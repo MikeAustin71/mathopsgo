@@ -696,7 +696,7 @@ func (nthrt *NthRootOp) calcPrecision() error {
 
 		nthrt.RequestedPrecision = existingPrecision
 
-		//return nil
+		// return nil
 	}
 
 	nthrt.RequestedPrecision++
