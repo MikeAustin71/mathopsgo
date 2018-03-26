@@ -458,13 +458,14 @@ func TestIntAry_MultiplyThisBy_08(t *testing.T) {
 	}
 
 	if thisStats.IntegerLen != 2 {
-		t.Errorf("Expected this this IntegerLen = 2 .  Instead this IntegerLen= %v .", thisStats.IntegerLen)
+		t.Errorf("Expected this this IntegerLen = 2 .  " +
+			"Instead this IntegerLen= %v .", thisStats.IntegerLen)
 	}
 
 	if this.GetPrecision() != 0 {
-		t.Errorf("Expected this this.GetPrecision() = 0 .  Instead this.GetPrecision= %v .", this.GetPrecision)
+		t.Errorf("Expected this this.GetPrecision() = 0 .  " +
+			"Instead this.GetPrecision= %v .", this.GetPrecision())
 	}
-
 }
 
 func TestIntAry_MultiplyThisBy_09(t *testing.T) {
@@ -492,7 +493,7 @@ func TestIntAry_MultiplyThisBy_09(t *testing.T) {
 	}
 
 	if this.GetPrecision() != 3 {
-		t.Errorf("Expected this this.GetPrecision() = 3 .  Instead this.GetPrecision= %v .", this.GetPrecision)
+		t.Errorf("Expected this this.GetPrecision() = 3 .  Instead this.GetPrecision= %v .", this.GetPrecision())
 	}
 
 }
