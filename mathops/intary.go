@@ -108,7 +108,7 @@ func (fIa *FracIntAry) GetRationalValue(maxPrecision int) (*big.Rat, error) {
 
 	}
 
-	newFloat, err := fIa.Numerator.DivideThisBy(&fIa.Denominator, maxPrecision)
+	newFloat, err := fIa.Numerator.DivideThisBy(&fIa.Denominator, 0, maxPrecision)
 
 	if err != nil {
 		return big.NewRat(1, 1), fmt.Errorf("GetRationalValue() - Error returned from fIa.Numerator.DivideThisBy(&fIa.Denominator, 42). Error= %v", err)
@@ -1592,7 +1592,7 @@ func (ia *IntAry) DivideByTenToPower(power uint) {
 // to a maximum of 1,024 digits to the right of the decimal
 // point.
 //
-func (ia *IntAry) DivideThisBy(iAry2 *IntAry, maxPrecision int) (IntAry, error) {
+func (ia *IntAry) DivideThisBy(iAry2 *IntAry, minPrecision,  maxPrecision int) (IntAry, error) {
 
 	ia.SetInternalFlags()
 	iAry2.SetInternalFlags()
@@ -1603,6 +1603,10 @@ func (ia *IntAry) DivideThisBy(iAry2 *IntAry, maxPrecision int) (IntAry, error) 
 
 	if maxPrecision < -1 {
 		return IntAry{}.New(), errors.New("Error: Input parameter 'maxPrecision' is INVALID. 'maxPrecision' is less than -1")
+	}
+
+	if minPrecision < 0 {
+		minPrecision = 0
 	}
 
 	if maxPrecision == -1 {
@@ -1646,7 +1650,7 @@ func (ia *IntAry) DivideThisBy(iAry2 *IntAry, maxPrecision int) (IntAry, error) 
 	if dividendMag > divisorMag {
 		deltaMag = uint(dividendMag - divisorMag)
 		tensCount.MultiplyByTenToPower(deltaMag)
-		incrementVal.MultiplyThisBy(&tensCount, -1)
+		incrementVal.MultiplyThisBy(&tensCount, -1, -1)
 
 	} else if divisorMag > dividendMag {
 		deltaMag = uint(divisorMag - dividendMag)
@@ -1694,6 +1698,10 @@ func (ia *IntAry) DivideThisBy(iAry2 *IntAry, maxPrecision int) (IntAry, error) 
 			incrementVal.DivideByTenToPower(1)
 		}
 
+	}
+
+	if quotient.GetPrecision() < minPrecision {
+		quotient.SetPrecision(minPrecision, false)
 	}
 
 	return quotient, nil
@@ -2173,7 +2181,7 @@ func (ia *IntAry) GetIntAryRune(index int) (rune, error) {
 			"index= '%v'", index)
 	}
 
-	return rune(ia.intAry[index]), nil
+	return rune(ia.intAry[index] + 48), nil
 
 }
 
@@ -2386,6 +2394,26 @@ func (ia *IntAry) GetNthRootOfThis(nthRoot, maxPrecision uint) (IntAry, error) {
 // or equal to zero '0' )
 func (ia *IntAry) GetPrecision() int {
 	return ia.precision
+}
+
+// GetRuneArray - Returns all the elements of the current
+// IntAry as an array of runes.
+func (ia *IntAry) GetRuneArray() []rune {
+
+	ia.SetInternalFlags()
+	aLen := ia.GetIntAryLength()
+
+	if aLen == 0 {
+		return []rune{}
+	}
+
+	outRunes := make([]rune, aLen)
+
+	for i:= 0; i < aLen; i++ {
+		outRunes[i] = rune(ia.intAry[i] + 48)
+	}
+
+	return outRunes
 }
 
 // GetScaleFactorBigInt - Returns a pointer to a Big Integer
@@ -2653,7 +2681,7 @@ func (ia *IntAry) Inverse(maxPrecision int) (IntAry, error) {
 		return IntAry{}.New(), fmt.Errorf("InverseOfThis() - Error returned from intAry{}.NewInt(1, 0). Error= %v", err)
 	}
 
-	iaInverse, err := iaOne.DivideThisBy(ia, maxPrecision)
+	iaInverse, err := iaOne.DivideThisBy(ia, 0, maxPrecision)
 
 	if err != nil {
 		return IntAry{}.New(), fmt.Errorf("InverseOfThis() - Error returned from iaOne.DivideThisBy(ia, maxPrecision). Error= %v", err)
@@ -2726,9 +2754,9 @@ func (ia *IntAry) MultiplyByTenToPower(power uint) {
 
 }
 
-func (ia *IntAry) MultiplyThisBy(ia2 *IntAry, maxPrecision int) error {
+func (ia *IntAry) MultiplyThisBy(ia2 *IntAry, minimumPrecision, maxPrecision int) error {
 
-	return ia.Multiply(ia, ia2, ia, maxPrecision)
+	return ia.Multiply(ia, ia2, ia, minimumPrecision, maxPrecision)
 
 
 }
@@ -2761,10 +2789,14 @@ func (ia *IntAry) MultiplyThisBy(ia2 *IntAry, maxPrecision int) error {
 //								the number of decimals places to right of the decimal
 //								point in the result.
 //
-func (ia *IntAry) Multiply(ia1, ia2, iaResult *IntAry, maxResultPrecision int) error {
+func (ia *IntAry) Multiply(ia1, ia2, iaResult *IntAry, minimumResultPrecision, maxResultPrecision int) error {
 
 	if maxResultPrecision < -1 {
 		return fmt.Errorf("Error: Parameter 'maxResultPrecision' is less than -1. maxResultPrecision= %v", maxResultPrecision)
+	}
+
+	if minimumResultPrecision < 0 {
+		minimumResultPrecision = 0
 	}
 
 	ia1.SetInternalFlags()
@@ -2772,7 +2804,7 @@ func (ia *IntAry) Multiply(ia1, ia2, iaResult *IntAry, maxResultPrecision int) e
 
 
 	if ia1.isZeroValue || ia2.isZeroValue {
-		iaResult.SetIntAryToZero(ia2.GetPrecision())
+		iaResult.SetIntAryToZero(minimumResultPrecision)
 		return nil
 	}
 
@@ -2842,7 +2874,10 @@ func (ia *IntAry) Multiply(ia1, ia2, iaResult *IntAry, maxResultPrecision int) e
 	iaResult.integerLen = newIntAryLen - newPrecision
 	iaResult.isZeroValue = false
 
-	if maxResultPrecision > -1 && maxResultPrecision < newPrecision {
+	if newPrecision < minimumResultPrecision {
+		iaResult.SetPrecision(minimumResultPrecision, false)
+
+	} else if maxResultPrecision > -1 && maxResultPrecision < newPrecision {
 		iaResult.SetPrecision(maxResultPrecision, true)
 	}
 
@@ -3200,7 +3235,7 @@ func (ia *IntAry) Pow(power, maxResultPrecision, internalPrecision int) error {
 // is equal to the original value squared.
 func (ia *IntAry)PowThisSquared() error {
 
-	return ia.MultiplyThisBy(ia, -1)
+	return ia.MultiplyThisBy(ia, ia.GetPrecision(), -1)
 }
 
 
@@ -3340,7 +3375,7 @@ func (ia *IntAry) pwrByTwos(power *big.Int, maxResultPrecision, internalPrecisio
 		if big.NewInt(0).Mod(tPower, two).Cmp(one) == 0 {
 			//temp = big.NewInt(0).Mul(result, tBase)
 			//result = big.NewInt(0).Set(temp)
-			err := ia.MultiplyThisBy(&tBase, internalPrecision)
+			err := ia.MultiplyThisBy(&tBase, -1, internalPrecision)
 			//fmt.Println("ia Precision = ", ia.GetPrecision())
 
 			if err != nil {
@@ -3357,7 +3392,8 @@ func (ia *IntAry) pwrByTwos(power *big.Int, maxResultPrecision, internalPrecisio
 		}
 
 
-		err:= tBase.MultiplyThisBy(&tBase, internalPrecision)
+		err:= tBase.MultiplyThisBy(&tBase, -1,  internalPrecision)
+
 		if err != nil {
 			return fmt.Errorf("intAry.pwrByTwos() - Error From tBase.MultiplyThisBy(&temp, true). Error= %v", err)
 		}
@@ -3405,7 +3441,7 @@ func (ia *IntAry) pwrByOnes(power, maxPrecision int) error {
 	multiplier := ia.CopyOut()
 
 	for i := 0; i < power; i++ {
-		ia.MultiplyThisBy(&multiplier, -1)
+		ia.MultiplyThisBy(&multiplier, -1, -1)
 	}
 
 	if oldPowerSignVal == 1 {
@@ -3437,19 +3473,6 @@ func (ia *IntAry) PrefixToIntAry(num uint8) {
 	if num > 0 {
 		ia.isZeroValue = false
 	}
-}
-
-// PrependToAry - Adds a numeric value at
-// the beginning of the current IntAry.
-func (ia *IntAry) PrependToAry(num uint8) {
-
-	ia.intAry =  append([]uint8{num}, ia.intAry...)
-	ia.intAryLen  = len(ia.intAry)
-	ia.integerLen = ia.intAryLen - ia.precision
-	if num > 0 {
-		ia.isZeroValue = false
-	}
-
 }
 
 // ResetFromBackUp - Retrieves data from the
@@ -3512,6 +3535,7 @@ func (ia *IntAry) RoundToPrecision(roundToPrecision int) error {
 
 		ia.intAryLen = len(ia.intAry)
 		ia.precision = roundToPrecision
+		ia.SetInternalFlags()
 		return nil
 	}
 
@@ -3558,6 +3582,7 @@ func (ia *IntAry) RoundToPrecision(roundToPrecision int) error {
 	}
 	ia.precision = roundToPrecision
 	ia.intAryLen = len(ia.intAry)
+	ia.SetInternalFlags()
 	return nil
 }
 
@@ -4493,6 +4518,7 @@ func (ia *IntAry) SetPrecision(precision int, roundResult bool) error {
 
 		ia.precision = precision
 		ia.intAryLen = len(ia.intAry)
+		ia.SetInternalFlags()
 		return nil
 	}
 
@@ -4749,28 +4775,4 @@ func (ia *IntAry) SubtractMultipleFromThis(iaMany ...*IntAry) error {
 	}
 
 	return nil
-}
-
-
-
-// TrimToFirstDigit - Removes leading zeros from the current
-// IntAry such that the first digit is a digit greater than zero.
-//
-// Exceptions:
-// 1. If the value of the IntAry is zero, the IntAry is set with
-//    one zero in the integer portion of the IntAry.
-//
-// 2. If 'Precision' is greater than zero, there will be a
-//    leading zero before the decimal point.
-// 				Example: 0.123
-//
-func (ia *IntAry) TrimToFirstDigit() error {
-
-	ia.SetInternalFlags()
-
-	ia.intAry = ia.intAry[ia.firstDigitIdx:]
-
-	ia.SetInternalFlags()
-
-	return ia.IsIntAryValid("IntAry.TrimToFirstDigit() ")
 }

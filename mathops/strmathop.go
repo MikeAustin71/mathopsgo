@@ -51,203 +51,22 @@ func (sMathOp *StrMathOp) Empty() {
 
 }
 
+
+
 // AddN1N2 - Adds the values in the N1 and N2 arrays
 // and returns the sum in the IFinal Array. Arrays
 // N1 and N2 must be first correctly populated before
 // calling this method.
 func (sMathOp *StrMathOp) AddN1N2() error {
 
-	ePrefix := "StrMathOp.AddN1N2() "
+	sMathOp.IFinal = sMathOp.N1.CopyOut()
 
-	sMathOp.N1.SetEqualArrayLengths(&sMathOp.N2)
-
-	if sMathOp.N1.IsZeroValue() && sMathOp.N2.IsZeroValue() {
-		sMathOp.IFinal.SetIntAryToZero(sMathOp.N1.GetPrecision())
-		return nil
-	}
-
-	var err error
-
-	compare := sMathOp.N1.CompareAbsoluteValues(&sMathOp.N2)
-
-	newSignVal := sMathOp.N1.GetSign()
-	doAdd := true
-	isZeroResult := false
-	doReverseNums := false
-
-	if compare == 1 {
-		// compare == + 1
-		// Absolute Value: N1 > N2
-
-		if sMathOp.N1.GetSign() == 1 && sMathOp.N2.GetSign() == 1 {
-			doAdd = true
-			newSignVal = 1
-		} else if sMathOp.N1.GetSign() == -1 && sMathOp.N2.GetSign() == 1 {
-			doAdd = false
-			newSignVal = -1
-		} else if sMathOp.N1.GetSign() == -1 && sMathOp.N2.GetSign() == -1 {
-			doAdd = true
-			newSignVal = -1
-		} else {
-			// Must Be sMathOp.N1.GetSign() == 1 && sMathOp.N2.GetSign() == -1
-			doAdd = false
-			newSignVal = 1
-		}
-
-	} else if compare == -1 {
-		// Absolute Values: N2 > N1
-		if sMathOp.N1.GetSign() == 1 && sMathOp.N2.GetSign() == 1 {
-			doAdd = true
-			newSignVal = 1
-		} else if sMathOp.N1.GetSign() == -1 && sMathOp.N2.GetSign() == 1 {
-			doAdd = false
-			doReverseNums = true
-			newSignVal = 1
-		} else if sMathOp.N1.GetSign() == -1 && sMathOp.N2.GetSign() == -1 {
-			doAdd = true
-			newSignVal = -1
-		} else {
-			// Must Be sMathOp.N1.GetSign() == 1 && sMathOp.N2.GetSign() == -1
-			doAdd = false
-			doReverseNums = true
-			newSignVal = -1
-		}
-
-	} else {
-		// Must be compare == 0
-		// Absolute Values: N1==N2
-		if sMathOp.N1.GetSign() == 1 && sMathOp.N2.GetSign() == 1 {
-			doAdd = true
-			newSignVal = 1
-		} else if sMathOp.N1.GetSign() == -1 && sMathOp.N2.GetSign() == 1 {
-			doAdd = false
-			newSignVal = 1
-			isZeroResult = true
-		} else if sMathOp.N1.GetSign() == -1 && sMathOp.N2.GetSign() == -1 {
-			doAdd = true
-			newSignVal = -1
-		} else {
-			// Must Be sMathOp.N1.GetSign() == 1 && sMathOp.N2.GetSign() == -1
-			doAdd = false
-			newSignVal = 1
-			isZeroResult = true
-		}
-
-	}
-
-	if isZeroResult {
-		sMathOp.IFinal.SetIntAryToZero(sMathOp.N1.GetPrecision())
-		return nil
-	}
-
-
-	sMathOp.IFinal, _ = IntAry{}.NewInt(sMathOp.N1.GetIntAryLength(),
-												uint(sMathOp.N1.GetPrecision()))
-
-	sMathOp.IFinal.SetSign(newSignVal)
-	// sMathOp.IFinal.GetPrecision() =
-	// Array Lengths of N1 and N2 are now equal
-
-	carry := 0
-	n1 := 0
-	n2 := 0
-	n3 := 0
-
-	for j := sMathOp.N1.GetIntAryLength() - 1; j >= 0; j-- {
-
-		if doReverseNums {
-
-			n2, err = sMathOp.N1.GetIntAryInt(j)
-
-			if err != nil {
-				return fmt.Errorf(ePrefix +
-					"Error returned by sMathOp.N1.GetIntAryInt(j) Error='%v'",
-						err.Error())
-			}
-
-			n1, err = sMathOp.N2.GetIntAryInt(j)
-
-			if err != nil {
-				return fmt.Errorf(ePrefix +
-					"Error returned by sMathOp.N2.GetIntAryInt(j) Error='%v'",
-					err.Error())
-			}
-
-		} else {
-			n1, err  = sMathOp.N1.GetIntAryInt(j)
-
-			if err != nil {
-				return fmt.Errorf(ePrefix +
-					"Error returned by else: sMathOp.N1.GetIntAryInt(j) Error='%v'",
-					err.Error())
-			}
-
-			n2, err = sMathOp.N2.GetIntAryInt(j)
-
-			if err != nil {
-				return fmt.Errorf(ePrefix +
-					"Error returned by else: sMathOp.N2.GetIntAryInt(j) Error='%v'",
-					err.Error())
-			}
-
-		}
-
-		if doAdd {
-			// doAdd == true
-			// Do Addition
-
-			n3 = n1 + n2 + carry
-
-			if n3 > 9 {
-				n3 = n1 + n2 + carry - 10
-				carry = 1
-
-			} else {
-				carry = 0
-			}
-
-		} else {
-			// doAdd == false
-			// Do Subtraction
-			n3 = n1 - n2 - carry
-
-			if n3 < 0 {
-				n3 = n1 + 10 - n2 - carry
-				carry = 1
-			} else {
-				carry = 0
-			}
-		}
-
-		err = sMathOp.IFinal.SetElement(j, n3)
-
-		if err != nil {
-			return fmt.Errorf(ePrefix + "Error returned by sMathOp.IFinal.SetElement(j, n3). " +
-				"Error ='%v'", err.Error())
-		}
-
-	}
-
-	if carry > 0 {
-		sMathOp.IFinal.PrependToAry(uint8(1))
-	}
-
-	element, err := sMathOp.IFinal.GetIntAryInt(0)
+	err := sMathOp.IFinal.AddToThis(&sMathOp.N2)
 
 	if err != nil {
-		return fmt.Errorf(ePrefix + "Error returned by sMathOp.IFinal.GetIntAryInt(0). " +
-			"Error='%v' ", err.Error())
-	}
-
-	if element == 0 {
-		sMathOp.IFinal.SetSignificantDigitIdxs()
-		err = sMathOp.IFinal.TrimToFirstDigit()
-
-		if err != nil {
-			return fmt.Errorf(ePrefix + "Error returned from sMathOp.IFinal.TrimToFirstDigit() " +
-				"Error = '%v' ", err.Error())
-		}
-
+		return fmt.Errorf("StrMathOp.AddN1N2() Error returned by " +
+			"sMathOp.IFinal.AddToThis(&sMathOp.N2). Error='%v'",
+				err.Error())
 	}
 
 	return nil
@@ -298,6 +117,39 @@ func (sMathOp *StrMathOp) RaiseToPower(power int) error {
 	return nil
 }
 
+// MultiplyN1N2 - Mulitplies Array N1 by Array N2 and
+// places the result in sMathOp.IFinal.
+func (sMathOp *StrMathOp) MultiplyN1N2() error {
+
+	sMathOp.N1.SetInternalFlags()
+	sMathOp.N2.SetInternalFlags()
+
+	sMathOp.IFinal = sMathOp.N1.CopyOut()
+	sMathOp.IFinal.SetInternalFlags()
+
+	n1Precision := sMathOp.N1.GetPrecision()
+	n2Precision := sMathOp.N2.GetPrecision()
+
+	greatestPrecision := n1Precision
+
+	if n2Precision > n1Precision {
+		greatestPrecision = n2Precision
+	}
+
+	maxPrecision := n1Precision + n2Precision
+
+	err := sMathOp.IFinal.MultiplyThisBy(&sMathOp.N2, greatestPrecision, maxPrecision)
+
+	if err != nil {
+		return fmt.Errorf("StrMathOp.MultiplyN1N2() Error returned by " +
+			"sMathOp.IFinal.MultiplyThisBy(&sMathOp.N2, maxPrecision) " +
+			"Error='%v' ", err.Error())
+	}
+
+
+	return nil
+}
+/*
 func (sMathOp *StrMathOp) MultiplyN1N2() error {
 	ePrefix := "StrMathOp.MultiplyN1N2() "
 
@@ -424,13 +276,13 @@ func (sMathOp *StrMathOp) MultiplyN1N2() error {
 
 	}
 
-	sMathOp.IFinal.GetSign() = newSignVal
-	sMathOp.IFinal.GetPrecision() = newPrecision
+	sMathOp.IFinal.SetSign(newSignVal)
+	sMathOp.IFinal.SetPrecision(newPrecision, true)
 	sMathOp.IFinal.OptimizeIntArrayLen(true)
 
 	return nil
 }
-
+*/
 
 // Divide - Divides the Dividend IntAry
 // field by the Divisor IntAry field. The results are
@@ -449,11 +301,11 @@ func (sMathOp *StrMathOp) Divide(maxPrecision int) error {
 	}
 
 	if sMathOp.Divisor.GetSign() == -1 {
-		sMathOp.Divisor.GetSign() = 1
+		sMathOp.Divisor.SetSign(1)
 	}
 
 	if sMathOp.Dividend.GetSign() == -1 {
-		sMathOp.Dividend.GetSign() = 1
+		sMathOp.Dividend.SetSign(1)
 	}
 
 	sMathOp.Divisor.SetIsZeroValue()
@@ -478,7 +330,7 @@ func (sMathOp *StrMathOp) Divide(maxPrecision int) error {
 	if dividendMag > divisorMag {
 		deltaMag = uint(dividendMag - divisorMag)
 		tensCount.MultiplyByTenToPower(deltaMag)
-		incrementVal.MultiplyThisBy(&tensCount, -1)
+		incrementVal.MultiplyThisBy(&tensCount, -1, -1)
 
 
 	} else if divisorMag > dividendMag {
@@ -494,7 +346,7 @@ func (sMathOp *StrMathOp) Divide(maxPrecision int) error {
 	for true {
 
 		if sMathOp.Quotient.GetPrecision() == precisionCutOff {
-			sMathOp.Quotient.GetSign() = newSignVal
+			sMathOp.Quotient.SetSign(newSignVal)
 			sMathOp.Quotient.RoundToPrecision(maxPrecision)
 			return nil
 		}
@@ -504,7 +356,7 @@ func (sMathOp *StrMathOp) Divide(maxPrecision int) error {
 		if compare == 0 {
 			// incrementalVal is equal to trialDividend
 			sMathOp.Quotient.AddToThis(&tensCount)
-			sMathOp.Quotient.GetSign() = newSignVal
+			sMathOp.Quotient.SetSign(newSignVal)
 			return nil
 
 		} else if compare == -1 {
@@ -591,201 +443,17 @@ func (sMathOp *StrMathOp) SubtractDivArys()  {
 //
 func (sMathOp *StrMathOp) SubtractN1N2() error {
 
-	ePrefix := "StrMathOp.SubtractN1N2()"
 
-	sMathOp.N1.SetEqualArrayLengths(&sMathOp.N2)
+	sMathOp.IFinal = sMathOp.N1.CopyOut()
 
-	if sMathOp.N1.IsZeroValue() && sMathOp.N2.IsZeroValue() {
-		sMathOp.IFinal.SetIntAryToZero(sMathOp.N1.GetPrecision())
-		return nil
-	}
-
-	compare := sMathOp.N1.CompareAbsoluteValues(&sMathOp.N2)
-	isZeroResult := false
-
-	// Largest Value in now in N1 slot
-	newSignVal := sMathOp.N1.GetSign()
-	doSubtract := true
-	doReverseNums := false
-
-	if compare == 1 {
-		// compare == + 1
-		// Absolute Value: N1 > N2
-
-		if sMathOp.N1.GetSign() == 1 && sMathOp.N2.GetSign() == 1 {
-			doSubtract = true
-			newSignVal = 1
-		} else if sMathOp.N1.GetSign() == -1 && sMathOp.N2.GetSign() == 1 {
-			doSubtract = false
-			newSignVal = -1
-		} else if sMathOp.N1.GetSign() == -1 && sMathOp.N2.GetSign() == -1 {
-			doSubtract = true
-			newSignVal = -1
-		} else {
-			// Must Be sMathOp.N1.GetSign() == 1 && sMathOp.N2.GetSign() == -1
-			doSubtract = false
-			newSignVal = 1
-		}
-
-	} else if compare == -1 {
-		// Absolute Values: N2 > N1
-		if sMathOp.N1.GetSign() == 1 && sMathOp.N2.GetSign() == 1 {
-			doSubtract = true
-			doReverseNums = true
-			newSignVal = -1
-		} else if sMathOp.N1.GetSign() == -1 && sMathOp.N2.GetSign() == 1 {
-			doSubtract = false
-			newSignVal = -1
-		} else if sMathOp.N1.GetSign() == -1 && sMathOp.N2.GetSign() == -1 {
-			doSubtract = true
-			doReverseNums = true
-			newSignVal = 1
-		} else {
-			// Must Be sMathOp.N1.GetSign() == 1 && sMathOp.N2.GetSign() == -1
-			doSubtract = false
-			newSignVal = 1
-		}
-
-	} else {
-		// Must be compare == 0
-		// Absolute Values: N1==N2
-		if sMathOp.N1.GetSign() == 1 && sMathOp.N2.GetSign() == 1 {
-			doSubtract = true
-			newSignVal = 1
-			isZeroResult = true
-		} else if sMathOp.N1.GetSign() == -1 && sMathOp.N2.GetSign() == 1 {
-			doSubtract = false
-			newSignVal = -1
-		} else if sMathOp.N1.GetSign() == -1 && sMathOp.N2.GetSign() == -1 {
-			doSubtract = true
-			newSignVal = 1
-			isZeroResult = true
-		} else {
-			// Must Be sMathOp.N1.GetSign() == 1 && sMathOp.N2.GetSign() == -1
-			doSubtract = false
-			newSignVal = 1
-		}
-
-	}
-
-	if isZeroResult {
-		sMathOp.IFinal.SetIntAryToZero(sMathOp.N1.GetPrecision())
-		return nil
-	}
-
-	//sMathOp.IFinal.IntAry = make([]int, sMathOp.N1.IntAryLen)
-	var err error
-
-	sMathOp.IFinal, err = IntAry{}.NewInt(sMathOp.N1.GetIntAryLength(), 0)
+	err := sMathOp.IFinal.SubtractFromThis(&sMathOp.N2)
 
 	if err != nil {
-		return fmt.Errorf(ePrefix + "Error returned by " +
-			"IntAry{}.NewInt(sMathOp.N1.GetIntAryLength(), 0) " +
-			"Error='%v'", err.Error())
-	}
-
-	sMathOp.IFinal.GetSign() = newSignVal
-	sMathOp.IFinal.GetPrecision() = sMathOp.N1.GetPrecision()
-	// Array Lengths of N1 and N2 are now equal
-
-	carry := 0
-	n1 := 0
-	n2 := 0
-	n3 := 0
-	for j := sMathOp.N1.GetIntAryLength() - 1; j >= 0; j-- {
-
-		if doReverseNums {
-
-			n1, err = sMathOp.N2.GetIntAryInt(j)
-
-			if err != nil {
-				return fmt.Errorf(ePrefix +
-					"Error returned by n1=sMathOp.N2.GetIntAryInt(j). " +
-					"Error='%v'", err.Error())
-			}
-
-			n2, err = sMathOp.N1.GetIntAryInt(j)
-
-			if err != nil {
-				return fmt.Errorf(ePrefix +
-					"Error returned by n2=sMathOp.N1.GetIntAryInt(j). " +
-					"Error='%v'", err.Error())
-			}
-
-		} else {
-
-			n1,err = sMathOp.N1.GetIntAryInt(j)
-
-			if err != nil {
-				return fmt.Errorf(ePrefix +
-					"Error returned by n1 = sMathOp.N1.GetIntAryInt(j). " +
-					"Error='%v'", err.Error())
-			}
-
-			n2, err = sMathOp.N2.GetIntAryInt(j)
-
-			if err != nil {
-				return fmt.Errorf(ePrefix +
-					"Error returned by n2 = sMathOp.N2.GetIntAryInt(j). " +
-					"Error='%v'", err.Error())
-			}
-
-		}
-
-		if !doSubtract {
-			// doSubtract == false
-			// Do Addition
-
-			n3 = n1 + n2 + carry
-
-			if n3 > 9 {
-				n3 = n1 + n2 + carry - 10
-				carry = 1
-
-			} else {
-				carry = 0
-			}
-
-		} else {
-			// doSubtract == true
-			// Do Subtraction
-			n3 = n1 - n2 - carry
-
-			if n3 < 0 {
-				n3 = n1 + 10 - n2 - carry
-				carry = 1
-			} else {
-				carry = 0
-			}
-		}
-
-
-		err = sMathOp.IFinal.SetElement(j, n3)
-		if err != nil {
-			return fmt.Errorf(ePrefix +
-				"Error returend by sMathOp.IFinal.SetElement(j, n3). " +
-				"Error='%v' ", err.Error())
-		}
-
-	}
-
-	if carry > 0 {
-		sMathOp.IFinal.PrependToAry(1)
-	}
-
-	if element, _ := sMathOp.IFinal.GetIntAryInt(0); element == 0 {
-
-		sMathOp.IFinal.SetSignificantDigitIdxs()
-
-		err = sMathOp.IFinal.TrimToFirstDigit()
-
-		if err != nil {
-			return fmt.Errorf(ePrefix +
-				"Error returned by sMathOp.IFinal.TrimToFirstDigit() " +
-				"Error='%v' ", err.Error())
-		}
-
+		return fmt.Errorf("StrMathOp.SubtractN1N2() Error returned by " +
+			"sMathOp.IFinal.SubtractFromThis(&sMathOp.N2). Error='%v'",
+				err.Error())
 	}
 
 	return nil
+
 }

@@ -325,7 +325,7 @@ func TestIntAry_MultiplyThisBy_01(t *testing.T) {
 	ia2, _ := IntAry{}.NewNumStr("8574.21396845")
 	expected := "830433.200957906780"
 
-	this.MultiplyThisBy(&ia2, -1)
+	this.MultiplyThisBy(&ia2, -1, -1)
 
 	resultStr := this.GetNumStr()
 
@@ -341,7 +341,7 @@ func TestIntAry_MultiplyThisBy_02(t *testing.T) {
 	ia2, _ := IntAry{}.NewNumStr("8574.21396845")
 	expected := "-830433.200957906780"
 
-	this.MultiplyThisBy(&ia2, -1)
+	this.MultiplyThisBy(&ia2, -1, -1)
 
 	resultStr := this.GetNumStr()
 
@@ -357,7 +357,7 @@ func TestIntAry_MultiplyThisBy_03(t *testing.T) {
 	ia2, _ := IntAry{}.NewNumStr("-8574.21396845")
 	expected := "-830433.200957906780"
 
-	this.MultiplyThisBy(&ia2, -1)
+	this.MultiplyThisBy(&ia2, -1, -1)
 
 	resultStr := this.GetNumStr()
 
@@ -373,7 +373,7 @@ func TestIntAry_MultiplyThisBy_04(t *testing.T) {
 	ia2, _ := IntAry{}.NewNumStr("-8574.21396845")
 	expected := "830433.200957906780"
 
-	this.MultiplyThisBy(&ia2, -1)
+	this.MultiplyThisBy(&ia2, -1, -1)
 
 	resultStr := this.GetNumStr()
 
@@ -390,7 +390,7 @@ func TestIntAry_MultiplyThisBy_05(t *testing.T) {
 	expected := "830433.200958"
 	maxPrecision := 6
 
-	this.MultiplyThisBy(&ia2, maxPrecision)
+	this.MultiplyThisBy(&ia2,maxPrecision, maxPrecision)
 
 	resultStr := this.GetNumStr()
 
@@ -411,7 +411,7 @@ func TestIntAry_MultiplyThisBy_06(t *testing.T) {
 	ia2, _ := IntAry{}.NewNumStr("-8574.21396845")
 	expected := "0.00000000"
 
-	this.MultiplyThisBy(&ia2, -1)
+	this.MultiplyThisBy(&ia2, 8, -1)
 
 	resultStr := this.GetNumStr()
 
@@ -427,7 +427,7 @@ func TestIntAry_MultiplyThisBy_07(t *testing.T) {
 	ia2, _ := IntAry{}.NewNumStr("0")
 	expected := "0"
 
-	this.MultiplyThisBy(&ia2, -1)
+	this.MultiplyThisBy(&ia2, 0, -1)
 
 	resultStr := this.GetNumStr()
 
@@ -443,7 +443,7 @@ func TestIntAry_MultiplyThisBy_08(t *testing.T) {
 	ia2, _ := IntAry{}.NewNumStr("2")
 	expected := "80"
 
-	this.MultiplyThisBy(&ia2, -1)
+	this.MultiplyThisBy(&ia2, 0, -1)
 
 	resultStr := this.GetNumStr()
 
@@ -474,7 +474,7 @@ func TestIntAry_MultiplyThisBy_09(t *testing.T) {
 	ia2, _ := IntAry{}.NewNumStr("99.9")
 	expected := "99899.001"
 
-	this.MultiplyThisBy(&ia2, -1)
+	this.MultiplyThisBy(&ia2, -1, -1)
 
 	resultStr := this.GetNumStr()
 

@@ -53,10 +53,12 @@ func TestStrMathOp_AddN1N2_01(t *testing.T) {
 
 	for i := 0; i < lNRunes; i++ {
 		
-		element, _ := mOps.IFinal.GetIntAryElement(i)
+		element, _ := mOps.IFinal.GetIntAryRune(i)
 		
-		if nRunes[i] != rune(element) {
-			t.Error("Error: Expected nRunes Array does NOT match ia.NumRunes Array! ")
+		if nRunes[i] != element {
+			t.Errorf("Error: Expected nRunes Array does NOT match ia.NumRunes Array! " +
+				" nRunes[i]='%v' element='%v'",
+					nRunes[i], element)
 			return
 		}
 
@@ -122,9 +124,9 @@ func TestStrMathOp_AddN1N2_02(t *testing.T) {
 
 	for i := 0; i < lNRunes; i++ {
 
-		element, _ := mOps.IFinal.GetIntAryElement(i)
+		element, _ := mOps.IFinal.GetIntAryRune(i)
 
-		if nRunes[i] != rune(element) {
+		if nRunes[i] != element {
 			t.Error("Error: Expected nRunes Array does NOT match ia.NumRunes Array! ")
 			return
 		}
@@ -189,9 +191,9 @@ func TestStrMathOp_AddN1N2_03(t *testing.T) {
 
 	for i := 0; i < lNRunes; i++ {
 
-		element, _ := mOps.IFinal.GetIntAryElement(i)
+		element, _ := mOps.IFinal.GetIntAryRune(i)
 
-		if nRunes[i] != rune(element) {
+		if nRunes[i] != element {
 			t.Error("Error: Expected nRunes Array does NOT match ia.NumRunes Array! ")
 			return
 		}
@@ -256,9 +258,11 @@ func TestStrMathOp_AddN1N2_04(t *testing.T) {
 		t.Errorf("Error: Expected IntArray Length= '%v'. Instead received IntArry Length= '%v'", lEArray, mOps.IFinal.GetIntAryLength())
 	}
 
+	actualRunes := mOps.IFinal.GetRuneArray()
+
 	for i := 0; i < lNRunes; i++ {
 
-		if element, _ := mOps.IFinal.GetIntAryElement(i); nRunes[i] != rune(element) {
+		if nRunes[i] != actualRunes[i] {
 			t.Error("Error: Expected nRunes Array does NOT match ia.NumRunes Array! ")
 			return
 		}
@@ -2003,12 +2007,12 @@ func TestStrMathOp_MultiplyN1N2_05(t *testing.T) {
 	mOps := StrMathOp{}.New()
 	nStr1 := "0.0"
 	nStr2 := "0.0"
-	expected := "0.00"
-	nRunes := []rune("000")
-	eIAry := []int{0, 0, 0}
+	expected := "0.0"
+	nRunes := []rune("00")
+	eIAry := []int{0, 0}
 	lNRunes := len(nRunes)
 	lEArray := len(eIAry)
-	ePrecision := 2
+	ePrecision := 1
 	eSignVal := 1
 
 	mOps.N1.SetIntAryWithNumStr(nStr1)

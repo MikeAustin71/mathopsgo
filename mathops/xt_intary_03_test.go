@@ -1171,7 +1171,7 @@ func TestIntAry_DivideThisBy_01(t *testing.T) {
 	ia2 := IntAry{}.New()
 	ia2.SetIntAryWithNumStr(divisor)
 
-	quotient, err := ia1.DivideThisBy(&ia2, maxPrecision)
+	quotient, err := ia1.DivideThisBy(&ia2, 0, maxPrecision)
 
 	if err != nil {
 		t.Errorf("Error returned from ia1.DivideThisBy(&ia2, maxPrecision). Error= %v", err)
@@ -1204,7 +1204,7 @@ func TestIntAry_DivideThisBy_02(t *testing.T) {
 	ia2 := IntAry{}.New()
 	ia2.SetIntAryWithNumStr(divisor)
 
-	quotient, err := ia1.DivideThisBy(&ia2, maxPrecision)
+	quotient, err := ia1.DivideThisBy(&ia2, 0, maxPrecision)
 
 	if err != nil {
 		t.Errorf("Error returned from ia1.DivideThisBy(&ia2, maxPrecision). Error= %v", err)
@@ -1237,7 +1237,7 @@ func TestIntAry_DivideThisBy_03(t *testing.T) {
 	ia2 := IntAry{}.New()
 	ia2.SetIntAryWithNumStr(divisor)
 
-	quotient, err := ia1.DivideThisBy(&ia2, maxPrecision)
+	quotient, err := ia1.DivideThisBy(&ia2, 0, maxPrecision)
 
 	if err != nil {
 		t.Errorf("Error returned from ia1.DivideThisBy(&ia2, maxPrecision). Error= %v", err)
@@ -1270,7 +1270,7 @@ func TestIntAry_DivideThisBy_04(t *testing.T) {
 	ia2 := IntAry{}.New()
 	ia2.SetIntAryWithNumStr(divisor)
 
-	quotient, err := ia1.DivideThisBy(&ia2, maxPrecision)
+	quotient, err := ia1.DivideThisBy(&ia2, 0, maxPrecision)
 
 	if err != nil {
 		t.Errorf("Error returned from ia1.DivideThisBy(&ia2, maxPrecision). Error= %v", err)
@@ -1303,7 +1303,7 @@ func TestIntAry_DivideThisBy_05(t *testing.T) {
 	ia2 := IntAry{}.New()
 	ia2.SetIntAryWithNumStr(divisor)
 
-	quotient, err := ia1.DivideThisBy(&ia2, maxPrecision)
+	quotient, err := ia1.DivideThisBy(&ia2, 0, maxPrecision)
 
 	if err != nil {
 		t.Errorf("Error returned from ia1.DivideThisBy(&ia2, maxPrecision). Error= %v", err)
@@ -1332,7 +1332,7 @@ func TestIntAry_DivideThisBy_06(t *testing.T) {
 	ia2 := IntAry{}.New()
 	ia2.SetIntAryWithNumStr(divisor)
 
-	_, err := ia1.DivideThisBy(&ia2, 15)
+	_, err := ia1.DivideThisBy(&ia2, 0, 15)
 
 	if err == nil {
 		t.Error("Expected an error from Divideby Zero. No Error Received!")
@@ -1353,7 +1353,7 @@ func TestIntAry_DivideThisBy_07(t *testing.T) {
 	ia2 := IntAry{}.New()
 	ia2.SetIntAryWithNumStr(divisor)
 
-	quotient, err := ia1.DivideThisBy(&ia2, maxPrecision)
+	quotient, err := ia1.DivideThisBy(&ia2, 0, maxPrecision)
 
 	if err != nil {
 		t.Errorf("Error returned from ia1.DivideThisBy(&ia2, maxPrecision). Error= %v", err)
@@ -1385,7 +1385,7 @@ func TestIntAry_DivideThisBy_08(t *testing.T) {
 	ia2 := IntAry{}.New()
 	ia2.SetIntAryWithNumStr(divisor)
 
-	quotient, err := ia1.DivideThisBy(&ia2, maxPrecision)
+	quotient, err := ia1.DivideThisBy(&ia2, 0, maxPrecision)
 
 	if err != nil {
 		t.Errorf("Error returned from ia1.DivideThisBy(&ia2, maxPrecision). Error= %v", err)
@@ -1417,7 +1417,7 @@ func TestIntAry_DivideThisBy_09(t *testing.T) {
 	ia2 := IntAry{}.New()
 	ia2.SetIntAryWithNumStr(divisor)
 
-	quotient, err := ia1.DivideThisBy(&ia2, maxPrecision)
+	quotient, err := ia1.DivideThisBy(&ia2, 0,maxPrecision)
 
 	if err != nil {
 		t.Errorf("Error returned from ia1.DivideThisBy(&ia2, maxPrecision). Error= %v", err)
@@ -1449,7 +1449,7 @@ func TestIntAry_DivideThisBy_10(t *testing.T) {
 	ia2 := IntAry{}.New()
 	ia2.SetIntAryWithNumStr(divisor)
 
-	quotient, err := ia1.DivideThisBy(&ia2, maxPrecision)
+	quotient, err := ia1.DivideThisBy(&ia2, 0, maxPrecision)
 
 	if err != nil {
 		t.Errorf("Error returned from ia1.DivideThisBy(&ia2, maxPrecision). Error= %v", err)
@@ -1484,7 +1484,7 @@ func TestIntAry_DivideThisBy_11(t *testing.T) {
 	ia2 := IntAry{}.New()
 	ia2.SetIntAryWithNumStr(divisor)
 
-	quotient, err := ia1.DivideThisBy(&ia2, maxPrecision)
+	quotient, err := ia1.DivideThisBy(&ia2, 0, maxPrecision)
 
 	if err != nil {
 		t.Errorf("Error returned from ia1.DivideThisBy(&ia2, maxPrecision). Error= %v", err)
@@ -1520,7 +1520,7 @@ func TestIntAry_DivideThisBy_12(t *testing.T) {
 	ia2 := IntAry{}.New()
 	ia2.SetIntAryWithNumStr(divisor)
 
-	quotient, err := ia1.DivideThisBy(&ia2, maxPrecision)
+	quotient, err := ia1.DivideThisBy(&ia2, 0, maxPrecision)
 
 	if err != nil {
 		t.Errorf("Error returned from ia1.DivideThisBy(&ia2, maxPrecision). Error= %v", err)
@@ -1555,7 +1555,7 @@ func TestIntAry_DivideThisBy_13(t *testing.T) {
 	ia2 := IntAry{}.New()
 	ia2.SetIntAryWithNumStr(divisor)
 
-	quotient, err := ia1.DivideThisBy(&ia2, maxPrecision)
+	quotient, err := ia1.DivideThisBy(&ia2, 0, maxPrecision)
 
 	if err != nil {
 		t.Errorf("Error returned from ia1.DivideThisBy(&ia2, maxPrecision). Error= %v", err)
@@ -1587,7 +1587,7 @@ func TestIntAry_DivideThisBy_14(t *testing.T) {
 	ia2 := IntAry{}.New()
 	ia2.SetIntAryWithNumStr(divisor)
 
-	_, err := ia1.DivideThisBy(&ia2, maxPrecision)
+	_, err := ia1.DivideThisBy(&ia2, 0, maxPrecision)
 
 	if err == nil {
 		t.Error("Expected error to result from invalid 'maxPrecision' value of -10. Instead, no such error was triggered")
@@ -1611,7 +1611,7 @@ func TestIntAry_DivideThisBy_15(t *testing.T) {
 	ia2 := IntAry{}.New()
 	ia2.SetIntAryWithNumStr(divisor)
 
-	quotient, err := ia1.DivideThisBy(&ia2, maxPrecision)
+	quotient, err := ia1.DivideThisBy(&ia2, 0, maxPrecision)
 
 	if err != nil {
 		t.Errorf("Error returned from ia1.DivideThisBy(&ia2, maxPrecision). Error= %v", err)
@@ -1647,7 +1647,7 @@ func TestIntAry_DivideThisBy_16(t *testing.T) {
 	ia2 := IntAry{}.New()
 	ia2.SetIntAryWithNumStr(divisor)
 
-	quotient, err := ia1.DivideThisBy(&ia2, maxPrecision)
+	quotient, err := ia1.DivideThisBy(&ia2,0, maxPrecision)
 
 	if err != nil {
 		t.Errorf("Error returned from ia1.DivideThisBy(&ia2, maxPrecision). Error= %v", err)
