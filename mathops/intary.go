@@ -928,6 +928,9 @@ func (ia *IntAry) AppendToIntAry(num uint8) {
 	}
 }
 
+// Ceiling - Returns an IntAry which constitutes
+// the mathematical ceiling of the current
+// IntAry.
 func (ia *IntAry) Ceiling() (IntAry, error) {
 
 	err := ia.IsIntAryValid("Ceiling() - ")
@@ -2107,12 +2110,70 @@ func (ia *IntAry) GetIntAryElement(index int) (uint8, error) {
 
 
 	if index < 0 || index > (ia.intAryLen - 1) {
-		return 0, fmt.Errorf("Error: GetIntAryElement(index int) - Index is INVALID! index Out Of Array Bounds! index= '%v'", index)
+		return 0,
+		fmt.Errorf("Error: GetIntAryElement(index int) - Index is INVALID! index Out Of Array Bounds! " +
+			"index= '%v'", index)
 	}
 
 	result := ia.intAry[index]
 
 	return result, nil
+
+}
+
+
+// GetIntAryInt - Returns an element of the
+// internal integer array maintained by the
+// current IntAry object. The value returned is
+// of Type 'int'.
+//
+// Input Parameter:
+// index int - 	The element returned is based on the
+// 							integer index passed to the method. If
+//							the index is outside the range of
+//							the internal array, an error is returned.
+//
+// Return Value:	If the 'index' passed to the method is valid,
+//								the method will return an integer of type
+//								'int' representing the value of the internal
+//								integer array at the specified index.
+func (ia *IntAry) GetIntAryInt(index int) (int, error) {
+
+	if index < 0 || index > (ia.intAryLen - 1) {
+		return 0,
+		fmt.Errorf("Error: GetIntAryInt(index int) - Index is INVALID! index Out Of Array Bounds! " +
+				"index= '%v'", index)
+	}
+
+	return int(ia.intAry[index]), nil
+}
+
+
+// GetIntAryRune - Returns an element of the
+// internal integer array maintained by the
+// current IntAry object. The value returned is
+// of Type 'rune'.
+//
+// Input Parameter:
+// index int - 	The element returned is based on the
+// 							integer index passed to the method. If
+//							the index is outside the range of
+//							the internal array, an error is returned.
+//
+// Return Value:	If the 'index' passed to the method is valid,
+//								the method will return an integer of type
+//								'rune' representing the value of the internal
+//								integer array at the specified index.
+//
+func (ia *IntAry) GetIntAryRune(index int) (rune, error) {
+
+	if index < 0 || index > (ia.intAryLen - 1) {
+		return 0,
+		fmt.Errorf("Error: GetIntAryRune(index int) - Index is INVALID! index Out Of Array Bounds! " +
+			"index= '%v'", index)
+	}
+
+	return rune(ia.intAry[index]), nil
 
 }
 
@@ -2545,6 +2606,24 @@ func (ia *IntAry) IsIntAryValid(errName string) error {
 	}
 
 	return nil
+}
+
+
+// IsZeroValue - Analyzes the current IntAry to determine
+// it is a zero value. If the IntAry is equal to a zero
+// value, this method returns 'true'
+//
+func (ia *IntAry) IsZeroValue() bool {
+
+	err := ia.IsIntAryValid("")
+
+	if err != nil {
+		return true
+	}
+
+
+	return ia.isZeroValue
+
 }
 
 // Inverse - Returns the inverse of the the current intAry's
@@ -3360,6 +3439,19 @@ func (ia *IntAry) PrefixToIntAry(num uint8) {
 	}
 }
 
+// PrependToAry - Adds a numeric value at
+// the beginning of the current IntAry.
+func (ia *IntAry) PrependToAry(num uint8) {
+
+	ia.intAry =  append([]uint8{num}, ia.intAry...)
+	ia.intAryLen  = len(ia.intAry)
+	ia.integerLen = ia.intAryLen - ia.precision
+	if num > 0 {
+		ia.isZeroValue = false
+	}
+
+}
+
 // ResetFromBackUp - Retrieves data from the
 // last saved backup and populates the current
 // intAry object.
@@ -3513,6 +3605,40 @@ func (ia *IntAry) SetCurrencySymbol(currencySymbol rune) {
 // Note: The default decimal separator character is '.'
 func (ia *IntAry) SetDecimalSeparator(decimalSeparator rune) {
 	ia.decimalSeparator = decimalSeparator
+}
+
+
+// SetElement - Sets the value of an IntAry element
+// at a given index.
+func (ia *IntAry) SetElement(index, val int) error {
+
+	ePrefix := "IntAry.SetElement() "
+
+	if val > math.MaxUint8 {
+
+		return fmt.Errorf(ePrefix +
+			"Error: Input parameter 'val' Exceeds Maximum for Unsigned Integer! MaxUint8='%v'",
+				math.MaxUint8)
+
+	}
+
+
+	if val < 0 {
+		return errors.New(ePrefix + "Error: Input parameter 'val' is less than ZERO!")
+	}
+
+	if index < 0 {
+		return errors.New(ePrefix + "Error: Input parameter 'index' is less than ZERO!")
+	}
+
+	if index > ia.GetIntAryLength() - 1 {
+		return errors.New(ePrefix + "Error: Input parameter 'index' EXCEEDS Int Array Length!")
+	}
+
+	ia.intAry[index] = uint8(val)
+
+	return nil
+
 }
 
 // SetEqualArrayLengths - Compares an intAry object
@@ -4623,4 +4749,28 @@ func (ia *IntAry) SubtractMultipleFromThis(iaMany ...*IntAry) error {
 	}
 
 	return nil
+}
+
+
+
+// TrimToFirstDigit - Removes leading zeros from the current
+// IntAry such that the first digit is a digit greater than zero.
+//
+// Exceptions:
+// 1. If the value of the IntAry is zero, the IntAry is set with
+//    one zero in the integer portion of the IntAry.
+//
+// 2. If 'Precision' is greater than zero, there will be a
+//    leading zero before the decimal point.
+// 				Example: 0.123
+//
+func (ia *IntAry) TrimToFirstDigit() error {
+
+	ia.SetInternalFlags()
+
+	ia.intAry = ia.intAry[ia.firstDigitIdx:]
+
+	ia.SetInternalFlags()
+
+	return ia.IsIntAryValid("IntAry.TrimToFirstDigit() ")
 }
