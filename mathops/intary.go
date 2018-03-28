@@ -1592,6 +1592,9 @@ func (ia *IntAry) DivideByTenToPower(power uint) {
 // to a maximum of 1,024 digits to the right of the decimal
 // point.
 //
+// 'minPrecision' specifies the minimum precision of the final result.
+// If 'minPrecision' is less than zero, it is automatically set to zero.
+//
 func (ia *IntAry) DivideThisBy(iAry2 *IntAry, minPrecision,  maxPrecision int) (IntAry, error) {
 
 	ia.SetInternalFlags()
@@ -1611,6 +1614,10 @@ func (ia *IntAry) DivideThisBy(iAry2 *IntAry, minPrecision,  maxPrecision int) (
 
 	if maxPrecision == -1 {
 		maxPrecision = 1024
+	}
+
+	if maxPrecision != -1 && 	minPrecision > maxPrecision {
+		minPrecision = maxPrecision
 	}
 
 	quotient := IntAry{}.New()

@@ -1,6 +1,13 @@
 # mathopsgo
 Math Operations Library using the Go Programming Language
 
+The source code repository of the 'mathops' Library 
+is located here:
+
+    https://github.com/MikeAustin71/mathopsgo.git
+
+
+
 # decimalnum
 'decimalnum' is Structure and Methods for managing decimal numbers. 
 It is written in the 'go' programming language (a.k.a 'golang').
