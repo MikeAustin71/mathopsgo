@@ -937,16 +937,20 @@ func (dec Decimal) NewPtr() *Decimal {
 // and initialization in one step.
 //
 // Example: Decimal{}.NewBigInt(bigI, precision)
-func (dec Decimal) NewBigInt(bigI *big.Int, precision uint) Decimal {
+func (dec Decimal) NewBigInt(bigI *big.Int, precision uint) (Decimal, error) {
 
 	d2 := Decimal{}.New()
 	err := d2.SetBigInt(bigI, precision)
 
 	if err != nil {
-		panic(err)
+		return Decimal{},
+		fmt.Errorf("Decimal.NewBigInt() Error returned by " +
+			"d2.SetBigInt(bigI, precision) " +
+			"bigI='%v' precision='%v' Error='%v'",
+				bigI.String(), precision, err.Error())
 	}
 
-	return d2
+	return d2, nil
 
 }
 
@@ -959,16 +963,20 @@ func (dec Decimal) NewBigInt(bigI *big.Int, precision uint) Decimal {
 // initialization in one step.
 //
 // Example: Decimal{}.NewInt(123456, 3)
-func (dec Decimal) NewInt(iNum int, precision uint) Decimal {
+//
+func (dec Decimal) NewInt(iNum int, precision uint) (Decimal, error) {
 	d2 := Decimal{}.New()
 
 	err := d2.SetInt(iNum, precision)
 
 	if err != nil {
-		panic(err)
+		return Decimal{},
+		fmt.Errorf("Decimal.NewInt() Error returned by " +
+			"d2.SetInt(iNum, precision). iNum='%v' precision='%v' Error='%v'",
+				iNum, precision, err.Error())
 	}
 
-	return d2
+	return d2, nil
 
 }
 
@@ -981,15 +989,48 @@ func (dec Decimal) NewInt(iNum int, precision uint) Decimal {
 // and initialization in one step.
 //
 // Example: Decimal{}.NewI64(i64, precision)
-func (dec Decimal) NewI64(i64 int64, precision uint) Decimal {
+func (dec Decimal) NewI64(i64 int64, precision uint) (Decimal, error) {
 	d2 := Decimal{}.New()
 	err := d2.SetInt64(i64, precision)
 
 	if err != nil {
-		panic(err)
+		return Decimal{},
+			fmt.Errorf("Decimal.NewInt() Error returned by " +
+				"d2.SetInt64(i64, precision). i64='%v' precision='%v' Error='%v'",
+				i64, precision, err.Error())
 	}
 
-	return d2
+	return d2, nil
+}
+
+// NewNumStrAry - Used to create and return an array of Decimal Types.
+// Input parameters are a series of number strings.
+func (dec Decimal) NewNumStrAry(numStrs ...string) ([] Decimal, error) {
+
+	ePrefix := "Decimal.NewNumStrAry() "
+
+	lenNumStrs := len(numStrs)
+
+	decAry := make([] Decimal, lenNumStrs, lenNumStrs + 100)
+
+	for i, numStr := range numStrs {
+
+		dec := Decimal{}.New()
+
+		err := dec.SetNumStr(numStr)
+
+		if err != nil {
+			return []Decimal{},
+			fmt.Errorf(ePrefix + "Error returned by dec.SetNumStr(numStr). " +
+				"numStr='%v' Index='%v' Error='%v'",
+					numStr, i, err.Error()	)
+		}
+
+		decAry[i] = dec.CopyOut()
+
+	}
+
+	return decAry, nil
 }
 
 // NewNumStr - Returns a Decimal type based on a number string
@@ -1000,17 +1041,21 @@ func (dec Decimal) NewI64(i64 int64, precision uint) Decimal {
 // with Decimal{} thereby allowing Decimal creation
 // and initialization in one step.
 //
-// Example: Decimal{}.NewNumStr('123.456')
-func (dec Decimal) NewNumStr(numStr string) Decimal {
+// Example: Decimal{}.NewNumStr("123.456")
+//
+func (dec Decimal) NewNumStr(numStr string) (Decimal, error) {
 	d2 := Decimal{}.New()
 
 	err := d2.SetNumStr(numStr)
 
 	if err != nil {
-		panic(err)
+		return Decimal{},
+			fmt.Errorf("Decimal.NewInt() Error returned by " +
+				"d2.SetNumStr(numStr). numStr='%v' Error='%v'",
+				numStr, err.Error())
 	}
 
-	return d2
+	return d2, nil
 
 }
 // NewNumStrDto - Returns a Decimal type based on a NumStrDto
@@ -1060,7 +1105,8 @@ func (dec Decimal) NewNumStrDto(numDto NumStrDto) (Decimal, error) {
 // with Decimal{} thereby allowing Decimal creation
 // and initialization in one step.
 //
-// Example: Decimal{}.NewNumStrPrecision('123456', 3)
+// Example: Decimal{}.NewNumStrPrecision('123456', 3, false)
+//
 func (dec Decimal) NewNumStrPrecision(numStr string, precision uint, roundResult bool) (Decimal, error) {
 
 	n1, err := NumStrDto{}.NewPtr().ParseNumStr(numStr)
@@ -1080,7 +1126,6 @@ func (dec Decimal) NewNumStrPrecision(numStr string, precision uint, roundResult
 	return d2, nil
 }
 
-// TODO More testing required NumStrPrecisionToDecimal
 // NumStrPrecisionToDecimal - receives a number string and a
 // precision value as parameters. This method creates a Decimal
 // Type containing the converted numeric and returns it.
@@ -1089,7 +1134,7 @@ func (dec Decimal) NewNumStrPrecision(numStr string, precision uint, roundResult
 //
 // Example Usage:
 // d := Decimal{}.New()
-// d2, err := d.NumStrPrecisionToDecimal("123456", 3)
+// d2, err := d.NumStrPrecisionToDecimal("123456", 3, false)
 // d2 is Now Equal to 123.456
 func (dec *Decimal) NumStrPrecisionToDecimal(str string, precision uint, roundResult bool) (Decimal, error) {
 
@@ -1783,3 +1828,4 @@ func (dec *Decimal) SubtractTotal(d2 Decimal) error {
 
 	return nil
 }
+
