@@ -1,14 +1,27 @@
 package mathops
 
 import (
-	"errors"
-	"fmt"
 	"math/big"
+	"fmt"
+	"errors"
 )
 
-// nthroot.go
-//
-// Used to extract square roots and nth roots of positive and negative
+/*
+
+  NthRootOp
+	=========
+
+	The source code repository for nthroot.go is located at:
+			https://github.com/MikeAustin71/mathopsgo.git
+
+	The source file decimal.go is located in directory:
+		MikeAustin71/mathopsgo/mathops/nthroot.go
+
+
+*/
+
+
+// NthRootOp - Used to extract square roots and nth roots of positive and negative
 // real numbers. Currently nth roots may only be passed as integer values.
 //
 // The technique employed to calculate nth roots is known as the

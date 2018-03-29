@@ -5,8 +5,20 @@ import (
 	"errors"
 )
 
-// StrMathOp - Used to perform string
-// based arithmetic.
+/*
+	StrMathOp
+	=========
+
+	The source code repository for decimal.go is located at:
+			https://github.com/MikeAustin71/mathopsgo.git
+
+	The source file decimal.go is located in directory:
+		MikeAustin71/mathopsgo/mathops/strmathop.go
+
+*/
+
+// StrMathOp - Used to perform string based math operations.
+// The are stored internally in a series of data fields.
 //
 // Dependencies:
 // 	IntAry
@@ -149,140 +161,6 @@ func (sMathOp *StrMathOp) MultiplyN1N2() error {
 
 	return nil
 }
-/*
-func (sMathOp *StrMathOp) MultiplyN1N2() error {
-	ePrefix := "StrMathOp.MultiplyN1N2() "
-
-	sMathOp.N1.SetIntAryLength()
-	sMathOp.N1.SetIsZeroValue()
-	sMathOp.N2.SetIntAryLength()
-	sMathOp.N2.SetIsZeroValue()
-
-	newPrecision := sMathOp.N1.GetPrecision() + sMathOp.N2.GetPrecision()
-
-	if sMathOp.N1.IsZeroValue() || sMathOp.N2.IsZeroValue() {
-		sMathOp.IFinal.SetIntAryToZero(newPrecision)
-		return nil
-	}
-
-	newSignVal := 1
-
-	if sMathOp.N1.GetSign() != sMathOp.N2.GetSign() {
-		newSignVal = -1
-	}
-	lenLevels := sMathOp.N2.GetIntAryLength()
-	lenNumPlaces := (sMathOp.N1.GetIntAryLength() + sMathOp.N2.GetIntAryLength()) + 1
-
-	sMathOp.IntMAry = make([][]int, lenLevels)
-
-	for i := 0; i < lenLevels; i++ {
-		sMathOp.IntMAry[i] = make([]int, lenNumPlaces)
-	}
-
-	var err error
-
-	sMathOp.IFinal, err = IntAry{}.NewInt(lenNumPlaces+1, 0)
-
-	if err != nil {
-		fmt.Errorf(ePrefix	+
-			"Error returned by IntAry{}.NewInt(lenNumPlaces+1, 0). " +
-			"Error='%v'", err.Error())
-	}
-
-
-	carry := 0
-	levels := 0
-	place := 0
-	n1 := 0
-	n2 := 0
-	n3 := 0
-	n4 := 0
-	x := 0
-
-	for i := sMathOp.N2.GetIntAryLength() - 1; i >= 0; i-- {
-
-		place = (lenNumPlaces - 1) - levels
-
-		for j := sMathOp.N1.GetIntAryLength() - 1; j >= 0; j-- {
-
-
-			n1, err = sMathOp.N1.GetIntAryInt(j)
-
-
-
-			n2, err = sMathOp.N2.GetIntAryInt(i)
-
-			n3 = (n1 * n2) + carry
-			x = n3 / 10
-			n4 = n3 - (x * 10)
-			// n4 = int(math.Mod(float64(n3), float64(10.00)))
-
-			sMathOp.IntMAry[levels][place] = n4
-
-			carry = x
-
-			place--
-		}
-
-		sMathOp.IntMAry[levels][place] = carry
-		carry = 0
-		levels++
-	}
-
-	carry = 0
-	n1 = 0
-	n2 = 0
-	n3 = 0
-	n4 = 0
-	x = 0
-
-	for i := 0; i < lenLevels; i++ {
-		for j := lenNumPlaces - 1; j >= 0; j-- {
-
-			n1, err = sMathOp.IFinal.GetIntAryInt(j+1)
-
-			if err != nil {
-				return fmt.Errorf(ePrefix +
-					"Error returned by sMathOp.IFinal.GetIntAryInt(j+1). " +
-					"Error='%v' ", err.Error())
-			}
-
-			n2 = sMathOp.IntMAry[i][j]
-			n3 = n1 + n2 + carry
-			n4 = 0
-
-			if n3 > 9 {
-				x = n3 / 10
-				n4 = n3 - (x * 10)
-				carry = x
-
-			} else {
-				n4 = n3
-				carry = 0
-			}
-
-			sMathOp.IFinal.SetElement(j+1,n4)
-		}
-
-		if carry > 0 {
-
-			err = sMathOp.IFinal.SetElement(0, carry)
-
-			if err != nil {
-				return fmt.Errorf(ePrefix + "Error returned by sMathOp.IFinal.SetElement(0, carry). " +
-					"Error='%v' ", err.Error())
-			}
-		}
-
-	}
-
-	sMathOp.IFinal.SetSign(newSignVal)
-	sMathOp.IFinal.SetPrecision(newPrecision, true)
-	sMathOp.IFinal.OptimizeIntArrayLen(true)
-
-	return nil
-}
-*/
 
 // Divide - Divides the Dividend IntAry
 // field by the Divisor IntAry field. The results are

@@ -10,28 +10,34 @@ import (
 )
 
 /*
-	Source Code Repository
-	**********************
-	The source code file intary.go is located in the source code respository:
+	IntAry
+	======
 
-		https://github.com/MikeAustin71/intary.git
+	The source code repository for intary.go is located at:
+			https://github.com/MikeAustin71/mathopsgo.git
 
-	IntAry Object
-	*************
+	The source file intary.go is located in directory:
+		MikeAustin71/mathopsgo/mathops/decimal.go
+
+
+	Overveiw And General Usage
+	==========================
+
 	Source file 'intary.go' contains a structure, 'IntAry', which is designed
  	to perform a variety of math operations on integer strings.
 
-	The directory ./archives/eulersnumbercalc contains an example which calculates
-	Euler's Number out to 1,000 digits.
+	This Type is capable of performing highly accurate operations on very large
+  numbers. For example, the directory 'MikeAustin71/mathopsgo/examples/eulersnumbercalc'
+	contains an example which calculates Euler's Number out to 1,000 digits.
+
+	The IntAry Type also has a backup and restore feature.
 
 	Dependencies
-	************
+	============
 	The 'IntAry' object has the following dependency:
 
-	nthroot.go - Source Repository: https://github.com/MikeAustin71/mathhlpr.git
+	nthroot.go - MikeAustin71/mathopsgo/mathops/nthroot.go
 
-	References:
-		https://learnandlearn.com/golang-programming/golang-reference/golang-find-decimal-logarithm-log10-function-examples-explanation
 
  */
 
@@ -439,7 +445,7 @@ type IntAryStatsDto struct {
 }
 
 // IntAry - Used to perform string
-// based arithmetic.
+// based numeric math operations.
 //
 // Dependencies: NthRootOp - nthroot.go
 //
@@ -3150,15 +3156,50 @@ func (ia IntAry) NewInt(num int, precision uint) (IntAry, error) {
 // Usage: ia := intAry{}.NewNumStr("123.456")
 func (ia IntAry) NewNumStr(num string) (IntAry, error) {
 
+
 	iAry := IntAry{}.New()
 	err := iAry.SetIntAryWithNumStr(num)
 
 	if err != nil {
-		return IntAry{}, err
+		return IntAry{},
+		fmt.Errorf("IntAry.NewNumStr() Error returned by  " +
+			"iAry.SetIntAryWithNumStr(num). num='%v', Error='%v' ",
+			num, err.Error())
 	}
+
 
 	return iAry, nil
 
+}
+
+// NewNumStrDto - Creates, initializes and returns an IntAry
+// Type using an input paramter of Type NumStrDto.
+func (ia IntAry) NewNumStrDto(numDto NumStrDto) (IntAry, error) {
+
+	ePrefix := "IntAry.NewNumStrDto() "
+
+	err := numDto.ResetNumStrOut()
+
+	if err != nil {
+		return IntAry{},
+		fmt.Errorf(ePrefix +
+			"Error returned by numDto.ResetNumStrOut(). " +
+			"Error='%v' ", err.Error())
+	}
+
+	iAry := IntAry{}.New()
+
+	err = iAry.SetIntAryWithNumStr(numDto.NumStrOut)
+
+	if err != nil {
+		return IntAry{},
+			fmt.Errorf("IntAry.NewNumStr() Error returned by  " +
+				"iAry.SetIntAryWithNumStr(numDto.NumStrOut). " +
+				"numDto.NumStrOut='%v', Error='%v' ",
+				numDto.NumStrOut, err.Error())
+	}
+
+	return iAry, nil
 }
 
 // OptimizeIntArrayLen - Eliminates Leading

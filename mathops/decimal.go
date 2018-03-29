@@ -8,14 +8,21 @@ import (
 )
 
 /*
+	Decimal
+	=======
+
 	The source code repository for decimal.go is located at:
-			https://github.com/MikeAustin71/decimalnum.git
+			https://github.com/MikeAustin71/mathopsgo.git
+
+	The source file decimal.go is located in directory:
+		MikeAustin71/mathopsgo/mathops/decimal.go
+
 */
 
-// Decimal type is used to perform math operations to
-// achieve a high degree of accuracy and uniformity when
-// dealing with fractional numbers containing digits to the
-// right of the decimal place.
+// Decimal - This type is used to perform math operations
+// which achieve a high degree of accuracy and uniformity
+// when dealing with fractional numbers containing digits
+// to the right of the decimal place.
 
 type Decimal struct {
 	isValid               bool
@@ -1004,6 +1011,44 @@ func (dec Decimal) NewNumStr(numStr string) Decimal {
 	}
 
 	return d2
+
+}
+// NewNumStrDto - Returns a Decimal type based on a NumStrDto
+// input parameter. If an error is encountered, it will trigger
+// a panic condition.
+//
+// The 'NewNumStrDto' method is designed to used in conjunction
+// with Decimal{} thereby allowing Decimal creation
+// and initialization in one step.
+//
+// Example: Decimal{}.NewNumStrDto(numDto)
+//
+func (dec Decimal) NewNumStrDto(numDto NumStrDto) (Decimal, error) {
+
+	ePrefix := "Decimal.NewNumStrDto() "
+
+	err := numDto.ResetNumStrOut()
+
+	if err != nil {
+		return Decimal{},
+		fmt.Errorf(ePrefix +
+			"Error returned by numDto.ResetNumStrOut() Error='%v'",
+				err.Error())
+	}
+
+	d2 := Decimal{}.New()
+
+	err = d2.SetNumStr(numDto.NumStrOut)
+
+	if err != nil {
+		return Decimal{},
+			fmt.Errorf(ePrefix +
+				"Error returned by d2.SetNumStr(numDto.NumStrOut) " +
+				" numDto.NumStrOut='%v' Error='%v'",
+				numDto.NumStrOut, err.Error())
+	}
+
+	return d2, nil
 
 }
 

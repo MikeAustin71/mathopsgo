@@ -9,10 +9,17 @@ import (
 )
 
 /*
+  NumStrUtility
+  =============
+
+	Type 'NumStrUtility' provides a set of numeric conversion and management routines
+  primarily focused on number strings.
 
 	The source code repository for numstrutility.go is located at :
-					https://github.com/MikeAustin71/numstrutility.git
+					https://github.com/MikeAustin71/mathopsgo.git
 
+
+ 					MikeAustin71/mathopsgo/mathops/numstrutility.go
 
 
 	Dependencies
@@ -245,6 +252,9 @@ func (ns NumStrUtility) ConvertInt64ToStr(num int64) (string, error) {
 	return numStr, nil
 }
 
+
+// ConvertRunesToInt64 - Converts a rune array to an int64 value.
+//
 func (ns *NumStrUtility) ConvertRunesToInt64(rAry []rune, signVal int) (int64, error) {
 
 	lNumRunes := len(rAry)
@@ -276,98 +286,14 @@ func (ns *NumStrUtility) ConvertRunesToInt64(rAry []rune, signVal int) (int64, e
 
 }
 
+// ParseNumString - Calls NumStrDto to Parse a number string and return
+// the value as a Type 'NumStrDto'.
 func (ns *NumStrUtility) ParseNumString(str string) (NumStrDto, error) {
 	return NumStrDto{}.NewPtr().ParseNumStr(str)
-/*
-	nDto.NumStrIn = str
-
-	if len(nDto.NumStrIn) == 0 {
-		return nDto, errors.New("Zero length number string!")
-	}
-
-	nDto.SignVal = 1
-	baseRunes := []rune(nDto.NumStrIn)
-	lBaseRunes := len(baseRunes)
-	isStartRunes := false
-	isEndRunes := false
-
-	for i := 0; i < lBaseRunes && isEndRunes == false; i++ {
-
-		if baseRunes[i] == '-' &&
-			isStartRunes == false && isEndRunes == false &&
-			i+1 < lBaseRunes &&
-			((baseRunes[i+1] >= '0' && baseRunes[i+1] <= '9') ||
-				baseRunes[i+1] == '.') {
-
-			nDto.SignVal = -1
-			isStartRunes = true
-			continue
-
-		} else if isEndRunes == false &&
-			baseRunes[i] >= '0' && baseRunes[i] <= '9' {
-
-			nDto.AbsAllNumRunes = append(nDto.AbsAllNumRunes, baseRunes[i])
-			isStartRunes = true
-			nDto.HasNumericDigits = true
-
-			if nDto.IsFractionalValue {
-				nDto.AbsFracRunes = append(nDto.AbsFracRunes, baseRunes[i])
-			} else {
-				nDto.AbsIntRunes = append(nDto.AbsIntRunes, baseRunes[i])
-			}
-
-		} else if (ns.ThousandsSeparator != ' ' && baseRunes[i] == ns.ThousandsSeparator) ||
-			(ns.CurrencySymbol != ' ' && baseRunes[i] == ns.CurrencySymbol) ||
-			baseRunes[i] == ' ' {
-
-			continue
-
-		} else if isEndRunes == false &&
-			i+1 < lBaseRunes &&
-			baseRunes[i+1] >= '0' && baseRunes[i+1] <= '9' &&
-			baseRunes[i] == '.' {
-
-			nDto.IsFractionalValue = true
-			continue
-
-		} else if isStartRunes && !isEndRunes {
-
-			isEndRunes = true
-
-		}
-
-	}
-
-	if len(nDto.AbsAllNumRunes) == 0 {
-		nDto.HasNumericDigits = false
-		nDto.NumStrOut = "0"
-		nDto.AbsIntRunes = append(nDto.AbsIntRunes, '0')
-		nDto.SignVal = 1
-		nDto.IsFractionalValue = false
-		return nDto, nil
-	}
-
-	if len(nDto.AbsIntRunes) == 0 {
-		nDto.AbsIntRunes = append(nDto.AbsIntRunes, '0')
-	}
-
-	if nDto.SignVal < 0 {
-		nDto.NumStrOut = "-"
-	}
-
-	nDto.NumStrOut += string(nDto.AbsIntRunes)
-
-	if nDto.IsFractionalValue {
-		nDto.Precision = uint(len(nDto.AbsFracRunes))
-		nDto.NumStrOut += "." + string(nDto.AbsFracRunes)
-	}
-
-	nDto.IsValid = true
-
-	return nDto, nil
-	*/
 }
 
+// ConvertNumStrToDecimal - Receives a string of numbers as input, then proceeds
+// to convert and return the number string as a Type, 'Decimal'.
 func (ns *NumStrUtility) ConvertNumStrToDecimal(str string) (Decimal, error) {
 	dec := Decimal{}.New()
 
@@ -424,7 +350,8 @@ func (ns *NumStrUtility) ConvertStrToIntNumRunes(str string) []rune {
 }
 
 
-
+// ConvertStrToFloat64 - Converts a string of numbers to a float64 value.
+//
 func (ns *NumStrUtility) ConvertStrToFloat64(str string) (float64, error) {
 
 	numF64 := float64(0.0)
@@ -484,16 +411,16 @@ func (ns *NumStrUtility) ConvertInt64ToFractionalValue(i64 int64) (float64, erro
 // Note: A sign character may be placed in the first character
 // position before the first digit. Example: '-' minus or
 // '+' plus.
+//
 func (ns *NumStrUtility) ScaleNumStr(str string, precision uint, roundResult bool) (NumStrDto, error) {
-
-
 
 	return NumStrDto{}.NewPtr().SetPrecision(str,precision, roundResult)
 
-
-
 }
 
+// SetCountryAndCurrency - Sets the Country and Currency flags for the
+// current NumStrUtility values.
+//
 func (ns *NumStrUtility) SetCountryAndCurrency(country string) error {
 
 	lcStr := strings.ToLower(country)

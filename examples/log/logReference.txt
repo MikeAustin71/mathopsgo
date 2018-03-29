@@ -1,0 +1,2 @@
+	References:
+		https://learnandlearn.com/golang-programming/golang-reference/golang-find-decimal-logarithm-log10-function-examples-explanation

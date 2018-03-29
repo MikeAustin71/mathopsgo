@@ -6,87 +6,101 @@ is located here:
 
     https://github.com/MikeAustin71/mathopsgo.git
 
+## Library Installation
+
+### Installing 'mathops' Library Locally
+Use this command to down load and install the 'mathops' library
+locally. 
+
+    go get github.com/MikeAustin71/mathopsgo/mathops
+    
+After installation, you may import and reference the library
+as follows:
+
+        import (
+            "MikeAustin71/mathopsgo/mathops"
+        )    
+
+### Updating the 'mathops' Local Library Installation
+To update the library run:
+    
+    go get -u github.com/MikeAustin71/mathopsgo/mathops
 
 
-# decimalnum
-'decimalnum' is Structure and Methods for managing decimal numbers. 
-It is written in the 'go' programming language (a.k.a 'golang').
+### Installing 'mathops' Library In Your Project
+As an alternative you could clone the library to a local drive:
 
-#### Source Code Repository:
-https://github.com/MikeAustin71/decimalnum.git
+    git clone  https://github.com/MikeAustin71/mathopsgo.git
 
+Thereafter just copy the 'MikeAustin71/mathopsgo/mathops'
+directory to your local drive and reference it using the '../mathops'
+syntax. Example:
 
-#### Dependencies 
- 'decimalnum' is dependent on the following source code files:
-
-##### intary.go - IntAry structure and methods. 
- 'decimalnum' is dependent on IntAry.
-
-      Source Code: https://github.com/MikeAustin71/intary.git
-         
-##### nthroot.go - NthRootOp structure and methods. 
-  IntAry is dependent on 'nthroot'  
-         
-      Source Code: https://github.com/MikeAustin71/mathhlpr.git
-      
-##### numstrdto.go - NumStrDto structure and Methods
- 'decimalnum' is dependent on NumStrDto
- 
-    Source Code: https://github.com/MikeAustin71/numstrdto.git      
-
-# intary
-This Golang utility used in managing integer arrays and performing math operations on those integer arrays.
-
-The primary library is located in the source file ./common/intary.go.
-
-'intary.go' contains a structure named, 'IntAry'. This structure and 
-provides methods for performing a variety of math operations on 'IntAry'
-objects. 'IntAry' objects are capable of performing complex math operations
-on very large numbers.
-
-The directory ./archives/eulersnumbercalc contains an example which calculates
-Euler's Number out to 1,000 digits.
+    import (
+        "../mathops"
+    )
 
 
-### Source Code Repository
-The source code repository for this library is located at:
+### Math Operations Utilities Written In The Go Programming Language
 
-https://github.com/MikeAustin71/intary.git
-
-
-### Dependencies
-
-The 'IntAry' object has the following dependency:
-
-nthroot.go - Source Repository: https://github.com/MikeAustin71/mathhlpr.git
+The Math Operations Utilities currently consist of separate libraries maintained
+in the sub-directory, 'mathops'. This directory also contains tests used to 
+validate these libraries. For additional documentation, see the source code
+files identified below.
 
 
-# numstrutility
-Golang utility used in formatting and managing number strings.
+## Math Operations Types
 
-# numstrdto
-Golang Utility for managing number strings
+### 1. IntAry
+Type IntAry is designed	to perform a variety of math operations on number strings.
+Support for both integer and fractional math operations is provided as well as 
+'backup and restore' functionality.  
 
-# stringmathops
+This Type is capable of performing highly accurate operations on very large numbers.
+For example, the directory 'MikeAustin71/mathopsgo/examples/eulersnumbercalc'
+contains an example which calculates Euler's Number out to 1,000 digits.
 
-Contains data structures used in performing string and integer math
-operations.
+Location: MikeAustin71/mathopsgo/mathops/intary.go
 
-The primary structure and associated methods are contained in the source
-code file, 'intary.go' located in the 'common' directory.
 
-Data structures and methods of integer array management and math
-operations are contained in the source code file 'intary.go'. 
-The primary data structure is 'IntAry'. The structure 'IntAry' and
-the associated methods necessary to perform a variety of math operations
-on integer arrays and number strings.
+### 2. Decimal
+Type Decimal contains Date Fields and Methods for managing decimal numbers.  
 
-'strmathop.go' contains methods which perform math operations using
-multiple 'IntAry' objects.
+The type is used to perform math operations which achieve a high degree of
+accuracy and uniformity when dealing with fractional numbers containing
+digits to the right of the decimal place.
 
-Source code for 'intary.go' and 'strmathop.go' is maintained in repository:
-https://github.com/MikeAustin71/stringmathops.git
+Location: MikeAustin71/mathopsgo/mathops/decimal.go
 
-### Dependencies
-IntAry located in source code file, 'intary.go'. It is dependent on
-structure 'NthRootOp' located in source code file, 'nthroot.go'    
+### 3. NthRootOp
+Type NthRootOp is used to extract square roots and nth roots of positive
+and negative real numbers. Currently nth roots may only be passed as
+integer values. The technique employed to calculate nth roots is known as
+the "shifting nth-root algorithm".
+
+Location: MikeAustin71/mathopsgo/mathops/nthroot.go
+
+### 4. NumStrUtility
+Type NumStrUtility provides a set of numeric conversion
+and management routines primarily focused on number strings.
+
+Location: MikeAustin71/mathopsgo/mathops/numstrutility.go
+
+
+### 5. NumStrDto 
+A 'lite' data transfer object containing data fields and methods
+used to manage, store and transport number strings. 
+
+Location: MikeAustin71/mathopsgo/mathops/numstrdto.go
+
+### 6. StrMathOp 
+This Type performs various math operations on a series of
+IntAry's and stores the results internally.
+
+Location: MikeAustin71/mathopsgo/mathops/strmathop.go
+
+### 7. Math Constants
+This source file is used to store constants used by various
+Types in the 'mathops' Library.
+
+Location: MikeAustin71/mathopsgo/mathops/mathopsconstants.go
