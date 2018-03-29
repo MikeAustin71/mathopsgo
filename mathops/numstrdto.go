@@ -33,36 +33,6 @@ type NumStrDto struct {
 	NumStrOut          string
 }
 
-// New - Used to create NumStrDto types.
-// This message initializes the NumStrDto
-// fields. This method will return the newly
-// create type (not a pointer to the type).
-// Example:
-// n := NumStrDto{}.New()
-// n2, err := n.ParseNumStr("123.456")
-//
-// Compare this method of object creation
-// with that shown in the NewPtr() method.
-func (nDto NumStrDto) New() NumStrDto {
-	n := NumStrDto{}
-	n.Empty()
-
-	return n
-}
-
-// NewPtr - Used to create and initialize
-// NumStrDto fields.  This method returns
-// a pointer to the newly created NumStrDto
-// type. As such, this method may be used
-// to streamline the initialization process.
-// Example:
-// n, err := NumStrDto{}.NewPtr().ParseNumStr("123.456")
-func (nDto NumStrDto) NewPtr() *NumStrDto {
-	n := NumStrDto{}
-	n.Empty()
-	return &n
-}
-
 // AddNumStrs - Adds the values represented by two NumStrDto objects and
 // returns the result as an NumStrDto.
 func (nDto *NumStrDto) AddNumStrs(n1Dto NumStrDto, n2Dto NumStrDto) (NumStrDto, error) {
@@ -1096,6 +1066,62 @@ func (nDto *NumStrDto) MultiplyNumStrs(n1Dto NumStrDto, n2Dto NumStrDto) (NumStr
 	return numStrOut, nil
 }
 
+// NewNumStr - Used to create a populated NumStrDto instance.
+// using a valid number string as an input parameter.
+//
+// Example:
+//
+// 		n, err := NumStrDto{}.NewNumStr("123.456")
+//
+func (nDto NumStrDto) NewNumStr(numStr string) (NumStrDto, error) {
+
+	ePrefix := "NumStrDto.NewNumStr() "
+
+	n := NumStrDto{}
+
+	n2, err := n.ParseNumStr(numStr)
+
+	if err != nil {
+		return NumStrDto{},
+			fmt.Errorf(ePrefix + "Error returned by n.ParseNumStr(numStr). " +
+				"numStr='%v'  Error='%v'",
+				numStr, err.Error())
+	}
+
+	return n2, nil
+}
+
+
+// New - Used to create empty NumStrDto types.
+// This message initializes the NumStrDto
+// fields. This method will return the newly
+// create type (not a pointer to the type).
+// Example:
+// n := NumStrDto{}.New()
+// n2, err := n.ParseNumStr("123.456")
+//
+// Compare this method of object creation
+// with that shown in the NewPtr() method.
+func (nDto NumStrDto) New() NumStrDto {
+	n := NumStrDto{}
+	n.Empty()
+
+	return n
+}
+
+// NewPtr - Used to create and initialize
+// NumStrDto fields.  This method returns
+// a pointer to the newly created NumStrDto
+// type. As such, this method may be used
+// to streamline the initialization process.
+// Example:
+// n, err := NumStrDto{}.NewPtr().ParseNumStr("123.456")
+func (nDto NumStrDto) NewPtr() *NumStrDto {
+	n := NumStrDto{}
+	n.Empty()
+	return &n
+}
+
 // ParseSignedBigInt - receives a signed *Big Int number and precision parameter. It then
 // generates and returns a new NumStrDto type.
 func (nDto *NumStrDto) ParseSignedBigInt(signedBigInt *big.Int, precision uint) (NumStrDto, error) {
@@ -1366,13 +1392,81 @@ func (nDto *NumStrDto) ParseNumStr(str string) (NumStrDto, error) {
 	return n2Dto, nil
 }
 
-func (nDto *NumStrDto) ScaleNumStr(signedNumStr string, precision int, roundResult bool) (NumStrDto, error) {
+// ScaleNumStr - Shifts the position of the decimal point left or right depending
+// on the value of input parameter 'scaleMode'.
+//
+// Input Parameters
+// ================
+//
+// signedNumStr					 string -		A valid Signed Number String
+//
+// shiftPrecision 	 				int -		The number of positions which the decimal point
+//																	will be shifted. If 'shiftPrecision is Equal to
+//																	Zero, no action will be taken, no error will be
+//																	issued and the original signedNumStr will be
+//																	returned.
+//
+// scaleMode	PrecisionScaleMode -	A constant with one of two Scale Mode values.
+//
+//																	SCALEPRECISIONLEFT - 	Shifts the decimal point
+//																												from its current position
+// 																												to the left.
+//
+//																	SCALEPRECISIONRIGHT - Shifts the decimal point
+//																												from its current position
+// 																												to the right.
+//
+//
+// Note: 	See Methods NumStrDto.ShiftPrecisionRight() and NumStrDto.ShiftPrecisionLeft()
+//				for additional information.
+//
+func (nDto *NumStrDto) ScaleNumStr(signedNumStr string,
+																		shiftPrecision uint,
+																			scaleMode PrecisionScaleMode) (NumStrDto, error) {
 
-	if precision < 0 {
-		precision = precision * -1
+	ePrefix := "NumStrDto.ScaleNumStr() "
+
+	n2Dto := NumStrDto{}
+
+	var err error
+
+	if scaleMode == SCALEPRECISIONLEFT {
+
+		n2Dto, err = nDto.ShiftPrecisionLeft(signedNumStr, shiftPrecision)
+
+		if err != nil {
+			return NumStrDto{},
+				fmt.Errorf(ePrefix+
+					"Error returned from nDto.ShiftPrecisionLeft(signedNumStr, shiftPrecision) "+
+					"signedNumStr='%v' shiftPrecision='%v' scaleMode='%v' Error='%v' ",
+					signedNumStr, shiftPrecision, scaleMode.String(), err.Error())
+
+		}
+
+	} else if scaleMode == SCALEPRECISIONRIGHT {
+
+		n2Dto, err = nDto.ShiftPrecisionRight(signedNumStr, shiftPrecision)
+
+		if err != nil {
+			return NumStrDto{},
+				fmt.Errorf(ePrefix +
+					"Error returned from nDto.ShiftPrecisionRight(signedNumStr, shiftPrecision) "+
+					"signedNumStr='%v' shiftPrecision='%v' scaleMode='%v' Error='%v' ",
+					signedNumStr, shiftPrecision, scaleMode.String(), err.Error())
+		}
+
+	} else {
+
+		return NumStrDto{},
+			fmt.Errorf(ePrefix +
+				"Error! Scale Mode is INVALID! "+
+				"Scale Mode is NOT Equal to SCALEPRECISIONLEFT or SCALEPRECISIONRIGHT. scaleMode='%v' ",
+				 scaleMode.String())
+
 	}
 
-	return nDto.ShiftPrecisionLeft(signedNumStr, uint(precision))
+
+	return n2Dto, nil
 }
 
 // ShiftPrecisionLeft - Shifts the existing precision of a number string. The position of
@@ -1390,6 +1484,7 @@ func (nDto *NumStrDto) ScaleNumStr(signedNumStr string, precision int, roundResu
 //	"123"								5						"0.00123"
 //  "0"									3						"0"
 // "123456.789"					0						"123456.789"		- Zero has no effect on original number string
+//
 func (nDto *NumStrDto) ShiftPrecisionLeft(signedNumStr string, precision uint) (NumStrDto, error) {
 
 	if len(signedNumStr) == 0 {
@@ -1638,8 +1733,10 @@ func (nDto *NumStrDto) ShiftPrecisionRight(signedNumStr string, precision uint) 
 //    "123.456"     4            false           "12.3456"
 func (nDto *NumStrDto) ScaleAbsoluteValStr(signedNumStr string, precision uint, roundResult bool) (NumStrDto, error) {
 
+	ePrefix := "NumStrDto.ScaleAbsoluteValStr() "
+
 	if len(signedNumStr) == 0 {
-		return NumStrDto{}, errors.New("ScaleAbsoluteValStr() Received zero length number string!")
+		return NumStrDto{}, errors.New(ePrefix + "Received zero length number string!")
 	}
 
 	// Set defaults for thousands separators,
@@ -1659,7 +1756,9 @@ func (nDto *NumStrDto) ScaleAbsoluteValStr(signedNumStr string, precision uint, 
 	n1, err := NumStrDto{}.NewPtr().ParseNumStr(signedNumStr)
 
 	if err != nil {
-		return NumStrDto{}, fmt.Errorf("ScaleAbsoluteValStr() - Received Error from NumStrDto.ParseNumStr(signedNumStr). str= '%v' Error= %v", signedNumStr, err)
+		return NumStrDto{}, fmt.Errorf(ePrefix +
+			"Received Error from NumStrDto.ParseNumStr(signedNumStr). " +
+			"str= '%v' Error= %v", signedNumStr, err)
 	}
 
 	n2 := NumStrDto{}.New()
@@ -1682,7 +1781,10 @@ func (nDto *NumStrDto) ScaleAbsoluteValStr(signedNumStr string, precision uint, 
 		absAllNumsToRound, isOk := big.NewInt(0).SetString(string(n1.AbsAllNumRunes), 10)
 
 		if !isOk {
-			return NumStrDto{}, fmt.Errorf("ScaleAbsoluteValStr()- Error: Failed to convert string to big.Int(). big.Int.SetString(n1.AbsAllNumRunes). n1.AbsAllNumRunes='%v' ", string(n1.AbsAllNumRunes))
+			return NumStrDto{},
+			fmt.Errorf(ePrefix + "Error: Failed to convert string to big.Int(). " +
+				"big.Int.SetString(n1.AbsAllNumRunes). n1.AbsAllNumRunes='%v' ",
+				string(n1.AbsAllNumRunes))
 		}
 
 		bigDeltaPrecision := big.NewInt(int64(lenN1AbsFracRunes - iSpecPrecision - 1))
@@ -1714,7 +1816,11 @@ func (nDto *NumStrDto) ScaleAbsoluteValStr(signedNumStr string, precision uint, 
 
 		if lenN1AbsAllNumRunes != (lenN1AbsIntRunes + lenN1AbsFracRunes) {
 
-			return NumStrDto{}, fmt.Errorf("ScaleAbsoluteValStr()- Error on Rounding. lenN1AbsAllNumRunes != (lenN1AbsIntRunes + lenN1AbsFracRunes). lenN1AbsAllNumRunes= '%v' lenN1AbsIntRunes= '%v' lenN1AbsFracRunes= '%v'", lenN1AbsAllNumRunes, lenN1AbsIntRunes, lenN1AbsFracRunes)
+			return NumStrDto{},
+			fmt.Errorf(ePrefix + "Error on Rounding. lenN1AbsAllNumRunes != " +
+				"(lenN1AbsIntRunes + lenN1AbsFracRunes). lenN1AbsAllNumRunes= '%v' " +
+				"lenN1AbsIntRunes= '%v' lenN1AbsFracRunes= '%v'",
+				lenN1AbsAllNumRunes, lenN1AbsIntRunes, lenN1AbsFracRunes)
 		}
 
 	}
@@ -1747,11 +1853,18 @@ func (nDto *NumStrDto) ScaleAbsoluteValStr(signedNumStr string, precision uint, 
 	lenAbsFracNumRunes := len(n2.AbsFracRunes)
 
 	if lenAbsAllNumRunes != lenAbsIntNumRunes+lenAbsFracNumRunes {
-		return NumStrDto{}, fmt.Errorf("ScaleAbsoluteValStr() Error: lenAbsAllNumRunes != lenAbsIntNumRunes + lenAbsFracNumRunes. lenAbsAllNumRunes= '%v' lenAbsIntNumRunes= '%v' lenAbsFracNumRunes= '%v'", lenAbsAllNumRunes, lenAbsIntNumRunes, lenAbsFracNumRunes)
+		return NumStrDto{},
+		fmt.Errorf(ePrefix +
+			"Error: lenAbsAllNumRunes != lenAbsIntNumRunes + lenAbsFracNumRunes. " +
+			"lenAbsAllNumRunes= '%v' lenAbsIntNumRunes= '%v' lenAbsFracNumRunes= '%v'",
+			lenAbsAllNumRunes, lenAbsIntNumRunes, lenAbsFracNumRunes)
 	}
 
 	if lenAbsFracNumRunes != int(n2.Precision) {
-		return NumStrDto{}, fmt.Errorf("ScaleAbsoluteValStr() Error: lenAbsAllNumRunes != lenAbsIntNumRunes + lenAbsFracNumRunes. lenAbsAllNumRunes= '%v' lenAbsIntNumRunes= '%v' lenAbsFracNumRunes= '%v'", lenAbsAllNumRunes, lenAbsIntNumRunes, lenAbsFracNumRunes)
+		return NumStrDto{},
+		fmt.Errorf(ePrefix + "Error: lenAbsAllNumRunes != lenAbsIntNumRunes + lenAbsFracNumRunes. " +
+			"lenAbsAllNumRunes= '%v' lenAbsIntNumRunes= '%v' lenAbsFracNumRunes= '%v'",
+			lenAbsAllNumRunes, lenAbsIntNumRunes, lenAbsFracNumRunes)
 	}
 
 	n2.NumStrOut = ""
@@ -1786,8 +1899,11 @@ func (nDto *NumStrDto) ScaleAbsoluteValStr(signedNumStr string, precision uint, 
 // "123.456         5             false						"123.45600"
 func (nDto *NumStrDto) SetPrecision(signedNumStr string, precision uint, roundResult bool) (NumStrDto, error) {
 
+	ePrefix := "NumStrDto.SetPrecision() "
+
 	if len(signedNumStr) == 0 {
-		return NumStrDto{}, errors.New("SetPrecision() Received zero length number string!")
+		return NumStrDto{},
+		errors.New(ePrefix + "Received zero length number string!")
 	}
 
 	// Set defaults for thousands separators,
@@ -1812,7 +1928,10 @@ func (nDto *NumStrDto) SetPrecision(signedNumStr string, precision uint, roundRe
 	n1, err := n0.ParseNumStr(signedNumStr)
 
 	if err != nil {
-		return NumStrDto{}, fmt.Errorf("SetPrecision()- Error returned from ns.ParseNumString(signedNumStr). signedNumStr='%v' Error= %v", signedNumStr, err)
+		return NumStrDto{},
+		fmt.Errorf(ePrefix +
+			"Error returned from ns.ParseNumString(signedNumStr). " +
+			"signedNumStr='%v' Error= %v", signedNumStr, err)
 	}
 
 	n2 := NumStrDto{}.New()
@@ -1836,7 +1955,10 @@ func (nDto *NumStrDto) SetPrecision(signedNumStr string, precision uint, roundRe
 		absAllNumsToRound, isOk := big.NewInt(0).SetString(string(n1.AbsAllNumRunes), 10)
 
 		if !isOk {
-			return NumStrDto{}, fmt.Errorf("SetPrecision()- Error: Failed to convert string to big.Int(). big.Int.SetString(n1.AbsAllNumRunes). n1.AbsAllNumRunes='%v' ", string(n1.AbsAllNumRunes))
+			return NumStrDto{},
+			fmt.Errorf(ePrefix + "Error: Failed to convert string to big.Int(). " +
+				"big.Int.SetString(n1.AbsAllNumRunes). n1.AbsAllNumRunes='%v' ",
+				string(n1.AbsAllNumRunes))
 		}
 
 		bigDeltaPrecision := big.NewInt(int64(lenN1AbsFracRunes - iSpecPrecision - 1))
@@ -1868,7 +1990,11 @@ func (nDto *NumStrDto) SetPrecision(signedNumStr string, precision uint, roundRe
 
 		if lenN1AbsAllNumRunes != (lenN1AbsIntRunes + lenN1AbsFracRunes) {
 
-			return NumStrDto{}, fmt.Errorf("SetPrecision()- Error on Rounding. lenN1AbsAllNumRunes != (lenN1AbsIntRunes + lenN1AbsFracRunes). lenN1AbsAllNumRunes= '%v' lenN1AbsIntRunes= '%v' lenN1AbsFracRunes= '%v'", lenN1AbsAllNumRunes, lenN1AbsIntRunes, lenN1AbsFracRunes)
+			return NumStrDto{},
+			fmt.Errorf(ePrefix + "Error on Rounding. lenN1AbsAllNumRunes != " +
+				"(lenN1AbsIntRunes + lenN1AbsFracRunes). lenN1AbsAllNumRunes= '%v' " +
+				"lenN1AbsIntRunes= '%v' lenN1AbsFracRunes= '%v'",
+				lenN1AbsAllNumRunes, lenN1AbsIntRunes, lenN1AbsFracRunes)
 		}
 
 	}
@@ -1916,7 +2042,7 @@ func (nDto *NumStrDto) SetPrecision(signedNumStr string, precision uint, roundRe
 		n2.IsFractionalValue = true
 	}
 
-	err = nDto.IsNumStrDtoValid(&n2, "SetPrecision()- ")
+	err = nDto.IsNumStrDtoValid(&n2, ePrefix + "- ")
 
 	if err != nil {
 
@@ -1934,12 +2060,16 @@ func (nDto *NumStrDto) SetPrecision(signedNumStr string, precision uint, roundRe
 // an error is thrown
 func (nDto *NumStrDto) SetSignValue(newSignVal int) error {
 
-	if err := nDto.IsNumStrDtoValid(nDto, "ChangeSignValue() - "); err != nil {
+	ePrefix := "NumStrDto.SetSignValue() "
+
+	if err := nDto.IsNumStrDtoValid(nDto, ePrefix + "- "); err != nil {
 		return err
 	}
 
 	if newSignVal != -1 && newSignVal != 1 {
-		return fmt.Errorf("SetSignValue() invalid sign value passed. Sign must be +1 or -1. This sign value= %v", newSignVal)
+		return fmt.Errorf(ePrefix +
+			"Invalid sign value passed. Sign must be +1 or -1. " +
+			"This sign value= %v", newSignVal)
 	}
 
 	nDto.SignVal = newSignVal
@@ -1964,7 +2094,7 @@ func (nDto *NumStrDto) ResetNumStrOut() error {
 		nDto.NumStrOut += string(nDto.AbsFracRunes)
 	}
 
-	return nDto.IsNumStrDtoValid(nDto, "ResetNumStrOut()")
+	return nDto.IsNumStrDtoValid(nDto, "NumStrDto.ResetNumStrOut() ")
 }
 
 // SubtractNumStrs - Subtracts the numeric values represented by two NumStrDto

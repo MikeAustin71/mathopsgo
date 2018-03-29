@@ -1157,6 +1157,7 @@ func (dec Decimal) NewNumStrPrecision(numStr string, precision uint, roundResult
 	return d2, nil
 }
 
+// TODO Needs more testing!
 // NumStrPrecisionToDecimal - receives a number string and a
 // precision value as parameters. This method creates a Decimal
 // Type containing the converted numeric and returns it.
