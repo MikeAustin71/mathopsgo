@@ -64,3 +64,22 @@ var NumStrCurrencySymbols = []rune{
 	'\U000020bf', // Bitcoin  						            32
 	'\U000000a2'} // United States Cent		            33
 
+// PrecisionScaleMode - Specifies the scaling mode used in
+// setting precision or the number of digits to the right
+// of the decimal place.
+type PrecisionScaleMode int
+
+func (scaleMode PrecisionScaleMode) String() string {
+
+	return PrecisionScaleModeLabels[scaleMode]
+}
+
+const (
+
+	SCALEPRECISIONRIGHT	PrecisionScaleMode = iota
+
+	SCALEPRECISIONLEFT
+
+)
+
+var PrecisionScaleModeLabels = [...]string{"ScalePrecisionRight","ScalePrecisionLeft"}
