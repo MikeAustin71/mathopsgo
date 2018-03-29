@@ -1170,6 +1170,121 @@ func (dec Decimal) NewNumStrPrecision(numStr string, precision uint, roundResult
 // d2 is Now Equal to 123.456
 func (dec *Decimal) NumStrPrecisionToDecimal(str string, precision uint, roundResult bool) (Decimal, error) {
 
+	ePrefix := "Decimal.NumStrPrecisionToDecimal() "
+
+	var err error
+
+	if dec.decimalSeparator == 0 {
+		dec.decimalSeparator = '.'
+	}
+
+	if dec.thousandsSeparator == 0 {
+		dec.thousandsSeparator = ','
+	}
+
+	if dec.currencySymbol == 0 {
+		dec.currencySymbol = '$'
+	}
+
+	n2 := NumStrDto{}
+
+	n1, err := NumStrDto{}.NewNumStr(str)
+
+	if err != nil {
+		return Decimal{},
+		fmt.Errorf(ePrefix + "Error returned by NumStrDto{}.NewNumStr(str) " +
+			"str='%v' Error='%v'",
+				str, err.Error())
+	}
+
+	d2 := Decimal{}
+
+	if precision == n1.Precision {
+
+		d2, err = dec.MakeDecimalFromNumStrDto(n1)
+
+		if err != nil {
+			return Decimal{},
+			fmt.Errorf(ePrefix + "Error received from dec.MakeDecimalFromNumStrDto(n1, precision). " +
+				"n1.NumStr='%v' precision='%v' Error= %v",
+				n1.NumStrOut, precision, err.Error())
+		}
+
+
+	} else if precision > n1.Precision {
+
+		netPrecision := precision - n1.Precision
+
+		n2, err = n1.ScaleNumStr(n1.NumStrOut, uint(netPrecision), SCALEPRECISIONRIGHT)
+
+		if err != nil {
+			return Decimal{},
+				fmt.Errorf(ePrefix +
+					"Error received from n1.ScaleNumStr(n1.NumStrOut, " +
+					"uint(netPrecision), SCALEPRECISIONRIGHT). " +
+					"n1.NumStrOut='%v' netPrecision='%v' Error= %v",
+					n1.NumStrOut, netPrecision, err.Error())
+
+		}
+
+		d2, err = dec.MakeDecimalFromNumStrDto(n2)
+
+		if err != nil {
+			return Decimal{},
+				fmt.Errorf(ePrefix + "Error received from dec.MakeDecimalFromNumStrDto(n1, precision). " +
+					"n1.NumStr='%v' precision='%v' Error= %v",
+					n1.NumStrOut, precision, err.Error())
+		}
+
+
+	} else {
+
+		// Only other possibility: n1.Precision > precision
+		// Must truncate fractional digits
+
+		n2, err = n1.SetPrecision(n1.NumStrOut, precision, roundResult)
+
+		if err != nil {
+			return Decimal{},
+				fmt.Errorf(ePrefix +
+					"Error received from n1.SetPrecision(n1.NumStrOut, " +
+					"precision, roundResult). " +
+					"n1.NumStrOut='%v' precision='%v' roundResult='%v'  Error= %v",
+					n1.NumStrOut, precision, roundResult , err.Error())
+		}
+
+		d2, err = dec.MakeDecimalFromNumStrDto(n2)
+
+		if err != nil {
+			return Decimal{},
+				fmt.Errorf(ePrefix + "Error received from dec.MakeDecimalFromNumStrDto(n1, precision). " +
+					"n1.NumStr='%v' precision='%v' Error= %v",
+					n1.NumStrOut, precision, err.Error())
+		}
+
+	}
+
+	d2.thousandsSeparator = dec.thousandsSeparator
+	d2.decimalSeparator = dec.decimalSeparator
+	d2.currencySymbol = dec.currencySymbol
+
+	return d2, nil
+
+}
+
+// NumStrPrecisionToDecimal - receives a number string and a
+// precision value as parameters. This method creates a Decimal
+// Type containing the converted numeric and returns it.
+// For example, if passed the string ('str') '123456' and a precision
+// value of '3', the resulting Decimal value would be 123.456.
+//
+// Example Usage:
+// d := Decimal{}.New()
+// d2, err := d.NumStrPrecisionToDecimal("123456", 3, false)
+// d2 is Now Equal to 123.456
+/*
+func (dec *Decimal) NumStrPrecisionToDecimal(str string, precision uint, roundResult bool) (Decimal, error) {
+
 	if dec.decimalSeparator == 0 {
 		dec.decimalSeparator = '.'
 	}
@@ -1200,6 +1315,8 @@ func (dec *Decimal) NumStrPrecisionToDecimal(str string, precision uint, roundRe
 	}
 
 	return d2, nil
+}
+ */
 
 	/*
 		lAbsAllRunes := len(nDto.AbsAllNumRunes)
@@ -1286,8 +1403,8 @@ func (dec *Decimal) NumStrPrecisionToDecimal(str string, precision uint, roundRe
 		}
 
 		return d2, nil
-	*/
 }
+	*/
 
 // Pow - raises the current Decimal to the power of
 // an integer 'exponent'. The result is returned as
