@@ -501,7 +501,7 @@ func TestDecimal_AddToThisArray_01(t *testing.T) {
 	}
 
 
-	d, err := Decimal{}.NewNumStrAry(
+	d, err := Decimal{}.NewNumStrsMultiple(
 		       "351.7",
 						    "6224.894",
 								    "34.8",
@@ -512,7 +512,7 @@ func TestDecimal_AddToThisArray_01(t *testing.T) {
 					 )
 
 	if err != nil {
-		t.Errorf("Error returned by Decimal{}.NewNumStrAry(...) " +
+		t.Errorf("Error returned by Decimal{}.NewNumStrsMultiple(...) " +
 			"Error = '%v' ", err.Error())
 	}
 
@@ -559,7 +559,7 @@ func TestDecimal_AddToThisArray_02(t *testing.T) {
 			"Error = '%v' ", err.Error())
 	}
 
-	d, err := Decimal{}.NewNumStrAry(
+	d, err := Decimal{}.NewNumStrsMultiple(
 		 "351.7",
 		      "6224.894",
 		          "34.8",
@@ -570,7 +570,7 @@ func TestDecimal_AddToThisArray_02(t *testing.T) {
 	     )
 
 	if err != nil {
-		t.Errorf("Error returned by Decimal{}.NewNumStrAry(...) " +
+		t.Errorf("Error returned by Decimal{}.NewNumStrsMultiple(...) " +
 			"Error = '%v' ", err.Error())
 	}
 

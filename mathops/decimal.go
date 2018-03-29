@@ -1003,11 +1003,42 @@ func (dec Decimal) NewI64(i64 int64, precision uint) (Decimal, error) {
 	return d2, nil
 }
 
-// NewNumStrAry - Used to create and return an array of Decimal Types.
+// NewNumStrsMultiple - Used to create and return an array of Decimal Types.
 // Input parameters are a series of number strings.
-func (dec Decimal) NewNumStrAry(numStrs ...string) ([] Decimal, error) {
+func (dec Decimal) NewNumStrsMultiple(numStrs ...string) ([] Decimal, error) {
 
-	ePrefix := "Decimal.NewNumStrAry() "
+	ePrefix := "Decimal.NewNumStrsMultiple() "
+
+	lenNumStrs := len(numStrs)
+
+	decAry := make([] Decimal, lenNumStrs, lenNumStrs + 100)
+
+	for i, numStr := range numStrs {
+
+		dec := Decimal{}.New()
+
+		err := dec.SetNumStr(numStr)
+
+		if err != nil {
+			return []Decimal{},
+			fmt.Errorf(ePrefix + "Error returned by dec.SetNumStr(numStr). " +
+				"numStr='%v' Index='%v' Error='%v'",
+					numStr, i, err.Error()	)
+		}
+
+		decAry[i] = dec.CopyOut()
+
+	}
+
+	return decAry, nil
+}
+
+// NewNumStrArray - Used to create and return an array of Decimal Types.
+// The input parameter is an array of number strings.
+//
+func (dec Decimal) NewNumStrArray(numStrs []string) ([] Decimal, error) {
+
+	ePrefix := "Decimal.NewNumStrArray() "
 
 	lenNumStrs := len(numStrs)
 
@@ -1814,10 +1845,10 @@ func (dec *Decimal) Subtract(d2 Decimal) (Decimal, error) {
 	return d4, nil
 }
 
-// SubtractTotal - Subtracts the value of the incoming Decimal type
-// from the current Decimal. The updated value is retained in the
-// current Decimal type.
-func (dec *Decimal) SubtractTotal(d2 Decimal) error {
+// SubtractFromThis - Subtracts the value of the incoming Decimal type
+// from the current Decimal type. The updated value is stored and retained
+// in the current Decimal instance.
+func (dec *Decimal) SubtractFromThis(d2 Decimal) error {
 	d3, err := dec.Subtract(d2)
 
 	if err != nil {
@@ -1828,4 +1859,47 @@ func (dec *Decimal) SubtractTotal(d2 Decimal) error {
 
 	return nil
 }
+
+// SubtractFromThisMultiple - Subtracts the value of multiple incoming
+// Decimal instances from the current Decimal type. The updated value
+// is stored and retained in the current Decimal instance.
+//
+func (dec *Decimal) SubtractFromThisMultiple(decs ...Decimal) error {
+
+	for _, dx := range decs {
+
+		dec3, err := dec.Subtract(dx)
+
+		if err != nil {
+			return fmt.Errorf("SubtractFromThisMultiple() - Error received from Add(). Error= %v", err)
+		}
+
+		dec.CopyIn(dec3)
+
+	}
+
+	return nil
+}
+
+// SubtractFromThisArray - Subtracts the values of an Array of incoming
+// Decimal instances from the current Decimal type. The updated value
+// is stored and retained in the current Decimal instance.
+//
+func (dec *Decimal) SubtractFromThisArray(decs []Decimal) error {
+
+	for _, dx := range decs {
+
+		dec3, err := dec.Subtract(dx)
+
+		if err != nil {
+			return fmt.Errorf("SubtractFromThisArray() - Error received from Add(). Error= %v", err)
+		}
+
+		dec.CopyIn(dec3)
+
+	}
+
+	return nil
+}
+
 
