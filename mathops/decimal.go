@@ -41,60 +41,76 @@ type Decimal struct {
 // Decimal Type.
 func (dec *Decimal) Add(d2 Decimal) (Decimal, error) {
 
+	ePrefix := "Decimal.Add() "
+
 	if !dec.isValid {
-		return Decimal{}, errors.New("This Decimal value invalid")
+		return Decimal{}, errors.New(ePrefix + "This Decimal value invalid")
 	}
 
 	if !d2.isValid {
-		return Decimal{}, errors.New("Incoming Decimal invalid")
+		return Decimal{}, errors.New(ePrefix + "Incoming Decimal invalid")
 	}
 
 	base10 := big.NewInt(10)
+	var d4 Decimal
+	var err error
+	var s3Text string
+	var newPrecision uint
+	var nDto NumStrDto
 
 	if dec.precision == d2.precision {
+
 		s3Val := big.NewInt(0).Add(dec.signedAllDigitsBigInt, d2.signedAllDigitsBigInt)
 
-		s3Text := s3Val.Text(10)
+		s3Text = s3Val.Text(10)
 
-		d4, err := dec.NumStrPrecisionToDecimal(s3Text, dec.precision, true)
+		newPrecision = dec.precision
 
-		if err != nil {
-			return Decimal{}, fmt.Errorf("Add() received error from nDto.NumStrPrecisionToDecimal(s3Text, nDto.precision) s3Text='%v' nDto.precision=%v. Error= %v", s3Text, dec.precision, err)
-		}
+	} else	if d2.precision > dec.precision {
 
-		return d4, nil
-	}
-
-	if d2.precision > dec.precision {
 		deltaPrecision := big.NewInt(int64(d2.precision - dec.precision))
 		deltaPrecisionScale := big.NewInt(0).Exp(base10, deltaPrecision, nil)
 		s1 := big.NewInt(0).Mul(dec.signedAllDigitsBigInt, deltaPrecisionScale)
 		s3 := big.NewInt(0).Add(s1, d2.signedAllDigitsBigInt)
-		s3Text := s3.Text(10)
 
-		d4, err := dec.NumStrPrecisionToDecimal(s3Text, d2.precision, true)
+		s3Text = s3.Text(10)
 
-		if err != nil {
-			return Decimal{}, fmt.Errorf("Add() received error from nDto.NumStrPrecisionToDecimal(s3Text, nDto.precision) s3Text='%v' nDto.precision=%v. Error= %v", s3Text, dec.precision, err)
-		}
+		newPrecision = d2.precision
 
-		return d4, nil
+	} else {
+
+		// must be dec.precision > d2.precision
+		idp := int(dec.precision) - int(d2.precision)
+		i64DeltaPrecision := int64(idp)
+		deltaPrecision := big.NewInt(i64DeltaPrecision)
+		deltaPrecisionScale := big.NewInt(0).Exp(base10, deltaPrecision, nil)
+		s1 := big.NewInt(0).Mul(d2.signedAllDigitsBigInt, deltaPrecisionScale)
+		s3 := big.NewInt(0).Add(s1, dec.signedAllDigitsBigInt)
+
+		s3Text = s3.Text(10)
+
+		newPrecision = dec.precision
 
 	}
 
-	// must be nDto.precison > d2.precision
-	idp := int(dec.precision) - int(d2.precision)
-	i64DeltaPrecision := int64(idp)
-	deltaPrecision := big.NewInt(i64DeltaPrecision)
-	deltaPrecisionScale := big.NewInt(0).Exp(base10, deltaPrecision, nil)
-	s1 := big.NewInt(0).Mul(d2.signedAllDigitsBigInt, deltaPrecisionScale)
-	s3 := big.NewInt(0).Add(s1, dec.signedAllDigitsBigInt)
-	s3Text := s3.Text(10)
-
-	d4, err := dec.NumStrPrecisionToDecimal(s3Text, dec.precision, true)
+	// s3Text is now a pure number string with no decimal point.
+	nDto, err = NumStrDto{}.NewPtr().ShiftPrecisionLeft(s3Text, newPrecision)
 
 	if err != nil {
-		return Decimal{}, fmt.Errorf("Add() received error from nDto.NumStrPrecisionToDecimal(s3Text, nDto.precision) s3Text='%v' nDto.precision=%v. Error= %v", s3Text, dec.precision, err)
+		return Decimal{},
+		fmt.Errorf(ePrefix + "Error returned by NumStrDto{}.NewPtr()." +
+			"ShiftPrecisionLeft(s3Text, newPrecision) " +
+			"s3Text='%v' newPrecision='%v' Error='%v'",
+				s3Text, newPrecision, err.Error())
+	}
+
+	d4, err = dec.MakeDecimalFromNumStrDto(nDto)
+
+	if err != nil {
+		return Decimal{},
+			fmt.Errorf(ePrefix + "Error returned from dec.MakeDecimalFromNumStrDto(nDto) " +
+				"nDto.NumStrOut='%v'  nDto.Precision='%v'  Error='%v'",
+				nDto.NumStrOut, nDto.Precision, err.Error())
 	}
 
 	return d4, nil
@@ -865,19 +881,43 @@ func (dec *Decimal) MakeDecimalFromIntAry(ia *IntAry) (Decimal, error) {
 // Decimal Type.
 func (dec *Decimal) Mul(d2 Decimal) (Decimal, error) {
 
+	ePrefix := "Decimal.Mul() "
+
 	if !dec.isValid {
-		return Decimal{}, errors.New("This Decimal Value Invalid!")
+		return Decimal{}, errors.New(ePrefix + "This Decimal Value Invalid!")
 	}
 
 	if !d2.isValid {
-		return Decimal{}, errors.New("Incoming Decimal Invalid!")
+		return Decimal{}, errors.New(ePrefix + "Incoming Decimal Invalid!")
 	}
 
 	s3Val := big.NewInt(0).Mul(dec.signedAllDigitsBigInt, d2.signedAllDigitsBigInt)
+	s3Text := s3Val.Text(10)
 
 	newPrecision := dec.precision + d2.precision
 
-	return dec.NumStrPrecisionToDecimal(s3Val.String(), newPrecision, true)
+	// s3Text is now a pure number string with no decimal point.
+	nDto, err := NumStrDto{}.NewPtr().ShiftPrecisionLeft(s3Text, newPrecision)
+
+	if err != nil {
+		return Decimal{},
+			fmt.Errorf(ePrefix + "Error returned by NumStrDto{}.NewPtr()." +
+				"ShiftPrecisionLeft(s3Text, newPrecision) " +
+				"s3Text='%v' newPrecision='%v' Error='%v'",
+				s3Text, newPrecision, err.Error())
+	}
+
+	d4, err := dec.MakeDecimalFromNumStrDto(nDto)
+
+	if err != nil {
+		return Decimal{},
+			fmt.Errorf(ePrefix + "Error returned from dec.MakeDecimalFromNumStrDto(nDto) " +
+				"nDto.NumStrOut='%v'  nDto.Precision='%v'  Error='%v'",
+				nDto.NumStrOut, nDto.Precision, err.Error())
+	}
+
+	return d4, nil
+
 }
 
 // MulTotal - Multiplies the value of the incoming
@@ -1168,7 +1208,7 @@ func (dec Decimal) NewNumStrPrecision(numStr string, precision uint, roundResult
 // d := Decimal{}.New()
 // d2, err := d.NumStrPrecisionToDecimal("123456", 3, false)
 // d2 is Now Equal to 123.456
-func (dec *Decimal) NumStrPrecisionToDecimal(str string, precision uint, roundResult bool) (Decimal, error) {
+func (dec *Decimal) NumStrPrecisionToDecimal(str string, requestedPrecision uint, roundResult bool) (Decimal, error) {
 
 	ePrefix := "Decimal.NumStrPrecisionToDecimal() "
 
@@ -1199,23 +1239,11 @@ func (dec *Decimal) NumStrPrecisionToDecimal(str string, precision uint, roundRe
 
 	d2 := Decimal{}
 
-	if precision == n1.Precision {
+	if n1.Precision == 0 && requestedPrecision > 0 {
 
-		d2, err = dec.MakeDecimalFromNumStrDto(n1)
+		netPrecision := requestedPrecision - n1.Precision
 
-		if err != nil {
-			return Decimal{},
-			fmt.Errorf(ePrefix + "Error received from dec.MakeDecimalFromNumStrDto(n1, precision). " +
-				"n1.NumStr='%v' precision='%v' Error= %v",
-				n1.NumStrOut, precision, err.Error())
-		}
-
-
-	} else if precision > n1.Precision {
-
-		netPrecision := precision - n1.Precision
-
-		n2, err = n1.ScaleNumStr(n1.NumStrOut, uint(netPrecision), SCALEPRECISIONRIGHT)
+		n2, err = n1.ScaleNumStr(n1.NumStrOut, uint(netPrecision), SCALEPRECISIONLEFT)
 
 		if err != nil {
 			return Decimal{},
@@ -1231,35 +1259,92 @@ func (dec *Decimal) NumStrPrecisionToDecimal(str string, precision uint, roundRe
 
 		if err != nil {
 			return Decimal{},
-				fmt.Errorf(ePrefix + "Error received from dec.MakeDecimalFromNumStrDto(n1, precision). " +
-					"n1.NumStr='%v' precision='%v' Error= %v",
-					n1.NumStrOut, precision, err.Error())
+				fmt.Errorf(ePrefix + "Error received from dec.MakeDecimalFromNumStrDto(n1, requestedPrecision). " +
+					"n1.NumStr='%v' requestedPrecision='%v' Error= %v",
+					n1.NumStrOut, requestedPrecision, err.Error())
+		}
+
+
+	} else if requestedPrecision == n1.Precision {
+
+		// Actual Precision is greater than zer and
+		// Requested Precision Equals Actual Precision
+		// Our job is done.
+
+		d2, err = dec.MakeDecimalFromNumStrDto(n1)
+
+		if err != nil {
+			return Decimal{},
+			fmt.Errorf(ePrefix + "Error received from dec.MakeDecimalFromNumStrDto(n1, requestedPrecision). " +
+				"n1.NumStr='%v' requestedPrecision='%v' Error= %v",
+				n1.NumStrOut, requestedPrecision, err.Error())
+		}
+
+
+		// Requested Precision is greater than actual requestedPrecision.
+		// Add fractional zero digits to the right.
+	} else if requestedPrecision > n1.Precision {
+
+		//netPrecision := requestedPrecision - n1.Precision
+
+		n2, err = n1.SetPrecision(n1.NumStrOut, requestedPrecision, false)
+
+		if err != nil {
+			return Decimal{},
+				fmt.Errorf(ePrefix+
+					"Error received from n1.SetPrecision(n1.NumStrOut, "+
+					"requestedPrecision, false). "+
+					"n1.NumStrOut='%v' requestedPrecision='%v' Error= %v",
+					n1.NumStrOut, requestedPrecision, err.Error())
+		}
+
+		/*
+		n2, err = n1.ScaleNumStr(n1.NumStrOut, uint(netPrecision), SCALEPRECISIONRIGHT)
+
+		if err != nil {
+			return Decimal{},
+				fmt.Errorf(ePrefix +
+					"Error received from n1.ScaleNumStr(n1.NumStrOut, " +
+					"uint(netPrecision), SCALEPRECISIONRIGHT). " +
+					"n1.NumStrOut='%v' netPrecision='%v' Error= %v",
+					n1.NumStrOut, netPrecision, err.Error())
+
+		}
+		*/
+
+		d2, err = dec.MakeDecimalFromNumStrDto(n2)
+
+		if err != nil {
+			return Decimal{},
+				fmt.Errorf(ePrefix + "Error received from dec.MakeDecimalFromNumStrDto(n1, requestedPrecision). " +
+					"n1.NumStr='%v' requestedPrecision='%v' Error= %v",
+					n1.NumStrOut, requestedPrecision, err.Error())
 		}
 
 
 	} else {
 
-		// Only other possibility: n1.Precision > precision
+		// Only other possibility: n1.Precision > requestedPrecision
 		// Must truncate fractional digits
 
-		n2, err = n1.SetPrecision(n1.NumStrOut, precision, roundResult)
+		n2, err = n1.SetPrecision(n1.NumStrOut, requestedPrecision, roundResult)
 
 		if err != nil {
 			return Decimal{},
 				fmt.Errorf(ePrefix +
 					"Error received from n1.SetPrecision(n1.NumStrOut, " +
-					"precision, roundResult). " +
-					"n1.NumStrOut='%v' precision='%v' roundResult='%v'  Error= %v",
-					n1.NumStrOut, precision, roundResult , err.Error())
+					"requestedPrecision, roundResult). " +
+					"n1.NumStrOut='%v' requestedPrecision='%v' roundResult='%v'  Error= %v",
+					n1.NumStrOut, requestedPrecision, roundResult , err.Error())
 		}
 
 		d2, err = dec.MakeDecimalFromNumStrDto(n2)
 
 		if err != nil {
 			return Decimal{},
-				fmt.Errorf(ePrefix + "Error received from dec.MakeDecimalFromNumStrDto(n1, precision). " +
-					"n1.NumStr='%v' precision='%v' Error= %v",
-					n1.NumStrOut, precision, err.Error())
+				fmt.Errorf(ePrefix + "Error received from dec.MakeDecimalFromNumStrDto(n1, requestedPrecision). " +
+					"n1.NumStr='%v' requestedPrecision='%v' Error= %v",
+					n1.NumStrOut, requestedPrecision, err.Error())
 		}
 
 	}
@@ -1422,6 +1507,8 @@ func (dec *Decimal) NumStrPrecisionToDecimal(str string, precision uint, roundRe
 //
 func (dec *Decimal) Pow(exponent int, maxPrecision int) (Decimal, error) {
 
+	ePrefix := "Decimal.Pow() "
+
 	expSign := 1
 
 	if exponent < 0 {
@@ -1434,12 +1521,28 @@ func (dec *Decimal) Pow(exponent int, maxPrecision int) (Decimal, error) {
 
 	newPrecision := dec.precision * uint(exponent)
 
-	result := big.NewInt(0).Exp(s1Val, ex, nil)
+	s3Val := big.NewInt(0).Exp(s1Val, ex, nil)
 
-	d2, err := dec.NumStrPrecisionToDecimal(result.String(), newPrecision, true)
+	s3Text := s3Val.Text(10)
+
+	// s3Text is now a pure number string with no decimal point.
+	nDto, err := NumStrDto{}.NewPtr().ShiftPrecisionLeft(s3Text, newPrecision)
 
 	if err != nil {
-		return Decimal{}.New(), fmt.Errorf("Pow() Error from nDto.NumStrPrecisionToDecimal(result.String(), newPrecision). Error= %v.", err)
+		return Decimal{},
+			fmt.Errorf(ePrefix + "Error returned by NumStrDto{}.NewPtr()." +
+				"ShiftPrecisionLeft(s3Text, newPrecision) " +
+				"s3Text='%v' newPrecision='%v' Error='%v'",
+				s3Text, newPrecision, err.Error())
+	}
+
+	d2, err := dec.MakeDecimalFromNumStrDto(nDto)
+
+	if err != nil {
+		return Decimal{},
+			fmt.Errorf(ePrefix + "Error returned from dec.MakeDecimalFromNumStrDto(nDto) " +
+				"nDto.NumStrOut='%v'  nDto.Precision='%v'  Error='%v'",
+				nDto.NumStrOut, nDto.Precision, err.Error())
 	}
 
 	if expSign == 1 {
@@ -1454,11 +1557,10 @@ func (dec *Decimal) Pow(exponent int, maxPrecision int) (Decimal, error) {
 	d3, err := d2.Inverse(maxPrecision)
 
 	if err != nil {
-		return Decimal{}.New(), fmt.Errorf("Pow() Error from d2.Inverse(). Error= %v.", err)
+		return Decimal{}.New(), fmt.Errorf("Pow() Error from d2.Inverse(). Error= %v.", err.Error())
 	}
 
 	return d3, nil
-
 }
 
 // Sets the value of the current Decimal to the input parameter 'iBig'
@@ -1895,15 +1997,22 @@ func (dec *Decimal) SetNumStrDto(nDto NumStrDto) error {
 // Decimal and returns the result as Decimal Type.
 func (dec *Decimal) Subtract(d2 Decimal) (Decimal, error) {
 
+	ePrefix := "Decimal.Subtract() "
+
 	if !dec.isValid {
-		return Decimal{}, errors.New("This Decimal Value Invalid!")
+		return Decimal{}, errors.New(ePrefix + "This Decimal Value Invalid!")
 	}
 
 	if !d2.isValid {
-		return Decimal{}, errors.New("Incoming Decimal Invalid!")
+		return Decimal{}, errors.New(ePrefix + "Incoming Decimal Invalid!")
 	}
 
 	base10 := big.NewInt(10)
+	var err error
+	var d4 Decimal
+	var newPrecision uint
+	var s3Text string
+	var nDto NumStrDto
 
 	if dec.precision == d2.precision {
 
@@ -1913,51 +2022,53 @@ func (dec *Decimal) Subtract(d2 Decimal) (Decimal, error) {
 
 		s3Val := big.NewInt(0).Sub(s1Val, s2Val)
 
-		s3Text := s3Val.String()
+		s3Text = s3Val.String()
 
-		d4, err := dec.NumStrPrecisionToDecimal(s3Text, dec.precision, true)
+		newPrecision = dec.precision
 
-		if err != nil {
-			return Decimal{}, fmt.Errorf("Add() received error from nDto.NumStrPrecisionToDecimal(s3Text, nDto.precision) s3Text='%v' nDto.precision=%v. Error= %v", s3Text, dec.precision, err)
-		}
-
-		return d4, nil
-	}
-
-	if d2.precision > dec.precision {
+	} else	if d2.precision > dec.precision {
 		deltaPrecision := big.NewInt(int64(d2.precision - dec.precision))
 		deltaPrecisionScale := big.NewInt(0).Exp(base10, deltaPrecision, nil)
 
 		s1Val := big.NewInt(0).Mul(dec.signedAllDigitsBigInt, deltaPrecisionScale)
 		s2Val := big.NewInt(0).Set(d2.signedAllDigitsBigInt)
 		s3Val := big.NewInt(0).Sub(s1Val, s2Val)
-		s3Text := s3Val.Text(10)
+		s3Text = s3Val.Text(10)
+		newPrecision = d2.precision
 
-		d4, err := dec.NumStrPrecisionToDecimal(s3Text, d2.precision, true)
+	} else {
+		// must be dec.precision > d2.precision
 
-		if err != nil {
-			return Decimal{}, fmt.Errorf("Add() received error from nDto.NumStrPrecisionToDecimal(s3Text, nDto.precision) s3Text='%v' nDto.precision=%v. Error= %v", s3Text, dec.precision, err)
-		}
+		deltaPrecision := big.NewInt(int64(dec.precision - d2.precision))
+		deltaPrecisionScale := big.NewInt(0).Exp(base10, deltaPrecision, nil)
+		s1Val := big.NewInt(0).Set(dec.signedAllDigitsBigInt)
+		s2Val := big.NewInt(0).Mul(d2.signedAllDigitsBigInt, deltaPrecisionScale)
 
-		return d4, nil
+		s3Val := big.NewInt(0).Sub(s1Val, s2Val)
+
+		s3Text = s3Val.Text(10)
+		newPrecision = dec.precision
 
 	}
 
-	// must be nDto.precison > d2.precision
-
-	deltaPrecision := big.NewInt(int64(dec.precision - d2.precision))
-	deltaPrecisionScale := big.NewInt(0).Exp(base10, deltaPrecision, nil)
-	s1Val := big.NewInt(0).Set(dec.signedAllDigitsBigInt)
-	s2Val := big.NewInt(0).Mul(d2.signedAllDigitsBigInt, deltaPrecisionScale)
-
-	s3Val := big.NewInt(0).Sub(s1Val, s2Val)
-
-	s3Text := s3Val.Text(10)
-
-	d4, err := dec.NumStrPrecisionToDecimal(s3Text, d2.precision, true)
+	// s3Text is now a pure number string with no decimal point.
+	nDto, err = NumStrDto{}.NewPtr().ShiftPrecisionLeft(s3Text, newPrecision)
 
 	if err != nil {
-		return Decimal{}, fmt.Errorf("Add() received error from nDto.NumStrPrecisionToDecimal(s3Text, nDto.precision) s3Text='%v' nDto.precision=%v. Error= %v", s3Text, dec.precision, err)
+		return Decimal{},
+			fmt.Errorf(ePrefix + "Error returned by NumStrDto{}.NewPtr()." +
+				"ShiftPrecisionLeft(s3Text, newPrecision) " +
+				"s3Text='%v' newPrecision='%v' Error='%v'",
+				s3Text, newPrecision, err.Error())
+	}
+
+	d4, err = dec.MakeDecimalFromNumStrDto(nDto)
+
+	if err != nil {
+		return Decimal{},
+			fmt.Errorf(ePrefix + "Error returned from dec.MakeDecimalFromNumStrDto(nDto) " +
+				"nDto.NumStrOut='%v'  nDto.Precision='%v'  Error='%v'",
+				nDto.NumStrOut, nDto.Precision, err.Error())
 	}
 
 	return d4, nil

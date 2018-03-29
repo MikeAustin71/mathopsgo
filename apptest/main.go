@@ -8,8 +8,126 @@ import (
 
 func main() {
 
-	ExampleMathOps_01()
+	ExampleDecimal_04()
 
+}
+
+func ExampleDecimal_04() {
+	numStr1 := "71.0159"
+	requestedPrecision := uint(4)
+	expected := "71.0159"
+	dec := mathops.Decimal{}
+
+	d2, err := dec.NumStrPrecisionToDecimal(numStr1, requestedPrecision, true)
+
+	if err != nil {
+		fmt.Printf("Error returned by dec.NumStrPrecisionToDecimal(numStr1, " +
+			"requestedPrecision, true). numStr1='%v', requestedPrecision='%v' Error='%v'",
+			requestedPrecision, numStr1, err.Error())
+		return
+	}
+
+	if expected != d2.GetNumStr() {
+		fmt.Printf("Error: Expected NumStr='%v'. Instead, NumStr='%v'", expected, d2.GetNumStr())
+		return
+	}
+
+	fmt.Println("NumStr: ", d2.GetNumStr())
+
+	fmt.Println("Successful Completion!")
+}
+
+
+func ExampleDecimal_03() {
+	numStr1 := "71.0159"
+	requestedPrecision := uint(3)
+	expected := "71.016"
+	dec := mathops.Decimal{}
+
+	d2, err := dec.NumStrPrecisionToDecimal(numStr1, requestedPrecision, true)
+
+	if err != nil {
+		fmt.Printf("Error returned by dec.NumStrPrecisionToDecimal(numStr1, " +
+			"requestedPrecision, true). numStr1='%v', requestedPrecision='%v' Error='%v'",
+			requestedPrecision, numStr1, err.Error())
+		return
+	}
+
+	if expected != d2.GetNumStr() {
+		fmt.Printf("Error: Expected NumStr='%v'. Instead, NumStr='%v'", expected, d2.GetNumStr())
+		return
+	}
+
+	fmt.Println("NumStr: ", d2.GetNumStr())
+
+	fmt.Println("Successful Completion!")
+}
+
+
+func ExampleDecimal_02() {
+	numStr1 := "71.01"
+	requestedPrecision := uint(3)
+	expected := "71.010"
+	dec := mathops.Decimal{}
+
+	d2, err := dec.NumStrPrecisionToDecimal(numStr1, requestedPrecision, true)
+
+	if err != nil {
+		fmt.Printf("Error returned by dec.NumStrPrecisionToDecimal(numStr1, " +
+			"requestedPrecision, true). numStr1='%v', requestedPrecision='%v' Error='%v'",
+				requestedPrecision, numStr1, err.Error())
+		return
+	}
+
+	if expected != d2.GetNumStr() {
+		fmt.Printf("Error: Expected NumStr='%v'. Instead, NumStr='%v'", expected, d2.GetNumStr())
+		return
+	}
+
+	fmt.Println("NumStr: ", d2.GetNumStr())
+
+	fmt.Println("Successful Completion!")
+}
+
+
+func ExampleDecimal_01() {
+	numStr1 := "35.50"
+	numStr2 := "35.51"
+	expected := "71.01"
+	nu := mathops.NumStrUtility{}
+
+	dec1, err := nu.ConvertNumStrToDecimal(numStr1)
+
+	if err != nil {
+		fmt.Printf("Received error from nu.ConvertNumStrToDecimal(numStr1). numStr1= '%v'. Error= %v\n", numStr1, err)
+		return
+	}
+
+	dec2, _ := nu.ConvertNumStrToDecimal(numStr2)
+
+	if err != nil {
+		fmt.Printf("Received error from nu.ConvertNumStrToDecimal(numStr2). numStr2= '%v'. Error= %v", numStr2, err)
+		return
+	}
+
+	dec3, err := dec1.Add(dec2)
+
+	if err != nil {
+		fmt.Printf("Received error from dec1.Add(dec2). Error= %v", err)
+		return
+	}
+
+	if expected != dec3.GetNumStr() {
+		fmt.Printf("Expected NumStrOut='%v'. Instead, got '%v'", expected, dec3.GetNumStr())
+		return
+	}
+
+	if !dec3.GetIsValid() {
+		fmt.Print("Expected dec3.isValid='true'. Instead, got 'false'")
+		return
+	}
+
+	fmt.Println("Successful Completion!")
 }
 
 func ExampleMathOps_01() {

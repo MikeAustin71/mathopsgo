@@ -455,7 +455,7 @@ func TestDecimal_NumStrPrecisionToDecimal_05(t *testing.T) {
 func TestDecimal_NumStrPrecisionToDecimal_06(t *testing.T) {
 
 	inStr := "-123456.789"
-	expected := "-123.456789"
+	expected := "-123456.789000"
 	eSignVal := -1
 	d := Decimal{}
 	precision := uint(6)
