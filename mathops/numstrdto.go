@@ -1955,11 +1955,13 @@ func (nDto *NumStrDto) ScaleAbsoluteValStr(signedNumStr string, precision uint, 
 // 10   "-123.456789"         1             false           "-123.4"
 // 11 	"-123.456789"         1             true            "-123.5"
 // 12  	 "123456.789"					0							true	           "123457"
-// 13 x	"-123456.789"         0							true						"-123457"
-// 14  	 "123456.789"					0							false	           "123456"
+// 13 	"-123456.789"         0							true						"-123457"
+// 14 	 "123456.789"					0							false	           "123456"
 // 15 	"-123456.789"					0							false						"-123456"
-// 16  	 "123457"             1							false						 "123457.0"
-// 17 	"-123457"							1							true						"-123457.0"
+// 16 	 "123457"             1							false						 "123457.0"
+// 17 	 "123457"             1							true						 "123457.0"
+// 18 	"-123457"							1							false						"-123457.0"
+// 19 	"-123457"							1							true						"-123457.0"
 //
 func (nDto *NumStrDto) SetPrecision(
 							signedNumStr string,
