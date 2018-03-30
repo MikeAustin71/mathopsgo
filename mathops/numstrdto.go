@@ -1930,19 +1930,41 @@ func (nDto *NumStrDto) ScaleAbsoluteValStr(signedNumStr string, precision uint, 
 	return n2, nil
 }
 
-// TODO - Needs more testing
+
 // SetPrecision - parses the incoming number string and applies the designated 'precision'. 'precision'
 // determines the number of digits to the right of the decimal place. The boolean parameter 'roundResult'
 // is used to apply rounding in those cases where 'precision' dictates a reduction in the number of
 // digits to the right of the decimal place.
 //
-// Examples:
-// ----------_- Input Parameters --_---------			Result
-// signedNumStr			precision			roundResult
-// "123456"				  7							false						"123456.0000000"
-// "123.456"				2							true						"123.46"
-// "123.456         5             false						"123.45600"
-func (nDto *NumStrDto) SetPrecision(signedNumStr string, precision uint, roundResult bool) (NumStrDto, error) {
+//
+//  Examples
+//  ========
+//
+// 		------------ Input Parameters ------------        	---- Result -------
+// Test
+//  No		signedNumStr			precision			roundResult
+// 	1	 		"123456789"				  7							false						 "123456789.0000000"
+// 	2 		"123456789"				  7							true						 "123456789.0000000"
+//  3  	x"-123456789"				  7							false						"-123456789.0000000"
+//  4  	 "-123456789"				  7							true						"-123456789.0000000"
+// 	5  	 "123456.789"					2							true						 "123456.79"
+//  6  	 "123456.789"					2							false						 "123456.78"
+// 	7  	 "123456.789"      		5             false						 "123456.78900"
+//  8  	 "123.456789"         5             false            "123.4"
+//  9  	 "123.456789"         5             true             "123.5"
+// 10 	"-123.456789"         5             false           "-123.4"
+// 11 	"-123.456789"         5             true            "-123.5"
+// 12  	 "123456.789"					0							true	           "123457"
+// 13 	"-123456.789"         0							true						"-123457"
+// 14  	 "123456.789"					0							false	           "123456"
+// 15 	"-123456.789"					0							false						"-123456"
+// 16  	 "123457"             1							false						 "123457.0"
+// 17 	"-123457"							1							true						"-123457.0"
+//
+func (nDto *NumStrDto) SetPrecision(
+							signedNumStr string,
+								precision uint,
+									roundResult bool) (NumStrDto, error) {
 
 	ePrefix := "NumStrDto.SetPrecision() "
 

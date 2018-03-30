@@ -566,7 +566,7 @@ func TestNumStrDto_ShiftPrecisionRight_01(t *testing.T) {
 	nsDto, err := NumStrDto{}.NewPtr().ShiftPrecisionRight(nStr, precision)
 
 	if err != nil {
-		t.Errorf("Received error from nsu.ShiftPrecisionLeft(nStr, precision). nStr= '%v' precision= '%v'. Error= %v", nStr, precision, err)
+		t.Errorf("Received error from nsu.ShiftPrecisionRight(nStr, precision). nStr= '%v' precision= '%v'. Error= %v", nStr, precision, err)
 	}
 
 	if nsDto.NumStrOut != expected {
@@ -616,7 +616,7 @@ func TestNumStrDto_ShiftPrecisionRight_02(t *testing.T) {
 	nsDto, err := NumStrDto{}.NewPtr().ShiftPrecisionRight(nStr, precision)
 
 	if err != nil {
-		t.Errorf("Received error from nsu.ShiftPrecisionLeft(nStr, precision). nStr= '%v' precision= '%v'. Error= %v", nStr, precision, err)
+		t.Errorf("Received error from nsu.ShiftPrecisionRight(nStr, precision). nStr= '%v' precision= '%v'. Error= %v", nStr, precision, err)
 	}
 
 	if nsDto.NumStrOut != expected {
@@ -666,7 +666,7 @@ func TestNumStrDto_ShiftPrecisionRight_03(t *testing.T) {
 	nsDto, err := NumStrDto{}.NewPtr().ShiftPrecisionRight(nStr, precision)
 
 	if err != nil {
-		t.Errorf("Received error from nsu.ShiftPrecisionLeft(nStr, precision). nStr= '%v' precision= '%v'. Error= %v", nStr, precision, err)
+		t.Errorf("Received error from nsu.ShiftPrecisionRight(nStr, precision). nStr= '%v' precision= '%v'. Error= %v", nStr, precision, err)
 	}
 
 	if nsDto.NumStrOut != expected {
@@ -716,7 +716,7 @@ func TestNumStrDto_ShiftPrecisionRight_04(t *testing.T) {
 	nsDto, err := NumStrDto{}.NewPtr().ShiftPrecisionRight(nStr, precision)
 
 	if err != nil {
-		t.Errorf("Received error from nsu.ShiftPrecisionLeft(nStr, precision). nStr= '%v' precision= '%v'. Error= %v", nStr, precision, err)
+		t.Errorf("Received error from nsu.ShiftPrecisionRight(nStr, precision). nStr= '%v' precision= '%v'. Error= %v", nStr, precision, err)
 	}
 
 	if nsDto.NumStrOut != expected {
@@ -766,7 +766,7 @@ func TestNumStrDto_ShiftPrecisionRight_05(t *testing.T) {
 	nsDto, err := NumStrDto{}.NewPtr().ShiftPrecisionRight(nStr, precision)
 
 	if err != nil {
-		t.Errorf("Received error from nsu.ShiftPrecisionLeft(nStr, precision). nStr= '%v' precision= '%v'. Error= %v", nStr, precision, err)
+		t.Errorf("Received error from nsu.ShiftPrecisionRight(nStr, precision). nStr= '%v' precision= '%v'. Error= %v", nStr, precision, err)
 	}
 
 	if nsDto.NumStrOut != expected {
@@ -816,7 +816,7 @@ func TestNumStrDto_ShiftPrecisionRight_06(t *testing.T) {
 	nsDto, err := NumStrDto{}.NewPtr().ShiftPrecisionRight(nStr, precision)
 
 	if err != nil {
-		t.Errorf("Received error from nsu.ShiftPrecisionLeft(nStr, precision). nStr= '%v' precision= '%v'. Error= %v", nStr, precision, err)
+		t.Errorf("Received error from nsu.ShiftPrecisionRight(nStr, precision). nStr= '%v' precision= '%v'. Error= %v", nStr, precision, err)
 	}
 
 	if nsDto.NumStrOut != expected {
@@ -866,7 +866,7 @@ func TestNumStrDto_ShiftPrecisionRight_07(t *testing.T) {
 	nsDto, err := NumStrDto{}.NewPtr().ShiftPrecisionRight(nStr, precision)
 
 	if err != nil {
-		t.Errorf("Received error from nsu.ShiftPrecisionLeft(nStr, precision). nStr= '%v' precision= '%v'. Error= %v", nStr, precision, err)
+		t.Errorf("Received error from nsu.ShiftPrecisionRight(nStr, precision). nStr= '%v' precision= '%v'. Error= %v", nStr, precision, err)
 	}
 
 	if nsDto.NumStrOut != expected {
@@ -916,7 +916,7 @@ func TestNumStrDto_ShiftPrecisionRight_08(t *testing.T) {
 	nsDto, err := NumStrDto{}.NewPtr().ShiftPrecisionRight(nStr, precision)
 
 	if err != nil {
-		t.Errorf("Received error from nsu.ShiftPrecisionLeft(nStr, precision). nStr= '%v' precision= '%v'. Error= %v", nStr, precision, err)
+		t.Errorf("Received error from nsu.ShiftPrecisionRight(nStr, precision). nStr= '%v' precision= '%v'. Error= %v", nStr, precision, err)
 	}
 
 	if nsDto.NumStrOut != expected {
@@ -966,7 +966,7 @@ func TestNumStrDto_ShiftPrecisionRight_09(t *testing.T) {
 	nsDto, err := NumStrDto{}.NewPtr().ShiftPrecisionRight(nStr, precision)
 
 	if err != nil {
-		t.Errorf("Received error from nsu.ShiftPrecisionLeft(nStr, precision). nStr= '%v' precision= '%v'. Error= %v", nStr, precision, err)
+		t.Errorf("Received error from nsu.ShiftPrecisionRight(nStr, precision). nStr= '%v' precision= '%v'. Error= %v", nStr, precision, err)
 	}
 
 	if nsDto.NumStrOut != expected {
@@ -1016,7 +1016,7 @@ func TestNumStrDto_ShiftPrecisionRight_10(t *testing.T) {
 	nsDto, err := NumStrDto{}.NewPtr().ShiftPrecisionRight(nStr, precision)
 
 	if err != nil {
-		t.Errorf("Received error from nsu.ShiftPrecisionLeft(nStr, precision). nStr= '%v' precision= '%v'. Error= %v", nStr, precision, err)
+		t.Errorf("Received error from nsu.ShiftPrecisionRight(nStr, precision). nStr= '%v' precision= '%v'. Error= %v", nStr, precision, err)
 	}
 
 	if nsDto.NumStrOut != expected {
