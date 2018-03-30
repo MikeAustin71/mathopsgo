@@ -1469,26 +1469,58 @@ func (nDto *NumStrDto) ScaleNumStr(signedNumStr string,
 	return n2Dto, nil
 }
 
-// ShiftPrecisionLeft - Shifts the existing precision of a number string. The position of
-// the decimal point is shifted 'precision' positions to the left.
+// ShiftPrecisionLeft - Shifts the relative position of a decimal point within a number
+// string. The position of the decimal point is shifted 'shiftPrecision' positions to
+// the left of the current decimal point position.
 //
 // This is equivalent to: result = signedNumStr / 10^precision or signedNumStr divided
 // by 10 raised to the power of precision.
 //
-// Examples:
-// signedNumStr			precision				Result
-//	"123456.789"				3						"123.456789"
-//	"123456.789"				2						"1234.56789"
-//	"123456.789"	   		6					  "0.123456789"
-//	"123456789"					6						"123.456789"
-//	"123"								5						"0.00123"
-//  "0"									3						"0"
-// "123456.789"					0						"123456.789"		- Zero has no effect on original number string
+// See the Examples section below.
 //
-func (nDto *NumStrDto) ShiftPrecisionLeft(signedNumStr string, precision uint) (NumStrDto, error) {
+// Input Parameters
+// ================
+//	signedNumStr		string		- A valid number string. The leading digit may optionally
+// 															be a '+' or '-' indicating numeric sign value. If '+'
+// 															or '-'	characters are not present in the first character
+// 															position, the number is assumed to represent a positive
+//															numeric value ('+').
+//
+//	shiftPrecision		uint		- The number of digits by which the current decimal point
+//															point position in the number string, 'signedNumStr' will
+//															be shifted to the left.
+//
+// Returns
+// =======
+//	NumStrDto				- If successful, the method returns the result of the Shift Left Precision
+//										operation in the form of a 'NumStrDto' instance
+//
+//	error						- If successful, the 'error' type is set to 'nil'. In case of an error,
+//										the 'error' instance returned will hold the error message.
+//
+// Examples
+// ========
+//										Requested
+//                      Shift
+//  signedNumStr			Precision				Result
+//	 "123456.789"				  3						"123.456789"
+//	 "123456.789"				  2						"1234.56789"
+//	 "123456.789"	   		  6					  "0.123456789"
+//	 "123456789"					6						"123.456789"
+//	 "123"								5						"0.00123"
+//   "0"									3						"0.000"
+// 	 "0.000"							2						"0.00000"
+//  "123456.789"					0						"123456.789"		- Zero 'shiftPrecicion' has no effect on
+// 																											original number string
+// "-123456.789"          3          "-123.456789"
+// "-123456789"						6					 "-123.456789"
+func (nDto *NumStrDto) ShiftPrecisionLeft(signedNumStr string, shiftPrecision uint) (NumStrDto, error) {
+
+	ePrefix := "NumStrDto.ShiftPrecisionLeft() "
 
 	if len(signedNumStr) == 0 {
-		return NumStrDto{}, errors.New("ShiftPrecisionLeft() Received zero length number string!")
+		return NumStrDto{}, errors.New(ePrefix +
+			"Received zero length number string!")
 	}
 
 	// Set defaults for thousands separators,
@@ -1508,7 +1540,10 @@ func (nDto *NumStrDto) ShiftPrecisionLeft(signedNumStr string, precision uint) (
 	n1, err := NumStrDto{}.NewPtr().ParseNumStr(signedNumStr)
 
 	if err != nil {
-		return NumStrDto{}, fmt.Errorf("ShiftPrecisionLeft() - Received Error from NumStrDto.ParseNumStr(signedNumStr). str= '%v' Error= %v", signedNumStr, err)
+		return NumStrDto{}, fmt.Errorf(ePrefix +
+			"Received Error from NumStrDto.ParseNumStr(signedNumStr). " +
+			"str= '%v' Error= %v",
+			signedNumStr, err)
 	}
 
 	n2 := NumStrDto{}.New()
@@ -1517,7 +1552,7 @@ func (nDto *NumStrDto) ShiftPrecisionLeft(signedNumStr string, precision uint) (
 	n2.DecimalSeparator = nDto.DecimalSeparator
 	n2.CurrencySymbol = nDto.CurrencySymbol
 	n2.SignVal = n1.SignVal
-	n2.Precision = precision + n1.Precision
+	n2.Precision = shiftPrecision + n1.Precision
 	n2.NumStrIn = n1.NumStrIn
 	iTotalSpecPrecision := int(n2.Precision)
 	lenAbsAllNumRunes := len(n1.AbsAllNumRunes)
@@ -1526,7 +1561,7 @@ func (nDto *NumStrDto) ShiftPrecisionLeft(signedNumStr string, precision uint) (
 
 	if nDto.IsNumStrZeroValue(&n1) {
 
-		return nDto.GetZeroNumStr(0), nil
+		return nDto.GetZeroNumStr(n2.Precision), nil
 	}
 
 	if iTotalSpecPrecision == lenAbsAllNumRunes {
@@ -1552,7 +1587,10 @@ func (nDto *NumStrDto) ShiftPrecisionLeft(signedNumStr string, precision uint) (
 	lenAbsIntRunes = lenAbsAllNumRunes - lenAbsFracRunes
 
 	if lenAbsIntRunes <= 0 {
-		return NumStrDto{}, fmt.Errorf("ShiftPrecisionLeft() - Calculated number of integer digits is less than or equal to ZERO. lenAbsIntRunes= '%v' ", lenAbsIntRunes)
+		return NumStrDto{}, fmt.Errorf(ePrefix +
+			"Calculated number of integer digits is less than or equal to ZERO. " +
+			"lenAbsIntRunes= '%v' ",
+			lenAbsIntRunes)
 	}
 
 	for i := 0; i < lenAbsAllNumRunes; i++ {
@@ -1577,7 +1615,7 @@ func (nDto *NumStrDto) ShiftPrecisionLeft(signedNumStr string, precision uint) (
 		n2.NumStrOut += string(n2.AbsFracRunes)
 	}
 
-	err = nDto.IsNumStrDtoValid(&n2, "ShiftPrecisionLeft()")
+	err = nDto.IsNumStrDtoValid(&n2, ePrefix)
 
 	if err != nil {
 		return NumStrDto{}, err
