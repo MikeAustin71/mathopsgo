@@ -1945,9 +1945,9 @@ func (nDto *NumStrDto) ScaleAbsoluteValStr(signedNumStr string, precision uint, 
 //  No		signedNumStr			precision			roundResult
 // 	1	 		"123456789"				  7							false						 "123456789.0000000"
 // 	2 		"123456789"				  7							true						 "123456789.0000000"
-//  3  	x"-123456789"				  7							false						"-123456789.0000000"
+//  3  	 "-123456789"				  7							false						"-123456789.0000000"
 //  4  	 "-123456789"				  7							true						"-123456789.0000000"
-// 	5  	 "123456.789"					2							true						 "123456.79"
+// 	5  	x"123456.789"					2							true						 "123456.79"
 //  6  	 "123456.789"					2							false						 "123456.78"
 // 	7  	 "123456.789"      		5             false						 "123456.78900"
 //  8  	 "123.456789"         5             false            "123.4"
