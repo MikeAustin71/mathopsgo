@@ -1510,10 +1510,12 @@ func (nDto *NumStrDto) ScaleNumStr(signedNumStr string,
 //	 "123"								5						"0.00123"
 //   "0"									3						"0.000"
 // 	 "0.000"							2						"0.00000"
-//  "123456.789"					0						"123456.789"		- Zero 'shiftPrecicion' has no effect on
+//  "123456.789"					0						"123456.789"		- Zero 'shiftPrecision' has no effect on
 // 																											original number string
+// "-123456.789"          0          "-123.456789"
 // "-123456.789"          3          "-123.456789"
 // "-123456789"						6					 "-123.456789"
+//
 func (nDto *NumStrDto) ShiftPrecisionLeft(signedNumStr string, shiftPrecision uint) (NumStrDto, error) {
 
 	ePrefix := "NumStrDto.ShiftPrecisionLeft() "
@@ -1634,12 +1636,17 @@ func (nDto *NumStrDto) ShiftPrecisionLeft(signedNumStr string, shiftPrecision ui
 //
 // Examples:
 // signedNumStr			precision			Result
-// "123456.789"				3						"123456789"
-// "123456.789"				2						"12345678.9"
-// "123456.789"       6					  "123456789000"
-// "123456789"				6						"123456789000000"
-// "0"								3						"0"
-// "123456.789"				0						"123456.789"		- Zero has no effect on original number string
+//  "123456.789"				3						"123456789"
+//  "123456.789"				2						"12345678.9"
+//  "123456.789"        6					  "123456789000"
+//  "123456789"	 			  6						"123456789000000"
+//  "123"               5	          "12300000"
+//  "0"								  3						"0"
+//  "123456.789"				0						"123456.789"		- Zero has no effect on original number string
+// "-123456.789"        0          "-123456.789"
+// "-123456.789"        3          "-123456789"
+// "-123456789"			    6					 "-123456789000000"
+//
 func (nDto *NumStrDto) ShiftPrecisionRight(signedNumStr string, precision uint) (NumStrDto, error) {
 
 	if len(signedNumStr) == 0 {
