@@ -1310,3 +1310,134 @@ func TestNumStrDto_SetPrecision_19(t *testing.T) {
 
 }
 
+func TestNumStrDto_SetThisPrecision_01(t *testing.T) {
+
+	nStr := "123456789"
+	initialPrecision := uint(0)
+	precision := uint(3)
+	roundResult := true
+	outPrecision := uint(3)
+	expected := "123456789.000"
+	signVal := 1
+	absIntRuneStr := "123456789"
+	absFracRuneStr := "000"
+
+	nsDto, err := NumStrDto{}.NewNumStr(nStr)
+
+	if err != nil {
+		t.Errorf("Error returned by NumStrDto{}.NewNumStr(nStr). " +
+			"Err='%v' ", err.Error())
+	}
+
+	if initialPrecision != nsDto.Precision {
+		t.Errorf("Error: Expected Initial Precision='%v'. Actual Initial Precision='%v' ",
+			initialPrecision, nsDto.Precision)
+	}
+
+  nsDto.SetThisPrecision(precision, roundResult)
+
+	if err != nil {
+		t.Errorf("Received error from nsu.SetThisPrecision(precision, roundResult). " +
+			"precision= '%v'. Error= %v", precision, err)
+	}
+
+	if nsDto.NumStrOut != expected {
+		t.Errorf("Expected NumStrOut='%v'. Instead, got %v.", expected, nsDto.NumStrOut)
+	}
+
+	if outPrecision != nsDto.Precision {
+		t.Errorf("Expected precision='%v'. Instead, got %v.", outPrecision, nsDto.Precision)
+	}
+
+	if signVal != nsDto.SignVal {
+		t.Errorf("Expected signVal='%v'. Instead, got %v.", signVal, nsDto.SignVal)
+	}
+
+	if !nsDto.IsValid {
+		t.Errorf("Expected isValid='true'. Instead, got %v.", nsDto.IsValid)
+	}
+
+	if !nsDto.HasNumericDigits {
+		t.Errorf("Expected HasNumericDigits='true'. Instead, got %v.", nsDto.HasNumericDigits)
+	}
+
+	s := string(nsDto.AbsIntRunes)
+
+	if s != absIntRuneStr {
+		t.Errorf("Expected AbsIntRunes='%v'. Instead, got %v.", absIntRuneStr, s)
+	}
+
+	s = string(nsDto.AbsFracRunes)
+
+	if s != absFracRuneStr {
+		t.Errorf("Expected AbsFracRunes='%v'. Instead, got %v", absFracRuneStr, s)
+	}
+
+}
+
+
+func TestNumStrDto_SetThisPrecision_02(t *testing.T) {
+
+	nStr := "123456.789"
+	initialPrecision := uint(3)
+	precision := uint(2)
+	roundResult := true
+	outPrecision := uint(2)
+	expected := "123456.79"
+	signVal := 1
+	absIntRuneStr := "123456"
+	absFracRuneStr := "79"
+
+	nsDto, err := NumStrDto{}.NewNumStr(nStr)
+
+	if err != nil {
+		t.Errorf("Error returned by NumStrDto{}.NewNumStr(nStr). " +
+			"Err='%v' ", err.Error())
+	}
+
+	if initialPrecision != nsDto.Precision {
+		t.Errorf("Error: Expected Initial Precision='%v'. Actual Initial Precision='%v' ",
+			initialPrecision, nsDto.Precision)
+	}
+
+  nsDto.SetThisPrecision(precision, roundResult)
+
+	if err != nil {
+		t.Errorf("Received error from nsu.SetThisPrecision(precision, roundResult). " +
+			"precision= '%v'. Error= %v", precision, err)
+	}
+
+	if nsDto.NumStrOut != expected {
+		t.Errorf("Expected NumStrOut='%v'. Instead, got %v.", expected, nsDto.NumStrOut)
+	}
+
+	if outPrecision != nsDto.Precision {
+		t.Errorf("Expected precision='%v'. Instead, got %v.", outPrecision, nsDto.Precision)
+	}
+
+	if signVal != nsDto.SignVal {
+		t.Errorf("Expected signVal='%v'. Instead, got %v.", signVal, nsDto.SignVal)
+	}
+
+	if !nsDto.IsValid {
+		t.Errorf("Expected isValid='true'. Instead, got %v.", nsDto.IsValid)
+	}
+
+	if !nsDto.HasNumericDigits {
+		t.Errorf("Expected HasNumericDigits='true'. Instead, got %v.", nsDto.HasNumericDigits)
+	}
+
+	s := string(nsDto.AbsIntRunes)
+
+	if s != absIntRuneStr {
+		t.Errorf("Expected AbsIntRunes='%v'. Instead, got %v.", absIntRuneStr, s)
+	}
+
+	s = string(nsDto.AbsFracRunes)
+
+	if s != absFracRuneStr {
+		t.Errorf("Expected AbsFracRunes='%v'. Instead, got %v", absFracRuneStr, s)
+	}
+
+}
+

@@ -1226,7 +1226,6 @@ func (dec *Decimal) NumStrPrecisionToDecimal(str string, requestedPrecision uint
 	}
 
 	var err error
-	n2 := NumStrDto{}
 	d2 := Decimal{}
 
 	n1, err := NumStrDto{}.NewNumStr(str)
@@ -1238,78 +1237,23 @@ func (dec *Decimal) NumStrPrecisionToDecimal(str string, requestedPrecision uint
 				str, err.Error())
 	}
 
-
-	if n1.Precision == 0  {
-
-		if requestedPrecision == 0 {
-
-			n2 = n1.CopyOut()
-
-		} else {
-
-			// Must be n1.Precision == 0  and requestedPrecsion > 0
-
-			n2, err = n1.ScaleNumStr(n1.NumStrOut, requestedPrecision, SCALEPRECISIONLEFT)
-
-			if err != nil {
-				return Decimal{},
-					fmt.Errorf(ePrefix +
-						"Error received from n1.ScaleNumStr(n1.NumStrOut, " +
-						"uint(netPrecision), SCALEPRECISIONRIGHT). " +
-						"n1.NumStrOut='%v' requestedPrecision='%v' Error= %v",
-						n1.NumStrOut, requestedPrecision, err.Error())
-
-			}
-
-		}
-
-	} else	if requestedPrecision == n1.Precision {
-
-		// Actual Precision is greater than zer and
-		// Requested Precision Equals Actual Precision
-		// Our job is done.
-		n2 = n1.CopyOut()
-
-	} else if requestedPrecision > n1.Precision {
-		// Requested Precision is greater than actual requestedPrecision.
-		// Add fractional zero digits to the right.
-
-		n2, err = n1.SetPrecision(n1.NumStrOut, requestedPrecision, false)
-
-		if err != nil {
-			return Decimal{},
-				fmt.Errorf(ePrefix+
-					"Error received from n1.SetPrecision(n1.NumStrOut, "+
-					"requestedPrecision, false). "+
-					"n1.NumStrOut='%v' requestedPrecision='%v' Error= %v",
-					n1.NumStrOut, requestedPrecision, err.Error())
-		}
-
-	} else {
-
-		// Only other possibility: n1.Precision > requestedPrecision
-		// Must truncate fractional digits
-
-		n2, err = n1.SetPrecision(n1.NumStrOut, requestedPrecision, roundResult)
-
-		if err != nil {
-			return Decimal{},
-				fmt.Errorf(ePrefix +
-					"Error received from n1.SetPrecision(n1.NumStrOut, " +
-					"requestedPrecision, roundResult). " +
-					"n1.NumStrOut='%v' requestedPrecision='%v' roundResult='%v'  Error= %v",
-					n1.NumStrOut, requestedPrecision, roundResult , err.Error())
-		}
-
-	}
-
-	d2, err = dec.MakeDecimalFromNumStrDto(n2)
+	err = n1.SetThisPrecision(requestedPrecision, roundResult)
 
 	if err != nil {
 		return Decimal{},
-			fmt.Errorf(ePrefix + "Error received from dec.MakeDecimalFromNumStrDto(n2). " +
-				"n2.NumStr='%v' requestedPrecision='%v' Error= %v",
-				n2.NumStrOut, requestedPrecision, err.Error())
+		fmt.Errorf(ePrefix +
+			"Error returned by n1.SetThisPrecision(requestedPrecision, roundResult) " +
+			"requestedPrecision='%v' roundResult='%v' Error='%v' ",
+				requestedPrecision, roundResult, err.Error())
+	}
+
+	d2, err = dec.MakeDecimalFromNumStrDto(n1)
+
+	if err != nil {
+		return Decimal{},
+			fmt.Errorf(ePrefix + "Error received from dec.MakeDecimalFromNumStrDto(n1). " +
+				"n1.NumStr='%v' requestedPrecision='%v' Error= %v",
+				n1.NumStrOut, requestedPrecision, err.Error())
 	}
 
 	d2.thousandsSeparator = dec.thousandsSeparator
@@ -1317,7 +1261,6 @@ func (dec *Decimal) NumStrPrecisionToDecimal(str string, requestedPrecision uint
 	d2.currencySymbol = dec.currencySymbol
 
 	return d2, nil
-
 }
 
 // NumStrPrecisionToDecimal - receives a number string and a

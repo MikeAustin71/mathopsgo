@@ -1763,7 +1763,21 @@ func (nDto *NumStrDto) ShiftPrecisionRight(signedNumStr string, precision uint) 
 // SetPrecision - parses the incoming number string and applies the designated 'precision'. 'precision'
 // determines the number of digits to the right of the decimal place. The boolean parameter 'roundResult'
 // is used to apply rounding in those cases where 'precision' dictates a reduction in the number of
-// digits to the right of the decimal place.
+// digits to the right of the decimal place. See 'Examples' below.
+//
+//
+// Input Parameters
+// ================
+//
+//	signedNumStr 	string	- A valid number string
+//
+//	precision 		uint		- The 'precision' values designates the number of places to the right of the
+//													decimal point which will be realized upon completion of this operation.
+//
+//	roundResult 	bool		- If the 'precision' value is less than the current number of places to the
+//													right of the decimal point, this method will truncate the existing fractional
+//													digits. If 'roundResult' is set to true, this truncation operation will
+//													include rounding the last digit.
 //
 //
 //  Examples
@@ -1950,6 +1964,44 @@ func (nDto *NumStrDto) SetPrecision(
 	n2.IsValid = true
 
 	return n2, nil
+}
+
+// SetThisPrecision - Sets precision for the current NumStrDto instance.
+// 'precision' identifies the number of decimal places to the right of the
+// decimal point.
+//
+// Input Parameters
+// ================
+//
+//	precision 		uint		- The 'precision' values designates the number of places to the right of the
+//													decimal point which will be realized upon completion of this operation. The
+//													precision operation will be performed on the number string contained in the
+//													NumStrDto instance.
+//
+//	roundResult 	bool		- If the 'precision' value is less than the current number of places to the
+//													right of the decimal point, this method will truncate the existing fractional
+//													digits. If 'roundResult' is set to true, this truncation operation will
+//													include rounding the last digit.
+//
+func (nDto *NumStrDto) SetThisPrecision(
+														precision uint,
+															roundResult bool) error {
+
+ ePrefix := "NumStrDto.SetThisPrecision() "
+
+
+ n2, err := nDto.SetPrecision(nDto.NumStrOut, precision, roundResult)
+
+ if err != nil {
+ 	return fmt.Errorf(ePrefix +
+ 		"Error returned by nDto.SetPrecision(signedNumStr, precision, " +
+ 		"roundResult). nDto.NumStrOut='%v' precision='%v', roundResult='%v'",
+		nDto.NumStrOut, precision, roundResult)
+ }
+
+ nDto.CopyIn(n2)
+
+ return nil
 }
 
 // SetSignValue - Sets the sign of the numeric value
