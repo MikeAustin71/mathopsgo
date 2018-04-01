@@ -1899,6 +1899,63 @@ func (dec *Decimal) SetNumStrDto(nDto NumStrDto) error {
 	return nil
 }
 
+// ShiftPrecisionLeft - shifts precision of the current Decimal instance
+// to the left by 'shiftPrecision' places. This is a 'relative' shift-left
+// operation. The shift is performed with the current decimal point position
+// as the starting point.
+//
+// This method performs a relative shift left of the decimal point position.
+// See Examples below:
+//
+// Input Parameters
+// ================
+//
+//
+// Examples:
+// signedNumStr			precision			Result
+//  "123456.789"				3						"123456789"
+//  "123456.789"				2						"12345678.9"
+//  "123456.789"        6					  "123456789000"
+//  "123456789"	 			  6						"123456789000000"
+//  "123"               5	          "12300000"
+//  "0"								  3						"0"
+//  "123456.789"				0						"123456.789"		- Zero has no effect on original number string
+// "-123456.789"        0          "-123456.789"
+// "-123456.789"        3          "-123456789"
+// "-123456789"			    6					 "-123456789000000"
+//
+func (dec *Decimal) ShiftPrecisionLeft(shiftPrecision int) error {
+
+	ePrefix := "Decimal.ShiftPrecisionLeft() "
+
+	if shiftPrecision < 0 {
+		return fmt.Errorf(ePrefix +
+			"Error: Input parameter 'shiftPrecision' is LESS THAN ZERO! " +
+			"shiftPrecision='%v' ", shiftPrecision)
+	}
+
+	n1, err := NumStrDto{}.NewPtr().ShiftPrecisionLeft(dec.numStr, uint(shiftPrecision))
+
+	if err != nil {
+		return fmt.Errorf(ePrefix +
+			"Error returned by NumStrDto{}.NewPtr().ShiftPrecisionLeft(dec.numStr, " +
+			"uint(shiftPrecision) dec.numStr='%v' shiftPrecision='%v' Error='%v'",
+				dec.numStr, shiftPrecision, err.Error())
+	}
+
+	dec2, err := dec.MakeDecimalFromNumStrDto(n1)
+
+	if err != nil {
+		return fmt.Errorf(ePrefix +
+			"Error returned by dec.MakeDecimalFromNumStrDto(n1). n1.NumStrOut='%v' " +
+			"Error='%v' ", n1.NumStrOut, err.Error())
+	}
+
+	dec.CopyIn(dec2)
+
+	return nil
+}
+
 // Subtract - Subtracts the incoming Decimal from the current
 // Decimal and returns the result as Decimal Type.
 func (dec *Decimal) Subtract(d2 Decimal) (Decimal, error) {

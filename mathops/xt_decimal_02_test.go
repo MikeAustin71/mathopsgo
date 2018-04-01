@@ -344,7 +344,7 @@ func TestDecimal_NumStrPrecisionToDecimal_01(t *testing.T) {
 func TestDecimal_NumStrPrecisionToDecimal_02(t *testing.T) {
 
 	inStr := "123456789"
-	expected := "123456.789"
+	expected := "123456789.000"
 	eSignVal := 1
 	precision := uint(3)
 
@@ -372,7 +372,7 @@ func TestDecimal_NumStrPrecisionToDecimal_02(t *testing.T) {
 func TestDecimal_NumStrPrecisionToDecimal_03(t *testing.T) {
 
 	inStr := "123456789"
-	expected := "0.123456789"
+	expected := "123456789.000000000"
 	eSignVal := 1
 
 	precision := uint(9)
@@ -399,7 +399,7 @@ func TestDecimal_NumStrPrecisionToDecimal_03(t *testing.T) {
 func TestDecimal_NumStrPrecisionToDecimal_04(t *testing.T) {
 
 	inStr := "123456789"
-	expected := "0.0123456789"
+	expected := "123456789.0000000000"
 	eSignVal := 1
 
 	d := Decimal{}
@@ -427,7 +427,7 @@ func TestDecimal_NumStrPrecisionToDecimal_04(t *testing.T) {
 func TestDecimal_NumStrPrecisionToDecimal_05(t *testing.T) {
 
 	inStr := "-123456789"
-	expected := "-0.0123456789"
+	expected := "-123456789.0000000000"
 	eSignVal := -1
 
 	d := Decimal{}
@@ -483,7 +483,7 @@ func TestDecimal_NumStrPrecisionToDecimal_06(t *testing.T) {
 func TestDecimal_NumStrPrecisionToDecimal_07(t *testing.T) {
 
 	inStr := "5"
-	expected := "0.5"
+	expected := "5.0"
 	precision := uint(1)
 	eSignVal := 1
 
@@ -538,7 +538,7 @@ func TestDecimal_NumStrPrecisionToDecimal_08(t *testing.T) {
 func TestDecimal_NumStrPrecisionToDecimal_09(t *testing.T) {
 
 	inStr := "123456"
-	expected := "123.456"
+	expected := "123456.000"
 	precision := uint(3)
 	eSignVal := 1
 
