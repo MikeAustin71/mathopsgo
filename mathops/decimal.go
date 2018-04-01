@@ -183,7 +183,7 @@ func (dec *Decimal) AllDigitsNumStr(numStr string) (string, error) {
 		return "", fmt.Errorf("AllDigitsNumStr() - nDto.ParseNumStr(numStr) returned an error. numStr= '%v' Error= %v", numStr, err)
 	}
 
-	return string(nDto.AbsAllNumRunes), nil
+	return string(nDto.GetAbsAllNumRunes()), nil
 }
 
 // NumStrToDecimal - Creates a Decimal type from a number
@@ -799,7 +799,7 @@ func (dec *Decimal) MakeDecimalBigIntPrecision(iBig *big.Int, precision uint) (D
 // provided by the 'nDto' NumStrDto parameter.
 func (dec *Decimal) MakeDecimalFromNumStrDto(nDto NumStrDto) (Decimal, error) {
 
-	if len(nDto.AbsAllNumRunes) == 0 {
+	if len(nDto.GetAbsAllNumRunes()) == 0 {
 
 		d2 := Decimal{}.New()
 
@@ -1580,11 +1580,11 @@ func (dec *Decimal) SetIntFracStrings(signVal int, intNum, fracNum string) error
 		numStr = "-"
 	}
 
-	numStr += string(n2.AbsAllNumRunes)
+	numStr += string(n2.GetAbsAllNumRunes())
 
-	if len(n3.AbsAllNumRunes) > 0 {
+	if len(n3.GetAbsAllNumRunes()) > 0 {
 		numStr += string(dec.decimalSeparator)
-		numStr += string(n3.AbsAllNumRunes)
+		numStr += string(n3.GetAbsAllNumRunes())
 	}
 
 	n4, err := n1.ParseNumStr(numStr)

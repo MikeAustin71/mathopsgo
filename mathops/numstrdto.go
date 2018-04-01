@@ -20,7 +20,7 @@ import (
 type NumStrDto struct {
 	IsValid            bool
 	signVal            int
-	AbsAllNumRunes     []rune
+	absAllNumRunes     []rune
 	AbsIntRunes        []rune
 	AbsFracRunes       []rune
 	precision          uint
@@ -64,7 +64,7 @@ func (nDto *NumStrDto) AddNumStrs(n1Dto NumStrDto, n2Dto NumStrDto) (NumStrDto, 
 	}
 
 	precision := n1DtoSetup.precision
-	lenN1AllRunes := len(n1DtoSetup.AbsAllNumRunes)
+	lenN1AllRunes := len(n1DtoSetup.absAllNumRunes)
 
 	n3IntAry := make([]int, lenN1AllRunes+1)
 	carry := 0
@@ -74,8 +74,8 @@ func (nDto *NumStrDto) AddNumStrs(n1Dto NumStrDto, n2Dto NumStrDto) (NumStrDto, 
 
 	for j := lenN1AllRunes - 1; j >= 0; j-- {
 
-		n1 = int(n1DtoSetup.AbsAllNumRunes[j]) - 48
-		n2 = int(n2DtoSetup.AbsAllNumRunes[j]) - 48
+		n1 = int(n1DtoSetup.absAllNumRunes[j]) - 48
+		n2 = int(n2DtoSetup.absAllNumRunes[j]) - 48
 
 		n3 = n1 + n2 + carry
 
@@ -265,7 +265,7 @@ func (nDto *NumStrDto) CopyOut() NumStrDto {
 	nOut := NumStrDto{}
 
 	nOut.signVal = nDto.signVal
-	nOut.AbsAllNumRunes = nDto.AbsAllNumRunes
+	nOut.absAllNumRunes = nDto.absAllNumRunes
 	nOut.AbsIntRunes = nDto.AbsIntRunes
 	nOut.AbsFracRunes = nDto.AbsFracRunes
 	nOut.precision = nDto.precision
@@ -289,7 +289,7 @@ func (nDto *NumStrDto) CopyIn(nInDto NumStrDto) {
 	nDto.Empty()
 
 	nDto.signVal = nInDto.signVal
-	nDto.AbsAllNumRunes = nInDto.AbsAllNumRunes
+	nDto.absAllNumRunes = nInDto.absAllNumRunes
 	nDto.AbsIntRunes = nInDto.AbsIntRunes
 	nDto.AbsFracRunes = nInDto.AbsFracRunes
 	nDto.precision = nInDto.precision
@@ -309,7 +309,7 @@ func (nDto *NumStrDto) CopyIn(nInDto NumStrDto) {
 func (nDto *NumStrDto) Empty() {
 	nDto.IsValid = true
 	nDto.signVal = 0
-	nDto.AbsAllNumRunes = []rune{}
+	nDto.absAllNumRunes = []rune{}
 	nDto.AbsIntRunes = []rune{}
 	nDto.AbsFracRunes = []rune{}
 	nDto.precision = 0
@@ -479,11 +479,11 @@ func (nDto *NumStrDto) FormatForMathOps(n1Dto, n2Dto NumStrDto) (n1DtoOut NumStr
 		deltaPrecision := n1DtoOut.precision - n2DtoOut.precision
 
 		for i := uint(0); i < deltaPrecision; i++ {
-			n2DtoOut.AbsAllNumRunes = append(n2DtoOut.AbsAllNumRunes, '0')
+			n2DtoOut.absAllNumRunes = append(n2DtoOut.absAllNumRunes, '0')
 			n2DtoOut.AbsFracRunes = append(n2DtoOut.AbsFracRunes, '0')
 		}
 
-		lenN2AllRunes = len(n2DtoOut.AbsAllNumRunes)
+		lenN2AllRunes = len(n2DtoOut.absAllNumRunes)
 		lenN2IntRunes = len(n2DtoOut.AbsIntRunes)
 		lenN2FracRunes = len(n2DtoOut.AbsFracRunes)
 
@@ -494,7 +494,7 @@ func (nDto *NumStrDto) FormatForMathOps(n1Dto, n2Dto NumStrDto) (n1DtoOut NumStr
 			return NumStrDto{}, NumStrDto{}, 0, false, err
 		}
 
-		lenN1AllRunes = len(n1DtoOut.AbsAllNumRunes)
+		lenN1AllRunes = len(n1DtoOut.absAllNumRunes)
 		lenN1IntRunes = len(n1DtoOut.AbsIntRunes)
 		lenN1FracRunes = len(n1DtoOut.AbsFracRunes)
 
@@ -503,11 +503,11 @@ func (nDto *NumStrDto) FormatForMathOps(n1Dto, n2Dto NumStrDto) (n1DtoOut NumStr
 		deltaPrecision := n2DtoOut.precision - n1DtoOut.precision
 
 		for i := uint(0); i < deltaPrecision; i++ {
-			n1DtoOut.AbsAllNumRunes = append(n1DtoOut.AbsAllNumRunes, '0')
+			n1DtoOut.absAllNumRunes = append(n1DtoOut.absAllNumRunes, '0')
 			n1DtoOut.AbsFracRunes = append(n1DtoOut.AbsFracRunes, '0')
 		}
 
-		lenN1AllRunes = len(n1DtoOut.AbsAllNumRunes)
+		lenN1AllRunes = len(n1DtoOut.absAllNumRunes)
 		lenN1IntRunes = len(n1DtoOut.AbsIntRunes)
 		lenN1FracRunes = len(n1DtoOut.AbsFracRunes)
 
@@ -518,18 +518,18 @@ func (nDto *NumStrDto) FormatForMathOps(n1Dto, n2Dto NumStrDto) (n1DtoOut NumStr
 			return NumStrDto{}, NumStrDto{}, 0, false, err
 		}
 
-		lenN2AllRunes = len(n2DtoOut.AbsAllNumRunes)
+		lenN2AllRunes = len(n2DtoOut.absAllNumRunes)
 		lenN2IntRunes = len(n2DtoOut.AbsIntRunes)
 		lenN2FracRunes = len(n2DtoOut.AbsFracRunes)
 
 	} else {
 		// n1DtoOut.precision == n2DtoOut.precision
 
-		lenN1AllRunes = len(n1DtoOut.AbsAllNumRunes)
+		lenN1AllRunes = len(n1DtoOut.absAllNumRunes)
 		lenN1IntRunes = len(n1DtoOut.AbsIntRunes)
 		lenN1FracRunes = len(n1DtoOut.AbsFracRunes)
 
-		lenN2AllRunes = len(n2DtoOut.AbsAllNumRunes)
+		lenN2AllRunes = len(n2DtoOut.absAllNumRunes)
 		lenN2IntRunes = len(n2DtoOut.AbsIntRunes)
 		lenN2FracRunes = len(n2DtoOut.AbsFracRunes)
 
@@ -546,7 +546,7 @@ func (nDto *NumStrDto) FormatForMathOps(n1Dto, n2Dto NumStrDto) (n1DtoOut NumStr
 		}
 
 		for j := 0; j < lenN1AllRunes; j++ {
-			absAllRunes = append(absAllRunes, n1DtoOut.AbsAllNumRunes[j])
+			absAllRunes = append(absAllRunes, n1DtoOut.absAllNumRunes[j])
 
 			if j < lenN1IntRunes {
 				absIntRunes = append(absIntRunes, n1DtoOut.AbsIntRunes[j])
@@ -554,9 +554,9 @@ func (nDto *NumStrDto) FormatForMathOps(n1Dto, n2Dto NumStrDto) (n1DtoOut NumStr
 
 		}
 
-		n1DtoOut.AbsAllNumRunes = absAllRunes
+		n1DtoOut.absAllNumRunes = absAllRunes
 		n1DtoOut.AbsIntRunes = absIntRunes
-		lenN1AllRunes = len(n1DtoOut.AbsAllNumRunes)
+		lenN1AllRunes = len(n1DtoOut.absAllNumRunes)
 		lenN1IntRunes = len(n1DtoOut.AbsIntRunes)
 
 		err = n1DtoOut.ResetNumStrOut()
@@ -576,7 +576,7 @@ func (nDto *NumStrDto) FormatForMathOps(n1Dto, n2Dto NumStrDto) (n1DtoOut NumStr
 		}
 
 		for j := 0; j < lenN2AllRunes; j++ {
-			absAllRunes = append(absAllRunes, n2DtoOut.AbsAllNumRunes[j])
+			absAllRunes = append(absAllRunes, n2DtoOut.absAllNumRunes[j])
 
 			if j < lenN2IntRunes {
 				absIntRunes = append(absIntRunes, n2DtoOut.AbsIntRunes[j])
@@ -584,9 +584,9 @@ func (nDto *NumStrDto) FormatForMathOps(n1Dto, n2Dto NumStrDto) (n1DtoOut NumStr
 
 		}
 
-		n2DtoOut.AbsAllNumRunes = absAllRunes
+		n2DtoOut.absAllNumRunes = absAllRunes
 		n2DtoOut.AbsIntRunes = absIntRunes
-		lenN2AllRunes = len(n2DtoOut.AbsAllNumRunes)
+		lenN2AllRunes = len(n2DtoOut.absAllNumRunes)
 		lenN2IntRunes = len(n2DtoOut.AbsIntRunes)
 
 		err := n2DtoOut.ResetNumStrOut()
@@ -630,7 +630,7 @@ func (nDto *NumStrDto) FormatForMathOps(n1Dto, n2Dto NumStrDto) (n1DtoOut NumStr
 }
 
 // GetAbsoluteBigInt - Returns the absolute value of all numeric
-// digits in the number string (nDto.AbsAllNumRunes). As such,
+// digits in the number string (nDto.absAllNumRunes). As such,
 // Fractional digits to the right of the decimal are included
 // in the consolidate integer number. All of the numeric digits
 // in the number string are therefore returned as a *big.Int
@@ -638,11 +638,11 @@ func (nDto *NumStrDto) FormatForMathOps(n1Dto, n2Dto NumStrDto) (n1DtoOut NumStr
 // initialized with a valid number string.
 func (nDto *NumStrDto) GetAbsoluteBigInt() (*big.Int, error) {
 
-	lenAbsAllNums := len(nDto.AbsAllNumRunes)
+	lenAbsAllNums := len(nDto.absAllNumRunes)
 	lenAbsIntRunes := len(nDto.AbsIntRunes)
 	lenAbsFracRunes := len(nDto.AbsFracRunes)
 
-	if !nDto.IsValid || nDto.signVal == 0 || len(nDto.AbsAllNumRunes) == 0 ||
+	if !nDto.IsValid || nDto.signVal == 0 || len(nDto.absAllNumRunes) == 0 ||
 		lenAbsAllNums != lenAbsIntRunes+lenAbsFracRunes {
 		s := "GetAbsoluteBigInt() - The existing NumStrDto is corrupted or improperly initialized. Re-initialize the NumStrDto object and try again."
 		return big.NewInt(0), errors.New(s)
@@ -651,18 +651,29 @@ func (nDto *NumStrDto) GetAbsoluteBigInt() (*big.Int, error) {
 
 	bigZero := big.NewInt(0)
 
-	strAbsAllRunes := string(nDto.AbsAllNumRunes)
+	strAbsAllRunes := string(nDto.absAllNumRunes)
 
 	absBigInt, isOk := bigZero.SetString(strAbsAllRunes, 10)
 
 	if !isOk {
-		s := fmt.Sprintf("GetAbsoluteBigInt() - Conversion of nDto.AbsAllNumRunes to *big.Int Failed!. nDto.AbsAllNumRunes= '%v'", strAbsAllRunes)
+		s := fmt.Sprintf("GetAbsoluteBigInt() - Conversion of nDto.absAllNumRunes to *big.Int Failed!. nDto.absAllNumRunes= '%v'", strAbsAllRunes)
 		return big.NewInt(0), errors.New(s)
 
 	}
 
 	return absBigInt, nil
 
+}
+
+// GetAbsAllNumRunes - Returns an array of runes representing
+// all of the integer and fractional digits included in the
+// current NumStrDto instance. The rune array returned will
+// consist of numeric digits with no sign value prefixed. This
+// effectively returns the absolute value of all integer and
+// fractional digits combined in one rune array (there is no
+// decimal point).
+func (nDto *NumStrDto) GetAbsAllNumRunes() []rune {
+	return nDto.absAllNumRunes
 }
 
 // GetPrecision - Returns the precision of the current
@@ -690,11 +701,11 @@ func (nDto *NumStrDto) GetRationalNumber() (int, *big.Rat, error) {
 
 	ratZero := big.NewRat(0, 1)
 
-	lenAbsAllNums := len(nDto.AbsAllNumRunes)
+	lenAbsAllNums := len(nDto.absAllNumRunes)
 	lenAbsIntRunes := len(nDto.AbsIntRunes)
 	lenAbsFracRunes := len(nDto.AbsFracRunes)
 
-	if !nDto.IsValid || nDto.signVal == 0 || len(nDto.AbsAllNumRunes) == 0 ||
+	if !nDto.IsValid || nDto.signVal == 0 || len(nDto.absAllNumRunes) == 0 ||
 		lenAbsAllNums != lenAbsIntRunes+lenAbsFracRunes {
 		s := "GetAbsoluteBigInt() - The existing NumStrDto is corrupted or improperly initialized. Re-initialize the NumStrDto object and try again."
 		return 0, ratZero, errors.New(s)
@@ -703,10 +714,10 @@ func (nDto *NumStrDto) GetRationalNumber() (int, *big.Rat, error) {
 
 	signVal := nDto.signVal
 
-	absInt, isOk := big.NewInt(0).SetString(string(nDto.AbsAllNumRunes), 10)
+	absInt, isOk := big.NewInt(0).SetString(string(nDto.absAllNumRunes), 10)
 
 	if !isOk {
-		return 0, ratZero, fmt.Errorf("GetRationalNumber() - Conversion of nDto.AbsAllNumRunes to big.Int Failed! nDto.AbsIntRunes= '%v'", nDto.AbsAllNumRunes)
+		return 0, ratZero, fmt.Errorf("GetRationalNumber() - Conversion of nDto.absAllNumRunes to big.Int Failed! nDto.AbsIntRunes= '%v'", nDto.absAllNumRunes)
 	}
 
 	base10 := big.NewInt(10)
@@ -729,11 +740,11 @@ func (nDto *NumStrDto) GetRationalNumber() (int, *big.Rat, error) {
 // initialized with a valid number string.
 func (nDto *NumStrDto) GetScaleFactor() (*big.Int, error) {
 
-	lenAbsAllNums := len(nDto.AbsAllNumRunes)
+	lenAbsAllNums := len(nDto.absAllNumRunes)
 	lenAbsIntRunes := len(nDto.AbsIntRunes)
 	lenAbsFracRunes := len(nDto.AbsFracRunes)
 
-	if !nDto.IsValid || nDto.signVal == 0 || len(nDto.AbsAllNumRunes) == 0 ||
+	if !nDto.IsValid || nDto.signVal == 0 || len(nDto.absAllNumRunes) == 0 ||
 		lenAbsAllNums != lenAbsIntRunes+lenAbsFracRunes {
 		s := "GetScaleFactor() - The existing NumStrDto is corrupted or improperly initialized. Re-initialize the NumStrDto object and try again."
 		return big.NewInt(0), errors.New(s)
@@ -764,11 +775,11 @@ func (nDto *NumStrDto) GetSign() int {
 // has not been properly initialized with a valid number string.
 func (nDto *NumStrDto) GetSignedBigInt() (*big.Int, error) {
 
-	lenAbsAllNums := len(nDto.AbsAllNumRunes)
+	lenAbsAllNums := len(nDto.absAllNumRunes)
 	lenAbsIntRunes := len(nDto.AbsIntRunes)
 	lenAbsFracRunes := len(nDto.AbsFracRunes)
 
-	if !nDto.IsValid || nDto.signVal == 0 || len(nDto.AbsAllNumRunes) == 0 ||
+	if !nDto.IsValid || nDto.signVal == 0 || len(nDto.absAllNumRunes) == 0 ||
 		lenAbsAllNums != lenAbsIntRunes+lenAbsFracRunes {
 		s := "GetSignedBigInt() - The existing NumStrDto is corrupted or improperly initialized. Re-initialize the NumStrDto object and try again."
 		return big.NewInt(0), errors.New(s)
@@ -824,7 +835,7 @@ func (nDto *NumStrDto) GetZeroNumStr(numFracDigits uint) NumStrDto {
 	n2Dto.IsFractionalValue = false
 	n2Dto.precision = 0
 	n2Dto.HasNumericDigits = true
-	n2Dto.AbsAllNumRunes = append(n2Dto.AbsAllNumRunes, '0')
+	n2Dto.absAllNumRunes = append(n2Dto.absAllNumRunes, '0')
 	n2Dto.AbsIntRunes = append(n2Dto.AbsIntRunes, '0')
 	n2Dto.AbsFracRunes = []rune{}
 	n2Dto.NumStrOut = "0"
@@ -834,7 +845,7 @@ func (nDto *NumStrDto) GetZeroNumStr(numFracDigits uint) NumStrDto {
 		n2Dto.NumStrOut = "0."
 
 		for i := uint(0); i < numFracDigits; i++ {
-			n2Dto.AbsAllNumRunes = append(n2Dto.AbsAllNumRunes, '0')
+			n2Dto.absAllNumRunes = append(n2Dto.absAllNumRunes, '0')
 			n2Dto.AbsFracRunes = append(n2Dto.AbsFracRunes, '0')
 			n2Dto.NumStrOut += "0"
 		}
@@ -850,12 +861,12 @@ func (nDto *NumStrDto) GetZeroNumStr(numFracDigits uint) NumStrDto {
 
 func (nDto *NumStrDto) IsNumStrZeroValue(numDto *NumStrDto) bool {
 
-	lenAbsAllNumRunes := len(numDto.AbsAllNumRunes)
+	lenAbsAllNumRunes := len(numDto.absAllNumRunes)
 
 	isZeroVal := true
 
 	for i := 0; i < lenAbsAllNumRunes; i++ {
-		if numDto.AbsAllNumRunes[i] != '0' {
+		if numDto.absAllNumRunes[i] != '0' {
 			isZeroVal = false
 		}
 	}
@@ -881,7 +892,7 @@ func (nDto *NumStrDto) IsNumStrDtoValid(numDto *NumStrDto, errName string) error
 
 	numDto.IsValid = false
 
-	lenAbsAllNumRunes := len(numDto.AbsAllNumRunes)
+	lenAbsAllNumRunes := len(numDto.absAllNumRunes)
 	lenAbsFracRunes := len(numDto.AbsFracRunes)
 	lenAbsIntRunes := len(numDto.AbsIntRunes)
 
@@ -896,7 +907,7 @@ func (nDto *NumStrDto) IsNumStrDtoValid(numDto *NumStrDto, errName string) error
 	// Validate n2Dto object
 	if lenAbsAllNumRunes != lenAbsIntRunes+lenAbsFracRunes {
 
-		s1 := string(numDto.AbsAllNumRunes)
+		s1 := string(numDto.absAllNumRunes)
 		s2 := string(numDto.AbsIntRunes)
 		s3 := string(numDto.AbsFracRunes)
 
@@ -936,7 +947,7 @@ func (nDto *NumStrDto) IsNumStrDtoValid(numDto *NumStrDto, errName string) error
 
 	for i := 0; i < lenAbsAllNumRunes; i++ {
 
-		if numDto.AbsAllNumRunes[i] < '0' || numDto.AbsAllNumRunes[i] > '9' {
+		if numDto.absAllNumRunes[i] < '0' || numDto.absAllNumRunes[i] > '9' {
 			hasNonNumericChars = true
 			break
 		}
@@ -973,8 +984,8 @@ func (nDto *NumStrDto) MultiplyNumStrs(n1Dto NumStrDto, n2Dto NumStrDto) (NumStr
 		return NumStrDto{}, fmt.Errorf("MultiplyNumStrs() - n2Dto, second NumStrDto is invalid! Error= %v", err)
 	}
 
-	lenN1AbsAllRunes := len(n1Dto.AbsAllNumRunes)
-	lenN2AbsAllRunes := len(n2Dto.AbsAllNumRunes)
+	lenN1AbsAllRunes := len(n1Dto.absAllNumRunes)
+	lenN2AbsAllRunes := len(n2Dto.absAllNumRunes)
 
 	var n1Setup NumStrDto
 	var n2Setup NumStrDto
@@ -1004,8 +1015,8 @@ func (nDto *NumStrDto) MultiplyNumStrs(n1Dto NumStrDto, n2Dto NumStrDto) (NumStr
 	}
 
 
-	lenN1AbsAllRunes = len(n1Setup.AbsAllNumRunes)
-	lenN2AbsAllRunes = len(n2Setup.AbsAllNumRunes)
+	lenN1AbsAllRunes = len(n1Setup.absAllNumRunes)
+	lenN2AbsAllRunes = len(n2Setup.absAllNumRunes)
 	lenLevels := lenN2AbsAllRunes
 	lenNumPlaces := (lenN1AbsAllRunes + lenN2AbsAllRunes) + 1
 
@@ -1030,8 +1041,8 @@ func (nDto *NumStrDto) MultiplyNumStrs(n1Dto NumStrDto, n2Dto NumStrDto) (NumStr
 
 		for j := lenN1AbsAllRunes - 1; j >= 0; j-- {
 
-			n1 = int(n1Setup.AbsAllNumRunes[j]) - 48
-			n2 = int(n2Setup.AbsAllNumRunes[i]) - 48
+			n1 = int(n1Setup.absAllNumRunes[j]) - 48
+			n2 = int(n2Setup.absAllNumRunes[i]) - 48
 			n3 = (n1 * n2) + carry
 			n4 = int(math.Mod(float64(n3), float64(10.00)))
 
@@ -1191,23 +1202,23 @@ func (nDto *NumStrDto) ParseSignedBigInt(signedBigInt *big.Int, precision uint) 
 	if iSpecPrecision >= lenAbsAllNumRunes {
 		deltaPrecision := (iSpecPrecision - lenAbsAllNumRunes) + 1
 		for i := 0; i < deltaPrecision; i++ {
-			n2Dto.AbsAllNumRunes = append(n2Dto.AbsAllNumRunes, '0')
+			n2Dto.absAllNumRunes = append(n2Dto.absAllNumRunes, '0')
 		}
 	}
 
 	for i := 0; i < lenAbsAllNumRunes; i++ {
-		n2Dto.AbsAllNumRunes = append(n2Dto.AbsAllNumRunes, absAllNumRunes[i])
+		n2Dto.absAllNumRunes = append(n2Dto.absAllNumRunes, absAllNumRunes[i])
 	}
 
-	lenAbsAllNumRunes = len(n2Dto.AbsAllNumRunes)
+	lenAbsAllNumRunes = len(n2Dto.absAllNumRunes)
 	lenAbsIntNumRunes := lenAbsAllNumRunes - iSpecPrecision
 
 	for j := 0; j < lenAbsAllNumRunes; j++ {
 		if j < lenAbsIntNumRunes {
-			n2Dto.AbsIntRunes = append(n2Dto.AbsIntRunes, n2Dto.AbsAllNumRunes[j])
+			n2Dto.AbsIntRunes = append(n2Dto.AbsIntRunes, n2Dto.absAllNumRunes[j])
 			n2Dto.HasNumericDigits = true
 		} else {
-			n2Dto.AbsFracRunes = append(n2Dto.AbsFracRunes, n2Dto.AbsAllNumRunes[j])
+			n2Dto.AbsFracRunes = append(n2Dto.AbsFracRunes, n2Dto.absAllNumRunes[j])
 			n2Dto.IsFractionalValue = true
 		}
 	}
@@ -1317,7 +1328,7 @@ func (nDto *NumStrDto) ParseNumStr(str string) (NumStrDto, error) {
 		} else if isEndRunes == false &&
 			baseRunes[i] >= '0' && baseRunes[i] <= '9' {
 
-			n2Dto.AbsAllNumRunes = append(n2Dto.AbsAllNumRunes, baseRunes[i])
+			n2Dto.absAllNumRunes = append(n2Dto.absAllNumRunes, baseRunes[i])
 			isStartRunes = true
 			n2Dto.HasNumericDigits = true
 
@@ -1343,7 +1354,7 @@ func (nDto *NumStrDto) ParseNumStr(str string) (NumStrDto, error) {
 
 	}
 
-	lenAbsAllNumRunes := len(n2Dto.AbsAllNumRunes)
+	lenAbsAllNumRunes := len(n2Dto.absAllNumRunes)
 
 	if lenAbsAllNumRunes == 0 {
 		nZeroNumStr := nDto.GetZeroNumStr(0)
@@ -1355,7 +1366,7 @@ func (nDto *NumStrDto) ParseNumStr(str string) (NumStrDto, error) {
 		n2Dto.AbsIntRunes = append(n2Dto.AbsIntRunes, '0')
 	}
 
-	lenAbsAllNumRunes = len(n2Dto.AbsAllNumRunes)
+	lenAbsAllNumRunes = len(n2Dto.absAllNumRunes)
 	lenAbsIntNumRunes = len(n2Dto.AbsIntRunes)
 	lenAbsFracNumRunes := len(n2Dto.AbsFracRunes)
 
@@ -1363,7 +1374,7 @@ func (nDto *NumStrDto) ParseNumStr(str string) (NumStrDto, error) {
 
 	for i := 0; i < lenAbsAllNumRunes; i++ {
 
-		if n2Dto.AbsAllNumRunes[i] != '0' {
+		if n2Dto.absAllNumRunes[i] != '0' {
 			isZeroVal = false
 		}
 
@@ -1387,18 +1398,18 @@ func (nDto *NumStrDto) ParseNumStr(str string) (NumStrDto, error) {
 	}
 
 	if lenAbsAllNumRunes != lenAbsIntNumRunes+lenAbsFracNumRunes {
-		n2Dto.AbsAllNumRunes = []rune{}
+		n2Dto.absAllNumRunes = []rune{}
 		newLenAbsAllNumRunes := lenAbsIntNumRunes + lenAbsFracNumRunes
 
 		for i := 0; i < newLenAbsAllNumRunes; i++ {
 			if i < lenAbsIntNumRunes {
-				n2Dto.AbsAllNumRunes = append(n2Dto.AbsAllNumRunes, n2Dto.AbsIntRunes[i])
+				n2Dto.absAllNumRunes = append(n2Dto.absAllNumRunes, n2Dto.AbsIntRunes[i])
 			} else {
-				n2Dto.AbsAllNumRunes = append(n2Dto.AbsAllNumRunes, n2Dto.AbsFracRunes[i-lenAbsIntNumRunes])
+				n2Dto.absAllNumRunes = append(n2Dto.absAllNumRunes, n2Dto.AbsFracRunes[i-lenAbsIntNumRunes])
 			}
 		}
 
-		lenAbsAllNumRunes = len(n2Dto.AbsAllNumRunes)
+		lenAbsAllNumRunes = len(n2Dto.absAllNumRunes)
 	}
 
 	// Validate n2Dto object
@@ -1578,7 +1589,7 @@ func (nDto *NumStrDto) ShiftPrecisionLeft(signedNumStr string, shiftPrecision ui
 	n2.precision = shiftPrecision + n1.precision
 	n2.NumStrIn = n1.NumStrIn
 	iTotalSpecPrecision := int(n2.precision)
-	lenAbsAllNumRunes := len(n1.AbsAllNumRunes)
+	lenAbsAllNumRunes := len(n1.absAllNumRunes)
 	lenAbsIntRunes := len(n1.AbsIntRunes)
 	lenAbsFracRunes := len(n1.AbsFracRunes)
 
@@ -1589,23 +1600,23 @@ func (nDto *NumStrDto) ShiftPrecisionLeft(signedNumStr string, shiftPrecision ui
 
 	if iTotalSpecPrecision == lenAbsAllNumRunes {
 
-		n2.AbsAllNumRunes = append(n2.AbsAllNumRunes, '0')
+		n2.absAllNumRunes = append(n2.absAllNumRunes, '0')
 
 	} else if iTotalSpecPrecision > lenAbsAllNumRunes {
 
 		deltaPrecision := iTotalSpecPrecision - lenAbsAllNumRunes + 1
 
 		for i := 0; i < deltaPrecision; i++ {
-			n2.AbsAllNumRunes = append(n2.AbsAllNumRunes, '0')
+			n2.absAllNumRunes = append(n2.absAllNumRunes, '0')
 		}
 
 	}
 
 	for j := 0; j < lenAbsAllNumRunes; j++ {
-		n2.AbsAllNumRunes = append(n2.AbsAllNumRunes, n1.AbsAllNumRunes[j])
+		n2.absAllNumRunes = append(n2.absAllNumRunes, n1.absAllNumRunes[j])
 	}
 
-	lenAbsAllNumRunes = len(n2.AbsAllNumRunes)
+	lenAbsAllNumRunes = len(n2.absAllNumRunes)
 	lenAbsFracRunes = iTotalSpecPrecision
 	lenAbsIntRunes = lenAbsAllNumRunes - lenAbsFracRunes
 
@@ -1619,9 +1630,9 @@ func (nDto *NumStrDto) ShiftPrecisionLeft(signedNumStr string, shiftPrecision ui
 	for i := 0; i < lenAbsAllNumRunes; i++ {
 
 		if i < lenAbsIntRunes {
-			n2.AbsIntRunes = append(n2.AbsIntRunes, n2.AbsAllNumRunes[i])
+			n2.AbsIntRunes = append(n2.AbsIntRunes, n2.absAllNumRunes[i])
 		} else {
-			n2.AbsFracRunes = append(n2.AbsFracRunes, n2.AbsAllNumRunes[i])
+			n2.AbsFracRunes = append(n2.AbsFracRunes, n2.absAllNumRunes[i])
 		}
 	}
 
@@ -1713,7 +1724,7 @@ func (nDto *NumStrDto) ShiftPrecisionRight(signedNumStr string, precision uint) 
 	n2.precision = uint(iTotalSpecPrecision)
 	n2.NumStrIn = n1.NumStrIn
 
-	lenAbsAllNumRunes := len(n1.AbsAllNumRunes)
+	lenAbsAllNumRunes := len(n1.absAllNumRunes)
 
 	if nDto.IsNumStrZeroValue(&n1) {
 
@@ -1723,24 +1734,24 @@ func (nDto *NumStrDto) ShiftPrecisionRight(signedNumStr string, precision uint) 
 	if int(precision) > int(n1.precision) {
 
 		for i := 0; i < lenAbsAllNumRunes; i++ {
-			n2.AbsAllNumRunes = append(n2.AbsAllNumRunes, n1.AbsAllNumRunes[i])
+			n2.absAllNumRunes = append(n2.absAllNumRunes, n1.absAllNumRunes[i])
 		}
 
 		deltaPrecision := int(precision) - int(n1.precision)
 
 		for i := 0; i < deltaPrecision; i++ {
-			n2.AbsAllNumRunes = append(n2.AbsAllNumRunes, '0')
+			n2.absAllNumRunes = append(n2.absAllNumRunes, '0')
 		}
 
 	} else {
 
 		for i := 0; i < lenAbsAllNumRunes; i++ {
-			n2.AbsAllNumRunes = append(n2.AbsAllNumRunes, n1.AbsAllNumRunes[i])
+			n2.absAllNumRunes = append(n2.absAllNumRunes, n1.absAllNumRunes[i])
 		}
 
 	}
 
-	lenAbsAllNumRunes = len(n2.AbsAllNumRunes)
+	lenAbsAllNumRunes = len(n2.absAllNumRunes)
 	lenAbsFracRunes := iTotalSpecPrecision
 	lenAbsIntRunes := lenAbsAllNumRunes - lenAbsFracRunes
 
@@ -1751,9 +1762,9 @@ func (nDto *NumStrDto) ShiftPrecisionRight(signedNumStr string, precision uint) 
 	for i := 0; i < lenAbsAllNumRunes; i++ {
 
 		if i < lenAbsIntRunes {
-			n2.AbsIntRunes = append(n2.AbsIntRunes, n2.AbsAllNumRunes[i])
+			n2.AbsIntRunes = append(n2.AbsIntRunes, n2.absAllNumRunes[i])
 		} else {
-			n2.AbsFracRunes = append(n2.AbsFracRunes, n2.AbsAllNumRunes[i])
+			n2.AbsFracRunes = append(n2.AbsFracRunes, n2.absAllNumRunes[i])
 		}
 	}
 
@@ -1877,7 +1888,7 @@ func (nDto *NumStrDto) SetPrecision(
 	n2.HasNumericDigits = true
 	n2.NumStrIn = signedNumStr
 	iSpecPrecision := int(precision)
-	lenN1AbsAllNumRunes := len(n1.AbsAllNumRunes)
+	lenN1AbsAllNumRunes := len(n1.absAllNumRunes)
 	lenN1AbsIntRunes := len(n1.AbsIntRunes)
 	lenN1AbsFracRunes := len(n1.AbsFracRunes)
 	totalRunes := 0
@@ -1885,13 +1896,13 @@ func (nDto *NumStrDto) SetPrecision(
 	if roundResult && lenN1AbsFracRunes > 0 &&
 		iSpecPrecision < lenN1AbsFracRunes {
 
-		absAllNumsToRound, isOk := big.NewInt(0).SetString(string(n1.AbsAllNumRunes), 10)
+		absAllNumsToRound, isOk := big.NewInt(0).SetString(string(n1.absAllNumRunes), 10)
 
 		if !isOk {
 			return NumStrDto{},
 			fmt.Errorf(ePrefix + "Error: Failed to convert string to big.Int(). " +
-				"big.Int.SetString(n1.AbsAllNumRunes). n1.AbsAllNumRunes='%v' ",
-				string(n1.AbsAllNumRunes))
+				"big.Int.SetString(n1.absAllNumRunes). n1.absAllNumRunes='%v' ",
+				string(n1.absAllNumRunes))
 		}
 
 		bigDeltaPrecision := big.NewInt(int64(lenN1AbsFracRunes - iSpecPrecision - 1))
@@ -1903,18 +1914,18 @@ func (nDto *NumStrDto) SetPrecision(
 		actualDeltaPrecision := big.NewInt(int64(lenN1AbsFracRunes - iSpecPrecision))
 		actualDeltaScaleFactor := big.NewInt(0).Exp(base10, actualDeltaPrecision, nil)
 		actualAbsAllNums := big.NewInt(0).Div(roundedAbsAllNums, actualDeltaScaleFactor)
-		n1.AbsAllNumRunes = []rune{}
+		n1.absAllNumRunes = []rune{}
 		n1.AbsIntRunes = []rune{}
 		n1.AbsFracRunes = []rune{}
-		n1.AbsAllNumRunes = []rune(string(actualAbsAllNums.String()))
-		lenN1AbsAllNumRunes = len(n1.AbsAllNumRunes)
+		n1.absAllNumRunes = []rune(string(actualAbsAllNums.String()))
+		lenN1AbsAllNumRunes = len(n1.absAllNumRunes)
 
 		for i := 0; i < lenN1AbsAllNumRunes; i++ {
 
 			if i < lenN1AbsIntRunes {
-				n1.AbsIntRunes = append(n1.AbsIntRunes, n1.AbsAllNumRunes[i])
+				n1.AbsIntRunes = append(n1.AbsIntRunes, n1.absAllNumRunes[i])
 			} else {
-				n1.AbsFracRunes = append(n1.AbsFracRunes, n1.AbsAllNumRunes[i])
+				n1.AbsFracRunes = append(n1.AbsFracRunes, n1.absAllNumRunes[i])
 			}
 		}
 
@@ -1933,7 +1944,7 @@ func (nDto *NumStrDto) SetPrecision(
 	}
 
 	if lenN1AbsIntRunes == 0 {
-		n2.AbsAllNumRunes = append(n2.AbsAllNumRunes, '0')
+		n2.absAllNumRunes = append(n2.absAllNumRunes, '0')
 		n2.AbsIntRunes = append(n2.AbsIntRunes, '0')
 	}
 
@@ -1942,19 +1953,19 @@ func (nDto *NumStrDto) SetPrecision(
 	for i := 0; i < totalRunes; i++ {
 
 		if i < lenN1AbsAllNumRunes {
-			n2.AbsAllNumRunes = append(n2.AbsAllNumRunes, n1.AbsAllNumRunes[i])
+			n2.absAllNumRunes = append(n2.absAllNumRunes, n1.absAllNumRunes[i])
 		} else {
-			n2.AbsAllNumRunes = append(n2.AbsAllNumRunes, '0')
+			n2.absAllNumRunes = append(n2.absAllNumRunes, '0')
 		}
 
 		if i < lenN1AbsIntRunes {
 
-			n2.AbsIntRunes = append(n2.AbsIntRunes, n1.AbsAllNumRunes[i])
+			n2.AbsIntRunes = append(n2.AbsIntRunes, n1.absAllNumRunes[i])
 
 		} else {
 
 			if i < lenN1AbsAllNumRunes {
-				n2.AbsFracRunes = append(n2.AbsFracRunes, n1.AbsAllNumRunes[i])
+				n2.AbsFracRunes = append(n2.AbsFracRunes, n1.absAllNumRunes[i])
 			} else {
 				n2.AbsFracRunes = append(n2.AbsFracRunes, '0')
 			}
@@ -2117,7 +2128,7 @@ func (nDto *NumStrDto) SubtractNumStrs(n1Dto, n2Dto NumStrDto) (NumStrDto, error
 		newSignVal = newSignVal * -1
 	}
 
-	lenN1AllRunes := len(n1NumDto.AbsAllNumRunes)
+	lenN1AllRunes := len(n1NumDto.absAllNumRunes)
 
 	n1IntAry := make([]int, lenN1AllRunes)
 	n2IntAry := make([]int, lenN1AllRunes)
@@ -2125,8 +2136,8 @@ func (nDto *NumStrDto) SubtractNumStrs(n1Dto, n2Dto NumStrDto) (NumStrDto, error
 
 	for i := 0; i < lenN1AllRunes; i++ {
 
-		n1IntAry[i] = int(n1NumDto.AbsAllNumRunes[i]) - 48
-		n2IntAry[i] = int(n2NumDto.AbsAllNumRunes[i]) - 48
+		n1IntAry[i] = int(n1NumDto.absAllNumRunes[i]) - 48
+		n2IntAry[i] = int(n2NumDto.absAllNumRunes[i]) - 48
 
 	}
 

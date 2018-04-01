@@ -1469,7 +1469,7 @@ func TestNumStrDto_ParseSignedBigInt_01(t *testing.T) {
 		t.Errorf("Expected NumStrOut = '%v'. Instead, got %v", nStr, s)
 	}
 
-	s = string(nDto.AbsAllNumRunes)
+	s = string(nDto.GetAbsAllNumRunes())
 
 	if absAllNumStr != s {
 		t.Errorf("Expected AbsIntRunes = '%v'. Instead, got %v", absAllNumStr, s)
@@ -1541,7 +1541,7 @@ func TestNumStrDto_ParseSignedBigInt_02(t *testing.T) {
 		t.Errorf("Expected NumStrOut = '%v'. Instead, got %v", nStr, s)
 	}
 
-	s = string(nDto.AbsAllNumRunes)
+	s = string(nDto.GetAbsAllNumRunes())
 
 	if absAllNumStr != s {
 		t.Errorf("Expected AbsIntRunes = '%v'. Instead, got %v", absAllNumStr, s)
