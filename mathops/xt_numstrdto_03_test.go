@@ -46,7 +46,7 @@ func TestNumStrDto_ScaleNumStr_01(t *testing.T) {
 		t.Errorf("Expected AbsIntRunes='%v'. Instead, got %v.", iStr, s)
 	}
 
-	s = string(nsDto.AbsFracRunes)
+	s = string(nsDto.GetAbsFracRunes())
 
 	if s != fracStr {
 		t.Errorf("Expected AbsFracRunes='%v'. Instead, got %v", fracStr, s)
@@ -94,7 +94,7 @@ func TestNumStrDto_ScaleNumStr_02(t *testing.T) {
 		t.Errorf("Expected AbsIntRunes='%v'. Instead, got %v.", iStr, s)
 	}
 
-	s = string(nsDto.AbsFracRunes)
+	s = string(nsDto.GetAbsFracRunes())
 
 	if s != fracStr {
 		t.Errorf("Expected AbsFracRunes='%v'. Instead, got %v", fracStr, s)
@@ -142,7 +142,7 @@ func TestNumStrDto_ScaleNumStr_03(t *testing.T) {
 		t.Errorf("Expected AbsIntRunes='%v'. Instead, got %v.", iStr, s)
 	}
 
-	s = string(nsDto.AbsFracRunes)
+	s = string(nsDto.GetAbsFracRunes())
 
 	if s != fracStr {
 		t.Errorf("Expected AbsFracRunes='%v'. Instead, got %v", fracStr, s)
@@ -190,7 +190,7 @@ func TestNumStrDto_ScaleNumStr_04(t *testing.T) {
 		t.Errorf("Expected AbsIntRunes='123'. Instead, got %v.", s)
 	}
 
-	s = string(nsDto.AbsFracRunes)
+	s = string(nsDto.GetAbsFracRunes())
 
 	if s != absFracRuneStr {
 		t.Errorf("Expected AbsFracRunes='456'. Instead, got %v", s)
@@ -238,7 +238,7 @@ func TestNumStrDto_ScaleNumStr_05(t *testing.T) {
 		t.Errorf("Expected AbsIntRunes='123'. Instead, got %v.", s)
 	}
 
-	s = string(nsDto.AbsFracRunes)
+	s = string(nsDto.GetAbsFracRunes())
 
 	if s != absFracRuneStr {
 		t.Errorf("Expected AbsFracRunes='456'. Instead, got %v", s)
@@ -286,7 +286,7 @@ func TestNumStrDto_ScaleNumStr_06(t *testing.T) {
 		t.Errorf("Expected AbsIntRunes='123'. Instead, got %v.", s)
 	}
 
-	s = string(nsDto.AbsFracRunes)
+	s = string(nsDto.GetAbsFracRunes())
 
 	if s != absFracRuneStr {
 		t.Errorf("Expected AbsFracRunes='456'. Instead, got %v", s)
@@ -333,7 +333,7 @@ func TestNumStrDto_ScaleNumStr_07(t *testing.T) {
 		t.Errorf("Expected AbsIntRunes='123'. Instead, got %v.", s)
 	}
 
-	s = string(nsDto.AbsFracRunes)
+	s = string(nsDto.GetAbsFracRunes())
 
 	if s != absFracRuneStr {
 		t.Errorf("Expected AbsFracRunes='456'. Instead, got %v", s)
@@ -384,7 +384,7 @@ func TestNumStrDto_SetPrecision_01(t *testing.T) {
 		t.Errorf("Expected AbsIntRunes='%v'. Instead, got %v.", absIntRuneStr, s)
 	}
 
-	s = string(nsDto.AbsFracRunes)
+	s = string(nsDto.GetAbsFracRunes())
 
 	if s != absFracRuneStr {
 		t.Errorf("Expected AbsFracRunes='%v'. Instead, got %v", absFracRuneStr, s)
@@ -435,7 +435,7 @@ func TestNumStrDto_SetPrecision_02(t *testing.T) {
 		t.Errorf("Expected AbsIntRunes='%v'. Instead, got %v.", absIntRuneStr, s)
 	}
 
-	s = string(nsDto.AbsFracRunes)
+	s = string(nsDto.GetAbsFracRunes())
 
 	if s != absFracRuneStr {
 		t.Errorf("Expected AbsFracRunes='%v'. Instead, got %v", absFracRuneStr, s)
@@ -486,7 +486,7 @@ func TestNumStrDto_SetPrecision_03(t *testing.T) {
 		t.Errorf("Expected AbsIntRunes='%v'. Instead, got %v.", absIntRuneStr, s)
 	}
 
-	s = string(nsDto.AbsFracRunes)
+	s = string(nsDto.GetAbsFracRunes())
 
 	if s != absFracRuneStr {
 		t.Errorf("Expected AbsFracRunes='%v'. Instead, got %v", absFracRuneStr, s)
@@ -537,7 +537,7 @@ func TestNumStrDto_SetPrecision_04(t *testing.T) {
 		t.Errorf("Expected AbsIntRunes='%v'. Instead, got %v.", absIntRuneStr, s)
 	}
 
-	s = string(nsDto.AbsFracRunes)
+	s = string(nsDto.GetAbsFracRunes())
 
 	if s != absFracRuneStr {
 		t.Errorf("Expected AbsFracRunes='%v'. Instead, got %v", absFracRuneStr, s)
@@ -588,7 +588,7 @@ func TestNumStrDto_SetPrecision_05(t *testing.T) {
 		t.Errorf("Expected AbsIntRunes='%v'. Instead, got %v.", absIntRuneStr, s)
 	}
 
-	s = string(nsDto.AbsFracRunes)
+	s = string(nsDto.GetAbsFracRunes())
 
 	if s != absFracRuneStr {
 		t.Errorf("Expected AbsFracRunes='%v'. Instead, got %v", absFracRuneStr, s)
@@ -639,7 +639,7 @@ func TestNumStrDto_SetPrecision_06(t *testing.T) {
 		t.Errorf("Expected AbsIntRunes='%v'. Instead, got %v.", absIntRuneStr, s)
 	}
 
-	s = string(nsDto.AbsFracRunes)
+	s = string(nsDto.GetAbsFracRunes())
 
 	if s != absFracRuneStr {
 		t.Errorf("Expected AbsFracRunes='%v'. Instead, got %v", absFracRuneStr, s)
@@ -690,7 +690,7 @@ func TestNumStrDto_SetPrecision_07(t *testing.T) {
 		t.Errorf("Expected AbsIntRunes='%v'. Instead, got %v.", absIntRuneStr, s)
 	}
 
-	s = string(nsDto.AbsFracRunes)
+	s = string(nsDto.GetAbsFracRunes())
 
 	if s != absFracRuneStr {
 		t.Errorf("Expected AbsFracRunes='%v'. Instead, got %v", absFracRuneStr, s)
@@ -741,7 +741,7 @@ func TestNumStrDto_SetPrecision_08(t *testing.T) {
 		t.Errorf("Expected AbsIntRunes='%v'. Instead, got %v.", absIntRuneStr, s)
 	}
 
-	s = string(nsDto.AbsFracRunes)
+	s = string(nsDto.GetAbsFracRunes())
 
 	if s != absFracRuneStr {
 		t.Errorf("Expected AbsFracRunes='%v'. Instead, got %v", absFracRuneStr, s)
@@ -792,7 +792,7 @@ func TestNumStrDto_SetPrecision_09(t *testing.T) {
 		t.Errorf("Expected AbsIntRunes='%v'. Instead, got %v.", absIntRuneStr, s)
 	}
 
-	s = string(nsDto.AbsFracRunes)
+	s = string(nsDto.GetAbsFracRunes())
 
 	if s != absFracRuneStr {
 		t.Errorf("Expected AbsFracRunes='%v'. Instead, got %v", absFracRuneStr, s)
@@ -843,7 +843,7 @@ func TestNumStrDto_SetPrecision_10(t *testing.T) {
 		t.Errorf("Expected AbsIntRunes='%v'. Instead, got %v.", absIntRuneStr, s)
 	}
 
-	s = string(nsDto.AbsFracRunes)
+	s = string(nsDto.GetAbsFracRunes())
 
 	if s != absFracRuneStr {
 		t.Errorf("Expected AbsFracRunes='%v'. Instead, got %v", absFracRuneStr, s)
@@ -894,7 +894,7 @@ func TestNumStrDto_SetPrecision_11(t *testing.T) {
 		t.Errorf("Expected AbsIntRunes='%v'. Instead, got %v.", absIntRuneStr, s)
 	}
 
-	s = string(nsDto.AbsFracRunes)
+	s = string(nsDto.GetAbsFracRunes())
 
 	if s != absFracRuneStr {
 		t.Errorf("Expected AbsFracRunes='%v'. Instead, got %v", absFracRuneStr, s)
@@ -945,7 +945,7 @@ func TestNumStrDto_SetPrecision_12(t *testing.T) {
 		t.Errorf("Expected AbsIntRunes='%v'. Instead, got %v.", absIntRuneStr, s)
 	}
 
-	s = string(nsDto.AbsFracRunes)
+	s = string(nsDto.GetAbsFracRunes())
 
 	if s != absFracRuneStr {
 		t.Errorf("Expected AbsFracRunes='%v'. Instead, got %v", absFracRuneStr, s)
@@ -996,7 +996,7 @@ func TestNumStrDto_SetPrecision_13(t *testing.T) {
 		t.Errorf("Expected AbsIntRunes='%v'. Instead, got %v.", absIntRuneStr, s)
 	}
 
-	s = string(nsDto.AbsFracRunes)
+	s = string(nsDto.GetAbsFracRunes())
 
 	if s != absFracRuneStr {
 		t.Errorf("Expected AbsFracRunes='%v'. Instead, got %v", absFracRuneStr, s)
@@ -1047,7 +1047,7 @@ func TestNumStrDto_SetPrecision_14(t *testing.T) {
 		t.Errorf("Expected AbsIntRunes='%v'. Instead, got %v.", absIntRuneStr, s)
 	}
 
-	s = string(nsDto.AbsFracRunes)
+	s = string(nsDto.GetAbsFracRunes())
 
 	if s != absFracRuneStr {
 		t.Errorf("Expected AbsFracRunes='%v'. Instead, got %v", absFracRuneStr, s)
@@ -1098,7 +1098,7 @@ func TestNumStrDto_SetPrecision_15(t *testing.T) {
 		t.Errorf("Expected AbsIntRunes='%v'. Instead, got %v.", absIntRuneStr, s)
 	}
 
-	s = string(nsDto.AbsFracRunes)
+	s = string(nsDto.GetAbsFracRunes())
 
 	if s != absFracRuneStr {
 		t.Errorf("Expected AbsFracRunes='%v'. Instead, got %v", absFracRuneStr, s)
@@ -1149,7 +1149,7 @@ func TestNumStrDto_SetPrecision_16(t *testing.T) {
 		t.Errorf("Expected AbsIntRunes='%v'. Instead, got %v.", absIntRuneStr, s)
 	}
 
-	s = string(nsDto.AbsFracRunes)
+	s = string(nsDto.GetAbsFracRunes())
 
 	if s != absFracRuneStr {
 		t.Errorf("Expected AbsFracRunes='%v'. Instead, got %v", absFracRuneStr, s)
@@ -1200,7 +1200,7 @@ func TestNumStrDto_SetPrecision_17(t *testing.T) {
 		t.Errorf("Expected AbsIntRunes='%v'. Instead, got %v.", absIntRuneStr, s)
 	}
 
-	s = string(nsDto.AbsFracRunes)
+	s = string(nsDto.GetAbsFracRunes())
 
 	if s != absFracRuneStr {
 		t.Errorf("Expected AbsFracRunes='%v'. Instead, got %v", absFracRuneStr, s)
@@ -1251,7 +1251,7 @@ func TestNumStrDto_SetPrecision_18(t *testing.T) {
 		t.Errorf("Expected AbsIntRunes='%v'. Instead, got %v.", absIntRuneStr, s)
 	}
 
-	s = string(nsDto.AbsFracRunes)
+	s = string(nsDto.GetAbsFracRunes())
 
 	if s != absFracRuneStr {
 		t.Errorf("Expected AbsFracRunes='%v'. Instead, got %v", absFracRuneStr, s)
@@ -1302,7 +1302,7 @@ func TestNumStrDto_SetPrecision_19(t *testing.T) {
 		t.Errorf("Expected AbsIntRunes='%v'. Instead, got %v.", absIntRuneStr, s)
 	}
 
-	s = string(nsDto.AbsFracRunes)
+	s = string(nsDto.GetAbsFracRunes())
 
 	if s != absFracRuneStr {
 		t.Errorf("Expected AbsFracRunes='%v'. Instead, got %v", absFracRuneStr, s)
@@ -1367,7 +1367,7 @@ func TestNumStrDto_SetThisPrecision_01(t *testing.T) {
 		t.Errorf("Expected AbsIntRunes='%v'. Instead, got %v.", absIntRuneStr, s)
 	}
 
-	s = string(nsDto.AbsFracRunes)
+	s = string(nsDto.GetAbsFracRunes())
 
 	if s != absFracRuneStr {
 		t.Errorf("Expected AbsFracRunes='%v'. Instead, got %v", absFracRuneStr, s)
@@ -1433,7 +1433,7 @@ func TestNumStrDto_SetThisPrecision_02(t *testing.T) {
 		t.Errorf("Expected AbsIntRunes='%v'. Instead, got %v.", absIntRuneStr, s)
 	}
 
-	s = string(nsDto.AbsFracRunes)
+	s = string(nsDto.GetAbsFracRunes())
 
 	if s != absFracRuneStr {
 		t.Errorf("Expected AbsFracRunes='%v'. Instead, got %v", absFracRuneStr, s)

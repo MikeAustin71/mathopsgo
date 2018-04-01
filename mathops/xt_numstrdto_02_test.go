@@ -36,8 +36,8 @@ func TestNumStrDto_MultiplyNumStrs_01(t *testing.T) {
 
 	}
 
-	s = string(nResult.AbsFracRunes)
-	expected = string(nExpected.AbsFracRunes)
+	s = string(nResult.GetAbsFracRunes())
+	expected = string(nExpected.GetAbsFracRunes())
 
 	if expected != s {
 		t.Errorf("Expected AbsFracRunes = '%v'. Instead, got %v", expected, s)
@@ -99,8 +99,8 @@ func TestNumStrDto_MultiplyNumStrs_02(t *testing.T) {
 
 	}
 
-	s = string(nResult.AbsFracRunes)
-	expected = string(nExpected.AbsFracRunes)
+	s = string(nResult.GetAbsFracRunes())
+	expected = string(nExpected.GetAbsFracRunes())
 
 	if expected != s {
 		t.Errorf("Expected AbsFracRunes = '%v'. Instead, got %v", expected, s)
@@ -162,8 +162,8 @@ func TestNumStrDto_MultiplyNumStrs_03(t *testing.T) {
 
 	}
 
-	s = string(nResult.AbsFracRunes)
-	expected = string(nExpected.AbsFracRunes)
+	s = string(nResult.GetAbsFracRunes())
+	expected = string(nExpected.GetAbsFracRunes())
 
 	if expected != s {
 		t.Errorf("Expected AbsFracRunes = '%v'. Instead, got %v", expected, s)
@@ -225,8 +225,8 @@ func TestNumStrDto_MultiplyNumStrs_04(t *testing.T) {
 
 	}
 
-	s = string(nResult.AbsFracRunes)
-	expected = string(nExpected.AbsFracRunes)
+	s = string(nResult.GetAbsFracRunes())
+	expected = string(nExpected.GetAbsFracRunes())
 
 	if expected != s {
 		t.Errorf("Expected AbsFracRunes = '%v'. Instead, got %v", expected, s)
@@ -288,8 +288,8 @@ func TestNumStrDto_MultiplyNumStrs_05(t *testing.T) {
 
 	}
 
-	s = string(nResult.AbsFracRunes)
-	expected = string(nExpected.AbsFracRunes)
+	s = string(nResult.GetAbsFracRunes())
+	expected = string(nExpected.GetAbsFracRunes())
 
 	if expected != s {
 		t.Errorf("Expected AbsFracRunes = '%v'. Instead, got %v", expected, s)
@@ -351,8 +351,8 @@ func TestNumStrDto_MultiplyNumStrs_06(t *testing.T) {
 
 	}
 
-	s = string(nResult.AbsFracRunes)
-	expected = string(nExpected.AbsFracRunes)
+	s = string(nResult.GetAbsFracRunes())
+	expected = string(nExpected.GetAbsFracRunes())
 
 	if expected != s {
 		t.Errorf("Expected AbsFracRunes = '%v'. Instead, got %v", expected, s)
@@ -414,8 +414,8 @@ func TestNumStrDto_MultiplyNumStrs_07(t *testing.T) {
 
 	}
 
-	s = string(nResult.AbsFracRunes)
-	expected = string(nExpected.AbsFracRunes)
+	s = string(nResult.GetAbsFracRunes())
+	expected = string(nExpected.GetAbsFracRunes())
 
 	if expected != s {
 		t.Errorf("Expected AbsFracRunes = '%v'. Instead, got %v", expected, s)
@@ -477,8 +477,8 @@ func TestNumStrDto_MultiplyNumStrs_08(t *testing.T) {
 
 	}
 
-	s = string(nResult.AbsFracRunes)
-	expected = string(nExpected.AbsFracRunes)
+	s = string(nResult.GetAbsFracRunes())
+	expected = string(nExpected.GetAbsFracRunes())
 
 	if expected != s {
 		t.Errorf("Expected AbsFracRunes = '%v'. Instead, got %v", expected, s)
@@ -540,8 +540,8 @@ func TestNumStrDto_MultiplyNumStrs_09(t *testing.T) {
 
 	}
 
-	s = string(nResult.AbsFracRunes)
-	expected = string(nExpected.AbsFracRunes)
+	s = string(nResult.GetAbsFracRunes())
+	expected = string(nExpected.GetAbsFracRunes())
 
 	if expected != s {
 		t.Errorf("Expected AbsFracRunes = '%v'. Instead, got %v", expected, s)
@@ -603,8 +603,8 @@ func TestNumStrDto_MultiplyNumStrs_10(t *testing.T) {
 
 	}
 
-	s = string(nResult.AbsFracRunes)
-	expected = string(nExpected.AbsFracRunes)
+	s = string(nResult.GetAbsFracRunes())
+	expected = string(nExpected.GetAbsFracRunes())
 
 	if expected != s {
 		t.Errorf("Expected AbsFracRunes = '%v'. Instead, got %v", expected, s)
@@ -666,8 +666,8 @@ func TestNumStrDto_MultiplyNumStrs_11(t *testing.T) {
 
 	}
 
-	s = string(nResult.AbsFracRunes)
-	expected = string(nExpected.AbsFracRunes)
+	s = string(nResult.GetAbsFracRunes())
+	expected = string(nExpected.GetAbsFracRunes())
 
 	if expected != s {
 		t.Errorf("Expected AbsFracRunes = '%v'. Instead, got %v", expected, s)
@@ -729,8 +729,8 @@ func TestNumStrDto_MultiplyNumStrs_12(t *testing.T) {
 
 	}
 
-	s = string(nResult.AbsFracRunes)
-	expected = string(nExpected.AbsFracRunes)
+	s = string(nResult.GetAbsFracRunes())
+	expected = string(nExpected.GetAbsFracRunes())
 
 	if expected != s {
 		t.Errorf("Expected AbsFracRunes = '%v'. Instead, got %v", expected, s)
@@ -792,8 +792,8 @@ func TestNumStrDto_MultiplyNumStrs_13(t *testing.T) {
 
 	}
 
-	s = string(nResult.AbsFracRunes)
-	expected = string(nExpected.AbsFracRunes)
+	s = string(nResult.GetAbsFracRunes())
+	expected = string(nExpected.GetAbsFracRunes())
 
 	if expected != s {
 		t.Errorf("Expected AbsFracRunes = '%v'. Instead, got %v", expected, s)
@@ -855,8 +855,8 @@ func TestNumStrDto_MultiplyNumStrs_14(t *testing.T) {
 
 	}
 
-	s = string(nResult.AbsFracRunes)
-	expected = string(nExpected.AbsFracRunes)
+	s = string(nResult.GetAbsFracRunes())
+	expected = string(nExpected.GetAbsFracRunes())
 
 	if expected != s {
 		t.Errorf("Expected AbsFracRunes = '%v'. Instead, got %v", expected, s)
@@ -913,7 +913,7 @@ func TestNumStrDto_NewNumStr_01(t *testing.T) {
 
 	}
 
-	s = string(nDto.AbsFracRunes)
+	s = string(nDto.GetAbsFracRunes())
 
 	if fracStr != s {
 		t.Errorf("Expected AbsFracRunes = '%v'. Instead, got %v", fracStr, s)
@@ -968,7 +968,7 @@ func TestNumStrDto_NewNumStr_02(t *testing.T) {
 
 	}
 
-	s = string(nDto.AbsFracRunes)
+	s = string(nDto.GetAbsFracRunes())
 
 	if fracStr != s {
 		t.Errorf("Expected AbsFracRunes = '%v'. Instead, got %v", fracStr, s)
@@ -1023,7 +1023,7 @@ func TestNumStrDto_NewNumStr_03(t *testing.T) {
 
 	}
 
-	s = string(nDto.AbsFracRunes)
+	s = string(nDto.GetAbsFracRunes())
 
 	if fracStr != s {
 		t.Errorf("Expected AbsFracRunes = '%v'. Instead, got %v", fracStr, s)
@@ -1079,7 +1079,7 @@ func TestNumStrDto_NewNumStr_04(t *testing.T) {
 
 	}
 
-	s = string(nDto.AbsFracRunes)
+	s = string(nDto.GetAbsFracRunes())
 
 	if fracStr != s {
 		t.Errorf("Expected AbsFracRunes = '%v'. Instead, got %v", fracStr, s)
@@ -1135,7 +1135,7 @@ func TestNumStrDto_NewNumStr_05(t *testing.T) {
 
 	}
 
-	s = string(nDto.AbsFracRunes)
+	s = string(nDto.GetAbsFracRunes())
 
 	if fracStr != s {
 		t.Errorf("Expected AbsFracRunes = '%v'. Instead, got %v", fracStr, s)
@@ -1190,7 +1190,7 @@ func TestNumStrDto_ParseNumStr_01(t *testing.T) {
 
 	}
 
-	s = string(nDto.AbsFracRunes)
+	s = string(nDto.GetAbsFracRunes())
 
 	if fracStr != s {
 		t.Errorf("Expected AbsFracRunes = '%v'. Instead, got %v", fracStr, s)
@@ -1245,7 +1245,7 @@ func TestNumStrDto_ParseNumStr_02(t *testing.T) {
 
 	}
 
-	s = string(nDto.AbsFracRunes)
+	s = string(nDto.GetAbsFracRunes())
 
 	if fracStr != s {
 		t.Errorf("Expected AbsFracRunes = '%v'. Instead, got %v", fracStr, s)
@@ -1300,7 +1300,7 @@ func TestNumStrDto_ParseNumStr_03(t *testing.T) {
 
 	}
 
-	s = string(nDto.AbsFracRunes)
+	s = string(nDto.GetAbsFracRunes())
 
 	if fracStr != s {
 		t.Errorf("Expected AbsFracRunes = '%v'. Instead, got %v", fracStr, s)
@@ -1355,7 +1355,7 @@ func TestNumStrDto_ParseNumStr_04(t *testing.T) {
 
 	}
 
-	s = string(nDto.AbsFracRunes)
+	s = string(nDto.GetAbsFracRunes())
 
 	if fracStr != s {
 		t.Errorf("Expected AbsFracRunes = '%v'. Instead, got %v", fracStr, s)
@@ -1411,7 +1411,7 @@ func TestNumStrDto_ParseNumStr_05(t *testing.T) {
 
 	}
 
-	s = string(nDto.AbsFracRunes)
+	s = string(nDto.GetAbsFracRunes())
 
 	if fracStr != s {
 		t.Errorf("Expected AbsFracRunes = '%v'. Instead, got %v", fracStr, s)
@@ -1483,7 +1483,7 @@ func TestNumStrDto_ParseSignedBigInt_01(t *testing.T) {
 
 	}
 
-	s = string(nDto.AbsFracRunes)
+	s = string(nDto.GetAbsFracRunes())
 
 	if fracStr != s {
 		t.Errorf("Expected AbsFracRunes = '%v'. Instead, got %v", fracStr, s)
@@ -1555,7 +1555,7 @@ func TestNumStrDto_ParseSignedBigInt_02(t *testing.T) {
 
 	}
 
-	s = string(nDto.AbsFracRunes)
+	s = string(nDto.GetAbsFracRunes())
 
 	if fracStr != s {
 		t.Errorf("Expected AbsFracRunes = '%v'. Instead, got %v", fracStr, s)
