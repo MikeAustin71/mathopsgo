@@ -22,8 +22,8 @@ func TestNumStrDto_AddNumStrs_01(t *testing.T) {
 		t.Errorf("nDto.AddNumStrs(n1, n2) returned an error. Error= %v", err)
 	}
 
-	s := nResult.NumStrOut
-	expected := nExpected.NumStrOut
+	s := nResult.GetNumStr()
+	expected := nExpected.GetNumStr()
 
 	if s != expected {
 		t.Errorf("Expected NumStrOut = '%v'. Instead, got %v", expected, s)
@@ -86,8 +86,8 @@ func TestNumStrDto_AddNumStrs_02(t *testing.T) {
 		t.Errorf("nDto.AddNumStrs(n1, n2) returned an error. Error= %v", err)
 	}
 
-	s := nResult.NumStrOut
-	expected := nExpected.NumStrOut
+	s := nResult.GetNumStr()
+	expected := nExpected.GetNumStr()
 
 	if s != expected {
 		t.Errorf("Expected NumStrOut = '%v'. Instead, got %v", expected, s)
@@ -150,8 +150,8 @@ func TestNumStrDto_AddNumStrs_03(t *testing.T) {
 		t.Errorf("nDto.AddNumStrs(n1, n2) returned an error. Error= %v", err)
 	}
 
-	s := nResult.NumStrOut
-	expected := nExpected.NumStrOut
+	s := nResult.GetNumStr()
+	expected := nExpected.GetNumStr()
 
 	if s != expected {
 		t.Errorf("Expected NumStrOut = '%v'. Instead, got %v", expected, s)
@@ -214,8 +214,8 @@ func TestNumStrDto_AddNumStrs_04(t *testing.T) {
 		t.Errorf("nDto.AddNumStrs(n1, n2) returned an error. Error= %v", err)
 	}
 
-	s := nResult.NumStrOut
-	expected := nExpected.NumStrOut
+	s := nResult.GetNumStr()
+	expected := nExpected.GetNumStr()
 
 	if s != expected {
 		t.Errorf("Expected NumStrOut = '%v'. Instead, got %v", expected, s)
@@ -278,8 +278,8 @@ func TestNumStrDto_AddNumStrs_05(t *testing.T) {
 		t.Errorf("nDto.AddNumStrs(n1, n2) returned an error. Error= %v", err)
 	}
 
-	s := nResult.NumStrOut
-	expected := nExpected.NumStrOut
+	s := nResult.GetNumStr()
+	expected := nExpected.GetNumStr()
 
 	if s != expected {
 		t.Errorf("Expected NumStrOut = '%v'. Instead, got %v", expected, s)
@@ -342,8 +342,8 @@ func TestNumStrDto_AddNumStrs_06(t *testing.T) {
 		t.Errorf("nDto.AddNumStrs(n1, n2) returned an error. Error= %v", err)
 	}
 
-	s := nResult.NumStrOut
-	expected := nExpected.NumStrOut
+	s := nResult.GetNumStr()
+	expected := nExpected.GetNumStr()
 
 	if s != expected {
 		t.Errorf("Expected NumStrOut = '%v'. Instead, got %v", expected, s)
@@ -406,8 +406,8 @@ func TestNumStrDto_AddNumStrs_07(t *testing.T) {
 		t.Errorf("nDto.AddNumStrs(n1, n2) returned an error. Error= %v", err)
 	}
 
-	s := nResult.NumStrOut
-	expected := nExpected.NumStrOut
+	s := nResult.GetNumStr()
+	expected := nExpected.GetNumStr()
 
 	if s != expected {
 		t.Errorf("Expected NumStrOut = '%v'. Instead, got %v", expected, s)
@@ -470,8 +470,8 @@ func TestNumStrDto_AddNumStrs_08(t *testing.T) {
 		t.Errorf("nDto.AddNumStrs(n1, n2) returned an error. Error= %v", err)
 	}
 
-	s := nResult.NumStrOut
-	expected := nExpected.NumStrOut
+	s := nResult.GetNumStr()
+	expected := nExpected.GetNumStr()
 
 	if s != expected {
 		t.Errorf("Expected NumStrOut = '%v'. Instead, got %v", expected, s)
@@ -534,8 +534,8 @@ func TestNumStrDto_AddNumStrs_09(t *testing.T) {
 		t.Errorf("nDto.AddNumStrs(n1, n2) returned an error. Error= %v", err)
 	}
 
-	s := nResult.NumStrOut
-	expected := nExpected.NumStrOut
+	s := nResult.GetNumStr()
+	expected := nExpected.GetNumStr()
 
 	if s != expected {
 		t.Errorf("Expected NumStrOut = '%v'. Instead, got %v", expected, s)
@@ -597,8 +597,8 @@ func TestNumStrDto_AddNumStrs_10(t *testing.T) {
 		t.Errorf("nDto.AddNumStrs(n1, n2) returned an error. Error= %v", err)
 	}
 
-	s := nResult.NumStrOut
-	expected := nExpected.NumStrOut
+	s := nResult.GetNumStr()
+	expected := nExpected.GetNumStr()
 
 	if s != expected {
 		t.Errorf("Expected NumStrOut = '%v'. Instead, got %v", expected, s)
@@ -659,8 +659,8 @@ func TestNumStrDto_AddNumStrs_11(t *testing.T) {
 		t.Errorf("nDto.AddNumStrs(n1, n2) returned an error. Error= %v", err)
 	}
 
-	s := nResult.NumStrOut
-	expected := nExpected.NumStrOut
+	s := nResult.GetNumStr()
+	expected := nExpected.GetNumStr()
 
 	if s != expected {
 		t.Errorf("Expected NumStrOut = '%v'. Instead, got %v", expected, s)
@@ -988,12 +988,12 @@ func TestNumStrDto_FormatForMathOps_01(t *testing.T) {
 		t.Errorf("Expected compare result = '%v'. Instead got '%v'", expectedCompare, compare)
 	}
 
-	if nOut1.NumStrOut != n1OutDto.NumStrOut {
-		t.Errorf("Expected n1OutDto.NumStrOut= '%v'. Instead got '%v'", nOut1.NumStrOut, n1OutDto.NumStrOut)
+	if nOut1.GetNumStr() != n1OutDto.GetNumStr() {
+		t.Errorf("Expected n1OutDto.GetNumStr()= '%v'. Instead got '%v'", nOut1.GetNumStr(), n1OutDto.GetNumStr())
 	}
 
-	if nOut2.NumStrOut != n2OutDto.NumStrOut {
-		t.Errorf("Expected n2OutDto.NumStrOut= '%v'. Instead got '%v'", nOut2.NumStrOut, n2OutDto.NumStrOut)
+	if nOut2.GetNumStr() != n2OutDto.GetNumStr() {
+		t.Errorf("Expected n2OutDto.GetNumStr()= '%v'. Instead got '%v'", nOut2.GetNumStr(), n2OutDto.GetNumStr())
 	}
 
 	if nOut1.GetSign() != n1OutDto.GetSign() {
@@ -1042,12 +1042,12 @@ func TestNumStrDto_FormatForMathOps_02(t *testing.T) {
 		t.Errorf("Expected compare result = '%v'. Instead got '%v'", expectedCompare, compare)
 	}
 
-	if nOut1.NumStrOut != n1OutDto.NumStrOut {
-		t.Errorf("Expected n1OutDto.NumStrOut= '%v'. Instead got '%v'", nOut1.NumStrOut, n1OutDto.NumStrOut)
+	if nOut1.GetNumStr() != n1OutDto.GetNumStr() {
+		t.Errorf("Expected n1OutDto.GetNumStr()= '%v'. Instead got '%v'", nOut1.GetNumStr(), n1OutDto.GetNumStr())
 	}
 
-	if nOut2.NumStrOut != n2OutDto.NumStrOut {
-		t.Errorf("Expected n2OutDto.NumStrOut= '%v'. Instead got '%v'", nOut2.NumStrOut, n2OutDto.NumStrOut)
+	if nOut2.GetNumStr() != n2OutDto.GetNumStr() {
+		t.Errorf("Expected n2OutDto.GetNumStr()= '%v'. Instead got '%v'", nOut2.GetNumStr(), n2OutDto.GetNumStr())
 	}
 
 	if nOut1.GetSign() != n1OutDto.GetSign() {
@@ -1096,12 +1096,12 @@ func TestNumStrDto_FormatForMathOps_03(t *testing.T) {
 		t.Errorf("Expected compare result = '%v'. Instead got '%v'", expectedCompare, compare)
 	}
 
-	if nOut1.NumStrOut != n1OutDto.NumStrOut {
-		t.Errorf("Expected n1OutDto.NumStrOut= '%v'. Instead got '%v'", nOut1.NumStrOut, n1OutDto.NumStrOut)
+	if nOut1.GetNumStr() != n1OutDto.GetNumStr() {
+		t.Errorf("Expected n1OutDto.GetNumStr()= '%v'. Instead got '%v'", nOut1.GetNumStr(), n1OutDto.GetNumStr())
 	}
 
-	if nOut2.NumStrOut != n2OutDto.NumStrOut {
-		t.Errorf("Expected n2OutDto.NumStrOut= '%v'. Instead got '%v'", nOut2.NumStrOut, n2OutDto.NumStrOut)
+	if nOut2.GetNumStr() != n2OutDto.GetNumStr() {
+		t.Errorf("Expected n2OutDto.GetNumStr()= '%v'. Instead got '%v'", nOut2.GetNumStr(), n2OutDto.GetNumStr())
 	}
 
 	if nOut1.GetSign() != n1OutDto.GetSign() {
@@ -1150,12 +1150,12 @@ func TestNumStrDto_FormatForMathOps_04(t *testing.T) {
 		t.Errorf("Expected compare result = '%v'. Instead got '%v'", expectedCompare, compare)
 	}
 
-	if nOut1.NumStrOut != n1OutDto.NumStrOut {
-		t.Errorf("Expected n1OutDto.NumStrOut= '%v'. Instead got '%v'", nOut1.NumStrOut, n1OutDto.NumStrOut)
+	if nOut1.GetNumStr() != n1OutDto.GetNumStr() {
+		t.Errorf("Expected n1OutDto.GetNumStr()= '%v'. Instead got '%v'", nOut1.GetNumStr(), n1OutDto.GetNumStr())
 	}
 
-	if nOut2.NumStrOut != n2OutDto.NumStrOut {
-		t.Errorf("Expected n2OutDto.NumStrOut= '%v'. Instead got '%v'", nOut2.NumStrOut, n2OutDto.NumStrOut)
+	if nOut2.GetNumStr() != n2OutDto.GetNumStr() {
+		t.Errorf("Expected n2OutDto.GetNumStr()= '%v'. Instead got '%v'", nOut2.GetNumStr(), n2OutDto.GetNumStr())
 	}
 
 	if nOut1.GetSign() != n1OutDto.GetSign() {
@@ -1203,12 +1203,12 @@ func TestNumStrDto_FormatForMathOps_05(t *testing.T) {
 		t.Errorf("Expected compare result = '%v'. Instead got '%v'", expectedCompare, compare)
 	}
 
-	if nOut1.NumStrOut != n1OutDto.NumStrOut {
-		t.Errorf("Expected n1OutDto.NumStrOut= '%v'. Instead got '%v'", nOut1.NumStrOut, n1OutDto.NumStrOut)
+	if nOut1.GetNumStr() != n1OutDto.GetNumStr() {
+		t.Errorf("Expected n1OutDto.GetNumStr()= '%v'. Instead got '%v'", nOut1.GetNumStr(), n1OutDto.GetNumStr())
 	}
 
-	if nOut2.NumStrOut != n2OutDto.NumStrOut {
-		t.Errorf("Expected n2OutDto.NumStrOut= '%v'. Instead got '%v'", nOut2.NumStrOut, n2OutDto.NumStrOut)
+	if nOut2.GetNumStr() != n2OutDto.GetNumStr() {
+		t.Errorf("Expected n2OutDto.GetNumStr()= '%v'. Instead got '%v'", nOut2.GetNumStr(), n2OutDto.GetNumStr())
 	}
 
 	if nOut1.GetSign() != n1OutDto.GetSign() {
@@ -1256,12 +1256,12 @@ func TestNumStrDto_FormatForMathOps_06(t *testing.T) {
 		t.Errorf("Expected compare result = '%v'. Instead got '%v'", expectedCompare, compare)
 	}
 
-	if nOut1.NumStrOut != n1OutDto.NumStrOut {
-		t.Errorf("Expected n1OutDto.NumStrOut= '%v'. Instead got '%v'", nOut1.NumStrOut, n1OutDto.NumStrOut)
+	if nOut1.GetNumStr() != n1OutDto.GetNumStr() {
+		t.Errorf("Expected n1OutDto.GetNumStr()= '%v'. Instead got '%v'", nOut1.GetNumStr(), n1OutDto.GetNumStr())
 	}
 
-	if nOut2.NumStrOut != n2OutDto.NumStrOut {
-		t.Errorf("Expected n2OutDto.NumStrOut= '%v'. Instead got '%v'", nOut2.NumStrOut, n2OutDto.NumStrOut)
+	if nOut2.GetNumStr() != n2OutDto.GetNumStr() {
+		t.Errorf("Expected n2OutDto.GetNumStr()= '%v'. Instead got '%v'", nOut2.GetNumStr(), n2OutDto.GetNumStr())
 	}
 
 	if nOut1.GetSign() != n1OutDto.GetSign() {
@@ -1300,7 +1300,7 @@ func TestNumStrDto_CopyIn_01(t *testing.T) {
 
 	nDto.CopyIn(n1)
 
-	s := nDto.NumStrOut
+	s := nDto.GetNumStr()
 
 	if s != nStr {
 		t.Errorf("Expected NumStrOut = '%v'. Instead, got %v", nStr, s)
@@ -1360,7 +1360,7 @@ func TestNumStrDto_CopyIn_02(t *testing.T) {
 
 	nDto.CopyIn(n1)
 
-	s := nDto.NumStrOut
+	s := nDto.GetNumStr()
 
 	if s != nStr {
 		t.Errorf("Expected NumStrOut = '%v'. Instead, got %v", nStr, s)
@@ -1418,7 +1418,7 @@ func TestNumStrDto_CopyOut_01(t *testing.T) {
 
 	nDto := n1.CopyOut()
 
-	s := nDto.NumStrOut
+	s := nDto.GetNumStr()
 
 	if s != nStr {
 		t.Errorf("Expected NumStrOut = '%v'. Instead, got %v", nStr, s)
@@ -1476,7 +1476,7 @@ func TestNumStrDto_CopyOut_02(t *testing.T) {
 
 	nDto := n1.CopyOut()
 
-	s := nDto.NumStrOut
+	s := nDto.GetNumStr()
 
 	if s != nStr {
 		t.Errorf("Expected NumStrOut = '%v'. Instead, got %v", nStr, s)

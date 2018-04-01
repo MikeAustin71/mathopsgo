@@ -211,7 +211,7 @@ func (ns *NumStrUtility) ConvertStrToIntNumStr(str string) string {
 		return ""
 	}
 
-	return string(nDto.NumStrOut)
+	return string(nDto.GetNumStr())
 }
 
 // ConvertInt64ToStr - Converts an int64 to a string of numeric
@@ -362,10 +362,10 @@ func (ns *NumStrUtility) ConvertStrToFloat64(str string) (float64, error) {
 		return numF64, fmt.Errorf("ConvertStrToFloat64() - Error returned from NumStrDto.ParseNumStr(str). str= '%v' Error= %v",str, err)
 	}
 
-	numF64, err = strconv.ParseFloat(nDto.NumStrOut, 64)
+	numF64, err = strconv.ParseFloat(nDto.GetNumStr(), 64)
 
 	if err != nil {
-		return float64(0.0), fmt.Errorf("ConvertStrToFloat64() - Error returned from strconv.ParseFloat(nDto.NumStrOut, 64). nDto.NumStrOut= '%v'. Error = %v", nDto.NumStrOut, err)
+		return float64(0.0), fmt.Errorf("ConvertStrToFloat64() - Error returned from strconv.ParseFloat(nDto.GetNumStr(), 64). nDto.GetNumStr()= '%v'. Error = %v", nDto.GetNumStr(), err)
 	}
 
 	return numF64, nil

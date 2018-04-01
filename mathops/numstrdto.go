@@ -18,18 +18,18 @@ import (
 // NumStrDto - This Type contains data fields and methods used
 // to manage, store and transport number strings.
 type NumStrDto struct {
-	IsValid            bool
-	signVal            int
-	absAllNumRunes     []rune
-	absIntRunes        []rune
-	absFracRunes       []rune
-	precision          uint
-	IsFractionalValue  bool
-	HasNumericDigits   bool
-	ThousandsSeparator rune
-	DecimalSeparator   rune
-	CurrencySymbol     rune
-	NumStrOut          string
+	IsValid            	bool
+	signVal            	int
+	absAllNumRunes     	[]rune
+	absIntRunes        	[]rune
+	absFracRunes       	[]rune
+	precision          	uint
+	IsFractionalValue  	bool
+	HasNumericDigits   	bool
+	ThousandsSeparator 	rune
+	DecimalSeparator   	rune
+	CurrencySymbol     	rune
+	numStr          		string
 }
 
 // AddNumStrs - Adds the values represented by two NumStrDto objects and
@@ -270,7 +270,7 @@ func (nDto *NumStrDto) CopyOut() NumStrDto {
 	nOut.precision = nDto.precision
 	nOut.IsFractionalValue = nDto.IsFractionalValue
 	nOut.HasNumericDigits = nDto.HasNumericDigits
-	nOut.NumStrOut = nDto.NumStrOut
+	nOut.numStr = nDto.numStr
 	nOut.ThousandsSeparator = nDto.ThousandsSeparator
 	nOut.DecimalSeparator = nDto.DecimalSeparator
 	nOut.CurrencySymbol = nDto.CurrencySymbol
@@ -293,7 +293,7 @@ func (nDto *NumStrDto) CopyIn(nInDto NumStrDto) {
 	nDto.precision = nInDto.precision
 	nDto.IsFractionalValue = nInDto.IsFractionalValue
 	nDto.HasNumericDigits = nInDto.HasNumericDigits
-	nDto.NumStrOut = nInDto.NumStrOut
+	nDto.numStr = nInDto.numStr
 	nDto.ThousandsSeparator = nInDto.ThousandsSeparator
 	nDto.DecimalSeparator = nInDto.DecimalSeparator
 	nDto.CurrencySymbol = nInDto.CurrencySymbol
@@ -312,7 +312,7 @@ func (nDto *NumStrDto) Empty() {
 	nDto.precision = 0
 	nDto.IsFractionalValue = false
 	nDto.HasNumericDigits = false
-	nDto.NumStrOut = ""
+	nDto.numStr = ""
 
 	if nDto.ThousandsSeparator == 0 {
 		nDto.ThousandsSeparator = ','
@@ -484,7 +484,7 @@ func (nDto *NumStrDto) FormatForMathOps(n1Dto, n2Dto NumStrDto) (n1DtoOut NumStr
 		lenN2FracRunes = len(n2DtoOut.absFracRunes)
 
 		n2DtoOut.precision = n1DtoOut.precision
-		err = n2DtoOut.ResetNumStrOut()
+		err = n2DtoOut.ResetNumStr()
 
 		if err != nil {
 			return NumStrDto{}, NumStrDto{}, 0, false, err
@@ -508,7 +508,7 @@ func (nDto *NumStrDto) FormatForMathOps(n1Dto, n2Dto NumStrDto) (n1DtoOut NumStr
 		lenN1FracRunes = len(n1DtoOut.absFracRunes)
 
 		n1DtoOut.precision = n2DtoOut.precision
-		err = n1DtoOut.ResetNumStrOut()
+		err = n1DtoOut.ResetNumStr()
 
 		if err != nil {
 			return NumStrDto{}, NumStrDto{}, 0, false, err
@@ -555,7 +555,7 @@ func (nDto *NumStrDto) FormatForMathOps(n1Dto, n2Dto NumStrDto) (n1DtoOut NumStr
 		lenN1AllRunes = len(n1DtoOut.absAllNumRunes)
 		lenN1IntRunes = len(n1DtoOut.absIntRunes)
 
-		err = n1DtoOut.ResetNumStrOut()
+		err = n1DtoOut.ResetNumStr()
 
 		if err != nil {
 			return NumStrDto{}, NumStrDto{}, 0, false, err
@@ -585,7 +585,7 @@ func (nDto *NumStrDto) FormatForMathOps(n1Dto, n2Dto NumStrDto) (n1DtoOut NumStr
 		lenN2AllRunes = len(n2DtoOut.absAllNumRunes)
 		lenN2IntRunes = len(n2DtoOut.absIntRunes)
 
-		err := n2DtoOut.ResetNumStrOut()
+		err := n2DtoOut.ResetNumStr()
 
 		if err != nil {
 			return NumStrDto{}, NumStrDto{}, 0, false, err
@@ -693,6 +693,12 @@ func (nDto *NumStrDto) GetAbsIntRunes() []rune {
 	return nDto.absIntRunes
 }
 
+// GetNumStr - returns the numeric value of the current NumStrDto
+// instance as a signed number string.
+func (nDto *NumStrDto) GetNumStr() string {
+	return nDto.numStr
+}
+
 // GetPrecision - Returns the precision of the current
 // NumStrDto Instance. The value represents the number
 // of fractional digits to the right of the decimal
@@ -788,7 +794,7 @@ func (nDto *NumStrDto) GetSign() int {
 	return nDto.signVal
 }
 // GetSignedBigInt - returns the signed *big.Int representing
-// the NumStrDto.NumStrOut. This method will fail if the NumStrDto
+// the NumStrDto.numStr. This method will fail if the NumStrDto
 // has not been properly initialized with a valid number string.
 func (nDto *NumStrDto) GetSignedBigInt() (*big.Int, error) {
 
@@ -855,16 +861,16 @@ func (nDto *NumStrDto) GetZeroNumStr(numFracDigits uint) NumStrDto {
 	n2Dto.absAllNumRunes = append(n2Dto.absAllNumRunes, '0')
 	n2Dto.absIntRunes = append(n2Dto.absIntRunes, '0')
 	n2Dto.absFracRunes = []rune{}
-	n2Dto.NumStrOut = "0"
+	n2Dto.numStr = "0"
 
 	if numFracDigits > 0 {
 		n2Dto.IsFractionalValue = true
-		n2Dto.NumStrOut = "0."
+		n2Dto.numStr = "0."
 
 		for i := uint(0); i < numFracDigits; i++ {
 			n2Dto.absAllNumRunes = append(n2Dto.absAllNumRunes, '0')
 			n2Dto.absFracRunes = append(n2Dto.absFracRunes, '0')
-			n2Dto.NumStrOut += "0"
+			n2Dto.numStr += "0"
 		}
 
 		n2Dto.precision = uint(numFracDigits)
@@ -956,8 +962,8 @@ func (nDto *NumStrDto) IsNumStrDtoValid(numDto *NumStrDto, errName string) error
 		checkNumStrOut += string(numDto.absFracRunes)
 	}
 
-	if checkNumStrOut != numDto.NumStrOut {
-		return fmt.Errorf("%v - numDto.NumStrOut is incorrect!.", errName)
+	if checkNumStrOut != numDto.numStr {
+		return fmt.Errorf("%v - numDto.numStr is incorrect!.", errName)
 	}
 
 	hasNonNumericChars := false
@@ -1247,17 +1253,17 @@ func (nDto *NumStrDto) ParseSignedBigInt(signedBigInt *big.Int, precision uint) 
 		return NumStrDto{}, fmt.Errorf("ParseSignedBigInt() lenAbsAllNumRunes != lenAbsIntNumRunes + lenAbsFracNumRunes. lenAbsAllNumRunes= '%v' lenAbsIntNumRunes= '%v' lenAbsFracNumRunes= '%v'", lenAbsAllNumRunes, lenAbsIntNumRunes, lenAbsFracNumRunes)
 	}
 
-	n2Dto.NumStrOut = ""
+	n2Dto.numStr = ""
 
 	if n2Dto.signVal < 0 {
-		n2Dto.NumStrOut = "-"
+		n2Dto.numStr = "-"
 	}
 
-	n2Dto.NumStrOut += string(n2Dto.absIntRunes)
+	n2Dto.numStr += string(n2Dto.absIntRunes)
 
 	if lenAbsFracNumRunes > 0 {
-		n2Dto.NumStrOut += "."
-		n2Dto.NumStrOut += string(n2Dto.absFracRunes)
+		n2Dto.numStr += "."
+		n2Dto.numStr += string(n2Dto.absFracRunes)
 	}
 
 	err := nDto.IsNumStrDtoValid(&n2Dto, "ParseSignedBigInt() - ")
@@ -1402,15 +1408,15 @@ func (nDto *NumStrDto) ParseNumStr(str string) (NumStrDto, error) {
 	}
 
 	if n2Dto.signVal < 0 {
-		n2Dto.NumStrOut = "-"
+		n2Dto.numStr = "-"
 	}
 
-	n2Dto.NumStrOut += string(n2Dto.absIntRunes)
+	n2Dto.numStr += string(n2Dto.absIntRunes)
 
 	if n2Dto.IsFractionalValue {
 		n2Dto.precision = uint(len(n2Dto.absFracRunes))
-		n2Dto.NumStrOut += string(nDto.DecimalSeparator)
-		n2Dto.NumStrOut += string(n2Dto.absFracRunes)
+		n2Dto.numStr += string(nDto.DecimalSeparator)
+		n2Dto.numStr += string(n2Dto.absFracRunes)
 	}
 
 	if lenAbsAllNumRunes != lenAbsIntNumRunes+lenAbsFracNumRunes {
@@ -1654,14 +1660,14 @@ func (nDto *NumStrDto) ShiftPrecisionLeft(signedNumStr string, shiftPrecision ui
 	lenAbsFracRunes = len(n2.absFracRunes)
 
 	if n2.signVal < 0 {
-		n2.NumStrOut = "-"
+		n2.numStr = "-"
 	}
 
-	n2.NumStrOut += string(n2.absIntRunes)
+	n2.numStr += string(n2.absIntRunes)
 
 	if lenAbsFracRunes > 0 {
-		n2.NumStrOut += "."
-		n2.NumStrOut += string(n2.absFracRunes)
+		n2.numStr += "."
+		n2.numStr += string(n2.absFracRunes)
 	}
 
 	err = nDto.IsNumStrDtoValid(&n2, ePrefix)
@@ -1785,14 +1791,14 @@ func (nDto *NumStrDto) ShiftPrecisionRight(signedNumStr string, precision uint) 
 	lenAbsFracRunes = len(n2.absFracRunes)
 
 	if n2.signVal < 0 {
-		n2.NumStrOut = "-"
+		n2.numStr = "-"
 	}
 
-	n2.NumStrOut += string(n2.absIntRunes)
+	n2.numStr += string(n2.absIntRunes)
 
 	if lenAbsFracRunes > 0 {
-		n2.NumStrOut += "."
-		n2.NumStrOut += string(n2.absFracRunes)
+		n2.numStr += "."
+		n2.numStr += string(n2.absFracRunes)
 	}
 
 	err = nDto.IsNumStrDtoValid(&n2, "ShiftPrecisionRight()")
@@ -1985,17 +1991,17 @@ func (nDto *NumStrDto) SetPrecision(
 		}
 	}
 
-	n2.NumStrOut = ""
+	n2.numStr = ""
 
 	if n2.signVal < 0 {
-		n2.NumStrOut = "-"
+		n2.numStr = "-"
 	}
 
-	n2.NumStrOut += string(n2.absIntRunes)
+	n2.numStr += string(n2.absIntRunes)
 
 	if n2.precision > 0 {
-		n2.NumStrOut += string(n2.DecimalSeparator)
-		n2.NumStrOut += string(n2.absFracRunes)
+		n2.numStr += string(n2.DecimalSeparator)
+		n2.numStr += string(n2.absFracRunes)
 		n2.IsFractionalValue = true
 	}
 
@@ -2035,13 +2041,13 @@ func (nDto *NumStrDto) SetThisPrecision(
  ePrefix := "NumStrDto.SetThisPrecision() "
 
 
- n2, err := nDto.SetPrecision(nDto.NumStrOut, precision, roundResult)
+ n2, err := nDto.SetPrecision(nDto.numStr, precision, roundResult)
 
  if err != nil {
  	return fmt.Errorf(ePrefix +
  		"Error returned by nDto.SetPrecision(signedNumStr, precision, " +
- 		"roundResult). nDto.NumStrOut='%v' precision='%v', roundResult='%v'",
-		nDto.NumStrOut, precision, roundResult)
+ 		"roundResult). nDto.numStr='%v' precision='%v', roundResult='%v'",
+		nDto.numStr, precision, roundResult)
  }
 
  nDto.CopyIn(n2)
@@ -2069,27 +2075,27 @@ func (nDto *NumStrDto) SetSignValue(newSignVal int) error {
 
 	nDto.signVal = newSignVal
 
-	return nDto.ResetNumStrOut()
+	return nDto.ResetNumStr()
 }
 
-// ResetNumStrOut - Re-creates the NumStrOut field using
+// ResetNumStr - Re-creates the NumStrOut field using
 // the current 'Precision' value.
-func (nDto *NumStrDto) ResetNumStrOut() error {
+func (nDto *NumStrDto) ResetNumStr() error {
 
-	nDto.NumStrOut = ""
+	nDto.numStr = ""
 
 	if nDto.signVal < 0 {
-		nDto.NumStrOut = "-"
+		nDto.numStr = "-"
 	}
 
-	nDto.NumStrOut += string(nDto.absIntRunes)
+	nDto.numStr += string(nDto.absIntRunes)
 
 	if nDto.precision > 0 {
-		nDto.NumStrOut += string(nDto.DecimalSeparator)
-		nDto.NumStrOut += string(nDto.absFracRunes)
+		nDto.numStr += string(nDto.DecimalSeparator)
+		nDto.numStr += string(nDto.absFracRunes)
 	}
 
-	return nDto.IsNumStrDtoValid(nDto, "NumStrDto.ResetNumStrOut() ")
+	return nDto.IsNumStrDtoValid(nDto, "NumStrDto.ResetNumStr() ")
 }
 
 // SubtractNumStrs - Subtracts the numeric values represented by two NumStrDto

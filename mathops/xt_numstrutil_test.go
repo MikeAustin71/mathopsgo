@@ -236,8 +236,8 @@ func TestNumStrUtility_ParseNumString_01(t *testing.T) {
 		t.Errorf("Error from ns.ParseNumString(rawStr). rawStr= '%v'. Error= %v", rawStr, err.Error())
 	}
 
-	if nsDto.NumStrOut != expected {
-		t.Errorf("Expected NumStrOut= '%v'. Instead, got %v", expected, nsDto.NumStrOut)
+	if nsDto.GetNumStr() != expected {
+		t.Errorf("Expected NumStrOut= '%v'. Instead, got %v", expected, nsDto.GetNumStr())
 	}
 
 	if nsDto.GetSign() != 1 {
@@ -270,8 +270,8 @@ func TestNumStrUtility_ParseNumString_02(t *testing.T) {
 		t.Errorf("Error from ns.ParseNumString(rawStr). rawStr= '%v'. Error= %v", rawStr, err.Error())
 	}
 
-	if nsDto.NumStrOut != expected {
-		t.Errorf("Expected NumStrOut= '%v'. Instead, got %v", expected, nsDto.NumStrOut)
+	if nsDto.GetNumStr() != expected {
+		t.Errorf("Expected NumStrOut= '%v'. Instead, got %v", expected, nsDto.GetNumStr())
 	}
 
 	if nsDto.GetSign() != -1 {
@@ -303,8 +303,8 @@ func TestNumStrUtility_ParseNumString_03(t *testing.T) {
 		t.Errorf("Error from ns.ParseNumString(rawStr). rawStr= '%v'. Error= %v", rawStr, err.Error())
 	}
 
-	if nsDto.NumStrOut != expected {
-		t.Errorf("Expected NumStrOut= '%v'. Instead, got %v", expected, nsDto.NumStrOut)
+	if nsDto.GetNumStr() != expected {
+		t.Errorf("Expected NumStrOut= '%v'. Instead, got %v", expected, nsDto.GetNumStr())
 	}
 
 	if nsDto.HasNumericDigits == false {

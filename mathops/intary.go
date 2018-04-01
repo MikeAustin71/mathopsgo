@@ -3178,25 +3178,25 @@ func (ia IntAry) NewNumStrDto(numDto NumStrDto) (IntAry, error) {
 
 	ePrefix := "IntAry.NewNumStrDto() "
 
-	err := numDto.ResetNumStrOut()
+	err := numDto.ResetNumStr()
 
 	if err != nil {
 		return IntAry{},
 		fmt.Errorf(ePrefix +
-			"Error returned by numDto.ResetNumStrOut(). " +
+			"Error returned by numDto.ResetNumStr(). " +
 			"Error='%v' ", err.Error())
 	}
 
 	iAry := IntAry{}.New()
 
-	err = iAry.SetIntAryWithNumStr(numDto.NumStrOut)
+	err = iAry.SetIntAryWithNumStr(numDto.GetNumStr())
 
 	if err != nil {
 		return IntAry{},
 			fmt.Errorf("IntAry.NewNumStr() Error returned by  " +
 				"iAry.SetIntAryWithNumStr(numDto.NumStrOut). " +
 				"numDto.NumStrOut='%v', Error='%v' ",
-				numDto.NumStrOut, err.Error())
+				numDto.GetNumStr(), err.Error())
 	}
 
 	return iAry, nil

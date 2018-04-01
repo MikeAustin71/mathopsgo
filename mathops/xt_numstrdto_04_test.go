@@ -18,8 +18,8 @@ func TestNumStrDto_ShiftPrecisionLeft_01(t *testing.T) {
 		t.Errorf("Received error from nsu.ShiftPrecisionLeft(nStr, precision). nStr= '%v' precision= '%v'. Error= %v", nStr, precision, err)
 	}
 
-	if nsDto.NumStrOut != expected {
-		t.Errorf("Expected NumStrOut='%v'. Instead, got %v.", expected, nsDto.NumStrOut)
+	if nsDto.GetNumStr() != expected {
+		t.Errorf("Expected NumStrOut='%v'. Instead, got %v.", expected, nsDto.GetNumStr())
 	}
 
 	if outPrecision != nsDto.GetPrecision() {
@@ -68,8 +68,8 @@ func TestNumStrDto_ShiftPrecisionLeft_02(t *testing.T) {
 		t.Errorf("Received error from nsu.ShiftPrecisionLeft(nStr, precision). nStr= '%v' precision= '%v'. Error= %v", nStr, precision, err)
 	}
 
-	if nsDto.NumStrOut != expected {
-		t.Errorf("Expected NumStrOut='%v'. Instead, got %v.", expected, nsDto.NumStrOut)
+	if nsDto.GetNumStr() != expected {
+		t.Errorf("Expected NumStrOut='%v'. Instead, got %v.", expected, nsDto.GetNumStr())
 	}
 
 	if outPrecision != nsDto.GetPrecision() {
@@ -118,8 +118,8 @@ func TestNumStrDto_ShiftPrecisionLeft_03(t *testing.T) {
 		t.Errorf("Received error from nsu.ShiftPrecisionLeft(nStr, precision). nStr= '%v' precision= '%v'. Error= %v", nStr, precision, err)
 	}
 
-	if nsDto.NumStrOut != expected {
-		t.Errorf("Expected NumStrOut='%v'. Instead, got %v.", expected, nsDto.NumStrOut)
+	if nsDto.GetNumStr() != expected {
+		t.Errorf("Expected NumStrOut='%v'. Instead, got %v.", expected, nsDto.GetNumStr())
 	}
 
 	if outPrecision != nsDto.GetPrecision() {
@@ -168,8 +168,8 @@ func TestNumStrDto_ShiftPrecisionLeft_04(t *testing.T) {
 		t.Errorf("Received error from nsu.ShiftPrecisionLeft(nStr, precision). nStr= '%v' precision= '%v'. Error= %v", nStr, precision, err)
 	}
 
-	if nsDto.NumStrOut != expected {
-		t.Errorf("Expected NumStrOut='%v'. Instead, got %v.", expected, nsDto.NumStrOut)
+	if nsDto.GetNumStr() != expected {
+		t.Errorf("Expected NumStrOut='%v'. Instead, got %v.", expected, nsDto.GetNumStr())
 	}
 
 	if outPrecision != nsDto.GetPrecision() {
@@ -218,8 +218,8 @@ func TestNumStrDto_ShiftPrecisionLeft_05(t *testing.T) {
 		t.Errorf("Received error from nsu.ShiftPrecisionLeft(nStr, precision). nStr= '%v' precision= '%v'. Error= %v", nStr, precision, err)
 	}
 
-	if nsDto.NumStrOut != expected {
-		t.Errorf("Expected NumStrOut='%v'. Instead, got %v.", expected, nsDto.NumStrOut)
+	if nsDto.GetNumStr() != expected {
+		t.Errorf("Expected NumStrOut='%v'. Instead, got %v.", expected, nsDto.GetNumStr())
 	}
 
 	if outPrecision != nsDto.GetPrecision() {
@@ -269,8 +269,8 @@ func TestNumStrDto_ShiftPrecisionLeft_06(t *testing.T) {
 		t.Errorf("Received error from nsu.ShiftPrecisionLeft(nStr, precision). nStr= '%v' precision= '%v'. Error= %v", nStr, precision, err)
 	}
 
-	if nsDto.NumStrOut != expected {
-		t.Errorf("Expected NumStrOut='%v'. Instead, got %v.", expected, nsDto.NumStrOut)
+	if nsDto.GetNumStr() != expected {
+		t.Errorf("Expected NumStrOut='%v'. Instead, got %v.", expected, nsDto.GetNumStr())
 	}
 
 	if outPrecision != nsDto.GetPrecision() {
@@ -319,8 +319,8 @@ func TestNumStrDto_ShiftPrecisionLeft_07(t *testing.T) {
 		t.Errorf("Received error from nsu.ShiftPrecisionLeft(nStr, precision). nStr= '%v' precision= '%v'. Error= %v", nStr, precision, err)
 	}
 
-	if nsDto.NumStrOut != expected {
-		t.Errorf("Expected NumStrOut='%v'. Instead, got %v.", expected, nsDto.NumStrOut)
+	if nsDto.GetNumStr() != expected {
+		t.Errorf("Expected NumStrOut='%v'. Instead, got %v.", expected, nsDto.GetNumStr())
 	}
 
 	if outPrecision != nsDto.GetPrecision() {
@@ -369,8 +369,8 @@ func TestNumStrDto_ShiftPrecisionLeft_08(t *testing.T) {
 		t.Errorf("Received error from nsu.ShiftPrecisionLeft(nStr, precision). nStr= '%v' precision= '%v'. Error= %v", nStr, precision, err)
 	}
 
-	if nsDto.NumStrOut != expected {
-		t.Errorf("Expected NumStrOut='%v'. Instead, got %v.", expected, nsDto.NumStrOut)
+	if nsDto.GetNumStr() != expected {
+		t.Errorf("Expected NumStrOut='%v'. Instead, got %v.", expected, nsDto.GetNumStr())
 	}
 
 	if outPrecision != nsDto.GetPrecision() {
@@ -419,8 +419,8 @@ func TestNumStrDto_ShiftPrecisionLeft_09(t *testing.T) {
 		t.Errorf("Received error from nsu.ShiftPrecisionLeft(nStr, precision). nStr= '%v' precision= '%v'. Error= %v", nStr, precision, err)
 	}
 
-	if nsDto.NumStrOut != expected {
-		t.Errorf("Expected NumStrOut='%v'. Instead, got %v.", expected, nsDto.NumStrOut)
+	if nsDto.GetNumStr() != expected {
+		t.Errorf("Expected NumStrOut='%v'. Instead, got %v.", expected, nsDto.GetNumStr())
 	}
 
 	if outPrecision != nsDto.GetPrecision() {
@@ -469,8 +469,8 @@ func TestNumStrDto_ShiftPrecisionLeft_10(t *testing.T) {
 		t.Errorf("Received error from nsu.ShiftPrecisionLeft(nStr, precision). nStr= '%v' precision= '%v'. Error= %v", nStr, precision, err)
 	}
 
-	if nsDto.NumStrOut != expected {
-		t.Errorf("Expected NumStrOut='%v'. Instead, got %v.", expected, nsDto.NumStrOut)
+	if nsDto.GetNumStr() != expected {
+		t.Errorf("Expected NumStrOut='%v'. Instead, got %v.", expected, nsDto.GetNumStr())
 	}
 
 	if outPrecision != nsDto.GetPrecision() {
@@ -519,8 +519,8 @@ func TestNumStrDto_ShiftPrecisionLeft_11(t *testing.T) {
 		t.Errorf("Received error from nsu.ShiftPrecisionLeft(nStr, precision). nStr= '%v' precision= '%v'. Error= %v", nStr, precision, err)
 	}
 
-	if nsDto.NumStrOut != expected {
-		t.Errorf("Expected NumStrOut='%v'. Instead, got %v.", expected, nsDto.NumStrOut)
+	if nsDto.GetNumStr() != expected {
+		t.Errorf("Expected NumStrOut='%v'. Instead, got %v.", expected, nsDto.GetNumStr())
 	}
 
 	if outPrecision != nsDto.GetPrecision() {
@@ -569,8 +569,8 @@ func TestNumStrDto_ShiftPrecisionRight_01(t *testing.T) {
 		t.Errorf("Received error from nsu.ShiftPrecisionRight(nStr, precision). nStr= '%v' precision= '%v'. Error= %v", nStr, precision, err)
 	}
 
-	if nsDto.NumStrOut != expected {
-		t.Errorf("Expected NumStrOut='%v'. Instead, got %v.", expected, nsDto.NumStrOut)
+	if nsDto.GetNumStr() != expected {
+		t.Errorf("Expected NumStrOut='%v'. Instead, got %v.", expected, nsDto.GetNumStr())
 	}
 
 	if outPrecision != nsDto.GetPrecision() {
@@ -619,8 +619,8 @@ func TestNumStrDto_ShiftPrecisionRight_02(t *testing.T) {
 		t.Errorf("Received error from nsu.ShiftPrecisionRight(nStr, precision). nStr= '%v' precision= '%v'. Error= %v", nStr, precision, err)
 	}
 
-	if nsDto.NumStrOut != expected {
-		t.Errorf("Expected NumStrOut='%v'. Instead, got %v.", expected, nsDto.NumStrOut)
+	if nsDto.GetNumStr() != expected {
+		t.Errorf("Expected NumStrOut='%v'. Instead, got %v.", expected, nsDto.GetNumStr())
 	}
 
 	if outPrecision != nsDto.GetPrecision() {
@@ -669,8 +669,8 @@ func TestNumStrDto_ShiftPrecisionRight_03(t *testing.T) {
 		t.Errorf("Received error from nsu.ShiftPrecisionRight(nStr, precision). nStr= '%v' precision= '%v'. Error= %v", nStr, precision, err)
 	}
 
-	if nsDto.NumStrOut != expected {
-		t.Errorf("Expected NumStrOut='%v'. Instead, got %v.", expected, nsDto.NumStrOut)
+	if nsDto.GetNumStr() != expected {
+		t.Errorf("Expected NumStrOut='%v'. Instead, got %v.", expected, nsDto.GetNumStr())
 	}
 
 	if outPrecision != nsDto.GetPrecision() {
@@ -719,8 +719,8 @@ func TestNumStrDto_ShiftPrecisionRight_04(t *testing.T) {
 		t.Errorf("Received error from nsu.ShiftPrecisionRight(nStr, precision). nStr= '%v' precision= '%v'. Error= %v", nStr, precision, err)
 	}
 
-	if nsDto.NumStrOut != expected {
-		t.Errorf("Expected NumStrOut='%v'. Instead, got %v.", expected, nsDto.NumStrOut)
+	if nsDto.GetNumStr() != expected {
+		t.Errorf("Expected NumStrOut='%v'. Instead, got %v.", expected, nsDto.GetNumStr())
 	}
 
 	if outPrecision != nsDto.GetPrecision() {
@@ -769,8 +769,8 @@ func TestNumStrDto_ShiftPrecisionRight_05(t *testing.T) {
 		t.Errorf("Received error from nsu.ShiftPrecisionRight(nStr, precision). nStr= '%v' precision= '%v'. Error= %v", nStr, precision, err)
 	}
 
-	if nsDto.NumStrOut != expected {
-		t.Errorf("Expected NumStrOut='%v'. Instead, got %v.", expected, nsDto.NumStrOut)
+	if nsDto.GetNumStr() != expected {
+		t.Errorf("Expected NumStrOut='%v'. Instead, got %v.", expected, nsDto.GetNumStr())
 	}
 
 	if outPrecision != nsDto.GetPrecision() {
@@ -819,8 +819,8 @@ func TestNumStrDto_ShiftPrecisionRight_06(t *testing.T) {
 		t.Errorf("Received error from nsu.ShiftPrecisionRight(nStr, precision). nStr= '%v' precision= '%v'. Error= %v", nStr, precision, err)
 	}
 
-	if nsDto.NumStrOut != expected {
-		t.Errorf("Expected NumStrOut='%v'. Instead, got %v.", expected, nsDto.NumStrOut)
+	if nsDto.GetNumStr() != expected {
+		t.Errorf("Expected NumStrOut='%v'. Instead, got %v.", expected, nsDto.GetNumStr())
 	}
 
 	if outPrecision != nsDto.GetPrecision() {
@@ -869,8 +869,8 @@ func TestNumStrDto_ShiftPrecisionRight_07(t *testing.T) {
 		t.Errorf("Received error from nsu.ShiftPrecisionRight(nStr, precision). nStr= '%v' precision= '%v'. Error= %v", nStr, precision, err)
 	}
 
-	if nsDto.NumStrOut != expected {
-		t.Errorf("Expected NumStrOut='%v'. Instead, got %v.", expected, nsDto.NumStrOut)
+	if nsDto.GetNumStr() != expected {
+		t.Errorf("Expected NumStrOut='%v'. Instead, got %v.", expected, nsDto.GetNumStr())
 	}
 
 	if outPrecision != nsDto.GetPrecision() {
@@ -919,8 +919,8 @@ func TestNumStrDto_ShiftPrecisionRight_08(t *testing.T) {
 		t.Errorf("Received error from nsu.ShiftPrecisionRight(nStr, precision). nStr= '%v' precision= '%v'. Error= %v", nStr, precision, err)
 	}
 
-	if nsDto.NumStrOut != expected {
-		t.Errorf("Expected NumStrOut='%v'. Instead, got %v.", expected, nsDto.NumStrOut)
+	if nsDto.GetNumStr() != expected {
+		t.Errorf("Expected NumStrOut='%v'. Instead, got %v.", expected, nsDto.GetNumStr())
 	}
 
 	if outPrecision != nsDto.GetPrecision() {
@@ -969,8 +969,8 @@ func TestNumStrDto_ShiftPrecisionRight_09(t *testing.T) {
 		t.Errorf("Received error from nsu.ShiftPrecisionRight(nStr, precision). nStr= '%v' precision= '%v'. Error= %v", nStr, precision, err)
 	}
 
-	if nsDto.NumStrOut != expected {
-		t.Errorf("Expected NumStrOut='%v'. Instead, got %v.", expected, nsDto.NumStrOut)
+	if nsDto.GetNumStr() != expected {
+		t.Errorf("Expected NumStrOut='%v'. Instead, got %v.", expected, nsDto.GetNumStr())
 	}
 
 	if outPrecision != nsDto.GetPrecision() {
@@ -1019,8 +1019,8 @@ func TestNumStrDto_ShiftPrecisionRight_10(t *testing.T) {
 		t.Errorf("Received error from nsu.ShiftPrecisionRight(nStr, precision). nStr= '%v' precision= '%v'. Error= %v", nStr, precision, err)
 	}
 
-	if nsDto.NumStrOut != expected {
-		t.Errorf("Expected NumStrOut='%v'. Instead, got %v.", expected, nsDto.NumStrOut)
+	if nsDto.GetNumStr() != expected {
+		t.Errorf("Expected NumStrOut='%v'. Instead, got %v.", expected, nsDto.GetNumStr())
 	}
 
 	if outPrecision != nsDto.GetPrecision() {
@@ -1070,8 +1070,8 @@ func TestNumStrDto_SubtractNumStrs_01(t *testing.T) {
 		t.Errorf("nDto.AddNumStrs(n1, n2) returned an error. Error= %v", err)
 	}
 
-	s := nDto.NumStrOut
-	expected := nResult.NumStrOut
+	s := nDto.GetNumStr()
+	expected := nResult.GetNumStr()
 
 	if s != expected {
 		t.Errorf("Expected NumStrOut = '%v'. Instead, got %v", expected, s)
@@ -1132,8 +1132,8 @@ func TestNumStrDto_SubtractNumStrs_02(t *testing.T) {
 		t.Errorf("nDto.AddNumStrs(n1, n2) returned an error. Error= %v", err)
 	}
 
-	s := nDto.NumStrOut
-	expected := nResult.NumStrOut
+	s := nDto.GetNumStr()
+	expected := nResult.GetNumStr()
 
 	if s != expected {
 		t.Errorf("Expected NumStrOut = '%v'. Instead, got %v", expected, s)
@@ -1194,8 +1194,8 @@ func TestNumStrDto_SubtractNumStrs_03(t *testing.T) {
 		t.Errorf("nDto.AddNumStrs(n1, n2) returned an error. Error= %v", err)
 	}
 
-	s := nDto.NumStrOut
-	expected := nResult.NumStrOut
+	s := nDto.GetNumStr()
+	expected := nResult.GetNumStr()
 
 	if s != expected {
 		t.Errorf("Expected NumStrOut = '%v'. Instead, got %v", expected, s)
@@ -1257,8 +1257,8 @@ func TestNumStrDto_SubtractNumStrs_04(t *testing.T) {
 		t.Errorf("nDto.AddNumStrs(n1, n2) returned an error. Error= %v", err)
 	}
 
-	s := nDto.NumStrOut
-	expected := nResult.NumStrOut
+	s := nDto.GetNumStr()
+	expected := nResult.GetNumStr()
 
 	if s != expected {
 		t.Errorf("Expected NumStrOut = '%v'. Instead, got %v", expected, s)
@@ -1320,8 +1320,8 @@ func TestNumStrDto_SubtractNumStrs_05(t *testing.T) {
 		t.Errorf("nDto.AddNumStrs(n1, n2) returned an error. Error= %v", err)
 	}
 
-	s := nDto.NumStrOut
-	expected := nResult.NumStrOut
+	s := nDto.GetNumStr()
+	expected := nResult.GetNumStr()
 
 	if s != expected {
 		t.Errorf("Expected NumStrOut = '%v'. Instead, got %v", expected, s)
@@ -1383,8 +1383,8 @@ func TestNumStrDto_SubtractNumStrs_06(t *testing.T) {
 		t.Errorf("nDto.AddNumStrs(n1, n2) returned an error. Error= %v", err)
 	}
 
-	s := nDto.NumStrOut
-	expected := nResult.NumStrOut
+	s := nDto.GetNumStr()
+	expected := nResult.GetNumStr()
 
 	if s != expected {
 		t.Errorf("Expected NumStrOut = '%v'. Instead, got %v", expected, s)

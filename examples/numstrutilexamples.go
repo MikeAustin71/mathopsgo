@@ -391,7 +391,7 @@ func PrintNumStrDtoContents(originalInputStr string, nStr mathops.NumStrDto) {
 	fmt.Println()
 	fmt.Println("******************************************************")
 	fmt.Println("    Original Input Str: ", originalInputStr)
-	fmt.Println("        nStr.NumStrOut: ", nStr.NumStrOut)
+	fmt.Println("        nStr.NumStrOut: ", nStr.GetNumStr())
 	fmt.Println("          nStr.signVal: ", nStr.GetSign())
 	fmt.Println("   nStr.AbsAllNumRunes: ", nStr.GetAbsAllNumRunes())
 	fmt.Println("      nStr.AbsIntRunes: ", nStr.GetAbsIntRunes())

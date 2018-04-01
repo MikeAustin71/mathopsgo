@@ -109,8 +109,8 @@ func (dec *Decimal) Add(d2 Decimal) (Decimal, error) {
 	if err != nil {
 		return Decimal{},
 			fmt.Errorf(ePrefix + "Error returned from dec.MakeDecimalFromNumStrDto(nDto) " +
-				"nDto.NumStrOut='%v'  nDto.GetPrecision()='%v'  Error='%v'",
-				nDto.NumStrOut, nDto.GetPrecision(), err.Error())
+				"nDto.GetNumStr()='%v'  nDto.GetPrecision()='%v'  Error='%v'",
+				nDto.GetNumStr(), nDto.GetPrecision(), err.Error())
 	}
 
 	return d4, nil
@@ -808,7 +808,7 @@ func (dec *Decimal) MakeDecimalFromNumStrDto(nDto NumStrDto) (Decimal, error) {
 
 	d2 := Decimal{}.New()
 	d2.signVal = nDto.GetSign()
-	d2.numStr = nDto.NumStrOut
+	d2.numStr = nDto.GetNumStr()
 	d2.precision = nDto.GetPrecision()
 	d2.currencySymbol = dec.currencySymbol
 	d2.decimalSeparator = nDto.DecimalSeparator
@@ -912,8 +912,8 @@ func (dec *Decimal) Mul(d2 Decimal) (Decimal, error) {
 	if err != nil {
 		return Decimal{},
 			fmt.Errorf(ePrefix + "Error returned from dec.MakeDecimalFromNumStrDto(nDto) " +
-				"nDto.NumStrOut='%v'  nDto.GetPrecision()='%v'  Error='%v'",
-				nDto.NumStrOut, nDto.GetPrecision(), err.Error())
+				"nDto.GetNumStr()='%v'  nDto.GetPrecision()='%v'  Error='%v'",
+				nDto.GetNumStr(), nDto.GetPrecision(), err.Error())
 	}
 
 	return d4, nil
@@ -1143,25 +1143,25 @@ func (dec Decimal) NewNumStrDto(numDto NumStrDto) (Decimal, error) {
 
 	ePrefix := "Decimal.NewNumStrDto() "
 
-	err := numDto.ResetNumStrOut()
+	err := numDto.ResetNumStr()
 
 	if err != nil {
 		return Decimal{},
 		fmt.Errorf(ePrefix +
-			"Error returned by numDto.ResetNumStrOut() Error='%v'",
+			"Error returned by numDto.ResetNumStr() Error='%v'",
 				err.Error())
 	}
 
 	d2 := Decimal{}.New()
 
-	err = d2.SetNumStr(numDto.NumStrOut)
+	err = d2.SetNumStr(numDto.GetNumStr())
 
 	if err != nil {
 		return Decimal{},
 			fmt.Errorf(ePrefix +
-				"Error returned by d2.SetNumStr(numDto.NumStrOut) " +
-				" numDto.NumStrOut='%v' Error='%v'",
-				numDto.NumStrOut, err.Error())
+				"Error returned by d2.SetNumStr(numDto.GetNumStr()) " +
+				" numDto.GetNumStr()='%v' Error='%v'",
+				numDto.GetNumStr(), err.Error())
 	}
 
 	return d2, nil
@@ -1186,7 +1186,7 @@ func (dec Decimal) NewNumStrPrecision(numStr string, precision uint, roundResult
 		return Decimal{}, fmt.Errorf("NewNumStrPrecision() Error returned from  NumStrDto.ParseNumStr(numStr). numStr= '%v' Error= %v", numStr, err)
 	}
 
-	n2, err := NumStrDto{}.NewPtr().SetPrecision(n1.NumStrOut, precision, roundResult)
+	n2, err := NumStrDto{}.NewPtr().SetPrecision(n1.GetNumStr(), precision, roundResult)
 
 	d2, err := dec.MakeDecimalFromNumStrDto(n2)
 
@@ -1253,7 +1253,7 @@ func (dec *Decimal) NumStrPrecisionToDecimal(str string, requestedPrecision uint
 		return Decimal{},
 			fmt.Errorf(ePrefix + "Error received from dec.MakeDecimalFromNumStrDto(n1). " +
 				"n1.NumStr='%v' requestedPrecision='%v' Error= %v",
-				n1.NumStrOut, requestedPrecision, err.Error())
+				n1.GetNumStr(), requestedPrecision, err.Error())
 	}
 
 	d2.thousandsSeparator = dec.thousandsSeparator
@@ -1296,7 +1296,7 @@ func (dec *Decimal) NumStrPrecisionToDecimal(str string, precision uint, roundRe
 	nDto, err := n1.ScaleAbsoluteValStr(str, precision, true)
 
 	if err != nil {
-		return Decimal{}, fmt.Errorf("NumStrPrecisionToDecimal() Error received from nDto.ScaleAbsoluteValStr(nDto.NumStrOut, precision, true). nDto.NumStrOut='%v' precision='%v' Error= %v", nDto.NumStrOut, precision, err)
+		return Decimal{}, fmt.Errorf("NumStrPrecisionToDecimal() Error received from nDto.ScaleAbsoluteValStr(nDto.GetNumStr(), precision, true). nDto.GetNumStr()='%v' precision='%v' Error= %v", nDto.GetNumStr(), precision, err)
 	}
 
 	d2, err := dec.MakeDecimalFromNumStrDto(nDto)
@@ -1447,8 +1447,8 @@ func (dec *Decimal) Pow(exponent int, maxPrecision int) (Decimal, error) {
 	if err != nil {
 		return Decimal{},
 			fmt.Errorf(ePrefix + "Error returned from dec.MakeDecimalFromNumStrDto(nDto) " +
-				"nDto.NumStrOut='%v'  nDto.GetPrecision()='%v'  Error='%v'",
-				nDto.NumStrOut, nDto.GetPrecision(), err.Error())
+				"nDto.GetNumStr()='%v'  nDto.GetPrecision()='%v'  Error='%v'",
+				nDto.GetNumStr(), nDto.GetPrecision(), err.Error())
 	}
 
 	if expSign == 1 {
@@ -1596,7 +1596,7 @@ func (dec *Decimal) SetIntFracStrings(signVal int, intNum, fracNum string) error
 	d2, err := dec.MakeDecimalFromNumStrDto(n4)
 
 	if err != nil {
-		return fmt.Errorf("SetIntFracStrings() - Error returned from dec.MakeDecimalFromNumStrDto(n4). n4.NumStrOut = '%v' Error= %v", n4.NumStrOut, err)
+		return fmt.Errorf("SetIntFracStrings() - Error returned from dec.MakeDecimalFromNumStrDto(n4). n4.GetNumStr() = '%v' Error= %v", n4.GetNumStr(), err)
 	}
 
 	dec.CopyIn(d2)
@@ -1891,7 +1891,7 @@ func (dec *Decimal) SetNumStrDto(nDto NumStrDto) error {
 	d2, err := dec.MakeDecimalFromNumStrDto(nDto)
 
 	if err != nil {
-		return fmt.Errorf("SetNumStrDto() Error received from dec.MakeDecimalFromNumStrDto(nDto). nDto.NumStrOut= '%v' Error= %v", nDto.NumStrOut, err)
+		return fmt.Errorf("SetNumStrDto() Error received from dec.MakeDecimalFromNumStrDto(nDto). nDto.GetNumStr()= '%v' Error= %v", nDto.GetNumStr(), err)
 	}
 
 	dec.CopyIn(d2)
@@ -1955,8 +1955,8 @@ func (dec *Decimal) ShiftPrecisionLeft(shiftPrecision int) error {
 
 	if err != nil {
 		return fmt.Errorf(ePrefix +
-			"Error returned by dec.MakeDecimalFromNumStrDto(n1). n1.NumStrOut='%v' " +
-			"Error='%v' ", n1.NumStrOut, err.Error())
+			"Error returned by dec.MakeDecimalFromNumStrDto(n1). n1.GetNumStr()='%v' " +
+			"Error='%v' ", n1.GetNumStr(), err.Error())
 	}
 
 	dec.CopyIn(dec2)
@@ -2038,8 +2038,8 @@ func (dec *Decimal) Subtract(d2 Decimal) (Decimal, error) {
 	if err != nil {
 		return Decimal{},
 			fmt.Errorf(ePrefix + "Error returned from dec.MakeDecimalFromNumStrDto(nDto) " +
-				"nDto.NumStrOut='%v'  nDto.GetPrecision()='%v'  Error='%v'",
-				nDto.NumStrOut, nDto.GetPrecision(), err.Error())
+				"nDto.GetNumStr()='%v'  nDto.GetPrecision()='%v'  Error='%v'",
+				nDto.GetNumStr(), nDto.GetPrecision(), err.Error())
 	}
 
 	return d4, nil

@@ -21,8 +21,8 @@ func TestNumStrDto_MultiplyNumStrs_01(t *testing.T) {
 		t.Errorf("nDto.MultiplyNumStrs(n1, n2) returned an error. Error= %v", err)
 	}
 
-	s := nResult.NumStrOut
-	expected := nExpected.NumStrOut
+	s := nResult.GetNumStr()
+	expected := nExpected.GetNumStr()
 
 	if s != expected {
 		t.Errorf("Expected NumStrOut = '%v'. Instead, got %v", expected, s)
@@ -84,8 +84,8 @@ func TestNumStrDto_MultiplyNumStrs_02(t *testing.T) {
 		t.Errorf("nDto.MultiplyNumStrs(n1, n2) returned an error. Error= %v", err)
 	}
 
-	s := nResult.NumStrOut
-	expected := nExpected.NumStrOut
+	s := nResult.GetNumStr()
+	expected := nExpected.GetNumStr()
 
 	if s != expected {
 		t.Errorf("Expected NumStrOut = '%v'. Instead, got %v", expected, s)
@@ -147,8 +147,8 @@ func TestNumStrDto_MultiplyNumStrs_03(t *testing.T) {
 		t.Errorf("nDto.MultiplyNumStrs(n1, n2) returned an error. Error= %v", err)
 	}
 
-	s := nResult.NumStrOut
-	expected := nExpected.NumStrOut
+	s := nResult.GetNumStr()
+	expected := nExpected.GetNumStr()
 
 	if s != expected {
 		t.Errorf("Expected NumStrOut = '%v'. Instead, got %v", expected, s)
@@ -210,8 +210,8 @@ func TestNumStrDto_MultiplyNumStrs_04(t *testing.T) {
 		t.Errorf("nDto.MultiplyNumStrs(n1, n2) returned an error. Error= %v", err)
 	}
 
-	s := nResult.NumStrOut
-	expected := nExpected.NumStrOut
+	s := nResult.GetNumStr()
+	expected := nExpected.GetNumStr()
 
 	if s != expected {
 		t.Errorf("Expected NumStrOut = '%v'. Instead, got %v", expected, s)
@@ -273,8 +273,8 @@ func TestNumStrDto_MultiplyNumStrs_05(t *testing.T) {
 		t.Errorf("nDto.MultiplyNumStrs(n1, n2) returned an error. Error= %v", err)
 	}
 
-	s := nResult.NumStrOut
-	expected := nExpected.NumStrOut
+	s := nResult.GetNumStr()
+	expected := nExpected.GetNumStr()
 
 	if s != expected {
 		t.Errorf("Expected NumStrOut = '%v'. Instead, got %v", expected, s)
@@ -336,8 +336,8 @@ func TestNumStrDto_MultiplyNumStrs_06(t *testing.T) {
 		t.Errorf("nDto.MultiplyNumStrs(n1, n2) returned an error. Error= %v", err)
 	}
 
-	s := nResult.NumStrOut
-	expected := nExpected.NumStrOut
+	s := nResult.GetNumStr()
+	expected := nExpected.GetNumStr()
 
 	if s != expected {
 		t.Errorf("Expected NumStrOut = '%v'. Instead, got %v", expected, s)
@@ -399,8 +399,8 @@ func TestNumStrDto_MultiplyNumStrs_07(t *testing.T) {
 		t.Errorf("nDto.MultiplyNumStrs(n1, n2) returned an error. Error= %v", err)
 	}
 
-	s := nResult.NumStrOut
-	expected := nExpected.NumStrOut
+	s := nResult.GetNumStr()
+	expected := nExpected.GetNumStr()
 
 	if s != expected {
 		t.Errorf("Expected NumStrOut = '%v'. Instead, got %v", expected, s)
@@ -462,8 +462,8 @@ func TestNumStrDto_MultiplyNumStrs_08(t *testing.T) {
 		t.Errorf("nDto.MultiplyNumStrs(n1, n2) returned an error. Error= %v", err)
 	}
 
-	s := nResult.NumStrOut
-	expected := nExpected.NumStrOut
+	s := nResult.GetNumStr()
+	expected := nExpected.GetNumStr()
 
 	if s != expected {
 		t.Errorf("Expected NumStrOut = '%v'. Instead, got %v", expected, s)
@@ -525,8 +525,8 @@ func TestNumStrDto_MultiplyNumStrs_09(t *testing.T) {
 		t.Errorf("nDto.MultiplyNumStrs(n1, n2) returned an error. Error= %v", err)
 	}
 
-	s := nResult.NumStrOut
-	expected := nExpected.NumStrOut
+	s := nResult.GetNumStr()
+	expected := nExpected.GetNumStr()
 
 	if s != expected {
 		t.Errorf("Expected NumStrOut = '%v'. Instead, got %v", expected, s)
@@ -588,8 +588,8 @@ func TestNumStrDto_MultiplyNumStrs_10(t *testing.T) {
 		t.Errorf("nDto.MultiplyNumStrs(n1, n2) returned an error. Error= %v", err)
 	}
 
-	s := nResult.NumStrOut
-	expected := nExpected.NumStrOut
+	s := nResult.GetNumStr()
+	expected := nExpected.GetNumStr()
 
 	if s != expected {
 		t.Errorf("Expected NumStrOut = '%v'. Instead, got %v", expected, s)
@@ -651,8 +651,8 @@ func TestNumStrDto_MultiplyNumStrs_11(t *testing.T) {
 		t.Errorf("nDto.MultiplyNumStrs(n1, n2) returned an error. Error= %v", err)
 	}
 
-	s := nResult.NumStrOut
-	expected := nExpected.NumStrOut
+	s := nResult.GetNumStr()
+	expected := nExpected.GetNumStr()
 
 	if s != expected {
 		t.Errorf("Expected NumStrOut = '%v'. Instead, got %v", expected, s)
@@ -714,8 +714,8 @@ func TestNumStrDto_MultiplyNumStrs_12(t *testing.T) {
 		t.Errorf("nDto.MultiplyNumStrs(n1, n2) returned an error. Error= %v", err)
 	}
 
-	s := nResult.NumStrOut
-	expected := nExpected.NumStrOut
+	s := nResult.GetNumStr()
+	expected := nExpected.GetNumStr()
 
 	if s != expected {
 		t.Errorf("Expected NumStrOut = '%v'. Instead, got %v", expected, s)
@@ -777,8 +777,8 @@ func TestNumStrDto_MultiplyNumStrs_13(t *testing.T) {
 		t.Errorf("nDto.MultiplyNumStrs(n1, n2) returned an error. Error= %v", err)
 	}
 
-	s := nResult.NumStrOut
-	expected := nExpected.NumStrOut
+	s := nResult.GetNumStr()
+	expected := nExpected.GetNumStr()
 
 	if s != expected {
 		t.Errorf("Expected NumStrOut = '%v'. Instead, got %v", expected, s)
@@ -840,8 +840,8 @@ func TestNumStrDto_MultiplyNumStrs_14(t *testing.T) {
 		t.Errorf("nDto.MultiplyNumStrs(n1, n2) returned an error. Error= %v", err)
 	}
 
-	s := nResult.NumStrOut
-	expected := nExpected.NumStrOut
+	s := nResult.GetNumStr()
+	expected := nExpected.GetNumStr()
 
 	if s != expected {
 		t.Errorf("Expected NumStrOut = '%v'. Instead, got %v", expected, s)
@@ -900,7 +900,7 @@ func TestNumStrDto_NewNumStr_01(t *testing.T) {
 		t.Errorf("Received error from NumStrDto.ParseNumStr(nStr). nStr= '%v' Error= %v", nStr, err)
 	}
 
-	s := nDto.NumStrOut
+	s := nDto.GetNumStr()
 
 	if s != nStr {
 		t.Errorf("Expected NumStrOut = '%v'. Instead, got %v", nStr, s)
@@ -955,7 +955,7 @@ func TestNumStrDto_NewNumStr_02(t *testing.T) {
 		t.Errorf("Received error from NumStrDto.ParseNumStr(nStr). nStr= '%v' Error= %v", nStr, err)
 	}
 
-	s := nDto.NumStrOut
+	s := nDto.GetNumStr()
 
 	if s != nStr {
 		t.Errorf("Expected NumStrOut = '%v'. Instead, got %v", nStr, s)
@@ -1010,7 +1010,7 @@ func TestNumStrDto_NewNumStr_03(t *testing.T) {
 		t.Errorf("Received error from NumStrDto.ParseNumStr(nStr). nStr= '%v' Error= %v", nStr, err)
 	}
 
-	s := nDto.NumStrOut
+	s := nDto.GetNumStr()
 
 	if s != nStr {
 		t.Errorf("Expected NumStrOut = '%v'. Instead, got %v", nStr, s)
@@ -1066,7 +1066,7 @@ func TestNumStrDto_NewNumStr_04(t *testing.T) {
 		t.Errorf("Received error from NumStrDto.ParseNumStr(nStr). nStr= '%v' Error= %v", nStr, err)
 	}
 
-	s := nDto.NumStrOut
+	s := nDto.GetNumStr()
 
 	if s != nStr {
 		t.Errorf("Expected NumStrOut = '%v'. Instead, got %v", nStr, s)
@@ -1122,7 +1122,7 @@ func TestNumStrDto_NewNumStr_05(t *testing.T) {
 		t.Errorf("Received error from NumStrDto.ParseNumStr(nStr). nStr= '%v' Error= %v", nStr, err)
 	}
 
-	s := nDto.NumStrOut
+	s := nDto.GetNumStr()
 
 	if s != nStrOut {
 		t.Errorf("Expected NumStrOut = '%v'. Instead, got %v", nStrOut, s)
@@ -1177,7 +1177,7 @@ func TestNumStrDto_ParseNumStr_01(t *testing.T) {
 		t.Errorf("Received error from NumStrDto.ParseNumStr(nStr). nStr= '%v' Error= %v", nStr, err)
 	}
 
-	s := nDto.NumStrOut
+	s := nDto.GetNumStr()
 
 	if s != nStr {
 		t.Errorf("Expected NumStrOut = '%v'. Instead, got %v", nStr, s)
@@ -1232,7 +1232,7 @@ func TestNumStrDto_ParseNumStr_02(t *testing.T) {
 		t.Errorf("Received error from NumStrDto.ParseNumStr(nStr). nStr= '%v' Error= %v", nStr, err)
 	}
 
-	s := nDto.NumStrOut
+	s := nDto.GetNumStr()
 
 	if s != nStr {
 		t.Errorf("Expected NumStrOut = '%v'. Instead, got %v", nStr, s)
@@ -1287,7 +1287,7 @@ func TestNumStrDto_ParseNumStr_03(t *testing.T) {
 		t.Errorf("Received error from NumStrDto.ParseNumStr(nStr). nStr= '%v' Error= %v", nStr, err)
 	}
 
-	s := nDto.NumStrOut
+	s := nDto.GetNumStr()
 
 	if s != nStr {
 		t.Errorf("Expected NumStrOut = '%v'. Instead, got %v", nStr, s)
@@ -1342,7 +1342,7 @@ func TestNumStrDto_ParseNumStr_04(t *testing.T) {
 		t.Errorf("Received error from NumStrDto.ParseNumStr(nStr). nStr= '%v' Error= %v", nStr, err)
 	}
 
-	s := nDto.NumStrOut
+	s := nDto.GetNumStr()
 
 	if s != nStr {
 		t.Errorf("Expected NumStrOut = '%v'. Instead, got %v", nStr, s)
@@ -1398,7 +1398,7 @@ func TestNumStrDto_ParseNumStr_05(t *testing.T) {
 		t.Errorf("Received error from NumStrDto.ParseNumStr(nStr). nStr= '%v' Error= %v", nStr, err)
 	}
 
-	s := nDto.NumStrOut
+	s := nDto.GetNumStr()
 
 	if s != nStrOut {
 		t.Errorf("Expected NumStrOut = '%v'. Instead, got %v", nStrOut, s)
@@ -1463,7 +1463,7 @@ func TestNumStrDto_ParseSignedBigInt_01(t *testing.T) {
 
 	nDto := n1.CopyOut()
 
-	s := nDto.NumStrOut
+	s := nDto.GetNumStr()
 
 	if s != nStr {
 		t.Errorf("Expected NumStrOut = '%v'. Instead, got %v", nStr, s)
@@ -1535,7 +1535,7 @@ func TestNumStrDto_ParseSignedBigInt_02(t *testing.T) {
 
 	nDto := n1.CopyOut()
 
-	s := nDto.NumStrOut
+	s := nDto.GetNumStr()
 
 	if s != nStr {
 		t.Errorf("Expected NumStrOut = '%v'. Instead, got %v", nStr, s)
