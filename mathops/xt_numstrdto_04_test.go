@@ -38,7 +38,7 @@ func TestNumStrDto_ShiftPrecisionLeft_01(t *testing.T) {
 		t.Errorf("Expected HasNumericDigits='true'. Instead, got %v.", nsDto.HasNumericDigits)
 	}
 
-	s := string(nsDto.AbsIntRunes)
+	s := string(nsDto.GetAbsIntRunes())
 
 	if s != absIntRuneStr {
 		t.Errorf("Expected AbsIntRunes='%v'. Instead, got %v.", absIntRuneStr, s)
@@ -88,7 +88,7 @@ func TestNumStrDto_ShiftPrecisionLeft_02(t *testing.T) {
 		t.Errorf("Expected HasNumericDigits='true'. Instead, got %v.", nsDto.HasNumericDigits)
 	}
 
-	s := string(nsDto.AbsIntRunes)
+	s := string(nsDto.GetAbsIntRunes())
 
 	if s != absIntRuneStr {
 		t.Errorf("Expected AbsIntRunes='%v'. Instead, got %v.", absIntRuneStr, s)
@@ -138,7 +138,7 @@ func TestNumStrDto_ShiftPrecisionLeft_03(t *testing.T) {
 		t.Errorf("Expected HasNumericDigits='true'. Instead, got %v.", nsDto.HasNumericDigits)
 	}
 
-	s := string(nsDto.AbsIntRunes)
+	s := string(nsDto.GetAbsIntRunes())
 
 	if s != absIntRuneStr {
 		t.Errorf("Expected AbsIntRunes='%v'. Instead, got %v.", absIntRuneStr, s)
@@ -188,7 +188,7 @@ func TestNumStrDto_ShiftPrecisionLeft_04(t *testing.T) {
 		t.Errorf("Expected HasNumericDigits='true'. Instead, got %v.", nsDto.HasNumericDigits)
 	}
 
-	s := string(nsDto.AbsIntRunes)
+	s := string(nsDto.GetAbsIntRunes())
 
 	if s != absIntRuneStr {
 		t.Errorf("Expected AbsIntRunes='%v'. Instead, got %v.", absIntRuneStr, s)
@@ -238,7 +238,7 @@ func TestNumStrDto_ShiftPrecisionLeft_05(t *testing.T) {
 		t.Errorf("Expected HasNumericDigits='true'. Instead, got %v.", nsDto.HasNumericDigits)
 	}
 
-	s := string(nsDto.AbsIntRunes)
+	s := string(nsDto.GetAbsIntRunes())
 
 	if s != absIntRuneStr {
 		t.Errorf("Expected AbsIntRunes='%v'. Instead, got %v.", absIntRuneStr, s)
@@ -289,7 +289,7 @@ func TestNumStrDto_ShiftPrecisionLeft_06(t *testing.T) {
 		t.Errorf("Expected HasNumericDigits='true'. Instead, got %v.", nsDto.HasNumericDigits)
 	}
 
-	s := string(nsDto.AbsIntRunes)
+	s := string(nsDto.GetAbsIntRunes())
 
 	if s != absIntRuneStr {
 		t.Errorf("Expected AbsIntRunes='%v'. Instead, got %v.", absIntRuneStr, s)
@@ -339,7 +339,7 @@ func TestNumStrDto_ShiftPrecisionLeft_07(t *testing.T) {
 		t.Errorf("Expected HasNumericDigits='true'. Instead, got %v.", nsDto.HasNumericDigits)
 	}
 
-	s := string(nsDto.AbsIntRunes)
+	s := string(nsDto.GetAbsIntRunes())
 
 	if s != absIntRuneStr {
 		t.Errorf("Expected AbsIntRunes='%v'. Instead, got %v.", absIntRuneStr, s)
@@ -389,7 +389,7 @@ func TestNumStrDto_ShiftPrecisionLeft_08(t *testing.T) {
 		t.Errorf("Expected HasNumericDigits='true'. Instead, got %v.", nsDto.HasNumericDigits)
 	}
 
-	s := string(nsDto.AbsIntRunes)
+	s := string(nsDto.GetAbsIntRunes())
 
 	if s != absIntRuneStr {
 		t.Errorf("Expected AbsIntRunes='%v'. Instead, got %v.", absIntRuneStr, s)
@@ -439,7 +439,7 @@ func TestNumStrDto_ShiftPrecisionLeft_09(t *testing.T) {
 		t.Errorf("Expected HasNumericDigits='true'. Instead, got %v.", nsDto.HasNumericDigits)
 	}
 
-	s := string(nsDto.AbsIntRunes)
+	s := string(nsDto.GetAbsIntRunes())
 
 	if s != absIntRuneStr {
 		t.Errorf("Expected AbsIntRunes='%v'. Instead, got %v.", absIntRuneStr, s)
@@ -489,7 +489,7 @@ func TestNumStrDto_ShiftPrecisionLeft_10(t *testing.T) {
 		t.Errorf("Expected HasNumericDigits='true'. Instead, got %v.", nsDto.HasNumericDigits)
 	}
 
-	s := string(nsDto.AbsIntRunes)
+	s := string(nsDto.GetAbsIntRunes())
 
 	if s != absIntRuneStr {
 		t.Errorf("Expected AbsIntRunes='%v'. Instead, got %v.", absIntRuneStr, s)
@@ -539,7 +539,7 @@ func TestNumStrDto_ShiftPrecisionLeft_11(t *testing.T) {
 		t.Errorf("Expected HasNumericDigits='true'. Instead, got %v.", nsDto.HasNumericDigits)
 	}
 
-	s := string(nsDto.AbsIntRunes)
+	s := string(nsDto.GetAbsIntRunes())
 
 	if s != absIntRuneStr {
 		t.Errorf("Expected AbsIntRunes='%v'. Instead, got %v.", absIntRuneStr, s)
@@ -589,7 +589,7 @@ func TestNumStrDto_ShiftPrecisionRight_01(t *testing.T) {
 		t.Errorf("Expected HasNumericDigits='true'. Instead, got %v.", nsDto.HasNumericDigits)
 	}
 
-	s := string(nsDto.AbsIntRunes)
+	s := string(nsDto.GetAbsIntRunes())
 
 	if s != absIntRuneStr {
 		t.Errorf("Expected AbsIntRunes='%v'. Instead, got %v.", absIntRuneStr, s)
@@ -639,7 +639,7 @@ func TestNumStrDto_ShiftPrecisionRight_02(t *testing.T) {
 		t.Errorf("Expected HasNumericDigits='true'. Instead, got %v.", nsDto.HasNumericDigits)
 	}
 
-	s := string(nsDto.AbsIntRunes)
+	s := string(nsDto.GetAbsIntRunes())
 
 	if s != absIntRuneStr {
 		t.Errorf("Expected AbsIntRunes='%v'. Instead, got %v.", absIntRuneStr, s)
@@ -689,7 +689,7 @@ func TestNumStrDto_ShiftPrecisionRight_03(t *testing.T) {
 		t.Errorf("Expected HasNumericDigits='true'. Instead, got %v.", nsDto.HasNumericDigits)
 	}
 
-	s := string(nsDto.AbsIntRunes)
+	s := string(nsDto.GetAbsIntRunes())
 
 	if s != absIntRuneStr {
 		t.Errorf("Expected AbsIntRunes='%v'. Instead, got %v.", absIntRuneStr, s)
@@ -739,7 +739,7 @@ func TestNumStrDto_ShiftPrecisionRight_04(t *testing.T) {
 		t.Errorf("Expected HasNumericDigits='true'. Instead, got %v.", nsDto.HasNumericDigits)
 	}
 
-	s := string(nsDto.AbsIntRunes)
+	s := string(nsDto.GetAbsIntRunes())
 
 	if s != absIntRuneStr {
 		t.Errorf("Expected AbsIntRunes='%v'. Instead, got %v.", absIntRuneStr, s)
@@ -789,7 +789,7 @@ func TestNumStrDto_ShiftPrecisionRight_05(t *testing.T) {
 		t.Errorf("Expected HasNumericDigits='true'. Instead, got %v.", nsDto.HasNumericDigits)
 	}
 
-	s := string(nsDto.AbsIntRunes)
+	s := string(nsDto.GetAbsIntRunes())
 
 	if s != absIntRuneStr {
 		t.Errorf("Expected AbsIntRunes='%v'. Instead, got %v.", absIntRuneStr, s)
@@ -839,7 +839,7 @@ func TestNumStrDto_ShiftPrecisionRight_06(t *testing.T) {
 		t.Errorf("Expected HasNumericDigits='true'. Instead, got %v.", nsDto.HasNumericDigits)
 	}
 
-	s := string(nsDto.AbsIntRunes)
+	s := string(nsDto.GetAbsIntRunes())
 
 	if s != absIntRuneStr {
 		t.Errorf("Expected AbsIntRunes='%v'. Instead, got %v.", absIntRuneStr, s)
@@ -889,7 +889,7 @@ func TestNumStrDto_ShiftPrecisionRight_07(t *testing.T) {
 		t.Errorf("Expected HasNumericDigits='true'. Instead, got %v.", nsDto.HasNumericDigits)
 	}
 
-	s := string(nsDto.AbsIntRunes)
+	s := string(nsDto.GetAbsIntRunes())
 
 	if s != absIntRuneStr {
 		t.Errorf("Expected AbsIntRunes='%v'. Instead, got %v.", absIntRuneStr, s)
@@ -939,7 +939,7 @@ func TestNumStrDto_ShiftPrecisionRight_08(t *testing.T) {
 		t.Errorf("Expected HasNumericDigits='true'. Instead, got %v.", nsDto.HasNumericDigits)
 	}
 
-	s := string(nsDto.AbsIntRunes)
+	s := string(nsDto.GetAbsIntRunes())
 
 	if s != absIntRuneStr {
 		t.Errorf("Expected AbsIntRunes='%v'. Instead, got %v.", absIntRuneStr, s)
@@ -989,7 +989,7 @@ func TestNumStrDto_ShiftPrecisionRight_09(t *testing.T) {
 		t.Errorf("Expected HasNumericDigits='true'. Instead, got %v.", nsDto.HasNumericDigits)
 	}
 
-	s := string(nsDto.AbsIntRunes)
+	s := string(nsDto.GetAbsIntRunes())
 
 	if s != absIntRuneStr {
 		t.Errorf("Expected AbsIntRunes='%v'. Instead, got %v.", absIntRuneStr, s)
@@ -1039,7 +1039,7 @@ func TestNumStrDto_ShiftPrecisionRight_10(t *testing.T) {
 		t.Errorf("Expected HasNumericDigits='true'. Instead, got %v.", nsDto.HasNumericDigits)
 	}
 
-	s := string(nsDto.AbsIntRunes)
+	s := string(nsDto.GetAbsIntRunes())
 
 	if s != absIntRuneStr {
 		t.Errorf("Expected AbsIntRunes='%v'. Instead, got %v.", absIntRuneStr, s)
@@ -1077,8 +1077,8 @@ func TestNumStrDto_SubtractNumStrs_01(t *testing.T) {
 		t.Errorf("Expected NumStrOut = '%v'. Instead, got %v", expected, s)
 	}
 
-	s = string(nDto.AbsIntRunes)
-	iStr := string(nResult.AbsIntRunes)
+	s = string(nDto.GetAbsIntRunes())
+	iStr := string(nResult.GetAbsIntRunes())
 
 	if iStr != s {
 		t.Errorf("Expected AbsIntRunes = '%v'. Instead, got %v", iStr, s)
@@ -1139,8 +1139,8 @@ func TestNumStrDto_SubtractNumStrs_02(t *testing.T) {
 		t.Errorf("Expected NumStrOut = '%v'. Instead, got %v", expected, s)
 	}
 
-	s = string(nDto.AbsIntRunes)
-	iStr := string(nResult.AbsIntRunes)
+	s = string(nDto.GetAbsIntRunes())
+	iStr := string(nResult.GetAbsIntRunes())
 
 	if iStr != s {
 		t.Errorf("Expected AbsIntRunes = '%v'. Instead, got %v", iStr, s)
@@ -1201,8 +1201,8 @@ func TestNumStrDto_SubtractNumStrs_03(t *testing.T) {
 		t.Errorf("Expected NumStrOut = '%v'. Instead, got %v", expected, s)
 	}
 
-	s = string(nDto.AbsIntRunes)
-	iStr := string(nResult.AbsIntRunes)
+	s = string(nDto.GetAbsIntRunes())
+	iStr := string(nResult.GetAbsIntRunes())
 
 	if iStr != s {
 		t.Errorf("Expected AbsIntRunes = '%v'. Instead, got %v", iStr, s)
@@ -1264,8 +1264,8 @@ func TestNumStrDto_SubtractNumStrs_04(t *testing.T) {
 		t.Errorf("Expected NumStrOut = '%v'. Instead, got %v", expected, s)
 	}
 
-	s = string(nDto.AbsIntRunes)
-	iStr := string(nResult.AbsIntRunes)
+	s = string(nDto.GetAbsIntRunes())
+	iStr := string(nResult.GetAbsIntRunes())
 
 	if iStr != s {
 		t.Errorf("Expected AbsIntRunes = '%v'. Instead, got %v", iStr, s)
@@ -1327,8 +1327,8 @@ func TestNumStrDto_SubtractNumStrs_05(t *testing.T) {
 		t.Errorf("Expected NumStrOut = '%v'. Instead, got %v", expected, s)
 	}
 
-	s = string(nDto.AbsIntRunes)
-	iStr := string(nResult.AbsIntRunes)
+	s = string(nDto.GetAbsIntRunes())
+	iStr := string(nResult.GetAbsIntRunes())
 
 	if iStr != s {
 		t.Errorf("Expected AbsIntRunes = '%v'. Instead, got %v", iStr, s)
@@ -1390,8 +1390,8 @@ func TestNumStrDto_SubtractNumStrs_06(t *testing.T) {
 		t.Errorf("Expected NumStrOut = '%v'. Instead, got %v", expected, s)
 	}
 
-	s = string(nDto.AbsIntRunes)
-	iStr := string(nResult.AbsIntRunes)
+	s = string(nDto.GetAbsIntRunes())
+	iStr := string(nResult.GetAbsIntRunes())
 
 	if iStr != s {
 		t.Errorf("Expected AbsIntRunes = '%v'. Instead, got %v", iStr, s)

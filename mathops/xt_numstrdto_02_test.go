@@ -28,8 +28,8 @@ func TestNumStrDto_MultiplyNumStrs_01(t *testing.T) {
 		t.Errorf("Expected NumStrOut = '%v'. Instead, got %v", expected, s)
 	}
 
-	s = string(nResult.AbsIntRunes)
-	expected = string(nExpected.AbsIntRunes)
+	s = string(nResult.GetAbsIntRunes())
+	expected = string(nExpected.GetAbsIntRunes())
 
 	if expected != s {
 		t.Errorf("Expected AbsIntRunes = '%v'. Instead, got %v", expected, s)
@@ -91,8 +91,8 @@ func TestNumStrDto_MultiplyNumStrs_02(t *testing.T) {
 		t.Errorf("Expected NumStrOut = '%v'. Instead, got %v", expected, s)
 	}
 
-	s = string(nResult.AbsIntRunes)
-	expected = string(nExpected.AbsIntRunes)
+	s = string(nResult.GetAbsIntRunes())
+	expected = string(nExpected.GetAbsIntRunes())
 
 	if expected != s {
 		t.Errorf("Expected AbsIntRunes = '%v'. Instead, got %v", expected, s)
@@ -154,8 +154,8 @@ func TestNumStrDto_MultiplyNumStrs_03(t *testing.T) {
 		t.Errorf("Expected NumStrOut = '%v'. Instead, got %v", expected, s)
 	}
 
-	s = string(nResult.AbsIntRunes)
-	expected = string(nExpected.AbsIntRunes)
+	s = string(nResult.GetAbsIntRunes())
+	expected = string(nExpected.GetAbsIntRunes())
 
 	if expected != s {
 		t.Errorf("Expected AbsIntRunes = '%v'. Instead, got %v", expected, s)
@@ -217,8 +217,8 @@ func TestNumStrDto_MultiplyNumStrs_04(t *testing.T) {
 		t.Errorf("Expected NumStrOut = '%v'. Instead, got %v", expected, s)
 	}
 
-	s = string(nResult.AbsIntRunes)
-	expected = string(nExpected.AbsIntRunes)
+	s = string(nResult.GetAbsIntRunes())
+	expected = string(nExpected.GetAbsIntRunes())
 
 	if expected != s {
 		t.Errorf("Expected AbsIntRunes = '%v'. Instead, got %v", expected, s)
@@ -280,8 +280,8 @@ func TestNumStrDto_MultiplyNumStrs_05(t *testing.T) {
 		t.Errorf("Expected NumStrOut = '%v'. Instead, got %v", expected, s)
 	}
 
-	s = string(nResult.AbsIntRunes)
-	expected = string(nExpected.AbsIntRunes)
+	s = string(nResult.GetAbsIntRunes())
+	expected = string(nExpected.GetAbsIntRunes())
 
 	if expected != s {
 		t.Errorf("Expected AbsIntRunes = '%v'. Instead, got %v", expected, s)
@@ -343,8 +343,8 @@ func TestNumStrDto_MultiplyNumStrs_06(t *testing.T) {
 		t.Errorf("Expected NumStrOut = '%v'. Instead, got %v", expected, s)
 	}
 
-	s = string(nResult.AbsIntRunes)
-	expected = string(nExpected.AbsIntRunes)
+	s = string(nResult.GetAbsIntRunes())
+	expected = string(nExpected.GetAbsIntRunes())
 
 	if expected != s {
 		t.Errorf("Expected AbsIntRunes = '%v'. Instead, got %v", expected, s)
@@ -406,8 +406,8 @@ func TestNumStrDto_MultiplyNumStrs_07(t *testing.T) {
 		t.Errorf("Expected NumStrOut = '%v'. Instead, got %v", expected, s)
 	}
 
-	s = string(nResult.AbsIntRunes)
-	expected = string(nExpected.AbsIntRunes)
+	s = string(nResult.GetAbsIntRunes())
+	expected = string(nExpected.GetAbsIntRunes())
 
 	if expected != s {
 		t.Errorf("Expected AbsIntRunes = '%v'. Instead, got %v", expected, s)
@@ -469,8 +469,8 @@ func TestNumStrDto_MultiplyNumStrs_08(t *testing.T) {
 		t.Errorf("Expected NumStrOut = '%v'. Instead, got %v", expected, s)
 	}
 
-	s = string(nResult.AbsIntRunes)
-	expected = string(nExpected.AbsIntRunes)
+	s = string(nResult.GetAbsIntRunes())
+	expected = string(nExpected.GetAbsIntRunes())
 
 	if expected != s {
 		t.Errorf("Expected AbsIntRunes = '%v'. Instead, got %v", expected, s)
@@ -532,8 +532,8 @@ func TestNumStrDto_MultiplyNumStrs_09(t *testing.T) {
 		t.Errorf("Expected NumStrOut = '%v'. Instead, got %v", expected, s)
 	}
 
-	s = string(nResult.AbsIntRunes)
-	expected = string(nExpected.AbsIntRunes)
+	s = string(nResult.GetAbsIntRunes())
+	expected = string(nExpected.GetAbsIntRunes())
 
 	if expected != s {
 		t.Errorf("Expected AbsIntRunes = '%v'. Instead, got %v", expected, s)
@@ -595,8 +595,8 @@ func TestNumStrDto_MultiplyNumStrs_10(t *testing.T) {
 		t.Errorf("Expected NumStrOut = '%v'. Instead, got %v", expected, s)
 	}
 
-	s = string(nResult.AbsIntRunes)
-	expected = string(nExpected.AbsIntRunes)
+	s = string(nResult.GetAbsIntRunes())
+	expected = string(nExpected.GetAbsIntRunes())
 
 	if expected != s {
 		t.Errorf("Expected AbsIntRunes = '%v'. Instead, got %v", expected, s)
@@ -658,8 +658,8 @@ func TestNumStrDto_MultiplyNumStrs_11(t *testing.T) {
 		t.Errorf("Expected NumStrOut = '%v'. Instead, got %v", expected, s)
 	}
 
-	s = string(nResult.AbsIntRunes)
-	expected = string(nExpected.AbsIntRunes)
+	s = string(nResult.GetAbsIntRunes())
+	expected = string(nExpected.GetAbsIntRunes())
 
 	if expected != s {
 		t.Errorf("Expected AbsIntRunes = '%v'. Instead, got %v", expected, s)
@@ -721,8 +721,8 @@ func TestNumStrDto_MultiplyNumStrs_12(t *testing.T) {
 		t.Errorf("Expected NumStrOut = '%v'. Instead, got %v", expected, s)
 	}
 
-	s = string(nResult.AbsIntRunes)
-	expected = string(nExpected.AbsIntRunes)
+	s = string(nResult.GetAbsIntRunes())
+	expected = string(nExpected.GetAbsIntRunes())
 
 	if expected != s {
 		t.Errorf("Expected AbsIntRunes = '%v'. Instead, got %v", expected, s)
@@ -784,8 +784,8 @@ func TestNumStrDto_MultiplyNumStrs_13(t *testing.T) {
 		t.Errorf("Expected NumStrOut = '%v'. Instead, got %v", expected, s)
 	}
 
-	s = string(nResult.AbsIntRunes)
-	expected = string(nExpected.AbsIntRunes)
+	s = string(nResult.GetAbsIntRunes())
+	expected = string(nExpected.GetAbsIntRunes())
 
 	if expected != s {
 		t.Errorf("Expected AbsIntRunes = '%v'. Instead, got %v", expected, s)
@@ -847,8 +847,8 @@ func TestNumStrDto_MultiplyNumStrs_14(t *testing.T) {
 		t.Errorf("Expected NumStrOut = '%v'. Instead, got %v", expected, s)
 	}
 
-	s = string(nResult.AbsIntRunes)
-	expected = string(nExpected.AbsIntRunes)
+	s = string(nResult.GetAbsIntRunes())
+	expected = string(nExpected.GetAbsIntRunes())
 
 	if expected != s {
 		t.Errorf("Expected AbsIntRunes = '%v'. Instead, got %v", expected, s)
@@ -906,7 +906,7 @@ func TestNumStrDto_NewNumStr_01(t *testing.T) {
 		t.Errorf("Expected NumStrOut = '%v'. Instead, got %v", nStr, s)
 	}
 
-	s = string(nDto.AbsIntRunes)
+	s = string(nDto.GetAbsIntRunes())
 
 	if iStr != s {
 		t.Errorf("Expected AbsIntRunes = '%v'. Instead, got %v", iStr, s)
@@ -961,7 +961,7 @@ func TestNumStrDto_NewNumStr_02(t *testing.T) {
 		t.Errorf("Expected NumStrOut = '%v'. Instead, got %v", nStr, s)
 	}
 
-	s = string(nDto.AbsIntRunes)
+	s = string(nDto.GetAbsIntRunes())
 
 	if iStr != s {
 		t.Errorf("Expected AbsIntRunes = '%v'. Instead, got %v", iStr, s)
@@ -1016,7 +1016,7 @@ func TestNumStrDto_NewNumStr_03(t *testing.T) {
 		t.Errorf("Expected NumStrOut = '%v'. Instead, got %v", nStr, s)
 	}
 
-	s = string(nDto.AbsIntRunes)
+	s = string(nDto.GetAbsIntRunes())
 
 	if iStr != s {
 		t.Errorf("Expected AbsIntRunes = '%v'. Instead, got %v", iStr, s)
@@ -1072,7 +1072,7 @@ func TestNumStrDto_NewNumStr_04(t *testing.T) {
 		t.Errorf("Expected NumStrOut = '%v'. Instead, got %v", nStr, s)
 	}
 
-	s = string(nDto.AbsIntRunes)
+	s = string(nDto.GetAbsIntRunes())
 
 	if iStr != s {
 		t.Errorf("Expected AbsIntRunes = '%v'. Instead, got %v", iStr, s)
@@ -1128,7 +1128,7 @@ func TestNumStrDto_NewNumStr_05(t *testing.T) {
 		t.Errorf("Expected NumStrOut = '%v'. Instead, got %v", nStrOut, s)
 	}
 
-	s = string(nDto.AbsIntRunes)
+	s = string(nDto.GetAbsIntRunes())
 
 	if iStr != s {
 		t.Errorf("Expected AbsIntRunes = '%v'. Instead, got %v", iStr, s)
@@ -1183,7 +1183,7 @@ func TestNumStrDto_ParseNumStr_01(t *testing.T) {
 		t.Errorf("Expected NumStrOut = '%v'. Instead, got %v", nStr, s)
 	}
 
-	s = string(nDto.AbsIntRunes)
+	s = string(nDto.GetAbsIntRunes())
 
 	if iStr != s {
 		t.Errorf("Expected AbsIntRunes = '%v'. Instead, got %v", iStr, s)
@@ -1238,7 +1238,7 @@ func TestNumStrDto_ParseNumStr_02(t *testing.T) {
 		t.Errorf("Expected NumStrOut = '%v'. Instead, got %v", nStr, s)
 	}
 
-	s = string(nDto.AbsIntRunes)
+	s = string(nDto.GetAbsIntRunes())
 
 	if iStr != s {
 		t.Errorf("Expected AbsIntRunes = '%v'. Instead, got %v", iStr, s)
@@ -1293,7 +1293,7 @@ func TestNumStrDto_ParseNumStr_03(t *testing.T) {
 		t.Errorf("Expected NumStrOut = '%v'. Instead, got %v", nStr, s)
 	}
 
-	s = string(nDto.AbsIntRunes)
+	s = string(nDto.GetAbsIntRunes())
 
 	if iStr != s {
 		t.Errorf("Expected AbsIntRunes = '%v'. Instead, got %v", iStr, s)
@@ -1348,7 +1348,7 @@ func TestNumStrDto_ParseNumStr_04(t *testing.T) {
 		t.Errorf("Expected NumStrOut = '%v'. Instead, got %v", nStr, s)
 	}
 
-	s = string(nDto.AbsIntRunes)
+	s = string(nDto.GetAbsIntRunes())
 
 	if iStr != s {
 		t.Errorf("Expected AbsIntRunes = '%v'. Instead, got %v", iStr, s)
@@ -1404,7 +1404,7 @@ func TestNumStrDto_ParseNumStr_05(t *testing.T) {
 		t.Errorf("Expected NumStrOut = '%v'. Instead, got %v", nStrOut, s)
 	}
 
-	s = string(nDto.AbsIntRunes)
+	s = string(nDto.GetAbsIntRunes())
 
 	if iStr != s {
 		t.Errorf("Expected AbsIntRunes = '%v'. Instead, got %v", iStr, s)
@@ -1476,7 +1476,7 @@ func TestNumStrDto_ParseSignedBigInt_01(t *testing.T) {
 
 	}
 
-	s = string(nDto.AbsIntRunes)
+	s = string(nDto.GetAbsIntRunes())
 
 	if iStr != s {
 		t.Errorf("Expected AbsIntRunes = '%v'. Instead, got %v", iStr, s)
@@ -1548,7 +1548,7 @@ func TestNumStrDto_ParseSignedBigInt_02(t *testing.T) {
 
 	}
 
-	s = string(nDto.AbsIntRunes)
+	s = string(nDto.GetAbsIntRunes())
 
 	if iStr != s {
 		t.Errorf("Expected AbsIntRunes = '%v'. Instead, got %v", iStr, s)
