@@ -244,8 +244,8 @@ func TestNumStrUtility_ParseNumString_01(t *testing.T) {
 		t.Errorf("Expected signVal=1. Instead, got %v", nsDto.SignVal)
 	}
 
-	if nsDto.Precision != 6 {
-		t.Errorf("Expected precision=6. Instead, got %v", nsDto.Precision)
+	if nsDto.GetPrecision() != 6 {
+		t.Errorf("Expected precision=6. Instead, got %v", nsDto.GetPrecision())
 	}
 
 	if nsDto.HasNumericDigits == false {
@@ -278,8 +278,8 @@ func TestNumStrUtility_ParseNumString_02(t *testing.T) {
 		t.Errorf("Expected signVal= -1. Instead, got %v", nsDto.SignVal)
 	}
 
-	if nsDto.Precision != 6 {
-		t.Errorf("Expected precision=6. Instead, got %v", nsDto.Precision)
+	if nsDto.GetPrecision() != 6 {
+		t.Errorf("Expected precision=6. Instead, got %v", nsDto.GetPrecision())
 	}
 
 	if nsDto.HasNumericDigits == false {

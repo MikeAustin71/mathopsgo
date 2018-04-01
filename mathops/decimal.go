@@ -109,8 +109,8 @@ func (dec *Decimal) Add(d2 Decimal) (Decimal, error) {
 	if err != nil {
 		return Decimal{},
 			fmt.Errorf(ePrefix + "Error returned from dec.MakeDecimalFromNumStrDto(nDto) " +
-				"nDto.NumStrOut='%v'  nDto.Precision='%v'  Error='%v'",
-				nDto.NumStrOut, nDto.Precision, err.Error())
+				"nDto.NumStrOut='%v'  nDto.GetPrecision()='%v'  Error='%v'",
+				nDto.NumStrOut, nDto.GetPrecision(), err.Error())
 	}
 
 	return d4, nil
@@ -809,7 +809,7 @@ func (dec *Decimal) MakeDecimalFromNumStrDto(nDto NumStrDto) (Decimal, error) {
 	d2 := Decimal{}.New()
 	d2.signVal = nDto.SignVal
 	d2.numStr = nDto.NumStrOut
-	d2.precision = nDto.Precision
+	d2.precision = nDto.GetPrecision()
 	d2.currencySymbol = dec.currencySymbol
 	d2.decimalSeparator = nDto.DecimalSeparator
 	d2.thousandsSeparator = dec.thousandsSeparator
@@ -912,8 +912,8 @@ func (dec *Decimal) Mul(d2 Decimal) (Decimal, error) {
 	if err != nil {
 		return Decimal{},
 			fmt.Errorf(ePrefix + "Error returned from dec.MakeDecimalFromNumStrDto(nDto) " +
-				"nDto.NumStrOut='%v'  nDto.Precision='%v'  Error='%v'",
-				nDto.NumStrOut, nDto.Precision, err.Error())
+				"nDto.NumStrOut='%v'  nDto.GetPrecision()='%v'  Error='%v'",
+				nDto.NumStrOut, nDto.GetPrecision(), err.Error())
 	}
 
 	return d4, nil
@@ -1447,8 +1447,8 @@ func (dec *Decimal) Pow(exponent int, maxPrecision int) (Decimal, error) {
 	if err != nil {
 		return Decimal{},
 			fmt.Errorf(ePrefix + "Error returned from dec.MakeDecimalFromNumStrDto(nDto) " +
-				"nDto.NumStrOut='%v'  nDto.Precision='%v'  Error='%v'",
-				nDto.NumStrOut, nDto.Precision, err.Error())
+				"nDto.NumStrOut='%v'  nDto.GetPrecision()='%v'  Error='%v'",
+				nDto.NumStrOut, nDto.GetPrecision(), err.Error())
 	}
 
 	if expSign == 1 {
@@ -1905,13 +1905,21 @@ func (dec *Decimal) SetNumStrDto(nDto NumStrDto) error {
 // as the starting point.
 //
 // This method performs a relative shift left of the decimal point position.
-// See Examples below:
+// See Examples below.
+//
+// This operation is equivalent to:
+// 							result = signed number / 10^shiftPrecision
+// 									or signed number divided by 10 raised to the power of shiftPrecision.
 //
 // Input Parameters
 // ================
 //
+//	shiftPrecision int	- The number of positions the decimal point will be shifted left
+//												from its current position.
 //
-// Examples:
+// Examples
+// ========
+//
 // signedNumStr			precision			Result
 //  "123456.789"				3						"123456789"
 //  "123456.789"				2						"12345678.9"
@@ -2030,8 +2038,8 @@ func (dec *Decimal) Subtract(d2 Decimal) (Decimal, error) {
 	if err != nil {
 		return Decimal{},
 			fmt.Errorf(ePrefix + "Error returned from dec.MakeDecimalFromNumStrDto(nDto) " +
-				"nDto.NumStrOut='%v'  nDto.Precision='%v'  Error='%v'",
-				nDto.NumStrOut, nDto.Precision, err.Error())
+				"nDto.NumStrOut='%v'  nDto.GetPrecision()='%v'  Error='%v'",
+				nDto.NumStrOut, nDto.GetPrecision(), err.Error())
 	}
 
 	return d4, nil
