@@ -29,7 +29,6 @@ type NumStrDto struct {
 	ThousandsSeparator rune
 	DecimalSeparator   rune
 	CurrencySymbol     rune
-	NumStrIn           string
 	NumStrOut          string
 }
 
@@ -271,7 +270,6 @@ func (nDto *NumStrDto) CopyOut() NumStrDto {
 	nOut.precision = nDto.precision
 	nOut.IsFractionalValue = nDto.IsFractionalValue
 	nOut.HasNumericDigits = nDto.HasNumericDigits
-	nOut.NumStrIn = nDto.NumStrIn
 	nOut.NumStrOut = nDto.NumStrOut
 	nOut.ThousandsSeparator = nDto.ThousandsSeparator
 	nOut.DecimalSeparator = nDto.DecimalSeparator
@@ -295,7 +293,6 @@ func (nDto *NumStrDto) CopyIn(nInDto NumStrDto) {
 	nDto.precision = nInDto.precision
 	nDto.IsFractionalValue = nInDto.IsFractionalValue
 	nDto.HasNumericDigits = nInDto.HasNumericDigits
-	nDto.NumStrIn = nInDto.NumStrIn
 	nDto.NumStrOut = nInDto.NumStrOut
 	nDto.ThousandsSeparator = nInDto.ThousandsSeparator
 	nDto.DecimalSeparator = nInDto.DecimalSeparator
@@ -315,7 +312,6 @@ func (nDto *NumStrDto) Empty() {
 	nDto.precision = 0
 	nDto.IsFractionalValue = false
 	nDto.HasNumericDigits = false
-	nDto.NumStrIn = ""
 	nDto.NumStrOut = ""
 
 	if nDto.ThousandsSeparator == 0 {
@@ -1195,7 +1191,7 @@ func (nDto *NumStrDto) ParseSignedBigInt(signedBigInt *big.Int, precision uint) 
 	}
 
 	n2Dto := NumStrDto{}.New()
-	n2Dto.NumStrIn = signedBigInt.String()
+
 
 	if signedBigInt.Cmp(bigZero) == 0 {
 		return nDto.GetZeroNumStr(0), nil
@@ -1303,13 +1299,12 @@ func (nDto *NumStrDto) ParseNumStr(str string) (NumStrDto, error) {
 
 	n2Dto := NumStrDto{}.New()
 
-	n2Dto.NumStrIn = str
 
 	n2Dto.signVal = 1
 	n2Dto.ThousandsSeparator = nDto.ThousandsSeparator
 	n2Dto.DecimalSeparator = nDto.DecimalSeparator
 	n2Dto.CurrencySymbol = nDto.CurrencySymbol
-	baseRunes := []rune(n2Dto.NumStrIn)
+	baseRunes := []rune(str)
 	lBaseRunes := len(baseRunes)
 	isStartRunes := false
 	isEndRunes := false
@@ -1608,7 +1603,6 @@ func (nDto *NumStrDto) ShiftPrecisionLeft(signedNumStr string, shiftPrecision ui
 	n2.CurrencySymbol = nDto.CurrencySymbol
 	n2.signVal = n1.signVal
 	n2.precision = shiftPrecision + n1.precision
-	n2.NumStrIn = n1.NumStrIn
 	iTotalSpecPrecision := int(n2.precision)
 	lenAbsAllNumRunes := len(n1.absAllNumRunes)
 	lenAbsIntRunes := len(n1.absIntRunes)
@@ -1743,7 +1737,6 @@ func (nDto *NumStrDto) ShiftPrecisionRight(signedNumStr string, precision uint) 
 	n2.CurrencySymbol = nDto.CurrencySymbol
 	n2.signVal = n1.signVal
 	n2.precision = uint(iTotalSpecPrecision)
-	n2.NumStrIn = n1.NumStrIn
 
 	lenAbsAllNumRunes := len(n1.absAllNumRunes)
 
@@ -1907,7 +1900,6 @@ func (nDto *NumStrDto) SetPrecision(
 	n2.DecimalSeparator = nDto.DecimalSeparator
 	n2.CurrencySymbol = nDto.CurrencySymbol
 	n2.HasNumericDigits = true
-	n2.NumStrIn = signedNumStr
 	iSpecPrecision := int(precision)
 	lenN1AbsAllNumRunes := len(n1.absAllNumRunes)
 	lenN1AbsIntRunes := len(n1.absIntRunes)
