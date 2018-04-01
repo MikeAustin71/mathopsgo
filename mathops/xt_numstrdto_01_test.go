@@ -44,8 +44,8 @@ func TestNumStrDto_AddNumStrs_01(t *testing.T) {
 		t.Errorf("Expected AbsFracRunes = '%v'. Instead, got %v", expected, s)
 	}
 
-	if nExpected.SignVal != nResult.SignVal {
-		t.Errorf("Expected SignVal= '%v'. Instead, got %v", nExpected.SignVal, nResult.SignVal)
+	if nExpected.GetSign() != nResult.GetSign() {
+		t.Errorf("Expected SignVal= '%v'. Instead, got %v", nExpected.GetSign(), nResult.GetSign())
 	}
 
 	if nExpected.HasNumericDigits != nResult.HasNumericDigits {
@@ -108,8 +108,8 @@ func TestNumStrDto_AddNumStrs_02(t *testing.T) {
 		t.Errorf("Expected AbsFracRunes = '%v'. Instead, got %v", expected, s)
 	}
 
-	if nExpected.SignVal != nResult.SignVal {
-		t.Errorf("Expected SignVal= '%v'. Instead, got %v", nExpected.SignVal, nResult.SignVal)
+	if nExpected.GetSign() != nResult.GetSign() {
+		t.Errorf("Expected SignVal= '%v'. Instead, got %v", nExpected.GetSign(), nResult.GetSign())
 	}
 
 	if nExpected.HasNumericDigits != nResult.HasNumericDigits {
@@ -172,8 +172,8 @@ func TestNumStrDto_AddNumStrs_03(t *testing.T) {
 		t.Errorf("Expected AbsFracRunes = '%v'. Instead, got %v", expected, s)
 	}
 
-	if nExpected.SignVal != nResult.SignVal {
-		t.Errorf("Expected SignVal= '%v'. Instead, got %v", nExpected.SignVal, nResult.SignVal)
+	if nExpected.GetSign() != nResult.GetSign() {
+		t.Errorf("Expected SignVal= '%v'. Instead, got %v", nExpected.GetSign(), nResult.GetSign())
 	}
 
 	if nExpected.HasNumericDigits != nResult.HasNumericDigits {
@@ -236,8 +236,8 @@ func TestNumStrDto_AddNumStrs_04(t *testing.T) {
 		t.Errorf("Expected AbsFracRunes = '%v'. Instead, got %v", expected, s)
 	}
 
-	if nExpected.SignVal != nResult.SignVal {
-		t.Errorf("Expected SignVal= '%v'. Instead, got %v", nExpected.SignVal, nResult.SignVal)
+	if nExpected.GetSign() != nResult.GetSign() {
+		t.Errorf("Expected SignVal= '%v'. Instead, got %v", nExpected.GetSign(), nResult.GetSign())
 	}
 
 	if nExpected.HasNumericDigits != nResult.HasNumericDigits {
@@ -300,8 +300,8 @@ func TestNumStrDto_AddNumStrs_05(t *testing.T) {
 		t.Errorf("Expected AbsFracRunes = '%v'. Instead, got %v", expected, s)
 	}
 
-	if nExpected.SignVal != nResult.SignVal {
-		t.Errorf("Expected SignVal= '%v'. Instead, got %v", nExpected.SignVal, nResult.SignVal)
+	if nExpected.GetSign() != nResult.GetSign() {
+		t.Errorf("Expected SignVal= '%v'. Instead, got %v", nExpected.GetSign(), nResult.GetSign())
 	}
 
 	if nExpected.HasNumericDigits != nResult.HasNumericDigits {
@@ -364,8 +364,8 @@ func TestNumStrDto_AddNumStrs_06(t *testing.T) {
 		t.Errorf("Expected AbsFracRunes = '%v'. Instead, got %v", expected, s)
 	}
 
-	if nExpected.SignVal != nResult.SignVal {
-		t.Errorf("Expected SignVal= '%v'. Instead, got %v", nExpected.SignVal, nResult.SignVal)
+	if nExpected.GetSign() != nResult.GetSign() {
+		t.Errorf("Expected SignVal= '%v'. Instead, got %v", nExpected.GetSign(), nResult.GetSign())
 	}
 
 	if nExpected.HasNumericDigits != nResult.HasNumericDigits {
@@ -428,8 +428,8 @@ func TestNumStrDto_AddNumStrs_07(t *testing.T) {
 		t.Errorf("Expected AbsFracRunes = '%v'. Instead, got %v", expected, s)
 	}
 
-	if nExpected.SignVal != nResult.SignVal {
-		t.Errorf("Expected SignVal= '%v'. Instead, got %v", nExpected.SignVal, nResult.SignVal)
+	if nExpected.GetSign() != nResult.GetSign() {
+		t.Errorf("Expected SignVal= '%v'. Instead, got %v", nExpected.GetSign(), nResult.GetSign())
 	}
 
 	if nExpected.HasNumericDigits != nResult.HasNumericDigits {
@@ -492,8 +492,8 @@ func TestNumStrDto_AddNumStrs_08(t *testing.T) {
 		t.Errorf("Expected AbsFracRunes = '%v'. Instead, got %v", expected, s)
 	}
 
-	if nExpected.SignVal != nResult.SignVal {
-		t.Errorf("Expected SignVal= '%v'. Instead, got %v", nExpected.SignVal, nResult.SignVal)
+	if nExpected.GetSign() != nResult.GetSign() {
+		t.Errorf("Expected SignVal= '%v'. Instead, got %v", nExpected.GetSign(), nResult.GetSign())
 	}
 
 	if nExpected.HasNumericDigits != nResult.HasNumericDigits {
@@ -555,8 +555,8 @@ func TestNumStrDto_AddNumStrs_09(t *testing.T) {
 		t.Errorf("Expected AbsFracRunes = '%v'. Instead, got %v", expected, s)
 	}
 
-	if nExpected.SignVal != nResult.SignVal {
-		t.Errorf("Expected SignVal= '%v'. Instead, got %v", nExpected.SignVal, nResult.SignVal)
+	if nExpected.GetSign() != nResult.GetSign() {
+		t.Errorf("Expected SignVal= '%v'. Instead, got %v", nExpected.GetSign(), nResult.GetSign())
 	}
 
 	if nExpected.HasNumericDigits != nResult.HasNumericDigits {
@@ -618,8 +618,8 @@ func TestNumStrDto_AddNumStrs_10(t *testing.T) {
 		t.Errorf("Expected AbsFracRunes = '%v'. Instead, got %v", expected, s)
 	}
 
-	if nExpected.SignVal != nResult.SignVal {
-		t.Errorf("Expected SignVal= '%v'. Instead, got %v", nExpected.SignVal, nResult.SignVal)
+	if nExpected.GetSign() != nResult.GetSign() {
+		t.Errorf("Expected SignVal= '%v'. Instead, got %v", nExpected.GetSign(), nResult.GetSign())
 	}
 
 	if nExpected.HasNumericDigits != nResult.HasNumericDigits {
@@ -680,8 +680,8 @@ func TestNumStrDto_AddNumStrs_11(t *testing.T) {
 		t.Errorf("Expected AbsFracRunes = '%v'. Instead, got %v", expected, s)
 	}
 
-	if nExpected.SignVal != nResult.SignVal {
-		t.Errorf("Expected SignVal= '%v'. Instead, got %v", nExpected.SignVal, nResult.SignVal)
+	if nExpected.GetSign() != nResult.GetSign() {
+		t.Errorf("Expected SignVal= '%v'. Instead, got %v", nExpected.GetSign(), nResult.GetSign())
 	}
 
 	if nExpected.HasNumericDigits != nResult.HasNumericDigits {
@@ -996,12 +996,12 @@ func TestNumStrDto_FormatForMathOps_01(t *testing.T) {
 		t.Errorf("Expected n2OutDto.NumStrOut= '%v'. Instead got '%v'", nOut2.NumStrOut, n2OutDto.NumStrOut)
 	}
 
-	if nOut1.SignVal != n1OutDto.SignVal {
-		t.Errorf("Expected n1OutDto.SignVal= '%v'. Instead got '%v'", nOut1.SignVal, n1OutDto.SignVal)
+	if nOut1.GetSign() != n1OutDto.GetSign() {
+		t.Errorf("Expected n1OutDto.GetSign()= '%v'. Instead got '%v'", nOut1.GetSign(), n1OutDto.GetSign())
 	}
 
-	if nOut2.SignVal != n2OutDto.SignVal {
-		t.Errorf("Expected n1OutDto.SignVal= '%v'. Instead got '%v'", nOut2.SignVal, n2OutDto.SignVal)
+	if nOut2.GetSign() != n2OutDto.GetSign() {
+		t.Errorf("Expected n1OutDto.GetSign()= '%v'. Instead got '%v'", nOut2.GetSign(), n2OutDto.GetSign())
 	}
 
 	if nOut1.GetPrecision() != n1OutDto.GetPrecision() {
@@ -1050,12 +1050,12 @@ func TestNumStrDto_FormatForMathOps_02(t *testing.T) {
 		t.Errorf("Expected n2OutDto.NumStrOut= '%v'. Instead got '%v'", nOut2.NumStrOut, n2OutDto.NumStrOut)
 	}
 
-	if nOut1.SignVal != n1OutDto.SignVal {
-		t.Errorf("Expected n1OutDto.SignVal= '%v'. Instead got '%v'", nOut1.SignVal, n1OutDto.SignVal)
+	if nOut1.GetSign() != n1OutDto.GetSign() {
+		t.Errorf("Expected n1OutDto.GetSign()= '%v'. Instead got '%v'", nOut1.GetSign(), n1OutDto.GetSign())
 	}
 
-	if nOut2.SignVal != n2OutDto.SignVal {
-		t.Errorf("Expected n1OutDto.SignVal= '%v'. Instead got '%v'", nOut2.SignVal, n2OutDto.SignVal)
+	if nOut2.GetSign() != n2OutDto.GetSign() {
+		t.Errorf("Expected n1OutDto.GetSign()= '%v'. Instead got '%v'", nOut2.GetSign(), n2OutDto.GetSign())
 	}
 
 	if nOut1.GetPrecision() != n1OutDto.GetPrecision() {
@@ -1104,12 +1104,12 @@ func TestNumStrDto_FormatForMathOps_03(t *testing.T) {
 		t.Errorf("Expected n2OutDto.NumStrOut= '%v'. Instead got '%v'", nOut2.NumStrOut, n2OutDto.NumStrOut)
 	}
 
-	if nOut1.SignVal != n1OutDto.SignVal {
-		t.Errorf("Expected n1OutDto.SignVal= '%v'. Instead got '%v'", nOut1.SignVal, n1OutDto.SignVal)
+	if nOut1.GetSign() != n1OutDto.GetSign() {
+		t.Errorf("Expected n1OutDto.GetSign()= '%v'. Instead got '%v'", nOut1.GetSign(), n1OutDto.GetSign())
 	}
 
-	if nOut2.SignVal != n2OutDto.SignVal {
-		t.Errorf("Expected n1OutDto.SignVal= '%v'. Instead got '%v'", nOut2.SignVal, n2OutDto.SignVal)
+	if nOut2.GetSign() != n2OutDto.GetSign() {
+		t.Errorf("Expected n1OutDto.GetSign()= '%v'. Instead got '%v'", nOut2.GetSign(), n2OutDto.GetSign())
 	}
 
 	if nOut1.GetPrecision() != n1OutDto.GetPrecision() {
@@ -1158,12 +1158,12 @@ func TestNumStrDto_FormatForMathOps_04(t *testing.T) {
 		t.Errorf("Expected n2OutDto.NumStrOut= '%v'. Instead got '%v'", nOut2.NumStrOut, n2OutDto.NumStrOut)
 	}
 
-	if nOut1.SignVal != n1OutDto.SignVal {
-		t.Errorf("Expected n1OutDto.SignVal= '%v'. Instead got '%v'", nOut1.SignVal, n1OutDto.SignVal)
+	if nOut1.GetSign() != n1OutDto.GetSign() {
+		t.Errorf("Expected n1OutDto.GetSign()= '%v'. Instead got '%v'", nOut1.GetSign(), n1OutDto.GetSign())
 	}
 
-	if nOut2.SignVal != n2OutDto.SignVal {
-		t.Errorf("Expected n1OutDto.SignVal= '%v'. Instead got '%v'", nOut2.SignVal, n2OutDto.SignVal)
+	if nOut2.GetSign() != n2OutDto.GetSign() {
+		t.Errorf("Expected n1OutDto.GetSign()= '%v'. Instead got '%v'", nOut2.GetSign(), n2OutDto.GetSign())
 	}
 
 	if nOut1.GetPrecision() != n1OutDto.GetPrecision() {
@@ -1211,12 +1211,12 @@ func TestNumStrDto_FormatForMathOps_05(t *testing.T) {
 		t.Errorf("Expected n2OutDto.NumStrOut= '%v'. Instead got '%v'", nOut2.NumStrOut, n2OutDto.NumStrOut)
 	}
 
-	if nOut1.SignVal != n1OutDto.SignVal {
-		t.Errorf("Expected n1OutDto.SignVal= '%v'. Instead got '%v'", nOut1.SignVal, n1OutDto.SignVal)
+	if nOut1.GetSign() != n1OutDto.GetSign() {
+		t.Errorf("Expected n1OutDto.GetSign()= '%v'. Instead got '%v'", nOut1.GetSign(), n1OutDto.GetSign())
 	}
 
-	if nOut2.SignVal != n2OutDto.SignVal {
-		t.Errorf("Expected n1OutDto.SignVal= '%v'. Instead got '%v'", nOut2.SignVal, n2OutDto.SignVal)
+	if nOut2.GetSign() != n2OutDto.GetSign() {
+		t.Errorf("Expected n1OutDto.GetSign()= '%v'. Instead got '%v'", nOut2.GetSign(), n2OutDto.GetSign())
 	}
 
 	if nOut1.GetPrecision() != n1OutDto.GetPrecision() {
@@ -1264,12 +1264,12 @@ func TestNumStrDto_FormatForMathOps_06(t *testing.T) {
 		t.Errorf("Expected n2OutDto.NumStrOut= '%v'. Instead got '%v'", nOut2.NumStrOut, n2OutDto.NumStrOut)
 	}
 
-	if nOut1.SignVal != n1OutDto.SignVal {
-		t.Errorf("Expected n1OutDto.SignVal= '%v'. Instead got '%v'", nOut1.SignVal, n1OutDto.SignVal)
+	if nOut1.GetSign() != n1OutDto.GetSign() {
+		t.Errorf("Expected n1OutDto.GetSign()= '%v'. Instead got '%v'", nOut1.GetSign(), n1OutDto.GetSign())
 	}
 
-	if nOut2.SignVal != n2OutDto.SignVal {
-		t.Errorf("Expected n1OutDto.SignVal= '%v'. Instead got '%v'", nOut2.SignVal, n2OutDto.SignVal)
+	if nOut2.GetSign() != n2OutDto.GetSign() {
+		t.Errorf("Expected n1OutDto.GetSign()= '%v'. Instead got '%v'", nOut2.GetSign(), n2OutDto.GetSign())
 	}
 
 	if nOut1.GetPrecision() != n1OutDto.GetPrecision() {
@@ -1319,8 +1319,8 @@ func TestNumStrDto_CopyIn_01(t *testing.T) {
 		t.Errorf("Expected AbsFracRunes = '%v'. Instead, got %v", fracStr, s)
 	}
 
-	if nDto.SignVal != signVal {
-		t.Errorf("Expected SignVal= '%v'. Instead, got %v", signVal, nDto.SignVal)
+	if nDto.GetSign() != signVal {
+		t.Errorf("Expected SignVal= '%v'. Instead, got %v", signVal, nDto.GetSign())
 	}
 
 	if !nDto.HasNumericDigits {
@@ -1379,8 +1379,8 @@ func TestNumStrDto_CopyIn_02(t *testing.T) {
 		t.Errorf("Expected AbsFracRunes = '%v'. Instead, got %v", fracStr, s)
 	}
 
-	if nDto.SignVal != signVal {
-		t.Errorf("Expected SignVal= '%v'. Instead, got %v", signVal, nDto.SignVal)
+	if nDto.GetSign() != signVal {
+		t.Errorf("Expected SignVal= '%v'. Instead, got %v", signVal, nDto.GetSign())
 	}
 
 	if !nDto.HasNumericDigits {
@@ -1437,8 +1437,8 @@ func TestNumStrDto_CopyOut_01(t *testing.T) {
 		t.Errorf("Expected AbsFracRunes = '%v'. Instead, got %v", fracStr, s)
 	}
 
-	if nDto.SignVal != signVal {
-		t.Errorf("Expected SignVal= '%v'. Instead, got %v", signVal, nDto.SignVal)
+	if nDto.GetSign() != signVal {
+		t.Errorf("Expected SignVal= '%v'. Instead, got %v", signVal, nDto.GetSign())
 	}
 
 	if !nDto.HasNumericDigits {
@@ -1495,8 +1495,8 @@ func TestNumStrDto_CopyOut_02(t *testing.T) {
 		t.Errorf("Expected AbsFracRunes = '%v'. Instead, got %v", fracStr, s)
 	}
 
-	if nDto.SignVal != signVal {
-		t.Errorf("Expected SignVal= '%v'. Instead, got %v", signVal, nDto.SignVal)
+	if nDto.GetSign() != signVal {
+		t.Errorf("Expected SignVal= '%v'. Instead, got %v", signVal, nDto.GetSign())
 	}
 
 	if !nDto.HasNumericDigits {

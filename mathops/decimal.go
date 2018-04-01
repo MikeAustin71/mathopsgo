@@ -807,7 +807,7 @@ func (dec *Decimal) MakeDecimalFromNumStrDto(nDto NumStrDto) (Decimal, error) {
 	}
 
 	d2 := Decimal{}.New()
-	d2.signVal = nDto.SignVal
+	d2.signVal = nDto.GetSign()
 	d2.numStr = nDto.NumStrOut
 	d2.precision = nDto.GetPrecision()
 	d2.currencySymbol = dec.currencySymbol
