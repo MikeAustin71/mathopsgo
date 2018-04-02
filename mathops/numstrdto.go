@@ -24,7 +24,7 @@ type NumStrDto struct {
 	absIntRunes        	[]rune
 	absFracRunes       	[]rune
 	precision          	uint
-	IsFractionalValue  	bool
+	isFractionalValue  	bool
 	HasNumericDigits   	bool
 	ThousandsSeparator 	rune
 	DecimalSeparator   	rune
@@ -268,7 +268,7 @@ func (nDto *NumStrDto) CopyOut() NumStrDto {
 	nOut.absIntRunes = nDto.absIntRunes
 	nOut.absFracRunes = nDto.absFracRunes
 	nOut.precision = nDto.precision
-	nOut.IsFractionalValue = nDto.IsFractionalValue
+	nOut.isFractionalValue = nDto.isFractionalValue
 	nOut.HasNumericDigits = nDto.HasNumericDigits
 	nOut.numStr = nDto.numStr
 	nOut.ThousandsSeparator = nDto.ThousandsSeparator
@@ -291,7 +291,7 @@ func (nDto *NumStrDto) CopyIn(nInDto NumStrDto) {
 	nDto.absIntRunes = nInDto.absIntRunes
 	nDto.absFracRunes = nInDto.absFracRunes
 	nDto.precision = nInDto.precision
-	nDto.IsFractionalValue = nInDto.IsFractionalValue
+	nDto.isFractionalValue = nInDto.isFractionalValue
 	nDto.HasNumericDigits = nInDto.HasNumericDigits
 	nDto.numStr = nInDto.numStr
 	nDto.ThousandsSeparator = nInDto.ThousandsSeparator
@@ -310,7 +310,7 @@ func (nDto *NumStrDto) Empty() {
 	nDto.absIntRunes = []rune{}
 	nDto.absFracRunes = []rune{}
 	nDto.precision = 0
-	nDto.IsFractionalValue = false
+	nDto.isFractionalValue = false
 	nDto.HasNumericDigits = false
 	nDto.numStr = ""
 
@@ -855,7 +855,7 @@ func (nDto *NumStrDto) GetZeroNumStr(numFracDigits uint) NumStrDto {
 	n2Dto.DecimalSeparator = nDto.DecimalSeparator
 	n2Dto.CurrencySymbol = nDto.CurrencySymbol
 	n2Dto.signVal = 1
-	n2Dto.IsFractionalValue = false
+	n2Dto.isFractionalValue = false
 	n2Dto.precision = 0
 	n2Dto.HasNumericDigits = true
 	n2Dto.absAllNumRunes = append(n2Dto.absAllNumRunes, '0')
@@ -864,7 +864,7 @@ func (nDto *NumStrDto) GetZeroNumStr(numFracDigits uint) NumStrDto {
 	n2Dto.numStr = "0"
 
 	if numFracDigits > 0 {
-		n2Dto.IsFractionalValue = true
+		n2Dto.isFractionalValue = true
 		n2Dto.numStr = "0."
 
 		for i := uint(0); i < numFracDigits; i++ {
@@ -924,7 +924,7 @@ func (nDto *NumStrDto) IsNumStrDtoValid(numDto *NumStrDto, errName string) error
 	}
 
 	if lenAbsFracRunes > 0 {
-		numDto.IsFractionalValue = true
+		numDto.isFractionalValue = true
 	}
 
 	// Validate n2Dto object
@@ -997,6 +997,13 @@ func (nDto *NumStrDto) IsNumStrDtoValid(numDto *NumStrDto, errName string) error
 	return nil
 }
 
+// IsFractionalValue - Returns 'true' if the numeric value of the
+// current NumStrDto object includes a fractional value; that is,
+// the number has fractional digits to the right of the decimal
+// point.
+func (nDto *NumStrDto) IsFractionalValue() bool {
+	return nDto.isFractionalValue
+}
 
 // IsValid - Returns 'true' if the current NumStrDto instance is in
 // a valid state.
@@ -1006,7 +1013,7 @@ func (nDto *NumStrDto) IsValid() bool {
 
 }
 
-// MultiplyNumStrs - Mulitplies two NumStrDto instances and returns the result as
+// MultiplyNumStrs - Multiplies two NumStrDto instances and returns the result as
 // an separate NumStrDto instance.
 func (nDto *NumStrDto) MultiplyNumStrs(n1Dto NumStrDto, n2Dto NumStrDto) (NumStrDto, error) {
 
@@ -1253,7 +1260,7 @@ func (nDto *NumStrDto) ParseSignedBigInt(signedBigInt *big.Int, precision uint) 
 			n2Dto.HasNumericDigits = true
 		} else {
 			n2Dto.absFracRunes = append(n2Dto.absFracRunes, n2Dto.absAllNumRunes[j])
-			n2Dto.IsFractionalValue = true
+			n2Dto.isFractionalValue = true
 		}
 	}
 
@@ -1365,7 +1372,7 @@ func (nDto *NumStrDto) ParseNumStr(str string) (NumStrDto, error) {
 			isStartRunes = true
 			n2Dto.HasNumericDigits = true
 
-			if n2Dto.IsFractionalValue {
+			if n2Dto.isFractionalValue {
 				n2Dto.absFracRunes = append(n2Dto.absFracRunes, baseRunes[i])
 			} else {
 				n2Dto.absIntRunes = append(n2Dto.absIntRunes, baseRunes[i])
@@ -1376,7 +1383,7 @@ func (nDto *NumStrDto) ParseNumStr(str string) (NumStrDto, error) {
 			baseRunes[i+1] >= '0' && baseRunes[i+1] <= '9' &&
 			(baseRunes[i] == '.' || baseRunes[i] == n2Dto.DecimalSeparator) {
 
-			n2Dto.IsFractionalValue = true
+			n2Dto.isFractionalValue = true
 			continue
 
 		} else if isStartRunes && !isEndRunes {
@@ -1424,7 +1431,7 @@ func (nDto *NumStrDto) ParseNumStr(str string) (NumStrDto, error) {
 
 	n2Dto.numStr += string(n2Dto.absIntRunes)
 
-	if n2Dto.IsFractionalValue {
+	if n2Dto.isFractionalValue {
 		n2Dto.precision = uint(len(n2Dto.absFracRunes))
 		n2Dto.numStr += string(nDto.DecimalSeparator)
 		n2Dto.numStr += string(n2Dto.absFracRunes)
@@ -2013,7 +2020,7 @@ func (nDto *NumStrDto) SetPrecision(
 	if n2.precision > 0 {
 		n2.numStr += string(n2.DecimalSeparator)
 		n2.numStr += string(n2.absFracRunes)
-		n2.IsFractionalValue = true
+		n2.isFractionalValue = true
 	}
 
 	err = nDto.IsNumStrDtoValid(&n2, ePrefix + "- ")

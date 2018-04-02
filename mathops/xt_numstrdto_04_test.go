@@ -1100,8 +1100,8 @@ func TestNumStrDto_SubtractNumStrs_01(t *testing.T) {
 		t.Errorf("Expected HasNumericDigist= 'true'. Instead, got %v", nDto.HasNumericDigits)
 	}
 
-	if nDto.IsFractionalValue != nResult.IsFractionalValue {
-		t.Errorf("Expected IsFractionalValue= '%v'. Instead, got '%v'", nResult.IsFractionalValue, nDto.IsFractionalValue)
+	if nDto.IsFractionalValue() != nResult.IsFractionalValue() {
+		t.Errorf("Expected IsFractionalValue= '%v'. Instead, got '%v'", nResult.IsFractionalValue(), nDto.IsFractionalValue())
 	}
 
 	if nDto.GetPrecision() != nResult.GetPrecision() {
@@ -1162,8 +1162,8 @@ func TestNumStrDto_SubtractNumStrs_02(t *testing.T) {
 		t.Errorf("Expected HasNumericDigist= 'true'. Instead, got %v", nDto.HasNumericDigits)
 	}
 
-	if nDto.IsFractionalValue != nResult.IsFractionalValue {
-		t.Errorf("Expected IsFractionalValue= '%v'. Instead, got '%v'", nResult.IsFractionalValue, nDto.IsFractionalValue)
+	if nDto.IsFractionalValue() != nResult.IsFractionalValue() {
+		t.Errorf("Expected IsFractionalValue= '%v'. Instead, got '%v'", nResult.IsFractionalValue(), nDto.IsFractionalValue())
 	}
 
 	if nDto.GetPrecision() != nResult.GetPrecision() {
@@ -1224,8 +1224,8 @@ func TestNumStrDto_SubtractNumStrs_03(t *testing.T) {
 		t.Errorf("Expected HasNumericDigist= 'true'. Instead, got %v", nDto.HasNumericDigits)
 	}
 
-	if nDto.IsFractionalValue != nResult.IsFractionalValue {
-		t.Errorf("Expected IsFractionalValue= '%v'. Instead, got '%v'", nResult.IsFractionalValue, nDto.IsFractionalValue)
+	if nDto.IsFractionalValue() != nResult.IsFractionalValue() {
+		t.Errorf("Expected IsFractionalValue= '%v'. Instead, got '%v'", nResult.IsFractionalValue(), nDto.IsFractionalValue())
 	}
 
 	if nDto.GetPrecision() != nResult.GetPrecision() {
@@ -1287,8 +1287,8 @@ func TestNumStrDto_SubtractNumStrs_04(t *testing.T) {
 		t.Errorf("Expected HasNumericDigist= 'true'. Instead, got %v", nDto.HasNumericDigits)
 	}
 
-	if nDto.IsFractionalValue != nResult.IsFractionalValue {
-		t.Errorf("Expected IsFractionalValue= '%v'. Instead, got '%v'", nResult.IsFractionalValue, nDto.IsFractionalValue)
+	if nDto.IsFractionalValue() != nResult.IsFractionalValue() {
+		t.Errorf("Expected IsFractionalValue= '%v'. Instead, got '%v'", nResult.IsFractionalValue(), nDto.IsFractionalValue())
 	}
 
 	if nDto.GetPrecision() != nResult.GetPrecision() {
@@ -1350,8 +1350,8 @@ func TestNumStrDto_SubtractNumStrs_05(t *testing.T) {
 		t.Errorf("Expected HasNumericDigist= 'true'. Instead, got %v", nDto.HasNumericDigits)
 	}
 
-	if nDto.IsFractionalValue != nResult.IsFractionalValue {
-		t.Errorf("Expected IsFractionalValue= '%v'. Instead, got '%v'", nResult.IsFractionalValue, nDto.IsFractionalValue)
+	if nDto.IsFractionalValue() != nResult.IsFractionalValue() {
+		t.Errorf("Expected IsFractionalValue= '%v'. Instead, got '%v'", nResult.IsFractionalValue(), nDto.IsFractionalValue())
 	}
 
 	if nDto.GetPrecision() != nResult.GetPrecision() {
@@ -1413,8 +1413,8 @@ func TestNumStrDto_SubtractNumStrs_06(t *testing.T) {
 		t.Errorf("Expected HasNumericDigist= 'true'. Instead, got %v", nDto.HasNumericDigits)
 	}
 
-	if nDto.IsFractionalValue != nResult.IsFractionalValue {
-		t.Errorf("Expected IsFractionalValue= '%v'. Instead, got '%v'", nResult.IsFractionalValue, nDto.IsFractionalValue)
+	if nDto.IsFractionalValue() != nResult.IsFractionalValue() {
+		t.Errorf("Expected IsFractionalValue= '%v'. Instead, got '%v'", nResult.IsFractionalValue(), nDto.IsFractionalValue())
 	}
 
 	if nDto.GetPrecision() != nResult.GetPrecision() {

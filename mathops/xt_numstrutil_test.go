@@ -252,8 +252,8 @@ func TestNumStrUtility_ParseNumString_01(t *testing.T) {
 		t.Errorf("Expected HasNumericDigits=true. Instead, got %v", nsDto.HasNumericDigits)
 	}
 
-	if nsDto.IsFractionalValue == false {
-		t.Errorf("Expected IsFractionalValue=true. Instead, got %v", nsDto.IsFractionalValue)
+	if nsDto.IsFractionalValue() == false {
+		t.Errorf("Expected IsFractionalValue=true. Instead, got %v", nsDto.IsFractionalValue())
 	}
 
 }
@@ -286,8 +286,8 @@ func TestNumStrUtility_ParseNumString_02(t *testing.T) {
 		t.Errorf("Expected HasNumericDigits=true. Instead, got %v", nsDto.HasNumericDigits)
 	}
 
-	if nsDto.IsFractionalValue == false {
-		t.Errorf("Expected IsFractionalValue=true. Instead, got %v", nsDto.IsFractionalValue)
+	if nsDto.IsFractionalValue() == false {
+		t.Errorf("Expected IsFractionalValue=true. Instead, got %v", nsDto.IsFractionalValue())
 	}
 
 }
