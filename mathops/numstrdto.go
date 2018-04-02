@@ -1016,13 +1016,17 @@ func (nDto *NumStrDto) IsValid() bool {
 // MultiplyNumStrs - Multiplies two NumStrDto instances and returns the result as
 // an separate NumStrDto instance.
 func (nDto *NumStrDto) MultiplyNumStrs(n1Dto NumStrDto, n2Dto NumStrDto) (NumStrDto, error) {
+	ePrefix := "NumStrDto.MultiplyNumStrs() "
 
 	if err := nDto.IsNumStrDtoValid(&n1Dto, "MultiplyNumStrs() - "); err != nil {
-		return NumStrDto{}, fmt.Errorf("MultiplyNumStrs() - n1Dto, first NumStrDto is invalid! Error= %v", err)
+		return NumStrDto{},
+		fmt.Errorf(ePrefix +
+			"- n1Dto, first NumStrDto is invalid! Error= %v", err)
 	}
 
 	if err := nDto.IsNumStrDtoValid(&n2Dto, "MultiplyNumStrs() - "); err != nil {
-		return NumStrDto{}, fmt.Errorf("MultiplyNumStrs() - n2Dto, second NumStrDto is invalid! Error= %v", err)
+		return NumStrDto{},
+		fmt.Errorf(ePrefix + "- n2Dto, second NumStrDto is invalid! Error= %v", err)
 	}
 
 	lenN1AbsAllRunes := len(n1Dto.absAllNumRunes)
@@ -1133,7 +1137,10 @@ func (nDto *NumStrDto) MultiplyNumStrs(n1Dto NumStrDto, n2Dto NumStrDto) (NumStr
 	numStrOut, err := nDto.FindIntArraySignificantDigitLimits(intFinalAry, newPrecision, newSignVal)
 
 	if err != nil {
-		return NumStrDto{}, fmt.Errorf("MultiplyNumStrs() - Error returned from nDto.FindIntArraySignificantDigitLimits(intFinalAry,newPrecision, newSignVal). Error= %v", err)
+		return NumStrDto{},
+		fmt.Errorf(ePrefix +
+			"- Error returned from nDto.FindIntArraySignificantDigitLimits(intFinalAry,newPrecision, " +
+			"newSignVal). Error= %v", err)
 	}
 
 	return numStrOut, nil
