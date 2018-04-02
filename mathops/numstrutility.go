@@ -207,7 +207,7 @@ func (ns *NumStrUtility) ConvertStrToIntNumStr(str string) string {
 
 	nDto, err := ns.ParseNumString(str)
 
-	if err != nil || !nDto.IsValid {
+	if err != nil || !nDto.IsValid() {
 		return ""
 	}
 

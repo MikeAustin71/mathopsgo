@@ -18,7 +18,7 @@ import (
 // NumStrDto - This Type contains data fields and methods used
 // to manage, store and transport number strings.
 type NumStrDto struct {
-	IsValid            	bool
+	isValid            	bool
 	signVal            	int
 	absAllNumRunes     	[]rune
 	absIntRunes        	[]rune
@@ -274,7 +274,7 @@ func (nDto *NumStrDto) CopyOut() NumStrDto {
 	nOut.ThousandsSeparator = nDto.ThousandsSeparator
 	nOut.DecimalSeparator = nDto.DecimalSeparator
 	nOut.CurrencySymbol = nDto.CurrencySymbol
-	nOut.IsValid = nDto.IsValid
+	nOut.isValid = nDto.isValid
 
 	return nOut
 }
@@ -297,14 +297,14 @@ func (nDto *NumStrDto) CopyIn(nInDto NumStrDto) {
 	nDto.ThousandsSeparator = nInDto.ThousandsSeparator
 	nDto.DecimalSeparator = nInDto.DecimalSeparator
 	nDto.CurrencySymbol = nInDto.CurrencySymbol
-	nDto.IsValid = nInDto.IsValid
+	nDto.isValid = nInDto.isValid
 
 }
 
 // Empty - Sets all the fields in the NumStrDto
 // to their initial or zero state.
 func (nDto *NumStrDto) Empty() {
-	nDto.IsValid = true
+	nDto.isValid = true
 	nDto.signVal = 0
 	nDto.absAllNumRunes = []rune{}
 	nDto.absIntRunes = []rune{}
@@ -638,7 +638,7 @@ func (nDto *NumStrDto) GetAbsoluteBigInt() (*big.Int, error) {
 	lenAbsIntRunes := len(nDto.absIntRunes)
 	lenAbsFracRunes := len(nDto.absFracRunes)
 
-	if !nDto.IsValid || nDto.signVal == 0 || len(nDto.absAllNumRunes) == 0 ||
+	if !nDto.isValid || nDto.signVal == 0 || len(nDto.absAllNumRunes) == 0 ||
 		lenAbsAllNums != lenAbsIntRunes+lenAbsFracRunes {
 		s := "GetAbsoluteBigInt() - The existing NumStrDto is corrupted or improperly initialized. Re-initialize the NumStrDto object and try again."
 		return big.NewInt(0), errors.New(s)
@@ -728,7 +728,7 @@ func (nDto *NumStrDto) GetRationalNumber() (int, *big.Rat, error) {
 	lenAbsIntRunes := len(nDto.absIntRunes)
 	lenAbsFracRunes := len(nDto.absFracRunes)
 
-	if !nDto.IsValid || nDto.signVal == 0 || len(nDto.absAllNumRunes) == 0 ||
+	if !nDto.isValid || nDto.signVal == 0 || len(nDto.absAllNumRunes) == 0 ||
 		lenAbsAllNums != lenAbsIntRunes+lenAbsFracRunes {
 		s := "GetAbsoluteBigInt() - The existing NumStrDto is corrupted or improperly initialized. Re-initialize the NumStrDto object and try again."
 		return 0, ratZero, errors.New(s)
@@ -767,7 +767,7 @@ func (nDto *NumStrDto) GetScaleFactor() (*big.Int, error) {
 	lenAbsIntRunes := len(nDto.absIntRunes)
 	lenAbsFracRunes := len(nDto.absFracRunes)
 
-	if !nDto.IsValid || nDto.signVal == 0 || len(nDto.absAllNumRunes) == 0 ||
+	if !nDto.isValid || nDto.signVal == 0 || len(nDto.absAllNumRunes) == 0 ||
 		lenAbsAllNums != lenAbsIntRunes+lenAbsFracRunes {
 		s := "GetScaleFactor() - The existing NumStrDto is corrupted or improperly initialized. Re-initialize the NumStrDto object and try again."
 		return big.NewInt(0), errors.New(s)
@@ -802,7 +802,7 @@ func (nDto *NumStrDto) GetSignedBigInt() (*big.Int, error) {
 	lenAbsIntRunes := len(nDto.absIntRunes)
 	lenAbsFracRunes := len(nDto.absFracRunes)
 
-	if !nDto.IsValid || nDto.signVal == 0 || len(nDto.absAllNumRunes) == 0 ||
+	if !nDto.isValid || nDto.signVal == 0 || len(nDto.absAllNumRunes) == 0 ||
 		lenAbsAllNums != lenAbsIntRunes+lenAbsFracRunes {
 		s := "GetSignedBigInt() - The existing NumStrDto is corrupted or improperly initialized. Re-initialize the NumStrDto object and try again."
 		return big.NewInt(0), errors.New(s)
@@ -876,7 +876,7 @@ func (nDto *NumStrDto) GetZeroNumStr(numFracDigits uint) NumStrDto {
 		n2Dto.precision = uint(numFracDigits)
 	}
 
-	n2Dto.IsValid = true
+	n2Dto.isValid = true
 
 	return n2Dto
 
@@ -913,7 +913,7 @@ func (nDto *NumStrDto) IsNumStrDtoValid(numDto *NumStrDto, errName string) error
 		numDto.CurrencySymbol = '$'
 	}
 
-	numDto.IsValid = false
+	numDto.isValid = false
 
 	lenAbsAllNumRunes := len(numDto.absAllNumRunes)
 	lenAbsFracRunes := len(numDto.absFracRunes)
@@ -992,11 +992,22 @@ func (nDto *NumStrDto) IsNumStrDtoValid(numDto *NumStrDto, errName string) error
 		return fmt.Errorf("%v - This NumStrDto contains Non-Numeric Characters and is INVALID!", errName)
 	}
 
-	numDto.IsValid = true
+	numDto.isValid = true
 
 	return nil
 }
 
+
+// IsValid - Returns 'true' if the current NumStrDto instance is in
+// a valid state.
+func (nDto *NumStrDto) IsValid() bool {
+
+	return nDto.isValid
+
+}
+
+// MultiplyNumStrs - Mulitplies two NumStrDto instances and returns the result as
+// an separate NumStrDto instance.
 func (nDto *NumStrDto) MultiplyNumStrs(n1Dto NumStrDto, n2Dto NumStrDto) (NumStrDto, error) {
 
 	if err := nDto.IsNumStrDtoValid(&n1Dto, "MultiplyNumStrs() - "); err != nil {
@@ -1272,7 +1283,7 @@ func (nDto *NumStrDto) ParseSignedBigInt(signedBigInt *big.Int, precision uint) 
 		return NumStrDto{}, err
 	}
 
-	n2Dto.IsValid = true
+	n2Dto.isValid = true
 
 	return n2Dto, nil
 
@@ -1441,7 +1452,7 @@ func (nDto *NumStrDto) ParseNumStr(str string) (NumStrDto, error) {
 		return NumStrDto{}, err
 	}
 
-	n2Dto.IsValid = true
+	n2Dto.isValid = true
 
 	return n2Dto, nil
 }
@@ -1676,7 +1687,7 @@ func (nDto *NumStrDto) ShiftPrecisionLeft(signedNumStr string, shiftPrecision ui
 		return NumStrDto{}, err
 	}
 
-	n2.IsValid = true
+	n2.isValid = true
 
 	return n2, nil
 }
@@ -1807,7 +1818,7 @@ func (nDto *NumStrDto) ShiftPrecisionRight(signedNumStr string, precision uint) 
 		return NumStrDto{}, err
 	}
 
-	n2.IsValid = true
+	n2.isValid = true
 
 	return n2, nil
 }
@@ -2012,7 +2023,7 @@ func (nDto *NumStrDto) SetPrecision(
 		return NumStrDto{}, err
 	}
 
-	n2.IsValid = true
+	n2.isValid = true
 
 	return n2, nil
 }

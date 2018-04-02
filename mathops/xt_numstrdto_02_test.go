@@ -936,8 +936,8 @@ func TestNumStrDto_NewNumStr_01(t *testing.T) {
 
 	}
 
-	if !nDto.IsValid {
-		t.Errorf("Expected IsValid= 'true'. Instead, got %v", nDto.IsValid)
+	if !nDto.IsValid() {
+		t.Errorf("Expected IsValid= 'true'. Instead, got %v", nDto.IsValid())
 	}
 
 }
@@ -991,8 +991,8 @@ func TestNumStrDto_NewNumStr_02(t *testing.T) {
 
 	}
 
-	if !nDto.IsValid {
-		t.Errorf("Expected IsValid= 'true'. Instead, got %v", nDto.IsValid)
+	if !nDto.IsValid() {
+		t.Errorf("Expected IsValid= 'true'. Instead, got %v", nDto.IsValid())
 	}
 
 }
@@ -1046,8 +1046,8 @@ func TestNumStrDto_NewNumStr_03(t *testing.T) {
 
 	}
 
-	if !nDto.IsValid {
-		t.Errorf("Expected IsValid= 'true'. Instead, got %v", nDto.IsValid)
+	if !nDto.IsValid() {
+		t.Errorf("Expected IsValid= 'true'. Instead, got %v", nDto.IsValid())
 	}
 
 }
@@ -1102,8 +1102,8 @@ func TestNumStrDto_NewNumStr_04(t *testing.T) {
 
 	}
 
-	if !nDto.IsValid {
-		t.Errorf("Expected IsValid= 'true'. Instead, got %v", nDto.IsValid)
+	if !nDto.IsValid() {
+		t.Errorf("Expected IsValid= 'true'. Instead, got %v", nDto.IsValid())
 	}
 
 }
@@ -1158,8 +1158,8 @@ func TestNumStrDto_NewNumStr_05(t *testing.T) {
 
 	}
 
-	if !nDto.IsValid {
-		t.Errorf("Expected IsValid= 'true'. Instead, got %v", nDto.IsValid)
+	if !nDto.IsValid() {
+		t.Errorf("Expected IsValid= 'true'. Instead, got %v", nDto.IsValid())
 	}
 
 }
@@ -1213,8 +1213,8 @@ func TestNumStrDto_ParseNumStr_01(t *testing.T) {
 
 	}
 
-	if !nDto.IsValid {
-		t.Errorf("Expected IsValid= 'true'. Instead, got %v", nDto.IsValid)
+	if !nDto.IsValid() {
+		t.Errorf("Expected IsValid= 'true'. Instead, got %v", nDto.IsValid())
 	}
 
 }
@@ -1268,8 +1268,8 @@ func TestNumStrDto_ParseNumStr_02(t *testing.T) {
 
 	}
 
-	if !nDto.IsValid {
-		t.Errorf("Expected IsValid= 'true'. Instead, got %v", nDto.IsValid)
+	if !nDto.IsValid() {
+		t.Errorf("Expected IsValid= 'true'. Instead, got %v", nDto.IsValid())
 	}
 
 }
@@ -1323,8 +1323,8 @@ func TestNumStrDto_ParseNumStr_03(t *testing.T) {
 
 	}
 
-	if !nDto.IsValid {
-		t.Errorf("Expected IsValid= 'true'. Instead, got %v", nDto.IsValid)
+	if !nDto.IsValid() {
+		t.Errorf("Expected IsValid= 'true'. Instead, got %v", nDto.IsValid())
 	}
 
 }
@@ -1378,8 +1378,8 @@ func TestNumStrDto_ParseNumStr_04(t *testing.T) {
 
 	}
 
-	if !nDto.IsValid {
-		t.Errorf("Expected IsValid= 'true'. Instead, got %v", nDto.IsValid)
+	if !nDto.IsValid() {
+		t.Errorf("Expected IsValid= 'true'. Instead, got %v", nDto.IsValid())
 	}
 
 }
@@ -1434,8 +1434,8 @@ func TestNumStrDto_ParseNumStr_05(t *testing.T) {
 
 	}
 
-	if !nDto.IsValid {
-		t.Errorf("Expected IsValid= 'true'. Instead, got %v", nDto.IsValid)
+	if !nDto.IsValid() {
+		t.Errorf("Expected IsValid= 'true'. Instead, got %v", nDto.IsValid())
 	}
 
 }
@@ -1506,8 +1506,8 @@ func TestNumStrDto_ParseSignedBigInt_01(t *testing.T) {
 
 	}
 
-	if !nDto.IsValid {
-		t.Errorf("Expected IsValid= 'true'. Instead, got %v", nDto.IsValid)
+	if !nDto.IsValid() {
+		t.Errorf("Expected IsValid= 'true'. Instead, got %v", nDto.IsValid())
 	}
 
 }
@@ -1578,8 +1578,8 @@ func TestNumStrDto_ParseSignedBigInt_02(t *testing.T) {
 
 	}
 
-	if !nDto.IsValid {
-		t.Errorf("Expected IsValid= 'true'. Instead, got %v", nDto.IsValid)
+	if !nDto.IsValid() {
+		t.Errorf("Expected IsValid= 'true'. Instead, got %v", nDto.IsValid())
 	}
 
 }

@@ -1336,8 +1336,8 @@ func TestNumStrDto_CopyIn_01(t *testing.T) {
 
 	}
 
-	if !nDto.IsValid {
-		t.Errorf("Expected IsValid= 'true'. Instead, got %v", nDto.IsValid)
+	if !nDto.IsValid() {
+		t.Errorf("Expected IsValid= 'true'. Instead, got %v", nDto.IsValid())
 	}
 
 }
@@ -1396,8 +1396,8 @@ func TestNumStrDto_CopyIn_02(t *testing.T) {
 
 	}
 
-	if !nDto.IsValid {
-		t.Errorf("Expected IsValid= 'true'. Instead, got %v", nDto.IsValid)
+	if !nDto.IsValid() {
+		t.Errorf("Expected IsValid= 'true'. Instead, got %v", nDto.IsValid())
 	}
 
 }
@@ -1454,8 +1454,8 @@ func TestNumStrDto_CopyOut_01(t *testing.T) {
 
 	}
 
-	if !nDto.IsValid {
-		t.Errorf("Expected IsValid= 'true'. Instead, got %v", nDto.IsValid)
+	if !nDto.IsValid() {
+		t.Errorf("Expected IsValid= 'true'. Instead, got %v", nDto.IsValid())
 	}
 
 }
@@ -1512,8 +1512,8 @@ func TestNumStrDto_CopyOut_02(t *testing.T) {
 
 	}
 
-	if !nDto.IsValid {
-		t.Errorf("Expected IsValid= 'true'. Instead, got %v", nDto.IsValid)
+	if !nDto.IsValid() {
+		t.Errorf("Expected IsValid= 'true'. Instead, got %v", nDto.IsValid())
 	}
 
 }
