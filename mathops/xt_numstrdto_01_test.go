@@ -61,7 +61,7 @@ func TestNumStrDto_AddNumStrs_01(t *testing.T) {
 
 	}
 
-	err = nDto.IsNumStrDtoValid(&nResult, "TestNumStrDto_AddNumStrs_01() - ")
+	err = nResult.IsNumStrDtoValid( "TestNumStrDto_AddNumStrs_01() - ")
 
 	if err != nil {
 		t.Errorf("Error returned from nDto.IsNumStrDtoValid(&nResult). Error= %v", err)
@@ -125,7 +125,7 @@ func TestNumStrDto_AddNumStrs_02(t *testing.T) {
 
 	}
 
-	err = nDto.IsNumStrDtoValid(&nResult, "TestNumStrDto_AddNumStrs_02() - ")
+	err = nResult.IsNumStrDtoValid("TestNumStrDto_AddNumStrs_02() - ")
 
 	if err != nil {
 		t.Errorf("Error returned from nDto.IsNumStrDtoValid(&nResult). Error= %v", err)
@@ -189,7 +189,7 @@ func TestNumStrDto_AddNumStrs_03(t *testing.T) {
 
 	}
 
-	err = nDto.IsNumStrDtoValid(&nResult, "TestNumStrDto_AddNumStrs_03() - ")
+	err = nResult.IsNumStrDtoValid( "TestNumStrDto_AddNumStrs_03() - ")
 
 	if err != nil {
 		t.Errorf("Error returned from nDto.IsNumStrDtoValid(&nResult). Error= %v", err)
@@ -253,7 +253,7 @@ func TestNumStrDto_AddNumStrs_04(t *testing.T) {
 
 	}
 
-	err = nDto.IsNumStrDtoValid(&nResult, "TestNumStrDto_AddNumStrs_04() - ")
+	err = nResult.IsNumStrDtoValid("TestNumStrDto_AddNumStrs_04() - ")
 
 	if err != nil {
 		t.Errorf("Error returned from nDto.IsNumStrDtoValid(&nResult). Error= %v", err)
@@ -317,7 +317,7 @@ func TestNumStrDto_AddNumStrs_05(t *testing.T) {
 
 	}
 
-	err = nDto.IsNumStrDtoValid(&nResult, "TestNumStrDto_AddNumStrs_05() - ")
+	err = nResult.IsNumStrDtoValid("TestNumStrDto_AddNumStrs_05() - ")
 
 	if err != nil {
 		t.Errorf("Error returned from nDto.IsNumStrDtoValid(&nResult). Error= %v", err)
@@ -381,7 +381,7 @@ func TestNumStrDto_AddNumStrs_06(t *testing.T) {
 
 	}
 
-	err = nDto.IsNumStrDtoValid(&nResult, "TestNumStrDto_AddNumStrs_06() - ")
+	err = nResult.IsNumStrDtoValid("TestNumStrDto_AddNumStrs_06() - ")
 
 	if err != nil {
 		t.Errorf("Error returned from nDto.IsNumStrDtoValid(&nResult). Error= %v", err)
@@ -445,7 +445,7 @@ func TestNumStrDto_AddNumStrs_07(t *testing.T) {
 
 	}
 
-	err = nDto.IsNumStrDtoValid(&nResult, "TestNumStrDto_AddNumStrs_07() - ")
+	err = nResult.IsNumStrDtoValid("TestNumStrDto_AddNumStrs_07() - ")
 
 	if err != nil {
 		t.Errorf("Error returned from nDto.IsNumStrDtoValid(&nResult). Error= %v", err)
@@ -509,7 +509,7 @@ func TestNumStrDto_AddNumStrs_08(t *testing.T) {
 
 	}
 
-	err = nDto.IsNumStrDtoValid(&nResult, "TestNumStrDto_AddNumStrs_08() - ")
+	err = nResult.IsNumStrDtoValid("TestNumStrDto_AddNumStrs_08() - ")
 
 	if err != nil {
 		t.Errorf("Error returned from nDto.IsNumStrDtoValid(&nResult). Error= %v", err)
@@ -572,7 +572,7 @@ func TestNumStrDto_AddNumStrs_09(t *testing.T) {
 
 	}
 
-	err = nDto.IsNumStrDtoValid(&nResult, "TestNumStrDto_AddNumStrs_09() - ")
+	err = nResult.IsNumStrDtoValid("TestNumStrDto_AddNumStrs_09() - ")
 
 	if err != nil {
 		t.Errorf("Error returned from nDto.IsNumStrDtoValid(&nResult). Error= %v", err)
@@ -634,7 +634,7 @@ func TestNumStrDto_AddNumStrs_10(t *testing.T) {
 		t.Errorf("Expected precision= '%v'. Instead, got %v", nExpected.GetPrecision(), nResult.GetPrecision())
 	}
 
-	err = nDto.IsNumStrDtoValid(&nResult, "TestNumStrDto_AddNumStrs_10() - ")
+	err = nResult.IsNumStrDtoValid("TestNumStrDto_AddNumStrs_10() - ")
 
 	if err != nil {
 		t.Errorf("Error returned from nDto.IsNumStrDtoValid(&nResult). Error= %v", err)
@@ -696,7 +696,7 @@ func TestNumStrDto_AddNumStrs_11(t *testing.T) {
 		t.Errorf("Expected precision= '%v'. Instead, got %v", nExpected.GetPrecision(), nResult.GetPrecision())
 	}
 
-	err = nDto.IsNumStrDtoValid(&nResult, "TestNumStrDto_AddNumStrs_10() - ")
+	err = nResult.IsNumStrDtoValid("TestNumStrDto_AddNumStrs_10() - ")
 
 	if err != nil {
 		t.Errorf("Error returned from nDto.IsNumStrDtoValid(&nResult). Error= %v", err)
