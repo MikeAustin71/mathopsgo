@@ -25,7 +25,7 @@ type NumStrDto struct {
 	absFracRunes       	[]rune
 	precision          	uint
 	isFractionalValue  	bool
-	HasNumericDigits   	bool
+	hasNumericDigits   	bool
 	ThousandsSeparator 	rune
 	DecimalSeparator   	rune
 	CurrencySymbol     	rune
@@ -269,7 +269,7 @@ func (nDto *NumStrDto) CopyOut() NumStrDto {
 	nOut.absFracRunes = nDto.absFracRunes
 	nOut.precision = nDto.precision
 	nOut.isFractionalValue = nDto.isFractionalValue
-	nOut.HasNumericDigits = nDto.HasNumericDigits
+	nOut.hasNumericDigits = nDto.hasNumericDigits
 	nOut.numStr = nDto.numStr
 	nOut.ThousandsSeparator = nDto.ThousandsSeparator
 	nOut.DecimalSeparator = nDto.DecimalSeparator
@@ -292,7 +292,7 @@ func (nDto *NumStrDto) CopyIn(nInDto NumStrDto) {
 	nDto.absFracRunes = nInDto.absFracRunes
 	nDto.precision = nInDto.precision
 	nDto.isFractionalValue = nInDto.isFractionalValue
-	nDto.HasNumericDigits = nInDto.HasNumericDigits
+	nDto.hasNumericDigits = nInDto.hasNumericDigits
 	nDto.numStr = nInDto.numStr
 	nDto.ThousandsSeparator = nInDto.ThousandsSeparator
 	nDto.DecimalSeparator = nInDto.DecimalSeparator
@@ -311,7 +311,7 @@ func (nDto *NumStrDto) Empty() {
 	nDto.absFracRunes = []rune{}
 	nDto.precision = 0
 	nDto.isFractionalValue = false
-	nDto.HasNumericDigits = false
+	nDto.hasNumericDigits = false
 	nDto.numStr = ""
 
 	if nDto.ThousandsSeparator == 0 {
@@ -857,7 +857,7 @@ func (nDto *NumStrDto) GetZeroNumStr(numFracDigits uint) NumStrDto {
 	n2Dto.signVal = 1
 	n2Dto.isFractionalValue = false
 	n2Dto.precision = 0
-	n2Dto.HasNumericDigits = true
+	n2Dto.hasNumericDigits = true
 	n2Dto.absAllNumRunes = append(n2Dto.absAllNumRunes, '0')
 	n2Dto.absIntRunes = append(n2Dto.absIntRunes, '0')
 	n2Dto.absFracRunes = []rune{}
@@ -882,6 +882,21 @@ func (nDto *NumStrDto) GetZeroNumStr(numFracDigits uint) NumStrDto {
 
 }
 
+// HasNumericDigits - returns 'false' if the number
+// string for the current NumStrDto instance is uninitialized
+// and contains no numeric digits. In this case, the length
+// of the number string is zero characters.
+//
+// If this method returns 'true' it signals that there is at
+// least one numeric digit in the number string, even if that
+// digit is zero.
+func (nDto *NumStrDto) HasNumericDigits() bool {
+	return nDto.hasNumericDigits
+}
+
+
+// IsNumStrZeroValue - Returns 'true' if all the digits in the number
+// string for the current NumStrDto instance are zero.
 func (nDto *NumStrDto) IsNumStrZeroValue(numDto *NumStrDto) bool {
 
 	lenAbsAllNumRunes := len(numDto.absAllNumRunes)
@@ -897,6 +912,12 @@ func (nDto *NumStrDto) IsNumStrZeroValue(numDto *NumStrDto) bool {
 	return isZeroVal
 }
 
+
+// IsNumStrDtoValid - Performs a diagnostic review of the current NumStrDto
+// instance and returns 'nil' if the NumStrDto object is valid in all
+// respects.
+//
+// If the NumStrDto instance is judged invalid, an error message is returned.
 func (nDto *NumStrDto) IsNumStrDtoValid(numDto *NumStrDto, errName string) error {
 
 	// Set defaults for thousands separators,
@@ -920,7 +941,7 @@ func (nDto *NumStrDto) IsNumStrDtoValid(numDto *NumStrDto, errName string) error
 	lenAbsIntRunes := len(numDto.absIntRunes)
 
 	if lenAbsAllNumRunes > 0 {
-		numDto.HasNumericDigits = true
+		numDto.hasNumericDigits = true
 	}
 
 	if lenAbsFracRunes > 0 {
@@ -1264,7 +1285,7 @@ func (nDto *NumStrDto) ParseSignedBigInt(signedBigInt *big.Int, precision uint) 
 	for j := 0; j < lenAbsAllNumRunes; j++ {
 		if j < lenAbsIntNumRunes {
 			n2Dto.absIntRunes = append(n2Dto.absIntRunes, n2Dto.absAllNumRunes[j])
-			n2Dto.HasNumericDigits = true
+			n2Dto.hasNumericDigits = true
 		} else {
 			n2Dto.absFracRunes = append(n2Dto.absFracRunes, n2Dto.absAllNumRunes[j])
 			n2Dto.isFractionalValue = true
@@ -1377,7 +1398,7 @@ func (nDto *NumStrDto) ParseNumStr(str string) (NumStrDto, error) {
 
 			n2Dto.absAllNumRunes = append(n2Dto.absAllNumRunes, baseRunes[i])
 			isStartRunes = true
-			n2Dto.HasNumericDigits = true
+			n2Dto.hasNumericDigits = true
 
 			if n2Dto.isFractionalValue {
 				n2Dto.absFracRunes = append(n2Dto.absFracRunes, baseRunes[i])
@@ -1930,7 +1951,7 @@ func (nDto *NumStrDto) SetPrecision(
 	n2.ThousandsSeparator = nDto.ThousandsSeparator
 	n2.DecimalSeparator = nDto.DecimalSeparator
 	n2.CurrencySymbol = nDto.CurrencySymbol
-	n2.HasNumericDigits = true
+	n2.hasNumericDigits = true
 	iSpecPrecision := int(precision)
 	lenN1AbsAllNumRunes := len(n1.absAllNumRunes)
 	lenN1AbsIntRunes := len(n1.absIntRunes)

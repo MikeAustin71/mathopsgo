@@ -397,7 +397,7 @@ func PrintNumStrDtoContents(originalInputStr string, nStr mathops.NumStrDto) {
 	fmt.Println("      nStr.AbsIntRunes: ", nStr.GetAbsIntRunes())
 	fmt.Println("     nStr.AbsFracRunes: ", nStr.GetAbsFracRunes())
 	fmt.Println("        nStr.precision: ", nStr.GetPrecision())
-	fmt.Println("nStr.HasNumericDigits : ", nStr.HasNumericDigits)
+	fmt.Println("nStr.HasNumericDigits : ", nStr.HasNumericDigits())
 	fmt.Println("nStr.IsFractionalValue: ", nStr.IsFractionalValue())
 	fmt.Println("        nStr.IsValid(): ", nStr.IsValid())
 	fmt.Println("******************************************************")

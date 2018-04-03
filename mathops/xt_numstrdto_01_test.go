@@ -48,8 +48,8 @@ func TestNumStrDto_AddNumStrs_01(t *testing.T) {
 		t.Errorf("Expected SignVal= '%v'. Instead, got %v", nExpected.GetSign(), nResult.GetSign())
 	}
 
-	if nExpected.HasNumericDigits != nResult.HasNumericDigits {
-		t.Errorf("Expected HasNumericDigist= '%v'. Instead, got '%v'", nExpected.HasNumericDigits, nResult.HasNumericDigits)
+	if nExpected.HasNumericDigits() != nResult.HasNumericDigits() {
+		t.Errorf("Expected HasNumericDigist= '%v'. Instead, got '%v'", nExpected.HasNumericDigits(), nResult.HasNumericDigits())
 	}
 
 	if nExpected.IsFractionalValue() != nResult.IsFractionalValue() {
@@ -112,8 +112,8 @@ func TestNumStrDto_AddNumStrs_02(t *testing.T) {
 		t.Errorf("Expected SignVal= '%v'. Instead, got %v", nExpected.GetSign(), nResult.GetSign())
 	}
 
-	if nExpected.HasNumericDigits != nResult.HasNumericDigits {
-		t.Errorf("Expected HasNumericDigist= '%v'. Instead, got '%v'", nExpected.HasNumericDigits, nResult.HasNumericDigits)
+	if nExpected.HasNumericDigits() != nResult.HasNumericDigits() {
+		t.Errorf("Expected HasNumericDigist= '%v'. Instead, got '%v'", nExpected.HasNumericDigits(), nResult.HasNumericDigits())
 	}
 
 	if nExpected.IsFractionalValue() != nResult.IsFractionalValue() {
@@ -176,8 +176,8 @@ func TestNumStrDto_AddNumStrs_03(t *testing.T) {
 		t.Errorf("Expected SignVal= '%v'. Instead, got %v", nExpected.GetSign(), nResult.GetSign())
 	}
 
-	if nExpected.HasNumericDigits != nResult.HasNumericDigits {
-		t.Errorf("Expected HasNumericDigist= '%v'. Instead, got '%v'", nExpected.HasNumericDigits, nResult.HasNumericDigits)
+	if nExpected.HasNumericDigits() != nResult.HasNumericDigits() {
+		t.Errorf("Expected HasNumericDigist= '%v'. Instead, got '%v'", nExpected.HasNumericDigits(), nResult.HasNumericDigits())
 	}
 
 	if nExpected.IsFractionalValue() != nResult.IsFractionalValue() {
@@ -240,8 +240,8 @@ func TestNumStrDto_AddNumStrs_04(t *testing.T) {
 		t.Errorf("Expected SignVal= '%v'. Instead, got %v", nExpected.GetSign(), nResult.GetSign())
 	}
 
-	if nExpected.HasNumericDigits != nResult.HasNumericDigits {
-		t.Errorf("Expected HasNumericDigist= '%v'. Instead, got '%v'", nExpected.HasNumericDigits, nResult.HasNumericDigits)
+	if nExpected.HasNumericDigits() != nResult.HasNumericDigits() {
+		t.Errorf("Expected HasNumericDigist= '%v'. Instead, got '%v'", nExpected.HasNumericDigits(), nResult.HasNumericDigits())
 	}
 
 	if nExpected.IsFractionalValue() != nResult.IsFractionalValue() {
@@ -304,8 +304,8 @@ func TestNumStrDto_AddNumStrs_05(t *testing.T) {
 		t.Errorf("Expected SignVal= '%v'. Instead, got %v", nExpected.GetSign(), nResult.GetSign())
 	}
 
-	if nExpected.HasNumericDigits != nResult.HasNumericDigits {
-		t.Errorf("Expected HasNumericDigist= '%v'. Instead, got '%v'", nExpected.HasNumericDigits, nResult.HasNumericDigits)
+	if nExpected.HasNumericDigits() != nResult.HasNumericDigits() {
+		t.Errorf("Expected HasNumericDigist= '%v'. Instead, got '%v'", nExpected.HasNumericDigits(), nResult.HasNumericDigits())
 	}
 
 	if nExpected.IsFractionalValue() != nResult.IsFractionalValue() {
@@ -368,8 +368,8 @@ func TestNumStrDto_AddNumStrs_06(t *testing.T) {
 		t.Errorf("Expected SignVal= '%v'. Instead, got %v", nExpected.GetSign(), nResult.GetSign())
 	}
 
-	if nExpected.HasNumericDigits != nResult.HasNumericDigits {
-		t.Errorf("Expected HasNumericDigist= '%v'. Instead, got '%v'", nExpected.HasNumericDigits, nResult.HasNumericDigits)
+	if nExpected.HasNumericDigits() != nResult.HasNumericDigits() {
+		t.Errorf("Expected HasNumericDigist= '%v'. Instead, got '%v'", nExpected.HasNumericDigits(), nResult.HasNumericDigits())
 	}
 
 	if nExpected.IsFractionalValue() != nResult.IsFractionalValue() {
@@ -432,8 +432,8 @@ func TestNumStrDto_AddNumStrs_07(t *testing.T) {
 		t.Errorf("Expected SignVal= '%v'. Instead, got %v", nExpected.GetSign(), nResult.GetSign())
 	}
 
-	if nExpected.HasNumericDigits != nResult.HasNumericDigits {
-		t.Errorf("Expected HasNumericDigist= '%v'. Instead, got '%v'", nExpected.HasNumericDigits, nResult.HasNumericDigits)
+	if nExpected.HasNumericDigits() != nResult.HasNumericDigits() {
+		t.Errorf("Expected HasNumericDigist= '%v'. Instead, got '%v'", nExpected.HasNumericDigits(), nResult.HasNumericDigits())
 	}
 
 	if nExpected.IsFractionalValue() != nResult.IsFractionalValue() {
@@ -496,8 +496,8 @@ func TestNumStrDto_AddNumStrs_08(t *testing.T) {
 		t.Errorf("Expected SignVal= '%v'. Instead, got %v", nExpected.GetSign(), nResult.GetSign())
 	}
 
-	if nExpected.HasNumericDigits != nResult.HasNumericDigits {
-		t.Errorf("Expected HasNumericDigist= '%v'. Instead, got '%v'", nExpected.HasNumericDigits, nResult.HasNumericDigits)
+	if nExpected.HasNumericDigits() != nResult.HasNumericDigits() {
+		t.Errorf("Expected HasNumericDigist= '%v'. Instead, got '%v'", nExpected.HasNumericDigits(), nResult.HasNumericDigits())
 	}
 
 	if nExpected.IsFractionalValue() != nResult.IsFractionalValue() {
@@ -559,8 +559,8 @@ func TestNumStrDto_AddNumStrs_09(t *testing.T) {
 		t.Errorf("Expected SignVal= '%v'. Instead, got %v", nExpected.GetSign(), nResult.GetSign())
 	}
 
-	if nExpected.HasNumericDigits != nResult.HasNumericDigits {
-		t.Errorf("Expected HasNumericDigist= '%v'. Instead, got '%v'", nExpected.HasNumericDigits, nResult.HasNumericDigits)
+	if nExpected.HasNumericDigits() != nResult.HasNumericDigits() {
+		t.Errorf("Expected HasNumericDigist= '%v'. Instead, got '%v'", nExpected.HasNumericDigits(), nResult.HasNumericDigits())
 	}
 
 	if nExpected.IsFractionalValue() != nResult.IsFractionalValue() {
@@ -622,8 +622,8 @@ func TestNumStrDto_AddNumStrs_10(t *testing.T) {
 		t.Errorf("Expected SignVal= '%v'. Instead, got %v", nExpected.GetSign(), nResult.GetSign())
 	}
 
-	if nExpected.HasNumericDigits != nResult.HasNumericDigits {
-		t.Errorf("Expected HasNumericDigist= '%v'. Instead, got '%v'", nExpected.HasNumericDigits, nResult.HasNumericDigits)
+	if nExpected.HasNumericDigits() != nResult.HasNumericDigits() {
+		t.Errorf("Expected HasNumericDigist= '%v'. Instead, got '%v'", nExpected.HasNumericDigits(), nResult.HasNumericDigits())
 	}
 
 	if nExpected.IsFractionalValue() != nResult.IsFractionalValue() {
@@ -684,8 +684,8 @@ func TestNumStrDto_AddNumStrs_11(t *testing.T) {
 		t.Errorf("Expected SignVal= '%v'. Instead, got %v", nExpected.GetSign(), nResult.GetSign())
 	}
 
-	if nExpected.HasNumericDigits != nResult.HasNumericDigits {
-		t.Errorf("Expected HasNumericDigist= '%v'. Instead, got '%v'", nExpected.HasNumericDigits, nResult.HasNumericDigits)
+	if nExpected.HasNumericDigits() != nResult.HasNumericDigits() {
+		t.Errorf("Expected HasNumericDigist= '%v'. Instead, got '%v'", nExpected.HasNumericDigits(), nResult.HasNumericDigits())
 	}
 
 	if nExpected.IsFractionalValue() != nResult.IsFractionalValue() {
@@ -1323,8 +1323,8 @@ func TestNumStrDto_CopyIn_01(t *testing.T) {
 		t.Errorf("Expected SignVal= '%v'. Instead, got %v", signVal, nDto.GetSign())
 	}
 
-	if !nDto.HasNumericDigits {
-		t.Errorf("Expected HasNumericDigist= 'true'. Instead, got %v", nDto.HasNumericDigits)
+	if !nDto.HasNumericDigits() {
+		t.Errorf("Expected HasNumericDigist= 'true'. Instead, got %v", nDto.HasNumericDigits())
 	}
 
 	if !nDto.IsFractionalValue() {
@@ -1383,8 +1383,8 @@ func TestNumStrDto_CopyIn_02(t *testing.T) {
 		t.Errorf("Expected SignVal= '%v'. Instead, got %v", signVal, nDto.GetSign())
 	}
 
-	if !nDto.HasNumericDigits {
-		t.Errorf("Expected HasNumericDigist= 'true'. Instead, got %v", nDto.HasNumericDigits)
+	if !nDto.HasNumericDigits() {
+		t.Errorf("Expected HasNumericDigist= 'true'. Instead, got %v", nDto.HasNumericDigits())
 	}
 
 	if !nDto.IsFractionalValue() {
@@ -1441,8 +1441,8 @@ func TestNumStrDto_CopyOut_01(t *testing.T) {
 		t.Errorf("Expected SignVal= '%v'. Instead, got %v", signVal, nDto.GetSign())
 	}
 
-	if !nDto.HasNumericDigits {
-		t.Errorf("Expected HasNumericDigist= 'true'. Instead, got %v", nDto.HasNumericDigits)
+	if !nDto.HasNumericDigits() {
+		t.Errorf("Expected HasNumericDigist= 'true'. Instead, got %v", nDto.HasNumericDigits())
 	}
 
 	if !nDto.IsFractionalValue() {
@@ -1499,8 +1499,8 @@ func TestNumStrDto_CopyOut_02(t *testing.T) {
 		t.Errorf("Expected SignVal= '%v'. Instead, got %v", signVal, nDto.GetSign())
 	}
 
-	if !nDto.HasNumericDigits {
-		t.Errorf("Expected HasNumericDigist= 'true'. Instead, got %v", nDto.HasNumericDigits)
+	if !nDto.HasNumericDigits() {
+		t.Errorf("Expected HasNumericDigist= 'true'. Instead, got %v", nDto.HasNumericDigits())
 	}
 
 	if !nDto.IsFractionalValue() {

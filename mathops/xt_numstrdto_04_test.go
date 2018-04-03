@@ -34,8 +34,8 @@ func TestNumStrDto_ShiftPrecisionLeft_01(t *testing.T) {
 		t.Errorf("Expected isValid='true'. Instead, got %v.", nsDto.IsValid())
 	}
 
-	if !nsDto.HasNumericDigits {
-		t.Errorf("Expected HasNumericDigits='true'. Instead, got %v.", nsDto.HasNumericDigits)
+	if !nsDto.HasNumericDigits() {
+		t.Errorf("Expected HasNumericDigits='true'. Instead, got %v.", nsDto.HasNumericDigits())
 	}
 
 	s := string(nsDto.GetAbsIntRunes())
@@ -84,8 +84,8 @@ func TestNumStrDto_ShiftPrecisionLeft_02(t *testing.T) {
 		t.Errorf("Expected isValid='true'. Instead, got %v.", nsDto.IsValid())
 	}
 
-	if !nsDto.HasNumericDigits {
-		t.Errorf("Expected HasNumericDigits='true'. Instead, got %v.", nsDto.HasNumericDigits)
+	if !nsDto.HasNumericDigits() {
+		t.Errorf("Expected HasNumericDigits='true'. Instead, got %v.", nsDto.HasNumericDigits())
 	}
 
 	s := string(nsDto.GetAbsIntRunes())
@@ -134,8 +134,8 @@ func TestNumStrDto_ShiftPrecisionLeft_03(t *testing.T) {
 		t.Errorf("Expected isValid='true'. Instead, got %v.", nsDto.IsValid())
 	}
 
-	if !nsDto.HasNumericDigits {
-		t.Errorf("Expected HasNumericDigits='true'. Instead, got %v.", nsDto.HasNumericDigits)
+	if !nsDto.HasNumericDigits() {
+		t.Errorf("Expected HasNumericDigits='true'. Instead, got %v.", nsDto.HasNumericDigits())
 	}
 
 	s := string(nsDto.GetAbsIntRunes())
@@ -184,8 +184,8 @@ func TestNumStrDto_ShiftPrecisionLeft_04(t *testing.T) {
 		t.Errorf("Expected isValid='true'. Instead, got %v.", nsDto.IsValid())
 	}
 
-	if !nsDto.HasNumericDigits {
-		t.Errorf("Expected HasNumericDigits='true'. Instead, got %v.", nsDto.HasNumericDigits)
+	if !nsDto.HasNumericDigits() {
+		t.Errorf("Expected HasNumericDigits='true'. Instead, got %v.", nsDto.HasNumericDigits())
 	}
 
 	s := string(nsDto.GetAbsIntRunes())
@@ -234,8 +234,8 @@ func TestNumStrDto_ShiftPrecisionLeft_05(t *testing.T) {
 		t.Errorf("Expected isValid='true'. Instead, got %v.", nsDto.IsValid())
 	}
 
-	if !nsDto.HasNumericDigits {
-		t.Errorf("Expected HasNumericDigits='true'. Instead, got %v.", nsDto.HasNumericDigits)
+	if !nsDto.HasNumericDigits() {
+		t.Errorf("Expected HasNumericDigits='true'. Instead, got %v.", nsDto.HasNumericDigits())
 	}
 
 	s := string(nsDto.GetAbsIntRunes())
@@ -285,8 +285,8 @@ func TestNumStrDto_ShiftPrecisionLeft_06(t *testing.T) {
 		t.Errorf("Expected isValid='true'. Instead, got %v.", nsDto.IsValid())
 	}
 
-	if !nsDto.HasNumericDigits {
-		t.Errorf("Expected HasNumericDigits='true'. Instead, got %v.", nsDto.HasNumericDigits)
+	if !nsDto.HasNumericDigits() {
+		t.Errorf("Expected HasNumericDigits='true'. Instead, got %v.", nsDto.HasNumericDigits())
 	}
 
 	s := string(nsDto.GetAbsIntRunes())
@@ -335,8 +335,8 @@ func TestNumStrDto_ShiftPrecisionLeft_07(t *testing.T) {
 		t.Errorf("Expected isValid='true'. Instead, got %v.", nsDto.IsValid())
 	}
 
-	if !nsDto.HasNumericDigits {
-		t.Errorf("Expected HasNumericDigits='true'. Instead, got %v.", nsDto.HasNumericDigits)
+	if !nsDto.HasNumericDigits() {
+		t.Errorf("Expected HasNumericDigits='true'. Instead, got %v.", nsDto.HasNumericDigits())
 	}
 
 	s := string(nsDto.GetAbsIntRunes())
@@ -385,8 +385,8 @@ func TestNumStrDto_ShiftPrecisionLeft_08(t *testing.T) {
 		t.Errorf("Expected isValid='true'. Instead, got %v.", nsDto.IsValid())
 	}
 
-	if !nsDto.HasNumericDigits {
-		t.Errorf("Expected HasNumericDigits='true'. Instead, got %v.", nsDto.HasNumericDigits)
+	if !nsDto.HasNumericDigits() {
+		t.Errorf("Expected HasNumericDigits='true'. Instead, got %v.", nsDto.HasNumericDigits())
 	}
 
 	s := string(nsDto.GetAbsIntRunes())
@@ -435,8 +435,8 @@ func TestNumStrDto_ShiftPrecisionLeft_09(t *testing.T) {
 		t.Errorf("Expected isValid='true'. Instead, got %v.", nsDto.IsValid())
 	}
 
-	if !nsDto.HasNumericDigits {
-		t.Errorf("Expected HasNumericDigits='true'. Instead, got %v.", nsDto.HasNumericDigits)
+	if !nsDto.HasNumericDigits() {
+		t.Errorf("Expected HasNumericDigits='true'. Instead, got %v.", nsDto.HasNumericDigits())
 	}
 
 	s := string(nsDto.GetAbsIntRunes())
@@ -485,8 +485,8 @@ func TestNumStrDto_ShiftPrecisionLeft_10(t *testing.T) {
 		t.Errorf("Expected isValid='true'. Instead, got %v.", nsDto.IsValid())
 	}
 
-	if !nsDto.HasNumericDigits {
-		t.Errorf("Expected HasNumericDigits='true'. Instead, got %v.", nsDto.HasNumericDigits)
+	if !nsDto.HasNumericDigits() {
+		t.Errorf("Expected HasNumericDigits='true'. Instead, got %v.", nsDto.HasNumericDigits())
 	}
 
 	s := string(nsDto.GetAbsIntRunes())
@@ -535,8 +535,8 @@ func TestNumStrDto_ShiftPrecisionLeft_11(t *testing.T) {
 		t.Errorf("Expected isValid='true'. Instead, got %v.", nsDto.IsValid())
 	}
 
-	if !nsDto.HasNumericDigits {
-		t.Errorf("Expected HasNumericDigits='true'. Instead, got %v.", nsDto.HasNumericDigits)
+	if !nsDto.HasNumericDigits() {
+		t.Errorf("Expected HasNumericDigits='true'. Instead, got %v.", nsDto.HasNumericDigits())
 	}
 
 	s := string(nsDto.GetAbsIntRunes())
@@ -585,8 +585,8 @@ func TestNumStrDto_ShiftPrecisionRight_01(t *testing.T) {
 		t.Errorf("Expected isValid='true'. Instead, got %v.", nsDto.IsValid())
 	}
 
-	if !nsDto.HasNumericDigits {
-		t.Errorf("Expected HasNumericDigits='true'. Instead, got %v.", nsDto.HasNumericDigits)
+	if !nsDto.HasNumericDigits() {
+		t.Errorf("Expected HasNumericDigits='true'. Instead, got %v.", nsDto.HasNumericDigits())
 	}
 
 	s := string(nsDto.GetAbsIntRunes())
@@ -635,8 +635,8 @@ func TestNumStrDto_ShiftPrecisionRight_02(t *testing.T) {
 		t.Errorf("Expected isValid='true'. Instead, got %v.", nsDto.IsValid())
 	}
 
-	if !nsDto.HasNumericDigits {
-		t.Errorf("Expected HasNumericDigits='true'. Instead, got %v.", nsDto.HasNumericDigits)
+	if !nsDto.HasNumericDigits() {
+		t.Errorf("Expected HasNumericDigits='true'. Instead, got %v.", nsDto.HasNumericDigits())
 	}
 
 	s := string(nsDto.GetAbsIntRunes())
@@ -685,8 +685,8 @@ func TestNumStrDto_ShiftPrecisionRight_03(t *testing.T) {
 		t.Errorf("Expected isValid='true'. Instead, got %v.", nsDto.IsValid())
 	}
 
-	if !nsDto.HasNumericDigits {
-		t.Errorf("Expected HasNumericDigits='true'. Instead, got %v.", nsDto.HasNumericDigits)
+	if !nsDto.HasNumericDigits() {
+		t.Errorf("Expected HasNumericDigits='true'. Instead, got %v.", nsDto.HasNumericDigits())
 	}
 
 	s := string(nsDto.GetAbsIntRunes())
@@ -735,8 +735,8 @@ func TestNumStrDto_ShiftPrecisionRight_04(t *testing.T) {
 		t.Errorf("Expected isValid='true'. Instead, got %v.", nsDto.IsValid())
 	}
 
-	if !nsDto.HasNumericDigits {
-		t.Errorf("Expected HasNumericDigits='true'. Instead, got %v.", nsDto.HasNumericDigits)
+	if !nsDto.HasNumericDigits() {
+		t.Errorf("Expected HasNumericDigits='true'. Instead, got %v.", nsDto.HasNumericDigits())
 	}
 
 	s := string(nsDto.GetAbsIntRunes())
@@ -785,8 +785,8 @@ func TestNumStrDto_ShiftPrecisionRight_05(t *testing.T) {
 		t.Errorf("Expected isValid='true'. Instead, got %v.", nsDto.IsValid())
 	}
 
-	if !nsDto.HasNumericDigits {
-		t.Errorf("Expected HasNumericDigits='true'. Instead, got %v.", nsDto.HasNumericDigits)
+	if !nsDto.HasNumericDigits() {
+		t.Errorf("Expected HasNumericDigits='true'. Instead, got %v.", nsDto.HasNumericDigits())
 	}
 
 	s := string(nsDto.GetAbsIntRunes())
@@ -835,8 +835,8 @@ func TestNumStrDto_ShiftPrecisionRight_06(t *testing.T) {
 		t.Errorf("Expected isValid='true'. Instead, got %v.", nsDto.IsValid())
 	}
 
-	if !nsDto.HasNumericDigits {
-		t.Errorf("Expected HasNumericDigits='true'. Instead, got %v.", nsDto.HasNumericDigits)
+	if !nsDto.HasNumericDigits() {
+		t.Errorf("Expected HasNumericDigits='true'. Instead, got %v.", nsDto.HasNumericDigits())
 	}
 
 	s := string(nsDto.GetAbsIntRunes())
@@ -885,8 +885,8 @@ func TestNumStrDto_ShiftPrecisionRight_07(t *testing.T) {
 		t.Errorf("Expected isValid='true'. Instead, got %v.", nsDto.IsValid())
 	}
 
-	if !nsDto.HasNumericDigits {
-		t.Errorf("Expected HasNumericDigits='true'. Instead, got %v.", nsDto.HasNumericDigits)
+	if !nsDto.HasNumericDigits() {
+		t.Errorf("Expected HasNumericDigits='true'. Instead, got %v.", nsDto.HasNumericDigits())
 	}
 
 	s := string(nsDto.GetAbsIntRunes())
@@ -935,8 +935,8 @@ func TestNumStrDto_ShiftPrecisionRight_08(t *testing.T) {
 		t.Errorf("Expected isValid='true'. Instead, got %v.", nsDto.IsValid())
 	}
 
-	if !nsDto.HasNumericDigits {
-		t.Errorf("Expected HasNumericDigits='true'. Instead, got %v.", nsDto.HasNumericDigits)
+	if !nsDto.HasNumericDigits() {
+		t.Errorf("Expected HasNumericDigits='true'. Instead, got %v.", nsDto.HasNumericDigits())
 	}
 
 	s := string(nsDto.GetAbsIntRunes())
@@ -985,8 +985,8 @@ func TestNumStrDto_ShiftPrecisionRight_09(t *testing.T) {
 		t.Errorf("Expected isValid='true'. Instead, got %v.", nsDto.IsValid())
 	}
 
-	if !nsDto.HasNumericDigits {
-		t.Errorf("Expected HasNumericDigits='true'. Instead, got %v.", nsDto.HasNumericDigits)
+	if !nsDto.HasNumericDigits() {
+		t.Errorf("Expected HasNumericDigits='true'. Instead, got %v.", nsDto.HasNumericDigits())
 	}
 
 	s := string(nsDto.GetAbsIntRunes())
@@ -1035,8 +1035,8 @@ func TestNumStrDto_ShiftPrecisionRight_10(t *testing.T) {
 		t.Errorf("Expected isValid='true'. Instead, got %v.", nsDto.IsValid())
 	}
 
-	if !nsDto.HasNumericDigits {
-		t.Errorf("Expected HasNumericDigits='true'. Instead, got %v.", nsDto.HasNumericDigits)
+	if !nsDto.HasNumericDigits() {
+		t.Errorf("Expected HasNumericDigits='true'. Instead, got %v.", nsDto.HasNumericDigits())
 	}
 
 	s := string(nsDto.GetAbsIntRunes())
@@ -1096,8 +1096,8 @@ func TestNumStrDto_SubtractNumStrs_01(t *testing.T) {
 		t.Errorf("Expected SignVal= '%v'. Instead, got %v", nResult.GetSign(), nDto.GetSign())
 	}
 
-	if !nDto.HasNumericDigits {
-		t.Errorf("Expected HasNumericDigist= 'true'. Instead, got %v", nDto.HasNumericDigits)
+	if !nDto.HasNumericDigits() {
+		t.Errorf("Expected HasNumericDigist= 'true'. Instead, got %v", nDto.HasNumericDigits())
 	}
 
 	if nDto.IsFractionalValue() != nResult.IsFractionalValue() {
@@ -1158,8 +1158,8 @@ func TestNumStrDto_SubtractNumStrs_02(t *testing.T) {
 		t.Errorf("Expected SignVal= '%v'. Instead, got %v", nResult.GetSign(), nDto.GetSign())
 	}
 
-	if !nDto.HasNumericDigits {
-		t.Errorf("Expected HasNumericDigist= 'true'. Instead, got %v", nDto.HasNumericDigits)
+	if !nDto.HasNumericDigits() {
+		t.Errorf("Expected HasNumericDigist= 'true'. Instead, got %v", nDto.HasNumericDigits())
 	}
 
 	if nDto.IsFractionalValue() != nResult.IsFractionalValue() {
@@ -1220,8 +1220,8 @@ func TestNumStrDto_SubtractNumStrs_03(t *testing.T) {
 		t.Errorf("Expected SignVal= '%v'. Instead, got %v", nResult.GetSign(), nDto.GetSign())
 	}
 
-	if !nDto.HasNumericDigits {
-		t.Errorf("Expected HasNumericDigist= 'true'. Instead, got %v", nDto.HasNumericDigits)
+	if !nDto.HasNumericDigits() {
+		t.Errorf("Expected HasNumericDigist= 'true'. Instead, got %v", nDto.HasNumericDigits())
 	}
 
 	if nDto.IsFractionalValue() != nResult.IsFractionalValue() {
@@ -1283,8 +1283,8 @@ func TestNumStrDto_SubtractNumStrs_04(t *testing.T) {
 		t.Errorf("Expected SignVal= '%v'. Instead, got %v", nResult.GetSign(), nDto.GetSign())
 	}
 
-	if !nDto.HasNumericDigits {
-		t.Errorf("Expected HasNumericDigist= 'true'. Instead, got %v", nDto.HasNumericDigits)
+	if !nDto.HasNumericDigits() {
+		t.Errorf("Expected HasNumericDigist= 'true'. Instead, got %v", nDto.HasNumericDigits())
 	}
 
 	if nDto.IsFractionalValue() != nResult.IsFractionalValue() {
@@ -1346,8 +1346,8 @@ func TestNumStrDto_SubtractNumStrs_05(t *testing.T) {
 		t.Errorf("Expected SignVal= '%v'. Instead, got %v", nResult.GetSign(), nDto.GetSign())
 	}
 
-	if !nDto.HasNumericDigits {
-		t.Errorf("Expected HasNumericDigist= 'true'. Instead, got %v", nDto.HasNumericDigits)
+	if !nDto.HasNumericDigits() {
+		t.Errorf("Expected HasNumericDigist= 'true'. Instead, got %v", nDto.HasNumericDigits())
 	}
 
 	if nDto.IsFractionalValue() != nResult.IsFractionalValue() {
@@ -1409,8 +1409,8 @@ func TestNumStrDto_SubtractNumStrs_06(t *testing.T) {
 		t.Errorf("Expected SignVal= '%v'. Instead, got %v", nResult.GetSign(), nDto.GetSign())
 	}
 
-	if !nDto.HasNumericDigits {
-		t.Errorf("Expected HasNumericDigist= 'true'. Instead, got %v", nDto.HasNumericDigits)
+	if !nDto.HasNumericDigits() {
+		t.Errorf("Expected HasNumericDigist= 'true'. Instead, got %v", nDto.HasNumericDigits())
 	}
 
 	if nDto.IsFractionalValue() != nResult.IsFractionalValue() {
