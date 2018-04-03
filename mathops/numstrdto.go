@@ -35,7 +35,7 @@ type NumStrDto struct {
 	hasNumericDigits   	bool			// If 'false' the number string has zero length and no numeric digits
 	thousandsSeparator 	rune			// Separates thousands in the integer number: '1,000,000,000
 	decimalSeparator   	rune			// Separates integer and fractional elements of a number. '123.456'
-	CurrencySymbol     	rune			// Currency symbol used in currency string displays
+	currencySymbol     	rune			// Currency symbol used in currency string displays
 	numStr          		string
 }
 
@@ -280,7 +280,7 @@ func (nDto *NumStrDto) CopyOut() NumStrDto {
 	nOut.numStr = nDto.numStr
 	nOut.thousandsSeparator = nDto.thousandsSeparator
 	nOut.decimalSeparator = nDto.decimalSeparator
-	nOut.CurrencySymbol = nDto.CurrencySymbol
+	nOut.currencySymbol = nDto.currencySymbol
 	nOut.isValid = nDto.isValid
 
 	return nOut
@@ -303,7 +303,7 @@ func (nDto *NumStrDto) CopyIn(nInDto NumStrDto) {
 	nDto.numStr = nInDto.numStr
 	nDto.thousandsSeparator = nInDto.thousandsSeparator
 	nDto.decimalSeparator = nInDto.decimalSeparator
-	nDto.CurrencySymbol = nInDto.CurrencySymbol
+	nDto.currencySymbol = nInDto.currencySymbol
 	nDto.isValid = nInDto.isValid
 
 }
@@ -329,8 +329,8 @@ func (nDto *NumStrDto) Empty() {
 		nDto.decimalSeparator = '.'
 	}
 
-	if nDto.CurrencySymbol == 0 {
-		nDto.CurrencySymbol = '$'
+	if nDto.currencySymbol == 0 {
+		nDto.currencySymbol = '$'
 	}
 
 
@@ -700,6 +700,21 @@ func (nDto *NumStrDto) GetAbsIntRunes() []rune {
 	return nDto.absIntRunes
 }
 
+// GetCurrencySymbol - Returns the character currently designated
+// as the currency symbol for this number string.
+//
+// In the USA, the currency symbol is the dollar sign ('$').
+//
+// For a list of Major Currency Unicode Symbols, see constants
+// located in: MikeAustin71/mathopsgo/mathops/mathopsconstants.go
+//
+// Example: $123.45
+//
+func (nDto *NumStrDto) GetCurrencySymbol() rune {
+
+	return nDto.currencySymbol
+
+}
 
 // GetDecimalSeparator - returns the character designated 
 // as the decimal separator for the current NumStrDto instance.
@@ -880,15 +895,15 @@ func (nDto *NumStrDto) GetZeroNumStr(numFracDigits uint) NumStrDto {
 		nDto.decimalSeparator = '.'
 	}
 
-	if nDto.CurrencySymbol == 0 {
-		nDto.CurrencySymbol = '$'
+	if nDto.currencySymbol == 0 {
+		nDto.currencySymbol = '$'
 	}
 
 	n2Dto := NumStrDto{}.New()
 	n2Dto.signVal = 1
 	n2Dto.thousandsSeparator = nDto.thousandsSeparator
 	n2Dto.decimalSeparator = nDto.decimalSeparator
-	n2Dto.CurrencySymbol = nDto.CurrencySymbol
+	n2Dto.currencySymbol = nDto.currencySymbol
 	n2Dto.signVal = 1
 	n2Dto.isFractionalValue = false
 	n2Dto.precision = 0
@@ -965,8 +980,8 @@ func (nDto *NumStrDto) IsNumStrDtoValid(numDto *NumStrDto, errName string) error
 		numDto.decimalSeparator = '.'
 	}
 
-	if numDto.CurrencySymbol == 0 {
-		numDto.CurrencySymbol = '$'
+	if numDto.currencySymbol == 0 {
+		numDto.currencySymbol = '$'
 	}
 
 	numDto.isValid = false
@@ -1273,8 +1288,8 @@ func (nDto *NumStrDto) ParseSignedBigInt(signedBigInt *big.Int, precision uint) 
 		nDto.decimalSeparator = '.'
 	}
 
-	if nDto.CurrencySymbol == 0 {
-		nDto.CurrencySymbol = '$'
+	if nDto.currencySymbol == 0 {
+		nDto.currencySymbol = '$'
 	}
 
 	n2Dto := NumStrDto{}.New()
@@ -1380,8 +1395,8 @@ func (nDto *NumStrDto) ParseNumStr(str string) (NumStrDto, error) {
 		nDto.decimalSeparator = '.'
 	}
 
-	if nDto.CurrencySymbol == 0 {
-		nDto.CurrencySymbol = '$'
+	if nDto.currencySymbol == 0 {
+		nDto.currencySymbol = '$'
 	}
 
 	n2Dto := NumStrDto{}.New()
@@ -1390,7 +1405,7 @@ func (nDto *NumStrDto) ParseNumStr(str string) (NumStrDto, error) {
 	n2Dto.signVal = 1
 	n2Dto.thousandsSeparator = nDto.thousandsSeparator
 	n2Dto.decimalSeparator = nDto.decimalSeparator
-	n2Dto.CurrencySymbol = nDto.CurrencySymbol
+	n2Dto.currencySymbol = nDto.currencySymbol
 	baseRunes := []rune(str)
 	lBaseRunes := len(baseRunes)
 	isStartRunes := false
@@ -1411,7 +1426,7 @@ func (nDto *NumStrDto) ParseNumStr(str string) (NumStrDto, error) {
 			baseRunes[i] == ' ' || baseRunes[i] == ',' ||
 			baseRunes[i] == '$' ||
 			baseRunes[i] == n2Dto.thousandsSeparator ||
-			baseRunes[i] == n2Dto.CurrencySymbol {
+			baseRunes[i] == n2Dto.currencySymbol {
 
 			isSkip = false
 			continue
@@ -1604,15 +1619,45 @@ func (nDto *NumStrDto) ScaleNumStr(signedNumStr string,
 	return n2Dto, nil
 }
 
+// SetCurrencySymbol - assigns the input parameter rune as the 
+// currency symbol to be used by the NumStrDto.
+//
+// In the USA, the currency symbol is the dollar sign ('$').
+//
+// Note: If a zero value is submitted as input, Currency Symbol
+// will default to the USA dollar sign ('$').
+//
+// For a list of Major Currency Unicode Symbols, see constants
+// located in: MikeAustin71/mathopsgo/mathops/mathopsconstants.go
+//
+// Example: $123.45
+//
+func (nDto *NumStrDto) SetCurrencySymbol(currencySymbol rune) {
+	
+	if currencySymbol == 0 {
+		currencySymbol = '$'
+	}
+	
+	nDto.currencySymbol = currencySymbol	
+}
+
 // SetDecimalSeparator - Assigns a rune or character to the internal
 // data field, 'decimalSeparator'. The Decimal Separator is used to
 // separate the integer and fractional elements of a number string.
 //
 // In the USA, the Decimal Separator is a period character ('.'). 
 //
+// Note: If a zero value is submitted as input, the Decimal Separator
+// will default to the USA standard period character ('.').
+//
 // Example: 123.456
 //
 func (nDto *NumStrDto) SetDecimalSeparator(decimalSeparator rune) {
+	
+	if decimalSeparator == 0 {
+		decimalSeparator = '.'
+	}
+	
 	nDto.decimalSeparator = decimalSeparator
 }
 
@@ -1620,13 +1665,50 @@ func (nDto *NumStrDto) SetDecimalSeparator(decimalSeparator rune) {
 // used to separate thousands in the display of the NumStrDto number
 // string. In the USA the typical thousands separator is the comma.
 //
+// If if a zero value is submitted, the Thousands Separator will default
+// to the comma character.
+//
 // Example:
 // 1,000,000
 //
 func (nDto *NumStrDto) SetThousandsSeparator(thousandsSeparator rune) {
 
+	if thousandsSeparator == 0 {
+		thousandsSeparator = ','
+	}
+	
 	nDto.thousandsSeparator = thousandsSeparator
 
+}
+
+// SetSeparators - Used to assign values for the Decimal and Thousands separators as well 
+// as the Currency Symbol to be used in displaying the current number string.
+//
+// Note: If zero values are submitted as input, the values will default to USA standards.
+//
+// USA Examples:
+// 
+// Decimal Separator period ('.') 		= 123.456
+// Thousands Separator comma (',') 		= 1,000,000,000
+// Currency Symbol dollar sign ('$')	= $123
+//
+func (nDto *NumStrDto) SetSeparators(decimalSeparator, thousandsSeparator, currencySymbol rune) {
+
+	if decimalSeparator == 0 {
+		decimalSeparator = '.'
+	}
+
+	if thousandsSeparator == 0 {
+		thousandsSeparator = ','
+	}
+	
+	if currencySymbol == 0 {
+		currencySymbol = '$'
+	}
+	
+	nDto.decimalSeparator = decimalSeparator
+	nDto.thousandsSeparator = thousandsSeparator
+	nDto.currencySymbol = currencySymbol
 }
 
 // ShiftPrecisionLeft - Shifts the relative position of a decimal point within a number
@@ -1695,8 +1777,8 @@ func (nDto *NumStrDto) ShiftPrecisionLeft(signedNumStr string, shiftPrecision ui
 		nDto.decimalSeparator = '.'
 	}
 
-	if nDto.CurrencySymbol == 0 {
-		nDto.CurrencySymbol = '$'
+	if nDto.currencySymbol == 0 {
+		nDto.currencySymbol = '$'
 	}
 
 	n1, err := NumStrDto{}.NewPtr().ParseNumStr(signedNumStr)
@@ -1712,7 +1794,7 @@ func (nDto *NumStrDto) ShiftPrecisionLeft(signedNumStr string, shiftPrecision ui
 
 	n2.thousandsSeparator = nDto.thousandsSeparator
 	n2.decimalSeparator = nDto.decimalSeparator
-	n2.CurrencySymbol = nDto.CurrencySymbol
+	n2.currencySymbol = nDto.currencySymbol
 	n2.signVal = n1.signVal
 	n2.precision = shiftPrecision + n1.precision
 	iTotalSpecPrecision := int(n2.precision)
@@ -1822,8 +1904,8 @@ func (nDto *NumStrDto) ShiftPrecisionRight(signedNumStr string, precision uint) 
 		nDto.decimalSeparator = '.'
 	}
 
-	if nDto.CurrencySymbol == 0 {
-		nDto.CurrencySymbol = '$'
+	if nDto.currencySymbol == 0 {
+		nDto.currencySymbol = '$'
 	}
 
 	n1, err := NumStrDto{}.NewPtr().ParseNumStr(signedNumStr)
@@ -1846,7 +1928,7 @@ func (nDto *NumStrDto) ShiftPrecisionRight(signedNumStr string, precision uint) 
 
 	n2.thousandsSeparator = nDto.thousandsSeparator
 	n2.decimalSeparator = nDto.decimalSeparator
-	n2.CurrencySymbol = nDto.CurrencySymbol
+	n2.currencySymbol = nDto.currencySymbol
 	n2.signVal = n1.signVal
 	n2.precision = uint(iTotalSpecPrecision)
 
@@ -1986,14 +2068,14 @@ func (nDto *NumStrDto) SetPrecision(
 		nDto.decimalSeparator = '.'
 	}
 
-	if nDto.CurrencySymbol == 0 {
-		nDto.CurrencySymbol = '$'
+	if nDto.currencySymbol == 0 {
+		nDto.currencySymbol = '$'
 	}
 
 	n0 := NumStrDto{}.New()
 	n0.thousandsSeparator = nDto.thousandsSeparator
 	n0.decimalSeparator = nDto.decimalSeparator
-	n0.CurrencySymbol = nDto.CurrencySymbol
+	n0.currencySymbol = nDto.currencySymbol
 
 	n1, err := n0.ParseNumStr(signedNumStr)
 
@@ -2010,7 +2092,7 @@ func (nDto *NumStrDto) SetPrecision(
 	n2.precision = precision
 	n2.thousandsSeparator = nDto.thousandsSeparator
 	n2.decimalSeparator = nDto.decimalSeparator
-	n2.CurrencySymbol = nDto.CurrencySymbol
+	n2.currencySymbol = nDto.currencySymbol
 	n2.hasNumericDigits = true
 	iSpecPrecision := int(precision)
 	lenN1AbsAllNumRunes := len(n1.absAllNumRunes)

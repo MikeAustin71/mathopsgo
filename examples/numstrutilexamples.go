@@ -401,6 +401,8 @@ func PrintNumStrDtoContents(originalInputStr string, nStr mathops.NumStrDto) {
 	fmt.Println("      nStr.IsFractionalValue: ", nStr.IsFractionalValue())
 	fmt.Println("              nStr.IsValid(): ", nStr.IsValid())
 	fmt.Println("nStr.GetThousandsSeparator(): ", nStr.GetThousandsSeparator())
+	fmt.Println("  nStr.GetDecimalSeparator(): ", nStr.GetDecimalSeparator())
+	fmt.Println("    nStr.GetCurrencySymbol(): ", nStr.GetCurrencySymbol())
 	fmt.Println("******************************************************")
 	fmt.Println()
 
