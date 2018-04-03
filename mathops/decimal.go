@@ -203,7 +203,7 @@ func (dec *Decimal) NumStrToDecimal(str string) (Decimal, error) {
 	}
 
 	n1 := NumStrDto{}.New()
-	n1.ThousandsSeparator = dec.thousandsSeparator
+	n1.SetThousandsSeparator(dec.thousandsSeparator)
 	n1.DecimalSeparator = dec.decimalSeparator
 	n1.CurrencySymbol = dec.currencySymbol
 
@@ -1559,7 +1559,7 @@ func (dec *Decimal) SetIntFracStrings(signVal int, intNum, fracNum string) error
 
 	n1 := NumStrDto{}.New()
 	n1.DecimalSeparator = dec.decimalSeparator
-	n1.ThousandsSeparator = dec.thousandsSeparator
+	n1.SetThousandsSeparator(dec.thousandsSeparator)
 	n1.CurrencySymbol = dec.currencySymbol
 
 	n2, err := n1.ParseNumStr(intNum)
