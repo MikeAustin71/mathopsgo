@@ -261,6 +261,243 @@ func TestNumStrDto_CompareSignedVals_08(t *testing.T) {
 
 }
 
+func TestNumStrDto_CopyIn_01(t *testing.T) {
+
+	nStr := "123.456"
+	iStr := "123"
+	fracStr := "456"
+	signVal := 1
+	precision := uint(3)
+
+	n1, err := NumStrDto{}.NewPtr().ParseNumStr(nStr)
+
+	if err != nil {
+		t.Errorf("Received error from n1 NumStrDto.ParseNumStr(nStr). nStr= '%v' Error= %v", nStr, err)
+	}
+
+	nDto := NumStrDto{}.New()
+
+	nDto.CopyIn(n1)
+
+	s := nDto.GetNumStr()
+
+	if s != nStr {
+		t.Errorf("Expected NumStrOut = '%v'. Instead, got %v", nStr, s)
+	}
+
+	s = string(nDto.GetAbsIntRunes())
+
+	if iStr != s {
+		t.Errorf("Expected AbsIntRunes = '%v'. Instead, got %v", iStr, s)
+
+	}
+
+	s = string(nDto.GetAbsFracRunes())
+
+	if fracStr != s {
+		t.Errorf("Expected AbsFracRunes = '%v'. Instead, got %v", fracStr, s)
+	}
+
+	if nDto.GetSign() != signVal {
+		t.Errorf("Expected SignVal= '%v'. Instead, got %v", signVal, nDto.GetSign())
+	}
+
+	if !nDto.HasNumericDigits() {
+		t.Errorf("Expected HasNumericDigist= 'true'. Instead, got %v", nDto.HasNumericDigits())
+	}
+
+	if !nDto.IsFractionalValue() {
+		t.Errorf("Expected IsFractionalValue= 'true'. Instead, got %v", nDto.IsFractionalValue())
+	}
+
+	if nDto.GetPrecision() != precision {
+		t.Errorf("Expected precision= '%v'. Instead, got %v", precision, nDto.GetPrecision())
+
+	}
+
+	if !nDto.IsValid() {
+		t.Errorf("Expected IsValid= 'true'. Instead, got %v", nDto.IsValid())
+	}
+
+}
+
+func TestNumStrDto_CopyIn_02(t *testing.T) {
+
+	nStr := "-123.456"
+	iStr := "123"
+	fracStr := "456"
+	signVal := -1
+	precision := uint(3)
+
+	n1, err := NumStrDto{}.NewPtr().ParseNumStr(nStr)
+
+	if err != nil {
+		t.Errorf("Received error from n1 NumStrDto.ParseNumStr(nStr). nStr= '%v' Error= %v", nStr, err)
+	}
+
+	nDto := NumStrDto{}.New()
+
+	nDto.CopyIn(n1)
+
+	s := nDto.GetNumStr()
+
+	if s != nStr {
+		t.Errorf("Expected NumStrOut = '%v'. Instead, got %v", nStr, s)
+	}
+
+	s = string(nDto.GetAbsIntRunes())
+
+	if iStr != s {
+		t.Errorf("Expected AbsIntRunes = '%v'. Instead, got %v", iStr, s)
+
+	}
+
+	s = string(nDto.GetAbsFracRunes())
+
+	if fracStr != s {
+		t.Errorf("Expected AbsFracRunes = '%v'. Instead, got %v", fracStr, s)
+	}
+
+	if nDto.GetSign() != signVal {
+		t.Errorf("Expected SignVal= '%v'. Instead, got %v", signVal, nDto.GetSign())
+	}
+
+	if !nDto.HasNumericDigits() {
+		t.Errorf("Expected HasNumericDigist= 'true'. Instead, got %v", nDto.HasNumericDigits())
+	}
+
+	if !nDto.IsFractionalValue() {
+		t.Errorf("Expected IsFractionalValue= 'true'. Instead, got %v", nDto.IsFractionalValue())
+	}
+
+	if nDto.GetPrecision() != precision {
+		t.Errorf("Expected precision= '%v'. Instead, got %v", precision, nDto.GetPrecision())
+
+	}
+
+	if !nDto.IsValid() {
+		t.Errorf("Expected IsValid= 'true'. Instead, got %v", nDto.IsValid())
+	}
+
+}
+
+func TestNumStrDto_CopyOut_01(t *testing.T) {
+
+	nStr := "123.456"
+	iStr := "123"
+	fracStr := "456"
+	signVal := 1
+	precision := uint(3)
+
+	n1, err := NumStrDto{}.NewPtr().ParseNumStr(nStr)
+
+	if err != nil {
+		t.Errorf("Received error from n1 NumStrDto.ParseNumStr(nStr). nStr= '%v' Error= %v", nStr, err)
+	}
+
+	nDto := n1.CopyOut()
+
+	s := nDto.GetNumStr()
+
+	if s != nStr {
+		t.Errorf("Expected NumStrOut = '%v'. Instead, got %v", nStr, s)
+	}
+
+	s = string(nDto.GetAbsIntRunes())
+
+	if iStr != s {
+		t.Errorf("Expected AbsIntRunes = '%v'. Instead, got %v", iStr, s)
+
+	}
+
+	s = string(nDto.GetAbsFracRunes())
+
+	if fracStr != s {
+		t.Errorf("Expected AbsFracRunes = '%v'. Instead, got %v", fracStr, s)
+	}
+
+	if nDto.GetSign() != signVal {
+		t.Errorf("Expected SignVal= '%v'. Instead, got %v", signVal, nDto.GetSign())
+	}
+
+	if !nDto.HasNumericDigits() {
+		t.Errorf("Expected HasNumericDigist= 'true'. Instead, got %v", nDto.HasNumericDigits())
+	}
+
+	if !nDto.IsFractionalValue() {
+		t.Errorf("Expected IsFractionalValue= 'true'. Instead, got %v", nDto.IsFractionalValue())
+	}
+
+	if nDto.GetPrecision() != precision {
+		t.Errorf("Expected precision= '%v'. Instead, got %v", precision, nDto.GetPrecision())
+
+	}
+
+	if !nDto.IsValid() {
+		t.Errorf("Expected IsValid= 'true'. Instead, got %v", nDto.IsValid())
+	}
+
+}
+
+func TestNumStrDto_CopyOut_02(t *testing.T) {
+
+	nStr := "-123.456"
+	iStr := "123"
+	fracStr := "456"
+	signVal := -1
+	precision := uint(3)
+
+	n1, err := NumStrDto{}.NewPtr().ParseNumStr(nStr)
+
+	if err != nil {
+		t.Errorf("Received error from n1 NumStrDto.ParseNumStr(nStr). nStr= '%v' Error= %v", nStr, err)
+	}
+
+	nDto := n1.CopyOut()
+
+	s := nDto.GetNumStr()
+
+	if s != nStr {
+		t.Errorf("Expected NumStrOut = '%v'. Instead, got %v", nStr, s)
+	}
+
+	s = string(nDto.GetAbsIntRunes())
+
+	if iStr != s {
+		t.Errorf("Expected AbsIntRunes = '%v'. Instead, got %v", iStr, s)
+
+	}
+
+	s = string(nDto.GetAbsFracRunes())
+
+	if fracStr != s {
+		t.Errorf("Expected AbsFracRunes = '%v'. Instead, got %v", fracStr, s)
+	}
+
+	if nDto.GetSign() != signVal {
+		t.Errorf("Expected SignVal= '%v'. Instead, got %v", signVal, nDto.GetSign())
+	}
+
+	if !nDto.HasNumericDigits() {
+		t.Errorf("Expected HasNumericDigist= 'true'. Instead, got %v", nDto.HasNumericDigits())
+	}
+
+	if !nDto.IsFractionalValue() {
+		t.Errorf("Expected IsFractionalValue= 'true'. Instead, got %v", nDto.IsFractionalValue())
+	}
+
+	if nDto.GetPrecision() != precision {
+		t.Errorf("Expected precision= '%v'. Instead, got %v", precision, nDto.GetPrecision())
+
+	}
+
+	if !nDto.IsValid() {
+		t.Errorf("Expected IsValid= 'true'. Instead, got %v", nDto.IsValid())
+	}
+
+}
+
+
 func TestNumStrDto_FormatForMathOps_01(t *testing.T) {
 	nStr1 := "-12567.218956"
 	nStr2 := "-9211.40"
@@ -579,242 +816,6 @@ func TestNumStrDto_FormatForMathOps_06(t *testing.T) {
 
 	if nOut2.GetPrecision() != n2OutDto.GetPrecision() {
 		t.Errorf("Expected n2OutDto.GetPrecision()= '%v'. Instead got '%v'", nOut2.GetPrecision(), n2OutDto.GetPrecision())
-	}
-
-}
-
-func TestNumStrDto_CopyIn_01(t *testing.T) {
-
-	nStr := "123.456"
-	iStr := "123"
-	fracStr := "456"
-	signVal := 1
-	precision := uint(3)
-
-	n1, err := NumStrDto{}.NewPtr().ParseNumStr(nStr)
-
-	if err != nil {
-		t.Errorf("Received error from n1 NumStrDto.ParseNumStr(nStr). nStr= '%v' Error= %v", nStr, err)
-	}
-
-	nDto := NumStrDto{}.New()
-
-	nDto.CopyIn(n1)
-
-	s := nDto.GetNumStr()
-
-	if s != nStr {
-		t.Errorf("Expected NumStrOut = '%v'. Instead, got %v", nStr, s)
-	}
-
-	s = string(nDto.GetAbsIntRunes())
-
-	if iStr != s {
-		t.Errorf("Expected AbsIntRunes = '%v'. Instead, got %v", iStr, s)
-
-	}
-
-	s = string(nDto.GetAbsFracRunes())
-
-	if fracStr != s {
-		t.Errorf("Expected AbsFracRunes = '%v'. Instead, got %v", fracStr, s)
-	}
-
-	if nDto.GetSign() != signVal {
-		t.Errorf("Expected SignVal= '%v'. Instead, got %v", signVal, nDto.GetSign())
-	}
-
-	if !nDto.HasNumericDigits() {
-		t.Errorf("Expected HasNumericDigist= 'true'. Instead, got %v", nDto.HasNumericDigits())
-	}
-
-	if !nDto.IsFractionalValue() {
-		t.Errorf("Expected IsFractionalValue= 'true'. Instead, got %v", nDto.IsFractionalValue())
-	}
-
-	if nDto.GetPrecision() != precision {
-		t.Errorf("Expected precision= '%v'. Instead, got %v", precision, nDto.GetPrecision())
-
-	}
-
-	if !nDto.IsValid() {
-		t.Errorf("Expected IsValid= 'true'. Instead, got %v", nDto.IsValid())
-	}
-
-}
-
-func TestNumStrDto_CopyIn_02(t *testing.T) {
-
-	nStr := "-123.456"
-	iStr := "123"
-	fracStr := "456"
-	signVal := -1
-	precision := uint(3)
-
-	n1, err := NumStrDto{}.NewPtr().ParseNumStr(nStr)
-
-	if err != nil {
-		t.Errorf("Received error from n1 NumStrDto.ParseNumStr(nStr). nStr= '%v' Error= %v", nStr, err)
-	}
-
-	nDto := NumStrDto{}.New()
-
-	nDto.CopyIn(n1)
-
-	s := nDto.GetNumStr()
-
-	if s != nStr {
-		t.Errorf("Expected NumStrOut = '%v'. Instead, got %v", nStr, s)
-	}
-
-	s = string(nDto.GetAbsIntRunes())
-
-	if iStr != s {
-		t.Errorf("Expected AbsIntRunes = '%v'. Instead, got %v", iStr, s)
-
-	}
-
-	s = string(nDto.GetAbsFracRunes())
-
-	if fracStr != s {
-		t.Errorf("Expected AbsFracRunes = '%v'. Instead, got %v", fracStr, s)
-	}
-
-	if nDto.GetSign() != signVal {
-		t.Errorf("Expected SignVal= '%v'. Instead, got %v", signVal, nDto.GetSign())
-	}
-
-	if !nDto.HasNumericDigits() {
-		t.Errorf("Expected HasNumericDigist= 'true'. Instead, got %v", nDto.HasNumericDigits())
-	}
-
-	if !nDto.IsFractionalValue() {
-		t.Errorf("Expected IsFractionalValue= 'true'. Instead, got %v", nDto.IsFractionalValue())
-	}
-
-	if nDto.GetPrecision() != precision {
-		t.Errorf("Expected precision= '%v'. Instead, got %v", precision, nDto.GetPrecision())
-
-	}
-
-	if !nDto.IsValid() {
-		t.Errorf("Expected IsValid= 'true'. Instead, got %v", nDto.IsValid())
-	}
-
-}
-
-func TestNumStrDto_CopyOut_01(t *testing.T) {
-
-	nStr := "123.456"
-	iStr := "123"
-	fracStr := "456"
-	signVal := 1
-	precision := uint(3)
-
-	n1, err := NumStrDto{}.NewPtr().ParseNumStr(nStr)
-
-	if err != nil {
-		t.Errorf("Received error from n1 NumStrDto.ParseNumStr(nStr). nStr= '%v' Error= %v", nStr, err)
-	}
-
-	nDto := n1.CopyOut()
-
-	s := nDto.GetNumStr()
-
-	if s != nStr {
-		t.Errorf("Expected NumStrOut = '%v'. Instead, got %v", nStr, s)
-	}
-
-	s = string(nDto.GetAbsIntRunes())
-
-	if iStr != s {
-		t.Errorf("Expected AbsIntRunes = '%v'. Instead, got %v", iStr, s)
-
-	}
-
-	s = string(nDto.GetAbsFracRunes())
-
-	if fracStr != s {
-		t.Errorf("Expected AbsFracRunes = '%v'. Instead, got %v", fracStr, s)
-	}
-
-	if nDto.GetSign() != signVal {
-		t.Errorf("Expected SignVal= '%v'. Instead, got %v", signVal, nDto.GetSign())
-	}
-
-	if !nDto.HasNumericDigits() {
-		t.Errorf("Expected HasNumericDigist= 'true'. Instead, got %v", nDto.HasNumericDigits())
-	}
-
-	if !nDto.IsFractionalValue() {
-		t.Errorf("Expected IsFractionalValue= 'true'. Instead, got %v", nDto.IsFractionalValue())
-	}
-
-	if nDto.GetPrecision() != precision {
-		t.Errorf("Expected precision= '%v'. Instead, got %v", precision, nDto.GetPrecision())
-
-	}
-
-	if !nDto.IsValid() {
-		t.Errorf("Expected IsValid= 'true'. Instead, got %v", nDto.IsValid())
-	}
-
-}
-
-func TestNumStrDto_CopyOut_02(t *testing.T) {
-
-	nStr := "-123.456"
-	iStr := "123"
-	fracStr := "456"
-	signVal := -1
-	precision := uint(3)
-
-	n1, err := NumStrDto{}.NewPtr().ParseNumStr(nStr)
-
-	if err != nil {
-		t.Errorf("Received error from n1 NumStrDto.ParseNumStr(nStr). nStr= '%v' Error= %v", nStr, err)
-	}
-
-	nDto := n1.CopyOut()
-
-	s := nDto.GetNumStr()
-
-	if s != nStr {
-		t.Errorf("Expected NumStrOut = '%v'. Instead, got %v", nStr, s)
-	}
-
-	s = string(nDto.GetAbsIntRunes())
-
-	if iStr != s {
-		t.Errorf("Expected AbsIntRunes = '%v'. Instead, got %v", iStr, s)
-
-	}
-
-	s = string(nDto.GetAbsFracRunes())
-
-	if fracStr != s {
-		t.Errorf("Expected AbsFracRunes = '%v'. Instead, got %v", fracStr, s)
-	}
-
-	if nDto.GetSign() != signVal {
-		t.Errorf("Expected SignVal= '%v'. Instead, got %v", signVal, nDto.GetSign())
-	}
-
-	if !nDto.HasNumericDigits() {
-		t.Errorf("Expected HasNumericDigist= 'true'. Instead, got %v", nDto.HasNumericDigits())
-	}
-
-	if !nDto.IsFractionalValue() {
-		t.Errorf("Expected IsFractionalValue= 'true'. Instead, got %v", nDto.IsFractionalValue())
-	}
-
-	if nDto.GetPrecision() != precision {
-		t.Errorf("Expected precision= '%v'. Instead, got %v", precision, nDto.GetPrecision())
-
-	}
-
-	if !nDto.IsValid() {
-		t.Errorf("Expected IsValid= 'true'. Instead, got %v", nDto.IsValid())
 	}
 
 }

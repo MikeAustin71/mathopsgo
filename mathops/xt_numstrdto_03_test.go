@@ -184,3 +184,223 @@ func TestNumStrDto_GetCurrencyStr_03(t *testing.T) {
 	}
 
 }
+
+func TestNumStrDto_GetCurrencyStr_04(t *testing.T) {
+
+	nStr := "-12345.29"
+	currencySymbol := '$'
+	decimalSeparator := '.'
+	thousandsSeparator := ','
+	expectedStr := "-$12,345.29"
+
+	nDto, err := NumStrDto{}.NewNumStr(nStr)
+
+	if err != nil {
+		t.Errorf("Error returned by NumStrDto{}.NewNumStr(nStr) " +
+			"nStr='%v' Error='%v'", nStr, err.Error())
+	}
+
+	nDto.SetSeparators(decimalSeparator, thousandsSeparator, currencySymbol)
+
+
+	if currencySymbol != nDto.GetCurrencySymbol() {
+		t.Errorf("Expected Currency Symbol='%v'.  Instead, Currency Symbol='%v' .",
+			currencySymbol, nDto.GetCurrencySymbol())
+	}
+
+	if decimalSeparator != nDto.GetDecimalSeparator() {
+		t.Errorf("Expected Decimal Separator='%v'.  Instead, Decimal Separator='%v' .",
+			decimalSeparator, nDto.GetDecimalSeparator() )
+
+	}
+
+	if thousandsSeparator != nDto.GetThousandsSeparator() {
+		t.Errorf("Expected Thousands Separator='%v'.  Instead, Thousands Separator='%v' .",
+			thousandsSeparator, nDto.GetThousandsSeparator() )
+
+	}
+
+	actualStr := nDto.GetCurrencyStr()
+
+	if expectedStr != actualStr {
+		t.Errorf("Expected Currency Str='%v'. Instead, Currency Str='%v'",
+			expectedStr, actualStr)
+	}
+
+}
+
+func TestNumStrDto_GetCurrencyParen_01(t *testing.T) {
+
+	nStr := "123456.97"
+	currencySymbol := '$'
+	decimalSeparator := '.'
+	thousandsSeparator := ','
+	expectedStr := "$123,456.97"
+
+	nDto, err := NumStrDto{}.NewNumStr(nStr)
+
+	if err != nil {
+		t.Errorf("Error returned by NumStrDto{}.NewNumStr(nStr) " +
+			"nStr='%v' Error='%v'", nStr, err.Error())
+	}
+
+	nDto.SetSeparators(decimalSeparator, thousandsSeparator, currencySymbol)
+
+
+	if currencySymbol != nDto.GetCurrencySymbol() {
+		t.Errorf("Expected Currency Symbol='%v'.  Instead, Currency Symbol='%v' .",
+			currencySymbol, nDto.GetCurrencySymbol())
+	}
+
+	if decimalSeparator != nDto.GetDecimalSeparator() {
+		t.Errorf("Expected Decimal Separator='%v'.  Instead, Decimal Separator='%v' .",
+			decimalSeparator, nDto.GetDecimalSeparator() )
+
+	}
+
+	if thousandsSeparator != nDto.GetThousandsSeparator() {
+		t.Errorf("Expected Thousands Separator='%v'.  Instead, Thousands Separator='%v' .",
+			thousandsSeparator, nDto.GetThousandsSeparator() )
+
+	}
+
+	actualStr := nDto.GetCurrencyStr()
+
+	if expectedStr != actualStr {
+		t.Errorf("Expected Currency Str='%v'. Instead, Currency Str='%v'",
+			expectedStr, actualStr)
+	}
+
+}
+
+func TestNumStrDto_GetCurrencyParen_02(t *testing.T) {
+
+	nStr := "123.45"
+	currencySymbol := '$'
+	decimalSeparator := '.'
+	thousandsSeparator := ','
+	expectedStr := "$123.45"
+
+	nDto, err := NumStrDto{}.NewNumStr(nStr)
+
+	if err != nil {
+		t.Errorf("Error returned by NumStrDto{}.NewNumStr(nStr) " +
+			"nStr='%v' Error='%v'", nStr, err.Error())
+	}
+
+	nDto.SetSeparators(decimalSeparator, thousandsSeparator, currencySymbol)
+
+
+	if currencySymbol != nDto.GetCurrencySymbol() {
+		t.Errorf("Expected Currency Symbol='%v'.  Instead, Currency Symbol='%v' .",
+			currencySymbol, nDto.GetCurrencySymbol())
+	}
+
+	if decimalSeparator != nDto.GetDecimalSeparator() {
+		t.Errorf("Expected Decimal Separator='%v'.  Instead, Decimal Separator='%v' .",
+			decimalSeparator, nDto.GetDecimalSeparator() )
+
+	}
+
+	if thousandsSeparator != nDto.GetThousandsSeparator() {
+		t.Errorf("Expected Thousands Separator='%v'.  Instead, Thousands Separator='%v' .",
+			thousandsSeparator, nDto.GetThousandsSeparator() )
+
+	}
+
+	actualStr := nDto.GetCurrencyStr()
+
+	if expectedStr != actualStr {
+		t.Errorf("Expected Currency Str='%v'. Instead, Currency Str='%v'",
+			expectedStr, actualStr)
+	}
+
+}
+
+func TestNumStrDto_GetCurrencyParen_03(t *testing.T) {
+
+	nStr := "12345.29"
+	currencySymbol := '$'
+	decimalSeparator := '.'
+	thousandsSeparator := ','
+	expectedStr := "$12,345.29"
+
+	nDto, err := NumStrDto{}.NewNumStr(nStr)
+
+	if err != nil {
+		t.Errorf("Error returned by NumStrDto{}.NewNumStr(nStr) " +
+			"nStr='%v' Error='%v'", nStr, err.Error())
+	}
+
+	nDto.SetSeparators(decimalSeparator, thousandsSeparator, currencySymbol)
+
+
+	if currencySymbol != nDto.GetCurrencySymbol() {
+		t.Errorf("Expected Currency Symbol='%v'.  Instead, Currency Symbol='%v' .",
+			currencySymbol, nDto.GetCurrencySymbol())
+	}
+
+	if decimalSeparator != nDto.GetDecimalSeparator() {
+		t.Errorf("Expected Decimal Separator='%v'.  Instead, Decimal Separator='%v' .",
+			decimalSeparator, nDto.GetDecimalSeparator() )
+
+	}
+
+	if thousandsSeparator != nDto.GetThousandsSeparator() {
+		t.Errorf("Expected Thousands Separator='%v'.  Instead, Thousands Separator='%v' .",
+			thousandsSeparator, nDto.GetThousandsSeparator() )
+
+	}
+
+	actualStr := nDto.GetCurrencyParen()
+
+	if expectedStr != actualStr {
+		t.Errorf("Expected Currency Str='%v'. Instead, Currency Str='%v'",
+			expectedStr, actualStr)
+	}
+
+}
+
+func TestNumStrDto_GetCurrencyParen_04(t *testing.T) {
+
+	nStr := "-12345.29"
+	currencySymbol := '$'
+	decimalSeparator := '.'
+	thousandsSeparator := ','
+	expectedStr := "($12,345.29)"
+
+	nDto, err := NumStrDto{}.NewNumStr(nStr)
+
+	if err != nil {
+		t.Errorf("Error returned by NumStrDto{}.NewNumStr(nStr) " +
+			"nStr='%v' Error='%v'", nStr, err.Error())
+	}
+
+	nDto.SetSeparators(decimalSeparator, thousandsSeparator, currencySymbol)
+
+
+	if currencySymbol != nDto.GetCurrencySymbol() {
+		t.Errorf("Expected Currency Symbol='%v'.  Instead, Currency Symbol='%v' .",
+			currencySymbol, nDto.GetCurrencySymbol())
+	}
+
+	if decimalSeparator != nDto.GetDecimalSeparator() {
+		t.Errorf("Expected Decimal Separator='%v'.  Instead, Decimal Separator='%v' .",
+			decimalSeparator, nDto.GetDecimalSeparator() )
+
+	}
+
+	if thousandsSeparator != nDto.GetThousandsSeparator() {
+		t.Errorf("Expected Thousands Separator='%v'.  Instead, Thousands Separator='%v' .",
+			thousandsSeparator, nDto.GetThousandsSeparator() )
+
+	}
+
+	actualStr := nDto.GetCurrencyParen()
+
+	if expectedStr != actualStr {
+		t.Errorf("Expected Currency Str='%v'. Instead, Currency Str='%v'",
+			expectedStr, actualStr)
+	}
+
+}

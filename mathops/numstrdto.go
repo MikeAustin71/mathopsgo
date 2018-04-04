@@ -634,6 +634,376 @@ func (nDto *NumStrDto) FormatForMathOps(n1Dto, n2Dto NumStrDto) (n1DtoOut NumStr
 	return n1DtoOut, n2DtoOut, compare, isOrderReversed, nil
 }
 
+
+// FormatCurrencyStr - Formats the current NumStrDto numeric value as a currency string.
+//
+// If the Currency Symbol was not previously set for this NumStrDto, the currency symbol
+// is defaulted to the USA standard dollar sign, ('$').
+//
+// If the Decimal Separator was not previously set for this NumStrDto, the Decimal Separator
+// is defaulted to the USA standard period ('.').
+//
+// If the Thousands Separator was not previously set for this NumStrDto, the Thousands
+// Separator is defaulted to the USA standard comma (',').
+//
+// Input Parameters
+// ================
+//
+// negValMode NegativeValueFmtMode -	Specifies the display mode for negative values:
+//																		LEADMINUSNEGVALFMTMODE 		-	Negative values formatted with
+//																														 		a leading minus sign.
+//																																Example: -$123,456.78
+//
+//																		PARENTHESESNEGVALFMTMODE	-	Negative values formatted with
+//																																surrounding parentheses.
+//																																Example: ($123,456.78)
+//
+func (nDto *NumStrDto) FormatCurrencyStr(negValMode NegativeValueFmtMode) (string, error) {
+
+	ePrefix := "NumStrDto.FormatCurrencyStr() "
+
+	if nDto.thousandsSeparator == 0 {
+		nDto.thousandsSeparator = ','
+	}
+
+	if nDto.decimalSeparator == 0 {
+		nDto.thousandsSeparator = '.'
+	}
+
+	if nDto.currencySymbol == 0 {
+		nDto.currencySymbol = '$'
+	}
+
+	err := nDto.IsNumStrDtoValid("")
+
+	if err != nil {
+		return "",
+		fmt.Errorf(ePrefix + "")
+	}
+
+	lenAllNumRunes := len(nDto.absAllNumRunes)
+
+	lenOut := lenAllNumRunes
+
+	lenIntRunes := lenAllNumRunes - int(nDto.precision)
+
+	seps := lenIntRunes / 3
+
+	mod := lenIntRunes - (seps * 3)
+
+	if mod == 0 {
+		seps --
+	}
+
+	// adjust for thousands delimiters
+	lenOut += seps
+
+	// adjust for negative sign value
+	if nDto.signVal == -1 {
+		if negValMode == LEADMINUSNEGVALFMTMODE {
+			lenOut++
+		} else {
+			// MUST BE negValMode == PARENTHESESNEGVALFMTMODE
+			lenOut += 2
+		}
+	}
+
+	// adjust for decimal point
+	if nDto.precision > 0 {
+		lenOut++
+	}
+
+	// adjust for currency symbol
+	lenOut++
+
+	outRunes := make([]rune, lenOut)
+	outIdx := lenOut - 1
+	allNumsIdx := lenAllNumRunes - 1
+
+	// If negative value and parenthesis formatting
+	// specified, format trailing parenthesis.
+	if nDto.signVal == -1 &&
+		 negValMode == PARENTHESESNEGVALFMTMODE {
+		 	outRunes[outIdx] = ')'
+		 	outIdx--
+	}
+
+	if nDto.precision > 0 {
+
+		for i := 0 ; i < int(nDto.precision) ; i++	{
+			outRunes[outIdx] = nDto.absAllNumRunes[allNumsIdx]
+			outIdx--
+			allNumsIdx--
+		}
+
+		outRunes[outIdx] = nDto.decimalSeparator
+		outIdx --
+	}
+
+	sepCnt := 0
+
+	for i:= 0 ; i < lenIntRunes; i++ {
+
+		sepCnt++
+
+		if sepCnt == 4 && seps > 0 {
+			sepCnt = 1
+			seps --
+			outRunes[outIdx] = nDto.thousandsSeparator
+			outIdx--
+		}
+
+		outRunes[outIdx] = nDto.absAllNumRunes[allNumsIdx]
+		outIdx--
+		allNumsIdx--
+
+	}
+
+	outRunes[outIdx] = nDto.currencySymbol
+
+	// If required, add leading negative
+	// value sign
+	if nDto.signVal == -1 &&
+		negValMode== PARENTHESESNEGVALFMTMODE{
+		outRunes[0] = '('
+	} else if nDto.signVal == -1 {
+		outRunes[0] = '-'
+	}
+
+	return string(outRunes), nil
+
+}
+
+// FormatNumStr - Formats the numeric value of the current NumStrDto
+// as number string consisting of integer digits to the left of the
+// decimal point and fractional digits to the right of the decimal
+// point, if such fractional digits exist. The resulting number string
+// will NOT contain a currency symbol or thousands separators.
+//
+// Example: 123456.789
+//
+// Input Parameters
+// ================
+//
+// negValMode NegativeValueFmtMode -	Specifies the display mode for negative values:
+//																		LEADMINUSNEGVALFMTMODE 		-	Negative values formatted with
+//																														 		a leading minus sign.
+//																																Example: -123456.78
+//
+//																		PARENTHESESNEGVALFMTMODE	-	Negative values formatted with
+//																																surrounding parentheses.
+//																																Example: (123456.78)
+//
+func (nDto *NumStrDto) FormatNumStr(negValMode NegativeValueFmtMode) (string, error) {
+
+	ePrefix := "NumStrDto.FormatThousandsStr() "
+
+	if nDto.decimalSeparator == 0 {
+		nDto.thousandsSeparator = '.'
+	}
+
+	err := nDto.IsNumStrDtoValid("")
+
+	if err != nil {
+		return "", fmt.Errorf(ePrefix + "NumStrDto INVALID! Error='%v'",
+			err.Error())
+	}
+
+	lenAllNumRunes := len(nDto.absAllNumRunes)
+
+	lenOut := lenAllNumRunes
+
+	lenIntRunes := lenAllNumRunes - int(nDto.precision)
+
+	// adjust for negative sign value
+	if nDto.signVal == -1 {
+		if negValMode == LEADMINUSNEGVALFMTMODE {
+			lenOut ++
+		}	else {
+			// MUST BE negValMode == PARENTHESESNEGVALFMTMODE
+			lenOut += 2
+		}
+
+	}
+
+	// adjust for decimal point
+	if nDto.precision > 0 {
+		lenOut ++
+	}
+
+	outRunes := make([]rune, lenOut)
+	outIdx := lenOut - 1
+
+	if nDto.signVal == -1 &&
+		negValMode == PARENTHESESNEGVALFMTMODE {
+		outRunes[outIdx] = ')'
+		outIdx--
+	}
+
+	allNumsIdx := lenAllNumRunes - 1
+
+	if nDto.precision > 0 {
+
+		for i := 0 ; i < int(nDto.precision) ; i++	{
+			outRunes[outIdx] = nDto.absAllNumRunes[allNumsIdx]
+			outIdx--
+			allNumsIdx--
+		}
+
+		outRunes[outIdx] = nDto.decimalSeparator
+		outIdx --
+	}
+
+
+	for i:= 0 ; i < lenIntRunes; i++ {
+
+		outRunes[outIdx] = nDto.absAllNumRunes[allNumsIdx]
+		outIdx--
+		allNumsIdx--
+
+	}
+
+	if nDto.signVal == -1 {
+		if negValMode == LEADMINUSNEGVALFMTMODE {
+			outRunes[0] = '-'
+		} else {
+			outRunes[0] = '('
+		}
+
+	}
+
+	return string(outRunes), nil
+}
+
+// FormatThousandsStr - Returns the number string delimited with the
+// nDto.thousandsSeparator character plus the Decimal Separator if
+// applicable.
+//
+// Example:
+// numstr = 1000000.234 converted to 1,000,000.234
+//
+// Input Parameters
+// ================
+//
+// Input Parameters
+// ================
+//
+// negValMode NegativeValueFmtMode -	Specifies the display mode for negative values:
+//																		LEADMINUSNEGVALFMTMODE 		-	Negative values formatted with
+//																														 		a leading minus sign.
+//																																Example: -123,456.78
+//
+//																		PARENTHESESNEGVALFMTMODE	-	Negative values formatted with
+//																																surrounding parentheses.
+//																																Example: (123,456.78)
+//
+func (nDto *NumStrDto) FormatThousandsStr(negValMode NegativeValueFmtMode) (string, error) {
+
+	ePrefix := "NumStrDto.FormatThousandsStr() "
+
+
+	if nDto.thousandsSeparator == 0 {
+		nDto.thousandsSeparator = ','
+	}
+
+	if nDto.decimalSeparator == 0 {
+		nDto.thousandsSeparator = '.'
+	}
+
+	err := nDto.IsNumStrDtoValid("")
+
+	if err != nil {
+		return "", fmt.Errorf(ePrefix + "NumStrDto INVALID! Error='%v'",
+			err.Error())
+	}
+
+	lenAllNumRunes := len(nDto.absAllNumRunes)
+
+	lenOut := lenAllNumRunes
+
+	lenIntRunes := lenAllNumRunes - int(nDto.precision)
+
+	seps := lenIntRunes / 3
+
+	mod := lenIntRunes - (seps * 3)
+
+	if mod == 0 {
+		seps --
+	}
+
+	// adjust for thousands delimiters
+	lenOut += seps
+
+	// adjust for negative sign value
+	if nDto.signVal == -1 {
+		if negValMode == LEADMINUSNEGVALFMTMODE {
+			lenOut ++
+		}	else {
+			// MUST BE negValMode == PARENTHESESNEGVALFMTMODE
+			lenOut += 2
+		}
+
+	}
+
+	// adjust for decimal point
+	if nDto.precision > 0 {
+		lenOut ++
+	}
+
+	outRunes := make([]rune, lenOut)
+	outIdx := lenOut - 1
+
+	if nDto.signVal == -1 &&
+		negValMode == PARENTHESESNEGVALFMTMODE {
+			outRunes[outIdx] = ')'
+			outIdx--
+	}
+
+	allNumsIdx := lenAllNumRunes - 1
+
+	if nDto.precision > 0 {
+
+		for i := 0 ; i < int(nDto.precision) ; i++	{
+			outRunes[outIdx] = nDto.absAllNumRunes[allNumsIdx]
+			outIdx--
+			allNumsIdx--
+		}
+
+		outRunes[outIdx] = nDto.decimalSeparator
+		outIdx --
+	}
+
+	sepCnt := 0
+
+	for i:= 0 ; i < lenIntRunes; i++ {
+
+		sepCnt++
+
+		if sepCnt == 4 && seps > 0 {
+			sepCnt = 1
+			seps --
+			outRunes[outIdx] = nDto.thousandsSeparator
+			outIdx--
+		}
+
+		outRunes[outIdx] = nDto.absAllNumRunes[allNumsIdx]
+		outIdx--
+		allNumsIdx--
+
+	}
+
+	if nDto.signVal == -1 {
+		if negValMode == LEADMINUSNEGVALFMTMODE {
+			outRunes[0] = '-'
+		} else {
+			outRunes[0] = '('
+		}
+
+	}
+
+	return string(outRunes), nil
+}
+
 // GetAbsoluteBigInt - Returns the absolute value of all numeric
 // digits in the number string (nDto.absAllNumRunes). As such,
 // Fractional digits to the right of the decimal are included
@@ -702,6 +1072,20 @@ func (nDto *NumStrDto) GetAbsIntRunes() []rune {
 	return nDto.absIntRunes
 }
 
+// GetAbsNumStr - Returns all digits in the current NumStrDto numeric
+// value as a pure, unsigned number string. If fractional digits exists
+// they are included and NOT separated by a decimal separator.
+//
+// Examples:
+// numstr				result
+// ------       ------
+// 123.45				12345
+// -123.45			12345
+//
+func (nDto *NumStrDto) GetAbsNumStr() string {
+	return string(nDto.absAllNumRunes)
+}
+
 // GetCurrencySymbol - Returns the character currently designated
 // as the currency symbol for this number string.
 //
@@ -716,36 +1100,6 @@ func (nDto *NumStrDto) GetCurrencySymbol() rune {
 
 	return nDto.currencySymbol
 
-}
-
-// GetDecimalSeparator - returns the character designated 
-// as the decimal separator for the current NumStrDto instance.
-//
-// In the USA, the decimal separator is the period character ('.').
-//
-// Example:		123.456
-// 		
-func (nDto *NumStrDto) GetDecimalSeparator() rune {
-	
-	return nDto.decimalSeparator
-	
-}
-
-// GetNumStr - returns the numeric value of the current NumStrDto
-// instance as a signed number string.
-//
-// Note: If the current NumStrDto is invalid, this method will return
-// an empty string.
-//
-func (nDto *NumStrDto) GetNumStr() string {
-
-	err := nDto.IsNumStrDtoValid("")
-
-	if err != nil {
-		return ""
-	}
-
-	return nDto.numStr
 }
 
 // GetCurrencyParen - Returns the number string delimited with the
@@ -764,102 +1118,14 @@ func (nDto *NumStrDto) GetNumStr() string {
 //
 func (nDto *NumStrDto) GetCurrencyParen() string {
 
-	if nDto.thousandsSeparator == 0 {
-		nDto.thousandsSeparator = ','
-	}
-
-	if nDto.decimalSeparator == 0 {
-		nDto.thousandsSeparator = '.'
-	}
-
-	if nDto.currencySymbol == 0 {
-		nDto.currencySymbol = '$'
-	}
-
-	err := nDto.IsNumStrDtoValid("")
+	outStr, err := nDto.FormatCurrencyStr(PARENTHESESNEGVALFMTMODE)
 
 	if err != nil {
 		return ""
 	}
 
-	lenAllNumRunes := len(nDto.absAllNumRunes)
+	return outStr
 
-	lenOut := lenAllNumRunes
-
-	lenIntRunes := lenAllNumRunes - int(nDto.precision)
-
-	seps := lenIntRunes / 3
-
-	mod := lenIntRunes - (seps * 3)
-
-	if mod == 0 {
-		seps --
-	}
-
-	// adjust for thousands delimiters
-	lenOut += seps
-
-	// adjust for negative sign value
-	if nDto.signVal == -1 {
-		lenOut +=2
-	}
-
-	// adjust for decimal point
-	if nDto.precision > 0 {
-		lenOut ++
-	}
-
-	// adjust for currency symbol
-	lenOut++
-
-	outRunes := make([]rune, lenOut)
-	outIdx := lenOut - 1
-	allNumsIdx := lenAllNumRunes - 1
-
-	if nDto.signVal == -1 {
-		outRunes[outIdx] = ')'
-		outIdx --
-	}
-
-	if nDto.precision > 0 {
-		
-		for i := 0 ; i < int(nDto.precision) ; i++	{
-			outRunes[outIdx] = nDto.absAllNumRunes[allNumsIdx]
-			outIdx--
-			allNumsIdx--
-		}
-
-		outRunes[outIdx] = nDto.decimalSeparator
-		outIdx --
-	}
-
-	sepCnt := 0
-	
-	for i:= 0 ; i < lenIntRunes; i++ {
-		
-		sepCnt++
-		
-		if sepCnt == 4 && seps > 0 {
-			sepCnt = 1
-			seps --
-			outRunes[outIdx] = nDto.thousandsSeparator
-			outIdx--
-		}
-
-		outRunes[outIdx] = nDto.absAllNumRunes[allNumsIdx]
-		outIdx--
-		allNumsIdx--
-		
-	}
-
-	outRunes[outIdx] = nDto.currencySymbol
-	outIdx--
-
-	if nDto.signVal == -1 {
-		outRunes[0] = '('
-	}
-	
-	return string(outRunes)
 }
 
 
@@ -880,96 +1146,52 @@ func (nDto *NumStrDto) GetCurrencyParen() string {
 //
 func (nDto *NumStrDto) GetCurrencyStr() string {
 
-	if nDto.thousandsSeparator == 0 {
-		nDto.thousandsSeparator = ','
-	}
-
-	if nDto.decimalSeparator == 0 {
-		nDto.thousandsSeparator = '.'
-	}
-
-	if nDto.currencySymbol == 0 {
-		nDto.currencySymbol = '$'
-	}
-
-	err := nDto.IsNumStrDtoValid("")
+	outStr, err := nDto.FormatCurrencyStr(LEADMINUSNEGVALFMTMODE)
 
 	if err != nil {
 		return ""
 	}
 
-	lenAllNumRunes := len(nDto.absAllNumRunes)
+	return outStr
+}
 
-	lenOut := lenAllNumRunes
+// GetDecimalSeparator - returns the character designated
+// as the decimal separator for the current NumStrDto instance.
+//
+// In the USA, the decimal separator is the period character ('.').
+//
+// Example:		123.456
+//
+func (nDto *NumStrDto) GetDecimalSeparator() rune {
 
-	lenIntRunes := lenAllNumRunes - int(nDto.precision)
+	return nDto.decimalSeparator
 
-	seps := lenIntRunes / 3
+}
 
-	mod := lenIntRunes - (seps * 3)
+// GetNumStr - returns the numeric value of the current NumStrDto
+// instance as a signed number string. The resulting number string
+// will NOT contain a currency symbol or thousands separators. It
+// will contain a decimal separator and fractional digits if such
+// fractional digits exist.
+//
+// Note: If the current NumStrDto is invalid, this method will return
+// an empty string.
+//
+// Examples:
+//			 123456.78
+//			-123456.78
+//
+func (nDto *NumStrDto) GetNumStr() string {
 
-	if mod == 0 {
-		seps --
+	outStr, err := nDto.FormatNumStr(LEADMINUSNEGVALFMTMODE)
+
+	if err != nil {
+		return ""
 	}
 
-	// adjust for thousands delimiters
-	lenOut += seps
+	nDto.numStr = outStr
 
-	// adjust for negative sign value
-	if nDto.signVal == -1 {
-		lenOut ++
-	}
-
-	// adjust for decimal point
-	if nDto.precision > 0 {
-		lenOut ++
-	}
-
-	// adjust for currency symbol
-	lenOut++
-
-	outRunes := make([]rune, lenOut)
-	outIdx := lenOut - 1
-	allNumsIdx := lenAllNumRunes - 1
-
-	if nDto.precision > 0 {
-
-		for i := 0 ; i < int(nDto.precision) ; i++	{
-			outRunes[outIdx] = nDto.absAllNumRunes[allNumsIdx]
-			outIdx--
-			allNumsIdx--
-		}
-
-		outRunes[outIdx] = nDto.decimalSeparator
-		outIdx --
-	}
-
-	sepCnt := 0
-
-	for i:= 0 ; i < lenIntRunes; i++ {
-
-		sepCnt++
-
-		if sepCnt == 4 && seps > 0 {
-			sepCnt = 1
-			seps --
-			outRunes[outIdx] = nDto.thousandsSeparator
-			outIdx--
-		}
-
-		outRunes[outIdx] = nDto.absAllNumRunes[allNumsIdx]
-		outIdx--
-		allNumsIdx--
-
-	}
-
-	outRunes[outIdx] = nDto.currencySymbol
-
-	if nDto.signVal == -1 {
-		outRunes[0] = '-'
-	}
-
-	return string(outRunes)
+	return nDto.numStr
 }
 
 // GetThouParen - Returns the number string delimited with the
@@ -988,96 +1210,18 @@ func (nDto *NumStrDto) GetCurrencyStr() string {
 //
 func (nDto *NumStrDto)GetThouParen() string {
 
-	if nDto.thousandsSeparator == 0 {
-		nDto.thousandsSeparator = ','
-	}
-
-	if nDto.decimalSeparator == 0 {
-		nDto.thousandsSeparator = '.'
-	}
-
-	err := nDto.IsNumStrDtoValid("")
+	outStr, err := nDto.FormatThousandsStr(PARENTHESESNEGVALFMTMODE)
 
 	if err != nil {
 		return ""
 	}
 
-	lenAllNumRunes := len(nDto.absAllNumRunes)
-
-	lenOut := lenAllNumRunes
-
-	lenIntRunes := lenAllNumRunes - int(nDto.precision)
-
-	seps := lenIntRunes / 3
-
-	mod := lenIntRunes - (seps * 3)
-
-	if mod == 0 {
-		seps --
-	}
-
-	// adjust for thousands delimiters
-	lenOut += seps
-
-	// adjust for negative sign value
-	if nDto.signVal == -1 {
-		lenOut+=2
-	}
-
-	// adjust for decimal point
-	if nDto.precision > 0 {
-		lenOut ++
-	}
-
-	outRunes := make([]rune, lenOut)
-	outIdx := lenOut - 1
-	allNumsIdx := lenAllNumRunes - 1
-
-	if nDto.signVal == -1 {
-		outRunes[outIdx] = ')'
-		outIdx --
-	}
-
-	if nDto.precision > 0 {
-
-		for i := 0 ; i < int(nDto.precision) ; i++	{
-			outRunes[outIdx] = nDto.absAllNumRunes[allNumsIdx]
-			outIdx--
-			allNumsIdx--
-		}
-
-		outRunes[outIdx] = nDto.decimalSeparator
-		outIdx --
-	}
-
-	sepCnt := 0
-
-	for i:= 0 ; i < lenIntRunes; i++ {
-
-		sepCnt++
-
-		if sepCnt == 4 && seps > 0 {
-			sepCnt = 1
-			seps --
-			outRunes[outIdx] = nDto.thousandsSeparator
-			outIdx--
-		}
-
-		outRunes[outIdx] = nDto.absAllNumRunes[allNumsIdx]
-		outIdx--
-		allNumsIdx--
-
-	}
-
-	if nDto.signVal == -1 {
-		outRunes[0] = '('
-	}
-
-	return string(outRunes)
+	return outStr
 }
 
 // GetThouStr - Returns the number string delimited with the
-// nDto.thousandsSeparator character.
+// nDto.thousandsSeparator character plus the Decimal Separator
+// if applicable.
 //
 // Example:
 // numstr = 1000000.234
@@ -1091,87 +1235,13 @@ func (nDto *NumStrDto)GetThouParen() string {
 //
 func (nDto *NumStrDto)GetThouStr() string {
 
-	if nDto.thousandsSeparator == 0 {
-		nDto.thousandsSeparator = ','
-	}
-
-	if nDto.decimalSeparator == 0 {
-		nDto.thousandsSeparator = '.'
-	}
-
-	err := nDto.IsNumStrDtoValid("")
+	outStr, err := nDto.FormatThousandsStr(LEADMINUSNEGVALFMTMODE)
 
 	if err != nil {
 		return ""
 	}
 
-	lenAllNumRunes := len(nDto.absAllNumRunes)
-
-	lenOut := lenAllNumRunes
-
-	lenIntRunes := lenAllNumRunes - int(nDto.precision)
-
-	seps := lenIntRunes / 3
-
-	mod := lenIntRunes - (seps * 3)
-
-	if mod == 0 {
-		seps --
-	}
-
-	// adjust for thousands delimiters
-	lenOut += seps
-
-	// adjust for negative sign value
-	if nDto.signVal == -1 {
-		lenOut ++
-	}
-
-	// adjust for decimal point
-	if nDto.precision > 0 {
-		lenOut ++
-	}
-
-	outRunes := make([]rune, lenOut)
-	outIdx := lenOut - 1
-	allNumsIdx := lenAllNumRunes - 1
-
-	if nDto.precision > 0 {
-
-		for i := 0 ; i < int(nDto.precision) ; i++	{
-			outRunes[outIdx] = nDto.absAllNumRunes[allNumsIdx]
-			outIdx--
-			allNumsIdx--
-		}
-
-		outRunes[outIdx] = nDto.decimalSeparator
-		outIdx --
-	}
-
-	sepCnt := 0
-
-	for i:= 0 ; i < lenIntRunes; i++ {
-
-		sepCnt++
-
-		if sepCnt == 4 && seps > 0 {
-			sepCnt = 1
-			seps --
-			outRunes[outIdx] = nDto.thousandsSeparator
-			outIdx--
-		}
-
-		outRunes[outIdx] = nDto.absAllNumRunes[allNumsIdx]
-		outIdx--
-		allNumsIdx--
-
-	}
-
-	if nDto.signVal == -1 {
-		outRunes[0] = '-'
-	}
-
-	return string(outRunes)
+	return outStr
 }
 
 // GetPrecision - Returns the precision of the current
