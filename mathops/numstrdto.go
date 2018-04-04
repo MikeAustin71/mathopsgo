@@ -1168,6 +1168,36 @@ func (nDto *NumStrDto) GetDecimalSeparator() rune {
 
 }
 
+
+// GetNumParen - Returns the numeric value of the current NumStrDto
+// instance as a signed number string. The resulting number string
+// will NOT contain a currency symbol or thousands separators. It
+// will contain a decimal separator and fractional digits if such
+// fractional digits exist.
+//
+// Note: If the current NumStrDto is invalid, this method will return
+// an empty string.
+//
+// If the sign of the numeric value is negative, the resulting number
+// string will be surrounded in parentheses.
+//
+// Examples:
+// numeric value						result
+// 	 123456.78							123456.78
+//	-123456.78             (123456.78)
+//
+func (nDto *NumStrDto) GetNumParen() string {
+
+	outStr, err := nDto.FormatNumStr(PARENTHESESNEGVALFMTMODE)
+
+	if err != nil {
+		return ""
+	}
+
+	return outStr
+
+}
+
 // GetNumStr - returns the numeric value of the current NumStrDto
 // instance as a signed number string. The resulting number string
 // will NOT contain a currency symbol or thousands separators. It

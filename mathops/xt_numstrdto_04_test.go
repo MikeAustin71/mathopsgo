@@ -1,885 +1,931 @@
 package mathops
 
-import "testing"
+import (
+	"testing"
+)
 
-func TestNumStrDto_MultiplyNumStrs_01(t *testing.T) {
-	nStr1 := "35.123456"
-	nStr2 := "47.9876514"
-	nStr3 := "1685.4921624912384"
-	nDto := NumStrDto{}.New()
 
-	n1, _ := nDto.ParseNumStr(nStr1)
-	n2, _ := nDto.ParseNumStr(nStr2)
-	nExpected, _ := nDto.ParseNumStr(nStr3)
+func TestNumStrDto_GetThouStr_01(t *testing.T) {
 
-	nResult, err := nDto.MultiplyNumStrs(n1, n2)
+	nStr := "123456.97"
+	currencySymbol := '$'
+	decimalSeparator := '.'
+	thousandsSeparator := ','
+	expectedStr := "123,456.97"
 
-	if err != nil {
-		t.Errorf("nDto.MultiplyNumStrs(n1, n2) returned an error. Error= %v", err)
-	}
-
-	s := nResult.GetNumStr()
-	expected := nExpected.GetNumStr()
-
-	if s != expected {
-		t.Errorf("Expected NumStrOut = '%v'. Instead, got %v", expected, s)
-	}
-
-	s = string(nResult.GetAbsIntRunes())
-	expected = string(nExpected.GetAbsIntRunes())
-
-	if expected != s {
-		t.Errorf("Expected AbsIntRunes = '%v'. Instead, got %v", expected, s)
-
-	}
-
-	s = string(nResult.GetAbsFracRunes())
-	expected = string(nExpected.GetAbsFracRunes())
-
-	if expected != s {
-		t.Errorf("Expected AbsFracRunes = '%v'. Instead, got %v", expected, s)
-	}
-
-	if nExpected.GetSign() != nResult.GetSign() {
-		t.Errorf("Expected SignVal= '%v'. Instead, got %v", nExpected.GetSign(), nResult.GetSign())
-	}
-
-	if nExpected.HasNumericDigits() != nResult.HasNumericDigits() {
-		t.Errorf("Expected HasNumericDigist= '%v'. Instead, got '%v'", nExpected.HasNumericDigits(), nResult.HasNumericDigits())
-	}
-
-	if nExpected.IsFractionalValue() != nResult.IsFractionalValue() {
-		t.Errorf("Expected IsFractionalValue= '%v'. Instead, got '%v'", nExpected.IsFractionalValue(), nResult.IsFractionalValue())
-	}
-
-	if nExpected.GetPrecision() != nResult.GetPrecision() {
-		t.Errorf("Expected precision= '%v'. Instead, got %v", nExpected.GetPrecision(), nResult.GetPrecision())
-
-	}
-
-	err = nResult.IsNumStrDtoValid("TestNumStrDto_MultiplyNumStrs_01() - ")
+	nDto, err := NumStrDto{}.NewNumStr(nStr)
 
 	if err != nil {
-		t.Errorf("Resulting NumStr is INVALD. Error= %v", err)
+		t.Errorf("Error returned by NumStrDto{}.NewNumStr(nStr) " +
+			"nStr='%v' Error='%v'", nStr, err.Error())
+	}
+
+	nDto.SetSeparators(decimalSeparator, thousandsSeparator, currencySymbol)
+
+
+	if currencySymbol != nDto.GetCurrencySymbol() {
+		t.Errorf("Expected Currency Symbol='%v'.  Instead, Currency Symbol='%v' .",
+			currencySymbol, nDto.GetCurrencySymbol())
+	}
+
+	if decimalSeparator != nDto.GetDecimalSeparator() {
+		t.Errorf("Expected Decimal Separator='%v'.  Instead, Decimal Separator='%v' .",
+			decimalSeparator, nDto.GetDecimalSeparator() )
+
+	}
+
+	if thousandsSeparator != nDto.GetThousandsSeparator() {
+		t.Errorf("Expected Thousands Separator='%v'.  Instead, Thousands Separator='%v' .",
+			thousandsSeparator, nDto.GetThousandsSeparator() )
+
+	}
+
+	actualStr := nDto.GetThouStr()
+
+	if expectedStr != actualStr {
+		t.Errorf("Expected Currency Str='%v'. Instead, Currency Str='%v'",
+			expectedStr, actualStr)
 	}
 
 }
 
-func TestNumStrDto_MultiplyNumStrs_02(t *testing.T) {
-	nStr1 := "35.123456"
-	nStr2 := "-47.9876514"
-	nStr3 := "-1685.4921624912384"
-	nDto := NumStrDto{}.New()
+func TestNumStrDto_GetThouStr_02(t *testing.T) {
 
-	n1, _ := nDto.ParseNumStr(nStr1)
-	n2, _ := nDto.ParseNumStr(nStr2)
-	nExpected, _ := nDto.ParseNumStr(nStr3)
+	nStr := "123.45"
+	currencySymbol := '$'
+	decimalSeparator := '.'
+	thousandsSeparator := ','
+	expectedStr := "123.45"
 
-	nResult, err := nDto.MultiplyNumStrs(n1, n2)
+	nDto, err := NumStrDto{}.NewNumStr(nStr)
 
 	if err != nil {
-		t.Errorf("nDto.MultiplyNumStrs(n1, n2) returned an error. Error= %v", err)
+		t.Errorf("Error returned by NumStrDto{}.NewNumStr(nStr) " +
+			"nStr='%v' Error='%v'", nStr, err.Error())
 	}
 
-	s := nResult.GetNumStr()
-	expected := nExpected.GetNumStr()
+	nDto.SetSeparators(decimalSeparator, thousandsSeparator, currencySymbol)
 
-	if s != expected {
-		t.Errorf("Expected NumStrOut = '%v'. Instead, got %v", expected, s)
+
+	if currencySymbol != nDto.GetCurrencySymbol() {
+		t.Errorf("Expected Currency Symbol='%v'.  Instead, Currency Symbol='%v' .",
+			currencySymbol, nDto.GetCurrencySymbol())
 	}
 
-	s = string(nResult.GetAbsIntRunes())
-	expected = string(nExpected.GetAbsIntRunes())
-
-	if expected != s {
-		t.Errorf("Expected AbsIntRunes = '%v'. Instead, got %v", expected, s)
-
-	}
-
-	s = string(nResult.GetAbsFracRunes())
-	expected = string(nExpected.GetAbsFracRunes())
-
-	if expected != s {
-		t.Errorf("Expected AbsFracRunes = '%v'. Instead, got %v", expected, s)
-	}
-
-	if nExpected.GetSign() != nResult.GetSign() {
-		t.Errorf("Expected SignVal= '%v'. Instead, got %v", nExpected.GetSign(), nResult.GetSign())
-	}
-
-	if nExpected.HasNumericDigits() != nResult.HasNumericDigits() {
-		t.Errorf("Expected HasNumericDigist= '%v'. Instead, got '%v'", nExpected.HasNumericDigits(), nResult.HasNumericDigits())
-	}
-
-	if nExpected.IsFractionalValue() != nResult.IsFractionalValue() {
-		t.Errorf("Expected IsFractionalValue= '%v'. Instead, got '%v'", nExpected.IsFractionalValue(), nResult.IsFractionalValue())
-	}
-
-	if nExpected.GetPrecision() != nResult.GetPrecision() {
-		t.Errorf("Expected precision= '%v'. Instead, got %v", nExpected.GetPrecision(), nResult.GetPrecision())
+	if decimalSeparator != nDto.GetDecimalSeparator() {
+		t.Errorf("Expected Decimal Separator='%v'.  Instead, Decimal Separator='%v' .",
+			decimalSeparator, nDto.GetDecimalSeparator() )
 
 	}
 
-	err = nResult.IsNumStrDtoValid("TestNumStrDto_MultiplyNumStrs_01() - ")
+	if thousandsSeparator != nDto.GetThousandsSeparator() {
+		t.Errorf("Expected Thousands Separator='%v'.  Instead, Thousands Separator='%v' .",
+			thousandsSeparator, nDto.GetThousandsSeparator() )
 
-	if err != nil {
-		t.Errorf("Resulting NumStr is INVALD. Error= %v", err)
+	}
+
+	actualStr := nDto.GetThouStr()
+
+	if expectedStr != actualStr {
+		t.Errorf("Expected Currency Str='%v'. Instead, Currency Str='%v'",
+			expectedStr, actualStr)
 	}
 
 }
 
-func TestNumStrDto_MultiplyNumStrs_03(t *testing.T) {
-	nStr1 := "-35.123456"
-	nStr2 := "-47.9876514"
-	nStr3 := "1685.4921624912384"
-	nDto := NumStrDto{}.New()
+func TestNumStrDto_GetThouStr_03(t *testing.T) {
 
-	n1, _ := nDto.ParseNumStr(nStr1)
-	n2, _ := nDto.ParseNumStr(nStr2)
-	nExpected, _ := nDto.ParseNumStr(nStr3)
+	nStr := "12345.29"
+	currencySymbol := '$'
+	decimalSeparator := '.'
+	thousandsSeparator := ','
+	expectedStr := "12,345.29"
 
-	nResult, err := nDto.MultiplyNumStrs(n1, n2)
+	nDto, err := NumStrDto{}.NewNumStr(nStr)
 
 	if err != nil {
-		t.Errorf("nDto.MultiplyNumStrs(n1, n2) returned an error. Error= %v", err)
+		t.Errorf("Error returned by NumStrDto{}.NewNumStr(nStr) " +
+			"nStr='%v' Error='%v'", nStr, err.Error())
 	}
 
-	s := nResult.GetNumStr()
-	expected := nExpected.GetNumStr()
+	nDto.SetSeparators(decimalSeparator, thousandsSeparator, currencySymbol)
 
-	if s != expected {
-		t.Errorf("Expected NumStrOut = '%v'. Instead, got %v", expected, s)
+
+	if currencySymbol != nDto.GetCurrencySymbol() {
+		t.Errorf("Expected Currency Symbol='%v'.  Instead, Currency Symbol='%v' .",
+			currencySymbol, nDto.GetCurrencySymbol())
 	}
 
-	s = string(nResult.GetAbsIntRunes())
-	expected = string(nExpected.GetAbsIntRunes())
-
-	if expected != s {
-		t.Errorf("Expected AbsIntRunes = '%v'. Instead, got %v", expected, s)
-
-	}
-
-	s = string(nResult.GetAbsFracRunes())
-	expected = string(nExpected.GetAbsFracRunes())
-
-	if expected != s {
-		t.Errorf("Expected AbsFracRunes = '%v'. Instead, got %v", expected, s)
-	}
-
-	if nExpected.GetSign() != nResult.GetSign() {
-		t.Errorf("Expected SignVal= '%v'. Instead, got %v", nExpected.GetSign(), nResult.GetSign())
-	}
-
-	if nExpected.HasNumericDigits() != nResult.HasNumericDigits() {
-		t.Errorf("Expected HasNumericDigist= '%v'. Instead, got '%v'", nExpected.HasNumericDigits(), nResult.HasNumericDigits())
-	}
-
-	if nExpected.IsFractionalValue() != nResult.IsFractionalValue() {
-		t.Errorf("Expected IsFractionalValue= '%v'. Instead, got '%v'", nExpected.IsFractionalValue(), nResult.IsFractionalValue())
-	}
-
-	if nExpected.GetPrecision() != nResult.GetPrecision() {
-		t.Errorf("Expected precision= '%v'. Instead, got %v", nExpected.GetPrecision(), nResult.GetPrecision())
+	if decimalSeparator != nDto.GetDecimalSeparator() {
+		t.Errorf("Expected Decimal Separator='%v'.  Instead, Decimal Separator='%v' .",
+			decimalSeparator, nDto.GetDecimalSeparator() )
 
 	}
 
-	err = nResult.IsNumStrDtoValid("TestNumStrDto_MultiplyNumStrs_01() - ")
+	if thousandsSeparator != nDto.GetThousandsSeparator() {
+		t.Errorf("Expected Thousands Separator='%v'.  Instead, Thousands Separator='%v' .",
+			thousandsSeparator, nDto.GetThousandsSeparator() )
 
-	if err != nil {
-		t.Errorf("Resulting NumStr is INVALD. Error= %v", err)
+	}
+
+	actualStr := nDto.GetThouStr()
+
+	if expectedStr != actualStr {
+		t.Errorf("Expected Currency Str='%v'. Instead, Currency Str='%v'",
+			expectedStr, actualStr)
 	}
 
 }
 
-func TestNumStrDto_MultiplyNumStrs_04(t *testing.T) {
-	nStr1 := "57"
-	nStr2 := "123"
-	nStr3 := "7011"
-	nDto := NumStrDto{}.New()
+func TestNumStrDto_GetThouStr_04(t *testing.T) {
 
-	n1, _ := nDto.ParseNumStr(nStr1)
-	n2, _ := nDto.ParseNumStr(nStr2)
-	nExpected, _ := nDto.ParseNumStr(nStr3)
+	nStr := "12345"
+	currencySymbol := '$'
+	decimalSeparator := '.'
+	thousandsSeparator := ','
+	expectedStr := "12,345"
 
-	nResult, err := nDto.MultiplyNumStrs(n1, n2)
+	nDto, err := NumStrDto{}.NewNumStr(nStr)
 
 	if err != nil {
-		t.Errorf("nDto.MultiplyNumStrs(n1, n2) returned an error. Error= %v", err)
+		t.Errorf("Error returned by NumStrDto{}.NewNumStr(nStr) " +
+			"nStr='%v' Error='%v'", nStr, err.Error())
 	}
 
-	s := nResult.GetNumStr()
-	expected := nExpected.GetNumStr()
+	nDto.SetSeparators(decimalSeparator, thousandsSeparator, currencySymbol)
 
-	if s != expected {
-		t.Errorf("Expected NumStrOut = '%v'. Instead, got %v", expected, s)
+
+	if currencySymbol != nDto.GetCurrencySymbol() {
+		t.Errorf("Expected Currency Symbol='%v'.  Instead, Currency Symbol='%v' .",
+			currencySymbol, nDto.GetCurrencySymbol())
 	}
 
-	s = string(nResult.GetAbsIntRunes())
-	expected = string(nExpected.GetAbsIntRunes())
-
-	if expected != s {
-		t.Errorf("Expected AbsIntRunes = '%v'. Instead, got %v", expected, s)
-
-	}
-
-	s = string(nResult.GetAbsFracRunes())
-	expected = string(nExpected.GetAbsFracRunes())
-
-	if expected != s {
-		t.Errorf("Expected AbsFracRunes = '%v'. Instead, got %v", expected, s)
-	}
-
-	if nExpected.GetSign() != nResult.GetSign() {
-		t.Errorf("Expected SignVal= '%v'. Instead, got %v", nExpected.GetSign(), nResult.GetSign())
-	}
-
-	if nExpected.HasNumericDigits() != nResult.HasNumericDigits() {
-		t.Errorf("Expected HasNumericDigist= '%v'. Instead, got '%v'", nExpected.HasNumericDigits(), nResult.HasNumericDigits())
-	}
-
-	if nExpected.IsFractionalValue() != nResult.IsFractionalValue() {
-		t.Errorf("Expected IsFractionalValue= '%v'. Instead, got '%v'", nExpected.IsFractionalValue(), nResult.IsFractionalValue())
-	}
-
-	if nExpected.GetPrecision() != nResult.GetPrecision() {
-		t.Errorf("Expected precision= '%v'. Instead, got %v", nExpected.GetPrecision(), nResult.GetPrecision())
+	if decimalSeparator != nDto.GetDecimalSeparator() {
+		t.Errorf("Expected Decimal Separator='%v'.  Instead, Decimal Separator='%v' .",
+			decimalSeparator, nDto.GetDecimalSeparator() )
 
 	}
 
-	err = nResult.IsNumStrDtoValid("TestNumStrDto_MultiplyNumStrs_01() - ")
+	if thousandsSeparator != nDto.GetThousandsSeparator() {
+		t.Errorf("Expected Thousands Separator='%v'.  Instead, Thousands Separator='%v' .",
+			thousandsSeparator, nDto.GetThousandsSeparator() )
 
-	if err != nil {
-		t.Errorf("Resulting NumStr is INVALD. Error= %v", err)
+	}
+
+	actualStr := nDto.GetThouStr()
+
+	if expectedStr != actualStr {
+		t.Errorf("Expected Currency Str='%v'. Instead, Currency Str='%v'",
+			expectedStr, actualStr)
 	}
 
 }
 
-func TestNumStrDto_MultiplyNumStrs_05(t *testing.T) {
-	nStr1 := "57"
-	nStr2 := "-123"
-	nStr3 := "-7011"
-	nDto := NumStrDto{}.New()
+func TestNumStrDto_GetThouStr_05(t *testing.T) {
 
-	n1, _ := nDto.ParseNumStr(nStr1)
-	n2, _ := nDto.ParseNumStr(nStr2)
-	nExpected, _ := nDto.ParseNumStr(nStr3)
+	nStr := "12345.1234"
+	currencySymbol := '$'
+	decimalSeparator := '.'
+	thousandsSeparator := ','
+	expectedStr := "12,345.1234"
 
-	nResult, err := nDto.MultiplyNumStrs(n1, n2)
+	nDto, err := NumStrDto{}.NewNumStr(nStr)
 
 	if err != nil {
-		t.Errorf("nDto.MultiplyNumStrs(n1, n2) returned an error. Error= %v", err)
+		t.Errorf("Error returned by NumStrDto{}.NewNumStr(nStr) " +
+			"nStr='%v' Error='%v'", nStr, err.Error())
 	}
 
-	s := nResult.GetNumStr()
-	expected := nExpected.GetNumStr()
+	nDto.SetSeparators(decimalSeparator, thousandsSeparator, currencySymbol)
 
-	if s != expected {
-		t.Errorf("Expected NumStrOut = '%v'. Instead, got %v", expected, s)
+
+	if currencySymbol != nDto.GetCurrencySymbol() {
+		t.Errorf("Expected Currency Symbol='%v'.  Instead, Currency Symbol='%v' .",
+			currencySymbol, nDto.GetCurrencySymbol())
 	}
 
-	s = string(nResult.GetAbsIntRunes())
-	expected = string(nExpected.GetAbsIntRunes())
-
-	if expected != s {
-		t.Errorf("Expected AbsIntRunes = '%v'. Instead, got %v", expected, s)
-
-	}
-
-	s = string(nResult.GetAbsFracRunes())
-	expected = string(nExpected.GetAbsFracRunes())
-
-	if expected != s {
-		t.Errorf("Expected AbsFracRunes = '%v'. Instead, got %v", expected, s)
-	}
-
-	if nExpected.GetSign() != nResult.GetSign() {
-		t.Errorf("Expected SignVal= '%v'. Instead, got %v", nExpected.GetSign(), nResult.GetSign())
-	}
-
-	if nExpected.HasNumericDigits() != nResult.HasNumericDigits() {
-		t.Errorf("Expected HasNumericDigist= '%v'. Instead, got '%v'", nExpected.HasNumericDigits(), nResult.HasNumericDigits())
-	}
-
-	if nExpected.IsFractionalValue() != nResult.IsFractionalValue() {
-		t.Errorf("Expected IsFractionalValue= '%v'. Instead, got '%v'", nExpected.IsFractionalValue(), nResult.IsFractionalValue())
-	}
-
-	if nExpected.GetPrecision() != nResult.GetPrecision() {
-		t.Errorf("Expected precision= '%v'. Instead, got %v", nExpected.GetPrecision(), nResult.GetPrecision())
+	if decimalSeparator != nDto.GetDecimalSeparator() {
+		t.Errorf("Expected Decimal Separator='%v'.  Instead, Decimal Separator='%v' .",
+			decimalSeparator, nDto.GetDecimalSeparator() )
 
 	}
 
-	err = nResult.IsNumStrDtoValid("TestNumStrDto_MultiplyNumStrs_01() - ")
+	if thousandsSeparator != nDto.GetThousandsSeparator() {
+		t.Errorf("Expected Thousands Separator='%v'.  Instead, Thousands Separator='%v' .",
+			thousandsSeparator, nDto.GetThousandsSeparator() )
 
-	if err != nil {
-		t.Errorf("Resulting NumStr is INVALD. Error= %v", err)
+	}
+
+	actualStr := nDto.GetThouStr()
+
+	if expectedStr != actualStr {
+		t.Errorf("Expected Currency Str='%v'. Instead, Currency Str='%v'",
+			expectedStr, actualStr)
 	}
 
 }
 
-func TestNumStrDto_MultiplyNumStrs_06(t *testing.T) {
-	nStr1 := "-57"
-	nStr2 := "123"
-	nStr3 := "-7011"
-	nDto := NumStrDto{}.New()
+func TestNumStrDto_GetThouStr_06(t *testing.T) {
 
-	n1, _ := nDto.ParseNumStr(nStr1)
-	n2, _ := nDto.ParseNumStr(nStr2)
-	nExpected, _ := nDto.ParseNumStr(nStr3)
+	nStr := "-12345.29"
+	currencySymbol := '$'
+	decimalSeparator := '.'
+	thousandsSeparator := ','
+	expectedStr := "-12,345.29"
 
-	nResult, err := nDto.MultiplyNumStrs(n1, n2)
+	nDto, err := NumStrDto{}.NewNumStr(nStr)
 
 	if err != nil {
-		t.Errorf("nDto.MultiplyNumStrs(n1, n2) returned an error. Error= %v", err)
+		t.Errorf("Error returned by NumStrDto{}.NewNumStr(nStr) " +
+			"nStr='%v' Error='%v'", nStr, err.Error())
 	}
 
-	s := nResult.GetNumStr()
-	expected := nExpected.GetNumStr()
+	nDto.SetSeparators(decimalSeparator, thousandsSeparator, currencySymbol)
 
-	if s != expected {
-		t.Errorf("Expected NumStrOut = '%v'. Instead, got %v", expected, s)
+
+	if currencySymbol != nDto.GetCurrencySymbol() {
+		t.Errorf("Expected Currency Symbol='%v'.  Instead, Currency Symbol='%v' .",
+			currencySymbol, nDto.GetCurrencySymbol())
 	}
 
-	s = string(nResult.GetAbsIntRunes())
-	expected = string(nExpected.GetAbsIntRunes())
-
-	if expected != s {
-		t.Errorf("Expected AbsIntRunes = '%v'. Instead, got %v", expected, s)
-
-	}
-
-	s = string(nResult.GetAbsFracRunes())
-	expected = string(nExpected.GetAbsFracRunes())
-
-	if expected != s {
-		t.Errorf("Expected AbsFracRunes = '%v'. Instead, got %v", expected, s)
-	}
-
-	if nExpected.GetSign() != nResult.GetSign() {
-		t.Errorf("Expected SignVal= '%v'. Instead, got %v", nExpected.GetSign(), nResult.GetSign())
-	}
-
-	if nExpected.HasNumericDigits() != nResult.HasNumericDigits() {
-		t.Errorf("Expected HasNumericDigist= '%v'. Instead, got '%v'", nExpected.HasNumericDigits(), nResult.HasNumericDigits())
-	}
-
-	if nExpected.IsFractionalValue() != nResult.IsFractionalValue() {
-		t.Errorf("Expected IsFractionalValue= '%v'. Instead, got '%v'", nExpected.IsFractionalValue(), nResult.IsFractionalValue())
-	}
-
-	if nExpected.GetPrecision() != nResult.GetPrecision() {
-		t.Errorf("Expected precision= '%v'. Instead, got %v", nExpected.GetPrecision(), nResult.GetPrecision())
+	if decimalSeparator != nDto.GetDecimalSeparator() {
+		t.Errorf("Expected Decimal Separator='%v'.  Instead, Decimal Separator='%v' .",
+			decimalSeparator, nDto.GetDecimalSeparator() )
 
 	}
 
-	err = nResult.IsNumStrDtoValid("TestNumStrDto_MultiplyNumStrs_01() - ")
+	if thousandsSeparator != nDto.GetThousandsSeparator() {
+		t.Errorf("Expected Thousands Separator='%v'.  Instead, Thousands Separator='%v' .",
+			thousandsSeparator, nDto.GetThousandsSeparator() )
 
-	if err != nil {
-		t.Errorf("Resulting NumStr is INVALD. Error= %v", err)
+	}
+
+	actualStr := nDto.GetThouStr()
+
+	if expectedStr != actualStr {
+		t.Errorf("Expected Currency Str='%v'. Instead, Currency Str='%v'",
+			expectedStr, actualStr)
 	}
 
 }
 
-func TestNumStrDto_MultiplyNumStrs_07(t *testing.T) {
-	nStr1 := "-57"
-	nStr2 := "-123"
-	nStr3 := "7011"
-	nDto := NumStrDto{}.New()
+func TestNumStrDto_GetThouStr_07(t *testing.T) {
 
-	n1, _ := nDto.ParseNumStr(nStr1)
-	n2, _ := nDto.ParseNumStr(nStr2)
-	nExpected, _ := nDto.ParseNumStr(nStr3)
+	nStr := "-12345"
+	currencySymbol := '$'
+	decimalSeparator := '.'
+	thousandsSeparator := ','
+	expectedStr := "-12,345"
 
-	nResult, err := nDto.MultiplyNumStrs(n1, n2)
+	nDto, err := NumStrDto{}.NewNumStr(nStr)
 
 	if err != nil {
-		t.Errorf("nDto.MultiplyNumStrs(n1, n2) returned an error. Error= %v", err)
+		t.Errorf("Error returned by NumStrDto{}.NewNumStr(nStr) " +
+			"nStr='%v' Error='%v'", nStr, err.Error())
 	}
 
-	s := nResult.GetNumStr()
-	expected := nExpected.GetNumStr()
+	nDto.SetSeparators(decimalSeparator, thousandsSeparator, currencySymbol)
 
-	if s != expected {
-		t.Errorf("Expected NumStrOut = '%v'. Instead, got %v", expected, s)
+
+	if currencySymbol != nDto.GetCurrencySymbol() {
+		t.Errorf("Expected Currency Symbol='%v'.  Instead, Currency Symbol='%v' .",
+			currencySymbol, nDto.GetCurrencySymbol())
 	}
 
-	s = string(nResult.GetAbsIntRunes())
-	expected = string(nExpected.GetAbsIntRunes())
-
-	if expected != s {
-		t.Errorf("Expected AbsIntRunes = '%v'. Instead, got %v", expected, s)
-
-	}
-
-	s = string(nResult.GetAbsFracRunes())
-	expected = string(nExpected.GetAbsFracRunes())
-
-	if expected != s {
-		t.Errorf("Expected AbsFracRunes = '%v'. Instead, got %v", expected, s)
-	}
-
-	if nExpected.GetSign() != nResult.GetSign() {
-		t.Errorf("Expected SignVal= '%v'. Instead, got %v", nExpected.GetSign(), nResult.GetSign())
-	}
-
-	if nExpected.HasNumericDigits() != nResult.HasNumericDigits() {
-		t.Errorf("Expected HasNumericDigist= '%v'. Instead, got '%v'", nExpected.HasNumericDigits(), nResult.HasNumericDigits())
-	}
-
-	if nExpected.IsFractionalValue() != nResult.IsFractionalValue() {
-		t.Errorf("Expected IsFractionalValue= '%v'. Instead, got '%v'", nExpected.IsFractionalValue(), nResult.IsFractionalValue())
-	}
-
-	if nExpected.GetPrecision() != nResult.GetPrecision() {
-		t.Errorf("Expected precision= '%v'. Instead, got %v", nExpected.GetPrecision(), nResult.GetPrecision())
+	if decimalSeparator != nDto.GetDecimalSeparator() {
+		t.Errorf("Expected Decimal Separator='%v'.  Instead, Decimal Separator='%v' .",
+			decimalSeparator, nDto.GetDecimalSeparator() )
 
 	}
 
-	err = nResult.IsNumStrDtoValid("TestNumStrDto_MultiplyNumStrs_01() - ")
+	if thousandsSeparator != nDto.GetThousandsSeparator() {
+		t.Errorf("Expected Thousands Separator='%v'.  Instead, Thousands Separator='%v' .",
+			thousandsSeparator, nDto.GetThousandsSeparator() )
 
-	if err != nil {
-		t.Errorf("Resulting NumStr is INVALD. Error= %v", err)
+	}
+
+	actualStr := nDto.GetThouStr()
+
+	if expectedStr != actualStr {
+		t.Errorf("Expected Currency Str='%v'. Instead, Currency Str='%v'",
+			expectedStr, actualStr)
 	}
 
 }
 
-func TestNumStrDto_MultiplyNumStrs_08(t *testing.T) {
-	nStr1 := "0"
-	nStr2 := "123"
-	nStr3 := "0"
-	nDto := NumStrDto{}.New()
+func TestNumStrDto_GetThouStr_08(t *testing.T) {
 
-	n1, _ := nDto.ParseNumStr(nStr1)
-	n2, _ := nDto.ParseNumStr(nStr2)
-	nExpected, _ := nDto.ParseNumStr(nStr3)
+	nStr := "-123"
+	currencySymbol := '$'
+	decimalSeparator := '.'
+	thousandsSeparator := ','
+	expectedStr := "-123"
 
-	nResult, err := nDto.MultiplyNumStrs(n1, n2)
+	nDto, err := NumStrDto{}.NewNumStr(nStr)
 
 	if err != nil {
-		t.Errorf("nDto.MultiplyNumStrs(n1, n2) returned an error. Error= %v", err)
+		t.Errorf("Error returned by NumStrDto{}.NewNumStr(nStr) " +
+			"nStr='%v' Error='%v'", nStr, err.Error())
 	}
 
-	s := nResult.GetNumStr()
-	expected := nExpected.GetNumStr()
+	nDto.SetSeparators(decimalSeparator, thousandsSeparator, currencySymbol)
 
-	if s != expected {
-		t.Errorf("Expected NumStrOut = '%v'. Instead, got %v", expected, s)
+
+	if currencySymbol != nDto.GetCurrencySymbol() {
+		t.Errorf("Expected Currency Symbol='%v'.  Instead, Currency Symbol='%v' .",
+			currencySymbol, nDto.GetCurrencySymbol())
 	}
 
-	s = string(nResult.GetAbsIntRunes())
-	expected = string(nExpected.GetAbsIntRunes())
-
-	if expected != s {
-		t.Errorf("Expected AbsIntRunes = '%v'. Instead, got %v", expected, s)
-
-	}
-
-	s = string(nResult.GetAbsFracRunes())
-	expected = string(nExpected.GetAbsFracRunes())
-
-	if expected != s {
-		t.Errorf("Expected AbsFracRunes = '%v'. Instead, got %v", expected, s)
-	}
-
-	if nExpected.GetSign() != nResult.GetSign() {
-		t.Errorf("Expected SignVal= '%v'. Instead, got %v", nExpected.GetSign(), nResult.GetSign())
-	}
-
-	if nExpected.HasNumericDigits() != nResult.HasNumericDigits() {
-		t.Errorf("Expected HasNumericDigist= '%v'. Instead, got '%v'", nExpected.HasNumericDigits(), nResult.HasNumericDigits())
-	}
-
-	if nExpected.IsFractionalValue() != nResult.IsFractionalValue() {
-		t.Errorf("Expected IsFractionalValue= '%v'. Instead, got '%v'", nExpected.IsFractionalValue(), nResult.IsFractionalValue())
-	}
-
-	if nExpected.GetPrecision() != nResult.GetPrecision() {
-		t.Errorf("Expected precision= '%v'. Instead, got %v", nExpected.GetPrecision(), nResult.GetPrecision())
+	if decimalSeparator != nDto.GetDecimalSeparator() {
+		t.Errorf("Expected Decimal Separator='%v'.  Instead, Decimal Separator='%v' .",
+			decimalSeparator, nDto.GetDecimalSeparator() )
 
 	}
 
-	err = nResult.IsNumStrDtoValid("TestNumStrDto_MultiplyNumStrs_01() - ")
+	if thousandsSeparator != nDto.GetThousandsSeparator() {
+		t.Errorf("Expected Thousands Separator='%v'.  Instead, Thousands Separator='%v' .",
+			thousandsSeparator, nDto.GetThousandsSeparator() )
 
-	if err != nil {
-		t.Errorf("Resulting NumStr is INVALD. Error= %v", err)
+	}
+
+	actualStr := nDto.GetThouStr()
+
+	if expectedStr != actualStr {
+		t.Errorf("Expected Currency Str='%v'. Instead, Currency Str='%v'",
+			expectedStr, actualStr)
 	}
 
 }
 
-func TestNumStrDto_MultiplyNumStrs_09(t *testing.T) {
-	nStr1 := "57"
-	nStr2 := "0"
-	nStr3 := "0"
-	nDto := NumStrDto{}.New()
+func TestNumStrDto_GetThouStr_09(t *testing.T) {
 
-	n1, _ := nDto.ParseNumStr(nStr1)
-	n2, _ := nDto.ParseNumStr(nStr2)
-	nExpected, _ := nDto.ParseNumStr(nStr3)
+	nStr := "-0.123"
+	currencySymbol := '$'
+	decimalSeparator := '.'
+	thousandsSeparator := ','
+	expectedStr := "-0.123"
 
-	nResult, err := nDto.MultiplyNumStrs(n1, n2)
+	nDto, err := NumStrDto{}.NewNumStr(nStr)
 
 	if err != nil {
-		t.Errorf("nDto.MultiplyNumStrs(n1, n2) returned an error. Error= %v", err)
+		t.Errorf("Error returned by NumStrDto{}.NewNumStr(nStr) " +
+			"nStr='%v' Error='%v'", nStr, err.Error())
 	}
 
-	s := nResult.GetNumStr()
-	expected := nExpected.GetNumStr()
+	nDto.SetSeparators(decimalSeparator, thousandsSeparator, currencySymbol)
 
-	if s != expected {
-		t.Errorf("Expected NumStrOut = '%v'. Instead, got %v", expected, s)
+
+	if currencySymbol != nDto.GetCurrencySymbol() {
+		t.Errorf("Expected Currency Symbol='%v'.  Instead, Currency Symbol='%v' .",
+			currencySymbol, nDto.GetCurrencySymbol())
 	}
 
-	s = string(nResult.GetAbsIntRunes())
-	expected = string(nExpected.GetAbsIntRunes())
-
-	if expected != s {
-		t.Errorf("Expected AbsIntRunes = '%v'. Instead, got %v", expected, s)
-
-	}
-
-	s = string(nResult.GetAbsFracRunes())
-	expected = string(nExpected.GetAbsFracRunes())
-
-	if expected != s {
-		t.Errorf("Expected AbsFracRunes = '%v'. Instead, got %v", expected, s)
-	}
-
-	if nExpected.GetSign() != nResult.GetSign() {
-		t.Errorf("Expected SignVal= '%v'. Instead, got %v", nExpected.GetSign(), nResult.GetSign())
-	}
-
-	if nExpected.HasNumericDigits() != nResult.HasNumericDigits() {
-		t.Errorf("Expected HasNumericDigist= '%v'. Instead, got '%v'", nExpected.HasNumericDigits(), nResult.HasNumericDigits())
-	}
-
-	if nExpected.IsFractionalValue() != nResult.IsFractionalValue() {
-		t.Errorf("Expected IsFractionalValue= '%v'. Instead, got '%v'", nExpected.IsFractionalValue(), nResult.IsFractionalValue())
-	}
-
-	if nExpected.GetPrecision() != nResult.GetPrecision() {
-		t.Errorf("Expected precision= '%v'. Instead, got %v", nExpected.GetPrecision(), nResult.GetPrecision())
+	if decimalSeparator != nDto.GetDecimalSeparator() {
+		t.Errorf("Expected Decimal Separator='%v'.  Instead, Decimal Separator='%v' .",
+			decimalSeparator, nDto.GetDecimalSeparator() )
 
 	}
 
-	err = nResult.IsNumStrDtoValid("TestNumStrDto_MultiplyNumStrs_01() - ")
+	if thousandsSeparator != nDto.GetThousandsSeparator() {
+		t.Errorf("Expected Thousands Separator='%v'.  Instead, Thousands Separator='%v' .",
+			thousandsSeparator, nDto.GetThousandsSeparator() )
 
-	if err != nil {
-		t.Errorf("Resulting NumStr is INVALD. Error= %v", err)
+	}
+
+	actualStr := nDto.GetThouStr()
+
+	if expectedStr != actualStr {
+		t.Errorf("Expected Currency Str='%v'. Instead, Currency Str='%v'",
+			expectedStr, actualStr)
 	}
 
 }
 
-func TestNumStrDto_MultiplyNumStrs_10(t *testing.T) {
-	nStr1 := "-57"
-	nStr2 := "0"
-	nStr3 := "0"
-	nDto := NumStrDto{}.New()
+func TestNumStrDto_GetThouStr_10(t *testing.T) {
 
-	n1, _ := nDto.ParseNumStr(nStr1)
-	n2, _ := nDto.ParseNumStr(nStr2)
-	nExpected, _ := nDto.ParseNumStr(nStr3)
+	nStr := "-1234567890.123"
+	currencySymbol := '$'
+	decimalSeparator := '.'
+	thousandsSeparator := ','
+	expectedStr := "-1,234,567,890.123"
 
-	nResult, err := nDto.MultiplyNumStrs(n1, n2)
+	nDto, err := NumStrDto{}.NewNumStr(nStr)
 
 	if err != nil {
-		t.Errorf("nDto.MultiplyNumStrs(n1, n2) returned an error. Error= %v", err)
+		t.Errorf("Error returned by NumStrDto{}.NewNumStr(nStr) " +
+			"nStr='%v' Error='%v'", nStr, err.Error())
 	}
 
-	s := nResult.GetNumStr()
-	expected := nExpected.GetNumStr()
+	nDto.SetSeparators(decimalSeparator, thousandsSeparator, currencySymbol)
 
-	if s != expected {
-		t.Errorf("Expected NumStrOut = '%v'. Instead, got %v", expected, s)
+
+	if currencySymbol != nDto.GetCurrencySymbol() {
+		t.Errorf("Expected Currency Symbol='%v'.  Instead, Currency Symbol='%v' .",
+			currencySymbol, nDto.GetCurrencySymbol())
 	}
 
-	s = string(nResult.GetAbsIntRunes())
-	expected = string(nExpected.GetAbsIntRunes())
-
-	if expected != s {
-		t.Errorf("Expected AbsIntRunes = '%v'. Instead, got %v", expected, s)
-
-	}
-
-	s = string(nResult.GetAbsFracRunes())
-	expected = string(nExpected.GetAbsFracRunes())
-
-	if expected != s {
-		t.Errorf("Expected AbsFracRunes = '%v'. Instead, got %v", expected, s)
-	}
-
-	if nExpected.GetSign() != nResult.GetSign() {
-		t.Errorf("Expected SignVal= '%v'. Instead, got %v", nExpected.GetSign(), nResult.GetSign())
-	}
-
-	if nExpected.HasNumericDigits() != nResult.HasNumericDigits() {
-		t.Errorf("Expected HasNumericDigist= '%v'. Instead, got '%v'", nExpected.HasNumericDigits(), nResult.HasNumericDigits())
-	}
-
-	if nExpected.IsFractionalValue() != nResult.IsFractionalValue() {
-		t.Errorf("Expected IsFractionalValue= '%v'. Instead, got '%v'", nExpected.IsFractionalValue(), nResult.IsFractionalValue())
-	}
-
-	if nExpected.GetPrecision() != nResult.GetPrecision() {
-		t.Errorf("Expected precision= '%v'. Instead, got %v", nExpected.GetPrecision(), nResult.GetPrecision())
+	if decimalSeparator != nDto.GetDecimalSeparator() {
+		t.Errorf("Expected Decimal Separator='%v'.  Instead, Decimal Separator='%v' .",
+			decimalSeparator, nDto.GetDecimalSeparator() )
 
 	}
 
-	err = nResult.IsNumStrDtoValid("TestNumStrDto_MultiplyNumStrs_01() - ")
+	if thousandsSeparator != nDto.GetThousandsSeparator() {
+		t.Errorf("Expected Thousands Separator='%v'.  Instead, Thousands Separator='%v' .",
+			thousandsSeparator, nDto.GetThousandsSeparator() )
 
-	if err != nil {
-		t.Errorf("Resulting NumStr is INVALD. Error= %v", err)
+	}
+
+	actualStr := nDto.GetThouStr()
+
+	if expectedStr != actualStr {
+		t.Errorf("Expected Currency Str='%v'. Instead, Currency Str='%v'",
+			expectedStr, actualStr)
 	}
 
 }
 
-func TestNumStrDto_MultiplyNumStrs_11(t *testing.T) {
-	nStr1 := "57"
-	nStr2 := "0.123"
-	nStr3 := "7.011"
-	nDto := NumStrDto{}.New()
+func TestNumStrDto_GetThouParen_01(t *testing.T) {
 
-	n1, _ := nDto.ParseNumStr(nStr1)
-	n2, _ := nDto.ParseNumStr(nStr2)
-	nExpected, _ := nDto.ParseNumStr(nStr3)
+	nStr := "123456.97"
+	currencySymbol := '$'
+	decimalSeparator := '.'
+	thousandsSeparator := ','
+	expectedStr := "123,456.97"
 
-	nResult, err := nDto.MultiplyNumStrs(n1, n2)
+	nDto, err := NumStrDto{}.NewNumStr(nStr)
 
 	if err != nil {
-		t.Errorf("nDto.MultiplyNumStrs(n1, n2) returned an error. Error= %v", err)
+		t.Errorf("Error returned by NumStrDto{}.NewNumStr(nStr) " +
+			"nStr='%v' Error='%v'", nStr, err.Error())
 	}
 
-	s := nResult.GetNumStr()
-	expected := nExpected.GetNumStr()
+	nDto.SetSeparators(decimalSeparator, thousandsSeparator, currencySymbol)
 
-	if s != expected {
-		t.Errorf("Expected NumStrOut = '%v'. Instead, got %v", expected, s)
+
+	if currencySymbol != nDto.GetCurrencySymbol() {
+		t.Errorf("Expected Currency Symbol='%v'.  Instead, Currency Symbol='%v' .",
+			currencySymbol, nDto.GetCurrencySymbol())
 	}
 
-	s = string(nResult.GetAbsIntRunes())
-	expected = string(nExpected.GetAbsIntRunes())
-
-	if expected != s {
-		t.Errorf("Expected AbsIntRunes = '%v'. Instead, got %v", expected, s)
-
-	}
-
-	s = string(nResult.GetAbsFracRunes())
-	expected = string(nExpected.GetAbsFracRunes())
-
-	if expected != s {
-		t.Errorf("Expected AbsFracRunes = '%v'. Instead, got %v", expected, s)
-	}
-
-	if nExpected.GetSign() != nResult.GetSign() {
-		t.Errorf("Expected SignVal= '%v'. Instead, got %v", nExpected.GetSign(), nResult.GetSign())
-	}
-
-	if nExpected.HasNumericDigits() != nResult.HasNumericDigits() {
-		t.Errorf("Expected HasNumericDigist= '%v'. Instead, got '%v'", nExpected.HasNumericDigits(), nResult.HasNumericDigits())
-	}
-
-	if nExpected.IsFractionalValue() != nResult.IsFractionalValue() {
-		t.Errorf("Expected IsFractionalValue= '%v'. Instead, got '%v'", nExpected.IsFractionalValue(), nResult.IsFractionalValue())
-	}
-
-	if nExpected.GetPrecision() != nResult.GetPrecision() {
-		t.Errorf("Expected precision= '%v'. Instead, got %v", nExpected.GetPrecision(), nResult.GetPrecision())
+	if decimalSeparator != nDto.GetDecimalSeparator() {
+		t.Errorf("Expected Decimal Separator='%v'.  Instead, Decimal Separator='%v' .",
+			decimalSeparator, nDto.GetDecimalSeparator() )
 
 	}
 
-	err = nResult.IsNumStrDtoValid("TestNumStrDto_MultiplyNumStrs_01() - ")
+	if thousandsSeparator != nDto.GetThousandsSeparator() {
+		t.Errorf("Expected Thousands Separator='%v'.  Instead, Thousands Separator='%v' .",
+			thousandsSeparator, nDto.GetThousandsSeparator() )
 
-	if err != nil {
-		t.Errorf("Resulting NumStr is INVALD. Error= %v", err)
+	}
+
+	actualStr := nDto.GetThouParen()
+
+	if expectedStr != actualStr {
+		t.Errorf("Expected Currency Str='%v'. Instead, Currency Str='%v'",
+			expectedStr, actualStr)
 	}
 
 }
 
-func TestNumStrDto_MultiplyNumStrs_12(t *testing.T) {
-	nStr1 := "62.1234567890123"
-	nStr2 := "3.12345678901234"
-	nStr3 := "194.039932864555212496281111782"
-	nDto := NumStrDto{}.New()
+func TestNumStrDto_GetThouParen_02(t *testing.T) {
 
-	n1, _ := nDto.ParseNumStr(nStr1)
-	n2, _ := nDto.ParseNumStr(nStr2)
-	nExpected, _ := nDto.ParseNumStr(nStr3)
+	nStr := "123.45"
+	currencySymbol := '$'
+	decimalSeparator := '.'
+	thousandsSeparator := ','
+	expectedStr := "123.45"
 
-	nResult, err := nDto.MultiplyNumStrs(n1, n2)
+	nDto, err := NumStrDto{}.NewNumStr(nStr)
 
 	if err != nil {
-		t.Errorf("nDto.MultiplyNumStrs(n1, n2) returned an error. Error= %v", err)
+		t.Errorf("Error returned by NumStrDto{}.NewNumStr(nStr) " +
+			"nStr='%v' Error='%v'", nStr, err.Error())
 	}
 
-	s := nResult.GetNumStr()
-	expected := nExpected.GetNumStr()
+	nDto.SetSeparators(decimalSeparator, thousandsSeparator, currencySymbol)
 
-	if s != expected {
-		t.Errorf("Expected NumStrOut = '%v'. Instead, got %v", expected, s)
+
+	if currencySymbol != nDto.GetCurrencySymbol() {
+		t.Errorf("Expected Currency Symbol='%v'.  Instead, Currency Symbol='%v' .",
+			currencySymbol, nDto.GetCurrencySymbol())
 	}
 
-	s = string(nResult.GetAbsIntRunes())
-	expected = string(nExpected.GetAbsIntRunes())
-
-	if expected != s {
-		t.Errorf("Expected AbsIntRunes = '%v'. Instead, got %v", expected, s)
-
-	}
-
-	s = string(nResult.GetAbsFracRunes())
-	expected = string(nExpected.GetAbsFracRunes())
-
-	if expected != s {
-		t.Errorf("Expected AbsFracRunes = '%v'. Instead, got %v", expected, s)
-	}
-
-	if nExpected.GetSign() != nResult.GetSign() {
-		t.Errorf("Expected SignVal= '%v'. Instead, got %v", nExpected.GetSign(), nResult.GetSign())
-	}
-
-	if nExpected.HasNumericDigits() != nResult.HasNumericDigits() {
-		t.Errorf("Expected HasNumericDigist= '%v'. Instead, got '%v'", nExpected.HasNumericDigits(), nResult.HasNumericDigits())
-	}
-
-	if nExpected.IsFractionalValue() != nResult.IsFractionalValue() {
-		t.Errorf("Expected IsFractionalValue= '%v'. Instead, got '%v'", nExpected.IsFractionalValue(), nResult.IsFractionalValue())
-	}
-
-	if nExpected.GetPrecision() != nResult.GetPrecision() {
-		t.Errorf("Expected precision= '%v'. Instead, got %v", nExpected.GetPrecision(), nResult.GetPrecision())
+	if decimalSeparator != nDto.GetDecimalSeparator() {
+		t.Errorf("Expected Decimal Separator='%v'.  Instead, Decimal Separator='%v' .",
+			decimalSeparator, nDto.GetDecimalSeparator() )
 
 	}
 
-	err = nResult.IsNumStrDtoValid("TestNumStrDto_MultiplyNumStrs_01() - ")
+	if thousandsSeparator != nDto.GetThousandsSeparator() {
+		t.Errorf("Expected Thousands Separator='%v'.  Instead, Thousands Separator='%v' .",
+			thousandsSeparator, nDto.GetThousandsSeparator() )
 
-	if err != nil {
-		t.Errorf("Resulting NumStr is INVALD. Error= %v", err)
+	}
+
+	actualStr := nDto.GetThouParen()
+
+	if expectedStr != actualStr {
+		t.Errorf("Expected Currency Str='%v'. Instead, Currency Str='%v'",
+			expectedStr, actualStr)
 	}
 
 }
 
-func TestNumStrDto_MultiplyNumStrs_13(t *testing.T) {
-	nStr1 := "-62.1234567890123"
-	nStr2 := "3.12345678901234"
-	nStr3 := "-194.039932864555212496281111782"
-	nDto := NumStrDto{}.New()
+func TestNumStrDto_GetThouParen_03(t *testing.T) {
 
-	n1, _ := nDto.ParseNumStr(nStr1)
-	n2, _ := nDto.ParseNumStr(nStr2)
-	nExpected, _ := nDto.ParseNumStr(nStr3)
+	nStr := "12345.29"
+	currencySymbol := '$'
+	decimalSeparator := '.'
+	thousandsSeparator := ','
+	expectedStr := "12,345.29"
 
-	nResult, err := nDto.MultiplyNumStrs(n1, n2)
+	nDto, err := NumStrDto{}.NewNumStr(nStr)
 
 	if err != nil {
-		t.Errorf("nDto.MultiplyNumStrs(n1, n2) returned an error. Error= %v", err)
+		t.Errorf("Error returned by NumStrDto{}.NewNumStr(nStr) " +
+			"nStr='%v' Error='%v'", nStr, err.Error())
 	}
 
-	s := nResult.GetNumStr()
-	expected := nExpected.GetNumStr()
+	nDto.SetSeparators(decimalSeparator, thousandsSeparator, currencySymbol)
 
-	if s != expected {
-		t.Errorf("Expected NumStrOut = '%v'. Instead, got %v", expected, s)
+
+	if currencySymbol != nDto.GetCurrencySymbol() {
+		t.Errorf("Expected Currency Symbol='%v'.  Instead, Currency Symbol='%v' .",
+			currencySymbol, nDto.GetCurrencySymbol())
 	}
 
-	s = string(nResult.GetAbsIntRunes())
-	expected = string(nExpected.GetAbsIntRunes())
-
-	if expected != s {
-		t.Errorf("Expected AbsIntRunes = '%v'. Instead, got %v", expected, s)
-
-	}
-
-	s = string(nResult.GetAbsFracRunes())
-	expected = string(nExpected.GetAbsFracRunes())
-
-	if expected != s {
-		t.Errorf("Expected AbsFracRunes = '%v'. Instead, got %v", expected, s)
-	}
-
-	if nExpected.GetSign() != nResult.GetSign() {
-		t.Errorf("Expected SignVal= '%v'. Instead, got %v", nExpected.GetSign(), nResult.GetSign())
-	}
-
-	if nExpected.HasNumericDigits() != nResult.HasNumericDigits() {
-		t.Errorf("Expected HasNumericDigist= '%v'. Instead, got '%v'", nExpected.HasNumericDigits(), nResult.HasNumericDigits())
-	}
-
-	if nExpected.IsFractionalValue() != nResult.IsFractionalValue() {
-		t.Errorf("Expected IsFractionalValue= '%v'. Instead, got '%v'", nExpected.IsFractionalValue(), nResult.IsFractionalValue())
-	}
-
-	if nExpected.GetPrecision() != nResult.GetPrecision() {
-		t.Errorf("Expected precision= '%v'. Instead, got %v", nExpected.GetPrecision(), nResult.GetPrecision())
+	if decimalSeparator != nDto.GetDecimalSeparator() {
+		t.Errorf("Expected Decimal Separator='%v'.  Instead, Decimal Separator='%v' .",
+			decimalSeparator, nDto.GetDecimalSeparator() )
 
 	}
 
-	err = nResult.IsNumStrDtoValid("TestNumStrDto_MultiplyNumStrs_01() - ")
+	if thousandsSeparator != nDto.GetThousandsSeparator() {
+		t.Errorf("Expected Thousands Separator='%v'.  Instead, Thousands Separator='%v' .",
+			thousandsSeparator, nDto.GetThousandsSeparator() )
 
-	if err != nil {
-		t.Errorf("Resulting NumStr is INVALD. Error= %v", err)
+	}
+
+	actualStr := nDto.GetThouParen()
+
+	if expectedStr != actualStr {
+		t.Errorf("Expected Currency Str='%v'. Instead, Currency Str='%v'",
+			expectedStr, actualStr)
 	}
 
 }
 
-func TestNumStrDto_MultiplyNumStrs_14(t *testing.T) {
-	nStr1 := "-62.1234567890123"
-	nStr2 := "-3.12345678901234"
-	nStr3 := "194.039932864555212496281111782"
-	nDto := NumStrDto{}.New()
+func TestNumStrDto_GetThouParen_04(t *testing.T) {
 
-	n1, _ := nDto.ParseNumStr(nStr1)
-	n2, _ := nDto.ParseNumStr(nStr2)
-	nExpected, _ := nDto.ParseNumStr(nStr3)
+	nStr := "12345"
+	currencySymbol := '$'
+	decimalSeparator := '.'
+	thousandsSeparator := ','
+	expectedStr := "12,345"
 
-	nResult, err := nDto.MultiplyNumStrs(n1, n2)
+	nDto, err := NumStrDto{}.NewNumStr(nStr)
 
 	if err != nil {
-		t.Errorf("nDto.MultiplyNumStrs(n1, n2) returned an error. Error= %v", err)
+		t.Errorf("Error returned by NumStrDto{}.NewNumStr(nStr) " +
+			"nStr='%v' Error='%v'", nStr, err.Error())
 	}
 
-	s := nResult.GetNumStr()
-	expected := nExpected.GetNumStr()
+	nDto.SetSeparators(decimalSeparator, thousandsSeparator, currencySymbol)
 
-	if s != expected {
-		t.Errorf("Expected NumStrOut = '%v'. Instead, got %v", expected, s)
+
+	if currencySymbol != nDto.GetCurrencySymbol() {
+		t.Errorf("Expected Currency Symbol='%v'.  Instead, Currency Symbol='%v' .",
+			currencySymbol, nDto.GetCurrencySymbol())
 	}
 
-	s = string(nResult.GetAbsIntRunes())
-	expected = string(nExpected.GetAbsIntRunes())
-
-	if expected != s {
-		t.Errorf("Expected AbsIntRunes = '%v'. Instead, got %v", expected, s)
-
-	}
-
-	s = string(nResult.GetAbsFracRunes())
-	expected = string(nExpected.GetAbsFracRunes())
-
-	if expected != s {
-		t.Errorf("Expected AbsFracRunes = '%v'. Instead, got %v", expected, s)
-	}
-
-	if nExpected.GetSign() != nResult.GetSign() {
-		t.Errorf("Expected SignVal= '%v'. Instead, got %v", nExpected.GetSign(), nResult.GetSign())
-	}
-
-	if nExpected.HasNumericDigits() != nResult.HasNumericDigits() {
-		t.Errorf("Expected HasNumericDigist= '%v'. Instead, got '%v'", nExpected.HasNumericDigits(), nResult.HasNumericDigits())
-	}
-
-	if nExpected.IsFractionalValue() != nResult.IsFractionalValue() {
-		t.Errorf("Expected IsFractionalValue= '%v'. Instead, got '%v'", nExpected.IsFractionalValue(), nResult.IsFractionalValue())
-	}
-
-	if nExpected.GetPrecision() != nResult.GetPrecision() {
-		t.Errorf("Expected precision= '%v'. Instead, got %v", nExpected.GetPrecision(), nResult.GetPrecision())
+	if decimalSeparator != nDto.GetDecimalSeparator() {
+		t.Errorf("Expected Decimal Separator='%v'.  Instead, Decimal Separator='%v' .",
+			decimalSeparator, nDto.GetDecimalSeparator() )
 
 	}
 
-	err = nResult.IsNumStrDtoValid("TestNumStrDto_MultiplyNumStrs_01() - ")
+	if thousandsSeparator != nDto.GetThousandsSeparator() {
+		t.Errorf("Expected Thousands Separator='%v'.  Instead, Thousands Separator='%v' .",
+			thousandsSeparator, nDto.GetThousandsSeparator() )
+
+	}
+
+	actualStr := nDto.GetThouParen()
+
+	if expectedStr != actualStr {
+		t.Errorf("Expected Currency Str='%v'. Instead, Currency Str='%v'",
+			expectedStr, actualStr)
+	}
+
+}
+
+func TestNumStrDto_GetThouParen_05(t *testing.T) {
+
+	nStr := "12345.1234"
+	currencySymbol := '$'
+	decimalSeparator := '.'
+	thousandsSeparator := ','
+	expectedStr := "12,345.1234"
+
+	nDto, err := NumStrDto{}.NewNumStr(nStr)
 
 	if err != nil {
-		t.Errorf("Resulting NumStr is INVALD. Error= %v", err)
+		t.Errorf("Error returned by NumStrDto{}.NewNumStr(nStr) " +
+			"nStr='%v' Error='%v'", nStr, err.Error())
+	}
+
+	nDto.SetSeparators(decimalSeparator, thousandsSeparator, currencySymbol)
+
+
+	if currencySymbol != nDto.GetCurrencySymbol() {
+		t.Errorf("Expected Currency Symbol='%v'.  Instead, Currency Symbol='%v' .",
+			currencySymbol, nDto.GetCurrencySymbol())
+	}
+
+	if decimalSeparator != nDto.GetDecimalSeparator() {
+		t.Errorf("Expected Decimal Separator='%v'.  Instead, Decimal Separator='%v' .",
+			decimalSeparator, nDto.GetDecimalSeparator() )
+
+	}
+
+	if thousandsSeparator != nDto.GetThousandsSeparator() {
+		t.Errorf("Expected Thousands Separator='%v'.  Instead, Thousands Separator='%v' .",
+			thousandsSeparator, nDto.GetThousandsSeparator() )
+
+	}
+
+	actualStr := nDto.GetThouParen()
+
+	if expectedStr != actualStr {
+		t.Errorf("Expected Currency Str='%v'. Instead, Currency Str='%v'",
+			expectedStr, actualStr)
+	}
+
+}
+
+
+func TestNumStrDto_GetThouParen_06(t *testing.T) {
+
+	nStr := "1234567890.25"
+	currencySymbol := '$'
+	decimalSeparator := '.'
+	thousandsSeparator := ','
+	expectedStr := "1,234,567,890.25"
+
+	nDto, err := NumStrDto{}.NewNumStr(nStr)
+
+	if err != nil {
+		t.Errorf("Error returned by NumStrDto{}.NewNumStr(nStr) " +
+			"nStr='%v' Error='%v'", nStr, err.Error())
+	}
+
+	nDto.SetSeparators(decimalSeparator, thousandsSeparator, currencySymbol)
+
+
+	if currencySymbol != nDto.GetCurrencySymbol() {
+		t.Errorf("Expected Currency Symbol='%v'.  Instead, Currency Symbol='%v' .",
+			currencySymbol, nDto.GetCurrencySymbol())
+	}
+
+	if decimalSeparator != nDto.GetDecimalSeparator() {
+		t.Errorf("Expected Decimal Separator='%v'.  Instead, Decimal Separator='%v' .",
+			decimalSeparator, nDto.GetDecimalSeparator() )
+
+	}
+
+	if thousandsSeparator != nDto.GetThousandsSeparator() {
+		t.Errorf("Expected Thousands Separator='%v'.  Instead, Thousands Separator='%v' .",
+			thousandsSeparator, nDto.GetThousandsSeparator() )
+
+	}
+
+	actualStr := nDto.GetThouParen()
+
+	if expectedStr != actualStr {
+		t.Errorf("Expected Currency Str='%v'. Instead, Currency Str='%v'",
+			expectedStr, actualStr)
+	}
+
+}
+
+func TestNumStrDto_GetThouParen_07(t *testing.T) {
+
+	nStr := "-12345.29"
+	currencySymbol := '$'
+	decimalSeparator := '.'
+	thousandsSeparator := ','
+	expectedStr := "(12,345.29)"
+
+	nDto, err := NumStrDto{}.NewNumStr(nStr)
+
+	if err != nil {
+		t.Errorf("Error returned by NumStrDto{}.NewNumStr(nStr) " +
+			"nStr='%v' Error='%v'", nStr, err.Error())
+	}
+
+	nDto.SetSeparators(decimalSeparator, thousandsSeparator, currencySymbol)
+
+
+	if currencySymbol != nDto.GetCurrencySymbol() {
+		t.Errorf("Expected Currency Symbol='%v'.  Instead, Currency Symbol='%v' .",
+			currencySymbol, nDto.GetCurrencySymbol())
+	}
+
+	if decimalSeparator != nDto.GetDecimalSeparator() {
+		t.Errorf("Expected Decimal Separator='%v'.  Instead, Decimal Separator='%v' .",
+			decimalSeparator, nDto.GetDecimalSeparator() )
+
+	}
+
+	if thousandsSeparator != nDto.GetThousandsSeparator() {
+		t.Errorf("Expected Thousands Separator='%v'.  Instead, Thousands Separator='%v' .",
+			thousandsSeparator, nDto.GetThousandsSeparator() )
+
+	}
+
+	actualStr := nDto.GetThouParen()
+
+	if expectedStr != actualStr {
+		t.Errorf("Expected Currency Str='%v'. Instead, Currency Str='%v'",
+			expectedStr, actualStr)
+	}
+
+}
+
+func TestNumStrDto_GetThouParen_08(t *testing.T) {
+
+	nStr := "-12345"
+	currencySymbol := '$'
+	decimalSeparator := '.'
+	thousandsSeparator := ','
+	expectedStr := "(12,345)"
+
+	nDto, err := NumStrDto{}.NewNumStr(nStr)
+
+	if err != nil {
+		t.Errorf("Error returned by NumStrDto{}.NewNumStr(nStr) " +
+			"nStr='%v' Error='%v'", nStr, err.Error())
+	}
+
+	nDto.SetSeparators(decimalSeparator, thousandsSeparator, currencySymbol)
+
+
+	if currencySymbol != nDto.GetCurrencySymbol() {
+		t.Errorf("Expected Currency Symbol='%v'.  Instead, Currency Symbol='%v' .",
+			currencySymbol, nDto.GetCurrencySymbol())
+	}
+
+	if decimalSeparator != nDto.GetDecimalSeparator() {
+		t.Errorf("Expected Decimal Separator='%v'.  Instead, Decimal Separator='%v' .",
+			decimalSeparator, nDto.GetDecimalSeparator() )
+
+	}
+
+	if thousandsSeparator != nDto.GetThousandsSeparator() {
+		t.Errorf("Expected Thousands Separator='%v'.  Instead, Thousands Separator='%v' .",
+			thousandsSeparator, nDto.GetThousandsSeparator() )
+
+	}
+
+	actualStr := nDto.GetThouParen()
+
+	if expectedStr != actualStr {
+		t.Errorf("Expected Currency Str='%v'. Instead, Currency Str='%v'",
+			expectedStr, actualStr)
+	}
+
+}
+
+func TestNumStrDto_GetThouParen_09(t *testing.T) {
+
+	nStr := "-123"
+	currencySymbol := '$'
+	decimalSeparator := '.'
+	thousandsSeparator := ','
+	expectedStr := "(123)"
+
+	nDto, err := NumStrDto{}.NewNumStr(nStr)
+
+	if err != nil {
+		t.Errorf("Error returned by NumStrDto{}.NewNumStr(nStr) " +
+			"nStr='%v' Error='%v'", nStr, err.Error())
+	}
+
+	nDto.SetSeparators(decimalSeparator, thousandsSeparator, currencySymbol)
+
+
+	if currencySymbol != nDto.GetCurrencySymbol() {
+		t.Errorf("Expected Currency Symbol='%v'.  Instead, Currency Symbol='%v' .",
+			currencySymbol, nDto.GetCurrencySymbol())
+	}
+
+	if decimalSeparator != nDto.GetDecimalSeparator() {
+		t.Errorf("Expected Decimal Separator='%v'.  Instead, Decimal Separator='%v' .",
+			decimalSeparator, nDto.GetDecimalSeparator() )
+
+	}
+
+	if thousandsSeparator != nDto.GetThousandsSeparator() {
+		t.Errorf("Expected Thousands Separator='%v'.  Instead, Thousands Separator='%v' .",
+			thousandsSeparator, nDto.GetThousandsSeparator() )
+
+	}
+
+	actualStr := nDto.GetThouParen()
+
+	if expectedStr != actualStr {
+		t.Errorf("Expected Currency Str='%v'. Instead, Currency Str='%v'",
+			expectedStr, actualStr)
+	}
+
+}
+
+func TestNumStrDto_GetThouParen_10(t *testing.T) {
+
+	nStr := "-0.123"
+	currencySymbol := '$'
+	decimalSeparator := '.'
+	thousandsSeparator := ','
+	expectedStr := "(0.123)"
+
+	nDto, err := NumStrDto{}.NewNumStr(nStr)
+
+	if err != nil {
+		t.Errorf("Error returned by NumStrDto{}.NewNumStr(nStr) " +
+			"nStr='%v' Error='%v'", nStr, err.Error())
+	}
+
+	nDto.SetSeparators(decimalSeparator, thousandsSeparator, currencySymbol)
+
+
+	if currencySymbol != nDto.GetCurrencySymbol() {
+		t.Errorf("Expected Currency Symbol='%v'.  Instead, Currency Symbol='%v' .",
+			currencySymbol, nDto.GetCurrencySymbol())
+	}
+
+	if decimalSeparator != nDto.GetDecimalSeparator() {
+		t.Errorf("Expected Decimal Separator='%v'.  Instead, Decimal Separator='%v' .",
+			decimalSeparator, nDto.GetDecimalSeparator() )
+
+	}
+
+	if thousandsSeparator != nDto.GetThousandsSeparator() {
+		t.Errorf("Expected Thousands Separator='%v'.  Instead, Thousands Separator='%v' .",
+			thousandsSeparator, nDto.GetThousandsSeparator() )
+
+	}
+
+	actualStr := nDto.GetThouParen()
+
+	if expectedStr != actualStr {
+		t.Errorf("Expected Currency Str='%v'. Instead, Currency Str='%v'",
+			expectedStr, actualStr)
+	}
+
+}
+
+func TestNumStrDto_GetThouParen_11(t *testing.T) {
+
+	nStr := "-1234567890.123"
+	currencySymbol := '$'
+	decimalSeparator := '.'
+	thousandsSeparator := ','
+	expectedStr := "(1,234,567,890.123)"
+
+	nDto, err := NumStrDto{}.NewNumStr(nStr)
+
+	if err != nil {
+		t.Errorf("Error returned by NumStrDto{}.NewNumStr(nStr) " +
+			"nStr='%v' Error='%v'", nStr, err.Error())
+	}
+
+	nDto.SetSeparators(decimalSeparator, thousandsSeparator, currencySymbol)
+
+
+	if currencySymbol != nDto.GetCurrencySymbol() {
+		t.Errorf("Expected Currency Symbol='%v'.  Instead, Currency Symbol='%v' .",
+			currencySymbol, nDto.GetCurrencySymbol())
+	}
+
+	if decimalSeparator != nDto.GetDecimalSeparator() {
+		t.Errorf("Expected Decimal Separator='%v'.  Instead, Decimal Separator='%v' .",
+			decimalSeparator, nDto.GetDecimalSeparator() )
+
+	}
+
+	if thousandsSeparator != nDto.GetThousandsSeparator() {
+		t.Errorf("Expected Thousands Separator='%v'.  Instead, Thousands Separator='%v' .",
+			thousandsSeparator, nDto.GetThousandsSeparator() )
+
+	}
+
+	actualStr := nDto.GetThouParen()
+
+	if expectedStr != actualStr {
+		t.Errorf("Expected Currency Str='%v'. Instead, Currency Str='%v'",
+			expectedStr, actualStr)
 	}
 
 }

@@ -1591,3 +1591,253 @@ func TestIntAry_Ceiling_07(t *testing.T) {
 
 }
 
+
+func TestIntAry_Equals_01(t *testing.T) {
+	nStr1 := "000549721.32178000"
+
+	ia := IntAry{}.New()
+	ia.SetIntAryWithNumStr(nStr1)
+
+	ia2 := IntAry{}.New()
+	ia2.CopyIn(&ia, false)
+
+	if !ia.Equals(&ia2) {
+		t.Error("Error: ia NOT EQUAL to ia2!")
+	}
+
+}
+
+func TestIntAry_Equals_02(t *testing.T) {
+	nStr1 := "-000549721.32178000"
+
+	ia := IntAry{}.New()
+	ia.SetIntAryWithNumStr(nStr1)
+	ia.CopyToBackUp()
+
+	ia2 := IntAry{}.New()
+	ia2.CopyIn(&ia, true)
+
+	if !ia.Equals(&ia2) {
+		t.Error("Error: ia NOT EQUAL to ia2!")
+	}
+
+	if !ia.BackUp.Equals(&ia.BackUp) {
+		t.Error("Error: ia.Backup != ia2.Backup!")
+	}
+
+}
+
+func TestIntAry_Equals_03(t *testing.T) {
+	nStr1 := "-000549721.32178000"
+
+	ia := IntAry{}.New()
+	ia.SetIntAryWithNumStr(nStr1)
+	ia.CopyToBackUp()
+
+	ia2 := IntAry{}.New()
+	ia2.CopyIn(&ia, true)
+
+	ia2.SetSign(1)
+
+	if ia.Equals(&ia2) {
+		t.Error("Error: ia EQUALS ia2!")
+	}
+
+}
+
+func TestIntAry_Equals_04(t *testing.T) {
+	nStr1 := "-000549721.32178000"
+
+	ia := IntAry{}.New()
+	ia.SetIntAryWithNumStr(nStr1)
+	ia.CopyToBackUp()
+
+	ia2 := IntAry{}.New()
+	ia2.CopyIn(&ia, true)
+
+	ia2.BackUp.SetSignValue(1)
+
+	if !ia.Equals(&ia2) {
+		t.Error("Error: ia NOT EQUAL ia2!")
+	}
+
+	if ia.BackUp.Equals(&ia2.BackUp) {
+		t.Error("Error: ia.BackUp SHOULD NOT EQUAL ia2.BackUp")
+	}
+
+}
+
+func TestIntAry_Floor_01(t *testing.T) {
+	nStr1 := "99.925"
+	expected := "99.000"
+	precision := 3
+
+	ia := IntAry{}.New()
+	ia.SetIntAryWithNumStr(nStr1)
+
+	iAry2, err := ia.Floor()
+
+	if err != nil {
+		t.Errorf("Received Error from ia.Floor(). Error:= %v", err)
+	}
+
+	s := iAry2.GetNumStr()
+	if expected != s {
+		t.Errorf("Error. Expected numStr= '%v'. Instead, got numStr='%v'\n", expected, s)
+	}
+
+	if iAry2.GetPrecision() != precision {
+		t.Errorf("Error. Expected precision= '%v'. Instead, got precision='%v'\n", precision, iAry2.GetPrecision())
+	}
+
+}
+
+func TestIntAry_Floor_02(t *testing.T) {
+	nStr1 := "-99.925"
+	expected := "-100.000"
+	precision := 3
+
+	ia := IntAry{}.New()
+	ia.SetIntAryWithNumStr(nStr1)
+
+	iAry2, err := ia.Floor()
+
+	if err != nil {
+		t.Errorf("Received Error from ia.Floor(). Error:= %v", err)
+	}
+
+	s := iAry2.GetNumStr()
+	if expected != s {
+		t.Errorf("Error. Expected numStr= '%v'. Instead, got numStr='%v'\n", expected, s)
+	}
+
+	if iAry2.GetPrecision() != precision {
+		t.Errorf("Error. Expected precision= '%v'. Instead, got precision='%v'\n", precision, iAry2.GetPrecision())
+	}
+
+}
+
+func TestIntAry_Floor_03(t *testing.T) {
+	nStr1 := "0.925"
+	expected := "0.000"
+	precision := 3
+
+	ia := IntAry{}.New()
+	ia.SetIntAryWithNumStr(nStr1)
+
+	iAry2, err := ia.Floor()
+
+	if err != nil {
+		t.Errorf("Received Error from ia.Floor(). Error:= %v", err)
+	}
+
+	s := iAry2.GetNumStr()
+	if expected != s {
+		t.Errorf("Error. Expected numStr= '%v'. Instead, got numStr='%v'\n", expected, s)
+	}
+
+	if iAry2.GetPrecision() != precision {
+		t.Errorf("Error. Expected precision= '%v'. Instead, got precision='%v'\n", precision, iAry2.GetPrecision())
+	}
+
+}
+
+func TestIntAry_Floor_04(t *testing.T) {
+	nStr1 := "2.0"
+	expected := "2.0"
+	precision := 1
+
+	ia := IntAry{}.New()
+	ia.SetIntAryWithNumStr(nStr1)
+
+	iAry2, err := ia.Floor()
+
+	if err != nil {
+		t.Errorf("Received Error from ia.Floor(). Error:= %v", err)
+	}
+
+	s := iAry2.GetNumStr()
+	if expected != s {
+		t.Errorf("Error. Expected numStr= '%v'. Instead, got numStr='%v'\n", expected, s)
+	}
+
+	if iAry2.GetPrecision() != precision {
+		t.Errorf("Error. Expected precision= '%v'. Instead, got precision='%v'\n", precision, iAry2.GetPrecision())
+	}
+
+}
+
+func TestIntAry_Floor_05(t *testing.T) {
+	nStr1 := "-2.7"
+	expected := "-3.0"
+	precision := 1
+
+	ia := IntAry{}.New()
+	ia.SetIntAryWithNumStr(nStr1)
+
+	iAry2, err := ia.Floor()
+
+	if err != nil {
+		t.Errorf("Received Error from ia.Floor(). Error:= %v", err)
+	}
+
+	s := iAry2.GetNumStr()
+	if expected != s {
+		t.Errorf("Error. Expected numStr= '%v'. Instead, got numStr='%v'\n", expected, s)
+	}
+
+	if iAry2.GetPrecision() != precision {
+		t.Errorf("Error. Expected precision= '%v'. Instead, got precision='%v'\n", precision, iAry2.GetPrecision())
+	}
+
+}
+
+func TestIntAry_Floor_06(t *testing.T) {
+	nStr1 := "-2"
+	expected := "-2"
+	precision := 0
+
+	ia := IntAry{}.New()
+	ia.SetIntAryWithNumStr(nStr1)
+
+	iAry2, err := ia.Floor()
+
+	if err != nil {
+		t.Errorf("Received Error from ia.Floor(). Error:= %v", err)
+	}
+
+	s := iAry2.GetNumStr()
+	if expected != s {
+		t.Errorf("Error. Expected numStr= '%v'. Instead, got numStr='%v'\n", expected, s)
+	}
+
+	if iAry2.GetPrecision() != precision {
+		t.Errorf("Error. Expected precision= '%v'. Instead, got precision='%v'\n", precision, iAry2.GetPrecision())
+	}
+
+}
+
+func TestIntAry_Floor_07(t *testing.T) {
+	nStr1 := "2.9"
+	expected := "2.0"
+	precision := 1
+
+	ia := IntAry{}.New()
+	ia.SetIntAryWithNumStr(nStr1)
+
+	iAry2, err := ia.Floor()
+
+	if err != nil {
+		t.Errorf("Received Error from ia.Floor(). Error:= %v", err)
+	}
+
+	s := iAry2.GetNumStr()
+	if expected != s {
+		t.Errorf("Error. Expected numStr= '%v'. Instead, got numStr='%v'\n", expected, s)
+	}
+
+	if iAry2.GetPrecision() != precision {
+		t.Errorf("Error. Expected precision= '%v'. Instead, got precision='%v'\n", precision, iAry2.GetPrecision())
+	}
+
+}
