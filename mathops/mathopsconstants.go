@@ -83,3 +83,57 @@ const (
 )
 
 var PrecisionScaleModeLabels = [...]string{"ScalePrecisionRight","ScalePrecisionLeft"}
+
+// NumStrFmtMode - Designates the type of number string formatting
+// applied when converting a number to a string.
+type NumStrFmtMode int
+
+func (nstrFmtMode NumStrFmtMode) String() string {
+	return NumStrFmtModeLabels[nstrFmtMode]
+}
+
+const (
+
+	// INTSTRDECIMALFMT - Specifies a pure number string with no decimal
+	// point, no thousands separators and no currency symbol.
+	// Example: 123456789
+	//
+	PUREINTEGERFMT NumStrFmtMode = iota
+
+	// INTSTRDECIMALFMT - Specifies an integer string, decimal point and
+	// fractional digits. No currency symbol or thousands separator are
+	// injected in to the final number string.
+	// Example: 12345.678
+	//
+	INTSTRDECIMALFMT
+
+	// THOUSANDSNUMSTRFMT - Specifies that the output number string will
+	// have a decimal point separating fractional digits. Integer numbers
+	// to the left of the decimal point will have a thousands separator
+	// character injected after every third character.
+	// Example: 123,456,789.23
+	//
+	THOUSANDSNUMSTRFMT
+
+	// CURRENCYNUMSTRFMT - Specifies a Currency String. The output number string
+	// will include a currency symbol, thousands separators and a decimal point.
+	CURRENCYNUMSTRFMT
+)
+
+var NumStrFmtModeLabels = [...]string{"PureIntegerString","IntegerDecimalString", "ThousandsNumString", "CurrencyNumString"}
+
+
+type NegativeValueFmtMode int
+
+func (negValFmtMode NegativeValueFmtMode) String() string {
+	return NegativeValueFmtModeLabels[negValFmtMode]
+}
+
+const (
+
+	LEADMINUSNEGVALFMTMODE NegativeValueFmtMode = iota
+
+	PARENTHESESNEGVALFMTMODE
+)
+
+var NegativeValueFmtModeLabels = [...]string{"LeadingMinusSign", "SurroundingParentheses"}

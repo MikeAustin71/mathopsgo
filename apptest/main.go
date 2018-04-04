@@ -8,8 +8,47 @@ import (
 
 func main() {
 
-	ExampleDecimal_04()
+	ExampleNumStrCurrency_01()
 
+}
+
+func ExampleNumStrThousands_01(){
+	rawNumStr := "4613"
+	expectedNStr := "4,613"
+	ns, err := mathops.NumStrDto{}.NewNumStr(rawNumStr)
+
+	if err != nil {
+		fmt.Printf("Error returne by NewNumStr(rawNumStr). rawNumStr='%v' Error='%v'",
+			rawNumStr, err.Error())
+		return
+	}
+
+	thousandsNStr := ns.GetThouStr()
+
+	fmt.Println("Thousands Delimited Number")
+	fmt.Println("   Expected NStr: ", expectedNStr)
+	fmt.Println("ns.GetThouStr() : ", thousandsNStr)
+
+}
+
+func ExampleNumStrCurrency_01(){
+	rawNumStr := "-0.23"
+	expectedNStr := "-$0.23"
+	ns, err := mathops.NumStrDto{}.NewNumStr(rawNumStr)
+
+	if err != nil {
+		fmt.Printf("Error returne by NewNumStr(rawNumStr). rawNumStr='%v' Error='%v'",
+			rawNumStr, err.Error())
+		return
+	}
+
+	thousandsNStr := ns.GetCurrencyStr()
+
+	fmt.Println("Thousands Currency Number")
+	fmt.Println("     		Expected NStr: ", expectedNStr)
+	fmt.Println("		ns.GetCurrencyStr(): ", thousandsNStr)
+	fmt.Println("  Length of NStr: ", len(expectedNStr))
+	fmt.Println("Length of OutStr: ", len(thousandsNStr))
 }
 
 func ExampleDecimal_04() {

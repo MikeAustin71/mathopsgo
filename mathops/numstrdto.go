@@ -733,8 +733,347 @@ func (nDto *NumStrDto) GetDecimalSeparator() rune {
 
 // GetNumStr - returns the numeric value of the current NumStrDto
 // instance as a signed number string.
+//
+// Note: If the current NumStrDto is invalid, this method will return
+// an empty string.
+//
 func (nDto *NumStrDto) GetNumStr() string {
+
+	err := nDto.IsNumStrDtoValid("")
+
+	if err != nil {
+		return ""
+	}
+
 	return nDto.numStr
+}
+
+// GetCurrencyParen - Returns the number string delimited with the
+// nDto.thousandsSeparator character and the currency symbol. If
+// the value is negative, the number will be surrounded in parentheses.
+//
+// Example:
+// numstr = 1000000.23
+// GetThouStr() = $1,000,000.23
+//
+// numstr = -1000000.23
+// GetThouStr() = ($1,000,000.23)
+//
+// Note: If the current NumStrDto is invalid, this method
+// returns an empty string.
+//
+func (nDto *NumStrDto) GetCurrencyParen() string {
+
+	if nDto.thousandsSeparator == 0 {
+		nDto.thousandsSeparator = ','
+	}
+
+	if nDto.decimalSeparator == 0 {
+		nDto.thousandsSeparator = '.'
+	}
+
+	if nDto.currencySymbol == 0 {
+		nDto.currencySymbol = '$'
+	}
+
+	err := nDto.IsNumStrDtoValid("")
+
+	if err != nil {
+		return ""
+	}
+
+	lenAllNumRunes := len(nDto.absAllNumRunes)
+
+	lenOut := lenAllNumRunes
+
+	lenIntRunes := lenAllNumRunes - int(nDto.precision)
+
+	seps := lenIntRunes / 3
+
+	mod := lenIntRunes - (seps * 3)
+
+	if mod == 0 {
+		seps --
+	}
+
+	// adjust for thousands delimiters
+	lenOut += seps
+
+	// adjust for negative sign value
+	if nDto.signVal == -1 {
+		lenOut +=2
+	}
+
+	// adjust for decimal point
+	if nDto.precision > 0 {
+		lenOut ++
+	}
+
+	// adjust for currency symbol
+	lenOut++
+
+	outRunes := make([]rune, lenOut)
+	outIdx := lenOut - 1
+	allNumsIdx := lenAllNumRunes - 1
+
+	if nDto.signVal == -1 {
+		outRunes[outIdx] = ')'
+		outIdx --
+	}
+
+	if nDto.precision > 0 {
+		
+		for i := 0 ; i < int(nDto.precision) ; i++	{
+			outRunes[outIdx] = nDto.absAllNumRunes[allNumsIdx]
+			outIdx--
+			allNumsIdx--
+		}
+
+		outRunes[outIdx] = nDto.decimalSeparator
+		outIdx --
+	}
+
+	sepCnt := 0
+	
+	for i:= 0 ; i < lenIntRunes; i++ {
+		
+		sepCnt++
+		
+		if sepCnt == 4 && seps > 0 {
+			sepCnt = 1
+			seps --
+			outRunes[outIdx] = nDto.thousandsSeparator
+			outIdx--
+		}
+
+		outRunes[outIdx] = nDto.absAllNumRunes[allNumsIdx]
+		outIdx--
+		allNumsIdx--
+		
+	}
+
+	outRunes[outIdx] = nDto.currencySymbol
+	outIdx--
+
+	if nDto.signVal == -1 {
+		outRunes[0] = '('
+	}
+	
+	return string(outRunes)
+}
+
+
+// GetCurrencyStr - Returns the number string delimited with the
+// nDto.thousandsSeparator character and the currency symbol.
+// If the value is negative, a leading minus sign will be prefixed
+// to the currency display.
+//
+// Example:
+// numstr = 1000000.23
+// GetThouStr() = $1,000,000.23
+//
+// numstr = -1000000.23
+// GetThouStr() = -$1,000,000.23
+//
+// Note: If the current NumStrDto is invalid, this method
+// returns an empty string.
+//
+func (nDto *NumStrDto) GetCurrencyStr() string {
+
+	if nDto.thousandsSeparator == 0 {
+		nDto.thousandsSeparator = ','
+	}
+
+	if nDto.decimalSeparator == 0 {
+		nDto.thousandsSeparator = '.'
+	}
+
+	if nDto.currencySymbol == 0 {
+		nDto.currencySymbol = '$'
+	}
+
+	err := nDto.IsNumStrDtoValid("")
+
+	if err != nil {
+		return ""
+	}
+
+	lenAllNumRunes := len(nDto.absAllNumRunes)
+
+	lenOut := lenAllNumRunes
+
+	lenIntRunes := lenAllNumRunes - int(nDto.precision)
+
+	seps := lenIntRunes / 3
+
+	mod := lenIntRunes - (seps * 3)
+
+	if mod == 0 {
+		seps --
+	}
+
+	// adjust for thousands delimiters
+	lenOut += seps
+
+	// adjust for negative sign value
+	if nDto.signVal == -1 {
+		lenOut ++
+	}
+
+	// adjust for decimal point
+	if nDto.precision > 0 {
+		lenOut ++
+	}
+
+	// adjust for currency symbol
+	lenOut++
+
+	outRunes := make([]rune, lenOut)
+	outIdx := lenOut - 1
+	allNumsIdx := lenAllNumRunes - 1
+
+	if nDto.precision > 0 {
+
+		for i := 0 ; i < int(nDto.precision) ; i++	{
+			outRunes[outIdx] = nDto.absAllNumRunes[allNumsIdx]
+			outIdx--
+			allNumsIdx--
+		}
+
+		outRunes[outIdx] = nDto.decimalSeparator
+		outIdx --
+	}
+
+	sepCnt := 0
+
+	for i:= 0 ; i < lenIntRunes; i++ {
+
+		sepCnt++
+
+		if sepCnt == 4 && seps > 0 {
+			sepCnt = 1
+			seps --
+			outRunes[outIdx] = nDto.thousandsSeparator
+			outIdx--
+		}
+
+		outRunes[outIdx] = nDto.absAllNumRunes[allNumsIdx]
+		outIdx--
+		allNumsIdx--
+
+	}
+
+	outRunes[outIdx] = nDto.currencySymbol
+
+	if nDto.signVal == -1 {
+		outRunes[0] = '-'
+	}
+
+	return string(outRunes)
+}
+
+// GetThouParen - Returns the number string delimited with the
+// nDto.thousandsSeparator character. Negative values are
+// surrounded in parentheses.
+//
+// Example:
+// numstr = 1000000.234
+// GetThouStr() = 1,000,000.234
+//
+// numstr = -1000000.234
+// GetThouStr() = (1,000,000.234)
+//
+// Note: If the current NumStrDto is invalid, this method
+// returns an empty string.
+//
+func (nDto *NumStrDto)GetThouParen() string {
+
+	if nDto.thousandsSeparator == 0 {
+		nDto.thousandsSeparator = ','
+	}
+
+	if nDto.decimalSeparator == 0 {
+		nDto.thousandsSeparator = '.'
+	}
+
+	err := nDto.IsNumStrDtoValid("")
+
+	if err != nil {
+		return ""
+	}
+
+	lenAllNumRunes := len(nDto.absAllNumRunes)
+
+	lenOut := lenAllNumRunes
+
+	lenIntRunes := lenAllNumRunes - int(nDto.precision)
+
+	seps := lenIntRunes / 3
+
+	mod := lenIntRunes - (seps * 3)
+
+	if mod == 0 {
+		seps --
+	}
+
+	// adjust for thousands delimiters
+	lenOut += seps
+
+	// adjust for negative sign value
+	if nDto.signVal == -1 {
+		lenOut+=2
+	}
+
+	// adjust for decimal point
+	if nDto.precision > 0 {
+		lenOut ++
+	}
+
+	outRunes := make([]rune, lenOut)
+	outIdx := lenOut - 1
+	allNumsIdx := lenAllNumRunes - 1
+
+	if nDto.signVal == -1 {
+		outRunes[outIdx] = ')'
+		outIdx --
+	}
+
+	if nDto.precision > 0 {
+
+		for i := 0 ; i < int(nDto.precision) ; i++	{
+			outRunes[outIdx] = nDto.absAllNumRunes[allNumsIdx]
+			outIdx--
+			allNumsIdx--
+		}
+
+		outRunes[outIdx] = nDto.decimalSeparator
+		outIdx --
+	}
+
+	sepCnt := 0
+
+	for i:= 0 ; i < lenIntRunes; i++ {
+
+		sepCnt++
+
+		if sepCnt == 4 && seps > 0 {
+			sepCnt = 1
+			seps --
+			outRunes[outIdx] = nDto.thousandsSeparator
+			outIdx--
+		}
+
+		outRunes[outIdx] = nDto.absAllNumRunes[allNumsIdx]
+		outIdx--
+		allNumsIdx--
+
+	}
+
+	if nDto.signVal == -1 {
+		outRunes[0] = '('
+	}
+
+	return string(outRunes)
 }
 
 // GetThouStr - Returns the number string delimited with the
@@ -744,6 +1083,12 @@ func (nDto *NumStrDto) GetNumStr() string {
 // numstr = 1000000.234
 // GetThouStr() = 1,000,000.234
 //
+// numstr = -1000000.234
+// GetThouStr() = -1,000,000.234
+//
+// Note: If the current NumStrDto is invalid, this method
+// returns an empty string.
+//
 func (nDto *NumStrDto)GetThouStr() string {
 
 	if nDto.thousandsSeparator == 0 {
@@ -752,6 +1097,12 @@ func (nDto *NumStrDto)GetThouStr() string {
 
 	if nDto.decimalSeparator == 0 {
 		nDto.thousandsSeparator = '.'
+	}
+
+	err := nDto.IsNumStrDtoValid("")
+
+	if err != nil {
+		return ""
 	}
 
 	lenAllNumRunes := len(nDto.absAllNumRunes)
@@ -786,7 +1137,7 @@ func (nDto *NumStrDto)GetThouStr() string {
 	allNumsIdx := lenAllNumRunes - 1
 
 	if nDto.precision > 0 {
-		
+
 		for i := 0 ; i < int(nDto.precision) ; i++	{
 			outRunes[outIdx] = nDto.absAllNumRunes[allNumsIdx]
 			outIdx--
@@ -797,15 +1148,15 @@ func (nDto *NumStrDto)GetThouStr() string {
 		outIdx --
 	}
 
-	
 	sepCnt := 0
-	
+
 	for i:= 0 ; i < lenIntRunes; i++ {
-		
+
 		sepCnt++
-		
-		if sepCnt == 4 {
-			sepCnt = 0
+
+		if sepCnt == 4 && seps > 0 {
+			sepCnt = 1
+			seps --
 			outRunes[outIdx] = nDto.thousandsSeparator
 			outIdx--
 		}
@@ -813,13 +1164,13 @@ func (nDto *NumStrDto)GetThouStr() string {
 		outRunes[outIdx] = nDto.absAllNumRunes[allNumsIdx]
 		outIdx--
 		allNumsIdx--
-		
+
 	}
 
 	if nDto.signVal == -1 {
 		outRunes[0] = '-'
 	}
-	
+
 	return string(outRunes)
 }
 
