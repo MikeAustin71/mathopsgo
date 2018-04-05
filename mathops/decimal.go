@@ -27,7 +27,6 @@ import (
 type Decimal struct {
 	isValid               bool
 	signVal               int
-	precision             uint
 	scaleFactor           *big.Int
 	thousandsSeparator    rune // defaults to ','
 	decimalSeparator      rune // defaults to '.'
@@ -58,29 +57,29 @@ func (dec *Decimal) Add(d2 Decimal) (Decimal, error) {
 	var newPrecision uint
 	var nDto NumStrDto
 
-	if dec.precision == d2.precision {
+	if dec.GetPrecision() == d2.GetPrecision() {
 
 		s3Val := big.NewInt(0).Add(dec.signedAllDigitsBigInt, d2.signedAllDigitsBigInt)
 
 		s3Text = s3Val.Text(10)
 
-		newPrecision = dec.precision
+		newPrecision = uint(dec.GetPrecision())
 
-	} else	if d2.precision > dec.precision {
+	} else	if d2.GetPrecision() > dec.GetPrecision() {
 
-		deltaPrecision := big.NewInt(int64(d2.precision - dec.precision))
+		deltaPrecision := big.NewInt(int64(d2.GetPrecision() - dec.GetPrecision()))
 		deltaPrecisionScale := big.NewInt(0).Exp(base10, deltaPrecision, nil)
 		s1 := big.NewInt(0).Mul(dec.signedAllDigitsBigInt, deltaPrecisionScale)
 		s3 := big.NewInt(0).Add(s1, d2.signedAllDigitsBigInt)
 
 		s3Text = s3.Text(10)
 
-		newPrecision = d2.precision
+		newPrecision = uint(d2.GetPrecision())
 
 	} else {
 
 		// must be dec.precision > d2.precision
-		idp := int(dec.precision) - int(d2.precision)
+		idp := int(dec.GetPrecision()) - int(d2.GetPrecision())
 		i64DeltaPrecision := int64(idp)
 		deltaPrecision := big.NewInt(i64DeltaPrecision)
 		deltaPrecisionScale := big.NewInt(0).Exp(base10, deltaPrecision, nil)
@@ -89,7 +88,7 @@ func (dec *Decimal) Add(d2 Decimal) (Decimal, error) {
 
 		s3Text = s3.Text(10)
 
-		newPrecision = dec.precision
+		newPrecision = uint(dec.GetPrecision())
 
 	}
 
@@ -227,7 +226,7 @@ func (dec *Decimal) CopyIn(d2 Decimal) {
 
 	dec.isValid = d2.isValid
 	dec.signVal = d2.signVal
-	dec.precision = d2.precision
+
 	dec.scaleFactor = big.NewInt(0).Set(d2.scaleFactor)
 	dec.numStrDto = d2.numStrDto.CopyOut()
 	dec.signedAllDigitsBigInt = big.NewInt(0).Set(d2.signedAllDigitsBigInt)
@@ -241,7 +240,7 @@ func (dec *Decimal) CopyOut() Decimal {
 	d2 := Decimal{}.New()
 	d2.isValid = dec.isValid
 	d2.signVal = dec.signVal
-	d2.precision = dec.precision
+
 	d2.scaleFactor = big.NewInt(0).Set(dec.scaleFactor)
 	d2.numStrDto = dec.numStrDto.CopyOut()
 	d2.signedAllDigitsBigInt = big.NewInt(0).Set(dec.signedAllDigitsBigInt)
@@ -260,14 +259,14 @@ func (dec *Decimal) Divide(divisor Decimal, precision int) (Decimal, error) {
 	sDividend1 := big.NewInt(0)
 	sDivisor2 := big.NewInt(0)
 
-	if divisor.precision > dec.precision {
-		deltaPrecision := big.NewInt(int64(divisor.precision - dec.precision))
+	if divisor.GetPrecision() > dec.GetPrecision() {
+		deltaPrecision := big.NewInt(int64(divisor.GetPrecision() - dec.GetPrecision()))
 		deltaPrecisionScale := big.NewInt(0).Exp(base10, deltaPrecision, nil)
 		sDividend1 = big.NewInt(0).Mul(dec.signedAllDigitsBigInt, deltaPrecisionScale)
 		sDivisor2 = big.NewInt(0).Set(divisor.signedAllDigitsBigInt)
 
-	} else if dec.precision > divisor.precision {
-		deltaPrecision := big.NewInt(int64(dec.precision - divisor.precision))
+	} else if dec.GetPrecision() > divisor.GetPrecision() {
+		deltaPrecision := big.NewInt(int64(dec.GetPrecision() - divisor.GetPrecision()))
 		deltaPrecisionScale := big.NewInt(0).Exp(base10, deltaPrecision, nil)
 		sDividend1 = big.NewInt(0).Set(dec.signedAllDigitsBigInt)
 		sDivisor2 = big.NewInt(0).Mul(divisor.signedAllDigitsBigInt, deltaPrecisionScale)
@@ -292,7 +291,6 @@ func (dec *Decimal) Divide(divisor Decimal, precision int) (Decimal, error) {
 func (dec *Decimal) Empty() {
 	dec.isValid = true
 	dec.signVal = 1
-	dec.precision = 0
 	dec.scaleFactor = big.NewInt(int64(1))
 	dec.numStrDto =  NumStrDto{}.NewPtr().GetZeroNumStr(0)
 	dec.signedAllDigitsBigInt = big.NewInt(0)
@@ -325,7 +323,7 @@ func (dec *Decimal) GetAbsoluteValue() (Decimal, error) {
 
 	var err error
 
-	d2.numStrDto, err = NumStrDto{}.NewNumStr(rQuotient.FloatString(int(d2.precision)))
+	d2.numStrDto, err = NumStrDto{}.NewNumStr(rQuotient.FloatString(int(d2.GetPrecision())))
 
 	if err != nil {
 		return Decimal{},
@@ -469,7 +467,7 @@ func (dec *Decimal) GetFloat64() (float64, big.Accuracy, error) {
 // to the value of the current 'Decimal' object.
 func (dec *Decimal) GetIntAry() (IntAry, error) {
 
-	ia, err := IntAry{}.NewBigInt(dec.signedAllDigitsBigInt, dec.precision)
+	ia, err := IntAry{}.NewBigInt(dec.signedAllDigitsBigInt, uint(dec.GetPrecision()))
 
 	if err != nil {
 		return IntAry{}.New(), fmt.Errorf("GetIntAry() - Received error from IntAry{}.NewBigInt(dec.signedAllDigitsBigInt, dec.precision). Error= %v", err)
@@ -551,7 +549,7 @@ func (dec *Decimal) GetNthRoot(nthRoot, maxPrecision uint) (Decimal, error) {
 // unsigned integer.
 func (dec *Decimal) GetPrecision() int {
 
-	return int(dec.precision)
+	return int(dec.numStrDto.GetPrecision())
 
 }
 
@@ -762,7 +760,7 @@ func (dec *Decimal) IsFraction() (bool, error) {
 		return false, errors.New("The Decimal data is corrupted. Please re-initialize!")
 	}
 
-	if dec.precision != 0 {
+	if dec.GetPrecision() != 0 {
 		return true, nil
 	}
 
@@ -778,8 +776,8 @@ func (dec *Decimal) MakeDecimalBigIntPrecision(iBig *big.Int, precision uint) (D
 
 	baseZero := big.NewInt(0)
 	base10 := big.NewInt(10)
-	d2.precision = precision
-	exponent := big.NewInt(int64(d2.precision))
+
+	exponent := big.NewInt(int64(precision))
 	d2.scaleFactor = big.NewInt(0).Exp(base10, exponent, nil)
 	d2.signedAllDigitsBigInt = big.NewInt(0).Set(iBig)
 
@@ -793,7 +791,7 @@ func (dec *Decimal) MakeDecimalBigIntPrecision(iBig *big.Int, precision uint) (D
 
 	var err error
 
-	d2.numStrDto, err = NumStrDto{}.NewNumStr(rQuotient.FloatString(int(d2.precision)))
+	d2.numStrDto, err = NumStrDto{}.NewNumStr(rQuotient.FloatString(int(precision)))
 
 	if err != nil {
 		return Decimal{},
@@ -801,12 +799,6 @@ func (dec *Decimal) MakeDecimalBigIntPrecision(iBig *big.Int, precision uint) (D
 			"Error='%v'", err.Error())
 	}
 
-	if d2.numStrDto.GetPrecision() != d2.precision {
-		return Decimal{},
-			fmt.Errorf(ePrefix + "Error: d2.numStrDto precision='%v. d2.precision='%v' " +
-				"Error='%v'", d2.numStrDto.GetPrecision(), d2.precision, err.Error())
-
-	}
 
 	d2.thousandsSeparator = dec.thousandsSeparator
 	d2.decimalSeparator = dec.decimalSeparator
@@ -844,7 +836,6 @@ func (dec *Decimal) MakeDecimalFromNumStrDto(nDto NumStrDto) (Decimal, error) {
 	d2 := Decimal{}.New()
 	d2.signVal = nDto.GetSign()
 	d2.numStrDto = nDto.CopyOut()
-	d2.precision = nDto.GetPrecision()
 	d2.currencySymbol = nDto.GetCurrencySymbol()
 	d2.decimalSeparator = nDto.GetDecimalSeparator()
 	d2.thousandsSeparator = nDto.GetThousandsSeparator()
@@ -912,13 +903,6 @@ func (dec *Decimal) MakeDecimalFromIntAry(ia *IntAry) (Decimal, error) {
 			fmt.Errorf(ePrefix + "- Error from ia.GetNumStrDto(). Error= %v", err.Error())
 	}
 
-	d2.precision = uint(ia.GetPrecision())
-
-	if d2.precision != d2.numStrDto.GetPrecision() {
-		return Decimal{},
-		 fmt.Errorf(ePrefix + "Error: ia.NumStrDto.Preciion='%v' ia.Precision='%v' ",
-		 	d2.numStrDto.GetPrecision(), ia.GetPrecision())
-	}
 
 	d2.signedAllDigitsBigInt = ia.GetBigInt()
 
@@ -966,7 +950,7 @@ func (dec *Decimal) Mul(d2 Decimal) (Decimal, error) {
 	s3Val := big.NewInt(0).Mul(dec.signedAllDigitsBigInt, d2.signedAllDigitsBigInt)
 	s3Text := s3Val.Text(10)
 
-	newPrecision := dec.precision + d2.precision
+	newPrecision := uint( dec.GetPrecision() + d2.GetPrecision())
 
 	// s3Text is now a pure number string with no decimal point.
 	nDto, err := NumStrDto{}.NewPtr().ShiftPrecisionLeft(s3Text, newPrecision)
@@ -1511,7 +1495,7 @@ func (dec *Decimal) Pow(exponent int, maxPrecision int) (Decimal, error) {
 	s1Val := dec.signedAllDigitsBigInt
 	ex := big.NewInt(int64(exponent))
 
-	newPrecision := dec.precision * uint(exponent)
+	newPrecision := uint(dec.GetPrecision()) * uint(exponent)
 
 	s3Val := big.NewInt(0).Exp(s1Val, ex, nil)
 
@@ -1773,7 +1757,7 @@ func (dec *Decimal) SetPrecisionTrunc(precision uint) error {
 
 	ePrefix := "Decimal.SetPrecisionTrunc() "
 
-	if dec.precision == precision {
+	if uint(dec.GetPrecision()) == precision {
 		return nil
 	}
 
@@ -2100,7 +2084,7 @@ func (dec *Decimal) Subtract(d2 Decimal) (Decimal, error) {
 	var s3Text string
 	var nDto NumStrDto
 
-	if dec.precision == d2.precision {
+	if dec.GetPrecision() == d2.GetPrecision() {
 
 		s1Val := big.NewInt(0).Set(dec.signedAllDigitsBigInt)
 
@@ -2110,22 +2094,22 @@ func (dec *Decimal) Subtract(d2 Decimal) (Decimal, error) {
 
 		s3Text = s3Val.String()
 
-		newPrecision = dec.precision
+		newPrecision = uint(dec.GetPrecision())
 
-	} else	if d2.precision > dec.precision {
-		deltaPrecision := big.NewInt(int64(d2.precision - dec.precision))
+	} else	if d2.GetPrecision() > dec.GetPrecision() {
+		deltaPrecision := big.NewInt(int64(d2.GetPrecision() - dec.GetPrecision()))
 		deltaPrecisionScale := big.NewInt(0).Exp(base10, deltaPrecision, nil)
 
 		s1Val := big.NewInt(0).Mul(dec.signedAllDigitsBigInt, deltaPrecisionScale)
 		s2Val := big.NewInt(0).Set(d2.signedAllDigitsBigInt)
 		s3Val := big.NewInt(0).Sub(s1Val, s2Val)
 		s3Text = s3Val.Text(10)
-		newPrecision = d2.precision
+		newPrecision = uint(d2.GetPrecision())
 
 	} else {
 		// must be dec.precision > d2.precision
 
-		deltaPrecision := big.NewInt(int64(dec.precision - d2.precision))
+		deltaPrecision := big.NewInt(int64(dec.GetPrecision() - d2.GetPrecision()))
 		deltaPrecisionScale := big.NewInt(0).Exp(base10, deltaPrecision, nil)
 		s1Val := big.NewInt(0).Set(dec.signedAllDigitsBigInt)
 		s2Val := big.NewInt(0).Mul(d2.signedAllDigitsBigInt, deltaPrecisionScale)
@@ -2133,7 +2117,7 @@ func (dec *Decimal) Subtract(d2 Decimal) (Decimal, error) {
 		s3Val := big.NewInt(0).Sub(s1Val, s2Val)
 
 		s3Text = s3Val.Text(10)
-		newPrecision = dec.precision
+		newPrecision = uint(dec.GetPrecision())
 
 	}
 
