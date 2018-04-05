@@ -1294,7 +1294,10 @@ func (dec Decimal) NewNumStrPrecision(numStr string, precision uint, roundResult
 // d2, err := d.NumStrPrecisionToDecimal("123456", 3, false)
 // d2 is Now Equal to 123.456
 //
-func (dec *Decimal) NumStrPrecisionToDecimal(str string, requestedPrecision uint, roundResult bool) (Decimal, error) {
+func (dec *Decimal) NumStrPrecisionToDecimal(
+					str string,
+						requestedPrecision uint,
+								roundResult bool) (Decimal, error) {
 
 	ePrefix := "Decimal.NumStrPrecisionToDecimal() "
 
@@ -1332,6 +1335,8 @@ func (dec *Decimal) NumStrPrecisionToDecimal(str string, requestedPrecision uint
 				requestedPrecision, roundResult, err.Error())
 	}
 
+	n1.SetSeparators(dec.decimalSeparator, dec.thousandsSeparator, dec.currencySymbol)
+
 	d2, err = dec.MakeDecimalFromNumStrDto(n1)
 
 	if err != nil {
@@ -1340,10 +1345,6 @@ func (dec *Decimal) NumStrPrecisionToDecimal(str string, requestedPrecision uint
 				"n1.NumStr='%v' requestedPrecision='%v' Error= %v",
 				n1.GetNumStr(), requestedPrecision, err.Error())
 	}
-
-	d2.thousandsSeparator = dec.thousandsSeparator
-	d2.decimalSeparator = dec.decimalSeparator
-	d2.currencySymbol = dec.currencySymbol
 
 	return d2, nil
 }
