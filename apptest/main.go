@@ -8,7 +8,37 @@ import (
 
 func main() {
 
-	ExampleNumStrCurrency_01()
+	ExampleDecimalSetPrecsionRound_01()
+
+}
+
+func ExampleDecimalSetPrecsionRound_01() {
+
+	str1 := "2.0105500"
+	precision := uint(4)
+	expected := "2.0106"
+
+	d1, err := mathops.Decimal{}.NewNumStr(str1)
+
+	if err != nil {
+		fmt.Printf("Error returned by Decimal{}.NewNumStr(str1) " +
+			"str1='%v' Error = '%v' \n", str1, err.Error())
+		return
+	}
+
+	if str1 != d1.GetNumStr() {
+		fmt.Printf("Expected NumStr= '%v'. Instead, got %v.\n", str1, d1.GetNumStr())
+		return
+	}
+
+	d1.SetPrecisionRound(precision)
+
+	if expected != d1.GetNumStr() {
+		fmt.Printf("Expected 2nd NumStr= '%v'. Instead, got %v .\n", expected, d1.GetNumStr())
+		return
+	}
+
+	fmt.Println("Successful Completion")
 
 }
 
