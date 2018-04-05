@@ -1943,6 +1943,11 @@ func (ia *IntAry) GetBigInt() *big.Int {
 // To set the value of currency symbol, see
 // the method SetCurrencySymbol().
 func (ia *IntAry) GetCurrencySymbol() rune {
+
+	if ia.currencySymbol == 0 {
+		ia.currencySymbol = '$'
+	}
+
 	return ia.currencySymbol
 }
 
@@ -1959,6 +1964,11 @@ func (ia *IntAry) GetCurrencySymbol() rune {
 // To set the value of decimal separator, see
 // method SetDecimalSeparator().
 func (ia *IntAry) GetDecimalSeparator() rune {
+
+	if ia.decimalSeparator == 0 {
+		ia.decimalSeparator = '.'
+	}
+
 	return ia.decimalSeparator
 }
 
@@ -2508,6 +2518,11 @@ func (ia *IntAry) GetSquareRootOfThis(maxPrecision uint) (IntAry, error) {
 // To set the value of thousands separator, see the method
 // SetThousandsSeparator().
 func (ia *IntAry) GetThousandsSeparator() rune {
+
+	if ia.thousandsSeparator == 0 {
+		ia.thousandsSeparator = ','
+	}
+
 	return ia.thousandsSeparator
 }
 

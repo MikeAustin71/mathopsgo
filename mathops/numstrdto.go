@@ -1235,6 +1235,10 @@ func (nDto *NumStrDto) GetAbsNumStr() string {
 //
 func (nDto *NumStrDto) GetCurrencySymbol() rune {
 
+	if nDto.currencySymbol == 0 {
+		nDto.currencySymbol = '$'
+	}
+
 	return nDto.currencySymbol
 
 }
@@ -1300,6 +1304,10 @@ func (nDto *NumStrDto) GetCurrencyStr() string {
 // Example:		123.456
 //
 func (nDto *NumStrDto) GetDecimalSeparator() rune {
+
+	if nDto.decimalSeparator == 0 {
+		nDto.decimalSeparator = '.'
+	}
 
 	return nDto.decimalSeparator
 
@@ -1560,6 +1568,11 @@ func (nDto *NumStrDto) GetSignedBigInt() (*big.Int, error) {
 // Example: 1,000,000,000
 //
 func (nDto *NumStrDto) GetThousandsSeparator() rune {
+
+	if nDto.thousandsSeparator == 0 {
+		nDto.thousandsSeparator = ','
+	}
+
 	return nDto.thousandsSeparator
 }
 

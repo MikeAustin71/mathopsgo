@@ -390,12 +390,22 @@ func (dec *Decimal) GetBigFloatString(precision uint) (string, error) {
 // GetCurrencySymbol - Returns the Decimal's current
 // value for Currency Symbol
 func (dec *Decimal) GetCurrencySymbol() rune {
+
+	if dec.numStrDto.GetCurrencySymbol() != dec.currencySymbol {
+		dec.numStrDto.SetCurrencySymbol(dec.currencySymbol)
+	}
+
 	return dec.currencySymbol
 }
 
 // GetDecimalSeparator - returns the Decimal's current
 // value for Decimal Separator (i.e. '.')
 func (dec *Decimal) GetDecimalSeparator() rune {
+
+	if dec.numStrDto.GetDecimalSeparator() != dec.decimalSeparator {
+		dec.numStrDto.SetDecimalSeparator(dec.decimalSeparator)
+	}
+
 	return dec.decimalSeparator
 }
 
@@ -687,6 +697,10 @@ func (dec *Decimal) GetSquareRoot(maxPrecision uint) (Decimal, error) {
 //
 func (dec *Decimal) GetThousandsSeparator() rune {
 
+	if dec.thousandsSeparator != dec.numStrDto.GetThousandsSeparator() {
+		dec.numStrDto.SetThousandsSeparator(dec.thousandsSeparator)
+	}
+
 	return dec.thousandsSeparator
 }
 
@@ -790,6 +804,18 @@ func (dec *Decimal) MakeDecimalBigIntPrecision(iBig *big.Int, precision uint) (D
 	d2.thousandsSeparator = dec.thousandsSeparator
 	d2.decimalSeparator = dec.decimalSeparator
 	d2.currencySymbol = dec.currencySymbol
+	d2.numStrDto.SetSeparators(dec.decimalSeparator, dec.thousandsSeparator, dec.currencySymbol)
+
+	err = d2.numStrDto.IsNumStrDtoValid(ePrefix + "- ")
+
+	if err != nil {
+
+		return Decimal{},
+			fmt.Errorf(ePrefix +
+				"Error returned by d2.numStrDto.IsNumStrDtoValid() " +
+				"Error='%v'", err.Error())
+	}
+
 	d2.isValid = true
 
 	return d2, nil
@@ -832,6 +858,13 @@ func (dec *Decimal) MakeDecimalFromNumStrDto(nDto NumStrDto) (Decimal, error) {
 			fmt.Errorf(ePrefix + "- Error from nDto.GetScaleFactor(). Error= %v", err)
 	}
 
+	err = nDto.IsNumStrDtoValid(ePrefix + "- ")
+
+	if err != nil {
+		return Decimal{}.New(),
+			fmt.Errorf(ePrefix + "- Error from nDto.IsNumStrDtoValid(). Error= %v", err.Error())
+	}
+
 	d2.isValid = true
 
 	return d2, nil
@@ -867,18 +900,40 @@ func (dec *Decimal) MakeDecimalFromIntAry(ia *IntAry) (Decimal, error) {
 	d2.signVal = ia.GetSign()
 	d2.numStrDto, err = ia.GetNumStrDto()
 
+	if err != nil {
+		return Decimal{},
+			fmt.Errorf(ePrefix + "- Error from ia.GetNumStrDto(). Error= %v", err.Error())
+	}
+
+	d2.precision = uint(ia.GetPrecision())
+
+	if d2.precision != d2.numStrDto.GetPrecision() {
+		return Decimal{},
+		 fmt.Errorf(ePrefix + "Error: ia.NumStrDto.Preciion='%v' ia.Precision='%v' ",
+		 	d2.numStrDto.GetPrecision(), ia.GetPrecision())
+	}
 
 	d2.signedAllDigitsBigInt = ia.GetBigInt()
-	d2.precision = uint(ia.GetPrecision())
-	d2.currencySymbol = dec.currencySymbol
-	d2.decimalSeparator = dec.decimalSeparator
-	d2.thousandsSeparator = dec.thousandsSeparator
+
+	d2.currencySymbol = ia.GetCurrencySymbol()
+	d2.decimalSeparator = ia.GetDecimalSeparator()
+	d2.thousandsSeparator = ia.GetThousandsSeparator()
+
+	d2.numStrDto.SetSeparators(d2.decimalSeparator, d2.thousandsSeparator, d2.currencySymbol)
 
 	d2.scaleFactor, err = ia.GetScaleFactor()
 
 	if err != nil {
 		return Decimal{},
 		fmt.Errorf(ePrefix + "- Error from ia.GetScaleFactor(). Error= %v", err.Error())
+	}
+
+	err = d2.numStrDto.IsNumStrDtoValid(ePrefix + "- ")
+
+	if err != nil {
+		return Decimal{},
+			fmt.Errorf(ePrefix + "- Error from d2.numStrDto.IsNumStrDtoValid(). " +
+				"Error= %v", err.Error())
 	}
 
 	d2.isValid = true
@@ -1521,8 +1576,17 @@ func (dec *Decimal) SetBigInt(iBig *big.Int, precision uint) error {
 
 // SetCurrencySymbol - sets the character which serves as the
 // currency symbol for this Decimal value. Currency defaults
-// to '$'
+// to '$'.
+//
+// For a listing of Major World Currency Symbols in Unicode format,
+// see array 'NumStrCurrencySymbols' in source file:
+//   MikeAustin71/mathopsgo/mathops/mathopsconstants.go
+//
 func (dec *Decimal) SetCurrencySymbol(currencySymbol rune) error {
+
+	if currencySymbol == 0 {
+		currencySymbol = '$'
+	}
 	dec.currencySymbol = currencySymbol
 	return nil
 }
@@ -1531,7 +1595,13 @@ func (dec *Decimal) SetCurrencySymbol(currencySymbol rune) error {
 // the number into integer and fractional components. This
 // defaults to "."
 func (dec *Decimal) SetDecimalSeparator(decimalSeparator rune) error {
+
+	if decimalSeparator == 0 {
+		decimalSeparator = '.'
+	}
+
 	dec.decimalSeparator = decimalSeparator
+	dec.numStrDto.SetDecimalSeparator(decimalSeparator)
 	return nil
 }
 
@@ -1731,6 +1801,8 @@ func (dec *Decimal) SetThousandsSeparator(thousandsSeparator rune) error {
 	}
 
 	dec.thousandsSeparator = thousandsSeparator
+	dec.numStrDto.SetThousandsSeparator(thousandsSeparator)
+
 	return nil
 }
 
