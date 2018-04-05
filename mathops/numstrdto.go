@@ -1059,7 +1059,32 @@ func (nDto *NumStrDto) GetAbsAllNumRunes() []rune {
 // to represent the absolute value of the fractional digits in the
 // current NumStrDto numeric value.
 func (nDto *NumStrDto) GetAbsFracRunes() []rune {
-	return nDto.absFracRunes
+
+	err := nDto.IsNumStrDtoValid("")
+
+	if err != nil {
+		return []rune{}
+	}
+
+	if nDto.precision == 0 {
+		return []rune{}
+	}
+
+	lenAllNums := len(nDto.absAllNumRunes)
+
+	if lenAllNums == 0 {
+		return []rune{}
+	}
+
+	absFracRunes := make([]rune, nDto.precision, nDto.precision+50)
+
+	lenIntNums := lenAllNums - int(nDto.precision)
+
+	for i:= lenIntNums; i < lenAllNums ; i++ {
+		absFracRunes[i-lenIntNums] = nDto.absAllNumRunes[i]
+	}
+
+	return absFracRunes
 }
 
 // GetAbsIntRunes - Returns all of the integer digits included
@@ -1069,7 +1094,28 @@ func (nDto *NumStrDto) GetAbsFracRunes() []rune {
 // value of all the integer digits. The integer digits of a NumStrDto
 // numeric includes all of the digits to the left of the decimal point.
 func (nDto *NumStrDto) GetAbsIntRunes() []rune {
-	return nDto.absIntRunes
+
+	err := nDto.IsNumStrDtoValid("")
+
+	if err != nil {
+		return []rune{}
+	}
+
+	lenAllNum := len(nDto.absAllNumRunes)
+
+	if lenAllNum == 0 {
+		return []rune{}
+	}
+
+	lenIntNum := lenAllNum - int(nDto.precision)
+
+	absIntRunes := make([]rune, lenIntNum, nDto.precision+50)
+
+	for i:= 0; i < lenIntNum; i++ {
+		absIntRunes[i] = nDto.absAllNumRunes[i]
+	}
+
+	return absIntRunes
 }
 
 // GetAbsNumStr - Returns all digits in the current NumStrDto numeric

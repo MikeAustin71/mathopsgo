@@ -29,6 +29,135 @@ func TestNumStrDto_GetAbsoluteBigInt_01(t *testing.T) {
 
 }
 
+func TestNumStrDto_GetAbsFracRunes_01(t *testing.T) {
+	nStr := "-123.456"
+	expectedRunes := []rune{'4','5', '6'}
+
+	nDto, err := NumStrDto{}.NewNumStr(nStr)
+
+	if err != nil {
+		t.Errorf("Error returned by NumStrDto{}.NewNumStr(nStr). " +
+			"nStr='%v' Error='%v'",
+				nStr, err.Error())
+	}
+
+	fracRunes := nDto.GetAbsFracRunes()
+
+	if len(expectedRunes) != len(fracRunes)  {
+		t.Errorf("Expected a rune array length of '%v'.  Instead length='%v' .",
+			len(expectedRunes), len(fracRunes))
+	}
+
+	for i:=0; i < len(fracRunes); i++ {
+		if expectedRunes[i] != fracRunes[i] {
+			t.Errorf("Error! Rune Idx='%v'. Expected rune='%v'. Instead rune='%v'. ",
+				i, expectedRunes[i], fracRunes[i])
+		}
+	}
+
+}
+
+func TestNumStrDto_GetAbsFracRunes_02(t *testing.T) {
+	nStr := "123"
+
+	nDto, err := NumStrDto{}.NewNumStr(nStr)
+
+	if err != nil {
+		t.Errorf("Error returned by NumStrDto{}.NewNumStr(nStr). " +
+			"nStr='%v' Error='%v'",
+				nStr, err.Error())
+	}
+
+	fracRunes := nDto.GetAbsFracRunes()
+
+	if len(fracRunes) != 0 {
+		t.Errorf("Expected rune array length=0. Instead length='%v' Array String='%v'",
+			len(fracRunes), string(fracRunes))
+	}
+
+}
+
+func TestNumStrDto_GetAbsIntRunes_01(t *testing.T) {
+	nStr := "-123.456"
+	expectedRunes := []rune{'1','2','3'}
+
+	nDto, err := NumStrDto{}.NewNumStr(nStr)
+
+	if err != nil {
+		t.Errorf("Error returned by NumStrDto{}.NewNumStr(nStr) " +
+			"nStr='%v' Error='%v'", nStr, err.Error())
+	}
+
+	intRunes := nDto.GetAbsIntRunes()
+
+	if len(expectedRunes) != len(intRunes) {
+		t.Errorf("Error: Expected Rune Array Length='%v'.  Instead, Array Length='%v'",
+			len(expectedRunes), len(intRunes))
+	}
+
+	for i:=0; i < len(intRunes); i++ {
+		if expectedRunes[i] != intRunes[i] {
+			t.Errorf("Error: Index='%v' Expected Rune='%v'. Actual Rune='%v'",
+				i, expectedRunes[i], intRunes[i])
+		}
+	}
+
+}
+
+func TestNumStrDto_GetAbsIntRunes_02(t *testing.T) {
+	nStr := "-123"
+	expectedRunes := []rune{'1','2','3'}
+
+	nDto, err := NumStrDto{}.NewNumStr(nStr)
+
+	if err != nil {
+		t.Errorf("Error returned by NumStrDto{}.NewNumStr(nStr) " +
+			"nStr='%v' Error='%v'", nStr, err.Error())
+	}
+
+	intRunes := nDto.GetAbsIntRunes()
+
+	if len(expectedRunes) != len(intRunes) {
+		t.Errorf("Error: Expected Rune Array Length='%v'.  Instead, Array Length='%v'",
+			len(expectedRunes), len(intRunes))
+	}
+
+	for i:=0; i < len(intRunes); i++ {
+		if expectedRunes[i] != intRunes[i] {
+			t.Errorf("Error: Index='%v' Expected Rune='%v'. Actual Rune='%v'",
+				i, expectedRunes[i], intRunes[i])
+		}
+	}
+
+}
+
+func TestNumStrDto_GetAbsIntRunes_03(t *testing.T) {
+	nStr := "123456789.7865"
+	expectedRunes := []rune{'1','2','3','4','5','6', '7', '8', '9'}
+
+	nDto, err := NumStrDto{}.NewNumStr(nStr)
+
+	if err != nil {
+		t.Errorf("Error returned by NumStrDto{}.NewNumStr(nStr) " +
+			"nStr='%v' Error='%v'", nStr, err.Error())
+	}
+
+	intRunes := nDto.GetAbsIntRunes()
+
+	if len(expectedRunes) != len(intRunes) {
+		t.Errorf("Error: Expected Rune Array Length='%v'.  Instead, Array Length='%v'",
+			len(expectedRunes), len(intRunes))
+	}
+
+	for i:=0; i < len(intRunes); i++ {
+		if expectedRunes[i] != intRunes[i] {
+			t.Errorf("Error: Index='%v' Expected Rune='%v'. Actual Rune='%v'",
+				i, expectedRunes[i], intRunes[i])
+		}
+	}
+
+}
+
 func TestNumStrDto_GetSignedBigInt_01(t *testing.T) {
 
 	nStr := "-123.456"
