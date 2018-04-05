@@ -497,6 +497,43 @@ func TestNumStrDto_CopyOut_02(t *testing.T) {
 
 }
 
+func TestNumStrDto_Divide_01(t *testing.T) {
+
+	nStr1 := "12"
+	nStr2 := "3"
+	expectedStr := "4.0"
+
+	n1Dto, err := NumStrDto{}.NewNumStr(nStr1)
+
+	if err != nil {
+		t.Errorf("Error returned from NumStrDto{}.NewNumStr(nStr1). " +
+			"nStr1='%v' Error= %v",
+			 nStr1, err.Error())
+	}
+
+	n2Dto, err := NumStrDto{}.NewNumStr(nStr2)
+
+	if err != nil {
+		t.Errorf("Error returned from NumStrDto{}.NewNumStr(nStr2). " +
+			"nStr2='%v' Error= %v",
+			nStr2, err.Error())
+	}
+
+	err = n1Dto.Divide(n2Dto, 1, 5)
+
+	if err != nil {
+		t.Errorf("Error returned from n1Dto.Divide(n2Dto, 1, 5). " +
+			" Error= %v", err.Error())
+	}
+
+	numStr := n1Dto.GetNumStr()
+
+	if expectedStr != numStr {
+		t.Errorf("Error: Expected NumStr='%v'.  Instead, NumStr='%v'.",
+			expectedStr, numStr)
+	}
+
+}
 
 func TestNumStrDto_FormatForMathOps_01(t *testing.T) {
 	nStr1 := "-12567.218956"

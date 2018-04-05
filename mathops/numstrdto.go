@@ -35,6 +35,24 @@ type NumStrDto struct {
 	numStr          		string
 }
 
+// Add - Adds the value of input NumStrDto to the current NumStrDto
+// instance
+func (nDto *NumStrDto) Add(n2Dto NumStrDto) error {
+	ePrefix := "NumStrDto.Add() "
+	n1Dto := nDto.CopyOut()
+
+	nResult, err := nDto.AddNumStrs(n1Dto, n2Dto)
+
+	if err != nil {
+		return fmt.Errorf(ePrefix + "Error returned by nDto.AddNumStrs(n1Dto, n2Dto). " +
+			"Error='%v'", err.Error())
+	}
+
+	nDto.CopyIn(nResult)
+
+	return nil
+}
+
 // AddNumStrs - Adds the values represented by two NumStrDto objects and
 // returns the result as an NumStrDto.
 func (nDto *NumStrDto) AddNumStrs(n1Dto NumStrDto, n2Dto NumStrDto) (NumStrDto, error) {
@@ -305,6 +323,73 @@ func (nDto *NumStrDto) CopyIn(nInDto NumStrDto) {
 	nDto.currencySymbol = nInDto.currencySymbol
 	nDto.isValid = nInDto.isValid
 
+}
+
+// Divides the current NumStrDto by input parameter 'n2Dto'.
+// Maximum precision of the division result is controlled by the input
+// parameter, 'maximumPrecision'.
+//
+// If 'maximumPrecision' is greater than or equal to zero ('0'),
+// the number of digits to the right of the decimal place will
+// not exceed 'maximumPrecision'.
+
+// 'maximumPrecision' is set equal to minus one ('-1'), will be set
+// to a maximum of 1,024 digits to the right of the decimal
+// point.
+//
+// 'minimumPrecision' specifies the minimum precision of the final result.
+// If 'minimumPrecision' is less than zero, it is automatically set to zero.
+//
+func (nDto *NumStrDto) Divide(n2Dto NumStrDto, minimumPrecision, maximumPrecision int ) error {
+
+	ePrefix := "NumStrDto.Divide() "
+
+	ia1, err := IntAry{}.NewNumStrDto(nDto.CopyOut())
+
+	if err != nil {
+		return fmt.Errorf(ePrefix + "Error returned by IntAry{}.NewNumStrDto(nDto.CopyOut()). " +
+			"Error='%v'", err.Error())
+	}
+
+	ia2, err := IntAry{}.NewNumStrDto(n2Dto)
+
+	if err != nil {
+		return fmt.Errorf(ePrefix + "Error returned by IntAry{}.NewNumStrDto(n2Dto). " +
+			"Error='%v'", err.Error())
+	}
+
+
+ iaResult, err :=	ia1.DivideThisBy(&ia2, minimumPrecision, maximumPrecision)
+
+	if err != nil {
+		return fmt.Errorf(ePrefix +
+			"ia1.DivideThisBy(&ia2, minimumPrecision, maximumPrecision). " +
+			"minimumPrecision='%v' maximumPrecision='%v' Error='%v'",
+			minimumPrecision, maximumPrecision, err.Error())
+	}
+
+	nResultDto, err := iaResult.GetNumStrDto()
+
+	if err != nil {
+		return fmt.Errorf(ePrefix + "Error returned by iaResult.GetNumStrDto(). " +
+			"Error='%v'", err.Error())
+	}
+
+	if nResultDto.GetPrecision() < uint(minimumPrecision) {
+
+		err = nResultDto.SetThisPrecision(uint(minimumPrecision), false)
+
+		if err != nil {
+			return fmt.Errorf(ePrefix +
+				"Error returned by nResultDto.SetThisPrecision(uint(minimumPrecision), false). " +
+				"Error='%v'", err.Error())
+		}
+
+	}
+
+	nDto.CopyIn(nResultDto)
+
+	return nil
 }
 
 // Empty - Sets all the fields in the NumStrDto
@@ -1713,6 +1798,26 @@ func (nDto *NumStrDto) IsValid() bool {
 
 }
 
+// Multiply - Multiplies the current NumStrDto by the input
+// parameter NumStrDto and stores the result in the current
+// NumStrDto.
+func (nDto *NumStrDto) Multiply(n2Dto NumStrDto) error {
+	ePrefix :="NumStrDto.Multiply() "
+
+	n1Dto := nDto.CopyOut()
+
+	nResult, err := nDto.MultiplyNumStrs(n1Dto, n2Dto)
+
+	if err != nil {
+		return fmt.Errorf(ePrefix + "Error returned by MultiplyNumStrs(n1Dto, n2Dto). " +
+			"Error='%v'", err.Error())
+	}
+
+	nDto.CopyIn(nResult)
+
+	return nil
+}
+
 // MultiplyNumStrs - Multiplies two NumStrDto instances and returns the result as
 // an separate NumStrDto instance.
 func (nDto *NumStrDto) MultiplyNumStrs(n1Dto NumStrDto, n2Dto NumStrDto) (NumStrDto, error) {
@@ -2909,6 +3014,26 @@ func (nDto *NumStrDto) ResetNumStr() error {
 	}
 
 	return nDto.IsNumStrDtoValid( ePrefix + "- ")
+}
+
+// Subtract - Subtracts the value of an input NumStrDto from the
+// current NumStrDto instance.
+func (nDto *NumStrDto) Subtract(n2Dto NumStrDto) error {
+
+	ePrefix := "NumStrDto.Subtract() "
+
+	n1Dto := nDto.CopyOut()
+
+	nResult, err := nDto.SubtractNumStrs(n1Dto, n2Dto)
+
+	if err != nil {
+		return fmt.Errorf(ePrefix + "Error returned by nDto.SubtractNumStrs(n1Dto, n2Dto). "+
+			"Error='%v'", err.Error())
+	}
+
+	nDto.CopyIn(nResult)
+
+	return nil
 }
 
 // SubtractNumStrs - Subtracts the numeric values represented by two NumStrDto

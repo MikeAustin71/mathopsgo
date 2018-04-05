@@ -117,6 +117,7 @@ func TestDecimal_MakeDecimalFromIntAry_02(t *testing.T) {
 
 }
 
+
 func TestDecimal_Pow_01(t *testing.T) {
 
 	numStr := "2.125"

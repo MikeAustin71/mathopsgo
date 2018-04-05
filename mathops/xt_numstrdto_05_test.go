@@ -2,6 +2,32 @@ package mathops
 
 import "testing"
 
+func TestNumStrDto_Multiply_01(t *testing.T) {
+
+	nStr1 := "35.123456"
+	nStr2 := "47.9876514"
+	nStr3 := "1685.4921624912384"
+	nDto := NumStrDto{}.New()
+
+	n1, _ := nDto.ParseNumStr(nStr1)
+	n2, _ := nDto.ParseNumStr(nStr2)
+	nExpected, _ := nDto.ParseNumStr(nStr3)
+
+	err := n1.Multiply(n2)
+
+	if err != nil {
+		t.Errorf("n1.Multiply(n2) returned an error. Error= %v", err)
+	}
+
+	s := n1.GetNumStr()
+	expected := nExpected.GetNumStr()
+
+	if s != expected {
+		t.Errorf("Expected NumStrOut = '%v'. Instead, got %v", expected, s)
+	}
+
+}
+
 func TestNumStrDto_MultiplyNumStrs_01(t *testing.T) {
 	nStr1 := "35.123456"
 	nStr2 := "47.9876514"

@@ -2378,6 +2378,23 @@ func (ia *IntAry) GetNumStr() string {
 	// return ia.numStr
 }
 
+// GetNumStrDto - Converts the current IntAry to a NumStrDto
+// instance and returns it.
+func (ia *IntAry) GetNumStrDto() (NumStrDto, error) {
+	ePrefix := "IntAry.GetNumStrDto() "
+
+	nstrDto, err := NumStrDto{}.NewNumStr(ia.GetNumStr())
+
+	if err != nil {
+		return NumStrDto{},
+			fmt.Errorf(ePrefix + "Error returned by NewNumStr(ia.GetNumStr()) " +
+				"Error='%v'", err.Error())
+	}
+
+	return nstrDto, nil
+
+}
+
 func (ia *IntAry) GetMagnitude() int {
 	ia.SetSignificantDigitIdxs()
 	return ia.intAryLen - ia.precision - ia.firstDigitIdx
