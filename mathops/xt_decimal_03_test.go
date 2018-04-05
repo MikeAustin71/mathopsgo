@@ -10,7 +10,7 @@ func TestDecimal_MakeDecimalBigIntPrecision_01(t *testing.T) {
 	bigI, isOk := big.NewInt(0).SetString(numStr, 10)
 
 	if !isOk {
-		t.Errorf("Failed to convert string to BigInt from numStr='%v'", numStr)
+		t.Errorf("Failed to convert string to BigInt from numStrDto='%v'", numStr)
 	}
 
 	precision := uint(3)
@@ -38,7 +38,7 @@ func TestDecimal_MakeDecimalBigIntPrecision_02(t *testing.T) {
 	bigI, isOk := big.NewInt(0).SetString(numStr, 10)
 
 	if !isOk {
-		t.Errorf("Failed to convert string to BigInt from numStr='%v'", numStr)
+		t.Errorf("Failed to convert string to BigInt from numStrDto='%v'", numStr)
 	}
 
 	d1 := Decimal{}
@@ -125,8 +125,8 @@ func TestDecimal_Pow_01(t *testing.T) {
 	d1, err := Decimal{}.NewNumStr(numStr)
 
 	if err != nil {
-		t.Errorf("Error returned by Decimal{}.NewNumStr(numStr) " +
-			"numStr='%v' Error = '%v' ",numStr, err.Error())
+		t.Errorf("Error returned by Decimal{}.NewNumStr(numStrDto) " +
+			"numStrDto='%v' Error = '%v' ",numStr, err.Error())
 	}
 
 	d2, err := d1.Pow(exp, 15)
@@ -150,8 +150,8 @@ func TestDecimal_Pow_02(t *testing.T) {
 	d1, err := Decimal{}.NewNumStr(numStr)
 
 	if err != nil {
-		t.Errorf("Error returned by Decimal{}.NewNumStr(numStr) " +
-			"numStr='%v' Error = '%v' ",numStr, err.Error())
+		t.Errorf("Error returned by Decimal{}.NewNumStr(numStrDto) " +
+			"numStrDto='%v' Error = '%v' ",numStr, err.Error())
 	}
 
 	d2, err := d1.Pow(exp, 32)
@@ -175,8 +175,8 @@ func TestDecimal_Pow_03(t *testing.T) {
 	d1, err := Decimal{}.NewNumStr(numStr)
 
 	if err != nil {
-		t.Errorf("Error returned by Decimal{}.NewNumStr(numStr) " +
-			"numStr='%v' Error = '%v' ",numStr, err.Error())
+		t.Errorf("Error returned by Decimal{}.NewNumStr(numStrDto) " +
+			"numStrDto='%v' Error = '%v' ",numStr, err.Error())
 	}
 
 	d2, err := d1.Pow(exp, 250)
@@ -202,7 +202,7 @@ func TestDecimal_Inverse_01(t *testing.T) {
 	d1, err := Decimal{}.NewNumStrPrecision(numStr, precision, false)
 
 	if err != nil {
-		t.Errorf("Error Returned from Decimal d1.NewNumStrPrecision(numStr, precision, false). numStr= '%v' precision= '%v' Error= %v", numStr, precision, err)
+		t.Errorf("Error Returned from Decimal d1.NewNumStrPrecision(numStrDto, precision, false). numStrDto= '%v' precision= '%v' Error= %v", numStr, precision, err)
 	}
 
 	d2, err := d1.Inverse(2)

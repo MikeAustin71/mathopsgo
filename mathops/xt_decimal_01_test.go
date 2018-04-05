@@ -179,7 +179,7 @@ func TestDecimal_AllDigitsNumStr_01(t *testing.T) {
 	outStr, err := d.AllDigitsNumStr(numStr)
 
 	if err != nil {
-		t.Errorf("Received error from d.AllDigitsNumStr(numStr). Error= %v", err)
+		t.Errorf("Received error from d.AllDigitsNumStr(numStrDto). Error= %v", err)
 	}
 
 	if expected != outStr {
@@ -833,8 +833,8 @@ func TestDecimal_MulTotal_01(t *testing.T) {
 	mul, err := Decimal{}.NewNumStr(numStr)
 
 	if err != nil {
-		t.Errorf("Error returned by Decimal{}.NewNumStr(numStr) " +
-			"numStr='%v'  Error = '%v' ",numStr, err.Error())
+		t.Errorf("Error returned by Decimal{}.NewNumStr(numStrDto) " +
+			"numStrDto='%v'  Error = '%v' ",numStr, err.Error())
 	}
 
 	d, err := Decimal{}.NewNumStr("1")

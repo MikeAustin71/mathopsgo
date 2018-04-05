@@ -447,7 +447,7 @@ func TestIntAry_GetFractionalDigits_01(t *testing.T) {
 
 	s := iAry2.GetNumStr()
 	if expected != s {
-		t.Errorf("Error. Expected numStr= '%v'. Instead, got numStr='%v'\n", expected, s)
+		t.Errorf("Error. Expected numStrDto= '%v'. Instead, got numStrDto='%v'\n", expected, s)
 	}
 
 	if iAry2.GetPrecision() != precision {
@@ -484,7 +484,7 @@ func TestIntAry_GetFractionalDigits_02(t *testing.T) {
 
 	s := iAry2.GetNumStr()
 	if expected != s {
-		t.Errorf("Error. Expected numStr= '%v'. Instead, got numStr='%v'\n", expected, s)
+		t.Errorf("Error. Expected numStrDto= '%v'. Instead, got numStrDto='%v'\n", expected, s)
 	}
 
 	if iAry2.GetPrecision() != precision {
@@ -521,7 +521,7 @@ func TestIntAry_GetFractionalDigits_03(t *testing.T) {
 
 	s := iAry2.GetNumStr()
 	if expected != s {
-		t.Errorf("Error. Expected numStr= '%v'. Instead, got numStr='%v'\n", expected, s)
+		t.Errorf("Error. Expected numStrDto= '%v'. Instead, got numStrDto='%v'\n", expected, s)
 	}
 
 	if iAry2.GetPrecision() != precision {
@@ -558,7 +558,7 @@ func TestIntAry_GetFractionalDigits_04(t *testing.T) {
 
 	s := iAry2.GetNumStr()
 	if expected != s {
-		t.Errorf("Error. Expected numStr= '%v'. Instead, got numStr='%v'\n", expected, s)
+		t.Errorf("Error. Expected numStrDto= '%v'. Instead, got numStrDto='%v'\n", expected, s)
 	}
 
 	if iAry2.GetPrecision() != precision {
@@ -595,7 +595,7 @@ func TestIntAry_GetIntegerDigits_01(t *testing.T) {
 
 	s := iAry2.GetNumStr()
 	if expected != s {
-		t.Errorf("Error. Expected numStr= '%v'. Instead, got numStr='%v'\n", expected, s)
+		t.Errorf("Error. Expected numStrDto= '%v'. Instead, got numStrDto='%v'\n", expected, s)
 	}
 
 	if iAry2.GetPrecision() != precision {
@@ -632,7 +632,7 @@ func TestIntAry_GetIntegerDigits_02(t *testing.T) {
 
 	s := iAry2.GetNumStr()
 	if expected != s {
-		t.Errorf("Error. Expected numStr= '%v'. Instead, got numStr='%v'\n", expected, s)
+		t.Errorf("Error. Expected numStrDto= '%v'. Instead, got numStrDto='%v'\n", expected, s)
 	}
 
 	if iAry2.GetPrecision() != precision {
@@ -669,7 +669,7 @@ func TestIntAry_GetIntegerDigits_03(t *testing.T) {
 
 	s := iAry2.GetNumStr()
 	if expected != s {
-		t.Errorf("Error. Expected numStr= '%v'. Instead, got numStr='%v'\n", expected, s)
+		t.Errorf("Error. Expected numStrDto= '%v'. Instead, got numStrDto='%v'\n", expected, s)
 	}
 
 	if iAry2.GetPrecision() != precision {
@@ -706,7 +706,7 @@ func TestIntAry_GetIntegerDigits_04(t *testing.T) {
 
 	s := iAry2.GetNumStr()
 	if expected != s {
-		t.Errorf("Error. Expected numStr= '%v'. Instead, got numStr='%v'", expected, s)
+		t.Errorf("Error. Expected numStrDto= '%v'. Instead, got numStrDto='%v'", expected, s)
 	}
 
 	if iAry2.GetPrecision() != precision {
@@ -992,7 +992,7 @@ func TestIntAry_IncrementIntegerOne_01(t *testing.T) {
 	}
 
 	if expected != ia.GetNumStr() {
-		t.Errorf("Error - Expected numStr= '%v'. Instead, numStr= '%v'", expected, ia.GetNumStr())
+		t.Errorf("Error - Expected numStrDto= '%v'. Instead, numStrDto= '%v'", expected, ia.GetNumStr())
 	}
 
 }
@@ -1009,7 +1009,7 @@ func TestIntAry_IncrementIntegerOne_02(t *testing.T) {
 	}
 
 	if expected != ia.GetNumStr() {
-		t.Errorf("Error - Expected numStr= '%v'. Instead, numStr= '%v'", expected, ia.GetNumStr())
+		t.Errorf("Error - Expected numStrDto= '%v'. Instead, numStrDto= '%v'", expected, ia.GetNumStr())
 	}
 
 }
@@ -1026,7 +1026,7 @@ func TestIntAry_IncrementIntegerOne_03(t *testing.T) {
 	}
 
 	if expected != ia.GetNumStr() {
-		t.Errorf("Error - Expected numStr= '%v'. Instead, numStr= '%v'", expected, ia.GetNumStr())
+		t.Errorf("Error - Expected numStrDto= '%v'. Instead, numStrDto= '%v'", expected, ia.GetNumStr())
 	}
 
 }
@@ -1043,7 +1043,7 @@ func TestIntAry_IncrementIntegerOne_04(t *testing.T) {
 	}
 
 	if expected != ia.GetNumStr() {
-		t.Errorf("Error - Expected numStr= '%v'. Instead, numStr= '%v'", expected, ia.GetNumStr())
+		t.Errorf("Error - Expected numStrDto= '%v'. Instead, numStrDto= '%v'", expected, ia.GetNumStr())
 	}
 
 }

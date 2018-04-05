@@ -1433,7 +1433,7 @@ func TestIntAry_Ceiling_01(t *testing.T) {
 
 	s := iAry2.GetNumStr()
 	if expected != s {
-		t.Errorf("Error. Expected numStr= '%v'. Instead, got numStr='%v'\n", expected, s)
+		t.Errorf("Error. Expected numStrDto= '%v'. Instead, got numStrDto='%v'\n", expected, s)
 	}
 
 	if iAry2.GetPrecision() != precision {
@@ -1458,7 +1458,7 @@ func TestIntAry_Ceiling_02(t *testing.T) {
 
 	s := iAry2.GetNumStr()
 	if expected != s {
-		t.Errorf("Error. Expected numStr= '%v'. Instead, got numStr='%v'\n", expected, s)
+		t.Errorf("Error. Expected numStrDto= '%v'. Instead, got numStrDto='%v'\n", expected, s)
 	}
 
 	if iAry2.GetPrecision() != precision {
@@ -1483,7 +1483,7 @@ func TestIntAry_Ceiling_03(t *testing.T) {
 
 	s := iAry2.GetNumStr()
 	if expected != s {
-		t.Errorf("Error. Expected numStr= '%v'. Instead, got numStr='%v'\n", expected, s)
+		t.Errorf("Error. Expected numStrDto= '%v'. Instead, got numStrDto='%v'\n", expected, s)
 	}
 
 	if iAry2.GetPrecision() != precision {
@@ -1507,7 +1507,7 @@ func TestIntAry_Ceiling_04(t *testing.T) {
 
 	s := iAry2.GetNumStr()
 	if expected != s {
-		t.Errorf("Error. Expected numStr= '%v'. Instead, got numStr='%v'\n", expected, s)
+		t.Errorf("Error. Expected numStrDto= '%v'. Instead, got numStrDto='%v'\n", expected, s)
 	}
 
 	if iAry2.GetPrecision() != precision {
@@ -1532,7 +1532,7 @@ func TestIntAry_Ceiling_05(t *testing.T) {
 
 	s := iAry2.GetNumStr()
 	if expected != s {
-		t.Errorf("Error. Expected numStr= '%v'. Instead, got numStr='%v'\n", expected, s)
+		t.Errorf("Error. Expected numStrDto= '%v'. Instead, got numStrDto='%v'\n", expected, s)
 	}
 
 	if iAry2.GetPrecision() != precision {
@@ -1557,7 +1557,7 @@ func TestIntAry_Ceiling_06(t *testing.T) {
 
 	s := iAry2.GetNumStr()
 	if expected != s {
-		t.Errorf("Error. Expected numStr= '%v'. Instead, got numStr='%v'\n", expected, s)
+		t.Errorf("Error. Expected numStrDto= '%v'. Instead, got numStrDto='%v'\n", expected, s)
 	}
 
 	if iAry2.GetPrecision() != precision {
@@ -1582,7 +1582,7 @@ func TestIntAry_Ceiling_07(t *testing.T) {
 
 	s := iAry2.GetNumStr()
 	if expected != s {
-		t.Errorf("Error. Expected numStr= '%v'. Instead, got numStr='%v'\n", expected, s)
+		t.Errorf("Error. Expected numStrDto= '%v'. Instead, got numStrDto='%v'\n", expected, s)
 	}
 
 	if iAry2.GetPrecision() != precision {
@@ -1683,7 +1683,7 @@ func TestIntAry_Floor_01(t *testing.T) {
 
 	s := iAry2.GetNumStr()
 	if expected != s {
-		t.Errorf("Error. Expected numStr= '%v'. Instead, got numStr='%v'\n", expected, s)
+		t.Errorf("Error. Expected numStrDto= '%v'. Instead, got numStrDto='%v'\n", expected, s)
 	}
 
 	if iAry2.GetPrecision() != precision {
@@ -1708,7 +1708,7 @@ func TestIntAry_Floor_02(t *testing.T) {
 
 	s := iAry2.GetNumStr()
 	if expected != s {
-		t.Errorf("Error. Expected numStr= '%v'. Instead, got numStr='%v'\n", expected, s)
+		t.Errorf("Error. Expected numStrDto= '%v'. Instead, got numStrDto='%v'\n", expected, s)
 	}
 
 	if iAry2.GetPrecision() != precision {
@@ -1733,7 +1733,7 @@ func TestIntAry_Floor_03(t *testing.T) {
 
 	s := iAry2.GetNumStr()
 	if expected != s {
-		t.Errorf("Error. Expected numStr= '%v'. Instead, got numStr='%v'\n", expected, s)
+		t.Errorf("Error. Expected numStrDto= '%v'. Instead, got numStrDto='%v'\n", expected, s)
 	}
 
 	if iAry2.GetPrecision() != precision {
@@ -1758,7 +1758,7 @@ func TestIntAry_Floor_04(t *testing.T) {
 
 	s := iAry2.GetNumStr()
 	if expected != s {
-		t.Errorf("Error. Expected numStr= '%v'. Instead, got numStr='%v'\n", expected, s)
+		t.Errorf("Error. Expected numStrDto= '%v'. Instead, got numStrDto='%v'\n", expected, s)
 	}
 
 	if iAry2.GetPrecision() != precision {
@@ -1783,7 +1783,7 @@ func TestIntAry_Floor_05(t *testing.T) {
 
 	s := iAry2.GetNumStr()
 	if expected != s {
-		t.Errorf("Error. Expected numStr= '%v'. Instead, got numStr='%v'\n", expected, s)
+		t.Errorf("Error. Expected numStrDto= '%v'. Instead, got numStrDto='%v'\n", expected, s)
 	}
 
 	if iAry2.GetPrecision() != precision {
@@ -1808,7 +1808,7 @@ func TestIntAry_Floor_06(t *testing.T) {
 
 	s := iAry2.GetNumStr()
 	if expected != s {
-		t.Errorf("Error. Expected numStr= '%v'. Instead, got numStr='%v'\n", expected, s)
+		t.Errorf("Error. Expected numStrDto= '%v'. Instead, got numStrDto='%v'\n", expected, s)
 	}
 
 	if iAry2.GetPrecision() != precision {
@@ -1833,7 +1833,7 @@ func TestIntAry_Floor_07(t *testing.T) {
 
 	s := iAry2.GetNumStr()
 	if expected != s {
-		t.Errorf("Error. Expected numStr= '%v'. Instead, got numStr='%v'\n", expected, s)
+		t.Errorf("Error. Expected numStrDto= '%v'. Instead, got numStrDto='%v'\n", expected, s)
 	}
 
 	if iAry2.GetPrecision() != precision {

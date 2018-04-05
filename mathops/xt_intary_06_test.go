@@ -314,7 +314,7 @@ func TestIntAry_RoundToPrecision_01(t *testing.T) {
 
 	s := ia.GetNumStr()
 	if expected != s {
-		t.Errorf("Error. Expected numStr= '%v'. Instead, got numStr='%v'\n", expected, s)
+		t.Errorf("Error. Expected numStrDto= '%v'. Instead, got numStrDto='%v'\n", expected, s)
 	}
 
 	if ia.GetPrecision() != precision {
@@ -336,7 +336,7 @@ func TestIntAry_RoundToPrecision_02(t *testing.T) {
 
 	s := ia.GetNumStr()
 	if expected != s {
-		t.Errorf("Error. Expected numStr= '%v'. Instead, got numStr='%v'\n", expected, s)
+		t.Errorf("Error. Expected numStrDto= '%v'. Instead, got numStrDto='%v'\n", expected, s)
 	}
 
 	if ia.GetPrecision() != precision {
@@ -358,7 +358,7 @@ func TestIntAry_RoundToPrecision_03(t *testing.T) {
 
 	s := ia.GetNumStr()
 	if expected != s {
-		t.Errorf("Error. Expected numStr= '%v'. Instead, got numStr='%v'\n", expected, s)
+		t.Errorf("Error. Expected numStrDto= '%v'. Instead, got numStrDto='%v'\n", expected, s)
 	}
 
 	if ia.GetPrecision() != precision {
@@ -380,7 +380,7 @@ func TestIntAry_RoundToPrecision_04(t *testing.T) {
 
 	s := ia.GetNumStr()
 	if expected != s {
-		t.Errorf("Error. Expected numStr= '%v'. Instead, got numStr='%v'\n", expected, s)
+		t.Errorf("Error. Expected numStrDto= '%v'. Instead, got numStrDto='%v'\n", expected, s)
 	}
 
 	if ia.GetPrecision() != precision {
@@ -402,7 +402,7 @@ func TestIntAry_RoundToPrecision_05(t *testing.T) {
 
 	s := ia.GetNumStr()
 	if expected != s {
-		t.Errorf("Error. Expected numStr= '%v'. Instead, got numStr='%v'\n", expected, s)
+		t.Errorf("Error. Expected numStrDto= '%v'. Instead, got numStrDto='%v'\n", expected, s)
 	}
 
 	if ia.GetPrecision() != precision {
@@ -424,7 +424,7 @@ func TestIntAry_RoundToPrecision_06(t *testing.T) {
 
 	s := ia.GetNumStr()
 	if expected != s {
-		t.Errorf("Error. Expected numStr= '%v'. Instead, got numStr='%v'\n", expected, s)
+		t.Errorf("Error. Expected numStrDto= '%v'. Instead, got numStrDto='%v'\n", expected, s)
 	}
 
 	if ia.GetPrecision() != precision {
@@ -446,7 +446,7 @@ func TestIntAry_RoundToPrecision_07(t *testing.T) {
 
 	s := ia.GetNumStr()
 	if expected != s {
-		t.Errorf("Error. Expected numStr= '%v'. Instead, got numStr='%v'\n", expected, s)
+		t.Errorf("Error. Expected numStrDto= '%v'. Instead, got numStrDto='%v'\n", expected, s)
 	}
 
 	if ia.GetPrecision() != precision {
@@ -468,7 +468,7 @@ func TestIntAry_RoundToPrecision_08(t *testing.T) {
 
 	s := ia.GetNumStr()
 	if expected != s {
-		t.Errorf("Error. Expected numStr= '%v'. Instead, got numStr='%v'\n", expected, s)
+		t.Errorf("Error. Expected numStrDto= '%v'. Instead, got numStrDto='%v'\n", expected, s)
 	}
 
 	if ia.GetPrecision() != precision {
@@ -490,7 +490,7 @@ func TestIntAry_RoundToPrecision_09(t *testing.T) {
 
 	s := ia.GetNumStr()
 	if expected != s {
-		t.Errorf("Error. Expected numStr= '%v'. Instead, got numStr='%v'\n", expected, s)
+		t.Errorf("Error. Expected numStrDto= '%v'. Instead, got numStrDto='%v'\n", expected, s)
 	}
 
 	if ia.GetPrecision() != precision {
@@ -512,7 +512,7 @@ func TestIntAry_RoundToPrecision_10(t *testing.T) {
 
 	s := ia.GetNumStr()
 	if expected != s {
-		t.Errorf("Error. Expected numStr= '%v'. Instead, got numStr='%v'\n", expected, s)
+		t.Errorf("Error. Expected numStrDto= '%v'. Instead, got numStrDto='%v'\n", expected, s)
 	}
 
 	if ia.GetPrecision() != precision {

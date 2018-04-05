@@ -2275,7 +2275,7 @@ func TestStrMathOp_RaiseToPower_01(t *testing.T) {
 
 	s := sMOp.IFinal.GetNumStr()
 	if expected != s {
-		t.Errorf("Expected numStr= '%v'. Instead received numStr= '%v'", expected, s)
+		t.Errorf("Expected numStrDto= '%v'. Instead received numStrDto= '%v'", expected, s)
 	}
 
 }
@@ -2296,7 +2296,7 @@ func TestStrMathOp_RaiseToPower_02(t *testing.T) {
 
 	s := sMOp.IFinal.GetNumStr()
 	if expected != s {
-		t.Errorf("Expected numStr= '%v'. Instead received numStr= '%v'", expected, s)
+		t.Errorf("Expected numStrDto= '%v'. Instead received numStrDto= '%v'", expected, s)
 	}
 
 }
@@ -2317,7 +2317,7 @@ func TestStrMathOp_RaiseToPower_03(t *testing.T) {
 
 	s := sMOp.IFinal.GetNumStr()
 	if expected != s {
-		t.Errorf("Expected numStr= '%v'. Instead received numStr= '%v'", expected, s)
+		t.Errorf("Expected numStrDto= '%v'. Instead received numStrDto= '%v'", expected, s)
 	}
 
 }
@@ -2338,7 +2338,7 @@ func TestStrMathOp_RaiseToPower_04(t *testing.T) {
 
 	s := sMOp.IFinal.GetNumStr()
 	if expected != s {
-		t.Errorf("Expected numStr= '%v'. Instead received numStr= '%v'", expected, s)
+		t.Errorf("Expected numStrDto= '%v'. Instead received numStrDto= '%v'", expected, s)
 	}
 
 }
@@ -2359,7 +2359,7 @@ func TestStrMathOp_RaiseToPower_06(t *testing.T) {
 
 	s := sMOp.IFinal.GetNumStr()
 	if expected != s {
-		t.Errorf("Expected numStr= '%v'. Instead received numStr= '%v'", expected, s)
+		t.Errorf("Expected numStrDto= '%v'. Instead received numStrDto= '%v'", expected, s)
 	}
 
 }
@@ -2380,7 +2380,7 @@ func TestStrMathOp_RaiseToPower_07(t *testing.T) {
 
 	s := sMOp.IFinal.GetNumStr()
 	if expected != s {
-		t.Errorf("Expected numStr= '%v'. Instead received numStr= '%v'", expected, s)
+		t.Errorf("Expected numStrDto= '%v'. Instead received numStrDto= '%v'", expected, s)
 	}
 
 }
@@ -2401,7 +2401,7 @@ func TestStrMathOp_RaiseToPower_08(t *testing.T) {
 
 	s := sMOp.IFinal.GetNumStr()
 	if expected != s {
-		t.Errorf("Expected numStr= '%v'. Instead received numStr= '%v'", expected, s)
+		t.Errorf("Expected numStrDto= '%v'. Instead received numStrDto= '%v'", expected, s)
 	}
 
 }
@@ -2422,7 +2422,7 @@ func TestStrMathOp_RaiseToPower_09(t *testing.T) {
 
 	s := sMOp.IFinal.GetNumStr()
 	if expected != s {
-		t.Errorf("Expected numStr= '%v'. Instead received numStr= '%v'", expected, s)
+		t.Errorf("Expected numStrDto= '%v'. Instead received numStrDto= '%v'", expected, s)
 	}
 
 }
@@ -2444,7 +2444,7 @@ func TestStrMathOp_RaiseToPower_10(t *testing.T) {
 
 	s := sMOp.IFinal.GetNumStr()
 	if expected != s {
-		t.Errorf("Expected numStr= '%v'. Instead received numStr= '%v'", expected, s)
+		t.Errorf("Expected numStrDto= '%v'. Instead received numStrDto= '%v'", expected, s)
 	}
 
 }

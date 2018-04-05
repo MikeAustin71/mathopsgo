@@ -1140,7 +1140,7 @@ func TestIntAry_SetWithNumStr_01(t *testing.T) {
 	//ia.SetIntAryLength()
 
 	if ia.GetNumStr() != nStr {
-		t.Errorf("Error: Expected numStr= '%v'. Instead received numStr= '%v'", nStr, ia.GetNumStr())
+		t.Errorf("Error: Expected numStrDto= '%v'. Instead received numStrDto= '%v'", nStr, ia.GetNumStr())
 	}
 
 	if ia.GetPrecision() != 3 {
@@ -1182,7 +1182,7 @@ func TestIntAry_SetWithNumStr_02(t *testing.T) {
 	ia.SetIntAryLength()
 
 	if ia.GetNumStr() != nStr {
-		t.Errorf("Error: Expected numStr= '%v'. Instead received numStr= '%v'", nStr, ia.GetNumStr())
+		t.Errorf("Error: Expected numStrDto= '%v'. Instead received numStrDto= '%v'", nStr, ia.GetNumStr())
 	}
 
 	if ia.GetPrecision() != ePrecision {
@@ -1225,7 +1225,7 @@ func TestIntAry_SetWithNumStr_03(t *testing.T) {
 	ia.SetIntAryLength()
 
 	if ia.GetNumStr() != nStr {
-		t.Errorf("Error: Expected numStr= '%v'. Instead received numStr= '%v'", nStr, ia.GetNumStr())
+		t.Errorf("Error: Expected numStrDto= '%v'. Instead received numStrDto= '%v'", nStr, ia.GetNumStr())
 	}
 
 	if ia.GetPrecision() != ePrecision {
@@ -1264,7 +1264,7 @@ func TestIntAry_SetPrecision_01(t *testing.T) {
 
 	s := ia.GetNumStr()
 	if expected != s {
-		t.Errorf("Error. Expected numStr= '%v'. Instead, got numStr='%v'\n", expected, s)
+		t.Errorf("Error. Expected numStrDto= '%v'. Instead, got numStrDto='%v'\n", expected, s)
 	}
 
 	if ia.GetPrecision() != precision {
@@ -1286,7 +1286,7 @@ func TestIntAry_SetPrecision_02(t *testing.T) {
 
 	s := ia.GetNumStr()
 	if expected != s {
-		t.Errorf("Error. Expected numStr= '%v'. Instead, got numStr='%v'\n", expected, s)
+		t.Errorf("Error. Expected numStrDto= '%v'. Instead, got numStrDto='%v'\n", expected, s)
 	}
 
 	if ia.GetPrecision() != precision {
@@ -1308,7 +1308,7 @@ func TestIntAry_SetPrecision_03(t *testing.T) {
 
 	s := ia.GetNumStr()
 	if expected != s {
-		t.Errorf("Error. Expected numStr= '%v'. Instead, got numStr='%v'\n", expected, s)
+		t.Errorf("Error. Expected numStrDto= '%v'. Instead, got numStrDto='%v'\n", expected, s)
 	}
 
 	if ia.GetPrecision() != precision {
@@ -1330,7 +1330,7 @@ func TestIntAry_SetPrecision_04(t *testing.T) {
 
 	s := ia.GetNumStr()
 	if expected != s {
-		t.Errorf("Error. Expected numStr= '%v'. Instead, got numStr='%v'\n", expected, s)
+		t.Errorf("Error. Expected numStrDto= '%v'. Instead, got numStrDto='%v'\n", expected, s)
 	}
 
 	if ia.GetPrecision() != precision {
@@ -1352,7 +1352,7 @@ func TestIntAry_SetPrecision_05(t *testing.T) {
 
 	s := ia.GetNumStr()
 	if expected != s {
-		t.Errorf("Error. Expected numStr= '%v'. Instead, got numStr='%v'\n", expected, s)
+		t.Errorf("Error. Expected numStrDto= '%v'. Instead, got numStrDto='%v'\n", expected, s)
 	}
 
 	if ia.GetPrecision() != precision {
@@ -1374,7 +1374,7 @@ func TestIntAry_SetPrecision_06(t *testing.T) {
 
 	s := ia.GetNumStr()
 	if expected != s {
-		t.Errorf("Error. Expected numStr= '%v'. Instead, got numStr='%v'\n", expected, s)
+		t.Errorf("Error. Expected numStrDto= '%v'. Instead, got numStrDto='%v'\n", expected, s)
 	}
 
 	if ia.GetPrecision() != precision {

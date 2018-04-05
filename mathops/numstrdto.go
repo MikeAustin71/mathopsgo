@@ -1520,7 +1520,7 @@ func (nDto *NumStrDto) GetSign() int {
 	return nDto.signVal
 }
 // GetSignedBigInt - returns the signed *big.Int representing
-// the NumStrDto.numStr. This method will fail if the NumStrDto
+// the NumStrDto.numStrDto. This method will fail if the NumStrDto
 // has not been properly initialized with a valid number string.
 func (nDto *NumStrDto) GetSignedBigInt() (*big.Int, error) {
 
@@ -1730,7 +1730,7 @@ func (nDto *NumStrDto) IsNumStrDtoValid(errName string) error {
 	}
 
 	if checkNumStrOut != nDto.numStr {
-		return fmt.Errorf("%v - nDto.numStr is incorrect!.", errName)
+		return fmt.Errorf("%v - nDto.numStrDto is incorrect!.", errName)
 	}
 
 	hasNonNumericChars := false
@@ -1968,8 +1968,8 @@ func (nDto NumStrDto) NewNumStr(numStr string) (NumStrDto, error) {
 
 	if err != nil {
 		return NumStrDto{},
-			fmt.Errorf(ePrefix + "Error returned by n.ParseNumStr(numStr). " +
-				"numStr='%v'  Error='%v'",
+			fmt.Errorf(ePrefix + "Error returned by n.ParseNumStr(numStrDto). " +
+				"numStrDto='%v'  Error='%v'",
 				numStr, err.Error())
 	}
 
@@ -2962,7 +2962,7 @@ func (nDto *NumStrDto) SetThisPrecision(
  if err != nil {
  	return fmt.Errorf(ePrefix +
  		"Error returned by nDto.SetPrecision(signedNumStr, precision, " +
- 		"roundResult). nDto.numStr='%v' precision='%v', roundResult='%v'",
+ 		"roundResult). nDto.numStrDto='%v' precision='%v', roundResult='%v'",
 		nDto.numStr, precision, roundResult)
  }
 

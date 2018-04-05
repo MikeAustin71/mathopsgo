@@ -23,7 +23,7 @@ func TestIntAry_SetSignificantDigitIdxs_01(t *testing.T) {
 	err := ia.SetIntAryWithNumStr(nStr)
 
 	if err != nil {
-		t.Errorf("Error returned from SetIntAryWithNumStr(nStr). numStr= %v ", eNumStr)
+		t.Errorf("Error returned from SetIntAryWithNumStr(nStr). numStrDto= %v ", eNumStr)
 	}
 
 	iaStats := ia.GetIntAryStats()
@@ -98,7 +98,7 @@ func TestIntAry_SetSignificantDigitIdxs_02(t *testing.T) {
 	err := ia.SetIntAryWithNumStr(nStr)
 
 	if err != nil {
-		t.Errorf("Error returned from SetIntAryWithNumStr(nStr). numStr= %v ", eNumStr)
+		t.Errorf("Error returned from SetIntAryWithNumStr(nStr). numStrDto= %v ", eNumStr)
 	}
 
 	iaStats := ia.GetIntAryStats()
@@ -173,7 +173,7 @@ func TestIntAry_SetSignificantDigitIdxs_03(t *testing.T) {
 	err := ia.SetIntAryWithNumStr(nStr)
 
 	if err != nil {
-		t.Errorf("Error returned from SetIntAryWithNumStr(nStr). numStr= %v ", eNumStr)
+		t.Errorf("Error returned from SetIntAryWithNumStr(nStr). numStrDto= %v ", eNumStr)
 	}
 
 	iaStats := ia.GetIntAryStats()
@@ -248,7 +248,7 @@ func TestIntAry_SetSignificantDigitIdxs_04(t *testing.T) {
 	err := ia.SetIntAryWithNumStr(nStr)
 
 	if err != nil {
-		t.Errorf("Error returned from SetIntAryWithNumStr(nStr). numStr= %v ", eNumStr)
+		t.Errorf("Error returned from SetIntAryWithNumStr(nStr). numStrDto= %v ", eNumStr)
 	}
 
 	iaStats := ia.GetIntAryStats()
@@ -323,7 +323,7 @@ func TestIntAry_SetSignificantDigitIdxs_05(t *testing.T) {
 	err := ia.SetIntAryWithNumStr(nStr)
 
 	if err != nil {
-		t.Errorf("Error returned from SetIntAryWithNumStr(nStr). numStr= %v ", eNumStr)
+		t.Errorf("Error returned from SetIntAryWithNumStr(nStr). numStrDto= %v ", eNumStr)
 	}
 
 	iaStats := ia.GetIntAryStats()
@@ -398,7 +398,7 @@ func TestIntAry_SetSignificantDigitIdxs_06(t *testing.T) {
 	err := ia.SetIntAryWithNumStr(nStr)
 
 	if err != nil {
-		t.Errorf("Error returned from SetIntAryWithNumStr(nStr). numStr= %v ", eNumStr)
+		t.Errorf("Error returned from SetIntAryWithNumStr(nStr). numStrDto= %v ", eNumStr)
 	}
 
 	iaStats := ia.GetIntAryStats()

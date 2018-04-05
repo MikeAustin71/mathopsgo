@@ -24,7 +24,7 @@ func TestIntAry_MultiplyByTenToPower_01(t *testing.T) {
 	ia.MultiplyByTenToPower(2)
 
 	if ia.GetNumStr() != eNumStr {
-		t.Errorf("Error: Expected numStr= '%v'. Instead received numStr= '%v'", eNumStr, ia.GetNumStr())
+		t.Errorf("Error: Expected numStrDto= '%v'. Instead received numStrDto= '%v'", eNumStr, ia.GetNumStr())
 	}
 
 	if ia.GetPrecision() != ePrecision {
@@ -70,7 +70,7 @@ func TestIntAry_MultiplyByTenToPower_02(t *testing.T) {
 	ia.MultiplyByTenToPower(power)
 
 	if ia.GetNumStr() != eNumStr {
-		t.Errorf("Error: Expected numStr= '%v'. Instead received numStr= '%v'", eNumStr, ia.GetNumStr())
+		t.Errorf("Error: Expected numStrDto= '%v'. Instead received numStrDto= '%v'", eNumStr, ia.GetNumStr())
 	}
 
 	if ia.GetPrecision() != ePrecision {
@@ -115,7 +115,7 @@ func TestIntAry_MultiplyByTenToPower_03(t *testing.T) {
 	ia.MultiplyByTenToPower(power)
 
 	if ia.GetNumStr() != eNumStr {
-		t.Errorf("Error: Expected numStr= '%v'. Instead received numStr= '%v'", eNumStr, ia.GetNumStr())
+		t.Errorf("Error: Expected numStrDto= '%v'. Instead received numStrDto= '%v'", eNumStr, ia.GetNumStr())
 	}
 
 	if ia.GetPrecision() != ePrecision {
@@ -161,7 +161,7 @@ func TestIntAry_MultiplyByTenToPower_04(t *testing.T) {
 	ia.MultiplyByTenToPower(power)
 
 	if ia.GetNumStr() != eNumStr {
-		t.Errorf("Error: Expected numStr= '%v'. Instead received numStr= '%v'", eNumStr, ia.GetNumStr())
+		t.Errorf("Error: Expected numStrDto= '%v'. Instead received numStrDto= '%v'", eNumStr, ia.GetNumStr())
 	}
 
 	if ia.GetPrecision() != ePrecision {
@@ -206,7 +206,7 @@ func TestIntAry_MultiplyByTenToPower_05(t *testing.T) {
 	ia.MultiplyByTenToPower(power)
 
 	if ia.GetNumStr() != eNumStr {
-		t.Errorf("Error: Expected numStr= '%v'. Instead received numStr= '%v'", eNumStr, ia.GetNumStr())
+		t.Errorf("Error: Expected numStrDto= '%v'. Instead received numStrDto= '%v'", eNumStr, ia.GetNumStr())
 	}
 
 	if ia.GetPrecision() != ePrecision {
@@ -251,7 +251,7 @@ func TestIntAry_MultiplyByTenToPower_06(t *testing.T) {
 	ia.MultiplyByTenToPower(power)
 
 	if ia.GetNumStr() != eNumStr {
-		t.Errorf("Error: Expected numStr= '%v'. Instead received numStr= '%v'", eNumStr, ia.GetNumStr())
+		t.Errorf("Error: Expected numStrDto= '%v'. Instead received numStrDto= '%v'", eNumStr, ia.GetNumStr())
 	}
 
 	if ia.GetPrecision() != ePrecision {

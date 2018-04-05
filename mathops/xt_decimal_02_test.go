@@ -155,7 +155,7 @@ func TestDecimal_NewNumStrPrecision_02(t *testing.T) {
 	d1, err := Decimal{}.NewNumStrPrecision(numStr, precision, false)
 
 	if err != nil {
-		t.Errorf("Error Returned from Decimal.NewNumStrPrecision(numStr, precision, false). inStr= '%v' precision= '%v' Error= %v", numStr, precision, err)
+		t.Errorf("Error Returned from Decimal.NewNumStrPrecision(numStrDto, precision, false). inStr= '%v' precision= '%v' Error= %v", numStr, precision, err)
 	}
 
 	if expected != d1.GetNumStr() {
@@ -173,7 +173,7 @@ func TestDecimal_NewNumStrPrecision_03(t *testing.T) {
 	d1, err := Decimal{}.NewNumStrPrecision(numStr, precision, false)
 
 	if err != nil {
-		t.Errorf("Error Returned from Decimal.NewNumStrPrecision(numStr, precision, false). inStr= '%v' precision= '%v' Error= %v", numStr, precision, err)
+		t.Errorf("Error Returned from Decimal.NewNumStrPrecision(numStrDto, precision, false). inStr= '%v' precision= '%v' Error= %v", numStr, precision, err)
 	}
 
 	if expected != d1.GetNumStr() {

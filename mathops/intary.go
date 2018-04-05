@@ -2375,7 +2375,7 @@ func (ia *IntAry) GetNumStr() string {
 
 	return buffer.String()
 	// ia.ConvertIntAryToNumStr()
-	// return ia.numStr
+	// return ia.numStrDto
 }
 
 // GetNumStrDto - Converts the current IntAry to a NumStrDto
@@ -4139,7 +4139,7 @@ func (ia *IntAry) SetIntAryWithFloat32(floatNum float32, precision int) error {
 	err := ia.SetIntAryWithNumStr(numStr)
 
 	if err != nil {
-		return fmt.Errorf("SetIntAryWithFloat32() - Error returned from ia.SetIntAryWithNumStr(numStr). numStr= '%v'  Error= '%v'", numStr, err)
+		return fmt.Errorf("SetIntAryWithFloat32() - Error returned from ia.SetIntAryWithNumStr(numStrDto). numStrDto= '%v'  Error= '%v'", numStr, err)
 	}
 
 	if precision > -1 {
@@ -4177,7 +4177,7 @@ func (ia *IntAry) SetIntAryWithFloat64(floatNum float64, precision int) error {
 	err := ia.SetIntAryWithNumStr(numStr)
 
 	if err != nil {
-		return fmt.Errorf("SetIntAryWithFloat64() - ia.SetIntAryWithNumStr(numStr) returned error. numStr='%v' Error='%v'",numStr, err)
+		return fmt.Errorf("SetIntAryWithFloat64() - ia.SetIntAryWithNumStr(numStrDto) returned error. numStrDto='%v' Error='%v'",numStr, err)
 	}
 
 	if precision > -1 {
@@ -4230,7 +4230,7 @@ func (ia *IntAry) SetIntAryWithFloatBig(floatNum *big.Float, precision int) erro
 	err := ia.SetIntAryWithNumStr(numStr)
 
 	if err != nil {
-		return fmt.Errorf("SetIntAryWithFloatBig() - Error returned from ia.SetIntAryWithNumStr(numStr). numStr='%v'  Error= '%v'", numStr, err)
+		return fmt.Errorf("SetIntAryWithFloatBig() - Error returned from ia.SetIntAryWithNumStr(numStrDto). numStrDto='%v'  Error= '%v'", numStr, err)
 	}
 
 	if precision > -1 {

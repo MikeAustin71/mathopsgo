@@ -8,11 +8,33 @@ import (
 
 func main() {
 
-	ExampleDecimalSetPrecsionRound_01()
+	ExampleDecimalRelevantPrecision_01()
 
 }
 
-func ExampleDecimalSetPrecsionRound_01() {
+func ExampleDecimalRelevantPrecision_01() {
+	str1 := "-2.0105000"
+	expected := uint(4)
+	d1, err := mathops.Decimal{}.NewNumStr(str1)
+
+	if err != nil {
+		fmt.Printf("Error returned by Decimal{}.NewNumStr(str1) " +
+			"str1='%v' Error = '%v' \n",str1, err.Error())
+		return
+	}
+
+	rP := d1.GetRelevantPrecision()
+
+	if rP != expected {
+		fmt.Printf("Expected Relevant Precision = %v. Instead, got %v\n",
+				expected, rP)
+		return
+	}
+
+	fmt.Println("Successful Completion")
+}
+
+func ExampleDecimalSetPrecisionRound_01() {
 
 	str1 := "2.0105500"
 	precision := uint(4)

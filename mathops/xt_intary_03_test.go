@@ -611,7 +611,7 @@ func TestIntAry_DecrementIntegerOne_01(t *testing.T) {
 	}
 
 	if expected != ia.GetNumStr() {
-		t.Errorf("Error - Expected numStr= '%v'. Instead, numStr= '%v'", expected, ia.GetNumStr())
+		t.Errorf("Error - Expected numStrDto= '%v'. Instead, numStrDto= '%v'", expected, ia.GetNumStr())
 	}
 }
 
@@ -627,7 +627,7 @@ func TestIntAry_DecrementIntegerOne_02(t *testing.T) {
 	}
 
 	if expected != ia.GetNumStr() {
-		t.Errorf("Error - Expected numStr= '%v'. Instead, numStr= '%v'", expected, ia.GetNumStr())
+		t.Errorf("Error - Expected numStrDto= '%v'. Instead, numStrDto= '%v'", expected, ia.GetNumStr())
 	}
 
 }
@@ -644,7 +644,7 @@ func TestIntAry_DecrementIntegerOne_03(t *testing.T) {
 	}
 
 	if expected != ia.GetNumStr() {
-		t.Errorf("Error - Expected numStr= '%v'. Instead, numStr= '%v'", expected, ia.GetNumStr())
+		t.Errorf("Error - Expected numStrDto= '%v'. Instead, numStrDto= '%v'", expected, ia.GetNumStr())
 	}
 
 }
@@ -813,7 +813,7 @@ func TestIntAry_DivideByTwo_01(t *testing.T) {
 	ia.DivideByTwo()
 
 	if expected != ia.GetNumStr() {
-		t.Errorf("Error: Expected numStr= '%v'. Instead received numStr= '%v'", expected, ia.GetNumStr())
+		t.Errorf("Error: Expected numStrDto= '%v'. Instead received numStrDto= '%v'", expected, ia.GetNumStr())
 	}
 
 	if precision != ia.GetPrecision() {
@@ -833,7 +833,7 @@ func TestIntAry_DivideByTwo_02(t *testing.T) {
 	ia.DivideByTwo()
 
 	if expected != ia.GetNumStr() {
-		t.Errorf("Error: Expected numStr= '%v'. Instead received numStr= '%v'", expected, ia.GetNumStr())
+		t.Errorf("Error: Expected numStrDto= '%v'. Instead received numStrDto= '%v'", expected, ia.GetNumStr())
 	}
 
 	if precision != ia.GetPrecision() {
@@ -853,7 +853,7 @@ func TestIntAry_DivideByTwo_03(t *testing.T) {
 	ia.DivideByTwo()
 
 	if expected != ia.GetNumStr() {
-		t.Errorf("Error: Expected numStr= '%v'. Instead received numStr= '%v'", expected, ia.GetNumStr())
+		t.Errorf("Error: Expected numStrDto= '%v'. Instead received numStrDto= '%v'", expected, ia.GetNumStr())
 	}
 
 	if precision != ia.GetPrecision() {
@@ -874,7 +874,7 @@ func TestIntAry_DivideByTwo_04(t *testing.T) {
 	ia.DivideByTwo()
 
 	if expected != ia.GetNumStr() {
-		t.Errorf("Error: Expected numStr= '%v'. Instead received numStr= '%v'", expected, ia.GetNumStr())
+		t.Errorf("Error: Expected numStrDto= '%v'. Instead received numStrDto= '%v'", expected, ia.GetNumStr())
 	}
 
 	if precision != ia.GetPrecision() {
@@ -907,7 +907,7 @@ func TestIntAry_DivideByTenToPower_01(t *testing.T) {
 	ia.DivideByTenToPower(power)
 
 	if ia.GetNumStr() != eNumStr {
-		t.Errorf("Error: Expected numStr= '%v'. Instead received numStr= '%v'", eNumStr, ia.GetNumStr())
+		t.Errorf("Error: Expected numStrDto= '%v'. Instead received numStrDto= '%v'", eNumStr, ia.GetNumStr())
 	}
 
 	if ia.GetPrecision() != ePrecision {
@@ -953,7 +953,7 @@ func TestIntAry_DivideByTenToPower_02(t *testing.T) {
 	ia.DivideByTenToPower(power)
 
 	if ia.GetNumStr() != eNumStr {
-		t.Errorf("Error: Expected numStr= '%v'. Instead received numStr= '%v'", eNumStr, ia.GetNumStr())
+		t.Errorf("Error: Expected numStrDto= '%v'. Instead received numStrDto= '%v'", eNumStr, ia.GetNumStr())
 	}
 
 	if ia.GetPrecision() != ePrecision {
@@ -998,7 +998,7 @@ func TestIntAry_DivideByTenToPower_03(t *testing.T) {
 	ia.DivideByTenToPower(power)
 
 	if ia.GetNumStr() != eNumStr {
-		t.Errorf("Error: Expected numStr= '%v'. Instead received numStr= '%v'", eNumStr, ia.GetNumStr())
+		t.Errorf("Error: Expected numStrDto= '%v'. Instead received numStrDto= '%v'", eNumStr, ia.GetNumStr())
 	}
 
 	if ia.GetPrecision() != ePrecision {
@@ -1043,7 +1043,7 @@ func TestIntAry_DivideByTenToPower_04(t *testing.T) {
 	ia.DivideByTenToPower(power)
 
 	if ia.GetNumStr() != eNumStr {
-		t.Errorf("Error: Expected numStr= '%v'. Instead received numStr= '%v'", eNumStr, ia.GetNumStr())
+		t.Errorf("Error: Expected numStrDto= '%v'. Instead received numStrDto= '%v'", eNumStr, ia.GetNumStr())
 	}
 
 	if ia.GetPrecision() != ePrecision {
@@ -1088,7 +1088,7 @@ func TestIntAry_DivideByTenToPower_05(t *testing.T) {
 	ia.DivideByTenToPower(power)
 
 	if ia.GetNumStr() != eNumStr {
-		t.Errorf("Error: Expected numStr= '%v'. Instead received numStr= '%v'", eNumStr, ia.GetNumStr())
+		t.Errorf("Error: Expected numStrDto= '%v'. Instead received numStrDto= '%v'", eNumStr, ia.GetNumStr())
 	}
 
 	if ia.GetPrecision() != ePrecision {
@@ -1133,7 +1133,7 @@ func TestIntAry_DivideByTenToPower_06(t *testing.T) {
 	ia.DivideByTenToPower(power)
 
 	if ia.GetNumStr() != eNumStr {
-		t.Errorf("Error: Expected numStr= '%v'. Instead received numStr= '%v'", eNumStr, ia.GetNumStr())
+		t.Errorf("Error: Expected numStrDto= '%v'. Instead received numStrDto= '%v'", eNumStr, ia.GetNumStr())
 	}
 
 	if ia.GetPrecision() != ePrecision {
