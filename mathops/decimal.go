@@ -801,6 +801,13 @@ func (dec *Decimal) MakeDecimalBigIntPrecision(iBig *big.Int, precision uint) (D
 			"Error='%v'", err.Error())
 	}
 
+	if d2.numStrDto.GetPrecision() != d2.precision {
+		return Decimal{},
+			fmt.Errorf(ePrefix + "Error: d2.numStrDto precision='%v. d2.precision='%v' " +
+				"Error='%v'", d2.numStrDto.GetPrecision(), d2.precision, err.Error())
+
+	}
+
 	d2.thousandsSeparator = dec.thousandsSeparator
 	d2.decimalSeparator = dec.decimalSeparator
 	d2.currencySymbol = dec.currencySymbol
