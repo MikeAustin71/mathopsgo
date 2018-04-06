@@ -8,7 +8,151 @@ import (
 
 func main() {
 
-	ExampleDecimalRelevantPrecision_01()
+	ExampleDecimalConvertToNumStr_03()
+
+}
+
+func ExampleDecimalConvertToNumStr_03() {
+
+	str := "123456.654321"
+
+	nDto, err := mathops.NumStrDto{}.NewNumStr(str)
+
+	if err != nil {
+		fmt.Printf("Error from NumStrDto{}.NewNumStr(str). " +
+			"str='%v' Error='%v' \n",
+				str, err.Error())
+		return
+	}
+
+	err = nDto.IsNumStrDtoValid("")
+
+	if err != nil {
+		fmt.Printf("nDto NumStrDto is INVALID! " +
+			"Error='%v' ", err.Error())
+		return
+	}
+
+
+	nDtoScaleFactor, err := nDto.GetScaleFactor()
+
+	if err != nil {
+		fmt.Printf("Error from nDto.GetScaleFactor(). " +
+			"Error='%v' ", err.Error())
+		return
+	}
+
+	fmt.Println("nDto Scale Factor: ", nDtoScaleFactor.Text(10))
+
+
+	dec := mathops.Decimal{}.New()
+
+	if err != nil {
+		fmt.Printf("Error returned by dec.SetNumStr(str). Error='%v\n", err.Error())
+		return
+	}
+
+	d2, err := dec.MakeDecimalFromNumStrDto(nDto)
+
+	if err != nil {
+		fmt.Printf("Error returned by dec.MakeDecimalFromNumStrDto(nDto). Error='%v\n", err.Error())
+		return
+	}
+
+	scaleVal, err := d2.GetScaleVal()
+
+	if err != nil {
+		fmt.Printf("Error returned by d2.GetScaleVal(). Error='%v\n", err.Error())
+		return
+	}
+
+	fmt.Println("d2.GetScaleFactor() ", scaleVal.Text(10) )
+	fmt.Println("d2.GetNumStr() ", d2.GetNumStr())
+
+	dec.CopyIn(d2)
+	fmt.Println("dec.GetNumStr() ", dec.GetNumStr())
+	decScaleVal, err := dec.GetScaleVal()
+
+	if err != nil {
+		fmt.Printf("Error returned by dec.GetScaleVal(). Error='%v\n", err.Error())
+		return
+	}
+
+	fmt.Println("dec.GetScaleFactor() ", decScaleVal.Text(10))
+
+
+}
+
+func ExampleDecimalConvertToNumStr_02() {
+
+	str := "123456.654321"
+
+	dec := mathops.Decimal{}.New()
+
+	err := dec.SetNumStr(str)
+
+	if err != nil {
+		fmt.Printf("Error returned by dec.SetNumStr(str). Error='%v\n", err.Error())
+		return
+	}
+
+	scaleVal, err := dec.GetScaleVal()
+
+	fmt.Println("dec.GetScaleFactor() ", scaleVal.Text(10) )
+	fmt.Println("dec.GetNumStr() ", dec.GetNumStr())
+
+
+}
+
+func ExampleDecimalConvertToNumStr_01() {
+
+	str := "123456.654321"
+	sint := "123456654321"
+	nsu := mathops.NumStrUtility{}
+	dec, err := nsu.ConvertNumStrToDecimal(str)
+
+	if err != nil {
+		fmt.Printf("Error from nsu.ConvertNumStrToDecimal(str). str= '%v'. Error= %v", str, err.Error())
+		return
+	}
+
+	if dec.GetNumStr() != str {
+		fmt.Printf("Expected NumStrOut= '%v'. Instead, got %v", str, dec.GetNumStr())
+		return
+	}
+
+	if dec.GetPrecision() != 6 {
+		fmt.Printf("Expected precision = '6'. Instead, got %v", dec.GetPrecision())
+		return
+	}
+
+	allDigits, _ := dec.GetSignedAllDigitsStr()
+
+	if allDigits != sint {
+		fmt.Printf("Expected nDto.SignedAllDigitsBigInt='%v'. Instead, got %v. ", sint, allDigits)
+		return
+	}
+
+	_, accuracy, err := dec.GetFloat64()
+
+	if accuracy.String() != "Exact" {
+		fmt.Printf("Expected nDto.SignedFloat64Accuracy == 'Exact'. Instead, got %v.", accuracy.String())
+		return
+	}
+
+	bf, _ := dec.GetBigFloat()
+	s := fmt.Sprintf("%s", bf.Text('f', dec.GetPrecision()))
+
+	if s != str {
+		fmt.Printf("Expected nDto.SignedBigFloat='%v'. Instead, got %v. ", str, s)
+		return
+
+	}
+
+	if !dec.GetIsValid() {
+		fmt.Printf("Expected nDto.isValid == 'true'. Instead, got %v", dec.GetIsValid())
+		return
+	}
 
 }
 
