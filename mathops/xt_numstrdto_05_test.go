@@ -2,6 +2,33 @@ package mathops
 
 import "testing"
 
+func TestNumStrDto_IsNumStrDtoValid_01(t *testing.T) {
+
+	nDto := NumStrDto{}
+
+	absAllNumRunes := nDto.GetAbsAllNumRunes()
+
+	lenAbsAllNumRunes := len(absAllNumRunes)
+
+	if lenAbsAllNumRunes != 0 {
+		t.Errorf("Expected Zero Length absAllNumRunes array. Array length was '%v'",
+			lenAbsAllNumRunes)
+	}
+
+	nDto.IsNumStrDtoValid("")
+
+	absAllNumRunes = nDto.GetAbsAllNumRunes()
+
+	lenAbsAllNumRunes = len(absAllNumRunes)
+
+	if lenAbsAllNumRunes != 0 {
+		t.Errorf("Expected after validation absAllNumRunes length='0'. Instead, length='%v'",
+			lenAbsAllNumRunes)
+	}
+
+
+}
+
 func TestNumStrDto_Multiply_01(t *testing.T) {
 
 	nStr1 := "35.123456"

@@ -1154,7 +1154,20 @@ func (nDto *NumStrDto) GetAbsoluteBigInt() (*big.Int, error) {
 // fractional digits combined in one rune array (there is no
 // decimal point).
 func (nDto *NumStrDto) GetAbsAllNumRunes() []rune {
-	return nDto.absAllNumRunes
+
+	lenAbsAllNumRunes := len(nDto.absAllNumRunes)
+
+	if lenAbsAllNumRunes == 0 {
+		return []rune{}
+	}
+
+	outRunes := make([]rune, lenAbsAllNumRunes, lenAbsAllNumRunes + 50 )
+
+	for i:= 0; i < lenAbsAllNumRunes; i++ {
+		outRunes[i] = nDto.absAllNumRunes[i]
+	}
+
+	return outRunes
 }
 
 // GetAbsFracRunes - Returns all of the fractional digits
@@ -1716,6 +1729,10 @@ func (nDto *NumStrDto) IsNumStrDtoValid(errName string) error {
 
 	if errName == "" {
 		errName = "NumStrDto.IsNumStrDtoValid() "
+	}
+
+	if len(nDto.absAllNumRunes) == 0 {
+		nDto.Empty()
 	}
 
 	// Set defaults for thousands separators,
