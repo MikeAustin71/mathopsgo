@@ -26,7 +26,7 @@ import (
 
 type Decimal struct {
 	isValid               bool
-	//signVal               int
+	signVal               int
 	scaleFactor           *big.Int
 	numStrDto             NumStrDto
 	signedAllDigitsBigInt *big.Int
@@ -212,6 +212,8 @@ func (dec *Decimal) CopyIn(d2 Decimal) {
 	dec.Empty()
 
 	dec.isValid = d2.isValid
+	dec.signVal = d2.signVal
+
 	dec.scaleFactor = big.NewInt(0).Set(d2.scaleFactor)
 	dec.numStrDto = d2.numStrDto.CopyOut()
 	dec.signedAllDigitsBigInt = big.NewInt(0).Set(d2.signedAllDigitsBigInt)
@@ -222,6 +224,8 @@ func (dec *Decimal) CopyIn(d2 Decimal) {
 func (dec *Decimal) CopyOut() Decimal {
 	d2 := Decimal{}.New()
 	d2.isValid = dec.isValid
+	d2.signVal = dec.signVal
+
 	d2.scaleFactor = big.NewInt(0).Set(dec.scaleFactor)
 	d2.numStrDto = dec.numStrDto.CopyOut()
 	d2.signedAllDigitsBigInt = big.NewInt(0).Set(dec.signedAllDigitsBigInt)
@@ -269,9 +273,9 @@ func (dec *Decimal) Divide(divisor Decimal, precision int) (Decimal, error) {
 // fields to their 'zero' values.
 func (dec *Decimal) Empty() {
 	dec.isValid = true
+	dec.signVal = 1
 	dec.scaleFactor = big.NewInt(int64(1))
 	dec.numStrDto =  NumStrDto{}.NewPtr().GetZeroNumStr(0)
-	dec.numStrDto.SetSignValue(1)
 	dec.signedAllDigitsBigInt = big.NewInt(0)
 		dec.SetEmptySeparatorsToDefault()
 }
@@ -287,12 +291,11 @@ func (dec *Decimal) GetAbsoluteValue() (Decimal, error) {
 
 	d2 := dec.CopyOut()
 
-	if d2.GetSign() == 1 {
+	if d2.signVal == 1 {
 		return d2, nil
 	}
 
-	d2.SetSign(1)
-
+	d2.signVal = 1
 	d2.signedAllDigitsBigInt = big.NewInt(0).Abs(dec.signedAllDigitsBigInt)
 
 	rDividend := big.NewRat(1, 1).SetInt(d2.signedAllDigitsBigInt)
@@ -542,7 +545,7 @@ func (dec *Decimal) GetRational() (*big.Rat, error) {
 // integers: +1 or -1.
 func (dec *Decimal) GetSign() int {
 
-	return dec.numStrDto.GetSign()
+	return dec.signVal
 }
 
 // GetRelevantPrecision - Returns an unsigned integer representing
@@ -748,7 +751,7 @@ func (dec *Decimal) MakeDecimalBigIntPrecision(iBig *big.Int, precision uint) (D
 	d2.signedAllDigitsBigInt = big.NewInt(0).Set(iBig)
 
 	if d2.signedAllDigitsBigInt.Cmp(baseZero) < 0 {
-		d2.SetSign(-1)
+		d2.signVal = -1
 	}
 
 	rDividend := big.NewRat(1, 1).SetInt(d2.signedAllDigitsBigInt)
@@ -799,6 +802,7 @@ func (dec *Decimal) MakeDecimalFromNumStrDto(nDto NumStrDto) (Decimal, error) {
 	}
 
 	d2 := Decimal{}.New()
+	d2.signVal = nDto.GetSign()
 	d2.numStrDto = nDto.CopyOut()
 	d2.SetCurrencySymbol(nDto.GetCurrencySymbol())
 	d2.SetDecimalSeparator(nDto.GetDecimalSeparator())
@@ -859,6 +863,7 @@ func (dec *Decimal) MakeDecimalFromIntAry(ia *IntAry) (Decimal, error) {
 	}
 
 	d2 := Decimal{}.New()
+	d2.signVal = ia.GetSign()
 	d2.numStrDto, err = ia.GetNumStrDto()
 
 	if err != nil {
@@ -1561,78 +1566,6 @@ func (dec *Decimal) SetEmptySeparatorsToDefault() {
 
 }
 
-// SetFloat - Sets the value of the current decimal to
-// that of the passed-in float32 parameter.
-//
-// Example usage:
-// d:= Decimal{}.New()
-// f32:= float32(123.456)
-// d.SetFloat(f32)
-func (dec *Decimal) SetFloat(f32 float32) error {
-
-	dec.SetEmptySeparatorsToDefault()
-
-	str := strconv.FormatFloat(float64(f32), 'f', -1, 32)
-
-	d2, err := dec.NumStrToDecimal(str)
-
-	if err != nil {
-		return fmt.Errorf("SetFloat() Error from nDto.NumStrToDecimal(str). str= '%v'. Error= %v", str, err)
-	}
-
-	dec.CopyIn(d2)
-
-	return nil
-}
-
-// SetFloat64 - Sets the value of the current decimal to
-// that of the passed-in float64 parameter.
-//
-// Example usage:
-// d:= Decimal{}.New()
-// f64:= float64(123.456)
-// d.SetFloat(f64)
-func (dec *Decimal) SetFloat64(f64 float64) error {
-
-	dec.SetEmptySeparatorsToDefault()
-
-	str := strconv.FormatFloat(f64, 'f', -1, 64)
-
-	d2, err := dec.NumStrToDecimal(str)
-
-	if err != nil {
-		return fmt.Errorf("SetFloat64() Error from nDto.NumStrToDecimal(str). str= '%v'. Error= %v", str, err)
-	}
-
-	dec.CopyIn(d2)
-
-	return nil
-}
-
-// SetFloatBig - Sets the value of the current Decimal to the
-// passed-in *big.Float parameter.
-//
-// Example usage:
-// d:= Decimal{}.New()
-// bigFloat:= big.NewFloat(float64(123.456))
-// d.SetBigFloat(bigFloat)
-func (dec *Decimal) SetFloatBig(bigFloat *big.Float) error {
-
-	dec.SetEmptySeparatorsToDefault()
-
-	str := bigFloat.Text('f', -1)
-
-	d2, err := dec.NumStrToDecimal(str)
-
-	if err != nil {
-		return fmt.Errorf("SetFloatBig() Error from nDto.NumStrToDecimal(str). str= '%v'. Error= %v", str, err)
-	}
-
-	dec.CopyIn(d2)
-
-	return nil
-}
-
 // Sets the value of the current Decimal to the input parameter 'iNum'
 // scaled to the value of precision. In other words, if 'iNum' is set
 // to a value of '123456' and precision is set to '3', the current
@@ -1823,6 +1756,78 @@ func (dec *Decimal) SetThousandsSeparator(thousandsSeparator rune) error {
 	return nil
 }
 
+// SetFloat - Sets the value of the current decimal to
+// that of the passed-in float32 parameter.
+//
+// Example usage:
+// d:= Decimal{}.New()
+// f32:= float32(123.456)
+// d.SetFloat(f32)
+func (dec *Decimal) SetFloat(f32 float32) error {
+
+	dec.SetEmptySeparatorsToDefault()
+
+	str := strconv.FormatFloat(float64(f32), 'f', -1, 32)
+
+	d2, err := dec.NumStrToDecimal(str)
+
+	if err != nil {
+		return fmt.Errorf("SetFloat() Error from nDto.NumStrToDecimal(str). str= '%v'. Error= %v", str, err)
+	}
+
+	dec.CopyIn(d2)
+
+	return nil
+}
+
+// SetFloat64 - Sets the value of the current decimal to
+// that of the passed-in float64 parameter.
+//
+// Example usage:
+// d:= Decimal{}.New()
+// f64:= float64(123.456)
+// d.SetFloat(f64)
+func (dec *Decimal) SetFloat64(f64 float64) error {
+
+	dec.SetEmptySeparatorsToDefault()
+
+	str := strconv.FormatFloat(f64, 'f', -1, 64)
+
+	d2, err := dec.NumStrToDecimal(str)
+
+	if err != nil {
+		return fmt.Errorf("SetFloat64() Error from nDto.NumStrToDecimal(str). str= '%v'. Error= %v", str, err)
+	}
+
+	dec.CopyIn(d2)
+
+	return nil
+}
+
+// SetFloatBig - Sets the value of the current Decimal to the
+// passed-in *big.Float parameter.
+//
+// Example usage:
+// d:= Decimal{}.New()
+// bigFloat:= big.NewFloat(float64(123.456))
+// d.SetBigFloat(bigFloat)
+func (dec *Decimal) SetFloatBig(bigFloat *big.Float) error {
+
+	dec.SetEmptySeparatorsToDefault()
+
+	str := bigFloat.Text('f', -1)
+
+	d2, err := dec.NumStrToDecimal(str)
+
+	if err != nil {
+		return fmt.Errorf("SetFloatBig() Error from nDto.NumStrToDecimal(str). str= '%v'. Error= %v", str, err)
+	}
+
+	dec.CopyIn(d2)
+
+	return nil
+}
+
 // SetNumStrPrecision - Sets the Decimal's value to a number string and
 // applies the appropriate 'precision' in order to determine placement
 // of the decimal point. For example, if the number string ('str') is passed
@@ -1906,23 +1911,6 @@ func (dec *Decimal) SetSeparators(decimalSeparator, thousandsSeparator, currency
 
 	dec.numStrDto.SetSeparators(decimalSeparator, thousandsSeparator, currencySymbol)
 
-}
-
-// SetSignValue - Sets the sign of the numeric value
-// for the current Decimal instance. Only two values
-// are allowed: +1 and -1.
-//
-// If any other value is passed an error is thrown.
-//
-func (dec *Decimal) SetSign(newSignVal int) error {
-
-	err := dec.numStrDto.SetSignValue(newSignVal)
-
-	if err != nil {
-		return fmt.Errorf("Decimal.SetSign() Error - %v", err.Error())
-	}
-
-	return nil
 }
 
 // ShiftPrecisionLeft - shifts precision of the current Decimal instance
