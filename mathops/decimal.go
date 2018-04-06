@@ -220,11 +220,14 @@ func (dec *Decimal) CopyIn(d2 Decimal) {
 	var err error
 	dec.Empty()
 	dec.numStrDto = d2.numStrDto.CopyOut()
-	dec.scaleFactor, err = d2.numStrDto.GetScaleFactor()
+
+	scaleVal, err := d2.numStrDto.GetScaleFactor()
 
 	if err != nil {
 		panic(err)
 	}
+
+	dec.scaleFactor = big.NewInt(0).Set(scaleVal)
 
 	dec.signedAllDigitsBigInt = big.NewInt(0).Set(d2.signedAllDigitsBigInt)
 	dec.SetThousandsSeparator(d2.GetThousandsSeparator())
@@ -873,14 +876,13 @@ func (dec *Decimal) IsDecimalValid() error {
 			"Error='%v' ", err.Error())
 	}
 
-	signedBigIntText := signedBigInt.Text(10)
-	decSignedAllDigitsBigIntText := dec.signedAllDigitsBigInt.Text(10)
+	result := signedBigInt.Cmp(dec.signedAllDigitsBigInt)
 
-	if decSignedAllDigitsBigIntText != signedBigIntText {
+	if result != 0 {
 		return fmt.Errorf(ePrefix +
 			"Error - NumStrDto Signed Big Int NOT Equal To Decimal Big Int! " +
 			"dec.signedAllDigitsBigInt= '%v'  NumStrDto.signedBigInt= '%v' ",
-			decSignedAllDigitsBigIntText, signedBigIntText)
+			dec.signedAllDigitsBigInt.Text(10), signedBigInt.Text(10))
 	}
 
 	scaleFactor, err := dec.numStrDto.GetScaleFactor()
@@ -890,14 +892,13 @@ func (dec *Decimal) IsDecimalValid() error {
 			"Error='%v' ", err.Error())
 	}
 
-	scaleFactorText := scaleFactor.Text(10)
-	decScaleFactorText := dec.scaleFactor.Text(10)
+	result = scaleFactor.Cmp(dec.scaleFactor)
 
-	if decScaleFactorText != scaleFactorText {
+	if  result != 0 {
 		return fmt.Errorf(ePrefix +
 			"Error - NumStrDto Scale Factor NOT Equal To Decimal Scale Factor! " +
 			"dec.scaleFactor= '%v'  NumStrDto.scaleFactor= '%v' ",
-			decScaleFactorText, scaleFactorText)
+			dec.scaleFactor.Text(10), scaleFactor.Text(10))
 	}
 
 	return nil
@@ -974,6 +975,25 @@ func (dec *Decimal) MakeDecimalBigIntPrecision(iBig *big.Int, precision uint) (D
 				"Error='%v'", err.Error())
 	}
 
+	signedAllDigitsBigIint, err := d2.numStrDto.GetSignedBigInt()
+
+	if err != nil {
+		return Decimal{}.New(),
+			fmt.Errorf(ePrefix + "- Error from nDto.GetSignedBigInt(). Error= %v", err)
+	}
+
+	d2.signedAllDigitsBigInt = big.NewInt(0).Set(signedAllDigitsBigIint)
+
+	scaleFactor, err := d2.numStrDto.GetScaleFactor()
+
+	if err != nil {
+		return Decimal{}.New(),
+			fmt.Errorf(ePrefix + "- Error from nDto.GetScaleFactor(). Error= %v", err)
+	}
+
+	d2.scaleFactor  = big.NewInt(0).Set(scaleFactor)
+
+
 	err = d2.IsDecimalValid()
 
 	if err != nil {
@@ -1000,31 +1020,36 @@ func (dec *Decimal) MakeDecimalFromNumStrDto(nDto NumStrDto) (Decimal, error) {
 
 	d2 := Decimal{}.New()
 	d2.numStrDto = nDto.CopyOut()
+
 	d2.SetCurrencySymbol(nDto.GetCurrencySymbol())
 	d2.SetDecimalSeparator(nDto.GetDecimalSeparator())
 	d2.SetThousandsSeparator(nDto.GetThousandsSeparator())
 
 	var err error
 
-	d2.signedAllDigitsBigInt, err = nDto.GetSignedBigInt()
+	signedAllDigitsBigInt, err := nDto.GetSignedBigInt()
 
 	if err != nil {
 		return Decimal{}.New(),
 			fmt.Errorf(ePrefix + "- Error from nDto.GetSignedBigInt(). Error= %v", err)
 	}
 
-	d2.scaleFactor, err = nDto.GetScaleFactor()
+	d2.signedAllDigitsBigInt = big.NewInt(0).Set(signedAllDigitsBigInt)
+
+	scaleFactor, err := nDto.GetScaleFactor()
 
 	if err != nil {
 		return Decimal{}.New(),
 			fmt.Errorf(ePrefix + "- Error from nDto.GetScaleFactor(). Error= %v", err)
 	}
 
-	err = nDto.IsNumStrDtoValid(ePrefix + "- ")
+	d2.scaleFactor = big.NewInt(0).Set(scaleFactor)
+
+	err = d2.numStrDto.IsNumStrDtoValid(ePrefix + "- ")
 
 	if err != nil {
 		return Decimal{}.New(),
-			fmt.Errorf(ePrefix + "- Error from nDto.IsNumStrDtoValid(). Error= %v", err.Error())
+			fmt.Errorf(ePrefix + "- Error from d2.numStrDto.IsNumStrDtoValid(). Error= %v", err.Error())
 	}
 
 	err = d2.IsDecimalValid()
@@ -1073,18 +1098,21 @@ func (dec *Decimal) MakeDecimalFromIntAry(ia *IntAry) (Decimal, error) {
 	}
 
 
-	d2.signedAllDigitsBigInt = ia.GetBigInt()
+	signedAllDigitsBigInt := ia.GetBigInt()
+	d2.signedAllDigitsBigInt = big.NewInt(0).Set(signedAllDigitsBigInt)
 
 	d2.SetCurrencySymbol(ia.GetCurrencySymbol())
 	d2.SetDecimalSeparator(ia.GetDecimalSeparator())
 	d2.SetThousandsSeparator(ia.GetThousandsSeparator())
 
-	d2.scaleFactor, err = ia.GetScaleFactor()
+	scaleFactor, err := ia.GetScaleFactor()
 
 	if err != nil {
 		return Decimal{},
 		fmt.Errorf(ePrefix + "- Error from ia.GetScaleFactor(). Error= %v", err.Error())
 	}
+
+	d2.scaleFactor = big.NewInt(0).Set(scaleFactor)
 
 	err = d2.numStrDto.IsNumStrDtoValid(ePrefix + "- ")
 
@@ -1185,7 +1213,7 @@ func (dec *Decimal) MulTotal(d2 Decimal) error {
 func (dec Decimal) New() Decimal {
 
 	d := Decimal{}
-	d.numStrDto = NumStrDto{}.NewPtr().GetZeroNumStr(0)
+	d.Empty()
 
 	return d
 
@@ -2053,7 +2081,6 @@ func (dec *Decimal) SetNumStr(str string) error {
 	if err != nil {
 		return fmt.Errorf("SetNumStr() Error. NumStrToDecimal(str) failed. str=%v. Error= %v.", str, err)
 	}
-
 
 
 	dec.CopyIn(d2)

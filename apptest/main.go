@@ -8,7 +8,35 @@ import (
 
 func main() {
 
-	ExampleDecimalConvertToNumStr_03()
+	ExampleDecimalConvertToNumStr_04()
+
+}
+
+func ExampleDecimalConvertToNumStr_04() {
+
+	nStrAry := []string{
+		"35.50",
+		"36.50",
+		"5.5",
+		"92.75",
+	}
+
+	expected := "170.25"
+
+	d := mathops.Decimal{}.New()
+
+	for i := 0; i < len(nStrAry); i++ {
+		dx := mathops.Decimal{}
+		dx.SetNumStr(nStrAry[i])
+		d.AddToThis(dx)
+	}
+
+	if expected != d.GetNumStr() {
+		fmt.Printf("Expected NumStrOut='%v'. Instead, got '%v'\n", expected, d.GetNumStr())
+		return
+	}
+
+	fmt.Println("Successful Completion!")
 
 }
 
