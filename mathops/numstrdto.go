@@ -1112,13 +1112,24 @@ func (nDto *NumStrDto) FormatThousandsStr(negValMode NegativeValueFmtMode) (stri
 // initialized with a valid number string.
 func (nDto *NumStrDto) GetAbsoluteBigInt() (*big.Int, error) {
 
+	ePrefix := "NumStrDto.GetAbsoluteBigInt() "
+
+	err := nDto.IsNumStrDtoValid("")
+
+	if err != nil {
+		return big.NewInt(0),
+			fmt.Errorf(ePrefix + "This NumStrDto instance is INVALID! Error='%v'", err.Error())
+	}
+
 	lenAbsAllNums := len(nDto.absAllNumRunes)
 	lenAbsIntRunes := nDto.GetAbsIntRunesLength()
 	lenAbsFracRunes := nDto.GetAbsFracRunesLength()
 
 	if !nDto.isValid || nDto.signVal == 0 || len(nDto.absAllNumRunes) == 0 ||
 		lenAbsAllNums != lenAbsIntRunes+lenAbsFracRunes {
-		s := "GetAbsoluteBigInt() - The existing NumStrDto is corrupted or improperly initialized. Re-initialize the NumStrDto object and try again."
+		s := ePrefix +
+			"- The existing NumStrDto is corrupted or improperly initialized. " +
+			"Re-initialize the NumStrDto object and try again."
 		return big.NewInt(0), errors.New(s)
 
 	}
@@ -1130,13 +1141,14 @@ func (nDto *NumStrDto) GetAbsoluteBigInt() (*big.Int, error) {
 	absBigInt, isOk := bigZero.SetString(strAbsAllRunes, 10)
 
 	if !isOk {
-		s := fmt.Sprintf("GetAbsoluteBigInt() - Conversion of nDto.absAllNumRunes to *big.Int Failed!. nDto.absAllNumRunes= '%v'", strAbsAllRunes)
+		s := fmt.Sprintf(ePrefix +
+			"- Conversion of nDto.absAllNumRunes to *big.Int Failed!. " +
+			"nDto.absAllNumRunes= '%v'", strAbsAllRunes)
 		return big.NewInt(0), errors.New(s)
 
 	}
 
 	return absBigInt, nil
-
 }
 
 // GetAbsAllNumRunes - Returns an array of runes representing
@@ -1454,7 +1466,27 @@ func (nDto *NumStrDto) GetPrecision() uint {
 //
 // This method will return an error if the NumStrDto fields are not properly
 // initialized and populated.
+//
+// Returns
+// =======
+//
+// sign value  						int 			- sign value of the number string
+// big Rational Number		*big.Rat	- Number string expressed as a
+//																		rational number
+// err										error			- In case of failure, an 'error' type
+//																		is returned. In case of success this
+//																		value is 'nil'
+//
 func (nDto *NumStrDto) GetRationalNumber() (int, *big.Rat, error) {
+
+	ePrefix := "NumStrDto.GetRationalNumber() "
+
+	err := nDto.IsNumStrDtoValid("")
+
+	if err != nil {
+		return 0, big.NewRat(1,1),
+			fmt.Errorf(ePrefix + "This NumStrDto instance is INVALID! Error='%v'", err.Error())
+	}
 
 	ratZero := big.NewRat(0, 1)
 
@@ -1464,7 +1496,9 @@ func (nDto *NumStrDto) GetRationalNumber() (int, *big.Rat, error) {
 
 	if !nDto.isValid || nDto.signVal == 0 || len(nDto.absAllNumRunes) == 0 ||
 		lenAbsAllNums != lenAbsIntRunes+lenAbsFracRunes {
-		s := "GetAbsoluteBigInt() - The existing NumStrDto is corrupted or improperly initialized. Re-initialize the NumStrDto object and try again."
+		s := ePrefix +
+			"- The existing NumStrDto is corrupted or improperly initialized. " +
+			"Re-initialize the NumStrDto object and try again."
 		return 0, ratZero, errors.New(s)
 
 	}
@@ -1474,7 +1508,9 @@ func (nDto *NumStrDto) GetRationalNumber() (int, *big.Rat, error) {
 	absInt, isOk := big.NewInt(0).SetString(string(nDto.absAllNumRunes), 10)
 
 	if !isOk {
-		return 0, ratZero, fmt.Errorf("GetRationalNumber() - Conversion of nDto.absAllNumRunes to big.Int Failed! nDto.absIntRunes= '%v'", nDto.absAllNumRunes)
+		return 0, ratZero, fmt.Errorf(ePrefix +
+			"- Conversion of nDto.absAllNumRunes to big.Int Failed! " +
+			"nDto.absIntRunes= '%v'", nDto.absAllNumRunes)
 	}
 
 	base10 := big.NewInt(10)
@@ -1497,13 +1533,24 @@ func (nDto *NumStrDto) GetRationalNumber() (int, *big.Rat, error) {
 // initialized with a valid number string.
 func (nDto *NumStrDto) GetScaleFactor() (*big.Int, error) {
 
+	ePrefix := "NumStrDto.GetScaleFactor() "
+
+	err := nDto.IsNumStrDtoValid("")
+
+	if err != nil {
+		return big.NewInt(0),
+		fmt.Errorf(ePrefix + "This NumStrDto instance is INVALID! Error='%v'", err.Error())
+	}
+
 	lenAbsAllNums := len(nDto.absAllNumRunes)
 	lenAbsIntRunes := nDto.GetAbsIntRunesLength()
 	lenAbsFracRunes := nDto.GetAbsFracRunesLength()
 
 	if !nDto.isValid || nDto.signVal == 0 || len(nDto.absAllNumRunes) == 0 ||
 		lenAbsAllNums != lenAbsIntRunes+lenAbsFracRunes {
-		s := "GetScaleFactor() - The existing NumStrDto is corrupted or improperly initialized. Re-initialize the NumStrDto object and try again."
+		s := ePrefix +
+			"- The existing NumStrDto is corrupted or improperly initialized. " +
+			"Re-initialize the NumStrDto object and try again."
 		return big.NewInt(0), errors.New(s)
 
 	}
@@ -1531,6 +1578,15 @@ func (nDto *NumStrDto) GetSign() int {
 // the NumStrDto.numStrDto. This method will fail if the NumStrDto
 // has not been properly initialized with a valid number string.
 func (nDto *NumStrDto) GetSignedBigInt() (*big.Int, error) {
+
+	ePrefix := "NumStrDto.GetSignedBigInt()"
+
+	err := nDto.IsNumStrDtoValid("")
+
+	if err != nil {
+		return big.NewInt(0),
+		fmt.Errorf(ePrefix + "NumStrDto is INVALID! Error='%v' ", err.Error())
+	}
 
 	lenAbsAllNums := len(nDto.absAllNumRunes)
 	lenAbsIntRunes := nDto.GetAbsIntRunesLength()
@@ -1693,6 +1749,7 @@ func (nDto *NumStrDto) IsNumStrDtoValid(errName string) error {
 	lenAbsAllNumRunes := len(nDto.absAllNumRunes)
 	lenAbsFracRunes := nDto.GetAbsFracRunesLength()
 	lenAbsIntRunes := nDto.GetAbsIntRunesLength()
+
 
 	if lenAbsAllNumRunes > 0 {
 		nDto.hasNumericDigits = true
