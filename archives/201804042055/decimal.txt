@@ -28,6 +28,7 @@ type Decimal struct {
 	isValid               bool
 	signVal               int
 	scaleFactor           *big.Int
+	thousandsSeparator    rune // defaults to ','
 	decimalSeparator      rune // defaults to '.'
 	currencySymbol        rune // defaults to '$'
 	numStrDto             NumStrDto
@@ -192,8 +193,8 @@ func (dec *Decimal) NumStrToDecimal(str string) (Decimal, error) {
 		dec.decimalSeparator = '.'
 	}
 
-	if dec.GetThousandsSeparator() == 0 {
-		dec.SetThousandsSeparator(',')
+	if dec.thousandsSeparator == 0 {
+		dec.thousandsSeparator = ','
 	}
 
 	if dec.currencySymbol == 0 {
@@ -201,7 +202,7 @@ func (dec *Decimal) NumStrToDecimal(str string) (Decimal, error) {
 	}
 
 	n1 := NumStrDto{}.New()
-	n1.SetThousandsSeparator(dec.GetThousandsSeparator())
+	n1.SetThousandsSeparator(dec.thousandsSeparator)
 	n1.SetDecimalSeparator(dec.decimalSeparator)
 	n1.SetCurrencySymbol(dec.currencySymbol)
 
@@ -230,7 +231,7 @@ func (dec *Decimal) CopyIn(d2 Decimal) {
 	dec.numStrDto = d2.numStrDto.CopyOut()
 	dec.signedAllDigitsBigInt = big.NewInt(0).Set(d2.signedAllDigitsBigInt)
 	dec.currencySymbol = d2.currencySymbol
-	dec.SetThousandsSeparator(d2.GetThousandsSeparator())
+	dec.thousandsSeparator = d2.thousandsSeparator
 	dec.decimalSeparator = d2.decimalSeparator
 
 }
@@ -244,7 +245,7 @@ func (dec *Decimal) CopyOut() Decimal {
 	d2.numStrDto = dec.numStrDto.CopyOut()
 	d2.signedAllDigitsBigInt = big.NewInt(0).Set(dec.signedAllDigitsBigInt)
 	d2.currencySymbol = dec.currencySymbol
-	d2.SetThousandsSeparator(dec.GetThousandsSeparator())
+	d2.thousandsSeparator = dec.thousandsSeparator
 	d2.decimalSeparator = dec.decimalSeparator
 
 	return d2
@@ -294,7 +295,7 @@ func (dec *Decimal) Empty() {
 	dec.numStrDto =  NumStrDto{}.NewPtr().GetZeroNumStr(0)
 	dec.signedAllDigitsBigInt = big.NewInt(0)
 	dec.currencySymbol = '$'
-	dec.SetThousandsSeparator(',')
+	dec.thousandsSeparator = ','
 	dec.decimalSeparator = '.'
 }
 
@@ -694,7 +695,11 @@ func (dec *Decimal) GetSquareRoot(maxPrecision uint) (Decimal, error) {
 //
 func (dec *Decimal) GetThousandsSeparator() rune {
 
-	return dec.numStrDto.GetThousandsSeparator()
+	if dec.thousandsSeparator != dec.numStrDto.GetThousandsSeparator() {
+		dec.numStrDto.SetThousandsSeparator(dec.thousandsSeparator)
+	}
+
+	return dec.thousandsSeparator
 }
 
 // GetIsValid - returns a boolean indicating
@@ -795,10 +800,10 @@ func (dec *Decimal) MakeDecimalBigIntPrecision(iBig *big.Int, precision uint) (D
 	}
 
 
-	d2.SetThousandsSeparator(dec.GetThousandsSeparator())
+	d2.thousandsSeparator = dec.thousandsSeparator
 	d2.decimalSeparator = dec.decimalSeparator
 	d2.currencySymbol = dec.currencySymbol
-	d2.numStrDto.SetSeparators(dec.GetDecimalSeparator(), dec.GetThousandsSeparator(), dec.GetCurrencySymbol())
+	d2.numStrDto.SetSeparators(dec.decimalSeparator, dec.thousandsSeparator, dec.currencySymbol)
 
 	err = d2.numStrDto.IsNumStrDtoValid(ePrefix + "- ")
 
@@ -833,6 +838,7 @@ func (dec *Decimal) MakeDecimalFromNumStrDto(nDto NumStrDto) (Decimal, error) {
 	d2.numStrDto = nDto.CopyOut()
 	d2.currencySymbol = nDto.GetCurrencySymbol()
 	d2.decimalSeparator = nDto.GetDecimalSeparator()
+	d2.thousandsSeparator = nDto.GetThousandsSeparator()
 
 	var err error
 
@@ -902,7 +908,9 @@ func (dec *Decimal) MakeDecimalFromIntAry(ia *IntAry) (Decimal, error) {
 
 	d2.currencySymbol = ia.GetCurrencySymbol()
 	d2.decimalSeparator = ia.GetDecimalSeparator()
+	d2.thousandsSeparator = ia.GetThousandsSeparator()
 
+	d2.numStrDto.SetSeparators(d2.decimalSeparator, d2.thousandsSeparator, d2.currencySymbol)
 
 	d2.scaleFactor, err = ia.GetScaleFactor()
 
@@ -1281,8 +1289,8 @@ func (dec *Decimal) NumStrPrecisionToDecimal(
 		dec.decimalSeparator = '.'
 	}
 
-	if dec.GetThousandsSeparator() == 0 {
-		dec.SetThousandsSeparator(',')
+	if dec.thousandsSeparator == 0 {
+		dec.thousandsSeparator = ','
 	}
 
 	if dec.currencySymbol == 0 {
@@ -1311,7 +1319,7 @@ func (dec *Decimal) NumStrPrecisionToDecimal(
 				requestedPrecision, roundResult, err.Error())
 	}
 
-	n1.SetSeparators(dec.decimalSeparator, dec.GetThousandsSeparator(), dec.currencySymbol)
+	n1.SetSeparators(dec.decimalSeparator, dec.thousandsSeparator, dec.currencySymbol)
 
 	d2, err = dec.MakeDecimalFromNumStrDto(n1)
 
@@ -1620,8 +1628,8 @@ func (dec *Decimal) SetIntFracStrings(signVal int, intNum, fracNum string) error
 		dec.decimalSeparator = '.'
 	}
 
-	if dec.GetThousandsSeparator() == 0 {
-		dec.SetThousandsSeparator(',')
+	if dec.thousandsSeparator == 0 {
+		dec.thousandsSeparator = ','
 	}
 
 	if dec.currencySymbol == 0 {
@@ -1636,7 +1644,7 @@ func (dec *Decimal) SetIntFracStrings(signVal int, intNum, fracNum string) error
 
 	n1 := NumStrDto{}.New()
 	n1.SetDecimalSeparator(dec.decimalSeparator)
-	n1.SetThousandsSeparator(dec.GetThousandsSeparator())
+	n1.SetThousandsSeparator(dec.thousandsSeparator)
 	n1.SetCurrencySymbol(dec.currencySymbol)
 
 	n2, err := n1.ParseNumStr(intNum)
@@ -1784,6 +1792,7 @@ func (dec *Decimal) SetThousandsSeparator(thousandsSeparator rune) error {
 		thousandsSeparator = ','
 	}
 
+	dec.thousandsSeparator = thousandsSeparator
 	dec.numStrDto.SetThousandsSeparator(thousandsSeparator)
 
 	return nil
@@ -1802,8 +1811,8 @@ func (dec *Decimal) SetFloat(f32 float32) error {
 		dec.decimalSeparator = '.'
 	}
 
-	if dec.GetThousandsSeparator() == 0 {
-		dec.SetThousandsSeparator(',')
+	if dec.thousandsSeparator == 0 {
+		dec.thousandsSeparator = ','
 	}
 
 	if dec.currencySymbol == 0 {
@@ -1836,8 +1845,8 @@ func (dec *Decimal) SetFloat64(f64 float64) error {
 		dec.decimalSeparator = '.'
 	}
 
-	if dec.GetThousandsSeparator() == 0 {
-		dec.SetThousandsSeparator( ',')
+	if dec.thousandsSeparator == 0 {
+		dec.thousandsSeparator = ','
 	}
 
 	if dec.currencySymbol == 0 {
@@ -1870,8 +1879,8 @@ func (dec *Decimal) SetFloatBig(bigFloat *big.Float) error {
 		dec.decimalSeparator = '.'
 	}
 
-	if dec.GetThousandsSeparator() == 0 {
-		dec.SetThousandsSeparator(',')
+	if dec.thousandsSeparator == 0 {
+		dec.thousandsSeparator = ','
 	}
 
 	if dec.currencySymbol == 0 {
@@ -1907,8 +1916,8 @@ func (dec *Decimal) SetNumStrPrecision(str string, precision uint, roundResult b
 		dec.decimalSeparator = '.'
 	}
 
-	if dec.GetThousandsSeparator() == 0 {
-		dec.SetThousandsSeparator(',')
+	if dec.thousandsSeparator == 0 {
+		dec.thousandsSeparator = ','
 	}
 
 	if dec.currencySymbol == 0 {
@@ -1942,8 +1951,8 @@ func (dec *Decimal) SetNumStr(str string) error {
 		dec.decimalSeparator = '.'
 	}
 
-	if dec.GetThousandsSeparator() == 0 {
-		dec.SetThousandsSeparator(',')
+	if dec.thousandsSeparator == 0 {
+		dec.thousandsSeparator = ','
 	}
 
 	if dec.currencySymbol == 0 {
@@ -1962,31 +1971,21 @@ func (dec *Decimal) SetNumStr(str string) error {
 
 }
 
-
-// SetDefaultSeparators - Ensures that separators are set to a valid value.
-// If not, this methods sets the default values for decimal separator,
-// thousands separator and currency symbol.
-func (dec *Decimal) SetDefaultSeparators() {
+// SetNumStrDto - Sets the value of the current Decimal type
+// to the value represented by the incoming NumStrDto parameter.
+func (dec *Decimal) SetNumStrDto(nDto NumStrDto) error {
 
 	if dec.decimalSeparator == 0 {
 		dec.decimalSeparator = '.'
 	}
 
-	if dec.GetThousandsSeparator() == 0 {
-		dec.SetThousandsSeparator(',')
+	if dec.thousandsSeparator == 0 {
+		dec.thousandsSeparator = ','
 	}
 
 	if dec.currencySymbol == 0 {
 		dec.currencySymbol = '$'
 	}
-
-}
-
-// SetNumStrDto - Sets the value of the current Decimal type
-// to the value represented by the incoming NumStrDto parameter.
-func (dec *Decimal) SetNumStrDto(nDto NumStrDto) error {
-
-	dec.SetDefaultSeparators()
 
 	d2, err := dec.MakeDecimalFromNumStrDto(nDto)
 

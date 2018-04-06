@@ -2401,6 +2401,10 @@ func (ia *IntAry) GetNumStrDto() (NumStrDto, error) {
 				"Error='%v'", err.Error())
 	}
 
+	nstrDto.SetThousandsSeparator(ia.GetThousandsSeparator())
+	nstrDto.SetDecimalSeparator(ia.GetDecimalSeparator())
+	nstrDto.SetCurrencySymbol(ia.GetCurrencySymbol())
+
 	return nstrDto, nil
 
 }
