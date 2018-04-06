@@ -26,7 +26,6 @@ import (
 
 type Decimal struct {
 	isValid               bool
-	//signVal               int
 	scaleFactor           *big.Int
 	numStrDto             NumStrDto
 	signedAllDigitsBigInt *big.Int
