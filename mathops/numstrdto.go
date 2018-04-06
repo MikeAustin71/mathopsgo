@@ -1121,14 +1121,9 @@ func (nDto *NumStrDto) GetAbsoluteBigInt() (*big.Int, error) {
 			fmt.Errorf(ePrefix + "This NumStrDto instance is INVALID! Error='%v'", err.Error())
 	}
 
-	lenAbsAllNums := len(nDto.absAllNumRunes)
-	lenAbsIntRunes := nDto.GetAbsIntRunesLength()
-	lenAbsFracRunes := nDto.GetAbsFracRunesLength()
-
-	if !nDto.isValid || nDto.signVal == 0 || len(nDto.absAllNumRunes) == 0 ||
-		lenAbsAllNums != lenAbsIntRunes+lenAbsFracRunes {
+	if  len(nDto.absAllNumRunes) == 0  {
 		s := ePrefix +
-			"- The existing NumStrDto is corrupted or improperly initialized. " +
+			"- The existing NumStrDto is a Zero length number. " +
 			"Re-initialize the NumStrDto object and try again."
 		return big.NewInt(0), errors.New(s)
 
@@ -1542,14 +1537,9 @@ func (nDto *NumStrDto) GetScaleFactor() (*big.Int, error) {
 		fmt.Errorf(ePrefix + "This NumStrDto instance is INVALID! Error='%v'", err.Error())
 	}
 
-	lenAbsAllNums := len(nDto.absAllNumRunes)
-	lenAbsIntRunes := nDto.GetAbsIntRunesLength()
-	lenAbsFracRunes := nDto.GetAbsFracRunesLength()
-
-	if !nDto.isValid || nDto.signVal == 0 || len(nDto.absAllNumRunes) == 0 ||
-		lenAbsAllNums != lenAbsIntRunes+lenAbsFracRunes {
+	if len(nDto.absAllNumRunes) == 0  {
 		s := ePrefix +
-			"- The existing NumStrDto is corrupted or improperly initialized. " +
+			"- The existing NumStrDto is a Zero length number. " +
 			"Re-initialize the NumStrDto object and try again."
 		return big.NewInt(0), errors.New(s)
 
@@ -1588,13 +1578,11 @@ func (nDto *NumStrDto) GetSignedBigInt() (*big.Int, error) {
 		fmt.Errorf(ePrefix + "NumStrDto is INVALID! Error='%v' ", err.Error())
 	}
 
-	lenAbsAllNums := len(nDto.absAllNumRunes)
-	lenAbsIntRunes := nDto.GetAbsIntRunesLength()
-	lenAbsFracRunes := nDto.GetAbsFracRunesLength()
 
-	if !nDto.isValid || nDto.signVal == 0 || len(nDto.absAllNumRunes) == 0 ||
-		lenAbsAllNums != lenAbsIntRunes+lenAbsFracRunes {
-		s := "GetSignedBigInt() - The existing NumStrDto is corrupted or improperly initialized. Re-initialize the NumStrDto object and try again."
+	if  len(nDto.absAllNumRunes) == 0  {
+		s := ePrefix +
+			" - The existing NumStrDto has a zero length number. " +
+			"Re-initialize this NumStrDto object and try again."
 		return big.NewInt(0), errors.New(s)
 
 	}
