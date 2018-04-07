@@ -273,7 +273,8 @@ func (dec *Decimal) Divide(divisor Decimal, precision int) (Decimal, error) {
 func (dec *Decimal) Empty() {
 	dec.numStrDto =  NumStrDto{}.NewPtr().GetZeroNumStr(0)
 	dec.numStrDto.SetSignValue(1)
-	dec.signedAllDigitsBigInt = big.NewInt(0)
+	bigI, _ := dec.numStrDto.GetSignedBigInt()
+	dec.signedAllDigitsBigInt = big.NewInt(0).Set(bigI)
 	dec.SetEmptySeparatorsToDefault()
 
 }
