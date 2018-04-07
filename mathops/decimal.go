@@ -1600,8 +1600,7 @@ func (dec Decimal) NewNumStrDto(numDto NumStrDto) (Decimal, error) {
 }
 
 // NewNumStrPrecision - Returns a Decimal type based on a number string
-// and a precision value received as input parameters. If an
-// error is encountered, it will trigger a panic condition.
+// and a precision value received as input parameters.
 //
 // The 'NewNumStrPrecision' method is designed to used in conjunction
 // with Decimal{} thereby allowing Decimal creation
@@ -1613,29 +1612,13 @@ func (dec Decimal) NewNumStrPrecision(numStr string, precision uint, roundResult
 
 	ePrefix := "Decimal.NewNumStrPrecision() "
 
-	n1, err := NumStrDto{}.NewPtr().ParseNumStr(numStr)
+	d2, err := Decimal{}.NewPtr().NumStrPrecisionToDecimal(numStr, precision, roundResult)
 
 	if err != nil {
 		return Decimal{},
-			fmt.Errorf(ePrefix + "Error returned from  NumStrDto.ParseNumStr(numStr). " +
-				"numStrDto= '%v' Error= %v", numStr, err)
-	}
-
-	err = n1.SetThisPrecision(precision, roundResult)
-
-	if err != nil {
-		return Decimal{},
-		fmt.Errorf(ePrefix + "Error returned by n1.SetThisPrecision(precision, roundResult) " +
-			"precision='%v' roundResult='%v' Error='%v'",
-				precision, roundResult, err.Error())
-	}
-
-	d2, err := dec.MakeDecimalFromNumStrDto(n1)
-
-	if err != nil {
-		return Decimal{},
-		fmt.Errorf(ePrefix + "Error returned from Decimal.MakeDecimalFromNumStrDto(n1). " +
-					"dec.numStrDto= '%v' Error= %v", dec.numStrDto.GetNumStr(), err)
+			fmt.Errorf(ePrefix + "Error returned by NumStrPrecisionToDecimal(numStr, precision, " +
+				"roundResult) numStr='%v' precision='%v' roundResult='%v' Error='%v' ",
+					numStr, precision, roundResult, err.Error())
 	}
 
 	return d2, nil
@@ -1665,7 +1648,6 @@ func (dec *Decimal) NewRationalNum(bigRat *big.Rat, precision int ) (Decimal, er
 
 }
 
-// TODO Needs more testing!
 // NumStrPrecisionToDecimal - receives a number string and a
 // precision value as parameters. This method creates a Decimal
 // Type containing the converted numeric and returns it.
@@ -1721,6 +1703,7 @@ func (dec *Decimal) NumStrPrecisionToDecimal(
 
 	return d2, nil
 }
+
 
 // Pow - raises the current Decimal to the power of
 // an integer 'exponent'. The result is returned as
@@ -1927,14 +1910,6 @@ func (dec *Decimal) SetFloat64(f64 float64) error {
 
 	ePrefix := "Decimal.SetFloat64() "
 
-	err := dec.IsDecimalValid()
-
-	if err != nil {
-		return fmt.Errorf(ePrefix +
-			"This Decimal object (dec) is INVALID! Please Re-initialize. " +
-			"Error='%v' ", err.Error())
-	}
-
 	dec.SetEmptySeparatorsToDefault()
 
 	str := strconv.FormatFloat(f64, 'f', -1, 64)
@@ -1994,17 +1969,9 @@ func (dec *Decimal) SetInt(iNum int, precision uint) error {
 
 	ePrefix := "Decimal.SetInt() "
 
-	err := dec.IsDecimalValid()
-
-	if err != nil {
-		return fmt.Errorf(ePrefix +
-			"This Decimal object (dec) is INVALID! Please Re-initialize. " +
-			"Error='%v' ", err.Error())
-	}
-
 	iBig := big.NewInt(int64(iNum))
 
-	err = dec.SetBigInt(iBig, precision)
+	err := dec.SetBigInt(iBig, precision)
 
 	if err != nil {
 		return fmt.Errorf(ePrefix +
@@ -2025,9 +1992,10 @@ func (dec *Decimal) SetInt(iNum int, precision uint) error {
 //
 // The parameter 'signVal will determine the Sign Value for the returned
 // Decimal type. It should be set to either +1 or -1.
+//
 func (dec *Decimal) SetIntFracStrings(signVal int, intNum, fracNum string) error {
 
-	ePrefix := "Decimal.SetInt() "
+	ePrefix := "Decimal.SetIntFracStrings() "
 
 	err := dec.IsDecimalValid()
 
@@ -2039,52 +2007,37 @@ func (dec *Decimal) SetIntFracStrings(signVal int, intNum, fracNum string) error
 
 	dec.SetEmptySeparatorsToDefault()
 
-	if signVal < 0 {
-		signVal = -1
-	} else {
-		signVal = 1
-	}
-
-	n1 := NumStrDto{}.New()
-	n1.SetDecimalSeparator(dec.GetDecimalSeparator())
-	n1.SetThousandsSeparator(dec.GetThousandsSeparator())
-	n1.SetCurrencySymbol(dec.GetCurrencySymbol())
-
-	n2, err := n1.ParseNumStr(intNum)
-
-	if err != nil {
-		return fmt.Errorf("SetIntFracStrings() - Error returned from n2 ParseNumStr(intNum). intNum= '%v' Error= %v", intNum, err)
-	}
-
-	n3, err := n1.ParseNumStr(fracNum)
-
-	if err != nil {
-		return fmt.Errorf("SetIntFracStrings() - Error returned from n3 ParseNumStr(fracNum). intNum= '%v' Error= %v", fracNum, err)
-	}
-
-	numStr := ""
+	var nxNumStr string
 
 	if signVal < 0 {
-		numStr = "-"
+		nxNumStr += "-"
 	}
 
-	numStr += string(n2.GetAbsAllNumRunes())
+	nxNumStr += intNum
 
-	if len(n3.GetAbsAllNumRunes()) > 0 {
-		numStr += string(dec.GetDecimalSeparator())
-		numStr += string(n3.GetAbsAllNumRunes())
-	}
+	nxNumStr += string(dec.GetDecimalSeparator())
 
-	n4, err := n1.ParseNumStr(numStr)
+	nxNumStr += fracNum
+
+	n0 := NumStrDto{}.New()
+
+	n0.SetSeparators(dec.GetDecimalSeparator(),dec.GetThousandsSeparator(), dec.GetCurrencySymbol())
+
+	n1, err := n0.ParseNumStr(nxNumStr)
 
 	if err != nil {
-		return fmt.Errorf("SetIntFracStrings() - Error returned from n4 ParseNumStr(numStrDto). intNum= '%v' Error= %v", numStr, err)
+		return fmt.Errorf(ePrefix +
+			"- Error returned from n0.ParseNumStr(nxNumStr). intNum= '%v'  fracNum='%v' Error= %v",
+				intNum, fracNum, err.Error())
 	}
 
-	d2, err := dec.MakeDecimalFromNumStrDto(n4)
+	d2, err := dec.MakeDecimalFromNumStrDto(n1)
 
 	if err != nil {
-		return fmt.Errorf("SetIntFracStrings() - Error returned from dec.MakeDecimalFromNumStrDto(n4). n4.GetNumStr() = '%v' Error= %v", n4.GetNumStr(), err)
+		return fmt.Errorf(ePrefix +
+			"- Error returned from dec.MakeDecimalFromNumStrDto(n1). " +
+			"n1.GetNumStr() = '%v' Error= %v",
+			n1.GetNumStr(), err)
 	}
 
 	dec.CopyIn(d2)
@@ -2244,7 +2197,7 @@ func (dec *Decimal) SetNumStrPrecision(str string, precision uint, roundResult b
 
 	dec.SetEmptySeparatorsToDefault()
 
-	d2, err := dec.NumStrPrecisionToDecimal(str, precision, roundResult)
+	d2, err := dec.NewNumStrPrecision(str, precision, roundResult)
 
 	if err != nil {
 		return fmt.Errorf(ePrefix +
