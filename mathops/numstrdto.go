@@ -2089,22 +2089,13 @@ func (nDto *NumStrDto) ParseSignedBigInt(signedBigInt *big.Int, precision uint) 
 	ePrefix := "NumStrDto.ParseSignedBigInt() "
 	bigZero := big.NewInt(0)
 
-	// Set defaults for thousands separators,
-	// decimal separators and currency Symbols
-	if nDto.thousandsSeparator == 0 {
-		nDto.thousandsSeparator = ','
-	}
-
-	if nDto.decimalSeparator == 0 {
-		nDto.decimalSeparator = '.'
-	}
-
-	if nDto.currencySymbol == 0 {
-		nDto.currencySymbol = '$'
-	}
+	nDto.SetEmptySeparatorsToDefault()
 
 	n2Dto := NumStrDto{}.New()
 
+	n2Dto.SetCurrencySymbol(nDto.GetCurrencySymbol())
+	n2Dto.SetDecimalSeparator(nDto.GetDecimalSeparator())
+	n2Dto.SetThousandsSeparator(nDto.GetThousandsSeparator())
 
 	if signedBigInt.Cmp(bigZero) == 0 {
 		return nDto.GetZeroNumStr(0), nil
@@ -2170,9 +2161,11 @@ func (nDto *NumStrDto) ParseSignedBigInt(signedBigInt *big.Int, precision uint) 
 	n2Dto.numStr += string(n2Dto.GetAbsIntRunes())
 
 	if lenAbsFracNumRunes > 0 {
-		n2Dto.numStr += "."
+		n2Dto.numStr += string(n2Dto.GetDecimalSeparator())
 		n2Dto.numStr += string(n2Dto.GetAbsFracRunes())
 	}
+
+
 
 	err := n2Dto.IsNumStrDtoValid( ePrefix + "- ")
 
@@ -2199,27 +2192,15 @@ func (nDto *NumStrDto) ParseNumStr(str string) (NumStrDto, error) {
 		return NumStrDto{}, errors.New(ePrefix + "Received zero length number string as input!")
 	}
 
-	// Set defaults for thousands separators,
-	// decimal separators and currency Symbols
-	if nDto.thousandsSeparator == 0 {
-		nDto.thousandsSeparator = ','
-	}
-
-	if nDto.decimalSeparator == 0 {
-		nDto.decimalSeparator = '.'
-	}
-
-	if nDto.currencySymbol == 0 {
-		nDto.currencySymbol = '$'
-	}
+	nDto.SetEmptySeparatorsToDefault()
 
 	n2Dto := NumStrDto{}.New()
 
 
 	n2Dto.signVal = 1
-	n2Dto.thousandsSeparator = nDto.thousandsSeparator
-	n2Dto.decimalSeparator = nDto.decimalSeparator
-	n2Dto.currencySymbol = nDto.currencySymbol
+	n2Dto.SetThousandsSeparator(nDto.GetThousandsSeparator())
+	n2Dto.SetDecimalSeparator(nDto.GetDecimalSeparator())
+	n2Dto.SetCurrencySymbol(nDto.GetCurrencySymbol())
 	baseRunes := []rune(str)
 	lBaseRunes := len(baseRunes)
 	isStartRunes := false
@@ -2797,6 +2778,26 @@ func (nDto *NumStrDto) ShiftPrecisionRight(signedNumStr string, precision uint) 
 
 	return n2, nil
 }
+
+// SetEmptySeparatorsToDefault - Ensures that separators are set to a valid value.
+// If separator runes are zero, this methods sets the default values for
+// decimal separator, thousands separator and currency symbol.
+func (nDto *NumStrDto) SetEmptySeparatorsToDefault() {
+
+	if nDto.GetDecimalSeparator() == 0 {
+		nDto.SetDecimalSeparator('.')
+	}
+
+	if nDto.GetThousandsSeparator() == 0 {
+		nDto.SetThousandsSeparator(',')
+	}
+
+	if nDto.GetCurrencySymbol() == 0 {
+		nDto.SetCurrencySymbol('$')
+	}
+
+}
+
 
 // SetPrecision - parses the incoming number string and applies the designated 'precision'. 'precision'
 // determines the number of digits to the right of the decimal place. The boolean parameter 'roundResult'
