@@ -170,6 +170,176 @@ func TestDecimal_ShiftPrecisionLeft_06(t *testing.T) {
 
 }
 
+func TestDecimal_ShiftPrecisionRight_01(t *testing.T) {
+
+	nStr1 := "123456789"
+	expectedNumStr := "123456789000"
+
+	d1, err := Decimal{}.NewNumStr(nStr1)
+
+	if err != nil {
+		t.Errorf("Error returned by Decimal{}.NewNumStr(nStr1). " +
+			"Error='%v' ", err.Error())
+	}
+
+	err = d1.ShiftPrecisionRight(3)
+
+	if err != nil {
+		t.Errorf("Error returned by d1.ShiftPrecisionLeft(3). " +
+			"Error='%v' ", err.Error())
+	}
+
+	actualNumStr := d1.GetNumStr()
+
+	if expectedNumStr != actualNumStr {
+		t.Errorf("Error: Expected NumStr='%v'.  Instead, NumStr='%v'.",
+			expectedNumStr, actualNumStr)
+	}
+
+}
+
+
+func TestDecimal_ShiftPrecisionRight_02(t *testing.T) {
+
+	nStr1 := "12345"
+	expectedNumStr := "12345000000"
+
+	d1, err := Decimal{}.NewNumStr(nStr1)
+
+	if err != nil {
+		t.Errorf("Error returned by Decimal{}.NewNumStr(nStr1). " +
+			"Error='%v' ", err.Error())
+	}
+
+	err = d1.ShiftPrecisionRight(6)
+
+	if err != nil {
+		t.Errorf("Error returned by d1.ShiftPrecisionLeft(3). " +
+			"Error='%v' ", err.Error())
+	}
+
+	actualNumStr := d1.GetNumStr()
+
+	if expectedNumStr != actualNumStr {
+		t.Errorf("Error: Expected NumStr='%v'.  Instead, NumStr='%v'.",
+			expectedNumStr, actualNumStr)
+	}
+
+}
+
+func TestDecimal_ShiftPrecisionRight_03(t *testing.T) {
+
+	nStr1 := "1.2345"
+	expectedNumStr := "1234500000"
+
+	d1, err := Decimal{}.NewNumStr(nStr1)
+
+	if err != nil {
+		t.Errorf("Error returned by Decimal{}.NewNumStr(nStr1). " +
+			"Error='%v' ", err.Error())
+	}
+
+	err = d1.ShiftPrecisionRight(9)
+
+	if err != nil {
+		t.Errorf("Error returned by d1.ShiftPrecisionLeft(3). " +
+			"Error='%v' ", err.Error())
+	}
+
+	actualNumStr := d1.GetNumStr()
+
+	if expectedNumStr != actualNumStr {
+		t.Errorf("Error: Expected NumStr='%v'.  Instead, NumStr='%v'.",
+			expectedNumStr, actualNumStr)
+	}
+
+}
+
+func TestDecimal_ShiftPrecisionRight_04(t *testing.T) {
+
+	nStr1 := "-123456.789"
+	expectedNumStr := "-123456789"
+
+	d1, err := Decimal{}.NewNumStr(nStr1)
+
+	if err != nil {
+		t.Errorf("Error returned by Decimal{}.NewNumStr(nStr1). " +
+			"Error='%v' ", err.Error())
+	}
+
+	err = d1.ShiftPrecisionRight(3)
+
+	if err != nil {
+		t.Errorf("Error returned by d1.ShiftPrecisionLeft(3). " +
+			"Error='%v' ", err.Error())
+	}
+
+	actualNumStr := d1.GetNumStr()
+
+	if expectedNumStr != actualNumStr {
+		t.Errorf("Error: Expected NumStr='%v'.  Instead, NumStr='%v'.",
+			expectedNumStr, actualNumStr)
+	}
+
+}
+
+func TestDecimal_ShiftPrecisionRight_05(t *testing.T) {
+
+	nStr1 := "-12.345"
+	expectedNumStr := "-1234.5"
+
+	d1, err := Decimal{}.NewNumStr(nStr1)
+
+	if err != nil {
+		t.Errorf("Error returned by Decimal{}.NewNumStr(nStr1). " +
+			"Error='%v' ", err.Error())
+	}
+
+	err = d1.ShiftPrecisionRight(2)
+
+	if err != nil {
+		t.Errorf("Error returned by d1.ShiftPrecisionLeft(3). " +
+			"Error='%v' ", err.Error())
+	}
+
+	actualNumStr := d1.GetNumStr()
+
+	if expectedNumStr != actualNumStr {
+		t.Errorf("Error: Expected NumStr='%v'.  Instead, NumStr='%v'.",
+			expectedNumStr, actualNumStr)
+	}
+
+}
+
+func TestDecimal_ShiftPrecisionRight_06(t *testing.T) {
+
+	nStr1 := "-12.345"
+	expectedNumStr := "-123450"
+
+	d1, err := Decimal{}.NewNumStr(nStr1)
+
+	if err != nil {
+		t.Errorf("Error returned by Decimal{}.NewNumStr(nStr1). " +
+			"Error='%v' ", err.Error())
+	}
+
+	err = d1.ShiftPrecisionRight(4)
+
+	if err != nil {
+		t.Errorf("Error returned by d1.ShiftPrecisionLeft(3). " +
+			"Error='%v' ", err.Error())
+	}
+
+	actualNumStr := d1.GetNumStr()
+
+	if expectedNumStr != actualNumStr {
+		t.Errorf("Error: Expected NumStr='%v'.  Instead, NumStr='%v'.",
+			expectedNumStr, actualNumStr)
+	}
+
+}
+
+
 func TestDecimal_Subtract_01(t *testing.T) {
 
 	nStr1 := "123456"

@@ -2108,7 +2108,7 @@ func (dec *Decimal) SetSign(newSignVal int) error {
 }
 
 // ShiftPrecisionLeft - shifts precision of the current Decimal instance
-// to the left by 'shiftPrecision' places. This is a 'relative' shift-left
+// to the left by 'shiftLeftPlaces' places. This is a 'relative' shift-left
 // operation. The shift is performed with the current decimal point position
 // as the starting point.
 //
@@ -2122,7 +2122,7 @@ func (dec *Decimal) SetSign(newSignVal int) error {
 // Input Parameters
 // ================
 //
-//	shiftPrecision int	- The number of positions the decimal point will be shifted left
+//	shiftLeftPlaces int	- The number of positions the decimal point will be shifted left
 //												from its current position.
 //
 // Examples
@@ -2140,14 +2140,14 @@ func (dec *Decimal) SetSign(newSignVal int) error {
 // "-123456.789"        3          "-123456789"
 // "-123456789"			    6					 "-123456789000000"
 //
-func (dec *Decimal) ShiftPrecisionLeft(shiftPrecision int) error {
+func (dec *Decimal) ShiftPrecisionLeft(shiftLeftPlaces int) error {
 
 	ePrefix := "Decimal.ShiftPrecisionLeft() "
 
-	if shiftPrecision < 0 {
+	if shiftLeftPlaces < 0 {
 		return fmt.Errorf(ePrefix +
-			"Error: Input parameter 'shiftPrecision' is LESS THAN ZERO! " +
-			"shiftPrecision='%v' ", shiftPrecision)
+			"Error: Input parameter 'shiftLeftPlaces' is LESS THAN ZERO! " +
+			"shiftLeftPlaces='%v' ", shiftLeftPlaces)
 	}
 
 	err := dec.IsDecimalValid()
@@ -2158,14 +2158,97 @@ func (dec *Decimal) ShiftPrecisionLeft(shiftPrecision int) error {
 			"Error='%v' ", err.Error())
 	}
 
-
-	n1, err := NumStrDto{}.NewPtr().ShiftPrecisionLeft(dec.numStrDto.GetNumStr(), uint(shiftPrecision))
+	n1, err := NumStrDto{}.NewPtr().ShiftPrecisionLeft(
+													dec.numStrDto.GetNumStr(),
+														uint(shiftLeftPlaces))
 
 	if err != nil {
 		return fmt.Errorf(ePrefix +
 			"Error returned by NumStrDto{}.NewPtr().ShiftPrecisionLeft(dec.numStrDto, " +
-			"uint(shiftPrecision) dec.numStrDto='%v' shiftPrecision='%v' Error='%v'",
-				dec.numStrDto.GetNumStr(), shiftPrecision, err.Error())
+			"uint(shiftLeftPlaces) dec.numStrDto='%v' shiftLeftPlaces='%v' Error='%v'",
+				dec.numStrDto.GetNumStr(), shiftLeftPlaces, err.Error())
+	}
+
+	dec.numStrDto = n1.CopyOut()
+	bigI, err := dec.numStrDto.GetSignedBigInt()
+
+	if err != nil {
+		return fmt.Errorf(ePrefix +
+			"Error returned by dec.numStrDto.GetSignedBigInt() " +
+			"Error='%v'", err.Error())
+
+	}
+
+	dec.signedAllDigitsBigInt = big.NewInt(0).Set(bigI)
+
+	err = dec.IsDecimalValid()
+
+	if err != nil {
+		return fmt.Errorf(ePrefix +
+			"This Decimal instance is INVALID! Please Re-Initialize. " +
+			"Error='%v'", err.Error())
+	}
+
+	return nil
+}
+
+// ShiftPrecisionRight - Shifts precision of the current Decimal instance
+// to the right by 'shiftRightPlaces' places. This is a 'relative' shift-right
+// operation. The shift is performed with the current decimal point position
+// as the starting point.
+//
+// This is equivalent to: result = signedNumStr X 10^precision or signedNumStr Multiplied
+// by 10 raised to the power of precision.
+//
+// This method performs a relative shift right of the decimal point position.
+// See Examples below.
+//
+// Input Parameters
+// ================
+//
+//	shiftRightPlaces int	- The number of positions the decimal point will be shifted right
+//													from its current position.
+//
+// Examples:
+// signedNumStr			precision			Result
+//  "123456.789"				3						"123456789"
+//  "123456.789"				2						"12345678.9"
+//  "123456.789"        6					  "123456789000"
+//  "123456789"	 			  6						"123456789000000"
+//  "123"               5	          "12300000"
+//  "0"								  3						"0"
+//  "123456.789"				0						"123456.789"		- Zero has no effect on original number string
+// "-123456.789"        0          "-123456.789"
+// "-123456.789"        3          "-123456789"
+// "-123456789"			    6					 "-123456789000000"
+//
+func (dec *Decimal) ShiftPrecisionRight(shiftRightPlaces int) error {
+
+	ePrefix := "Decimal.ShiftPrecisionRight() "
+
+	if shiftRightPlaces < 0 {
+		return fmt.Errorf(ePrefix +
+			"Error: Input parameter 'shiftRightPlaces' is LESS THAN ZERO! " +
+			"shiftLeftPlaces='%v' ", shiftRightPlaces)
+	}
+
+	err := dec.IsDecimalValid()
+
+	if err != nil {
+		return fmt.Errorf(ePrefix +
+			"This Decimal object (dec) is INVALID! Please Re-initialize. " +
+			"Error='%v' ", err.Error())
+	}
+
+	n1, err := NumStrDto{}.NewPtr().ShiftPrecisionRight(
+																	dec.numStrDto.GetNumStr(),
+																		uint(shiftRightPlaces))
+
+	if err != nil {
+		return fmt.Errorf(ePrefix +
+			"Error returned by NumStrDto{}.NewPtr().ShiftPrecisionLeft(dec.numStrDto, " +
+			"uint(shiftLeftPlaces) dec.numStrDto='%v' shiftRightPlaces='%v' Error='%v'",
+			dec.numStrDto.GetNumStr(), shiftRightPlaces, err.Error())
 	}
 
 	dec.numStrDto = n1.CopyOut()
