@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"math"
 	"math/big"
+	"strconv"
 )
 
 /*
@@ -2051,6 +2052,170 @@ func (nDto NumStrDto) NewNumStr(numStr string) (NumStrDto, error) {
 	return n2, nil
 }
 
+
+// NewBigFloat - Creates a new NumStrDto instance from a Big Float value
+// (*big.Float) and a precision specification.
+func (nDto NumStrDto) NewBigFloat(bigFloat *big.Float, precision int) (NumStrDto, error) {
+
+	ePrefix := "NumStrDto.NewBigFloat() "
+
+	numStr := bigFloat.Text('f', precision)
+
+	n2, err := NumStrDto{}.NewPtr().ParseNumStr(numStr)
+
+	if err != nil {
+		return NumStrDto{},
+			fmt.Errorf(ePrefix + "Error returned by n.ParseNumStr(numStr). " +
+				"numStr='%v'  Error='%v'",
+				numStr, err.Error())
+	}
+
+	return n2, nil
+
+}
+
+// NewBigInt - Creates a new NumStrDto instance from a signed big integer (*big.Int) and
+// a precision specification.
+func (nDto NumStrDto) NewBigInt(signedBigInt *big.Int, precision uint) (NumStrDto, error) {
+
+	ePrefix := "NumStrDto.NewBigInt() "
+
+	n2, err := NumStrDto{}.NewPtr().ParseSignedBigInt(signedBigInt, precision)
+
+	if err != nil {
+		return NumStrDto{},
+			fmt.Errorf(ePrefix + "Error returned by ParseSignedBigInt(signedBigInt, precision). " +
+				"signedBigInt='%v' precision='%v'  Error='%v'",
+				signedBigInt.Text(10), precision,  err.Error())
+	}
+
+	return n2, nil
+}
+
+
+// NewFloat32 - Creates a new NumStrDto instance from a float32
+// and precision specification.
+func (nDto NumStrDto) NewFloat32(f32 float32, precision int) (NumStrDto, error) {
+
+	ePrefix := "NumStrDto.NewFloat32() "
+
+	numStr := strconv.FormatFloat(float64(f32), 'f', precision, 32)
+
+	n2, err := NumStrDto{}.NewPtr().ParseNumStr(numStr)
+
+	if err != nil {
+		return NumStrDto{},
+			fmt.Errorf(ePrefix + "Error returned by n.ParseNumStr(numStr). " +
+				"numStr='%v'  Error='%v'",
+				numStr, err.Error())
+	}
+
+	return n2, nil
+
+}
+
+// NewFloat64 - Creates a new NumStrDto instance from a float64
+// and precision specification.
+func (nDto NumStrDto) NewFloat64(f64 float64, precision int) (NumStrDto, error) {
+
+	ePrefix := "NumStrDto.NewFloat64() "
+
+	numStr := strconv.FormatFloat(f64, 'f', precision, 64)
+
+	n2, err := NumStrDto{}.NewPtr().ParseNumStr(numStr)
+
+	if err != nil {
+		return NumStrDto{},
+			fmt.Errorf(ePrefix + "Error returned by n.ParseNumStr(numStr). " +
+				"numStr='%v'  Error='%v'",
+				numStr, err.Error())
+	}
+
+	return n2, nil
+}
+
+// Creates a new NumStrDto from an int and a precision specification.
+func (nDto NumStrDto) NewInt(intNum int, precision uint) (NumStrDto, error) {
+	ePrefix := "NumStrDto.NewInt() "
+
+	numStr := strconv.FormatInt(int64(intNum), 10)
+
+	n2, err := NumStrDto{}.NewPtr().ParseNumStr(numStr)
+
+	if err != nil {
+		return NumStrDto{},
+			fmt.Errorf(ePrefix + "Error returned by n.ParseNumStr(numStr). " +
+				"numStr='%v'  Error='%v'",
+				numStr, err.Error())
+	}
+
+	n2.SetThisPrecision(precision, true)
+
+	return n2, nil
+}
+
+// NewInt32 - Creates a new NumStrDto from an int32 and a precision specification.
+func (nDto NumStrDto) NewInt32(i32 int32, precision uint) (NumStrDto, error) {
+	ePrefix := "NumStrDto.NewInt32() "
+
+	numStr := strconv.FormatInt(int64(i32), 10)
+
+	n2, err := NumStrDto{}.NewPtr().ParseNumStr(numStr)
+
+	if err != nil {
+		return NumStrDto{},
+			fmt.Errorf(ePrefix + "Error returned by n.ParseNumStr(numStr). " +
+				"numStr='%v'  Error='%v'",
+				numStr, err.Error())
+	}
+
+	n2.SetThisPrecision(precision, true)
+
+	return n2, nil
+}
+
+// NewInt64 - Creates a new NumStrDto from an int64 and a precision specification.
+func (nDto NumStrDto) NewInt64(i64 int64, precision uint) (NumStrDto, error) {
+	ePrefix := "NumStrDto.NewInt64() "
+
+	numStr := strconv.FormatInt(i64, 10)
+
+	n2, err := NumStrDto{}.NewPtr().ParseNumStr(numStr)
+
+	if err != nil {
+		return NumStrDto{},
+			fmt.Errorf(ePrefix + "Error returned by n.ParseNumStr(numStr). " +
+				"numStr='%v'  Error='%v'",
+				numStr, err.Error())
+	}
+
+	n2.SetThisPrecision(precision, true)
+
+	return n2, nil
+}
+
+// NewRational - Creates a new NumStrDto instance from a rational number and a precision
+// specification.
+//
+// For information on Big Rational Numbers (*big.Rat), see https://golang.org/pkg/math/big/
+//
+func (nDto NumStrDto) NewRational(bigRat *big.Rat, precision int) (NumStrDto, error) {
+
+	ePrefix := "NumStrDto.NewRational() "
+
+	numStr := bigRat.FloatString(precision)
+
+	n2, err := NumStrDto{}.NewPtr().ParseNumStr(numStr)
+
+	if err != nil {
+		return NumStrDto{},
+			fmt.Errorf(ePrefix + "Error returned by n.ParseNumStr(numStr). " +
+				"numStr='%v'  Error='%v'",
+				numStr, err.Error())
+	}
+
+	return n2, nil
+}
 
 // New - Used to create empty NumStrDto types.
 // This message initializes the NumStrDto

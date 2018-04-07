@@ -218,9 +218,7 @@ func (dec *Decimal) CopyIn(d2 Decimal) {
 
 	dec.Empty()
 	dec.numStrDto = d2.numStrDto.CopyOut()
-
 	dec.signedAllDigitsBigInt = big.NewInt(0).Set(d2.signedAllDigitsBigInt)
-	dec.SetThousandsSeparator(d2.GetThousandsSeparator())
 
 }
 
@@ -228,7 +226,6 @@ func (dec *Decimal) CopyOut() Decimal {
 	d2 := Decimal{}.New()
 	d2.numStrDto = dec.numStrDto.CopyOut()
 	d2.signedAllDigitsBigInt = big.NewInt(0).Set(dec.signedAllDigitsBigInt)
-	d2.SetThousandsSeparator(dec.GetThousandsSeparator())
 
 	return d2
 }
@@ -1644,6 +1641,30 @@ func (dec Decimal) NewNumStrPrecision(numStr string, precision uint, roundResult
 	return d2, nil
 }
 
+
+// NewRationalNum - Creates a new Decimal instance based on input parameters consisting
+// of a Rational Number (*big.Rat) and the specified 'precision' to be implemented in
+// the resulting Decimal number value.
+//
+// For information on *big.Rat see https://golang.org/pkg/math/big/
+//
+func (dec *Decimal) NewRationalNum(bigRat *big.Rat, precision int ) (Decimal, error) {
+	ePrefix := "Decimal.NewRationalNum() "
+
+	n1, err := NumStrDto{}.NewRational(bigRat, precision)
+
+	d2, err := dec.MakeDecimalFromNumStrDto(n1)
+
+	if err != nil {
+		return Decimal{},
+			fmt.Errorf(ePrefix + "Error returned from Decimal.MakeDecimalFromNumStrDto(n1). " +
+				"dec.numStrDto= '%v' Error= %v", dec.numStrDto.GetNumStr(), err)
+	}
+
+	return d2, nil
+
+}
+
 // TODO Needs more testing!
 // NumStrPrecisionToDecimal - receives a number string and a
 // precision value as parameters. This method creates a Decimal
@@ -1658,7 +1679,7 @@ func (dec Decimal) NewNumStrPrecision(numStr string, precision uint, roundResult
 //
 func (dec *Decimal) NumStrPrecisionToDecimal(
 					str string,
-						requestedPrecision uint,
+						requiredPrecision uint,
 								roundResult bool) (Decimal, error) {
 
 	ePrefix := "Decimal.NumStrPrecisionToDecimal() "
@@ -1677,14 +1698,14 @@ func (dec *Decimal) NumStrPrecisionToDecimal(
 				str, err.Error())
 	}
 
-	err = n1.SetThisPrecision(requestedPrecision, roundResult)
+	err = n1.SetThisPrecision(requiredPrecision, roundResult)
 
 	if err != nil {
 		return Decimal{},
 		fmt.Errorf(ePrefix +
-			"Error returned by n1.SetThisPrecision(requestedPrecision, roundResult) " +
-			"requestedPrecision='%v' roundResult='%v' Error='%v' ",
-				requestedPrecision, roundResult, err.Error())
+			"Error returned by n1.SetThisPrecision(requiredPrecision, roundResult) " +
+			"requiredPrecision='%v' roundResult='%v' Error='%v' ",
+			requiredPrecision, roundResult, err.Error())
 	}
 
 	n1.SetSeparators(dec.GetDecimalSeparator(), dec.GetThousandsSeparator(), dec.GetCurrencySymbol())
@@ -1694,8 +1715,8 @@ func (dec *Decimal) NumStrPrecisionToDecimal(
 	if err != nil {
 		return Decimal{},
 			fmt.Errorf(ePrefix + "Error received from dec.MakeDecimalFromNumStrDto(n1). " +
-				"n1.NumStr='%v' requestedPrecision='%v' Error= %v",
-				n1.GetNumStr(), requestedPrecision, err.Error())
+				"n1.NumStr='%v' requiredPrecision='%v' Error= %v",
+				n1.GetNumStr(), requiredPrecision, err.Error())
 	}
 
 	return d2, nil
@@ -1877,14 +1898,6 @@ func (dec *Decimal) SetFloat32(f32 float32) error {
 
 	ePrefix := "Decimal.SetFloat32() "
 
-	err := dec.IsDecimalValid()
-
-	if err != nil {
-		return fmt.Errorf(ePrefix +
-			"This Decimal object (dec) is INVALID! Please Re-initialize. " +
-			"Error='%v' ", err.Error())
-	}
-
 	dec.SetEmptySeparatorsToDefault()
 
 	str := strconv.FormatFloat(float64(f32), 'f', -1, 32)
@@ -1952,14 +1965,6 @@ func (dec *Decimal) SetFloatBig(bigFloat *big.Float) error {
 
 	ePrefix := "Decimal.SetFloatBig() "
 
-	err := dec.IsDecimalValid()
-
-	if err != nil {
-		return fmt.Errorf(ePrefix +
-			"This Decimal object (dec) is INVALID! Please Re-initialize. " +
-			"Error='%v' ", err.Error())
-	}
-
 	dec.SetEmptySeparatorsToDefault()
 
 	str := bigFloat.Text('f', -1)
@@ -1967,7 +1972,9 @@ func (dec *Decimal) SetFloatBig(bigFloat *big.Float) error {
 	d2, err := dec.NumStrToDecimal(str)
 
 	if err != nil {
-		return fmt.Errorf("SetFloatBig() Error from nDto.NumStrToDecimal(str). str= '%v'. Error= %v", str, err)
+		return fmt.Errorf(ePrefix +
+			"Error from nDto.NumStrToDecimal(str). str= '%v'. Error= %v",
+				str, err)
 	}
 
 	dec.CopyIn(d2)
