@@ -727,6 +727,324 @@ func TestDecimal_AddToThisMultiple_02(t *testing.T) {
 
 }
 
+func TestDecimal_GetNumStr_01(t *testing.T) {
+
+	str1 := "575.63"
+
+	d1, err := Decimal{}.NewNumStr(str1)
+
+	if err != nil {
+		t.Errorf("Error returned by Decimal{}.NewNumStr(str1). " +
+			"Error='%v' ", err.Error())
+	}
+
+	actualStr := d1.GetNumStr()
+
+	if str1 != actualStr {
+		t.Errorf("Error: Expected NumStr='%v'.  Instead NumStr='%v' ",
+			str1, actualStr)
+	}
+
+}
+
+
+func TestDecimal_GetNumStr_02(t *testing.T) {
+
+	str1 := "-575.63"
+
+	d1, err := Decimal{}.NewNumStr(str1)
+
+	if err != nil {
+		t.Errorf("Error returned by Decimal{}.NewNumStr(str1). " +
+			"Error='%v' ", err.Error())
+	}
+
+	actualStr := d1.GetNumStr()
+
+	if str1 != actualStr {
+		t.Errorf("Error: Expected NumStr='%v'.  Instead NumStr='%v' ",
+			str1, actualStr)
+	}
+
+}
+
+func TestDecimal_GetNumParen_01(t *testing.T) {
+
+	str1 := "575.63"
+
+	d1, err := Decimal{}.NewNumStr(str1)
+
+	if err != nil {
+		t.Errorf("Error returned by Decimal{}.NewNumStr(str1). " +
+			"Error='%v' ", err.Error())
+	}
+
+	actualStr := d1.GetNumParen()
+
+	if str1 != actualStr {
+		t.Errorf("Error: Expected NumStr='%v'.  Instead NumStr='%v' ",
+			str1, actualStr)
+	}
+
+}
+
+
+func TestDecimal_GetNumParen_02(t *testing.T) {
+
+	str1 := "-575.63"
+	expectedStr := "(575.63)"
+
+	d1, err := Decimal{}.NewNumStr(str1)
+
+	if err != nil {
+		t.Errorf("Error returned by Decimal{}.NewNumStr(str1). " +
+			"Error='%v' ", err.Error())
+	}
+
+	actualStr := d1.GetNumParen()
+
+	if expectedStr != actualStr {
+		t.Errorf("Error: Expected NumStr='%v'.  Instead NumStr='%v' ",
+			expectedStr, actualStr)
+	}
+
+}
+
+func TestDecimal_GetThouStr_01(t *testing.T) {
+
+	str1 := "2567894.63"
+
+	expectedStr := "2,567,894.63"
+
+	d1, err := Decimal{}.NewNumStr(str1)
+
+	if err != nil {
+		t.Errorf("Error returned by Decimal{}.NewNumStr(str1). " +
+			"Error='%v' ", err.Error())
+	}
+
+	actualStr := d1.GetThouStr()
+
+	if expectedStr != actualStr {
+		t.Errorf("Error: Expected NumStr='%v'.  Instead NumStr='%v' ",
+			expectedStr, actualStr)
+	}
+
+}
+
+
+func TestDecimal_GetThouStr_02(t *testing.T) {
+
+	str1 := "-2567894.63"
+
+	expectedStr := "-2,567,894.63"
+
+	d1, err := Decimal{}.NewNumStr(str1)
+
+	if err != nil {
+		t.Errorf("Error returned by Decimal{}.NewNumStr(str1). " +
+			"Error='%v' ", err.Error())
+	}
+
+	actualStr := d1.GetThouStr()
+
+	if expectedStr != actualStr {
+		t.Errorf("Error: Expected NumStr='%v'.  Instead NumStr='%v' ",
+			expectedStr, actualStr)
+	}
+
+}
+
+func TestDecimal_GetThouParen_01(t *testing.T) {
+
+	str1 := "2567894.63"
+
+	expectedStr := "2,567,894.63"
+
+	d1, err := Decimal{}.NewNumStr(str1)
+
+	if err != nil {
+		t.Errorf("Error returned by Decimal{}.NewNumStr(str1). " +
+			"Error='%v' ", err.Error())
+	}
+
+	actualStr := d1.GetThouParen()
+
+	if expectedStr != actualStr {
+		t.Errorf("Error: Expected NumStr='%v'.  Instead NumStr='%v' ",
+			expectedStr, actualStr)
+	}
+
+}
+
+
+func TestDecimal_GetThouParen_02(t *testing.T) {
+
+	str1 := "-2567894.63"
+
+	expectedStr := "(2,567,894.63)"
+
+	d1, err := Decimal{}.NewNumStr(str1)
+
+	if err != nil {
+		t.Errorf("Error returned by Decimal{}.NewNumStr(str1). " +
+			"Error='%v' ", err.Error())
+	}
+
+	actualStr := d1.GetThouParen()
+
+	if expectedStr != actualStr {
+		t.Errorf("Error: Expected NumStr='%v'.  Instead NumStr='%v' ",
+			expectedStr, actualStr)
+	}
+
+}
+
+
+func TestDecimal_GetCurrencyStr_01(t *testing.T) {
+
+	str1 := "2567894.63"
+
+	expectedStr := "$2,567,894.63"
+
+	d1, err := Decimal{}.NewNumStr(str1)
+
+	if err != nil {
+		t.Errorf("Error returned by Decimal{}.NewNumStr(str1). " +
+			"Error='%v' ", err.Error())
+	}
+
+	actualStr := d1.GetCurrencyStr()
+
+	if expectedStr != actualStr {
+		t.Errorf("Error: Expected NumStr='%v'.  Instead NumStr='%v' ",
+			expectedStr, actualStr)
+	}
+
+}
+
+func TestDecimal_GetCurrencyStr_02(t *testing.T) {
+
+	str1 := "2567894.63"
+
+	expectedStr := "€2,567,894.63"
+
+	d1, err := Decimal{}.NewNumStr(str1)
+
+	if err != nil {
+		t.Errorf("Error returned by Decimal{}.NewNumStr(str1). " +
+			"Error='%v' ", err.Error())
+	}
+
+	// '\U000020ac', // Euro €  													 7
+	d1.SetCurrencySymbol('\U000020ac')
+
+	actualStr := d1.GetCurrencyStr()
+
+	if expectedStr != actualStr {
+		t.Errorf("Error: Expected NumStr='%v'.  Instead NumStr='%v' ",
+			expectedStr, actualStr)
+	}
+
+}
+
+
+func TestDecimal_GetCurrencyStr_03(t *testing.T) {
+
+	str1 := "-2567894.63"
+
+	expectedStr := "-$2,567,894.63"
+
+	d1, err := Decimal{}.NewNumStr(str1)
+
+	if err != nil {
+		t.Errorf("Error returned by Decimal{}.NewNumStr(str1). " +
+			"Error='%v' ", err.Error())
+	}
+
+	actualStr := d1.GetCurrencyStr()
+
+	if expectedStr != actualStr {
+		t.Errorf("Error: Expected NumStr='%v'.  Instead NumStr='%v' ",
+			expectedStr, actualStr)
+	}
+
+}
+
+func TestDecimal_GetCurrencyParen_01(t *testing.T) {
+
+	str1 := "2567894.63"
+
+	expectedStr := "$2,567,894.63"
+
+	d1, err := Decimal{}.NewNumStr(str1)
+
+	if err != nil {
+		t.Errorf("Error returned by Decimal{}.NewNumStr(str1). " +
+			"Error='%v' ", err.Error())
+	}
+
+	actualStr := d1.GetCurrencyParen()
+
+	if expectedStr != actualStr {
+		t.Errorf("Error: Expected NumStr='%v'.  Instead NumStr='%v' ",
+			expectedStr, actualStr)
+	}
+
+}
+
+func TestDecimal_GetCurrencyParen_02(t *testing.T) {
+
+	str1 := "2567894.63"
+
+	expectedStr := "€2,567,894.63"
+
+	d1, err := Decimal{}.NewNumStr(str1)
+
+	if err != nil {
+		t.Errorf("Error returned by Decimal{}.NewNumStr(str1). " +
+			"Error='%v' ", err.Error())
+	}
+
+	// '\U000020ac', // Euro €  													 7
+	d1.SetCurrencySymbol('\U000020ac')
+
+	actualStr := d1.GetCurrencyParen()
+
+	if expectedStr != actualStr {
+		t.Errorf("Error: Expected NumStr='%v'.  Instead NumStr='%v' ",
+			expectedStr, actualStr)
+	}
+
+}
+
+
+func TestDecimal_GetCurrencyParen_03(t *testing.T) {
+
+	str1 := "-2567894.63"
+
+	expectedStr := "(£2,567,894.63)"
+
+	d1, err := Decimal{}.NewNumStr(str1)
+
+	if err != nil {
+		t.Errorf("Error returned by Decimal{}.NewNumStr(str1). " +
+			"Error='%v' ", err.Error())
+	}
+
+	// '\U000000a3', // United Kingdom Pound (£)					29
+	d1.SetCurrencySymbol('\U000000a3')
+
+	actualStr := d1.GetCurrencyParen()
+
+	if expectedStr != actualStr {
+		t.Errorf("Error: Expected NumStr='%v'.  Instead NumStr='%v' ",
+			expectedStr, actualStr)
+	}
+
+}
+
+
 func TestDecimal_Mul_01(t *testing.T) {
 
 	str1 := "575.63"

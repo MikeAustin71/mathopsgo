@@ -23,7 +23,7 @@ package mathops
 // https://gist.github.com/bzerangue/5484121
 // http://symbologic.info/currency.htm
 // http://www.xe.com/symbols.php
-
+//
 // NumStrCurrencySymbols - an array containing
 // most of the world's major currency symbols
 // stored as type 'rune'.
@@ -36,7 +36,7 @@ var NumStrCurrencySymbols = []rune{
 	'\U00000024', // Colombia Peso										 4
 	'\U0004b10d', // Czech Republic Koruna						 5
 	'\U000000a3', // Egypt Pound											 6
-	'\U000020ac', // Euro    													 7
+	'\U000020ac', // Euro €  													 7
 	'\U00070116', // Hungary Forint										 8
 	'\U00107114', // Iceland Krona										 9
 	'\U00082112', // Indonesia Rupiah									10

@@ -1297,10 +1297,10 @@ func (nDto *NumStrDto) GetCurrencyParen() string {
 //
 // Example:
 // numstr = 1000000.23
-// GetThouStr() = $1,000,000.23
+// GetCurrencyStr() = $1,000,000.23
 //
 // numstr = -1000000.23
-// GetThouStr() = -$1,000,000.23
+// GetCurrencyStr() = -$1,000,000.23
 //
 // Note: If the current NumStrDto is invalid, this method
 // returns an empty string.

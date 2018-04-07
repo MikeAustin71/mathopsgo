@@ -406,11 +406,80 @@ func (dec *Decimal) GetBigFloatString(precision uint) (string, error) {
 }
 
 // GetCurrencySymbol - Returns the Decimal's current
-// value for Currency Symbol
+// value for Currency Symbol.
+//
+// Characters for Thousands Separators, Decimal Separators and Currency
+// Symbols vary by country and culture. The Decimal Type allows the user
+// to control the characters used for Thousands Separators, Decimal Separators
+// and Currency Symbols.
+//
+// In the USA, the currency symbol is the dollar sign
+// ('$').
+//
 func (dec *Decimal) GetCurrencySymbol() rune {
 
 	return dec.numStrDto.GetCurrencySymbol()
 }
+
+// GetCurrencyStr - Returns the Decimal's numeric value expressed
+// as number string delimited with the Decimal's Thousands Separator
+// and prefixed with the designated Currency Symbol characters.
+//
+// Note: The file mathopsconstants.go file contains Unicode characters
+// for most of the world's major currencies. This file is located at:
+// 			MikeAustin71/mathopsgo/mathops/mathopsconstants.go
+//
+// Characters for Thousands Separators, Decimal Separators and Currency
+// Symbols vary by country and culture. These Separators and Currency
+// Symbol are variable and may be controlled by the user.
+//
+// If the numeric value is negative, a leading minus sign will be prefixed
+// to the currency display.
+//
+// Example:
+// numstr = 1000000.23
+// GetThouStr() = $1,000,000.23
+//
+// numstr = -1000000.23
+// GetThouStr() = -$1,000,000.23
+//
+// Note: If the current Decimal is invalid, this method
+// returns an empty string.
+//
+func (dec *Decimal) GetCurrencyStr() string {
+	return dec.numStrDto.GetCurrencyStr()
+}
+
+
+// GetCurrencyParen - Returns the Decimal's numeric value expressed
+// as number string delimited with the Decimal's Thousands Separator
+// and prefixed with the designated Currency Symbol characters.
+//
+// Note: The file mathopsconstants.go file contains Unicode characters
+// for most of the world's major currencies. This file is located at:
+// 			MikeAustin71/mathopsgo/mathops/mathopsconstants.go
+//
+// Characters for Thousands Separators, Decimal Separators and Currency
+// Symbols vary by country and culture. These Separators and Currency
+// Symbol are variable and may be controlled by the user.
+//
+// If the numeric value is negative, the resulting number string is
+// surrounded by parentheses.
+//
+// Example:
+// numstr = 1000000.23
+// GetCurrencyParen() = $1,000,000.23
+//
+// numstr = -1000000.23
+// GetCurrencyParen() = ($1,000,000.23)
+//
+// Note: If the current Decimal is invalid, this method
+// returns an empty string.
+//
+func (dec *Decimal) GetCurrencyParen() string {
+	return dec.numStrDto.GetCurrencyParen()
+}
+
 
 // GetDecimalSeparator - returns the Decimal's current
 // value for Decimal Separator (i.e. '.')
@@ -504,13 +573,48 @@ func (dec *Decimal) GetIntAry() (IntAry, error) {
 }
 
 // GetNumStr - Returns the internal value of the Decimal
-// expressed as a signed numeric string. Precision is
-// controlled by the Decimal's precision setting.
+// expressed as a signed numeric string. Precision, or
+// placement of the decimal point, is controlled by
+// the Decimal's precision setting.
+//
+// Example Output:
+// ===============
+//
+//  123
+//  123.4
+//  123456789
+//  123456789.44
+// -123
+// -123.4
+// -123456789
+// -123456789.44
+//
 func (dec *Decimal) GetNumStr() string {
 
 	return dec.numStrDto.GetNumStr()
 
 }
+
+// GetNumPren - Returns the internal value of the
+// Decimal expressed as number string. Precision
+// or placement of the decimal point is controlled
+// by the Decimal's 'precision' setting.
+//
+// If the numeric value is less than zero, a negative
+// number, the number string is surrounded in parentheses.
+//
+// Example Output:
+// ===============
+//
+//  123
+//  123.4
+// (123)
+// (123.4)
+//
+func (dec *Decimal) GetNumParen() string {
+	return dec.numStrDto.GetNumParen()
+}
+
 
 // GetNumStrDto - returns a NumStrDto structure initialized
 // to the value of the current Decimal object.
@@ -781,11 +885,64 @@ func (dec *Decimal) GetSquareRoot(maxPrecision uint) (Decimal, error) {
 // the Thousands Separator for the current Decimal
 // object.
 //
+// Characters for Thousands Separators, Decimal Separators and Currency
+// Symbols vary by country and culture. The Decimal Type allows the user
+// to control the characters used for Thousands Separators, Decimal Separators
+// and Currency Symbols.
+//
 // For U.S.A. - The thousands separator is a the comma (',')
 //
 func (dec *Decimal) GetThousandsSeparator() rune {
 
 	return dec.numStrDto.GetThousandsSeparator()
+}
+
+// GetThouStr - Returns a number string which represents the Decimal's
+// numeric value. Thousands are separated by the Decimal's Thousands
+// Separator. In the USA, the Thousands Separator is a comma character
+// (',').
+//
+// Characters for Thousands Separators, Decimal Separators and Currency
+// Symbols vary by country and culture. The Decimal Type allows the user
+// to control the characters used for Thousands Separators, Decimal Separators
+// and Currency Symbols.
+//
+// Negative numbers are preceded by a minus sign.
+//
+// Example Output
+// ==============
+//
+//  123,456,789
+//  123,456,789.12
+// -123,456,789
+// -123,456,789.12
+//
+func (dec *Decimal) GetThouStr() string {
+	return dec.numStrDto.GetThouStr()
+}
+
+// GetThouParen - Returns the Decimal's numeric value formatted
+// as a number string with thousands separated by the Decimal's
+// Thousands Separator.  In the USA, the Thousands Separator is
+// a comma character (',').
+//
+// Characters for Thousands Separators, Decimal Separators and Currency
+// Symbols vary by country and culture. The Decimal Type allows the user
+// to control the characters used for Thousands Separators, Decimal Separators
+// and Currency Symbols.
+//
+// Negative numbers are surrounded with parentheses.
+//
+// Example Output
+// ==============
+//
+//  123,456,789
+//  123,456,789.12
+// (123,456,789)
+// (123,456,789.12)
+//
+func (dec *Decimal) GetThouParen() string {
+	return dec.numStrDto.GetThouParen()
 }
 
 // GetIsValid - returns a boolean indicating
@@ -797,7 +954,7 @@ func (dec *Decimal) GetThousandsSeparator() rune {
 // method returns 'false'.
 //
 // Notice that this method relies on
-// Decimal.IsDecimalValid which returns an
+// Decimal.IsDecimalValid() which returns an
 // 'error' type.
 //
 func (dec *Decimal) GetIsValid() bool {
@@ -1209,6 +1366,9 @@ func (dec Decimal) NewPtr() *Decimal {
 // and initialization in one step.
 //
 // Example: Decimal{}.NewBigInt(bigI, precision)
+// bigI := big.NewInt(123456)
+// Decimal{}.NewBigInt(bigI, 3) = 123.456
+//
 func (dec Decimal) NewBigInt(bigI *big.Int, precision uint) (Decimal, error) {
 
 	d2 := Decimal{}.New()
@@ -1235,7 +1395,7 @@ func (dec Decimal) NewBigInt(bigI *big.Int, precision uint) (Decimal, error) {
 // with Decimal{} thereby allowing Decimal creation and
 // initialization in one step.
 //
-// Example: Decimal{}.NewInt(123456, 3)
+// Example: Decimal{}.NewInt(123456, 3) = 123.456
 //
 func (dec Decimal) NewInt(iNum int, precision uint) (Decimal, error) {
 	d2 := Decimal{}.New()
@@ -1262,6 +1422,8 @@ func (dec Decimal) NewInt(iNum int, precision uint) (Decimal, error) {
 // and initialization in one step.
 //
 // Example: Decimal{}.NewI64(i64, precision)
+//	Decimal{}.NewI64(123456, 3) = 123.456
+//
 func (dec Decimal) NewI64(i64 int64, precision uint) (Decimal, error) {
 	d2 := Decimal{}.New()
 	err := d2.SetInt64(i64, precision)
@@ -1274,6 +1436,40 @@ func (dec Decimal) NewI64(i64 int64, precision uint) (Decimal, error) {
 	}
 
 	return d2, nil
+}
+
+// NewFloat32 - Creates a new Decimal instance based on a float32
+// input.
+func (dec Decimal) NewFloat32(f32 float32) (Decimal, error) {
+
+	d2 := Decimal{}.New()
+	err := d2.SetFloat32(f32)
+
+	if err != nil {
+		return Decimal{},
+		fmt.Errorf("Error returned by d2.SetFloat32(f32). " +
+			"f32='%v' Error='%v' ", f32, err.Error())
+	}
+
+	return d2, nil
+
+}
+
+// NewFloat32 - Creates a new Decimal instance based on a float64
+// input.
+func (dec Decimal) NewFloat64(f64 float64) (Decimal, error) {
+
+	d2 := Decimal{}.New()
+	err := d2.SetFloat64(f64)
+
+	if err != nil {
+		return Decimal{},
+		fmt.Errorf("Error returned by d2.SetFloat64(f64). " +
+			"f64='%v' Error='%v' ", f64, err.Error())
+	}
+
+	return d2, nil
+
 }
 
 // NewNumStrsMultiple - Used to create and return an array of Decimal Types.
@@ -1414,7 +1610,7 @@ func (dec Decimal) NewNumStrDto(numDto NumStrDto) (Decimal, error) {
 // with Decimal{} thereby allowing Decimal creation
 // and initialization in one step.
 //
-// Example: Decimal{}.NewNumStrPrecision('123456', 3, false)
+// Example: Decimal{}.NewNumStrPrecision('123456', 3, false) = 123.456
 //
 func (dec Decimal) NewNumStrPrecision(numStr string, precision uint, roundResult bool) (Decimal, error) {
 
@@ -1616,6 +1812,11 @@ func (dec *Decimal) SetBigInt(iBig *big.Int, precision uint) error {
 // currency symbol for this Decimal value. Currency defaults
 // to '$'.
 //
+// Characters for Thousands Separators, Decimal Separators and Currency
+// Symbols vary by country and culture. The Decimal Type allows the user
+// to control the characters used for Thousands Separators, Decimal Separators
+// and Currency Symbols.
+//
 // For a listing of Major World Currency Symbols in Unicode format,
 // see array 'NumStrCurrencySymbols' in source file:
 //   MikeAustin71/mathopsgo/mathops/mathopsconstants.go
@@ -1629,7 +1830,15 @@ func (dec *Decimal) SetCurrencySymbol(currencySymbol rune) error {
 
 // SetDecimalSeparator - sets the character which separates
 // the number into integer and fractional components. This
-// defaults to "."
+// defaults to the period '.'
+//
+// Characters for Thousands Separators, Decimal Separators and Currency
+// Symbols vary by country and culture. The Decimal Type allows the user
+// to control the characters used for Thousands Separators, Decimal Separators
+// and Currency Symbols.
+//
+// In the USA the Decimal Separator character is a period ('.')
+//
 func (dec *Decimal) SetDecimalSeparator(decimalSeparator rune) error {
 
 	dec.numStrDto.SetDecimalSeparator(decimalSeparator)
@@ -1656,16 +1865,17 @@ func (dec *Decimal) SetEmptySeparatorsToDefault() {
 
 }
 
-// SetFloat - Sets the value of the current decimal to
+// SetFloat32 - Sets the value of the current decimal to
 // that of the passed-in float32 parameter.
 //
 // Example usage:
 // d:= Decimal{}.New()
 // f32:= float32(123.456)
-// d.SetFloat(f32)
-func (dec *Decimal) SetFloat(f32 float32) error {
+// d.SetFloat32(f32)
+//
+func (dec *Decimal) SetFloat32(f32 float32) error {
 
-	ePrefix := "Decimal.SetFloat() "
+	ePrefix := "Decimal.SetFloat32() "
 
 	err := dec.IsDecimalValid()
 
@@ -1698,7 +1908,8 @@ func (dec *Decimal) SetFloat(f32 float32) error {
 // Example usage:
 // d:= Decimal{}.New()
 // f64:= float64(123.456)
-// d.SetFloat(f64)
+// d.SetFloat32(f64)
+// Number String = "123.456"
 func (dec *Decimal) SetFloat64(f64 float64) error {
 
 	ePrefix := "Decimal.SetFloat64() "
@@ -1735,6 +1946,8 @@ func (dec *Decimal) SetFloat64(f64 float64) error {
 // d:= Decimal{}.New()
 // bigFloat:= big.NewFloat(float64(123.456))
 // d.SetBigFloat(bigFloat)
+// Number String = "123.456"
+//
 func (dec *Decimal) SetFloatBig(bigFloat *big.Float) error {
 
 	ePrefix := "Decimal.SetFloatBig() "
@@ -1985,7 +2198,14 @@ func (dec *Decimal) SetPrecisionTrunc(precision uint) error {
 // SetThousandsSeparator - sets the character which serves
 // as the 'thousands' separator.
 //
-// This values defaults to ','
+// In the USA, the Thousands Separator character is the comma (',').
+// The Decimal Thousands Separator value defaults to the comma (',').
+//
+// Characters for Thousands Separators, Decimal Separators and Currency
+// Symbols vary by country and culture. The Decimal Type allows the user
+// to control the characters used for Thousands Separators, Decimal Separators
+// and Currency Symbols.
+//
 func (dec *Decimal) SetThousandsSeparator(thousandsSeparator rune) error {
 
 	dec.numStrDto.SetThousandsSeparator(thousandsSeparator)

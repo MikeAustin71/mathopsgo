@@ -467,10 +467,10 @@ func TestDecimal_SetFloat_01(t *testing.T) {
 	eSignVal := 1
 	d1 := Decimal{}.New()
 
-	err := d1.SetFloat(fVal)
+	err := d1.SetFloat32(fVal)
 
 	if err != nil {
-		t.Errorf("Received error from d1.SetFloat(fVal). fVal= '%v' Error= %v ", fVal, err)
+		t.Errorf("Received error from d1.SetFloat32(fVal). fVal= '%v' Error= %v ", fVal, err)
 	}
 
 	if  eNumStr1 != d1.GetNumStr() {
@@ -501,10 +501,10 @@ func TestDecimal_SetFloat_02(t *testing.T) {
 	eSignVal := -1
 	d1 := Decimal{}.New()
 
-	err := d1.SetFloat(fVal)
+	err := d1.SetFloat32(fVal)
 
 	if err != nil {
-		t.Errorf("Received error from d1.SetFloat(fVal). fVal= '%v' Error= %v ", fVal, err)
+		t.Errorf("Received error from d1.SetFloat32(fVal). fVal= '%v' Error= %v ", fVal, err)
 	}
 
 	if  eNumStr1 != d1.GetNumStr() {
