@@ -534,7 +534,7 @@ func TestDecimal_SetFloat64_01(t *testing.T) {
 	eSignVal := 1
 	d1 := Decimal{}.New()
 
-	err := d1.SetFloat64(fVal)
+	err := d1.SetFloat64(fVal, int(ePrecision))
 
 	if err != nil {
 		t.Errorf("Received error from d1.SetFloat64(fVal). fVal= '%v' Error= %v ", fVal, err)
@@ -567,7 +567,7 @@ func TestDecimal_SetFloat64_02(t *testing.T) {
 	eSignVal := -1
 	d1 := Decimal{}.New()
 
-	err := d1.SetFloat64(fVal)
+	err := d1.SetFloat64(fVal, int(ePrecision))
 
 	if err != nil {
 		t.Errorf("Received error from d1.SetFloat64(fVal). fVal= '%v' Error= %v ", fVal, err)

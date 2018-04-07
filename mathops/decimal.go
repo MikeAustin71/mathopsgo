@@ -1454,10 +1454,10 @@ func (dec Decimal) NewFloat32(f32 float32) (Decimal, error) {
 
 // NewFloat32 - Creates a new Decimal instance based on a float64
 // input.
-func (dec Decimal) NewFloat64(f64 float64) (Decimal, error) {
+func (dec Decimal) NewFloat64(f64 float64, precision int) (Decimal, error) {
 
 	d2 := Decimal{}.New()
-	err := d2.SetFloat64(f64)
+	err := d2.SetFloat64(f64, precision)
 
 	if err != nil {
 		return Decimal{},
@@ -1906,13 +1906,13 @@ func (dec *Decimal) SetFloat32(f32 float32) error {
 // f64:= float64(123.456)
 // d.SetFloat32(f64)
 // Number String = "123.456"
-func (dec *Decimal) SetFloat64(f64 float64) error {
+func (dec *Decimal) SetFloat64(f64 float64, precision int) error {
 
 	ePrefix := "Decimal.SetFloat64() "
 
 	dec.SetEmptySeparatorsToDefault()
 
-	str := strconv.FormatFloat(f64, 'f', -1, 64)
+	str := strconv.FormatFloat(f64, 'f', precision, 64)
 
 	d2, err := dec.NumStrToDecimal(str)
 
