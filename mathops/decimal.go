@@ -276,7 +276,6 @@ func (dec *Decimal) Empty() {
 	bigI, _ := dec.numStrDto.GetSignedBigInt()
 	dec.signedAllDigitsBigInt = big.NewInt(0).Set(bigI)
 	dec.SetEmptySeparatorsToDefault()
-
 }
 
 // GetAbsoluteValue - returns the absolute value of the
@@ -2169,15 +2168,25 @@ func (dec *Decimal) ShiftPrecisionLeft(shiftPrecision int) error {
 				dec.numStrDto.GetNumStr(), shiftPrecision, err.Error())
 	}
 
-	dec2, err := dec.MakeDecimalFromNumStrDto(n1)
+	dec.numStrDto = n1.CopyOut()
+	bigI, err := dec.numStrDto.GetSignedBigInt()
 
 	if err != nil {
 		return fmt.Errorf(ePrefix +
-			"Error returned by dec.MakeDecimalFromNumStrDto(n1). n1.GetNumStr()='%v' " +
-			"Error='%v' ", n1.GetNumStr(), err.Error())
+			"Error returned by dec.numStrDto.GetSignedBigInt() " +
+			"Error='%v'", err.Error())
+
 	}
 
-	dec.CopyIn(dec2)
+	dec.signedAllDigitsBigInt = big.NewInt(0).Set(bigI)
+
+	err = dec.IsDecimalValid()
+
+	if err != nil {
+		return fmt.Errorf(ePrefix +
+			"This Decimal instance is INVALID! Please Re-Initialize. " +
+			"Error='%v'", err.Error())
+	}
 
 	return nil
 }

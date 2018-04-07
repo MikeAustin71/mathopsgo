@@ -2,6 +2,90 @@ package mathops
 
 import "testing"
 
+func TestDecimal_ShiftPrecisionLeft_01(t *testing.T) {
+
+	nStr1 := "123456789"
+	expectedNumStr := "123456.789"
+
+	d1, err := Decimal{}.NewNumStr(nStr1)
+
+	if err != nil {
+		t.Errorf("Error returned by Decimal{}.NewNumStr(nStr1). " +
+			"Error='%v' ", err.Error())
+	}
+
+	err = d1.ShiftPrecisionLeft(3)
+
+	if err != nil {
+		t.Errorf("Error returned by d1.ShiftPrecisionLeft(3). " +
+			"Error='%v' ", err.Error())
+	}
+
+	actualNumStr := d1.GetNumStr()
+
+	if expectedNumStr != actualNumStr {
+		t.Errorf("Error: Expected NumStr='%v'.  Instead, NumStr='%v'.",
+			expectedNumStr, actualNumStr)
+	}
+
+}
+
+func TestDecimal_ShiftPrecisionLeft_02(t *testing.T) {
+
+	nStr1 := "12345"
+	expectedNumStr := "0.012345"
+
+	d1, err := Decimal{}.NewNumStr(nStr1)
+
+	if err != nil {
+		t.Errorf("Error returned by Decimal{}.NewNumStr(nStr1). " +
+			"Error='%v' ", err.Error())
+	}
+
+	err = d1.ShiftPrecisionLeft(6)
+
+	if err != nil {
+		t.Errorf("Error returned by d1.ShiftPrecisionLeft(3). " +
+			"Error='%v' ", err.Error())
+	}
+
+	actualNumStr := d1.GetNumStr()
+
+	if expectedNumStr != actualNumStr {
+		t.Errorf("Error: Expected NumStr='%v'.  Instead, NumStr='%v'.",
+			expectedNumStr, actualNumStr)
+	}
+
+}
+
+func TestDecimal_ShiftPrecisionLeft_03(t *testing.T) {
+
+	nStr1 := "12345"
+	expectedNumStr := "0.000012345"
+
+	d1, err := Decimal{}.NewNumStr(nStr1)
+
+	if err != nil {
+		t.Errorf("Error returned by Decimal{}.NewNumStr(nStr1). " +
+			"Error='%v' ", err.Error())
+	}
+
+	err = d1.ShiftPrecisionLeft(9)
+
+	if err != nil {
+		t.Errorf("Error returned by d1.ShiftPrecisionLeft(3). " +
+			"Error='%v' ", err.Error())
+	}
+
+	actualNumStr := d1.GetNumStr()
+
+	if expectedNumStr != actualNumStr {
+		t.Errorf("Error: Expected NumStr='%v'.  Instead, NumStr='%v'.",
+			expectedNumStr, actualNumStr)
+	}
+
+}
+
 func TestDecimal_Subtract_01(t *testing.T) {
 
 	nStr1 := "123456"
