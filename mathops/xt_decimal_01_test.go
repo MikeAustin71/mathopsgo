@@ -727,6 +727,199 @@ func TestDecimal_AddToThisMultiple_02(t *testing.T) {
 
 }
 
+func TestDecimal_Divide_01(t *testing.T) {
+	// str1 / str2
+	str1 := "575.63"
+	str2 := "2014.123"
+	ePrecision := 20
+	expected := "0.28579684557497233287"
+
+	d1 := Decimal{}.New()
+
+	err := d1.SetNumStr(str1)
+
+	if err != nil {
+		t.Errorf("Error thrown by d1.SetNumStr(str1). str1= '%v' Error= %v", str1, err)
+	}
+
+	d2 := Decimal{}.New()
+
+	err = d2.SetNumStr(str2)
+
+	if err != nil {
+		t.Errorf("Error thrown by d2.SetNumStr(str2). str2= '%v' Error= %v", str2, err)
+	}
+
+	d3, err := d1.Divide(d2, ePrecision)
+
+	if err != nil {
+		t.Errorf("Error thrown by d1.Divide(d2, 20).  Error= %v", err)
+	}
+
+	outNumStr, _ := d3.GetBigFloatString(uint(d3.GetPrecision()))
+
+	if outNumStr != expected {
+		t.Errorf("Expected Quotient %v. Instead, got %v", expected, outNumStr)
+	}
+
+	actualResult := d3.GetNumStr()
+
+	ia1, err := IntAry{}.NewNumStr(str1)
+
+	if err != nil {
+		t.Errorf("Error returned from IntAry{}.NewNumStr(str1). "+
+			"str1='%v' Error='%v \n", str1, err.Error())
+	}
+
+	ia2, err := IntAry{}.NewNumStr(str2)
+
+	if err != nil {
+		t.Errorf("Error returned from IntAry{}.NewNumStr(str2). "+
+			"str2='%v' Error='%v \n", str2, err.Error())
+		return
+	}
+
+	ia3, err := ia1.DivideThisBy(&ia2, 0, 20 )
+
+	if err != nil {
+		t.Errorf("Error returned from ia1.DivideThisBy(&ia2, 0, 20 ). " +
+			"Error='%v \n", err.Error())
+		return
+	}
+
+	chkResult := ia3.GetNumStr()
+
+	if chkResult != actualResult {
+		t.Errorf("Error: Expected result='%v'. Instead, result='%v'. " +
+			chkResult, actualResult)
+	}
+
+}
+
+func TestDecimal_Divide_02(t *testing.T) {
+	// str1 / str2
+	str1 := "-8076.63"
+	str2 := "12014.123"
+	ePrecision := 20
+
+	d1 := Decimal{}.New()
+
+	err := d1.SetNumStr(str1)
+
+	if err != nil {
+		t.Errorf("Error thrown by d1.SetNumStr(str1). str1= '%v' Error= %v", str1, err)
+	}
+
+	d2 := Decimal{}.New()
+
+	err = d2.SetNumStr(str2)
+
+	if err != nil {
+		t.Errorf("Error thrown by d2.SetNumStr(str2). str2= '%v' Error= %v", str2, err)
+	}
+
+	d3, err := d1.Divide(d2, ePrecision)
+
+	if err != nil {
+		t.Errorf("Error thrown by d1.Divide(d2, 20).  Error= %v", err)
+	}
+
+	actualResult := d3.GetNumStr()
+
+	ia1, err := IntAry{}.NewNumStr(str1)
+
+	if err != nil {
+		t.Errorf("Error returned from IntAry{}.NewNumStr(str1). "+
+			"str1='%v' Error='%v \n", str1, err.Error())
+	}
+
+	ia2, err := IntAry{}.NewNumStr(str2)
+
+	if err != nil {
+		t.Errorf("Error returned from IntAry{}.NewNumStr(str2). "+
+			"str2='%v' Error='%v \n", str2, err.Error())
+		return
+	}
+
+	ia3, err := ia1.DivideThisBy(&ia2, 0, 20 )
+
+	if err != nil {
+		t.Errorf("Error returned from ia1.DivideThisBy(&ia2, 0, 20 ). " +
+			"Error='%v \n", err.Error())
+		return
+	}
+
+	chkResult := ia3.GetNumStr()
+
+	if chkResult != actualResult {
+		t.Errorf("Error: Expected result='%v'. Instead, result='%v'. " +
+			chkResult, actualResult)
+	}
+
+}
+
+func TestDecimal_Divide_03(t *testing.T) {
+	// str1 / str2
+	str1 := "100"
+	str2 := "33"
+	ePrecision := 20
+
+	d1 := Decimal{}.New()
+
+	err := d1.SetNumStr(str1)
+
+	if err != nil {
+		t.Errorf("Error thrown by d1.SetNumStr(str1). str1= '%v' Error= %v", str1, err)
+	}
+
+	d2 := Decimal{}.New()
+
+	err = d2.SetNumStr(str2)
+
+	if err != nil {
+		t.Errorf("Error thrown by d2.SetNumStr(str2). str2= '%v' Error= %v", str2, err)
+	}
+
+	d3, err := d1.Divide(d2, ePrecision)
+
+	if err != nil {
+		t.Errorf("Error thrown by d1.Divide(d2, 20).  Error= %v", err)
+	}
+
+	actualResult := d3.GetNumStr()
+
+	ia1, err := IntAry{}.NewNumStr(str1)
+
+	if err != nil {
+		t.Errorf("Error returned from IntAry{}.NewNumStr(str1). "+
+			"str1='%v' Error='%v \n", str1, err.Error())
+	}
+
+	ia2, err := IntAry{}.NewNumStr(str2)
+
+	if err != nil {
+		t.Errorf("Error returned from IntAry{}.NewNumStr(str2). "+
+			"str2='%v' Error='%v \n", str2, err.Error())
+		return
+	}
+
+	ia3, err := ia1.DivideThisBy(&ia2, 0, 20 )
+
+	if err != nil {
+		t.Errorf("Error returned from ia1.DivideThisBy(&ia2, 0, 20 ). " +
+			"Error='%v \n", err.Error())
+		return
+	}
+
+	chkResult := ia3.GetNumStr()
+
+	if chkResult != actualResult {
+		t.Errorf("Error: Expected result='%v'. Instead, result='%v'. " +
+			chkResult, actualResult)
+	}
+
+}
+
 func TestDecimal_GetNumStr_01(t *testing.T) {
 
 	str1 := "575.63"
@@ -1040,43 +1233,6 @@ func TestDecimal_GetCurrencyParen_03(t *testing.T) {
 	if expectedStr != actualStr {
 		t.Errorf("Error: Expected NumStr='%v'.  Instead NumStr='%v' ",
 			expectedStr, actualStr)
-	}
-
-}
-
-func TestDecimal_Divide_01(t *testing.T) {
-
-	str1 := "575.63"
-	str2 := "2014.123"
-	expected := "0.28579684557497233287"
-	//actual   := "0.28579684557497231356"
-
-	d1 := Decimal{}.New()
-
-	err := d1.SetNumStr(str1)
-
-	if err != nil {
-		t.Errorf("Error thrown by d1.SetNumStr(str1). str1= '%v' Error= %v", str1, err)
-	}
-
-	d2 := Decimal{}.New()
-
-	err = d2.SetNumStr(str2)
-
-	if err != nil {
-		t.Errorf("Error thrown by d2.SetNumStr(str2). str2= '%v' Error= %v", str2, err)
-	}
-
-	d3, err := d1.Divide(d2, 20)
-
-	if err != nil {
-		t.Errorf("Error thrown by d1.Divide(d2, 20).  Error= %v", err)
-	}
-
-	outNumStr, _ := d3.GetBigFloatString(uint(d3.GetPrecision()))
-
-	if outNumStr != expected {
-		t.Errorf("Expected Quotient %v. Instead, got %v", expected, outNumStr)
 	}
 
 }

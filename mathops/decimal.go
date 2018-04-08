@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"math/big"
 	"strconv"
+	"strings"
 )
 
 /*
@@ -438,7 +439,9 @@ func (dec *Decimal) GetBigFloat() (*big.Float, error) {
 // GetBigFloatString - returns a signed number string which is accurate out
 // to a very large number of decimal places (40+ decimal places). In contrast,
 // the *big.Float returned by GetBigFloat() is only accurate to about
-// 16-17 decimal places. func (nDto *Decimal)
+// 16-17 decimal places. func (nDto *Decimal).
+//
+// The returned string result is trimmed to eliminate leading and trailing spaces.
 func (dec *Decimal) GetBigFloatString(precision uint) (string, error) {
 
 	ePrefix := "Decimal.GetBigFloatString() "
@@ -474,7 +477,9 @@ func (dec *Decimal) GetBigFloatString(precision uint) (string, error) {
 	rDivisor := big.NewRat(1, 1).SetInt(decScaleFactor)
 	rQuotient := big.NewRat(1, 1).Quo(rDividend, rDivisor)
 
-	return rQuotient.FloatString(int(precision)), nil
+	fmtResult := strings.TrimLeft(strings.TrimRight(rQuotient.FloatString(int(precision)), " "), " ")
+
+	return fmtResult, nil
 }
 
 // GetCurrencySymbol - Returns the Decimal's current

@@ -8,7 +8,75 @@ import (
 
 func main() {
 
-	ExampleDecimalConvertToNumStr_04()
+	ExampleDecimalDivide_01()
+
+}
+
+func ExampleDecimalDivide_01() {
+	// str1 / str2
+	str1 := "575.63"
+	str2 := "2014.123"
+	ePrecision := 20
+	expected := "0.28579684557497233287"
+
+	d1, err := mathops.Decimal{}.NewNumStr(str1)
+
+	if err != nil {
+		fmt.Printf("Error returned from Decimal{}.NewNumStr(str1). "+
+			"str1='%v' Error='%v \n", str1, err.Error())
+		return
+	}
+
+	d2, err := mathops.Decimal{}.NewNumStr(str2)
+
+	if err != nil {
+		fmt.Printf("Error returned from Decimal{}.NewNumStr(str2). "+
+			"str2='%v' Error='%v \n", str2, err.Error())
+		return
+	}
+
+	d3, err := d1.Divide(d2, ePrecision)
+
+	if err != nil {
+		fmt.Printf("Error returned from d1.Divide(d2, ePrecision). "+
+			" Error='%v \n", str1, err.Error())
+		return
+	}
+
+	actualResult := d3.GetNumStr()
+
+	ia1, err := mathops.IntAry{}.NewNumStr(str1)
+
+	if err != nil {
+		fmt.Printf("Error returned from IntAry{}.NewNumStr(str1). "+
+			"str1='%v' Error='%v \n", str1, err.Error())
+		return
+	}
+
+	ia2, err := mathops.IntAry{}.NewNumStr(str2)
+
+	if err != nil {
+		fmt.Printf("Error returned from IntAry{}.NewNumStr(str2). "+
+			"str2='%v' Error='%v \n", str2, err.Error())
+		return
+	}
+
+
+	ia3, err := ia1.DivideThisBy(&ia2, 0, 20 )
+
+	if err != nil {
+		fmt.Printf("Error returned from ia1.DivideThisBy(&ia2, 0, 20 ). " +
+			"Error='%v \n", err.Error())
+		return
+	}
+
+	chkResult := ia3.GetNumStr()
+
+	fmt.Println("			    Dividend: ", str1)
+	fmt.Println(" 			   Divisor: ", str2)
+	fmt.Println("	   Actual Result: ", actualResult)
+	fmt.Println("	 Expected Result: ", expected)
+	fmt.Println("	    Check Result: ", chkResult)
 
 }
 
