@@ -14,10 +14,17 @@ func main() {
 
 func ExampleDecimalDivide_01() {
 	// str1 / str2
+	/*
 	str1 := "575.63"
 	str2 := "2014.123"
 	ePrecision := 20
 	expected := "0.28579684557497233287"
+*/
+
+	str1 := "975.69"
+	str2 := "589.7654321"
+	expected := "1.654369597"
+	ePrecision := 9
 
 	d1, err := mathops.Decimal{}.NewNumStr(str1)
 
@@ -62,7 +69,7 @@ func ExampleDecimalDivide_01() {
 	}
 
 
-	ia3, err := ia1.DivideThisBy(&ia2, 0, 20 )
+	ia3, err := ia1.DivideThisBy(&ia2, 0, ePrecision )
 
 	if err != nil {
 		fmt.Printf("Error returned from ia1.DivideThisBy(&ia2, 0, 20 ). " +
