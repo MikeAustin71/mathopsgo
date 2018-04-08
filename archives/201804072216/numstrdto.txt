@@ -2963,24 +2963,6 @@ func (nDto *NumStrDto) SetEmptySeparatorsToDefault() {
 
 }
 
-// SetNumStr - Sets the value of the current NumStrDto instance
-// to the number string received as input.
-func (nDto *NumStrDto) SetNumStr(numStr string) error {
-
-	ePrefix := "NumStrDto.SetNumStr() "
-
-	n2, err := NumStrDto{}.NewNumStr(numStr)
-
-	if err != nil {
-		return fmt.Errorf(ePrefix + "Error returned by NumStrDto{}.NewNumStr(numStr). " +
-			"numStr='%v' Error='%v' ")
-	}
-
-	nDto.CopyIn(n2)
-
-	return nil
-
-}
 
 // SetPrecision - parses the incoming number string and applies the designated 'precision'. 'precision'
 // determines the number of digits to the right of the decimal place. The boolean parameter 'roundResult'

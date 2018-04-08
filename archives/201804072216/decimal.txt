@@ -1,6 +1,7 @@
 package mathops
 
 import (
+	"errors"
 	"fmt"
 	"math/big"
 	"strconv"
@@ -19,16 +20,13 @@ import (
 */
 
 // Decimal - This type is used to perform math operations
-// which achieve a high degree of accuracy when dealing
-// with fractional numbers containing digits to the right
-// of the decimal place.
-//
-// While storage operations are provided by a type NumStrDto,
-// math operations are performed using types *big.Int and
-// *big.Rat.
+// which achieve a high degree of accuracy and uniformity
+// when dealing with fractional numbers containing digits
+// to the right of the decimal place.
 
 type Decimal struct {
 	numStrDto             NumStrDto
+	signedAllDigitsBigInt *big.Int
 }
 
 // Add - Adds the value of the current Decimal to that of
@@ -61,67 +59,39 @@ func (dec *Decimal) Add(d2 Decimal) (Decimal, error) {
 	var s3Text string
 	var newPrecision uint
 	var nDto NumStrDto
-	
-	x, err := dec.numStrDto.GetSignedBigInt()
 
-	if err != nil {
-		return Decimal{},
-			fmt.Errorf(ePrefix + "Error returned by dec.numStrDto.GetSignedBigInt() " +
-				"Error= '%v' ", err.Error())
-	}
-	
-	decSignedAllDigitsBigInt := big.NewInt(0).Set(x)
+	if dec.GetPrecision() == d2.GetPrecision() {
 
-
-	x, err = d2.numStrDto.GetSignedBigInt()
-
-	if err != nil {
-		return Decimal{},
-			fmt.Errorf(ePrefix + "Error returned by dec.numStrDto.GetSignedBigInt() " +
-				"Error= '%v' ", err.Error())
-	}
-	
-	
-	d2SignedAllDigitsBigInt := big.NewInt(0).Set(x)
-	
-	// precision is uint
-	decPrecision := dec.numStrDto.GetPrecision()
-	
-	d2Precision := d2.numStrDto.GetPrecision()
-	
-	
-	if decPrecision == d2Precision {
-
-		s3Val := big.NewInt(0).Add(decSignedAllDigitsBigInt, d2SignedAllDigitsBigInt)
+		s3Val := big.NewInt(0).Add(dec.signedAllDigitsBigInt, d2.signedAllDigitsBigInt)
 
 		s3Text = s3Val.Text(10)
 
-		newPrecision = decPrecision
+		newPrecision = uint(dec.GetPrecision())
 
-	} else	if d2Precision > decPrecision {
+	} else	if d2.GetPrecision() > dec.GetPrecision() {
 
 		deltaPrecision := big.NewInt(int64(d2.GetPrecision() - dec.GetPrecision()))
 		deltaPrecisionScale := big.NewInt(0).Exp(base10, deltaPrecision, nil)
-		s1 := big.NewInt(0).Mul(decSignedAllDigitsBigInt, deltaPrecisionScale)
-		s3 := big.NewInt(0).Add(s1, d2SignedAllDigitsBigInt)
+		s1 := big.NewInt(0).Mul(dec.signedAllDigitsBigInt, deltaPrecisionScale)
+		s3 := big.NewInt(0).Add(s1, d2.signedAllDigitsBigInt)
 
 		s3Text = s3.Text(10)
 
-		newPrecision = d2Precision
+		newPrecision = uint(d2.GetPrecision())
 
 	} else {
 
 		// must be dec.precision > d2.precision
-		idp := int(decPrecision) - int(d2Precision)
+		idp := int(dec.GetPrecision()) - int(d2.GetPrecision())
 		i64DeltaPrecision := int64(idp)
 		deltaPrecision := big.NewInt(i64DeltaPrecision)
 		deltaPrecisionScale := big.NewInt(0).Exp(base10, deltaPrecision, nil)
-		s1 := big.NewInt(0).Mul(d2SignedAllDigitsBigInt, deltaPrecisionScale)
-		s3 := big.NewInt(0).Add(s1, decSignedAllDigitsBigInt)
+		s1 := big.NewInt(0).Mul(d2.signedAllDigitsBigInt, deltaPrecisionScale)
+		s3 := big.NewInt(0).Add(s1, dec.signedAllDigitsBigInt)
 
 		s3Text = s3.Text(10)
 
-		newPrecision = dec.numStrDto.GetPrecision()
+		newPrecision = uint(dec.GetPrecision())
 
 	}
 
@@ -248,12 +218,15 @@ func (dec *Decimal) CopyIn(d2 Decimal) {
 
 	dec.Empty()
 	dec.numStrDto = d2.numStrDto.CopyOut()
-	return 
+	dec.signedAllDigitsBigInt = big.NewInt(0).Set(d2.signedAllDigitsBigInt)
+
 }
 
 func (dec *Decimal) CopyOut() Decimal {
 	d2 := Decimal{}.New()
 	d2.numStrDto = dec.numStrDto.CopyOut()
+	d2.signedAllDigitsBigInt = big.NewInt(0).Set(dec.signedAllDigitsBigInt)
+
 	return d2
 }
 
@@ -261,49 +234,25 @@ func (dec *Decimal) CopyOut() Decimal {
 // parameter 'divisor'.
 func (dec *Decimal) Divide(divisor Decimal, precision int) (Decimal, error) {
 
-	ePrefix := "Decimal.Divide() "
-	
 	base10 := big.NewInt(10)
 	sDividend1 := big.NewInt(0)
 	sDivisor2 := big.NewInt(0)
-	x, err := dec.numStrDto.GetSignedBigInt()
-	
-	if err != nil {
-		return Decimal{},
-		fmt.Errorf(ePrefix + "Error returned by dec.numStrDto.GetSignedBigInt() " +
-			"Error='%v' ", err.Error())
-	}
 
-	decSignedAllDigitsBigInt := big.NewInt(0).Set(x)
-	decPrecision := dec.numStrDto.GetPrecision()
-
-	x, err = divisor.numStrDto.GetSignedBigInt()
-
-	if err != nil {
-		return Decimal{},
-			fmt.Errorf(ePrefix + "Error returned by divisor.numStrDto.GetSignedBigInt() " +
-				"Error='%v' ", err.Error())
-	}
-	
-	divisorSignedAllDigitsBigInt:= big.NewInt(0).Set(x)
-	divisorPrecision := divisor.numStrDto.GetPrecision()
-	
-	
-	if divisorPrecision > decPrecision {
+	if divisor.GetPrecision() > dec.GetPrecision() {
 		deltaPrecision := big.NewInt(int64(divisor.GetPrecision() - dec.GetPrecision()))
 		deltaPrecisionScale := big.NewInt(0).Exp(base10, deltaPrecision, nil)
-		sDividend1 = big.NewInt(0).Mul(decSignedAllDigitsBigInt, deltaPrecisionScale)
-		sDivisor2 = big.NewInt(0).Set(divisorSignedAllDigitsBigInt)
+		sDividend1 = big.NewInt(0).Mul(dec.signedAllDigitsBigInt, deltaPrecisionScale)
+		sDivisor2 = big.NewInt(0).Set(divisor.signedAllDigitsBigInt)
 
-	} else if decPrecision > divisorPrecision {
+	} else if dec.GetPrecision() > divisor.GetPrecision() {
 		deltaPrecision := big.NewInt(int64(dec.GetPrecision() - divisor.GetPrecision()))
 		deltaPrecisionScale := big.NewInt(0).Exp(base10, deltaPrecision, nil)
-		sDividend1 = big.NewInt(0).Set(decSignedAllDigitsBigInt)
-		sDivisor2 = big.NewInt(0).Mul(divisorSignedAllDigitsBigInt, deltaPrecisionScale)
+		sDividend1 = big.NewInt(0).Set(dec.signedAllDigitsBigInt)
+		sDivisor2 = big.NewInt(0).Mul(divisor.signedAllDigitsBigInt, deltaPrecisionScale)
 
 	} else {
-		sDividend1 = big.NewInt(0).Set(decSignedAllDigitsBigInt)
-		sDivisor2 = big.NewInt(0).Set(divisorSignedAllDigitsBigInt)
+		sDividend1 = big.NewInt(0).Set(dec.signedAllDigitsBigInt)
+		sDivisor2 = big.NewInt(0).Set(divisor.signedAllDigitsBigInt)
 
 	}
 
@@ -313,6 +262,7 @@ func (dec *Decimal) Divide(divisor Decimal, precision int) (Decimal, error) {
 	numStr := rQuotient.FloatString(precision)
 
 	return dec.NumStrToDecimal(numStr)
+
 }
 
 // Empty - Sets all values of the current Decimal's
@@ -320,6 +270,8 @@ func (dec *Decimal) Divide(divisor Decimal, precision int) (Decimal, error) {
 func (dec *Decimal) Empty() {
 	dec.numStrDto =  NumStrDto{}.NewPtr().GetZeroNumStr(0)
 	dec.numStrDto.SetSignValue(1)
+	bigI, _ := dec.numStrDto.GetSignedBigInt()
+	dec.signedAllDigitsBigInt = big.NewInt(0).Set(bigI)
 	dec.SetEmptySeparatorsToDefault()
 }
 
@@ -340,23 +292,15 @@ func (dec *Decimal) GetAbsoluteValue() (Decimal, error) {
 
 	d2 := dec.CopyOut()
 
-	if d2.numStrDto.GetSign() == 1 {
+	if d2.GetSign() == 1 {
 		return d2, nil
 	}
 
-	d2.numStrDto.SetSignValue(1)
+	d2.SetSign(1)
 
-	x, err := d2.numStrDto.GetSignedBigInt()
-	
-	if err != nil {
-		return Decimal{},
-			fmt.Errorf(ePrefix + "Error returned by d2.numStrDto.GetSignedBigInt() " +
-				"Error='%v'", err.Error())
-	}
-	
-	d2SignedAllDigitsBigInt := big.NewInt(0).Set(x)
+	d2.signedAllDigitsBigInt = big.NewInt(0).Abs(dec.signedAllDigitsBigInt)
 
-	rDividend := big.NewRat(1, 1).SetInt(d2SignedAllDigitsBigInt)
+	rDividend := big.NewRat(1, 1).SetInt(d2.signedAllDigitsBigInt)
 
 	d2ScaleFactor, err := d2.numStrDto.GetScaleFactor()
 
@@ -371,8 +315,7 @@ func (dec *Decimal) GetAbsoluteValue() (Decimal, error) {
 	rQuotient := big.NewRat(1, 1).Quo(rDividend, rDivisor)
 
 
-	d2.numStrDto, err = 
-			NumStrDto{}.NewNumStr(rQuotient.FloatString(int(d2.numStrDto.GetPrecision())))
+	d2.numStrDto, err = NumStrDto{}.NewNumStr(rQuotient.FloatString(int(d2.GetPrecision())))
 
 	if err != nil {
 		return Decimal{},
@@ -399,15 +342,7 @@ func (dec *Decimal) GetAbsoluteAllDigitsStr() (string, error) {
 			"Error='%v'", err.Error())
 	}
 
-	decSignedAllDigitsBigInt, err := dec.numStrDto.GetSignedBigInt()
-
-	if err != nil {
-		return "",
-			fmt.Errorf(ePrefix + "Error returned by dec.numStrDto.GetSignedBigInt(). " +
-				"Error='%v'", err.Error())
-	}
-		
-	absVal := big.NewInt(0).Abs(decSignedAllDigitsBigInt)
+	absVal := big.NewInt(0).Abs(dec.signedAllDigitsBigInt)
 
 	return absVal.String(), nil
 }
@@ -451,18 +386,7 @@ func (dec *Decimal) GetBigFloatString(precision uint) (string, error) {
 			"Error='%v' ", err.Error())
 	}
 
-	x, err := dec.numStrDto.GetSignedBigInt()
-		
-	if err != nil {
-		return "",
-			fmt.Errorf(ePrefix + 
-				"Error returned by dec.numStrDto.GetSignedBigInt() " +
-				"Error='%v' ", err.Error())
-	}
-
-	decSignedAllDigitsBigInt:= big.NewInt(0).Set(x)
-		
-	rDividend := big.NewRat(1, 1).SetInt(decSignedAllDigitsBigInt)
+	rDividend := big.NewRat(1, 1).SetInt(dec.signedAllDigitsBigInt)
 	decScaleFactor, err := dec.numStrDto.GetScaleFactor()
 
 	if err != nil {
@@ -475,6 +399,7 @@ func (dec *Decimal) GetBigFloatString(precision uint) (string, error) {
 	rQuotient := big.NewRat(1, 1).Quo(rDividend, rDivisor)
 
 	return rQuotient.FloatString(int(precision)), nil
+
 }
 
 // GetCurrencySymbol - Returns the Decimal's current
@@ -631,29 +556,14 @@ func (dec *Decimal) GetFloat64() (float64, big.Accuracy, error) {
 // GetIntAry - Returns an IntAry structure initialized
 // to the value of the current 'Decimal' object.
 func (dec *Decimal) GetIntAry() (IntAry, error) {
-	
-	ePrefix := "Decimal.GetIntAry() "
-	x, err := dec.numStrDto.GetSignedBigInt()
 
-	if err != nil {
-		return IntAry{}.New(),
-			fmt.Errorf(ePrefix + "- Received error from " +
-				"dec.numStrDto.GetSignedBigInt() " +
-				"Error= %v", err.Error())
-	}
-
-	decSignedAllDigitsBigInt := big.NewInt(0).Set(x)
-	
-	decPrecision := dec.numStrDto.GetPrecision()
-	
-	ia, err := IntAry{}.NewBigInt(decSignedAllDigitsBigInt, decPrecision)
+	ia, err := IntAry{}.NewBigInt(dec.signedAllDigitsBigInt, uint(dec.GetPrecision()))
 
 	if err != nil {
 		return IntAry{}.New(),
 		fmt.Errorf("Decimal.GetIntAry() - Received error from " +
-			"IntAry{}.NewBigInt(decSignedAllDigitsBigInt, decPrecision). " +
-			" decSignedAllDigitsBigInt='%v' decPrecision='%v' Error= %v",
-			decSignedAllDigitsBigInt.Text(10), decPrecision, err.Error())
+			"IntAry{}.NewBigInt(dec.signedAllDigitsBigInt," +
+			"dec.precision). Error= %v", err)
 	}
 
 	return ia, nil
@@ -798,17 +708,7 @@ func (dec *Decimal) GetRational() (*big.Rat, error) {
 			"Error='%v' ", err.Error())
 	}
 
-	x, err := dec.numStrDto.GetSignedBigInt()
-
-	if err != nil {
-		return big.NewRat(1, 1),
-			fmt.Errorf(ePrefix + "Error returned by dec.numStrDto.GetSignedBigInt() " +
-				"Error='%v' ", err.Error())
-	}
-
-	decSignedAllDigitsBigInt := big.NewInt(0).Set(x)
-	
-	rDividend := big.NewRat(1, 1).SetInt(decSignedAllDigitsBigInt)
+	rDividend := big.NewRat(1, 1).SetInt(dec.signedAllDigitsBigInt)
 
 	decScaleFactor, err := dec.numStrDto.GetScaleFactor()
 
@@ -908,15 +808,7 @@ func (dec *Decimal) GetSignedAllDigitsStr() (string, error) {
 				"Error='%v' ", err.Error())
 	}
 
-	result := ""
-	
-	if dec.numStrDto.signVal < 0 {
-		result += "-"
-	}
-	
-	result += string(dec.numStrDto.absAllNumRunes)
-	
-	return result, nil
+	return dec.signedAllDigitsBigInt.String(), nil
 }
 
 // GetSignedAllDigitsVal - returns the Decimal value expressed as an
@@ -937,15 +829,7 @@ func (dec *Decimal) GetSignedAllDigitsVal() (*big.Int, error) {
 				"Error='%v' ", err.Error())
 	}
 
-	x, err := dec.numStrDto.GetSignedBigInt()
-
-	if err != nil {
-		return big.NewInt(0),
-			fmt.Errorf(ePrefix + "Error returned by dec.numStrDto.GetSignedBigInt() " +
-				"Error='%v' ", err.Error())
-	}
-	
-	return big.NewInt(0).Set(x), nil
+	return dec.signedAllDigitsBigInt, nil
 }
 
 // GetSquareRoot - Returns a Decimal object equal to the square root
@@ -1108,17 +992,7 @@ func (dec *Decimal) Inverse(maxPrecision int) (Decimal, error) {
 		maxPrecision = 500
 	}
 
-	x, err := dec.numStrDto.GetSignedBigInt()
-
-	if err != nil {
-		return Decimal{},
-			fmt.Errorf(ePrefix + "Error returned by dec.numStrDto.GetSignedBigInt() " +
-				"Error='%v' ", err.Error())
-	}
-
-	decSignedAllDigitsBigInt := big.NewInt(0).Set(x)
-	
-	rDividend := big.NewRat(1, 1).SetInt(decSignedAllDigitsBigInt)
+	rDividend := big.NewRat(1, 1).SetInt(dec.signedAllDigitsBigInt)
 
 	decScaleFactor, err := dec.numStrDto.GetScaleFactor()
 
@@ -1180,6 +1054,22 @@ func (dec *Decimal) IsDecimalValid() error {
 		return err
 	}
 
+	signedBigInt, err := dec.numStrDto.GetSignedBigInt()
+
+	if err != nil {
+		return fmt.Errorf(ePrefix + "dec.numStrDto.GetSignedBigInt() returned an Error. " +
+			"Error='%v' ", err.Error())
+	}
+
+	result := signedBigInt.Cmp(dec.signedAllDigitsBigInt)
+
+	if result != 0 {
+		return fmt.Errorf(ePrefix +
+			"Error - NumStrDto Signed Big Int NOT Equal To Decimal Big Int! " +
+			"dec.signedAllDigitsBigInt= '%v'  NumStrDto.signedBigInt= '%v' ",
+			dec.signedAllDigitsBigInt.Text(10), signedBigInt.Text(10))
+	}
+
 	return nil
 }
 
@@ -1200,7 +1090,7 @@ func (dec *Decimal) IsFraction() (bool, error) {
 				"Error='%v' ", err.Error())
 	}
 
-	if dec.numStrDto.precision != 0 {
+	if dec.GetPrecision() != 0 {
 		return true, nil
 	}
 
@@ -1273,8 +1163,25 @@ func (dec *Decimal) MakeDecimalFromNumStrDto(nDto NumStrDto) (Decimal, error) {
 	d2.SetDecimalSeparator(nDto.GetDecimalSeparator())
 	d2.SetThousandsSeparator(nDto.GetThousandsSeparator())
 
+	var err error
 
-	err := d2.IsDecimalValid()
+	signedAllDigitsBigInt, err := nDto.GetSignedBigInt()
+
+	if err != nil {
+		return Decimal{}.New(),
+			fmt.Errorf(ePrefix + "- Error from nDto.GetSignedBigInt(). Error= %v", err)
+	}
+
+	d2.signedAllDigitsBigInt = big.NewInt(0).Set(signedAllDigitsBigInt)
+
+	err = d2.numStrDto.IsNumStrDtoValid(ePrefix + "- ")
+
+	if err != nil {
+		return Decimal{}.New(),
+			fmt.Errorf(ePrefix + "- Error from d2.numStrDto.IsNumStrDtoValid(). Error= %v", err.Error())
+	}
+
+	err = d2.IsDecimalValid()
 
 	if err != nil {
 		return Decimal{},
@@ -1319,6 +1226,23 @@ func (dec *Decimal) MakeDecimalFromIntAry(ia *IntAry) (Decimal, error) {
 			fmt.Errorf(ePrefix + "- Error returned by ia.GetNumStrDto(). Error= %v", err.Error())
 	}
 
+	signedAllDigitsBigInt, err := d2.numStrDto.GetSignedBigInt()
+
+	if err != nil {
+		return Decimal{},
+			fmt.Errorf(ePrefix + "- Error returned by ia.GetNumStrDto(). Error= %v", err.Error())
+	}
+
+	d2.signedAllDigitsBigInt = big.NewInt(0).Set(signedAllDigitsBigInt)
+
+	err = d2.numStrDto.IsNumStrDtoValid(ePrefix + "- ")
+
+	if err != nil {
+		return Decimal{},
+			fmt.Errorf(ePrefix + "- Error from d2.numStrDto.IsNumStrDtoValid(). " +
+				"Error= %v", err.Error())
+	}
+
 	err = d2.IsDecimalValid()
 
 	if err != nil {
@@ -1353,32 +1277,10 @@ func (dec *Decimal) Mul(d2 Decimal) (Decimal, error) {
 			"Error='%v' ", err.Error())
 	}
 
-	x, err := dec.numStrDto.GetSignedBigInt()
-
-	if err != nil {
-		return Decimal{},
-			fmt.Errorf(ePrefix + "Error returned by dec.numStrDto.GetSignedBigInt() " +
-				"Error='%v' ", err.Error())
-	}
-
-	decSignedAllDigitsBigInt := big.NewInt(0).Set(x)
-	decPrecision := dec.numStrDto.precision
-	
-	x, err = d2.numStrDto.GetSignedBigInt()
-
-	if err != nil {
-		return Decimal{},
-			fmt.Errorf(ePrefix + "Error returned by d2.numStrDto.GetSignedBigInt() " +
-				"Error='%v' ", err.Error())
-	}
-
-	d2SignedAllDigitsBigInt := big.NewInt(0).Set(x)
-	d2Precision := d2.numStrDto.precision
-	
-	s3Val := big.NewInt(0).Mul(decSignedAllDigitsBigInt, d2SignedAllDigitsBigInt)
+	s3Val := big.NewInt(0).Mul(dec.signedAllDigitsBigInt, d2.signedAllDigitsBigInt)
 	s3Text := s3Val.Text(10)
 
-	newPrecision := uint( decPrecision + d2Precision)
+	newPrecision := uint( dec.GetPrecision() + d2.GetPrecision())
 
 	// s3Text is now a pure number string with no decimal point.
 	nDto, err := NumStrDto{}.NewPtr().ShiftPrecisionLeft(s3Text, newPrecision)
@@ -1401,6 +1303,7 @@ func (dec *Decimal) Mul(d2 Decimal) (Decimal, error) {
 	}
 
 	return d4, nil
+
 }
 
 // MulTotal - Multiplies the value of the incoming
@@ -1478,6 +1381,7 @@ func (dec Decimal) NewBigInt(bigI *big.Int, precision uint) (Decimal, error) {
 	}
 
 	return d2, nil
+
 }
 
 // NewInt - Returns a Decimal type based on int and precision input
@@ -1503,6 +1407,7 @@ func (dec Decimal) NewInt(iNum int, precision uint) (Decimal, error) {
 	}
 
 	return d2, nil
+
 }
 
 // NewI64 - Returns a Decimal type based on int64 and precision
@@ -1544,9 +1449,10 @@ func (dec Decimal) NewFloat32(f32 float32) (Decimal, error) {
 	}
 
 	return d2, nil
+
 }
 
-// NewFloat64 - Creates a new Decimal instance based on a float64
+// NewFloat32 - Creates a new Decimal instance based on a float64
 // input.
 func (dec Decimal) NewFloat64(f64 float64, precision int) (Decimal, error) {
 
@@ -1560,6 +1466,7 @@ func (dec Decimal) NewFloat64(f64 float64, precision int) (Decimal, error) {
 	}
 
 	return d2, nil
+
 }
 
 // NewNumStrsMultiple - Used to create and return an array of Decimal Types.
@@ -1646,8 +1553,8 @@ func (dec Decimal) NewNumStr(numStr string) (Decimal, error) {
 	}
 
 	return d2, nil
-}
 
+}
 // NewNumStrDto - Returns a Decimal type based on a NumStrDto
 // input parameter. If an error is encountered, it will trigger
 // a panic condition.
@@ -1672,12 +1579,19 @@ func (dec Decimal) NewNumStrDto(numDto NumStrDto) (Decimal, error) {
 
 	d2 := Decimal{}.New()
 
-	err = d2.SetNumStrDto(numDto)
+	newNumStr := numDto.GetNumStr()
+
+	if newNumStr == "" {
+		return Decimal{},
+		errors.New(ePrefix + "Error: Input parameter numDto returned an EMPTY number string!")
+	}
+
+	err = d2.SetNumStr(newNumStr)
 
 	if err != nil {
 		return Decimal{},
 			fmt.Errorf(ePrefix +
-				"Error returned by d2.SetNumStrDto(numDto) " +
+				"Error returned by d2.SetNumStr(numDto.GetNumStr()) " +
 				" numDto.GetNumStr()='%v' Error='%v'",
 				numDto.GetNumStr(), err.Error())
 	}
@@ -1731,6 +1645,7 @@ func (dec *Decimal) NewRationalNum(bigRat *big.Rat, precision int ) (Decimal, er
 	}
 
 	return d2, nil
+
 }
 
 // NumStrPrecisionToDecimal - receives a number string and a
@@ -1797,7 +1712,7 @@ func (dec *Decimal) NumStrPrecisionToDecimal(
 // Input Parameters:
 // maxPrecision int - Determines the number of digits to the right of the
 // 			decimal point returned in the result.
-// 			** If the value of maxPrecision is minus 1 (-1):
+// 			** If the value of maxPrecision is minus 1:
 //  					-- 	For Positive exponents, the actual number of digits calculated to
 //        					the right of the decimal point will be returned.
 //
@@ -1823,16 +1738,7 @@ func (dec *Decimal) Pow(exponent int, maxPrecision int) (Decimal, error) {
 		exponent = exponent * -1
 	}
 
-	decSignedAllDigitsBigInt, err := dec.numStrDto.GetSignedBigInt()
-
-	if err != nil {
-		return Decimal{},
-			fmt.Errorf(ePrefix + "Error returned by dec.numStrDto.GetSignedBigInt() " +
-				"Error='%v'", err.Error())
-	}
-	
-	
-	s1Val :=  big.NewInt(0).Set(decSignedAllDigitsBigInt)
+	s1Val := dec.signedAllDigitsBigInt
 	ex := big.NewInt(int64(exponent))
 
 	newPrecision := uint(dec.GetPrecision()) * uint(exponent)
@@ -2101,33 +2007,17 @@ func (dec *Decimal) SetIntFracStrings(signVal int, intNum, fracNum string) error
 
 	dec.SetEmptySeparatorsToDefault()
 
-	intDto, err := NumStrDto{}.NewNumStr(intNum)
-
-	if err != nil {
-		return fmt.Errorf(ePrefix +
-			"Error returned by NumStrDto{}.NewNumStr(intNum). " +
-			"intNum='%v' Error='%v' ",intNum, err.Error())
-	}
-
-	fracDto, err := NumStrDto{}.NewNumStr(fracNum)
-
-	if err != nil {
-		return fmt.Errorf(ePrefix +
-			"Error returned by NumStrDto{}.NewNumStr(fracNum). " +
-			"fracNum='%v' Error='%v' ",fracNum, err.Error())
-	}
-
 	var nxNumStr string
 
 	if signVal < 0 {
 		nxNumStr += "-"
 	}
 
-	nxNumStr += string(intDto.absAllNumRunes)
+	nxNumStr += intNum
 
 	nxNumStr += string(dec.GetDecimalSeparator())
 
-	nxNumStr += string(fracDto.absAllNumRunes)
+	nxNumStr += fracNum
 
 	n0 := NumStrDto{}.New()
 
@@ -2173,101 +2063,7 @@ func (dec *Decimal) SetInt64(i64 int64, precision uint) error {
 
 }
 
-// SetNumStrPrecision - Sets the Decimal's value to a number string and
-// applies the appropriate 'precision' in order to determine placement
-// of the decimal point. For example, if the number string ('str') is passed
-// in as "123456" with a 'precision value of '3', the result is a value of
-// 123.456.
-//
-// Example Usage:
-// d:= Decimal{}.New()
-// d.SetNumStrPrecision("123456", 3)
-// Resulting Decimal Value = 123.456
-func (dec *Decimal) SetNumStrPrecision(str string, precision uint, roundResult bool) error {
-
-	ePrefix := "Decimal.SetNumStrPrecision() "
-
-	err := dec.IsDecimalValid()
-
-	if err != nil {
-		return fmt.Errorf(ePrefix +
-			"This Decimal object (dec) is INVALID! Please Re-initialize. " +
-			"Error='%v' ", err.Error())
-	}
-
-	dec.SetEmptySeparatorsToDefault()
-
-	d2, err := dec.NewNumStrPrecision(str, precision, roundResult)
-
-	if err != nil {
-		return fmt.Errorf(ePrefix +
-			"NumStrPrecisionToDecimal(str) failed. str=%v. Error= %v",
-			str, err)
-	}
-
-	dec.CopyIn(d2)
-
-	return nil
-}
-
-// SetNumStr - Set's the Decimal's value to the input
-// parameter 'str'. For example if 'str' is set equal
-// to '123.456', this method will set the Decimal's
-// value to 123.456.
-//
-// Example Usage:
-// d := Decimal{}.New()
-// d.SetNumStr("123.456")
-// Decimal Value = 123.456
-func (dec *Decimal) SetNumStr(str string) error {
-
-	dec.SetEmptySeparatorsToDefault()
-
-	d2, err := dec.NumStrToDecimal(str)
-
-	if err != nil {
-		return fmt.Errorf("SetNumStr() Error. NumStrToDecimal(str) failed. str=%v. Error= %v.", str, err)
-	}
-
-	dec.CopyIn(d2)
-
-	return nil
-}
-
-// SetNumStrDto - Sets the value of the current Decimal type
-// to the value represented by the incoming NumStrDto parameter.
-func (dec *Decimal) SetNumStrDto(nDto NumStrDto) error {
-
-	ePrefix := "Decimal.SetNumStrDto() "
-
-	if len(nDto.absAllNumRunes) == 0 || nDto.GetNumStr() == "" {
-
-		err := nDto.SetNumStr("0")
-
-		if err != nil {
-			return fmt.Errorf(ePrefix + "Error returned by nDto.SetNumStr(\"0\"). " +
-				"Error='%v' ", err.Error())
-		}
-
-	}
-
-	dec.SetEmptySeparatorsToDefault()
-
-	d2, err := dec.MakeDecimalFromNumStrDto(nDto)
-
-	if err != nil {
-		return fmt.Errorf(ePrefix +
-			"- Error received from dec.MakeDecimalFromNumStrDto(nDto). " +
-			"nDto.GetNumStr()= '%v' Error= %v",
-			nDto.GetNumStr(), err.Error() )
-	}
-
-	dec.CopyIn(d2)
-
-	return nil
-}
-
-// SetPrecisionRound - Sets the precision or
+// SetPrecisionTrunc - Sets the precision or
 // scale of the Decimal value. Precision determines
 // the number of digits displayed to the right of
 // the decimal place. Note that precision is
@@ -2294,8 +2090,8 @@ func (dec *Decimal) SetPrecisionRound(precision uint) error {
 	if err != nil {
 		return fmt.Errorf(ePrefix +
 			"- Received error from NumStrDto.SetPrecision(dec.numStrDto, precision, true). " +
-			"dec.numStrDto='%v' precision='%v' Error= %v",
-			dec.numStrDto, precision, err)
+				"dec.numStrDto='%v' precision='%v' Error= %v",
+					dec.numStrDto, precision, err)
 
 	}
 
@@ -2359,6 +2155,104 @@ func (dec *Decimal) SetPrecisionTrunc(precision uint) error {
 	return nil
 }
 
+// SetThousandsSeparator - sets the character which serves
+// as the 'thousands' separator.
+//
+// In the USA, the Thousands Separator character is the comma (',').
+// The Decimal Thousands Separator value defaults to the comma (',').
+//
+// Characters for Thousands Separators, Decimal Separators and Currency
+// Symbols vary by country and culture. The Decimal Type allows the user
+// to control the characters used for Thousands Separators, Decimal Separators
+// and Currency Symbols.
+//
+func (dec *Decimal) SetThousandsSeparator(thousandsSeparator rune) error {
+
+	dec.numStrDto.SetThousandsSeparator(thousandsSeparator)
+
+	return nil
+}
+
+// SetNumStrPrecision - Sets the Decimal's value to a number string and
+// applies the appropriate 'precision' in order to determine placement
+// of the decimal point. For example, if the number string ('str') is passed
+// in as "123456" with a 'precision value of '3', the result is a value of
+// 123.456.
+//
+// Example Usage:
+// d:= Decimal{}.New()
+// d.SetNumStrPrecision("123456", 3)
+// Resulting Decimal Value = 123.456
+func (dec *Decimal) SetNumStrPrecision(str string, precision uint, roundResult bool) error {
+
+	ePrefix := "Decimal.SetNumStrPrecision() "
+
+	err := dec.IsDecimalValid()
+
+	if err != nil {
+		return fmt.Errorf(ePrefix +
+			"This Decimal object (dec) is INVALID! Please Re-initialize. " +
+			"Error='%v' ", err.Error())
+	}
+
+	dec.SetEmptySeparatorsToDefault()
+
+	d2, err := dec.NewNumStrPrecision(str, precision, roundResult)
+
+	if err != nil {
+		return fmt.Errorf(ePrefix +
+			"NumStrPrecisionToDecimal(str) failed. str=%v. Error= %v",
+			str, err)
+	}
+
+	dec.CopyIn(d2)
+
+	return nil
+}
+
+// SetNumStr - Set's the Decimal's value to the input
+// parameter 'str'. For example if 'str' is set equal
+// to '123.456', this method will set the Decimal's
+// value to 123.456.
+//
+// Example Usage:
+// d := Decimal{}.New()
+// d.SetNumStr("123.456")
+// Decimal Value = 123.456
+func (dec *Decimal) SetNumStr(str string) error {
+
+	dec.SetEmptySeparatorsToDefault()
+
+	d2, err := dec.NumStrToDecimal(str)
+
+	if err != nil {
+		return fmt.Errorf("SetNumStr() Error. NumStrToDecimal(str) failed. str=%v. Error= %v.", str, err)
+	}
+
+
+	dec.CopyIn(d2)
+
+	return nil
+
+}
+
+// SetNumStrDto - Sets the value of the current Decimal type
+// to the value represented by the incoming NumStrDto parameter.
+func (dec *Decimal) SetNumStrDto(nDto NumStrDto) error {
+
+	dec.SetEmptySeparatorsToDefault()
+
+	d2, err := dec.MakeDecimalFromNumStrDto(nDto)
+
+	if err != nil {
+		return fmt.Errorf("SetNumStrDto() Error received from dec.MakeDecimalFromNumStrDto(nDto). nDto.GetNumStr()= '%v' Error= %v", nDto.GetNumStr(), err)
+	}
+
+	dec.CopyIn(d2)
+
+	return nil
+}
+
 // SetSeparators - Used to assign values for the Decimal and Thousands separators as well
 // as the Currency Symbol to be used in displaying the current number string.
 //
@@ -2389,24 +2283,6 @@ func (dec *Decimal) SetSign(newSignVal int) error {
 	if err != nil {
 		return fmt.Errorf("Decimal.SetSign() Error - %v", err.Error())
 	}
-
-	return nil
-}
-
-// SetThousandsSeparator - sets the character which serves
-// as the 'thousands' separator.
-//
-// In the USA, the Thousands Separator character is the comma (',').
-// The Decimal Thousands Separator value defaults to the comma (',').
-//
-// Characters for Thousands Separators, Decimal Separators and Currency
-// Symbols vary by country and culture. The Decimal Type allows the user
-// to control the characters used for Thousands Separators, Decimal Separators
-// and Currency Symbols.
-//
-func (dec *Decimal) SetThousandsSeparator(thousandsSeparator rune) error {
-
-	dec.numStrDto.SetThousandsSeparator(thousandsSeparator)
 
 	return nil
 }
@@ -2474,6 +2350,16 @@ func (dec *Decimal) ShiftPrecisionLeft(shiftLeftPlaces int) error {
 	}
 
 	dec.numStrDto = n1.CopyOut()
+	bigI, err := dec.numStrDto.GetSignedBigInt()
+
+	if err != nil {
+		return fmt.Errorf(ePrefix +
+			"Error returned by dec.numStrDto.GetSignedBigInt() " +
+			"Error='%v'", err.Error())
+
+	}
+
+	dec.signedAllDigitsBigInt = big.NewInt(0).Set(bigI)
 
 	err = dec.IsDecimalValid()
 
@@ -2546,6 +2432,16 @@ func (dec *Decimal) ShiftPrecisionRight(shiftRightPlaces int) error {
 	}
 
 	dec.numStrDto = n1.CopyOut()
+	bigI, err := dec.numStrDto.GetSignedBigInt()
+
+	if err != nil {
+		return fmt.Errorf(ePrefix +
+			"Error returned by dec.numStrDto.GetSignedBigInt() " +
+			"Error='%v'", err.Error())
+
+	}
+
+	dec.signedAllDigitsBigInt = big.NewInt(0).Set(bigI)
 
 	err = dec.IsDecimalValid()
 
@@ -2583,43 +2479,19 @@ func (dec *Decimal) Subtract(d2 Decimal) (Decimal, error) {
 				"Error='%v' ", err.Error())
 	}
 
+
+
 	base10 := big.NewInt(10)
 	var d4 Decimal
 	var newPrecision uint
 	var s3Text string
 	var nDto NumStrDto
 
-	x, err := dec.numStrDto.GetSignedBigInt()
+	if dec.GetPrecision() == d2.GetPrecision() {
 
-	if err != nil {
-		return Decimal{},
-			fmt.Errorf(ePrefix +
-				"Error returned by dec.numStrDto.GetSignedBigInt(). " +
-				"Error='%v' ", err.Error())
-	}
+		s1Val := big.NewInt(0).Set(dec.signedAllDigitsBigInt)
 
-	decSignedAllDigitsBigInt := big.NewInt(0).Set(x)
-	decPrecision := dec.numStrDto.precision
-
-	x, err = d2.numStrDto.GetSignedBigInt()
-
-	if err != nil {
-		return Decimal{},
-			fmt.Errorf(ePrefix +
-				"Error returned by d2.numStrDto.GetSignedBigInt(). " +
-				"Error='%v' ", err.Error())
-	}
-
-	d2SignedAllDigitsBigInt := big.NewInt(0).Set(x)
-	d2Precision := d2.numStrDto.precision
-	
-	
-	
-	if decPrecision == d2Precision {
-
-		s1Val := big.NewInt(0).Set(decSignedAllDigitsBigInt)
-
-		s2Val := big.NewInt(0).Set(d2SignedAllDigitsBigInt)
+		s2Val := big.NewInt(0).Set(d2.signedAllDigitsBigInt)
 
 		s3Val := big.NewInt(0).Sub(s1Val, s2Val)
 
@@ -2627,23 +2499,23 @@ func (dec *Decimal) Subtract(d2 Decimal) (Decimal, error) {
 
 		newPrecision = uint(dec.GetPrecision())
 
-	} else	if d2Precision > decPrecision {
+	} else	if d2.GetPrecision() > dec.GetPrecision() {
 		deltaPrecision := big.NewInt(int64(d2.GetPrecision() - dec.GetPrecision()))
 		deltaPrecisionScale := big.NewInt(0).Exp(base10, deltaPrecision, nil)
 
-		s1Val := big.NewInt(0).Mul(decSignedAllDigitsBigInt, deltaPrecisionScale)
-		s2Val := big.NewInt(0).Set(d2SignedAllDigitsBigInt)
+		s1Val := big.NewInt(0).Mul(dec.signedAllDigitsBigInt, deltaPrecisionScale)
+		s2Val := big.NewInt(0).Set(d2.signedAllDigitsBigInt)
 		s3Val := big.NewInt(0).Sub(s1Val, s2Val)
 		s3Text = s3Val.Text(10)
 		newPrecision = uint(d2.GetPrecision())
 
 	} else {
-		// must be decPrecision > d2Precision
+		// must be dec.precision > d2.precision
 
 		deltaPrecision := big.NewInt(int64(dec.GetPrecision() - d2.GetPrecision()))
 		deltaPrecisionScale := big.NewInt(0).Exp(base10, deltaPrecision, nil)
-		s1Val := big.NewInt(0).Set(decSignedAllDigitsBigInt)
-		s2Val := big.NewInt(0).Mul(d2SignedAllDigitsBigInt, deltaPrecisionScale)
+		s1Val := big.NewInt(0).Set(dec.signedAllDigitsBigInt)
+		s2Val := big.NewInt(0).Mul(d2.signedAllDigitsBigInt, deltaPrecisionScale)
 
 		s3Val := big.NewInt(0).Sub(s1Val, s2Val)
 
