@@ -1,612 +1,751 @@
 package mathops
 
-import "testing"
+import (
+	"testing"
+	"math/big"
+)
 
-func TestDecimal_ShiftPrecisionLeft_01(t *testing.T) {
 
-	nStr1 := "123456789"
-	expectedNumStr := "123456.789"
+func TestDecimal_Pow_01(t *testing.T) {
 
-	d1, err := Decimal{}.NewNumStr(nStr1)
-
-	if err != nil {
-		t.Errorf("Error returned by Decimal{}.NewNumStr(nStr1). " +
-			"Error='%v' ", err.Error())
-	}
-
-	err = d1.ShiftPrecisionLeft(3)
+	numStr := "2.125"
+	exp := 5
+	d1, err := Decimal{}.NewNumStr(numStr)
 
 	if err != nil {
-		t.Errorf("Error returned by d1.ShiftPrecisionLeft(3). " +
-			"Error='%v' ", err.Error())
+		t.Errorf("Error returned by Decimal{}.NewNumStr(numStrDto) " +
+			"numStrDto='%v' Error = '%v' ",numStr, err.Error())
 	}
 
-	actualNumStr := d1.GetNumStr()
+	d2, err := d1.Pow(exp, 15)
 
-	if expectedNumStr != actualNumStr {
-		t.Errorf("Error: Expected NumStr='%v'.  Instead, NumStr='%v'.",
-			expectedNumStr, actualNumStr)
+	if err != nil {
+		t.Errorf("Received error from d1.Pow(exp). exp='%v' Error= %v", exp, err)
+	}
+
+	expected := "43.330596923828125"
+
+	if expected != d2.GetNumStr() {
+		t.Errorf("Expected NumStr= '%v'. Instead, got %v.", expected, d2.GetNumStr())
 	}
 
 }
 
-func TestDecimal_ShiftPrecisionLeft_02(t *testing.T) {
+func TestDecimal_Pow_02(t *testing.T) {
 
-	nStr1 := "12345"
-	expectedNumStr := "0.012345"
-
-	d1, err := Decimal{}.NewNumStr(nStr1)
-
-	if err != nil {
-		t.Errorf("Error returned by Decimal{}.NewNumStr(nStr1). " +
-			"Error='%v' ", err.Error())
-	}
-
-	err = d1.ShiftPrecisionLeft(6)
+	numStr := "2.125"
+	exp := -5
+	d1, err := Decimal{}.NewNumStr(numStr)
 
 	if err != nil {
-		t.Errorf("Error returned by d1.ShiftPrecisionLeft(3). " +
-			"Error='%v' ", err.Error())
+		t.Errorf("Error returned by Decimal{}.NewNumStr(numStrDto) " +
+			"numStrDto='%v' Error = '%v' ",numStr, err.Error())
 	}
 
-	actualNumStr := d1.GetNumStr()
+	d2, err := d1.Pow(exp, 32)
 
-	if expectedNumStr != actualNumStr {
-		t.Errorf("Error: Expected NumStr='%v'.  Instead, NumStr='%v'.",
-			expectedNumStr, actualNumStr)
+	if err != nil {
+		t.Errorf("Received error from d1.Pow(exp). exp='%v' Error= %v", exp, err)
+	}
+
+	expected := "0.02307838042845159759046157465153"
+
+	if expected != d2.GetNumStr() {
+		t.Errorf("Expected NumStr= '%v'. Instead, got %v.", expected, d2.GetNumStr())
 	}
 
 }
 
-func TestDecimal_ShiftPrecisionLeft_03(t *testing.T) {
+func TestDecimal_Pow_03(t *testing.T) {
 
-	nStr1 := "12345"
-	expectedNumStr := "0.000012345"
-
-	d1, err := Decimal{}.NewNumStr(nStr1)
-
-	if err != nil {
-		t.Errorf("Error returned by Decimal{}.NewNumStr(nStr1). " +
-			"Error='%v' ", err.Error())
-	}
-
-	err = d1.ShiftPrecisionLeft(9)
+	numStr := "2.125"
+	exp := -5
+	d1, err := Decimal{}.NewNumStr(numStr)
 
 	if err != nil {
-		t.Errorf("Error returned by d1.ShiftPrecisionLeft(3). " +
-			"Error='%v' ", err.Error())
+		t.Errorf("Error returned by Decimal{}.NewNumStr(numStrDto) " +
+			"numStrDto='%v' Error = '%v' ",numStr, err.Error())
 	}
 
-	actualNumStr := d1.GetNumStr()
+	d2, err := d1.Pow(exp, 250)
 
-	if expectedNumStr != actualNumStr {
-		t.Errorf("Error: Expected NumStr='%v'.  Instead, NumStr='%v'.",
-			expectedNumStr, actualNumStr)
+	if err != nil {
+		t.Errorf("Received error from d1.Pow(exp). exp='%v' Error= %v", exp, err)
+	}
+
+	expected := "0.0230783804284515975904615746515318091892352539727592285702010836302529057503678187310412245740240038257373805953698154109885713843013768287933221444131345621425256205378428954465132756326869536861810731644102187755527493261645362878092652992519669234"
+
+	if expected != d2.GetNumStr() {
+		t.Errorf("Expected NumStr= '%v'. Instead, got %v.", expected, d2.GetNumStr())
 	}
 
 }
 
-func TestDecimal_ShiftPrecisionLeft_04(t *testing.T) {
+func TestDecimal_SetPrecisionRound_01(t *testing.T) {
 
-	nStr1 := "-123456789"
-	expectedNumStr := "-123456.789"
+	str1 := "2.0105500"
+	precision := uint(4)
+	expected := "2.0106"
 
-	d1, err := Decimal{}.NewNumStr(nStr1)
-
-	if err != nil {
-		t.Errorf("Error returned by Decimal{}.NewNumStr(nStr1). " +
-			"Error='%v' ", err.Error())
-	}
-
-	err = d1.ShiftPrecisionLeft(3)
+	d1, err := Decimal{}.NewNumStr(str1)
 
 	if err != nil {
-		t.Errorf("Error returned by d1.ShiftPrecisionLeft(3). " +
-			"Error='%v' ", err.Error())
+		t.Errorf("Error returned by Decimal{}.NewNumStr(str1) " +
+			"str1='%v' Error = '%v' ", str1, err.Error())
 	}
 
-	actualNumStr := d1.GetNumStr()
+	if str1 != d1.GetNumStr() {
+		t.Errorf("Expected NumStr= '%v'. Instead, got %v.", str1, d1.GetNumStr())
+	}
 
-	if expectedNumStr != actualNumStr {
-		t.Errorf("Error: Expected NumStr='%v'.  Instead, NumStr='%v'.",
-			expectedNumStr, actualNumStr)
+	d1.SetPrecisionRound(precision)
+
+	if expected != d1.GetNumStr() {
+		t.Errorf("Expected 2nd NumStr= '%v'. Instead, got %v.", expected, d1.GetNumStr())
 	}
 
 }
 
-func TestDecimal_ShiftPrecisionLeft_05(t *testing.T) {
+func TestDecimal_SetPrecisionRound_02(t *testing.T) {
 
-	nStr1 := "-12345"
-	expectedNumStr := "-0.012345"
+	str1 := "-2.0105500"
 
-	d1, err := Decimal{}.NewNumStr(nStr1)
-
-	if err != nil {
-		t.Errorf("Error returned by Decimal{}.NewNumStr(nStr1). " +
-			"Error='%v' ", err.Error())
-	}
-
-	err = d1.ShiftPrecisionLeft(6)
+	d1, err := Decimal{}.NewNumStr(str1)
 
 	if err != nil {
-		t.Errorf("Error returned by d1.ShiftPrecisionLeft(3). " +
-			"Error='%v' ", err.Error())
+		t.Errorf("Error returned by Decimal{}.NewNumStr(str1) " +
+			"str1='%v' Error = '%v' ", str1, err.Error())
 	}
 
-	actualNumStr := d1.GetNumStr()
+	if str1 != d1.GetNumStr() {
+		t.Errorf("Expected NumStr= '%v'. Instead, got %v.", str1, d1.GetNumStr())
+	}
 
-	if expectedNumStr != actualNumStr {
-		t.Errorf("Error: Expected NumStr='%v'.  Instead, NumStr='%v'.",
-			expectedNumStr, actualNumStr)
+	d1.SetPrecisionRound(4)
+
+	expected := "-2.0106"
+
+	if expected != d1.GetNumStr() {
+		t.Errorf("Expected NumStr= '%v'. Instead, got %v.", expected, d1.GetNumStr())
 	}
 
 }
 
-func TestDecimal_ShiftPrecisionLeft_06(t *testing.T) {
+func TestDecimal_SetPrecisionTrunc_01(t *testing.T) {
+	str1 := "2.0105500"
 
-	nStr1 := "-12345"
-	expectedNumStr := "-0.000012345"
-
-	d1, err := Decimal{}.NewNumStr(nStr1)
+	d1, err := Decimal{}.NewNumStr(str1)
 
 	if err != nil {
-		t.Errorf("Error returned by Decimal{}.NewNumStr(nStr1). " +
-			"Error='%v' ", err.Error())
+		t.Errorf("Error returned by Decimal{}.NewNumStr(str1) " +
+			"str1='%v' Error = '%v' ", str1, err.Error())
 	}
 
-	err = d1.ShiftPrecisionLeft(9)
-
-	if err != nil {
-		t.Errorf("Error returned by d1.ShiftPrecisionLeft(3). " +
-			"Error='%v' ", err.Error())
+	if str1 != d1.GetNumStr() {
+		t.Errorf("Expected NumStr= '%v'. Instead, got %v.", str1, d1.GetNumStr())
 	}
 
-	actualNumStr := d1.GetNumStr()
+	d1.SetPrecisionTrunc(4)
 
-	if expectedNumStr != actualNumStr {
-		t.Errorf("Error: Expected NumStr='%v'.  Instead, NumStr='%v'.",
-			expectedNumStr, actualNumStr)
+	expected := "2.0105"
+
+	if expected != d1.GetNumStr() {
+		t.Errorf("Expected NumStr= '%v'. Instead, got %v.", expected, d1.GetNumStr())
 	}
 
 }
 
-func TestDecimal_ShiftPrecisionRight_01(t *testing.T) {
+func TestDecimal_SetPrecisionTrunc_02(t *testing.T) {
+	str1 := "-2.0105500"
 
-	nStr1 := "123456789"
-	expectedNumStr := "123456789000"
-
-	d1, err := Decimal{}.NewNumStr(nStr1)
+	d1, err := Decimal{}.NewNumStr(str1)
 
 	if err != nil {
-		t.Errorf("Error returned by Decimal{}.NewNumStr(nStr1). " +
-			"Error='%v' ", err.Error())
+		t.Errorf("Error returned by Decimal{}.NewNumStr(str1) " +
+			"str1='%v' Error = '%v' ", str1, err.Error())
 	}
 
-	err = d1.ShiftPrecisionRight(3)
-
-	if err != nil {
-		t.Errorf("Error returned by d1.ShiftPrecisionLeft(3). " +
-			"Error='%v' ", err.Error())
+	if str1 != d1.GetNumStr() {
+		t.Errorf("Expected NumStr= '%v'. Instead, got %v.", str1, d1.GetNumStr())
 	}
 
-	actualNumStr := d1.GetNumStr()
+	d1.SetPrecisionTrunc(4)
 
-	if expectedNumStr != actualNumStr {
-		t.Errorf("Error: Expected NumStr='%v'.  Instead, NumStr='%v'.",
-			expectedNumStr, actualNumStr)
+	expected := "-2.0105"
+
+	if expected != d1.GetNumStr() {
+		t.Errorf("Expected NumStr= '%v'. Instead, got %v.", expected, d1.GetNumStr())
 	}
 
 }
 
+func TestDecimal_SetNumStr_01(t *testing.T) {
 
-func TestDecimal_ShiftPrecisionRight_02(t *testing.T) {
+	nStr1 := "1.35"
+	ePrecision := uint(2)
+	eSignVal := 1
+	d1 := Decimal{}.New()
 
-	nStr1 := "12345"
-	expectedNumStr := "12345000000"
+	d1.SetNumStr(nStr1)
 
-	d1, err := Decimal{}.NewNumStr(nStr1)
-
-	if err != nil {
-		t.Errorf("Error returned by Decimal{}.NewNumStr(nStr1). " +
-			"Error='%v' ", err.Error())
+	if nStr1 != d1.GetNumStr() {
+		t.Errorf("Expected NumStr = '%v'. Instead got NumStr= '%v'", nStr1, d1.GetNumStr())
 	}
 
-	err = d1.ShiftPrecisionRight(6)
-
-	if err != nil {
-		t.Errorf("Error returned by d1.ShiftPrecisionLeft(3). " +
-			"Error='%v' ", err.Error())
+	if int(ePrecision) != d1.GetPrecision() {
+		t.Errorf("Expected Precision= '%v'. Intead, got Precision= '%v' ", ePrecision, d1.GetPrecision())
 	}
 
-	actualNumStr := d1.GetNumStr()
+	if eSignVal != d1.GetSign() {
+		t.Errorf("Expected Sign Value= '%v'. Intead, got Sign Value = '%v' ", eSignVal, d1.GetSign())
 
-	if expectedNumStr != actualNumStr {
-		t.Errorf("Error: Expected NumStr='%v'.  Instead, NumStr='%v'.",
-			expectedNumStr, actualNumStr)
 	}
 
-}
-
-func TestDecimal_ShiftPrecisionRight_03(t *testing.T) {
-
-	nStr1 := "1.2345"
-	expectedNumStr := "1234500000"
-
-	d1, err := Decimal{}.NewNumStr(nStr1)
-
-	if err != nil {
-		t.Errorf("Error returned by Decimal{}.NewNumStr(nStr1). " +
-			"Error='%v' ", err.Error())
-	}
-
-	err = d1.ShiftPrecisionRight(9)
-
-	if err != nil {
-		t.Errorf("Error returned by d1.ShiftPrecisionLeft(3). " +
-			"Error='%v' ", err.Error())
-	}
-
-	actualNumStr := d1.GetNumStr()
-
-	if expectedNumStr != actualNumStr {
-		t.Errorf("Error: Expected NumStr='%v'.  Instead, NumStr='%v'.",
-			expectedNumStr, actualNumStr)
+	if !d1.GetIsValid() {
+		t.Errorf("Expected IsValid == 'true'. Instead got IsValid= '%v'", d1.GetIsValid())
 	}
 
 }
 
-func TestDecimal_ShiftPrecisionRight_04(t *testing.T) {
+func TestDecimal_SetNumStr_02(t *testing.T) {
 
-	nStr1 := "-123456.789"
-	expectedNumStr := "-123456789"
+	nStr1 := "-1.35"
+	ePrecision := uint(2)
+	eSignVal := -1
+	d1 := Decimal{}.New()
 
-	d1, err := Decimal{}.NewNumStr(nStr1)
+	d1.SetNumStr(nStr1)
 
-	if err != nil {
-		t.Errorf("Error returned by Decimal{}.NewNumStr(nStr1). " +
-			"Error='%v' ", err.Error())
+
+	if nStr1 != d1.GetNumStr() {
+		t.Errorf("Expected NumStr = '%v'. Instead got NumStr= '%v'", nStr1, d1.GetNumStr())
 	}
 
-	err = d1.ShiftPrecisionRight(3)
-
-	if err != nil {
-		t.Errorf("Error returned by d1.ShiftPrecisionLeft(3). " +
-			"Error='%v' ", err.Error())
+	if int(ePrecision) != d1.GetPrecision() {
+		t.Errorf("Expected Precision= '%v'. Intead, got Precision= '%v' ", ePrecision, d1.GetPrecision())
 	}
 
-	actualNumStr := d1.GetNumStr()
 
-	if expectedNumStr != actualNumStr {
-		t.Errorf("Error: Expected NumStr='%v'.  Instead, NumStr='%v'.",
-			expectedNumStr, actualNumStr)
+	if eSignVal != d1.GetSign() {
+		t.Errorf("Expected Sign Value= '%v'. Intead, got Sign Value = '%v' ", eSignVal, d1.GetSign())
+
 	}
 
-}
-
-func TestDecimal_ShiftPrecisionRight_05(t *testing.T) {
-
-	nStr1 := "-12.345"
-	expectedNumStr := "-1234.5"
-
-	d1, err := Decimal{}.NewNumStr(nStr1)
-
-	if err != nil {
-		t.Errorf("Error returned by Decimal{}.NewNumStr(nStr1). " +
-			"Error='%v' ", err.Error())
-	}
-
-	err = d1.ShiftPrecisionRight(2)
-
-	if err != nil {
-		t.Errorf("Error returned by d1.ShiftPrecisionLeft(3). " +
-			"Error='%v' ", err.Error())
-	}
-
-	actualNumStr := d1.GetNumStr()
-
-	if expectedNumStr != actualNumStr {
-		t.Errorf("Error: Expected NumStr='%v'.  Instead, NumStr='%v'.",
-			expectedNumStr, actualNumStr)
+	if !d1.GetIsValid() {
+		t.Errorf("Expected IsValid == 'true'. Instead got IsValid= '%v'", d1.GetIsValid())
 	}
 
 }
 
-func TestDecimal_ShiftPrecisionRight_06(t *testing.T) {
+func TestDecimal_SetNumStr_03(t *testing.T) {
 
-	nStr1 := "-12.345"
-	expectedNumStr := "-123450"
+	nStr1 := "0.00"
+	ePrecision := uint(2)
+	eSignVal := 1
+	d1 := Decimal{}.New()
 
-	d1, err := Decimal{}.NewNumStr(nStr1)
+	d1.SetNumStr(nStr1)
 
-	if err != nil {
-		t.Errorf("Error returned by Decimal{}.NewNumStr(nStr1). " +
-			"Error='%v' ", err.Error())
+	if nStr1 != d1.GetNumStr() {
+		t.Errorf("Expected NumStr = '%v'. Instead got NumStr= '%v'", nStr1, d1.GetNumStr())
 	}
 
-	err = d1.ShiftPrecisionRight(4)
-
-	if err != nil {
-		t.Errorf("Error returned by d1.ShiftPrecisionLeft(3). " +
-			"Error='%v' ", err.Error())
+	if int(ePrecision) != d1.GetPrecision() {
+		t.Errorf("Expected Precision= '%v'. Intead, got Precision= '%v' ", ePrecision, d1.GetPrecision())
 	}
 
-	actualNumStr := d1.GetNumStr()
+	if eSignVal != d1.GetSign() {
+		t.Errorf("Expected Sign Value= '%v'. Intead, got Sign Value = '%v' ", eSignVal, d1.GetSign())
 
-	if expectedNumStr != actualNumStr {
-		t.Errorf("Error: Expected NumStr='%v'.  Instead, NumStr='%v'.",
-			expectedNumStr, actualNumStr)
 	}
 
-}
-
-
-func TestDecimal_Subtract_01(t *testing.T) {
-
-	nStr1 := "123456"
-	expected := "123455.5"
-
-	precision1 := uint(0)
-
-	d1, err := Decimal{}.NewNumStrPrecision(nStr1, precision1, true)
-
-	if err != nil {
-		t.Errorf("Error Returned from Decimal d1.NewNumStrPrecision(nStr1, precision1, false). nStr1= '%v' precision1= '%v' Error= %v", nStr1, precision1, err)
-	}
-
-	nStr2 := "0.5"
-	precision2 := uint(1)
-
-	d2, err := Decimal{}.NewNumStrPrecision(nStr2, precision2, false)
-
-	if err != nil {
-		t.Errorf("Error Returned from Decimal d2.NewNumStrPrecision(nStr2, precision2, false). nStr2= '%v' precision2= '%v' Error= %v", nStr2, precision2, err)
-	}
-
-	d3, err := d1.Subtract(d2)
-
-	if err != nil {
-		t.Errorf("Error received from Subtract. Error= %v", err)
-	}
-
-	if expected != d3.GetNumStr() {
-		t.Errorf("Expected NumStr: %v. Instead, got %v", expected, d3.GetNumStr())
+	if !d1.GetIsValid() {
+		t.Errorf("Expected IsValid == 'true'. Instead got IsValid= '%v'", d1.GetIsValid())
 	}
 
 }
 
-func TestDecimal_Subtract_02(t *testing.T) {
+func TestDecimal_SetNumStr_04(t *testing.T) {
 
-	nStr1 := "123.222"
+	nStr1 := "-0.00"
+	eNumStr1 := "0.00"
+	ePrecision := uint(2)
+	eSignVal := 1
+	d1 := Decimal{}.New()
 
-	d1, err := Decimal{}.NewNumStr(nStr1)
+	d1.SetNumStr(nStr1)
 
-	if err != nil {
-		t.Errorf("Error returned by Decimal{}.NewNumStr(nStr1) " +
-			"nStr1='%v' Error = '%v' ", nStr1, err.Error())
+	if eNumStr1 != d1.GetNumStr() {
+		t.Errorf("Expected NumStr = '%v'. Instead got NumStr= '%v'", eNumStr1, d1.GetNumStr())
 	}
 
-	nStr2 := "-1.2223"
-
-	d2, err := Decimal{}.NewNumStr(nStr2)
-
-	if err != nil {
-		t.Errorf("Error returned by Decimal{}.NewNumStr(nStr2) " +
-			"nStr2='%v' Error = '%v' ", nStr2, err.Error())
+	if int(ePrecision) != d1.GetPrecision() {
+		t.Errorf("Expected Precision= '%v'. Intead, got Precision= '%v' ", ePrecision, d1.GetPrecision())
 	}
 
-	d3, err := d1.Subtract(d2)
+	if eSignVal != d1.GetSign() {
+		t.Errorf("Expected Sign Value= '%v'. Intead, got Sign Value = '%v' ", eSignVal, d1.GetSign())
 
-	if err != nil {
-		t.Errorf("Error received from Subtract. Error= %v", err)
 	}
 
-	expected := "124.4443"
-
-	if expected != d3.GetNumStr() {
-		t.Errorf("Expected NumStr: %v. Instead, got %v", expected, d3.GetNumStr())
+	if !d1.GetIsValid() {
+		t.Errorf("Expected IsValid == 'true'. Instead got IsValid= '%v'", d1.GetIsValid())
 	}
 
 }
 
-func TestDecimal_Subtract_03(t *testing.T) {
+func TestDecimal_SetNumStr_05(t *testing.T) {
 
-	nStr1 := "-4"
+	nStr1 := "92"
+	eNumStr1 := "92"
+	ePrecision := uint(0)
+	eSignVal := 1
+	d1 := Decimal{}.New()
 
-	d1, err := Decimal{}.NewNumStr(nStr1)
+	d1.SetNumStr(nStr1)
 
-	if err != nil {
-		t.Errorf("Error returned by Decimal{}.NewNumStr(nStr1) " +
-			"nStr1='%v' Error = '%v' ", nStr1, err.Error())
+	if eNumStr1 != d1.GetNumStr() {
+		t.Errorf("Expected NumStr = '%v'. Instead got NumStr= '%v'", eNumStr1, d1.GetNumStr())
 	}
 
-	nStr2 := "-2"
-
-	d2, err := Decimal{}.NewNumStr(nStr2)
-
-	if err != nil {
-		t.Errorf("Error returned by Decimal{}.NewNumStr(nStr2) " +
-			"nStr2='%v' Error = '%v' ", nStr2, err.Error())
+	if int(ePrecision) != d1.GetPrecision() {
+		t.Errorf("Expected Precision= '%v'. Intead, got Precision= '%v' ", ePrecision, d1.GetPrecision())
 	}
 
-	d3, err := d1.Subtract(d2)
+	if eSignVal != d1.GetSign() {
+		t.Errorf("Expected Sign Value= '%v'. Intead, got Sign Value = '%v' ", eSignVal, d1.GetSign())
 
-	if err != nil {
-		t.Errorf("Error received from Subtract. Error= %v", err)
 	}
 
-	expected := "-2"
-
-	if expected != d3.GetNumStr() {
-		t.Errorf("Expected NumStr: %v. Instead, got %v", expected, d3.GetNumStr())
+	if !d1.GetIsValid() {
+		t.Errorf("Expected IsValid == 'true'. Instead got IsValid= '%v'", d1.GetIsValid())
 	}
 
 }
 
-func TestDecimal_SubtractTotal_01(t *testing.T) {
-	nStrAry := []string{
-		"5.50",
-		"6.50",
-		"7.00",
-		"8.25",
-	}
+func TestDecimal_SetNumStrDto_01(t *testing.T) {
 
-	d, err := Decimal{}.NewNumStr("500.00")
+	nStr0 := "-999999.99999"
+
+	nStr1 := "1.35"
+	ePrecision := uint(2)
+	eSignVal := 1
+
+	nDto, err := NumStrDto{}.NewNumStr(nStr1)
 
 	if err != nil {
-		t.Errorf("Error returned by Decimal{}.NewNumStr(\"500.00\") " +
-			"Error = '%v' ", err.Error())
+		t.Errorf("Error returned by NumStrDto{}.NewNumStr(nStr1). " +
+			"nStr1='%v' Error='%v' ",
+			nStr1, err.Error())
 	}
 
-	expected := "472.75"
+	d1, err := Decimal{}.NewNumStr(nStr0)
 
-	for i := 0; i < len(nStrAry); i++ {
-		dx, err := Decimal{}.NewNumStr(nStrAry[i])
-
-		if err != nil {
-			t.Errorf("Error returned by Decimal{}.NewNumStr(nStrAry[i]) " +
-				"nStrAry[i]='%v' Error = '%v' ", nStrAry[i], err.Error())
-		}
-
-		d.SubtractFromThis(dx)
+	if err != nil {
+		t.Errorf("Error returned by Decimal{}.NewNumStr(nStr0). " +
+			"nStr0='%v' Error='%v' ",
+				nStr0, err.Error())
 	}
 
-	if expected != d.GetNumStr() {
-		t.Errorf("Expected NumStr: %v. Instead, got %v", expected, d.GetNumStr())
+	err = d1.SetNumStrDto(nDto)
+
+	if err != nil {
+		t.Errorf("Error returned by d1.SetNumStrDto(nDto). " +
+			"nDto.GetNumStr()='%v' Error='%v' ",
+			nDto.GetNumStr(), err.Error())
+	}
+
+	if nStr1 != d1.GetNumStr() {
+		t.Errorf("Expected NumStr = '%v'. Instead got NumStr= '%v'", nStr1, d1.GetNumStr())
+	}
+
+	if int(ePrecision) != d1.GetPrecision() {
+		t.Errorf("Expected Precision= '%v'. Intead, got Precision= '%v' ", ePrecision, d1.GetPrecision())
+	}
+
+	if eSignVal != d1.GetSign() {
+		t.Errorf("Expected Sign Value= '%v'. Intead, got Sign Value = '%v' ", eSignVal, d1.GetSign())
+
+	}
+
+	if !d1.GetIsValid() {
+		t.Errorf("Expected IsValid == 'true'. Instead got IsValid= '%v'", d1.GetIsValid())
 	}
 
 }
 
-func TestDecimal_SubtractTotal_02(t *testing.T) {
-	nStrAry := []string{
-		"5.50",
-		"6.50",
-		"7.00",
-		"8.25",
+func TestDecimal_SetNumStrDto_02(t *testing.T) {
+
+	nStr0 := "-999999.99999"
+
+	nStr1 := "-1555666.35"
+	ePrecision := uint(2)
+	eSignVal := -1
+
+	nDto, err := NumStrDto{}.NewNumStr(nStr1)
+
+	if err != nil {
+		t.Errorf("Error returned by NumStrDto{}.NewNumStr(nStr1). " +
+			"nStr1='%v' Error='%v' ",
+			nStr1, err.Error())
 	}
 
-	d := Decimal{}.New()
+	d1, err := Decimal{}.NewNumStr(nStr0)
 
-	expected := "-27.25"
-
-	for i := 0; i < len(nStrAry); i++ {
-		dx, err := Decimal{}.NewNumStr(nStrAry[i])
-
-		if err != nil {
-			t.Errorf("Error returned by Decimal{}.NewNumStr(nStrAry[i]) " +
-				"nStrAry[i]='%v' Error = '%v' ", nStrAry[i], err.Error())
-		}
-
-		d.SubtractFromThis(dx)
+	if err != nil {
+		t.Errorf("Error returned by Decimal{}.NewNumStr(nStr0). " +
+			"nStr0='%v' Error='%v' ",
+				nStr0, err.Error())
 	}
 
-	if expected != d.GetNumStr() {
-		t.Errorf("Expected NumStr: %v. Instead, got %v", expected, d.GetNumStr())
+	err = d1.SetNumStrDto(nDto)
+
+	if err != nil {
+		t.Errorf("Error returned by d1.SetNumStrDto(nDto). " +
+			"nDto.GetNumStr()='%v' Error='%v' ",
+			nDto.GetNumStr(), err.Error())
+	}
+
+	if nStr1 != d1.GetNumStr() {
+		t.Errorf("Expected NumStr = '%v'. Instead got NumStr= '%v'", nStr1, d1.GetNumStr())
+	}
+
+	if int(ePrecision) != d1.GetPrecision() {
+		t.Errorf("Expected Precision= '%v'. Intead, got Precision= '%v' ", ePrecision, d1.GetPrecision())
+	}
+
+	if eSignVal != d1.GetSign() {
+		t.Errorf("Expected Sign Value= '%v'. Intead, got Sign Value = '%v' ", eSignVal, d1.GetSign())
+
+	}
+
+	if !d1.GetIsValid() {
+		t.Errorf("Expected IsValid == 'true'. Instead got IsValid= '%v'", d1.GetIsValid())
 	}
 
 }
 
-func TestDecimal_SubtractFromThisArray_01(t *testing.T) {
+func TestDecimal_SetNumStrDto_03(t *testing.T) {
 
-	nStrAry := []string{
-		"5.50",
-		"6.50",
-		"7.00",
-		"8.25",
-	}
+	nStr0 := "-999999.99999"
 
-	decs, err := Decimal{}.NewNumStrArray(nStrAry)
+	nStr1 := "1555777.123456"
+	ePrecision := uint(6)
+	eSignVal := 1
 
-	if err != nil {
-		t.Errorf("Error returned by Decimal{}.NewNumStrArray(nStrAry) " +
-			"Error = '%v' ",
-			err.Error())
-	}
-
-	total, err := Decimal{}.NewNumStr("0.0")
+	nDto, err := NumStrDto{}.NewNumStr(nStr1)
 
 	if err != nil {
-		t.Errorf("Error returned by Decimal{}.NewNumStr(\"0.0\") " +
-			"Error = '%v' ",
-			err.Error())
+		t.Errorf("Error returned by NumStrDto{}.NewNumStr(nStr1). " +
+			"nStr1='%v' Error='%v' ",
+			nStr1, err.Error())
 	}
 
-	expected := "-27.25"
-
-	err = total.SubtractFromThisArray(decs)
+	d1, err := Decimal{}.NewNumStr(nStr0)
 
 	if err != nil {
-		t.Errorf("Error returned by total.SubtractFromThisArray(decs) " +
-			"Error = '%v' ",
-			err.Error())
+		t.Errorf("Error returned by Decimal{}.NewNumStr(nStr0). " +
+			"nStr0='%v' Error='%v' ",
+				nStr0, err.Error())
 	}
 
-	if expected != total.GetNumStr() {
-		t.Errorf("Expected NumStr: %v. Instead, got %v", expected, total.GetNumStr())
+	err = d1.SetNumStrDto(nDto)
+
+	if err != nil {
+		t.Errorf("Error returned by d1.SetNumStrDto(nDto). " +
+			"nDto.GetNumStr()='%v' Error='%v' ",
+			nDto.GetNumStr(), err.Error())
+	}
+
+	if nStr1 != d1.GetNumStr() {
+		t.Errorf("Expected NumStr = '%v'. Instead got NumStr= '%v'", nStr1, d1.GetNumStr())
+	}
+
+	if int(ePrecision) != d1.GetPrecision() {
+		t.Errorf("Expected Precision= '%v'. Intead, got Precision= '%v' ", ePrecision, d1.GetPrecision())
+	}
+
+	if eSignVal != d1.GetSign() {
+		t.Errorf("Expected Sign Value= '%v'. Intead, got Sign Value = '%v' ", eSignVal, d1.GetSign())
+
+	}
+
+	if !d1.GetIsValid() {
+		t.Errorf("Expected IsValid == 'true'. Instead got IsValid= '%v'", d1.GetIsValid())
 	}
 
 }
 
-func TestDecimal_SubtractFromThisMultiple_01(t *testing.T) {
+func TestDecimal_SetFloat_01(t *testing.T) {
 
-	dec1, err := Decimal{}.NewNumStr("5.50")
+	fVal := float32(92.25)
+	eNumStr1 := "92.25"
+	ePrecision := uint(2)
+	eSignVal := 1
+	d1 := Decimal{}.New()
 
-	if err != nil {
-		t.Errorf("Error returned by Decimal{}.NewNumStr(\"5.50\") " +
-			"Error = '%v' ",
-			err.Error())
-	}
-
-	dec2, err := Decimal{}.NewNumStr("6.50")
+	err := d1.SetFloat32(fVal)
 
 	if err != nil {
-		t.Errorf("Error returned by Decimal{}.NewNumStr(\"6.50\") " +
-			"Error = '%v' ",
-			err.Error())
+		t.Errorf("Received error from d1.SetFloat32(fVal). fVal= '%v' Error= %v ", fVal, err)
 	}
 
-	dec3, err := Decimal{}.NewNumStr("7.00")
-
-	if err != nil {
-		t.Errorf("Error returned by Decimal{}.NewNumStr(\"7.00\") " +
-			"Error = '%v' ",
-			err.Error())
+	if  eNumStr1 != d1.GetNumStr() {
+		t.Errorf("Expected NumStr = '%v'. Instead got NumStr= '%v'", eNumStr1, d1.GetNumStr())
 	}
 
-	dec4, err := Decimal{}.NewNumStr("8.25")
-
-	if err != nil {
-		t.Errorf("Error returned by Decimal{}.NewNumStr(\"8.25\") " +
-			"Error = '%v' ",
-			err.Error())
+	if int(ePrecision) != d1.GetPrecision() {
+		t.Errorf("Expected Precision= '%v'. Intead, got Precision= '%v' ", ePrecision, d1.GetPrecision())
 	}
 
-	total, err := Decimal{}.NewNumStr("0.0")
 
-	if err != nil {
-		t.Errorf("Error returned by Decimal{}.NewNumStr(\"0.0\") " +
-			"Error = '%v' ",
-			err.Error())
+	if eSignVal != d1.GetSign() {
+		t.Errorf("Expected Sign Value= '%v'. Intead, got Sign Value = '%v' ", eSignVal, d1.GetSign())
+
 	}
 
-	expected := "-27.25"
-
-	err = total.SubtractFromThisMultiple(
-												dec1,
-												dec2,
-												dec3,
-												dec4,
-									)
-
-	if err != nil {
-		t.Errorf("Error returned by total.SubtractFromThisMultiple(...) " +
-			"Error = '%v' ",
-			err.Error())
-	}
-
-	if expected != total.GetNumStr() {
-		t.Errorf("Expected NumStr: %v. Instead, got %v", expected, total.GetNumStr())
+	if !d1.GetIsValid() {
+		t.Errorf("Expected IsValid == 'true'. Instead got IsValid= '%v'", d1.GetIsValid())
 	}
 
 }
 
+func TestDecimal_SetFloat_02(t *testing.T) {
 
+	fVal := float32(-92.25)
+	eNumStr1 := "-92.25"
+	ePrecision := uint(2)
+	eSignVal := -1
+	d1 := Decimal{}.New()
+
+	err := d1.SetFloat32(fVal)
+
+	if err != nil {
+		t.Errorf("Received error from d1.SetFloat32(fVal). fVal= '%v' Error= %v ", fVal, err)
+	}
+
+	if  eNumStr1 != d1.GetNumStr() {
+		t.Errorf("Expected NumStr = '%v'. Instead got NumStr= '%v'", eNumStr1, d1.GetNumStr())
+	}
+
+	if int(ePrecision) != d1.GetPrecision() {
+		t.Errorf("Expected Precision= '%v'. Intead, got Precision= '%v' ", ePrecision, d1.GetPrecision())
+	}
+
+	if eSignVal != d1.GetSign() {
+		t.Errorf("Expected Sign Value= '%v'. Intead, got Sign Value = '%v' ", eSignVal, d1.GetSign())
+
+	}
+
+	if !d1.GetIsValid() {
+		t.Errorf("Expected IsValid == 'true'. Instead got IsValid= '%v'", d1.GetIsValid())
+	}
+
+}
+
+func TestDecimal_SetFloat64_01(t *testing.T) {
+
+	fVal := float64(92.256)
+	eNumStr1 := "92.256"
+	ePrecision := uint(3)
+	eSignVal := 1
+	d1 := Decimal{}.New()
+
+	err := d1.SetFloat64(fVal, int(ePrecision))
+
+	if err != nil {
+		t.Errorf("Received error from d1.SetFloat64(fVal). fVal= '%v' Error= %v ", fVal, err)
+	}
+
+	if eNumStr1 != d1.GetNumStr() {
+		t.Errorf("Expected NumStr = '%v'. Instead got NumStr= '%v'", eNumStr1, d1.GetNumStr())
+	}
+
+	if int(ePrecision) != d1.GetPrecision() {
+		t.Errorf("Expected Precision= '%v'. Intead, got Precision= '%v' ", ePrecision, d1.GetPrecision())
+	}
+
+	if eSignVal != d1.GetSign() {
+		t.Errorf("Expected Sign Value= '%v'. Intead, got Sign Value = '%v' ", eSignVal, d1.GetSign())
+
+	}
+
+	if !d1.GetIsValid() {
+		t.Errorf("Expected IsValid == 'true'. Instead got IsValid= '%v'", d1.GetIsValid())
+	}
+
+}
+
+func TestDecimal_SetFloat64_02(t *testing.T) {
+
+	fVal := float64(-92.25)
+	eNumStr1 := "-92.25"
+	ePrecision := uint(2)
+	eSignVal := -1
+	d1 := Decimal{}.New()
+
+	err := d1.SetFloat64(fVal, int(ePrecision))
+
+	if err != nil {
+		t.Errorf("Received error from d1.SetFloat64(fVal). fVal= '%v' Error= %v ", fVal, err)
+	}
+
+	if eNumStr1 != d1.GetNumStr() {
+		t.Errorf("Expected NumStr = '%v'. Instead got NumStr= '%v'", eNumStr1, d1.GetNumStr())
+	}
+
+	if int(ePrecision) != d1.GetPrecision() {
+		t.Errorf("Expected Precision= '%v'. Intead, got Precision= '%v' ", ePrecision, d1.GetPrecision())
+	}
+
+	if eSignVal != d1.GetSign() {
+		t.Errorf("Expected Sign Value= '%v'. Intead, got Sign Value = '%v' ", eSignVal, d1.GetSign())
+	}
+
+	if !d1.GetIsValid() {
+		t.Errorf("Expected IsValid == 'true'. Instead got IsValid= '%v'", d1.GetIsValid())
+	}
+
+}
+func TestDecimal_SetFloatBig_01(t *testing.T) {
+
+	eNumStr1 := "92.256"
+	fVal, isOk := big.NewFloat(0.0).SetString(eNumStr1)
+
+	if !isOk {
+		t.Errorf("bigFloat.SetString failed to convert eNumStr1. eNumStr1= '%v'", eNumStr1)
+	}
+
+	ePrecision := uint(3)
+	eSignVal := 1
+	d1 := Decimal{}.New()
+
+	err := d1.SetFloatBig(fVal)
+
+	if err != nil {
+		t.Errorf("d1.SetFloatBig(fVal) returned an error. fVal= '%v' Error= %v", eNumStr1, err)
+	}
+
+	if eNumStr1 != d1.GetNumStr() {
+		t.Errorf("Expected NumStr = '%v'. Instead got NumStr= '%v'", eNumStr1, d1.GetNumStr())
+	}
+
+	if int(ePrecision) != d1.GetPrecision() {
+		t.Errorf("Expected Precision= '%v'. Intead, got Precision= '%v' ", ePrecision, d1.GetPrecision())
+	}
+
+	if eSignVal != d1.GetSign() {
+		t.Errorf("Expected Sign Value= '%v'. Intead, got Sign Value = '%v' ", eSignVal, d1.GetSign())
+	}
+
+	if !d1.GetIsValid() {
+		t.Errorf("Expected IsValid == 'true'. Instead got IsValid= '%v'", d1.GetIsValid())
+	}
+
+}
+
+func TestDecimal_SetFloatBig_02(t *testing.T) {
+
+	eNumStr1 := "-92.25"
+	ePrecision := uint(2)
+	eSignVal := -1
+	fVal, isOk := big.NewFloat(0.0).SetString(eNumStr1)
+
+	if !isOk {
+		t.Errorf("bigFloat.SetString failed to convert eNumStr1. eNumStr1= '%v'", eNumStr1)
+	}
+
+	d1 := Decimal{}.New()
+
+	err := d1.SetFloatBig(fVal)
+
+	if err != nil {
+		t.Errorf("d1.SetFloatBig(fVal) returned an error. fVal= '%v' Error= %v", eNumStr1, err)
+	}
+
+	if eNumStr1 != d1.GetNumStr() {
+		t.Errorf("Expected NumStr = '%v'. Instead got NumStr= '%v'", eNumStr1, d1.GetNumStr())
+	}
+
+	if int(ePrecision) != d1.GetPrecision() {
+		t.Errorf("Expected Precision= '%v'. Intead, got Precision= '%v' ", ePrecision, d1.GetPrecision())
+	}
+
+	if eSignVal != d1.GetSign() {
+		t.Errorf("Expected Sign Value= '%v'. Intead, got Sign Value = '%v' ", eSignVal, d1.GetSign())
+	}
+
+	if !d1.GetIsValid() {
+		t.Errorf("Expected IsValid == 'true'. Instead got IsValid= '%v'", d1.GetIsValid())
+	}
+
+}
+
+func TestDecimal_SetIntFracStrings_01(t *testing.T) {
+
+	intStr := "123"
+	fracStr := "456"
+	eNumStr := "123.456"
+	eSignVal := 1
+	ePrecision := uint(3)
+
+	d1 := Decimal{}.New()
+
+	err := d1.SetIntFracStrings(eSignVal, intStr, fracStr)
+
+	if err != nil {
+		t.Errorf("d1.SetIntFracStrings(eSignVal, intStr, fracStr) returned an error. eSignVal= '%v' intStr= '%v' fracStr= '%v' Error= %v", eSignVal, intStr, fracStr, err)
+	}
+
+	if eNumStr != d1.GetNumStr() {
+		t.Errorf("Expected NumStr = '%v'. Instead got NumStr= '%v'", eNumStr, d1.GetNumStr())
+	}
+
+	if int(ePrecision) != d1.GetPrecision() {
+		t.Errorf("Expected Precision= '%v'. Intead, got Precision= '%v' ", ePrecision, d1.GetPrecision())
+	}
+
+	if eSignVal != d1.GetSign() {
+		t.Errorf("Expected Sign Value= '%v'. Intead, got Sign Value = '%v' ", eSignVal, d1.GetSign())
+	}
+
+	if !d1.GetIsValid() {
+		t.Errorf("Expected IsValid == 'true'. Instead got IsValid= '%v'", d1.GetIsValid())
+	}
+
+}
+
+func TestDecimal_SetIntFracStrings_02(t *testing.T) {
+
+	intStr := "123"
+	fracStr := "0456"
+	eNumStr := "-123.0456"
+	eSignVal := -1
+	ePrecision := uint(4)
+
+	d1 := Decimal{}.New()
+
+	err := d1.SetIntFracStrings(eSignVal, intStr, fracStr)
+
+	if err != nil {
+		t.Errorf("d1.SetIntFracStrings(eSignVal, intStr, fracStr) returned an error. eSignVal= '%v' intStr= '%v' fracStr= '%v' Error= %v", eSignVal, intStr, fracStr, err)
+	}
+
+
+	if eNumStr != d1.GetNumStr() {
+		t.Errorf("Expected NumStr = '%v'. Instead got NumStr= '%v'", eNumStr, d1.GetNumStr())
+	}
+
+	if int(ePrecision) != d1.GetPrecision() {
+		t.Errorf("Expected Precision= '%v'. Intead, got Precision= '%v' ", ePrecision, d1.GetPrecision())
+	}
+
+	if eSignVal != d1.GetSign() {
+		t.Errorf("Expected Sign Value= '%v'. Intead, got Sign Value = '%v' ", eSignVal, d1.GetSign())
+	}
+
+	if !d1.GetIsValid() {
+		t.Errorf("Expected IsValid == 'true'. Instead got IsValid= '%v'", d1.GetIsValid())
+	}
+
+}

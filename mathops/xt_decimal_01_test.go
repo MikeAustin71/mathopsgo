@@ -1044,136 +1044,6 @@ func TestDecimal_GetCurrencyParen_03(t *testing.T) {
 
 }
 
-
-func TestDecimal_Mul_01(t *testing.T) {
-
-	str1 := "575.63"
-	str2 := "2014.123"
-	expected := "1159389.62249"
-
-	d1 := Decimal{}.New()
-
-	err := d1.SetNumStr(str1)
-
-	if err != nil {
-		t.Errorf("Error thrown on d1.SetNumStr(str1). str1= '%v' Error= %v", str1, err)
-	}
-
-	d2 := Decimal{}.New()
-
-	err = d2.SetNumStr(str2)
-
-	if err != nil {
-		t.Errorf("Error thrown on d1.SetNumStr(str2). str1= '%v' Error= %v", str2, err)
-	}
-
-	d3, err := d1.Mul(d2)
-
-	if err != nil {
-		t.Errorf("Error thrown on d1.Mul(d2). Error= %v", err)
-	}
-
-	if d3.GetNumStr() != expected {
-		t.Errorf("Error. Expected %v. Instead, got %v", expected, d3.GetNumStr())
-	}
-
-}
-
-func TestDecimal_Mul_02(t *testing.T) {
-
-	str1 := "-575.63"
-	str2 := "2014.123"
-	expected := "-1159389.62249"
-
-	d1 := Decimal{}.New()
-
-	err := d1.SetNumStr(str1)
-
-	if err != nil {
-		t.Errorf("Error thrown on d1.SetNumStr(str1). str1= '%v' Error= %v", str1, err)
-	}
-
-	d2 := Decimal{}.New()
-
-	err = d2.SetNumStr(str2)
-
-	if err != nil {
-		t.Errorf("Error thrown on d1.SetNumStr(str2). str1= '%v' Error= %v", str2, err)
-	}
-
-	d3, err := d1.Mul(d2)
-
-	if err != nil {
-		t.Errorf("Error thrown on d1.Mul(d2). Error= %v", err)
-	}
-
-	if expected != d3.GetNumStr() {
-		t.Errorf("Error. Expected %v. Instead, got %v", expected, d3.GetNumStr())
-	}
-
-}
-func TestDecimal_Mul_03(t *testing.T) {
-
-	str1 := "-575.63"
-	str2 := "-2014.123"
-	expected := "1159389.62249"
-
-	d1 := Decimal{}.New()
-
-	err := d1.SetNumStr(str1)
-
-	if err != nil {
-		t.Errorf("Error thrown on d1.SetNumStr(str1). str1= '%v' Error= %v", str1, err)
-	}
-
-	d2 := Decimal{}.New()
-
-	err = d2.SetNumStr(str2)
-
-	if err != nil {
-		t.Errorf("Error thrown on d1.SetNumStr(str2). str1= '%v' Error= %v", str2, err)
-	}
-
-	d3, err := d1.Mul(d2)
-
-	if err != nil {
-		t.Errorf("Error thrown on d1.Mul(d2). Error= %v", err)
-	}
-
-	if expected != d3.GetNumStr() {
-		t.Errorf("Error. Expected %v. Instead, got %v", expected, d3.GetNumStr())
-	}
-
-}
-
-func TestDecimal_MulTotal_01(t *testing.T) {
-	numStr := "3"
-	mul, err := Decimal{}.NewNumStr(numStr)
-
-	if err != nil {
-		t.Errorf("Error returned by Decimal{}.NewNumStr(numStrDto) " +
-			"numStrDto='%v'  Error = '%v' ",numStr, err.Error())
-	}
-
-	d, err := Decimal{}.NewNumStr("1")
-
-	if err != nil {
-		t.Errorf("Error returned by Decimal{}.NewNumStr(\"1\") " +
-			"Error = '%v' ", err.Error())
-	}
-
-	for i := 0; i < 4; i++ {
-		d.MulTotal(mul)
-	}
-
-	expected := "81"
-
-	if expected != d.GetNumStr() {
-		t.Errorf("Error. Expected %v. Instead, got %v", expected, d.GetNumStr())
-	}
-
-}
-
 func TestDecimal_Divide_01(t *testing.T) {
 
 	str1 := "575.63"
@@ -1618,6 +1488,31 @@ func TestDecimal_GetSquareRoot_03(t *testing.T) {
 
 	if err == nil {
 		t.Error("It was expected that an error would be generated when attempting to calculate the square root of a negative number. However, no such error was triggered!")
+	}
+
+}
+
+
+func TestDecimal_Inverse_01(t *testing.T) {
+
+	numStr := "25"
+	precision := uint(0)
+	expected := "0.04"
+
+	d1, err := Decimal{}.NewNumStrPrecision(numStr, precision, false)
+
+	if err != nil {
+		t.Errorf("Error Returned from Decimal d1.NewNumStrPrecision(numStrDto, precision, false). numStrDto= '%v' precision= '%v' Error= %v", numStr, precision, err)
+	}
+
+	d2, err := d1.Inverse(2)
+
+	if err != nil {
+		t.Errorf("Received error from d1.Inverse(). Error= %v", err)
+	}
+
+	if expected != d2.GetNumStr() {
+		t.Errorf("Expected NumStr= '%v'. Instead, got %v.", expected, d2.GetNumStr())
 	}
 
 }
