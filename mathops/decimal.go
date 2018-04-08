@@ -870,6 +870,9 @@ func (dec *Decimal) GetRelevantPrecision() uint {
 // GetScaleVal - Returns the scale value associated with this decimal value. The
 // scale value is expressed as 10 to an exponent. Example 10^2 == 100.
 //
+// Scale Value, or Scale Factor, is defined by 10 raised to the power
+// of Decimal precision.
+//
 // The return scale value is of type big integer (*big.Int)
 //
 func (dec *Decimal) GetScaleVal() (*big.Int, error) {
