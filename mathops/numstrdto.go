@@ -2217,12 +2217,12 @@ func (nDto NumStrDto) NewRational(bigRat *big.Rat, precision int) (NumStrDto, er
 	return n2, nil
 }
 
-// New - Used to create empty NumStrDto types.
+// NewBigIntNum - Used to create empty NumStrDto types.
 // This message initializes the NumStrDto
 // fields. This method will return the newly
 // create type (not a pointer to the type).
 // Example:
-// n := NumStrDto{}.New()
+// n := NumStrDto{}.NewBigIntNum()
 // n2, err := n.ParseNumStr("123.456")
 //
 // Compare this method of object creation

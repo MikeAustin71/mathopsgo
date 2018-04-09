@@ -1428,11 +1428,11 @@ func (dec *Decimal) MulTotal(d2 Decimal) error {
 	return nil
 }
 
-// New - Creates and returns a Decimal type.
+// NewBigIntNum - Creates and returns a Decimal type.
 // The Decimal value is initialized to zero.
 //
 // Example Usage:
-//   d := Decimal{}.New()
+//   d := Decimal{}.NewBigIntNum()
 //
 // This is the recommended procedure for creating
 // a Decimal type.
@@ -1748,7 +1748,7 @@ func (dec *Decimal) NewRationalNum(bigRat *big.Rat, precision int ) (Decimal, er
 // value of '3', the resulting Decimal value would be 123.456.
 //
 // Example Usage:
-// d := Decimal{}.New()
+// d := Decimal{}.NewBigIntNum()
 // d2, err := d.NumStrPrecisionToDecimal("123456", 3, false)
 // d2 is Now Equal to 123.456
 //
@@ -1896,7 +1896,7 @@ func (dec *Decimal) Pow(exponent int, maxPrecision int) (Decimal, error) {
 // zero ('0') will yield an integer of '123456'.
 //
 // Example usage:
-// d:= Decimal{}.New()
+// d:= Decimal{}.NewBigIntNum()
 // iBig := big.NewInt(int64(123))
 // d.SetBigInt(iBig, 1)
 //
@@ -1975,7 +1975,7 @@ func (dec *Decimal) SetEmptySeparatorsToDefault() {
 // that of the passed-in float32 parameter.
 //
 // Example usage:
-// d:= Decimal{}.New()
+// d:= Decimal{}.NewBigIntNum()
 // f32:= float32(123.456)
 // d.SetFloat32(f32)
 //
@@ -2004,7 +2004,7 @@ func (dec *Decimal) SetFloat32(f32 float32) error {
 // that of the passed-in float64 parameter.
 //
 // Example usage:
-// d:= Decimal{}.New()
+// d:= Decimal{}.NewBigIntNum()
 // f64:= float64(123.456)
 // d.SetFloat32(f64)
 // Number String = "123.456"
@@ -2033,7 +2033,7 @@ func (dec *Decimal) SetFloat64(f64 float64, precision int) error {
 // passed-in *big.Float parameter.
 //
 // Example usage:
-// d:= Decimal{}.New()
+// d:= Decimal{}.NewBigIntNum()
 // bigFloat:= big.NewFloat(float64(123.456))
 // d.SetBigFloat(bigFloat)
 // Number String = "123.456"
@@ -2065,7 +2065,7 @@ func (dec *Decimal) SetFloatBig(bigFloat *big.Float) error {
 // Decimal will be set to a value of '123.456'.
 //
 // Example usage:
-// d:= Decimal{}.New()
+// d:= Decimal{}.NewBigIntNum()
 // d.SetInt(123456, 3)
 func (dec *Decimal) SetInt(iNum int, precision uint) error {
 
@@ -2172,7 +2172,7 @@ func (dec *Decimal) SetIntFracStrings(signVal int, intNum, fracNum string) error
 // value of zero ('0') will yield an integer value of '123456'.
 //
 // Example usage:
-// d:= Decimal{}.New()
+// d:= Decimal{}.NewBigIntNum()
 // i64:= int64(123456)
 // d.SetInt64(i64, 3)
 func (dec *Decimal) SetInt64(i64 int64, precision uint) error {
@@ -2188,7 +2188,7 @@ func (dec *Decimal) SetInt64(i64 int64, precision uint) error {
 // 123.456.
 //
 // Example Usage:
-// d:= Decimal{}.New()
+// d:= Decimal{}.NewBigIntNum()
 // d.SetNumStrPrecision("123456", 3)
 // Resulting Decimal Value = 123.456
 func (dec *Decimal) SetNumStrPrecision(str string, precision uint, roundResult bool) error {
@@ -2224,7 +2224,7 @@ func (dec *Decimal) SetNumStrPrecision(str string, precision uint, roundResult b
 // value to 123.456.
 //
 // Example Usage:
-// d := Decimal{}.New()
+// d := Decimal{}.NewBigIntNum()
 // d.SetNumStr("123.456")
 // Decimal Value = 123.456
 func (dec *Decimal) SetNumStr(str string) error {

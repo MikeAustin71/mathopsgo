@@ -268,7 +268,7 @@ func TestIntAry_GetIntAry_02(t *testing.T) {
 
 	// GetIntAry() returns a reference to the internal array because we are using 'slices'. Be careful!!!
 	if iAry[4] != iAry2[4] {
-		t.Errorf("Error: Changed Reference to iAry[4]. However the internal Int Ary Value remained unchanged. Old Value='%v'  New Value=%v", iAry[4], iAry2[4])
+		t.Errorf("Error: Changed Reference to iAry[4]. However the internal Int Ary Value remained unchanged. Old Value='%v'  NewBigIntNum Value=%v", iAry[4], iAry2[4])
 	}
 
 }
@@ -315,7 +315,7 @@ func TestIntAry_GetIntAryDeepCopy_02(t *testing.T) {
 
 	// GetIntAry() returns a reference to the internal array because we are using 'slices'. Be careful!!!
 	if iAry[4] == iAry2[4] {
-		t.Errorf("Error: Changed Reference to iAry[4]. However the internal Int Ary Value was also changed. Old Value='%v'  New Value=%v", iAry[4], iAry2[4])
+		t.Errorf("Error: Changed Reference to iAry[4]. However the internal Int Ary Value was also changed. Old Value='%v'  NewBigIntNum Value=%v", iAry[4], iAry2[4])
 	}
 
 }

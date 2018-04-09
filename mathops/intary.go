@@ -2933,8 +2933,8 @@ func (ia *IntAry) Multiply(ia1, ia2, iaResult *IntAry, minimumResultPrecision, m
 	return nil
 }
 
-// New - Creates a new blank intAry object.
-// Usage: ia := intAry{}.New()
+// NewBigIntNum - Creates a new blank intAry object.
+// Usage: ia := intAry{}.NewBigIntNum()
 func (ia IntAry) New() IntAry {
 	iAry := IntAry{}
 	iAry.intAry = []uint8{}
