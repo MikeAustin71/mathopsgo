@@ -498,6 +498,22 @@ func (dec *Decimal) GetCurrencySymbol() rune {
 	return dec.numStrDto.GetCurrencySymbol()
 }
 
+// GetSignedBigInt - Returns the numeric value of the current Decimal
+// instance as a signed *big.Int.
+func (dec *Decimal) GetSignedBigInt() (*big.Int, error) {
+	ePrefix := "Decimal.GetBigInt() "
+
+	bInt, err :=	dec.numStrDto.GetSignedBigInt()
+
+	if err != nil {
+		return big.NewInt(0),
+		fmt.Errorf(ePrefix + "Error returned by dec.numStrDto.GetSignedBigInt(). " +
+			"Error='%v' ", err.Error())
+	}
+
+ 	return big.NewInt(0).Set(bInt), nil
+}
+
 // GetCurrencyStr - Returns the Decimal's numeric value expressed
 // as number string delimited with the Decimal's Thousands Separator
 // and prefixed with the designated Currency Symbol characters.

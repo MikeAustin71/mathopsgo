@@ -1613,7 +1613,7 @@ func (nDto *NumStrDto) GetSignedBigInt() (*big.Int, error) {
 		return signedBigInt, nil
 	}
 
-	return absBigInt, nil
+	return big.NewInt(0).Set(absBigInt), nil
 }
 
 

@@ -2,10 +2,12 @@ package mathops
 
 import (
 	"math/big"
+	"fmt"
 )
 
 // BigIntNum - wraps a *big.Int integer and its associated
 // precision and Sign Value.
+//
 type BigIntNum struct {
 	BigInt			*big.Int
 	AbsBigInt		*big.Int
@@ -15,13 +17,148 @@ type BigIntNum struct {
 												// 	the 'BigInt' integer.
 }
 
-// New - Creates a new BigIntNum instance using a *big.Int type and its
+
+// New - returns a new BigIntNum instance initialized to
+// zero.
+//
+func (bNum BigIntNum) New() BigIntNum {
+	b := BigIntNum{}
+	b.Empty()
+	return b
+}
+
+// NewBigInt - Creates a new BigIntNum instance using a *big.Int type and its
 // associated precision.
 //
-func (bNum BigIntNum) New(bigI *big.Int, precision uint) BigIntNum {
+func (bNum BigIntNum) NewBigInt(bigI *big.Int, precision uint) BigIntNum {
 	b := BigIntNum{}
 	b.SetBigIntNum(bigI, precision)
 	return b
+}
+
+// NewDecimal - Receives a 'Decimal' type as input and returns a BigIntNum.
+//
+func (bNum BigIntNum) NewDecimal(decNum Decimal) (BigIntNum, error) {
+	ePrefix := "BigIntNum.NewIntAry() "
+
+	err := decNum.IsDecimalValid()
+
+	if err != nil {
+		return BigIntNum{},
+			fmt.Errorf(ePrefix + "Error: Input Parameter 'decNum' is INVALID!. Error returned by " +
+				"decNum.IsDecimalValid(). Error='%v'", err.Error())
+	}
+
+	bInt, err := decNum.GetSignedBigInt()
+
+	if err != nil {
+		return BigIntNum{},
+			fmt.Errorf(ePrefix + "Error returned by decNum.GetSignedBigInt(). " +
+				"Error='%v'", err.Error())
+	}
+
+	precision := uint(decNum.GetPrecision())
+
+	b := BigIntNum{}
+	b.SetBigIntNum(bInt, precision)
+	return b, nil
+}
+
+// NewIntAry - Creates a new BigIntNum instance from an input parameter
+// IntAry.
+//
+// Be careful, IntAry's can accommodate very, very large numbers.
+//
+func (bNum BigIntNum) NewIntAry(ia IntAry) (BigIntNum, error) {
+	ePrefix := "BigIntNum.NewIntAry() "
+
+	err := ia.IsIntAryValid("")
+
+	if err != nil {
+		return BigIntNum{},
+		fmt.Errorf(ePrefix + "Error: Input Parameter 'ia' is INVALID!. Error returned by " +
+			"ia.IsIntAryValid(\"\"). Error='%v'", err.Error())
+	}
+
+	bInt := ia.GetBigInt()
+	precision := uint(ia.GetPrecision())
+
+	b := BigIntNum{}
+	b.SetBigIntNum(bInt, precision)
+	return b, nil
+}
+
+// NewNumStr - Receives a number string as input and returns
+// a new BigIntNum instance.
+//
+func (bNum BigIntNum) NewNumStr(numStr string) (BigIntNum, error) {
+
+	ePrefix := "BigIntNum.NewNumStr() "
+
+	nDto, err := NumStrDto{}.NewNumStr(numStr)
+
+	if err != nil {
+		return BigIntNum{},
+		fmt.Errorf(ePrefix + "Error returned by NumStrDto{}.NewNumStr(numStr). " +
+			"numStr='%v' Error='%v'", numStr, err.Error())
+	}
+
+	bigI, err := nDto.GetSignedBigInt()
+
+	if err != nil {
+		return BigIntNum{},
+			fmt.Errorf(ePrefix + "Error returned by nDto.GetSignedBigInt(). " +
+				"Error='%v'", err.Error())
+	}
+
+	b := BigIntNum{}
+
+	b.SetBigIntNum(bigI, nDto.GetPrecision())
+
+	return b, nil
+}
+
+// NewNumStrDto - Receives a NumStrDto instance as input and returns
+// a new BigIntNum instance.
+//
+func (bNum BigIntNum) NewNumStrDto(nDto NumStrDto) (BigIntNum, error) {
+
+	ePrefix := "BigIntNum.NewNumStrDto() "
+
+	err := nDto.IsNumStrDtoValid("")
+
+	if err != nil {
+		return BigIntNum{},
+		fmt.Errorf(ePrefix + "Error returned from nDto.IsNumStrDtoValid(\"\"). " +
+			"NumStr='%v' Error='%v'", nDto.GetNumStr(), err.Error())
+	}
+
+	bigI, err := nDto.GetSignedBigInt()
+
+	if err != nil {
+		return BigIntNum{},
+			fmt.Errorf(ePrefix + "Error returned by nDto.GetSignedBigInt(). " +
+				"Error='%v'", err.Error())
+	}
+
+	b := BigIntNum{}
+
+	b.SetBigIntNum(bigI, nDto.GetPrecision())
+
+	return b, nil
+}
+
+// Empty - Resets the BigIntNum data fields to their
+// uninitialized or zero state.
+//
+func (bNum *BigIntNum) Empty() {
+
+	bNum.BigInt = big.NewInt(0)
+	bNum.AbsBigInt = big.NewInt(0)
+	bNum.ScaleFactor = big.NewInt(1)
+	bNum.Sign = 1
+	bNum.Precision = 0
+
 }
 
 // CopyIn - Receives an incoming BigIntNum type and
@@ -41,7 +178,7 @@ func (bNum *BigIntNum) CopyIn(bigN BigIntNum) {
 //
 func (bNum *BigIntNum) CopyOut() BigIntNum {
 
-	b2 := BigIntNum{}.New(big.NewInt(0).Set(bNum.BigInt), bNum.Precision)
+	b2 := BigIntNum{}.NewBigInt(big.NewInt(0).Set(bNum.BigInt), bNum.Precision)
 
 	return b2
 }
@@ -103,8 +240,8 @@ func (bPair BigIntPair) NewBase(
 						b2Precision uint) BigIntPair {
 
 
-	b1BigIntNum := BigIntNum{}.New(b1, b1Precision)
-	b2BigIntNum := BigIntNum{}.New(b2, b2Precision)
+	b1BigIntNum := BigIntNum{}.NewBigInt(b1, b1Precision)
+	b2BigIntNum := BigIntNum{}.NewBigInt(b2, b2Precision)
 
 	return BigIntPair{}.NewBigIntNum(b1BigIntNum, b2BigIntNum)
 
@@ -122,6 +259,127 @@ func (bPair BigIntPair) NewBigIntNum(b1, b2 BigIntNum ) BigIntPair {
 	return bd2
 }
 
+
+// NewIntAry - Creates a new BigIntPair instance from two
+// Decimal instances passed as input parameters.
+//
+func (bPair BigIntPair) NewDecimal(dec1, dec2 Decimal) (BigIntPair, error) {
+
+	ePrefix := "BigIntPair.NewDecimal() "
+
+	b1Num, err := BigIntNum{}.NewDecimal(dec1)
+
+	if err != nil {
+		return BigIntPair{},
+			fmt.Errorf(ePrefix + "Error returned by BigIntNum{}.NewDecimal(dec1). " +
+				"Error='%v' ", err.Error())
+	}
+
+	b2Num, err := BigIntNum{}.NewDecimal(dec2)
+
+	if err != nil {
+		return BigIntPair{},
+			fmt.Errorf(ePrefix + "Error returned by BigIntNum{}.NewDecimal(dec2). " +
+				"Error='%v' ", err.Error())
+	}
+
+	bd2 := BigIntPair{}
+
+	bd2.SetBigIntPair(b1Num, b2Num)
+
+	return bd2, nil
+}
+
+// NewIntAry - Creates a new BigIntPair instance from two
+// IntAry instances passed as input parameters.
+//
+// Be careful, IntAry's can accommodate very, very large numbers.
+//
+func (bPair BigIntPair) NewIntAry(ia1, ia2 IntAry) (BigIntPair, error) {
+
+	ePrefix := "BigIntPair.NewIntAry() "
+
+	b1Num, err := BigIntNum{}.NewIntAry(ia1)
+
+	if err != nil {
+		return BigIntPair{},
+		fmt.Errorf(ePrefix + "Error returned by BigIntNum{}.NewIntAry(ia1). " +
+			"Error='%v' ", err.Error())
+	}
+
+	b2Num, err := BigIntNum{}.NewIntAry(ia2)
+
+	if err != nil {
+		return BigIntPair{},
+			fmt.Errorf(ePrefix + "Error returned by BigIntNum{}.NewIntAry(ia2). " +
+				"Error='%v' ", err.Error())
+	}
+
+	bd2 := BigIntPair{}
+
+	bd2.SetBigIntPair(b1Num, b2Num)
+
+	return bd2, nil
+}
+
+// NewNumStr - Creates a new BigIntPair instance from two number strings
+// passed as input parameters.
+//
+func (bPair BigIntPair) NewNumStr(n1NumStr, n2NumStr string) (BigIntPair, error) {
+	ePrefix := "BigIntPair.NewNumStrDto() "
+	b1Num, err := BigIntNum{}.NewNumStr(n1NumStr)
+
+	if err != nil {
+		return BigIntPair{},
+		fmt.Errorf(ePrefix + "Error returned by BigIntNum{}.NewNumStr(n1NumStr). " +
+			"numStr='%v' Error='%v' ", n1NumStr, err.Error())
+	}
+
+	b2Num, err := BigIntNum{}.NewNumStr(n2NumStr)
+
+	if err != nil {
+		return BigIntPair{},
+			fmt.Errorf(ePrefix + "Error returned by BigIntNum{}.NewNumStr(n2NumStr). " +
+				"numStr='%v' Error='%v' ", n2NumStr, err.Error())
+	}
+
+	b2Pair := BigIntPair{}
+
+	b2Pair.SetBigIntPair(b1Num, b2Num)
+
+	return b2Pair, nil
+
+}
+
+// NewNumStrDto - Creates a new BigIntPair instance from two NumStrDto
+// instances passed as input parameters.
+//
+func (bPair BigIntPair) NewNumStrDto(n1Dto, n2Dto NumStrDto) (BigIntPair, error) {
+
+	ePrefix := "BigIntPair.NewNumStrDto() "
+	b1Num, err := BigIntNum{}.NewNumStrDto(n1Dto)
+
+	if err != nil {
+		return BigIntPair{},
+		fmt.Errorf(ePrefix + "Error returned by BigIntNum{}.NewNumStrDto(n1Dto). " +
+			"numStr='%v' Error='%v' ", n1Dto.GetNumStr(), err.Error())
+	}
+
+	b2Num, err := BigIntNum{}.NewNumStrDto(n2Dto)
+
+	if err != nil {
+		return BigIntPair{},
+			fmt.Errorf(ePrefix + "Error returned by BigIntNum{}.NewNumStrDto(n2Dto). " +
+				"numStr='%v' Error='%v' ", n2Dto.GetNumStr(), err.Error())
+	}
+
+	b2Pair := BigIntPair{}
+
+	b2Pair.SetBigIntPair(b1Num, b2Num)
+
+	return b2Pair, nil
+
+}
 
 // CopyIn - Copies the values provided by incoming BigIntPair
 // parameter into the current BigIntPair instance.
@@ -177,6 +435,7 @@ func (bPair *BigIntPair) SetBigIntPair(b1, b2 BigIntNum ) {
 func(bPair *BigIntPair) MakePrecisionsEqual() {
 
 	if bPair.Big1.Precision == bPair.Big2.Precision {
+		// Nothing to do. Precisions are equal.
 		return
 	}
 
@@ -186,7 +445,7 @@ func(bPair *BigIntPair) MakePrecisionsEqual() {
 		deltaPrecision := big.NewInt(int64(bPair.Big1.Precision - bPair.Big2.Precision))
 		deltaPrecisionScale := big.NewInt(0).Exp(base10, deltaPrecision, nil)
 		newB2Int := big.NewInt(0).Mul(bPair.Big2.BigInt, deltaPrecisionScale)
-		newB2Num := BigIntNum{}.New(newB2Int, bPair.Big1.Precision)
+		newB2Num := BigIntNum{}.NewBigInt(newB2Int, bPair.Big1.Precision)
 		newBPair := BigIntPair{}.NewBigIntNum(bPair.Big1, newB2Num)
 		bPair.CopyIn(newBPair)
 		return
@@ -197,7 +456,7 @@ func(bPair *BigIntPair) MakePrecisionsEqual() {
 	deltaPrecision := big.NewInt(int64(bPair.Big2.Precision - bPair.Big1.Precision))
 	deltaPrecisionScale := big.NewInt(0).Exp(base10, deltaPrecision, nil)
 	newB1Int := big.NewInt(0).Mul(bPair.Big1.BigInt, deltaPrecisionScale)
-	newB1Num := BigIntNum{}.New(newB1Int, bPair.Big2.Precision)
+	newB1Num := BigIntNum{}.NewBigInt(newB1Int, bPair.Big2.Precision)
 	newBPair := BigIntPair{}.NewBigIntNum(newB1Num, bPair.Big2)
 
 	bPair.CopyIn(newBPair)
@@ -205,59 +464,27 @@ func(bPair *BigIntPair) MakePrecisionsEqual() {
 	return
 }
 
-// BigIntMathDto - This type is used to perform math operations
-// using the *big.Int Type.
+// BigIntBasicMathResult - Used to return the result
+// of an Addition, Subtraction or Multiplication operation.
 //
-// If you are unfamiliar with the *big.Int type, reference:
-// 						https://golang.org/pkg/math/big/
-//
-type BigIntMathDto struct {
-	Input  BigIntPair
+type BigIntBasicMathResult struct {
+	Input BigIntPair
 	Result BigIntNum
 }
 
-func (bMath BigIntMathDto) New() BigIntMathDto {
-
-	b2Math := BigIntMathDto{}
-
-	b2Math.Input = BigIntPair{}.New()
-
-	baseZero := big.NewInt(0)
-
-	b2Math.Result = BigIntNum{}.New(baseZero, 0)
-
-	return b2Math
-
-}
-
-// NewNewBigIntPair - Creates a new BigIntMathDto based on input parameter
-// type, 'BigIntPair'
+// BigIntDivideModResult - Used to return the result
+// of Big Int division with a Quotient and Modulo
+// Values.
 //
-func (bMath BigIntMathDto) NewBigIntPairResult(bPair BigIntPair) BigIntMathDto {
-
-	b2Math := BigIntMathDto{}
-
-	b2Math.Input = bPair.CopyOut()
-
-	return b2Math
+type BigIntDivideModResult struct {
+  Dividend BigIntNum
+  Divisor BigIntNum
+  Quotient BigIntNum
+  Modulo BigIntNum
 }
 
-
-
-func (bMath BigIntMathDto) NewAdd(
-										b1 *big.Int,
-											precision1 uint,
-												b2 *big.Int,
-													precision2 uint ) BigIntMathDto {
-
-	b1Pair := BigIntPair{}.NewBase(b1, precision1, b2, precision2)
-
-	b1Pair.MakePrecisionsEqual()
-
-	b3 := big.NewInt(0).Add(b1Pair.Big1.BigInt, b1Pair.Big2.BigInt)
-
-	b2Math := BigIntMathDto{}.New()
-	b2Math.Input = b1Pair.CopyOut()
-	b2Math.Result = BigIntNum{}.New(b3, b1Pair.Big2.Precision)
-	return b2Math
+type BigIntDivideFracResult struct {
+	Dividend BigIntNum
+	Divisor BigIntNum
+	Quotient *big.Rat
 }
