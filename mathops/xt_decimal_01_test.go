@@ -983,7 +983,7 @@ func TestDecimal_Divide_04(t *testing.T) {
 	}
 
 	if excelResult != actualResult {
-		t.Errorf("Error: Excel Expected result='%v'. Instead, result='%v'. " +
+		t.Errorf("Error: Excel Expected result='%v'. Instead, result='%v'. ",
 			excelResult, actualResult)
 	}
 
