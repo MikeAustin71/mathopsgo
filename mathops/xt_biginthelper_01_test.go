@@ -605,6 +605,192 @@ func TestBigIntNum_Decimal_02(t *testing.T) {
 
 }
 
+func TestBigIntPair_Compare_01(t *testing.T) {
+	n1Str := "4"
+	n2Str := "-24"
+	expectedBig1Compare := 1
+	expectedPrecision1Compare := 0
+	expectedBig1AbsCompare := -1
+
+	b1, oK := big.NewInt(0).SetString(n1Str, 10)
+
+	if !oK {
+		t.Errorf("Error returned by big.NewInt(0).SetString(n1Str, 10)" +
+			"n1Str='%v' ", n1Str)
+	}
+
+
+	b2, oK := big.NewInt(0).SetString(n2Str, 10)
+
+	if !oK {
+		t.Errorf("Error returned by big.NewInt(0).SetString(n2Str, 10)" +
+			"n2Str='%v' ", n2Str)
+	}
+
+	bPair := BigIntPair{}.NewBase(b1, 0, b2, 0)
+
+	if expectedBig1Compare != bPair.Big1Compare  {
+		t.Errorf("Error: Expected bPair.Big1Compare='%d'. "+
+			"Instead, bPair.Big1Compare='%v'. bPair.Big1='%s'  bPair.Big2='%s'",
+			expectedBig1Compare, bPair.Big1Compare,
+				bPair.Big1.BigInt.Text(10), bPair.Big2.BigInt.Text(10))
+	}
+
+	if expectedPrecision1Compare != bPair.Precision1Compare {
+		t.Errorf("Error: Expected bPair.Precision1Compare='%d'. " +
+			"Instead, bPair.Precision1Compare='%d'. bPair.Big1.Precision='%d' " +
+			"bPair.Big2.Precision='%d'.",
+			expectedBig1Compare, bPair.Precision1Compare,
+				bPair.Big1.Precision, bPair.Big2.Precision)
+	}
+
+	if expectedBig1AbsCompare != bPair.Big1AbsCompare  {
+		t.Errorf("Error: Expected bPair.Big1AbsCompare='%d'. " +
+			"Instead, bPair.Big1AbsCompare='%d'. bPair.Big1.AbsBigInt='%s' " +
+			"bPair.Big2.AbsBigInt='%s'",
+				expectedBig1AbsCompare, bPair.Big1AbsCompare,
+					bPair.Big1.AbsBigInt.Text(10),
+						bPair.Big2.AbsBigInt.Text(10))
+	}
+
+}
+
+func TestBigIntPair_Compare_02(t *testing.T) {
+	n1Str := "-24"
+	n2Str := "4"
+	expectedBig1Compare := -1
+	expectedPrecision1Compare := 0
+	expectedBig1AbsCompare := 1
+
+	b1, oK := big.NewInt(0).SetString(n1Str, 10)
+
+	if !oK {
+		t.Errorf("Error returned by big.NewInt(0).SetString(n1Str, 10)" +
+			"n1Str='%v' ", n1Str)
+	}
+
+
+	b2, oK := big.NewInt(0).SetString(n2Str, 10)
+
+	if !oK {
+		t.Errorf("Error returned by big.NewInt(0).SetString(n2Str, 10)" +
+			"n2Str='%v' ", n2Str)
+	}
+
+	bPair := BigIntPair{}.NewBase(b1, 0, b2, 0)
+
+	if expectedBig1Compare != bPair.Big1Compare  {
+		t.Errorf("Error: Expected bPair.Big1Compare='%d'. "+
+			"Instead, bPair.Big1Compare='%v'. bPair.Big1='%s'  bPair.Big2='%s'",
+			expectedBig1Compare, bPair.Big1Compare,
+				bPair.Big1.BigInt.Text(10), bPair.Big2.BigInt.Text(10))
+	}
+
+	if expectedPrecision1Compare != bPair.Precision1Compare {
+		t.Errorf("Error: Expected bPair.Precision1Compare='%d'. " +
+			"Instead, bPair.Precision1Compare='%d'. bPair.Big1.Precision='%d' " +
+			"bPair.Big2.Precision='%d'.",
+			expectedBig1Compare, bPair.Precision1Compare,
+				bPair.Big1.Precision, bPair.Big2.Precision)
+	}
+
+	if expectedBig1AbsCompare != bPair.Big1AbsCompare  {
+		t.Errorf("Error: Expected bPair.Big1AbsCompare='%d'. " +
+			"Instead, bPair.Big1AbsCompare='%d'. bPair.Big1.AbsBigInt='%s' " +
+			"bPair.Big2.AbsBigInt='%s'",
+				expectedBig1AbsCompare, bPair.Big1AbsCompare,
+					bPair.Big1.AbsBigInt.Text(10),
+						bPair.Big2.AbsBigInt.Text(10))
+	}
+
+}
+
+
+func TestBigIntPair_Compare_03(t *testing.T) {
+	n1Str := "40000"
+	n1Precision := uint(4)
+	n2Str := "240"
+	n2Precision := uint(1)
+
+	expectedMaxPrecision := uint(4)
+	expectedBig1Compare := 1
+	expectedPrecision1Compare := 1
+	expectedBig1AbsCompare := 1
+
+	b1, oK := big.NewInt(0).SetString(n1Str, 10)
+
+	if !oK {
+		t.Errorf("Error returned by big.NewInt(0).SetString(n1Str, 10)" +
+			"n1Str='%v' ", n1Str)
+	}
+
+
+	b2, oK := big.NewInt(0).SetString(n2Str, 10)
+
+	if !oK {
+		t.Errorf("Error returned by big.NewInt(0).SetString(n2Str, 10)" +
+			"n2Str='%v' ", n2Str)
+	}
+
+	bPair := BigIntPair{}.NewBase(b1, n1Precision, b2, n2Precision)
+
+	if expectedBig1Compare != bPair.Big1Compare  {
+		t.Errorf("Error: Expected bPair.Big1Compare='%d'. "+
+			"Instead, bPair.Big1Compare='%v'. bPair.Big1='%s'  bPair.Big2='%s'",
+			expectedBig1Compare, bPair.Big1Compare,
+				bPair.Big1.BigInt.Text(10), bPair.Big2.BigInt.Text(10))
+	}
+
+	if expectedPrecision1Compare != bPair.Precision1Compare {
+		t.Errorf("Error: Expected bPair.Precision1Compare='%d'. " +
+			"Instead, bPair.Precision1Compare='%d'. bPair.Big1.Precision='%d' " +
+			"bPair.Big2.Precision='%d'.",
+			expectedBig1Compare, bPair.Precision1Compare,
+				bPair.Big1.Precision, bPair.Big2.Precision)
+	}
+
+	if expectedBig1AbsCompare != bPair.Big1AbsCompare  {
+		t.Errorf("Error: Expected bPair.Big1AbsCompare='%d'. " +
+			"Instead, bPair.Big1AbsCompare='%d'. bPair.Big1.AbsBigInt='%s' " +
+			"bPair.Big2.AbsBigInt='%s'",
+				expectedBig1AbsCompare, bPair.Big1AbsCompare,
+					bPair.Big1.AbsBigInt.Text(10),
+						bPair.Big2.AbsBigInt.Text(10))
+	}
+
+	bPair.MakePrecisionsEqual()
+	expectedBig1Compare = -1
+	expectedPrecision1Compare = 0
+	expectedBig1AbsCompare = -1
+
+	if expectedMaxPrecision != bPair.Big2.Precision {
+		t.Errorf("Error: After Equalizing Precision, Expected Big2.Precision='%v'. " +
+			"Instead, Big2.Precision='%v'.", expectedMaxPrecision, bPair.Big2.Precision )
+	}
+
+	if expectedBig1Compare != bPair.Big1Compare {
+		t.Errorf("Error: After Equalizing Precision, Expected Big1Compare='%v'. " +
+			"Instead, Big1Compare='%v'. bPair.Big1='%s' bPair.Big2='%s'. ",
+				expectedBig1Compare, bPair.Big1Compare, bPair.Big1.BigInt.Text(10),
+					bPair.Big2.BigInt.Text(10))
+	}
+
+	if expectedBig1AbsCompare != bPair.Big1AbsCompare {
+		t.Errorf("Error: After Equalizing Precision, Expected Big1AbsCompare='%v'. " +
+			"Instead, Big1AbsCompare='%v'. bPair.Big1='%s' bPair.Big2='%s'. ",
+				expectedBig1AbsCompare, bPair.Big1AbsCompare, bPair.Big1.BigInt.Text(10),
+					bPair.Big2.BigInt.Text(10))
+	}
+
+	if expectedPrecision1Compare != bPair.Precision1Compare {
+		t.Errorf("Error: After Equalizing Precision, Expected Precision1Compare='%v'. " +
+			"Instead, bPair.Precision1Compare='%v'. bPair.Big1.Precision='%v' " +
+			"bPair.Big2.Precision='%v'",
+				expectedPrecision1Compare, bPair.Precision1Compare,
+					bPair.Big1.Precision, bPair.Big2.Precision)
+	}
+}
+
 func TestBigIntPair_NewBase_01(t *testing.T) {
 
 	//n1Str:="1234567.8901"
