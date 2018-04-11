@@ -385,8 +385,8 @@ func (bPair BigIntPair) NewNumStrDto(n1Dto, n2Dto NumStrDto) (BigIntPair, error)
 // parameter into the current BigIntPair instance.
 func (bPair *BigIntPair) CopyIn(bd2 BigIntPair) {
 
-	bPair.Big1 = bd2.Big1.CopyOut()
-	bPair.Big2 = bd2.Big2.CopyOut()
+	bPair.Big1.CopyIn(bd2.Big1)
+	bPair.Big2.CopyIn(bd2.Big2)
 	bPair.Big1Compare = bd2.Big1Compare
 	bPair.Big1AbsCompare = bd2.Big1AbsCompare
 	bPair.Precision1Compare = bd2.Precision1Compare
@@ -408,8 +408,8 @@ func (bPair *BigIntPair) CopyOut() BigIntPair {
 // respectively.
 //
 func (bPair *BigIntPair) SetBigIntPair(b1, b2 BigIntNum ) {
-	bPair.Big1 = b1.CopyOut()
-	bPair.Big2 = b2.CopyOut()
+	bPair.Big1.CopyIn(b1)
+	bPair.Big2.CopyIn(b2)
 
 	bPair.Big1Compare = bPair.Big1.BigInt.Cmp(bPair.Big2.BigInt)
 	bPair.Big1AbsCompare = bPair.Big1.AbsBigInt.Cmp(bPair.Big2.AbsBigInt)
