@@ -1,5 +1,5 @@
 === RUN   TestBigIntNum_NewNumStr_01
---- PASS: TestBigIntNum_NewNumStr_01 (0.04s)
+--- PASS: TestBigIntNum_NewNumStr_01 (0.01s)
 === RUN   TestBigIntNum_NewNumStr_02
 --- PASS: TestBigIntNum_NewNumStr_02 (0.00s)
 === RUN   TestBigIntNum_BigInt_01
@@ -38,6 +38,10 @@
 --- PASS: TestBigIntPair_NewIntAry_01 (0.00s)
 === RUN   TestBigIntPair_NewIntAry_02
 --- PASS: TestBigIntPair_NewIntAry_02 (0.00s)
+=== RUN   TestBigIntPair_Decimal_01
+--- PASS: TestBigIntPair_Decimal_01 (0.00s)
+=== RUN   TestBigIntPair_Decimal_02
+--- PASS: TestBigIntPair_Decimal_02 (0.00s)
 === RUN   TestNumStrUtility_ConvertNumStrToDecimal_01
 --- PASS: TestNumStrUtility_ConvertNumStrToDecimal_01 (0.00s)
 === RUN   TestNumStrUtility_ConvertNumStrToDecimal_02
@@ -617,13 +621,13 @@
 === RUN   TestIntAry_DivideThisBy_12
 --- PASS: TestIntAry_DivideThisBy_12 (0.00s)
 === RUN   TestIntAry_DivideThisBy_13
---- PASS: TestIntAry_DivideThisBy_13 (0.06s)
+--- PASS: TestIntAry_DivideThisBy_13 (0.05s)
 === RUN   TestIntAry_DivideThisBy_14
 --- PASS: TestIntAry_DivideThisBy_14 (0.00s)
 === RUN   TestIntAry_DivideThisBy_15
 --- PASS: TestIntAry_DivideThisBy_15 (0.00s)
 === RUN   TestIntAry_DivideThisBy_16
---- PASS: TestIntAry_DivideThisBy_16 (0.07s)
+--- PASS: TestIntAry_DivideThisBy_16 (0.06s)
 === RUN   TestIntAry_GetAbsoluteValue_01
 --- PASS: TestIntAry_GetAbsoluteValue_01 (0.00s)
 === RUN   TestIntAry_GetCurrencySymbol_01
@@ -831,7 +835,7 @@
 === RUN   TestIntAry_Pow_05
 --- PASS: TestIntAry_Pow_05 (0.00s)
 === RUN   TestIntAry_Pow_06
---- PASS: TestIntAry_Pow_06 (0.26s)
+--- PASS: TestIntAry_Pow_06 (0.25s)
 === RUN   TestIntAry_ResetFromBackUp_01
 --- PASS: TestIntAry_ResetFromBackUp_01 (0.00s)
 === RUN   TestIntAry_RoundToPrecision_01
@@ -1685,4 +1689,4 @@
 === RUN   TestStrMathOp_SubtractN1N2_19
 --- PASS: TestStrMathOp_SubtractN1N2_19 (0.00s)
 PASS
-ok  	MikeAustin71/mathopsgo/mathops	0.714s
+ok  	MikeAustin71/mathopsgo/mathops	0.631s
