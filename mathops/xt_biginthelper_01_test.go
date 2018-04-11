@@ -604,3 +604,368 @@ func TestBigIntNum_Decimal_02(t *testing.T) {
 	}
 
 }
+
+func TestBigIntPair_NewBase_01(t *testing.T) {
+
+	//n1Str:="1234567.8901"
+	num1Str := "12345678901"
+	b1, oK := big.NewInt(0).SetString(num1Str, 10)
+
+	if !oK {
+		errors.New("Error returned from big.NewInt(0).SetString(num1Str, 10)")
+	}
+
+	b1Precision := uint(4)
+	b1Sign := 1
+	b1AbsBigInt := big.NewInt(0).Set(b1)
+
+	//n2Str:="7654321.95"
+	num2Str := "765432195"
+	b2, oK := big.NewInt(0).SetString(num2Str, 10)
+
+	if !oK {
+		errors.New("Error returned from big.NewInt(0).SetString(num2Str, 10)")
+	}
+
+	b2Precision := uint(2)
+	b2Sign := 1
+	b2AbsBigInt := big.NewInt(0).Set(b2)
+
+	reconciledPrecision := uint(4)
+
+	n2StrReconciled :="76543219500"
+
+	bPair := BigIntPair{}.NewBase(b1, b1Precision, b2, b2Precision)
+
+	if bPair.Big1.BigInt.Cmp(b1) != 0 {
+		t.Errorf("Error: Expected Big1.BigInt='%v'.  Instead Big1.BigInt='%v'.",
+			b1.Text(10), bPair.Big1.BigInt.Text(10))
+	}
+
+	if b1AbsBigInt.Cmp(bPair.Big1.AbsBigInt) != 0 {
+		t.Errorf("Error: Expected Big1.AbsBigInt='%v'.  Instead Big1.AbsBigInt='%v'.",
+			b1AbsBigInt.Text(10), bPair.Big1.AbsBigInt.Text(10))
+	}
+
+	if b1Precision !=  bPair.Big1.Precision {
+		t.Errorf("Error: Expected Big1.Precision='%v'.  Instead, Big1.Precision='%v'.",
+			b1Precision, bPair.Big1.Precision)
+	}
+
+	if b1Sign != bPair.Big1.Sign {
+		t.Errorf("Error: Expected Big1.Sign='%v'.  Instead, Big1.Sign='%v'.",
+			b1Sign, bPair.Big1.Sign)
+	}
+
+	if bPair.Big2.BigInt.Cmp(b2) != 0 {
+		t.Errorf("Error. Expected Big2.BigInt='%v'.  Instead Big2.BigInt='%v'.",
+			b2.Text(10), bPair.Big2.BigInt.Text(10))
+	}
+
+
+	if b2AbsBigInt.Cmp(bPair.Big2.AbsBigInt) != 0 {
+		t.Errorf("Error: Expected Big2.AbsBigInt='%v'.  Instead Big2.AbsBigInt='%v'.",
+			b2AbsBigInt.Text(10), bPair.Big2.AbsBigInt.Text(10))
+	}
+
+	if b2Precision !=  bPair.Big2.Precision {
+		t.Errorf("Error: Expected Big2.Precision='%v'.  Instead, Big2.Precision='%v'.",
+			b2Precision, bPair.Big2.Precision)
+	}
+
+	if b2Sign != bPair.Big2.Sign {
+		t.Errorf("Error: Expected Big2.Sign='%v'.  Instead, Big2.Sign='%v'.",
+			b2Sign, bPair.Big2.Sign)
+	}
+
+	bPair.MakePrecisionsEqual()
+
+	if reconciledPrecision !=  bPair.Big2.Precision {
+		t.Errorf("Error: Expected reconciled Big2.Precision='%v'. " +
+			" Instead, reconciled Big2.Precision='%v'.",
+			reconciledPrecision, bPair.Big2.Precision)
+	}
+
+	actualBig2Numstr := bPair.Big2.BigInt.Text(10)
+
+	if n2StrReconciled != actualBig2Numstr {
+		t.Errorf("Error: Expected reconciled Big2.BigInt='%v'. " +
+			"Instead, reconciled Big2.BigInt='%v'. ",
+			n2StrReconciled, actualBig2Numstr)
+	}
+}
+func TestBigIntPair_NewBase_02(t *testing.T) {
+
+	//n1Str:="-1234567.8901"
+	num1Str := "-12345678901"
+	b1, oK := big.NewInt(0).SetString(num1Str, 10)
+
+	if !oK {
+		errors.New("Error returned from big.NewInt(0).SetString(num1Str, 10)")
+	}
+
+	b1Precision := uint(4)
+	b1Sign := -1
+	b1AbsBigInt := big.NewInt(0).Neg(b1)
+
+	//n2Str:="-7654321.95"
+	num2Str := "-765432195"
+	b2, oK := big.NewInt(0).SetString(num2Str, 10)
+
+	if !oK {
+		errors.New("Error returned from big.NewInt(0).SetString(num2Str, 10)")
+	}
+
+	b2Precision := uint(2)
+	b2Sign := -1
+	b2AbsBigInt := big.NewInt(0).Neg(b2)
+
+	reconciledPrecision := uint(4)
+
+	n2StrReconciled :="-76543219500"
+
+	bPair := BigIntPair{}.NewBase(b1, b1Precision, b2, b2Precision)
+
+	if bPair.Big1.BigInt.Cmp(b1) != 0 {
+		t.Errorf("Error: Expected Big1.BigInt='%v'.  Instead Big1.BigInt='%v'.",
+			b1.Text(10), bPair.Big1.BigInt.Text(10))
+	}
+
+	if b1AbsBigInt.Cmp(bPair.Big1.AbsBigInt) != 0 {
+		t.Errorf("Error: Expected Big1.AbsBigInt='%v'.  Instead Big1.AbsBigInt='%v'.",
+			b1AbsBigInt.Text(10), bPair.Big1.AbsBigInt.Text(10))
+	}
+
+	if b1Precision !=  bPair.Big1.Precision {
+		t.Errorf("Error: Expected Big1.Precision='%v'.  Instead, Big1.Precision='%v'.",
+			b1Precision, bPair.Big1.Precision)
+	}
+
+	if b1Sign != bPair.Big1.Sign {
+		t.Errorf("Error: Expected Big1.Sign='%v'.  Instead, Big1.Sign='%v'.",
+			b1Sign, bPair.Big1.Sign)
+	}
+
+	if bPair.Big2.BigInt.Cmp(b2) != 0 {
+		t.Errorf("Error. Expected Big2.BigInt='%v'.  Instead Big2.BigInt='%v'.",
+			b2.Text(10), bPair.Big2.BigInt.Text(10))
+	}
+
+
+	if b2AbsBigInt.Cmp(bPair.Big2.AbsBigInt) != 0 {
+		t.Errorf("Error: Expected Big2.AbsBigInt='%v'.  Instead Big2.AbsBigInt='%v'.",
+			b2AbsBigInt.Text(10), bPair.Big2.AbsBigInt.Text(10))
+	}
+
+	if b2Precision !=  bPair.Big2.Precision {
+		t.Errorf("Error: Expected Big2.Precision='%v'.  Instead, Big2.Precision='%v'.",
+			b2Precision, bPair.Big2.Precision)
+	}
+
+	if b2Sign != bPair.Big2.Sign {
+		t.Errorf("Error: Expected Big2.Sign='%v'.  Instead, Big2.Sign='%v'.",
+			b2Sign, bPair.Big2.Sign)
+	}
+
+	bPair.MakePrecisionsEqual()
+
+	if reconciledPrecision !=  bPair.Big2.Precision {
+		t.Errorf("Error: Expected reconciled Big2.Precision='%v'. " +
+			" Instead, reconciled Big2.Precision='%v'.",
+			reconciledPrecision, bPair.Big2.Precision)
+	}
+
+	actualBig2Numstr := bPair.Big2.BigInt.Text(10)
+
+	if n2StrReconciled != actualBig2Numstr {
+		t.Errorf("Error: Expected reconciled Big2.BigInt='%v'. " +
+			"Instead, reconciled Big2.BigInt='%v'. ",
+			n2StrReconciled, actualBig2Numstr)
+	}
+}
+
+func TestBigIntPair_NewBigIntNum_01(t *testing.T) {
+
+	//n1Str:="1234567.8901"
+	num1Str := "12345678901"
+	b1, oK := big.NewInt(0).SetString(num1Str, 10)
+
+	if !oK {
+		errors.New("Error returned from big.NewInt(0).SetString(num1Str, 10)")
+	}
+
+	b1Precision := uint(4)
+	b1Sign := 1
+	b1AbsBigInt := big.NewInt(0).Set(b1)
+
+	//n2Str:="7654321.95"
+	num2Str := "765432195"
+	b2, oK := big.NewInt(0).SetString(num2Str, 10)
+
+	if !oK {
+		errors.New("Error returned from big.NewInt(0).SetString(num2Str, 10)")
+	}
+
+	b2Precision := uint(2)
+	b2Sign := 1
+	b2AbsBigInt := big.NewInt(0).Set(b2)
+
+	reconciledPrecision := uint(4)
+
+	n2StrReconciled :="76543219500"
+
+	b1BigIntNum := BigIntNum{}.NewBigInt(b1, b1Precision)
+	b2BigIntNum := BigIntNum{}.NewBigInt(b2, b2Precision)
+
+	bPair := BigIntPair{}.NewBigIntNum(b1BigIntNum, b2BigIntNum)
+
+	if bPair.Big1.BigInt.Cmp(b1) != 0 {
+		t.Errorf("Error: Expected Big1.BigInt='%v'.  Instead Big1.BigInt='%v'.",
+			b1.Text(10), bPair.Big1.BigInt.Text(10))
+	}
+
+	if b1AbsBigInt.Cmp(bPair.Big1.AbsBigInt) != 0 {
+		t.Errorf("Error: Expected Big1.AbsBigInt='%v'.  Instead Big1.AbsBigInt='%v'.",
+			b1AbsBigInt.Text(10), bPair.Big1.AbsBigInt.Text(10))
+	}
+
+	if b1Precision !=  bPair.Big1.Precision {
+		t.Errorf("Error: Expected Big1.Precision='%v'.  Instead, Big1.Precision='%v'.",
+			b1Precision, bPair.Big1.Precision)
+	}
+
+	if b1Sign != bPair.Big1.Sign {
+		t.Errorf("Error: Expected Big1.Sign='%v'.  Instead, Big1.Sign='%v'.",
+			b1Sign, bPair.Big1.Sign)
+	}
+
+	if bPair.Big2.BigInt.Cmp(b2) != 0 {
+		t.Errorf("Error. Expected Big2.BigInt='%v'.  Instead Big2.BigInt='%v'.",
+			b2.Text(10), bPair.Big2.BigInt.Text(10))
+	}
+
+
+	if b2AbsBigInt.Cmp(bPair.Big2.AbsBigInt) != 0 {
+		t.Errorf("Error: Expected Big2.AbsBigInt='%v'.  Instead Big2.AbsBigInt='%v'.",
+			b2AbsBigInt.Text(10), bPair.Big2.AbsBigInt.Text(10))
+	}
+
+	if b2Precision !=  bPair.Big2.Precision {
+		t.Errorf("Error: Expected Big2.Precision='%v'.  Instead, Big2.Precision='%v'.",
+			b2Precision, bPair.Big2.Precision)
+	}
+
+	if b2Sign != bPair.Big2.Sign {
+		t.Errorf("Error: Expected Big2.Sign='%v'.  Instead, Big2.Sign='%v'.",
+			b2Sign, bPair.Big2.Sign)
+	}
+
+	bPair.MakePrecisionsEqual()
+
+	if reconciledPrecision !=  bPair.Big2.Precision {
+		t.Errorf("Error: Expected reconciled Big2.Precision='%v'. " +
+			" Instead, reconciled Big2.Precision='%v'.",
+			reconciledPrecision, bPair.Big2.Precision)
+	}
+
+	actualBig2Numstr := bPair.Big2.BigInt.Text(10)
+
+	if n2StrReconciled != actualBig2Numstr {
+		t.Errorf("Error: Expected reconciled Big2.BigInt='%v'. " +
+			"Instead, reconciled Big2.BigInt='%v'. ",
+			n2StrReconciled, actualBig2Numstr)
+	}
+}
+
+func TestBigIntPair_NewBigIntNum_02(t *testing.T) {
+
+	//n1Str:="-1234567.8901"
+	num1Str := "-12345678901"
+	b1, oK := big.NewInt(0).SetString(num1Str, 10)
+
+	if !oK {
+		errors.New("Error returned from big.NewInt(0).SetString(num1Str, 10)")
+	}
+
+	b1Precision := uint(4)
+	b1Sign := -1
+	b1AbsBigInt := big.NewInt(0).Neg(b1)
+
+	//n2Str:="-7654321.95"
+	num2Str := "-765432195"
+	b2, oK := big.NewInt(0).SetString(num2Str, 10)
+
+	if !oK {
+		errors.New("Error returned from big.NewInt(0).SetString(num2Str, 10)")
+	}
+
+	b2Precision := uint(2)
+	b2Sign := -1
+	b2AbsBigInt := big.NewInt(0).Neg(b2)
+
+	reconciledPrecision := uint(4)
+
+	n2StrReconciled :="-76543219500"
+
+	b1BigIntNum := BigIntNum{}.NewBigInt(b1, b1Precision)
+	b2BigIntNum := BigIntNum{}.NewBigInt(b2, b2Precision)
+
+	bPair := BigIntPair{}.NewBigIntNum(b1BigIntNum, b2BigIntNum)
+
+	if bPair.Big1.BigInt.Cmp(b1) != 0 {
+		t.Errorf("Error: Expected Big1.BigInt='%v'.  Instead Big1.BigInt='%v'.",
+			b1.Text(10), bPair.Big1.BigInt.Text(10))
+	}
+
+	if b1AbsBigInt.Cmp(bPair.Big1.AbsBigInt) != 0 {
+		t.Errorf("Error: Expected Big1.AbsBigInt='%v'.  Instead Big1.AbsBigInt='%v'.",
+			b1AbsBigInt.Text(10), bPair.Big1.AbsBigInt.Text(10))
+	}
+
+	if b1Precision !=  bPair.Big1.Precision {
+		t.Errorf("Error: Expected Big1.Precision='%v'.  Instead, Big1.Precision='%v'.",
+			b1Precision, bPair.Big1.Precision)
+	}
+
+	if b1Sign != bPair.Big1.Sign {
+		t.Errorf("Error: Expected Big1.Sign='%v'.  Instead, Big1.Sign='%v'.",
+			b1Sign, bPair.Big1.Sign)
+	}
+
+	if bPair.Big2.BigInt.Cmp(b2) != 0 {
+		t.Errorf("Error. Expected Big2.BigInt='%v'.  Instead Big2.BigInt='%v'.",
+			b2.Text(10), bPair.Big2.BigInt.Text(10))
+	}
+
+
+	if b2AbsBigInt.Cmp(bPair.Big2.AbsBigInt) != 0 {
+		t.Errorf("Error: Expected Big2.AbsBigInt='%v'.  Instead Big2.AbsBigInt='%v'.",
+			b2AbsBigInt.Text(10), bPair.Big2.AbsBigInt.Text(10))
+	}
+
+	if b2Precision !=  bPair.Big2.Precision {
+		t.Errorf("Error: Expected Big2.Precision='%v'.  Instead, Big2.Precision='%v'.",
+			b2Precision, bPair.Big2.Precision)
+	}
+
+	if b2Sign != bPair.Big2.Sign {
+		t.Errorf("Error: Expected Big2.Sign='%v'.  Instead, Big2.Sign='%v'.",
+			b2Sign, bPair.Big2.Sign)
+	}
+
+	bPair.MakePrecisionsEqual()
+
+	if reconciledPrecision !=  bPair.Big2.Precision {
+		t.Errorf("Error: Expected reconciled Big2.Precision='%v'. " +
+			" Instead, reconciled Big2.Precision='%v'.",
+			reconciledPrecision, bPair.Big2.Precision)
+	}
+
+	actualBig2Numstr := bPair.Big2.BigInt.Text(10)
+
+	if n2StrReconciled != actualBig2Numstr {
+		t.Errorf("Error: Expected reconciled Big2.BigInt='%v'. " +
+			"Instead, reconciled Big2.BigInt='%v'. ",
+			n2StrReconciled, actualBig2Numstr)
+	}
+}
