@@ -17,6 +17,70 @@ type BigIntNum struct {
 												// 	the 'BigInt' integer.
 }
 
+// CopyIn - Receives an incoming BigIntNum type and
+// copies the value into the current BigIntNum instance.
+//
+func (bNum *BigIntNum) CopyIn(bigN BigIntNum) {
+
+	bNum.BigInt = big.NewInt(0).Set(bigN.BigInt)
+	bNum.AbsBigInt = big.NewInt(0).Set(bigN.AbsBigInt)
+	bNum.Precision = bigN.Precision
+	bNum.ScaleFactor = big.NewInt(0).Set(bigN.ScaleFactor)
+	bNum.Sign = bigN.Sign
+}
+
+// CopyOut - Makes a deep copy of the current BigIntNum instance
+// and returns it as a new BigIntNum instance.
+//
+func (bNum *BigIntNum) CopyOut() BigIntNum {
+
+	b2 := BigIntNum{}.NewBigInt(big.NewInt(0).Set(bNum.BigInt), bNum.Precision)
+
+	return b2
+}
+
+// Empty - Resets the BigIntNum data fields to their
+// uninitialized or zero state.
+//
+func (bNum *BigIntNum) Empty() {
+
+	bNum.BigInt = big.NewInt(0)
+	bNum.AbsBigInt = big.NewInt(0)
+	bNum.ScaleFactor = big.NewInt(1)
+	bNum.Sign = 1
+	bNum.Precision = 0
+
+}
+
+// Equal - Compares two BigIntNum instances and returns 'true'
+// if the two instances are equal in value.
+//
+// If they are not Equal, the method returns 'false'.
+//
+func (bNum *BigIntNum) Equal(b2 BigIntNum) bool {
+
+	if bNum.BigInt.Cmp(b2.BigInt) != 0 {
+		return false
+	}
+
+	if bNum.AbsBigInt.Cmp(b2.AbsBigInt) != 0 {
+		return false
+	}
+
+	if bNum.ScaleFactor.Cmp(b2.ScaleFactor) != 0 {
+		return false
+	}
+
+	if bNum.Sign != b2.Sign {
+		return false
+	}
+
+	if bNum.Precision != b2.Precision {
+		return false
+	}
+
+	return true
+}
 
 // New - returns a new BigIntNum instance initialized to
 // zero.
@@ -148,41 +212,6 @@ func (bNum BigIntNum) NewNumStrDto(nDto NumStrDto) (BigIntNum, error) {
 	return b, nil
 }
 
-// Empty - Resets the BigIntNum data fields to their
-// uninitialized or zero state.
-//
-func (bNum *BigIntNum) Empty() {
-
-	bNum.BigInt = big.NewInt(0)
-	bNum.AbsBigInt = big.NewInt(0)
-	bNum.ScaleFactor = big.NewInt(1)
-	bNum.Sign = 1
-	bNum.Precision = 0
-
-}
-
-// CopyIn - Receives an incoming BigIntNum type and
-// copies the value into the current BigIntNum instance.
-//
-func (bNum *BigIntNum) CopyIn(bigN BigIntNum) {
-
-	bNum.BigInt = big.NewInt(0).Set(bigN.BigInt)
-	bNum.AbsBigInt = big.NewInt(0).Set(bigN.AbsBigInt)
-	bNum.Precision = bigN.Precision
-	bNum.ScaleFactor = big.NewInt(0).Set(bigN.ScaleFactor)
-	bNum.Sign = bigN.Sign
-}
-
-// CopyOut - Makes a deep copy of the current BigIntNum instance
-// and returns it as a new BigIntNum instance.
-//
-func (bNum *BigIntNum) CopyOut() BigIntNum {
-
-	b2 := BigIntNum{}.NewBigInt(big.NewInt(0).Set(bNum.BigInt), bNum.Precision)
-
-	return b2
-}
-
 // SetBigIntNum - Sets the value of the current BigIntNum instance using
 // the input parameters *big.Int integer and precision.
 //
@@ -220,6 +249,76 @@ type BigIntPair struct {
 	Big2							BigIntNum
 }
 
+// CopyIn - Copies the values provided by incoming BigIntPair
+// parameter into the current BigIntPair instance.
+func (bPair *BigIntPair) CopyIn(bd2 BigIntPair) {
+
+	bPair.Big1.CopyIn(bd2.Big1)
+	bPair.Big2.CopyIn(bd2.Big2)
+	bPair.Big1Compare = bd2.Big1Compare
+	bPair.Big1AbsCompare = bd2.Big1AbsCompare
+	bPair.Precision1Compare = bd2.Precision1Compare
+
+}
+
+// CopyOut - Makes a deep copy of the current BigIntPair
+// instance and returns it as a new BigIntPair object.
+//
+func (bPair *BigIntPair) CopyOut() BigIntPair {
+
+	bd2 := BigIntPair{}.NewBigIntNum(bPair.Big1, bPair.Big2)
+
+	return bd2
+}
+
+// Empty - Sets all data fields for the current BigIntPair instance
+// to their uninitialized or zero states.
+func (bPair *BigIntPair) Empty() {
+	bPair.Big1.Empty()
+	bPair.Big2.Empty()
+	bPair.Big1Compare = 0
+	bPair.Big1AbsCompare = 0
+	bPair.Precision1Compare = 0
+
+}
+
+// MakePrecisionsEqual - Analyzes the two component BigIntNum's, b1 and b2,
+// and then converts the one with the smallest precision to a new value
+// equivalent in precision to the other BigIntNum. When completed, this
+// method insures that both component BigIntNum's are both formatted to
+// the largest precision.
+//
+func(bPair *BigIntPair) MakePrecisionsEqual() {
+
+	if bPair.Big1.Precision == bPair.Big2.Precision {
+		// Nothing to do. Precisions are equal.
+		return
+	}
+
+	base10 := big.NewInt(10)
+
+	if bPair.Big1.Precision > bPair.Big2.Precision {
+		deltaPrecision := big.NewInt(int64(bPair.Big1.Precision - bPair.Big2.Precision))
+		deltaPrecisionScale := big.NewInt(0).Exp(base10, deltaPrecision, nil)
+		newB2Int := big.NewInt(0).Mul(bPair.Big2.BigInt, deltaPrecisionScale)
+		newB2Num := BigIntNum{}.NewBigInt(newB2Int, bPair.Big1.Precision)
+		newBPair := BigIntPair{}.NewBigIntNum(bPair.Big1, newB2Num)
+		bPair.CopyIn(newBPair)
+		return
+
+	}
+
+	// Must be bPair.Big2.Precision > bPair.Big1.Precision
+	deltaPrecision := big.NewInt(int64(bPair.Big2.Precision - bPair.Big1.Precision))
+	deltaPrecisionScale := big.NewInt(0).Exp(base10, deltaPrecision, nil)
+	newB1Int := big.NewInt(0).Mul(bPair.Big1.BigInt, deltaPrecisionScale)
+	newB1Num := BigIntNum{}.NewBigInt(newB1Int, bPair.Big2.Precision)
+	newBPair := BigIntPair{}.NewBigIntNum(newB1Num, bPair.Big2)
+
+	bPair.CopyIn(newBPair)
+
+	return
+}
 
 // New - Creates an Empty BigIntPair instance. Both
 // 'Big1' and 'Big2' are set to zero.  Both Precision
@@ -381,28 +480,6 @@ func (bPair BigIntPair) NewNumStrDto(n1Dto, n2Dto NumStrDto) (BigIntPair, error)
 
 }
 
-// CopyIn - Copies the values provided by incoming BigIntPair
-// parameter into the current BigIntPair instance.
-func (bPair *BigIntPair) CopyIn(bd2 BigIntPair) {
-
-	bPair.Big1.CopyIn(bd2.Big1)
-	bPair.Big2.CopyIn(bd2.Big2)
-	bPair.Big1Compare = bd2.Big1Compare
-	bPair.Big1AbsCompare = bd2.Big1AbsCompare
-	bPair.Precision1Compare = bd2.Precision1Compare
-
-}
-
-// CopyOut - Makes a deep copy of the current BigIntPair
-// instance and returns it as a new BigIntPair object.
-//
-func (bPair *BigIntPair) CopyOut() BigIntPair {
-
-	bd2 := BigIntPair{}.NewBigIntNum(bPair.Big1, bPair.Big2)
-
-	return bd2
-}
-
 // SetBigIntPairSetBigIntPair -Sets the values of the current
 // BigIntPair instance to the input values of b1 and b2
 // respectively.
@@ -425,44 +502,6 @@ func (bPair *BigIntPair) SetBigIntPair(b1, b2 BigIntNum ) {
 
 }
 
-// MakePrecisionsEqual - Analyzes the two component
-// BigIntNum's, b1 and b2, and then converts the
-// one with the least precision to a new value
-// with equivalent precision. When completed, this
-// method insures that both component BigIntNum's
-// are formated to the largest precision.
-//
-func(bPair *BigIntPair) MakePrecisionsEqual() {
-
-	if bPair.Big1.Precision == bPair.Big2.Precision {
-		// Nothing to do. Precisions are equal.
-		return
-	}
-
-	base10 := big.NewInt(10)
-
-	if bPair.Big1.Precision > bPair.Big2.Precision {
-		deltaPrecision := big.NewInt(int64(bPair.Big1.Precision - bPair.Big2.Precision))
-		deltaPrecisionScale := big.NewInt(0).Exp(base10, deltaPrecision, nil)
-		newB2Int := big.NewInt(0).Mul(bPair.Big2.BigInt, deltaPrecisionScale)
-		newB2Num := BigIntNum{}.NewBigInt(newB2Int, bPair.Big1.Precision)
-		newBPair := BigIntPair{}.NewBigIntNum(bPair.Big1, newB2Num)
-		bPair.CopyIn(newBPair)
-		return
-
-	}
-
-	// Must be bPair.Big2.Precision > bPair.Big1.Precision
-	deltaPrecision := big.NewInt(int64(bPair.Big2.Precision - bPair.Big1.Precision))
-	deltaPrecisionScale := big.NewInt(0).Exp(base10, deltaPrecision, nil)
-	newB1Int := big.NewInt(0).Mul(bPair.Big1.BigInt, deltaPrecisionScale)
-	newB1Num := BigIntNum{}.NewBigInt(newB1Int, bPair.Big2.Precision)
-	newBPair := BigIntPair{}.NewBigIntNum(newB1Num, bPair.Big2)
-
-	bPair.CopyIn(newBPair)
-
-	return
-}
 
 // BigIntBasicMathResult - Used to return the result
 // of an Addition, Subtraction or Multiplication operation.

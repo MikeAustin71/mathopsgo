@@ -154,7 +154,7 @@ func (bMath BigIntMathDto) AddPair(bPair BigIntPair) BigIntBasicMathResult {
 	b3 := big.NewInt(0).Add(bPair.Big1.BigInt, bPair.Big2.BigInt)
 
 	bResult := BigIntBasicMathResult{}
-	bResult.Input.CopyIn(bPair)
+	bResult.Input= bPair.CopyOut()
 	bResult.Result = BigIntNum{}.NewBigInt(b3, bPair.Big2.Precision)
 
 	return bResult

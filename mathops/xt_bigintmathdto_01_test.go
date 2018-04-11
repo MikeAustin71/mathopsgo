@@ -387,14 +387,14 @@ func TestBigIntMathDto_AddBigIntNums_04(t *testing.T) {
 func TestBigIntMathDto_AddNumStr_01(t *testing.T) {
 
 	n1Str := "123456.789"
-	b1Str := "123456789"
+	b1ReconciledStr := "123456789000"
 	b1Precision := uint(3)
-	b1Big, oK := big.NewInt(0).SetString(b1Str, 10)
+
+	b1ReconciledBig, oK := big.NewInt(0).SetString(b1ReconciledStr, 10)
 
 	if !oK {
-		errors.New("Error returned by big.NewInt(0).SetString(b1Str, 10)")
+		errors.New("Error returned by big.NewInt(0).SetString(b1ReconciledStr, 10)")
 	}
-
 
 	n2Str := "987.123456"
 	b2Str := "987123456"
@@ -410,6 +410,12 @@ func TestBigIntMathDto_AddNumStr_01(t *testing.T) {
 	expectedPrecision := uint(6)
 	expectedSign := 1
 
+	maxPrecision := b1Precision
+
+	if b2Precision > b1Precision {
+		maxPrecision = b2Precision
+	}
+
 	biExpectedResult, oK :=  big.NewInt(0).SetString(expectedResultStr, 10)
 
 	result, err := BigIntMathDto{}.AddNumStr(n1Str, n2Str)
@@ -419,16 +425,16 @@ func TestBigIntMathDto_AddNumStr_01(t *testing.T) {
 			"Error='%v' ", err.Error())
 	}
 
-	if b1Big.Cmp(result.Input.Big1.BigInt) != 0 {
+	if b1ReconciledBig.Cmp(result.Input.Big1.BigInt) != 0 {
 		t.Errorf("Error: Expected InputBig1='%v'. Instead, InputBig1='%v'. " +
-			b1Big.Text(10), result.Input.Big1.BigInt.Text(10))
+			b1ReconciledBig.Text(10), result.Input.Big1.BigInt.Text(10))
 	}
 
 
-	if b1Precision != result.Input.Big1.Precision {
+	if maxPrecision != result.Input.Big1.Precision {
 		t.Errorf("Error: Expected InputBig1Precision='%v'.  Instead, " +
 			"InputBig1Precision='%v' ",
-			b1Precision, result.Input.Big1.Precision)
+			maxPrecision, result.Input.Big1.Precision)
 	}
 
 	if b2Big.Cmp(result.Input.Big2.BigInt) != 0 {
@@ -436,10 +442,10 @@ func TestBigIntMathDto_AddNumStr_01(t *testing.T) {
 			b2Big.Text(10), result.Input.Big2.BigInt.Text(10))
 	}
 
-	if b2Precision != result.Input.Big2.Precision {
+	if maxPrecision != result.Input.Big2.Precision {
 		t.Errorf("Error: Expected InputBig2Precision='%v'.  Instead, " +
 			"InputBig2Precision='%v' ",
-			b2Precision, result.Input.Big2.Precision)
+			maxPrecision, result.Input.Big2.Precision)
 	}
 
 	if biExpectedResult.Cmp(result.Result.BigInt) != 0 {
@@ -462,14 +468,14 @@ func TestBigIntMathDto_AddNumStr_01(t *testing.T) {
 func TestBigIntMathDto_AddNumStr_02(t *testing.T) {
 
 	n1Str := "123456.789"
-	b1Str := "123456789"
+	b1ReconciledStr := "123456789000"
 	b1Precision := uint(3)
-	b1Big, oK := big.NewInt(0).SetString(b1Str, 10)
+
+	b1ReconciledBig, oK := big.NewInt(0).SetString(b1ReconciledStr, 10)
 
 	if !oK {
-		errors.New("Error returned by big.NewInt(0).SetString(b1Str, 10)")
+		errors.New("Error returned by big.NewInt(0).SetString(b1ReconciledStr, 10)")
 	}
-
 
 	n2Str := "-987.123456"
 	b2Str := "-987123456"
@@ -483,6 +489,13 @@ func TestBigIntMathDto_AddNumStr_02(t *testing.T) {
 	expectedResultStr := "122469665544"
 	expectedPrecision := uint(6)
 	expectedSign := 1
+
+	maxPrecision := b1Precision
+
+	if b2Precision > b1Precision {
+		maxPrecision = b2Precision
+	}
+
 	biExpectedResult, oK :=  big.NewInt(0).SetString(expectedResultStr, 10)
 
 	result,err := BigIntMathDto{}.AddNumStr(n1Str, n2Str)
@@ -492,16 +505,16 @@ func TestBigIntMathDto_AddNumStr_02(t *testing.T) {
 			"Error='%v' ", err.Error())
 	}
 
-	if b1Big.Cmp(result.Input.Big1.BigInt) != 0 {
+	if b1ReconciledBig.Cmp(result.Input.Big1.BigInt) != 0 {
 		t.Errorf("Error: Expected InputBig1='%v'. Instead, InputBig1='%v'. " +
-			b1Big.Text(10), result.Input.Big1.BigInt.Text(10))
+			b1ReconciledBig.Text(10), result.Input.Big1.BigInt.Text(10))
 	}
 
 
-	if b1Precision != result.Input.Big1.Precision {
+	if maxPrecision != result.Input.Big1.Precision {
 		t.Errorf("Error: Expected InputBig1Precision='%v'.  Instead, " +
 			"InputBig1Precision='%v' ",
-			b1Precision, result.Input.Big1.Precision)
+			maxPrecision, result.Input.Big1.Precision)
 	}
 
 
@@ -511,10 +524,10 @@ func TestBigIntMathDto_AddNumStr_02(t *testing.T) {
 	}
 
 
-	if b2Precision != result.Input.Big2.Precision {
+	if maxPrecision != result.Input.Big2.Precision {
 		t.Errorf("Error: Expected InputBig2Precision='%v'.  Instead, " +
 			"InputBig2Precision='%v' ",
-			b2Precision, result.Input.Big2.Precision)
+			maxPrecision, result.Input.Big2.Precision)
 	}
 
 
@@ -538,9 +551,9 @@ func TestBigIntMathDto_AddNumStr_02(t *testing.T) {
 func TestBigIntMathDto_AddNumStr_03(t *testing.T) {
 
 	n1Str := "-123456.789"
-	b1Str := "-123456789"
+	b1ReconciledStr := "-123456789000"
 	b1Precision := uint(3)
-	b1Big, oK := big.NewInt(0).SetString(b1Str, 10)
+	b1ReconciledBig, oK := big.NewInt(0).SetString(b1ReconciledStr, 10)
 
 	if !oK {
 		errors.New("Error returned by big.NewInt(0).SetString(b1Str, 10)")
@@ -559,6 +572,13 @@ func TestBigIntMathDto_AddNumStr_03(t *testing.T) {
 	expectedResultStr := "-122469665544"
 	expectedPrecision := uint(6)
 	expectedSign := -1
+
+	maxPrecision := b1Precision
+
+	if b2Precision > b1Precision {
+		maxPrecision = b2Precision
+	}
+
 	biExpectedResult, oK :=  big.NewInt(0).SetString(expectedResultStr, 10)
 
 	result, err := BigIntMathDto{}.AddNumStr(n1Str, n2Str)
@@ -568,15 +588,15 @@ func TestBigIntMathDto_AddNumStr_03(t *testing.T) {
 			"Error='%v' ", err.Error())
 	}
 
-	if b1Big.Cmp(result.Input.Big1.BigInt) != 0 {
+	if b1ReconciledBig.Cmp(result.Input.Big1.BigInt) != 0 {
 		t.Errorf("Error: Expected InputBig1='%v'. Instead, InputBig1='%v'. " +
-			b1Big.Text(10), result.Input.Big1.BigInt.Text(10))
+			b1ReconciledBig.Text(10), result.Input.Big1.BigInt.Text(10))
 	}
 
-	if b1Precision != result.Input.Big1.Precision {
+	if maxPrecision != result.Input.Big1.Precision {
 		t.Errorf("Error: Expected InputBig1Precision='%v'.  Instead, " +
 			"InputBig1Precision='%v' ",
-			b1Precision, result.Input.Big1.Precision)
+			maxPrecision, result.Input.Big1.Precision)
 	}
 
 	if b2Big.Cmp(result.Input.Big2.BigInt) != 0 {
@@ -585,10 +605,10 @@ func TestBigIntMathDto_AddNumStr_03(t *testing.T) {
 	}
 
 
-	if b2Precision != result.Input.Big2.Precision {
+	if maxPrecision != result.Input.Big2.Precision {
 		t.Errorf("Error: Expected InputBig2Precision='%v'.  Instead, " +
 			"InputBig2Precision='%v' ",
-			b2Precision, result.Input.Big2.Precision)
+			maxPrecision, result.Input.Big2.Precision)
 	}
 
 	if biExpectedResult.Cmp(result.Result.BigInt) != 0 {
@@ -611,9 +631,9 @@ func TestBigIntMathDto_AddNumStr_03(t *testing.T) {
 func TestBigIntMathDto_AddNumStr_04(t *testing.T) {
 
 	n1Str := "-123456.789"
-	b1Str := "-123456789"
+	b1ReconciledStr := "-123456789000"
 	b1Precision := uint(3)
-	b1Big, oK := big.NewInt(0).SetString(b1Str, 10)
+	b1ReconciledBig, oK := big.NewInt(0).SetString(b1ReconciledStr, 10)
 
 	if !oK {
 		errors.New("Error returned by big.NewInt(0).SetString(b1Str, 10)")
@@ -633,6 +653,14 @@ func TestBigIntMathDto_AddNumStr_04(t *testing.T) {
 	expectedResultStr := "-124443912456"
 	expectedPrecision := uint(6)
 	expectedSign := -1
+
+	maxPrecision := b1Precision
+
+	if b2Precision > b1Precision {
+		maxPrecision = b2Precision
+	}
+
+
 	biExpectedResult, oK :=  big.NewInt(0).SetString(expectedResultStr, 10)
 
 	result, err := BigIntMathDto{}.AddNumStr(n1Str, n2Str)
@@ -642,15 +670,15 @@ func TestBigIntMathDto_AddNumStr_04(t *testing.T) {
 			"Error='%v' ", err.Error())
 	}
 
-	if b1Big.Cmp(result.Input.Big1.BigInt) != 0 {
+	if b1ReconciledBig.Cmp(result.Input.Big1.BigInt) != 0 {
 		t.Errorf("Error: Expected InputBig1='%v'. Instead, InputBig1='%v'. " +
-			b1Big.Text(10), result.Input.Big1.BigInt.Text(10))
+			b1ReconciledBig.Text(10), result.Input.Big1.BigInt.Text(10))
 	}
 
-	if b1Precision != result.Input.Big1.Precision {
+	if maxPrecision != result.Input.Big1.Precision {
 		t.Errorf("Error: Expected InputBig1Precision='%v'.  Instead, " +
 			"InputBig1Precision='%v' ",
-			b1Precision, result.Input.Big1.Precision)
+			maxPrecision, result.Input.Big1.Precision)
 	}
 
 	if b2Big.Cmp(result.Input.Big2.BigInt) != 0 {
