@@ -651,6 +651,175 @@ func TestBigIntMathAdd_AddBigIntNumSeries_02(t *testing.T) {
 
 }
 
+
+func TestBigIntMathAdd_AddDecimal_01(t *testing.T) {
+	n1Str := "123456.789"
+
+	n2Str := "987.123456"
+
+	expectedNumStr 		:= "124443.912456"
+	expectedPrecision := uint(6)
+	expectedSign := 1
+
+
+	dec1, err := Decimal{}.NewNumStr(n1Str)
+	
+	if err != nil {
+		t.Errorf("Error returned by Decimal{}.NewNumStr(n1Str). " +
+			"n1Str='%v' Error='%v' ", n1Str, err.Error())
+	}
+
+	dec2, err := Decimal{}.NewNumStr(n2Str)
+	
+	if err != nil {
+		t.Errorf("Error returned by Decimal{}.NewNumStr(n2Str). " +
+			"n2Str='%v' Error='%v' ", n2Str, err.Error())
+	}
+
+
+	result, err := BigIntMathAdd{}.AddDecimal(dec1, dec2)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntMathAdd{}.AddDecimal(dec1, dec2). " +
+			"Error='%v' ", err.Error())
+	}
+
+	actualNumStr, err := result.Result.GetNumStr()
+
+	if err != nil {
+		t.Errorf("Error returned by result.Result.GetNumStr(). " +
+			"Error='%v' ", err.Error())
+	}
+
+	if expectedNumStr != actualNumStr {
+		t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v' ",
+			expectedNumStr, actualNumStr)
+	}
+
+	if expectedPrecision != result.Result.Precision {
+		t.Errorf("Error: Expected Result Precision='%v'.  Instead, Precision='%v'. ",
+			expectedPrecision, result.Result.Precision)
+	}
+
+	if expectedSign != result.Result.Sign {
+		t.Errorf("Error: Expected Result Sign='%v'. Instead, Sign='%v'. ",
+			expectedSign, result.Result.Sign)
+	}
+
+}
+
+func TestBigIntMathAdd_AddDecimal_02(t *testing.T) {
+	n1Str := "123456.789"
+
+	n2Str := "-987.123456"
+
+	expectedNumStr 		:= "122469.665544"
+	expectedPrecision := uint(6)
+	expectedSign := 1
+
+
+	dec1, err := Decimal{}.NewNumStr(n1Str)
+
+	if err != nil {
+		t.Errorf("Error returned by Decimal{}.NewNumStr(n1Str). " +
+			"n1Str='%v' Error='%v' ", n1Str, err.Error())
+	}
+
+	dec2, err := Decimal{}.NewNumStr(n2Str)
+
+	if err != nil {
+		t.Errorf("Error returned by Decimal{}.NewNumStr(n2Str). " +
+			"n2Str='%v' Error='%v' ", n2Str, err.Error())
+	}
+
+
+	result, err := BigIntMathAdd{}.AddDecimal(dec1, dec2)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntMathAdd{}.AddDecimal(dec1, dec2). " +
+			"Error='%v' ", err.Error())
+	}
+
+	actualNumStr, err := result.Result.GetNumStr()
+
+	if err != nil {
+		t.Errorf("Error returned by result.Result.GetNumStr(). " +
+			"Error='%v' ", err.Error())
+	}
+
+	if expectedNumStr != actualNumStr {
+		t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v' ",
+			expectedNumStr, actualNumStr)
+	}
+
+	if expectedPrecision != result.Result.Precision {
+		t.Errorf("Error: Expected Result Precision='%v'.  Instead, Precision='%v'. ",
+			expectedPrecision, result.Result.Precision)
+	}
+
+	if expectedSign != result.Result.Sign {
+		t.Errorf("Error: Expected Result Sign='%v'. Instead, Sign='%v'. ",
+			expectedSign, result.Result.Sign)
+	}
+
+}
+
+func TestBigIntMathAdd_AddDecimal_03(t *testing.T) {
+	n1Str := "-123456.789"
+
+	n2Str := "987.123456"
+
+	expectedNumStr 		:= "-122469.665544"
+	expectedPrecision := uint(6)
+	expectedSign := -1
+
+
+	dec1, err := Decimal{}.NewNumStr(n1Str)
+
+	if err != nil {
+		t.Errorf("Error returned by Decimal{}.NewNumStr(n1Str). " +
+			"n1Str='%v' Error='%v' ", n1Str, err.Error())
+	}
+
+	dec2, err := Decimal{}.NewNumStr(n2Str)
+
+	if err != nil {
+		t.Errorf("Error returned by Decimal{}.NewNumStr(n2Str). " +
+			"n2Str='%v' Error='%v' ", n2Str, err.Error())
+	}
+
+
+	result, err := BigIntMathAdd{}.AddDecimal(dec1, dec2)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntMathAdd{}.AddDecimal(dec1, dec2). " +
+			"Error='%v' ", err.Error())
+	}
+
+	actualNumStr, err := result.Result.GetNumStr()
+
+	if err != nil {
+		t.Errorf("Error returned by result.Result.GetNumStr(). " +
+			"Error='%v' ", err.Error())
+	}
+
+	if expectedNumStr != actualNumStr {
+		t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v' ",
+			expectedNumStr, actualNumStr)
+	}
+
+	if expectedPrecision != result.Result.Precision {
+		t.Errorf("Error: Expected Result Precision='%v'.  Instead, Precision='%v'. ",
+			expectedPrecision, result.Result.Precision)
+	}
+
+	if expectedSign != result.Result.Sign {
+		t.Errorf("Error: Expected Result Sign='%v'. Instead, Sign='%v'. ",
+			expectedSign, result.Result.Sign)
+	}
+
+}
+
 func TestBigIntMathAdd_AddDecimalSeries_01(t *testing.T) {
 	n1Str := "45.8"
 	n2Str := "1.45962"
