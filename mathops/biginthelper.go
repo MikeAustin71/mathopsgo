@@ -239,6 +239,26 @@ func (bNum *BigIntNum) SetBigIntNum(bigI *big.Int, precision uint) {
 	
 }
 
+// GetNumStr - Converts the BigIntNum value to string of numbers
+// which includes the decimal point and decimal digits if they exist.
+//
+func (bNum *BigIntNum) GetNumStr() (string, error) {
+
+	ePrefix := "BigIntNum.GetNumStr() "
+
+	nDto, err := NumStrDto{}.NewBigInt(bNum.BigInt, bNum.Precision)
+
+	if err != nil {
+		return "",
+		fmt.Errorf (ePrefix +
+			"Error returned by NumStrDto{}.NewBigInt(bNum.BigInt, bNum.Precision) " +
+			"bNum.BigInt='%v' bNum.Precision='%v' Error='%v'",
+				bNum.BigInt.Text(10), bNum.Precision, err.Error())
+	}
+
+	return nDto.GetNumStr(), nil
+}
+
 // BigIntPair - contains a pair of 'BitIntNum' types. This structure
 // is used to set up calculations involving *big.Int types.
 type BigIntPair struct {
@@ -253,8 +273,8 @@ type BigIntPair struct {
 // parameter into the current BigIntPair instance.
 func (bPair *BigIntPair) CopyIn(bd2 BigIntPair) {
 
-	bPair.Big1.CopyIn(bd2.Big1)
-	bPair.Big2.CopyIn(bd2.Big2)
+	bPair.Big1 = bd2.Big1.CopyOut()
+	bPair.Big2 = bd2.Big2.CopyOut()
 	bPair.Big1Compare = bd2.Big1Compare
 	bPair.Big1AbsCompare = bd2.Big1AbsCompare
 	bPair.Precision1Compare = bd2.Precision1Compare
@@ -509,6 +529,18 @@ func (bPair *BigIntPair) SetBigIntPair(b1, b2 BigIntNum ) {
 type BigIntBasicMathResult struct {
 	Input BigIntPair
 	Result BigIntNum
+}
+
+// New - Returns a new BigIntBasicMathResult with all values set to
+// zero.
+//
+func (basicResult BigIntBasicMathResult) New() BigIntBasicMathResult {
+	b2 := BigIntBasicMathResult{}
+
+	b2.Input = BigIntPair{}.NewBase(big.NewInt(0), 0, big.NewInt(0), 0)
+	b2.Result = BigIntNum{}.NewBigInt(big.NewInt(0), 0)
+
+	return b2
 }
 
 // BigIntDivideModResult - Used to return the result

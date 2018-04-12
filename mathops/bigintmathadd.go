@@ -20,6 +20,32 @@ func (bAdd BigIntMathAdd) AddBigIntNums(b1, b2 BigIntNum) BigIntBasicMathResult 
 	return bAdd.AddPair(bPair)
 }
 
+// AddBigIntNumSeries - Adds a series of BigIntNum types and returns the total in a
+// BigIntBasicMathResult instance.
+//
+func (bAdd BigIntMathAdd) AddBigIntNumSeries(bNums ... BigIntNum) BigIntBasicMathResult {
+
+	total := BigIntNum{}.New()
+
+	for i, bNum := range bNums {
+
+		if i == 0 {
+			total = bNum.CopyOut()
+			continue
+		}
+
+		result := bAdd.AddBigIntNums(total, bNum)
+
+		total = result.Result.CopyOut()
+
+	}
+
+	finalResult := BigIntBasicMathResult{}.New()
+	finalResult.Result = total.CopyOut()
+
+	return finalResult
+}
+
 // AddBigInts - Adds two *big.Int numbers. Each *big.Int number
 // is passed to the method with an associated decimal place precision
 // specification.
