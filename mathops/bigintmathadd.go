@@ -106,6 +106,47 @@ func (bAdd BigIntMathAdd) AddDecimal(dec1, dec2 Decimal) (BigIntBasicMathResult,
 	return bAdd.AddPair(bPair), nil
 }
 
+// AddDecimalSeries - Adds a series of 'Decimal' types and returns the combined total
+// as a 'BigIntBasicMathResult' instance.
+//
+func (bAdd BigIntMathAdd) AddDecimalSeries(decs ... Decimal) (BigIntBasicMathResult, error) {
+	ePrefix := "BigIntMathAdd.AddDecimalSeries() "
+
+	finalResult := BigIntBasicMathResult{}.New()
+	var err error
+
+	for i, dec := range decs {
+
+		if i == 0 {
+
+			finalResult.Result, err = BigIntNum{}.NewDecimal(dec)
+
+			if err != nil {
+				return BigIntBasicMathResult{}.New(),
+				fmt.Errorf(ePrefix + "Error returned by BigIntNum{}.NewDecimal(dec). " +
+					" i='%v' NumStr='%v' Error='%v' ", i, dec.GetNumStr(), err.Error())
+			}
+
+			continue
+		}
+
+		b2Num, err := BigIntNum{}.NewDecimal(dec)
+
+		if err != nil {
+			return BigIntBasicMathResult{}.New(),
+				fmt.Errorf(ePrefix + "Error returned by BigIntNum{}.NewDecimal(dec). " +
+					" i='%v' NumStr='%v' Error='%v' ", i, dec.GetNumStr(), err.Error())
+		}
+
+
+		result := bAdd.AddBigIntNums(finalResult.Result, b2Num)
+
+		finalResult.Result = result.Result.CopyOut()
+	}
+
+	return finalResult, nil
+}
+
 // AddIntAry - Receives two IntAry instances and adds their numeric values.
 //
 // The result is returned as type BigIntBasicMathResult.
