@@ -6,7 +6,7 @@ import (
 	"errors"
 )
 
-func TestBigIntMathDto_AddBigInts_01(t *testing.T) {
+func TestBigIntMathAdd_AddBigInts_01(t *testing.T) {
 
 	// n1Str := 123456.789
 	b1Str := "123456789"
@@ -33,7 +33,7 @@ func TestBigIntMathDto_AddBigInts_01(t *testing.T) {
 
 	biExpectedResult, oK :=  big.NewInt(0).SetString(expectedResultStr, 10)
 
-	result := BigIntMathDto{}.AddBigInts(b1Big, b1Precision, b2Big, b2Precision)
+	result := BigIntMathAdd{}.AddBigInts(b1Big, b1Precision, b2Big, b2Precision)
 
 	if biExpectedResult.Cmp(result.Result.BigInt) != 0 {
 		t.Errorf("Error: Expected Result='%v'.  Instead, Result='%v'. ",
@@ -52,7 +52,7 @@ func TestBigIntMathDto_AddBigInts_01(t *testing.T) {
 
 }
 
-func TestBigIntMathDto_AddBigInts_02(t *testing.T) {
+func TestBigIntMathAdd_AddBigInts_02(t *testing.T) {
 
 	// n1Str := 123456.789
 	b1Str := "123456789"
@@ -78,7 +78,7 @@ func TestBigIntMathDto_AddBigInts_02(t *testing.T) {
 	expectedSign := 1
 	biExpectedResult, oK :=  big.NewInt(0).SetString(expectedResultStr, 10)
 
-	result := BigIntMathDto{}.AddBigInts(b1Big, b1Precision, b2Big, b2Precision)
+	result := BigIntMathAdd{}.AddBigInts(b1Big, b1Precision, b2Big, b2Precision)
 
 	if biExpectedResult.Cmp(result.Result.BigInt) != 0 {
 		t.Errorf("Error: Expected Result='%v'.  Instead, Result='%v'. ",
@@ -97,7 +97,7 @@ func TestBigIntMathDto_AddBigInts_02(t *testing.T) {
 
 }
 
-func TestBigIntMathDto_AddBigInts_03(t *testing.T) {
+func TestBigIntMathAdd_AddBigInts_03(t *testing.T) {
 
 	// n1Str := -123456.789
 	b1Str := "-123456789"
@@ -123,7 +123,7 @@ func TestBigIntMathDto_AddBigInts_03(t *testing.T) {
 	expectedSign := -1
 	biExpectedResult, oK :=  big.NewInt(0).SetString(expectedResultStr, 10)
 
-	result := BigIntMathDto{}.AddBigInts(b1Big, b1Precision, b2Big, b2Precision)
+	result := BigIntMathAdd{}.AddBigInts(b1Big, b1Precision, b2Big, b2Precision)
 
 	if biExpectedResult.Cmp(result.Result.BigInt) != 0 {
 		t.Errorf("Error: Expected Result='%v'.  Instead, Result='%v'. ",
@@ -142,7 +142,7 @@ func TestBigIntMathDto_AddBigInts_03(t *testing.T) {
 
 }
 
-func TestBigIntMathDto_AddBigInts_04(t *testing.T) {
+func TestBigIntMathAdd_AddBigInts_04(t *testing.T) {
 
 	// n1Str := -123456.789
 	b1Str := "-123456789"
@@ -168,7 +168,7 @@ func TestBigIntMathDto_AddBigInts_04(t *testing.T) {
 	expectedSign := -1
 	biExpectedResult, oK :=  big.NewInt(0).SetString(expectedResultStr, 10)
 
-	result := BigIntMathDto{}.AddBigInts(b1Big, b1Precision, b2Big, b2Precision)
+	result := BigIntMathAdd{}.AddBigInts(b1Big, b1Precision, b2Big, b2Precision)
 
 	if biExpectedResult.Cmp(result.Result.BigInt) != 0 {
 		t.Errorf("Error: Expected Result='%v'.  Instead, Result='%v'. ",
@@ -187,7 +187,7 @@ func TestBigIntMathDto_AddBigInts_04(t *testing.T) {
 
 }
 
-func TestBigIntMathDto_AddBigIntNums_01(t *testing.T) {
+func TestBigIntMathAdd_AddBigIntNums_01(t *testing.T) {
 
 	// n1Str := 123456.789
 	b1Str := "123456789"
@@ -218,7 +218,7 @@ func TestBigIntMathDto_AddBigIntNums_01(t *testing.T) {
 
 	biExpectedResult, oK :=  big.NewInt(0).SetString(expectedResultStr, 10)
 
-	result := BigIntMathDto{}.AddBigIntNums(b1Num, b2Num)
+	result := BigIntMathAdd{}.AddBigIntNums(b1Num, b2Num)
 
 	if biExpectedResult.Cmp(result.Result.BigInt) != 0 {
 		t.Errorf("Error: Expected Result='%v'.  Instead, Result='%v'. ",
@@ -237,7 +237,7 @@ func TestBigIntMathDto_AddBigIntNums_01(t *testing.T) {
 
 }
 
-func TestBigIntMathDto_AddBigIntNums_02(t *testing.T) {
+func TestBigIntMathAdd_AddBigIntNums_02(t *testing.T) {
 
 	// n1Str := 123456.789
 	b1Str := "123456789"
@@ -267,7 +267,7 @@ func TestBigIntMathDto_AddBigIntNums_02(t *testing.T) {
 	expectedSign := 1
 	biExpectedResult, oK :=  big.NewInt(0).SetString(expectedResultStr, 10)
 
-	result := BigIntMathDto{}.AddBigIntNums(b1Num, b2Num)
+	result := BigIntMathAdd{}.AddBigIntNums(b1Num, b2Num)
 
 	if biExpectedResult.Cmp(result.Result.BigInt) != 0 {
 		t.Errorf("Error: Expected Result='%v'.  Instead, Result='%v'. ",
@@ -286,7 +286,7 @@ func TestBigIntMathDto_AddBigIntNums_02(t *testing.T) {
 
 }
 
-func TestBigIntMathDto_AddBigIntNums_03(t *testing.T) {
+func TestBigIntMathAdd_AddBigIntNums_03(t *testing.T) {
 
 	// n1Str := -123456.789
 	b1Str := "-123456789"
@@ -316,7 +316,7 @@ func TestBigIntMathDto_AddBigIntNums_03(t *testing.T) {
 	expectedSign := -1
 	biExpectedResult, oK :=  big.NewInt(0).SetString(expectedResultStr, 10)
 
-	result := BigIntMathDto{}.AddBigIntNums(b1Num, b2Num)
+	result := BigIntMathAdd{}.AddBigIntNums(b1Num, b2Num)
 
 	if biExpectedResult.Cmp(result.Result.BigInt) != 0 {
 		t.Errorf("Error: Expected Result='%v'.  Instead, Result='%v'. ",
@@ -335,7 +335,7 @@ func TestBigIntMathDto_AddBigIntNums_03(t *testing.T) {
 
 }
 
-func TestBigIntMathDto_AddBigIntNums_04(t *testing.T) {
+func TestBigIntMathAdd_AddBigIntNums_04(t *testing.T) {
 
 	// n1Str := -123456.789
 	b1Str := "-123456789"
@@ -365,7 +365,7 @@ func TestBigIntMathDto_AddBigIntNums_04(t *testing.T) {
 	expectedSign := -1
 	biExpectedResult, oK :=  big.NewInt(0).SetString(expectedResultStr, 10)
 
-	result := BigIntMathDto{}.AddBigIntNums(b1Num, b2Num)
+	result := BigIntMathAdd{}.AddBigIntNums(b1Num, b2Num)
 
 	if biExpectedResult.Cmp(result.Result.BigInt) != 0 {
 		t.Errorf("Error: Expected Result='%v'.  Instead, Result='%v'. ",
@@ -384,7 +384,7 @@ func TestBigIntMathDto_AddBigIntNums_04(t *testing.T) {
 
 }
 
-func TestBigIntMathDto_AddNumStr_01(t *testing.T) {
+func TestBigIntMathAdd_AddNumStr_01(t *testing.T) {
 
 	n1Str := "123456.789"
 	b1ReconciledStr := "123456789000"
@@ -418,10 +418,10 @@ func TestBigIntMathDto_AddNumStr_01(t *testing.T) {
 
 	biExpectedResult, oK :=  big.NewInt(0).SetString(expectedResultStr, 10)
 
-	result, err := BigIntMathDto{}.AddNumStr(n1Str, n2Str)
+	result, err := BigIntMathAdd{}.AddNumStr(n1Str, n2Str)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntMathDto{}.AddNumStr(n1Str, n2Str). " +
+		t.Errorf("Error returned by BigIntMathAdd{}.AddNumStr(n1Str, n2Str). " +
 			"Error='%v' ", err.Error())
 	}
 
@@ -465,7 +465,7 @@ func TestBigIntMathDto_AddNumStr_01(t *testing.T) {
 
 }
 
-func TestBigIntMathDto_AddNumStr_02(t *testing.T) {
+func TestBigIntMathAdd_AddNumStr_02(t *testing.T) {
 
 	n1Str := "123456.789"
 	b1ReconciledStr := "123456789000"
@@ -498,10 +498,10 @@ func TestBigIntMathDto_AddNumStr_02(t *testing.T) {
 
 	biExpectedResult, oK :=  big.NewInt(0).SetString(expectedResultStr, 10)
 
-	result,err := BigIntMathDto{}.AddNumStr(n1Str, n2Str)
+	result,err := BigIntMathAdd{}.AddNumStr(n1Str, n2Str)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntMathDto{}.AddNumStr(n1Str, n2Str). " +
+		t.Errorf("Error returned by BigIntMathAdd{}.AddNumStr(n1Str, n2Str). " +
 			"Error='%v' ", err.Error())
 	}
 
@@ -548,7 +548,7 @@ func TestBigIntMathDto_AddNumStr_02(t *testing.T) {
 
 }
 
-func TestBigIntMathDto_AddNumStr_03(t *testing.T) {
+func TestBigIntMathAdd_AddNumStr_03(t *testing.T) {
 
 	n1Str := "-123456.789"
 	b1ReconciledStr := "-123456789000"
@@ -581,10 +581,10 @@ func TestBigIntMathDto_AddNumStr_03(t *testing.T) {
 
 	biExpectedResult, oK :=  big.NewInt(0).SetString(expectedResultStr, 10)
 
-	result, err := BigIntMathDto{}.AddNumStr(n1Str, n2Str)
+	result, err := BigIntMathAdd{}.AddNumStr(n1Str, n2Str)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntMathDto{}.AddNumStr(n1Str, n2Str). " +
+		t.Errorf("Error returned by BigIntMathAdd{}.AddNumStr(n1Str, n2Str). " +
 			"Error='%v' ", err.Error())
 	}
 
@@ -628,7 +628,7 @@ func TestBigIntMathDto_AddNumStr_03(t *testing.T) {
 
 }
 
-func TestBigIntMathDto_AddNumStr_04(t *testing.T) {
+func TestBigIntMathAdd_AddNumStr_04(t *testing.T) {
 
 	n1Str := "-123456.789"
 	b1ReconciledStr := "-123456789000"
@@ -663,10 +663,10 @@ func TestBigIntMathDto_AddNumStr_04(t *testing.T) {
 
 	biExpectedResult, oK :=  big.NewInt(0).SetString(expectedResultStr, 10)
 
-	result, err := BigIntMathDto{}.AddNumStr(n1Str, n2Str)
+	result, err := BigIntMathAdd{}.AddNumStr(n1Str, n2Str)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntMathDto{}.AddNumStr(n1Str, n2Str). " +
+		t.Errorf("Error returned by BigIntMathAdd{}.AddNumStr(n1Str, n2Str). " +
 			"Error='%v' ", err.Error())
 	}
 

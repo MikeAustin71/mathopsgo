@@ -1,5 +1,5 @@
 === RUN   TestBigIntNum_NewNumStr_01
---- PASS: TestBigIntNum_NewNumStr_01 (0.03s)
+--- PASS: TestBigIntNum_NewNumStr_01 (0.04s)
 === RUN   TestBigIntNum_NewNumStr_02
 --- PASS: TestBigIntNum_NewNumStr_02 (0.00s)
 === RUN   TestBigIntNum_BigInt_01
@@ -48,30 +48,32 @@
 --- PASS: TestBigIntPair_Decimal_01 (0.00s)
 === RUN   TestBigIntPair_Decimal_02
 --- PASS: TestBigIntPair_Decimal_02 (0.00s)
-=== RUN   TestBigIntMathDto_AddBigInts_01
---- PASS: TestBigIntMathDto_AddBigInts_01 (0.00s)
-=== RUN   TestBigIntMathDto_AddBigInts_02
---- PASS: TestBigIntMathDto_AddBigInts_02 (0.00s)
-=== RUN   TestBigIntMathDto_AddBigInts_03
---- PASS: TestBigIntMathDto_AddBigInts_03 (0.00s)
-=== RUN   TestBigIntMathDto_AddBigInts_04
---- PASS: TestBigIntMathDto_AddBigInts_04 (0.00s)
-=== RUN   TestBigIntMathDto_AddBigIntNums_01
---- PASS: TestBigIntMathDto_AddBigIntNums_01 (0.00s)
-=== RUN   TestBigIntMathDto_AddBigIntNums_02
---- PASS: TestBigIntMathDto_AddBigIntNums_02 (0.00s)
-=== RUN   TestBigIntMathDto_AddBigIntNums_03
---- PASS: TestBigIntMathDto_AddBigIntNums_03 (0.00s)
-=== RUN   TestBigIntMathDto_AddBigIntNums_04
---- PASS: TestBigIntMathDto_AddBigIntNums_04 (0.00s)
-=== RUN   TestBigIntMathDto_AddNumStr_01
---- PASS: TestBigIntMathDto_AddNumStr_01 (0.00s)
-=== RUN   TestBigIntMathDto_AddNumStr_02
---- PASS: TestBigIntMathDto_AddNumStr_02 (0.00s)
-=== RUN   TestBigIntMathDto_AddNumStr_03
---- PASS: TestBigIntMathDto_AddNumStr_03 (0.00s)
-=== RUN   TestBigIntMathDto_AddNumStr_04
---- PASS: TestBigIntMathDto_AddNumStr_04 (0.00s)
+=== RUN   TestBigIntMathAdd_AddBigInts_01
+--- PASS: TestBigIntMathAdd_AddBigInts_01 (0.00s)
+=== RUN   TestBigIntMathAdd_AddBigInts_02
+--- PASS: TestBigIntMathAdd_AddBigInts_02 (0.00s)
+=== RUN   TestBigIntMathAdd_AddBigInts_03
+--- PASS: TestBigIntMathAdd_AddBigInts_03 (0.00s)
+=== RUN   TestBigIntMathAdd_AddBigInts_04
+--- PASS: TestBigIntMathAdd_AddBigInts_04 (0.00s)
+=== RUN   TestBigIntMathAdd_AddBigIntNums_01
+--- PASS: TestBigIntMathAdd_AddBigIntNums_01 (0.00s)
+=== RUN   TestBigIntMathAdd_AddBigIntNums_02
+--- PASS: TestBigIntMathAdd_AddBigIntNums_02 (0.00s)
+=== RUN   TestBigIntMathAdd_AddBigIntNums_03
+--- PASS: TestBigIntMathAdd_AddBigIntNums_03 (0.00s)
+=== RUN   TestBigIntMathAdd_AddBigIntNums_04
+--- PASS: TestBigIntMathAdd_AddBigIntNums_04 (0.00s)
+=== RUN   TestBigIntMathAdd_AddNumStr_01
+--- PASS: TestBigIntMathAdd_AddNumStr_01 (0.00s)
+=== RUN   TestBigIntMathAdd_AddNumStr_02
+--- PASS: TestBigIntMathAdd_AddNumStr_02 (0.00s)
+=== RUN   TestBigIntMathAdd_AddNumStr_03
+--- PASS: TestBigIntMathAdd_AddNumStr_03 (0.00s)
+=== RUN   TestBigIntMathAdd_AddNumStr_04
+--- PASS: TestBigIntMathAdd_AddNumStr_04 (0.00s)
+=== RUN   TestBigIntMathSubtract_SubtractBigIntNums_01
+--- PASS: TestBigIntMathSubtract_SubtractBigIntNums_01 (0.00s)
 === RUN   TestNumStrUtility_ConvertNumStrToDecimal_01
 --- PASS: TestNumStrUtility_ConvertNumStrToDecimal_01 (0.00s)
 === RUN   TestNumStrUtility_ConvertNumStrToDecimal_02
@@ -349,7 +351,7 @@
 === RUN   TestFracIntAry_GetRationalValue_06
 --- PASS: TestFracIntAry_GetRationalValue_06 (0.00s)
 === RUN   TestFracIntAry_GetRationalValue_07
---- PASS: TestFracIntAry_GetRationalValue_07 (0.06s)
+--- PASS: TestFracIntAry_GetRationalValue_07 (0.08s)
 === RUN   TestIntAry_AddMultipleToThis_01
 --- PASS: TestIntAry_AddMultipleToThis_01 (0.00s)
 === RUN   TestIntAry_AddToThis_01
@@ -1719,4 +1721,4 @@
 === RUN   TestStrMathOp_SubtractN1N2_19
 --- PASS: TestStrMathOp_SubtractN1N2_19 (0.00s)
 PASS
-ok  	MikeAustin71/mathopsgo/mathops	0.593s
+ok  	MikeAustin71/mathopsgo/mathops	0.796s
