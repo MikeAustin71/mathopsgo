@@ -10,6 +10,35 @@ type BigIntMathAdd struct {
 	Result BigIntNum
 }
 
+// AddBigIntNumArray - Adds an Array of 'BigIntNum' types and returns the result
+// as type 'BigIntBasicMathResult'
+//
+func (bAdd BigIntMathAdd) AddBigIntNumArray(bNums []BigIntNum ) BigIntBasicMathResult {
+
+	finalResult := BigIntBasicMathResult{}.New()
+	lenBNums := len(bNums)
+
+	if lenBNums == 0 {
+		return finalResult
+	}
+
+	for i:=0; i < lenBNums; i++ {
+
+		if i == 0 {
+			finalResult.Result = bNums[i].CopyOut()
+			continue
+		}
+
+		result := bAdd.AddBigIntNums(finalResult.Result, bNums[i])
+
+		finalResult.Result = result.Result.CopyOut()
+
+	}
+
+	return finalResult
+
+}
+
 // AddBigIntNums - Adds two BigIntNums and returns the result in a new
 // BigIntBasicMathResult instance
 //
@@ -25,23 +54,20 @@ func (bAdd BigIntMathAdd) AddBigIntNums(b1, b2 BigIntNum) BigIntBasicMathResult 
 //
 func (bAdd BigIntMathAdd) AddBigIntNumSeries(bNums ... BigIntNum) BigIntBasicMathResult {
 
-	total := BigIntNum{}.New()
+	finalResult := BigIntBasicMathResult{}.New()
 
 	for i, bNum := range bNums {
 
 		if i == 0 {
-			total = bNum.CopyOut()
+			finalResult.Result = bNum.CopyOut()
 			continue
 		}
 
-		result := bAdd.AddBigIntNums(total, bNum)
+		result := bAdd.AddBigIntNums(finalResult.Result, bNum)
 
-		total = result.Result.CopyOut()
+		finalResult.Result = result.Result.CopyOut()
 
 	}
-
-	finalResult := BigIntBasicMathResult{}.New()
-	finalResult.Result = total.CopyOut()
 
 	return finalResult
 }

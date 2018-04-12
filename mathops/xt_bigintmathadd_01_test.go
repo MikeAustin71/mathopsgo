@@ -384,6 +384,134 @@ func TestBigIntMathAdd_AddBigIntNums_04(t *testing.T) {
 
 }
 
+func TestBigIntMathAdd_AddBigIntNumArray_01(t *testing.T) {
+
+	numStrs := []string{"45.8",
+											"1.45962",
+											"58.71",
+											"-37.62174",
+											"89.8",
+										}
+
+	expectedTotalStr := "158.14788"
+	expectedBNum, err := BigIntNum{}.NewNumStr(expectedTotalStr)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(expectedTotalStr). " +
+			"expectedTotalStr='%v' Error='%v'.", expectedTotalStr, err.Error())
+
+	}
+
+	expectedResultNumStr, err := expectedBNum.GetNumStr()
+
+	if err != nil {
+		t.Errorf("Error returned by expectedBNum.GetNumStr(). Error='%v'",
+			err.Error())
+	}
+
+	const lenBigNums int = 5
+
+	bNums := make([]BigIntNum, lenBigNums)
+
+	for i:=0; i < lenBigNums; i++ {
+
+		bNums[i], err = BigIntNum{}.NewNumStr(numStrs[i])
+
+		if err != nil {
+			t.Errorf("Error returned by BigIntNum{}.NewNumStr(numStrs[i]). " +
+				"i='%v' numStrs[i]='%v' Error='%v'",
+					i, numStrs[i], err.Error())
+		}
+
+	}
+
+  results := BigIntMathAdd{}.AddBigIntNumArray(bNums)
+
+  actualResultNumStr, err := results.Result.GetNumStr()
+
+  if err != nil {
+  	t.Errorf("Error returned by results.Result.GetNumStr(). " +
+  		"Error='%v' ", err.Error())
+	}
+
+
+  if expectedResultNumStr != actualResultNumStr {
+  	t.Errorf("Error: Expected Total='%v'. Instead, Total='%v'. ",
+			expectedResultNumStr, actualResultNumStr)
+	}
+
+	if !expectedBNum.Equal(results.Result) {
+		t.Error("Error: Expected BigIntNum != actual BigIntNum. " +
+			"BigIntTotal='%v'. Instead, BigIntTotal='%v'. ",
+			expectedBNum.BigInt.Text(10), results.Result.BigInt.Text(10))
+	}
+
+}
+
+func TestBigIntMathAdd_AddBigIntNumArray_02(t *testing.T) {
+
+	numStrs := []string{"-978425.648941",
+											"33.12",
+											"-804.1",
+											"32567",
+											"-41.859",
+										}
+
+	expectedTotalStr := "-946671.487941"
+	expectedBNum, err := BigIntNum{}.NewNumStr(expectedTotalStr)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(expectedTotalStr). " +
+			"expectedTotalStr='%v' Error='%v'.", expectedTotalStr, err.Error())
+
+	}
+
+	expectedResultNumStr, err := expectedBNum.GetNumStr()
+
+	if err != nil {
+		t.Errorf("Error returned by expectedBNum.GetNumStr(). Error='%v'",
+			err.Error())
+	}
+
+	const lenBigNums int = 5
+
+	bNums := make([]BigIntNum, lenBigNums)
+
+	for i:=0; i < lenBigNums; i++ {
+
+		bNums[i], err = BigIntNum{}.NewNumStr(numStrs[i])
+
+		if err != nil {
+			t.Errorf("Error returned by BigIntNum{}.NewNumStr(numStrs[i]). " +
+				"i='%v' numStrs[i]='%v' Error='%v'",
+					i, numStrs[i], err.Error())
+		}
+
+	}
+
+  results := BigIntMathAdd{}.AddBigIntNumArray(bNums)
+
+  actualResultNumStr, err := results.Result.GetNumStr()
+
+  if err != nil {
+  	t.Errorf("Error returned by results.Result.GetNumStr(). " +
+  		"Error='%v' ", err.Error())
+	}
+
+
+  if expectedResultNumStr != actualResultNumStr {
+  	t.Errorf("Error: Expected Total='%v'. Instead, Total='%v'. ",
+			expectedResultNumStr, actualResultNumStr)
+	}
+
+	if !expectedBNum.Equal(results.Result) {
+		t.Error("Error: Expected BigIntNum != actual BigIntNum. " +
+			"BigIntTotal='%v'. Instead, BigIntTotal='%v'. ",
+			expectedBNum.BigInt.Text(10), results.Result.BigInt.Text(10))
+	}
+
+}
+
 func TestBigIntMathAdd_AddBigIntNumSeries_01(t *testing.T) {
 	n1Str := "45.8"
 	n2Str := "1.45962"
