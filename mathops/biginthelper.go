@@ -8,11 +8,14 @@ import (
 // BigIntNum - wraps a *big.Int integer and its associated
 // precision and Sign Value.
 //
+// Note: The methods associated with this type all assume that
+// the *big.Int are configured in base 10.
+//
 type BigIntNum struct {
 	BigInt			*big.Int
 	AbsBigInt		*big.Int
 	Precision 	uint			// Number of digits to the right of the decimal point.
-	ScaleFactor *big.Int	// Scale Factor =  10^precision
+	ScaleFactor *big.Int	// Scale Factor =  10^(precision * -1)
 	Sign				int				// Valid values are -1 or +1. Indicates the sign of the
 												// 	the 'BigInt' integer.
 }
@@ -94,9 +97,46 @@ func (bNum BigIntNum) New() BigIntNum {
 // NewBigInt - Creates a new BigIntNum instance using a *big.Int type and its
 // associated precision.
 //
+// The 'precision' parameter specifies the number of digits to the right
+// of the decimal point. The Numeric value is equal to bigI x 10^(precision x -1).
+// This effectively locates the decimal point by counting from the extreme right
+// of the integer number, 'precision' places to the left. See the example below.
+//
+// Input Parameters
+// bigI *big.Int	- 'bigI' is a type *big.Int and represents the integer
+//									value of the number; that is, the numeric value with
+//									out decimal digits.
+//
+// precision uint	- This unsigned integer (always a positive value) identifies
+// 									the location of the decimal point in the integer value 'bigI'.
+// 									The decimal point location is calculated by starting with the
+// 									right most digit in the integer number and counting	left,
+// 									'precision' places. Example:
+//											Integer Value		Precision			Numeric Value
+//											  123456					 3					  123.456
+//
 func (bNum BigIntNum) NewBigInt(bigI *big.Int, precision uint) BigIntNum {
 	b := BigIntNum{}
-	b.SetBigIntNum(bigI, precision)
+	b.SetBigInt(bigI, precision)
+	return b
+}
+
+// NewBigIntExponent - Returns a new BigIntNum instance in which the
+// numeric value is set using an integer multiplied by 10
+// raised to the power of the 'exponent' parameter.
+//
+// 				numeric value = integer X 10^exponent
+//
+// If exponent is less than +1, precision is set equal to exponent and
+// bigI is unchanged.
+//
+// If exponent is greater than 0, bigI is multiplied by 10 raised to the power
+// of 'exponent' and precision is set equal to zero.
+//
+func (bNum BigIntNum) NewBigIntExponent(bigI *big.Int, exponent int) BigIntNum {
+
+	b := BigIntNum{}
+	b.SetBigIntExponent(bigI, exponent)
 	return b
 }
 
@@ -124,7 +164,7 @@ func (bNum BigIntNum) NewDecimal(decNum Decimal) (BigIntNum, error) {
 	precision := uint(decNum.GetPrecision())
 
 	b := BigIntNum{}
-	b.SetBigIntNum(bInt, precision)
+	b.SetBigInt(bInt, precision)
 	return b, nil
 }
 
@@ -148,7 +188,7 @@ func (bNum BigIntNum) NewIntAry(ia IntAry) (BigIntNum, error) {
 	precision := uint(ia.GetPrecision())
 
 	b := BigIntNum{}
-	b.SetBigIntNum(bInt, precision)
+	b.SetBigInt(bInt, precision)
 	return b, nil
 }
 
@@ -177,7 +217,7 @@ func (bNum BigIntNum) NewNumStr(numStr string) (BigIntNum, error) {
 
 	b := BigIntNum{}
 
-	b.SetBigIntNum(bigI, nDto.GetPrecision())
+	b.SetBigInt(bigI, nDto.GetPrecision())
 
 	return b, nil
 }
@@ -207,18 +247,33 @@ func (bNum BigIntNum) NewNumStrDto(nDto NumStrDto) (BigIntNum, error) {
 
 	b := BigIntNum{}
 
-	b.SetBigIntNum(bigI, nDto.GetPrecision())
+	b.SetBigInt(bigI, nDto.GetPrecision())
 
 	return b, nil
 }
 
-// SetBigIntNum - Sets the value of the current BigIntNum instance using
+// SetBigInt - Sets the value of the current BigIntNum instance using
 // the input parameters *big.Int integer and precision.
 //
 // The 'precision' parameter specifies the number of digits to the right
-// of the decimal point.
+// of the decimal point. The Numeric value is equal to bigI x 10^(precision x -1).
+// This effectively locates the decimal point by counting from the extreme right
+// of the integer number, 'precision' places to the left. See the example below.
 //
-func (bNum *BigIntNum) SetBigIntNum(bigI *big.Int, precision uint) {
+// Input Parameters
+// bigI *big.Int	- 'bigI' is a type *big.Int and represents the integer
+//									value of the number; that is, the numeric value with
+//									out decimal digits.
+//
+// precision uint	- This unsigned integer (always a positive value) identifies
+// 									the location of the decimal point in the integer value 'bigI'.
+// 									The decimal point location is calculated by starting with the
+// 									right most digit in the integer number and counting	left,
+// 									'precision' places. Example:
+//											Integer Value		Precision			Numeric Value
+//											  123456					 3					  123.456
+//
+func (bNum *BigIntNum) SetBigInt(bigI *big.Int, precision uint) {
 
 	bNum.BigInt = big.NewInt(0).Set(bigI)
 	bNum.Precision = precision
@@ -237,6 +292,38 @@ func (bNum *BigIntNum) SetBigIntNum(bigI *big.Int, precision uint) {
 		bNum.AbsBigInt = big.NewInt(0).Set(bNum.BigInt)
 	}
 	
+}
+
+// SetBigIntMantissa - Sets the numeric value using an integer
+// multiplied by 10 raised to the power of the 'exponent'
+// parameter.
+//
+// 				numeric value = integer X 10^exponent
+//
+// If exponent is less than +1, precision is set equal to exponent and
+// bigI is unchanged.
+//
+// If exponent is greater than 0, bigI is multiplied by 10 raised to the
+// power of exponent and precision is set equal to zero.
+//
+func (bNum *BigIntNum) SetBigIntExponent(bigI *big.Int, exponent int) {
+
+	if exponent < 1 {
+		precision := uint(exponent * -1)
+		bNum.SetBigInt(bigI, precision)
+		return
+	}
+
+	// exponent must be greater than zero.
+	// scale left exponent places and set precision to zero
+
+	big10 := big.NewInt(10)
+	scale := big.NewInt(int64(exponent))
+	scaleValue := big.NewInt(0).Exp(big10, scale, nil)
+	newBigI := big.NewInt(0).Mul(bigI, scaleValue)
+
+	bNum.SetBigInt(newBigI, uint(0))
+	return
 }
 
 // GetNumStr - Converts the BigIntNum value to string of numbers

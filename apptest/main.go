@@ -3,14 +3,16 @@ package main
 import (
 
 	"fmt"
+	"../examples"
 	"../mathops"
 )
 
 func main() {
 
-	ExampleDecimalDivide_01()
+	examples.ExampleBigIntAdd_01()
 
 }
+
 
 func ExampleDecimalDivide_01() {
 	// str1 / str2
@@ -46,7 +48,7 @@ func ExampleDecimalDivide_01() {
 
 	if err != nil {
 		fmt.Printf("Error returned from d1.Divide(d2, ePrecision). "+
-			" Error='%v \n", str1, err.Error())
+			" Error='%v \n",  err.Error())
 		return
 	}
 
