@@ -3,16 +3,31 @@ package main
 import (
 
 	"fmt"
-	"../examples"
 	"../mathops"
 )
 
 func main() {
 
-	examples.ExampleBigIntAdd_01()
+	ExampleBigIntRounding_01()
 
 }
 
+func ExampleBigIntRounding_01() {
+	nStr := "-123.567"
+	expectedNumStr := "-123.57"
+	roundToDec := uint(2)
+
+	bINum1, _ := mathops.BigIntNum{}.NewNumStr(nStr)
+
+	bINum1.RoundToDecPlace(roundToDec)
+
+	actualNumStr, _ := bINum1.GetNumStr()
+
+	fmt.Println("Expected NumStr: ", expectedNumStr)
+	fmt.Println("  Actual NumStr: ", actualNumStr)
+
+
+}
 
 func ExampleDecimalDivide_01() {
 	// str1 / str2
