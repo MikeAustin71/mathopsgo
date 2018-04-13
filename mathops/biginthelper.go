@@ -304,7 +304,7 @@ func (bNum BigIntNum) NewIntExponent(iNum int, exponent int) BigIntNum {
 	return b
 }
 
-// NewInt32Exp - New Int32 Exponent returns a new BigIntNum instance in
+// NewInt32Exponent - New Int32 Exponent returns a new BigIntNum instance in
 // which the numeric value is set using an integer multiplied by 10 raised
 // to the power of the 'exponent' parameter.
 //
@@ -318,11 +318,11 @@ func (bNum BigIntNum) NewIntExponent(iNum int, exponent int) BigIntNum {
 //
 // Examples:
 //
-//	biNum := BigIntNum{}.NewInt32Exp(123456, -3) = "123.456" precision = 3 
+//	biNum := BigIntNum{}.NewInt32Exponent(123456, -3) = "123.456" precision = 3
 //
-//	biNum := BigIntNum{}.NewInt32Exp(123456, 3) = "123456000" precision = 0
+//	biNum := BigIntNum{}.NewInt32Exponent(123456, 3) = "123456000" precision = 0
 //
-func (bNum BigIntNum) NewInt32Exp(i32 int32, exponent int) BigIntNum {
+func (bNum BigIntNum) NewInt32Exponent(i32 int32, exponent int) BigIntNum {
 
 	bigI := big.NewInt(int64(i32))
 	b := BigIntNum{}
@@ -330,7 +330,7 @@ func (bNum BigIntNum) NewInt32Exp(i32 int32, exponent int) BigIntNum {
 	return b
 }
 
-// NewInt64Exp - New Int64 Exponent returns a new BigIntNum instance in
+// NewInt64Exponent - New Int64 Exponent returns a new BigIntNum instance in
 // which the numeric value is set using an integer multiplied by 10 raised
 // to the power of the 'exponent' parameter.
 //
@@ -344,11 +344,11 @@ func (bNum BigIntNum) NewInt32Exp(i32 int32, exponent int) BigIntNum {
 //
 // Examples:
 //
-//	biNum := BigIntNum{}.NewInt64Exp(123456, -3) = "123.456" precision = 3 
+//	biNum := BigIntNum{}.NewInt64Exponent(123456, -3) = "123.456" precision = 3
 //
-//	biNum := BigIntNum{}.NewInt64Exp(123456, 3) = "123456000" precision = 0
+//	biNum := BigIntNum{}.NewInt64Exponent(123456, 3) = "123456000" precision = 0
 //
-func (bNum BigIntNum) NewInt64Exp(i64 int64, exponent int) BigIntNum {
+func (bNum BigIntNum) NewInt64Exponent(i64 int64, exponent int) BigIntNum {
 
 	bigI := big.NewInt(i64)
 	b := BigIntNum{}
