@@ -340,7 +340,7 @@ func TestBigIntNum_NewBigIntExponent_01(t *testing.T) {
 
 	bOriginal := big.NewInt(int64(n))
 
-	bINum := BigIntNum{}.NewBigIntExponent(bOriginal, exponent)
+	bINum := BigIntNum{}.NewBigIntExp(bOriginal, exponent)
 
 	actualNumStr, err := bINum.GetNumStr()
 
@@ -382,7 +382,7 @@ func TestBigIntNum_NewBigIntExponent_02(t *testing.T) {
 
 	bOriginal := big.NewInt(int64(n))
 
-	bINum := BigIntNum{}.NewBigIntExponent(bOriginal, exponent)
+	bINum := BigIntNum{}.NewBigIntExp(bOriginal, exponent)
 
 	actualNumStr, err := bINum.GetNumStr()
 
@@ -424,7 +424,7 @@ func TestBigIntNum_NewBigIntExponent_03(t *testing.T) {
 
 	bOriginal := big.NewInt(int64(n))
 
-	bINum := BigIntNum{}.NewBigIntExponent(bOriginal, exponent)
+	bINum := BigIntNum{}.NewBigIntExp(bOriginal, exponent)
 
 	actualNumStr, err := bINum.GetNumStr()
 
@@ -466,7 +466,7 @@ func TestBigIntNum_NewBigIntExponent_04(t *testing.T) {
 
 	bOriginal := big.NewInt(int64(n))
 
-	bINum := BigIntNum{}.NewBigIntExponent(bOriginal, exponent)
+	bINum := BigIntNum{}.NewBigIntExp(bOriginal, exponent)
 
 	actualNumStr, err := bINum.GetNumStr()
 

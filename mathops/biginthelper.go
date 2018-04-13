@@ -3,6 +3,7 @@ package mathops
 import (
 	"math/big"
 	"fmt"
+	"strconv"
 )
 
 // BigIntNum - wraps a *big.Int integer and its associated
@@ -121,9 +122,10 @@ func (bNum BigIntNum) NewBigInt(bigI *big.Int, precision uint) BigIntNum {
 	return b
 }
 
-// NewBigIntExponent - Returns a new BigIntNum instance in which the
-// numeric value is set using an integer multiplied by 10
-// raised to the power of the 'exponent' parameter.
+// NewBigIntExp - New BigInt Exponent returns a new
+// BigIntNum instance in which the numeric value is
+// set using an integer multiplied by 10 raised to
+// the power of the 'exponent' parameter.
 //
 // 				numeric value = integer X 10^exponent
 //
@@ -133,7 +135,7 @@ func (bNum BigIntNum) NewBigInt(bigI *big.Int, precision uint) BigIntNum {
 // If exponent is greater than 0, bigI is multiplied by 10 raised to the power
 // of 'exponent' and precision is set equal to zero.
 //
-func (bNum BigIntNum) NewBigIntExponent(bigI *big.Int, exponent int) BigIntNum {
+func (bNum BigIntNum) NewBigIntExp(bigI *big.Int, exponent int) BigIntNum {
 
 	b := BigIntNum{}
 	b.SetBigIntExponent(bigI, exponent)
@@ -167,6 +169,185 @@ func (bNum BigIntNum) NewDecimal(decNum Decimal) (BigIntNum, error) {
 	b.SetBigInt(bInt, precision)
 	return b, nil
 }
+
+// NewFloat32 - Returns a new BigIntNum instance using a float32 floating point
+// input parameter.  The precision of the number is specified by the input 
+// parameter, 'decimalPlaces'.
+// 
+// Input Parameters
+// ================
+//
+// f32 float32				- This float32 value will be converted into an instance of 
+//											BigIntNum.
+//
+// decimalPlaces int	- If greater than -1, this value designates the number
+// 											of decimal places which will be extracted from the 
+//											float32 value. If 'decimalPlaces' = -1, the number 
+//											of decimal places will be inferred. -1 uses the smallest
+// 											number of digits necessary return 'f32' exactly.
+//											Any 'decimalPlaces' value less than zero will be
+//											automatically converted to -1.
+//
+func (bNum BigIntNum) NewFloat32(f32 float32, decimalPlaces int) (BigIntNum, error) {
+	ePrefix := "BigIntNumNewFloat32() "
+	
+	b := BigIntNum{}
+	err := b.SetFloat32(f32, decimalPlaces)
+	
+	if err != nil {
+		return BigIntNum{},
+		fmt.Errorf(ePrefix + "Error returned by b.SetFloat32(f32, decimalPlaces). " +
+			"Error='%v' ", err.Error())
+	}
+	
+	return b, nil
+}
+
+// NewBigFloat - Returns a new BigIntNum instance using a *big.Float floating point
+// input parameter.  The precision of the number is specified by the input 
+// parameter, 'decimalPlaces'.
+// 
+// Input Parameters
+// ================
+//
+// bigFloat *big.Float	- This *big.Float value will be converted into an instance of
+//												BigIntNum.
+//
+// decimalPlaces int		- If greater than -1, this value designates the number
+// 												of decimal places which will be extracted from the
+//												*big.Float value. If 'decimalPlaces' = -1, the number
+//												of decimal places will be inferred. -1 uses the smallest
+// 												number of digits necessary return 'bigFloat' exactly.
+//												Any 'decimalPlaces' value less than zero will be
+//												automatically converted to -1. Be careful, -1 could
+//												generate a very, very large number of decimal places.
+//
+func (bNum BigIntNum) NewBigFloat(bigFloat *big.Float, decimalPlaces int) (BigIntNum, error) {
+	ePrefix := "BigIntNumNewFloat64() "
+	
+	b := BigIntNum{}
+	err := b.SetBigFloat(bigFloat, decimalPlaces)
+	
+	if err != nil {
+		return BigIntNum{},
+		fmt.Errorf(ePrefix + "Error returned by b.SetBigFloat(bigFloat, decimalPlaces). " +
+			"Error='%v' ", err.Error())
+	}
+	
+	return b, nil
+}
+
+// NewFloat64 - Returns a new BigIntNum instance using a float64 floating point
+// input parameter.  The precision of the number is specified by the input
+// parameter, 'decimalPlaces'.
+//
+// Input Parameters
+// ================
+//
+// f64 float64				- This float64 value will be converted into an instance of
+//											BigIntNum.
+//
+// decimalPlaces int	- If greater than -1, this value designates the number
+// 											of decimal places which will be extracted from the
+//											float64 value. If 'decimalPlaces' = -1, the number
+//											of decimal places will be inferred. -1 uses the smallest
+// 											number of digits necessary return 'f64' exactly.
+//											Any 'decimalPlaces' value less than zero will be
+//											automatically converted to -1.
+//
+func (bNum BigIntNum) NewFloat64(f64 float64, decimalPlaces int) (BigIntNum, error) {
+	ePrefix := "BigIntNumNewFloat64() "
+
+	b := BigIntNum{}
+	err := b.SetFloat64(f64, decimalPlaces)
+
+	if err != nil {
+		return BigIntNum{},
+		fmt.Errorf(ePrefix + "Error returned by b.SetFloat64(f64, decimalPlaces). " +
+			"Error='%v' ", err.Error())
+	}
+
+	return b, nil
+}
+
+// NewIntExponent - New Int Exponent returns a new BigIntNum instance in which
+// the numeric value is set using an integer multiplied by 10 raised to
+// the power of the 'exponent' parameter.
+//
+// 				numeric value = integer X 10^exponent
+//
+// If exponent is less than +1, precision is set equal to exponent and
+// 'iNum' is unchanged.
+//
+// If exponent is greater than 0, 'iNum' is multiplied by 10 raised to the power
+// of 'exponent' and precision is set equal to zero.
+//
+// Examples:
+//
+//	biNum := BigIntNum{}.NewIntExponent(123456, -3) = "123.456" precision = 3 
+//
+//	biNum := BigIntNum{}.NewIntExponent(123456, 3) = "123456000" precision = 0
+//
+func (bNum BigIntNum) NewIntExponent(iNum int, exponent int) BigIntNum {
+	
+	bigI := big.NewInt(int64(iNum))
+	b := BigIntNum{}
+	b.SetBigIntExponent(bigI, exponent)	
+	return b
+}
+
+// NewInt32Exp - New Int32 Exponent returns a new BigIntNum instance in
+// which the numeric value is set using an integer multiplied by 10 raised
+// to the power of the 'exponent' parameter.
+//
+// 				numeric value = integer X 10^exponent
+//
+// If exponent is less than +1, precision is set equal to exponent and
+// 'i32' is unchanged.
+//
+// If exponent is greater than 0, 'i32' is multiplied by 10 raised to the power
+// of 'exponent' and precision is set equal to zero.
+//
+// Examples:
+//
+//	biNum := BigIntNum{}.NewInt32Exp(123456, -3) = "123.456" precision = 3 
+//
+//	biNum := BigIntNum{}.NewInt32Exp(123456, 3) = "123456000" precision = 0
+//
+func (bNum BigIntNum) NewInt32Exp(i32 int32, exponent int) BigIntNum {
+
+	bigI := big.NewInt(int64(i32))
+	b := BigIntNum{}
+	b.SetBigIntExponent(bigI, exponent)
+	return b
+}
+
+// NewInt64Exp - New Int64 Exponent returns a new BigIntNum instance in
+// which the numeric value is set using an integer multiplied by 10 raised
+// to the power of the 'exponent' parameter.
+//
+// 				numeric value = integer X 10^exponent
+//
+// If exponent is less than +1, precision is set equal to exponent and
+// 'i64' is unchanged.
+//
+// If exponent is greater than 0, 'i64' is multiplied by 10 raised to the power
+// of 'exponent' and precision is set equal to zero.
+//
+// Examples:
+//
+//	biNum := BigIntNum{}.NewInt64Exp(123456, -3) = "123.456" precision = 3 
+//
+//	biNum := BigIntNum{}.NewInt64Exp(123456, 3) = "123456000" precision = 0
+//
+func (bNum BigIntNum) NewInt64Exp(i64 int64, exponent int) BigIntNum {
+
+	bigI := big.NewInt(i64)
+	b := BigIntNum{}
+	b.SetBigIntExponent(bigI, exponent)
+	return b
+}
+
 
 // NewIntAry - Creates a new BigIntNum instance from an input parameter
 // IntAry.
@@ -294,7 +475,7 @@ func (bNum *BigIntNum) SetBigInt(bigI *big.Int, precision uint) {
 	
 }
 
-// SetBigIntMantissa - Sets the numeric value using an integer
+// SetBigIntExponent - Sets the numeric value using an integer
 // multiplied by 10 raised to the power of the 'exponent'
 // parameter.
 //
@@ -325,6 +506,155 @@ func (bNum *BigIntNum) SetBigIntExponent(bigI *big.Int, exponent int) {
 	bNum.SetBigInt(newBigI, uint(0))
 	return
 }
+
+// SetBigFloat - Sets the value of a BigIntNum using a *big.Float floating point
+// input parameter.  The precision of the number is specified by the input 
+// parameter, 'decimalPlaces'.
+// 
+// Input Parameters
+// ================
+//
+// bigFloat *big.Float	- This float32 value will be converted into an instance of 
+//												BigIntNum.
+//
+// decimalPlaces int		- If greater than -1, this value designates the number
+// 												of decimal places which will be extracted from the 
+//												*big.Float value. If 'decimalPlaces' = -1, the number 
+//												of decimal places will be inferred automatically. 
+// 												-1 uses the smallest number of digits necessary return
+// 												the *big.Float value exactly.	Any 'decimalPlaces' value
+// 												less than zero will be automatically converted to -1. Be
+//												careful, -1 could generate a very, very large number of 
+//												decimal places.
+//
+func (bNum *BigIntNum) SetBigFloat(bigFloat *big.Float, decimalPlaces int) error {
+
+	ePrefix := "NumStrDto.NewBigFloat() "
+
+	if decimalPlaces < 0 {
+		decimalPlaces = -1
+	}
+	
+	numStr := bigFloat.Text('f', decimalPlaces)
+
+	nDto, err := NumStrDto{}.NewNumStr(numStr)
+
+	if err != nil {
+		return 	fmt.Errorf(ePrefix	+
+				"Error returned by NumStrDto{}.NewNumStr(numStr). " +
+				"numStr='%v'  Error='%v'",
+				numStr, err.Error())
+	}
+
+	bigI, err := nDto.GetSignedBigInt()
+
+	if err != nil {
+		fmt.Errorf(ePrefix + "Error returned by nDto.GetSignedBigInt(). " +
+			"Error='%v'", err.Error())
+	}
+
+	bNum.SetBigInt(bigI, nDto.GetPrecision())
+
+	return nil
+}
+
+// SetFloat32 - Sets the value of a BigIntNum using a float32 floating point
+// input parameter.  The precision of the number is specified by the input 
+// parameter, 'decimalPlaces'.
+// 
+// Input Parameters
+// ================
+//
+// f32 float32				- This float32 value will be converted into an instance of 
+//											BigIntNum.
+//
+// decimalPlaces int	- If greater than -1, this value designates the number
+// 											of decimal places which will be extracted from the 
+//											float32 value. If 'decimalPlaces' = -1, the number 
+//											of decimal places will be inferred. -1 uses the smallest
+// 											number of digits necessary return 'f32' exactly.
+//											Any 'decimalPlaces' value less than zero will be
+//											automatically converted to -1.
+//
+func (bNum *BigIntNum) SetFloat32(f32 float32, decimalPlaces int) error {
+	
+	ePrefix := "BigIntNum.SetFloat32() "
+	
+	if decimalPlaces < 0 {
+		decimalPlaces = -1
+	}
+	
+	numStr := strconv.FormatFloat(float64(f32), 'f', decimalPlaces, 32)
+	
+	nDto, err := NumStrDto{}.NewNumStr(numStr) 
+	
+	if err != nil {
+		return fmt.Errorf(ePrefix + "Error returned by NumStrDto{}.NewNumStr(numStr). " +
+			"numStr='%v' Error='%v'. ",
+				numStr, err.Error())
+	}
+
+	bigI, err := nDto.GetSignedBigInt()
+
+	if err != nil {
+			fmt.Errorf(ePrefix + "Error returned by nDto.GetSignedBigInt(). " +
+				"Error='%v'", err.Error())
+	}
+
+	bNum.SetBigInt(bigI, nDto.GetPrecision())
+
+	return nil
+} 
+
+
+// SetFloat64 - Sets the value of a BigIntNum using a float64 floating point
+// input parameter.  The precision of the number is specified by the input
+// parameter 'decimalPlaces'.
+// 
+// Input Parameters
+// ================
+//
+// f64 float64				- This float64 value will be converted into an instance of 
+//											BigIntNum.
+//
+// decimalPlaces int	- If greater than -1, this value designates the number
+// 											of decimal places which will be extracted from the 
+//											float64 value. If 'decimalPlaces' = -1, the number 
+//											of decimal places will be inferred. -1 uses the smallest
+// 											number of digits necessary return 'f64' exactly.
+//											Any 'decimalPlaces' value less than zero will be
+//											automatically converted to -1.
+//
+func (bNum *BigIntNum) SetFloat64(f64 float64, decimalPlaces int) error {
+	
+	ePrefix := "BigIntNum.SetFloat64() "
+	
+	if decimalPlaces < 0 {
+		decimalPlaces = -1
+	}
+	
+	numStr := strconv.FormatFloat(f64, 'f', decimalPlaces, 64)
+	
+	nDto, err := NumStrDto{}.NewNumStr(numStr) 
+	
+	if err != nil {
+		return fmt.Errorf(ePrefix + "Error returned by NumStrDto{}.NewNumStr(numStr). " +
+			"numStr='%v' Error='%v'. ",
+				numStr, err.Error())
+	}
+
+	bigI, err := nDto.GetSignedBigInt()
+
+	if err != nil {
+			fmt.Errorf(ePrefix + "Error returned by nDto.GetSignedBigInt(). " +
+				"Error='%v'", err.Error())
+	}
+
+	bNum.SetBigInt(bigI, nDto.GetPrecision())
+
+	return nil
+} 
+
 
 // GetNumStr - Converts the BigIntNum value to string of numbers
 // which includes the decimal point and decimal digits if they exist.
