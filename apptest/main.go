@@ -13,8 +13,8 @@ func main() {
 }
 
 func ExampleBigIntRounding_01() {
-	nStr := "-123.567"
-	expectedNumStr := "-123.57"
+	nStr := "0.000"
+	expectedNumStr := "0.00"
 	roundToDec := uint(2)
 
 	bINum1, _ := mathops.BigIntNum{}.NewNumStr(nStr)

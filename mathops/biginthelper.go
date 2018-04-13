@@ -86,6 +86,26 @@ func (bNum *BigIntNum) Equal(b2 BigIntNum) bool {
 	return true
 }
 
+// GetNumStr - Converts the BigIntNum value to string of numbers
+// which includes the decimal point and decimal digits if they exist.
+//
+func (bNum *BigIntNum) GetNumStr() (string, error) {
+
+	ePrefix := "BigIntNum.GetNumStr() "
+
+	nDto, err := NumStrDto{}.NewBigInt(bNum.BigInt, bNum.Precision)
+
+	if err != nil {
+		return "",
+			fmt.Errorf (ePrefix +
+				"Error returned by NumStrDto{}.NewBigInt(bNum.BigInt, bNum.Precision) " +
+				"bNum.BigInt='%v' bNum.Precision='%v' Error='%v'",
+				bNum.BigInt.Text(10), bNum.Precision, err.Error())
+	}
+
+	return nDto.GetNumStr(), nil
+}
+
 // New - returns a new BigIntNum instance initialized to
 // zero.
 //
@@ -459,6 +479,11 @@ func (bNum *BigIntNum) RoundToDecPlace(precision uint) {
 		return
 	}
 
+	if bNum.BigInt.Cmp(big.NewInt(0)) == 0 {
+		bNum.Precision = precision
+		return
+	}
+
 	base5 := big.NewInt(5)
 
 	bigNumRound5 := BigIntNum{}.NewBigInt(base5, uint(precision + 1))
@@ -701,27 +726,34 @@ func (bNum *BigIntNum) SetFloat64(f64 float64, decimalPlaces int) error {
 	bNum.SetBigInt(bigI, nDto.GetPrecision())
 
 	return nil
-} 
+}
 
-
-// GetNumStr - Converts the BigIntNum value to string of numbers
-// which includes the decimal point and decimal digits if they exist.
+// TruncToDecPlace - Truncates the current BigIntNum to the number
+// of decimal places specified by input parameter 'precision'.
+// No rounding occurs, the trailing digits are simply truncated or
+// deleted in order to achieve the specified number of decimal places.
 //
-func (bNum *BigIntNum) GetNumStr() (string, error) {
+// 'precision' equals the number of digits to the right of the decimal
+// place.
+//
+func (bNum *BigIntNum) TruncToDecPlace(precision uint) {
 
-	ePrefix := "BigIntNum.GetNumStr() "
-
-	nDto, err := NumStrDto{}.NewBigInt(bNum.BigInt, bNum.Precision)
-
-	if err != nil {
-		return "",
-		fmt.Errorf (ePrefix +
-			"Error returned by NumStrDto{}.NewBigInt(bNum.BigInt, bNum.Precision) " +
-			"bNum.BigInt='%v' bNum.Precision='%v' Error='%v'",
-				bNum.BigInt.Text(10), bNum.Precision, err.Error())
+	if bNum.Precision <= precision {
+		// Nothing to do. We can only round to a precision
+		// which is less than the current precision.
+		return
 	}
 
-	return nDto.GetNumStr(), nil
+	if bNum.BigInt.Cmp(big.NewInt(0)) == 0 {
+		bNum.Precision = precision
+		return
+	}
+
+	base10 := big.NewInt(10)
+
+	newBigInt := big.NewInt(0).Div(bNum.BigInt, base10)
+
+	bNum.SetBigInt(newBigInt, precision)
 }
 
 // BigIntPair - contains a pair of 'BitIntNum' types. This structure

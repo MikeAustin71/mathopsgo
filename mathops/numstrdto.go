@@ -2263,7 +2263,7 @@ func (nDto *NumStrDto) ParseSignedBigInt(signedBigInt *big.Int, precision uint) 
 	n2Dto.SetThousandsSeparator(nDto.GetThousandsSeparator())
 
 	if signedBigInt.Cmp(bigZero) == 0 {
-		return nDto.GetZeroNumStr(0), nil
+		return nDto.GetZeroNumStr(precision), nil
 	}
 
 	if precision == 0 {
