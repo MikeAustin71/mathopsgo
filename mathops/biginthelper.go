@@ -122,7 +122,7 @@ func (bNum BigIntNum) NewBigInt(bigI *big.Int, precision uint) BigIntNum {
 	return b
 }
 
-// NewBigIntExp - New BigInt Exponent returns a new
+// NewBigIntExponent - New BigInt Exponent returns a new
 // BigIntNum instance in which the numeric value is
 // set using an integer multiplied by 10 raised to
 // the power of the 'exponent' parameter.
@@ -135,7 +135,15 @@ func (bNum BigIntNum) NewBigInt(bigI *big.Int, precision uint) BigIntNum {
 // If exponent is greater than 0, bigI is multiplied by 10 raised to the power
 // of 'exponent' and precision is set equal to zero.
 //
-func (bNum BigIntNum) NewBigIntExp(bigI *big.Int, exponent int) BigIntNum {
+// Examples:
+//
+//	biNum :=
+// 			BigIntNum{}.NewBigIntExponent(big.NewInt(int64(123456)), -3) = "123.456"  precision = 3
+//
+//	biNum :=
+// 			BigIntNum{}.NewBigIntExponent(big.NewInt(int64(123456)), 3) = "123456000" precision = 0
+//
+func (bNum BigIntNum) NewBigIntExponent(bigI *big.Int, exponent int) BigIntNum {
 
 	b := BigIntNum{}
 	b.SetBigIntExponent(bigI, exponent)
