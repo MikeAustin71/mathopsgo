@@ -751,7 +751,11 @@ func (bNum *BigIntNum) TruncToDecPlace(precision uint) {
 
 	base10 := big.NewInt(10)
 
-	newBigInt := big.NewInt(0).Div(bNum.BigInt, base10)
+	newBigInt := big.NewInt(0).Div(bNum.AbsBigInt, base10)
+
+	if bNum.Sign < 1 {
+		newBigInt = big.NewInt(0).Neg(newBigInt)
+	}
 
 	bNum.SetBigInt(newBigInt, precision)
 }
