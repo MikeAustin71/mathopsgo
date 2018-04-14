@@ -2,8 +2,33 @@ package mathops
 
 import (
 	"testing"
+	"math/big"
 )
 
+
+func TestNumStrDto_GetSignedBigInt_01(t *testing.T) {
+
+	nStr := "-123.456"
+	signedNumStr := "-123456"
+	expected, isOk := big.NewInt(0).SetString(signedNumStr, 10)
+
+	if !isOk {
+		t.Errorf("big.SetString(signedNumStr,10) Failed!. signedNumStr= '%v'", signedNumStr)
+	}
+
+	n1, err := NumStrDto{}.NewPtr().ParseNumStr(nStr)
+
+	if err != nil {
+		t.Errorf("Received error from n1 NumStrDto.ParseNumStr(nStr). nStr= '%v' Error= %v", nStr, err)
+	}
+
+	signedBigInt, err := n1.GetSignedBigInt()
+
+	if signedBigInt.Cmp(expected) != 0 {
+		t.Errorf("Expected signedBigInt= %v . Instead got, %v", expected.String(), signedBigInt.String())
+	}
+
+}
 
 func TestNumStrDto_GetThouStr_01(t *testing.T) {
 

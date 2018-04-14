@@ -1390,6 +1390,49 @@ func TestDecimal_GetAbsoluteValue_02(t *testing.T) {
 
 }
 
+func TestDecimal_GetBigIntNum_01(t *testing.T) {
+
+	bigI := big.NewInt(int64(123456123456))
+	precision := uint(6)
+
+	exStr := "123456.123456"
+
+	expectedBigIntNum := BigIntNum{}.NewBigInt(bigI, precision)
+
+	dec, err := Decimal{}.NewBigInt(bigI, precision)
+
+	if err != nil {
+		t.Errorf("Error returned by Decimal{}.NewBigInt(bigI, precision). " +
+			"Error='%v' ", err.Error())
+	}
+
+	bigINum, err := dec.GetBigIntNum()
+
+	if err != nil {
+		t.Errorf("Error returned by dec.GetBigIntNum(). " +
+			"Error='%v' ", err.Error())
+	}
+
+	if !expectedBigIntNum.Equal(bigINum) {
+		t.Errorf("Error: Expected BigIntNum NOT Equal to Actual BigIntNum! "+
+			"expectedBi='%v', expectedPrecision='%v'. actualBi='%v' actualPrecision='%v'",
+				expectedBigIntNum.BigInt.Text(10), expectedBigIntNum.Precision,
+					bigINum.BigInt.Text(10), bigINum.Precision)
+	}
+
+	actualNumStr, err := bigINum.GetNumStr()
+
+	if err != nil {
+		t.Errorf("Error returned by bigINum.GetNumStr(). " +
+			"Error='%v' ", err.Error())
+	}
+
+	if exStr != actualNumStr {
+		t.Errorf("Error: Expected NumStr='%v'.  Instead, NumStr='%v'",
+			exStr, actualNumStr)
+	}
+}
+
 func TestDecimal_GetIntAry_01(t *testing.T) {
 	bigI := big.NewInt(int64(123456123456))
 	precision := uint(6)

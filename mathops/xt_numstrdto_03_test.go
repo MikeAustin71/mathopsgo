@@ -158,30 +158,6 @@ func TestNumStrDto_GetAbsIntRunes_03(t *testing.T) {
 
 }
 
-func TestNumStrDto_GetSignedBigInt_01(t *testing.T) {
-
-	nStr := "-123.456"
-	signedNumStr := "-123456"
-	expected, isOk := big.NewInt(0).SetString(signedNumStr, 10)
-
-	if !isOk {
-		t.Errorf("big.SetString(signedNumStr,10) Failed!. signedNumStr= '%v'", signedNumStr)
-	}
-
-	n1, err := NumStrDto{}.NewPtr().ParseNumStr(nStr)
-
-	if err != nil {
-		t.Errorf("Received error from n1 NumStrDto.ParseNumStr(nStr). nStr= '%v' Error= %v", nStr, err)
-	}
-
-	signedBigInt, err := n1.GetSignedBigInt()
-
-	if signedBigInt.Cmp(expected) != 0 {
-		t.Errorf("Expected signedBigInt= %v . Instead got, %v", expected.String(), signedBigInt.String())
-	}
-
-}
-
 func TestNumStrDto_GetCurrencyStr_01(t *testing.T) {
 
 	nStr := "123456.97"
@@ -936,6 +912,48 @@ func TestNumStrDto_GetCurrencyParen_08(t *testing.T) {
 
 }
 
+func TestNumStrDto_GetBigIntNum_01(t *testing.T) {
+
+	bigI := big.NewInt(int64(123456123456))
+	precision := uint(6)
+
+	exStr := "123456.123456"
+
+	expectedBigIntNum := BigIntNum{}.NewBigInt(bigI, precision)
+
+	intAry, err := IntAry{}.NewBigInt(bigI, precision)
+
+	if err != nil {
+		t.Errorf("Error returned by IntAry{}.NewBigInt(bigI, precision). " +
+			"Error='%v' ", err.Error())
+	}
+
+	bigINum, err := intAry.GetBigIntNum()
+
+	if err != nil {
+		t.Errorf("Error returned by intAry.GetBigIntNum(). " +
+			"Error='%v' ", err.Error())
+	}
+
+	if !expectedBigIntNum.Equal(bigINum) {
+		t.Errorf("Error: Expected BigIntNum NOT Equal to Actual BigIntNum! "+
+			"expectedBi='%v', expectedPrecision='%v'. actualBi='%v' actualPrecision='%v'",
+			expectedBigIntNum.BigInt.Text(10), expectedBigIntNum.Precision,
+			bigINum.BigInt.Text(10), bigINum.Precision)
+	}
+
+	actualNumStr, err := bigINum.GetNumStr()
+
+	if err != nil {
+		t.Errorf("Error returned by bigINum.GetNumStr(). " +
+			"Error='%v' ", err.Error())
+	}
+
+	if exStr != actualNumStr {
+		t.Errorf("Error: Expected NumStr='%v'.  Instead, NumStr='%v'",
+			exStr, actualNumStr)
+	}
+}
 
 func TestNumStrDto_GetNumStr_01(t *testing.T) {
 
