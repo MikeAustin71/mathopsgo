@@ -86,8 +86,52 @@ func (bNum *BigIntNum) Equal(b2 BigIntNum) bool {
 	return true
 }
 
-// GetNumStr - Converts the BigIntNum value to string of numbers
-// which includes the decimal point and decimal digits if they exist.
+// GetDecimal - Converts the current BigIntNum value to a Decimal
+// instance. The resulting number value includes the decimal point
+// and decimal digits if they exist.
+//
+func (bNum *BigIntNum) GetDecimal() (Decimal, error) {
+
+	ePrefix := "BigIntNum.GetDecimal() "
+
+	dec, err := Decimal{}.NewBigInt(bNum.BigInt, bNum.Precision)
+
+	if err != nil {
+		return Decimal{},
+			fmt.Errorf (ePrefix +
+				"Error returned by Decimal{}.NewBigInt(bNum.BigInt, bNum.Precision) " +
+				"bNum.BigInt='%v' bNum.Precision='%v' Error='%v'",
+				bNum.BigInt.Text(10), bNum.Precision, err.Error())
+	}
+
+	return dec, nil
+}
+
+// GetIntAry - Converts the current BigIntNum value to an IntAry
+// instance. The resulting number value includes the decimal point
+// and decimal digits if they exist.
+//
+func (bNum *BigIntNum) GetIntAry() (IntAry, error) {
+
+	ePrefix := "BigIntNum.GetIntAry() "
+
+	ia, err := IntAry{}.NewBigInt(bNum.BigInt, bNum.Precision)
+
+	if err != nil {
+		return IntAry{},
+			fmt.Errorf (ePrefix +
+				"Error returned by IntAry{}.NewBigInt(bNum.BigInt, bNum.Precision) " +
+				"bNum.BigInt='%v' bNum.Precision='%v' Error='%v'",
+				bNum.BigInt.Text(10), bNum.Precision, err.Error())
+	}
+
+	return ia, nil
+}
+
+
+// GetNumStr - Converts the current BigIntNum value to string of
+// numbers which includes the decimal point and decimal digits
+// if they exist.
 //
 func (bNum *BigIntNum) GetNumStr() (string, error) {
 
@@ -104,6 +148,27 @@ func (bNum *BigIntNum) GetNumStr() (string, error) {
 	}
 
 	return nDto.GetNumStr(), nil
+}
+
+// GetNumStrDto - Converts the current BigIntNum value to a NumStrDto
+// instance. The resulting number string includes the decimal point
+// and decimal digits if they exist.
+//
+func (bNum *BigIntNum) GetNumStrDto() (NumStrDto, error) {
+
+	ePrefix := "BigIntNum.GetNumStrDto() "
+
+	nDto, err := NumStrDto{}.NewBigInt(bNum.BigInt, bNum.Precision)
+
+	if err != nil {
+		return NumStrDto{},
+			fmt.Errorf (ePrefix +
+				"Error returned by NumStrDto{}.NewBigInt(bNum.BigInt, bNum.Precision) " +
+				"bNum.BigInt='%v' bNum.Precision='%v' Error='%v'",
+				bNum.BigInt.Text(10), bNum.Precision, err.Error())
+	}
+
+	return nDto, nil
 }
 
 // New - returns a new BigIntNum instance initialized to
@@ -393,7 +458,7 @@ func (bNum BigIntNum) NewIntAry(ia IntAry) (BigIntNum, error) {
 			"ia.IsIntAryValid(\"\"). Error='%v'", err.Error())
 	}
 
-	bInt := ia.GetBigInt()
+	bInt := ia.GetSignedBigInt()
 	precision := uint(ia.GetPrecision())
 
 	b := BigIntNum{}

@@ -1910,32 +1910,6 @@ func (ia *IntAry) GetAbsoluteValue() IntAry {
 
 }
 
-// GetBigInt - Returns the current value of
-// this intAry object as a big integer
-// (*big.Int)
-func (ia *IntAry) GetBigInt() *big.Int {
-
-	result := big.NewInt(0).SetInt64(0)
-	big10 := big.NewInt(0).SetInt64(10)
-
-	ia.SetInternalFlags()
-
-	for i := 0; i < ia.intAryLen; i++ {
-		result = big.NewInt(0).Mul(result, big10)
-		result = big.NewInt(0).Add(result, big.NewInt(0).SetInt64(int64(ia.intAry[i])))
-
-	}
-
-	if ia.signVal == -1 {
-
-		bigMinusOne := big.NewInt(0).SetInt64(-1)
-
-		result = big.NewInt(0).Mul(result, bigMinusOne)
-	}
-
-	return result
-}
-
 // GetCurrencySymbol - returns a type 'rune'
 // which represents the setting for currency
 // symbol in the current IntAry object.
@@ -2071,7 +2045,7 @@ func (ia *IntAry) GetInt() (int, error) {
 
 	minInt := big.NewInt(0).SetInt64(int64(math.MinInt32))
 
-	result := ia.GetBigInt()
+	result := ia.GetSignedBigInt()
 
 	compare := result.Cmp(maxInt)
 
@@ -2105,7 +2079,7 @@ func (ia *IntAry) GetInt64() (int64, error) {
 
 	minI64 := big.NewInt(0).SetInt64(math.MinInt64)
 
-	result := ia.GetBigInt()
+	result := ia.GetSignedBigInt()
 
 	compare := result.Cmp(maxI64)
 
@@ -2351,6 +2325,29 @@ func (ia *IntAry) GetIntAryStats() IntAryStatsDto {
 	return iStats
 }
 
+// GetBigIntNum - Converts the numeric value of the current
+// IntAry to 'BigIntNum' instance and returns it to the calling
+// function.
+//
+func (ia *IntAry) GetBigIntNum() (BigIntNum, error) {
+	ePrefix := "IntAry.GetBigIntNum() "
+
+	err := ia.IsIntAryValid("")
+
+	if err != nil {
+		return BigIntNum{},
+		fmt.Errorf(ePrefix + "Error returned by ia.IsIntAryValid(). " +
+			"Error='%v' ", err.Error())
+	}
+
+
+	bInt := ia.GetSignedBigInt()
+
+	bIntNum := BigIntNum{}.NewBigInt(bInt, uint(ia.precision))
+
+	return bIntNum, nil
+}
+
 // GetNumStr - returns the current value
 // of this intAry object as a number string.
 func (ia *IntAry) GetNumStr() string {
@@ -2493,6 +2490,30 @@ func (ia *IntAry) GetScaleFactor() (*big.Int, error) {
 // always be one of two values: +1 or -1 .
 func (ia *IntAry) GetSign() int {
 	return ia.signVal
+}
+
+// GetSignedBigInt - Returns the current value of
+// this intAry object as a big integer
+// (*big.Int)
+func (ia *IntAry) GetSignedBigInt() *big.Int {
+
+	result := big.NewInt(0).SetInt64(0)
+	big10 := big.NewInt(0).SetInt64(10)
+
+	ia.SetInternalFlags()
+
+	for i := 0; i < ia.intAryLen; i++ {
+		result = big.NewInt(0).Mul(result, big10)
+		result = big.NewInt(0).Add(result, big.NewInt(0).SetInt64(int64(ia.intAry[i])))
+
+	}
+
+	if ia.signVal == -1 {
+
+		result = big.NewInt(0).Neg(result)
+	}
+
+	return result
 }
 
 // GetSquareRootOfThis - Returns an intAry object equal to the 'square root'

@@ -1244,6 +1244,28 @@ func (nDto *NumStrDto) GetAbsNumStr() string {
 	return string(nDto.absAllNumRunes)
 }
 
+
+// GetBigIntNum - Converts the numeric value of the
+// current NumStrDto to a 'BigIntNum' type and returns
+// it to the calling function.
+//
+func (nDto *NumStrDto) GetBigIntNum() (BigIntNum, error) {
+	ePrefix := "NumStrDto.GetBigIntNum() "
+
+	bInt, err := nDto.GetSignedBigInt()
+
+	if err != nil {
+		return BigIntNum{},
+		fmt.Errorf(ePrefix +
+			"Error returned by nDto.GetSignedBigInt() " +
+			"Error='%v' ", err.Error())
+	}
+
+	bIntNum := BigIntNum{}.NewBigInt(bInt, nDto.precision)
+
+	return bIntNum, nil
+}
+
 // GetCurrencySymbol - Returns the character currently designated
 // as the currency symbol for this number string.
 //
@@ -2973,7 +2995,7 @@ func (nDto *NumStrDto) SetNumStr(numStr string) error {
 
 	if err != nil {
 		return fmt.Errorf(ePrefix + "Error returned by NumStrDto{}.NewNumStr(numStr). " +
-			"numStr='%v' Error='%v' ")
+			"numStr='%v' Error='%v' ", numStr, err.Error())
 	}
 
 	nDto.CopyIn(n2)

@@ -482,6 +482,27 @@ func (dec *Decimal) GetBigFloatString(precision uint) (string, error) {
 	return fmtResult, nil
 }
 
+// GetBigIntNum - Converts the current Decimal numeric value to
+// an instance of type 'BigIntNum' and returns it to the calling
+// function.
+//
+func (dec *Decimal) GetBigIntNum() (BigIntNum, error) {
+
+	ePrefix := "Decimal.GetBigIntNum() "
+
+	bInt, err :=	dec.numStrDto.GetSignedBigInt()
+
+	if err != nil {
+		return BigIntNum{},
+			fmt.Errorf(ePrefix + "Error returned by dec.numStrDto.GetSignedBigInt(). " +
+				"Error='%v' ", err.Error())
+	}
+
+	biNum := BigIntNum{}.NewBigInt(bInt, dec.numStrDto.precision)
+
+	return biNum, nil
+}
+
 // GetCurrencySymbol - Returns the Decimal's current
 // value for Currency Symbol.
 //
@@ -501,7 +522,7 @@ func (dec *Decimal) GetCurrencySymbol() rune {
 // GetSignedBigInt - Returns the numeric value of the current Decimal
 // instance as a signed *big.Int.
 func (dec *Decimal) GetSignedBigInt() (*big.Int, error) {
-	ePrefix := "Decimal.GetBigInt() "
+	ePrefix := "Decimal.GetSignedBigInt() "
 
 	bInt, err :=	dec.numStrDto.GetSignedBigInt()
 
