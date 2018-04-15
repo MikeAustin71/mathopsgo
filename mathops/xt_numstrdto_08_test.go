@@ -23,8 +23,9 @@ func TestNumStrDto_SetPrecision_01(t *testing.T) {
 		t.Errorf("Expected NumStrOut='%v'. Instead, got %v.", expected, nsDto.GetNumStr())
 	}
 
-	if outPrecision != nsDto.GetPrecision() {
-		t.Errorf("Expected precision='%v'. Instead, got %v.", outPrecision, nsDto.GetPrecision())
+	if outPrecision != nsDto.GetPrecisionUint() {
+		t.Errorf("Expected precision='%v'. Instead, got %v.",
+				outPrecision, nsDto.GetPrecisionUint())
 	}
 
 	if signVal != nsDto.GetSign() {
@@ -74,8 +75,8 @@ func TestNumStrDto_SetPrecision_02(t *testing.T) {
 		t.Errorf("Expected NumStrOut='%v'. Instead, got %v.", expected, nsDto.GetNumStr())
 	}
 
-	if outPrecision != nsDto.GetPrecision() {
-		t.Errorf("Expected precision='%v'. Instead, got %v.", outPrecision, nsDto.GetPrecision())
+	if outPrecision != nsDto.GetPrecisionUint() {
+		t.Errorf("Expected precision='%v'. Instead, got %v.", outPrecision, nsDto.GetPrecisionUint())
 	}
 
 	if signVal != nsDto.GetSign() {
@@ -125,8 +126,8 @@ func TestNumStrDto_SetPrecision_03(t *testing.T) {
 		t.Errorf("Expected NumStrOut='%v'. Instead, got %v.", expected, nsDto.GetNumStr())
 	}
 
-	if outPrecision != nsDto.GetPrecision() {
-		t.Errorf("Expected precision='%v'. Instead, got %v.", outPrecision, nsDto.GetPrecision())
+	if outPrecision != nsDto.GetPrecisionUint() {
+		t.Errorf("Expected precision='%v'. Instead, got %v.", outPrecision, nsDto.GetPrecisionUint())
 	}
 
 	if signVal != nsDto.GetSign() {
@@ -176,8 +177,8 @@ func TestNumStrDto_SetPrecision_04(t *testing.T) {
 		t.Errorf("Expected NumStrOut='%v'. Instead, got %v.", expected, nsDto.GetNumStr())
 	}
 
-	if outPrecision != nsDto.GetPrecision() {
-		t.Errorf("Expected precision='%v'. Instead, got %v.", outPrecision, nsDto.GetPrecision())
+	if outPrecision != nsDto.GetPrecisionUint() {
+		t.Errorf("Expected precision='%v'. Instead, got %v.", outPrecision, nsDto.GetPrecisionUint())
 	}
 
 	if signVal != nsDto.GetSign() {
@@ -227,8 +228,8 @@ func TestNumStrDto_SetPrecision_05(t *testing.T) {
 		t.Errorf("Expected NumStrOut='%v'. Instead, got %v.", expected, nsDto.GetNumStr())
 	}
 
-	if outPrecision != nsDto.GetPrecision() {
-		t.Errorf("Expected precision='%v'. Instead, got %v.", outPrecision, nsDto.GetPrecision())
+	if outPrecision != nsDto.GetPrecisionUint() {
+		t.Errorf("Expected precision='%v'. Instead, got %v.", outPrecision, nsDto.GetPrecisionUint())
 	}
 
 	if signVal != nsDto.GetSign() {
@@ -278,8 +279,8 @@ func TestNumStrDto_SetPrecision_06(t *testing.T) {
 		t.Errorf("Expected NumStrOut='%v'. Instead, got %v.", expected, nsDto.GetNumStr())
 	}
 
-	if outPrecision != nsDto.GetPrecision() {
-		t.Errorf("Expected precision='%v'. Instead, got %v.", outPrecision, nsDto.GetPrecision())
+	if outPrecision != nsDto.GetPrecisionUint() {
+		t.Errorf("Expected precision='%v'. Instead, got %v.", outPrecision, nsDto.GetPrecisionUint())
 	}
 
 	if signVal != nsDto.GetSign() {
@@ -329,8 +330,8 @@ func TestNumStrDto_SetPrecision_07(t *testing.T) {
 		t.Errorf("Expected NumStrOut='%v'. Instead, got %v.", expected, nsDto.GetNumStr())
 	}
 
-	if outPrecision != nsDto.GetPrecision() {
-		t.Errorf("Expected precision='%v'. Instead, got %v.", outPrecision, nsDto.GetPrecision())
+	if outPrecision != nsDto.GetPrecisionUint() {
+		t.Errorf("Expected precision='%v'. Instead, got %v.", outPrecision, nsDto.GetPrecisionUint())
 	}
 
 	if signVal != nsDto.GetSign() {
@@ -380,8 +381,8 @@ func TestNumStrDto_SetPrecision_08(t *testing.T) {
 		t.Errorf("Expected NumStrOut='%v'. Instead, got %v.", expected, nsDto.GetNumStr())
 	}
 
-	if outPrecision != nsDto.GetPrecision() {
-		t.Errorf("Expected precision='%v'. Instead, got %v.", outPrecision, nsDto.GetPrecision())
+	if outPrecision != nsDto.GetPrecisionUint() {
+		t.Errorf("Expected precision='%v'. Instead, got %v.", outPrecision, nsDto.GetPrecisionUint())
 	}
 
 	if signVal != nsDto.GetSign() {
@@ -431,8 +432,8 @@ func TestNumStrDto_SetPrecision_09(t *testing.T) {
 		t.Errorf("Expected NumStrOut='%v'. Instead, got %v.", expected, nsDto.GetNumStr())
 	}
 
-	if outPrecision != nsDto.GetPrecision() {
-		t.Errorf("Expected precision='%v'. Instead, got %v.", outPrecision, nsDto.GetPrecision())
+	if outPrecision != nsDto.GetPrecisionUint() {
+		t.Errorf("Expected precision='%v'. Instead, got %v.", outPrecision, nsDto.GetPrecisionUint())
 	}
 
 	if signVal != nsDto.GetSign() {
@@ -482,8 +483,8 @@ func TestNumStrDto_SetPrecision_10(t *testing.T) {
 		t.Errorf("Expected NumStrOut='%v'. Instead, got %v.", expected, nsDto.GetNumStr())
 	}
 
-	if outPrecision != nsDto.GetPrecision() {
-		t.Errorf("Expected precision='%v'. Instead, got %v.", outPrecision, nsDto.GetPrecision())
+	if outPrecision != nsDto.GetPrecisionUint() {
+		t.Errorf("Expected precision='%v'. Instead, got %v.", outPrecision, nsDto.GetPrecisionUint())
 	}
 
 	if signVal != nsDto.GetSign() {
@@ -533,8 +534,8 @@ func TestNumStrDto_SetPrecision_11(t *testing.T) {
 		t.Errorf("Expected NumStrOut='%v'. Instead, got %v.", expected, nsDto.GetNumStr())
 	}
 
-	if outPrecision != nsDto.GetPrecision() {
-		t.Errorf("Expected precision='%v'. Instead, got %v.", outPrecision, nsDto.GetPrecision())
+	if outPrecision != nsDto.GetPrecisionUint() {
+		t.Errorf("Expected precision='%v'. Instead, got %v.", outPrecision, nsDto.GetPrecisionUint())
 	}
 
 	if signVal != nsDto.GetSign() {
@@ -584,8 +585,8 @@ func TestNumStrDto_SetPrecision_12(t *testing.T) {
 		t.Errorf("Expected NumStrOut='%v'. Instead, got %v.", expected, nsDto.GetNumStr())
 	}
 
-	if outPrecision != nsDto.GetPrecision() {
-		t.Errorf("Expected precision='%v'. Instead, got %v.", outPrecision, nsDto.GetPrecision())
+	if outPrecision != nsDto.GetPrecisionUint() {
+		t.Errorf("Expected precision='%v'. Instead, got %v.", outPrecision, nsDto.GetPrecisionUint())
 	}
 
 	if signVal != nsDto.GetSign() {
@@ -635,8 +636,8 @@ func TestNumStrDto_SetPrecision_13(t *testing.T) {
 		t.Errorf("Expected NumStrOut='%v'. Instead, got %v.", expected, nsDto.GetNumStr())
 	}
 
-	if outPrecision != nsDto.GetPrecision() {
-		t.Errorf("Expected precision='%v'. Instead, got %v.", outPrecision, nsDto.GetPrecision())
+	if outPrecision != nsDto.GetPrecisionUint() {
+		t.Errorf("Expected precision='%v'. Instead, got %v.", outPrecision, nsDto.GetPrecisionUint())
 	}
 
 	if signVal != nsDto.GetSign() {
@@ -686,8 +687,8 @@ func TestNumStrDto_SetPrecision_14(t *testing.T) {
 		t.Errorf("Expected NumStrOut='%v'. Instead, got %v.", expected, nsDto.GetNumStr())
 	}
 
-	if outPrecision != nsDto.GetPrecision() {
-		t.Errorf("Expected precision='%v'. Instead, got %v.", outPrecision, nsDto.GetPrecision())
+	if outPrecision != nsDto.GetPrecisionUint() {
+		t.Errorf("Expected precision='%v'. Instead, got %v.", outPrecision, nsDto.GetPrecisionUint())
 	}
 
 	if signVal != nsDto.GetSign() {
@@ -737,8 +738,8 @@ func TestNumStrDto_SetPrecision_15(t *testing.T) {
 		t.Errorf("Expected NumStrOut='%v'. Instead, got %v.", expected, nsDto.GetNumStr())
 	}
 
-	if outPrecision != nsDto.GetPrecision() {
-		t.Errorf("Expected precision='%v'. Instead, got %v.", outPrecision, nsDto.GetPrecision())
+	if outPrecision != nsDto.GetPrecisionUint() {
+		t.Errorf("Expected precision='%v'. Instead, got %v.", outPrecision, nsDto.GetPrecisionUint())
 	}
 
 	if signVal != nsDto.GetSign() {
@@ -788,8 +789,8 @@ func TestNumStrDto_SetPrecision_16(t *testing.T) {
 		t.Errorf("Expected NumStrOut='%v'. Instead, got %v.", expected, nsDto.GetNumStr())
 	}
 
-	if outPrecision != nsDto.GetPrecision() {
-		t.Errorf("Expected precision='%v'. Instead, got %v.", outPrecision, nsDto.GetPrecision())
+	if outPrecision != nsDto.GetPrecisionUint() {
+		t.Errorf("Expected precision='%v'. Instead, got %v.", outPrecision, nsDto.GetPrecisionUint())
 	}
 
 	if signVal != nsDto.GetSign() {
@@ -839,8 +840,8 @@ func TestNumStrDto_SetPrecision_17(t *testing.T) {
 		t.Errorf("Expected NumStrOut='%v'. Instead, got %v.", expected, nsDto.GetNumStr())
 	}
 
-	if outPrecision != nsDto.GetPrecision() {
-		t.Errorf("Expected precision='%v'. Instead, got %v.", outPrecision, nsDto.GetPrecision())
+	if outPrecision != nsDto.GetPrecisionUint() {
+		t.Errorf("Expected precision='%v'. Instead, got %v.", outPrecision, nsDto.GetPrecisionUint())
 	}
 
 	if signVal != nsDto.GetSign() {
@@ -890,8 +891,8 @@ func TestNumStrDto_SetPrecision_18(t *testing.T) {
 		t.Errorf("Expected NumStrOut='%v'. Instead, got %v.", expected, nsDto.GetNumStr())
 	}
 
-	if outPrecision != nsDto.GetPrecision() {
-		t.Errorf("Expected precision='%v'. Instead, got %v.", outPrecision, nsDto.GetPrecision())
+	if outPrecision != nsDto.GetPrecisionUint() {
+		t.Errorf("Expected precision='%v'. Instead, got %v.", outPrecision, nsDto.GetPrecisionUint())
 	}
 
 	if signVal != nsDto.GetSign() {
@@ -941,8 +942,8 @@ func TestNumStrDto_SetPrecision_19(t *testing.T) {
 		t.Errorf("Expected NumStrOut='%v'. Instead, got %v.", expected, nsDto.GetNumStr())
 	}
 
-	if outPrecision != nsDto.GetPrecision() {
-		t.Errorf("Expected precision='%v'. Instead, got %v.", outPrecision, nsDto.GetPrecision())
+	if outPrecision != nsDto.GetPrecisionUint() {
+		t.Errorf("Expected precision='%v'. Instead, got %v.", outPrecision, nsDto.GetPrecisionUint())
 	}
 
 	if signVal != nsDto.GetSign() {
@@ -990,9 +991,9 @@ func TestNumStrDto_SetThisPrecision_01(t *testing.T) {
 			"Err='%v' ", err.Error())
 	}
 
-	if initialPrecision != nsDto.GetPrecision() {
+	if initialPrecision != nsDto.GetPrecisionUint() {
 		t.Errorf("Error: Expected Initial Precision='%v'. Actual Initial Precision='%v' ",
-			initialPrecision, nsDto.GetPrecision())
+			initialPrecision, nsDto.GetPrecisionUint())
 	}
 
 	nsDto.SetThisPrecision(precision, roundResult)
@@ -1006,8 +1007,8 @@ func TestNumStrDto_SetThisPrecision_01(t *testing.T) {
 		t.Errorf("Expected NumStrOut='%v'. Instead, got %v.", expected, nsDto.GetNumStr())
 	}
 
-	if outPrecision != nsDto.GetPrecision() {
-		t.Errorf("Expected precision='%v'. Instead, got %v.", outPrecision, nsDto.GetPrecision())
+	if outPrecision != nsDto.GetPrecisionUint() {
+		t.Errorf("Expected precision='%v'. Instead, got %v.", outPrecision, nsDto.GetPrecisionUint())
 	}
 
 	if signVal != nsDto.GetSign() {
@@ -1056,9 +1057,9 @@ func TestNumStrDto_SetThisPrecision_02(t *testing.T) {
 			"Err='%v' ", err.Error())
 	}
 
-	if initialPrecision != nsDto.GetPrecision() {
+	if initialPrecision != nsDto.GetPrecisionUint() {
 		t.Errorf("Error: Expected Initial Precision='%v'. Actual Initial Precision='%v' ",
-			initialPrecision, nsDto.GetPrecision())
+			initialPrecision, nsDto.GetPrecisionUint())
 	}
 
 	nsDto.SetThisPrecision(precision, roundResult)
@@ -1072,8 +1073,8 @@ func TestNumStrDto_SetThisPrecision_02(t *testing.T) {
 		t.Errorf("Expected NumStrOut='%v'. Instead, got %v.", expected, nsDto.GetNumStr())
 	}
 
-	if outPrecision != nsDto.GetPrecision() {
-		t.Errorf("Expected precision='%v'. Instead, got %v.", outPrecision, nsDto.GetPrecision())
+	if outPrecision != nsDto.GetPrecisionUint() {
+		t.Errorf("Expected precision='%v'. Instead, got %v.", outPrecision, nsDto.GetPrecisionUint())
 	}
 
 	if signVal != nsDto.GetSign() {
@@ -1122,8 +1123,8 @@ func TestNumStrDto_ShiftPrecisionLeft_01(t *testing.T) {
 		t.Errorf("Expected NumStrOut='%v'. Instead, got %v.", expected, nsDto.GetNumStr())
 	}
 
-	if outPrecision != nsDto.GetPrecision() {
-		t.Errorf("Expected precision='%v'. Instead, got %v.", outPrecision, nsDto.GetPrecision())
+	if outPrecision != nsDto.GetPrecisionUint() {
+		t.Errorf("Expected precision='%v'. Instead, got %v.", outPrecision, nsDto.GetPrecisionUint())
 	}
 
 	if signVal != nsDto.GetSign() {
@@ -1172,8 +1173,8 @@ func TestNumStrDto_ShiftPrecisionLeft_02(t *testing.T) {
 		t.Errorf("Expected NumStrOut='%v'. Instead, got %v.", expected, nsDto.GetNumStr())
 	}
 
-	if outPrecision != nsDto.GetPrecision() {
-		t.Errorf("Expected precision='%v'. Instead, got %v.", outPrecision, nsDto.GetPrecision())
+	if outPrecision != nsDto.GetPrecisionUint() {
+		t.Errorf("Expected precision='%v'. Instead, got %v.", outPrecision, nsDto.GetPrecisionUint())
 	}
 
 	if signVal != nsDto.GetSign() {
@@ -1222,8 +1223,8 @@ func TestNumStrDto_ShiftPrecisionLeft_03(t *testing.T) {
 		t.Errorf("Expected NumStrOut='%v'. Instead, got %v.", expected, nsDto.GetNumStr())
 	}
 
-	if outPrecision != nsDto.GetPrecision() {
-		t.Errorf("Expected precision='%v'. Instead, got %v.", outPrecision, nsDto.GetPrecision())
+	if outPrecision != nsDto.GetPrecisionUint() {
+		t.Errorf("Expected precision='%v'. Instead, got %v.", outPrecision, nsDto.GetPrecisionUint())
 	}
 
 	if signVal != nsDto.GetSign() {
@@ -1272,8 +1273,8 @@ func TestNumStrDto_ShiftPrecisionLeft_04(t *testing.T) {
 		t.Errorf("Expected NumStrOut='%v'. Instead, got %v.", expected, nsDto.GetNumStr())
 	}
 
-	if outPrecision != nsDto.GetPrecision() {
-		t.Errorf("Expected precision='%v'. Instead, got %v.", outPrecision, nsDto.GetPrecision())
+	if outPrecision != nsDto.GetPrecisionUint() {
+		t.Errorf("Expected precision='%v'. Instead, got %v.", outPrecision, nsDto.GetPrecisionUint())
 	}
 
 	if signVal != nsDto.GetSign() {
@@ -1322,8 +1323,8 @@ func TestNumStrDto_ShiftPrecisionLeft_05(t *testing.T) {
 		t.Errorf("Expected NumStrOut='%v'. Instead, got %v.", expected, nsDto.GetNumStr())
 	}
 
-	if outPrecision != nsDto.GetPrecision() {
-		t.Errorf("Expected precision='%v'. Instead, got %v.", outPrecision, nsDto.GetPrecision())
+	if outPrecision != nsDto.GetPrecisionUint() {
+		t.Errorf("Expected precision='%v'. Instead, got %v.", outPrecision, nsDto.GetPrecisionUint())
 	}
 
 	if signVal != nsDto.GetSign() {
@@ -1373,8 +1374,8 @@ func TestNumStrDto_ShiftPrecisionLeft_06(t *testing.T) {
 		t.Errorf("Expected NumStrOut='%v'. Instead, got %v.", expected, nsDto.GetNumStr())
 	}
 
-	if outPrecision != nsDto.GetPrecision() {
-		t.Errorf("Expected precision='%v'. Instead, got %v.", outPrecision, nsDto.GetPrecision())
+	if outPrecision != nsDto.GetPrecisionUint() {
+		t.Errorf("Expected precision='%v'. Instead, got %v.", outPrecision, nsDto.GetPrecisionUint())
 	}
 
 	if signVal != nsDto.GetSign() {
@@ -1423,8 +1424,8 @@ func TestNumStrDto_ShiftPrecisionLeft_07(t *testing.T) {
 		t.Errorf("Expected NumStrOut='%v'. Instead, got %v.", expected, nsDto.GetNumStr())
 	}
 
-	if outPrecision != nsDto.GetPrecision() {
-		t.Errorf("Expected precision='%v'. Instead, got %v.", outPrecision, nsDto.GetPrecision())
+	if outPrecision != nsDto.GetPrecisionUint() {
+		t.Errorf("Expected precision='%v'. Instead, got %v.", outPrecision, nsDto.GetPrecisionUint())
 	}
 
 	if signVal != nsDto.GetSign() {
@@ -1473,8 +1474,8 @@ func TestNumStrDto_ShiftPrecisionLeft_08(t *testing.T) {
 		t.Errorf("Expected NumStrOut='%v'. Instead, got %v.", expected, nsDto.GetNumStr())
 	}
 
-	if outPrecision != nsDto.GetPrecision() {
-		t.Errorf("Expected precision='%v'. Instead, got %v.", outPrecision, nsDto.GetPrecision())
+	if outPrecision != nsDto.GetPrecisionUint() {
+		t.Errorf("Expected precision='%v'. Instead, got %v.", outPrecision, nsDto.GetPrecisionUint())
 	}
 
 	if signVal != nsDto.GetSign() {
@@ -1523,8 +1524,8 @@ func TestNumStrDto_ShiftPrecisionLeft_09(t *testing.T) {
 		t.Errorf("Expected NumStrOut='%v'. Instead, got %v.", expected, nsDto.GetNumStr())
 	}
 
-	if outPrecision != nsDto.GetPrecision() {
-		t.Errorf("Expected precision='%v'. Instead, got %v.", outPrecision, nsDto.GetPrecision())
+	if outPrecision != nsDto.GetPrecisionUint() {
+		t.Errorf("Expected precision='%v'. Instead, got %v.", outPrecision, nsDto.GetPrecisionUint())
 	}
 
 	if signVal != nsDto.GetSign() {
@@ -1573,8 +1574,8 @@ func TestNumStrDto_ShiftPrecisionLeft_10(t *testing.T) {
 		t.Errorf("Expected NumStrOut='%v'. Instead, got %v.", expected, nsDto.GetNumStr())
 	}
 
-	if outPrecision != nsDto.GetPrecision() {
-		t.Errorf("Expected precision='%v'. Instead, got %v.", outPrecision, nsDto.GetPrecision())
+	if outPrecision != nsDto.GetPrecisionUint() {
+		t.Errorf("Expected precision='%v'. Instead, got %v.", outPrecision, nsDto.GetPrecisionUint())
 	}
 
 	if signVal != nsDto.GetSign() {
@@ -1623,8 +1624,8 @@ func TestNumStrDto_ShiftPrecisionLeft_11(t *testing.T) {
 		t.Errorf("Expected NumStrOut='%v'. Instead, got %v.", expected, nsDto.GetNumStr())
 	}
 
-	if outPrecision != nsDto.GetPrecision() {
-		t.Errorf("Expected precision='%v'. Instead, got %v.", outPrecision, nsDto.GetPrecision())
+	if outPrecision != nsDto.GetPrecisionUint() {
+		t.Errorf("Expected precision='%v'. Instead, got %v.", outPrecision, nsDto.GetPrecisionUint())
 	}
 
 	if signVal != nsDto.GetSign() {

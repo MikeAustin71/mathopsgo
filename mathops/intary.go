@@ -39,6 +39,11 @@ import (
 	nthroot.go - MikeAustin71/mathopsgo/mathops/nthroot.go
 
 
+	InNumMgr
+	========
+
+	The NumStrDto Type implements the INumMgr interface.
+
  */
 
 
@@ -1910,6 +1915,61 @@ func (ia *IntAry) GetAbsoluteValue() IntAry {
 
 }
 
+// GetBigInt - Returns the current value of this intAry object expressed
+// as a signed integer number of type *big.Int.
+//
+func (ia *IntAry) GetBigInt() (*big.Int, error) {
+
+	ePrefix := "IntAry.GetBigInt() "
+
+	err := ia.IsIntAryValid("")
+
+	if err!=nil {
+		return big.NewInt(0),
+		fmt.Errorf(ePrefix + "Error returned by ia.IsIntAryValid(). Error='%v'",
+			err.Error())
+	}
+
+	result := big.NewInt(0).SetInt64(0)
+	big10 := big.NewInt(0).SetInt64(10)
+
+	for i := 0; i < ia.intAryLen; i++ {
+		result = big.NewInt(0).Mul(result, big10)
+		result = big.NewInt(0).Add(result, big.NewInt(0).SetInt64(int64(ia.intAry[i])))
+
+	}
+
+	if ia.signVal == -1 {
+
+		result = big.NewInt(0).Neg(result)
+	}
+
+	return result, nil
+}
+
+// GetBigIntNum - Converts the numeric value of the current
+// IntAry to 'BigIntNum' instance and returns it to the calling
+// function.
+//
+func (ia *IntAry) GetBigIntNum() (BigIntNum, error) {
+	ePrefix := "IntAry.GetBigIntNum() "
+
+	err := ia.IsIntAryValid("")
+
+	if err != nil {
+		return BigIntNum{},
+			fmt.Errorf(ePrefix + "Error returned by ia.IsIntAryValid(). " +
+				"Error='%v' ", err.Error())
+	}
+
+
+	bInt, _ := ia.GetBigInt()
+
+	bIntNum := BigIntNum{}.NewBigInt(bInt, uint(ia.precision))
+
+	return bIntNum, nil
+}
+
 // GetCurrencySymbol - returns a type 'rune'
 // which represents the setting for currency
 // symbol in the current IntAry object.
@@ -2041,26 +2101,41 @@ func (ia *IntAry) GetIntegerDigits() (IntAry, error) {
 //
 func (ia *IntAry) GetInt() (int, error) {
 
+	ePrefix := "IntAry.GetInt() "
+
+	err := ia.IsIntAryValid("")
+
+	if err != nil {
+		return 0,
+			fmt.Errorf(ePrefix + "Error returned by ia.IsIntAryValid(). " +
+				"Error='%v' ", err.Error())
+	}
+
 	maxInt := big.NewInt(0).SetInt64(int64(math.MaxInt32))
 
 	minInt := big.NewInt(0).SetInt64(int64(math.MinInt32))
 
-	result := ia.GetSignedBigInt()
+	result, _ := ia.GetBigInt()
 
 	compare := result.Cmp(maxInt)
 
 	if compare == 1 {
-		return int(0), errors.New("error: the value of this intAry object exceeds the maximum allowable value for the int type")
+		return int(0),
+		errors.New(ePrefix + "Error: the value of this intAry object " +
+			"exceeds the maximum allowable value for the int type")
 	}
 
 	compare = result.Cmp(minInt)
 
 	if compare == -1 {
-		return int(0), errors.New("error: the value of this intAry object is less than the minimum allowable value for the int type")
+		return int(0),
+		errors.New(ePrefix +
+			"Error: the value of this intAry object is less " +
+				"than the minimum allowable value for the int type")
+
 	}
 
 	return int(result.Int64()), nil
-
 }
 
 // GetInt64 - Returns the value of the current
@@ -2073,13 +2148,24 @@ func (ia *IntAry) GetInt() (int, error) {
 // Anything outside this range will generate an error.
 //
 // Reference: https://golang.org/ref/spec#Numeric_types
+//
 func (ia *IntAry) GetInt64() (int64, error) {
+
+	ePrefix := "IntAry.GetInt64() "
+
+	err := ia.IsIntAryValid("")
+
+	if err != nil {
+		return int64(0),
+		fmt.Errorf(ePrefix + "Error returned by ia.IsIntAryValid() " +
+			"Error='%v' ", err.Error())
+	}
 
 	maxI64 := big.NewInt(0).SetInt64(math.MaxInt64)
 
 	minI64 := big.NewInt(0).SetInt64(math.MinInt64)
 
-	result := ia.GetSignedBigInt()
+	result, _ := ia.GetBigInt()
 
 	compare := result.Cmp(maxI64)
 
@@ -2325,29 +2411,6 @@ func (ia *IntAry) GetIntAryStats() IntAryStatsDto {
 	return iStats
 }
 
-// GetBigIntNum - Converts the numeric value of the current
-// IntAry to 'BigIntNum' instance and returns it to the calling
-// function.
-//
-func (ia *IntAry) GetBigIntNum() (BigIntNum, error) {
-	ePrefix := "IntAry.GetBigIntNum() "
-
-	err := ia.IsIntAryValid("")
-
-	if err != nil {
-		return BigIntNum{},
-		fmt.Errorf(ePrefix + "Error returned by ia.IsIntAryValid(). " +
-			"Error='%v' ", err.Error())
-	}
-
-
-	bInt := ia.GetSignedBigInt()
-
-	bIntNum := BigIntNum{}.NewBigInt(bInt, uint(ia.precision))
-
-	return bIntNum, nil
-}
-
 // GetNumStr - returns the current value
 // of this intAry object as a number string.
 func (ia *IntAry) GetNumStr() string {
@@ -2426,15 +2489,53 @@ func (ia *IntAry) GetNthRootOfThis(nthRoot, maxPrecision uint) (IntAry, error) {
 }
 
 // GetPrecision - returns the precision value
-// for the current intAry object. 'precision'
-// represents the number of digits to the right
-// of the decimal point.
+// for the current intAry object.
 //
-// The value of 'precision' returned by this
-// method should always be >= zero (greater than
-// or equal to zero '0' )
+// Precision is defined as the number of numeric digits to
+// the right of the decimal place. To compute the location
+// of the decimal point in a string of numeric digits, go
+// to the right most digit in the number string and count
+// left 'precision' digits.
+//
+// The value of 'precision' returned by this method will
+// always be >= zero (greater than or equal to zero '0').
+//
+// Example:
+// 						1.234    	GetPrecision() = 3
+// 								5			GetPrecision() = 0
+// 					0.12345  		GetPrecision() = 5
+//
+//		Number String				Precision				Fractional Number
+//			123456								3								123.456
+//
+//
 func (ia *IntAry) GetPrecision() int {
 	return ia.precision
+}
+
+// GetPrecisionUint - returns the precision value for the
+// current intAry object as an unsigned integer (uint).
+//
+// Precision is defined as the number of numeric digits to
+// the right of the decimal place. To compute the location
+// of the decimal point in a string of numeric digits, go
+// to the right most digit in the number string and count
+// left 'precision' digits.
+//
+// The value of 'precision' returned by this method will
+// always be >= zero (greater than or equal to zero '0').
+//
+// Example:
+// 						1.234    	GetPrecision() = 3
+// 								5			GetPrecision() = 0
+// 					0.12345  		GetPrecision() = 5
+//
+//		Number String				Precision				Fractional Number
+//			123456								3								123.456
+//
+//
+func (ia *IntAry) GetPrecisionUint() uint {
+	return uint(ia.precision)
 }
 
 // GetRuneArray - Returns all the elements of the current
@@ -2490,30 +2591,6 @@ func (ia *IntAry) GetScaleFactor() (*big.Int, error) {
 // always be one of two values: +1 or -1 .
 func (ia *IntAry) GetSign() int {
 	return ia.signVal
-}
-
-// GetSignedBigInt - Returns the current value of
-// this intAry object as a big integer
-// (*big.Int)
-func (ia *IntAry) GetSignedBigInt() *big.Int {
-
-	result := big.NewInt(0).SetInt64(0)
-	big10 := big.NewInt(0).SetInt64(10)
-
-	ia.SetInternalFlags()
-
-	for i := 0; i < ia.intAryLen; i++ {
-		result = big.NewInt(0).Mul(result, big10)
-		result = big.NewInt(0).Add(result, big.NewInt(0).SetInt64(int64(ia.intAry[i])))
-
-	}
-
-	if ia.signVal == -1 {
-
-		result = big.NewInt(0).Neg(result)
-	}
-
-	return result
 }
 
 // GetSquareRootOfThis - Returns an intAry object equal to the 'square root'
@@ -2683,6 +2760,10 @@ func (ia *IntAry) IncrementIntegerOne() error {
 // IsIntAryValid - Examines the current intAry and returns
 // an error if the intAry object is found to be invalid.
 func (ia *IntAry) IsIntAryValid(errName string) error {
+
+	if errName == "" {
+		errName = "IntAry.IsIntAryValid() "
+	}
 
 	ia.SetInternalFlags()
 

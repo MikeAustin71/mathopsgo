@@ -18,6 +18,9 @@ import (
 
 // NumStrDto - This Type contains data fields and methods used
 // to manage, store and transport number strings.
+//
+// The NumStrDto Type implements the INumMgr interface.
+//
 type NumStrDto struct {
 	isValid            	bool			// If 'true', it signals that the NumStrDto instance has been reviewed
 																//		and validated.
@@ -376,7 +379,7 @@ func (nDto *NumStrDto) Divide(n2Dto NumStrDto, minimumPrecision, maximumPrecisio
 			"Error='%v'", err.Error())
 	}
 
-	if nResultDto.GetPrecision() < uint(minimumPrecision) {
+	if nResultDto.GetPrecision() < minimumPrecision {
 
 		err = nResultDto.SetThisPrecision(uint(minimumPrecision), false)
 
@@ -1201,6 +1204,12 @@ func (nDto *NumStrDto) GetAbsFracRunes() []rune {
 	return absFracRunes
 }
 
+// GetAbsFracRunesLength - Returns the length of the
+// fractional digits in the number string.
+func (nDto *NumStrDto) GetAbsFracRunesLength() int {
+	return int(nDto.precision)
+}
+
 // GetAbsIntRunes - Returns all of the integer digits included
 // in the current NumStrDto numeric value as an array of runes.
 // The returned rune array does not contain a sign value in the
@@ -1245,6 +1254,56 @@ func (nDto *NumStrDto) GetAbsNumStr() string {
 }
 
 
+// GetAbsIntRunesLength - Returns the length of the
+// integer portion of the number setring.
+func (nDto *NumStrDto) GetAbsIntRunesLength() int {
+
+	lenAllNums := len(nDto.absAllNumRunes)
+
+	return lenAllNums - int(nDto.precision)
+}
+
+// GetBigInt - returns a integer of type *big.Int representing
+// the signed integer value of NumStrDto.numStrDto. Decimal numbers
+// like '-123.456' will be returned as signed integer values, '-123456'.
+//
+// This method will fail if the NumStrDto
+// has not been properly initialized with a valid number string.
+func (nDto *NumStrDto) GetBigInt() (*big.Int, error) {
+
+	ePrefix := "NumStrDto.GetBigInt()"
+
+	err := nDto.IsNumStrDtoValid("")
+
+	if err != nil {
+		return big.NewInt(0),
+			fmt.Errorf(ePrefix + "NumStrDto is INVALID! Error='%v' ", err.Error())
+	}
+
+
+	if  len(nDto.absAllNumRunes) == 0  {
+		s := ePrefix +
+			" - The existing NumStrDto has a zero length number. " +
+			"Re-initialize this NumStrDto object and try again."
+		return big.NewInt(0), errors.New(s)
+
+	}
+
+	absBigInt, err := nDto.GetAbsoluteBigInt()
+
+	if err != nil {
+		s := fmt.Sprintf("GetBigInt() - Error returned from nDto.GetAbsoluteBigInt(). Error= %v", err)
+		return big.NewInt(0), errors.New(s)
+	}
+
+	if nDto.signVal < 0 {
+		signedBigInt := big.NewInt(0).Neg(absBigInt)
+		return signedBigInt, nil
+	}
+
+	return big.NewInt(0).Set(absBigInt), nil
+}
+
 // GetBigIntNum - Converts the numeric value of the
 // current NumStrDto to a 'BigIntNum' type and returns
 // it to the calling function.
@@ -1252,12 +1311,12 @@ func (nDto *NumStrDto) GetAbsNumStr() string {
 func (nDto *NumStrDto) GetBigIntNum() (BigIntNum, error) {
 	ePrefix := "NumStrDto.GetBigIntNum() "
 
-	bInt, err := nDto.GetSignedBigInt()
+	bInt, err := nDto.GetBigInt()
 
 	if err != nil {
 		return BigIntNum{},
 		fmt.Errorf(ePrefix +
-			"Error returned by nDto.GetSignedBigInt() " +
+			"Error returned by nDto.GetBigInt() " +
 			"Error='%v' ", err.Error())
 	}
 
@@ -1354,21 +1413,6 @@ func (nDto *NumStrDto) GetDecimalSeparator() rune {
 
 	return nDto.decimalSeparator
 
-}
-
-// GetAbsIntRunesLength - Returns the length of the
-// integer portion of the number setring.
-func (nDto *NumStrDto) GetAbsIntRunesLength() int {
-
-	lenAllNums := len(nDto.absAllNumRunes)
-
-	return lenAllNums - int(nDto.precision)
-}
-
-// GetAbsFracRunesLength - Returns the length of the
-// fractional digits in the number string.
-func (nDto *NumStrDto) GetAbsFracRunesLength() int {
-	return int(nDto.precision)
 }
 
 // GetNumParen - Returns the numeric value of the current NumStrDto
@@ -1477,20 +1521,52 @@ func (nDto *NumStrDto)GetThouStr() string {
 }
 
 // GetPrecision - Returns the precision of the current
-// NumStrDto Instance. The value represents the number
-// of fractional digits to the right of the decimal
-// point.
+// NumStrDto Instance.
 //
-// Example
-// =======
+// Precision is defined as the number of numeric digits to
+// the right of the decimal place. To compute the location
+// of the decimal point in a string of numeric digits, go
+// to the right most digit in the number string and count
+// left 'precision' digits.
 //
-// 1.234    GetPrecision() = 3
-// 5				GetPrecision() = 0
-// 0.12345  GetPrecision() = 5
+// The value of 'precision' returned by this method will
+// always be >= zero (greater than or equal to zero '0').
 //
-func (nDto *NumStrDto) GetPrecision() uint {
+// Example:
+// 						1.234    	GetPrecision() = 3
+// 								5			GetPrecision() = 0
+// 					0.12345  		GetPrecision() = 5
+//
+//		Number String				Precision				Fractional Number
+//			123456								3								123.456
+//
+func (nDto *NumStrDto) GetPrecision() int {
+	return int(nDto.precision)
+}
+
+// GetPrecisionUint - Returns the precision of the
+// current NumStrDto Instance as an unsigned integer
+// (uint). Precision represents the number of fractional
+// digits to the right of the decimal point.
+//
+// Precision is defined as the number of numeric digits to
+// the right of the decimal place. To compute the location
+// of the decimal point in a string of numeric digits, go
+// to the right most digit in the number string and count
+// left 'precision' digits.
+//
+// Example:
+// 						1.234    	GetPrecision() = 3
+// 								5			GetPrecision() = 0
+// 					0.12345  		GetPrecision() = 5
+//
+//		Number String				Precision				Fractional Number
+//			123456								3								123.456
+//
+func (nDto *NumStrDto) GetPrecisionUint() uint {
 	return nDto.precision
 }
+
 
 // GetRationalNumber - returns the sign value of the number string, plus the
 // numeric value of the number string expressed as a Rational Number.
@@ -1600,44 +1676,6 @@ func (nDto *NumStrDto) GetScaleFactor() (*big.Int, error) {
 func (nDto *NumStrDto) GetSign() int {
 	return nDto.signVal
 }
-// GetSignedBigInt - returns the signed *big.Int representing
-// the NumStrDto.numStrDto. This method will fail if the NumStrDto
-// has not been properly initialized with a valid number string.
-func (nDto *NumStrDto) GetSignedBigInt() (*big.Int, error) {
-
-	ePrefix := "NumStrDto.GetSignedBigInt()"
-
-	err := nDto.IsNumStrDtoValid("")
-
-	if err != nil {
-		return big.NewInt(0),
-		fmt.Errorf(ePrefix + "NumStrDto is INVALID! Error='%v' ", err.Error())
-	}
-
-
-	if  len(nDto.absAllNumRunes) == 0  {
-		s := ePrefix +
-			" - The existing NumStrDto has a zero length number. " +
-			"Re-initialize this NumStrDto object and try again."
-		return big.NewInt(0), errors.New(s)
-
-	}
-
-	absBigInt, err := nDto.GetAbsoluteBigInt()
-
-	if err != nil {
-		s := fmt.Sprintf("GetSignedBigInt() - Error returned from nDto.GetAbsoluteBigInt(). Error= %v", err)
-		return big.NewInt(0), errors.New(s)
-	}
-
-	if nDto.signVal < 0 {
-		signedBigInt := big.NewInt(0).Neg(absBigInt)
-		return signedBigInt, nil
-	}
-
-	return big.NewInt(0).Set(absBigInt), nil
-}
-
 
 // GetThousandsSeparator - returns a rune which represents
 // the character currently used to separate thousands in

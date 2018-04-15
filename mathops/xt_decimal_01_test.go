@@ -1420,10 +1420,10 @@ func TestDecimal_GetBigIntNum_01(t *testing.T) {
 					bigINum.BigInt.Text(10), bigINum.Precision)
 	}
 
-	actualNumStr, err := bigINum.GetNumStr()
+	actualNumStr, err := bigINum.GetNumStrErr()
 
 	if err != nil {
-		t.Errorf("Error returned by bigINum.GetNumStr(). " +
+		t.Errorf("Error returned by bigINum.GetNumStrErr(). " +
 			"Error='%v' ", err.Error())
 	}
 

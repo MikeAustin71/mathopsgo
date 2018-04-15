@@ -22,7 +22,7 @@ func TestNumStrDto_GetSignedBigInt_01(t *testing.T) {
 		t.Errorf("Received error from n1 NumStrDto.ParseNumStr(nStr). nStr= '%v' Error= %v", nStr, err)
 	}
 
-	signedBigInt, err := n1.GetSignedBigInt()
+	signedBigInt, err := n1.GetBigInt()
 
 	if signedBigInt.Cmp(expected) != 0 {
 		t.Errorf("Expected signedBigInt= %v . Instead got, %v", expected.String(), signedBigInt.String())

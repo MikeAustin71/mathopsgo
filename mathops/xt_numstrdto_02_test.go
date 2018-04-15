@@ -310,8 +310,8 @@ func TestNumStrDto_CopyIn_01(t *testing.T) {
 		t.Errorf("Expected IsFractionalValue= 'true'. Instead, got %v", nDto.IsFractionalValue())
 	}
 
-	if nDto.GetPrecision() != precision {
-		t.Errorf("Expected precision= '%v'. Instead, got %v", precision, nDto.GetPrecision())
+	if precision != nDto.GetPrecisionUint() {
+		t.Errorf("Expected precision= '%v'. Instead, got %v", precision, nDto.GetPrecisionUint())
 
 	}
 
@@ -370,8 +370,8 @@ func TestNumStrDto_CopyIn_02(t *testing.T) {
 		t.Errorf("Expected IsFractionalValue= 'true'. Instead, got %v", nDto.IsFractionalValue())
 	}
 
-	if nDto.GetPrecision() != precision {
-		t.Errorf("Expected precision= '%v'. Instead, got %v", precision, nDto.GetPrecision())
+	if precision!= nDto.GetPrecisionUint()  {
+		t.Errorf("Expected precision= '%v'. Instead, got %v", precision, nDto.GetPrecisionUint())
 
 	}
 
@@ -428,8 +428,8 @@ func TestNumStrDto_CopyOut_01(t *testing.T) {
 		t.Errorf("Expected IsFractionalValue= 'true'. Instead, got %v", nDto.IsFractionalValue())
 	}
 
-	if nDto.GetPrecision() != precision {
-		t.Errorf("Expected precision= '%v'. Instead, got %v", precision, nDto.GetPrecision())
+	if precision != nDto.GetPrecisionUint() {
+		t.Errorf("Expected precision= '%v'. Instead, got %v", precision, nDto.GetPrecisionUint())
 
 	}
 
@@ -486,8 +486,8 @@ func TestNumStrDto_CopyOut_02(t *testing.T) {
 		t.Errorf("Expected IsFractionalValue= 'true'. Instead, got %v", nDto.IsFractionalValue())
 	}
 
-	if nDto.GetPrecision() != precision {
-		t.Errorf("Expected precision= '%v'. Instead, got %v", precision, nDto.GetPrecision())
+	if precision != nDto.GetPrecisionUint() {
+		t.Errorf("Expected precision= '%v'. Instead, got %v", precision, nDto.GetPrecisionUint())
 
 	}
 

@@ -602,10 +602,10 @@ func TestBigIntNum_NewBigIntExponent_01(t *testing.T) {
 
 	bINum := BigIntNum{}.NewBigIntExponent(bOriginal, exponent)
 
-	actualNumStr, err := bINum.GetNumStr()
+	actualNumStr, err := bINum.GetNumStrErr()
 
 	if err != nil {
-		t.Errorf("Error returned by bINum.GetNumStr(). Error='%v'", err.Error())
+		t.Errorf("Error returned by bINum.GetNumStrErr(). Error='%v'", err.Error())
 	}
 
 	if actualNumStr != expectedNumStr {
@@ -644,10 +644,10 @@ func TestBigIntNum_NewBigIntExponent_02(t *testing.T) {
 
 	bINum := BigIntNum{}.NewBigIntExponent(bOriginal, exponent)
 
-	actualNumStr, err := bINum.GetNumStr()
+	actualNumStr, err := bINum.GetNumStrErr()
 
 	if err != nil {
-		t.Errorf("Error returned by bINum.GetNumStr(). Error='%v'", err.Error())
+		t.Errorf("Error returned by bINum.GetNumStrErr(). Error='%v'", err.Error())
 	}
 
 	if expectedNumStr != actualNumStr  {
@@ -686,10 +686,10 @@ func TestBigIntNum_NewBigIntExponent_03(t *testing.T) {
 
 	bINum := BigIntNum{}.NewBigIntExponent(bOriginal, exponent)
 
-	actualNumStr, err := bINum.GetNumStr()
+	actualNumStr, err := bINum.GetNumStrErr()
 
 	if err != nil {
-		t.Errorf("Error returned by bINum.GetNumStr(). Error='%v'", err.Error())
+		t.Errorf("Error returned by bINum.GetNumStrErr(). Error='%v'", err.Error())
 	}
 
 	if actualNumStr != expectedNumStr {
@@ -728,10 +728,10 @@ func TestBigIntNum_NewBigIntExponent_04(t *testing.T) {
 
 	bINum := BigIntNum{}.NewBigIntExponent(bOriginal, exponent)
 
-	actualNumStr, err := bINum.GetNumStr()
+	actualNumStr, err := bINum.GetNumStrErr()
 
 	if err != nil {
-		t.Errorf("Error returned by bINum.GetNumStr(). Error='%v'", err.Error())
+		t.Errorf("Error returned by bINum.GetNumStrErr(). Error='%v'", err.Error())
 	}
 
 	if expectedNumStr != actualNumStr  {
@@ -896,10 +896,10 @@ func TestBigIntNum_RoundToDecPlace_01(t *testing.T) {
 
 	bINum1.RoundToDecPlace(roundToDec)
 
-	actualNumStr, err := bINum1.GetNumStr()
+	actualNumStr, err := bINum1.GetNumStrErr()
 
 	if err != nil {
-		t.Errorf("Error returned by bINum1.GetNumStr(). Error='%v'",
+		t.Errorf("Error returned by bINum1.GetNumStrErr(). Error='%v'",
 			err.Error())
 	}
 
@@ -926,10 +926,10 @@ func TestBigIntNum_RoundToDecPlace_02(t *testing.T) {
 
 	bINum1.RoundToDecPlace(roundToDec)
 
-	actualNumStr, err := bINum1.GetNumStr()
+	actualNumStr, err := bINum1.GetNumStrErr()
 
 	if err != nil {
-		t.Errorf("Error returned by bINum1.GetNumStr(). Error='%v'",
+		t.Errorf("Error returned by bINum1.GetNumStrErr(). Error='%v'",
 			err.Error())
 	}
 
@@ -956,10 +956,10 @@ func TestBigIntNum_RoundToDecPlace_03(t *testing.T) {
 
 	bINum1.RoundToDecPlace(roundToDec)
 
-	actualNumStr, err := bINum1.GetNumStr()
+	actualNumStr, err := bINum1.GetNumStrErr()
 
 	if err != nil {
-		t.Errorf("Error returned by bINum1.GetNumStr(). Error='%v'",
+		t.Errorf("Error returned by bINum1.GetNumStrErr(). Error='%v'",
 			err.Error())
 	}
 
@@ -986,10 +986,10 @@ func TestBigIntNum_RoundToDecPlace_04(t *testing.T) {
 
 	bINum1.RoundToDecPlace(roundToDec)
 
-	actualNumStr, err := bINum1.GetNumStr()
+	actualNumStr, err := bINum1.GetNumStrErr()
 
 	if err != nil {
-		t.Errorf("Error returned by bINum1.GetNumStr(). Error='%v'",
+		t.Errorf("Error returned by bINum1.GetNumStrErr(). Error='%v'",
 			err.Error())
 	}
 
@@ -1016,10 +1016,10 @@ func TestBigIntNum_RoundToDecPlace_05(t *testing.T) {
 
 	bINum1.RoundToDecPlace(roundToDec)
 
-	actualNumStr, err := bINum1.GetNumStr()
+	actualNumStr, err := bINum1.GetNumStrErr()
 
 	if err != nil {
-		t.Errorf("Error returned by bINum1.GetNumStr(). Error='%v'",
+		t.Errorf("Error returned by bINum1.GetNumStrErr(). Error='%v'",
 			err.Error())
 	}
 
@@ -1046,10 +1046,10 @@ func TestBigIntNum_TruncToDecPlace_01(t *testing.T) {
 
 	bINum1.TruncToDecPlace(truncToDec)
 
-	actualNumStr, err := bINum1.GetNumStr()
+	actualNumStr, err := bINum1.GetNumStrErr()
 
 	if err != nil {
-		t.Errorf("Error returned by bINum1.GetNumStr(). Error='%v'",
+		t.Errorf("Error returned by bINum1.GetNumStrErr(). Error='%v'",
 			err.Error())
 	}
 
@@ -1076,10 +1076,10 @@ func TestBigIntNum_TruncToDecPlace_02(t *testing.T) {
 
 	bINum1.TruncToDecPlace(truncToDec)
 
-	actualNumStr, err := bINum1.GetNumStr()
+	actualNumStr, err := bINum1.GetNumStrErr()
 
 	if err != nil {
-		t.Errorf("Error returned by bINum1.GetNumStr(). Error='%v'",
+		t.Errorf("Error returned by bINum1.GetNumStrErr(). Error='%v'",
 			err.Error())
 	}
 
@@ -1107,10 +1107,10 @@ func TestBigIntNum_TruncToDecPlace_03(t *testing.T) {
 
 	bINum1.TruncToDecPlace(truncToDec)
 
-	actualNumStr, err := bINum1.GetNumStr()
+	actualNumStr, err := bINum1.GetNumStrErr()
 
 	if err != nil {
-		t.Errorf("Error returned by bINum1.GetNumStr(). Error='%v'",
+		t.Errorf("Error returned by bINum1.GetNumStrErr(). Error='%v'",
 			err.Error())
 	}
 
@@ -1137,10 +1137,10 @@ func TestBigIntNum_TruncToDecPlace_04(t *testing.T) {
 
 	bINum1.TruncToDecPlace(truncToPlace)
 
-	actualNumStr, err := bINum1.GetNumStr()
+	actualNumStr, err := bINum1.GetNumStrErr()
 
 	if err != nil {
-		t.Errorf("Error returned by bINum1.GetNumStr(). Error='%v'",
+		t.Errorf("Error returned by bINum1.GetNumStrErr(). Error='%v'",
 			err.Error())
 	}
 
@@ -1167,10 +1167,10 @@ func TestBigIntNum_TruncToDecPlace_05(t *testing.T) {
 
 	bINum1.TruncToDecPlace(truncToDec)
 
-	actualNumStr, err := bINum1.GetNumStr()
+	actualNumStr, err := bINum1.GetNumStrErr()
 
 	if err != nil {
-		t.Errorf("Error returned by bINum1.GetNumStr(). Error='%v'",
+		t.Errorf("Error returned by bINum1.GetNumStrErr1(). Error='%v'",
 			err.Error())
 	}
 

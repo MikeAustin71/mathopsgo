@@ -49,8 +49,9 @@ func TestNumStrDto_NewNumStr_01(t *testing.T) {
 		t.Errorf("Expected IsFractionalValue= 'true'. Instead, got %v", nDto.IsFractionalValue())
 	}
 
-	if nDto.GetPrecision() != precision {
-		t.Errorf("Expected precision= '%v'. Instead, got %v", precision, nDto.GetPrecision())
+	if precision != nDto.GetPrecisionUint() {
+		t.Errorf("Expected precision= '%v'. Instead, got %v",
+				precision, nDto.GetPrecisionUint())
 
 	}
 
@@ -101,11 +102,13 @@ func TestNumStrDto_NewNumStr_02(t *testing.T) {
 	}
 
 	if nDto.IsFractionalValue() != false {
-		t.Errorf("Expected IsFractionalValue= '%v'. Instead, got %v", false, nDto.IsFractionalValue())
+		t.Errorf("Expected IsFractionalValue= '%v'. Instead, got %v",
+			false, nDto.IsFractionalValue())
 	}
 
-	if nDto.GetPrecision() != precision {
-		t.Errorf("Expected precision= '%v'. Instead, got %v", precision, nDto.GetPrecision())
+	if precision != nDto.GetPrecisionUint() {
+		t.Errorf("Expected precision= '%v'. Instead, got %v",
+					precision, nDto.GetPrecisionUint())
 
 	}
 
@@ -159,8 +162,9 @@ func TestNumStrDto_NewNumStr_03(t *testing.T) {
 		t.Errorf("Expected IsFractionalValue= '%v'. Instead, got %v", false, nDto.IsFractionalValue())
 	}
 
-	if nDto.GetPrecision() != precision {
-		t.Errorf("Expected precision= '%v'. Instead, got %v", precision, nDto.GetPrecision())
+	if precision != nDto.GetPrecisionUint() {
+		t.Errorf("Expected precision= '%v'. Instead, got %v",
+				precision, nDto.GetPrecisionUint())
 
 	}
 
@@ -181,7 +185,8 @@ func TestNumStrDto_NewNumStr_04(t *testing.T) {
 	nDto, err := NumStrDto{}.NewNumStr(nStr)
 
 	if err != nil {
-		t.Errorf("Received error from NumStrDto.ParseNumStr(nStr). nStr= '%v' Error= %v", nStr, err)
+		t.Errorf("Received error from NumStrDto.ParseNumStr(nStr). " +
+			"nStr= '%v' Error= %v",nStr, err)
 	}
 
 	s := nDto.GetNumStr()
@@ -215,8 +220,9 @@ func TestNumStrDto_NewNumStr_04(t *testing.T) {
 		t.Errorf("Expected IsFractionalValue= '%v'. Instead, got %v", true, nDto.IsFractionalValue())
 	}
 
-	if nDto.GetPrecision() != precision {
-		t.Errorf("Expected precision= '%v'. Instead, got %v", precision, nDto.GetPrecision())
+	if precision != nDto.GetPrecisionUint() {
+		t.Errorf("Expected precision= '%v'. Instead, got %v",
+				precision, nDto.GetPrecisionUint())
 
 	}
 
@@ -271,8 +277,9 @@ func TestNumStrDto_NewNumStr_05(t *testing.T) {
 		t.Errorf("Expected IsFractionalValue= '%v'. Instead, got %v", true, nDto.IsFractionalValue())
 	}
 
-	if nDto.GetPrecision() != precision {
-		t.Errorf("Expected precision= '%v'. Instead, got %v", precision, nDto.GetPrecision())
+	if precision != nDto.GetPrecisionUint() {
+		t.Errorf("Expected precision= '%v'. Instead, got %v",
+					precision, nDto.GetPrecisionUint())
 
 	}
 
@@ -292,7 +299,8 @@ func TestNumStrDto_ParseNumStr_01(t *testing.T) {
 	nDto, err := NumStrDto{}.NewPtr().ParseNumStr(nStr)
 
 	if err != nil {
-		t.Errorf("Received error from NumStrDto.ParseNumStr(nStr). nStr= '%v' Error= %v", nStr, err)
+		t.Errorf("Received error from NumStrDto.ParseNumStr(nStr). " +
+				"nStr= '%v' Error= %v", nStr, err)
 	}
 
 	s := nDto.GetNumStr()
@@ -326,8 +334,9 @@ func TestNumStrDto_ParseNumStr_01(t *testing.T) {
 		t.Errorf("Expected IsFractionalValue= 'true'. Instead, got %v", nDto.IsFractionalValue())
 	}
 
-	if nDto.GetPrecision() != precision {
-		t.Errorf("Expected precision= '%v'. Instead, got %v", precision, nDto.GetPrecision())
+	if precision != nDto.GetPrecisionUint() {
+		t.Errorf("Expected precision= '%v'. Instead, got %v",
+				precision, nDto.GetPrecisionUint())
 
 	}
 
@@ -381,8 +390,9 @@ func TestNumStrDto_ParseNumStr_02(t *testing.T) {
 		t.Errorf("Expected IsFractionalValue= '%v'. Instead, got %v", false, nDto.IsFractionalValue())
 	}
 
-	if nDto.GetPrecision() != precision {
-		t.Errorf("Expected precision= '%v'. Instead, got %v", precision, nDto.GetPrecision())
+	if precision != nDto.GetPrecisionUint() {
+		t.Errorf("Expected precision= '%v'. Instead, got %v",
+				precision, nDto.GetPrecisionUint())
 
 	}
 
@@ -436,8 +446,9 @@ func TestNumStrDto_ParseNumStr_03(t *testing.T) {
 		t.Errorf("Expected IsFractionalValue= '%v'. Instead, got %v", false, nDto.IsFractionalValue())
 	}
 
-	if nDto.GetPrecision() != precision {
-		t.Errorf("Expected precision= '%v'. Instead, got %v", precision, nDto.GetPrecision())
+	if precision != nDto.GetPrecisionUint() {
+		t.Errorf("Expected precision= '%v'. Instead, got %v",
+				precision, nDto.GetPrecisionUint())
 
 	}
 
@@ -491,9 +502,9 @@ func TestNumStrDto_ParseNumStr_04(t *testing.T) {
 		t.Errorf("Expected IsFractionalValue= '%v'. Instead, got %v", true, nDto.IsFractionalValue())
 	}
 
-	if nDto.GetPrecision() != precision {
-		t.Errorf("Expected precision= '%v'. Instead, got %v", precision, nDto.GetPrecision())
-
+	if precision != nDto.GetPrecisionUint() {
+		t.Errorf("Expected precision= '%v'. Instead, got %v",
+					precision, nDto.GetPrecisionUint())
 	}
 
 	if !nDto.IsValid() {
@@ -547,8 +558,9 @@ func TestNumStrDto_ParseNumStr_05(t *testing.T) {
 		t.Errorf("Expected IsFractionalValue= '%v'. Instead, got %v", true, nDto.IsFractionalValue())
 	}
 
-	if nDto.GetPrecision() != precision {
-		t.Errorf("Expected precision= '%v'. Instead, got %v", precision, nDto.GetPrecision())
+	if precision != nDto.GetPrecisionUint() {
+		t.Errorf("Expected precision= '%v'. Instead, got %v",
+				precision, nDto.GetPrecisionUint())
 
 	}
 
@@ -619,8 +631,9 @@ func TestNumStrDto_ParseSignedBigInt_01(t *testing.T) {
 		t.Errorf("Expected IsFractionalValue= 'true'. Instead, got %v", nDto.IsFractionalValue())
 	}
 
-	if nDto.GetPrecision() != precision {
-		t.Errorf("Expected precision= '%v'. Instead, got %v", precision, nDto.GetPrecision())
+	if precision != nDto.GetPrecisionUint() {
+		t.Errorf("Expected precision= '%v'. Instead, got %v",
+				precision, nDto.GetPrecisionUint())
 
 	}
 
@@ -691,8 +704,9 @@ func TestNumStrDto_ParseSignedBigInt_02(t *testing.T) {
 		t.Errorf("Expected IsFractionalValue= 'true'. Instead, got %v", nDto.IsFractionalValue())
 	}
 
-	if nDto.GetPrecision() != precision {
-		t.Errorf("Expected precision= '%v'. Instead, got %v", precision, nDto.GetPrecision())
+	if precision != nDto.GetPrecisionUint() {
+		t.Errorf("Expected precision= '%v'. Instead, got %v",
+				precision, nDto.GetPrecisionUint())
 
 	}
 

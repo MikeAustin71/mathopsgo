@@ -403,10 +403,10 @@ func TestBigIntMathAdd_AddBigIntNumArray_01(t *testing.T) {
 
 	}
 
-	expectedResultNumStr, err := expectedBNum.GetNumStr()
+	expectedResultNumStr, err := expectedBNum.GetNumStrErr()
 
 	if err != nil {
-		t.Errorf("Error returned by expectedBNum.GetNumStr(). Error='%v'",
+		t.Errorf("Error returned by expectedBNum.GetNumStrErr(). Error='%v'",
 			err.Error())
 	}
 
@@ -428,15 +428,15 @@ func TestBigIntMathAdd_AddBigIntNumArray_01(t *testing.T) {
 
   results := BigIntMathAdd{}.AddBigIntNumArray(bNums)
 
-  actualResultNumStr, err := results.Result.GetNumStr()
+  actualResultNumStr, err := results.Result.GetNumStrErr()
 
-  if err != nil {
-  	t.Errorf("Error returned by results.Result.GetNumStr(). " +
-  		"Error='%v' ", err.Error())
+	if err != nil {
+		t.Errorf("Error returned by results.Result.GetNumStrErr(). Error='%v'",
+			err.Error())
 	}
 
 
-  if expectedResultNumStr != actualResultNumStr {
+	if expectedResultNumStr != actualResultNumStr {
   	t.Errorf("Error: Expected Total='%v'. Instead, Total='%v'. ",
 			expectedResultNumStr, actualResultNumStr)
 	}
@@ -467,10 +467,10 @@ func TestBigIntMathAdd_AddBigIntNumArray_02(t *testing.T) {
 
 	}
 
-	expectedResultNumStr, err := expectedBNum.GetNumStr()
+	expectedResultNumStr, err := expectedBNum.GetNumStrErr()
 
 	if err != nil {
-		t.Errorf("Error returned by expectedBNum.GetNumStr(). Error='%v'",
+		t.Errorf("Error returned by expectedBNum.GetNumStrErr(). Error='%v'",
 			err.Error())
 	}
 
@@ -492,10 +492,10 @@ func TestBigIntMathAdd_AddBigIntNumArray_02(t *testing.T) {
 
   results := BigIntMathAdd{}.AddBigIntNumArray(bNums)
 
-  actualResultNumStr, err := results.Result.GetNumStr()
+  actualResultNumStr, err := results.Result.GetNumStrErr()
 
   if err != nil {
-  	t.Errorf("Error returned by results.Result.GetNumStr(). " +
+  	t.Errorf("Error returned by results.Result.GetNumStrErr(). " +
   		"Error='%v' ", err.Error())
 	}
 
@@ -529,10 +529,10 @@ func TestBigIntMathAdd_AddBigIntNumSeries_01(t *testing.T) {
 
 	}
 
-	expectedResultNumStr, err := expectedBNum.GetNumStr()
+	expectedResultNumStr, err := expectedBNum.GetNumStrErr()
 
 	if err != nil {
-		t.Errorf("Error returned by expectedBNum.GetNumStr(). Error='%v'",
+		t.Errorf("Error returned by expectedBNum.GetNumStrErr(). Error='%v'",
 			err.Error())
 	}
 
@@ -598,10 +598,10 @@ func TestBigIntMathAdd_AddBigIntNumSeries_02(t *testing.T) {
 
 	}
 
-	expectedResultNumStr, err := expectedBNum.GetNumStr()
+	expectedResultNumStr, err := expectedBNum.GetNumStrErr()
 
 	if err != nil {
-		t.Errorf("Error returned by expectedBNum.GetNumStr(). Error='%v'",
+		t.Errorf("Error returned by expectedBNum.GetNumStrErr(). Error='%v'",
 			err.Error())
 	}
 
@@ -684,7 +684,7 @@ func TestBigIntMathAdd_AddDecimal_01(t *testing.T) {
 			"Error='%v' ", err.Error())
 	}
 
-	actualNumStr, err := result.Result.GetNumStr()
+	actualNumStr, err := result.Result.GetNumStrErr()
 
 	if err != nil {
 		t.Errorf("Error returned by result.Result.GetNumStr(). " +
@@ -740,7 +740,7 @@ func TestBigIntMathAdd_AddDecimal_02(t *testing.T) {
 			"Error='%v' ", err.Error())
 	}
 
-	actualNumStr, err := result.Result.GetNumStr()
+	actualNumStr, err := result.Result.GetNumStrErr()
 
 	if err != nil {
 		t.Errorf("Error returned by result.Result.GetNumStr(). " +
@@ -796,7 +796,7 @@ func TestBigIntMathAdd_AddDecimal_03(t *testing.T) {
 			"Error='%v' ", err.Error())
 	}
 
-	actualNumStr, err := result.Result.GetNumStr()
+	actualNumStr, err := result.Result.GetNumStrErr()
 
 	if err != nil {
 		t.Errorf("Error returned by result.Result.GetNumStr(). " +
@@ -836,7 +836,7 @@ func TestBigIntMathAdd_AddDecimalSeries_01(t *testing.T) {
 
 	}
 
-	expectedResultNumStr, err := expectedBNum.GetNumStr()
+	expectedResultNumStr, err := expectedBNum.GetNumStrErr()
 
 	if err != nil {
 		t.Errorf("Error returned by expectedBNum.GetNumStr(). Error='%v'",
@@ -896,7 +896,7 @@ func TestBigIntMathAdd_AddDecimalSeries_01(t *testing.T) {
 			expectedBNum.BigInt.Text(10), total.Result.BigInt.Text(10))
 	}
 
-	actualTotalNumstr, err := total.Result.GetNumStr()
+	actualTotalNumstr, err := total.Result.GetNumStrErr()
 
 	if err != nil {
 		t.Errorf("Error returned by total.Result.GetNumStr() " +
@@ -926,10 +926,10 @@ func TestBigIntMathAdd_AddDecimalSeries_02(t *testing.T) {
 
 	}
 
-	expectedResultNumStr, err := expectedBNum.GetNumStr()
+	expectedResultNumStr, err := expectedBNum.GetNumStrErr()
 
 	if err != nil {
-		t.Errorf("Error returned by expectedBNum.GetNumStr(). Error='%v'",
+		t.Errorf("Error returned by expectedBNum.GetNumStrErr(). Error='%v'",
 			err.Error())
 	}
 
@@ -986,10 +986,10 @@ func TestBigIntMathAdd_AddDecimalSeries_02(t *testing.T) {
 			expectedBNum.BigInt.Text(10), total.Result.BigInt.Text(10))
 	}
 
-	actualTotalNumstr, err := total.Result.GetNumStr()
+	actualTotalNumstr, err := total.Result.GetNumStrErr()
 
 	if err != nil {
-		t.Errorf("Error returned by total.Result.GetNumStr() " +
+		t.Errorf("Error returned by total.Result.GetNumStrErr() " +
 			"Error='%v' ", err.Error())
 	}
 

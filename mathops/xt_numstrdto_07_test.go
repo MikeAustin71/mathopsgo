@@ -24,8 +24,9 @@ func TestNumStrDto_ScaleNumStr_01(t *testing.T) {
 		t.Errorf("Expected NumStrOut='%v'. Instead, got %v.", expected, nsDto.GetNumStr())
 	}
 
-	if ePrecision != nsDto.GetPrecision() {
-		t.Errorf("Expected precision='%v'. Instead, got %v.", scale, nsDto.GetPrecision())
+	if ePrecision != nsDto.GetPrecisionUint() {
+		t.Errorf("Expected precision='%v'. Instead, got %v.",
+				ePrecision, nsDto.GetPrecisionUint())
 	}
 
 	if signVal != nsDto.GetSign() {
@@ -72,8 +73,9 @@ func TestNumStrDto_ScaleNumStr_02(t *testing.T) {
 		t.Errorf("Expected NumStrOut='%v'. Instead, got %v.", expected, nsDto.GetNumStr())
 	}
 
-	if precision != nsDto.GetPrecision() {
-		t.Errorf("Expected precision='%v'. Instead, got %v.", precision, nsDto.GetPrecision())
+	if precision != nsDto.GetPrecisionUint() {
+		t.Errorf("Expected precision='%v'. Instead, got %v.",
+				precision, nsDto.GetPrecisionUint())
 	}
 
 	if signVal != nsDto.GetSign() {
@@ -120,8 +122,9 @@ func TestNumStrDto_ScaleNumStr_03(t *testing.T) {
 		t.Errorf("Expected NumStrOut='%v'. Instead, got %v.", expected, nsDto.GetNumStr())
 	}
 
-	if precision != nsDto.GetPrecision() {
-		t.Errorf("Expected precision='%v'. Instead, got %v.", precision, nsDto.GetPrecision())
+	if precision != nsDto.GetPrecisionUint() {
+		t.Errorf("Expected precision='%v'. Instead, got %v.",
+				precision, nsDto.GetPrecisionUint())
 	}
 
 	if signVal != nsDto.GetSign() {
@@ -168,8 +171,9 @@ func TestNumStrDto_ScaleNumStr_04(t *testing.T) {
 		t.Errorf("Expected NumStrOut='%v'. Instead, got %v.", expected, nsDto.GetNumStr())
 	}
 
-	if precision != nsDto.GetPrecision() {
-		t.Errorf("Expected precision='%v'. Instead, got %v.", precision, nsDto.GetPrecision())
+	if precision != nsDto.GetPrecisionUint() {
+		t.Errorf("Expected precision='%v'. Instead, got %v.",
+				precision, nsDto.GetPrecisionUint())
 	}
 
 	if signVal != nsDto.GetSign() {
@@ -213,15 +217,18 @@ func TestNumStrDto_ScaleNumStr_05(t *testing.T) {
 	}
 
 	if nsDto.GetNumStr() != expected {
-		t.Errorf("Expected NumStrOut='%v'. Instead, got %v.", expected, nsDto.GetNumStr())
+		t.Errorf("Expected NumStrOut='%v'. Instead, got %v.",
+				expected, nsDto.GetNumStr())
 	}
 
-	if precision != nsDto.GetPrecision() {
-		t.Errorf("Expected precision='%v'. Instead, got %v.", precision, nsDto.GetPrecision())
+	if precision != nsDto.GetPrecisionUint() {
+		t.Errorf("Expected precision='%v'. Instead, got %v.",
+				precision, nsDto.GetPrecisionUint())
 	}
 
 	if signVal != nsDto.GetSign() {
-		t.Errorf("Expected signVal='%v'. Instead, got %v.", signVal, nsDto.GetSign())
+		t.Errorf("Expected signVal='%v'. Instead, got %v.",
+				signVal, nsDto.GetSign())
 	}
 
 	if !nsDto.IsValid() {
@@ -229,7 +236,8 @@ func TestNumStrDto_ScaleNumStr_05(t *testing.T) {
 	}
 
 	if !nsDto.HasNumericDigits() {
-		t.Errorf("Expected HasNumericDigits='true'. Instead, got %v.", nsDto.HasNumericDigits())
+		t.Errorf("Expected HasNumericDigits='true'. Instead, got %v.",
+				nsDto.HasNumericDigits())
 	}
 
 	s := string(nsDto.GetAbsIntRunes())
@@ -261,23 +269,28 @@ func TestNumStrDto_ScaleNumStr_06(t *testing.T) {
 	}
 
 	if nsDto.GetNumStr() != expected {
-		t.Errorf("Expected NumStrOut='%v'. Instead, got %v.", expected, nsDto.GetNumStr())
+		t.Errorf("Expected NumStrOut='%v'. Instead, got %v.",
+				expected, nsDto.GetNumStr())
 	}
 
-	if precision != nsDto.GetPrecision() {
-		t.Errorf("Expected precision='%v'. Instead, got %v.", precision, nsDto.GetPrecision())
+	if precision != nsDto.GetPrecisionUint() {
+		t.Errorf("Expected precision='%v'. Instead, got %v.",
+				precision, nsDto.GetPrecisionUint())
 	}
 
 	if signVal != nsDto.GetSign() {
-		t.Errorf("Expected signVal='%v'. Instead, got %v.", signVal, nsDto.GetSign())
+		t.Errorf("Expected signVal='%v'. Instead, got %v.",
+				signVal, nsDto.GetSign())
 	}
 
 	if !nsDto.IsValid() {
-		t.Errorf("Expected isValid='true'. Instead, got %v.", nsDto.IsValid())
+		t.Errorf("Expected isValid='true'. Instead, got %v.",
+				nsDto.IsValid())
 	}
 
 	if !nsDto.HasNumericDigits() {
-		t.Errorf("Expected HasNumericDigits='true'. Instead, got %v.", nsDto.HasNumericDigits())
+		t.Errorf("Expected HasNumericDigits='true'. Instead, got %v.",
+				nsDto.HasNumericDigits())
 	}
 
 	s := string(nsDto.GetAbsIntRunes())
@@ -311,8 +324,9 @@ func TestNumStrDto_ScaleNumStr_07(t *testing.T) {
 		t.Errorf("Expected NumStrOut='%v'. Instead, got %v.", expected, nsDto.GetNumStr())
 	}
 
-	if precision != nsDto.GetPrecision() {
-		t.Errorf("Expected precision='%v'. Instead, got %v.", precision, nsDto.GetPrecision())
+	if precision != nsDto.GetPrecisionUint() {
+		t.Errorf("Expected precision='%v'. Instead, got %v.",
+			precision, nsDto.GetPrecisionUint())
 	}
 
 	if signVal != nsDto.GetSign() {
