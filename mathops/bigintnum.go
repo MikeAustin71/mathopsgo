@@ -554,9 +554,18 @@ func (bNum BigIntNum) NewIntAry(ia IntAry) (BigIntNum, error) {
 // 'numMgr' as a value. The pointer to the type is needed in or order to
 // call methods on 'numMgr'.
 //
-// Example:
+// Example 1:
 //	dec, err := Decimal{}.NewNumStr(nStr)
 //	bINum, err := BigIntNum{}.NewINumMgr(&dec)
+//
+// Example 2:
+// dec, err := Decimal{}.NewNumStr(nStr)
+// bINum, err := BigIntNum{}.NewINumMgr(dec.GetThisPointer())
+//
+// Example 3:
+// dec := Decimal{}.NewPtr()
+// err := dec.SetNumStr(nStr)
+// bINum, err := BigIntNum{}.NewINumMgr(dec)
 //
 func (bNum BigIntNum) NewINumMgr(numMgr INumMgr) (BigIntNum, error) {
 
@@ -916,11 +925,21 @@ func (bNum *BigIntNum) SetFloat64(f64 float64, decimalPlaces int) error {
 // 'numMgr' as a value. The pointer to the type is needed in or order to
 // call methods on 'numMgr'.
 //
-// Example:
-//
-//	bINum := BigIntNum{}
+// Example 1:
 //	dec, err := Decimal{}.NewNumStr(nStr)
+//	bINum := BigIntNum{}
 //	err := bINum.SetINumMgr(&dec)
+//
+// Example 2:
+// dec, err := Decimal{}.NewNumStr(nStr)
+// bINum := BigIntNum{}
+// err := bINum.SetINumMgr(dec.GetThisPointer())
+//
+// Example 3:
+// dec := Decimal{}.NewPtr()
+// err := dec.SetNumStr(nStr)
+// bINum := BigIntNum{}
+// err := bINum.SetINumMgr(dec)
 //
 func (bNum *BigIntNum) SetINumMgr(numMgr INumMgr) error {
 

@@ -1470,6 +1470,13 @@ func (nDto *NumStrDto) GetNumStr() string {
 	return nDto.numStr
 }
 
+// GetThisPointer - Returns a pointer to the current NumStrDto instance.
+//
+func (nDto *NumStrDto) GetThisPointer() *NumStrDto {
+
+	return nDto
+}
+
 // GetThouParen - Returns the number string delimited with the
 // nDto.thousandsSeparator character. Negative values are
 // surrounded in parentheses.

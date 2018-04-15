@@ -1082,6 +1082,13 @@ func (dec *Decimal) GetSquareRoot(maxPrecision uint) (Decimal, error) {
 	return dOut, nil
 }
 
+// GetThisPointer - Returns a pointer to the current Decimal instance
+//
+func (dec *Decimal) GetThisPointer() *Decimal {
+
+	return dec
+}
+
 // GetThousandsSeparator - Gets the current value of
 // the Thousands Separator for the current Decimal
 // object.

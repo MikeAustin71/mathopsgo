@@ -2605,6 +2605,13 @@ func (ia *IntAry) GetSquareRootOfThis(maxPrecision uint) (IntAry, error) {
 	return nthRt.GetSquareRootIntAry(ia, maxPrecision)
 }
 
+// GetThisPointer - Returns a pointer to the current IntAry instance
+//
+func (ia *IntAry) GetThisPointer() *IntAry {
+
+	return ia
+}
+
 // GetThousandsSeparator - returns a value of type 'rune'
 // which represents the thousands separator associated
 // with the current IntAry object.
@@ -3338,6 +3345,15 @@ func (ia IntAry) NewNumStrDto(numDto NumStrDto) (IntAry, error) {
 	}
 
 	return iAry, nil
+}
+
+// NewPtr - Returns a pointer to a new IntAry instance.
+//
+func (ia IntAry) NewPtr() *IntAry {
+
+	ia2 := IntAry{}.New()
+
+	return &ia2
 }
 
 // OptimizeIntArrayLen - Eliminates Leading

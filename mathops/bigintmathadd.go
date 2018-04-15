@@ -72,6 +72,8 @@ func (bAdd BigIntMathAdd) AddBigIntNumSeries(bNums ... BigIntNum) BigIntBasicMat
 	return finalResult
 }
 
+
+
 // AddBigInts - Adds two *big.Int numbers. Each *big.Int number
 // is passed to the method with an associated decimal place precision
 // specification.
