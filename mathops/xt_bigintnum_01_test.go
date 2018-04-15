@@ -1326,7 +1326,7 @@ func TestBigIntNum_RoundToDecPlace_03(t *testing.T) {
 func TestBigIntNum_RoundToDecPlace_04(t *testing.T) {
 
 	nStr := "123.567"
-	expectedNumStr := "123.567"
+	expectedNumStr := "123.5670"
 	roundToDec := uint(4)
 
 	bINum1, err := BigIntNum{}.NewNumStr(nStr)
@@ -1354,6 +1354,36 @@ func TestBigIntNum_RoundToDecPlace_04(t *testing.T) {
 }
 
 func TestBigIntNum_RoundToDecPlace_05(t *testing.T) {
+
+	nStr := "-123.567"
+	expectedNumStr := "-123.5670"
+	roundToDec := uint(4)
+
+	bINum1, err := BigIntNum{}.NewNumStr(nStr)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(nStr). " +
+			" nStr='%v'  Error='%v'",
+			nStr, err.Error())
+	}
+
+	bINum1.RoundToDecPlace(roundToDec)
+
+	actualNumStr, err := bINum1.GetNumStrErr()
+
+	if err != nil {
+		t.Errorf("Error returned by bINum1.GetNumStrErr(). Error='%v'",
+			err.Error())
+	}
+
+	if expectedNumStr != actualNumStr {
+		t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v'. ",
+			expectedNumStr, actualNumStr )
+	}
+
+}
+
+func TestBigIntNum_RoundToDecPlace_06(t *testing.T) {
 
 	nStr := "0.000"
 	expectedNumStr := "0.00"

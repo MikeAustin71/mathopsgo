@@ -648,21 +648,35 @@ func (bNum BigIntNum) NewNumStrDto(nDto NumStrDto) (BigIntNum, error) {
 	return b, nil
 }
 
-
 // RoundToDecPlace - Rounds the current BigIntNum instance to a specified
 // number of decimal places.
 //
-// If the number of decimal places specified for round is greater than
-// or equal to the current number of decimal places, no action is taken.
+// If the number of decimal places specified for rounding ('precision") is
+// equal to the current BigIntNum.Precision, no action is taken.
 //
-// 'precision' must be less than the current BigIntNum.Precision before
-// the rounding operation will engage.
+// If the number of decimal places specified for rounding ('precision') is
+// greater than the current BigIntNum.Precision, trailing zeros are added to
+// the current BigIntNum.BigInt value and BigIntNum.Precision is set equal
+// to input parameter, 'precision'.
+//
+// Input parameter 'precision' must be less than the current BigIntNum.Precision
+// before the rounding operation will engage.
 //
 func (bNum *BigIntNum) RoundToDecPlace(precision uint) {
 
-	if bNum.Precision <= precision {
-		// Nothing to do. We can only round to a precision
-		// which is less than the current precision.
+	if bNum.Precision == precision {
+		// Nothing to do. Specified 'precision' is already implemented.
+		return
+	}
+
+	base10 := big.NewInt(10)
+
+	if bNum.Precision < precision {
+		deltaPrecision := precision - bNum.Precision
+		deltaExponent := big.NewInt(int64(deltaPrecision))
+		scaleValue := big.NewInt(0).Exp(base10, deltaExponent, nil)
+		newBigInt := big.NewInt(0).Mul(bNum.BigInt, scaleValue)
+		bNum.SetBigInt(newBigInt, precision)
 		return
 	}
 
@@ -681,7 +695,6 @@ func (bNum *BigIntNum) RoundToDecPlace(precision uint) {
 
 	result := BigIntMathAdd{}.AddBigIntNums(bigNumBase, bigNumRound5)
 
-	base10 := big.NewInt(10)
 
 	newBigInt := big.NewInt(0).Div(result.Result.BigInt, base10)
 
