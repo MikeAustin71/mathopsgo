@@ -216,6 +216,91 @@ func (bAdd BigIntMathAdd) AddIntAry(ia1, ia2 IntAry) (BigIntBasicMathResult, err
 	return bAdd.AddPair(bPair), nil
 }
 
+// AddIntAryArray - Receives an array of IntAry objects and totals their numeric values.
+// The total numeric value is returned in a BigIntBasicMathResult instance.
+//
+func (bAdd BigIntMathAdd) AddIntAryArray(iarys []IntAry) (BigIntBasicMathResult, error) {
+
+	ePrefix := "BigIntMathAdd.AddIntAryArray() "
+
+	finalResult := BigIntBasicMathResult{}.New()
+
+	var err error
+
+	lenIaArray := len(iarys)
+
+	for i := 0; i < lenIaArray; i++ {
+
+		if i == 0 {
+
+			finalResult.Result, err = BigIntNum{}.NewIntAry(iarys[i])
+
+			if err != nil {
+				return BigIntBasicMathResult{}.New(),
+					fmt.Errorf(ePrefix + "Error returned by BigIntNum{}.NewIntAry(iarys[i]). " +
+						" i='%v' NumStr='%v' Error='%v' ", i, iarys[i].GetNumStr(), err.Error())
+			}
+
+			continue
+		}
+
+		b2Num, err := BigIntNum{}.NewIntAry(iarys[i])
+
+		if err != nil {
+			return BigIntBasicMathResult{}.New(),
+				fmt.Errorf(ePrefix + "Error returned by BigIntNum{}.NewIntAry(ia). " +
+					" i='%v' NumStr='%v' Error='%v' ", i, iarys[i].GetNumStr(), err.Error())
+		}
+
+		result := bAdd.AddBigIntNums(finalResult.Result, b2Num)
+
+		finalResult.Result = result.Result.CopyOut()
+	}
+
+	return finalResult, nil
+}
+
+// AddIntArySeries - Adds a series of IntAry objects and returns the total in a
+// BigIntBasicMathResult.
+//
+func (bAdd BigIntMathAdd) AddIntArySeries(iarys ... IntAry) (BigIntBasicMathResult, error) {
+	ePrefix := "BigIntMathAdd.AddIntArySeries() "
+
+	finalResult := BigIntBasicMathResult{}.New()
+	var err error
+
+	for i, ia := range iarys {
+
+		if i == 0 {
+
+			finalResult.Result, err = BigIntNum{}.NewIntAry(ia)
+
+			if err != nil {
+				return BigIntBasicMathResult{}.New(),
+					fmt.Errorf(ePrefix + "Error returned by BigIntNum{}.NewIntAry(ia). " +
+						" i='%v' NumStr='%v' Error='%v' ", i, ia.GetNumStr(), err.Error())
+			}
+
+			continue
+		}
+
+		b2Num, err := BigIntNum{}.NewIntAry(ia)
+
+		if err != nil {
+			return BigIntBasicMathResult{}.New(),
+				fmt.Errorf(ePrefix + "Error returned by BigIntNum{}.NewIntAry(ia). " +
+					" i='%v' NumStr='%v' Error='%v' ", i, ia.GetNumStr(), err.Error())
+		}
+
+
+		result := bAdd.AddBigIntNums(finalResult.Result, b2Num)
+
+		finalResult.Result = result.Result.CopyOut()
+	}
+
+	return finalResult, nil
+}
+
 // AddNumStr - Receives two number strings and adds their numeric values.
 //
 // The result is returned as type BigIntBasicMathResult.
