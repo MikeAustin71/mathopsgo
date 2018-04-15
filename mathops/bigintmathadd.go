@@ -108,6 +108,54 @@ func (bAdd BigIntMathAdd) AddDecimal(dec1, dec2 Decimal) (BigIntBasicMathResult,
 	return bAdd.AddPair(bPair), nil
 }
 
+// AddDecimalArray - Adds a series of 'Decimal' types and returns the combined total
+// as a 'BigIntBasicMathResult' instance.
+//
+func (bAdd BigIntMathAdd) AddDecimalArray(decs []Decimal) (BigIntBasicMathResult, error) {
+	ePrefix := "BigIntMathAdd.AddDecimalArray() "
+
+	finalResult := BigIntBasicMathResult{}.New()
+	var err error
+
+	lenDecs := len(decs)
+
+	if lenDecs == 0 {
+		return finalResult, nil
+	}
+
+
+	for i:= 0; i < lenDecs; i++ {
+
+		if i == 0 {
+
+			finalResult.Result, err = BigIntNum{}.NewDecimal(decs[i])
+
+			if err != nil {
+				return BigIntBasicMathResult{}.New(),
+					fmt.Errorf(ePrefix + "Error returned by BigIntNum{}.NewDecimal(decs[i]). " +
+						" i='%v' NumStr='%v' Error='%v' ", i, decs[i].GetNumStr(), err.Error())
+			}
+
+			continue
+		}
+
+		b2Num, err := BigIntNum{}.NewDecimal(decs[i])
+
+		if err != nil {
+			return BigIntBasicMathResult{}.New(),
+				fmt.Errorf(ePrefix + "Error returned by BigIntNum{}.NewDecimal(decs[i]). " +
+					" i='%v' NumStr='%v' Error='%v' ", i, decs[i].GetNumStr(), err.Error())
+		}
+
+
+		result := bAdd.AddBigIntNums(finalResult.Result, b2Num)
+
+		finalResult.Result = result.Result.CopyOut()
+	}
+
+	return finalResult, nil
+}
+
 // AddDecimalSeries - Adds a series of 'Decimal' types and returns the combined total
 // as a 'BigIntBasicMathResult' instance.
 //
