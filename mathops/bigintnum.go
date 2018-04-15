@@ -217,7 +217,7 @@ func (bNum *BigIntNum) GetNumStrDto() (NumStrDto, error) {
 //			123456								3								123.456
 //
 //
-func (bNum BigIntNum) GetPrecision() int {
+func (bNum *BigIntNum) GetPrecision() int {
 	return int(bNum.Precision)
 }
 
@@ -239,8 +239,12 @@ func (bNum BigIntNum) GetPrecision() int {
 //			123456								3								123.456
 //
 //
-func (bNum BigIntNum) GetPrecisionUint() uint {
+func (bNum *BigIntNum) GetPrecisionUint() uint {
 	return bNum.Precision
+}
+
+func (bNum *BigIntNum) GetThisPointer() *BigIntNum {
+	return bNum
 }
 
 // New - returns a new BigIntNum instance initialized to
