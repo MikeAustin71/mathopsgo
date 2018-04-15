@@ -544,6 +544,20 @@ func (bNum BigIntNum) NewIntAry(ia IntAry) (BigIntNum, error) {
 // in numeric value to the input parameter, 'numMgr'. The BigIntNum instance
 // is then returned to the calling function.
 //
+// Currently, the following 'mathops' Types implement the INumMgr interface:
+// 					Decimal,
+//					IntAry,
+//					NumStrDto,
+//					BigIntNum
+//
+// Note: 'numMgr' must be a pointer to a type. This method will not accept
+// 'numMgr' as a value. The pointer to the type is needed in or order to
+// call methods on 'numMgr'.
+//
+// Example:
+//	dec, err := Decimal{}.NewNumStr(nStr)
+//	bINum, err := BigIntNum{}.NewINumMgr(&dec)
+//
 func (bNum BigIntNum) NewINumMgr(numMgr INumMgr) (BigIntNum, error) {
 
 	ePrefix := "BigIntNum.NewINumMgr() "
@@ -892,12 +906,21 @@ func (bNum *BigIntNum) SetFloat64(f64 float64, decimalPlaces int) error {
 // the INumMgr interface and proceeds to set the current
 // BigIntNum instance to its equivalent numeric value.
 //
-// Note: numMgr must be a pointer to a type.
+// Currently, the following 'mathops' Types implement the INumMgr interface:
+// 					Decimal,
+//					IntAry,
+//					NumStrDto,
+//					BigIntNum
+//
+// 'numMgr' must be a pointer to a type. This method will not accept
+// 'numMgr' as a value. The pointer to the type is needed in or order to
+// call methods on 'numMgr'.
 //
 // Example:
-//	dec, err := Decimal{}.NewNumStr(nStr)
-//	bINum, err := BigIntNum{}.NewINumMgr(&dec)
 //
+//	bINum := BigIntNum{}
+//	dec, err := Decimal{}.NewNumStr(nStr)
+//	err := bINum.SetINumMgr(&dec)
 //
 func (bNum *BigIntNum) SetINumMgr(numMgr INumMgr) error {
 
