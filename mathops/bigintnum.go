@@ -307,6 +307,40 @@ func (bNum BigIntNum) NewBigIntExponent(bigI *big.Int, exponent int) BigIntNum {
 	return b
 }
 
+// NewBigFloat - Returns a new BigIntNum instance using a *big.Float floating point
+// input parameter.  The precision of the number is specified by the input
+// parameter, 'decimalPlaces'.
+//
+// Input Parameters
+// ================
+//
+// bigFloat *big.Float	- This *big.Float value will be converted into an instance of
+//												BigIntNum.
+//
+// decimalPlaces int		- If greater than -1, this value designates the number
+// 												of decimal places which will be extracted from the
+//												*big.Float value. If 'decimalPlaces' = -1, the number
+//												of decimal places will be inferred. -1 uses the smallest
+// 												number of digits necessary return 'bigFloat' exactly.
+//												Any 'decimalPlaces' value less than zero will be
+//												automatically converted to -1. Be careful, -1 could
+//												generate a very, very large number of decimal places.
+//
+func (bNum BigIntNum) NewBigFloat(bigFloat *big.Float, decimalPlaces int) (BigIntNum, error) {
+	ePrefix := "BigIntNumNewFloat64() "
+
+	b := BigIntNum{}
+	err := b.SetBigFloat(bigFloat, decimalPlaces)
+
+	if err != nil {
+		return BigIntNum{},
+			fmt.Errorf(ePrefix + "Error returned by b.SetBigFloat(bigFloat, decimalPlaces). " +
+				"Error='%v' ", err.Error())
+	}
+
+	return b, nil
+}
+
 // NewDecimal - Receives a 'Decimal' type as input and returns a BigIntNum.
 //
 func (bNum BigIntNum) NewDecimal(decNum Decimal) (BigIntNum, error) {
@@ -362,40 +396,6 @@ func (bNum BigIntNum) NewFloat32(f32 float32, decimalPlaces int) (BigIntNum, err
 	if err != nil {
 		return BigIntNum{},
 			fmt.Errorf(ePrefix + "Error returned by b.SetFloat32(f32, decimalPlaces). " +
-				"Error='%v' ", err.Error())
-	}
-
-	return b, nil
-}
-
-// NewBigFloat - Returns a new BigIntNum instance using a *big.Float floating point
-// input parameter.  The precision of the number is specified by the input
-// parameter, 'decimalPlaces'.
-//
-// Input Parameters
-// ================
-//
-// bigFloat *big.Float	- This *big.Float value will be converted into an instance of
-//												BigIntNum.
-//
-// decimalPlaces int		- If greater than -1, this value designates the number
-// 												of decimal places which will be extracted from the
-//												*big.Float value. If 'decimalPlaces' = -1, the number
-//												of decimal places will be inferred. -1 uses the smallest
-// 												number of digits necessary return 'bigFloat' exactly.
-//												Any 'decimalPlaces' value less than zero will be
-//												automatically converted to -1. Be careful, -1 could
-//												generate a very, very large number of decimal places.
-//
-func (bNum BigIntNum) NewBigFloat(bigFloat *big.Float, decimalPlaces int) (BigIntNum, error) {
-	ePrefix := "BigIntNumNewFloat64() "
-
-	b := BigIntNum{}
-	err := b.SetBigFloat(bigFloat, decimalPlaces)
-
-	if err != nil {
-		return BigIntNum{},
-			fmt.Errorf(ePrefix + "Error returned by b.SetBigFloat(bigFloat, decimalPlaces). " +
 				"Error='%v' ", err.Error())
 	}
 
@@ -537,6 +537,28 @@ func (bNum BigIntNum) NewIntAry(ia IntAry) (BigIntNum, error) {
 	b := BigIntNum{}
 	b.SetBigInt(bInt, precision)
 	return b, nil
+}
+
+// NewINumMgr - Receives an object which implements the INumMgr interface.
+// The method then proceeds to create a new BigIntNum instance equivalent
+// in numeric value to the input parameter, 'numMgr'. The BigIntNum instance
+// is then returned to the calling function.
+//
+func (bNum BigIntNum) NewINumMgr(numMgr INumMgr) (BigIntNum, error) {
+
+	ePrefix := "BigIntNum.NewINumMgr() "
+
+	bINum := BigIntNum{}.New()
+
+	err := bINum.SetINumMgr(numMgr)
+
+	if err != nil {
+		return BigIntNum{},
+			fmt.Errorf(ePrefix + "Error returned by bINum.SetINumMgr(numMgr). " +
+				"Error='%v' ", err.Error())
+	}
+
+	return bINum, nil
 }
 
 // NewNumStr - Receives a number string as input and returns
@@ -862,6 +884,33 @@ func (bNum *BigIntNum) SetFloat64(f64 float64, decimalPlaces int) error {
 	}
 
 	bNum.SetBigInt(bigI, uint(nDto.GetPrecision()))
+
+	return nil
+}
+
+// SetINumMgr - Receives an input parameter implementing
+// the INumMgr interface and proceeds to set the current
+// BigIntNum instance to its equivalent numeric value.
+//
+// Note: numMgr must be a pointer to a type.
+//
+// Example:
+//	dec, err := Decimal{}.NewNumStr(nStr)
+//	bINum, err := BigIntNum{}.NewINumMgr(&dec)
+//
+//
+func (bNum *BigIntNum) SetINumMgr(numMgr INumMgr) error {
+
+	ePrefix := "BigIntNum.SetINumMgr() "
+
+	bigInt, err := numMgr.GetBigInt()
+
+	if err != nil {
+		return fmt.Errorf(ePrefix + "Error returned by numMgr.GetBigInt(). " +
+			"Error='%v'", err.Error() )
+	}
+
+	bNum.SetBigInt(bigInt, numMgr.GetPrecisionUint())
 
 	return nil
 }
