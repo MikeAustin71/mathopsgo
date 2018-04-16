@@ -109,7 +109,7 @@ func (bAdd BigIntMathAdd) AddDecimal(dec1, dec2 Decimal) (BigIntBasicMathResult,
 }
 
 // AddDecimalArray - Adds a series of 'Decimal' types and returns the combined total
-// as a 'BigIntBasicMathResult' instance.
+// as an instance of Type, 'BigIntBasicMathResult'.
 //
 func (bAdd BigIntMathAdd) AddDecimalArray(decs []Decimal) (BigIntBasicMathResult, error) {
 	ePrefix := "BigIntMathAdd.AddDecimalArray() "
@@ -157,7 +157,7 @@ func (bAdd BigIntMathAdd) AddDecimalArray(decs []Decimal) (BigIntBasicMathResult
 }
 
 // AddDecimalSeries - Adds a series of 'Decimal' types and returns the combined total
-// as a 'BigIntBasicMathResult' instance.
+// as an instance of Type, 'BigIntBasicMathResult'.
 //
 func (bAdd BigIntMathAdd) AddDecimalSeries(decs ... Decimal) (BigIntBasicMathResult, error) {
 	ePrefix := "BigIntMathAdd.AddDecimalSeries() "
@@ -318,6 +318,95 @@ func (bAdd BigIntMathAdd) AddNumStr(n1NumStr, n2NumStr string) (BigIntBasicMathR
 	}
 
 	return bAdd.AddPair(bPair), nil
+}
+
+// AddNumStrArray - Adds a series of number strings and returns the combined total
+// as an instance of Type 'BigIntBasicMathResult'.
+//
+func (bAdd BigIntMathAdd) AddNumStrArray(numStrs []string) (BigIntBasicMathResult, error) {
+
+	ePrefix := "BigIntMathAdd.AddNumStrArray() "
+
+	finalResult := BigIntBasicMathResult{}.New()
+	var err error
+
+	lenNumStrs := len(numStrs)
+
+	if lenNumStrs == 0 {
+		return finalResult, nil
+	}
+
+	for i:= 0; i < lenNumStrs; i++ {
+
+		if i == 0 {
+
+			finalResult.Result, err = BigIntNum{}.NewNumStr(numStrs[i])
+
+			if err != nil {
+				return BigIntBasicMathResult{}.New(),
+					fmt.Errorf(ePrefix + "Error returned by BigIntNum{}.NewNumStr(numStrs[i]). " +
+						" i='%v' NumStr='%v' Error='%v' ", i, numStrs[i], err.Error())
+			}
+
+			continue
+		}
+
+		b2Num, err := BigIntNum{}.NewNumStr(numStrs[i])
+
+		if err != nil {
+			return BigIntBasicMathResult{}.New(),
+				fmt.Errorf(ePrefix + "Error returned by BigIntNum{}.NewNumStr(numStrs[i]). " +
+					" i='%v' NumStr='%v' Error='%v' ", i, numStrs[i], err.Error())
+		}
+
+
+		result := bAdd.AddBigIntNums(finalResult.Result, b2Num)
+
+		finalResult.Result = result.Result.CopyOut()
+	}
+
+	return finalResult, nil
+}
+
+// AddNumStrSeries - Adds a series of number strings and returns
+// the combined total as an instance of Type, 'BigIntBasicMathResult'.
+//
+func (bAdd BigIntMathAdd) AddNumStrSeries(numStrs ... string) (BigIntBasicMathResult, error) {
+	ePrefix := "BigIntMathAdd.AddNumStrSeries() "
+
+	finalResult := BigIntBasicMathResult{}.New()
+	var err error
+
+	for i, numStr := range numStrs {
+
+		if i == 0 {
+
+			finalResult.Result, err = BigIntNum{}.NewNumStr(numStr)
+
+			if err != nil {
+				return BigIntBasicMathResult{}.New(),
+					fmt.Errorf(ePrefix + "Error returned by BigIntNum{}.NewNumStr(numStr). " +
+						" i='%v' NumStr='%v' Error='%v' ", i, numStr, err.Error())
+			}
+
+			continue
+		}
+
+		b2Num, err := BigIntNum{}.NewNumStr(numStr)
+
+		if err != nil {
+			return BigIntBasicMathResult{}.New(),
+				fmt.Errorf(ePrefix + "Error returned by BigIntNum{}.NewNumStr(numStr). " +
+					" i='%v' NumStr='%v' Error='%v' ", i, numStr, err.Error())
+		}
+
+
+		result := bAdd.AddBigIntNums(finalResult.Result, b2Num)
+
+		finalResult.Result = result.Result.CopyOut()
+	}
+
+	return finalResult, nil
 }
 
 // AddNumStrDto - Receives two NumStrDto instances and adds their numeric values.
