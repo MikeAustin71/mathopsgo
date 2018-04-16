@@ -108,7 +108,7 @@ func (bAdd BigIntMathAdd) AddDecimal(dec1, dec2 Decimal) (BigIntBasicMathResult,
 	return bAdd.AddPair(bPair), nil
 }
 
-// AddDecimalArray - Adds a series of 'Decimal' types and returns the combined total
+// AddDecimalArray - Adds an array of 'Decimal' types and returns the combined total
 // as an instance of Type, 'BigIntBasicMathResult'.
 //
 func (bAdd BigIntMathAdd) AddDecimalArray(decs []Decimal) (BigIntBasicMathResult, error) {
@@ -122,7 +122,6 @@ func (bAdd BigIntMathAdd) AddDecimalArray(decs []Decimal) (BigIntBasicMathResult
 	if lenDecs == 0 {
 		return finalResult, nil
 	}
-
 
 	for i:= 0; i < lenDecs; i++ {
 
@@ -173,7 +172,7 @@ func (bAdd BigIntMathAdd) AddDecimalSeries(decs ... Decimal) (BigIntBasicMathRes
 			if err != nil {
 				return BigIntBasicMathResult{}.New(),
 				fmt.Errorf(ePrefix + "Error returned by BigIntNum{}.NewDecimal(dec). " +
-					" i='%v' NumStr='%v' Error='%v' ", i, dec.GetNumStr(), err.Error())
+					" i='%v' dec.GetNumStr()='%v' Error='%v' ", i, dec.GetNumStr(), err.Error())
 			}
 
 			continue
@@ -184,9 +183,8 @@ func (bAdd BigIntMathAdd) AddDecimalSeries(decs ... Decimal) (BigIntBasicMathRes
 		if err != nil {
 			return BigIntBasicMathResult{}.New(),
 				fmt.Errorf(ePrefix + "Error returned by BigIntPair{}.NewINumMgr(&finalResult.Result, &dec). " +
-					" i='%v' dec[i].GetNumStr()='%v' Error='%v' ", i, decs[i].GetNumStr(), err.Error())
+					" i='%v' dec.GetNumStr()='%v' Error='%v' ", i, dec.GetNumStr(), err.Error())
 		}
-
 
 		result := bAdd.AddPair(bPair)
 
@@ -428,7 +426,96 @@ func (bAdd BigIntMathAdd) AddNumStrDto(n1Dto, n2Dto NumStrDto) (BigIntBasicMathR
 	}
 
 	return bAdd.AddPair(bPair), nil
+}
 
+// AddNumStrDtoArray - Adds an array of 'NumStrDto' types and returns the combined total
+// as an instance of Type, 'BigIntBasicMathResult'.
+//
+func (bAdd BigIntMathAdd) AddNumStrDtoArray(nDtos []NumStrDto) (BigIntBasicMathResult, error) {
+	ePrefix := "BigIntMathAdd.AddDecimalArray() "
+
+	finalResult := BigIntBasicMathResult{}.New()
+	var err error
+
+	lenDecs := len(nDtos)
+
+	if lenDecs == 0 {
+		return finalResult, nil
+	}
+
+	for i:= 0; i < lenDecs; i++ {
+
+		if i == 0 {
+
+			finalResult.Result, err = BigIntNum{}.NewNumStrDto(nDtos[i])
+
+			if err != nil {
+				return BigIntBasicMathResult{}.New(),
+					fmt.Errorf(ePrefix + "Error returned by BigIntNum{}.NewNumStrDto(nDtos[i]). " +
+						" i='%v' nDtos[i].GetNumStr()='%v' Error='%v' ", i, nDtos[i].GetNumStr(), err.Error())
+			}
+
+			continue
+		}
+
+		bPair, err := BigIntPair{}.NewINumMgr(&finalResult.Result, &nDtos[i])
+
+		if err != nil {
+			return BigIntBasicMathResult{}.New(),
+				fmt.Errorf(ePrefix + "Error returned by BigIntPair{}.NewINumMgr(&finalResult.Result, &nDtos[i]). " +
+					" i='%v' dec[i].GetNumStr()='%v' Error='%v' ", i, nDtos[i].GetNumStr(), err.Error())
+		}
+
+		result := bAdd.AddPair(bPair)
+
+		finalResult.Result = result.Result.CopyOut()
+	}
+
+	return finalResult, nil
+
+}
+
+// AddDecimalSeries - Adds a series of 'NumStrDto' types and returns the combined total
+// as an instance of Type, 'BigIntBasicMathResult'.
+//
+func (bAdd BigIntMathAdd) AddNumStrDtoSeries(nDtos ... NumStrDto) (BigIntBasicMathResult, error) {
+
+	ePrefix := "BigIntMathAdd.AddNumStrDtoSeries() "
+
+	finalResult := BigIntBasicMathResult{}.New()
+	var err error
+
+	for i, nDto := range nDtos {
+
+		if i == 0 {
+
+			finalResult.Result, err = BigIntNum{}.NewNumStrDto(nDto)
+
+			if err != nil {
+				return BigIntBasicMathResult{}.New(),
+					fmt.Errorf(ePrefix + "Error returned by BigIntNum{}.NewNumStrDto(nDto). " +
+						" i='%v' NumStr='%v' Error='%v' ", i, nDto.GetNumStr(), err.Error())
+			}
+
+			continue
+		}
+
+		bPair, err := BigIntPair{}.NewINumMgr(&finalResult.Result, &nDto)
+
+		if err != nil {
+			return BigIntBasicMathResult{}.New(),
+				fmt.Errorf(ePrefix +
+					"Error returned by BigIntPair{}.NewINumMgr(&finalResult.Result, &nDto). " +
+					" i='%v' nDto.GetNumStr()='%v' Error='%v' ",
+					i, nDto.GetNumStr(), err.Error())
+		}
+
+		result := bAdd.AddPair(bPair)
+
+		finalResult.Result = result.Result.CopyOut()
+	}
+
+	return finalResult, nil
 }
 
 // AddPair - Receives a BigIntPair and proceeds to add b1.BigIntNum to
