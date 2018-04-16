@@ -101,7 +101,8 @@ func (bAdd BigIntMathAdd) AddDecimal(dec1, dec2 Decimal) (BigIntBasicMathResult,
 
 	if err != nil {
 		return BigIntBasicMathResult{},
-			fmt.Errorf(ePrefix + "Error returned by BigIntPair{}.NewDecimal(dec1, dec2). " +
+			fmt.Errorf(ePrefix +
+				"Error returned by BigIntPair{}.NewDecimal(dec1, dec2). " +
 				"Error='%v' ", err.Error())
 	}
 
@@ -112,6 +113,7 @@ func (bAdd BigIntMathAdd) AddDecimal(dec1, dec2 Decimal) (BigIntBasicMathResult,
 // as an instance of Type, 'BigIntBasicMathResult'.
 //
 func (bAdd BigIntMathAdd) AddDecimalArray(decs []Decimal) (BigIntBasicMathResult, error) {
+
 	ePrefix := "BigIntMathAdd.AddDecimalArray() "
 
 	finalResult := BigIntBasicMathResult{}.New()
@@ -131,8 +133,10 @@ func (bAdd BigIntMathAdd) AddDecimalArray(decs []Decimal) (BigIntBasicMathResult
 
 			if err != nil {
 				return BigIntBasicMathResult{}.New(),
-					fmt.Errorf(ePrefix + "Error returned by BigIntNum{}.NewDecimal(decs[i]). " +
-						" i='%v' NumStr='%v' Error='%v' ", i, decs[i].GetNumStr(), err.Error())
+					fmt.Errorf(ePrefix +
+						"Error returned by BigIntNum{}.NewDecimal(decs[i]). " +
+						" i='%v' decs[i].GetNumStr()='%v' Error='%v' ",
+						i, decs[i].GetNumStr(), err.Error())
 			}
 
 			continue
@@ -158,6 +162,7 @@ func (bAdd BigIntMathAdd) AddDecimalArray(decs []Decimal) (BigIntBasicMathResult
 // as an instance of Type, 'BigIntBasicMathResult'.
 //
 func (bAdd BigIntMathAdd) AddDecimalSeries(decs ... Decimal) (BigIntBasicMathResult, error) {
+
 	ePrefix := "BigIntMathAdd.AddDecimalSeries() "
 
 	finalResult := BigIntBasicMathResult{}.New()
@@ -171,8 +176,10 @@ func (bAdd BigIntMathAdd) AddDecimalSeries(decs ... Decimal) (BigIntBasicMathRes
 
 			if err != nil {
 				return BigIntBasicMathResult{}.New(),
-				fmt.Errorf(ePrefix + "Error returned by BigIntNum{}.NewDecimal(dec). " +
-					" i='%v' dec.GetNumStr()='%v' Error='%v' ", i, dec.GetNumStr(), err.Error())
+				fmt.Errorf(ePrefix +
+					"Error returned by BigIntNum{}.NewDecimal(dec). " +
+					" i='%v' dec.GetNumStr()='%v' Error='%v' ",
+					i, dec.GetNumStr(), err.Error())
 			}
 
 			continue
@@ -300,6 +307,136 @@ func (bAdd BigIntMathAdd) AddIntArySeries(iarys ... IntAry) (BigIntBasicMathResu
 
 	return finalResult, nil
 }
+
+
+// AddINumMgr - Receives two objects which implement the INumMgr Interface
+// and adds their numeric values.
+//
+// The result is returned as an instance of Type, 'BigIntBasicMathResult'.
+//
+func (bAdd BigIntMathAdd) AddINumMgr(num1, num2 INumMgr) (BigIntBasicMathResult, error) {
+
+	ePrefix := "BigIntMathAdd.AddINumMgr() "
+
+	bPair, err := BigIntPair{}.NewINumMgr(num1, num2)
+
+	if err != nil {
+		return BigIntBasicMathResult{},
+			fmt.Errorf(ePrefix +
+				"Error returned by NBigIntPair{}.NewINumMgr(num1, num2). " +
+				"num1.GetNumStr()='%v', num2.GetNumStr()='%v' Error='%v' ",
+				num1.GetNumStr(), num2.GetNumStr(), err.Error())
+	}
+
+	return bAdd.AddPair(bPair), nil
+}
+
+// AddINumMgrArray - Adds an array of objects which implement the 'INumMgr'
+// interface. The combined total of the numeric values from these objects
+// is returned as an instance of Type, 'BigIntBasicMathResult'.
+//
+// The INumMgr interface is implemented by types, BigIntNum, Decimal,
+// NumStrDto and IntAry. This allows the user to mix different types in
+// a single array and add their numeric values.
+//
+func (bAdd BigIntMathAdd) AddINumMgrArray(nums []INumMgr) (BigIntBasicMathResult, error) {
+
+	ePrefix := "BigIntMathAdd.AddINumMgrArray() "
+
+	finalResult := BigIntBasicMathResult{}.New()
+	var err error
+
+	lenDecs := len(nums)
+
+	if lenDecs == 0 {
+		return finalResult, nil
+	}
+
+	for i:= 0; i < lenDecs; i++ {
+
+		if i == 0 {
+
+			finalResult.Result, err = BigIntNum{}.NewINumMgr(nums[i])
+
+			if err != nil {
+				return BigIntBasicMathResult{}.New(),
+					fmt.Errorf(ePrefix +
+						"Error returned by BigIntNum{}.NewINumMgr(nums[i]). " +
+						" i='%v' nums[i].GetNumStr()='%v' Error='%v' ",
+						i, nums[i].GetNumStr(), err.Error())
+			}
+
+			continue
+		}
+
+		bPair, err := BigIntPair{}.NewINumMgr(&finalResult.Result, nums[i])
+
+		if err != nil {
+			return BigIntBasicMathResult{}.New(),
+				fmt.Errorf(ePrefix +
+					"Error returned by BigIntPair{}.NewINumMgr(&finalResult.Result, &nums[i]). " +
+					" i='%v' nums[i].GetNumStr()='%v' Error='%v' ", i, nums[i].GetNumStr(), err.Error())
+		}
+
+		result := bAdd.AddPair(bPair)
+
+		finalResult.Result = result.Result.CopyOut()
+	}
+
+	return finalResult, nil
+}
+
+
+// AddINumMgrSeries - Adds a series of objects which implement the 'INumMgr'
+// interface. The combined total of the numeric values from these objects
+// is returned as an instance of Type, 'BigIntBasicMathResult'.
+//
+// The INumMgr interface is implemented by types, BigIntNum, Decimal,
+// NumStrDto and IntAry. This allows the user to mix different types in
+// a single array and add their numeric values.
+//
+func (bAdd BigIntMathAdd) AddINumMgrSeries(nums ... INumMgr) (BigIntBasicMathResult, error) {
+
+	ePrefix := "BigIntMathAdd.AddDecimalSeries() "
+
+	finalResult := BigIntBasicMathResult{}.New()
+	var err error
+
+	for i, num := range nums {
+
+		if i == 0 {
+
+			finalResult.Result, err = BigIntNum{}.NewINumMgr(num)
+
+			if err != nil {
+				return BigIntBasicMathResult{}.New(),
+					fmt.Errorf(ePrefix +
+						"Error returned by BigIntNum{}.NewINumMgr(num). " +
+						" i='%v' num.GetNumStr()='%v' Error='%v' ",
+						i, num.GetNumStr(), err.Error())
+			}
+
+			continue
+		}
+
+		bPair, err := BigIntPair{}.NewINumMgr(&finalResult.Result, num)
+
+		if err != nil {
+			return BigIntBasicMathResult{}.New(),
+				fmt.Errorf(ePrefix +
+					"Error returned by BigIntPair{}.NewINumMgr(&finalResult.Result, &num). " +
+					" i='%v' num.GetNumStr()='%v' Error='%v' ",
+					i, num.GetNumStr(), err.Error())
+		}
+
+		result := bAdd.AddPair(bPair)
+
+		finalResult.Result = result.Result.CopyOut()
+	}
+
+	return finalResult, nil
+}
+
 
 // AddNumStr - Receives two number strings and adds their numeric values.
 //
