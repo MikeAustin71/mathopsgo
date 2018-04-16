@@ -1,5 +1,5 @@
 === RUN   TestBigIntPair_Compare_01
---- PASS: TestBigIntPair_Compare_01 (0.02s)
+--- PASS: TestBigIntPair_Compare_01 (0.01s)
 === RUN   TestBigIntPair_Compare_02
 --- PASS: TestBigIntPair_Compare_02 (0.00s)
 === RUN   TestBigIntPair_Compare_03
@@ -74,6 +74,10 @@
 --- PASS: TestBigIntMathAdd_AddIntAry_03 (0.00s)
 === RUN   TestBigIntMathAdd_AddIntAry_04
 --- PASS: TestBigIntMathAdd_AddIntAry_04 (0.00s)
+=== RUN   TestBigIntMathAdd_AddNumStrArray_01
+--- PASS: TestBigIntMathAdd_AddNumStrArray_01 (0.00s)
+=== RUN   TestBigIntMathAdd_AddNumStrArray_02
+--- PASS: TestBigIntMathAdd_AddNumStrArray_02 (0.00s)
 === RUN   TestBigIntMathAdd_AddIntArySeries_01
 --- PASS: TestBigIntMathAdd_AddIntArySeries_01 (0.00s)
 === RUN   TestBigIntMathAdd_AddIntArySeries_02
@@ -82,10 +86,6 @@
 --- PASS: TestBigIntMathAdd_AddIntAryArray_01 (0.00s)
 === RUN   TestBigIntMathAdd_AddIntAryArray_02
 --- PASS: TestBigIntMathAdd_AddIntAryArray_02 (0.00s)
-=== RUN   TestBigIntMathAdd_AddNumStrArray_01
---- PASS: TestBigIntMathAdd_AddNumStrArray_01 (0.00s)
-=== RUN   TestBigIntMathAdd_AddNumStrArray_02
---- PASS: TestBigIntMathAdd_AddNumStrArray_02 (0.00s)
 === RUN   TestBigIntMathAdd_AddNumStrSeries_01
 --- PASS: TestBigIntMathAdd_AddNumStrSeries_01 (0.00s)
 === RUN   TestBigIntMathAdd_AddNumStrSeries_02
@@ -106,6 +106,10 @@
 --- PASS: TestBigIntMathAdd_AddNumStrDto_03 (0.00s)
 === RUN   TestBigIntMathAdd_AddNumStrDto_04
 --- PASS: TestBigIntMathAdd_AddNumStrDto_04 (0.00s)
+=== RUN   TestBigIntMathAdd_AddNumStrDtoArray_01
+--- PASS: TestBigIntMathAdd_AddNumStrDtoArray_01 (0.00s)
+=== RUN   TestBigIntMathAdd_AddNumStrDtoArray_02
+--- PASS: TestBigIntMathAdd_AddNumStrDtoArray_02 (0.00s)
 === RUN   TestBigIntMathSubtract_SubtractBigIntNums_01
 --- PASS: TestBigIntMathSubtract_SubtractBigIntNums_01 (0.00s)
 === RUN   TestBigIntNum_NewNumStr_01
@@ -453,7 +457,7 @@
 === RUN   TestFracIntAry_GetRationalValue_06
 --- PASS: TestFracIntAry_GetRationalValue_06 (0.00s)
 === RUN   TestFracIntAry_GetRationalValue_07
---- PASS: TestFracIntAry_GetRationalValue_07 (0.06s)
+--- PASS: TestFracIntAry_GetRationalValue_07 (0.07s)
 === RUN   TestIntAry_AddMultipleToThis_01
 --- PASS: TestIntAry_AddMultipleToThis_01 (0.00s)
 === RUN   TestIntAry_AddToThis_01
@@ -1827,4 +1831,4 @@
 === RUN   TestStrMathOp_SubtractN1N2_19
 --- PASS: TestStrMathOp_SubtractN1N2_19 (0.00s)
 PASS
-ok  	MikeAustin71/mathopsgo/mathops	0.610s
+ok  	MikeAustin71/mathopsgo/mathops	0.843s
