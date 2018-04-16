@@ -139,16 +139,15 @@ func (bAdd BigIntMathAdd) AddDecimalArray(decs []Decimal) (BigIntBasicMathResult
 			continue
 		}
 
-		b2Num, err := BigIntNum{}.NewDecimal(decs[i])
+		bPair, err := BigIntPair{}.NewINumMgr(&finalResult.Result, &decs[i])
 
 		if err != nil {
 			return BigIntBasicMathResult{}.New(),
-				fmt.Errorf(ePrefix + "Error returned by BigIntNum{}.NewDecimal(decs[i]). " +
-					" i='%v' NumStr='%v' Error='%v' ", i, decs[i].GetNumStr(), err.Error())
+				fmt.Errorf(ePrefix + "Error returned by BigIntPair{}.NewINumMgr(&finalResult.Result, &decs[i]). " +
+					" i='%v' dec[i].GetNumStr()='%v' Error='%v' ", i, decs[i].GetNumStr(), err.Error())
 		}
 
-
-		result := bAdd.AddBigIntNums(finalResult.Result, b2Num)
+		result := bAdd.AddPair(bPair)
 
 		finalResult.Result = result.Result.CopyOut()
 	}
@@ -180,16 +179,16 @@ func (bAdd BigIntMathAdd) AddDecimalSeries(decs ... Decimal) (BigIntBasicMathRes
 			continue
 		}
 
-		b2Num, err := BigIntNum{}.NewDecimal(dec)
+		bPair, err := BigIntPair{}.NewINumMgr(&finalResult.Result, &dec)
 
 		if err != nil {
 			return BigIntBasicMathResult{}.New(),
-				fmt.Errorf(ePrefix + "Error returned by BigIntNum{}.NewDecimal(dec). " +
-					" i='%v' NumStr='%v' Error='%v' ", i, dec.GetNumStr(), err.Error())
+				fmt.Errorf(ePrefix + "Error returned by BigIntPair{}.NewINumMgr(&finalResult.Result, &dec). " +
+					" i='%v' dec[i].GetNumStr()='%v' Error='%v' ", i, decs[i].GetNumStr(), err.Error())
 		}
 
 
-		result := bAdd.AddBigIntNums(finalResult.Result, b2Num)
+		result := bAdd.AddPair(bPair)
 
 		finalResult.Result = result.Result.CopyOut()
 	}
@@ -244,15 +243,17 @@ func (bAdd BigIntMathAdd) AddIntAryArray(iarys []IntAry) (BigIntBasicMathResult,
 			continue
 		}
 
-		b2Num, err := BigIntNum{}.NewIntAry(iarys[i])
+		bPair, err := BigIntPair{}.NewINumMgr(&finalResult.Result, &iarys[i])
 
 		if err != nil {
 			return BigIntBasicMathResult{}.New(),
-				fmt.Errorf(ePrefix + "Error returned by BigIntNum{}.NewIntAry(ia). " +
-					" i='%v' NumStr='%v' Error='%v' ", i, iarys[i].GetNumStr(), err.Error())
+				fmt.Errorf(ePrefix +
+					"Error returned by BigIntPair{}.NewINumMgr(&finalResult.Result, &iarys[i]). " +
+					" i='%v' iarys[i].GetNumStr()='%v' Error='%v' ",
+					i, iarys[i].GetNumStr(), err.Error())
 		}
 
-		result := bAdd.AddBigIntNums(finalResult.Result, b2Num)
+		result := bAdd.AddPair(bPair)
 
 		finalResult.Result = result.Result.CopyOut()
 	}
@@ -284,16 +285,17 @@ func (bAdd BigIntMathAdd) AddIntArySeries(iarys ... IntAry) (BigIntBasicMathResu
 			continue
 		}
 
-		b2Num, err := BigIntNum{}.NewIntAry(ia)
+		bPair, err := BigIntPair{}.NewINumMgr(&finalResult.Result, &ia)
 
 		if err != nil {
 			return BigIntBasicMathResult{}.New(),
-				fmt.Errorf(ePrefix + "Error returned by BigIntNum{}.NewIntAry(ia). " +
-					" i='%v' NumStr='%v' Error='%v' ", i, ia.GetNumStr(), err.Error())
+				fmt.Errorf(ePrefix +
+					"Error returned by BigIntPair{}.NewINumMgr(&finalResult.Result, &ia). " +
+					" i='%v' ia.GetNumStr()='%v' Error='%v' ",
+					i, ia.GetNumStr(), err.Error())
 		}
 
-
-		result := bAdd.AddBigIntNums(finalResult.Result, b2Num)
+		result := bAdd.AddPair(bPair)
 
 		finalResult.Result = result.Result.CopyOut()
 	}

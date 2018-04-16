@@ -187,6 +187,35 @@ func (bPair BigIntPair) NewIntAry(ia1, ia2 IntAry) (BigIntPair, error) {
 	return bd2, nil
 }
 
+// NewINumMgr - Creates a new BigIntPair instance from two objects implementing the
+// INumMgr interface.
+func (bPair BigIntPair) NewINumMgr(num1, num2 INumMgr) (BigIntPair, error) {
+
+	ePrefix := "BigIntPair.NewINumMgr() "
+
+	b1Num, err := num1.GetBigInt()
+
+	if err != nil {
+		return BigIntPair{},
+		fmt.Errorf(ePrefix + "Error returned by num1.GetBigInt(). " +
+			"Error='%v'. ", err.Error())
+	}
+
+	b1Precision := num1.GetPrecisionUint()
+
+	b2Num, err := num2.GetBigInt()
+
+	if err != nil {
+		return BigIntPair{},
+			fmt.Errorf(ePrefix + "Error returned by num2.GetBigInt(). " +
+				"Error='%v'. ", err.Error())
+	}
+
+	b2Precision := num2.GetPrecisionUint()
+
+	return BigIntPair{}.NewBase(b1Num, b1Precision, b2Num, b2Precision), nil
+}
+
 // NewNumStr - Creates a new BigIntPair instance from two number strings
 // passed as input parameters.
 //
