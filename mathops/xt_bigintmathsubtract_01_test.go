@@ -6,13 +6,15 @@ import (
 )
 
 func TestBigIntMathSubtract_SubtractBigIntNums_01(t *testing.T) {
-
+	// minuend = 123.32
 	minuendStr := "12332"
 	minuendPrecision := uint(2)
 
+	// subtrahend = 23.321
 	subtrahendStr := "23321"
 	subtrahendPrecision := uint(3)
 
+	// result = 99.999
 	expectedBigINumStr := "99999"
 	expectedBigINumPrecision := uint(3)
 	expectedBigINumSign := 1
@@ -60,5 +62,289 @@ func TestBigIntMathSubtract_SubtractBigIntNums_01(t *testing.T) {
 		t.Errorf("Error: Expected number sign='%v'. Instead, number sign='%v'",
 			expectedBigINumSign, result.Result.Sign)
 	}
+
+}
+
+
+func TestBigIntMathSubtract_SubtractBigIntNums_02(t *testing.T) {
+	// minuend = 949321.6712
+	minuendStr := "9493216712"
+	minuendPrecision := uint(4)
+
+	// subtrahend = 45678.21
+	subtrahendStr := "4567821"
+	subtrahendPrecision := uint(2)
+
+	// result = 903643.4612
+	expectedBigINumStr := "9036434612"
+	expectedBigINumPrecision := uint(4)
+	expectedBigINumSign := 1
+
+	bMinuend, oK := big.NewInt(0).SetString(minuendStr, 10)
+
+	if !oK {
+		t.Errorf("Error returned by big.NewInt(0).SetString(minuendStr, 10) " +
+			"minuendStr='%v' ", minuendStr)
+	}
+
+	bSubtrahend, oK := big.NewInt(0).SetString(subtrahendStr, 10)
+
+	if !oK {
+		t.Errorf("Error returned by big.NewInt(0).SetString(subtrahendStr, 10) " +
+			"subtrahendStr='%v' ", subtrahendStr)
+	}
+
+	expectedBigI, oK := big.NewInt(0).SetString(expectedBigINumStr, 10)
+
+	if !oK {
+		t.Errorf("Error returned by big.NewInt(0).SetString(expectedBigINumStr, 10) " +
+			"expectedBigINumStr='%v' ", expectedBigINumStr)
+	}
+
+	expectedBigINum := BigIntNum{}.NewBigInt(expectedBigI, expectedBigINumPrecision)
+
+	minuendBiNum := BigIntNum{}.NewBigInt(bMinuend, minuendPrecision)
+
+	subtrahendBiNum := BigIntNum{}.NewBigInt(bSubtrahend, subtrahendPrecision)
+
+	result := BigIntMathSubtract{}.SubtractBigIntNums(minuendBiNum, subtrahendBiNum)
+
+	if !expectedBigINum.Equal(result.Result) {
+		t.Errorf("Error: Expected BigIntNum='%s'. Instead, BigIntNum= '%s'. ",
+			expectedBigINum.BigInt.Text(10), result.Result.BigInt.Text(10))
+	}
+
+	if expectedBigINum.BigInt.Cmp(result.Result.BigInt) != 0 {
+		t.Errorf("Comparison Error: Expected BigIntNum='%s'. Instead, BigIntNum= '%s'. ",
+			expectedBigINum.BigInt.Text(10), result.Result.BigInt.Text(10))
+	}
+
+	if expectedBigINumSign != result.Result.Sign {
+		t.Errorf("Error: Expected number sign='%v'. Instead, number sign='%v'",
+			expectedBigINumSign, result.Result.Sign)
+	}
+
+}
+
+func TestBigIntMathSubtract_SubtractBigIntNums_03(t *testing.T) {
+	// minuend = -5876458.56789012
+	minuendStr := "-587645856789012"
+	minuendPrecision := uint(8)
+
+	// subtrahend = 847129.876
+	subtrahendStr := "847129876"
+	subtrahendPrecision := uint(3)
+
+	// result = -6723588.44389012
+	expectedBigINumStr := "-672358844389012"
+	expectedBigINumPrecision := uint(8)
+	expectedBigINumSign := -1
+
+	bMinuend, oK := big.NewInt(0).SetString(minuendStr, 10)
+
+	if !oK {
+		t.Errorf("Error returned by big.NewInt(0).SetString(minuendStr, 10) " +
+			"minuendStr='%v' ", minuendStr)
+	}
+
+	bSubtrahend, oK := big.NewInt(0).SetString(subtrahendStr, 10)
+
+	if !oK {
+		t.Errorf("Error returned by big.NewInt(0).SetString(subtrahendStr, 10) " +
+			"subtrahendStr='%v' ", subtrahendStr)
+	}
+
+	expectedBigI, oK := big.NewInt(0).SetString(expectedBigINumStr, 10)
+
+	if !oK {
+		t.Errorf("Error returned by big.NewInt(0).SetString(expectedBigINumStr, 10) " +
+			"expectedBigINumStr='%v' ", expectedBigINumStr)
+	}
+
+	expectedBigINum := BigIntNum{}.NewBigInt(expectedBigI, expectedBigINumPrecision)
+
+	minuendBiNum := BigIntNum{}.NewBigInt(bMinuend, minuendPrecision)
+
+	subtrahendBiNum := BigIntNum{}.NewBigInt(bSubtrahend, subtrahendPrecision)
+
+	result := BigIntMathSubtract{}.SubtractBigIntNums(minuendBiNum, subtrahendBiNum)
+
+	if !expectedBigINum.Equal(result.Result) {
+		t.Errorf("Error: Expected BigIntNum='%s'. Instead, BigIntNum= '%s'. ",
+			expectedBigINum.BigInt.Text(10), result.Result.BigInt.Text(10))
+	}
+
+	if expectedBigINum.BigInt.Cmp(result.Result.BigInt) != 0 {
+		t.Errorf("Comparison Error: Expected BigIntNum='%s'. Instead, BigIntNum= '%s'. ",
+			expectedBigINum.BigInt.Text(10), result.Result.BigInt.Text(10))
+	}
+
+	if expectedBigINumSign != result.Result.Sign {
+		t.Errorf("Error: Expected number sign='%v'. Instead, number sign='%v'",
+			expectedBigINumSign, result.Result.Sign)
+	}
+
+}
+
+func TestBigIntMathSubtract_SubtractBigIntNums_04(t *testing.T) {
+	// minuend = -289.673849
+	minuendStr := "-289673849"
+	minuendPrecision := uint(6)
+
+	// subtrahend = -14579.012
+	subtrahendStr := "-14579012"
+	subtrahendPrecision := uint(3)
+
+	// result = 14289.338151
+	expectedBigINumStr := "14289338151"
+	expectedBigINumPrecision := uint(6)
+	expectedBigINumSign := 1
+
+	bMinuend, oK := big.NewInt(0).SetString(minuendStr, 10)
+
+	if !oK {
+		t.Errorf("Error returned by big.NewInt(0).SetString(minuendStr, 10) " +
+			"minuendStr='%v' ", minuendStr)
+	}
+
+	bSubtrahend, oK := big.NewInt(0).SetString(subtrahendStr, 10)
+
+	if !oK {
+		t.Errorf("Error returned by big.NewInt(0).SetString(subtrahendStr, 10) " +
+			"subtrahendStr='%v' ", subtrahendStr)
+	}
+
+	expectedBigI, oK := big.NewInt(0).SetString(expectedBigINumStr, 10)
+
+	if !oK {
+		t.Errorf("Error returned by big.NewInt(0).SetString(expectedBigINumStr, 10) " +
+			"expectedBigINumStr='%v' ", expectedBigINumStr)
+	}
+
+	expectedBigINum := BigIntNum{}.NewBigInt(expectedBigI, expectedBigINumPrecision)
+
+	minuendBiNum := BigIntNum{}.NewBigInt(bMinuend, minuendPrecision)
+
+	subtrahendBiNum := BigIntNum{}.NewBigInt(bSubtrahend, subtrahendPrecision)
+
+	result := BigIntMathSubtract{}.SubtractBigIntNums(minuendBiNum, subtrahendBiNum)
+
+	if !expectedBigINum.Equal(result.Result) {
+		t.Errorf("Error: Expected BigIntNum='%s'. Instead, BigIntNum= '%s'. ",
+			expectedBigINum.BigInt.Text(10), result.Result.BigInt.Text(10))
+	}
+
+	if expectedBigINum.BigInt.Cmp(result.Result.BigInt) != 0 {
+		t.Errorf("Comparison Error: Expected BigIntNum='%s'. Instead, BigIntNum= '%s'. ",
+			expectedBigINum.BigInt.Text(10), result.Result.BigInt.Text(10))
+	}
+
+	if expectedBigINumSign != result.Result.Sign {
+		t.Errorf("Error: Expected number sign='%v'. Instead, number sign='%v'",
+			expectedBigINumSign, result.Result.Sign)
+	}
+
+}
+
+func TestBigIntMathSubtract_SubtractBigIntNumArray_01(t *testing.T) {
+
+	// minuend = 7328941.123456
+	minuendStr := "7328941123456"
+	minuendPrecision := uint(6)
+
+
+	subtrahend0:= "123.894000"
+	subtrahend1:= "67.1"
+	subtrahend2:= "93.0"
+	subtrahend3:= "-124498.67158"
+	subtrahend4:= "647129.57"
+	subtrahend5:= "28"
+
+
+	// result = 6805998.231036
+	expectedBigINumStr := "6805998231036"
+	expectedBigINumPrecision := uint(6)
+	expectedBigINumSign := 1
+
+	bMinuend, oK := big.NewInt(0).SetString(minuendStr, 10)
+
+	if !oK {
+		t.Errorf("Error returned by big.NewInt(0).SetString(minuendStr, 10) " +
+			"minuendStr='%v' ", minuendStr)
+	}
+
+	lenSubtrahends := 6
+	var err error
+	subtrahendAry := make([]BigIntNum, lenSubtrahends)
+	
+	subtrahendAry[0], err = BigIntNum{}.NewNumStr(subtrahend0)
+	
+	if err != nil {
+		t.Errorf("Error returned from BigIntNum{}.NewNumStr(subtrahend0). " +
+			"Error='%v'. ", err.Error())
+	}
+	
+	subtrahendAry[1], err = BigIntNum{}.NewNumStr(subtrahend1)
+	
+	if err != nil {
+		t.Errorf("Error returned from BigIntNum{}.NewNumStr(subtrahend1). " +
+			"Error='%v'. ", err.Error())
+	}
+	
+	subtrahendAry[2], err = BigIntNum{}.NewNumStr(subtrahend2)
+	
+	if err != nil {
+		t.Errorf("Error returned from BigIntNum{}.NewNumStr(subtrahend2). " +
+			"Error='%v'. ", err.Error())
+	}
+	
+	subtrahendAry[3], err = BigIntNum{}.NewNumStr(subtrahend3)
+	
+	if err != nil {
+		t.Errorf("Error returned from BigIntNum{}.NewNumStr(subtrahend3). " +
+			"Error='%v'. ", err.Error())
+	}
+	
+	subtrahendAry[4], err = BigIntNum{}.NewNumStr(subtrahend4)
+	
+	if err != nil {
+		t.Errorf("Error returned from BigIntNum{}.NewNumStr(subtrahend4). " +
+			"Error='%v'. ", err.Error())
+	}
+	
+	subtrahendAry[5], err = BigIntNum{}.NewNumStr(subtrahend5)
+	
+	if err != nil {
+		t.Errorf("Error returned from BigIntNum{}.NewNumStr(subtrahend5). " +
+			"Error='%v'. ", err.Error())
+	}
+	
+
+	expectedBigI, oK := big.NewInt(0).SetString(expectedBigINumStr, 10)
+
+	if !oK {
+		t.Errorf("Error returned by big.NewInt(0).SetString(expectedBigINumStr, 10) " +
+			"expectedBigINumStr='%v' ", expectedBigINumStr)
+	}
+
+	expectedBigINum := BigIntNum{}.NewBigInt(expectedBigI, expectedBigINumPrecision)
+
+	minuendBiNum := BigIntNum{}.NewBigInt(bMinuend, minuendPrecision)
+
+	result := BigIntMathSubtract{}.SubtractBigIntNumArray(minuendBiNum, subtrahendAry)
+
+
+	if expectedBigINum.BigInt.Cmp(result.Result.BigInt) != 0 {
+		t.Errorf("Comparison Error: Expected BigIntNum='%s'. Instead, BigIntNum= '%s'. ",
+			expectedBigINum.BigInt.Text(10), result.Result.BigInt.Text(10))
+	}
+
+	if expectedBigINumSign != result.Result.Sign {
+		t.Errorf("Error: Expected number sign='%v'. Instead, number sign='%v'",
+			expectedBigINumSign, result.Result.Sign)
+	}
+
+
+
 
 }

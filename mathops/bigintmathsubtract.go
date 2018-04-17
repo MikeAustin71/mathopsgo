@@ -39,6 +39,48 @@ func (bSubtract BigIntMathSubtract) SubtractBigInts(
 }
 
 
+
+// SubtractBigIntNums - Receives one BigIntNum which is classified as the 'minuend'.
+// The second input parameter is an array of BigIntNum Types. The array of 'subtrahends'
+// is subtracted from the 'minuends'
+//
+// In the subtraction operation:
+// 								b1 - b2 = difference or result
+//								'subtrahend' - 'minuend' = result
+//								b1 = 'subtrahend'
+//								b2 = 'minuend'
+//
+// In this case the 'subtrahend' is an array of BigIntNum Types.
+//
+// The result is returned as a type 'BigIntBasicMathResult'.
+//
+func (bSubtract BigIntMathSubtract) SubtractBigIntNumArray(
+																				minuend BigIntNum,
+																					subtrahends []BigIntNum) BigIntBasicMathResult {
+
+	finalResult := BigIntBasicMathResult{}.New()
+	finalResult.Result = minuend.CopyOut()
+
+	lenSubtrahends := len(subtrahends)
+
+	if lenSubtrahends == 0 {
+		return finalResult
+	}
+
+	for i:=0; i < lenSubtrahends; i++ {
+
+		bPair := BigIntPair{}.NewBigIntNum(finalResult.Result, subtrahends[i])
+
+		result := bSubtract.SubtractPair(bPair)
+
+		finalResult.Result = result.Result.CopyOut()
+
+	}
+
+	return finalResult
+}
+
+
 // SubtractBigIntNums - Receives two 'BigIntNum' instances and proceeds to subtract
 // b2 from b2.
 //
