@@ -1,5 +1,5 @@
 === RUN   TestBigIntPair_Compare_01
---- PASS: TestBigIntPair_Compare_01 (0.02s)
+--- PASS: TestBigIntPair_Compare_01 (0.01s)
 === RUN   TestBigIntPair_Compare_02
 --- PASS: TestBigIntPair_Compare_02 (0.00s)
 === RUN   TestBigIntPair_Compare_03
@@ -154,6 +154,23 @@
 --- PASS: TestBigIntMathSubtract_SubtractBigIntNumSeries_03 (0.00s)
 === RUN   TestBigIntMathSubtract_SubtractBigIntNumSeries_04
 --- PASS: TestBigIntMathSubtract_SubtractBigIntNumSeries_04 (0.00s)
+=== RUN   TestBigIntMathSubtract_SubtractDecimal_01
+--- FAIL: TestBigIntMathSubtract_SubtractDecimal_01 (0.00s)
+	xt_bigintmathsubtract_01_test.go:1168: Error: Expected BigIntNum='99999'. Instead, BigIntNum= '-10989'. 
+	xt_bigintmathsubtract_01_test.go:1173: Comparison Error: Expected BigIntNum='99999'. Instead, BigIntNum= '-10989'. 
+	xt_bigintmathsubtract_01_test.go:1178: Error: Expected number sign='1'. Instead, number sign='-1'
+=== RUN   TestBigIntMathSubtract_SubtractDecimal_02
+--- FAIL: TestBigIntMathSubtract_SubtractDecimal_02 (0.00s)
+	xt_bigintmathsubtract_01_test.go:1229: Comparison Error: Expected BigIntNum='9036434612'. Instead, BigIntNum= '9488648891'. 
+=== RUN   TestBigIntMathSubtract_SubtractDecimal_03
+--- FAIL: TestBigIntMathSubtract_SubtractDecimal_03 (0.00s)
+	xt_bigintmathsubtract_01_test.go:1286: Error: Expected BigIntNum='-672358844389012'. Instead, BigIntNum= '-587646703918888'. 
+	xt_bigintmathsubtract_01_test.go:1291: Comparison Error: Expected BigIntNum='-672358844389012'. Instead, BigIntNum= '-587646703918888'. 
+=== RUN   TestBigIntMathSubtract_SubtractDecimal_04
+--- FAIL: TestBigIntMathSubtract_SubtractDecimal_04 (0.00s)
+	xt_bigintmathsubtract_01_test.go:1346: Error: Expected BigIntNum='14289338151'. Instead, BigIntNum= '-275094837'. 
+	xt_bigintmathsubtract_01_test.go:1351: Comparison Error: Expected BigIntNum='14289338151'. Instead, BigIntNum= '-275094837'. 
+	xt_bigintmathsubtract_01_test.go:1356: Error: Expected number sign='1'. Instead, number sign='-1'
 === RUN   TestBigIntNum_NewNumStr_01
 --- PASS: TestBigIntNum_NewNumStr_01 (0.00s)
 === RUN   TestBigIntNum_NewNumStr_02
@@ -499,7 +516,7 @@
 === RUN   TestFracIntAry_GetRationalValue_06
 --- PASS: TestFracIntAry_GetRationalValue_06 (0.00s)
 === RUN   TestFracIntAry_GetRationalValue_07
---- PASS: TestFracIntAry_GetRationalValue_07 (0.07s)
+--- PASS: TestFracIntAry_GetRationalValue_07 (0.06s)
 === RUN   TestIntAry_AddMultipleToThis_01
 --- PASS: TestIntAry_AddMultipleToThis_01 (0.00s)
 === RUN   TestIntAry_AddToThis_01
@@ -1017,7 +1034,7 @@
 === RUN   TestIntAry_Pow_05
 --- PASS: TestIntAry_Pow_05 (0.00s)
 === RUN   TestIntAry_Pow_06
---- PASS: TestIntAry_Pow_06 (0.25s)
+--- PASS: TestIntAry_Pow_06 (0.26s)
 === RUN   TestIntAry_ResetFromBackUp_01
 --- PASS: TestIntAry_ResetFromBackUp_01 (0.00s)
 === RUN   TestIntAry_RoundToPrecision_01
@@ -1872,5 +1889,6 @@
 --- PASS: TestStrMathOp_SubtractN1N2_18 (0.00s)
 === RUN   TestStrMathOp_SubtractN1N2_19
 --- PASS: TestStrMathOp_SubtractN1N2_19 (0.00s)
-PASS
-ok  	MikeAustin71/mathopsgo/mathops	0.760s
+FAIL
+exit status 1
+FAIL	MikeAustin71/mathopsgo/mathops	0.610s
