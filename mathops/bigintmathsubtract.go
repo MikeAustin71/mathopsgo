@@ -16,18 +16,19 @@ type BigIntMathSubtract struct {
 }
 
 
-// SubtractBigInts - Performs the subtraction operation. This method receives
-// two *big.Int types and subtracts 'minuend' from 'subtrahend'.
+// SubtractBigInts - Performs the subtraction operation.
 //
-// The result is returned as a type BigIntBasicMathResult
-//
-//  'subtrahend' - 'minuend' = result
+// In the subtraction operation:
+// 								b1 - b2 = difference or result
+//								'minuend' - 'subtrahend' = difference or result
+//								b1 = 'minuend'
+//								b2 = 'subtrahend'
 //
 func (bSubtract BigIntMathSubtract) SubtractBigInts(
-	subtrahend *big.Int,
-	subPrecision uint,
 	minuend *big.Int,
-	minPrecision uint) BigIntBasicMathResult {
+	minPrecision uint,
+	subtrahend *big.Int,
+	subPrecision uint) BigIntBasicMathResult {
 
 	bPair := BigIntPair{}.NewBase(
 		subtrahend,
@@ -38,19 +39,34 @@ func (bSubtract BigIntMathSubtract) SubtractBigInts(
 	return bSubtract.SubtractPair(bPair)
 }
 
+// SubtractBigIntNums - Receives two 'BigIntNum' instances and proceeds to subtract
+// b2 from b2.
+//
+// 								b1 - b2 = difference
+//								'minuend' - 'subtrahend' = difference or result
+//								b1 = 'minuend'
+//								b2 = 'subtrahend'
+//
+// The result is returned as a type 'BigIntBasicMathResult'.
+//
+func (bSubtract BigIntMathSubtract) SubtractBigIntNums(b1, b2 BigIntNum) BigIntBasicMathResult {
 
+	bPair := BigIntPair{}.NewBigIntNum(b1, b2)
 
-// SubtractBigIntNums - Receives one BigIntNum which is classified as the 'minuend'.
-// The second input parameter is an array of BigIntNum Types. The array of 'subtrahends'
-// is subtracted from the 'minuends'
+	return bSubtract.SubtractPair(bPair)
+}
+
+// SubtractBigIntNumArray - Receives one BigIntNum which is classified as the 'minuend'.
+// The second input parameter is an array of BigIntNum Types labeled, 'subtrahends'.
+// The array of 'subtrahends' is subtracted from the 'minuend'.
 //
 // In the subtraction operation:
 // 								b1 - b2 = difference or result
-//								'subtrahend' - 'minuend' = result
-//								b1 = 'subtrahend'
-//								b2 = 'minuend'
+//								'minuend' - 'subtrahend' = difference or result
+//								b1 = 'minuend'
+//								b2 = 'subtrahend'
 //
-// In this case the 'subtrahend' is an array of BigIntNum Types.
+// In this method, the 'subtrahend' is an array of BigIntNum Types.
 //
 // The result is returned as a type 'BigIntBasicMathResult'.
 //
@@ -80,22 +96,39 @@ func (bSubtract BigIntMathSubtract) SubtractBigIntNumArray(
 	return finalResult
 }
 
-
-// SubtractBigIntNums - Receives two 'BigIntNum' instances and proceeds to subtract
-// b2 from b2.
+// SubtractBigIntNumArray - Receives one BigIntNum which is classified as the 'minuend'.
+// The second input parameter, 'subtrahends' is a series of Type BigIntNum .
 //
-// 								b1 - b2 = difference
-//								'subtrahend' - 'minuend' = result
-//								b1 = 'subtrahend'
-//								b2 = 'minuend'
+// The 'subtrahends' series is subtracted from the 'minuend'.
+//
+// In the subtraction operation:
+// 								b1 - b2 = difference or result
+//								'minuend' - 'subtrahend' = difference or result
+//								b1 = 'minuend'
+//								b2 = 'subtrahend'
+//
+// In this method, the 'subtrahend' is a series of BigIntNum Types.
 //
 // The result is returned as a type 'BigIntBasicMathResult'.
 //
-func (bSubtract BigIntMathSubtract) SubtractBigIntNums(b1, b2 BigIntNum) BigIntBasicMathResult {
+func (bSubtract BigIntMathSubtract) SubtractBigIntNumSeries(
+																				minuend BigIntNum,
+																					subtrahends ... BigIntNum) BigIntBasicMathResult {
 
-	bPair := BigIntPair{}.NewBigIntNum(b1, b2)
+	finalResult := BigIntBasicMathResult{}.New()
+	finalResult.Result = minuend.CopyOut()
 
-	return bSubtract.SubtractPair(bPair)
+	for _, subtrahend := range subtrahends {
+
+		bPair := BigIntPair{}.NewBigIntNum(finalResult.Result, subtrahend)
+
+		result := bSubtract.SubtractPair(bPair)
+
+		finalResult.Result = result.Result.CopyOut()
+
+	}
+
+	return finalResult
 }
 
 
