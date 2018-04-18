@@ -4871,10 +4871,6 @@ func (ia *IntAry) SetThousandsSeparator(thousandsSeparator rune) {
 // ia2 *intAry - Incoming intAry object whose value will be subtracted
 // 								from this current intAry value.
 //
-// convertToNumStr - boolean value determines whether the current intAry
-//                   object will convert the intAry value to a number string.
-//                   Set this parameter to 'false' if this method is called
-//                   multiple times in order to improve performance.
 func (ia *IntAry) SubtractFromThis(ia2 *IntAry) error {
 
 	ia.SetEqualArrayLengths(ia2)
