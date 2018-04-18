@@ -9,7 +9,6 @@ import (
 func main() {
 
 	ExampleSubtraction_02()
-	ExampleSubtraction_01()
 
 }
 
@@ -154,8 +153,7 @@ func ExampleSubtraction_01() {
 
 func ExampleSubtraction_02() {
 
-	minuendStr := "-18973642.1234567"
-	//minuendPrecision := uint(6)
+	minuendStr := "-1718973642.1234567"
 
 	iaMinuend, err := mathops.IntAry{}.NewNumStr(minuendStr)
 
@@ -173,17 +171,17 @@ func ExampleSubtraction_02() {
 		return
 	}
 
-	subtrahend0:= "737.21"
-	subtrahend1:= "9637591.879546"
-	subtrahend2:= "28"
-	subtrahend3:= "5284.9765"
-	subtrahend4:= "-189291837.12"
-	subtrahend5:= "7638932.12398765"
+	subtrahend0:= "-28934682.721"
+	subtrahend1:= "424.987654321"
+	subtrahend2:= "-987"
+	subtrahend3:= "62.94"
+	subtrahend4:= "-999999999.99999"
+	subtrahend5:= "-9638932.371"
 
 	subtrahendAry := make([]mathops.BigIntNum, 6)
 	// Confirmed Subtraction Result
-	//        Result5:  153035620.80650965
-	//     ia Result5:  153035620.80650965
+	// ia Result5:    2,757,547,756.287792379
+	// Array Result:  2,757,547,756.287792379
 
 	iaSub0, err := mathops.IntAry{}.NewNumStr(subtrahend0)
 
@@ -301,6 +299,7 @@ func ExampleSubtraction_02() {
 	result := mathops.BigIntMathSubtract{}.SubtractPair(bPair)
 	
 	fmt.Println("Original Minued: ", iaMinuend.GetNumStr())
+	fmt.Println("       bigISub0: ", bigISub0.GetNumStr())
 	fmt.Println("        Result0: ", result.Result.GetNumStr())
 	iaMinuend.SubtractFromThis(&iaSub0)
 	fmt.Println("     ia Result0: ", iaMinuend.GetNumStr())
@@ -309,6 +308,7 @@ func ExampleSubtraction_02() {
 	bPair = mathops.BigIntPair{}.NewBigIntNum(result.Result, bigISub1 )
 	result = mathops.BigIntMathSubtract{}.SubtractPair(bPair)
 
+	fmt.Println("       bigISub1: ", bigISub1.GetNumStr())
 	fmt.Println("        Result1: ", result.Result.GetNumStr())
 	fmt.Println("     ia Result1: ", iaMinuend.GetNumStr())
 
@@ -316,6 +316,7 @@ func ExampleSubtraction_02() {
 	bPair = mathops.BigIntPair{}.NewBigIntNum(result.Result, bigISub2 )
 	result = mathops.BigIntMathSubtract{}.SubtractPair(bPair)
 
+	fmt.Println("       bigISub2: ", bigISub2.GetNumStr())
 	fmt.Println("        Result2: ", result.Result.GetNumStr())
 	fmt.Println("     ia Result2: ", iaMinuend.GetNumStr())
 
@@ -323,6 +324,7 @@ func ExampleSubtraction_02() {
 	bPair = mathops.BigIntPair{}.NewBigIntNum(result.Result, bigISub3 )
 	result = mathops.BigIntMathSubtract{}.SubtractPair(bPair)
 
+	fmt.Println("       bigISub3: ", bigISub3.GetNumStr())
 	fmt.Println("        Result3: ", result.Result.GetNumStr())
 	fmt.Println("     ia Result3: ", iaMinuend.GetNumStr())
 
@@ -330,6 +332,7 @@ func ExampleSubtraction_02() {
 	bPair = mathops.BigIntPair{}.NewBigIntNum(result.Result, bigISub4 )
 	result = mathops.BigIntMathSubtract{}.SubtractPair(bPair)
 
+	fmt.Println("       bigISub4: ", bigISub4.GetNumStr())
 	fmt.Println("        Result4: ", result.Result.GetNumStr())
 	fmt.Println("     ia Result4: ", iaMinuend.GetNumStr())
 
@@ -337,6 +340,7 @@ func ExampleSubtraction_02() {
 	bPair = mathops.BigIntPair{}.NewBigIntNum(result.Result, bigISub5 )
 	result = mathops.BigIntMathSubtract{}.SubtractPair(bPair)
 
+	fmt.Println("       bigISub5: ", bigISub5.GetNumStr())
 	fmt.Println("        Result5: ", result.Result.GetNumStr())
 	fmt.Println("     ia Result5: ", iaMinuend.GetNumStr())
 
