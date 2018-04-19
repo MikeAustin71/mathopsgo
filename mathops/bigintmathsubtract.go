@@ -142,7 +142,8 @@ func (bSubtract BigIntMathSubtract) SubtractBigIntNumSeries(
 //								b1 = 'minuend'
 //								b2 = 'subtrahend'
 //
-// The result is returned as a type 'BigIntBasicMathResult'.
+// The result of this subtraction operation is returned as a
+// type 'BigIntBasicMathResult'.
 //
 func (bSubtract BigIntMathSubtract) SubtractDecimal(
 																			decMinuend Decimal,
@@ -174,7 +175,7 @@ func (bSubtract BigIntMathSubtract) SubtractDecimal(
 //								b1 = 'minuend'
 //								b2 = 'subtrahend'
 //
-// In this method, the 'subtrahend' is an array of BigIntNum Types.
+// In this method, the 'subtrahend' is an array of Decimal Types.
 //
 // The result is returned as a type 'BigIntBasicMathResult'.
 //
@@ -226,9 +227,9 @@ func (bSubtract BigIntMathSubtract) SubtractDecimalArray(
 }
 
 
-// SubtractBigIntNumSeries - Receives one BigIntNum which is classified as
+// SubtractDecimalSeries - Receives one Decimal Type which is classified as
 // the 'minuend'. The second input parameter, 'subtrahends' is a series of
-// Type BigIntNum .
+// Type Decimal .
 //
 // The 'subtrahends' series is subtracted from the 'minuend'.
 //
@@ -238,7 +239,7 @@ func (bSubtract BigIntMathSubtract) SubtractDecimalArray(
 //								b1 = 'minuend'
 //								b2 = 'subtrahend'
 //
-// In this method, the 'subtrahend' is a series of BigIntNum Types.
+// In this method, the 'subtrahend' is a series of Decimal Types.
 //
 // The result is returned as a type 'BigIntBasicMathResult'.
 //
@@ -282,24 +283,32 @@ func (bSubtract BigIntMathSubtract) SubtractDecimalSeries(
 }
 
 
-// SubtractIntAry - Receives two IntAry instances and proceeds to subtract
-// ia2 from ia1.
+// SubtractIntAry - Performs the subtraction operation on two
 //
-// ia1 - ia2 = result
+// IntAry Types.
+// 				iaMinuend - iaSubtrahend = difference
 //
-// The result is returned as a type 'BigIntBasicMathResult'.
+// In the subtraction operation:
+// 								b1 - b2 = difference or result
+//								'minuend' - 'subtrahend' = difference or result
+//								b1 = 'minuend'
+//								b2 = 'subtrahend'
+//
+// The result of this subtraction operation is returned as a
+// type 'BigIntBasicMathResult'.
 //
 func (bSubtract BigIntMathSubtract) SubtractIntAry(
-	ia1 IntAry,
-	ia2 IntAry) (BigIntBasicMathResult, error) {
+									iaMinuend IntAry,
+										iaSubtrahend IntAry) (BigIntBasicMathResult, error) {
 
 	ePrefix := "BigIntMathSubtract.SubtractIntAry() "
 
-	bPair, err := BigIntPair{}.NewIntAry(ia1, ia2)
+	bPair, err := BigIntPair{}.NewIntAry(iaMinuend, iaSubtrahend)
 
 	if err != nil {
 		return BigIntBasicMathResult{},
-			fmt.Errorf(ePrefix + "Error returned by BigIntPair{}.NewIntAry(ia1, ia2). " +
+			fmt.Errorf(ePrefix +
+				"Error returned by BigIntPair{}.NewIntAry(iaMinuend, iaSubtrahend). " +
 				"Error='%v' ", err.Error())
 	}
 
