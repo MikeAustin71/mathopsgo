@@ -1201,7 +1201,6 @@ func TestBigIntMathSubtract_SubtractDecimal_04(t *testing.T) {
 
 }
 
-
 func TestBigIntMathSubtract_SubtractDecimalArray_01(t *testing.T) {
 
 	var err error

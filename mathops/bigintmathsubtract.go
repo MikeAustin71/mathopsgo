@@ -282,7 +282,6 @@ func (bSubtract BigIntMathSubtract) SubtractDecimalSeries(
 	return finalResult, nil
 }
 
-
 // SubtractIntAry - Performs the subtraction operation on two
 //
 // IntAry Types.
