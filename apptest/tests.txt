@@ -210,6 +210,14 @@
 --- PASS: TestBigIntMathSubtract_SubtractNumStr_03 (0.00s)
 === RUN   TestBigIntMathSubtract_SubtractNumStr_04
 --- PASS: TestBigIntMathSubtract_SubtractNumStr_04 (0.00s)
+=== RUN   TestBigIntMathSubtract_SubtractNumStrArray_01
+--- PASS: TestBigIntMathSubtract_SubtractNumStrArray_01 (0.00s)
+=== RUN   TestBigIntMathSubtract_SubtractNumStrArray_02
+--- PASS: TestBigIntMathSubtract_SubtractNumStrArray_02 (0.00s)
+=== RUN   TestBigIntMathSubtract_SubtractNumStrArray_03
+--- PASS: TestBigIntMathSubtract_SubtractNumStrArray_03 (0.00s)
+=== RUN   TestBigIntMathSubtract_SubtractNumStrArray_04
+--- PASS: TestBigIntMathSubtract_SubtractNumStrArray_04 (0.00s)
 === RUN   TestBigIntNum_NewNumStr_01
 --- PASS: TestBigIntNum_NewNumStr_01 (0.00s)
 === RUN   TestBigIntNum_NewNumStr_02
@@ -1891,7 +1899,7 @@
 === RUN   TestStrMathOp_RaiseToPower_10
 --- PASS: TestStrMathOp_RaiseToPower_10 (0.00s)
 === RUN   TestStrMathOp_SubtractN1N2_01
---- PASS: TestStrMathOp_SubtractN1N2_01 (0.00s)
+--- PASS: TestStrMathOp_SubtractN1N2_01 (0.01s)
 === RUN   TestStrMathOp_SubtractN1N2_02
 --- PASS: TestStrMathOp_SubtractN1N2_02 (0.00s)
 === RUN   TestStrMathOp_SubtractN1N2_03
@@ -1929,4 +1937,4 @@
 === RUN   TestStrMathOp_SubtractN1N2_19
 --- PASS: TestStrMathOp_SubtractN1N2_19 (0.00s)
 PASS
-ok  	MikeAustin71/mathopsgo/mathops	0.640s
+ok  	MikeAustin71/mathopsgo/mathops	0.660s
