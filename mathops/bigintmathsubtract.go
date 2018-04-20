@@ -344,8 +344,6 @@ func (bSubtract BigIntMathSubtract) SubtractIntAryArray(
 				"minuend='%v' Error='%v'", minuend.GetNumStr(), err.Error())
 	}
 
-
-
 	lenSubtrahends := len(subtrahends)
 
 	if lenSubtrahends == 0 {
@@ -359,7 +357,7 @@ func (bSubtract BigIntMathSubtract) SubtractIntAryArray(
 		if err != nil {
 			return BigIntBasicMathResult{},
 				fmt.Errorf(ePrefix +
-					"Error returned by BigIntNum{}.NewDecimal(subtrahends[i]). " +
+					"Error returned by BigIntNum{}.NewIntAry(subtrahends[i]). " +
 					"i='%v' subtrahend='%v' Error='%v'",
 					i, subtrahends[i].GetNumStr(), err.Error())
 		}
@@ -617,6 +615,121 @@ func (bSubtract BigIntMathSubtract) SubtractNumStrDto(
 	return bSubtract.SubtractPair(bPair), nil
 }
 
+// SubtractNumStrDtoArray - Receives one NumStrDto parameter which is classified as
+// the 'minuend'. The second input parameter is an array of NumStrDto Types
+// labeled, 'subtrahends'.
+//
+// The array of 'subtrahends' is subtracted from the 'minuend'.
+//
+// In the subtraction operation:
+//								'minuend' - 'subtrahend' = difference or result
+// 								b1 - b2 = difference or result
+//								b1 = 'minuend'
+//								b2 = 'subtrahend'
+//
+// In this method, the 'subtrahend' is an array of NumStrDto Types.
+//
+// The result of the subtraction operation is returned as a type 'BigIntBasicMathResult'.
+//
+func (bSubtract BigIntMathSubtract) SubtractNumStrDtoArray(
+				minuend NumStrDto,
+					subtrahends []NumStrDto) (BigIntBasicMathResult, error) {
+
+	var err error
+	ePrefix := "BigIntMathSubtract.SubtractNumStrDtoArray() "
+	finalResult := BigIntBasicMathResult{}.New()
+	finalResult.Result, err = BigIntNum{}.NewNumStrDto(minuend)
+
+	if err != nil {
+		return BigIntBasicMathResult{},
+			fmt.Errorf(ePrefix +
+				"Error returned by BigIntNum{}.NewNumStrDto(minuend). " +
+				"minuend='%v' Error='%v'", minuend.GetNumStr(), err.Error())
+	}
+
+	lenSubtrahends := len(subtrahends)
+
+	if lenSubtrahends == 0 {
+		return finalResult, nil
+	}
+
+	for i:=0; i < lenSubtrahends; i++ {
+
+		bigINum, err := BigIntNum{}.NewNumStrDto(subtrahends[i])
+
+		if err != nil {
+			return BigIntBasicMathResult{},
+				fmt.Errorf(ePrefix +
+					"Error returned by BigIntNum{}.NewNumStrDto(subtrahends[i]). " +
+					"i='%v' subtrahend='%v' Error='%v'",
+					i, subtrahends[i].GetNumStr(), err.Error())
+		}
+
+		bPair := BigIntPair{}.NewBigIntNum(finalResult.Result, bigINum)
+
+		result := bSubtract.SubtractPair(bPair)
+
+		finalResult.Result = result.Result.CopyOut()
+
+	}
+
+	return finalResult, nil
+}
+
+// SubtractNumStrDtoSeries - Receives one NumStrDto Type which is classified as
+// the 'minuend'. The second input parameter, 'subtrahends' is a series of
+// Type NumStrDto .
+//
+// The 'subtrahends' series is subtracted from the 'minuend'.
+//
+// In the subtraction operation:
+//								'minuend' - 'subtrahend' = difference or result
+// 								b1 - b2 = difference or result
+//								b1 = 'minuend'
+//								b2 = 'subtrahend'
+//
+// In this method, the 'subtrahend' is a series of NumStrDto Types.
+//
+// The result of the subtraction operation is returned as a type 'BigIntBasicMathResult'.
+//
+func (bSubtract BigIntMathSubtract) SubtractNumStrDtoSeries(
+				minuend NumStrDto,
+					subtrahends ... NumStrDto) (BigIntBasicMathResult, error) {
+
+	ePrefix := "BigIntMathSubtract.SubtractNumStrDtoSeries() "
+	var err error
+
+	finalResult := BigIntBasicMathResult{}.New()
+	finalResult.Result, err = BigIntNum{}.NewNumStrDto(minuend)
+
+	if err != nil {
+		return BigIntBasicMathResult{}.New(),
+			fmt.Errorf(ePrefix +
+				"Error returned by BigIntNum{}.NewNumStrDto(minuend). " +
+				"minuend='%v' Error='%v'", minuend.GetNumStr(), err.Error())
+	}
+
+	for i, subtrahend := range subtrahends {
+
+		bigINumSubtrahend, err := BigIntNum{}.NewNumStrDto(subtrahend)
+
+		if err != nil {
+			return BigIntBasicMathResult{}.New(),
+				fmt.Errorf(ePrefix +
+					"Error returned by BigIntNum{}.NewNumStrDto(subtrahend). " +
+					"index='%v' subtrahend='%v' Error='%v'",
+					i, subtrahend.GetNumStr(), err.Error())
+		}
+
+		bPair := BigIntPair{}.NewBigIntNum(finalResult.Result, bigINumSubtrahend)
+
+		result := bSubtract.SubtractPair(bPair)
+
+		finalResult.Result = result.Result.CopyOut()
+	}
+
+	return finalResult, nil
+}
 
 // SubtractPair - Performs the subtraction operation. This method receives a type
 // 'BigIntPair' and proceeds to subtract b2.BigInt from b1.BigInt.
