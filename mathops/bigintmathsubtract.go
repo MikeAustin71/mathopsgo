@@ -587,24 +587,30 @@ func (bSubtract BigIntMathSubtract) SubtractNumStrSeries(
 }
 
 
-// SubtractNumStrDto - Receives two NumStrDto instances and proceeds to subtract
-// n2Dto from n1Dto.
+// SubtractNumStrDto - Receives two 'NumStrDto' instances and proceeds to subtract
+// 'nDtoSubtrahend' from 'nDtoMinuend'.
 //
-// n1Dto - n2Dto = result
+// 			nDtoMinuend - nDtoSubtrahend = difference or result
+//
+// In the subtraction operation:
+//							  'minuend' - 'subtrahend' = difference or result
+//								nDtoMinuend 		= 'minuend'
+//								nDtoSubtrahend 	= 'subtrahend'
+//
 //
 // The result is returned as a type 'BigIntBasicMathResult'.
 //
 func (bSubtract BigIntMathSubtract) SubtractNumStrDto(
-	n1Dto NumStrDto,
-	nDto NumStrDto) (BigIntBasicMathResult, error) {
+					nDtoMinuend NumStrDto,
+						nDtoSubtrahend NumStrDto) (BigIntBasicMathResult, error) {
 
 	ePrefix := "BigIntMathSubtract.SubtractNumStrDto() "
 
-	bPair, err := BigIntPair{}.NewNumStrDto(n1Dto, nDto)
+	bPair, err := BigIntPair{}.NewNumStrDto(nDtoMinuend, nDtoSubtrahend)
 
 	if err != nil {
 		return BigIntBasicMathResult{},
-			fmt.Errorf(ePrefix + "Error returned by BigIntPair{}.NewNumStrDto(n1Dto, nDto). " +
+			fmt.Errorf(ePrefix + "Error returned by BigIntPair{}.NewNumStrDto(nDtoMinuend, nDtoSubtrahend). " +
 				"Error='%v' ", err.Error())
 	}
 
