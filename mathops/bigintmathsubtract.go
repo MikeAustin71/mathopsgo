@@ -428,6 +428,169 @@ func (bSubtract BigIntMathSubtract) SubtractIntArySeries(
 	return finalResult, nil
 }
 
+
+// SubtractINumMgr - Receives two objects which implement the INumMgr Interface
+// and subtracts their numeric values.
+//
+// The 'subtrahend' numeric value is subtracted from the 'minuend' numeric value.
+//
+// In the subtraction operation:
+//
+//								'minuend' - 'subtrahend' = difference or result
+//
+// The INumMgr interface is implemented by types, BigIntNum, Decimal,
+// NumStrDto and IntAry.
+//
+// After the subtraction operation, the result is returned as an instance of Type,
+// 'BigIntBasicMathResult'.
+//
+func (bSubtract BigIntMathSubtract) SubtractINumMgr(
+						minuend,
+							subtrahend INumMgr) (BigIntBasicMathResult, error) {
+
+	ePrefix := "BigIntMathSubtract.SubtractINumMgr() "
+
+	bPair, err := BigIntPair{}.NewINumMgr(minuend, subtrahend)
+
+	if err != nil {
+		return BigIntBasicMathResult{},
+			fmt.Errorf(ePrefix +
+				"Error returned by NBigIntPair{}.NewINumMgr(minuend, subtrahend). " +
+				"minuend.GetNumStr()='%v', subtrahend.GetNumStr()='%v' Error='%v' ",
+				minuend.GetNumStr(), subtrahend.GetNumStr(), err.Error())
+	}
+
+	return bSubtract.SubtractPair(bPair), nil
+}
+
+// SubtractINumMgrArray - Receives two input parameters. The first parameter
+// is an INumMgr instance which is classified as the 'minuend'. The second
+// parameter is an array of INumMgr instances which resents the 'subtrahends'.
+// A subtraction operation is performed on the 'minuend' and the 'subtrahends'
+// array. The numeric value of the 'subtrahends' is subtracted from the 'minuend'.
+//
+// In the subtraction operation:
+//
+//								'minuend' - 'subtrahend' = difference or result
+//
+// The INumMgr interface is implemented by types, BigIntNum, Decimal,
+// NumStrDto and IntAry. This allows the user to mix different types in
+// a single array and add their numeric values.
+//
+// After the subtraction operation, the result is returned as an instance of Type,
+// 'BigIntBasicMathResult'.
+//
+func (bSubtract BigIntMathSubtract) SubtractINumMgrArray(
+									minuend INumMgr,
+										subtrahends []INumMgr) (BigIntBasicMathResult, error) {
+
+	ePrefix := "BigIntMathSubtract.SubtractINumMgrArray() "
+
+	finalResult := BigIntBasicMathResult{}.New()
+	var err error
+
+	lenDecs := len(subtrahends)
+
+	if lenDecs == 0 {
+		return finalResult, nil
+	}
+
+	for i:= 0; i < lenDecs; i++ {
+
+		if i == 0 {
+
+			finalResult.Result, err = BigIntNum{}.NewINumMgr(subtrahends[i])
+
+			if err != nil {
+				return BigIntBasicMathResult{}.New(),
+					fmt.Errorf(ePrefix +
+						"Error returned by BigIntNum{}.NewINumMgr(subtrahends[i]). " +
+						" i='%v' subtrahends[i].GetNumStr()='%v' Error='%v' ",
+						i, subtrahends[i].GetNumStr(), err.Error())
+			}
+
+			continue
+		}
+
+		bPair, err := BigIntPair{}.NewINumMgr(&finalResult.Result, subtrahends[i])
+
+		if err != nil {
+			return BigIntBasicMathResult{}.New(),
+				fmt.Errorf(ePrefix +
+					"Error returned by BigIntPair{}.NewINumMgr(&finalResult.Result, &subtrahends[i]). " +
+					" i='%v' subtrahends[i].GetNumStr()='%v' Error='%v' ", i, subtrahends[i].GetNumStr(), err.Error())
+		}
+
+		result := bSubtract.SubtractPair(bPair)
+
+		finalResult.Result = result.Result.CopyOut()
+	}
+
+	return finalResult, nil
+}
+
+
+// SubtractINumMgrSeries - Receives two input parameters. The first parameter
+// is an INumMgr instance which is classified as the 'minuend'. The second
+// parameter is a series of INumMgr instances which resents the 'subtrahends'.
+// A subtraction operation is performed on the 'minuend' and the 'subtrahends'.
+// The numeric value of the 'subtrahends' is subtracted from the 'minuend'.
+//
+// In the subtraction operation:
+//
+//					'minuend' - 'subtrahend' = difference or result
+//
+// The INumMgr interface is implemented by types, BigIntNum, Decimal,
+// NumStrDto and IntAry. This allows the user to mix different types in
+// a single array and add their numeric values.
+//
+// After the subtraction operation, the result is returned as an instance of Type,
+// 'BigIntBasicMathResult'.
+//
+func (bSubtract BigIntMathSubtract) SubtractINumMgrSeries(
+					minuend INumMgr,
+						subtrahends ... INumMgr) (BigIntBasicMathResult, error) {
+
+	ePrefix := "BigIntMathSubtract.SubtractINumMgrSeries() "
+
+	finalResult := BigIntBasicMathResult{}.New()
+	var err error
+
+	for i, subtrahend := range subtrahends {
+
+		if i == 0 {
+
+			finalResult.Result, err = BigIntNum{}.NewINumMgr(subtrahend)
+
+			if err != nil {
+				return BigIntBasicMathResult{}.New(),
+					fmt.Errorf(ePrefix +
+						"Error returned by BigIntNum{}.NewINumMgr(subtrahend). " +
+						" i='%v' subtrahend.GetNumStr()='%v' Error='%v' ",
+						i, subtrahend.GetNumStr(), err.Error())
+			}
+
+			continue
+		}
+
+		bPair, err := BigIntPair{}.NewINumMgr(&finalResult.Result, subtrahend)
+
+		if err != nil {
+			return BigIntBasicMathResult{}.New(),
+				fmt.Errorf(ePrefix +
+					"Error returned by BigIntPair{}.NewINumMgr(&finalResult.Result, &subtrahend). " +
+					" i='%v' subtrahend.GetNumStr()='%v' Error='%v' ",
+					i, subtrahend.GetNumStr(), err.Error())
+		}
+
+		result := bSubtract.SubtractPair(bPair)
+
+		finalResult.Result = result.Result.CopyOut()
+	}
+
+	return finalResult, nil
+}
+
 // SubtractNumStr - Receives two number strings and proceeds to subtract
 // n2 from n1.
 //

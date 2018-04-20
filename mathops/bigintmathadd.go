@@ -308,9 +308,11 @@ func (bAdd BigIntMathAdd) AddIntArySeries(iarys ... IntAry) (BigIntBasicMathResu
 	return finalResult, nil
 }
 
-
 // AddINumMgr - Receives two objects which implement the INumMgr Interface
 // and adds their numeric values.
+//
+// The INumMgr interface is implemented by types, BigIntNum, Decimal,
+// NumStrDto and IntAry.
 //
 // The result is returned as an instance of Type, 'BigIntBasicMathResult'.
 //
@@ -397,7 +399,7 @@ func (bAdd BigIntMathAdd) AddINumMgrArray(nums []INumMgr) (BigIntBasicMathResult
 //
 func (bAdd BigIntMathAdd) AddINumMgrSeries(nums ... INumMgr) (BigIntBasicMathResult, error) {
 
-	ePrefix := "BigIntMathAdd.AddDecimalSeries() "
+	ePrefix := "BigIntMathAdd.AddINumMgrSeries() "
 
 	finalResult := BigIntBasicMathResult{}.New()
 	var err error
@@ -436,7 +438,6 @@ func (bAdd BigIntMathAdd) AddINumMgrSeries(nums ... INumMgr) (BigIntBasicMathRes
 
 	return finalResult, nil
 }
-
 
 // AddNumStr - Receives two number strings and adds their numeric values.
 //
