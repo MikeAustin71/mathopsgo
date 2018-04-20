@@ -162,7 +162,6 @@ func (bSubtract BigIntMathSubtract) SubtractDecimal(
 	return bSubtract.SubtractPair(bPair), nil
 }
 
-
 // SubtractDecimalArray - Receives one Decimal parameter which is classified as
 // the 'minuend'. The second input parameter is an array of Decimal Types
 // labeled, 'subtrahends'.
@@ -225,7 +224,6 @@ func (bSubtract BigIntMathSubtract) SubtractDecimalArray(
 
 	return finalResult, nil
 }
-
 
 // SubtractDecimalSeries - Receives one Decimal Type which is classified as
 // the 'minuend'. The second input parameter, 'subtrahends' is a series of
@@ -314,6 +312,68 @@ func (bSubtract BigIntMathSubtract) SubtractIntAry(
 	return bSubtract.SubtractPair(bPair), nil
 }
 
+// SubtractIntAryArray - Receives one IntAry parameter which is classified as
+// the 'minuend'. The second input parameter is an array of IntAry Types
+// labeled, 'subtrahends'.
+//
+// The array of 'subtrahends' is subtracted from the 'minuend'.
+//
+// In the subtraction operation:
+// 								b1 - b2 = difference or result
+//								'minuend' - 'subtrahend' = difference or result
+//								b1 = 'minuend'
+//								b2 = 'subtrahend'
+//
+// In this method, the 'subtrahend' is an array of IntAry Types.
+//
+// The result is returned as a type 'BigIntBasicMathResult'.
+//
+func (bSubtract BigIntMathSubtract) SubtractIntAryArray(
+				minuend IntAry,
+					subtrahends []IntAry) (BigIntBasicMathResult, error) {
+
+	var err error
+	ePrefix := "BigIntMathSubtract.SubtractInAryArray() "
+	finalResult := BigIntBasicMathResult{}.New()
+	finalResult.Result, err = BigIntNum{}.NewIntAry(minuend)
+
+	if err != nil {
+		return BigIntBasicMathResult{},
+			fmt.Errorf(ePrefix +
+				"Error returned by BigIntNum{}.NewIntAry(minuend). " +
+				"minuend='%v' Error='%v'", minuend.GetNumStr(), err.Error())
+	}
+
+
+
+	lenSubtrahends := len(subtrahends)
+
+	if lenSubtrahends == 0 {
+		return finalResult, nil
+	}
+
+	for i:=0; i < lenSubtrahends; i++ {
+
+		bigINum, err := BigIntNum{}.NewIntAry(subtrahends[i])
+
+		if err != nil {
+			return BigIntBasicMathResult{},
+				fmt.Errorf(ePrefix +
+					"Error returned by BigIntNum{}.NewDecimal(subtrahends[i]). " +
+					"i='%v' subtrahend='%v' Error='%v'",
+					i, subtrahends[i].GetNumStr(), err.Error())
+		}
+
+		bPair := BigIntPair{}.NewBigIntNum(finalResult.Result, bigINum)
+
+		result := bSubtract.SubtractPair(bPair)
+
+		finalResult.Result = result.Result.CopyOut()
+
+	}
+
+	return finalResult, nil
+}
 
 // SubtractNumStr - Receives two number strings and proceeds to subtract
 // n2 from n1.
