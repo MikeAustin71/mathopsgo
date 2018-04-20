@@ -485,32 +485,25 @@ func (bSubtract BigIntMathSubtract) SubtractINumMgrArray(
 										subtrahends []INumMgr) (BigIntBasicMathResult, error) {
 
 	ePrefix := "BigIntMathSubtract.SubtractINumMgrArray() "
-
-	finalResult := BigIntBasicMathResult{}.New()
 	var err error
 
-	lenDecs := len(subtrahends)
+	finalResult := BigIntBasicMathResult{}.New()
+	finalResult.Result, err = BigIntNum{}.NewINumMgr(minuend)
 
-	if lenDecs == 0 {
+	if err != nil {
+		return BigIntBasicMathResult{},
+			fmt.Errorf(ePrefix +
+				"Error returned by BigIntNum{}.NewINumMgr(minuend). " +
+				"minuend='%v' Error='%v'", minuend.GetNumStr(), err.Error())
+	}
+
+	lenSubtrahends := len(subtrahends)
+
+	if lenSubtrahends == 0 {
 		return finalResult, nil
 	}
 
-	for i:= 0; i < lenDecs; i++ {
-
-		if i == 0 {
-
-			finalResult.Result, err = BigIntNum{}.NewINumMgr(subtrahends[i])
-
-			if err != nil {
-				return BigIntBasicMathResult{}.New(),
-					fmt.Errorf(ePrefix +
-						"Error returned by BigIntNum{}.NewINumMgr(subtrahends[i]). " +
-						" i='%v' subtrahends[i].GetNumStr()='%v' Error='%v' ",
-						i, subtrahends[i].GetNumStr(), err.Error())
-			}
-
-			continue
-		}
+	for i:= 0; i < lenSubtrahends; i++ {
 
 		bPair, err := BigIntPair{}.NewINumMgr(&finalResult.Result, subtrahends[i])
 
