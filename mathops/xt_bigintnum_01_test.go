@@ -459,6 +459,32 @@ func TestBigIntNum_Decimal_02(t *testing.T) {
 
 }
 
+func TestBigIntNum_GetDecimal_01(t *testing.T) {
+	expectedStr := "-847921684.347"
+	ePrecision := uint(3)
+
+	bINum, err := BigIntNum{}.NewNumStr(expectedStr)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(expectedStr). Error='%v'", err.Error())
+	}
+
+	decActual, err := bINum.GetDecimal()
+
+	if expectedStr != decActual.GetNumStr() {
+		t.Errorf("Error: Expected decActual.GetNumStr()='%v'. " +
+			"Instead, decActual.GetNumStr()='%v'.",
+			expectedStr, decActual.GetNumStr())
+	}
+
+	if ePrecision != decActual.GetPrecisionUint() {
+		t.Errorf("Error: Expected decActual.GetPrecisionUint()='%v'. " +
+			"Instead, decActual.GetPrecisionUint()='%v'.",
+			ePrecision, decActual.GetPrecisionUint())
+	}
+
+}
+
 func TestBigIntNum_IntAry_01(t *testing.T) {
 
 	nStr:="123.456"
