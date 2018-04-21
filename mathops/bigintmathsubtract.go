@@ -24,17 +24,42 @@ type BigIntMathSubtract struct {
 //								b1 = 'minuend'
 //								b2 = 'subtrahend'
 //
+// Input Parameters
+// ================
+//
+//	minuend *big.Int					- The number from which the subtrahend will be subtracted
+//	minPrecision uint,				- The 'minuend' Precision or numeric digits after
+//																	the decimal point.
+//	subtrahend *big.Int,			- The number to be subtracted from the 'minuend'.
+//	subPrecision uint  				- The 'subtrahend' Precision or numeric digits after
+//																	the decimal point.
+//
+// Return Values
+// =============
+//
+// After the subtraction operation, the 'difference' or 'result' is returned as a
+// Type BigIntBasicMathResult.
+//
+// 					type BigIntBasicMathResult struct {
+// 								Input BigIntPair
+//											Input.Big1		= minuend
+//											Input.Big2		= subtrahend
+//
+// 								Result BigIntNum
+// 											Result.BigInt = difference or result
+//					}
+//
 func (bSubtract BigIntMathSubtract) SubtractBigInts(
-	minuend *big.Int,
-	minPrecision uint,
-	subtrahend *big.Int,
-	subPrecision uint) BigIntBasicMathResult {
+									minuend *big.Int,
+										minPrecision uint,
+											subtrahend *big.Int,
+												subPrecision uint) BigIntBasicMathResult {
 
 	bPair := BigIntPair{}.NewBase(
-		subtrahend,
-		subPrecision,
 		minuend,
-		minPrecision)
+		minPrecision,
+		subtrahend,
+		subPrecision)
 
 	return bSubtract.SubtractPair(bPair)
 }
@@ -47,7 +72,18 @@ func (bSubtract BigIntMathSubtract) SubtractBigInts(
 //								b1 = 'minuend'
 //								b2 = 'subtrahend'
 //
-// The result is returned as a type 'BigIntBasicMathResult'.
+//
+// After the subtraction operation, the 'difference' or 'result' is returned as a
+// Type BigIntBasicMathResult.
+//
+// 					type BigIntBasicMathResult struct {
+// 								Input BigIntPair
+//											Input.Big1		= minuend
+//											Input.Big2		= subtrahend
+//
+// 								Result BigIntNum
+// 											Result.BigInt = difference or result
+//					}
 //
 func (bSubtract BigIntMathSubtract) SubtractBigIntNums(b1, b2 BigIntNum) BigIntBasicMathResult {
 
@@ -68,7 +104,19 @@ func (bSubtract BigIntMathSubtract) SubtractBigIntNums(b1, b2 BigIntNum) BigIntB
 //
 // In this method, the 'subtrahend' is an array of BigIntNum Types.
 //
-// The result is returned as a type 'BigIntBasicMathResult'.
+//
+// After the subtraction operation, the 'difference' or 'result' is returned as a
+// Type BigIntBasicMathResult.
+//
+// 					type BigIntBasicMathResult struct {
+// 								Input BigIntPair
+//											Input.Big1		= minuend
+//											Input.Big2		= (last) subtrahend
+//
+// 								Result BigIntNum
+// 											Result.BigInt = difference or result
+//					}
+//
 //
 func (bSubtract BigIntMathSubtract) SubtractBigIntNumArray(
 																				minuend BigIntNum,
@@ -110,7 +158,18 @@ func (bSubtract BigIntMathSubtract) SubtractBigIntNumArray(
 //
 // In this method, the 'subtrahend' is a series of BigIntNum Types.
 //
-// The result is returned as a type 'BigIntBasicMathResult'.
+// After the subtraction operation, the 'difference' or 'result' is returned as a
+// Type BigIntBasicMathResult.
+//
+// 					type BigIntBasicMathResult struct {
+// 								Input BigIntPair
+//											Input.Big1		= minuend
+//											Input.Big2		= (last) subtrahend
+//
+// 								Result BigIntNum
+// 											Result.BigInt = difference or result
+//					}
+//
 //
 func (bSubtract BigIntMathSubtract) SubtractBigIntNumSeries(
 																				minuend BigIntNum,
@@ -142,8 +201,19 @@ func (bSubtract BigIntMathSubtract) SubtractBigIntNumSeries(
 //								b1 = 'minuend'
 //								b2 = 'subtrahend'
 //
-// The result of this subtraction operation is returned as a
-// type 'BigIntBasicMathResult'.
+//
+// After the subtraction operation, the 'difference' or 'result' is returned as a
+// Type BigIntBasicMathResult.
+//
+// 					type BigIntBasicMathResult struct {
+// 								Input BigIntPair
+//											Input.Big1		= minuend
+//											Input.Big2		= subtrahend
+//
+// 								Result BigIntNum
+// 											Result.BigInt = difference or result
+//					}
+//
 //
 func (bSubtract BigIntMathSubtract) SubtractDecimal(
 																			decMinuend Decimal,
@@ -176,7 +246,18 @@ func (bSubtract BigIntMathSubtract) SubtractDecimal(
 //
 // In this method, the 'subtrahend' is an array of Decimal Types.
 //
-// The result is returned as a type 'BigIntBasicMathResult'.
+// After the subtraction operation, the 'difference' or 'result' is returned as a
+// Type BigIntBasicMathResult.
+//
+// 					type BigIntBasicMathResult struct {
+// 								Input BigIntPair
+//											Input.Big1		= minuend
+//											Input.Big2		= (last) subtrahend
+//
+// 								Result BigIntNum
+// 											Result.BigInt = difference or result
+//					}
+//
 //
 func (bSubtract BigIntMathSubtract) SubtractDecimalArray(
 				minuend Decimal,
@@ -239,7 +320,18 @@ func (bSubtract BigIntMathSubtract) SubtractDecimalArray(
 //
 // In this method, the 'subtrahend' is a series of Decimal Types.
 //
-// The result is returned as a type 'BigIntBasicMathResult'.
+// After the subtraction operation, the 'difference' or 'result' is returned as a
+// Type BigIntBasicMathResult.
+//
+// 					type BigIntBasicMathResult struct {
+// 								Input BigIntPair
+//											Input.Big1		= minuend
+//											Input.Big2		= (last) subtrahend
+//
+// 								Result BigIntNum
+// 											Result.BigInt = difference or result
+//					}
+//
 //
 func (bSubtract BigIntMathSubtract) SubtractDecimalSeries(
 										minuend Decimal,
@@ -291,8 +383,17 @@ func (bSubtract BigIntMathSubtract) SubtractDecimalSeries(
 //								b1 = 'minuend'
 //								b2 = 'subtrahend'
 //
-// The result of this subtraction operation is returned as a
-// type 'BigIntBasicMathResult'.
+// After the subtraction operation, the 'difference' or 'result' is returned as a
+// Type BigIntBasicMathResult.
+//
+// 					type BigIntBasicMathResult struct {
+// 								Input BigIntPair
+//											Input.Big1		= minuend
+//											Input.Big2		= subtrahend
+//
+// 								Result BigIntNum
+// 											Result.BigInt = difference or result
+//					}
 //
 func (bSubtract BigIntMathSubtract) SubtractIntAry(
 									iaMinuend IntAry,
@@ -326,7 +427,17 @@ func (bSubtract BigIntMathSubtract) SubtractIntAry(
 //
 // In this method, the 'subtrahend' is an array of IntAry Types.
 //
-// The result of the subtraction operation is returned as a type 'BigIntBasicMathResult'.
+// After the subtraction operation, the 'difference' or 'result' is returned as a
+// Type BigIntBasicMathResult.
+//
+// 					type BigIntBasicMathResult struct {
+// 								Input BigIntPair
+//											Input.Big1		= minuend
+//											Input.Big2		= (last) subtrahend
+//
+// 								Result BigIntNum
+// 											Result.BigInt = difference or result
+//					}
 //
 func (bSubtract BigIntMathSubtract) SubtractIntAryArray(
 				minuend IntAry,
@@ -385,9 +496,19 @@ func (bSubtract BigIntMathSubtract) SubtractIntAryArray(
 //								b1 = 'minuend'
 //								b2 = 'subtrahend'
 //
-// In this method, the 'subtrahend' is a series of IntAry Types.
+// After the subtraction operation, the 'difference' or 'result' is returned as a
+// Type BigIntBasicMathResult.
 //
-// The result of the subtraction operation is returned as a type 'BigIntBasicMathResult'.
+// The 'difference' or 'result' is returned as a Type BigIntBasicMathResult.
+//
+// 					type BigIntBasicMathResult struct {
+// 								Input BigIntPair
+//											Input.Big1		= minuend
+//											Input.Big2		= (last) subtrahend
+//
+// 								Result BigIntNum
+// 											Result.BigInt = difference or result
+//					}
 //
 func (bSubtract BigIntMathSubtract) SubtractIntArySeries(
 					minuend IntAry,
@@ -441,8 +562,17 @@ func (bSubtract BigIntMathSubtract) SubtractIntArySeries(
 // The INumMgr interface is implemented by types, BigIntNum, Decimal,
 // NumStrDto and IntAry.
 //
-// After the subtraction operation, the result is returned as an instance of Type,
-// 'BigIntBasicMathResult'.
+// After the subtraction operation, the 'difference' or 'result' is returned as a
+// Type BigIntBasicMathResult.
+//
+// 					type BigIntBasicMathResult struct {
+// 								Input BigIntPair
+//											Input.Big1		= minuend
+//											Input.Big2		= subtrahend
+//
+// 								Result BigIntNum
+// 											Result.BigInt = difference or result
+//					}
 //
 func (bSubtract BigIntMathSubtract) SubtractINumMgr(
 						minuend,
@@ -477,8 +607,17 @@ func (bSubtract BigIntMathSubtract) SubtractINumMgr(
 // NumStrDto and IntAry. This allows the user to mix different types in
 // a single array and add their numeric values.
 //
-// After the subtraction operation, the result is returned as an instance of Type,
-// 'BigIntBasicMathResult'.
+// After the subtraction operation, the 'difference' or 'result' is returned as a
+// Type BigIntBasicMathResult.
+//
+// 					type BigIntBasicMathResult struct {
+// 								Input BigIntPair
+//											Input.Big1		= minuend
+//											Input.Big2		= (last) subtrahend
+//
+// 								Result BigIntNum
+// 											Result.BigInt = difference or result
+//					}
 //
 func (bSubtract BigIntMathSubtract) SubtractINumMgrArray(
 									minuend INumMgr,
@@ -537,8 +676,17 @@ func (bSubtract BigIntMathSubtract) SubtractINumMgrArray(
 // NumStrDto and IntAry. This allows the user to mix different types in
 // a single array and add their numeric values.
 //
-// After the subtraction operation, the result is returned as an instance of Type,
-// 'BigIntBasicMathResult'.
+// After the subtraction operation, the 'difference' or 'result' is returned as a
+// Type BigIntBasicMathResult.
+//
+// 					type BigIntBasicMathResult struct {
+// 								Input BigIntPair
+//											Input.Big1		= minuend
+//											Input.Big2		= (last) subtrahend
+//
+// 								Result BigIntNum
+// 											Result.BigInt = difference or result
+//					}
 //
 func (bSubtract BigIntMathSubtract) SubtractINumMgrSeries(
 					minuend INumMgr,
@@ -591,11 +739,21 @@ func (bSubtract BigIntMathSubtract) SubtractINumMgrSeries(
 //								n1 = 'minuend'
 //								n2 = 'subtrahend'
 //
-// The result of the subtraction operation is returned as a type 'BigIntBasicMathResult'.
+// After the subtraction operation, the 'difference' or 'result' is returned as a
+// Type BigIntBasicMathResult.
+//
+// 					type BigIntBasicMathResult struct {
+// 								Input BigIntPair
+//											Input.Big1		= minuend
+//											Input.Big2		= subtrahend
+//
+// 								Result BigIntNum
+// 											Result.BigInt = difference or result
+//					}
 //
 func (bSubtract BigIntMathSubtract) SubtractNumStr(
-	n1 string,
-	n2 string) (BigIntBasicMathResult, error) {
+								n1 string,
+									n2 string) (BigIntBasicMathResult, error) {
 
 	ePrefix := "BigIntMathSubtract.SubtractNumStr() "
 
@@ -628,7 +786,17 @@ func (bSubtract BigIntMathSubtract) SubtractNumStr(
 //
 // In this method, the 'subtrahend' is an array of string Types.
 //
-// The result of the subtraction operation is returned as a type 'BigIntBasicMathResult'.
+// After the subtraction operation, the 'difference' or 'result' is returned as a
+// Type BigIntBasicMathResult.
+//
+// 					type BigIntBasicMathResult struct {
+// 								Input BigIntPair
+//											Input.Big1		= minuend
+//											Input.Big2		= (last) subtrahend
+//
+// 								Result BigIntNum
+// 											Result.BigInt = difference or result
+//					}
 //
 func (bSubtract BigIntMathSubtract) SubtractNumStrArray(
 				minuend string,
@@ -693,7 +861,17 @@ func (bSubtract BigIntMathSubtract) SubtractNumStrArray(
 //
 // In this method, the 'subtrahend' is a series of strings.
 //
-// The result of the subtraction operation is returned as a type 'BigIntBasicMathResult'.
+// After the subtraction operation, the 'difference' or 'result' is returned as a
+// Type BigIntBasicMathResult.
+//
+// 					type BigIntBasicMathResult struct {
+// 								Input BigIntPair
+//											Input.Big1		= minuend
+//											Input.Big2		= (last) subtrahend
+//
+// 								Result BigIntNum
+// 											Result.BigInt = difference or result
+//					}
 //
 func (bSubtract BigIntMathSubtract) SubtractNumStrSeries(
 				minuend string,
@@ -745,8 +923,17 @@ func (bSubtract BigIntMathSubtract) SubtractNumStrSeries(
 //								nDtoMinuend 		= 'minuend'
 //								nDtoSubtrahend 	= 'subtrahend'
 //
+// After the subtraction operation, the 'difference' or 'result' is returned as a
+// Type BigIntBasicMathResult.
 //
-// The result is returned as a type 'BigIntBasicMathResult'.
+// 					type BigIntBasicMathResult struct {
+// 								Input BigIntPair
+//											Input.Big1		= minuend
+//											Input.Big2		= subtrahend
+//
+// 								Result BigIntNum
+// 											Result.BigInt = difference or result
+//					}
 //
 func (bSubtract BigIntMathSubtract) SubtractNumStrDto(
 					nDtoMinuend NumStrDto,
@@ -779,7 +966,17 @@ func (bSubtract BigIntMathSubtract) SubtractNumStrDto(
 //
 // In this method, the 'subtrahend' is an array of NumStrDto Types.
 //
-// The result of the subtraction operation is returned as a type 'BigIntBasicMathResult'.
+// After the subtraction operation, the 'difference' or 'result' is returned as a
+// Type BigIntBasicMathResult.
+//
+// 					type BigIntBasicMathResult struct {
+// 								Input BigIntPair
+//											Input.Big1		= minuend
+//											Input.Big2		= (last) subtrahend
+//
+// 								Result BigIntNum
+// 											Result.BigInt = difference or result
+//					}
 //
 func (bSubtract BigIntMathSubtract) SubtractNumStrDtoArray(
 				minuend NumStrDto,
@@ -840,7 +1037,17 @@ func (bSubtract BigIntMathSubtract) SubtractNumStrDtoArray(
 //
 // In this method, the 'subtrahend' is a series of NumStrDto Types.
 //
-// The result of the subtraction operation is returned as a type 'BigIntBasicMathResult'.
+// After the subtraction operation, the 'difference' or 'result' is returned as a
+// Type BigIntBasicMathResult.
+//
+// 					type BigIntBasicMathResult struct {
+// 								Input BigIntPair
+//											Input.Big1		= minuend
+//											Input.Big2		= (last) subtrahend
+//
+// 								Result BigIntNum
+// 											Result.BigInt = difference or result
+//					}
 //
 func (bSubtract BigIntMathSubtract) SubtractNumStrDtoSeries(
 				minuend NumStrDto,
@@ -884,7 +1091,17 @@ func (bSubtract BigIntMathSubtract) SubtractNumStrDtoSeries(
 // SubtractPair - Performs the subtraction operation. This method receives a type
 // 'BigIntPair' and proceeds to subtract b2.BigInt from b1.BigInt.
 //
-// The result is returned as type BigIntBasicMathResult
+// After the subtraction operation, the 'difference' or 'result' is returned as a
+// Type BigIntBasicMathResult.
+//
+// 					type BigIntBasicMathResult struct {
+// 								Input BigIntPair
+//											Input.Big1		= minuend
+//											Input.Big2		= subtrahend
+//
+// 								Result BigIntNum
+// 											Result.BigInt = difference or result
+//					}
 //
 func (bSubtract BigIntMathSubtract) SubtractPair(bPair BigIntPair) BigIntBasicMathResult {
 

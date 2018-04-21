@@ -45,55 +45,191 @@ func (bMultiply BigIntMathMultiply) NewBigIntPairResult(bPair BigIntPair) BigInt
 }
 
 
-// MultiplyBigIntNums - Receives two BigIntNum types and proceeds to multiply the
-// two numeric values.
-//
-// 				b1 X b2 = result
-//
-// The result is returned as a BigIntMathResult type.
-//
-func (bMultiply BigIntMathMultiply) MultiplyBigIntNums(b1, b2 BigIntNum) BigIntBasicMathResult {
-
-	bPair := BigIntPair{}.NewBigIntNum(b1, b2)
-
-	return bMultiply.MultiplyPair(bPair)
-
-}
-
 // MultiplyBigInts - Receives two *big.Int numbers and their associated precision
-// specifications. The method the proceeds to mulitpy b1 times b2.
+// specifications. This method then proceeds to perform a multiplication operation
+// by multiplying the 'multiplier' by the 'multiplicand'
 //
-//						b1 x b2 = result
+// In the multiplication operation, the number to be multiplied is called the
+// "multiplicand", while the number of times the multiplicand is to be multiplied
+// comes from the "multiplier". Usually the multiplier is placed first and the
+// multiplicand is placed second.
 //
-// The result is returned as a type 'BigIntBasicMathResult'.
+// For example, in the problem 5 x 3 equals 15, the 5 is the 'multiplier',
+// 3 is the 'multiplicand' and 15 is the 'product' or result.
+//
+//							multiplier x multiplicand = product or result
+//
+// Input Parameters
+// ================
+//
+//	multiplier *big.Int					- The number to be multiplied by 'multiplicand'
+//	multiplierPrecision uint,		- The 'multiplier' Precision or numeric digits after
+//																	the decimal point.
+//	multiplicand *big.Int,			- The number to be multiplied by the 'multiplier'.
+//	multiplicandPrecision uint  - The 'multiplicand' Precision or numeric digits after
+//																	the decimal point.
+//
+// Return Values
+// =============
+//
+// This method performs the multiplication operation and returns the result or
+// 'product' as a BigIntBasicMathResult type.
+//
+// 					type BigIntBasicMathResult struct {
+// 								Input BigIntPair
+//											Input.Big1		= multiplier
+//											Input.Big2		= multiplicand
+//
+// 								Result BigIntNum
+// 											Result.BigInt = product
+//					}
+//
 //
 func (bMultiply BigIntMathMultiply) MultiplyBigInts(
-	b1 *big.Int,
-	b1Precision uint,
-	b2 *big.Int,
-	b2Precision uint) BigIntBasicMathResult {
+									multiplier *big.Int,
+										multiplierPrecision uint,
+											multiplicand *big.Int,
+												multiplicandPrecision uint) BigIntBasicMathResult {
 
-	bPair := BigIntPair{}.NewBase(b1, b1Precision, b2, b2Precision)
+	bPair := BigIntPair{}.NewBase(
+												multiplier,
+													multiplierPrecision,
+														multiplicand,
+															multiplicandPrecision)
 
 	return bMultiply.MultiplyPair(bPair)
 
 }
 
+
+// MultiplyBigIntNums - Receives two BigIntNum types and performs a 'multiplication'
+// operation on the BigIntNum's.
+//
+// In the multiplication operation, the number to be multiplied is called the
+// "multiplicand", while the number of times the multiplicand is to be multiplied
+// comes from the "multiplier". Usually the multiplier is placed first and the
+// multiplicand is placed second.
+//
+// For example, in the problem 5 x 3 equals 15, the 5 is the 'multiplier',
+// 3 is the 'multiplicand' and 15 is the 'product' or result.
+//
+//							multiplier x multiplicand = product or result
+//
+// This method performs the multiplication operation and afterwards returns the
+// result or 'product' as a BigIntBasicMathResult type.
+//
+// 					type BigIntBasicMathResult struct {
+// 								Input BigIntPair
+//											Input.Big1		= multiplier
+//											Input.Big2		= multiplicand
+//
+// 								Result BigIntNum
+// 											Result.BigInt = product
+//					}
+//
+//
+func (bMultiply BigIntMathMultiply) MultiplyBigIntNums(
+								multiplier BigIntNum,
+									multiplicand BigIntNum) BigIntBasicMathResult {
+
+	bPair := BigIntPair{}.NewBigIntNum(multiplier, multiplicand)
+
+	return bMultiply.MultiplyPair(bPair)
+
+}
+
+// MultiplyBigIntNumArray - Receives one BigIntNum which is classified as the 'minuend'.
+// The second input parameter is an array of BigIntNum Types labeled, 'subtrahends'.
+// The array of 'subtrahends' is subtracted from the 'minuend'.
+//
+// In the multiplication operation, the number to be multiplied is called the
+// "multiplicand", while the number of times the multiplicand is to be multiplied
+// comes from the "multiplier". Usually the multiplier is placed first and the
+// multiplicand is placed second.
+//
+// For example, in the problem 5 x 3 equals 15, the 5 is the 'multiplier',
+// 3 is the 'multiplicand' and 15 is the 'product' or result.
+//
+//							multiplier x multiplicand = product or result
+//
+// This method performs the multiplication operation and afterwards returns the
+// result or 'product' as a BigIntBasicMathResult type.
+//
+// 					type BigIntBasicMathResult struct {
+// 								Input BigIntPair
+//											Input.Big1		= multiplier
+//											Input.Big2		= multiplicand
+//
+// 								Result BigIntNum
+// 											Result.BigInt = product
+//					}
+//
+//
+func (bMultiply BigIntMathMultiply) MultiplyBigIntNumArray(
+	minuend BigIntNum,
+	subtrahends []BigIntNum) BigIntBasicMathResult {
+
+	finalResult := BigIntBasicMathResult{}.New()
+	finalResult.Result = minuend.CopyOut()
+
+	lenSubtrahends := len(subtrahends)
+
+	if lenSubtrahends == 0 {
+		return finalResult
+	}
+
+	for i:=0; i < lenSubtrahends; i++ {
+
+		bPair := BigIntPair{}.NewBigIntNum(finalResult.Result, subtrahends[i])
+
+		result := bMultiply.MultiplyPair(bPair)
+
+		finalResult.Result = result.Result.CopyOut()
+
+	}
+
+	return finalResult
+}
+
+
 // MultiplyDecimal - Receives two Decimal instances and multiplies their
-// numeric values. The result is returned as a 'BigIntBasicMathResult'
+// numeric values. The result or 'product' is returned as a 'BigIntBasicMathResult'
 // type.
 //
+// In the multiplication operation, the number to be multiplied is called the
+// "multiplicand", while the number of times the multiplicand is to be multiplied
+// comes from the "multiplier". Usually the multiplier is placed first and the
+// multiplicand is placed second.
+//
+// For example, in the problem 5 x 3 equals 15, the 5 is the 'multiplier',
+// 3 is the 'multiplicand' and 15 is the 'product' or result.
+//
+//							multiplier x multiplicand = product or result
+//
+// This method performs the multiplication operation and afterwards returns the
+// result or 'product' as a BigIntBasicMathResult type.
+//
+// 					type BigIntBasicMathResult struct {
+// 								Input BigIntPair
+//											Input.Big1		= multiplier
+//											Input.Big2		= multiplicand
+//
+// 								Result BigIntNum
+// 											Result.BigInt = product
+//					}
+//
+//
 func (bMultiply BigIntMathMultiply) MultiplyDecimal(
-														dec1,
-														dec2 Decimal) (BigIntBasicMathResult, error) {
+														multiplier,
+														multiplicand Decimal) (BigIntBasicMathResult, error) {
 
 	ePrefix := "BigIntMathMultiply.MultiplyDecimal() "
 
-	bPair, err := BigIntPair{}.NewDecimal(dec1, dec2)
+	bPair, err := BigIntPair{}.NewDecimal(multiplier, multiplicand)
 
 	if err != nil {
 		return BigIntBasicMathResult{},
-			fmt.Errorf(ePrefix + "Error returned by BigIntPair{}.NewDecimal(dec1, dec2). " +
+			fmt.Errorf(ePrefix + "Error returned by BigIntPair{}.NewDecimal(multiplier, multiplicand). " +
 				"Error='%v' ", err.Error())
 	}
 
