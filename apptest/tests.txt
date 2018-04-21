@@ -1,5 +1,5 @@
 === RUN   TestBigIntPair_Compare_01
---- PASS: TestBigIntPair_Compare_01 (0.02s)
+--- PASS: TestBigIntPair_Compare_01 (0.06s)
 === RUN   TestBigIntPair_Compare_02
 --- PASS: TestBigIntPair_Compare_02 (0.00s)
 === RUN   TestBigIntPair_Compare_03
@@ -292,6 +292,8 @@
 --- PASS: TestBigIntNum_Decimal_02 (0.00s)
 === RUN   TestBigIntNum_GetDecimal_01
 --- PASS: TestBigIntNum_GetDecimal_01 (0.00s)
+=== RUN   TestBigIntNum_GetNumStrDto_01
+--- PASS: TestBigIntNum_GetNumStrDto_01 (0.00s)
 === RUN   TestBigIntNum_IntAry_01
 --- PASS: TestBigIntNum_IntAry_01 (0.00s)
 === RUN   TestBigIntNum_IntAry_02
@@ -621,7 +623,7 @@
 === RUN   TestFracIntAry_GetRationalValue_06
 --- PASS: TestFracIntAry_GetRationalValue_06 (0.00s)
 === RUN   TestFracIntAry_GetRationalValue_07
---- PASS: TestFracIntAry_GetRationalValue_07 (0.06s)
+--- PASS: TestFracIntAry_GetRationalValue_07 (0.07s)
 === RUN   TestIntAry_AddMultipleToThis_01
 --- PASS: TestIntAry_AddMultipleToThis_01 (0.00s)
 === RUN   TestIntAry_AddToThis_01
@@ -789,7 +791,7 @@
 === RUN   TestIntAry_Ceiling_03
 --- PASS: TestIntAry_Ceiling_03 (0.00s)
 === RUN   TestIntAry_Ceiling_04
---- PASS: TestIntAry_Ceiling_04 (0.00s)
+--- PASS: TestIntAry_Ceiling_04 (0.05s)
 === RUN   TestIntAry_Ceiling_05
 --- PASS: TestIntAry_Ceiling_05 (0.00s)
 === RUN   TestIntAry_Ceiling_06
@@ -923,7 +925,7 @@
 === RUN   TestIntAry_DivideThisBy_12
 --- PASS: TestIntAry_DivideThisBy_12 (0.00s)
 === RUN   TestIntAry_DivideThisBy_13
---- PASS: TestIntAry_DivideThisBy_13 (0.05s)
+--- PASS: TestIntAry_DivideThisBy_13 (0.08s)
 === RUN   TestIntAry_DivideThisBy_14
 --- PASS: TestIntAry_DivideThisBy_14 (0.00s)
 === RUN   TestIntAry_DivideThisBy_15
@@ -1139,7 +1141,7 @@
 === RUN   TestIntAry_Pow_05
 --- PASS: TestIntAry_Pow_05 (0.00s)
 === RUN   TestIntAry_Pow_06
---- PASS: TestIntAry_Pow_06 (0.25s)
+--- PASS: TestIntAry_Pow_06 (0.26s)
 === RUN   TestIntAry_ResetFromBackUp_01
 --- PASS: TestIntAry_ResetFromBackUp_01 (0.00s)
 === RUN   TestIntAry_RoundToPrecision_01
@@ -1785,9 +1787,9 @@
 === RUN   TestNumStrDto_ShiftPrecisionRight_04
 --- PASS: TestNumStrDto_ShiftPrecisionRight_04 (0.00s)
 === RUN   TestNumStrDto_ShiftPrecisionRight_05
---- PASS: TestNumStrDto_ShiftPrecisionRight_05 (0.00s)
+--- PASS: TestNumStrDto_ShiftPrecisionRight_05 (0.02s)
 === RUN   TestNumStrDto_ShiftPrecisionRight_06
---- PASS: TestNumStrDto_ShiftPrecisionRight_06 (0.01s)
+--- PASS: TestNumStrDto_ShiftPrecisionRight_06 (0.00s)
 === RUN   TestNumStrDto_ShiftPrecisionRight_07
 --- PASS: TestNumStrDto_ShiftPrecisionRight_07 (0.00s)
 === RUN   TestNumStrDto_ShiftPrecisionRight_08
@@ -1995,4 +1997,4 @@
 === RUN   TestStrMathOp_SubtractN1N2_19
 --- PASS: TestStrMathOp_SubtractN1N2_19 (0.00s)
 PASS
-ok  	MikeAustin71/mathopsgo/mathops	0.641s
+ok  	MikeAustin71/mathopsgo/mathops	0.812s
