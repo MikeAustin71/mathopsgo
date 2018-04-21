@@ -545,26 +545,20 @@ func (bSubtract BigIntMathSubtract) SubtractINumMgrSeries(
 						subtrahends ... INumMgr) (BigIntBasicMathResult, error) {
 
 	ePrefix := "BigIntMathSubtract.SubtractINumMgrSeries() "
-
-	finalResult := BigIntBasicMathResult{}.New()
 	var err error
 
+	finalResult := BigIntBasicMathResult{}.New()
+
+	finalResult.Result, err = BigIntNum{}.NewINumMgr(minuend)
+
+	if err != nil {
+		return BigIntBasicMathResult{},
+			fmt.Errorf(ePrefix +
+				"Error returned by BigIntNum{}.NewINumMgr(minuend). " +
+				"minuend='%v' Error='%v'", minuend.GetNumStr(), err.Error())
+	}
+
 	for i, subtrahend := range subtrahends {
-
-		if i == 0 {
-
-			finalResult.Result, err = BigIntNum{}.NewINumMgr(subtrahend)
-
-			if err != nil {
-				return BigIntBasicMathResult{}.New(),
-					fmt.Errorf(ePrefix +
-						"Error returned by BigIntNum{}.NewINumMgr(subtrahend). " +
-						" i='%v' subtrahend.GetNumStr()='%v' Error='%v' ",
-						i, subtrahend.GetNumStr(), err.Error())
-			}
-
-			continue
-		}
 
 		bPair, err := BigIntPair{}.NewINumMgr(&finalResult.Result, subtrahend)
 
