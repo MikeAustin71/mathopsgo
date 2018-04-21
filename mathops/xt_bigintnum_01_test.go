@@ -511,6 +511,32 @@ func TestBigIntNum_GetNumStrDto_01(t *testing.T) {
 
 }
 
+func TestBigIntNum_GetIntAry_01(t *testing.T) {
+	expectedStr := "-847921684.347"
+	ePrecision := uint(3)
+
+	bINum, err := BigIntNum{}.NewNumStr(expectedStr)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(expectedStr). Error='%v'", err.Error())
+	}
+
+	intAry, err := bINum.GetIntAry()
+
+	if expectedStr != intAry.GetNumStr() {
+		t.Errorf("Error: Expected intAry.GetNumStr()='%v'. " +
+			"Instead, intAry.GetNumStr()='%v'.",
+			expectedStr, intAry.GetNumStr())
+	}
+
+	if ePrecision != intAry.GetPrecisionUint() {
+		t.Errorf("Error: Expected intAry.GetPrecisionUint()='%v'. " +
+			"Instead, intAry.GetPrecisionUint()='%v'.",
+			ePrecision, intAry.GetPrecisionUint())
+	}
+
+}
+
 func TestBigIntNum_IntAry_01(t *testing.T) {
 
 	nStr:="123.456"
