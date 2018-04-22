@@ -1,5 +1,5 @@
 === RUN   TestBigIntPair_Compare_01
---- PASS: TestBigIntPair_Compare_01 (0.04s)
+--- PASS: TestBigIntPair_Compare_01 (0.01s)
 === RUN   TestBigIntPair_Compare_02
 --- PASS: TestBigIntPair_Compare_02 (0.00s)
 === RUN   TestBigIntPair_Compare_03
@@ -154,6 +154,16 @@
 --- PASS: TestBigIntMathMultiply_MultiplyBigIntNumArray_01 (0.00s)
 === RUN   TestBigIntMathMultiply_MultiplyBigIntNumArray_02
 --- PASS: TestBigIntMathMultiply_MultiplyBigIntNumArray_02 (0.00s)
+=== RUN   TestBigIntMathMultiply_MultiplyBigIntNumOutputToArray_01
+--- PASS: TestBigIntMathMultiply_MultiplyBigIntNumOutputToArray_01 (0.00s)
+=== RUN   TestBigIntMathMultiply_MultiplyBigIntNumOutputToArray_02
+--- PASS: TestBigIntMathMultiply_MultiplyBigIntNumOutputToArray_02 (0.00s)
+=== RUN   TestBigIntMathMultiply_MultiplyBigIntNumOutputToArray_03
+--- PASS: TestBigIntMathMultiply_MultiplyBigIntNumOutputToArray_03 (0.00s)
+=== RUN   TestBigIntMathMultiply_MultiplyBigIntNumOutputToArray_04
+--- PASS: TestBigIntMathMultiply_MultiplyBigIntNumOutputToArray_04 (0.00s)
+=== RUN   TestBigIntMathMultiply_MultiplyBigIntNumOutputToArray_05
+--- PASS: TestBigIntMathMultiply_MultiplyBigIntNumOutputToArray_05 (0.00s)
 === RUN   TestBigIntMathSubtract_SubtractBigInts_01
 --- PASS: TestBigIntMathSubtract_SubtractBigInts_01 (0.00s)
 === RUN   TestBigIntMathSubtract_SubtractBigInts_02
@@ -1753,7 +1763,7 @@
 === RUN   TestNumStrDto_SetPrecision_02
 --- PASS: TestNumStrDto_SetPrecision_02 (0.00s)
 === RUN   TestNumStrDto_SetPrecision_03
---- PASS: TestNumStrDto_SetPrecision_03 (0.00s)
+--- PASS: TestNumStrDto_SetPrecision_03 (0.01s)
 === RUN   TestNumStrDto_SetPrecision_04
 --- PASS: TestNumStrDto_SetPrecision_04 (0.00s)
 === RUN   TestNumStrDto_SetPrecision_05
@@ -1765,7 +1775,7 @@
 === RUN   TestNumStrDto_SetPrecision_08
 --- PASS: TestNumStrDto_SetPrecision_08 (0.00s)
 === RUN   TestNumStrDto_SetPrecision_09
---- PASS: TestNumStrDto_SetPrecision_09 (0.01s)
+--- PASS: TestNumStrDto_SetPrecision_09 (0.00s)
 === RUN   TestNumStrDto_SetPrecision_10
 --- PASS: TestNumStrDto_SetPrecision_10 (0.00s)
 === RUN   TestNumStrDto_SetPrecision_11
@@ -2031,4 +2041,4 @@
 === RUN   TestStrMathOp_SubtractN1N2_19
 --- PASS: TestStrMathOp_SubtractN1N2_19 (0.00s)
 PASS
-ok  	MikeAustin71/mathopsgo/mathops	0.759s
+ok  	MikeAustin71/mathopsgo/mathops	0.649s

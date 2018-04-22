@@ -193,6 +193,63 @@ func (bMultiply BigIntMathMultiply) MultiplyBigIntNumArray(
 }
 
 
+// MultiplyBigIntNumOutputToArray - Receives one BigIntNum which is classified as the 'multiplier'.
+// The second input parameter is an array of BigIntNum Types labeled, 'multiplicands'.
+//
+// Each element of the 'multiplicands' array is multiplied by the 'multiplier'. The result or
+// 'product' is then stored in a results array which is returned to the calling function.
+//
+// In the multiplication operation, the number to be multiplied is called the
+// "multiplicand", while the number of times the multiplicand is to be multiplied
+// comes from the "multiplier". Usually the multiplier is placed first and the
+// multiplicand is placed second.
+//
+// For example, in the problem 5 x 3 equals 15, the 5 is the 'multiplier',
+// 3 is the 'multiplicand' and 15 is the 'product' or result.
+//
+// Example
+// =======
+// 										Multiplicands												Output
+// Multiplier				    	Array														Array
+//
+//		3			x				multiplicands[0] = 2			=				  outputarray[0] =  6
+//		3			x				multiplicands[0] = 3			=				  outputarray[0] =  9
+//		3			x				multiplicands[0] = 4			=				  outputarray[0] = 12
+//		3			x				multiplicands[0] = 5			=				  outputarray[0] = 15
+//		3			x				multiplicands[0] = 6			=				  outputarray[0] = 18
+//		3			x				multiplicands[0] = 7			=				  outputarray[0] = 21
+//
+//
+// This method performs the multiplication operation described above and afterwards returns the
+// result or 'product' in an Array of 'BigIntNums' ([] BigIntNums).
+//
+func (bMultiply BigIntMathMultiply) MultiplyBigIntNumOutputToArray(
+																		multiplier BigIntNum,
+																			multiplicands []BigIntNum) [] BigIntNum {
+
+	bINumInterimResult := multiplier.CopyOut()
+
+	lenMultiplicands := len(multiplicands)
+
+	if lenMultiplicands == 0 {
+		return []BigIntNum{}
+	}
+
+	resultArray := make([]BigIntNum, lenMultiplicands)
+
+	for i:=0; i < lenMultiplicands; i++ {
+
+		bPair := BigIntPair{}.NewBigIntNum(bINumInterimResult, multiplicands[i])
+
+		result := bMultiply.MultiplyPair(bPair)
+
+		resultArray[i] = result.Result.CopyOut()
+
+	}
+
+	return resultArray
+}
+
 // MultiplyDecimal - Receives two Decimal instances and multiplies their
 // numeric values. The result or 'product' is returned as a 'BigIntBasicMathResult'
 // type.
