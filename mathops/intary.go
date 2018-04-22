@@ -4194,7 +4194,9 @@ func (ia *IntAry) SetIntAryWithBigInt(intDigits *big.Int, precision uint) error 
 	big10 := big.NewInt(10)
 	modx := big.NewInt(0)
 
-	compare := bigZero.Cmp(intDigits)
+	xIntDigits := big.NewInt(0).Set(intDigits)
+
+	compare := bigZero.Cmp(xIntDigits)
 
 	ia.intAry = []uint8{}
 	ia.intAryLen = 0
@@ -4203,7 +4205,7 @@ func (ia *IntAry) SetIntAryWithBigInt(intDigits *big.Int, precision uint) error 
 
 	if compare == 1 {
 		bigMinus1 := big.NewInt(0).SetInt64(int64(-1))
-		intDigits = big.NewInt(0).Mul(intDigits, bigMinus1)
+		xIntDigits = big.NewInt(0).Mul(xIntDigits, bigMinus1)
 		ia.signVal = -1
 	}
 
@@ -4214,18 +4216,18 @@ func (ia *IntAry) SetIntAryWithBigInt(intDigits *big.Int, precision uint) error 
 
 	for true {
 
-		compare := bigZero.Cmp(intDigits)
+		compare := bigZero.Cmp(xIntDigits)
 
 		if compare == 0 {
 			break
 		}
 
-		quotient, mod = big.NewInt(0).DivMod(intDigits, big10, modx)
+		quotient, mod = big.NewInt(0).DivMod(xIntDigits, big10, modx)
 
 		ia.intAry = append(ia.intAry, uint8(mod.Int64()))
 		ia.intAryLen++
 
-		intDigits.Set(quotient)
+		xIntDigits.Set(quotient)
 
 	}
 

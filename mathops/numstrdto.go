@@ -2147,7 +2147,9 @@ func (nDto NumStrDto) NewBigInt(signedBigInt *big.Int, precision uint) (NumStrDt
 
 	ePrefix := "NumStrDto.NewBigInt() "
 
-	n2, err := NumStrDto{}.NewPtr().ParseSignedBigInt(signedBigInt, precision)
+	n2, err := NumStrDto{}.NewPtr().ParseSignedBigInt(
+								big.NewInt(0).Set(signedBigInt),
+									precision)
 
 	if err != nil {
 		return NumStrDto{},
@@ -2269,7 +2271,6 @@ func (nDto NumStrDto) NewInt64(i64 int64, precision uint) (NumStrDto, error) {
 func (nDto NumStrDto) NewRational(bigRat *big.Rat, precision int) (NumStrDto, error) {
 
 	ePrefix := "NumStrDto.NewRational() "
-
 	numStr := bigRat.FloatString(precision)
 
 	n2, err := NumStrDto{}.NewPtr().ParseNumStr(numStr)
@@ -2284,7 +2285,7 @@ func (nDto NumStrDto) NewRational(bigRat *big.Rat, precision int) (NumStrDto, er
 	return n2, nil
 }
 
-// NewBigIntNum - Used to create empty NumStrDto types.
+// New - Used to create empty NumStrDto types.
 // This message initializes the NumStrDto
 // fields. This method will return the newly
 // create type (not a pointer to the type).

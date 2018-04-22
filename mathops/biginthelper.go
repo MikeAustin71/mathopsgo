@@ -119,7 +119,7 @@ func (bPair BigIntPair) NewBigIntNum(b1, b2 BigIntNum ) BigIntPair {
 
 	bd2 := BigIntPair{}
 
-	bd2.SetBigIntPair(b1, b2)
+	bd2.SetBigIntPair( b1, b2)
 
 	return bd2
 }

@@ -96,7 +96,7 @@ func (bNum *BigIntNum) Equal(b2 BigIntNum) bool {
 // of type *big.int
 func (bNum *BigIntNum) GetBigInt() (*big.Int, error) {
 
-	return bNum.BigInt, nil
+	return big.NewInt(0).Set(bNum.BigInt), nil
 }
 
 // GetDecimal - Converts the current BigIntNum value to a Decimal
@@ -107,7 +107,7 @@ func (bNum *BigIntNum) GetDecimal() (Decimal, error) {
 
 	ePrefix := "BigIntNum.GetDecimal() "
 
-	dec, err := Decimal{}.NewBigInt(bNum.BigInt, bNum.Precision)
+	dec, err := Decimal{}.NewBigInt(big.NewInt(0).Set(bNum.BigInt), bNum.Precision)
 
 	if err != nil {
 		return Decimal{},
@@ -128,7 +128,7 @@ func (bNum *BigIntNum) GetIntAry() (IntAry, error) {
 
 	ePrefix := "BigIntNum.GetIntAry() "
 
-	ia, err := IntAry{}.NewBigInt(bNum.BigInt, bNum.Precision)
+	ia, err := IntAry{}.NewBigInt(big.NewInt(0).Set(bNum.BigInt), bNum.Precision)
 
 	if err != nil {
 		return IntAry{},
@@ -147,7 +147,7 @@ func (bNum *BigIntNum) GetIntAry() (IntAry, error) {
 //
 func (bNum *BigIntNum) GetNumStr() (string) {
 
-	nDto, err := NumStrDto{}.NewBigInt(bNum.BigInt, bNum.Precision)
+	nDto, err := NumStrDto{}.NewBigInt(big.NewInt(0).Set(bNum.BigInt), bNum.Precision)
 
 	if err != nil {
 		return ""
@@ -165,7 +165,7 @@ func (bNum *BigIntNum) GetNumStrErr() (string, error) {
 
 	ePrefix := "BigIntNum.GetNumStrErr() "
 
-	nDto, err := NumStrDto{}.NewBigInt(bNum.BigInt, bNum.Precision)
+	nDto, err := NumStrDto{}.NewBigInt(big.NewInt(0).Set(bNum.BigInt), bNum.Precision)
 
 	if err != nil {
 		return "",
@@ -186,7 +186,7 @@ func (bNum *BigIntNum) GetNumStrDto() (NumStrDto, error) {
 
 	ePrefix := "BigIntNum.GetNumStrDto() "
 
-	nDto, err := NumStrDto{}.NewBigInt(bNum.BigInt, bNum.Precision)
+	nDto, err := NumStrDto{}.NewBigInt(big.NewInt(0).Set(bNum.BigInt), bNum.Precision)
 
 	if err != nil {
 		return NumStrDto{},

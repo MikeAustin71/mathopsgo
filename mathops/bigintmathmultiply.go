@@ -138,9 +138,12 @@ func (bMultiply BigIntMathMultiply) MultiplyBigIntNums(
 
 }
 
-// MultiplyBigIntNumArray - Receives one BigIntNum which is classified as the 'minuend'.
-// The second input parameter is an array of BigIntNum Types labeled, 'subtrahends'.
-// The array of 'subtrahends' is subtracted from the 'minuend'.
+// MultiplyBigIntNumArray - Receives one BigIntNum which is classified as the 'multiplier'.
+// The second input parameter is an array of BigIntNum Types labeled, 'multiplicands'. The
+// first element of the 'multiplicands' array is multiplied by the 'multiplicands' to produce
+// a 'product'. That 'product' replaces the 'multiplier' and is multiplied by the next element
+// in the multiplicands array. This process is continued through the last element in the array
+// and the final 'product' is returned as a Type 'BigIntBasicMathResult'.
 //
 // In the multiplication operation, the number to be multiplied is called the
 // "multiplicand", while the number of times the multiplicand is to be multiplied
@@ -152,7 +155,7 @@ func (bMultiply BigIntMathMultiply) MultiplyBigIntNums(
 //
 //							multiplier x multiplicand = product or result
 //
-// This method performs the multiplication operation and afterwards returns the
+// This method performs the multiplication operation described above and afterwards returns the
 // result or 'product' as a BigIntBasicMathResult type.
 //
 // 					type BigIntBasicMathResult struct {
@@ -166,26 +169,24 @@ func (bMultiply BigIntMathMultiply) MultiplyBigIntNums(
 //
 //
 func (bMultiply BigIntMathMultiply) MultiplyBigIntNumArray(
-	minuend BigIntNum,
-	subtrahends []BigIntNum) BigIntBasicMathResult {
+									multiplier BigIntNum,
+											multiplicands []BigIntNum) BigIntBasicMathResult {
 
 	finalResult := BigIntBasicMathResult{}.New()
-	finalResult.Result = minuend.CopyOut()
+	finalResult.Result = multiplier.CopyOut()
+	lenMultiplicands := len(multiplicands)
 
-	lenSubtrahends := len(subtrahends)
-
-	if lenSubtrahends == 0 {
+	if lenMultiplicands == 0 {
 		return finalResult
 	}
 
-	for i:=0; i < lenSubtrahends; i++ {
+	for i:=0; i < lenMultiplicands; i++ {
 
-		bPair := BigIntPair{}.NewBigIntNum(finalResult.Result, subtrahends[i])
+		bPair := BigIntPair{}.NewBigIntNum(finalResult.Result, multiplicands[i])
 
 		result := bMultiply.MultiplyPair(bPair)
 
 		finalResult.Result = result.Result.CopyOut()
-
 	}
 
 	return finalResult
@@ -309,8 +310,6 @@ func (bMultiply BigIntMathMultiply) MultiplyNumStrDto(
 // The result is returned as a BigIntBasicMathResult type.
 //
 func (bMultiply BigIntMathMultiply) MultiplyPair(bPair BigIntPair) BigIntBasicMathResult {
-
-
 
 	b3 := big.NewInt(0).Mul(bPair.Big1.BigInt, bPair.Big2.BigInt)
 
