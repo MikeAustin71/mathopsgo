@@ -247,6 +247,17 @@ func (bNum *BigIntNum) GetThisPointer() *BigIntNum {
 	return bNum
 }
 
+// IsZero - Returns a boolean signaling whether the current
+// BigIntNum value is zero.
+func (bNum *BigIntNum) IsZero() bool {
+
+	if bNum.BigInt.Cmp(big.NewInt(0)) == 0 {
+		return true
+	}
+
+	return false
+}
+
 // New - returns a new BigIntNum instance initialized to
 // zero.
 //

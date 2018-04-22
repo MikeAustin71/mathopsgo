@@ -140,6 +140,16 @@
 --- PASS: TestBigIntMathSubtract_MultiplyBigInts_04 (0.00s)
 === RUN   TestBigIntMathSubtract_MultiplyBigInts_05
 --- PASS: TestBigIntMathSubtract_MultiplyBigInts_05 (0.00s)
+=== RUN   TestBigIntMathSubtract_MultiplyBigIntNums_01
+--- PASS: TestBigIntMathSubtract_MultiplyBigIntNums_01 (0.00s)
+=== RUN   TestBigIntMathSubtract_MultiplyBigIntNums_02
+--- PASS: TestBigIntMathSubtract_MultiplyBigIntNums_02 (0.00s)
+=== RUN   TestBigIntMathSubtract_MultiplyBigIntNums_03
+--- PASS: TestBigIntMathSubtract_MultiplyBigIntNums_03 (0.00s)
+=== RUN   TestBigIntMathSubtract_MultiplyBigIntNums_04
+--- PASS: TestBigIntMathSubtract_MultiplyBigIntNums_04 (0.00s)
+=== RUN   TestBigIntMathSubtract_MultiplyBigIntNums_05
+--- PASS: TestBigIntMathSubtract_MultiplyBigIntNums_05 (0.00s)
 === RUN   TestBigIntMathSubtract_SubtractBigInts_01
 --- PASS: TestBigIntMathSubtract_SubtractBigInts_01 (0.00s)
 === RUN   TestBigIntMathSubtract_SubtractBigInts_02
@@ -643,7 +653,7 @@
 === RUN   TestFracIntAry_GetRationalValue_06
 --- PASS: TestFracIntAry_GetRationalValue_06 (0.00s)
 === RUN   TestFracIntAry_GetRationalValue_07
---- PASS: TestFracIntAry_GetRationalValue_07 (0.10s)
+--- PASS: TestFracIntAry_GetRationalValue_07 (0.06s)
 === RUN   TestIntAry_AddMultipleToThis_01
 --- PASS: TestIntAry_AddMultipleToThis_01 (0.00s)
 === RUN   TestIntAry_AddToThis_01
@@ -1761,7 +1771,7 @@
 === RUN   TestNumStrDto_SetPrecision_13
 --- PASS: TestNumStrDto_SetPrecision_13 (0.00s)
 === RUN   TestNumStrDto_SetPrecision_14
---- PASS: TestNumStrDto_SetPrecision_14 (0.00s)
+--- PASS: TestNumStrDto_SetPrecision_14 (0.02s)
 === RUN   TestNumStrDto_SetPrecision_15
 --- PASS: TestNumStrDto_SetPrecision_15 (0.00s)
 === RUN   TestNumStrDto_SetPrecision_16
@@ -1777,7 +1787,7 @@
 === RUN   TestNumStrDto_SetThisPrecision_02
 --- PASS: TestNumStrDto_SetThisPrecision_02 (0.00s)
 === RUN   TestNumStrDto_ShiftPrecisionLeft_01
---- PASS: TestNumStrDto_ShiftPrecisionLeft_01 (0.02s)
+--- PASS: TestNumStrDto_ShiftPrecisionLeft_01 (0.00s)
 === RUN   TestNumStrDto_ShiftPrecisionLeft_02
 --- PASS: TestNumStrDto_ShiftPrecisionLeft_02 (0.00s)
 === RUN   TestNumStrDto_ShiftPrecisionLeft_03
@@ -2017,4 +2027,4 @@
 === RUN   TestStrMathOp_SubtractN1N2_19
 --- PASS: TestStrMathOp_SubtractN1N2_19 (0.00s)
 PASS
-ok  	MikeAustin71/mathopsgo/mathops	0.774s
+ok  	MikeAustin71/mathopsgo/mathops	0.722s
