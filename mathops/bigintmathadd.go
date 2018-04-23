@@ -10,6 +10,16 @@ type BigIntMathAdd struct {
 	Result BigIntNum
 }
 
+// AddBigIntNums - Adds two BigIntNums and returns the result in a new
+// BigIntBasicMathResult instance
+//
+func (bAdd BigIntMathAdd) AddBigIntNums(b1, b2 BigIntNum) BigIntBasicMathResult {
+
+	bPair := BigIntPair{}.NewBigIntNum(b1, b2)
+
+	return bAdd.AddPair(bPair)
+}
+
 // AddBigIntNumArray - Adds an Array of 'BigIntNum' types and returns the result
 // as type 'BigIntBasicMathResult'
 //
@@ -39,14 +49,50 @@ func (bAdd BigIntMathAdd) AddBigIntNumArray(bNums []BigIntNum ) BigIntBasicMathR
 
 }
 
-// AddBigIntNums - Adds two BigIntNums and returns the result in a new
-// BigIntBasicMathResult instance
+
+// AddBigIntNumOutputToArray - The first input parameter to this method
+// is a BigIntNum Type labeled, 'addend'.  The second element is an 
+// array of BigIntNum types labeled 'bNums'. The 'addend' is added to 
+// each element of the 'bNums' array with the result output to another
+// array of BigIntNum types ([]BigIntNum) which is returned to the calling
+// function.
 //
-func (bAdd BigIntMathAdd) AddBigIntNums(b1, b2 BigIntNum) BigIntBasicMathResult {
+// Example
+// =======
+// 										Multiplicands												Output
+//  Addend   				    	Array														Array
+//
+//		3			+					bNums[0] = 2			=				  outputarray[0] =  5
+//		3			+					bNums[0] = 3			=				  outputarray[0] =  6
+//		3			+					bNums[0] = 4			=				  outputarray[0] =  7
+//		3			+					bNums[0] = 5			=				  outputarray[0] =  8
+//		3			+					bNums[0] = 6			=				  outputarray[0] =  9
+//		3			+					bNums[0] = 9			=				  outputarray[0] = 12
+//
+//
+func (bAdd BigIntMathAdd) AddBigIntNumOutputToArray(
+													addend BigIntNum, 
+														bNums []BigIntNum ) []BigIntNum {
 
-	bPair := BigIntPair{}.NewBigIntNum(b1, b2)
+	lenBNums := len(bNums)
 
-	return bAdd.AddPair(bPair)
+	if lenBNums == 0 {
+		return []BigIntNum{}
+	}
+
+	resultArray := make([]BigIntNum, lenBNums)
+
+	for i:=0; i < lenBNums; i++ {
+
+		bPair := BigIntPair{}.NewBigIntNum(addend, bNums[i])
+
+		result := bAdd.AddPair(bPair)
+
+		resultArray[i] = result.Result.CopyOut()
+
+	}
+
+	return resultArray
 }
 
 // AddBigIntNumSeries - Adds a series of BigIntNum types and returns the total in a
@@ -156,6 +202,66 @@ func (bAdd BigIntMathAdd) AddDecimalArray(decs []Decimal) (BigIntBasicMathResult
 	}
 
 	return finalResult, nil
+}
+
+// AddDecimalOutputToArray - The first input parameter to this method
+// is a Decimal Type labeled, 'addend'.  The second element is an 
+// array of Decimal types labeled 'decs'. The 'addend' is added to 
+// each element of the 'decs' array with the result output to another
+// array of Decimal types which is returned to the calling function.
+//
+// Example
+// =======
+// 										    decs										 Output
+//  Addend   				    	Array											Array
+//
+//		3			+					decs[0] = 2			=				  outputarray[0] =  5
+//		3			+					decs[0] = 3			=				  outputarray[0] =  6
+//		3			+					decs[0] = 4			=				  outputarray[0] =  7
+//		3			+					decs[0] = 5			=				  outputarray[0] =  8
+//		3			+					decs[0] = 6			=				  outputarray[0] =  9
+//		3			+					decs[0] = 9			=				  outputarray[0] = 12
+//
+//
+func (bAdd BigIntMathAdd) AddDecimalOutputToArray(
+														addend Decimal, 
+																decs []Decimal) ([]Decimal, error) {
+
+	ePrefix := "BigIntMathAdd.AddDecimalOutputToArray() "
+
+	lenDecs := len(decs)
+
+	if lenDecs == 0 {
+		return []Decimal{}, nil
+	}
+
+	resultsArray := make([]Decimal, lenDecs)
+	
+	for i:= 0; i < lenDecs; i++ {
+
+		bPair, err := BigIntPair{}.NewDecimal(addend, decs[i])
+
+		if err != nil {
+			return []Decimal{},
+				fmt.Errorf(ePrefix + "Error returned by BigIntPair{}.NewDecimal(addend, decs[i]). " +
+					" i='%v' dec[i].GetNumStr()='%v' Error='%v' ", i, decs[i].GetNumStr(), err.Error())
+		}
+
+		result := bAdd.AddPair(bPair)
+
+		resultsArray[i], err = result.Result.GetDecimal()
+
+		if err != nil {
+			return []Decimal{},
+				fmt.Errorf(ePrefix +
+					"Error returned by result.Result.GetDecimal(). " +
+					" i='%v' decs[i].GetNumStr()='%v' Error='%v' ",
+					i, decs[i].GetNumStr(), err.Error())
+		}
+
+	}
+
+	return resultsArray, nil
 }
 
 // AddDecimalSeries - Adds a series of 'Decimal' types and returns the combined total

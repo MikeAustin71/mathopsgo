@@ -48,6 +48,10 @@
 --- PASS: TestBigIntMathAdd_AddBigIntNumArray_01 (0.00s)
 === RUN   TestBigIntMathAdd_AddBigIntNumArray_02
 --- PASS: TestBigIntMathAdd_AddBigIntNumArray_02 (0.00s)
+=== RUN   TestBigIntMathAdd_AddBigIntNumOutputToArray_01
+--- PASS: TestBigIntMathAdd_AddBigIntNumOutputToArray_01 (0.00s)
+=== RUN   TestBigIntMathAdd_AddBigIntNumOutputToArray_02
+--- PASS: TestBigIntMathAdd_AddBigIntNumOutputToArray_02 (0.00s)
 === RUN   TestBigIntMathAdd_AddBigIntNumSeries_01
 --- PASS: TestBigIntMathAdd_AddBigIntNumSeries_01 (0.00s)
 === RUN   TestBigIntMathAdd_AddBigIntNumSeries_02
@@ -62,6 +66,10 @@
 --- PASS: TestBigIntMathAdd_AddDecimalArray_01 (0.00s)
 === RUN   TestBigIntMathAdd_AddDecimalArray_02
 --- PASS: TestBigIntMathAdd_AddDecimalArray_02 (0.00s)
+=== RUN   TestBigIntMathAdd_AddDecimalOutputToArray_01
+--- PASS: TestBigIntMathAdd_AddDecimalOutputToArray_01 (0.00s)
+=== RUN   TestBigIntMathAdd_AddDecimalOutputToArray_02
+--- PASS: TestBigIntMathAdd_AddDecimalOutputToArray_02 (0.00s)
 === RUN   TestBigIntMathAdd_AddDecimalSeries_01
 --- PASS: TestBigIntMathAdd_AddDecimalSeries_01 (0.00s)
 === RUN   TestBigIntMathAdd_AddDecimalSeries_02
@@ -667,7 +675,7 @@
 === RUN   TestFracIntAry_GetRationalValue_06
 --- PASS: TestFracIntAry_GetRationalValue_06 (0.00s)
 === RUN   TestFracIntAry_GetRationalValue_07
---- PASS: TestFracIntAry_GetRationalValue_07 (0.06s)
+--- PASS: TestFracIntAry_GetRationalValue_07 (0.07s)
 === RUN   TestIntAry_AddMultipleToThis_01
 --- PASS: TestIntAry_AddMultipleToThis_01 (0.00s)
 === RUN   TestIntAry_AddToThis_01
@@ -1763,7 +1771,7 @@
 === RUN   TestNumStrDto_SetPrecision_02
 --- PASS: TestNumStrDto_SetPrecision_02 (0.00s)
 === RUN   TestNumStrDto_SetPrecision_03
---- PASS: TestNumStrDto_SetPrecision_03 (0.01s)
+--- PASS: TestNumStrDto_SetPrecision_03 (0.00s)
 === RUN   TestNumStrDto_SetPrecision_04
 --- PASS: TestNumStrDto_SetPrecision_04 (0.00s)
 === RUN   TestNumStrDto_SetPrecision_05
@@ -2041,4 +2049,4 @@
 === RUN   TestStrMathOp_SubtractN1N2_19
 --- PASS: TestStrMathOp_SubtractN1N2_19 (0.00s)
 PASS
-ok  	MikeAustin71/mathopsgo/mathops	0.649s
+ok  	MikeAustin71/mathopsgo/mathops	0.678s

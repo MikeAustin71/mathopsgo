@@ -513,6 +513,127 @@ func TestBigIntMathAdd_AddBigIntNumArray_02(t *testing.T) {
 
 }
 
+func TestBigIntMathAdd_AddBigIntNumOutputToArray_01(t *testing.T) {
+
+	var err error
+
+	// multiplier = 0
+	addendStr := "5"
+	// bNumStrs
+	bNumStrs :=  [] string {
+		"5",
+		"10.123",
+		"15",
+		"253.692",
+		"35",
+		"55",
+	}
+
+	// Expected Results Array
+	expectedNumStrs := [] string {
+		"10",
+		"15.123",
+		"20",
+		"258.692",
+		"40",
+		"60",
+	}
+
+
+	addendBiNum, err := BigIntNum{}.NewNumStr(addendStr)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(addendStr) " +
+			"addendStr='%v'  Error='%v'. ", addendStr, err.Error())
+	}
+
+	lenArray := len(bNumStrs)
+	bINumArray := make([]BigIntNum, lenArray)
+
+	for i:=0; i < lenArray; i++ {
+
+		bINumArray[i], err = 	BigIntNum{}.NewNumStr(bNumStrs[i])
+
+		if err != nil {
+			t.Errorf("Error returned by BigIntNum{}.NewNumStr(bNumStrs[i]) " +
+				"i='%v'  bNumStrs[i]='%v'  Error='%v'. ", i, bNumStrs[i], err.Error())
+		}
+
+	}
+
+	result := BigIntMathAdd{}.AddBigIntNumOutputToArray(addendBiNum, bINumArray)
+
+	for j:=0; j < lenArray; j++ {
+
+		if expectedNumStrs[j] != result[j].GetNumStr()  {
+			t.Errorf("Error: Expected NumStr[%v]='%v'. Instead NumStr[%v]='%v'. ",
+				j, expectedNumStrs[j], j, result[j].GetNumStr())
+		}
+
+	}
+
+}
+
+func TestBigIntMathAdd_AddBigIntNumOutputToArray_02(t *testing.T) {
+
+	var err error
+
+	// multiplier = 0
+	addendStr := "3.1"
+	// bNumStrs
+	bNumStrs :=  [] string {
+		"5",
+		"10.123",
+		"0",
+		"253.692",
+		"35",
+		"55",
+	}
+
+	// Expected Results Array
+	expectedNumStrs := [] string {
+		"8.1",
+		"13.223",
+		"3.1",
+		"256.792",
+		"38.1",
+		"58.1",
+	}
+
+	addendBiNum, err := BigIntNum{}.NewNumStr(addendStr)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(addendStr) " +
+			"addendStr='%v'  Error='%v'. ", addendStr, err.Error())
+	}
+
+	lenArray := len(bNumStrs)
+	bINumArray := make([]BigIntNum, lenArray)
+
+	for i:=0; i < lenArray; i++ {
+
+		bINumArray[i], err = 	BigIntNum{}.NewNumStr(bNumStrs[i])
+
+		if err != nil {
+			t.Errorf("Error returned by BigIntNum{}.NewNumStr(bNumStrs[i]) " +
+				"i='%v'  bNumStrs[i]='%v'  Error='%v'. ", i, bNumStrs[i], err.Error())
+		}
+
+	}
+
+	result := BigIntMathAdd{}.AddBigIntNumOutputToArray(addendBiNum, bINumArray)
+
+	for j:=0; j < lenArray; j++ {
+
+		if expectedNumStrs[j] != result[j].GetNumStr()  {
+			t.Errorf("Error: Expected NumStr[%v]='%v'. Instead NumStr[%v]='%v'. ",
+				j, expectedNumStrs[j], j, result[j].GetNumStr())
+		}
+
+	}
+
+}
+
 func TestBigIntMathAdd_AddBigIntNumSeries_01(t *testing.T) {
 	n1Str := "45.8"
 	n2Str := "1.45962"
@@ -968,6 +1089,138 @@ func TestBigIntMathAdd_AddDecimalArray_02(t *testing.T) {
 			expectedResultNumStr, actualTotalNumstr)
 	}
 
+}
+
+func TestBigIntMathAdd_AddDecimalOutputToArray_01(t *testing.T) {
+
+	var err error
+
+	// multiplier = 0
+	addendStr := "5"
+
+	// decNumStrs
+	decNumStrs :=  [] string {
+		"5",
+		"10.123",
+		"15",
+		"253.692",
+		"35",
+		"55",
+	}
+
+	// Expected Results Array
+	expectedNumStrs := [] string {
+		"10",
+		"15.123",
+		"20",
+		"258.692",
+		"40",
+		"60",
+	}
+
+
+	decAddend, err := Decimal{}.NewNumStr(addendStr)
+
+	if err != nil {
+		t.Errorf("Error returned by Decimal{}.NewNumStr(addendStr) " +
+			"addendStr='%v'  Error='%v'. ", addendStr, err.Error())
+	}
+
+	lenArray := len(decNumStrs)
+	decArray := make([]Decimal, lenArray)
+
+
+	for i:=0; i < lenArray; i++ {
+
+		decArray[i], err = 	Decimal{}.NewNumStr(decNumStrs[i])
+
+		if err != nil {
+			t.Errorf("Error returned by Decimal{}.NewNumStr(decNumStrs[i]) " +
+				"i='%v'  decNumStrs[i]='%v'  Error='%v'. ", i, decNumStrs[i], err.Error())
+		}
+
+	}
+
+	result, err := BigIntMathAdd{}.AddDecimalOutputToArray(decAddend, decArray)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntMathAdd{}.AddDecimalOutputToArray(" +
+			"decAddend, decArray) addendStr='%v'  Error='%v'. ",
+			addendStr, err.Error())
+	}
+
+	for j:=0; j < lenArray; j++ {
+
+		if expectedNumStrs[j] != result[j].GetNumStr()  {
+			t.Errorf("Error: Expected NumStr[%v]='%v'. Instead NumStr[%v]='%v'. ",
+				j, expectedNumStrs[j], j, result[j].GetNumStr())
+		}
+	}
+}
+
+func TestBigIntMathAdd_AddDecimalOutputToArray_02(t *testing.T) {
+
+	var err error
+
+	// multiplier = 0
+	addendStr := "3.1"
+
+	// decNumStrs
+	decNumStrs :=  [] string {
+		"5",
+		"10.123",
+		"0",
+		"253.692",
+		"35",
+		"55",
+	}
+
+	// Expected Results Array
+	expectedNumStrs := [] string {
+		"8.1",
+		"13.223",
+		"3.1",
+		"256.792",
+		"38.1",
+		"58.1",
+	}
+
+	decAddend, err := Decimal{}.NewNumStr(addendStr)
+
+	if err != nil {
+		t.Errorf("Error returned by Decimal{}.NewNumStr(addendStr) " +
+			"addendStr='%v'  Error='%v'. ", addendStr, err.Error())
+	}
+
+	lenArray := len(decNumStrs)
+	decsArray := make([]Decimal, lenArray)
+
+	for i:=0; i < lenArray; i++ {
+
+		decsArray[i], err =	Decimal{}.NewNumStr(decNumStrs[i])
+
+		if err != nil {
+			t.Errorf("Error returned by Decimal{}.NewNumStr(decNumStrs[i]) " +
+				"i='%v'  decNumStrs[i]='%v'  Error='%v'. ", i, decNumStrs[i], err.Error())
+		}
+
+	}
+
+	result, err := BigIntMathAdd{}.AddDecimalOutputToArray(decAddend, decsArray)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntMathAdd{}.AddDecimalOutputToArray(" +
+			"decAddend, decsArray) addendStr='%v'  Error='%v'. ",
+			addendStr, err.Error())
+	}
+
+	for j:=0; j < lenArray; j++ {
+
+		if expectedNumStrs[j] != result[j].GetNumStr()  {
+			t.Errorf("Error: Expected NumStr[%v]='%v'. Instead NumStr[%v]='%v'. ",
+				j, expectedNumStrs[j], j, result[j].GetNumStr())
+		}
+	}
 }
 
 func TestBigIntMathAdd_AddDecimalSeries_01(t *testing.T) {

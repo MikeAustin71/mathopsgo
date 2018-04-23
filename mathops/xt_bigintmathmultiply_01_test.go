@@ -1148,11 +1148,6 @@ func TestBigIntMathMultiply_MultiplyBigIntNumOutputToArray_01(t *testing.T) {
 	lenArray := len(multiplicandStrs)
 	bINumArray := make([]BigIntNum, lenArray)
 
-	if err != nil {
-		t.Errorf("Error returned by IntAry{}.NewNumStr(multiplierStr) " +
-			"multiplierStr='%v'  Error='%v'. ", multiplierStr, err.Error())
-	}
-
 	for i:=0; i < lenArray; i++ {
 
 		bINumArray[i], err = 	BigIntNum{}.NewNumStr(multiplicandStrs[i])
@@ -1213,11 +1208,6 @@ func TestBigIntMathMultiply_MultiplyBigIntNumOutputToArray_02(t *testing.T) {
 
 	lenArray := len(multiplicandStrs)
 	bINumArray := make([]BigIntNum, lenArray)
-
-	if err != nil {
-		t.Errorf("Error returned by IntAry{}.NewNumStr(multiplierStr) " +
-			"multiplierStr='%v'  Error='%v'. ", multiplierStr, err.Error())
-	}
 
 	for i:=0; i < lenArray; i++ {
 
@@ -1280,11 +1270,6 @@ func TestBigIntMathMultiply_MultiplyBigIntNumOutputToArray_03(t *testing.T) {
 	lenArray := len(multiplicandStrs)
 	bINumArray := make([]BigIntNum, lenArray)
 
-	if err != nil {
-		t.Errorf("Error returned by IntAry{}.NewNumStr(multiplierStr) " +
-			"multiplierStr='%v'  Error='%v'. ", multiplierStr, err.Error())
-	}
-
 	for i:=0; i < lenArray; i++ {
 
 		bINumArray[i], err = 	BigIntNum{}.NewNumStr(multiplicandStrs[i])
@@ -1346,11 +1331,6 @@ func TestBigIntMathMultiply_MultiplyBigIntNumOutputToArray_04(t *testing.T) {
 	lenArray := len(multiplicandStrs)
 	bINumArray := make([]BigIntNum, lenArray)
 
-	if err != nil {
-		t.Errorf("Error returned by IntAry{}.NewNumStr(multiplierStr) " +
-			"multiplierStr='%v'  Error='%v'. ", multiplierStr, err.Error())
-	}
-
 	for i:=0; i < lenArray; i++ {
 
 		bINumArray[i], err = 	BigIntNum{}.NewNumStr(multiplicandStrs[i])
@@ -1411,11 +1391,6 @@ func TestBigIntMathMultiply_MultiplyBigIntNumOutputToArray_05(t *testing.T) {
 
 	lenArray := len(multiplicandStrs)
 	bINumArray := make([]BigIntNum, lenArray)
-
-	if err != nil {
-		t.Errorf("Error returned by IntAry{}.NewNumStr(multiplierStr) " +
-			"multiplierStr='%v'  Error='%v'. ", multiplierStr, err.Error())
-	}
 
 	for i:=0; i < lenArray; i++ {
 
