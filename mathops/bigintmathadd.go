@@ -547,6 +547,61 @@ func (bAdd BigIntMathAdd) AddINumMgrArray(nums []INumMgr) (BigIntBasicMathResult
 	return finalResult, nil
 }
 
+// AddINumMgrOutputToArray - The first input parameter to this method
+// is an object that implements the  INumMgr interface and is labeled,
+// 'addend'.  The second element is an array of objects which implement
+// the INumMgr interface. This array is labeled labeled, 'numMgrs'. The
+// 'addend' is added to each element of the 'numMgrs' array with the result
+// output to another INumMgr array which is returned to the calling function.
+//
+// Example
+// =======
+// 										    numMgrs										 Output
+//  Addend   				    	Array											Array
+//
+//		3			+					numMgrs[0] = 2			=				  outputarray[0] =  5
+//		3			+					numMgrs[1] = 3			=				  outputarray[1] =  6
+//		3			+					numMgrs[2] = 4			=				  outputarray[2] =  7
+//		3			+					numMgrs[3] = 5			=				  outputarray[3] =  8
+//		3			+					numMgrs[4] = 6			=				  outputarray[4] =  9
+//		3			+					numMgrs[5] = 9			=				  outputarray[5] = 12
+//
+//
+func (bAdd BigIntMathAdd) AddINumMgrOutputToArray(
+																	addend INumMgr,
+																		numMgrs []INumMgr) ([]INumMgr, error) {
+
+	ePrefix := "BigIntMathAdd.AddINumMgrOutputToArray() "
+
+	lenDecs := len(numMgrs)
+
+	if lenDecs == 0 {
+		return []INumMgr{}, nil
+	}
+
+	resultsArray := make([]INumMgr, lenDecs) 
+		
+	for i:= 0; i < lenDecs; i++ {
+
+		bPair, err := BigIntPair{}.NewINumMgr(addend, numMgrs[i])
+
+		if err != nil {
+			return []INumMgr{},
+				fmt.Errorf(ePrefix +
+					"Error returned by BigIntPair{}.NewINumMgr(addend, numMgrs[i]). " +
+					" i='%v' numMgrs[i].GetNumStr()='%v' Error='%v' ", i, numMgrs[i].GetNumStr(), err.Error())
+		}
+
+		result := bAdd.AddPair(bPair)
+		
+		bIntNum := result.Result.CopyOut()
+		
+		resultsArray[i] = &bIntNum
+	}
+
+	return resultsArray, nil
+}
+
 
 // AddINumMgrSeries - Adds a series of objects which implement the 'INumMgr'
 // interface. The combined total of the numeric values from these objects
