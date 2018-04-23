@@ -63,11 +63,11 @@ func (bAdd BigIntMathAdd) AddBigIntNumArray(bNums []BigIntNum ) BigIntBasicMathR
 //  Addend   				    	Array														Array
 //
 //		3			+					bNums[0] = 2			=				  outputarray[0] =  5
-//		3			+					bNums[0] = 3			=				  outputarray[0] =  6
-//		3			+					bNums[0] = 4			=				  outputarray[0] =  7
-//		3			+					bNums[0] = 5			=				  outputarray[0] =  8
-//		3			+					bNums[0] = 6			=				  outputarray[0] =  9
-//		3			+					bNums[0] = 9			=				  outputarray[0] = 12
+//		3			+					bNums[1] = 3			=				  outputarray[1] =  6
+//		3			+					bNums[2] = 4			=				  outputarray[2] =  7
+//		3			+					bNums[3] = 5			=				  outputarray[3] =  8
+//		3			+					bNums[4] = 6			=				  outputarray[4] =  9
+//		3			+					bNums[5] = 9			=				  outputarray[5] = 12
 //
 //
 func (bAdd BigIntMathAdd) AddBigIntNumOutputToArray(
@@ -216,11 +216,11 @@ func (bAdd BigIntMathAdd) AddDecimalArray(decs []Decimal) (BigIntBasicMathResult
 //  Addend   				    	Array											Array
 //
 //		3			+					decs[0] = 2			=				  outputarray[0] =  5
-//		3			+					decs[0] = 3			=				  outputarray[0] =  6
-//		3			+					decs[0] = 4			=				  outputarray[0] =  7
-//		3			+					decs[0] = 5			=				  outputarray[0] =  8
-//		3			+					decs[0] = 6			=				  outputarray[0] =  9
-//		3			+					decs[0] = 9			=				  outputarray[0] = 12
+//		3			+					decs[1] = 3			=				  outputarray[1] =  6
+//		3			+					decs[2] = 4			=				  outputarray[2] =  7
+//		3			+					decs[3] = 5			=				  outputarray[3] =  8
+//		3			+					decs[4] = 6			=				  outputarray[4] =  9
+//		3			+					decs[5] = 9			=				  outputarray[5] = 12
 //
 //
 func (bAdd BigIntMathAdd) AddDecimalOutputToArray(
@@ -370,6 +370,59 @@ func (bAdd BigIntMathAdd) AddIntAryArray(iarys []IntAry) (BigIntBasicMathResult,
 	}
 
 	return finalResult, nil
+}
+
+// AddIntAryOutputToArray - The first input parameter to this method
+// is an IntAry Type labeled, 'addend'.  The second element is an 
+// array of IntAry types labeled 'iarys'. The 'addend' is added to 
+// each element of the 'iarys' array with the result output to another
+// array of IntAry types which is returned to the calling function.
+//
+// Example
+// =======
+// 										    decs										 Output
+//  Addend   				    	Array											Array
+//
+//		3			+					iarys[0] = 2			=				  outputarray[0] =  5
+//		3			+					iarys[1] = 3			=				  outputarray[1] =  6
+//		3			+					iarys[2] = 4			=				  outputarray[2] =  7
+//		3			+					iarys[3] = 5			=				  outputarray[3] =  8
+//		3			+					iarys[4] = 6			=				  outputarray[4] =  9
+//		3			+					iarys[5] = 9			=				  outputarray[5] = 12
+//
+//
+func (bAdd BigIntMathAdd) AddIntAryOutputToArray(
+														addend IntAry,
+															iarys []IntAry) ([]IntAry, error) {
+
+	ePrefix := "BigIntMathAdd.AddIntAryOutputToArray() "
+
+	lenIaArray := len(iarys)
+
+	if lenIaArray == 0 {
+		return []IntAry{}, nil
+	}
+	
+	resultsArray := make([]IntAry, lenIaArray)
+	
+	for i := 0; i < lenIaArray; i++ {
+
+		bPair, err := BigIntPair{}.NewIntAry(addend, iarys[i])
+
+		if err != nil {
+			return []IntAry{},
+				fmt.Errorf(ePrefix +
+					"Error returned by BigIntPair{}.NewIntAry(addend, iarys[i]). " +
+					" i='%v' iarys[i].GetNumStr()='%v' Error='%v' ",
+					i, iarys[i].GetNumStr(), err.Error())
+		}
+
+		result := bAdd.AddPair(bPair)
+
+		resultsArray[i], err = result.Result.GetIntAry()
+	}
+
+	return resultsArray, nil
 }
 
 // AddIntArySeries - Adds a series of IntAry objects and returns the total in a

@@ -213,11 +213,11 @@ func (bMultiply BigIntMathMultiply) MultiplyBigIntNumArray(
 // Multiplier				    	Array														Array
 //
 //		3			x				multiplicands[0] = 2			=				  outputarray[0] =  6
-//		3			x				multiplicands[0] = 3			=				  outputarray[0] =  9
-//		3			x				multiplicands[0] = 4			=				  outputarray[0] = 12
-//		3			x				multiplicands[0] = 5			=				  outputarray[0] = 15
-//		3			x				multiplicands[0] = 6			=				  outputarray[0] = 18
-//		3			x				multiplicands[0] = 7			=				  outputarray[0] = 21
+//		3			x				multiplicands[1] = 3			=				  outputarray[1] =  9
+//		3			x				multiplicands[2] = 4			=				  outputarray[2] = 12
+//		3			x				multiplicands[3] = 5			=				  outputarray[3] = 15
+//		3			x				multiplicands[4] = 6			=				  outputarray[4] = 18
+//		3			x				multiplicands[5] = 7			=				  outputarray[5] = 21
 //
 //
 // This method performs the multiplication operation described above and afterwards returns the
