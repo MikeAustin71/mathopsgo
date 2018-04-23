@@ -655,6 +655,12 @@ func (bAdd BigIntMathAdd) AddINumMgrSeries(nums ... INumMgr) (BigIntBasicMathRes
 
 // AddNumStr - Receives two number strings and adds their numeric values.
 //
+// The two input parameters, 'n1NumStr' and 'n2NumStr' must be formatted
+// as strings of numeric digits, or number strings. Number strings may have
+// a leading minus sign ('-') to indicate the numeric sign value. In addition,
+// the string of numeric digits may include a decimal point ('.') to separate
+// fractional digits.
+//
 // The result is returned as type BigIntBasicMathResult.
 //
 func (bAdd BigIntMathAdd) AddNumStr(n1NumStr, n2NumStr string) (BigIntBasicMathResult, error) {
@@ -674,6 +680,11 @@ func (bAdd BigIntMathAdd) AddNumStr(n1NumStr, n2NumStr string) (BigIntBasicMathR
 
 // AddNumStrArray - Adds a series of number strings and returns the combined total
 // as an instance of Type 'BigIntBasicMathResult'.
+//
+// All the elements of the 'numStrs' array must be formatted as strings of numeric
+// digits or number strings. Number strings may have a leading minus sign ('-')
+// to indicate the numeric sign value. In addition, the string of numeric digits
+// may include a decimal point ('.') to separate fraction digits.
 //
 func (bAdd BigIntMathAdd) AddNumStrArray(numStrs []string) (BigIntBasicMathResult, error) {
 
@@ -720,8 +731,80 @@ func (bAdd BigIntMathAdd) AddNumStrArray(numStrs []string) (BigIntBasicMathResul
 	return finalResult, nil
 }
 
+// AddNumStrOutputToArray - The first input parameter to this method
+// is a string Type labeled, 'addend'.  The second element is an 
+// array of string types labeled 'numStrs'. The 'addend' is added to 
+// each element of the 'numStrs' array with the result output to another
+// array of string types which is returned to the calling function.
+//
+// Input parameters 'addend' and all elements of the 'numStrs' array must
+// be formatted as strings of numeric digits or number strings. Number strings
+// may have a leading minus sign ('-') to indicate the numeric sign value. In
+// addition, the string of numeric digits may include a decimal point ('.') to
+// separate fraction digits.
+//
+// Example
+// =======
+// 										    numStrs										 Output
+//  Addend   				    	Array											Array
+//
+//		3			+					numStrs[0] = 2			=				  outputarray[0] =  5
+//		3			+					numStrs[1] = 3			=				  outputarray[1] =  6
+//		3			+					numStrs[2] = 4			=				  outputarray[2] =  7
+//		3			+					numStrs[3] = 5			=				  outputarray[3] =  8
+//		3			+					numStrs[4] = 6			=				  outputarray[4] =  9
+//		3			+					numStrs[5] = 9			=				  outputarray[5] = 12
+//
+//
+func (bAdd BigIntMathAdd) AddNumStrOutputToArray(
+													addend string, 
+														numStrs []string) ([]string, error) {
+
+	ePrefix := "BigIntMathAdd.AddNumStrOutputToArray() "
+
+	lenNumStrs := len(numStrs)
+
+	if lenNumStrs == 0 {
+		return []string{}, nil
+	}
+
+	bINumAddend, err := BigIntNum{}.NewNumStr(addend)
+
+	if err != nil {
+		return []string{},
+			fmt.Errorf(ePrefix + "Error returned by BigIntNum{}.NewNumStr(addend). " +
+				" addend='%v' Error='%v' ", addend, err.Error())
+	}
+	
+	resultsArray := make([]string, lenNumStrs)
+	
+	for i:= 0; i < lenNumStrs; i++ {
+
+		b2Num, err := BigIntNum{}.NewNumStr(numStrs[i])
+
+		if err != nil {
+			return []string{},
+				fmt.Errorf(ePrefix + "Error returned by BigIntNum{}.NewNumStr(numStrs[i]). " +
+					" i='%v' NumStr='%v' Error='%v' ", i, numStrs[i], err.Error())
+		}
+
+		
+		result := bAdd.AddPair(BigIntPair{}.NewBigIntNum(bINumAddend, b2Num))
+
+		resultsArray[i] = result.Result.GetNumStr()
+		
+	}
+
+	return resultsArray, nil
+}
+
 // AddNumStrSeries - Adds a series of number strings and returns
 // the combined total as an instance of Type, 'BigIntBasicMathResult'.
+//
+// All the elements of the 'numStrs' series must be formatted as strings of numeric
+// digits, or number strings. Number strings may have a leading minus sign ('-')
+// to indicate the numeric sign value. In addition, the string of numeric digits
+// may include a decimal point ('.') to separate fractional digits.
 //
 func (bAdd BigIntMathAdd) AddNumStrSeries(numStrs ... string) (BigIntBasicMathResult, error) {
 	ePrefix := "BigIntMathAdd.AddNumStrSeries() "
