@@ -910,7 +910,67 @@ func (bAdd BigIntMathAdd) AddNumStrDtoArray(nDtos []NumStrDto) (BigIntBasicMathR
 
 }
 
-// AddDecimalSeries - Adds a series of 'NumStrDto' types and returns the combined total
+// AddNumStrDtoOutputToArray - The first input parameter to this method
+// is a NumStrDto Type labeled, 'addend'.  The second element is an 
+// array of NumStrDto types labeled 'nDtos'. The 'addend' is added to 
+// each element of the 'nDtos' array with the result output to another
+// array of NumStrDto types which is returned to the calling function.
+//
+// Example
+// =======
+// 										    nDtos										 Output
+//  Addend   				    	Array											Array
+//
+//		3			+					nDtos[0] = 2			=				  outputarray[0] =  5
+//		3			+					nDtos[1] = 3			=				  outputarray[1] =  6
+//		3			+					nDtos[2] = 4			=				  outputarray[2] =  7
+//		3			+					nDtos[3] = 5			=				  outputarray[3] =  8
+//		3			+					nDtos[4] = 6			=				  outputarray[4] =  9
+//		3			+					nDtos[5] = 9			=				  outputarray[5] = 12
+//
+//
+func (bAdd BigIntMathAdd) AddNumStrDtoOutputToArray(
+													addend NumStrDto,
+															nDtos []NumStrDto) ([]NumStrDto, error) {
+
+	ePrefix := "BigIntMathAdd.AddNumStrDtoOutputToArray() "
+
+	lenDecs := len(nDtos)
+
+	if lenDecs == 0 {
+		return []NumStrDto{}, nil
+	}
+
+	resultsArray := make([]NumStrDto, lenDecs)
+
+	for i:= 0; i < lenDecs; i++ {
+
+		bPair, err := BigIntPair{}.NewNumStrDto(addend, nDtos[i])
+
+		if err != nil {
+			return []NumStrDto{},
+				fmt.Errorf(ePrefix + "Error returned by BigIntPair{}.NewNumStrDto(addend, nDtos[i]). " +
+					" i='%v' dec[i].GetNumStr()='%v' Error='%v' ", i, nDtos[i].GetNumStr(), err.Error())
+		}
+
+		result := bAdd.AddPair(bPair)
+
+		resultsArray[i], err = result.Result.GetNumStrDto()
+
+		if err != nil {
+			return []NumStrDto{},
+				fmt.Errorf(ePrefix +
+					"Error returned by result.Result.GetNumStrDto(). " +
+					" i='%v' nDtos[i].GetNumStr()='%v' Error='%v' ",
+					i, nDtos[i].GetNumStr(), err.Error())
+		}
+
+	}
+
+	return resultsArray, nil
+}
+
+// AddNumStrDtoSeries - Adds a series of 'NumStrDto' types and returns the combined total
 // as an instance of Type, 'BigIntBasicMathResult'.
 //
 func (bAdd BigIntMathAdd) AddNumStrDtoSeries(nDtos ... NumStrDto) (BigIntBasicMathResult, error) {
