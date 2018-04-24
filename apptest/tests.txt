@@ -1,5 +1,5 @@
 === RUN   TestBigIntPair_Compare_01
---- PASS: TestBigIntPair_Compare_01 (0.03s)
+--- PASS: TestBigIntPair_Compare_01 (0.01s)
 === RUN   TestBigIntPair_Compare_02
 --- PASS: TestBigIntPair_Compare_02 (0.00s)
 === RUN   TestBigIntPair_Compare_03
@@ -211,7 +211,7 @@
 === RUN   TestBigIntMathSubtract_SubtractBigIntNumArray_03
 --- PASS: TestBigIntMathSubtract_SubtractBigIntNumArray_03 (0.00s)
 === RUN   TestBigIntMathSubtract_SubtractBigIntNumArray_04
---- PASS: TestBigIntMathSubtract_SubtractBigIntNumArray_04 (0.02s)
+--- PASS: TestBigIntMathSubtract_SubtractBigIntNumArray_04 (0.00s)
 === RUN   TestBigIntMathSubtract_SubtractBigIntNumOutputToArray_01
 --- PASS: TestBigIntMathSubtract_SubtractBigIntNumOutputToArray_01 (0.00s)
 === RUN   TestBigIntMathSubtract_SubtractBigIntNumOutputToArray_02
@@ -1013,7 +1013,7 @@
 === RUN   TestIntAry_DivideThisBy_12
 --- PASS: TestIntAry_DivideThisBy_12 (0.00s)
 === RUN   TestIntAry_DivideThisBy_13
---- PASS: TestIntAry_DivideThisBy_13 (0.05s)
+--- PASS: TestIntAry_DivideThisBy_13 (0.06s)
 === RUN   TestIntAry_DivideThisBy_14
 --- PASS: TestIntAry_DivideThisBy_14 (0.00s)
 === RUN   TestIntAry_DivideThisBy_15
@@ -1757,7 +1757,7 @@
 === RUN   TestNumStrDto_MultiplyNumStrs_10
 --- PASS: TestNumStrDto_MultiplyNumStrs_10 (0.00s)
 === RUN   TestNumStrDto_MultiplyNumStrs_11
---- PASS: TestNumStrDto_MultiplyNumStrs_11 (0.01s)
+--- PASS: TestNumStrDto_MultiplyNumStrs_11 (0.04s)
 === RUN   TestNumStrDto_MultiplyNumStrs_12
 --- PASS: TestNumStrDto_MultiplyNumStrs_12 (0.00s)
 === RUN   TestNumStrDto_MultiplyNumStrs_13
@@ -2085,4 +2085,4 @@
 === RUN   TestStrMathOp_SubtractN1N2_19
 --- PASS: TestStrMathOp_SubtractN1N2_19 (0.00s)
 PASS
-ok  	MikeAustin71/mathopsgo/mathops	0.610s
+ok  	MikeAustin71/mathopsgo/mathops	0.636s

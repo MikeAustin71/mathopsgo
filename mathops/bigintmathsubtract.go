@@ -154,7 +154,7 @@ func (bSubtract BigIntMathSubtract) SubtractBigIntNumArray(
 // Example
 // =======
 // 										    subtrahends										 Output
-//  Addend   				    	Array											Array
+// Minuend   				    	  Array											   Array
 //
 //		10			-					subtrahends[0] = 2			=				  outputarray[0] =  8
 //		10			-					subtrahends[1] = 3			=				  outputarray[1] =  7
@@ -361,7 +361,7 @@ func (bSubtract BigIntMathSubtract) SubtractDecimalArray(
 // Example
 // =======
 // 										    subtrahends										 Output
-//  Addend   				    	Array											Array
+// Minuend   				    	   Array											 Array
 //
 //		10			-					subtrahends[0] = 2			=				  outputarray[0] =  8
 //		10			-					subtrahends[1] = 3			=				  outputarray[1] =  7
@@ -589,6 +589,68 @@ func (bSubtract BigIntMathSubtract) SubtractIntAryArray(
 	}
 
 	return finalResult, nil
+}
+
+// SubtractIntAryOutputToArray - The first input parameter to this method
+// is a IntAry Type labeled, 'minuend'.  The second element is an 
+// array of IntAry types labeled 'subtrahends'. The 'minuend' is subtracted
+// from each element of the 'subtrahends' array with the result output to
+// another 'results' array of IntAry types which is then returned to the
+// calling function.
+//
+// Example
+// =======
+// 										    subtrahends										 Output
+//  Minuend   				    	Array													Array
+//
+//		10			-					subtrahends[0] = 2			=				  outputarray[0] =  8
+//		10			-					subtrahends[1] = 3			=				  outputarray[1] =  7
+//		10			-					subtrahends[2] = 4			=				  outputarray[2] =  6
+//		10			-					subtrahends[3] = 5			=				  outputarray[3] =  5
+//		10			-					subtrahends[4] = 6			=				  outputarray[4] =  4
+//		10			-					subtrahends[5] = 9			=				  outputarray[5] =  1
+//
+//
+func (bSubtract BigIntMathSubtract) SubtractIntAryOutputToArray(
+														minuend IntAry,
+															subtrahends []IntAry) ([]IntAry, error) {
+
+	ePrefix := "BigIntMathSubtract.SubtractIntAryOutputToArray() "
+
+	lenSubtrahends := len(subtrahends)
+
+	if lenSubtrahends == 0 {
+		return []IntAry{}, nil
+	}
+
+	resultsArray := make([]IntAry, lenSubtrahends)
+
+	for i:=0; i < lenSubtrahends; i++ {
+
+		bPair, err := BigIntPair{}.NewIntAry(minuend, subtrahends[i])
+
+		if err != nil {
+			return []IntAry{},
+				fmt.Errorf(ePrefix +
+					"Error returned by BigIntPair{}.NewIntAry(minuend, subtrahends[i]) " +
+					"minuend='%v' subtrahends[%v]='%v' Error='%v'. ",
+					minuend.GetNumStr(), i, subtrahends[i].GetNumStr(), err.Error())
+		}
+
+		result := bSubtract.SubtractPair(bPair)
+
+		resultsArray[i], err = result.Result.GetIntAry()
+
+		if err != nil {
+			return []IntAry{},
+				fmt.Errorf(ePrefix +
+					"Error returned by result.Result.GetIntAry() " +
+					"i='%v' result.Result='%v' Error='%v'. ",
+					i, result.Result.GetNumStr(), err.Error())
+		}
+	}
+
+	return resultsArray, nil
 }
 
 // SubtractIntArySeries - Receives one IntAry Type which is classified as
