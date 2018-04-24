@@ -145,9 +145,9 @@ func (bSubtract BigIntMathSubtract) SubtractBigIntNumArray(
 }
 
 // SubtractBigIntNumOutputToArray - The first input parameter to this method
-// is a BigIntNum Type labeled, 'minuend'.  The second element is an array
-// of BigIntNum types labeled 'subtrahends'. The 'minuend' is subtracted from
-// each element of the 'subtrahends' array with the result output to another
+// is a BigIntNum Type labeled, 'minuend'.  The second input parameter is an
+// array of BigIntNum types labeled 'subtrahends'. The 'minuend' is subtracted
+// from each element of the 'subtrahends' array with the result output to another
 // 'results' array of BigIntNum types which is then returned to the calling
 // function.
 //
@@ -352,7 +352,7 @@ func (bSubtract BigIntMathSubtract) SubtractDecimalArray(
 }
 
 // SubtractDecimalOutputToArray - The first input parameter to this method
-// is a Decimal Type labeled, 'minuend'.  The second element is an 
+// is a Decimal Type labeled, 'minuend'.  The second input parameter is an 
 // array of Decimal types labeled 'subtrahends'. The 'minuend' is subtracted
 // from each element of the 'subtrahends' array with the result output to
 // another 'results' array of Decimal types which is then returned to the
@@ -592,8 +592,8 @@ func (bSubtract BigIntMathSubtract) SubtractIntAryArray(
 }
 
 // SubtractIntAryOutputToArray - The first input parameter to this method
-// is a IntAry Type labeled, 'minuend'.  The second element is an array
-// of IntAry types labeled 'subtrahends'. The 'minuend' is subtracted
+// is a IntAry Type labeled, 'minuend'.  The second input parameter is an
+// array of IntAry types labeled 'subtrahends'. The 'minuend' is subtracted
 // from each element of the 'subtrahends' array with the result output to
 // another 'results' array of IntAry types which is then returned to the
 // calling function.
@@ -1067,6 +1067,70 @@ func (bSubtract BigIntMathSubtract) SubtractNumStrArray(
 
 	return finalResult, nil
 }
+
+
+// SubtractNumStrOutputToArray - The first input parameter to this method
+// is a string Type labeled, 'minuend'.  The second input parameter is an
+// array of strings labeled 'subtrahends'. The 'minuend' is subtracted
+// from each element of the 'subtrahends' array with the result output to
+// another 'results' array of strings which is then returned to the calling
+// function.
+//
+// Example
+// =======
+// 										    subtrahends										 Output
+//  Minuend   				    	Array													Array
+//
+//		10			-					subtrahends[0] = 2			=				  outputarray[0] =  8
+//		10			-					subtrahends[1] = 3			=				  outputarray[1] =  7
+//		10			-					subtrahends[2] = 4			=				  outputarray[2] =  6
+//		10			-					subtrahends[3] = 5			=				  outputarray[3] =  5
+//		10			-					subtrahends[4] = 6			=				  outputarray[4] =  4
+//		10			-					subtrahends[5] = 9			=				  outputarray[5] =  1
+//
+//
+func (bSubtract BigIntMathSubtract) SubtractNumStrOutputToArray(
+														minuend string,
+															subtrahends []string) ([]string, error) {
+
+	ePrefix := "BigIntMathSubtract.SubtractNumStrOutputToArray() "
+
+	lenSubtrahends := len(subtrahends)
+
+	if lenSubtrahends == 0 {
+		return []string{}, nil
+	}
+
+	resultsArray := make([]string, lenSubtrahends)
+
+	for i:=0; i < lenSubtrahends; i++ {
+
+		bPair, err := BigIntPair{}.NewNumStr(minuend, subtrahends[i])
+
+		if err != nil {
+			return []string{},
+				fmt.Errorf(ePrefix +
+					"Error returned by BigIntPair{}.NewNumStr(minuend, subtrahends[i]) " +
+					"minuend='%v' subtrahends[%v]='%v' Error='%v'. ",
+					minuend, i, subtrahends[i], err.Error())
+		}
+
+		result := bSubtract.SubtractPair(bPair)
+
+		resultsArray[i] = result.Result.GetNumStr()
+
+		if err != nil {
+			return []string{},
+				fmt.Errorf(ePrefix +
+					"Error returned by result.Result.GetNumStr() " +
+					"i='%v' result.Result='%v' Error='%v'. ",
+					i, result.Result.GetNumStr(), err.Error())
+		}
+	}
+
+	return resultsArray, nil
+}
+
 
 // SubtractNumStrSeries - Receives one 'string' Type which is classified as
 // the 'minuend'. The second input parameter, 'subtrahends' is a series of
