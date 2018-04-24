@@ -11,7 +11,7 @@ func TestDecimal_MakeDecimalBigIntPrecision_01(t *testing.T) {
 	bigI, isOk := big.NewInt(0).SetString(numStr, 10)
 
 	if !isOk {
-		t.Errorf("Failed to convert string to BigInt from numStrDto='%v'", numStr)
+		t.Errorf("Failed to convert string to bigInt from numStrDto='%v'", numStr)
 	}
 
 	precision := uint(3)
@@ -39,7 +39,7 @@ func TestDecimal_MakeDecimalBigIntPrecision_02(t *testing.T) {
 	bigI, isOk := big.NewInt(0).SetString(numStr, 10)
 
 	if !isOk {
-		t.Errorf("Failed to convert string to BigInt from numStrDto='%v'", numStr)
+		t.Errorf("Failed to convert string to bigInt from numStrDto='%v'", numStr)
 	}
 
 	d1 := Decimal{}
@@ -75,11 +75,11 @@ func TestDecimal_MakeDecimalFromIntAry_01(t *testing.T) {
 	}
 
 	if int(precision) != d2.GetPrecision() {
-		t.Errorf("Expected Precision== %v .  Instead, Precision== %v", precision, d2.GetPrecision())
+		t.Errorf("Expected precision== %v .  Instead, precision== %v", precision, d2.GetPrecision())
 	}
 
 	if signVal != d2.GetSign() {
-		t.Errorf("Expected Sign Value== %v .  Instead, Sign Value== %v", signVal, d2.GetSign())
+		t.Errorf("Expected sign Value== %v .  Instead, sign Value== %v", signVal, d2.GetSign())
 	}
 
 }
@@ -109,11 +109,11 @@ func TestDecimal_MakeDecimalFromIntAry_02(t *testing.T) {
 
 
 	if int(precision) != d2.GetPrecision() {
-		t.Errorf("Expected Precision== %v .  Instead, Precision== %v", precision, d2.GetPrecision())
+		t.Errorf("Expected precision== %v .  Instead, precision== %v", precision, d2.GetPrecision())
 	}
 
 	if signVal != d2.GetSign() {
-		t.Errorf("Expected Sign Value== %v .  Instead, Sign Value== %v", signVal, d2.GetSign())
+		t.Errorf("Expected sign Value== %v .  Instead, sign Value== %v", signVal, d2.GetSign())
 	}
 
 }

@@ -882,7 +882,7 @@ func TestIntAry_DivideByTwo_04(t *testing.T) {
 	}
 
 	if signVal != ia.GetSign() {
-		t.Errorf("Error: Expected Sign Value= '%v'. Instead, Sign Value= '%v'. ", signVal, ia.GetSign())
+		t.Errorf("Error: Expected sign Value= '%v'. Instead, sign Value= '%v'. ", signVal, ia.GetSign())
 	}
 
 }

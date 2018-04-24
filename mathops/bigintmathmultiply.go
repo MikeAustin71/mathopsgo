@@ -63,10 +63,10 @@ func (bMultiply BigIntMathMultiply) NewBigIntPairResult(bPair BigIntPair) BigInt
 // ================
 //
 //	multiplier *big.Int					- The number to be multiplied by 'multiplicand'
-//	multiplierPrecision uint,		- The 'multiplier' Precision or numeric digits after
+//	multiplierPrecision uint,		- The 'multiplier' precision or numeric digits after
 //																	the decimal point.
 //	multiplicand *big.Int,			- The number to be multiplied by the 'multiplier'.
-//	multiplicandPrecision uint  - The 'multiplicand' Precision or numeric digits after
+//	multiplicandPrecision uint  - The 'multiplicand' precision or numeric digits after
 //																	the decimal point.
 //
 // Return Values
@@ -81,7 +81,7 @@ func (bMultiply BigIntMathMultiply) NewBigIntPairResult(bPair BigIntPair) BigInt
 //											Input.Big2		= multiplicand
 //
 // 								Result BigIntNum
-// 											Result.BigInt = product
+// 											Result.bigInt = product
 //					}
 //
 //
@@ -124,7 +124,7 @@ func (bMultiply BigIntMathMultiply) MultiplyBigInts(
 //											Input.Big2		= multiplicand
 //
 // 								Result BigIntNum
-// 											Result.BigInt = product
+// 											Result.bigInt = product
 //					}
 //
 //
@@ -164,7 +164,7 @@ func (bMultiply BigIntMathMultiply) MultiplyBigIntNums(
 //											Input.Big2		= multiplicand
 //
 // 								Result BigIntNum
-// 											Result.BigInt = product
+// 											Result.bigInt = product
 //					}
 //
 //
@@ -273,7 +273,7 @@ func (bMultiply BigIntMathMultiply) MultiplyBigIntNumOutputToArray(
 //											Input.Big2		= multiplicand
 //
 // 								Result BigIntNum
-// 											Result.BigInt = product
+// 											Result.bigInt = product
 //					}
 //
 //
@@ -368,11 +368,13 @@ func (bMultiply BigIntMathMultiply) MultiplyNumStrDto(
 //
 func (bMultiply BigIntMathMultiply) MultiplyPair(bPair BigIntPair) BigIntBasicMathResult {
 
-	b3 := big.NewInt(0).Mul(bPair.Big1.BigInt, bPair.Big2.BigInt)
+	b3 := big.NewInt(0).Mul(bPair.GetBig1BigInt(), bPair.GetBig2BigInt())
 
 	bResult := BigIntBasicMathResult{}
 	bResult.Input = bPair.CopyOut()
-	bResult.Result = BigIntNum{}.NewBigInt(b3, bPair.Big1.Precision + bPair.Big2.Precision)
+	bResult.Result = BigIntNum{}.NewBigInt(
+								b3,
+								bPair.Big1.GetPrecisionUint() + bPair.Big2.GetPrecisionUint())
 
 	return bResult
 

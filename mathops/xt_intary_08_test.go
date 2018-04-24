@@ -221,7 +221,7 @@ func TestIntAry_SetSignificantDigitIdxs_03(t *testing.T) {
 	}
 
 	if int(ePrecision) != iaStats.Precision {
-		t.Errorf("Expected ia Precision= '%v' . Instead, ia Precision= '%v'", ePrecision, iaStats.Precision)
+		t.Errorf("Expected ia precision= '%v' . Instead, ia precision= '%v'", ePrecision, iaStats.Precision)
 	}
 
 	if eSignVal != iaStats.SignVal {
@@ -296,7 +296,7 @@ func TestIntAry_SetSignificantDigitIdxs_04(t *testing.T) {
 	}
 
 	if int(ePrecision) != iaStats.Precision {
-		t.Errorf("Expected iaStats.Precision= '%v' . Instead, iaStats.Precision= '%v'", ePrecision, iaStats.Precision)
+		t.Errorf("Expected iaStats.precision= '%v' . Instead, iaStats.precision= '%v'", ePrecision, iaStats.Precision)
 	}
 
 	if eSignVal != iaStats.SignVal {
@@ -371,7 +371,7 @@ func TestIntAry_SetSignificantDigitIdxs_05(t *testing.T) {
 	}
 
 	if int(ePrecision) != iaStats.Precision {
-		t.Errorf("Expected iaStats.Precision= '%v' . Instead, iaStats.Precision= '%v'", ePrecision, iaStats.Precision)
+		t.Errorf("Expected iaStats.precision= '%v' . Instead, iaStats.precision= '%v'", ePrecision, iaStats.Precision)
 	}
 
 	if eSignVal != iaStats.SignVal {
@@ -446,7 +446,7 @@ func TestIntAry_SetSignificantDigitIdxs_06(t *testing.T) {
 	}
 
 	if int(ePrecision) != iaStats.Precision {
-		t.Errorf("Expected iaStats.Precision= '%v' . Instead, iaStats.Precision= '%v'", ePrecision, iaStats.Precision)
+		t.Errorf("Expected iaStats.precision= '%v' . Instead, iaStats.precision= '%v'", ePrecision, iaStats.Precision)
 	}
 
 	if eSignVal != iaStats.SignVal {

@@ -488,7 +488,7 @@ func (dec *Decimal) GetBigFloatString(precision uint) (string, error) {
 // integer value using type *big.Int. No factional values are included.
 // For example, the value '-123.456' would be returned as the integer
 // value '-123456'.  To compute the precise value of the Decimal, this
-// integer value would need to be divided by the 'Precision Value'. See
+// integer value would need to be divided by the 'precision Value'. See
 // GetScaleVal() below.
 func (dec *Decimal) GetBigInt() (*big.Int, error) {
 
@@ -733,7 +733,7 @@ func (dec *Decimal) GetIntAry() (IntAry, error) {
 }
 
 // GetNumStr - Returns the internal value of the Decimal
-// expressed as a signed numeric string. Precision, or
+// expressed as a signed numeric string. precision, or
 // placement of the decimal point, is controlled by
 // the Decimal's precision setting.
 //
@@ -756,7 +756,7 @@ func (dec *Decimal) GetNumStr() string {
 }
 
 // GetNumPren - Returns the internal value of the
-// Decimal expressed as number string. Precision
+// Decimal expressed as number string. precision
 // or placement of the decimal point is controlled
 // by the Decimal's 'precision' setting.
 //
@@ -852,7 +852,7 @@ func (dec *Decimal) GetNthRoot(nthRoot, maxPrecision uint) (Decimal, error) {
 // The value of 'precision' returned by this method will
 // always be >= zero (greater than or equal to zero '0').
 //
-// Precision is defined as the number of numeric digits to
+// precision is defined as the number of numeric digits to
 // the right of the decimal place. To compute the location
 // of the decimal point in a string of numeric digits, go
 // to the right most digit in the number string and count
@@ -863,7 +863,7 @@ func (dec *Decimal) GetNthRoot(nthRoot, maxPrecision uint) (Decimal, error) {
 // 								5			GetPrecision() = 0
 // 					0.12345  		GetPrecision() = 5
 //
-//		Number String				Precision				Fractional Number
+//		Number String				precision				Fractional Number
 //			123456								3								123.456
 //
 func (dec *Decimal) GetPrecision() int {
@@ -872,10 +872,10 @@ func (dec *Decimal) GetPrecision() int {
 
 }
 
-// GetPrecisionUint - Returns Precision as an
+// GetPrecisionUint - Returns precision as an
 // unsigned integer.
 //
-// Precision is defined as the number of numeric digits to
+// precision is defined as the number of numeric digits to
 // the right of the decimal place. To compute the location
 // of the decimal point in a string of numeric digits, go
 // to the right most digit in the number string and count
@@ -886,7 +886,7 @@ func (dec *Decimal) GetPrecision() int {
 // 								5			GetPrecision() = 0
 // 					0.12345  		GetPrecision() = 5
 //
-//		Number String				Precision				Fractional Number
+//		Number String				precision				Fractional Number
 //			123456								3								123.456
 //
 //
@@ -2179,7 +2179,7 @@ func (dec *Decimal) SetInt(iNum int, precision uint) error {
 // the right of the decimal place, while 'intNum' represents all the
 // integer digits to the left of the decimal place.
 //
-// The parameter 'signVal will determine the Sign Value for the returned
+// The parameter 'signVal will determine the sign Value for the returned
 // Decimal type. It should be set to either +1 or -1.
 //
 func (dec *Decimal) SetIntFracStrings(signVal int, intNum, fracNum string) error {
@@ -2363,7 +2363,7 @@ func (dec *Decimal) SetNumStrDto(nDto NumStrDto) error {
 }
 
 // SetPrecisionRound - Sets the precision or
-// scale of the Decimal value. Precision determines
+// scale of the Decimal value. precision determines
 // the number of digits displayed to the right of
 // the decimal place. Note that precision is
 // processed as an unsigned integer.
@@ -2408,7 +2408,7 @@ func (dec *Decimal) SetPrecisionRound(precision uint) error {
 }
 
 // SetPrecisionTrunc - Sets the precision or
-// scale of the Decimal value. Precision determines
+// scale of the Decimal value. precision determines
 // the number of digits displayed to the right of
 // the decimal place. Note that precision is
 // processed as an unsigned integer.

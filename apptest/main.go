@@ -99,19 +99,19 @@ func ExampleBigIntMultiply_02() {
 
 	if !expectedBigINum.Equal(result.Result) {
 		fmt.Printf("Error: Expected BigIntNum='%s'. Instead, BigIntNum= '%s'. ",
-			expectedBigINum.BigInt.Text(10), result.Result.BigInt.Text(10))
+			expectedBigINum.GetNumStr(), result.Result.GetNumStr())
 		return
 	}
 
-	if expectedBigINum.BigInt.Cmp(result.Result.BigInt) != 0 {
+	if expectedBigINum.CmpBigInt(result.Result) != 0 {
 		fmt.Printf("Comparison Error: Expected BigIntNum='%s'. Instead, BigIntNum= '%s'. ",
-			expectedBigINum.BigInt.Text(10), result.Result.BigInt.Text(10))
+			expectedBigINum.GetNumStr(), result.Result.GetNumStr())
 		return
 	}
 
-	if expectedBigINumSign != result.Result.Sign {
+	if expectedBigINumSign != result.Result.GetSign() {
 		fmt.Printf("Error: Expected number sign='%v'. Instead, number sign='%v'",
-			expectedBigINumSign, result.Result.Sign)
+			expectedBigINumSign, result.Result.GetSign())
 		return
 	}
 
@@ -442,7 +442,7 @@ func ExampleDecimalRelevantPrecision_01() {
 	rP := d1.GetRelevantPrecision()
 
 	if rP != expected {
-		fmt.Printf("Expected Relevant Precision = %v. Instead, got %v\n",
+		fmt.Printf("Expected Relevant precision = %v. Instead, got %v\n",
 				expected, rP)
 		return
 	}
@@ -684,13 +684,13 @@ func ExampleMathOps_01() {
 	}
 
 	if ePrecision != nResultIntAry.GetPrecision() {
-		fmt.Printf("Expected Precision='%v'. Instead, Precision='%v'",
+		fmt.Printf("Expected precision='%v'. Instead, precision='%v'",
 			ePrecision, nResultIntAry.GetPrecision())
 		return
 	}
 
 	if eSignVal != nResultIntAry.GetSign() {
-		fmt.Printf("Expected Sign='%v'. Instead, Sign='%v' \n",
+		fmt.Printf("Expected sign='%v'. Instead, sign='%v' \n",
 			eSignVal, nResultIntAry.GetSign())
 	}
 

@@ -1022,11 +1022,11 @@ func (bAdd BigIntMathAdd) AddPair(bPair BigIntPair) BigIntBasicMathResult {
 
 	bPair.MakePrecisionsEqual()
 
-	b3 := big.NewInt(0).Add(bPair.Big1.BigInt, bPair.Big2.BigInt)
+	b3 := big.NewInt(0).Add(bPair.GetBig1BigInt(), bPair.GetBig2BigInt())
 
 	bResult := BigIntBasicMathResult{}
 	bResult.Input= bPair.CopyOut()
-	bResult.Result = BigIntNum{}.NewBigInt(b3, bPair.Big2.Precision)
+	bResult.Result = BigIntNum{}.NewBigInt(b3, bPair.Big2.GetPrecisionUint())
 
 	return bResult
 }

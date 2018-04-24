@@ -34,7 +34,7 @@ func TestStrMathOp_AddN1N2_01(t *testing.T) {
 	}
 
 	if mOps.IFinal.GetPrecision() != ePrecision {
-		t.Errorf("Error: Expected Precision= '%v'. Instead received Precision= '%v'",
+		t.Errorf("Error: Expected precision= '%v'. Instead received precision= '%v'",
 									ePrecision, mOps.IFinal.GetPrecision())
 	}
 
@@ -107,7 +107,7 @@ func TestStrMathOp_AddN1N2_02(t *testing.T) {
 	}
 
 	if mOps.IFinal.GetPrecision() != ePrecision {
-		t.Errorf("Error: Expected Precision= '%v'. Instead received Precision= '%v'", ePrecision, mOps.IFinal.GetPrecision())
+		t.Errorf("Error: Expected precision= '%v'. Instead received precision= '%v'", ePrecision, mOps.IFinal.GetPrecision())
 	}
 
 	if eSignVal != mOps.IFinal.GetSign() {
@@ -174,7 +174,7 @@ func TestStrMathOp_AddN1N2_03(t *testing.T) {
 	}
 
 	if mOps.IFinal.GetPrecision() != ePrecision {
-		t.Errorf("Error: Expected Precision= '%v'. Instead received Precision= '%v'", ePrecision, mOps.IFinal.GetPrecision())
+		t.Errorf("Error: Expected precision= '%v'. Instead received precision= '%v'", ePrecision, mOps.IFinal.GetPrecision())
 	}
 
 	if eSignVal != mOps.IFinal.GetSign() {
@@ -243,7 +243,7 @@ func TestStrMathOp_AddN1N2_04(t *testing.T) {
 	}
 
 	if mOps.IFinal.GetPrecision() != ePrecision {
-		t.Errorf("Error: Expected Precision= '%v'. Instead received Precision= '%v'", ePrecision, mOps.IFinal.GetPrecision())
+		t.Errorf("Error: Expected precision= '%v'. Instead received precision= '%v'", ePrecision, mOps.IFinal.GetPrecision())
 	}
 
 	if eSignVal != mOps.IFinal.GetSign() {
@@ -312,7 +312,7 @@ func TestStrMathOp_AddN1N2_05(t *testing.T) {
 	}
 
 	if mOps.IFinal.GetPrecision() != ePrecision {
-		t.Errorf("Error: Expected Precision= '%v'. Instead received Precision= '%v'", ePrecision, mOps.IFinal.GetPrecision())
+		t.Errorf("Error: Expected precision= '%v'. Instead received precision= '%v'", ePrecision, mOps.IFinal.GetPrecision())
 	}
 
 	if eSignVal != mOps.IFinal.GetSign() {
@@ -377,7 +377,7 @@ func TestStrMathOp_AddN1N2_06(t *testing.T) {
 	}
 
 	if mOps.IFinal.GetPrecision() != ePrecision {
-		t.Errorf("Error: Expected Precision= '%v'. Instead received Precision= '%v'", ePrecision, mOps.IFinal.GetPrecision())
+		t.Errorf("Error: Expected precision= '%v'. Instead received precision= '%v'", ePrecision, mOps.IFinal.GetPrecision())
 	}
 
 	if eSignVal != mOps.IFinal.GetSign() {
@@ -441,7 +441,7 @@ func TestStrMathOp_AddN1N2_07(t *testing.T) {
 	}
 
 	if mOps.IFinal.GetPrecision() != ePrecision {
-		t.Errorf("Error: Expected Precision= '%v'. Instead received Precision= '%v'", ePrecision, mOps.IFinal.GetPrecision())
+		t.Errorf("Error: Expected precision= '%v'. Instead received precision= '%v'", ePrecision, mOps.IFinal.GetPrecision())
 	}
 
 	if eSignVal != mOps.IFinal.GetSign() {
@@ -506,7 +506,7 @@ func TestStrMathOp_AddN1N2_08(t *testing.T) {
 	}
 
 	if mOps.IFinal.GetPrecision() != ePrecision {
-		t.Errorf("Error: Expected Precision= '%v'. Instead received Precision= '%v'", ePrecision, mOps.IFinal.GetPrecision())
+		t.Errorf("Error: Expected precision= '%v'. Instead received precision= '%v'", ePrecision, mOps.IFinal.GetPrecision())
 	}
 
 	if eSignVal != mOps.IFinal.GetSign() {
@@ -571,7 +571,7 @@ func TestStrMathOp_AddN1N2_09(t *testing.T) {
 	}
 
 	if mOps.IFinal.GetPrecision() != ePrecision {
-		t.Errorf("Error: Expected Precision= '%v'. Instead received Precision= '%v'", ePrecision, mOps.IFinal.GetPrecision())
+		t.Errorf("Error: Expected precision= '%v'. Instead received precision= '%v'", ePrecision, mOps.IFinal.GetPrecision())
 	}
 
 	if eSignVal != mOps.IFinal.GetSign() {
@@ -636,7 +636,7 @@ func TestStrMathOp_AddN1N2_10(t *testing.T) {
 	}
 
 	if mOps.IFinal.GetPrecision() != ePrecision {
-		t.Errorf("Error: Expected Precision= '%v'. Instead received Precision= '%v'", ePrecision, mOps.IFinal.GetPrecision())
+		t.Errorf("Error: Expected precision= '%v'. Instead received precision= '%v'", ePrecision, mOps.IFinal.GetPrecision())
 	}
 
 	if eSignVal != mOps.IFinal.GetSign() {
@@ -701,7 +701,7 @@ func TestStrMathOp_AddN1N2_11(t *testing.T) {
 	}
 
 	if mOps.IFinal.GetPrecision() != ePrecision {
-		t.Errorf("Error: Expected Precision= '%v'. Instead received Precision= '%v'", ePrecision, mOps.IFinal.GetPrecision())
+		t.Errorf("Error: Expected precision= '%v'. Instead received precision= '%v'", ePrecision, mOps.IFinal.GetPrecision())
 	}
 
 	if eSignVal != mOps.IFinal.GetSign() {
@@ -766,7 +766,7 @@ func TestStrMathOp_AddN1N2_12(t *testing.T) {
 	}
 
 	if mOps.IFinal.GetPrecision() != ePrecision {
-		t.Errorf("Error: Expected Precision= '%v'. Instead received Precision= '%v'", ePrecision, mOps.IFinal.GetPrecision())
+		t.Errorf("Error: Expected precision= '%v'. Instead received precision= '%v'", ePrecision, mOps.IFinal.GetPrecision())
 	}
 
 	if eSignVal != mOps.IFinal.GetSign() {
@@ -831,7 +831,7 @@ func TestStrMathOp_AddN1N2_13(t *testing.T) {
 	}
 
 	if mOps.IFinal.GetPrecision() != ePrecision {
-		t.Errorf("Error: Expected Precision= '%v'. Instead received Precision= '%v'", ePrecision, mOps.IFinal.GetPrecision())
+		t.Errorf("Error: Expected precision= '%v'. Instead received precision= '%v'", ePrecision, mOps.IFinal.GetPrecision())
 	}
 
 	if eSignVal != mOps.IFinal.GetSign() {
@@ -896,7 +896,7 @@ func TestStrMathOp_AddN1N2_14(t *testing.T) {
 	}
 
 	if mOps.IFinal.GetPrecision() != ePrecision {
-		t.Errorf("Error: Expected Precision= '%v'. Instead received Precision= '%v'", ePrecision, mOps.IFinal.GetPrecision())
+		t.Errorf("Error: Expected precision= '%v'. Instead received precision= '%v'", ePrecision, mOps.IFinal.GetPrecision())
 	}
 
 	if eSignVal != mOps.IFinal.GetSign() {
@@ -961,7 +961,7 @@ func TestStrMathOp_AddN1N2_15(t *testing.T) {
 	}
 
 	if mOps.IFinal.GetPrecision() != ePrecision {
-		t.Errorf("Error: Expected Precision= '%v'. Instead received Precision= '%v'", ePrecision, mOps.IFinal.GetPrecision())
+		t.Errorf("Error: Expected precision= '%v'. Instead received precision= '%v'", ePrecision, mOps.IFinal.GetPrecision())
 	}
 
 	if eSignVal != mOps.IFinal.GetSign() {
@@ -1026,7 +1026,7 @@ func TestStrMathOp_AddN1N2_16(t *testing.T) {
 	}
 
 	if mOps.IFinal.GetPrecision() != ePrecision {
-		t.Errorf("Error: Expected Precision= '%v'. Instead received Precision= '%v'", ePrecision, mOps.IFinal.GetPrecision())
+		t.Errorf("Error: Expected precision= '%v'. Instead received precision= '%v'", ePrecision, mOps.IFinal.GetPrecision())
 	}
 
 	if eSignVal != mOps.IFinal.GetSign() {
@@ -1091,7 +1091,7 @@ func TestStrMathOp_AddN1N2_17(t *testing.T) {
 	}
 
 	if mOps.IFinal.GetPrecision() != ePrecision {
-		t.Errorf("Error: Expected Precision= '%v'. Instead received Precision= '%v'", ePrecision, mOps.IFinal.GetPrecision())
+		t.Errorf("Error: Expected precision= '%v'. Instead received precision= '%v'", ePrecision, mOps.IFinal.GetPrecision())
 	}
 
 	if eSignVal != mOps.IFinal.GetSign() {
@@ -1156,7 +1156,7 @@ func TestStrMathOp_AddN1N2_18(t *testing.T) {
 	}
 
 	if mOps.IFinal.GetPrecision() != ePrecision {
-		t.Errorf("Error: Expected Precision= '%v'. Instead received Precision= '%v'", ePrecision, mOps.IFinal.GetPrecision())
+		t.Errorf("Error: Expected precision= '%v'. Instead received precision= '%v'", ePrecision, mOps.IFinal.GetPrecision())
 	}
 
 	if eSignVal != mOps.IFinal.GetSign() {
@@ -1221,7 +1221,7 @@ func TestStrMathOp_AddN1N2_19(t *testing.T) {
 	}
 
 	if mOps.IFinal.GetPrecision() != ePrecision {
-		t.Errorf("Error: Expected Precision= '%v'. Instead received Precision= '%v'", ePrecision, mOps.IFinal.GetPrecision())
+		t.Errorf("Error: Expected precision= '%v'. Instead received precision= '%v'", ePrecision, mOps.IFinal.GetPrecision())
 	}
 
 	if eSignVal != mOps.IFinal.GetSign() {
@@ -1286,7 +1286,7 @@ func TestStrMathOp_AddN1N2_20(t *testing.T) {
 	}
 
 	if mOps.IFinal.GetPrecision() != ePrecision {
-		t.Errorf("Error: Expected Precision= '%v'. Instead received Precision= '%v'", ePrecision, mOps.IFinal.GetPrecision())
+		t.Errorf("Error: Expected precision= '%v'. Instead received precision= '%v'", ePrecision, mOps.IFinal.GetPrecision())
 	}
 
 	if eSignVal != mOps.IFinal.GetSign() {
@@ -1351,7 +1351,7 @@ func TestStrMathOp_AddN1N2_21(t *testing.T) {
 	}
 
 	if mOps.IFinal.GetPrecision() != ePrecision {
-		t.Errorf("Error: Expected Precision= '%v'. Instead received Precision= '%v'", ePrecision, mOps.IFinal.GetPrecision())
+		t.Errorf("Error: Expected precision= '%v'. Instead received precision= '%v'", ePrecision, mOps.IFinal.GetPrecision())
 	}
 
 	if eSignVal != mOps.IFinal.GetSign() {
@@ -1416,7 +1416,7 @@ func TestStrMathOp_AddN1N2_22(t *testing.T) {
 	}
 
 	if mOps.IFinal.GetPrecision() != ePrecision {
-		t.Errorf("Error: Expected Precision= '%v'. Instead received Precision= '%v'", ePrecision, mOps.IFinal.GetPrecision())
+		t.Errorf("Error: Expected precision= '%v'. Instead received precision= '%v'", ePrecision, mOps.IFinal.GetPrecision())
 	}
 
 	if eSignVal != mOps.IFinal.GetSign() {
@@ -1481,7 +1481,7 @@ func TestStrMathOp_AddN1N2_23(t *testing.T) {
 	}
 
 	if mOps.IFinal.GetPrecision() != ePrecision {
-		t.Errorf("Error: Expected Precision= '%v'. Instead received Precision= '%v'", ePrecision, mOps.IFinal.GetPrecision())
+		t.Errorf("Error: Expected precision= '%v'. Instead received precision= '%v'", ePrecision, mOps.IFinal.GetPrecision())
 	}
 
 	if eSignVal != mOps.IFinal.GetSign() {
@@ -1546,7 +1546,7 @@ func TestStrMathOp_AddN1N2_24(t *testing.T) {
 	}
 
 	if mOps.IFinal.GetPrecision() != ePrecision {
-		t.Errorf("Error: Expected Precision= '%v'. Instead received Precision= '%v'", ePrecision, mOps.IFinal.GetPrecision())
+		t.Errorf("Error: Expected precision= '%v'. Instead received precision= '%v'", ePrecision, mOps.IFinal.GetPrecision())
 	}
 
 	if eSignVal != mOps.IFinal.GetSign() {
@@ -1776,7 +1776,7 @@ func TestStrMathOp_MultiplyN1N2_01(t *testing.T) {
 	}
 
 	if mOps.IFinal.GetPrecision() != ePrecision {
-		t.Errorf("Error: Expected Precision= '%v'. Instead received Precision= '%v'", ePrecision, mOps.IFinal.GetPrecision())
+		t.Errorf("Error: Expected precision= '%v'. Instead received precision= '%v'", ePrecision, mOps.IFinal.GetPrecision())
 	}
 
 	if eSignVal != mOps.IFinal.GetSign() {
@@ -1840,7 +1840,7 @@ func TestStrMathOp_MultiplyN1N2_02(t *testing.T) {
 	}
 
 	if mOps.IFinal.GetPrecision() != ePrecision {
-		t.Errorf("Error: Expected Precision= '%v'. Instead received Precision= '%v'", ePrecision, mOps.IFinal.GetPrecision())
+		t.Errorf("Error: Expected precision= '%v'. Instead received precision= '%v'", ePrecision, mOps.IFinal.GetPrecision())
 	}
 
 	if eSignVal != mOps.IFinal.GetSign() {
@@ -1904,7 +1904,7 @@ func TestStrMathOp_MultiplyN1N2_03(t *testing.T) {
 	}
 
 	if mOps.IFinal.GetPrecision() != ePrecision {
-		t.Errorf("Error: Expected Precision= '%v'. Instead received Precision= '%v'", ePrecision, mOps.IFinal.GetPrecision())
+		t.Errorf("Error: Expected precision= '%v'. Instead received precision= '%v'", ePrecision, mOps.IFinal.GetPrecision())
 	}
 
 	if eSignVal != mOps.IFinal.GetSign() {
@@ -1968,7 +1968,7 @@ func TestStrMathOp_MultiplyN1N2_04(t *testing.T) {
 	}
 
 	if mOps.IFinal.GetPrecision() != ePrecision {
-		t.Errorf("Error: Expected Precision= '%v'. Instead received Precision= '%v'", ePrecision, mOps.IFinal.GetPrecision())
+		t.Errorf("Error: Expected precision= '%v'. Instead received precision= '%v'", ePrecision, mOps.IFinal.GetPrecision())
 	}
 
 	if eSignVal != mOps.IFinal.GetSign() {
@@ -2032,7 +2032,7 @@ func TestStrMathOp_MultiplyN1N2_05(t *testing.T) {
 	}
 
 	if mOps.IFinal.GetPrecision() != ePrecision {
-		t.Errorf("Error: Expected Precision= '%v'. Instead received Precision= '%v'", ePrecision, mOps.IFinal.GetPrecision())
+		t.Errorf("Error: Expected precision= '%v'. Instead received precision= '%v'", ePrecision, mOps.IFinal.GetPrecision())
 	}
 
 	if eSignVal != mOps.IFinal.GetSign() {
@@ -2096,7 +2096,7 @@ func TestStrMathOp_MultiplyN1N2_06(t *testing.T) {
 	}
 
 	if mOps.IFinal.GetPrecision() != ePrecision {
-		t.Errorf("Error: Expected Precision= '%v'. Instead received Precision= '%v'", ePrecision, mOps.IFinal.GetPrecision())
+		t.Errorf("Error: Expected precision= '%v'. Instead received precision= '%v'", ePrecision, mOps.IFinal.GetPrecision())
 	}
 
 	if eSignVal != mOps.IFinal.GetSign() {
@@ -2160,7 +2160,7 @@ func TestStrMathOp_MultiplyN1N2_07(t *testing.T) {
 	}
 
 	if mOps.IFinal.GetPrecision() != ePrecision {
-		t.Errorf("Error: Expected Precision= '%v'. Instead received Precision= '%v'", ePrecision, mOps.IFinal.GetPrecision())
+		t.Errorf("Error: Expected precision= '%v'. Instead received precision= '%v'", ePrecision, mOps.IFinal.GetPrecision())
 	}
 
 	if eSignVal != mOps.IFinal.GetSign() {
@@ -2224,7 +2224,7 @@ func TestStrMathOp_MultiplyN1N2_08(t *testing.T) {
 	}
 
 	if mOps.IFinal.GetPrecision() != ePrecision {
-		t.Errorf("Error: Expected Precision= '%v'. Instead received Precision= '%v'", ePrecision, mOps.IFinal.GetPrecision())
+		t.Errorf("Error: Expected precision= '%v'. Instead received precision= '%v'", ePrecision, mOps.IFinal.GetPrecision())
 	}
 
 	if eSignVal != mOps.IFinal.GetSign() {

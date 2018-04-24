@@ -38,9 +38,9 @@ func TestBigIntMathMultiply_MultiplyBigInts_01(t *testing.T) {
 			"expectedBigINumStr='%v'  Error='%v'. ", expectedBigINumStr, err.Error())
 	}
 
-	bIMultiplier := big.NewInt(0).Set(multiplierBiNum.BigInt)
+	bIMultiplier := big.NewInt(0).Set(multiplierBiNum.bigInt)
 	multiplierPrecision := multiplierBiNum.GetPrecisionUint()
-	biMultiplicand := big.NewInt(0).Set(multiplicandBiNum.BigInt)
+	biMultiplicand := big.NewInt(0).Set(multiplicandBiNum.bigInt)
 	multiplicandPrecision := multiplicandBiNum.GetPrecisionUint()
 
 	result := BigIntMathMultiply{}.MultiplyBigInts(
@@ -51,17 +51,17 @@ func TestBigIntMathMultiply_MultiplyBigInts_01(t *testing.T) {
 
 	if !expectedBigINum.Equal(result.Result) {
 		t.Errorf("Error: Expected BigIntNum='%s'. Instead, BigIntNum= '%s'. ",
-			expectedBigINum.BigInt.Text(10), result.Result.BigInt.Text(10))
+			expectedBigINum.bigInt.Text(10), result.Result.bigInt.Text(10))
 	}
 
-	if expectedBigINum.BigInt.Cmp(result.Result.BigInt) != 0 {
+	if expectedBigINum.bigInt.Cmp(result.Result.bigInt) != 0 {
 		t.Errorf("Comparison Error: Expected BigIntNum='%s'. Instead, BigIntNum= '%s'. ",
-			expectedBigINum.BigInt.Text(10), result.Result.BigInt.Text(10))
+			expectedBigINum.bigInt.Text(10), result.Result.bigInt.Text(10))
 	}
 
-	if expectedBigINumSign != result.Result.Sign {
+	if expectedBigINumSign != result.Result.sign {
 		t.Errorf("Error: Expected number sign='%v'. Instead, number sign='%v'",
-			expectedBigINumSign, result.Result.Sign)
+			expectedBigINumSign, result.Result.sign)
 	}
 
 }
@@ -128,9 +128,9 @@ func TestBigIntMathMultiply_MultiplyBigInts_02(t *testing.T) {
 			"expectedBigINumStr='%v'  Error='%v'. ", expectedBigINumStr, err.Error())
 	}
 
-	bIMultiplier := big.NewInt(0).Set(multiplierBiNum.BigInt)
+	bIMultiplier := big.NewInt(0).Set(multiplierBiNum.bigInt)
 	multiplierPrecision := multiplierBiNum.GetPrecisionUint()
-	biMultiplicand := big.NewInt(0).Set(multiplicandBiNum.BigInt)
+	biMultiplicand := big.NewInt(0).Set(multiplicandBiNum.bigInt)
 	multiplicandPrecision := multiplicandBiNum.GetPrecisionUint()
 
 	result := BigIntMathMultiply{}.MultiplyBigInts(
@@ -141,17 +141,17 @@ func TestBigIntMathMultiply_MultiplyBigInts_02(t *testing.T) {
 
 	if !expectedBigINum.Equal(result.Result) {
 		t.Errorf("Error: Expected BigIntNum='%s'. Instead, BigIntNum= '%s'. ",
-			expectedBigINum.BigInt.Text(10), result.Result.BigInt.Text(10))
+			expectedBigINum.bigInt.Text(10), result.Result.bigInt.Text(10))
 	}
 
-	if expectedBigINum.BigInt.Cmp(result.Result.BigInt) != 0 {
+	if expectedBigINum.bigInt.Cmp(result.Result.bigInt) != 0 {
 		t.Errorf("Comparison Error: Expected BigIntNum='%s'. Instead, BigIntNum= '%s'. ",
-			expectedBigINum.BigInt.Text(10), result.Result.BigInt.Text(10))
+			expectedBigINum.bigInt.Text(10), result.Result.bigInt.Text(10))
 	}
 
-	if expectedBigINumSign != result.Result.Sign {
+	if expectedBigINumSign != result.Result.sign {
 		t.Errorf("Error: Expected number sign='%v'. Instead, number sign='%v'",
-			expectedBigINumSign, result.Result.Sign)
+			expectedBigINumSign, result.Result.sign)
 	}
 
 	actualNumStr, err := result.Result.GetNumStrErr()
@@ -231,9 +231,9 @@ func TestBigIntMathMultiply_MultiplyBigInts_03(t *testing.T) {
 			"expectedBigINumStr='%v'  Error='%v'. ", expectedBigINumStr, err.Error())
 	}
 
-	bIMultiplier := big.NewInt(0).Set(multiplierBiNum.BigInt)
+	bIMultiplier := big.NewInt(0).Set(multiplierBiNum.bigInt)
 	multiplierPrecision := multiplierBiNum.GetPrecisionUint()
-	biMultiplicand := big.NewInt(0).Set(multiplicandBiNum.BigInt)
+	biMultiplicand := big.NewInt(0).Set(multiplicandBiNum.bigInt)
 	multiplicandPrecision := multiplicandBiNum.GetPrecisionUint()
 
 	result := BigIntMathMultiply{}.MultiplyBigInts(
@@ -244,17 +244,17 @@ func TestBigIntMathMultiply_MultiplyBigInts_03(t *testing.T) {
 
 	if !expectedBigINum.Equal(result.Result) {
 		t.Errorf("Error: Expected BigIntNum='%s'. Instead, BigIntNum= '%s'. ",
-			expectedBigINum.BigInt.Text(10), result.Result.BigInt.Text(10))
+			expectedBigINum.bigInt.Text(10), result.Result.bigInt.Text(10))
 	}
 
-	if expectedBigINum.BigInt.Cmp(result.Result.BigInt) != 0 {
+	if expectedBigINum.bigInt.Cmp(result.Result.bigInt) != 0 {
 		t.Errorf("Comparison Error: Expected BigIntNum='%s'. Instead, BigIntNum= '%s'. ",
-			expectedBigINum.BigInt.Text(10), result.Result.BigInt.Text(10))
+			expectedBigINum.bigInt.Text(10), result.Result.bigInt.Text(10))
 	}
 
-	if expectedBigINumSign != result.Result.Sign {
+	if expectedBigINumSign != result.Result.sign {
 		t.Errorf("Error: Expected number sign='%v'. Instead, number sign='%v'",
-			expectedBigINumSign, result.Result.Sign)
+			expectedBigINumSign, result.Result.sign)
 	}
 
 	actualNumStr, err := result.Result.GetNumStrErr()
@@ -334,9 +334,9 @@ func TestBigIntMathMultiply_MultiplyBigInts_04(t *testing.T) {
 			"expectedBigINumStr='%v'  Error='%v'. ", expectedBigINumStr, err.Error())
 	}
 
-	bIMultiplier := big.NewInt(0).Set(multiplierBiNum.BigInt)
+	bIMultiplier := big.NewInt(0).Set(multiplierBiNum.bigInt)
 	multiplierPrecision := multiplierBiNum.GetPrecisionUint()
-	biMultiplicand := big.NewInt(0).Set(multiplicandBiNum.BigInt)
+	biMultiplicand := big.NewInt(0).Set(multiplicandBiNum.bigInt)
 	multiplicandPrecision := multiplicandBiNum.GetPrecisionUint()
 
 	result := BigIntMathMultiply{}.MultiplyBigInts(
@@ -347,17 +347,17 @@ func TestBigIntMathMultiply_MultiplyBigInts_04(t *testing.T) {
 
 	if !expectedBigINum.Equal(result.Result) {
 		t.Errorf("Error: Expected BigIntNum='%s'. Instead, BigIntNum= '%s'. ",
-			expectedBigINum.BigInt.Text(10), result.Result.BigInt.Text(10))
+			expectedBigINum.bigInt.Text(10), result.Result.bigInt.Text(10))
 	}
 
-	if expectedBigINum.BigInt.Cmp(result.Result.BigInt) != 0 {
+	if expectedBigINum.bigInt.Cmp(result.Result.bigInt) != 0 {
 		t.Errorf("Comparison Error: Expected BigIntNum='%s'. Instead, BigIntNum= '%s'. ",
-			expectedBigINum.BigInt.Text(10), result.Result.BigInt.Text(10))
+			expectedBigINum.bigInt.Text(10), result.Result.bigInt.Text(10))
 	}
 
-	if expectedBigINumSign != result.Result.Sign {
+	if expectedBigINumSign != result.Result.sign {
 		t.Errorf("Error: Expected number sign='%v'. Instead, number sign='%v'",
-			expectedBigINumSign, result.Result.Sign)
+			expectedBigINumSign, result.Result.sign)
 	}
 
 	actualNumStr, err := result.Result.GetNumStrErr()
@@ -437,9 +437,9 @@ func TestBigIntMathMultiply_MultiplyBigInts_05(t *testing.T) {
 			"expectedBigINumStr='%v'  Error='%v'. ", expectedBigINumStr, err.Error())
 	}
 
-	bIMultiplier := big.NewInt(0).Set(multiplierBiNum.BigInt)
+	bIMultiplier := big.NewInt(0).Set(multiplierBiNum.bigInt)
 	multiplierPrecision := multiplierBiNum.GetPrecisionUint()
-	biMultiplicand := big.NewInt(0).Set(multiplicandBiNum.BigInt)
+	biMultiplicand := big.NewInt(0).Set(multiplicandBiNum.bigInt)
 	multiplicandPrecision := multiplicandBiNum.GetPrecisionUint()
 
 	result := BigIntMathMultiply{}.MultiplyBigInts(
@@ -450,17 +450,17 @@ func TestBigIntMathMultiply_MultiplyBigInts_05(t *testing.T) {
 
 	if !expectedBigINum.Equal(result.Result) {
 		t.Errorf("Error: Expected BigIntNum='%s'. Instead, BigIntNum= '%s'. ",
-			expectedBigINum.BigInt.Text(10), result.Result.BigInt.Text(10))
+			expectedBigINum.bigInt.Text(10), result.Result.bigInt.Text(10))
 	}
 
-	if expectedBigINum.BigInt.Cmp(result.Result.BigInt) != 0 {
+	if expectedBigINum.bigInt.Cmp(result.Result.bigInt) != 0 {
 		t.Errorf("Comparison Error: Expected BigIntNum='%s'. Instead, BigIntNum= '%s'. ",
-			expectedBigINum.BigInt.Text(10), result.Result.BigInt.Text(10))
+			expectedBigINum.bigInt.Text(10), result.Result.bigInt.Text(10))
 	}
 
-	if expectedBigINumSign != result.Result.Sign {
+	if expectedBigINumSign != result.Result.sign {
 		t.Errorf("Error: Expected number sign='%v'. Instead, number sign='%v'",
-			expectedBigINumSign, result.Result.Sign)
+			expectedBigINumSign, result.Result.sign)
 	}
 
 	actualNumStr, err := result.Result.GetNumStrErr()
@@ -516,17 +516,17 @@ func TestBigIntMathMultiply_MultiplyBigIntNums_01(t *testing.T) {
 
 	if !expectedBigINum.Equal(result.Result) {
 		t.Errorf("Error: Expected BigIntNum='%s'. Instead, BigIntNum= '%s'. ",
-			expectedBigINum.BigInt.Text(10), result.Result.BigInt.Text(10))
+			expectedBigINum.bigInt.Text(10), result.Result.bigInt.Text(10))
 	}
 
-	if expectedBigINum.BigInt.Cmp(result.Result.BigInt) != 0 {
+	if expectedBigINum.bigInt.Cmp(result.Result.bigInt) != 0 {
 		t.Errorf("Comparison Error: Expected BigIntNum='%s'. Instead, BigIntNum= '%s'. ",
-			expectedBigINum.BigInt.Text(10), result.Result.BigInt.Text(10))
+			expectedBigINum.bigInt.Text(10), result.Result.bigInt.Text(10))
 	}
 
-	if expectedBigINumSign != result.Result.Sign {
+	if expectedBigINumSign != result.Result.sign {
 		t.Errorf("Error: Expected number sign='%v'. Instead, number sign='%v'",
-			expectedBigINumSign, result.Result.Sign)
+			expectedBigINumSign, result.Result.sign)
 	}
 
 }
@@ -597,17 +597,17 @@ func TestBigIntMathMultiply_MultiplyBigIntNums_02(t *testing.T) {
 
 	if !expectedBigINum.Equal(result.Result) {
 		t.Errorf("Error: Expected BigIntNum='%s'. Instead, BigIntNum= '%s'. ",
-			expectedBigINum.BigInt.Text(10), result.Result.BigInt.Text(10))
+			expectedBigINum.bigInt.Text(10), result.Result.bigInt.Text(10))
 	}
 
-	if expectedBigINum.BigInt.Cmp(result.Result.BigInt) != 0 {
+	if expectedBigINum.bigInt.Cmp(result.Result.bigInt) != 0 {
 		t.Errorf("Comparison Error: Expected BigIntNum='%s'. Instead, BigIntNum= '%s'. ",
-			expectedBigINum.BigInt.Text(10), result.Result.BigInt.Text(10))
+			expectedBigINum.bigInt.Text(10), result.Result.bigInt.Text(10))
 	}
 
-	if expectedBigINumSign != result.Result.Sign {
+	if expectedBigINumSign != result.Result.sign {
 		t.Errorf("Error: Expected number sign='%v'. Instead, number sign='%v'",
-			expectedBigINumSign, result.Result.Sign)
+			expectedBigINumSign, result.Result.sign)
 	}
 
 	actualNumStr, err := result.Result.GetNumStrErr()
@@ -690,17 +690,17 @@ func TestBigIntMathMultiply_MultiplyBigIntNums_03(t *testing.T) {
 
 	if !expectedBigINum.Equal(result.Result) {
 		t.Errorf("Error: Expected BigIntNum='%s'. Instead, BigIntNum= '%s'. ",
-			expectedBigINum.BigInt.Text(10), result.Result.BigInt.Text(10))
+			expectedBigINum.bigInt.Text(10), result.Result.bigInt.Text(10))
 	}
 
-	if expectedBigINum.BigInt.Cmp(result.Result.BigInt) != 0 {
+	if expectedBigINum.bigInt.Cmp(result.Result.bigInt) != 0 {
 		t.Errorf("Comparison Error: Expected BigIntNum='%s'. Instead, BigIntNum= '%s'. ",
-			expectedBigINum.BigInt.Text(10), result.Result.BigInt.Text(10))
+			expectedBigINum.bigInt.Text(10), result.Result.bigInt.Text(10))
 	}
 
-	if expectedBigINumSign != result.Result.Sign {
+	if expectedBigINumSign != result.Result.sign {
 		t.Errorf("Error: Expected number sign='%v'. Instead, number sign='%v'",
-			expectedBigINumSign, result.Result.Sign)
+			expectedBigINumSign, result.Result.sign)
 	}
 
 	actualNumStr, err := result.Result.GetNumStrErr()
@@ -783,17 +783,17 @@ func TestBigIntMathMultiply_MultiplyBigIntNums_04(t *testing.T) {
 
 	if !expectedBigINum.Equal(result.Result) {
 		t.Errorf("Error: Expected BigIntNum='%s'. Instead, BigIntNum= '%s'. ",
-			expectedBigINum.BigInt.Text(10), result.Result.BigInt.Text(10))
+			expectedBigINum.bigInt.Text(10), result.Result.bigInt.Text(10))
 	}
 
-	if expectedBigINum.BigInt.Cmp(result.Result.BigInt) != 0 {
+	if expectedBigINum.bigInt.Cmp(result.Result.bigInt) != 0 {
 		t.Errorf("Comparison Error: Expected BigIntNum='%s'. Instead, BigIntNum= '%s'. ",
-			expectedBigINum.BigInt.Text(10), result.Result.BigInt.Text(10))
+			expectedBigINum.bigInt.Text(10), result.Result.bigInt.Text(10))
 	}
 
-	if expectedBigINumSign != result.Result.Sign {
+	if expectedBigINumSign != result.Result.sign {
 		t.Errorf("Error: Expected number sign='%v'. Instead, number sign='%v'",
-			expectedBigINumSign, result.Result.Sign)
+			expectedBigINumSign, result.Result.sign)
 	}
 
 	actualNumStr, err := result.Result.GetNumStrErr()
@@ -876,17 +876,17 @@ func TestBigIntMathMultiply_MultiplyBigIntNums_05(t *testing.T) {
 
 	if !expectedBigINum.Equal(result.Result) {
 		t.Errorf("Error: Expected BigIntNum='%s'. Instead, BigIntNum= '%s'. ",
-			expectedBigINum.BigInt.Text(10), result.Result.BigInt.Text(10))
+			expectedBigINum.bigInt.Text(10), result.Result.bigInt.Text(10))
 	}
 
-	if expectedBigINum.BigInt.Cmp(result.Result.BigInt) != 0 {
+	if expectedBigINum.bigInt.Cmp(result.Result.bigInt) != 0 {
 		t.Errorf("Comparison Error: Expected BigIntNum='%s'. Instead, BigIntNum= '%s'. ",
-			expectedBigINum.BigInt.Text(10), result.Result.BigInt.Text(10))
+			expectedBigINum.bigInt.Text(10), result.Result.bigInt.Text(10))
 	}
 
-	if expectedBigINumSign != result.Result.Sign {
+	if expectedBigINumSign != result.Result.sign {
 		t.Errorf("Error: Expected number sign='%v'. Instead, number sign='%v'",
-			expectedBigINumSign, result.Result.Sign)
+			expectedBigINumSign, result.Result.sign)
 	}
 
 	actualNumStr, err := result.Result.GetNumStrErr()
@@ -979,17 +979,17 @@ func TestBigIntMathMultiply_MultiplyBigIntNumArray_01(t *testing.T) {
 
 	if !expectedBigINum.Equal(result.Result) {
 		t.Errorf("Error: Expected BigIntNum='%s'. Instead, BigIntNum= '%s'. ",
-			expectedBigINum.BigInt.Text(10), result.Result.BigInt.Text(10))
+			expectedBigINum.bigInt.Text(10), result.Result.bigInt.Text(10))
 	}
 
-	if expectedBigINum.BigInt.Cmp(result.Result.BigInt) != 0 {
+	if expectedBigINum.bigInt.Cmp(result.Result.bigInt) != 0 {
 		t.Errorf("Comparison Error: Expected BigIntNum='%s'. Instead, BigIntNum= '%s'. ",
-			expectedBigINum.BigInt.Text(10), result.Result.BigInt.Text(10))
+			expectedBigINum.bigInt.Text(10), result.Result.bigInt.Text(10))
 	}
 
-	if expectedBigINumSign != result.Result.Sign {
+	if expectedBigINumSign != result.Result.sign {
 		t.Errorf("Error: Expected number sign='%v'. Instead, number sign='%v'",
-			expectedBigINumSign, result.Result.Sign)
+			expectedBigINumSign, result.Result.sign)
 	}
 
 	actualNumStr, err := result.Result.GetNumStrErr()
@@ -1083,17 +1083,17 @@ func TestBigIntMathMultiply_MultiplyBigIntNumArray_02(t *testing.T) {
 
 	if !expectedBigINum.Equal(result.Result) {
 		t.Errorf("Error: Expected BigIntNum='%s'. Instead, BigIntNum= '%s'. ",
-			expectedBigINum.BigInt.Text(10), result.Result.BigInt.Text(10))
+			expectedBigINum.bigInt.Text(10), result.Result.bigInt.Text(10))
 	}
 
-	if expectedBigINum.BigInt.Cmp(result.Result.BigInt) != 0 {
+	if expectedBigINum.bigInt.Cmp(result.Result.bigInt) != 0 {
 		t.Errorf("Comparison Error: Expected BigIntNum='%s'. Instead, BigIntNum= '%s'. ",
-			expectedBigINum.BigInt.Text(10), result.Result.BigInt.Text(10))
+			expectedBigINum.bigInt.Text(10), result.Result.bigInt.Text(10))
 	}
 
-	if expectedBigINumSign != result.Result.Sign {
+	if expectedBigINumSign != result.Result.sign {
 		t.Errorf("Error: Expected number sign='%v'. Instead, number sign='%v'",
-			expectedBigINumSign, result.Result.Sign)
+			expectedBigINumSign, result.Result.sign)
 	}
 
 	actualNumStr, err := result.Result.GetNumStrErr()

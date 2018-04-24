@@ -7,7 +7,7 @@ import (
 )
 
 // BigIntNum - wraps a *big.Int integer and its associated
-// precision and Sign Value. While the numeric value is
+// precision and sign Value. While the numeric value is
 // stored as an integer of type *big.Int, the BigIntNum
 // type is capable of storing decimal fractions.
 //
@@ -18,12 +18,25 @@ import (
 // The BigIntNum Type implements the INumMgr interface.
 //
 type BigIntNum struct {
-	BigInt			*big.Int
-	AbsBigInt		*big.Int
-	Precision 	uint			// Number of digits to the right of the decimal point.
-	ScaleFactor *big.Int	// Scale Factor =  10^(precision * -1)
-	Sign				int				// Valid values are -1 or +1. Indicates the sign of the
-	// 	the 'BigInt' integer.
+	bigInt      *big.Int
+	absBigInt   *big.Int
+	precision   uint     // Number of digits to the right of the decimal point.
+	scaleFactor *big.Int // Scale Factor =  10^(precision * -1)
+	sign        int      // Valid values are -1 or +1. Indicates the sign of the
+	// 	the 'bigInt' integer.
+}
+
+// CmpBigInt - Compares the value of the *big.Int integer to that
+// contained in an incoming BigIntNum.
+//
+// Return Values:
+// bNum == bigIntNum 				Return  0
+// bNum > bigIntNum					Return +1
+// bNum < bigIntNum					Return -1
+func (bNum *BigIntNum) CmpBigInt(bigIntNum BigIntNum) int {
+
+	return bNum.bigInt.Cmp(bigIntNum.bigInt)
+
 }
 
 // CopyIn - Receives an incoming BigIntNum type and
@@ -31,11 +44,11 @@ type BigIntNum struct {
 //
 func (bNum *BigIntNum) CopyIn(bigN BigIntNum) {
 
-	bNum.BigInt = big.NewInt(0).Set(bigN.BigInt)
-	bNum.AbsBigInt = big.NewInt(0).Set(bigN.AbsBigInt)
-	bNum.Precision = bigN.Precision
-	bNum.ScaleFactor = big.NewInt(0).Set(bigN.ScaleFactor)
-	bNum.Sign = bigN.Sign
+	bNum.bigInt = big.NewInt(0).Set(bigN.bigInt)
+	bNum.absBigInt = big.NewInt(0).Set(bigN.absBigInt)
+	bNum.precision = bigN.precision
+	bNum.scaleFactor = big.NewInt(0).Set(bigN.scaleFactor)
+	bNum.sign = bigN.sign
 }
 
 // CopyOut - Makes a deep copy of the current BigIntNum instance
@@ -43,7 +56,7 @@ func (bNum *BigIntNum) CopyIn(bigN BigIntNum) {
 //
 func (bNum *BigIntNum) CopyOut() BigIntNum {
 
-	b2 := BigIntNum{}.NewBigInt(big.NewInt(0).Set(bNum.BigInt), bNum.Precision)
+	b2 := BigIntNum{}.NewBigInt(big.NewInt(0).Set(bNum.bigInt), bNum.precision)
 
 	return b2
 }
@@ -53,11 +66,11 @@ func (bNum *BigIntNum) CopyOut() BigIntNum {
 //
 func (bNum *BigIntNum) Empty() {
 
-	bNum.BigInt = big.NewInt(0)
-	bNum.AbsBigInt = big.NewInt(0)
-	bNum.ScaleFactor = big.NewInt(1)
-	bNum.Sign = 1
-	bNum.Precision = 0
+	bNum.bigInt = big.NewInt(0)
+	bNum.absBigInt = big.NewInt(0)
+	bNum.scaleFactor = big.NewInt(1)
+	bNum.sign = 1
+	bNum.precision = 0
 
 }
 
@@ -68,36 +81,79 @@ func (bNum *BigIntNum) Empty() {
 //
 func (bNum *BigIntNum) Equal(b2 BigIntNum) bool {
 
-	if bNum.BigInt.Cmp(b2.BigInt) != 0 {
+	if bNum.bigInt.Cmp(b2.bigInt) != 0 {
 		return false
 	}
 
-	if bNum.AbsBigInt.Cmp(b2.AbsBigInt) != 0 {
+	if bNum.absBigInt.Cmp(b2.absBigInt) != 0 {
 		return false
 	}
 
-	if bNum.ScaleFactor.Cmp(b2.ScaleFactor) != 0 {
+	if bNum.scaleFactor.Cmp(b2.scaleFactor) != 0 {
 		return false
 	}
 
-	if bNum.Sign != b2.Sign {
+	if bNum.sign != b2.sign {
 		return false
 	}
 
-	if bNum.Precision != b2.Precision {
+	if bNum.precision != b2.precision {
 		return false
 	}
 
 	return true
 }
 
+// GetAbsoluteNumStr - Returns the absolute integer value (positive value) of the
+// *big.Int value encapsulated by this BigIntNum. No decimal point is included.
+//
+// If an error is encountered, an empty string is returned.
+//
+func (bNum *BigIntNum) GetAbsoluteNumStr() string {
+
+	nDto, err := NumStrDto{}.NewBigInt(big.NewInt(0).Set(bNum.bigInt), bNum.precision)
+
+	if err != nil {
+		return ""
+	}
+
+	return nDto.GetAbsNumStr()
+}
+
+// GetAbsoluteNumStrErr - Returns the absolute integer value (positive value) of the
+// *big.Int value encapsulated by this BigIntNum. No decimal point is included.
+//
+// This method is identical to GetAbsoluteNumStr() above, except that this method
+// returns an error value.
+//
+func (bNum *BigIntNum) GetAbsoluteNumStrErr() (string, error) {
+	nDto, err := NumStrDto{}.NewBigInt(big.NewInt(0).Set(bNum.bigInt), bNum.precision)
+
+	if err != nil {
+		return "",
+		fmt.Errorf("Error returned by NumStrDto{}.NewBigInt(" +
+			"big.NewInt(0).Set(bNum.bigInt), bNum.precision). Error='%v'",
+				err.Error())
+	}
+
+	return nDto.GetAbsNumStr(),nil
+}
+
+// GetAbsoluteValue - returns the absolute value of the
+// *big.Int value encapsulated by the current BigIntNum.
+func (bNum *BigIntNum) GetAbsoluteValue() *big.Int {
+	
+	return big.NewInt(0).Set(bNum.absBigInt)
+}
 
 // GetBigInt - return the numeric value as an integer
-// of type *big.int
+// of type *big.int.
+//
 func (bNum *BigIntNum) GetBigInt() (*big.Int, error) {
 
-	return big.NewInt(0).Set(bNum.BigInt), nil
+	return big.NewInt(0).Set(bNum.bigInt), nil
 }
+
 
 // GetDecimal - Converts the current BigIntNum value to a Decimal
 // instance. The resulting number value includes the decimal point
@@ -107,14 +163,14 @@ func (bNum *BigIntNum) GetDecimal() (Decimal, error) {
 
 	ePrefix := "BigIntNum.GetDecimal() "
 
-	dec, err := Decimal{}.NewBigInt(big.NewInt(0).Set(bNum.BigInt), bNum.Precision)
+	dec, err := Decimal{}.NewBigInt(big.NewInt(0).Set(bNum.bigInt), bNum.precision)
 
 	if err != nil {
 		return Decimal{},
 			fmt.Errorf (ePrefix +
-				"Error returned by Decimal{}.NewBigInt(bNum.BigInt, bNum.Precision) " +
-				"bNum.BigInt='%v' bNum.Precision='%v' Error='%v'",
-				bNum.BigInt.Text(10), bNum.Precision, err.Error())
+				"Error returned by Decimal{}.NewBigInt(bNum.bigInt, bNum.precision) " +
+				"bNum.bigInt='%v' bNum.precision='%v' Error='%v'",
+				bNum.bigInt.Text(10), bNum.precision, err.Error())
 	}
 
 	return dec, nil
@@ -128,14 +184,14 @@ func (bNum *BigIntNum) GetIntAry() (IntAry, error) {
 
 	ePrefix := "BigIntNum.GetIntAry() "
 
-	ia, err := IntAry{}.NewBigInt(big.NewInt(0).Set(bNum.BigInt), bNum.Precision)
+	ia, err := IntAry{}.NewBigInt(big.NewInt(0).Set(bNum.bigInt), bNum.precision)
 
 	if err != nil {
 		return IntAry{},
 			fmt.Errorf (ePrefix +
-				"Error returned by IntAry{}.NewBigInt(bNum.BigInt, bNum.Precision) " +
-				"bNum.BigInt='%v' bNum.Precision='%v' Error='%v'",
-				bNum.BigInt.Text(10), bNum.Precision, err.Error())
+				"Error returned by IntAry{}.NewBigInt(bNum.bigInt, bNum.precision) " +
+				"bNum.bigInt='%v' bNum.precision='%v' Error='%v'",
+				bNum.bigInt.Text(10), bNum.precision, err.Error())
 	}
 
 	return ia, nil
@@ -147,7 +203,7 @@ func (bNum *BigIntNum) GetIntAry() (IntAry, error) {
 //
 func (bNum *BigIntNum) GetNumStr() (string) {
 
-	nDto, err := NumStrDto{}.NewBigInt(big.NewInt(0).Set(bNum.BigInt), bNum.Precision)
+	nDto, err := NumStrDto{}.NewBigInt(big.NewInt(0).Set(bNum.bigInt), bNum.precision)
 
 	if err != nil {
 		return ""
@@ -165,12 +221,12 @@ func (bNum *BigIntNum) GetNumStrErr() (string, error) {
 
 	ePrefix := "BigIntNum.GetNumStrErr() "
 
-	nDto, err := NumStrDto{}.NewBigInt(big.NewInt(0).Set(bNum.BigInt), bNum.Precision)
+	nDto, err := NumStrDto{}.NewBigInt(big.NewInt(0).Set(bNum.bigInt), bNum.precision)
 
 	if err != nil {
 		return "",
 			fmt.Errorf(ePrefix +
-				"Error returned by NumStrDto{}.NewBigInt(bNum.BigInt, bNum.Precision). " +
+				"Error returned by NumStrDto{}.NewBigInt(bNum.bigInt, bNum.precision). " +
 				"Error='%v' ", err.Error())
 
 	}
@@ -186,14 +242,14 @@ func (bNum *BigIntNum) GetNumStrDto() (NumStrDto, error) {
 
 	ePrefix := "BigIntNum.GetNumStrDto() "
 
-	nDto, err := NumStrDto{}.NewBigInt(big.NewInt(0).Set(bNum.BigInt), bNum.Precision)
+	nDto, err := NumStrDto{}.NewBigInt(big.NewInt(0).Set(bNum.bigInt), bNum.precision)
 
 	if err != nil {
 		return NumStrDto{},
 			fmt.Errorf (ePrefix +
-				"Error returned by NumStrDto{}.NewBigInt(bNum.BigInt, bNum.Precision) " +
-				"bNum.BigInt='%v' bNum.Precision='%v' Error='%v'",
-				bNum.BigInt.Text(10), bNum.Precision, err.Error())
+				"Error returned by NumStrDto{}.NewBigInt(bNum.bigInt, bNum.precision) " +
+				"bNum.bigInt='%v' bNum.precision='%v' Error='%v'",
+				bNum.bigInt.Text(10), bNum.precision, err.Error())
 	}
 
 	return nDto, nil
@@ -202,7 +258,7 @@ func (bNum *BigIntNum) GetNumStrDto() (NumStrDto, error) {
 // GetPrecision - Returns precision as an integer of
 // type 'int'.
 //
-// Precision is defined as the number of numeric digits to
+// precision is defined as the number of numeric digits to
 // the right of the decimal place. To compute the location
 // of the decimal point in a string of numeric digits, go
 // to the right most digit in the number string and count
@@ -213,18 +269,18 @@ func (bNum *BigIntNum) GetNumStrDto() (NumStrDto, error) {
 // 								5			GetPrecision() = 0
 // 					0.12345  		GetPrecision() = 5
 //
-//		Number String				Precision				Fractional Number
+//		Number String				precision				Fractional Number
 //			123456								3								123.456
 //
 //
 func (bNum *BigIntNum) GetPrecision() int {
-	return int(bNum.Precision)
+	return int(bNum.precision)
 }
 
 // GetPrecisionUint - Returns precision as an unsigned
 // integer (uint).
 //
-// Precision is defined as the number of numeric digits to
+// precision is defined as the number of numeric digits to
 // the right of the decimal place. To compute the location
 // of the decimal point in a string of numeric digits, go
 // to the right most digit in the number string and count
@@ -235,23 +291,46 @@ func (bNum *BigIntNum) GetPrecision() int {
 // 								5			GetPrecision() = 0
 // 					0.12345  		GetPrecision() = 5
 //
-//		Number String				Precision				Fractional Number
+//		Number String				precision				Fractional Number
 //			123456								3								123.456
 //
 //
 func (bNum *BigIntNum) GetPrecisionUint() uint {
-	return bNum.Precision
+	return bNum.precision
 }
 
+// GetThisPointer - Returns a pointer to the current 
+// instance of this BigIntNum.
 func (bNum *BigIntNum) GetThisPointer() *BigIntNum {
 	return bNum
+}
+
+// GetScaleFactor - Returns the scale value of the current 
+// BigIntNum.  Scale value is a function of 'precision' or 
+// the number of digits to the right of the decimal place. 
+//
+// Example:
+// precision = 0 		Scale Factor = 10^0   	Scale Factor =    1
+// precision = 1		Scale Factor = 10^1			Scale Factor =   10
+// precision = 2		Scale Factor = 10^2			Scale Factor =  100
+// precision = 3    Scale Factor = 10^3			Scale Factor = 1000
+//
+func (bNum *BigIntNum) GetScaleFactor() *big.Int {
+	return big.NewInt(0).Set(bNum.scaleFactor)
+}
+
+// GetSign - Returns the numeric sign associated 
+// with the current numeric value encapsulated by
+// this BigIntNum.
+func (bNum *BigIntNum) GetSign() int {
+	return bNum.sign
 }
 
 // IsZero - Returns a boolean signaling whether the current
 // BigIntNum value is zero.
 func (bNum *BigIntNum) IsZero() bool {
 
-	if bNum.BigInt.Cmp(big.NewInt(0)) == 0 {
+	if bNum.bigInt.Cmp(big.NewInt(0)) == 0 {
 		return true
 	}
 
@@ -285,7 +364,7 @@ func (bNum BigIntNum) New() BigIntNum {
 // 									The decimal point location is calculated by starting with the
 // 									right most digit in the integer number and counting	left,
 // 									'precision' places. Example:
-//											Integer Value		Precision			Numeric Value
+//											Integer Value		precision			Numeric Value
 //											  123456					 3					  123.456
 //
 func (bNum BigIntNum) NewBigInt(bigI *big.Int, precision uint) BigIntNum {
@@ -294,7 +373,7 @@ func (bNum BigIntNum) NewBigInt(bigI *big.Int, precision uint) BigIntNum {
 	return b
 }
 
-// NewBigIntExponent - New BigInt Exponent returns a new
+// NewBigIntExponent - New bigInt Exponent returns a new
 // BigIntNum instance in which the numeric value is
 // set using an integer multiplied by 10 raised to
 // the power of the 'exponent' parameter.
@@ -668,31 +747,31 @@ func (bNum BigIntNum) NewNumStrDto(nDto NumStrDto) (BigIntNum, error) {
 // Example:
 // 	integer= 123456; precision = 3; Numeric Value= 123.456
 //
-// If the value of BigIntNum.BigInt is zero ('0'), that zero value will
-// remain unaltered. However, BigIntNum.Precision will be set equal to
+// If the value of BigIntNum.bigInt is zero ('0'), that zero value will
+// remain unaltered. However, BigIntNum.precision will be set equal to
 // input parameter, 'precision'.
 //
 // If the number of decimal places specified for rounding ('precision") is
-// equal to the current BigIntNum.Precision, no action is taken.
+// equal to the current BigIntNum.precision, no action is taken.
 //
 // If the number of decimal places specified for rounding ('precision') is
-// greater than the current BigIntNum.Precision, trailing zeros are added to
-// the current BigIntNum.BigInt value and BigIntNum.Precision is set equal
+// greater than the current BigIntNum.precision, trailing zeros are added to
+// the current BigIntNum.bigInt value and BigIntNum.precision is set equal
 // to input parameter, 'precision'.
 //
-// Input parameter 'precision' must be less than the current BigIntNum.Precision
+// Input parameter 'precision' must be less than the current BigIntNum.precision
 // before the rounding operation will engage.
 //
 func (bNum *BigIntNum) RoundToDecPlace(precision uint) {
 
-	if bNum.Precision == precision {
+	if bNum.precision == precision {
 		// Nothing to do. Specified 'precision' is already implemented.
 		return
 	}
 
-	// BigInt == zero, set precision an return
-	if bNum.BigInt.Cmp(big.NewInt(0)) == 0 {
-		bNum.Precision = precision
+	// bigInt == zero, set precision an return
+	if bNum.bigInt.Cmp(big.NewInt(0)) == 0 {
+		bNum.precision = precision
 		return
 	}
 
@@ -700,11 +779,11 @@ func (bNum *BigIntNum) RoundToDecPlace(precision uint) {
 
 	// If existing precision is less than new specified precision,
 	// add trailing zeros, set new precision parameter and return.
-	if bNum.Precision < precision {
-		deltaPrecision := precision - bNum.Precision
+	if bNum.precision < precision {
+		deltaPrecision := precision - bNum.precision
 		deltaExponent := big.NewInt(int64(deltaPrecision))
 		scaleValue := big.NewInt(0).Exp(base10, deltaExponent, nil)
-		newBigInt := big.NewInt(0).Mul(bNum.BigInt, scaleValue)
+		newBigInt := big.NewInt(0).Mul(bNum.bigInt, scaleValue)
 		bNum.SetBigInt(newBigInt, precision)
 		return
 	}
@@ -713,16 +792,16 @@ func (bNum *BigIntNum) RoundToDecPlace(precision uint) {
 
 	bigNumRound5 := BigIntNum{}.NewBigInt(base5, uint(precision + 1))
 
-	baseIRound := big.NewInt(0).Set(bNum.AbsBigInt)
+	baseIRound := big.NewInt(0).Set(bNum.absBigInt)
 
-	bigNumBase := BigIntNum{}.NewBigInt(baseIRound, bNum.Precision)
+	bigNumBase := BigIntNum{}.NewBigInt(baseIRound, bNum.precision)
 
 	result := BigIntMathAdd{}.AddBigIntNums(bigNumBase, bigNumRound5)
 
 
-	newBigInt := big.NewInt(0).Div(result.Result.BigInt, base10)
+	newBigInt := big.NewInt(0).Div(result.Result.bigInt, base10)
 
-	if bNum.Sign < 0 {
+	if bNum.sign < 0 {
 		newBigInt = big.NewInt(0).Neg(newBigInt)
 	}
 
@@ -748,26 +827,26 @@ func (bNum *BigIntNum) RoundToDecPlace(precision uint) {
 // 									The decimal point location is calculated by starting with the
 // 									right most digit in the integer number and counting	left,
 // 									'precision' places. Example:
-//											Integer Value		Precision			Numeric Value
+//											Integer Value		precision			Numeric Value
 //											  123456					 3					  123.456
 //
 func (bNum *BigIntNum) SetBigInt(bigI *big.Int, precision uint) {
 
-	bNum.BigInt = big.NewInt(0).Set(bigI)
-	bNum.Precision = precision
+	bNum.bigInt = big.NewInt(0).Set(bigI)
+	bNum.precision = precision
 	base10 := big.NewInt(0).SetInt64(int64(10))
-	bigPrecision := big.NewInt(0).SetInt64(int64(bNum.Precision))
-	bNum.ScaleFactor = big.NewInt(0).Exp(base10, bigPrecision, nil)
+	bigPrecision := big.NewInt(0).SetInt64(int64(bNum.precision))
+	bNum.scaleFactor = big.NewInt(0).Exp(base10, bigPrecision, nil)
 	baseZero := big.NewInt(0).SetInt64(0)
-	result := bNum.BigInt.Cmp(baseZero)
+	result := bNum.bigInt.Cmp(baseZero)
 
 	if result == -1 {
-		bNum.Sign = -1
+		bNum.sign = -1
 		minusOne := big.NewInt(0).SetInt64(-1)
-		bNum.AbsBigInt = big.NewInt(0).Mul(bNum.BigInt, minusOne)
+		bNum.absBigInt = big.NewInt(0).Mul(bNum.bigInt, minusOne)
 	} else {
-		bNum.Sign = 1
-		bNum.AbsBigInt = big.NewInt(0).Set(bNum.BigInt)
+		bNum.sign = 1
+		bNum.absBigInt = big.NewInt(0).Set(bNum.bigInt)
 	}
 
 }
@@ -1009,31 +1088,31 @@ func (bNum *BigIntNum) SetINumMgr(numMgr INumMgr) error {
 // Example:
 // 	integer= 123456; precision = 3; Numeric Value= 123.456
 //
-// If the value of BigIntNum.BigInt is zero ('0'), that zero value will
-// remain unaltered. However, BigIntNum.Precision will be set equal to
+// If the value of BigIntNum.bigInt is zero ('0'), that zero value will
+// remain unaltered. However, BigIntNum.precision will be set equal to
 // input parameter, 'precision'.
 //
 // If the number of decimal places specified for truncation ('precision") is
-// equal to the current BigIntNum.Precision, no action is taken.
+// equal to the current BigIntNum.precision, no action is taken.
 //
 // If the number of decimal places specified for truncation ('precision') is
-// greater than the current BigIntNum.Precision, trailing zeros are added to
-// the current BigIntNum.BigInt value and BigIntNum.Precision is set equal
+// greater than the current BigIntNum.precision, trailing zeros are added to
+// the current BigIntNum.bigInt value and BigIntNum.precision is set equal
 // to input parameter, 'precision'.
 //
-// Input parameter 'precision' must be less than the current BigIntNum.Precision
+// Input parameter 'precision' must be less than the current BigIntNum.precision
 // before the truncation operation will engage.
 //
 func (bNum *BigIntNum) TruncToDecPlace(precision uint) {
 
-	if bNum.Precision == precision {
+	if bNum.precision == precision {
 		// Nothing to do. Specified 'precision' is already implemented.
 		return
 	}
 
-	// BigInt == zero, set precision an return
-	if bNum.BigInt.Cmp(big.NewInt(0)) == 0 {
-		bNum.Precision = precision
+	// bigInt == zero, set precision an return
+	if bNum.bigInt.Cmp(big.NewInt(0)) == 0 {
+		bNum.precision = precision
 		return
 	}
 
@@ -1041,18 +1120,18 @@ func (bNum *BigIntNum) TruncToDecPlace(precision uint) {
 
 	// If existing precision is less than new specified precision,
 	// add trailing zeros, set new precision parameter and return.
-	if bNum.Precision < precision {
-		deltaPrecision := precision - bNum.Precision
+	if bNum.precision < precision {
+		deltaPrecision := precision - bNum.precision
 		deltaExponent := big.NewInt(int64(deltaPrecision))
 		scaleValue := big.NewInt(0).Exp(base10, deltaExponent, nil)
-		newBigInt := big.NewInt(0).Mul(bNum.BigInt, scaleValue)
+		newBigInt := big.NewInt(0).Mul(bNum.bigInt, scaleValue)
 		bNum.SetBigInt(newBigInt, precision)
 		return
 	}
 
-	newBigInt := big.NewInt(0).Div(bNum.AbsBigInt, base10)
+	newBigInt := big.NewInt(0).Div(bNum.absBigInt, base10)
 
-	if bNum.Sign < 1 {
+	if bNum.sign < 1 {
 		newBigInt = big.NewInt(0).Neg(newBigInt)
 	}
 

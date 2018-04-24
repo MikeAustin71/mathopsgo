@@ -153,11 +153,11 @@ func TestDecimal_NewNumStrDto_01(t *testing.T) {
 	}
 
 	if int(ePrecision) != d1.GetPrecision() {
-		t.Errorf("Expected Precision= '%v'. Intead, got Precision= '%v' ", ePrecision, d1.GetPrecision())
+		t.Errorf("Expected precision= '%v'. Intead, got precision= '%v' ", ePrecision, d1.GetPrecision())
 	}
 
 	if eSignVal != d1.GetSign() {
-		t.Errorf("Expected Sign Value= '%v'. Intead, got Sign Value = '%v' ", eSignVal, d1.GetSign())
+		t.Errorf("Expected sign Value= '%v'. Intead, got sign Value = '%v' ", eSignVal, d1.GetSign())
 
 	}
 
@@ -191,11 +191,11 @@ func TestDecimal_NewNumStrDto_02(t *testing.T) {
 	}
 
 	if int(ePrecision) != d1.GetPrecision() {
-		t.Errorf("Expected Precision= '%v'. Intead, got Precision= '%v' ", ePrecision, d1.GetPrecision())
+		t.Errorf("Expected precision= '%v'. Intead, got precision= '%v' ", ePrecision, d1.GetPrecision())
 	}
 
 	if eSignVal != d1.GetSign() {
-		t.Errorf("Expected Sign Value= '%v'. Intead, got Sign Value = '%v' ", eSignVal, d1.GetSign())
+		t.Errorf("Expected sign Value= '%v'. Intead, got sign Value = '%v' ", eSignVal, d1.GetSign())
 
 	}
 
@@ -229,11 +229,11 @@ func TestDecimal_NewNumStrDto_03(t *testing.T) {
 	}
 
 	if int(ePrecision) != d1.GetPrecision() {
-		t.Errorf("Expected Precision= '%v'. Intead, got Precision= '%v' ", ePrecision, d1.GetPrecision())
+		t.Errorf("Expected precision= '%v'. Intead, got precision= '%v' ", ePrecision, d1.GetPrecision())
 	}
 
 	if eSignVal != d1.GetSign() {
-		t.Errorf("Expected Sign Value= '%v'. Intead, got Sign Value = '%v' ", eSignVal, d1.GetSign())
+		t.Errorf("Expected sign Value= '%v'. Intead, got sign Value = '%v' ", eSignVal, d1.GetSign())
 
 	}
 
@@ -263,11 +263,11 @@ func TestDecimal_NewNumStrDto_04(t *testing.T) {
 	}
 
 	if int(ePrecision) != d1.GetPrecision() {
-		t.Errorf("Expected Precision= '%v'. Intead, got Precision= '%v' ", ePrecision, d1.GetPrecision())
+		t.Errorf("Expected precision= '%v'. Intead, got precision= '%v' ", ePrecision, d1.GetPrecision())
 	}
 
 	if eSignVal != d1.GetSign() {
-		t.Errorf("Expected Sign Value= '%v'. Intead, got Sign Value = '%v' ", eSignVal, d1.GetSign())
+		t.Errorf("Expected sign Value= '%v'. Intead, got sign Value = '%v' ", eSignVal, d1.GetSign())
 
 	}
 
@@ -298,11 +298,11 @@ func TestDecimal_NewNumStrDto_05(t *testing.T) {
 	}
 
 	if int(ePrecision) != d1.GetPrecision() {
-		t.Errorf("Expected Precision= '%v'. Intead, got Precision= '%v' ", ePrecision, d1.GetPrecision())
+		t.Errorf("Expected precision= '%v'. Intead, got precision= '%v' ", ePrecision, d1.GetPrecision())
 	}
 
 	if eSignVal != d1.GetSign() {
-		t.Errorf("Expected Sign Value= '%v'. Intead, got Sign Value = '%v' ", eSignVal, d1.GetSign())
+		t.Errorf("Expected sign Value= '%v'. Intead, got sign Value = '%v' ", eSignVal, d1.GetSign())
 
 	}
 
@@ -515,7 +515,7 @@ func TestDecimal_NumStrPrecisionToDecimal_01(t *testing.T) {
 	}
 
 	if eSignVal != d1.GetSign() {
-		t.Errorf("Expected Sign Value= '%v'. Instead, got Sign Value= '%v' ", eSignVal, d1.GetSign())
+		t.Errorf("Expected sign Value= '%v'. Instead, got sign Value= '%v' ", eSignVal, d1.GetSign())
 	}
 
 
@@ -544,7 +544,7 @@ func TestDecimal_NumStrPrecisionToDecimal_02(t *testing.T) {
 
 
 	if eSignVal != d1.GetSign() {
-		t.Errorf("Expected Sign Value= '%v'. Instead, got Sign Value= '%v' ", eSignVal, d1.GetSign())
+		t.Errorf("Expected sign Value= '%v'. Instead, got sign Value= '%v' ", eSignVal, d1.GetSign())
 	}
 
 	if int(precision) != d1.GetPrecision() {
@@ -571,7 +571,7 @@ func TestDecimal_NumStrPrecisionToDecimal_03(t *testing.T) {
 	}
 
 	if eSignVal != d1.GetSign() {
-		t.Errorf("Expected Sign Value= '%v'. Instead, got Sign Value= '%v' ", eSignVal, d1.GetSign())
+		t.Errorf("Expected sign Value= '%v'. Instead, got sign Value= '%v' ", eSignVal, d1.GetSign())
 	}
 
 	if int(precision) != d1.GetPrecision() {
@@ -599,7 +599,7 @@ func TestDecimal_NumStrPrecisionToDecimal_04(t *testing.T) {
 	}
 
 	if eSignVal != d1.GetSign() {
-		t.Errorf("Expected Sign Value= '%v'. Instead, got Sign Value= '%v' ", eSignVal, d1.GetSign())
+		t.Errorf("Expected sign Value= '%v'. Instead, got sign Value= '%v' ", eSignVal, d1.GetSign())
 	}
 
 	if int(precision) != d1.GetPrecision() {
@@ -627,7 +627,7 @@ func TestDecimal_NumStrPrecisionToDecimal_05(t *testing.T) {
 	}
 
 	if eSignVal != d1.GetSign() {
-		t.Errorf("Expected Sign Value= '%v'. Instead, got Sign Value= '%v' ", eSignVal, d1.GetSign())
+		t.Errorf("Expected sign Value= '%v'. Instead, got sign Value= '%v' ", eSignVal, d1.GetSign())
 	}
 
 	if int(precision) != d1.GetPrecision() {
@@ -655,7 +655,7 @@ func TestDecimal_NumStrPrecisionToDecimal_06(t *testing.T) {
 	}
 
 	if eSignVal != d1.GetSign() {
-		t.Errorf("Expected Sign Value= '%v'. Instead, got Sign Value= '%v' ", eSignVal, d1.GetSign())
+		t.Errorf("Expected sign Value= '%v'. Instead, got sign Value= '%v' ", eSignVal, d1.GetSign())
 	}
 
 	if int(precision) != d1.GetPrecision() {
@@ -683,7 +683,7 @@ func TestDecimal_NumStrPrecisionToDecimal_07(t *testing.T) {
 	}
 
 	if eSignVal != d1.GetSign() {
-		t.Errorf("Expected Sign Value= '%v'. Instead, got Sign Value= '%v' ", eSignVal, d1.GetSign())
+		t.Errorf("Expected sign Value= '%v'. Instead, got sign Value= '%v' ", eSignVal, d1.GetSign())
 	}
 
 	if int(precision) != d1.GetPrecision() {
@@ -711,7 +711,7 @@ func TestDecimal_NumStrPrecisionToDecimal_08(t *testing.T) {
 
 
 	if eSignVal != d1.GetSign() {
-		t.Errorf("Expected Sign Value= '%v'. Instead, got Sign Value= '%v' ", eSignVal, d1.GetSign())
+		t.Errorf("Expected sign Value= '%v'. Instead, got sign Value= '%v' ", eSignVal, d1.GetSign())
 	}
 
 	if int(precision) != d1.GetPrecision() {
@@ -738,7 +738,7 @@ func TestDecimal_NumStrPrecisionToDecimal_09(t *testing.T) {
 	}
 
 	if eSignVal != d1.GetSign() {
-		t.Errorf("Expected Sign Value= '%v'. Instead, got Sign Value= '%v' ", eSignVal, d1.GetSign())
+		t.Errorf("Expected sign Value= '%v'. Instead, got sign Value= '%v' ", eSignVal, d1.GetSign())
 	}
 
 	if int(precision) != d1.GetPrecision() {

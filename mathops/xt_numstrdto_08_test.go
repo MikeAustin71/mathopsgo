@@ -992,7 +992,7 @@ func TestNumStrDto_SetThisPrecision_01(t *testing.T) {
 	}
 
 	if initialPrecision != nsDto.GetPrecisionUint() {
-		t.Errorf("Error: Expected Initial Precision='%v'. Actual Initial Precision='%v' ",
+		t.Errorf("Error: Expected Initial precision='%v'. Actual Initial precision='%v' ",
 			initialPrecision, nsDto.GetPrecisionUint())
 	}
 
@@ -1058,7 +1058,7 @@ func TestNumStrDto_SetThisPrecision_02(t *testing.T) {
 	}
 
 	if initialPrecision != nsDto.GetPrecisionUint() {
-		t.Errorf("Error: Expected Initial Precision='%v'. Actual Initial Precision='%v' ",
+		t.Errorf("Error: Expected Initial precision='%v'. Actual Initial precision='%v' ",
 			initialPrecision, nsDto.GetPrecisionUint())
 	}
 

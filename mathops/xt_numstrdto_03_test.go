@@ -938,8 +938,8 @@ func TestNumStrDto_GetBigIntNum_01(t *testing.T) {
 	if !expectedBigIntNum.Equal(bigINum) {
 		t.Errorf("Error: Expected BigIntNum NOT Equal to Actual BigIntNum! "+
 			"expectedBi='%v', expectedPrecision='%v'. actualBi='%v' actualPrecision='%v'",
-			expectedBigIntNum.BigInt.Text(10), expectedBigIntNum.Precision,
-			bigINum.BigInt.Text(10), bigINum.Precision)
+			expectedBigIntNum.bigInt.Text(10), expectedBigIntNum.precision,
+			bigINum.bigInt.Text(10), bigINum.precision)
 	}
 
 	actualNumStr, err := bigINum.GetNumStrErr()

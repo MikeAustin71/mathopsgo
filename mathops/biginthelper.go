@@ -48,6 +48,32 @@ func (bPair *BigIntPair) Empty() {
 
 }
 
+// GetBig1BigInt Returns the *big.Int value of data field
+// bPair.Big1
+func(bPair *BigIntPair) GetBig1BigInt() *big.Int {
+
+	b1, err := bPair.Big1.GetBigInt()
+
+	if err != nil {
+		return big.NewInt(0)
+	}
+
+	return b1
+}
+
+// GetBig1BigInt Returns the *big.Int value of data field
+// bPair.Big1
+func(bPair *BigIntPair) GetBig2BigInt() *big.Int {
+
+	b2, err := bPair.Big2.GetBigInt()
+
+	if err != nil {
+		return big.NewInt(0)
+	}
+
+	return b2
+}
+
 // MakePrecisionsEqual - Analyzes the two component BigIntNum's, b1 and b2,
 // and then converts the one with the smallest precision to a new value
 // equivalent in precision to the other BigIntNum. When completed, this
@@ -56,29 +82,29 @@ func (bPair *BigIntPair) Empty() {
 //
 func(bPair *BigIntPair) MakePrecisionsEqual() {
 
-	if bPair.Big1.Precision == bPair.Big2.Precision {
+	if bPair.Big1.precision == bPair.Big2.precision {
 		// Nothing to do. Precisions are equal.
 		return
 	}
 
 	base10 := big.NewInt(10)
 
-	if bPair.Big1.Precision > bPair.Big2.Precision {
-		deltaPrecision := big.NewInt(int64(bPair.Big1.Precision - bPair.Big2.Precision))
+	if bPair.Big1.precision > bPair.Big2.precision {
+		deltaPrecision := big.NewInt(int64(bPair.Big1.precision - bPair.Big2.precision))
 		deltaPrecisionScale := big.NewInt(0).Exp(base10, deltaPrecision, nil)
-		newB2Int := big.NewInt(0).Mul(bPair.Big2.BigInt, deltaPrecisionScale)
-		newB2Num := BigIntNum{}.NewBigInt(newB2Int, bPair.Big1.Precision)
+		newB2Int := big.NewInt(0).Mul(bPair.Big2.bigInt, deltaPrecisionScale)
+		newB2Num := BigIntNum{}.NewBigInt(newB2Int, bPair.Big1.precision)
 		newBPair := BigIntPair{}.NewBigIntNum(bPair.Big1, newB2Num)
 		bPair.CopyIn(newBPair)
 		return
 
 	}
 
-	// Must be bPair.Big2.Precision > bPair.Big1.Precision
-	deltaPrecision := big.NewInt(int64(bPair.Big2.Precision - bPair.Big1.Precision))
+	// Must be bPair.Big2.precision > bPair.Big1.precision
+	deltaPrecision := big.NewInt(int64(bPair.Big2.precision - bPair.Big1.precision))
 	deltaPrecisionScale := big.NewInt(0).Exp(base10, deltaPrecision, nil)
-	newB1Int := big.NewInt(0).Mul(bPair.Big1.BigInt, deltaPrecisionScale)
-	newB1Num := BigIntNum{}.NewBigInt(newB1Int, bPair.Big2.Precision)
+	newB1Int := big.NewInt(0).Mul(bPair.Big1.bigInt, deltaPrecisionScale)
+	newB1Num := BigIntNum{}.NewBigInt(newB1Int, bPair.Big2.precision)
 	newBPair := BigIntPair{}.NewBigIntNum(newB1Num, bPair.Big2)
 
 	bPair.CopyIn(newBPair)
@@ -87,7 +113,7 @@ func(bPair *BigIntPair) MakePrecisionsEqual() {
 }
 
 // New - Creates an Empty BigIntPair instance. Both
-// 'Big1' and 'Big2' are set to zero.  Both Precision
+// 'Big1' and 'Big2' are set to zero.  Both precision
 // values are also set to zero.
 func (bPair BigIntPair) New() BigIntPair {
 		base1Zero := big.NewInt(0)
@@ -283,15 +309,15 @@ func (bPair *BigIntPair) SetBigIntPair(b1, b2 BigIntNum ) {
 	bPair.Big1.CopyIn(b1)
 	bPair.Big2.CopyIn(b2)
 
-	bPair.Big1Compare = bPair.Big1.BigInt.Cmp(bPair.Big2.BigInt)
-	bPair.Big1AbsCompare = bPair.Big1.AbsBigInt.Cmp(bPair.Big2.AbsBigInt)
+	bPair.Big1Compare = bPair.Big1.bigInt.Cmp(bPair.Big2.bigInt)
+	bPair.Big1AbsCompare = bPair.Big1.absBigInt.Cmp(bPair.Big2.absBigInt)
 
-	if bPair.Big1.Precision == bPair.Big2.Precision {
+	if bPair.Big1.precision == bPair.Big2.precision {
 		bPair.Precision1Compare = 0
-	} else if bPair.Big1.Precision > bPair.Big2.Precision {
+	} else if bPair.Big1.precision > bPair.Big2.precision {
 		bPair.Precision1Compare = 1
 	} else {
-		// Must be bPair.Big1.Precision < bPair.Big2.Precision
+		// Must be bPair.Big1.precision < bPair.Big2.precision
 		bPair.Precision1Compare = -1
 	}
 

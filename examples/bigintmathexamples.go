@@ -131,15 +131,15 @@ func ExampleSubtraction_01() {
 
 	fmt.Println("Result: ", result.Result.GetNumStr())
 
-	if expectedBigINum.BigInt.Cmp(result.Result.BigInt) != 0 {
+	if expectedBigINum.CmpBigInt(result.Result) != 0 {
 		fmt.Printf("Comparison Error: Expected BigIntNum='%s'. Instead, BigIntNum= '%s'. ",
-			expectedBigINum.BigInt.Text(10), result.Result.BigInt.Text(10))
+			expectedBigINum.GetNumStr(), result.Result.GetNumStr())
 		return
 	}
 
-	if expectedBigINumSign != result.Result.Sign {
+	if expectedBigINumSign != result.Result.GetSign() {
 		fmt.Printf("Error: Expected number sign='%v'. Instead, number sign='%v'",
-			expectedBigINumSign, result.Result.Sign)
+			expectedBigINumSign, result.Result.GetSign())
 		return
 	}
 
@@ -437,17 +437,17 @@ func ExamplePrintBasicMathResult(expectedResultStr string,
   getNumStr := result.Result.GetNumStr()
 
 	fmt.Println("            expected result: ", expectedResultStr)
-	fmt.Println("              result.BigInt: ", result.Result.BigInt.Text(10))
+	fmt.Println("              result.bigInt: ", result.Result.GetNumStr())
 	fmt.Println("         result.GetNumStr(): ", getNumStr)
 	fmt.Println("")
-	fmt.Println("         Expected Precision: ", expectedPrecision)
-	fmt.Println("           result.Precision: ", result.Result.Precision)
+	fmt.Println("         Expected precision: ", expectedPrecision)
+	fmt.Println("           result.precision: ", result.Result.GetPrecisionUint())
 	fmt.Println("")
-	fmt.Println("          result.Input.Big1: ", result.Input.Big1.BigInt.Text(10))
-	fmt.Println("result.Input.Big1.Precision: ", result.Input.Big1.Precision)
+	fmt.Println("          result.Input.Big1: ", result.Input.Big1.GetNumStr())
+	fmt.Println("result.Input.Big1.precision: ", result.Input.Big1.GetPrecisionUint())
 	fmt.Println("")
-	fmt.Println("          result.Input.Big2: ", result.Input.Big2.BigInt.Text(10))
-	fmt.Println("result.Input.Big2.Precision: ", result.Input.Big2.Precision)
+	fmt.Println("          result.Input.Big2: ", result.Input.Big2.GetNumStr())
+	fmt.Println("result.Input.Big2.precision: ", result.Input.Big2.GetPrecisionUint())
 
 
 }

@@ -28,10 +28,10 @@ type BigIntMathSubtract struct {
 // ================
 //
 //	minuend *big.Int					- The number from which the subtrahend will be subtracted
-//	minPrecision uint,				- The 'minuend' Precision or numeric digits after
+//	minPrecision uint,				- The 'minuend' precision or numeric digits after
 //																	the decimal point.
 //	subtrahend *big.Int,			- The number to be subtracted from the 'minuend'.
-//	subPrecision uint  				- The 'subtrahend' Precision or numeric digits after
+//	subPrecision uint  				- The 'subtrahend' precision or numeric digits after
 //																	the decimal point.
 //
 // Return Values
@@ -46,7 +46,7 @@ type BigIntMathSubtract struct {
 //											Input.Big2		= subtrahend
 //
 // 								Result BigIntNum
-// 											Result.BigInt = difference or result
+// 											Result.bigInt = difference or result
 //					}
 //
 func (bSubtract BigIntMathSubtract) SubtractBigInts(
@@ -82,7 +82,7 @@ func (bSubtract BigIntMathSubtract) SubtractBigInts(
 //											Input.Big2		= subtrahend
 //
 // 								Result BigIntNum
-// 											Result.BigInt = difference or result
+// 											Result.bigInt = difference or result
 //					}
 //
 func (bSubtract BigIntMathSubtract) SubtractBigIntNums(b1, b2 BigIntNum) BigIntBasicMathResult {
@@ -114,7 +114,7 @@ func (bSubtract BigIntMathSubtract) SubtractBigIntNums(b1, b2 BigIntNum) BigIntB
 //											Input.Big2		= (last) subtrahend
 //
 // 								Result BigIntNum
-// 											Result.BigInt = difference or result
+// 											Result.bigInt = difference or result
 //					}
 //
 //
@@ -144,6 +144,50 @@ func (bSubtract BigIntMathSubtract) SubtractBigIntNumArray(
 	return finalResult
 }
 
+// SubtractBigIntNumOutputToArray - The first input parameter to this method
+// is a BigIntNum Type labeled, 'addend'.  The second element is an 
+// array of BigIntNum types labeled 'subtrahends'. The 'addend' is added to 
+// each element of the 'subtrahends' array with the result output to another
+// array of BigIntNum types which is returned to the calling function.
+//
+// Example
+// =======
+// 										    subtrahends										 Output
+//  Addend   				    	Array											Array
+//
+//		10			-					subtrahends[0] = 2			=				  outputarray[0] =  8
+//		10			-					subtrahends[1] = 3			=				  outputarray[1] =  7
+//		10			-					subtrahends[2] = 4			=				  outputarray[2] =  6
+//		10			-					subtrahends[3] = 5			=				  outputarray[3] =  5
+//		10			-					subtrahends[4] = 6			=				  outputarray[4] =  4
+//		10			-					subtrahends[5] = 9			=				  outputarray[5] =  1
+//
+//
+func (bSubtract BigIntMathSubtract) SubtractBigIntNumOutputToArray(
+																				minuend BigIntNum,
+																					subtrahends []BigIntNum) []BigIntNum {
+
+	lenSubtrahends := len(subtrahends)
+
+	if lenSubtrahends == 0 {
+		return []BigIntNum{}
+	}
+
+	resultsArray := make([]BigIntNum, lenSubtrahends)
+	
+	for i:=0; i < lenSubtrahends; i++ {
+
+		bPair := BigIntPair{}.NewBigIntNum(minuend, subtrahends[i])
+
+		result := bSubtract.SubtractPair(bPair)
+
+		resultsArray[i] = result.Result.CopyOut()
+
+	}
+
+	return resultsArray
+}
+
 // SubtractBigIntNumSeries - Receives one BigIntNum which is classified as
 // the 'minuend'. The second input parameter, 'subtrahends' is a series of
 // Type BigIntNum .
@@ -167,7 +211,7 @@ func (bSubtract BigIntMathSubtract) SubtractBigIntNumArray(
 //											Input.Big2		= (last) subtrahend
 //
 // 								Result BigIntNum
-// 											Result.BigInt = difference or result
+// 											Result.bigInt = difference or result
 //					}
 //
 //
@@ -211,7 +255,7 @@ func (bSubtract BigIntMathSubtract) SubtractBigIntNumSeries(
 //											Input.Big2		= subtrahend
 //
 // 								Result BigIntNum
-// 											Result.BigInt = difference or result
+// 											Result.bigInt = difference or result
 //					}
 //
 //
@@ -255,7 +299,7 @@ func (bSubtract BigIntMathSubtract) SubtractDecimal(
 //											Input.Big2		= (last) subtrahend
 //
 // 								Result BigIntNum
-// 											Result.BigInt = difference or result
+// 											Result.bigInt = difference or result
 //					}
 //
 //
@@ -329,7 +373,7 @@ func (bSubtract BigIntMathSubtract) SubtractDecimalArray(
 //											Input.Big2		= (last) subtrahend
 //
 // 								Result BigIntNum
-// 											Result.BigInt = difference or result
+// 											Result.bigInt = difference or result
 //					}
 //
 //
@@ -392,7 +436,7 @@ func (bSubtract BigIntMathSubtract) SubtractDecimalSeries(
 //											Input.Big2		= subtrahend
 //
 // 								Result BigIntNum
-// 											Result.BigInt = difference or result
+// 											Result.bigInt = difference or result
 //					}
 //
 func (bSubtract BigIntMathSubtract) SubtractIntAry(
@@ -436,7 +480,7 @@ func (bSubtract BigIntMathSubtract) SubtractIntAry(
 //											Input.Big2		= (last) subtrahend
 //
 // 								Result BigIntNum
-// 											Result.BigInt = difference or result
+// 											Result.bigInt = difference or result
 //					}
 //
 func (bSubtract BigIntMathSubtract) SubtractIntAryArray(
@@ -507,7 +551,7 @@ func (bSubtract BigIntMathSubtract) SubtractIntAryArray(
 //											Input.Big2		= (last) subtrahend
 //
 // 								Result BigIntNum
-// 											Result.BigInt = difference or result
+// 											Result.bigInt = difference or result
 //					}
 //
 func (bSubtract BigIntMathSubtract) SubtractIntArySeries(
@@ -571,7 +615,7 @@ func (bSubtract BigIntMathSubtract) SubtractIntArySeries(
 //											Input.Big2		= subtrahend
 //
 // 								Result BigIntNum
-// 											Result.BigInt = difference or result
+// 											Result.bigInt = difference or result
 //					}
 //
 func (bSubtract BigIntMathSubtract) SubtractINumMgr(
@@ -616,7 +660,7 @@ func (bSubtract BigIntMathSubtract) SubtractINumMgr(
 //											Input.Big2		= (last) subtrahend
 //
 // 								Result BigIntNum
-// 											Result.BigInt = difference or result
+// 											Result.bigInt = difference or result
 //					}
 //
 func (bSubtract BigIntMathSubtract) SubtractINumMgrArray(
@@ -685,7 +729,7 @@ func (bSubtract BigIntMathSubtract) SubtractINumMgrArray(
 //											Input.Big2		= (last) subtrahend
 //
 // 								Result BigIntNum
-// 											Result.BigInt = difference or result
+// 											Result.bigInt = difference or result
 //					}
 //
 func (bSubtract BigIntMathSubtract) SubtractINumMgrSeries(
@@ -748,7 +792,7 @@ func (bSubtract BigIntMathSubtract) SubtractINumMgrSeries(
 //											Input.Big2		= subtrahend
 //
 // 								Result BigIntNum
-// 											Result.BigInt = difference or result
+// 											Result.bigInt = difference or result
 //					}
 //
 func (bSubtract BigIntMathSubtract) SubtractNumStr(
@@ -795,7 +839,7 @@ func (bSubtract BigIntMathSubtract) SubtractNumStr(
 //											Input.Big2		= (last) subtrahend
 //
 // 								Result BigIntNum
-// 											Result.BigInt = difference or result
+// 											Result.bigInt = difference or result
 //					}
 //
 func (bSubtract BigIntMathSubtract) SubtractNumStrArray(
@@ -870,7 +914,7 @@ func (bSubtract BigIntMathSubtract) SubtractNumStrArray(
 //											Input.Big2		= (last) subtrahend
 //
 // 								Result BigIntNum
-// 											Result.BigInt = difference or result
+// 											Result.bigInt = difference or result
 //					}
 //
 func (bSubtract BigIntMathSubtract) SubtractNumStrSeries(
@@ -932,7 +976,7 @@ func (bSubtract BigIntMathSubtract) SubtractNumStrSeries(
 //											Input.Big2		= subtrahend
 //
 // 								Result BigIntNum
-// 											Result.BigInt = difference or result
+// 											Result.bigInt = difference or result
 //					}
 //
 func (bSubtract BigIntMathSubtract) SubtractNumStrDto(
@@ -975,7 +1019,7 @@ func (bSubtract BigIntMathSubtract) SubtractNumStrDto(
 //											Input.Big2		= (last) subtrahend
 //
 // 								Result BigIntNum
-// 											Result.BigInt = difference or result
+// 											Result.bigInt = difference or result
 //					}
 //
 func (bSubtract BigIntMathSubtract) SubtractNumStrDtoArray(
@@ -1046,7 +1090,7 @@ func (bSubtract BigIntMathSubtract) SubtractNumStrDtoArray(
 //											Input.Big2		= (last) subtrahend
 //
 // 								Result BigIntNum
-// 											Result.BigInt = difference or result
+// 											Result.bigInt = difference or result
 //					}
 //
 func (bSubtract BigIntMathSubtract) SubtractNumStrDtoSeries(
@@ -1089,7 +1133,7 @@ func (bSubtract BigIntMathSubtract) SubtractNumStrDtoSeries(
 }
 
 // SubtractPair - Performs the subtraction operation. This method receives a type
-// 'BigIntPair' and proceeds to subtract b2.BigInt from b1.BigInt.
+// 'BigIntPair' and proceeds to subtract b2.bigInt from b1.bigInt.
 //
 // After the subtraction operation, the 'difference' or 'result' is returned as a
 // Type BigIntBasicMathResult.
@@ -1100,18 +1144,18 @@ func (bSubtract BigIntMathSubtract) SubtractNumStrDtoSeries(
 //											Input.Big2		= subtrahend
 //
 // 								Result BigIntNum
-// 											Result.BigInt = difference or result
+// 											Result.bigInt = difference or result
 //					}
 //
 func (bSubtract BigIntMathSubtract) SubtractPair(bPair BigIntPair) BigIntBasicMathResult {
 
 	bPair.MakePrecisionsEqual()
-
-	b3 := big.NewInt(0).Sub(bPair.Big1.BigInt, bPair.Big2.BigInt)
+	
+	b3 := big.NewInt(0).Sub(bPair.GetBig1BigInt(), bPair.GetBig2BigInt())
 
 	bResult := BigIntBasicMathResult{}
 	bResult.Input = bPair.CopyOut()
-	bResult.Result = BigIntNum{}.NewBigInt(b3, bPair.Big2.Precision)
+	bResult.Result = BigIntNum{}.NewBigInt(b3, bPair.Big2.GetPrecisionUint())
 
 	return bResult
 }

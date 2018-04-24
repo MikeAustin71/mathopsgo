@@ -2011,7 +2011,7 @@ func (ia *IntAry) GetDecimalSeparator() rune {
 // digits to the right of the decimal point from the
 // current intAry object.
 //
-// Note: The Sign Value of the returned int Ary is always
+// Note: The sign Value of the returned int Ary is always
 // positive or +1.
 //
 // The return intAry will display fractional digits with
@@ -2358,7 +2358,7 @@ func (ia *IntAry) GetIntAryLength() int {
 //													to the right of the decimal point in
 //													the current IntAry value
 //
-// Precision							- Type int: The number of digits to the right
+// precision							- Type int: The number of digits to the right
 //													of the decimal point in the current
 //													IntAry value
 //
@@ -2491,7 +2491,7 @@ func (ia *IntAry) GetNthRootOfThis(nthRoot, maxPrecision uint) (IntAry, error) {
 // GetPrecision - returns the precision value
 // for the current intAry object.
 //
-// Precision is defined as the number of numeric digits to
+// precision is defined as the number of numeric digits to
 // the right of the decimal place. To compute the location
 // of the decimal point in a string of numeric digits, go
 // to the right most digit in the number string and count
@@ -2505,7 +2505,7 @@ func (ia *IntAry) GetNthRootOfThis(nthRoot, maxPrecision uint) (IntAry, error) {
 // 								5			GetPrecision() = 0
 // 					0.12345  		GetPrecision() = 5
 //
-//		Number String				Precision				Fractional Number
+//		Number String				precision				Fractional Number
 //			123456								3								123.456
 //
 //
@@ -2516,7 +2516,7 @@ func (ia *IntAry) GetPrecision() int {
 // GetPrecisionUint - returns the precision value for the
 // current intAry object as an unsigned integer (uint).
 //
-// Precision is defined as the number of numeric digits to
+// precision is defined as the number of numeric digits to
 // the right of the decimal place. To compute the location
 // of the decimal point in a string of numeric digits, go
 // to the right most digit in the number string and count
@@ -2530,7 +2530,7 @@ func (ia *IntAry) GetPrecision() int {
 // 								5			GetPrecision() = 0
 // 					0.12345  		GetPrecision() = 5
 //
-//		Number String				Precision				Fractional Number
+//		Number String				precision				Fractional Number
 //			123456								3								123.456
 //
 //
@@ -2775,11 +2775,11 @@ func (ia *IntAry) IsIntAryValid(errName string) error {
 	ia.SetInternalFlags()
 
 	if ia.signVal != -1 && ia.signVal != 1 {
-		return fmt.Errorf("%v Sign Value is INVALID! Sign Value= '%v'", errName, ia.signVal)
+		return fmt.Errorf("%v sign Value is INVALID! sign Value= '%v'", errName, ia.signVal)
 	}
 
 	if ia.precision < 0 {
-		return fmt.Errorf("%v precision Value is INVALID! Sign Value= '%v'", errName, ia.precision)
+		return fmt.Errorf("%v precision Value is INVALID! sign Value= '%v'", errName, ia.precision)
 	}
 
 
@@ -3578,7 +3578,7 @@ func (ia *IntAry) pwrByTwos(power *big.Int, maxResultPrecision, internalPrecisio
 			//temp = big.NewInt(0).Mul(result, tBase)
 			//result = big.NewInt(0).Set(temp)
 			err := ia.MultiplyThisBy(&tBase, -1, internalPrecision)
-			//fmt.Println("ia Precision = ", ia.GetPrecision())
+			//fmt.Println("ia precision = ", ia.GetPrecision())
 
 			if err != nil {
 				return fmt.Errorf("intAry.pwrByTwos() - Error From result.MultiplyThisBy(&tBase, true). Error= %v", err)

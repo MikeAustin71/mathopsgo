@@ -582,7 +582,7 @@ func TestNumStrDto_ParseSignedBigInt_01(t *testing.T) {
 	sBigInt, isOk := big.NewInt(0).SetString(signedAbsNumStr, 10)
 
 	if !isOk {
-		t.Errorf("BigInt.SetString(signedAbsNumStr,10) conversion failed! nStr= '%v' ", signedAbsNumStr)
+		t.Errorf("bigInt.SetString(signedAbsNumStr,10) conversion failed! nStr= '%v' ", signedAbsNumStr)
 	}
 
 	n1, err := NumStrDto{}.NewPtr().ParseSignedBigInt(sBigInt, precision)
@@ -655,7 +655,7 @@ func TestNumStrDto_ParseSignedBigInt_02(t *testing.T) {
 	sBigInt, isOk := big.NewInt(0).SetString(signedAbsNumStr, 10)
 
 	if !isOk {
-		t.Errorf("BigInt.SetString(signedAbsNumStr,10) conversion failed! nStr= '%v' ", signedAbsNumStr)
+		t.Errorf("bigInt.SetString(signedAbsNumStr,10) conversion failed! nStr= '%v' ", signedAbsNumStr)
 	}
 
 	n1, err := NumStrDto{}.NewPtr().ParseSignedBigInt(sBigInt, precision)

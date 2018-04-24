@@ -692,7 +692,7 @@ func (nthrt *NthRootOp) bundleFracs() error {
 func (nthrt *NthRootOp) calcPrecision() error {
 
 	if nthrt.OriginalNum.GetPrecision() < 0 {
-		return fmt.Errorf("NthRootOp.calcPrecision() - Existing Precision is less than zero! OriginalNum.Precision= %v", nthrt.OriginalNum.GetPrecision())
+		return fmt.Errorf("NthRootOp.calcPrecision() - Existing precision is less than zero! OriginalNum.precision= %v", nthrt.OriginalNum.GetPrecision())
 	}
 
 	existingPrecision := nthrt.OriginalNum.GetPrecision() / nthrt.NthRoot

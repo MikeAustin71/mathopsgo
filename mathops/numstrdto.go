@@ -1530,7 +1530,7 @@ func (nDto *NumStrDto)GetThouStr() string {
 // GetPrecision - Returns the precision of the current
 // NumStrDto Instance.
 //
-// Precision is defined as the number of numeric digits to
+// precision is defined as the number of numeric digits to
 // the right of the decimal place. To compute the location
 // of the decimal point in a string of numeric digits, go
 // to the right most digit in the number string and count
@@ -1544,7 +1544,7 @@ func (nDto *NumStrDto)GetThouStr() string {
 // 								5			GetPrecision() = 0
 // 					0.12345  		GetPrecision() = 5
 //
-//		Number String				Precision				Fractional Number
+//		Number String				precision				Fractional Number
 //			123456								3								123.456
 //
 func (nDto *NumStrDto) GetPrecision() int {
@@ -1553,10 +1553,10 @@ func (nDto *NumStrDto) GetPrecision() int {
 
 // GetPrecisionUint - Returns the precision of the
 // current NumStrDto Instance as an unsigned integer
-// (uint). Precision represents the number of fractional
+// (uint). precision represents the number of fractional
 // digits to the right of the decimal point.
 //
-// Precision is defined as the number of numeric digits to
+// precision is defined as the number of numeric digits to
 // the right of the decimal place. To compute the location
 // of the decimal point in a string of numeric digits, go
 // to the right most digit in the number string and count
@@ -1567,7 +1567,7 @@ func (nDto *NumStrDto) GetPrecision() int {
 // 								5			GetPrecision() = 0
 // 					0.12345  		GetPrecision() = 5
 //
-//		Number String				Precision				Fractional Number
+//		Number String				precision				Fractional Number
 //			123456								3								123.456
 //
 func (nDto *NumStrDto) GetPrecisionUint() uint {
@@ -1846,7 +1846,7 @@ func (nDto *NumStrDto) IsNumStrDtoValid(errName string) error {
 	}
 
 	if lenAbsFracRunes != int(nDto.precision) {
-		return fmt.Errorf("%v - Length of Frac Runes does NOT equal Precision.", errName)
+		return fmt.Errorf("%v - Length of Frac Runes does NOT equal precision.", errName)
 	}
 
 	if lenAbsFracRunes > 0 && lenAbsIntRunes == 0 {
@@ -1855,7 +1855,7 @@ func (nDto *NumStrDto) IsNumStrDtoValid(errName string) error {
 	}
 
 	if nDto.signVal != 1 && nDto.signVal != -1 {
-		return fmt.Errorf("%v - Sign Value is INVALID. Should be +1 or -1. This Sign Value is %v",
+		return fmt.Errorf("%v - sign Value is INVALID. Should be +1 or -1. This sign Value is %v",
 			errName, nDto.signVal)
 	}
 
@@ -2416,7 +2416,7 @@ func (nDto *NumStrDto) ParseSignedBigInt(signedBigInt *big.Int, precision uint) 
 // formatted number string. The string is returned via a NumStrDto type.
 // Returned number strings may consist of a leading negative sign ('-')
 // numeric digits and may include a decimal separator ('.'). The NumStrDto
-// breaks the string down into Sign, Integer and Fractional components.
+// breaks the string down into sign, Integer and Fractional components.
 func (nDto *NumStrDto) ParseNumStr(str string) (NumStrDto, error) {
 
 	ePrefix := "NumStrDto.ParseNumStr() "
@@ -2759,7 +2759,7 @@ func (nDto *NumStrDto) SetSeparators(decimalSeparator, thousandsSeparator, curre
 //
 // Returns
 // =======
-//	NumStrDto				- If successful, the method returns the result of the Shift Left Precision
+//	NumStrDto				- If successful, the method returns the result of the Shift Left precision
 //										operation in the form of a 'NumStrDto' instance
 //
 //	error						- If successful, the 'error' type is set to 'nil'. In case of an error,
@@ -2769,7 +2769,7 @@ func (nDto *NumStrDto) SetSeparators(decimalSeparator, thousandsSeparator, curre
 // ========
 //										Requested
 //                      Shift
-//  signedNumStr			Precision				Result
+//  signedNumStr			precision				Result
 //	 "123456.789"				  3						"123.456789"
 //	 "123456.789"				  2						"1234.56789"
 //	 "123456.789"	   		  6					  "0.123456789"
@@ -3312,7 +3312,7 @@ func (nDto *NumStrDto) SetSignValue(newSignVal int) error {
 
 	if newSignVal != -1 && newSignVal != 1 {
 		return fmt.Errorf(ePrefix +
-			"Invalid sign value passed. Sign must be +1 or -1. " +
+			"Invalid sign value passed. sign must be +1 or -1. " +
 			"This sign value= %v", newSignVal)
 	}
 
@@ -3322,7 +3322,7 @@ func (nDto *NumStrDto) SetSignValue(newSignVal int) error {
 }
 
 // ResetNumStr - Re-creates the NumStrOut field using
-// the current 'Precision' value.
+// the current 'precision' value.
 func (nDto *NumStrDto) ResetNumStr() error {
 
 	ePrefix := "NumStrDto.ResetNumStr() "
