@@ -451,14 +451,12 @@ func TestBigIntMathSubtract_SubtractBigIntNumArray_01(t *testing.T) {
 	// minuend = 7328941.123456
 	minuendStr := "7328941.123456"
 
-
 	subtrahend0:= "123.894000"
 	subtrahend1:= "67.1"
 	subtrahend2:= "93.0"
 	subtrahend3:= "-124498.67158"
 	subtrahend4:= "647129.57"
 	subtrahend5:= "28"
-
 
 	// result = 6805998.231036
 	expectedBigINumStr := "6805998.231036"
@@ -478,7 +476,6 @@ func TestBigIntMathSubtract_SubtractBigIntNumArray_01(t *testing.T) {
 		t.Errorf("Error returned by BigIntNum{}.NewNumStr(minuendStr) " +
 			"minuendStr='%v'  Error='%v'. ", minuendStr, err.Error())
 	}
-
 
 	lenSubtrahends := 6
 	subtrahendAry := make([]BigIntNum, lenSubtrahends)

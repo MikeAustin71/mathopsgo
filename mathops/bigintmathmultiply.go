@@ -102,8 +102,8 @@ func (bMultiply BigIntMathMultiply) MultiplyBigInts(
 }
 
 
-// MultiplyBigIntNums - Receives two BigIntNum types and performs a 'multiplication'
-// operation on the BigIntNum's.
+// MultiplyBigIntNums - Receives two BigIntNum types as input parameters and then
+// performs a 'multiplication' operation on these BigIntNum's.
 //
 // In the multiplication operation, the number to be multiplied is called the
 // "multiplicand", while the number of times the multiplicand is to be multiplied
@@ -140,15 +140,14 @@ func (bMultiply BigIntMathMultiply) MultiplyBigIntNums(
 
 // MultiplyBigIntNumArray - Receives one BigIntNum which is classified as the 'multiplier'.
 // The second input parameter is an array of BigIntNum Types labeled, 'multiplicands'. The
-// first element of the 'multiplicands' array is multiplied by the 'multiplicands' to produce
+// first element of the 'multiplicands' array is multiplied by the 'multiplier' to produce
 // a 'product'. That 'product' replaces the 'multiplier' and is multiplied by the next element
 // in the multiplicands array. This process is continued through the last element in the array
-// and the final 'product' is returned as a Type 'BigIntBasicMathResult'.
+// and the combined, final 'product' is returned as a Type 'BigIntBasicMathResult'.
 //
-// In the multiplication operation, the number to be multiplied is called the
-// "multiplicand", while the number of times the multiplicand is to be multiplied
-// comes from the "multiplier". Usually the multiplier is placed first and the
-// multiplicand is placed second.
+// In the multiplication operation, the number to be multiplied is called the "multiplicand",
+// while the number of times the multiplicand is to be multiplied comes from the "multiplier".
+// Usually the multiplier is placed first and the multiplicand is placed second.
 //
 // For example, in the problem 5 x 3 equals 15, the 5 is the 'multiplier',
 // 3 is the 'multiplicand' and 15 is the 'product' or result.
@@ -192,20 +191,19 @@ func (bMultiply BigIntMathMultiply) MultiplyBigIntNumArray(
 	return finalResult
 }
 
-
-// MultiplyBigIntNumOutputToArray - Receives one BigIntNum which is classified as the 'multiplier'.
-// The second input parameter is an array of BigIntNum Types labeled, 'multiplicands'.
+// MultiplyBigIntNumOutputToArray - Receives one input parameter of Type BigIntNum which
+// is classified as the 'multiplier'. The second input parameter is an array of BigIntNum
+// Types labeled, 'multiplicands'.
 //
 // Each element of the 'multiplicands' array is multiplied by the 'multiplier'. The result or
 // 'product' is then stored in a results array which is returned to the calling function.
 //
-// In the multiplication operation, the number to be multiplied is called the
-// "multiplicand", while the number of times the multiplicand is to be multiplied
-// comes from the "multiplier". Usually the multiplier is placed first and the
-// multiplicand is placed second.
+// In the multiplication operation, the number to be multiplied is called the "multiplicand",
+// while the number of times the multiplicand is to be multiplied comes from the "multiplier".
+// Usually the multiplier is placed first and the multiplicand is placed second.
 //
-// For example, in the problem 5 x 3 equals 15, the 5 is the 'multiplier',
-// 3 is the 'multiplicand' and 15 is the 'product' or result.
+// For example, in the problem 5 x 3 equals 15, the 5 is the 'multiplier', 3 is the 'multiplicand'
+// and 15 is the 'product' or result.
 //
 // Example
 // =======
@@ -248,6 +246,59 @@ func (bMultiply BigIntMathMultiply) MultiplyBigIntNumOutputToArray(
 	}
 
 	return resultArray
+}
+
+// MultiplyBigIntNumSeries - Receives one input parameter of Type BigIntNum which is classified
+//  as the 'multiplier'. The second input parameter is a series of BigIntNum Types labeled,
+// 'multiplicands'. The first element of the 'multiplicands' series is multiplied by the 'multiplier'
+// to produce a 'product'. That 'product' replaces the 'multiplier' and is multiplied by the next
+// element in the multiplicands series. This process is continued through the last element in the
+// series. Afterwards, the combined final 'product' is returned as a Type 'BigIntBasicMathResult'.
+//
+// In the multiplication operation, the number to be multiplied is called the "multiplicand",
+// while the number of times the multiplicand is to be multiplied comes from the "multiplier".
+// Usually the multiplier is placed first and the multiplicand is placed second.
+//
+// For example, in the problem 5 x 3 equals 15, the 5 is the 'multiplier',
+// 3 is the 'multiplicand' and 15 is the 'product' or result.
+//
+//							multiplier x multiplicand = product or result
+//
+// This method performs the multiplication operation described above and afterwards returns the
+// result or 'product' as a BigIntBasicMathResult type.
+//
+// 					type BigIntBasicMathResult struct {
+// 								Input BigIntPair
+//											Input.Big1		= multiplier
+//											Input.Big2		= multiplicand
+//
+// 								Result BigIntNum
+// 											Result.bigInt = product
+//					}
+//
+//
+func (bMultiply BigIntMathMultiply) MultiplyBigIntNumSeries(
+																multiplier BigIntNum,
+																	multiplicands ... BigIntNum) BigIntBasicMathResult {
+
+	finalResult := BigIntBasicMathResult{}.New()
+	finalResult.Result = multiplier.CopyOut()
+	lenMultiplicands := len(multiplicands)
+
+	if lenMultiplicands == 0 {
+		return finalResult
+	}
+
+	for _, multiplicand := range multiplicands {
+
+		bPair := BigIntPair{}.NewBigIntNum(finalResult.Result, multiplicand)
+
+		result := bMultiply.MultiplyPair(bPair)
+
+		finalResult.Result = result.Result.CopyOut()
+	}
+
+	return finalResult
 }
 
 // MultiplyDecimal - Receives two Decimal instances and multiplies their
@@ -343,8 +394,8 @@ func (bMultiply BigIntMathMultiply) MultiplyNumStr(
 // type.
 //
 func (bMultiply BigIntMathMultiply) MultiplyNumStrDto(
-							n1Dto,
-							n2Dto NumStrDto) (BigIntBasicMathResult, error) {
+																n1Dto,
+																	n2Dto NumStrDto) (BigIntBasicMathResult, error) {
 
 	ePrefix := "BigIntMathMultiply.MultiplyNumStrDto() "
 
