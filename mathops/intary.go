@@ -1760,6 +1760,13 @@ func (ia *IntAry) EmptyBackUp() {
 	ia.BackUp = BackUpIntAry{}.New()
 }
 
+// Equal - Returns 'true' if all field values of the current
+// intAry object are equal to all field values of the input
+// parameter intAry object, 'iAry2'.
+func (ia *IntAry) Equal(iAry2 IntAry) bool {
+	return ia.Equals(&iAry2)
+}
+
 // Equals - Returns 'true' if all field values
 // of the current intAry object are equal to all
 // field values of the input parameter intAry object,
