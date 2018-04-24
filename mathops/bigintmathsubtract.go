@@ -592,8 +592,8 @@ func (bSubtract BigIntMathSubtract) SubtractIntAryArray(
 }
 
 // SubtractIntAryOutputToArray - The first input parameter to this method
-// is a IntAry Type labeled, 'minuend'.  The second element is an 
-// array of IntAry types labeled 'subtrahends'. The 'minuend' is subtracted
+// is a IntAry Type labeled, 'minuend'.  The second element is an array
+// of IntAry types labeled 'subtrahends'. The 'minuend' is subtracted
 // from each element of the 'subtrahends' array with the result output to
 // another 'results' array of IntAry types which is then returned to the
 // calling function.
@@ -830,6 +830,62 @@ func (bSubtract BigIntMathSubtract) SubtractINumMgrArray(
 	return finalResult, nil
 }
 
+// SubtractINumMgrOutputToArray - The first input parameter to this method
+// is an object which implements the INumMgr interface ('minuend').  The
+// second input parameter is an array of INumMgr interface types labeled
+// 'subtrahends'. The 'minuend' is subtracted from each element of the
+// 'subtrahends' array with the result output to another 'results' array
+// of INumMgr interface types which is then returned to the calling function.
+//
+// Example
+// =======
+// 										    subtrahends										 Output
+//  Minuend   				    	Array													Array
+//
+//		10			-					subtrahends[0] = 2			=				  outputarray[0] =  8
+//		10			-					subtrahends[1] = 3			=				  outputarray[1] =  7
+//		10			-					subtrahends[2] = 4			=				  outputarray[2] =  6
+//		10			-					subtrahends[3] = 5			=				  outputarray[3] =  5
+//		10			-					subtrahends[4] = 6			=				  outputarray[4] =  4
+//		10			-					subtrahends[5] = 9			=				  outputarray[5] =  1
+//
+// Note: The underlying type for the returned results array is 'BigIntNum', a
+// type which implements the INumMgr Interface.
+//
+func (bSubtract BigIntMathSubtract) SubtractINumMgrOutputToArray(
+	minuend INumMgr,
+	subtrahends []INumMgr) ([]INumMgr, error) {
+
+	ePrefix := "BigIntMathSubtract.SubtractINumMgrOutputToArray() "
+
+	lenSubtrahends := len(subtrahends)
+
+	if lenSubtrahends == 0 {
+		return []INumMgr{}, nil
+	}
+
+	resultsArray := make([]INumMgr, lenSubtrahends)
+
+	for i:=0; i < lenSubtrahends; i++ {
+
+		bPair, err := BigIntPair{}.NewINumMgr(minuend, subtrahends[i])
+
+		if err != nil {
+			return []INumMgr{},
+				fmt.Errorf(ePrefix +
+					"Error returned by BigIntPair{}.NewINumMgr(minuend, subtrahends[i]) " +
+					"minuend='%v' subtrahends[%v]='%v' Error='%v'. ",
+					minuend.GetNumStr(), i, subtrahends[i].GetNumStr(), err.Error())
+		}
+
+		result := bSubtract.SubtractPair(bPair)
+
+		resultsArray[i] = &result.Result
+
+	}
+
+	return resultsArray, nil
+}
 
 // SubtractINumMgrSeries - Receives two input parameters. The first parameter
 // is an INumMgr instance which is classified as the 'minuend'. The second

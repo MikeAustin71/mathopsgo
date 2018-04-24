@@ -3634,6 +3634,376 @@ func TestBigIntMathSubtract_SubtractIntAryArray_04(t *testing.T) {
 
 }
 
+func TestBigIntMathSubtract_SubtractIntAryOutputToArray_01(t *testing.T) {
+
+	var err error
+
+	// minuend =   100
+	minuendStr := "100"
+
+	subtrahendStrs := []string{
+		"5",
+		"10",
+		"30",
+		"60.55",
+		"-100.1",
+		"-5.6",
+	}
+
+	expectedStrs := []string{
+		"95",
+		"90",
+		"70",
+		"39.45",
+		"200.1",
+		"105.6",
+	}
+
+
+	minuendIntAry, err := IntAry{}.NewNumStr(minuendStr)
+
+	if err != nil {
+		t.Errorf("Error returned by IntAry{}.NewNumStr(minuendStr) " +
+			"minuendStr='%v'  Error='%v'. ", minuendStr, err.Error())
+	}
+
+	lenSubtrahends := len(subtrahendStrs)
+	subtrahendAry := make([]IntAry, lenSubtrahends)
+	expectedResultsAry := make([]IntAry, lenSubtrahends)
+
+	for i:=0; i < lenSubtrahends; i++ {
+
+		subtrahendAry[i], err = IntAry{}.NewNumStr(subtrahendStrs[i])
+
+		if err != nil {
+			t.Errorf("Error returned by IntAry{}.NewNumStr(subtrahendStrs[i]) " +
+				"subtrahendStrs[%v]='%v'  Error='%v'. ", i, subtrahendStrs[i], err.Error())
+		}
+
+		expectedResultsAry[i], err = IntAry{}.NewNumStr(expectedStrs[i])
+
+		if err != nil {
+			t.Errorf("Error returned by IntAry{}.NewNumStr(expectedStrs[i]) " +
+				"expectedStrs[%v]='%v'  Error='%v'. ", i, expectedStrs[i], err.Error())
+		}
+
+	}
+
+	resultArray, err :=
+		BigIntMathSubtract{}.SubtractIntAryOutputToArray(minuendIntAry, subtrahendAry)
+
+	if err != nil {
+		t.Errorf("Error returned byBigIntMathSubtract{}.SubtractIntAryOutputToArray" +
+			"(minuendIntAry, subtrahendAry) minuendIntAry='%v'  Error='%v'. ",
+			minuendIntAry.GetNumStr(), err.Error())
+	}
+
+	for k:=0; k < lenSubtrahends; k++ {
+
+		if !resultArray[k].Equal(expectedResultsAry[k]) {
+			t.Errorf("Inequality Error: Expected ResultsAry='%v'. Instead, ResultsAry='%v'. ",
+				expectedResultsAry[k].GetNumStr(), resultArray[k].GetNumStr())
+		}
+
+	}
+
+}
+
+func TestBigIntMathSubtract_SubtractIntAryOutputToArray_02(t *testing.T) {
+
+	var err error
+
+	// minuend =   5051
+	minuendStr := "5051"
+
+	subtrahendStrs := []string{
+		"8000",
+		"6051.123456",
+		"-30871.25",
+		"604.55",
+		"9100.123",
+		"-115.76",
+	}
+
+	expectedStrs := []string{
+		"-2949",
+		"-1000.123456",
+		"35922.25",
+		"4446.45",
+		"-4049.123",
+		"5166.76",
+	}
+
+	minuendIntAry, err := IntAry{}.NewNumStr(minuendStr)
+
+	if err != nil {
+		t.Errorf("Error returned by IntAry{}.NewNumStr(minuendStr) " +
+			"minuendStr='%v'  Error='%v'. ", minuendStr, err.Error())
+	}
+
+	lenSubtrahends := len(subtrahendStrs)
+	subtrahendAry := make([]IntAry, lenSubtrahends)
+	expectedResultsAry := make([]IntAry, lenSubtrahends)
+
+	for i:=0; i < lenSubtrahends; i++ {
+
+		subtrahendAry[i], err = IntAry{}.NewNumStr(subtrahendStrs[i])
+
+		if err != nil {
+			t.Errorf("Error returned by IntAry{}.NewNumStr(subtrahendStrs[i]) " +
+				"subtrahendStrs[%v]='%v'  Error='%v'. ", i, subtrahendStrs[i], err.Error())
+		}
+
+		expectedResultsAry[i], err = IntAry{}.NewNumStr(expectedStrs[i])
+
+		if err != nil {
+			t.Errorf("Error returned by IntAry{}.NewNumStr(expectedStrs[i]) " +
+				"expectedStrs[%v]='%v'  Error='%v'. ", i, expectedStrs[i], err.Error())
+		}
+
+	}
+
+	resultArray, err :=
+		BigIntMathSubtract{}.SubtractIntAryOutputToArray(minuendIntAry, subtrahendAry)
+
+	if err != nil {
+		t.Errorf("Error returned byBigIntMathSubtract{}.SubtractIntAryOutputToArray" +
+			"(minuendIntAry, subtrahendAry) minuendIntAry='%v'  Error='%v'. ",
+			minuendIntAry.GetNumStr(), err.Error())
+	}
+
+	for k:=0; k < lenSubtrahends; k++ {
+
+		if !resultArray[k].Equal(expectedResultsAry[k]) {
+			t.Errorf("Error: Expected ResultsAry='%v' Not Equal. Instead, ResultsAry='%v'. ",
+				expectedResultsAry[k].GetNumStr(), resultArray[k].GetNumStr())
+		}
+
+	}
+
+}
+
+func TestBigIntMathSubtract_SubtractIntAryOutputToArray_03(t *testing.T) {
+
+	var err error
+
+	// minuend =   -20051.974578
+	minuendStr := "-20051.974578"
+
+	subtrahendStrs := []string{
+		"476.543798",
+		"6051.123456",
+		"-270871.25",
+		"15604.5589321",
+		"987100.123",
+		"-114555.76",
+	}
+
+	expectedStrs := []string{
+		"-20528.518376",
+		"-26103.098034",
+		"250819.275422",
+		"-35656.5335101",
+		"-1007152.097578",
+		"94503.785422",
+	}
+
+	minuendIntAry, err := IntAry{}.NewNumStr(minuendStr)
+
+	if err != nil {
+		t.Errorf("Error returned by IntAry{}.NewNumStr(minuendStr) " +
+			"minuendStr='%v'  Error='%v'. ", minuendStr, err.Error())
+	}
+
+	lenSubtrahends := len(subtrahendStrs)
+	subtrahendAry := make([]IntAry, lenSubtrahends)
+	expectedResultsAry := make([]IntAry, lenSubtrahends)
+
+	for i:=0; i < lenSubtrahends; i++ {
+
+		subtrahendAry[i], err = IntAry{}.NewNumStr(subtrahendStrs[i])
+
+		if err != nil {
+			t.Errorf("Error returned by IntAry{}.NewNumStr(subtrahendStrs[i]) " +
+				"subtrahendStrs[%v]='%v'  Error='%v'. ", i, subtrahendStrs[i], err.Error())
+		}
+
+		expectedResultsAry[i], err = IntAry{}.NewNumStr(expectedStrs[i])
+
+		if err != nil {
+			t.Errorf("Error returned by IntAry{}.NewNumStr(expectedStrs[i]) " +
+				"expectedStrs[%v]='%v'  Error='%v'. ", i, expectedStrs[i], err.Error())
+		}
+
+	}
+
+	resultArray, err :=
+		BigIntMathSubtract{}.SubtractIntAryOutputToArray(minuendIntAry, subtrahendAry)
+
+	if err != nil {
+		t.Errorf("Error returned byBigIntMathSubtract{}.SubtractIntAryOutputToArray" +
+			"(minuendIntAry, subtrahendAry) minuendIntAry='%v'  Error='%v'. ",
+			minuendIntAry.GetNumStr(), err.Error())
+	}
+
+	for k:=0; k < lenSubtrahends; k++ {
+
+		if !resultArray[k].Equal(expectedResultsAry[k]) {
+			t.Errorf("Error: Expected ResultsAry='%v' Not Equal. Instead, ResultsAry='%v'. ",
+				expectedResultsAry[k].GetNumStr(), resultArray[k].GetNumStr())
+		}
+
+	}
+}
+
+func TestBigIntMathSubtract_SubtractIntAryOutputToArray_04(t *testing.T) {
+
+	var err error
+
+	// minuend =   0
+	minuendStr := "0"
+
+	subtrahendStrs := []string{
+		"476.543798",
+		"6051.123456",
+		"-270871.25",
+		"15604.5589321",
+		"987100.123",
+		"-114555.76",
+	}
+
+	expectedStrs := []string{
+		"-476.543798",
+		"-6051.123456",
+		"270871.25",
+		"-15604.5589321",
+		"-987100.123",
+		"114555.76",
+	}
+
+	minuendIntAry, err := IntAry{}.NewNumStr(minuendStr)
+
+	if err != nil {
+		t.Errorf("Error returned by IntAry{}.NewNumStr(minuendStr) " +
+			"minuendStr='%v'  Error='%v'. ", minuendStr, err.Error())
+	}
+
+	lenSubtrahends := len(subtrahendStrs)
+	subtrahendAry := make([]IntAry, lenSubtrahends)
+	expectedResultsAry := make([]IntAry, lenSubtrahends)
+
+	for i:=0; i < lenSubtrahends; i++ {
+
+		subtrahendAry[i], err = IntAry{}.NewNumStr(subtrahendStrs[i])
+
+		if err != nil {
+			t.Errorf("Error returned by IntAry{}.NewNumStr(subtrahendStrs[i]) " +
+				"subtrahendStrs[%v]='%v'  Error='%v'. ", i, subtrahendStrs[i], err.Error())
+		}
+
+		expectedResultsAry[i], err = IntAry{}.NewNumStr(expectedStrs[i])
+
+		if err != nil {
+			t.Errorf("Error returned by IntAry{}.NewNumStr(expectedStrs[i]) " +
+				"expectedStrs[%v]='%v'  Error='%v'. ", i, expectedStrs[i], err.Error())
+		}
+
+	}
+
+	resultArray, err :=
+		BigIntMathSubtract{}.SubtractIntAryOutputToArray(minuendIntAry, subtrahendAry)
+
+	if err != nil {
+		t.Errorf("Error returned byBigIntMathSubtract{}.SubtractIntAryOutputToArray" +
+			"(minuendIntAry, subtrahendAry) minuendIntAry='%v'  Error='%v'. ",
+			minuendIntAry.GetNumStr(), err.Error())
+	}
+
+	for k:=0; k < lenSubtrahends; k++ {
+
+		if !resultArray[k].Equal(expectedResultsAry[k]) {
+			t.Errorf("Error: Expected ResultsAry='%v' Not Equal. Instead, ResultsAry='%v'. ",
+				expectedResultsAry[k].GetNumStr(), resultArray[k].GetNumStr())
+		}
+
+	}
+
+}
+
+
+func TestBigIntMathSubtract_SubtractIntAryOutputToArray_05(t *testing.T) {
+
+	var err error
+
+	// minuend =   0
+	minuendStr := "98.2"
+
+	subtrahendStrs := []string{
+		"0",
+		"0.000",
+		"0",
+		"0",
+		"0.00000",
+		"0.0",
+	}
+
+	expectedStrs := []string{
+		"98.2",
+		"98.200",
+		"98.2",
+		"98.2",
+		"98.20000",
+		"98.2",
+	}
+
+	minuendIntAry, err := IntAry{}.NewNumStr(minuendStr)
+
+	if err != nil {
+		t.Errorf("Error returned by IntAry{}.NewNumStr(minuendStr) " +
+			"minuendStr='%v'  Error='%v'. ", minuendStr, err.Error())
+	}
+
+	lenSubtrahends := len(subtrahendStrs)
+	subtrahendAry := make([]IntAry, lenSubtrahends)
+	expectedResultsAry := make([]IntAry, lenSubtrahends)
+
+	for i:=0; i < lenSubtrahends; i++ {
+
+		subtrahendAry[i], err = IntAry{}.NewNumStr(subtrahendStrs[i])
+
+		if err != nil {
+			t.Errorf("Error returned by IntAry{}.NewNumStr(subtrahendStrs[i]) " +
+				"subtrahendStrs[%v]='%v'  Error='%v'. ", i, subtrahendStrs[i], err.Error())
+		}
+
+		expectedResultsAry[i], err = IntAry{}.NewNumStr(expectedStrs[i])
+
+		if err != nil {
+			t.Errorf("Error returned by IntAry{}.NewNumStr(expectedStrs[i]) " +
+				"expectedStrs[%v]='%v'  Error='%v'. ", i, expectedStrs[i], err.Error())
+		}
+
+	}
+
+	resultArray, err :=
+		BigIntMathSubtract{}.SubtractIntAryOutputToArray(minuendIntAry, subtrahendAry)
+
+	if err != nil {
+		t.Errorf("Error returned byBigIntMathSubtract{}.SubtractIntAryOutputToArray" +
+			"(minuendIntAry, subtrahendAry) minuendIntAry='%v'  Error='%v'. ",
+			minuendIntAry.GetNumStr(), err.Error())
+	}
+
+	for k:=0; k < lenSubtrahends; k++ {
+
+		if !resultArray[k].Equal(expectedResultsAry[k]) {
+			t.Errorf("Error: Expected ResultsAry='%v' Not Equal. Instead, ResultsAry='%v'. ",
+				expectedResultsAry[k].GetNumStr(), resultArray[k].GetNumStr())
+		}
+
+	}
+}
+
 func TestBigIntMathSubtract_SubtractIntArySeries_01(t *testing.T) {
 
 	var err error
@@ -4752,6 +5122,394 @@ func TestBigIntMathSubtract_SubtractINumMgrArray_04(t *testing.T) {
 			expectedBigINumSign, result.Result.sign)
 	}
 
+}
+
+func TestBigIntMathSubtract_SubtractINumMgrOutputToArray_01(t *testing.T) {
+
+	var err error
+
+	// minuend =   100
+	minuendStr := "100"
+
+	subtrahendStrs := []string{
+		"5",
+		"10",
+		"30",
+		"60.55",
+		"-100.1",
+		"-5.6",
+	}
+
+	expectedStrs := []string{
+		"95",
+		"90",
+		"70",
+		"39.45",
+		"200.1",
+		"105.6",
+	}
+
+
+	minuendINumMgr, err := NumStrDto{}.NewNumStr(minuendStr)
+
+	if err != nil {
+		t.Errorf("Error returned by INumMgr{}.NewNumStr(minuendStr) " +
+			"minuendStr='%v'  Error='%v'. ", minuendStr, err.Error())
+	}
+
+	lenSubtrahends := len(subtrahendStrs)
+	subtrahendAry := make([]INumMgr, lenSubtrahends)
+	expectedResultsAry := make([]INumMgr, lenSubtrahends)
+
+	for i:=0; i < lenSubtrahends; i++ {
+
+		dec, err := Decimal{}.NewNumStr(subtrahendStrs[i])
+
+		if err != nil {
+			t.Errorf("Error returned by Decimal{}.NewNumStr(subtrahendStrs[i]) " +
+				"subtrahendStrs[%v]='%v'  Error='%v'. ", i, subtrahendStrs[i], err.Error())
+		}
+
+		subtrahendAry[i] = &dec
+
+		dec2, err := Decimal{}.NewNumStr(expectedStrs[i])
+
+		if err != nil {
+			t.Errorf("Error returned by Decimal{}.NewNumStr(expectedStrs[i]) " +
+				"expectedStrs[%v]='%v'  Error='%v'. ", i, expectedStrs[i], err.Error())
+		}
+
+		expectedResultsAry[i] = &dec2
+	}
+
+	resultArray, err :=
+		BigIntMathSubtract{}.SubtractINumMgrOutputToArray(&minuendINumMgr, subtrahendAry)
+
+	if err != nil {
+		t.Errorf("Error returned byBigIntMathSubtract{}.SubtractINumMgrOutputToArray" +
+			"(minuendINumMgr, subtrahendAry) minuendINumMgr='%v'  Error='%v'. ",
+			minuendINumMgr.GetNumStr(), err.Error())
+	}
+
+	for k:=0; k < lenSubtrahends; k++ {
+
+		if expectedResultsAry[k].GetNumStr() != resultArray[k].GetNumStr() {
+			t.Errorf("Inequality Error: Expected ResultsAry='%v'. Instead, ResultsAry='%v'. ",
+				expectedResultsAry[k].GetNumStr(), resultArray[k].GetNumStr())
+		}
+
+	}
+
+}
+
+func TestBigIntMathSubtract_SubtractINumMgrOutputToArray_02(t *testing.T) {
+
+	var err error
+
+	// minuend =   5051
+	minuendStr := "5051"
+
+	subtrahendStrs := []string{
+		"8000",
+		"6051.123456",
+		"-30871.25",
+		"604.55",
+		"9100.123",
+		"-115.76",
+	}
+
+	expectedStrs := []string{
+		"-2949",
+		"-1000.123456",
+		"35922.25",
+		"4446.45",
+		"-4049.123",
+		"5166.76",
+	}
+
+	minuendINumMgr, err := IntAry{}.NewNumStr(minuendStr)
+
+	if err != nil {
+		t.Errorf("Error returned by IntAry{}.NewNumStr(minuendStr) " +
+			"minuendStr='%v'  Error='%v'. ", minuendStr, err.Error())
+	}
+
+	lenSubtrahends := len(subtrahendStrs)
+	subtrahendAry := make([]INumMgr, lenSubtrahends)
+	expectedResultsAry := make([]INumMgr, lenSubtrahends)
+
+	for i:=0; i < lenSubtrahends; i++ {
+
+		nDto1, err := NumStrDto{}.NewNumStr(subtrahendStrs[i])
+
+		if err != nil {
+			t.Errorf("Error returned by NumStrDto{}.NewNumStr(subtrahendStrs[i]) " +
+				"subtrahendStrs[%v]='%v'  Error='%v'. ", i, subtrahendStrs[i], err.Error())
+		}
+
+		subtrahendAry[i] = &nDto1
+
+		nDto2, err := NumStrDto{}.NewNumStr(expectedStrs[i])
+
+		if err != nil {
+			t.Errorf("Error returned by NumStrDto{}.NewNumStr(expectedStrs[i]) " +
+				"expectedStrs[%v]='%v'  Error='%v'. ", i, expectedStrs[i], err.Error())
+		}
+
+		expectedResultsAry[i] = &nDto2
+
+	}
+
+	resultArray, err :=
+		BigIntMathSubtract{}.SubtractINumMgrOutputToArray(&minuendINumMgr, subtrahendAry)
+
+	if err != nil {
+		t.Errorf("Error returned byBigIntMathSubtract{}.SubtractINumMgrOutputToArray" +
+			"(minuendINumMgr, subtrahendAry) minuendINumMgr='%v'  Error='%v'. ",
+			minuendINumMgr.GetNumStr(), err.Error())
+	}
+
+	for k:=0; k < lenSubtrahends; k++ {
+
+		if expectedResultsAry[k].GetNumStr() != resultArray[k].GetNumStr() {
+			t.Errorf("Error: Expected ResultsAry='%v' Not Equal. Instead, ResultsAry='%v'. ",
+				expectedResultsAry[k].GetNumStr(), resultArray[k].GetNumStr())
+		}
+
+	}
+
+}
+
+func TestBigIntMathSubtract_SubtractINumMgrOutputToArray_03(t *testing.T) {
+
+	var err error
+
+	// minuend =   -20051.974578
+	minuendStr := "-20051.974578"
+
+	subtrahendStrs := []string{
+		"476.543798",
+		"6051.123456",
+		"-270871.25",
+		"15604.5589321",
+		"987100.123",
+		"-114555.76",
+	}
+
+	expectedStrs := []string{
+		"-20528.518376",
+		"-26103.098034",
+		"250819.275422",
+		"-35656.5335101",
+		"-1007152.097578",
+		"94503.785422",
+	}
+
+	minuendINumMgr, err := Decimal{}.NewNumStr(minuendStr)
+
+	if err != nil {
+		t.Errorf("Error returned by Decimal{}.NewNumStr(minuendStr) " +
+			"minuendStr='%v'  Error='%v'. ", minuendStr, err.Error())
+	}
+
+	lenSubtrahends := len(subtrahendStrs)
+	subtrahendAry := make([]INumMgr, lenSubtrahends)
+	expectedResultsAry := make([]INumMgr, lenSubtrahends)
+
+	for i:=0; i < lenSubtrahends; i++ {
+
+		ia1, err := IntAry{}.NewNumStr(subtrahendStrs[i])
+
+		if err != nil {
+			t.Errorf("Error returned by IntAry{}.NewNumStr(subtrahendStrs[i]) " +
+				"subtrahendStrs[%v]='%v'  Error='%v'. ", i, subtrahendStrs[i], err.Error())
+		}
+
+		subtrahendAry[i] = &ia1
+
+		ia2, err := IntAry{}.NewNumStr(expectedStrs[i])
+
+		if err != nil {
+			t.Errorf("Error returned by IntAry{}.NewNumStr(expectedStrs[i]) " +
+				"expectedStrs[%v]='%v'  Error='%v'. ", i, expectedStrs[i], err.Error())
+		}
+
+		expectedResultsAry[i] = &ia2
+	}
+
+	resultArray, err :=
+		BigIntMathSubtract{}.SubtractINumMgrOutputToArray(&minuendINumMgr, subtrahendAry)
+
+	if err != nil {
+		t.Errorf("Error returned byBigIntMathSubtract{}.SubtractINumMgrOutputToArray" +
+			"(minuendINumMgr, subtrahendAry) minuendINumMgr='%v'  Error='%v'. ",
+			minuendINumMgr.GetNumStr(), err.Error())
+	}
+
+	for k:=0; k < lenSubtrahends; k++ {
+
+		if expectedResultsAry[k].GetNumStr() != resultArray[k].GetNumStr() {
+			t.Errorf("Error: Expected ResultsAry='%v' Not Equal. Instead, ResultsAry='%v'. ",
+				expectedResultsAry[k].GetNumStr(), resultArray[k].GetNumStr())
+		}
+
+	}
+}
+
+func TestBigIntMathSubtract_SubtractINumMgrOutputToArray_04(t *testing.T) {
+
+	var err error
+
+	// minuend =   0
+	minuendStr := "0"
+
+	subtrahendStrs := []string{
+		"476.543798",
+		"6051.123456",
+		"-270871.25",
+		"15604.5589321",
+		"987100.123",
+		"-114555.76",
+	}
+
+	expectedStrs := []string{
+		"-476.543798",
+		"-6051.123456",
+		"270871.25",
+		"-15604.5589321",
+		"-987100.123",
+		"114555.76",
+	}
+
+	minuendINumMgr, err := Decimal{}.NewNumStr(minuendStr)
+
+	if err != nil {
+		t.Errorf("Error returned by Decimal{}.NewNumStr(minuendStr) " +
+			"minuendStr='%v'  Error='%v'. ", minuendStr, err.Error())
+	}
+
+	lenSubtrahends := len(subtrahendStrs)
+	subtrahendAry := make([]INumMgr, lenSubtrahends)
+	expectedResultsAry := make([]INumMgr, lenSubtrahends)
+
+	for i:=0; i < lenSubtrahends; i++ {
+
+		dec1, err := Decimal{}.NewNumStr(subtrahendStrs[i])
+
+		if err != nil {
+			t.Errorf("Error returned by Decimal{}.NewNumStr(subtrahendStrs[i]) " +
+				"subtrahendStrs[%v]='%v'  Error='%v'. ", i, subtrahendStrs[i], err.Error())
+		}
+
+		subtrahendAry[i] = &dec1
+
+		dec2, err := Decimal{}.NewNumStr(expectedStrs[i])
+
+		if err != nil {
+			t.Errorf("Error returned by Decimal{}.NewNumStr(expectedStrs[i]) " +
+				"expectedStrs[%v]='%v'  Error='%v'. ", i, expectedStrs[i], err.Error())
+		}
+
+		expectedResultsAry[i] = &dec2
+
+	}
+
+	resultArray, err :=
+		BigIntMathSubtract{}.SubtractINumMgrOutputToArray(&minuendINumMgr, subtrahendAry)
+
+	if err != nil {
+		t.Errorf("Error returned byBigIntMathSubtract{}.SubtractINumMgrOutputToArray" +
+			"(minuendINumMgr, subtrahendAry) minuendINumMgr='%v'  Error='%v'. ",
+			minuendINumMgr.GetNumStr(), err.Error())
+	}
+
+	for k:=0; k < lenSubtrahends; k++ {
+
+		if expectedResultsAry[k].GetNumStr() != resultArray[k].GetNumStr() {
+			t.Errorf("Error: Expected ResultsAry='%v' Not Equal. Instead, ResultsAry='%v'. ",
+				expectedResultsAry[k].GetNumStr(), resultArray[k].GetNumStr())
+		}
+
+	}
+
+}
+
+
+func TestBigIntMathSubtract_SubtractINumMgrOutputToArray_05(t *testing.T) {
+
+	var err error
+
+	// minuend =   0
+	minuendStr := "98.2"
+
+	subtrahendStrs := []string{
+		"0",
+		"0.000",
+		"0",
+		"0",
+		"0.00000",
+		"0.0",
+	}
+
+	expectedStrs := []string{
+		"98.2",
+		"98.200",
+		"98.2",
+		"98.2",
+		"98.20000",
+		"98.2",
+	}
+
+	minuendINumMgr, err := BigIntNum{}.NewNumStr(minuendStr)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(minuendStr) " +
+			"minuendStr='%v'  Error='%v'. ", minuendStr, err.Error())
+	}
+
+	lenSubtrahends := len(subtrahendStrs)
+	subtrahendAry := make([]INumMgr, lenSubtrahends)
+	expectedResultsAry := make([]INumMgr, lenSubtrahends)
+
+	for i:=0; i < lenSubtrahends; i++ {
+
+		nDto1, err := NumStrDto{}.NewNumStr(subtrahendStrs[i])
+
+		if err != nil {
+			t.Errorf("Error returned by NumStrDto{}.NewNumStr(subtrahendStrs[i]) " +
+				"subtrahendStrs[%v]='%v'  Error='%v'. ", i, subtrahendStrs[i], err.Error())
+		}
+
+		subtrahendAry[i] = &nDto1
+
+		nDto2, err := NumStrDto{}.NewNumStr(expectedStrs[i])
+
+		if err != nil {
+			t.Errorf("Error returned by NumStrDto{}.NewNumStr(expectedStrs[i]) " +
+				"expectedStrs[%v]='%v'  Error='%v'. ", i, expectedStrs[i], err.Error())
+		}
+
+		expectedResultsAry[i] = &nDto2
+
+	}
+
+	resultArray, err :=
+		BigIntMathSubtract{}.SubtractINumMgrOutputToArray(&minuendINumMgr, subtrahendAry)
+
+	if err != nil {
+		t.Errorf("Error returned byBigIntMathSubtract{}.SubtractINumMgrOutputToArray" +
+			"(minuendINumMgr, subtrahendAry) minuendINumMgr='%v'  Error='%v'. ",
+			minuendINumMgr.GetNumStr(), err.Error())
+	}
+
+	for k:=0; k < lenSubtrahends; k++ {
+
+		if expectedResultsAry[k].GetNumStr() != resultArray[k].GetNumStr() {
+			t.Errorf("Error: Expected ResultsAry='%v' Not Equal. Instead, ResultsAry='%v'. ",
+				expectedResultsAry[k].GetNumStr(), resultArray[k].GetNumStr())
+		}
+
+	}
 }
 
 func TestBigIntMathSubtract_SubtractINumMgrSeries_01(t *testing.T) {
