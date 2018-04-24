@@ -1312,6 +1312,68 @@ func (bSubtract BigIntMathSubtract) SubtractNumStrDtoArray(
 	return finalResult, nil
 }
 
+// SubtractNumStrDtoOutputToArray - The first input parameter to this method
+// is a NumStrDto Type labeled, 'minuend'.  The second input parameter is an 
+// array of NumStrDto types labeled 'subtrahends'. The 'minuend' is subtracted
+// from each element of the 'subtrahends' array with the result output to
+// another 'results' array of NumStrDto types which is then returned to the
+// calling function.
+//
+// Example
+// =======
+// 										    subtrahends										 Output
+// Minuend   				    	   Array											 Array
+//
+//		10			-					subtrahends[0] = 2			=				  outputarray[0] =  8
+//		10			-					subtrahends[1] = 3			=				  outputarray[1] =  7
+//		10			-					subtrahends[2] = 4			=				  outputarray[2] =  6
+//		10			-					subtrahends[3] = 5			=				  outputarray[3] =  5
+//		10			-					subtrahends[4] = 6			=				  outputarray[4] =  4
+//		10			-					subtrahends[5] = 9			=				  outputarray[5] =  1
+//
+//
+func (bSubtract BigIntMathSubtract) SubtractNumStrDtoOutputToArray(
+												minuend NumStrDto,
+														subtrahends []NumStrDto) ([]NumStrDto, error) {
+
+	ePrefix := "BigIntMathSubtract.SubtractNumStrDtoOutputToArray() "
+
+	lenSubtrahends := len(subtrahends)
+
+	if lenSubtrahends == 0 {
+		return []NumStrDto{}, nil
+	}
+
+	resultsArray := make([]NumStrDto, lenSubtrahends)
+
+	for i:=0; i < lenSubtrahends; i++ {
+
+		bPair, err := BigIntPair{}.NewNumStrDto(minuend, subtrahends[i])
+
+		if err != nil {
+			return []NumStrDto{},
+				fmt.Errorf(ePrefix +
+					"Error returned by BigIntPair{}.NewNumStrDto(minuend, subtrahends[i]) " +
+					"minuend='%v' subtrahends[%v]='%v' Error='%v'. ",
+					minuend.GetNumStr(), i, subtrahends[i].GetNumStr(), err.Error())
+		}
+
+		result := bSubtract.SubtractPair(bPair)
+
+		resultsArray[i], err = result.Result.GetNumStrDto()
+
+		if err != nil {
+			return []NumStrDto{},
+				fmt.Errorf(ePrefix +
+					"Error returned by result.Result.GetNumStrDto() " +
+					"i='%v' result.Result='%v' Error='%v'. ",
+					i, result.Result.GetNumStr(), err.Error())
+		}
+	}
+
+	return resultsArray, nil
+}
+
 // SubtractNumStrDtoSeries - Receives one NumStrDto Type which is classified as
 // the 'minuend'. The second input parameter, 'subtrahends' is a series of
 // Type NumStrDto .

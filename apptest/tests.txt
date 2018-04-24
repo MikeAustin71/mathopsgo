@@ -1,5 +1,5 @@
 === RUN   TestBigIntPair_Compare_01
---- PASS: TestBigIntPair_Compare_01 (0.01s)
+--- PASS: TestBigIntPair_Compare_01 (0.02s)
 === RUN   TestBigIntPair_Compare_02
 --- PASS: TestBigIntPair_Compare_02 (0.00s)
 === RUN   TestBigIntPair_Compare_03
@@ -382,6 +382,16 @@
 --- PASS: TestBigIntMathSubtract_SubtractNumStrDtoArray_03 (0.00s)
 === RUN   TestBigIntMathSubtract_SubtractNumStrDtoArray_04
 --- PASS: TestBigIntMathSubtract_SubtractNumStrDtoArray_04 (0.00s)
+=== RUN   TestBigIntMathSubtract_SubtractNumStrDtoOutputToArray_01
+--- PASS: TestBigIntMathSubtract_SubtractNumStrDtoOutputToArray_01 (0.00s)
+=== RUN   TestBigIntMathSubtract_SubtractNumStrDtoOutputToArray_02
+--- PASS: TestBigIntMathSubtract_SubtractNumStrDtoOutputToArray_02 (0.00s)
+=== RUN   TestBigIntMathSubtract_SubtractNumStrDtoOutputToArray_03
+--- PASS: TestBigIntMathSubtract_SubtractNumStrDtoOutputToArray_03 (0.00s)
+=== RUN   TestBigIntMathSubtract_SubtractNumStrDtoOutputToArray_04
+--- PASS: TestBigIntMathSubtract_SubtractNumStrDtoOutputToArray_04 (0.00s)
+=== RUN   TestBigIntMathSubtract_SubtractNumStrDtoOutputToArray_05
+--- PASS: TestBigIntMathSubtract_SubtractNumStrDtoOutputToArray_05 (0.00s)
 === RUN   TestBigIntMathSubtract_SubtractNumStrDtoSeries_01
 --- PASS: TestBigIntMathSubtract_SubtractNumStrDtoSeries_01 (0.00s)
 === RUN   TestBigIntMathSubtract_SubtractNumStrDtoSeries_02
@@ -1727,7 +1737,7 @@
 === RUN   TestNumStrDto_GetThouStr_03
 --- PASS: TestNumStrDto_GetThouStr_03 (0.00s)
 === RUN   TestNumStrDto_GetThouStr_04
---- PASS: TestNumStrDto_GetThouStr_04 (0.00s)
+--- PASS: TestNumStrDto_GetThouStr_04 (0.01s)
 === RUN   TestNumStrDto_GetThouStr_05
 --- PASS: TestNumStrDto_GetThouStr_05 (0.00s)
 === RUN   TestNumStrDto_GetThouStr_06
@@ -1751,7 +1761,7 @@
 === RUN   TestNumStrDto_GetThouParen_05
 --- PASS: TestNumStrDto_GetThouParen_05 (0.00s)
 === RUN   TestNumStrDto_GetThouParen_06
---- PASS: TestNumStrDto_GetThouParen_06 (0.01s)
+--- PASS: TestNumStrDto_GetThouParen_06 (0.00s)
 === RUN   TestNumStrDto_GetThouParen_07
 --- PASS: TestNumStrDto_GetThouParen_07 (0.00s)
 === RUN   TestNumStrDto_GetThouParen_08
@@ -2115,4 +2125,4 @@
 === RUN   TestStrMathOp_SubtractN1N2_19
 --- PASS: TestStrMathOp_SubtractN1N2_19 (0.00s)
 PASS
-ok  	MikeAustin71/mathopsgo/mathops	0.616s
+ok  	MikeAustin71/mathopsgo/mathops	0.649s
