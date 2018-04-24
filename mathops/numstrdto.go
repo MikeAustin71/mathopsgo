@@ -396,6 +396,50 @@ func (nDto *NumStrDto) Divide(n2Dto NumStrDto, minimumPrecision, maximumPrecisio
 	return nil
 }
 
+// Equal - Returns true if the input parameter NumStrDto instance
+// is equal in all respects to the current NumStrDto Instance
+func (nDto *NumStrDto) Equal(n2Dto NumStrDto) bool {
+
+	err := nDto.IsNumStrDtoValid("")
+
+	if err != nil {
+		return false
+	}
+
+	err = n2Dto.IsNumStrDtoValid("")
+
+	if err != nil {
+		return false
+	}
+
+	if nDto.GetNumStr() != n2Dto.GetNumStr() {
+		return false
+	}
+
+	lenAbsRuneArray := len(nDto.absAllNumRunes)
+
+	if nDto.isValid != n2Dto.isValid ||
+			nDto.signVal != n2Dto.signVal ||
+			lenAbsRuneArray != len(n2Dto.absAllNumRunes) ||
+			nDto.precision != n2Dto.precision ||
+			nDto.isFractionalValue != n2Dto.isFractionalValue ||
+			nDto.hasNumericDigits != n2Dto.hasNumericDigits ||
+			nDto.numStr != n2Dto.numStr ||
+			nDto.thousandsSeparator != n2Dto.thousandsSeparator ||
+			nDto.decimalSeparator != n2Dto.decimalSeparator ||
+			nDto.currencySymbol != n2Dto.currencySymbol {
+				return false
+	}
+
+	for i:=0; i < lenAbsRuneArray; i++ {
+		if nDto.absAllNumRunes[i] != n2Dto.absAllNumRunes[i] {
+			return false
+		}
+	}
+
+	return true
+}
+
 // Empty - Sets all the fields in the NumStrDto
 // to their initial or zero state.
 func (nDto *NumStrDto) Empty() {
@@ -418,7 +462,6 @@ func (nDto *NumStrDto) Empty() {
 	if nDto.currencySymbol == 0 {
 		nDto.currencySymbol = '$'
 	}
-
 
 }
 

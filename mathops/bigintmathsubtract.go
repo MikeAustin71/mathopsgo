@@ -145,10 +145,11 @@ func (bSubtract BigIntMathSubtract) SubtractBigIntNumArray(
 }
 
 // SubtractBigIntNumOutputToArray - The first input parameter to this method
-// is a BigIntNum Type labeled, 'addend'.  The second element is an 
-// array of BigIntNum types labeled 'subtrahends'. The 'addend' is added to 
+// is a BigIntNum Type labeled, 'minuend'.  The second element is an array
+// of BigIntNum types labeled 'subtrahends'. The 'minuend' is subtracted from
 // each element of the 'subtrahends' array with the result output to another
-// array of BigIntNum types which is returned to the calling function.
+// 'results' array of BigIntNum types which is then returned to the calling
+// function.
 //
 // Example
 // =======
@@ -348,6 +349,68 @@ func (bSubtract BigIntMathSubtract) SubtractDecimalArray(
 	}
 
 	return finalResult, nil
+}
+
+// SubtractDecimalOutputToArray - The first input parameter to this method
+// is a Decimal Type labeled, 'minuend'.  The second element is an 
+// array of Decimal types labeled 'subtrahends'. The 'minuend' is subtracted
+// from each element of the 'subtrahends' array with the result output to
+// another 'results' array of Decimal types which is then returned to the
+// calling function.
+//
+// Example
+// =======
+// 										    subtrahends										 Output
+//  Addend   				    	Array											Array
+//
+//		10			-					subtrahends[0] = 2			=				  outputarray[0] =  8
+//		10			-					subtrahends[1] = 3			=				  outputarray[1] =  7
+//		10			-					subtrahends[2] = 4			=				  outputarray[2] =  6
+//		10			-					subtrahends[3] = 5			=				  outputarray[3] =  5
+//		10			-					subtrahends[4] = 6			=				  outputarray[4] =  4
+//		10			-					subtrahends[5] = 9			=				  outputarray[5] =  1
+//
+//
+func (bSubtract BigIntMathSubtract) SubtractDecimalOutputToArray(
+												minuend Decimal,
+														subtrahends []Decimal) ([]Decimal, error) {
+
+  ePrefix := "BigIntMathSubtract.SubtractDecimalOutputToArray() "
+
+	lenSubtrahends := len(subtrahends)
+
+	if lenSubtrahends == 0 {
+		return []Decimal{}, nil
+	}
+
+	resultsArray := make([]Decimal, lenSubtrahends)
+
+	for i:=0; i < lenSubtrahends; i++ {
+
+		bPair, err := BigIntPair{}.NewDecimal(minuend, subtrahends[i])
+
+		if err != nil {
+			return []Decimal{},
+			 fmt.Errorf(ePrefix +
+			 	"Error returned by BigIntPair{}.NewDecimal(minuend, subtrahends[i]) " +
+			 	"minuend='%v' subtrahends[%v]='%v' Error='%v'. ",
+			 		minuend.GetNumStr(), i, subtrahends[i].GetNumStr(), err.Error())
+		}
+
+		result := bSubtract.SubtractPair(bPair)
+
+		resultsArray[i], err = result.Result.GetDecimal()
+
+		if err != nil {
+			return []Decimal{},
+				fmt.Errorf(ePrefix +
+					"Error returned by result.Result.GetDecimal() " +
+					"i='%v' result.Result='%v' Error='%v'. ",
+					i, result.Result.GetNumStr(), err.Error())
+		}
+	}
+
+	return resultsArray, nil
 }
 
 // SubtractDecimalSeries - Receives one Decimal Type which is classified as

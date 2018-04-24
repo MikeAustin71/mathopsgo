@@ -318,6 +318,13 @@ func (dec *Decimal) Divide(divisor Decimal, precision int) (Decimal, error) {
 	return dec.NumStrToDecimal(numStr)
 }
 
+// Equal - Returns true if the input Decimal instance is equal
+// in all respects to the current Decimal instance.
+func (dec *Decimal) Equal(dec2 Decimal) bool {
+
+	return dec.numStrDto.Equal(dec2.numStrDto)
+}
+
 // Empty - Sets all values of the current Decimal's
 // fields to their 'zero' values.
 func (dec *Decimal) Empty() {
