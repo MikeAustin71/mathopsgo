@@ -807,8 +807,8 @@ func (bMultiply BigIntMathMultiply) MultiplyIntAryOutputToArray(
 //
 //
 func (bMultiply BigIntMathMultiply) MultiplyIntArySeries(
-	multiplier IntAry,
-	multiplicands ... IntAry) (BigIntBasicMathResult, error) {
+									multiplier IntAry,
+													multiplicands ... IntAry) (BigIntBasicMathResult, error) {
 
 	ePrefix := "BigIntMathMultiply.MultiplyIntArySeries() "
 	var err error
@@ -846,9 +846,41 @@ func (bMultiply BigIntMathMultiply) MultiplyIntArySeries(
 	return finalResult, nil
 }
 
-// MultiplyNumStr - Receives two number strings and multiplies their
-// numeric values. The result is returned as a 'BigIntBasicMathResult'
+
+// MultiplyNumStr - Receives two number strings and multiplies their numeric
+// values.
+//
+// 							n1NumStr x n2NumStr = product
+//
+// The result or 'product' is returned as a 'BigIntBasicMathResult'
 // type.
+//
+// The strings passed to this method are 'number' strings in that they consist
+// of a string of numeric digits which may include a period ('.') or decimal point
+// used to separate fractional numeric digits.
+//
+// In the multiplication operation, the number to be multiplied is called the
+// "multiplicand", while the number of times the multiplicand is to be multiplied
+// comes from the "multiplier". Usually the multiplier is placed first and the
+// multiplicand is placed second.
+//
+// For example, in the problem 5 x 3 equals 15, the 5 is the 'multiplier',
+// 3 is the 'multiplicand' and 15 is the 'product' or result.
+//
+//							multiplier x multiplicand = product or result
+//
+// This method performs the multiplication operation and afterwards returns the
+// result or 'product' as a BigIntBasicMathResult type.
+//
+// 					type BigIntBasicMathResult struct {
+// 								Input BigIntPair
+//											Input.Big1		= multiplier
+//											Input.Big2		= multiplicand
+//
+// 								Result BigIntNum
+// 											Result.bigInt = product
+//					}
+//
 //
 func (bMultiply BigIntMathMultiply) MultiplyNumStr(
 							n1NumStr,
