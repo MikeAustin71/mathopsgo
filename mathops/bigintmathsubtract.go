@@ -320,8 +320,6 @@ func (bSubtract BigIntMathSubtract) SubtractDecimalArray(
 			"minuend='%v' Error='%v'", minuend.GetNumStr(), err.Error())
 	}
 
-
-
 	lenSubtrahends := len(subtrahends)
 
 	if lenSubtrahends == 0 {
