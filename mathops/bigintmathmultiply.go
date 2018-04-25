@@ -379,40 +379,41 @@ func (bMultiply BigIntMathMultiply) MultiplyDecimalArray(
 															multiplicands []Decimal) (BigIntBasicMathResult, error) {
 
   ePrefix := "BigIntMathMultiply.MultiplyDecimalArray() "
-
-	xMultiplier := multiplier.CopyOut()
+	finalResult := BigIntBasicMathResult{}
 
 	lenMultiplicands := len(multiplicands)
 
 	if lenMultiplicands == 0 {
-		return BigIntBasicMathResult{}, nil
+		return finalResult, nil
 	}
 
-	finalResult := BigIntBasicMathResult{}
+	multiplierBINum, err := BigIntNum{}.NewDecimal(multiplier)
+
+	if err != nil {
+		return BigIntBasicMathResult{},
+			fmt.Errorf(ePrefix +
+				"Error returned by igIntNum{}.NewDecimal(multiplier) " +
+				" multiplier='%v' Error='%v'. ",
+				multiplier.GetNumStr(), err.Error())
+	}
 
 	for i:=0; i < lenMultiplicands; i++ {
 
-		bPair, err := BigIntPair{}.NewDecimal(xMultiplier, multiplicands[i])
-
-		if err != nil {
-			return BigIntBasicMathResult{},
-			fmt.Errorf(ePrefix +
-				"Error returned by BigIntPair{}.NewDecimal(xMultiplier, multiplicands[i]) " +
-				" xMultiplier='%v' multiplicands[%v]='%v' Error='%v'. ",
-					xMultiplier.GetNumStr(), i, multiplicands[i].GetNumStr(), err.Error())
-		}
-
-		finalResult = bMultiply.MultiplyPair(bPair)
-
-		xMultiplier, err = finalResult.Result.GetDecimal()
+		multiplicandBINum, err := BigIntNum{}.NewDecimal(multiplicands[i])
 
 		if err != nil {
 			return BigIntBasicMathResult{},
 				fmt.Errorf(ePrefix +
-					"Error returned by result.Result.GetDecimal() " +
-					" i='%v'  Error='%v'. ",
-					i, err.Error())
+					"Error returned by BigIntNum{}.NewDecimal(multiplicands[i]) " +
+					" multiplierBINum='%v' multiplicands[%v]='%v' Error='%v'. ",
+					multiplierBINum.GetNumStr(), i, multiplicands[i].GetNumStr(), err.Error())
 		}
+
+		bPair := BigIntPair{}.NewBigIntNum(multiplierBINum, multiplicandBINum )
+
+		finalResult = bMultiply.MultiplyPair(bPair)
+
+		multiplierBINum = finalResult.Result.CopyOut()
 
 	}
 
