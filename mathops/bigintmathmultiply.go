@@ -376,7 +376,7 @@ func (bMultiply BigIntMathMultiply) MultiplyDecimal(
 //
 func (bMultiply BigIntMathMultiply) MultiplyDecimalArray(
 															multiplier Decimal,
-															multiplicands []Decimal) (BigIntBasicMathResult, error) {
+																multiplicands []Decimal) (BigIntBasicMathResult, error) {
 
   ePrefix := "BigIntMathMultiply.MultiplyDecimalArray() "
 	finalResult := BigIntBasicMathResult{}
@@ -392,7 +392,7 @@ func (bMultiply BigIntMathMultiply) MultiplyDecimalArray(
 	if err != nil {
 		return BigIntBasicMathResult{},
 			fmt.Errorf(ePrefix +
-				"Error returned by igIntNum{}.NewDecimal(multiplier) " +
+				"Error returned by BigIntNum{}.NewDecimal(multiplier) " +
 				" multiplier='%v' Error='%v'. ",
 				multiplier.GetNumStr(), err.Error())
 	}
@@ -420,6 +420,89 @@ func (bMultiply BigIntMathMultiply) MultiplyDecimalArray(
 	return finalResult, nil
 }
 
+// MultiplyDecimalOutputToArray - Receives one input parameter of Type Decimal which
+// is classified as the 'multiplier'. The second input parameter is an array of Decimal
+// Types labeled, 'multiplicands'.
+//
+// Each element of the 'multiplicands' array is multiplied by the 'multiplier'. The result or
+// 'product' is then stored in a results array which is returned to the calling function.
+//
+// In the multiplication operation, the number to be multiplied is called the "multiplicand",
+// while the number of times the multiplicand is to be multiplied comes from the "multiplier".
+// Usually the multiplier is placed first and the multiplicand is placed second.
+//
+// For example, in the problem 5 x 3 equals 15, the 5 is the 'multiplier', 3 is the 'multiplicand'
+// and 15 is the 'product' or result.
+//
+// Example
+// =======
+// 										Multiplicands												Output
+// Multiplier				    	Array														Array
+//
+//		3			x				multiplicands[0] = 2			=				  outputarray[0] =  6
+//		3			x				multiplicands[1] = 3			=				  outputarray[1] =  9
+//		3			x				multiplicands[2] = 4			=				  outputarray[2] = 12
+//		3			x				multiplicands[3] = 5			=				  outputarray[3] = 15
+//		3			x				multiplicands[4] = 6			=				  outputarray[4] = 18
+//		3			x				multiplicands[5] = 7			=				  outputarray[5] = 21
+//
+//
+// This method performs the multiplication operation described above and afterwards returns the
+// result or 'product' in an Array of 'Decimals' ([] Decimals).
+//
+func (bMultiply BigIntMathMultiply) MultiplyDecimalOutputToArray(
+																		multiplier Decimal,
+																			multiplicands []Decimal) ([]Decimal, error) {
+
+	ePrefix := "BigIntMathMultiply.MultiplyDecimalArray() "
+
+	lenMultiplicands := len(multiplicands)
+
+	if lenMultiplicands == 0 {
+		return []Decimal{}, nil
+	}
+
+	multiplierBINum, err := BigIntNum{}.NewDecimal(multiplier)
+
+	if err != nil {
+		return []Decimal{},
+			fmt.Errorf(ePrefix +
+				"Error returned by BigIntNum{}.NewDecimal(multiplier) " +
+				" multiplier='%v' Error='%v'. ",
+				multiplier.GetNumStr(), err.Error())
+	}
+
+	resultArray := make([]Decimal, lenMultiplicands)
+
+	for i:=0; i < lenMultiplicands; i++ {
+
+		multiplicandBINum, err := BigIntNum{}.NewDecimal(multiplicands[i])
+
+		if err != nil {
+			return []Decimal{},
+				fmt.Errorf(ePrefix +
+					"Error returned by BigIntNum{}.NewDecimal(multiplicands[i]) " +
+					" multiplierBINum='%v' multiplicands[%v]='%v' Error='%v'. ",
+					multiplierBINum.GetNumStr(), i, multiplicands[i].GetNumStr(), err.Error())
+		}
+
+		bPair := BigIntPair{}.NewBigIntNum(multiplierBINum, multiplicandBINum )
+
+		finalResult := bMultiply.MultiplyPair(bPair)
+
+		resultArray[i], err = finalResult.Result.GetDecimal()
+
+		if err != nil {
+			return []Decimal{},
+				fmt.Errorf(ePrefix +
+					"Error returned by finalResult.Result.GetDecimal() " +
+					"i='%v' Error='%v'. ", i,  err.Error())
+		}
+	}
+
+	return resultArray, nil
+}
+
 // MultiplyIntAry - Receives two IntAry instances and multiplies their
 // numeric values. The result is returned as a 'BigIntBasicMathResult'
 // type.
@@ -428,7 +511,7 @@ func (bMultiply BigIntMathMultiply) MultiplyDecimalArray(
 //
 func (bMultiply BigIntMathMultiply) MultiplyIntAry(
 														ia1,
-														ia2 IntAry) (BigIntBasicMathResult, error) {
+															ia2 IntAry) (BigIntBasicMathResult, error) {
 
 	ePrefix := "BigIntMathMultiply.MultiplyIntAry() "
 
