@@ -573,8 +573,31 @@ func (bMultiply BigIntMathMultiply) MultiplyDecimalSeries(
 }
 
 // MultiplyIntAry - Receives two IntAry instances and multiplies their
-// numeric values. The result is returned as a 'BigIntBasicMathResult'
+// numeric values. The result or 'product' is returned as a 'BigIntBasicMathResult'
 // type.
+//
+// In the multiplication operation, the number to be multiplied is called the
+// "multiplicand", while the number of times the multiplicand is to be multiplied
+// comes from the "multiplier". Usually the multiplier is placed first and the
+// multiplicand is placed second.
+//
+// For example, in the problem 5 x 3 equals 15, the 5 is the 'multiplier',
+// 3 is the 'multiplicand' and 15 is the 'product' or result.
+//
+//							multiplier x multiplicand = product or result
+//
+// This method performs the multiplication operation and afterwards returns the
+// result or 'product' as a BigIntBasicMathResult type.
+//
+// 					type BigIntBasicMathResult struct {
+// 								Input BigIntPair
+//											Input.Big1		= multiplier
+//											Input.Big2		= multiplicand
+//
+// 								Result BigIntNum
+// 											Result.bigInt = product
+//					}
+//
 //
 // Be careful, IntAry's can accommodate very, very large numbers.
 //
