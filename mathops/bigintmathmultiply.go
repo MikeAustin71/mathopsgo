@@ -693,6 +693,88 @@ func (bMultiply BigIntMathMultiply) MultiplyIntAryArray(
 	return finalResult, nil
 }
 
+// MultiplyIntAryOutputToArray - Receives one input parameter of Type IntAry which
+// is classified as the 'multiplier'. The second input parameter is an array of IntAry
+// Types labeled, 'multiplicands'.
+//
+// Each element of the 'multiplicands' array is multiplied by the 'multiplier'. The result or
+// 'product' is then stored in a results array which is returned to the calling function.
+//
+// In the multiplication operation, the number to be multiplied is called the "multiplicand",
+// while the number of times the multiplicand is to be multiplied comes from the "multiplier".
+// Usually the multiplier is placed first and the multiplicand is placed second.
+//
+// For example, in the problem 5 x 3 equals 15, the 5 is the 'multiplier', 3 is the 'multiplicand'
+// and 15 is the 'product' or result.
+//
+// Example
+// =======
+// 										Multiplicands												Output
+// Multiplier				    	Array														Array
+//
+//		3			x				multiplicands[0] = 2			=				  outputarray[0] =  6
+//		3			x				multiplicands[1] = 3			=				  outputarray[1] =  9
+//		3			x				multiplicands[2] = 4			=				  outputarray[2] = 12
+//		3			x				multiplicands[3] = 5			=				  outputarray[3] = 15
+//		3			x				multiplicands[4] = 6			=				  outputarray[4] = 18
+//		3			x				multiplicands[5] = 7			=				  outputarray[5] = 21
+//
+//
+// This method performs the multiplication operation described above and afterwards returns the
+// result or 'product' in an Array of 'IntArys' ([] IntArys).
+//
+func (bMultiply BigIntMathMultiply) MultiplyIntAryOutputToArray(
+																		multiplier IntAry,
+																			multiplicands []IntAry) ([]IntAry, error) {
+
+	ePrefix := "BigIntMathMultiply.MultiplyIntAryArray() "
+
+	lenMultiplicands := len(multiplicands)
+
+	if lenMultiplicands == 0 {
+		return []IntAry{}, nil
+	}
+
+	multiplierBINum, err := BigIntNum{}.NewIntAry(multiplier)
+
+	if err != nil {
+		return []IntAry{},
+			fmt.Errorf(ePrefix +
+				"Error returned by BigIntNum{}.NewIntAry(multiplier) " +
+				" multiplier='%v' Error='%v'. ",
+				multiplier.GetNumStr(), err.Error())
+	}
+
+	resultArray := make([]IntAry, lenMultiplicands)
+
+	for i:=0; i < lenMultiplicands; i++ {
+
+		multiplicandBINum, err := BigIntNum{}.NewIntAry(multiplicands[i])
+
+		if err != nil {
+			return []IntAry{},
+				fmt.Errorf(ePrefix +
+					"Error returned by BigIntNum{}.NewIntAry(multiplicands[i]) " +
+					" multiplierBINum='%v' multiplicands[%v]='%v' Error='%v'. ",
+					multiplierBINum.GetNumStr(), i, multiplicands[i].GetNumStr(), err.Error())
+		}
+
+		bPair := BigIntPair{}.NewBigIntNum(multiplierBINum, multiplicandBINum )
+
+		finalResult := bMultiply.MultiplyPair(bPair)
+
+		resultArray[i], err = finalResult.Result.GetIntAry()
+
+		if err != nil {
+			return []IntAry{},
+				fmt.Errorf(ePrefix +
+					"Error returned by finalResult.Result.GetIntAry() " +
+					"i='%v' Error='%v'. ", i,  err.Error())
+		}
+	}
+
+	return resultArray, nil
+}
 
 // MultiplyNumStr - Receives two number strings and multiplies their
 // numeric values. The result is returned as a 'BigIntBasicMathResult'

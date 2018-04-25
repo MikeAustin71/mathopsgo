@@ -3049,7 +3049,6 @@ func TestBigIntMathMultiply_MultiplyDecimalArray_04(t *testing.T) {
 
 }
 
-
 func TestBigIntMathMultiply_MultiplyDecimalOutputToArray_01(t *testing.T) {
 
 	var err error
@@ -4823,6 +4822,341 @@ func TestBigIntMathMultiply_MultiplyIntAryArray_04(t *testing.T) {
 		t.Errorf("Error: Expected actualNumStr='%v' " +
 			"Instead, actualNumStr='%v'",
 			iaResult.GetNumStr(), actualNumStr)
+	}
+
+}
+
+func TestBigIntMathMultiply_MultiplyIntAryOutputToArray_01(t *testing.T) {
+
+	var err error
+
+	// multiplier = 2
+	multiplierStr := "2"
+	// multiplicandStrs
+	multiplicandStrs :=  [] string {
+		"1",
+		"2",
+		"3",
+		"4",
+		"5",
+		"6",
+	}
+
+	// Expected Results Array
+	expectedNumStrs := [] string {
+		"2",
+		"4",
+		"6",
+		"8",
+		"10",
+		"12",
+	}
+
+
+	multiplierIntAry, err := IntAry{}.NewNumStr(multiplierStr)
+
+	if err != nil {
+		t.Errorf("Error returned by IntAry{}.NewNumStr(multiplierStr) " +
+			"multiplierStr='%v'  Error='%v'. ", multiplierStr, err.Error())
+	}
+
+	lenArray := len(multiplicandStrs)
+	decimalArray := make([]IntAry, lenArray)
+
+	for i:=0; i < lenArray; i++ {
+
+		decimalArray[i], err = 	IntAry{}.NewNumStr(multiplicandStrs[i])
+
+		if err != nil {
+			t.Errorf("Error returned by IntAry{}.NewNumStr(multiplicandStrs[i]) " +
+				"i='%v'  multiplicandStrs[i]='%v'  Error='%v'. ", i, multiplicandStrs[i], err.Error())
+		}
+
+	}
+
+	result, err := BigIntMathMultiply{}.MultiplyIntAryOutputToArray(multiplierIntAry, decimalArray)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntMathMultiply{}.MultiplyIntAryOutputToArray" +
+			"(multiplierIntAry, decimalArray) multiplierIntAry='%v'  Error='%v'. ",
+			multiplierIntAry.GetNumStr(), err.Error())
+	}
+
+	for j:=0; j < lenArray; j++ {
+
+		if expectedNumStrs[j] != result[j].GetNumStr()  {
+			t.Errorf("Error: Expected NumStr[%v]='%v'. Instead NumStr[%v]='%v'. ",
+				j, expectedNumStrs[j], j, result[j].GetNumStr())
+		}
+
+	}
+
+}
+
+func TestBigIntMathMultiply_MultiplyIntAryOutputToArray_02(t *testing.T) {
+
+	var err error
+
+	// multiplier = 8
+	multiplierStr := "8"
+	// multiplicandStrs
+	multiplicandStrs :=  [] string {
+		"100.1",
+		"-26",
+		"3.924",
+		"8",
+		"5297.123",
+		"-4.896",
+	}
+
+	// Expected Results Array
+	expectedNumStrs := [] string {
+		"800.8",
+		"-208",
+		"31.392",
+		"64",
+		"42376.984",
+		"-39.168",
+	}
+
+
+	multiplierIntAry, err := IntAry{}.NewNumStr(multiplierStr)
+
+	if err != nil {
+		t.Errorf("Error returned by IntAry{}.NewNumStr(multiplierStr) " +
+			"multiplierStr='%v'  Error='%v'. ", multiplierStr, err.Error())
+	}
+
+	lenArray := len(multiplicandStrs)
+	decimalArray := make([]IntAry, lenArray)
+
+	for i:=0; i < lenArray; i++ {
+
+		decimalArray[i], err = 	IntAry{}.NewNumStr(multiplicandStrs[i])
+
+		if err != nil {
+			t.Errorf("Error returned by IntAry{}.NewNumStr(multiplicandStrs[i]) " +
+				"i='%v'  multiplicandStrs[i]='%v'  Error='%v'. ", i, multiplicandStrs[i], err.Error())
+		}
+
+	}
+
+	result, err := BigIntMathMultiply{}.MultiplyIntAryOutputToArray(multiplierIntAry, decimalArray)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntMathMultiply{}.MultiplyIntAryOutputToArray" +
+			"(multiplierIntAry, decimalArray) multiplierIntAry='%v'  Error='%v'. ",
+			multiplierIntAry.GetNumStr(), err.Error())
+	}
+
+	for j:=0; j < lenArray; j++ {
+
+		if expectedNumStrs[j] != result[j].GetNumStr()  {
+			t.Errorf("Error: Expected NumStr[%v]='%v'. Instead NumStr[%v]='%v'. ",
+				j, expectedNumStrs[j], j, result[j].GetNumStr())
+		}
+
+	}
+
+}
+
+func TestBigIntMathMultiply_MultiplyIntAryOutputToArray_03(t *testing.T) {
+
+	var err error
+
+	// multiplier = -31.2
+	multiplierStr := "-31.2"
+	// multiplicandStrs
+	multiplicandStrs :=  [] string {
+		"100.1",
+		"-26",
+		"3.924",
+		"8",
+		"5297.123",
+		"-4.896",
+	}
+
+	// Expected Results Array
+	expectedNumStrs := [] string {
+		"-3123.12",
+		"811.2",
+		"-122.4288",
+		"-249.6",
+		"-165270.2376",
+		"152.7552",
+	}
+
+
+	multiplierIntAry, err := IntAry{}.NewNumStr(multiplierStr)
+
+	if err != nil {
+		t.Errorf("Error returned by IntAry{}.NewNumStr(multiplierStr) " +
+			"multiplierStr='%v'  Error='%v'. ", multiplierStr, err.Error())
+	}
+
+	lenArray := len(multiplicandStrs)
+	decimalArray := make([]IntAry, lenArray)
+
+	for i:=0; i < lenArray; i++ {
+
+		decimalArray[i], err = 	IntAry{}.NewNumStr(multiplicandStrs[i])
+
+		if err != nil {
+			t.Errorf("Error returned by IntAry{}.NewNumStr(multiplicandStrs[i]) " +
+				"i='%v'  multiplicandStrs[i]='%v'  Error='%v'. ", i, multiplicandStrs[i], err.Error())
+		}
+
+	}
+
+	result, err := BigIntMathMultiply{}.MultiplyIntAryOutputToArray(multiplierIntAry, decimalArray)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntMathMultiply{}.MultiplyIntAryOutputToArray" +
+			"(multiplierIntAry, decimalArray) multiplierIntAry='%v'  Error='%v'. ",
+			multiplierIntAry.GetNumStr(), err.Error())
+	}
+
+	for j:=0; j < lenArray; j++ {
+
+		if expectedNumStrs[j] != result[j].GetNumStr()  {
+			t.Errorf("Error: Expected NumStr[%v]='%v'. Instead NumStr[%v]='%v'. ",
+				j, expectedNumStrs[j], j, result[j].GetNumStr())
+		}
+
+	}
+
+}
+
+func TestBigIntMathMultiply_MultiplyIntAryOutputToArray_04(t *testing.T) {
+
+	var err error
+
+	// multiplier = 283
+	multiplierStr := "283"
+	// multiplicandStrs
+	multiplicandStrs :=  [] string {
+		"0",
+		"-26",
+		"0",
+		"8",
+		"5297.123",
+		"0",
+	}
+
+	// Expected Results Array
+	expectedNumStrs := [] string {
+		"0",
+		"-7358",
+		"0",
+		"2264",
+		"1499085.809",
+		"0",
+	}
+
+
+	multiplierIntAry, err := IntAry{}.NewNumStr(multiplierStr)
+
+	if err != nil {
+		t.Errorf("Error returned by IntAry{}.NewNumStr(multiplierStr) " +
+			"multiplierStr='%v'  Error='%v'. ", multiplierStr, err.Error())
+	}
+
+	lenArray := len(multiplicandStrs)
+	decimalArray := make([]IntAry, lenArray)
+
+	for i:=0; i < lenArray; i++ {
+
+		decimalArray[i], err = 	IntAry{}.NewNumStr(multiplicandStrs[i])
+
+		if err != nil {
+			t.Errorf("Error returned by IntAry{}.NewNumStr(multiplicandStrs[i]) " +
+				"i='%v'  multiplicandStrs[i]='%v'  Error='%v'. ", i, multiplicandStrs[i], err.Error())
+		}
+
+	}
+
+	result, err := BigIntMathMultiply{}.MultiplyIntAryOutputToArray(multiplierIntAry, decimalArray)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntMathMultiply{}.MultiplyIntAryOutputToArray" +
+			"(multiplierIntAry, decimalArray) multiplierIntAry='%v'  Error='%v'. ",
+			multiplierIntAry.GetNumStr(), err.Error())
+	}
+
+	for j:=0; j < lenArray; j++ {
+
+		if expectedNumStrs[j] != result[j].GetNumStr()  {
+			t.Errorf("Error: Expected NumStr[%v]='%v'. Instead NumStr[%v]='%v'. ",
+				j, expectedNumStrs[j], j, result[j].GetNumStr())
+		}
+
+	}
+
+}
+
+func TestBigIntMathMultiply_MultiplyIntAryOutputToArray_05(t *testing.T) {
+
+	var err error
+
+	// multiplier = 0
+	multiplierStr := "0"
+	// multiplicandStrs
+	multiplicandStrs :=  [] string {
+		"5",
+		"-26",
+		"9",
+		"8",
+		"5297.123",
+		"37",
+	}
+
+	// Expected Results Array
+	expectedNumStrs := [] string {
+		"0",
+		"0",
+		"0",
+		"0",
+		"0.000",
+		"0",
+	}
+
+
+	multiplierIntAry, err := IntAry{}.NewNumStr(multiplierStr)
+
+	if err != nil {
+		t.Errorf("Error returned by IntAry{}.NewNumStr(multiplierStr) " +
+			"multiplierStr='%v'  Error='%v'. ", multiplierStr, err.Error())
+	}
+
+	lenArray := len(multiplicandStrs)
+	decimalArray := make([]IntAry, lenArray)
+
+	for i:=0; i < lenArray; i++ {
+
+		decimalArray[i], err = 	IntAry{}.NewNumStr(multiplicandStrs[i])
+
+		if err != nil {
+			t.Errorf("Error returned by IntAry{}.NewNumStr(multiplicandStrs[i]) " +
+				"i='%v'  multiplicandStrs[i]='%v'  Error='%v'. ", i, multiplicandStrs[i], err.Error())
+		}
+
+	}
+
+	result, err := BigIntMathMultiply{}.MultiplyIntAryOutputToArray(multiplierIntAry, decimalArray)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntMathMultiply{}.MultiplyIntAryOutputToArray" +
+			"(multiplierIntAry, decimalArray) multiplierIntAry='%v'  Error='%v'. ",
+			multiplierIntAry.GetNumStr(), err.Error())
+	}
+
+	for j:=0; j < lenArray; j++ {
+
+		if expectedNumStrs[j] != result[j].GetNumStr()  {
+			t.Errorf("Error: Expected NumStr[%v]='%v'. Instead NumStr[%v]='%v'. ",
+				j, expectedNumStrs[j], j, result[j].GetNumStr())
+		}
+
 	}
 
 }
