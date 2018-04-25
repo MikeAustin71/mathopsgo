@@ -478,7 +478,6 @@ func TestBigIntMathMultiply_MultiplyBigInts_05(t *testing.T) {
 
 }
 
-
 func TestBigIntMathMultiply_MultiplyBigIntNums_01(t *testing.T) {
 	// multiplier = 123.32
 	multiplierStr := "123.32"
@@ -2063,3 +2062,556 @@ func TestBigIntMathMultiply_MultiplyBigIntNumSeries_04(t *testing.T) {
 	}
 
 }
+
+func TestBigIntMathMultiply_MultiplyDecimal_01(t *testing.T) {
+	// multiplier = 123.32
+	multiplierStr := "123.32"
+
+	// multiplicand = 23.321
+	multiplicandStr := "23.321"
+
+	// product = 2875.94572
+	expectedNumStr := "2875.94572"
+
+	expectedSignValue := 1
+
+	multiplierDecimal, err := Decimal{}.NewNumStr(multiplierStr)
+
+	if err != nil {
+		t.Errorf("Error returned by Decimal{}.NewNumStr(multiplierStr) " +
+			"multiplierStr='%v'  Error='%v'. ", multiplierStr, err.Error())
+	}
+
+	multiplicandDecimal, err := Decimal{}.NewNumStr(multiplicandStr)
+
+	if err != nil {
+		t.Errorf("Error returned by Decimal{}.NewNumStr(multiplicandStr) " +
+			"multiplicandStr='%v'  Error='%v'. ", multiplicandStr, err.Error())
+	}
+
+	iaMultiplier, err := IntAry{}.NewNumStr(multiplierStr)
+
+	if err != nil {
+		t.Errorf("Error returned by IntAry{}.NewNumStr(multiplierStr) " +
+			"multiplierStr='%v'  Error='%v'. ", multiplierStr, err.Error())
+	}
+
+
+	iaMultiplicand, err := IntAry{}.NewNumStr(multiplicandStr)
+
+	if err != nil {
+		t.Errorf("Error returned by IntAry{}.NewNumStr(multiplicandStr) " +
+			"multiplicandStr='%v'  Error='%v'. ", multiplicandStr, err.Error())
+	}
+
+	iaResult := IntAry{}.New()
+
+	err =	iaMultiplier.Multiply(
+		&iaMultiplier,
+		&iaMultiplicand,
+		&iaResult,
+		-1,
+		-1)
+
+	if err != nil {
+		t.Errorf("Error returned by iaMultiplier.Multiply() " +
+			"Error='%v'. ", err.Error())
+	}
+
+	expectedDecimal, err := Decimal{}.NewNumStr(expectedNumStr)
+
+	if err != nil {
+		t.Errorf("Error returned by Decimal{}.NewNumStr(expectedNumStr) " +
+			"expectedNumStr='%v'  Error='%v'. ", expectedNumStr, err.Error())
+	}
+
+	result, err := BigIntMathMultiply{}.MultiplyDecimal(multiplierDecimal, multiplicandDecimal)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntMathMultiply{}.MultiplyDecimal" +
+			"(multiplierDecimal, multiplicandDecimal) " +
+			"multiplierDecimal='%v' multiplicandDecimal='%v' Error='%v'. ",
+			multiplierDecimal.GetNumStr(), multiplicandDecimal.GetNumStr(), err.Error())
+	}
+
+	if expectedDecimal.GetNumStr() != result.Result.GetNumStr() {
+		t.Errorf("Error: Expected BigIntNum='%s'. Instead, BigIntNum= '%s'. ",
+			expectedDecimal.GetNumStr(), result.Result.GetNumStr())
+	}
+
+	expectedDecimalBigInt, err := expectedDecimal.GetBigInt()
+
+	if err != nil {
+		t.Errorf("Error returned by expectedDecimal.GetBigInt() " +
+			"Error='%v'. ",
+			err.Error())
+	}
+
+	if expectedDecimalBigInt.Cmp(result.Result.bigInt) != 0 {
+		t.Errorf("Comparison Error: Expected BigIntNum='%s'. Instead, BigIntNum= '%s'. ",
+			expectedDecimal.GetNumStr(), result.Result.GetNumStr())
+	}
+
+	if expectedSignValue != result.Result.sign {
+		t.Errorf("Error: Expected number sign='%v'. Instead, number sign='%v'",
+			expectedSignValue, result.Result.sign)
+	}
+
+	actualNumStr, err := result.Result.GetNumStrErr()
+
+	if err != nil {
+		t.Errorf("Error returned by result.Result.GetNumStrErr() " +
+			"Error='%v'. ", err.Error())
+	}
+
+	if iaResult.GetNumStr() != actualNumStr {
+		t.Errorf("Error: Expected actualNumStr='%v' " +
+			"Instead, actualNumStr='%v'",
+			iaResult.GetNumStr(), actualNumStr)
+	}
+
+}
+
+func TestBigIntMathMultiply_MultiplyDecimal_02(t *testing.T) {
+	// multiplier = 57638422123.327890123
+	multiplierStr := "57638422123.327890123"
+
+	// multiplicand = 537621943.12345
+	multiplicandStr := "537621943.12345"
+
+	// product = 30987680500513189125.14259702468435
+	expectedNumStr := "30987680500513189125.14259702468435"
+
+	expectedSignValue := 1
+
+	multiplierDecimal, err := Decimal{}.NewNumStr(multiplierStr)
+
+	if err != nil {
+		t.Errorf("Error returned by Decimal{}.NewNumStr(multiplierStr) " +
+			"multiplierStr='%v'  Error='%v'. ", multiplierStr, err.Error())
+	}
+
+	multiplicandDecimal, err := Decimal{}.NewNumStr(multiplicandStr)
+
+	if err != nil {
+		t.Errorf("Error returned by Decimal{}.NewNumStr(multiplicandStr) " +
+			"multiplicandStr='%v'  Error='%v'. ", multiplicandStr, err.Error())
+	}
+
+	iaMultiplier, err := IntAry{}.NewNumStr(multiplierStr)
+
+	if err != nil {
+		t.Errorf("Error returned by IntAry{}.NewNumStr(multiplierStr) " +
+			"multiplierStr='%v'  Error='%v'. ", multiplierStr, err.Error())
+	}
+
+
+	iaMultiplicand, err := IntAry{}.NewNumStr(multiplicandStr)
+
+	if err != nil {
+		t.Errorf("Error returned by IntAry{}.NewNumStr(multiplicandStr) " +
+			"multiplicandStr='%v'  Error='%v'. ", multiplicandStr, err.Error())
+	}
+
+	iaResult := IntAry{}.New()
+
+	err =	iaMultiplier.Multiply(
+		&iaMultiplier,
+		&iaMultiplicand,
+		&iaResult,
+		-1,
+		-1)
+
+	if err != nil {
+		t.Errorf("Error returned by iaMultiplier.Multiply() " +
+			"Error='%v'. ", err.Error())
+	}
+
+	expectedDecimal, err := Decimal{}.NewNumStr(expectedNumStr)
+
+	if err != nil {
+		t.Errorf("Error returned by Decimal{}.NewNumStr(expectedNumStr) " +
+			"expectedNumStr='%v'  Error='%v'. ", expectedNumStr, err.Error())
+	}
+
+	result, err := BigIntMathMultiply{}.MultiplyDecimal(multiplierDecimal, multiplicandDecimal)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntMathMultiply{}.MultiplyDecimal" +
+			"(multiplierDecimal, multiplicandDecimal) " +
+			"multiplierDecimal='%v' multiplicandDecimal='%v' Error='%v'. ",
+			multiplierDecimal.GetNumStr(), multiplicandDecimal.GetNumStr(), err.Error())
+	}
+
+	if expectedDecimal.GetNumStr() != result.Result.GetNumStr() {
+		t.Errorf("Error: Expected BigIntNum='%s'. Instead, BigIntNum= '%s'. ",
+			expectedDecimal.GetNumStr(), result.Result.GetNumStr())
+	}
+
+	expectedDecimalBigInt, err := expectedDecimal.GetBigInt()
+
+	if err != nil {
+		t.Errorf("Error returned by expectedDecimal.GetBigInt() " +
+			"Error='%v'. ",
+			err.Error())
+	}
+
+	if expectedDecimalBigInt.Cmp(result.Result.bigInt) != 0 {
+		t.Errorf("Comparison Error: Expected BigIntNum='%s'. Instead, BigIntNum= '%s'. ",
+			expectedDecimal.GetNumStr(), result.Result.GetNumStr())
+	}
+
+	if expectedSignValue != result.Result.sign {
+		t.Errorf("Error: Expected number sign='%v'. Instead, number sign='%v'",
+			expectedSignValue, result.Result.sign)
+	}
+
+	actualNumStr, err := result.Result.GetNumStrErr()
+
+	if err != nil {
+		t.Errorf("Error returned by result.Result.GetNumStrErr() " +
+			"Error='%v'. ", err.Error())
+	}
+
+	if iaResult.GetNumStr() != actualNumStr {
+		t.Errorf("Error: Expected actualNumStr='%v' " +
+			"Instead, actualNumStr='%v'",
+			iaResult.GetNumStr(), actualNumStr)
+	}
+
+}
+
+func TestBigIntMathMultiply_MultiplyDecimal_03(t *testing.T) {
+	// multiplier = 123.32
+	multiplierStr := "57638422123.327890123"
+
+	// multiplicand = -537621943.12345
+	multiplicandStr := "-537621943.12345"
+
+	// product = -30987680500513189125.14259702468435
+	expectedNumStr := "-30987680500513189125.14259702468435"
+
+	expectedSignValue := -1
+
+	multiplierDecimal, err := Decimal{}.NewNumStr(multiplierStr)
+
+	if err != nil {
+		t.Errorf("Error returned by Decimal{}.NewNumStr(multiplierStr) " +
+			"multiplierStr='%v'  Error='%v'. ", multiplierStr, err.Error())
+	}
+
+	multiplicandDecimal, err := Decimal{}.NewNumStr(multiplicandStr)
+
+	if err != nil {
+		t.Errorf("Error returned by Decimal{}.NewNumStr(multiplicandStr) " +
+			"multiplicandStr='%v'  Error='%v'. ", multiplicandStr, err.Error())
+	}
+
+	iaMultiplier, err := IntAry{}.NewNumStr(multiplierStr)
+
+	if err != nil {
+		t.Errorf("Error returned by IntAry{}.NewNumStr(multiplierStr) " +
+			"multiplierStr='%v'  Error='%v'. ", multiplierStr, err.Error())
+	}
+
+
+	iaMultiplicand, err := IntAry{}.NewNumStr(multiplicandStr)
+
+	if err != nil {
+		t.Errorf("Error returned by IntAry{}.NewNumStr(multiplicandStr) " +
+			"multiplicandStr='%v'  Error='%v'. ", multiplicandStr, err.Error())
+	}
+
+	iaResult := IntAry{}.New()
+
+	err =	iaMultiplier.Multiply(
+		&iaMultiplier,
+		&iaMultiplicand,
+		&iaResult,
+		-1,
+		-1)
+
+	if err != nil {
+		t.Errorf("Error returned by iaMultiplier.Multiply() " +
+			"Error='%v'. ", err.Error())
+	}
+
+	expectedDecimal, err := Decimal{}.NewNumStr(expectedNumStr)
+
+	if err != nil {
+		t.Errorf("Error returned by Decimal{}.NewNumStr(expectedNumStr) " +
+			"expectedNumStr='%v'  Error='%v'. ", expectedNumStr, err.Error())
+	}
+
+	result, err := BigIntMathMultiply{}.MultiplyDecimal(multiplierDecimal, multiplicandDecimal)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntMathMultiply{}.MultiplyDecimal" +
+			"(multiplierDecimal, multiplicandDecimal) " +
+			"multiplierDecimal='%v' multiplicandDecimal='%v' Error='%v'. ",
+			multiplierDecimal.GetNumStr(), multiplicandDecimal.GetNumStr(), err.Error())
+	}
+
+	if expectedDecimal.GetNumStr() != result.Result.GetNumStr() {
+		t.Errorf("Error: Expected BigIntNum='%s'. Instead, BigIntNum= '%s'. ",
+			expectedDecimal.GetNumStr(), result.Result.GetNumStr())
+	}
+
+	expectedDecimalBigInt, err := expectedDecimal.GetBigInt()
+
+	if err != nil {
+		t.Errorf("Error returned by expectedDecimal.GetBigInt() " +
+			"Error='%v'. ",
+			err.Error())
+	}
+
+	if expectedDecimalBigInt.Cmp(result.Result.bigInt) != 0 {
+		t.Errorf("Comparison Error: Expected BigIntNum='%s'. Instead, BigIntNum= '%s'. ",
+			expectedDecimal.GetNumStr(), result.Result.GetNumStr())
+	}
+
+	if expectedSignValue != result.Result.sign {
+		t.Errorf("Error: Expected number sign='%v'. Instead, number sign='%v'",
+			expectedSignValue, result.Result.sign)
+	}
+
+	actualNumStr, err := result.Result.GetNumStrErr()
+
+	if err != nil {
+		t.Errorf("Error returned by result.Result.GetNumStrErr() " +
+			"Error='%v'. ", err.Error())
+	}
+
+	if iaResult.GetNumStr() != actualNumStr {
+		t.Errorf("Error: Expected actualNumStr='%v' " +
+			"Instead, actualNumStr='%v'",
+			iaResult.GetNumStr(), actualNumStr)
+	}
+
+}
+
+func TestBigIntMathMultiply_MultiplyDecimal_04(t *testing.T) {
+	// multiplier = 89637.9876
+	multiplierStr := "-89637.9876"
+
+	// multiplicand = -247632
+	multiplicandStr := "-247632"
+
+	// product = 22197234145.3632
+	expectedNumStr := "22197234145.3632"
+
+	expectedSignValue := 1
+
+	multiplierDecimal, err := Decimal{}.NewNumStr(multiplierStr)
+
+	if err != nil {
+		t.Errorf("Error returned by Decimal{}.NewNumStr(multiplierStr) " +
+			"multiplierStr='%v'  Error='%v'. ", multiplierStr, err.Error())
+	}
+
+	multiplicandDecimal, err := Decimal{}.NewNumStr(multiplicandStr)
+
+	if err != nil {
+		t.Errorf("Error returned by Decimal{}.NewNumStr(multiplicandStr) " +
+			"multiplicandStr='%v'  Error='%v'. ", multiplicandStr, err.Error())
+	}
+
+	iaMultiplier, err := IntAry{}.NewNumStr(multiplierStr)
+
+	if err != nil {
+		t.Errorf("Error returned by IntAry{}.NewNumStr(multiplierStr) " +
+			"multiplierStr='%v'  Error='%v'. ", multiplierStr, err.Error())
+	}
+
+
+	iaMultiplicand, err := IntAry{}.NewNumStr(multiplicandStr)
+
+	if err != nil {
+		t.Errorf("Error returned by IntAry{}.NewNumStr(multiplicandStr) " +
+			"multiplicandStr='%v'  Error='%v'. ", multiplicandStr, err.Error())
+	}
+
+	iaResult := IntAry{}.New()
+
+	err =	iaMultiplier.Multiply(
+		&iaMultiplier,
+		&iaMultiplicand,
+		&iaResult,
+		-1,
+		-1)
+
+	if err != nil {
+		t.Errorf("Error returned by iaMultiplier.Multiply() " +
+			"Error='%v'. ", err.Error())
+	}
+
+	expectedDecimal, err := Decimal{}.NewNumStr(expectedNumStr)
+
+	if err != nil {
+		t.Errorf("Error returned by Decimal{}.NewNumStr(expectedNumStr) " +
+			"expectedNumStr='%v'  Error='%v'. ", expectedNumStr, err.Error())
+	}
+
+	result, err := BigIntMathMultiply{}.MultiplyDecimal(multiplierDecimal, multiplicandDecimal)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntMathMultiply{}.MultiplyDecimal" +
+			"(multiplierDecimal, multiplicandDecimal) " +
+			"multiplierDecimal='%v' multiplicandDecimal='%v' Error='%v'. ",
+			multiplierDecimal.GetNumStr(), multiplicandDecimal.GetNumStr(), err.Error())
+	}
+
+	if expectedDecimal.GetNumStr() != result.Result.GetNumStr() {
+		t.Errorf("Error: Expected BigIntNum='%s'. Instead, BigIntNum= '%s'. ",
+			expectedDecimal.GetNumStr(), result.Result.GetNumStr())
+	}
+
+	expectedDecimalBigInt, err := expectedDecimal.GetBigInt()
+
+	if err != nil {
+		t.Errorf("Error returned by expectedDecimal.GetBigInt() " +
+			"Error='%v'. ",
+			err.Error())
+	}
+
+	if expectedDecimalBigInt.Cmp(result.Result.bigInt) != 0 {
+		t.Errorf("Comparison Error: Expected BigIntNum='%s'. Instead, BigIntNum= '%s'. ",
+			expectedDecimal.GetNumStr(), result.Result.GetNumStr())
+	}
+
+	if expectedSignValue != result.Result.sign {
+		t.Errorf("Error: Expected number sign='%v'. Instead, number sign='%v'",
+			expectedSignValue, result.Result.sign)
+	}
+
+	actualNumStr, err := result.Result.GetNumStrErr()
+
+	if err != nil {
+		t.Errorf("Error returned by result.Result.GetNumStrErr() " +
+			"Error='%v'. ", err.Error())
+	}
+
+	if iaResult.GetNumStr() != actualNumStr {
+		t.Errorf("Error: Expected actualNumStr='%v' " +
+			"Instead, actualNumStr='%v'",
+			iaResult.GetNumStr(), actualNumStr)
+	}
+
+}
+
+func TestBigIntMathMultiply_MultiplyDecimal_05(t *testing.T) {
+	// multiplier = -89637.9876
+	multiplierStr := "-89637.9876"
+
+	// multiplicand = 0.00
+	multiplicandStr := "0.00"
+
+	// product = 0.00
+	expectedNumStr := "0.000000"
+
+	expectedSignValue := 1
+
+	multiplierDecimal, err := Decimal{}.NewNumStr(multiplierStr)
+
+	if err != nil {
+		t.Errorf("Error returned by Decimal{}.NewNumStr(multiplierStr) " +
+			"multiplierStr='%v'  Error='%v'. ", multiplierStr, err.Error())
+	}
+
+	multiplicandDecimal, err := Decimal{}.NewNumStr(multiplicandStr)
+
+	if err != nil {
+		t.Errorf("Error returned by Decimal{}.NewNumStr(multiplicandStr) " +
+			"multiplicandStr='%v'  Error='%v'. ", multiplicandStr, err.Error())
+	}
+
+	iaMultiplier, err := IntAry{}.NewNumStr(multiplierStr)
+
+	if err != nil {
+		t.Errorf("Error returned by IntAry{}.NewNumStr(multiplierStr) " +
+			"multiplierStr='%v'  Error='%v'. ", multiplierStr, err.Error())
+	}
+
+
+	iaMultiplicand, err := IntAry{}.NewNumStr(multiplicandStr)
+
+	if err != nil {
+		t.Errorf("Error returned by IntAry{}.NewNumStr(multiplicandStr) " +
+			"multiplicandStr='%v'  Error='%v'. ", multiplicandStr, err.Error())
+	}
+
+	iaResult := IntAry{}.New()
+
+	err =	iaMultiplier.Multiply(
+		&iaMultiplier,
+		&iaMultiplicand,
+		&iaResult,
+		-1,
+		-1)
+
+	if err != nil {
+		t.Errorf("Error returned by iaMultiplier.Multiply() " +
+			"Error='%v'. ", err.Error())
+	}
+
+	expectedDecimal, err := Decimal{}.NewNumStr(expectedNumStr)
+
+	if err != nil {
+		t.Errorf("Error returned by Decimal{}.NewNumStr(expectedNumStr) " +
+			"expectedNumStr='%v'  Error='%v'. ", expectedNumStr, err.Error())
+	}
+
+	result, err := BigIntMathMultiply{}.MultiplyDecimal(multiplierDecimal, multiplicandDecimal)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntMathMultiply{}.MultiplyDecimal" +
+			"(multiplierDecimal, multiplicandDecimal) " +
+			"multiplierDecimal='%v' multiplicandDecimal='%v' Error='%v'. ",
+			multiplierDecimal.GetNumStr(), multiplicandDecimal.GetNumStr(), err.Error())
+	}
+
+	if expectedDecimal.GetNumStr() != result.Result.GetNumStr() {
+		t.Errorf("Error: Expected BigIntNum='%s'. Instead, BigIntNum= '%s'. ",
+			expectedDecimal.GetNumStr(), result.Result.GetNumStr())
+	}
+
+	expectedDecimalBigInt, err := expectedDecimal.GetBigInt()
+
+	if err != nil {
+		t.Errorf("Error returned by expectedDecimal.GetBigInt() " +
+			"Error='%v'. ",
+			err.Error())
+	}
+
+	if expectedDecimalBigInt.Cmp(result.Result.bigInt) != 0 {
+		t.Errorf("Comparison Error: Expected BigIntNum='%s'. Instead, BigIntNum= '%s'. ",
+			expectedDecimal.GetNumStr(), result.Result.GetNumStr())
+	}
+
+	if expectedSignValue != result.Result.sign {
+		t.Errorf("Error: Expected number sign='%v'. Instead, number sign='%v'",
+			expectedSignValue, result.Result.sign)
+	}
+
+	actualBigInt, err := result.Result.GetBigInt()
+
+	if err != nil {
+		t.Errorf("Error returned by result.Result.GetBigInt() " +
+			"Error='%v'. ", err.Error())
+	}
+
+	iaBigInt, err := iaResult.GetBigInt()
+
+	if err != nil {
+		t.Errorf("Error returned by iaResult.GetBigInt() " +
+			"Error='%v'. ", err.Error())
+	}
+
+	if actualBigInt.Cmp(iaBigInt) != 0 {
+		t.Errorf("Error: Expected actualBigInt='%v' " +
+			"Instead, actualBigInt='%v'",
+			iaResult.GetNumStr(), actualBigInt)
+	}
+
+}
+
