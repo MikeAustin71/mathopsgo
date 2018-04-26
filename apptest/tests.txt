@@ -19,7 +19,7 @@
 === RUN   TestBigIntPair_NewNumStrDto_01
 --- PASS: TestBigIntPair_NewNumStrDto_01 (0.00s)
 === RUN   TestBigIntPair_NewNumStrDto_02
---- PASS: TestBigIntPair_NewNumStrDto_02 (0.00s)
+--- PASS: TestBigIntPair_NewNumStrDto_02 (0.02s)
 === RUN   TestBigIntPair_NewIntAry_01
 --- PASS: TestBigIntPair_NewIntAry_01 (0.00s)
 === RUN   TestBigIntPair_NewIntAry_02
@@ -300,6 +300,14 @@
 --- PASS: TestBigIntMathMultiply_MultiplyNumStrOutputToArray_04 (0.00s)
 === RUN   TestBigIntMathMultiply_MultiplyNumStrOutputToArray_05
 --- PASS: TestBigIntMathMultiply_MultiplyNumStrOutputToArray_05 (0.00s)
+=== RUN   TestBigIntMathMultiply_MultiplyNumStrSeries_01
+--- PASS: TestBigIntMathMultiply_MultiplyNumStrSeries_01 (0.00s)
+=== RUN   TestBigIntMathMultiply_MultiplyNumStrSeries_02
+--- PASS: TestBigIntMathMultiply_MultiplyNumStrSeries_02 (0.00s)
+=== RUN   TestBigIntMathMultiply_MultiplyNumStrSeries_03
+--- PASS: TestBigIntMathMultiply_MultiplyNumStrSeries_03 (0.00s)
+=== RUN   TestBigIntMathMultiply_MultiplyNumStrSeries_04
+--- PASS: TestBigIntMathMultiply_MultiplyNumStrSeries_04 (0.00s)
 === RUN   TestBigIntMathSubtract_SubtractBigInts_01
 --- PASS: TestBigIntMathSubtract_SubtractBigInts_01 (0.00s)
 === RUN   TestBigIntMathSubtract_SubtractBigInts_02
@@ -1511,7 +1519,7 @@
 === RUN   TestIntAry_SetIntAryWithIntAry_01
 --- PASS: TestIntAry_SetIntAryWithIntAry_01 (0.00s)
 === RUN   TestIntAry_SetIntAryWithIntAry_02
---- PASS: TestIntAry_SetIntAryWithIntAry_02 (0.00s)
+--- PASS: TestIntAry_SetIntAryWithIntAry_02 (0.01s)
 === RUN   TestIntAry_SetIntAryWithIntAry_03
 --- PASS: TestIntAry_SetIntAryWithIntAry_03 (0.00s)
 === RUN   TestIntAry_SetIntAryWithIntAry_04
@@ -1531,7 +1539,7 @@
 === RUN   TestIntAry_SetSign_01
 --- PASS: TestIntAry_SetSign_01 (0.00s)
 === RUN   TestIntAry_SetSign_02
---- PASS: TestIntAry_SetSign_02 (0.01s)
+--- PASS: TestIntAry_SetSign_02 (0.00s)
 === RUN   TestIntAry_SetSign_03
 --- PASS: TestIntAry_SetSign_03 (0.00s)
 === RUN   TestIntAry_SetSign_04
@@ -2237,4 +2245,4 @@
 === RUN   TestStrMathOp_SubtractN1N2_19
 --- PASS: TestStrMathOp_SubtractN1N2_19 (0.00s)
 PASS
-ok  	MikeAustin71/mathopsgo/mathops	0.663s
+ok  	MikeAustin71/mathopsgo/mathops	0.774s
