@@ -899,6 +899,85 @@ func (bMultiply BigIntMathMultiply) MultiplyNumStr(
 	return bMultiply.MultiplyPair(bPair), nil
 }
 
+// MultiplyNumStrArray - Receives one number string which is classified as the 'multiplier'.
+// The second input parameter is an array of number strings labeled, 'multiplicands'. The
+// first element of the 'multiplicands' array is multiplied by the 'multiplier' to produce
+// a 'product'. That 'product' replaces the 'multiplier' and is multiplied by the next element
+// in the multiplicands array. This process is continued through the last element in the array
+// when the combined, final 'product' is returned as a Type 'BigIntBasicMathResult'.
+//
+// The strings passed to this method are 'number' strings in that they consist of a string
+// of numeric digits which may include a period ('.') or decimal point used to separate
+// fractional numeric digits.
+//
+// In the multiplication operation, the number to be multiplied is called the "multiplicand",
+// while the number of times the multiplicand is to be multiplied comes from the "multiplier".
+// Usually the multiplier is placed first and the multiplicand is placed second.
+//
+// For example, in the problem 5 x 3 equals 15, the 5 is the 'multiplier',
+// 3 is the 'multiplicand' and 15 is the 'product' or result.
+//
+//							multiplier x multiplicand = product or result
+//
+// This method performs the multiplication operation described above and afterwards returns the
+// result or 'product' as a BigIntBasicMathResult type.
+//
+// 					type BigIntBasicMathResult struct {
+// 								Input BigIntPair
+//											Input.Big1		= multiplier
+//											Input.Big2		= multiplicand
+//
+// 								Result Decimal
+// 											Result.bigInt = product
+//					}
+//
+//
+func (bMultiply BigIntMathMultiply) MultiplyNumStrArray(
+													multiplier string,
+															multiplicands []string) (BigIntBasicMathResult, error) {
+
+	ePrefix := "BigIntMathMultiply.MultiplyNumStrArray() "
+	finalResult := BigIntBasicMathResult{}
+
+	lenMultiplicands := len(multiplicands)
+
+	if lenMultiplicands == 0 {
+		return finalResult, nil
+	}
+
+	multiplierBINum, err := BigIntNum{}.NewNumStr(multiplier)
+
+	if err != nil {
+		return BigIntBasicMathResult{},
+			fmt.Errorf(ePrefix +
+				"Error returned by BigIntNum{}.NewDecimal(multiplier) " +
+				" multiplier='%v' Error='%v'. ",
+				multiplier, err.Error())
+	}
+
+	for i:=0; i < lenMultiplicands; i++ {
+
+		multiplicandBINum, err := BigIntNum{}.NewNumStr(multiplicands[i])
+
+		if err != nil {
+			return BigIntBasicMathResult{},
+				fmt.Errorf(ePrefix +
+					"Error returned by BigIntNum{}.NewDecimal(multiplicands[i]) " +
+					" multiplierBINum='%v' multiplicands[%v]='%v' Error='%v'. ",
+					multiplierBINum.GetNumStr(), i, multiplicands[i], err.Error())
+		}
+
+		bPair := BigIntPair{}.NewBigIntNum(multiplierBINum, multiplicandBINum )
+
+		finalResult = bMultiply.MultiplyPair(bPair)
+
+		multiplierBINum = finalResult.Result.CopyOut()
+
+	}
+
+	return finalResult, nil
+}
+
 // MultiplyNumStrDto - Receives two NumStrDto instances and multiplies their
 // numeric values. The result is returned as a 'BigIntBasicMathResult'
 // type.
@@ -940,4 +1019,3 @@ func (bMultiply BigIntMathMultiply) MultiplyPair(bPair BigIntPair) BigIntBasicMa
 	return bResult
 
 }
-

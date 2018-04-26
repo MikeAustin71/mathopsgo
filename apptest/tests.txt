@@ -282,6 +282,14 @@
 --- PASS: TestBigIntMathMultiply_MultiplyNumStrs_04 (0.00s)
 === RUN   TestBigIntMathMultiply_MultiplyNumStrs_05
 --- PASS: TestBigIntMathMultiply_MultiplyNumStrs_05 (0.00s)
+=== RUN   TestBigIntMathMultiply_MultiplyNumStrArray_01
+--- PASS: TestBigIntMathMultiply_MultiplyNumStrArray_01 (0.00s)
+=== RUN   TestBigIntMathMultiply_MultiplyNumStrArray_02
+--- PASS: TestBigIntMathMultiply_MultiplyNumStrArray_02 (0.00s)
+=== RUN   TestBigIntMathMultiply_MultiplyNumStrArray_03
+--- PASS: TestBigIntMathMultiply_MultiplyNumStrArray_03 (0.00s)
+=== RUN   TestBigIntMathMultiply_MultiplyNumStrArray_04
+--- PASS: TestBigIntMathMultiply_MultiplyNumStrArray_04 (0.00s)
 === RUN   TestBigIntMathSubtract_SubtractBigInts_01
 --- PASS: TestBigIntMathSubtract_SubtractBigInts_01 (0.00s)
 === RUN   TestBigIntMathSubtract_SubtractBigInts_02
@@ -845,7 +853,7 @@
 === RUN   TestFracIntAry_GetRationalValue_06
 --- PASS: TestFracIntAry_GetRationalValue_06 (0.00s)
 === RUN   TestFracIntAry_GetRationalValue_07
---- PASS: TestFracIntAry_GetRationalValue_07 (0.07s)
+--- PASS: TestFracIntAry_GetRationalValue_07 (0.06s)
 === RUN   TestIntAry_AddMultipleToThis_01
 --- PASS: TestIntAry_AddMultipleToThis_01 (0.00s)
 === RUN   TestIntAry_AddToThis_01
@@ -1363,7 +1371,7 @@
 === RUN   TestIntAry_Pow_05
 --- PASS: TestIntAry_Pow_05 (0.00s)
 === RUN   TestIntAry_Pow_06
---- PASS: TestIntAry_Pow_06 (0.26s)
+--- PASS: TestIntAry_Pow_06 (0.25s)
 === RUN   TestIntAry_ResetFromBackUp_01
 --- PASS: TestIntAry_ResetFromBackUp_01 (0.00s)
 === RUN   TestIntAry_RoundToPrecision_01
@@ -1525,7 +1533,7 @@
 === RUN   TestIntAry_SetWithNumStr_02
 --- PASS: TestIntAry_SetWithNumStr_02 (0.00s)
 === RUN   TestIntAry_SetWithNumStr_03
---- PASS: TestIntAry_SetWithNumStr_03 (0.00s)
+--- PASS: TestIntAry_SetWithNumStr_03 (0.01s)
 === RUN   TestIntAry_SetPrecision_01
 --- PASS: TestIntAry_SetPrecision_01 (0.00s)
 === RUN   TestIntAry_SetPrecision_02
@@ -1547,7 +1555,7 @@
 === RUN   TestIntAry_SetSignificantDigitIdxs_04
 --- PASS: TestIntAry_SetSignificantDigitIdxs_04 (0.00s)
 === RUN   TestIntAry_SetSignificantDigitIdxs_05
---- PASS: TestIntAry_SetSignificantDigitIdxs_05 (0.01s)
+--- PASS: TestIntAry_SetSignificantDigitIdxs_05 (0.00s)
 === RUN   TestIntAry_SetSignificantDigitIdxs_06
 --- PASS: TestIntAry_SetSignificantDigitIdxs_06 (0.00s)
 === RUN   TestIntAry_SetThousandsSeparator_01
@@ -2219,4 +2227,4 @@
 === RUN   TestStrMathOp_SubtractN1N2_19
 --- PASS: TestStrMathOp_SubtractN1N2_19 (0.00s)
 PASS
-ok  	MikeAustin71/mathopsgo/mathops	1.138s
+ok  	MikeAustin71/mathopsgo/mathops	0.798s
