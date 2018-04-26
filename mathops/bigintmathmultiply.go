@@ -454,7 +454,7 @@ func (bMultiply BigIntMathMultiply) MultiplyDecimalOutputToArray(
 																		multiplier Decimal,
 																			multiplicands []Decimal) ([]Decimal, error) {
 
-	ePrefix := "BigIntMathMultiply.MultiplyDecimalArray() "
+	ePrefix := "BigIntMathMultiply.MultiplyDecimalOutputToArray() "
 
 	lenMultiplicands := len(multiplicands)
 
@@ -727,7 +727,7 @@ func (bMultiply BigIntMathMultiply) MultiplyIntAryOutputToArray(
 																		multiplier IntAry,
 																			multiplicands []IntAry) ([]IntAry, error) {
 
-	ePrefix := "BigIntMathMultiply.MultiplyIntAryArray() "
+	ePrefix := "BigIntMathMultiply.MultiplyIntAryOutputToArray() "
 
 	lenMultiplicands := len(multiplicands)
 
@@ -976,6 +976,89 @@ func (bMultiply BigIntMathMultiply) MultiplyNumStrArray(
 	}
 
 	return finalResult, nil
+}
+
+// MultiplyNumStrOutputToArray - Receives one input parameter of Type string which
+// is classified as the 'multiplier'. The second input parameter is an array of strings
+// labeled, 'multiplicands'.
+//
+// Each element of the 'multiplicands' array is multiplied by the 'multiplier'. The result or
+// 'product' is then stored in a results array which is returned to the calling function.
+//
+// In the multiplication operation, the number to be multiplied is called the "multiplicand",
+// while the number of times the multiplicand is to be multiplied comes from the "multiplier".
+// Usually the multiplier is placed first and the multiplicand is placed second.
+//
+// For example, in the problem 5 x 3 equals 15, the 5 is the 'multiplier', 3 is the 'multiplicand'
+// and 15 is the 'product' or result.
+//
+// Example
+// =======
+// 										Multiplicands												Output
+// Multiplier				    	Array														Array
+//
+//		3			x				multiplicands[0] = 2			=				  outputarray[0] =  6
+//		3			x				multiplicands[1] = 3			=				  outputarray[1] =  9
+//		3			x				multiplicands[2] = 4			=				  outputarray[2] = 12
+//		3			x				multiplicands[3] = 5			=				  outputarray[3] = 15
+//		3			x				multiplicands[4] = 6			=				  outputarray[4] = 18
+//		3			x				multiplicands[5] = 7			=				  outputarray[5] = 21
+//
+//
+// This method performs the multiplication operation described above and afterwards returns the
+// result or 'product' in an Array of 'NumStrs' ([] NumStrs).
+//
+func (bMultiply BigIntMathMultiply) MultiplyNumStrOutputToArray(
+													multiplier string,
+														multiplicands []string) ([]string, error) {
+
+	ePrefix := "BigIntMathMultiply.MultiplyNumStrOutputToArray() "
+
+	lenMultiplicands := len(multiplicands)
+
+	if lenMultiplicands == 0 {
+		return []string{}, nil
+	}
+
+	multiplierBINum, err := BigIntNum{}.NewNumStr(multiplier)
+
+	if err != nil {
+		return []string{},
+			fmt.Errorf(ePrefix +
+				"Error returned by BigIntNum{}.NewNumStr(multiplier) " +
+				" multiplier='%v' Error='%v'. ",
+				multiplier, err.Error())
+	}
+
+	resultArray := make([]string, lenMultiplicands)
+
+	for i:=0; i < lenMultiplicands; i++ {
+
+		multiplicandBINum, err := BigIntNum{}.NewNumStr(multiplicands[i])
+
+		if err != nil {
+			return []string{},
+				fmt.Errorf(ePrefix +
+					"Error returned by BigIntNum{}.NewNumStr(multiplicands[i]) " +
+					" multiplierBINum='%v' multiplicands[%v]='%v' Error='%v'. ",
+					multiplierBINum.GetNumStr(), i, multiplicands[i], err.Error())
+		}
+
+		bPair := BigIntPair{}.NewBigIntNum(multiplierBINum, multiplicandBINum )
+
+		finalResult := bMultiply.MultiplyPair(bPair)
+
+		resultArray[i], err = finalResult.Result.GetNumStrErr()
+
+		if err != nil {
+			return []string{},
+				fmt.Errorf(ePrefix +
+					"Error returned by finalResult.Result.GetNumStrErr() " +
+					"i='%v' Error='%v'. ", i,  err.Error())
+		}
+	}
+
+	return resultArray, nil
 }
 
 // MultiplyNumStrDto - Receives two NumStrDto instances and multiplies their
