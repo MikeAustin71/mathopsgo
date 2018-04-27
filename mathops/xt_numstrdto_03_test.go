@@ -158,6 +158,49 @@ func TestNumStrDto_GetAbsIntRunes_03(t *testing.T) {
 
 }
 
+func TestNumStrDto_GetBigIntNum_01(t *testing.T) {
+
+	bigI := big.NewInt(int64(123456123456))
+	precision := uint(6)
+
+	exStr := "123456.123456"
+
+	expectedBigIntNum := BigIntNum{}.NewBigInt(bigI, precision)
+
+	intAry, err := IntAry{}.NewBigInt(bigI, precision)
+
+	if err != nil {
+		t.Errorf("Error returned by IntAry{}.NewBigInt(bigI, precision). " +
+			"Error='%v' ", err.Error())
+	}
+
+	bigINum, err := intAry.GetBigIntNum()
+
+	if err != nil {
+		t.Errorf("Error returned by intAry.GetBigIntNum(). " +
+			"Error='%v' ", err.Error())
+	}
+
+	if !expectedBigIntNum.Equal(bigINum) {
+		t.Errorf("Error: Expected BigIntNum NOT Equal to Actual BigIntNum! "+
+			"expectedBi='%v', expectedPrecision='%v'. actualBi='%v' actualPrecision='%v'",
+			expectedBigIntNum.bigInt.Text(10), expectedBigIntNum.precision,
+			bigINum.bigInt.Text(10), bigINum.precision)
+	}
+
+	actualNumStr, err := bigINum.GetNumStrErr()
+
+	if err != nil {
+		t.Errorf("Error returned by bigINum.GetNumStrErr(). " +
+			"Error='%v' ", err.Error())
+	}
+
+	if exStr != actualNumStr {
+		t.Errorf("Error: Expected NumStr='%v'.  Instead, NumStr='%v'",
+			exStr, actualNumStr)
+	}
+}
+
 func TestNumStrDto_GetCurrencyStr_01(t *testing.T) {
 
 	nStr := "123456.97"
@@ -912,47 +955,77 @@ func TestNumStrDto_GetCurrencyParen_08(t *testing.T) {
 
 }
 
-func TestNumStrDto_GetBigIntNum_01(t *testing.T) {
+func TestNumStrDto_GetDecimal_01(t *testing.T) {
 
-	bigI := big.NewInt(int64(123456123456))
-	precision := uint(6)
+	numStr := "198649257.12345678"
 
-	exStr := "123456.123456"
-
-	expectedBigIntNum := BigIntNum{}.NewBigInt(bigI, precision)
-
-	intAry, err := IntAry{}.NewBigInt(bigI, precision)
+	controlDecimal, err := Decimal{}.NewNumStr(numStr)
 
 	if err != nil {
-		t.Errorf("Error returned by IntAry{}.NewBigInt(bigI, precision). " +
-			"Error='%v' ", err.Error())
+		t.Errorf("Error returned by controlDecimal = Decimal{}.NewNumStr(numStr). " +
+			"numStr='%v' Error='%v'",
+			numStr, err.Error())
 	}
 
-	bigINum, err := intAry.GetBigIntNum()
+	controlNDto, err := NumStrDto{}.NewNumStr(numStr)
 
 	if err != nil {
-		t.Errorf("Error returned by intAry.GetBigIntNum(). " +
-			"Error='%v' ", err.Error())
+		t.Errorf("Error returned by controlNDto = NumStrDto{}.NewNumStr(numStr). " +
+			"numStr='%v' Error='%v'",
+			numStr, err.Error())
 	}
 
-	if !expectedBigIntNum.Equal(bigINum) {
-		t.Errorf("Error: Expected BigIntNum NOT Equal to Actual BigIntNum! "+
-			"expectedBi='%v', expectedPrecision='%v'. actualBi='%v' actualPrecision='%v'",
-			expectedBigIntNum.bigInt.Text(10), expectedBigIntNum.precision,
-			bigINum.bigInt.Text(10), bigINum.precision)
-	}
-
-	actualNumStr, err := bigINum.GetNumStrErr()
+	decActual, err := controlNDto.GetDecimal()
 
 	if err != nil {
-		t.Errorf("Error returned by bigINum.GetNumStrErr(). " +
-			"Error='%v' ", err.Error())
+		t.Errorf("Error returned by decActual = controlNDto.GetDecimal(). " +
+			"Error='%v'",	err.Error())
 	}
 
-	if exStr != actualNumStr {
-		t.Errorf("Error: Expected NumStr='%v'.  Instead, NumStr='%v'",
-			exStr, actualNumStr)
+	if numStr != decActual.GetNumStr() {
+		t.Errorf("Error: Expected decActual.GetNumStr()='%v'. Instead, " +
+			"decActual.GetNumStr()='%v'.",
+			numStr, decActual.GetNumStr())
 	}
+
+	if !controlDecimal.Equal(decActual) {
+		t.Errorf("Error: controlDecimal NOT EQUAL to decActual! " +
+			"controlDecimal='%v' decActual='%v'",
+			controlDecimal.GetNumStr(), decActual.GetNumStr())
+	}
+}
+
+func TestNumStrDto_GetIntAry(t *testing.T) {
+
+	numStr := "589627.123456"
+
+	controlNDto, err := NumStrDto{}.NewNumStr(numStr)
+
+	if err != nil {
+		t.Errorf("Error returned by NumStrDto{}.NewNumStr(numStr). " +
+			"numStr='%v'  Error='%v'", numStr, err.Error())
+	}
+
+	controlIa, err := IntAry{}.NewNumStr(numStr)
+
+	actualIa, err := controlNDto.GetIntAry()
+
+	if err != nil {
+		t.Errorf("Error returned by controlNDto.GetIntAry(). " +
+			"numStr='%v'  Error='%v'", numStr, err.Error())
+	}
+
+	if numStr != actualIa.GetNumStr() {
+		t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v'. ",
+			numStr, actualIa.GetNumStr())
+	}
+
+	if !controlIa.Equal(actualIa) {
+		t.Errorf("Error: controlIa NOT EQUAL to actual actualIa! " +
+			"controlNDto='%v' nDto='%v'",
+			controlNDto.GetNumStr(), actualIa.GetNumStr())
+	}
+
 }
 
 func TestNumStrDto_GetNumStr_01(t *testing.T) {
