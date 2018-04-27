@@ -117,6 +117,46 @@ func TestIntAry_GetCurrencySymbol_05(t *testing.T) {
 
 }
 
+func TestIntAry_GetDecimal_01(t *testing.T) {
+	numStr := "198649257.12345678"
+
+	controlDecimal, err := Decimal{}.NewNumStr(numStr)
+
+	if err != nil {
+		t.Errorf("Error returned by controlDecimal = Decimal{}.NewNumStr(numStr). " +
+			"numStr='%v' Error='%v'",
+				numStr, err.Error())
+	}
+
+	ia, err := IntAry{}.NewNumStr(numStr)
+
+	if err != nil {
+		t.Errorf("Error returned by ia = IntAry{}.NewNumStr(numStr). " +
+			"numStr='%v' Error='%v'",
+			numStr, err.Error())
+	}
+
+	decActual, err := ia.GetDecimal()
+
+	if err != nil {
+		t.Errorf("Error returned by decActual = ia.GetDecimal(). " +
+			"Error='%v'",	err.Error())
+	}
+
+	if numStr != decActual.GetNumStr() {
+		t.Errorf("Error: Expected decActual.GetNumStr()='%v'. Instead, " +
+			"decActual.GetNumStr()='%v'.",
+			numStr, decActual.GetNumStr())
+	}
+
+	if !controlDecimal.Equal(decActual) {
+		t.Errorf("Error: controlDecimal NOT EQUAL to decActual! " +
+			"controlDecimal='%v' decActual='%v'",
+			controlDecimal.GetNumStr(), decActual.GetNumStr())
+	}
+
+}
+
 func TestIntAry_GetDecimalSeparator_01(t *testing.T) {
 	ia := IntAry{}.New()
 
@@ -900,6 +940,45 @@ func TestIntAry_GetNthRootOfThis_08(t *testing.T) {
 	_, err := ia.GetNthRootOfThis(nthRoot, maxPrecision)
 	if err == nil {
 		t.Error("Expected Error from ia.GetNthRootOfThis(nthRoot, maxPrecision) for nthRoot == 1. No Error triggered")
+	}
+
+}
+
+func TestIntAry_GetNumStrDto_01(t *testing.T) {
+
+	numStr := "589627.123456"
+
+	controlNDto, err := NumStrDto{}.NewNumStr(numStr)
+
+	if err != nil {
+		t.Errorf("Error returned by NumStrDto{}.NewNumStr(numStr). " +
+			"numStr='%v'  Error='%v'", numStr, err.Error())
+	}
+
+
+	ia, err := IntAry{}.NewNumStr(numStr)
+
+	if err != nil {
+		t.Errorf("Error returned by IntAry{}.NewNumStr(numStr). " +
+			"numStr='%v'  Error='%v'", numStr, err.Error())
+	}
+
+	nDto, err := ia.GetNumStrDto()
+
+	if err != nil {
+		t.Errorf("Error returned by ia.GetNumStrDto(). " +
+			"ia.GetNumStr()='%v'  Error='%v'", ia.GetNumStr(), err.Error())
+	}
+
+	if ia.GetNumStr() != nDto.GetNumStr() {
+		t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v'. ",
+			ia.GetNumStr(), nDto.GetNumStr())
+	}
+
+	if !controlNDto.Equal(nDto) {
+		t.Errorf("Error: controlNDto NOT EQUAL to actual nDto! " +
+			"controlNDto='%v' nDto='%v'",
+				controlNDto.GetNumStr(), nDto.GetNumStr())
 	}
 
 }

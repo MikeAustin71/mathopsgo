@@ -1992,6 +1992,30 @@ func (ia *IntAry) GetCurrencySymbol() rune {
 	return ia.currencySymbol
 }
 
+// GetDecimal - Converts the current IntAry instance to
+// a Type, 'Decimal' and returns it to the calling function.
+//
+func (ia *IntAry) GetDecimal() (Decimal, error) {
+
+	ePrefix := "IntAry.GetDecimal() "
+
+	err := ia.IsIntAryValid(ePrefix)
+
+	if err != nil {
+		return Decimal{}, err
+	}
+
+	dec, err := Decimal{}.NewNumStr(ia.GetNumStr())
+
+	if err != nil {
+		return Decimal{},
+		fmt.Errorf(ePrefix + "Error returned by Decimal{}.NewNumStr(ia.GetNumStr()) " +
+			"ia.GetNumStr()='%v' Error='%v'",
+				ia.GetNumStr(), err.Error())
+	}
+
+	return dec, nil
+}
 
 // GetDecimalSeparator - returns a type 'rune'
 // which represents the setting for decimal
