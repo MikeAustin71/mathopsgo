@@ -1458,6 +1458,33 @@ func (nDto *NumStrDto) GetDecimalSeparator() rune {
 
 }
 
+
+// GetDecimal - Converts the current NumStrDto instance
+// to a Type 'Decimal' and returns it to the calling
+// function.
+//
+func (nDto *NumStrDto) GetDecimal() (Decimal, error) {
+
+	ePrefix := "NumStrDto.GetIntAry() "
+
+	err := nDto.IsNumStrDtoValid(ePrefix)
+
+	if err != nil {
+		return Decimal{}, err
+	}
+
+	dec, err := Decimal{}.NewNumStrDto(nDto.CopyOut())
+
+	if err != nil {
+		return Decimal{},
+		fmt.Errorf(ePrefix +
+			"Error returned by Decimal{}.NewNumStrDto(nDto.CopyOut()) " +
+			"Error='%v' ", err.Error())
+	}
+
+	return dec, nil
+}
+
 // GetIntAry - Converts the current NumStrDto instance
 // to a Type IntAry and returns it to the calling function.
 //
@@ -1480,7 +1507,6 @@ func (nDto *NumStrDto) GetIntAry() (IntAry, error) {
 
 
 	return ia, nil
-
 }
 
 // GetNumParen - Returns the numeric value of the current NumStrDto

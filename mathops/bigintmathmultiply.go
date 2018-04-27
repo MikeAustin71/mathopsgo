@@ -1250,6 +1250,89 @@ func (bMultiply BigIntMathMultiply) MultiplyNumStrDtoArray(
 	return finalResult, nil
 }
 
+// MultiplyNumStrDtoOutputToArray - Receives one input parameter of Type NumStrDto which
+// is classified as the 'multiplier'. The second input parameter is an array of NumStrDto
+// Types labeled, 'multiplicands'.
+//
+// Each element of the 'multiplicands' array is multiplied by the 'multiplier'. The result or
+// 'product' is then stored in a results array which is returned to the calling function.
+//
+// In the multiplication operation, the number to be multiplied is called the "multiplicand",
+// while the number of times the multiplicand is to be multiplied comes from the "multiplier".
+// Usually the multiplier is placed first and the multiplicand is placed second.
+//
+// For example, in the problem 5 x 3 equals 15, the 5 is the 'multiplier', 3 is the 'multiplicand'
+// and 15 is the 'product' or result.
+//
+// Example
+// =======
+// 										Multiplicands												Output
+// Multiplier				    	Array														Array
+//
+//		3			x				multiplicands[0] = 2			=				  outputarray[0] =  6
+//		3			x				multiplicands[1] = 3			=				  outputarray[1] =  9
+//		3			x				multiplicands[2] = 4			=				  outputarray[2] = 12
+//		3			x				multiplicands[3] = 5			=				  outputarray[3] = 15
+//		3			x				multiplicands[4] = 6			=				  outputarray[4] = 18
+//		3			x				multiplicands[5] = 7			=				  outputarray[5] = 21
+//
+//
+// This method performs the multiplication operation described above and afterwards returns the
+// result or 'product' in an Array of 'NumStrDtos' ([] NumStrDtos).
+//
+func (bMultiply BigIntMathMultiply) MultiplyNumStrDtoOutputToArray(
+	multiplier NumStrDto,
+	multiplicands []NumStrDto) ([]NumStrDto, error) {
+
+	ePrefix := "BigIntMathMultiply.MultiplyNumStrDtoOutputToArray() "
+
+	lenMultiplicands := len(multiplicands)
+
+	if lenMultiplicands == 0 {
+		return []NumStrDto{}, nil
+	}
+
+	multiplierBINum, err := BigIntNum{}.NewNumStrDto(multiplier)
+
+	if err != nil {
+		return []NumStrDto{},
+			fmt.Errorf(ePrefix +
+				"Error returned by BigIntNum{}.NewNumStrDto(multiplier) " +
+				" multiplier='%v' Error='%v'. ",
+				multiplier.GetNumStr(), err.Error())
+	}
+
+	resultArray := make([]NumStrDto, lenMultiplicands)
+
+	for i:=0; i < lenMultiplicands; i++ {
+
+		multiplicandBINum, err := BigIntNum{}.NewNumStrDto(multiplicands[i])
+
+		if err != nil {
+			return []NumStrDto{},
+				fmt.Errorf(ePrefix +
+					"Error returned by BigIntNum{}.NewNumStrDto(multiplicands[i]) " +
+					" multiplierBINum='%v' multiplicands[%v]='%v' Error='%v'. ",
+					multiplierBINum.GetNumStr(), i, multiplicands[i].GetNumStr(), err.Error())
+		}
+
+		bPair := BigIntPair{}.NewBigIntNum(multiplierBINum, multiplicandBINum )
+
+		finalResult := bMultiply.MultiplyPair(bPair)
+
+		resultArray[i], err = finalResult.Result.GetNumStrDto()
+
+		if err != nil {
+			return []NumStrDto{},
+				fmt.Errorf(ePrefix +
+					"Error returned by finalResult.Result.GetNumStrDto() " +
+					"i='%v' Error='%v'. ", i,  err.Error())
+		}
+	}
+
+	return resultArray, nil
+}
+
 // MultiplyPair - Receives a BigIntPair instance and proceeds to multiply
 // b1.BigIntNum by b2.BigIntNum.
 //
