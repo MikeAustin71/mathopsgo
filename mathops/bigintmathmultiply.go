@@ -5,8 +5,8 @@ import (
 	"fmt"
 )
 
-// BigIntMathDto - This type is used to perform math operations
-// using the *big.Int Type.
+// BigIntMathMultiply - This methods associated with this type are
+// used to perform math operations using the *big.Int Type.
 //
 // If you are unfamiliar with the *big.Int type, reference:
 // 						https://golang.org/pkg/math/big/

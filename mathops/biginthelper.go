@@ -9,9 +9,12 @@ import (
 // is used to set up calculations involving *big.Int types.
 type BigIntPair struct {
 	Big1 							BigIntNum
-	Big1Compare 			int
-	Big1AbsCompare 		int
-	Precision1Compare int
+
+	Big1Compare 			int 			// 	1 = Big1 > Big2; 0 = Big1 == Big2; -1 = Big1 < Big2
+	Big1AbsCompare 		int				// 	1 = Big1 > Big2; 0 = Big1 == Big2; -1 = Big1 < Big2
+	Precision1Compare int				// 	1 = Big1Precision > Big2Precision;
+															//  0 = Big1Precision == Big2Precision;
+															// -1 = Big1Precision < Big2Precision
 	Big2							BigIntNum
 }
 
@@ -322,7 +325,6 @@ func (bPair *BigIntPair) SetBigIntPair(b1, b2 BigIntNum ) {
 	}
 
 }
-
 
 // BigIntBasicMathResult - Used to return the result
 // of an Addition, Subtraction or Multiplication operation.

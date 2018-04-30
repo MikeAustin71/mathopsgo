@@ -3348,6 +3348,26 @@ func (ia IntAry) NewNumStr(num string) (IntAry, error) {
 
 }
 
+// NewNumStrMaxPrecision - Creates a new intAry object initialized
+// to the value of input parameter 'num' which is passed
+// as type 'string'.
+//
+// Usage: ia := intAry{}.NewNumStr("123.456")
+func (ia IntAry) NewNumStrMaxPrecision(num string, maxPrecision int) (IntAry, error) {
+
+	iAry := IntAry{}.New()
+	err := iAry.SetIntAryWithNumStrMaxPrecision(num, maxPrecision)
+
+	if err != nil {
+		return IntAry{},
+		fmt.Errorf("IntAry.NewNumStr() Error returned by  " +
+			"iAry.SetIntAryWithNumStrMaxPrecision(num). num='%v', Error='%v' ",
+			num, err.Error())
+	}
+
+	return iAry, nil
+}
+
 // NewNumStrDto - Creates, initializes and returns an IntAry
 // Type using an input paramter of Type NumStrDto.
 func (ia IntAry) NewNumStrDto(numDto NumStrDto) (IntAry, error) {
@@ -3732,8 +3752,9 @@ func (ia *IntAry) ResetFromBackUp() {
 
 }
 
-// RoundToPrecision - Rounds the value of the intAry to a precision
-// specified by the 'roundToPrecision' parameter.
+// RoundToPrecision - Rounds the value of the current IntAry instance
+// to a precision specified by the 'roundToPrecision' parameter.
+//
 func (ia *IntAry) RoundToPrecision(roundToPrecision int) error {
 
 	if roundToPrecision < 0 {
@@ -4488,6 +4509,35 @@ func (ia *IntAry) SetIntAryWithIntAryObj(iAry2 *IntAry, copyBackup bool) error {
 	}
 
 	ia.CopyIn(iAry2, copyBackup)
+
+	return nil
+}
+
+// SetIntAryWithNumStrMaxPrecision - receives a raw number string and sets the
+// fields of the internal intAry structure to the appropriate
+// values.
+//
+// A second input parameter specifies the maximum allowable precision for the IntAry.
+// If IntAry precision exceeds 'maxPrecision', IntAry precision is rounded to
+// 'maxPrecision'.
+//
+// The term 'precision' defines the number of numeric digits to the right of the
+// decimal point or decimal separator.
+//
+func (ia *IntAry) SetIntAryWithNumStrMaxPrecision(str string, maxPrecision int) error {
+	ePrefix := "IntAry.SetIntAryWithNumStrMaxPrecision() "
+
+	err := ia.SetIntAryWithNumStr(str)
+
+	if err != nil {
+		return fmt.Errorf(ePrefix + "Error returned by ia.SetIntAryWithNumStr(str)" +
+			"str='%v' Error='%v' ",
+				str, err.Error())
+	}
+
+	if ia.precision > maxPrecision {
+		ia.RoundToPrecision(maxPrecision)
+	}
 
 	return nil
 }

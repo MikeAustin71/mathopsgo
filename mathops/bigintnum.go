@@ -708,6 +708,42 @@ func (bNum BigIntNum) NewNumStr(numStr string) (BigIntNum, error) {
 	return b, nil
 }
 
+
+// NewNumStr - Receives a number string as input and returns
+// a new BigIntNum instance.
+//
+func (bNum BigIntNum) NewNumStrMaxPrecision(numStr string, maxPrecision uint) (BigIntNum, error) {
+
+	ePrefix := "BigIntNum.NewNumStr() "
+
+	nDto, err := NumStrDto{}.NewNumStr(numStr)
+
+	if err != nil {
+		return BigIntNum{},
+			fmt.Errorf(ePrefix + "Error returned by NumStrDto{}.NewNumStr(numStr). " +
+				"numStr='%v' Error='%v'", numStr, err.Error())
+	}
+
+
+	bigI, err := nDto.GetBigInt()
+
+	if err != nil {
+		return BigIntNum{},
+			fmt.Errorf(ePrefix + "Error returned by nDto.GetBigInt(). " +
+				"Error='%v'", err.Error())
+	}
+
+	b := BigIntNum{}
+
+	b.SetBigInt(bigI, uint(nDto.GetPrecision()))
+
+	if b.precision > maxPrecision {
+		b.RoundToDecPlace(maxPrecision)
+	}
+
+	return b, nil
+}
+
 // NewNumStrDto - Receives a NumStrDto instance as input and returns
 // a new BigIntNum instance.
 //
@@ -1075,6 +1111,48 @@ func (bNum *BigIntNum) SetINumMgr(numMgr INumMgr) error {
 	bNum.SetBigInt(bigInt, numMgr.GetPrecisionUint())
 
 	return nil
+}
+
+func (bNum *BigIntNum) TrimTrailingFracZeros(){
+
+	if bNum.precision == 0 {
+		return
+	}
+
+	biBaseZero := big.NewInt(0)
+
+	if bNum.bigInt.Cmp(biBaseZero) == 0 {
+		bNum.precision = 0
+		bNum.scaleFactor = big.NewInt(1)
+		return
+	}
+
+
+	biBase10 := big.NewInt(10)
+
+	mod10 := big.NewInt(0).Mod(bNum.bigInt, biBase10)
+	doReset := false
+
+	for mod10.Cmp(biBaseZero) == 0 && bNum.precision > 0 {
+		bNum.bigInt = big.NewInt(0).Div(bNum.bigInt, biBase10)
+		bNum.precision --
+		doReset = true
+		mod10 = big.NewInt(0).Mod(bNum.bigInt, biBase10)
+	}
+
+	if doReset {
+		if bNum.sign < 0 {
+			bNum.absBigInt = big.NewInt(0).Neg(bNum.bigInt)
+		} else {
+			bNum.absBigInt = big.NewInt(0).Set(bNum.bigInt)
+		}
+
+		bigPrecision := big.NewInt(0).SetInt64(int64(bNum.precision))
+		bNum.scaleFactor = big.NewInt(0).Exp(biBase10, bigPrecision, nil)
+
+	}
+
+	return
 }
 
 // TruncToDecPlace - Truncates the current BigIntNum to the number

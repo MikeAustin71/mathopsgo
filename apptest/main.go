@@ -8,7 +8,120 @@ import (
 
 func main() {
 
-	ExampleBigIntMultiply_02()
+	numStrDividend := "-2.5"
+	numStrDivisor := "-12.555"
+
+	//ExampleBigIntDivideIntQuotient_02(numStrDividend, numStrDivisor)
+
+	maxPrecision := uint(15)
+	fmt.Println()
+	ExampleBigIntDivideQuotientModulo_01(numStrDividend, numStrDivisor, maxPrecision)
+
+}
+
+func ExampleBigIntDivideIntQuotient_02(numStrDividend, numStrDivisor string) {
+
+	bINDividend, err := mathops.BigIntNum{}.NewNumStr(numStrDividend)
+
+	if err != nil {
+		fmt.Printf("Error returned by BigIntNum{}.NewNumStr(numStrDividend) " +
+			" numStrDividend='%v' Error='%v. ",
+			numStrDividend, err.Error())
+		return
+	}
+
+	bINDivisor, err := mathops.BigIntNum{}.NewNumStr(numStrDivisor)
+
+	if err != nil {
+		fmt.Printf("Error returned by BigIntNum{}.NewNumStr(numStrDivisor) " +
+			" numStrDivisor='%v' Error='%v. ",
+			numStrDividend, err.Error())
+		return
+	}
+
+	quotient, err := mathops.BigIntMathDivide{}.BigIntNumIntQuotient(
+		bINDividend,
+		bINDivisor)
+
+	if err != nil {
+		fmt.Printf("Error returned byBigIntMathDivide{}.BigIntNumDivResult(...) " +
+			"Error='%v. ",
+			err.Error())
+		return
+	}
+
+	PrintBigIntNumIntQuotient("Raw Results",bINDividend, bINDivisor, quotient)
+
+	quotient.TrimTrailingFracZeros()
+
+	PrintBigIntNumIntQuotient("Optimized Results", bINDividend, bINDivisor, quotient)
+}
+
+func ExampleBigIntDivideQuotientModulo_01(numStrDividend, numStrDivisor string, maxPrecision uint) {
+
+	bINDividend, err := mathops.BigIntNum{}.NewNumStr(numStrDividend)
+
+	if err != nil {
+		fmt.Printf("Error returned by BigIntNum{}.NewNumStr(numStrDividend) " +
+			" numStrDividend='%v' Error='%v. ",
+				numStrDividend, err.Error())
+		return
+	}
+
+	bINDivisor, err := mathops.BigIntNum{}.NewNumStr(numStrDivisor)
+
+	if err != nil {
+		fmt.Printf("Error returned by BigIntNum{}.NewNumStr(numStrDivisor) " +
+			" numStrDivisor='%v' Error='%v. ",
+			numStrDividend, err.Error())
+		return
+	}
+
+	quotient, modulo, err := mathops.BigIntMathDivide{}.BigIntNumQuotientMod(
+															bINDividend,
+															bINDivisor,
+																maxPrecision)
+
+	if err != nil {
+		fmt.Printf("Error returned byBigIntMathDivide{}.BigIntNumDivResult(...) " +
+			"Error='%v. ",
+			err.Error())
+		return
+	}
+
+	PrintBigIntNumQuotientMod("Raw Results",bINDividend, bINDivisor, quotient, modulo)
+
+
+	quotient.TrimTrailingFracZeros()
+	modulo.TrimTrailingFracZeros()
+
+
+	PrintBigIntNumQuotientMod("Optimized Results", bINDividend, bINDivisor, quotient, modulo)
+
+}
+
+func PrintBigIntNumIntQuotient(title string, dividend, divisor, quotient mathops.BigIntNum) {
+	fmt.Println(title)
+	fmt.Println("**************************************************")
+	fmt.Println("Results of BigIntMathDivide.BigIntNumIntQuotient() ")
+	fmt.Println("**************************************************")
+	fmt.Println("         Dividend: ", dividend.GetNumStr())
+	fmt.Println("          Divisor: ", divisor.GetNumStr())
+	fmt.Println("         Quotient:", quotient.GetNumStr())
+
+}
+
+
+func PrintBigIntNumQuotientMod(title string, dividend, divisor, quotient, modulo mathops.BigIntNum) {
+
+	fmt.Println(title)
+	fmt.Println("**************************************************")
+	fmt.Println("Results of BigIntMathDivide.BigIntNumQuotientMod() ")
+	fmt.Println("**************************************************")
+	fmt.Println("         Dividend: ", dividend.GetNumStr())
+	fmt.Println("          Divisor: ", divisor.GetNumStr())
+	fmt.Println("         Quotient:", quotient.GetNumStr())
+	fmt.Println("           Modulo:", modulo.GetNumStr())
 
 }
 
