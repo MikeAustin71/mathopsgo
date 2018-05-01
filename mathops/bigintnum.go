@@ -835,7 +835,7 @@ func (bNum *BigIntNum) RoundToDecPlace(precision uint) {
 	result := BigIntMathAdd{}.AddBigIntNums(bigNumBase, bigNumRound5)
 
 
-	newBigInt := big.NewInt(0).Div(result.Result.bigInt, base10)
+	newBigInt := big.NewInt(0).Quo(result.bigInt, base10)
 
 	if bNum.sign < 0 {
 		newBigInt = big.NewInt(0).Neg(newBigInt)
@@ -1134,7 +1134,7 @@ func (bNum *BigIntNum) TrimTrailingFracZeros(){
 	doReset := false
 
 	for mod10.Cmp(biBaseZero) == 0 && bNum.precision > 0 {
-		bNum.bigInt = big.NewInt(0).Div(bNum.bigInt, biBase10)
+		bNum.bigInt = big.NewInt(0).Quo(bNum.bigInt, biBase10)
 		bNum.precision --
 		doReset = true
 		mod10 = big.NewInt(0).Mod(bNum.bigInt, biBase10)
@@ -1207,7 +1207,7 @@ func (bNum *BigIntNum) TruncToDecPlace(precision uint) {
 		return
 	}
 
-	newBigInt := big.NewInt(0).Div(bNum.absBigInt, base10)
+	newBigInt := big.NewInt(0).Quo(bNum.absBigInt, base10)
 
 	if bNum.sign < 1 {
 		newBigInt = big.NewInt(0).Neg(newBigInt)

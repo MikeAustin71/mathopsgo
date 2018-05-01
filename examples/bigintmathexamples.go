@@ -376,9 +376,7 @@ func ExampleBigIntAdd_01() {
 
 	result := mathops.BigIntMathAdd{}.AddBigInts(b1, 6, b2, 3 )
 
-
 	ExamplePrintBasicMathResult(expectedResultStr, expectedPrecision, result)
-
 }
 
 func ExampleBigIntAddNumStr_01() {
@@ -432,22 +430,479 @@ func ExampleBigIntAddNumStr_02() {
 
 func ExamplePrintBasicMathResult(expectedResultStr string,
 																	expectedPrecision uint,
-																		result mathops.BigIntBasicMathResult) {
+																		result mathops.BigIntNum) {
 
-  getNumStr := result.Result.GetNumStr()
+  getNumStr := result.GetNumStr()
 
 	fmt.Println("            expected result: ", expectedResultStr)
-	fmt.Println("              result.bigInt: ", result.Result.GetNumStr())
+	fmt.Println("              result.bigInt: ", result.GetNumStr())
 	fmt.Println("         result.GetNumStr(): ", getNumStr)
 	fmt.Println("")
 	fmt.Println("         Expected precision: ", expectedPrecision)
-	fmt.Println("           result.precision: ", result.Result.GetPrecisionUint())
+	fmt.Println("           result.precision: ", result.GetPrecisionUint())
 	fmt.Println("")
-	fmt.Println("          result.Input.Big1: ", result.Input.Big1.GetNumStr())
-	fmt.Println("result.Input.Big1.precision: ", result.Input.Big1.GetPrecisionUint())
-	fmt.Println("")
-	fmt.Println("          result.Input.Big2: ", result.Input.Big2.GetNumStr())
-	fmt.Println("result.Input.Big2.precision: ", result.Input.Big2.GetPrecisionUint())
 
+
+}
+
+func ExampleBigIntDivideModulo_03(
+	numStrDividend,
+	numStrDivisor string,
+	maxPrecision uint,
+	expectedResult string) {
+
+	bINDividend, err := mathops.BigIntNum{}.NewNumStr(numStrDividend)
+
+	if err != nil {
+		fmt.Printf("Error returned by BigIntNum{}.NewNumStr(numStrDividend) " +
+			" numStrDividend='%v' Error='%v. ",
+			numStrDividend, err.Error())
+		return
+	}
+
+	bINDivisor, err := mathops.BigIntNum{}.NewNumStr(numStrDivisor)
+
+	if err != nil {
+		fmt.Printf("Error returned by BigIntNum{}.NewNumStr(numStrDivisor) " +
+			" numStrDivisor='%v' Error='%v. ",
+			numStrDividend, err.Error())
+		return
+	}
+
+	modulo, err := mathops.BigIntMathDivide{}.BigIntNumModulo(
+		bINDividend,
+		bINDivisor,
+		maxPrecision)
+
+	if err != nil {
+		fmt.Printf("Error returned byBigIntMathDivide{}.BigIntNumModulo(...) " +
+			"Error='%v. ",
+			err.Error())
+		return
+	}
+
+	PrintBigIntNumModulo(
+		"Raw Results",
+		bINDividend,
+		bINDivisor,
+		modulo,
+		maxPrecision,
+		expectedResult)
+
+	modulo.TrimTrailingFracZeros()
+
+	PrintBigIntNumModulo(
+		"Optimized Results",
+		bINDividend,
+		bINDivisor,
+		modulo,
+		maxPrecision,
+		expectedResult)
+
+}
+
+func ExampleBigIntDivideIntQuotient_02(numStrDividend, numStrDivisor, expectedResult string) {
+
+	bINDividend, err := mathops.BigIntNum{}.NewNumStr(numStrDividend)
+
+	if err != nil {
+		fmt.Printf("Error returned by BigIntNum{}.NewNumStr(numStrDividend) " +
+			" numStrDividend='%v' Error='%v. ",
+			numStrDividend, err.Error())
+		return
+	}
+
+	bINDivisor, err := mathops.BigIntNum{}.NewNumStr(numStrDivisor)
+
+	if err != nil {
+		fmt.Printf("Error returned by BigIntNum{}.NewNumStr(numStrDivisor) " +
+			" numStrDivisor='%v' Error='%v. ",
+			numStrDividend, err.Error())
+		return
+	}
+
+	quotient, err := mathops.BigIntMathDivide{}.BigIntNumIntQuotient(
+		bINDividend,
+		bINDivisor)
+
+	if err != nil {
+		fmt.Printf("Error returned byBigIntMathDivide{}.BigIntNumIntQuotient(...) " +
+			"Error='%v. ",
+			err.Error())
+		return
+	}
+
+	PrintBigIntNumIntQuotient(
+		"Raw Results",
+		bINDividend,
+		bINDivisor,
+		quotient,
+		expectedResult)
+
+	quotient.TrimTrailingFracZeros()
+
+	PrintBigIntNumIntQuotient(
+		"Optimized Results",
+		bINDividend,
+		bINDivisor,
+		quotient,
+		expectedResult)
+
+}
+
+func ExampleBigIntDivideQuotientModulo_01(numStrDividend, numStrDivisor string, maxPrecision uint) {
+
+	bINDividend, err := mathops.BigIntNum{}.NewNumStr(numStrDividend)
+
+	if err != nil {
+		fmt.Printf("Error returned by BigIntNum{}.NewNumStr(numStrDividend) " +
+			" numStrDividend='%v' Error='%v. ",
+			numStrDividend, err.Error())
+		return
+	}
+
+	bINDivisor, err := mathops.BigIntNum{}.NewNumStr(numStrDivisor)
+
+	if err != nil {
+		fmt.Printf("Error returned by BigIntNum{}.NewNumStr(numStrDivisor) " +
+			" numStrDivisor='%v' Error='%v. ",
+			numStrDividend, err.Error())
+		return
+	}
+
+	quotient, modulo, err := mathops.BigIntMathDivide{}.BigIntNumQuotientMod(
+		bINDividend,
+		bINDivisor,
+		maxPrecision)
+
+	if err != nil {
+		fmt.Printf("Error returned byBigIntMathDivide{}.BigIntNumQuotientMod(...) " +
+			"Error='%v. ",
+			err.Error())
+		return
+	}
+
+	PrintBigIntNumQuotientMod(
+		"Raw Results",
+		bINDividend,
+		bINDivisor,
+		quotient,
+		modulo,
+		maxPrecision)
+
+
+	quotient.TrimTrailingFracZeros()
+	modulo.TrimTrailingFracZeros()
+
+	PrintBigIntNumQuotientMod(
+		"Optimized Results",
+		bINDividend,
+		bINDivisor,
+		quotient,
+		modulo,
+		maxPrecision)
+
+}
+
+func ExampleBigIntMultiply_02() {
+
+	var err error
+
+	// multiplier = 2
+	multiplierStr := "2"
+	// multiplicandStrs
+	multiplicandStrs :=  [] string {
+		"2",
+		"3",
+		"4",
+		"5",
+		"6",
+		"7",
+	}
+
+	// product = 128
+	expectedBigINumStr := "128"
+
+	expectedBigINumSign := 1
+
+	multiplierBiNum, err := mathops.BigIntNum{}.NewNumStr(multiplierStr)
+
+	if err != nil {
+		fmt.Printf("Error returned by BigIntNum{}.NewNumStr(multiplierStr) " +
+			"multiplierStr='%v'  Error='%v'. ", multiplierStr, err.Error())
+		return
+	}
+
+
+	lenArray := len(multiplicandStrs)
+	bINumArray := make([]mathops.BigIntNum, lenArray)
+
+	iaResult, err := mathops.IntAry{}.NewNumStr(multiplierStr)
+
+	if err != nil {
+		fmt.Printf("Error returned by IntAry{}.NewNumStr(multiplierStr) " +
+			"multiplierStr='%v'  Error='%v'. ", multiplierStr, err.Error())
+		return
+	}
+
+	for i:=0; i < lenArray; i++ {
+
+		bINumArray[i], err = 	mathops.BigIntNum{}.NewNumStr(multiplicandStrs[i])
+
+		if err != nil {
+			fmt.Printf("Error returned by BigIntNum{}.NewNumStr(multiplicandStrs[i]) " +
+				"i='%v'  multiplicandStrs[i]='%v'  Error='%v'. ", i, multiplicandStrs[i], err.Error())
+			return
+		}
+
+		ia, err := bINumArray[i].GetIntAry()
+
+		if err != nil {
+			fmt.Printf("Error returned by bINumArray[i].GetIntAry() " +
+				"i='%v'  multiplicandStrs[i]='%v'  Error='%v'. ", i, multiplicandStrs[i], err.Error())
+			return
+		}
+
+		fmt.Println("After ia bINumArray[i]=", bINumArray[i].GetNumStr())
+
+		err = iaResult.MultiplyThisBy(&ia, -1, -1)
+
+		if err != nil {
+			fmt.Printf("Error returned by iaResult.MultiplyThisBy(&ia, -1, -1) " +
+				"i='%v'  multiplicandStrs[i]='%v'  Error='%v'. ", i, multiplicandStrs[i], err.Error())
+			return
+		}
+
+	}
+
+	expectedBigINum, err := mathops.BigIntNum{}.NewNumStr(expectedBigINumStr)
+
+	if err != nil {
+		fmt.Printf("Error returned by BigIntNum{}.NewNumStr(expectedBigINumStr) " +
+			"expectedBigINumStr='%v'  Error='%v'. ", expectedBigINumStr, err.Error())
+		return
+	}
+
+	for k:=0; k < len(bINumArray); k++ {
+		fmt.Println("PreLoad bINumArray[k]=", bINumArray[k].GetNumStr())
+	}
+
+	result := mathops.BigIntMathMultiply{}.MultiplyBigIntNumArray(multiplierBiNum, bINumArray)
+
+	if !expectedBigINum.Equal(result.Result) {
+		fmt.Printf("Error: Expected BigIntNum='%s'. Instead, BigIntNum= '%s'. ",
+			expectedBigINum.GetNumStr(), result.Result.GetNumStr())
+		return
+	}
+
+	if expectedBigINum.CmpBigInt(result.Result) != 0 {
+		fmt.Printf("Comparison Error: Expected BigIntNum='%s'. Instead, BigIntNum= '%s'. ",
+			expectedBigINum.GetNumStr(), result.Result.GetNumStr())
+		return
+	}
+
+	if expectedBigINumSign != result.Result.GetSign() {
+		fmt.Printf("Error: Expected number sign='%v'. Instead, number sign='%v'",
+			expectedBigINumSign, result.Result.GetSign())
+		return
+	}
+
+	actualNumStr, err := result.Result.GetNumStrErr()
+
+	if err != nil {
+		fmt.Printf("Error returned by result.Result.GetNumStrErr() " +
+			"Error='%v'. ", err.Error())
+		return
+	}
+
+	if iaResult.GetNumStr() != actualNumStr {
+		fmt.Printf("Error: Expected actualNumStr='%v' " +
+			"Instead, actualNumStr='%v'",
+			iaResult.GetNumStr(), actualNumStr)
+		return
+	}
+
+}
+
+func ExampleBigIntMultiply_01() {
+	// multiplier = 2
+	multiplierStr := "2"
+	// multiplicandStrs
+	multiplicandStrs :=  [] string {
+		"2",
+		"2",
+		"2",
+		"2",
+		"2",
+		"2",
+	}
+
+	// product = 128
+	expectedBigINumStr := "128"
+
+	// expectedBigINumSign := 1
+
+	multiplierBiNum, err := mathops.BigIntNum{}.NewNumStr(multiplierStr)
+
+	if err != nil {
+		fmt.Printf("Error returned by BigIntNum{}.NewNumStr(multiplierStr) " +
+			"multiplierStr='%v'  Error='%v'. ", multiplierStr, err.Error())
+	}
+
+
+	lenArray := len(multiplicandStrs)
+	bINumArray := make([]mathops.BigIntNum, lenArray)
+
+
+	for i:=0; i < lenArray; i++ {
+
+		bINumArray[i], err = 	mathops.BigIntNum{}.NewNumStr(multiplicandStrs[i])
+
+		if err != nil {
+			fmt.Printf("Error returned by BigIntNum{}.NewNumStr(multiplicandStrs[i]) " +
+				"i='%v'  multiplicandStrs[i]='%v'  Error='%v'. ", i, multiplicandStrs[i], err.Error())
+		}
+
+	}
+
+	result := mathops.BigIntMathMultiply{}.MultiplyBigIntNumArray(multiplierBiNum, bINumArray)
+
+	fmt.Println("Expected Result: ", expectedBigINumStr)
+	fmt.Println("  Actual Result: ", result.Result.GetNumStr())
+
+}
+
+
+func ExampleDecimalDivide_01() {
+	// str1 / str2
+	/*
+	str1 := "575.63"
+	str2 := "2014.123"
+	ePrecision := 20
+	expected := "0.28579684557497233287"
+*/
+
+	str1 := "975.69"
+	str2 := "589.7654321"
+	expected := "1.654369597"
+	ePrecision := 9
+
+	d1, err := mathops.Decimal{}.NewNumStr(str1)
+
+	if err != nil {
+		fmt.Printf("Error returned from Decimal{}.NewNumStr(str1). "+
+			"str1='%v' Error='%v \n", str1, err.Error())
+		return
+	}
+
+	d2, err := mathops.Decimal{}.NewNumStr(str2)
+
+	if err != nil {
+		fmt.Printf("Error returned from Decimal{}.NewNumStr(str2). "+
+			"str2='%v' Error='%v \n", str2, err.Error())
+		return
+	}
+
+	d3, err := d1.Divide(d2, ePrecision)
+
+	if err != nil {
+		fmt.Printf("Error returned from d1.Divide(d2, ePrecision). "+
+			" Error='%v \n",  err.Error())
+		return
+	}
+
+	actualResult := d3.GetNumStr()
+
+	ia1, err := mathops.IntAry{}.NewNumStr(str1)
+
+	if err != nil {
+		fmt.Printf("Error returned from IntAry{}.NewNumStr(str1). "+
+			"str1='%v' Error='%v \n", str1, err.Error())
+		return
+	}
+
+	ia2, err := mathops.IntAry{}.NewNumStr(str2)
+
+	if err != nil {
+		fmt.Printf("Error returned from IntAry{}.NewNumStr(str2). "+
+			"str2='%v' Error='%v \n", str2, err.Error())
+		return
+	}
+
+
+	ia3, err := ia1.DivideThisBy(&ia2, 0, ePrecision )
+
+	if err != nil {
+		fmt.Printf("Error returned from ia1.DivideThisBy(&ia2, 0, 20 ). " +
+			"Error='%v \n", err.Error())
+		return
+	}
+
+	chkResult := ia3.GetNumStr()
+
+	fmt.Println("			    Dividend: ", str1)
+	fmt.Println(" 			   Divisor: ", str2)
+	fmt.Println("	   Actual Result: ", actualResult)
+	fmt.Println("	 Expected Result: ", expected)
+	fmt.Println("	    Check Result: ", chkResult)
+
+}
+
+
+func PrintBigIntNumModulo(
+	title string,
+	dividend,
+	divisor,
+	modulo mathops.BigIntNum,
+	maxPrecision uint,
+	expectedResult string) {
+
+	fmt.Println(title)
+	fmt.Println("**************************************************")
+	fmt.Println("Results of BigIntMathDivide.BigIntNumModulo() ")
+	fmt.Println("**************************************************")
+	fmt.Println("         Dividend: ", dividend.GetNumStr())
+	fmt.Println("          Divisor: ", divisor.GetNumStr())
+	fmt.Println("           Modulo: ", modulo.GetNumStr())
+	fmt.Println("  Expected Result: ", expectedResult)
+	fmt.Println("    Max Precision: ", maxPrecision)
+}
+
+func PrintBigIntNumIntQuotient(
+	title string,
+	dividend,
+	divisor,
+	quotient mathops.BigIntNum,
+	expectedResult string) {
+
+	fmt.Println(title)
+	fmt.Println("**************************************************")
+	fmt.Println("Results of BigIntMathDivide.BigIntNumIntQuotient() ")
+	fmt.Println("**************************************************")
+	fmt.Println("         Dividend: ", dividend.GetNumStr())
+	fmt.Println("          Divisor: ", divisor.GetNumStr())
+	fmt.Println("         Quotient: ", quotient.GetNumStr())
+	fmt.Println("  Expected Result: ", expectedResult)
+
+}
+
+
+func PrintBigIntNumQuotientMod(
+	title string,
+	dividend,
+	divisor,
+	quotient,
+	modulo mathops.BigIntNum,
+	maxPrecision uint) {
+
+	fmt.Println(title)
+	fmt.Println("**************************************************")
+	fmt.Println("Results of BigIntMathDivide.BigIntNumQuotientMod() ")
+	fmt.Println("**************************************************")
+	fmt.Println("         Dividend: ", dividend.GetNumStr())
+	fmt.Println("          Divisor: ", divisor.GetNumStr())
+	fmt.Println("         Quotient: ", quotient.GetNumStr())
+	fmt.Println("           Modulo: ", modulo.GetNumStr())
+	fmt.Println("    Max Precision: ", maxPrecision)
 
 }

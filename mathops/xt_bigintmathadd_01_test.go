@@ -36,19 +36,19 @@ func TestBigIntMathAdd_AddBigInts_01(t *testing.T) {
 
 	result := BigIntMathAdd{}.AddBigInts(b1Big, b1Precision, b2Big, b2Precision)
 
-	if biExpectedResult.Cmp(result.Result.bigInt) != 0 {
+	if biExpectedResult.Cmp(result.bigInt) != 0 {
 		t.Errorf("Error: Expected Result='%v'.  Instead, Result='%v'. ",
-			biExpectedResult.Text(10), result.Result.bigInt.Text(10))
+			biExpectedResult.Text(10), result.bigInt.Text(10))
 	}
 
-	if expectedPrecision != result.Result.precision {
+	if expectedPrecision != result.precision {
 		t.Errorf("Error: Expected Result precision='%v'. Instead, Result precision='%v'. ",
-			expectedPrecision, result.Result.precision)
+			expectedPrecision, result.precision)
 	}
 
-	if expectedSign != result.Result.sign {
+	if expectedSign != result.sign {
 		t.Errorf("Error: Expected Recult sign='%v'. Instead, Result sign='%v' ",
-			expectedSign, result.Result.sign)
+			expectedSign, result.sign)
 	}
 
 }
@@ -81,19 +81,19 @@ func TestBigIntMathAdd_AddBigInts_02(t *testing.T) {
 
 	result := BigIntMathAdd{}.AddBigInts(b1Big, b1Precision, b2Big, b2Precision)
 
-	if biExpectedResult.Cmp(result.Result.bigInt) != 0 {
+	if biExpectedResult.Cmp(result.bigInt) != 0 {
 		t.Errorf("Error: Expected Result='%v'.  Instead, Result='%v'. ",
-			biExpectedResult.Text(10), result.Result.bigInt.Text(10))
+			biExpectedResult.Text(10), result.bigInt.Text(10))
 	}
 
-	if expectedPrecision != result.Result.precision {
+	if expectedPrecision != result.precision {
 		t.Errorf("Error: Expected Result precision='%v'. Instead, Result precision='%v'. ",
-			expectedPrecision, result.Result.precision)
+			expectedPrecision, result.precision)
 	}
 
-	if expectedSign != result.Result.sign {
+	if expectedSign != result.sign {
 		t.Errorf("Error: Expected Recult sign='%v'. Instead, Result sign='%v' ",
-			expectedSign, result.Result.sign)
+			expectedSign, result.sign)
 	}
 
 }
@@ -126,19 +126,19 @@ func TestBigIntMathAdd_AddBigInts_03(t *testing.T) {
 
 	result := BigIntMathAdd{}.AddBigInts(b1Big, b1Precision, b2Big, b2Precision)
 
-	if biExpectedResult.Cmp(result.Result.bigInt) != 0 {
+	if biExpectedResult.Cmp(result.bigInt) != 0 {
 		t.Errorf("Error: Expected Result='%v'.  Instead, Result='%v'. ",
-			biExpectedResult.Text(10), result.Result.bigInt.Text(10))
+			biExpectedResult.Text(10), result.bigInt.Text(10))
 	}
 
-	if expectedPrecision != result.Result.precision {
+	if expectedPrecision != result.precision {
 		t.Errorf("Error: Expected Result precision='%v'. Instead, Result precision='%v'. ",
-			expectedPrecision, result.Result.precision)
+			expectedPrecision, result.precision)
 	}
 
-	if expectedSign != result.Result.sign {
+	if expectedSign != result.sign {
 		t.Errorf("Error: Expected Recult sign='%v'. Instead, Result sign='%v' ",
-			expectedSign, result.Result.sign)
+			expectedSign, result.sign)
 	}
 
 }
@@ -171,19 +171,19 @@ func TestBigIntMathAdd_AddBigInts_04(t *testing.T) {
 
 	result := BigIntMathAdd{}.AddBigInts(b1Big, b1Precision, b2Big, b2Precision)
 
-	if biExpectedResult.Cmp(result.Result.bigInt) != 0 {
+	if biExpectedResult.Cmp(result.bigInt) != 0 {
 		t.Errorf("Error: Expected Result='%v'.  Instead, Result='%v'. ",
-			biExpectedResult.Text(10), result.Result.bigInt.Text(10))
+			biExpectedResult.Text(10), result.bigInt.Text(10))
 	}
 
-	if expectedPrecision != result.Result.precision {
+	if expectedPrecision != result.precision {
 		t.Errorf("Error: Expected Result precision='%v'. Instead, Result precision='%v'. ",
-			expectedPrecision, result.Result.precision)
+			expectedPrecision, result.precision)
 	}
 
-	if expectedSign != result.Result.sign {
+	if expectedSign != result.sign {
 		t.Errorf("Error: Expected Recult sign='%v'. Instead, Result sign='%v' ",
-			expectedSign, result.Result.sign)
+			expectedSign, result.sign)
 	}
 
 }
@@ -221,19 +221,19 @@ func TestBigIntMathAdd_AddBigIntNums_01(t *testing.T) {
 
 	result := BigIntMathAdd{}.AddBigIntNums(b1Num, b2Num)
 
-	if biExpectedResult.Cmp(result.Result.bigInt) != 0 {
+	if biExpectedResult.Cmp(result.bigInt) != 0 {
 		t.Errorf("Error: Expected Result='%v'.  Instead, Result='%v'. ",
-			biExpectedResult.Text(10), result.Result.bigInt.Text(10))
+			biExpectedResult.Text(10), result.bigInt.Text(10))
 	}
 
-	if expectedPrecision != result.Result.precision {
+	if expectedPrecision != result.precision {
 		t.Errorf("Error: Expected Result precision='%v'. Instead, Result precision='%v'. ",
-			expectedPrecision, result.Result.precision)
+			expectedPrecision, result.precision)
 	}
 
-	if expectedSign != result.Result.sign {
+	if expectedSign != result.sign {
 		t.Errorf("Error: Expected Recult sign='%v'. Instead, Result sign='%v' ",
-			expectedSign, result.Result.sign)
+			expectedSign, result.sign)
 	}
 
 }
@@ -270,19 +270,19 @@ func TestBigIntMathAdd_AddBigIntNums_02(t *testing.T) {
 
 	result := BigIntMathAdd{}.AddBigIntNums(b1Num, b2Num)
 
-	if biExpectedResult.Cmp(result.Result.bigInt) != 0 {
+	if biExpectedResult.Cmp(result.bigInt) != 0 {
 		t.Errorf("Error: Expected Result='%v'.  Instead, Result='%v'. ",
-			biExpectedResult.Text(10), result.Result.bigInt.Text(10))
+			biExpectedResult.Text(10), result.bigInt.Text(10))
 	}
 
-	if expectedPrecision != result.Result.precision {
+	if expectedPrecision != result.precision {
 		t.Errorf("Error: Expected Result precision='%v'. Instead, Result precision='%v'. ",
-			expectedPrecision, result.Result.precision)
+			expectedPrecision, result.precision)
 	}
 
-	if expectedSign != result.Result.sign {
+	if expectedSign != result.sign {
 		t.Errorf("Error: Expected Recult sign='%v'. Instead, Result sign='%v' ",
-			expectedSign, result.Result.sign)
+			expectedSign, result.sign)
 	}
 
 }
@@ -319,19 +319,19 @@ func TestBigIntMathAdd_AddBigIntNums_03(t *testing.T) {
 
 	result := BigIntMathAdd{}.AddBigIntNums(b1Num, b2Num)
 
-	if biExpectedResult.Cmp(result.Result.bigInt) != 0 {
+	if biExpectedResult.Cmp(result.bigInt) != 0 {
 		t.Errorf("Error: Expected Result='%v'.  Instead, Result='%v'. ",
-			biExpectedResult.Text(10), result.Result.bigInt.Text(10))
+			biExpectedResult.Text(10), result.bigInt.Text(10))
 	}
 
-	if expectedPrecision != result.Result.precision {
+	if expectedPrecision != result.precision {
 		t.Errorf("Error: Expected Result precision='%v'. Instead, Result precision='%v'. ",
-			expectedPrecision, result.Result.precision)
+			expectedPrecision, result.precision)
 	}
 
-	if expectedSign != result.Result.sign {
+	if expectedSign != result.sign {
 		t.Errorf("Error: Expected Recult sign='%v'. Instead, Result sign='%v' ",
-			expectedSign, result.Result.sign)
+			expectedSign, result.sign)
 	}
 
 }
@@ -368,19 +368,19 @@ func TestBigIntMathAdd_AddBigIntNums_04(t *testing.T) {
 
 	result := BigIntMathAdd{}.AddBigIntNums(b1Num, b2Num)
 
-	if biExpectedResult.Cmp(result.Result.bigInt) != 0 {
+	if biExpectedResult.Cmp(result.bigInt) != 0 {
 		t.Errorf("Error: Expected Result='%v'.  Instead, Result='%v'. ",
-			biExpectedResult.Text(10), result.Result.bigInt.Text(10))
+			biExpectedResult.Text(10), result.bigInt.Text(10))
 	}
 
-	if expectedPrecision != result.Result.precision {
+	if expectedPrecision != result.precision {
 		t.Errorf("Error: Expected Result precision='%v'. Instead, Result precision='%v'. ",
-			expectedPrecision, result.Result.precision)
+			expectedPrecision, result.precision)
 	}
 
-	if expectedSign != result.Result.sign {
+	if expectedSign != result.sign {
 		t.Errorf("Error: Expected Recult sign='%v'. Instead, Result sign='%v' ",
-			expectedSign, result.Result.sign)
+			expectedSign, result.sign)
 	}
 
 }
@@ -428,10 +428,10 @@ func TestBigIntMathAdd_AddBigIntNumArray_01(t *testing.T) {
 
   results := BigIntMathAdd{}.AddBigIntNumArray(bNums)
 
-  actualResultNumStr, err := results.Result.GetNumStrErr()
+  actualResultNumStr, err := results.GetNumStrErr()
 
 	if err != nil {
-		t.Errorf("Error returned by results.Result.GetNumStrErr(). Error='%v'",
+		t.Errorf("Error returned by results.GetNumStrErr(). Error='%v'",
 			err.Error())
 	}
 
@@ -441,10 +441,10 @@ func TestBigIntMathAdd_AddBigIntNumArray_01(t *testing.T) {
 			expectedResultNumStr, actualResultNumStr)
 	}
 
-	if !expectedBNum.Equal(results.Result) {
+	if !expectedBNum.Equal(results) {
 		t.Errorf("Error: Expected BigIntNum to equal actual BigIntNum. It Did NOT! " +
 			"BigIntTotal='%s'. Instead, BigIntTotal='%s'. ",
-			expectedBNum.bigInt.Text(10), results.Result.bigInt.Text(10))
+			expectedBNum.bigInt.Text(10), results.bigInt.Text(10))
 	}
 
 }
@@ -492,10 +492,10 @@ func TestBigIntMathAdd_AddBigIntNumArray_02(t *testing.T) {
 
   results := BigIntMathAdd{}.AddBigIntNumArray(bNums)
 
-  actualResultNumStr, err := results.Result.GetNumStrErr()
+  actualResultNumStr, err := results.GetNumStrErr()
 
   if err != nil {
-  	t.Errorf("Error returned by results.Result.GetNumStrErr(). " +
+  	t.Errorf("Error returned by results.GetNumStrErr(). " +
   		"Error='%v' ", err.Error())
 	}
 
@@ -505,10 +505,10 @@ func TestBigIntMathAdd_AddBigIntNumArray_02(t *testing.T) {
 			expectedResultNumStr, actualResultNumStr)
 	}
 
-	if !expectedBNum.Equal(results.Result) {
+	if !expectedBNum.Equal(results) {
 		t.Errorf("Error: Expected BigIntNum != actual BigIntNum. " +
 			"BigIntTotal='%v'. Instead, BigIntTotal='%v'. ",
-			expectedBNum.bigInt.Text(10), results.Result.bigInt.Text(10))
+			expectedBNum.bigInt.Text(10), results.bigInt.Text(10))
 	}
 
 }
@@ -695,10 +695,10 @@ func TestBigIntMathAdd_AddBigIntNumSeries_01(t *testing.T) {
 
 	total := BigIntMathAdd{}.AddBigIntNumSeries(b1, b2, b3, b4, b5)
 
-	if !expectedBNum.Equal(total.Result) {
+	if !expectedBNum.Equal(total) {
 		t.Errorf("Error - Incorrect Total: Expected total='%v'. Instead, " +
 			"total='%v'. ",
-			expectedResultNumStr, total.Result.bigInt.Text(10))
+			expectedResultNumStr, total.bigInt.Text(10))
 	}
 
 }
@@ -764,10 +764,10 @@ func TestBigIntMathAdd_AddBigIntNumSeries_02(t *testing.T) {
 
 	total := BigIntMathAdd{}.AddBigIntNumSeries(b1, b2, b3, b4, b5)
 
-	if !expectedBNum.Equal(total.Result) {
+	if !expectedBNum.Equal(total) {
 		t.Errorf("Error - Incorrect Total: Expected total='%v'. Instead, " +
 			"total='%v'. ",
-			expectedResultNumStr, total.Result.bigInt.Text(10))
+			expectedResultNumStr, total.bigInt.Text(10))
 	}
 
 }
@@ -805,10 +805,10 @@ func TestBigIntMathAdd_AddDecimal_01(t *testing.T) {
 			"Error='%v' ", err.Error())
 	}
 
-	actualNumStr, err := result.Result.GetNumStrErr()
+	actualNumStr, err := result.GetNumStrErr()
 
 	if err != nil {
-		t.Errorf("Error returned by result.Result.GetNumStr(). " +
+		t.Errorf("Error returned by result.GetNumStr(). " +
 			"Error='%v' ", err.Error())
 	}
 
@@ -817,14 +817,14 @@ func TestBigIntMathAdd_AddDecimal_01(t *testing.T) {
 			expectedNumStr, actualNumStr)
 	}
 
-	if expectedPrecision != result.Result.precision {
+	if expectedPrecision != result.precision {
 		t.Errorf("Error: Expected Result precision='%v'.  Instead, precision='%v'. ",
-			expectedPrecision, result.Result.precision)
+			expectedPrecision, result.precision)
 	}
 
-	if expectedSign != result.Result.sign {
+	if expectedSign != result.sign {
 		t.Errorf("Error: Expected Result sign='%v'. Instead, sign='%v'. ",
-			expectedSign, result.Result.sign)
+			expectedSign, result.sign)
 	}
 
 }
@@ -861,10 +861,10 @@ func TestBigIntMathAdd_AddDecimal_02(t *testing.T) {
 			"Error='%v' ", err.Error())
 	}
 
-	actualNumStr, err := result.Result.GetNumStrErr()
+	actualNumStr, err := result.GetNumStrErr()
 
 	if err != nil {
-		t.Errorf("Error returned by result.Result.GetNumStr(). " +
+		t.Errorf("Error returned by result.GetNumStr(). " +
 			"Error='%v' ", err.Error())
 	}
 
@@ -873,14 +873,14 @@ func TestBigIntMathAdd_AddDecimal_02(t *testing.T) {
 			expectedNumStr, actualNumStr)
 	}
 
-	if expectedPrecision != result.Result.precision {
+	if expectedPrecision != result.precision {
 		t.Errorf("Error: Expected Result precision='%v'.  Instead, precision='%v'. ",
-			expectedPrecision, result.Result.precision)
+			expectedPrecision, result.precision)
 	}
 
-	if expectedSign != result.Result.sign {
+	if expectedSign != result.sign {
 		t.Errorf("Error: Expected Result sign='%v'. Instead, sign='%v'. ",
-			expectedSign, result.Result.sign)
+			expectedSign, result.sign)
 	}
 
 }
@@ -917,10 +917,10 @@ func TestBigIntMathAdd_AddDecimal_03(t *testing.T) {
 			"Error='%v' ", err.Error())
 	}
 
-	actualNumStr, err := result.Result.GetNumStrErr()
+	actualNumStr, err := result.GetNumStrErr()
 
 	if err != nil {
-		t.Errorf("Error returned by result.Result.GetNumStr(). " +
+		t.Errorf("Error returned by result.GetNumStr(). " +
 			"Error='%v' ", err.Error())
 	}
 
@@ -929,14 +929,14 @@ func TestBigIntMathAdd_AddDecimal_03(t *testing.T) {
 			expectedNumStr, actualNumStr)
 	}
 
-	if expectedPrecision != result.Result.precision {
+	if expectedPrecision != result.precision {
 		t.Errorf("Error: Expected Result precision='%v'.  Instead, precision='%v'. ",
-			expectedPrecision, result.Result.precision)
+			expectedPrecision, result.precision)
 	}
 
-	if expectedSign != result.Result.sign {
+	if expectedSign != result.sign {
 		t.Errorf("Error: Expected Result sign='%v'. Instead, sign='%v'. ",
-			expectedSign, result.Result.sign)
+			expectedSign, result.sign)
 	}
 
 }
@@ -996,16 +996,16 @@ func TestBigIntMathAdd_AddDecimalArray_01(t *testing.T) {
 			"Error='%v' ", err.Error())
 	}
 
-	if !expectedBNum.Equal(total.Result) {
+	if !expectedBNum.Equal(total) {
 		t.Errorf("Error - Incorrect Total: Expected total='%v'. Instead, " +
 			"total='%v'. ",
-			expectedBNum.bigInt.Text(10), total.Result.bigInt.Text(10))
+			expectedBNum.bigInt.Text(10), total.bigInt.Text(10))
 	}
 
-	actualTotalNumstr, err := total.Result.GetNumStrErr()
+	actualTotalNumstr, err := total.GetNumStrErr()
 
 	if err != nil {
-		t.Errorf("Error returned by total.Result.GetNumStr() " +
+		t.Errorf("Error returned by total.GetNumStr() " +
 			"Error='%v' ", err.Error())
 	}
 
@@ -1071,16 +1071,16 @@ func TestBigIntMathAdd_AddDecimalArray_02(t *testing.T) {
 			"Error='%v' ", err.Error())
 	}
 
-	if !expectedBNum.Equal(total.Result) {
+	if !expectedBNum.Equal(total) {
 		t.Errorf("Error - Incorrect Total: Expected total='%v'. Instead, " +
 			"total='%v'. ",
-			expectedBNum.bigInt.Text(10), total.Result.bigInt.Text(10))
+			expectedBNum.bigInt.Text(10), total.bigInt.Text(10))
 	}
 
-	actualTotalNumstr, err := total.Result.GetNumStrErr()
+	actualTotalNumstr, err := total.GetNumStrErr()
 
 	if err != nil {
-		t.Errorf("Error returned by total.Result.GetNumStr() " +
+		t.Errorf("Error returned by total.GetNumStr() " +
 			"Error='%v' ", err.Error())
 	}
 
@@ -1293,16 +1293,16 @@ func TestBigIntMathAdd_AddDecimalSeries_01(t *testing.T) {
 			"dec2, dec3, dec4, dec5). Error='%v' ", err.Error())
 	}
 
-	if !expectedBNum.Equal(total.Result) {
+	if !expectedBNum.Equal(total) {
 		t.Errorf("Error - Incorrect Total: Expected total='%v'. Instead, " +
 			"total='%v'. ",
-			expectedBNum.bigInt.Text(10), total.Result.bigInt.Text(10))
+			expectedBNum.bigInt.Text(10), total.bigInt.Text(10))
 	}
 
-	actualTotalNumstr, err := total.Result.GetNumStrErr()
+	actualTotalNumstr, err := total.GetNumStrErr()
 
 	if err != nil {
-		t.Errorf("Error returned by total.Result.GetNumStr() " +
+		t.Errorf("Error returned by total.GetNumStr() " +
 			"Error='%v' ", err.Error())
 	}
 
@@ -1383,16 +1383,16 @@ func TestBigIntMathAdd_AddDecimalSeries_02(t *testing.T) {
 			"dec2, dec3, dec4, dec5). Error='%v' ", err.Error())
 	}
 
-	if !expectedBNum.Equal(total.Result) {
+	if !expectedBNum.Equal(total) {
 		t.Errorf("Error - Incorrect Total: Expected total='%v'. Instead, " +
 			"total='%v'. ",
-			expectedBNum.bigInt.Text(10), total.Result.bigInt.Text(10))
+			expectedBNum.bigInt.Text(10), total.bigInt.Text(10))
 	}
 
-	actualTotalNumstr, err := total.Result.GetNumStrErr()
+	actualTotalNumstr, err := total.GetNumStrErr()
 
 	if err != nil {
-		t.Errorf("Error returned by total.Result.GetNumStrErr() " +
+		t.Errorf("Error returned by total.GetNumStrErr() " +
 			"Error='%v' ", err.Error())
 	}
 
@@ -1405,36 +1405,20 @@ func TestBigIntMathAdd_AddDecimalSeries_02(t *testing.T) {
 
 func TestBigIntMathAdd_AddINumMgr_01(t *testing.T) {
 	n1Str := "123456.789"
-	b1ReconciledStr := "123456789000"
-	b1Precision := uint(3)
-
-	b1ReconciledBig, oK := big.NewInt(0).SetString(b1ReconciledStr, 10)
-
-	if !oK {
-		errors.New("Error returned by big.NewInt(0).SetString(b1ReconciledStr, 10)")
-	}
-
 	n2Str := "987.123456"
-	b2Str := "987123456"
-	b2Precision := uint(6)
-	b2Big, oK := big.NewInt(0).SetString(b2Str, 10)
-
-	if !oK {
-		errors.New("Error returned by big.NewInt(0).SetString(b2Str, 10)")
-	}
 
 	// Result = 	124443.912456
 	expectedResultStr := "124443912456"
 	expectedPrecision := uint(6)
 	expectedSign := 1
 
-	maxPrecision := b1Precision
-
-	if b2Precision > b1Precision {
-		maxPrecision = b2Precision
-	}
 
 	biExpectedResult, oK :=  big.NewInt(0).SetString(expectedResultStr, 10)
+
+	if !oK {
+		t.Error("Error returned by biExpectedResult, oK := " +
+			"big.NewInt(0).SetString(expectedResultStr, 10) ")
+	}
 
 	ia1, err := IntAry{}.NewNumStr(n1Str)
 
@@ -1457,42 +1441,19 @@ func TestBigIntMathAdd_AddINumMgr_01(t *testing.T) {
 			"Error='%v' ", err.Error())
 	}
 
-	if b1ReconciledBig.Cmp(result.Input.Big1.bigInt) != 0 {
-		t.Errorf("Error: Expected InputBig1='%v'. Instead, InputBig1='%v'. " +
-			b1ReconciledBig.Text(10), result.Input.Big1.bigInt.Text(10))
-	}
-
-
-	if maxPrecision != result.Input.Big1.precision {
-		t.Errorf("Error: Expected InputBig1Precision='%v'.  Instead, " +
-			"InputBig1Precision='%v' ",
-			maxPrecision, result.Input.Big1.precision)
-	}
-
-	if b2Big.Cmp(result.Input.Big2.bigInt) != 0 {
-		t.Errorf("Error: Expected InputBig2='%v'. Instead, InputBig2='%v'. " +
-			b2Big.Text(10), result.Input.Big2.bigInt.Text(10))
-	}
-
-	if maxPrecision != result.Input.Big2.precision {
-		t.Errorf("Error: Expected InputBig2Precision='%v'.  Instead, " +
-			"InputBig2Precision='%v' ",
-			maxPrecision, result.Input.Big2.precision)
-	}
-
-	if biExpectedResult.Cmp(result.Result.bigInt) != 0 {
+	if biExpectedResult.Cmp(result.bigInt) != 0 {
 		t.Errorf("Error: Expected Result='%v'.  Instead, Result='%v'. ",
-			biExpectedResult.Text(10), result.Result.bigInt.Text(10))
+			biExpectedResult.Text(10), result.bigInt.Text(10))
 	}
 
-	if expectedPrecision != result.Result.precision {
+	if expectedPrecision != result.precision {
 		t.Errorf("Error: Expected Result precision='%v'. Instead, Result precision='%v'. ",
-			expectedPrecision, result.Result.precision)
+			expectedPrecision, result.precision)
 	}
 
-	if expectedSign != result.Result.sign {
+	if expectedSign != result.sign {
 		t.Errorf("Error: Expected Recult sign='%v'. Instead, Result sign='%v' ",
-			expectedSign, result.Result.sign)
+			expectedSign, result.sign)
 	}
 
 }
@@ -1500,35 +1461,18 @@ func TestBigIntMathAdd_AddINumMgr_01(t *testing.T) {
 func TestBigIntMathAdd_AddINumMgr_02(t *testing.T) {
 
 	n1Str := "123456.789"
-	b1ReconciledStr := "123456789000"
-	b1Precision := uint(3)
-
-	b1ReconciledBig, oK := big.NewInt(0).SetString(b1ReconciledStr, 10)
-
-	if !oK {
-		errors.New("Error returned by big.NewInt(0).SetString(b1ReconciledStr, 10)")
-	}
-
 	n2Str := "-987.123456"
-	b2Str := "-987123456"
-	b2Precision := uint(6)
-	b2Big, oK := big.NewInt(0).SetString(b2Str, 10)
-
-	if !oK {
-		errors.New("Error returned by big.NewInt(0).SetString(b2Str, 10)")
-	}
 
 	expectedResultStr := "122469665544"
 	expectedPrecision := uint(6)
 	expectedSign := 1
 
-	maxPrecision := b1Precision
-
-	if b2Precision > b1Precision {
-		maxPrecision = b2Precision
-	}
-
 	biExpectedResult, oK :=  big.NewInt(0).SetString(expectedResultStr, 10)
+
+	if !oK {
+		t.Error("Error returned by biExpectedResult, oK := " +
+			"big.NewInt(0).SetString(expectedResultStr, 10)")
+	}
 
 	ia1, err := IntAry{}.NewNumStr(n1Str)
 
@@ -1551,45 +1495,19 @@ func TestBigIntMathAdd_AddINumMgr_02(t *testing.T) {
 			"Error='%v' ", err.Error())
 	}
 
-	if b1ReconciledBig.Cmp(result.Input.Big1.bigInt) != 0 {
-		t.Errorf("Error: Expected InputBig1='%v'. Instead, InputBig1='%v'. " +
-			b1ReconciledBig.Text(10), result.Input.Big1.bigInt.Text(10))
-	}
-
-
-	if maxPrecision != result.Input.Big1.precision {
-		t.Errorf("Error: Expected InputBig1Precision='%v'.  Instead, " +
-			"InputBig1Precision='%v' ",
-			maxPrecision, result.Input.Big1.precision)
-	}
-
-
-	if b2Big.Cmp(result.Input.Big2.bigInt) != 0 {
-		t.Errorf("Error: Expected InputBig2='%v'. Instead, InputBig2='%v'. " +
-			b2Big.Text(10), result.Input.Big2.bigInt.Text(10))
-	}
-
-
-	if maxPrecision != result.Input.Big2.precision {
-		t.Errorf("Error: Expected InputBig2Precision='%v'.  Instead, " +
-			"InputBig2Precision='%v' ",
-			maxPrecision, result.Input.Big2.precision)
-	}
-
-
-	if biExpectedResult.Cmp(result.Result.bigInt) != 0 {
+	if biExpectedResult.Cmp(result.bigInt) != 0 {
 		t.Errorf("Error: Expected Result='%v'.  Instead, Result='%v'. ",
-			biExpectedResult.Text(10), result.Result.bigInt.Text(10))
+			biExpectedResult.Text(10), result.bigInt.Text(10))
 	}
 
-	if expectedPrecision != result.Result.precision {
+	if expectedPrecision != result.precision {
 		t.Errorf("Error: Expected Result precision='%v'. Instead, Result precision='%v'. ",
-			expectedPrecision, result.Result.precision)
+			expectedPrecision, result.precision)
 	}
 
-	if expectedSign != result.Result.sign {
+	if expectedSign != result.sign {
 		t.Errorf("Error: Expected Recult sign='%v'. Instead, Result sign='%v' ",
-			expectedSign, result.Result.sign)
+			expectedSign, result.sign)
 	}
 
 }
@@ -1597,35 +1515,19 @@ func TestBigIntMathAdd_AddINumMgr_02(t *testing.T) {
 func TestBigIntMathAdd_AddINumMgr_03(t *testing.T) {
 
 	n1Str := "-123456.789"
-	b1ReconciledStr := "-123456789000"
-	b1Precision := uint(3)
-	b1ReconciledBig, oK := big.NewInt(0).SetString(b1ReconciledStr, 10)
-
-	if !oK {
-		errors.New("Error returned by big.NewInt(0).SetString(b1Str, 10)")
-	}
-
 	n2Str := "987.123456"
-	b2Str := "987123456"
-	b2Precision := uint(6)
-	b2Big, oK := big.NewInt(0).SetString(b2Str, 10)
-
-	if !oK {
-		errors.New("Error returned by big.NewInt(0).SetString(b2Str, 10)")
-	}
 
 	// Result := -122469.665544
 	expectedResultStr := "-122469665544"
 	expectedPrecision := uint(6)
 	expectedSign := -1
 
-	maxPrecision := b1Precision
-
-	if b2Precision > b1Precision {
-		maxPrecision = b2Precision
-	}
-
 	biExpectedResult, oK :=  big.NewInt(0).SetString(expectedResultStr, 10)
+
+	if !oK {
+		t.Error("Error returned by biExpectedResult, oK := " +
+			"big.NewInt(0).SetString(expectedResultStr, 10)")
+	}
 
 	nDto1, err := NumStrDto{}.NewNumStr(n1Str)
 
@@ -1651,77 +1553,38 @@ func TestBigIntMathAdd_AddINumMgr_03(t *testing.T) {
 			err.Error())
 	}
 
-	if b1ReconciledBig.Cmp(result.Input.Big1.bigInt) != 0 {
-		t.Errorf("Error: Expected InputBig1='%v'. Instead, InputBig1='%v'. " +
-			b1ReconciledBig.Text(10), result.Input.Big1.bigInt.Text(10))
-	}
-
-	if maxPrecision != result.Input.Big1.precision {
-		t.Errorf("Error: Expected InputBig1Precision='%v'.  Instead, " +
-			"InputBig1Precision='%v' ",
-			maxPrecision, result.Input.Big1.precision)
-	}
-
-	if b2Big.Cmp(result.Input.Big2.bigInt) != 0 {
-		t.Errorf("Error: Expected InputBig2='%v'. Instead, InputBig2='%v'. " +
-			b2Big.Text(10), result.Input.Big2.bigInt.Text(10))
-	}
-
-
-	if maxPrecision != result.Input.Big2.precision {
-		t.Errorf("Error: Expected InputBig2Precision='%v'.  Instead, " +
-			"InputBig2Precision='%v' ",
-			maxPrecision, result.Input.Big2.precision)
-	}
-
-	if biExpectedResult.Cmp(result.Result.bigInt) != 0 {
+	if biExpectedResult.Cmp(result.bigInt) != 0 {
 		t.Errorf("Error: Expected Result='%v'.  Instead, Result='%v'. ",
-			biExpectedResult.Text(10), result.Result.bigInt.Text(10))
+			biExpectedResult.Text(10), result.bigInt.Text(10))
 	}
 
-	if expectedPrecision != result.Result.precision {
+	if expectedPrecision != result.precision {
 		t.Errorf("Error: Expected Result precision='%v'. Instead, Result precision='%v'. ",
-			expectedPrecision, result.Result.precision)
+			expectedPrecision, result.precision)
 	}
 
-	if expectedSign != result.Result.sign {
+	if expectedSign != result.sign {
 		t.Errorf("Error: Expected Recult sign='%v'. Instead, Result sign='%v' ",
-			expectedSign, result.Result.sign)
+			expectedSign, result.sign)
 	}
 }
 
 func TestBigIntMathAdd_AddINumMgr_04(t *testing.T) {
 
 	n1Str := "-123456.789"
-	b1ReconciledStr := "-123456789000"
-	b1Precision := uint(3)
-	b1ReconciledBig, oK := big.NewInt(0).SetString(b1ReconciledStr, 10)
-
-	if !oK {
-		errors.New("Error returned by big.NewInt(0).SetString(b1Str, 10)")
-	}
-
 	n2Str := "-987.123456"
-	b2Str := "-987123456"
-	b2Precision := uint(6)
-	b2Big, oK := big.NewInt(0).SetString(b2Str, 10)
-
-	if !oK {
-		errors.New("Error returned by big.NewInt(0).SetString(b2Str, 10)")
-	}
 
 	// Result := -124443.912456
 	expectedResultStr := "-124443912456"
 	expectedPrecision := uint(6)
 	expectedSign := -1
 
-	maxPrecision := b1Precision
-
-	if b2Precision > b1Precision {
-		maxPrecision = b2Precision
-	}
-
 	biExpectedResult, oK :=  big.NewInt(0).SetString(expectedResultStr, 10)
+
+	if !oK {
+		t.Error("Error returned by biExpectedResult, oK := " +
+			"big.NewInt(0).SetString(expectedResultStr, 10)")
+	}
 
 	nDto1, err := NumStrDto{}.NewNumStr(n1Str)
 
@@ -1744,43 +1607,20 @@ func TestBigIntMathAdd_AddINumMgr_04(t *testing.T) {
 			"Error='%v' ", err.Error())
 	}
 
-	if b1ReconciledBig.Cmp(result.Input.Big1.bigInt) != 0 {
-		t.Errorf("Error: Expected InputBig1='%v'. Instead, InputBig1='%v'. " +
-			b1ReconciledBig.Text(10), result.Input.Big1.bigInt.Text(10))
-	}
-
-	if maxPrecision != result.Input.Big1.precision {
-		t.Errorf("Error: Expected InputBig1Precision='%v'.  Instead, " +
-			"InputBig1Precision='%v' ",
-			maxPrecision, result.Input.Big1.precision)
-	}
-
-	if b2Big.Cmp(result.Input.Big2.bigInt) != 0 {
-		t.Errorf("Error: Expected InputBig2='%v'. Instead, InputBig2='%v'. " +
-			b2Big.Text(10), result.Input.Big2.bigInt.Text(10))
-	}
-
-	if b2Precision != result.Input.Big2.precision {
-		t.Errorf("Error: Expected InputBig2Precision='%v'.  Instead, " +
-			"InputBig2Precision='%v' ",
-			b2Precision, result.Input.Big2.precision)
-	}
-
-	if biExpectedResult.Cmp(result.Result.bigInt) != 0 {
+	if biExpectedResult.Cmp(result.bigInt) != 0 {
 		t.Errorf("Error: Expected Result='%v'.  Instead, Result='%v'. ",
-			biExpectedResult.Text(10), result.Result.bigInt.Text(10))
+			biExpectedResult.Text(10), result.bigInt.Text(10))
 	}
 
-	if expectedPrecision != result.Result.precision {
+	if expectedPrecision != result.precision {
 		t.Errorf("Error: Expected Result precision='%v'. Instead, Result precision='%v'. ",
-			expectedPrecision, result.Result.precision)
+			expectedPrecision, result.precision)
 	}
 
-	if expectedSign != result.Result.sign {
+	if expectedSign != result.sign {
 		t.Errorf("Error: Expected Recult sign='%v'. Instead, Result sign='%v' ",
-			expectedSign, result.Result.sign)
+			expectedSign, result.sign)
 	}
-
 }
 
 func TestBigIntMathAdd_AddINumMgrArray_01(t *testing.T) {
@@ -1856,16 +1696,16 @@ func TestBigIntMathAdd_AddINumMgrArray_01(t *testing.T) {
 			"Error='%v' ", err.Error())
 	}
 
-	if !expectedBNum.Equal(total.Result) {
+	if !expectedBNum.Equal(total) {
 		t.Errorf("Error - Incorrect Total: Expected total='%v'. Instead, " +
 			"total='%v'. ",
-			expectedBNum.bigInt.Text(10), total.Result.bigInt.Text(10))
+			expectedBNum.bigInt.Text(10), total.bigInt.Text(10))
 	}
 
-	actualTotalNumstr, err := total.Result.GetNumStrErr()
+	actualTotalNumstr, err := total.GetNumStrErr()
 
 	if err != nil {
-		t.Errorf("Error returned by total.Result.GetNumStr() " +
+		t.Errorf("Error returned by total.GetNumStr() " +
 			"Error='%v' ", err.Error())
 	}
 
@@ -1949,16 +1789,16 @@ func TestBigIntMathAdd_AddINumMgrArray_02(t *testing.T) {
 			"Error='%v' ", err.Error())
 	}
 
-	if !expectedBNum.Equal(total.Result) {
+	if !expectedBNum.Equal(total) {
 		t.Errorf("Error - Incorrect Total: Expected total='%v'. Instead, " +
 			"total='%v'. ",
-			expectedBNum.bigInt.Text(10), total.Result.bigInt.Text(10))
+			expectedBNum.bigInt.Text(10), total.bigInt.Text(10))
 	}
 
-	actualTotalNumstr, err := total.Result.GetNumStrErr()
+	actualTotalNumstr, err := total.GetNumStrErr()
 
 	if err != nil {
-		t.Errorf("Error returned by total.Result.GetNumStr() " +
+		t.Errorf("Error returned by total.GetNumStr() " +
 			"Error='%v' ", err.Error())
 	}
 
@@ -2174,16 +2014,16 @@ func TestBigIntMathAdd_AddINumMgrSeries_01(t *testing.T) {
 			"&nDto2, &ia3, &bigINum4, &dec5). Error='%v' ", err.Error())
 	}
 
-	if !expectedBNum.Equal(total.Result) {
+	if !expectedBNum.Equal(total) {
 		t.Errorf("Error - Incorrect Total: Expected total='%v'. Instead, " +
 			"total='%v'. ",
-			expectedBNum.bigInt.Text(10), total.Result.bigInt.Text(10))
+			expectedBNum.bigInt.Text(10), total.bigInt.Text(10))
 	}
 
-	actualTotalNumstr, err := total.Result.GetNumStrErr()
+	actualTotalNumstr, err := total.GetNumStrErr()
 
 	if err != nil {
-		t.Errorf("Error returned by total.Result.GetNumStr() " +
+		t.Errorf("Error returned by total.GetNumStr() " +
 			"Error='%v' ", err.Error())
 	}
 
@@ -2263,16 +2103,16 @@ func TestBigIntMathAdd_AddINumMgrSeries_02(t *testing.T) {
 			"&ia2, &nDto3, &dec4, &bINum5). Error='%v' ", err.Error())
 	}
 
-	if !expectedBNum.Equal(total.Result) {
+	if !expectedBNum.Equal(total) {
 		t.Errorf("Error - Incorrect Total: Expected total='%v'. Instead, " +
 			"total='%v'. ",
-			expectedBNum.bigInt.Text(10), total.Result.bigInt.Text(10))
+			expectedBNum.bigInt.Text(10), total.bigInt.Text(10))
 	}
 
-	actualTotalNumstr, err := total.Result.GetNumStrErr()
+	actualTotalNumstr, err := total.GetNumStrErr()
 
 	if err != nil {
-		t.Errorf("Error returned by total.Result.GetNumStrErr() " +
+		t.Errorf("Error returned by total.GetNumStrErr() " +
 			"Error='%v' ", err.Error())
 	}
 
@@ -2284,36 +2124,19 @@ func TestBigIntMathAdd_AddINumMgrSeries_02(t *testing.T) {
 
 func TestBigIntMathAdd_AddIntAry_01(t *testing.T) {
 	n1Str := "123456.789"
-	b1ReconciledStr := "123456789000"
-	b1Precision := uint(3)
-
-	b1ReconciledBig, oK := big.NewInt(0).SetString(b1ReconciledStr, 10)
-
-	if !oK {
-		errors.New("Error returned by big.NewInt(0).SetString(b1ReconciledStr, 10)")
-	}
-
 	n2Str := "987.123456"
-	b2Str := "987123456"
-	b2Precision := uint(6)
-	b2Big, oK := big.NewInt(0).SetString(b2Str, 10)
-
-	if !oK {
-		errors.New("Error returned by big.NewInt(0).SetString(b2Str, 10)")
-	}
 
 	// Result = 	124443.912456
 	expectedResultStr := "124443912456"
 	expectedPrecision := uint(6)
 	expectedSign := 1
 
-	maxPrecision := b1Precision
-
-	if b2Precision > b1Precision {
-		maxPrecision = b2Precision
-	}
-
 	biExpectedResult, oK :=  big.NewInt(0).SetString(expectedResultStr, 10)
+
+	if !oK {
+		t.Error("Error returned by biExpectedResult, oK := " +
+			"big.NewInt(0).SetString(expectedResultStr, 10)")
+	}
 
 	ia1, err := IntAry{}.NewNumStr(n1Str)
 
@@ -2336,42 +2159,19 @@ func TestBigIntMathAdd_AddIntAry_01(t *testing.T) {
 			"Error='%v' ", err.Error())
 	}
 
-	if b1ReconciledBig.Cmp(result.Input.Big1.bigInt) != 0 {
-		t.Errorf("Error: Expected InputBig1='%v'. Instead, InputBig1='%v'. " +
-			b1ReconciledBig.Text(10), result.Input.Big1.bigInt.Text(10))
-	}
-
-
-	if maxPrecision != result.Input.Big1.precision {
-		t.Errorf("Error: Expected InputBig1Precision='%v'.  Instead, " +
-			"InputBig1Precision='%v' ",
-			maxPrecision, result.Input.Big1.precision)
-	}
-
-	if b2Big.Cmp(result.Input.Big2.bigInt) != 0 {
-		t.Errorf("Error: Expected InputBig2='%v'. Instead, InputBig2='%v'. " +
-			b2Big.Text(10), result.Input.Big2.bigInt.Text(10))
-	}
-
-	if maxPrecision != result.Input.Big2.precision {
-		t.Errorf("Error: Expected InputBig2Precision='%v'.  Instead, " +
-			"InputBig2Precision='%v' ",
-			maxPrecision, result.Input.Big2.precision)
-	}
-
-	if biExpectedResult.Cmp(result.Result.bigInt) != 0 {
+	if biExpectedResult.Cmp(result.bigInt) != 0 {
 		t.Errorf("Error: Expected Result='%v'.  Instead, Result='%v'. ",
-			biExpectedResult.Text(10), result.Result.bigInt.Text(10))
+			biExpectedResult.Text(10), result.bigInt.Text(10))
 	}
 
-	if expectedPrecision != result.Result.precision {
+	if expectedPrecision != result.precision {
 		t.Errorf("Error: Expected Result precision='%v'. Instead, Result precision='%v'. ",
-			expectedPrecision, result.Result.precision)
+			expectedPrecision, result.precision)
 	}
 
-	if expectedSign != result.Result.sign {
+	if expectedSign != result.sign {
 		t.Errorf("Error: Expected Recult sign='%v'. Instead, Result sign='%v' ",
-			expectedSign, result.Result.sign)
+			expectedSign, result.sign)
 	}
 
 }
@@ -2379,35 +2179,17 @@ func TestBigIntMathAdd_AddIntAry_01(t *testing.T) {
 func TestBigIntMathAdd_AddIntAry_02(t *testing.T) {
 
 	n1Str := "123456.789"
-	b1ReconciledStr := "123456789000"
-	b1Precision := uint(3)
-
-	b1ReconciledBig, oK := big.NewInt(0).SetString(b1ReconciledStr, 10)
-
-	if !oK {
-		errors.New("Error returned by big.NewInt(0).SetString(b1ReconciledStr, 10)")
-	}
-
 	n2Str := "-987.123456"
-	b2Str := "-987123456"
-	b2Precision := uint(6)
-	b2Big, oK := big.NewInt(0).SetString(b2Str, 10)
-
-	if !oK {
-		errors.New("Error returned by big.NewInt(0).SetString(b2Str, 10)")
-	}
-
 	expectedResultStr := "122469665544"
 	expectedPrecision := uint(6)
 	expectedSign := 1
 
-	maxPrecision := b1Precision
-
-	if b2Precision > b1Precision {
-		maxPrecision = b2Precision
-	}
-
 	biExpectedResult, oK :=  big.NewInt(0).SetString(expectedResultStr, 10)
+
+	if !oK {
+		t.Error("Error returned by biExpectedResult, oK := " +
+			"big.NewInt(0).SetString(expectedResultStr, 10)")
+	}
 
 	ia1, err := IntAry{}.NewNumStr(n1Str)
 
@@ -2430,45 +2212,19 @@ func TestBigIntMathAdd_AddIntAry_02(t *testing.T) {
 			"Error='%v' ", err.Error())
 	}
 
-	if b1ReconciledBig.Cmp(result.Input.Big1.bigInt) != 0 {
-		t.Errorf("Error: Expected InputBig1='%v'. Instead, InputBig1='%v'. " +
-			b1ReconciledBig.Text(10), result.Input.Big1.bigInt.Text(10))
-	}
-
-
-	if maxPrecision != result.Input.Big1.precision {
-		t.Errorf("Error: Expected InputBig1Precision='%v'.  Instead, " +
-			"InputBig1Precision='%v' ",
-			maxPrecision, result.Input.Big1.precision)
-	}
-
-
-	if b2Big.Cmp(result.Input.Big2.bigInt) != 0 {
-		t.Errorf("Error: Expected InputBig2='%v'. Instead, InputBig2='%v'. " +
-			b2Big.Text(10), result.Input.Big2.bigInt.Text(10))
-	}
-
-
-	if maxPrecision != result.Input.Big2.precision {
-		t.Errorf("Error: Expected InputBig2Precision='%v'.  Instead, " +
-			"InputBig2Precision='%v' ",
-			maxPrecision, result.Input.Big2.precision)
-	}
-
-
-	if biExpectedResult.Cmp(result.Result.bigInt) != 0 {
+	if biExpectedResult.Cmp(result.bigInt) != 0 {
 		t.Errorf("Error: Expected Result='%v'.  Instead, Result='%v'. ",
-			biExpectedResult.Text(10), result.Result.bigInt.Text(10))
+			biExpectedResult.Text(10), result.bigInt.Text(10))
 	}
 
-	if expectedPrecision != result.Result.precision {
+	if expectedPrecision != result.precision {
 		t.Errorf("Error: Expected Result precision='%v'. Instead, Result precision='%v'. ",
-			expectedPrecision, result.Result.precision)
+			expectedPrecision, result.precision)
 	}
 
-	if expectedSign != result.Result.sign {
+	if expectedSign != result.sign {
 		t.Errorf("Error: Expected Recult sign='%v'. Instead, Result sign='%v' ",
-			expectedSign, result.Result.sign)
+			expectedSign, result.sign)
 	}
 
 
@@ -2477,35 +2233,19 @@ func TestBigIntMathAdd_AddIntAry_02(t *testing.T) {
 func TestBigIntMathAdd_AddIntAry_03(t *testing.T) {
 
 	n1Str := "-123456.789"
-	b1ReconciledStr := "-123456789000"
-	b1Precision := uint(3)
-	b1ReconciledBig, oK := big.NewInt(0).SetString(b1ReconciledStr, 10)
-
-	if !oK {
-		errors.New("Error returned by big.NewInt(0).SetString(b1Str, 10)")
-	}
-
 	n2Str := "987.123456"
-	b2Str := "987123456"
-	b2Precision := uint(6)
-	b2Big, oK := big.NewInt(0).SetString(b2Str, 10)
-
-	if !oK {
-		errors.New("Error returned by big.NewInt(0).SetString(b2Str, 10)")
-	}
-
 	// Result := -122469.665544
 	expectedResultStr := "-122469665544"
 	expectedPrecision := uint(6)
 	expectedSign := -1
 
-	maxPrecision := b1Precision
-
-	if b2Precision > b1Precision {
-		maxPrecision = b2Precision
-	}
 
 	biExpectedResult, oK :=  big.NewInt(0).SetString(expectedResultStr, 10)
+
+	if !oK {
+		t.Error("Error returned by biExpectedResult, oK := " +
+			"big.NewInt(0).SetString(expectedResultStr, 10)")
+	}
 
 	ia1, err := IntAry{}.NewNumStr(n1Str)
 
@@ -2528,77 +2268,37 @@ func TestBigIntMathAdd_AddIntAry_03(t *testing.T) {
 			"Error='%v' ", err.Error())
 	}
 
-	if b1ReconciledBig.Cmp(result.Input.Big1.bigInt) != 0 {
-		t.Errorf("Error: Expected InputBig1='%v'. Instead, InputBig1='%v'. " +
-			b1ReconciledBig.Text(10), result.Input.Big1.bigInt.Text(10))
-	}
-
-	if maxPrecision != result.Input.Big1.precision {
-		t.Errorf("Error: Expected InputBig1Precision='%v'.  Instead, " +
-			"InputBig1Precision='%v' ",
-			maxPrecision, result.Input.Big1.precision)
-	}
-
-	if b2Big.Cmp(result.Input.Big2.bigInt) != 0 {
-		t.Errorf("Error: Expected InputBig2='%v'. Instead, InputBig2='%v'. " +
-			b2Big.Text(10), result.Input.Big2.bigInt.Text(10))
-	}
-
-
-	if maxPrecision != result.Input.Big2.precision {
-		t.Errorf("Error: Expected InputBig2Precision='%v'.  Instead, " +
-			"InputBig2Precision='%v' ",
-			maxPrecision, result.Input.Big2.precision)
-	}
-
-	if biExpectedResult.Cmp(result.Result.bigInt) != 0 {
+	if biExpectedResult.Cmp(result.bigInt) != 0 {
 		t.Errorf("Error: Expected Result='%v'.  Instead, Result='%v'. ",
-			biExpectedResult.Text(10), result.Result.bigInt.Text(10))
+			biExpectedResult.Text(10), result.bigInt.Text(10))
 	}
 
-	if expectedPrecision != result.Result.precision {
+	if expectedPrecision != result.precision {
 		t.Errorf("Error: Expected Result precision='%v'. Instead, Result precision='%v'. ",
-			expectedPrecision, result.Result.precision)
+			expectedPrecision, result.precision)
 	}
 
-	if expectedSign != result.Result.sign {
+	if expectedSign != result.sign {
 		t.Errorf("Error: Expected Recult sign='%v'. Instead, Result sign='%v' ",
-			expectedSign, result.Result.sign)
+			expectedSign, result.sign)
 	}
 }
 
 func TestBigIntMathAdd_AddIntAry_04(t *testing.T) {
 
 	n1Str := "-123456.789"
-	b1ReconciledStr := "-123456789000"
-	b1Precision := uint(3)
-	b1ReconciledBig, oK := big.NewInt(0).SetString(b1ReconciledStr, 10)
-
-	if !oK {
-		errors.New("Error returned by big.NewInt(0).SetString(b1Str, 10)")
-	}
-
 	n2Str := "-987.123456"
-	b2Str := "-987123456"
-	b2Precision := uint(6)
-	b2Big, oK := big.NewInt(0).SetString(b2Str, 10)
-
-	if !oK {
-		errors.New("Error returned by big.NewInt(0).SetString(b2Str, 10)")
-	}
-
 	// Result := -124443.912456
 	expectedResultStr := "-124443912456"
 	expectedPrecision := uint(6)
 	expectedSign := -1
 
-	maxPrecision := b1Precision
-
-	if b2Precision > b1Precision {
-		maxPrecision = b2Precision
-	}
-
 	biExpectedResult, oK :=  big.NewInt(0).SetString(expectedResultStr, 10)
+
+	if !oK {
+		t.Error("Error returned by biExpectedResult, oK := " +
+			"big.NewInt(0).SetString(expectedResultStr, 10)")
+	}
 
 	ia1, err := IntAry{}.NewNumStr(n1Str)
 
@@ -2621,41 +2321,19 @@ func TestBigIntMathAdd_AddIntAry_04(t *testing.T) {
 			"Error='%v' ", err.Error())
 	}
 
-	if b1ReconciledBig.Cmp(result.Input.Big1.bigInt) != 0 {
-		t.Errorf("Error: Expected InputBig1='%v'. Instead, InputBig1='%v'. " +
-			b1ReconciledBig.Text(10), result.Input.Big1.bigInt.Text(10))
-	}
-
-	if maxPrecision != result.Input.Big1.precision {
-		t.Errorf("Error: Expected InputBig1Precision='%v'.  Instead, " +
-			"InputBig1Precision='%v' ",
-			maxPrecision, result.Input.Big1.precision)
-	}
-
-	if b2Big.Cmp(result.Input.Big2.bigInt) != 0 {
-		t.Errorf("Error: Expected InputBig2='%v'. Instead, InputBig2='%v'. " +
-			b2Big.Text(10), result.Input.Big2.bigInt.Text(10))
-	}
-
-	if b2Precision != result.Input.Big2.precision {
-		t.Errorf("Error: Expected InputBig2Precision='%v'.  Instead, " +
-			"InputBig2Precision='%v' ",
-			b2Precision, result.Input.Big2.precision)
-	}
-
-	if biExpectedResult.Cmp(result.Result.bigInt) != 0 {
+	if biExpectedResult.Cmp(result.bigInt) != 0 {
 		t.Errorf("Error: Expected Result='%v'.  Instead, Result='%v'. ",
-			biExpectedResult.Text(10), result.Result.bigInt.Text(10))
+			biExpectedResult.Text(10), result.bigInt.Text(10))
 	}
 
-	if expectedPrecision != result.Result.precision {
+	if expectedPrecision != result.precision {
 		t.Errorf("Error: Expected Result precision='%v'. Instead, Result precision='%v'. ",
-			expectedPrecision, result.Result.precision)
+			expectedPrecision, result.precision)
 	}
 
-	if expectedSign != result.Result.sign {
+	if expectedSign != result.sign {
 		t.Errorf("Error: Expected Recult sign='%v'. Instead, Result sign='%v' ",
-			expectedSign, result.Result.sign)
+			expectedSign, result.sign)
 	}
 
 }
@@ -2714,16 +2392,16 @@ func TestBigIntMathAdd_AddIntAryArray_01(t *testing.T) {
 			"Error='%v' ", err.Error())
 	}
 
-	if !expectedBNum.Equal(total.Result) {
+	if !expectedBNum.Equal(total) {
 		t.Errorf("Error - Incorrect Total: Expected total='%v'. Instead, " +
 			"total='%v'. ",
-			expectedBNum.bigInt.Text(10), total.Result.bigInt.Text(10))
+			expectedBNum.bigInt.Text(10), total.bigInt.Text(10))
 	}
 
-	actualTotalNumstr, err := total.Result.GetNumStrErr()
+	actualTotalNumstr, err := total.GetNumStrErr()
 
 	if err != nil {
-		t.Errorf("Error returned by total.Result.GetNumStr() " +
+		t.Errorf("Error returned by total.GetNumStr() " +
 			"Error='%v' ", err.Error())
 	}
 
@@ -2788,16 +2466,16 @@ func TestBigIntMathAdd_AddIntAryArray_02(t *testing.T) {
 			"Error='%v' ", err.Error())
 	}
 
-	if !expectedBNum.Equal(total.Result) {
+	if !expectedBNum.Equal(total) {
 		t.Errorf("Error - Incorrect Total: Expected total='%v'. Instead, " +
 			"total='%v'. ",
-			expectedBNum.bigInt.Text(10), total.Result.bigInt.Text(10))
+			expectedBNum.bigInt.Text(10), total.bigInt.Text(10))
 	}
 
-	actualTotalNumstr, err := total.Result.GetNumStrErr()
+	actualTotalNumstr, err := total.GetNumStrErr()
 
 	if err != nil {
-		t.Errorf("Error returned by total.Result.GetNumStr() " +
+		t.Errorf("Error returned by total.GetNumStr() " +
 			"Error='%v' ", err.Error())
 	}
 
@@ -2999,16 +2677,16 @@ func TestBigIntMathAdd_AddIntArySeries_01(t *testing.T) {
 			"Error='%v' ", err.Error())
 	}
 
-	if !expectedBNum.Equal(total.Result) {
+	if !expectedBNum.Equal(total) {
 		t.Errorf("Error - Incorrect Total: Expected total='%v'. Instead, " +
 			"total='%v'. ",
-			expectedBNum.bigInt.Text(10), total.Result.bigInt.Text(10))
+			expectedBNum.bigInt.Text(10), total.bigInt.Text(10))
 	}
 
-	actualTotalNumstr, err := total.Result.GetNumStrErr()
+	actualTotalNumstr, err := total.GetNumStrErr()
 
 	if err != nil {
-		t.Errorf("Error returned by total.Result.GetNumStr() " +
+		t.Errorf("Error returned by total.GetNumStr() " +
 			"Error='%v' ", err.Error())
 	}
 
@@ -3078,16 +2756,16 @@ func TestBigIntMathAdd_AddIntArySeries_02(t *testing.T) {
 			"Error='%v' ", err.Error())
 	}
 
-	if !expectedBNum.Equal(total.Result) {
+	if !expectedBNum.Equal(total) {
 		t.Errorf("Error - Incorrect Total: Expected total='%v'. Instead, " +
 			"total='%v'. ",
-			expectedBNum.bigInt.Text(10), total.Result.bigInt.Text(10))
+			expectedBNum.bigInt.Text(10), total.bigInt.Text(10))
 	}
 
-	actualTotalNumstr, err := total.Result.GetNumStrErr()
+	actualTotalNumstr, err := total.GetNumStrErr()
 
 	if err != nil {
-		t.Errorf("Error returned by total.Result.GetNumStr() " +
+		t.Errorf("Error returned by total.GetNumStr() " +
 			"Error='%v' ", err.Error())
 	}
 
@@ -3101,36 +2779,18 @@ func TestBigIntMathAdd_AddIntArySeries_02(t *testing.T) {
 func TestBigIntMathAdd_AddNumStr_01(t *testing.T) {
 
 	n1Str := "123456.789"
-	b1ReconciledStr := "123456789000"
-	b1Precision := uint(3)
-
-	b1ReconciledBig, oK := big.NewInt(0).SetString(b1ReconciledStr, 10)
-
-	if !oK {
-		errors.New("Error returned by big.NewInt(0).SetString(b1ReconciledStr, 10)")
-	}
-
 	n2Str := "987.123456"
-	b2Str := "987123456"
-	b2Precision := uint(6)
-	b2Big, oK := big.NewInt(0).SetString(b2Str, 10)
-
-	if !oK {
-		errors.New("Error returned by big.NewInt(0).SetString(b2Str, 10)")
-	}
-
 	// Result = 	124443.912456
 	expectedResultStr := "124443912456"
 	expectedPrecision := uint(6)
 	expectedSign := 1
 
-	maxPrecision := b1Precision
-
-	if b2Precision > b1Precision {
-		maxPrecision = b2Precision
-	}
-
 	biExpectedResult, oK :=  big.NewInt(0).SetString(expectedResultStr, 10)
+
+	if !oK {
+		t.Error("Error returned by biExpectedResult, oK := " +
+			"big.NewInt(0).SetString(expectedResultStr, 10)")
+	}
 
 	result, err := BigIntMathAdd{}.AddNumStr(n1Str, n2Str)
 
@@ -3139,42 +2799,19 @@ func TestBigIntMathAdd_AddNumStr_01(t *testing.T) {
 			"Error='%v' ", err.Error())
 	}
 
-	if b1ReconciledBig.Cmp(result.Input.Big1.bigInt) != 0 {
-		t.Errorf("Error: Expected InputBig1='%v'. Instead, InputBig1='%v'. " +
-			b1ReconciledBig.Text(10), result.Input.Big1.bigInt.Text(10))
-	}
-
-
-	if maxPrecision != result.Input.Big1.precision {
-		t.Errorf("Error: Expected InputBig1Precision='%v'.  Instead, " +
-			"InputBig1Precision='%v' ",
-			maxPrecision, result.Input.Big1.precision)
-	}
-
-	if b2Big.Cmp(result.Input.Big2.bigInt) != 0 {
-		t.Errorf("Error: Expected InputBig2='%v'. Instead, InputBig2='%v'. " +
-			b2Big.Text(10), result.Input.Big2.bigInt.Text(10))
-	}
-
-	if maxPrecision != result.Input.Big2.precision {
-		t.Errorf("Error: Expected InputBig2Precision='%v'.  Instead, " +
-			"InputBig2Precision='%v' ",
-			maxPrecision, result.Input.Big2.precision)
-	}
-
-	if biExpectedResult.Cmp(result.Result.bigInt) != 0 {
+	if biExpectedResult.Cmp(result.bigInt) != 0 {
 		t.Errorf("Error: Expected Result='%v'.  Instead, Result='%v'. ",
-			biExpectedResult.Text(10), result.Result.bigInt.Text(10))
+			biExpectedResult.Text(10), result.bigInt.Text(10))
 	}
 
-	if expectedPrecision != result.Result.precision {
+	if expectedPrecision != result.precision {
 		t.Errorf("Error: Expected Result precision='%v'. Instead, Result precision='%v'. ",
-			expectedPrecision, result.Result.precision)
+			expectedPrecision, result.precision)
 	}
 
-	if expectedSign != result.Result.sign {
+	if expectedSign != result.sign {
 		t.Errorf("Error: Expected Recult sign='%v'. Instead, Result sign='%v' ",
-			expectedSign, result.Result.sign)
+			expectedSign, result.sign)
 	}
 
 }
@@ -3182,35 +2819,18 @@ func TestBigIntMathAdd_AddNumStr_01(t *testing.T) {
 func TestBigIntMathAdd_AddNumStr_02(t *testing.T) {
 
 	n1Str := "123456.789"
-	b1ReconciledStr := "123456789000"
-	b1Precision := uint(3)
-
-	b1ReconciledBig, oK := big.NewInt(0).SetString(b1ReconciledStr, 10)
-
-	if !oK {
-		errors.New("Error returned by big.NewInt(0).SetString(b1ReconciledStr, 10)")
-	}
-
 	n2Str := "-987.123456"
-	b2Str := "-987123456"
-	b2Precision := uint(6)
-	b2Big, oK := big.NewInt(0).SetString(b2Str, 10)
-
-	if !oK {
-		errors.New("Error returned by big.NewInt(0).SetString(b2Str, 10)")
-	}
 
 	expectedResultStr := "122469665544"
 	expectedPrecision := uint(6)
 	expectedSign := 1
 
-	maxPrecision := b1Precision
-
-	if b2Precision > b1Precision {
-		maxPrecision = b2Precision
-	}
-
 	biExpectedResult, oK :=  big.NewInt(0).SetString(expectedResultStr, 10)
+
+	if !oK {
+		t.Error("Error returned by biExpectedResult, oK := " +
+			"big.NewInt(0).SetString(expectedResultStr, 10)")
+	}
 
 	result,err := BigIntMathAdd{}.AddNumStr(n1Str, n2Str)
 
@@ -3219,45 +2839,19 @@ func TestBigIntMathAdd_AddNumStr_02(t *testing.T) {
 			"Error='%v' ", err.Error())
 	}
 
-	if b1ReconciledBig.Cmp(result.Input.Big1.bigInt) != 0 {
-		t.Errorf("Error: Expected InputBig1='%v'. Instead, InputBig1='%v'. " +
-			b1ReconciledBig.Text(10), result.Input.Big1.bigInt.Text(10))
-	}
-
-
-	if maxPrecision != result.Input.Big1.precision {
-		t.Errorf("Error: Expected InputBig1Precision='%v'.  Instead, " +
-			"InputBig1Precision='%v' ",
-			maxPrecision, result.Input.Big1.precision)
-	}
-
-
-	if b2Big.Cmp(result.Input.Big2.bigInt) != 0 {
-		t.Errorf("Error: Expected InputBig2='%v'. Instead, InputBig2='%v'. " +
-			b2Big.Text(10), result.Input.Big2.bigInt.Text(10))
-	}
-
-
-	if maxPrecision != result.Input.Big2.precision {
-		t.Errorf("Error: Expected InputBig2Precision='%v'.  Instead, " +
-			"InputBig2Precision='%v' ",
-			maxPrecision, result.Input.Big2.precision)
-	}
-
-
-	if biExpectedResult.Cmp(result.Result.bigInt) != 0 {
+	if biExpectedResult.Cmp(result.bigInt) != 0 {
 		t.Errorf("Error: Expected Result='%v'.  Instead, Result='%v'. ",
-			biExpectedResult.Text(10), result.Result.bigInt.Text(10))
+			biExpectedResult.Text(10), result.bigInt.Text(10))
 	}
 
-	if expectedPrecision != result.Result.precision {
+	if expectedPrecision != result.precision {
 		t.Errorf("Error: Expected Result precision='%v'. Instead, Result precision='%v'. ",
-			expectedPrecision, result.Result.precision)
+			expectedPrecision, result.precision)
 	}
 
-	if expectedSign != result.Result.sign {
+	if expectedSign != result.sign {
 		t.Errorf("Error: Expected Recult sign='%v'. Instead, Result sign='%v' ",
-			expectedSign, result.Result.sign)
+			expectedSign, result.sign)
 	}
 
 }
@@ -3265,35 +2859,19 @@ func TestBigIntMathAdd_AddNumStr_02(t *testing.T) {
 func TestBigIntMathAdd_AddNumStr_03(t *testing.T) {
 
 	n1Str := "-123456.789"
-	b1ReconciledStr := "-123456789000"
-	b1Precision := uint(3)
-	b1ReconciledBig, oK := big.NewInt(0).SetString(b1ReconciledStr, 10)
-
-	if !oK {
-		errors.New("Error returned by big.NewInt(0).SetString(b1Str, 10)")
-	}
-
 	n2Str := "987.123456"
-	b2Str := "987123456"
-	b2Precision := uint(6)
-	b2Big, oK := big.NewInt(0).SetString(b2Str, 10)
-
-	if !oK {
-		errors.New("Error returned by big.NewInt(0).SetString(b2Str, 10)")
-	}
 
 	// Result := -122469.665544
 	expectedResultStr := "-122469665544"
 	expectedPrecision := uint(6)
 	expectedSign := -1
 
-	maxPrecision := b1Precision
-
-	if b2Precision > b1Precision {
-		maxPrecision = b2Precision
-	}
-
 	biExpectedResult, oK :=  big.NewInt(0).SetString(expectedResultStr, 10)
+
+	if !oK {
+		t.Error("Error returned by biExpectedResult, oK := " +
+			"big.NewInt(0).SetString(expectedResultStr, 10)")
+	}
 
 	result, err := BigIntMathAdd{}.AddNumStr(n1Str, n2Str)
 
@@ -3302,42 +2880,19 @@ func TestBigIntMathAdd_AddNumStr_03(t *testing.T) {
 			"Error='%v' ", err.Error())
 	}
 
-	if b1ReconciledBig.Cmp(result.Input.Big1.bigInt) != 0 {
-		t.Errorf("Error: Expected InputBig1='%v'. Instead, InputBig1='%v'. " +
-			b1ReconciledBig.Text(10), result.Input.Big1.bigInt.Text(10))
-	}
-
-	if maxPrecision != result.Input.Big1.precision {
-		t.Errorf("Error: Expected InputBig1Precision='%v'.  Instead, " +
-			"InputBig1Precision='%v' ",
-			maxPrecision, result.Input.Big1.precision)
-	}
-
-	if b2Big.Cmp(result.Input.Big2.bigInt) != 0 {
-		t.Errorf("Error: Expected InputBig2='%v'. Instead, InputBig2='%v'. " +
-			b2Big.Text(10), result.Input.Big2.bigInt.Text(10))
-	}
-
-
-	if maxPrecision != result.Input.Big2.precision {
-		t.Errorf("Error: Expected InputBig2Precision='%v'.  Instead, " +
-			"InputBig2Precision='%v' ",
-			maxPrecision, result.Input.Big2.precision)
-	}
-
-	if biExpectedResult.Cmp(result.Result.bigInt) != 0 {
+	if biExpectedResult.Cmp(result.bigInt) != 0 {
 		t.Errorf("Error: Expected Result='%v'.  Instead, Result='%v'. ",
-			biExpectedResult.Text(10), result.Result.bigInt.Text(10))
+			biExpectedResult.Text(10), result.bigInt.Text(10))
 	}
 
-	if expectedPrecision != result.Result.precision {
+	if expectedPrecision != result.precision {
 		t.Errorf("Error: Expected Result precision='%v'. Instead, Result precision='%v'. ",
-			expectedPrecision, result.Result.precision)
+			expectedPrecision, result.precision)
 	}
 
-	if expectedSign != result.Result.sign {
+	if expectedSign != result.sign {
 		t.Errorf("Error: Expected Recult sign='%v'. Instead, Result sign='%v' ",
-			expectedSign, result.Result.sign)
+			expectedSign, result.sign)
 	}
 
 }
@@ -3345,37 +2900,19 @@ func TestBigIntMathAdd_AddNumStr_03(t *testing.T) {
 func TestBigIntMathAdd_AddNumStr_04(t *testing.T) {
 
 	n1Str := "-123456.789"
-	b1ReconciledStr := "-123456789000"
-	b1Precision := uint(3)
-	b1ReconciledBig, oK := big.NewInt(0).SetString(b1ReconciledStr, 10)
-
-	if !oK {
-		errors.New("Error returned by big.NewInt(0).SetString(b1Str, 10)")
-	}
-
 	n2Str := "-987.123456"
-	b2Str := "-987123456"
-	b2Precision := uint(6)
-	b2Big, oK := big.NewInt(0).SetString(b2Str, 10)
-
-	if !oK {
-		errors.New("Error returned by big.NewInt(0).SetString(b2Str, 10)")
-	}
-
 
 	// Result := -124443.912456
 	expectedResultStr := "-124443912456"
 	expectedPrecision := uint(6)
 	expectedSign := -1
 
-	maxPrecision := b1Precision
-
-	if b2Precision > b1Precision {
-		maxPrecision = b2Precision
-	}
-
-
 	biExpectedResult, oK :=  big.NewInt(0).SetString(expectedResultStr, 10)
+
+	if !oK {
+		t.Error("Error returned by biExpectedResult, oK := " +
+			"big.NewInt(0).SetString(expectedResultStr, 10)")
+	}
 
 	result, err := BigIntMathAdd{}.AddNumStr(n1Str, n2Str)
 
@@ -3384,42 +2921,19 @@ func TestBigIntMathAdd_AddNumStr_04(t *testing.T) {
 			"Error='%v' ", err.Error())
 	}
 
-	if b1ReconciledBig.Cmp(result.Input.Big1.bigInt) != 0 {
-		t.Errorf("Error: Expected InputBig1='%v'. Instead, InputBig1='%v'. " +
-			b1ReconciledBig.Text(10), result.Input.Big1.bigInt.Text(10))
-	}
-
-	if maxPrecision != result.Input.Big1.precision {
-		t.Errorf("Error: Expected InputBig1Precision='%v'.  Instead, " +
-			"InputBig1Precision='%v' ",
-			maxPrecision, result.Input.Big1.precision)
-	}
-
-	if b2Big.Cmp(result.Input.Big2.bigInt) != 0 {
-		t.Errorf("Error: Expected InputBig2='%v'. Instead, InputBig2='%v'. " +
-			b2Big.Text(10), result.Input.Big2.bigInt.Text(10))
-	}
-
-	if b2Precision != result.Input.Big2.precision {
-		t.Errorf("Error: Expected InputBig2Precision='%v'.  Instead, " +
-			"InputBig2Precision='%v' ",
-			b2Precision, result.Input.Big2.precision)
-	}
-
-
-	if biExpectedResult.Cmp(result.Result.bigInt) != 0 {
+	if biExpectedResult.Cmp(result.bigInt) != 0 {
 		t.Errorf("Error: Expected Result='%v'.  Instead, Result='%v'. ",
-			biExpectedResult.Text(10), result.Result.bigInt.Text(10))
+			biExpectedResult.Text(10), result.bigInt.Text(10))
 	}
 
-	if expectedPrecision != result.Result.precision {
+	if expectedPrecision != result.precision {
 		t.Errorf("Error: Expected Result precision='%v'. Instead, Result precision='%v'. ",
-			expectedPrecision, result.Result.precision)
+			expectedPrecision, result.precision)
 	}
 
-	if expectedSign != result.Result.sign {
+	if expectedSign != result.sign {
 		t.Errorf("Error: Expected Recult sign='%v'. Instead, Result sign='%v' ",
-			expectedSign, result.Result.sign)
+			expectedSign, result.sign)
 	}
 
 }
@@ -3550,16 +3064,16 @@ func TestBigIntMathAdd_AddNumStrArray_01(t *testing.T) {
 			"Error='%v' ", err.Error())
 	}
 
-	if !expectedBNum.Equal(total.Result) {
+	if !expectedBNum.Equal(total) {
 		t.Errorf("Error - Incorrect Total: Expected total='%v'. Instead, " +
 			"total='%v'. ",
-			expectedBNum.bigInt.Text(10), total.Result.bigInt.Text(10))
+			expectedBNum.bigInt.Text(10), total.bigInt.Text(10))
 	}
 
-	actualTotalNumstr, err := total.Result.GetNumStrErr()
+	actualTotalNumstr, err := total.GetNumStrErr()
 
 	if err != nil {
-		t.Errorf("Error returned by total.Result.GetNumStr() " +
+		t.Errorf("Error returned by total.GetNumStr() " +
 			"Error='%v' ", err.Error())
 	}
 
@@ -3604,16 +3118,16 @@ func TestBigIntMathAdd_AddNumStrArray_02(t *testing.T) {
 			"Error='%v' ", err.Error())
 	}
 
-	if !expectedBNum.Equal(total.Result) {
+	if !expectedBNum.Equal(total) {
 		t.Errorf("Error - Incorrect Total: Expected total='%v'. Instead, " +
 			"total='%v'. ",
-			expectedBNum.bigInt.Text(10), total.Result.bigInt.Text(10))
+			expectedBNum.bigInt.Text(10), total.bigInt.Text(10))
 	}
 
-	actualTotalNumstr, err := total.Result.GetNumStrErr()
+	actualTotalNumstr, err := total.GetNumStrErr()
 
 	if err != nil {
-		t.Errorf("Error returned by total.Result.GetNumStr() " +
+		t.Errorf("Error returned by total.GetNumStr() " +
 			"Error='%v' ", err.Error())
 	}
 
@@ -3663,16 +3177,16 @@ func TestBigIntMathAdd_AddNumStrSeries_01(t *testing.T) {
 			"Error='%v' ", err.Error())
 	}
 
-	if !expectedBNum.Equal(total.Result) {
+	if !expectedBNum.Equal(total) {
 		t.Errorf("Error - Incorrect Total: Expected total='%v'. Instead, " +
 			"total='%v'. ",
-			expectedBNum.bigInt.Text(10), total.Result.bigInt.Text(10))
+			expectedBNum.bigInt.Text(10), total.bigInt.Text(10))
 	}
 
-	actualTotalNumstr, err := total.Result.GetNumStrErr()
+	actualTotalNumstr, err := total.GetNumStrErr()
 
 	if err != nil {
-		t.Errorf("Error returned by total.Result.GetNumStr() " +
+		t.Errorf("Error returned by total.GetNumStr() " +
 			"Error='%v' ", err.Error())
 	}
 
@@ -3722,16 +3236,16 @@ func TestBigIntMathAdd_AddNumStrSeries_02(t *testing.T) {
 			"Error='%v' ", err.Error())
 	}
 
-	if !expectedBNum.Equal(total.Result) {
+	if !expectedBNum.Equal(total) {
 		t.Errorf("Error - Incorrect Total: Expected total='%v'. Instead, " +
 			"total='%v'. ",
-			expectedBNum.bigInt.Text(10), total.Result.bigInt.Text(10))
+			expectedBNum.bigInt.Text(10), total.bigInt.Text(10))
 	}
 
-	actualTotalNumstr, err := total.Result.GetNumStrErr()
+	actualTotalNumstr, err := total.GetNumStrErr()
 
 	if err != nil {
-		t.Errorf("Error returned by total.Result.GetNumStr() " +
+		t.Errorf("Error returned by total.GetNumStr() " +
 			"Error='%v' ", err.Error())
 	}
 
@@ -3745,36 +3259,19 @@ func TestBigIntMathAdd_AddNumStrSeries_02(t *testing.T) {
 func TestBigIntMathAdd_AddNumStrDto_01(t *testing.T) {
 
 	n1Str := "123456.789"
-	b1ReconciledStr := "123456789000"
-	b1Precision := uint(3)
-
-	b1ReconciledBig, oK := big.NewInt(0).SetString(b1ReconciledStr, 10)
-
-	if !oK {
-		errors.New("Error returned by big.NewInt(0).SetString(b1ReconciledStr, 10)")
-	}
-
 	n2Str := "987.123456"
-	b2Str := "987123456"
-	b2Precision := uint(6)
-	b2Big, oK := big.NewInt(0).SetString(b2Str, 10)
-
-	if !oK {
-		errors.New("Error returned by big.NewInt(0).SetString(b2Str, 10)")
-	}
 
 	// Result = 	124443.912456
 	expectedResultStr := "124443912456"
 	expectedPrecision := uint(6)
 	expectedSign := 1
 
-	maxPrecision := b1Precision
-
-	if b2Precision > b1Precision {
-		maxPrecision = b2Precision
-	}
-
 	biExpectedResult, oK :=  big.NewInt(0).SetString(expectedResultStr, 10)
+
+	if !oK {
+		t.Error("Error returned by biExpectedResult, oK := " +
+			"big.NewInt(0).SetString(expectedResultStr, 10)")
+	}
 
 	n1Dto, err := NumStrDto{}.NewNumStr(n1Str)
 
@@ -3798,41 +3295,19 @@ func TestBigIntMathAdd_AddNumStrDto_01(t *testing.T) {
 			n1Dto.GetNumStr(), n2Dto.GetNumStr(), err.Error())
 	}
 
-	if b1ReconciledBig.Cmp(result.Input.Big1.bigInt) != 0 {
-		t.Errorf("Error: Expected InputBig1='%v'. Instead, InputBig1='%v'. " +
-			b1ReconciledBig.Text(10), result.Input.Big1.bigInt.Text(10))
-	}
-
-	if maxPrecision != result.Input.Big1.precision {
-		t.Errorf("Error: Expected InputBig1Precision='%v'.  Instead, " +
-			"InputBig1Precision='%v' ",
-			maxPrecision, result.Input.Big1.precision)
-	}
-
-	if b2Big.Cmp(result.Input.Big2.bigInt) != 0 {
-		t.Errorf("Error: Expected InputBig2='%v'. Instead, InputBig2='%v'. " +
-			b2Big.Text(10), result.Input.Big2.bigInt.Text(10))
-	}
-
-	if maxPrecision != result.Input.Big2.precision {
-		t.Errorf("Error: Expected InputBig2Precision='%v'.  Instead, " +
-			"InputBig2Precision='%v' ",
-			maxPrecision, result.Input.Big2.precision)
-	}
-
-	if biExpectedResult.Cmp(result.Result.bigInt) != 0 {
+	if biExpectedResult.Cmp(result.bigInt) != 0 {
 		t.Errorf("Error: Expected Result='%v'.  Instead, Result='%v'. ",
-			biExpectedResult.Text(10), result.Result.bigInt.Text(10))
+			biExpectedResult.Text(10), result.bigInt.Text(10))
 	}
 
-	if expectedPrecision != result.Result.precision {
+	if expectedPrecision != result.precision {
 		t.Errorf("Error: Expected Result precision='%v'. Instead, Result precision='%v'. ",
-			expectedPrecision, result.Result.precision)
+			expectedPrecision, result.precision)
 	}
 
-	if expectedSign != result.Result.sign {
+	if expectedSign != result.sign {
 		t.Errorf("Error: Expected Recult sign='%v'. Instead, Result sign='%v' ",
-			expectedSign, result.Result.sign)
+			expectedSign, result.sign)
 	}
 
 }
@@ -3840,35 +3315,17 @@ func TestBigIntMathAdd_AddNumStrDto_01(t *testing.T) {
 func TestBigIntMathAdd_AddNumStrDto_02(t *testing.T) {
 
 	n1Str := "123456.789"
-	b1ReconciledStr := "123456789000"
-	b1Precision := uint(3)
-
-	b1ReconciledBig, oK := big.NewInt(0).SetString(b1ReconciledStr, 10)
-
-	if !oK {
-		errors.New("Error returned by big.NewInt(0).SetString(b1ReconciledStr, 10)")
-	}
-
 	n2Str := "-987.123456"
-	b2Str := "-987123456"
-	b2Precision := uint(6)
-	b2Big, oK := big.NewInt(0).SetString(b2Str, 10)
-
-	if !oK {
-		errors.New("Error returned by big.NewInt(0).SetString(b2Str, 10)")
-	}
-
 	expectedResultStr := "122469665544"
 	expectedPrecision := uint(6)
 	expectedSign := 1
 
-	maxPrecision := b1Precision
-
-	if b2Precision > b1Precision {
-		maxPrecision = b2Precision
-	}
-
 	biExpectedResult, oK :=  big.NewInt(0).SetString(expectedResultStr, 10)
+
+	if !oK {
+		t.Error("Error returned by biExpectedResult, oK := " +
+			"big.NewInt(0).SetString(expectedResultStr, 10)")
+	}
 
 	n1Dto, err := NumStrDto{}.NewNumStr(n1Str)
 
@@ -3892,76 +3349,37 @@ func TestBigIntMathAdd_AddNumStrDto_02(t *testing.T) {
 			n1Dto.GetNumStr(), n2Dto.GetNumStr(), err.Error())
 	}
 
-	if b1ReconciledBig.Cmp(result.Input.Big1.bigInt) != 0 {
-		t.Errorf("Error: Expected InputBig1='%v'. Instead, InputBig1='%v'. " +
-			b1ReconciledBig.Text(10), result.Input.Big1.bigInt.Text(10))
-	}
-
-	if maxPrecision != result.Input.Big1.precision {
-		t.Errorf("Error: Expected InputBig1Precision='%v'.  Instead, " +
-			"InputBig1Precision='%v' ",
-			maxPrecision, result.Input.Big1.precision)
-	}
-
-	if b2Big.Cmp(result.Input.Big2.bigInt) != 0 {
-		t.Errorf("Error: Expected InputBig2='%v'. Instead, InputBig2='%v'. " +
-			b2Big.Text(10), result.Input.Big2.bigInt.Text(10))
-	}
-
-	if maxPrecision != result.Input.Big2.precision {
-		t.Errorf("Error: Expected InputBig2Precision='%v'.  Instead, " +
-			"InputBig2Precision='%v' ",
-			maxPrecision, result.Input.Big2.precision)
-	}
-
-	if biExpectedResult.Cmp(result.Result.bigInt) != 0 {
+	if biExpectedResult.Cmp(result.bigInt) != 0 {
 		t.Errorf("Error: Expected Result='%v'.  Instead, Result='%v'. ",
-			biExpectedResult.Text(10), result.Result.bigInt.Text(10))
+			biExpectedResult.Text(10), result.bigInt.Text(10))
 	}
 
-	if expectedPrecision != result.Result.precision {
+	if expectedPrecision != result.precision {
 		t.Errorf("Error: Expected Result precision='%v'. Instead, Result precision='%v'. ",
-			expectedPrecision, result.Result.precision)
+			expectedPrecision, result.precision)
 	}
 
-	if expectedSign != result.Result.sign {
+	if expectedSign != result.sign {
 		t.Errorf("Error: Expected Recult sign='%v'. Instead, Result sign='%v' ",
-			expectedSign, result.Result.sign)
+			expectedSign, result.sign)
 	}
 }
 
 func TestBigIntMathAdd_AddNumStrDto_03(t *testing.T) {
 
 	n1Str := "-123456.789"
-	b1ReconciledStr := "-123456789000"
-	b1Precision := uint(3)
-	b1ReconciledBig, oK := big.NewInt(0).SetString(b1ReconciledStr, 10)
-
-	if !oK {
-		errors.New("Error returned by big.NewInt(0).SetString(b1Str, 10)")
-	}
-
 	n2Str := "987.123456"
-	b2Str := "987123456"
-	b2Precision := uint(6)
-	b2Big, oK := big.NewInt(0).SetString(b2Str, 10)
-
-	if !oK {
-		errors.New("Error returned by big.NewInt(0).SetString(b2Str, 10)")
-	}
-
 	// Result := -122469.665544
 	expectedResultStr := "-122469665544"
 	expectedPrecision := uint(6)
 	expectedSign := -1
 
-	maxPrecision := b1Precision
-
-	if b2Precision > b1Precision {
-		maxPrecision = b2Precision
-	}
-
 	biExpectedResult, oK :=  big.NewInt(0).SetString(expectedResultStr, 10)
+
+	if !oK {
+		t.Error("Error returned by biExpectedResult, oK := " +
+			"big.NewInt(0).SetString(expectedResultStr, 10)")
+	}
 
 	n1Dto, err := NumStrDto{}.NewNumStr(n1Str)
 
@@ -3985,76 +3403,37 @@ func TestBigIntMathAdd_AddNumStrDto_03(t *testing.T) {
 			n1Dto.GetNumStr(), n2Dto.GetNumStr(), err.Error())
 	}
 
-	if b1ReconciledBig.Cmp(result.Input.Big1.bigInt) != 0 {
-		t.Errorf("Error: Expected InputBig1='%v'. Instead, InputBig1='%v'. " +
-			b1ReconciledBig.Text(10), result.Input.Big1.bigInt.Text(10))
-	}
-
-	if maxPrecision != result.Input.Big1.precision {
-		t.Errorf("Error: Expected InputBig1Precision='%v'.  Instead, " +
-			"InputBig1Precision='%v' ",
-			maxPrecision, result.Input.Big1.precision)
-	}
-
-	if b2Big.Cmp(result.Input.Big2.bigInt) != 0 {
-		t.Errorf("Error: Expected InputBig2='%v'. Instead, InputBig2='%v'. " +
-			b2Big.Text(10), result.Input.Big2.bigInt.Text(10))
-	}
-
-	if maxPrecision != result.Input.Big2.precision {
-		t.Errorf("Error: Expected InputBig2Precision='%v'.  Instead, " +
-			"InputBig2Precision='%v' ",
-			maxPrecision, result.Input.Big2.precision)
-	}
-
-	if biExpectedResult.Cmp(result.Result.bigInt) != 0 {
+	if biExpectedResult.Cmp(result.bigInt) != 0 {
 		t.Errorf("Error: Expected Result='%v'.  Instead, Result='%v'. ",
-			biExpectedResult.Text(10), result.Result.bigInt.Text(10))
+			biExpectedResult.Text(10), result.bigInt.Text(10))
 	}
 
-	if expectedPrecision != result.Result.precision {
+	if expectedPrecision != result.precision {
 		t.Errorf("Error: Expected Result precision='%v'. Instead, Result precision='%v'. ",
-			expectedPrecision, result.Result.precision)
+			expectedPrecision, result.precision)
 	}
 
-	if expectedSign != result.Result.sign {
+	if expectedSign != result.sign {
 		t.Errorf("Error: Expected Recult sign='%v'. Instead, Result sign='%v' ",
-			expectedSign, result.Result.sign)
+			expectedSign, result.sign)
 	}
 }
 
 func TestBigIntMathAdd_AddNumStrDto_04(t *testing.T) {
 
 	n1Str := "-123456.789"
-	b1ReconciledStr := "-123456789000"
-	b1Precision := uint(3)
-	b1ReconciledBig, oK := big.NewInt(0).SetString(b1ReconciledStr, 10)
-
-	if !oK {
-		errors.New("Error returned by big.NewInt(0).SetString(b1Str, 10)")
-	}
-
 	n2Str := "-987.123456"
-	b2Str := "-987123456"
-	b2Precision := uint(6)
-	b2Big, oK := big.NewInt(0).SetString(b2Str, 10)
-
-	if !oK {
-		errors.New("Error returned by big.NewInt(0).SetString(b2Str, 10)")
-	}
-
 	// Result := -124443.912456
 	expectedResultStr := "-124443912456"
 	expectedPrecision := uint(6)
 	expectedSign := -1
 
-	maxPrecision := b1Precision
-
-	if b2Precision > b1Precision {
-		maxPrecision = b2Precision
-	}
-
 	biExpectedResult, oK :=  big.NewInt(0).SetString(expectedResultStr, 10)
+
+	if !oK {
+		t.Error("Error returned by biExpectedResult, oK := " +
+			"big.NewInt(0).SetString(expectedResultStr, 10)")
+	}
 
 	n1Dto, err := NumStrDto{}.NewNumStr(n1Str)
 
@@ -4078,41 +3457,19 @@ func TestBigIntMathAdd_AddNumStrDto_04(t *testing.T) {
 			n1Dto.GetNumStr(), n2Dto.GetNumStr(), err.Error())
 	}
 
-	if b1ReconciledBig.Cmp(result.Input.Big1.bigInt) != 0 {
-		t.Errorf("Error: Expected InputBig1='%v'. Instead, InputBig1='%v'. " +
-			b1ReconciledBig.Text(10), result.Input.Big1.bigInt.Text(10))
-	}
-
-	if maxPrecision != result.Input.Big1.precision {
-		t.Errorf("Error: Expected InputBig1Precision='%v'.  Instead, " +
-			"InputBig1Precision='%v' ",
-			maxPrecision, result.Input.Big1.precision)
-	}
-
-	if b2Big.Cmp(result.Input.Big2.bigInt) != 0 {
-		t.Errorf("Error: Expected InputBig2='%v'. Instead, InputBig2='%v'. " +
-			b2Big.Text(10), result.Input.Big2.bigInt.Text(10))
-	}
-
-	if b2Precision != result.Input.Big2.precision {
-		t.Errorf("Error: Expected InputBig2Precision='%v'.  Instead, " +
-			"InputBig2Precision='%v' ",
-			b2Precision, result.Input.Big2.precision)
-	}
-
-	if biExpectedResult.Cmp(result.Result.bigInt) != 0 {
+	if biExpectedResult.Cmp(result.bigInt) != 0 {
 		t.Errorf("Error: Expected Result='%v'.  Instead, Result='%v'. ",
-			biExpectedResult.Text(10), result.Result.bigInt.Text(10))
+			biExpectedResult.Text(10), result.bigInt.Text(10))
 	}
 
-	if expectedPrecision != result.Result.precision {
+	if expectedPrecision != result.precision {
 		t.Errorf("Error: Expected Result precision='%v'. Instead, Result precision='%v'. ",
-			expectedPrecision, result.Result.precision)
+			expectedPrecision, result.precision)
 	}
 
-	if expectedSign != result.Result.sign {
+	if expectedSign != result.sign {
 		t.Errorf("Error: Expected Recult sign='%v'. Instead, Result sign='%v' ",
-			expectedSign, result.Result.sign)
+			expectedSign, result.sign)
 	}
 }
 
@@ -4165,16 +3522,16 @@ func TestBigIntMathAdd_AddNumStrDtoArray_01(t *testing.T) {
 			"Length numStrDtoAry='%v' Error='%v' ", len(numStrDtoAry), err.Error())
 	}
 
-	if !expectedBNum.Equal(total.Result) {
+	if !expectedBNum.Equal(total) {
 		t.Errorf("Error - Incorrect Total: Expected total='%v'. Instead, " +
 			"total='%v'. ",
-			expectedBNum.bigInt.Text(10), total.Result.bigInt.Text(10))
+			expectedBNum.bigInt.Text(10), total.bigInt.Text(10))
 	}
 
-	actualTotalNumstr, err := total.Result.GetNumStrErr()
+	actualTotalNumstr, err := total.GetNumStrErr()
 
 	if err != nil {
-		t.Errorf("Error returned by total.Result.GetNumStr() " +
+		t.Errorf("Error returned by total.GetNumStr() " +
 			"Error='%v' ", err.Error())
 	}
 
@@ -4234,16 +3591,16 @@ func TestBigIntMathAdd_AddNumStrDtoArray_02(t *testing.T) {
 			"Length numStrDtoAry='%v' Error='%v' ", len(numStrDtoAry), err.Error())
 	}
 
-	if !expectedBNum.Equal(total.Result) {
+	if !expectedBNum.Equal(total) {
 		t.Errorf("Error - Incorrect Total: Expected total='%v'. Instead, " +
 			"total='%v'. ",
-			expectedBNum.bigInt.Text(10), total.Result.bigInt.Text(10))
+			expectedBNum.bigInt.Text(10), total.bigInt.Text(10))
 	}
 
-	actualTotalNumstr, err := total.Result.GetNumStrErr()
+	actualTotalNumstr, err := total.GetNumStrErr()
 
 	if err != nil {
-		t.Errorf("Error returned by total.Result.GetNumStr() " +
+		t.Errorf("Error returned by total.GetNumStr() " +
 			"Error='%v' ", err.Error())
 	}
 
@@ -4441,16 +3798,16 @@ func TestBigIntMathAdd_AddNumStrDtoSeries_01(t *testing.T) {
 			"Error='%v' ", err.Error())
 	}
 
-	if !expectedBNum.Equal(total.Result) {
+	if !expectedBNum.Equal(total) {
 		t.Errorf("Error - Incorrect Total: Expected total='%v'. Instead, " +
 			"total='%v'. ",
-			expectedBNum.bigInt.Text(10), total.Result.bigInt.Text(10))
+			expectedBNum.bigInt.Text(10), total.bigInt.Text(10))
 	}
 
-	actualTotalNumstr, err := total.Result.GetNumStrErr()
+	actualTotalNumstr, err := total.GetNumStrErr()
 
 	if err != nil {
-		t.Errorf("Error returned by total.Result.GetNumStr() " +
+		t.Errorf("Error returned by total.GetNumStr() " +
 			"Error='%v' ", err.Error())
 	}
 
@@ -4515,16 +3872,16 @@ func TestBigIntMathAdd_AddNumStrDtoSeries_02(t *testing.T) {
 			"Error='%v' ", err.Error())
 	}
 
-	if !expectedBNum.Equal(total.Result) {
+	if !expectedBNum.Equal(total) {
 		t.Errorf("Error - Incorrect Total: Expected total='%v'. Instead, " +
 			"total='%v'. ",
-			expectedBNum.bigInt.Text(10), total.Result.bigInt.Text(10))
+			expectedBNum.bigInt.Text(10), total.bigInt.Text(10))
 	}
 
-	actualTotalNumstr, err := total.Result.GetNumStrErr()
+	actualTotalNumstr, err := total.GetNumStrErr()
 
 	if err != nil {
-		t.Errorf("Error returned by total.Result.GetNumStr() " +
+		t.Errorf("Error returned by total.GetNumStr() " +
 			"Error='%v' ", err.Error())
 	}
 
