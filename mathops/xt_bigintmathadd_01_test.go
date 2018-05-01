@@ -3892,3 +3892,802 @@ func TestBigIntMathAdd_AddNumStrDtoSeries_02(t *testing.T) {
 
 }
 
+func TestBigIntMathAdd_AddPair_01(t *testing.T) {
+	// n1Str := 123456.789
+	b1Str := "123456.789"
+	b1Precision := uint(3)
+
+	// n2Str := 987.123456
+	b2Str := "987.123456"
+	b2Precision := uint(6)
+
+	expectedResultStr := "124443.912456"
+
+	b1Num, err := BigIntNum{}.NewNumStr(b1Str)
+
+	if err != nil {
+		t.Errorf("Error returned by b1Num, err := " +
+			"BigIntNum{}.NewNumStr(b1Str) b1Str='%v' Error='%v",
+				b1Str, err.Error())
+	}
+
+	if b1Precision != b1Num.GetPrecisionUint() {
+		t.Errorf("Setup Error: Expected b1Precision='%v'. "+
+			"Instead, b1Precision='%v.",
+			b1Precision, b1Num.GetPrecisionUint())
+	}
+
+	b2Num, err := BigIntNum{}.NewNumStr(b2Str)
+
+	if err != nil {
+		t.Errorf("Error returned by b2Num, err := " +
+			"BigIntNum{}.NewNumStr(b2Str) b2Str='%v' Error='%v",
+			b2Str, err.Error())
+	}
+
+	if b2Precision != b2Num.GetPrecisionUint() {
+		t.Errorf("Setup Error: Expected b2Precision='%v'. "+
+			"Instead, b2Precision='%v.",
+			b2Precision, b2Num.GetPrecisionUint())
+	}
+
+	expectedBigINum, err := BigIntNum{}.NewNumStr(expectedResultStr)
+
+	if err != nil {
+		t.Errorf("Error returned by expectedBigINum, err := " +
+			"BigIntNum{}.NewNumStr(expectedResultStr) " +
+			"expectedResultStr='%v' Error='%v",
+			expectedResultStr, err.Error())
+	}
+
+	maxPrecision := b1Precision
+
+	if b2Precision > b1Precision {
+		maxPrecision = b2Precision
+	}
+
+	bPair := BigIntPair{}.NewBigIntNum(b1Num, b2Num)
+
+	bPair.MakePrecisionsEqual()
+
+	if maxPrecision != bPair.Big1.GetPrecisionUint() {
+		t.Errorf("BigIntPair Error: Expected bPair.Big1 Precision= '%v'. " +
+			"Instead, Precision='%v'.",
+			maxPrecision, bPair.Big1.GetPrecisionUint())
+	}
+
+	if maxPrecision != bPair.Big2.GetPrecisionUint() {
+		t.Errorf("BigIntPair Error: Expected bPair.Big2 Precision= '%v'. " +
+			"Instead, Precision='%v'.",
+			maxPrecision, bPair.Big2.GetPrecisionUint())
+	}
+
+	result := BigIntMathAdd{}.AddPair(bPair)
+
+	if !expectedBigINum.Equal(result) {
+		t.Errorf("Error: Expected Addition Result='%v'. " +
+			"Instead, Result='%v'",
+			expectedBigINum.GetNumStr(), result.GetNumStr())
+	}
+
+}
+
+func TestBigIntMathAdd_AddPair_02(t *testing.T) {
+	// n1Str := 123456.789
+	b1Str := "123456.789"
+	b1Precision := uint(3)
+
+	// n2Str := -987.123456
+	b2Str := "-987.123456"
+	b2Precision := uint(6)
+
+	expectedResultStr := "122469.665544"
+
+	b1Num, err := BigIntNum{}.NewNumStr(b1Str)
+
+	if err != nil {
+		t.Errorf("Error returned by b1Num, err := " +
+			"BigIntNum{}.NewNumStr(b1Str) b1Str='%v' Error='%v",
+				b1Str, err.Error())
+	}
+
+	if b1Precision != b1Num.GetPrecisionUint() {
+		t.Errorf("Setup Error: Expected b1Precision='%v'. "+
+			"Instead, b1Precision='%v.",
+			b1Precision, b1Num.GetPrecisionUint())
+	}
+
+	b2Num, err := BigIntNum{}.NewNumStr(b2Str)
+
+	if err != nil {
+		t.Errorf("Error returned by b2Num, err := " +
+			"BigIntNum{}.NewNumStr(b2Str) b2Str='%v' Error='%v",
+			b2Str, err.Error())
+	}
+
+	if b2Precision != b2Num.GetPrecisionUint() {
+		t.Errorf("Setup Error: Expected b2Precision='%v'. "+
+			"Instead, b2Precision='%v.",
+			b2Precision, b2Num.GetPrecisionUint())
+	}
+
+	expectedBigINum, err := BigIntNum{}.NewNumStr(expectedResultStr)
+
+	if err != nil {
+		t.Errorf("Error returned by expectedBigINum, err := " +
+			"BigIntNum{}.NewNumStr(expectedResultStr) " +
+			"expectedResultStr='%v' Error='%v",
+			expectedResultStr, err.Error())
+	}
+
+	maxPrecision := b1Precision
+
+	if b2Precision > b1Precision {
+		maxPrecision = b2Precision
+	}
+
+	bPair := BigIntPair{}.NewBigIntNum(b1Num, b2Num)
+
+	bPair.MakePrecisionsEqual()
+
+	if maxPrecision != bPair.Big1.GetPrecisionUint() {
+		t.Errorf("BigIntPair Error: Expected bPair.Big1 Precision= '%v'. " +
+			"Instead, Precision='%v'.",
+			maxPrecision, bPair.Big1.GetPrecisionUint())
+	}
+
+	if maxPrecision != bPair.Big2.GetPrecisionUint() {
+		t.Errorf("BigIntPair Error: Expected bPair.Big2 Precision= '%v'. " +
+			"Instead, Precision='%v'.",
+			maxPrecision, bPair.Big2.GetPrecisionUint())
+	}
+
+	result := BigIntMathAdd{}.AddPair(bPair)
+
+	if !expectedBigINum.Equal(result) {
+		t.Errorf("Error: Expected Addition Result='%v'. " +
+			"Instead, Result='%v'",
+			expectedBigINum.GetNumStr(), result.GetNumStr())
+	}
+
+}
+
+func TestBigIntMathAdd_AddPair_03(t *testing.T) {
+	// n1Str := -123456.789
+	b1Str := "-123456.789"
+	b1Precision := uint(3)
+
+	// n2Str := 987.123456
+	b2Str := "987.123456"
+	b2Precision := uint(6)
+
+	expectedResultStr := "-122469.665544"
+
+	b1Num, err := BigIntNum{}.NewNumStr(b1Str)
+
+	if err != nil {
+		t.Errorf("Error returned by b1Num, err := " +
+			"BigIntNum{}.NewNumStr(b1Str) b1Str='%v' Error='%v",
+				b1Str, err.Error())
+	}
+
+	if b1Precision != b1Num.GetPrecisionUint() {
+		t.Errorf("Setup Error: Expected b1Precision='%v'. "+
+			"Instead, b1Precision='%v.",
+			b1Precision, b1Num.GetPrecisionUint())
+	}
+
+	b2Num, err := BigIntNum{}.NewNumStr(b2Str)
+
+	if err != nil {
+		t.Errorf("Error returned by b2Num, err := " +
+			"BigIntNum{}.NewNumStr(b2Str) b2Str='%v' Error='%v",
+			b2Str, err.Error())
+	}
+
+	if b2Precision != b2Num.GetPrecisionUint() {
+		t.Errorf("Setup Error: Expected b2Precision='%v'. "+
+			"Instead, b2Precision='%v.",
+			b2Precision, b2Num.GetPrecisionUint())
+	}
+
+	expectedBigINum, err := BigIntNum{}.NewNumStr(expectedResultStr)
+
+	if err != nil {
+		t.Errorf("Error returned by expectedBigINum, err := " +
+			"BigIntNum{}.NewNumStr(expectedResultStr) " +
+			"expectedResultStr='%v' Error='%v",
+			expectedResultStr, err.Error())
+	}
+
+	maxPrecision := b1Precision
+
+	if b2Precision > b1Precision {
+		maxPrecision = b2Precision
+	}
+
+	bPair := BigIntPair{}.NewBigIntNum(b1Num, b2Num)
+
+	bPair.MakePrecisionsEqual()
+
+	if maxPrecision != bPair.Big1.GetPrecisionUint() {
+		t.Errorf("BigIntPair Error: Expected bPair.Big1 Precision= '%v'. " +
+			"Instead, Precision='%v'.",
+			maxPrecision, bPair.Big1.GetPrecisionUint())
+	}
+
+	if maxPrecision != bPair.Big2.GetPrecisionUint() {
+		t.Errorf("BigIntPair Error: Expected bPair.Big2 Precision= '%v'. " +
+			"Instead, Precision='%v'.",
+			maxPrecision, bPair.Big2.GetPrecisionUint())
+	}
+
+	result := BigIntMathAdd{}.AddPair(bPair)
+
+	if !expectedBigINum.Equal(result) {
+		t.Errorf("Error: Expected Addition Result='%v'. " +
+			"Instead, Result='%v'",
+			expectedBigINum.GetNumStr(), result.GetNumStr())
+	}
+
+}
+
+func TestBigIntMathAdd_AddPair_04(t *testing.T) {
+	// n1Str := -123456.789
+	b1Str := "-123456.789"
+	b1Precision := uint(3)
+
+	// n2Str := -987.123456
+	b2Str := "-987.123456"
+	b2Precision := uint(6)
+
+	expectedResultStr := "-124443.912456"
+
+	b1Num, err := BigIntNum{}.NewNumStr(b1Str)
+
+	if err != nil {
+		t.Errorf("Error returned by b1Num, err := " +
+			"BigIntNum{}.NewNumStr(b1Str) b1Str='%v' Error='%v",
+				b1Str, err.Error())
+	}
+
+	if b1Precision != b1Num.GetPrecisionUint() {
+		t.Errorf("Setup Error: Expected b1Precision='%v'. "+
+			"Instead, b1Precision='%v.",
+			b1Precision, b1Num.GetPrecisionUint())
+	}
+
+	b2Num, err := BigIntNum{}.NewNumStr(b2Str)
+
+	if err != nil {
+		t.Errorf("Error returned by b2Num, err := " +
+			"BigIntNum{}.NewNumStr(b2Str) b2Str='%v' Error='%v",
+			b2Str, err.Error())
+	}
+
+	if b2Precision != b2Num.GetPrecisionUint() {
+		t.Errorf("Setup Error: Expected b2Precision='%v'. "+
+			"Instead, b2Precision='%v.",
+			b2Precision, b2Num.GetPrecisionUint())
+	}
+
+	expectedBigINum, err := BigIntNum{}.NewNumStr(expectedResultStr)
+
+	if err != nil {
+		t.Errorf("Error returned by expectedBigINum, err := " +
+			"BigIntNum{}.NewNumStr(expectedResultStr) " +
+			"expectedResultStr='%v' Error='%v",
+			expectedResultStr, err.Error())
+	}
+
+	maxPrecision := b1Precision
+
+	if b2Precision > b1Precision {
+		maxPrecision = b2Precision
+	}
+
+	bPair := BigIntPair{}.NewBigIntNum(b1Num, b2Num)
+
+	bPair.MakePrecisionsEqual()
+
+	if maxPrecision != bPair.Big1.GetPrecisionUint() {
+		t.Errorf("BigIntPair Error: Expected bPair.Big1 Precision= '%v'. " +
+			"Instead, Precision='%v'.",
+			maxPrecision, bPair.Big1.GetPrecisionUint())
+	}
+
+	if maxPrecision != bPair.Big2.GetPrecisionUint() {
+		t.Errorf("BigIntPair Error: Expected bPair.Big2 Precision= '%v'. " +
+			"Instead, Precision='%v'.",
+			maxPrecision, bPair.Big2.GetPrecisionUint())
+	}
+
+	result := BigIntMathAdd{}.AddPair(bPair)
+
+	if !expectedBigINum.Equal(result) {
+		t.Errorf("Error: Expected Addition Result='%v'. " +
+			"Instead, Result='%v'",
+			expectedBigINum.GetNumStr(), result.GetNumStr())
+	}
+
+}
+
+func TestBigIntMathAdd_AddPair_05(t *testing.T) {
+	// n1Str := 0
+	b1Str := "0"
+	b1Precision := uint(0)
+
+	// n2Str := -987.123456
+	b2Str := "-987.123456"
+	b2Precision := uint(6)
+
+	expectedResultStr := "-987.123456"
+
+	b1Num, err := BigIntNum{}.NewNumStr(b1Str)
+
+	if err != nil {
+		t.Errorf("Error returned by b1Num, err := " +
+			"BigIntNum{}.NewNumStr(b1Str) b1Str='%v' Error='%v",
+				b1Str, err.Error())
+	}
+
+	if b1Precision != b1Num.GetPrecisionUint() {
+		t.Errorf("Setup Error: Expected b1Precision='%v'. "+
+			"Instead, b1Precision='%v.",
+			b1Precision, b1Num.GetPrecisionUint())
+	}
+
+	b2Num, err := BigIntNum{}.NewNumStr(b2Str)
+
+	if err != nil {
+		t.Errorf("Error returned by b2Num, err := " +
+			"BigIntNum{}.NewNumStr(b2Str) b2Str='%v' Error='%v",
+			b2Str, err.Error())
+	}
+
+	if b2Precision != b2Num.GetPrecisionUint() {
+		t.Errorf("Setup Error: Expected b2Precision='%v'. "+
+			"Instead, b2Precision='%v.",
+			b2Precision, b2Num.GetPrecisionUint())
+	}
+
+	expectedBigINum, err := BigIntNum{}.NewNumStr(expectedResultStr)
+
+	if err != nil {
+		t.Errorf("Error returned by expectedBigINum, err := " +
+			"BigIntNum{}.NewNumStr(expectedResultStr) " +
+			"expectedResultStr='%v' Error='%v",
+			expectedResultStr, err.Error())
+	}
+
+	maxPrecision := b1Precision
+
+	if b2Precision > b1Precision {
+		maxPrecision = b2Precision
+	}
+
+	bPair := BigIntPair{}.NewBigIntNum(b1Num, b2Num)
+
+	bPair.MakePrecisionsEqual()
+
+	if maxPrecision != bPair.Big1.GetPrecisionUint() {
+		t.Errorf("BigIntPair Error: Expected bPair.Big1 Precision= '%v'. " +
+			"Instead, Precision='%v'.",
+			maxPrecision, bPair.Big1.GetPrecisionUint())
+	}
+
+	if maxPrecision != bPair.Big2.GetPrecisionUint() {
+		t.Errorf("BigIntPair Error: Expected bPair.Big2 Precision= '%v'. " +
+			"Instead, Precision='%v'.",
+			maxPrecision, bPair.Big2.GetPrecisionUint())
+	}
+
+	result := BigIntMathAdd{}.AddPair(bPair)
+
+	if !expectedBigINum.Equal(result) {
+		t.Errorf("Error: Expected Addition Result='%v'. " +
+			"Instead, Result='%v'",
+			expectedBigINum.GetNumStr(), result.GetNumStr())
+	}
+
+}
+
+func TestBigIntMathAdd_AddPair_06(t *testing.T) {
+	// n1Str := -123456.789
+	b1Str := "-123456.789"
+	b1Precision := uint(3)
+
+	// n2Str := 0
+	b2Str := "0"
+	b2Precision := uint(0)
+
+	expectedResultStr := "-123456.789"
+
+	b1Num, err := BigIntNum{}.NewNumStr(b1Str)
+
+	if err != nil {
+		t.Errorf("Error returned by b1Num, err := " +
+			"BigIntNum{}.NewNumStr(b1Str) b1Str='%v' Error='%v",
+				b1Str, err.Error())
+	}
+
+	if b1Precision != b1Num.GetPrecisionUint() {
+		t.Errorf("Setup Error: Expected b1Precision='%v'. "+
+			"Instead, b1Precision='%v.",
+			b1Precision, b1Num.GetPrecisionUint())
+	}
+
+	b2Num, err := BigIntNum{}.NewNumStr(b2Str)
+
+	if err != nil {
+		t.Errorf("Error returned by b2Num, err := " +
+			"BigIntNum{}.NewNumStr(b2Str) b2Str='%v' Error='%v",
+			b2Str, err.Error())
+	}
+
+	if b2Precision != b2Num.GetPrecisionUint() {
+		t.Errorf("Setup Error: Expected b2Precision='%v'. "+
+			"Instead, b2Precision='%v.",
+			b2Precision, b2Num.GetPrecisionUint())
+	}
+
+	expectedBigINum, err := BigIntNum{}.NewNumStr(expectedResultStr)
+
+	if err != nil {
+		t.Errorf("Error returned by expectedBigINum, err := " +
+			"BigIntNum{}.NewNumStr(expectedResultStr) " +
+			"expectedResultStr='%v' Error='%v",
+			expectedResultStr, err.Error())
+	}
+
+	maxPrecision := b1Precision
+
+	if b2Precision > b1Precision {
+		maxPrecision = b2Precision
+	}
+
+	bPair := BigIntPair{}.NewBigIntNum(b1Num, b2Num)
+
+	bPair.MakePrecisionsEqual()
+
+	if maxPrecision != bPair.Big1.GetPrecisionUint() {
+		t.Errorf("BigIntPair Error: Expected bPair.Big1 Precision= '%v'. " +
+			"Instead, Precision='%v'.",
+			maxPrecision, bPair.Big1.GetPrecisionUint())
+	}
+
+	if maxPrecision != bPair.Big2.GetPrecisionUint() {
+		t.Errorf("BigIntPair Error: Expected bPair.Big2 Precision= '%v'. " +
+			"Instead, Precision='%v'.",
+			maxPrecision, bPair.Big2.GetPrecisionUint())
+	}
+
+	result := BigIntMathAdd{}.AddPair(bPair)
+
+	if !expectedBigINum.Equal(result) {
+		t.Errorf("Error: Expected Addition Result='%v'. " +
+			"Instead, Result='%v'",
+			expectedBigINum.GetNumStr(), result.GetNumStr())
+	}
+
+}
+
+func TestBigIntMathAdd_AddPair_07(t *testing.T) {
+	// n1Str := 7
+	b1Str := "7"
+	b1Precision := uint(0)
+
+	// n2Str := 0
+	b2Str := "0"
+	b2Precision := uint(0)
+
+	expectedResultStr := "7"
+
+	b1Num, err := BigIntNum{}.NewNumStr(b1Str)
+
+	if err != nil {
+		t.Errorf("Error returned by b1Num, err := " +
+			"BigIntNum{}.NewNumStr(b1Str) b1Str='%v' Error='%v",
+				b1Str, err.Error())
+	}
+
+	if b1Precision != b1Num.GetPrecisionUint() {
+		t.Errorf("Setup Error: Expected b1Precision='%v'. "+
+			"Instead, b1Precision='%v.",
+			b1Precision, b1Num.GetPrecisionUint())
+	}
+
+	b2Num, err := BigIntNum{}.NewNumStr(b2Str)
+
+	if err != nil {
+		t.Errorf("Error returned by b2Num, err := " +
+			"BigIntNum{}.NewNumStr(b2Str) b2Str='%v' Error='%v",
+			b2Str, err.Error())
+	}
+
+	if b2Precision != b2Num.GetPrecisionUint() {
+		t.Errorf("Setup Error: Expected b2Precision='%v'. "+
+			"Instead, b2Precision='%v.",
+			b2Precision, b2Num.GetPrecisionUint())
+	}
+
+	expectedBigINum, err := BigIntNum{}.NewNumStr(expectedResultStr)
+
+	if err != nil {
+		t.Errorf("Error returned by expectedBigINum, err := " +
+			"BigIntNum{}.NewNumStr(expectedResultStr) " +
+			"expectedResultStr='%v' Error='%v",
+			expectedResultStr, err.Error())
+	}
+
+	maxPrecision := b1Precision
+
+	if b2Precision > b1Precision {
+		maxPrecision = b2Precision
+	}
+
+	bPair := BigIntPair{}.NewBigIntNum(b1Num, b2Num)
+
+	bPair.MakePrecisionsEqual()
+
+	if maxPrecision != bPair.Big1.GetPrecisionUint() {
+		t.Errorf("BigIntPair Error: Expected bPair.Big1 Precision= '%v'. " +
+			"Instead, Precision='%v'.",
+			maxPrecision, bPair.Big1.GetPrecisionUint())
+	}
+
+	if maxPrecision != bPair.Big2.GetPrecisionUint() {
+		t.Errorf("BigIntPair Error: Expected bPair.Big2 Precision= '%v'. " +
+			"Instead, Precision='%v'.",
+			maxPrecision, bPair.Big2.GetPrecisionUint())
+	}
+
+	result := BigIntMathAdd{}.AddPair(bPair)
+
+	if !expectedBigINum.Equal(result) {
+		t.Errorf("Error: Expected Addition Result='%v'. " +
+			"Instead, Result='%v'",
+			expectedBigINum.GetNumStr(), result.GetNumStr())
+	}
+
+}
+
+func TestBigIntMathAdd_AddPair_08(t *testing.T) {
+	// n1Str := 0
+	b1Str := "0"
+	b1Precision := uint(0)
+
+	// n2Str := 7
+	b2Str := "7"
+	b2Precision := uint(0)
+
+	expectedResultStr := "7"
+
+	b1Num, err := BigIntNum{}.NewNumStr(b1Str)
+
+	if err != nil {
+		t.Errorf("Error returned by b1Num, err := " +
+			"BigIntNum{}.NewNumStr(b1Str) b1Str='%v' Error='%v",
+				b1Str, err.Error())
+	}
+
+	if b1Precision != b1Num.GetPrecisionUint() {
+		t.Errorf("Setup Error: Expected b1Precision='%v'. "+
+			"Instead, b1Precision='%v.",
+			b1Precision, b1Num.GetPrecisionUint())
+	}
+
+	b2Num, err := BigIntNum{}.NewNumStr(b2Str)
+
+	if err != nil {
+		t.Errorf("Error returned by b2Num, err := " +
+			"BigIntNum{}.NewNumStr(b2Str) b2Str='%v' Error='%v",
+			b2Str, err.Error())
+	}
+
+	if b2Precision != b2Num.GetPrecisionUint() {
+		t.Errorf("Setup Error: Expected b2Precision='%v'. "+
+			"Instead, b2Precision='%v.",
+			b2Precision, b2Num.GetPrecisionUint())
+	}
+
+	expectedBigINum, err := BigIntNum{}.NewNumStr(expectedResultStr)
+
+	if err != nil {
+		t.Errorf("Error returned by expectedBigINum, err := " +
+			"BigIntNum{}.NewNumStr(expectedResultStr) " +
+			"expectedResultStr='%v' Error='%v",
+			expectedResultStr, err.Error())
+	}
+
+	maxPrecision := b1Precision
+
+	if b2Precision > b1Precision {
+		maxPrecision = b2Precision
+	}
+
+	bPair := BigIntPair{}.NewBigIntNum(b1Num, b2Num)
+
+	bPair.MakePrecisionsEqual()
+
+	if maxPrecision != bPair.Big1.GetPrecisionUint() {
+		t.Errorf("BigIntPair Error: Expected bPair.Big1 Precision= '%v'. " +
+			"Instead, Precision='%v'.",
+			maxPrecision, bPair.Big1.GetPrecisionUint())
+	}
+
+	if maxPrecision != bPair.Big2.GetPrecisionUint() {
+		t.Errorf("BigIntPair Error: Expected bPair.Big2 Precision= '%v'. " +
+			"Instead, Precision='%v'.",
+			maxPrecision, bPair.Big2.GetPrecisionUint())
+	}
+
+	result := BigIntMathAdd{}.AddPair(bPair)
+
+	if !expectedBigINum.Equal(result) {
+		t.Errorf("Error: Expected Addition Result='%v'. " +
+			"Instead, Result='%v'",
+			expectedBigINum.GetNumStr(), result.GetNumStr())
+	}
+
+}
+
+func TestBigIntMathAdd_AddPair_09(t *testing.T) {
+	// n1Str := 1.7
+	b1Str := "1.7"
+	b1Precision := uint(1)
+
+	// n2Str := 0
+	b2Str := "0"
+	b2Precision := uint(0)
+
+	expectedResultStr := "1.7"
+
+	b1Num, err := BigIntNum{}.NewNumStr(b1Str)
+
+	if err != nil {
+		t.Errorf("Error returned by b1Num, err := " +
+			"BigIntNum{}.NewNumStr(b1Str) b1Str='%v' Error='%v",
+				b1Str, err.Error())
+	}
+
+	if b1Precision != b1Num.GetPrecisionUint() {
+		t.Errorf("Setup Error: Expected b1Precision='%v'. "+
+			"Instead, b1Precision='%v.",
+			b1Precision, b1Num.GetPrecisionUint())
+	}
+
+	b2Num, err := BigIntNum{}.NewNumStr(b2Str)
+
+	if err != nil {
+		t.Errorf("Error returned by b2Num, err := " +
+			"BigIntNum{}.NewNumStr(b2Str) b2Str='%v' Error='%v",
+			b2Str, err.Error())
+	}
+
+	if b2Precision != b2Num.GetPrecisionUint() {
+		t.Errorf("Setup Error: Expected b2Precision='%v'. "+
+			"Instead, b2Precision='%v.",
+			b2Precision, b2Num.GetPrecisionUint())
+	}
+
+	expectedBigINum, err := BigIntNum{}.NewNumStr(expectedResultStr)
+
+	if err != nil {
+		t.Errorf("Error returned by expectedBigINum, err := " +
+			"BigIntNum{}.NewNumStr(expectedResultStr) " +
+			"expectedResultStr='%v' Error='%v",
+			expectedResultStr, err.Error())
+	}
+
+	maxPrecision := b1Precision
+
+	if b2Precision > b1Precision {
+		maxPrecision = b2Precision
+	}
+
+	bPair := BigIntPair{}.NewBigIntNum(b1Num, b2Num)
+
+	bPair.MakePrecisionsEqual()
+
+	if maxPrecision != bPair.Big1.GetPrecisionUint() {
+		t.Errorf("BigIntPair Error: Expected bPair.Big1 Precision= '%v'. " +
+			"Instead, Precision='%v'.",
+			maxPrecision, bPair.Big1.GetPrecisionUint())
+	}
+
+	if maxPrecision != bPair.Big2.GetPrecisionUint() {
+		t.Errorf("BigIntPair Error: Expected bPair.Big2 Precision= '%v'. " +
+			"Instead, Precision='%v'.",
+			maxPrecision, bPair.Big2.GetPrecisionUint())
+	}
+
+	result := BigIntMathAdd{}.AddPair(bPair)
+
+	if !expectedBigINum.Equal(result) {
+		t.Errorf("Error: Expected Addition Result='%v'. " +
+			"Instead, Result='%v'",
+			expectedBigINum.GetNumStr(), result.GetNumStr())
+	}
+
+}
+
+func TestBigIntMathAdd_AddPair_10(t *testing.T) {
+	// n1Str := 0
+	b1Str := "0"
+	b1Precision := uint(0)
+
+	// n2Str := 0
+	b2Str := "0"
+	b2Precision := uint(0)
+
+	expectedResultStr := "0"
+
+	b1Num, err := BigIntNum{}.NewNumStr(b1Str)
+
+	if err != nil {
+		t.Errorf("Error returned by b1Num, err := " +
+			"BigIntNum{}.NewNumStr(b1Str) b1Str='%v' Error='%v",
+				b1Str, err.Error())
+	}
+
+	if b1Precision != b1Num.GetPrecisionUint() {
+		t.Errorf("Setup Error: Expected b1Precision='%v'. "+
+			"Instead, b1Precision='%v.",
+			b1Precision, b1Num.GetPrecisionUint())
+	}
+
+	b2Num, err := BigIntNum{}.NewNumStr(b2Str)
+
+	if err != nil {
+		t.Errorf("Error returned by b2Num, err := " +
+			"BigIntNum{}.NewNumStr(b2Str) b2Str='%v' Error='%v",
+			b2Str, err.Error())
+	}
+
+	if b2Precision != b2Num.GetPrecisionUint() {
+		t.Errorf("Setup Error: Expected b2Precision='%v'. "+
+			"Instead, b2Precision='%v.",
+			b2Precision, b2Num.GetPrecisionUint())
+	}
+
+	expectedBigINum, err := BigIntNum{}.NewNumStr(expectedResultStr)
+
+	if err != nil {
+		t.Errorf("Error returned by expectedBigINum, err := " +
+			"BigIntNum{}.NewNumStr(expectedResultStr) " +
+			"expectedResultStr='%v' Error='%v",
+			expectedResultStr, err.Error())
+	}
+
+	maxPrecision := b1Precision
+
+	if b2Precision > b1Precision {
+		maxPrecision = b2Precision
+	}
+
+	bPair := BigIntPair{}.NewBigIntNum(b1Num, b2Num)
+
+	bPair.MakePrecisionsEqual()
+
+	if maxPrecision != bPair.Big1.GetPrecisionUint() {
+		t.Errorf("BigIntPair Error: Expected bPair.Big1 Precision= '%v'. " +
+			"Instead, Precision='%v'.",
+			maxPrecision, bPair.Big1.GetPrecisionUint())
+	}
+
+	if maxPrecision != bPair.Big2.GetPrecisionUint() {
+		t.Errorf("BigIntPair Error: Expected bPair.Big2 Precision= '%v'. " +
+			"Instead, Precision='%v'.",
+			maxPrecision, bPair.Big2.GetPrecisionUint())
+	}
+
+	result := BigIntMathAdd{}.AddPair(bPair)
+
+	if !expectedBigINum.Equal(result) {
+		t.Errorf("Error: Expected Addition Result='%v'. " +
+			"Instead, Result='%v'",
+			expectedBigINum.GetNumStr(), result.GetNumStr())
+	}
+
+}
