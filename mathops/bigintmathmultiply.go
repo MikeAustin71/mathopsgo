@@ -3,6 +3,7 @@ package mathops
 import (
 	"math/big"
 	"fmt"
+	"errors"
 )
 
 // BigIntMathMultiply - This methods associated with this type are
@@ -145,7 +146,7 @@ func (bMultiply BigIntMathMultiply) MultiplyBigIntNumArray(
 	lenMultiplicands := len(multiplicands)
 
 	if lenMultiplicands == 0 {
-		return finalResult
+		return BigIntNum{}.New()
 	}
 
 	for i:=0; i < lenMultiplicands; i++ {
@@ -240,7 +241,7 @@ func (bMultiply BigIntMathMultiply) MultiplyBigIntNumSeries(
 	lenMultiplicands := len(multiplicands)
 
 	if lenMultiplicands == 0 {
-		return finalResult
+		return BigIntNum{}.New()
 	}
 
 	for _, multiplicand := range multiplicands {
@@ -315,7 +316,8 @@ func (bMultiply BigIntMathMultiply) MultiplyDecimalArray(
 	lenMultiplicands := len(multiplicands)
 
 	if lenMultiplicands == 0 {
-		return BigIntNum{}.New(), nil
+		return BigIntNum{}.New(),
+			errors.New(ePrefix + "Error: multiplicands array is Empty!")
 	}
 
 	finalResult, err := BigIntNum{}.NewDecimal(multiplier)
@@ -388,7 +390,8 @@ func (bMultiply BigIntMathMultiply) MultiplyDecimalOutputToArray(
 	lenMultiplicands := len(multiplicands)
 
 	if lenMultiplicands == 0 {
-		return []Decimal{}, nil
+		return []Decimal{},
+			errors.New(ePrefix + "Error: multiplicands array is Empty!")
 	}
 
 	multiplierBINum, err := BigIntNum{}.NewDecimal(multiplier)
@@ -457,6 +460,11 @@ func (bMultiply BigIntMathMultiply) MultiplyDecimalSeries(
 														multiplicands ... Decimal) (BigIntNum, error) {
 
 	ePrefix := "BigIntMathMultiply.MultiplyDecimalSeries() "
+
+	if len(multiplicands) == 0 {
+		return BigIntNum{}.New(),
+			errors.New(ePrefix + "Error: multiplicands series is Empty!")
+	}
 
 	finalResult, err := BigIntNum{}.NewDecimal(multiplier)
 
@@ -553,7 +561,8 @@ func (bMultiply BigIntMathMultiply) MultiplyIntAryArray(
 	lenMultiplicands := len(multiplicands)
 
 	if lenMultiplicands == 0 {
-		return BigIntNum{}.New(), nil
+		return BigIntNum{}.New(),
+			errors.New(ePrefix + "Error: multiplicands array is Empty!")
 	}
 
 	finalResult, err := BigIntNum{}.NewIntAry(multiplier)
@@ -626,7 +635,9 @@ func (bMultiply BigIntMathMultiply) MultiplyIntAryOutputToArray(
 	lenMultiplicands := len(multiplicands)
 
 	if lenMultiplicands == 0 {
-		return []IntAry{}, nil
+		return []IntAry{},
+			errors.New(ePrefix + "Error: multiplicands array is Empty!")
+
 	}
 
 	multiplierBINum, err := BigIntNum{}.NewIntAry(multiplier)
@@ -695,6 +706,11 @@ func (bMultiply BigIntMathMultiply) MultiplyIntArySeries(
 													multiplicands ... IntAry) (BigIntNum, error) {
 
 	ePrefix := "BigIntMathMultiply.MultiplyIntArySeries() "
+
+	if len(multiplicands) == 0 {
+		return BigIntNum{}.New(),
+			errors.New(ePrefix + "Error: multiplicands series is Empty!")
+	}
 
 	finalResult, err := BigIntNum{}.NewIntAry(multiplier)
 
@@ -801,7 +817,9 @@ func (bMultiply BigIntMathMultiply) MultiplyNumStrArray(
 	lenMultiplicands := len(multiplicands)
 
 	if lenMultiplicands == 0 {
-		return BigIntNum{}.New(), nil
+		return BigIntNum{}.New(),
+			errors.New(ePrefix + "Error: multiplicands array is Empty!")
+
 	}
 
 	finalResult, err := BigIntNum{}.NewNumStr(multiplier)
@@ -873,7 +891,8 @@ func (bMultiply BigIntMathMultiply) MultiplyNumStrOutputToArray(
 	lenMultiplicands := len(multiplicands)
 
 	if lenMultiplicands == 0 {
-		return []string{}, nil
+		return []string{},
+			errors.New(ePrefix + "Error: multiplicands array is Empty!")
 	}
 
 	multiplierBINum, err := BigIntNum{}.NewNumStr(multiplier)
@@ -943,7 +962,8 @@ func (bMultiply BigIntMathMultiply) MultiplyNumStrSeries(
 	ePrefix := "BigIntMathMultiply.MultiplyNumStrSeries() "
 
 	if len(multiplicands) == 0 {
-		return BigIntNum{}.New(), nil
+		return BigIntNum{}.New(),
+			errors.New(ePrefix + "Error: multiplicands series is Empty!")
 	}
 
 	finalResult, err := BigIntNum{}.NewNumStr(multiplier)
@@ -1030,15 +1050,16 @@ func (bMultiply BigIntMathMultiply) MultiplyNumStrDto(
 // result or 'product' as a BigIntNum type.
 //
 func (bMultiply BigIntMathMultiply) MultiplyNumStrDtoArray(
-	multiplier NumStrDto,
-	multiplicands []NumStrDto) (BigIntNum, error) {
+													multiplier NumStrDto,
+														multiplicands []NumStrDto) (BigIntNum, error) {
 
 	ePrefix := "BigIntMathMultiply.MultiplyNumStrDtoArray() "
 
 	lenMultiplicands := len(multiplicands)
 
 	if lenMultiplicands == 0 {
-		return BigIntNum{}.New(), nil
+		return BigIntNum{}.New(),
+			errors.New(ePrefix + "Error: multiplicands array is Empty!")
 	}
 
 	finalResult, err := BigIntNum{}.NewNumStrDto(multiplier)
@@ -1110,7 +1131,8 @@ func (bMultiply BigIntMathMultiply) MultiplyNumStrDtoOutputToArray(
 	lenMultiplicands := len(multiplicands)
 
 	if lenMultiplicands == 0 {
-		return []NumStrDto{}, nil
+		return []NumStrDto{},
+			errors.New(ePrefix + "Error: multiplicands array is Empty!")
 	}
 
 	multiplierBINum, err := BigIntNum{}.NewNumStrDto(multiplier)
@@ -1181,7 +1203,8 @@ func (bMultiply BigIntMathMultiply) MultiplyNumStrDtoSeries(
 	ePrefix := "BigIntMathMultiply.MultiplyNumStrDtoSeries() "
 
 	if len(multiplicands) == 0 {
-		return BigIntNum{}.New(), nil
+		return BigIntNum{}.New(),
+			errors.New(ePrefix + "Error: multiplicands series is Empty!")
 	}
 
 	finalResult, err := BigIntNum{}.NewNumStrDto(multiplier)
