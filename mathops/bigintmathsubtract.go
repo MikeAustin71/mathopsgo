@@ -3,6 +3,7 @@ package mathops
 import (
 	"fmt"
 	"math/big"
+	"errors"
 )
 
 // BigIntMathSubtract - Contains methods used to perform subtraction 
@@ -271,7 +272,6 @@ func (bSubtract BigIntMathSubtract) SubtractDecimalArray(
 				minuend Decimal,
 					subtrahends []Decimal) (BigIntNum, error) {
 
-	var err error
 	ePrefix := "BigIntMathSubtract.SubtractDecimalArray() "
 	finalResult, err := BigIntNum{}.NewDecimal(minuend)
 
@@ -285,7 +285,8 @@ func (bSubtract BigIntMathSubtract) SubtractDecimalArray(
 	lenSubtrahends := len(subtrahends)
 
 	if lenSubtrahends == 0 {
-		return finalResult, nil
+		return finalResult,
+			errors.New(ePrefix + "Error: subtrahends array is Empty!")
 	}
 
 	for i:=0; i < lenSubtrahends; i++ {
@@ -337,7 +338,8 @@ func (bSubtract BigIntMathSubtract) SubtractDecimalOutputToArray(
 	lenSubtrahends := len(subtrahends)
 
 	if lenSubtrahends == 0 {
-		return []Decimal{}, nil
+		return []Decimal{},
+			errors.New(ePrefix + "Error: subtrahends array is Empty!")
 	}
 
 	resultsArray := make([]Decimal, lenSubtrahends)
@@ -400,6 +402,11 @@ func (bSubtract BigIntMathSubtract) SubtractDecimalSeries(
 		fmt.Errorf(ePrefix +
 			"Error returned by BigIntNum{}.NewDecimal(minuend). " +
 			"minuend='%v' Error='%v'", minuend.GetNumStr(), err.Error())
+	}
+
+	if len(subtrahends) == 0 {
+		return finalResult,
+			errors.New(ePrefix + "Error: subtrahends series is Empty!")
 	}
 
 	for i, subtrahend := range subtrahends {
@@ -490,7 +497,8 @@ func (bSubtract BigIntMathSubtract) SubtractIntAryArray(
 	lenSubtrahends := len(subtrahends)
 
 	if lenSubtrahends == 0 {
-		return finalResult, nil
+		return finalResult,
+			errors.New(ePrefix + "Error: subtrahends array is Empty!")
 	}
 
 	for i:=0; i < lenSubtrahends; i++ {
@@ -542,7 +550,8 @@ func (bSubtract BigIntMathSubtract) SubtractIntAryOutputToArray(
 	lenSubtrahends := len(subtrahends)
 
 	if lenSubtrahends == 0 {
-		return []IntAry{}, nil
+		return []IntAry{},
+			errors.New(ePrefix + "Error: subtrahends array is Empty!")
 	}
 
 	resultsArray := make([]IntAry, lenSubtrahends)
@@ -602,6 +611,11 @@ func (bSubtract BigIntMathSubtract) SubtractIntArySeries(
 			fmt.Errorf(ePrefix +
 				"Error returned by BigIntNum{}.NewIntAry(minuend). " +
 				"minuend='%v' Error='%v'", minuend.GetNumStr(), err.Error())
+	}
+
+	if len(subtrahends) == 0 {
+		return finalResult,
+			errors.New(ePrefix + "Error: subtrahends series is Empty!")
 	}
 
 	for i, subtrahend := range subtrahends {
@@ -694,7 +708,8 @@ func (bSubtract BigIntMathSubtract) SubtractINumMgrArray(
 	lenSubtrahends := len(subtrahends)
 
 	if lenSubtrahends == 0 {
-		return finalResult, nil
+		return finalResult,
+			errors.New(ePrefix + "Error: subtrahends array is Empty!")
 	}
 
 	for i:= 0; i < lenSubtrahends; i++ {
@@ -737,15 +752,16 @@ func (bSubtract BigIntMathSubtract) SubtractINumMgrArray(
 // type which implements the INumMgr Interface.
 //
 func (bSubtract BigIntMathSubtract) SubtractINumMgrOutputToArray(
-	minuend INumMgr,
-	subtrahends []INumMgr) ([]INumMgr, error) {
+										minuend INumMgr,
+											subtrahends []INumMgr) ([]INumMgr, error) {
 
 	ePrefix := "BigIntMathSubtract.SubtractINumMgrOutputToArray() "
 
 	lenSubtrahends := len(subtrahends)
 
 	if lenSubtrahends == 0 {
-		return []INumMgr{}, nil
+		return []INumMgr{},
+			errors.New(ePrefix + "Error: subtrahends array is Empty!")
 	}
 
 	resultsArray := make([]INumMgr, lenSubtrahends)
@@ -800,6 +816,11 @@ func (bSubtract BigIntMathSubtract) SubtractINumMgrSeries(
 			fmt.Errorf(ePrefix +
 				"Error returned by BigIntNum{}.NewINumMgr(minuend). " +
 				"minuend='%v' Error='%v'", minuend.GetNumStr(), err.Error())
+	}
+
+	if len(subtrahends) == 0 {
+		return finalResult,
+			errors.New(ePrefix + "Error: subtrahends series is Empty!")
 	}
 
 	for i, subtrahend := range subtrahends {
@@ -892,7 +913,8 @@ func (bSubtract BigIntMathSubtract) SubtractNumStrArray(
 	lenSubtrahends := len(subtrahends)
 
 	if lenSubtrahends == 0 {
-		return finalResult, nil
+		return finalResult,
+			errors.New(ePrefix + "Error: subtrahends array is Empty!")
 	}
 
 	for i:=0; i < lenSubtrahends; i++ {
@@ -945,7 +967,8 @@ func (bSubtract BigIntMathSubtract) SubtractNumStrOutputToArray(
 	lenSubtrahends := len(subtrahends)
 
 	if lenSubtrahends == 0 {
-		return []string{}, nil
+		return []string{},
+			errors.New(ePrefix + "Error: subtrahends array is Empty!")
 	}
 
 	resultsArray := make([]string, lenSubtrahends)
@@ -1013,6 +1036,11 @@ func (bSubtract BigIntMathSubtract) SubtractNumStrSeries(
 			fmt.Errorf(ePrefix +
 				"Error returned by BigIntNum{}.NewNumStr(minuend). " +
 				"minuend='%v' Error='%v'", minuend, err.Error())
+	}
+
+	if len(subtrahends) == 0 {
+		return finalResult,
+			errors.New(ePrefix + "Error: subtrahends series is Empty!")
 	}
 
 	for i, subtrahend := range subtrahends {
@@ -1101,7 +1129,8 @@ func (bSubtract BigIntMathSubtract) SubtractNumStrDtoArray(
 	lenSubtrahends := len(subtrahends)
 
 	if lenSubtrahends == 0 {
-		return finalResult, nil
+		return finalResult,
+			errors.New(ePrefix + "Error: subtrahends array is Empty!")
 	}
 
 	for i:=0; i < lenSubtrahends; i++ {
@@ -1153,7 +1182,8 @@ func (bSubtract BigIntMathSubtract) SubtractNumStrDtoOutputToArray(
 	lenSubtrahends := len(subtrahends)
 
 	if lenSubtrahends == 0 {
-		return []NumStrDto{}, nil
+		return []NumStrDto{},
+			errors.New(ePrefix + "Error: subtrahends array is Empty!")
 	}
 
 	resultsArray := make([]NumStrDto, lenSubtrahends)
@@ -1216,6 +1246,11 @@ func (bSubtract BigIntMathSubtract) SubtractNumStrDtoSeries(
 			fmt.Errorf(ePrefix +
 				"Error returned by BigIntNum{}.NewNumStrDto(minuend). " +
 				"minuend='%v' Error='%v'", minuend.GetNumStr(), err.Error())
+	}
+
+	if len(subtrahends) == 0 {
+		return finalResult,
+			errors.New(ePrefix + "Error: subtrahends series is Empty!")
 	}
 
 	for i, subtrahend := range subtrahends {
