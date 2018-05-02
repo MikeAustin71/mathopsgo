@@ -576,6 +576,24 @@
 --- PASS: TestBigIntMathSubtract_SubtractNumStrDtoSeries_03 (0.00s)
 === RUN   TestBigIntMathSubtract_SubtractNumStrDtoSeries_04
 --- PASS: TestBigIntMathSubtract_SubtractNumStrDtoSeries_04 (0.00s)
+=== RUN   TestBigIntMathSubtract_SubtractPair_01
+--- PASS: TestBigIntMathSubtract_SubtractPair_01 (0.00s)
+=== RUN   TestBigIntMathSubtract_SubtractPair_02
+--- PASS: TestBigIntMathSubtract_SubtractPair_02 (0.00s)
+=== RUN   TestBigIntMathSubtract_SubtractPair_03
+--- PASS: TestBigIntMathSubtract_SubtractPair_03 (0.00s)
+=== RUN   TestBigIntMathSubtract_SubtractPair_04
+--- PASS: TestBigIntMathSubtract_SubtractPair_04 (0.00s)
+=== RUN   TestBigIntMathSubtract_SubtractPair_05
+--- PASS: TestBigIntMathSubtract_SubtractPair_05 (0.00s)
+=== RUN   TestBigIntMathSubtract_SubtractPair_06
+--- PASS: TestBigIntMathSubtract_SubtractPair_06 (0.00s)
+=== RUN   TestBigIntMathSubtract_SubtractPair_07
+--- PASS: TestBigIntMathSubtract_SubtractPair_07 (0.00s)
+=== RUN   TestBigIntMathSubtract_SubtractPair_08
+--- PASS: TestBigIntMathSubtract_SubtractPair_08 (0.00s)
+=== RUN   TestBigIntMathSubtract_SubtractPair_09
+--- PASS: TestBigIntMathSubtract_SubtractPair_09 (0.00s)
 === RUN   TestBigIntNum_NewNumStr_01
 --- PASS: TestBigIntNum_NewNumStr_01 (0.00s)
 === RUN   TestBigIntNum_NewNumStr_02
@@ -927,7 +945,7 @@
 === RUN   TestFracIntAry_GetRationalValue_06
 --- PASS: TestFracIntAry_GetRationalValue_06 (0.00s)
 === RUN   TestFracIntAry_GetRationalValue_07
---- PASS: TestFracIntAry_GetRationalValue_07 (0.05s)
+--- PASS: TestFracIntAry_GetRationalValue_07 (0.07s)
 === RUN   TestIntAry_AddMultipleToThis_01
 --- PASS: TestIntAry_AddMultipleToThis_01 (0.00s)
 === RUN   TestIntAry_AddToThis_01
@@ -1355,7 +1373,7 @@
 === RUN   TestIntAry_MultiplyByTenToPower_03
 --- PASS: TestIntAry_MultiplyByTenToPower_03 (0.00s)
 === RUN   TestIntAry_MultiplyByTenToPower_04
---- PASS: TestIntAry_MultiplyByTenToPower_04 (0.00s)
+--- PASS: TestIntAry_MultiplyByTenToPower_04 (0.02s)
 === RUN   TestIntAry_MultiplyByTenToPower_05
 --- PASS: TestIntAry_MultiplyByTenToPower_05 (0.00s)
 === RUN   TestIntAry_MultiplyByTenToPower_06
@@ -1407,7 +1425,7 @@
 === RUN   TestIntAry_NewFloat32_01
 --- PASS: TestIntAry_NewFloat32_01 (0.00s)
 === RUN   TestIntAry_NewFloat32_02
---- PASS: TestIntAry_NewFloat32_02 (0.02s)
+--- PASS: TestIntAry_NewFloat32_02 (0.00s)
 === RUN   TestIntAry_NewInt64_01
 --- PASS: TestIntAry_NewInt64_01 (0.00s)
 === RUN   TestIntAry_NewInt64_02
@@ -2255,7 +2273,7 @@
 === RUN   TestStrMathOp_RaiseToPower_01
 --- PASS: TestStrMathOp_RaiseToPower_01 (0.00s)
 === RUN   TestStrMathOp_RaiseToPower_02
---- PASS: TestStrMathOp_RaiseToPower_02 (0.00s)
+--- PASS: TestStrMathOp_RaiseToPower_02 (0.01s)
 === RUN   TestStrMathOp_RaiseToPower_03
 --- PASS: TestStrMathOp_RaiseToPower_03 (0.00s)
 === RUN   TestStrMathOp_RaiseToPower_04
@@ -2309,4 +2327,4 @@
 === RUN   TestStrMathOp_SubtractN1N2_19
 --- PASS: TestStrMathOp_SubtractN1N2_19 (0.00s)
 PASS
-ok  	MikeAustin71/mathopsgo/mathops	1.029s
+ok  	MikeAustin71/mathopsgo/mathops	1.150s
