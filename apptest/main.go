@@ -4,22 +4,24 @@ import (
 
 	"fmt"
 	"../mathops"
-	"../examples"
+	"math/big"
 )
 
 func main() {
 
-	numStrDividend := "-2.5"
-	numStrDivisor := "-12.555"
-	expectedResult := "-2.5"
+	ExampleTestRat_01(20, 30, 15)
 
-	maxPrecision := uint(15)
-	fmt.Println()
-	examples.ExampleBigIntDivideModulo_03(
-		numStrDividend,
-			numStrDivisor,
-				maxPrecision,
-					expectedResult)
+}
+
+func ExampleTestRat_01(num64, denom64 int64, maxPrecision uint) {
+
+	rNum := big.NewRat(num64, denom64)
+
+	numerator := rNum.Num()
+	denominator := rNum.Denom()
+	fmt.Println("       rNum: ", rNum.FloatString(int(maxPrecision)))
+	fmt.Println("  Numerator: ", numerator.Text(10))
+	fmt.Println("Denominator: ", denominator.Text(10))
 
 }
 
