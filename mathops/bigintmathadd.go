@@ -3,6 +3,7 @@ package mathops
 import (
 	"fmt"
 	"math/big"
+	"errors"
 )
 
 type BigIntMathAdd struct {
@@ -161,7 +162,8 @@ func (bAdd BigIntMathAdd) AddDecimalArray(decs []Decimal) (BigIntNum, error) {
 	lenDecs := len(decs)
 
 	if lenDecs == 0 {
-		return finalResult, nil
+		return finalResult,
+			errors.New(ePrefix + "Error: decs array is Empty!")
 	}
 
 	for i:= 0; i < lenDecs; i++ {
@@ -223,7 +225,8 @@ func (bAdd BigIntMathAdd) AddDecimalOutputToArray(
 	lenDecs := len(decs)
 
 	if lenDecs == 0 {
-		return []Decimal{}, nil
+		return []Decimal{},
+			errors.New(ePrefix + "Error: decs array is Empty!")
 	}
 
 	resultsArray := make([]Decimal, lenDecs)
@@ -264,6 +267,11 @@ func (bAdd BigIntMathAdd) AddDecimalSeries(decs ... Decimal) (BigIntNum, error) 
 
 	finalResult := BigIntNum{}.New()
 	var err error
+
+	if len(decs) == 0 {
+		return finalResult,
+			errors.New(ePrefix + "Error: decs series is Empty!")
+	}
 
 	for i, dec := range decs {
 
@@ -324,9 +332,14 @@ func (bAdd BigIntMathAdd) AddIntAryArray(iarys []IntAry) (BigIntNum, error) {
 
 	finalResult := BigIntNum{}.New()
 
-	var err error
-
 	lenIaArray := len(iarys)
+
+	if lenIaArray == 0 {
+		return finalResult,
+			errors.New(ePrefix + "Error: iarys array is Empty!")
+	}
+
+	var err error
 
 	for i := 0; i < lenIaArray; i++ {
 
@@ -387,7 +400,8 @@ func (bAdd BigIntMathAdd) AddIntAryOutputToArray(
 	lenIaArray := len(iarys)
 
 	if lenIaArray == 0 {
-		return []IntAry{}, nil
+		return []IntAry{},
+			errors.New(ePrefix + "Error: iarys array is Empty!")
 	}
 	
 	resultsArray := make([]IntAry, lenIaArray)
@@ -419,6 +433,12 @@ func (bAdd BigIntMathAdd) AddIntArySeries(iarys ... IntAry) (BigIntNum, error) {
 	ePrefix := "BigIntMathAdd.AddIntArySeries() "
 
 	finalResult := BigIntNum{}.New()
+
+	if len(iarys) == 0 {
+		return finalResult,
+			errors.New(ePrefix + "Error: 'iarys' series is Empty!")
+	}
+
 	var err error
 
 	for i, ia := range iarys {
@@ -495,7 +515,8 @@ func (bAdd BigIntMathAdd) AddINumMgrArray(nums []INumMgr) (BigIntNum, error) {
 	lenDecs := len(nums)
 
 	if lenDecs == 0 {
-		return finalResult, nil
+		return finalResult,
+			errors.New(ePrefix + "Error: 'nums' array is Empty!")
 	}
 
 	for i:= 0; i < lenDecs; i++ {
@@ -559,7 +580,8 @@ func (bAdd BigIntMathAdd) AddINumMgrOutputToArray(
 	lenDecs := len(numMgrs)
 
 	if lenDecs == 0 {
-		return []INumMgr{}, nil
+		return []INumMgr{},
+			errors.New(ePrefix + "Error: 'numMgrs' array is Empty!")
 	}
 
 	resultsArray := make([]INumMgr, lenDecs) 
@@ -597,6 +619,12 @@ func (bAdd BigIntMathAdd) AddINumMgrSeries(nums ... INumMgr) (BigIntNum, error) 
 	ePrefix := "BigIntMathAdd.AddINumMgrSeries() "
 
 	finalResult := BigIntNum{}.New()
+
+	if len(nums) == 0 {
+		return finalResult,
+			errors.New(ePrefix + "Error: 'nums' series is Empty!")
+	}
+
 	var err error
 
 	for i, num := range nums {
@@ -675,7 +703,8 @@ func (bAdd BigIntMathAdd) AddNumStrArray(numStrs []string) (BigIntNum, error) {
 	lenNumStrs := len(numStrs)
 
 	if lenNumStrs == 0 {
-		return finalResult, nil
+		return finalResult,
+			errors.New(ePrefix + "Error: 'numStrs' array is Empty!")
 	}
 
 	for i:= 0; i < lenNumStrs; i++ {
@@ -741,7 +770,8 @@ func (bAdd BigIntMathAdd) AddNumStrOutputToArray(
 	lenNumStrs := len(numStrs)
 
 	if lenNumStrs == 0 {
-		return []string{}, nil
+		return []string{},
+			errors.New(ePrefix + "Error: 'numStrs' array is Empty!")
 	}
 
 	bINumAddend, err := BigIntNum{}.NewNumStr(addend)
@@ -785,6 +815,12 @@ func (bAdd BigIntMathAdd) AddNumStrSeries(numStrs ... string) (BigIntNum, error)
 	ePrefix := "BigIntMathAdd.AddNumStrSeries() "
 
 	finalResult := BigIntNum{}.New()
+
+	if len(numStrs) == 0 {
+		return finalResult,
+			errors.New(ePrefix + "Error: 'numStrs' series is Empty!")
+	}
+
 	var err error
 
 	for i, numStr := range numStrs {
@@ -850,7 +886,8 @@ func (bAdd BigIntMathAdd) AddNumStrDtoArray(nDtos []NumStrDto) (BigIntNum, error
 	lenDecs := len(nDtos)
 
 	if lenDecs == 0 {
-		return finalResult, nil
+		return finalResult,
+			errors.New(ePrefix + "Error: 'nDtos' array is Empty!")
 	}
 
 	for i:= 0; i < lenDecs; i++ {
@@ -911,7 +948,8 @@ func (bAdd BigIntMathAdd) AddNumStrDtoOutputToArray(
 	lenDecs := len(nDtos)
 
 	if lenDecs == 0 {
-		return []NumStrDto{}, nil
+		return []NumStrDto{},
+			errors.New(ePrefix + "Error: 'nDtos' array is Empty!")
 	}
 
 	resultsArray := make([]NumStrDto, lenDecs)
@@ -951,6 +989,12 @@ func (bAdd BigIntMathAdd) AddNumStrDtoSeries(nDtos ... NumStrDto) (BigIntNum, er
 	ePrefix := "BigIntMathAdd.AddNumStrDtoSeries() "
 
 	finalResult := BigIntNum{}.New()
+
+	if len(nDtos) == 0 {
+		return finalResult,
+			errors.New(ePrefix + "Error: 'nDtos' series is Empty!")
+	}
+
 	var err error
 
 	for i, nDto := range nDtos {
