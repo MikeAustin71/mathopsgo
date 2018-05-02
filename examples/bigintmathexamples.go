@@ -129,17 +129,17 @@ func ExampleSubtraction_01() {
 		fmt.Printf("Subtrahend[%v]='%v' \n", i, subtrahendAry[i].GetNumStr())
 	}
 
-	fmt.Println("Result: ", result.Result.GetNumStr())
+	fmt.Println("Result: ", result.GetNumStr())
 
-	if expectedBigINum.CmpBigInt(result.Result) != 0 {
+	if expectedBigINum.CmpBigInt(result) != 0 {
 		fmt.Printf("Comparison Error: Expected BigIntNum='%s'. Instead, BigIntNum= '%s'. ",
-			expectedBigINum.GetNumStr(), result.Result.GetNumStr())
+			expectedBigINum.GetNumStr(), result.GetNumStr())
 		return
 	}
 
-	if expectedBigINumSign != result.Result.GetSign() {
+	if expectedBigINumSign != result.GetSign() {
 		fmt.Printf("Error: Expected number sign='%v'. Instead, number sign='%v'",
-			expectedBigINumSign, result.Result.GetSign())
+			expectedBigINumSign, result.GetSign())
 		return
 	}
 
@@ -295,53 +295,53 @@ func ExampleSubtraction_02() {
 
 	fmt.Println("Original Minued: ", iaMinuend.GetNumStr())
 	fmt.Println("       bigISub0: ", bigISub0.GetNumStr())
-	fmt.Println("        Result0: ", result.Result.GetNumStr())
+	fmt.Println("        Result0: ", result.GetNumStr())
 	iaMinuend.SubtractFromThis(&iaSub0)
 	fmt.Println("     ia Result0: ", iaMinuend.GetNumStr())
 
 	iaMinuend.SubtractFromThis(&iaSub1)
-	bPair = mathops.BigIntPair{}.NewBigIntNum(result.Result, bigISub1 )
+	bPair = mathops.BigIntPair{}.NewBigIntNum(result, bigISub1 )
 	result = mathops.BigIntMathSubtract{}.SubtractPair(bPair)
 
 	fmt.Println("       bigISub1: ", bigISub1.GetNumStr())
-	fmt.Println("        Result1: ", result.Result.GetNumStr())
+	fmt.Println("        Result1: ", result.GetNumStr())
 	fmt.Println("     ia Result1: ", iaMinuend.GetNumStr())
 
 	iaMinuend.SubtractFromThis(&iaSub2)
-	bPair = mathops.BigIntPair{}.NewBigIntNum(result.Result, bigISub2 )
+	bPair = mathops.BigIntPair{}.NewBigIntNum(result, bigISub2 )
 	result = mathops.BigIntMathSubtract{}.SubtractPair(bPair)
 
 	fmt.Println("       bigISub2: ", bigISub2.GetNumStr())
-	fmt.Println("        Result2: ", result.Result.GetNumStr())
+	fmt.Println("        Result2: ", result.GetNumStr())
 	fmt.Println("     ia Result2: ", iaMinuend.GetNumStr())
 
 	iaMinuend.SubtractFromThis(&iaSub3)
-	bPair = mathops.BigIntPair{}.NewBigIntNum(result.Result, bigISub3 )
+	bPair = mathops.BigIntPair{}.NewBigIntNum(result, bigISub3 )
 	result = mathops.BigIntMathSubtract{}.SubtractPair(bPair)
 
 	fmt.Println("       bigISub3: ", bigISub3.GetNumStr())
-	fmt.Println("        Result3: ", result.Result.GetNumStr())
+	fmt.Println("        Result3: ", result.GetNumStr())
 	fmt.Println("     ia Result3: ", iaMinuend.GetNumStr())
 
 	iaMinuend.SubtractFromThis(&iaSub4)
-	bPair = mathops.BigIntPair{}.NewBigIntNum(result.Result, bigISub4 )
+	bPair = mathops.BigIntPair{}.NewBigIntNum(result, bigISub4 )
 	result = mathops.BigIntMathSubtract{}.SubtractPair(bPair)
 
 	fmt.Println("       bigISub4: ", bigISub4.GetNumStr())
-	fmt.Println("        Result4: ", result.Result.GetNumStr())
+	fmt.Println("        Result4: ", result.GetNumStr())
 	fmt.Println("     ia Result4: ", iaMinuend.GetNumStr())
 
 	iaMinuend.SubtractFromThis(&iaSub5)
-	bPair = mathops.BigIntPair{}.NewBigIntNum(result.Result, bigISub5 )
+	bPair = mathops.BigIntPair{}.NewBigIntNum(result, bigISub5 )
 	result = mathops.BigIntMathSubtract{}.SubtractPair(bPair)
 
 	fmt.Println("       bigISub5: ", bigISub5.GetNumStr())
-	fmt.Println("        Result5: ", result.Result.GetNumStr())
+	fmt.Println("        Result5: ", result.GetNumStr())
 	fmt.Println("     ia Result5: ", iaMinuend.GetNumStr())
 
 	result = mathops.BigIntMathSubtract{}.SubtractBigIntNumArray(bigIMinuend, subtrahendAry)
 
-	fmt.Println("   Array Result: ", result.Result.GetNumStr())
+	fmt.Println("   Array Result: ", result.GetNumStr())
 
 }
 

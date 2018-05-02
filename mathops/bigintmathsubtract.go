@@ -38,28 +38,19 @@ type BigIntMathSubtract struct {
 // =============
 //
 // After the subtraction operation, the 'difference' or 'result' is returned as a
-// Type BigIntBasicMathResult.
-//
-// 					type BigIntBasicMathResult struct {
-// 								Input BigIntPair
-//											Input.Big1		= minuend
-//											Input.Big2		= subtrahend
-//
-// 								Result BigIntNum
-// 											Result.bigInt = difference or result
-//					}
+// Type BigIntNum.
 //
 func (bSubtract BigIntMathSubtract) SubtractBigInts(
 									minuend *big.Int,
 										minPrecision uint,
 											subtrahend *big.Int,
-												subPrecision uint) BigIntBasicMathResult {
+												subPrecision uint) BigIntNum {
 
 	bPair := BigIntPair{}.NewBase(
-		minuend,
-		minPrecision,
-		subtrahend,
-		subPrecision)
+												minuend,
+													minPrecision,
+														subtrahend,
+															subPrecision)
 
 	return bSubtract.SubtractPair(bPair)
 }
@@ -74,18 +65,9 @@ func (bSubtract BigIntMathSubtract) SubtractBigInts(
 //
 //
 // After the subtraction operation, the 'difference' or 'result' is returned as a
-// Type BigIntBasicMathResult.
+// Type BigIntNum.
 //
-// 					type BigIntBasicMathResult struct {
-// 								Input BigIntPair
-//											Input.Big1		= minuend
-//											Input.Big2		= subtrahend
-//
-// 								Result BigIntNum
-// 											Result.bigInt = difference or result
-//					}
-//
-func (bSubtract BigIntMathSubtract) SubtractBigIntNums(b1, b2 BigIntNum) BigIntBasicMathResult {
+func (bSubtract BigIntMathSubtract) SubtractBigIntNums(b1, b2 BigIntNum) BigIntNum {
 
 	bPair := BigIntPair{}.NewBigIntNum(b1, b2)
 
@@ -106,24 +88,13 @@ func (bSubtract BigIntMathSubtract) SubtractBigIntNums(b1, b2 BigIntNum) BigIntB
 //
 //
 // After the subtraction operation, the 'difference' or 'result' is returned as a
-// Type BigIntBasicMathResult.
-//
-// 					type BigIntBasicMathResult struct {
-// 								Input BigIntPair
-//											Input.Big1		= minuend
-//											Input.Big2		= (last) subtrahend
-//
-// 								Result BigIntNum
-// 											Result.bigInt = difference or result
-//					}
-//
+// Type BigIntNum.
 //
 func (bSubtract BigIntMathSubtract) SubtractBigIntNumArray(
 																				minuend BigIntNum,
-																					subtrahends []BigIntNum) BigIntBasicMathResult {
+																					subtrahends []BigIntNum) BigIntNum {
 
-	finalResult := BigIntBasicMathResult{}.New()
-	finalResult.Result = minuend.CopyOut()
+	finalResult := minuend.CopyOut()
 
 	lenSubtrahends := len(subtrahends)
 
@@ -133,11 +104,9 @@ func (bSubtract BigIntMathSubtract) SubtractBigIntNumArray(
 
 	for i:=0; i < lenSubtrahends; i++ {
 
-		bPair := BigIntPair{}.NewBigIntNum(finalResult.Result, subtrahends[i])
+		bPair := BigIntPair{}.NewBigIntNum(finalResult, subtrahends[i])
 
-		result := bSubtract.SubtractPair(bPair)
-
-		finalResult.Result = result.Result.CopyOut()
+		finalResult = bSubtract.SubtractPair(bPair)
 
 	}
 
@@ -180,9 +149,7 @@ func (bSubtract BigIntMathSubtract) SubtractBigIntNumOutputToArray(
 
 		bPair := BigIntPair{}.NewBigIntNum(minuend, subtrahends[i])
 
-		result := bSubtract.SubtractPair(bPair)
-
-		resultsArray[i] = result.Result.CopyOut()
+		resultsArray[i] = bSubtract.SubtractPair(bPair)
 
 	}
 
@@ -204,9 +171,9 @@ func (bSubtract BigIntMathSubtract) SubtractBigIntNumOutputToArray(
 // In this method, the 'subtrahend' is a series of BigIntNum Types.
 //
 // After the subtraction operation, the 'difference' or 'result' is returned as a
-// Type BigIntBasicMathResult.
+// Type BigIntNum.
 //
-// 					type BigIntBasicMathResult struct {
+// 					type BigIntNum struct {
 // 								Input BigIntPair
 //											Input.Big1		= minuend
 //											Input.Big2		= (last) subtrahend
@@ -218,19 +185,15 @@ func (bSubtract BigIntMathSubtract) SubtractBigIntNumOutputToArray(
 //
 func (bSubtract BigIntMathSubtract) SubtractBigIntNumSeries(
 																				minuend BigIntNum,
-																					subtrahends ... BigIntNum) BigIntBasicMathResult {
+																					subtrahends ... BigIntNum) BigIntNum {
 
-	finalResult := BigIntBasicMathResult{}.New()
-	finalResult.Result = minuend.CopyOut()
+	finalResult := minuend.CopyOut()
 
 	for _, subtrahend := range subtrahends {
 
-		bPair := BigIntPair{}.NewBigIntNum(finalResult.Result, subtrahend)
+		bPair := BigIntPair{}.NewBigIntNum(finalResult, subtrahend)
 
-		result := bSubtract.SubtractPair(bPair)
-
-		finalResult.Result = result.Result.CopyOut()
-
+		finalResult = bSubtract.SubtractPair(bPair)
 	}
 
 	return finalResult
@@ -248,9 +211,9 @@ func (bSubtract BigIntMathSubtract) SubtractBigIntNumSeries(
 //
 //
 // After the subtraction operation, the 'difference' or 'result' is returned as a
-// Type BigIntBasicMathResult.
+// Type BigIntNum.
 //
-// 					type BigIntBasicMathResult struct {
+// 					type BigIntNum struct {
 // 								Input BigIntPair
 //											Input.Big1		= minuend
 //											Input.Big2		= subtrahend
@@ -262,14 +225,14 @@ func (bSubtract BigIntMathSubtract) SubtractBigIntNumSeries(
 //
 func (bSubtract BigIntMathSubtract) SubtractDecimal(
 																			decMinuend Decimal,
-																				decSubtrahend Decimal) (BigIntBasicMathResult, error) {
+																				decSubtrahend Decimal) (BigIntNum, error) {
 
 	ePrefix := "BigIntMathSubtract.SubtractDecimal() "
 
 	bPair, err := BigIntPair{}.NewDecimal(decMinuend, decSubtrahend)
 
 	if err != nil {
-		return BigIntBasicMathResult{},
+		return BigIntNum{},
 			fmt.Errorf(ePrefix + "Error returned by BigIntPair{}.NewDecimal(decMinuend, decSubtrahend). " +
 				"Error='%v' ", err.Error())
 	}
@@ -292,9 +255,9 @@ func (bSubtract BigIntMathSubtract) SubtractDecimal(
 // In this method, the 'subtrahend' is an array of Decimal Types.
 //
 // After the subtraction operation, the 'difference' or 'result' is returned as a
-// Type BigIntBasicMathResult.
+// Type BigIntNum.
 //
-// 					type BigIntBasicMathResult struct {
+// 					type BigIntNum struct {
 // 								Input BigIntPair
 //											Input.Big1		= minuend
 //											Input.Big2		= (last) subtrahend
@@ -306,15 +269,14 @@ func (bSubtract BigIntMathSubtract) SubtractDecimal(
 //
 func (bSubtract BigIntMathSubtract) SubtractDecimalArray(
 				minuend Decimal,
-					subtrahends []Decimal) (BigIntBasicMathResult, error) {
+					subtrahends []Decimal) (BigIntNum, error) {
 
 	var err error
 	ePrefix := "BigIntMathSubtract.SubtractDecimalArray() "
-	finalResult := BigIntBasicMathResult{}.New()
-	finalResult.Result, err = BigIntNum{}.NewDecimal(minuend)
+	finalResult, err := BigIntNum{}.NewDecimal(minuend)
 
 	if err != nil {
-		return BigIntBasicMathResult{},
+		return BigIntNum{},
 		fmt.Errorf(ePrefix +
 			"Error returned by BigIntNum{}.NewDecimal(minuend). " +
 			"minuend='%v' Error='%v'", minuend.GetNumStr(), err.Error())
@@ -331,19 +293,16 @@ func (bSubtract BigIntMathSubtract) SubtractDecimalArray(
 		bigINum, err := BigIntNum{}.NewDecimal(subtrahends[i])
 
 		if err != nil {
-			return BigIntBasicMathResult{},
+			return BigIntNum{},
 				fmt.Errorf(ePrefix +
 					"Error returned by BigIntNum{}.NewDecimal(subtrahends[i]). " +
 					"i='%v' subtrahend='%v' Error='%v'",
 					i, subtrahends[i].GetNumStr(), err.Error())
 		}
 
-		bPair := BigIntPair{}.NewBigIntNum(finalResult.Result, bigINum)
+		bPair := BigIntPair{}.NewBigIntNum(finalResult, bigINum)
 
-		result := bSubtract.SubtractPair(bPair)
-
-		finalResult.Result = result.Result.CopyOut()
-
+		finalResult = bSubtract.SubtractPair(bPair)
 	}
 
 	return finalResult, nil
@@ -397,14 +356,14 @@ func (bSubtract BigIntMathSubtract) SubtractDecimalOutputToArray(
 
 		result := bSubtract.SubtractPair(bPair)
 
-		resultsArray[i], err = result.Result.GetDecimal()
+		resultsArray[i], err = result.GetDecimal()
 
 		if err != nil {
 			return []Decimal{},
 				fmt.Errorf(ePrefix +
 					"Error returned by result.Result.GetDecimal() " +
 					"i='%v' result.Result='%v' Error='%v'. ",
-					i, result.Result.GetNumStr(), err.Error())
+					i, result.GetNumStr(), err.Error())
 		}
 	}
 
@@ -426,30 +385,18 @@ func (bSubtract BigIntMathSubtract) SubtractDecimalOutputToArray(
 // In this method, the 'subtrahend' is a series of Decimal Types.
 //
 // After the subtraction operation, the 'difference' or 'result' is returned as a
-// Type BigIntBasicMathResult.
-//
-// 					type BigIntBasicMathResult struct {
-// 								Input BigIntPair
-//											Input.Big1		= minuend
-//											Input.Big2		= (last) subtrahend
-//
-// 								Result BigIntNum
-// 											Result.bigInt = difference or result
-//					}
-//
+// Type BigIntNum.
 //
 func (bSubtract BigIntMathSubtract) SubtractDecimalSeries(
 										minuend Decimal,
-											subtrahends ... Decimal) (BigIntBasicMathResult, error) {
+											subtrahends ... Decimal) (BigIntNum, error) {
 
 	ePrefix := "BigIntMathSubtract.SubtractDecimalSeries() "
-	var err error
 
-	finalResult := BigIntBasicMathResult{}.New()
-	finalResult.Result, err = BigIntNum{}.NewDecimal(minuend)
+	finalResult, err := BigIntNum{}.NewDecimal(minuend)
 
 	if err != nil {
-		return BigIntBasicMathResult{}.New(),
+		return BigIntNum{}.New(),
 		fmt.Errorf(ePrefix +
 			"Error returned by BigIntNum{}.NewDecimal(minuend). " +
 			"minuend='%v' Error='%v'", minuend.GetNumStr(), err.Error())
@@ -460,18 +407,16 @@ func (bSubtract BigIntMathSubtract) SubtractDecimalSeries(
 		bigINumSubtrahend, err := BigIntNum{}.NewDecimal(subtrahend)
 
 		if err != nil {
-			return BigIntBasicMathResult{}.New(),
+			return BigIntNum{}.New(),
 				fmt.Errorf(ePrefix +
 					"Error returned by BigIntNum{}.NewDecimal(subtrahend). " +
 					"index='%v' subtrahend='%v' Error='%v'",
 					i, subtrahend.GetNumStr(), err.Error())
 		}
 
-		bPair := BigIntPair{}.NewBigIntNum(finalResult.Result, bigINumSubtrahend)
+		bPair := BigIntPair{}.NewBigIntNum(finalResult, bigINumSubtrahend)
 
-		result := bSubtract.SubtractPair(bPair)
-
-		finalResult.Result = result.Result.CopyOut()
+		finalResult = bSubtract.SubtractPair(bPair)
 	}
 
 	return finalResult, nil
@@ -489,27 +434,18 @@ func (bSubtract BigIntMathSubtract) SubtractDecimalSeries(
 //								b2 = 'subtrahend'
 //
 // After the subtraction operation, the 'difference' or 'result' is returned as a
-// Type BigIntBasicMathResult.
-//
-// 					type BigIntBasicMathResult struct {
-// 								Input BigIntPair
-//											Input.Big1		= minuend
-//											Input.Big2		= subtrahend
-//
-// 								Result BigIntNum
-// 											Result.bigInt = difference or result
-//					}
+// Type BigIntNum.
 //
 func (bSubtract BigIntMathSubtract) SubtractIntAry(
 									iaMinuend IntAry,
-										iaSubtrahend IntAry) (BigIntBasicMathResult, error) {
+										iaSubtrahend IntAry) (BigIntNum, error) {
 
 	ePrefix := "BigIntMathSubtract.SubtractIntAry() "
 
 	bPair, err := BigIntPair{}.NewIntAry(iaMinuend, iaSubtrahend)
 
 	if err != nil {
-		return BigIntBasicMathResult{},
+		return BigIntNum{},
 			fmt.Errorf(ePrefix +
 				"Error returned by BigIntPair{}.NewIntAry(iaMinuend, iaSubtrahend). " +
 				"Error='%v' ", err.Error())
@@ -533,28 +469,19 @@ func (bSubtract BigIntMathSubtract) SubtractIntAry(
 // In this method, the 'subtrahend' is an array of IntAry Types.
 //
 // After the subtraction operation, the 'difference' or 'result' is returned as a
-// Type BigIntBasicMathResult.
-//
-// 					type BigIntBasicMathResult struct {
-// 								Input BigIntPair
-//											Input.Big1		= minuend
-//											Input.Big2		= (last) subtrahend
-//
-// 								Result BigIntNum
-// 											Result.bigInt = difference or result
-//					}
+// Type BigIntNum.
 //
 func (bSubtract BigIntMathSubtract) SubtractIntAryArray(
 				minuend IntAry,
-					subtrahends []IntAry) (BigIntBasicMathResult, error) {
+					subtrahends []IntAry) (BigIntNum, error) {
 
-	var err error
+
 	ePrefix := "BigIntMathSubtract.SubtractInAryArray() "
-	finalResult := BigIntBasicMathResult{}.New()
-	finalResult.Result, err = BigIntNum{}.NewIntAry(minuend)
+
+	finalResult, err := BigIntNum{}.NewIntAry(minuend)
 
 	if err != nil {
-		return BigIntBasicMathResult{},
+		return BigIntNum{},
 			fmt.Errorf(ePrefix +
 				"Error returned by BigIntNum{}.NewIntAry(minuend). " +
 				"minuend='%v' Error='%v'", minuend.GetNumStr(), err.Error())
@@ -571,19 +498,16 @@ func (bSubtract BigIntMathSubtract) SubtractIntAryArray(
 		bigINum, err := BigIntNum{}.NewIntAry(subtrahends[i])
 
 		if err != nil {
-			return BigIntBasicMathResult{},
+			return BigIntNum{},
 				fmt.Errorf(ePrefix +
 					"Error returned by BigIntNum{}.NewIntAry(subtrahends[i]). " +
 					"i='%v' subtrahend='%v' Error='%v'",
 					i, subtrahends[i].GetNumStr(), err.Error())
 		}
 
-		bPair := BigIntPair{}.NewBigIntNum(finalResult.Result, bigINum)
+		bPair := BigIntPair{}.NewBigIntNum(finalResult, bigINum)
 
-		result := bSubtract.SubtractPair(bPair)
-
-		finalResult.Result = result.Result.CopyOut()
-
+		finalResult = bSubtract.SubtractPair(bPair)
 	}
 
 	return finalResult, nil
@@ -637,14 +561,14 @@ func (bSubtract BigIntMathSubtract) SubtractIntAryOutputToArray(
 
 		result := bSubtract.SubtractPair(bPair)
 
-		resultsArray[i], err = result.Result.GetIntAry()
+		resultsArray[i], err = result.GetIntAry()
 
 		if err != nil {
 			return []IntAry{},
 				fmt.Errorf(ePrefix +
 					"Error returned by result.Result.GetIntAry() " +
 					"i='%v' result.Result='%v' Error='%v'. ",
-					i, result.Result.GetNumStr(), err.Error())
+					i, result.GetNumStr(), err.Error())
 		}
 	}
 
@@ -664,31 +588,17 @@ func (bSubtract BigIntMathSubtract) SubtractIntAryOutputToArray(
 //								b2 = 'subtrahend'
 //
 // After the subtraction operation, the 'difference' or 'result' is returned as a
-// Type BigIntBasicMathResult.
-//
-// The 'difference' or 'result' is returned as a Type BigIntBasicMathResult.
-//
-// 					type BigIntBasicMathResult struct {
-// 								Input BigIntPair
-//											Input.Big1		= minuend
-//											Input.Big2		= (last) subtrahend
-//
-// 								Result BigIntNum
-// 											Result.bigInt = difference or result
-//					}
+// Type BigIntNum.
 //
 func (bSubtract BigIntMathSubtract) SubtractIntArySeries(
-					minuend IntAry,
-						subtrahends ... IntAry) (BigIntBasicMathResult, error) {
+																			minuend IntAry,
+																				subtrahends ... IntAry) (BigIntNum, error) {
 
 	ePrefix := "BigIntMathSubtract.SubtractIntArySeries() "
-	var err error
-
-	finalResult := BigIntBasicMathResult{}.New()
-	finalResult.Result, err = BigIntNum{}.NewIntAry(minuend)
+	finalResult, err := BigIntNum{}.NewIntAry(minuend)
 
 	if err != nil {
-		return BigIntBasicMathResult{}.New(),
+		return BigIntNum{}.New(),
 			fmt.Errorf(ePrefix +
 				"Error returned by BigIntNum{}.NewIntAry(minuend). " +
 				"minuend='%v' Error='%v'", minuend.GetNumStr(), err.Error())
@@ -699,18 +609,16 @@ func (bSubtract BigIntMathSubtract) SubtractIntArySeries(
 		bigINumSubtrahend, err := BigIntNum{}.NewIntAry(subtrahend)
 
 		if err != nil {
-			return BigIntBasicMathResult{}.New(),
+			return BigIntNum{}.New(),
 				fmt.Errorf(ePrefix +
 					"Error returned by BigIntNum{}.NewIntAry(subtrahend). " +
 					"index='%v' subtrahend='%v' Error='%v'",
 					i, subtrahend.GetNumStr(), err.Error())
 		}
 
-		bPair := BigIntPair{}.NewBigIntNum(finalResult.Result, bigINumSubtrahend)
+		bPair := BigIntPair{}.NewBigIntNum(finalResult, bigINumSubtrahend)
 
-		result := bSubtract.SubtractPair(bPair)
-
-		finalResult.Result = result.Result.CopyOut()
+		finalResult = bSubtract.SubtractPair(bPair)
 	}
 
 	return finalResult, nil
@@ -730,27 +638,18 @@ func (bSubtract BigIntMathSubtract) SubtractIntArySeries(
 // NumStrDto and IntAry.
 //
 // After the subtraction operation, the 'difference' or 'result' is returned as a
-// Type BigIntBasicMathResult.
-//
-// 					type BigIntBasicMathResult struct {
-// 								Input BigIntPair
-//											Input.Big1		= minuend
-//											Input.Big2		= subtrahend
-//
-// 								Result BigIntNum
-// 											Result.bigInt = difference or result
-//					}
+// Type BigIntNum.
 //
 func (bSubtract BigIntMathSubtract) SubtractINumMgr(
 						minuend,
-							subtrahend INumMgr) (BigIntBasicMathResult, error) {
+							subtrahend INumMgr) (BigIntNum, error) {
 
 	ePrefix := "BigIntMathSubtract.SubtractINumMgr() "
 
 	bPair, err := BigIntPair{}.NewINumMgr(minuend, subtrahend)
 
 	if err != nil {
-		return BigIntBasicMathResult{},
+		return BigIntNum{},
 			fmt.Errorf(ePrefix +
 				"Error returned by NBigIntPair{}.NewINumMgr(minuend, subtrahend). " +
 				"minuend.GetNumStr()='%v', subtrahend.GetNumStr()='%v' Error='%v' ",
@@ -775,29 +674,18 @@ func (bSubtract BigIntMathSubtract) SubtractINumMgr(
 // a single array and add their numeric values.
 //
 // After the subtraction operation, the 'difference' or 'result' is returned as a
-// Type BigIntBasicMathResult.
-//
-// 					type BigIntBasicMathResult struct {
-// 								Input BigIntPair
-//											Input.Big1		= minuend
-//											Input.Big2		= (last) subtrahend
-//
-// 								Result BigIntNum
-// 											Result.bigInt = difference or result
-//					}
+// Type BigIntNum.
 //
 func (bSubtract BigIntMathSubtract) SubtractINumMgrArray(
 									minuend INumMgr,
-										subtrahends []INumMgr) (BigIntBasicMathResult, error) {
+										subtrahends []INumMgr) (BigIntNum, error) {
 
 	ePrefix := "BigIntMathSubtract.SubtractINumMgrArray() "
-	var err error
 
-	finalResult := BigIntBasicMathResult{}.New()
-	finalResult.Result, err = BigIntNum{}.NewINumMgr(minuend)
+	finalResult, err := BigIntNum{}.NewINumMgr(minuend)
 
 	if err != nil {
-		return BigIntBasicMathResult{},
+		return BigIntNum{},
 			fmt.Errorf(ePrefix +
 				"Error returned by BigIntNum{}.NewINumMgr(minuend). " +
 				"minuend='%v' Error='%v'", minuend.GetNumStr(), err.Error())
@@ -811,18 +699,16 @@ func (bSubtract BigIntMathSubtract) SubtractINumMgrArray(
 
 	for i:= 0; i < lenSubtrahends; i++ {
 
-		bPair, err := BigIntPair{}.NewINumMgr(&finalResult.Result, subtrahends[i])
+		bPair, err := BigIntPair{}.NewINumMgr(&finalResult, subtrahends[i])
 
 		if err != nil {
-			return BigIntBasicMathResult{}.New(),
+			return BigIntNum{}.New(),
 				fmt.Errorf(ePrefix +
 					"Error returned by BigIntPair{}.NewINumMgr(&finalResult.Result, &subtrahends[i]). " +
 					" i='%v' subtrahends[i].GetNumStr()='%v' Error='%v' ", i, subtrahends[i].GetNumStr(), err.Error())
 		}
 
-		result := bSubtract.SubtractPair(bPair)
-
-		finalResult.Result = result.Result.CopyOut()
+		finalResult = bSubtract.SubtractPair(bPair)
 	}
 
 	return finalResult, nil
@@ -878,8 +764,7 @@ func (bSubtract BigIntMathSubtract) SubtractINumMgrOutputToArray(
 
 		result := bSubtract.SubtractPair(bPair)
 
-		resultsArray[i] = &result.Result
-
+		resultsArray[i] = &result
 	}
 
 	return resultsArray, nil
@@ -900,30 +785,18 @@ func (bSubtract BigIntMathSubtract) SubtractINumMgrOutputToArray(
 // a single array and add their numeric values.
 //
 // After the subtraction operation, the 'difference' or 'result' is returned as a
-// Type BigIntBasicMathResult.
-//
-// 					type BigIntBasicMathResult struct {
-// 								Input BigIntPair
-//											Input.Big1		= minuend
-//											Input.Big2		= (last) subtrahend
-//
-// 								Result BigIntNum
-// 											Result.bigInt = difference or result
-//					}
+// Type BigIntNum.
 //
 func (bSubtract BigIntMathSubtract) SubtractINumMgrSeries(
 					minuend INumMgr,
-						subtrahends ... INumMgr) (BigIntBasicMathResult, error) {
+						subtrahends ... INumMgr) (BigIntNum, error) {
 
 	ePrefix := "BigIntMathSubtract.SubtractINumMgrSeries() "
-	var err error
 
-	finalResult := BigIntBasicMathResult{}.New()
-
-	finalResult.Result, err = BigIntNum{}.NewINumMgr(minuend)
+	finalResult, err := BigIntNum{}.NewINumMgr(minuend)
 
 	if err != nil {
-		return BigIntBasicMathResult{},
+		return BigIntNum{},
 			fmt.Errorf(ePrefix +
 				"Error returned by BigIntNum{}.NewINumMgr(minuend). " +
 				"minuend='%v' Error='%v'", minuend.GetNumStr(), err.Error())
@@ -931,19 +804,17 @@ func (bSubtract BigIntMathSubtract) SubtractINumMgrSeries(
 
 	for i, subtrahend := range subtrahends {
 
-		bPair, err := BigIntPair{}.NewINumMgr(&finalResult.Result, subtrahend)
+		bPair, err := BigIntPair{}.NewINumMgr(&finalResult, subtrahend)
 
 		if err != nil {
-			return BigIntBasicMathResult{}.New(),
+			return BigIntNum{}.New(),
 				fmt.Errorf(ePrefix +
 					"Error returned by BigIntPair{}.NewINumMgr(&finalResult.Result, &subtrahend). " +
 					" i='%v' subtrahend.GetNumStr()='%v' Error='%v' ",
 					i, subtrahend.GetNumStr(), err.Error())
 		}
 
-		result := bSubtract.SubtractPair(bPair)
-
-		finalResult.Result = result.Result.CopyOut()
+		finalResult = bSubtract.SubtractPair(bPair)
 	}
 
 	return finalResult, nil
@@ -963,27 +834,18 @@ func (bSubtract BigIntMathSubtract) SubtractINumMgrSeries(
 //								n2 = 'subtrahend'
 //
 // After the subtraction operation, the 'difference' or 'result' is returned as a
-// Type BigIntBasicMathResult.
-//
-// 					type BigIntBasicMathResult struct {
-// 								Input BigIntPair
-//											Input.Big1		= minuend
-//											Input.Big2		= subtrahend
-//
-// 								Result BigIntNum
-// 											Result.bigInt = difference or result
-//					}
+// Type BigIntNum.
 //
 func (bSubtract BigIntMathSubtract) SubtractNumStr(
-								n1 string,
-									n2 string) (BigIntBasicMathResult, error) {
+													n1 string,
+														n2 string) (BigIntNum, error) {
 
 	ePrefix := "BigIntMathSubtract.SubtractNumStr() "
 
 	bPair, err := BigIntPair{}.NewNumStr(n1, n2)
 
 	if err != nil {
-		return BigIntBasicMathResult{},
+		return BigIntNum{},
 			fmt.Errorf(ePrefix + "Error returned by BigIntPair{}.NewNumStr(n1, n2). " +
 				"Error='%v' ", err.Error())
 	}
@@ -1010,28 +872,18 @@ func (bSubtract BigIntMathSubtract) SubtractNumStr(
 // In this method, the 'subtrahend' is an array of string Types.
 //
 // After the subtraction operation, the 'difference' or 'result' is returned as a
-// Type BigIntBasicMathResult.
-//
-// 					type BigIntBasicMathResult struct {
-// 								Input BigIntPair
-//											Input.Big1		= minuend
-//											Input.Big2		= (last) subtrahend
-//
-// 								Result BigIntNum
-// 											Result.bigInt = difference or result
-//					}
+// Type BigIntNum.
 //
 func (bSubtract BigIntMathSubtract) SubtractNumStrArray(
 				minuend string,
-					subtrahends []string) (BigIntBasicMathResult, error) {
+					subtrahends []string) (BigIntNum, error) {
 
-	var err error
 	ePrefix := "BigIntMathSubtract.SubtractNumStrArray() "
-	finalResult := BigIntBasicMathResult{}.New()
-	finalResult.Result, err = BigIntNum{}.NewNumStr(minuend)
+
+	finalResult, err := BigIntNum{}.NewNumStr(minuend)
 
 	if err != nil {
-		return BigIntBasicMathResult{},
+		return BigIntNum{},
 			fmt.Errorf(ePrefix +
 				"Error returned by BigIntNum{}.NewNumStr(minuend). " +
 				"minuend='%v' Error='%v'", minuend, err.Error())
@@ -1048,19 +900,16 @@ func (bSubtract BigIntMathSubtract) SubtractNumStrArray(
 		bigINum, err := BigIntNum{}.NewNumStr(subtrahends[i])
 
 		if err != nil {
-			return BigIntBasicMathResult{},
+			return BigIntNum{},
 				fmt.Errorf(ePrefix +
 					"Error returned by BigIntNum{}.NewNumStr(subtrahends[i]). " +
 					"i='%v' subtrahend='%v' Error='%v'",
 					i, subtrahends[i], err.Error())
 		}
 
-		bPair := BigIntPair{}.NewBigIntNum(finalResult.Result, bigINum)
+		bPair := BigIntPair{}.NewBigIntNum(finalResult, bigINum)
 
-		result := bSubtract.SubtractPair(bPair)
-
-		finalResult.Result = result.Result.CopyOut()
-
+		finalResult = bSubtract.SubtractPair(bPair)
 	}
 
 	return finalResult, nil
@@ -1115,14 +964,14 @@ func (bSubtract BigIntMathSubtract) SubtractNumStrOutputToArray(
 
 		result := bSubtract.SubtractPair(bPair)
 
-		resultsArray[i] = result.Result.GetNumStr()
+		resultsArray[i] = result.GetNumStr()
 
 		if err != nil {
 			return []string{},
 				fmt.Errorf(ePrefix +
 					"Error returned by result.Result.GetNumStr() " +
 					"i='%v' result.Result='%v' Error='%v'. ",
-					i, result.Result.GetNumStr(), err.Error())
+					i, result.GetNumStr(), err.Error())
 		}
 	}
 
@@ -1149,29 +998,18 @@ func (bSubtract BigIntMathSubtract) SubtractNumStrOutputToArray(
 // In this method, the 'subtrahend' is a series of strings.
 //
 // After the subtraction operation, the 'difference' or 'result' is returned as a
-// Type BigIntBasicMathResult.
-//
-// 					type BigIntBasicMathResult struct {
-// 								Input BigIntPair
-//											Input.Big1		= minuend
-//											Input.Big2		= (last) subtrahend
-//
-// 								Result BigIntNum
-// 											Result.bigInt = difference or result
-//					}
+// Type BigIntNum.
 //
 func (bSubtract BigIntMathSubtract) SubtractNumStrSeries(
-				minuend string,
-					subtrahends ... string) (BigIntBasicMathResult, error) {
+															minuend string,
+																subtrahends ... string) (BigIntNum, error) {
 
 	ePrefix := "BigIntMathSubtract.SubtractNumStrSeries() "
-	var err error
 
-	finalResult := BigIntBasicMathResult{}.New()
-	finalResult.Result, err = BigIntNum{}.NewNumStr(minuend)
+	finalResult, err := BigIntNum{}.NewNumStr(minuend)
 
 	if err != nil {
-		return BigIntBasicMathResult{}.New(),
+		return BigIntNum{}.New(),
 			fmt.Errorf(ePrefix +
 				"Error returned by BigIntNum{}.NewNumStr(minuend). " +
 				"minuend='%v' Error='%v'", minuend, err.Error())
@@ -1182,18 +1020,16 @@ func (bSubtract BigIntMathSubtract) SubtractNumStrSeries(
 		bigINumSubtrahend, err := BigIntNum{}.NewNumStr(subtrahend)
 
 		if err != nil {
-			return BigIntBasicMathResult{}.New(),
+			return BigIntNum{}.New(),
 				fmt.Errorf(ePrefix +
 					"Error returned by BigIntNum{}.NewNumStr(subtrahend). " +
 					"index='%v' subtrahend='%v' Error='%v'",
 					i, subtrahend, err.Error())
 		}
 
-		bPair := BigIntPair{}.NewBigIntNum(finalResult.Result, bigINumSubtrahend)
+		bPair := BigIntPair{}.NewBigIntNum(finalResult, bigINumSubtrahend)
 
-		result := bSubtract.SubtractPair(bPair)
-
-		finalResult.Result = result.Result.CopyOut()
+		finalResult = bSubtract.SubtractPair(bPair)
 	}
 
 	return finalResult, nil
@@ -1211,27 +1047,18 @@ func (bSubtract BigIntMathSubtract) SubtractNumStrSeries(
 //								nDtoSubtrahend 	= 'subtrahend'
 //
 // After the subtraction operation, the 'difference' or 'result' is returned as a
-// Type BigIntBasicMathResult.
-//
-// 					type BigIntBasicMathResult struct {
-// 								Input BigIntPair
-//											Input.Big1		= minuend
-//											Input.Big2		= subtrahend
-//
-// 								Result BigIntNum
-// 											Result.bigInt = difference or result
-//					}
+// Type BigIntNum.
 //
 func (bSubtract BigIntMathSubtract) SubtractNumStrDto(
-					nDtoMinuend NumStrDto,
-						nDtoSubtrahend NumStrDto) (BigIntBasicMathResult, error) {
+									nDtoMinuend NumStrDto,
+										nDtoSubtrahend NumStrDto) (BigIntNum, error) {
 
 	ePrefix := "BigIntMathSubtract.SubtractNumStrDto() "
 
 	bPair, err := BigIntPair{}.NewNumStrDto(nDtoMinuend, nDtoSubtrahend)
 
 	if err != nil {
-		return BigIntBasicMathResult{},
+		return BigIntNum{},
 			fmt.Errorf(ePrefix + "Error returned by BigIntPair{}.NewNumStrDto(nDtoMinuend, nDtoSubtrahend). " +
 				"Error='%v' ", err.Error())
 	}
@@ -1254,28 +1081,18 @@ func (bSubtract BigIntMathSubtract) SubtractNumStrDto(
 // In this method, the 'subtrahend' is an array of NumStrDto Types.
 //
 // After the subtraction operation, the 'difference' or 'result' is returned as a
-// Type BigIntBasicMathResult.
-//
-// 					type BigIntBasicMathResult struct {
-// 								Input BigIntPair
-//											Input.Big1		= minuend
-//											Input.Big2		= (last) subtrahend
-//
-// 								Result BigIntNum
-// 											Result.bigInt = difference or result
-//					}
+// Type BigIntNum.
 //
 func (bSubtract BigIntMathSubtract) SubtractNumStrDtoArray(
 				minuend NumStrDto,
-					subtrahends []NumStrDto) (BigIntBasicMathResult, error) {
+					subtrahends []NumStrDto) (BigIntNum, error) {
 
-	var err error
 	ePrefix := "BigIntMathSubtract.SubtractNumStrDtoArray() "
-	finalResult := BigIntBasicMathResult{}.New()
-	finalResult.Result, err = BigIntNum{}.NewNumStrDto(minuend)
+
+	finalResult, err := BigIntNum{}.NewNumStrDto(minuend)
 
 	if err != nil {
-		return BigIntBasicMathResult{},
+		return BigIntNum{},
 			fmt.Errorf(ePrefix +
 				"Error returned by BigIntNum{}.NewNumStrDto(minuend). " +
 				"minuend='%v' Error='%v'", minuend.GetNumStr(), err.Error())
@@ -1292,19 +1109,16 @@ func (bSubtract BigIntMathSubtract) SubtractNumStrDtoArray(
 		bigINum, err := BigIntNum{}.NewNumStrDto(subtrahends[i])
 
 		if err != nil {
-			return BigIntBasicMathResult{},
+			return BigIntNum{},
 				fmt.Errorf(ePrefix +
 					"Error returned by BigIntNum{}.NewNumStrDto(subtrahends[i]). " +
 					"i='%v' subtrahend='%v' Error='%v'",
 					i, subtrahends[i].GetNumStr(), err.Error())
 		}
 
-		bPair := BigIntPair{}.NewBigIntNum(finalResult.Result, bigINum)
+		bPair := BigIntPair{}.NewBigIntNum(finalResult, bigINum)
 
-		result := bSubtract.SubtractPair(bPair)
-
-		finalResult.Result = result.Result.CopyOut()
-
+		finalResult = bSubtract.SubtractPair(bPair)
 	}
 
 	return finalResult, nil
@@ -1358,14 +1172,14 @@ func (bSubtract BigIntMathSubtract) SubtractNumStrDtoOutputToArray(
 
 		result := bSubtract.SubtractPair(bPair)
 
-		resultsArray[i], err = result.Result.GetNumStrDto()
+		resultsArray[i], err = result.GetNumStrDto()
 
 		if err != nil {
 			return []NumStrDto{},
 				fmt.Errorf(ePrefix +
 					"Error returned by result.Result.GetNumStrDto() " +
 					"i='%v' result.Result='%v' Error='%v'. ",
-					i, result.Result.GetNumStr(), err.Error())
+					i, result.GetNumStr(), err.Error())
 		}
 	}
 
@@ -1387,29 +1201,18 @@ func (bSubtract BigIntMathSubtract) SubtractNumStrDtoOutputToArray(
 // In this method, the 'subtrahend' is a series of NumStrDto Types.
 //
 // After the subtraction operation, the 'difference' or 'result' is returned as a
-// Type BigIntBasicMathResult.
-//
-// 					type BigIntBasicMathResult struct {
-// 								Input BigIntPair
-//											Input.Big1		= minuend
-//											Input.Big2		= (last) subtrahend
-//
-// 								Result BigIntNum
-// 											Result.bigInt = difference or result
-//					}
+// Type BigIntNum.
 //
 func (bSubtract BigIntMathSubtract) SubtractNumStrDtoSeries(
-				minuend NumStrDto,
-					subtrahends ... NumStrDto) (BigIntBasicMathResult, error) {
+																			minuend NumStrDto,
+																				subtrahends ... NumStrDto) (BigIntNum, error) {
 
 	ePrefix := "BigIntMathSubtract.SubtractNumStrDtoSeries() "
-	var err error
 
-	finalResult := BigIntBasicMathResult{}.New()
-	finalResult.Result, err = BigIntNum{}.NewNumStrDto(minuend)
+	finalResult, err := BigIntNum{}.NewNumStrDto(minuend)
 
 	if err != nil {
-		return BigIntBasicMathResult{}.New(),
+		return BigIntNum{}.New(),
 			fmt.Errorf(ePrefix +
 				"Error returned by BigIntNum{}.NewNumStrDto(minuend). " +
 				"minuend='%v' Error='%v'", minuend.GetNumStr(), err.Error())
@@ -1420,18 +1223,16 @@ func (bSubtract BigIntMathSubtract) SubtractNumStrDtoSeries(
 		bigINumSubtrahend, err := BigIntNum{}.NewNumStrDto(subtrahend)
 
 		if err != nil {
-			return BigIntBasicMathResult{}.New(),
+			return BigIntNum{}.New(),
 				fmt.Errorf(ePrefix +
 					"Error returned by BigIntNum{}.NewNumStrDto(subtrahend). " +
 					"index='%v' subtrahend='%v' Error='%v'",
 					i, subtrahend.GetNumStr(), err.Error())
 		}
 
-		bPair := BigIntPair{}.NewBigIntNum(finalResult.Result, bigINumSubtrahend)
+		bPair := BigIntPair{}.NewBigIntNum(finalResult, bigINumSubtrahend)
 
-		result := bSubtract.SubtractPair(bPair)
-
-		finalResult.Result = result.Result.CopyOut()
+		finalResult = bSubtract.SubtractPair(bPair)
 	}
 
 	return finalResult, nil
@@ -1441,26 +1242,15 @@ func (bSubtract BigIntMathSubtract) SubtractNumStrDtoSeries(
 // 'BigIntPair' and proceeds to subtract b2.bigInt from b1.bigInt.
 //
 // After the subtraction operation, the 'difference' or 'result' is returned as a
-// Type BigIntBasicMathResult.
+// Type BigIntNum.
 //
-// 					type BigIntBasicMathResult struct {
-// 								Input BigIntPair
-//											Input.Big1		= minuend
-//											Input.Big2		= subtrahend
-//
-// 								Result BigIntNum
-// 											Result.bigInt = difference or result
-//					}
-//
-func (bSubtract BigIntMathSubtract) SubtractPair(bPair BigIntPair) BigIntBasicMathResult {
+func (bSubtract BigIntMathSubtract) SubtractPair(bPair BigIntPair) BigIntNum {
 
 	bPair.MakePrecisionsEqual()
 	
 	b3 := big.NewInt(0).Sub(bPair.GetBig1BigInt(), bPair.GetBig2BigInt())
 
-	bResult := BigIntBasicMathResult{}
-	bResult.Input = bPair.CopyOut()
-	bResult.Result = BigIntNum{}.NewBigInt(b3, bPair.Big2.GetPrecisionUint())
+	bResult := BigIntNum{}.NewBigInt(b3, bPair.Big2.GetPrecisionUint())
 
 	return bResult
 }

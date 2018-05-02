@@ -49,19 +49,19 @@ func TestBigIntMathSubtract_SubtractBigInts_01(t *testing.T) {
 										biSubtrahend,
 											subtrahendPrecision)
 
-	if !expectedBigINum.Equal(result.Result) {
+	if !expectedBigINum.Equal(result) {
 		t.Errorf("Error: Expected BigIntNum='%s'. Instead, BigIntNum= '%s'. ",
-			expectedBigINum.bigInt.Text(10), result.Result.bigInt.Text(10))
+			expectedBigINum.bigInt.Text(10), result.bigInt.Text(10))
 	}
 
-	if expectedBigINum.bigInt.Cmp(result.Result.bigInt) != 0 {
+	if expectedBigINum.bigInt.Cmp(result.bigInt) != 0 {
 		t.Errorf("Comparison Error: Expected BigIntNum='%s'. Instead, BigIntNum= '%s'. ",
-			expectedBigINum.bigInt.Text(10), result.Result.bigInt.Text(10))
+			expectedBigINum.bigInt.Text(10), result.bigInt.Text(10))
 	}
 
-	if expectedBigINumSign != result.Result.sign {
+	if expectedBigINumSign != result.sign {
 		t.Errorf("Error: Expected number sign='%v'. Instead, number sign='%v'",
-			expectedBigINumSign, result.Result.sign)
+			expectedBigINumSign, result.sign)
 	}
 
 }
@@ -108,19 +108,19 @@ func TestBigIntMathSubtract_SubtractBigInts_02(t *testing.T) {
 		biSubtrahend,
 		subtrahendPrecision)
 
-	if !expectedBigINum.Equal(result.Result) {
+	if !expectedBigINum.Equal(result) {
 		t.Errorf("Error: Expected BigIntNum='%s'. Instead, BigIntNum= '%s'. ",
-			expectedBigINum.bigInt.Text(10), result.Result.bigInt.Text(10))
+			expectedBigINum.bigInt.Text(10), result.bigInt.Text(10))
 	}
 
-	if expectedBigINum.bigInt.Cmp(result.Result.bigInt) != 0 {
+	if expectedBigINum.bigInt.Cmp(result.bigInt) != 0 {
 		t.Errorf("Comparison Error: Expected BigIntNum='%s'. Instead, BigIntNum= '%s'. ",
-			expectedBigINum.bigInt.Text(10), result.Result.bigInt.Text(10))
+			expectedBigINum.bigInt.Text(10), result.bigInt.Text(10))
 	}
 
-	if expectedBigINumSign != result.Result.sign {
+	if expectedBigINumSign != result.sign {
 		t.Errorf("Error: Expected number sign='%v'. Instead, number sign='%v'",
-			expectedBigINumSign, result.Result.sign)
+			expectedBigINumSign, result.sign)
 	}
 
 }
@@ -167,19 +167,19 @@ func TestBigIntMathSubtract_SubtractBigInts_03(t *testing.T) {
 		biSubtrahend,
 		subtrahendPrecision)
 
-	if !expectedBigINum.Equal(result.Result) {
+	if !expectedBigINum.Equal(result) {
 		t.Errorf("Error: Expected BigIntNum='%s'. Instead, BigIntNum= '%s'. ",
-			expectedBigINum.bigInt.Text(10), result.Result.bigInt.Text(10))
+			expectedBigINum.bigInt.Text(10), result.bigInt.Text(10))
 	}
 
-	if expectedBigINum.bigInt.Cmp(result.Result.bigInt) != 0 {
+	if expectedBigINum.bigInt.Cmp(result.bigInt) != 0 {
 		t.Errorf("Comparison Error: Expected BigIntNum='%s'. Instead, BigIntNum= '%s'. ",
-			expectedBigINum.bigInt.Text(10), result.Result.bigInt.Text(10))
+			expectedBigINum.bigInt.Text(10), result.bigInt.Text(10))
 	}
 
-	if expectedBigINumSign != result.Result.sign {
+	if expectedBigINumSign != result.sign {
 		t.Errorf("Error: Expected number sign='%v'. Instead, number sign='%v'",
-			expectedBigINumSign, result.Result.sign)
+			expectedBigINumSign, result.sign)
 	}
 }
 
@@ -226,19 +226,19 @@ func TestBigIntMathSubtract_SubtractBigInts_04(t *testing.T) {
 							biSubtrahend,
 								subtrahendPrecision)
 
-	if !expectedBigINum.Equal(result.Result) {
+	if !expectedBigINum.Equal(result) {
 		t.Errorf("Error: Expected BigIntNum='%s'. Instead, BigIntNum= '%s'. ",
-			expectedBigINum.bigInt.Text(10), result.Result.bigInt.Text(10))
+			expectedBigINum.bigInt.Text(10), result.bigInt.Text(10))
 	}
 
-	if expectedBigINum.bigInt.Cmp(result.Result.bigInt) != 0 {
+	if expectedBigINum.bigInt.Cmp(result.bigInt) != 0 {
 		t.Errorf("Comparison Error: Expected BigIntNum='%s'. Instead, BigIntNum= '%s'. ",
-			expectedBigINum.bigInt.Text(10), result.Result.bigInt.Text(10))
+			expectedBigINum.bigInt.Text(10), result.bigInt.Text(10))
 	}
 
-	if expectedBigINumSign != result.Result.sign {
+	if expectedBigINumSign != result.sign {
 		t.Errorf("Error: Expected number sign='%v'. Instead, number sign='%v'",
-			expectedBigINumSign, result.Result.sign)
+			expectedBigINumSign, result.sign)
 	}
 
 }
@@ -279,19 +279,19 @@ func TestBigIntMathSubtract_SubtractBigIntNums_01(t *testing.T) {
 
 	result := BigIntMathSubtract{}.SubtractBigIntNums(minuendBiNum, subtrahendBiNum)
 
-	if !expectedBigINum.Equal(result.Result) {
+	if !expectedBigINum.Equal(result) {
 		t.Errorf("Error: Expected BigIntNum='%s'. Instead, BigIntNum= '%s'. ",
-			expectedBigINum.bigInt.Text(10), result.Result.bigInt.Text(10))
+			expectedBigINum.bigInt.Text(10), result.bigInt.Text(10))
 	}
 
-	if expectedBigINum.bigInt.Cmp(result.Result.bigInt) != 0 {
+	if expectedBigINum.bigInt.Cmp(result.bigInt) != 0 {
 		t.Errorf("Comparison Error: Expected BigIntNum='%s'. Instead, BigIntNum= '%s'. ",
-			expectedBigINum.bigInt.Text(10), result.Result.bigInt.Text(10))
+			expectedBigINum.bigInt.Text(10), result.bigInt.Text(10))
 	}
 
-	if expectedBigINumSign != result.Result.sign {
+	if expectedBigINumSign != result.sign {
 		t.Errorf("Error: Expected number sign='%v'. Instead, number sign='%v'",
-			expectedBigINumSign, result.Result.sign)
+			expectedBigINumSign, result.sign)
 	}
 
 }
@@ -329,19 +329,19 @@ func TestBigIntMathSubtract_SubtractBigIntNums_02(t *testing.T) {
 
 	result := BigIntMathSubtract{}.SubtractBigIntNums(minuendBiNum, subtrahendBiNum)
 
-	if !expectedBigINum.Equal(result.Result) {
+	if !expectedBigINum.Equal(result) {
 		t.Errorf("Error: Expected BigIntNum='%s'. Instead, BigIntNum= '%s'. ",
-			expectedBigINum.bigInt.Text(10), result.Result.bigInt.Text(10))
+			expectedBigINum.bigInt.Text(10), result.bigInt.Text(10))
 	}
 
-	if expectedBigINum.bigInt.Cmp(result.Result.bigInt) != 0 {
+	if expectedBigINum.bigInt.Cmp(result.bigInt) != 0 {
 		t.Errorf("Comparison Error: Expected BigIntNum='%s'. Instead, BigIntNum= '%s'. ",
-			expectedBigINum.bigInt.Text(10), result.Result.bigInt.Text(10))
+			expectedBigINum.bigInt.Text(10), result.bigInt.Text(10))
 	}
 
-	if expectedBigINumSign != result.Result.sign {
+	if expectedBigINumSign != result.sign {
 		t.Errorf("Error: Expected number sign='%v'. Instead, number sign='%v'",
-			expectedBigINumSign, result.Result.sign)
+			expectedBigINumSign, result.sign)
 	}
 
 }
@@ -379,19 +379,19 @@ func TestBigIntMathSubtract_SubtractBigIntNums_03(t *testing.T) {
 
 	result := BigIntMathSubtract{}.SubtractBigIntNums(minuendBiNum, subtrahendBiNum)
 
-	if !expectedBigINum.Equal(result.Result) {
+	if !expectedBigINum.Equal(result) {
 		t.Errorf("Error: Expected BigIntNum='%s'. Instead, BigIntNum= '%s'. ",
-			expectedBigINum.bigInt.Text(10), result.Result.bigInt.Text(10))
+			expectedBigINum.bigInt.Text(10), result.bigInt.Text(10))
 	}
 
-	if expectedBigINum.bigInt.Cmp(result.Result.bigInt) != 0 {
+	if expectedBigINum.bigInt.Cmp(result.bigInt) != 0 {
 		t.Errorf("Comparison Error: Expected BigIntNum='%s'. Instead, BigIntNum= '%s'. ",
-			expectedBigINum.bigInt.Text(10), result.Result.bigInt.Text(10))
+			expectedBigINum.bigInt.Text(10), result.bigInt.Text(10))
 	}
 
-	if expectedBigINumSign != result.Result.sign {
+	if expectedBigINumSign != result.sign {
 		t.Errorf("Error: Expected number sign='%v'. Instead, number sign='%v'",
-			expectedBigINumSign, result.Result.sign)
+			expectedBigINumSign, result.sign)
 	}
 }
 
@@ -429,19 +429,19 @@ func TestBigIntMathSubtract_SubtractBigIntNums_04(t *testing.T) {
 
 	result := BigIntMathSubtract{}.SubtractBigIntNums(minuendBiNum, subtrahendBiNum)
 
-	if !expectedBigINum.Equal(result.Result) {
+	if !expectedBigINum.Equal(result) {
 		t.Errorf("Error: Expected BigIntNum='%s'. Instead, BigIntNum= '%s'. ",
-			expectedBigINum.bigInt.Text(10), result.Result.bigInt.Text(10))
+			expectedBigINum.bigInt.Text(10), result.bigInt.Text(10))
 	}
 
-	if expectedBigINum.bigInt.Cmp(result.Result.bigInt) != 0 {
+	if expectedBigINum.bigInt.Cmp(result.bigInt) != 0 {
 		t.Errorf("Comparison Error: Expected BigIntNum='%s'. Instead, BigIntNum= '%s'. ",
-			expectedBigINum.bigInt.Text(10), result.Result.bigInt.Text(10))
+			expectedBigINum.bigInt.Text(10), result.bigInt.Text(10))
 	}
 
-	if expectedBigINumSign != result.Result.sign {
+	if expectedBigINumSign != result.sign {
 		t.Errorf("Error: Expected number sign='%v'. Instead, number sign='%v'",
-			expectedBigINumSign, result.Result.sign)
+			expectedBigINumSign, result.sign)
 	}
 
 }
@@ -524,14 +524,14 @@ func TestBigIntMathSubtract_SubtractBigIntNumArray_01(t *testing.T) {
 
 	result := BigIntMathSubtract{}.SubtractBigIntNumArray(minuendBiNum, subtrahendAry)
 
-	if expectedBigINum.bigInt.Cmp(result.Result.bigInt) != 0 {
+	if expectedBigINum.bigInt.Cmp(result.bigInt) != 0 {
 		t.Errorf("Comparison Error: Expected BigIntNum='%s'. Instead, BigIntNum= '%s'. ",
-			expectedBigINum.bigInt.Text(10), result.Result.bigInt.Text(10))
+			expectedBigINum.bigInt.Text(10), result.bigInt.Text(10))
 	}
 
-	if expectedBigINumSign != result.Result.sign {
+	if expectedBigINumSign != result.sign {
 		t.Errorf("Error: Expected number sign='%v'. Instead, number sign='%v'",
-			expectedBigINumSign, result.Result.sign)
+			expectedBigINumSign, result.sign)
 	}
 
 }
@@ -616,14 +616,14 @@ func TestBigIntMathSubtract_SubtractBigIntNumArray_02(t *testing.T) {
 
 	result := BigIntMathSubtract{}.SubtractBigIntNumArray(minuendBiNum, subtrahendAry)
 
-	if expectedBigINum.bigInt.Cmp(result.Result.bigInt) != 0 {
+	if expectedBigINum.bigInt.Cmp(result.bigInt) != 0 {
 		t.Errorf("Comparison Error: Expected BigIntNum='%s'. Instead, BigIntNum= '%s'. ",
-			expectedBigINum.bigInt.Text(10), result.Result.bigInt.Text(10))
+			expectedBigINum.bigInt.Text(10), result.bigInt.Text(10))
 	}
 
-	if expectedBigINumSign != result.Result.sign {
+	if expectedBigINumSign != result.sign {
 		t.Errorf("Error: Expected number sign='%v'. Instead, number sign='%v'",
-			expectedBigINumSign, result.Result.sign)
+			expectedBigINumSign, result.sign)
 	}
 
 }
@@ -706,14 +706,14 @@ func TestBigIntMathSubtract_SubtractBigIntNumArray_03(t *testing.T) {
 
 	result := BigIntMathSubtract{}.SubtractBigIntNumArray(minuendBiNum, subtrahendAry)
 
-	if expectedBigINum.bigInt.Cmp(result.Result.bigInt) != 0 {
+	if expectedBigINum.bigInt.Cmp(result.bigInt) != 0 {
 		t.Errorf("Comparison Error: Expected BigIntNum='%s'. Instead, BigIntNum= '%s'. ",
-			expectedBigINum.bigInt.Text(10), result.Result.bigInt.Text(10))
+			expectedBigINum.bigInt.Text(10), result.bigInt.Text(10))
 	}
 
-	if expectedBigINumSign != result.Result.sign {
+	if expectedBigINumSign != result.sign {
 		t.Errorf("Error: Expected number sign='%v'. Instead, number sign='%v'",
-			expectedBigINumSign, result.Result.sign)
+			expectedBigINumSign, result.sign)
 	}
 
 }
@@ -798,14 +798,14 @@ func TestBigIntMathSubtract_SubtractBigIntNumArray_04(t *testing.T) {
 
 	result := BigIntMathSubtract{}.SubtractBigIntNumArray(minuendBiNum, subtrahendAry)
 
-	if expectedBigINum.bigInt.Cmp(result.Result.bigInt) != 0 {
+	if expectedBigINum.bigInt.Cmp(result.bigInt) != 0 {
 		t.Errorf("Comparison Error: Expected BigIntNum='%s'. Instead, BigIntNum= '%s'. ",
-			expectedBigINum.bigInt.Text(10), result.Result.bigInt.Text(10))
+			expectedBigINum.bigInt.Text(10), result.bigInt.Text(10))
 	}
 
-	if expectedBigINumSign != result.Result.sign {
+	if expectedBigINumSign != result.sign {
 		t.Errorf("Error: Expected number sign='%v'. Instead, number sign='%v'",
-			expectedBigINumSign, result.Result.sign)
+			expectedBigINumSign, result.sign)
 	}
 
 }
@@ -1239,14 +1239,14 @@ func TestBigIntMathSubtract_SubtractBigIntNumSeries_01(t *testing.T) {
 		  subtrahendAry[5])
 
 
-	if expectedBigINum.bigInt.Cmp(result.Result.bigInt) != 0 {
+	if expectedBigINum.bigInt.Cmp(result.bigInt) != 0 {
 		t.Errorf("Comparison Error: Expected BigIntNum='%s'. Instead, BigIntNum= '%s'. ",
-			expectedBigINum.bigInt.Text(10), result.Result.bigInt.Text(10))
+			expectedBigINum.bigInt.Text(10), result.bigInt.Text(10))
 	}
 
-	if expectedBigINumSign != result.Result.sign {
+	if expectedBigINumSign != result.sign {
 		t.Errorf("Error: Expected number sign='%v'. Instead, number sign='%v'",
-			expectedBigINumSign, result.Result.sign)
+			expectedBigINumSign, result.sign)
 	}
 
 }
@@ -1339,14 +1339,14 @@ func TestBigIntMathSubtract_SubtractBigIntNumSeries_02(t *testing.T) {
 																	subtrahendAry[5])
 
 
-	if expectedBigINum.bigInt.Cmp(result.Result.bigInt) != 0 {
+	if expectedBigINum.bigInt.Cmp(result.bigInt) != 0 {
 		t.Errorf("Comparison Error: Expected BigIntNum='%s'. Instead, BigIntNum= '%s'. ",
-			expectedBigINum.bigInt.Text(10), result.Result.bigInt.Text(10))
+			expectedBigINum.bigInt.Text(10), result.bigInt.Text(10))
 	}
 
-	if expectedBigINumSign != result.Result.sign {
+	if expectedBigINumSign != result.sign {
 		t.Errorf("Error: Expected number sign='%v'. Instead, number sign='%v'",
-			expectedBigINumSign, result.Result.sign)
+			expectedBigINumSign, result.sign)
 	}
 
 }
@@ -1440,14 +1440,14 @@ func TestBigIntMathSubtract_SubtractBigIntNumSeries_03(t *testing.T) {
 											subtrahendAry[5])
 
 
-	if expectedBigINum.bigInt.Cmp(result.Result.bigInt) != 0 {
+	if expectedBigINum.bigInt.Cmp(result.bigInt) != 0 {
 		t.Errorf("Comparison Error: Expected BigIntNum='%s'. Instead, BigIntNum= '%s'. ",
-			expectedBigINum.bigInt.Text(10), result.Result.bigInt.Text(10))
+			expectedBigINum.bigInt.Text(10), result.bigInt.Text(10))
 	}
 
-	if expectedBigINumSign != result.Result.sign {
+	if expectedBigINumSign != result.sign {
 		t.Errorf("Error: Expected number sign='%v'. Instead, number sign='%v'",
-			expectedBigINumSign, result.Result.sign)
+			expectedBigINumSign, result.sign)
 	}
 
 }
@@ -1539,14 +1539,14 @@ func TestBigIntMathSubtract_SubtractBigIntNumSeries_04(t *testing.T) {
 									subtrahendAry[4],
 									subtrahendAry[5])
 
-	if expectedBigINum.bigInt.Cmp(result.Result.bigInt) != 0 {
+	if expectedBigINum.bigInt.Cmp(result.bigInt) != 0 {
 		t.Errorf("Comparison Error: Expected BigIntNum='%s'. Instead, BigIntNum= '%s'. ",
-			expectedBigINum.bigInt.Text(10), result.Result.bigInt.Text(10))
+			expectedBigINum.bigInt.Text(10), result.bigInt.Text(10))
 	}
 
-	if expectedBigINumSign != result.Result.sign {
+	if expectedBigINumSign != result.sign {
 		t.Errorf("Error: Expected number sign='%v'. Instead, number sign='%v'",
-			expectedBigINumSign, result.Result.sign)
+			expectedBigINumSign, result.sign)
 	}
 
 }
@@ -1592,19 +1592,19 @@ func TestBigIntMathSubtract_SubtractDecimal_01(t *testing.T) {
 			minuendStr ,subtrahendStr, err.Error())
 	}
 
-	if !expectedBigINum.Equal(result.Result) {
+	if !expectedBigINum.Equal(result) {
 		t.Errorf("Error: Expected BigIntNum='%s'. Instead, BigIntNum= '%s'. ",
-			expectedBigINum.bigInt.Text(10), result.Result.bigInt.Text(10))
+			expectedBigINum.bigInt.Text(10), result.bigInt.Text(10))
 	}
 
-	if expectedBigINum.bigInt.Cmp(result.Result.bigInt) != 0 {
+	if expectedBigINum.bigInt.Cmp(result.bigInt) != 0 {
 		t.Errorf("Comparison Error: Expected BigIntNum='%s'. Instead, BigIntNum= '%s'. ",
-			expectedBigINum.bigInt.Text(10), result.Result.bigInt.Text(10))
+			expectedBigINum.bigInt.Text(10), result.bigInt.Text(10))
 	}
 
-	if expectedBigINumSign != result.Result.sign {
+	if expectedBigINumSign != result.sign {
 		t.Errorf("Error: Expected number sign='%v'. Instead, number sign='%v'",
-			expectedBigINumSign, result.Result.sign)
+			expectedBigINumSign, result.sign)
 	}
 
 }
@@ -1649,14 +1649,14 @@ func TestBigIntMathSubtract_SubtractDecimal_02(t *testing.T) {
 			minuendStr ,subtrahendStr, err.Error())
 	}
 
-	if expectedBigINum.bigInt.Cmp(result.Result.bigInt) != 0 {
+	if expectedBigINum.bigInt.Cmp(result.bigInt) != 0 {
 		t.Errorf("Comparison Error: Expected BigIntNum='%s'. Instead, BigIntNum= '%s'. ",
-			expectedBigINum.bigInt.Text(10), result.Result.bigInt.Text(10))
+			expectedBigINum.bigInt.Text(10), result.bigInt.Text(10))
 	}
 
-	if expectedBigINumSign != result.Result.sign {
+	if expectedBigINumSign != result.sign {
 		t.Errorf("Error: Expected number sign='%v'. Instead, number sign='%v'",
-			expectedBigINumSign, result.Result.sign)
+			expectedBigINumSign, result.sign)
 	}
 
 }
@@ -1703,19 +1703,19 @@ func TestBigIntMathSubtract_SubtractDecimal_03(t *testing.T) {
 			minuendStr ,subtrahendStr, err.Error())
 	}
 
-	if !expectedBigINum.Equal(result.Result) {
+	if !expectedBigINum.Equal(result) {
 		t.Errorf("Error: Expected BigIntNum='%s'. Instead, BigIntNum= '%s'. ",
-			expectedBigINum.bigInt.Text(10), result.Result.bigInt.Text(10))
+			expectedBigINum.bigInt.Text(10), result.bigInt.Text(10))
 	}
 
-	if expectedBigINum.bigInt.Cmp(result.Result.bigInt) != 0 {
+	if expectedBigINum.bigInt.Cmp(result.bigInt) != 0 {
 		t.Errorf("Comparison Error: Expected BigIntNum='%s'. Instead, BigIntNum= '%s'. ",
-			expectedBigINum.bigInt.Text(10), result.Result.bigInt.Text(10))
+			expectedBigINum.bigInt.Text(10), result.bigInt.Text(10))
 	}
 
-	if expectedBigINumSign != result.Result.sign {
+	if expectedBigINumSign != result.sign {
 		t.Errorf("Error: Expected number sign='%v'. Instead, number sign='%v'",
-			expectedBigINumSign, result.Result.sign)
+			expectedBigINumSign, result.sign)
 	}
 
 }
@@ -1760,19 +1760,19 @@ func TestBigIntMathSubtract_SubtractDecimal_04(t *testing.T) {
 			minuendStr ,subtrahendStr, err.Error())
 	}
 
-	if !expectedBigINum.Equal(result.Result) {
+	if !expectedBigINum.Equal(result) {
 		t.Errorf("Error: Expected BigIntNum='%s'. Instead, BigIntNum= '%s'. ",
-			expectedBigINum.bigInt.Text(10), result.Result.bigInt.Text(10))
+			expectedBigINum.bigInt.Text(10), result.bigInt.Text(10))
 	}
 
-	if expectedBigINum.bigInt.Cmp(result.Result.bigInt) != 0 {
+	if expectedBigINum.bigInt.Cmp(result.bigInt) != 0 {
 		t.Errorf("Comparison Error: Expected BigIntNum='%s'. Instead, BigIntNum= '%s'. ",
-			expectedBigINum.bigInt.Text(10), result.Result.bigInt.Text(10))
+			expectedBigINum.bigInt.Text(10), result.bigInt.Text(10))
 	}
 
-	if expectedBigINumSign != result.Result.sign {
+	if expectedBigINumSign != result.sign {
 		t.Errorf("Error: Expected number sign='%v'. Instead, number sign='%v'",
-			expectedBigINumSign, result.Result.sign)
+			expectedBigINumSign, result.sign)
 	}
 
 }
@@ -1868,14 +1868,14 @@ func TestBigIntMathSubtract_SubtractDecimalArray_01(t *testing.T) {
 			"decMinuend, subtrahendAry). Error='%v' ", err.Error())
 	}
 
-	if expectedBigINum.bigInt.Cmp(result.Result.bigInt) != 0 {
+	if expectedBigINum.bigInt.Cmp(result.bigInt) != 0 {
 		t.Errorf("Comparison Error: Expected BigIntNum='%s'. Instead, BigIntNum= '%s'. ",
-			expectedBigINum.bigInt.Text(10), result.Result.bigInt.Text(10))
+			expectedBigINum.bigInt.Text(10), result.bigInt.Text(10))
 	}
 
-	if expectedBigINumSign != result.Result.sign {
+	if expectedBigINumSign != result.sign {
 		t.Errorf("Error: Expected number sign='%v'. Instead, number sign='%v'",
-			expectedBigINumSign, result.Result.sign)
+			expectedBigINumSign, result.sign)
 	}
 
 }
@@ -1971,14 +1971,14 @@ func TestBigIntMathSubtract_SubtractDecimalArray_02(t *testing.T) {
 			"decMinuend, subtrahendAry). Error='%v' ", err.Error())
 	}
 
-	if expectedBigINum.bigInt.Cmp(result.Result.bigInt) != 0 {
+	if expectedBigINum.bigInt.Cmp(result.bigInt) != 0 {
 		t.Errorf("Comparison Error: Expected BigIntNum='%s'. Instead, BigIntNum= '%s'. ",
-			expectedBigINum.bigInt.Text(10), result.Result.bigInt.Text(10))
+			expectedBigINum.bigInt.Text(10), result.bigInt.Text(10))
 	}
 
-	if expectedBigINumSign != result.Result.sign {
+	if expectedBigINumSign != result.sign {
 		t.Errorf("Error: Expected number sign='%v'. Instead, number sign='%v'",
-			expectedBigINumSign, result.Result.sign)
+			expectedBigINumSign, result.sign)
 	}
 
 }
@@ -2073,14 +2073,14 @@ func TestBigIntMathSubtract_SubtractDecimalArray_03(t *testing.T) {
 			"decMinuend, subtrahendAry). Error='%v' ", err.Error())
 	}
 
-	if expectedBigINum.bigInt.Cmp(result.Result.bigInt) != 0 {
+	if expectedBigINum.bigInt.Cmp(result.bigInt) != 0 {
 		t.Errorf("Comparison Error: Expected BigIntNum='%s'. Instead, BigIntNum= '%s'. ",
-			expectedBigINum.bigInt.Text(10), result.Result.bigInt.Text(10))
+			expectedBigINum.bigInt.Text(10), result.bigInt.Text(10))
 	}
 
-	if expectedBigINumSign != result.Result.sign {
+	if expectedBigINumSign != result.sign {
 		t.Errorf("Error: Expected number sign='%v'. Instead, number sign='%v'",
-			expectedBigINumSign, result.Result.sign)
+			expectedBigINumSign, result.sign)
 	}
 
 }
@@ -2175,14 +2175,14 @@ func TestBigIntMathSubtract_SubtractDecimalArray_04(t *testing.T) {
 			"decMinuend, subtrahendAry). Error='%v' ", err.Error())
 	}
 
-	if expectedBigINum.bigInt.Cmp(result.Result.bigInt) != 0 {
+	if expectedBigINum.bigInt.Cmp(result.bigInt) != 0 {
 		t.Errorf("Comparison Error: Expected BigIntNum='%s'. Instead, BigIntNum= '%s'. ",
-			expectedBigINum.bigInt.Text(10), result.Result.bigInt.Text(10))
+			expectedBigINum.bigInt.Text(10), result.bigInt.Text(10))
 	}
 
-	if expectedBigINumSign != result.Result.sign {
+	if expectedBigINumSign != result.sign {
 		t.Errorf("Error: Expected number sign='%v'. Instead, number sign='%v'",
-			expectedBigINumSign, result.Result.sign)
+			expectedBigINumSign, result.sign)
 	}
 
 }
@@ -2654,14 +2654,14 @@ func TestBigIntMathSubtract_SubtractDecimalSeries_01(t *testing.T) {
 			"decMinuend, ...). Error='%v' ", err.Error())
 	}
 
-	if expectedBigINum.bigInt.Cmp(result.Result.bigInt) != 0 {
+	if expectedBigINum.bigInt.Cmp(result.bigInt) != 0 {
 		t.Errorf("Comparison Error: Expected BigIntNum='%s'. Instead, BigIntNum= '%s'. ",
-			expectedBigINum.bigInt.Text(10), result.Result.bigInt.Text(10))
+			expectedBigINum.bigInt.Text(10), result.bigInt.Text(10))
 	}
 
-	if expectedBigINumSign != result.Result.sign {
+	if expectedBigINumSign != result.sign {
 		t.Errorf("Error: Expected number sign='%v'. Instead, number sign='%v'",
-			expectedBigINumSign, result.Result.sign)
+			expectedBigINumSign, result.sign)
 	}
 
 }
@@ -2763,14 +2763,14 @@ func TestBigIntMathSubtract_SubtractDecimalSeries_02(t *testing.T) {
 			"decMinuend, ...). Error='%v' ", err.Error())
 	}
 
-	if expectedBigINum.bigInt.Cmp(result.Result.bigInt) != 0 {
+	if expectedBigINum.bigInt.Cmp(result.bigInt) != 0 {
 		t.Errorf("Comparison Error: Expected BigIntNum='%s'. Instead, BigIntNum= '%s'. ",
-			expectedBigINum.bigInt.Text(10), result.Result.bigInt.Text(10))
+			expectedBigINum.bigInt.Text(10), result.bigInt.Text(10))
 	}
 
-	if expectedBigINumSign != result.Result.sign {
+	if expectedBigINumSign != result.sign {
 		t.Errorf("Error: Expected number sign='%v'. Instead, number sign='%v'",
-			expectedBigINumSign, result.Result.sign)
+			expectedBigINumSign, result.sign)
 	}
 
 }
@@ -2872,14 +2872,14 @@ func TestBigIntMathSubtract_SubtractDecimalSeries_03(t *testing.T) {
 			"decMinuend, ...). Error='%v' ", err.Error())
 	}
 
-	if expectedBigINum.bigInt.Cmp(result.Result.bigInt) != 0 {
+	if expectedBigINum.bigInt.Cmp(result.bigInt) != 0 {
 		t.Errorf("Comparison Error: Expected BigIntNum='%s'. Instead, BigIntNum= '%s'. ",
-			expectedBigINum.bigInt.Text(10), result.Result.bigInt.Text(10))
+			expectedBigINum.bigInt.Text(10), result.bigInt.Text(10))
 	}
 
-	if expectedBigINumSign != result.Result.sign {
+	if expectedBigINumSign != result.sign {
 		t.Errorf("Error: Expected number sign='%v'. Instead, number sign='%v'",
-			expectedBigINumSign, result.Result.sign)
+			expectedBigINumSign, result.sign)
 	}
 
 }
@@ -2982,14 +2982,14 @@ func TestBigIntMathSubtract_SubtractDecimalSeries_04(t *testing.T) {
 			"decMinuend, ...). Error='%v' ", err.Error())
 	}
 
-	if expectedBigINum.bigInt.Cmp(result.Result.bigInt) != 0 {
+	if expectedBigINum.bigInt.Cmp(result.bigInt) != 0 {
 		t.Errorf("Comparison Error: Expected BigIntNum='%s'. Instead, BigIntNum= '%s'. ",
-			expectedBigINum.bigInt.Text(10), result.Result.bigInt.Text(10))
+			expectedBigINum.bigInt.Text(10), result.bigInt.Text(10))
 	}
 
-	if expectedBigINumSign != result.Result.sign {
+	if expectedBigINumSign != result.sign {
 		t.Errorf("Error: Expected number sign='%v'. Instead, number sign='%v'",
-			expectedBigINumSign, result.Result.sign)
+			expectedBigINumSign, result.sign)
 	}
 
 }
@@ -3034,19 +3034,19 @@ func TestBigIntMathSubtract_SubtractIntAry_01(t *testing.T) {
 			iaMinuend.GetNumStr() , iaSubtrahend.GetNumStr(), err.Error())
 	}
 
-	if !expectedBigINum.Equal(result.Result) {
+	if !expectedBigINum.Equal(result) {
 		t.Errorf("Error: Expected BigIntNum='%s'. Instead, BigIntNum= '%s'. ",
-			expectedBigINum.bigInt.Text(10), result.Result.bigInt.Text(10))
+			expectedBigINum.bigInt.Text(10), result.bigInt.Text(10))
 	}
 
-	if expectedBigINum.bigInt.Cmp(result.Result.bigInt) != 0 {
+	if expectedBigINum.bigInt.Cmp(result.bigInt) != 0 {
 		t.Errorf("Comparison Error: Expected BigIntNum='%s'. Instead, BigIntNum= '%s'. ",
-			expectedBigINum.bigInt.Text(10), result.Result.bigInt.Text(10))
+			expectedBigINum.bigInt.Text(10), result.bigInt.Text(10))
 	}
 
-	if expectedBigINumSign != result.Result.sign {
+	if expectedBigINumSign != result.sign {
 		t.Errorf("Error: Expected number sign='%v'. Instead, number sign='%v'",
-			expectedBigINumSign, result.Result.sign)
+			expectedBigINumSign, result.sign)
 	}
 
 }
@@ -3092,14 +3092,14 @@ func TestBigIntMathSubtract_SubtractIntAry_02(t *testing.T) {
 			iaMinuend.GetNumStr() , iaSubtrahend.GetNumStr(), err.Error())
 	}
 
-	if expectedBigINum.bigInt.Cmp(result.Result.bigInt) != 0 {
+	if expectedBigINum.bigInt.Cmp(result.bigInt) != 0 {
 		t.Errorf("Comparison Error: Expected BigIntNum='%s'. Instead, BigIntNum= '%s'. ",
-			expectedBigINum.bigInt.Text(10), result.Result.bigInt.Text(10))
+			expectedBigINum.bigInt.Text(10), result.bigInt.Text(10))
 	}
 
-	if expectedBigINumSign != result.Result.sign {
+	if expectedBigINumSign != result.sign {
 		t.Errorf("Error: Expected number sign='%v'. Instead, number sign='%v'",
-			expectedBigINumSign, result.Result.sign)
+			expectedBigINumSign, result.sign)
 	}
 
 }
@@ -3146,19 +3146,19 @@ func TestBigIntMathSubtract_SubtractIntAry_03(t *testing.T) {
 			iaMinuend.GetNumStr() , iaSubtrahend.GetNumStr(), err.Error())
 	}
 
-	if !expectedBigINum.Equal(result.Result) {
+	if !expectedBigINum.Equal(result) {
 		t.Errorf("Error: Expected BigIntNum='%s'. Instead, BigIntNum= '%s'. ",
-			expectedBigINum.bigInt.Text(10), result.Result.bigInt.Text(10))
+			expectedBigINum.bigInt.Text(10), result.bigInt.Text(10))
 	}
 
-	if expectedBigINum.bigInt.Cmp(result.Result.bigInt) != 0 {
+	if expectedBigINum.bigInt.Cmp(result.bigInt) != 0 {
 		t.Errorf("Comparison Error: Expected BigIntNum='%s'. Instead, BigIntNum= '%s'. ",
-			expectedBigINum.bigInt.Text(10), result.Result.bigInt.Text(10))
+			expectedBigINum.bigInt.Text(10), result.bigInt.Text(10))
 	}
 
-	if expectedBigINumSign != result.Result.sign {
+	if expectedBigINumSign != result.sign {
 		t.Errorf("Error: Expected number sign='%v'. Instead, number sign='%v'",
-			expectedBigINumSign, result.Result.sign)
+			expectedBigINumSign, result.sign)
 	}
 
 }
@@ -3203,19 +3203,19 @@ func TestBigIntMathSubtract_SubtractIntAry_04(t *testing.T) {
 			iaMinuend.GetNumStr() , iaSubtrahend.GetNumStr(), err.Error())
 	}
 
-	if !expectedBigINum.Equal(result.Result) {
+	if !expectedBigINum.Equal(result) {
 		t.Errorf("Error: Expected BigIntNum='%s'. Instead, BigIntNum= '%s'. ",
-			expectedBigINum.bigInt.Text(10), result.Result.bigInt.Text(10))
+			expectedBigINum.bigInt.Text(10), result.bigInt.Text(10))
 	}
 
-	if expectedBigINum.bigInt.Cmp(result.Result.bigInt) != 0 {
+	if expectedBigINum.bigInt.Cmp(result.bigInt) != 0 {
 		t.Errorf("Comparison Error: Expected BigIntNum='%s'. Instead, BigIntNum= '%s'. ",
-			expectedBigINum.bigInt.Text(10), result.Result.bigInt.Text(10))
+			expectedBigINum.bigInt.Text(10), result.bigInt.Text(10))
 	}
 
-	if expectedBigINumSign != result.Result.sign {
+	if expectedBigINumSign != result.sign {
 		t.Errorf("Error: Expected number sign='%v'. Instead, number sign='%v'",
-			expectedBigINumSign, result.Result.sign)
+			expectedBigINumSign, result.sign)
 	}
 
 }
@@ -3310,14 +3310,14 @@ func TestBigIntMathSubtract_SubtractIntAryArray_01(t *testing.T) {
 			"iaMinuend, subtrahendAry). Error='%v' ", err.Error())
 	}
 
-	if expectedBigINum.bigInt.Cmp(result.Result.bigInt) != 0 {
+	if expectedBigINum.bigInt.Cmp(result.bigInt) != 0 {
 		t.Errorf("Comparison Error: Expected BigIntNum='%s'. Instead, BigIntNum= '%s'. ",
-			expectedBigINum.bigInt.Text(10), result.Result.bigInt.Text(10))
+			expectedBigINum.bigInt.Text(10), result.bigInt.Text(10))
 	}
 
-	if expectedBigINumSign != result.Result.sign {
+	if expectedBigINumSign != result.sign {
 		t.Errorf("Error: Expected number sign='%v'. Instead, number sign='%v'",
-			expectedBigINumSign, result.Result.sign)
+			expectedBigINumSign, result.sign)
 	}
 
 }
@@ -3413,14 +3413,14 @@ func TestBigIntMathSubtract_SubtractIntAryArray_02(t *testing.T) {
 			"iaMinuend, subtrahendAry). Error='%v' ", err.Error())
 	}
 
-	if expectedBigINum.bigInt.Cmp(result.Result.bigInt) != 0 {
+	if expectedBigINum.bigInt.Cmp(result.bigInt) != 0 {
 		t.Errorf("Comparison Error: Expected BigIntNum='%s'. Instead, BigIntNum= '%s'. ",
-			expectedBigINum.bigInt.Text(10), result.Result.bigInt.Text(10))
+			expectedBigINum.bigInt.Text(10), result.bigInt.Text(10))
 	}
 
-	if expectedBigINumSign != result.Result.sign {
+	if expectedBigINumSign != result.sign {
 		t.Errorf("Error: Expected number sign='%v'. Instead, number sign='%v'",
-			expectedBigINumSign, result.Result.sign)
+			expectedBigINumSign, result.sign)
 	}
 
 }
@@ -3515,14 +3515,14 @@ func TestBigIntMathSubtract_SubtractIntAryArray_03(t *testing.T) {
 			"iaMinuend, subtrahendAry). Error='%v' ", err.Error())
 	}
 
-	if expectedBigINum.bigInt.Cmp(result.Result.bigInt) != 0 {
+	if expectedBigINum.bigInt.Cmp(result.bigInt) != 0 {
 		t.Errorf("Comparison Error: Expected BigIntNum='%s'. Instead, BigIntNum= '%s'. ",
-			expectedBigINum.bigInt.Text(10), result.Result.bigInt.Text(10))
+			expectedBigINum.bigInt.Text(10), result.bigInt.Text(10))
 	}
 
-	if expectedBigINumSign != result.Result.sign {
+	if expectedBigINumSign != result.sign {
 		t.Errorf("Error: Expected number sign='%v'. Instead, number sign='%v'",
-			expectedBigINumSign, result.Result.sign)
+			expectedBigINumSign, result.sign)
 	}
 
 }
@@ -3617,14 +3617,14 @@ func TestBigIntMathSubtract_SubtractIntAryArray_04(t *testing.T) {
 			"iaMinuend, subtrahendAry). Error='%v' ", err.Error())
 	}
 
-	if expectedBigINum.bigInt.Cmp(result.Result.bigInt) != 0 {
+	if expectedBigINum.bigInt.Cmp(result.bigInt) != 0 {
 		t.Errorf("Comparison Error: Expected BigIntNum='%s'. Instead, BigIntNum= '%s'. ",
-			expectedBigINum.bigInt.Text(10), result.Result.bigInt.Text(10))
+			expectedBigINum.bigInt.Text(10), result.bigInt.Text(10))
 	}
 
-	if expectedBigINumSign != result.Result.sign {
+	if expectedBigINumSign != result.sign {
 		t.Errorf("Error: Expected number sign='%v'. Instead, number sign='%v'",
-			expectedBigINumSign, result.Result.sign)
+			expectedBigINumSign, result.sign)
 	}
 
 }
@@ -4096,14 +4096,14 @@ func TestBigIntMathSubtract_SubtractIntArySeries_01(t *testing.T) {
 			"iaMinuend, ...). Error='%v' ", err.Error())
 	}
 
-	if expectedBigINum.bigInt.Cmp(result.Result.bigInt) != 0 {
+	if expectedBigINum.bigInt.Cmp(result.bigInt) != 0 {
 		t.Errorf("Comparison Error: Expected BigIntNum='%s'. Instead, BigIntNum= '%s'. ",
-			expectedBigINum.bigInt.Text(10), result.Result.bigInt.Text(10))
+			expectedBigINum.bigInt.Text(10), result.bigInt.Text(10))
 	}
 
-	if expectedBigINumSign != result.Result.sign {
+	if expectedBigINumSign != result.sign {
 		t.Errorf("Error: Expected number sign='%v'. Instead, number sign='%v'",
-			expectedBigINumSign, result.Result.sign)
+			expectedBigINumSign, result.sign)
 	}
 
 }
@@ -4205,14 +4205,14 @@ func TestBigIntMathSubtract_SubtractIntArySeries_02(t *testing.T) {
 			"iaMinuend, ...). Error='%v' ", err.Error())
 	}
 
-	if expectedBigINum.bigInt.Cmp(result.Result.bigInt) != 0 {
+	if expectedBigINum.bigInt.Cmp(result.bigInt) != 0 {
 		t.Errorf("Comparison Error: Expected BigIntNum='%s'. Instead, BigIntNum= '%s'. ",
-			expectedBigINum.bigInt.Text(10), result.Result.bigInt.Text(10))
+			expectedBigINum.bigInt.Text(10), result.bigInt.Text(10))
 	}
 
-	if expectedBigINumSign != result.Result.sign {
+	if expectedBigINumSign != result.sign {
 		t.Errorf("Error: Expected number sign='%v'. Instead, number sign='%v'",
-			expectedBigINumSign, result.Result.sign)
+			expectedBigINumSign, result.sign)
 	}
 
 }
@@ -4314,14 +4314,14 @@ func TestBigIntMathSubtract_SubtractIntArySeries_03(t *testing.T) {
 			"iaMinuend, ...). Error='%v' ", err.Error())
 	}
 
-	if expectedBigINum.bigInt.Cmp(result.Result.bigInt) != 0 {
+	if expectedBigINum.bigInt.Cmp(result.bigInt) != 0 {
 		t.Errorf("Comparison Error: Expected BigIntNum='%s'. Instead, BigIntNum= '%s'. ",
-			expectedBigINum.bigInt.Text(10), result.Result.bigInt.Text(10))
+			expectedBigINum.bigInt.Text(10), result.bigInt.Text(10))
 	}
 
-	if expectedBigINumSign != result.Result.sign {
+	if expectedBigINumSign != result.sign {
 		t.Errorf("Error: Expected number sign='%v'. Instead, number sign='%v'",
-			expectedBigINumSign, result.Result.sign)
+			expectedBigINumSign, result.sign)
 	}
 
 }
@@ -4423,14 +4423,14 @@ func TestBigIntMathSubtract_SubtractIntArySeries_04(t *testing.T) {
 			"iaMinuend, ...). Error='%v' ", err.Error())
 	}
 
-	if expectedBigINum.bigInt.Cmp(result.Result.bigInt) != 0 {
+	if expectedBigINum.bigInt.Cmp(result.bigInt) != 0 {
 		t.Errorf("Comparison Error: Expected BigIntNum='%s'. Instead, BigIntNum= '%s'. ",
-			expectedBigINum.bigInt.Text(10), result.Result.bigInt.Text(10))
+			expectedBigINum.bigInt.Text(10), result.bigInt.Text(10))
 	}
 
-	if expectedBigINumSign != result.Result.sign {
+	if expectedBigINumSign != result.sign {
 		t.Errorf("Error: Expected number sign='%v'. Instead, number sign='%v'",
-			expectedBigINumSign, result.Result.sign)
+			expectedBigINumSign, result.sign)
 	}
 
 }
@@ -4476,19 +4476,19 @@ func TestBigIntMathSubtract_SubtractINumMgr_01(t *testing.T) {
 			minuendStr ,subtrahendStr, err.Error())
 	}
 
-	if !expectedBigINum.Equal(result.Result) {
+	if !expectedBigINum.Equal(result) {
 		t.Errorf("Error: Expected BigIntNum='%s'. Instead, BigIntNum= '%s'. ",
-			expectedBigINum.bigInt.Text(10), result.Result.bigInt.Text(10))
+			expectedBigINum.bigInt.Text(10), result.bigInt.Text(10))
 	}
 
-	if expectedBigINum.bigInt.Cmp(result.Result.bigInt) != 0 {
+	if expectedBigINum.bigInt.Cmp(result.bigInt) != 0 {
 		t.Errorf("Comparison Error: Expected BigIntNum='%s'. Instead, BigIntNum= '%s'. ",
-			expectedBigINum.bigInt.Text(10), result.Result.bigInt.Text(10))
+			expectedBigINum.bigInt.Text(10), result.bigInt.Text(10))
 	}
 
-	if expectedBigINumSign != result.Result.sign {
+	if expectedBigINumSign != result.sign {
 		t.Errorf("Error: Expected number sign='%v'. Instead, number sign='%v'",
-			expectedBigINumSign, result.Result.sign)
+			expectedBigINumSign, result.sign)
 	}
 
 }
@@ -4533,14 +4533,14 @@ func TestBigIntMathSubtract_SubtractINumMgr_02(t *testing.T) {
 			minuendStr ,subtrahendStr, err.Error())
 	}
 
-	if expectedBigINum.bigInt.Cmp(result.Result.bigInt) != 0 {
+	if expectedBigINum.bigInt.Cmp(result.bigInt) != 0 {
 		t.Errorf("Comparison Error: Expected BigIntNum='%s'. Instead, BigIntNum= '%s'. ",
-			expectedBigINum.bigInt.Text(10), result.Result.bigInt.Text(10))
+			expectedBigINum.bigInt.Text(10), result.bigInt.Text(10))
 	}
 
-	if expectedBigINumSign != result.Result.sign {
+	if expectedBigINumSign != result.sign {
 		t.Errorf("Error: Expected number sign='%v'. Instead, number sign='%v'",
-			expectedBigINumSign, result.Result.sign)
+			expectedBigINumSign, result.sign)
 	}
 
 }
@@ -4587,19 +4587,19 @@ func TestBigIntMathSubtract_SubtractINumMgr_03(t *testing.T) {
 			minuendStr ,subtrahendStr, err.Error())
 	}
 
-	if !expectedBigINum.Equal(result.Result) {
+	if !expectedBigINum.Equal(result) {
 		t.Errorf("Error: Expected BigIntNum='%s'. Instead, BigIntNum= '%s'. ",
-			expectedBigINum.bigInt.Text(10), result.Result.bigInt.Text(10))
+			expectedBigINum.bigInt.Text(10), result.bigInt.Text(10))
 	}
 
-	if expectedBigINum.bigInt.Cmp(result.Result.bigInt) != 0 {
+	if expectedBigINum.bigInt.Cmp(result.bigInt) != 0 {
 		t.Errorf("Comparison Error: Expected BigIntNum='%s'. Instead, BigIntNum= '%s'. ",
-			expectedBigINum.bigInt.Text(10), result.Result.bigInt.Text(10))
+			expectedBigINum.bigInt.Text(10), result.bigInt.Text(10))
 	}
 
-	if expectedBigINumSign != result.Result.sign {
+	if expectedBigINumSign != result.sign {
 		t.Errorf("Error: Expected number sign='%v'. Instead, number sign='%v'",
-			expectedBigINumSign, result.Result.sign)
+			expectedBigINumSign, result.sign)
 	}
 
 }
@@ -4644,19 +4644,19 @@ func TestBigIntMathSubtract_SubtractINumMgr_04(t *testing.T) {
 			minuendStr ,subtrahendStr, err.Error())
 	}
 
-	if !expectedBigINum.Equal(result.Result) {
+	if !expectedBigINum.Equal(result) {
 		t.Errorf("Error: Expected BigIntNum='%s'. Instead, BigIntNum= '%s'. ",
-			expectedBigINum.bigInt.Text(10), result.Result.bigInt.Text(10))
+			expectedBigINum.bigInt.Text(10), result.bigInt.Text(10))
 	}
 
-	if expectedBigINum.bigInt.Cmp(result.Result.bigInt) != 0 {
+	if expectedBigINum.bigInt.Cmp(result.bigInt) != 0 {
 		t.Errorf("Comparison Error: Expected BigIntNum='%s'. Instead, BigIntNum= '%s'. ",
-			expectedBigINum.bigInt.Text(10), result.Result.bigInt.Text(10))
+			expectedBigINum.bigInt.Text(10), result.bigInt.Text(10))
 	}
 
-	if expectedBigINumSign != result.Result.sign {
+	if expectedBigINumSign != result.sign {
 		t.Errorf("Error: Expected number sign='%v'. Instead, number sign='%v'",
-			expectedBigINumSign, result.Result.sign)
+			expectedBigINumSign, result.sign)
 	}
 
 }
@@ -4763,14 +4763,14 @@ func TestBigIntMathSubtract_SubtractINumMgrArray_01(t *testing.T) {
 			"&nDtoMinuend, subtrahendAry). Error='%v' ", err.Error())
 	}
 
-	if expectedBigINum.bigInt.Cmp(result.Result.bigInt) != 0 {
+	if expectedBigINum.bigInt.Cmp(result.bigInt) != 0 {
 		t.Errorf("Comparison Error: Expected BigIntNum='%s'. Instead, BigIntNum= '%s'. ",
-			expectedBigINum.bigInt.Text(10), result.Result.bigInt.Text(10))
+			expectedBigINum.bigInt.Text(10), result.bigInt.Text(10))
 	}
 
-	if expectedBigINumSign != result.Result.sign {
+	if expectedBigINumSign != result.sign {
 		t.Errorf("Error: Expected number sign='%v'. Instead, number sign='%v'",
-			expectedBigINumSign, result.Result.sign)
+			expectedBigINumSign, result.sign)
 	}
 
 }
@@ -4877,14 +4877,14 @@ func TestBigIntMathSubtract_SubtractINumMgrArray_02(t *testing.T) {
 			"&nDtoMinuend, subtrahendAry). Error='%v' ", err.Error())
 	}
 
-	if expectedBigINum.bigInt.Cmp(result.Result.bigInt) != 0 {
+	if expectedBigINum.bigInt.Cmp(result.bigInt) != 0 {
 		t.Errorf("Comparison Error: Expected BigIntNum='%s'. Instead, BigIntNum= '%s'. ",
-			expectedBigINum.bigInt.Text(10), result.Result.bigInt.Text(10))
+			expectedBigINum.bigInt.Text(10), result.bigInt.Text(10))
 	}
 
-	if expectedBigINumSign != result.Result.sign {
+	if expectedBigINumSign != result.sign {
 		t.Errorf("Error: Expected number sign='%v'. Instead, number sign='%v'",
-			expectedBigINumSign, result.Result.sign)
+			expectedBigINumSign, result.sign)
 	}
 
 }
@@ -4992,14 +4992,14 @@ func TestBigIntMathSubtract_SubtractINumMgrArray_03(t *testing.T) {
 			"&nDtoMinuend, subtrahendAry). Error='%v' ", err.Error())
 	}
 
-	if expectedBigINum.bigInt.Cmp(result.Result.bigInt) != 0 {
+	if expectedBigINum.bigInt.Cmp(result.bigInt) != 0 {
 		t.Errorf("Comparison Error: Expected BigIntNum='%s'. Instead, BigIntNum= '%s'. ",
-			expectedBigINum.bigInt.Text(10), result.Result.bigInt.Text(10))
+			expectedBigINum.bigInt.Text(10), result.bigInt.Text(10))
 	}
 
-	if expectedBigINumSign != result.Result.sign {
+	if expectedBigINumSign != result.sign {
 		t.Errorf("Error: Expected number sign='%v'. Instead, number sign='%v'",
-			expectedBigINumSign, result.Result.sign)
+			expectedBigINumSign, result.sign)
 	}
 
 }
@@ -5107,14 +5107,14 @@ func TestBigIntMathSubtract_SubtractINumMgrArray_04(t *testing.T) {
 			"&nDtoMinuend, subtrahendAry). Error='%v' ", err.Error())
 	}
 
-	if expectedBigINum.bigInt.Cmp(result.Result.bigInt) != 0 {
+	if expectedBigINum.bigInt.Cmp(result.bigInt) != 0 {
 		t.Errorf("Comparison Error: Expected BigIntNum='%s'. Instead, BigIntNum= '%s'. ",
-			expectedBigINum.bigInt.Text(10), result.Result.bigInt.Text(10))
+			expectedBigINum.bigInt.Text(10), result.bigInt.Text(10))
 	}
 
-	if expectedBigINumSign != result.Result.sign {
+	if expectedBigINumSign != result.sign {
 		t.Errorf("Error: Expected number sign='%v'. Instead, number sign='%v'",
-			expectedBigINumSign, result.Result.sign)
+			expectedBigINumSign, result.sign)
 	}
 
 }
@@ -5606,14 +5606,14 @@ func TestBigIntMathSubtract_SubtractINumMgrSeries_01(t *testing.T) {
 			"&nDtoMinuend, ...). Error='%v' ", err.Error())
 	}
 
-	if expectedBigINum.bigInt.Cmp(result.Result.bigInt) != 0 {
+	if expectedBigINum.bigInt.Cmp(result.bigInt) != 0 {
 		t.Errorf("Comparison Error: Expected BigIntNum='%s'. Instead, BigIntNum= '%s'. ",
-			expectedBigINum.bigInt.Text(10), result.Result.bigInt.Text(10))
+			expectedBigINum.bigInt.Text(10), result.bigInt.Text(10))
 	}
 
-	if expectedBigINumSign != result.Result.sign {
+	if expectedBigINumSign != result.sign {
 		t.Errorf("Error: Expected number sign='%v'. Instead, number sign='%v'",
-			expectedBigINumSign, result.Result.sign)
+			expectedBigINumSign, result.sign)
 	}
 
 }
@@ -5717,14 +5717,14 @@ func TestBigIntMathSubtract_SubtractINumMgrSeries_02(t *testing.T) {
 			"&nDtoMinuend, ...). Error='%v' ", err.Error())
 	}
 
-	if expectedBigINum.bigInt.Cmp(result.Result.bigInt) != 0 {
+	if expectedBigINum.bigInt.Cmp(result.bigInt) != 0 {
 		t.Errorf("Comparison Error: Expected BigIntNum='%s'. Instead, BigIntNum= '%s'. ",
-			expectedBigINum.bigInt.Text(10), result.Result.bigInt.Text(10))
+			expectedBigINum.bigInt.Text(10), result.bigInt.Text(10))
 	}
 
-	if expectedBigINumSign != result.Result.sign {
+	if expectedBigINumSign != result.sign {
 		t.Errorf("Error: Expected number sign='%v'. Instead, number sign='%v'",
-			expectedBigINumSign, result.Result.sign)
+			expectedBigINumSign, result.sign)
 	}
 
 }
@@ -5823,14 +5823,14 @@ func TestBigIntMathSubtract_SubtractINumMgrSeries_03(t *testing.T) {
 			"&nDtoMinuend, ... subtrahend). Error='%v' ", err.Error())
 	}
 
-	if expectedBigINum.bigInt.Cmp(result.Result.bigInt) != 0 {
+	if expectedBigINum.bigInt.Cmp(result.bigInt) != 0 {
 		t.Errorf("Comparison Error: Expected BigIntNum='%s'. Instead, BigIntNum= '%s'. ",
-			expectedBigINum.bigInt.Text(10), result.Result.bigInt.Text(10))
+			expectedBigINum.bigInt.Text(10), result.bigInt.Text(10))
 	}
 
-	if expectedBigINumSign != result.Result.sign {
+	if expectedBigINumSign != result.sign {
 		t.Errorf("Error: Expected number sign='%v'. Instead, number sign='%v'",
-			expectedBigINumSign, result.Result.sign)
+			expectedBigINumSign, result.sign)
 	}
 
 }
@@ -5929,14 +5929,14 @@ func TestBigIntMathSubtract_SubtractINumMgrSeries_04(t *testing.T) {
 			"&nDtoMinuend, ... subtrahend). Error='%v' ", err.Error())
 	}
 
-	if expectedBigINum.bigInt.Cmp(result.Result.bigInt) != 0 {
+	if expectedBigINum.bigInt.Cmp(result.bigInt) != 0 {
 		t.Errorf("Comparison Error: Expected BigIntNum='%s'. Instead, BigIntNum= '%s'. ",
-			expectedBigINum.bigInt.Text(10), result.Result.bigInt.Text(10))
+			expectedBigINum.bigInt.Text(10), result.bigInt.Text(10))
 	}
 
-	if expectedBigINumSign != result.Result.sign {
+	if expectedBigINumSign != result.sign {
 		t.Errorf("Error: Expected number sign='%v'. Instead, number sign='%v'",
-			expectedBigINumSign, result.Result.sign)
+			expectedBigINumSign, result.sign)
 	}
 
 }
@@ -5967,19 +5967,19 @@ func TestBigIntMathSubtract_SubtractNumStr_01(t *testing.T) {
 			minuendStr , subtrahendStr, err.Error())
 	}
 
-	if !expectedBigINum.Equal(result.Result) {
+	if !expectedBigINum.Equal(result) {
 		t.Errorf("Error: Expected BigIntNum='%s'. Instead, BigIntNum= '%s'. ",
-			expectedBigINum.bigInt.Text(10), result.Result.bigInt.Text(10))
+			expectedBigINum.bigInt.Text(10), result.bigInt.Text(10))
 	}
 
-	if expectedBigINum.bigInt.Cmp(result.Result.bigInt) != 0 {
+	if expectedBigINum.bigInt.Cmp(result.bigInt) != 0 {
 		t.Errorf("Comparison Error: Expected BigIntNum='%s'. Instead, BigIntNum= '%s'. ",
-			expectedBigINum.bigInt.Text(10), result.Result.bigInt.Text(10))
+			expectedBigINum.bigInt.Text(10), result.bigInt.Text(10))
 	}
 
-	if expectedBigINumSign != result.Result.sign {
+	if expectedBigINumSign != result.sign {
 		t.Errorf("Error: Expected number sign='%v'. Instead, number sign='%v'",
-			expectedBigINumSign, result.Result.sign)
+			expectedBigINumSign, result.sign)
 	}
 
 }
@@ -6011,14 +6011,14 @@ func TestBigIntMathSubtract_SubtractNumStr_02(t *testing.T) {
 			minuendStr , subtrahendStr, err.Error())
 	}
 
-	if expectedBigINum.bigInt.Cmp(result.Result.bigInt) != 0 {
+	if expectedBigINum.bigInt.Cmp(result.bigInt) != 0 {
 		t.Errorf("Comparison Error: Expected BigIntNum='%s'. Instead, BigIntNum= '%s'. ",
-			expectedBigINum.bigInt.Text(10), result.Result.bigInt.Text(10))
+			expectedBigINum.bigInt.Text(10), result.bigInt.Text(10))
 	}
 
-	if expectedBigINumSign != result.Result.sign {
+	if expectedBigINumSign != result.sign {
 		t.Errorf("Error: Expected number sign='%v'. Instead, number sign='%v'",
-			expectedBigINumSign, result.Result.sign)
+			expectedBigINumSign, result.sign)
 	}
 
 }
@@ -6049,19 +6049,19 @@ func TestBigIntMathSubtract_SubtractNumStr_03(t *testing.T) {
 			minuendStr , subtrahendStr, err.Error())
 	}
 
-	if !expectedBigINum.Equal(result.Result) {
+	if !expectedBigINum.Equal(result) {
 		t.Errorf("Error: Expected BigIntNum='%s'. Instead, BigIntNum= '%s'. ",
-			expectedBigINum.bigInt.Text(10), result.Result.bigInt.Text(10))
+			expectedBigINum.bigInt.Text(10), result.bigInt.Text(10))
 	}
 
-	if expectedBigINum.bigInt.Cmp(result.Result.bigInt) != 0 {
+	if expectedBigINum.bigInt.Cmp(result.bigInt) != 0 {
 		t.Errorf("Comparison Error: Expected BigIntNum='%s'. Instead, BigIntNum= '%s'. ",
-			expectedBigINum.bigInt.Text(10), result.Result.bigInt.Text(10))
+			expectedBigINum.bigInt.Text(10), result.bigInt.Text(10))
 	}
 
-	if expectedBigINumSign != result.Result.sign {
+	if expectedBigINumSign != result.sign {
 		t.Errorf("Error: Expected number sign='%v'. Instead, number sign='%v'",
-			expectedBigINumSign, result.Result.sign)
+			expectedBigINumSign, result.sign)
 	}
 
 }
@@ -6092,19 +6092,19 @@ func TestBigIntMathSubtract_SubtractNumStr_04(t *testing.T) {
 			minuendStr , subtrahendStr, err.Error())
 	}
 
-	if !expectedBigINum.Equal(result.Result) {
+	if !expectedBigINum.Equal(result) {
 		t.Errorf("Error: Expected BigIntNum='%s'. Instead, BigIntNum= '%s'. ",
-			expectedBigINum.bigInt.Text(10), result.Result.bigInt.Text(10))
+			expectedBigINum.bigInt.Text(10), result.bigInt.Text(10))
 	}
 
-	if expectedBigINum.bigInt.Cmp(result.Result.bigInt) != 0 {
+	if expectedBigINum.bigInt.Cmp(result.bigInt) != 0 {
 		t.Errorf("Comparison Error: Expected BigIntNum='%s'. Instead, BigIntNum= '%s'. ",
-			expectedBigINum.bigInt.Text(10), result.Result.bigInt.Text(10))
+			expectedBigINum.bigInt.Text(10), result.bigInt.Text(10))
 	}
 
-	if expectedBigINumSign != result.Result.sign {
+	if expectedBigINumSign != result.sign {
 		t.Errorf("Error: Expected number sign='%v'. Instead, number sign='%v'",
-			expectedBigINumSign, result.Result.sign)
+			expectedBigINumSign, result.sign)
 	}
 
 }
@@ -6152,14 +6152,14 @@ func TestBigIntMathSubtract_SubtractNumStrArray_01(t *testing.T) {
 			"minuendStr, subtrahendAry). Error='%v' ", err.Error())
 	}
 
-	if expectedBigINum.bigInt.Cmp(result.Result.bigInt) != 0 {
+	if expectedBigINum.bigInt.Cmp(result.bigInt) != 0 {
 		t.Errorf("Comparison Error: Expected BigIntNum='%s'. Instead, BigIntNum= '%s'. ",
-			expectedBigINum.bigInt.Text(10), result.Result.bigInt.Text(10))
+			expectedBigINum.bigInt.Text(10), result.bigInt.Text(10))
 	}
 
-	if expectedBigINumSign != result.Result.sign {
+	if expectedBigINumSign != result.sign {
 		t.Errorf("Error: Expected number sign='%v'. Instead, number sign='%v'",
-			expectedBigINumSign, result.Result.sign)
+			expectedBigINumSign, result.sign)
 	}
 
 }
@@ -6206,14 +6206,14 @@ func TestBigIntMathSubtract_SubtractNumStrArray_02(t *testing.T) {
 			"minuendStr, subtrahendAry). Error='%v' ", err.Error())
 	}
 
-	if expectedBigINum.bigInt.Cmp(result.Result.bigInt) != 0 {
+	if expectedBigINum.bigInt.Cmp(result.bigInt) != 0 {
 		t.Errorf("Comparison Error: Expected BigIntNum='%s'. Instead, BigIntNum= '%s'. ",
-			expectedBigINum.bigInt.Text(10), result.Result.bigInt.Text(10))
+			expectedBigINum.bigInt.Text(10), result.bigInt.Text(10))
 	}
 
-	if expectedBigINumSign != result.Result.sign {
+	if expectedBigINumSign != result.sign {
 		t.Errorf("Error: Expected number sign='%v'. Instead, number sign='%v'",
-			expectedBigINumSign, result.Result.sign)
+			expectedBigINumSign, result.sign)
 	}
 
 }
@@ -6260,14 +6260,14 @@ func TestBigIntMathSubtract_SubtractNumStrArray_03(t *testing.T) {
 			"minuendStr, subtrahendAry). Error='%v' ", err.Error())
 	}
 
-	if expectedBigINum.bigInt.Cmp(result.Result.bigInt) != 0 {
+	if expectedBigINum.bigInt.Cmp(result.bigInt) != 0 {
 		t.Errorf("Comparison Error: Expected BigIntNum='%s'. Instead, BigIntNum= '%s'. ",
-			expectedBigINum.bigInt.Text(10), result.Result.bigInt.Text(10))
+			expectedBigINum.bigInt.Text(10), result.bigInt.Text(10))
 	}
 
-	if expectedBigINumSign != result.Result.sign {
+	if expectedBigINumSign != result.sign {
 		t.Errorf("Error: Expected number sign='%v'. Instead, number sign='%v'",
-			expectedBigINumSign, result.Result.sign)
+			expectedBigINumSign, result.sign)
 	}
 
 }
@@ -6314,14 +6314,14 @@ func TestBigIntMathSubtract_SubtractNumStrArray_04(t *testing.T) {
 			"minuendStr, subtrahendAry). Error='%v' ", err.Error())
 	}
 
-	if expectedBigINum.bigInt.Cmp(result.Result.bigInt) != 0 {
+	if expectedBigINum.bigInt.Cmp(result.bigInt) != 0 {
 		t.Errorf("Comparison Error: Expected BigIntNum='%s'. Instead, BigIntNum= '%s'. ",
-			expectedBigINum.bigInt.Text(10), result.Result.bigInt.Text(10))
+			expectedBigINum.bigInt.Text(10), result.bigInt.Text(10))
 	}
 
-	if expectedBigINumSign != result.Result.sign {
+	if expectedBigINumSign != result.sign {
 		t.Errorf("Error: Expected number sign='%v'. Instead, number sign='%v'",
-			expectedBigINumSign, result.Result.sign)
+			expectedBigINumSign, result.sign)
 	}
 
 }
@@ -6655,14 +6655,14 @@ func TestBigIntMathSubtract_SubtractNumStrSeries_01(t *testing.T) {
 			"minuendStr, ...). Error='%v' ", err.Error())
 	}
 
-	if expectedBigINum.bigInt.Cmp(result.Result.bigInt) != 0 {
+	if expectedBigINum.bigInt.Cmp(result.bigInt) != 0 {
 		t.Errorf("Comparison Error: Expected BigIntNum='%s'. Instead, BigIntNum= '%s'. ",
-			expectedBigINum.bigInt.Text(10), result.Result.bigInt.Text(10))
+			expectedBigINum.bigInt.Text(10), result.bigInt.Text(10))
 	}
 
-	if expectedBigINumSign != result.Result.sign {
+	if expectedBigINumSign != result.sign {
 		t.Errorf("Error: Expected number sign='%v'. Instead, number sign='%v'",
-			expectedBigINumSign, result.Result.sign)
+			expectedBigINumSign, result.sign)
 	}
 
 }
@@ -6707,14 +6707,14 @@ func TestBigIntMathSubtract_SubtractNumStrSeries_02(t *testing.T) {
 			"minuendStr, ...). Error='%v' ", err.Error())
 	}
 
-	if expectedBigINum.bigInt.Cmp(result.Result.bigInt) != 0 {
+	if expectedBigINum.bigInt.Cmp(result.bigInt) != 0 {
 		t.Errorf("Comparison Error: Expected BigIntNum='%s'. Instead, BigIntNum= '%s'. ",
-			expectedBigINum.bigInt.Text(10), result.Result.bigInt.Text(10))
+			expectedBigINum.bigInt.Text(10), result.bigInt.Text(10))
 	}
 
-	if expectedBigINumSign != result.Result.sign {
+	if expectedBigINumSign != result.sign {
 		t.Errorf("Error: Expected number sign='%v'. Instead, number sign='%v'",
-			expectedBigINumSign, result.Result.sign)
+			expectedBigINumSign, result.sign)
 	}
 
 }
@@ -6759,14 +6759,14 @@ func TestBigIntMathSubtract_SubtractNumStrSeries_03(t *testing.T) {
 			"minuendStr, ...). Error='%v' ", err.Error())
 	}
 
-	if expectedBigINum.bigInt.Cmp(result.Result.bigInt) != 0 {
+	if expectedBigINum.bigInt.Cmp(result.bigInt) != 0 {
 		t.Errorf("Comparison Error: Expected BigIntNum='%s'. Instead, BigIntNum= '%s'. ",
-			expectedBigINum.bigInt.Text(10), result.Result.bigInt.Text(10))
+			expectedBigINum.bigInt.Text(10), result.bigInt.Text(10))
 	}
 
-	if expectedBigINumSign != result.Result.sign {
+	if expectedBigINumSign != result.sign {
 		t.Errorf("Error: Expected number sign='%v'. Instead, number sign='%v'",
-			expectedBigINumSign, result.Result.sign)
+			expectedBigINumSign, result.sign)
 	}
 
 }
@@ -6811,14 +6811,14 @@ func TestBigIntMathSubtract_SubtractNumStrSeries_04(t *testing.T) {
 			"minuendStr, ...). Error='%v' ", err.Error())
 	}
 
-	if expectedBigINum.bigInt.Cmp(result.Result.bigInt) != 0 {
+	if expectedBigINum.bigInt.Cmp(result.bigInt) != 0 {
 		t.Errorf("Comparison Error: Expected BigIntNum='%s'. Instead, BigIntNum= '%s'. ",
-			expectedBigINum.bigInt.Text(10), result.Result.bigInt.Text(10))
+			expectedBigINum.bigInt.Text(10), result.bigInt.Text(10))
 	}
 
-	if expectedBigINumSign != result.Result.sign {
+	if expectedBigINumSign != result.sign {
 		t.Errorf("Error: Expected number sign='%v'. Instead, number sign='%v'",
-			expectedBigINumSign, result.Result.sign)
+			expectedBigINumSign, result.sign)
 	}
 }
 
@@ -6863,19 +6863,19 @@ func TestBigIntMathSubtract_SubtractNumStrDto_01(t *testing.T) {
 			minuendStr, subtrahendStr, err.Error())
 	}
 
-	if !expectedBigINum.Equal(result.Result) {
+	if !expectedBigINum.Equal(result) {
 		t.Errorf("Error: Expected BigIntNum='%s'. Instead, BigIntNum= '%s'. ",
-			expectedBigINum.bigInt.Text(10), result.Result.bigInt.Text(10))
+			expectedBigINum.bigInt.Text(10), result.bigInt.Text(10))
 	}
 
-	if expectedBigINum.bigInt.Cmp(result.Result.bigInt) != 0 {
+	if expectedBigINum.bigInt.Cmp(result.bigInt) != 0 {
 		t.Errorf("Comparison Error: Expected BigIntNum='%s'. Instead, BigIntNum= '%s'. ",
-			expectedBigINum.bigInt.Text(10), result.Result.bigInt.Text(10))
+			expectedBigINum.bigInt.Text(10), result.bigInt.Text(10))
 	}
 
-	if expectedBigINumSign != result.Result.sign {
+	if expectedBigINumSign != result.sign {
 		t.Errorf("Error: Expected number sign='%v'. Instead, number sign='%v'",
-			expectedBigINumSign, result.Result.sign)
+			expectedBigINumSign, result.sign)
 	}
 
 }
@@ -6920,14 +6920,14 @@ func TestBigIntMathSubtract_SubtractNumStrDto_02(t *testing.T) {
 			minuendStr, subtrahendStr, err.Error())
 	}
 
-	if expectedBigINum.bigInt.Cmp(result.Result.bigInt) != 0 {
+	if expectedBigINum.bigInt.Cmp(result.bigInt) != 0 {
 		t.Errorf("Comparison Error: Expected BigIntNum='%s'. Instead, BigIntNum= '%s'. ",
-			expectedBigINum.bigInt.Text(10), result.Result.bigInt.Text(10))
+			expectedBigINum.bigInt.Text(10), result.bigInt.Text(10))
 	}
 
-	if expectedBigINumSign != result.Result.sign {
+	if expectedBigINumSign != result.sign {
 		t.Errorf("Error: Expected number sign='%v'. Instead, number sign='%v'",
-			expectedBigINumSign, result.Result.sign)
+			expectedBigINumSign, result.sign)
 	}
 
 }
@@ -6974,19 +6974,19 @@ func TestBigIntMathSubtract_SubtractNumStrDto_03(t *testing.T) {
 			minuendStr, subtrahendStr, err.Error())
 	}
 
-	if !expectedBigINum.Equal(result.Result) {
+	if !expectedBigINum.Equal(result) {
 		t.Errorf("Error: Expected BigIntNum='%s'. Instead, BigIntNum= '%s'. ",
-			expectedBigINum.bigInt.Text(10), result.Result.bigInt.Text(10))
+			expectedBigINum.bigInt.Text(10), result.bigInt.Text(10))
 	}
 
-	if expectedBigINum.bigInt.Cmp(result.Result.bigInt) != 0 {
+	if expectedBigINum.bigInt.Cmp(result.bigInt) != 0 {
 		t.Errorf("Comparison Error: Expected BigIntNum='%s'. Instead, BigIntNum= '%s'. ",
-			expectedBigINum.bigInt.Text(10), result.Result.bigInt.Text(10))
+			expectedBigINum.bigInt.Text(10), result.bigInt.Text(10))
 	}
 
-	if expectedBigINumSign != result.Result.sign {
+	if expectedBigINumSign != result.sign {
 		t.Errorf("Error: Expected number sign='%v'. Instead, number sign='%v'",
-			expectedBigINumSign, result.Result.sign)
+			expectedBigINumSign, result.sign)
 	}
 
 }
@@ -7031,19 +7031,19 @@ func TestBigIntMathSubtract_SubtractNumStrDto_04(t *testing.T) {
 			minuendStr, subtrahendStr, err.Error())
 	}
 
-	if !expectedBigINum.Equal(result.Result) {
+	if !expectedBigINum.Equal(result) {
 		t.Errorf("Error: Expected BigIntNum='%s'. Instead, BigIntNum= '%s'. ",
-			expectedBigINum.bigInt.Text(10), result.Result.bigInt.Text(10))
+			expectedBigINum.bigInt.Text(10), result.bigInt.Text(10))
 	}
 
-	if expectedBigINum.bigInt.Cmp(result.Result.bigInt) != 0 {
+	if expectedBigINum.bigInt.Cmp(result.bigInt) != 0 {
 		t.Errorf("Comparison Error: Expected BigIntNum='%s'. Instead, BigIntNum= '%s'. ",
-			expectedBigINum.bigInt.Text(10), result.Result.bigInt.Text(10))
+			expectedBigINum.bigInt.Text(10), result.bigInt.Text(10))
 	}
 
-	if expectedBigINumSign != result.Result.sign {
+	if expectedBigINumSign != result.sign {
 		t.Errorf("Error: Expected number sign='%v'. Instead, number sign='%v'",
-			expectedBigINumSign, result.Result.sign)
+			expectedBigINumSign, result.sign)
 	}
 }
 
@@ -7137,14 +7137,14 @@ func TestBigIntMathSubtract_SubtractNumStrDtoArray_01(t *testing.T) {
 			"nDtoMinuend, subtrahendAry). Error='%v' ", err.Error())
 	}
 
-	if expectedBigINum.bigInt.Cmp(result.Result.bigInt) != 0 {
+	if expectedBigINum.bigInt.Cmp(result.bigInt) != 0 {
 		t.Errorf("Comparison Error: Expected BigIntNum='%s'. Instead, BigIntNum= '%s'. ",
-			expectedBigINum.bigInt.Text(10), result.Result.bigInt.Text(10))
+			expectedBigINum.bigInt.Text(10), result.bigInt.Text(10))
 	}
 
-	if expectedBigINumSign != result.Result.sign {
+	if expectedBigINumSign != result.sign {
 		t.Errorf("Error: Expected number sign='%v'. Instead, number sign='%v'",
-			expectedBigINumSign, result.Result.sign)
+			expectedBigINumSign, result.sign)
 	}
 
 }
@@ -7240,14 +7240,14 @@ func TestBigIntMathSubtract_SubtractNumStrDtoArray_02(t *testing.T) {
 			"nDtoMinuend, subtrahendAry). Error='%v' ", err.Error())
 	}
 
-	if expectedBigINum.bigInt.Cmp(result.Result.bigInt) != 0 {
+	if expectedBigINum.bigInt.Cmp(result.bigInt) != 0 {
 		t.Errorf("Comparison Error: Expected BigIntNum='%s'. Instead, BigIntNum= '%s'. ",
-			expectedBigINum.bigInt.Text(10), result.Result.bigInt.Text(10))
+			expectedBigINum.bigInt.Text(10), result.bigInt.Text(10))
 	}
 
-	if expectedBigINumSign != result.Result.sign {
+	if expectedBigINumSign != result.sign {
 		t.Errorf("Error: Expected number sign='%v'. Instead, number sign='%v'",
-			expectedBigINumSign, result.Result.sign)
+			expectedBigINumSign, result.sign)
 	}
 
 }
@@ -7342,14 +7342,14 @@ func TestBigIntMathSubtract_SubtractNumStrDtoArray_03(t *testing.T) {
 			"nDtoMinuend, subtrahendAry). Error='%v' ", err.Error())
 	}
 
-	if expectedBigINum.bigInt.Cmp(result.Result.bigInt) != 0 {
+	if expectedBigINum.bigInt.Cmp(result.bigInt) != 0 {
 		t.Errorf("Comparison Error: Expected BigIntNum='%s'. Instead, BigIntNum= '%s'. ",
-			expectedBigINum.bigInt.Text(10), result.Result.bigInt.Text(10))
+			expectedBigINum.bigInt.Text(10), result.bigInt.Text(10))
 	}
 
-	if expectedBigINumSign != result.Result.sign {
+	if expectedBigINumSign != result.sign {
 		t.Errorf("Error: Expected number sign='%v'. Instead, number sign='%v'",
-			expectedBigINumSign, result.Result.sign)
+			expectedBigINumSign, result.sign)
 	}
 
 }
@@ -7444,14 +7444,14 @@ func TestBigIntMathSubtract_SubtractNumStrDtoArray_04(t *testing.T) {
 			"nDtoMinuend, subtrahendAry). Error='%v' ", err.Error())
 	}
 
-	if expectedBigINum.bigInt.Cmp(result.Result.bigInt) != 0 {
+	if expectedBigINum.bigInt.Cmp(result.bigInt) != 0 {
 		t.Errorf("Comparison Error: Expected BigIntNum='%s'. Instead, BigIntNum= '%s'. ",
-			expectedBigINum.bigInt.Text(10), result.Result.bigInt.Text(10))
+			expectedBigINum.bigInt.Text(10), result.bigInt.Text(10))
 	}
 
-	if expectedBigINumSign != result.Result.sign {
+	if expectedBigINumSign != result.sign {
 		t.Errorf("Error: Expected number sign='%v'. Instead, number sign='%v'",
-			expectedBigINumSign, result.Result.sign)
+			expectedBigINumSign, result.sign)
 	}
 
 }
@@ -7917,14 +7917,14 @@ func TestBigIntMathSubtract_SubtractNumStrDtoSeries_01(t *testing.T) {
 			"nDtoMinuend, ...). Error='%v' ", err.Error())
 	}
 
-	if expectedBigINum.bigInt.Cmp(result.Result.bigInt) != 0 {
+	if expectedBigINum.bigInt.Cmp(result.bigInt) != 0 {
 		t.Errorf("Comparison Error: Expected BigIntNum='%s'. Instead, BigIntNum= '%s'. ",
-			expectedBigINum.bigInt.Text(10), result.Result.bigInt.Text(10))
+			expectedBigINum.bigInt.Text(10), result.bigInt.Text(10))
 	}
 
-	if expectedBigINumSign != result.Result.sign {
+	if expectedBigINumSign != result.sign {
 		t.Errorf("Error: Expected number sign='%v'. Instead, number sign='%v'",
-			expectedBigINumSign, result.Result.sign)
+			expectedBigINumSign, result.sign)
 	}
 }
 
@@ -8025,14 +8025,14 @@ func TestBigIntMathSubtract_SubtractNumStrDtoSeries_02(t *testing.T) {
 			"nDtoMinuend, ...). Error='%v' ", err.Error())
 	}
 
-	if expectedBigINum.bigInt.Cmp(result.Result.bigInt) != 0 {
+	if expectedBigINum.bigInt.Cmp(result.bigInt) != 0 {
 		t.Errorf("Comparison Error: Expected BigIntNum='%s'. Instead, BigIntNum= '%s'. ",
-			expectedBigINum.bigInt.Text(10), result.Result.bigInt.Text(10))
+			expectedBigINum.bigInt.Text(10), result.bigInt.Text(10))
 	}
 
-	if expectedBigINumSign != result.Result.sign {
+	if expectedBigINumSign != result.sign {
 		t.Errorf("Error: Expected number sign='%v'. Instead, number sign='%v'",
-			expectedBigINumSign, result.Result.sign)
+			expectedBigINumSign, result.sign)
 	}
 
 }
@@ -8134,14 +8134,14 @@ func TestBigIntMathSubtract_SubtractNumStrDtoSeries_03(t *testing.T) {
 			"nDtoMinuend, ...). Error='%v' ", err.Error())
 	}
 
-	if expectedBigINum.bigInt.Cmp(result.Result.bigInt) != 0 {
+	if expectedBigINum.bigInt.Cmp(result.bigInt) != 0 {
 		t.Errorf("Comparison Error: Expected BigIntNum='%s'. Instead, BigIntNum= '%s'. ",
-			expectedBigINum.bigInt.Text(10), result.Result.bigInt.Text(10))
+			expectedBigINum.bigInt.Text(10), result.bigInt.Text(10))
 	}
 
-	if expectedBigINumSign != result.Result.sign {
+	if expectedBigINumSign != result.sign {
 		t.Errorf("Error: Expected number sign='%v'. Instead, number sign='%v'",
-			expectedBigINumSign, result.Result.sign)
+			expectedBigINumSign, result.sign)
 	}
 
 }
@@ -8243,14 +8243,14 @@ func TestBigIntMathSubtract_SubtractNumStrDtoSeries_04(t *testing.T) {
 			"nDtoMinuend, ...). Error='%v' ", err.Error())
 	}
 
-	if expectedBigINum.bigInt.Cmp(result.Result.bigInt) != 0 {
+	if expectedBigINum.bigInt.Cmp(result.bigInt) != 0 {
 		t.Errorf("Comparison Error: Expected BigIntNum='%s'. Instead, BigIntNum= '%s'. ",
-			expectedBigINum.bigInt.Text(10), result.Result.bigInt.Text(10))
+			expectedBigINum.bigInt.Text(10), result.bigInt.Text(10))
 	}
 
-	if expectedBigINumSign != result.Result.sign {
+	if expectedBigINumSign != result.sign {
 		t.Errorf("Error: Expected number sign='%v'. Instead, number sign='%v'",
-			expectedBigINumSign, result.Result.sign)
+			expectedBigINumSign, result.sign)
 	}
 
 }
