@@ -4298,6 +4298,31 @@ func (ia *IntAry) SetIntAryWithBigInt(intDigits *big.Int, precision uint) error 
 	return nil
 }
 
+// SetIntAryWithBigIntNum - Sets the current value of the intAry to the value
+// of input parameter 'bigINum'.
+//
+func (ia *IntAry) SetIntAryWithBigIntNum(bigINum BigIntNum) error {
+
+	ePrefix := "IntAry.SetIntAryWithBigIntNum() "
+
+	bInt, err := bigINum.GetBigInt()
+
+	if err != nil {
+		return fmt.Errorf(ePrefix + "Error returned by bigINum.GetBigInt(). Error='%v'",
+			err.Error())
+	}
+
+	err = ia.SetIntAryWithBigInt(bInt, bigINum.GetPrecisionUint())
+
+	if err != nil {
+		return fmt.Errorf(ePrefix + "Error returned by ia.SetIntAryWithBigInt(bInt, " +
+			"bigINum.GetPrecisionUint())).  Error='%v'",
+			err.Error())
+	}
+
+	return nil
+}
+
 // SetIntAryWithFloat32 - Sets the current value of the intAry based on the
 // input parameter, 'floatNum'. 'floatNum is of type float32, a 32-bit
 // floating point number.
