@@ -4274,7 +4274,7 @@ func (ia *IntAry) SetIntAryWithBigInt(intDigits *big.Int, precision uint) error 
 			break
 		}
 
-		quotient, mod = big.NewInt(0).DivMod(xIntDigits, big10, modx)
+		quotient, mod = big.NewInt(0).QuoRem(xIntDigits, big10, modx)
 
 		ia.intAry = append(ia.intAry, uint8(mod.Int64()))
 		ia.intAryLen++
