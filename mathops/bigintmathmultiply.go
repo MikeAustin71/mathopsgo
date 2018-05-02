@@ -73,23 +73,13 @@ func (bMultiply BigIntMathMultiply) NewBigIntPairResult(bPair BigIntPair) BigInt
 // =============
 //
 // This method performs the multiplication operation and returns the result or
-// 'product' as a BigIntBasicMathResult type.
-//
-// 					type BigIntBasicMathResult struct {
-// 								Input BigIntPair
-//											Input.Big1		= multiplier
-//											Input.Big2		= multiplicand
-//
-// 								Result BigIntNum
-// 											Result.bigInt = product
-//					}
-//
+// 'product' as a BigIntNum type.
 //
 func (bMultiply BigIntMathMultiply) MultiplyBigInts(
 									multiplier *big.Int,
 										multiplierPrecision uint,
 											multiplicand *big.Int,
-												multiplicandPrecision uint) BigIntBasicMathResult {
+												multiplicandPrecision uint) BigIntNum {
 
 	bPair := BigIntPair{}.NewBase(
 												multiplier,
@@ -98,7 +88,6 @@ func (bMultiply BigIntMathMultiply) MultiplyBigInts(
 															multiplicandPrecision)
 
 	return bMultiply.MultiplyPair(bPair)
-
 }
 
 
@@ -116,21 +105,11 @@ func (bMultiply BigIntMathMultiply) MultiplyBigInts(
 //							multiplier x multiplicand = product or result
 //
 // This method performs the multiplication operation and afterwards returns the
-// result or 'product' as a BigIntBasicMathResult type.
-//
-// 					type BigIntBasicMathResult struct {
-// 								Input BigIntPair
-//											Input.Big1		= multiplier
-//											Input.Big2		= multiplicand
-//
-// 								Result BigIntNum
-// 											Result.bigInt = product
-//					}
-//
+// result or 'product' as a BigIntNum type.
 //
 func (bMultiply BigIntMathMultiply) MultiplyBigIntNums(
 								multiplier BigIntNum,
-									multiplicand BigIntNum) BigIntBasicMathResult {
+									multiplicand BigIntNum) BigIntNum {
 
 	bPair := BigIntPair{}.NewBigIntNum(multiplier, multiplicand)
 
@@ -143,7 +122,7 @@ func (bMultiply BigIntMathMultiply) MultiplyBigIntNums(
 // first element of the 'multiplicands' array is multiplied by the 'multiplier' to produce
 // a 'product'. That 'product' replaces the 'multiplier' and is multiplied by the next element
 // in the multiplicands array. This process is continued through the last element in the array
-// and the combined, final 'product' is returned as a Type 'BigIntBasicMathResult'.
+// and the combined, final 'product' is returned as a Type 'BigIntNum'.
 //
 // In the multiplication operation, the number to be multiplied is called the "multiplicand",
 // while the number of times the multiplicand is to be multiplied comes from the "multiplier".
@@ -155,24 +134,14 @@ func (bMultiply BigIntMathMultiply) MultiplyBigIntNums(
 //							multiplier x multiplicand = product or result
 //
 // This method performs the multiplication operation described above and afterwards returns the
-// result or 'product' as a BigIntBasicMathResult type.
-//
-// 					type BigIntBasicMathResult struct {
-// 								Input BigIntPair
-//											Input.Big1		= multiplier
-//											Input.Big2		= multiplicand
-//
-// 								Result BigIntNum
-// 											Result.bigInt = product
-//					}
+// result or 'product' as a BigIntNum type.
 //
 //
 func (bMultiply BigIntMathMultiply) MultiplyBigIntNumArray(
 									multiplier BigIntNum,
-											multiplicands []BigIntNum) BigIntBasicMathResult {
+											multiplicands []BigIntNum) BigIntNum {
 
-	finalResult := BigIntBasicMathResult{}.New()
-	finalResult.Result = multiplier.CopyOut()
+	finalResult := multiplier.CopyOut()
 	lenMultiplicands := len(multiplicands)
 
 	if lenMultiplicands == 0 {
@@ -181,11 +150,9 @@ func (bMultiply BigIntMathMultiply) MultiplyBigIntNumArray(
 
 	for i:=0; i < lenMultiplicands; i++ {
 
-		bPair := BigIntPair{}.NewBigIntNum(finalResult.Result, multiplicands[i])
+		bPair := BigIntPair{}.NewBigIntNum(finalResult, multiplicands[i])
 
-		result := bMultiply.MultiplyPair(bPair)
-
-		finalResult.Result = result.Result.CopyOut()
+		finalResult = bMultiply.MultiplyPair(bPair)
 	}
 
 	return finalResult
@@ -239,10 +206,7 @@ func (bMultiply BigIntMathMultiply) MultiplyBigIntNumOutputToArray(
 
 		bPair := BigIntPair{}.NewBigIntNum(bINumInterimResult, multiplicands[i])
 
-		result := bMultiply.MultiplyPair(bPair)
-
-		resultArray[i] = result.Result.CopyOut()
-
+		resultArray[i] = bMultiply.MultiplyPair(bPair)
 	}
 
 	return resultArray
@@ -253,7 +217,7 @@ func (bMultiply BigIntMathMultiply) MultiplyBigIntNumOutputToArray(
 // 'multiplicands'. The first element of the 'multiplicands' series is multiplied by the 'multiplier'
 // to produce a 'product'. That 'product' replaces the 'multiplier' and is multiplied by the next
 // element in the multiplicands series. This process is continued through the last element in the
-// series. Afterwards, the combined final 'product' is returned as a Type 'BigIntBasicMathResult'.
+// series. Afterwards, the combined final 'product' is returned as a Type 'BigIntNum'.
 //
 // In the multiplication operation, the number to be multiplied is called the "multiplicand",
 // while the number of times the multiplicand is to be multiplied comes from the "multiplier".
@@ -265,24 +229,14 @@ func (bMultiply BigIntMathMultiply) MultiplyBigIntNumOutputToArray(
 //							multiplier x multiplicand = product or result
 //
 // This method performs the multiplication operation described above and afterwards returns the
-// result or 'product' as a BigIntBasicMathResult type.
-//
-// 					type BigIntBasicMathResult struct {
-// 								Input BigIntPair
-//											Input.Big1		= multiplier
-//											Input.Big2		= multiplicand
-//
-// 								Result BigIntNum
-// 											Result.bigInt = product
-//					}
-//
+// result or 'product' as a BigIntNum type.
 //
 func (bMultiply BigIntMathMultiply) MultiplyBigIntNumSeries(
 																multiplier BigIntNum,
-																	multiplicands ... BigIntNum) BigIntBasicMathResult {
+																	multiplicands ... BigIntNum) BigIntNum {
 
-	finalResult := BigIntBasicMathResult{}.New()
-	finalResult.Result = multiplier.CopyOut()
+	finalResult := multiplier.CopyOut()
+
 	lenMultiplicands := len(multiplicands)
 
 	if lenMultiplicands == 0 {
@@ -291,18 +245,16 @@ func (bMultiply BigIntMathMultiply) MultiplyBigIntNumSeries(
 
 	for _, multiplicand := range multiplicands {
 
-		bPair := BigIntPair{}.NewBigIntNum(finalResult.Result, multiplicand)
+		bPair := BigIntPair{}.NewBigIntNum(finalResult, multiplicand)
 
-		result := bMultiply.MultiplyPair(bPair)
-
-		finalResult.Result = result.Result.CopyOut()
+		finalResult = bMultiply.MultiplyPair(bPair)
 	}
 
 	return finalResult
 }
 
 // MultiplyDecimal - Receives two Decimal instances and multiplies their
-// numeric values. The result or 'product' is returned as a 'BigIntBasicMathResult'
+// numeric values. The result or 'product' is returned as a 'BigIntNum'
 // type.
 //
 // In the multiplication operation, the number to be multiplied is called the
@@ -316,28 +268,18 @@ func (bMultiply BigIntMathMultiply) MultiplyBigIntNumSeries(
 //							multiplier x multiplicand = product or result
 //
 // This method performs the multiplication operation and afterwards returns the
-// result or 'product' as a BigIntBasicMathResult type.
-//
-// 					type BigIntBasicMathResult struct {
-// 								Input BigIntPair
-//											Input.Big1		= multiplier
-//											Input.Big2		= multiplicand
-//
-// 								Result BigIntNum
-// 											Result.bigInt = product
-//					}
-//
+// result or 'product' as a BigIntNum type.
 //
 func (bMultiply BigIntMathMultiply) MultiplyDecimal(
 														multiplier,
-														multiplicand Decimal) (BigIntBasicMathResult, error) {
+														multiplicand Decimal) (BigIntNum, error) {
 
 	ePrefix := "BigIntMathMultiply.MultiplyDecimal() "
 
 	bPair, err := BigIntPair{}.NewDecimal(multiplier, multiplicand)
 
 	if err != nil {
-		return BigIntBasicMathResult{},
+		return BigIntNum{},
 			fmt.Errorf(ePrefix + "Error returned by BigIntPair{}.NewDecimal(multiplier, multiplicand). " +
 				"Error='%v' ", err.Error())
 	}
@@ -350,7 +292,7 @@ func (bMultiply BigIntMathMultiply) MultiplyDecimal(
 // first element of the 'multiplicands' array is multiplied by the 'multiplier' to produce
 // a 'product'. That 'product' replaces the 'multiplier' and is multiplied by the next element
 // in the multiplicands array. This process is continued through the last element in the array
-// when the combined, final 'product' is returned as a Type 'BigIntBasicMathResult'.
+// when the combined, final 'product' is returned as a Type 'BigIntNum'.
 //
 // In the multiplication operation, the number to be multiplied is called the "multiplicand",
 // while the number of times the multiplicand is to be multiplied comes from the "multiplier".
@@ -362,36 +304,24 @@ func (bMultiply BigIntMathMultiply) MultiplyDecimal(
 //							multiplier x multiplicand = product or result
 //
 // This method performs the multiplication operation described above and afterwards returns the
-// result or 'product' as a BigIntBasicMathResult type.
-//
-// 					type BigIntBasicMathResult struct {
-// 								Input BigIntPair
-//											Input.Big1		= multiplier
-//											Input.Big2		= multiplicand
-//
-// 								Result Decimal
-// 											Result.bigInt = product
-//					}
-//
+// result or 'product' as a BigIntNum type.
 //
 func (bMultiply BigIntMathMultiply) MultiplyDecimalArray(
 															multiplier Decimal,
-																multiplicands []Decimal) (BigIntBasicMathResult, error) {
+																multiplicands []Decimal) (BigIntNum, error) {
 
   ePrefix := "BigIntMathMultiply.MultiplyDecimalArray() "
-  var err error
-	finalResult := BigIntBasicMathResult{}
 
 	lenMultiplicands := len(multiplicands)
 
 	if lenMultiplicands == 0 {
-		return finalResult, nil
+		return BigIntNum{}.New(), nil
 	}
 
-	finalResult.Result, err = BigIntNum{}.NewDecimal(multiplier)
+	finalResult, err := BigIntNum{}.NewDecimal(multiplier)
 
 	if err != nil {
-		return BigIntBasicMathResult{},
+		return BigIntNum{},
 			fmt.Errorf(ePrefix +
 				"Error returned by BigIntNum{}.NewDecimal(multiplier) " +
 				" multiplier='%v' Error='%v'. ",
@@ -403,14 +333,14 @@ func (bMultiply BigIntMathMultiply) MultiplyDecimalArray(
 		multiplicandBINum, err := BigIntNum{}.NewDecimal(multiplicands[i])
 
 		if err != nil {
-			return BigIntBasicMathResult{},
+			return BigIntNum{},
 				fmt.Errorf(ePrefix +
 					"Error returned by BigIntNum{}.NewDecimal(multiplicands[i]) " +
 					"multiplicands[%v]='%v' Error='%v'. ",
 					 i, multiplicands[i].GetNumStr(), err.Error())
 		}
 
-		bPair := BigIntPair{}.NewBigIntNum(finalResult.Result, multiplicandBINum )
+		bPair := BigIntPair{}.NewBigIntNum(finalResult, multiplicandBINum )
 
 		finalResult = bMultiply.MultiplyPair(bPair)
 
@@ -487,14 +417,14 @@ func (bMultiply BigIntMathMultiply) MultiplyDecimalOutputToArray(
 
 		bPair := BigIntPair{}.NewBigIntNum(multiplierBINum, multiplicandBINum )
 
-		finalResult := bMultiply.MultiplyPair(bPair)
+		result := bMultiply.MultiplyPair(bPair)
 
-		resultArray[i], err = finalResult.Result.GetDecimal()
+		resultArray[i], err = result.GetDecimal()
 
 		if err != nil {
 			return []Decimal{},
 				fmt.Errorf(ePrefix +
-					"Error returned by finalResult.Result.GetDecimal() " +
+					"Error returned by result.GetDecimal() " +
 					"i='%v' Error='%v'. ", i,  err.Error())
 		}
 	}
@@ -508,7 +438,7 @@ func (bMultiply BigIntMathMultiply) MultiplyDecimalOutputToArray(
 // by the 'multiplier' to produce a 'product'. That 'product' replaces the 'multiplier' and is
 // multiplied by the next element in the multiplicands series. This process is continued through
 // the last element in the series. Afterwards, the combined final 'product' is returned as a Type
-// 'BigIntBasicMathResult'.
+// 'BigIntNum'.
 //
 // In the multiplication operation, the number to be multiplied is called the "multiplicand",
 // while the number of times the multiplicand is to be multiplied comes from the "multiplier".
@@ -520,31 +450,18 @@ func (bMultiply BigIntMathMultiply) MultiplyDecimalOutputToArray(
 //							multiplier x multiplicand = product or result
 //
 // This method performs the multiplication operation described above and afterwards returns the
-// result or 'product' as a BigIntBasicMathResult type.
-//
-// 					type BigIntBasicMathResult struct {
-// 								Input BigIntPair
-//											Input.Big1		= multiplier
-//											Input.Big2		= multiplicand
-//
-// 								Result Decimal
-// 											Result.bigInt = product
-//					}
-//
+// result or 'product' as a BigIntNum type.
 //
 func (bMultiply BigIntMathMultiply) MultiplyDecimalSeries(
 													multiplier Decimal,
-														multiplicands ... Decimal) (BigIntBasicMathResult, error) {
+														multiplicands ... Decimal) (BigIntNum, error) {
 
 	ePrefix := "BigIntMathMultiply.MultiplyDecimalSeries() "
-	var err error
 
-	finalResult := BigIntBasicMathResult{}.New()
-
-	finalResult.Result, err = BigIntNum{}.NewDecimal(multiplier)
+	finalResult, err := BigIntNum{}.NewDecimal(multiplier)
 
 	if err != nil {
-		return BigIntBasicMathResult{},
+		return BigIntNum{},
 			fmt.Errorf(ePrefix +
 				"Error returned by BigIntNum{}.NewDecimal(multiplier) " +
 				" multiplier='%v' Error='%v'. ",
@@ -556,14 +473,14 @@ func (bMultiply BigIntMathMultiply) MultiplyDecimalSeries(
 		multiplicandBINum, err := BigIntNum{}.NewDecimal(multiplicand)
 
 		if err != nil {
-			return BigIntBasicMathResult{},
+			return BigIntNum{},
 				fmt.Errorf(ePrefix +
 					"Error returned by BigIntNum{}.NewDecimal(multiplicand) " +
 					" multiplicand='%v' Error='%v'. ",
 					multiplicand.GetNumStr(), err.Error())
 		}
 
-		bPair := BigIntPair{}.NewBigIntNum(finalResult.Result.CopyOut(), multiplicandBINum)
+		bPair := BigIntPair{}.NewBigIntNum(finalResult, multiplicandBINum)
 
 		finalResult = bMultiply.MultiplyPair(bPair)
 
@@ -573,7 +490,7 @@ func (bMultiply BigIntMathMultiply) MultiplyDecimalSeries(
 }
 
 // MultiplyIntAry - Receives two IntAry instances and multiplies their
-// numeric values. The result or 'product' is returned as a 'BigIntBasicMathResult'
+// numeric values. The result or 'product' is returned as a 'BigIntNum'
 // type.
 //
 // In the multiplication operation, the number to be multiplied is called the
@@ -587,30 +504,20 @@ func (bMultiply BigIntMathMultiply) MultiplyDecimalSeries(
 //							multiplier x multiplicand = product or result
 //
 // This method performs the multiplication operation and afterwards returns the
-// result or 'product' as a BigIntBasicMathResult type.
-//
-// 					type BigIntBasicMathResult struct {
-// 								Input BigIntPair
-//											Input.Big1		= multiplier
-//											Input.Big2		= multiplicand
-//
-// 								Result BigIntNum
-// 											Result.bigInt = product
-//					}
-//
+// result or 'product' as a BigIntNum type.
 //
 // Be careful, IntAry's can accommodate very, very large numbers.
 //
 func (bMultiply BigIntMathMultiply) MultiplyIntAry(
 														ia1,
-															ia2 IntAry) (BigIntBasicMathResult, error) {
+															ia2 IntAry) (BigIntNum, error) {
 
 	ePrefix := "BigIntMathMultiply.MultiplyIntAry() "
 
 	bPair, err := BigIntPair{}.NewIntAry(ia1, ia2)
 
 	if err != nil {
-		return BigIntBasicMathResult{},
+		return BigIntNum{},
 			fmt.Errorf(ePrefix + "Error returned by BigIntPair{}.NewIntAry(ia1, ia2). " +
 				"Error='%v' ", err.Error())
 	}
@@ -623,7 +530,7 @@ func (bMultiply BigIntMathMultiply) MultiplyIntAry(
 // first element of the 'multiplicands' array is multiplied by the 'multiplier' to produce
 // a 'product'. That 'product' replaces the 'multiplier' and is multiplied by the next element
 // in the multiplicands array. This process is continued through the last element in the array
-// when the combined, final 'product' is returned as a Type 'BigIntBasicMathResult'.
+// when the combined, final 'product' is returned as a Type 'BigIntNum'.
 //
 // In the multiplication operation, the number to be multiplied is called the "multiplicand",
 // while the number of times the multiplicand is to be multiplied comes from the "multiplier".
@@ -635,38 +542,24 @@ func (bMultiply BigIntMathMultiply) MultiplyIntAry(
 //							multiplier x multiplicand = product or result
 //
 // This method performs the multiplication operation described above and afterwards returns the
-// result or 'product' as a BigIntBasicMathResult type.
-//
-// 					type BigIntBasicMathResult struct {
-// 								Input BigIntPair
-//											Input.Big1		= multiplier
-//											Input.Big2		= multiplicand
-//
-// 								Result IntAry
-// 											Result.bigInt = product
-//					}
-//
+// result or 'product' as a BigIntNum type.
 //
 func (bMultiply BigIntMathMultiply) MultiplyIntAryArray(
 													multiplier IntAry,
-														multiplicands []IntAry) (BigIntBasicMathResult, error) {
+														multiplicands []IntAry) (BigIntNum, error) {
 
 	ePrefix := "BigIntMathMultiply.MultiplyIntAryArray() "
-
-	var err error
-
-	finalResult := BigIntBasicMathResult{}
 
 	lenMultiplicands := len(multiplicands)
 
 	if lenMultiplicands == 0 {
-		return finalResult, nil
+		return BigIntNum{}.New(), nil
 	}
 
-	finalResult.Result, err = BigIntNum{}.NewIntAry(multiplier)
+	finalResult, err := BigIntNum{}.NewIntAry(multiplier)
 
 	if err != nil {
-		return BigIntBasicMathResult{},
+		return BigIntNum{},
 			fmt.Errorf(ePrefix +
 				"Error returned by BigIntNum{}.NewIntAry(multiplier) " +
 				" multiplier='%v' Error='%v'. ",
@@ -678,14 +571,14 @@ func (bMultiply BigIntMathMultiply) MultiplyIntAryArray(
 		multiplicandBINum, err := BigIntNum{}.NewIntAry(multiplicands[i])
 
 		if err != nil {
-			return BigIntBasicMathResult{},
+			return BigIntNum{},
 				fmt.Errorf(ePrefix +
 					"Error returned by BigIntNum{}.NewIntAry(multiplicands[i]) " +
 					"multiplicands[%v]='%v' Error='%v'. ",
 					i, multiplicands[i].GetNumStr(), err.Error())
 		}
 
-		bPair := BigIntPair{}.NewBigIntNum(finalResult.Result, multiplicandBINum )
+		bPair := BigIntPair{}.NewBigIntNum(finalResult, multiplicandBINum )
 
 		finalResult = bMultiply.MultiplyPair(bPair)
 
@@ -762,9 +655,9 @@ func (bMultiply BigIntMathMultiply) MultiplyIntAryOutputToArray(
 
 		bPair := BigIntPair{}.NewBigIntNum(multiplierBINum, multiplicandBINum )
 
-		finalResult := bMultiply.MultiplyPair(bPair)
+		result := bMultiply.MultiplyPair(bPair)
 
-		resultArray[i], err = finalResult.Result.GetIntAry()
+		resultArray[i], err = result.GetIntAry()
 
 		if err != nil {
 			return []IntAry{},
@@ -783,7 +676,7 @@ func (bMultiply BigIntMathMultiply) MultiplyIntAryOutputToArray(
 // the 'multiplier' to produce a 'product'. That 'product' replaces the 'multiplier' and is
 // multiplied by the next element in the multiplicands series. This process is continued through
 // the last element in the series. Afterwards, the combined final 'product' is returned as a
-// Type 'BigIntBasicMathResult'.
+// Type 'BigIntNum'.
 //
 // In the multiplication operation, the number to be multiplied is called the "multiplicand",
 // while the number of times the multiplicand is to be multiplied comes from the "multiplier".
@@ -795,31 +688,18 @@ func (bMultiply BigIntMathMultiply) MultiplyIntAryOutputToArray(
 //							multiplier x multiplicand = product or result
 //
 // This method performs the multiplication operation described above and afterwards returns the
-// result or 'product' as a BigIntBasicMathResult type.
-//
-// 					type BigIntBasicMathResult struct {
-// 								Input BigIntPair
-//											Input.Big1		= multiplier
-//											Input.Big2		= multiplicand
-//
-// 								Result IntAry
-// 											Result.bigInt = product
-//					}
-//
+// result or 'product' as a BigIntNum type.
 //
 func (bMultiply BigIntMathMultiply) MultiplyIntArySeries(
 									multiplier IntAry,
-													multiplicands ... IntAry) (BigIntBasicMathResult, error) {
+													multiplicands ... IntAry) (BigIntNum, error) {
 
 	ePrefix := "BigIntMathMultiply.MultiplyIntArySeries() "
-	var err error
 
-	finalResult := BigIntBasicMathResult{}.New()
-
-	finalResult.Result, err = BigIntNum{}.NewIntAry(multiplier)
+	finalResult, err := BigIntNum{}.NewIntAry(multiplier)
 
 	if err != nil {
-		return BigIntBasicMathResult{},
+		return BigIntNum{},
 			fmt.Errorf(ePrefix +
 				"Error returned by BigIntNum{}.NewIntAry(multiplier) " +
 				" multiplier='%v' Error='%v'. ",
@@ -831,17 +711,16 @@ func (bMultiply BigIntMathMultiply) MultiplyIntArySeries(
 		multiplicandBINum, err := BigIntNum{}.NewIntAry(multiplicand)
 
 		if err != nil {
-			return BigIntBasicMathResult{},
+			return BigIntNum{},
 				fmt.Errorf(ePrefix +
 					"Error returned by BigIntNum{}.NewIntAry(multiplicand) " +
 					" multiplicand='%v' Error='%v'. ",
 					multiplicand.GetNumStr(), err.Error())
 		}
 
-		bPair := BigIntPair{}.NewBigIntNum(finalResult.Result.CopyOut(), multiplicandBINum)
+		bPair := BigIntPair{}.NewBigIntNum(finalResult, multiplicandBINum)
 
 		finalResult = bMultiply.MultiplyPair(bPair)
-
 	}
 
 	return finalResult, nil
@@ -853,7 +732,7 @@ func (bMultiply BigIntMathMultiply) MultiplyIntArySeries(
 //
 // 							n1NumStr x n2NumStr = product
 //
-// The result or 'product' is returned as a 'BigIntBasicMathResult'
+// The result or 'product' is returned as a 'BigIntNum'
 // type.
 //
 // The strings passed to this method are 'number' strings in that they consist
@@ -871,28 +750,18 @@ func (bMultiply BigIntMathMultiply) MultiplyIntArySeries(
 //							multiplier x multiplicand = product or result
 //
 // This method performs the multiplication operation and afterwards returns the
-// result or 'product' as a BigIntBasicMathResult type.
-//
-// 					type BigIntBasicMathResult struct {
-// 								Input BigIntPair
-//											Input.Big1		= multiplier
-//											Input.Big2		= multiplicand
-//
-// 								Result BigIntNum
-// 											Result.bigInt = product
-//					}
-//
+// result or 'product' as a BigIntNum type.
 //
 func (bMultiply BigIntMathMultiply) MultiplyNumStr(
-							n1NumStr,
-								n2NumStr string) (BigIntBasicMathResult, error) {
+																			n1NumStr,
+																				n2NumStr string) (BigIntNum, error) {
 
 	ePrefix := "BigIntMathMultiply.MultiplyNumStr() "
 
 	bPair, err := BigIntPair{}.NewNumStr(n1NumStr, n2NumStr)
 
 	if err != nil {
-		return BigIntBasicMathResult{},
+		return BigIntNum{},
 			fmt.Errorf(ePrefix + "Error returned by BigIntPair{}.NewNumStr(n1NumStr, n2NumStr). " +
 				"Error='%v' ", err.Error())
 	}
@@ -905,7 +774,7 @@ func (bMultiply BigIntMathMultiply) MultiplyNumStr(
 // first element of the 'multiplicands' array is multiplied by the 'multiplier' to produce
 // a 'product'. That 'product' replaces the 'multiplier' and is multiplied by the next element
 // in the multiplicands array. This process is continued through the last element in the array
-// when the combined, final 'product' is returned as a Type 'BigIntBasicMathResult'.
+// when the combined, final 'product' is returned as a Type 'BigIntNum'.
 //
 // The strings passed to this method are 'number' strings in that they consist of a string
 // of numeric digits which may include a period ('.') or decimal point used to separate
@@ -921,40 +790,26 @@ func (bMultiply BigIntMathMultiply) MultiplyNumStr(
 //							multiplier x multiplicand = product or result
 //
 // This method performs the multiplication operation described above and afterwards returns the
-// result or 'product' as a BigIntBasicMathResult type.
-//
-// 					type BigIntBasicMathResult struct {
-// 								Input BigIntPair
-//											Input.Big1		= multiplier
-//											Input.Big2		= multiplicand
-//
-// 								Result Decimal
-// 											Result.bigInt = product
-//					}
-//
+// result or 'product' as a BigIntNum type.
 //
 func (bMultiply BigIntMathMultiply) MultiplyNumStrArray(
 													multiplier string,
-															multiplicands []string) (BigIntBasicMathResult, error) {
+															multiplicands []string) (BigIntNum, error) {
 
 	ePrefix := "BigIntMathMultiply.MultiplyNumStrArray() "
-
-	var err error
-
-	finalResult := BigIntBasicMathResult{}
 
 	lenMultiplicands := len(multiplicands)
 
 	if lenMultiplicands == 0 {
-		return finalResult, nil
+		return BigIntNum{}.New(), nil
 	}
 
-	finalResult.Result, err = BigIntNum{}.NewNumStr(multiplier)
+	finalResult, err := BigIntNum{}.NewNumStr(multiplier)
 
 	if err != nil {
-		return BigIntBasicMathResult{},
+		return BigIntNum{},
 			fmt.Errorf(ePrefix +
-				"Error returned by BigIntNum{}.NewDecimal(multiplier) " +
+				"Error returned by BigIntNum{}.NewNumStr(multiplier) " +
 				" multiplier='%v' Error='%v'. ",
 				multiplier, err.Error())
 	}
@@ -964,14 +819,14 @@ func (bMultiply BigIntMathMultiply) MultiplyNumStrArray(
 		multiplicandBINum, err := BigIntNum{}.NewNumStr(multiplicands[i])
 
 		if err != nil {
-			return BigIntBasicMathResult{},
+			return BigIntNum{},
 				fmt.Errorf(ePrefix +
-					"Error returned by BigIntNum{}.NewDecimal(multiplicands[i]) " +
+					"Error returned by BigIntNum{}.NewNumStr(multiplicands[i]) " +
 					"multiplicands[%v]='%v' Error='%v'. ",
 					i, multiplicands[i], err.Error())
 		}
 
-		bPair := BigIntPair{}.NewBigIntNum(finalResult.Result, multiplicandBINum )
+		bPair := BigIntPair{}.NewBigIntNum(finalResult, multiplicandBINum )
 
 		finalResult = bMultiply.MultiplyPair(bPair)
 	}
@@ -1047,9 +902,9 @@ func (bMultiply BigIntMathMultiply) MultiplyNumStrOutputToArray(
 
 		bPair := BigIntPair{}.NewBigIntNum(multiplierBINum, multiplicandBINum )
 
-		finalResult := bMultiply.MultiplyPair(bPair)
+		result := bMultiply.MultiplyPair(bPair)
 
-		resultArray[i], err = finalResult.Result.GetNumStrErr()
+		resultArray[i], err = result.GetNumStrErr()
 
 		if err != nil {
 			return []string{},
@@ -1067,7 +922,7 @@ func (bMultiply BigIntMathMultiply) MultiplyNumStrOutputToArray(
 // 'multiplicands'. The first element of the 'multiplicands' series is multiplied by the 'multiplier'
 // to produce a 'product'. That 'product' replaces the 'multiplier' and is multiplied by the next
 // element in the multiplicands series. This process is continued through the last element in the
-// series. Afterwards, the combined final 'product' is returned as a Type 'BigIntBasicMathResult'.
+// series. Afterwards, the combined final 'product' is returned as a Type 'BigIntNum'.
 //
 // In the multiplication operation, the number to be multiplied is called the "multiplicand",
 // while the number of times the multiplicand is to be multiplied comes from the "multiplier".
@@ -1079,31 +934,22 @@ func (bMultiply BigIntMathMultiply) MultiplyNumStrOutputToArray(
 //							multiplier x multiplicand = product or result
 //
 // This method performs the multiplication operation described above and afterwards returns the
-// result or 'product' as a BigIntBasicMathResult type.
-//
-// 					type BigIntBasicMathResult struct {
-// 								Input BigIntPair
-//											Input.Big1		= multiplier
-//											Input.Big2		= multiplicand
-//
-// 								Result Decimal
-// 											Result.bigInt = product
-//					}
-//
+// result or 'product' as a BigIntNum type.
 //
 func (bMultiply BigIntMathMultiply) MultiplyNumStrSeries(
 												multiplier string,
-													multiplicands ... string) (BigIntBasicMathResult, error) {
+													multiplicands ... string) (BigIntNum, error) {
 
 	ePrefix := "BigIntMathMultiply.MultiplyNumStrSeries() "
-	var err error
 
-	finalResult := BigIntBasicMathResult{}.New()
+	if len(multiplicands) == 0 {
+		return BigIntNum{}.New(), nil
+	}
 
-	finalResult.Result, err = BigIntNum{}.NewNumStr(multiplier)
+	finalResult, err := BigIntNum{}.NewNumStr(multiplier)
 
 	if err != nil {
-		return BigIntBasicMathResult{},
+		return BigIntNum{},
 			fmt.Errorf(ePrefix +
 				"Error returned by BigIntNum{}.NewNumStr(multiplier) " +
 				" multiplier='%v' Error='%v'. ",
@@ -1115,24 +961,23 @@ func (bMultiply BigIntMathMultiply) MultiplyNumStrSeries(
 		multiplicandBINum, err := BigIntNum{}.NewNumStr(multiplicand)
 
 		if err != nil {
-			return BigIntBasicMathResult{},
+			return BigIntNum{},
 				fmt.Errorf(ePrefix +
 					"Error returned by BigIntNum{}.NewNumStr(multiplicand) " +
 					" multiplicand='%v' Error='%v'. ",
 					multiplicand, err.Error())
 		}
 
-		bPair := BigIntPair{}.NewBigIntNum(finalResult.Result.CopyOut(), multiplicandBINum)
+		bPair := BigIntPair{}.NewBigIntNum(finalResult, multiplicandBINum)
 
 		finalResult = bMultiply.MultiplyPair(bPair)
-
 	}
 
 	return finalResult, nil
 }
 
 // MultiplyNumStrDto - Receives two NumStrDto instances and multiplies their
-// numeric values. The result or 'product' is returned as a 'BigIntBasicMathResult'
+// numeric values. The result or 'product' is returned as a 'BigIntNum'
 // type.
 //
 // In the multiplication operation, the number to be multiplied is called the
@@ -1146,28 +991,18 @@ func (bMultiply BigIntMathMultiply) MultiplyNumStrSeries(
 //							multiplier x multiplicand = product or result
 //
 // This method performs the multiplication operation and afterwards returns the
-// result or 'product' as a BigIntBasicMathResult type.
-//
-// 					type BigIntBasicMathResult struct {
-// 								Input BigIntPair
-//											Input.Big1		= multiplier
-//											Input.Big2		= multiplicand
-//
-// 								Result BigIntNum
-// 											Result.bigInt = product
-//					}
-//
+// result or 'product' as a BigIntNum type.
 //
 func (bMultiply BigIntMathMultiply) MultiplyNumStrDto(
 																n1Dto,
-																	n2Dto NumStrDto) (BigIntBasicMathResult, error) {
+																	n2Dto NumStrDto) (BigIntNum, error) {
 
 	ePrefix := "BigIntMathMultiply.MultiplyNumStrDto() "
 
 	bPair, err := BigIntPair{}.NewNumStrDto(n1Dto, n2Dto)
 
 	if err != nil {
-		return BigIntBasicMathResult{},
+		return BigIntNum{},
 			fmt.Errorf(ePrefix + "Error returned by BigIntPair{}.NewNumStrDto(n1Dto, n2Dto). " +
 				"Error='%v' ", err.Error())
 	}
@@ -1180,7 +1015,7 @@ func (bMultiply BigIntMathMultiply) MultiplyNumStrDto(
 // first element of the 'multiplicands' array is multiplied by the 'multiplier' to produce
 // a 'product'. That 'product' replaces the 'multiplier' and is multiplied by the next element
 // in the multiplicands array. This process is continued through the last element in the array
-// when the combined, final 'product' is returned as a Type 'BigIntBasicMathResult'.
+// when the combined, final 'product' is returned as a Type 'BigIntNum'.
 //
 // In the multiplication operation, the number to be multiplied is called the "multiplicand",
 // while the number of times the multiplicand is to be multiplied comes from the "multiplier".
@@ -1192,37 +1027,24 @@ func (bMultiply BigIntMathMultiply) MultiplyNumStrDto(
 //							multiplier x multiplicand = product or result
 //
 // This method performs the multiplication operation described above and afterwards returns the
-// result or 'product' as a BigIntBasicMathResult type.
-//
-// 					type BigIntBasicMathResult struct {
-// 								Input BigIntPair
-//											Input.Big1		= multiplier
-//											Input.Big2		= multiplicand
-//
-// 								Result NumStrDto
-// 											Result.bigInt = product
-//					}
-//
+// result or 'product' as a BigIntNum type.
 //
 func (bMultiply BigIntMathMultiply) MultiplyNumStrDtoArray(
 	multiplier NumStrDto,
-	multiplicands []NumStrDto) (BigIntBasicMathResult, error) {
+	multiplicands []NumStrDto) (BigIntNum, error) {
 
 	ePrefix := "BigIntMathMultiply.MultiplyNumStrDtoArray() "
-	var err error
-
-	finalResult := BigIntBasicMathResult{}
 
 	lenMultiplicands := len(multiplicands)
 
 	if lenMultiplicands == 0 {
-		return finalResult, nil
+		return BigIntNum{}.New(), nil
 	}
 
-	finalResult.Result, err = BigIntNum{}.NewNumStrDto(multiplier)
+	finalResult, err := BigIntNum{}.NewNumStrDto(multiplier)
 
 	if err != nil {
-		return BigIntBasicMathResult{},
+		return BigIntNum{},
 			fmt.Errorf(ePrefix +
 				"Error returned by BigIntNum{}.NewNumStrDto(multiplier) " +
 				" multiplier='%v' Error='%v'. ",
@@ -1234,17 +1056,16 @@ func (bMultiply BigIntMathMultiply) MultiplyNumStrDtoArray(
 		multiplicandBINum, err := BigIntNum{}.NewNumStrDto(multiplicands[i])
 
 		if err != nil {
-			return BigIntBasicMathResult{},
+			return BigIntNum{},
 				fmt.Errorf(ePrefix +
 					"Error returned by BigIntNum{}.NewNumStrDto(multiplicands[i]) " +
 					"multiplicands[%v]='%v' Error='%v'. ",
 					i, multiplicands[i].GetNumStr(), err.Error())
 		}
 
-		bPair := BigIntPair{}.NewBigIntNum(finalResult.Result, multiplicandBINum )
+		bPair := BigIntPair{}.NewBigIntNum(finalResult, multiplicandBINum )
 
 		finalResult = bMultiply.MultiplyPair(bPair)
-
 	}
 
 	return finalResult, nil
@@ -1281,8 +1102,8 @@ func (bMultiply BigIntMathMultiply) MultiplyNumStrDtoArray(
 // result or 'product' in an Array of 'NumStrDtos' ([] NumStrDtos).
 //
 func (bMultiply BigIntMathMultiply) MultiplyNumStrDtoOutputToArray(
-	multiplier NumStrDto,
-	multiplicands []NumStrDto) ([]NumStrDto, error) {
+													multiplier NumStrDto,
+														multiplicands []NumStrDto) ([]NumStrDto, error) {
 
 	ePrefix := "BigIntMathMultiply.MultiplyNumStrDtoOutputToArray() "
 
@@ -1318,9 +1139,9 @@ func (bMultiply BigIntMathMultiply) MultiplyNumStrDtoOutputToArray(
 
 		bPair := BigIntPair{}.NewBigIntNum(multiplierBINum, multiplicandBINum )
 
-		finalResult := bMultiply.MultiplyPair(bPair)
+		result := bMultiply.MultiplyPair(bPair)
 
-		resultArray[i], err = finalResult.Result.GetNumStrDto()
+		resultArray[i], err = result.GetNumStrDto()
 
 		if err != nil {
 			return []NumStrDto{},
@@ -1339,7 +1160,7 @@ func (bMultiply BigIntMathMultiply) MultiplyNumStrDtoOutputToArray(
 // by the 'multiplier' to produce a 'product'. That 'product' replaces the 'multiplier' and is
 // multiplied by the next element in the multiplicands series. This process is continued through
 // the last element in the series. Afterwards, the combined final 'product' is returned as a Type
-// 'BigIntBasicMathResult'.
+// 'BigIntNum'.
 //
 // In the multiplication operation, the number to be multiplied is called the "multiplicand",
 // while the number of times the multiplicand is to be multiplied comes from the "multiplier".
@@ -1351,31 +1172,22 @@ func (bMultiply BigIntMathMultiply) MultiplyNumStrDtoOutputToArray(
 //							multiplier x multiplicand = product or result
 //
 // This method performs the multiplication operation described above and afterwards returns the
-// result or 'product' as a BigIntBasicMathResult type.
-//
-// 					type BigIntBasicMathResult struct {
-// 								Input BigIntPair
-//											Input.Big1		= multiplier
-//											Input.Big2		= multiplicand
-//
-// 								Result NumStrDto
-// 											Result.bigInt = product
-//					}
-//
+// result or 'product' as a BigIntNum type.
 //
 func (bMultiply BigIntMathMultiply) MultiplyNumStrDtoSeries(
 							multiplier NumStrDto,
-								multiplicands ... NumStrDto) (BigIntBasicMathResult, error) {
+								multiplicands ... NumStrDto) (BigIntNum, error) {
 
 	ePrefix := "BigIntMathMultiply.MultiplyNumStrDtoSeries() "
-	var err error
 
-	finalResult := BigIntBasicMathResult{}.New()
+	if len(multiplicands) == 0 {
+		return BigIntNum{}.New(), nil
+	}
 
-	finalResult.Result, err = BigIntNum{}.NewNumStrDto(multiplier)
+	finalResult, err := BigIntNum{}.NewNumStrDto(multiplier)
 
 	if err != nil {
-		return BigIntBasicMathResult{},
+		return BigIntNum{},
 			fmt.Errorf(ePrefix +
 				"Error returned by BigIntNum{}.NewNumStrDto(multiplier) " +
 				" multiplier='%v' Error='%v'. ",
@@ -1387,17 +1199,16 @@ func (bMultiply BigIntMathMultiply) MultiplyNumStrDtoSeries(
 		multiplicandBINum, err := BigIntNum{}.NewNumStrDto(multiplicand)
 
 		if err != nil {
-			return BigIntBasicMathResult{},
+			return BigIntNum{},
 				fmt.Errorf(ePrefix +
 					"Error returned by BigIntNum{}.NewNumStrDto(multiplicand) " +
 					" multiplicand='%v' Error='%v'. ",
 					multiplicand.GetNumStr(), err.Error())
 		}
 
-		bPair := BigIntPair{}.NewBigIntNum(finalResult.Result.CopyOut(), multiplicandBINum)
+		bPair := BigIntPair{}.NewBigIntNum(finalResult, multiplicandBINum)
 
 		finalResult = bMultiply.MultiplyPair(bPair)
-
 	}
 
 	return finalResult, nil
@@ -1408,18 +1219,15 @@ func (bMultiply BigIntMathMultiply) MultiplyNumStrDtoSeries(
 //
 // b1.BigIntNum x b2.BigIntNum = Result
 //
-// The result is returned as a BigIntBasicMathResult type.
+// The result is returned as a BigIntNum type.
 //
-func (bMultiply BigIntMathMultiply) MultiplyPair(bPair BigIntPair) BigIntBasicMathResult {
+func (bMultiply BigIntMathMultiply) MultiplyPair(bPair BigIntPair) BigIntNum {
 
 	b3 := big.NewInt(0).Mul(bPair.GetBig1BigInt(), bPair.GetBig2BigInt())
 
-	bResult := BigIntBasicMathResult{}
-	bResult.Input = bPair.CopyOut()
-	bResult.Result = BigIntNum{}.NewBigInt(
+	bResult := BigIntNum{}.NewBigInt(
 								b3,
 								bPair.Big1.GetPrecisionUint() + bPair.Big2.GetPrecisionUint())
 
 	return bResult
-
 }

@@ -689,25 +689,25 @@ func ExampleBigIntMultiply_02() {
 
 	result := mathops.BigIntMathMultiply{}.MultiplyBigIntNumArray(multiplierBiNum, bINumArray)
 
-	if !expectedBigINum.Equal(result.Result) {
+	if !expectedBigINum.Equal(result) {
 		fmt.Printf("Error: Expected BigIntNum='%s'. Instead, BigIntNum= '%s'. ",
-			expectedBigINum.GetNumStr(), result.Result.GetNumStr())
+			expectedBigINum.GetNumStr(), result.GetNumStr())
 		return
 	}
 
-	if expectedBigINum.CmpBigInt(result.Result) != 0 {
+	if expectedBigINum.CmpBigInt(result) != 0 {
 		fmt.Printf("Comparison Error: Expected BigIntNum='%s'. Instead, BigIntNum= '%s'. ",
-			expectedBigINum.GetNumStr(), result.Result.GetNumStr())
+			expectedBigINum.GetNumStr(), result.GetNumStr())
 		return
 	}
 
-	if expectedBigINumSign != result.Result.GetSign() {
+	if expectedBigINumSign != result.GetSign() {
 		fmt.Printf("Error: Expected number sign='%v'. Instead, number sign='%v'",
-			expectedBigINumSign, result.Result.GetSign())
+			expectedBigINumSign, result.GetSign())
 		return
 	}
 
-	actualNumStr, err := result.Result.GetNumStrErr()
+	actualNumStr, err := result.GetNumStrErr()
 
 	if err != nil {
 		fmt.Printf("Error returned by result.Result.GetNumStrErr() " +
@@ -768,7 +768,7 @@ func ExampleBigIntMultiply_01() {
 	result := mathops.BigIntMathMultiply{}.MultiplyBigIntNumArray(multiplierBiNum, bINumArray)
 
 	fmt.Println("Expected Result: ", expectedBigINumStr)
-	fmt.Println("  Actual Result: ", result.Result.GetNumStr())
+	fmt.Println("  Actual Result: ", result.GetNumStr())
 
 }
 
