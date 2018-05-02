@@ -3129,6 +3129,31 @@ func (ia IntAry) NewBigInt(num *big.Int, precision uint) (IntAry, error) {
 
 }
 
+// NewBigIntNum - Creates a new intAry object initialized
+// to the value of input parameter 'bINum' which is passed
+// as type 'BigIntNum'.
+//
+// Usage:
+// bINum, _ := BigIntNum{}.NewNumStr("1234.5678")
+// ia, err := intAry{}.NewBigIntNim(bINum)
+//
+func (ia IntAry) NewBigIntNum(bINum BigIntNum) (IntAry, error) {
+
+	iAry := IntAry{}.New()
+
+	err := iAry.SetIntAryWithBigIntNum(bINum)
+
+	if err != nil {
+		ePrefix := "IntAry.NewBigIntNum() "
+		return IntAry{},
+		fmt.Errorf(ePrefix + "Error returned by iAry.SetIntAryWithBigIntNum(bINum). " +
+			"bINum='%v' Error='%v'",
+				bINum.GetNumStr(), err.Error())
+	}
+
+	return iAry, nil
+}
+
 // NewFloat32 - Creates a new intAry object initialized
 // to the value of input parameter 'num' which is passed
 // as type 'float32'. Input parameter 'precision' is used
