@@ -323,7 +323,7 @@ func TestIntAry_MultiplyThisBy_01(t *testing.T) {
 
 	this, _ := IntAry{}.NewNumStr("96.8524")
 	ia2, _ := IntAry{}.NewNumStr("8574.21396845")
-	expected := "830433.200957906780"
+	expected := "830433.20095790678"
 
 	this.MultiplyThisBy(&ia2, -1, -1)
 
@@ -339,7 +339,7 @@ func TestIntAry_MultiplyThisBy_02(t *testing.T) {
 
 	this, _ := IntAry{}.NewNumStr("-96.8524")
 	ia2, _ := IntAry{}.NewNumStr("8574.21396845")
-	expected := "-830433.200957906780"
+	expected := "-830433.20095790678"
 
 	this.MultiplyThisBy(&ia2, -1, -1)
 
@@ -355,7 +355,7 @@ func TestIntAry_MultiplyThisBy_03(t *testing.T) {
 
 	this, _ := IntAry{}.NewNumStr("96.8524")
 	ia2, _ := IntAry{}.NewNumStr("-8574.21396845")
-	expected := "-830433.200957906780"
+	expected := "-830433.20095790678"
 
 	this.MultiplyThisBy(&ia2, -1, -1)
 
@@ -371,7 +371,7 @@ func TestIntAry_MultiplyThisBy_04(t *testing.T) {
 
 	this, _ := IntAry{}.NewNumStr("-96.8524")
 	ia2, _ := IntAry{}.NewNumStr("-8574.21396845")
-	expected := "830433.200957906780"
+	expected := "830433.20095790678"
 
 	this.MultiplyThisBy(&ia2, -1, -1)
 

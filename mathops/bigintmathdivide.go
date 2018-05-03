@@ -286,3 +286,94 @@ func (bIDivide BigIntMathDivide) BigIntNumFracQuotient(
 
 	return fracQuotient, nil
 }
+
+// DecimalQuotientMod - Performs a division operation on Decimal type input
+// parameters, 'dividend' and 'divisor'.
+//
+// There are two BigIntNum Type return values: 'quotient' and 'modulo'.
+//
+// The calculation of 'quotient' and 'modulo' is based on T-Division (Truncate Division).
+// See "Division and Modulus for Computer Scientists", DAAN LEIJEN, University of Utrecht
+// Dept. of Computer Science, PO.Box 80.089, 3508 TB Utrecht The Netherlands:
+// https://www.microsoft.com/en-us/research/wp-content/uploads/2016/02/divmodnote-letter.pdf
+// Also available at ../notes/divmodnote-letter.pdf.
+// So for q=quotient; D=Dividend d=Divisor r=Remainder or 'modulo' :
+//   						q = D div d = f(D/d) r = D mod d = D − d ·q
+//
+// 'quotient' is the integer result of dividing the 'dividend' by the 'divisor'
+//
+// 'modulo' - The modulo operation finds the remainder after division of one
+// number by another. (r = D mod d = D − d ·q)
+//
+// Input parameter 'maxPrecision' is used to control the maximum precision of the
+// resulting 'modulo'. Precision is defined as the the number of fractional digits
+// to the right of the decimal point. Be advised that these calculations can support
+// very large precision values.
+//
+// Examples:
+// =========
+//
+// Dividend			divided by		Divisor			=		Quotient			Modulo/Remainder
+//   12.555					/						 2.5			=			 5							 0.055
+//   12.555  	 			/ 				 	 2  			= 		 6							 0.555
+//    2.5 					/ 				 	12.555		= 	   0							 2.500
+//	-12.555 				/ 				   2.5 			= 		-5							-0.055
+//  -12.555     		/    			 	 2  			= 		-6							-0.555
+//  - 2.5 					/ 				 	12.555		= 		 0							-2.500
+// 	 12.555					/ 				 - 2.5			=			-5							 0.055
+//   12.555 				/ 				 - 2 				= 		-6							 0.555
+//    2.5 				  / 				 -12.555		= 		 0							 2.500
+// 	-12.555 				/ 				 - 2.5 			= 		 5							-0.055
+//  -12.555     		/    			 - 2 				= 		 6							-0.555
+//  - 2.5	 					/ 				 -12.555		= 		 0							-2.500
+//
+func (bIDivide BigIntMathDivide) DecimalQuotientMod(
+								dividend,
+									divisor Decimal,
+										maxPrecision uint) (quotient, modulo BigIntNum, err error) {
+
+	ePrefix := "BigIntMathDivide.DecimalQuotientMod() "
+
+	quotient = BigIntNum{}.New()
+	modulo = BigIntNum{}.New()
+	err = nil
+
+	bINumDividend, errx := dividend.GetBigIntNum()
+
+	if errx != nil {
+		err = fmt.Errorf(ePrefix + "Error returned by dividend.GetBigIntNum(). " +
+			"dividend='%v' Error='%v'",
+			dividend.GetNumStr(), errx.Error())
+		return quotient, modulo, err
+	}
+
+
+	bINumDivisor, errx := divisor.GetBigIntNum()
+
+	if errx != nil {
+		err = fmt.Errorf(ePrefix + "Error returned by divisor.GetBigIntNum(). " +
+			"divisor='%v' Error='%v'",
+			divisor.GetNumStr(), errx.Error())
+
+		return quotient, modulo, err
+	}
+
+
+	quotient, modulo, errx =
+			BigIntMathDivide{}.BigIntNumQuotientMod(bINumDividend, bINumDivisor, maxPrecision)
+
+	if errx != nil {
+		err = fmt.Errorf(ePrefix + "Error returned by BigIntMathDivide{}."+
+			"BigIntNumQuotientMod(bINumDividend, bINumDivisor, maxPrecision). " +
+			"Error='%v'",	errx.Error())
+
+		quotient = BigIntNum{}.New()
+		modulo = BigIntNum{}.New()
+
+		return quotient, modulo, err
+	}
+
+	err = nil
+
+	return quotient, modulo, err
+}

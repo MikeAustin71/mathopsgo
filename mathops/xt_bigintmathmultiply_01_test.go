@@ -383,7 +383,7 @@ func TestBigIntMathMultiply_MultiplyBigInts_05(t *testing.T) {
 	multiplicandStr := "0.00"
 
 	// product = 0.00
-	expectedBigINumStr := "0.000000"
+	expectedBigINumStr := "0"
 
 	expectedBigINumSign := 1
 
@@ -422,7 +422,7 @@ func TestBigIntMathMultiply_MultiplyBigInts_05(t *testing.T) {
 		&iaMultiplier,
 		&iaMultiplicand,
 		&iaResult,
-		6,
+		-1,
 		-1)
 
 	if err != nil {
@@ -817,8 +817,8 @@ func TestBigIntMathMultiply_MultiplyBigIntNums_05(t *testing.T) {
 	// multiplicand = 0.00
 	multiplicandStr := "0.00"
 
-	// product = 0.00
-	expectedBigINumStr := "0.000000"
+	// product = 0
+	expectedBigINumStr := "0"
 
 	expectedBigINumSign := 1
 
@@ -856,13 +856,15 @@ func TestBigIntMathMultiply_MultiplyBigIntNums_05(t *testing.T) {
 		&iaMultiplier,
 		&iaMultiplicand,
 		&iaResult,
-		6,
+		-1,
 		-1)
 
 	if err != nil {
 		t.Errorf("Error returned by iaMultiplier.Multiply() " +
 			"Error='%v'. ", err.Error())
 	}
+
+	iaResult.OptimizeIntArrayLen(true)
 
 	expectedBigINum, err := BigIntNum{}.NewNumStr(expectedBigINumStr)
 
@@ -1126,8 +1128,8 @@ func TestBigIntMathMultiply_MultiplyBigIntNumArray_03(t *testing.T) {
 		"11",
 	}
 
-	// product = 2212352.17675792320
-	expectedBigINumStr := "2212352.17675792320"
+	// product = 2212352.1767579232
+	expectedBigINumStr := "2212352.1767579232"
 
 	expectedBigINumSign := 1
 
@@ -1204,6 +1206,8 @@ func TestBigIntMathMultiply_MultiplyBigIntNumArray_03(t *testing.T) {
 		t.Errorf("Error returned by result.GetNumStrErr() " +
 			"Error='%v'. ", err.Error())
 	}
+
+	iaResult.OptimizeIntArrayLen(true)
 
 	if iaResult.GetNumStr() != actualNumStr {
 		t.Errorf("Error: Expected actualNumStr='%v' " +
@@ -1582,7 +1586,7 @@ func TestBigIntMathMultiply_MultiplyBigIntNumOutputToArray_05(t *testing.T) {
 		 "0",
 		 "0",
 		 "0",
-		 "0.000",
+		 "0",
 		 "0",
 	}
 
@@ -1860,8 +1864,8 @@ func TestBigIntMathMultiply_MultiplyBigIntNumSeries_03(t *testing.T) {
 		"11",
 	}
 
-	// product = 2212352.17675792320
-	expectedBigINumStr := "2212352.17675792320"
+	// product = 2212352.1767579232
+	expectedBigINumStr := "2212352.1767579232"
 
 	expectedBigINumSign := 1
 
@@ -1945,6 +1949,8 @@ func TestBigIntMathMultiply_MultiplyBigIntNumSeries_03(t *testing.T) {
 		t.Errorf("Error returned by result.GetNumStrErr() " +
 			"Error='%v'. ", err.Error())
 	}
+
+	iaResult.OptimizeIntArrayLen(true)
 
 	if iaResult.GetNumStr() != actualNumStr {
 		t.Errorf("Error: Expected actualNumStr='%v' " +
@@ -2507,7 +2513,7 @@ func TestBigIntMathMultiply_MultiplyDecimal_05(t *testing.T) {
 	multiplicandStr := "0.00"
 
 	// product = 0.00
-	expectedNumStr := "0.000000"
+	expectedNumStr := "0"
 
 	expectedSignValue := 1
 
@@ -2849,8 +2855,8 @@ func TestBigIntMathMultiply_MultiplyDecimalArray_03(t *testing.T) {
 		"11",
 	}
 
-	// product = 2212352.17675792320
-	expectedBigINumStr := "2212352.17675792320"
+	// product = 2212352.1767579232
+	expectedBigINumStr := "2212352.1767579232"
 
 	expectedBigINumSign := 1
 
@@ -2932,6 +2938,8 @@ func TestBigIntMathMultiply_MultiplyDecimalArray_03(t *testing.T) {
 		t.Errorf("Error returned by result.GetNumStrErr() " +
 			"Error='%v'. ", err.Error())
 	}
+
+	iaResult.OptimizeIntArrayLen(true)
 
 	if iaResult.GetNumStr() != actualNumStr {
 		t.Errorf("Error: Expected actualNumStr='%v' " +
@@ -3339,7 +3347,7 @@ func TestBigIntMathMultiply_MultiplyDecimalOutputToArray_05(t *testing.T) {
 		"0",
 		"0",
 		"0",
-		"0.000",
+		"0",
 		"0",
 	}
 
@@ -3628,8 +3636,8 @@ func TestBigIntMathMultiply_MultiplyDecimalSeries_03(t *testing.T) {
 		"11",
 	}
 
-	// product = 2212352.17675792320
-	expectedBigINumStr := "2212352.17675792320"
+	// product = 2212352.1767579232
+	expectedBigINumStr := "2212352.1767579232"
 
 	expectedBigINumSign := 1
 
@@ -3718,6 +3726,8 @@ func TestBigIntMathMultiply_MultiplyDecimalSeries_03(t *testing.T) {
 		t.Errorf("Error returned by result.GetNumStrErr() " +
 			"Error='%v'. ", err.Error())
 	}
+
+	iaResult.OptimizeIntArrayLen(true)
 
 	if iaResult.GetNumStr() != actualNumStr {
 		t.Errorf("Error: Expected actualNumStr='%v' " +
@@ -4283,8 +4293,8 @@ func TestBigIntMathMultiply_MultiplyIntAry_05(t *testing.T) {
 	// multiplicand = 0.00
 	multiplicandStr := "0.00"
 
-	// product = 0.00
-	expectedNumStr := "0.000000"
+	// product = 0
+	expectedNumStr := "0"
 
 	expectedSignValue := 1
 
@@ -4626,8 +4636,8 @@ func TestBigIntMathMultiply_MultiplyIntAryArray_03(t *testing.T) {
 		"11",
 	}
 
-	// product = 2212352.17675792320
-	expectedBigINumStr := "2212352.17675792320"
+	// product = 2212352.1767579232
+	expectedBigINumStr := "2212352.1767579232"
 
 	expectedBigINumSign := 1
 
@@ -4709,6 +4719,8 @@ func TestBigIntMathMultiply_MultiplyIntAryArray_03(t *testing.T) {
 		t.Errorf("Error returned by result.GetNumStrErr() " +
 			"Error='%v'. ", err.Error())
 	}
+
+	iaResult.OptimizeIntArrayLen(true)
 
 	if iaResult.GetNumStr() != actualNumStr {
 		t.Errorf("Error: Expected actualNumStr='%v' " +
@@ -5116,7 +5128,7 @@ func TestBigIntMathMultiply_MultiplyIntAryOutputToArray_05(t *testing.T) {
 		"0",
 		"0",
 		"0",
-		"0.000",
+		"0",
 		"0",
 	}
 
@@ -5405,8 +5417,8 @@ func TestBigIntMathMultiply_MultiplyIntArySeries_03(t *testing.T) {
 		"11",
 	}
 
-	// product = 2212352.17675792320
-	expectedBigINumStr := "2212352.17675792320"
+	// product = 2212352.1767579232
+	expectedBigINumStr := "2212352.1767579232"
 
 	expectedBigINumSign := 1
 
@@ -5801,8 +5813,8 @@ func TestBigIntMathMultiply_MultiplyNumStrs_05(t *testing.T) {
 	// multiplicand = 0.00
 	multiplicandStr := "0.00"
 
-	// product = 0.00
-	expectedBigINumStr := "0.000000"
+	// product = 0
+	expectedBigINumStr := "0"
 
 	expectedBigINumSign := 1
 
@@ -6044,8 +6056,8 @@ func TestBigIntMathMultiply_MultiplyNumStrArray_03(t *testing.T) {
 		"11",
 	}
 
-	// product = 2212352.17675792320
-	expectedBigINumStr := "2212352.17675792320"
+	// product = 2212352.1767579232
+	expectedBigINumStr := "2212352.1767579232"
 
 	expectedBigINumSign := 1
 
@@ -6425,7 +6437,7 @@ func TestBigIntMathMultiply_MultiplyNumStrOutputToArray_05(t *testing.T) {
 		"0",
 		"0",
 		"0",
-		"0.000",
+		"0",
 		"0",
 	}
 
@@ -6658,8 +6670,8 @@ func TestBigIntMathMultiply_MultiplyNumStrSeries_03(t *testing.T) {
 		"11",
 	}
 
-	// product = 2212352.17675792320
-	expectedBigINumStr := "2212352.17675792320"
+	// product = 2212352.1767579232
+	expectedBigINumStr := "2212352.1767579232"
 
 	expectedBigINumSign := 1
 
@@ -7275,8 +7287,8 @@ func TestBigIntMathMultiply_MultiplyNumStrDto_05(t *testing.T) {
 	// multiplicand = 0.00
 	multiplicandStr := "0.00"
 
-	// product = 0.00
-	expectedNumStr := "0.000000"
+	// product = 0
+	expectedNumStr := "0"
 
 	expectedSignValue := 1
 
@@ -7619,8 +7631,8 @@ func TestBigIntMathMultiply_MultiplyNumStrDtoArray_03(t *testing.T) {
 		"11",
 	}
 
-	// product = 2212352.17675792320
-	expectedBigINumStr := "2212352.17675792320"
+	// product = 2212352.1767579232
+	expectedBigINumStr := "2212352.1767579232"
 
 	expectedBigINumSign := 1
 
@@ -8109,7 +8121,7 @@ func TestBigIntMathMultiply_MultiplyNumStrDtoOutputToArray_05(t *testing.T) {
 		"0",
 		"0",
 		"0",
-		"0.000",
+		"0",
 		"0",
 	}
 
@@ -8398,8 +8410,8 @@ func TestBigIntMathMultiply_MultiplyNumStrDtoSeries_03(t *testing.T) {
 		"11",
 	}
 
-	// product = 2212352.17675792320
-	expectedBigINumStr := "2212352.17675792320"
+	// product = 2212352.1767579232
+	expectedBigINumStr := "2212352.1767579232"
 
 	expectedBigINumSign := 1
 

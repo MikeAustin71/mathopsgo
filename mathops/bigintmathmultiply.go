@@ -1252,5 +1252,7 @@ func (bMultiply BigIntMathMultiply) MultiplyPair(bPair BigIntPair) BigIntNum {
 								b3,
 								bPair.Big1.GetPrecisionUint() + bPair.Big2.GetPrecisionUint())
 
+	bResult.TrimTrailingFracZeros()
+
 	return bResult
 }

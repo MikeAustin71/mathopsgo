@@ -2943,10 +2943,39 @@ func (ia *IntAry) MultiplyByTenToPower(power uint) {
 
 }
 
+// MultiplyThisBy -Multiplies the current IntAry by intAry ia2 and stores the multiplication result
+// in the IntAry instance.
+//
+// Parameters
+// ==========
+//
+// 'ia2' - 				Pointer to an intAry object. In this multiplication operation, 'ia2'
+// 								is the multiplier.
+//
+// 'minimumResultPrecision' int -
+//								'minimumResultPrecision' will determine the minimum number of digits computed
+//								to the right of the decimal place in the final result.
+//								If 'minimumResultPrecision' is set to a value of -1, all significant digits (digits
+//								greater than zero) will be returned to the right of the decimal place. Remember
+//								that the maximum number of decimal digits returned will be controlled by parameter
+//								'maxResultPrecision'
+//
+// 'maxResultPrecision' 		int -
+//								'maxResultPrecision' will determine the maximum
+// 								number of digits to the right of the decimal
+//								place in the result.
+//
+//								Valid values are -1 and values >= zero ('0')
+//        				Values less than -1 will trigger an error.
+//
+//								A value of -1 signals that no limit will be placed on
+//								the number of decimals places to right of the decimal
+//								point in the result. Be advised that a very, very large number
+//								of decimal digits may be accommodated by the IntAry Type.
+//
 func (ia *IntAry) MultiplyThisBy(ia2 *IntAry, minimumPrecision, maxPrecision int) error {
 
 	return ia.Multiply(ia, ia2, ia, minimumPrecision, maxPrecision)
-
 
 }
 
@@ -2966,7 +2995,15 @@ func (ia *IntAry) MultiplyThisBy(ia2 *IntAry, minimumPrecision, maxPrecision int
 //								of the multiplication operation. The multiplication operation is achieved
 //								by multiplying 'ia1' by 'ia2'.
 //
-// 'maxResultPrecision' int -
+// 'minimumResultPrecision' int -
+//								'minimumResultPrecision' will determine the minimum number of digits computed
+//								to the right of the decimal place in the final result.
+//								If 'minimumResultPrecision' is set to a value of -1, all significant digits (digits
+//								greater than zero) will be returned to the right of the decimal place. Remember
+//								that the maximum number of decimal digits returned will be controlled by parameter
+//								'maxResultPrecision'
+//
+// 'maxResultPrecision' 		int -
 //								'maxResultPrecision' will determine the maximum
 // 								number of digits to the right of the decimal
 //								place in the result.
@@ -2976,7 +3013,8 @@ func (ia *IntAry) MultiplyThisBy(ia2 *IntAry, minimumPrecision, maxPrecision int
 //
 //								A value of -1 signals that no limit will be placed on
 //								the number of decimals places to right of the decimal
-//								point in the result.
+//								point in the result. Be advised that a very, very large number
+//								of decimal digits may be accommodated by the IntAry Type.
 //
 func (ia *IntAry) Multiply(ia1, ia2, iaResult *IntAry, minimumResultPrecision, maxResultPrecision int) error {
 
@@ -2984,8 +3022,10 @@ func (ia *IntAry) Multiply(ia1, ia2, iaResult *IntAry, minimumResultPrecision, m
 		return fmt.Errorf("Error: Parameter 'maxResultPrecision' is less than -1. maxResultPrecision= %v", maxResultPrecision)
 	}
 
-	if minimumResultPrecision < 0 {
-		minimumResultPrecision = 0
+	if minimumResultPrecision > maxResultPrecision &&
+			maxResultPrecision != -1 {
+
+		maxResultPrecision = minimumResultPrecision
 	}
 
 	ia1.SetInternalFlags()
@@ -2993,7 +3033,13 @@ func (ia *IntAry) Multiply(ia1, ia2, iaResult *IntAry, minimumResultPrecision, m
 
 
 	if ia1.isZeroValue || ia2.isZeroValue {
+
+		if minimumResultPrecision < 1 {
+			minimumResultPrecision = 0
+		}
+
 		iaResult.SetIntAryToZero(minimumResultPrecision)
+
 		return nil
 	}
 
@@ -3063,10 +3109,16 @@ func (ia *IntAry) Multiply(ia1, ia2, iaResult *IntAry, minimumResultPrecision, m
 	iaResult.integerLen = newIntAryLen - newPrecision
 	iaResult.isZeroValue = false
 
-	if newPrecision < minimumResultPrecision {
+	if minimumResultPrecision < 0 {
+		iaResult.OptimizeIntArrayLen(true)
+		newPrecision = iaResult.precision
+
+	} else if newPrecision < minimumResultPrecision {
 		iaResult.SetPrecision(minimumResultPrecision, false)
 
-	} else if maxResultPrecision > -1 && maxResultPrecision < newPrecision {
+	}
+
+	if maxResultPrecision > -1 && maxResultPrecision < newPrecision {
 		iaResult.SetPrecision(maxResultPrecision, true)
 	}
 
