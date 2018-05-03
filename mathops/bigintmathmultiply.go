@@ -91,7 +91,6 @@ func (bMultiply BigIntMathMultiply) MultiplyBigInts(
 	return bMultiply.MultiplyPair(bPair)
 }
 
-
 // MultiplyBigIntNums - Receives two BigIntNum types as input parameters and then
 // performs a 'multiplication' operation on these BigIntNum's.
 //
@@ -115,7 +114,6 @@ func (bMultiply BigIntMathMultiply) MultiplyBigIntNums(
 	bPair := BigIntPair{}.NewBigIntNum(multiplier, multiplicand)
 
 	return bMultiply.MultiplyPair(bPair)
-
 }
 
 // MultiplyBigIntNumArray - Receives one BigIntNum which is classified as the 'multiplier'.
@@ -184,13 +182,12 @@ func (bMultiply BigIntMathMultiply) MultiplyBigIntNumArray(
 //		3			x				multiplicands[4] = 6			=				  outputarray[4] = 18
 //		3			x				multiplicands[5] = 7			=				  outputarray[5] = 21
 //
-//
 // This method performs the multiplication operation described above and afterwards returns the
 // result or 'product' in an Array of 'BigIntNums' ([] BigIntNums).
 //
 func (bMultiply BigIntMathMultiply) MultiplyBigIntNumOutputToArray(
-																		multiplier BigIntNum,
-																			multiplicands []BigIntNum) [] BigIntNum {
+																			multiplier BigIntNum,
+																				multiplicands []BigIntNum) [] BigIntNum {
 
 	bINumInterimResult := multiplier.CopyOut()
 

@@ -1671,3 +1671,115 @@ func TestBigIntNum_TruncToDecPlace_06(t *testing.T) {
 	}
 
 }
+
+func TestBigIntNum_ExtendPrecision_01(t *testing.T) {
+
+	num1Str := "654.123"
+	expectedNumStr := "654.12300"
+
+	bNum1, err := BigIntNum{}.NewNumStr(num1Str)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(num1Str). Error='%v' ",
+			err.Error())
+	}
+
+	expectedNum, err := BigIntNum{}.NewNumStr(expectedNumStr)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(expectedNumStr). Error='%v' ",
+			err.Error())
+	}
+
+	bNum1.extendPrecision(2)
+
+	if !expectedNum.Equal(bNum1) {
+		t.Errorf("Error: Expected bNum1='%v'.  Instead, bNum2='%v'",
+			expectedNum.GetNumStr(), bNum1.GetNumStr())
+	}
+
+}
+
+func TestBigIntNum_ExtendPrecision_02(t *testing.T) {
+
+	num1Str := "-654.123"
+	expectedNumStr := "-654.12300"
+
+	bNum1, err := BigIntNum{}.NewNumStr(num1Str)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(num1Str). Error='%v' ",
+			err.Error())
+	}
+
+	expectedNum, err := BigIntNum{}.NewNumStr(expectedNumStr)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(expectedNumStr). Error='%v' ",
+			err.Error())
+	}
+
+	bNum1.extendPrecision(2)
+
+	if !expectedNum.Equal(bNum1) {
+		t.Errorf("Error: Expected bNum1='%v'.  Instead, bNum2='%v'",
+			expectedNum.GetNumStr(), bNum1.GetNumStr())
+	}
+
+}
+
+func TestBigIntNum_ExtendPrecision_03(t *testing.T) {
+
+	num1Str := "7"
+	expectedNumStr := "7.00"
+
+	bNum1, err := BigIntNum{}.NewNumStr(num1Str)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(num1Str). Error='%v' ",
+			err.Error())
+	}
+
+	expectedNum, err := BigIntNum{}.NewNumStr(expectedNumStr)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(expectedNumStr). Error='%v' ",
+			err.Error())
+	}
+
+	bNum1.extendPrecision(2)
+
+	if !expectedNum.Equal(bNum1) {
+		t.Errorf("Error: Expected bNum1='%v'.  Instead, bNum2='%v'",
+			expectedNum.GetNumStr(), bNum1.GetNumStr())
+	}
+
+}
+
+func TestBigIntNum_ExtendPrecision_04(t *testing.T) {
+
+	num1Str := "0"
+	expectedNumStr := "0.00"
+
+	bNum1, err := BigIntNum{}.NewNumStr(num1Str)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(num1Str). Error='%v' ",
+			err.Error())
+	}
+
+	expectedNum, err := BigIntNum{}.NewNumStr(expectedNumStr)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(expectedNumStr). Error='%v' ",
+			err.Error())
+	}
+
+	bNum1.extendPrecision(2)
+
+	if !expectedNum.Equal(bNum1) {
+		t.Errorf("Error: Expected bNum1='%v'.  Instead, bNum2='%v'",
+			expectedNum.GetNumStr(), bNum1.GetNumStr())
+	}
+
+}

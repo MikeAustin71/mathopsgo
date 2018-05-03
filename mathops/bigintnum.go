@@ -1067,6 +1067,42 @@ func (bNum *BigIntNum) SetFloat64(f64 float64, decimalPlaces int) error {
 	return nil
 }
 
+// SetPrecision - Sets a new 'precision' value for the current
+// BigIntNum instance. The new 'precision' is specified by the
+// uint type input parameter, 'newPrecision'.
+//
+// Precision is defined as the number of numeric digits to right
+// of the decimal place.
+//
+// If 'newPrecision' is greater than the current BigIntNum precision
+// value, trailing zeros are added to the fractional digits to the
+// right of the decimal place.
+//
+// If 'newPrecision' is less than the current BigIntNum precision
+// value, the current BigIntNum numeric value is rounded to the
+// specified 'newPrecision' value.
+//
+// Examples:  892.123  has a precision of 3
+//              7	     has a precision of 0
+//	           -4.59   has a precision of 2
+//
+func (bNum *BigIntNum) SetPrecision(newPrecision uint) {
+
+	if newPrecision == bNum.precision {
+		return
+	}
+
+	if bNum.precision > newPrecision {
+		bNum.RoundToDecPlace(newPrecision)
+		return
+	}
+
+	// bNum.precision must be less than newPrecision
+	bNum.extendPrecision( newPrecision - bNum.precision )
+	return
+
+}
+
 // SetINumMgr - Receives an input parameter implementing
 // the INumMgr interface and proceeds to set the current
 // BigIntNum instance to its equivalent numeric value.
@@ -1216,3 +1252,29 @@ func (bNum *BigIntNum) TruncToDecPlace(precision uint) {
 	bNum.SetBigInt(newBigInt, precision)
 }
 
+// extendPrecision - Extends the current precision.
+//
+// Precision is the number of fractional digits to the right
+// of the decimal place. This method will extend the number of
+// digits to the right of the decimal place by adding trailing
+// zeros to the current numeric value of this 'BigIntNum' instance.
+// The number of trailing zeros to be added is determined by the
+// input parameter, 'deltaPrecision'.
+//
+func (bNum *BigIntNum) extendPrecision(deltaPrecision uint) {
+
+	if deltaPrecision == 0 {
+		return
+	}
+
+	base10 := big.NewInt(10)
+	bigINum := big.NewInt(0).Set(bNum.bigInt)
+	newPrecision := bNum.precision
+
+	for i:=uint(0); i < deltaPrecision; i++ {
+		bigINum = big.NewInt(0).Mul(bigINum, base10)
+		newPrecision++
+	}
+
+	bNum.CopyIn(BigIntNum{}.NewBigInt(bigINum, newPrecision))
+}
