@@ -56,7 +56,7 @@ type BigIntMathDivide struct {
 //    2.5 				  / 				 -12.555		= 		 0							 2.500
 // 	-12.555 				/ 				 - 2.5 			= 		 5							-0.055
 //  -12.555     		/    			 - 2 				= 		 6							-0.555
-//  - 2.5	 					/ 				 -12.555		= 		 0							-2.5
+//  - 2.5	 					/ 				 -12.555		= 		 0							-2.500
 //
 func (bIDivide BigIntMathDivide) BigIntNumQuotientMod(
 								dividend,
