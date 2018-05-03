@@ -244,6 +244,7 @@ func (bIDivide BigIntMathDivide) BigIntNumModulo(
 // 	-12.555 			/ 			- 2.5 			= 			5022								3				 5.022
 //  -12.555     	/    		- 2 				= 		  62775								4				 6.2775
 //  - 2.5	 				/ 			-12.555		  = 		  199123855037834	   15				 0.199123855037834
+//  -10						/				- 2					=				5														 5
 //
 // The input parameter 'maxPrecision' is used to control the precision of the
 // resulting fractional quotient. Be advised that this method is capable of
@@ -271,15 +272,17 @@ func (bIDivide BigIntMathDivide) BigIntNumFracQuotient(
 
 
 	fracQuotient, err =
-				BigIntNum{}.NewNumStrMaxPrecision(numStr, maxPrecision)
+				BigIntNum{}.NewNumStr(numStr)
 
 	if err != nil {
 		return BigIntNum{}.New(),
 			fmt.Errorf(ePrefix +
-				"Error returned by BigIntNum{}.NewNumStrMaxPrecision(numStr, maxPrecision). " +
+				"Error returned by BigIntNum{}.NewNumStr(numStr, maxPrecision). " +
 				"numStr='%v' maxPrecision='%v' Error='%v'",
 				numStr, maxPrecision, err.Error())
 	}
+
+	fracQuotient.TrimTrailingFracZeros()
 
 	return fracQuotient, nil
 }
