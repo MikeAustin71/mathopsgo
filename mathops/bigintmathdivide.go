@@ -117,6 +117,9 @@ func (bIDivide BigIntMathDivide) BigIntNumQuotientMod(
 // 		-5 				/ 				-2 				= 				 2
 //    -5.25     /    			-2 				= 				 2
 //    -2 				/ 				-4				= 				 0
+//     12.555		/ 			  -2.5			=			    -5
+//    -12.555		/ 			  -2.5			=			     5
+//     12.555		/ 			  -2				=			    -6
 //
 func (bIDivide BigIntMathDivide) BigIntNumIntQuotient(
 				dividend,
