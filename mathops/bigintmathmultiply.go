@@ -17,7 +17,7 @@ type BigIntMathMultiply struct {
 	Result BigIntNum
 }
 
-// New - Creates a BigIntMathMultiply intance with data
+// New - Creates a BigIntMathMultiply instance with data
 // variables initialized to zero.
 //
 func (bMultiply BigIntMathMultiply) New() BigIntMathMultiply {
@@ -136,7 +136,6 @@ func (bMultiply BigIntMathMultiply) MultiplyBigIntNums(
 //
 // This method performs the multiplication operation described above and afterwards returns the
 // result or 'product' as a BigIntNum type.
-//
 //
 func (bMultiply BigIntMathMultiply) MultiplyBigIntNumArray(
 									multiplier BigIntNum,
