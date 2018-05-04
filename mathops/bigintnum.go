@@ -251,16 +251,42 @@ func (bNum *BigIntNum) GetDecimalSeparator() rune {
 
 }
 
-// TODO Finish GetFractionalPart
+// GetFractionalPart - Returns the fractional digits of the
+// current BigIntNum instance as a new BigIntNum instance
+// containing those correctly formatted fractional digits.
+//
+// Examples
+// ========
+//
+// 			 Current
+// 			BigIntNum				 		Return
+//  			Value						  Value
+// 			----------				---------
+//
+//  			123.456						 0.456
+// 			 -123.456						-0.456
+// 			  123								 0
+// 			 -123								 0
+//
 func (bNum *BigIntNum) GetFractionalPart() BigIntNum{
-	return BigIntNum{}.New()
+
+	if bNum.IsZero() {
+		return BigIntNum{}.NewBigInt(big.NewInt(0), 0)
+	}
+
+	scaleVal := big.NewInt(0).Exp(big.NewInt(10),
+								big.NewInt(int64(bNum.precision)), nil)
+
+	modulo := big.NewInt(0).Rem(bNum.bigInt, scaleVal)
+
+	return BigIntNum{}.NewBigInt(modulo, bNum.precision)
 }
 
 // GetIntAry - Converts the current BigIntNum value to an IntAry
 // instance. The resulting number value includes the decimal point
 // and fractional digits if they exist.
 //
-// Note that the BigIntNum settings for 'decimalSeparator', 'thoushandsSeparator'
+// Note that the BigIntNum settings for 'decimalSeparator', 'thousandsSeparator'
 // and 'currencySymbol' are transferred to the new IntAry instance returned to the
 // calling function.
 //
@@ -284,12 +310,11 @@ func (bNum *BigIntNum) GetIntAry() (IntAry, error) {
 	return ia, nil
 }
 
-// TODO - Finish GetIntegerPart
 // GetIntegerPart - returns a BigIntNum equal to the integer
 // value of the current BigIntNum.
 // Examples:
 //
-// 			Current
+// 			 Current
 // 			BigIntNum				 		Return
 //  			Value						  Value
 // 			----------				---------
@@ -300,7 +325,13 @@ func (bNum *BigIntNum) GetIntAry() (IntAry, error) {
 // 			 -123								-123
 //
 func (bNum *BigIntNum) GetIntegerPart() BigIntNum {
-	return BigIntNum{}.New()
+
+	scaleVal := big.NewInt(0).Exp(big.NewInt(10),
+								big.NewInt(int64(bNum.precision)), nil)
+
+	quotient := big.NewInt(0).Quo(bNum.bigInt, scaleVal)
+
+	return BigIntNum{}.NewBigInt(quotient, 0)
 }
 
 // GetNumStr - Converts the current BigIntNum value to string of
@@ -977,19 +1008,16 @@ func (bNum *BigIntNum) RoundToDecPlace(precision uint) {
 
 	// Must be: bNum.precision >  precision
 
-	base10 := big.NewInt(10)
-
-	base5 := big.NewInt(5)
-
-	bigNumRound5 := BigIntNum{}.NewBigInt(base5, uint(precision + 1))
+	bigNumRound5 :=
+		BigIntNum{}.NewBigInt(big.NewInt(5), uint(precision + 1))
 
 	bigNumBase := BigIntNum{}.NewBigInt(bNum.absBigInt, bNum.precision)
 
 	result := BigIntMathAdd{}.AddBigIntNums(bigNumBase, bigNumRound5)
 
-	deltaPrecision := big.NewInt(int64(bNum.precision - precision))
-
-	scaleVal := big.NewInt(0).Exp(base10, deltaPrecision, nil)
+	// 10^deltaPrecision
+	scaleVal := big.NewInt(0).Exp(big.NewInt(10),
+								big.NewInt(int64(bNum.precision - precision)), nil)
 
 	result.bigInt = big.NewInt(0).Quo(result.bigInt, scaleVal)
 
