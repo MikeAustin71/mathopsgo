@@ -129,13 +129,55 @@ func (bNum *BigIntNum) Equal(b2 BigIntNum) bool {
 	return true
 }
 
-// TODO - Finish Floor
 // Floor - returns the greatest integer less than or equal to
 // the numeric value of the current BigIntNum. Reference Wikipedia,
 // https://en.wikipedia.org/wiki/Floor_and_ceiling_functions
 //
+// 						Initial 			Floor
+//  					 Value				Value
+// 						-------      -------
+//  						5.95					5
+//  						5.05					5
+//  						5							5
+// 						 -5.05			 	 -6
+//  						2.4				  	2
+//  						2.9					 	2
+// 						 -2.7				 	 -3
+// 						 -2					 	 -2
+//
 func (bNum *BigIntNum) Floor() BigIntNum {
-	return BigIntNum{}.New()
+
+	if bNum.IsZero() {
+		return BigIntNum{}.NewBigInt(big.NewInt(0), 0)
+	}
+
+	scaleVal := big.NewInt(0).Exp(big.NewInt(10),
+		big.NewInt(int64(bNum.precision)), nil)
+
+	absQuotient := big.NewInt(0).Quo(bNum.absBigInt, scaleVal)
+
+	if absQuotient.Cmp(bNum.absBigInt) == 0 {
+		if bNum.sign < 0 {
+			absQuotient = big.NewInt(0).Neg(absQuotient)
+			return BigIntNum{}.NewBigInt(absQuotient, 0)
+		}
+
+		return BigIntNum{}.NewBigInt(absQuotient, 0)
+	}
+
+	// absQuotient != bNum.absBigInt
+
+	if bNum.sign > 0 {
+		// bNum is positive
+		return BigIntNum{}.NewBigInt(absQuotient, 0)
+	}
+
+	// bNum is negative
+	absQuotient = big.NewInt(0).Add(absQuotient, big.NewInt(1))
+
+	result := big.NewInt(0).Neg(absQuotient)
+
+	return BigIntNum{}.NewBigInt(result, 0)
 }
 
 // GetAbsoluteNumStr - Returns the absolute integer value (positive value) of the
