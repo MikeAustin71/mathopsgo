@@ -29,14 +29,50 @@ type BigIntNum struct {
 	currencySymbol 			rune				// Currency Symbol
 }
 
-// TODO - Finish Ceil
-// Ceil - Ceiling: The least integer greater than or equal to
-// the numeric value of the current BigIntNum. Reference Wikipedia:
-// https://en.wikipedia.org/wiki/Floor_and_ceiling_functions
+// Ceil - Ceiling: The least, or lowest value integer, which is greater than
+// or equal to the numeric value of the current BigIntNum. Reference Wikipedia:
+// 				https://en.wikipedia.org/wiki/Floor_and_ceiling_functions
 //
+// Examples
+// ========
+//
+// 						Initial 		 Ceiling
+//  					 Value				Value
+// 						-------      -------
+//  						5.95					6
+//  						5.05					6
+//  						5							5
+// 						 -5.05			 	 -5
+//  						2.4				  	3
+//  						2.9					 	3
+// 						 -2.7				 	 -2
+// 						 -2					 	 -2
 //
 func (bNum *BigIntNum) Ceil() BigIntNum {
-	return BigIntNum{}.New()
+
+	if bNum.IsZero() {
+		return BigIntNum{}.NewBigInt(big.NewInt(0), 0)
+	}
+
+	if bNum.precision == 0 {
+		return bNum.CopyOut()
+	}
+
+	scaleVal := big.NewInt(0).Exp(big.NewInt(10),
+		big.NewInt(int64(bNum.precision)), nil)
+
+	absQuotient:= big.NewInt(0).Quo(bNum.absBigInt, scaleVal)
+
+	// absQuotient IS NOT EQUAL TO bNum.absBigInt
+
+	if bNum.sign > 0 {
+		// bNum is positive
+		absQuotient = big.NewInt(0).Add(absQuotient, big.NewInt(1))
+		return BigIntNum{}.NewBigInt(absQuotient, 0)
+	}
+
+	// bNum is negative
+	return BigIntNum{}.NewBigInt(big.NewInt(0).Neg(absQuotient), 0)
 }
 
 // CmpBigInt - Compares the value of the *big.Int integer to that
@@ -151,21 +187,16 @@ func (bNum *BigIntNum) Floor() BigIntNum {
 		return BigIntNum{}.NewBigInt(big.NewInt(0), 0)
 	}
 
+	if bNum.precision == 0 {
+		return bNum.CopyOut()
+	}
+
 	scaleVal := big.NewInt(0).Exp(big.NewInt(10),
 		big.NewInt(int64(bNum.precision)), nil)
 
 	absQuotient := big.NewInt(0).Quo(bNum.absBigInt, scaleVal)
 
-	if absQuotient.Cmp(bNum.absBigInt) == 0 {
-		if bNum.sign < 0 {
-			absQuotient = big.NewInt(0).Neg(absQuotient)
-			return BigIntNum{}.NewBigInt(absQuotient, 0)
-		}
-
-		return BigIntNum{}.NewBigInt(absQuotient, 0)
-	}
-
-	// absQuotient != bNum.absBigInt
+	// absQuotient IS NOT EQUAL TO bNum.absBigInt
 
 	if bNum.sign > 0 {
 		// bNum is positive
@@ -175,9 +206,8 @@ func (bNum *BigIntNum) Floor() BigIntNum {
 	// bNum is negative
 	absQuotient = big.NewInt(0).Add(absQuotient, big.NewInt(1))
 
-	result := big.NewInt(0).Neg(absQuotient)
-
-	return BigIntNum{}.NewBigInt(result, 0)
+	return BigIntNum{}.NewBigInt(
+											big.NewInt(0).Neg(absQuotient),0)
 }
 
 // GetAbsoluteNumStr - Returns the absolute integer value (positive value) of the
