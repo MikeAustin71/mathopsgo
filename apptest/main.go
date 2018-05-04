@@ -9,7 +9,90 @@ import (
 
 func main() {
 
-	ExampleTestRat_01(20, 30, 15)
+	ExampleRoundPrecision_01()
+
+}
+
+func ExampleRoundPrecision_01() {
+	num1Str := "654.123456"
+	expectedNumStr := "654.123"
+	newPrecision := uint(3)
+
+	bNum1, err := mathops.BigIntNum{}.NewNumStr(num1Str)
+
+	if err != nil {
+		fmt.Printf("Error returned by BigIntNum{}.NewNumStr(num1Str). Error='%v' ",
+			err.Error())
+		return
+	}
+
+	expectedNum, err := mathops.BigIntNum{}.NewNumStr(expectedNumStr)
+
+	if err != nil {
+		fmt.Printf("Error returned by BigIntNum{}.NewNumStr(expectedNumStr). Error='%v' ",
+			err.Error())
+		return
+	}
+
+	fmt.Println("Old BNum1: ", bNum1.GetNumStr())
+
+	bNum1.RoundToDecPlace(newPrecision)
+
+	fmt.Println("New BNum1: ", bNum1.GetNumStr())
+
+	if !expectedNum.Equal(bNum1) {
+		fmt.Printf("Error: Expected bNum1='%v'.  Instead, bNum2='%v'",
+			expectedNum.GetNumStr(), bNum1.GetNumStr())
+		return
+	}
+
+	if newPrecision != bNum1.GetPrecisionUint() {
+		fmt.Printf("Error: Expected precision='%v'. Instead, precision='%v' .",
+			newPrecision, bNum1.GetPrecisionUint())
+		return
+	}
+
+}
+
+func ExampleSetPrecision_01(){
+
+	num1Str := "654.123456"
+	expectedNumStr := "654.123"
+	newPrecision := uint(3)
+
+	bNum1, err := mathops.BigIntNum{}.NewNumStr(num1Str)
+
+	if err != nil {
+		fmt.Printf("Error returned by BigIntNum{}.NewNumStr(num1Str). Error='%v' ",
+			err.Error())
+		return
+	}
+
+	expectedNum, err := mathops.BigIntNum{}.NewNumStr(expectedNumStr)
+
+	if err != nil {
+		fmt.Printf("Error returned by BigIntNum{}.NewNumStr(expectedNumStr). Error='%v' ",
+			err.Error())
+		return
+	}
+
+	fmt.Println("Old BNum1: ", bNum1.GetNumStr())
+
+	bNum1.SetPrecision(newPrecision)
+
+	fmt.Println("New BNum1: ", bNum1.GetNumStr())
+
+	if !expectedNum.Equal(bNum1) {
+		fmt.Printf("Error: Expected bNum1='%v'.  Instead, bNum2='%v'",
+			expectedNum.GetNumStr(), bNum1.GetNumStr())
+		return
+	}
+
+	if newPrecision != bNum1.GetPrecisionUint() {
+		fmt.Printf("Error: Expected precision='%v'. Instead, precision='%v' .",
+			newPrecision, bNum1.GetPrecisionUint())
+		return
+	}
 
 }
 

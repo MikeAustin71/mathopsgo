@@ -1564,63 +1564,6 @@ func (nDto *NumStrDto) GetNumStr() string {
 	return nDto.numStr
 }
 
-// GetThisPointer - Returns a pointer to the current NumStrDto instance.
-//
-func (nDto *NumStrDto) GetThisPointer() *NumStrDto {
-
-	return nDto
-}
-
-// GetThouParen - Returns the number string delimited with the
-// nDto.thousandsSeparator character. Negative values are
-// surrounded in parentheses.
-//
-// Example:
-// numstr = 1000000.234
-// GetThouStr() = 1,000,000.234
-//
-// numstr = -1000000.234
-// GetThouStr() = (1,000,000.234)
-//
-// Note: If the current NumStrDto is invalid, this method
-// returns an empty string.
-//
-func (nDto *NumStrDto)GetThouParen() string {
-
-	outStr, err := nDto.FormatThousandsStr(PARENTHESESNEGVALFMTMODE)
-
-	if err != nil {
-		return ""
-	}
-
-	return outStr
-}
-
-// GetThouStr - Returns the number string delimited with the
-// nDto.thousandsSeparator character plus the Decimal Separator
-// if applicable.
-//
-// Example:
-// numstr = 1000000.234
-// GetThouStr() = 1,000,000.234
-//
-// numstr = -1000000.234
-// GetThouStr() = -1,000,000.234
-//
-// Note: If the current NumStrDto is invalid, this method
-// returns an empty string.
-//
-func (nDto *NumStrDto)GetThouStr() string {
-
-	outStr, err := nDto.FormatThousandsStr(LEADMINUSNEGVALFMTMODE)
-
-	if err != nil {
-		return ""
-	}
-
-	return outStr
-}
-
 // GetPrecision - Returns the precision of the current
 // NumStrDto Instance.
 //
@@ -1776,6 +1719,63 @@ func (nDto *NumStrDto) GetScaleFactor() (*big.Int, error) {
 // numeric value. Return values will be either +1 or -1.
 func (nDto *NumStrDto) GetSign() int {
 	return nDto.signVal
+}
+
+// GetThisPointer - Returns a pointer to the current NumStrDto instance.
+//
+func (nDto *NumStrDto) GetThisPointer() *NumStrDto {
+
+	return nDto
+}
+
+// GetThouParen - Returns the number string delimited with the
+// nDto.thousandsSeparator character. Negative values are
+// surrounded in parentheses.
+//
+// Example:
+// numstr = 1000000.234
+// GetThouStr() = 1,000,000.234
+//
+// numstr = -1000000.234
+// GetThouStr() = (1,000,000.234)
+//
+// Note: If the current NumStrDto is invalid, this method
+// returns an empty string.
+//
+func (nDto *NumStrDto)GetThouParen() string {
+
+	outStr, err := nDto.FormatThousandsStr(PARENTHESESNEGVALFMTMODE)
+
+	if err != nil {
+		return ""
+	}
+
+	return outStr
+}
+
+// GetThouStr - Returns the number string delimited with the
+// nDto.thousandsSeparator character plus the Decimal Separator
+// if applicable.
+//
+// Example:
+// numstr = 1000000.234
+// GetThouStr() = 1,000,000.234
+//
+// numstr = -1000000.234
+// GetThouStr() = -1,000,000.234
+//
+// Note: If the current NumStrDto is invalid, this method
+// returns an empty string.
+//
+func (nDto *NumStrDto)GetThouStr() string {
+
+	outStr, err := nDto.FormatThousandsStr(LEADMINUSNEGVALFMTMODE)
+
+	if err != nil {
+		return ""
+	}
+
+	return outStr
 }
 
 // GetThousandsSeparator - returns a rune which represents

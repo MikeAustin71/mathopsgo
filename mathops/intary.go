@@ -5030,6 +5030,47 @@ func (ia *IntAry) SetSignificantDigitIdxs() {
 	}
 }
 
+// SetSeparators - Used to assign values for the Decimal and Thousands separators as well
+// as the Currency Symbol to be used in displaying the current intAry number string.
+//
+// Different nations and cultures use different symbols to delimit numerical values. In the
+// USA and many other countries, a period character ('.') is used to delimit integer and
+// fractional digits within a numeric value (123.45). Likewise, thousands may be delimited
+// by a comma (','). Currency signs very by nationality. For instance, the USA, Canada and
+// several other countries use the dollar sign ($) as a currency symbol.
+//
+// For a list of major world currency symbols see:
+// 	MikeAustin71\mathopsgo\mathops\mathopsconstants.go
+//  http://www.xe.com/symbols.php
+//
+// Note: If zero values are submitted as input for separator values, those values will default
+// to USA standards.
+//
+// USA Examples:
+//
+// Decimal Separator period ('.') 		= 123.456
+// Thousands Separator comma (',') 		= 1,000,000,000
+// Currency Symbol dollar sign ('$')	= $123
+//
+func (ia *IntAry) SetSeparators(decimalSeparator, thousandsSeparator, currencySymbol rune) {
+
+	if decimalSeparator == 0 {
+		decimalSeparator = '.'
+	}
+
+	if thousandsSeparator == 0 {
+		thousandsSeparator = ','
+	}
+
+	if currencySymbol == 0 {
+		currencySymbol = '$'
+	}
+
+	ia.decimalSeparator = decimalSeparator
+	ia.thousandsSeparator = thousandsSeparator
+	ia.currencySymbol = currencySymbol
+}
+
 // SetThousandsSeparator is used to set the value of the thousands
 // separator character. The thousands separator character is used
 // to separate thousands when the value of this IntAry object is

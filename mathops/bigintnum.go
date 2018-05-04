@@ -18,12 +18,15 @@ import (
 // The BigIntNum Type implements the INumMgr interface.
 //
 type BigIntNum struct {
-	bigInt      *big.Int
-	absBigInt   *big.Int
-	precision   uint     // Number of digits to the right of the decimal point.
-	scaleFactor *big.Int // Scale Factor =  10^(precision * -1)
-	sign        int      // Valid values are -1 or +1. Indicates the sign of the
-	// 	the 'bigInt' integer.
+	bigInt      				*big.Int
+	absBigInt   				*big.Int
+	precision   				uint     		// Number of digits to the right of the decimal point.
+	scaleFactor 				*big.Int 		// Scale Factor =  10^(precision * -1)
+	sign        				int      		// Valid values are -1 or +1. Indicates the sign of the
+																	// 		the 'bigInt' integer.
+	decimalSeparator 		rune				// Character used to separate integer and fractional digits ('.')
+	thousandsSeparator 	rune 				// Character used to separate thousands (1,000,000,000
+	currencySymbol 			rune				// Currency Symbol
 }
 
 // CmpBigInt - Compares the value of the *big.Int integer to that
@@ -71,6 +74,18 @@ func (bNum *BigIntNum) Empty() {
 	bNum.scaleFactor = big.NewInt(1)
 	bNum.sign = 1
 	bNum.precision = 0
+
+	if bNum.thousandsSeparator == 0 {
+		bNum.thousandsSeparator = ','
+	}
+
+	if bNum.decimalSeparator == 0 {
+		bNum.decimalSeparator = '.'
+	}
+
+	if bNum.currencySymbol == 0 {
+		bNum.currencySymbol = '$'
+	}
 
 }
 
@@ -154,8 +169,27 @@ func (bNum *BigIntNum) GetBigInt() (*big.Int, error) {
 	return big.NewInt(0).Set(bNum.bigInt), nil
 }
 
+// GetCurrencySymbol - Returns the character currently designated
+// as the currency symbol for this BigIntNum instance.
+//
+// In the USA, the currency symbol is the dollar sign ('$').
+//
+// For a list of Major Currency Unicode Symbols, see constants
+// located in: MikeAustin71/mathopsgo/mathops/mathopsconstants.go
+//
+// Example: $123.45
+//
+func (bNum *BigIntNum) GetCurrencySymbol() rune {
 
-// GetDecimal - Converts the current BigIntNum value to a Decimal
+	if bNum.currencySymbol == 0 {
+		bNum.currencySymbol = '$'
+	}
+
+	return bNum.currencySymbol
+
+}
+
+// GetDecimal - Converts the current BigIntNum value to a Type Decimal
 // instance. The resulting number value includes the decimal point
 // and decimal digits if they exist.
 //
@@ -173,12 +207,38 @@ func (bNum *BigIntNum) GetDecimal() (Decimal, error) {
 				bNum.bigInt.Text(10), bNum.precision, err.Error())
 	}
 
+	bNum.setDefaultSeparators()
+
+	dec.SetSeparators(bNum.decimalSeparator, bNum.thousandsSeparator, bNum.currencySymbol)
+
 	return dec, nil
+}
+
+
+// GetDecimalSeparator - returns the character designated
+// as the decimal separator for the current NumStrDto instance.
+//
+// In the USA, the decimal separator is the period character ('.').
+//
+// Example:		123.456
+//
+func (bNum *BigIntNum) GetDecimalSeparator() rune {
+
+	if bNum.decimalSeparator == 0 {
+		bNum.decimalSeparator = '.'
+	}
+
+	return bNum.decimalSeparator
+
 }
 
 // GetIntAry - Converts the current BigIntNum value to an IntAry
 // instance. The resulting number value includes the decimal point
-// and decimal digits if they exist.
+// and fractional digits if they exist.
+//
+// Note that the BigIntNum settings for 'decimalSeparator', 'thoushandsSeparator'
+// and 'currencySymbol' are transferred to the new IntAry instance returned to the
+// calling function.
 //
 func (bNum *BigIntNum) GetIntAry() (IntAry, error) {
 
@@ -193,6 +253,9 @@ func (bNum *BigIntNum) GetIntAry() (IntAry, error) {
 				"bNum.bigInt='%v' bNum.precision='%v' Error='%v'",
 				bNum.bigInt.Text(10), bNum.precision, err.Error())
 	}
+
+	bNum.setDefaultSeparators()
+	ia.SetSeparators(bNum.decimalSeparator, bNum.thousandsSeparator, bNum.currencySymbol)
 
 	return ia, nil
 }
@@ -209,6 +272,8 @@ func (bNum *BigIntNum) GetNumStr() (string) {
 		return ""
 	}
 
+	bNum.setDefaultSeparators()
+	nDto.SetSeparators(bNum.decimalSeparator, bNum.thousandsSeparator, bNum.currencySymbol)
 	return nDto.GetNumStr()
 }
 
@@ -231,6 +296,8 @@ func (bNum *BigIntNum) GetNumStrErr() (string, error) {
 
 	}
 
+	bNum.setDefaultSeparators()
+	nDto.SetSeparators(bNum.decimalSeparator, bNum.thousandsSeparator, bNum.currencySymbol)
 	return nDto.GetNumStr(), nil
 }
 
@@ -251,6 +318,10 @@ func (bNum *BigIntNum) GetNumStrDto() (NumStrDto, error) {
 				"bNum.bigInt='%v' bNum.precision='%v' Error='%v'",
 				bNum.bigInt.Text(10), bNum.precision, err.Error())
 	}
+
+	bNum.setDefaultSeparators()
+
+	nDto.SetSeparators(bNum.decimalSeparator, bNum.thousandsSeparator, bNum.currencySymbol)
 
 	return nDto, nil
 }
@@ -299,10 +370,11 @@ func (bNum *BigIntNum) GetPrecisionUint() uint {
 	return bNum.precision
 }
 
-// GetThisPointer - Returns a pointer to the current 
-// instance of this BigIntNum.
-func (bNum *BigIntNum) GetThisPointer() *BigIntNum {
-	return bNum
+// GetSign - Returns the numeric sign associated
+// with the current numeric value encapsulated by
+// this BigIntNum.
+func (bNum *BigIntNum) GetSign() int {
+	return bNum.sign
 }
 
 // GetScaleFactor - Returns the scale value of the current 
@@ -319,11 +391,27 @@ func (bNum *BigIntNum) GetScaleFactor() *big.Int {
 	return big.NewInt(0).Set(bNum.scaleFactor)
 }
 
-// GetSign - Returns the numeric sign associated 
-// with the current numeric value encapsulated by
-// this BigIntNum.
-func (bNum *BigIntNum) GetSign() int {
-	return bNum.sign
+// GetThisPointer - Returns a pointer to the current
+// instance of this BigIntNum.
+func (bNum *BigIntNum) GetThisPointer() *BigIntNum {
+	return bNum
+}
+
+// GetThousandsSeparator - returns a rune which represents
+// the character currently used to separate thousands in
+// the display of the current BigIntNum instance.
+//
+// In the USA, the thousands separator is a comma character.
+//
+// Example: 1,000,000,000
+//
+func (bNum *BigIntNum) GetThousandsSeparator() rune {
+
+	if bNum.thousandsSeparator == 0 {
+		bNum.thousandsSeparator = ','
+	}
+
+	return bNum.thousandsSeparator
 }
 
 // IsZero - Returns a boolean signaling whether the current
@@ -369,6 +457,7 @@ func (bNum BigIntNum) New() BigIntNum {
 //
 func (bNum BigIntNum) NewBigInt(bigI *big.Int, precision uint) BigIntNum {
 	b := BigIntNum{}
+	b.Empty()
 	b.SetBigInt(bigI, precision)
 	return b
 }
@@ -397,6 +486,7 @@ func (bNum BigIntNum) NewBigInt(bigI *big.Int, precision uint) BigIntNum {
 func (bNum BigIntNum) NewBigIntExponent(bigI *big.Int, exponent int) BigIntNum {
 
 	b := BigIntNum{}
+	b.Empty()
 	b.SetBigIntExponent(bigI, exponent)
 	return b
 }
@@ -424,6 +514,8 @@ func (bNum BigIntNum) NewBigFloat(bigFloat *big.Float, decimalPlaces int) (BigIn
 	ePrefix := "BigIntNumNewFloat64() "
 
 	b := BigIntNum{}
+	b.Empty()
+
 	err := b.SetBigFloat(bigFloat, decimalPlaces)
 
 	if err != nil {
@@ -459,6 +551,7 @@ func (bNum BigIntNum) NewDecimal(decNum Decimal) (BigIntNum, error) {
 	precision := uint(decNum.GetPrecision())
 
 	b := BigIntNum{}
+	b.Empty()
 	b.SetBigInt(bInt, precision)
 	return b, nil
 }
@@ -485,6 +578,7 @@ func (bNum BigIntNum) NewFloat32(f32 float32, decimalPlaces int) (BigIntNum, err
 	ePrefix := "BigIntNumNewFloat32() "
 
 	b := BigIntNum{}
+	b.Empty()
 	err := b.SetFloat32(f32, decimalPlaces)
 
 	if err != nil {
@@ -518,6 +612,7 @@ func (bNum BigIntNum) NewFloat64(f64 float64, decimalPlaces int) (BigIntNum, err
 	ePrefix := "BigIntNumNewFloat64() "
 
 	b := BigIntNum{}
+	b.Empty()
 	err := b.SetFloat64(f64, decimalPlaces)
 
 	if err != nil {
@@ -551,6 +646,7 @@ func (bNum BigIntNum) NewIntExponent(iNum int, exponent int) BigIntNum {
 
 	bigI := big.NewInt(int64(iNum))
 	b := BigIntNum{}
+	b.Empty()
 	b.SetBigIntExponent(bigI, exponent)
 	return b
 }
@@ -577,6 +673,7 @@ func (bNum BigIntNum) NewInt32Exponent(i32 int32, exponent int) BigIntNum {
 
 	bigI := big.NewInt(int64(i32))
 	b := BigIntNum{}
+	b.Empty()
 	b.SetBigIntExponent(bigI, exponent)
 	return b
 }
@@ -603,6 +700,7 @@ func (bNum BigIntNum) NewInt64Exponent(i64 int64, exponent int) BigIntNum {
 
 	bigI := big.NewInt(i64)
 	b := BigIntNum{}
+	b.Empty()
 	b.SetBigIntExponent(bigI, exponent)
 	return b
 }
@@ -629,6 +727,7 @@ func (bNum BigIntNum) NewIntAry(ia IntAry) (BigIntNum, error) {
 	precision := ia.GetPrecisionUint()
 
 	b := BigIntNum{}
+	b.Empty()
 	b.SetBigInt(bInt, precision)
 	return b, nil
 }
@@ -666,6 +765,7 @@ func (bNum BigIntNum) NewINumMgr(numMgr INumMgr) (BigIntNum, error) {
 	ePrefix := "BigIntNum.NewINumMgr() "
 
 	bINum := BigIntNum{}.New()
+	bINum.Empty()
 
 	err := bINum.SetINumMgr(numMgr)
 
@@ -702,7 +802,7 @@ func (bNum BigIntNum) NewNumStr(numStr string) (BigIntNum, error) {
 	}
 
 	b := BigIntNum{}
-
+	b.Empty()
 	b.SetBigInt(bigI, uint(nDto.GetPrecision()))
 
 	return b, nil
@@ -734,7 +834,7 @@ func (bNum BigIntNum) NewNumStrMaxPrecision(numStr string, maxPrecision uint) (B
 	}
 
 	b := BigIntNum{}
-
+	b.Empty()
 	b.SetBigInt(bigI, uint(nDto.GetPrecision()))
 
 	if b.precision > maxPrecision {
@@ -768,7 +868,7 @@ func (bNum BigIntNum) NewNumStrDto(nDto NumStrDto) (BigIntNum, error) {
 	}
 
 	b := BigIntNum{}
-
+	b.Empty()
 	b.SetBigInt(bigI, uint(nDto.GetPrecision()))
 
 	return b, nil
@@ -811,38 +911,37 @@ func (bNum *BigIntNum) RoundToDecPlace(precision uint) {
 		return
 	}
 
-	base10 := big.NewInt(10)
-
 	// If existing precision is less than new specified precision,
 	// add trailing zeros, set new precision parameter and return.
 	if bNum.precision < precision {
 		deltaPrecision := precision - bNum.precision
-		deltaExponent := big.NewInt(int64(deltaPrecision))
-		scaleValue := big.NewInt(0).Exp(base10, deltaExponent, nil)
-		newBigInt := big.NewInt(0).Mul(bNum.bigInt, scaleValue)
-		bNum.SetBigInt(newBigInt, precision)
+		bNum.extendPrecision(deltaPrecision)
 		return
 	}
+
+	// Must be: bNum.precision >  precision
+
+	base10 := big.NewInt(10)
 
 	base5 := big.NewInt(5)
 
 	bigNumRound5 := BigIntNum{}.NewBigInt(base5, uint(precision + 1))
 
-	baseIRound := big.NewInt(0).Set(bNum.absBigInt)
-
-	bigNumBase := BigIntNum{}.NewBigInt(baseIRound, bNum.precision)
+	bigNumBase := BigIntNum{}.NewBigInt(bNum.absBigInt, bNum.precision)
 
 	result := BigIntMathAdd{}.AddBigIntNums(bigNumBase, bigNumRound5)
 
+	deltaPrecision := big.NewInt(int64(bNum.precision - precision))
 
-	newBigInt := big.NewInt(0).Quo(result.bigInt, base10)
+	scaleVal := big.NewInt(0).Exp(base10, deltaPrecision, nil)
+
+	result.bigInt = big.NewInt(0).Quo(result.bigInt, scaleVal)
 
 	if bNum.sign < 0 {
-		newBigInt = big.NewInt(0).Neg(newBigInt)
+		result.bigInt = big.NewInt(0).Neg(result.bigInt)
 	}
 
-	bNum.SetBigInt(newBigInt, precision)
-
+	bNum.SetBigInt(result.bigInt, precision)
 }
 
 // SetBigInt - Sets the value of the current BigIntNum instance using
@@ -867,6 +966,8 @@ func (bNum *BigIntNum) RoundToDecPlace(precision uint) {
 //											  123456					 3					  123.456
 //
 func (bNum *BigIntNum) SetBigInt(bigI *big.Int, precision uint) {
+
+	bNum.Empty()
 
 	bNum.bigInt = big.NewInt(0).Set(bigI)
 	bNum.precision = precision
@@ -970,6 +1071,52 @@ func (bNum *BigIntNum) SetBigFloat(bigFloat *big.Float, decimalPlaces int) error
 	return nil
 }
 
+// SetCurrencySymbol - assigns the input parameter rune as the
+// currency symbol to be used by the BigIntNum when generating
+// number strings for display.
+//
+// In the USA, the currency symbol is the dollar sign ('$').
+//
+// Note: If a zero value is submitted as input, Currency Symbol
+// will default to the USA dollar sign ('$').
+//
+// For a list of Major Currency Unicode Symbols, see constants
+// located in: MikeAustin71/mathopsgo/mathops/mathopsconstants.go
+//
+// Example: $123.45
+//
+func (bNum *BigIntNum) SetCurrencySymbol(currencySymbol rune) {
+
+	if currencySymbol == 0 {
+		currencySymbol = '$'
+	}
+
+	bNum.currencySymbol = currencySymbol
+}
+
+// SetDecimalSeparator - Assigns a rune or character to the internal
+// data field, 'decimalSeparator'. The Decimal Separator is used to
+// separate the integer and fractional elements of a number string.
+//
+// The BigIntNum Type uses this character when generating number strings
+// for display.
+//
+// In the USA, the Decimal Separator is a period character ('.').
+//
+// Note: If a zero value is submitted as input, the Decimal Separator
+// will default to the USA standard period character ('.').
+//
+// Example: 123.456
+//
+func (bNum *BigIntNum) SetDecimalSeparator(decimalSeparator rune) {
+
+	if decimalSeparator == 0 {
+		decimalSeparator = '.'
+	}
+
+	bNum.decimalSeparator = decimalSeparator
+}
+
 // SetFloat32 - Sets the value of a BigIntNum using a float32 floating point
 // input parameter.  The precision of the number is specified by the input
 // parameter, 'decimalPlaces'.
@@ -1067,42 +1214,6 @@ func (bNum *BigIntNum) SetFloat64(f64 float64, decimalPlaces int) error {
 	return nil
 }
 
-// SetPrecision - Sets a new 'precision' value for the current
-// BigIntNum instance. The new 'precision' is specified by the
-// uint type input parameter, 'newPrecision'.
-//
-// Precision is defined as the number of numeric digits to right
-// of the decimal place.
-//
-// If 'newPrecision' is greater than the current BigIntNum precision
-// value, trailing zeros are added to the fractional digits to the
-// right of the decimal place.
-//
-// If 'newPrecision' is less than the current BigIntNum precision
-// value, the current BigIntNum numeric value is rounded to the
-// specified 'newPrecision' value.
-//
-// Examples:  892.123  has a precision of 3
-//              7	     has a precision of 0
-//	           -4.59   has a precision of 2
-//
-func (bNum *BigIntNum) SetPrecision(newPrecision uint) {
-
-	if newPrecision == bNum.precision {
-		return
-	}
-
-	if bNum.precision > newPrecision {
-		bNum.RoundToDecPlace(newPrecision)
-		return
-	}
-
-	// bNum.precision must be less than newPrecision
-	bNum.extendPrecision( newPrecision - bNum.precision )
-	return
-
-}
-
 // SetINumMgr - Receives an input parameter implementing
 // the INumMgr interface and proceeds to set the current
 // BigIntNum instance to its equivalent numeric value.
@@ -1149,6 +1260,75 @@ func (bNum *BigIntNum) SetINumMgr(numMgr INumMgr) error {
 	return nil
 }
 
+
+// SetPrecision - Sets a new 'precision' value for the current
+// BigIntNum instance. The new 'precision' is specified by the
+// uint type input parameter, 'newPrecision'.
+//
+// Precision is defined as the number of numeric digits to right
+// of the decimal place.
+//
+// If 'newPrecision' is greater than the current BigIntNum precision
+// value, trailing zeros are added to the fractional digits to the
+// right of the decimal place.
+//
+// If 'newPrecision' is less than the current BigIntNum precision
+// value, the current BigIntNum numeric value is rounded to the
+// specified 'newPrecision' value.
+//
+// Examples:  892.123  has a precision of 3
+//              7	     has a precision of 0
+//	           -4.59   has a precision of 2
+//
+func (bNum *BigIntNum) SetPrecision(newPrecision uint) {
+
+	if newPrecision == bNum.precision {
+		return
+	}
+
+	if bNum.precision > newPrecision {
+		bNum.RoundToDecPlace(newPrecision)
+		return
+	}
+
+	deltaPrecision := newPrecision - bNum.precision
+	// bNum.precision must be less than newPrecision
+	bNum.extendPrecision(deltaPrecision)
+	return
+
+}
+
+// SetThousandsSeparator - Sets the value of the character which will be
+// used to separate thousands in the display of the NumStrDto number
+// string. In the USA the typical thousands separator is the comma.
+//
+// If if a zero value is submitted, the Thousands Separator will default
+// to the comma character.
+//
+// Example:
+// 1,000,000
+//
+func (bNum *BigIntNum) SetThousandsSeparator(thousandsSeparator rune) {
+
+	if thousandsSeparator == 0 {
+		thousandsSeparator = ','
+	}
+
+	bNum.thousandsSeparator = thousandsSeparator
+
+}
+
+// TrimTrailingFracZeros - This method will delete non-significant
+// trailing zeros from the fractional digits of the current BigIntNum
+// numerical value.
+//
+// Examples:
+//  Initial Value			Trimmed Value
+//		456.123000 			 456.123
+//			0.000					 0
+//			7.0						 7
+//	 -456.123000			-456.123
+//
 func (bNum *BigIntNum) TrimTrailingFracZeros(){
 
 	if bNum.precision == 0 {
@@ -1191,6 +1371,47 @@ func (bNum *BigIntNum) TrimTrailingFracZeros(){
 	return
 }
 
+// SetSeparators - Used to assign values for the Decimal and Thousands separators as well
+// as the Currency Symbol to be used in displaying the current number string.
+//
+// Different nations and cultures use different symbols to delimit numerical values. In the
+// USA and many other countries, a period character ('.') is used to delimit integer and
+// fractional digits within a numeric value (123.45). Likewise, thousands may be delimited
+// by a comma (','). Currency signs very by nationality. For instance, the USA, Canada and
+// several other countries use the dollar sign ($) as a currency symbol.
+//
+// For a list of major world currency symbols see:
+// 	MikeAustin71\mathopsgo\mathops\mathopsconstants.go
+//  http://www.xe.com/symbols.php
+//
+// Note: If zero values are submitted as input for separator values, those values will default
+// to USA standards.
+//
+// USA Examples:
+//
+// Decimal Separator period ('.') 		= 123.456
+// Thousands Separator comma (',') 		= 1,000,000,000
+// Currency Symbol dollar sign ('$')	= $123
+//
+func (bNum *BigIntNum) SetSeparators(decimalSeparator, thousandsSeparator, currencySymbol rune) {
+
+	if decimalSeparator == 0 {
+		decimalSeparator = '.'
+	}
+
+	if thousandsSeparator == 0 {
+		thousandsSeparator = ','
+	}
+
+	if currencySymbol == 0 {
+		currencySymbol = '$'
+	}
+
+	bNum.decimalSeparator = decimalSeparator
+	bNum.thousandsSeparator = thousandsSeparator
+	bNum.currencySymbol = currencySymbol
+}
+
 // TruncToDecPlace - Truncates the current BigIntNum to the number
 // of decimal places specified by input parameter 'precision'.
 // No rounding occurs, the trailing digits are simply truncated or
@@ -1230,20 +1451,20 @@ func (bNum *BigIntNum) TruncToDecPlace(precision uint) {
 		return
 	}
 
-	base10 := big.NewInt(10)
-
 	// If existing precision is less than new specified precision,
 	// add trailing zeros, set new precision parameter and return.
 	if bNum.precision < precision {
-		deltaPrecision := precision - bNum.precision
-		deltaExponent := big.NewInt(int64(deltaPrecision))
-		scaleValue := big.NewInt(0).Exp(base10, deltaExponent, nil)
-		newBigInt := big.NewInt(0).Mul(bNum.bigInt, scaleValue)
-		bNum.SetBigInt(newBigInt, precision)
+
+		bNum.extendPrecision(precision - bNum.precision)
 		return
 	}
 
-	newBigInt := big.NewInt(0).Quo(bNum.absBigInt, base10)
+	// Must be bNum.precision > precision
+	base10 := big.NewInt(10)
+	deltaPrecision := big.NewInt(int64(bNum.precision - precision))
+	newBigInt := big.NewInt(0).Set(bNum.absBigInt)
+	newScaleVal := big.NewInt(0).Exp(base10, deltaPrecision, nil)
+	newBigInt = big.NewInt(0).Quo(newBigInt, newScaleVal)
 
 	if bNum.sign < 1 {
 		newBigInt = big.NewInt(0).Neg(newBigInt)
@@ -1268,13 +1489,32 @@ func (bNum *BigIntNum) extendPrecision(deltaPrecision uint) {
 	}
 
 	base10 := big.NewInt(10)
+	scaleVal := big.NewInt(0).Exp(base10,big.NewInt(int64(deltaPrecision)), nil)
 	bigINum := big.NewInt(0).Set(bNum.bigInt)
-	newPrecision := bNum.precision
+	newPrecision := bNum.precision + deltaPrecision
 
-	for i:=uint(0); i < deltaPrecision; i++ {
-		bigINum = big.NewInt(0).Mul(bigINum, base10)
-		newPrecision++
-	}
+	bigINum = big.NewInt(0).Mul(bigINum, scaleVal)
 
 	bNum.CopyIn(BigIntNum{}.NewBigInt(bigINum, newPrecision))
+}
+
+
+// setDefaultSeparators - Sets default characters for
+// decimal separator, thousands separator and currency
+// symbol if those variables have not been previously
+// assigned values.
+//
+func (bNum *BigIntNum) setDefaultSeparators() {
+
+	if bNum.decimalSeparator == 0 {
+		bNum.decimalSeparator = '.'
+	}
+
+	if bNum.thousandsSeparator == 0 {
+		bNum.thousandsSeparator = ','
+	}
+
+	if bNum.currencySymbol == 0 {
+		bNum.currencySymbol = '$'
+	}
 }
