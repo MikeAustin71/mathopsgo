@@ -884,19 +884,32 @@ func (bNum BigIntNum) NewNumStrDto(nDto NumStrDto) (BigIntNum, error) {
 // 	integer= 123456; precision = 3; Numeric Value= 123.456
 //
 // If the value of BigIntNum.bigInt is zero ('0'), that zero value will
-// remain unaltered. However, BigIntNum.precision will be set equal to
+// remain unaltered. However, the BigIntNum.precision value will be set equal to
 // input parameter, 'precision'.
 //
 // If the number of decimal places specified for rounding ('precision") is
 // equal to the current BigIntNum.precision, no action is taken.
 //
 // If the number of decimal places specified for rounding ('precision') is
-// greater than the current BigIntNum.precision, trailing zeros are added to
+// greater than the current BigIntNum.precision value, trailing zeros are added to
 // the current BigIntNum.bigInt value and BigIntNum.precision is set equal
 // to input parameter, 'precision'.
 //
-// Input parameter 'precision' must be less than the current BigIntNum.precision
-// before the rounding operation will engage.
+// Finally, if the number of decimal places specified for rounding ('precision') is
+// less than the current BigIntNum.precision value, the fractional digits will be
+// rounded in accordance with the input parameter, 'precision'.
+//
+// Examples:
+//
+// 	 Original       				'precision'				Resulting
+//    Value								input parameter			  Value
+//  --------------				---------------     -------------
+//	654.123456									9							 654.123456000
+//	654.123456									4							 654.1235
+// -654.123456									9							-654.123456000
+// -654.123456									4							-654.1235
+//		0													3								 0.000
+//    0.000000									0								 0
 //
 func (bNum *BigIntNum) RoundToDecPlace(precision uint) {
 
@@ -907,7 +920,7 @@ func (bNum *BigIntNum) RoundToDecPlace(precision uint) {
 
 	// bigInt == zero, set precision an return
 	if bNum.bigInt.Cmp(big.NewInt(0)) == 0 {
-		bNum.precision = precision
+		bNum.CopyIn(BigIntNum{}.NewBigInt(big.NewInt(0), precision))
 		return
 	}
 
@@ -1268,7 +1281,11 @@ func (bNum *BigIntNum) SetINumMgr(numMgr INumMgr) error {
 // Precision is defined as the number of numeric digits to right
 // of the decimal place.
 //
-// If 'newPrecision' is greater than the current BigIntNum precision
+// If 'newPrecision' is equal to the current BigIntNum.precision value,
+// no action is taken and the original BigIntNum numeric value remains
+// unchanged.
+//
+// If 'newPrecision' is greater than the current BigIntNum.precision
 // value, trailing zeros are added to the fractional digits to the
 // right of the decimal place.
 //
@@ -1276,9 +1293,17 @@ func (bNum *BigIntNum) SetINumMgr(numMgr INumMgr) error {
 // value, the current BigIntNum numeric value is rounded to the
 // specified 'newPrecision' value.
 //
-// Examples:  892.123  has a precision of 3
-//              7	     has a precision of 0
-//	           -4.59   has a precision of 2
+// Examples:
+//
+// 	 Original       			'newPrecision'				Resulting
+//    Value								input parameter			  Value
+//  --------------				---------------     -------------
+//	654.123456									9							 654.123456000
+//	654.123456									4							 654.1235
+// -654.123456									9							-654.123456000
+// -654.123456									4							-654.1235
+//		0													3								 0.000
+//    0.000000									0								 0
 //
 func (bNum *BigIntNum) SetPrecision(newPrecision uint) {
 
@@ -1420,23 +1445,34 @@ func (bNum *BigIntNum) SetSeparators(decimalSeparator, thousandsSeparator, curre
 // 'precision' equals the number of digits to the right of the decimal
 // place.
 //
-// Example:
-// 	integer= 123456; precision = 3; Numeric Value= 123.456
-//
 // If the value of BigIntNum.bigInt is zero ('0'), that zero value will
 // remain unaltered. However, BigIntNum.precision will be set equal to
 // input parameter, 'precision'.
 //
 // If the number of decimal places specified for truncation ('precision") is
-// equal to the current BigIntNum.precision, no action is taken.
+// equal to the current BigIntNum.precision, no action is taken and the
+// original BigIntNum numeric value remains unchanged.
 //
 // If the number of decimal places specified for truncation ('precision') is
 // greater than the current BigIntNum.precision, trailing zeros are added to
 // the current BigIntNum.bigInt value and BigIntNum.precision is set equal
 // to input parameter, 'precision'.
 //
-// Input parameter 'precision' must be less than the current BigIntNum.precision
-// before the truncation operation will engage.
+// If 'precision' is less than the current BigIntNum.precision
+// value, the current BigIntNum numeric value is truncated to
+// the specified 'precision' value and NO rounding occurs.
+//
+// Examples:
+//
+// 	 Original       			'newPrecision'				Resulting
+//    Value								input parameter			  Value
+//  --------------				---------------     -------------
+//	654.123456									9							 654.123456000
+//	654.123456									4							 654.1234 (no rounding)
+// -654.123456									9							-654.123456000
+// -654.123456									4							-654.1234 (no rounding)
+//		0													3								 0.000
+//    0.000000									0								 0
 //
 func (bNum *BigIntNum) TruncToDecPlace(precision uint) {
 
@@ -1488,10 +1524,17 @@ func (bNum *BigIntNum) extendPrecision(deltaPrecision uint) {
 		return
 	}
 
+	newPrecision := bNum.precision + deltaPrecision
+
+	// bigInt == zero, set precision an return
+	if bNum.bigInt.Cmp(big.NewInt(0)) == 0 {
+		bNum.CopyIn(BigIntNum{}.NewBigInt(big.NewInt(0), newPrecision))
+		return
+	}
+
 	base10 := big.NewInt(10)
 	scaleVal := big.NewInt(0).Exp(base10,big.NewInt(int64(deltaPrecision)), nil)
 	bigINum := big.NewInt(0).Set(bNum.bigInt)
-	newPrecision := bNum.precision + deltaPrecision
 
 	bigINum = big.NewInt(0).Mul(bigINum, scaleVal)
 
