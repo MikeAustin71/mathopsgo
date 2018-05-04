@@ -326,6 +326,10 @@ func (bNum *BigIntNum) GetIntAry() (IntAry, error) {
 //
 func (bNum *BigIntNum) GetIntegerPart() BigIntNum {
 
+	if bNum.IsZero() {
+		return BigIntNum{}.NewBigInt(big.NewInt(0), 0)
+	}
+
 	scaleVal := big.NewInt(0).Exp(big.NewInt(10),
 								big.NewInt(int64(bNum.precision)), nil)
 
