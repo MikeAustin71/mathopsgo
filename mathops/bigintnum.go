@@ -29,6 +29,16 @@ type BigIntNum struct {
 	currencySymbol 			rune				// Currency Symbol
 }
 
+// TODO - Finish Ceil
+// Ceil - Ceiling: The least integer greater than or equal to
+// the numeric value of the current BigIntNum. Reference Wikipedia:
+// https://en.wikipedia.org/wiki/Floor_and_ceiling_functions
+//
+//
+func (bNum *BigIntNum) Ceil() BigIntNum {
+	return BigIntNum{}.New()
+}
+
 // CmpBigInt - Compares the value of the *big.Int integer to that
 // contained in an incoming BigIntNum.
 //
@@ -117,6 +127,15 @@ func (bNum *BigIntNum) Equal(b2 BigIntNum) bool {
 	}
 
 	return true
+}
+
+// TODO - Finish Floor
+// Floor - returns the greatest integer less than or equal to
+// the numeric value of the current BigIntNum. Reference Wikipedia,
+// https://en.wikipedia.org/wiki/Floor_and_ceiling_functions
+//
+func (bNum *BigIntNum) Floor() BigIntNum {
+	return BigIntNum{}.New()
 }
 
 // GetAbsoluteNumStr - Returns the absolute integer value (positive value) of the
@@ -232,6 +251,11 @@ func (bNum *BigIntNum) GetDecimalSeparator() rune {
 
 }
 
+// TODO Finish GetFractionalPart
+func (bNum *BigIntNum) GetFractionalPart() BigIntNum{
+	return BigIntNum{}.New()
+}
+
 // GetIntAry - Converts the current BigIntNum value to an IntAry
 // instance. The resulting number value includes the decimal point
 // and fractional digits if they exist.
@@ -258,6 +282,25 @@ func (bNum *BigIntNum) GetIntAry() (IntAry, error) {
 	ia.SetSeparators(bNum.decimalSeparator, bNum.thousandsSeparator, bNum.currencySymbol)
 
 	return ia, nil
+}
+
+// TODO - Finish GetIntegerPart
+// GetIntegerPart - returns a BigIntNum equal to the integer
+// value of the current BigIntNum.
+// Examples:
+//
+// 			Current
+// 			BigIntNum				 		Return
+//  			Value						  Value
+// 			----------				---------
+//
+//  			123.456						 123
+// 			 -123.456						-123
+// 			  123								 123
+// 			 -123								-123
+//
+func (bNum *BigIntNum) GetIntegerPart() BigIntNum {
+	return BigIntNum{}.New()
 }
 
 // GetNumStr - Converts the current BigIntNum value to string of
