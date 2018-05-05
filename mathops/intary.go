@@ -2435,7 +2435,7 @@ func (ia *IntAry) GetIntAryLength() int {
 // LastDigitIdx          -  Type int: The IntAry index of the last non-zero
 //													digit in the internal integer array
 //
-// IsZeroValue           -	A boolean value indicating whether the
+// IsZero           -	A boolean value indicating whether the
 //													current IntAry value is zero
 //
 // IsIntegerZeroValue    - 	A boolean value indicating whether integer
@@ -2857,12 +2857,11 @@ func (ia *IntAry) IsIntAryValid(errName string) error {
 	return nil
 }
 
-
-// IsZeroValue - Analyzes the current IntAry to determine
+// IsZero - Analyzes the current IntAry to determine
 // it is a zero value. If the IntAry is equal to a zero
 // value, this method returns 'true'
 //
-func (ia *IntAry) IsZeroValue() bool {
+func (ia *IntAry) IsZero() bool {
 
 	err := ia.IsIntAryValid("")
 

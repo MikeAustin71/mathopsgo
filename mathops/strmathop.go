@@ -103,7 +103,7 @@ func (sMathOp *StrMathOp) RaiseToPower(power int) error {
 
 	resultPrecision := sMathOp.N1.GetPrecision()
 
-	if sMathOp.N1.IsZeroValue() {
+	if sMathOp.N1.IsZero() {
 		sMathOp.IFinal.SetIntAryToZero(resultPrecision)
 		return nil
 	}
@@ -187,13 +187,13 @@ func (sMathOp *StrMathOp) Divide(maxPrecision int) error {
 	}
 
 	sMathOp.Divisor.SetIsZeroValue()
-	if sMathOp.Divisor.IsZeroValue() {
+	if sMathOp.Divisor.IsZero() {
 		return errors.New("divisor is zero - divide by zero error")
 	}
 
 	sMathOp.Dividend.SetIsZeroValue()
 
-	if sMathOp.Dividend.IsZeroValue() {
+	if sMathOp.Dividend.IsZero() {
 		return nil
 	}
 

@@ -40,7 +40,7 @@ func TestIntAry_SetSignificantDigitIdxs_01(t *testing.T) {
 	eIsZeroValue = !eIsZeroValue
 
 	if eIsZeroValue != iaStats.IsZeroValue {
-		t.Errorf("Expected ia IsZeroValue= '%v' .  Instead, ia IsZeroValue= '%v' .", eIsZeroValue, iaStats.IsZeroValue)
+		t.Errorf("Expected ia IsZero= '%v' .  Instead, ia IsZero= '%v' .", eIsZeroValue, iaStats.IsZeroValue)
 	}
 
 	eIsIntegerZeroValue = !eIsIntegerZeroValue
@@ -115,7 +115,7 @@ func TestIntAry_SetSignificantDigitIdxs_02(t *testing.T) {
 	eIsZeroValue = !eIsZeroValue
 
 	if eIsZeroValue != iaStats.IsZeroValue {
-		t.Errorf("Expected ia IsZeroValue= '%v' .  Instead, ia IsZeroValue= '%v' .", eIsZeroValue, iaStats.IsZeroValue)
+		t.Errorf("Expected ia IsZero= '%v' .  Instead, ia IsZero= '%v' .", eIsZeroValue, iaStats.IsZeroValue)
 	}
 
 	eIsIntegerZeroValue = !eIsIntegerZeroValue
@@ -190,7 +190,7 @@ func TestIntAry_SetSignificantDigitIdxs_03(t *testing.T) {
 	eIsZeroValue = !eIsZeroValue
 
 	if eIsZeroValue != iaStats.IsZeroValue {
-		t.Errorf("Expected ia IsZeroValue= '%v' .  Instead, ia IsZeroValue= '%v' .", eIsZeroValue, iaStats.IsZeroValue)
+		t.Errorf("Expected ia IsZero= '%v' .  Instead, ia IsZero= '%v' .", eIsZeroValue, iaStats.IsZeroValue)
 	}
 
 	eIsIntegerZeroValue = !eIsIntegerZeroValue
@@ -265,7 +265,7 @@ func TestIntAry_SetSignificantDigitIdxs_04(t *testing.T) {
 	eIsZeroValue = !eIsZeroValue
 
 	if eIsZeroValue != iaStats.IsZeroValue {
-		t.Errorf("Expected ia IsZeroValue= '%v' .  Instead, ia IsZeroValue= '%v' .", eIsZeroValue, iaStats.IsZeroValue)
+		t.Errorf("Expected ia IsZero= '%v' .  Instead, ia IsZero= '%v' .", eIsZeroValue, iaStats.IsZeroValue)
 	}
 
 	eIsIntegerZeroValue = !eIsIntegerZeroValue
@@ -340,7 +340,7 @@ func TestIntAry_SetSignificantDigitIdxs_05(t *testing.T) {
 	eIsZeroValue = !eIsZeroValue
 
 	if eIsZeroValue != iaStats.IsZeroValue {
-		t.Errorf("Expected iaStats.IsZeroValue= '%v' .  Instead, iaStats.IsZeroValue= '%v' .", eIsZeroValue, iaStats.IsZeroValue)
+		t.Errorf("Expected iaStats.IsZero= '%v' .  Instead, iaStats.IsZero= '%v' .", eIsZeroValue, iaStats.IsZeroValue)
 	}
 
 	eIsIntegerZeroValue = !eIsIntegerZeroValue
@@ -415,7 +415,7 @@ func TestIntAry_SetSignificantDigitIdxs_06(t *testing.T) {
 	eIsZeroValue = !eIsZeroValue
 
 	if eIsZeroValue != iaStats.IsZeroValue {
-		t.Errorf("Expected iaStats.IsZeroValue= '%v' .  Instead, iaStats.IsZeroValue= '%v' .", eIsZeroValue, iaStats.IsZeroValue)
+		t.Errorf("Expected iaStats.IsZero= '%v' .  Instead, iaStats.IsZero= '%v' .", eIsZeroValue, iaStats.IsZeroValue)
 	}
 
 	eIsIntegerZeroValue = !eIsIntegerZeroValue

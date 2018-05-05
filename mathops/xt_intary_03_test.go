@@ -462,7 +462,7 @@ func TestIntAry_CopyIn_01(t *testing.T) {
 	}
 
 	if ia2Stats.IsZeroValue != iaStats.IsZeroValue {
-		t.Errorf("Error Expected ia2 IsZeroValue == ia IsZeroValue. Instead, ia2 IsZeroValue= '%v' and ia IsZeroValue= '%v' .", ia2Stats.IsZeroValue, iaStats.IsZeroValue)
+		t.Errorf("Error Expected ia2 IsZero == ia IsZero. Instead, ia2 IsZero= '%v' and ia IsZero= '%v' .", ia2Stats.IsZeroValue, iaStats.IsZeroValue)
 	}
 
 	if ia2Stats.IsIntegerZeroValue != iaStats.IsIntegerZeroValue {
@@ -547,7 +547,7 @@ func TestIntAry_CopyIn_02(t *testing.T) {
 	}
 
 	if ia2Stats.IsZeroValue != iaStats.IsZeroValue {
-		t.Errorf("Error Expected ia2 IsZeroValue == ia IsZeroValue.  Instead, ia2 IsZeroValue= '%v' and ia IsZeroValue= '%v' .", ia2Stats.IsZeroValue, iaStats.IsZeroValue)
+		t.Errorf("Error Expected ia2 IsZero == ia IsZero.  Instead, ia2 IsZero= '%v' and ia IsZero= '%v' .", ia2Stats.IsZeroValue, iaStats.IsZeroValue)
 	}
 
 	if ia2Stats.IsIntegerZeroValue != iaStats.IsIntegerZeroValue {

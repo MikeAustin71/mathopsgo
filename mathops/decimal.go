@@ -1309,6 +1309,12 @@ func (dec *Decimal) IsFraction() (bool, error) {
 	return false, nil
 }
 
+// IsZero - Returns true if the numeric value of the current
+// 'Decimal' instance is zero.
+func (dec *Decimal) IsZero() bool {
+	return dec.numStrDto.IsZero()
+}
+
 // MakeDecimalBigIntPrecision - This method receives a *big.Int and a precision value which
 // are used to construct and return a Decimal Type. The value of 'precision' determines the
 // number of Big Int digits which will be placed to the right of the decimal place.

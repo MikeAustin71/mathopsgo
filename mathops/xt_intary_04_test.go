@@ -525,7 +525,7 @@ func TestIntAry_GetFractionalDigits_01(t *testing.T) {
 	iAry2Stats := iAry2.GetIntAryStats()
 
 	if false != iAry2Stats.IsZeroValue {
-		t.Errorf("Error. Expected iAry2 IsZeroValue= '%v'. Instead, got isZeroValue='%v'\n", false, iAry2Stats.IsZeroValue)
+		t.Errorf("Error. Expected iAry2 IsZero= '%v'. Instead, got isZeroValue='%v'\n", false, iAry2Stats.IsZeroValue)
 	}
 
 	s := iAry2.GetNumStr()
@@ -562,7 +562,7 @@ func TestIntAry_GetFractionalDigits_02(t *testing.T) {
 	iAry2Stats := iAry2.GetIntAryStats()
 
 	if true != iAry2Stats.IsZeroValue {
-		t.Errorf("Error. Expected iAry2 IsZeroValue= '%v'. Instead, got isZeroValue='%v'\n", true, iAry2Stats.IsZeroValue)
+		t.Errorf("Error. Expected iAry2 IsZero= '%v'. Instead, got isZeroValue='%v'\n", true, iAry2Stats.IsZeroValue)
 	}
 
 	s := iAry2.GetNumStr()
@@ -599,7 +599,7 @@ func TestIntAry_GetFractionalDigits_03(t *testing.T) {
 	iAry2Stats := iAry2.GetIntAryStats()
 
 	if true != iAry2Stats.IsZeroValue {
-		t.Errorf("Error. Expected iAry2 IsZeroValue= '%v'. Instead, got isZeroValue='%v'\n", true, iAry2Stats.IsZeroValue)
+		t.Errorf("Error. Expected iAry2 IsZero= '%v'. Instead, got isZeroValue='%v'\n", true, iAry2Stats.IsZeroValue)
 	}
 
 	s := iAry2.GetNumStr()
@@ -636,7 +636,7 @@ func TestIntAry_GetFractionalDigits_04(t *testing.T) {
 	iAry2Stats := iAry2.GetIntAryStats()
 
 	if false != iAry2Stats.IsZeroValue {
-		t.Errorf("Error. Expected iAry2 IsZeroValue= '%v'. Instead, got isZeroValue='%v'\n", false, iAry2Stats.IsZeroValue)
+		t.Errorf("Error. Expected iAry2 IsZero= '%v'. Instead, got isZeroValue='%v'\n", false, iAry2Stats.IsZeroValue)
 	}
 
 	s := iAry2.GetNumStr()
@@ -673,7 +673,7 @@ func TestIntAry_GetIntegerDigits_01(t *testing.T) {
 	iAry2Stats := iAry2.GetIntAryStats()
 
 	if false != iAry2Stats.IsZeroValue {
-		t.Errorf("Error. Expected iAry2 IsZeroValue= '%v'. Instead, got isZeroValue='%v'\n", false, iAry2Stats.IsZeroValue)
+		t.Errorf("Error. Expected iAry2 IsZero= '%v'. Instead, got isZeroValue='%v'\n", false, iAry2Stats.IsZeroValue)
 	}
 
 	s := iAry2.GetNumStr()
@@ -710,7 +710,7 @@ func TestIntAry_GetIntegerDigits_02(t *testing.T) {
 	iAry2Stats := iAry2.GetIntAryStats()
 
 	if true != iAry2Stats.IsZeroValue {
-		t.Errorf("Error. Expected iAry2 IsZeroValue= '%v'. Instead, got isZeroValue='%v'\n", true, iAry2Stats.IsZeroValue)
+		t.Errorf("Error. Expected iAry2 IsZero= '%v'. Instead, got isZeroValue='%v'\n", true, iAry2Stats.IsZeroValue)
 	}
 
 	s := iAry2.GetNumStr()
@@ -747,7 +747,7 @@ func TestIntAry_GetIntegerDigits_03(t *testing.T) {
 	iAry2Stats := iAry2.GetIntAryStats()
 
 	if false != iAry2Stats.IsZeroValue {
-		t.Errorf("Error. Expected iAry2 IsZeroValue= '%v'. Instead, got isZeroValue='%v'\n", false, iAry2Stats.IsZeroValue)
+		t.Errorf("Error. Expected iAry2 IsZero= '%v'. Instead, got isZeroValue='%v'\n", false, iAry2Stats.IsZeroValue)
 	}
 
 	s := iAry2.GetNumStr()
@@ -784,7 +784,7 @@ func TestIntAry_GetIntegerDigits_04(t *testing.T) {
 	iAry2Stats := iAry2.GetIntAryStats()
 
 	if true != iAry2Stats.IsZeroValue {
-		t.Errorf("Error. Expected iAry2 IsZeroValue= '%v'. Instead, got IsZeroValue='%v'", true, iAry2Stats.IsZeroValue)
+		t.Errorf("Error. Expected iAry2 IsZero= '%v'. Instead, got IsZero='%v'", true, iAry2Stats.IsZeroValue)
 	}
 
 	s := iAry2.GetNumStr()

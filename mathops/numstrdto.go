@@ -2035,6 +2035,26 @@ func (nDto *NumStrDto) IsValid() bool {
 
 }
 
+// IsZero - Returns true if the value of the current NumStrDto
+// instance is zero.
+//
+func (nDto *NumStrDto) IsZero() bool {
+
+	lenRunes := len(nDto.absAllNumRunes)
+
+	if lenRunes == 0 {
+		return true
+	}
+
+	for i:=0; i < lenRunes; i++ {
+		if nDto.absAllNumRunes[i] != '0' {
+			return false
+		}
+	}
+
+	return true
+}
+
 // Multiply - Multiplies the current NumStrDto by the input
 // parameter NumStrDto and stores the result in the current
 // NumStrDto.

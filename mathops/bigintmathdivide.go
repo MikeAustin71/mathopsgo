@@ -16,7 +16,11 @@ type BigIntMathDivide struct {
 									// BigIntPair.Big1 = Dividend
 									// BigIntPair.Big2 = Divisor
 
-	Result BigIntNum
+	Result BigIntNum // BigIntPair.Big1 = Quotient
+									 // BigIntPair.Big2 = Modulo
+
+	ResultFracQuo	BigIntNum		// Quotient expressed with fractional digits
+														// to the right of the decimal place.
 }
 
 // BigIntNumQuotientMod - Performs a division operation on BigIntNum input
@@ -464,4 +468,89 @@ func (bIDivide BigIntMathDivide) DecimalQuotientMod(
 	err = nil
 
 	return quotient, modulo, err
+}
+
+
+// BigIntNumFracQuotient - Performs a division operation on Decimal Type input
+// parameters 'dividend' and 'divisor'.
+//
+// The resulting quotient is returned as a BigIntNum type representing the
+// result of the division operation expressed as integer and fractional digits
+// as appropriate. Remember that the BigIntNum type specifies 'precision'. Precision
+// is defined as the number of fractional digits to the right of the decimal place.
+//
+// Examples:
+// =========
+// Note: For all examples maximum precision is specified as '15'.
+// ----------------------------------------------------------------------------
+//																				   Quotient
+//  Dividend		divided by	Divisor		=		BigIntNum Integer 	Precision	 Result
+//  -------- 	  ----------	--------				-----------------	  ---------	 ------
+// 	 10.5  				/ 				2 				= 			525  							  2  			 5.25
+// 	 10    				/ 				2 				= 			5	  							  0  			 5
+//   11.5  				/         2.5				=  			46								  1				 4.6
+//    2.5					/				 12.555			=				199123855037834	   15				 0.199123855037834
+//	-12.555 			/ 				2.5 			= 		 -5022							  3				-5.022
+//  -12.555     	/    			2  			  = 		 -62775							  4				-6.2775
+//  - 2.5 				/ 			 12.555		  = 		 -199123855037834	   15				-0.199123855037834
+// 	 12.555				/ 			- 2.5			  =			 -5022								3				-5.022
+//   12.555 			/ 			- 2 				= 		 -62775								4				-6.2775
+//    2.5 				/ 			-12.555		  = 		 -199123855037834	   15				-0.199123855037834
+// 	-12.555 			/ 			- 2.5 			= 			5022								3				 5.022
+//  -12.555     	/    		- 2 				= 		  62775								4				 6.2775
+//  - 2.5	 				/ 			-12.555		  = 		  199123855037834	   15				 0.199123855037834
+//  -10						/				- 2					=				5														 5
+//
+// The input parameter 'maxPrecision' is used to control the precision of the
+// resulting fractional quotient. Be advised that this method is capable of
+// calculating quotients with very long strings of fractional digits.
+//
+func (bIDivide BigIntMathDivide) DecimalFracQuotient(
+															dividend,
+																divisor Decimal,
+																	maxPrecision uint) (fracQuotient BigIntNum, err error) {
+
+	ePrefix := "BigIntMathDivide.DecimalFracQuotient() "
+
+	if divisor.IsZero() {
+		fracQuotient = BigIntNum{}.New()
+		err = errors.New(ePrefix + "Error: Attempted divide by zero!")
+		return fracQuotient, err
+	}
+
+	bPair, errx := BigIntPair{}.NewDecimal(dividend, divisor)
+
+	if errx != nil {
+		fracQuotient = BigIntNum{}.New()
+		err = fmt.Errorf(ePrefix +
+			"Error returned by BigIntPair{}.NewDecimal(dividend, divisor). " +
+			"dividend='%v' divisor='%v' Error='%v'",
+				dividend.GetNumStr(), divisor.GetNumStr(), err.Error())
+
+		return fracQuotient, err
+	}
+
+	bPair.MakePrecisionsEqual()
+
+	rDividend := big.NewRat(1, 1).SetInt(bPair.Big1.bigInt)
+	rDivisor := big.NewRat(1, 1).SetInt(bPair.Big2.bigInt)
+	rQuotient := big.NewRat(1, 1).Quo(rDividend, rDivisor)
+	numStr := rQuotient.FloatString(int(maxPrecision))
+
+	fracQuotient, errx =
+		BigIntNum{}.NewNumStr(numStr)
+
+	if errx != nil {
+		fracQuotient = BigIntNum{}.New()
+		err =	fmt.Errorf(ePrefix +
+			"Error returned by BigIntNum{}.NewNumStr(numStr, maxPrecision). " +
+			"numStr='%v' maxPrecision='%v' Error='%v'",
+			numStr, maxPrecision, err.Error())
+
+		return fracQuotient, err
+	}
+
+	fracQuotient.TrimTrailingFracZeros()
+
+	return fracQuotient, nil
 }
