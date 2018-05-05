@@ -942,6 +942,22 @@ func (ia *IntAry) AppendToIntAry(num uint8) {
 // Ceiling - Returns an IntAry which constitutes
 // the mathematical ceiling of the current
 // IntAry.
+//
+// Examples
+// ========
+//
+// 						Initial 		 Ceiling
+//  					 Value				Value
+// 						-------      -------
+//  						5.95					6
+//  						5.05					6
+//  						5							5
+// 						 -5.05			 	 -5
+//  						2.4				  	3
+//  						2.9					 	3
+// 						 -2.7				 	 -2
+// 						 -2					 	 -2
+//
 func (ia *IntAry) Ceiling() (IntAry, error) {
 
 	err := ia.IsIntAryValid("Ceiling() - ")

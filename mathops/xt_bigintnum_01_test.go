@@ -241,7 +241,7 @@ func TestBigIntNum_Ceil_01(t *testing.T) {
 			nStr, err.Error())
 	}
 
-	ceiling := bINum1.Ceil()
+	ceiling := bINum1.Ceiling()
 
 	actualNumStr, err := ceiling.GetNumStrErr()
 
@@ -276,7 +276,7 @@ func TestBigIntNum_Ceil_02(t *testing.T) {
 			nStr, err.Error())
 	}
 
-	ceiling := bINum1.Ceil()
+	ceiling := bINum1.Ceiling()
 
 	actualNumStr, err := ceiling.GetNumStrErr()
 
@@ -311,7 +311,7 @@ func TestBigIntNum_Ceil_03(t *testing.T) {
 			nStr, err.Error())
 	}
 
-	ceiling := bINum1.Ceil()
+	ceiling := bINum1.Ceiling()
 
 	actualNumStr, err := ceiling.GetNumStrErr()
 
@@ -346,7 +346,7 @@ func TestBigIntNum_Ceil_04(t *testing.T) {
 			nStr, err.Error())
 	}
 
-	ceiling := bINum1.Ceil()
+	ceiling := bINum1.Ceiling()
 
 	actualNumStr, err := ceiling.GetNumStrErr()
 
@@ -381,7 +381,7 @@ func TestBigIntNum_Ceil_05(t *testing.T) {
 			nStr, err.Error())
 	}
 
-	ceiling := bINum1.Ceil()
+	ceiling := bINum1.Ceiling()
 
 	actualNumStr, err := ceiling.GetNumStrErr()
 
@@ -416,7 +416,7 @@ func TestBigIntNum_Ceil_06(t *testing.T) {
 			nStr, err.Error())
 	}
 
-	ceiling := bINum1.Ceil()
+	ceiling := bINum1.Ceiling()
 
 	actualNumStr, err := ceiling.GetNumStrErr()
 
@@ -451,7 +451,7 @@ func TestBigIntNum_Ceil_07(t *testing.T) {
 			nStr, err.Error())
 	}
 
-	ceiling := bINum1.Ceil()
+	ceiling := bINum1.Ceiling()
 
 	actualNumStr, err := ceiling.GetNumStrErr()
 
@@ -486,7 +486,7 @@ func TestBigIntNum_Ceil_08(t *testing.T) {
 			nStr, err.Error())
 	}
 
-	ceiling := bINum1.Ceil()
+	ceiling := bINum1.Ceiling()
 
 	actualNumStr, err := ceiling.GetNumStrErr()
 
@@ -521,7 +521,7 @@ func TestBigIntNum_Ceil_09(t *testing.T) {
 			nStr, err.Error())
 	}
 
-	ceiling := bINum1.Ceil()
+	ceiling := bINum1.Ceiling()
 
 	actualNumStr, err := ceiling.GetNumStrErr()
 
@@ -556,7 +556,7 @@ func TestBigIntNum_Ceil_10(t *testing.T) {
 			nStr, err.Error())
 	}
 
-	ceiling := bINum1.Ceil()
+	ceiling := bINum1.Ceiling()
 
 	actualNumStr, err := ceiling.GetNumStrErr()
 
@@ -591,7 +591,7 @@ func TestBigIntNum_Ceil_12(t *testing.T) {
 			nStr, err.Error())
 	}
 
-	ceiling := bINum1.Ceil()
+	ceiling := bINum1.Ceiling()
 
 	actualNumStr, err := ceiling.GetNumStrErr()
 
@@ -626,7 +626,7 @@ func TestBigIntNum_Ceil_13(t *testing.T) {
 			nStr, err.Error())
 	}
 
-	ceiling := bINum1.Ceil()
+	ceiling := bINum1.Ceiling()
 
 	actualNumStr, err := ceiling.GetNumStrErr()
 
@@ -661,7 +661,7 @@ func TestBigIntNum_Ceil_14(t *testing.T) {
 			nStr, err.Error())
 	}
 
-	ceiling := bINum1.Ceil()
+	ceiling := bINum1.Ceiling()
 
 	actualNumStr, err := ceiling.GetNumStrErr()
 
@@ -696,7 +696,7 @@ func TestBigIntNum_Ceil_15(t *testing.T) {
 			nStr, err.Error())
 	}
 
-	ceiling := bINum1.Ceil()
+	ceiling := bINum1.Ceiling()
 
 	actualNumStr, err := ceiling.GetNumStrErr()
 
@@ -731,7 +731,7 @@ func TestBigIntNum_Ceil_16(t *testing.T) {
 			nStr, err.Error())
 	}
 
-	ceiling := bINum1.Ceil()
+	ceiling := bINum1.Ceiling()
 
 	actualNumStr, err := ceiling.GetNumStrErr()
 
@@ -766,7 +766,7 @@ func TestBigIntNum_Ceil_17(t *testing.T) {
 			nStr, err.Error())
 	}
 
-	ceiling := bINum1.Ceil()
+	ceiling := bINum1.Ceiling()
 
 	actualNumStr, err := ceiling.GetNumStrErr()
 

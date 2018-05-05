@@ -29,7 +29,7 @@ type BigIntNum struct {
 	currencySymbol 			rune				// Currency Symbol
 }
 
-// Ceil - Ceiling: The least, or lowest value integer, which is greater than
+// Ceiling - Ceiling: The least, or lowest value integer, which is greater than
 // or equal to the numeric value of the current BigIntNum. Reference Wikipedia:
 // 				https://en.wikipedia.org/wiki/Floor_and_ceiling_functions
 //
@@ -48,7 +48,7 @@ type BigIntNum struct {
 // 						 -2.7				 	 -2
 // 						 -2					 	 -2
 //
-func (bNum *BigIntNum) Ceil() BigIntNum {
+func (bNum *BigIntNum) Ceiling() BigIntNum {
 
 	if bNum.IsZero() {
 		return BigIntNum{}.NewBigInt(big.NewInt(0), 0)

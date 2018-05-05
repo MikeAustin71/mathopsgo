@@ -1591,6 +1591,106 @@ func TestIntAry_Ceiling_07(t *testing.T) {
 
 }
 
+func TestIntAry_Ceiling_08(t *testing.T) {
+	nStr1 := "-5.05"
+	expected := "-5.00"
+	precision := 2
+
+	ia := IntAry{}.New()
+	ia.SetIntAryWithNumStr(nStr1)
+
+	iAry2, err := ia.Ceiling()
+
+	if err != nil {
+		t.Errorf("Received Error from ia.Ceiling(). Error:= %v", err)
+	}
+
+	s := iAry2.GetNumStr()
+	if expected != s {
+		t.Errorf("Error. Expected numStrDto= '%v'. Instead, got numStrDto='%v'\n", expected, s)
+	}
+
+	if iAry2.GetPrecision() != precision {
+		t.Errorf("Error. Expected precision= '%v'. Instead, got precision='%v'\n", precision, iAry2.GetPrecision())
+	}
+
+}
+
+func TestIntAry_Ceiling_09(t *testing.T) {
+	nStr1 := "5.05"
+	expected := "6.00"
+	precision := 2
+
+	ia := IntAry{}.New()
+	ia.SetIntAryWithNumStr(nStr1)
+
+	iAry2, err := ia.Ceiling()
+
+	if err != nil {
+		t.Errorf("Received Error from ia.Ceiling(). Error:= %v", err)
+	}
+
+	s := iAry2.GetNumStr()
+	if expected != s {
+		t.Errorf("Error. Expected numStrDto= '%v'. Instead, got numStrDto='%v'\n", expected, s)
+	}
+
+	if iAry2.GetPrecision() != precision {
+		t.Errorf("Error. Expected precision= '%v'. Instead, got precision='%v'\n", precision, iAry2.GetPrecision())
+	}
+
+}
+
+func TestIntAry_Ceiling_10(t *testing.T) {
+	nStr1 := "5.95"
+	expected := "6.00"
+	precision := 2
+
+	ia := IntAry{}.New()
+	ia.SetIntAryWithNumStr(nStr1)
+
+	iAry2, err := ia.Ceiling()
+
+	if err != nil {
+		t.Errorf("Received Error from ia.Ceiling(). Error:= %v", err)
+	}
+
+	s := iAry2.GetNumStr()
+	if expected != s {
+		t.Errorf("Error. Expected numStrDto= '%v'. Instead, got numStrDto='%v'\n", expected, s)
+	}
+
+	if iAry2.GetPrecision() != precision {
+		t.Errorf("Error. Expected precision= '%v'. Instead, got precision='%v'\n", precision, iAry2.GetPrecision())
+	}
+
+}
+
+func TestIntAry_Ceiling_11(t *testing.T) {
+	nStr1 := "5"
+	expected := "5"
+	precision := 0
+
+	ia := IntAry{}.New()
+	ia.SetIntAryWithNumStr(nStr1)
+
+	iAry2, err := ia.Ceiling()
+
+	if err != nil {
+		t.Errorf("Received Error from ia.Ceiling(). Error:= %v", err)
+	}
+
+	s := iAry2.GetNumStr()
+	if expected != s {
+		t.Errorf("Error. Expected numStrDto= '%v'. Instead, got numStrDto='%v'\n", expected, s)
+	}
+
+	if iAry2.GetPrecision() != precision {
+		t.Errorf("Error. Expected precision= '%v'. Instead, got precision='%v'\n", precision, iAry2.GetPrecision())
+	}
+
+}
+
 
 func TestIntAry_Equals_01(t *testing.T) {
 	nStr1 := "000549721.32178000"
