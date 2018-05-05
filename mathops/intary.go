@@ -1808,6 +1808,22 @@ func (ia *IntAry) Equals(iAry2 *IntAry) bool {
 // Floor - Math 'Floor' function. Finds the
 // integer number which is less than or
 // equal to the value of the current intAry.
+// Reference Wikipedia,
+// https://en.wikipedia.org/wiki/Floor_and_ceiling_functions
+//
+// Examples
+// ========
+// 						Initial 			Floor
+//  					 Value				Value
+// 						-------      -------
+//  						5.95					5
+//  						5.05					5
+//  						5							5
+// 						 -5.05			 	 -6
+//  						2.4				  	2
+//  						2.9					 	2
+// 						 -2.7				 	 -3
+// 						 -2					 	 -2
 func (ia *IntAry) Floor() (IntAry, error) {
 
 	err := ia.IsIntAryValid("Floor() - ")
