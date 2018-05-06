@@ -1,5 +1,5 @@
 === RUN   TestBigIntPair_Compare_01
---- PASS: TestBigIntPair_Compare_01 (0.02s)
+--- PASS: TestBigIntPair_Compare_01 (0.01s)
 === RUN   TestBigIntPair_Compare_02
 --- PASS: TestBigIntPair_Compare_02 (0.00s)
 === RUN   TestBigIntPair_Compare_03
@@ -314,6 +314,8 @@
 --- PASS: TestBigIntMathDivide_DecimalFracQuotient_03 (0.00s)
 === RUN   TestBigIntMathDivide_DecimalFracQuotient_04
 --- PASS: TestBigIntMathDivide_DecimalFracQuotient_04 (0.00s)
+=== RUN   TestBigIntMathDivide_DecimalFracQuotientArray_01
+--- PASS: TestBigIntMathDivide_DecimalFracQuotientArray_01 (0.00s)
 === RUN   TestBigIntMathMultiply_MultiplyBigInts_01
 --- PASS: TestBigIntMathMultiply_MultiplyBigInts_01 (0.00s)
 === RUN   TestBigIntMathMultiply_MultiplyBigInts_02
@@ -975,7 +977,7 @@
 === RUN   TestDecimal_Add_04
 --- PASS: TestDecimal_Add_04 (0.00s)
 === RUN   TestDecimal_Add_05
---- PASS: TestDecimal_Add_05 (0.00s)
+--- PASS: TestDecimal_Add_05 (0.02s)
 === RUN   TestDecimal_AddToThis_01
 --- PASS: TestDecimal_AddToThis_01 (0.00s)
 === RUN   TestDecimal_AddToThis_02
@@ -1097,7 +1099,7 @@
 === RUN   TestDecimal_NewNumStrDto_03
 --- PASS: TestDecimal_NewNumStrDto_03 (0.00s)
 === RUN   TestDecimal_NewNumStrDto_04
---- PASS: TestDecimal_NewNumStrDto_04 (0.00s)
+--- PASS: TestDecimal_NewNumStrDto_04 (0.02s)
 === RUN   TestDecimal_NewNumStrDto_05
 --- PASS: TestDecimal_NewNumStrDto_05 (0.00s)
 === RUN   TestDecimal_NewNumStrPrecision_01
@@ -1107,7 +1109,7 @@
 === RUN   TestDecimal_NewNumStrPrecision_03
 --- PASS: TestDecimal_NewNumStrPrecision_03 (0.00s)
 === RUN   TestDecimal_NewNumStrPrecision_04
---- PASS: TestDecimal_NewNumStrPrecision_04 (0.02s)
+--- PASS: TestDecimal_NewNumStrPrecision_04 (0.00s)
 === RUN   TestDecimal_NewNumStrPrecision_06
 --- PASS: TestDecimal_NewNumStrPrecision_06 (0.00s)
 === RUN   TestDecimal_NewNumStrPrecision_07
@@ -1163,7 +1165,7 @@
 === RUN   TestDecimal_SetNumStr_05
 --- PASS: TestDecimal_SetNumStr_05 (0.00s)
 === RUN   TestDecimal_SetNumStrDto_01
---- PASS: TestDecimal_SetNumStrDto_01 (0.02s)
+--- PASS: TestDecimal_SetNumStrDto_01 (0.00s)
 === RUN   TestDecimal_SetNumStrDto_02
 --- PASS: TestDecimal_SetNumStrDto_02 (0.00s)
 === RUN   TestDecimal_SetNumStrDto_03
@@ -2635,4 +2637,4 @@
 === RUN   TestStrMathOp_SubtractN1N2_19
 --- PASS: TestStrMathOp_SubtractN1N2_19 (0.00s)
 PASS
-ok  	MikeAustin71/mathopsgo/mathops	1.108s
+ok  	MikeAustin71/mathopsgo/mathops	1.161s
