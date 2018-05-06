@@ -1316,3 +1316,90 @@ func (bIDivide BigIntMathDivide) NumStrQuotientMod(
 
 	return quotient, modulo, nil
 }
+
+// NumStrFracQuotient - Performs a division operation on NumStr Type input
+// parameters 'dividend' and 'divisor'.
+//
+// The resulting quotient is returned as a BigIntNum type representing the
+// result of the division operation expressed as integer and fractional digits.
+// Remember that the BigIntNum type specifies 'precision'. Precision is defined
+// as the number of fractional digits to the right of the decimal place.
+//
+// The input parameter 'maxPrecision' is used to control the precision of the
+// resulting fractional quotient. Be advised that this method is capable of
+// calculating quotients with very long strings of fractional digits. Therefore,
+// the user is advised to set a relevant value for 'maxPrecision'.
+//
+// Examples:
+// =========
+//
+// Note: For all examples maximum precision is specified as '15'.
+// ----------------------------------------------------------------------------
+//																				     Quotient
+//  Dividend		divided by	Divisor		=		  BigIntNum Integer 	Precision	 Result
+//  -------- 	  ----------	--------				-----------------	  ---------	 ------
+// 	 10.5  				/ 				2 				= 			525  							  2  			 5.25
+// 	 10    				/ 				2 				= 			5	  							  0  			 5
+//   11.5  				/         2.5				=  			46								  1				 4.6
+//    2.5					/				 12.555			=				199123855037834	   15				 0.199123855037834
+//	-12.555 			/ 				2.5 			= 		 -5022							  3				-5.022
+//  -12.555     	/    			2  			  = 		 -62775							  4				-6.2775
+//  - 2.5 				/ 			 12.555		  = 		 -199123855037834	   15				-0.199123855037834
+// 	 12.555				/ 			- 2.5			  =			 -5022								3				-5.022
+//   12.555 			/ 			- 2 				= 		 -62775								4				-6.2775
+//    2.5 				/ 			-12.555		  = 		 -199123855037834	   15				-0.199123855037834
+// 	-12.555 			/ 			- 2.5 			= 			5022								3				 5.022
+//  -12.555     	/    		- 2 				= 		  62775								4				 6.2775
+//  - 2.5	 				/ 			-12.555		  = 		  199123855037834	   15				 0.199123855037834
+//  -10						/				- 2					=				5														 5
+//
+func (bIDivide BigIntMathDivide) NumStrFracQuotient(
+															dividend,
+																divisor string,
+																	maxPrecision uint) (fracQuotient BigIntNum, err error) {
+
+	ePrefix := "BigIntMathDivide.NumStrFracQuotient() "
+
+	bINumDividend, errx := BigIntNum{}.NewNumStr(dividend)
+
+	if errx != nil {
+		fracQuotient = BigIntNum{}
+		err = fmt.Errorf(ePrefix + "Error returned by BigIntNum{}.NewNumStr(dividend) " +
+			"dividend='%v' Error='%v' ",
+			dividend, errx.Error())
+
+		return fracQuotient, err
+	}
+
+	bINumDivisor, errx := BigIntNum{}.NewNumStr(divisor)
+
+	if errx != nil {
+		fracQuotient = BigIntNum{}
+		err = fmt.Errorf(ePrefix + "Error returned by BigIntNum{}.NewNumStr(divisor) " +
+			"divisor='%v' Error='%v' ",
+			divisor, errx.Error())
+
+		return fracQuotient, err
+	}
+
+	if bINumDivisor.IsZero() {
+		fracQuotient = BigIntNum{}.New()
+		err = errors.New(ePrefix + "Error: Attempted divide by zero!")
+		return fracQuotient, err
+	}
+
+	fracQuotient, errx =
+		BigIntMathDivide{}.BigIntNumFracQuotient(bINumDividend, bINumDivisor, maxPrecision)
+
+	if errx != nil {
+		fracQuotient = BigIntNum{}
+		err = fmt.Errorf(ePrefix + "Error returned by BigIntMathDivide{}.BigIntNumFracQuotient(" +
+			"bINumDividend, bINumDivisor, maxPrecision)" +
+			"bINumDividend='%v' bINumDivisor='%v' maxPrecision='%v' Error='%v' ",
+			bINumDividend.GetNumStr(), bINumDivisor.GetNumStr(), maxPrecision, errx.Error())
+
+		return fracQuotient, err
+	}
+
+	return fracQuotient, nil
+}

@@ -5237,3 +5237,135 @@ func TestBigIntMathDivide_NumStrQuotientMod_06(t *testing.T) {
 	}
 
 }
+
+func TestBigIntMathDivide_NumStrFracQuotient_01(t *testing.T) {
+	// Dividend		divided by		Divisor			=		Quotient
+	// 	 10.5  				/ 					2 				= 	 5.25
+
+	dividendStr 			:= "10.5"
+	divisorStr  			:= "2"
+	expectedQuoStr 		:= "5.25"
+	maxPrecision			:= uint(15)
+
+	expectedQuo, err := BigIntNum{}.NewNumStr(expectedQuoStr)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(expectedQuoStr). " +
+			"expectedQuoStr='%v' Error='%v' ",
+			expectedQuoStr, err.Error())
+	}
+
+	quotient, err :=
+		BigIntMathDivide{}.NumStrFracQuotient(dividendStr, divisorStr, maxPrecision)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntMathDivide{}.NumStrFracQuotient" +
+			"(dividendStr, divisorStr, maxPrecision).  " +
+			"dividendStr='%v' divisorStr='%v' maxPrecision='%v' Error='%v' ",
+			dividendStr, divisorStr, maxPrecision,err.Error())
+	}
+
+	if !expectedQuo.Equal(quotient) {
+		t.Errorf("Error: Expected Quotient='%v'. Instead Quotient='%v'",
+			expectedQuo.GetNumStr(), quotient.GetNumStr())
+	}
+}
+
+func TestBigIntMathDivide_NumStrFracQuotient_02(t *testing.T) {
+	// Dividend		divided by		Divisor			=		Quotient
+	//	-12.555 			/ 					2.5 			= 		-5.022
+
+	dividendStr 			:= "-12.555"
+	divisorStr  			:= "2.5"
+	expectedQuoStr 		:= "-5.022"
+	maxPrecision			:= uint(15)
+
+	expectedQuo, err := BigIntNum{}.NewNumStr(expectedQuoStr)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(expectedQuoStr). " +
+			"expectedQuoStr='%v' Error='%v' ",
+			expectedQuoStr, err.Error())
+	}
+
+	quotient, err :=
+		BigIntMathDivide{}.NumStrFracQuotient(dividendStr, divisorStr, maxPrecision)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntMathDivide{}.NumStrFracQuotient" +
+			"(dividendStr, divisorStr, maxPrecision).  " +
+			"dividendStr='%v' divisorStr='%v' maxPrecision='%v' Error='%v' ",
+			dividendStr, divisorStr, maxPrecision,err.Error())
+	}
+
+	if !expectedQuo.Equal(quotient) {
+		t.Errorf("Error: Expected Quotient='%v'. Instead Quotient='%v'",
+			expectedQuo.GetNumStr(), quotient.GetNumStr())
+	}
+}
+
+func TestBigIntMathDivide_NumStrFracQuotient_03(t *testing.T) {
+	// Dividend		divided by		Divisor			=		Quotient
+	//  - 2.5 				/ 			 	12.555		  = 	-0.199123855037834
+
+	dividendStr 			:= "-2.5"
+	divisorStr  			:= "12.555"
+	expectedQuoStr 		:= "-0.199123855037834"
+	maxPrecision			:= uint(15)
+
+	expectedQuo, err := BigIntNum{}.NewNumStr(expectedQuoStr)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(expectedQuoStr). " +
+			"expectedQuoStr='%v' Error='%v' ",
+			expectedQuoStr, err.Error())
+	}
+
+	quotient, err :=
+		BigIntMathDivide{}.NumStrFracQuotient(dividendStr, divisorStr, maxPrecision)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntMathDivide{}.NumStrFracQuotient" +
+			"(dividendStr, divisorStr, maxPrecision).  " +
+			"dividendStr='%v' divisorStr='%v' maxPrecision='%v' Error='%v' ",
+			dividendStr, divisorStr, maxPrecision,err.Error())
+	}
+
+	if !expectedQuo.Equal(quotient) {
+		t.Errorf("Error: Expected Quotient='%v'. Instead Quotient='%v'",
+			expectedQuo.GetNumStr(), quotient.GetNumStr())
+	}
+}
+
+func TestBigIntMathDivide_NumStrFracQuotient_04(t *testing.T) {
+	// Dividend		divided by		Divisor			=		Quotient
+	// 	-12.555 			/ 				 -2.5 			= 	 5.022
+
+	dividendStr 			:= "-12.555"
+	divisorStr  			:= "-2.5"
+	expectedQuoStr 		:= "5.022"
+	maxPrecision			:= uint(15)
+
+	expectedQuo, err := BigIntNum{}.NewNumStr(expectedQuoStr)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(expectedQuoStr). " +
+			"expectedQuoStr='%v' Error='%v' ",
+			expectedQuoStr, err.Error())
+	}
+
+	quotient, err :=
+		BigIntMathDivide{}.NumStrFracQuotient(dividendStr, divisorStr, maxPrecision)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntMathDivide{}.NumStrFracQuotient" +
+			"(dividendStr, divisorStr, maxPrecision).  " +
+			"dividendStr='%v' divisorStr='%v' maxPrecision='%v' Error='%v' ",
+			dividendStr, divisorStr, maxPrecision,err.Error())
+	}
+
+	if !expectedQuo.Equal(quotient) {
+		t.Errorf("Error: Expected Quotient='%v'. Instead Quotient='%v'",
+			expectedQuo.GetNumStr(), quotient.GetNumStr())
+	}
+}
