@@ -841,3 +841,109 @@ func (bIDivide BigIntMathDivide) IntAryFracQuotient(
 
 	return fracQuotient, nil
 }
+
+// IntAryFracQuotientArray - Performs a division operation on IntAry input
+// parameters 'dividends' and 'divisor'. 'dividends' is an array of IntAry
+// Types. The division operation is performed on each element of the 'dividends'
+// array using a single 'divisor'.
+//
+// The resulting quotients are returned as an array of IntAry Types. The values
+// represent result of each division operation expressed as integer and fractional
+// digits.
+//
+// The input parameter 'maxPrecision' is used to control the precision of the
+// resulting fractional quotient. Precision is defined as the number of numeric
+// digits to the right of the decimal point. Be advised that this method is
+// capable of calculating quotients with very long strings of fractional digits.
+// Therefore the user is advised to set a relevant value for 'maxPrecision'.
+//
+// Examples:
+// =========
+// Note: For all examples maximum precision is specified as '15'.
+// ----------------------------------------------------------------------------
+//    	                                       Returned
+//  	Dividend		divided by	Divisor		=	       Array						=  	 Result
+//  	-------- 	  ----------	--------				-----------------	   		---------
+//	 	 10.5  				 / 				2.5 			= 		 fracQuoArray[0]		=   	 4.2
+//	 	 10    				 / 				2.5 			= 		 fracQuoArray[1]		=	 	   4
+//	   11.5  				 /        2.5				=  		 fracQuoArray[2]		=		   4.6
+//	    2.5					 /				2.5			  =			 fracQuoArray[3]    =      1
+//		-12.555 			 / 				2.5 			= 		 fracQuoArray[4]    =  -   5.022
+//	  - 2.5 				 / 			  2.5		    = 		 fracQuoArray[5]    =  -   1
+//	   12.555 			 / 			  2.5 			= 		 fracQuoArray[6]    =      5.022
+//	 -122.783 			 / 			  2.5 			= 		 fracQuoArray[7]    =  -  49.1132
+//	-6847.231   	   /    	  2.5 			= 		 fracQuoArray[8]    =  -2738.8924
+//	  - 2.5	 				 / 			  2.5		    = 		 fracQuoArray[9]    =  -   1
+//	  -10						 /			  2.5				=			 fracQuoArray[10]   =  -   4
+//	  -10.5					 /			  2.5				=			 fracQuoArray[11]   =  -   4.2
+//
+func (bIDivide BigIntMathDivide) IntAryFracQuotientArray(
+	dividends []IntAry,
+	divisor IntAry,
+	maxPrecision uint) (fracQuoArray [] IntAry, err error) {
+
+	ePrefix := "BigIntMathDivide.IntAryFracQuotientArray() "
+
+	if divisor.IsZero() {
+		fracQuoArray = []IntAry{}
+		err = errors.New(ePrefix + "Error: Attempted divide by zero!")
+		return fracQuoArray, err
+	}
+
+	lenAry := len(dividends)
+
+	if lenAry == 0 {
+		fracQuoArray = []IntAry{}
+		err = errors.New(ePrefix + "Error: Input Parameter 'dividends' is an EMPTY Array!")
+		return fracQuoArray, err
+	}
+
+	fracQuoArray = make([]IntAry, lenAry, lenAry+20)
+
+	for i:=0; i < lenAry; i++ {
+
+		bPair, errx := BigIntPair{}.NewIntAry(dividends[i], divisor)
+
+		if errx != nil {
+			fracQuoArray = []IntAry{}
+			err =	fmt.Errorf(ePrefix +
+				"Error returned by BigIntPair{}.NewIntAry(dividends[i], divisor). " +
+				"dividends[%v]='%v' divisor='%v' Error='%v'",
+				i, dividends[i].GetNumStr(), divisor.GetNumStr(), errx.Error())
+			return fracQuoArray, err
+		}
+
+		bPair.MakePrecisionsEqual()
+
+		rDividend := big.NewRat(1, 1).SetInt(bPair.Big1.bigInt)
+		rDivisor := big.NewRat(1, 1).SetInt(bPair.Big2.bigInt)
+		rQuotient := big.NewRat(1, 1).Quo(rDividend, rDivisor)
+		numStr := rQuotient.FloatString(int(maxPrecision))
+
+		bINum, errx := BigIntNum{}.NewNumStr(numStr)
+
+		if errx != nil {
+			fracQuoArray = []IntAry{}
+			err =	fmt.Errorf(ePrefix +
+				"Error returned by BigIntNum{}.NewNumStr(numStr). " +
+				"numStr='%v' maxPrecision='%v' Error='%v'",
+				numStr, maxPrecision, errx.Error())
+			return fracQuoArray, err
+		}
+
+		bINum.TrimTrailingFracZeros()
+
+		fracQuoArray[i], errx = bINum.GetIntAry()
+
+		if errx != nil {
+			fracQuoArray = []IntAry{}
+			err =	fmt.Errorf(ePrefix +
+				"Error returned by bINum.GetIntAry(). Error='%v'",
+				errx.Error())
+			return fracQuoArray, err
+		}
+
+	}
+
+	return fracQuoArray, nil
+}
