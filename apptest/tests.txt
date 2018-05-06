@@ -1,5 +1,5 @@
 === RUN   TestBigIntPair_Compare_01
---- PASS: TestBigIntPair_Compare_01 (0.01s)
+--- PASS: TestBigIntPair_Compare_01 (0.00s)
 === RUN   TestBigIntPair_Compare_02
 --- PASS: TestBigIntPair_Compare_02 (0.00s)
 === RUN   TestBigIntPair_Compare_03
@@ -25,7 +25,7 @@
 === RUN   TestBigIntPair_NewIntAry_02
 --- PASS: TestBigIntPair_NewIntAry_02 (0.00s)
 === RUN   TestBigIntPair_Decimal_01
---- PASS: TestBigIntPair_Decimal_01 (0.01s)
+--- PASS: TestBigIntPair_Decimal_01 (0.00s)
 === RUN   TestBigIntPair_Decimal_02
 --- PASS: TestBigIntPair_Decimal_02 (0.00s)
 === RUN   TestBigIntMathAdd_AddBigInts_01
@@ -352,6 +352,18 @@
 --- PASS: TestBigIntMathDivide_INumMgrFracQuotient_04 (0.00s)
 === RUN   TestBigIntMathDivide_INumMgrFracQuotientArray_01
 --- PASS: TestBigIntMathDivide_INumMgrFracQuotientArray_01 (0.00s)
+=== RUN   TestBigIntMathDivide_NumStrQuotientMod_01
+--- PASS: TestBigIntMathDivide_NumStrQuotientMod_01 (0.00s)
+=== RUN   TestBigIntMathDivide_NumStrQuotientMod_02
+--- PASS: TestBigIntMathDivide_NumStrQuotientMod_02 (0.00s)
+=== RUN   TestBigIntMathDivide_NumStrQuotientMod_03
+--- PASS: TestBigIntMathDivide_NumStrQuotientMod_03 (0.00s)
+=== RUN   TestBigIntMathDivide_NumStrQuotientMod_04
+--- PASS: TestBigIntMathDivide_NumStrQuotientMod_04 (0.00s)
+=== RUN   TestBigIntMathDivide_NumStrQuotientMod_05
+--- PASS: TestBigIntMathDivide_NumStrQuotientMod_05 (0.00s)
+=== RUN   TestBigIntMathDivide_NumStrQuotientMod_06
+--- PASS: TestBigIntMathDivide_NumStrQuotientMod_06 (0.00s)
 === RUN   TestBigIntMathMultiply_MultiplyBigInts_01
 --- PASS: TestBigIntMathMultiply_MultiplyBigInts_01 (0.00s)
 === RUN   TestBigIntMathMultiply_MultiplyBigInts_02
@@ -999,7 +1011,7 @@
 === RUN   TestNumStrUtility_ConvertNumStrToDecimal_02
 --- PASS: TestNumStrUtility_ConvertNumStrToDecimal_02 (0.00s)
 === RUN   TestNumStrUtility_ConvertNumStrToDecimal_03
---- PASS: TestNumStrUtility_ConvertNumStrToDecimal_03 (0.00s)
+--- PASS: TestNumStrUtility_ConvertNumStrToDecimal_03 (0.01s)
 === RUN   TestNumStrUtility_ConvertNumStrToDecimal_04
 --- PASS: TestNumStrUtility_ConvertNumStrToDecimal_04 (0.00s)
 === RUN   TestDecimal_AllDigitsNumStr_01
@@ -1023,7 +1035,7 @@
 === RUN   TestDecimal_AddToThisArray_01
 --- PASS: TestDecimal_AddToThisArray_01 (0.00s)
 === RUN   TestDecimal_AddToThisArray_02
---- PASS: TestDecimal_AddToThisArray_02 (0.01s)
+--- PASS: TestDecimal_AddToThisArray_02 (0.00s)
 === RUN   TestDecimal_AddToThisMultiple_01
 --- PASS: TestDecimal_AddToThisMultiple_01 (0.00s)
 === RUN   TestDecimal_AddToThisMultiple_02
@@ -1813,7 +1825,7 @@
 === RUN   TestIntAry_Pow_05
 --- PASS: TestIntAry_Pow_05 (0.00s)
 === RUN   TestIntAry_Pow_06
---- PASS: TestIntAry_Pow_06 (0.25s)
+--- PASS: TestIntAry_Pow_06 (0.26s)
 === RUN   TestIntAry_ResetFromBackUp_01
 --- PASS: TestIntAry_ResetFromBackUp_01 (0.00s)
 === RUN   TestIntAry_RoundToPrecision_01
@@ -2673,4 +2685,4 @@
 === RUN   TestStrMathOp_SubtractN1N2_19
 --- PASS: TestStrMathOp_SubtractN1N2_19 (0.00s)
 PASS
-ok  	MikeAustin71/mathopsgo/mathops	1.074s
+ok  	MikeAustin71/mathopsgo/mathops	1.151s
