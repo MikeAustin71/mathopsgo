@@ -16,6 +16,8 @@ type BigIntPair struct {
 															//  0 = Big1Precision == Big2Precision;
 															// -1 = Big1Precision < Big2Precision
 	Big2							BigIntNum
+	MaxPrecision			uint			// Used to control output from complex
+															//  calculations
 }
 
 // CopyIn - Copies the values provided by incoming BigIntPair

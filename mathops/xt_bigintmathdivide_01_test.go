@@ -5369,3 +5369,68 @@ func TestBigIntMathDivide_NumStrFracQuotient_04(t *testing.T) {
 			expectedQuo.GetNumStr(), quotient.GetNumStr())
 	}
 }
+
+
+func TestBigIntMathDivide_NumStrFracQuotientArray_01(t *testing.T) {
+
+	divisorStr := "2.5"
+	maxPrecision := uint(15)
+
+	dividendArrayStr := [] string {
+		"10.5",
+		"10",
+		"11.5",
+		"2.5",
+		"-12.555",
+		"-2.5",
+		"12.555",
+		"-122.783",
+		"-6847.231",
+		"-2.5",
+		"-10",
+		"-10.5",
+	}
+
+	expectedArrayStr := [] string {
+		"4.2",
+		"4",
+		"4.6",
+		"1",
+		"-5.022",
+		"-1",
+		"5.022",
+		"-49.1132",
+		"-2738.8924",
+		"-1",
+		"-4",
+		"-4.2",
+	}
+
+	lenDividends := len(dividendArrayStr)
+
+	resultArray, err :=
+		BigIntMathDivide{}.NumStrFracQuotientArray(dividendArrayStr, divisorStr, maxPrecision)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntMathDivide{}.NumStrFracQuotientArray"+
+			"(dividendArrayStr, divisorStr, maxPrecision). " +
+			"divisor='%v' maxPrecision='%v' Error='%v' ",
+			divisorStr, maxPrecision, err.Error())
+	}
+
+	lenResultArray := len(resultArray)
+
+	if lenDividends != lenResultArray {
+		t.Errorf("Error: Expected Results Array Length='%v'. Actual Array Length='%v'.",
+			lenDividends, lenResultArray)
+	}
+
+	for k:=0; k < lenDividends; k++ {
+
+		if expectedArrayStr[k] != resultArray[k].GetNumStr() {
+			t.Errorf(	"Expected Value='%v'. Actual Value='%v' k='%v'",
+				expectedArrayStr[k], resultArray[k].GetNumStr(), k)
+		}
+
+	}
+}

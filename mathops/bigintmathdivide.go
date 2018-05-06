@@ -283,7 +283,7 @@ func (bIDivide BigIntMathDivide) BigIntNumFracQuotient(
 	if errx != nil {
 		fracQuotient = BigIntNum{}.New()
 		err =	fmt.Errorf(ePrefix +
-				"Error returned by BigIntNum{}.NewNumStr(numStr, maxPrecision). " +
+				"Error returned by BigIntNum{}.NewNumStr(numStr). " +
 				"numStr='%v' maxPrecision='%v' Error='%v'",
 				numStr, maxPrecision, err.Error())
 
@@ -1258,16 +1258,16 @@ func (bIDivide BigIntMathDivide) INumMgrFracQuotientArray(
 // Dividend			divided by		Divisor			=		Quotient			Modulo/Remainder
 //   12.555					/						 2.5			=			 5							 0.055
 //   12.555  	 			/ 				 	 2  			= 		 6							 0.555
-//    2.5 					/ 				 	12.555		= 	   0							 2.500
+//    2.5 					/ 				 	12.555		= 	   0							 2.5
 //	-12.555 				/ 				   2.5 			= 		-5							-0.055
 //  -12.555     		/    			 	 2  			= 		-6							-0.555
-//  - 2.5 					/ 				 	12.555		= 		 0							-2.500
+//  - 2.5 					/ 				 	12.555		= 		 0							-2.5
 // 	 12.555					/ 				 - 2.5			=			-5							 0.055
 //   12.555 				/ 				 - 2 				= 		-6							 0.555
-//    2.5 				  / 				 -12.555		= 		 0							 2.500
+//    2.5 				  / 				 -12.555		= 		 0							 2.5
 // 	-12.555 				/ 				 - 2.5 			= 		 5							-0.055
 //  -12.555     		/    			 - 2 				= 		 6							-0.555
-//  - 2.5	 					/ 				 -12.555		= 		 0							-2.500
+//  - 2.5	 					/ 				 -12.555		= 		 0							-2.5
 //
 func (bIDivide BigIntMathDivide) NumStrQuotientMod(
 					dividend,
@@ -1276,40 +1276,37 @@ func (bIDivide BigIntMathDivide) NumStrQuotientMod(
 
 	ePrefix := "BigIntMathDivide.NumStrQuotientMod() "
 
-	bINumDividend, errx := BigIntNum{}.NewNumStr(dividend)
+	quotient = BigIntNum{}.NewBigInt(big.NewInt(0), 0)
+
+	modulo = BigIntNum{}.NewBigInt(big.NewInt(0), 0)
+
+	bPair, errx := BigIntPair{}.NewNumStr(dividend, divisor)
 
 	if errx != nil {
-		quotient = BigIntNum{}.NewBigInt(big.NewInt(0), 0)
-		modulo = BigIntNum{}.NewBigInt(big.NewInt(0), 0)
-		err = fmt.Errorf(ePrefix + "Error returned by BigIntNum{}.NewNumStr(dividend) " +
-			"dividend='%v' Error='%v' ",
-				dividend, errx.Error())
-
+		err = fmt.Errorf(ePrefix + "Error returned by BigIntPair{}.NewNumStr(dividend, divisor) " +
+			"dividend='%v' divisor='%v' Error='%v' ",
+				dividend ,divisor, errx.Error())
 		return quotient, modulo, err
 	}
 
-	bINumDivisor, errx := BigIntNum{}.NewNumStr(divisor)
-
-	if errx != nil {
-		quotient = BigIntNum{}.NewBigInt(big.NewInt(0), 0)
-		modulo = BigIntNum{}.NewBigInt(big.NewInt(0), 0)
-		err = fmt.Errorf(ePrefix + "Error returned by BigIntNum{}.NewNumStr(divisor) " +
-			"divisor='%v' Error='%v' ",
-				divisor, errx.Error())
-
+	if bPair.Big2.bigInt.Cmp(big.NewInt(0)) == 0 {
+		err = errors.New(ePrefix + "Error: Attempted Divide By ZERO!")
 		return quotient, modulo, err
 	}
+
+	bPair.MaxPrecision = maxPrecision
 
 	quotient, modulo, errx =
-		BigIntMathDivide{}.BigIntNumQuotientMod(bINumDividend, bINumDivisor, maxPrecision)
+		BigIntMathDivide{}.PairQuotientMod(bPair)
 
 	if errx != nil {
-		err = fmt.Errorf(ePrefix + "Error returned by BigIntMathDivide{}."+
-			"BigIntNumQuotientMod(bINumDividend, bINumDivisor, maxPrecision). " +
-			"Error='%v'",	errx.Error())
-
 		quotient = BigIntNum{}.New()
 		modulo = BigIntNum{}.New()
+
+		err = fmt.Errorf(ePrefix + "Error returned by BigIntMathDivide{}."+
+			"PairQuotientMod(bPair). " +
+		  " dividend='%v' divisor='%v' maxPrecision='%v' Error='%v'",
+			bPair.Big1.GetNumStr(), bPair.Big2.GetNumStr(), bPair.MaxPrecision, errx.Error())
 
 		return quotient, modulo, err
 	}
@@ -1360,46 +1357,298 @@ func (bIDivide BigIntMathDivide) NumStrFracQuotient(
 
 	ePrefix := "BigIntMathDivide.NumStrFracQuotient() "
 
-	bINumDividend, errx := BigIntNum{}.NewNumStr(dividend)
+	bPair, errx := BigIntPair{}.NewNumStr(dividend, divisor)
 
 	if errx != nil {
 		fracQuotient = BigIntNum{}
-		err = fmt.Errorf(ePrefix + "Error returned by BigIntNum{}.NewNumStr(dividend) " +
-			"dividend='%v' Error='%v' ",
-			dividend, errx.Error())
+		err = fmt.Errorf(ePrefix + "Error returned by BigIntNum{}.NewNumStr(dividend, divisor) " +
+			"dividend='%v' divisor='%v' maxPrecision='%v' Error='%v' ",
+			dividend, divisor, maxPrecision, errx.Error())
 
 		return fracQuotient, err
 	}
 
-	bINumDivisor, errx := BigIntNum{}.NewNumStr(divisor)
-
-	if errx != nil {
-		fracQuotient = BigIntNum{}
-		err = fmt.Errorf(ePrefix + "Error returned by BigIntNum{}.NewNumStr(divisor) " +
-			"divisor='%v' Error='%v' ",
-			divisor, errx.Error())
-
-		return fracQuotient, err
-	}
-
-	if bINumDivisor.IsZero() {
+	if bPair.Big2.bigInt.Cmp(big.NewInt(0)) == 0 {
 		fracQuotient = BigIntNum{}.New()
 		err = errors.New(ePrefix + "Error: Attempted divide by zero!")
 		return fracQuotient, err
 	}
 
+	bPair.MaxPrecision = maxPrecision
+
 	fracQuotient, errx =
-		BigIntMathDivide{}.BigIntNumFracQuotient(bINumDividend, bINumDivisor, maxPrecision)
+		BigIntMathDivide{}.PairFracQuotient(bPair)
 
 	if errx != nil {
 		fracQuotient = BigIntNum{}
-		err = fmt.Errorf(ePrefix + "Error returned by BigIntMathDivide{}.BigIntNumFracQuotient(" +
-			"bINumDividend, bINumDivisor, maxPrecision)" +
-			"bINumDividend='%v' bINumDivisor='%v' maxPrecision='%v' Error='%v' ",
-			bINumDividend.GetNumStr(), bINumDivisor.GetNumStr(), maxPrecision, errx.Error())
+		err = fmt.Errorf(ePrefix + "Error returned by BigIntMathDivide{}.PairFracQuotient(" +
+			"bPair)" +
+			"dividend='%v' divisor='%v' maxPrecision='%v' Error='%v' ",
+			bPair.Big1.GetNumStr(), bPair.Big2.GetNumStr(), bPair.MaxPrecision, errx.Error())
 
 		return fracQuotient, err
 	}
 
 	return fracQuotient, nil
+}
+
+// NumStrFracQuotientArray - Performs a division operation on input parameters
+// 'dividends' and 'divisor' which are formatted as number strings.
+//
+// 	Number strings are strings of numeric digits which may, or may not, include
+//  a decimal separator ('.') to separate integer and fractional digits.
+//
+// 'dividends' is an array of number strings. The division operation is performed
+// on each element of the 'dividends' array using a single 'divisor'.
+//
+// The resulting quotients are returned as an array of BigIntNum types. The values
+// represent result of each division operation expressed as integer and fractional
+// digits.
+//
+// The input parameter 'maxPrecision' is used to control the precision of the
+// resulting fractional quotient. Precision is defined as the number of numeric
+// digits to the right of the decimal point. Be advised that this method is
+// capable of calculating quotients with very long strings of fractional digits.
+// Therefore the user is advised to set a relevant value for 'maxPrecision'.
+//
+// Examples:
+// =========
+// Note: For all examples maximum precision is specified as '15'.
+// ----------------------------------------------------------------------------
+//    	                                       Returned
+//  	Dividend		divided by	Divisor		=	       Array						=  	 Result
+//  	-------- 	  ----------	--------				-----------------	   		---------
+//	 	 10.5  				 / 				2.5 			= 		 fracQuoArray[0]		=   	 4.2
+//	 	 10    				 / 				2.5 			= 		 fracQuoArray[1]		=	 	   4
+//	   11.5  				 /        2.5				=  		 fracQuoArray[2]		=		   4.6
+//	    2.5					 /				2.5			  =			 fracQuoArray[3]    =      1
+//		-12.555 			 / 				2.5 			= 		 fracQuoArray[4]    =  -   5.022
+//	  - 2.5 				 / 			  2.5		    = 		 fracQuoArray[5]    =  -   1
+//	   12.555 			 / 			  2.5 			= 		 fracQuoArray[6]    =      5.022
+//	 -122.783 			 / 			  2.5 			= 		 fracQuoArray[7]    =  -  49.1132
+//	-6847.231   	   /    	  2.5 			= 		 fracQuoArray[8]    =  -2738.8924
+//	  - 2.5	 				 / 			  2.5		    = 		 fracQuoArray[9]    =  -   1
+//	  -10						 /			  2.5				=			 fracQuoArray[10]   =  -   4
+//	  -10.5					 /			  2.5				=			 fracQuoArray[11]   =  -   4.2
+//
+func (bIDivide BigIntMathDivide) NumStrFracQuotientArray(
+					dividends []string,
+						divisor string,
+							maxPrecision uint) (fracQuoArray [] BigIntNum, err error) {
+
+	ePrefix := "BigIntMathDivide.NumStrFracQuotientArray() "
+
+	lenAry := len(dividends)
+
+	if lenAry == 0 {
+		fracQuoArray = []BigIntNum{}
+		err = errors.New(ePrefix + "Error: Input Parameter 'dividends' is an EMPTY Array!")
+		return fracQuoArray, err
+	}
+
+	fracQuoArray = make([]BigIntNum, lenAry, lenAry+20)
+
+	for i:=0; i < lenAry; i++ {
+
+		bPair, errx := BigIntPair{}.NewNumStr(dividends[i], divisor)
+
+		if errx != nil {
+			fracQuoArray = []BigIntNum{}
+			err = fmt.Errorf(ePrefix +
+				"Error returned by BigIntPair{}.NewNumStr(dividends[i], divisor) " +
+				"dividends[%v]='%v' divisor='%v' Error='%v' ",
+				i, dividends[i], divisor, errx.Error())
+
+			return fracQuoArray, err
+		}
+
+		bPair.MaxPrecision = maxPrecision
+
+		fracQuoArray[i], errx =
+			BigIntMathDivide{}.PairFracQuotient(bPair)
+
+		if errx != nil {
+			fracQuoArray = []BigIntNum{}
+			err = fmt.Errorf(ePrefix +
+				"Error returned by BigIntMathDivide{}.PairFracQuotient(bPair) " +
+				"dividend['%v']='%v' divisor='%v' maxPrecision='%v' Error='%v' ",
+				i, bPair.Big1.GetNumStr(), bPair.Big2.GetNumStr(), maxPrecision, errx.Error())
+
+			return fracQuoArray, err
+		}
+
+	}
+
+	return fracQuoArray, nil
+}
+
+// PairFracQuotient - Receives a BigIntPair type as an input parameter. 'BigIntPair.Big1'
+// is treated as the Dividend. 'BigIntPair.Big2' is considered the divisor.
+// 'BigIntPair.MaxPrecision' is used to control the precision of the resulting
+// fractional quotient. Be advised that this method is capable of calculating
+// quotients with very long strings of fractional digits. Therefore, the user
+// is advised to set a relevant 'BigIntPair.MaxPrecision' value.
+//
+// 	type BigIntPair struct {
+//				Big1							BigIntNum  // The Dividend
+//				Big2							BigIntNum	 // The Divisor
+//				MaxPrecision			uint			 // Controls Precision
+//	}
+//
+// This method performs a division operation on BigIntNum parameters 'dividend'
+// (BigIntPair.Big1) and 'divisor' (BigIntPair.Big2). The resulting quotient is
+// returned as a BigIntNum type representing the result of the division operation
+// expressed as integer and fractional digits. The number of fractional digits
+// output to the result is controlled by BigIntPair.MaxPrecision. Remember that
+// the BigIntNum type specifies 'precision'. Precision is defined as the number
+// of fractional digits to the right of the decimal place.
+//
+// Examples:
+// =========
+//
+// Note: For all examples BigIntPair.MaxPrecision is specified as '15'.
+// ----------------------------------------------------------------------------
+//																				   Quotient
+//  Dividend		divided by	Divisor		=		BigIntNum Integer 	Precision	 Result
+//  -------- 	  ----------	--------				-----------------	  ---------	 ------
+// 	 10.5  				/ 				2 				= 			525  							  2  			 5.25
+// 	 10    				/ 				2 				= 			5	  							  0  			 5
+//   11.5  				/         2.5				=  			46								  1				 4.6
+//    2.5					/				 12.555			=				199123855037834	   15				 0.199123855037834
+//	-12.555 			/ 				2.5 			= 		 -5022							  3				-5.022
+//  -12.555     	/    			2  			  = 		 -62775							  4				-6.2775
+//  - 2.5 				/ 			 12.555		  = 		 -199123855037834	   15				-0.199123855037834
+// 	 12.555				/ 			- 2.5			  =			 -5022								3				-5.022
+//   12.555 			/ 			- 2 				= 		 -62775								4				-6.2775
+//    2.5 				/ 			-12.555		  = 		 -199123855037834	   15				-0.199123855037834
+// 	-12.555 			/ 			- 2.5 			= 			5022								3				 5.022
+//  -12.555     	/    		- 2 				= 		  62775								4				 6.2775
+//  - 2.5	 				/ 			-12.555		  = 		  199123855037834	   15				 0.199123855037834
+//  -10						/				- 2					=				5														 5
+//
+func (bIDivide BigIntMathDivide) PairFracQuotient(
+				bPair BigIntPair) (fracQuotient BigIntNum, err error) {
+
+	ePrefix := "BigIntMathDivide.PairFracQuotient() "
+	fracQuotient = BigIntNum{}.New()
+
+	if bPair.Big2.bigInt.Cmp(big.NewInt(0)) == 0 {
+		err = errors.New(ePrefix + "Attempted Divide by ZERO!")
+		return fracQuotient, err
+	}
+
+	bPair.MakePrecisionsEqual()
+
+	rDividend := big.NewRat(1, 1).SetInt(bPair.Big1.bigInt)
+	rDivisor := big.NewRat(1, 1).SetInt(bPair.Big2.bigInt)
+	rQuotient := big.NewRat(1, 1).Quo(rDividend, rDivisor)
+	numStr := rQuotient.FloatString(int(bPair.MaxPrecision))
+
+	fracQuotient, errx :=
+		BigIntNum{}.NewNumStr(numStr)
+
+	if errx != nil {
+		fracQuotient = BigIntNum{}.New()
+		err =	fmt.Errorf(ePrefix +
+			"Error returned by BigIntNum{}.NewNumStr(numStr). " +
+			"numStr='%v' maxPrecision='%v' Error='%v'",
+			numStr, bPair.MaxPrecision, err.Error())
+
+		return fracQuotient, err
+	}
+
+	fracQuotient.TrimTrailingFracZeros()
+
+	return fracQuotient, nil
+}
+
+// PairQuotientMod -  Receives a BigIntPair type as an input parameter. 'BigIntPair.Big1'
+// is treated as the Dividend. 'BigIntPair.Big2' is considered the divisor.
+// 'BigIntPair.MaxPrecision' is used to control the precision of the resulting
+// fractional quotient. Be advised that this method is capable of calculating
+// quotients with very long strings of fractional digits. Therefore, the user
+// is advised to set a relevant 'BigIntPair.MaxPrecision' value.
+//
+// 	type BigIntPair struct {
+//				Big1							BigIntNum  // The Dividend
+//				Big2							BigIntNum	 // The Divisor
+//				MaxPrecision			uint			 // Controls Precision
+//	}
+//
+// The method performs a division operation on BigIntNum input
+// parameters 'dividend' (BigIntPair.Big1) and 'divisor' (BigIntPair.Big2).
+// The result is a quotient and modulo (remainder). These values are returned as
+// two BigIntNum types, 'quotient' and 'modulo'.
+//
+// The calculation of 'quotient' and 'modulo' is based on T-Division (Truncate Division).
+// See "Division and Modulus for Computer Scientists", DAAN LEIJEN, University of Utrecht
+// Dept. of Computer Science, PO.Box 80.089, 3508 TB Utrecht The Netherlands:
+// https://www.microsoft.com/en-us/research/wp-content/uploads/2016/02/divmodnote-letter.pdf
+// Also available at ../notes/divmodnote-letter.pdf.
+// So for q=quotient; D=Dividend d=Divisor r=Remainder or 'modulo' :
+//   						q = D div d = f(D/d) r = D mod d = D − d ·q
+//
+// 'quotient' is the integer result of dividing the 'dividend' by the 'divisor'
+//
+// 'modulo' - The modulo operation finds the remainder after division of one
+// number by another. (r = D mod d = D − d ·q)
+//
+// Input parameter 'maxPrecision' is used to control the maximum precision of the
+// resulting 'modulo'. Precision is defined as the the number of fractional digits
+// to the right of the decimal point. Be advised that these calculations can support
+// very large precision values.
+//
+// Examples:
+// =========
+//
+// Dividend			divided by		Divisor			=		Quotient			Modulo/Remainder
+//   12.555					/						 2.5			=			 5							 0.055
+//   12.555  	 			/ 				 	 2  			= 		 6							 0.555
+//    2.5 					/ 				 	12.555		= 	   0							 2.5
+//	-12.555 				/ 				   2.5 			= 		-5							-0.055
+//  -12.555     		/    			 	 2  			= 		-6							-0.555
+//  - 2.5 					/ 				 	12.555		= 		 0							-2.5
+// 	 12.555					/ 				 - 2.5			=			-5							 0.055
+//   12.555 				/ 				 - 2 				= 		-6							 0.555
+//    2.5 				  / 				 -12.555		= 		 0							 2.5
+// 	-12.555 				/ 				 - 2.5 			= 		 5							-0.055
+//  -12.555     		/    			 - 2 				= 		 6							-0.555
+//  - 2.5	 					/ 				 -12.555		= 		 0							-2.5
+//
+func (bIDivide BigIntMathDivide) PairQuotientMod(
+								bPair BigIntPair) (quotient, modulo BigIntNum, err error) {
+
+	quotient = BigIntNum{}.New()
+	modulo = BigIntNum{}.New()
+
+	if bPair.Big2.bigInt.Cmp(big.NewInt(0)) == 0 {
+
+		ePrefix := "BigIntMathDivide.PairQuotientMod() "
+
+		err = errors.New(ePrefix +
+			"Error: Attempted Divide By ZERO!")
+
+		return quotient, modulo, err
+	}
+
+	bPair.MakePrecisionsEqual()
+
+	quotientBigI, moduloBigI := big.NewInt(0).QuoRem(
+			bPair.Big1.bigInt,
+				bPair.Big2.bigInt,
+					big.NewInt(0))
+
+	quotient = BigIntNum{}.NewBigInt(quotientBigI, 0)
+
+	modulo = BigIntNum{}.NewBigInt(moduloBigI, bPair.Big2.GetPrecisionUint())
+
+	if modulo.precision > bPair.MaxPrecision {
+		modulo.RoundToDecPlace(bPair.MaxPrecision)
+	}
+
+	modulo.TrimTrailingFracZeros()
+
+	err = nil
+
+	return quotient, modulo, err
 }
