@@ -666,7 +666,6 @@ func (bIDivide BigIntMathDivide) DecimalFracQuotientArray(
 	return fracQuoArray, nil
 }
 
-
 // IntAryQuotientMod - Performs a division operation on IntAry type input
 // parameters, 'dividend' and 'divisor'.
 //
@@ -1041,4 +1040,189 @@ func (bIDivide BigIntMathDivide) INumMgrQuotientMod(
 	err = nil
 
 	return quotient, modulo, err
+}
+
+// INumMgrFracQuotient - Performs a division operation on input
+// parameters 'dividend' and 'divisor' which implement the INumMgr
+// interface.
+//
+// The resulting quotient is returned as a BigIntNum type representing the
+// result of the division operation expressed as integer and fractional digits.
+// Remember that the BigIntNum type specifies 'precision'. Precision is defined
+// as the number of fractional digits to the right of the decimal place.
+//
+// The input parameter 'maxPrecision' is used to control the precision of the
+// resulting fractional quotient. Be advised that this method is capable of
+// calculating quotients with very long strings of fractional digits. Therefore,
+// the user is advised to set a relevant value for 'maxPrecision'.
+//
+// Examples:
+// =========
+//
+// Note: For all examples maximum precision is specified as '15'.
+// ----------------------------------------------------------------------------
+//																				     Quotient
+//  Dividend		divided by	Divisor		=		  BigIntNum Integer 	Precision	 Result
+//  -------- 	  ----------	--------				-----------------	  ---------	 ------
+// 	 10.5  				/ 				2 				= 			525  							  2  			 5.25
+// 	 10    				/ 				2 				= 			5	  							  0  			 5
+//   11.5  				/         2.5				=  			46								  1				 4.6
+//    2.5					/				 12.555			=				199123855037834	   15				 0.199123855037834
+//	-12.555 			/ 				2.5 			= 		 -5022							  3				-5.022
+//  -12.555     	/    			2  			  = 		 -62775							  4				-6.2775
+//  - 2.5 				/ 			 12.555		  = 		 -199123855037834	   15				-0.199123855037834
+// 	 12.555				/ 			- 2.5			  =			 -5022								3				-5.022
+//   12.555 			/ 			- 2 				= 		 -62775								4				-6.2775
+//    2.5 				/ 			-12.555		  = 		 -199123855037834	   15				-0.199123855037834
+// 	-12.555 			/ 			- 2.5 			= 			5022								3				 5.022
+//  -12.555     	/    		- 2 				= 		  62775								4				 6.2775
+//  - 2.5	 				/ 			-12.555		  = 		  199123855037834	   15				 0.199123855037834
+//  -10						/				- 2					=				5														 5
+//
+func (bIDivide BigIntMathDivide) INumMgrFracQuotient(
+														dividend,
+															divisor INumMgr,
+																maxPrecision uint) (fracQuotient BigIntNum, err error) {
+
+	ePrefix := "BigIntMathDivide.INumMgrFracQuotient() "
+
+	if divisor.IsZero() {
+		fracQuotient = BigIntNum{}.New()
+		err = errors.New(ePrefix + "Error: Attempted divide by zero!")
+		return fracQuotient, err
+	}
+
+	bPair, errx := BigIntPair{}.NewINumMgr(dividend, divisor)
+
+	if errx != nil {
+		fracQuotient = BigIntNum{}.New()
+		err = fmt.Errorf(ePrefix +
+			"Error returned by BigIntPair{}.NewINumMgr(dividend, divisor). " +
+			"dividend='%v' divisor='%v' Error='%v'",
+			dividend.GetNumStr(), divisor.GetNumStr(), err.Error())
+
+		return fracQuotient, err
+	}
+
+	bPair.MakePrecisionsEqual()
+
+	rDividend := big.NewRat(1, 1).SetInt(bPair.Big1.bigInt)
+	rDivisor := big.NewRat(1, 1).SetInt(bPair.Big2.bigInt)
+	rQuotient := big.NewRat(1, 1).Quo(rDividend, rDivisor)
+	numStr := rQuotient.FloatString(int(maxPrecision))
+
+	fracQuotient, errx =
+		BigIntNum{}.NewNumStr(numStr)
+
+	if errx != nil {
+		fracQuotient = BigIntNum{}.New()
+		err =	fmt.Errorf(ePrefix +
+			"Error returned by BigIntNum{}.NewNumStr(numStr, maxPrecision). " +
+			"numStr='%v' maxPrecision='%v' Error='%v'",
+			numStr, maxPrecision, err.Error())
+
+		return fracQuotient, err
+	}
+
+	fracQuotient.TrimTrailingFracZeros()
+
+	return fracQuotient, nil
+}
+
+// INumMgrFracQuotientArray - Performs a division operation on input parameters
+// 'dividends' and 'divisor' which implement the INumMgr interfce. 'dividends'
+// is an array of types implementing the INumMgr interface. The division operation
+// is performed on each element of the 'dividends' array using a single 'divisor'.
+//
+// The resulting quotients are returned as an array of types implementing the INumMgr
+// Interface. The values represent the results of each division operation expressed
+// as integer and fractional digits.
+//
+// The input parameter 'maxPrecision' is used to control the precision of the
+// resulting fractional quotient. Precision is defined as the number of numeric
+// digits to the right of the decimal point. Be advised that this method is
+// capable of calculating quotients with very long strings of fractional digits.
+// Therefore the user is advised to set a relevant value for 'maxPrecision'.
+//
+// Examples:
+// =========
+// Note: For all examples maximum precision is specified as '15'.
+// ----------------------------------------------------------------------------
+//    	                                       Returned
+//  	Dividend		divided by	Divisor		=	       Array						=  	 Result
+//  	-------- 	  ----------	--------				-----------------	   		---------
+//	 	 10.5  				 / 				2.5 			= 		 fracQuoArray[0]		=   	 4.2
+//	 	 10    				 / 				2.5 			= 		 fracQuoArray[1]		=	 	   4
+//	   11.5  				 /        2.5				=  		 fracQuoArray[2]		=		   4.6
+//	    2.5					 /				2.5			  =			 fracQuoArray[3]    =      1
+//		-12.555 			 / 				2.5 			= 		 fracQuoArray[4]    =  -   5.022
+//	  - 2.5 				 / 			  2.5		    = 		 fracQuoArray[5]    =  -   1
+//	   12.555 			 / 			  2.5 			= 		 fracQuoArray[6]    =      5.022
+//	 -122.783 			 / 			  2.5 			= 		 fracQuoArray[7]    =  -  49.1132
+//	-6847.231   	   /    	  2.5 			= 		 fracQuoArray[8]    =  -2738.8924
+//	  - 2.5	 				 / 			  2.5		    = 		 fracQuoArray[9]    =  -   1
+//	  -10						 /			  2.5				=			 fracQuoArray[10]   =  -   4
+//	  -10.5					 /			  2.5				=			 fracQuoArray[11]   =  -   4.2
+//
+func (bIDivide BigIntMathDivide) INumMgrFracQuotientArray(
+												dividends []INumMgr,
+													divisor INumMgr,
+														maxPrecision uint) (fracQuoArray [] INumMgr, err error) {
+
+	ePrefix := "BigIntMathDivide.INumMgrFracQuotientArray() "
+
+	if divisor.IsZero() {
+		fracQuoArray = []INumMgr{}
+		err = errors.New(ePrefix + "Error: Attempted divide by zero!")
+		return fracQuoArray, err
+	}
+
+	lenAry := len(dividends)
+
+	if lenAry == 0 {
+		fracQuoArray = []INumMgr{}
+		err = errors.New(ePrefix + "Error: Input Parameter 'dividends' is an EMPTY Array!")
+		return fracQuoArray, err
+	}
+
+	fracQuoArray = make([]INumMgr, lenAry, lenAry+20)
+
+	for i:=0; i < lenAry; i++ {
+
+		bPair, errx := BigIntPair{}.NewINumMgr(dividends[i], divisor)
+
+		if errx != nil {
+			fracQuoArray = []INumMgr{}
+			err =	fmt.Errorf(ePrefix +
+				"Error returned by BigIntPair{}.NewINumMgr(dividends[i], divisor). " +
+				"dividends[%v]='%v' divisor='%v' Error='%v'",
+				i, dividends[i].GetNumStr(), divisor.GetNumStr(), errx.Error())
+			return fracQuoArray, err
+		}
+
+		bPair.MakePrecisionsEqual()
+
+		rDividend := big.NewRat(1, 1).SetInt(bPair.Big1.bigInt)
+		rDivisor := big.NewRat(1, 1).SetInt(bPair.Big2.bigInt)
+		rQuotient := big.NewRat(1, 1).Quo(rDividend, rDivisor)
+		numStr := rQuotient.FloatString(int(maxPrecision))
+
+		bINum, errx := BigIntNum{}.NewNumStr(numStr)
+
+		if errx != nil {
+			fracQuoArray = []INumMgr{}
+			err =	fmt.Errorf(ePrefix +
+				"Error returned by BigIntNum{}.NewNumStr(numStr). " +
+				"numStr='%v' maxPrecision='%v' Error='%v'",
+				numStr, maxPrecision, errx.Error())
+			return fracQuoArray, err
+		}
+
+		bINum.TrimTrailingFracZeros()
+
+		fracQuoArray[i] = &bINum
+
+	}
+
+	return fracQuoArray, nil
 }
