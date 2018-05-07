@@ -289,6 +289,33 @@ func TestNumStrDto_NewNumStr_05(t *testing.T) {
 
 }
 
+func TestNumStrDto_NewBigIntNum_01(t *testing.T) {
+	nStr := "123.456"
+
+	bINum, err := BigIntNum{}.NewNumStr(nStr)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(nStr). " +
+			"nStr='%v' Error='%v ",
+				nStr, err.Error())
+	}
+
+	nDto, err := NumStrDto{}.NewBigIntNum(bINum)
+
+
+	if err != nil {
+		t.Errorf("Error returned by NumStrDto{}.NewBigIntNum(bINum). " +
+			"bINum='%v' Error='%v ",
+			bINum.GetNumStr(), err.Error())
+	}
+
+	if nStr != nDto.GetNumStr() {
+		t.Errorf("Expected nDto.GetNumStr()='%v'. Instead, nDto.GetNumStr()='%v'.",
+			nStr, nDto.GetNumStr())
+	}
+
+}
+
 func TestNumStrDto_ParseNumStr_01(t *testing.T) {
 	nStr := "123.456"
 	iStr := "123"

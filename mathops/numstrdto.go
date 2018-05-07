@@ -2252,7 +2252,7 @@ func (nDto NumStrDto) NewBigInt(signedBigInt *big.Int, precision uint) (NumStrDt
 
 	ePrefix := "NumStrDto.NewBigInt() "
 
-	n2, err := NumStrDto{}.NewPtr().ParseSignedBigInt(
+	n2, err := NumStrDto{}.ParseSignedBigInt(
 								big.NewInt(0).Set(signedBigInt),
 									precision)
 
@@ -2266,6 +2266,23 @@ func (nDto NumStrDto) NewBigInt(signedBigInt *big.Int, precision uint) (NumStrDt
 	return n2, nil
 }
 
+// NewBigIntNum - Receives a BigIntNum and converts it to a NumStrDto
+// instance which is returned to the calling function.
+//
+func (nDto NumStrDto) NewBigIntNum(bINum BigIntNum) (NumStrDto, error) {
+	ePrefix := "NumStrDto.NewBigIntNum() "
+	n2, err := NumStrDto{}.ParseBigIntNum(bINum)
+
+	if err != nil {
+		return NumStrDto{},
+			fmt.Errorf(ePrefix + "Error returned by ParseBigIntNum(bINum). " +
+				"bINum='%v'  Error='%v'",
+				bINum.GetNumStr(),  err.Error())
+	}
+
+	return n2, nil
+
+}
 
 // NewFloat32 - Creates a new NumStrDto instance from a float32
 // and precision specification.
@@ -2424,9 +2441,8 @@ func (nDto NumStrDto) NewPtr() *NumStrDto {
 // instance which is returned to the calling function.
 //
 func (nDto NumStrDto) ParseBigIntNum(biNum BigIntNum) (NumStrDto, error) {
-	ePrefix := "NumStrDto.ParseBigIntNum() "
 
-	nDto.SetEmptySeparatorsToDefault()
+	ePrefix := "NumStrDto.ParseBigIntNum() "
 
 	n2Dto := NumStrDto{}.New()
 
@@ -2455,7 +2471,6 @@ func (nDto NumStrDto) ParseBigIntNum(biNum BigIntNum) (NumStrDto, error) {
 	if scratchNum.Cmp(bigZero) == 0 {
 
 		n2Dto.absAllNumRunes = append(n2Dto.absAllNumRunes, '0')
-		n2Dto.precision = 0
 
 	} else {
 
@@ -2508,10 +2523,9 @@ func (nDto NumStrDto) ParseBigIntNum(biNum BigIntNum) (NumStrDto, error) {
 
 // ParseSignedBigInt - receives a signed *Big Int number and precision parameter. It then
 // generates and returns a new NumStrDto type.
-func (nDto *NumStrDto) ParseSignedBigInt(signedBigInt *big.Int, precision uint) (NumStrDto, error) {
+func (nDto NumStrDto) ParseSignedBigInt(signedBigInt *big.Int, precision uint) (NumStrDto, error) {
 
 	ePrefix := "NumStrDto.ParseSignedBigInt() "
-	bigZero := big.NewInt(0)
 
 	nDto.SetEmptySeparatorsToDefault()
 
@@ -2520,87 +2534,76 @@ func (nDto *NumStrDto) ParseSignedBigInt(signedBigInt *big.Int, precision uint) 
 	n2Dto.SetCurrencySymbol(nDto.GetCurrencySymbol())
 	n2Dto.SetDecimalSeparator(nDto.GetDecimalSeparator())
 	n2Dto.SetThousandsSeparator(nDto.GetThousandsSeparator())
-
-	if signedBigInt.Cmp(bigZero) == 0 {
-		return nDto.GetZeroNumStrDto(precision), nil
-	}
-
-	if precision == 0 {
-
-		return nDto.ParseNumStr(signedBigInt.String())
-	}
-
-	signVal := 1
-
-	if signedBigInt.Cmp(bigZero) < 0 {
-		signVal = -1
-	}
-
-	absBigInt := big.NewInt(0).Abs(signedBigInt)
-
-	n2Dto.signVal = signVal
 	n2Dto.precision = precision
+	n2Dto.hasNumericDigits = true
 
-	absAllNumRunes := []rune(string(absBigInt.String()))
-	lenAbsAllNumRunes := len(absAllNumRunes)
-	iSpecPrecision := int(precision)
-	if iSpecPrecision >= lenAbsAllNumRunes {
-		deltaPrecision := (iSpecPrecision - lenAbsAllNumRunes) + 1
-		for i := 0; i < deltaPrecision; i++ {
-			n2Dto.absAllNumRunes = append(n2Dto.absAllNumRunes, '0')
+	if n2Dto.precision > 0 {
+		n2Dto.isFractionalValue = true
+	}
+
+	scratchNum := big.NewInt(0).Set(signedBigInt)
+	bigZero := big.NewInt(0)
+	n2Dto.signVal = 1
+
+	if scratchNum.Cmp(bigZero) == -1 {
+		scratchNum.Neg(scratchNum)
+		n2Dto.signVal = -1
+	}
+
+	bigTen  := big.NewInt(int64(10))
+	modulo := big.NewInt(0)
+	n2Dto.absAllNumRunes = make([]rune, 0, 100)
+
+	if scratchNum.Cmp(bigZero) == 0 {
+
+		n2Dto.absAllNumRunes = append(n2Dto.absAllNumRunes, '0')
+
+	} else {
+
+		for scratchNum.Cmp(bigZero) == 1 {
+			modulo = big.NewInt(0).Rem(scratchNum, bigTen)
+			scratchNum = big.NewInt(0).Quo(scratchNum,bigTen)
+			n2Dto.absAllNumRunes = append(n2Dto.absAllNumRunes, rune(modulo.Int64() + int64(48)))
 		}
 	}
 
-	for i := 0; i < lenAbsAllNumRunes; i++ {
-		n2Dto.absAllNumRunes = append(n2Dto.absAllNumRunes, absAllNumRunes[i])
+	lenAllNumRunes := len(n2Dto.absAllNumRunes)
+
+	if int(n2Dto.precision) >= lenAllNumRunes   {
+
+		deltaNumRunes := int(n2Dto.precision) - lenAllNumRunes + 1
+
+		for k:=0; k < deltaNumRunes; k++ {
+			n2Dto.absAllNumRunes  =  append(n2Dto.absAllNumRunes, '0')
+			lenAllNumRunes++
+		}
+
 	}
 
-	lenAbsAllNumRunes = len(n2Dto.absAllNumRunes)
-	lenAbsIntNumRunes := lenAbsAllNumRunes - iSpecPrecision
+	tRune := rune(0)
 
-	for j := 0; j < lenAbsAllNumRunes; j++ {
-		if j < lenAbsIntNumRunes {
-			n2Dto.hasNumericDigits = true
-		} else {
-			n2Dto.isFractionalValue = true
+	if lenAllNumRunes > 1 {
+		xLen := lenAllNumRunes - 1
+		sortLimit := xLen / 2
+		yCnt := 0
+		for i:= xLen; i > sortLimit ; i-- {
+			tRune = n2Dto.absAllNumRunes[yCnt]
+			n2Dto.absAllNumRunes[yCnt] = n2Dto.absAllNumRunes[i]
+			n2Dto.absAllNumRunes[i] = tRune
+			yCnt++
 		}
 	}
 
-	lenAbsIntNumRunes = n2Dto.GetAbsIntRunesLength()
-	lenAbsFracNumRunes := n2Dto.GetAbsFracRunesLength()
-
-	if lenAbsAllNumRunes != lenAbsIntNumRunes+lenAbsFracNumRunes {
-		return NumStrDto{},
-		fmt.Errorf(ePrefix + "lenAbsAllNumRunes != lenAbsIntNumRunes + lenAbsFracNumRunes. " +
-			"lenAbsAllNumRunes= '%v' lenAbsIntNumRunes= '%v' lenAbsFracNumRunes= '%v'",
-			lenAbsAllNumRunes, lenAbsIntNumRunes, lenAbsFracNumRunes)
-	}
-
-	n2Dto.numStr = ""
-
-	if n2Dto.signVal < 0 {
-		n2Dto.numStr = "-"
-	}
-
-	n2Dto.numStr += string(n2Dto.GetAbsIntRunes())
-
-	if lenAbsFracNumRunes > 0 {
-		n2Dto.numStr += string(n2Dto.GetDecimalSeparator())
-		n2Dto.numStr += string(n2Dto.GetAbsFracRunes())
-	}
-
-
-
-	err := n2Dto.IsNumStrDtoValid( ePrefix + "- ")
+	err := n2Dto.IsNumStrDtoValid("")
 
 	if err != nil {
-		return NumStrDto{}, err
+		return NumStrDto{}.New(),
+			fmt.Errorf(ePrefix +
+				"NumStrDto INVALID! Error='%v'",
+				err.Error())
 	}
 
-	n2Dto.isValid = true
-
 	return n2Dto, nil
-
 }
 
 // ParseNumStr - receives a raw string and converts to a properly

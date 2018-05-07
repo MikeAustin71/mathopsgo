@@ -9,12 +9,37 @@ import (
 
 func main() {
 
-	ExampleNumStrDtoBigIntNumParse_01()
+	ExampleNumStrDtoBigIntParse_02()
+
+}
+
+func ExampleNumStrDtoBigIntParse_02() {
+	num1Str := "-123456789"
+	precision := uint(15)
+
+	bNum1, ok := big.NewInt(0).SetString(num1Str, 10)
+
+	if !ok {
+		fmt.Print("Error returned by big.NewInt(0).SetString(num1Str, 10).  ")
+		return
+	}
+
+	nDto2, err :=  mathops.NumStrDto{}.ParseSignedBigInt(bNum1, precision)
+	if err != nil {
+		fmt.Printf("Error returned by nDto.ParseBigIntNum(bNum1). Error='%v' ",
+			err.Error())
+		return
+	}
+
+
+	fmt.Println("Original NumStr: ", num1Str)
+	fmt.Println("   nDto2 NumStr: ", nDto2.GetNumStr())
+	fmt.Println(" spec precision: ", precision)
 
 }
 
 func ExampleNumStrDtoBigIntNumParse_01() {
-	num1Str := "-1.001234567890123"
+	num1Str := "0.000"
 
 	bNum1, err := mathops.BigIntNum{}.NewNumStr(num1Str)
 
