@@ -1455,6 +1455,96 @@ func (bIDivide BigIntMathDivide) NumStrFracQuotientArray(
 	return fracQuoArray, nil
 }
 
+// NumStrDtoQuotientMod - Performs a division operation on NumStrDto type input
+// parameters, 'dividend' and 'divisor'.
+//
+// There are two BigIntNum Type return values: 'quotient' and 'modulo'.
+//
+// The calculation of 'quotient' and 'modulo' is based on T-Division (Truncate Division).
+// See "Division and Modulus for Computer Scientists", DAAN LEIJEN, University of Utrecht
+// Dept. of Computer Science, PO.Box 80.089, 3508 TB Utrecht The Netherlands:
+// https://www.microsoft.com/en-us/research/wp-content/uploads/2016/02/divmodnote-letter.pdf
+// Also available at ../notes/divmodnote-letter.pdf.
+// So for q=quotient; D=Dividend d=Divisor r=Remainder or 'modulo' :
+//   						q = D div d = f(D/d) r = D mod d = D − d ·q
+//
+// 'quotient' is the integer result of dividing the 'dividend' by the 'divisor'
+//
+// 'modulo' - The modulo operation finds the remainder after division of one
+// number by another. (r = D mod d = D − d ·q)
+//
+// Input parameter 'maxPrecision' is used to control the maximum precision of the
+// resulting 'modulo'. Precision is defined as the the number of fractional digits
+// to the right of the decimal point. Be advised that these calculations can support
+// very large precision values. Therefore, the user is advised to set a relevant value
+// for 'maxPrecision'.
+//
+// Examples:
+// =========
+//
+// Dividend			divided by		Divisor			=		Quotient			Modulo/Remainder
+//   12.555					/						 2.5			=			 5							 0.055
+//   12.555  	 			/ 				 	 2  			= 		 6							 0.555
+//    2.5 					/ 				 	12.555		= 	   0							 2.5
+//	-12.555 				/ 				   2.5 			= 		-5							-0.055
+//  -12.555     		/    			 	 2  			= 		-6							-0.555
+//  - 2.5 					/ 				 	12.555		= 		 0							-2.5
+// 	 12.555					/ 				 - 2.5			=			-5							 0.055
+//   12.555 				/ 				 - 2 				= 		-6							 0.555
+//    2.5 				  / 				 -12.555		= 		 0							 2.5
+// 	-12.555 				/ 				 - 2.5 			= 		 5							-0.055
+//  -12.555     		/    			 - 2 				= 		 6							-0.555
+//  - 2.5	 					/ 				 -12.555		= 		 0							-2.5
+//
+func (bIDivide BigIntMathDivide) NumStrDtoQuotientMod(
+											dividend,
+												divisor NumStrDto,
+													maxPrecision uint) (quotient, modulo BigIntNum, err error) {
+
+	ePrefix := "BigIntMathDivide.NumStrDtoQuotientMod() "
+
+	quotient = BigIntNum{}.New()
+	modulo = BigIntNum{}.New()
+	err = nil
+
+	bPair, errx := BigIntPair{}.NewNumStrDto(dividend, divisor)
+
+	if errx != nil {
+		err = fmt.Errorf(ePrefix +
+			"Error returned by BigIntPair{}.NewNumStrDto(dividend, divisor). " +
+			"dividend='%v' divisor='%v' Error='%v'",
+			dividend.GetNumStr() ,divisor.GetNumStr(), errx.Error())
+
+		return quotient, modulo, err
+	}
+
+	if bPair.Big2.IsZero() {
+		err = errors.New(ePrefix + "Error: Attempted divide by ZERO!")
+		return quotient, modulo, err
+	}
+
+	bPair.MaxPrecision = maxPrecision
+
+	quotient, modulo, errx =
+		BigIntMathDivide{}.PairQuotientMod(bPair)
+
+	if errx != nil {
+		err = fmt.Errorf(ePrefix + "Error returned by BigIntMathDivide{}."+
+			"PairQuotientMod(bPair). " +
+			"dividend='%v' divisor='%v' maxPrecision='%v' Error='%v'",
+			bPair.Big1.GetNumStr(), bPair.Big2.GetNumStr(), bPair.MaxPrecision, errx.Error())
+
+		quotient = BigIntNum{}.New()
+		modulo = BigIntNum{}.New()
+
+		return quotient, modulo, err
+	}
+
+	err = nil
+
+	return quotient, modulo, err
+}
+
 // PairFracQuotient - Receives a BigIntPair type as an input parameter. 'BigIntPair.Big1'
 // is treated as the Dividend. 'BigIntPair.Big2' is considered the divisor.
 // 'BigIntPair.MaxPrecision' is used to control the precision of the resulting
