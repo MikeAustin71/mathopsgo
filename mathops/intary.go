@@ -3482,12 +3482,12 @@ func (ia IntAry) NewNumStrDto(numDto NumStrDto) (IntAry, error) {
 
 	ePrefix := "IntAry.NewNumStrDto() "
 
-	err := numDto.ResetNumStr()
+	err := numDto.IsNumStrDtoValid(ePrefix)
 
 	if err != nil {
 		return IntAry{},
 		fmt.Errorf(ePrefix +
-			"Error returned by numDto.ResetNumStr(). " +
+			"Error returned by IsNumStrDtoValid(ePrefix). " +
 			"Error='%v' ", err.Error())
 	}
 
