@@ -2400,6 +2400,7 @@ func (nDto NumStrDto) ParseBigIntNum(biNum BigIntNum) (NumStrDto, error) {
 	bigZero := big.NewInt(0)
 	bigTen  := big.NewInt(int64(10))
 	modulo := big.NewInt(0)
+	modX := big.NewInt(0)
 	n2Dto.absAllNumRunes = make([]rune, 0, 100)
 
 	if scratchNum.Cmp(bigZero) == 0 {
@@ -2410,8 +2411,8 @@ func (nDto NumStrDto) ParseBigIntNum(biNum BigIntNum) (NumStrDto, error) {
 
 		for scratchNum.Cmp(bigZero) == 1 {
 
-				modulo = big.NewInt(0).Rem(scratchNum, bigTen)
-				scratchNum = big.NewInt(0).Quo(scratchNum,bigTen)
+				scratchNum, modulo = big.NewInt(0).QuoRem(scratchNum,bigTen, modX)
+
 			  n2Dto.absAllNumRunes = append(n2Dto.absAllNumRunes, rune(modulo.Int64() + int64(48)))
 		}
 	}
