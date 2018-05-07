@@ -1168,7 +1168,9 @@ func (nDto *NumStrDto) GetAbsoluteBigInt() (*big.Int, error) {
 			fmt.Errorf(ePrefix + "This NumStrDto instance is INVALID! Error='%v'", err.Error())
 	}
 
-	if  len(nDto.absAllNumRunes) == 0  {
+	lenAllNumRunes := len(nDto.absAllNumRunes)
+
+	if  lenAllNumRunes == 0  {
 		s := ePrefix +
 			"- The existing NumStrDto is a Zero length number. " +
 			"Re-initialize the NumStrDto object and try again."
@@ -1176,17 +1178,14 @@ func (nDto *NumStrDto) GetAbsoluteBigInt() (*big.Int, error) {
 
 	}
 
-	bigZero := big.NewInt(0)
+	base10 := big.NewInt(int64(10))
+	absBigInt := big.NewInt(0)
 
-	strAbsAllRunes := string(nDto.absAllNumRunes)
+	for i:=0; i < lenAllNumRunes; i++ {
 
-	absBigInt, isOk := bigZero.SetString(strAbsAllRunes, 10)
-
-	if !isOk {
-		s := fmt.Sprintf(ePrefix +
-			"- Conversion of nDto.absAllNumRunes to *big.Int Failed!. " +
-			"nDto.absAllNumRunes= '%v'", strAbsAllRunes)
-		return big.NewInt(0), errors.New(s)
+		absBigInt = big.NewInt(0).Mul(absBigInt, base10)
+		absBigInt = big.NewInt(0).Add(absBigInt,
+											big.NewInt( int64(nDto.absAllNumRunes[i] - 48)))
 
 	}
 
@@ -1323,15 +1322,6 @@ func (nDto *NumStrDto) GetBigInt() (*big.Int, error) {
 			fmt.Errorf(ePrefix + "NumStrDto is INVALID! Error='%v' ", err.Error())
 	}
 
-
-	if  len(nDto.absAllNumRunes) == 0  {
-		s := ePrefix +
-			" - The existing NumStrDto has a zero length number. " +
-			"Re-initialize this NumStrDto object and try again."
-		return big.NewInt(0), errors.New(s)
-
-	}
-
 	absBigInt, err := nDto.GetAbsoluteBigInt()
 
 	if err != nil {
@@ -1340,8 +1330,7 @@ func (nDto *NumStrDto) GetBigInt() (*big.Int, error) {
 	}
 
 	if nDto.signVal < 0 {
-		signedBigInt := big.NewInt(0).Neg(absBigInt)
-		return signedBigInt, nil
+		return big.NewInt(0).Neg(absBigInt), nil
 	}
 
 	return big.NewInt(0).Set(absBigInt), nil
@@ -1953,6 +1942,7 @@ func (nDto *NumStrDto) IsNumStrDtoValid(errName string) error {
 			errName, nDto.signVal)
 	}
 
+	/*
 	checkNumStrOut := ""
 
 	if nDto.signVal < 0 {
@@ -1969,6 +1959,7 @@ func (nDto *NumStrDto) IsNumStrDtoValid(errName string) error {
 	if checkNumStrOut != nDto.numStr {
 		return fmt.Errorf("%v - nDto.numStrDto is incorrect!.", errName)
 	}
+	*/
 
 	hasNonNumericChars := false
 	nDto.hasNumericDigits = false
@@ -2427,6 +2418,91 @@ func (nDto NumStrDto) NewPtr() *NumStrDto {
 	n := NumStrDto{}
 	n.Empty()
 	return &n
+}
+
+// ParseBigIntNum - Receives a BigIntNum instance and coverts it to a NumStrDto
+// instance which is returned to the calling function.
+func (nDto NumStrDto) ParseBigIntNum(biNum BigIntNum) (NumStrDto, error) {
+	ePrefix := "NumStrDto.ParseBigIntNum() "
+
+	nDto.SetEmptySeparatorsToDefault()
+
+	n2Dto := NumStrDto{}.New()
+
+	n2Dto.SetCurrencySymbol(biNum.GetCurrencySymbol())
+	n2Dto.SetDecimalSeparator(biNum.GetDecimalSeparator())
+	n2Dto.SetThousandsSeparator(biNum.GetThousandsSeparator())
+	n2Dto.SetSignValue(biNum.GetSign())
+	n2Dto.precision = biNum.GetPrecisionUint()
+	n2Dto.hasNumericDigits = true
+
+	if n2Dto.precision > 0 {
+		n2Dto.isFractionalValue = true
+	}
+
+	scratchNum := big.NewInt(0).Set(biNum.bigInt)
+
+	if n2Dto.signVal < 0 {
+		scratchNum.Neg(scratchNum)
+	}
+
+	bigZero := big.NewInt(0)
+	bigTen  := big.NewInt(int64(10))
+	modulo := big.NewInt(0)
+	n2Dto.absAllNumRunes = make([]rune, 0, 100)
+
+	if scratchNum.Cmp(bigZero) == 0 {
+
+		n2Dto.absAllNumRunes = append(n2Dto.absAllNumRunes, '0')
+		n2Dto.precision = 0
+
+	} else {
+
+		for scratchNum.Cmp(bigZero) == 1 {
+
+				modulo = big.NewInt(0).Rem(scratchNum, bigTen)
+				scratchNum = big.NewInt(0).Quo(scratchNum,bigTen)
+			  n2Dto.absAllNumRunes = append(n2Dto.absAllNumRunes, rune(modulo.Int64() + int64(48)))
+		}
+	}
+
+	lenAllNumRunes := len(n2Dto.absAllNumRunes)
+
+	if int(n2Dto.precision) >= lenAllNumRunes   {
+
+		deltaNumRunes := int(n2Dto.precision) - lenAllNumRunes + 1
+
+		for k:=0; k < deltaNumRunes; k++ {
+			n2Dto.absAllNumRunes  =  append(n2Dto.absAllNumRunes, '0')
+			lenAllNumRunes++
+		}
+
+	}
+
+	tRune := rune(0)
+
+	if lenAllNumRunes > 1 {
+		xLen := lenAllNumRunes - 1
+		yCnt := 0
+		for i:= xLen; i > xLen/2 ; i-- {
+				tRune = n2Dto.absAllNumRunes[yCnt]
+				n2Dto.absAllNumRunes[yCnt] = n2Dto.absAllNumRunes[i]
+				n2Dto.absAllNumRunes[i] = tRune
+				yCnt++
+		}
+	}
+
+
+	err := n2Dto.IsNumStrDtoValid("")
+
+	if err != nil {
+		return NumStrDto{}.New(),
+		fmt.Errorf(ePrefix +
+			"NumStrDto INVALID! Error='%v'",
+			err.Error())
+	}
+
+	return n2Dto, nil
 }
 
 // ParseSignedBigInt - receives a signed *Big Int number and precision parameter. It then
@@ -3420,10 +3496,6 @@ func (nDto *NumStrDto) SetSignValue(newSignVal int) error {
 
 	ePrefix := "NumStrDto.SetSignValue() "
 
-	if err := nDto.IsNumStrDtoValid(ePrefix + "- "); err != nil {
-		return err
-	}
-
 	if newSignVal != -1 && newSignVal != 1 {
 		return fmt.Errorf(ePrefix +
 			"Invalid sign value passed. sign must be +1 or -1. " +
@@ -3432,7 +3504,7 @@ func (nDto *NumStrDto) SetSignValue(newSignVal int) error {
 
 	nDto.signVal = newSignVal
 
-	return nDto.ResetNumStr()
+	return nil
 }
 
 // ResetNumStr - Re-creates the NumStrOut field using

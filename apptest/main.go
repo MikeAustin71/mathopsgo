@@ -9,7 +9,31 @@ import (
 
 func main() {
 
-	ExampleRoundPrecision_01()
+	ExampleNumStrDtoBigIntNumParse_01()
+
+}
+
+func ExampleNumStrDtoBigIntNumParse_01() {
+	num1Str := "-1.001234567890123"
+
+	bNum1, err := mathops.BigIntNum{}.NewNumStr(num1Str)
+
+	if err != nil {
+		fmt.Printf("Error returned by BigIntNum{}.NewNumStr(num1Str). Error='%v' ",
+			err.Error())
+		return
+	}
+
+	nDto2, err :=  mathops.NumStrDto{}.ParseBigIntNum(bNum1)
+	if err != nil {
+		fmt.Printf("Error returned by nDto.ParseBigIntNum(bNum1). Error='%v' ",
+			err.Error())
+		return
+	}
+
+
+	fmt.Println("Original NumStr: ", num1Str)
+	fmt.Println("   nDto2 NumStr: ", nDto2.GetNumStr())
 
 }
 
