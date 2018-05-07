@@ -2422,6 +2422,7 @@ func (nDto NumStrDto) NewPtr() *NumStrDto {
 
 // ParseBigIntNum - Receives a BigIntNum instance and coverts it to a NumStrDto
 // instance which is returned to the calling function.
+//
 func (nDto NumStrDto) ParseBigIntNum(biNum BigIntNum) (NumStrDto, error) {
 	ePrefix := "NumStrDto.ParseBigIntNum() "
 
@@ -2491,7 +2492,6 @@ func (nDto NumStrDto) ParseBigIntNum(biNum BigIntNum) (NumStrDto, error) {
 				yCnt++
 		}
 	}
-
 
 	err := n2Dto.IsNumStrDtoValid("")
 
