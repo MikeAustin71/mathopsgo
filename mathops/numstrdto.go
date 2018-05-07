@@ -1882,10 +1882,6 @@ func (nDto *NumStrDto) IsNumStrDtoValid(errName string) error {
 		errName = "NumStrDto.IsNumStrDtoValid() "
 	}
 
-	if len(nDto.absAllNumRunes) == 0 {
-		nDto.Empty()
-	}
-
 	// Set defaults for thousands separators,
 	// decimal separators and currency Symbols
 	if nDto.thousandsSeparator == 0 {
@@ -1901,40 +1897,20 @@ func (nDto *NumStrDto) IsNumStrDtoValid(errName string) error {
 	}
 
 	nDto.isValid = false
+	nDto.isFractionalValue = false
+	nDto.hasNumericDigits = false
+
 
 	lenAbsAllNumRunes := len(nDto.absAllNumRunes)
-	lenAbsFracRunes := nDto.GetAbsFracRunesLength()
-	lenAbsIntRunes := nDto.GetAbsIntRunesLength()
 
-
-	if lenAbsAllNumRunes > 0 {
-		nDto.hasNumericDigits = true
+	if int(nDto.precision) >= lenAbsAllNumRunes {
+		return errors.New(errName +
+			"- Error: precision does match number string. Type is Corrupted!")
 	}
 
-	if lenAbsFracRunes > 0 {
-		nDto.isFractionalValue = true
-	}
-
-	// Validate n2Dto object
-	if lenAbsAllNumRunes != lenAbsIntRunes+lenAbsFracRunes {
-
-		s1 := string(nDto.absAllNumRunes)
-		s2 := string(nDto.GetAbsIntRunes())
-		s3 := string(nDto.GetAbsFracRunes())
-
-		return fmt.Errorf("%v - Length of Int Runes + Frac Runes " +
-				"does NOT equal len of All Runes. " +
-				"AllRunes= '%v' IntRunes= '%v' FracRunes= '%v' ",
-				errName, s1, s2, s3)
-	}
-
-	if lenAbsFracRunes != int(nDto.precision) {
-		return fmt.Errorf("%v - Length of Frac Runes does NOT equal precision.", errName)
-	}
-
-	if lenAbsFracRunes > 0 && lenAbsIntRunes == 0 {
-		return fmt.Errorf("%v - Length of Frac Runes 1 or greater and length of Int Runes is ZERO!.",
-						errName)
+	if lenAbsAllNumRunes == 0 {
+		return errors.New(errName +
+			"- Error: Number string is a ZERO length string!")
 	}
 
 	if nDto.signVal != 1 && nDto.signVal != -1 {
@@ -1942,62 +1918,20 @@ func (nDto *NumStrDto) IsNumStrDtoValid(errName string) error {
 			errName, nDto.signVal)
 	}
 
-	/*
-	checkNumStrOut := ""
-
-	if nDto.signVal < 0 {
-		checkNumStrOut = "-"
-	}
-
-	checkNumStrOut += string(nDto.GetAbsIntRunes())
-
-	if nDto.precision > 0 {
-		checkNumStrOut += string(nDto.decimalSeparator)
-		checkNumStrOut += string(nDto.GetAbsFracRunes())
-	}
-
-	if checkNumStrOut != nDto.numStr {
-		return fmt.Errorf("%v - nDto.numStrDto is incorrect!.", errName)
-	}
-	*/
-
-	hasNonNumericChars := false
-	nDto.hasNumericDigits = false
-
 	for i:= 0; i < lenAbsAllNumRunes; i++ {
-		if nDto.absAllNumRunes[i] >= '0' && nDto.absAllNumRunes[i] <= '9' {
-			nDto.hasNumericDigits = true
-			break
-		}
-	}
-
-	absIntRunes := nDto.GetAbsIntRunes()
-	absFracRunes := nDto.GetAbsFracRunes()
-
-	for i := 0; i < lenAbsAllNumRunes; i++ {
 
 		if nDto.absAllNumRunes[i] < '0' || nDto.absAllNumRunes[i] > '9' {
-			hasNonNumericChars = true
-			break
-		}
 
-		if i < lenAbsIntRunes &&
-			(absIntRunes[i] < '0' || absIntRunes[i] > '9') {
-			hasNonNumericChars = true
-			break
-		}
+			return errors.New(errName + "- Error: Non-Numeric character found in number string!")
 
-		if i >= lenAbsIntRunes &&
-			(absFracRunes[i - lenAbsIntRunes] < '0' || absFracRunes[i - lenAbsIntRunes] > '9') {
-			hasNonNumericChars = true
-			break
 		}
 	}
 
-	if hasNonNumericChars {
-		return fmt.Errorf("%v - This NumStrDto contains Non-Numeric Characters and is INVALID!",
-							errName)
+	if nDto.precision > 0 {
+		nDto.isFractionalValue = true
 	}
+
+	nDto.hasNumericDigits = true
 
 	nDto.isValid = true
 
