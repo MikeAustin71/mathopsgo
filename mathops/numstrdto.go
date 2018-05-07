@@ -1784,7 +1784,7 @@ func (nDto *NumStrDto) GetThousandsSeparator() rune {
 	return nDto.thousandsSeparator
 }
 
-// GetZeroNumStr - returns a new NumStrDto initialized
+// GetZeroNumStrDto - returns a new NumStrDto initialized
 // to zero value. If the parameter numFracDigits is set
 // to a value greater than zero, then an equal number of
 // zero characters will be added to the right of the
@@ -1794,7 +1794,7 @@ func (nDto *NumStrDto) GetThousandsSeparator() rune {
 //	0									"0"
 //	2									"0.00"
 //
-func (nDto *NumStrDto) GetZeroNumStr(numFracDigits uint) NumStrDto {
+func (nDto *NumStrDto) GetZeroNumStrDto(numFracDigits uint) NumStrDto {
 
 	// Set defaults for thousands separators,
 	// decimal separators and currency Symbols
@@ -2484,8 +2484,9 @@ func (nDto NumStrDto) ParseBigIntNum(biNum BigIntNum) (NumStrDto, error) {
 
 	if lenAllNumRunes > 1 {
 		xLen := lenAllNumRunes - 1
+		sortLimit := xLen / 2
 		yCnt := 0
-		for i:= xLen; i > xLen/2 ; i-- {
+		for i:= xLen; i > sortLimit ; i-- {
 				tRune = n2Dto.absAllNumRunes[yCnt]
 				n2Dto.absAllNumRunes[yCnt] = n2Dto.absAllNumRunes[i]
 				n2Dto.absAllNumRunes[i] = tRune
@@ -2521,7 +2522,7 @@ func (nDto *NumStrDto) ParseSignedBigInt(signedBigInt *big.Int, precision uint) 
 	n2Dto.SetThousandsSeparator(nDto.GetThousandsSeparator())
 
 	if signedBigInt.Cmp(bigZero) == 0 {
-		return nDto.GetZeroNumStr(precision), nil
+		return nDto.GetZeroNumStrDto(precision), nil
 	}
 
 	if precision == 0 {
@@ -2693,7 +2694,7 @@ func (nDto *NumStrDto) ParseNumStr(str string) (NumStrDto, error) {
 	lenAbsAllNumRunes := len(n2Dto.absAllNumRunes)
 
 	if lenAbsAllNumRunes == 0 {
-		nZeroNumStr := nDto.GetZeroNumStr(0)
+		nZeroNumStr := nDto.GetZeroNumStrDto(0)
 		return nZeroNumStr, nil
 	}
 
@@ -2715,7 +2716,7 @@ func (nDto *NumStrDto) ParseNumStr(str string) (NumStrDto, error) {
 	}
 
 	if isZeroVal {
-		nZeroDto := nDto.GetZeroNumStr(uint(lenAbsFracNumRunes))
+		nZeroDto := nDto.GetZeroNumStrDto(uint(lenAbsFracNumRunes))
 		return nZeroDto, nil
 	}
 
@@ -3019,7 +3020,7 @@ func (nDto *NumStrDto) ShiftPrecisionLeft(signedNumStr string, shiftPrecision ui
 
 	if nDto.IsNumStrZeroValue(&n1) {
 
-		return nDto.GetZeroNumStr(n2.precision), nil
+		return nDto.GetZeroNumStrDto(n2.precision), nil
 	}
 
 	if iTotalSpecPrecision == lenAbsAllNumRunes {
@@ -3145,7 +3146,7 @@ func (nDto *NumStrDto) ShiftPrecisionRight(signedNumStr string, precision uint) 
 
 	if nDto.IsNumStrZeroValue(&n1) {
 
-		return nDto.GetZeroNumStr(0), nil
+		return nDto.GetZeroNumStrDto(0), nil
 	}
 
 	if int(precision) > int(n1.precision) {
@@ -3564,7 +3565,7 @@ func (nDto *NumStrDto) SubtractNumStrs(n1Dto, n2Dto NumStrDto) (NumStrDto, error
 	}
 
 	if compare == 0 {
-		return nDto.GetZeroNumStr(n1NumDto.precision), nil
+		return nDto.GetZeroNumStrDto(n1NumDto.precision), nil
 	}
 
 	newSignVal := n1NumDto.signVal

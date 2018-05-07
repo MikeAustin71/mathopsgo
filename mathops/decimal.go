@@ -328,7 +328,7 @@ func (dec *Decimal) Equal(dec2 Decimal) bool {
 // Empty - Sets all values of the current Decimal's
 // fields to their 'zero' values.
 func (dec *Decimal) Empty() {
-	dec.numStrDto =  NumStrDto{}.NewPtr().GetZeroNumStr(0)
+	dec.numStrDto =  NumStrDto{}.NewPtr().GetZeroNumStrDto(0)
 	dec.numStrDto.SetSignValue(1)
 	dec.SetEmptySeparatorsToDefault()
 }
