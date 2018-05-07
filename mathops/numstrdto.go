@@ -22,8 +22,6 @@ import (
 // The NumStrDto Type implements the INumMgr interface.
 //
 type NumStrDto struct {
-	isValid            	bool			// If 'true', it signals that the NumStrDto instance has been reviewed
-																//		and validated.
 	signVal            	int				// An integer value indicating the numeric sign of this number string.
 																// 		Valid values are +1 or -1
 	absAllNumRunes     	[]rune		// An array of runes containing all the numeric digits in a number with
@@ -36,7 +34,6 @@ type NumStrDto struct {
 	thousandsSeparator 	rune			// Separates thousands in the integer number: '1,000,000,000
 	decimalSeparator   	rune			// Separates integer and fractional elements of a number. '123.456'
 	currencySymbol     	rune			// Currency symbol used in currency string displays
-	//numStr          		string
 }
 
 // Add - Adds the value of input NumStrDto to the current NumStrDto
@@ -303,7 +300,6 @@ func (nDto *NumStrDto) CopyOut() NumStrDto {
 	nOut.thousandsSeparator = nDto.thousandsSeparator
 	nOut.decimalSeparator = nDto.decimalSeparator
 	nOut.currencySymbol = nDto.currencySymbol
-	nOut.isValid = nDto.isValid
 
 	return nOut
 }
@@ -323,7 +319,6 @@ func (nDto *NumStrDto) CopyIn(nInDto NumStrDto) {
 	nDto.thousandsSeparator = nInDto.thousandsSeparator
 	nDto.decimalSeparator = nInDto.decimalSeparator
 	nDto.currencySymbol = nInDto.currencySymbol
-	nDto.isValid = nInDto.isValid
 
 }
 
@@ -416,8 +411,7 @@ func (nDto *NumStrDto) Equal(n2Dto NumStrDto) bool {
 
 	lenAbsRuneArray := len(nDto.absAllNumRunes)
 
-	if nDto.isValid != n2Dto.isValid ||
-			nDto.signVal != n2Dto.signVal ||
+	if nDto.signVal != n2Dto.signVal ||
 			lenAbsRuneArray != len(n2Dto.absAllNumRunes) ||
 			nDto.precision != n2Dto.precision ||
 			nDto.isFractionalValue != n2Dto.isFractionalValue ||
@@ -440,7 +434,6 @@ func (nDto *NumStrDto) Equal(n2Dto NumStrDto) bool {
 // Empty - Sets all the fields in the NumStrDto
 // to their initial or zero state.
 func (nDto *NumStrDto) Empty() {
-	nDto.isValid = true
 	nDto.signVal = 0
 	nDto.absAllNumRunes = []rune{}
 	nDto.precision = 0
@@ -1624,17 +1617,12 @@ func (nDto *NumStrDto) GetRationalNumber() (int, *big.Rat, error) {
 
 	ratZero := big.NewRat(0, 1)
 
-	lenAbsAllNums := len(nDto.absAllNumRunes)
-	lenAbsIntRunes := nDto.GetAbsIntRunesLength()
-	lenAbsFracRunes := nDto.GetAbsFracRunesLength()
+	err = nDto.IsNumStrDtoValid(ePrefix)
 
-	if !nDto.isValid || nDto.signVal == 0 || len(nDto.absAllNumRunes) == 0 ||
-		lenAbsAllNums != lenAbsIntRunes+lenAbsFracRunes {
-		s := ePrefix +
-			"- The existing NumStrDto is corrupted or improperly initialized. " +
-			"Re-initialize the NumStrDto object and try again."
-		return 0, ratZero, errors.New(s)
-
+	if err != nil {
+		return 0, ratZero, errors.New(ePrefix +
+			"- Error: The existing NumStrDto is corrupted or improperly initialized. " +
+			"Re-initialize the NumStrDto object and try again.")
 	}
 
 	signVal := nDto.signVal
@@ -1826,8 +1814,6 @@ func (nDto *NumStrDto) GetZeroNumStrDto(numFracDigits uint) NumStrDto {
 		n2Dto.precision = uint(numFracDigits)
 	}
 
-	n2Dto.isValid = true
-
 	return n2Dto
 }
 
@@ -1887,10 +1873,8 @@ func (nDto *NumStrDto) IsNumStrDtoValid(errName string) error {
 		nDto.currencySymbol = '$'
 	}
 
-	nDto.isValid = false
 	nDto.isFractionalValue = false
 	nDto.hasNumericDigits = false
-
 
 	lenAbsAllNumRunes := len(nDto.absAllNumRunes)
 
@@ -1924,8 +1908,6 @@ func (nDto *NumStrDto) IsNumStrDtoValid(errName string) error {
 
 	nDto.hasNumericDigits = true
 
-	nDto.isValid = true
-
 	return nil
 }
 
@@ -1944,11 +1926,10 @@ func (nDto *NumStrDto) IsValid() bool {
 	err := nDto.IsNumStrDtoValid("")
 
 	if err != nil {
-		nDto.isValid = false
+		return false
 	}
 
-	return nDto.isValid
-
+	return true
 }
 
 // IsZero - Returns true if the value of the current NumStrDto
@@ -2669,13 +2650,11 @@ func (nDto *NumStrDto) ParseNumStr(str string) (NumStrDto, error) {
 	}
 
 	// Validate n2Dto object
-	err := n2Dto.IsNumStrDtoValid(ePrefix + "- ")
+	err := n2Dto.IsNumStrDtoValid(ePrefix)
 
 	if err != nil {
 		return NumStrDto{}, err
 	}
-
-	n2Dto.isValid = true
 
 	return n2Dto, nil
 }
@@ -2975,13 +2954,11 @@ func (nDto *NumStrDto) ShiftPrecisionLeft(signedNumStr string, shiftPrecision ui
 
 	lenAbsFracRunes = n2.GetAbsFracRunesLength()
 
-	err = n2.IsNumStrDtoValid(ePrefix + "- ")
+	err = n2.IsNumStrDtoValid(ePrefix)
 
 	if err != nil {
 		return NumStrDto{}, err
 	}
-
-	n2.isValid = true
 
 	return n2, nil
 }
@@ -3090,13 +3067,11 @@ func (nDto *NumStrDto) ShiftPrecisionRight(signedNumStr string, precision uint) 
 
 	lenAbsFracRunes = n2.GetAbsFracRunesLength()
 
-	err = n2.IsNumStrDtoValid( ePrefix + "- ")
+	err = n2.IsNumStrDtoValid( ePrefix)
 
 	if err != nil {
 		return NumStrDto{}, err
 	}
-
-	n2.isValid = true
 
 	return n2, nil
 }
@@ -3327,14 +3302,12 @@ func (nDto *NumStrDto) SetPrecision(
 		n2.isFractionalValue = true
 	}
 
-	err = n2.IsNumStrDtoValid(ePrefix + "- ")
+	err = n2.IsNumStrDtoValid(ePrefix)
 
 	if err != nil {
 
 		return NumStrDto{}, err
 	}
-
-	n2.isValid = true
 
 	return n2, nil
 }
