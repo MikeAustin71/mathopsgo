@@ -991,6 +991,7 @@ func (nDto *NumStrDto) FormatNumStr(negValMode NegativeValueFmtMode) (string, er
 		if negValMode == LEADMINUSNEGVALFMTMODE {
 			outRunes[0] = '-'
 		} else {
+			// MUST BE negValMode == PARENTHESESNEGVALFMTMODE
 			outRunes[0] = '('
 		}
 
