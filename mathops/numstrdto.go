@@ -28,8 +28,6 @@ type NumStrDto struct {
 																//		no preceding plus or minus sign character. Example: 123.456 =
 																//		[]rune{'1','2','3','4','5','6'}
 	precision          	uint			// The number of digits to the right of the decimal point.
-	isFractionalValue  	bool			// If true, the number string contains fractional digits to the right
-																//		of the decimal point: 123.456
 	hasNumericDigits   	bool			// If 'false' the number string has zero length and no numeric digits
 	thousandsSeparator 	rune			// Separates thousands in the integer number: '1,000,000,000
 	decimalSeparator   	rune			// Separates integer and fractional elements of a number. '123.456'
@@ -295,7 +293,6 @@ func (nDto *NumStrDto) CopyOut() NumStrDto {
 	nOut.signVal = nDto.signVal
 	nOut.absAllNumRunes = nDto.absAllNumRunes
 	nOut.precision = nDto.precision
-	nOut.isFractionalValue = nDto.isFractionalValue
 	nOut.hasNumericDigits = nDto.hasNumericDigits
 	nOut.thousandsSeparator = nDto.thousandsSeparator
 	nOut.decimalSeparator = nDto.decimalSeparator
@@ -314,7 +311,6 @@ func (nDto *NumStrDto) CopyIn(nInDto NumStrDto) {
 	nDto.signVal = nInDto.signVal
 	nDto.absAllNumRunes = nInDto.absAllNumRunes
 	nDto.precision = nInDto.precision
-	nDto.isFractionalValue = nInDto.isFractionalValue
 	nDto.hasNumericDigits = nInDto.hasNumericDigits
 	nDto.thousandsSeparator = nInDto.thousandsSeparator
 	nDto.decimalSeparator = nInDto.decimalSeparator
@@ -414,7 +410,6 @@ func (nDto *NumStrDto) Equal(n2Dto NumStrDto) bool {
 	if nDto.signVal != n2Dto.signVal ||
 			lenAbsRuneArray != len(n2Dto.absAllNumRunes) ||
 			nDto.precision != n2Dto.precision ||
-			nDto.isFractionalValue != n2Dto.isFractionalValue ||
 			nDto.hasNumericDigits != n2Dto.hasNumericDigits ||
 			nDto.thousandsSeparator != n2Dto.thousandsSeparator ||
 			nDto.decimalSeparator != n2Dto.decimalSeparator ||
@@ -437,7 +432,6 @@ func (nDto *NumStrDto) Empty() {
 	nDto.signVal = 0
 	nDto.absAllNumRunes = []rune{}
 	nDto.precision = 0
-	nDto.isFractionalValue = false
 	nDto.hasNumericDigits = false
 
 	if nDto.thousandsSeparator == 0 {
@@ -1798,14 +1792,11 @@ func (nDto *NumStrDto) GetZeroNumStrDto(numFracDigits uint) NumStrDto {
 	n2Dto.decimalSeparator = nDto.decimalSeparator
 	n2Dto.currencySymbol = nDto.currencySymbol
 	n2Dto.signVal = 1
-	n2Dto.isFractionalValue = false
 	n2Dto.precision = 0
 	n2Dto.hasNumericDigits = true
 	n2Dto.absAllNumRunes = append(n2Dto.absAllNumRunes, '0')
 
-
 	if numFracDigits > 0 {
-		n2Dto.isFractionalValue = true
 
 		for i := uint(0); i < numFracDigits; i++ {
 			n2Dto.absAllNumRunes = append(n2Dto.absAllNumRunes, '0')
@@ -1873,7 +1864,6 @@ func (nDto *NumStrDto) IsNumStrDtoValid(errName string) error {
 		nDto.currencySymbol = '$'
 	}
 
-	nDto.isFractionalValue = false
 	nDto.hasNumericDigits = false
 
 	lenAbsAllNumRunes := len(nDto.absAllNumRunes)
@@ -1902,9 +1892,6 @@ func (nDto *NumStrDto) IsNumStrDtoValid(errName string) error {
 		}
 	}
 
-	if nDto.precision > 0 {
-		nDto.isFractionalValue = true
-	}
 
 	nDto.hasNumericDigits = true
 
@@ -1916,7 +1903,12 @@ func (nDto *NumStrDto) IsNumStrDtoValid(errName string) error {
 // the number has fractional digits to the right of the decimal
 // point.
 func (nDto *NumStrDto) IsFractionalValue() bool {
-	return nDto.isFractionalValue
+
+	if nDto.precision > 0 {
+		return true
+	}
+
+	return false
 }
 
 // IsValid - Returns 'true' if the current NumStrDto instance is in
@@ -2359,10 +2351,6 @@ func (nDto NumStrDto) ParseBigIntNum(biNum BigIntNum) (NumStrDto, error) {
 	n2Dto.precision = biNum.GetPrecisionUint()
 	n2Dto.hasNumericDigits = true
 
-	if n2Dto.precision > 0 {
-		n2Dto.isFractionalValue = true
-	}
-
 	scratchNum := big.NewInt(0).Set(biNum.bigInt)
 
 	if n2Dto.signVal < 0 {
@@ -2443,11 +2431,6 @@ func (nDto NumStrDto) ParseSignedBigInt(signedBigInt *big.Int, precision uint) (
 	n2Dto.SetThousandsSeparator(nDto.GetThousandsSeparator())
 	n2Dto.precision = precision
 	n2Dto.hasNumericDigits = true
-
-	if n2Dto.precision > 0 {
-		n2Dto.isFractionalValue = true
-	}
-
 	scratchNum := big.NewInt(0).Set(signedBigInt)
 	bigZero := big.NewInt(0)
 	n2Dto.signVal = 1
@@ -2541,6 +2524,7 @@ func (nDto *NumStrDto) ParseNumStr(str string) (NumStrDto, error) {
 	isEndRunes := false
 	lCurRunes := len(NumStrCurrencySymbols)
 	isSkip := false
+	isFractionalValue := false
 
 	var absFracRunes []rune
 	var absIntRunes []rune
@@ -2581,7 +2565,7 @@ func (nDto *NumStrDto) ParseNumStr(str string) (NumStrDto, error) {
 			isStartRunes = true
 			n2Dto.hasNumericDigits = true
 
-			if n2Dto.isFractionalValue {
+			if isFractionalValue {
 				absFracRunes = append(absFracRunes, baseRunes[i])
 			} else {
 				absIntRunes = append(absIntRunes, baseRunes[i])
@@ -2592,7 +2576,7 @@ func (nDto *NumStrDto) ParseNumStr(str string) (NumStrDto, error) {
 			baseRunes[i+1] >= '0' && baseRunes[i+1] <= '9' &&
 			(baseRunes[i] == '.' || baseRunes[i] == n2Dto.decimalSeparator) {
 
-			n2Dto.isFractionalValue = true
+			isFractionalValue = true
 			continue
 
 		} else if isStartRunes && !isEndRunes {
@@ -2630,7 +2614,7 @@ func (nDto *NumStrDto) ParseNumStr(str string) (NumStrDto, error) {
 		return nZeroDto, nil
 	}
 
-	if n2Dto.isFractionalValue {
+	if isFractionalValue {
 		n2Dto.precision = uint(len(absFracRunes))
 	}
 
@@ -3296,10 +3280,6 @@ func (nDto *NumStrDto) SetPrecision(
 				n2AbsFracRunes = append(n2AbsFracRunes, '0')
 			}
 		}
-	}
-
-	if n2.precision > 0 {
-		n2.isFractionalValue = true
 	}
 
 	err = n2.IsNumStrDtoValid(ePrefix)
