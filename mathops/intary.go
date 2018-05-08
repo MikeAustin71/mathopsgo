@@ -4757,23 +4757,15 @@ func (ia *IntAry) SetIntAryWithNumStrMaxPrecision(str string, maxPrecision int) 
 // values.
 func (ia *IntAry) SetIntAryWithNumStr(str string) error {
 
+	ePrefix := "IntAry.SetIntAryWithNumStr() "
+
 	if len(str) == 0 {
-		return errors.New("SetIntAryWithNumStr() received zero length number string")
+		return errors.New(ePrefix + "Error: received zero length number string")
 	}
 
 	ia.Empty()
 
-	if ia.decimalSeparator == 0 {
-		ia.decimalSeparator = '.'
-	}
-
-	if ia.thousandsSeparator == 0 {
-		ia.thousandsSeparator = ','
-	}
-
-	if ia.currencySymbol == 0 {
-		ia.currencySymbol = '$'
-	}
+	ia.setDefaultSeparators()
 
 	ia.signVal = 1
 	baseRunes := []rune(str)
@@ -4850,7 +4842,7 @@ func (ia *IntAry) SetIntAryWithNumStr(str string) error {
 
 
 	// Validate intAry object
-	err := ia.IsIntAryValid("SetIntAryWithNumStr() - ")
+	err := ia.IsIntAryValid(ePrefix + "- ")
 
 	if err != nil {
 		return err
@@ -5307,4 +5299,24 @@ func (ia *IntAry) SubtractMultipleFromThis(iaMany ...*IntAry) error {
 	}
 
 	return nil
+}
+
+// Sets the default values for data fields decimalSeparator, thousandsSeparator
+// and currencySymbol.  If these values have not been previously set, they are
+// initialized to USA standard values.
+//
+func (ia *IntAry) setDefaultSeparators() {
+
+	if ia.decimalSeparator == 0 {
+		ia.decimalSeparator = '.'
+	}
+
+	if ia.thousandsSeparator == 0 {
+		ia.thousandsSeparator = ','
+	}
+
+	if ia.currencySymbol == 0 {
+		ia.currencySymbol = '$'
+	}
+
 }

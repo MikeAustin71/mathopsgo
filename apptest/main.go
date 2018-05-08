@@ -9,7 +9,31 @@ import (
 
 func main() {
 
-	ExampleNumStrDtoBigIntParse_02()
+	num1Str := "0.000"
+
+	ExampleBigIntNumString_01(num1Str)
+
+}
+
+func ExampleBigIntNumString_01(num1Str string) {
+
+
+
+	bINum := mathops.BigIntNum{}
+
+	fmt.Println("original numstr: ", num1Str)
+
+	err := bINum.SetNumStr(num1Str)
+
+	if err != nil {
+		fmt.Printf("Error returned by bINum.SetNumStr(num1Str). Error='%v' ",
+			err.Error())
+
+		return
+	}
+
+
+	fmt.Println("  actual numStr: ", bINum.GetNumStr())
 
 }
 

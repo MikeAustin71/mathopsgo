@@ -4,6 +4,7 @@ import (
 	"math/big"
 	"fmt"
 	"strconv"
+	"errors"
 )
 
 // BigIntNum - wraps a *big.Int integer and its associated
@@ -938,25 +939,15 @@ func (bNum BigIntNum) NewNumStr(numStr string) (BigIntNum, error) {
 
 	ePrefix := "BigIntNum.NewNumStr() "
 
-	nDto, err := NumStrDto{}.NewNumStr(numStr)
-
-	if err != nil {
-		return BigIntNum{},
-			fmt.Errorf(ePrefix + "Error returned by NumStrDto{}.NewNumStr(numStr). " +
-				"numStr='%v' Error='%v'", numStr, err.Error())
-	}
-
-	bigI, err := nDto.GetBigInt()
-
-	if err != nil {
-		return BigIntNum{},
-			fmt.Errorf(ePrefix + "Error returned by nDto.GetBigInt(). " +
-				"Error='%v'", err.Error())
-	}
-
 	b := BigIntNum{}
-	b.Empty()
-	b.SetBigInt(bigI, uint(nDto.GetPrecision()))
+	err := b.SetNumStr(numStr)
+
+	if err != nil {
+		return BigIntNum{},
+			fmt.Errorf(ePrefix + "Error returned by b.SetNumStr(numStr). " +
+				"numStr='%v' Error='%v'",
+						numStr, err.Error())
+	}
 
 	return b, nil
 }
@@ -965,30 +956,23 @@ func (bNum BigIntNum) NewNumStr(numStr string) (BigIntNum, error) {
 // NewNumStr - Receives a number string as input and returns
 // a new BigIntNum instance.
 //
-func (bNum BigIntNum) NewNumStrMaxPrecision(numStr string, maxPrecision uint) (BigIntNum, error) {
-
-	ePrefix := "BigIntNum.NewNumStr() "
-
-	nDto, err := NumStrDto{}.NewNumStr(numStr)
-
-	if err != nil {
-		return BigIntNum{},
-			fmt.Errorf(ePrefix + "Error returned by NumStrDto{}.NewNumStr(numStr). " +
-				"numStr='%v' Error='%v'", numStr, err.Error())
-	}
-
-
-	bigI, err := nDto.GetBigInt()
-
-	if err != nil {
-		return BigIntNum{},
-			fmt.Errorf(ePrefix + "Error returned by nDto.GetBigInt(). " +
-				"Error='%v'", err.Error())
-	}
+func (bNum BigIntNum) NewNumStrMaxPrecision(
+													numStr string,
+															maxPrecision uint) (BigIntNum, error) {
 
 	b := BigIntNum{}
-	b.Empty()
-	b.SetBigInt(bigI, uint(nDto.GetPrecision()))
+
+	err:= b.SetNumStr(numStr)
+
+	if err != nil {
+
+		ePrefix := "BigIntNum.NewNumStr() "
+
+		return BigIntNum{},
+			fmt.Errorf(ePrefix + "Error returned by b.SetNumStr(numStr). " +
+				"numStr='%v' Error='%v' ",
+					numStr, err.Error())
+	}
 
 	if b.precision > maxPrecision {
 		b.RoundToDecPlace(maxPrecision)
@@ -1419,6 +1403,118 @@ func (bNum *BigIntNum) SetINumMgr(numMgr INumMgr) error {
 	}
 
 	bNum.SetBigInt(bigInt, numMgr.GetPrecisionUint())
+
+	return nil
+}
+
+// SetNumStr - Initializes the current BigIntNum instance
+// of the numeric value of the number string input parameter.
+// A number string is a string of numeric digits which may
+// or may not be prefixed with a minus sign ('-'). The numeric
+// string of digits may also contain a decimal separator such
+// as a period ('.'). The decimal separator may be set by the
+// user. See Method BigIntNum.SetDecimalSeparator(). The decimal
+// separator is used to separate integer and fractional numeric
+// digits within the number string.
+//
+func (bNum *BigIntNum) SetNumStr(numStr string) error {
+
+	ePrefix := "BigIntNum) SetNumStr() "
+
+	if len(numStr) == 0 {
+		return errors.New(ePrefix + "Error: Input parameter 'numStr' is an EMPTY string!")
+	}
+
+	baseRunes := []rune(numStr)
+	lBaseRunes := len(baseRunes)
+
+	bNum.setDefaultSeparators()
+
+	newSign := 1
+	newPrecision := uint(0)
+	newAbsBigInt := big.NewInt(0)
+	baseTen := big.NewInt(10)
+	isStartRunes := false
+	isEndRunes := false
+	isFractionalValue := false
+
+	for i := 0; i < lBaseRunes && isEndRunes == false; i++ {
+
+		if baseRunes[i] == '+' ||
+			baseRunes[i] == ' '  ||
+			baseRunes[i] == bNum.thousandsSeparator ||
+			baseRunes[i] == bNum.currencySymbol {
+
+			continue
+
+		}
+
+		if baseRunes[i] == ',' && bNum.decimalSeparator != ',' {
+			continue
+		}
+
+		if isStartRunes == true &&
+			isEndRunes == false &&
+			isFractionalValue &&
+			baseRunes[i] == bNum.decimalSeparator {
+
+			continue
+		}
+
+		if baseRunes[i] == '-' &&
+			isStartRunes == false && isEndRunes == false &&
+			i+1 < lBaseRunes &&
+			((baseRunes[i+1] >= '0' && baseRunes[i+1] <= '9') ||
+				baseRunes[i+1] == bNum.decimalSeparator) {
+
+			newSign = -1
+			isStartRunes = true
+			continue
+
+		} else if isEndRunes == false &&
+			baseRunes[i] >= '0' && baseRunes[i] <= '9' {
+
+			newAbsBigInt = big.NewInt(0).Mul(newAbsBigInt, baseTen)
+
+			newAbsBigInt = big.NewInt(0).Add(newAbsBigInt,
+					big.NewInt(int64(baseRunes[i]-48)))
+
+			isStartRunes = true
+
+			if isFractionalValue {
+				newPrecision++
+			}
+
+		} else if isEndRunes == false &&
+			i+1 < lBaseRunes &&
+			baseRunes[i+1] >= '0' && baseRunes[i+1] <= '9' &&
+			baseRunes[i] == bNum.decimalSeparator {
+
+			isFractionalValue = true
+			continue
+
+		} else if isStartRunes && !isEndRunes {
+
+			isEndRunes = true
+
+		}
+
+	}
+
+	bNum.Empty()
+	bNum.sign = newSign
+	bNum.precision = newPrecision
+	bNum.absBigInt = big.NewInt(0).Set(newAbsBigInt)
+
+	if bNum.sign == 1 {
+		bNum.bigInt = big.NewInt(0).Set(newAbsBigInt)
+	} else {
+		bNum.bigInt = big.NewInt(0).Neg(newAbsBigInt)
+	}
+
+	bNum.scaleFactor = big.NewInt(0).Exp(baseTen,
+											big.NewInt(int64(newPrecision)),
+											nil)
 
 	return nil
 }
