@@ -28,7 +28,6 @@ type NumStrDto struct {
 																//		no preceding plus or minus sign character. Example: 123.456 =
 																//		[]rune{'1','2','3','4','5','6'}
 	precision          	uint			// The number of digits to the right of the decimal point.
-	hasNumericDigits   	bool			// If 'false' the number string has zero length and no numeric digits
 	thousandsSeparator 	rune			// Separates thousands in the integer number: '1,000,000,000
 	decimalSeparator   	rune			// Separates integer and fractional elements of a number. '123.456'
 	currencySymbol     	rune			// Currency symbol used in currency string displays
@@ -293,7 +292,6 @@ func (nDto *NumStrDto) CopyOut() NumStrDto {
 	nOut.signVal = nDto.signVal
 	nOut.absAllNumRunes = nDto.absAllNumRunes
 	nOut.precision = nDto.precision
-	nOut.hasNumericDigits = nDto.hasNumericDigits
 	nOut.thousandsSeparator = nDto.thousandsSeparator
 	nOut.decimalSeparator = nDto.decimalSeparator
 	nOut.currencySymbol = nDto.currencySymbol
@@ -311,7 +309,6 @@ func (nDto *NumStrDto) CopyIn(nInDto NumStrDto) {
 	nDto.signVal = nInDto.signVal
 	nDto.absAllNumRunes = nInDto.absAllNumRunes
 	nDto.precision = nInDto.precision
-	nDto.hasNumericDigits = nInDto.hasNumericDigits
 	nDto.thousandsSeparator = nInDto.thousandsSeparator
 	nDto.decimalSeparator = nInDto.decimalSeparator
 	nDto.currencySymbol = nInDto.currencySymbol
@@ -410,7 +407,6 @@ func (nDto *NumStrDto) Equal(n2Dto NumStrDto) bool {
 	if nDto.signVal != n2Dto.signVal ||
 			lenAbsRuneArray != len(n2Dto.absAllNumRunes) ||
 			nDto.precision != n2Dto.precision ||
-			nDto.hasNumericDigits != n2Dto.hasNumericDigits ||
 			nDto.thousandsSeparator != n2Dto.thousandsSeparator ||
 			nDto.decimalSeparator != n2Dto.decimalSeparator ||
 			nDto.currencySymbol != n2Dto.currencySymbol {
@@ -432,7 +428,6 @@ func (nDto *NumStrDto) Empty() {
 	nDto.signVal = 0
 	nDto.absAllNumRunes = []rune{}
 	nDto.precision = 0
-	nDto.hasNumericDigits = false
 
 	if nDto.thousandsSeparator == 0 {
 		nDto.thousandsSeparator = ','
@@ -1793,7 +1788,6 @@ func (nDto *NumStrDto) GetZeroNumStrDto(numFracDigits uint) NumStrDto {
 	n2Dto.currencySymbol = nDto.currencySymbol
 	n2Dto.signVal = 1
 	n2Dto.precision = 0
-	n2Dto.hasNumericDigits = true
 	n2Dto.absAllNumRunes = append(n2Dto.absAllNumRunes, '0')
 
 	if numFracDigits > 0 {
@@ -1817,7 +1811,14 @@ func (nDto *NumStrDto) GetZeroNumStrDto(numFracDigits uint) NumStrDto {
 // least one numeric digit in the number string, even if that
 // digit is zero.
 func (nDto *NumStrDto) HasNumericDigits() bool {
-	return nDto.hasNumericDigits
+
+	err := nDto.IsNumStrDtoValid("NumStrDto.HasNumericDigits() ")
+
+	if err != nil {
+		return false
+	}
+
+	return true
 }
 
 
@@ -1864,18 +1865,16 @@ func (nDto *NumStrDto) IsNumStrDtoValid(errName string) error {
 		nDto.currencySymbol = '$'
 	}
 
-	nDto.hasNumericDigits = false
-
 	lenAbsAllNumRunes := len(nDto.absAllNumRunes)
-
-	if int(nDto.precision) >= lenAbsAllNumRunes {
-		return errors.New(errName +
-			"- Error: precision does match number string. Type is Corrupted!")
-	}
 
 	if lenAbsAllNumRunes == 0 {
 		return errors.New(errName +
 			"- Error: Number string is a ZERO length string!")
+	}
+
+	if int(nDto.precision) >= lenAbsAllNumRunes {
+		return errors.New(errName +
+			"- Error: precision does match number string. Type is Corrupted!")
 	}
 
 	if nDto.signVal != 1 && nDto.signVal != -1 {
@@ -1891,9 +1890,6 @@ func (nDto *NumStrDto) IsNumStrDtoValid(errName string) error {
 
 		}
 	}
-
-
-	nDto.hasNumericDigits = true
 
 	return nil
 }
@@ -2349,7 +2345,6 @@ func (nDto NumStrDto) ParseBigIntNum(biNum BigIntNum) (NumStrDto, error) {
 	n2Dto.SetThousandsSeparator(biNum.GetThousandsSeparator())
 	n2Dto.SetSignValue(biNum.GetSign())
 	n2Dto.precision = biNum.GetPrecisionUint()
-	n2Dto.hasNumericDigits = true
 
 	scratchNum := big.NewInt(0).Set(biNum.bigInt)
 
@@ -2430,7 +2425,6 @@ func (nDto NumStrDto) ParseSignedBigInt(signedBigInt *big.Int, precision uint) (
 	n2Dto.SetDecimalSeparator(nDto.GetDecimalSeparator())
 	n2Dto.SetThousandsSeparator(nDto.GetThousandsSeparator())
 	n2Dto.precision = precision
-	n2Dto.hasNumericDigits = true
 	scratchNum := big.NewInt(0).Set(signedBigInt)
 	bigZero := big.NewInt(0)
 	n2Dto.signVal = 1
@@ -2563,7 +2557,6 @@ func (nDto *NumStrDto) ParseNumStr(str string) (NumStrDto, error) {
 
 			n2Dto.absAllNumRunes = append(n2Dto.absAllNumRunes, baseRunes[i])
 			isStartRunes = true
-			n2Dto.hasNumericDigits = true
 
 			if isFractionalValue {
 				absFracRunes = append(absFracRunes, baseRunes[i])
@@ -3191,7 +3184,6 @@ func (nDto *NumStrDto) SetPrecision(
 	n2.thousandsSeparator = nDto.thousandsSeparator
 	n2.decimalSeparator = nDto.decimalSeparator
 	n2.currencySymbol = nDto.currencySymbol
-	n2.hasNumericDigits = true
 	n2AbsIntRunes := n2.GetAbsIntRunes()
 	n2AbsFracRunes := n2.GetAbsFracRunes()
 
