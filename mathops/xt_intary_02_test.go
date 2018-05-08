@@ -9,7 +9,7 @@ func TestIntAry_AddIntToThis_01(t *testing.T) {
 	ia1, _ := IntAry{}.NewNumStr("25")
 
 	num := 50
-	precision := uint(0)
+	precision := 0
 	expected := "75"
 
 	err := ia1.AddIntToThis(num, precision)
@@ -30,7 +30,7 @@ func TestIntAry_AddIntToThis_02(t *testing.T) {
 	ia1, _ := IntAry{}.NewNumStr("100")
 
 	num := -25
-	precision := uint(0)
+	precision := 0
 
 	err := ia1.AddIntToThis(num, precision)
 
@@ -51,7 +51,7 @@ func TestIntAry_AddIntToThis_03(t *testing.T) {
 	ia1, _ := IntAry{}.NewNumStr("-100")
 
 	num := -25
-	precision := uint(0)
+	precision := 0
 
 	err := ia1.AddIntToThis(num, precision)
 
@@ -67,8 +67,9 @@ func TestIntAry_AddIntToThis_03(t *testing.T) {
 		t.Errorf("Expected result='%v'. Instead, result='%v' ",expected, result)
 	}
 
-	if uint(ia1.GetPrecision()) != precision {
-		t.Errorf("Expected ia1.GetPrecision= '%v'.  Instead, ia1.GetPrecision='%v' ", precision, ia1.GetPrecision())
+	if ia1.GetPrecision() != precision {
+		t.Errorf("Expected ia1.GetPrecision= '%v'.  Instead, ia1.GetPrecision='%v' ",
+			precision, ia1.GetPrecision())
 	}
 }
 
@@ -76,7 +77,7 @@ func TestIntAry_AddIntToThis_04(t *testing.T) {
 	ia1, _ := IntAry{}.NewNumStr("25.75")
 
 	num := 5050
-	precision := uint(2)
+	precision := 2
 	expected := "76.25"
 
 	err := ia1.AddIntToThis(num, precision)
@@ -97,7 +98,7 @@ func TestIntAry_AddIntToThis_05(t *testing.T) {
 	ia1, _ := IntAry{}.NewNumStr("100.925")
 
 	num := -25967
-	precision := uint(3)
+	precision := 3
 
 	err := ia1.AddIntToThis(num, precision)
 
@@ -113,7 +114,7 @@ func TestIntAry_AddIntToThis_05(t *testing.T) {
 		t.Errorf("Error: Expected result='%v'. Instead, result='%v' ",expected, result)
 	}
 
-	if precision != uint(ia1.GetPrecision()) {
+	if precision != ia1.GetPrecision() {
 		t.Errorf("Error: Expected precision='%v'.  Instead precision='%v'", precision, ia1.GetPrecision())
 	}
 
@@ -123,7 +124,7 @@ func TestIntAry_AddIntToThis_06(t *testing.T) {
 	ia1, _ := IntAry{}.NewNumStr("-100.35842")
 
 	num := -1256984
-	precision := uint(4)
+	precision := 4
 	outPrecision := 5
 
 	err := ia1.AddIntToThis(num, precision)
@@ -149,7 +150,7 @@ func TestIntAry_AddIntToThis_07(t *testing.T) {
 	ia1, _ := IntAry{}.NewNumStr("0")
 
 	num := 0
-	precision := uint(0)
+	precision := 0
 	outPrecision := 0
 
 	err := ia1.AddIntToThis(num, precision)
@@ -175,7 +176,7 @@ func TestIntAry_AddIntToThis_08(t *testing.T) {
 	ia1, _ := IntAry{}.NewNumStr("0.00")
 
 	num := 000
-	precision := uint(2)
+	precision := 2
 	outPrecision := 2
 
 	err := ia1.AddIntToThis(num, precision)
@@ -201,7 +202,7 @@ func TestIntAry_AddInt64ToThis_01(t *testing.T) {
 	ia1, _ := IntAry{}.NewNumStr("25")
 
 	num := int64(50)
-	precision := uint(0)
+	precision := 0
 	expected := "75"
 
 	err := ia1.AddInt64ToThis(num, precision)
@@ -222,7 +223,7 @@ func TestIntAry_AddInt64ToThis_02(t *testing.T) {
 	ia1, _ := IntAry{}.NewNumStr("100")
 
 	num := int64(-25)
-	precision := uint(0)
+	precision := 0
 
 	err := ia1.AddInt64ToThis(num, precision)
 
@@ -243,7 +244,7 @@ func TestIntAry_AddInt64ToThis_03(t *testing.T) {
 	ia1, _ := IntAry{}.NewNumStr("-100")
 
 	num := int64(-25)
-	precision := uint(0)
+	precision := 0
 
 	err := ia1.AddInt64ToThis(num, precision)
 
@@ -259,7 +260,7 @@ func TestIntAry_AddInt64ToThis_03(t *testing.T) {
 		t.Errorf("Expected result='%v'. Instead, result='%v' ",expected, result)
 	}
 
-	if uint(ia1.GetPrecision()) != precision {
+	if ia1.GetPrecision() != precision {
 		t.Errorf("Expected ia1.GetPrecision= '%v'.  Instead, ia1.GetPrecision='%v' ", precision, ia1.GetPrecision())
 	}
 }
@@ -268,7 +269,7 @@ func TestIntAry_AddInt64ToThis_04(t *testing.T) {
 	ia1, _ := IntAry{}.NewNumStr("25.75")
 
 	num := int64(5050)
-	precision := uint(2)
+	precision := 2
 	expected := "76.25"
 
 	err := ia1.AddInt64ToThis(num, precision)
@@ -289,7 +290,7 @@ func TestIntAry_AddInt64ToThis_05(t *testing.T) {
 	ia1, _ := IntAry{}.NewNumStr("100.925")
 
 	num := int64(-25967)
-	precision := uint(3)
+	precision := 3
 
 	err := ia1.AddInt64ToThis(num, precision)
 
@@ -305,7 +306,7 @@ func TestIntAry_AddInt64ToThis_05(t *testing.T) {
 		t.Errorf("Error: Expected result='%v'. Instead, result='%v' ",expected, result)
 	}
 
-	if precision != uint(ia1.GetPrecision()) {
+	if precision != ia1.GetPrecision() {
 		t.Errorf("Error: Expected precision='%v'.  Instead precision='%v'", precision, ia1.GetPrecision())
 	}
 
@@ -315,7 +316,7 @@ func TestIntAry_AddInt64ToThis_06(t *testing.T) {
 	ia1, _ := IntAry{}.NewNumStr("-100.35842")
 
 	num := int64(-1256984)
-	precision := uint(4)
+	precision := 4
 	outPrecision := 5
 
 	err := ia1.AddInt64ToThis(num, precision)
@@ -341,7 +342,7 @@ func TestIntAry_AddInt64ToThis_07(t *testing.T) {
 	ia1, _ := IntAry{}.NewNumStr("0")
 
 	num := int64(0)
-	precision := uint(0)
+	precision := 0
 	outPrecision := 0
 
 	err := ia1.AddInt64ToThis(num, precision)
@@ -367,7 +368,7 @@ func TestIntAry_AddInt64ToThis_08(t *testing.T) {
 	ia1, _ := IntAry{}.NewNumStr("0.00")
 
 	num := int64(000)
-	precision := uint(2)
+	precision := 2
 	outPrecision := 2
 
 	err := ia1.AddInt64ToThis(num, precision)
@@ -393,7 +394,7 @@ func TestIntAry_AddBigIntToThis_01(t *testing.T) {
 	ia1, _ := IntAry{}.NewNumStr("25")
 
 	num := big.NewInt(50)
-	precision := uint(0)
+	precision := 0
 	expected := "75"
 
 	err := ia1.AddBigIntToThis(num, precision)
@@ -414,7 +415,7 @@ func TestIntAry_AddBigIntToThis_02(t *testing.T) {
 	ia1, _ := IntAry{}.NewNumStr("100")
 
 	num := big.NewInt(-25)
-	precision := uint(0)
+	precision := 0
 
 	err := ia1.AddBigIntToThis(num, precision)
 
@@ -435,7 +436,7 @@ func TestIntAry_AddBigIntToThis_03(t *testing.T) {
 	ia1, _ := IntAry{}.NewNumStr("-100")
 
 	num := big.NewInt(-25)
-	precision := uint(0)
+	precision := 0
 
 	err := ia1.AddBigIntToThis(num, precision)
 
@@ -451,7 +452,7 @@ func TestIntAry_AddBigIntToThis_03(t *testing.T) {
 		t.Errorf("Expected result='%v'. Instead, result='%v' ",expected, result)
 	}
 
-	if uint(ia1.GetPrecision()) != precision {
+	if ia1.GetPrecision() != precision {
 		t.Errorf("Expected ia1.GetPrecision= '%v'.  Instead, ia1.GetPrecision='%v' ", precision, ia1.GetPrecision())
 	}
 }
@@ -460,7 +461,7 @@ func TestIntAry_AddBigIntToThis_04(t *testing.T) {
 	ia1, _ := IntAry{}.NewNumStr("25.75")
 
 	num := big.NewInt(5050)
-	precision := uint(2)
+	precision := 2
 	expected := "76.25"
 
 	err := ia1.AddBigIntToThis(num, precision)
@@ -481,7 +482,7 @@ func TestIntAry_AddBigIntToThis_05(t *testing.T) {
 	ia1, _ := IntAry{}.NewNumStr("100.925")
 
 	num := big.NewInt(-25967)
-	precision := uint(3)
+	precision := 3
 
 	err := ia1.AddBigIntToThis(num, precision)
 
@@ -497,7 +498,7 @@ func TestIntAry_AddBigIntToThis_05(t *testing.T) {
 		t.Errorf("Error: Expected result='%v'. Instead, result='%v' ",expected, result)
 	}
 
-	if precision != uint(ia1.GetPrecision()) {
+	if precision != ia1.GetPrecision() {
 		t.Errorf("Error: Expected precision='%v'.  Instead precision='%v'", precision, ia1.GetPrecision())
 	}
 
@@ -507,7 +508,7 @@ func TestIntAry_AddBigIntToThis_06(t *testing.T) {
 	ia1, _ := IntAry{}.NewNumStr("-100.35842")
 
 	num := big.NewInt(-1256984)
-	precision := uint(4)
+	precision := 4
 	outPrecision := 5
 
 	err := ia1.AddBigIntToThis(num, precision)
@@ -533,7 +534,7 @@ func TestIntAry_AddBigIntToThis_07(t *testing.T) {
 	ia1, _ := IntAry{}.NewNumStr("0")
 
 	num := big.NewInt(0)
-	precision := uint(0)
+	precision := 0
 	outPrecision := 0
 
 	err := ia1.AddBigIntToThis(num, precision)
@@ -559,7 +560,7 @@ func TestIntAry_AddBigIntToThis_08(t *testing.T) {
 	ia1, _ := IntAry{}.NewNumStr("0.00")
 
 	num := big.NewInt(000)
-	precision := uint(2)
+	precision := 2
 	outPrecision := 2
 
 	err := ia1.AddBigIntToThis(num, precision)

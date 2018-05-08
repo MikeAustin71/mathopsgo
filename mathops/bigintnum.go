@@ -366,7 +366,7 @@ func (bNum *BigIntNum) GetIntAry() (IntAry, error) {
 
 	ePrefix := "BigIntNum.GetIntAry() "
 
-	ia, err := IntAry{}.NewBigInt(big.NewInt(0).Set(bNum.bigInt), bNum.precision)
+	ia, err := IntAry{}.NewBigInt(big.NewInt(0).Set(bNum.bigInt), int(bNum.precision))
 
 	if err != nil {
 		return IntAry{},
@@ -597,11 +597,14 @@ func (bNum BigIntNum) New() BigIntNum {
 //									value of the number; that is, the numeric value with
 //									out decimal digits.
 //
-// precision uint	- This unsigned integer (always a positive value) identifies
+// precision int	- This unsigned integer (always a positive value) identifies
 // 									the location of the decimal point in the integer value 'bigI'.
 // 									The decimal point location is calculated by starting with the
 // 									right most digit in the integer number and counting	left,
-// 									'precision' places. Example:
+// 									'precision' places.
+//
+// 									Example:
+//
 //											Integer Value		precision			Numeric Value
 //											  123456					 3					  123.456
 //

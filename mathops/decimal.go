@@ -726,7 +726,7 @@ func (dec *Decimal) GetIntAry() (IntAry, error) {
 	
 	decPrecision := dec.numStrDto.GetPrecision()
 	
-	ia, err := IntAry{}.NewBigInt(decSignedAllDigitsBigInt, uint(decPrecision))
+	ia, err := IntAry{}.NewBigInt(decSignedAllDigitsBigInt, decPrecision)
 
 	if err != nil {
 		return IntAry{}.New(),

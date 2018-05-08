@@ -181,7 +181,7 @@ func (nthrt *NthRootOp) GetNthRootInt(num int, precision, nthRoot, maxPrecision 
 
 	ai := IntAry{}.New()
 
-	err := ai.SetIntAryWithInt(num, precision)
+	err := ai.SetIntAryWithInt(num, int(precision))
 
 	if err != nil {
 		return IntAry{}.New(), fmt.Errorf("NthRootOp.GetNthRootIn() - Error ai.SetIntAryWithInt32(num, precision) num= %v, precision=%v Error= %v ", num, precision, err)
@@ -210,7 +210,7 @@ func (nthrt *NthRootOp) GetNthRootInt64(num int64, precision, nthRoot, maxPrecis
 
 	ai := IntAry{}.New()
 
-	err := ai.SetIntAryWithInt64(num, precision)
+	err := ai.SetIntAryWithInt64(num, int(precision))
 
 	if err != nil {
 		return IntAry{}.New(), fmt.Errorf("NthRootOp.GetNthRootInt64() - Error ai.SetIntAryWithInt32(num, precision) num= %v, precision=%v Error= %v ", num, precision, err)
@@ -238,7 +238,7 @@ func (nthrt *NthRootOp) GetNthRootInt64(num int64, precision, nthRoot, maxPrecis
 func (nthrt *NthRootOp) GetNthRootBigInt(num *big.Int, precision, nthRoot, maxPrecision uint) (IntAry, error) {
 	ai := IntAry{}.New()
 
-	err := ai.SetIntAryWithBigInt(num, precision)
+	err := ai.SetIntAryWithBigInt(num, int(precision))
 
 	if err != nil {
 		return IntAry{}.New(), fmt.Errorf("NthRootOp.GetNthRootBigInt() - Error ai.SetIntAryWithBigInt(num, precision) num= %v, precision=%v Error= %v ", num, precision, err)
@@ -363,7 +363,7 @@ func (nthrt *NthRootOp) GetSquareRootBigFloat(num *big.Float, maxPrecision uint)
 func (nthrt *NthRootOp) GetSquareRootInt(num int, precision, maxPrecision uint) (IntAry, error) {
 	ai := IntAry{}.New()
 
-	err := ai.SetIntAryWithInt(num, precision)
+	err := ai.SetIntAryWithInt(num, int(precision))
 
 	if err != nil {
 		return IntAry{}.New(), fmt.Errorf("NthRootOp.GetSquareRootInt() - Error ai.SetIntAryWithInt(num, precision) num= %v, precision=%v Error= %v ", num, precision, err)
@@ -388,7 +388,7 @@ func (nthrt *NthRootOp) GetSquareRootInt(num int, precision, maxPrecision uint) 
 func (nthrt *NthRootOp) GetSquareRootInt32(num int32, precision, maxPrecision uint) (IntAry, error) {
 	ai := IntAry{}.New()
 
-	err := ai.SetIntAryWithInt32(num, precision)
+	err := ai.SetIntAryWithInt32(num, int(precision))
 
 	if err != nil {
 		return IntAry{}.New(), fmt.Errorf("NthRootOp.GetSquareRootInt32() - Error ai.SetIntAryWithInt32(num, precision) num= %v, precision=%v Error= %v ", num, precision, err)
@@ -413,7 +413,7 @@ func (nthrt *NthRootOp) GetSquareRootInt32(num int32, precision, maxPrecision ui
 func (nthrt *NthRootOp) GetSquareRootInt64(num int64, precision, maxPrecision uint) (IntAry, error) {
 	ai := IntAry{}.New()
 
-	err := ai.SetIntAryWithInt64(num, precision)
+	err := ai.SetIntAryWithInt64(num, int(precision))
 
 	if err != nil {
 		return IntAry{}.New(), fmt.Errorf("NthRootOp.GetSquareRootInt64() - Error ai.SetIntAryWithInt64(num, precision) num= %v, precision=%v Error= %v ", num, precision, err)
@@ -438,7 +438,7 @@ func (nthrt *NthRootOp) GetSquareRootInt64(num int64, precision, maxPrecision ui
 func (nthrt *NthRootOp) GetSquareRootBigInt(num *big.Int, precision, maxPrecision uint) (IntAry, error) {
 	ai := IntAry{}.New()
 
-	err := ai.SetIntAryWithBigInt(num, precision)
+	err := ai.SetIntAryWithBigInt(num, int(precision))
 
 	if err != nil {
 		return IntAry{}.New(), fmt.Errorf("NthRootOp.GetSquareRootBigInt() - Error ai.SetIntAryWithBigInt(num, precision) num= %v, precision=%v Error= %v ", num, precision, err)

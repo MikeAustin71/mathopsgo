@@ -565,11 +565,12 @@ func (ia *IntAry) AddToThis(ia2 *IntAry) error {
 //
 //	num int 				-	The integer number to be added to the current IntAry object.
 //
-//  precision uint 	- The precision which should be applied to the int64 input
+//  precision int 	- The precision which should be applied to the int64 input
 //										parameter to designate the number of digits to the right
 //										of the decimal point. Example:  num = 123456, precision = 3
 //										Result = 123.456 will be added to the current value of the
-//                    the current IntAry object.
+//                    the current IntAry object. Note: If the value of input parameter
+//										'precision' is negative, an error will be returned
 //
 // Example:
 //  intDigits     precision     	    result
@@ -578,7 +579,7 @@ func (ia *IntAry) AddToThis(ia2 *IntAry) error {
 //  -946254  			   3					      -946.254
 //  -946254				   0						    -946254
 //
-func (ia *IntAry) AddIntToThis(num int, precision uint) error {
+func (ia *IntAry) AddIntToThis(num int, precision int) error {
 
 	ia2, err := IntAry{}.NewInt(num, precision)
 
@@ -598,11 +599,13 @@ func (ia *IntAry) AddIntToThis(num int, precision uint) error {
 //
 //	num int64 -	The integer number to be added to the current IntAry object.
 //
-//  precision uint - 	The precision which should be applied to the int64 input
+//  precision int - 	The precision which should be applied to the int64 input
 //										parameter to designate the number of digits to the right
 //										of the decimal point. Example:  num = 123456, precision = 3
 //										Result = 123.456 will be added to the current value of the
-//                    the current IntAry object.
+//                    the current IntAry object. 'precision' must be passed as a
+//										positive value. Negative values will trigger an error.
+//
 // Example:
 //  intDigits     precision     	    result
 //  946254  			   3							   946.254
@@ -610,7 +613,15 @@ func (ia *IntAry) AddIntToThis(num int, precision uint) error {
 //  -946254  			   3					      -946.254
 //  -946254				   0						    -946254
 //
-func (ia *IntAry) AddInt64ToThis(num int64, precision uint) error {
+func (ia *IntAry) AddInt64ToThis(num int64, precision int) error {
+
+	if precision < 0 {
+
+		ePrefix := "IntAry.AddInt64ToThis() "
+
+		return fmt.Errorf(ePrefix + "Error: Input parameter is a negative value! " +
+			"precision='%v' ", precision)
+	}
 
 	ia2, err := IntAry{}.NewInt64(num, precision)
 
@@ -651,7 +662,7 @@ func (ia *IntAry) AddInt64ToThis(num int64, precision uint) error {
 // The result will equal the current value of the IntAry
 // object plus, '123.456'
 //
-func (ia *IntAry) AddBigIntToThis(num *big.Int, precision uint) error {
+func (ia *IntAry) AddBigIntToThis(num *big.Int, precision int) error {
 
 	ia2, err := IntAry{}.NewBigInt(num, precision)
 
@@ -3185,7 +3196,9 @@ func (ia IntAry) New() IntAry {
 // or negative number.
 //
 // Input parameter 'precision' indicates the number of digits
-// to be formatted to the right of the decimal place.
+// to be formatted to the right of the decimal place. 'precision'
+// must be a positive value. Negative 'precision' values will
+// trigger an error.
 //
 // Example:
 //  intDigits     precision     	    result
@@ -3199,7 +3212,14 @@ func (ia IntAry) New() IntAry {
 // precision := uint(3)
 // ia, err := intAry{}.NewBigInt(num, precision)
 //
-func (ia IntAry) NewBigInt(num *big.Int, precision uint) (IntAry, error) {
+func (ia IntAry) NewBigInt(num *big.Int, precision int) (IntAry, error) {
+	ePrefix := "IntAry.NewBigInt() "
+
+	if precision < 0 {
+		return IntAry{},
+		fmt.Errorf(ePrefix + "Error: Input parameter 'precision' is a negative value! " +
+			"precision='%v' ", precision)
+	}
 
 	iAry := IntAry{}.New()
 	err := iAry.SetIntAryWithBigInt(num, precision)
@@ -3216,18 +3236,30 @@ func (ia IntAry) NewBigInt(num *big.Int, precision uint) (IntAry, error) {
 // to the value of input parameter 'bINum' which is passed
 // as type 'BigIntNum'.
 //
+// If the 'BigIntNum' precision value exceeds the positive
+// maximum value of 'int' (32-bit integer = 2,147,483,647 ),
+// an error will be returned.
+//
 // Usage:
 // bINum, _ := BigIntNum{}.NewNumStr("1234.5678")
 // ia, err := intAry{}.NewBigIntNim(bINum)
 //
 func (ia IntAry) NewBigIntNum(bINum BigIntNum) (IntAry, error) {
 
+	ePrefix := "IntAry.NewBigIntNum() "
+
 	iAry := IntAry{}.New()
+
+	if bINum.precision > uint(math.MaxInt32) {
+		return iAry,
+			fmt.Errorf(ePrefix + "Error: Input parameter bINum has a 'precision' value " +
+				"which exceeds the MaxInt32 Value. MaxInt32='%v' bINum.precision='%v' ",
+					math.MinInt32, bINum.precision)
+	}
 
 	err := iAry.SetIntAryWithBigIntNum(bINum)
 
 	if err != nil {
-		ePrefix := "IntAry.NewBigIntNum() "
 		return IntAry{},
 		fmt.Errorf(ePrefix + "Error returned by iAry.SetIntAryWithBigIntNum(bINum). " +
 			"bINum='%v' Error='%v'",
@@ -3364,14 +3396,16 @@ func (ia IntAry) NewFloatBig(num *big.Float, precision int) (IntAry, error) {
 // as type 'int32'.
 //
 // Input parameter 'precision' indicates the number of digits
-// to be formatted to the right of the decimal place.
+// to be formatted to the right of the decimal place and must
+// be passed as a positive value. Negative precision values
+// will trigger an error.
 //
 // Usage:
 // num := int32(123456)
 // precision := uint(3)
 // ia, err := intAry{}.NewInt32(num, precision)
 //
-func (ia IntAry) NewInt32(num int32, precision uint) (IntAry, error) {
+func (ia IntAry) NewInt32(num int32, precision int) (IntAry, error) {
 
 	iAry := IntAry{}.New()
 	err := iAry.SetIntAryWithInt32(num, precision)
@@ -3389,14 +3423,16 @@ func (ia IntAry) NewInt32(num int32, precision uint) (IntAry, error) {
 // as type 'int64'.
 //
 // Input parameter 'precision' indicates the number of digits
-// to be formatted to the right of the decimal place.
+// to be formatted to the right of the decimal place and must
+// be passed as a positive value. Negative precision values
+// will trigger an error.
 //
 // Usage:
 // num := int64(123456)
 // precision := uint(3)
 // ia, err := intAry{}.NewInt64(num, precision)
 //
-func (ia IntAry) NewInt64(num int64, precision uint) (IntAry, error) {
+func (ia IntAry) NewInt64(num int64, precision int) (IntAry, error) {
 
 	iAry := IntAry{}.New()
 	err := iAry.SetIntAryWithInt64(num, precision)
@@ -3414,14 +3450,16 @@ func (ia IntAry) NewInt64(num int64, precision uint) (IntAry, error) {
 // as type 'int32'.
 //
 // Input parameter 'precision' indicates the number of digits
-// to be formatted to the right of the decimal place.
+// to be formatted to the right of the decimal place. If the
+// value of input parameter is negative, an error will be
+// returned.
 //
 // Usage:
 // num := int(123456)
 // precision := uint(3)
 // ia, err := intAry{}.NewInt32(num, precision)
 //
-func (ia IntAry) NewInt(num int, precision uint) (IntAry, error) {
+func (ia IntAry) NewInt(num int, precision int) (IntAry, error) {
 
 	iAry := IntAry{}.New()
 	err := iAry.SetIntAryWithInt(num, precision)
@@ -4063,7 +4101,8 @@ func (ia *IntAry) SetEqualArrayLengths(iAry2 *IntAry) {
 // to that of the input parameter 'intDigits', an integer of type 'int'.
 //
 // Input parameter 'precision' to indicate the number of
-// digits to the right of the decimal place.
+// digits to the right of the decimal place. If the value of input
+// parameter 'precision' is negative, an error will be returned.
 //
 // The numeric sign (plus or minus) of the resulting intAry value
 // is determined by the sign of input parameter,'intDigits'.
@@ -4074,7 +4113,7 @@ func (ia *IntAry) SetEqualArrayLengths(iAry2 *IntAry) {
 //  -946254  			   3					      -946.254
 //  -946254				   0						    -946254
 //
-func (ia *IntAry) SetIntAryWithInt(intDigits int, precision uint) error {
+func (ia *IntAry) SetIntAryWithInt(intDigits int, precision int) error {
 	quotient := 0
 	mod := 0
 
@@ -4140,14 +4179,21 @@ func (ia *IntAry) SetIntAryWithInt(intDigits int, precision uint) error {
 //  -946254  			   3					      -946.254
 //  -946254				   0						    -946254
 //
-func (ia *IntAry) SetIntAryWithInt32(intDigits int32, precision uint) error {
+func (ia *IntAry) SetIntAryWithInt32(intDigits int32, precision int) error {
+
+	if precision < 0 {
+		ePrefix := "IntAry.SetIntAryWithInt32() "
+		return fmt.Errorf(ePrefix + "Error: input parameter 'precision' is a negative value! " +
+			"precision='%v' ", precision)
+	}
+
 	tenI32 := int32(10)
 	quotient := int32(0)
 	mod := int32(0)
 
 	ia.intAry = []uint8{}
 	ia.intAryLen = 0
-	ia.precision = int(precision)
+	ia.precision = precision
 	ia.signVal = 1
 
 	if intDigits < 0 {
@@ -4156,7 +4202,7 @@ func (ia *IntAry) SetIntAryWithInt32(intDigits int32, precision uint) error {
 	}
 
 	if intDigits == 0 {
-		ia.SetIntAryToZero(int(precision))
+		ia.SetIntAryToZero(precision)
 		return nil
 	}
 
@@ -4197,7 +4243,9 @@ func (ia *IntAry) SetIntAryWithInt32(intDigits int32, precision uint) error {
 // integer.
 //
 // Note: Input parameter 'precision' to indicate the number of
-// digits to the right of the decimal place.
+// digits to the right of the decimal place. Note: 'precision
+// must be a positive number. Negative 'precision' values will
+// trigger an error.
 //
 // The numeric sign (plus or minus) of the resulting intAry value
 // is determined by the sign of input parameter 'intDigits'.
@@ -4209,7 +4257,13 @@ func (ia *IntAry) SetIntAryWithInt32(intDigits int32, precision uint) error {
 //  -946254  			   3					      -946.254
 //  -946254				   0						    -946254
 //
-func (ia *IntAry) SetIntAryWithInt64(intDigits int64, precision uint) error {
+func (ia *IntAry) SetIntAryWithInt64(intDigits int64, precision int) error {
+
+	if precision < 0 {
+		ePrefix := "IntAry.SetIntAryWithInt64() "
+		return fmt.Errorf(ePrefix + "Error: Input parameter is a negative value! " +
+			"precision='%v' ", precision)
+	}
 
 	quotient := int64(0)
 	mod := int64(0)
@@ -4217,7 +4271,7 @@ func (ia *IntAry) SetIntAryWithInt64(intDigits int64, precision uint) error {
 
 	ia.intAry = []uint8{}
 	ia.intAryLen = 0
-	ia.precision = int(precision)
+	ia.precision = precision
 	ia.signVal = 1
 
 	if intDigits < 0 {
@@ -4226,7 +4280,7 @@ func (ia *IntAry) SetIntAryWithInt64(intDigits int64, precision uint) error {
 	}
 
 	if intDigits == 0 {
-		ia.SetIntAryToZero(int(precision))
+		ia.SetIntAryToZero(precision)
 		return nil
 	}
 
@@ -4337,7 +4391,8 @@ func (ia *IntAry) SetIntAryWithUint64(intDigits uint64, precision uint, signVal 
 // of input parameter 'intDigits'. The sign value (plus or minus) is taken
 // from the input parameter, 'intDigits'. The precision or number of digits
 // to the right of the decimal point, is determined by the input parameter,
-// 'precision'.
+// 'precision'. Input parameter 'precision' must be passed as a positive value.
+// Negative 'precision' values will trigger an error.
 //
 // Example:
 //  intDigits     precision     	    result
@@ -4346,7 +4401,16 @@ func (ia *IntAry) SetIntAryWithUint64(intDigits uint64, precision uint, signVal 
 //  -946254  			   3					      -946.254
 //  -946254				   0						    -946254
 //
-func (ia *IntAry) SetIntAryWithBigInt(intDigits *big.Int, precision uint) error {
+func (ia *IntAry) SetIntAryWithBigInt(intDigits *big.Int, precision int) error {
+
+	if precision < 0 {
+		ePrefix := "IntAry.SetIntAryWithBigInt() "
+
+		return fmt.Errorf(ePrefix + "Error: Input parameter 'precision' is a negative value! " +
+			"precision='%v' ", precision)
+
+	}
+
 
 	bigZero := big.NewInt(0)
 	quotient := big.NewInt(0)
@@ -4360,7 +4424,9 @@ func (ia *IntAry) SetIntAryWithBigInt(intDigits *big.Int, precision uint) error 
 
 	ia.intAry = []uint8{}
 	ia.intAryLen = 0
-	ia.precision = int(precision)
+	ia.precision = precision
+
+
 	ia.signVal = 1
 
 	if compare == 1 {
@@ -4407,11 +4473,22 @@ func (ia *IntAry) SetIntAryWithBigInt(intDigits *big.Int, precision uint) error 
 }
 
 // SetIntAryWithBigIntNum - Sets the current value of the intAry to the value
-// of input parameter 'bigINum'.
+// of input parameter 'bigINum', a BigIntNum type.
+//
+// If the input parameter 'BigIntNum' precision value exceeds the positive
+// maximum value of 'int' (32-bit integer = 2,147,483,647 ), an error will
+// be returned.
 //
 func (ia *IntAry) SetIntAryWithBigIntNum(bigINum BigIntNum) error {
 
 	ePrefix := "IntAry.SetIntAryWithBigIntNum() "
+
+	if bigINum.precision > uint(math.MaxInt32) {
+		return  fmt.Errorf(ePrefix + "Error: Input parameter bigINum has a 'precision' value " +
+				"which exceeds the MaxInt32 Value. MaxInt32='%v' bigINum.precision='%v' ",
+				math.MinInt32, bigINum.precision)
+	}
+
 
 	bInt, err := bigINum.GetBigInt()
 
@@ -4420,7 +4497,7 @@ func (ia *IntAry) SetIntAryWithBigIntNum(bigINum BigIntNum) error {
 			err.Error())
 	}
 
-	err = ia.SetIntAryWithBigInt(bInt, bigINum.GetPrecisionUint())
+	err = ia.SetIntAryWithBigInt(bInt, int(bigINum.GetPrecisionUint()))
 
 	if err != nil {
 		return fmt.Errorf(ePrefix + "Error returned by ia.SetIntAryWithBigInt(bInt, " +

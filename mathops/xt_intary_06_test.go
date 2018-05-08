@@ -1295,7 +1295,7 @@ func TestIntAry_SetIntAryWithBigInt_01(t *testing.T) {
 	num := big.NewInt(int64(123456789))
 
 	eNumStr := "123456.789"
-	ePrecision := uint(3)
+	ePrecision := 3
 	eSignVal := 1
 
 	ia := IntAry{}.New()
@@ -1325,7 +1325,7 @@ func TestIntAry_SetIntAryWithBigInt_02(t *testing.T) {
 	num := big.NewInt(int64(-123456789))
 
 	eNumStr := "-123456.789"
-	ePrecision := uint(3)
+	ePrecision :=3
 	eSignVal := -1
 
 	ia := IntAry{}.New()
@@ -1355,7 +1355,7 @@ func TestIntAry_SetIntAryWithBigInt_03(t *testing.T) {
 	num := big.NewInt(int64(0))
 
 	eNumStr := "0.000"
-	ePrecision := uint(3)
+	ePrecision := 3
 	eSignVal := 1
 
 	ia := IntAry{}.New()
@@ -1385,7 +1385,7 @@ func TestIntAry_SetIntAryWithInt_01(t *testing.T) {
 	num := 123456789
 
 	eNumStr := "123456.789"
-	ePrecision := uint(3)
+	ePrecision := 3
 	eSignVal := 1
 
 	ia := IntAry{}.New()
@@ -1415,7 +1415,7 @@ func TestIntAry_SetIntAryWithInt_02(t *testing.T) {
 	num := -123456789
 
 	eNumStr := "-12345.6789"
-	ePrecision := uint(4)
+	ePrecision := 4
 	eSignVal := -1
 
 	ia := IntAry{}.New()
@@ -1445,7 +1445,7 @@ func TestIntAry_SetIntAryWithInt_03(t *testing.T) {
 	num := 0
 
 	eNumStr := "0.0000"
-	ePrecision := uint(4)
+	ePrecision := 4
 	eSignVal := 1
 
 	ia := IntAry{}.New()
@@ -1475,7 +1475,7 @@ func TestIntAry_SetIntAryWithInt_04(t *testing.T) {
 	num := 32
 
 	eNumStr := "0.0032"
-	ePrecision := uint(4)
+	ePrecision := 4
 	eSignVal := 1
 
 	ia := IntAry{}.New()
@@ -1505,7 +1505,7 @@ func TestIntAry_SetIntAryWithInt_05(t *testing.T) {
 	num := -32
 
 	eNumStr := "-32"
-	ePrecision := uint(0)
+	ePrecision := 0
 	eSignVal := -1
 
 	ia := IntAry{}.New()
@@ -1535,7 +1535,7 @@ func TestIntAry_SetIntAryWithInt_06(t *testing.T) {
 	num := 32
 
 	eNumStr := "0.32"
-	ePrecision := uint(2)
+	ePrecision := 2
 	eSignVal := 1
 
 	ia := IntAry{}.New()

@@ -26,11 +26,11 @@ func TestIntAry_GetAbsoluteValue_01(t *testing.T) {
 func TestIntAry_GetBigIntNum_01(t *testing.T) {
 
 	bigI := big.NewInt(int64(123456123456))
-	precision := uint(6)
+	precision := 6
 
 	exStr := "123456.123456"
 
-	expectedBigIntNum := BigIntNum{}.NewBigInt(bigI, precision)
+	expectedBigIntNum := BigIntNum{}.NewBigInt(bigI, uint(precision))
 
 	intAry, err := IntAry{}.NewBigInt(bigI, precision)
 

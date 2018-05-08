@@ -551,7 +551,7 @@ func TestIntAry_NewNumStr_02(t *testing.T) {
 
 func TestIntAry_NewBigInt_01(t *testing.T) {
 	num := big.NewInt(123456)
-	precision := uint(3)
+	precision := 3
 	ia, err := IntAry{}.NewBigInt(num, precision)
 	eStr := "123.456"
 	eSignVal := 1
@@ -576,7 +576,7 @@ func TestIntAry_NewBigInt_01(t *testing.T) {
 
 func TestIntAry_NewBigInt_02(t *testing.T) {
 	num := big.NewInt(-123456)
-	precision := uint(3)
+	precision := 3
 	ia, err := IntAry{}.NewBigInt(num, precision)
 	eStr := "-123.456"
 	eSignVal := -1
@@ -798,7 +798,7 @@ func TestIntAry_NewFloat32_02(t *testing.T) {
 
 func TestIntAry_NewInt64_01(t *testing.T) {
 	num := int64(123456)
-	precision := uint(3)
+	precision := 3
 	ia, err := IntAry{}.NewInt64(num, precision)
 	eStr := "123.456"
 	eSignVal := 1
@@ -823,7 +823,7 @@ func TestIntAry_NewInt64_01(t *testing.T) {
 
 func TestIntAry_NewInt64_02(t *testing.T) {
 	num := int64(-123456)
-	precision := uint(3)
+	precision :=3
 	ia, err := IntAry{}.NewInt64(num, precision)
 	eStr := "-123.456"
 	eSignVal := -1
@@ -848,7 +848,7 @@ func TestIntAry_NewInt64_02(t *testing.T) {
 
 func TestIntAry_NewInt32_01(t *testing.T) {
 	num := int32(123456)
-	precision := uint(3)
+	precision := 3
 	ia, err := IntAry{}.NewInt32(num, precision)
 	eStr := "123.456"
 	eSignVal := 1
@@ -873,7 +873,7 @@ func TestIntAry_NewInt32_01(t *testing.T) {
 
 func TestIntAry_NewInt32_02(t *testing.T) {
 	num := int32(-123456)
-	precision := uint(3)
+	precision := 3
 	ia, err := IntAry{}.NewInt32(num, precision)
 	eStr := "-123.456"
 	eSignVal := -1
@@ -898,7 +898,7 @@ func TestIntAry_NewInt32_02(t *testing.T) {
 
 func TestIntAry_NewInt_01(t *testing.T) {
 	num := int(123456)
-	precision := uint(3)
+	precision := 3
 	ia, err := IntAry{}.NewInt(num, precision)
 	eStr := "123.456"
 	eSignVal := 1
@@ -923,7 +923,7 @@ func TestIntAry_NewInt_01(t *testing.T) {
 
 func TestIntAry_NewInt_02(t *testing.T) {
 	num := int(-123456)
-	precision := uint(3)
+	precision := 3
 	ia, err := IntAry{}.NewInt(num, precision)
 	eStr := "-123.456"
 	eSignVal := -1
