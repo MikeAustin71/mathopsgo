@@ -6,7 +6,6 @@ import (
 	"errors"
 )
 
-
 func TestBigIntNum_GetFractionalPart_01(t *testing.T) {
 
 	nStr := "123.456"
@@ -23,12 +22,7 @@ func TestBigIntNum_GetFractionalPart_01(t *testing.T) {
 
 	fractionalPart := bINum1.GetFractionalPart()
 
-	actualNumStr, err := fractionalPart.GetNumStrErr()
-
-	if err != nil {
-		t.Errorf("Error returned by fractionalPart.GetNumStrErr(). Error='%v'",
-			err.Error())
-	}
+	actualNumStr := fractionalPart.GetNumStr()
 
 	if expectedNumStr != actualNumStr {
 		t.Errorf("Error: Expected Fractional Part NumStr='%v'. " +
@@ -59,12 +53,7 @@ func TestBigIntNum_GetFractionalPart_02(t *testing.T) {
 
 	fractionalPart := bINum1.GetFractionalPart()
 
-	actualNumStr, err := fractionalPart.GetNumStrErr()
-
-	if err != nil {
-		t.Errorf("Error returned by fractionalPart.GetNumStrErr(). Error='%v'",
-			err.Error())
-	}
+	actualNumStr := fractionalPart.GetNumStr()
 
 	if expectedNumStr != actualNumStr {
 		t.Errorf("Error: Expected Fractional Part NumStr='%v'. " +
@@ -95,12 +84,7 @@ func TestBigIntNum_GetFractionalPart_03(t *testing.T) {
 
 	fractionalPart := bINum1.GetFractionalPart()
 
-	actualNumStr, err := fractionalPart.GetNumStrErr()
-
-	if err != nil {
-		t.Errorf("Error returned by fractionalPart.GetNumStrErr(). Error='%v'",
-			err.Error())
-	}
+	actualNumStr := fractionalPart.GetNumStr()
 
 	if expectedNumStr != actualNumStr {
 		t.Errorf("Error: Expected Fractional Part NumStr='%v'. " +
@@ -131,12 +115,7 @@ func TestBigIntNum_GetFractionalPart_04(t *testing.T) {
 
 	fractionalPart := bINum1.GetFractionalPart()
 
-	actualNumStr, err := fractionalPart.GetNumStrErr()
-
-	if err != nil {
-		t.Errorf("Error returned by fractionalPart.GetNumStrErr(). Error='%v'",
-			err.Error())
-	}
+	actualNumStr := fractionalPart.GetNumStr()
 
 	if expectedNumStr != actualNumStr {
 		t.Errorf("Error: Expected Fractional Part NumStr='%v'. " +
@@ -167,12 +146,7 @@ func TestBigIntNum_GetFractionalPart_05(t *testing.T) {
 
 	fractionalPart := bINum1.GetFractionalPart()
 
-	actualNumStr, err := fractionalPart.GetNumStrErr()
-
-	if err != nil {
-		t.Errorf("Error returned by fractionalPart.GetNumStrErr(). Error='%v'",
-			err.Error())
-	}
+	actualNumStr := fractionalPart.GetNumStr()
 
 	if expectedNumStr != actualNumStr {
 		t.Errorf("Error: Expected Fractional Part NumStr='%v'. " +
@@ -203,12 +177,7 @@ func TestBigIntNum_GetFractionalPart_06(t *testing.T) {
 
 	fractionalPart := bINum1.GetFractionalPart()
 
-	actualNumStr, err := fractionalPart.GetNumStrErr()
-
-	if err != nil {
-		t.Errorf("Error returned by fractionalPart.GetNumStrErr(). Error='%v'",
-			err.Error())
-	}
+	actualNumStr := fractionalPart.GetNumStr()
 
 	if expectedNumStr != actualNumStr {
 		t.Errorf("Error: Expected Fractional Part NumStr='%v'. " +
@@ -317,12 +286,7 @@ func TestBigIntNum_GetIntegerPart_01(t *testing.T) {
 
 	integerPart := bINum1.GetIntegerPart()
 
-	actualNumStr, err := integerPart.GetNumStrErr()
-
-	if err != nil {
-		t.Errorf("Error returned by integerPart.GetNumStrErr(). Error='%v'",
-			err.Error())
-	}
+	actualNumStr := integerPart.GetNumStr()
 
 	if expectedNumStr != actualNumStr {
 		t.Errorf("Error: Expected Integer Part NumStr='%v'. " +
@@ -354,12 +318,7 @@ func TestBigIntNum_GetIntegerPart_02(t *testing.T) {
 
 	integerPart := bINum1.GetIntegerPart()
 
-	actualNumStr, err := integerPart.GetNumStrErr()
-
-	if err != nil {
-		t.Errorf("Error returned by integerPart.GetNumStrErr(). Error='%v'",
-			err.Error())
-	}
+	actualNumStr := integerPart.GetNumStr()
 
 	if expectedNumStr != actualNumStr {
 		t.Errorf("Error: Expected Integer Part NumStr='%v'. " +
@@ -391,12 +350,7 @@ func TestBigIntNum_GetIntegerPart_03(t *testing.T) {
 
 	integerPart := bINum1.GetIntegerPart()
 
-	actualNumStr, err := integerPart.GetNumStrErr()
-
-	if err != nil {
-		t.Errorf("Error returned by integerPart.GetNumStrErr(). Error='%v'",
-			err.Error())
-	}
+	actualNumStr := integerPart.GetNumStr()
 
 	if expectedNumStr != actualNumStr {
 		t.Errorf("Error: Expected Integer Part NumStr='%v'. " +
@@ -428,12 +382,7 @@ func TestBigIntNum_GetIntegerPart_04(t *testing.T) {
 
 	integerPart := bINum1.GetIntegerPart()
 
-	actualNumStr, err := integerPart.GetNumStrErr()
-
-	if err != nil {
-		t.Errorf("Error returned by integerPart.GetNumStrErr(). Error='%v'",
-			err.Error())
-	}
+	actualNumStr := integerPart.GetNumStr()
 
 	if expectedNumStr != actualNumStr {
 		t.Errorf("Error: Expected Integer Part NumStr='%v'. " +
@@ -465,12 +414,7 @@ func TestBigIntNum_GetIntegerPart_05(t *testing.T) {
 
 	integerPart := bINum1.GetIntegerPart()
 
-	actualNumStr, err := integerPart.GetNumStrErr()
-
-	if err != nil {
-		t.Errorf("Error returned by integerPart.GetNumStrErr(). Error='%v'",
-			err.Error())
-	}
+	actualNumStr := integerPart.GetNumStr()
 
 	if expectedNumStr != actualNumStr {
 		t.Errorf("Error: Expected Integer Part NumStr='%v'. " +
@@ -502,12 +446,7 @@ func TestBigIntNum_GetIntegerPart_06(t *testing.T) {
 
 	integerPart := bINum1.GetIntegerPart()
 
-	actualNumStr, err := integerPart.GetNumStrErr()
-
-	if err != nil {
-		t.Errorf("Error returned by integerPart.GetNumStrErr(). Error='%v'",
-			err.Error())
-	}
+	actualNumStr := integerPart.GetNumStr()
 
 	if expectedNumStr != actualNumStr {
 		t.Errorf("Error: Expected Integer Part NumStr='%v'. " +

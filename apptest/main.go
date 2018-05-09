@@ -9,13 +9,14 @@ import (
 
 func main() {
 
-	num1Str := "1567123.45"
-	expectedNumStr := "1,567,123.45"
+	bINum := big.NewInt(-1234)
+	precision := uint(6)
+	expectedNumStr := "(0.001234)"
 
 	// mathops.LEADMINUSNEGVALFMTMODE
 	// mathops.PARENTHESESNEGVALFMTMODE
 
-	ExampleBigIntThouStr_01(num1Str, expectedNumStr,  mathops.PARENTHESESNEGVALFMTMODE)
+	ExampleBigIntNumString_03(bINum, precision, expectedNumStr,  mathops.PARENTHESESNEGVALFMTMODE)
 
 }
 
@@ -42,6 +43,24 @@ func ExampleBigIntThouStr_01(num1Str, expectedNumStr string, mode mathops.Negati
 
 }
 
+func ExampleBigIntNumString_03(
+												bInt *big.Int,
+													precision uint,
+														expectedNumStr string,
+															mode mathops.NegativeValueFmtMode) {
+
+	bINum := mathops.BigIntNum{}.NewBigInt(bInt, precision)
+
+
+	outStr := bINum.FormatNumStr(mode)
+
+	fmt.Println("       Expected NumStr: ", "'", expectedNumStr, "'")
+	fmt.Println("         Actual NumStr: ", "'", outStr,"'")
+	fmt.Println("  Actual String Length: ", len(outStr))
+	fmt.Println("Expected String Length: ", len(expectedNumStr))
+	return
+
+}
 func ExampleBigIntNumString_02(num1Str, expectedNumStr string, mode mathops.NegativeValueFmtMode) {
 
 	bINum, err := mathops.BigIntNum{}.NewNumStr(num1Str)

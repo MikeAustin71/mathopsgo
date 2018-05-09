@@ -919,14 +919,8 @@ func (bMultiply BigIntMathMultiply) MultiplyNumStrOutputToArray(
 
 		result := bMultiply.MultiplyPair(bPair)
 
-		resultArray[i], err = result.GetNumStrErr()
+		resultArray[i] = result.GetNumStr()
 
-		if err != nil {
-			return []string{},
-				fmt.Errorf(ePrefix +
-					"Error returned by finalResult.Result.GetNumStrErr() " +
-					"i='%v' Error='%v'. ", i,  err.Error())
-		}
 	}
 
 	return resultArray, nil

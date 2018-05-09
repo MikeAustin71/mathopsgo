@@ -154,12 +154,7 @@ func TestBigIntMathMultiply_MultiplyBigInts_02(t *testing.T) {
 			expectedBigINumSign, result.sign)
 	}
 
-	actualNumStr, err := result.GetNumStrErr()
-
-	if err != nil {
-		t.Errorf("Error returned by result.GetNumStrErr() " +
-			"Error='%v'. ", err.Error())
-	}
+	actualNumStr := result.GetNumStr()
 
 	if iaResult.GetNumStr() != actualNumStr {
 		t.Errorf("Error: Expected actualNumStr='%v' " +
@@ -257,12 +252,7 @@ func TestBigIntMathMultiply_MultiplyBigInts_03(t *testing.T) {
 			expectedBigINumSign, result.sign)
 	}
 
-	actualNumStr, err := result.GetNumStrErr()
-
-	if err != nil {
-		t.Errorf("Error returned by result.GetNumStrErr() " +
-			"Error='%v'. ", err.Error())
-	}
+	actualNumStr := result.GetNumStr()
 
 	if iaResult.GetNumStr() != actualNumStr {
 		t.Errorf("Error: Expected actualNumStr='%v' " +
@@ -360,12 +350,7 @@ func TestBigIntMathMultiply_MultiplyBigInts_04(t *testing.T) {
 			expectedBigINumSign, result.sign)
 	}
 
-	actualNumStr, err := result.GetNumStrErr()
-
-	if err != nil {
-		t.Errorf("Error returned by result.GetNumStrErr() " +
-			"Error='%v'. ", err.Error())
-	}
+	actualNumStr := result.GetNumStr()
 
 	if iaResult.GetNumStr() != actualNumStr {
 		t.Errorf("Error: Expected actualNumStr='%v' " +
@@ -463,12 +448,7 @@ func TestBigIntMathMultiply_MultiplyBigInts_05(t *testing.T) {
 			expectedBigINumSign, result.sign)
 	}
 
-	actualNumStr, err := result.GetNumStrErr()
-
-	if err != nil {
-		t.Errorf("Error returned by result.GetNumStrErr() " +
-			"Error='%v'. ", err.Error())
-	}
+	actualNumStr := result.GetNumStr()
 
 	if iaResult.GetNumStr() != actualNumStr {
 		t.Errorf("Error: Expected actualNumStr='%v' " +
@@ -609,12 +589,7 @@ func TestBigIntMathMultiply_MultiplyBigIntNums_02(t *testing.T) {
 			expectedBigINumSign, result.sign)
 	}
 
-	actualNumStr, err := result.GetNumStrErr()
-
-	if err != nil {
-		t.Errorf("Error returned by result.GetNumStrErr() " +
-			"Error='%v'. ", err.Error())
-	}
+	actualNumStr := result.GetNumStr()
 
 	if iaResult.GetNumStr() != actualNumStr {
 		t.Errorf("Error: Expected actualNumStr='%v' " +
@@ -702,12 +677,7 @@ func TestBigIntMathMultiply_MultiplyBigIntNums_03(t *testing.T) {
 			expectedBigINumSign, result.sign)
 	}
 
-	actualNumStr, err := result.GetNumStrErr()
-
-	if err != nil {
-		t.Errorf("Error returned by result.GetNumStrErr() " +
-			"Error='%v'. ", err.Error())
-	}
+	actualNumStr := result.GetNumStr()
 
 	if iaResult.GetNumStr() != actualNumStr {
 		t.Errorf("Error: Expected actualNumStr='%v' " +
@@ -795,12 +765,7 @@ func TestBigIntMathMultiply_MultiplyBigIntNums_04(t *testing.T) {
 			expectedBigINumSign, result.sign)
 	}
 
-	actualNumStr, err := result.GetNumStrErr()
-
-	if err != nil {
-		t.Errorf("Error returned by result.GetNumStrErr() " +
-			"Error='%v'. ", err.Error())
-	}
+	actualNumStr := result.GetNumStr()
 
 	if iaResult.GetNumStr() != actualNumStr {
 		t.Errorf("Error: Expected actualNumStr='%v' " +
@@ -890,12 +855,7 @@ func TestBigIntMathMultiply_MultiplyBigIntNums_05(t *testing.T) {
 			expectedBigINumSign, result.sign)
 	}
 
-	actualNumStr, err := result.GetNumStrErr()
-
-	if err != nil {
-		t.Errorf("Error returned by result.GetNumStrErr() " +
-			"Error='%v'. ", err.Error())
-	}
+	actualNumStr := result.GetNumStr()
 
 	if iaResult.GetNumStr() != actualNumStr {
 		t.Errorf("Error: Expected actualNumStr='%v' " +
@@ -993,12 +953,7 @@ func TestBigIntMathMultiply_MultiplyBigIntNumArray_01(t *testing.T) {
 			expectedBigINumSign, result.sign)
 	}
 
-	actualNumStr, err := result.GetNumStrErr()
-
-	if err != nil {
-		t.Errorf("Error returned by result.GetNumStrErr() " +
-			"Error='%v'. ", err.Error())
-	}
+	actualNumStr := result.GetNumStr()
 
 	if iaResult.GetNumStr() != actualNumStr {
 		t.Errorf("Error: Expected actualNumStr='%v' " +
@@ -1097,12 +1052,7 @@ func TestBigIntMathMultiply_MultiplyBigIntNumArray_02(t *testing.T) {
 			expectedBigINumSign, result.sign)
 	}
 
-	actualNumStr, err := result.GetNumStrErr()
-
-	if err != nil {
-		t.Errorf("Error returned by result.GetNumStrErr() " +
-			"Error='%v'. ", err.Error())
-	}
+	actualNumStr := result.GetNumStr()
 
 	if iaResult.GetNumStr() != actualNumStr {
 		t.Errorf("Error: Expected actualNumStr='%v' " +
@@ -1200,12 +1150,7 @@ func TestBigIntMathMultiply_MultiplyBigIntNumArray_03(t *testing.T) {
 			expectedBigINumSign, result.sign)
 	}
 
-	actualNumStr, err := result.GetNumStrErr()
-
-	if err != nil {
-		t.Errorf("Error returned by result.GetNumStrErr() " +
-			"Error='%v'. ", err.Error())
-	}
+	actualNumStr := result.GetNumStr()
 
 	iaResult.OptimizeIntArrayLen(true)
 
@@ -1305,12 +1250,7 @@ func TestBigIntMathMultiply_MultiplyBigIntNumArray_04(t *testing.T) {
 			expectedBigINumSign, result.sign)
 	}
 
-	actualNumStr, err := result.GetNumStrErr()
-
-	if err != nil {
-		t.Errorf("Error returned by result.GetNumStrErr() " +
-			"Error='%v'. ", err.Error())
-	}
+	actualNumStr := result.GetNumStr()
 
 	if iaResult.GetNumStr() != actualNumStr {
 		t.Errorf("Error: Expected actualNumStr='%v' " +
@@ -1721,12 +1661,7 @@ func TestBigIntMathMultiply_MultiplyBigIntNumSeries_01(t *testing.T) {
 			expectedBigINumSign, result.sign)
 	}
 
-	actualNumStr, err := result.GetNumStrErr()
-
-	if err != nil {
-		t.Errorf("Error returned by result.GetNumStrErr() " +
-			"Error='%v'. ", err.Error())
-	}
+	actualNumStr := result.GetNumStr()
 
 	if iaResult.GetNumStr() != actualNumStr {
 		t.Errorf("Error: Expected actualNumStr='%v' " +
@@ -1833,12 +1768,7 @@ func TestBigIntMathMultiply_MultiplyBigIntNumSeries_02(t *testing.T) {
 			expectedBigINumSign, result.sign)
 	}
 
-	actualNumStr, err := result.GetNumStrErr()
-
-	if err != nil {
-		t.Errorf("Error returned by result.GetNumStrErr() " +
-			"Error='%v'. ", err.Error())
-	}
+	actualNumStr := result.GetNumStr()
 
 	if iaResult.GetNumStr() != actualNumStr {
 		t.Errorf("Error: Expected actualNumStr='%v' " +
@@ -1943,12 +1873,7 @@ func TestBigIntMathMultiply_MultiplyBigIntNumSeries_03(t *testing.T) {
 			expectedBigINumSign, result.sign)
 	}
 
-	actualNumStr, err := result.GetNumStrErr()
-
-	if err != nil {
-		t.Errorf("Error returned by result.GetNumStrErr() " +
-			"Error='%v'. ", err.Error())
-	}
+	actualNumStr := result.GetNumStr()
 
 	iaResult.OptimizeIntArrayLen(true)
 
@@ -2054,12 +1979,7 @@ func TestBigIntMathMultiply_MultiplyBigIntNumSeries_04(t *testing.T) {
 			expectedBigINumSign, result.sign)
 	}
 
-	actualNumStr, err := result.GetNumStrErr()
-
-	if err != nil {
-		t.Errorf("Error returned by result.GetNumStrErr() " +
-			"Error='%v'. ", err.Error())
-	}
+	actualNumStr := result.GetNumStr()
 
 	if iaResult.GetNumStr() != actualNumStr {
 		t.Errorf("Error: Expected actualNumStr='%v' " +
@@ -2163,12 +2083,7 @@ func TestBigIntMathMultiply_MultiplyDecimal_01(t *testing.T) {
 			expectedSignValue, result.sign)
 	}
 
-	actualNumStr, err := result.GetNumStrErr()
-
-	if err != nil {
-		t.Errorf("Error returned by result.GetNumStrErr() " +
-			"Error='%v'. ", err.Error())
-	}
+	actualNumStr := result.GetNumStr()
 
 	if iaResult.GetNumStr() != actualNumStr {
 		t.Errorf("Error: Expected actualNumStr='%v' " +
@@ -2272,12 +2187,7 @@ func TestBigIntMathMultiply_MultiplyDecimal_02(t *testing.T) {
 			expectedSignValue, result.sign)
 	}
 
-	actualNumStr, err := result.GetNumStrErr()
-
-	if err != nil {
-		t.Errorf("Error returned by result.GetNumStrErr() " +
-			"Error='%v'. ", err.Error())
-	}
+	actualNumStr := result.GetNumStr()
 
 	if iaResult.GetNumStr() != actualNumStr {
 		t.Errorf("Error: Expected actualNumStr='%v' " +
@@ -2381,12 +2291,7 @@ func TestBigIntMathMultiply_MultiplyDecimal_03(t *testing.T) {
 			expectedSignValue, result.sign)
 	}
 
-	actualNumStr, err := result.GetNumStrErr()
-
-	if err != nil {
-		t.Errorf("Error returned by result.GetNumStrErr() " +
-			"Error='%v'. ", err.Error())
-	}
+	actualNumStr := result.GetNumStr()
 
 	if iaResult.GetNumStr() != actualNumStr {
 		t.Errorf("Error: Expected actualNumStr='%v' " +
@@ -2490,12 +2395,7 @@ func TestBigIntMathMultiply_MultiplyDecimal_04(t *testing.T) {
 			expectedSignValue, result.sign)
 	}
 
-	actualNumStr, err := result.GetNumStrErr()
-
-	if err != nil {
-		t.Errorf("Error returned by result.GetNumStrErr() " +
-			"Error='%v'. ", err.Error())
-	}
+	actualNumStr := result.GetNumStr()
 
 	if iaResult.GetNumStr() != actualNumStr {
 		t.Errorf("Error: Expected actualNumStr='%v' " +
@@ -2715,12 +2615,7 @@ func TestBigIntMathMultiply_MultiplyDecimalArray_01(t *testing.T) {
 			expectedBigINumSign, result.sign)
 	}
 
-	actualNumStr, err := result.GetNumStrErr()
-
-	if err != nil {
-		t.Errorf("Error returned by result.GetNumStrErr() " +
-			"Error='%v'. ", err.Error())
-	}
+	actualNumStr := result.GetNumStr()
 
 	if iaResult.GetNumStr() != actualNumStr {
 		t.Errorf("Error: Expected actualNumStr='%v' " +
@@ -2824,12 +2719,7 @@ func TestBigIntMathMultiply_MultiplyDecimalArray_02(t *testing.T) {
 			expectedBigINumSign, result.sign)
 	}
 
-	actualNumStr, err := result.GetNumStrErr()
-
-	if err != nil {
-		t.Errorf("Error returned by result.GetNumStrErr() " +
-			"Error='%v'. ", err.Error())
-	}
+	actualNumStr := result.GetNumStr()
 
 	if iaResult.GetNumStr() != actualNumStr {
 		t.Errorf("Error: Expected actualNumStr='%v' " +
@@ -2932,12 +2822,7 @@ func TestBigIntMathMultiply_MultiplyDecimalArray_03(t *testing.T) {
 			expectedBigINumSign, result.sign)
 	}
 
-	actualNumStr, err := result.GetNumStrErr()
-
-	if err != nil {
-		t.Errorf("Error returned by result.GetNumStrErr() " +
-			"Error='%v'. ", err.Error())
-	}
+	actualNumStr := result.GetNumStr()
 
 	iaResult.OptimizeIntArrayLen(true)
 
@@ -3042,12 +2927,7 @@ func TestBigIntMathMultiply_MultiplyDecimalArray_04(t *testing.T) {
 			expectedBigINumSign, result.sign)
 	}
 
-	actualNumStr, err := result.GetNumStrErr()
-
-	if err != nil {
-		t.Errorf("Error returned by result.GetNumStrErr() " +
-			"Error='%v'. ", err.Error())
-	}
+	actualNumStr := result.GetNumStr()
 
 	if iaResult.GetNumStr() != actualNumStr {
 		t.Errorf("Error: Expected actualNumStr='%v' " +
@@ -3488,12 +3368,7 @@ func TestBigIntMathMultiply_MultiplyDecimalSeries_01(t *testing.T) {
 			expectedBigINumSign, result.sign)
 	}
 
-	actualNumStr, err := result.GetNumStrErr()
-
-	if err != nil {
-		t.Errorf("Error returned by result.GetNumStrErr() " +
-			"Error='%v'. ", err.Error())
-	}
+	actualNumStr := result.GetNumStr()
 
 	if iaResult.GetNumStr() != actualNumStr {
 		t.Errorf("Error: Expected actualNumStr='%v' " +
@@ -3605,12 +3480,7 @@ func TestBigIntMathMultiply_MultiplyDecimalSeries_02(t *testing.T) {
 			expectedBigINumSign, result.sign)
 	}
 
-	actualNumStr, err := result.GetNumStrErr()
-
-	if err != nil {
-		t.Errorf("Error returned by result.GetNumStrErr() " +
-			"Error='%v'. ", err.Error())
-	}
+	actualNumStr := result.GetNumStr()
 
 	if iaResult.GetNumStr() != actualNumStr {
 		t.Errorf("Error: Expected actualNumStr='%v' " +
@@ -3720,12 +3590,7 @@ func TestBigIntMathMultiply_MultiplyDecimalSeries_03(t *testing.T) {
 			expectedBigINumSign, result.sign)
 	}
 
-	actualNumStr, err := result.GetNumStrErr()
-
-	if err != nil {
-		t.Errorf("Error returned by result.GetNumStrErr() " +
-			"Error='%v'. ", err.Error())
-	}
+	actualNumStr := result.GetNumStr()
 
 	iaResult.OptimizeIntArrayLen(true)
 
@@ -3836,12 +3701,7 @@ func TestBigIntMathMultiply_MultiplyDecimalSeries_04(t *testing.T) {
 			expectedBigINumSign, result.sign)
 	}
 
-	actualNumStr, err := result.GetNumStrErr()
-
-	if err != nil {
-		t.Errorf("Error returned by result.GetNumStrErr() " +
-			"Error='%v'. ", err.Error())
-	}
+	actualNumStr := result.GetNumStr()
 
 	if iaResult.GetNumStr() != actualNumStr {
 		t.Errorf("Error: Expected actualNumStr='%v' " +
@@ -3944,12 +3804,7 @@ func TestBigIntMathMultiply_MultiplyIntAry_01(t *testing.T) {
 			expectedSignValue, result.sign)
 	}
 
-	actualNumStr, err := result.GetNumStrErr()
-
-	if err != nil {
-		t.Errorf("Error returned by result.GetNumStrErr() " +
-			"Error='%v'. ", err.Error())
-	}
+	actualNumStr := result.GetNumStr()
 
 	if iaResult.GetNumStr() != actualNumStr {
 		t.Errorf("Error: Expected actualNumStr='%v' " +
@@ -4053,12 +3908,7 @@ func TestBigIntMathMultiply_MultiplyIntAry_02(t *testing.T) {
 			expectedSignValue, result.sign)
 	}
 
-	actualNumStr, err := result.GetNumStrErr()
-
-	if err != nil {
-		t.Errorf("Error returned by result.GetNumStrErr() " +
-			"Error='%v'. ", err.Error())
-	}
+	actualNumStr := result.GetNumStr()
 
 	if iaResult.GetNumStr() != actualNumStr {
 		t.Errorf("Error: Expected actualNumStr='%v' " +
@@ -4162,12 +4012,7 @@ func TestBigIntMathMultiply_MultiplyIntAry_03(t *testing.T) {
 			expectedSignValue, result.sign)
 	}
 
-	actualNumStr, err := result.GetNumStrErr()
-
-	if err != nil {
-		t.Errorf("Error returned by result.GetNumStrErr() " +
-			"Error='%v'. ", err.Error())
-	}
+	actualNumStr := result.GetNumStr()
 
 	if iaResult.GetNumStr() != actualNumStr {
 		t.Errorf("Error: Expected actualNumStr='%v' " +
@@ -4271,12 +4116,7 @@ func TestBigIntMathMultiply_MultiplyIntAry_04(t *testing.T) {
 			expectedSignValue, result.sign)
 	}
 
-	actualNumStr, err := result.GetNumStrErr()
-
-	if err != nil {
-		t.Errorf("Error returned by result.GetNumStrErr() " +
-			"Error='%v'. ", err.Error())
-	}
+	actualNumStr := result.GetNumStr()
 
 	if iaResult.GetNumStr() != actualNumStr {
 		t.Errorf("Error: Expected actualNumStr='%v' " +
@@ -4496,12 +4336,7 @@ func TestBigIntMathMultiply_MultiplyIntAryArray_01(t *testing.T) {
 			expectedBigINumSign, result.sign)
 	}
 
-	actualNumStr, err := result.GetNumStrErr()
-
-	if err != nil {
-		t.Errorf("Error returned by result.GetNumStrErr() " +
-			"Error='%v'. ", err.Error())
-	}
+	actualNumStr := result.GetNumStr()
 
 	if iaResult.GetNumStr() != actualNumStr {
 		t.Errorf("Error: Expected actualNumStr='%v' " +
@@ -4605,12 +4440,7 @@ func TestBigIntMathMultiply_MultiplyIntAryArray_02(t *testing.T) {
 			expectedBigINumSign, result.sign)
 	}
 
-	actualNumStr, err := result.GetNumStrErr()
-
-	if err != nil {
-		t.Errorf("Error returned by result.GetNumStrErr() " +
-			"Error='%v'. ", err.Error())
-	}
+	actualNumStr := result.GetNumStr()
 
 	if iaResult.GetNumStr() != actualNumStr {
 		t.Errorf("Error: Expected actualNumStr='%v' " +
@@ -4713,12 +4543,7 @@ func TestBigIntMathMultiply_MultiplyIntAryArray_03(t *testing.T) {
 			expectedBigINumSign, result.sign)
 	}
 
-	actualNumStr, err := result.GetNumStrErr()
-
-	if err != nil {
-		t.Errorf("Error returned by result.GetNumStrErr() " +
-			"Error='%v'. ", err.Error())
-	}
+	actualNumStr := result.GetNumStr()
 
 	iaResult.OptimizeIntArrayLen(true)
 
@@ -4823,12 +4648,7 @@ func TestBigIntMathMultiply_MultiplyIntAryArray_04(t *testing.T) {
 			expectedBigINumSign, result.sign)
 	}
 
-	actualNumStr, err := result.GetNumStrErr()
-
-	if err != nil {
-		t.Errorf("Error returned by result.GetNumStrErr() " +
-			"Error='%v'. ", err.Error())
-	}
+	actualNumStr := result.GetNumStr()
 
 	if iaResult.GetNumStr() != actualNumStr {
 		t.Errorf("Error: Expected actualNumStr='%v' " +
@@ -5269,12 +5089,7 @@ func TestBigIntMathMultiply_MultiplyIntArySeries_01(t *testing.T) {
 			expectedBigINumSign, result.sign)
 	}
 
-	actualNumStr, err := result.GetNumStrErr()
-
-	if err != nil {
-		t.Errorf("Error returned by result.GetNumStrErr() " +
-			"Error='%v'. ", err.Error())
-	}
+	actualNumStr := result.GetNumStr()
 
 	if iaResult.GetNumStr() != actualNumStr {
 		t.Errorf("Error: Expected actualNumStr='%v' " +
@@ -5386,12 +5201,7 @@ func TestBigIntMathMultiply_MultiplyIntArySeries_02(t *testing.T) {
 			expectedBigINumSign, result.sign)
 	}
 
-	actualNumStr, err := result.GetNumStrErr()
-
-	if err != nil {
-		t.Errorf("Error returned by result.GetNumStrErr() " +
-			"Error='%v'. ", err.Error())
-	}
+	actualNumStr := result.GetNumStr()
 
 	if iaResult.GetNumStr() != actualNumStr {
 		t.Errorf("Error: Expected actualNumStr='%v' " +
@@ -5501,12 +5311,7 @@ func TestBigIntMathMultiply_MultiplyIntArySeries_03(t *testing.T) {
 			expectedBigINumSign, result.sign)
 	}
 
-	actualNumStr, err := result.GetNumStrErr()
-
-	if err != nil {
-		t.Errorf("Error returned by result.GetNumStrErr() " +
-			"Error='%v'. ", err.Error())
-	}
+	actualNumStr := result.GetNumStr()
 
 	if iaResult.GetNumStr() != actualNumStr {
 		t.Errorf("Error: Expected actualNumStr='%v' " +
@@ -5615,12 +5420,7 @@ func TestBigIntMathMultiply_MultiplyIntArySeries_04(t *testing.T) {
 			expectedBigINumSign, result.sign)
 	}
 
-	actualNumStr, err := result.GetNumStrErr()
-
-	if err != nil {
-		t.Errorf("Error returned by result.GetNumStrErr() " +
-			"Error='%v'. ", err.Error())
-	}
+	actualNumStr := result.GetNumStr()
 
 	if iaResult.GetNumStr() != actualNumStr {
 		t.Errorf("Error: Expected actualNumStr='%v' " +
@@ -5930,12 +5730,7 @@ func TestBigIntMathMultiply_MultiplyNumStrArray_01(t *testing.T) {
 			expectedBigINumSign, result.sign)
 	}
 
-	actualNumStr, err := result.GetNumStrErr()
-
-	if err != nil {
-		t.Errorf("Error returned by result.GetNumStrErr() " +
-			"Error='%v'. ", err.Error())
-	}
+	actualNumStr := result.GetNumStr()
 
 	if iaResult.GetNumStr() != actualNumStr {
 		t.Errorf("Error: Expected actualNumStr='%v' " +
@@ -6025,12 +5820,7 @@ func TestBigIntMathMultiply_MultiplyNumStrArray_02(t *testing.T) {
 			expectedBigINumSign, result.sign)
 	}
 
-	actualNumStr, err := result.GetNumStrErr()
-
-	if err != nil {
-		t.Errorf("Error returned by result.GetNumStrErr() " +
-			"Error='%v'. ", err.Error())
-	}
+	actualNumStr := result.GetNumStr()
 
 	if iaResult.GetNumStr() != actualNumStr {
 		t.Errorf("Error: Expected actualNumStr='%v' " +
@@ -6119,12 +5909,7 @@ func TestBigIntMathMultiply_MultiplyNumStrArray_03(t *testing.T) {
 			expectedBigINumSign, result.sign)
 	}
 
-	actualNumStr, err := result.GetNumStrErr()
-
-	if err != nil {
-		t.Errorf("Error returned by result.GetNumStrErr() " +
-			"Error='%v'. ", err.Error())
-	}
+	actualNumStr := result.GetNumStr()
 
 	if iaResult.GetNumStr() != actualNumStr {
 		t.Errorf("Error: Expected actualNumStr='%v' " +
@@ -6213,12 +5998,7 @@ func TestBigIntMathMultiply_MultiplyNumStrArray_04(t *testing.T) {
 			expectedBigINumSign, result.sign)
 	}
 
-	actualNumStr, err := result.GetNumStrErr()
-
-	if err != nil {
-		t.Errorf("Error returned by result.GetNumStrErr() " +
-			"Error='%v'. ", err.Error())
-	}
+	actualNumStr := result.GetNumStr()
 
 	if iaResult.GetNumStr() != actualNumStr {
 		t.Errorf("Error: Expected actualNumStr='%v' " +
@@ -6542,12 +6322,7 @@ func TestBigIntMathMultiply_MultiplyNumStrSeries_01(t *testing.T) {
 			expectedBigINumSign, result.sign)
 	}
 
-	actualNumStr, err := result.GetNumStrErr()
-
-	if err != nil {
-		t.Errorf("Error returned by result.GetNumStrErr() " +
-			"Error='%v'. ", err.Error())
-	}
+	actualNumStr := result.GetNumStr()
 
 	if iaResult.GetNumStr() != actualNumStr {
 		t.Errorf("Error: Expected actualNumStr='%v' " +
@@ -6639,12 +6414,7 @@ func TestBigIntMathMultiply_MultiplyNumStrSeries_02(t *testing.T) {
 			expectedBigINumSign, result.sign)
 	}
 
-	actualNumStr, err := result.GetNumStrErr()
-
-	if err != nil {
-		t.Errorf("Error returned by result.GetNumStrErr() " +
-			"Error='%v'. ", err.Error())
-	}
+	actualNumStr := result.GetNumStr()
 
 	if iaResult.GetNumStr() != actualNumStr {
 		t.Errorf("Error: Expected actualNumStr='%v' " +
@@ -6734,12 +6504,7 @@ func TestBigIntMathMultiply_MultiplyNumStrSeries_03(t *testing.T) {
 			expectedBigINumSign, result.sign)
 	}
 
-	actualNumStr, err := result.GetNumStrErr()
-
-	if err != nil {
-		t.Errorf("Error returned by result.GetNumStrErr() " +
-			"Error='%v'. ", err.Error())
-	}
+	actualNumStr := result.GetNumStr()
 
 	if iaResult.GetNumStr() != actualNumStr {
 		t.Errorf("Error: Expected actualNumStr='%v' " +
@@ -6829,12 +6594,7 @@ func TestBigIntMathMultiply_MultiplyNumStrSeries_04(t *testing.T) {
 			expectedBigINumSign, result.sign)
 	}
 
-	actualNumStr, err := result.GetNumStrErr()
-
-	if err != nil {
-		t.Errorf("Error returned by result.GetNumStrErr() " +
-			"Error='%v'. ", err.Error())
-	}
+	actualNumStr := result.GetNumStr()
 
 	if iaResult.GetNumStr() != actualNumStr {
 		t.Errorf("Error: Expected actualNumStr='%v' " +
@@ -6938,12 +6698,7 @@ func TestBigIntMathMultiply_MultiplyNumStrDto_01(t *testing.T) {
 			expectedSignValue, result.sign)
 	}
 
-	actualNumStr, err := result.GetNumStrErr()
-
-	if err != nil {
-		t.Errorf("Error returned by result.GetNumStrErr() " +
-			"Error='%v'. ", err.Error())
-	}
+	actualNumStr := result.GetNumStr()
 
 	if iaResult.GetNumStr() != actualNumStr {
 		t.Errorf("Error: Expected actualNumStr='%v' " +
@@ -7047,12 +6802,7 @@ func TestBigIntMathMultiply_MultiplyNumStrDto_02(t *testing.T) {
 			expectedSignValue, result.sign)
 	}
 
-	actualNumStr, err := result.GetNumStrErr()
-
-	if err != nil {
-		t.Errorf("Error returned by result.GetNumStrErr() " +
-			"Error='%v'. ", err.Error())
-	}
+	actualNumStr := result.GetNumStr()
 
 	if iaResult.GetNumStr() != actualNumStr {
 		t.Errorf("Error: Expected actualNumStr='%v' " +
@@ -7156,12 +6906,7 @@ func TestBigIntMathMultiply_MultiplyNumStrDto_03(t *testing.T) {
 			expectedSignValue, result.sign)
 	}
 
-	actualNumStr, err := result.GetNumStrErr()
-
-	if err != nil {
-		t.Errorf("Error returned by result.GetNumStrErr() " +
-			"Error='%v'. ", err.Error())
-	}
+	actualNumStr := result.GetNumStr()
 
 	if iaResult.GetNumStr() != actualNumStr {
 		t.Errorf("Error: Expected actualNumStr='%v' " +
@@ -7265,12 +7010,7 @@ func TestBigIntMathMultiply_MultiplyNumStrDto_04(t *testing.T) {
 			expectedSignValue, result.sign)
 	}
 
-	actualNumStr, err := result.GetNumStrErr()
-
-	if err != nil {
-		t.Errorf("Error returned by result.GetNumStrErr() " +
-			"Error='%v'. ", err.Error())
-	}
+	actualNumStr := result.GetNumStr()
 
 	if iaResult.GetNumStr() != actualNumStr {
 		t.Errorf("Error: Expected actualNumStr='%v' " +
@@ -7491,12 +7231,7 @@ func TestBigIntMathMultiply_MultiplyNumStrDtoArray_01(t *testing.T) {
 			expectedBigINumSign, result.sign)
 	}
 
-	actualNumStr, err := result.GetNumStrErr()
-
-	if err != nil {
-		t.Errorf("Error returned by result.GetNumStrErr() " +
-			"Error='%v'. ", err.Error())
-	}
+	actualNumStr := result.GetNumStr()
 
 	if iaResult.GetNumStr() != actualNumStr {
 		t.Errorf("Error: Expected actualNumStr='%v' " +
@@ -7600,12 +7335,7 @@ func TestBigIntMathMultiply_MultiplyNumStrDtoArray_02(t *testing.T) {
 			expectedBigINumSign, result.sign)
 	}
 
-	actualNumStr, err := result.GetNumStrErr()
-
-	if err != nil {
-		t.Errorf("Error returned by result.GetNumStrErr() " +
-			"Error='%v'. ", err.Error())
-	}
+	actualNumStr := result.GetNumStr()
 
 	if iaResult.GetNumStr() != actualNumStr {
 		t.Errorf("Error: Expected actualNumStr='%v' " +
@@ -7708,12 +7438,7 @@ func TestBigIntMathMultiply_MultiplyNumStrDtoArray_03(t *testing.T) {
 			expectedBigINumSign, result.sign)
 	}
 
-	actualNumStr, err := result.GetNumStrErr()
-
-	if err != nil {
-		t.Errorf("Error returned by result.GetNumStrErr() " +
-			"Error='%v'. ", err.Error())
-	}
+	actualNumStr := result.GetNumStr()
 
 	if iaResult.GetNumStr() != actualNumStr {
 		t.Errorf("Error: Expected actualNumStr='%v' " +
@@ -7816,12 +7541,7 @@ func TestBigIntMathMultiply_MultiplyNumStrDtoArray_04(t *testing.T) {
 			expectedBigINumSign, result.sign)
 	}
 
-	actualNumStr, err := result.GetNumStrErr()
-
-	if err != nil {
-		t.Errorf("Error returned by result.GetNumStrErr() " +
-			"Error='%v'. ", err.Error())
-	}
+	actualNumStr := result.GetNumStr()
 
 	if iaResult.GetNumStr() != actualNumStr {
 		t.Errorf("Error: Expected actualNumStr='%v' " +
@@ -8262,12 +7982,7 @@ func TestBigIntMathMultiply_MultiplyNumStrDtoSeries_01(t *testing.T) {
 			expectedBigINumSign, result.sign)
 	}
 
-	actualNumStr, err := result.GetNumStrErr()
-
-	if err != nil {
-		t.Errorf("Error returned by result.GetNumStrErr() " +
-			"Error='%v'. ", err.Error())
-	}
+	actualNumStr := result.GetNumStr()
 
 	if iaResult.GetNumStr() != actualNumStr {
 		t.Errorf("Error: Expected actualNumStr='%v' " +
@@ -8379,12 +8094,7 @@ func TestBigIntMathMultiply_MultiplyNumStrDtoSeries_02(t *testing.T) {
 			expectedBigINumSign, result.sign)
 	}
 
-	actualNumStr, err := result.GetNumStrErr()
-
-	if err != nil {
-		t.Errorf("Error returned by result.GetNumStrErr() " +
-			"Error='%v'. ", err.Error())
-	}
+	actualNumStr := result.GetNumStr()
 
 	if iaResult.GetNumStr() != actualNumStr {
 		t.Errorf("Error: Expected actualNumStr='%v' " +
@@ -8494,12 +8204,7 @@ func TestBigIntMathMultiply_MultiplyNumStrDtoSeries_03(t *testing.T) {
 			expectedBigINumSign, result.sign)
 	}
 
-	actualNumStr, err := result.GetNumStrErr()
-
-	if err != nil {
-		t.Errorf("Error returned by result.GetNumStrErr() " +
-			"Error='%v'. ", err.Error())
-	}
+	actualNumStr := result.GetNumStr()
 
 	if iaResult.GetNumStr() != actualNumStr {
 		t.Errorf("Error: Expected actualNumStr='%v' " +
@@ -8608,12 +8313,7 @@ func TestBigIntMathMultiply_MultiplyNumStrDtoSeries_04(t *testing.T) {
 			expectedBigINumSign, result.sign)
 	}
 
-	actualNumStr, err := result.GetNumStrErr()
-
-	if err != nil {
-		t.Errorf("Error returned by result.GetNumStrErr() " +
-			"Error='%v'. ", err.Error())
-	}
+	actualNumStr := result.GetNumStr()
 
 	if iaResult.GetNumStr() != actualNumStr {
 		t.Errorf("Error: Expected actualNumStr='%v' " +

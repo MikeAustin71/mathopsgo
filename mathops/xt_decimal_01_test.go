@@ -1420,7 +1420,67 @@ func TestDecimal_GetBigIntNum_01(t *testing.T) {
 					bigINum.bigInt.Text(10), bigINum.precision)
 	}
 
-	actualNumStr, err := bigINum.GetNumStrErr()
+	actualNumStr := bigINum.GetNumStr()
+
+	if err != nil {
+		t.Errorf("Error returned by bigINum.GetNumStrErr(). " +
+			"Error='%v' ", err.Error())
+	}
+
+	if err != nil {
+		t.Errorf("Error returned by bigINum.GetNumStrErr(). " +
+			"Error='%v' ", err.Error())
+	}
+
+	if err != nil {
+		t.Errorf("Error returned by bigINum.GetNumStrErr(). " +
+			"Error='%v' ", err.Error())
+	}
+
+	if err != nil {
+		t.Errorf("Error returned by bigINum.GetNumStrErr(). " +
+			"Error='%v' ", err.Error())
+	}
+
+	if err != nil {
+		t.Errorf("Error returned by bigINum.GetNumStrErr(). " +
+			"Error='%v' ", err.Error())
+	}
+
+	if err != nil {
+		t.Errorf("Error returned by bigINum.GetNumStrErr(). " +
+			"Error='%v' ", err.Error())
+	}
+
+	if err != nil {
+		t.Errorf("Error returned by bigINum.GetNumStrErr(). " +
+			"Error='%v' ", err.Error())
+	}
+
+	if err != nil {
+		t.Errorf("Error returned by bigINum.GetNumStrErr(). " +
+			"Error='%v' ", err.Error())
+	}
+
+	if err != nil {
+		t.Errorf("Error returned by bigINum.GetNumStrErr(). " +
+			"Error='%v' ", err.Error())
+	}
+
+	if err != nil {
+		t.Errorf("Error returned by bigINum.GetNumStrErr(). " +
+			"Error='%v' ", err.Error())
+	}
+
+	if err != nil {
+		t.Errorf("Error returned by bigINum.GetNumStrErr(). " +
+			"Error='%v' ", err.Error())
+	}
+
+	if err != nil {
+		t.Errorf("Error returned by bigINum.GetNumStrErr(). " +
+			"Error='%v' ", err.Error())
+	}
 
 	if err != nil {
 		t.Errorf("Error returned by bigINum.GetNumStrErr(). " +

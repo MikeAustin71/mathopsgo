@@ -1,6 +1,9 @@
 package mathops
 
-import "testing"
+import (
+	"testing"
+	"math/big"
+)
 
 func TestBigIntNum_Floor_01(t *testing.T) {
 	nStr := "5.95"
@@ -17,12 +20,7 @@ func TestBigIntNum_Floor_01(t *testing.T) {
 
 	floor := bINum1.Floor()
 
-	actualNumStr, err := floor.GetNumStrErr()
-
-	if err != nil {
-		t.Errorf("Error returned by floor.GetNumStrErr(). Error='%v'",
-			err.Error())
-	}
+	actualNumStr := floor.GetNumStr()
 
 	if expectedNumStr != actualNumStr {
 		t.Errorf("Error: Expected Floor NumStr='%v'. " +
@@ -52,12 +50,7 @@ func TestBigIntNum_Floor_02(t *testing.T) {
 
 	floor := bINum1.Floor()
 
-	actualNumStr, err := floor.GetNumStrErr()
-
-	if err != nil {
-		t.Errorf("Error returned by floor.GetNumStrErr(). Error='%v'",
-			err.Error())
-	}
+	actualNumStr := floor.GetNumStr()
 
 	if expectedNumStr != actualNumStr {
 		t.Errorf("Error: Expected Floor NumStr='%v'. " +
@@ -87,12 +80,7 @@ func TestBigIntNum_Floor_03(t *testing.T) {
 
 	floor := bINum1.Floor()
 
-	actualNumStr, err := floor.GetNumStrErr()
-
-	if err != nil {
-		t.Errorf("Error returned by floor.GetNumStrErr(). Error='%v'",
-			err.Error())
-	}
+	actualNumStr := floor.GetNumStr()
 
 	if expectedNumStr != actualNumStr {
 		t.Errorf("Error: Expected Floor NumStr='%v'. " +
@@ -122,12 +110,7 @@ func TestBigIntNum_Floor_04(t *testing.T) {
 
 	floor := bINum1.Floor()
 
-	actualNumStr, err := floor.GetNumStrErr()
-
-	if err != nil {
-		t.Errorf("Error returned by floor.GetNumStrErr(). Error='%v'",
-			err.Error())
-	}
+	actualNumStr := floor.GetNumStr()
 
 	if expectedNumStr != actualNumStr {
 		t.Errorf("Error: Expected Floor NumStr='%v'. " +
@@ -157,12 +140,7 @@ func TestBigIntNum_Floor_05(t *testing.T) {
 
 	floor := bINum1.Floor()
 
-	actualNumStr, err := floor.GetNumStrErr()
-
-	if err != nil {
-		t.Errorf("Error returned by floor.GetNumStrErr(). Error='%v'",
-			err.Error())
-	}
+	actualNumStr := floor.GetNumStr()
 
 	if expectedNumStr != actualNumStr {
 		t.Errorf("Error: Expected Floor NumStr='%v'. " +
@@ -192,12 +170,7 @@ func TestBigIntNum_Floor_06(t *testing.T) {
 
 	floor := bINum1.Floor()
 
-	actualNumStr, err := floor.GetNumStrErr()
-
-	if err != nil {
-		t.Errorf("Error returned by floor.GetNumStrErr(). Error='%v'",
-			err.Error())
-	}
+	actualNumStr := floor.GetNumStr()
 
 	if expectedNumStr != actualNumStr {
 		t.Errorf("Error: Expected Floor NumStr='%v'. " +
@@ -227,12 +200,7 @@ func TestBigIntNum_Floor_07(t *testing.T) {
 
 	floor := bINum1.Floor()
 
-	actualNumStr, err := floor.GetNumStrErr()
-
-	if err != nil {
-		t.Errorf("Error returned by floor.GetNumStrErr(). Error='%v'",
-			err.Error())
-	}
+	actualNumStr := floor.GetNumStr()
 
 	if expectedNumStr != actualNumStr {
 		t.Errorf("Error: Expected Floor NumStr='%v'. " +
@@ -262,12 +230,7 @@ func TestBigIntNum_Floor_08(t *testing.T) {
 
 	floor := bINum1.Floor()
 
-	actualNumStr, err := floor.GetNumStrErr()
-
-	if err != nil {
-		t.Errorf("Error returned by floor.GetNumStrErr(). Error='%v'",
-			err.Error())
-	}
+	actualNumStr := floor.GetNumStr()
 
 	if expectedNumStr != actualNumStr {
 		t.Errorf("Error: Expected Floor NumStr='%v'. " +
@@ -297,12 +260,7 @@ func TestBigIntNum_Floor_09(t *testing.T) {
 
 	floor := bINum1.Floor()
 
-	actualNumStr, err := floor.GetNumStrErr()
-
-	if err != nil {
-		t.Errorf("Error returned by floor.GetNumStrErr(). Error='%v'",
-			err.Error())
-	}
+	actualNumStr := floor.GetNumStr()
 
 	if expectedNumStr != actualNumStr {
 		t.Errorf("Error: Expected Floor NumStr='%v'. " +
@@ -332,12 +290,7 @@ func TestBigIntNum_Floor_10(t *testing.T) {
 
 	floor := bINum1.Floor()
 
-	actualNumStr, err := floor.GetNumStrErr()
-
-	if err != nil {
-		t.Errorf("Error returned by floor.GetNumStrErr(). Error='%v'",
-			err.Error())
-	}
+	actualNumStr := floor.GetNumStr()
 
 	if expectedNumStr != actualNumStr {
 		t.Errorf("Error: Expected Floor NumStr='%v'. " +
@@ -367,12 +320,7 @@ func TestBigIntNum_Floor_11(t *testing.T) {
 
 	floor := bINum1.Floor()
 
-	actualNumStr, err := floor.GetNumStrErr()
-
-	if err != nil {
-		t.Errorf("Error returned by floor.GetNumStrErr(). Error='%v'",
-			err.Error())
-	}
+	actualNumStr := floor.GetNumStr()
 
 	if expectedNumStr != actualNumStr {
 		t.Errorf("Error: Expected Floor NumStr='%v'. " +
@@ -402,12 +350,7 @@ func TestBigIntNum_Floor_12(t *testing.T) {
 
 	floor := bINum1.Floor()
 
-	actualNumStr, err := floor.GetNumStrErr()
-
-	if err != nil {
-		t.Errorf("Error returned by floor.GetNumStrErr(). Error='%v'",
-			err.Error())
-	}
+	actualNumStr := floor.GetNumStr()
 
 	if expectedNumStr != actualNumStr {
 		t.Errorf("Error: Expected Floor NumStr='%v'. " +
@@ -437,12 +380,7 @@ func TestBigIntNum_Floor_13(t *testing.T) {
 
 	floor := bINum1.Floor()
 
-	actualNumStr, err := floor.GetNumStrErr()
-
-	if err != nil {
-		t.Errorf("Error returned by floor.GetNumStrErr(). Error='%v'",
-			err.Error())
-	}
+	actualNumStr := floor.GetNumStr()
 
 	if expectedNumStr != actualNumStr {
 		t.Errorf("Error: Expected Floor NumStr='%v'. " +
@@ -472,12 +410,7 @@ func TestBigIntNum_Floor_14(t *testing.T) {
 
 	floor := bINum1.Floor()
 
-	actualNumStr, err := floor.GetNumStrErr()
-
-	if err != nil {
-		t.Errorf("Error returned by floor.GetNumStrErr(). Error='%v'",
-			err.Error())
-	}
+	actualNumStr := floor.GetNumStr()
 
 	if expectedNumStr != actualNumStr {
 		t.Errorf("Error: Expected Floor NumStr='%v'. " +
@@ -507,12 +440,7 @@ func TestBigIntNum_Floor_15(t *testing.T) {
 
 	floor := bINum1.Floor()
 
-	actualNumStr, err := floor.GetNumStrErr()
-
-	if err != nil {
-		t.Errorf("Error returned by floor.GetNumStrErr(). Error='%v'",
-			err.Error())
-	}
+	actualNumStr := floor.GetNumStr()
 
 	if expectedNumStr != actualNumStr {
 		t.Errorf("Error: Expected Floor NumStr='%v'. " +
@@ -801,6 +729,112 @@ func TestBigIntNum_FormatNumStr_14(t *testing.T) {
 			expectedNumStr, outStr)
 	}
 
+}
+
+func TestBigIntNum_FormatNumStr_15(t *testing.T) {
+
+	originalBInt := big.NewInt(12345)
+	precision := uint(8)
+	expectedNumStr := "0.00012345"
+	mode := LEADMINUSNEGVALFMTMODE
+
+	bINum := BigIntNum{}.NewBigInt(originalBInt, precision)
+
+	outStr := bINum.FormatNumStr(mode)
+
+	if expectedNumStr != outStr {
+		t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v'",
+			expectedNumStr, outStr)
+	}
+
+}
+
+func TestBigIntNum_FormatNumStr_16(t *testing.T) {
+
+	originalBInt := big.NewInt(12345)
+	precision := uint(5)
+	expectedNumStr := "0.12345"
+	mode := LEADMINUSNEGVALFMTMODE
+
+	bINum := BigIntNum{}.NewBigInt(originalBInt, precision)
+
+	outStr := bINum.FormatNumStr(mode)
+
+	if expectedNumStr != outStr {
+		t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v'",
+			expectedNumStr, outStr)
+	}
+
+}
+
+func TestBigIntNum_FormatNumStr_17(t *testing.T) {
+
+	originalBInt := big.NewInt(-12345)
+	precision := uint(8)
+	expectedNumStr := "-0.00012345"
+	mode := LEADMINUSNEGVALFMTMODE
+
+	bINum := BigIntNum{}.NewBigInt(originalBInt, precision)
+
+	outStr := bINum.FormatNumStr(mode)
+
+	if expectedNumStr != outStr {
+		t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v'",
+			expectedNumStr, outStr)
+	}
+
+}
+
+func TestBigIntNum_FormatNumStr_18(t *testing.T) {
+
+	originalBInt := big.NewInt(-12345)
+	precision := uint(5)
+	expectedNumStr := "-0.12345"
+	mode := LEADMINUSNEGVALFMTMODE
+
+	bINum := BigIntNum{}.NewBigInt(originalBInt, precision)
+
+	outStr := bINum.FormatNumStr(mode)
+
+	if expectedNumStr != outStr {
+		t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v'",
+			expectedNumStr, outStr)
+	}
+}
+
+func TestBigIntNum_FormatNumStr_19(t *testing.T) {
+
+	originalBInt := big.NewInt(-12345)
+	precision := uint(8)
+	expectedNumStr := "(0.00012345)"
+	mode := PARENTHESESNEGVALFMTMODE
+
+	bINum := BigIntNum{}.NewBigInt(originalBInt, precision)
+
+	outStr := bINum.FormatNumStr(mode)
+
+	if expectedNumStr != outStr {
+		t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v'",
+			expectedNumStr, outStr)
+	}
+
+}
+
+func TestBigIntNum_FormatNumStr_20(t *testing.T) {
+
+	originalBInt := big.NewInt(-12345)
+	precision := uint(5)
+	expectedNumStr := "(0.12345)"
+	mode := PARENTHESESNEGVALFMTMODE
+
+	bINum := BigIntNum{}.NewBigInt(originalBInt, precision)
+
+	outStr := bINum.FormatNumStr(mode)
+
+	if expectedNumStr != outStr {
+		t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v'",
+			expectedNumStr, outStr)
+	}
 }
 
 func TestBigIntNum_FormatThousandsStr_01(t *testing.T) {
@@ -1148,4 +1182,109 @@ func TestBigIntNum_FormatThousandsStr_15(t *testing.T) {
 
 }
 
+func TestBigIntNum_FormatThousandsStr_16(t *testing.T) {
+
+	originalBInt := big.NewInt(12345)
+	precision := uint(8)
+	expectedNumStr := "0.00012345"
+	mode := LEADMINUSNEGVALFMTMODE
+
+	bINum := BigIntNum{}.NewBigInt(originalBInt, precision)
+
+	outStr := bINum.FormatThousandsStr(mode)
+
+	if expectedNumStr != outStr {
+		t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v'",
+			expectedNumStr, outStr)
+	}
+
+}
+
+func TestBigIntNum_FormatThousandsStr_17(t *testing.T) {
+
+	originalBInt := big.NewInt(12345)
+	precision := uint(5)
+	expectedNumStr := "0.12345"
+	mode := LEADMINUSNEGVALFMTMODE
+
+	bINum := BigIntNum{}.NewBigInt(originalBInt, precision)
+
+	outStr := bINum.FormatThousandsStr(mode)
+
+	if expectedNumStr != outStr {
+		t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v'",
+			expectedNumStr, outStr)
+	}
+
+}
+
+func TestBigIntNum_FormatThousandsStr_18(t *testing.T) {
+
+	originalBInt := big.NewInt(-12345)
+	precision := uint(8)
+	expectedNumStr := "-0.00012345"
+	mode := LEADMINUSNEGVALFMTMODE
+
+	bINum := BigIntNum{}.NewBigInt(originalBInt, precision)
+
+	outStr := bINum.FormatThousandsStr(mode)
+
+	if expectedNumStr != outStr {
+		t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v'",
+			expectedNumStr, outStr)
+	}
+
+}
+
+func TestBigIntNum_FormatThousandsStr_19(t *testing.T) {
+
+	originalBInt := big.NewInt(-12345)
+	precision := uint(5)
+	expectedNumStr := "-0.12345"
+	mode := LEADMINUSNEGVALFMTMODE
+
+	bINum := BigIntNum{}.NewBigInt(originalBInt, precision)
+
+	outStr := bINum.FormatThousandsStr(mode)
+
+	if expectedNumStr != outStr {
+		t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v'",
+			expectedNumStr, outStr)
+	}
+}
+
+func TestBigIntNum_FormatThousandsStr_20(t *testing.T) {
+
+	originalBInt := big.NewInt(-12345)
+	precision := uint(8)
+	expectedNumStr := "(0.00012345)"
+	mode := PARENTHESESNEGVALFMTMODE
+
+	bINum := BigIntNum{}.NewBigInt(originalBInt, precision)
+
+	outStr := bINum.FormatThousandsStr(mode)
+
+	if expectedNumStr != outStr {
+		t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v'",
+			expectedNumStr, outStr)
+	}
+
+}
+
+func TestBigIntNum_FormatThousandsStr_21(t *testing.T) {
+
+	originalBInt := big.NewInt(-12345)
+	precision := uint(5)
+	expectedNumStr := "(0.12345)"
+	mode := PARENTHESESNEGVALFMTMODE
+
+	bINum := BigIntNum{}.NewBigInt(originalBInt, precision)
+
+	outStr := bINum.FormatThousandsStr(mode)
+
+	if expectedNumStr != outStr {
+		t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v'",
+			expectedNumStr, outStr)
+	}
+}
 

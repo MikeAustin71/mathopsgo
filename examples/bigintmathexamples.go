@@ -707,13 +707,7 @@ func ExampleBigIntMultiply_02() {
 		return
 	}
 
-	actualNumStr, err := result.GetNumStrErr()
-
-	if err != nil {
-		fmt.Printf("Error returned by result.Result.GetNumStrErr() " +
-			"Error='%v'. ", err.Error())
-		return
-	}
+	actualNumStr := result.GetNumStr()
 
 	if iaResult.GetNumStr() != actualNumStr {
 		fmt.Printf("Error: Expected actualNumStr='%v' " +

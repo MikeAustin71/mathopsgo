@@ -758,7 +758,6 @@ func (nDto *NumStrDto) FormatForMathOps(n1Dto, n2Dto NumStrDto) (n1DtoOut NumStr
 	return n1DtoOut, n2DtoOut, compare, isOrderReversed, nil
 }
 
-
 // FormatCurrencyStr - Formats the current NumStrDto numeric value as a currency string.
 //
 // If the Currency Symbol was not previously set for this NumStrDto, the currency symbol
@@ -791,7 +790,7 @@ func (nDto *NumStrDto) FormatCurrencyStr(negValMode NegativeValueFmtMode) (strin
 	}
 
 	if nDto.decimalSeparator == 0 {
-		nDto.thousandsSeparator = '.'
+		nDto.decimalSeparator = '.'
 	}
 
 	if nDto.currencySymbol == 0 {

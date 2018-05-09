@@ -53,12 +53,7 @@ func TestIntAry_GetBigIntNum_01(t *testing.T) {
 			bigINum.bigInt.Text(10), bigINum.precision)
 	}
 
-	actualNumStr, err := bigINum.GetNumStrErr()
-
-	if err != nil {
-		t.Errorf("Error returned by bigINum.GetNumStrErr(). " +
-			"Error='%v' ", err.Error())
-	}
+	actualNumStr := bigINum.GetNumStr()
 
 	if exStr != actualNumStr {
 		t.Errorf("Error: Expected NumStr='%v'.  Instead, NumStr='%v'",
