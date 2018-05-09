@@ -1,5 +1,5 @@
 === RUN   TestBigIntPair_Compare_01
---- PASS: TestBigIntPair_Compare_01 (0.02s)
+--- PASS: TestBigIntPair_Compare_01 (0.01s)
 === RUN   TestBigIntPair_Compare_02
 --- PASS: TestBigIntPair_Compare_02 (0.00s)
 === RUN   TestBigIntPair_Compare_03
@@ -376,8 +376,14 @@
 --- PASS: TestBigIntMathDivide_NumStrFracQuotient_04 (0.00s)
 === RUN   TestBigIntMathDivide_NumStrFracQuotientArray_01
 --- PASS: TestBigIntMathDivide_NumStrFracQuotientArray_01 (0.00s)
-=== RUN   TestBigIntMathDivide_NumStrDtoQuotientMod_01
---- PASS: TestBigIntMathDivide_NumStrDtoQuotientMod_01 (0.00s)
+=== RUN   TestBigIntMathDivide_ModuloToNumStrDto_01
+--- PASS: TestBigIntMathDivide_ModuloToNumStrDto_01 (0.00s)
+=== RUN   TestBigIntMathDivide_ModuloToNumStrDto_02
+--- PASS: TestBigIntMathDivide_ModuloToNumStrDto_02 (0.00s)
+=== RUN   TestBigIntMathDivide_ModuloToNumStrDto_03
+--- PASS: TestBigIntMathDivide_ModuloToNumStrDto_03 (0.00s)
+=== RUN   TestBigIntMathDivide_ModuloToNumStrDto_04
+--- PASS: TestBigIntMathDivide_ModuloToNumStrDto_04 (0.00s)
 === RUN   TestBigIntMathDivide_NumStrDtoQuotientMod_02
 --- PASS: TestBigIntMathDivide_NumStrDtoQuotientMod_02 (0.00s)
 === RUN   TestBigIntMathDivide_NumStrDtoQuotientMod_03
@@ -1043,7 +1049,7 @@
 === RUN   TestBigIntNum_GetNumStrDto_01
 --- PASS: TestBigIntNum_GetNumStrDto_01 (0.00s)
 === RUN   TestBigIntNum_GetIntAry_01
---- PASS: TestBigIntNum_GetIntAry_01 (0.01s)
+--- PASS: TestBigIntNum_GetIntAry_01 (0.00s)
 === RUN   TestBigIntNum_GetIntegerPart_01
 --- PASS: TestBigIntNum_GetIntegerPart_01 (0.00s)
 === RUN   TestBigIntNum_GetIntegerPart_02
@@ -1213,7 +1219,7 @@
 === RUN   TestDecimal_AllDigitsNumStr_01
 --- PASS: TestDecimal_AllDigitsNumStr_01 (0.00s)
 === RUN   TestDecimal_Add_01
---- PASS: TestDecimal_Add_01 (0.01s)
+--- PASS: TestDecimal_Add_01 (0.00s)
 === RUN   TestDecimal_Add_02
 --- PASS: TestDecimal_Add_02 (0.00s)
 === RUN   TestDecimal_Add_03
@@ -2021,7 +2027,7 @@
 === RUN   TestIntAry_Pow_05
 --- PASS: TestIntAry_Pow_05 (0.00s)
 === RUN   TestIntAry_Pow_06
---- PASS: TestIntAry_Pow_06 (0.27s)
+--- PASS: TestIntAry_Pow_06 (0.25s)
 === RUN   TestIntAry_ResetFromBackUp_01
 --- PASS: TestIntAry_ResetFromBackUp_01 (0.00s)
 === RUN   TestIntAry_RoundToPrecision_01
@@ -2883,4 +2889,4 @@
 === RUN   TestStrMathOp_SubtractN1N2_19
 --- PASS: TestStrMathOp_SubtractN1N2_19 (0.00s)
 PASS
-ok  	MikeAustin71/mathopsgo/mathops	1.112s
+ok  	MikeAustin71/mathopsgo/mathops	1.010s
