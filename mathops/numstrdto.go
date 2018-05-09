@@ -920,10 +920,10 @@ func (nDto *NumStrDto) FormatCurrencyStr(negValMode NegativeValueFmtMode) (strin
 //
 func (nDto *NumStrDto) FormatNumStr(negValMode NegativeValueFmtMode) (string, error) {
 
-	ePrefix := "NumStrDto.FormatThousandsStr() "
+	ePrefix := "NumStrDto.FormatNumStr() "
 
 	if nDto.decimalSeparator == 0 {
-		nDto.thousandsSeparator = '.'
+		nDto.decimalSeparator = '.'
 	}
 
 	err := nDto.IsNumStrDtoValid("")
@@ -1032,7 +1032,7 @@ func (nDto *NumStrDto) FormatThousandsStr(negValMode NegativeValueFmtMode) (stri
 	}
 
 	if nDto.decimalSeparator == 0 {
-		nDto.thousandsSeparator = '.'
+		nDto.decimalSeparator = '.'
 	}
 
 	err := nDto.IsNumStrDtoValid("")

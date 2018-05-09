@@ -9,15 +9,39 @@ import (
 
 func main() {
 
-	num1Str := "0.000"
+	num1Str := "-123.4567"
+	expectedNumStr := "-123.4567"
 
-	ExampleBigIntNumString_01(num1Str)
+	// mathops.LEADMINUSNEGVALFMTMODE
+	// mathops.PARENTHESESNEGVALFMTMODE
+
+	ExampleBigIntNumString_02(num1Str, expectedNumStr,  mathops.LEADMINUSNEGVALFMTMODE)
 
 }
 
+func ExampleBigIntNumString_02(num1Str, expectedNumStr string, mode mathops.NegativeValueFmtMode) {
+
+	bINum, err := mathops.BigIntNum{}.NewNumStr(num1Str)
+
+	if err != nil {
+		fmt.Printf("Error returned by BigIntNum{}.NewNumStr(num1Str). "+
+			" num1Str= '%v' Error='%v' ",
+			num1Str, err.Error())
+
+		return
+	}
+
+	outStr := bINum.FormatNumStr(mode)
+
+	fmt.Println("       Original NumStr: ",  "'",num1Str, "'",)
+	fmt.Println("       Expected NumStr: ", "'", expectedNumStr, "'")
+	fmt.Println("         Actual NumStr: ", "'", outStr,"'")
+	fmt.Println("  Actual String Length: ", len(outStr))
+	fmt.Println("Expected String Length: ", len(expectedNumStr))
+	return
+}
+
 func ExampleBigIntNumString_01(num1Str string) {
-
-
 
 	bINum := mathops.BigIntNum{}
 

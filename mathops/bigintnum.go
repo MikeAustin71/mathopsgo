@@ -211,6 +211,112 @@ func (bNum *BigIntNum) Floor() BigIntNum {
 											big.NewInt(0).Neg(absQuotient),0)
 }
 
+// FormatNumStr - Formats the numeric value of the current NumStrDto
+// as number string consisting of integer digits to the left of the
+// decimal point and fractional digits to the right of the decimal
+// point, if such fractional digits exist. The resulting number string
+// will NOT contain a currency symbol or thousands separators.
+//
+// Example: 123456.789
+//
+// Input Parameters
+// ================
+//
+// negValMode NegativeValueFmtMode -	Specifies the display mode for negative values:
+//																		LEADMINUSNEGVALFMTMODE 		-	Negative values formatted with
+//																														 		a leading minus sign.
+//																																Example: -123456.78
+//
+//																		PARENTHESESNEGVALFMTMODE	-	Negative values formatted with
+//																																surrounding parentheses.
+//																																Example: (123456.78)
+//
+func (bNum *BigIntNum) FormatNumStr(negValMode NegativeValueFmtMode) string {
+
+	if bNum.decimalSeparator == 0 {
+		bNum.decimalSeparator = '.'
+	}
+
+	outRunes := make([]rune, 0, 300)
+
+	scratchNum := big.NewInt(0).Set(bNum.absBigInt)
+	baseZero := big.NewInt(0)
+
+	if scratchNum.Cmp(baseZero) == 0 {
+		bNum.sign = 1
+
+		outRunes = append(outRunes, '0')
+
+		if bNum.precision > 0 {
+			outRunes = append(outRunes, bNum.decimalSeparator)
+
+			for h := 0; h < int(bNum.precision); h++ {
+				outRunes = append(outRunes, '0')
+			}
+
+		}
+
+		return string(outRunes)
+	}
+
+	startIdx := 0
+	modulo := big.NewInt(0)
+	baseTen := big.NewInt(10)
+
+	for scratchNum.Cmp(baseZero) == 1 {
+
+		if startIdx==0 &&
+			bNum.sign == -1  &&
+			negValMode == PARENTHESESNEGVALFMTMODE {
+
+			outRunes = append(outRunes, ')')
+		}
+
+		modX := big.NewInt(0)
+		scratchNum, modulo = big.NewInt(0).QuoRem(scratchNum, baseTen, modX)
+		outRunes = append(outRunes, rune(modulo.Int64() + int64(48)))
+		startIdx++
+
+		if bNum.precision > 0 &&
+			int(bNum.precision) == startIdx {
+
+			outRunes = append(outRunes, bNum.decimalSeparator)
+			startIdx++
+		}
+
+	}
+
+	startIdx--
+
+	// adjust for negative sign value
+	if bNum.sign == -1 {
+
+		if negValMode == LEADMINUSNEGVALFMTMODE {
+			outRunes = append(outRunes, '-')
+			startIdx++
+
+		}	else {
+			// MUST BE negValMode == PARENTHESESNEGVALFMTMODE
+			outRunes = append(outRunes, '(')
+			startIdx+=2
+		}
+	}
+
+	sortLimit := startIdx / 2
+	tRune := rune(0)
+	yCnt := 0
+
+	for i:= startIdx; i > sortLimit ; i-- {
+		tRune = outRunes[yCnt]
+		outRunes[yCnt] = outRunes[i]
+		outRunes[i] = tRune
+		yCnt++
+	}
+
+	return string(outRunes)
+}
+
+
 // GetAbsoluteNumStr - Returns the absolute integer value (positive value) of the
 // *big.Int value encapsulated by this BigIntNum. No decimal point is included.
 //
@@ -417,15 +523,8 @@ func (bNum *BigIntNum) GetIntegerPart() BigIntNum {
 //
 func (bNum *BigIntNum) GetNumStr() (string) {
 
-	nDto, err := NumStrDto{}.NewBigInt(big.NewInt(0).Set(bNum.bigInt), bNum.precision)
+	return bNum.FormatNumStr(LEADMINUSNEGVALFMTMODE)
 
-	if err != nil {
-		return ""
-	}
-
-	bNum.setDefaultSeparators()
-	nDto.SetSeparators(bNum.decimalSeparator, bNum.thousandsSeparator, bNum.currencySymbol)
-	return nDto.GetNumStr()
 }
 
 // GetNumStrErr - Converts the current BigIntNum value to string of
@@ -951,7 +1050,6 @@ func (bNum BigIntNum) NewNumStr(numStr string) (BigIntNum, error) {
 
 	return b, nil
 }
-
 
 // NewNumStr - Receives a number string as input and returns
 // a new BigIntNum instance.
