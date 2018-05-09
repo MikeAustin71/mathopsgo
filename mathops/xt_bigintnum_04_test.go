@@ -6,6 +6,100 @@ import (
 	"errors"
 )
 
+func TestBigIntNum_NewFloat32_01(t *testing.T) {
+
+	numf32 := float32(32.123)
+
+	expectedNumStr := "32.1230"
+
+	bINum, err := BigIntNum{}.NewFloat32(numf32, 4)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewFloat32(numf32, 4) " +
+			"Error='%v' ", err.Error())
+	}
+
+	actualNumStr := bINum.GetNumStr()
+
+	if expectedNumStr != actualNumStr {
+		t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v' ",
+			expectedNumStr, actualNumStr)
+	}
+
+}
+
+func TestBigIntNum_NewFloat32_02(t *testing.T) {
+
+	numf32 := float32(32.129)
+
+	expectedNumStr := "32.13"
+
+	bINum, err := BigIntNum{}.NewFloat32(numf32, 2)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewFloat32(numf32, 4) " +
+			"Error='%v' ", err.Error())
+	}
+
+	actualNumStr := bINum.GetNumStr()
+
+	if expectedNumStr != actualNumStr {
+		t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v' ",
+			expectedNumStr, actualNumStr)
+	}
+
+}
+
+func TestBigIntNum_NewIntExponent_01(t *testing.T) {
+
+	numInt := 1234
+
+	expectedNumStr := "1234000"
+
+	bINum := BigIntNum{}.NewIntExponent(numInt, 3)
+
+	actualNumStr := bINum.GetNumStr()
+
+	if expectedNumStr != actualNumStr {
+		t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v' ",
+			expectedNumStr, actualNumStr)
+	}
+
+}
+
+func TestBigIntNum_NewIntExponent_02(t *testing.T) {
+
+	numInt := 123456
+
+	expectedNumStr := "1234.56"
+
+	bINum := BigIntNum{}.NewIntExponent(numInt, -2)
+
+	actualNumStr := bINum.GetNumStr()
+
+	if expectedNumStr != actualNumStr {
+		t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v' ",
+			expectedNumStr, actualNumStr)
+	}
+
+}
+
+func TestBigIntNum_NewIntExponent_03(t *testing.T) {
+
+	numInt := 123456
+
+	expectedNumStr := "123456"
+
+	bINum := BigIntNum{}.NewIntExponent(numInt, 0)
+
+	actualNumStr := bINum.GetNumStr()
+
+	if expectedNumStr != actualNumStr {
+		t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v' ",
+			expectedNumStr, actualNumStr)
+	}
+
+}
 
 func TestBigIntNum_NewINumMgr_01(t *testing.T) {
 
