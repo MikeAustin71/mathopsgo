@@ -1555,6 +1555,213 @@ func TestBigIntNum_Floor_15(t *testing.T) {
 	}
 }
 
+func TestBigIntNum_FormatNumStr_01(t *testing.T) {
+
+	originalNumStr := "-123.45"
+	expectedNumStr := "-123.45"
+	mode := LEADMINUSNEGVALFMTMODE
+
+	bINum, err := BigIntNum{}.NewNumStr(originalNumStr)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(originalNumStr). "+
+			" num1Str= '%v' Error='%v' ",
+			originalNumStr, err.Error())
+	}
+
+	outStr := bINum.FormatNumStr(mode)
+
+	if expectedNumStr != outStr {
+		t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v'",
+			expectedNumStr, outStr)
+	}
+
+}
+
+func TestBigIntNum_FormatNumStr_02(t *testing.T) {
+
+	originalNumStr := "123.45"
+	expectedNumStr := "123.45"
+	mode := LEADMINUSNEGVALFMTMODE
+
+	bINum, err := BigIntNum{}.NewNumStr(originalNumStr)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(originalNumStr). "+
+			" num1Str= '%v' Error='%v' ",
+			originalNumStr, err.Error())
+	}
+
+	outStr := bINum.FormatNumStr(mode)
+
+	if expectedNumStr != outStr {
+		t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v'",
+			expectedNumStr, outStr)
+	}
+
+}
+
+func TestBigIntNum_FormatNumStr_03(t *testing.T) {
+
+	originalNumStr := "-123.45"
+	expectedNumStr := "(123.45)"
+	mode := PARENTHESESNEGVALFMTMODE
+
+	bINum, err := BigIntNum{}.NewNumStr(originalNumStr)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(originalNumStr). "+
+			" num1Str= '%v' Error='%v' ",
+			originalNumStr, err.Error())
+	}
+
+	outStr := bINum.FormatNumStr(mode)
+
+	if expectedNumStr != outStr {
+		t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v'",
+			expectedNumStr, outStr)
+	}
+
+}
+
+func TestBigIntNum_FormatNumStr_04(t *testing.T) {
+
+	originalNumStr := "-1234.56"
+	expectedNumStr := "-1234.56"
+	mode := LEADMINUSNEGVALFMTMODE
+
+	bINum, err := BigIntNum{}.NewNumStr(originalNumStr)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(originalNumStr). "+
+			" num1Str= '%v' Error='%v' ",
+			originalNumStr, err.Error())
+	}
+
+	outStr := bINum.FormatNumStr(mode)
+
+	if expectedNumStr != outStr {
+		t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v'",
+			expectedNumStr, outStr)
+	}
+
+}
+
+func TestBigIntNum_FormatNumStr_05(t *testing.T) {
+
+	originalNumStr := "1234.56"
+	expectedNumStr := "1234.56"
+	mode := LEADMINUSNEGVALFMTMODE
+
+	bINum, err := BigIntNum{}.NewNumStr(originalNumStr)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(originalNumStr). "+
+			" num1Str= '%v' Error='%v' ",
+			originalNumStr, err.Error())
+	}
+
+	outStr := bINum.FormatNumStr(mode)
+
+	if expectedNumStr != outStr {
+		t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v'",
+			expectedNumStr, outStr)
+	}
+
+}
+
+func TestBigIntNum_FormatNumStr_06(t *testing.T) {
+
+	originalNumStr := "-1234.56"
+	expectedNumStr := "(1234.56)"
+	mode := PARENTHESESNEGVALFMTMODE
+
+	bINum, err := BigIntNum{}.NewNumStr(originalNumStr)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(originalNumStr). "+
+			" num1Str= '%v' Error='%v' ",
+			originalNumStr, err.Error())
+	}
+
+	outStr := bINum.FormatNumStr(mode)
+
+	if expectedNumStr != outStr {
+		t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v'",
+			expectedNumStr, outStr)
+	}
+
+}
+
+func TestBigIntNum_FormatNumStr_07(t *testing.T) {
+
+	originalNumStr := "0"
+	expectedNumStr := "0"
+	mode := PARENTHESESNEGVALFMTMODE
+
+	bINum, err := BigIntNum{}.NewNumStr(originalNumStr)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(originalNumStr). "+
+			" num1Str= '%v' Error='%v' ",
+			originalNumStr, err.Error())
+	}
+
+	outStr := bINum.FormatNumStr(mode)
+
+	if expectedNumStr != outStr {
+		t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v'",
+			expectedNumStr, outStr)
+	}
+
+}
+
+func TestBigIntNum_FormatNumStr_08(t *testing.T) {
+
+	originalNumStr := "0.000"
+	expectedNumStr := "0.000"
+	mode := LEADMINUSNEGVALFMTMODE
+
+	bINum, err := BigIntNum{}.NewNumStr(originalNumStr)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(originalNumStr). "+
+			" num1Str= '%v' Error='%v' ",
+			originalNumStr, err.Error())
+	}
+
+	outStr := bINum.FormatNumStr(mode)
+
+	if expectedNumStr != outStr {
+		t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v'",
+			expectedNumStr, outStr)
+	}
+
+}
+
+func TestBigIntNum_FormatNumStr_09(t *testing.T) {
+
+	originalNumStr := "0.000"
+	expectedNumStr := "0.000"
+	mode := PARENTHESESNEGVALFMTMODE
+
+	bINum, err := BigIntNum{}.NewNumStr(originalNumStr)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(originalNumStr). "+
+			" num1Str= '%v' Error='%v' ",
+			originalNumStr, err.Error())
+	}
+
+	outStr := bINum.FormatNumStr(mode)
+
+	if expectedNumStr != outStr {
+		t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v'",
+			expectedNumStr, outStr)
+	}
+
+}
+
 func TestBigIntNum_GetFractionalPart_01(t *testing.T) {
 
 	nStr := "123.456"
