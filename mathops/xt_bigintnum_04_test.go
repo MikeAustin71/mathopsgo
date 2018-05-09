@@ -6,6 +6,72 @@ import (
 	"errors"
 )
 
+func TestBigIntNum_NewBigFloat_01(t *testing.T) {
+
+	bfloat := big.NewFloat(32.123)
+
+	expectedNumStr := "32.1230"
+
+	bINum, err := BigIntNum{}.NewBigFloat(bfloat, 4)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewBigFloat(bfloat, 4) " +
+			"Error='%v' ", err.Error())
+	}
+
+	actualNumStr := bINum.GetNumStr()
+
+	if expectedNumStr != actualNumStr {
+		t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v' ",
+			expectedNumStr, actualNumStr)
+	}
+
+}
+
+func TestBigIntNum_NewBigFloat_02(t *testing.T) {
+
+	bFloat := big.NewFloat(32.129)
+
+	expectedNumStr := "32.13"
+
+	bINum, err := BigIntNum{}.NewBigFloat(bFloat, 2)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewBigFloat(bFloat, 4) " +
+			"Error='%v' ", err.Error())
+	}
+
+	actualNumStr := bINum.GetNumStr()
+
+	if expectedNumStr != actualNumStr {
+		t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v' ",
+			expectedNumStr, actualNumStr)
+	}
+
+}
+
+func TestBigIntNum_NewBigFloat_03(t *testing.T) {
+
+	bFloat := big.NewFloat(-32.129)
+
+	expectedNumStr := "-32.13"
+
+	bINum, err := BigIntNum{}.NewBigFloat(bFloat, 2)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewBigFloat(bFloat, 4) " +
+			"Error='%v' ", err.Error())
+	}
+
+	actualNumStr := bINum.GetNumStr()
+
+	if expectedNumStr != actualNumStr {
+		t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v' ",
+			expectedNumStr, actualNumStr)
+	}
+
+}
+
 func TestBigIntNum_NewFloat32_01(t *testing.T) {
 
 	numf32 := float32(32.123)
