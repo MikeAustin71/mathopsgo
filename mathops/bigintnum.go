@@ -214,13 +214,17 @@ func (bNum *BigIntNum) Floor() BigIntNum {
 // FormatCurrencyStr - Formats the current BigIntNum numeric value as a currency string.
 //
 // If the Currency Symbol was not previously set for this BigIntNum, the currency symbol
-// is defaulted to the USA standard dollar sign, ('$').
+// is defaulted to the USA standard dollar sign, ('$'). To use other currency symbols, see
+// method BigIntNum.SetCurrencySymbol(). For a list of Major Currency Unicode Symbols, see
+// constants located in: MikeAustin71/mathopsgo/mathops/mathopsconstants.go
 //
 // If the Decimal Separator was not previously set for this BigIntNum, the Decimal Separator
-// is defaulted to the USA standard period ('.').
+// is defaulted to the USA standard period ('.'). To use another character for Decimal
+// Separator, see method BigIntNum.SetDecimalSeparator().
 //
 // If the Thousands Separator was not previously set for this BigIntNum, the Thousands
-// Separator is defaulted to the USA standard comma (',').
+// Separator is defaulted to the USA standard comma (','). To use another character for
+// Thousands Separator, see method BigIntNum.SetThousandsSeparator().
 //
 // Input Parameters
 // ================
@@ -244,6 +248,10 @@ func (bNum *BigIntNum) FormatCurrencyStr(negValMode NegativeValueFmtMode) string
 		bNum.thousandsSeparator = ','
 	}
 
+	if bNum.currencySymbol == 0 {
+		bNum.currencySymbol = '$'
+	}
+
 	outRunes := make([]rune, 0, 300)
 
 	scratchNum := big.NewInt(0).Set(bNum.absBigInt)
@@ -251,6 +259,8 @@ func (bNum *BigIntNum) FormatCurrencyStr(negValMode NegativeValueFmtMode) string
 
 	if scratchNum.Cmp(baseZero) == 0 {
 		bNum.sign = 1
+
+		outRunes = append(outRunes, bNum.currencySymbol)
 
 		outRunes = append(outRunes, '0')
 
@@ -269,6 +279,7 @@ func (bNum *BigIntNum) FormatCurrencyStr(negValMode NegativeValueFmtMode) string
 	startIdx := 0
 	modulo := big.NewInt(0)
 	baseTen := big.NewInt(10)
+	digitCnt := 0
 	thouCnt := -1
 
 	if bNum.precision == 0 {
@@ -288,6 +299,7 @@ func (bNum *BigIntNum) FormatCurrencyStr(negValMode NegativeValueFmtMode) string
 		modX := big.NewInt(0)
 		scratchNum, modulo = big.NewInt(0).QuoRem(scratchNum, baseTen, modX)
 		outRunes = append(outRunes, rune(modulo.Int64() + int64(48)))
+		digitCnt++
 		startIdx++
 
 		if thouCnt > -1 {
@@ -312,7 +324,29 @@ func (bNum *BigIntNum) FormatCurrencyStr(negValMode NegativeValueFmtMode) string
 
 	}
 
+	if int(bNum.precision) >= digitCnt {
+
+		delta := int(bNum.precision) - digitCnt + 1
+
+		for k:=0; k < delta; k++ {
+			outRunes = append(outRunes, '0')
+			startIdx++
+
+			if bNum.precision > 0 &&
+				int(bNum.precision) == startIdx {
+
+				outRunes = append(outRunes, bNum.decimalSeparator)
+				startIdx++
+			}
+		}
+	}
+
 	startIdx--
+
+	// append Currency Symbol
+	outRunes = append(outRunes, bNum.currencySymbol)
+	startIdx++
+
 
 	// adjust for negative sign value
 	if bNum.sign == -1 {
@@ -340,7 +374,6 @@ func (bNum *BigIntNum) FormatCurrencyStr(negValMode NegativeValueFmtMode) string
 	}
 
 	return string(outRunes)
-
 }
 
 // FormatNumStr - Formats the numeric value of the current BigIntNum
@@ -348,6 +381,11 @@ func (bNum *BigIntNum) FormatCurrencyStr(negValMode NegativeValueFmtMode) string
 // of the decimal point and fractional digits to the right of the decimal
 // point, if such fractional digits exist. The resulting number string
 // will NOT contain a currency symbol or thousands separators.
+//
+// If the Decimal Separator was not previously set for this BigIntNum,
+// the Decimal Separator is defaulted to the USA standard period ('.').
+// To use another character for Decimal Separator, see method
+// BigIntNum.SetDecimalSeparator().
 //
 // Output Examples: 123456.789 or -123456.789
 //
@@ -474,9 +512,13 @@ func (bNum *BigIntNum) FormatNumStr(negValMode NegativeValueFmtMode) string {
 //
 // If the Decimal Separator was not previously set for this BigIntNum,
 // the Decimal Separator is defaulted to the USA standard period ('.').
+// To use another character for Decimal Separator, see method
+// BigIntNum.SetDecimalSeparator().
 //
 // If the Thousands Separator was not previously set for this BigIntNum,
 // the Thousands Separator is defaulted to the USA standard comma (',').
+// To use another character for Thousands Separator, see method
+// BigIntNum.SetThousandsSeparator().
 //
 // Example:
 // numstr = 1000000.234 converted to 1,000,000.234
