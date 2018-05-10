@@ -1200,7 +1200,98 @@ func (bIDivide BigIntMathDivide) INumMgrFracQuotientArray(
 }
 
 
-// NumStrQuotientMod - Performs a division operation on input parameters 'dividend' and 'divisor'
+// INumMgrModulo - Performs a modulo operation on input parameters
+// 'dividend' and 'divisor'. Both parameters must implement the INumMgr
+// interface.
+//
+// The modulo operation finds the remainder after division of one number
+// by another (sometimes called modulus).
+// 				Wikipedia https://en.wikipedia.org/wiki/Modulo_operation
+//
+// This method returns one BigIntNum value: 'modulo'.
+//
+// The calculation of 'modulo' is based on T-Division (Truncate Division). See
+// "Division and Modulus for Computer Scientists", DAAN LEIJEN, University of
+// Utrecht Dept. of Computer Science, PO.Box 80.089, 3508 TB Utrecht The Netherlands:
+// https://www.microsoft.com/en-us/research/wp-content/uploads/2016/02/divmodnote-letter.pdf
+// Also available at ../notes/divmodnote-letter.pdf.
+//
+// So, for q=quotient; D=Dividend d=Divisor r=Remainder or 'modulo' :
+//   						q = D div d = f(D/d)
+// 							r = D mod d = D − d ·q
+//
+// The modulo operation finds the remainder after division of one
+// number by another. (r = D mod d = D − d ·q)
+//
+// Input parameter 'maxPrecision' is used to control the maximum precision of the
+// resulting 'modulo'. Precision is defined as the the number of fractional digits
+// to the right of the decimal point. Be advised that these calculations can support
+// very large precision values.
+//
+// Examples:
+// =========
+//
+// Dividend			  mod by			Divisor			=			Modulo/Remainder
+// --------				------			-------						----------------
+//   12.555					%						 2.5			=			 0.055
+//   12.555  	 			% 				 	 2  			= 		 0.555
+//    2.5 					% 				 	12.555		= 	   2.5
+//	-12.555 				% 				   2.5 			= 		-0.055
+//  -12.555     		%    			 	 2  			= 		-0.555
+//  - 2.5 					% 				 	12.555		= 		-2.5
+// 	 12.555					% 				 - 2.5			=			 0.055
+//   12.555 				% 				 - 2 				= 		 0.555
+//    2.5 				  % 				 -12.555		= 		 2.5
+// 	-12.555 				% 				 - 2.5 			= 		-0.055
+//  -12.555     		%    			 - 2 				= 		-0.555
+//  - 2.5	 					% 				 -12.555		= 		-2.5
+//
+func (bIDivide BigIntMathDivide) INumMgrModulo(
+											dividend,
+												divisor INumMgr,
+													maxPrecision uint) (modulo BigIntNum, err error) {
+
+	ePrefix := "BigIntMathDivide.INumMgrModulo() "
+
+	bPair, errx := BigIntPair{}.NewINumMgr(dividend, divisor)
+
+	if errx != nil {
+		modulo = BigIntNum{}.New()
+		err = fmt.Errorf(ePrefix + "Error returned by BigIntPair{}.NewINumMgr(" +
+			"dividend, divisor) dividend='%v' divisor='%v' Error='%v'",
+				dividend.GetNumStr(), divisor.GetNumStr(), err.Error())
+
+		return modulo, err
+	}
+
+	if bPair.Big2.IsZero() {
+		modulo = BigIntNum{}.New()
+		err = fmt.Errorf(ePrefix + "Error: Attempted to mod by zero!")
+		return modulo, err
+	}
+
+	bPair.MaxPrecision = maxPrecision
+
+	modulo, errx = BigIntMathDivide{}.PairMod(bPair)
+
+	if errx != nil {
+		modulo = BigIntNum{}.New()
+		err = fmt.Errorf(ePrefix +
+			"Error returned by BigIntMathDivide{}.PairMod(bPair). " +
+			"dividend='%v' divisor='%v' maxPrecision='%v' Error='%v'",
+			bPair.Big1.GetNumStr(), bPair.Big2.GetNumStr(),
+			bPair.MaxPrecision, errx.Error())
+
+		return modulo, err
+	}
+
+	err = nil
+
+	return modulo, err
+}
+
+// NumStNumber strings are strings of numeric digits which may,
+//// or may not, include a decimal separator ('.') used to separate integer and fractional digits..rQuotientMod - Performs a division operation on input parameters 'dividend' and 'divisor'
 // which are comprised as number strings. Number strings are strings of numeric digits which may,
 // or may not, include a decimal separator ('.') used to separate integer and fractional digits..
 //
@@ -1455,8 +1546,10 @@ func (bIDivide BigIntMathDivide) NumStrFracQuotientArray(
 }
 
 
-// BigIntNumModulo - Performs a modulo operation on BigIntNum input
-// parameters 'dividend' and 'divisor'.
+// NumStrModulo - Performs a modulo operation on input parameters 'dividend'
+// and 'divisor'. Both input parameters are formatted a number strings. Number
+// strings are strings of numeric digits which may,/ or may not, include a decimal
+// separator ('.') used to separate integer and fractional digits.
 //
 // The modulo operation finds the remainder after division of one number
 // by another (sometimes called modulus).
@@ -1507,8 +1600,6 @@ func (bIDivide BigIntMathDivide) NumStrModulo(
 
 	ePrefix := "BigIntMathDivide.NumStrModulo() "
 
-	var errx error
-
 	bPair, errx := BigIntPair{}.NewNumStr(dividend, divisor)
 
 	if errx != nil {
@@ -1518,6 +1609,12 @@ func (bIDivide BigIntMathDivide) NumStrModulo(
 			"dividend='%v' divisor='%v' maxPrecision='%v' Error='%v'",
 			dividend, divisor, maxPrecision, errx.Error())
 
+		return modulo, err
+	}
+
+	if bPair.Big2.IsZero() {
+		modulo = BigIntNum{}.New()
+		err = fmt.Errorf(ePrefix + "Error: Attempted to mod by zero!")
 		return modulo, err
 	}
 
@@ -1607,7 +1704,6 @@ func (bIDivide BigIntMathDivide) NumStrDtoModulo(
 
 		return modulo, err
 	}
-
 
 	if bPair.Big2.IsZero() {
 		err = fmt.Errorf(ePrefix + "Error: Attempted to mod by zero!")
