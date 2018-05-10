@@ -936,7 +936,6 @@ func (bIDivide BigIntMathDivide) IntAryFracQuotientArray(
 	return fracQuoArray, nil
 }
 
-
 // IntAryModulo - Performs a modulo operation on IntAry input
 // parameters 'dividend' and 'divisor'.
 //
@@ -1019,6 +1018,108 @@ func (bIDivide BigIntMathDivide) IntAryModulo(
 			"dividend='%v' divisor='%v' maxPrecision='%v' Error='%v'",
 			bPair.Big1.GetNumStr(), bPair.Big2.GetNumStr(),
 			bPair.MaxPrecision, errx.Error())
+
+		return modulo, err
+	}
+
+	err = nil
+
+	return modulo, err
+}
+
+// ModuloToIntAry - Performs a modulo operation on IntAry input
+// parameters 'dividend' and 'divisor'.
+//
+// The modulo operation finds the remainder after division of one number
+// by another (sometimes called modulus).
+// 				Wikipedia https://en.wikipedia.org/wiki/Modulo_operation
+//
+// This method returns one IntAry value: 'modulo'.
+//
+// The calculation of 'modulo' is based on T-Division (Truncate Division). See
+// "Division and Modulus for Computer Scientists", DAAN LEIJEN, University of
+// Utrecht Dept. of Computer Science, PO.Box 80.089, 3508 TB Utrecht The Netherlands:
+// https://www.microsoft.com/en-us/research/wp-content/uploads/2016/02/divmodnote-letter.pdf
+// Also available at ../notes/divmodnote-letter.pdf.
+//
+// So, for q=quotient; D=Dividend d=Divisor r=Remainder or 'modulo' :
+//   						q = D div d = f(D/d)
+// 							r = D mod d = D − d ·q
+//
+// The modulo operation finds the remainder after division of one
+// number by another. (r = D mod d = D − d ·q)
+//
+// Input parameter 'maxPrecision' is used to control the maximum precision of the
+// resulting 'modulo'. Precision is defined as the the number of fractional digits
+// to the right of the decimal point. Be advised that these calculations can support
+// very large precision values.
+//
+// Examples:
+// =========
+//
+// Dividend			  mod by			Divisor			=			Modulo/Remainder
+// --------				------			-------						----------------
+//   12.555					%						 2.5			=			 0.055
+//   12.555  	 			% 				 	 2  			= 		 0.555
+//    2.5 					% 				 	12.555		= 	   2.5
+//	-12.555 				% 				   2.5 			= 		-0.055
+//  -12.555     		%    			 	 2  			= 		-0.555
+//  - 2.5 					% 				 	12.555		= 		-2.5
+// 	 12.555					% 				 - 2.5			=			 0.055
+//   12.555 				% 				 - 2 				= 		 0.555
+//    2.5 				  % 				 -12.555		= 		 2.5
+// 	-12.555 				% 				 - 2.5 			= 		-0.055
+//  -12.555     		%    			 - 2 				= 		-0.555
+//  - 2.5	 					% 				 -12.555		= 		-2.5
+//
+func (bIDivide BigIntMathDivide) ModuloToIntAry(
+						dividend,
+							divisor IntAry,
+								maxPrecision uint) (modulo IntAry, err error) {
+
+	ePrefix := "BigIntMathDivide.ModuloToIntAry() "
+
+	bPair, errx := BigIntPair{}.NewIntAry(dividend, divisor)
+
+	if errx != nil {
+		modulo = IntAry{}.New()
+		err = fmt.Errorf(ePrefix +
+			"Error returned by BigIntPair{}.NewIntAry(dividend, divisor). " +
+			"dividend='%v' divisor='%v' maxPrecision='%v' Error='%v'",
+			dividend.GetNumStr(), divisor.GetNumStr(),
+			maxPrecision, errx.Error())
+
+		return modulo, err
+	}
+
+	if bPair.Big2.IsZero() {
+		modulo = IntAry{}.New()
+		err = fmt.Errorf(ePrefix + "Error: Attempted to mod by zero!")
+		return modulo, err
+	}
+
+	bPair.MaxPrecision = maxPrecision
+
+	bINumModulo, errx := BigIntMathDivide{}.PairMod(bPair)
+
+	if errx != nil {
+		modulo = IntAry{}.New()
+		err = fmt.Errorf(ePrefix +
+			"Error returned by BigIntMathDivide{}.PairMod(bPair). " +
+			"dividend='%v' divisor='%v' maxPrecision='%v' Error='%v'",
+			bPair.Big1.GetNumStr(), bPair.Big2.GetNumStr(),
+			bPair.MaxPrecision, errx.Error())
+
+		return modulo, err
+	}
+
+	modulo, errx = bINumModulo.GetIntAry()
+
+	if errx != nil {
+		modulo = IntAry{}.New()
+		err = fmt.Errorf(ePrefix +
+			"Error returned by bINumModulo.GetIntAry(). " +
+			"Error='%v'", errx.Error())
 
 		return modulo, err
 	}
