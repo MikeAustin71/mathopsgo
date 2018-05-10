@@ -1502,9 +1502,9 @@ func (bIDivide BigIntMathDivide) NumStrFracQuotientArray(
 //  - 2.5	 					% 				 -12.555		= 		-2.5
 //
 func (bIDivide BigIntMathDivide) NumStrDtoModulo(
-	dividend,
-	divisor NumStrDto,
-	maxPrecision uint) (modulo BigIntNum, err error) {
+										dividend,
+											divisor NumStrDto,
+												maxPrecision uint) (modulo BigIntNum, err error) {
 
 	ePrefix := "BigIntMathDivide.NumStrDtoQuotientMod() "
 
