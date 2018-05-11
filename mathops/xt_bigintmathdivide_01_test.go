@@ -4104,6 +4104,170 @@ func TestBigIntMathDivide_DecimalModulo_04(t *testing.T) {
 
 }
 
+func TestBigIntMathDivide_ModuloToDecimal_01(t *testing.T) {
+	// Dividend			  mod by			Divisor			=			Modulo/Remainder
+	// --------				------			-------						----------------
+	//   12.555					%						 2.5			=			 0.055
+
+	dividendStr := "12.555"
+	divisorStr := "2.5"
+	expectedModuloStr := "0.055"
+	maxPrecision := uint(15)
+
+	iaDividend, err := Decimal{}.NewNumStr(dividendStr)
+
+	if err != nil {
+		t.Errorf("Error returned by Decimal{}.NewNumStr(dividendStr). " +
+			"dividendStr='%v' error='%v'", dividendStr, err.Error())
+	}
+
+	iaDivisor, err := Decimal{}.NewNumStr(divisorStr)
+
+	if err != nil {
+		t.Errorf("Error returned by Decimal{}.NewNumStr(divisorStr). " +
+			"divisorStr='%v' error='%v'", divisorStr, err.Error())
+	}
+
+	iaModulo, err := BigIntMathDivide{}.ModuloToDecimal(iaDividend, iaDivisor, maxPrecision)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntMathDivide{}.ModuloToDecimal(iaDividend, " +
+			"iaDivisor, maxPrecision). Error='%v'", err.Error())
+
+	}
+
+	actualModuloStr := iaModulo.GetNumStr()
+
+	if expectedModuloStr != actualModuloStr {
+		t.Errorf("Error: Expected modulo='%v'. Instead modulo='%v'",
+			expectedModuloStr, actualModuloStr)
+	}
+
+}
+
+func TestBigIntMathDivide_ModuloToDecimal_02(t *testing.T) {
+	// Dividend			  mod by			Divisor			=			Modulo/Remainder
+	// --------				------			-------						----------------
+	//   -12.555 				% 				 - 2.5 			= 		-0.055
+
+	dividendStr := "-12.555"
+	divisorStr := "-2.5"
+	expectedModuloStr := "-0.055"
+	maxPrecision := uint(15)
+
+	iaDividend, err := Decimal{}.NewNumStr(dividendStr)
+
+	if err != nil {
+		t.Errorf("Error returned by Decimal{}.NewNumStr(dividendStr). " +
+			"dividendStr='%v' error='%v'", dividendStr, err.Error())
+	}
+
+	iaDivisor, err := Decimal{}.NewNumStr(divisorStr)
+
+	if err != nil {
+		t.Errorf("Error returned by Decimal{}.NewNumStr(divisorStr). " +
+			"divisorStr='%v' error='%v'", divisorStr, err.Error())
+	}
+
+	iaModulo, err := BigIntMathDivide{}.ModuloToDecimal(iaDividend, iaDivisor, maxPrecision)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntMathDivide{}.ModuloToDecimal(iaDividend, " +
+			"iaDivisor, maxPrecision). Error='%v'", err.Error())
+
+	}
+
+	actualModuloStr := iaModulo.GetNumStr()
+
+	if expectedModuloStr != actualModuloStr {
+		t.Errorf("Error: Expected modulo='%v'. Instead modulo='%v'",
+			expectedModuloStr, actualModuloStr)
+	}
+
+}
+
+func TestBigIntMathDivide_ModuloToDecimal_03(t *testing.T) {
+	// Dividend			  mod by			Divisor			=			Modulo/Remainder
+	// --------				------			-------						----------------
+	//   12.555					% 				 - 2.5			=			 0.055
+
+	dividendStr := "12.555"
+	divisorStr := "-2.5"
+	expectedModuloStr := "0.055"
+	maxPrecision := uint(15)
+
+	iaDividend, err := Decimal{}.NewNumStr(dividendStr)
+
+	if err != nil {
+		t.Errorf("Error returned by Decimal{}.NewNumStr(dividendStr). " +
+			"dividendStr='%v' error='%v'", dividendStr, err.Error())
+	}
+
+	iaDivisor, err := Decimal{}.NewNumStr(divisorStr)
+
+	if err != nil {
+		t.Errorf("Error returned by Decimal{}.NewNumStr(divisorStr). " +
+			"divisorStr='%v' error='%v'", divisorStr, err.Error())
+	}
+
+	iaModulo, err := BigIntMathDivide{}.ModuloToDecimal(iaDividend, iaDivisor, maxPrecision)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntMathDivide{}.ModuloToDecimal(iaDividend, " +
+			"iaDivisor, maxPrecision). Error='%v'", err.Error())
+
+	}
+
+	actualModuloStr := iaModulo.GetNumStr()
+
+	if expectedModuloStr != actualModuloStr {
+		t.Errorf("Error: Expected modulo='%v'. Instead modulo='%v'",
+			expectedModuloStr, actualModuloStr)
+	}
+
+}
+
+func TestBigIntMathDivide_ModuloToDecimal_04(t *testing.T) {
+	// Dividend			  mod by			Divisor			=			Modulo/Remainder
+	// --------				------			-------						----------------
+	//    2.5 				  % 				 -12.555		= 		 2.5
+
+	dividendStr := "2.5"
+	divisorStr := "-12.555"
+	expectedModuloStr := "2.5"
+	maxPrecision := uint(15)
+
+	iaDividend, err := Decimal{}.NewNumStr(dividendStr)
+
+	if err != nil {
+		t.Errorf("Error returned by Decimal{}.NewNumStr(dividendStr). " +
+			"dividendStr='%v' error='%v'", dividendStr, err.Error())
+	}
+
+	iaDivisor, err := Decimal{}.NewNumStr(divisorStr)
+
+	if err != nil {
+		t.Errorf("Error returned by Decimal{}.NewNumStr(divisorStr). " +
+			"divisorStr='%v' error='%v'", divisorStr, err.Error())
+	}
+
+	iaModulo, err := BigIntMathDivide{}.ModuloToDecimal(iaDividend, iaDivisor, maxPrecision)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntMathDivide{}.ModuloToDecimal(iaDividend, " +
+			"iaDivisor, maxPrecision). Error='%v'", err.Error())
+
+	}
+
+	actualModuloStr := iaModulo.GetNumStr()
+
+	if expectedModuloStr != actualModuloStr {
+		t.Errorf("Error: Expected iaModulo='%v'. Instead iaModulo='%v'",
+			expectedModuloStr, actualModuloStr)
+	}
+
+}
+
 func TestBigIntMathDivide_IntAryQuotientMod_01(t *testing.T) {
 	// Dividend			divided by		Divisor			=		Quotient			Modulo/Remainder
 	//   12.555					/						 2.5			=			 5							 0.055

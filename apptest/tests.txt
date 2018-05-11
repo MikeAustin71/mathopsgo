@@ -326,6 +326,14 @@
 --- PASS: TestBigIntMathDivide_DecimalModulo_03 (0.00s)
 === RUN   TestBigIntMathDivide_DecimalModulo_04
 --- PASS: TestBigIntMathDivide_DecimalModulo_04 (0.00s)
+=== RUN   TestBigIntMathDivide_ModuloToDecimal_01
+--- PASS: TestBigIntMathDivide_ModuloToDecimal_01 (0.00s)
+=== RUN   TestBigIntMathDivide_ModuloToDecimal_02
+--- PASS: TestBigIntMathDivide_ModuloToDecimal_02 (0.00s)
+=== RUN   TestBigIntMathDivide_ModuloToDecimal_03
+--- PASS: TestBigIntMathDivide_ModuloToDecimal_03 (0.00s)
+=== RUN   TestBigIntMathDivide_ModuloToDecimal_04
+--- PASS: TestBigIntMathDivide_ModuloToDecimal_04 (0.00s)
 === RUN   TestBigIntMathDivide_IntAryQuotientMod_01
 --- PASS: TestBigIntMathDivide_IntAryQuotientMod_01 (0.00s)
 === RUN   TestBigIntMathDivide_IntAryQuotientMod_02
@@ -933,7 +941,7 @@
 === RUN   TestBigIntNum_Floor_08
 --- PASS: TestBigIntNum_Floor_08 (0.00s)
 === RUN   TestBigIntNum_Floor_09
---- PASS: TestBigIntNum_Floor_09 (0.00s)
+--- PASS: TestBigIntNum_Floor_09 (0.01s)
 === RUN   TestBigIntNum_Floor_10
 --- PASS: TestBigIntNum_Floor_10 (0.00s)
 === RUN   TestBigIntNum_Floor_11
@@ -951,7 +959,7 @@
 === RUN   TestBigIntNum_FormatNumStr_02
 --- PASS: TestBigIntNum_FormatNumStr_02 (0.00s)
 === RUN   TestBigIntNum_FormatNumStr_03
---- PASS: TestBigIntNum_FormatNumStr_03 (0.01s)
+--- PASS: TestBigIntNum_FormatNumStr_03 (0.00s)
 === RUN   TestBigIntNum_FormatNumStr_04
 --- PASS: TestBigIntNum_FormatNumStr_04 (0.00s)
 === RUN   TestBigIntNum_FormatNumStr_05
@@ -1409,7 +1417,7 @@
 === RUN   TestDecimal_NewNumStrPrecision_03
 --- PASS: TestDecimal_NewNumStrPrecision_03 (0.00s)
 === RUN   TestDecimal_NewNumStrPrecision_04
---- PASS: TestDecimal_NewNumStrPrecision_04 (0.00s)
+--- PASS: TestDecimal_NewNumStrPrecision_04 (0.02s)
 === RUN   TestDecimal_NewNumStrPrecision_06
 --- PASS: TestDecimal_NewNumStrPrecision_06 (0.00s)
 === RUN   TestDecimal_NewNumStrPrecision_07
@@ -2939,4 +2947,4 @@
 === RUN   TestStrMathOp_SubtractN1N2_19
 --- PASS: TestStrMathOp_SubtractN1N2_19 (0.00s)
 PASS
-ok  	MikeAustin71/mathopsgo/mathops	1.065s
+ok  	MikeAustin71/mathopsgo/mathops	1.261s
