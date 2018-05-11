@@ -12,8 +12,19 @@ type BigIntMathPower struct {
 }
 
 
-func (bIPwr BigIntMathPower) Pwr(base, exponent BigIntNum) (BigIntNum, error) {
-	return bIPwr.raiseToPositiveIntegerPower(base, exponent)
+func (bIPwr BigIntMathPower) Pwr(base, exponent BigIntNum, maxPrecision uint) (BigIntNum, error) {
+
+	if exponent.GetPrecisionUint() == uint(0) &&
+			exponent.GetSign() > 0 {
+		return bIPwr.raiseToPositiveIntegerPower(base, exponent)
+	} else if exponent.GetPrecisionUint() == uint(0) &&
+		exponent.GetSign() < 0 {
+		return bIPwr.raiseToNegativeIntegerPower(base, exponent, maxPrecision)
+	}
+
+
+
+	return BigIntNum{}, nil
 }
 
 // raiseToNegativeIntegerPower - Assumes that input parameter 'exponent' is negative and an
