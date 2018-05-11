@@ -13,18 +13,43 @@ type BigIntMathPower struct {
 
 
 func (bIPwr BigIntMathPower) Pwr(base, exponent BigIntNum, maxPrecision uint) (BigIntNum, error) {
+	ePrefix := "BigIntMathPower.Pwr() "
+
+	result := BigIntNum{}
+	var err error
 
 	if exponent.GetPrecisionUint() == uint(0) &&
 			exponent.GetSign() > 0 {
-		return bIPwr.raiseToPositiveIntegerPower(base, exponent)
+		result, err = bIPwr.raiseToPositiveIntegerPower(base, exponent)
+
+		if err != nil {
+			return BigIntNum{}.NewZero(0),
+				fmt.Errorf(ePrefix +
+					"Error returned by bIPwr.raiseToPositiveIntegerPower(" +
+					"base, exponent, maxPrecision) " +
+					"base='%v' exponent='%v' Error='%v' ",
+					base.GetNumStr(), exponent.GetNumStr(), err.Error())
+		}
+
 	} else if exponent.GetPrecisionUint() == uint(0) &&
 		exponent.GetSign() < 0 {
-		return bIPwr.raiseToNegativeIntegerPower(base, exponent, maxPrecision)
+		result, err = bIPwr.raiseToNegativeIntegerPower(base, exponent, maxPrecision)
+
+		if err != nil {
+			return BigIntNum{}.NewZero(0),
+				fmt.Errorf(ePrefix + "Error returned by bIPwr.raiseToNegativeIntegerPower(" +
+					"base, exponent, maxPrecision) " +
+					"base='%v' exponent='%v' maxPrecision='%v' Error='%v' ",
+						base.GetNumStr(), exponent.GetNumStr(), maxPrecision, err.Error())
+		}
+
+	} else {
+		result = BigIntNum{}.NewOne()
 	}
 
 
 
-	return BigIntNum{}, nil
+	return result, nil
 }
 
 // raiseToNegativeIntegerPower - Assumes that input parameter 'exponent' is negative and an
