@@ -3,6 +3,7 @@ package mathops
 import (
 	"fmt"
 	"math/big"
+	"errors"
 )
 
 type BigIntMathPower struct {
@@ -15,6 +16,15 @@ type BigIntMathPower struct {
 // Upon computing the result of 'base' raised to the power of 'exponent' (base^exponent), the result
 // is returned as Type BigIntNum.
 //
+// Examples:
+// =========
+//
+//	base				exponent				maxPrecision	  		result
+// -------			---------  			-------------	 			-------
+//
+//	2							 4								17								16
+//  2							-4								17								 0.0625
+//  3.7						 2.5							30								26.333240780428070965289991839141
 func (bIPwr BigIntMathPower) Pwr(base, exponent BigIntNum, maxPrecision uint) (BigIntNum, error) {
 	ePrefix := "BigIntMathPower.Pwr() "
 
@@ -47,10 +57,15 @@ func (bIPwr BigIntMathPower) Pwr(base, exponent BigIntNum, maxPrecision uint) (B
 		}
 
 	} else {
-		result = BigIntNum{}.NewOne()
+		return BigIntNum{}.NewZero(0),
+			errors.New(ePrefix +
+				"SETUP ERROR! - CANNOT PROCESS THIS TYPE OF EXPONENT CONFIGURATION!!!")
 	}
 
 
+	if result.precision > maxPrecision {
+		result.SetPrecision(maxPrecision)
+	}
 
 	return result, nil
 }
@@ -63,7 +78,7 @@ func (bIPwr BigIntMathPower) Pwr(base, exponent BigIntNum, maxPrecision uint) (B
 // raise input parameter 'base' to the power of 'exponent' and return the result as a BigIntNum
 // type.
 //
-func (bIPwr *BigIntMathPower) raiseToNegativeIntegerPower(
+func (bIPwr BigIntMathPower) raiseToNegativeIntegerPower(
 															base,
 																exponent BigIntNum,
 																	maxPrecision uint) (BigIntNum, error) {
@@ -94,7 +109,7 @@ func (bIPwr *BigIntMathPower) raiseToNegativeIntegerPower(
 
 	bINumResult1 := BigIntNum{}.NewBigInt(result1, newPrecision)
 
-	bINumOne := BigIntNum{}.NewOne()
+	bINumOne := BigIntNum{}.NewOne(0)
 
 	result, err := BigIntMathDivide{}.BigIntNumFracQuotient(bINumOne, bINumResult1, maxPrecision)
 
@@ -130,7 +145,7 @@ func (bIPwr *BigIntMathPower) raiseToNegativeIntegerPower(
 //  -4.2				3					 -74.088
 //	-2.9				4					  70.7281
 //
-func (bIPwr *BigIntMathPower) raiseToPositiveIntegerPower(
+func (bIPwr BigIntMathPower) raiseToPositiveIntegerPower(
 				base,
 					exponent BigIntNum) (BigIntNum, error) {
 

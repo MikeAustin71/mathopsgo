@@ -1434,34 +1434,114 @@ func (bNum BigIntNum) NewNumStrDto(nDto NumStrDto) (BigIntNum, error) {
 	return b, nil
 }
 
-// NewOne - Returns a BigIntNum with an integer value of '1' (one).
-func (bNum *BigIntNum) NewOne() BigIntNum {
+// NewOne - Returns a BigIntNum Type with a value equal to '1' (one).
+// The number of zeros created after the decimal place holder
+// (fractional digits) is determined by the input parameter 'precision'.
+// To create an integer with a value equal to '1', set 'precision' equal
+// to zero (0).
+//
+// Examples:
+// =========
+//
+// 'precision'
+//   value 					Result
+// 		0								1
+//    2								1.00
+// 		3								1.000
+//
+func (bNum BigIntNum) NewOne(precision uint) BigIntNum {
 	b := BigIntNum{}
 	b.Empty()
-	b.SetBigInt(big.NewInt(1), 0)
+	b.SetBigInt(big.NewInt(1), precision)
 
 	return b
 }
 
-// NewOne - Returns a BigIntNum with integer value of  '10' (ten).
-func (bNum *BigIntNum) NewTen() BigIntNum {
-
+// NewTwo - Returns a BigIntNum Type with a value equal to  '2' (two).
+// The number of zeros created after the decimal place holder
+// (fractional digits) is determined by the input parameter 'precision'.
+// To create an integer with a value equal to '1', set 'precision' equal
+// to zero (0).
+//
+// Examples:
+// =========
+//
+// 'precision'
+//   value 					Result
+// 		0								2
+//    2								2.00
+// 		3								2.000
+//
+func (bNum BigIntNum) NewTwo(precision uint) BigIntNum {
 	b := BigIntNum{}
 	b.Empty()
-	b.SetBigInt(big.NewInt(10), 0)
+	b.SetBigInt(big.NewInt(2), precision)
 
 	return b
-
 }
 
-// New Zero - Returns a BigIntNum with a value of zero. The number
-// of zeros created after the decimal place holder (fractional digits)
-// is determined by the input parameter 'precision'.
-func (bNum *BigIntNum) NewZero(precision uint) BigIntNum {
+// NewThree - Returns a BigIntNum Type with a value equal to  '3' (three).
+// The number of zeros created after the decimal place holder
+// (fractional digits) is determined by the input parameter 'precision'.
+// To create an integer with a value equal to '1', set 'precision' equal
+// to zero (0).
+//
+// Examples:
+// =========
+//
+// 'precision'
+//   value 					Result
+// 		0								3
+//    2								3.00
+// 		3								3.000
+//
+func (bNum BigIntNum) NewThree(precision uint) BigIntNum {
+	b := BigIntNum{}
+	b.Empty()
+	b.SetBigInt(big.NewInt(3), precision)
+
+	return b
+}
+
+// NewTen - Returns a BigIntNum with integer value of  '10' (ten).
+// The number of zeros created after the decimal place holder
+// (fractional digits) is determined by the input parameter 'precision'.
+// To create an integer with a value equal to '10', set 'precision' equal
+// to zero (0).
+//
+// 'precision'
+//   value 					Result
+// 		0								10
+//    2								10.00
+// 		3								10.000
+//
+func (bNum BigIntNum) NewTen(precision uint) BigIntNum {
 
 	b := BigIntNum{}
 	b.Empty()
 	b.SetBigInt(big.NewInt(10), precision)
+
+	return b
+
+}
+
+// New Zero - Returns a BigIntNum instance with a value equal to zero.
+// The number of zeros created after the decimal place holder
+// (fractional digits) is determined by the input parameter 'precision'.
+// To create an integer with a value equal to '0', set 'precision' equal
+// to zero (0).
+//
+// 'precision'
+//   value 					Result
+// 		0								0
+//    2								0.00
+// 		3								0.000
+//
+func (bNum BigIntNum) NewZero(precision uint) BigIntNum {
+
+	b := BigIntNum{}
+	b.Empty()
+	b.SetBigInt(big.NewInt(0), precision)
 
 	return b
 

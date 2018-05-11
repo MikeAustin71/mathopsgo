@@ -7,6 +7,252 @@ import (
 )
 
 
+//ExampleNumStrDtoBigIntParse_02
+func ExampleNumStrDtoBigIntParse_02() {
+	num1Str := "-123456789"
+	precision := uint(15)
+
+	bNum1, ok := big.NewInt(0).SetString(num1Str, 10)
+
+	if !ok {
+		fmt.Print("Error returned by big.NewInt(0).SetString(num1Str, 10).  ")
+		return
+	}
+
+	nDto2, err :=  mathops.NumStrDto{}.ParseSignedBigInt(bNum1, precision)
+	if err != nil {
+		fmt.Printf("Error returned by nDto.ParseBigIntNum(bNum1). Error='%v' ",
+			err.Error())
+		return
+	}
+
+
+	fmt.Println("Original NumStr: ", num1Str)
+	fmt.Println("   nDto2 NumStr: ", nDto2.GetNumStr())
+	fmt.Println(" spec precision: ", precision)
+
+}
+
+func ExampleNumStrDtoBigIntNumParse_01() {
+	num1Str := "0.000"
+
+	bNum1, err := mathops.BigIntNum{}.NewNumStr(num1Str)
+
+	if err != nil {
+		fmt.Printf("Error returned by BigIntNum{}.NewNumStr(num1Str). Error='%v' ",
+			err.Error())
+		return
+	}
+
+	nDto2, err :=  mathops.NumStrDto{}.ParseBigIntNum(bNum1)
+	if err != nil {
+		fmt.Printf("Error returned by nDto.ParseBigIntNum(bNum1). Error='%v' ",
+			err.Error())
+		return
+	}
+
+
+	fmt.Println("Original NumStr: ", num1Str)
+	fmt.Println("   nDto2 NumStr: ", nDto2.GetNumStr())
+
+}
+
+//ExampleRoundPrecision_01
+func ExampleRoundPrecision_01() {
+	num1Str := "654.123456"
+	expectedNumStr := "654.123"
+	newPrecision := uint(3)
+
+	bNum1, err := mathops.BigIntNum{}.NewNumStr(num1Str)
+
+	if err != nil {
+		fmt.Printf("Error returned by BigIntNum{}.NewNumStr(num1Str). Error='%v' ",
+			err.Error())
+		return
+	}
+
+	expectedNum, err := mathops.BigIntNum{}.NewNumStr(expectedNumStr)
+
+	if err != nil {
+		fmt.Printf("Error returned by BigIntNum{}.NewNumStr(expectedNumStr). Error='%v' ",
+			err.Error())
+		return
+	}
+
+	fmt.Println("Old BNum1: ", bNum1.GetNumStr())
+
+	bNum1.RoundToDecPlace(newPrecision)
+
+	fmt.Println("New BNum1: ", bNum1.GetNumStr())
+
+	if !expectedNum.Equal(bNum1) {
+		fmt.Printf("Error: Expected bNum1='%v'.  Instead, bNum2='%v'",
+			expectedNum.GetNumStr(), bNum1.GetNumStr())
+		return
+	}
+
+	if newPrecision != bNum1.GetPrecisionUint() {
+		fmt.Printf("Error: Expected precision='%v'. Instead, precision='%v' .",
+			newPrecision, bNum1.GetPrecisionUint())
+		return
+	}
+
+}
+
+//ExampleSetPrecision_01
+func ExampleSetPrecision_01(){
+
+	num1Str := "654.123456"
+	expectedNumStr := "654.123"
+	newPrecision := uint(3)
+
+	bNum1, err := mathops.BigIntNum{}.NewNumStr(num1Str)
+
+	if err != nil {
+		fmt.Printf("Error returned by BigIntNum{}.NewNumStr(num1Str). Error='%v' ",
+			err.Error())
+		return
+	}
+
+	expectedNum, err := mathops.BigIntNum{}.NewNumStr(expectedNumStr)
+
+	if err != nil {
+		fmt.Printf("Error returned by BigIntNum{}.NewNumStr(expectedNumStr). Error='%v' ",
+			err.Error())
+		return
+	}
+
+	fmt.Println("Old BNum1: ", bNum1.GetNumStr())
+
+	bNum1.SetPrecision(newPrecision)
+
+	fmt.Println("New BNum1: ", bNum1.GetNumStr())
+
+	if !expectedNum.Equal(bNum1) {
+		fmt.Printf("Error: Expected bNum1='%v'.  Instead, bNum2='%v'",
+			expectedNum.GetNumStr(), bNum1.GetNumStr())
+		return
+	}
+
+	if newPrecision != bNum1.GetPrecisionUint() {
+		fmt.Printf("Error: Expected precision='%v'. Instead, precision='%v' .",
+			newPrecision, bNum1.GetPrecisionUint())
+		return
+	}
+
+}
+
+//ExampleBigIntCurrencyStr_01
+func ExampleBigIntCurrencyStr_01(num1Str, expectedNumStr string, mode mathops.NegativeValueFmtMode) {
+
+	bINum, err := mathops.BigIntNum{}.NewNumStr(num1Str)
+
+	if err != nil {
+		fmt.Printf("Error returned by BigIntNum{}.NewNumStr(num1Str). "+
+			" num1Str= '%v' Error='%v' ",
+			num1Str, err.Error())
+
+		return
+	}
+
+	outStr := bINum.FormatCurrencyStr(mode)
+
+	fmt.Println("       Original NumStr: ",  "'",num1Str, "'",)
+	fmt.Println("       Expected NumStr: ", "'", expectedNumStr, "'")
+	fmt.Println("         Actual NumStr: ", "'", outStr,"'")
+	fmt.Println("  Actual String Length: ", len(outStr))
+	fmt.Println("Expected String Length: ", len(expectedNumStr))
+	return
+
+}
+
+//ExampleBigIntThouStr_01
+func ExampleBigIntThouStr_01(num1Str, expectedNumStr string, mode mathops.NegativeValueFmtMode) {
+
+	bINum, err := mathops.BigIntNum{}.NewNumStr(num1Str)
+
+	if err != nil {
+		fmt.Printf("Error returned by BigIntNum{}.NewNumStr(num1Str). "+
+			" num1Str= '%v' Error='%v' ",
+			num1Str, err.Error())
+
+		return
+	}
+
+	outStr := bINum.FormatThousandsStr(mode)
+
+	fmt.Println("       Original NumStr: ",  "'",num1Str, "'",)
+	fmt.Println("       Expected NumStr: ", "'", expectedNumStr, "'")
+	fmt.Println("         Actual NumStr: ", "'", outStr,"'")
+	fmt.Println("  Actual String Length: ", len(outStr))
+	fmt.Println("Expected String Length: ", len(expectedNumStr))
+	return
+
+}
+
+func ExampleBigIntNumString_03(
+	bInt *big.Int,
+	precision uint,
+	expectedNumStr string,
+	mode mathops.NegativeValueFmtMode) {
+
+	bINum := mathops.BigIntNum{}.NewBigInt(bInt, precision)
+
+
+	outStr := bINum.FormatNumStr(mode)
+
+	fmt.Println("       Expected NumStr: ", "'", expectedNumStr, "'")
+	fmt.Println("         Actual NumStr: ", "'", outStr,"'")
+	fmt.Println("  Actual String Length: ", len(outStr))
+	fmt.Println("Expected String Length: ", len(expectedNumStr))
+	return
+
+}
+
+//ExampleBigIntNumString_02
+func ExampleBigIntNumString_02(num1Str, expectedNumStr string, mode mathops.NegativeValueFmtMode) {
+
+	bINum, err := mathops.BigIntNum{}.NewNumStr(num1Str)
+
+	if err != nil {
+		fmt.Printf("Error returned by BigIntNum{}.NewNumStr(num1Str). "+
+			" num1Str= '%v' Error='%v' ",
+			num1Str, err.Error())
+
+		return
+	}
+
+	outStr := bINum.FormatNumStr(mode)
+
+	fmt.Println("       Original NumStr: ",  "'",num1Str, "'",)
+	fmt.Println("       Expected NumStr: ", "'", expectedNumStr, "'")
+	fmt.Println("         Actual NumStr: ", "'", outStr,"'")
+	fmt.Println("  Actual String Length: ", len(outStr))
+	fmt.Println("Expected String Length: ", len(expectedNumStr))
+	return
+}
+
+//ExampleBigIntNumString_01
+func ExampleBigIntNumString_01(num1Str string) {
+
+	bINum := mathops.BigIntNum{}
+
+	fmt.Println("original numstr: ", num1Str)
+
+	err := bINum.SetNumStr(num1Str)
+
+	if err != nil {
+		fmt.Printf("Error returned by bINum.SetNumStr(num1Str). Error='%v' ",
+			err.Error())
+
+		return
+	}
+
+
+	fmt.Println("  actual numStr: ", bINum.GetNumStr())
+
+}
+
 func ExampleSubtraction_01() {
 
 	var err error
