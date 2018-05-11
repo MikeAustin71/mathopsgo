@@ -11,7 +11,10 @@ type BigIntMathPower struct {
 	Result BigIntNum
 }
 
-
+// Pwr - Raises 'base' to the power of 'exponent'.  Both 'base' and 'exponent' are Type BigIntNum.
+// Upon computing the result of 'base' raised to the power of 'exponent' (base^exponent), the result
+// is returned as Type BigIntNum.
+//
 func (bIPwr BigIntMathPower) Pwr(base, exponent BigIntNum, maxPrecision uint) (BigIntNum, error) {
 	ePrefix := "BigIntMathPower.Pwr() "
 
