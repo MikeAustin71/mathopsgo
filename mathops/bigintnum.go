@@ -1434,6 +1434,39 @@ func (bNum BigIntNum) NewNumStrDto(nDto NumStrDto) (BigIntNum, error) {
 	return b, nil
 }
 
+// NewOne - Returns a BigIntNum with an integer value of '1' (one).
+func (bNum *BigIntNum) NewOne() BigIntNum {
+	b := BigIntNum{}
+	b.Empty()
+	b.SetBigInt(big.NewInt(1), 0)
+
+	return b
+}
+
+// NewOne - Returns a BigIntNum with integer value of  '10' (ten).
+func (bNum *BigIntNum) NewTen() BigIntNum {
+
+	b := BigIntNum{}
+	b.Empty()
+	b.SetBigInt(big.NewInt(10), 0)
+
+	return b
+
+}
+
+// New Zero - Returns a BigIntNum with a value of zero. The number
+// of zeros created after the decimal place holder (fractional digits)
+// is determined by the input parameter 'precision'.
+func (bNum *BigIntNum) NewZero(precision uint) BigIntNum {
+
+	b := BigIntNum{}
+	b.Empty()
+	b.SetBigInt(big.NewInt(10), precision)
+
+	return b
+
+}
+
 // RoundToDecPlace - Rounds the current BigIntNum instance to a specified
 // number of decimal places.
 //
