@@ -333,11 +333,11 @@ func (dec *Decimal) Empty() {
 	dec.SetEmptySeparatorsToDefault()
 }
 
-// GetAbsoluteValue - returns the absolute value of the
+// GetAbsoluteBigIntValue - returns the absolute value of the
 // decimal expressed as a string. If the decimal value is
 // '-123.456', this method will return '123.456'.
 func (dec *Decimal) GetAbsoluteValue() (Decimal, error) {
-	ePrefix := "Decimal.GetAbsoluteValue() "
+	ePrefix := "Decimal.GetAbsoluteBigIntValue() "
 	var err error
 
 	err = dec.IsDecimalValid()

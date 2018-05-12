@@ -1953,7 +1953,7 @@ func (ia *IntAry) Floor() (IntAry, error) {
 	return iAry2, nil
 }
 
-// GetAbsoluteValue - Returns an intAry which represents
+// GetAbsoluteBigIntValue - Returns an intAry which represents
 // the Absolute Value of the current intAry
 func (ia *IntAry) GetAbsoluteValue() IntAry {
 

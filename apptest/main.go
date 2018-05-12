@@ -7,10 +7,10 @@ import (
 
 func main() {
 
-	baseStr := "2"
-	exponentStr := "-4"
-	expectedNumStr := "0.0625"
-	maxPrecision := uint(17)
+	baseStr := "-2"
+	exponentStr := "3.8"
+	expectedNumStr := "13.928809012737986226180320279676"
+	maxPrecision := uint(30)
 
 	ExampleBigIntNumPower_01(baseStr, exponentStr, expectedNumStr, maxPrecision)
 
@@ -45,7 +45,7 @@ func ExampleBigIntNumPower_01(baseStr, exponentStr, expectedStr string, maxPreci
 
 	fmt.Println("*** BigIntMathPower{}.Pwr() ***")
 	fmt.Println("Expected Result: ", expectedStr)
-	fmt.Println("   Actual Resut: ", result.GetNumStr())
+	fmt.Println("  Actual Result: ", result.GetNumStr())
 	fmt.Println("           Base: ", bINumBase.GetNumStr())
 	fmt.Println("       Exponent: ", bINumExponent.GetNumStr())
 

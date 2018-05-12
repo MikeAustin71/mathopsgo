@@ -1357,7 +1357,7 @@ func TestDecimal_GetAbsoluteValue_01(t *testing.T) {
 	dAbs, err := d.GetAbsoluteValue()
 
 	if err != nil {
-		t.Errorf("Error returned from d.GetAbsoluteValue(). Error= %v", err)
+		t.Errorf("Error returned from d.GetAbsoluteBigIntValue(). Error= %v", err)
 	}
 
 	if expected != dAbs.GetNumStr() {
@@ -1381,7 +1381,7 @@ func TestDecimal_GetAbsoluteValue_02(t *testing.T) {
 	dAbs, err := d.GetAbsoluteValue()
 
 	if err != nil {
-		t.Errorf("Error returned from d.GetAbsoluteValue(). Error= %v", err)
+		t.Errorf("Error returned from d.GetAbsoluteBigIntValue(). Error= %v", err)
 	}
 
 	if expected != dAbs.GetNumStr() {

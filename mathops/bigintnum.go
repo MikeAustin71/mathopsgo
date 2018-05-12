@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"strconv"
 	"errors"
+	"math"
 )
 
 // BigIntNum - wraps a *big.Int integer and its associated
@@ -701,9 +702,16 @@ func (bNum *BigIntNum) GetAbsoluteNumStrErr() (string, error) {
 	return nDto.GetAbsNumStr(),nil
 }
 
-// GetAbsoluteValue - returns the absolute value of the
+// GetAbsoluteBigIntNumValue - Returns the absolute numeric value
+// of this BigIntNum instance as a new BigIntNum Type.
+func (bNum *BigIntNum) GetAbsoluteBigIntNumValue() BigIntNum {
+
+	return BigIntNum{}.NewBigInt(bNum.absBigInt, bNum.precision)
+}
+
+// GetAbsoluteBigIntValue - returns the absolute value of the
 // *big.Int value encapsulated by the current BigIntNum.
-func (bNum *BigIntNum) GetAbsoluteValue() *big.Int {
+func (bNum *BigIntNum) GetAbsoluteBigIntValue() *big.Int {
 	
 	return big.NewInt(0).Set(bNum.absBigInt)
 }
@@ -866,6 +874,24 @@ func (bNum *BigIntNum) GetIntegerPart() BigIntNum {
 	return BigIntNum{}.NewBigInt(quotient, 0)
 }
 
+// GetInverse - Returns the value of one (1) divided by the current
+// BigIntNum instance as a new BigIntNum Type.
+func (bNum *BigIntNum) GetInverse(maxPrecision uint) (BigIntNum, error) {
+
+	bINumOne := BigIntNum{}.NewOne(0)
+
+	result, err := BigIntMathDivide{}.BigIntNumFracQuotient(bINumOne, bNum.CopyOut(), maxPrecision)
+
+	if err != nil {
+		return BigIntNum{},
+		fmt.Errorf("BigIntNum.GetInverse() - Error returned by BigIntMathDivide{}." +
+			"BigIntNumFracQuotient(bINumOne, bNum.CopyOut(), maxPrecision)" +
+			"bNum='%v' Error='%v' ", bNum.GetNumStr(), err.Error())
+	}
+
+	return result, nil
+}
+
 // GetNumStr - Converts the current BigIntNum value to string of
 // numbers which includes the decimal point and decimal digits
 // if they exist.
@@ -987,6 +1013,23 @@ func (bNum *BigIntNum) GetThousandsSeparator() rune {
 	}
 
 	return bNum.thousandsSeparator
+}
+
+// Returns the integer value of BigIntNum.bigInt as an unsigned
+// integer. If the value of BigIntNum.bigInt exceeds that of the
+// maximum unsigned integer value, an error is returned
+func (bNum *BigIntNum) GetUnsignedInt() (uint, error) {
+
+	maxUint := big.NewInt(int64(math.MaxUint32))
+
+	if bNum.bigInt.Cmp(maxUint) == 1 {
+		return uint(0),
+		fmt.Errorf("BigIntNum.GetUnsignedInt() - Error: The value of this BigIntNum instance " +
+			"exceeds the maximum value of the unsigned integer. BigIntNum='%v' MaxUint='%v' ",
+				bNum.bigInt.Text(10), maxUint.Text(10))
+	}
+
+	return uint(bNum.bigInt.Int64()), nil
 }
 
 // IsZero - Returns a boolean signaling whether the current
