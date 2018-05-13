@@ -112,6 +112,37 @@ func (bNum *BigIntNum) CopyOut() BigIntNum {
 	return b2
 }
 
+// DivideByTwo - Divides the numerical value of the current BigIntNum by two ('2')
+// and returns the result as an integer quotient and a floating point modulo.
+//
+// If modulo equals zero ('0'), it signals the the current numerical value is 'even'
+// and divisible by two.
+//
+func (bNum *BigIntNum) DivideByTwo() (intQuotient, modulo BigIntNum, err error) {
+
+	biNum2 := BigIntNum{}.NewTwo(0)
+
+	var errx error
+
+	intQuotient, modulo, errx =
+			BigIntMathDivide{}.BigIntNumQuotientMod(bNum.CopyOut(), biNum2, 15)
+
+	if errx != nil {
+		intQuotient = BigIntNum{}.New()
+		modulo = BigIntNum{}.New()
+		err = fmt.Errorf("BigIntNum.DivideByTwo() - Error returned by " +
+			"BigIntMathDivide{}.BigIntNumQuotientMod(bNum.CopyOut(), biNum2, 15) " +
+			"bNum='%v' biNum2='%v' Error='%v'",
+			bNum.GetNumStr(), biNum2.GetNumStr(), err.Error())
+
+		return intQuotient, modulo, err
+	}
+
+	err = nil
+
+	return intQuotient, modulo, err
+}
+
 // Empty - Resets the BigIntNum data fields to their
 // uninitialized or zero state.
 //
@@ -890,6 +921,61 @@ func (bNum *BigIntNum) GetInverse(maxPrecision uint) (BigIntNum, error) {
 	}
 
 	return result, nil
+}
+
+// GetNumberOfDigits - Returns the number of digits in the numeric value of the
+// current BigIntNum instance. The count only includes numeric digits and as such
+// EXCLUDES number signs ('-' or '+' ), thousands separators (',') and decimal
+// separators.
+//
+// Examples:
+// =========
+//                                       Result=
+// Numeric String                       Number of
+//     Value								          Numeric Digits
+// =============                      ==============
+//        123.45														5
+//  1,234,567                               7
+// -1,234,567.8															8
+// 					0																1
+//          0.00                            1
+//        012.34                            4
+//          0.1234													4
+//          0.123400												6
+//          0.0123400												6
+//  1,234,567.800													 10
+//          5                               1
+//
+// Note: The returned integer number will always be a positive number.
+//
+func (bNum *BigIntNum) GetNumberOfDigits() int {
+
+	outRunes := make([]rune, 0, 300)
+
+	scratchNum := big.NewInt(0).Set(bNum.absBigInt)
+	baseZero := big.NewInt(0)
+	digitCnt := 0
+
+	if scratchNum.Cmp(baseZero) == 0 {
+
+		digitCnt = 1
+
+		return digitCnt
+	}
+
+	modulo := big.NewInt(0)
+	baseTen := big.NewInt(10)
+
+	for scratchNum.Cmp(baseZero) == 1 {
+
+		modX := big.NewInt(0)
+		scratchNum, modulo = big.NewInt(0).QuoRem(scratchNum, baseTen, modX)
+		outRunes = append(outRunes, rune(modulo.Int64() + int64(48)))
+		digitCnt++
+
+	}
+
+	return digitCnt
 }
 
 // GetNumStr - Converts the current BigIntNum value to string of

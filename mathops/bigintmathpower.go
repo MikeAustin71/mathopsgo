@@ -146,7 +146,7 @@ func (bIPwr BigIntMathPower) raiseToNegativeFractionalPower(
 		 	"Error returned by bIPwr.raiseToPositiveFractionalPower(base," +
 			"exponent.GetAbsoluteBigIntNumValue(), maxPrecision)" +
 			"base='%v' exponentAbsValue='%v' maxPrecision='%v' Error='%v' ",
-			base.GetNumStr(), exponentAbsVal.GetNumStr(),
+			base.GetNumStr(), exponentAbsVal.GetNumStr(), maxPrecision,
 			err.Error())
 	}
 

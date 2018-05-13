@@ -3,7 +3,7 @@
 === RUN   TestBigIntPair_Compare_02
 --- PASS: TestBigIntPair_Compare_02 (0.00s)
 === RUN   TestBigIntPair_Compare_03
---- PASS: TestBigIntPair_Compare_03 (0.00s)
+--- PASS: TestBigIntPair_Compare_03 (0.01s)
 === RUN   TestBigIntPair_NewBase_01
 --- PASS: TestBigIntPair_NewBase_01 (0.00s)
 === RUN   TestBigIntPair_NewBase_02
@@ -642,6 +642,10 @@
 --- PASS: TestBigIntMathMultiply_MultiplyNumStrDtoSeries_03 (0.00s)
 === RUN   TestBigIntMathMultiply_MultiplyNumStrDtoSeries_04
 --- PASS: TestBigIntMathMultiply_MultiplyNumStrDtoSeries_04 (0.00s)
+=== RUN   TestBigIntMathPower_Pwr_01
+--- PASS: TestBigIntMathPower_Pwr_01 (0.00s)
+=== RUN   TestBigIntMathPower_Pwr_02
+--- PASS: TestBigIntMathPower_Pwr_02 (0.00s)
 === RUN   TestBigIntMathSubtract_SubtractBigInts_01
 --- PASS: TestBigIntMathSubtract_SubtractBigInts_01 (0.00s)
 === RUN   TestBigIntMathSubtract_SubtractBigInts_02
@@ -911,7 +915,7 @@
 === RUN   TestBigIntNum_Ceil_16
 --- PASS: TestBigIntNum_Ceil_16 (0.00s)
 === RUN   TestBigIntNum_Ceil_17
---- PASS: TestBigIntNum_Ceil_17 (0.00s)
+--- PASS: TestBigIntNum_Ceil_17 (0.01s)
 === RUN   TestBigIntNum_Decimal_01
 --- PASS: TestBigIntNum_Decimal_01 (0.00s)
 === RUN   TestBigIntNum_Decimal_02
@@ -941,7 +945,7 @@
 === RUN   TestBigIntNum_Floor_08
 --- PASS: TestBigIntNum_Floor_08 (0.00s)
 === RUN   TestBigIntNum_Floor_09
---- PASS: TestBigIntNum_Floor_09 (0.01s)
+--- PASS: TestBigIntNum_Floor_09 (0.00s)
 === RUN   TestBigIntNum_Floor_10
 --- PASS: TestBigIntNum_Floor_10 (0.00s)
 === RUN   TestBigIntNum_Floor_11
@@ -1120,6 +1124,28 @@
 --- PASS: TestBigIntNum_GetIntegerPart_05 (0.00s)
 === RUN   TestBigIntNum_GetIntegerPart_06
 --- PASS: TestBigIntNum_GetIntegerPart_06 (0.00s)
+=== RUN   TestBigIntNum_GetNumberOfDigits_01
+--- PASS: TestBigIntNum_GetNumberOfDigits_01 (0.00s)
+=== RUN   TestBigIntNum_GetNumberOfDigits_02
+--- PASS: TestBigIntNum_GetNumberOfDigits_02 (0.00s)
+=== RUN   TestBigIntNum_GetNumberOfDigits_03
+--- PASS: TestBigIntNum_GetNumberOfDigits_03 (0.00s)
+=== RUN   TestBigIntNum_GetNumberOfDigits_04
+--- PASS: TestBigIntNum_GetNumberOfDigits_04 (0.00s)
+=== RUN   TestBigIntNum_GetNumberOfDigits_05
+--- PASS: TestBigIntNum_GetNumberOfDigits_05 (0.00s)
+=== RUN   TestBigIntNum_GetNumberOfDigits_06
+--- PASS: TestBigIntNum_GetNumberOfDigits_06 (0.00s)
+=== RUN   TestBigIntNum_GetNumberOfDigits_07
+--- PASS: TestBigIntNum_GetNumberOfDigits_07 (0.00s)
+=== RUN   TestBigIntNum_GetNumberOfDigits_08
+--- PASS: TestBigIntNum_GetNumberOfDigits_08 (0.00s)
+=== RUN   TestBigIntNum_GetNumberOfDigits_09
+--- PASS: TestBigIntNum_GetNumberOfDigits_09 (0.00s)
+=== RUN   TestBigIntNum_GetNumberOfDigits_10
+--- PASS: TestBigIntNum_GetNumberOfDigits_10 (0.00s)
+=== RUN   TestBigIntNum_GetNumberOfDigits_11
+--- PASS: TestBigIntNum_GetNumberOfDigits_11 (0.00s)
 === RUN   TestBigIntNum_IntAry_01
 --- PASS: TestBigIntNum_IntAry_01 (0.00s)
 === RUN   TestBigIntNum_IntAry_02
@@ -1417,7 +1443,7 @@
 === RUN   TestDecimal_NewNumStrPrecision_03
 --- PASS: TestDecimal_NewNumStrPrecision_03 (0.00s)
 === RUN   TestDecimal_NewNumStrPrecision_04
---- PASS: TestDecimal_NewNumStrPrecision_04 (0.02s)
+--- PASS: TestDecimal_NewNumStrPrecision_04 (0.00s)
 === RUN   TestDecimal_NewNumStrPrecision_06
 --- PASS: TestDecimal_NewNumStrPrecision_06 (0.00s)
 === RUN   TestDecimal_NewNumStrPrecision_07
@@ -2947,4 +2973,4 @@
 === RUN   TestStrMathOp_SubtractN1N2_19
 --- PASS: TestStrMathOp_SubtractN1N2_19 (0.00s)
 PASS
-ok  	MikeAustin71/mathopsgo/mathops	1.261s
+ok  	MikeAustin71/mathopsgo/mathops	1.133s

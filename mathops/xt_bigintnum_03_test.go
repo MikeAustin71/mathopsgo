@@ -462,6 +462,221 @@ func TestBigIntNum_GetIntegerPart_06(t *testing.T) {
 
 }
 
+func TestBigIntNum_GetNumberOfDigits_01(t *testing.T) {
+
+	nStr := "123.45"
+	expectedDigitCnt := 5
+	bINum, err := BigIntNum{}.NewNumStr(nStr)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(nStr). " +
+			"Error='%v' ", err.Error())
+	}
+
+	actualDigitCnt := bINum.GetNumberOfDigits()
+
+	if expectedDigitCnt != actualDigitCnt {
+		t.Errorf("Error: Expected Digit Count='%v'. Instead, Digit Count='%v' ",
+			expectedDigitCnt, actualDigitCnt)
+	}
+
+}
+
+func TestBigIntNum_GetNumberOfDigits_02(t *testing.T) {
+
+	nStr := "1,234,567"
+	expectedDigitCnt := 7
+	bINum, err := BigIntNum{}.NewNumStr(nStr)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(nStr). " +
+			"Error='%v' ", err.Error())
+	}
+
+	actualDigitCnt := bINum.GetNumberOfDigits()
+
+	if expectedDigitCnt != actualDigitCnt {
+		t.Errorf("Error: Expected Digit Count='%v'. Instead, Digit Count='%v' ",
+			expectedDigitCnt, actualDigitCnt)
+	}
+
+}
+
+func TestBigIntNum_GetNumberOfDigits_03(t *testing.T) {
+
+	nStr := "-1,234,567.8"
+	expectedDigitCnt := 8
+	bINum, err := BigIntNum{}.NewNumStr(nStr)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(nStr). " +
+			"Error='%v' ", err.Error())
+	}
+
+	actualDigitCnt := bINum.GetNumberOfDigits()
+
+	if expectedDigitCnt != actualDigitCnt {
+		t.Errorf("Error: Expected Digit Count='%v'. Instead, Digit Count='%v' ",
+			expectedDigitCnt, actualDigitCnt)
+	}
+
+}
+
+func TestBigIntNum_GetNumberOfDigits_04(t *testing.T) {
+
+	nStr := "0"
+	expectedDigitCnt := 1
+	bINum, err := BigIntNum{}.NewNumStr(nStr)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(nStr). " +
+			"Error='%v' ", err.Error())
+	}
+
+	actualDigitCnt := bINum.GetNumberOfDigits()
+
+	if expectedDigitCnt != actualDigitCnt {
+		t.Errorf("Error: Expected Digit Count='%v'. Instead, Digit Count='%v' ",
+			expectedDigitCnt, actualDigitCnt)
+	}
+
+}
+
+func TestBigIntNum_GetNumberOfDigits_05(t *testing.T) {
+
+	//nStr := "0.00"
+	expectedDigitCnt := 1
+	bINum := BigIntNum{}.NewZero(2)
+
+	actualDigitCnt := bINum.GetNumberOfDigits()
+
+	if expectedDigitCnt != actualDigitCnt {
+		t.Errorf("Error: Expected Digit Count='%v'. Instead, Digit Count='%v' ",
+			expectedDigitCnt, actualDigitCnt)
+	}
+
+}
+
+func TestBigIntNum_GetNumberOfDigits_06(t *testing.T) {
+
+	nStr := "012.34"
+	expectedDigitCnt := 4
+	bINum, err := BigIntNum{}.NewNumStr(nStr)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(nStr). " +
+			"Error='%v' ", err.Error())
+	}
+
+	actualDigitCnt := bINum.GetNumberOfDigits()
+
+	if expectedDigitCnt != actualDigitCnt {
+		t.Errorf("Error: Expected Digit Count='%v'. Instead, Digit Count='%v' ",
+			expectedDigitCnt, actualDigitCnt)
+	}
+
+}
+
+func TestBigIntNum_GetNumberOfDigits_07(t *testing.T) {
+
+	nStr := "0.1234"
+	expectedDigitCnt := 4
+	bINum, err := BigIntNum{}.NewNumStr(nStr)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(nStr). " +
+			"Error='%v' ", err.Error())
+	}
+
+	actualDigitCnt := bINum.GetNumberOfDigits()
+
+	if expectedDigitCnt != actualDigitCnt {
+		t.Errorf("Error: Expected Digit Count='%v'. Instead, Digit Count='%v' ",
+			expectedDigitCnt, actualDigitCnt)
+	}
+
+}
+
+func TestBigIntNum_GetNumberOfDigits_08(t *testing.T) {
+
+	nStr := "0.123400"
+	expectedDigitCnt := 6
+	bINum, err := BigIntNum{}.NewNumStr(nStr)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(nStr). " +
+			"Error='%v' ", err.Error())
+	}
+
+	actualDigitCnt := bINum.GetNumberOfDigits()
+
+	if expectedDigitCnt != actualDigitCnt {
+		t.Errorf("Error: Expected Digit Count='%v'. Instead, Digit Count='%v' ",
+			expectedDigitCnt, actualDigitCnt)
+	}
+
+}
+
+func TestBigIntNum_GetNumberOfDigits_09(t *testing.T) {
+
+	nStr := "0.0123400"
+	expectedDigitCnt := 6
+	bINum, err := BigIntNum{}.NewNumStr(nStr)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(nStr). " +
+			"Error='%v' ", err.Error())
+	}
+
+	actualDigitCnt := bINum.GetNumberOfDigits()
+
+	if expectedDigitCnt != actualDigitCnt {
+		t.Errorf("Error: Expected Digit Count='%v'. Instead, Digit Count='%v' ",
+			expectedDigitCnt, actualDigitCnt)
+	}
+
+}
+
+func TestBigIntNum_GetNumberOfDigits_10(t *testing.T) {
+
+	nStr := "1,234,567.800"
+	expectedDigitCnt := 10
+	bINum, err := BigIntNum{}.NewNumStr(nStr)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(nStr). " +
+			"Error='%v' ", err.Error())
+	}
+
+	actualDigitCnt := bINum.GetNumberOfDigits()
+
+	if expectedDigitCnt != actualDigitCnt {
+		t.Errorf("Error: Expected Digit Count='%v'. Instead, Digit Count='%v' ",
+			expectedDigitCnt, actualDigitCnt)
+	}
+
+}
+
+func TestBigIntNum_GetNumberOfDigits_11(t *testing.T) {
+
+	nStr := "5"
+	expectedDigitCnt := 1
+	bINum, err := BigIntNum{}.NewNumStr(nStr)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(nStr). " +
+			"Error='%v' ", err.Error())
+	}
+
+	actualDigitCnt := bINum.GetNumberOfDigits()
+
+	if expectedDigitCnt != actualDigitCnt {
+		t.Errorf("Error: Expected Digit Count='%v'. Instead, Digit Count='%v' ",
+			expectedDigitCnt, actualDigitCnt)
+	}
+
+}
+
 func TestBigIntNum_IntAry_01(t *testing.T) {
 
 	nStr:="123.456"
