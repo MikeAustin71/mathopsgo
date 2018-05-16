@@ -755,6 +755,29 @@ func (bNum *BigIntNum) GetBigInt() (*big.Int, error) {
 	return big.NewInt(0).Set(bNum.bigInt), nil
 }
 
+
+// GetInt - Returns a type 'int' containing the integer
+// value of the current BigIntNum instance.
+func (bNum *BigIntNum) GetInt() (int, error) {
+
+	ePrefix := "BigIntNum) GetInt() "
+	bIMaxInt := big.NewInt(int64(math.MaxInt32))
+	bIMinInt := big.NewInt(int64(math.MinInt32))
+
+	if bNum.bigInt.Cmp(bIMaxInt) == 1 {
+		return 0, fmt.Errorf(ePrefix + "Error: BigIntNum Value is GREATER than Int32 Maximum! "+
+			"Int32 Maximum Value='%v' BigIntNum Value='%v'",bIMaxInt.Text(10), bNum.GetNumStr())
+	}
+
+	if bNum.bigInt.Cmp(bIMinInt) == -1 {
+		return 0, fmt.Errorf(ePrefix + "Error: BigIntNum Value is LESS than Int32 Minmum! "+
+			"Int32 Minimum Value='%v' BigIntNum Value='%v'",bIMinInt.Text(10), bNum.GetNumStr())
+	}
+
+	return int(bNum.bigInt.Int64()), nil
+
+}
+
 // GetCurrencySymbol - Returns the character currently designated
 // as the currency symbol for this BigIntNum instance.
 //

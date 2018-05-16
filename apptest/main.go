@@ -3,16 +3,40 @@ package main
 import (
 	"MikeAustin71/mathopsgo/mathops"
 	"fmt"
+	"math/big"
 )
 
 func main() {
 
-	baseStr := "-2"
-	exponentStr := "3.8"
-	expectedNumStr := "13.928809012737986226180320279676"
+	base := mathops.BigIntNum{}.NewBigInt(big.NewInt(8), 0)
+	nthRoot := mathops.BigIntNum{}.NewBigInt(big.NewInt(3), 0)
+	expectedNumStr := "2"
 	maxPrecision := uint(30)
 
-	ExampleBigIntNumPower_01(baseStr, exponentStr, expectedNumStr, maxPrecision)
+	ExampleBigIntNumNthRoot_01(base, nthRoot, maxPrecision, expectedNumStr)
+
+}
+
+func ExampleBigIntNumNthRoot_01(
+				base, nthRoot mathops.BigIntNum,
+					maxPrecision uint,
+						expectedNumStr string) {
+
+	mathNthRoot := mathops.BigIntMathNthRoot{}
+
+	result, err := mathNthRoot.GetNthRootIntAry(base, nthRoot, maxPrecision)
+
+	if err != nil {
+		fmt.Printf("Error returned by mathNthRoot.GetNthRootIntAry(base, nthRoot, maxPrecision). " +
+			"Error='%v' \n", err.Error())
+		return
+	}
+
+	fmt.Println("*** BigIntMathNthRoot ***")
+	fmt.Println("Expected Result: ", expectedNumStr)
+	fmt.Println("  Actual Result: ", result.GetNumStr())
+	fmt.Println("           Base: ", base.GetNumStr())
+	fmt.Println("        NthRoot: ", nthRoot.GetNumStr())
 
 }
 
