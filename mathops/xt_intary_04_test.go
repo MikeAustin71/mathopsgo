@@ -825,7 +825,7 @@ func TestIntAry_GetNthRootOfThis_02(t *testing.T) {
 	iaResult, err := ia.GetNthRootOfThis(nthRoot, maxPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned from nRt.GetNthRootIntAry() - %v", err)
+		t.Errorf("Error returned from nRt.GetNthRootOfThis(..) Error='%v'", err.Error())
 	}
 
 	if expected != iaResult.GetNumStr() {
@@ -845,7 +845,7 @@ func TestIntAry_GetNthRootOfThis_03(t *testing.T) {
 	iaResult, err := ia.GetNthRootOfThis(nthRoot, maxPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned from iaResult.GetNthRootIntAry() - %v", err)
+		t.Errorf("Error returned from iaResult.GetNthRootOfThis(...) Error='%v'", err.Error())
 	}
 
 	if expected != iaResult.GetNumStr() {
@@ -865,7 +865,7 @@ func TestIntAry_GetNthRootOfThis_04(t *testing.T) {
 	iaResult, err := ia.GetNthRootOfThis(nthRoot, maxPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned from iaResult.GetNthRootIntAry() - %v", err)
+		t.Errorf("Error returned from iaResult.GetNthRootOfThis(...). Error='%v'", err.Error())
 	}
 
 	if expected != iaResult.GetNumStr() {
@@ -883,7 +883,8 @@ func TestIntAry_GetNthRootOfThis_05(t *testing.T) {
 	_, err := ia.GetNthRootOfThis(nthRoot, maxPrecision)
 
 	if err == nil {
-		t.Error("Expected Error from iaResult.GetNthRootIntAry() for negative number with even nthRoot. No Error triggered")
+		t.Error("Expected Error from iaResult.GetNthRootOfThis(...) for negative number " +
+				"with even nthRoot. No Error triggered")
 	}
 
 }
@@ -898,7 +899,7 @@ func TestIntAry_GetNthRootOfThis_06(t *testing.T) {
 	iaResult, err := ia.GetNthRootOfThis(nthRoot, maxPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned from nRt.GetNthRootIntAry() - %v", err)
+		t.Errorf("Error returned from nRt.GetNthRootOfThis(...). Error='%v'", err.Error())
 	}
 
 	if expected != iaResult.GetNumStr() {

@@ -22,15 +22,11 @@ import (
 
 
 // NthRootOp - Used to extract square roots and nth roots of positive and negative
-// real numbers. Currently nth roots may only be passed as integer values.
+// real numbers. Currently nth roots may only be passed as integer values. The maximum
+// integer value is +2,147,483,647. The minimum integer value is two ('2').
 //
 // The technique employed to calculate nth roots is known as the
 // "shifting nth-root algorithm".
-//
-// This source file is located in source code repository:
-//
-// https://github.com/MikeAustin71/mathhlpr.git
-//
 //
 // See: https://en.wikipedia.org/wiki/Shifting_nth_root_algorithm
 //
@@ -247,7 +243,7 @@ func (nthrt *NthRootOp) GetNthRootBigInt(num *big.Int, precision, nthRoot, maxPr
 	return nthrt.GetNthRootIntAry(&ai, nthRoot, maxPrecision)
 }
 
-// GetNthRootIntAry  - Calculates the Nth Root of a real number ('num')
+// GetNthRoot  - Calculates the Nth Root of a real number ('num')
 // passed to the method as a pointer to type intAry.  In addition, the caller must supply
 // input parameters for 'nthRoot' and 'maxPrecision'.
 //
@@ -265,7 +261,9 @@ func (nthrt *NthRootOp) GetNthRootIntAry(num *IntAry, nthRoot, maxPrecision uint
 	err := nthrt.initializeAndExtract(num, nthRoot, maxPrecision)
 
 	if err != nil {
-		return IntAry{}.New(), fmt.Errorf("NthRootOp.GetNthRootIntAry() Error returned from initializeAndExtract. Error= %v", err)
+		return IntAry{}.New(),
+			fmt.Errorf("NthRootOp.GetNthRootIntAry() Error returned from initializeAndExtract(..). " +
+				"Error= %v", err.Error())
 	}
 
 	return nthrt.ResultAry.CopyOut(), nil
@@ -462,7 +460,9 @@ func (nthrt *NthRootOp) GetSquareRootIntAry(num *IntAry, maxPrecision uint) (Int
 	err := nthrt.initializeAndExtract(num, 2, maxPrecision)
 
 	if err != nil {
-		return IntAry{}.New(), fmt.Errorf("NthRootOp.GetNthRootIntAry() Error returned from initializeAndExtract. Error= %v", err)
+		return IntAry{}.New(),
+			fmt.Errorf("NthRootOp.GetSquareRootIntAry() Error returned from initializeAndExtract. " +
+					"Error= %v", err.Error())
 	}
 
 	return nthrt.ResultAry.CopyOut(), nil
@@ -473,7 +473,7 @@ func (nthrt *NthRootOp) GetSquareRootIntAry(num *IntAry, maxPrecision uint) (Int
 // passed to the method as a pointer to type intAry.  In addition, the caller must supply
 // input parameters for 'nthRoot' and 'maxPrecision'.
 //
-// The difference between this method, 'SetNthRootIntAry' and 'GetNthRootIntAry' is in
+// The difference between this method, 'SetNthRootIntAry' and 'GetNthRoot' is in
 // the return value.  This method, 'SetNthRootIntAry' does not return the result. Instead,
 // the calculation result is stored in the NthRootOp intAry Object, NthRootOp.ResultAry.
 // This method is primarily for use by other low level routines seeking to improve performance

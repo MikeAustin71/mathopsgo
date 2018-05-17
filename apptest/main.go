@@ -8,26 +8,92 @@ import (
 
 func main() {
 
-	base := mathops.BigIntNum{}.NewBigInt(big.NewInt(8), 0)
-	nthRoot := mathops.BigIntNum{}.NewBigInt(big.NewInt(3), 0)
-	expectedNumStr := "2"
-	maxPrecision := uint(30)
+	baseStr := "2"
+	exponentStr := "-3"
+	expectedStr := "0.125"
 
-	ExampleBigIntNumNthRoot_01(base, nthRoot, maxPrecision, expectedNumStr)
+	ExampleBigIntExpTest_01(baseStr, exponentStr, expectedStr)
 
 }
 
+func ExampleBigIntExpTest_01(baseStr, exponentStr, expectedStr string) {
+
+	bINumBase, err := mathops.BigIntNum{}.NewNumStr(baseStr)
+
+	if err != nil {
+		fmt.Printf("Error returned by BigIntNum{}.NewNumStr(baseStr). " +
+			"baseStr='%v' Error='%v' \n", baseStr, err.Error())
+		return
+	}
+
+	bIBase, err := bINumBase.GetBigInt()
+
+	if err != nil {
+		fmt.Printf("Error returned by bINumBase.GetBigInt(). " +
+			"bINumBase='%v' Error='%v' \n", bINumBase.GetNumStr(), err.Error())
+		return
+	}
+
+
+	bINumExponent, err := mathops.BigIntNum{}.NewNumStr(exponentStr)
+
+	if err != nil {
+		fmt.Printf("Error returned by BigIntNum{}.NewNumStr(exponentStr). " +
+			"exponentStr='%v' Error='%v' \n", exponentStr, err.Error())
+		return
+	}
+
+	bIExponent, err := bINumExponent.GetBigInt()
+
+	if err != nil {
+		fmt.Printf("Error returned by bINumExponent.GetBigInt(). " +
+			"bINumExponent='%v' Error='%v' \n", bINumExponent.GetNumStr(), err.Error())
+		return
+	}
+	modM := big.NewInt(0)
+	result := big.NewInt(0).Exp(bIBase, bIExponent, modM)
+
+	fmt.Println("big.NewInt(0).Exp(...)")
+	fmt.Println("-------------------------------")
+	fmt.Println("    Base: ", bIBase.Text(10))
+	fmt.Println("Exponent: ", bIExponent.Text(10))
+	fmt.Println("-------------------------------")
+	fmt.Println("Expected: ", expectedStr)
+	fmt.Println("  Result: ", result.Text(10))
+	fmt.Println("-------------------------------")
+	fmt.Println("    ModM: ", modM.Text(10))
+}
+
 func ExampleBigIntNumNthRoot_01(
-				base, nthRoot mathops.BigIntNum,
+				baseStr, nthRootStr string,
 					maxPrecision uint,
 						expectedNumStr string) {
 
-	mathNthRoot := mathops.BigIntMathNthRoot{}
 
-	result, err := mathNthRoot.GetNthRootIntAry(base, nthRoot, maxPrecision)
+	base, err := mathops.BigIntNum{}.NewNumStr(baseStr)
 
 	if err != nil {
-		fmt.Printf("Error returned by mathNthRoot.GetNthRootIntAry(base, nthRoot, maxPrecision). " +
+		fmt.Printf("Error returned by BigIntNum{}.NewNumStr(baseStr). " +
+			"baseStr='%v' Error='%v' \n", baseStr, err.Error())
+		return
+	}
+
+
+	nthRoot, err := mathops.BigIntNum{}.NewNumStr(nthRootStr)
+
+	if err != nil {
+		fmt.Printf("Error returned by BigIntNum{}.NewNumStr(nthRootStr). " +
+			"nthRootStr='%v' Error='%v' \n", nthRootStr, err.Error())
+		return
+	}
+
+
+	mathNthRootOp := mathops.BigIntMathNthRoot{}
+
+	result, err := mathNthRootOp.GetNthRoot(base, nthRoot, maxPrecision)
+
+	if err != nil {
+		fmt.Printf("Error returned by mathNthRootOp.GetNthRoot(base, nthRoot, maxPrecision). " +
 			"Error='%v' \n", err.Error())
 		return
 	}

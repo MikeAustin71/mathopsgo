@@ -64,24 +64,29 @@ func (nthrt *BigIntMathNthRoot) Empty() {
 	nthrt.Big10ToNthPower = big.NewInt(0)
 }
 
-// GetNthRootIntAry  - Calculates the Nth Root of a real number ('num')
-// passed to the method as a pointer to type intAry.  In addition, the caller must supply
+// GetNthRoot  - Calculates the Nth Root of a real number ('num')
+// passed to the method as Type BigIntNum.  In addition, the caller must supply
 // input parameters for 'nthRoot' and 'maxPrecision'.
 //
 // 'nthRoot' specifies the root which will be calculated for parameter, 'num'. Example,
-// square root, cube root, 4th root, 9th root etc.
+// square root, cube root, 4th root, 9th root etc. 'nthRoot' is a BigIntNum Type which
+// must be a positive integer number with a value greater than one ('1') and less than
+// or equal to +2,147,483,647. As a practical matter, your computer may run out of memory
+// before you reach this maximum limit. If 'nthRoot' fails to meet this criteria an error
+// will be returned.
 //
 // 'maxPrecision' specifies the number of decimals to the right of the decimal place to
 // which the Nth root will be calculated.
 //
-// The calculation result is returned as an intAry object.
+// The calculation result is returned as an instance to Type BigIntNum .
 //
-// Note: A negative 'num' value with an even nthRoot will generate an error.
-func (nthrt *BigIntMathNthRoot) GetNthRootIntAry(
+func (nthrt *BigIntMathNthRoot) GetNthRoot(
 					num , nthRoot BigIntNum,
 						maxPrecision uint) (BigIntNum, error) {
 
-	ePrefix := "BigIntMathNthRoot.GetNthRootIntAry() "
+
+	ePrefix := "BigIntMathNthRoot.GetNthRoot() "
+
 	err := nthrt.initializeAndExtract(num, nthRoot, maxPrecision)
 
 	if err != nil {
@@ -105,25 +110,34 @@ func (nthrt *BigIntMathNthRoot) GetNthRootIntAry(
 	return result, nil
 }
 
-
+// initializeAndExtract - Validates input parameters and sets up structures used
+// to complete the nthRoot calculation.
 func (nthrt *BigIntMathNthRoot) initializeAndExtract(
 					num , nthRoot BigIntNum, maxPrecision uint) error {
+
+	ePrefix := "BigIntMathNthRoot.initializeAndExtract() "
 
 	if nthRoot.IsZero() {
 		nthrt.ResultAry.SetIntAryToOne(int(maxPrecision))
 		return nil
 	}
 
+	if nthRoot.precision > 0 {
+		return errors.New(ePrefix + "-Error: input parameter 'nthRoot' is a floating point number. " +
+			"Precision is greater than Zero. NthRoot calculations can only be performed when 'nthRoot' is an " +
+			"integer number.")
+	}
+
 	err := nthrt.initialize(num, nthRoot, maxPrecision)
 
 	if err != nil {
-		return fmt.Errorf("BigIntMathNthRoot.initializeAndExtract() Error returned from initialization. Error= %v", err)
+		return fmt.Errorf(ePrefix + "-Error returned from initialization. Error= %v", err.Error())
 	}
 
 	err = nthrt.doRootExtraction()
 
 	if err != nil {
-		return fmt.Errorf("BigIntMathNthRoot.initializeAndExtract() - Error returned from nthrt.doRootExtraction() - %v", err)
+		return fmt.Errorf(ePrefix + "-Error returned from nthrt.doRootExtraction() - %v", err.Error())
 	}
 
 	return nil
@@ -166,7 +180,7 @@ func (nthrt *BigIntMathNthRoot) initialize(
 
 		isNthRootEven := false
 
-		if intNthRootVal != mod * 2 {
+		if intNthRootVal == mod * 2 {
 			isNthRootEven = true
 		}
 
@@ -231,9 +245,9 @@ func (nthrt *BigIntMathNthRoot) bundleInts() error {
 	intNums := nthrt.OriginalNum.GetIntegerPart()
 	//intNums, err := nthrt.OriginalNum.GetIntegerDigits()
 
-	intNumsStats := intNums.GetNumberOfDigits()
+	intNumOfDigits := intNums.GetNumberOfDigits()
 
-	if intNumsStats < 1 {
+	if intNumOfDigits < 1 {
 		return errors.New(ePrefix + " intNums Number of Digits is less than 1")
 	}
 
@@ -244,15 +258,15 @@ func (nthrt *BigIntMathNthRoot) bundleInts() error {
 		return fmt.Errorf(ePrefix + "Error returned by nthrt.NthRoot.GetInt(). Error='%v' ", err.Error())
 	}
 
-	if intNumsStats <= bIntNthRtValue {
+	if intNumOfDigits <= bIntNthRtValue {
 
 		bundleSize = 1
 
 	} else {
 
-		bundleSize = intNumsStats / bIntNthRtValue
+		bundleSize = intNumOfDigits / bIntNthRtValue
 
-		if intNumsStats > ((intNumsStats / bIntNthRtValue) * bIntNthRtValue) {
+		if intNumOfDigits > ((intNumOfDigits / bIntNthRtValue) * bIntNthRtValue) {
 
 			bundleSize++
 
@@ -266,7 +280,7 @@ func (nthrt *BigIntMathNthRoot) bundleInts() error {
 	intAryIdx := 0
 	intAry, _ := intNums.GetIntAry()
 	u8Ary, _ := intAry.GetIntAry()
-	for j := intNumsStats - 1; j >= 0; j -= bIntNthRtValue {
+	for j := intNumOfDigits - 1; j >= 0; j -= bIntNthRtValue {
 		bundle := make([]int, bIntNthRtValue)
 		intAryIdx = j
 		for k := bIntNthRtValue - 1; k >= 0; k-- {
@@ -299,12 +313,6 @@ func (nthrt *BigIntMathNthRoot) bundleFracs() error {
 
 	fracNums := nthrt.OriginalNum.GetFractionalPart()
 
-	intFracNumVal, err := fracNums.GetInt()
-
-	if err != nil {
-		return fmt.Errorf(ePrefix + "Error Returned from fracNums.GetInt() - Error= %v", err)
-	}
-
 	intNthRootVal, err := nthrt.NthRoot.GetInt()
 
 	if err != nil {
@@ -313,15 +321,17 @@ func (nthrt *BigIntMathNthRoot) bundleFracs() error {
 
 	iFAry, _ := fracNums.GetIntAry()
 
+	iFAryStats := iFAry.GetIntAryStats()
+
 	u8Ary, _ := iFAry.GetIntAry()
 
-	for i := 1; i < intFracNumVal; i += intNthRootVal {
+	for i := 1; i < iFAryStats.IntAryLen; i += intNthRootVal {
 
 		bundle := make([]int, intNthRootVal)
 
 		for j := 0; j < intNthRootVal; j++ {
 
-			if i+j < intFracNumVal {
+			if i+j < iFAryStats.IntAryLen {
 				bundle[j] = int(u8Ary[i+j])
 			}
 		}

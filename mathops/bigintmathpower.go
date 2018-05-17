@@ -239,7 +239,7 @@ func (bIPwr BigIntMathPower) raiseToPositiveFractionalPower(
 
   if err != nil {
   	return BigIntNum{},
-  		fmt.Errorf(ePrefix + "Error returned by nr.GetNthRootIntAry(&iaPwrResult1, " +
+  		fmt.Errorf(ePrefix + "Error returned by nr.GetNthRoot(&iaPwrResult1, " +
   			"nthRoot, maxPrecision). iaPwrResult1='%v' nthRoot='%v' maxPrecision='%v' " +
   			"Error='%v' ", iaPwrResult1.GetNumStr(), nthRoot, maxPrecision, err.Error())
 	}
@@ -248,7 +248,7 @@ func (bIPwr BigIntMathPower) raiseToPositiveFractionalPower(
 
 	if err != nil {
 		return BigIntNum{},
-			fmt.Errorf(ePrefix + "Error returned by nr.GetNthRootIntAry(&iaPwrResult1, " +
+			fmt.Errorf(ePrefix + "Error returned by nr.GetNthRoot(&iaPwrResult1, " +
 				"nthRoot, maxPrecision). iaPwrResult1='%v' nthRoot='%v' maxPrecision='%v' " +
 				"Error='%v' ", iaPwrResult1.GetNumStr(), nthRoot, maxPrecision, err.Error())
 	}
