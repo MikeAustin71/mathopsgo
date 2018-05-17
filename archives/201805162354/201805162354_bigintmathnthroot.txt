@@ -30,6 +30,8 @@ type BigIntMathNthRoot struct {
 	BaseNumBundles     	[][]int
 	LenBaseNumBundles  	int
 	BaseNumBundlesIdx  	int
+	ResultAry          	IntAry
+	ResultIdx						int
 	ResultBInt					*big.Int
 	ResultPrecision    	int
 	ResultBINum					BigIntNum
@@ -56,8 +58,10 @@ func (nthrt *BigIntMathNthRoot) Empty() {
 	nthrt.BaseNumBundles = make([][]int, 0, 500)
 	nthrt.LenBaseNumBundles = 0
 	nthrt.BaseNumBundlesIdx = 0
+	nthrt.ResultAry = IntAry{}.New()
 	nthrt.ResultBInt = big.NewInt(0)
 	nthrt.ResultBINum = BigIntNum{}.NewZero(0)
+	nthrt.ResultIdx = 0
 	nthrt.ResultPrecision = 0
 	nthrt.RequestedPrecision = 0
 	nthrt.Big10 = big.NewInt(0)
@@ -155,6 +159,19 @@ func (nthrt *BigIntMathNthRoot) calcNthRootGateway(
 				radicand.GetNumStr(), nthRoot.GetNumStr(), err.Error() )
 	}
 
+	/*
+	result, err := nthrt.ResultAry.GetBigIntNum()
+
+	if err != nil {
+		return BigIntNum{}.New(),
+			fmt.Errorf(ePrefix +
+				"Error returned from nthrt.ResultAry.GetBigIntNum()" +
+				" Error= %v", err.Error() )
+	}
+
+
+	return result, nil
+	*/
 	return nthrt.ResultBINum, nil
 }
 
@@ -254,6 +271,9 @@ func (nthrt *BigIntMathNthRoot) initialize(
 	nthrt.Big10 = big.NewInt(10)
 	nthrt.Big10ToNthPower = big.NewInt(0).Exp(nthrt.Big10, nthrt.NthRoot.bigInt, nil)
 	nthrt.BigZero = big.NewInt(0)
+	nthrt.ResultAry = IntAry{}.New()
+	nthrt.ResultAry.SetPrecision(nthrt.RequestedPrecision, false)
+	nthrt.ResultAry.SetSign(radicand.GetSign())
 	nthrt.ResultBInt = big.NewInt(0)
 	nthrt.ResultBINum = BigIntNum{}.NewZero(0)
 	nthrt.Y = big.NewInt(0)
@@ -428,7 +448,7 @@ func (nthrt *BigIntMathNthRoot) calcPrecision() error {
 
 func (nthrt *BigIntMathNthRoot) doRootExtraction() error {
 
-	// ePrefix := "BigIntMathNthRoot) doRootExtraction() "
+	ePrefix := "BigIntMathNthRoot) doRootExtraction() "
 	nthrt.Y = big.NewInt(0)
 	nthrt.Minuend = big.NewInt(0)
 	nthrt.Subtrahend = big.NewInt(0)
@@ -440,6 +460,16 @@ func (nthrt *BigIntMathNthRoot) doRootExtraction() error {
 
 	}
 
+	nthrt.ResultAry.SetSign(nthrt.OriginalNum.GetSign())
+	nthrt.ResultAry.OptimizeIntArrayLen(false)
+	err := nthrt.ResultAry.RoundToPrecision(nthrt.RequestedPrecision - 1)
+
+	if err != nil {
+		return fmt.Errorf(ePrefix +
+			"- Error returned from sqrt.ResultAry.RoundToPrecision(sqrt.ResultPrecision). " +
+					"nthrt.ResultPrecision= %v  Error= %v", nthrt.ResultPrecision, err)
+	}
+
 	if nthrt.OriginalNum.GetSign() < 1 {
 		nthrt.ResultBInt = big.NewInt(0).Neg(nthrt.ResultBInt)
 	}
@@ -447,7 +477,6 @@ func (nthrt *BigIntMathNthRoot) doRootExtraction() error {
 	nthrt.ResultBINum = BigIntNum{}.NewBigInt(nthrt.ResultBInt, uint(nthrt.RequestedPrecision))
 
 	nthrt.ResultBINum.RoundToDecPlace( uint(nthrt.RequestedPrecision)-1)
-
 	return nil
 }
 
@@ -506,6 +535,7 @@ func (nthrt *BigIntMathNthRoot) findNextRoot(bundleIdx int) {
 
 	nthrt.R = big.NewInt(0).Set(nthrt.RPrime)
 	nthrt.Y = big.NewInt(0).Set(nthrt.YPrime)
+	nthrt.ResultAry.AppendToIntAry(uint8(nthrt.Beta.Int64()))
 	nthrt.ResultBInt = big.NewInt(0).Mul(nthrt.ResultBInt, nthrt.Big10)
 	nthrt.ResultBInt = big.NewInt(0).Add(nthrt.ResultBInt, nthrt.Beta )
 

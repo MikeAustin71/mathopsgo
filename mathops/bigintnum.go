@@ -1598,13 +1598,20 @@ func (bNum BigIntNum) NewNumStrDto(nDto NumStrDto) (BigIntNum, error) {
 // 'precision'
 //   value 					Result
 // 		0								1
+//		1								1.0
 //    2								1.00
 // 		3								1.000
 //
 func (bNum BigIntNum) NewOne(precision uint) BigIntNum {
 	b := BigIntNum{}
 	b.Empty()
-	b.SetBigInt(big.NewInt(1), precision)
+	if precision == 0 {
+		b.SetBigInt(big.NewInt(1), 0)
+	}
+
+	scaleVal := big.NewInt(0).Exp(big.NewInt(10), big.NewInt(int64(precision)), nil)
+	newVal := big.NewInt(0).Mul(big.NewInt(1), scaleVal)
+	b.SetBigInt(newVal, precision)
 
 	return b
 }
