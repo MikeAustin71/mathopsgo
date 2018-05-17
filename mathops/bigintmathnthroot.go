@@ -491,10 +491,13 @@ func (nthrt *BigIntMathNthRoot) findNextRoot(bundleIdx int) {
 
 		term_2a1 = big.NewInt(0).Mul(nthrt.BaseNum, nthrt.Y)
 		term_2a2 = big.NewInt(0).Add(term_2a1, nthrt.Beta)
-		term_2a = nthrt.bigPower(term_2a2, uint(nthrt.NthRootIntVal))
+
+		term_2a = big.NewInt(0).Exp(term_2a2, big.NewInt(int64(nthrt.NthRootIntVal)), nil)
 
 		term_2b1 = big.NewInt(0).Set(nthrt.Big10ToNthPower)
-		term_2b2 = nthrt.bigPower(nthrt.Y, uint(nthrt.NthRootIntVal))
+
+		term_2b2 = big.NewInt(0).Exp(nthrt.Y,big.NewInt(int64(nthrt.NthRootIntVal)), nil)
+
 		term_2b = big.NewInt(0).Mul(term_2b1, term_2b2)
 
 		nthrt.Subtrahend = big.NewInt(0).Sub(term_2a, term_2b)
@@ -511,16 +514,6 @@ func (nthrt *BigIntMathNthRoot) findNextRoot(bundleIdx int) {
 
 }
 
-func (nthrt *BigIntMathNthRoot) bigPower(bigNum *big.Int, power uint) *big.Int {
-
-	bigResult := big.NewInt(1)
-
-	for i := uint(0); i < power; i++ {
-		bigResult = big.NewInt(0).Mul(bigResult, bigNum)
-	}
-
-	return bigResult
-}
 
 func (nthrt *BigIntMathNthRoot) getBundleBigInt(idx int) *big.Int {
 
