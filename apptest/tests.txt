@@ -2921,9 +2921,9 @@
 === RUN   TestStrMathOp_MultiplyN1N2_02
 --- PASS: TestStrMathOp_MultiplyN1N2_02 (0.00s)
 === RUN   TestStrMathOp_MultiplyN1N2_03
---- PASS: TestStrMathOp_MultiplyN1N2_03 (0.00s)
+--- PASS: TestStrMathOp_MultiplyN1N2_03 (0.01s)
 === RUN   TestStrMathOp_MultiplyN1N2_04
---- PASS: TestStrMathOp_MultiplyN1N2_04 (0.01s)
+--- PASS: TestStrMathOp_MultiplyN1N2_04 (0.00s)
 === RUN   TestStrMathOp_MultiplyN1N2_05
 --- PASS: TestStrMathOp_MultiplyN1N2_05 (0.00s)
 === RUN   TestStrMathOp_MultiplyN1N2_06
@@ -2989,4 +2989,4 @@
 === RUN   TestStrMathOp_SubtractN1N2_19
 --- PASS: TestStrMathOp_SubtractN1N2_19 (0.00s)
 PASS
-ok  	MikeAustin71/mathopsgo/mathops	1.820s
+ok  	MikeAustin71/mathopsgo/mathops	1.368s

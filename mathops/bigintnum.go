@@ -1605,8 +1605,10 @@ func (bNum BigIntNum) NewNumStrDto(nDto NumStrDto) (BigIntNum, error) {
 func (bNum BigIntNum) NewOne(precision uint) BigIntNum {
 	b := BigIntNum{}
 	b.Empty()
+
 	if precision == 0 {
 		b.SetBigInt(big.NewInt(1), 0)
+		return b
 	}
 
 	scaleVal := big.NewInt(0).Exp(big.NewInt(10), big.NewInt(int64(precision)), nil)
@@ -1628,13 +1630,22 @@ func (bNum BigIntNum) NewOne(precision uint) BigIntNum {
 // 'precision'
 //   value 					Result
 // 		0								2
+//    1								2.0
 //    2								2.00
 // 		3								2.000
 //
 func (bNum BigIntNum) NewTwo(precision uint) BigIntNum {
 	b := BigIntNum{}
 	b.Empty()
-	b.SetBigInt(big.NewInt(2), precision)
+
+	if precision == 0 {
+		b.SetBigInt(big.NewInt(2), 0)
+		return b
+	}
+
+	scaleVal := big.NewInt(0).Exp(big.NewInt(10), big.NewInt(int64(precision)), nil)
+	newVal := big.NewInt(0).Mul(big.NewInt(2), scaleVal)
+	b.SetBigInt(newVal, precision)
 
 	return b
 }
@@ -1657,7 +1668,15 @@ func (bNum BigIntNum) NewTwo(precision uint) BigIntNum {
 func (bNum BigIntNum) NewThree(precision uint) BigIntNum {
 	b := BigIntNum{}
 	b.Empty()
-	b.SetBigInt(big.NewInt(3), precision)
+
+	if precision == 0 {
+		b.SetBigInt(big.NewInt(3), 0)
+		return b
+	}
+
+	scaleVal := big.NewInt(0).Exp(big.NewInt(10), big.NewInt(int64(precision)), nil)
+	newVal := big.NewInt(0).Mul(big.NewInt(3), scaleVal)
+	b.SetBigInt(newVal, precision)
 
 	return b
 }
@@ -1671,6 +1690,7 @@ func (bNum BigIntNum) NewThree(precision uint) BigIntNum {
 // 'precision'
 //   value 					Result
 // 		0								10
+//		1								10.0
 //    2								10.00
 // 		3								10.000
 //
@@ -1678,7 +1698,15 @@ func (bNum BigIntNum) NewTen(precision uint) BigIntNum {
 
 	b := BigIntNum{}
 	b.Empty()
-	b.SetBigInt(big.NewInt(10), precision)
+
+	if precision == 0 {
+		b.SetBigInt(big.NewInt(10), 0)
+		return b
+	}
+
+	scaleVal := big.NewInt(0).Exp(big.NewInt(10), big.NewInt(int64(precision)), nil)
+	newVal := big.NewInt(0).Mul(big.NewInt(10), scaleVal)
+	b.SetBigInt(newVal, precision)
 
 	return b
 
