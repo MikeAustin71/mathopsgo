@@ -963,6 +963,222 @@ func TestBigIntNum_NewBigIntExponent_04(t *testing.T) {
 
 }
 
+func TestBigIntNum_NewOne_01(t *testing.T) {
+	expectedNumStr := "1.000"
+	expectedPrecision := uint(3)
+
+	bINum := BigIntNum{}.NewOne(expectedPrecision)
+
+	if expectedNumStr != bINum.GetNumStr() {
+		t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v'",
+			expectedNumStr, bINum.GetNumStr())
+	}
+
+	if expectedPrecision != bINum.GetPrecisionUint() {
+		t.Errorf("Error: Expected Precision='%v'. Instead, Precision='%v'",
+			expectedPrecision, bINum.GetPrecisionUint())
+	}
+
+}
+
+func TestBigIntNum_NewOne_02(t *testing.T) {
+	expectedNumStr := "1"
+	expectedPrecision := uint(0)
+
+	bINum := BigIntNum{}.NewOne(expectedPrecision)
+
+	if expectedNumStr != bINum.GetNumStr() {
+		t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v'",
+			expectedNumStr, bINum.GetNumStr())
+	}
+
+	if expectedPrecision != bINum.GetPrecisionUint() {
+		t.Errorf("Error: Expected Precision='%v'. Instead, Precision='%v'",
+			expectedPrecision, bINum.GetPrecisionUint())
+	}
+
+}
+
+func TestBigIntNum_NewOne_03(t *testing.T) {
+	expectedNumStr := "1.00000"
+	expectedPrecision := uint(5)
+
+	bINum := BigIntNum{}.NewOne(expectedPrecision)
+
+	if expectedNumStr != bINum.GetNumStr() {
+		t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v'",
+			expectedNumStr, bINum.GetNumStr())
+	}
+
+	if expectedPrecision != bINum.GetPrecisionUint() {
+		t.Errorf("Error: Expected Precision='%v'. Instead, Precision='%v'",
+			expectedPrecision, bINum.GetPrecisionUint())
+	}
+
+}
+
+func TestBigIntNum_NewTwo_01(t *testing.T) {
+	expectedNumStr := "2.000"
+	expectedPrecision := uint(3)
+
+	bINum := BigIntNum{}.NewTwo(expectedPrecision)
+
+	if expectedNumStr != bINum.GetNumStr() {
+		t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v'",
+			expectedNumStr, bINum.GetNumStr())
+	}
+
+	if expectedPrecision != bINum.GetPrecisionUint() {
+		t.Errorf("Error: Expected Precision='%v'. Instead, Precision='%v'",
+			expectedPrecision, bINum.GetPrecisionUint())
+	}
+
+}
+
+func TestBigIntNum_NewTwo_02(t *testing.T) {
+	expectedNumStr := "2"
+	expectedPrecision := uint(0)
+
+	bINum := BigIntNum{}.NewTwo(expectedPrecision)
+
+	if expectedNumStr != bINum.GetNumStr() {
+		t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v'",
+			expectedNumStr, bINum.GetNumStr())
+	}
+
+	if expectedPrecision != bINum.GetPrecisionUint() {
+		t.Errorf("Error: Expected Precision='%v'. Instead, Precision='%v'",
+			expectedPrecision, bINum.GetPrecisionUint())
+	}
+
+}
+
+func TestBigIntNum_NewTwo_03(t *testing.T) {
+	expectedNumStr := "2.00000"
+	expectedPrecision := uint(5)
+
+	bINum := BigIntNum{}.NewTwo(expectedPrecision)
+
+	if expectedNumStr != bINum.GetNumStr() {
+		t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v'",
+			expectedNumStr, bINum.GetNumStr())
+	}
+
+	if expectedPrecision != bINum.GetPrecisionUint() {
+		t.Errorf("Error: Expected Precision='%v'. Instead, Precision='%v'",
+			expectedPrecision, bINum.GetPrecisionUint())
+	}
+
+}
+
+func TestBigIntNum_NewThree_01(t *testing.T) {
+	expectedNumStr := "3.000"
+	expectedPrecision := uint(3)
+
+	bINum := BigIntNum{}.NewThree(expectedPrecision)
+
+	if expectedNumStr != bINum.GetNumStr() {
+		t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v'",
+			expectedNumStr, bINum.GetNumStr())
+	}
+
+	if expectedPrecision != bINum.GetPrecisionUint() {
+		t.Errorf("Error: Expected Precision='%v'. Instead, Precision='%v'",
+			expectedPrecision, bINum.GetPrecisionUint())
+	}
+
+}
+
+func TestBigIntNum_NewThree_02(t *testing.T) {
+	expectedNumStr := "3"
+	expectedPrecision := uint(0)
+
+	bINum := BigIntNum{}.NewThree(expectedPrecision)
+
+	if expectedNumStr != bINum.GetNumStr() {
+		t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v'",
+			expectedNumStr, bINum.GetNumStr())
+	}
+
+	if expectedPrecision != bINum.GetPrecisionUint() {
+		t.Errorf("Error: Expected Precision='%v'. Instead, Precision='%v'",
+			expectedPrecision, bINum.GetPrecisionUint())
+	}
+
+}
+
+func TestBigIntNum_NewThree_03(t *testing.T) {
+	expectedNumStr := "3.00000"
+	expectedPrecision := uint(5)
+
+	bINum := BigIntNum{}.NewThree(expectedPrecision)
+
+	if expectedNumStr != bINum.GetNumStr() {
+		t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v'",
+			expectedNumStr, bINum.GetNumStr())
+	}
+
+	if expectedPrecision != bINum.GetPrecisionUint() {
+		t.Errorf("Error: Expected Precision='%v'. Instead, Precision='%v'",
+			expectedPrecision, bINum.GetPrecisionUint())
+	}
+
+}
+
+func TestBigIntNum_NewTen_01(t *testing.T) {
+	expectedNumStr := "10.000"
+	expectedPrecision := uint(3)
+
+	bINum := BigIntNum{}.NewTen(expectedPrecision)
+
+	if expectedNumStr != bINum.GetNumStr() {
+		t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v'",
+			expectedNumStr, bINum.GetNumStr())
+	}
+
+	if expectedPrecision != bINum.GetPrecisionUint() {
+		t.Errorf("Error: Expected Precision='%v'. Instead, Precision='%v'",
+			expectedPrecision, bINum.GetPrecisionUint())
+	}
+
+}
+
+func TestBigIntNum_NewTen_02(t *testing.T) {
+	expectedNumStr := "10"
+	expectedPrecision := uint(0)
+
+	bINum := BigIntNum{}.NewTen(expectedPrecision)
+
+	if expectedNumStr != bINum.GetNumStr() {
+		t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v'",
+			expectedNumStr, bINum.GetNumStr())
+	}
+
+	if expectedPrecision != bINum.GetPrecisionUint() {
+		t.Errorf("Error: Expected Precision='%v'. Instead, Precision='%v'",
+			expectedPrecision, bINum.GetPrecisionUint())
+	}
+
+}
+
+func TestBigIntNum_NewTen_03(t *testing.T) {
+	expectedNumStr := "10.00000"
+	expectedPrecision := uint(5)
+
+	bINum := BigIntNum{}.NewTen(expectedPrecision)
+
+	if expectedNumStr != bINum.GetNumStr() {
+		t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v'",
+			expectedNumStr, bINum.GetNumStr())
+	}
+
+	if expectedPrecision != bINum.GetPrecisionUint() {
+		t.Errorf("Error: Expected Precision='%v'. Instead, Precision='%v'",
+			expectedPrecision, bINum.GetPrecisionUint())
+	}
+
+}
+
 func TestBigIntNum_NumStrDto_01(t *testing.T) {
 
 	nStr:="123.456"

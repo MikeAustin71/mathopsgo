@@ -460,12 +460,6 @@ func (nthrt *BigIntMathNthRoot) findNextRoot(bundleIdx int) {
 
 	nthrt.RPrime = big.NewInt(-1)
 
-	// nthrt.R already set
-	// n = nthrt.NthRoot already set
-	// nthrt.Y already set
-	// nthrt.BaseNum = 10
-	// nthrt.Big10ToNthPower = BaseNum^n
-
 	itatr := big.NewInt(9)
 	term_1a := big.NewInt(0)
 	term_1b := big.NewInt(0)
