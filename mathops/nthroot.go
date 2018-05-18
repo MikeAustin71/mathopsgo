@@ -500,6 +500,7 @@ func (nthrt *NthRootOp) SetNthRootIntAry(num *IntAry, nthRoot, maxPrecision uint
 	return nil
 }
 
+
 func (nthrt *NthRootOp) initializeAndExtract(num *IntAry, nthRoot, maxPrecision uint) error {
 
 	if nthRoot == 0 {
@@ -574,7 +575,7 @@ func (nthrt *NthRootOp) initialize(originalNum *IntAry, nthRoot, maxPrecision ui
 	nthrt.BigOne = big.NewInt(1)
 	nthrt.Big3 = big.NewInt(3)
 	nthrt.Big10 = big.NewInt(10)
-	nthrt.Big10ToNthPower = nthrt.bigPower(nthrt.Big10, uint(nthrt.NthRoot))
+	nthrt.Big10ToNthPower = big.NewInt(0).Exp(nthrt.Big10, big.NewInt(int64(nthrt.NthRoot)), nil)
 	nthrt.BigZero = big.NewInt(0)
 	nthrt.ResultAry = IntAry{}.New()
 	nthrt.ResultAry.SetPrecision(nthrt.RequestedPrecision, false)
@@ -791,10 +792,11 @@ func (nthrt *NthRootOp) findNextRoot(bundleIdx int) {
 
 		term_2a1 = big.NewInt(0).Mul(nthrt.BaseNum, nthrt.Y)
 		term_2a2 = big.NewInt(0).Add(term_2a1, nthrt.Beta)
-		term_2a = nthrt.bigPower(term_2a2, uint(nthrt.NthRoot))
+		term_2a = big.NewInt(0).Exp(term_2a2, big.NewInt(int64(nthrt.NthRoot)), nil)
 
 		term_2b1 = big.NewInt(0).Set(nthrt.Big10ToNthPower)
-		term_2b2 = nthrt.bigPower(nthrt.Y, uint(nthrt.NthRoot))
+		term_2b2 = big.NewInt(0).Exp(nthrt.Y, big.NewInt(int64(nthrt.NthRoot)), nil )
+
 		term_2b = big.NewInt(0).Mul(term_2b1, term_2b2)
 
 		nthrt.Subtrahend = big.NewInt(0).Sub(term_2a, term_2b)
@@ -808,17 +810,6 @@ func (nthrt *NthRootOp) findNextRoot(bundleIdx int) {
 	nthrt.Y = big.NewInt(0).Set(nthrt.YPrime)
 	nthrt.ResultAry.AppendToIntAry(uint8(nthrt.Beta.Int64()))
 
-}
-
-func (nthrt *NthRootOp) bigPower(bigNum *big.Int, power uint) *big.Int {
-
-	bigResult := big.NewInt(1)
-
-	for i := uint(0); i < power; i++ {
-		bigResult = big.NewInt(0).Mul(bigResult, bigNum)
-	}
-
-	return bigResult
 }
 
 func (nthrt *NthRootOp) getBundleBigInt(idx int) *big.Int {
