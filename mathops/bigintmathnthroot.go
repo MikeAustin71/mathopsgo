@@ -129,7 +129,6 @@ func (nthrt *BigIntMathNthRoot) calcNthRootGateway(
 		return BigIntNum{}.NewOne(maxPrecision), nil
 	}
 
-
 	if nthRoot.precision > 0 {
 		return BigIntNum{}.NewZero(0),
 			errors.New(ePrefix + "-Error: input parameter 'nthRoot' is a floating point number. " +
@@ -145,62 +144,16 @@ func (nthrt *BigIntMathNthRoot) calcNthRootGateway(
 				"Error - Input Parameter 'nthRoot' INVALID! 'nthRoot' cannot equal 1. ")
 	}
 
-	err := nthrt.initializeAndExtract(radicand, nthRoot, maxPrecision)
-
-	if err != nil {
-		return BigIntNum{}.New(),
-			fmt.Errorf(ePrefix +
-				"Error returned from nthrt.initializeAndExtract(num, " +
-				"nthRoot, maxPrecision). num='%v' nthRoot='%v'  Error= %v",
-				radicand.GetNumStr(), nthRoot.GetNumStr(), err.Error() )
-	}
-
-	return nthrt.ResultBINum, nil
-}
-
-
-// initializeAndExtract - Validates input parameters and sets up structures used
-// to complete the nthRoot calculation.
-func (nthrt *BigIntMathNthRoot) initializeAndExtract(
-					num , nthRoot BigIntNum, maxPrecision uint) error {
-
-	ePrefix := "BigIntMathNthRoot.initializeAndExtract() "
-
-	err := nthrt.initialize(num, nthRoot, maxPrecision)
-
-	if err != nil {
-		return fmt.Errorf(ePrefix + "-Error returned from initialization. Error= %v", err.Error())
-	}
-
-	err = nthrt.doRootExtraction()
-
-	if err != nil {
-		return fmt.Errorf(ePrefix + "-Error returned from nthrt.doRootExtraction() - %v", err.Error())
-	}
-
-	return nil
-
-}
-
-// initialize - Initializes the data fields of the BigIntMathNthRoot structure and validates the
-// original number passed to the Nth Root Calculation. This method assumes that radicand and
-// nthRoot have already been validated.
-//
-func (nthrt *BigIntMathNthRoot) initialize(
-				radicand, nthRoot BigIntNum,
-						maxPrecision uint) error {
-
-  ePrefix := "BigIntMathNthRoot.initialize() "
-
-
 	intNthRootVal, err := nthRoot.GetInt()
 
 	if err != nil {
-		return fmt.Errorf(ePrefix + "Error Returned from nthrt.NthRoot.GetInt() - Error= %v", err)
+		return BigIntNum{}.NewZero(0),
+		fmt.Errorf(ePrefix + "Error Returned from nthrt.NthRoot.GetInt() - Error= %v", err)
 	}
 
 	if intNthRootVal == 1 {
-		return fmt.Errorf(ePrefix +
+		return BigIntNum{}.NewZero(0),
+		fmt.Errorf(ePrefix +
 			"Error - Input Parameter 'nthRoot' INVALID! 'nthRoot' cannot equal 1. " +
 			"nthRoot= %v", intNthRootVal)
 
@@ -208,7 +161,7 @@ func (nthrt *BigIntMathNthRoot) initialize(
 
 	if radicand.GetSign() == -1 {
 
- 	  mod := intNthRootVal / 2
+		mod := intNthRootVal / 2
 
 		isNthRootEven := false
 
@@ -217,19 +170,50 @@ func (nthrt *BigIntMathNthRoot) initialize(
 		}
 
 		if isNthRootEven {
-			return fmt.Errorf(ePrefix + "Error - Cannot compute nthRoot of a negative number " +
+			return BigIntNum{}.NewZero(0),
+			fmt.Errorf(ePrefix + "Error - Cannot compute nthRoot of a negative number " +
 				"when nthRoot is even. nthRoot can only be extracted from negative numbers when nthRoot" +
 				" is odd. Original Number= %v  nthRoot= %v", radicand.GetNumStr(), nthRoot.GetNumStr())
 		}
 
 	}
 
+	err = nthrt.initialize(radicand, nthRoot, intNthRootVal, maxPrecision)
+
+	if err != nil {
+		return BigIntNum{}.NewZero(0),
+		fmt.Errorf(ePrefix + "-Error returned from initialization. Error= %v", err.Error())
+	}
+
+	err = nthrt.doRootExtraction()
+
+	if err != nil {
+		return BigIntNum{}.NewZero(0),
+			fmt.Errorf(ePrefix + "-Error returned from nthrt.doRootExtraction() - %v", err.Error())
+	}
+
+	return nthrt.ResultBINum, nil
+}
+
+
+// initialize - Initializes the data fields of the BigIntMathNthRoot structure and validates the
+// original number passed to the Nth Root Calculation. This method assumes that radicand and
+// nthRoot have already been validated.
+//
+func (nthrt *BigIntMathNthRoot) initialize(
+				radicand, nthRoot BigIntNum,
+					intNthRootVal int,
+						maxPrecision uint) error {
+
+  ePrefix := "BigIntMathNthRoot.initialize() "
+
+
 	nthrt.NthRoot = nthRoot.CopyOut()
-	nthrt.OriginalNum = radicand.CopyOut()
 	nthrt.NthRootIntVal = intNthRootVal
+	nthrt.OriginalNum = radicand.CopyOut()
 	nthrt.RequestedPrecision = int(maxPrecision)
 
-	err = nthrt.bundleInts()
+	err := nthrt.bundleInts()
 
 	if err != nil {
 		return fmt.Errorf(ePrefix + "Error returned from nthrt.bundleInts(). Error= %v", err)
