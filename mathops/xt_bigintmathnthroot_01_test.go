@@ -285,3 +285,40 @@ func TestBigIntMathNthRoot_GetNthRootBigNum_08(t *testing.T) {
 
 }
 
+func TestBigIntMathNthRoot_GetNthRootBigNum_09(t *testing.T) {
+
+	baseStr := "0.027"
+	nthRootStr := "3"
+	maxPrecision := uint(6)
+	expectedResult := "0.300000"
+
+	bINumBase, err  := BigIntNum{}.NewNumStr(baseStr)
+
+	if err != nil {
+		t.Errorf("Error returned from BigIntNum{}.NewNumStr(baseStr) " +
+			"baseStr='%v' Error='%v'", baseStr, err.Error())
+	}
+
+	bINumNthRoot, err := BigIntNum{}.NewNumStr(nthRootStr)
+
+	if err != nil {
+		t.Errorf("Error returned from BigIntNum{}.NewNumStr(nthRootStr) " +
+			"nthRootStr='%v' Error='%v'", nthRootStr, err.Error())
+	}
+
+	bIMathNthRoot := BigIntMathNthRoot{}
+
+	result, err := bIMathNthRoot.GetNthRoot(bINumBase, bINumNthRoot, maxPrecision)
+
+	if err != nil {
+		t.Errorf("Error returned from bIMathNthRoot.GetNthRoot(). " +
+			"Error='%v' ", err.Error())
+	}
+
+	if expectedResult != result.GetNumStr() {
+		t.Errorf("Expected result= %v .  Instead result= %v .",
+			expectedResult, result.GetNumStr())
+	}
+
+}
+

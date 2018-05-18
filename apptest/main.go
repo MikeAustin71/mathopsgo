@@ -8,11 +8,12 @@ import (
 
 func main() {
 
-	baseStr := "2"
-	exponentStr := "-3"
-	expectedStr := "0.125"
+	baseStr := "0.027"
+	nthRootStr := "3"
+	maximumPrecision := uint(6)
+	expectedStr := "0.300000"
 
-	ExampleBigIntExpTest_01(baseStr, exponentStr, expectedStr)
+	ExampleBigIntNumNthRoot_01(baseStr, nthRootStr, maximumPrecision, expectedStr)
 
 }
 
