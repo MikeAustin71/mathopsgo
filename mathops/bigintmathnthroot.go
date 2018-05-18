@@ -320,19 +320,13 @@ func (nthrt *BigIntMathNthRoot) bundleInts() error {
 // digits in the original number.
 func (nthrt *BigIntMathNthRoot) bundleFracs() error {
 
-	ePrefix := "BigIntMathNthRoot.bundleFracs() "
-
 	if nthrt.OriginalNum.GetPrecision() < 1 {
 		return nil
 	}
 
 	fracNums := nthrt.OriginalNum.GetFractionalPart()
 
-	intNthRootVal, err := nthrt.NthRoot.GetInt()
-
-	if err != nil {
-		return fmt.Errorf(ePrefix + "Error Returned from nthrt.NthRoot.GetInt() - Error= %v", err)
-	}
+	intNthRootVal := nthrt.NthRootIntVal
 
 	iFAry, _ := fracNums.GetIntAry()
 
