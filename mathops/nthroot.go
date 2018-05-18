@@ -258,7 +258,7 @@ func (nthrt *NthRootOp) GetNthRootBigInt(num *big.Int, precision, nthRoot, maxPr
 // Note: A negative 'num' value with an even nthRoot will generate an error.
 func (nthrt *NthRootOp) GetNthRootIntAry(num *IntAry, nthRoot, maxPrecision uint) (IntAry, error) {
 
-	err := nthrt.initializeAndExtract(num, nthRoot, maxPrecision)
+	err := nthrt.calcNthRootGateway(num, nthRoot, maxPrecision)
 
 	if err != nil {
 		return IntAry{}.New(),
@@ -457,7 +457,7 @@ func (nthrt *NthRootOp) GetSquareRootBigInt(num *big.Int, precision, maxPrecisio
 // Note: A negative 'num' value with an even nthRoot will generate an error.
 func (nthrt *NthRootOp) GetSquareRootIntAry(num *IntAry, maxPrecision uint) (IntAry, error) {
 
-	err := nthrt.initializeAndExtract(num, 2, maxPrecision)
+	err := nthrt.calcNthRootGateway(num, 2, maxPrecision)
 
 	if err != nil {
 		return IntAry{}.New(),
@@ -491,7 +491,7 @@ func (nthrt *NthRootOp) GetSquareRootIntAry(num *IntAry, maxPrecision uint) (Int
 // Note: A negative 'num' value with an even nthRoot will generate an error.
 func (nthrt *NthRootOp) SetNthRootIntAry(num *IntAry, nthRoot, maxPrecision uint) error {
 
-	err := nthrt.initializeAndExtract(num, nthRoot, maxPrecision)
+	err := nthrt.calcNthRootGateway(num, nthRoot, maxPrecision)
 
 	if err != nil {
 		return fmt.Errorf("NthRootOp.SetNthRootIntAry() Error returned from initializeAndExtract. Error= %v", err)
@@ -501,23 +501,65 @@ func (nthrt *NthRootOp) SetNthRootIntAry(num *IntAry, nthRoot, maxPrecision uint
 }
 
 
-func (nthrt *NthRootOp) initializeAndExtract(num *IntAry, nthRoot, maxPrecision uint) error {
+// calcNthRootGateway - This method is is the primary means by which the nth root
+// calculation is accessed. All screening and validation of input parameters 'originalNum'
+// and 'nthRoot' are performed here. If 'originalNum' and 'nthRoot' pass all tests for
+// validity, this method proceeds to perform the nth root calculation and store the result
+// in the NthRootOp data structure. The final result of the nth root calculation is therefore
+// stored in data structure element, 'NthRootOp.ResultAry'.
+//
+func (nthrt *NthRootOp) calcNthRootGateway(originalNum *IntAry, nthRoot, maxPrecision uint) error {
+
+	ePrefix := "NthRootOp.calcNthRootGateway() "
+
+	var err error
+
+	nthrt.ResultAry, err = IntAry{}.NewInt32(0,0)
+
+	if err != nil {
+		return fmt.Errorf(ePrefix +
+			"Error returned by IntAry{}.NewInt32(0,0). " +
+			"Error='%v' ", err.Error())
+	}
+
+	// If originalNum is zero, the result will always be zero.
+	if originalNum.IsZero() {
+		nthrt.ResultAry.SetIntAryToZero(int(maxPrecision))
+		return nil
+	}
 
 	if nthRoot == 0 {
 		nthrt.ResultAry.SetIntAryToOne(int(maxPrecision))
 		return nil
 	}
 
-	err := nthrt.initialize(num, nthRoot, maxPrecision)
+	if originalNum.GetSign() == -1 {
+
+		isNthRootEven := nthRoot / 2
+
+		if isNthRootEven*2 == nthRoot {
+			return fmt.Errorf(ePrefix +
+				"- Cannot compute nthRoot of a negative number when nthRoot is even. nthRoot can " +
+				"only be extracted from negative numbers when nthRoot is odd. " +
+				"Original Number= %v  nthRoot= %v", originalNum.GetNumStr(), nthRoot)
+		}
+
+	}
+
+	err = nthrt.initialize(originalNum, nthRoot, maxPrecision)
 
 	if err != nil {
-		return fmt.Errorf("NthRootOp.initializeAndExtract() Error returned from initialization. Error= %v", err)
+		return fmt.Errorf(ePrefix +
+			"Error returned from initialization. Error= %v",
+			err.Error())
 	}
 
 	err = nthrt.doRootExtraction()
 
 	if err != nil {
-		return fmt.Errorf("NthRootOp.initializeAndExtract() - Error returned from nthrt.doRootExtraction() - %v", err)
+		return fmt.Errorf(ePrefix +
+			"- Error returned from nthrt.doRootExtraction() " +
+			"Error='%v' ", err.Error())
 	}
 
 	return nil
@@ -536,16 +578,6 @@ func (nthrt *NthRootOp) initialize(originalNum *IntAry, nthRoot, maxPrecision ui
 
 	if nthRoot == 1 {
 		return fmt.Errorf("NthRootOp.initialize() - Input Parameter 'nthRoot' INVALID! 'nthRoot' cannot equal 1. nthRoot= %v", nthRoot)
-	}
-
-	if originalNum.GetSign() == -1 {
-
-		isNthRootEven := nthRoot / 2
-
-		if isNthRootEven*2 == nthRoot {
-			return fmt.Errorf("NthRootOp.initialize() - Cannot compute nthRoot of a negative number when nthRoot is even. nthRoot can only be extracted from negative numbers when nthRoot is odd. Original Number= %v  nthRoot= %v", originalNum.GetNumStr(), nthRoot)
-		}
-
 	}
 
 	nthrt.NthRoot = int(nthRoot)
