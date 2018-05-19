@@ -8,8 +8,106 @@ import (
 
 func main() {
 
-	target := big.NewInt(50)
-	ExampleBigIntMagnitude_01(target)
+	target,_ := mathops.BigIntNum{}.NewNumStr("9832712300")
+	nthRoot, _ := mathops.BigIntNum{}.NewNumStr("9")
+	expectedBundleCnt := "2"
+	ExampleBundleCount_01(target, nthRoot, expectedBundleCnt )
+}
+
+func ExampleBundleCount_01(bINumTarget, bINumNthRoot mathops.BigIntNum, expectedBundleCnt string) {
+
+	target, _ := bINumTarget.GetBigInt()
+	nthRoot, _ := bINumNthRoot.GetBigInt()
+
+	fmt.Println( "      Original Target: ", target.Text(10))
+	newTarget, addedPrecision, err :=ExampleBundleCount_02(target, nthRoot)
+	if err != nil {
+		fmt.Printf("Error returned by ExampleBundleCount_02(target, nthRoot). " +
+			"Error='%v' ", err.Error())
+		return
+	}
+
+	fmt.Println("           New Target: ", newTarget.Text(10))
+	fmt.Println("      Added Precision: ", addedPrecision)
+
+	bundleCnt, err := ExampleBundleCount_03(newTarget, nthRoot)
+
+	if err != nil {
+		fmt.Printf("Error returned by ExampleBundleCount_03(newTarget, nthRoot). " +
+			"Error='%v' ", err.Error())
+		return
+	}
+
+	fmt.Println("         Bundle Count: ", bundleCnt.Text(10))
+	fmt.Println("Expected Bundle Count: ", expectedBundleCnt)
+
+}
+
+func ExampleBundleCount_03(target, nthRoot *big.Int) (bundleCnt *big.Int, err error) {
+	// Guaranteed: Magnitude of target is Greater Than or Equal to nthRoot
+	bundleCnt = big.NewInt(0)
+	err = nil
+
+	ePrefix := "ExampleBundleCount_03() "
+	magnitude, errx := mathops.BigIntMath{}.GetMagnitude(target)
+
+	if errx != nil {
+		err = fmt.Errorf(ePrefix +
+			"Error returned by BigIntMath{}.GetMagnitude(target). " +
+			"target='%v' Error='%v' ",
+			target.Text(10), err.Error())
+		return bundleCnt, err
+	}
+
+	bigOne := big.NewInt(1)
+
+	numOfDigits := big.NewInt(0).Add(magnitude, bigOne)
+
+	quotient, mod := big.NewInt(0).QuoRem(
+											numOfDigits,
+											nthRoot,
+											big.NewInt(0))
+
+
+	bundleCnt = big.NewInt(0).Set(quotient)
+
+	if mod.Cmp(big.NewInt(0)) == 1 {
+		bundleCnt = big.NewInt(0).Add(bundleCnt, bigOne)
+	}
+
+
+	return bundleCnt, nil
+}
+
+func ExampleBundleCount_02(target, nthRoot *big.Int) (newTarget *big.Int, addedPrecision uint, err error) {
+	// FormatTargetInt
+	ePrefix := "ExampleBundleCount_02() "
+	newTarget = big.NewInt(0)
+	addedPrecision = 0
+	err = nil
+	magnitude, errx := mathops.BigIntMath{}.GetMagnitude(target)
+
+	if errx != nil {
+		err = fmt.Errorf(ePrefix +
+			"Error returned by BigIntMath{}.GetMagnitude(target). " +
+			"target='%v' Error='%v' ",
+				target.Text(10), err.Error())
+		return newTarget, addedPrecision, err
+	}
+
+	baseTen := big.NewInt(10)
+	newTarget = big.NewInt(0).Set(target)
+	numOfDigits := big.NewInt(0).Add(magnitude, big.NewInt(1))
+
+	for numOfDigits.Cmp(nthRoot) == -1 {
+
+		newTarget = big.NewInt(0).Mul(newTarget, baseTen )
+		addedPrecision++
+		numOfDigits = big.NewInt(0).Add(numOfDigits, big.NewInt(1))
+
+	}
+
+	return newTarget, addedPrecision, nil
 }
 
 func ExampleBigIntMagnitude_01(target *big.Int) {
