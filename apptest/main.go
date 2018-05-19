@@ -8,9 +8,9 @@ import (
 
 func main() {
 
-	target,_ := mathops.BigIntNum{}.NewNumStr("9832712300")
-	nthRoot, _ := mathops.BigIntNum{}.NewNumStr("9")
-	expectedBundleCnt := "2"
+	target,_ := mathops.BigIntNum{}.NewNumStr("98327123000")
+	nthRoot, _ := mathops.BigIntNum{}.NewNumStr("3")
+	expectedBundleCnt := "4"
 	ExampleBundleCount_01(target, nthRoot, expectedBundleCnt )
 }
 
