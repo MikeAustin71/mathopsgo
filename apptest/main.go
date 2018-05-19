@@ -8,12 +8,34 @@ import (
 
 func main() {
 
-	baseStr := "0.027"
-	nthRootStr := "3"
-	maximumPrecision := uint(6)
-	expectedStr := "0.300000"
+	target := big.NewInt(50)
+	ExampleBigIntMagnitude_01(target)
+}
 
-	ExampleBigIntNumNthRoot_01(baseStr, nthRootStr, maximumPrecision, expectedStr)
+func ExampleBigIntMagnitude_01(target *big.Int) {
+
+	magnitude, err := mathops.BigIntMath{}.GetMagnitude(target)
+
+	if err != nil {
+		fmt.Printf("Error returned by BigIntMath{}.GetMagnitude(target). " +
+			"target='%v' Error='%v' ", target.Text(10), err.Error())
+		return
+	}
+
+	bigTen := big.NewInt(10)
+	val := big.NewInt(0).Exp(bigTen, magnitude, nil)
+
+	fmt.Println("   target= ", target.Text(10))
+	fmt.Println("magnitude= ", magnitude.Text(10))
+	fmt.Println("Ten Value= ", val.Text(10))
+
+	bigTarget := mathops.BigIntNum{}.NewBigInt(target, 0)
+	bigMagnitude := mathops.BigIntNum{}.NewBigInt(magnitude, 0)
+	bigTenValue := mathops.BigIntNum{}.NewBigInt(val, 0)
+	fmt.Println("========================================")
+	fmt.Println("   Target Str: ", bigTarget.FormatThousandsStr(mathops.LEADMINUSNEGVALFMTMODE))
+	fmt.Println("Ten Value Str: ", bigTenValue.FormatThousandsStr(mathops.LEADMINUSNEGVALFMTMODE))
+	fmt.Println("    Magnitude: ", bigMagnitude.GetNumStr())
 
 }
 

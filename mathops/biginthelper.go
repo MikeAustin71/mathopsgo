@@ -5,6 +5,8 @@ import (
 	"fmt"
 )
 
+
+
 // BigIntPair - contains a pair of 'BitIntNum' types. This structure
 // is used to set up calculations involving *big.Int types.
 type BigIntPair struct {
