@@ -20,7 +20,7 @@ func ExampleBundleCount_01(bINumTarget, bINumNthRoot mathops.BigIntNum, expected
 	nthRoot, _ := bINumNthRoot.GetBigInt()
 
 	fmt.Println( "      Original Target: ", target.Text(10))
-	newTarget, addedPrecision, err :=ExampleBundleCount_02(target, nthRoot)
+	newTarget, err :=ExampleBundleCount_02(target, nthRoot)
 	if err != nil {
 		fmt.Printf("Error returned by ExampleBundleCount_02(target, nthRoot). " +
 			"Error='%v' ", err.Error())
@@ -28,7 +28,6 @@ func ExampleBundleCount_01(bINumTarget, bINumNthRoot mathops.BigIntNum, expected
 	}
 
 	fmt.Println("           New Target: ", newTarget.Text(10))
-	fmt.Println("      Added Precision: ", addedPrecision)
 
 	bundleCnt, err := ExampleBundleCount_03(newTarget, nthRoot)
 
@@ -41,6 +40,17 @@ func ExampleBundleCount_01(bINumTarget, bINumNthRoot mathops.BigIntNum, expected
 	fmt.Println("         Bundle Count: ", bundleCnt.Text(10))
 	fmt.Println("Expected Bundle Count: ", expectedBundleCnt)
 
+}
+
+func ExampleBundlePrecisionCount_03(
+	intBundleCnt *big.Int,
+		maxPrecision uint )	(totalBundleCnt, precisionBundleCnt *big.Int, err error) {
+
+	err = nil
+	totalBundleCnt = big.NewInt(0).Add(intBundleCnt, big.NewInt(int64(maxPrecision)))
+	precisionBundleCnt = big.NewInt(0)
+
+	return
 }
 
 func ExampleBundleCount_03(target, nthRoot *big.Int) (bundleCnt *big.Int, err error) {
@@ -79,11 +89,10 @@ func ExampleBundleCount_03(target, nthRoot *big.Int) (bundleCnt *big.Int, err er
 	return bundleCnt, nil
 }
 
-func ExampleBundleCount_02(target, nthRoot *big.Int) (newTarget *big.Int, addedPrecision uint, err error) {
+func ExampleBundleCount_02(target, nthRoot *big.Int) (newTarget *big.Int, err error) {
 	// FormatTargetInt
 	ePrefix := "ExampleBundleCount_02() "
 	newTarget = big.NewInt(0)
-	addedPrecision = 0
 	err = nil
 	magnitude, errx := mathops.BigIntMath{}.GetMagnitude(target)
 
@@ -92,7 +101,7 @@ func ExampleBundleCount_02(target, nthRoot *big.Int) (newTarget *big.Int, addedP
 			"Error returned by BigIntMath{}.GetMagnitude(target). " +
 			"target='%v' Error='%v' ",
 				target.Text(10), err.Error())
-		return newTarget, addedPrecision, err
+		return newTarget, err
 	}
 
 	baseTen := big.NewInt(10)
@@ -102,12 +111,11 @@ func ExampleBundleCount_02(target, nthRoot *big.Int) (newTarget *big.Int, addedP
 	for numOfDigits.Cmp(nthRoot) == -1 {
 
 		newTarget = big.NewInt(0).Mul(newTarget, baseTen )
-		addedPrecision++
 		numOfDigits = big.NewInt(0).Add(numOfDigits, big.NewInt(1))
 
 	}
 
-	return newTarget, addedPrecision, nil
+	return newTarget, nil
 }
 
 func ExampleBigIntMagnitude_01(target *big.Int) {

@@ -1080,6 +1080,13 @@ func (bNum *BigIntNum) GetPrecisionUint() uint {
 	return bNum.precision
 }
 
+// GetThisPointer - Returns a pointer to the current
+// instance of this BigIntNum.
+func (bNum *BigIntNum) GetThisPointer() *BigIntNum {
+	return bNum
+}
+
+
 // GetSign - Returns the numeric sign associated
 // with the current numeric value encapsulated by
 // this BigIntNum.
@@ -1087,9 +1094,16 @@ func (bNum *BigIntNum) GetSign() int {
 	return bNum.sign
 }
 
-// GetScaleFactor - Returns the scale value of the current 
-// BigIntNum.  Scale value is a function of 'precision' or 
-// the number of digits to the right of the decimal place. 
+// Returns the the integer value of the current BigIntNum
+// as a signed *big.Int Type.
+//
+func (bNum *BigIntNum) GetSignedBigInt() *big.Int{
+	return bNum.bigInt
+}
+
+// GetScaleFactor - Returns the scale value of the current
+// BigIntNum.  Scale value is a function of 'precision' or
+// the number of digits to the right of the decimal place.
 //
 // Example:
 // precision = 0 		Scale Factor = 10^0   	Scale Factor =    1
@@ -1099,12 +1113,6 @@ func (bNum *BigIntNum) GetSign() int {
 //
 func (bNum *BigIntNum) GetScaleFactor() *big.Int {
 	return big.NewInt(0).Set(bNum.scaleFactor)
-}
-
-// GetThisPointer - Returns a pointer to the current
-// instance of this BigIntNum.
-func (bNum *BigIntNum) GetThisPointer() *BigIntNum {
-	return bNum
 }
 
 // GetThousandsSeparator - returns a rune which represents

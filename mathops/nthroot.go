@@ -697,7 +697,7 @@ func (nthrt *NthRootOp) bundleFracs() error {
 	iFAry, _ := fracNums.GetIntAry()
 
 	if err != nil {
-		return fmt.Errorf("NthRootOp.bundleFracs() Error Returned from nthrt.OriginalNum.GetFractionalDigits() - Error= %v", err)
+		return fmt.Errorf("NthRootOp.bundleFracs() Error Returned from nthrt.OriginalRadicand.GetFractionalDigits() - Error= %v", err)
 	}
 
 	for i := 1; i < iFracNumStats.IntAryLen; i += nthrt.NthRoot {
@@ -725,7 +725,7 @@ func (nthrt *NthRootOp) bundleFracs() error {
 func (nthrt *NthRootOp) calcPrecision() error {
 
 	if nthrt.OriginalNum.GetPrecision() < 0 {
-		return fmt.Errorf("NthRootOp.calcPrecision() - Existing precision is less than zero! OriginalNum.precision= %v", nthrt.OriginalNum.GetPrecision())
+		return fmt.Errorf("NthRootOp.calcPrecision() - Existing precision is less than zero! OriginalRadicand.precision= %v", nthrt.OriginalNum.GetPrecision())
 	}
 
 	existingPrecision := nthrt.OriginalNum.GetPrecision() / nthrt.NthRoot
