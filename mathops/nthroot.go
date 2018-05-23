@@ -599,7 +599,7 @@ func (nthrt *NthRootOp) initialize(originalNum *IntAry, nthRoot, maxPrecision ui
 	err = nthrt.calcPrecision()
 
 	if err != nil {
-		return fmt.Errorf("NthRootOp.initialize() - Error returned from nthrt.calcPrecision(). Error= %v", err)
+		return fmt.Errorf("NthRootOp.initialize() - Error returned from nthrt.CalcPrecision(). Error= %v", err)
 	}
 
 	// Set constants for calculations
@@ -718,14 +718,14 @@ func (nthrt *NthRootOp) bundleFracs() error {
 	return nil
 }
 
-// calcPrecision - calculates the bundle size and creates
+// CalcPrecision - calculates the bundle size and creates
 // the bundle array elements necessary to process the nth
 // root to the requested number of decimal places to the
 // right of the decimal point.
 func (nthrt *NthRootOp) calcPrecision() error {
 
 	if nthrt.OriginalNum.GetPrecision() < 0 {
-		return fmt.Errorf("NthRootOp.calcPrecision() - Existing precision is less than zero! OriginalRadicand.precision= %v", nthrt.OriginalNum.GetPrecision())
+		return fmt.Errorf("NthRootOp.CalcPrecision() - Existing precision is less than zero! OriginalRadicand.precision= %v", nthrt.OriginalNum.GetPrecision())
 	}
 
 	existingPrecision := nthrt.OriginalNum.GetPrecision() / nthrt.NthRoot

@@ -8,10 +8,59 @@ import (
 
 func main() {
 
-	target,_ := mathops.BigIntNum{}.NewNumStr("98327123000")
-	nthRoot, _ := mathops.BigIntNum{}.NewNumStr("3")
-	expectedBundleCnt := "4"
-	ExampleBundleCount_01(target, nthRoot, expectedBundleCnt )
+	radicand := "64.567891"
+	nthRoot := "2"
+	expectedStr := "8.03541479949853"
+	maxPrecision := uint(14)
+
+	ExampleBigIntNumNthRoot_01(radicand, nthRoot, maxPrecision, expectedStr)
+}
+
+/*
+func ExampleBiNumNthRootSetupBundles_01(radicand, nthRoot mathops.BigIntNum){
+
+}
+*/
+func ExampleBigIntNumNthRoot_01(
+	radicandStr, nthRootStr string,
+	maxPrecision uint,
+	expectedNumStr string) {
+
+
+	radicand, err := mathops.BigIntNum{}.NewNumStr(radicandStr)
+
+	if err != nil {
+		fmt.Printf("Error returned by BigIntNum{}.NewNumStr(radicandStr). " +
+			"radicandStr='%v' Error='%v' \n", radicandStr, err.Error())
+		return
+	}
+
+
+	nthRoot, err := mathops.BigIntNum{}.NewNumStr(nthRootStr)
+
+	if err != nil {
+		fmt.Printf("Error returned by BigIntNum{}.NewNumStr(nthRootStr). " +
+			"nthRootStr='%v' Error='%v' \n", nthRootStr, err.Error())
+		return
+	}
+
+
+	mathNthRootOp := mathops.BigIntMathNthRoot{}
+
+	result, err := mathNthRootOp.GetNthRoot(radicand, nthRoot, maxPrecision)
+
+	if err != nil {
+		fmt.Printf("Error returned by mathNthRootOp.GetNthRoot(radicand, nthRoot, maxPrecision). " +
+			"Error='%v' \n", err.Error())
+		return
+	}
+
+	fmt.Println("*** BigIntMathNthRoot ***")
+	fmt.Println("Expected Result: ", expectedNumStr)
+	fmt.Println("  Actual Result: ", result.GetNumStr())
+	fmt.Println("           Base: ", radicand.GetNumStr())
+	fmt.Println("        NthRoot: ", nthRoot.GetNumStr())
+
 }
 
 func ExampleBundleCount_01(bINumTarget, bINumNthRoot mathops.BigIntNum, expectedBundleCnt string) {
@@ -193,47 +242,6 @@ func ExampleBigIntExpTest_01(baseStr, exponentStr, expectedStr string) {
 	fmt.Println("    ModM: ", modM.Text(10))
 }
 
-func ExampleBigIntNumNthRoot_01(
-				baseStr, nthRootStr string,
-					maxPrecision uint,
-						expectedNumStr string) {
-
-
-	base, err := mathops.BigIntNum{}.NewNumStr(baseStr)
-
-	if err != nil {
-		fmt.Printf("Error returned by BigIntNum{}.NewNumStr(baseStr). " +
-			"baseStr='%v' Error='%v' \n", baseStr, err.Error())
-		return
-	}
-
-
-	nthRoot, err := mathops.BigIntNum{}.NewNumStr(nthRootStr)
-
-	if err != nil {
-		fmt.Printf("Error returned by BigIntNum{}.NewNumStr(nthRootStr). " +
-			"nthRootStr='%v' Error='%v' \n", nthRootStr, err.Error())
-		return
-	}
-
-
-	mathNthRootOp := mathops.BigIntMathNthRoot{}
-
-	result, err := mathNthRootOp.GetNthRoot(base, nthRoot, maxPrecision)
-
-	if err != nil {
-		fmt.Printf("Error returned by mathNthRootOp.GetNthRoot(base, nthRoot, maxPrecision). " +
-			"Error='%v' \n", err.Error())
-		return
-	}
-
-	fmt.Println("*** BigIntMathNthRoot ***")
-	fmt.Println("Expected Result: ", expectedNumStr)
-	fmt.Println("  Actual Result: ", result.GetNumStr())
-	fmt.Println("           Base: ", base.GetNumStr())
-	fmt.Println("        NthRoot: ", nthRoot.GetNumStr())
-
-}
 
 func ExampleBigIntNumPower_01(baseStr, exponentStr, expectedStr string, maxPrecision uint) {
 
