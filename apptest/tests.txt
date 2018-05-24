@@ -651,23 +651,42 @@
 === RUN   TestBigIntMathMultiply_MultiplyNumStrDtoSeries_04
 --- PASS: TestBigIntMathMultiply_MultiplyNumStrDtoSeries_04 (0.00s)
 === RUN   TestBigIntMathNthRoot_GetNthRootBigNum_01
+        intBundleLength:  1
+       fracBundleLength:  0
+finalBundleLength:  1
 --- PASS: TestBigIntMathNthRoot_GetNthRootBigNum_01 (0.00s)
 === RUN   TestBigIntMathNthRoot_GetNthRootBigNum_02
+        intBundleLength:  2
+       fracBundleLength:  0
+finalBundleLength:  2
 --- PASS: TestBigIntMathNthRoot_GetNthRootBigNum_02 (0.00s)
 === RUN   TestBigIntMathNthRoot_GetNthRootBigNum_03
+        intBundleLength:  2
+       fracBundleLength:  0
+finalBundleLength:  2
 --- PASS: TestBigIntMathNthRoot_GetNthRootBigNum_03 (0.00s)
 === RUN   TestBigIntMathNthRoot_GetNthRootBigNum_04
+        intBundleLength:  1
+       fracBundleLength:  0
+finalBundleLength:  1
 --- PASS: TestBigIntMathNthRoot_GetNthRootBigNum_04 (0.00s)
 === RUN   TestBigIntMathNthRoot_GetNthRootBigNum_05
 --- PASS: TestBigIntMathNthRoot_GetNthRootBigNum_05 (0.00s)
 === RUN   TestBigIntMathNthRoot_GetNthRootBigNum_06
+        intBundleLength:  2
+       fracBundleLength:  0
+finalBundleLength:  2
 --- PASS: TestBigIntMathNthRoot_GetNthRootBigNum_06 (0.00s)
 === RUN   TestBigIntMathNthRoot_GetNthRootBigNum_07
 --- PASS: TestBigIntMathNthRoot_GetNthRootBigNum_07 (0.00s)
 === RUN   TestBigIntMathNthRoot_GetNthRootBigNum_08
 --- PASS: TestBigIntMathNthRoot_GetNthRootBigNum_08 (0.00s)
 === RUN   TestBigIntMathNthRoot_GetNthRootBigNum_09
---- PASS: TestBigIntMathNthRoot_GetNthRootBigNum_09 (0.00s)
+        intBundleLength:  1
+       fracBundleLength:  0
+finalBundleLength:  1
+--- FAIL: TestBigIntMathNthRoot_GetNthRootBigNum_09 (0.00s)
+	xt_bigintmathnthroot_01_test.go:319: Expected result= 0.300000 .  Instead result= 0.646330 .
 === RUN   TestBigIntMathPower_Pwr_01
 --- PASS: TestBigIntMathPower_Pwr_01 (0.00s)
 === RUN   TestBigIntMathPower_Pwr_02
@@ -3024,5 +3043,6 @@
 --- PASS: TestStrMathOp_SubtractN1N2_18 (0.00s)
 === RUN   TestStrMathOp_SubtractN1N2_19
 --- PASS: TestStrMathOp_SubtractN1N2_19 (0.00s)
-PASS
-ok  	MikeAustin71/mathopsgo/mathops	0.719s
+FAIL
+exit status 1
+FAIL	MikeAustin71/mathopsgo/mathops	1.245s

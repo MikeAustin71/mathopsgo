@@ -8,10 +8,10 @@ import (
 
 func main() {
 
-	radicand := "98327.123"
-	nthRoot := "2"
-	expectedStr := "313.571559615983"
-	maxPrecision := uint(12)
+	radicand := "0.027"
+	nthRoot := "3"
+	expectedStr := "0.300000"
+	maxPrecision := uint(6)
 
 	ExampleBigIntNumNthRoot_01(radicand, nthRoot, maxPrecision, expectedStr)
 }
@@ -45,9 +45,7 @@ func ExampleBigIntNumNthRoot_01(
 	}
 
 
-	mathNthRootOp := mathops.BigIntMathNthRoot{}
-
-	result, err := mathNthRootOp.GetNthRoot(radicand, nthRoot, maxPrecision)
+	result, err := mathops.BigIntMathNthRoot{}.GetNthRoot(radicand, nthRoot, maxPrecision)
 
 	if err != nil {
 		fmt.Printf("Error returned by mathNthRootOp.GetNthRoot(radicand, nthRoot, maxPrecision). " +
