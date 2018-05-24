@@ -8,10 +8,10 @@ import (
 
 func main() {
 
-	radicand := "64.567891"
+	radicand := "98327.123"
 	nthRoot := "2"
-	expectedStr := "8.03541479949853"
-	maxPrecision := uint(14)
+	expectedStr := "313.571559615983"
+	maxPrecision := uint(12)
 
 	ExampleBigIntNumNthRoot_01(radicand, nthRoot, maxPrecision, expectedStr)
 }

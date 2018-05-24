@@ -230,16 +230,18 @@ func (nthrt *BigIntMathNthRoot) initialize(
 
 
 	nthrt.BundleLength, err = nthrt.CalcBundleLength(
-							nthrt.IntBundleRadicand,
-								nthrt.FracBundleRadicand,
-									nthrt.NthRoot.GetAbsoluteBigIntValue(),
+							nthrt.OriginalRadicand,
+									nthrt.NthRoot,
 										nthrt.BundleAddOnPrecision)
 
 	if err != nil {
 		return fmt.Errorf(ePrefix +
-			"Error returned from nthrt.CalcBundleLength(...). Error= %v",
-				err.Error())
+			"Error returned from nthrt.CalcBundleLength(OriginalRadicand, NthRoot, AddOnPrecision). " +
+			"OriginalRadicand='%v' NthRoot='%v' AddOnPrecision='%v' Error= %v",
+			nthrt.OriginalRadicand.GetNumStr(), nthrt.NthRoot.GetNumStr(),
+			nthrt.BundleAddOnPrecision.Text(10), err.Error())
 	}
+
 
 	radicandPrecision := big.NewInt(int64(nthrt.OriginalRadicand.GetPrecisionUint()))
 
@@ -333,91 +335,91 @@ func (nthrt *BigIntMathNthRoot) SetupBundles(
 // final nthRoot result.
 //
 func (nthrt  *BigIntMathNthRoot) CalcBundleLength(
-				intBundleRadicand,
-					fracBundleRadicand,
-						nthRoot,
+				radicand,
+						nthRoot BigIntNum,
 							bundleAddonPrecision *big.Int) (bundleLength *big.Int, err error) {
 
 	ePrefix := "BigIntMathNthRoot.CalcBundleLength() "
 	bundleLength = big.NewInt(0)
 	err = nil
-  bigZero := big.NewInt(0)
+	modX := big.NewInt(0)
+	bigZero := big.NewInt(0)
 	bigOne := big.NewInt(1)
-	magnitude := big.NewInt(0)
-	numOfDigits := big.NewInt(0)
-	quotient := big.NewInt(0)
-	mod := big.NewInt(0)
-	intBundleLength := big.NewInt(0)
-	fracBundleLength := big.NewInt(0)
-	var errx error
+	scaleValue := big.NewInt(0).Exp(
+									big.NewInt(10),
+										big.NewInt(int64(radicand.GetPrecisionUint())),
+											nil)
 
-	if intBundleRadicand.Cmp(bigZero) == 1 {
+	radicandBigInt := radicand.GetAbsoluteBigIntValue()
 
-		magnitude, errx = BigIntMath{}.GetMagnitude(intBundleRadicand)
+	// break radicand into integer digits
+	intRadicand :=
+		big.NewInt(0).Quo(
+			radicandBigInt,
+					scaleValue)
 
-		if errx != nil {
-			err = fmt.Errorf(ePrefix +
-				"Error returned by BigIntMath{}.GetMagnitude(intBundleRadicand). " +
-				"intBundleRadicand='%v' Error='%v' ",
-				intBundleRadicand.Text(10), err.Error())
-			return bundleLength, err
-		}
+	numOfDigits, errx := BigIntMath{}.GetMagnitude(intRadicand)
 
-		numOfDigits = big.NewInt(0).Add(magnitude, bigOne)
-
-		quotient, mod = big.NewInt(0).QuoRem(
-			numOfDigits,
-			nthRoot,
-			big.NewInt(0))
-
-		intBundleLength = big.NewInt(0).Set(quotient)
-
-		if mod.Cmp(big.NewInt(0)) == 1 {
-			intBundleLength = big.NewInt(0).Add(intBundleLength, bigOne)
-		}
-
+	if errx != nil {
+		err = fmt.Errorf(ePrefix	+
+			"Error returned by BigIntMath{}.GetMagnitude(intRadicand). " +
+			"intRadicand='%v' Error='%v'",
+				intRadicand.Text(10), err.Error())
 	}
 
-	fmt.Println("intBundle Length: ", intBundleLength)
+	// Convert integer radicand to number of digits
+	numOfDigits = big.NewInt(0).Add(numOfDigits, bigOne)
 
-	if fracBundleRadicand.Cmp(bigZero) == 1 {
+	bigIntNthRoot := nthRoot.GetAbsoluteBigIntValue()
 
-		magnitude, errx = BigIntMath{}.GetMagnitude(fracBundleRadicand)
+	intBundleLength, intBundleLengthMod := big.NewInt(0).QuoRem(
+																					numOfDigits,
+																						bigIntNthRoot,
+																							modX)
 
-		if errx != nil {
-			err = fmt.Errorf(ePrefix +
-				"Error returned by BigIntMath{}.GetMagnitude(fracBundleRadicand). " +
-				"fracBundleRadicand='%v' Error='%v' ",
-				fracBundleRadicand.Text(10), err.Error())
-			return bundleLength, err
-		}
+	// For the integer bundle calculation add one to bundle length if
+	// there are any remaining digits.
+	// Example  5 / 3 = Quotient of 1 Mod of 2. Add 1 to bundle size
+	if intBundleLengthMod.Cmp(bigZero) == 1 {
+		intBundleLength = big.NewInt(0).Add(intBundleLength, bigOne)
+	}
 
-		numOfDigits = big.NewInt(0).Add(magnitude, bigOne)
-
-		quotient, mod = big.NewInt(0).QuoRem(
-												numOfDigits,
-													nthRoot,
-														big.NewInt(0))
-
-		fracBundleLength = big.NewInt(0).Set(quotient)
+	// break radicand into fractional digits
+	fracRadicand :=
+		big.NewInt(0).Rem(
+			radicandBigInt,
+			 scaleValue)
 
 
-		//if mod.Cmp(big.NewInt(0)) == 1 {
-				//fracBundleLength = big.NewInt(0).Sub(quotient, bigOne)
-		//}
+	numOfDigits, errx = BigIntMath{}.GetMagnitude(fracRadicand)
 
+	if errx != nil {
+		err = fmt.Errorf(ePrefix	+
+			"Error returned by BigIntMath{}.GetMagnitude(fracRadicand). " +
+			"fracRadicand='%v' Error='%v'",
+			fracRadicand.Text(10), err.Error())
 	}
 
 
+	// Convert the fractional radicand component to number of digits
+	numOfDigits = big.NewInt(0).Add(numOfDigits, bigOne)
+
+	// Frac Bundle Length is equal to 'Quotient' of Number of Digits divided
+	// by Nth Root. The Modulo of this division is ignored for fractional
+	// digits.
+	fracBundleLength := big.NewInt(0).Quo(numOfDigits, bigIntNthRoot)
+
+	fmt.Println("        intBundleLength: ", intBundleLength.Text(10))
 	fmt.Println("       fracBundleLength: ", fracBundleLength.Text(10))
 
 	bundleLength = big.NewInt(0).Add(intBundleLength, fracBundleLength)
 
 	fmt.Println("finalBundleLength: ", bundleLength.Text(10))
 
-	finalBundleLength := big.NewInt(0).Add(bundleLength, bundleAddonPrecision)
+	bundleLength = big.NewInt(0).Add(bundleLength, bundleAddonPrecision)
+	err = nil
 
-	return finalBundleLength, nil
+	return bundleLength, err
 }
 
 // CalcPrecision - This method will calculate the actual precision of the
@@ -446,9 +448,6 @@ func (nthrt *BigIntMathNthRoot) CalcPrecision(
 	quotient := big.NewInt(0).Quo(radicandPrecision, nthRoot)
 
 	actualPrecision = big.NewInt(0).Add(bundleAddOnPrecision, quotient)
-
-	// TODO May need to check modulo
-	//actualPrecision = big.NewInt(0).Add(actualPrecision, big.NewInt(1))
 
 	err = nil
 
