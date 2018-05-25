@@ -300,7 +300,7 @@ func (nthrt *BigIntMathNthRoot) setupBundles(
 		err = errors.New(ePrefix + "Error: Both intBundleRadicand and fracBundleRadicand are ZERO!")
 		return intBundleRadicand, fracBundleRadicand, precisionAdjustment, err
 	}
-
+	/*
 	if intBundleRadicand.Cmp(bigZero) == 0 {
 		// If intRadicand == 0 fracBundleRadicand must be Greater Than Zero
 		// Prior data validation ensures that intRadicand and fracBundleRadicand
@@ -311,7 +311,7 @@ func (nthrt *BigIntMathNthRoot) setupBundles(
 		err = nil
 		return intBundleRadicand, fracBundleRadicand, precisionAdjustment, err
 	}
-
+	*/
 	magnitude, errx := BigIntMath{}.GetMagnitude(fracBundleRadicand)
 
 	if errx != nil {
@@ -490,12 +490,12 @@ func (nthrt  *BigIntMathNthRoot) calcBundleLength(
 
 	}
 
-	//fmt.Println("        intBundleLength: ", intBundleLength.Text(10))
-	//fmt.Println("       fracBundleLength: ", fracBundleLength.Text(10))
+	fmt.Println("        intBundleLength: ", intBundleLength.Text(10))
+	fmt.Println("       fracBundleLength: ", fracBundleLength.Text(10))
 
 	bundleLength = big.NewInt(0).Add(intBundleLength, fracBundleLength)
 
-	//fmt.Println("      finalBundleLength: ", bundleLength.Text(10))
+	fmt.Println("      finalBundleLength: ", bundleLength.Text(10))
 
 	bundleLength = big.NewInt(0).Add(bundleLength, bundleAddonPrecision)
 	err = nil

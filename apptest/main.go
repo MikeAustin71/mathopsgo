@@ -8,11 +8,21 @@ import (
 
 func main() {
 
+	/*
 	radicand := "0.027"
 	nthRoot := "3"
-	expectedStr := "0.300000"
 	maxPrecision := uint(6)
+	expectedResult := "0.300000"
+	Corrections:
+		1. Move fract digits to integer.  27.0
+	  2. Precision Adjustment = -1
+	 */
 
+	radicand := "0.0275"
+	nthRoot := "3"
+	expectedStr := "0.301840536839884"
+	maxPrecision := uint(15)
+	// Root(27.5;3) = 3.01840536839884
 	ExampleBigIntNumNthRoot_01(radicand, nthRoot, maxPrecision, expectedStr)
 }
 
