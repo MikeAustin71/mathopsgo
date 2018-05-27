@@ -20,15 +20,16 @@ import (
 // The BigIntNum Type implements the INumMgr interface.
 //
 type BigIntNum struct {
-	bigInt      				*big.Int
-	absBigInt   				*big.Int
-	precision   				uint     		// Number of digits to the right of the decimal point.
-	scaleFactor 				*big.Int 		// Scale Factor =  10^(precision * -1)
-	sign        				int      		// Valid values are -1 or +1. Indicates the sign of the
+	bigInt      						*big.Int
+	absBigInt   						*big.Int
+	precision   						uint     		// Number of digits to the right of the decimal point.
+	scaleFactor 						*big.Int 		// Scale Factor =  10^(precision * -1)
+	numberOfExpectedDigits	*big.Int		// Number of digits in the 'absBigInt' value
+	sign        						int      		// Valid values are -1 or +1. Indicates the sign of the
 																	// 		the 'bigInt' integer.
-	decimalSeparator 		rune				// Character used to separate integer and fractional digits ('.')
-	thousandsSeparator 	rune 				// Character used to separate thousands (1,000,000,000
-	currencySymbol 			rune				// Currency Symbol
+	decimalSeparator 				rune				// Character used to separate integer and fractional digits ('.')
+	thousandsSeparator 			rune 				// Character used to separate thousands (1,000,000,000
+	currencySymbol 					rune				// Currency Symbol
 }
 
 // Ceiling - Ceiling: The least, or lowest value integer, which is greater than
@@ -99,6 +100,7 @@ func (bNum *BigIntNum) CopyIn(bigN BigIntNum) {
 	bNum.absBigInt = big.NewInt(0).Set(bigN.absBigInt)
 	bNum.precision = bigN.precision
 	bNum.scaleFactor = big.NewInt(0).Set(bigN.scaleFactor)
+	bNum.numberOfExpectedDigits = big.NewInt(0).Set(bigN.numberOfExpectedDigits)
 	bNum.sign = bigN.sign
 }
 
@@ -151,6 +153,7 @@ func (bNum *BigIntNum) Empty() {
 	bNum.bigInt = big.NewInt(0)
 	bNum.absBigInt = big.NewInt(0)
 	bNum.scaleFactor = big.NewInt(1)
+	bNum.numberOfExpectedDigits = big.NewInt(0)
 	bNum.sign = 1
 	bNum.precision = 0
 
@@ -1001,6 +1004,63 @@ func (bNum *BigIntNum) GetNumberOfDigits() int {
 	return digitCnt
 }
 
+// GetActualNumberOfDigits - Returns the number of numeric digits
+// int the absolute value of this BigIntNum instance. In addition,
+// a boolean value is returned indicating whether the absolute value
+// is zero.
+//
+// Examples
+// ========
+//
+//        123.45														5
+//  1,234,567                               7
+// -1,234,567                               7
+// 					0																1
+//          0.00                            1
+//        012.34                            4
+//          0.1234													4
+//        - 0.1234													4
+//          0.123400												4
+//          0.0123400												4
+//  1,234,567.800													  8
+//          5                               1
+//
+func (bNum *BigIntNum) GetActualNumberOfDigits() (
+							numberOfDigits *big.Int, isZeroValue bool, err error) {
+
+	numberOfDigits = big.NewInt(0)
+	isZeroValue = false
+	err = nil
+
+	numOfDigits, errx := BigIntMath{}.GetMagnitude(bNum.absBigInt)
+
+	if errx != nil {
+		ePrefix := "BigIntNum.GetActualNumberOfDigits() "
+		err = fmt.Errorf(ePrefix + "Error returned by BigIntMath{}.GetMagnitude(bNum.absBigInt) " +
+			"bNum.absBigInt='%v' Error='%v' ", bNum.absBigInt.Text(10), err.Error())
+		return numberOfDigits, isZeroValue, err
+	}
+
+	numberOfDigits = big.NewInt(0).Add(numOfDigits, big.NewInt(1))
+
+	if bNum.absBigInt.Cmp(big.NewInt(0)) == 0 {
+		isZeroValue = true
+	}
+
+	return numberOfDigits, isZeroValue, err
+}
+
+// GetExpectedNumberOfDigits - Returns the number of expected numeric
+// digits associated with this BigIntNum instance. The returned value
+// is stored in data field, BigIntNum.numberOfExpectedDigits. The value
+// is set by calling method BigIntNum.SetExpectedNumberOfDigits().
+//
+// This value is useful in tracking leading zeros.
+//
+func (bNum *BigIntNum) GetExpectedNumberOfDigits() *big.Int {
+	return bNum.numberOfExpectedDigits
+}
+
 // GetNumStr - Converts the current BigIntNum value to string of
 // numbers which includes the decimal point and decimal digits
 // if they exist.
@@ -1058,6 +1118,26 @@ func (bNum *BigIntNum) GetPrecision() int {
 	return int(bNum.precision)
 }
 
+// GetPrecisionBigInt - Returns the 'precision' of the current
+// BigIntNum instance as a *big.Int Type.
+//
+// precision is defined as the number of numeric digits to
+// the right of the decimal place. To compute the location
+// of the decimal point in a string of numeric digits, go
+// to the right most digit in the number string and count
+// left 'precision' digits.
+//
+// Example:
+// 						1.234    	GetPrecisionBigInt() = 3
+// 								5			GetPrecisionBigInt() = 0
+// 					0.12345  		GetPrecisionBigInt() = 5
+//
+func (bNum *BigIntNum) GetPrecisionBigInt() *big.Int {
+
+	return big.NewInt(int64(bNum.precision))
+
+}
+
 // GetPrecisionUint - Returns precision as an unsigned
 // integer (uint).
 //
@@ -1068,9 +1148,9 @@ func (bNum *BigIntNum) GetPrecision() int {
 // left 'precision' digits.
 //
 // Example:
-// 						1.234    	GetPrecision() = 3
-// 								5			GetPrecision() = 0
-// 					0.12345  		GetPrecision() = 5
+// 						1.234    	GetPrecisionUint() = 3
+// 								5			GetPrecisionUint() = 0
+// 					0.12345  		GetPrecisionUint() = 5
 //
 //		Number String				precision				Fractional Number
 //			123456								3								123.456
@@ -1852,8 +1932,8 @@ func (bNum *BigIntNum) SetBigInt(bigI *big.Int, precision uint) {
 	base10 := big.NewInt(0).SetInt64(int64(10))
 	bigPrecision := big.NewInt(0).SetInt64(int64(bNum.precision))
 	bNum.scaleFactor = big.NewInt(0).Exp(base10, bigPrecision, nil)
-	baseZero := big.NewInt(0).SetInt64(0)
-	result := bNum.bigInt.Cmp(baseZero)
+	bNum.numberOfExpectedDigits = big.NewInt(0)
+	result := bNum.bigInt.Cmp(big.NewInt(0))
 
 	if result == -1 {
 		bNum.sign = -1
@@ -2251,6 +2331,28 @@ func (bNum *BigIntNum) SetNumStr(numStr string) error {
 }
 
 
+// SetExpectedNumberOfDigits - Sets the number of expected digits associated with the
+// Absolute Value of this 'BigIntNum.absBigInt'. The value is stored in the data
+// field, 'BigIntNum.numberOfExpectedDigits'.
+//
+// Useful in tracking leading zeros.
+//
+func (bNum *BigIntNum) SetExpectedNumberOfDigits(numOfDigts *big.Int) {
+		bNum.numberOfExpectedDigits = big.NewInt(0).Set(numOfDigts)
+}
+
+// SetExpectedToActualNumberOfDigits - Sets the 'Expected' number of numeric
+// digits associated with this BigIntNum, to the actual number of numeric digits
+// in the BigIntNum value at the time when this method is called.
+//
+func (bNum *BigIntNum) SetExpectedToActualNumberOfDigits() {
+
+	actNumOfDigits, _, _ :=	 bNum.GetActualNumberOfDigits()
+
+	bNum.numberOfExpectedDigits = big.NewInt(0).Set(actNumOfDigits)
+
+}
+
 // SetPrecision - Sets a new 'precision' value for the current
 // BigIntNum instance. The new 'precision' is specified by the
 // uint type input parameter, 'newPrecision'.
@@ -2320,6 +2422,47 @@ func (bNum *BigIntNum) SetThousandsSeparator(thousandsSeparator rune) {
 
 }
 
+// SetSeparators - Used to assign values for the Decimal and Thousands separators as well
+// as the Currency Symbol to be used in displaying the current number string.
+//
+// Different nations and cultures use different symbols to delimit numerical values. In the
+// USA and many other countries, a period character ('.') is used to delimit integer and
+// fractional digits within a numeric value (123.45). Likewise, thousands may be delimited
+// by a comma (','). Currency signs very by nationality. For instance, the USA, Canada and
+// several other countries use the dollar sign ($) as a currency symbol.
+//
+// For a list of major world currency symbols see:
+// 	MikeAustin71\mathopsgo\mathops\mathopsconstants.go
+//  http://www.xe.com/symbols.php
+//
+// Note: If zero values are submitted as input for separator values, those values will default
+// to USA standards.
+//
+// USA Examples:
+//
+// Decimal Separator period ('.') 		= 123.456
+// Thousands Separator comma (',') 		= 1,000,000,000
+// Currency Symbol dollar sign ('$')	= $123
+//
+func (bNum *BigIntNum) SetSeparators(decimalSeparator, thousandsSeparator, currencySymbol rune) {
+
+	if decimalSeparator == 0 {
+		decimalSeparator = '.'
+	}
+
+	if thousandsSeparator == 0 {
+		thousandsSeparator = ','
+	}
+
+	if currencySymbol == 0 {
+		currencySymbol = '$'
+	}
+
+	bNum.decimalSeparator = decimalSeparator
+	bNum.thousandsSeparator = thousandsSeparator
+	bNum.currencySymbol = currencySymbol
+}
+
 // TrimTrailingFracZeros - This method will delete non-significant
 // trailing zeros from the fractional digits of the current BigIntNum
 // numerical value.
@@ -2371,47 +2514,6 @@ func (bNum *BigIntNum) TrimTrailingFracZeros(){
 	}
 
 	return
-}
-
-// SetSeparators - Used to assign values for the Decimal and Thousands separators as well
-// as the Currency Symbol to be used in displaying the current number string.
-//
-// Different nations and cultures use different symbols to delimit numerical values. In the
-// USA and many other countries, a period character ('.') is used to delimit integer and
-// fractional digits within a numeric value (123.45). Likewise, thousands may be delimited
-// by a comma (','). Currency signs very by nationality. For instance, the USA, Canada and
-// several other countries use the dollar sign ($) as a currency symbol.
-//
-// For a list of major world currency symbols see:
-// 	MikeAustin71\mathopsgo\mathops\mathopsconstants.go
-//  http://www.xe.com/symbols.php
-//
-// Note: If zero values are submitted as input for separator values, those values will default
-// to USA standards.
-//
-// USA Examples:
-//
-// Decimal Separator period ('.') 		= 123.456
-// Thousands Separator comma (',') 		= 1,000,000,000
-// Currency Symbol dollar sign ('$')	= $123
-//
-func (bNum *BigIntNum) SetSeparators(decimalSeparator, thousandsSeparator, currencySymbol rune) {
-
-	if decimalSeparator == 0 {
-		decimalSeparator = '.'
-	}
-
-	if thousandsSeparator == 0 {
-		thousandsSeparator = ','
-	}
-
-	if currencySymbol == 0 {
-		currencySymbol = '$'
-	}
-
-	bNum.decimalSeparator = decimalSeparator
-	bNum.thousandsSeparator = thousandsSeparator
-	bNum.currencySymbol = currencySymbol
 }
 
 // TruncToDecPlace - Truncates the current BigIntNum to the number

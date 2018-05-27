@@ -17,11 +17,17 @@ func main() {
 		1. Move fract digits to integer.  27.0
 	  2. Precision Adjustment = -1
 	 */
-
+/*
 	radicand := "0.0275"
 	nthRoot := "3"
 	expectedStr := "0.301840536839884"
 	maxPrecision := uint(15)
+*/
+	radicand := "5604423.924"
+	nthRoot := "5"
+	expectedStr := "22.3720713464898"
+	maxPrecision := uint(13)
+
 	// Root(27.5;3) = 3.01840536839884
 	ExampleBigIntNumNthRoot_01(radicand, nthRoot, maxPrecision, expectedStr)
 }
@@ -63,9 +69,25 @@ func ExampleBigIntNumNthRoot_01(
 		return
 	}
 
+	expectedResult, err := mathops.BigIntNum{}.NewNumStr(expectedNumStr)
+
+	if err != nil {
+		fmt.Printf("Error returned by mathNthRootOp.BigIntNum{}.NewNumStr(expectedNumStr). " +
+			"expectedNumStr='%v' Error='%v' \n", expectedNumStr, err.Error())
+		return
+	}
+
+
 	fmt.Println("*** BigIntMathNthRoot ***")
 	fmt.Println("Expected Result: ", expectedNumStr)
 	fmt.Println("  Actual Result: ", result.GetNumStr())
+	if !expectedResult.Equal(result) {
+		fmt.Println("*** ERROR - Actual Result Does NOT Match Expected Result! ***")
+	} else {
+		fmt.Println("SUCCESS - Expected Result Matched Actual Result!")
+		fmt.Println()
+	}
+
 	fmt.Println("           Base: ", radicand.GetNumStr())
 	fmt.Println("        NthRoot: ", nthRoot.GetNumStr())
 
