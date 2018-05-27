@@ -1120,11 +1120,11 @@ Original IntBundleRadicand:  0
 === RUN   TestBigIntMathNthRoot_GetNthRootBigNum_08
 --- PASS: TestBigIntMathNthRoot_GetNthRootBigNum_08 (0.00s)
 === RUN   TestBigIntMathNthRoot_GetNthRootBigNum_09
-        intBundleLength:  1
+        intBundleLength:  0
        fracBundleLength:  0
-      finalBundleLength:  1
+      finalBundleLength:  0
 --------------------
-Original IntBundleRadicand:  27
+Original IntBundleRadicand:  0
            nextBundleValue:  27
       newIntBundleRadicand:  0
      newFracBundleRadicand:  0
@@ -1171,14 +1171,8 @@ Original IntBundleRadicand:  0
       newIntBundleRadicand:  0
      newFracBundleRadicand:  0
 
---------------------
-Original IntBundleRadicand:  0
-           nextBundleValue:  0
-      newIntBundleRadicand:  0
-     newFracBundleRadicand:  0
-
 --- FAIL: TestBigIntMathNthRoot_GetNthRootBigNum_09 (0.00s)
-	xt_bigintmathnthroot_01_test.go:319: Expected result= 0.300000 .  Instead result= 3.000000 .
+	xt_bigintmathnthroot_01_test.go:325: Expected result= 0.300000 .  Instead result= 0.030000 .
 === RUN   TestBigIntMathPower_Pwr_01
 --- PASS: TestBigIntMathPower_Pwr_01 (0.00s)
 === RUN   TestBigIntMathPower_Pwr_02
@@ -3537,4 +3531,4 @@ Original IntBundleRadicand:  0
 --- PASS: TestStrMathOp_SubtractN1N2_19 (0.00s)
 FAIL
 exit status 1
-FAIL	MikeAustin71/mathopsgo/mathops	1.092s
+FAIL	MikeAustin71/mathopsgo/mathops	0.856s

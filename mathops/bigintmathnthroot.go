@@ -291,7 +291,7 @@ func (nthrt *BigIntMathNthRoot) setupBundles(
 																	intBundleRadicand,
 																		fracBundleRadicand BigIntNum,
 																			precisionAdjustment *big.Int,
-	err error) {
+																				err error) {
 
 	ePrefix := "BigIntMathNthRoot.setupBundles() "
 
@@ -302,15 +302,11 @@ func (nthrt *BigIntMathNthRoot) setupBundles(
 	err = nil
 
 	var errx error
-	numOfDigits := big.NewInt(0)
-	numOfAllDigits := big.NewInt(0)
-	numOfFracDigits := big.NewInt(0)
+
 	modX := big.NewInt(0)
-	bigZero := big.NewInt(0)
-	bigOne := big.NewInt(1)
 	bigTen := big.NewInt(10)
 	scaleValue := big.NewInt(0)
-	nthRootBigInt := nthRoot.GetAbsoluteBigIntValue()
+
 	setupRadicand =
 		BigIntNum{}.NewBigInt(
 			radicand.GetAbsoluteBigIntValue(),
@@ -327,61 +323,40 @@ func (nthrt *BigIntMathNthRoot) setupBundles(
 		return setupRadicand, intBundleRadicand, fracBundleRadicand, precisionAdjustment, err
 	}
 
-	// Precision must be greater than zero
-	radicandPrecision := setupRadicand.GetPrecisionBigInt()
-
-	numOfAllDigits, _, errx = setupRadicand.GetActualNumberOfDigits()
+	setupRadicandTotalDigits, _, errx := setupRadicand.GetActualNumberOfDigits()
 
 	if errx != nil {
-		err = fmt.Errorf(ePrefix + "Error returned by  setupRadicand.GetActualNumberOfDigits() " +
-			"Error='%v'", errx.Error())
+		err = fmt.Errorf(ePrefix +
+			"Error returned by setupRadicand.GetActualNumberOfDigits(). " +
+			"Error='%v' ", errx.Error())
 
-		return BigIntNum{}.NewZero(0),  intBundleRadicand, fracBundleRadicand, precisionAdjustment, err
-	}
-
-	scaleValue = big.NewInt(0).Exp(bigTen, radicandPrecision, nil)
-
-	fracDigits := big.NewInt(0).Rem(setupRadicand.GetAbsoluteBigIntValue(), scaleValue)
-
-	numOfFracDigits, errx = BigIntMath{}.GetMagnitude(fracDigits)
-
-	if errx != nil {
-		err = fmt.Errorf(ePrefix + "Error returned by  BigIntMath{}.GetMagnitude(" +
-			"fracDigits) Error='%v'", errx.Error())
 		return BigIntNum{}.NewZero(0), intBundleRadicand, fracBundleRadicand, precisionAdjustment, err
 	}
 
-	numOfFracDigits = big.NewInt(0).Add(numOfFracDigits, bigOne)
+	// Precision must be greater than zero
+	radicandPrecision := setupRadicand.GetPrecisionBigInt()
+	setupRadicandIntegerDigits :=
+		big.NewInt(0).Sub(setupRadicandTotalDigits, radicandPrecision)
 
-	if radicandPrecision.Cmp(bigZero) == 1 &&
-		(numOfAllDigits.Cmp(radicandPrecision) < 1  ||
-			numOfFracDigits.Cmp(radicandPrecision) == -1) {
+	expectedFractionalDigits := big.NewInt(0).Set(radicandPrecision)
 
-		nthRootMultiple := big.NewInt(0).Quo(radicandPrecision, nthRootBigInt)
+	scaleValue = big.NewInt(0).Exp(bigTen, radicandPrecision, nil)
 
-		/*
-		if numOfFracDigits.Cmp(radicandPrecision) == -1 {
-			precisionAdjustment = big.NewInt(0).Add(nthRootMultiple,bigOne)
-			precisionAdjustment = big.NewInt(0).Neg(precisionAdjustment)
-
-		}
-		*/
-
-		exponent := big.NewInt(0).Mul(nthRootBigInt,nthRootMultiple)
-		scaleValue = big.NewInt(0).Exp(bigTen, exponent, nil)
-		bINumScaleValue := BigIntNum{}.NewBigInt(scaleValue, 0)
-		setupRadicand = BigIntMathMultiply{}.MultiplyBigIntNums(setupRadicand, bINumScaleValue)
-		setupRadicand.SetExpectedToActualNumberOfDigits()
-		radicandPrecision = setupRadicand.GetPrecisionBigInt()
-		//fmt.Println("bINumSetupRadicand: ", setupRadicand.GetNumStr())
-		//precisionAdjustment = big.NewInt(0).Neg(nthRootMultiple)
-	}
-
-	scaleValue = big.NewInt(0).Exp(bigTen,	radicandPrecision, nil)
 	intBundleRadicandBigInt, fracBundleRadicandBigInt :=
 		big.NewInt(0).QuoRem(setupRadicand.GetAbsoluteBigIntValue(), scaleValue, modX)
 
 	intBundleRadicand = BigIntNum{}.NewBigInt(intBundleRadicandBigInt, 0)
+	intBundleRadicand.SetExpectedNumberOfDigits(setupRadicandIntegerDigits)
+
+	mod := big.NewInt(0).Rem(radicandPrecision,nthRoot.GetAbsoluteBigIntValue() )
+
+	if mod.Cmp(big.NewInt(0))==1 {
+		delta := big.NewInt(0).Sub(nthRoot.GetAbsoluteBigIntValue(), mod)
+		scaleVal := big.NewInt(0).Exp(big.NewInt(10), delta, nil)
+		fracBundleRadicandBigInt = big.NewInt(0).Mul(fracBundleRadicandBigInt,scaleVal)
+		expectedFractionalDigits = big.NewInt(0).Add(expectedFractionalDigits,delta)
+	}
+
 
 	fracBundleRadicand = BigIntNum{}.NewBigInt(fracBundleRadicandBigInt, 0)
 
@@ -391,40 +366,11 @@ func (nthrt *BigIntMathNthRoot) setupBundles(
 		return BigIntNum{}.NewZero(0), intBundleRadicand, fracBundleRadicand, precisionAdjustment, err
 	}
 
-	intBundleRadicand.SetExpectedToActualNumberOfDigits()
-	fracBundleRadicand.SetExpectedToActualNumberOfDigits()
 
-	if fracBundleRadicand.IsZero() {
-		err = nil
-		return setupRadicand, intBundleRadicand, fracBundleRadicand, precisionAdjustment, err
-	}
-
-	numOfDigits, _, errx = fracBundleRadicand.GetActualNumberOfDigits()
-
-	if errx != nil {
-		err =	fmt.Errorf(ePrefix +
-			"Error returned by fracBundleRadicand.GetActualNumberOfDigits(). " +
-			"fracBundleRadicand='%v' Error='%v' ",
-			fracBundleRadicand.GetNumStr(), errx.Error())
-
-		intBundleRadicand = BigIntNum{}.NewZero(0)
-		fracBundleRadicand = BigIntNum{}.NewZero(0)
-		precisionAdjustment = big.NewInt(0)
-
-		return BigIntNum{}.NewZero(0), intBundleRadicand, fracBundleRadicand, precisionAdjustment, err
-	}
-
-	mod := big.NewInt(0).Rem(numOfDigits,nthRoot.GetAbsoluteBigIntValue() )
-
-	if mod.Cmp(big.NewInt(0))==1 {
-		delta := big.NewInt(0).Sub(nthRoot.GetAbsoluteBigIntValue(), mod)
-		scaleVal := big.NewInt(0).Exp(big.NewInt(10), delta, nil)
-		fracBundleRadicandBigInt = big.NewInt(0).Mul(fracBundleRadicand.GetAbsoluteBigIntValue(),scaleVal)
-		fracBundleRadicand = BigIntNum{}.NewBigInt(fracBundleRadicandBigInt, 0)
-		fracBundleRadicand.SetExpectedToActualNumberOfDigits()
-	}
+	fracBundleRadicand.SetExpectedNumberOfDigits(expectedFractionalDigits)
 
 	err = nil
+
 	return setupRadicand, intBundleRadicand, fracBundleRadicand, precisionAdjustment, err
 }
 
@@ -852,25 +798,47 @@ func (nthrt *BigIntMathNthRoot) getNextBundleBigIntValue(
 	var exponent *big.Int
 	var divisor *big.Int
 
-	expectedNumberOfDigits := intBundleRadicand.GetExpectedNumberOfDigits()
-	actualNumberOfDigits, _, errx  := intBundleRadicand.GetActualNumberOfDigits()
-	deltaDigits := big.NewInt(0).Sub(expectedNumberOfDigits, actualNumberOfDigits)
-	nthRootDeltaDigits := big.NewInt(0).Sub(deltaDigits, nthRoot.GetAbsoluteBigIntValue())
+	expectedIntegerNumOfDigits := intBundleRadicand.GetExpectedNumberOfDigits()
+	actualIntegerNumOfDigits, _, errx  := intBundleRadicand.GetActualNumberOfDigits()
+	if errx != nil {
+		err = fmt.Errorf(ePrefix +
+			"Error returned by intBundleRadicand.GetActualNumberOfDigits(). " +
+			"Error='%v' ", errx.Error())
+
+		return nextBundleValue, newIntBundleRadicand, newFracBundleRadicand, err
+	}
+
+	deltaDigits := big.NewInt(0).Sub(expectedIntegerNumOfDigits, actualIntegerNumOfDigits)
+	nthRootIntegerDeltaDigits := big.NewInt(0).Sub(deltaDigits, nthRoot.GetAbsoluteBigIntValue())
 	bigZero := big.NewInt(0)
 
-	if nthRootDeltaDigits.Cmp(bigZero) >= 0 {
+	expectedFracNumOfDigits := fracBundleRadicand.GetExpectedNumberOfDigits()
+	actualFracNumOfDigits, _, errx := fracBundleRadicand.GetActualNumberOfDigits()
 
+	if errx != nil {
+		err = fmt.Errorf(ePrefix +
+			"Error returned by fracBundleRadicand.GetActualNumberOfDigits(). " +
+			"Error='%v' ", errx.Error())
+
+		return nextBundleValue, newIntBundleRadicand, newFracBundleRadicand, err
+	}
+
+	deltaDigits = big.NewInt(0).Sub(expectedFracNumOfDigits, actualFracNumOfDigits)
+	nthRootFracDeltaDigits := big.NewInt(0).Sub(deltaDigits, nthRoot.GetAbsoluteBigIntValue())
+
+
+	if nthRootIntegerDeltaDigits.Cmp(bigZero) >= 0 {
 
 		nextBundleValue = big.NewInt(0)
 		newIntBundleRadicand = intBundleRadicand.CopyOut()
 		newFracBundleRadicand = fracBundleRadicand.CopyOut()
-		expectedNumberOfDigits = big.NewInt(0).Sub(expectedNumberOfDigits, nthRoot.GetAbsoluteBigIntValue())
+		expectedIntegerNumOfDigits = big.NewInt(0).Sub(expectedIntegerNumOfDigits, nthRoot.GetAbsoluteBigIntValue())
 
-		if expectedNumberOfDigits.Cmp(actualNumberOfDigits) == -1 {
-			expectedNumberOfDigits = big.NewInt(0).Set(actualNumberOfDigits)
+		if expectedIntegerNumOfDigits.Cmp(actualIntegerNumOfDigits) == -1 {
+			expectedIntegerNumOfDigits = big.NewInt(0).Set(actualIntegerNumOfDigits)
 		}
 
-		newIntBundleRadicand.SetExpectedNumberOfDigits(expectedNumberOfDigits)
+		newIntBundleRadicand.SetExpectedNumberOfDigits(expectedIntegerNumOfDigits)
 
 		err = nil
 
@@ -892,7 +860,7 @@ func (nthrt *BigIntMathNthRoot) getNextBundleBigIntValue(
 
 			return nextBundleValue, newIntBundleRadicand, newFracBundleRadicand, err
 		}
-		actualNumberOfDigits = big.NewInt(0).Add(magnitude, big.NewInt(1))
+		actualIntegerNumOfDigits = big.NewInt(0).Add(magnitude, big.NewInt(1))
 		digitsQuotient = big.NewInt(0).Quo(magnitude, nthrt.NthRoot.GetAbsoluteBigIntValue())
 		exponent = big.NewInt(0).Mul(digitsQuotient, nthrt.NthRoot.GetAbsoluteBigIntValue())
 		divisor = big.NewInt(0).Exp(nthrt.Big10, exponent, nil)
@@ -916,11 +884,27 @@ func (nthrt *BigIntMathNthRoot) getNextBundleBigIntValue(
 
 		numberOfDigits = big.NewInt(0).Add(numberOfDigits, big.NewInt(1))
 
-		expectedNumberOfDigits = big.NewInt(0).Sub(actualNumberOfDigits, numberOfDigits)
+		expectedIntegerNumOfDigits = big.NewInt(0).Sub(actualIntegerNumOfDigits, numberOfDigits)
 
 		newIntBundleRadicand = BigIntNum{}.NewBigInt(tempRadicand, 0)
-		newIntBundleRadicand.SetExpectedNumberOfDigits(expectedNumberOfDigits)
+		newIntBundleRadicand.SetExpectedNumberOfDigits(expectedIntegerNumOfDigits)
 		newFracBundleRadicand = fracBundleRadicand.CopyOut()
+		err = nil
+
+
+	} else if nthRootFracDeltaDigits.Cmp(bigZero) >= 0 {
+
+		nextBundleValue = big.NewInt(0)
+		newIntBundleRadicand = intBundleRadicand.CopyOut()
+		newFracBundleRadicand = fracBundleRadicand.CopyOut()
+		expectedIntegerNumOfDigits = big.NewInt(0).Sub(expectedFracNumOfDigits, nthRoot.GetAbsoluteBigIntValue())
+
+		if expectedFracNumOfDigits.Cmp(actualFracNumOfDigits) == -1 {
+			expectedFracNumOfDigits = big.NewInt(0).Set(actualFracNumOfDigits)
+		}
+
+		newIntBundleRadicand.SetExpectedNumberOfDigits(expectedIntegerNumOfDigits)
+
 		err = nil
 
 	} else if !fracBundleRadicand.IsZero() {

@@ -22,11 +22,17 @@ func main() {
 	nthRoot := "3"
 	expectedStr := "0.301840536839884"
 	maxPrecision := uint(15)
+	radicand := "0.45"
+	nthRoot := "3"
+	expectedStr := "0.766309432393553"
+	maxPrecision := uint(15)
 */
+
 	radicand := "0.027"
 	nthRoot := "3"
 	expectedStr := "0.300000"
 	maxPrecision := uint(6)
+
 
 	// Root(27.5;3) = 3.01840536839884
 	ExampleBigIntNumNthRoot_01(radicand, nthRoot, maxPrecision, expectedStr)
