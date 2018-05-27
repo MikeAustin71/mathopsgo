@@ -286,24 +286,30 @@ func TestBigIntMathNthRoot_GetNthRootBigNum_08(t *testing.T) {
 }
 
 func TestBigIntMathNthRoot_GetNthRootBigNum_09(t *testing.T) {
-
+/*
 	baseStr := "0.027"
 	nthRootStr := "3"
 	maxPrecision := uint(6)
 	expectedResult := "0.300000"
+*/
 
-	bINumBase, err  := BigIntNum{}.NewNumStr(baseStr)
+	radicand := "0.027"
+	nthRoot := "3"
+	expectedStr := "0.300000"
+	maxPrecision := uint(6)
+
+	bINumBase, err  := BigIntNum{}.NewNumStr(radicand)
 
 	if err != nil {
 		t.Errorf("Error returned from BigIntNum{}.NewNumStr(baseStr) " +
-			"baseStr='%v' Error='%v'", baseStr, err.Error())
+			"baseStr='%v' Error='%v'", radicand, err.Error())
 	}
 
-	bINumNthRoot, err := BigIntNum{}.NewNumStr(nthRootStr)
+	bINumNthRoot, err := BigIntNum{}.NewNumStr(nthRoot)
 
 	if err != nil {
 		t.Errorf("Error returned from BigIntNum{}.NewNumStr(nthRootStr) " +
-			"nthRootStr='%v' Error='%v'", nthRootStr, err.Error())
+			"nthRootStr='%v' Error='%v'", nthRoot, err.Error())
 	}
 
 	bIMathNthRoot := BigIntMathNthRoot{}
@@ -315,9 +321,9 @@ func TestBigIntMathNthRoot_GetNthRootBigNum_09(t *testing.T) {
 			"Error='%v' ", err.Error())
 	}
 
-	if expectedResult != result.GetNumStr() {
+	if expectedStr != result.GetNumStr() {
 		t.Errorf("Expected result= %v .  Instead result= %v .",
-			expectedResult, result.GetNumStr())
+			expectedStr, result.GetNumStr())
 	}
 
 }

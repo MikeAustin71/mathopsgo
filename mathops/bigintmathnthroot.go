@@ -854,13 +854,18 @@ func (nthrt *BigIntMathNthRoot) getNextBundleBigIntValue(
 
 	expectedNumberOfDigits := intBundleRadicand.GetExpectedNumberOfDigits()
 	actualNumberOfDigits, _, errx  := intBundleRadicand.GetActualNumberOfDigits()
+	deltaDigits := big.NewInt(0).Sub(expectedNumberOfDigits, actualNumberOfDigits)
+	nthRootDeltaDigits := big.NewInt(0).Sub(deltaDigits, nthRoot.GetAbsoluteBigIntValue())
+	bigZero := big.NewInt(0)
 
-	if expectedNumberOfDigits.Cmp(actualNumberOfDigits) == 1 {
+	if nthRootDeltaDigits.Cmp(bigZero) >= 0 {
+
+
 		nextBundleValue = big.NewInt(0)
 		newIntBundleRadicand = intBundleRadicand.CopyOut()
 		newFracBundleRadicand = fracBundleRadicand.CopyOut()
+		expectedNumberOfDigits = big.NewInt(0).Sub(expectedNumberOfDigits, nthRoot.GetAbsoluteBigIntValue())
 
-		expectedNumberOfDigits = big.NewInt(0).Sub(expectedNumberOfDigits, nthRoot.GetAbsoluteBigIntValue() )
 		if expectedNumberOfDigits.Cmp(actualNumberOfDigits) == -1 {
 			expectedNumberOfDigits = big.NewInt(0).Set(actualNumberOfDigits)
 		}
@@ -869,7 +874,7 @@ func (nthrt *BigIntMathNthRoot) getNextBundleBigIntValue(
 
 		err = nil
 
-		//return nextBundleValue, newIntBundleRadicand, newFracBundleRadicand, err
+		// return nextBundleValue, newIntBundleRadicand, newFracBundleRadicand, err
 
 	} else if !intBundleRadicand.IsZero() {
 

@@ -1020,12 +1020,6 @@ Original IntBundleRadicand:  5604423
 
 --------------------
 Original IntBundleRadicand:  4423
-           nextBundleValue:  0
-      newIntBundleRadicand:  4423
-     newFracBundleRadicand:  92400
-
---------------------
-Original IntBundleRadicand:  4423
            nextBundleValue:  4423
       newIntBundleRadicand:  0
      newFracBundleRadicand:  92400
@@ -1114,8 +1108,13 @@ Original IntBundleRadicand:  0
       newIntBundleRadicand:  0
      newFracBundleRadicand:  0
 
---- FAIL: TestBigIntMathNthRoot_GetNthRootBigNum_06 (0.00s)
-	xt_bigintmathnthroot_01_test.go:215: Expected result= -22.3720713464898 .  Instead result= -22.3685383297446 .
+--------------------
+Original IntBundleRadicand:  0
+           nextBundleValue:  0
+      newIntBundleRadicand:  0
+     newFracBundleRadicand:  0
+
+--- PASS: TestBigIntMathNthRoot_GetNthRootBigNum_06 (0.00s)
 === RUN   TestBigIntMathNthRoot_GetNthRootBigNum_07
 --- PASS: TestBigIntMathNthRoot_GetNthRootBigNum_07 (0.00s)
 === RUN   TestBigIntMathNthRoot_GetNthRootBigNum_08
@@ -2133,7 +2132,7 @@ Original IntBundleRadicand:  0
 === RUN   TestFracIntAry_GetRationalValue_06
 --- PASS: TestFracIntAry_GetRationalValue_06 (0.00s)
 === RUN   TestFracIntAry_GetRationalValue_07
---- PASS: TestFracIntAry_GetRationalValue_07 (0.06s)
+--- PASS: TestFracIntAry_GetRationalValue_07 (0.05s)
 === RUN   TestIntAry_AddMultipleToThis_01
 --- PASS: TestIntAry_AddMultipleToThis_01 (0.00s)
 === RUN   TestIntAry_AddToThis_01
@@ -3538,4 +3537,4 @@ Original IntBundleRadicand:  0
 --- PASS: TestStrMathOp_SubtractN1N2_19 (0.00s)
 FAIL
 exit status 1
-FAIL	MikeAustin71/mathopsgo/mathops	1.257s
+FAIL	MikeAustin71/mathopsgo/mathops	1.092s
