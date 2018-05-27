@@ -654,357 +654,37 @@
         intBundleLength:  1
        fracBundleLength:  0
       finalBundleLength:  1
---------------------
-Original IntBundleRadicand:  125
-           nextBundleValue:  125
-      newIntBundleRadicand:  0
-     newFracBundleRadicand:  0
-
---------------------
-Original IntBundleRadicand:  0
-           nextBundleValue:  0
-      newIntBundleRadicand:  0
-     newFracBundleRadicand:  0
-
---------------------
-Original IntBundleRadicand:  0
-           nextBundleValue:  0
-      newIntBundleRadicand:  0
-     newFracBundleRadicand:  0
-
---------------------
-Original IntBundleRadicand:  0
-           nextBundleValue:  0
-      newIntBundleRadicand:  0
-     newFracBundleRadicand:  0
-
---------------------
-Original IntBundleRadicand:  0
-           nextBundleValue:  0
-      newIntBundleRadicand:  0
-     newFracBundleRadicand:  0
-
---------------------
-Original IntBundleRadicand:  0
-           nextBundleValue:  0
-      newIntBundleRadicand:  0
-     newFracBundleRadicand:  0
-
---------------------
-Original IntBundleRadicand:  0
-           nextBundleValue:  0
-      newIntBundleRadicand:  0
-     newFracBundleRadicand:  0
-
---------------------
-Original IntBundleRadicand:  0
-           nextBundleValue:  0
-      newIntBundleRadicand:  0
-     newFracBundleRadicand:  0
-
---------------------
-Original IntBundleRadicand:  0
-           nextBundleValue:  0
-      newIntBundleRadicand:  0
-     newFracBundleRadicand:  0
-
---------------------
-Original IntBundleRadicand:  0
-           nextBundleValue:  0
-      newIntBundleRadicand:  0
-     newFracBundleRadicand:  0
-
---------------------
-Original IntBundleRadicand:  0
-           nextBundleValue:  0
-      newIntBundleRadicand:  0
-     newFracBundleRadicand:  0
-
---------------------
-Original IntBundleRadicand:  0
-           nextBundleValue:  0
-      newIntBundleRadicand:  0
-     newFracBundleRadicand:  0
-
---------------------
-Original IntBundleRadicand:  0
-           nextBundleValue:  0
-      newIntBundleRadicand:  0
-     newFracBundleRadicand:  0
-
---------------------
-Original IntBundleRadicand:  0
-           nextBundleValue:  0
-      newIntBundleRadicand:  0
-     newFracBundleRadicand:  0
-
---------------------
-Original IntBundleRadicand:  0
-           nextBundleValue:  0
-      newIntBundleRadicand:  0
-     newFracBundleRadicand:  0
-
---------------------
-Original IntBundleRadicand:  0
-           nextBundleValue:  0
-      newIntBundleRadicand:  0
-     newFracBundleRadicand:  0
-
---------------------
-Original IntBundleRadicand:  0
-           nextBundleValue:  0
-      newIntBundleRadicand:  0
-     newFracBundleRadicand:  0
-
+            quotient:  0
+bundleAddOnPrecision:  16
+precision Adjustment:  0
+    actual precision:  16
 --- PASS: TestBigIntMathNthRoot_GetNthRootBigNum_01 (0.00s)
 === RUN   TestBigIntMathNthRoot_GetNthRootBigNum_02
         intBundleLength:  2
        fracBundleLength:  0
       finalBundleLength:  2
---------------------
-Original IntBundleRadicand:  5604423
-           nextBundleValue:  5
-      newIntBundleRadicand:  604423
-     newFracBundleRadicand:  0
-
---------------------
-Original IntBundleRadicand:  604423
-           nextBundleValue:  604423
-      newIntBundleRadicand:  0
-     newFracBundleRadicand:  0
-
---------------------
-Original IntBundleRadicand:  0
-           nextBundleValue:  0
-      newIntBundleRadicand:  0
-     newFracBundleRadicand:  0
-
---------------------
-Original IntBundleRadicand:  0
-           nextBundleValue:  0
-      newIntBundleRadicand:  0
-     newFracBundleRadicand:  0
-
---------------------
-Original IntBundleRadicand:  0
-           nextBundleValue:  0
-      newIntBundleRadicand:  0
-     newFracBundleRadicand:  0
-
---------------------
-Original IntBundleRadicand:  0
-           nextBundleValue:  0
-      newIntBundleRadicand:  0
-     newFracBundleRadicand:  0
-
---------------------
-Original IntBundleRadicand:  0
-           nextBundleValue:  0
-      newIntBundleRadicand:  0
-     newFracBundleRadicand:  0
-
---------------------
-Original IntBundleRadicand:  0
-           nextBundleValue:  0
-      newIntBundleRadicand:  0
-     newFracBundleRadicand:  0
-
---------------------
-Original IntBundleRadicand:  0
-           nextBundleValue:  0
-      newIntBundleRadicand:  0
-     newFracBundleRadicand:  0
-
---------------------
-Original IntBundleRadicand:  0
-           nextBundleValue:  0
-      newIntBundleRadicand:  0
-     newFracBundleRadicand:  0
-
---------------------
-Original IntBundleRadicand:  0
-           nextBundleValue:  0
-      newIntBundleRadicand:  0
-     newFracBundleRadicand:  0
-
---------------------
-Original IntBundleRadicand:  0
-           nextBundleValue:  0
-      newIntBundleRadicand:  0
-     newFracBundleRadicand:  0
-
---------------------
-Original IntBundleRadicand:  0
-           nextBundleValue:  0
-      newIntBundleRadicand:  0
-     newFracBundleRadicand:  0
-
---------------------
-Original IntBundleRadicand:  0
-           nextBundleValue:  0
-      newIntBundleRadicand:  0
-     newFracBundleRadicand:  0
-
---------------------
-Original IntBundleRadicand:  0
-           nextBundleValue:  0
-      newIntBundleRadicand:  0
-     newFracBundleRadicand:  0
-
---------------------
-Original IntBundleRadicand:  0
-           nextBundleValue:  0
-      newIntBundleRadicand:  0
-     newFracBundleRadicand:  0
-
---------------------
-Original IntBundleRadicand:  0
-           nextBundleValue:  0
-      newIntBundleRadicand:  0
-     newFracBundleRadicand:  0
-
+            quotient:  0
+bundleAddOnPrecision:  15
+precision Adjustment:  0
+    actual precision:  15
 --- PASS: TestBigIntMathNthRoot_GetNthRootBigNum_02 (0.00s)
 === RUN   TestBigIntMathNthRoot_GetNthRootBigNum_03
         intBundleLength:  2
        fracBundleLength:  0
       finalBundleLength:  2
---------------------
-Original IntBundleRadicand:  5604423
-           nextBundleValue:  5
-      newIntBundleRadicand:  604423
-     newFracBundleRadicand:  924000
-
---------------------
-Original IntBundleRadicand:  604423
-           nextBundleValue:  604423
-      newIntBundleRadicand:  0
-     newFracBundleRadicand:  924000
-
---------------------
-Original IntBundleRadicand:  0
-           nextBundleValue:  924000
-      newIntBundleRadicand:  0
-     newFracBundleRadicand:  0
-
---------------------
-Original IntBundleRadicand:  0
-           nextBundleValue:  0
-      newIntBundleRadicand:  0
-     newFracBundleRadicand:  0
-
---------------------
-Original IntBundleRadicand:  0
-           nextBundleValue:  0
-      newIntBundleRadicand:  0
-     newFracBundleRadicand:  0
-
---------------------
-Original IntBundleRadicand:  0
-           nextBundleValue:  0
-      newIntBundleRadicand:  0
-     newFracBundleRadicand:  0
-
---------------------
-Original IntBundleRadicand:  0
-           nextBundleValue:  0
-      newIntBundleRadicand:  0
-     newFracBundleRadicand:  0
-
---------------------
-Original IntBundleRadicand:  0
-           nextBundleValue:  0
-      newIntBundleRadicand:  0
-     newFracBundleRadicand:  0
-
---------------------
-Original IntBundleRadicand:  0
-           nextBundleValue:  0
-      newIntBundleRadicand:  0
-     newFracBundleRadicand:  0
-
---------------------
-Original IntBundleRadicand:  0
-           nextBundleValue:  0
-      newIntBundleRadicand:  0
-     newFracBundleRadicand:  0
-
---------------------
-Original IntBundleRadicand:  0
-           nextBundleValue:  0
-      newIntBundleRadicand:  0
-     newFracBundleRadicand:  0
-
---------------------
-Original IntBundleRadicand:  0
-           nextBundleValue:  0
-      newIntBundleRadicand:  0
-     newFracBundleRadicand:  0
-
---------------------
-Original IntBundleRadicand:  0
-           nextBundleValue:  0
-      newIntBundleRadicand:  0
-     newFracBundleRadicand:  0
-
---------------------
-Original IntBundleRadicand:  0
-           nextBundleValue:  0
-      newIntBundleRadicand:  0
-     newFracBundleRadicand:  0
-
---------------------
-Original IntBundleRadicand:  0
-           nextBundleValue:  0
-      newIntBundleRadicand:  0
-     newFracBundleRadicand:  0
-
---------------------
-Original IntBundleRadicand:  0
-           nextBundleValue:  0
-      newIntBundleRadicand:  0
-     newFracBundleRadicand:  0
-
---------------------
-Original IntBundleRadicand:  0
-           nextBundleValue:  0
-      newIntBundleRadicand:  0
-     newFracBundleRadicand:  0
-
+            quotient:  0
+bundleAddOnPrecision:  15
+precision Adjustment:  0
+    actual precision:  15
 --- PASS: TestBigIntMathNthRoot_GetNthRootBigNum_03 (0.00s)
 === RUN   TestBigIntMathNthRoot_GetNthRootBigNum_04
         intBundleLength:  1
        fracBundleLength:  0
       finalBundleLength:  1
---------------------
-Original IntBundleRadicand:  27
-           nextBundleValue:  27
-      newIntBundleRadicand:  0
-     newFracBundleRadicand:  0
-
---------------------
-Original IntBundleRadicand:  0
-           nextBundleValue:  0
-      newIntBundleRadicand:  0
-     newFracBundleRadicand:  0
-
---------------------
-Original IntBundleRadicand:  0
-           nextBundleValue:  0
-      newIntBundleRadicand:  0
-     newFracBundleRadicand:  0
-
---------------------
-Original IntBundleRadicand:  0
-           nextBundleValue:  0
-      newIntBundleRadicand:  0
-     newFracBundleRadicand:  0
-
---------------------
-Original IntBundleRadicand:  0
-           nextBundleValue:  0
-      newIntBundleRadicand:  0
-     newFracBundleRadicand:  0
-
+            quotient:  0
+bundleAddOnPrecision:  4
+precision Adjustment:  0
+    actual precision:  4
 --- PASS: TestBigIntMathNthRoot_GetNthRootBigNum_04 (0.00s)
 === RUN   TestBigIntMathNthRoot_GetNthRootBigNum_05
 --- PASS: TestBigIntMathNthRoot_GetNthRootBigNum_05 (0.00s)
@@ -1012,108 +692,10 @@ Original IntBundleRadicand:  0
         intBundleLength:  2
        fracBundleLength:  0
       finalBundleLength:  2
---------------------
-Original IntBundleRadicand:  5604423
-           nextBundleValue:  56
-      newIntBundleRadicand:  4423
-     newFracBundleRadicand:  92400
-
---------------------
-Original IntBundleRadicand:  4423
-           nextBundleValue:  4423
-      newIntBundleRadicand:  0
-     newFracBundleRadicand:  92400
-
---------------------
-Original IntBundleRadicand:  0
-           nextBundleValue:  92400
-      newIntBundleRadicand:  0
-     newFracBundleRadicand:  0
-
---------------------
-Original IntBundleRadicand:  0
-           nextBundleValue:  0
-      newIntBundleRadicand:  0
-     newFracBundleRadicand:  0
-
---------------------
-Original IntBundleRadicand:  0
-           nextBundleValue:  0
-      newIntBundleRadicand:  0
-     newFracBundleRadicand:  0
-
---------------------
-Original IntBundleRadicand:  0
-           nextBundleValue:  0
-      newIntBundleRadicand:  0
-     newFracBundleRadicand:  0
-
---------------------
-Original IntBundleRadicand:  0
-           nextBundleValue:  0
-      newIntBundleRadicand:  0
-     newFracBundleRadicand:  0
-
---------------------
-Original IntBundleRadicand:  0
-           nextBundleValue:  0
-      newIntBundleRadicand:  0
-     newFracBundleRadicand:  0
-
---------------------
-Original IntBundleRadicand:  0
-           nextBundleValue:  0
-      newIntBundleRadicand:  0
-     newFracBundleRadicand:  0
-
---------------------
-Original IntBundleRadicand:  0
-           nextBundleValue:  0
-      newIntBundleRadicand:  0
-     newFracBundleRadicand:  0
-
---------------------
-Original IntBundleRadicand:  0
-           nextBundleValue:  0
-      newIntBundleRadicand:  0
-     newFracBundleRadicand:  0
-
---------------------
-Original IntBundleRadicand:  0
-           nextBundleValue:  0
-      newIntBundleRadicand:  0
-     newFracBundleRadicand:  0
-
---------------------
-Original IntBundleRadicand:  0
-           nextBundleValue:  0
-      newIntBundleRadicand:  0
-     newFracBundleRadicand:  0
-
---------------------
-Original IntBundleRadicand:  0
-           nextBundleValue:  0
-      newIntBundleRadicand:  0
-     newFracBundleRadicand:  0
-
---------------------
-Original IntBundleRadicand:  0
-           nextBundleValue:  0
-      newIntBundleRadicand:  0
-     newFracBundleRadicand:  0
-
---------------------
-Original IntBundleRadicand:  0
-           nextBundleValue:  0
-      newIntBundleRadicand:  0
-     newFracBundleRadicand:  0
-
---------------------
-Original IntBundleRadicand:  0
-           nextBundleValue:  0
-      newIntBundleRadicand:  0
-     newFracBundleRadicand:  0
-
+            quotient:  0
+bundleAddOnPrecision:  15
+precision Adjustment:  0
+    actual precision:  15
 --- PASS: TestBigIntMathNthRoot_GetNthRootBigNum_06 (0.00s)
 === RUN   TestBigIntMathNthRoot_GetNthRootBigNum_07
 --- PASS: TestBigIntMathNthRoot_GetNthRootBigNum_07 (0.00s)
@@ -1123,54 +705,10 @@ Original IntBundleRadicand:  0
         intBundleLength:  0
        fracBundleLength:  0
       finalBundleLength:  0
---------------------
-Original IntBundleRadicand:  0
-           nextBundleValue:  27
-      newIntBundleRadicand:  0
-     newFracBundleRadicand:  0
-
---------------------
-Original IntBundleRadicand:  0
-           nextBundleValue:  0
-      newIntBundleRadicand:  0
-     newFracBundleRadicand:  0
-
---------------------
-Original IntBundleRadicand:  0
-           nextBundleValue:  0
-      newIntBundleRadicand:  0
-     newFracBundleRadicand:  0
-
---------------------
-Original IntBundleRadicand:  0
-           nextBundleValue:  0
-      newIntBundleRadicand:  0
-     newFracBundleRadicand:  0
-
---------------------
-Original IntBundleRadicand:  0
-           nextBundleValue:  0
-      newIntBundleRadicand:  0
-     newFracBundleRadicand:  0
-
---------------------
-Original IntBundleRadicand:  0
-           nextBundleValue:  0
-      newIntBundleRadicand:  0
-     newFracBundleRadicand:  0
-
---------------------
-Original IntBundleRadicand:  0
-           nextBundleValue:  0
-      newIntBundleRadicand:  0
-     newFracBundleRadicand:  0
-
---------------------
-Original IntBundleRadicand:  0
-           nextBundleValue:  0
-      newIntBundleRadicand:  0
-     newFracBundleRadicand:  0
-
+            quotient:  1
+bundleAddOnPrecision:  8
+precision Adjustment:  0
+    actual precision:  9
 --- FAIL: TestBigIntMathNthRoot_GetNthRootBigNum_09 (0.00s)
 	xt_bigintmathnthroot_01_test.go:325: Expected result= 0.300000 .  Instead result= 0.030000 .
 === RUN   TestBigIntMathPower_Pwr_01
@@ -2126,7 +1664,7 @@ Original IntBundleRadicand:  0
 === RUN   TestFracIntAry_GetRationalValue_06
 --- PASS: TestFracIntAry_GetRationalValue_06 (0.00s)
 === RUN   TestFracIntAry_GetRationalValue_07
---- PASS: TestFracIntAry_GetRationalValue_07 (0.05s)
+--- PASS: TestFracIntAry_GetRationalValue_07 (0.06s)
 === RUN   TestIntAry_AddMultipleToThis_01
 --- PASS: TestIntAry_AddMultipleToThis_01 (0.00s)
 === RUN   TestIntAry_AddToThis_01
@@ -3531,4 +3069,4 @@ Original IntBundleRadicand:  0
 --- PASS: TestStrMathOp_SubtractN1N2_19 (0.00s)
 FAIL
 exit status 1
-FAIL	MikeAustin71/mathopsgo/mathops	0.856s
+FAIL	MikeAustin71/mathopsgo/mathops	1.031s

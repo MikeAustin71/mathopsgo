@@ -654,13 +654,28 @@ func (nthrt *BigIntMathNthRoot) calcPrecision(
 
 	}
 
-	quotient := big.NewInt(0).Quo(radicandPrecision, nthRoot)
+	modX := big.NewInt(0)
+
+	quotient, _ := big.NewInt(0).QuoRem(radicandPrecision, nthRoot, modX)
+
+	/*
+	if mod.Cmp(bigZero) == 0 {
+		precisionAdjustment = big.NewInt(0).Sub(precisionAdjustment, big.NewInt(1))
+	}
+	*/
 
 	actualPrecision = big.NewInt(0).Add(bundleAddOnPrecision, quotient)
 	actualPrecision = big.NewInt(0).Add(actualPrecision, precisionAdjustment)
 	if actualPrecision.Cmp(bigZero) < 0 {
 		actualPrecision = big.NewInt(0)
 	}
+
+
+
+	fmt.Println("            quotient: ", quotient.Text(10))
+	fmt.Println("bundleAddOnPrecision: ", bundleAddOnPrecision.Text(10))
+	fmt.Println("precision Adjustment: ", precisionAdjustment.Text(10))
+	fmt.Println("    actual precision: ", actualPrecision.Text(10))
 
 	err = nil
 
@@ -948,14 +963,14 @@ func (nthrt *BigIntMathNthRoot) getNextBundleBigIntValue(
 		err = nil
 	}
 
-
+	/*
 	fmt.Println("--------------------")
 	fmt.Println("Original IntBundleRadicand: ",nthrt.IntBundleRadicand.GetNumStr())
 	fmt.Println("           nextBundleValue: ", nextBundleValue.Text(10))
 	fmt.Println("      newIntBundleRadicand: ", newIntBundleRadicand.GetNumStr())
 	fmt.Println("     newFracBundleRadicand: ", newFracBundleRadicand.GetNumStr())
 	fmt.Println("")
-
+	*/
 	return nextBundleValue, newIntBundleRadicand, newFracBundleRadicand, err
 }
 
