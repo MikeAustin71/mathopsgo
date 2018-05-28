@@ -40,11 +40,10 @@ func main() {
 
 */
 
-	radicand := "0.0275"
+	radicand := "0.027"
 	nthRoot := "3"
-	expectedStr := "0.301840536839884"
-	maxPrecision := uint(15)
-
+	expectedStr := "0.300000"
+	maxPrecision := uint(6)
 
 	// Root(27.5;3) = 3.01840536839884
 	ExampleBigIntNumNthRoot_01(radicand, nthRoot, maxPrecision, expectedStr)
@@ -99,6 +98,7 @@ func ExampleBigIntNumNthRoot_01(
 	fmt.Println("*** BigIntMathNthRoot ***")
 	fmt.Println("Expected Result: ", expectedNumStr)
 	fmt.Println("  Actual Result: ", result.GetNumStr())
+	fmt.Println("  Max Precision: ", maxPrecision)
 	if !expectedResult.Equal(result) {
 		fmt.Println("*** ERROR - Actual Result Does NOT Match Expected Result! ***")
 	} else {
