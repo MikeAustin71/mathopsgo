@@ -651,10 +651,6 @@
 === RUN   TestBigIntMathMultiply_MultiplyNumStrDtoSeries_04
 --- PASS: TestBigIntMathMultiply_MultiplyNumStrDtoSeries_04 (0.00s)
 === RUN   TestBigIntMathNthRoot_GetNthRootBigNum_01
-        intBundleLength:  1
-       fracBundleLength:  0
-  bundleAddonPrecision:  16
-      finalBundleLength:  1
     fracBundleLength:  0
 bundleAddOnPrecision:  16
 precision Adjustment:  0
@@ -662,10 +658,6 @@ precision Adjustment:  0
 FracPrecision Count:  16
 --- PASS: TestBigIntMathNthRoot_GetNthRootBigNum_01 (0.00s)
 === RUN   TestBigIntMathNthRoot_GetNthRootBigNum_02
-        intBundleLength:  2
-       fracBundleLength:  0
-  bundleAddonPrecision:  15
-      finalBundleLength:  2
     fracBundleLength:  0
 bundleAddOnPrecision:  15
 precision Adjustment:  0
@@ -673,10 +665,6 @@ precision Adjustment:  0
 FracPrecision Count:  15
 --- PASS: TestBigIntMathNthRoot_GetNthRootBigNum_02 (0.00s)
 === RUN   TestBigIntMathNthRoot_GetNthRootBigNum_03
-        intBundleLength:  2
-       fracBundleLength:  0
-  bundleAddonPrecision:  15
-      finalBundleLength:  2
     fracBundleLength:  0
 bundleAddOnPrecision:  15
 precision Adjustment:  0
@@ -684,10 +672,6 @@ precision Adjustment:  0
 FracPrecision Count:  15
 --- PASS: TestBigIntMathNthRoot_GetNthRootBigNum_03 (0.00s)
 === RUN   TestBigIntMathNthRoot_GetNthRootBigNum_04
-        intBundleLength:  1
-       fracBundleLength:  0
-  bundleAddonPrecision:  4
-      finalBundleLength:  1
     fracBundleLength:  0
 bundleAddOnPrecision:  4
 precision Adjustment:  0
@@ -697,10 +681,6 @@ FracPrecision Count:  4
 === RUN   TestBigIntMathNthRoot_GetNthRootBigNum_05
 --- PASS: TestBigIntMathNthRoot_GetNthRootBigNum_05 (0.00s)
 === RUN   TestBigIntMathNthRoot_GetNthRootBigNum_06
-        intBundleLength:  2
-       fracBundleLength:  0
-  bundleAddonPrecision:  15
-      finalBundleLength:  2
     fracBundleLength:  0
 bundleAddOnPrecision:  15
 precision Adjustment:  0
@@ -712,16 +692,27 @@ FracPrecision Count:  15
 === RUN   TestBigIntMathNthRoot_GetNthRootBigNum_08
 --- PASS: TestBigIntMathNthRoot_GetNthRootBigNum_08 (0.00s)
 === RUN   TestBigIntMathNthRoot_GetNthRootBigNum_09
-        intBundleLength:  0
-       fracBundleLength:  1
-  bundleAddonPrecision:  8
-      finalBundleLength:  1
     fracBundleLength:  1
 bundleAddOnPrecision:  8
 precision Adjustment:  0
     actual precision:  9
 FracPrecision Count:  9
 --- PASS: TestBigIntMathNthRoot_GetNthRootBigNum_09 (0.00s)
+=== RUN   TestBigIntMathNthRoot_GetNthRootBigNum_10
+    fracBundleLength:  0
+bundleAddOnPrecision:  17
+precision Adjustment:  0
+    actual precision:  17
+FracPrecision Count:  17
+--- PASS: TestBigIntMathNthRoot_GetNthRootBigNum_10 (0.00s)
+=== RUN   TestBigIntMathNthRoot_GetNthRootBigNum_11
+    fracBundleLength:  3
+bundleAddOnPrecision:  14
+precision Adjustment:  0
+    actual precision:  17
+FracPrecision Count:  18
+--- FAIL: TestBigIntMathNthRoot_GetNthRootBigNum_11 (0.00s)
+	xt_bigintmathnthroot_01_test.go:394: Expected result= 447.213595505548 .  Instead result= 447.219185634964 .
 === RUN   TestBigIntMathPower_Pwr_01
 --- PASS: TestBigIntMathPower_Pwr_01 (0.00s)
 === RUN   TestBigIntMathPower_Pwr_02
@@ -3078,5 +3069,6 @@ FracPrecision Count:  9
 --- PASS: TestStrMathOp_SubtractN1N2_18 (0.00s)
 === RUN   TestStrMathOp_SubtractN1N2_19
 --- PASS: TestStrMathOp_SubtractN1N2_19 (0.00s)
-PASS
-ok  	MikeAustin71/mathopsgo/mathops	1.031s
+FAIL
+exit status 1
+FAIL	MikeAustin71/mathopsgo/mathops	1.140s

@@ -110,7 +110,7 @@ func (bNum *BigIntNum) CopyIn(bigN BigIntNum) {
 func (bNum *BigIntNum) CopyOut() BigIntNum {
 
 	b2 := BigIntNum{}.NewBigInt(big.NewInt(0).Set(bNum.bigInt), bNum.precision)
-
+	b2.numberOfExpectedDigits = big.NewInt(0).Set(bNum.numberOfExpectedDigits)
 	return b2
 }
 
