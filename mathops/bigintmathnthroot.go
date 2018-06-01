@@ -809,7 +809,11 @@ func (nthrt *BigIntMathNthRoot) findNextRoot() error {
 	return nil
 }
 
+// getNextBundleBigIntValue - Calculate and return the next bundle of
+// numeric digits for nth Root extraction calculations.
+//
 func (nthrt *BigIntMathNthRoot) getNextBundleBigIntValue(
+
 	intBundleRadicand, fracBundleRadicand, nthRoot BigIntNum) (
 	nextBundleValue *big.Int, newIntBundleRadicand, newFracBundleRadicand BigIntNum, err error) {
 
@@ -830,8 +834,8 @@ func (nthrt *BigIntMathNthRoot) getNextBundleBigIntValue(
 	var exponent *big.Int
 	var divisor *big.Int
 
-	expectedIntegerNumOfDigits := intBundleRadicand.GetExpectedNumberOfDigits()
-	actualIntegerNumOfDigits, _, errx  := intBundleRadicand.GetActualNumberOfDigits()
+	intExpectedNumOfDigits := intBundleRadicand.GetExpectedNumberOfDigits()
+	intActualNumOfDigits, _, errx  := intBundleRadicand.GetActualNumberOfDigits()
 	if errx != nil {
 		err = fmt.Errorf(ePrefix +
 			"Error returned by intBundleRadicand.GetActualNumberOfDigits(). " +
@@ -840,12 +844,14 @@ func (nthrt *BigIntMathNthRoot) getNextBundleBigIntValue(
 		return nextBundleValue, newIntBundleRadicand, newFracBundleRadicand, err
 	}
 
-	deltaDigits := big.NewInt(0).Sub(expectedIntegerNumOfDigits, actualIntegerNumOfDigits)
-	nthRootIntegerDeltaDigits := big.NewInt(0).Sub(deltaDigits, nthRoot.GetAbsoluteBigIntValue())
+	intExpectedActualDelta  := big.NewInt(0).Sub(intExpectedNumOfDigits, intActualNumOfDigits)
+	intExpectedNthRootDelta := big.NewInt(0).Sub(intExpectedNumOfDigits, nthRoot.GetAbsoluteBigIntValue())
+	intIsZeroValue := intBundleRadicand.IsZero()
+
 	bigZero := big.NewInt(0)
 
-	expectedFracNumOfDigits := fracBundleRadicand.GetExpectedNumberOfDigits()
-	actualFracNumOfDigits, _, errx := fracBundleRadicand.GetActualNumberOfDigits()
+	fracExpectedNumOfDigits := fracBundleRadicand.GetExpectedNumberOfDigits()
+	fracActualNumOfDigits, _, errx := fracBundleRadicand.GetActualNumberOfDigits()
 
 	if errx != nil {
 		err = fmt.Errorf(ePrefix +
@@ -854,41 +860,62 @@ func (nthrt *BigIntMathNthRoot) getNextBundleBigIntValue(
 
 		return nextBundleValue, newIntBundleRadicand, newFracBundleRadicand, err
 	}
+
+	fracExpectedNthRootDelta := big.NewInt(0).Sub(fracExpectedNumOfDigits, nthRoot.GetAbsoluteBigIntValue())
+	fracExpectedActualDelta := big.NewInt(0).Sub(fracExpectedNumOfDigits, fracActualNumOfDigits)
+	fracIsZeroValue := fracBundleRadicand.IsZero()
+
+
 	fmt.Println()
 	fmt.Println("==================================================")
-	t1:= big.NewInt(0).Set(actualIntegerNumOfDigits)
-	fmt.Println("   Actual No Of Int Digits:", t1.Text(10))
+	t1:= big.NewInt(0).Set(intActualNumOfDigits)
+	fmt.Println("     Int Actual No Of Digits: ", t1.Text(10))
 
-	t1 = big.NewInt(0).Set(expectedIntegerNumOfDigits)
-	fmt.Println(" Expected No of Int Digits:", t1.Text(10))
-
-	t1 = big.NewInt(0).Set(nthRootIntegerDeltaDigits)
-	fmt.Println(" nthRootIntegerDeltaDigits:", t1.Text(10))
+	t1 = big.NewInt(0).Set(intExpectedNumOfDigits)
+	fmt.Println("   Int Expected No of Digits: ", t1.Text(10))
 
 
-	t1 = big.NewInt(0).Set(actualFracNumOfDigits)
-	fmt.Println("  Actual No Of Frac Digits: ", t1.Text(10))
+	t1 = big.NewInt(0).Set(intExpectedNthRootDelta)
+	fmt.Println(" Int Expected Nth Root Delta: ", t1.Text(10))
 
-	t1 = big.NewInt(0).Set(expectedFracNumOfDigits)
-	fmt.Println("Expected No of Frac Digits: ", t1.Text(10))
+	fmt.Println("                 Int Is Zero: ", intIsZeroValue)
 
-	deltaDigits = big.NewInt(0).Sub(expectedFracNumOfDigits, actualFracNumOfDigits)
-	nthRootFracDeltaDigits := big.NewInt(0).Sub(deltaDigits, nthRoot.GetAbsoluteBigIntValue())
-	t1 = big.NewInt(0).Set(nthRootFracDeltaDigits)
-	fmt.Println("    nthRootFracDeltaDigits: ", t1.Text(10))
+	t1 = big.NewInt(0).Set(intExpectedActualDelta)
+	fmt.Println("   Int Expected Actual Delta: ", t1.Text(10))
 
-	if nthRootIntegerDeltaDigits.Cmp(bigZero) >= 0 {
+
+	t1 = big.NewInt(0).Set(fracActualNumOfDigits)
+	fmt.Println("    Frac Actual No Of Digits: ", t1.Text(10))
+
+	t1 = big.NewInt(0).Set(fracExpectedNumOfDigits)
+	fmt.Println("  Frac Expected No Of Digits: ", t1.Text(10))
+
+	t1 = big.NewInt(0).Set(fracExpectedNthRootDelta)
+	fmt.Println(" Frac Expected NthRoot Delta: ", t1.Text(10))
+
+	fmt.Println("                 Int Is Zero: ", fracIsZeroValue)
+
+	t1 = big.NewInt(0).Set(fracExpectedActualDelta)
+	fmt.Println("  Frac Expected Actual Delta: ", t1.Text(10))
+
+
+
+	if (intExpectedActualDelta.Cmp(bigZero) > 0 &&
+				intExpectedNthRootDelta.Cmp(bigZero) > 0) ||
+					(intExpectedActualDelta.Cmp(bigZero) > 0 &&
+						intExpectedNthRootDelta.Cmp(bigZero) == 0 &&
+							intIsZeroValue) {
 		fmt.Println("Calc nthRoot IntegerDeltaDigits >=0")
 		nextBundleValue = big.NewInt(0)
 		newIntBundleRadicand = intBundleRadicand.CopyOut()
 		newFracBundleRadicand = fracBundleRadicand.CopyOut()
-		expectedIntegerNumOfDigits = big.NewInt(0).Sub(expectedIntegerNumOfDigits, nthRoot.GetAbsoluteBigIntValue())
+		intExpectedNumOfDigits = big.NewInt(0).Sub(intExpectedNumOfDigits, nthRoot.GetAbsoluteBigIntValue())
 
-		if expectedIntegerNumOfDigits.Cmp(actualIntegerNumOfDigits) == -1 {
-			expectedIntegerNumOfDigits = big.NewInt(0).Set(actualIntegerNumOfDigits)
+		if intExpectedNumOfDigits.Cmp(intActualNumOfDigits) == -1 {
+			intExpectedNumOfDigits = big.NewInt(0).Set(intActualNumOfDigits)
 		}
 
-		newIntBundleRadicand.SetExpectedNumberOfDigits(expectedIntegerNumOfDigits)
+		newIntBundleRadicand.SetExpectedNumberOfDigits(intExpectedNumOfDigits)
 
 		err = nil
 
@@ -911,7 +938,7 @@ func (nthrt *BigIntMathNthRoot) getNextBundleBigIntValue(
 			return nextBundleValue, newIntBundleRadicand, newFracBundleRadicand, err
 		}
 
-		actualIntegerNumOfDigits = big.NewInt(0).Add(magnitude, big.NewInt(1))
+		intActualNumOfDigits = big.NewInt(0).Add(magnitude, big.NewInt(1))
 		digitsQuotient = big.NewInt(0).Quo(magnitude, nthrt.NthRoot.GetAbsoluteBigIntValue())
 		exponent = big.NewInt(0).Mul(digitsQuotient, nthrt.NthRoot.GetAbsoluteBigIntValue())
 		divisor = big.NewInt(0).Exp(nthrt.Big10, exponent, nil)
@@ -935,26 +962,31 @@ func (nthrt *BigIntMathNthRoot) getNextBundleBigIntValue(
 
 		numberOfDigits = big.NewInt(0).Add(numberOfDigits, big.NewInt(1))
 
-		expectedIntegerNumOfDigits = big.NewInt(0).Sub(actualIntegerNumOfDigits, numberOfDigits)
+		intExpectedNumOfDigits = big.NewInt(0).Sub(intActualNumOfDigits, numberOfDigits)
 
 		newIntBundleRadicand = BigIntNum{}.NewBigInt(tempRadicand, 0)
-		newIntBundleRadicand.SetExpectedNumberOfDigits(expectedIntegerNumOfDigits)
+		newIntBundleRadicand.SetExpectedNumberOfDigits(intExpectedNumOfDigits)
 		newFracBundleRadicand = fracBundleRadicand.CopyOut()
 		err = nil
 
 
-	} else if nthRootFracDeltaDigits.Cmp(bigZero) >= 0 {
-		fmt.Println("Calc nthRoot FracDeltaDigits >= 0")
+	} else if (fracExpectedActualDelta.Cmp(bigZero) > 0 &&
+		fracExpectedNthRootDelta.Cmp(bigZero) > 0) ||
+		(fracExpectedActualDelta.Cmp(bigZero) > 0 &&
+			fracExpectedNthRootDelta.Cmp(bigZero) == 0 &&
+			fracIsZeroValue) {
+
+				fmt.Println("Calc nthRoot FracDeltaDigits >= 0")
 		nextBundleValue = big.NewInt(0)
 		newIntBundleRadicand = intBundleRadicand.CopyOut()
 		newFracBundleRadicand = fracBundleRadicand.CopyOut()
-		expectedFracNumOfDigits = big.NewInt(0).Sub(expectedFracNumOfDigits, nthRoot.GetAbsoluteBigIntValue())
+		fracExpectedNumOfDigits = big.NewInt(0).Sub(fracExpectedNumOfDigits, nthRoot.GetAbsoluteBigIntValue())
 
-		if expectedFracNumOfDigits.Cmp(actualFracNumOfDigits) == -1 {
-			expectedFracNumOfDigits = big.NewInt(0).Set(actualFracNumOfDigits)
+		if fracExpectedNumOfDigits.Cmp(fracActualNumOfDigits) == -1 {
+			fracExpectedNumOfDigits = big.NewInt(0).Set(fracActualNumOfDigits)
 		}
 
-		newFracBundleRadicand.SetExpectedNumberOfDigits(expectedFracNumOfDigits)
+		newFracBundleRadicand.SetExpectedNumberOfDigits(fracExpectedNumOfDigits)
 		nthrt.FracPrecision = big.NewInt(0).Add(nthrt.FracPrecision, big.NewInt(1))
 		err = nil
 
