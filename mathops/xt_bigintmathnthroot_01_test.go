@@ -359,12 +359,159 @@ func TestBigIntMathNthRoot_GetNthRootBigNum_10(t *testing.T) {
 
 }
 
-
 func TestBigIntMathNthRoot_GetNthRootBigNum_11(t *testing.T) {
 
 	radicand := "200000.000005"
 	nthRoot := "2"
 	expectedStr := "447.213595505548"
+	maxPrecision := uint(12)
+
+	bINumBase, err  := BigIntNum{}.NewNumStr(radicand)
+
+	if err != nil {
+		t.Errorf("Error returned from BigIntNum{}.NewNumStr(baseStr) " +
+			"baseStr='%v' Error='%v'", radicand, err.Error())
+	}
+
+	bINumNthRoot, err := BigIntNum{}.NewNumStr(nthRoot)
+
+	if err != nil {
+		t.Errorf("Error returned from BigIntNum{}.NewNumStr(nthRootStr) " +
+			"nthRootStr='%v' Error='%v'", nthRoot, err.Error())
+	}
+
+	bIMathNthRoot := BigIntMathNthRoot{}
+
+	result, err := bIMathNthRoot.GetNthRoot(bINumBase, bINumNthRoot, maxPrecision)
+
+	if err != nil {
+		t.Errorf("Error returned from bIMathNthRoot.GetNthRoot(). " +
+			"Error='%v' ", err.Error())
+	}
+
+	if expectedStr != result.GetNumStr() {
+		t.Errorf("Expected result= %v .  Instead result= %v .",
+			expectedStr, result.GetNumStr())
+	}
+
+}
+
+func TestBigIntMathNthRoot_GetNthRootBigNum_12(t *testing.T) {
+
+	radicand := "200001.100005"
+	nthRoot := "2"
+	expectedStr := "447.214825341245"
+	maxPrecision := uint(12)
+
+	bINumBase, err  := BigIntNum{}.NewNumStr(radicand)
+
+	if err != nil {
+		t.Errorf("Error returned from BigIntNum{}.NewNumStr(baseStr) " +
+			"baseStr='%v' Error='%v'", radicand, err.Error())
+	}
+
+	bINumNthRoot, err := BigIntNum{}.NewNumStr(nthRoot)
+
+	if err != nil {
+		t.Errorf("Error returned from BigIntNum{}.NewNumStr(nthRootStr) " +
+			"nthRootStr='%v' Error='%v'", nthRoot, err.Error())
+	}
+
+	bIMathNthRoot := BigIntMathNthRoot{}
+
+	result, err := bIMathNthRoot.GetNthRoot(bINumBase, bINumNthRoot, maxPrecision)
+
+	if err != nil {
+		t.Errorf("Error returned from bIMathNthRoot.GetNthRoot(). " +
+			"Error='%v' ", err.Error())
+	}
+
+	if expectedStr != result.GetNumStr() {
+		t.Errorf("Expected result= %v .  Instead result= %v .",
+			expectedStr, result.GetNumStr())
+	}
+
+}
+
+func TestBigIntMathNthRoot_GetNthRootBigNum_13(t *testing.T) {
+
+	radicand := "2000000.0000005"
+	nthRoot := "2"
+	expectedStr := "1414.21356237327"
+	maxPrecision := uint(11)
+
+	bINumBase, err  := BigIntNum{}.NewNumStr(radicand)
+
+	if err != nil {
+		t.Errorf("Error returned from BigIntNum{}.NewNumStr(baseStr) " +
+			"baseStr='%v' Error='%v'", radicand, err.Error())
+	}
+
+	bINumNthRoot, err := BigIntNum{}.NewNumStr(nthRoot)
+
+	if err != nil {
+		t.Errorf("Error returned from BigIntNum{}.NewNumStr(nthRootStr) " +
+			"nthRootStr='%v' Error='%v'", nthRoot, err.Error())
+	}
+
+	bIMathNthRoot := BigIntMathNthRoot{}
+
+	result, err := bIMathNthRoot.GetNthRoot(bINumBase, bINumNthRoot, maxPrecision)
+
+	if err != nil {
+		t.Errorf("Error returned from bIMathNthRoot.GetNthRoot(). " +
+			"Error='%v' ", err.Error())
+	}
+
+	if expectedStr != result.GetNumStr() {
+		t.Errorf("Expected result= %v .  Instead result= %v .",
+			expectedStr, result.GetNumStr())
+	}
+
+}
+
+func TestBigIntMathNthRoot_GetNthRootBigNum_14(t *testing.T) {
+
+	radicand := "20000000.00000005"
+	nthRoot := "3"
+	expectedStr := "271.441761659491"
+	maxPrecision := uint(12)
+
+	bINumBase, err  := BigIntNum{}.NewNumStr(radicand)
+
+	if err != nil {
+		t.Errorf("Error returned from BigIntNum{}.NewNumStr(baseStr) " +
+			"baseStr='%v' Error='%v'", radicand, err.Error())
+	}
+
+	bINumNthRoot, err := BigIntNum{}.NewNumStr(nthRoot)
+
+	if err != nil {
+		t.Errorf("Error returned from BigIntNum{}.NewNumStr(nthRootStr) " +
+			"nthRootStr='%v' Error='%v'", nthRoot, err.Error())
+	}
+
+	bIMathNthRoot := BigIntMathNthRoot{}
+
+	result, err := bIMathNthRoot.GetNthRoot(bINumBase, bINumNthRoot, maxPrecision)
+
+	if err != nil {
+		t.Errorf("Error returned from bIMathNthRoot.GetNthRoot(). " +
+			"Error='%v' ", err.Error())
+	}
+
+	if expectedStr != result.GetNumStr() {
+		t.Errorf("Expected result= %v .  Instead result= %v .",
+			expectedStr, result.GetNumStr())
+	}
+
+}
+
+func TestBigIntMathNthRoot_GetNthRootBigNum_15(t *testing.T) {
+
+	radicand := "20000200.00020005"
+	nthRoot := "3"
+	expectedStr := "271.442666463252"
 	maxPrecision := uint(12)
 
 	bINumBase, err  := BigIntNum{}.NewNumStr(radicand)

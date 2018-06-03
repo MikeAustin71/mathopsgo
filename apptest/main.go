@@ -38,18 +38,27 @@ func main() {
 	expectedStr := "0.301840536839884"
 	maxPrecision := uint(15)
 
-*/
 
-	// fracBundleLength:  3
-	// bundleAddOnPrecision:  14
-	//	precision Adjustment:  0
-	//	actual precision:  17
-	//	FracPrecision Count:  18
 
 	radicand := "200000.000005"
 	nthRoot := "2"
 	expectedStr := "447.213595505548"
 	maxPrecision := uint(12)
+	radicand := "200001.100005"
+	nthRoot := "2"
+	expectedStr := "447.214825341245"
+	maxPrecision := uint(12)
+
+*/
+
+	radicand := "2000001.1000005"
+	nthRoot := "2"
+	expectedStr := "1414.21395128195"
+	maxPrecision := uint(11)
+
+	// Error
+	// 447.214825894670^2 = 200,001.1005
+
 
 	// Root(27.5;3) = 3.01840536839884
 	ExampleBigIntNumNthRoot_01(radicand, nthRoot, maxPrecision, expectedStr)

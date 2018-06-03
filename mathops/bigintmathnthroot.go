@@ -992,6 +992,7 @@ func (nthrt *BigIntMathNthRoot) getNextBundleBigIntValue(
 
 	} else if !fracBundleRadicand.IsZero() {
 		fmt.Println("Calc fracBundleRadicand Is NOT Zero")
+
 		magnitude, errx = BigIntMath{}.GetMagnitude(fracBundleRadicand.GetAbsoluteBigIntValue())
 
 		if errx != nil {
@@ -1016,9 +1017,9 @@ func (nthrt *BigIntMathNthRoot) getNextBundleBigIntValue(
 
 		newIntBundleRadicand = BigIntNum{}.NewZero(0)
 		newIntBundleRadicand.SetExpectedToActualNumberOfDigits()
-
+		fracExpectedNumOfDigits = big.NewInt(0).Sub(fracExpectedNumOfDigits, nthrt.NthRoot.GetAbsoluteBigIntValue())
 		newFracBundleRadicand = BigIntNum{}.NewBigInt(tempRadicand, 0)
-		newFracBundleRadicand.SetExpectedToActualNumberOfDigits()
+		newFracBundleRadicand.SetExpectedNumberOfDigits(fracExpectedNumOfDigits)
 		nthrt.FracPrecision = big.NewInt(0).Add(nthrt.FracPrecision, big.NewInt(1))
 		err = nil
 
