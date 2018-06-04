@@ -436,6 +436,48 @@ func TestNthRootOp_GetNthRootIntAry_15(t *testing.T) {
 
 }
 
+func TestNthRootOp_GetNthRootIntAry_16(t *testing.T) {
+	nRt := NthRootOp{}
+	radicandStr := "2020020.1010205"
+	nthRoot := uint(2)
+	expected := "1421.27411185193"
+	maxPrecision := uint(11)
+
+	originalNum, _ := IntAry{}.NewNumStr(radicandStr)
+
+	ai, err := nRt.GetNthRootIntAry(&originalNum, nthRoot, maxPrecision)
+
+	if err != nil {
+		t.Errorf("Error returned from nRt.GetNthRootIntAry() - %v", err)
+	}
+
+	if expected != ai.GetNumStr() {
+		t.Errorf("Expected result= %v .  Instead ai.GetNumStr()= %v .", expected, ai.GetNumStr())
+	}
+
+}
+
+func TestNthRootOp_GetNthRootIntAry_17(t *testing.T) {
+	nRt := NthRootOp{}
+	radicandStr := "209050307.020509033"
+	nthRoot := uint(2)
+	expected := "14458.5720947993"
+	maxPrecision := uint(10)
+
+	originalNum, _ := IntAry{}.NewNumStr(radicandStr)
+
+	ai, err := nRt.GetNthRootIntAry(&originalNum, nthRoot, maxPrecision)
+
+	if err != nil {
+		t.Errorf("Error returned from nRt.GetNthRootIntAry() - %v", err)
+	}
+
+	if expected != ai.GetNumStr() {
+		t.Errorf("Expected result= %v .  Instead ai.GetNumStr()= %v .", expected, ai.GetNumStr())
+	}
+
+}
+
 func TestNthRootOp_GetSquareRootFloat32_01(t *testing.T) {
 
 	nRt := NthRootOp{}

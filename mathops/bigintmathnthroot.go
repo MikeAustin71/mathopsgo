@@ -848,6 +848,7 @@ func (nthrt *BigIntMathNthRoot) getNextBundleBigIntValue(
 
 	intExpectedActualDelta  := big.NewInt(0).Sub(intExpectedNumOfDigits, intActualNumOfDigits)
 	intExpectedNthRootDelta := big.NewInt(0).Sub(intExpectedNumOfDigits, nthRoot.GetAbsoluteBigIntValue())
+	intModExpectedNthRoot := big.NewInt(0).Rem(intExpectedNumOfDigits, nthRoot.GetAbsoluteBigIntValue())
 	intIsZeroValue := intBundleRadicand.IsZero()
 
 	bigZero := big.NewInt(0)
@@ -868,9 +869,10 @@ func (nthrt *BigIntMathNthRoot) getNextBundleBigIntValue(
 	fracIsZeroValue := fracBundleRadicand.IsZero()
 
 
+	t1:= big.NewInt(0).Set(intActualNumOfDigits)
+
 	fmt.Println()
 	fmt.Println("==================================================")
-	t1:= big.NewInt(0).Set(intActualNumOfDigits)
 	fmt.Println("     Int Actual No Of Digits: ", t1.Text(10))
 
 	t1 = big.NewInt(0).Set(intExpectedNumOfDigits)
@@ -901,7 +903,6 @@ func (nthrt *BigIntMathNthRoot) getNextBundleBigIntValue(
 	fmt.Println("  Frac Expected Actual Delta: ", t1.Text(10))
 
 
-
 	if (intExpectedActualDelta.Cmp(bigZero) > 0 &&
 		intExpectedActualDelta.Cmp(nthRoot.GetAbsoluteBigIntValue()) >= 0) ||
 		(intExpectedActualDelta.Cmp(bigZero) > 0 &&
@@ -919,8 +920,6 @@ func (nthrt *BigIntMathNthRoot) getNextBundleBigIntValue(
 		newIntBundleRadicand.SetExpectedNumberOfDigits(intExpectedNumOfDigits)
 
 		err = nil
-
-		// return nextBundleValue, newIntBundleRadicand, newFracBundleRadicand, err
 
 	} else if !intBundleRadicand.IsZero() {
 		fmt.Println("Calc inBundleRadicand is NOT Zero")
@@ -963,7 +962,13 @@ func (nthrt *BigIntMathNthRoot) getNextBundleBigIntValue(
 
 		numberOfDigits = big.NewInt(0).Add(numberOfDigits, big.NewInt(1))
 
-		intExpectedNumOfDigits = big.NewInt(0).Sub(intExpectedNumOfDigits, numberOfDigits)
+		if intModExpectedNthRoot.Cmp(bigZero) > 0 {
+			intExpectedNumOfDigits = big.NewInt(0).Sub(intExpectedNumOfDigits, numberOfDigits)
+		} else {
+			intExpectedNumOfDigits = big.NewInt(0).Sub(intExpectedNumOfDigits, nthrt.NthRoot.GetAbsoluteBigIntValue())
+		}
+
+
 
 		newIntBundleRadicand = BigIntNum{}.NewBigInt(tempRadicand, 0)
 		newIntBundleRadicand.SetExpectedNumberOfDigits(intExpectedNumOfDigits)

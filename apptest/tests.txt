@@ -1848,10 +1848,10 @@ Original FracBundleRadicand:  92400
 
 ==================================================
      Int Actual No Of Digits:  1
-   Int Expected No of Digits:  1
- Int Expected Nth Root Delta:  -4
+   Int Expected No of Digits:  0
+ Int Expected Nth Root Delta:  -5
                  Int Is Zero:  true
-   Int Expected Actual Delta:  0
+   Int Expected Actual Delta:  -1
     Frac Actual No Of Digits:  5
   Frac Expected No Of Digits:  5
  Frac Expected NthRoot Delta:  0
@@ -3160,10 +3160,10 @@ Original FracBundleRadicand:  100005
 
 ==================================================
      Int Actual No Of Digits:  1
-   Int Expected No of Digits:  1
- Int Expected Nth Root Delta:  -1
+   Int Expected No of Digits:  0
+ Int Expected Nth Root Delta:  -2
                  Int Is Zero:  true
-   Int Expected Actual Delta:  0
+   Int Expected Actual Delta:  -1
     Frac Actual No Of Digits:  6
   Frac Expected No Of Digits:  6
  Frac Expected NthRoot Delta:  4
@@ -4728,10 +4728,10 @@ Original FracBundleRadicand:  10102050
 
 ==================================================
      Int Actual No Of Digits:  2
-   Int Expected No of Digits:  5
- Int Expected Nth Root Delta:  3
+   Int Expected No of Digits:  4
+ Int Expected Nth Root Delta:  2
                  Int Is Zero:  false
-   Int Expected Actual Delta:  3
+   Int Expected Actual Delta:  2
     Frac Actual No Of Digits:  8
   Frac Expected No Of Digits:  8
  Frac Expected NthRoot Delta:  6
@@ -4748,10 +4748,10 @@ Original FracBundleRadicand:  10102050
 
 ==================================================
      Int Actual No Of Digits:  2
-   Int Expected No of Digits:  3
- Int Expected Nth Root Delta:  1
+   Int Expected No of Digits:  2
+ Int Expected Nth Root Delta:  0
                  Int Is Zero:  false
-   Int Expected Actual Delta:  1
+   Int Expected Actual Delta:  0
     Frac Actual No Of Digits:  8
   Frac Expected No Of Digits:  8
  Frac Expected NthRoot Delta:  6
@@ -4768,10 +4768,10 @@ Original FracBundleRadicand:  10102050
 
 ==================================================
      Int Actual No Of Digits:  1
-   Int Expected No of Digits:  1
- Int Expected Nth Root Delta:  -1
+   Int Expected No of Digits:  0
+ Int Expected Nth Root Delta:  -2
                  Int Is Zero:  true
-   Int Expected Actual Delta:  0
+   Int Expected Actual Delta:  -1
     Frac Actual No Of Digits:  8
   Frac Expected No Of Digits:  8
  Frac Expected NthRoot Delta:  6
@@ -5087,6 +5087,433 @@ Original FracBundleRadicand:  0
 
 FracPrecision Count:  16
 --- PASS: TestBigIntMathNthRoot_GetNthRootBigNum_16 (0.00s)
+=== RUN   TestBigIntMathNthRoot_GetNthRootBigNum_17
+    fracBundleLength:  4
+bundleAddOnPrecision:  12
+precision Adjustment:  0
+    actual precision:  16
+
+==================================================
+     Int Actual No Of Digits:  9
+   Int Expected No of Digits:  9
+ Int Expected Nth Root Delta:  7
+                 Int Is Zero:  false
+   Int Expected Actual Delta:  0
+    Frac Actual No Of Digits:  9
+  Frac Expected No Of Digits:  10
+ Frac Expected NthRoot Delta:  8
+                 Int Is Zero:  false
+  Frac Expected Actual Delta:  1
+Calc inBundleRadicand is NOT Zero
+ Original IntBundleRadicand:  209050307
+Original FracBundleRadicand:  205090330
+            nextBundleValue:  2
+       newIntBundleRadicand:  9050307
+      newFracBundleRadicand:  205090330
+====================================================
+
+
+==================================================
+     Int Actual No Of Digits:  7
+   Int Expected No of Digits:  8
+ Int Expected Nth Root Delta:  6
+                 Int Is Zero:  false
+   Int Expected Actual Delta:  1
+    Frac Actual No Of Digits:  9
+  Frac Expected No Of Digits:  10
+ Frac Expected NthRoot Delta:  8
+                 Int Is Zero:  false
+  Frac Expected Actual Delta:  1
+Calc inBundleRadicand is NOT Zero
+ Original IntBundleRadicand:  9050307
+Original FracBundleRadicand:  205090330
+            nextBundleValue:  9
+       newIntBundleRadicand:  50307
+      newFracBundleRadicand:  205090330
+====================================================
+
+
+==================================================
+     Int Actual No Of Digits:  5
+   Int Expected No of Digits:  6
+ Int Expected Nth Root Delta:  4
+                 Int Is Zero:  false
+   Int Expected Actual Delta:  1
+    Frac Actual No Of Digits:  9
+  Frac Expected No Of Digits:  10
+ Frac Expected NthRoot Delta:  8
+                 Int Is Zero:  false
+  Frac Expected Actual Delta:  1
+Calc inBundleRadicand is NOT Zero
+ Original IntBundleRadicand:  50307
+Original FracBundleRadicand:  205090330
+            nextBundleValue:  5
+       newIntBundleRadicand:  307
+      newFracBundleRadicand:  205090330
+====================================================
+
+
+==================================================
+     Int Actual No Of Digits:  3
+   Int Expected No of Digits:  4
+ Int Expected Nth Root Delta:  2
+                 Int Is Zero:  false
+   Int Expected Actual Delta:  1
+    Frac Actual No Of Digits:  9
+  Frac Expected No Of Digits:  10
+ Frac Expected NthRoot Delta:  8
+                 Int Is Zero:  false
+  Frac Expected Actual Delta:  1
+Calc inBundleRadicand is NOT Zero
+ Original IntBundleRadicand:  307
+Original FracBundleRadicand:  205090330
+            nextBundleValue:  3
+       newIntBundleRadicand:  7
+      newFracBundleRadicand:  205090330
+====================================================
+
+
+==================================================
+     Int Actual No Of Digits:  1
+   Int Expected No of Digits:  2
+ Int Expected Nth Root Delta:  0
+                 Int Is Zero:  false
+   Int Expected Actual Delta:  1
+    Frac Actual No Of Digits:  9
+  Frac Expected No Of Digits:  10
+ Frac Expected NthRoot Delta:  8
+                 Int Is Zero:  false
+  Frac Expected Actual Delta:  1
+Calc inBundleRadicand is NOT Zero
+ Original IntBundleRadicand:  7
+Original FracBundleRadicand:  205090330
+            nextBundleValue:  7
+       newIntBundleRadicand:  0
+      newFracBundleRadicand:  205090330
+====================================================
+
+
+==================================================
+     Int Actual No Of Digits:  1
+   Int Expected No of Digits:  0
+ Int Expected Nth Root Delta:  -2
+                 Int Is Zero:  true
+   Int Expected Actual Delta:  -1
+    Frac Actual No Of Digits:  9
+  Frac Expected No Of Digits:  10
+ Frac Expected NthRoot Delta:  8
+                 Int Is Zero:  false
+  Frac Expected Actual Delta:  1
+Calc fracBundleRadicand Is NOT Zero
+ Original IntBundleRadicand:  0
+Original FracBundleRadicand:  205090330
+            nextBundleValue:  2
+       newIntBundleRadicand:  0
+      newFracBundleRadicand:  5090330
+====================================================
+
+
+==================================================
+     Int Actual No Of Digits:  1
+   Int Expected No of Digits:  1
+ Int Expected Nth Root Delta:  -1
+                 Int Is Zero:  true
+   Int Expected Actual Delta:  0
+    Frac Actual No Of Digits:  7
+  Frac Expected No Of Digits:  8
+ Frac Expected NthRoot Delta:  6
+                 Int Is Zero:  false
+  Frac Expected Actual Delta:  1
+Calc fracBundleRadicand Is NOT Zero
+ Original IntBundleRadicand:  0
+Original FracBundleRadicand:  5090330
+            nextBundleValue:  5
+       newIntBundleRadicand:  0
+      newFracBundleRadicand:  90330
+====================================================
+
+
+==================================================
+     Int Actual No Of Digits:  1
+   Int Expected No of Digits:  1
+ Int Expected Nth Root Delta:  -1
+                 Int Is Zero:  true
+   Int Expected Actual Delta:  0
+    Frac Actual No Of Digits:  5
+  Frac Expected No Of Digits:  6
+ Frac Expected NthRoot Delta:  4
+                 Int Is Zero:  false
+  Frac Expected Actual Delta:  1
+Calc fracBundleRadicand Is NOT Zero
+ Original IntBundleRadicand:  0
+Original FracBundleRadicand:  90330
+            nextBundleValue:  9
+       newIntBundleRadicand:  0
+      newFracBundleRadicand:  330
+====================================================
+
+
+==================================================
+     Int Actual No Of Digits:  1
+   Int Expected No of Digits:  1
+ Int Expected Nth Root Delta:  -1
+                 Int Is Zero:  true
+   Int Expected Actual Delta:  0
+    Frac Actual No Of Digits:  3
+  Frac Expected No Of Digits:  4
+ Frac Expected NthRoot Delta:  2
+                 Int Is Zero:  false
+  Frac Expected Actual Delta:  1
+Calc fracBundleRadicand Is NOT Zero
+ Original IntBundleRadicand:  0
+Original FracBundleRadicand:  330
+            nextBundleValue:  3
+       newIntBundleRadicand:  0
+      newFracBundleRadicand:  30
+====================================================
+
+
+==================================================
+     Int Actual No Of Digits:  1
+   Int Expected No of Digits:  1
+ Int Expected Nth Root Delta:  -1
+                 Int Is Zero:  true
+   Int Expected Actual Delta:  0
+    Frac Actual No Of Digits:  2
+  Frac Expected No Of Digits:  2
+ Frac Expected NthRoot Delta:  0
+                 Int Is Zero:  false
+  Frac Expected Actual Delta:  0
+Calc fracBundleRadicand Is NOT Zero
+ Original IntBundleRadicand:  0
+Original FracBundleRadicand:  30
+            nextBundleValue:  30
+       newIntBundleRadicand:  0
+      newFracBundleRadicand:  0
+====================================================
+
+
+==================================================
+     Int Actual No Of Digits:  1
+   Int Expected No of Digits:  1
+ Int Expected Nth Root Delta:  -1
+                 Int Is Zero:  true
+   Int Expected Actual Delta:  0
+    Frac Actual No Of Digits:  1
+  Frac Expected No Of Digits:  0
+ Frac Expected NthRoot Delta:  -2
+                 Int Is Zero:  true
+  Frac Expected Actual Delta:  -1
+Calc else zero
+ Original IntBundleRadicand:  0
+Original FracBundleRadicand:  0
+            nextBundleValue:  0
+       newIntBundleRadicand:  0
+      newFracBundleRadicand:  0
+====================================================
+
+
+==================================================
+     Int Actual No Of Digits:  1
+   Int Expected No of Digits:  1
+ Int Expected Nth Root Delta:  -1
+                 Int Is Zero:  true
+   Int Expected Actual Delta:  0
+    Frac Actual No Of Digits:  1
+  Frac Expected No Of Digits:  1
+ Frac Expected NthRoot Delta:  -1
+                 Int Is Zero:  true
+  Frac Expected Actual Delta:  0
+Calc else zero
+ Original IntBundleRadicand:  0
+Original FracBundleRadicand:  0
+            nextBundleValue:  0
+       newIntBundleRadicand:  0
+      newFracBundleRadicand:  0
+====================================================
+
+
+==================================================
+     Int Actual No Of Digits:  1
+   Int Expected No of Digits:  1
+ Int Expected Nth Root Delta:  -1
+                 Int Is Zero:  true
+   Int Expected Actual Delta:  0
+    Frac Actual No Of Digits:  1
+  Frac Expected No Of Digits:  1
+ Frac Expected NthRoot Delta:  -1
+                 Int Is Zero:  true
+  Frac Expected Actual Delta:  0
+Calc else zero
+ Original IntBundleRadicand:  0
+Original FracBundleRadicand:  0
+            nextBundleValue:  0
+       newIntBundleRadicand:  0
+      newFracBundleRadicand:  0
+====================================================
+
+
+==================================================
+     Int Actual No Of Digits:  1
+   Int Expected No of Digits:  1
+ Int Expected Nth Root Delta:  -1
+                 Int Is Zero:  true
+   Int Expected Actual Delta:  0
+    Frac Actual No Of Digits:  1
+  Frac Expected No Of Digits:  1
+ Frac Expected NthRoot Delta:  -1
+                 Int Is Zero:  true
+  Frac Expected Actual Delta:  0
+Calc else zero
+ Original IntBundleRadicand:  0
+Original FracBundleRadicand:  0
+            nextBundleValue:  0
+       newIntBundleRadicand:  0
+      newFracBundleRadicand:  0
+====================================================
+
+
+==================================================
+     Int Actual No Of Digits:  1
+   Int Expected No of Digits:  1
+ Int Expected Nth Root Delta:  -1
+                 Int Is Zero:  true
+   Int Expected Actual Delta:  0
+    Frac Actual No Of Digits:  1
+  Frac Expected No Of Digits:  1
+ Frac Expected NthRoot Delta:  -1
+                 Int Is Zero:  true
+  Frac Expected Actual Delta:  0
+Calc else zero
+ Original IntBundleRadicand:  0
+Original FracBundleRadicand:  0
+            nextBundleValue:  0
+       newIntBundleRadicand:  0
+      newFracBundleRadicand:  0
+====================================================
+
+
+==================================================
+     Int Actual No Of Digits:  1
+   Int Expected No of Digits:  1
+ Int Expected Nth Root Delta:  -1
+                 Int Is Zero:  true
+   Int Expected Actual Delta:  0
+    Frac Actual No Of Digits:  1
+  Frac Expected No Of Digits:  1
+ Frac Expected NthRoot Delta:  -1
+                 Int Is Zero:  true
+  Frac Expected Actual Delta:  0
+Calc else zero
+ Original IntBundleRadicand:  0
+Original FracBundleRadicand:  0
+            nextBundleValue:  0
+       newIntBundleRadicand:  0
+      newFracBundleRadicand:  0
+====================================================
+
+
+==================================================
+     Int Actual No Of Digits:  1
+   Int Expected No of Digits:  1
+ Int Expected Nth Root Delta:  -1
+                 Int Is Zero:  true
+   Int Expected Actual Delta:  0
+    Frac Actual No Of Digits:  1
+  Frac Expected No Of Digits:  1
+ Frac Expected NthRoot Delta:  -1
+                 Int Is Zero:  true
+  Frac Expected Actual Delta:  0
+Calc else zero
+ Original IntBundleRadicand:  0
+Original FracBundleRadicand:  0
+            nextBundleValue:  0
+       newIntBundleRadicand:  0
+      newFracBundleRadicand:  0
+====================================================
+
+
+==================================================
+     Int Actual No Of Digits:  1
+   Int Expected No of Digits:  1
+ Int Expected Nth Root Delta:  -1
+                 Int Is Zero:  true
+   Int Expected Actual Delta:  0
+    Frac Actual No Of Digits:  1
+  Frac Expected No Of Digits:  1
+ Frac Expected NthRoot Delta:  -1
+                 Int Is Zero:  true
+  Frac Expected Actual Delta:  0
+Calc else zero
+ Original IntBundleRadicand:  0
+Original FracBundleRadicand:  0
+            nextBundleValue:  0
+       newIntBundleRadicand:  0
+      newFracBundleRadicand:  0
+====================================================
+
+
+==================================================
+     Int Actual No Of Digits:  1
+   Int Expected No of Digits:  1
+ Int Expected Nth Root Delta:  -1
+                 Int Is Zero:  true
+   Int Expected Actual Delta:  0
+    Frac Actual No Of Digits:  1
+  Frac Expected No Of Digits:  1
+ Frac Expected NthRoot Delta:  -1
+                 Int Is Zero:  true
+  Frac Expected Actual Delta:  0
+Calc else zero
+ Original IntBundleRadicand:  0
+Original FracBundleRadicand:  0
+            nextBundleValue:  0
+       newIntBundleRadicand:  0
+      newFracBundleRadicand:  0
+====================================================
+
+
+==================================================
+     Int Actual No Of Digits:  1
+   Int Expected No of Digits:  1
+ Int Expected Nth Root Delta:  -1
+                 Int Is Zero:  true
+   Int Expected Actual Delta:  0
+    Frac Actual No Of Digits:  1
+  Frac Expected No Of Digits:  1
+ Frac Expected NthRoot Delta:  -1
+                 Int Is Zero:  true
+  Frac Expected Actual Delta:  0
+Calc else zero
+ Original IntBundleRadicand:  0
+Original FracBundleRadicand:  0
+            nextBundleValue:  0
+       newIntBundleRadicand:  0
+      newFracBundleRadicand:  0
+====================================================
+
+
+==================================================
+     Int Actual No Of Digits:  1
+   Int Expected No of Digits:  1
+ Int Expected Nth Root Delta:  -1
+                 Int Is Zero:  true
+   Int Expected Actual Delta:  0
+    Frac Actual No Of Digits:  1
+  Frac Expected No Of Digits:  1
+ Frac Expected NthRoot Delta:  -1
+                 Int Is Zero:  true
+  Frac Expected Actual Delta:  0
+Calc else zero
+ Original IntBundleRadicand:  0
+Original FracBundleRadicand:  0
+            nextBundleValue:  0
+       newIntBundleRadicand:  0
+      newFracBundleRadicand:  0
+====================================================
+
+FracPrecision Count:  16
+--- PASS: TestBigIntMathNthRoot_GetNthRootBigNum_17 (0.00s)
 === RUN   TestBigIntMathPower_Pwr_01
 --- PASS: TestBigIntMathPower_Pwr_01 (0.00s)
 === RUN   TestBigIntMathPower_Pwr_02
@@ -6040,7 +6467,7 @@ FracPrecision Count:  16
 === RUN   TestFracIntAry_GetRationalValue_06
 --- PASS: TestFracIntAry_GetRationalValue_06 (0.00s)
 === RUN   TestFracIntAry_GetRationalValue_07
---- PASS: TestFracIntAry_GetRationalValue_07 (0.05s)
+--- PASS: TestFracIntAry_GetRationalValue_07 (0.06s)
 === RUN   TestIntAry_AddMultipleToThis_01
 --- PASS: TestIntAry_AddMultipleToThis_01 (0.00s)
 === RUN   TestIntAry_AddToThis_01
@@ -6863,6 +7290,10 @@ FracPrecision Count:  16
 --- PASS: TestNthRootOp_GetNthRootIntAry_14 (0.00s)
 === RUN   TestNthRootOp_GetNthRootIntAry_15
 --- PASS: TestNthRootOp_GetNthRootIntAry_15 (0.00s)
+=== RUN   TestNthRootOp_GetNthRootIntAry_16
+--- PASS: TestNthRootOp_GetNthRootIntAry_16 (0.00s)
+=== RUN   TestNthRootOp_GetNthRootIntAry_17
+--- PASS: TestNthRootOp_GetNthRootIntAry_17 (0.00s)
 === RUN   TestNthRootOp_GetSquareRootFloat32_01
 --- PASS: TestNthRootOp_GetSquareRootFloat32_01 (0.00s)
 === RUN   TestNthRootOp_GetSquareRootFloat64_01
@@ -7456,4 +7887,4 @@ FracPrecision Count:  16
 === RUN   TestStrMathOp_SubtractN1N2_19
 --- PASS: TestStrMathOp_SubtractN1N2_19 (0.00s)
 PASS
-ok  	MikeAustin71/mathopsgo/mathops	1.122s
+ok  	MikeAustin71/mathopsgo/mathops	1.160s

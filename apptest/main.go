@@ -51,16 +51,16 @@ func main() {
 
 */
 
-	radicand := "200000.000005"
+	radicand := "209050307.020509033"
 	nthRoot := "2"
-	expectedStr := "447.213595505548"
-	maxPrecision := uint(12)
+	expectedStr := "14458.5720947993"
+	maxPrecision := uint(10)
 
 	// Error
-	// 1414.28434234782^2 = 2,000,200.20101021
+	// 14456.8496914335^2 = 209,000,503.000701
 
 
-	// Root(27.5;3) = 3.01840536839884
+
 	ExampleBigIntNumNthRoot_01(radicand, nthRoot, maxPrecision, expectedStr)
 }
 
