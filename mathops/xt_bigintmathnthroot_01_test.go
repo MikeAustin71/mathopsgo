@@ -655,3 +655,77 @@ func TestBigIntMathNthRoot_GetNthRootBigNum_18(t *testing.T) {
 
 }
 
+func TestBigIntMathNthRoot_GetNthRootBigNum_19(t *testing.T) {
+
+	radicand := "500001.00000009"
+	nthRoot := "5"
+	expectedStr := "13.7973021335269"
+	maxPrecision := uint(13)
+
+	bINumBase, err  := BigIntNum{}.NewNumStr(radicand)
+
+	if err != nil {
+		t.Errorf("Error returned from BigIntNum{}.NewNumStr(baseStr) " +
+			"baseStr='%v' Error='%v'", radicand, err.Error())
+	}
+
+	bINumNthRoot, err := BigIntNum{}.NewNumStr(nthRoot)
+
+	if err != nil {
+		t.Errorf("Error returned from BigIntNum{}.NewNumStr(nthRootStr) " +
+			"nthRootStr='%v' Error='%v'", nthRoot, err.Error())
+	}
+
+	bIMathNthRoot := BigIntMathNthRoot{}
+
+	result, err := bIMathNthRoot.GetNthRoot(bINumBase, bINumNthRoot, maxPrecision)
+
+	if err != nil {
+		t.Errorf("Error returned from bIMathNthRoot.GetNthRoot(). " +
+			"Error='%v' ", err.Error())
+	}
+
+	if expectedStr != result.GetNumStr() {
+		t.Errorf("Expected result= %v .  Instead result= %v .",
+			expectedStr, result.GetNumStr())
+	}
+
+}
+
+func TestBigIntMathNthRoot_GetNthRootBigNum_20(t *testing.T) {
+
+	radicand := "500001.00000009"
+	nthRoot := "3"
+	expectedStr := "79.3701055117479"
+	maxPrecision := uint(13)
+
+	bINumBase, err  := BigIntNum{}.NewNumStr(radicand)
+
+	if err != nil {
+		t.Errorf("Error returned from BigIntNum{}.NewNumStr(baseStr) " +
+			"baseStr='%v' Error='%v'", radicand, err.Error())
+	}
+
+	bINumNthRoot, err := BigIntNum{}.NewNumStr(nthRoot)
+
+	if err != nil {
+		t.Errorf("Error returned from BigIntNum{}.NewNumStr(nthRootStr) " +
+			"nthRootStr='%v' Error='%v'", nthRoot, err.Error())
+	}
+
+	bIMathNthRoot := BigIntMathNthRoot{}
+
+	result, err := bIMathNthRoot.GetNthRoot(bINumBase, bINumNthRoot, maxPrecision)
+
+	if err != nil {
+		t.Errorf("Error returned from bIMathNthRoot.GetNthRoot(). " +
+			"Error='%v' ", err.Error())
+	}
+
+	if expectedStr != result.GetNumStr() {
+		t.Errorf("Expected result= %v .  Instead result= %v .",
+			expectedStr, result.GetNumStr())
+	}
+
+}
+

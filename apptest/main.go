@@ -51,9 +51,9 @@ func main() {
 
 */
 
-	radicand := "500001"
-	nthRoot := "5"
-	expectedStr := "13.7973021335264"
+	radicand := "500001.00000009"
+	nthRoot := "3"
+	expectedStr := "79.3701055117479"
 	maxPrecision := uint(13)
 
 	// Error
