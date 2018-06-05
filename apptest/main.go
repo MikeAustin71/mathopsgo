@@ -51,10 +51,10 @@ func main() {
 
 */
 
-	radicand := "209050307.020509033"
-	nthRoot := "2"
-	expectedStr := "14458.5720947993"
-	maxPrecision := uint(10)
+	radicand := "500001"
+	nthRoot := "5"
+	expectedStr := "13.7973021335264"
+	maxPrecision := uint(13)
 
 	// Error
 	// 14456.8496914335^2 = 209,000,503.000701
