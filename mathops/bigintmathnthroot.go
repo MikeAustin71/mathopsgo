@@ -167,24 +167,21 @@ func (nthrt *BigIntMathNthRoot) calcNthRootGateway(
 
 	if radicand.GetSign() == -1 {
 
-		bigINumTwo := BigIntNum{}.NewTwo(0)
-
-		_, mod, err := BigIntMathDivide{}.BigIntNumQuotientMod(nthRoot, bigINumTwo, 0)
+		isEvenNum, err := nthRoot.IsEvenNumber()
 
 		if err != nil {
 			return BigIntNum{}.NewZero(0),
 				fmt.Errorf(ePrefix +
-					"Error returned by BigIntMathDivide{}.BigIntNumQuotientMod(nthRoot, bigINumTwo, 0) " +
-					"Error='%v' ", err.Error())
+					"Error returned by nthRoot.IsEvenNumber() " +
+					"nthRoot='%v' Error='%v' ",nthRoot.GetNumStr(), err.Error())
 		}
 
-		if mod.IsZero() {
+		if isEvenNum {
 			return BigIntNum{}.NewZero(0),
 			fmt.Errorf(ePrefix +
 				"INVALID ENTRY - Cannot calculate nthRoot of a negative number when nthRoot is even. " +
 				"Original Number= %v  nthRoot= %v", radicand.GetNumStr(), nthRoot.GetNumStr())
 		}
-
 	}
 
 	_, err := nthrt.initialize(radicand, nthRoot, maxPrecision)

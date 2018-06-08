@@ -726,6 +726,36 @@ func TestBigIntMathNthRoot_GetNthRootBigNum_20(t *testing.T) {
 		t.Errorf("Expected result= %v .  Instead result= %v .",
 			expectedStr, result.GetNumStr())
 	}
+}
+
+func TestBigIntMathNthRoot_GetNthRootBigNum_21(t *testing.T) {
+
+	radicand := "-8000"
+	nthRoot := "4"
+	maxPrecision := uint(20)
+
+	bINumBase, err  := BigIntNum{}.NewNumStr(radicand)
+
+	if err != nil {
+		t.Errorf("Error returned from BigIntNum{}.NewNumStr(baseStr) " +
+			"baseStr='%v' Error='%v'", radicand, err.Error())
+	}
+
+	bINumNthRoot, err := BigIntNum{}.NewNumStr(nthRoot)
+
+	if err != nil {
+		t.Errorf("Error returned from BigIntNum{}.NewNumStr(nthRootStr) " +
+			"nthRootStr='%v' Error='%v'", nthRoot, err.Error())
+	}
+
+	bIMathNthRoot := BigIntMathNthRoot{}
+
+	_, err = bIMathNthRoot.GetNthRoot(bINumBase, bINumNthRoot, maxPrecision)
+
+	if err == nil {
+		t.Error("Expected an Error. Negative Radicand with even NthRoot. " +
+			"Instead, NO ERROR WAS RETURNED.")
+	}
 
 }
 
