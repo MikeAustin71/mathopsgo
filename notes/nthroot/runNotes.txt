@@ -1,0 +1,14 @@
+Problem: Find Square root of 390626 to 32-decimal places.
+
+625.00079999948800065535895142587904
+
+625.00079999948800065535895142588
+
+
+ComputeSquareRoot() Using BigInt
+Elapsed Time:  0-Hours 0-Minutes 0-Seconds 1-Milliseconds 1-Microseconds 800-Nanoseconds
+
+ComputeSqRootIntAry() Using IntAry
+IntAry Run
+
+Elapsed Time:  0-Hours 0-Minutes 0-Seconds 2-Milliseconds 508-Microseconds 600-Nanoseconds

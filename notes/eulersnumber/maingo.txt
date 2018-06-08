@@ -1,0 +1,168 @@
+package main
+
+import (
+	"MikeAustin71/intary/common"
+	"fmt"
+	"time"
+	"math/big"
+)
+
+
+func main() {
+
+/*
+number := "1.000001"
+	power := big.NewInt(1000000)
+	maxPrecision := 30
+	internalPrecision := 50000
+	expected := "2.718280469319376883819799708454"
+  Elapsed Time:  0-Hours 3-Minutes 36-Seconds 412-Milliseconds 541-Microseconds 0-Nanoseconds
+
+	number := "1.000000001"
+	power := big.NewInt(1000000000)
+	maxPrecision := 50
+	internalPrecision := 50000
+	 expected:  2.71828182845904523536028747135266249775724709369995
+      result: 2.71828182709990432237664402386033286282501316408962
+
+  Elapsed Time:  0-Hours 9-Minutes 30-Seconds 462-Milliseconds 823-Microseconds 400-Nanoseconds
+
+
+	number := "1.000000000001"
+	power := big.NewInt(1000000000000)
+	maxPrecision := 50
+	internalPrecision := 50000
+
+	expected:   2.71828182845 904523536028747135266249775724709369995
+      result: 2.71828182845 768609444605919461415372989472200263316
+
+13-Minutes
+
+	number := "1.000000000000001"
+	power := big.NewInt(1000000000000000)
+	maxPrecision := 50
+	internalPrecision := 50000
+	expected: 2.71828182845904 523536028747135266249775724709369995
+		result: 2.71828182845904 387621937324183129069678488847857900
+Elapsed Time:  0-Hours 19-Minutes 43-Seconds 491-Milliseconds 56-Microseconds 900-Nanoseconds
+
+number := "1.000000000000000000000000000000000000000000000000001"
+	power, ok := big.NewInt(0).SetString("1000000000000000000000000000000000000000000000000000",10)
+
+	maxPrecision := 51
+	internalPrecision := 50000
+	expected := "2.71828182845904523536028747135266249775724709369995"
+
+	expected: 2.71828182845904523536028747135266249775724709369995
+    result: 2.718281828459045235360287471352662497757247093699958
+Elapsed Time:  1-Hours 16-Minutes 24-Seconds 438-Milliseconds 427-Microseconds 200-Nanoseconds
+
+
+number := "1.0000000000000000000000000000000000000000000000000001" // 52 decimal places
+	power, ok := big.NewInt(0).SetString("10000000000000000000000000000000000000000000000000000",10) // 52 zeros
+	maxPrecision := 51
+	internalPrecision := 2000
+ expected: 2.71828182845904523536028747135266249775724709369995
+   result: 2.718281828459045235360287471352662497757247093699959
+Elapsed Time:  0-Hours 0-Minutes 7-Seconds 39-Milliseconds 158-Microseconds 900-Nanoseconds
+
+
+	number := "1.0000000000000000000000000000000000000000000000000000001" // 55 decimal places
+	power, ok := big.NewInt(0).SetString("10000000000000000000000000000000000000000000000000000000",10) // 55 zeros
+	maxPrecision := 54
+	internalPrecision := 5000
+	expected := "2.71828182845904523536028747135266249775724709369995"
+expected:      2.71828182845904523536028747135266249775724709369995
+  result:      2.718281828459045235360287471352662497757247093699959575
+UofStAndrews:  2.718281828459045235360287471352662497757247093699959574966967627724076630353
+
+Elapsed Time:  0-Hours 0-Minutes 51-Seconds 269-Milliseconds 448-Microseconds 600-Nanoseconds
+
+*/
+
+	ia1 := common.IntAry{}.New()
+	ia1.SetIntAryToOne(0)
+	ia1.MultiplyByTenToPower(1010)
+	power := ia1.GetBigInt()
+
+	iaInverse, _ := ia1.Inverse(-1)
+
+	iaOne := common.IntAry{}.New()
+	iaOne.SetIntAryToOne(0)
+	iaInverse.AddToThis(&iaOne)
+
+
+	number := iaInverse.GetNumStr()
+
+	maxPrecision := 1000
+	internalPrecision := maxPrecision + 5000
+	expected := "2.718281828459045235360287471352662497757247093699959574966967627724076630354"
+
+
+	PowerByTwo(number, power, maxPrecision, internalPrecision, expected)
+
+}
+
+
+func PowerByTwo(number string, power *big.Int, maxResultPrecision, internalPrecision int, expected string) {
+
+	// 97.3^7 expected := "82563839680943.6069797"
+	//  4.3789^-8 expected := "0.0000073974115435604814873569688138682329855849" 46-digits
+
+	// 2^7 expected := "128"
+	// 3^17 expected := "129140163"
+	// 4^20 expected := "1099511627776"
+	// 5^20 expected := "95367431640625"
+
+	fh := common.FileHelper{}
+  fileName:= "D:/go/work/src/MikeAustin71/intary/app/resultOutput.txt"
+	if fh.DoesFileExist(fileName) {
+		fh.DeleteDirFile(fileName)
+	}
+
+
+	fmt.Printf("      number: %v\n", number)
+	fmt.Printf("       power: %v\n", power)
+	fmt.Printf("    expected: %v\n", expected)
+	ia, _ := common.IntAry{}.NewNumStr(number)
+	startTime := time.Now()
+	err := ia.PowByTwos(power, maxResultPrecision, internalPrecision)
+	endTime := time.Now()
+
+	if err != nil {
+		fmt.Printf("Error returned from ia.PowByTwos(power, maxResultPrecision, internalPrecision). Error= %v", err)
+		return
+	}
+
+	du := common.DurationUtility{}
+	du.SetStartEndTimes(startTime, endTime)
+
+	if err != nil {
+		fmt.Printf("Error returned from ia.PowByTwos(power, maxResultPrecision). Error= %v \n", err)
+	}
+
+	resultStr := ia.GetNumStr()
+
+	fmt.Printf("      result: %v\n", resultStr)
+
+
+	fmt.Printf("maxResultPrecision: %v\n", maxResultPrecision)
+	fmt.Printf("         Precision: %v\n", ia.GetPrecision())
+	fmt.Println("---------------------------------------")
+	display, _ := du.GetHoursTime()
+	fmt.Println("Elapsed Time: ", display.DisplayStr)
+	fmt.Println("=================================")
+
+	f, err := fh.CreateFile(fileName)
+
+	if err != nil {
+		fmt.Printf("Error returned from fh.CreateFile(fileName). Error= %v", err)
+		return
+	}
+	defer f.Close()
+
+	fh.WriteFileStr(resultStr, f)
+
+}
+
+
