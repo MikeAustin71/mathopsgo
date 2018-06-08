@@ -1232,6 +1232,16 @@
 --- PASS: TestBigIntNum_IsEvenNumber_09 (0.00s)
 === RUN   TestBigIntNum_IsEvenNumber_10
 --- PASS: TestBigIntNum_IsEvenNumber_10 (0.00s)
+=== RUN   TestBigIntNum_IsZero_01
+--- PASS: TestBigIntNum_IsZero_01 (0.00s)
+=== RUN   TestBigIntNum_IsZero_02
+--- PASS: TestBigIntNum_IsZero_02 (0.00s)
+=== RUN   TestBigIntNum_IsZero_03
+--- PASS: TestBigIntNum_IsZero_03 (0.00s)
+=== RUN   TestBigIntNum_IsZero_04
+--- PASS: TestBigIntNum_IsZero_04 (0.00s)
+=== RUN   TestBigIntNum_IsZero_05
+--- PASS: TestBigIntNum_IsZero_05 (0.00s)
 === RUN   TestBigIntNum_IntAry_01
 --- PASS: TestBigIntNum_IntAry_01 (0.00s)
 === RUN   TestBigIntNum_IntAry_02
@@ -1681,7 +1691,7 @@
 === RUN   TestFracIntAry_GetRationalValue_06
 --- PASS: TestFracIntAry_GetRationalValue_06 (0.00s)
 === RUN   TestFracIntAry_GetRationalValue_07
---- PASS: TestFracIntAry_GetRationalValue_07 (0.06s)
+--- PASS: TestFracIntAry_GetRationalValue_07 (0.05s)
 === RUN   TestIntAry_AddMultipleToThis_01
 --- PASS: TestIntAry_AddMultipleToThis_01 (0.00s)
 === RUN   TestIntAry_AddToThis_01
@@ -2221,7 +2231,7 @@
 === RUN   TestIntAry_Pow_05
 --- PASS: TestIntAry_Pow_05 (0.00s)
 === RUN   TestIntAry_Pow_06
---- PASS: TestIntAry_Pow_06 (0.26s)
+--- PASS: TestIntAry_Pow_06 (0.25s)
 === RUN   TestIntAry_ResetFromBackUp_01
 --- PASS: TestIntAry_ResetFromBackUp_01 (0.00s)
 === RUN   TestIntAry_RoundToPrecision_01
@@ -3107,4 +3117,4 @@
 === RUN   TestStrMathOp_SubtractN1N2_19
 --- PASS: TestStrMathOp_SubtractN1N2_19 (0.00s)
 PASS
-ok  	MikeAustin71/mathopsgo/mathops	1.154s
+ok  	MikeAustin71/mathopsgo/mathops	1.703s

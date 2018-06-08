@@ -937,6 +937,106 @@ func TestBigIntNum_IsEvenNumber_10(t *testing.T) {
 
 }
 
+func TestBigIntNum_IsZero_01(t *testing.T) {
+
+	testNumStr := "0.000"
+	expectedIsZero := true
+
+	bINum, err := BigIntNum{}.NewNumStr(testNumStr)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(testNumStr). " +
+			"testNumStr='%v' Error='%v' ", testNumStr, err.Error())
+	}
+
+	isZero := bINum.IsZero()
+
+	if expectedIsZero != isZero {
+		t.Errorf("Expected TestNumber to be IsZero='%v'. Instead TestNumber IsZero='%v'",
+			expectedIsZero, isZero)
+	}
+}
+
+func TestBigIntNum_IsZero_02(t *testing.T) {
+
+	testNumStr := "0"
+	expectedIsZero := true
+
+	bINum, err := BigIntNum{}.NewNumStr(testNumStr)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(testNumStr). " +
+			"testNumStr='%v' Error='%v' ", testNumStr, err.Error())
+	}
+
+	isZero := bINum.IsZero()
+
+	if expectedIsZero != isZero {
+		t.Errorf("Expected TestNumber to be IsZero='%v'. Instead TestNumber IsZero='%v'",
+			expectedIsZero, isZero)
+	}
+}
+
+func TestBigIntNum_IsZero_03(t *testing.T) {
+
+	testNumStr := "0.0000000000001"
+	expectedIsZero := false
+
+	bINum, err := BigIntNum{}.NewNumStr(testNumStr)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(testNumStr). " +
+			"testNumStr='%v' Error='%v' ", testNumStr, err.Error())
+	}
+
+	isZero := bINum.IsZero()
+
+	if expectedIsZero != isZero {
+		t.Errorf("Expected TestNumber to be IsZero='%v'. Instead TestNumber IsZero='%v'",
+			expectedIsZero, isZero)
+	}
+}
+
+func TestBigIntNum_IsZero_04(t *testing.T) {
+
+	testNumStr := "100000000000000000000"
+	expectedIsZero := false
+
+	bINum, err := BigIntNum{}.NewNumStr(testNumStr)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(testNumStr). " +
+			"testNumStr='%v' Error='%v' ", testNumStr, err.Error())
+	}
+
+	isZero := bINum.IsZero()
+
+	if expectedIsZero != isZero {
+		t.Errorf("Expected TestNumber to be IsZero='%v'. Instead TestNumber IsZero='%v'",
+			expectedIsZero, isZero)
+	}
+}
+
+func TestBigIntNum_IsZero_05(t *testing.T) {
+
+	testNumStr := "0.000000000000000000000000001"
+	expectedIsZero := false
+
+	bINum, err := BigIntNum{}.NewNumStr(testNumStr)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(testNumStr). " +
+			"testNumStr='%v' Error='%v' ", testNumStr, err.Error())
+	}
+
+	isZero := bINum.IsZero()
+
+	if expectedIsZero != isZero {
+		t.Errorf("Expected TestNumber to be IsZero='%v'. Instead TestNumber IsZero='%v'",
+			expectedIsZero, isZero)
+	}
+}
+
 func TestBigIntNum_IntAry_01(t *testing.T) {
 
 	nStr:="123.456"
