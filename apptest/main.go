@@ -8,10 +8,10 @@ import (
 
 func main() {
 
-	baseStr := "5"
-	exponentStr := "-3"
-	expectedStr := "0.008"
-	maxPrecision := uint(3)
+	baseStr := "-5"
+	exponentStr := "5"
+	expectedStr := "-3125"
+	maxPrecision := uint(0)
 
 	ExampleBigIntNumPower_01(baseStr, exponentStr, expectedStr, maxPrecision)
 
