@@ -539,8 +539,7 @@ func (nthrt *NthRootOp) calcNthRootGateway(originalNum *IntAry, nthRoot, maxPrec
 
 		if isNthRootEven*2 == nthRoot {
 			return fmt.Errorf(ePrefix +
-				"- Cannot compute nthRoot of a negative number when nthRoot is even. nthRoot can " +
-				"only be extracted from negative numbers when nthRoot is odd. " +
+				"INVALID ENTRY - Cannot calculate nthRoot of a negative number when nthRoot is even. " +
 				"Original Number= %v  nthRoot= %v", originalNum.GetNumStr(), nthRoot)
 		}
 

@@ -180,9 +180,9 @@ func (nthrt *BigIntMathNthRoot) calcNthRootGateway(
 
 		if mod.IsZero() {
 			return BigIntNum{}.NewZero(0),
-			fmt.Errorf(ePrefix + "Error - Cannot compute nthRoot of a negative number " +
-				"when nthRoot is even. nthRoot can only be extracted from negative numbers when nthRoot" +
-				" is odd. Original Number= %v  nthRoot= %v", radicand.GetNumStr(), nthRoot.GetNumStr())
+			fmt.Errorf(ePrefix +
+				"INVALID ENTRY - Cannot calculate nthRoot of a negative number when nthRoot is even. " +
+				"Original Number= %v  nthRoot= %v", radicand.GetNumStr(), nthRoot.GetNumStr())
 		}
 
 	}

@@ -677,6 +677,266 @@ func TestBigIntNum_GetNumberOfDigits_11(t *testing.T) {
 
 }
 
+func TestBigIntNum_IsEvenNumber_01(t *testing.T) {
+
+	testNumStr := "4"
+	expectedIsEven := true
+	bINum, err := BigIntNum{}.NewNumStr(testNumStr)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(testNumStr). " +
+			"testNumStr='%v' Error='%v' ", testNumStr, err.Error())
+	}
+
+	isEven, err := bINum.IsEvenNumber()
+
+	if err != nil {
+		t.Errorf("Error returned by bINum.IsEvenNumber(). " +
+			"bINum='%v' Error='%v' ", bINum.GetNumStr(), err.Error())
+
+	}
+
+	if expectedIsEven != isEven {
+		t.Errorf("Expected TestNumber to be IsEven='%v'. Instead TestNumber IsEven='%v'",
+			expectedIsEven, isEven)
+	}
+
+}
+
+func TestBigIntNum_IsEvenNumber_02(t *testing.T) {
+
+	testNumStr := "5"
+	expectedIsEven := false
+	bINum, err := BigIntNum{}.NewNumStr(testNumStr)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(testNumStr). " +
+			"testNumStr='%v' Error='%v' ", testNumStr, err.Error())
+	}
+
+	isEven, err := bINum.IsEvenNumber()
+
+	if err != nil {
+		t.Errorf("Error returned by bINum.IsEvenNumber(). " +
+			"bINum='%v' Error='%v' ", bINum.GetNumStr(), err.Error())
+
+	}
+
+	if expectedIsEven != isEven {
+		t.Errorf("Expected TestNumber to be IsEven='%v'. Instead TestNumber IsEven='%v'",
+			expectedIsEven, isEven)
+	}
+
+}
+
+func TestBigIntNum_IsEvenNumber_03(t *testing.T) {
+
+	testNumStr := "4.4"
+	expectedIsEven := false
+	bINum, err := BigIntNum{}.NewNumStr(testNumStr)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(testNumStr). " +
+			"testNumStr='%v' Error='%v' ", testNumStr, err.Error())
+	}
+
+	isEven, err := bINum.IsEvenNumber()
+
+	if err != nil {
+		t.Errorf("Error returned by bINum.IsEvenNumber(). " +
+			"bINum='%v' Error='%v' ", bINum.GetNumStr(), err.Error())
+
+	}
+
+	if expectedIsEven != isEven {
+		t.Errorf("Expected TestNumber to be IsEven='%v'. Instead TestNumber IsEven='%v'",
+			expectedIsEven, isEven)
+	}
+
+}
+
+func TestBigIntNum_IsEvenNumber_04(t *testing.T) {
+
+	testNumStr := "9793442794"
+	expectedIsEven := true
+	bINum, err := BigIntNum{}.NewNumStr(testNumStr)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(testNumStr). " +
+			"testNumStr='%v' Error='%v' ", testNumStr, err.Error())
+	}
+
+	isEven, err := bINum.IsEvenNumber()
+
+	if err != nil {
+		t.Errorf("Error returned by bINum.IsEvenNumber(). " +
+			"bINum='%v' Error='%v' ", bINum.GetNumStr(), err.Error())
+
+	}
+
+	if expectedIsEven != isEven {
+		t.Errorf("Expected TestNumber to be IsEven='%v'. Instead TestNumber IsEven='%v'",
+			expectedIsEven, isEven)
+	}
+
+}
+
+func TestBigIntNum_IsEvenNumber_05(t *testing.T) {
+
+	testNumStr := "9793442795"
+	expectedIsEven := false
+	bINum, err := BigIntNum{}.NewNumStr(testNumStr)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(testNumStr). " +
+			"testNumStr='%v' Error='%v' ", testNumStr, err.Error())
+	}
+
+	isEven, err := bINum.IsEvenNumber()
+
+	if err != nil {
+		t.Errorf("Error returned by bINum.IsEvenNumber(). " +
+			"bINum='%v' Error='%v' ", bINum.GetNumStr(), err.Error())
+
+	}
+
+	if expectedIsEven != isEven {
+		t.Errorf("Expected TestNumber to be IsEven='%v'. Instead TestNumber IsEven='%v'",
+			expectedIsEven, isEven)
+	}
+
+}
+
+func TestBigIntNum_IsEvenNumber_06(t *testing.T) {
+
+	testNumStr := "-9793442794"
+	expectedIsEven := true
+	bINum, err := BigIntNum{}.NewNumStr(testNumStr)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(testNumStr). " +
+			"testNumStr='%v' Error='%v' ", testNumStr, err.Error())
+	}
+
+	isEven, err := bINum.IsEvenNumber()
+
+	if err != nil {
+		t.Errorf("Error returned by bINum.IsEvenNumber(). " +
+			"bINum='%v' Error='%v' ", bINum.GetNumStr(), err.Error())
+
+	}
+
+	if expectedIsEven != isEven {
+		t.Errorf("Expected TestNumber to be IsEven='%v'. Instead TestNumber IsEven='%v'",
+			expectedIsEven, isEven)
+	}
+
+}
+
+func TestBigIntNum_IsEvenNumber_07(t *testing.T) {
+
+	testNumStr := "757849035736836546"
+	expectedIsEven := true
+	bINum, err := BigIntNum{}.NewNumStr(testNumStr)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(testNumStr). " +
+			"testNumStr='%v' Error='%v' ", testNumStr, err.Error())
+	}
+
+	isEven, err := bINum.IsEvenNumber()
+
+	if err != nil {
+		t.Errorf("Error returned by bINum.IsEvenNumber(). " +
+			"bINum='%v' Error='%v' ", bINum.GetNumStr(), err.Error())
+
+	}
+
+	if expectedIsEven != isEven {
+		t.Errorf("Expected TestNumber to be IsEven='%v'. Instead TestNumber IsEven='%v'",
+			expectedIsEven, isEven)
+	}
+
+}
+
+func TestBigIntNum_IsEvenNumber_08(t *testing.T) {
+
+	testNumStr := "-757849035736836546"
+	expectedIsEven := true
+	bINum, err := BigIntNum{}.NewNumStr(testNumStr)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(testNumStr). " +
+			"testNumStr='%v' Error='%v' ", testNumStr, err.Error())
+	}
+
+	isEven, err := bINum.IsEvenNumber()
+
+	if err != nil {
+		t.Errorf("Error returned by bINum.IsEvenNumber(). " +
+			"bINum='%v' Error='%v' ", bINum.GetNumStr(), err.Error())
+
+	}
+
+	if expectedIsEven != isEven {
+		t.Errorf("Expected TestNumber to be IsEven='%v'. Instead TestNumber IsEven='%v'",
+			expectedIsEven, isEven)
+	}
+
+}
+
+func TestBigIntNum_IsEvenNumber_09(t *testing.T) {
+
+	testNumStr := "757849035736836547"
+	expectedIsEven := false
+	bINum, err := BigIntNum{}.NewNumStr(testNumStr)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(testNumStr). " +
+			"testNumStr='%v' Error='%v' ", testNumStr, err.Error())
+	}
+
+	isEven, err := bINum.IsEvenNumber()
+
+	if err != nil {
+		t.Errorf("Error returned by bINum.IsEvenNumber(). " +
+			"bINum='%v' Error='%v' ", bINum.GetNumStr(), err.Error())
+
+	}
+
+	if expectedIsEven != isEven {
+		t.Errorf("Expected TestNumber to be IsEven='%v'. Instead TestNumber IsEven='%v'",
+			expectedIsEven, isEven)
+	}
+
+}
+
+func TestBigIntNum_IsEvenNumber_10(t *testing.T) {
+
+	testNumStr := "-757849035736836547"
+	expectedIsEven := false
+	bINum, err := BigIntNum{}.NewNumStr(testNumStr)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(testNumStr). " +
+			"testNumStr='%v' Error='%v' ", testNumStr, err.Error())
+	}
+
+	isEven, err := bINum.IsEvenNumber()
+
+	if err != nil {
+		t.Errorf("Error returned by bINum.IsEvenNumber(). " +
+			"bINum='%v' Error='%v' ", bINum.GetNumStr(), err.Error())
+
+	}
+
+	if expectedIsEven != isEven {
+		t.Errorf("Expected TestNumber to be IsEven='%v'. Instead TestNumber IsEven='%v'",
+			expectedIsEven, isEven)
+	}
+
+}
+
 func TestBigIntNum_IntAry_01(t *testing.T) {
 
 	nStr:="123.456"

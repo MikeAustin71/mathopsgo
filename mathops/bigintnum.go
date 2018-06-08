@@ -1229,6 +1229,32 @@ func (bNum *BigIntNum) GetUnsignedInt() (uint, error) {
 	return uint(bNum.bigInt.Int64()), nil
 }
 
+// IsEvenNumber - Returns true if the current BigIntNum value is
+// evenly divisible by 2.
+//
+// Definition: https://www.mathsisfun.com/definitions/even-number.html
+//
+func (bNum *BigIntNum) IsEvenNumber() (bool, error) {
+
+	if bNum.precision > 0 {
+		return false, nil
+	}
+
+	bigINumTwo := BigIntNum{}.NewTwo(0)
+
+	_, mod, err := BigIntMathDivide{}.BigIntNumQuotientMod(bNum.CopyOut(), bigINumTwo, 0)
+
+	if err != nil {
+		ePrefix := "BigIntNum.IsEvenNumber() "
+		return false,
+			fmt.Errorf(ePrefix +
+				"Error returned by BigIntMathDivide{}.BigIntNumQuotientMod(nthRoot, bigINumTwo, 0) " +
+				"Error='%v' ", err.Error())
+	}
+
+	return mod.IsZero(), nil
+}
+
 // IsZero - Returns a boolean signaling whether the current
 // BigIntNum value is zero.
 func (bNum *BigIntNum) IsZero() bool {

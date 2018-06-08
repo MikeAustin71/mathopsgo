@@ -1212,6 +1212,26 @@
 --- PASS: TestBigIntNum_GetNumberOfDigits_10 (0.00s)
 === RUN   TestBigIntNum_GetNumberOfDigits_11
 --- PASS: TestBigIntNum_GetNumberOfDigits_11 (0.00s)
+=== RUN   TestBigIntNum_IsEvenNumber_01
+--- PASS: TestBigIntNum_IsEvenNumber_01 (0.00s)
+=== RUN   TestBigIntNum_IsEvenNumber_02
+--- PASS: TestBigIntNum_IsEvenNumber_02 (0.00s)
+=== RUN   TestBigIntNum_IsEvenNumber_03
+--- PASS: TestBigIntNum_IsEvenNumber_03 (0.00s)
+=== RUN   TestBigIntNum_IsEvenNumber_04
+--- PASS: TestBigIntNum_IsEvenNumber_04 (0.00s)
+=== RUN   TestBigIntNum_IsEvenNumber_05
+--- PASS: TestBigIntNum_IsEvenNumber_05 (0.00s)
+=== RUN   TestBigIntNum_IsEvenNumber_06
+--- PASS: TestBigIntNum_IsEvenNumber_06 (0.00s)
+=== RUN   TestBigIntNum_IsEvenNumber_07
+--- PASS: TestBigIntNum_IsEvenNumber_07 (0.00s)
+=== RUN   TestBigIntNum_IsEvenNumber_08
+--- PASS: TestBigIntNum_IsEvenNumber_08 (0.00s)
+=== RUN   TestBigIntNum_IsEvenNumber_09
+--- PASS: TestBigIntNum_IsEvenNumber_09 (0.00s)
+=== RUN   TestBigIntNum_IsEvenNumber_10
+--- PASS: TestBigIntNum_IsEvenNumber_10 (0.00s)
 === RUN   TestBigIntNum_IntAry_01
 --- PASS: TestBigIntNum_IntAry_01 (0.00s)
 === RUN   TestBigIntNum_IntAry_02
@@ -1661,7 +1681,7 @@
 === RUN   TestFracIntAry_GetRationalValue_06
 --- PASS: TestFracIntAry_GetRationalValue_06 (0.00s)
 === RUN   TestFracIntAry_GetRationalValue_07
---- PASS: TestFracIntAry_GetRationalValue_07 (0.05s)
+--- PASS: TestFracIntAry_GetRationalValue_07 (0.06s)
 === RUN   TestIntAry_AddMultipleToThis_01
 --- PASS: TestIntAry_AddMultipleToThis_01 (0.00s)
 === RUN   TestIntAry_AddToThis_01
@@ -2201,7 +2221,7 @@
 === RUN   TestIntAry_Pow_05
 --- PASS: TestIntAry_Pow_05 (0.00s)
 === RUN   TestIntAry_Pow_06
---- PASS: TestIntAry_Pow_06 (0.25s)
+--- PASS: TestIntAry_Pow_06 (0.26s)
 === RUN   TestIntAry_ResetFromBackUp_01
 --- PASS: TestIntAry_ResetFromBackUp_01 (0.00s)
 === RUN   TestIntAry_RoundToPrecision_01
@@ -3087,4 +3107,4 @@
 === RUN   TestStrMathOp_SubtractN1N2_19
 --- PASS: TestStrMathOp_SubtractN1N2_19 (0.00s)
 PASS
-ok  	MikeAustin71/mathopsgo/mathops	1.205s
+ok  	MikeAustin71/mathopsgo/mathops	1.154s
