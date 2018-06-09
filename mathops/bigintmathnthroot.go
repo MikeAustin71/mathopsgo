@@ -220,7 +220,7 @@ func (nthrt *BigIntMathNthRoot) calcPositiveFractionalNthRoot(radicand, nthRoot 
 
 	var exponentMaxPrecision uint
 
-	if newMaxPrecision.CmpBigInt(maxUintPrecison) > 0 {
+	if newMaxPrecision.Cmp(maxUintPrecison) > 0 {
 		exponentMaxPrecision = math.MaxUint32
 	} else {
 		exponentMaxPrecision = math.MaxUint32

@@ -22,11 +22,11 @@ import (
 type BigIntNum struct {
 	bigInt      						*big.Int
 	absBigInt   						*big.Int
-	precision   						uint     		// Number of digits to the right of the decimal point.
+	precision   						uint        // Number of digits to the right of the decimal point.
 	scaleFactor 						*big.Int 		// Scale Factor =  10^(precision * -1)
 	numberOfExpectedDigits	*big.Int		// Number of digits in the 'absBigInt' value
 	sign        						int      		// Valid values are -1 or +1. Indicates the sign of the
-																	// 		the 'bigInt' integer.
+																			// 		the 'bigInt' integer.
 	decimalSeparator 				rune				// Character used to separate integer and fractional digits ('.')
 	thousandsSeparator 			rune 				// Character used to separate thousands (1,000,000,000
 	currencySymbol 					rune				// Currency Symbol
@@ -774,32 +774,15 @@ func (bNum *BigIntNum) FormatThousandsStr(negValMode NegativeValueFmtMode) strin
 //
 func (bNum *BigIntNum) GetAbsoluteNumStr() string {
 
-	nDto, err := NumStrDto{}.NewBigInt(big.NewInt(0).Set(bNum.bigInt), bNum.precision)
-
-	if err != nil {
-		return ""
+	if bNum.GetSign() == 1 {
+		return bNum.FormatNumStr(LEADMINUSNEGVALFMTMODE)
 	}
 
-	return nDto.GetAbsNumStr()
-}
+	biNum := bNum.CopyOut()
 
-// GetAbsoluteNumStrErr - Returns the absolute integer value (positive value) of the
-// *big.Int value encapsulated by this BigIntNum. No decimal point is included.
-//
-// This method is identical to GetAbsoluteNumStr() above, except that this method
-// returns an error value.
-//
-func (bNum *BigIntNum) GetAbsoluteNumStrErr() (string, error) {
-	nDto, err := NumStrDto{}.NewBigInt(big.NewInt(0).Set(bNum.bigInt), bNum.precision)
+	biNum.ChangeSign()
 
-	if err != nil {
-		return "",
-		fmt.Errorf("Error returned by NumStrDto{}.NewBigInt(" +
-			"big.NewInt(0).Set(bNum.bigInt), bNum.precision). Error='%v'",
-				err.Error())
-	}
-
-	return nDto.GetAbsNumStr(),nil
+	return biNum.FormatNumStr(LEADMINUSNEGVALFMTMODE)
 }
 
 // GetAbsoluteBigIntNumValue - Returns the absolute numeric value
@@ -1145,7 +1128,7 @@ func (bNum *BigIntNum) GetNumStrDto() (NumStrDto, error) {
 
 	ePrefix := "BigIntNum.GetNumStrDto() "
 
-	nDto, err := NumStrDto{}.NewBigInt(big.NewInt(0).Set(bNum.bigInt), bNum.precision)
+	nDto, err := NumStrDto{}.NewBigInt(big.NewInt(0).Set(bNum.bigInt), uint(bNum.precision))
 
 	if err != nil {
 		return NumStrDto{},
