@@ -815,6 +815,470 @@ func TestBigIntNum_Cmp_01(t *testing.T) {
 
 }
 
+func TestBigIntNum_Cmp_02(t *testing.T) {
+
+	n1Str := "123.456"
+	n2Str := "123.457"
+	expectedCmpResult := -1
+
+	bINum1, err := BigIntNum{}.NewNumStr(n1Str)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(n1Str). " +
+			"n1Str='%v' Error='%v'", n1Str, err.Error())
+	}
+
+	bINum2, err := BigIntNum{}.NewNumStr(n2Str)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(n2Str). " +
+			"n2Str='%v' Error='%v'", n2Str, err.Error())
+	}
+
+	cmpResult := bINum1.Cmp(bINum2)
+
+	if expectedCmpResult != cmpResult {
+		t.Errorf("Error: Expected Comparision Result='%v'.  Instead, Result='%v'",
+			expectedCmpResult, cmpResult)
+	}
+
+}
+
+func TestBigIntNum_Cmp_03(t *testing.T) {
+
+	n1Str := "123.456"
+	n2Str := "123.456"
+	expectedCmpResult := 0
+
+	bINum1, err := BigIntNum{}.NewNumStr(n1Str)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(n1Str). " +
+			"n1Str='%v' Error='%v'", n1Str, err.Error())
+	}
+
+	bINum2, err := BigIntNum{}.NewNumStr(n2Str)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(n2Str). " +
+			"n2Str='%v' Error='%v'", n2Str, err.Error())
+	}
+
+	cmpResult := bINum1.Cmp(bINum2)
+
+	if expectedCmpResult != cmpResult {
+		t.Errorf("Error: Expected Comparision Result='%v'.  Instead, Result='%v'",
+			expectedCmpResult, cmpResult)
+	}
+
+}
+
+func TestBigIntNum_Cmp_04(t *testing.T) {
+
+	n1Str := "-123.456"
+	n2Str := "-123.457"
+	expectedCmpResult := 1
+
+	bINum1, err := BigIntNum{}.NewNumStr(n1Str)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(n1Str). " +
+			"n1Str='%v' Error='%v'", n1Str, err.Error())
+	}
+
+	bINum2, err := BigIntNum{}.NewNumStr(n2Str)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(n2Str). " +
+			"n2Str='%v' Error='%v'", n2Str, err.Error())
+	}
+
+	cmpResult := bINum1.Cmp(bINum2)
+
+	if expectedCmpResult != cmpResult {
+		t.Errorf("Error: Expected Comparision Result='%v'.  Instead, Result='%v'",
+			expectedCmpResult, cmpResult)
+	}
+
+}
+
+func TestBigIntNum_Cmp_05(t *testing.T) {
+
+	n1Str := "-123.456"
+	n2Str := "-123.455"
+	expectedCmpResult := -1
+
+	bINum1, err := BigIntNum{}.NewNumStr(n1Str)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(n1Str). " +
+			"n1Str='%v' Error='%v'", n1Str, err.Error())
+	}
+
+	bINum2, err := BigIntNum{}.NewNumStr(n2Str)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(n2Str). " +
+			"n2Str='%v' Error='%v'", n2Str, err.Error())
+	}
+
+	cmpResult := bINum1.Cmp(bINum2)
+
+	if expectedCmpResult != cmpResult {
+		t.Errorf("Error: Expected Comparision Result='%v'.  Instead, Result='%v'",
+			expectedCmpResult, cmpResult)
+	}
+
+}
+
+func TestBigIntNum_Cmp_06(t *testing.T) {
+
+	n1Str := "-123.456"
+	n2Str := "-123.456"
+	expectedCmpResult := 0
+
+	bINum1, err := BigIntNum{}.NewNumStr(n1Str)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(n1Str). " +
+			"n1Str='%v' Error='%v'", n1Str, err.Error())
+	}
+
+	bINum2, err := BigIntNum{}.NewNumStr(n2Str)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(n2Str). " +
+			"n2Str='%v' Error='%v'", n2Str, err.Error())
+	}
+
+	cmpResult := bINum1.Cmp(bINum2)
+
+	if expectedCmpResult != cmpResult {
+		t.Errorf("Error: Expected Comparision Result='%v'.  Instead, Result='%v'",
+			expectedCmpResult, cmpResult)
+	}
+
+}
+
+func TestBigIntNum_Cmp_07(t *testing.T) {
+
+	n1Str := "123456000643218"
+	n2Str := "123456000643217"
+	expectedCmpResult := 1
+
+	bINum1, err := BigIntNum{}.NewNumStr(n1Str)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(n1Str). " +
+			"n1Str='%v' Error='%v'", n1Str, err.Error())
+	}
+
+	bINum2, err := BigIntNum{}.NewNumStr(n2Str)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(n2Str). " +
+			"n2Str='%v' Error='%v'", n2Str, err.Error())
+	}
+
+	cmpResult := bINum1.Cmp(bINum2)
+
+	if expectedCmpResult != cmpResult {
+		t.Errorf("Error: Expected Comparision Result='%v'.  Instead, Result='%v'",
+			expectedCmpResult, cmpResult)
+	}
+
+}
+
+func TestBigIntNum_Cmp_08(t *testing.T) {
+
+	n1Str := "123456000643218"
+	n2Str := "123456000643219"
+	expectedCmpResult := -1
+
+	bINum1, err := BigIntNum{}.NewNumStr(n1Str)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(n1Str). " +
+			"n1Str='%v' Error='%v'", n1Str, err.Error())
+	}
+
+	bINum2, err := BigIntNum{}.NewNumStr(n2Str)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(n2Str). " +
+			"n2Str='%v' Error='%v'", n2Str, err.Error())
+	}
+
+	cmpResult := bINum1.Cmp(bINum2)
+
+	if expectedCmpResult != cmpResult {
+		t.Errorf("Error: Expected Comparision Result='%v'.  Instead, Result='%v'",
+			expectedCmpResult, cmpResult)
+	}
+
+}
+
+func TestBigIntNum_Cmp_09(t *testing.T) {
+
+	n1Str := "123456000643218"
+	n2Str := "123456000643218"
+	expectedCmpResult := 0
+
+	bINum1, err := BigIntNum{}.NewNumStr(n1Str)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(n1Str). " +
+			"n1Str='%v' Error='%v'", n1Str, err.Error())
+	}
+
+	bINum2, err := BigIntNum{}.NewNumStr(n2Str)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(n2Str). " +
+			"n2Str='%v' Error='%v'", n2Str, err.Error())
+	}
+
+	cmpResult := bINum1.Cmp(bINum2)
+
+	if expectedCmpResult != cmpResult {
+		t.Errorf("Error: Expected Comparision Result='%v'.  Instead, Result='%v'",
+			expectedCmpResult, cmpResult)
+	}
+
+}
+
+func TestBigIntNum_Cmp_10(t *testing.T) {
+
+	n1Str := "-123456000643218"
+	n2Str := "-123456000643217"
+	expectedCmpResult := -1
+
+	bINum1, err := BigIntNum{}.NewNumStr(n1Str)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(n1Str). " +
+			"n1Str='%v' Error='%v'", n1Str, err.Error())
+	}
+
+	bINum2, err := BigIntNum{}.NewNumStr(n2Str)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(n2Str). " +
+			"n2Str='%v' Error='%v'", n2Str, err.Error())
+	}
+
+	cmpResult := bINum1.Cmp(bINum2)
+
+	if expectedCmpResult != cmpResult {
+		t.Errorf("Error: Expected Comparision Result='%v'.  Instead, Result='%v'",
+			expectedCmpResult, cmpResult)
+	}
+
+}
+
+func TestBigIntNum_Cmp_11(t *testing.T) {
+
+	n1Str := "-123456000643218"
+	n2Str := "-123456000643219"
+	expectedCmpResult := 1
+
+	bINum1, err := BigIntNum{}.NewNumStr(n1Str)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(n1Str). " +
+			"n1Str='%v' Error='%v'", n1Str, err.Error())
+	}
+
+	bINum2, err := BigIntNum{}.NewNumStr(n2Str)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(n2Str). " +
+			"n2Str='%v' Error='%v'", n2Str, err.Error())
+	}
+
+	cmpResult := bINum1.Cmp(bINum2)
+
+	if expectedCmpResult != cmpResult {
+		t.Errorf("Error: Expected Comparision Result='%v'.  Instead, Result='%v'",
+			expectedCmpResult, cmpResult)
+	}
+
+}
+
+func TestBigIntNum_Cmp_12(t *testing.T) {
+
+	n1Str := "-123456000643218"
+	n2Str := "-123456000643218"
+	expectedCmpResult := 0
+
+	bINum1, err := BigIntNum{}.NewNumStr(n1Str)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(n1Str). " +
+			"n1Str='%v' Error='%v'", n1Str, err.Error())
+	}
+
+	bINum2, err := BigIntNum{}.NewNumStr(n2Str)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(n2Str). " +
+			"n2Str='%v' Error='%v'", n2Str, err.Error())
+	}
+
+	cmpResult := bINum1.Cmp(bINum2)
+
+	if expectedCmpResult != cmpResult {
+		t.Errorf("Error: Expected Comparision Result='%v'.  Instead, Result='%v'",
+			expectedCmpResult, cmpResult)
+	}
+
+}
+
+func TestBigIntNum_Cmp_13(t *testing.T) {
+
+	n1Str := "1.7"
+	n2Str := "-12345.6000643218"
+	expectedCmpResult := 1
+
+	bINum1, err := BigIntNum{}.NewNumStr(n1Str)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(n1Str). " +
+			"n1Str='%v' Error='%v'", n1Str, err.Error())
+	}
+
+	bINum2, err := BigIntNum{}.NewNumStr(n2Str)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(n2Str). " +
+			"n2Str='%v' Error='%v'", n2Str, err.Error())
+	}
+
+	cmpResult := bINum1.Cmp(bINum2)
+
+	if expectedCmpResult != cmpResult {
+		t.Errorf("Error: Expected Comparision Result='%v'.  Instead, Result='%v'",
+			expectedCmpResult, cmpResult)
+	}
+
+}
+
+func TestBigIntNum_Cmp_14(t *testing.T) {
+
+	n1Str := "-1.7"
+	n2Str := "0.01"
+	expectedCmpResult := -1
+
+	bINum1, err := BigIntNum{}.NewNumStr(n1Str)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(n1Str). " +
+			"n1Str='%v' Error='%v'", n1Str, err.Error())
+	}
+
+	bINum2, err := BigIntNum{}.NewNumStr(n2Str)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(n2Str). " +
+			"n2Str='%v' Error='%v'", n2Str, err.Error())
+	}
+
+	cmpResult := bINum1.Cmp(bINum2)
+
+	if expectedCmpResult != cmpResult {
+		t.Errorf("Error: Expected Comparision Result='%v'.  Instead, Result='%v'",
+			expectedCmpResult, cmpResult)
+	}
+
+}
+
+func TestBigIntNum_Cmp_15(t *testing.T) {
+
+	n1Str := "17"
+	n2Str := "-1"
+	expectedCmpResult := 1
+
+	bINum1, err := BigIntNum{}.NewNumStr(n1Str)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(n1Str). " +
+			"n1Str='%v' Error='%v'", n1Str, err.Error())
+	}
+
+	bINum2, err := BigIntNum{}.NewNumStr(n2Str)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(n2Str). " +
+			"n2Str='%v' Error='%v'", n2Str, err.Error())
+	}
+
+	cmpResult := bINum1.Cmp(bINum2)
+
+	if expectedCmpResult != cmpResult {
+		t.Errorf("Error: Expected Comparision Result='%v'.  Instead, Result='%v'",
+			expectedCmpResult, cmpResult)
+	}
+
+}
+
+func TestBigIntNum_Cmp_16(t *testing.T) {
+
+	n1Str := "-17"
+	n2Str := "1"
+	expectedCmpResult := -1
+
+	bINum1, err := BigIntNum{}.NewNumStr(n1Str)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(n1Str). " +
+			"n1Str='%v' Error='%v'", n1Str, err.Error())
+	}
+
+	bINum2, err := BigIntNum{}.NewNumStr(n2Str)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(n2Str). " +
+			"n2Str='%v' Error='%v'", n2Str, err.Error())
+	}
+
+	cmpResult := bINum1.Cmp(bINum2)
+
+	if expectedCmpResult != cmpResult {
+		t.Errorf("Error: Expected Comparision Result='%v'.  Instead, Result='%v'",
+			expectedCmpResult, cmpResult)
+	}
+
+}
+
+func TestBigIntNum_Cmp_17(t *testing.T) {
+
+	n1Str := "0"
+	n2Str := "0.000"
+	expectedCmpResult := 0
+
+	bINum1, err := BigIntNum{}.NewNumStr(n1Str)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(n1Str). " +
+			"n1Str='%v' Error='%v'", n1Str, err.Error())
+	}
+
+	bINum2, err := BigIntNum{}.NewNumStr(n2Str)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(n2Str). " +
+			"n2Str='%v' Error='%v'", n2Str, err.Error())
+	}
+
+	cmpResult := bINum1.Cmp(bINum2)
+
+	if expectedCmpResult != cmpResult {
+		t.Errorf("Error: Expected Comparision Result='%v'.  Instead, Result='%v'",
+			expectedCmpResult, cmpResult)
+	}
+
+}
+
 func TestBigIntNum_Decimal_01(t *testing.T) {
 
 	nStr:="123.456"
