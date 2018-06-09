@@ -764,7 +764,7 @@ func TestBigIntNum_ChangeSign_03(t *testing.T) {
 	nStr:="0.00"
 	expectedStr := "0.00"
 	expectedSign := 1
-	
+
 	bINum, err := BigIntNum{}.NewNumStr(nStr)
 
 	if err != nil {
@@ -786,7 +786,34 @@ func TestBigIntNum_ChangeSign_03(t *testing.T) {
 
 }
 
+func TestBigIntNum_Cmp_01(t *testing.T) {
 
+	n1Str := "123.456"
+	n2Str := "123.455"
+	expectedCmpResult := 1
+
+	bINum1, err := BigIntNum{}.NewNumStr(n1Str)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(n1Str). " +
+			"n1Str='%v' Error='%v'", n1Str, err.Error())
+	}
+
+	bINum2, err := BigIntNum{}.NewNumStr(n2Str)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(n2Str). " +
+			"n2Str='%v' Error='%v'", n2Str, err.Error())
+	}
+
+	cmpResult := bINum1.Cmp(bINum2)
+
+	if expectedCmpResult != cmpResult {
+		t.Errorf("Error: Expected Comparision Result='%v'.  Instead, Result='%v'",
+			expectedCmpResult, cmpResult)
+	}
+
+}
 
 func TestBigIntNum_Decimal_01(t *testing.T) {
 

@@ -104,8 +104,48 @@ func (bNum *BigIntNum) ChangeSign() {
 	return
 }
 
+// Cmp - Performs a true comparison of two BigIntNum values
+// and returns an integer value indicating the the relationship
+// between the two numeric values (i.e. greater than, less than,
+// or equal).
+//
+// Note: Unlike method CmpBigInt() below, this method does more than
+// just compare the root *big.Int. In making it's comparision, this
+// method takes into account, numeric sign values and precision. Therefore,
+// this method provides a true and comprehensive picture of the relationship
+// between two BigIntNum values.
+//
+// Return Values:
+// bNum == bigIntNum 				Return  0
+// bNum > bigIntNum					Return +1
+// bNum < bigIntNum					Return -1
+//
+func (bNum *BigIntNum) Cmp(bigIntNum BigIntNum) int {
+
+	b1Sign := bNum.GetSign()
+	b2Sign := bigIntNum.GetSign()
+
+	if b1Sign != b2Sign{
+		return b1Sign
+	}
+
+	// The signs must be equal
+
+	difference := BigIntMathSubtract{}.SubtractBigIntNums(
+									bNum.CopyOut(),
+										bigIntNum)
+
+	if difference.IsZero() {
+		return 0
+	}
+
+	return difference.GetSign()
+}
+
 // CmpBigInt - Compares the value of the *big.Int integer to that
 // contained in an incoming BigIntNum.
+//
+// For a true comparison of BigIntNum values see 'Cmp'
 //
 // Return Values:
 // bNum == bigIntNum 				Return  0

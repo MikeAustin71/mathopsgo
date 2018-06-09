@@ -4,6 +4,7 @@ import (
 	"math/big"
 	"fmt"
 	"errors"
+	"math"
 )
 
 // BigIntMathNthRoot - Used to extract square roots and nth roots of positive and negative
@@ -101,6 +102,28 @@ func (nthrt BigIntMathNthRoot) GetNthRoot(
 
 	ePrefix := "BigIntMathNthRoot.GetNthRoot() "
 
+
+	if radicand.GetSign() == -1 {
+
+		isEvenNum, err := nthRoot.IsEvenNumber()
+
+		if err != nil {
+			return BigIntNum{}.NewZero(0),
+				fmt.Errorf(ePrefix +
+					"Error returned by nthRoot.IsEvenNumber() " +
+					"nthRoot='%v' Error='%v' ",nthRoot.GetNumStr(), err.Error())
+		}
+
+		if isEvenNum {
+			return BigIntNum{}.NewZero(0),
+				fmt.Errorf(ePrefix +
+					"INVALID ENTRY - Cannot calculate nthRoot of a negative number when nthRoot is even. " +
+					"Original Number= %v  nthRoot= %v", radicand.GetNumStr(), nthRoot.GetNumStr())
+		}
+
+	}
+
+
 	result, err := nthrt.calcNthRootGateway(radicand, nthRoot, maxPrecision)
 
 	if err != nil {
@@ -113,6 +136,101 @@ func (nthrt BigIntMathNthRoot) GetNthRoot(
 	return result, nil
 }
 
+//                             Stage 1                                             //
+// ******************************************************************************* //
+
+// calcPositiveNthRoot - Calculates the nth root of a radicand where the nth root
+// is a positive value.
+func (nthrt *BigIntMathNthRoot) calcPositiveNthRoot(radicand, nthRoot BigIntNum,
+											maxPrecision uint) (BigIntNum, error) {
+
+return BigIntNum{}.NewZero(0), nil
+}
+
+// calcNegativeNthRoot - calculates the nth root of a radicand where the nth root
+// is a negative value.
+func (nthrt *BigIntMathNthRoot) calcNegativeNthRoot(radicand, nthRoot BigIntNum,
+	maxPrecision uint) (BigIntNum, error) {
+
+
+	return BigIntNum{}.NewZero(0), nil
+}
+
+
+//                             Stage 2                                             //
+// ******************************************************************************* //
+
+func (nthrt *BigIntMathNthRoot) calcPositiveIntegerNthRoot(radicand, nthRoot BigIntNum,
+	maxPrecision uint) (BigIntNum, error) {
+
+	bINumResult, err := nthrt.calcNthRootGateway(radicand, nthRoot, maxPrecision)
+
+	if err != nil {
+		ePrefix := "BigIntMathNthRoot.calcPositiveIntegerNthRoot() "
+		return BigIntNum{}.NewZero(0),
+		fmt.Errorf(ePrefix +
+			"Error returned by nthrt.calcNthRootGateway(radicand, nthRoot, maxPrecision) " +
+			"Error='%v' ", err.Error())
+	}
+
+	return bINumResult, nil
+}
+
+func (nthrt *BigIntMathNthRoot) calcPositiveFractionalNthRoot(radicand, nthRoot BigIntNum,
+	maxPrecision uint) (BigIntNum, error) {
+
+	ePrefix := "BigIntMathNthRoot.calcPositiveFractionalNthRoot() "
+
+	if nthRoot.GetPrecisionUint() == 0 {
+		return BigIntNum{}.NewZero(0),
+		fmt.Errorf(ePrefix +
+			"Error: This method only processes Fractional NthRoots. " +
+			"The current NthRoot is an Integer Value. nthRoot='%v'",
+				nthRoot.GetNumStr())
+	}
+
+	if nthRoot.GetSign() < 0 {
+		return BigIntNum{}.NewZero(0),
+			fmt.Errorf(ePrefix +
+				"Error: This method only processes Positive NthRoot Values. " +
+				"The current NthRoot is a NEGATIVE Value. nthRoot='%v'",
+				nthRoot.GetNumStr())
+	}
+
+	modXZero := big.NewInt(0)
+
+	scaleFactor := big.NewInt(0).Exp(
+		big.NewInt(10),
+		big.NewInt(int64(nthRoot.GetPrecisionUint())),
+		modXZero )
+
+	ratFraction := big.NewRat(1, 1 ).SetFrac(nthRoot.GetAbsoluteBigIntValue(), scaleFactor)
+
+	// Numerator of ratFraction is new nthRoot
+	//newNthRoot := BigIntNum{}.NewBigInt(ratFraction.Num(), 0)
+
+	// Denomerator of ratFraction is exponent for current radicand.
+	exponent := BigIntNum{}.NewBigInt(ratFraction.Denom(), 0)
+
+	radicandPrecision := BigIntNum{}.NewBigInt(big.NewInt(int64(radicand.GetPrecisionUint())),0)
+
+	newMaxPrecision := BigIntMathMultiply{}.MultiplyBigIntNums(exponent, radicandPrecision)
+
+	maxUintPrecison := BigIntNum{}.NewBigInt(big.NewInt(int64(math.MaxUint32)),0)
+
+	var exponentMaxPrecision uint
+
+	if newMaxPrecision.CmpBigInt(maxUintPrecison) > 0 {
+		exponentMaxPrecision = math.MaxUint32
+	} else {
+		exponentMaxPrecision = math.MaxUint32
+	}
+
+	newRadicand, _ := BigIntMathPower{}.Pwr(radicand, exponent, exponentMaxPrecision)
+
+
+	return newRadicand, nil
+}
 
 // calcNthRootGateway - Calculate the nth root of a radicand. The result is returned
 // as a BigIntNum.
@@ -164,6 +282,7 @@ func (nthrt *BigIntMathNthRoot) calcNthRootGateway(
 			errors.New(ePrefix +
 				"Error - Input Parameter 'nthRoot' INVALID! 'nthRoot' cannot equal 1. ")
 	}
+
 
 	if radicand.GetSign() == -1 {
 
