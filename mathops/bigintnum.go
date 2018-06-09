@@ -78,6 +78,32 @@ func (bNum *BigIntNum) Ceiling() BigIntNum {
 	return BigIntNum{}.NewBigInt(big.NewInt(0).Neg(absQuotient), 0)
 }
 
+// ChangeSign - Changes the sign of the current BigIntNum value.
+//
+// If the value of BigIntNum is zero, the sign will remain unchanged
+// and this method will return with no action taken.
+//
+// If the sign of the current BigIntNum value is positive (+), the sign
+// will be changed to negative (-). Likewise, if the current sign is
+// negative (-), the sign will be changed to positive (+).
+//
+func (bNum *BigIntNum) ChangeSign() {
+
+	if bNum.IsZero() {
+		return
+	}
+
+	bNum.bigInt = big.NewInt(0).Neg(bNum.bigInt)
+
+	if bNum.bigInt.Cmp(big.NewInt(0)) == -1 {
+		bNum.sign = -1
+	} else {
+		bNum.sign = 1
+	}
+
+	return
+}
+
 // CmpBigInt - Compares the value of the *big.Int integer to that
 // contained in an incoming BigIntNum.
 //

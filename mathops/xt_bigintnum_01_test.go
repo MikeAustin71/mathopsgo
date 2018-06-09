@@ -708,6 +708,86 @@ func TestBigIntNum_Ceil_17(t *testing.T) {
 	}
 }
 
+func TestBigIntNum_ChangeSign_01(t *testing.T) {
+	nStr:="123.456"
+	expectedStr := "-123.456"
+	expectedSign := -1
+
+	bINum, err := BigIntNum{}.NewNumStr(nStr)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(nStr). " +
+			"nStr='%v' Error='%v'", nStr, err.Error())
+	}
+
+	bINum.ChangeSign()
+
+	if expectedSign != bINum.GetSign() {
+		t.Errorf("Error: After ChangeSign - Expected Sign='%v'.  Instead, Sign='%v' ",
+			expectedSign, bINum.GetSign() )
+	}
+
+	if expectedStr != bINum.GetNumStr() {
+		t.Errorf("Error: After ChangeSign - Expected BigIntNum='%v'. Instead, BigIntNum='%v'",
+			expectedStr, bINum.GetNumStr())
+	}
+
+}
+
+func TestBigIntNum_ChangeSign_02(t *testing.T) {
+	nStr:="-123.456"
+	expectedStr := "123.456"
+	expectedSign := 1
+
+	bINum, err := BigIntNum{}.NewNumStr(nStr)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(nStr). " +
+			"nStr='%v' Error='%v'", nStr, err.Error())
+	}
+
+	bINum.ChangeSign()
+
+	if expectedSign != bINum.GetSign() {
+		t.Errorf("Error: After ChangeSign - Expected Sign='%v'.  Instead, Sign='%v' ",
+			expectedSign, bINum.GetSign() )
+	}
+
+	if expectedStr != bINum.GetNumStr() {
+		t.Errorf("Error: After ChangeSign - Expected BigIntNum='%v'. Instead, BigIntNum='%v'",
+			expectedStr, bINum.GetNumStr())
+	}
+
+}
+
+func TestBigIntNum_ChangeSign_03(t *testing.T) {
+	nStr:="0.00"
+	expectedStr := "0.00"
+	expectedSign := 1
+	
+	bINum, err := BigIntNum{}.NewNumStr(nStr)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(nStr). " +
+			"nStr='%v' Error='%v'", nStr, err.Error())
+	}
+
+	bINum.ChangeSign()
+
+	if expectedSign != bINum.GetSign() {
+		t.Errorf("Error: After ChangeSign - Expected Sign='%v'.  Instead, Sign='%v' ",
+			expectedSign, bINum.GetSign() )
+	}
+
+	if expectedStr != bINum.GetNumStr() {
+		t.Errorf("Error: After ChangeSign - Expected BigIntNum='%v'. Instead, BigIntNum='%v'",
+			expectedStr, bINum.GetNumStr())
+	}
+
+}
+
+
+
 func TestBigIntNum_Decimal_01(t *testing.T) {
 
 	nStr:="123.456"
