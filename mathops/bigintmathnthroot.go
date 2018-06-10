@@ -204,19 +204,27 @@ func (nthrt *BigIntMathNthRoot) calcNegativeNthRoot(radicand, nthRoot BigIntNum,
 		if err != nil {
 			return BigIntNum{}.NewZero(0),
 				fmt.Errorf(ePrefix + "Error returned by calcPositiveIntegerNthRoot(...) " +
-					"Error='%v' ", err.Error())
+					"Error='%v' \n", err.Error())
 		}
 	} else {
 		nthRootResult, err = nthrt.calcPositiveFractionalNthRoot(radicand, nthRoot, maxPrecision)
 		if err != nil {
 			return BigIntNum{}.NewZero(0),
 				fmt.Errorf(ePrefix + "Error returned by calcPositiveFractionalNthRoot(...) " +
-					"Error='%v' ", err.Error())
+					"Error='%v' \n", err.Error())
 		}
 	}
 
+	inverse, err := nthRootResult.Inverse(maxPrecision)
 
-	return nthRootResult, nil
+	if err != nil {
+		return BigIntNum{}.NewZero(0),
+			fmt.Errorf(ePrefix + "Error returned by nthRootResult.Inverse(maxPrecision) " +
+				"maxPrecision='%v' Error='%v' \n", maxPrecision, err.Error())
+
+	}
+
+	return inverse, nil
 }
 
 
