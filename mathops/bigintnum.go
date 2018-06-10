@@ -808,8 +808,17 @@ func (bNum *BigIntNum) GetBigInt() (*big.Int, error) {
 }
 
 
-// GetInt - Returns a type 'int' containing the integer
+// GetInt - Returns a type 'int' containing the 32-big integer
 // value of the current BigIntNum instance.
+//
+// If the current BigIntNum value is greater than the maximum
+// 'int' value, the maximum 32-bit integer value is returned
+// in addition to an 'error'.
+//
+// If the current BigIntNum value is less than the minimum 'int'
+// value, the minimum 32-bit integer value is returned along with
+// an 'error'.
+//
 func (bNum *BigIntNum) GetInt() (int, error) {
 
 	ePrefix := "BigIntNum) GetInt() "
@@ -817,18 +826,49 @@ func (bNum *BigIntNum) GetInt() (int, error) {
 	bIMinInt := big.NewInt(int64(math.MinInt32))
 
 	if bNum.bigInt.Cmp(bIMaxInt) == 1 {
-		return 0, fmt.Errorf(ePrefix + "Error: BigIntNum Value is GREATER than Int32 Maximum! "+
+		return math.MaxInt32, fmt.Errorf(ePrefix + "Error: BigIntNum Value is GREATER than Int32 Maximum! "+
 			"Int32 Maximum Value='%v' BigIntNum Value='%v'",bIMaxInt.Text(10), bNum.GetNumStr())
 	}
 
 	if bNum.bigInt.Cmp(bIMinInt) == -1 {
-		return 0, fmt.Errorf(ePrefix + "Error: BigIntNum Value is LESS than Int32 Minmum! "+
+		return math.MinInt32, fmt.Errorf(ePrefix + "Error: BigIntNum Value is LESS than Int32 Minmum! "+
 			"Int32 Minimum Value='%v' BigIntNum Value='%v'",bIMinInt.Text(10), bNum.GetNumStr())
 	}
 
 	return int(bNum.bigInt.Int64()), nil
 
 }
+
+
+// GetUInt - Returns a type 'uint' containing the 32-bit unsigned
+// integer value of the current BigIntNum instance.
+//
+// If the current BigIntNum value is greater than the maximum
+// 'uint' value, the maximum 32-bit unsigned integer value is returned
+// in addition to an 'error'.
+//
+// If the current BigIntNum value is less than the minimum 'uint'
+// value, the minimum 32-bit integer value of zero is returned along
+// with an 'error'.
+//
+func (bNum *BigIntNum) GetUInt() (uint, error) {
+	ePrefix := "BigIntNum.GetUInt() "
+
+	bIMaxUint := big.NewInt(int64(math.MaxUint32))
+
+	if bNum.bigInt.Cmp(big.NewInt(0)) == -1 {
+		return uint(0),
+		fmt.Errorf(ePrefix + "Error: BigIntNum is LESS THAN minimum 'uint' value of zero.")
+	}
+
+	if bNum.bigInt.Cmp(bIMaxUint) == 1 {
+		return math.MaxUint32,
+			fmt.Errorf("Error: BigIntNum is GREATER THAN maximum 'uint' value.")
+	}
+
+	return  uint(bNum.bigInt.Uint64()), nil
+}
+
 
 // GetCurrencySymbol - Returns the character currently designated
 // as the currency symbol for this BigIntNum instance.
@@ -1276,6 +1316,31 @@ func (bNum *BigIntNum) GetUnsignedInt() (uint, error) {
 	}
 
 	return uint(bNum.bigInt.Int64()), nil
+}
+
+// Inverse - Returns the inverse of the current BigIntNum
+// value. The inverse of the value is equal to one ('1')
+// divided by the numeric value of the current BigIntNum.
+//
+func (bNum *BigIntNum) Inverse(maxPrecision uint) (BigIntNum, error) {
+
+	if bNum.IsZero() {
+		return BigIntNum{}.NewZero(0), nil
+	}
+
+	bIOne := BigIntNum{}.NewOne(0)
+
+	inverse, err := BigIntMathDivide{}.BigIntNumFracQuotient(bIOne, bNum.CopyOut(), maxPrecision )
+
+	if err != nil {
+		ePrefix := "BigIntNum.Inverse() "
+		return BigIntNum{}.NewZero(0),
+		fmt.Errorf(ePrefix +
+			"Error returned by BigIntMathDivide{}.BigIntNumFracQuotient(...) " +
+			"Error='%v' \n", err.Error())
+	}
+
+	return inverse, nil
 }
 
 // IsEvenNumber - Returns true if the current BigIntNum value is

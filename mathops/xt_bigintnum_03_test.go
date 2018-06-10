@@ -677,6 +677,156 @@ func TestBigIntNum_GetNumberOfDigits_11(t *testing.T) {
 
 }
 
+func TestBigIntNum_Inverse_01(t *testing.T) {
+	testNumStr := "4"
+	expectedNumStr := "0.25"
+	maxPrecision := uint(2)
+
+	bINum, err := BigIntNum{}.NewNumStr(testNumStr)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(testNumStr). " +
+			"testNumStr='%v' Error='%v' \n", testNumStr, err.Error())
+	}
+
+	actualInverse, err := bINum.Inverse(maxPrecision)
+
+	if err != nil {
+		t.Errorf("Error returned by bINum.Inverse(maxPrecision). " +
+			"maxPrecision='%v' Error='%v' \n", maxPrecision, err.Error())
+	}
+
+	if expectedNumStr != actualInverse.GetNumStr() {
+		t.Errorf("Error: Expected Inverse='%v'. Instead, Inverse='%v' \n",
+			expectedNumStr, actualInverse.GetNumStr())
+	}
+}
+
+func TestBigIntNum_Inverse_02(t *testing.T) {
+	testNumStr := "9.357"
+	expectedNumStr := "0.10687186063909372662178048519825"
+	maxPrecision := uint(32)
+
+	bINum, err := BigIntNum{}.NewNumStr(testNumStr)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(testNumStr). " +
+			"testNumStr='%v' Error='%v' \n", testNumStr, err.Error())
+	}
+
+	actualInverse, err := bINum.Inverse(maxPrecision)
+
+	if err != nil {
+		t.Errorf("Error returned by bINum.Inverse(maxPrecision). " +
+			"maxPrecision='%v' Error='%v' \n", maxPrecision, err.Error())
+	}
+
+	if expectedNumStr != actualInverse.GetNumStr() {
+		t.Errorf("Error: Expected Inverse='%v'. Instead, Inverse='%v' \n",
+			expectedNumStr, actualInverse.GetNumStr())
+	}
+}
+
+func TestBigIntNum_Inverse_03(t *testing.T) {
+	testNumStr := "-9.357"
+	expectedNumStr := "-0.10687186063909372662178048519825"
+	maxPrecision := uint(32)
+
+	bINum, err := BigIntNum{}.NewNumStr(testNumStr)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(testNumStr). " +
+			"testNumStr='%v' Error='%v' \n", testNumStr, err.Error())
+	}
+
+	actualInverse, err := bINum.Inverse(maxPrecision)
+
+	if err != nil {
+		t.Errorf("Error returned by bINum.Inverse(maxPrecision). " +
+			"maxPrecision='%v' Error='%v' \n", maxPrecision, err.Error())
+	}
+
+	if expectedNumStr != actualInverse.GetNumStr() {
+		t.Errorf("Error: Expected Inverse='%v'. Instead, Inverse='%v' \n",
+			expectedNumStr, actualInverse.GetNumStr())
+	}
+}
+
+func TestBigIntNum_Inverse_04(t *testing.T) {
+	testNumStr := "0"
+	expectedNumStr := "0"
+	maxPrecision := uint(0)
+
+	bINum, err := BigIntNum{}.NewNumStr(testNumStr)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(testNumStr). " +
+			"testNumStr='%v' Error='%v' \n", testNumStr, err.Error())
+	}
+
+	actualInverse, err := bINum.Inverse(maxPrecision)
+
+	if err != nil {
+		t.Errorf("Error returned by bINum.Inverse(maxPrecision). " +
+			"maxPrecision='%v' Error='%v' \n", maxPrecision, err.Error())
+	}
+
+	if expectedNumStr != actualInverse.GetNumStr() {
+		t.Errorf("Error: Expected Inverse='%v'. Instead, Inverse='%v' \n",
+			expectedNumStr, actualInverse.GetNumStr())
+	}
+}
+
+func TestBigIntNum_Inverse_09(t *testing.T) {
+	testNumStr := "9"
+	expectedNumStr := "0.11111111111111111111111111111111"
+	maxPrecision := uint(32)
+
+	bINum, err := BigIntNum{}.NewNumStr(testNumStr)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(testNumStr). " +
+			"testNumStr='%v' Error='%v' \n", testNumStr, err.Error())
+	}
+
+	actualInverse, err := bINum.Inverse(maxPrecision)
+
+	if err != nil {
+		t.Errorf("Error returned by bINum.Inverse(maxPrecision). " +
+			"maxPrecision='%v' Error='%v' \n", maxPrecision, err.Error())
+	}
+
+	if expectedNumStr != actualInverse.GetNumStr() {
+		t.Errorf("Error: Expected Inverse='%v'. Instead, Inverse='%v' \n",
+			expectedNumStr, actualInverse.GetNumStr())
+	}
+}
+
+func TestBigIntNum_Inverse_10(t *testing.T) {
+	testNumStr := "-9"
+	expectedNumStr := "-0.11111111111111111111111111111111"
+	maxPrecision := uint(32)
+
+	bINum, err := BigIntNum{}.NewNumStr(testNumStr)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(testNumStr). " +
+			"testNumStr='%v' Error='%v' \n", testNumStr, err.Error())
+	}
+
+	actualInverse, err := bINum.Inverse(maxPrecision)
+
+	if err != nil {
+		t.Errorf("Error returned by bINum.Inverse(maxPrecision). " +
+			"maxPrecision='%v' Error='%v' \n", maxPrecision, err.Error())
+	}
+
+	if expectedNumStr != actualInverse.GetNumStr() {
+		t.Errorf("Error: Expected Inverse='%v'. Instead, Inverse='%v' \n",
+			expectedNumStr, actualInverse.GetNumStr())
+	}
+}
+
 func TestBigIntNum_IsEvenNumber_01(t *testing.T) {
 
 	testNumStr := "4"
