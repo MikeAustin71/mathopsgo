@@ -3,6 +3,7 @@ package mathops
 import (
 	"fmt"
 	"math/big"
+	"errors"
 )
 
 type BigIntMathPower struct {
@@ -37,12 +38,12 @@ func (bIPwr BigIntMathPower) Pwr(base, exponent BigIntNum, maxPrecision uint) (B
 
 		if exponent.GetSign() > 0 {
 			// exponent is a positive number
-			result, err = bIPwr.RaiseToPositiveIntegerPower(base, exponent)
+			result, err = bIPwr.raiseToPositiveIntegerPower(base, exponent)
 
 			if err != nil {
 				return BigIntNum{}.NewZero(0),
 					fmt.Errorf(ePrefix +
-						"Error returned by bIPwr.RaiseToPositiveIntegerPower(" +
+						"Error returned by bIPwr.raiseToPositiveIntegerPower(" +
 						"base, exponent, maxPrecision) " +
 						"base='%v' exponent='%v' Error='%v' ",
 						base.GetNumStr(), exponent.GetNumStr(), err.Error())
@@ -50,11 +51,11 @@ func (bIPwr BigIntMathPower) Pwr(base, exponent BigIntNum, maxPrecision uint) (B
 
 		} else {
 			// exponent must be a negative number
-			result, err = bIPwr.RaiseToNegativeIntegerPower(base, exponent, maxPrecision)
+			result, err = bIPwr.raiseToNegativeIntegerPower(base, exponent, maxPrecision)
 
 			if err != nil {
 				return BigIntNum{}.NewZero(0),
-					fmt.Errorf(ePrefix + "Error returned by bIPwr.RaiseToNegativeIntegerPower("+
+					fmt.Errorf(ePrefix + "Error returned by bIPwr.raiseToNegativeIntegerPower("+
 						"base, exponent, maxPrecision) "+
 						"base='%v' exponent='%v' maxPrecision='%v' Error='%v' ",
 						base.GetNumStr(), exponent.GetNumStr(), maxPrecision, err.Error())
@@ -68,7 +69,7 @@ func (bIPwr BigIntMathPower) Pwr(base, exponent BigIntNum, maxPrecision uint) (B
 		if exponent.GetSign() > 0 {
 			// fractional exponent is a positive number
 
-		 result, err = bIPwr.RaiseToPositiveFractionalPower(base, exponent, maxPrecision)
+		 result, err = bIPwr.raiseToPositiveFractionalPower(base, exponent, maxPrecision)
 
 		 if err != nil {
 		 	return BigIntNum{},
@@ -82,7 +83,7 @@ func (bIPwr BigIntMathPower) Pwr(base, exponent BigIntNum, maxPrecision uint) (B
 		} else {
 			// fractional exponent must be a negative number
 
-			result, err = bIPwr.RaiseToNegativeFractionalPower(base, exponent, maxPrecision)
+			result, err = bIPwr.raiseToNegativeFractionalPower(base, exponent, maxPrecision)
 
 			if err != nil {
 				return BigIntNum{},
@@ -103,7 +104,7 @@ func (bIPwr BigIntMathPower) Pwr(base, exponent BigIntNum, maxPrecision uint) (B
 	return result, nil
 }
 
-// RaiseToNegativeFractionalPower - Assumes that input parameter 'exponent' is negative and a
+// raiseToNegativeFractionalPower - Assumes that input parameter 'exponent' is negative and a
 // fractional number (precision > 0 - has fractional digits). If 'exponent' is positive or if
 // 'exponent' is an integer number, an error is returned.
 //
@@ -111,7 +112,7 @@ func (bIPwr BigIntMathPower) Pwr(base, exponent BigIntNum, maxPrecision uint) (B
 // raise input parameter 'base' to the power of 'exponent' and return the result as a BigIntNum
 // type.
 //
-func (bIPwr BigIntMathPower) RaiseToNegativeFractionalPower(
+func (bIPwr BigIntMathPower) raiseToNegativeFractionalPower(
 		base,
 			exponent BigIntNum,
 				maxPrecision uint) (BigIntNum, error) {
@@ -134,7 +135,7 @@ func (bIPwr BigIntMathPower) RaiseToNegativeFractionalPower(
 
 	exponentAbsVal := exponent.GetAbsoluteBigIntNumValue()
 	bINumResult, err :=
-							bIPwr.RaiseToPositiveFractionalPower(
+							bIPwr.raiseToPositiveFractionalPower(
 											base,
 												exponentAbsVal,
 													maxPrecision)
@@ -162,7 +163,7 @@ func (bIPwr BigIntMathPower) RaiseToNegativeFractionalPower(
 	return inverseResult, nil
 }
 
-// RaiseToPositiveFractionalPower - Assumes that input parameter 'exponent' is positive and a
+// raiseToPositiveFractionalPower - Assumes that input parameter 'exponent' is positive and a
 // fractional number (precision > 0 - has fractional digits). If 'exponent' is negative or if
 // 'exponent' is an integer number, an error is returned.
 //
@@ -170,7 +171,7 @@ func (bIPwr BigIntMathPower) RaiseToNegativeFractionalPower(
 // raise input parameter 'base' to the power of 'exponent' and return the result as a BigIntNum
 // type.
 //
-func (bIPwr BigIntMathPower) RaiseToPositiveFractionalPower(
+func (bIPwr BigIntMathPower) raiseToPositiveFractionalPower(
 		base,
 			exponent BigIntNum,
 				maxPrecision uint) (BigIntNum, error) {
@@ -202,22 +203,56 @@ func (bIPwr BigIntMathPower) RaiseToPositiveFractionalPower(
 
 	bINumNumerator := BigIntNum{}.NewBigInt(ratExponent.Num(), 0)
 
-	pwr1Result, err := bIPwr.RaiseToPositiveIntegerPower(base, bINumNumerator)
+	pwr1Result, err := bIPwr.raiseToPositiveIntegerPower(base, bINumNumerator)
 
 	if err != nil {
-		return BigIntNum{},
+		return BigIntNum{}.NewZero(0),
 		fmt.Errorf(ePrefix + "Error returned by bIPwr.raiseToPositive" +
 			"IntegerPower(base, bINumNumerator)" +
-			"base='%v' bINumNumerator='%v' Error='%v' ",
+			"base='%v' bINumNumerator='%v' Error='%v' \n",
 				base.GetNumStr(), bINumNumerator.GetNumStr(), err.Error())
 	}
 
 	nthRoot := BigIntNum{}.NewBigInt(ratExponent.Denom(), 0)
 
+	// If nthRoot is zero, the result will always be '1'
+	if nthRoot.IsZero() {
+		return BigIntNum{}.NewOne(maxPrecision), nil
+	}
+
+	bigINumOne := BigIntNum{}.NewOne(0)
+
+	// Error if nthRoot == 1
+	if nthRoot.Cmp(bigINumOne) == 0 {
+		return BigIntNum{}.NewZero(0),
+			errors.New(ePrefix +
+				"Error - Input Parameter 'nthRoot' INVALID! 'nthRoot' cannot equal 1.\n")
+	}
+
+	if pwr1Result.GetSign() == -1 {
+
+		isEvenNum, err := nthRoot.IsEvenNumber()
+
+		if err != nil {
+			return BigIntNum{}.NewZero(0),
+				fmt.Errorf(ePrefix +
+					"Error returned by nthRoot.IsEvenNumber() " +
+					"nthRoot='%v' Error='%v'\n",nthRoot.GetNumStr(), err.Error())
+		}
+
+		if isEvenNum {
+			return BigIntNum{}.NewZero(0),
+				fmt.Errorf(ePrefix +
+					"INVALID ENTRY - Cannot calculate nthRoot of a negative number when nthRoot is even. " +
+					"Original Number= %v  nthRoot= %v\n", pwr1Result.GetNumStr(), nthRoot.GetNumStr())
+		}
+
+	}
+
 	biNumResult, err := BigIntMathNthRoot{}.GetNthRoot(pwr1Result, nthRoot, maxPrecision)
 
 	if err != nil {
-		return BigIntNum{},
+		return BigIntNum{}.NewZero(0),
 			fmt.Errorf(ePrefix +
 					"Error returned by dBigIntMathNthRoot{}.GetNthRoot(...) " +
 				"Error='%v'",	err.Error())
@@ -226,7 +261,7 @@ func (bIPwr BigIntMathPower) RaiseToPositiveFractionalPower(
 	return biNumResult, nil
 }
 
-// RaiseToNegativeIntegerPower - Assumes that input parameter 'exponent' is negative and an
+// raiseToNegativeIntegerPower - Assumes that input parameter 'exponent' is negative and an
 // integer number (precision==0 - no fractional digits). If 'exponent' is positive or if
 // it is NOT an integer number, an error is returned.
 //
@@ -234,12 +269,12 @@ func (bIPwr BigIntMathPower) RaiseToPositiveFractionalPower(
 // raise input parameter 'base' to the power of 'exponent' and return the result as a BigIntNum
 // type.
 //
-func (bIPwr BigIntMathPower) RaiseToNegativeIntegerPower(
+func (bIPwr BigIntMathPower) raiseToNegativeIntegerPower(
 															base,
 																exponent BigIntNum,
 																	maxPrecision uint) (BigIntNum, error) {
 
-  ePrefix := "BigIntMathPower.RaiseToNegativeIntegerPower()"
+  ePrefix := "BigIntMathPower.raiseToNegativeIntegerPower()"
 
 	if exponent.GetPrecisionUint() > 0 {
 		return BigIntNum{},
@@ -277,7 +312,7 @@ func (bIPwr BigIntMathPower) RaiseToNegativeIntegerPower(
 	return result, nil
 }
 
-// RaiseToPositiveIntegerPower - Assumes that input parameter 'exponent' is a positive
+// raiseToPositiveIntegerPower - Assumes that input parameter 'exponent' is a positive
 // integer number. If 'exponent' is negative or if 'exponent' is NOT an integer (precision > 0),
 // an error will be triggered.
 //
@@ -297,11 +332,11 @@ func (bIPwr BigIntMathPower) RaiseToNegativeIntegerPower(
 //  -4.2				3					 -74.088
 //	-2.9				4					  70.7281
 //  -2          3.8
-func (bIPwr BigIntMathPower) RaiseToPositiveIntegerPower(
+func (bIPwr BigIntMathPower) raiseToPositiveIntegerPower(
 				base,
 					exponent BigIntNum) (BigIntNum, error) {
 
-	ePrefix := "BigIntMathPower.RaiseToPositiveIntegerPower() "
+	ePrefix := "BigIntMathPower.raiseToPositiveIntegerPower() "
 
 	if exponent.GetPrecisionUint() > 0 {
 		return BigIntNum{},

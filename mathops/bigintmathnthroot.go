@@ -133,11 +133,11 @@ func (nthrt BigIntMathNthRoot) GetNthRoot(
 	}
 
 	bigINumOne := BigIntNum{}.NewOne(0)
-
+	// Error if nthRoot == 1
 	if nthRoot.Cmp(bigINumOne) == 0 {
 		return BigIntNum{}.NewZero(0),
 			errors.New(ePrefix +
-				"Error - Input Parameter 'nthRoot' INVALID! 'nthRoot' cannot equal 1. ")
+				"Error - Input Parameter 'nthRoot' INVALID! 'nthRoot' cannot equal 1.\n")
 	}
 
 
@@ -272,6 +272,8 @@ func (nthrt *BigIntMathNthRoot) calcPositiveFractionalNthRoot(radicand, nthRoot 
 				nthRoot.GetNumStr())
 	}
 
+
+
 	modXZero := big.NewInt(0)
 
 	scaleFactor := big.NewInt(0).Exp(
@@ -283,6 +285,39 @@ func (nthrt *BigIntMathNthRoot) calcPositiveFractionalNthRoot(radicand, nthRoot 
 
 	// Numerator of ratFraction is new nthRoot
 	newNthRoot := BigIntNum{}.NewBigInt(ratFraction.Num(), 0)
+
+	if radicand.GetSign() == -1 {
+
+		isEvenNum, err := newNthRoot.IsEvenNumber()
+
+		if err != nil {
+			return BigIntNum{}.NewZero(0),
+				fmt.Errorf(ePrefix +
+					"Error returned by newNthRoot.IsEvenNumber() " +
+					"newNthRoot='%v' Error='%v'\n",newNthRoot.GetNumStr(), err.Error())
+		}
+
+		if isEvenNum {
+			return BigIntNum{}.NewZero(0),
+				fmt.Errorf(ePrefix +
+					"INVALID ENTRY - Cannot calculate nthRoot of a negative number when nthRoot is even. " +
+					"Original Number= %v  newNthRoot= %v\n", radicand.GetNumStr(), newNthRoot.GetNumStr())
+		}
+
+	}
+
+	// If nthRoot is zero, the result will always be '1'
+	if newNthRoot.IsZero() {
+		return BigIntNum{}.NewOne(maxPrecision), nil
+	}
+
+	bigINumOne := BigIntNum{}.NewOne(0)
+	// Error if nthRoot == 1
+	if newNthRoot.Cmp(bigINumOne) == 0 {
+		return BigIntNum{}.NewZero(0),
+			errors.New(ePrefix +
+				"Error - Input Parameter 'newNthRoot' INVALID! 'newNthRoot' cannot equal 1. ")
+	}
 
 	// Denomerator of ratFraction is exponent for current radicand.
 	exponent := BigIntNum{}.NewBigInt(ratFraction.Denom(), 0)
