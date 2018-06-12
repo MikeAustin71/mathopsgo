@@ -8,64 +8,19 @@ import (
 
 func main() {
 
-	baseStr := "-5"
-	exponentStr := "5"
-	expectedStr := "-3125"
-	maxPrecision := uint(0)
+	radicandStr := "8"
+	nthRootStr := "0.4"
+	expectedStr := "181.01933598375616624661615669884"
+	maxPrecision := uint(29)
 
-	ExampleBigIntNumPower_01(baseStr, exponentStr, expectedStr, maxPrecision)
-
-}
-
-
-func ExampleBigIntNumPower_01(baseStr, exponentStr, expectedStr string, maxPrecision uint) {
-
-	bINumBase, err := mathops.BigIntNum{}.NewNumStr(baseStr)
-
-	if err != nil {
-		fmt.Printf("Error returned by BigIntNum{}.NewNumStr(baseStr). " +
-			"baseStr='%v' Error='%v' \n", baseStr, err.Error())
-		return
-	}
-
-	bINumExponent, err := mathops.BigIntNum{}.NewNumStr(exponentStr)
-
-	if err != nil {
-		fmt.Printf("Error returned by BigIntNum{}.NewNumStr(exponentStr). " +
-			"exponentStr='%v' Error='%v' \n", exponentStr, err.Error())
-		return
-	}
-
-	result, err := mathops.BigIntMathPower{}.Pwr(bINumBase, bINumExponent, maxPrecision)
-
-	if err != nil {
-		fmt.Printf("Error returned by BigIntMathPower{}.Pwr(bINumBase, bINumExponent, maxPrecision). " +
-			"bINumBase='%v' bINumExponent='%v' maxPrecision='%v' Error='%v' \n",
-			bINumBase.GetNumStr(), bINumExponent.GetNumStr(), maxPrecision, err.Error())
-		return
-	}
-
-	fmt.Println("*** BigIntMathPower{}.Pwr() ***")
-	fmt.Println("Expected Result: ", expectedStr)
-	fmt.Println("  Actual Result: ", result.GetNumStr())
-
-	if expectedStr != result.GetNumStr() {
-		fmt.Println("XXX FAILURE XXX Expected Result NOT EQUAL to Actual Result!")
-	} else {
-		fmt.Println("*** SUCCESS *** Expected Result Equals Actual Result!")
-	}
-
-
-	fmt.Println("           Base: ", bINumBase.GetNumStr())
-	fmt.Println("       Exponent: ", bINumExponent.GetNumStr())
+	ExampleBigIntNumNthRoot_01(radicandStr, nthRootStr, maxPrecision,  expectedStr)
 
 }
-
 
 func ExampleBigIntNumNthRoot_01(
-	radicandStr, nthRootStr string,
-	maxPrecision uint,
-	expectedNumStr string) {
+			radicandStr, nthRootStr string,
+				maxPrecision uint,
+					expectedNumStr string) {
 
 
 	radicand, err := mathops.BigIntNum{}.NewNumStr(radicandStr)
@@ -118,6 +73,51 @@ func ExampleBigIntNumNthRoot_01(
 	fmt.Println("        NthRoot: ", nthRoot.GetNumStr())
 
 }
+
+func ExampleBigIntNumPower_01(baseStr, exponentStr, expectedStr string, maxPrecision uint) {
+
+	bINumBase, err := mathops.BigIntNum{}.NewNumStr(baseStr)
+
+	if err != nil {
+		fmt.Printf("Error returned by BigIntNum{}.NewNumStr(baseStr). " +
+			"baseStr='%v' Error='%v' \n", baseStr, err.Error())
+		return
+	}
+
+	bINumExponent, err := mathops.BigIntNum{}.NewNumStr(exponentStr)
+
+	if err != nil {
+		fmt.Printf("Error returned by BigIntNum{}.NewNumStr(exponentStr). " +
+			"exponentStr='%v' Error='%v' \n", exponentStr, err.Error())
+		return
+	}
+
+	result, err := mathops.BigIntMathPower{}.Pwr(bINumBase, bINumExponent, maxPrecision)
+
+	if err != nil {
+		fmt.Printf("Error returned by BigIntMathPower{}.Pwr(bINumBase, bINumExponent, maxPrecision). " +
+			"bINumBase='%v' bINumExponent='%v' maxPrecision='%v' Error='%v' \n",
+			bINumBase.GetNumStr(), bINumExponent.GetNumStr(), maxPrecision, err.Error())
+		return
+	}
+
+	fmt.Println("*** BigIntMathPower{}.Pwr() ***")
+	fmt.Println("Expected Result: ", expectedStr)
+	fmt.Println("  Actual Result: ", result.GetNumStr())
+
+	if expectedStr != result.GetNumStr() {
+		fmt.Println("XXX FAILURE XXX Expected Result NOT EQUAL to Actual Result!")
+	} else {
+		fmt.Println("*** SUCCESS *** Expected Result Equals Actual Result!")
+	}
+
+
+	fmt.Println("           Base: ", bINumBase.GetNumStr())
+	fmt.Println("       Exponent: ", bINumExponent.GetNumStr())
+
+}
+
+
 
 func ExampleBundleCount_01(bINumTarget, bINumNthRoot mathops.BigIntNum, expectedBundleCnt string) {
 

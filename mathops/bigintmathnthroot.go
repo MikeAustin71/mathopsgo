@@ -78,21 +78,42 @@ func (nthrt *BigIntMathNthRoot) Empty() {
 	nthrt.Beta = big.NewInt(0)
 }
 
-// GetNthRoot  - Calculates the Nth Root of a real number ('num')
-// passed to the method as Type BigIntNum.  In addition, the caller must supply
-// input parameters for 'nthRoot' and 'maxPrecision'.
+// GetNthRoot  - Calculates the Nth Root of a real number ('radicand')
+// passed to the method as Type BigIntNum.  The calling function must supply
+// input parameters for 'radicand', 'nthRoot' and 'maxPrecision'.
 //
-// 'nthRoot' specifies the root which will be calculated for parameter, 'num'. Example,
-// square root, cube root, 4th root, 9th root etc. 'nthRoot' is a BigIntNum Type which
-// must be a positive integer number with a value greater than one ('1') and less than
-// or equal to +2,147,483,647. As a practical matter, your computer may run out of memory
-// before you reach this maximum limit. If 'nthRoot' fails to meet this criteria an error
-// will be returned.
+// Input Parameters
+// ================
 //
-// 'maxPrecision' specifies the number of decimals to the right of the decimal place to
-// which the Nth root will be calculated.
+// radicand	- The radicand value from which the nth Root will be taken.
+//            nthRootResult^nthRoot = radicand
 //
-// The calculation result is returned as an instance to Type BigIntNum .
+// nthRoot  - Specifies the root which will be calculated for parameter,
+// 						'radicand'. Example, square root, cube root, 4th root,
+// 						9th root etc. 'nthRoot' is a BigIntNum Type which may be
+// 						a positive or negative number. In addition, the nthRoot may
+// 						be either an integer number or a fractional number.
+// 					  The nthRoot must be with a numeric value greater than one ('1')
+//            or less than minus one (-1). nthRoots with a value of zero will
+// 						always return an nthRoot result of zero. Nth Root values of +1 or
+//						-1 will generate an error.
+//
+//						If the radicand is negative and the nthRoot value is an even number
+//						(evenly divisible by 2 with no remainder), an error will be returned
+//						since the result of such a calculation is an imaginary number.
+//
+// maxPrecision	- Specifies the maximum number of decimals to the right of the
+// 								decimal point to which the Nth root result will be calculated.
+//
+//	Returns
+//	=======
+//
+//	BigIntNum - If successful the nth root result will be returned as a
+//							BigIntNum type.
+//
+//	error			- If the calculation completes successfully, the 'error' type
+//							returned will be set equal to 'nil'. If an error is encountered
+//							the returned 'error' type will contain an error message.
 //
 func (nthrt BigIntMathNthRoot) GetNthRoot(
 					radicand, nthRoot BigIntNum,
@@ -140,17 +161,32 @@ func (nthrt BigIntMathNthRoot) GetNthRoot(
 				"Error - Input Parameter 'nthRoot' INVALID! 'nthRoot' cannot equal 1.\n")
 	}
 
+	var nthRootResult BigIntNum
+	var err error
 
-	result, err := nthrt.calcNthRootGateway(radicand, nthRoot, maxPrecision)
+	if nthRoot.GetSign() == -1 {
 
-	if err != nil {
-		return BigIntNum{}.NewZero(0),
-			fmt.Errorf(ePrefix + "Error returned by nthrt.calcNthRootGateway(radicand, nthRoot, maxPrecision). " +
-				"radicand='%v' nthRoot='%v' maxPrecision='%v'\n",
-					radicand.GetNumStr(), nthRoot.GetNumStr(), maxPrecision)
+		nthRootResult, err = nthrt.calcNegativeNthRoot(radicand, nthRoot, maxPrecision)
+
+		if err != nil {
+			return BigIntNum{}.NewZero(0),
+				fmt.Errorf(ePrefix + "Error returned by nthrt.calcNegativeNthRoot(...). " +
+					"Error='%v' \n")
+		}
+
+	} else {
+
+		nthRootResult, err = nthrt.calcPositiveNthRoot(radicand, nthRoot, maxPrecision)
+
+		if err != nil {
+			return BigIntNum{}.NewZero(0),
+				fmt.Errorf(ePrefix + "Error returned by nthrt.calcPositiveNthRoot(...). " +
+					"Error='%v' \n")
+		}
+
 	}
 
-	return result, nil
+	return nthRootResult, nil
 }
 
 //                             Stage 1                                             //
