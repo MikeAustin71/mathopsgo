@@ -9,9 +9,9 @@ import (
 func main() {
 
 	radicandStr := "8"
-	nthRootStr := "0.4"
-	expectedStr := "181.01933598375616624661615669884"
-	maxPrecision := uint(29)
+	nthRootStr := "-3"
+	expectedStr := "0.5"
+	maxPrecision := uint(1)
 
 	ExampleBigIntNumNthRoot_01(radicandStr, nthRootStr, maxPrecision,  expectedStr)
 

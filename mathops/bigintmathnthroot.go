@@ -7,21 +7,17 @@ import (
 	)
 
 // BigIntMathNthRoot - Used to extract square roots and nth roots of positive and negative
-// real numbers. Currently nth roots must be positive and the value must NOT exceed the
-// maximum int-32 value of +2,147,483,647. As a practical matter, your computer may run out
-// of memory before you hit this maximum.
+// real numbers. Nth Roots may be either integer or fractional numbers. In addition, Nth
+// Roots may be either positive or integer numbers.
 //
 // The technique employed to calculate nth roots is known as the
 // "shifting nth-root algorithm".
 //
 // This source file is located in source code repository:
 //
-// https://github.com/MikeAustin71/mathhlpr.git
-//
+// https://github.com/MikeAustin71/mathopsgo.git
 //
 // See: https://en.wikipedia.org/wiki/Shifting_nth_root_algorithm
-//
-// Dependencies: intAry - intary.go
 //
 type BigIntMathNthRoot struct {
 	NthRoot               BigIntNum
@@ -171,7 +167,7 @@ func (nthrt BigIntMathNthRoot) GetNthRoot(
 		if err != nil {
 			return BigIntNum{}.NewZero(0),
 				fmt.Errorf(ePrefix + "Error returned by nthrt.calcNegativeNthRoot(...). " +
-					"Error='%v' \n")
+					"Error='%v' \n", err.Error())
 		}
 
 	} else {
@@ -181,7 +177,7 @@ func (nthrt BigIntMathNthRoot) GetNthRoot(
 		if err != nil {
 			return BigIntNum{}.NewZero(0),
 				fmt.Errorf(ePrefix + "Error returned by nthrt.calcPositiveNthRoot(...). " +
-					"Error='%v' \n")
+					"Error='%v' \n", err.Error())
 		}
 
 	}
@@ -236,14 +232,14 @@ func (nthrt *BigIntMathNthRoot) calcNegativeNthRoot(radicand, nthRoot BigIntNum,
 	var err error
 
 	if newNthRoot.GetPrecisionUint() == 0 {
-		nthRootResult, err = nthrt.calcPositiveIntegerNthRoot(radicand, nthRoot, maxPrecision)
+		nthRootResult, err = nthrt.calcPositiveIntegerNthRoot(radicand, newNthRoot, maxPrecision)
 		if err != nil {
 			return BigIntNum{}.NewZero(0),
 				fmt.Errorf(ePrefix + "Error returned by calcPositiveIntegerNthRoot(...) " +
 					"Error='%v' \n", err.Error())
 		}
 	} else {
-		nthRootResult, err = nthrt.calcPositiveFractionalNthRoot(radicand, nthRoot, maxPrecision)
+		nthRootResult, err = nthrt.calcPositiveFractionalNthRoot(radicand, newNthRoot, maxPrecision)
 		if err != nil {
 			return BigIntNum{}.NewZero(0),
 				fmt.Errorf(ePrefix + "Error returned by calcPositiveFractionalNthRoot(...) " +
