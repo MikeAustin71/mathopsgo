@@ -876,3 +876,74 @@ func TestBigIntMathNthRoot_GetNthRootBigNum_24(t *testing.T) {
 
 }
 
+func TestBigIntMathNthRoot_GetNthRootBigNum_25(t *testing.T) {
+
+	radicand := "8.2"
+	nthRoot := "-3.2"
+	//              0.12345678901234567890123456789012
+	expectedStr := "0.5181233574858042598812721854708"
+	maxPrecision := uint(31)
+
+	bINumBase, err  := BigIntNum{}.NewNumStr(radicand)
+
+	if err != nil {
+		t.Errorf("Error returned from BigIntNum{}.NewNumStr(radicand) " +
+			"radicand='%v' Error='%v'", radicand, err.Error())
+	}
+
+	bINumNthRoot, err := BigIntNum{}.NewNumStr(nthRoot)
+
+	if err != nil {
+		t.Errorf("Error returned from BigIntNum{}.NewNumStr(nthRoot) " +
+			"nthRoot='%v' Error='%v'", nthRoot, err.Error())
+	}
+
+	bIMathNthRoot := BigIntMathNthRoot{}
+
+	nthRootResult, err := bIMathNthRoot.GetNthRoot(bINumBase, bINumNthRoot, maxPrecision)
+
+	if err != nil {
+		t.Errorf("Error returned by bIMathNthRoot.GetNthRoot(bINumBase, " +
+			"bINumNthRoot, maxPrecision) bINumBase='%v' bINumNthRoot='%v' " +
+			" maxPrecision='%v' Error='%v'.", bINumBase.GetNumStr(),
+				bINumNthRoot.GetNumStr(), maxPrecision, err.Error())
+	}
+
+	if expectedStr != nthRootResult.GetNumStr() {
+		t.Errorf("Error: Expected NthRoot Result='%v'.  Instead Result='%v'",
+			expectedStr, nthRootResult.GetNumStr())
+	}
+
+}
+
+func TestBigIntMathNthRoot_GetNthRootBigNum_26(t *testing.T) {
+
+	radicand := "-8.2"
+	nthRoot := "-3.2"
+	maxPrecision := uint(31)
+
+	bINumBase, err  := BigIntNum{}.NewNumStr(radicand)
+
+	if err != nil {
+		t.Errorf("Error returned from BigIntNum{}.NewNumStr(radicand) " +
+			"radicand='%v' Error='%v'", radicand, err.Error())
+	}
+
+	bINumNthRoot, err := BigIntNum{}.NewNumStr(nthRoot)
+
+	if err != nil {
+		t.Errorf("Error returned from BigIntNum{}.NewNumStr(nthRoot) " +
+			"nthRoot='%v' Error='%v'", nthRoot, err.Error())
+	}
+
+	bIMathNthRoot := BigIntMathNthRoot{}
+
+	_, err = bIMathNthRoot.GetNthRoot(bINumBase, bINumNthRoot, maxPrecision)
+
+	if err == nil {
+		t.Error("Error: Expected err!=nil. Instead, err==nil. Should have received an error " +
+			"on this calculation, but DID NOT RECEIVE AN ERROR!")
+	}
+
+}
+
