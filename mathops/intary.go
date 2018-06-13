@@ -2947,7 +2947,7 @@ func (ia *IntAry) MultiplyByTenToPower(power uint) {
 //
 func (ia *IntAry) MultiplyThisBy(ia2 *IntAry, minimumPrecision, maxPrecision int) error {
 
-	return ia.Multiply(ia, ia2, ia, minimumPrecision, maxPrecision)
+	return IntAryMathMultiply{}.Multiply(ia, ia2, ia, minimumPrecision, maxPrecision)
 
 }
 
@@ -2990,111 +2990,7 @@ func (ia *IntAry) MultiplyThisBy(ia2 *IntAry, minimumPrecision, maxPrecision int
 //
 func (ia *IntAry) Multiply(ia1, ia2, iaResult *IntAry, minimumResultPrecision, maxResultPrecision int) error {
 
-	if maxResultPrecision < -1 {
-		return fmt.Errorf("Error: Parameter 'maxResultPrecision' is less than -1. maxResultPrecision= %v", maxResultPrecision)
-	}
-
-	if minimumResultPrecision > maxResultPrecision &&
-			maxResultPrecision != -1 {
-
-		maxResultPrecision = minimumResultPrecision
-	}
-
-	ia1.SetInternalFlags()
-	ia2.SetInternalFlags()
-
-
-	if ia1.isZeroValue || ia2.isZeroValue {
-
-		if minimumResultPrecision < 1 {
-			minimumResultPrecision = 0
-		}
-
-		iaResult.SetIntAryToZero(minimumResultPrecision)
-
-		return nil
-	}
-
-	newSignVal := 1
-
-	if ia1.signVal != ia2.signVal {
-		newSignVal = -1
-	}
-
-	newPrecision := ia1.precision + ia2.precision
-
-	newIntAryLen := ia1.intAryLen + ia2.intAryLen
-
-	resultAry := make([]uint8, newIntAryLen)
-
-	carry := uint8(0)
-	multiplier := uint8(0)
-	multiplicand := uint8(0)
-	product := uint8(0)
-	resultIdx := 0
-	offset := 0
-
-	for i := ia2.intAryLen -1; i >=0 ; i-- {
-		multiplicand = ia2.intAry[i]
-		offset++
-		nextResultIdx := newIntAryLen - offset
-
-		for j := ia1.intAryLen - 1; j >= 0 ; j-- {
-
-			multiplier = ia1.intAry[j]
-
-			product = multiplier * multiplicand
-
-			resultIdx = nextResultIdx
-
-			resultAry[resultIdx]+= product
-
-
-			for resultAry[resultIdx] > 9 {
-				carry = resultAry[resultIdx] / 10
-				resultAry[resultIdx] = resultAry[resultIdx] - (carry * 10)
-
-				resultIdx--
-
-				resultAry[resultIdx]+= carry
-
-			}
-
-			carry = 0
-			nextResultIdx--
-		}
-
-	}
-
-
-	if newIntAryLen - newPrecision > 1 && resultAry[0] == 0 {
-
-		iaResult.intAry = resultAry[1:]
-		newIntAryLen--
-	} else {
-		iaResult.intAry = resultAry
-	}
-
-	iaResult.precision = newPrecision
-	iaResult.signVal = newSignVal
-	iaResult.intAryLen = newIntAryLen
-	iaResult.integerLen = newIntAryLen - newPrecision
-	iaResult.isZeroValue = false
-
-	if minimumResultPrecision < 0 {
-		iaResult.OptimizeIntArrayLen(true)
-		newPrecision = iaResult.precision
-
-	} else if newPrecision < minimumResultPrecision {
-		iaResult.SetPrecision(minimumResultPrecision, false)
-
-	}
-
-	if maxResultPrecision > -1 && maxResultPrecision < newPrecision {
-		iaResult.SetPrecision(maxResultPrecision, true)
-	}
-
-	return nil
+	return IntAryMathMultiply{}.Multiply(ia1, ia2, iaResult, minimumResultPrecision, maxResultPrecision)
 }
 
 // NewBigIntNum - Creates a new blank intAry object.
