@@ -1246,4 +1246,142 @@ func TestIntAry_Inverse_03(t *testing.T) {
 	}
 }
 
+func TestIntAry_IsEvenNumber_01(t *testing.T) {
+	nStr := "24"
+	expectedIsEven := true
 
+	ia, err := IntAry{}.NewNumStr(nStr)
+
+	if err != nil {
+		t.Errorf("Error returned by IntAry{}.NewNumStr(nStr). " +
+			"nStr='%v' Error='%v' ", nStr, err.Error())
+	}
+
+	isEven := ia.IsEvenNumber()
+
+	if expectedIsEven != isEven {
+		t.Errorf("Error: Expected IsEven='%v'. Instead, IsEven='%v' ",
+			expectedIsEven, isEven)
+	}
+
+}
+
+func TestIntAry_IsEvenNumber_02(t *testing.T) {
+	nStr := "25"
+	expectedIsEven := false
+
+	ia, err := IntAry{}.NewNumStr(nStr)
+
+	if err != nil {
+		t.Errorf("Error returned by IntAry{}.NewNumStr(nStr). " +
+			"nStr='%v' Error='%v' ", nStr, err.Error())
+	}
+
+	isEven := ia.IsEvenNumber()
+
+	if expectedIsEven != isEven {
+		t.Errorf("Error: Expected IsEven='%v'. Instead, IsEven='%v' ",
+			expectedIsEven, isEven)
+	}
+
+}
+
+func TestIntAry_IsEvenNumber_03(t *testing.T) {
+	nStr := "4.44"
+	expectedIsEven := false
+
+	ia, err := IntAry{}.NewNumStr(nStr)
+
+	if err != nil {
+		t.Errorf("Error returned by IntAry{}.NewNumStr(nStr). " +
+			"nStr='%v' Error='%v' ", nStr, err.Error())
+	}
+
+	isEven := ia.IsEvenNumber()
+
+	if expectedIsEven != isEven {
+		t.Errorf("Error: Expected IsEven='%v'. Instead, IsEven='%v' ",
+			expectedIsEven, isEven)
+	}
+
+}
+
+func TestIntAry_IsEvenNumber_04(t *testing.T) {
+	nStr := "0"
+	expectedIsEven := true
+
+	ia, err := IntAry{}.NewNumStr(nStr)
+
+	if err != nil {
+		t.Errorf("Error returned by IntAry{}.NewNumStr(nStr). " +
+			"nStr='%v' Error='%v' ", nStr, err.Error())
+	}
+
+	isEven := ia.IsEvenNumber()
+
+	if expectedIsEven != isEven {
+		t.Errorf("Error: Expected IsEven='%v'. Instead, IsEven='%v' ",
+			expectedIsEven, isEven)
+	}
+
+}
+
+func TestIntAry_IsEvenNumber_05(t *testing.T) {
+	nStr := "-24"
+	expectedIsEven := true
+
+	ia, err := IntAry{}.NewNumStr(nStr)
+
+	if err != nil {
+		t.Errorf("Error returned by IntAry{}.NewNumStr(nStr). " +
+			"nStr='%v' Error='%v' ", nStr, err.Error())
+	}
+
+	isEven := ia.IsEvenNumber()
+
+	if expectedIsEven != isEven {
+		t.Errorf("Error: Expected IsEven='%v'. Instead, IsEven='%v' ",
+			expectedIsEven, isEven)
+	}
+
+}
+
+func TestIntAry_IsEvenNumber_06(t *testing.T) {
+	nStr := "-25"
+	expectedIsEven := false
+
+	ia, err := IntAry{}.NewNumStr(nStr)
+
+	if err != nil {
+		t.Errorf("Error returned by IntAry{}.NewNumStr(nStr). " +
+			"nStr='%v' Error='%v' ", nStr, err.Error())
+	}
+
+	isEven := ia.IsEvenNumber()
+
+	if expectedIsEven != isEven {
+		t.Errorf("Error: Expected IsEven='%v'. Instead, IsEven='%v' ",
+			expectedIsEven, isEven)
+	}
+
+}
+
+func TestIntAry_IsEvenNumber_07(t *testing.T) {
+	nStr := "-4.44"
+	expectedIsEven := false
+
+	ia, err := IntAry{}.NewNumStr(nStr)
+
+	if err != nil {
+		t.Errorf("Error returned by IntAry{}.NewNumStr(nStr). " +
+			"nStr='%v' Error='%v' ", nStr, err.Error())
+	}
+
+	isEven := ia.IsEvenNumber()
+
+	if expectedIsEven != isEven {
+		t.Errorf("Error: Expected IsEven='%v'. Instead, IsEven='%v' ",
+			expectedIsEven, isEven)
+	}
+
+}

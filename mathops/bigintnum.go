@@ -1354,6 +1354,10 @@ func (bNum *BigIntNum) IsEvenNumber() (bool, error) {
 		return false, nil
 	}
 
+	if bNum.IsZero() {
+		return true, nil
+	}
+
 	bigINumTwo := BigIntNum{}.NewTwo(0)
 
 	_, mod, err := BigIntMathDivide{}.BigIntNumQuotientMod(bNum.CopyOut(), bigINumTwo, 0)

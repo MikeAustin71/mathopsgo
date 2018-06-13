@@ -1452,9 +1452,7 @@ func (ia *IntAry) DecrementIntegerOne() error {
 }
 
 // DivideByTwo - Divides the current value of
-// intAry by 2. If parameter 'convertToNumStr'
-// is set to 'true', the result will be converted
-// to a number string.
+// intAry by 2.
 func (ia *IntAry) DivideByTwo() {
 
 	ia.OptimizeIntArrayLen(false)
@@ -2866,6 +2864,30 @@ func (ia *IntAry) IsIntAryValid(errName string) error {
 	}
 
 	return nil
+}
+
+// IsEvenNumber - Returns true if the current IntAry numeric value
+// is evenly divisible by two (2) with no remainder.
+//
+func (ia *IntAry) IsEvenNumber() bool {
+
+	if ia.precision > 0 {
+		return false
+	}
+
+	if ia.IsZero() {
+		return true
+	}
+
+	tNum := ia.CopyOut()
+
+	tNum.DivideByTwo()
+
+	if tNum.precision > 0 {
+		return false
+	}
+
+	return true
 }
 
 // IsZero - Analyzes the current IntAry to determine
