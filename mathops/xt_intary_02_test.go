@@ -582,6 +582,52 @@ func TestIntAry_AddBigIntToThis_08(t *testing.T) {
 	}
 }
 
+func TestIntAry_AddBigIntNumToThis_01(t *testing.T) {
+
+
+	ia1, _ := IntAry{}.NewNumStr("1.05")
+
+	bINum, _ := BigIntNum{}.NewNumStr("2.37")
+
+	expectedStr := "3.42"
+
+	err := ia1.AddBigIntNumToThis(bINum)
+
+	if err != nil {
+		t.Errorf("Error returned by ia1.AddBigIntNumToThis(bINum). " +
+			"bINum='%v' Error='%v' ", bINum.GetNumStr(), err.Error())
+	}
+
+	if expectedStr != ia1.GetNumStr() {
+		t.Errorf("Error: Expected result='%v'. Instead, result='%v' ",
+			expectedStr, ia1.GetNumStr() )
+	}
+
+}
+
+func TestIntAry_AddBigIntNumToThis_02(t *testing.T) {
+
+
+	ia1, _ := IntAry{}.NewNumStr("-1.05")
+
+	bINum, _ := BigIntNum{}.NewNumStr("2.37")
+
+	expectedStr := "1.32"
+
+	err := ia1.AddBigIntNumToThis(bINum)
+
+	if err != nil {
+		t.Errorf("Error returned by ia1.AddBigIntNumToThis(bINum). " +
+			"bINum='%v' Error='%v' ", bINum.GetNumStr(), err.Error())
+	}
+
+	if expectedStr != ia1.GetNumStr() {
+		t.Errorf("Error: Expected result='%v'. Instead, result='%v' ",
+			expectedStr, ia1.GetNumStr() )
+	}
+
+}
+
 func TestIntAry_AddFloat32ToThis_01(t *testing.T) {
 	ia1, _ := IntAry{}.NewNumStr("1.00")
 

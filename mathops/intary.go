@@ -477,82 +477,13 @@ type IntAry struct {
 //
 // ia2 *intAry - Incoming intAry object whose value will be subtracted
 // 								from this current intAry value.
+//
 func (ia *IntAry) AddToThis(ia2 *IntAry) error {
 
-	ia.SetEqualArrayLengths(ia2)
+	IntAryMathAdd{}.RunTotal(ia, ia2)
 
-	if ia2.isZeroValue {
-		return nil
-	}
+	return nil
 
-	compare := ia.CompareAbsoluteValues(ia2)
-
-	newSignVal := ia.signVal
-	doAdd := true
-	isZeroResult := false
-	doReverseNums := false
-
-	if compare == 1 {
-		// compare == + 1
-		// Absolute Value: N1 > N2
-
-		if ia.signVal == 1 && ia2.signVal == 1 {
-			doAdd = true
-			newSignVal = 1
-		} else if ia.signVal == -1 && ia2.signVal == 1 {
-			doAdd = false
-			newSignVal = -1
-		} else if ia.signVal == -1 && ia2.signVal == -1 {
-			doAdd = true
-			newSignVal = -1
-		} else {
-			// Must Be ia.signVal == 1 && ia2.signVal == -1
-			doAdd = false
-			newSignVal = 1
-		}
-
-	} else if compare == -1 {
-		// Absolute Values: N2 > N1
-		if ia.signVal == 1 && ia2.signVal == 1 {
-			doAdd = true
-			newSignVal = 1
-		} else if ia.signVal == -1 && ia2.signVal == 1 {
-			doAdd = false
-			doReverseNums = true
-			newSignVal = 1
-		} else if ia.signVal == -1 && ia2.signVal == -1 {
-			doAdd = true
-			newSignVal = -1
-		} else {
-			// Must Be ia.signVal == 1 && ia2.signVal == -1
-			doAdd = false
-			doReverseNums = true
-			newSignVal = -1
-		}
-
-	} else {
-		// Must be compare == 0
-		// Absolute Values: N1==N2
-		if ia.signVal == 1 && ia2.signVal == 1 {
-			doAdd = true
-			newSignVal = 1
-		} else if ia.signVal == -1 && ia2.signVal == 1 {
-			doAdd = false
-			newSignVal = 1
-			isZeroResult = true
-		} else if ia.signVal == -1 && ia2.signVal == -1 {
-			doAdd = true
-			newSignVal = -1
-		} else {
-			// Must Be ia.signVal == 1 && ia2.signVal == -1
-			doAdd = false
-			newSignVal = 1
-			isZeroResult = true
-		}
-
-	}
-
-	return ia.addToSubtractFromThis(ia2, newSignVal, doAdd, isZeroResult, doReverseNums)
 }
 
 // AddIntToThis - Adds an integer number to the value of the
@@ -585,7 +516,7 @@ func (ia *IntAry) AddIntToThis(num int, precision int) error {
 		return err
 	}
 
-	ia.AddToThis(&ia2)
+	IntAryMathAdd{}.RunTotal(ia, &ia2)
 
 	return nil
 }
@@ -627,7 +558,7 @@ func (ia *IntAry) AddInt64ToThis(num int64, precision int) error {
 		return err
 	}
 
-	ia.AddToThis(&ia2)
+	IntAryMathAdd{}.RunTotal(ia, &ia2)
 
 	return nil
 }
@@ -668,10 +599,29 @@ func (ia *IntAry) AddBigIntToThis(num *big.Int, precision int) error {
 		return err
 	}
 
-	ia.AddToThis(&ia2)
+	IntAryMathAdd{}.RunTotal(ia, &ia2)
 
 	return nil
 }
+
+// AddBigIntNumToThis - Adds the value of the current IntAry
+// to the BigIntNum input parameter.
+//
+func (ia *IntAry) AddBigIntNumToThis(bINum BigIntNum) error {
+
+	ia2, err := IntAry{}.NewBigIntNum(bINum)
+
+	if err != nil {
+		ePrefix := "IntAry.AddBigIntNumToThis() "
+		return fmt.Errorf(ePrefix + "Error returned by IntAry{}.NewBigIntNum(bINum). " +
+			"Error='%v'", err.Error())
+	}
+
+	IntAryMathAdd{}.RunTotal(ia, &ia2)
+
+	return nil
+}
+
 // AddFloat32ToThis - Adds the value of input number (float32)
 // to the current value of this IntAry object.
 //
@@ -715,7 +665,7 @@ func (ia *IntAry) AddFloat32ToThis(num float32, precision int) error {
 		return nil
 	}
 
-	ia.AddToThis(&ia2)
+	IntAryMathAdd{}.RunTotal(ia, &ia2)
 
 	return nil
 }
@@ -756,7 +706,7 @@ func (ia *IntAry) AddFloat64ToThis(num float64, precision int) error {
 		return err
 	}
 
-	ia.AddToThis(&ia2)
+	IntAryMathAdd{}.RunTotal(ia, &ia2)
 
 	return nil
 }
@@ -798,7 +748,7 @@ func (ia *IntAry) AddFloatBigToThis(num *big.Float, precision int) error {
 		return err
 	}
 
-	ia.AddToThis(&ia2)
+	IntAryMathAdd{}.RunTotal(ia, &ia2)
 
 	return nil
 }
@@ -813,15 +763,9 @@ func (ia *IntAry) AddFloatBigToThis(num *big.Float, precision int) error {
 //
 func (ia *IntAry) AddMultipleToThis(iaMany ...*IntAry) error {
 
-	var err error
-
 	for _, iAry := range iaMany {
 
-		err = ia.AddToThis(iAry)
-
-		if err != nil {
-			return fmt.Errorf("AddMultipleToThis() - Received error from ia.AddToThis(iAry, false). Error= %v", err)
-		}
+		IntAryMathAdd{}.RunTotal(ia, iAry)
 
 	}
 
@@ -3610,6 +3554,17 @@ func (ia IntAry) NewPtr() *IntAry {
 	ia2 := IntAry{}.New()
 
 	return &ia2
+}
+
+// NewZero - Creates a new IntAry instance and sets
+// the value to Zero.
+//
+func (ia IntAry) NewZero(precision int) IntAry {
+	ia2 := IntAry{}
+
+	ia2.SetIntAryToZero(precision)
+
+	return ia2
 }
 
 // OptimizeIntArrayLen - Eliminates Leading
