@@ -3,22 +3,35 @@ package mathops
 import (
 	"math/big"
 	"fmt"
+	"math"
 	"strconv"
 	"errors"
-	"math"
 )
 
-// BigIntNum - wraps a *big.Int integer and its associated
-// precision and sign Value. While the numeric value is
-// stored as an integer of type *big.Int, the BigIntNum
-// type is capable of storing decimal fractions.
-//
-// All methods associated with this type all assume that
-// the *big.Int value stored by the BigIntNum Type is configured
-// in base 10.
-//
-// The BigIntNum Type implements the INumMgr interface.
-//
+/*
+ BigIntNum - wraps a *big.Int integer and its associated
+ precision and sign Value. While the numeric value is
+ stored as an integer of type *big.Int, the BigIntNum
+ type is capable of storing decimal fractions.
+
+ All methods associated with this type all assume that
+ the *big.Int value stored by the BigIntNum Type is configured
+ in base 10.
+
+ INumMgr
+ ========
+
+ The BigIntNum Type implements the INumMgr interface.
+
+ Source Code Repository:
+ =======================
+ 	https://github.com/MikeAustin71/mathopsgo.git
+
+ Local File:
+ ===========
+ 	MikeAustin71\mathopsgo\mathops\bigintnum.go
+
+*/
 type BigIntNum struct {
 	bigInt      						*big.Int
 	absBigInt   						*big.Int
@@ -90,6 +103,7 @@ func (bNum *BigIntNum) Ceiling() BigIntNum {
 func (bNum *BigIntNum) ChangeSign() {
 
 	if bNum.IsZero() {
+		bNum.sign = 1
 		return
 	}
 
@@ -1346,7 +1360,8 @@ func (bNum *BigIntNum) Inverse(maxPrecision uint) (BigIntNum, error) {
 // IsEvenNumber - Returns true if the current BigIntNum value is
 // evenly divisible by 2.
 //
-// Definition: https://www.mathsisfun.com/definitions/even-number.html
+// Even Number Definition:
+// 	https://www.mathsisfun.com/definitions/even-number.html
 //
 func (bNum *BigIntNum) IsEvenNumber() (bool, error) {
 

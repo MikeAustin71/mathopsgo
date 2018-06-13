@@ -1692,6 +1692,105 @@ func TestIntAry_Ceiling_11(t *testing.T) {
 
 }
 
+func TestIntAry_ChangeSign_01(t *testing.T) {
+	nStr := "-572"
+	expectedStr := "572"
+
+  ia, err := IntAry{}.NewNumStr(nStr)
+
+  if err != nil {
+  	t.Errorf("Error returned by IntAry{}.NewNumStr(nStr). " +
+  		"nStr='%v' Error='%v'", nStr, err.Error())
+	}
+
+  ia.ChangeSign()
+
+  if expectedStr != ia.GetNumStr() {
+  	t.Errorf("Error: Expected ia.GetNumStr='%v'. Instead, ia.GetNumStr='%v' ",
+			expectedStr, ia.GetNumStr())
+	}
+
+}
+
+func TestIntAry_ChangeSign_02(t *testing.T) {
+	nStr := "572"
+	expectedStr := "-572"
+
+  ia, err := IntAry{}.NewNumStr(nStr)
+
+  if err != nil {
+  	t.Errorf("Error returned by IntAry{}.NewNumStr(nStr). " +
+  		"nStr='%v' Error='%v'", nStr, err.Error())
+	}
+
+  ia.ChangeSign()
+
+  if expectedStr != ia.GetNumStr() {
+  	t.Errorf("Error: Expected ia.GetNumStr='%v'. Instead, ia.GetNumStr='%v' ",
+			expectedStr, ia.GetNumStr())
+	}
+
+}
+
+func TestIntAry_ChangeSign_03(t *testing.T) {
+	nStr := "0"
+	expectedStr := "0"
+
+  ia, err := IntAry{}.NewNumStr(nStr)
+
+  if err != nil {
+  	t.Errorf("Error returned by IntAry{}.NewNumStr(nStr). " +
+  		"nStr='%v' Error='%v'", nStr, err.Error())
+	}
+
+  ia.ChangeSign()
+
+  if expectedStr != ia.GetNumStr() {
+  	t.Errorf("Error: Expected ia.GetNumStr='%v'. Instead, ia.GetNumStr='%v' ",
+			expectedStr, ia.GetNumStr())
+	}
+
+}
+
+func TestIntAry_ChangeSign_04(t *testing.T) {
+	nStr := "-12.456"
+	expectedStr := "12.456"
+
+  ia, err := IntAry{}.NewNumStr(nStr)
+
+  if err != nil {
+  	t.Errorf("Error returned by IntAry{}.NewNumStr(nStr). " +
+  		"nStr='%v' Error='%v'", nStr, err.Error())
+	}
+
+  ia.ChangeSign()
+
+  if expectedStr != ia.GetNumStr() {
+  	t.Errorf("Error: Expected ia.GetNumStr='%v'. Instead, ia.GetNumStr='%v' ",
+			expectedStr, ia.GetNumStr())
+	}
+
+}
+
+func TestIntAry_ChangeSign_05(t *testing.T) {
+	nStr := "12.456"
+	expectedStr := "-12.456"
+
+  ia, err := IntAry{}.NewNumStr(nStr)
+
+  if err != nil {
+  	t.Errorf("Error returned by IntAry{}.NewNumStr(nStr). " +
+  		"nStr='%v' Error='%v'", nStr, err.Error())
+	}
+
+  ia.ChangeSign()
+
+  if expectedStr != ia.GetNumStr() {
+  	t.Errorf("Error: Expected ia.GetNumStr='%v'. Instead, ia.GetNumStr='%v' ",
+			expectedStr, ia.GetNumStr())
+	}
+
+}
 
 func TestIntAry_Equals_01(t *testing.T) {
 	nStr1 := "000549721.32178000"

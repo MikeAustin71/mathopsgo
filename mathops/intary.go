@@ -10,18 +10,9 @@ import (
 )
 
 /*
-	IntAry
-	======
 
-	The source code repository for intary.go is located at:
-			https://github.com/MikeAustin71/mathopsgo.git
-
-	The source file intary.go is located in directory:
-		MikeAustin71/mathopsgo/mathops/decimal.go
-
-
-	Overveiw And General Usage
-	==========================
+	IntAry Overveiw And General Usage:
+	==================================
 
 	Source file 'intary.go' contains a structure, 'IntAry', which is designed
  	to perform a variety of math operations on integer strings.
@@ -39,15 +30,22 @@ import (
 	nthroot.go - MikeAustin71/mathopsgo/mathops/nthroot.go
 
 
-	InNumMgr
+	INumMgr
 	========
 
-	The NumStrDto Type implements the INumMgr interface.
+	The IntAry Type implements the INumMgr interface.
+
+ Source Code Repository:
+ =======================
+ 	https://github.com/MikeAustin71/mathopsgo.git
+
+ Local File:
+ ===========
+ MikeAustin71\mathopsgo\mathops\intary.go
 
  */
 
-
-// A fraction represented by a numerator and a denominator.
+// FracIntAry - A fraction represented by a numerator and a denominator.
 // Both numerator and denominator are of type intAry
 type FracIntAry struct {
 	Numerator   IntAry
@@ -1065,6 +1063,35 @@ func (ia *IntAry) Ceiling() (IntAry, error) {
 	return iAry2, nil
 }
 
+// ChangeSign - Changes the sign of the current IntAry instance.
+// If the current IntAry numeric value is positive (+), this method
+// will change the sign value to negative (-).
+//
+// Conversely if the current IntAry is a negative (-) numeric value,
+// this method will change the sign to positive (+).
+//
+func (ia *IntAry) ChangeSign() {
+
+	if ia.IsZero() {
+		ia.SetSign(1)
+		return
+	}
+
+	if ia.signVal < 1 {
+		ia.SetSign(1)
+	} else {
+		ia.SetSign(-1)
+	}
+
+}
+
+// CompareSignedValues - Compares two IntAry signed numeric values.
+//
+// Returns:
+// 0  = Current IntAry value is equal to the passed IntAry value.
+// 1  = Current IntAry value is greater than the passed IntAry value.
+// -1 = Current IntAry value is less than the passed IntAry value.
+//
 func (ia *IntAry) CompareSignedValues(iAry2 *IntAry) int {
 
 	iCompare := ia.CompareAbsoluteValues(iAry2)
@@ -1094,6 +1121,13 @@ func (ia *IntAry) CompareSignedValues(iAry2 *IntAry) int {
 
 }
 
+// CompareAbsoluteValues - Compares the absolute values of
+// two IntAry instances.
+// Returns:
+// 0  = Current IntAry value is equal to the passed IntAry value.
+// 1  = Current IntAry value is greater than the passed IntAry value.
+// -1 = Current IntAry value is less than the passed IntAry value.
+//
 func (ia *IntAry) CompareAbsoluteValues(iAry2 *IntAry) int {
 
 	ia.SetIntAryLength()
@@ -2893,6 +2927,9 @@ func (ia *IntAry) IsEvenNumber() bool {
 // IsZero - Analyzes the current IntAry to determine
 // it is a zero value. If the IntAry is equal to a zero
 // value, this method returns 'true'
+//
+// Even Number Definition:
+// 		https://www.mathsisfun.com/definitions/even-number.html
 //
 func (ia *IntAry) IsZero() bool {
 
