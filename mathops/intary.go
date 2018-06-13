@@ -3,10 +3,10 @@ package mathops
 import (
 	"errors"
 	"fmt"
+		"math/big"
+		"bytes"
 	"math"
-	"math/big"
 	"strconv"
-	"bytes"
 )
 
 /*
@@ -768,79 +768,6 @@ func (ia *IntAry) AddMultipleToThis(iaMany ...*IntAry) error {
 		IntAryMathAdd{}.RunTotal(ia, iAry)
 
 	}
-
-	return nil
-}
-
-func (ia *IntAry) addToSubtractFromThis(ia2 *IntAry, newSignVal int, doAdd bool, isZeroResult bool, doReverseNums bool) error {
-
-	if isZeroResult {
-		ia.SetIntAryToZero(ia.precision)
-		return nil
-	}
-
-	ia.signVal = newSignVal
-
-	carry := 0
-	n1 := 0
-	n2 := 0
-	n3 := 0
-
-	for j := ia.intAryLen - 1; j >= 0; j-- {
-
-		if doReverseNums {
-
-			n2 = int(ia.intAry[j])
-			n1 = int(ia2.intAry[j])
-
-		} else {
-			n1 = int(ia.intAry[j])
-			n2 = int(ia2.intAry[j])
-
-		}
-
-		if doAdd {
-			// doAdd == true
-			// Do Addition
-
-			n3 = n1 + n2 + carry
-
-			if n3 > 9 {
-				n3 = n1 + n2 + carry - 10
-				carry = 1
-
-			} else {
-				carry = 0
-			}
-
-		} else {
-			// doAdd == false
-			// Do Subtraction
-			n3 = n1 - n2 - carry
-
-			if n3 < 0 {
-				n3 = n1 + 10 - n2 - carry
-				carry = 1
-			} else {
-				carry = 0
-			}
-		}
-
-		ia.intAry[j] = uint8(n3)
-
-	}
-
-	if carry > 0 {
-		ia.intAry = append([]uint8{1}, ia.intAry...)
-		ia.intAryLen++
-	}
-
-	if ia.intAry[0] == 0 {
-		ia.SetSignificantDigitIdxs()
-		ia.intAry = ia.intAry[ia.firstDigitIdx:]
-	}
-
-	ia.SetInternalFlags()
 
 	return nil
 }
@@ -5213,82 +5140,10 @@ func (ia *IntAry) SetThousandsSeparator(thousandsSeparator rune) {
 //
 func (ia *IntAry) SubtractFromThis(ia2 *IntAry) error {
 
-	ia.SetEqualArrayLengths(ia2)
+	IntAryMathSubtract{}.SubtractTotal(ia, ia2)
 
-	if ia.isZeroValue && ia2.isZeroValue {
-		ia.SetIntAryToZero(ia.precision)
-		return nil
-	}
+	return nil
 
-	compare := ia.CompareAbsoluteValues(ia2)
-	isZeroResult := false
-
-	// Largest Value in now in N1 slot
-	newSignVal := ia.signVal
-	doAdd := false
-	doReverseNums := false
-
-	if compare == 1 {
-		// compare == + 1
-		// Absolute Value: N1 > N2
-
-		if ia.signVal == 1 && ia2.signVal == 1 {
-			doAdd = false
-			newSignVal = 1
-		} else if ia.signVal == -1 && ia2.signVal == 1 {
-			doAdd = true
-			newSignVal = -1
-		} else if ia.signVal == -1 && ia2.signVal == -1 {
-			doAdd = false
-			newSignVal = -1
-		} else {
-			// Must Be ia.signVal == 1 && ia2.signVal == -1
-			doAdd = true
-			newSignVal = 1
-		}
-
-	} else if compare == -1 {
-		// Absolute Values: N2 > N1
-		if ia.signVal == 1 && ia2.signVal == 1 {
-			doAdd = false
-			doReverseNums = true
-			newSignVal = -1
-		} else if ia.signVal == -1 && ia2.signVal == 1 {
-			doAdd = true
-			newSignVal = -1
-		} else if ia.signVal == -1 && ia2.signVal == -1 {
-			doAdd = false
-			doReverseNums = true
-			newSignVal = 1
-		} else {
-			// Must Be ia.signVal == 1 && ia2.signVal == -1
-			doAdd = true
-			newSignVal = 1
-		}
-
-	} else {
-		// Must be compare == 0
-		// Absolute Values: N1==N2
-		if ia.signVal == 1 && ia2.signVal == 1 {
-			doAdd = false
-			newSignVal = 1
-			isZeroResult = true
-		} else if ia.signVal == -1 && ia2.signVal == 1 {
-			doAdd = true
-			newSignVal = -1
-		} else if ia.signVal == -1 && ia2.signVal == -1 {
-			doAdd = false
-			newSignVal = 1
-			isZeroResult = true
-		} else {
-			// Must Be ia.signVal == 1 && ia2.signVal == -1
-			doAdd = true
-			newSignVal = 1
-		}
-
-	}
-
-	return ia.addToSubtractFromThis(ia2, newSignVal, doAdd, isZeroResult, doReverseNums)
 }
 
 // SubtractMultipleFromThis - This method will subtract multiple intAry values from the
@@ -5301,15 +5156,11 @@ func (ia *IntAry) SubtractFromThis(ia2 *IntAry) error {
 // 										 subtracted from the current intAry Value.
 //
 func (ia *IntAry) SubtractMultipleFromThis(iaMany ...*IntAry) error {
-	var err error
 
 	for _, iAry := range iaMany {
 
-		err = ia.SubtractFromThis(iAry)
+		IntAryMathSubtract{}.SubtractTotal(ia, iAry)
 
-		if err != nil {
-			return fmt.Errorf("SubtractMultipleFromThis() - Received error from ia.SubtractFromThis(iAry, false). Error= %v", err)
-		}
 	}
 
 	return nil
