@@ -194,3 +194,98 @@ func TestIntAryMathAdd_RunTotal_01(t *testing.T) {
 	
 }
 
+func TestIntAryMathAdd_AddManyArray_01(t *testing.T) {
+
+	total := IntAry{}.NewZero(0)
+
+	nStr1 := "5.1"
+	nStr2 := "21.452"
+	nStr3 := "8"
+	nStr4 := "-6.7"
+	expectedStr := "27.852"
+
+	iaArray := make([]IntAry, 4)
+
+	var err error
+
+	iaArray[0], err = IntAry{}.NewNumStr(nStr1)
+
+	if err != nil {
+		t.Errorf("Error returned by IntAry{}.NewNumStr(nStr1). " +
+			"nStr1='%v' Error='%v' ", nStr1, err.Error())
+	}
+
+	iaArray[1], err = IntAry{}.NewNumStr(nStr2)
+
+	if err != nil {
+		t.Errorf("Error returned by IntAry{}.NewNumStr(nStr2). " +
+			"nStr2='%v' Error='%v' ", nStr2, err.Error())
+	}
+
+	iaArray[2], err = IntAry{}.NewNumStr(nStr3)
+
+	if err != nil {
+		t.Errorf("Error returned by IntAry{}.NewNumStr(nStr3). " +
+			"nStr3='%v' Error='%v' ", nStr3, err.Error())
+	}
+
+	iaArray[3], err = IntAry{}.NewNumStr(nStr4)
+
+	if err != nil {
+		t.Errorf("Error returned by IntAry{}.NewNumStr(nStr4). " +
+			"nStr4='%v' Error='%v' ", nStr4, err.Error())
+	}
+
+	IntAryMathAdd{}.AddManyArray(&total, iaArray)
+
+	if expectedStr != total.GetNumStr() {
+		t.Errorf("Error: Expected result='%v'.  Instead, result='%v' ",
+			expectedStr, total.GetNumStr())
+	}
+
+}
+
+func TestIntAryMathAdd_AddMany_01(t *testing.T) {
+	total := IntAry{}.NewZero(0)
+
+	nStr1 := "5.1"
+	nStr2 := "21.452"
+	nStr3 := "8"
+	nStr4 := "-6.7"
+	expectedStr := "27.852"
+
+	ia1, err := IntAry{}.NewNumStr(nStr1)
+
+	if err != nil {
+		t.Errorf("Error returned by IntAry{}.NewNumStr(nStr1). " +
+			"nStr1='%v' Error='%v' ", nStr1, err.Error())
+	}
+
+	ia2, err := IntAry{}.NewNumStr(nStr2)
+
+	if err != nil {
+		t.Errorf("Error returned by IntAry{}.NewNumStr(nStr2). " +
+			"nStr2='%v' Error='%v' ", nStr2, err.Error())
+	}
+
+	ia3, err := IntAry{}.NewNumStr(nStr3)
+
+	if err != nil {
+		t.Errorf("Error returned by IntAry{}.NewNumStr(nStr3). " +
+			"nStr3='%v' Error='%v' ", nStr3, err.Error())
+	}
+
+	ia4, err := IntAry{}.NewNumStr(nStr4)
+
+	if err != nil {
+		t.Errorf("Error returned by IntAry{}.NewNumStr(nStr4). " +
+			"nStr4='%v' Error='%v' ", nStr4, err.Error())
+	}
+
+	IntAryMathAdd{}.AddMany(&total, &ia1, &ia2, &ia3, &ia4)
+
+	if expectedStr != total.GetNumStr() {
+		t.Errorf("Error: Expected result='%v'.  Instead, result='%v' ",
+			expectedStr, total.GetNumStr())
+	}
+}
