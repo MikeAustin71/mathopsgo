@@ -7,6 +7,95 @@ type IntAryMathMultiply struct {
 	Result IntAry
 }
 
+
+// MultiplyByTenToPower - Input parameter 'base' is multiplied by 10 to the exponent
+// power. The result is stored in base.
+//
+// base = base X 10^power
+//
+// Input Parameters
+// ================
+//
+// base		*IntAry		- Pointer to an IntAry numeric value. 'base' is multiplied
+//										by 10 to the exponent 'power' and the result is stored
+//										in base. The original value of 'base' will therefore be
+//										overwritten and destroyed.
+//
+// power  uint			- 10 is raised to the exponent 'power' and multiplied by 'base'.
+//
+func (iaMultiply IntAryMathMultiply) MultiplyByTenToPower(base *IntAry, power uint) {
+
+	if power == 0 {
+		return
+	}
+	for i := uint(0); i < power; i++ {
+
+		if base.precision > 0 {
+			base.precision--
+			continue
+		}
+
+		base.intAry = append(base.intAry, 0)
+	}
+
+	base.intAryLen = len(base.intAry)
+
+	if base.precision < 0 {
+		base.precision = 0
+	}
+
+}
+
+// MultiplyByTwoToPower - Multiplies 'base' by 2 to the exponent 'power'. The result
+// is stored in 'base'.
+//
+// base = base X (2^power)
+//
+// Input Parameters
+// ================
+//
+// base		*IntAry		- Pointer to an IntAry numeric value. 'base' is multiplied
+//										by 2 to the exponent 'power' and the result is stored
+//										in base. The original value of 'base' will therefore be
+//										overwritten and destroyed.
+//
+// power  uint			- 2 is raised to the exponent 'power' and multiplied by 'base'.
+//
+func (iaMultiply IntAryMathMultiply) MultiplyByTwoToPower(base *IntAry, power uint) {
+
+	base.SetIntAryLength()
+
+	if power == 0 {
+		return
+	}
+
+	for h := uint(0); h < power; h++ {
+		n1 := uint8(0)
+		carry := uint8(0)
+
+		for i := base.intAryLen - 1; i >= 0; i-- {
+
+			n1 = (base.intAry[i] * 2) + carry
+
+			if n1 > 9 {
+				n1 = n1 - 10
+				carry = 1
+			} else {
+				carry = 0
+			}
+
+			base.intAry[i] = n1
+		}
+
+		if carry > 0 {
+			base.intAry = append([]uint8{1}, base.intAry...)
+			base.intAryLen++
+		}
+
+	}
+
+}
+
 // MultiplyInPlace - Multiplies IntAry parameter 'ia1' by IntAry parameter 'ia2' and
 // returns the result in parameter 'ia1'.
 //

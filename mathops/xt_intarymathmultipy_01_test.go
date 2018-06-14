@@ -91,7 +91,48 @@ func TestIntAryMathMultiply_Multiply_01(t *testing.T) {
 
 	if expectedStr != ia3.GetNumStr() {
 		t.Errorf("Error: Expected multiplication result='%v'. Instead, result='%v'",
+			expectedStr, ia3.GetNumStr())
+	}
+
+}
+
+func TestIntAryMathMultiply_MultiplyByTwoToPower_01(t *testing.T) {
+
+	nStr1 := "5.2"
+	expectedStr := "83.2"
+	power := uint(4)
+	ia1, err := IntAry{}.NewNumStr(nStr1)
+
+	if err != nil {
+		t.Errorf("Error returned by IntAry{}.NewNumStr(nStr1). " +
+			"nStr1='%v' Error='%v' ", nStr1, err.Error())
+	}
+
+	IntAryMathMultiply{}.MultiplyByTwoToPower(&ia1, power)
+
+	if expectedStr != ia1.GetNumStr() {
+		t.Errorf("Error: Expected multiplication result='%v'. Instead, result='%v'",
 			expectedStr, ia1.GetNumStr())
 	}
 
+
+}
+
+func TestIntAryMathMultiply_MultiplyByTenToPower_01(t *testing.T) {
+	nStr1 := "5.2"
+	expectedStr := "5200"
+	power := uint(3)
+	ia1, err := IntAry{}.NewNumStr(nStr1)
+
+	if err != nil {
+		t.Errorf("Error returned by IntAry{}.NewNumStr(nStr1). " +
+			"nStr1='%v' Error='%v' ", nStr1, err.Error())
+	}
+
+	IntAryMathMultiply{}.MultiplyByTenToPower(&ia1, power)
+
+	if expectedStr != ia1.GetNumStr() {
+		t.Errorf("Error: Expected multiplication result='%v'. Instead, result='%v'",
+			expectedStr, ia1.GetNumStr())
+	}
 }

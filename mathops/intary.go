@@ -2852,41 +2852,12 @@ func (ia *IntAry) Inverse(maxPrecision int) (IntAry, error) {
 }
 
 // MultiplyByTwoToPower Multiply the existing value
-// of the intAry by 2 to the power of the passed in
+// of the IntAry by 2 to the power of the passed in
 // parameter.
 //
 func (ia *IntAry) MultiplyByTwoToPower(power uint) {
 
-	ia.SetIntAryLength()
-
-	if power == 0 {
-		return
-	}
-
-	for h := uint(0); h < power; h++ {
-		n1 := uint8(0)
-		carry := uint8(0)
-
-		for i := ia.intAryLen - 1; i >= 0; i-- {
-
-			n1 = (ia.intAry[i] * 2) + carry
-
-			if n1 > 9 {
-				n1 = n1 - 10
-				carry = 1
-			} else {
-				carry = 0
-			}
-
-			ia.intAry[i] = n1
-		}
-
-		if carry > 0 {
-			ia.intAry = append([]uint8{1}, ia.intAry...)
-			ia.intAryLen++
-		}
-
-	}
+	IntAryMathMultiply{}.MultiplyByTwoToPower(ia, power)
 
 }
 
@@ -2894,24 +2865,7 @@ func (ia *IntAry) MultiplyByTwoToPower(power uint) {
 // by 10 to the power of the passed in parameter.
 func (ia *IntAry) MultiplyByTenToPower(power uint) {
 
-	if power == 0 {
-		return
-	}
-	for i := uint(0); i < power; i++ {
-
-		if ia.precision > 0 {
-			ia.precision--
-			continue
-		}
-
-		ia.intAry = append(ia.intAry, 0)
-	}
-
-	ia.intAryLen = len(ia.intAry)
-
-	if ia.precision < 0 {
-		ia.precision = 0
-	}
+	IntAryMathMultiply{}.MultiplyByTenToPower(ia, power)
 
 }
 
@@ -3370,6 +3324,31 @@ func (ia IntAry) NewNumStrDto(numDto NumStrDto) (IntAry, error) {
 	return iAry, nil
 }
 
+// NewOne - Creates a new IntAry with a value of '1'.
+// Note: 'precision' values less than zero will be
+// converted to zero.
+//
+func (ia IntAry) NewOne(precision int) IntAry {
+
+	if precision < 0 {
+		precision = 0
+	}
+
+	value := int64(1)
+
+	multiplier := int64(10)
+
+	for i:= 0; i < precision; i++ {
+		value = value * multiplier
+	}
+
+	ia1 := IntAry{}.NewZero(0)
+
+	ia1.SetIntAryWithInt64(value, precision)
+
+	return ia1
+}
+
 // NewPtr - Returns a pointer to a new IntAry instance.
 //
 func (ia IntAry) NewPtr() *IntAry {
@@ -3379,10 +3358,42 @@ func (ia IntAry) NewPtr() *IntAry {
 	return &ia2
 }
 
+// NewTwo - Creates a new IntAry with a value of '1'.
+// Note: 'precision' values less than zero will be
+// converted to zero.
+//
+func (ia IntAry) NewTwo(precision int) IntAry {
+
+	if precision < 0 {
+		precision = 0
+	}
+
+	value := int64(2)
+
+	multiplier := int64(10)
+
+	for i:= 0; i < precision; i++ {
+		value = value * multiplier
+	}
+
+	ia1 := IntAry{}.NewZero(0)
+
+	ia1.SetIntAryWithInt64(value, precision)
+
+	return ia1
+}
+
 // NewZero - Creates a new IntAry instance and sets
 // the value to Zero.
 //
+// Note: 'precision' values less than zero will be
+// converted to zero.
 func (ia IntAry) NewZero(precision int) IntAry {
+
+	if precision < 0 {
+		precision = 0
+	}
+
 	ia2 := IntAry{}
 
 	ia2.SetIntAryToZero(precision)
