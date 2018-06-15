@@ -25,8 +25,9 @@ type IntAryMathDivide struct {
 // the number of digits to the right of the decimal place will
 // not exceed 'maxPrecision'.
 //
-// 'maxPrecision' is set equal to minus one ('-1'), the computed
-// precision resulting from division calculation will be returned.
+// If 'maxPrecision' is set equal to minus one ('-1'), 'maxPrecision'
+// will be automatically set to a maximum of 4,096 digits to the right
+// of the decimal point.
 //
 // 'minPrecision' specifies the minimum precision of the final result.
 // If 'minPrecision' is less than zero, it is automatically set to zero.
@@ -55,11 +56,15 @@ func (iaDivide IntAryMathDivide) Divide(
 		return IntAry{}.New(), errors.New("Error: Input parameter 'maxPrecision' is INVALID. 'maxPrecision' is less than -1")
 	}
 
+	if maxPrecision == -1 {
+		maxPrecision = 4096
+	}
+
 	if minPrecision < 0 {
 		minPrecision = 0
 	}
 
-	if maxPrecision != -1 && 	minPrecision > maxPrecision {
+	if minPrecision > maxPrecision {
 		minPrecision = maxPrecision
 	}
 
@@ -118,6 +123,15 @@ func (iaDivide IntAryMathDivide) Divide(
 			quotient.RoundToPrecision(maxPrecision)
 			quotient.OptimizeIntArrayLen(true)
 			quotient.signVal = newSignVal
+
+			if quotient.GetPrecision() > maxPrecision {
+				quotient.RoundToPrecision(maxPrecision)
+			}
+
+			if quotient.GetPrecision() < minPrecision {
+				quotient.SetPrecision(minPrecision, false)
+			}
+
 			return quotient, nil
 		}
 
@@ -130,11 +144,8 @@ func (iaDivide IntAryMathDivide) Divide(
 			quotient.OptimizeIntArrayLen(true)
 			quotient.signVal = newSignVal
 
-			if quotient.GetPrecision() > maxPrecision &&
-				maxPrecision != -1 {
-
+			if quotient.GetPrecision() > maxPrecision {
 				quotient.RoundToPrecision(maxPrecision)
-
 			}
 
 			if quotient.GetPrecision() < minPrecision {
@@ -162,11 +173,8 @@ func (iaDivide IntAryMathDivide) Divide(
 
 	}
 
-	if quotient.GetPrecision() > maxPrecision &&
-		maxPrecision != -1 {
-
+	if quotient.GetPrecision() > maxPrecision {
 		quotient.RoundToPrecision(maxPrecision)
-
 	}
 
 	if quotient.GetPrecision() < minPrecision {
@@ -174,4 +182,46 @@ func (iaDivide IntAryMathDivide) Divide(
 	}
 
 	return quotient, nil
+}
+
+// DivideByTwo - Receives an input parameter of pointer to
+// an IntAry instance ('ia'). 'ia' is then divided by two (2)
+// and the result is returned in the input parameter 'ia'.
+//
+func (iaDivide IntAryMathDivide) DivideByTwo(ia *IntAry) {
+
+	ia.OptimizeIntArrayLen(false)
+
+	if ia.isZeroValue {
+
+		ia.SetIntAryToZero(ia.precision)
+
+		return
+	}
+
+	n1 := uint8(0)
+	n2 := uint8(0)
+	carry := uint8(0)
+
+	for i := 0; i < ia.intAryLen; i++ {
+
+		n1 = ia.intAry[i] + carry
+		n2 = n1 / 2
+		carry = (n1 - (n2 * 2)) * 10
+		ia.intAry[i] = n2
+
+	}
+
+	if carry > 0 {
+		ia.intAry = append(ia.intAry, 5)
+		ia.intAryLen++
+		ia.precision++
+	}
+
+	if ia.intAry[0] == 0 {
+		ia.SetSignificantDigitIdxs()
+		ia.intAry = ia.intAry[ia.firstDigitIdx:]
+		ia.SetIntAryLength()
+	}
+
 }

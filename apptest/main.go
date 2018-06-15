@@ -8,12 +8,64 @@ import (
 
 func main() {
 
-	radicandStr := "8"
-	nthRootStr := "-3"
-	expectedStr := "0.5"
-	maxPrecision := uint(1)
+	dividend := "1"
+	divisor := "26"
+	eQuotient := "0.0384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615385"
+	minPrecision := 0
+	maxPrecision := -1
 
-	ExampleBigIntNumNthRoot_01(radicandStr, nthRootStr, maxPrecision,  expectedStr)
+	ExampleIntAryDivide_01(dividend, divisor, eQuotient, minPrecision, maxPrecision)
+
+}
+
+func ExampleIntAryDivide_01(dividendStr, divisorStr, eQuotient string, minPreicion, maxPrecision int) {
+
+	dividend, err := mathops.IntAry{}.NewNumStr(dividendStr)
+
+	if err != nil {
+		fmt.Printf("Error returned by IntAry{}.NewNumStr(dividendStr). " +
+			"dividendStr='%v' Error='%v' \n", dividendStr, err.Error())
+		return
+
+	}
+
+	divisor, err := mathops.IntAry{}.NewNumStr(divisorStr)
+
+	if err != nil {
+		fmt.Printf("Error returned by IntAry{}.NewNumStr(divisorStr). " +
+			"divisorStr='%v' Error='%v' \n", divisorStr, err.Error())
+		return
+
+	}
+
+	quotient, err := mathops.IntAryMathDivide{}.Divide(
+										&dividend,
+											&divisor,
+												minPreicion,
+													maxPrecision)
+
+	if err != nil {
+		fmt.Printf("Error returned by IntAryMathDivide{}.Divide(). " +
+			"dividendStr='%v' divisorStr='%v' minPrecision='%v' maxPrecision='%v'" +
+					"Error='%v' \n",
+						dividendStr, divisorStr, minPreicion, maxPrecision, err.Error())
+
+		return
+	}
+
+	actualStr := quotient.GetNumStr()
+
+	if eQuotient != actualStr {
+		fmt.Printf("Error: Expected quotient='%v'.  Actual quotient='%v' ",
+			eQuotient, actualStr)
+		return
+	}
+
+	fmt.Println("*** SUCCESS ***")
+	fmt.Println("Expected Quotient: ", eQuotient)
+	fmt.Println("  Actual Quotient: ", actualStr)
+	fmt.Println("         Dividend: ", dividendStr)
+	fmt.Println("          Divisor: ", divisorStr)
 
 }
 

@@ -1360,39 +1360,8 @@ func (ia *IntAry) DecrementIntegerOne() error {
 // intAry by 2.
 func (ia *IntAry) DivideByTwo() {
 
-	ia.OptimizeIntArrayLen(false)
+	IntAryMathDivide{}.DivideByTwo(ia)
 
-	if ia.isZeroValue {
-
-		ia.SetIntAryToZero(ia.precision)
-
-		return
-	}
-
-	n1 := uint8(0)
-	n2 := uint8(0)
-	carry := uint8(0)
-
-	for i := 0; i < ia.intAryLen; i++ {
-
-		n1 = ia.intAry[i] + carry
-		n2 = n1 / 2
-		carry = (n1 - (n2 * 2)) * 10
-		ia.intAry[i] = n2
-
-	}
-
-	if carry > 0 {
-		ia.intAry = append(ia.intAry, 5)
-		ia.intAryLen++
-		ia.precision++
-	}
-
-	if ia.intAry[0] == 0 {
-		ia.SetSignificantDigitIdxs()
-		ia.intAry = ia.intAry[ia.firstDigitIdx:]
-		ia.SetIntAryLength()
-	}
 }
 
 // DivideByInt64 - Divide the current value of the intAry
@@ -1528,128 +1497,22 @@ func (ia *IntAry) DivideByTenToPower(power uint) {
 // If 'maxPrecision' is greater than or equal to zero ('0'),
 // the number of digits to the right of the decimal place will
 // not exceed 'maxPrecision'.
-
-// 'maxPrecision' is set equal to minus one ('-1'), will be set
-// to a maximum of 1,024 digits to the right of the decimal
-// point.
+//
+// If 'maxPrecision' is set equal to minus one ('-1'), 'maxPrecision'
+// will be automatically set to a maximum of 4,096 digits to the right
+// of the decimal point.
 //
 // 'minPrecision' specifies the minimum precision of the final result.
 // If 'minPrecision' is less than zero, it is automatically set to zero.
 //
 func (ia *IntAry) DivideThisBy(iAry2 *IntAry, minPrecision,  maxPrecision int) (IntAry, error) {
 
-	ia.SetInternalFlags()
-	iAry2.SetInternalFlags()
+	quotient, err := IntAryMathDivide{}.Divide(ia, iAry2, minPrecision, maxPrecision)
 
-	if iAry2.isZeroValue {
-		return IntAry{}.New(), errors.New("Error: divide by zero")
-	}
-
-	if maxPrecision < -1 {
-		return IntAry{}.New(), errors.New("Error: Input parameter 'maxPrecision' is INVALID. 'maxPrecision' is less than -1")
-	}
-
-	if minPrecision < 0 {
-		minPrecision = 0
-	}
-
-	if maxPrecision == -1 {
-		maxPrecision = 1024
-	}
-
-	if maxPrecision != -1 && 	minPrecision > maxPrecision {
-		minPrecision = maxPrecision
-	}
-
-	quotient := IntAry{}.New()
-	quotient.SetIntAryToZero(0)
-
-	if ia.isZeroValue {
-		return quotient, nil
-	}
-
-	trialDividend := ia.CopyOut()
-
-	divisor := iAry2.CopyOut()
-
-	tensCount := IntAry{}.New()
-	tensCount.SetIntAryToOne(0)
-
-	newSignVal := 1
-
-	if trialDividend.signVal != divisor.signVal {
-		newSignVal = -1
-	}
-
-	if trialDividend.signVal == -1 {
-		trialDividend.signVal = 1
-	}
-
-	if divisor.signVal == -1 {
-		divisor.signVal = 1
-	}
-
-	dividendMag := trialDividend.GetMagnitude()
-	divisorMag := divisor.GetMagnitude()
-	deltaMag := uint(0)
-	incrementVal := IntAry{}.New()
-	incrementVal = divisor.CopyOut()
-
-	if dividendMag > divisorMag {
-		deltaMag = uint(dividendMag - divisorMag)
-		tensCount.MultiplyByTenToPower(deltaMag)
-		incrementVal.MultiplyThisBy(&tensCount, -1, -1)
-
-	} else if divisorMag > dividendMag {
-		deltaMag = uint(divisorMag - dividendMag)
-		trialDividend.MultiplyByTenToPower(deltaMag)
-		tensCount.DivideByTenToPower(deltaMag)
-
-	}
-
-	compare := 0
-	precisionCutOff := maxPrecision + dividendMag + 1
-
-	for true {
-
-		if quotient.precision >= precisionCutOff {
-			quotient.RoundToPrecision(maxPrecision)
-			quotient.OptimizeIntArrayLen(true)
-			quotient.signVal = newSignVal
-			return quotient, nil
-		}
-
-		compare = incrementVal.CompareAbsoluteValues(&trialDividend)
-
-		if compare == 0 {
-			// incrementalVal is equal to trialDividend
-			quotient.AddToThis(&tensCount)
-			quotient.RoundToPrecision(maxPrecision)
-			quotient.OptimizeIntArrayLen(true)
-			quotient.signVal = newSignVal
-			return quotient, nil
-
-		} else if compare == -1 {
-			// incrementalVal < trialDividend
-			quotient.AddToThis(&tensCount)
-
-			// Calc Remainder
-			trialDividend.SubtractFromThis(&incrementVal)
-
-			continue
-
-		} else {
-			// Must Be compare == 1
-			// incrementalVal > trialDividend
-
-			tensCount.DivideByTenToPower(1)
-			incrementVal.DivideByTenToPower(1)
-		}
-
-	}
-
-	if quotient.GetPrecision() < minPrecision {
-		quotient.SetPrecision(minPrecision, false)
+	if err != nil {
+		ePrefix := "IntAry.DivideThisBy() "
+		return IntAry{}.NewZero(0),
+			fmt.Errorf(ePrefix + "Error='%v'\n", err.Error())
 	}
 
 	return quotient, nil

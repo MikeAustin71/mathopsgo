@@ -39,3 +39,27 @@ func TestIntAryMathDivide_Divide_01(t *testing.T) {
 	}
 
 }
+
+func TestIntAryMathDivide_DivideByTwo_01(t *testing.T) {
+
+	nStr1 := "25.63"
+
+	//                          1         2         3
+	//               0.123456789012345678901234567890
+	expectedStr := "12.815"
+
+	ia, err := IntAry{}.NewNumStr(nStr1)
+
+	if err != nil {
+		t.Errorf("Error returned by IntAry{}.NewNumStr(nStr1). " +
+			"nStr1='%v' Error='%v' ", nStr1, err.Error())
+	}
+
+	IntAryMathDivide{}.DivideByTwo(&ia)
+
+	if expectedStr != ia.GetNumStr() {
+		t.Errorf("Error: Expected result='%v'.  Instead, result='%v'",
+			expectedStr, ia.GetNumStr())
+	}
+
+}
