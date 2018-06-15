@@ -3193,21 +3193,9 @@ func (ia IntAry) NewNumStrDto(numDto NumStrDto) (IntAry, error) {
 //
 func (ia IntAry) NewOne(precision int) IntAry {
 
-	if precision < 0 {
-		precision = 0
-	}
+	ia1 := IntAry{}
 
-	value := int64(1)
-
-	multiplier := int64(10)
-
-	for i:= 0; i < precision; i++ {
-		value = value * multiplier
-	}
-
-	ia1 := IntAry{}.NewZero(0)
-
-	ia1.SetIntAryWithInt64(value, precision)
+	ia1.SetIntAryToOne(precision)
 
 	return ia1
 }
@@ -3221,30 +3209,36 @@ func (ia IntAry) NewPtr() *IntAry {
 	return &ia2
 }
 
-// NewTwo - Creates a new IntAry with a value of '1'.
+// NewTwo - Creates a new IntAry instance with a
+// value of '2'.
+//
 // Note: 'precision' values less than zero will be
 // converted to zero.
 //
 func (ia IntAry) NewTwo(precision int) IntAry {
 
-	if precision < 0 {
-		precision = 0
-	}
+	ia1 := IntAry{}
 
-	value := int64(2)
-
-	multiplier := int64(10)
-
-	for i:= 0; i < precision; i++ {
-		value = value * multiplier
-	}
-
-	ia1 := IntAry{}.NewZero(0)
-
-	ia1.SetIntAryWithInt64(value, precision)
+	ia1.SetIntAryToTwo(precision)
 
 	return ia1
 }
+
+// NewThree - Creates a new IntAry instance with a
+// value of '3'.
+//
+// Note: 'precision' values less than zero will be
+// converted to zero.
+//
+func (ia IntAry) NewThree(precision int) IntAry {
+
+	ia1 := IntAry{}
+
+	ia1.SetIntAryToThree(precision)
+
+	return ia1
+}
+
 
 // NewZero - Creates a new IntAry instance and sets
 // the value to Zero.
@@ -4620,11 +4614,59 @@ func (ia *IntAry) SetIntAryToOne(precision int) error {
 	return nil
 }
 
+// SetIntAryToTwo - Sets the value of the intAry object to one ('1').
+func (ia *IntAry) SetIntAryToTwo(precision int) error {
+
+	if precision < 0 {
+		return fmt.Errorf("SetIntAryToTwo() - Error: precision is less than ZERO! precision= '%v'", precision)
+	}
+
+	ia.intAryLen = 1 + precision
+	ia.precision = precision
+	ia.intAry = make([]uint8, ia.intAryLen)
+	ia.intAry[0] = 2
+	ia.signVal = 1
+	ia.isZeroValue = false
+	ia.isIntegerZeroValue = false
+	ia.firstDigitIdx = 0
+	ia.lastDigitIdx = 0
+
+	if ia.decimalSeparator == 0 {
+		ia.decimalSeparator = '.'
+	}
+
+	return nil
+}
+
+// SetIntAryToThree - Sets the value of the intAry object to one ('1').
+func (ia *IntAry) SetIntAryToThree(precision int) error {
+
+	if precision < 0 {
+		return fmt.Errorf("SetIntAryToThree() - Error: precision is less than ZERO! precision= '%v'", precision)
+	}
+
+	ia.intAryLen = 1 + precision
+	ia.precision = precision
+	ia.intAry = make([]uint8, ia.intAryLen)
+	ia.intAry[0] = 3
+	ia.signVal = 1
+	ia.isZeroValue = false
+	ia.isIntegerZeroValue = false
+	ia.firstDigitIdx = 0
+	ia.lastDigitIdx = 0
+
+	if ia.decimalSeparator == 0 {
+		ia.decimalSeparator = '.'
+	}
+
+	return nil
+}
+
 // SetIntAryToTen - Sets the value of the intAry object to Ten ('10')
 func (ia *IntAry) SetIntAryToTen(precision int) error {
 
 	if precision < 0 {
-		return fmt.Errorf("SetIntAryToOne() - Error: precision is less than ZERO! precision= '%v'", precision)
+		return fmt.Errorf("SetIntAryToTen() - Error: precision is less than ZERO! precision= '%v'", precision)
 	}
 
 	ia.intAryLen = 2 + precision
