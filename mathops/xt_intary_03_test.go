@@ -652,7 +652,7 @@ func TestIntAry_DecrementIntegerOne_03(t *testing.T) {
 func TestIntAry_DivideByInt64_01(t *testing.T) {
 	nStr1 := "579"
 	expected := "17.545454545454545454545454545455"
-	maxPrecision := uint64(30)
+	maxPrecision := 30
 	divisor := int64(33)
 
 	ia := IntAry{}.New()
@@ -675,7 +675,7 @@ func TestIntAry_DivideByInt64_01(t *testing.T) {
 
 func TestIntAry_DivideByInt64_02(t *testing.T) {
 	nStr1 := "579"
-	maxPrecision := uint64(0)
+	maxPrecision := 0
 	divisor := int64(0)
 
 	ia := IntAry{}.New()
@@ -691,7 +691,7 @@ func TestIntAry_DivideByInt64_02(t *testing.T) {
 func TestIntAry_DivideByInt64_03(t *testing.T) {
 	nStr1 := "4"
 	expected := "2"
-	maxPrecision := uint64(0)
+	maxPrecision := 0
 	divisor := int64(2)
 
 	ia := IntAry{}.New()
@@ -715,7 +715,7 @@ func TestIntAry_DivideByInt64_03(t *testing.T) {
 func TestIntAry_DivideByInt64_04(t *testing.T) {
 	nStr1 := "476"
 	expected := "-14"
-	maxPrecision := uint64(10)
+	maxPrecision := 10
 	ePrecision := 0
 	eSignVal := -1
 	divisor := int64(-34)
@@ -745,7 +745,7 @@ func TestIntAry_DivideByInt64_04(t *testing.T) {
 func TestIntAry_DivideByInt64_05(t *testing.T) {
 	nStr1 := "-476"
 	expected := "-14"
-	maxPrecision := uint64(10)
+	maxPrecision := 10
 	ePrecision := 0
 	eSignVal := -1
 	divisor := int64(34)
@@ -775,7 +775,7 @@ func TestIntAry_DivideByInt64_05(t *testing.T) {
 func TestIntAry_DivideByInt64_06(t *testing.T) {
 	nStr1 := "-476"
 	expected := "14"
-	maxPrecision := uint64(10)
+	maxPrecision := 10
 	ePrecision := 0
 	eSignVal := 1
 	divisor := int64(-34)

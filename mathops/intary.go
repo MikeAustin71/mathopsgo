@@ -1366,81 +1366,25 @@ func (ia *IntAry) DivideByTwo() {
 
 // DivideByInt64 - Divide the current value of the intAry
 // by an int64 'divisor' parameter passed to the method.
-func (ia *IntAry) DivideByInt64(divisor int64, maxPrecision uint64) error {
+//
+// If the quotient has a number of decimal places to the right of
+// the decimal point which is greater than 'maxPrecision', the
+// result is rounded to 'maxPrecision' decimal places.
+//
+// If 'maxPrecision' is set equal to -1, 'maxPrecision' is automatically
+// set to 4,096.
+//
+// If 'maxPrecision' is less than -1, an error will be returned.
+//
+func (ia *IntAry) DivideByInt64(divisor int64, maxPrecision int) error {
 
-	if divisor == 0 {
-		return errors.New("'divisor' Equals Zero. Cannot divide by zero")
-	}
+	err := IntAryMathDivide{}.DivideByInt64(ia, divisor, maxPrecision)
 
-	ia.OptimizeIntArrayLen(false)
-
-	if ia.isZeroValue {
-
-		ia.SetIntAryToZero(ia.precision)
-
-		return nil
-	}
-
-	dSignVal := 1
-
-	if divisor < 0 {
-		dSignVal = -1
-		divisor = divisor * -1
-	}
-
-	ia.signVal = dSignVal * ia.signVal
-
-	n1 := int64(0)
-	n2 := int64(0)
-	carry := int64(0)
-	iMaxPrecision := int(maxPrecision) + 1
-	newAryLen := ia.intAryLen
-	intAryLen := ia.intAryLen - ia.precision
-	precisionCnt := 0
-
-	for i := 0; i < newAryLen; i++ {
-
-		if i >= intAryLen {
-			precisionCnt++
-		}
-
-		if i < ia.intAryLen {
-			n1 = int64(ia.intAry[i]) + carry
-		} else {
-			n1 = int64(0) + carry
-		}
-
-		n2 = n1 / divisor
-		carry = (n1 - (n2 * divisor)) * 10
-
-		if i < ia.intAryLen {
-			ia.intAry[i] = uint8(n2)
-		} else {
-			ia.intAry = append(ia.intAry, uint8(n2))
-		}
-
-		if i == newAryLen-1 &&
-			carry > 0 && precisionCnt <= iMaxPrecision {
-
-			newAryLen++
-
-		}
-
-	}
-
-	ia.precision = precisionCnt
-
-	ia.intAryLen = newAryLen
-
-	if precisionCnt >= iMaxPrecision {
-		iMaxPrecision--
-		ia.RoundToPrecision(iMaxPrecision)
-	}
-
-	if ia.intAry[0] == 0 {
-		ia.SetSignificantDigitIdxs()
-		ia.intAry = ia.intAry[ia.firstDigitIdx:]
-		ia.SetIntAryLength()
+	if err !=nil {
+		ePrefix := "IntAry.DivideByInt64() "
+		return fmt.Errorf(ePrefix +
+			"Error returned by IntAryMathDivide{}.DivideByInt64() " +
+			"Error='%v' \n", err.Error())
 	}
 
 	return nil
