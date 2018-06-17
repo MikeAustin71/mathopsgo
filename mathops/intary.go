@@ -2912,6 +2912,22 @@ func (ia IntAry) NewBigIntNum(bINum BigIntNum) (IntAry, error) {
 	return iAry, nil
 }
 
+// NewFive - Creates a new IntAry instance with a
+// value of '3'.
+//
+// Note: 'precision' values less than zero will be
+// converted to zero.
+//
+func (ia IntAry) NewFive(precision int) IntAry {
+
+	ia1 := IntAry{}
+
+	ia1.SetIntAryToFive(precision)
+
+	return ia1
+}
+
+
 // NewFloat32 - Creates a new intAry object initialized
 // to the value of input parameter 'num' which is passed
 // as type 'float32'. Input parameter 'precision' is used
@@ -4606,6 +4622,28 @@ func (ia *IntAry) SetIsZeroValue() {
 	ia.signVal = 1
 }
 
+// SetIntAryToFive - Sets the value of the intAry object to one ('1').
+func (ia *IntAry) SetIntAryToFive(precision int) error {
+
+	if precision < 0 {
+		return fmt.Errorf("SetIntAryToFive() - Error: precision is less than ZERO! precision= '%v'", precision)
+	}
+
+	ia.intAryLen = 1 + precision
+	ia.precision = precision
+	ia.intAry = make([]uint8, ia.intAryLen)
+	ia.intAry[0] = 5
+	ia.signVal = 1
+	ia.isZeroValue = false
+	ia.isIntegerZeroValue = false
+	ia.firstDigitIdx = 0
+	ia.lastDigitIdx = 0
+
+	ia.setDefaultSeparators()
+
+	return nil
+}
+
 // SetIntAryToOne - Sets the value of the intAry object to one ('1').
 func (ia *IntAry) SetIntAryToOne(precision int) error {
 
@@ -4623,9 +4661,7 @@ func (ia *IntAry) SetIntAryToOne(precision int) error {
 	ia.firstDigitIdx = 0
 	ia.lastDigitIdx = 0
 
-	if ia.decimalSeparator == 0 {
-		ia.decimalSeparator = '.'
-	}
+	ia.setDefaultSeparators()
 
 	return nil
 }
@@ -4647,9 +4683,7 @@ func (ia *IntAry) SetIntAryToTwo(precision int) error {
 	ia.firstDigitIdx = 0
 	ia.lastDigitIdx = 0
 
-	if ia.decimalSeparator == 0 {
-		ia.decimalSeparator = '.'
-	}
+	ia.setDefaultSeparators()
 
 	return nil
 }
@@ -4671,9 +4705,7 @@ func (ia *IntAry) SetIntAryToThree(precision int) error {
 	ia.firstDigitIdx = 0
 	ia.lastDigitIdx = 0
 
-	if ia.decimalSeparator == 0 {
-		ia.decimalSeparator = '.'
-	}
+	ia.setDefaultSeparators()
 
 	return nil
 }
@@ -4695,9 +4727,7 @@ func (ia *IntAry) SetIntAryToTen(precision int) error {
 	ia.firstDigitIdx = 0
 	ia.lastDigitIdx = 0
 
-	if ia.decimalSeparator == 0 {
-		ia.decimalSeparator = '.'
-	}
+	ia.setDefaultSeparators()
 
 	return nil
 }
@@ -4714,9 +4744,7 @@ func (ia *IntAry) SetIntAryToZero(precision int) error {
 	ia.intAry = make([]uint8, ia.intAryLen)
 	ia.signVal = 1
 
-	if ia.decimalSeparator == 0 {
-		ia.decimalSeparator = '.'
-	}
+	ia.setDefaultSeparators()
 
 	ia.SetInternalFlags()
 

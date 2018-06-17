@@ -974,6 +974,33 @@ func TestIntAry_NewOne_02(t *testing.T) {
 	
 }
 
+func TestIntAry_NewFive_01(t *testing.T) {
+
+	expected := "5"
+	ePrecision := 0
+
+	ia := IntAry{}.NewFive(ePrecision)
+
+	if expected != ia.GetNumStr() {
+		t.Errorf("Error: Expected result='%v'. Instead, result='%v' ",
+			expected, ia.GetNumStr() )
+	}
+
+}
+
+func TestIntAry_NewFive_02(t *testing.T) {
+
+	expected := "5.00"
+	ePrecision := 2
+
+	ia := IntAry{}.NewFive(ePrecision)
+
+	if expected != ia.GetNumStr() {
+		t.Errorf("Error: Expected result='%v'. Instead, result='%v' ",
+			expected, ia.GetNumStr() )
+	}
+
+}
 
 func TestIntAry_NewTen_01(t *testing.T) {
 
