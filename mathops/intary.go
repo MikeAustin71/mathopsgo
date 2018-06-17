@@ -3209,20 +3209,21 @@ func (ia IntAry) NewPtr() *IntAry {
 	return &ia2
 }
 
-// NewTwo - Creates a new IntAry instance with a
-// value of '2'.
+// NewTen - Creates a new IntAry instance with a
+// value of '10'.
 //
 // Note: 'precision' values less than zero will be
 // converted to zero.
 //
-func (ia IntAry) NewTwo(precision int) IntAry {
+func (ia IntAry) NewTen(precision int) IntAry {
 
 	ia1 := IntAry{}
 
-	ia1.SetIntAryToTwo(precision)
+	ia1.SetIntAryToTen(precision)
 
 	return ia1
 }
+
 
 // NewThree - Creates a new IntAry instance with a
 // value of '3'.
@@ -3235,6 +3236,21 @@ func (ia IntAry) NewThree(precision int) IntAry {
 	ia1 := IntAry{}
 
 	ia1.SetIntAryToThree(precision)
+
+	return ia1
+}
+
+// NewTwo - Creates a new IntAry instance with a
+// value of '2'.
+//
+// Note: 'precision' values less than zero will be
+// converted to zero.
+//
+func (ia IntAry) NewTwo(precision int) IntAry {
+
+	ia1 := IntAry{}
+
+	ia1.SetIntAryToTwo(precision)
 
 	return ia1
 }

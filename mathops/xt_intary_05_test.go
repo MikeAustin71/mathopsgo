@@ -946,6 +946,120 @@ func TestIntAry_NewInt_02(t *testing.T) {
 
 }
 
+func TestIntAry_NewOne_01(t *testing.T) {
+	
+	expected := "1"
+	ePrecision := 0
+	
+	ia := IntAry{}.NewOne(ePrecision) 
+
+	if expected != ia.GetNumStr() {
+		t.Errorf("Error: Expected result='%v'. Instead, result='%v' ",
+			expected, ia.GetNumStr() )
+	}
+	
+}
+
+func TestIntAry_NewOne_02(t *testing.T) {
+	
+	expected := "1.00"
+	ePrecision := 2
+	
+	ia := IntAry{}.NewOne(ePrecision) 
+
+	if expected != ia.GetNumStr() {
+		t.Errorf("Error: Expected result='%v'. Instead, result='%v' ",
+			expected, ia.GetNumStr() )
+	}
+	
+}
+
+
+func TestIntAry_NewTen_01(t *testing.T) {
+
+	expected := "10"
+	ePrecision := 0
+
+	ia := IntAry{}.NewTen(ePrecision)
+
+	if expected != ia.GetNumStr() {
+		t.Errorf("Error: Expected result='%v'. Instead, result='%v' ",
+			expected, ia.GetNumStr() )
+	}
+
+}
+
+func TestIntAry_NewTen_02(t *testing.T) {
+
+	expected := "10.00"
+	ePrecision := 2
+
+	ia := IntAry{}.NewTen(ePrecision)
+
+	if expected != ia.GetNumStr() {
+		t.Errorf("Error: Expected result='%v'. Instead, result='%v' ",
+			expected, ia.GetNumStr() )
+	}
+
+}
+
+func TestIntAry_NewThree_01(t *testing.T) {
+
+	expected := "3"
+	ePrecision := 0
+
+	ia := IntAry{}.NewThree(ePrecision)
+
+	if expected != ia.GetNumStr() {
+		t.Errorf("Error: Expected result='%v'. Instead, result='%v' ",
+			expected, ia.GetNumStr() )
+	}
+
+}
+
+func TestIntAry_NewThree_02(t *testing.T) {
+
+	expected := "3.00"
+	ePrecision := 2
+
+	ia := IntAry{}.NewThree(ePrecision)
+
+	if expected != ia.GetNumStr() {
+		t.Errorf("Error: Expected result='%v'. Instead, result='%v' ",
+			expected, ia.GetNumStr() )
+	}
+
+}
+
+
+func TestIntAry_NewTwo_01(t *testing.T) {
+
+	expected := "2"
+	ePrecision := 0
+
+	ia := IntAry{}.NewTwo(ePrecision)
+
+	if expected != ia.GetNumStr() {
+		t.Errorf("Error: Expected result='%v'. Instead, result='%v' ",
+			expected, ia.GetNumStr() )
+	}
+
+}
+
+func TestIntAry_NewTwo_02(t *testing.T) {
+
+	expected := "2.00"
+	ePrecision := 2
+
+	ia := IntAry{}.NewTwo(ePrecision)
+
+	if expected != ia.GetNumStr() {
+		t.Errorf("Error: Expected result='%v'. Instead, result='%v' ",
+			expected, ia.GetNumStr() )
+	}
+
+}
+
 func TestIntAry_OptimizeIntArrayLen_01(t *testing.T) {
 	nStr1 := "00579.123456000"
 	expected := "579.123456000"
