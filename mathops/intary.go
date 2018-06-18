@@ -1390,46 +1390,12 @@ func (ia *IntAry) DivideByInt64(divisor int64, maxPrecision int) error {
 	return nil
 }
 
-// DivideByTenToPower - Divide intAry value by
-// 10 raised to the power of the 'power'
-// parameter.
+// DivideByTenToPower - Divide intAry value by 10 raised to the
+// power of the input parameter, 'power'.
 //
-// If parameter 'convertToNumStr' is set to 'true', the
-// result will be automatically converted to a number string.
 func (ia *IntAry) DivideByTenToPower(power uint) {
 
-	if power == 0 {
-		return
-	}
-
-	ia.precision += int(power)
-	ia.intAryLen = len(ia.intAry)
-	newLen := ia.precision + 1
-
-	if ia.intAryLen < newLen {
-
-		t := make([]uint8, newLen)
-
-		deltaLen := newLen - ia.intAryLen
-
-		for i := 0; i < newLen; i++ {
-
-			if i < deltaLen {
-				t[i] = 0
-			} else {
-				t[i] = ia.intAry[i-deltaLen]
-			}
-
-		}
-
-		ia.intAry = make([]uint8, newLen)
-		for i := 0; i < newLen; i++ {
-			ia.intAry[i] = t[i]
-		}
-
-		ia.intAryLen = newLen
-	}
-
+	IntAryMathDivide{}.DivideByTenToPower(ia, power)
 }
 
 // DivideThisBy - Divides the current value of intAry by the parameter iAry2.

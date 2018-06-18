@@ -286,6 +286,47 @@ func (iaDivide IntAryMathDivide) DivideByInt64(ia *IntAry, divisor int64, maxPre
 
 }
 
+// DivideByTenToPower - Divide input parameter 'ia' of type IntAry by 10 raised
+// to the power of input parameter 'power'.
+//
+// The result, or quotient, is returned via the pointer to input parameter 'ia'.
+//
+func (iaDivide IntAryMathDivide) DivideByTenToPower(ia *IntAry, power uint) {
+
+	if power == 0 {
+		return
+	}
+
+	ia.precision += int(power)
+	ia.intAryLen = len(ia.intAry)
+	newLen := ia.precision + 1
+
+	if ia.intAryLen < newLen {
+
+		t := make([]uint8, newLen)
+
+		deltaLen := newLen - ia.intAryLen
+
+		for i := 0; i < newLen; i++ {
+
+			if i < deltaLen {
+				t[i] = 0
+			} else {
+				t[i] = ia.intAry[i-deltaLen]
+			}
+
+		}
+
+		ia.intAry = make([]uint8, newLen)
+		for i := 0; i < newLen; i++ {
+			ia.intAry[i] = t[i]
+		}
+
+		ia.intAryLen = newLen
+	}
+
+}
+
 // DivideByTwo - Receives an input parameter of pointer to
 // an IntAry instance ('ia'). 'ia' is then divided by two (2)
 // and the result is returned in the input parameter 'ia'.
