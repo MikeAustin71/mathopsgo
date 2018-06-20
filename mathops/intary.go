@@ -87,6 +87,32 @@ func (fIa FracIntAry) NewIntArys(numerator, denominator *IntAry) FracIntAry {
 	return fIa2
 }
 
+func (fIa FracIntAry) NewFracIntAry(fracIntAry *IntAry) FracIntAry {
+
+	fIa2 := FracIntAry{}
+
+	if fracIntAry.GetPrecision() == 0 {
+
+
+		fIa2.Numerator = fracIntAry.CopyOut()
+		fIa2.Denominator = IntAry{}.NewOne(0)
+
+		return fIa2
+	}
+
+	precision := fracIntAry.GetPrecision()
+	fIa2.Numerator = fracIntAry.CopyOut()
+	fIa2.Numerator.precision = 0
+	fIa2.Numerator.OptimizeIntArrayLen(false)
+	fIa2.Numerator.SetInternalFlags()
+
+	fIa2.Denominator = IntAry{}.NewOne(0)
+	IntAryMathMultiply{}.MultiplyByTenToPower(&fIa2.Denominator, uint(precision) )
+
+	return fIa2
+
+}
+
 // GetRationalValue - Converts the fraction and returns the value as a
 // big rational number (*big.Rat).
 //
