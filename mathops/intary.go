@@ -4925,7 +4925,9 @@ func (ia *IntAry) SetThousandsSeparator(thousandsSeparator rune) {
 
 // SubtractFromThis - Subtracts the value of parameter
 // 'ia2' from the current intAry object.
-// Paramters:
+//
+// Input Parameters:
+// =================
 //
 // ia2 *intAry - Incoming intAry object whose value will be subtracted
 // 								from this current intAry value.
@@ -4935,6 +4937,82 @@ func (ia *IntAry) SubtractFromThis(ia2 *IntAry) error {
 	IntAryMathSubtract{}.SubtractTotal(ia, ia2)
 
 	return nil
+
+}
+
+// ShiftPrecisionLeft - Shifts the relative position of a decimal point within a number
+// string. The position of the decimal point is shifted 'shiftPrecision' positions to
+// the left of the current decimal point position.
+//
+// This is equivalent to: result = signedNumStr / 10^precision or signedNumStr divided
+// by 10 raised to the power of precision.
+//
+// See the Examples section below.
+//
+// Input Parameters
+// ================
+//
+//	shiftPrecision		uint		- The number of digits by which the current decimal point
+//															point position in the current IntAry numeric value, will
+//															be shifted to the left.
+//
+// Examples
+// ========
+//										Requested
+//                      Shift
+//  signedNumStr			precision				Result
+//	 "123456.789"				  3						"123.456789"
+//	 "123456.789"				  2						"1234.56789"
+//	 "123456.789"	   		  6					  "0.123456789"
+//	 "123456789"					6						"123.456789"
+//	 "123"								5						"0.00123"
+//   "0"									3						"0.000"
+// 	 "0.000"							2						"0.00000"
+//  "123456.789"					0						"123456.789"		- Zero 'shiftPrecision' has no effect on
+// 																											original number string
+// "-123456.789"          0          "-123.456789"
+// "-123456.789"          3          "-123.456789"
+// "-123456789"						6					 "-123.456789"
+//
+func (ia *IntAry) ShiftPrecisionLeft(shiftPrecision uint) {
+
+	IntAryMathDivide{}.DivideByTenToPower(ia, shiftPrecision)
+
+}
+
+// ShiftPrecisionRight - Shifts the existing precision of the current IntAry numeric value.
+// The position of the decimal point is shifted 'shiftPrecision' positions to the right.
+//
+// This is equivalent to: result = IntAry X 10^shiftPrecision or IntAry Multiplied by 10
+// raised to the power of input parameter 'shiftPrecision'.
+//
+// Input Parameters:
+// =================
+//
+//	shiftPrecision		uint		- The number of digits by which the current decimal point
+//															point position in the current IntAry numeric value will
+//															be shifted to the right.
+//
+// Examples:
+// =========
+//                    Input
+//                  Parameter
+// IntAry Value		shiftPrecision		Result
+// ------------   --------------    ------
+//  "123456.789"				3						"123456789"
+//  "123456.789"				2						"12345678.9"
+//  "123456.789"        6					  "123456789000"
+//  "123456789"	 			  6						"123456789000000"
+//  "123"               5	          "12300000"
+//  "0"								  3						"0"
+//  "123456.789"				0						"123456.789"		- Zero has no effect on original number string
+// "-123456.789"        0          "-123456.789"
+// "-123456.789"        3          "-123456789"
+// "-123456789"			    6					 "-123456789000000"
+//
+func (ia *IntAry) ShiftPrecisionRight(shiftPrecision uint) {
+
+	IntAryMathMultiply{}.MultiplyByTenToPower(ia, shiftPrecision)
 
 }
 

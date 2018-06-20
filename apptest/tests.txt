@@ -489,7 +489,7 @@
 === RUN   TestBigIntMathMultiply_MultiplyBigIntNumArray_04
 --- PASS: TestBigIntMathMultiply_MultiplyBigIntNumArray_04 (0.00s)
 === RUN   TestBigIntMathMultiply_MultiplyBigIntNumOutputToArray_01
---- PASS: TestBigIntMathMultiply_MultiplyBigIntNumOutputToArray_01 (0.00s)
+--- PASS: TestBigIntMathMultiply_MultiplyBigIntNumOutputToArray_01 (0.02s)
 === RUN   TestBigIntMathMultiply_MultiplyBigIntNumOutputToArray_02
 --- PASS: TestBigIntMathMultiply_MultiplyBigIntNumOutputToArray_02 (0.00s)
 === RUN   TestBigIntMathMultiply_MultiplyBigIntNumOutputToArray_03
@@ -703,7 +703,7 @@
 === RUN   TestBigIntMathNthRoot_GetNthRootBigNum_26
 --- PASS: TestBigIntMathNthRoot_GetNthRootBigNum_26 (0.00s)
 === RUN   TestBigIntMathNthRoot_GetNthRootBigNum_27
---- PASS: TestBigIntMathNthRoot_GetNthRootBigNum_27 (0.19s)
+--- PASS: TestBigIntMathNthRoot_GetNthRootBigNum_27 (0.15s)
 === RUN   TestBigIntMathPower_Pwr_01
 --- PASS: TestBigIntMathPower_Pwr_01 (0.00s)
 === RUN   TestBigIntMathPower_Pwr_02
@@ -1759,7 +1759,7 @@
 === RUN   TestFracIntAry_GetRationalValue_06
 --- PASS: TestFracIntAry_GetRationalValue_06 (0.00s)
 === RUN   TestFracIntAry_GetRationalValue_07
---- PASS: TestFracIntAry_GetRationalValue_07 (0.07s)
+--- PASS: TestFracIntAry_GetRationalValue_07 (0.06s)
 === RUN   TestIntAry_AddMultipleToThis_01
 --- PASS: TestIntAry_AddMultipleToThis_01 (0.00s)
 === RUN   TestIntAry_AddToThis_01
@@ -2093,7 +2093,7 @@
 === RUN   TestIntAry_DivideThisBy_12
 --- PASS: TestIntAry_DivideThisBy_12 (0.00s)
 === RUN   TestIntAry_DivideThisBy_13
---- PASS: TestIntAry_DivideThisBy_13 (0.92s)
+--- PASS: TestIntAry_DivideThisBy_13 (0.82s)
 === RUN   TestIntAry_DivideThisBy_14
 --- PASS: TestIntAry_DivideThisBy_14 (0.00s)
 === RUN   TestIntAry_DivideThisBy_15
@@ -2536,6 +2536,18 @@
 --- PASS: TestIntAry_SetSignificantDigitIdxs_06 (0.00s)
 === RUN   TestIntAry_SetThousandsSeparator_01
 --- PASS: TestIntAry_SetThousandsSeparator_01 (0.00s)
+=== RUN   TestIntAry_ShiftPrecisionLeft_01
+--- PASS: TestIntAry_ShiftPrecisionLeft_01 (0.00s)
+=== RUN   TestIntAry_ShiftPrecisionLeft_02
+--- PASS: TestIntAry_ShiftPrecisionLeft_02 (0.00s)
+=== RUN   TestIntAry_ShiftPrecisionLeft_03
+--- PASS: TestIntAry_ShiftPrecisionLeft_03 (0.00s)
+=== RUN   TestIntAry_ShiftPrecisionLeft_04
+--- PASS: TestIntAry_ShiftPrecisionLeft_04 (0.00s)
+=== RUN   TestIntAry_ShiftPrecisionLeft_05
+--- PASS: TestIntAry_ShiftPrecisionLeft_05 (0.00s)
+=== RUN   TestIntAry_ShiftPrecisionLeft_06
+--- PASS: TestIntAry_ShiftPrecisionLeft_06 (0.00s)
 === RUN   TestIntAry_SubtractFromThis_01
 --- PASS: TestIntAry_SubtractFromThis_01 (0.00s)
 === RUN   TestIntAry_SubtractFromThis_02
@@ -3267,4 +3279,4 @@
 === RUN   TestStrMathOp_SubtractN1N2_19
 --- PASS: TestStrMathOp_SubtractN1N2_19 (0.00s)
 PASS
-ok  	MikeAustin71/mathopsgo/mathops	6.398s
+ok  	MikeAustin71/mathopsgo/mathops	4.161s
