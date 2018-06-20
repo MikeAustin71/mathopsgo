@@ -44,6 +44,8 @@ func (iaMultiply IntAryMathMultiply) MultiplyByTenToPower(base *IntAry, power ui
 		base.precision = 0
 	}
 
+	base.OptimizeIntArrayLen(false)
+
 }
 
 // MultiplyByTwoToPower - Multiplies 'base' by 2 to the exponent 'power'. The result

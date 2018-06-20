@@ -619,6 +619,182 @@ func TestIntAry_ShiftPrecisionLeft_06(t *testing.T) {
 
 }
 
+func TestIntAry_ShiftPrecisionRight_01(t *testing.T) {
+
+	nStr1 := "900.777"
+	shiftPrecisionRight := uint(3)
+	expectedStr := "900777"
+
+	ia1, err := IntAry{}.NewNumStr(nStr1)
+
+	if err != nil {
+		t.Errorf("Error returned by IntAry{}.NewNumStr(nStr1) " +
+			"nStr1='%v' Error='%v' ", nStr1, err.Error())
+	}
+
+	ia1.ShiftPrecisionRight(shiftPrecisionRight)
+
+	if expectedStr != ia1.GetNumStr() {
+		t.Errorf("Error: Expected result='%v'. Instead, result='%v' ",
+			expectedStr, ia1.GetNumStr())
+	}
+
+}
+
+func TestIntAry_ShiftPrecisionRight_02(t *testing.T) {
+
+	nStr1 := "900777"
+	shiftPrecisionRight := uint(3)
+	expectedStr := "900777000"
+
+	ia1, err := IntAry{}.NewNumStr(nStr1)
+
+	if err != nil {
+		t.Errorf("Error returned by IntAry{}.NewNumStr(nStr1) " +
+			"nStr1='%v' Error='%v' ", nStr1, err.Error())
+	}
+
+	ia1.ShiftPrecisionRight(shiftPrecisionRight)
+
+	if expectedStr != ia1.GetNumStr() {
+		t.Errorf("Error: Expected result='%v'. Instead, result='%v' ",
+			expectedStr, ia1.GetNumStr())
+	}
+
+}
+
+func TestIntAry_ShiftPrecisionRight_03(t *testing.T) {
+
+	nStr1 := "0.900777"
+	shiftPrecisionRight := uint(3)
+	expectedStr := "900.777"
+
+	ia1, err := IntAry{}.NewNumStr(nStr1)
+
+	if err != nil {
+		t.Errorf("Error returned by IntAry{}.NewNumStr(nStr1) " +
+			"nStr1='%v' Error='%v' ", nStr1, err.Error())
+	}
+
+	ia1.ShiftPrecisionRight(shiftPrecisionRight)
+
+	if expectedStr != ia1.GetNumStr() {
+		t.Errorf("Error: Expected result='%v'. Instead, result='%v' ",
+			expectedStr, ia1.GetNumStr())
+	}
+
+}
+
+func TestIntAry_ShiftPrecisionRight_04(t *testing.T) {
+
+	nStr1 := "0"
+	shiftPrecisionRight := uint(3)
+	expectedStr := "0000"
+
+	ia1, err := IntAry{}.NewNumStr(nStr1)
+
+	if err != nil {
+		t.Errorf("Error returned by IntAry{}.NewNumStr(nStr1) " +
+			"nStr1='%v' Error='%v' ", nStr1, err.Error())
+	}
+
+	ia1.ShiftPrecisionRight(shiftPrecisionRight)
+
+	if expectedStr != ia1.GetNumStr() {
+		t.Errorf("Error: Expected result='%v'. Instead, result='%v' ",
+			expectedStr, ia1.GetNumStr())
+	}
+
+}
+
+func TestIntAry_ShiftPrecisionRight_05(t *testing.T) {
+
+	nStr1 := "0.000"
+	shiftPrecisionRight := uint(3)
+	expectedStr := "0000"
+
+	ia1, err := IntAry{}.NewNumStr(nStr1)
+
+	if err != nil {
+		t.Errorf("Error returned by IntAry{}.NewNumStr(nStr1) " +
+			"nStr1='%v' Error='%v' ", nStr1, err.Error())
+	}
+
+	ia1.ShiftPrecisionRight(shiftPrecisionRight)
+
+	if expectedStr != ia1.GetNumStr() {
+		t.Errorf("Error: Expected result='%v'. Instead, result='%v' ",
+			expectedStr, ia1.GetNumStr())
+	}
+
+}
+
+func TestIntAry_ShiftPrecisionRight_06(t *testing.T) {
+
+	nStr1 := "-900.777"
+	shiftPrecisionRight := uint(3)
+	expectedStr := "-900777"
+
+	ia1, err := IntAry{}.NewNumStr(nStr1)
+
+	if err != nil {
+		t.Errorf("Error returned by IntAry{}.NewNumStr(nStr1) " +
+			"nStr1='%v' Error='%v' ", nStr1, err.Error())
+	}
+
+	ia1.ShiftPrecisionRight(shiftPrecisionRight)
+
+	if expectedStr != ia1.GetNumStr() {
+		t.Errorf("Error: Expected result='%v'. Instead, result='%v' ",
+			expectedStr, ia1.GetNumStr())
+	}
+
+}
+
+func TestIntAry_ShiftPrecisionRight_07(t *testing.T) {
+
+	nStr1 := "-900777"
+	shiftPrecisionRight := uint(3)
+	expectedStr := "-900777000"
+
+	ia1, err := IntAry{}.NewNumStr(nStr1)
+
+	if err != nil {
+		t.Errorf("Error returned by IntAry{}.NewNumStr(nStr1) " +
+			"nStr1='%v' Error='%v' ", nStr1, err.Error())
+	}
+
+	ia1.ShiftPrecisionRight(shiftPrecisionRight)
+
+	if expectedStr != ia1.GetNumStr() {
+		t.Errorf("Error: Expected result='%v'. Instead, result='%v' ",
+			expectedStr, ia1.GetNumStr())
+	}
+
+}
+
+func TestIntAry_ShiftPrecisionRight_08(t *testing.T) {
+
+	nStr1 := "900777"
+	shiftPrecisionRight := uint(3)
+	expectedStr := "900777000"
+
+	ia1, err := IntAry{}.NewNumStr(nStr1)
+
+	if err != nil {
+		t.Errorf("Error returned by IntAry{}.NewNumStr(nStr1) " +
+			"nStr1='%v' Error='%v' ", nStr1, err.Error())
+	}
+
+	ia1.ShiftPrecisionRight(shiftPrecisionRight)
+
+	if expectedStr != ia1.GetNumStr() {
+		t.Errorf("Error: Expected result='%v'. Instead, result='%v' ",
+			expectedStr, ia1.GetNumStr())
+	}
+
+}
+
 func TestIntAry_SubtractFromThis_01(t *testing.T) {
 	nStr1 := "900.777"
 	nStr2 := "901.000"

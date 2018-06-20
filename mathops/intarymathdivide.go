@@ -325,6 +325,8 @@ func (iaDivide IntAryMathDivide) DivideByTenToPower(ia *IntAry, power uint) {
 		ia.intAryLen = newLen
 	}
 
+	ia.OptimizeIntArrayLen(false)
+
 }
 
 // DivideByTwo - Receives an input parameter of pointer to
