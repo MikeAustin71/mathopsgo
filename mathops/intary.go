@@ -87,12 +87,15 @@ func (fIa FracIntAry) NewIntArys(numerator, denominator *IntAry) FracIntAry {
 	return fIa2
 }
 
+
+// NewFracIntAry - Creates a FracIntAry instance from a single IntAry object.
+// The IntAry input parameter is converted into an equivalent fraction.
+//
 func (fIa FracIntAry) NewFracIntAry(fracIntAry *IntAry) FracIntAry {
 
 	fIa2 := FracIntAry{}
 
 	if fracIntAry.GetPrecision() == 0 {
-
 
 		fIa2.Numerator = fracIntAry.CopyOut()
 		fIa2.Denominator = IntAry{}.NewOne(0)
@@ -102,15 +105,15 @@ func (fIa FracIntAry) NewFracIntAry(fracIntAry *IntAry) FracIntAry {
 
 	precision := fracIntAry.GetPrecision()
 	fIa2.Numerator = fracIntAry.CopyOut()
-	fIa2.Numerator.precision = 0
-	fIa2.Numerator.OptimizeIntArrayLen(false)
-	fIa2.Numerator.SetInternalFlags()
+
+	if precision > 0 {
+		fIa2.Numerator.ShiftPrecisionRight(uint(precision))
+	}
 
 	fIa2.Denominator = IntAry{}.NewOne(0)
 	IntAryMathMultiply{}.MultiplyByTenToPower(&fIa2.Denominator, uint(precision) )
 
 	return fIa2
-
 }
 
 // GetRationalValue - Converts the fraction and returns the value as a
@@ -120,7 +123,7 @@ func (fIa FracIntAry) NewFracIntAry(fracIntAry *IntAry) FracIntAry {
 // places to the right of the decimal point contained in the result.
 //
 // If the value of maxPrecision is -1, maximum precision will default to
-// 1024 decimal places. maxPrecision values less than -1 will trigger an
+// 4096 decimal places. maxPrecision values less than -1 will trigger an
 // error.
 func (fIa *FracIntAry) GetRationalValue(maxPrecision int) (*big.Rat, error) {
 
@@ -129,7 +132,7 @@ func (fIa *FracIntAry) GetRationalValue(maxPrecision int) (*big.Rat, error) {
 	}
 
 	if maxPrecision == -1 {
-		maxPrecision = 1024
+		maxPrecision = 4096
 	}
 
 	if fIa.Numerator.GetPrecision() == 0 && fIa.Denominator.GetPrecision() == 0 {

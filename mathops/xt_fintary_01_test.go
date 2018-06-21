@@ -240,3 +240,164 @@ func TestFracIntAry_GetRationalValue_07(t *testing.T) {
 
 }
 
+func TestFracIntAry_NewFracIntAry_01(t *testing.T) {
+
+	numStr := "3.1"
+	expectedNumerator := "31"
+	expectedDenominator := "10"
+
+	iaNum, err := IntAry{}.NewNumStr(numStr)
+
+	if err != nil {
+		t.Errorf("Error returned by IntAry{}.NewNumStr(numStr). " +
+			"numStr='%v' Error='%v' ", numStr, err.Error())
+	}
+
+	fracIa := FracIntAry{}.NewFracIntAry(&iaNum)
+
+	if expectedNumerator != fracIa.Numerator.GetNumStr() {
+		t.Errorf("Error: Expected Numerator='%v'. Instead, Numerator='%v'. ",
+			expectedNumerator, fracIa.Numerator.GetNumStr())
+	}
+
+	if expectedDenominator != fracIa.Denominator.GetNumStr() {
+		t.Errorf("Error: Expected Denominator='%v'. Instead, Denominator='%v'. ",
+			expectedDenominator, fracIa.Denominator.GetNumStr())
+	}
+
+}
+
+func TestFracIntAry_NewFracIntAry_02(t *testing.T) {
+
+	numStr := "50"
+	expectedNumerator := "50"
+	expectedDenominator := "1"
+
+	iaNum, err := IntAry{}.NewNumStr(numStr)
+
+	if err != nil {
+		t.Errorf("Error returned by IntAry{}.NewNumStr(numStr). " +
+			"numStr='%v' Error='%v' ", numStr, err.Error())
+	}
+
+	fracIa := FracIntAry{}.NewFracIntAry(&iaNum)
+
+	if expectedNumerator != fracIa.Numerator.GetNumStr() {
+		t.Errorf("Error: Expected Numerator='%v'. Instead, Numerator='%v'. ",
+			expectedNumerator, fracIa.Numerator.GetNumStr())
+	}
+
+	if expectedDenominator != fracIa.Denominator.GetNumStr() {
+		t.Errorf("Error: Expected Denominator='%v'. Instead, Denominator='%v'. ",
+			expectedDenominator, fracIa.Denominator.GetNumStr())
+	}
+
+}
+
+func TestFracIntAry_NewFracIntAry_03(t *testing.T) {
+
+	numStr := "-50"
+	expectedNumerator := "-50"
+	expectedDenominator := "1"
+
+	iaNum, err := IntAry{}.NewNumStr(numStr)
+
+	if err != nil {
+		t.Errorf("Error returned by IntAry{}.NewNumStr(numStr). " +
+			"numStr='%v' Error='%v' ", numStr, err.Error())
+	}
+
+	fracIa := FracIntAry{}.NewFracIntAry(&iaNum)
+
+	if expectedNumerator != fracIa.Numerator.GetNumStr() {
+		t.Errorf("Error: Expected Numerator='%v'. Instead, Numerator='%v'. ",
+			expectedNumerator, fracIa.Numerator.GetNumStr())
+	}
+
+	if expectedDenominator != fracIa.Denominator.GetNumStr() {
+		t.Errorf("Error: Expected Denominator='%v'. Instead, Denominator='%v'. ",
+			expectedDenominator, fracIa.Denominator.GetNumStr())
+	}
+
+}
+
+func TestFracIntAry_NewFracIntAry_04(t *testing.T) {
+
+	numStr := "50.72589"
+	expectedNumerator := "5072589"
+	expectedDenominator := "100000"
+
+	iaNum, err := IntAry{}.NewNumStr(numStr)
+
+	if err != nil {
+		t.Errorf("Error returned by IntAry{}.NewNumStr(numStr). " +
+			"numStr='%v' Error='%v' ", numStr, err.Error())
+	}
+
+	fracIa := FracIntAry{}.NewFracIntAry(&iaNum)
+
+	if expectedNumerator != fracIa.Numerator.GetNumStr() {
+		t.Errorf("Error: Expected Numerator='%v'. Instead, Numerator='%v'. ",
+			expectedNumerator, fracIa.Numerator.GetNumStr())
+	}
+
+	if expectedDenominator != fracIa.Denominator.GetNumStr() {
+		t.Errorf("Error: Expected Denominator='%v'. Instead, Denominator='%v'. ",
+			expectedDenominator, fracIa.Denominator.GetNumStr())
+	}
+
+}
+
+func TestFracIntAry_NewFracIntAry_05(t *testing.T) {
+
+	numStr := "5072589"
+	expectedNumerator := "5072589"
+	expectedDenominator := "1"
+
+	iaNum, err := IntAry{}.NewNumStr(numStr)
+
+	if err != nil {
+		t.Errorf("Error returned by IntAry{}.NewNumStr(numStr). " +
+			"numStr='%v' Error='%v' ", numStr, err.Error())
+	}
+
+	fracIa := FracIntAry{}.NewFracIntAry(&iaNum)
+
+	if expectedNumerator != fracIa.Numerator.GetNumStr() {
+		t.Errorf("Error: Expected Numerator='%v'. Instead, Numerator='%v'. ",
+			expectedNumerator, fracIa.Numerator.GetNumStr())
+	}
+
+	if expectedDenominator != fracIa.Denominator.GetNumStr() {
+		t.Errorf("Error: Expected Denominator='%v'. Instead, Denominator='%v'. ",
+			expectedDenominator, fracIa.Denominator.GetNumStr())
+	}
+
+}
+
+func TestFracIntAry_NewFracIntAry_06(t *testing.T) {
+
+	numStr := "-50.72589"
+	expectedNumerator := "-5072589"
+	expectedDenominator := "100000"
+
+	iaNum, err := IntAry{}.NewNumStr(numStr)
+
+	if err != nil {
+		t.Errorf("Error returned by IntAry{}.NewNumStr(numStr). " +
+			"numStr='%v' Error='%v' ", numStr, err.Error())
+	}
+
+	fracIa := FracIntAry{}.NewFracIntAry(&iaNum)
+
+	if expectedNumerator != fracIa.Numerator.GetNumStr() {
+		t.Errorf("Error: Expected Numerator='%v'. Instead, Numerator='%v'. ",
+			expectedNumerator, fracIa.Numerator.GetNumStr())
+	}
+
+	if expectedDenominator != fracIa.Denominator.GetNumStr() {
+		t.Errorf("Error: Expected Denominator='%v'. Instead, Denominator='%v'. ",
+			expectedDenominator, fracIa.Denominator.GetNumStr())
+	}
+
+}
