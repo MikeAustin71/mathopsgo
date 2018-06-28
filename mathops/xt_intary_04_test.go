@@ -799,8 +799,8 @@ func TestIntAry_GetIntegerDigits_04(t *testing.T) {
 
 func TestIntAry_GetNthRootOfThis_01(t *testing.T) {
 	numStr1 := "125"
-	nthRoot := uint(5)
-	maxPrecision := uint(14)
+	nthRoot := 5
+	maxPrecision := 14
 	expected := "2.62652780440377"
 	ia, _ := IntAry{}.NewNumStr(numStr1)
 	iaResult, err := ia.GetNthRootOfThis(nthRoot, maxPrecision)
@@ -818,8 +818,8 @@ func TestIntAry_GetNthRootOfThis_01(t *testing.T) {
 func TestIntAry_GetNthRootOfThis_02(t *testing.T) {
 
 	numStr1 := "5604423"
-	nthRoot := uint(6)
-	maxPrecision := uint(13)
+	nthRoot := 6
+	maxPrecision := 13
 	expected := "13.3276982415963"
 	ia, _ := IntAry{}.NewNumStr(numStr1)
 	iaResult, err := ia.GetNthRootOfThis(nthRoot, maxPrecision)
@@ -837,8 +837,8 @@ func TestIntAry_GetNthRootOfThis_02(t *testing.T) {
 func TestIntAry_GetNthRootOfThis_03(t *testing.T) {
 
 	numStr1 := "5604423.924"
-	nthRoot := uint(6)
-	maxPrecision := uint(13)
+	nthRoot := 6
+	maxPrecision := 13
 	expected := "13.3276986078187"
 	ia, _ := IntAry{}.NewNumStr(numStr1)
 
@@ -857,8 +857,8 @@ func TestIntAry_GetNthRootOfThis_03(t *testing.T) {
 func TestIntAry_GetNthRootOfThis_04(t *testing.T) {
 
 	numStr1 := "-27"
-	nthRoot := uint(3)
-	maxPrecision := uint(2)
+	nthRoot := 3
+	maxPrecision := 2
 	expected := "-3.00"
 	ia, _ := IntAry{}.NewNumStr(numStr1)
 
@@ -877,8 +877,8 @@ func TestIntAry_GetNthRootOfThis_04(t *testing.T) {
 func TestIntAry_GetNthRootOfThis_05(t *testing.T) {
 	ia := IntAry{}.New()
 	numStr1 := "-27"
-	nthRoot := uint(4)
-	maxPrecision := uint(2)
+	nthRoot := 4
+	maxPrecision := 2
 	ia.SetIntAryWithNumStr(numStr1)
 	_, err := ia.GetNthRootOfThis(nthRoot, maxPrecision)
 
@@ -891,8 +891,8 @@ func TestIntAry_GetNthRootOfThis_05(t *testing.T) {
 
 func TestIntAry_GetNthRootOfThis_06(t *testing.T) {
 	numStr1 := "-5604423.924"
-	nthRoot := uint(5)
-	maxPrecision := uint(13)
+	nthRoot := 5
+	maxPrecision := 13
 	expected := "-22.3720713464898"
 	ia, _ := IntAry{}.NewNumStr(numStr1)
 
@@ -911,8 +911,8 @@ func TestIntAry_GetNthRootOfThis_06(t *testing.T) {
 func TestIntAry_GetNthRootOfThis_07(t *testing.T) {
 
 	numStr1 := "5604423.924"
-	nthRoot := uint(0)
-	maxPrecision := uint(1)
+	nthRoot := 0
+	maxPrecision := 1
 	expected := "1.0"
 	ia, _ := IntAry{}.NewNumStr(numStr1)
 
@@ -931,8 +931,8 @@ func TestIntAry_GetNthRootOfThis_07(t *testing.T) {
 func TestIntAry_GetNthRootOfThis_08(t *testing.T) {
 	numStr1 := "27"
 	ia, _ := IntAry{}.NewNumStr(numStr1)
-	nthRoot := uint(1)
-	maxPrecision := uint(2)
+	nthRoot := 1
+	maxPrecision := 2
 	_, err := ia.GetNthRootOfThis(nthRoot, maxPrecision)
 	if err == nil {
 		t.Error("Expected Error from ia.GetNthRootOfThis(nthRoot, maxPrecision) for nthRoot == 1. No Error triggered")
@@ -1000,7 +1000,7 @@ func TestIntAry_GetScaleFactor_01(t *testing.T) {
 func TestIntAry_GetSquareRootInt_01(t *testing.T) {
 
 	numSr1 := "2686.5"
-	maxPrecision := uint(30)
+	maxPrecision := 30
 	expected := "51.831457629512986714934518985668"
 	ai, _ := IntAry{}.NewNumStr(numSr1)
 

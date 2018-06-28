@@ -812,7 +812,7 @@ func (dec *Decimal) GetNumStrDto() (NumStrDto, error) {
 // The calculation result is returned as an IntAry object.
 //
 // Note: A negative Decimal value with an even nthRoot will generate an error.
-func (dec *Decimal) GetNthRoot(nthRoot, maxPrecision uint) (Decimal, error) {
+func (dec *Decimal) GetNthRoot(nthRoot, maxPrecision int) (Decimal, error) {
 
 	ePrefix := "Decimal.GetNthRoot() "
 
@@ -829,12 +829,23 @@ func (dec *Decimal) GetNthRoot(nthRoot, maxPrecision uint) (Decimal, error) {
 
 	if err != nil {
 		return Decimal{}.New(),
-		fmt.Errorf(ePrefix + "- Received error from dec.GetIntAry(). Error= %v", err)
+		fmt.Errorf(ePrefix + "- Received error from dec.GetIntAry(). Error= %v \n",
+			err.Error())
 	}
+
+	iaNthRoot, err := IntAry{}.NewInt(nthRoot, 0)
+
+	if err != nil {
+		return Decimal{}.New(),
+			fmt.Errorf(ePrefix +
+				"- Error returned by IntAry{}.NewInt(nthRoot, 0). Error= %v \n",
+				err.Error())
+	}
+
 
 	nrt := NthRootOp{}
 
-	iaNth, err := nrt.GetNthRootIntAry(&ia, nthRoot, maxPrecision)
+	iaNth, err := nrt.GetNthRootIntAry(&ia, &iaNthRoot, maxPrecision)
 
 	if err != nil {
 		return Decimal{}.New(),
@@ -1048,7 +1059,7 @@ func (dec *Decimal) GetSignedAllDigitsStr() (string, error) {
 //
 // Note: If the current Decimal value is a negative value, an error will
 // be generated. You cannot take the square root of a negative number.
-func (dec *Decimal) GetSquareRoot(maxPrecision uint) (Decimal, error) {
+func (dec *Decimal) GetSquareRoot(maxPrecision int) (Decimal, error) {
 
 	ePrefix := "Decimal.GetSquareRoot() "
 

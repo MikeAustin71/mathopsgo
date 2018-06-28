@@ -1261,18 +1261,6 @@ func (ia *IntAry) CopyOut() IntAry {
 	return iAry2
 }
 
-// CopyOutPtr - Similar to CopyOut. In this case, however,
-// the method returns a pointer to a deep copy of the current
-// IntAry instance.
-//
-func (ia *IntAry) CopyOutPtr() *IntAry {
-
-	ia2 := ia.CopyOut()
-
-	return &ia2
-
-}
-
 // CopyToBackUp - Makes a copy of the current
 // intAry object and saves it to BackUp.
 //
@@ -2273,21 +2261,10 @@ func (ia *IntAry) GetMagnitude() int {
 // 'nthRoot' - uint value which specifies the root to calculate
 // 'maxPrecision' - uint value which specifies the number of digits
 //									to the right of the decimal place in the result.
-func (ia *IntAry) GetNthRootOfThis(nthRoot, maxPrecision int) (IntAry, error) {
-
-	iaNthRoot, err := IntAry{}.NewInt(nthRoot, 0)
-
-	if err != nil {
-		ePrefix := "IntAry.GetNthRootOfThis() "
-		return IntAry{}.NewZero(0),
-		fmt.Errorf(ePrefix +
-			"Error returned by IntAry{}.NewInt(nthRoot, 0) Error='%v' ",
-				err.Error())
-	}
-
+func (ia *IntAry) GetNthRootOfThis(nthRoot, maxPrecision uint) (IntAry, error) {
 	nthRt := NthRootOp{}
 
-	return nthRt.GetNthRootIntAry(ia, &iaNthRoot, maxPrecision)
+	return nthRt.GetNthRootIntAry(ia, nthRoot, maxPrecision)
 }
 
 // GetPrecision - returns the precision value
@@ -2401,7 +2378,7 @@ func (ia *IntAry) GetSign() int {
 // Input Parameters:
 // 'maxPrecision' - uint value which specifies the number of digits
 //									to the right of the decimal place in the result.
-func (ia *IntAry) GetSquareRootOfThis(maxPrecision int) (IntAry, error) {
+func (ia *IntAry) GetSquareRootOfThis(maxPrecision uint) (IntAry, error) {
 	nthRt := NthRootOp{}
 
 	return nthRt.GetSquareRootIntAry(ia, maxPrecision)
@@ -2577,23 +2554,20 @@ func (ia *IntAry) IsIntAryValid(errName string) error {
 	ia.SetInternalFlags()
 
 	if ia.signVal != -1 && ia.signVal != 1 {
-		return fmt.Errorf("%v sign Value is INVALID! sign Value= '%v'\n", errName, ia.signVal)
+		return fmt.Errorf("%v sign Value is INVALID! sign Value= '%v'", errName, ia.signVal)
 	}
 
 	if ia.precision < 0 {
-		return fmt.Errorf("%v precision Value is INVALID! sign Value= '%v'\n", errName, ia.precision)
+		return fmt.Errorf("%v precision Value is INVALID! sign Value= '%v'", errName, ia.precision)
 	}
 
 
 	if ia.precision >= ia.intAryLen {
-		return fmt.Errorf("%v error: precision is greater than or equal to IntArray length " +
-			"- ia.precision= %v  ia.intAryLen= %v \n", errName, ia.precision, ia.intAryLen)
-
+		return fmt.Errorf("%v error: precision is greater than or equal to IntArray length - ia.precision= %v  ia.intAryLen= %v ", errName, ia.precision, ia.intAryLen)
 	}
 
 	if ia.integerLen == 0 {
-		return fmt.Errorf("%v error: integer length is zero - missing leading integer zero\n",
-							errName)
+		return fmt.Errorf("%v error: integer length is zero - missing leading integer zero", errName)
 	}
 
 	return nil
@@ -2601,9 +2575,6 @@ func (ia *IntAry) IsIntAryValid(errName string) error {
 
 // IsEvenNumber - Returns true if the current IntAry numeric value
 // is evenly divisible by two (2) with no remainder.
-//
-// Even Number Definition:
-// 	https://www.mathsisfun.com/definitions/even-number.html
 //
 func (ia *IntAry) IsEvenNumber() bool {
 
@@ -2617,38 +2588,13 @@ func (ia *IntAry) IsEvenNumber() bool {
 
 	tNum := ia.CopyOut()
 
-	IntAryMathDivide{}.DivideByTwo(&tNum)
+	tNum.DivideByTwo()
 
 	if tNum.precision > 0 {
 		return false
 	}
 
 	return true
-}
-
-// IsOne - Returns 'true' if the value of the current
-// IntAry is '1'.
-//
-// Examples:
-// =========
-//
-// Value 			Result
-// -----			------
-// 1.0				true
-// 1					true
-// 1.0000			true
-// 1.0001			false
-// 2.0				false
-//
-func (ia *IntAry) IsOne() bool {
-
-	iaOne := IntAry{}.NewOne(int(ia.precision))
-
-	if ia.Equals(&iaOne) {
-		return true
-	}
-
-	return false
 }
 
 // IsZero - Analyzes the current IntAry to determine
@@ -5091,14 +5037,6 @@ func (ia *IntAry) ShiftPrecisionRight(shiftPrecision uint) {
 
 	IntAryMathMultiply{}.MultiplyByTenToPower(ia, shiftPrecision)
 
-}
-
-
-// String - Returns the numeric value of the current IntAry as
-// a string.
-//
-func (ia *IntAry) String() string {
-	return ia.GetNumStr()
 }
 
 // SubtractMultipleFromThis - This method will subtract multiple intAry values from the

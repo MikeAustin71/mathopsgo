@@ -1563,8 +1563,8 @@ func TestDecimal_GetIntAry_02(t *testing.T) {
 
 func TestDecimal_GetNthRoot_01(t *testing.T) {
 	numStr1 := "125"
-	nthRoot := uint(5)
-	maxPrecision := uint(14)
+	nthRoot := 5
+	maxPrecision := 14
 	expected := "2.62652780440377"
 	eSignVal := 1
 
@@ -1598,8 +1598,8 @@ func TestDecimal_GetNthRoot_01(t *testing.T) {
 
 func TestDecimal_GetNthRoot_02(t *testing.T) {
 	numStr1 := "5604423"
-	nthRoot := uint(6)
-	maxPrecision := uint(13)
+	nthRoot := 6
+	maxPrecision := 13
 	expected := "13.3276982415963"
 	eSignVal := 1
 
@@ -1632,8 +1632,8 @@ func TestDecimal_GetNthRoot_02(t *testing.T) {
 
 func TestDecimal_GetNthRoot_03(t *testing.T) {
 	numStr1 := "5604423.924"
-	nthRoot := uint(6)
-	maxPrecision := uint(13)
+	nthRoot := 6
+	maxPrecision := 13
 	expected := "13.3276986078187"
 	eSignVal := 1
 
@@ -1666,8 +1666,8 @@ func TestDecimal_GetNthRoot_03(t *testing.T) {
 
 func TestDecimal_GetNthRoot_04(t *testing.T) {
 	numStr1 := "-27"
-	nthRoot := uint(3)
-	maxPrecision := uint(2)
+	nthRoot := 3
+	maxPrecision := 2
 	expected := "-3.00"
 	eSignVal := -1
 
@@ -1700,8 +1700,8 @@ func TestDecimal_GetNthRoot_04(t *testing.T) {
 
 func TestDecimal_GetNthRoot_05(t *testing.T) {
 	numStr1 := "-27"
-	nthRoot := uint(4)
-	maxPrecision := uint(2)
+	nthRoot := 4
+	maxPrecision := 2
 
 	d1, err := Decimal{}.NewNumStr(numStr1)
 
@@ -1739,7 +1739,7 @@ func TestDecimal_GetRelevantPrecision(t *testing.T) {
 
 func TestDecimal_GetSquareRoot_01(t *testing.T) {
 	numStr1 := "2686.5"
-	maxPrecision := uint(30)
+	maxPrecision := 30
 	expected := "51.831457629512986714934518985668"
 	eSignVal := 1
 
@@ -1771,7 +1771,7 @@ func TestDecimal_GetSquareRoot_01(t *testing.T) {
 
 func TestDecimal_GetSquareRoot_02(t *testing.T) {
 	numStr1 := "390626"
-	maxPrecision := uint(29)
+	maxPrecision := 29
 	expected := "625.00079999948800065535895142588"
 	eSignVal := 1
 
@@ -1803,7 +1803,7 @@ func TestDecimal_GetSquareRoot_02(t *testing.T) {
 
 func TestDecimal_GetSquareRoot_03(t *testing.T) {
 	numStr1 := "-390626"
-	maxPrecision := uint(29)
+	maxPrecision := 29
 
 	d1, err := Decimal{}.NewNumStr(numStr1)
 

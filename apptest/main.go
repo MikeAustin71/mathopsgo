@@ -122,7 +122,7 @@ func ExampleBigIntNumNthRoot_01(
 	}
 
 	fmt.Println("           Base: ", radicand.GetNumStr())
-	fmt.Println("        NthRoot: ", nthRoot.GetNumStr())
+	fmt.Println("        NthRootInt: ", nthRoot.GetNumStr())
 
 }
 

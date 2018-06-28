@@ -291,8 +291,8 @@ func (nthrt *BigIntMathNthRoot) calcPositiveFractionalNthRoot(radicand, nthRoot 
 	if nthRoot.GetSign() < 0 {
 		return BigIntNum{}.NewZero(0),
 			fmt.Errorf(ePrefix +
-				"Error: This method only processes Positive NthRoot Values. " +
-				"The current NthRoot is a NEGATIVE Value. nthRoot='%v'",
+				"Error: This method only processes Positive NthRootInt Values. " +
+				"The current NthRootInt is a NEGATIVE Value. nthRoot='%v'",
 				nthRoot.GetNumStr())
 	}
 
@@ -300,7 +300,7 @@ func (nthrt *BigIntMathNthRoot) calcPositiveFractionalNthRoot(radicand, nthRoot 
 		return BigIntNum{}.NewZero(0),
 		fmt.Errorf(ePrefix +
 			"Error: This method only processes Fractional NthRoots. " +
-			"The current NthRoot is an Integer Value. nthRoot='%v'",
+			"The current NthRootInt is an Integer Value. nthRoot='%v'",
 				nthRoot.GetNumStr())
 	}
 
@@ -441,8 +441,8 @@ func (nthrt *BigIntMathNthRoot) initialize(
 	if errx != nil {
 		setupRadicand = BigIntNum{}.NewZero(0)
 		err = fmt.Errorf(ePrefix +
-			"Error returned from nthrt.setupBundles(OriginalRadicand, NthRoot). " +
-			"OriginalRadicand='%v' NthRoot='%v' Error= %v",
+			"Error returned from nthrt.setupBundles(OriginalRadicand, NthRootInt). " +
+			"OriginalRadicand='%v' NthRootInt='%v' Error= %v",
 			nthrt.OriginalRadicand.GetNumStr(), nthrt.NthRoot.GetNumStr(), errx.Error())
 		return setupRadicand, err
 	}
@@ -460,8 +460,8 @@ func (nthrt *BigIntMathNthRoot) initialize(
 
 	if errx != nil {
 		err = fmt.Errorf(ePrefix +
-			"Error returned from nthrt.calcBundleLength(SetupRadicand, NthRoot, AddOnPrecision). " +
-			"SetupRadicand='%v' NthRoot='%v' AddOnPrecision='%v' Error= %v",
+			"Error returned from nthrt.calcBundleLength(SetupRadicand, NthRootInt, AddOnPrecision). " +
+			"SetupRadicand='%v' NthRootInt='%v' AddOnPrecision='%v' Error= %v",
 			nthrt.SetupRadicand.GetNumStr(), nthrt.NthRoot.GetNumStr(),
 			nthrt.BundleAddOnPrecision.Text(10), errx.Error())
 		setupRadicand = BigIntNum{}.NewZero(0)

@@ -753,7 +753,7 @@ func TestBigIntMathNthRoot_GetNthRootBigNum_21(t *testing.T) {
 	_, err = bIMathNthRoot.GetNthRoot(bINumBase, bINumNthRoot, maxPrecision)
 
 	if err == nil {
-		t.Error("Expected an Error. Negative Radicand with even NthRoot. " +
+		t.Error("Expected an Error. Negative Radicand with even NthRootInt. " +
 			"Instead, NO ERROR WAS RETURNED.")
 	}
 
@@ -792,7 +792,7 @@ func TestBigIntMathNthRoot_GetNthRootBigNum_22(t *testing.T) {
 	}
 
 	if expectedStr != nthRootResult.GetNumStr() {
-		t.Errorf("Error: Expected NthRoot Result='%v'.  Instead Result='%v'",
+		t.Errorf("Error: Expected NthRootInt Result='%v'.  Instead Result='%v'",
 			expectedStr, nthRootResult.GetNumStr())
 	}
 
@@ -831,7 +831,7 @@ func TestBigIntMathNthRoot_GetNthRootBigNum_23(t *testing.T) {
 	}
 
 	if expectedStr != nthRootResult.GetNumStr() {
-		t.Errorf("Error: Expected NthRoot Result='%v'.  Instead Result='%v'",
+		t.Errorf("Error: Expected NthRootInt Result='%v'.  Instead Result='%v'",
 			expectedStr, nthRootResult.GetNumStr())
 	}
 
@@ -870,7 +870,7 @@ func TestBigIntMathNthRoot_GetNthRootBigNum_24(t *testing.T) {
 	}
 
 	if expectedStr != nthRootResult.GetNumStr() {
-		t.Errorf("Error: Expected NthRoot Result='%v'.  Instead Result='%v'",
+		t.Errorf("Error: Expected NthRootInt Result='%v'.  Instead Result='%v'",
 			expectedStr, nthRootResult.GetNumStr())
 	}
 
@@ -910,7 +910,7 @@ func TestBigIntMathNthRoot_GetNthRootBigNum_25(t *testing.T) {
 	}
 
 	if expectedStr != nthRootResult.GetNumStr() {
-		t.Errorf("Error: Expected NthRoot Result='%v'.  Instead Result='%v'",
+		t.Errorf("Error: Expected NthRootInt Result='%v'.  Instead Result='%v'",
 			expectedStr, nthRootResult.GetNumStr())
 	}
 
@@ -982,7 +982,7 @@ func TestBigIntMathNthRoot_GetNthRootBigNum_27(t *testing.T) {
 	}
 
 	if expectedStr != nthRootResult.GetNumStr() {
-		t.Errorf("Error: Expected NthRoot Result='%v'.  Instead Result='%v'",
+		t.Errorf("Error: Expected NthRootInt Result='%v'.  Instead Result='%v'",
 			expectedStr, nthRootResult.GetNumStr())
 	}
 
