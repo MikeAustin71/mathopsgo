@@ -52,24 +52,56 @@ type FracIntAry struct {
 	Denominator IntAry
 }
 
-// NewNumStrs - Creates a FracIntAry type by passing input parameters numerator and
+// NewBigInts - Creates a new FracIntAry type from two *big.Int types passed
+// as input parameters.
+//
+func (fIa FracIntAry) NewBigInts(numerator, denominator *big.Int) (FracIntAry, error) {
+	ePrefix := "FracIntAry.NewBigInts() "
+
+	iaNumerator, err := IntAry{}.NewBigInt(numerator, 0)
+
+	if err != nil {
+		return FracIntAry{},
+		fmt.Errorf(ePrefix + "- Error returned by IntAry{}.NewBigInt(numerator, 0) " +
+			"Error='%v' ", err)
+	}
+
+	iaDenominator, err := IntAry{}.NewBigInt(denominator, 0)
+
+	if err != nil {
+		return FracIntAry{},
+			fmt.Errorf(ePrefix + "- Error returned by IntAry{}.NewBigInt(denominator, 0) " +
+				"Error='%v' ", err)
+	}
+
+	newFracIntAry := FracIntAry{}.NewIntArys(&iaNumerator, &iaDenominator)
+
+	return newFracIntAry, nil
+}
+
+// NewNumStrs - Creates a new FracIntAry type by passing input parameters numerator and
 // denominator as number strings.
+//
 func (fIa FracIntAry) NewNumStrs(numerator, denominator string) (FracIntAry, error) {
 
 	var err error
 
+	ePrefix := "FracIntAry.NewNumStrs() "
 	fIa2 := FracIntAry{}
 
 	fIa2.Numerator, err = IntAry{}.NewNumStr(numerator)
 
 	if err != nil {
-		return FracIntAry{}, fmt.Errorf("FracIntAry.NewNumStrs() - Error returned from intAry{}.NewNumStr(numerator). Error= %v", err)
+		return FracIntAry{}, fmt.Errorf(ePrefix +
+			"- Error returned from intAry{}.NewNumStr(numerator). Error= %v", err)
 	}
 
 	fIa2.Denominator, err = IntAry{}.NewNumStr(denominator)
 
 	if err != nil {
-		return FracIntAry{}, fmt.Errorf("FracIntAry.NewNumStrs() - Error returned from intAry{}.NewNumStr(denominator). Error= %v", err)
+		return FracIntAry{},
+			fmt.Errorf(ePrefix +
+				"- Error returned from intAry{}.NewNumStr(denominator). Error= %v", err)
 	}
 
 	return fIa2, nil
@@ -91,20 +123,20 @@ func (fIa FracIntAry) NewIntArys(numerator, denominator *IntAry) FracIntAry {
 // NewFracIntAry - Creates a FracIntAry instance from a single IntAry object.
 // The IntAry input parameter is converted into an equivalent fraction.
 //
-func (fIa FracIntAry) NewFracIntAry(fracIntAry *IntAry) FracIntAry {
+func (fIa FracIntAry) NewFracIntAry(ia *IntAry) FracIntAry {
 
 	fIa2 := FracIntAry{}
 
-	if fracIntAry.GetPrecision() == 0 {
+	if ia.GetPrecision() == 0 {
 
-		fIa2.Numerator = fracIntAry.CopyOut()
+		fIa2.Numerator = ia.CopyOut()
 		fIa2.Denominator = IntAry{}.NewOne(0)
 
 		return fIa2
 	}
 
-	precision := fracIntAry.GetPrecision()
-	fIa2.Numerator = fracIntAry.CopyOut()
+	precision := ia.GetPrecision()
+	fIa2.Numerator = ia.CopyOut()
 
 	if precision > 0 {
 		fIa2.Numerator.ShiftPrecisionRight(uint(precision))
@@ -114,6 +146,30 @@ func (fIa FracIntAry) NewFracIntAry(fracIntAry *IntAry) FracIntAry {
 	IntAryMathMultiply{}.MultiplyByTenToPower(&fIa2.Denominator, uint(precision) )
 
 	return fIa2
+}
+
+// CopyOut - Creates and returns a copy of the current
+// FracIntAry.
+//
+func (fIa *FracIntAry) CopyOut() FracIntAry {
+
+	newFrac := FracIntAry{}
+
+	newFrac.Numerator = fIa.Numerator.CopyOut()
+	newFrac.Denominator = fIa.Denominator.CopyOut()
+
+	return newFrac
+}
+
+// CopyIn - Receives a pointer to an incoming FracIntAry and copies
+// the values into the current FracIntAry.
+//
+func (fIa *FracIntAry) CopyIn(fIa2 *FracIntAry) {
+
+	fIa.Numerator = fIa2.Numerator.CopyOut()
+
+	fIa.Denominator = fIa2.Denominator.CopyOut()
+
 }
 
 // GetRationalValue - Converts the fraction and returns the value as a
@@ -160,6 +216,66 @@ func (fIa *FracIntAry) GetRationalValue(maxPrecision int) (*big.Rat, error) {
 
 	return fRat, nil
 
+}
+
+// GetLowestCommonDenom - Returns a FracIntAry which represents the lowest common
+// denominator for the current FracIntAry.
+//
+// Note: if 'maxPrecision' is less than 0, it is automatically converted to '4,096'
+// decimal places.
+//
+func (fIa *FracIntAry) GetLowestCommonDenom(maxPrecision int) (FracIntAry, error) {
+
+	if maxPrecision < 0 {
+		maxPrecision = 4096
+	}
+
+	ePrefix := "FracIntAry.GetLowestCommonDenom() "
+
+	ratFrac, err := fIa.GetRationalValue(maxPrecision)
+
+	if err != nil {
+		return FracIntAry{},
+		fmt.Errorf(ePrefix +
+			"Error returned by fIa.GetRationalValue(4096) ")
+	}
+
+	newFAry, err := fIa.NewBigInts(ratFrac.Num(), ratFrac.Denom())
+
+	if err != nil {
+		return FracIntAry{},
+			fmt.Errorf(ePrefix +
+				"Error returned by fIa.NewBigInts(ratFrac.Num(), ratFrac.Denom()) ")
+	}
+
+
+	return newFAry, nil
+}
+
+// ReduceToLowestCommonDenom - Converts the value of the current FracIntAry
+// to its lowest common denominator.
+//
+// Note: if 'maxPrecision' is less than 0, it is automatically converted to '4,096'
+// decimal places.
+//
+func (fIa *FracIntAry) ReduceToLowestCommonDenom(maxPrecision int) error {
+
+	if maxPrecision < 0 {
+		maxPrecision = 4096
+	}
+
+	fIaLCD, err := fIa.GetLowestCommonDenom(maxPrecision)
+
+	if err != nil {
+		ePrefix := "FracIntAry.ReduceToLowestCommonDenom() "
+		return fmt.Errorf(ePrefix +
+			"Error returned by fIa.GetLowestCommonDenom(maxPrecision). " +
+			"Error='%v' ", err.Error())
+	}
+
+	fIa.CopyIn(&fIaLCD)
+
+	return nil
 }
 
 type BackUpIntAry struct {
@@ -2680,12 +2796,12 @@ func (ia *IntAry) IsZero() bool {
 //
 //											Note: if 'maxPrecision' is set equal to negative
 //														one (-1), the maximum number of decimals is
-//														set to 1024 digits to the right of the decimal
+//														set to 4096 digits to the right of the decimal
 //														place
 func (ia *IntAry) Inverse(maxPrecision int) (IntAry, error) {
 
 	if maxPrecision == -1 {
-		maxPrecision = 1024
+		maxPrecision = 4096
 	}
 
 	if maxPrecision < 0 {
