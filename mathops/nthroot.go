@@ -583,9 +583,9 @@ func (nthrt *NthRootOp) GetSquareRootIntAry(radicand *IntAry, maxPrecision int) 
 
 }
 
-// SetNthRootIntAry  - Calculates the Nth Root of a positive real number ('num')
-// passed to the method as a pointer to type intAry.  In addition, the caller must supply
-// input parameters for 'nthRoot' and 'maxPrecision'.
+// SetNthRootIntAry  - Calculates the Nth Root of a number ('radicand') passed to the
+// method as a pointer to type intAry.  In addition, the caller must supply input
+// parameters for 'nthRoot' and 'maxPrecision'.
 //
 // The difference between this method, 'SetNthRootIntAry' and 'GetNthRoot' is in
 // the return value.  This method, 'SetNthRootIntAry' does not return the result. Instead,
@@ -603,11 +603,11 @@ func (nthrt *NthRootOp) GetSquareRootIntAry(radicand *IntAry, maxPrecision int) 
 // 'NthRootOp.ResultAry' is an intAry Object.
 //
 // Note: A negative 'num' value with an even nthRoot will generate an error.
-func (nthrt *NthRootOp) SetNthRootIntAry(num , nthRoot *IntAry, maxPrecision int) error {
+func (nthrt *NthRootOp) SetNthRootIntAry(radicand, nthRoot *IntAry, maxPrecision int) error {
 
 
 
-	return nthrt.calcNthRootGateway(num, nthRoot, maxPrecision)
+	return nthrt.calcNthRootGateway(radicand, nthRoot, maxPrecision)
 }
 
 
@@ -665,7 +665,7 @@ func (nthrt *NthRootOp) calcNthRootGateway(radicand, nthRoot *IntAry, maxPrecisi
 
 		return nthrt.calcPositiveIntegerNthRoot(radicand, nthRoot, maxPrecision)
 
-	} else if nthRoot.precision == 0 && nthRootSign == 1 {
+	} else if nthRoot.precision > 0 && nthRootSign == 1 {
 
 		return nthrt.calcPositiveFractionalNthRoot(radicand, nthRoot, maxPrecision)
 

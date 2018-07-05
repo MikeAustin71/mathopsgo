@@ -393,6 +393,8 @@ func TestNthRootOp_GetNthRootIntAry_10(t *testing.T) {
 
 }
 
+
+
 func TestNthRootOp_GetNthRootIntAry_11(t *testing.T) {
 	nRt := NthRootOp{}
 	radicandStr := "200000.000005"
@@ -629,7 +631,7 @@ func TestNthRootOp_GetNthRootIntAry_20(t *testing.T) {
 	nthRoot, err := IntAry{}.NewInt(3,0)
 
 	if err != nil {
-		t.Errorf("Error returned from IntAry{}.NewInt(5,0) Error='%v'",
+		t.Errorf("Error returned from IntAry{}.NewInt(3,0) Error='%v'",
 			err.Error())
 	}
 
@@ -649,6 +651,62 @@ func TestNthRootOp_GetNthRootIntAry_20(t *testing.T) {
 	}
 
 }
+
+func TestNthRootOp_GetNthRootIntAry_21(t *testing.T) {
+
+	radicandStr := "-8000"
+	maxPrecision := 20
+	nthRoot, err := IntAry{}.NewInt(4,0)
+
+	if err != nil {
+		t.Errorf("Error returned from IntAry{}.NewInt(4,0) Error='%v'",
+			err.Error())
+	}
+
+	origRadicand, _ := IntAry{}.NewNumStr(radicandStr)
+
+	nthRt := NthRootOp{}
+	_, err = nthRt.GetNthRootIntAry(&origRadicand, &nthRoot, maxPrecision)
+
+	if err == nil {
+		t.Error("Expected an Error. Negative Radicand with even NthRootInt. " +
+			"Instead, NO ERROR WAS RETURNED.")
+	}
+
+}
+
+
+func TestNthRootOp_GetNthRootIntAry_22(t *testing.T) {
+	radicandStr := "8"
+	nthRootStr := "0.4"
+	expected := "181.01933598375616624661615669884"
+	maxPrecision := 29
+
+	nthRoot, err := IntAry{}.NewNumStr(nthRootStr)
+
+	if err != nil {
+		t.Errorf("Error returned from IntAry{}.NewNumStr(nthRootStr) " +
+			"nthRootStr='%v' Error='%v'",
+			nthRootStr, err.Error())
+	}
+
+	origRadicand, _ := IntAry{}.NewNumStr(radicandStr)
+
+	nthRt := NthRootOp{}
+
+	ai, err := nthRt.GetNthRootIntAry(&origRadicand, &nthRoot, maxPrecision)
+
+	if err != nil {
+		t.Errorf("Error returned from NthRootOp{}.GetNthRootIntAry(...) - %v",
+				err.Error())
+	}
+
+	if expected != ai.GetNumStr() {
+		t.Errorf("Expected result= %v .  Instead ai.GetNumStr()= %v .", expected, ai.GetNumStr())
+	}
+
+}
+
 
 func TestNthRootOp_GetSquareRootFloat32_01(t *testing.T) {
 
