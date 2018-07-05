@@ -737,6 +737,92 @@ func TestNthRootOp_GetNthRootIntAry_23(t *testing.T) {
 
 }
 
+func TestNthRootOp_GetNthRootIntAry_24(t *testing.T) {
+	radicand := "8"
+	nthRoot := "-3.2"
+	expectedStr := "0.52213689121370692016098323936996"
+	maxPrecision := 32
+
+	iaNthRoot, err := IntAry{}.NewNumStr(nthRoot)
+
+	if err != nil {
+		t.Errorf("Error returned from IntAry{}.NewNumStr(nthRootStr) " +
+			"nthRootStr='%v' Error='%v'",
+			nthRoot, err.Error())
+	}
+
+	origRadicand, _ := IntAry{}.NewNumStr(radicand)
+
+
+
+	ai, err := NthRootOp{}.NewNthRoot(&origRadicand, &iaNthRoot, maxPrecision)
+
+	if err != nil {
+		t.Errorf("Error returned from NthRootOp{}.NewNthRoot(...) - %v",
+				err.Error())
+	}
+
+	if expectedStr != ai.GetNumStr() {
+		t.Errorf("Expected result= %v .  Instead ai.GetNumStr()= %v .", expectedStr, ai.GetNumStr())
+	}
+
+}
+
+func TestNthRootOp_GetNthRootIntAry_25(t *testing.T) {
+
+	radicand := "8.2"
+	nthRoot := "-3.2"
+	//              0.12345678901234567890123456789012
+	expectedStr := "0.5181233574858042598812721854708"
+	maxPrecision := 31
+
+	iaNthRoot, err := IntAry{}.NewNumStr(nthRoot)
+
+	if err != nil {
+		t.Errorf("Error returned from IntAry{}.NewNumStr(nthRootStr) " +
+			"nthRootStr='%v' Error='%v'",
+			nthRoot, err.Error())
+	}
+
+	origRadicand, _ := IntAry{}.NewNumStr(radicand)
+
+	ai, err := NthRootOp{}.NewNthRoot(&origRadicand, &iaNthRoot, maxPrecision)
+
+	if err != nil {
+		t.Errorf("Error returned from NthRootOp{}.NewNthRoot(...) - %v",
+				err.Error())
+	}
+
+	if expectedStr != ai.GetNumStr() {
+		t.Errorf("Expected result= %v .  Instead ai.GetNumStr()= %v .", expectedStr, ai.GetNumStr())
+	}
+
+}
+
+func TestNthRootOp_GetNthRootIntAry_26(t *testing.T) {
+
+	radicand := "-8.2"
+	nthRoot := "-3.2"
+	maxPrecision := 31
+
+	iaNthRoot, err := IntAry{}.NewNumStr(nthRoot)
+
+	if err != nil {
+		t.Errorf("Error returned from IntAry{}.NewNumStr(nthRootStr) " +
+			"nthRootStr='%v' Error='%v'",
+			nthRoot, err.Error())
+	}
+
+	origRadicand, _ := IntAry{}.NewNumStr(radicand)
+
+	_, err = NthRootOp{}.NewNthRoot(&origRadicand, &iaNthRoot, maxPrecision)
+
+	if err == nil {
+		t.Error("Expected a valid error object to be returned. Error: err==nil!" )
+	}
+
+}
+
 
 func TestNthRootOp_GetSquareRootFloat32_01(t *testing.T) {
 
