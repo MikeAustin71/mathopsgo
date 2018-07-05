@@ -675,7 +675,6 @@ func TestNthRootOp_GetNthRootIntAry_21(t *testing.T) {
 
 }
 
-
 func TestNthRootOp_GetNthRootIntAry_22(t *testing.T) {
 	radicandStr := "8"
 	nthRootStr := "0.4"
@@ -698,6 +697,37 @@ func TestNthRootOp_GetNthRootIntAry_22(t *testing.T) {
 
 	if err != nil {
 		t.Errorf("Error returned from NthRootOp{}.GetNthRootIntAry(...) - %v",
+				err.Error())
+	}
+
+	if expected != ai.GetNumStr() {
+		t.Errorf("Expected result= %v .  Instead ai.GetNumStr()= %v .", expected, ai.GetNumStr())
+	}
+
+}
+
+func TestNthRootOp_GetNthRootIntAry_23(t *testing.T) {
+	radicand := "8"
+	nthRoot := "-3"
+	expected := "0.5"
+	maxPrecision := 1
+
+	iaNthRoot, err := IntAry{}.NewNumStr(nthRoot)
+
+	if err != nil {
+		t.Errorf("Error returned from IntAry{}.NewNumStr(nthRootStr) " +
+			"nthRootStr='%v' Error='%v'",
+			nthRoot, err.Error())
+	}
+
+	origRadicand, _ := IntAry{}.NewNumStr(radicand)
+
+
+
+	ai, err := NthRootOp{}.NewNthRoot(&origRadicand, &iaNthRoot, maxPrecision)
+
+	if err != nil {
+		t.Errorf("Error returned from NthRootOp{}.NewNthRoot(...) - %v",
 				err.Error())
 	}
 
