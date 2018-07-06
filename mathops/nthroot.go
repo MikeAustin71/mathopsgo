@@ -734,6 +734,10 @@ func (nthrt *NthRootOp) calcPositiveIntegerNthRoot(
 		}
 	}
 
+	if maxPrecision < 0 {
+		maxPrecision = 4096
+	}
+
 	err := nthrt.initialize(radicand, nthRoot, maxPrecision)
 
 	if err != nil {
@@ -777,6 +781,9 @@ func (nthrt *NthRootOp) calcNegativeIntegerNthRoot(
 		}
 	}
 
+  if maxPrecision < 0 {
+  	maxPrecision = 4096
+	}
 
   // Change sign from negative (-) to positive (+)
 	nthRoot.ChangeSign()
@@ -797,13 +804,18 @@ func (nthrt *NthRootOp) calcNegativeIntegerNthRoot(
 			"Error='%v' ", err.Error())
 	}
 
-  result, err :=	nthrt.ResultAry.Inverse(maxPrecision)
+
+  result, err :=	nthrt.ResultAry.Inverse(maxPrecision + 100)
 
   if err != nil {
 		return fmt.Errorf(ePrefix +
 			"- Error returned from nthrt.ResultAry.Inverse() " +
 			"Error='%v' ", err.Error())
 
+	}
+
+  if result.GetPrecision() > maxPrecision {
+  	result.RoundToPrecision(maxPrecision)
 	}
 
   // Change sign from positive (+), back to negative (-)
@@ -841,9 +853,15 @@ func (nthrt *NthRootOp) calcPositiveFractionalNthRoot(
   		"nthRoot='%v' ", nthRoot.GetNumStr())
 	}
 
+  if maxPrecision < 0 {
+  	maxPrecision = 4096
+	}
+
+  internalMaxPrecision := maxPrecision + 100
+
 	fracIntAry := FracIntAry{}.NewFracIntAry(nthRoot)
 
-	err := fracIntAry.ReduceToLowestCommonDenom(4096)
+	err := fracIntAry.ReduceToLowestCommonDenom(internalMaxPrecision)
 
 	if err != nil {
 		return fmt.Errorf(ePrefix +
@@ -857,7 +875,7 @@ func (nthrt *NthRootOp) calcPositiveFractionalNthRoot(
 						&newRadicand,
 							&fracIntAry.Denominator,
 								0,
-							10)
+							internalMaxPrecision)
 
 	if err != nil {
 		return fmt.Errorf(ePrefix +
@@ -905,6 +923,11 @@ func (nthrt *NthRootOp) calcNegativeFractionalNthRoot(
 
   ePrefix := "NthRootOp.calcNegativeFractionalNthRoot() "
 
+  if maxPrecision < 0 {
+  	maxPrecision = 4096
+	}
+
+  internalMaxPrecision := maxPrecision + 100
 
   if nthRoot.GetSign() != -1 {
 		return fmt.Errorf(ePrefix +
@@ -923,7 +946,7 @@ func (nthrt *NthRootOp) calcNegativeFractionalNthRoot(
 
 	fracIntAry := FracIntAry{}.NewFracIntAry(nthRoot)
 
-	err := fracIntAry.ReduceToLowestCommonDenom(4096)
+	err := fracIntAry.ReduceToLowestCommonDenom(internalMaxPrecision)
 
 	if err != nil {
 		return fmt.Errorf(ePrefix +
@@ -937,7 +960,7 @@ func (nthrt *NthRootOp) calcNegativeFractionalNthRoot(
 		&newRadicand,
 		&fracIntAry.Denominator,
 		0,
-		10)
+		internalMaxPrecision)
 
 	if err != nil {
 		return fmt.Errorf(ePrefix +
@@ -954,7 +977,7 @@ func (nthrt *NthRootOp) calcNegativeFractionalNthRoot(
 		}
 	}
 
-	err = nthrt.initialize(&newRadicand, &fracIntAry.Numerator, maxPrecision)
+	err = nthrt.initialize(&newRadicand, &fracIntAry.Numerator, internalMaxPrecision)
 
 	if err != nil {
 		return fmt.Errorf(ePrefix +
@@ -970,13 +993,17 @@ func (nthrt *NthRootOp) calcNegativeFractionalNthRoot(
 			"Error='%v' ", err.Error())
 	}
 
-	result, err :=	nthrt.ResultAry.Inverse(maxPrecision)
+	result, err :=	nthrt.ResultAry.Inverse(internalMaxPrecision + 10)
 
 	if err != nil {
 		return fmt.Errorf(ePrefix +
 			"- Error returned from nthrt.ResultAry.Inverse() " +
 			"Error='%v' ", err.Error())
 
+	}
+
+	if result.GetPrecision() > maxPrecision {
+		result.RoundToPrecision(maxPrecision)
 	}
 
 	// Change sign from positive (+), back to negative (-)

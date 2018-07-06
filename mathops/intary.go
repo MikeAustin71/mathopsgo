@@ -2800,7 +2800,7 @@ func (ia *IntAry) IsZero() bool {
 //														place
 func (ia *IntAry) Inverse(maxPrecision int) (IntAry, error) {
 
-	if maxPrecision == -1 {
+	if maxPrecision < 0 {
 		maxPrecision = 4096
 	}
 
@@ -2808,16 +2808,22 @@ func (ia *IntAry) Inverse(maxPrecision int) (IntAry, error) {
 		return IntAry{}.New(), errors.New("InverseOfThis() - Input parameter 'maxPrecision' is INVALID. 'maxPrecision' cannot be less than zero.")
 	}
 
+	internalPrecision := maxPrecision + 50
+
 	iaOne, err := IntAry{}.NewInt(1, 0)
 
 	if err != nil {
 		return IntAry{}.New(), fmt.Errorf("InverseOfThis() - Error returned from intAry{}.NewInt(1, 0). Error= %v", err)
 	}
 
-	iaInverse, err := iaOne.DivideThisBy(ia, 0, maxPrecision)
+	iaInverse, err := iaOne.DivideThisBy(ia, 0, internalPrecision)
 
 	if err != nil {
 		return IntAry{}.New(), fmt.Errorf("InverseOfThis() - Error returned from iaOne.DivideThisBy(ia, maxPrecision). Error= %v", err)
+	}
+
+	if iaInverse.GetPrecision() > maxPrecision {
+		iaInverse.RoundToPrecision(maxPrecision)
 	}
 
 	return iaInverse, nil

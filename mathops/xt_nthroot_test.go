@@ -823,6 +823,36 @@ func TestNthRootOp_GetNthRootIntAry_26(t *testing.T) {
 
 }
 
+func TestNthRootOp_GetNthRootIntAry_27(t *testing.T) {
+
+	radicand := "5.967"
+	nthRoot := "-2.894"
+	//              0.12345678901234567890123456789012
+	expectedStr := "0.53944021275349493325378163087104"
+	maxPrecision := 32
+
+	iaNthRoot, err := IntAry{}.NewNumStr(nthRoot)
+
+	if err != nil {
+		t.Errorf("Error returned from IntAry{}.NewNumStr(nthRootStr) " +
+			"nthRootStr='%v' Error='%v'",
+			nthRoot, err.Error())
+	}
+
+	origRadicand, _ := IntAry{}.NewNumStr(radicand)
+
+	ai, err := NthRootOp{}.NewNthRoot(&origRadicand, &iaNthRoot, maxPrecision)
+
+	if err != nil {
+		t.Errorf("Error returned from NthRootOp{}.NewNthRoot(...) - %v",
+			err.Error())
+	}
+
+	if expectedStr != ai.GetNumStr() {
+		t.Errorf("Expected result= %v .  Instead ai.GetNumStr()= %v .", expectedStr, ai.GetNumStr())
+	}
+
+}
 
 func TestNthRootOp_GetSquareRootFloat32_01(t *testing.T) {
 
