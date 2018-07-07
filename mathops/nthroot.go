@@ -865,8 +865,9 @@ func (nthrt *NthRootOp) calcPositiveFractionalNthRoot(
 
 	if err != nil {
 		return fmt.Errorf(ePrefix +
-			"Error returned by fracIntAry.ReduceToLowestCommonDenom(4096) " +
-			"Error='%v' ", err.Error())
+			"Error returned by fracIntAry.ReduceToLowestCommonDenom(internalMaxPrecision) " +
+			"internalMaxPrecision='%v' Error='%v' ",
+			internalMaxPrecision, err.Error())
 	}
 
 	newRadicand := radicand.CopyOut()

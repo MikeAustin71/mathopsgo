@@ -1420,10 +1420,9 @@ func (ia *IntAry) CopyToBackUp() {
 // DecrementIntegerOne - Decrements the numeric value of the current
 // intAry by subtracting '1'.
 //
-// IMPORTANT: This method assumes that SetIntAryLength() and
-// SetIsZeroValue() have already been called.
-
 func (ia *IntAry) DecrementIntegerOne() error {
+
+	ia.SetInternalFlags()
 
 	if ia.isZeroValue || ia.isIntegerZeroValue {
 		ia.signVal = -1
@@ -2742,6 +2741,33 @@ func (ia *IntAry) IsEvenNumber() bool {
 	return true
 }
 
+
+// IsOne - Returns 'true' if the value of the current
+// IntAry is minus one (-1).
+//
+// Examples:
+// =========
+//
+// Value 			Result
+// -----			------
+// -1.0				true
+// -1					true
+// -1.0000			true
+// -1.0001			false
+// -2.0				false
+//
+func (ia *IntAry) IsMinusOne() bool {
+
+	iaMinusOne := IntAry{}.NewOne(ia.precision)
+	iaMinusOne.ChangeSign()
+
+	if ia.Equals(&iaMinusOne) {
+		return true
+	}
+
+	return false
+}
+
 // IsOne - Returns 'true' if the value of the current
 // IntAry is '1'.
 //
@@ -2758,7 +2784,7 @@ func (ia *IntAry) IsEvenNumber() bool {
 //
 func (ia *IntAry) IsOne() bool {
 
-	iaOne := IntAry{}.NewOne(int(ia.precision))
+	iaOne := IntAry{}.NewOne(ia.precision)
 
 	if ia.Equals(&iaOne) {
 		return true
