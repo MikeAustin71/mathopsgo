@@ -1,24 +1,33 @@
 package main
 
 import (
-	"MikeAustin71/mathopsgo/mathops"
+	"../mathops"
 	"fmt"
 	"math/big"
+	"time"
+	"../examples"
 )
 
 func main() {
 
-	baseStr := "45"
-	exponentStr := "12"
-	expectedResultStr := "68952523554931640625"
+	// Time: 0-Nanoseconds
+	baseStr := "19"
+	exponentStr := "2.3"
+	//                        12345648901234567890123456789012
+	expectedResultStr := "873.23931881701910176203214553167"
 	minPrecision := 0
-	maxPrecision := 0
+	maxPrecision := 29
 
 	ExampleIntAryMultiplyPower_01(baseStr, exponentStr, expectedResultStr, minPrecision, maxPrecision)
+	fmt.Println("------------------------------")
+	ExampleBigIntNumPower_01(baseStr, exponentStr, expectedResultStr, uint(maxPrecision))
 
 }
 
 func ExampleIntAryMultiplyPower_01(baseStr, exponentStr, expectedResultStr string, minPrecision, maxPrecision int) {
+
+	var t1 time.Time
+	var t0 time.Time
 
 
  iaBase, err := mathops.IntAry{}.NewNumStr(baseStr)
@@ -39,7 +48,9 @@ func ExampleIntAryMultiplyPower_01(baseStr, exponentStr, expectedResultStr strin
 
 	}
 
+	t0 = time.Now()
   actualResult, err := mathops.IntAryMathPower{}.PwrByMultiplication(&iaBase, &iaExponent, minPrecision, maxPrecision)
+	t1 = time.Now()
 
   if err != nil {
 		fmt.Printf("Error returned by IntAryMathPower{}.PwrByMultiplication(...). " +
@@ -60,11 +71,13 @@ func ExampleIntAryMultiplyPower_01(baseStr, exponentStr, expectedResultStr strin
 		fmt.Println("@@@@ ERROR @@@@")
 	}
 
+	str := examples.CodeDurationToStr(t1.Sub(t0))
 
 	fmt.Println("     Input Base: ", baseStr)
 	fmt.Println(" Input Exponent: ", exponentStr)
 	fmt.Println("         Result: ", actualResultStr)
 	fmt.Println("Expected Result: ", expectedResultStr)
+	fmt.Println("   Elapsed Time: ", str)
 
 }
 
@@ -194,7 +207,12 @@ func ExampleBigIntNumPower_01(baseStr, exponentStr, expectedStr string, maxPreci
 		return
 	}
 
+	var t0 time.Time
+	var t1 time.Time
+
+	t0 = time.Now()
 	result, err := mathops.BigIntMathPower{}.Pwr(bINumBase, bINumExponent, maxPrecision)
+	t1 = time.Now()
 
 	if err != nil {
 		fmt.Printf("Error returned by BigIntMathPower{}.Pwr(bINumBase, bINumExponent, maxPrecision). " +
@@ -203,10 +221,12 @@ func ExampleBigIntNumPower_01(baseStr, exponentStr, expectedStr string, maxPreci
 		return
 	}
 
+	str := examples.CodeDurationToStr(t1.Sub(t0))
+
 	fmt.Println("*** BigIntMathPower{}.Pwr() ***")
 	fmt.Println("Expected Result: ", expectedStr)
 	fmt.Println("  Actual Result: ", result.GetNumStr())
-
+  fmt.Println("   Elapsed Time: ", str)
 	if expectedStr != result.GetNumStr() {
 		fmt.Println("XXX FAILURE XXX Expected Result NOT EQUAL to Actual Result!")
 	} else {
