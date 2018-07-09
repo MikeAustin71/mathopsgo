@@ -165,6 +165,12 @@ func (iaPwr IntAryMathPower) PwrByMultiplication(
 	exponentPrecision := exponent.GetPrecision()
   exponentSign := exponent.GetSign()
 
+	iaZero := IntAry{}.NewZero(0)
+
+	if base.IsZero() {
+		return &iaZero,
+			errors.New(ePrefix + "'base' is Zero value. INVALID INPUT!")
+	}
 
   if exponentPrecision == 0 && exponentSign == 1 {
   	return iaPwr.pwrMultiplyPositiveIntegerExponent(
@@ -174,9 +180,31 @@ func (iaPwr IntAryMathPower) PwrByMultiplication(
 							maxResultPrecision)
 	}
 
-  result := IntAry{}.NewZero(0)
+  if exponentPrecision == 0 && exponentSign == -1 {
+  	return iaPwr.pwrMultiplyNegativeIntegerExponent(
+  			base,
+  				exponent,
+						minResultPrecision,
+							maxResultPrecision)
+	}
 
-	return &result,
+  if exponentPrecision > 0 && exponentSign == 1 {
+  	return iaPwr.pwrMultiplyPositiveFractionalExponent(
+  			base,
+  				exponent,
+						minResultPrecision,
+							maxResultPrecision)
+	}
+
+  if exponentPrecision == 0 && exponentSign == -1 {
+  	return iaPwr.pwrMultiplyNegativeFractionalExponent(
+  			base,
+  				exponent,
+						minResultPrecision,
+							maxResultPrecision)
+	}
+
+	return &iaZero,
   	errors.New(ePrefix + "Error: input parameters failed to match valid calculation types!")
 }
 
@@ -365,10 +393,10 @@ func (iaPwr *IntAryMathPower) pwrMultiplyPositiveIntegerExponent(
 																	minResultPrecision, maxResultPrecision int) (*IntAry, error) {
 
   ePrefix := "IntAryMathPower.pwrMultiplyPositiveIntegerExponent() "
-	result := IntAry{}.NewZero(0)
+	iaErrReturn := IntAry{}.NewZero(0)
 
 	if exponent.GetSign() != 1 {
-		return &result,
+		return &iaErrReturn,
 			fmt.Errorf(ePrefix +
 			"Error: 'exponent' is expected to be a positive integer. " +
 			"Instead, 'exponent' is negative! exponent='%v'",
@@ -376,7 +404,7 @@ func (iaPwr *IntAryMathPower) pwrMultiplyPositiveIntegerExponent(
 	}
 
 	if exponent.GetPrecision() != 0 {
-		return &result,
+		return &iaErrReturn,
 			fmt.Errorf(ePrefix +
 			"Error: 'exponent' is expected to be an integer value. " +
 			"Instead, 'exponent' is a fractional value! exponent='%v'",
@@ -395,23 +423,30 @@ func (iaPwr *IntAryMathPower) pwrMultiplyPositiveIntegerExponent(
 		minResultPrecision = maxResultPrecision
 	}
 
-	internalMaxPrecision := maxResultPrecision + 1000
+	if base.IsZero() {
+		return &iaErrReturn,
+		errors.New(ePrefix + "ERROR: 'base' is zero value. INVALID INPUT!")
+	}
 
-  minusOne := IntAry{}.NewOne(0)
-  minusOne.ChangeSign()
+	result := IntAry{}.NewOne(0)
 
-  result = base.CopyOut()
+	if exponent.IsZero() {
+		result.SetPrecision(minResultPrecision, false)
+		return &result, nil
+	}
+
+	internalMaxPrecision := maxResultPrecision + 100
+
   opExponent := exponent.CopyOut()
 
-  for !opExponent.Equals(&minusOne) {
+  for !opExponent.IsZero() {
 
   	IntAryMathMultiply{}.MultiplyInPlace(&result, base, minResultPrecision, internalMaxPrecision)
 
   	err := opExponent.DecrementIntegerOne()
 
   	if err != nil {
-  		result.SetIntAryToZero(0)
-  		return &result,
+  		return &iaErrReturn,
   		 fmt.Errorf(ePrefix +
   		 	"Error returned by opExponent.DecrementIntegerOne() " +
   		 	"Error='%v' ", err.Error())
@@ -460,10 +495,10 @@ func (iaPwr *IntAryMathPower) pwrMultiplyNegativeIntegerExponent(
 													minResultPrecision, maxResultPrecision int) (*IntAry, error) {
 
 	ePrefix := "IntAryMathPower.pwrMultiplyNegativeIntegerExponent() "
-	result := IntAry{}.NewZero(0)
+	iaErrReturn := IntAry{}.NewZero(0)
 
 	if exponent.GetSign() != -1 {
-		return &result,
+		return &iaErrReturn,
 			fmt.Errorf(ePrefix +
 				"Error: 'exponent' is expected to be a negative integer. " +
 				"Instead, 'exponent' is positive! exponent='%v'",
@@ -471,7 +506,7 @@ func (iaPwr *IntAryMathPower) pwrMultiplyNegativeIntegerExponent(
 	}
 
 	if exponent.GetPrecision() < 1 {
-		return &result,
+		return &iaErrReturn,
 			fmt.Errorf(ePrefix +
 				"Error: 'exponent' is expected to be a fractional value. " +
 				"Instead, 'exponent' is an integer value! exponent='%v'",
@@ -492,31 +527,27 @@ func (iaPwr *IntAryMathPower) pwrMultiplyNegativeIntegerExponent(
 
 	internalMaxPrecision := maxResultPrecision + 1000
 
-	minusOne := IntAry{}.NewOne(0)
-	minusOne.ChangeSign()
-
 	newBase, err := base.Inverse(internalMaxPrecision)
 
 	if err != nil {
-		result = IntAry{}.NewZero(0)
-		return &result, 
+		return &iaErrReturn,
 			fmt.Errorf(ePrefix +
 				"Error returned by base.Inverse(internalMaxPrecision)")
 	}
 
-	result = newBase.CopyOut()
+	result := IntAry{}.NewOne(0)
 	opExponent := exponent.CopyOut()
 	opExponent.ChangeSign()
+	iaZero := IntAry{}.NewZero(0)
 	
-	for !opExponent.Equals(&minusOne) {
+	for !opExponent.Equals(&iaZero) {
 
 		IntAryMathMultiply{}.MultiplyInPlace(&result, &newBase, minResultPrecision, internalMaxPrecision)
 
 		err := opExponent.DecrementIntegerOne()
 
 		if err != nil {
-			result.SetIntAryToZero(0)
-			return &result,
+			return &iaErrReturn,
 				fmt.Errorf(ePrefix +
 					"Error returned by opExponent.DecrementIntegerOne() " +
 					"Error='%v' ", err.Error())
@@ -574,8 +605,8 @@ func (iaPwr *IntAryMathPower) pwrMultiplyPositiveFractionalExponent(
 	if exponent.GetSign() != 1 {
 		return &iaError,
 			fmt.Errorf(ePrefix +
-				"Error: 'exponent' is expected to be a positive integer. " +
-				"Instead, 'exponent' is negative! exponent='%v'",
+				"Error: 'exponent' is expected to be a positive fractional value. " +
+				"Instead, 'exponent' is a negative value! exponent='%v'",
 				exponent.GetNumStr())
 	}
 
@@ -656,7 +687,141 @@ func (iaPwr *IntAryMathPower) pwrMultiplyPositiveFractionalExponent(
 }
 
 
-// TODO Finish pwrMultiplyNegativeFractionalExponent()
+// pwrMultiplyNegativeFractionalExponent - raises 'base' to the power of
+// 'exponent'. Input parameter 'exponent' is expected to represent a negative
+// fractional value, i.e., a numeric value with digits to the right of the
+// decimal place.
+//
+// Input parameter must be negative numeric value with a value less than zero.
+// If 'exponent' is a positive value, an error will be thrown.
+//
+// If 'exponent' is a numeric value with no digits to the right of the
+// decimal place, it is by definition an integer value and NOT a fractional
+// value. In that case, an error will be thrown.
+//
+// This method uses simple multiplication to generate the result.
+//
+// Input parameter 'maxResultPrecision' will round the result to this
+// number of decimal places after the decimal point if the result is
+// greater than 'maxResultPrecision'.  If the value of 'maxResultPrecision'
+// is less than zero, it will be automatically set to a value of '4096'.
+//
+// Input parameter 'minResultPrecision' signals that if the result precision
+// is less than 'minResultPrecision', zeros will be added to the right of
+// the decimal place in order to implement the 'minResultPrecision'
+// specification. If the value of 'minResultPrecision' is less than zero,
+// 'minResultPrecision' will be automatically set to a value of zero.
+//
+// The result of the power operation is returned as a pointer to a new
+// 'result' IntAry. None of the input parameters are altered by this
+// operation.
+//
+func (iaPwr *IntAryMathPower) pwrMultiplyNegativeFractionalExponent(
+													base, exponent *IntAry,
+														minResultPrecision, maxResultPrecision int) (*IntAry, error) {
+
+	ePrefix := "IntAryMathPower.pwrMultiplyNegativeFractionalExponent() "
+	iaError := IntAry{}.NewZero(0)
+
+	if exponent.GetSign() != -1 {
+		return &iaError,
+			fmt.Errorf(ePrefix +
+				"Error: 'exponent' is expected to be a negative fractional value. " +
+				"Instead, 'exponent' is a positive value! exponent='%v'",
+				exponent.GetNumStr())
+	}
+
+	if exponent.GetPrecision() < 1 {
+		return &iaError,
+			fmt.Errorf(ePrefix +
+				"Error: 'exponent' is expected to be a fractional value. " +
+				"Instead, 'exponent' is an integer value! exponent='%v'",
+				exponent.GetNumStr())
+	}
+
+	if maxResultPrecision < 0 {
+		maxResultPrecision = 4096
+	}
+
+	if minResultPrecision < 0 {
+		minResultPrecision = 0
+	}
+
+	if minResultPrecision > maxResultPrecision {
+		minResultPrecision = maxResultPrecision
+	}
+
+	internalMaxPrecision := maxResultPrecision + 1000
+
+	newExponent := exponent.CopyOut()
+
+	// Change sign from minus to plus
+	newExponent.ChangeSign()
+
+	newInverseBase, err := base.Inverse(internalMaxPrecision)
+
+	if err != nil {
+		fmt.Errorf(ePrefix +
+			"Error returned by base.Inverse(internalMaxPrecision) " +
+			"Error='%v' ", err.Error())
+	}
+
+	fracIntAry := FracIntAry{}.NewFracIntAry(exponent)
+
+	err = fracIntAry.ReduceToLowestCommonDenom(internalMaxPrecision)
+
+	if err != nil {
+		return &iaError,
+				fmt.Errorf(ePrefix +
+			"Error returned by fracIntAry.ReduceToLowestCommonDenom(internalMaxPrecision) " +
+			"Error='%v' ", err.Error())
+	}
+
+	internalMaxPrecision++
+
+	newBase, err := NthRootOp{}.NewNthRoot(&newInverseBase, &fracIntAry.Denominator, internalMaxPrecision)
+
+	if err != nil {
+		return &iaError,
+			fmt.Errorf(ePrefix +
+			"Error returned by NthRootOp{}.NewNthRoot(...) " +
+			"Error='%v' ", err.Error())
+	}
+
+
+	minusOne := IntAry{}.NewOne(0)
+	minusOne.ChangeSign()
+
+	result := newBase.CopyOut()
+	internalMaxPrecision++
+
+  // fracIntAry.Numerator == new exponent
+	for !fracIntAry.Numerator.Equals(&minusOne) {
+
+		IntAryMathMultiply{}.MultiplyInPlace(&result, &newBase, minResultPrecision, internalMaxPrecision)
+
+		err := fracIntAry.Numerator.DecrementIntegerOne()
+
+		if err != nil {
+			result.SetIntAryToZero(0)
+			return &result,
+				fmt.Errorf(ePrefix +
+					"Error returned by fracIntAry.Numerator.DecrementIntegerOne() " +
+					"Error='%v' ", err.Error())
+		}
+
+	}
+
+	if result.GetPrecision() > maxResultPrecision {
+		result.RoundToPrecision(maxResultPrecision)
+	}
+
+	if result.GetPrecision() < minResultPrecision {
+		result.SetPrecision(minResultPrecision, false)
+	}
+
+	return &result, nil
+}
 
 // pwrTwoPositiveIntegerExponent - raises 'base' to the power of 'exponent'.
 // Input parameter 'exponent' is expected to represent a positive integer.

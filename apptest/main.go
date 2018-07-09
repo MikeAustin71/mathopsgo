@@ -8,17 +8,67 @@ import (
 
 func main() {
 
-	dividend := "1"
-	divisor := "26"
-	eQuotient := "0.0384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615384615385"
+	baseStr := "45"
+	exponentStr := "12"
+	expectedResultStr := "68952523554931640625"
 	minPrecision := 0
-	maxPrecision := -1
+	maxPrecision := 0
 
-	ExampleIntAryDivide_01(dividend, divisor, eQuotient, minPrecision, maxPrecision)
+	ExampleIntAryMultiplyPower_01(baseStr, exponentStr, expectedResultStr, minPrecision, maxPrecision)
 
 }
 
-func ExampleIntAryDivide_01(dividendStr, divisorStr, eQuotient string, minPreicion, maxPrecision int) {
+func ExampleIntAryMultiplyPower_01(baseStr, exponentStr, expectedResultStr string, minPrecision, maxPrecision int) {
+
+
+ iaBase, err := mathops.IntAry{}.NewNumStr(baseStr)
+
+	if err != nil {
+		fmt.Printf("Error returned by IntAry{}.NewNumStr(baseStr). " +
+			"baseStr='%v' Error='%v' \n", baseStr, err.Error())
+		return
+
+	}
+
+ iaExponent, err := mathops.IntAry{}.NewNumStr(exponentStr)
+
+	if err != nil {
+		fmt.Printf("Error returned by IntAry{}.NewNumStr(exponentStr). " +
+			"exponentStr='%v' Error='%v' \n", exponentStr, err.Error())
+		return
+
+	}
+
+  actualResult, err := mathops.IntAryMathPower{}.PwrByMultiplication(&iaBase, &iaExponent, minPrecision, maxPrecision)
+
+  if err != nil {
+		fmt.Printf("Error returned by IntAryMathPower{}.PwrByMultiplication(...). " +
+			"Error='%v' \n", err.Error())
+		return
+
+	}
+
+  actualResultStr := actualResult.GetNumStr()
+
+  fmt.Println()
+	fmt.Println("=====================")
+  fmt.Println("PwrByMultiplication()")
+  fmt.Println("=====================")
+	if expectedResultStr == actualResultStr {
+		fmt.Println("*** SUCCESS ***")
+	} else {
+		fmt.Println("@@@@ ERROR @@@@")
+	}
+
+
+	fmt.Println("     Input Base: ", baseStr)
+	fmt.Println(" Input Exponent: ", exponentStr)
+	fmt.Println("         Result: ", actualResultStr)
+	fmt.Println("Expected Result: ", expectedResultStr)
+
+}
+
+func ExampleIntAryDivide_01(dividendStr, divisorStr, eQuotient string, minPrecision, maxPrecision int) {
 
 	dividend, err := mathops.IntAry{}.NewNumStr(dividendStr)
 
@@ -41,14 +91,14 @@ func ExampleIntAryDivide_01(dividendStr, divisorStr, eQuotient string, minPreici
 	quotient, err := mathops.IntAryMathDivide{}.Divide(
 										&dividend,
 											&divisor,
-												minPreicion,
+		minPrecision,
 													maxPrecision)
 
 	if err != nil {
 		fmt.Printf("Error returned by IntAryMathDivide{}.Divide(). " +
 			"dividendStr='%v' divisorStr='%v' minPrecision='%v' maxPrecision='%v'" +
 					"Error='%v' \n",
-						dividendStr, divisorStr, minPreicion, maxPrecision, err.Error())
+						dividendStr, divisorStr, minPrecision, maxPrecision, err.Error())
 
 		return
 	}
