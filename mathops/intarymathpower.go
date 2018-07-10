@@ -12,6 +12,16 @@ type IntAryMathPower struct {
 }
 
 // Pwr - Raises input parameter 'base' to the power of 'exponent'.
+// This method uses the 'Power By Twos' technique.
+// See:
+// https://en.wikipedia.org/wiki/Exponentiation_by_squaring
+// https://en.wikipedia.org/wiki/Exponentiation_by_squaring#Computation_by_powers_of_2
+// This method is based on revised code taken in part from Ye Lin Aung.
+// https://stackoverflow.com/questions/30182129/calculating-large-exponentiation-in-golang
+// This algorithm modified by Mike Rapp to achieve improved performance.
+//
+// The result of raising 'base' to the power of 'exponent' will return the result in
+// 'base'. As such the original value of 'base' will be overwritten.
 //
 func (iaPwr IntAryMathPower) Pwr(
 					base, exponent *IntAry,
@@ -29,6 +39,21 @@ func (iaPwr IntAryMathPower) Pwr(
 
 	if err != nil {
 		return err
+	}
+
+	if base.IsZero() {
+		return errors.New(ePrefix + "Error: Input parameter 'base' is zero value. INVALID INPUT!")
+	}
+
+	if exponent.IsZero() {
+		base.SetIntAryToOne(minResultPrecision)
+		return nil
+	}
+
+	iaOne := IntAry{}.NewOne(exponent.GetPrecision())
+
+	if exponent.Equals(&iaOne) {
+		return nil
 	}
 
 	exponentPrecision := exponent.GetPrecision()
@@ -938,7 +963,9 @@ func (iaPwr *IntAryMathPower) pwrTwoPositiveIntegerExponent(
 			err.Error())
 	}
 
-	err = iaPwr.PwrByTwos(base, bInt, maxResultPrecision, maxResultPrecision + 50)
+	internalPrecision := maxResultPrecision + 100
+
+	err = iaPwr.PwrByTwos(base, bInt, maxResultPrecision, internalPrecision)
 
 	if err != nil {
 		return fmt.Errorf(ePrefix +
@@ -1023,7 +1050,9 @@ func (iaPwr *IntAryMathPower) pwrTwoNegativeIntegerExponent(
 			err.Error())
 	}
 
-	err = iaPwr.PwrByTwos(base, bInt, maxResultPrecision, maxResultPrecision + 50)
+	internalPrecision := maxResultPrecision + 100
+
+	err = iaPwr.PwrByTwos(base, bInt, maxResultPrecision, internalPrecision)
 
 	if err != nil {
 		return fmt.Errorf(ePrefix +
@@ -1111,6 +1140,8 @@ func (iaPwr *IntAryMathPower) pwrTwoPositiveFractionalExponent(
 			"Error='%v' ", err.Error())
 	}
 
+	internalMaxPrecision += 5
+
 	newBase, err := NthRootOp{}.NewNthRoot(base, &fracIntAry.Denominator, internalMaxPrecision)
 
 	if err != nil {
@@ -1128,6 +1159,8 @@ func (iaPwr *IntAryMathPower) pwrTwoPositiveFractionalExponent(
 			"Error returned by fracIntAry.Numerator.GetBigInt() " +
 			"Error='%v' ", err.Error())
 	}
+
+	internalMaxPrecision += 5
 
 	err = iaPwr.PwrByTwos(base, expBigInt, maxResultPrecision, internalMaxPrecision)
 
@@ -1230,6 +1263,8 @@ func (iaPwr *IntAryMathPower) pwrTwoNegativeFractionalExponent(
 			"Error returned by newExponent.GetBigInt() " +
 			"Error='%v' ", err.Error())
 	}
+
+	internalMaxPrecision += 5
 
 	err = iaPwr.PwrByTwos(base, expBigInt, maxResultPrecision, internalMaxPrecision)
 
