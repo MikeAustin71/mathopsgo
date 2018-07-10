@@ -34,6 +34,22 @@ func (bIPwr BigIntMathPower) Pwr(base, exponent BigIntNum, maxPrecision uint) (B
 	result := BigIntNum{}
 	var err error
 
+	if base.IsZero() {
+		return result,
+		 errors.New(ePrefix + "Error: 'base' input parameter is Zero. INVALID INPUT!")
+	}
+
+	if exponent.IsZero() {
+		return BigIntNum{}.NewOne(0), nil
+	}
+
+	bigOne := BigIntNum{}.NewOne(exponent.GetPrecisionUint())
+
+	if exponent.Equal(bigOne) {
+		result = base.CopyOut()
+		return base, nil
+	}
+
 	if exponent.GetPrecisionUint() == uint(0) {
 
 		if exponent.GetSign() > 0 {

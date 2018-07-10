@@ -161,18 +161,18 @@ func (iaPwr IntAryMathPower) PwrByMultiplication(
 									minResultPrecision, maxResultPrecision int ) (*IntAry, error) {
 
   ePrefix := "IntAryMathPower.PwrByMultiplication() "
-	iaZero := IntAry{}.NewZero(0)
+	iaReturn := IntAry{}.NewZero(0)
 
   err := base.IsIntAryValid(ePrefix + "Invalid 'base' - ")
 
   if err != nil {
-		return &iaZero, err
+		return &iaReturn, err
 	}
 
   err = exponent.IsIntAryValid(ePrefix + "Invalid 'exponent' - ")
 
 	if err != nil {
-		return &iaZero, err
+		return &iaReturn, err
 	}
 
 	exponentPrecision := exponent.GetPrecision()
@@ -180,8 +180,20 @@ func (iaPwr IntAryMathPower) PwrByMultiplication(
 
 
 	if base.IsZero() {
-		return &iaZero,
+		return &iaReturn,
 			errors.New(ePrefix + "'base' is Zero value. INVALID INPUT!")
+	}
+
+  if exponent.IsZero() {
+  	iaReturn.SetIntAryToOne(minResultPrecision)
+  	return &iaReturn, nil
+	}
+
+  iaOne := IntAry{}.NewOne(exponent.GetPrecision())
+
+  if exponent.Equals(&iaOne) {
+  	iaReturn = base.CopyOut()
+  	return &iaReturn, nil
 	}
 
   if exponentPrecision == 0 && exponentSign == 1 {
@@ -216,7 +228,7 @@ func (iaPwr IntAryMathPower) PwrByMultiplication(
 							maxResultPrecision)
 	}
 
-	return &iaZero,
+	return &iaReturn,
   	errors.New(ePrefix + "Error: input parameters failed to match valid calculation types!")
 }
 
@@ -400,17 +412,15 @@ func (iaPwr *IntAryMathPower) PwrByTwos(
 // 'result' IntAry. None of the input parameters are altered by this
 // operation.
 //
+// Note: This method does not perform tests for base==0, exponent==0 or exponent==1.
+// It is assumed that these tests were performed before calling this method.
+//
 func (iaPwr *IntAryMathPower) pwrMultiplyPositiveIntegerExponent(
 																base, exponent *IntAry,
 																	minResultPrecision, maxResultPrecision int) (*IntAry, error) {
 
   ePrefix := "IntAryMathPower.pwrMultiplyPositiveIntegerExponent() "
 	iaErrReturn := IntAry{}.NewZero(0)
-
-	if base.IsZero() {
-		return &iaErrReturn,
-			errors.New(ePrefix + "'base' is Zero value. INVALID INPUT!")
-	}
 
 
 	if exponent.GetSign() != 1 {
@@ -442,11 +452,6 @@ func (iaPwr *IntAryMathPower) pwrMultiplyPositiveIntegerExponent(
 	}
 
 	result := IntAry{}.NewOne(0)
-
-	if exponent.IsZero() {
-		result.SetPrecision(minResultPrecision, false)
-		return &result, nil
-	}
 
 	internalMaxPrecision := maxResultPrecision + 100
 
@@ -503,17 +508,15 @@ func (iaPwr *IntAryMathPower) pwrMultiplyPositiveIntegerExponent(
 // 'result' IntAry. None of the input parameters are altered by this
 // operation.
 //
+// Note: This method does not perform tests for base==0 .
+// It is assumed that this test was performed before calling this method.
+//
 func (iaPwr *IntAryMathPower) pwrMultiplyNegativeIntegerExponent(
 											base, exponent *IntAry,
 													minResultPrecision, maxResultPrecision int) (*IntAry, error) {
 
 	ePrefix := "IntAryMathPower.pwrMultiplyNegativeIntegerExponent() "
 	iaErrReturn := IntAry{}.NewZero(0)
-
-	if base.IsZero() {
-		return &iaErrReturn,
-			errors.New(ePrefix + "'base' is Zero value. INVALID INPUT!")
-	}
 
 	if exponent.GetSign() != -1 {
 		return &iaErrReturn,
@@ -614,22 +617,16 @@ func (iaPwr *IntAryMathPower) pwrMultiplyNegativeIntegerExponent(
 // 'result' IntAry. None of the input parameters are altered by this
 // operation.
 //
+// Note: This method does not perform tests for base==0, exponent==0
+//       or exponent==1. Is is assumed that these tests were performed
+//       before calling this method.
+//
 func (iaPwr *IntAryMathPower) pwrMultiplyPositiveFractionalExponent(
 	base, exponent *IntAry,
 	minResultPrecision, maxResultPrecision int) (*IntAry, error) {
 
 	ePrefix := "IntAryMathPower.pwrMultiplyPositiveFractionalExponent() "
 	iaErrReturn := IntAry{}.NewZero(0)
-
-	if base.IsZero() {
-		return &iaErrReturn,
-			errors.New(ePrefix + "'base' is Zero value. INVALID INPUT!")
-	}
-
-	if exponent.IsZero() {
-		iaErrReturn.SetIntAryToOne(minResultPrecision)
-		return &iaErrReturn, nil
-	}
 
 	if exponent.GetSign() != 1 {
 		return &iaErrReturn,
@@ -758,18 +755,15 @@ func (iaPwr *IntAryMathPower) pwrMultiplyPositiveFractionalExponent(
 // 'result' IntAry. None of the input parameters are altered by this
 // operation.
 //
+// Note: This method does not perform a test for base==0. It is assumed
+//       this test was performed before calling this method.
+//
 func (iaPwr *IntAryMathPower) pwrMultiplyNegativeFractionalExponent(
 													base, exponent *IntAry,
 														minResultPrecision, maxResultPrecision int) (*IntAry, error) {
 
 	ePrefix := "IntAryMathPower.pwrMultiplyNegativeFractionalExponent() "
 	iaErrReturn := IntAry{}.NewZero(0)
-
-	if base.IsZero() {
-		return &iaErrReturn,
-			errors.New(ePrefix + "'base' is Zero value. INVALID INPUT!")
-	}
-
 
 	if exponent.GetSign() != -1 {
 		return &iaErrReturn,

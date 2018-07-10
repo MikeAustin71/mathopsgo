@@ -11,16 +11,25 @@ import (
 func main() {
 
 	// Time: 0-Nanoseconds
-	baseStr := "19"
-	exponentStr := "2.3"
-	//                        12345648901234567890123456789012
-	expectedResultStr := "873.23931881701910176203214553167"
+	baseStr := "-45.1"
+	exponentStr := "1"
+	//                      12345678901234567890123456789012345
+	expectedNumStr := "-45.1"
+	maxPrecision := 5
 	minPrecision := 0
-	maxPrecision := 29
 
-	ExampleIntAryMultiplyPower_01(baseStr, exponentStr, expectedResultStr, minPrecision, maxPrecision)
+	/*
+	fmt.Println("     int64 Minute ", int64(time.Minute))
+	fmt.Println("     int64 Second ", int64(time.Second))
+	fmt.Println("int64 MilliSecond ", int64(time.Millisecond))
+	fmt.Println("int64 MicroSecond ", int64(time.Microsecond))
+	*/
+
+	//                        12345648901234567890123456789012
+
+	ExampleIntAryMultiplyPower_01(baseStr, exponentStr, expectedNumStr, minPrecision, maxPrecision)
 	fmt.Println("------------------------------")
-	ExampleBigIntNumPower_01(baseStr, exponentStr, expectedResultStr, uint(maxPrecision))
+	ExampleBigIntNumPower_01(baseStr, exponentStr, expectedNumStr, uint(maxPrecision))
 
 }
 
