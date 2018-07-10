@@ -3710,55 +3710,6 @@ func (ia *IntAry) pwrByTwos(power *big.Int, maxResultPrecision, internalPrecisio
 	return nil
 }
 
-func (ia *IntAry) pwrByOnes(power, maxPrecision int) error {
-	ia.SetInternalFlags()
-
-	if ia.isZeroValue {
-		return nil
-	}
-
-	if power == 0 {
-		ia.SetIntAryToOne(ia.precision)
-		return nil
-	}
-
-	if power == 1 {
-		return nil
-	}
-
-	oldPowerSignVal := 1
-
-	if power < 0 {
-		power = power * -1
-		oldPowerSignVal = -1
-	}
-
-	power--
-
-	multiplier := ia.CopyOut()
-
-	for i := 0; i < power; i++ {
-		ia.MultiplyThisBy(&multiplier, -1, -1)
-	}
-
-	if oldPowerSignVal == 1 {
-
-		return nil
-	}
-
-	// Power must be negative.
-	iaInv, err := ia.Inverse(maxPrecision)
-
-	if err != nil {
-		fmt.Errorf("Pow() - Error returned from ia.Inverse(maxPrecision). Error= %v ", err)
-	}
-
-	ia.CopyIn(&iaInv, false)
-
-	return nil
-
-}
-
 // PrefixToIntAry - Adds an integer of type
 // uint8 to the front of the existing internal
 // integer array maintained by the current
