@@ -631,10 +631,10 @@ func (nthrt *BigIntMathNthRoot) setupBundles(
 
 	setUpRadicand := bINumSetUpRadicand.GetAbsoluteBigIntValue()
 
-	numOfDigits, errx = BigIntMath{}.GetMagnitude(bINumSetUpRadicand.GetAbsoluteBigIntValue())
+	numOfDigits, errx = BigIntMath{}.GetMagnitudeDigits(bINumSetUpRadicand.GetAbsoluteBigIntValue())
 
 	if errx != nil {
-		err = fmt.Errorf(ePrefix + "Error returned by  BigIntMath{}.GetMagnitude(" +
+		err = fmt.Errorf(ePrefix + "Error returned by  BigIntMath{}.GetMagnitudeDigits(" +
 			"radicand.GetAbsoluteBigIntValue()) Error='%v'", errx.Error())
 	}
 
@@ -663,11 +663,11 @@ func (nthrt *BigIntMathNthRoot) setupBundles(
 		return intBundleRadicand, fracBundleRadicand, precisionAdjustment, err
 	}
 
-	numOfDigits, errx = BigIntMath{}.GetMagnitude(fracBundleRadicand)
+	numOfDigits, errx = BigIntMath{}.GetMagnitudeDigits(fracBundleRadicand)
 
 	if errx != nil {
 		err =	fmt.Errorf(ePrefix +
-			"Error returned by BigIntMath{}.GetMagnitude(fracBundleRadicand). " +
+			"Error returned by BigIntMath{}.GetMagnitudeDigits(fracBundleRadicand). " +
 			"fracBundleRadicand='%v' Error='%v' ",
 			fracBundleRadicand.Text(10), errx.Error())
 
@@ -712,12 +712,12 @@ func (nthrt *BigIntMathNthRoot) setupBundles(
 	intBundleRadicand, fracBundleRadicand = big.NewInt(0).QuoRem(radicand.GetAbsoluteBigIntValue(), scaleVal, modX)
 
 
-	magnitude, errx := BigIntMath{}.GetMagnitude(fracBundleRadicand)
+	magnitude, errx := BigIntMath{}.GetMagnitudeDigits(fracBundleRadicand)
 
 	if errx != nil {
 		ePrefix := "BigIntMathNthRoot.setupBundles() "
 		err =	fmt.Errorf(ePrefix +
-			"Error returned by BigIntMath{}.GetMagnitude(fracBundleRadicand). " +
+			"Error returned by BigIntMath{}.GetMagnitudeDigits(fracBundleRadicand). " +
 			"fracBundleRadicand='%v' Error='%v' ",
 			fracBundleRadicand.Text(10), err.Error())
 
@@ -792,7 +792,7 @@ func (nthrt  *BigIntMathNthRoot) calcBundleLength(
 
 		if errx != nil {
 			err = fmt.Errorf(ePrefix	+
-				"Error returned by BigIntMath{}.GetMagnitude(intRadicand). " +
+				"Error returned by BigIntMath{}.GetMagnitudeDigits(intRadicand). " +
 				"intRadicand='%v' Error='%v'",
 					intRadicand.Text(10), errx.Error())
 
@@ -1110,7 +1110,7 @@ func (nthrt *BigIntMathNthRoot) getNextBundleBigIntValue(
 
 		if errx != nil {
 			err = fmt.Errorf(ePrefix +
-				"Error returned by BigIntMath{}.GetMagnitude(intBundleRadicand.GetAbsoluteBigIntValue()). " +
+				"Error returned by BigIntMath{}.GetMagnitudeDigits(intBundleRadicand.GetAbsoluteBigIntValue()). " +
 				"intBundleRadicand='%v' Error='%v'",
 				intBundleRadicand.GetNumStr(), errx.Error())
 
@@ -1132,7 +1132,7 @@ func (nthrt *BigIntMathNthRoot) getNextBundleBigIntValue(
 		numberOfDigits, errx = BigIntMath{}.GetMagnitude(nextBundleValue)
 
 		if errx != nil {
-			err = fmt.Errorf(ePrefix + "Error returned by BigIntMath{}.GetMagnitude(nextBundleValue). " +
+			err = fmt.Errorf(ePrefix + "Error returned by BigIntMath{}.GetMagnitudeDigits(nextBundleValue). " +
 				"nextBundleValue='%v' Error='%v'",
 				nextBundleValue.Text(10), errx.Error())
 
@@ -1187,7 +1187,7 @@ func (nthrt *BigIntMathNthRoot) getNextBundleBigIntValue(
 		if errx != nil {
 
 			err =	fmt.Errorf(ePrefix +
-				"Error returned by BigIntMath{}.GetMagnitude(fracBundleRadicand.GetAbsoluteBigIntValue()). " +
+				"Error returned by BigIntMath{}.GetMagnitudeDigits(fracBundleRadicand.GetAbsoluteBigIntValue()). " +
 				"fracBundleRadicand='%v' Error='%v' ",
 				fracBundleRadicand.GetNumStr(), errx.Error())
 

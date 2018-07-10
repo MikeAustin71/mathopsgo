@@ -10,7 +10,7 @@ type BigIntMath struct {
 	Output		*big.Int
 }
 
-// GetMagnitude - Returns the magnitude of a *big.Int number passed as an input
+// GetMagnitudeDigits - Returns the magnitude of a *big.Int number passed as an input
 // parameter. Magnitude is defined here as the power of 10 which generates a value
 // less than or equal to the 'target' *big.Int number.
 //

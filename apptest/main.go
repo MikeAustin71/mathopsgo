@@ -24,7 +24,10 @@ func main() {
 	//                        12345648901234567890123456789012
 
 
+	numStr := "98327123"
+	expectedMagnitude := 7
 
+	ExampleIntAryGetMagnitude_01(numStr, expectedMagnitude)
 
 }
 
@@ -33,17 +36,45 @@ func ExampleIntAryGetMagnitude_01(numStr string, expectedMagnitude int ) {
 	iaNum, err := mathops.IntAry{}.NewNumStr(numStr)
 
 	if err != nil {
-		if err != nil {
-			fmt.Printf("Error returned by IntAry{}.NewNumStr(numStr). " +
-				"numStr='%v' Error='%v' \n", numStr, err.Error())
-			return
-		}
+		fmt.Printf("Error returned by IntAry{}.NewNumStr(numStr). " +
+			"numStr='%v' Error='%v' \n", numStr, err.Error())
+		return
 	}
 
-	magnitude := iaNum.GetMagnitude()
+	bInt, err := iaNum.GetBigInt()
 
-	fmt.Println("  Actual Magnitude: ", magnitude)
-	fmt.Println("Expected Magnigude: ", expectedMagnitude)
+	if err != nil {
+		fmt.Printf("Error returned by iaNum.GetBigInt(). " +
+			"Error='%v' \n", err.Error())
+		return
+	}
+
+	bIMagnitude, err := mathops.BigIntMath{}.GetMagnitude(bInt)
+
+	if err != nil {
+		fmt.Printf("Error returned by BigIntMath{}.GetMagnitudeDigits(bInt). " +
+			"Error='%v' \n", err.Error())
+		return
+	}
+
+	magnitude := iaNum.GetMagnitudeDigits()
+
+	iaMagnitude, err := iaNum.GetMagnitude()
+
+	if err != nil {
+		fmt.Printf("Error returned by iaNum.GetMagnitude(). " +
+			"Error='%v' \n", err.Error())
+		return
+	}
+
+
+	fmt.Println("       Target Number: ", numStr)
+	fmt.Println("    Actual Magnitude: ", magnitude)
+	fmt.Println("  Expected Magnitude: ", expectedMagnitude)
+	fmt.Println(" IntAry.GetMagnitude: ", iaMagnitude)
+  fmt.Println("-------------------------------------")
+	fmt.Println("BigIntMath Magnitude: ", bIMagnitude.Text(10))
+
 
 }
 
@@ -313,7 +344,7 @@ func ExampleBundleCount_03(target, nthRoot *big.Int) (bundleCnt *big.Int, err er
 
 	if errx != nil {
 		err = fmt.Errorf(ePrefix +
-			"Error returned by BigIntMath{}.GetMagnitude(target). " +
+			"Error returned by BigIntMath{}.GetMagnitudeDigits(target). " +
 			"target='%v' Error='%v' ",
 			target.Text(10), err.Error())
 		return bundleCnt, err
@@ -348,7 +379,7 @@ func ExampleBundleCount_02(target, nthRoot *big.Int) (newTarget *big.Int, err er
 
 	if errx != nil {
 		err = fmt.Errorf(ePrefix +
-			"Error returned by BigIntMath{}.GetMagnitude(target). " +
+			"Error returned by BigIntMath{}.GetMagnitudeDigits(target). " +
 			"target='%v' Error='%v' ",
 				target.Text(10), err.Error())
 		return newTarget, err
@@ -373,7 +404,7 @@ func ExampleBigIntMagnitude_01(target *big.Int) {
 	magnitude, err := mathops.BigIntMath{}.GetMagnitude(target)
 
 	if err != nil {
-		fmt.Printf("Error returned by BigIntMath{}.GetMagnitude(target). " +
+		fmt.Printf("Error returned by BigIntMath{}.GetMagnitudeDigits(target). " +
 			"target='%v' Error='%v' ", target.Text(10), err.Error())
 		return
 	}

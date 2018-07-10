@@ -813,7 +813,7 @@ func (bNum *BigIntNum) GetActualNumberOfDigits() (
 
 	if errx != nil {
 		ePrefix := "BigIntNum.GetActualNumberOfDigits() "
-		err = fmt.Errorf(ePrefix + "Error returned by BigIntMath{}.GetMagnitude(bNum.absBigInt) " +
+		err = fmt.Errorf(ePrefix + "Error returned by BigIntMath{}.GetMagnitudeDigits(bNum.absBigInt) " +
 			"bNum.absBigInt='%v' Error='%v' ", bNum.absBigInt.Text(10), err.Error())
 		return numberOfDigits, isZeroValue, err
 	}

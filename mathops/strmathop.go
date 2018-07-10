@@ -199,8 +199,8 @@ func (sMathOp *StrMathOp) Divide(maxPrecision int) error {
 
 	trialDividend := sMathOp.Dividend.CopyOut()
 
-	dividendMag := sMathOp.Dividend.GetMagnitude()
-	divisorMag := sMathOp.Divisor.GetMagnitude()
+	dividendMag := sMathOp.Dividend.GetMagnitudeDigits()
+	divisorMag := sMathOp.Divisor.GetMagnitudeDigits()
 	deltaMag := uint(0)
 	incrementVal := IntAry{}.New()
 	incrementVal.SetIntAryWithNumStr(sMathOp.Divisor.GetNumStr())

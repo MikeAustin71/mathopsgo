@@ -2375,8 +2375,40 @@ func (ia *IntAry) GetNumStrDto() (NumStrDto, error) {
 
 }
 
-func (ia *IntAry) GetMagnitude() int {
-	ia.SetSignificantDigitIdxs()
+// GetMagnitude - Returns the magnitude of the
+// integer portion of the current IntAry numeric
+// value. The integer portion of the number is
+// represented by the digits to the left of the
+// decimal point.
+//
+// Magnitude is defined here as the power of 10
+// which generates a value less than or equal to
+// the integer portion of the current IntAry numeric
+// value.
+//
+// 			10^magnitude  <= IntAry value
+//
+// Note: If the current IntAry value is negative,
+// an error will be generated.
+//
+func (ia *IntAry) GetMagnitude() (int, error) {
+
+	ia.SetInternalFlags()
+
+	if ia.signVal == -1 {
+		return -1, fmt.Errorf("IntAry.GetMagnitude() Error: current IntAry value is negative! " +
+			"value='%v' ", ia.GetNumStr())
+	}
+
+	return ia.intAryLen - ia.precision - ia.firstDigitIdx - 1, nil
+}
+
+// GetMagnitudeDigits - Returns the number of digits
+// in the integer portion of the current IntAry numeric
+// value.
+//
+func (ia *IntAry) GetMagnitudeDigits() int {
+	ia.SetInternalFlags()
 	return ia.intAryLen - ia.precision - ia.firstDigitIdx
 
 }

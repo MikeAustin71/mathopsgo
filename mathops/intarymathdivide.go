@@ -99,8 +99,8 @@ func (iaDivide IntAryMathDivide) Divide(
 		tempDivisor.signVal = 1
 	}
 
-	dividendMag := trialDividend.GetMagnitude()
-	divisorMag := tempDivisor.GetMagnitude()
+	dividendMag := trialDividend.GetMagnitudeDigits()
+	divisorMag := tempDivisor.GetMagnitudeDigits()
 	deltaMag := uint(0)
 	incrementVal := IntAry{}.New()
 	incrementVal = tempDivisor.CopyOut()
