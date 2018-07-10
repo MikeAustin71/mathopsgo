@@ -3,7 +3,7 @@ package mathops
 import (
 	"math/big"
 	"testing"
-)
+	)
 
 func TestIntAry_GetAbsoluteValue_01(t *testing.T) {
 	numStr := "-927.351"
@@ -768,7 +768,13 @@ func TestIntAry_GetIntegerDigits_04(t *testing.T) {
 	signVal := 1
 
 	ia := IntAry{}.New()
-	ia.SetIntAryWithNumStr(nStr1)
+	err := ia.SetIntAryWithNumStr(nStr1)
+
+	if err != nil {
+		t.Errorf("Error returned by ia.SetIntAryWithNumStr(nStr1) " +
+			"nStr1='%v' Error='%v' ", nStr1, err.Error())
+	}
+
 
 	iAry2, err := ia.GetIntegerDigits()
 
@@ -793,6 +799,143 @@ func TestIntAry_GetIntegerDigits_04(t *testing.T) {
 
 	if signVal != iAry2.GetSign() {
 		t.Errorf("Error. Expected signVal= '%v'. Instead, got signVal='%v'", signVal, iAry2.GetSign())
+	}
+
+}
+
+func TestIntAry_GetMagnitude_01(t *testing.T) {
+
+	numStr := "98327123"
+	expectedMagnitude := 7
+
+	iaNum, err := IntAry{}.NewNumStr(numStr)
+
+	if err != nil {
+		t.Errorf("Error returned by ia.SetIntAryWithNumStr(nStr1) " +
+			"numStr='%v' Error='%v' ", numStr, err.Error())
+	}
+
+	actualMagnitude, err := iaNum.GetMagnitude()
+
+	if err != nil {
+		t.Errorf("Error returned by iaNum.GetMagnitude() " +
+			"Error='%v' ", err.Error())
+	}
+
+	if expectedMagnitude != actualMagnitude {
+		t.Errorf("Error: Expected Magnitude='%v'.  Instead, Magnitude='%v' ",
+			expectedMagnitude, actualMagnitude)
+	}
+
+}
+
+func TestIntAry_GetMagnitude_02(t *testing.T) {
+
+	numStr := "98327123.1234"
+	expectedMagnitude := 7
+
+	iaNum, err := IntAry{}.NewNumStr(numStr)
+
+	if err != nil {
+		t.Errorf("Error returned by ia.SetIntAryWithNumStr(nStr1) " +
+			"numStr='%v' Error='%v' ", numStr, err.Error())
+	}
+
+	actualMagnitude, err := iaNum.GetMagnitude()
+
+	if err != nil {
+		t.Errorf("Error returned by iaNum.GetMagnitude() " +
+			"Error='%v' ", err.Error())
+	}
+
+	if expectedMagnitude != actualMagnitude {
+		t.Errorf("Error: Expected Magnitude='%v'.  Instead, Magnitude='%v' ",
+			expectedMagnitude, actualMagnitude)
+	}
+
+}
+
+func TestIntAry_GetMagnitude_03(t *testing.T) {
+
+	numStr := "-98327123"
+
+	iaNum, err := IntAry{}.NewNumStr(numStr)
+
+	if err != nil {
+		t.Errorf("Error returned by ia.SetIntAryWithNumStr(nStr1) " +
+			"numStr='%v' Error='%v' ", numStr, err.Error())
+	}
+
+	_, err = iaNum.GetMagnitude()
+
+	if err == nil {
+		t.Error("Error: Expected error return from iaNum.GetMagnitude(). NO ERROR RETURNED! " )
+	}
+
+}
+
+func TestIntAry_GetMagnitudeDigits_01(t *testing.T) {
+
+	numStr := "98327123"
+	expectedMagnitude := 8
+
+	iaNum, err := IntAry{}.NewNumStr(numStr)
+
+	if err != nil {
+		t.Errorf("Error returned by ia.SetIntAryWithNumStr(nStr1) " +
+			"numStr='%v' Error='%v' ", numStr, err.Error())
+	}
+
+	actualMagnitude := iaNum.GetMagnitudeDigits()
+
+
+	if expectedMagnitude != actualMagnitude {
+		t.Errorf("Error: Expected Digits Magnitude='%v'.  Instead, Digits Magnitude='%v' ",
+			expectedMagnitude, actualMagnitude)
+	}
+
+}
+
+func TestIntAry_GetMagnitudeDigits_02(t *testing.T) {
+
+	numStr := "-98327123"
+	expectedMagnitude := 8
+
+	iaNum, err := IntAry{}.NewNumStr(numStr)
+
+	if err != nil {
+		t.Errorf("Error returned by ia.SetIntAryWithNumStr(nStr1) " +
+			"numStr='%v' Error='%v' ", numStr, err.Error())
+	}
+
+	actualMagnitude := iaNum.GetMagnitudeDigits()
+
+
+	if expectedMagnitude != actualMagnitude {
+		t.Errorf("Error: Expected Digits Magnitude='%v'.  Instead, Digits Magnitude='%v' ",
+			expectedMagnitude, actualMagnitude)
+	}
+
+}
+
+func TestIntAry_GetMagnitudeDigits_03(t *testing.T) {
+
+	numStr := "98327123.123"
+	expectedMagnitude := 8
+
+	iaNum, err := IntAry{}.NewNumStr(numStr)
+
+	if err != nil {
+		t.Errorf("Error returned by ia.SetIntAryWithNumStr(nStr1) " +
+			"numStr='%v' Error='%v' ", numStr, err.Error())
+	}
+
+	actualMagnitude := iaNum.GetMagnitudeDigits()
+
+
+	if expectedMagnitude != actualMagnitude {
+		t.Errorf("Error: Expected Digits Magnitude='%v'.  Instead, Digits Magnitude='%v' ",
+			expectedMagnitude, actualMagnitude)
 	}
 
 }
