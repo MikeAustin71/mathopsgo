@@ -781,6 +781,52 @@ func (bNum *BigIntNum) FormatThousandsStr(negValMode NegativeValueFmtMode) strin
 
 }
 
+// GetActualNumberOfDigits - Returns the number of numeric digits
+// int the absolute value of this BigIntNum instance. In addition,
+// a boolean value is returned indicating whether the absolute value
+// is zero.
+//
+// Examples
+// ========
+//
+//        123.45														5
+//  1,234,567                               7
+// -1,234,567                               7
+// 					0																1
+//          0.00                            1
+//        012.34                            4
+//          0.1234													4
+//        - 0.1234													4
+//          0.123400												4
+//          0.0123400												4
+//  1,234,567.800													  8
+//          5                               1
+//
+func (bNum *BigIntNum) GetActualNumberOfDigits() (
+	numberOfDigits *big.Int, isZeroValue bool, err error) {
+
+	numberOfDigits = big.NewInt(0)
+	isZeroValue = false
+	err = nil
+
+	numOfDigits, errx := BigIntMath{}.GetMagnitude(bNum.absBigInt)
+
+	if errx != nil {
+		ePrefix := "BigIntNum.GetActualNumberOfDigits() "
+		err = fmt.Errorf(ePrefix + "Error returned by BigIntMath{}.GetMagnitude(bNum.absBigInt) " +
+			"bNum.absBigInt='%v' Error='%v' ", bNum.absBigInt.Text(10), err.Error())
+		return numberOfDigits, isZeroValue, err
+	}
+
+	numberOfDigits = big.NewInt(0).Add(numOfDigits, big.NewInt(1))
+
+	if bNum.absBigInt.Cmp(big.NewInt(0)) == 0 {
+		isZeroValue = true
+	}
+
+	return numberOfDigits, isZeroValue, err
+}
+
 // GetAbsoluteNumStr - Returns the absolute integer value (positive value) of the
 // *big.Int value encapsulated by this BigIntNum. No decimal point is included.
 //
@@ -820,69 +866,6 @@ func (bNum *BigIntNum) GetBigInt() (*big.Int, error) {
 
 	return big.NewInt(0).Set(bNum.bigInt), nil
 }
-
-
-// GetInt - Returns a type 'int' containing the 32-big integer
-// value of the current BigIntNum instance.
-//
-// If the current BigIntNum value is greater than the maximum
-// 'int' value, the maximum 32-bit integer value is returned
-// in addition to an 'error'.
-//
-// If the current BigIntNum value is less than the minimum 'int'
-// value, the minimum 32-bit integer value is returned along with
-// an 'error'.
-//
-func (bNum *BigIntNum) GetInt() (int, error) {
-
-	ePrefix := "BigIntNum) GetInt() "
-	bIMaxInt := big.NewInt(int64(math.MaxInt32))
-	bIMinInt := big.NewInt(int64(math.MinInt32))
-
-	if bNum.bigInt.Cmp(bIMaxInt) == 1 {
-		return math.MaxInt32, fmt.Errorf(ePrefix + "Error: BigIntNum Value is GREATER than Int32 Maximum! "+
-			"Int32 Maximum Value='%v' BigIntNum Value='%v'",bIMaxInt.Text(10), bNum.GetNumStr())
-	}
-
-	if bNum.bigInt.Cmp(bIMinInt) == -1 {
-		return math.MinInt32, fmt.Errorf(ePrefix + "Error: BigIntNum Value is LESS than Int32 Minmum! "+
-			"Int32 Minimum Value='%v' BigIntNum Value='%v'",bIMinInt.Text(10), bNum.GetNumStr())
-	}
-
-	return int(bNum.bigInt.Int64()), nil
-
-}
-
-
-// GetUInt - Returns a type 'uint' containing the 32-bit unsigned
-// integer value of the current BigIntNum instance.
-//
-// If the current BigIntNum value is greater than the maximum
-// 'uint' value, the maximum 32-bit unsigned integer value is returned
-// in addition to an 'error'.
-//
-// If the current BigIntNum value is less than the minimum 'uint'
-// value, the minimum 32-bit integer value of zero is returned along
-// with an 'error'.
-//
-func (bNum *BigIntNum) GetUInt() (uint, error) {
-	ePrefix := "BigIntNum.GetUInt() "
-
-	bIMaxUint := big.NewInt(int64(math.MaxUint32))
-
-	if bNum.bigInt.Cmp(big.NewInt(0)) == -1 {
-		return uint(0),
-		fmt.Errorf(ePrefix + "Error: BigIntNum is LESS THAN minimum 'uint' value of zero.")
-	}
-
-	if bNum.bigInt.Cmp(bIMaxUint) == 1 {
-		return math.MaxUint32,
-			fmt.Errorf("Error: BigIntNum is GREATER THAN maximum 'uint' value.")
-	}
-
-	return  uint(bNum.bigInt.Uint64()), nil
-}
-
 
 // GetCurrencySymbol - Returns the character currently designated
 // as the currency symbol for this BigIntNum instance.
@@ -947,6 +930,17 @@ func (bNum *BigIntNum) GetDecimalSeparator() rune {
 
 }
 
+// GetExpectedNumberOfDigits - Returns the number of expected numeric
+// digits associated with this BigIntNum instance. The returned value
+// is stored in data field, BigIntNum.numberOfExpectedDigits. The value
+// is set by calling method BigIntNum.SetExpectedNumberOfDigits().
+//
+// This value is useful in tracking leading zeros.
+//
+func (bNum *BigIntNum) GetExpectedNumberOfDigits() *big.Int {
+	return bNum.numberOfExpectedDigits
+}
+
 // GetFractionalPart - Returns the fractional digits of the
 // current BigIntNum instance as a new BigIntNum instance
 // containing those correctly formatted fractional digits.
@@ -976,6 +970,37 @@ func (bNum *BigIntNum) GetFractionalPart() BigIntNum{
 	modulo := big.NewInt(0).Rem(bNum.bigInt, scaleVal)
 
 	return BigIntNum{}.NewBigInt(modulo, bNum.precision)
+}
+
+// GetInt - Returns a type 'int' containing the 32-big integer
+// value of the current BigIntNum instance.
+//
+// If the current BigIntNum value is greater than the maximum
+// 'int' value, the maximum 32-bit integer value is returned
+// in addition to an 'error'.
+//
+// If the current BigIntNum value is less than the minimum 'int'
+// value, the minimum 32-bit integer value is returned along with
+// an 'error'.
+//
+func (bNum *BigIntNum) GetInt() (int, error) {
+
+	ePrefix := "BigIntNum) GetInt() "
+	bIMaxInt := big.NewInt(int64(math.MaxInt32))
+	bIMinInt := big.NewInt(int64(math.MinInt32))
+
+	if bNum.bigInt.Cmp(bIMaxInt) == 1 {
+		return math.MaxInt32, fmt.Errorf(ePrefix + "Error: BigIntNum Value is GREATER than Int32 Maximum! "+
+			"Int32 Maximum Value='%v' BigIntNum Value='%v'",bIMaxInt.Text(10), bNum.GetNumStr())
+	}
+
+	if bNum.bigInt.Cmp(bIMinInt) == -1 {
+		return math.MinInt32, fmt.Errorf(ePrefix + "Error: BigIntNum Value is LESS than Int32 Minmum! "+
+			"Int32 Minimum Value='%v' BigIntNum Value='%v'",bIMinInt.Text(10), bNum.GetNumStr())
+	}
+
+	return int(bNum.bigInt.Int64()), nil
+
 }
 
 // GetIntAry - Converts the current BigIntNum value to an IntAry
@@ -1105,63 +1130,6 @@ func (bNum *BigIntNum) GetNumberOfDigits() int {
 	}
 
 	return digitCnt
-}
-
-// GetActualNumberOfDigits - Returns the number of numeric digits
-// int the absolute value of this BigIntNum instance. In addition,
-// a boolean value is returned indicating whether the absolute value
-// is zero.
-//
-// Examples
-// ========
-//
-//        123.45														5
-//  1,234,567                               7
-// -1,234,567                               7
-// 					0																1
-//          0.00                            1
-//        012.34                            4
-//          0.1234													4
-//        - 0.1234													4
-//          0.123400												4
-//          0.0123400												4
-//  1,234,567.800													  8
-//          5                               1
-//
-func (bNum *BigIntNum) GetActualNumberOfDigits() (
-							numberOfDigits *big.Int, isZeroValue bool, err error) {
-
-	numberOfDigits = big.NewInt(0)
-	isZeroValue = false
-	err = nil
-
-	numOfDigits, errx := BigIntMath{}.GetMagnitude(bNum.absBigInt)
-
-	if errx != nil {
-		ePrefix := "BigIntNum.GetActualNumberOfDigits() "
-		err = fmt.Errorf(ePrefix + "Error returned by BigIntMath{}.GetMagnitude(bNum.absBigInt) " +
-			"bNum.absBigInt='%v' Error='%v' ", bNum.absBigInt.Text(10), err.Error())
-		return numberOfDigits, isZeroValue, err
-	}
-
-	numberOfDigits = big.NewInt(0).Add(numOfDigits, big.NewInt(1))
-
-	if bNum.absBigInt.Cmp(big.NewInt(0)) == 0 {
-		isZeroValue = true
-	}
-
-	return numberOfDigits, isZeroValue, err
-}
-
-// GetExpectedNumberOfDigits - Returns the number of expected numeric
-// digits associated with this BigIntNum instance. The returned value
-// is stored in data field, BigIntNum.numberOfExpectedDigits. The value
-// is set by calling method BigIntNum.SetExpectedNumberOfDigits().
-//
-// This value is useful in tracking leading zeros.
-//
-func (bNum *BigIntNum) GetExpectedNumberOfDigits() *big.Int {
-	return bNum.numberOfExpectedDigits
 }
 
 // GetNumStr - Converts the current BigIntNum value to string of
@@ -1315,21 +1283,52 @@ func (bNum *BigIntNum) GetThousandsSeparator() rune {
 	return bNum.thousandsSeparator
 }
 
-// Returns the integer value of BigIntNum.bigInt as an unsigned
-// integer. If the value of BigIntNum.bigInt exceeds that of the
-// maximum unsigned integer value, an error is returned
-func (bNum *BigIntNum) GetUnsignedInt() (uint, error) {
+// GetUInt - Returns a type 'uint' containing the 32-bit unsigned
+// integer value of the current BigIntNum instance.
+//
+// If the current BigIntNum value is greater than the maximum
+// 'uint' value, the maximum 32-bit unsigned integer value is returned
+// in addition to an 'error'.
+//
+// If the current BigIntNum value is less than the minimum 'uint'
+// value, the minimum 32-bit integer value of zero is returned along
+// with an 'error'.
+//
+func (bNum *BigIntNum) GetUInt() (uint, error) {
+	ePrefix := "BigIntNum.GetUInt() "
 
-	maxUint := big.NewInt(int64(math.MaxUint32))
+	bIMaxUint := big.NewInt(int64(math.MaxUint32))
 
-	if bNum.bigInt.Cmp(maxUint) == 1 {
+	if bNum.bigInt.Cmp(big.NewInt(0)) == -1 {
 		return uint(0),
-		fmt.Errorf("BigIntNum.GetUnsignedInt() - Error: The value of this BigIntNum instance " +
-			"exceeds the maximum value of the unsigned integer. BigIntNum='%v' MaxUint='%v' ",
-				bNum.bigInt.Text(10), maxUint.Text(10))
+			fmt.Errorf(ePrefix + "Error: BigIntNum is LESS THAN minimum 'uint' value of zero.")
 	}
 
-	return uint(bNum.bigInt.Int64()), nil
+	if bNum.bigInt.Cmp(bIMaxUint) == 1 {
+		return math.MaxUint32,
+			fmt.Errorf("Error: BigIntNum is GREATER THAN maximum 'uint' value.")
+	}
+
+	return  uint(bNum.bigInt.Uint64()), nil
+}
+
+// Returns the integer value of BigIntNum.bigInt as a  64-bit
+// unsigned integer. If the value of BigIntNum.bigInt exceeds
+// that of the maximum unsigned 64-bit integer value, an error
+// is returned.
+//
+func (bNum *BigIntNum) GetUInt64() (uint64, error) {
+
+	bIntMaxUint64 := big.NewInt(0).SetUint64(uint64(math.MaxUint64))
+
+	if bNum.bigInt.Cmp(bIntMaxUint64) == 1 {
+		return uint64(0),
+		fmt.Errorf("BigIntNum.GetUInt64() - Error: The value of this BigIntNum instance " +
+			"exceeds the maximum value of the unsigned 64-bit integer. BigIntNum='%v' MaxUint64='%v' ",
+				bNum.bigInt.Text(10), bIntMaxUint64.Text(10))
+	}
+
+	return bNum.bigInt.Uint64(), nil
 }
 
 // Inverse - Returns the inverse of the current BigIntNum

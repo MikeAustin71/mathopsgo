@@ -10,26 +10,40 @@ import (
 
 func main() {
 
-	// Time: 0-Nanoseconds
-	baseStr := "-45.1"
-	exponentStr := "1"
-	//                      12345678901234567890123456789012345
-	expectedNumStr := "-45.1"
-	maxPrecision := 5
-	minPrecision := 0
 
 	/*
 	fmt.Println("     int64 Minute ", int64(time.Minute))
 	fmt.Println("     int64 Second ", int64(time.Second))
 	fmt.Println("int64 MilliSecond ", int64(time.Millisecond))
 	fmt.Println("int64 MicroSecond ", int64(time.Microsecond))
+	ExampleIntAryMultiplyPower_01(baseStr, exponentStr, expectedNumStr, minPrecision, maxPrecision)
+	fmt.Println("------------------------------")
+	ExampleBigIntNumPower_01(baseStr, exponentStr, expectedNumStr, uint(maxPrecision))
 	*/
 
 	//                        12345648901234567890123456789012
 
-	ExampleIntAryMultiplyPower_01(baseStr, exponentStr, expectedNumStr, minPrecision, maxPrecision)
-	fmt.Println("------------------------------")
-	ExampleBigIntNumPower_01(baseStr, exponentStr, expectedNumStr, uint(maxPrecision))
+
+
+
+}
+
+func ExampleIntAryGetMagnitude_01(numStr string, expectedMagnitude int ) {
+
+	iaNum, err := mathops.IntAry{}.NewNumStr(numStr)
+
+	if err != nil {
+		if err != nil {
+			fmt.Printf("Error returned by IntAry{}.NewNumStr(numStr). " +
+				"numStr='%v' Error='%v' \n", numStr, err.Error())
+			return
+		}
+	}
+
+	magnitude := iaNum.GetMagnitude()
+
+	fmt.Println("  Actual Magnitude: ", magnitude)
+	fmt.Println("Expected Magnigude: ", expectedMagnitude)
 
 }
 
