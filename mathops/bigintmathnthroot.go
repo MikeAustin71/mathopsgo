@@ -207,7 +207,6 @@ if nthRoot.GetPrecisionUint() > 0 {
 
 return nthrt.calcPositiveIntegerNthRoot(radicand, nthRoot, maxPrecision)
 
-return BigIntNum{}.NewZero(0), nil
 }
 
 // calcNegativeNthRoot - calculates the nth root result of a radicand where the
@@ -266,10 +265,46 @@ func (nthrt *BigIntMathNthRoot) calcNegativeNthRoot(radicand, nthRoot BigIntNum,
 func (nthrt *BigIntMathNthRoot) calcPositiveIntegerNthRoot(radicand, nthRoot BigIntNum,
 	maxPrecision uint) (BigIntNum, error) {
 
+	ePrefix := "BigIntMathNthRoot.calcPositiveIntegerNthRoot() "
+
+	if nthRoot.GetSign() != 1 {
+		return BigIntNum{}.NewZero(0),
+			fmt.Errorf(ePrefix +
+				"Error: Expected 'nthRoot' to be positive. nthRoot is negative! " +
+				"nthRoot='%v' ", nthRoot.GetNumStr())
+	}
+
+	if nthRoot.GetPrecision() != 0 {
+		return BigIntNum{}.NewZero(0),
+			fmt.Errorf(ePrefix +
+				"Error: Expected 'nthRoot' to be integer value. nthRoot is fractional value! " +
+				"nthRoot='%v' ", nthRoot.GetNumStr())
+	}
+
+	if radicand.GetSign() == -1 {
+
+		isEvenNum, err := nthRoot.IsEvenNumber()
+
+		if err != nil {
+			return BigIntNum{}.NewZero(0),
+				fmt.Errorf(ePrefix +
+					"Error returned by nthRoot.IsEvenNumber() " +
+					"nthRoot='%v' Error='%v'\n",nthRoot.GetNumStr(), err.Error())
+		}
+
+		if isEvenNum {
+			return BigIntNum{}.NewZero(0),
+				fmt.Errorf(ePrefix +
+					"INVALID ENTRY - Cannot calculate nthRoot of a negative number when nthRoot is even. " +
+					"Original Number= %v  nthRoot= %v\n", radicand.GetNumStr(), nthRoot.GetNumStr())
+		}
+
+	}
+
+
 	bINumResult, err := nthrt.calcNthRootGateway(radicand, nthRoot, maxPrecision)
 
 	if err != nil {
-		ePrefix := "BigIntMathNthRoot.calcPositiveIntegerNthRoot() "
 		return BigIntNum{}.NewZero(0),
 		fmt.Errorf(ePrefix +
 			"Error returned by nthrt.calcNthRootGateway(radicand, nthRoot, maxPrecision) " +
@@ -304,8 +339,6 @@ func (nthrt *BigIntMathNthRoot) calcPositiveFractionalNthRoot(radicand, nthRoot 
 				nthRoot.GetNumStr())
 	}
 
-
-
 	modXZero := big.NewInt(0)
 
 	scaleFactor := big.NewInt(0).Exp(
@@ -318,7 +351,30 @@ func (nthrt *BigIntMathNthRoot) calcPositiveFractionalNthRoot(radicand, nthRoot 
 	// Numerator of ratFraction is new nthRoot
 	newNthRoot := BigIntNum{}.NewBigInt(ratFraction.Num(), 0)
 
-	if radicand.GetSign() == -1 {
+	// If nthRoot is zero, the result will always be '1'
+	if newNthRoot.IsZero() {
+		return BigIntNum{}.NewOne(maxPrecision), nil
+	}
+
+	bigINumOne := BigIntNum{}.NewOne(0)
+
+	// if nthRoot == 1
+	if newNthRoot.Cmp(bigINumOne) == 0 {
+		return radicand.CopyOut(), nil
+	}
+
+	// Denomerator of ratFraction is exponent for current radicand.
+	exponent := BigIntNum{}.NewBigInt(ratFraction.Denom(), 0)
+
+	radicandPrecision := BigIntNum{}.NewBigInt(big.NewInt(int64(radicand.GetPrecisionUint())),0)
+
+	newMaxPrecision := BigIntMathMultiply{}.MultiplyBigIntNums(exponent, radicandPrecision)
+
+	exponentMaxPrecision, _ := newMaxPrecision.GetUInt()
+
+	newRadicand, _ := BigIntMathPower{}.Pwr(radicand, exponent, exponentMaxPrecision)
+
+	if newRadicand.GetSign() == -1 {
 
 		isEvenNum, err := newNthRoot.IsEvenNumber()
 
@@ -338,36 +394,12 @@ func (nthrt *BigIntMathNthRoot) calcPositiveFractionalNthRoot(radicand, nthRoot 
 
 	}
 
-	// If nthRoot is zero, the result will always be '1'
-	if newNthRoot.IsZero() {
-		return BigIntNum{}.NewOne(maxPrecision), nil
-	}
-
-	bigINumOne := BigIntNum{}.NewOne(0)
-	// Error if nthRoot == 1
-	if newNthRoot.Cmp(bigINumOne) == 0 {
-		return BigIntNum{}.NewZero(0),
-			errors.New(ePrefix +
-				"Error - Input Parameter 'newNthRoot' INVALID! 'newNthRoot' cannot equal 1. ")
-	}
-
-	// Denomerator of ratFraction is exponent for current radicand.
-	exponent := BigIntNum{}.NewBigInt(ratFraction.Denom(), 0)
-
-	radicandPrecision := BigIntNum{}.NewBigInt(big.NewInt(int64(radicand.GetPrecisionUint())),0)
-
-	newMaxPrecision := BigIntMathMultiply{}.MultiplyBigIntNums(exponent, radicandPrecision)
-
-	exponentMaxPrecision, _ := newMaxPrecision.GetUInt()
-
-	newRadicand, _ := BigIntMathPower{}.Pwr(radicand, exponent, exponentMaxPrecision)
-
 	nthRootResult, err := nthrt.calcNthRootGateway(newRadicand, newNthRoot, maxPrecision)
 
 	if err != nil {
 		return BigIntNum{}.NewZero(0),
 			fmt.Errorf(ePrefix +
-				"Error returned by calcNthRootGateway(newRadicand, newNthRoot, maxPrecision). " +
+				"Error returned by nthrt.calcNthRootGateway(newRadicand, newNthRoot, maxPrecision). " +
 					"Error='%v' ", err.Error())
 	}
 
@@ -598,152 +630,6 @@ func (nthrt *BigIntMathNthRoot) setupBundles(
 
 	return setupRadicand, intBundleRadicand, fracBundleRadicand, precisionAdjustment, err
 }
-
-// setupBundles - Experimental
-/*
-func (nthrt *BigIntMathNthRoot) setupBundles(
-							radicand, nthRoot BigIntNum) (intBundleRadicand,
-																							fracBundleRadicand,
-																								precisionAdjustment *big.Int,
-																									err error) {
-
-	ePrefix := "BigIntMathNthRoot.setupBundles() "
-
-	intBundleRadicand = big.NewInt(0)
-	fracBundleRadicand = big.NewInt(0)
-	precisionAdjustment = big.NewInt(0)
-	err = nil
-
-	var errx error
-	numOfDigits := big.NewInt(0)
-	modX := big.NewInt(0)
-	bigZero := big.NewInt(0)
-	bigOne := big.NewInt(1)
-	bigTen := big.NewInt(10)
-	scaleValue := big.NewInt(0)
-	nthRootBigInt := nthRoot.GetAbsoluteBigIntValue()
-	bINumSetUpRadicand :=
-			BigIntNum{}.NewBigInt(
-										radicand.GetAbsoluteBigIntValue(),
-											radicand.GetPrecisionUint())
-
-	radicandPrecision := big.NewInt(int64(bINumSetUpRadicand.GetPrecisionUint()))
-
-	setUpRadicand := bINumSetUpRadicand.GetAbsoluteBigIntValue()
-
-	numOfDigits, errx = BigIntMath{}.GetMagnitudeDigits(bINumSetUpRadicand.GetAbsoluteBigIntValue())
-
-	if errx != nil {
-		err = fmt.Errorf(ePrefix + "Error returned by  BigIntMath{}.GetMagnitudeDigits(" +
-			"radicand.GetAbsoluteBigIntValue()) Error='%v'", errx.Error())
-	}
-
-	numOfDigits = big.NewInt(0).Add(numOfDigits, bigOne)
-
-	if numOfDigits.Cmp(radicandPrecision) < 1  {
-
-		nthRootMultiple := big.NewInt(0).Quo(radicandPrecision, nthRootBigInt)
-		exponent := big.NewInt(0).Mul(nthRootBigInt,nthRootMultiple)
-		scaleValue = big.NewInt(0).Exp(bigTen, exponent, nil)
-		bINumScaleValue := BigIntNum{}.NewBigInt(scaleValue, 0)
-		bINumSetUpRadicand = BigIntMathMultiply{}.MultiplyBigIntNums(bINumSetUpRadicand, bINumScaleValue)
-		setUpRadicand = bINumSetUpRadicand.GetAbsoluteBigIntValue()
-		radicandPrecision = big.NewInt(int64(bINumSetUpRadicand.GetPrecisionUint()))
-		//precisionAdjustment = big.NewInt(0).Neg(nthRootMultiple)
-	}
-
-	scaleValue = big.NewInt(0).Exp(bigTen,	radicandPrecision, nil)
-
-	intBundleRadicand, fracBundleRadicand =
-			big.NewInt(0).QuoRem(setUpRadicand, scaleValue, modX)
-
-	if intBundleRadicand.Cmp(bigZero) == 0 &&
-				fracBundleRadicand.Cmp(bigZero) == 0 {
-		err = errors.New(ePrefix + "Error: Both intBundleRadicand and fracBundleRadicand are ZERO!")
-		return intBundleRadicand, fracBundleRadicand, precisionAdjustment, err
-	}
-
-	numOfDigits, errx = BigIntMath{}.GetMagnitudeDigits(fracBundleRadicand)
-
-	if errx != nil {
-		err =	fmt.Errorf(ePrefix +
-			"Error returned by BigIntMath{}.GetMagnitudeDigits(fracBundleRadicand). " +
-			"fracBundleRadicand='%v' Error='%v' ",
-			fracBundleRadicand.Text(10), errx.Error())
-
-		intBundleRadicand = big.NewInt(0)
-		fracBundleRadicand = big.NewInt(0)
-		precisionAdjustment = big.NewInt(0)
-
-		return intBundleRadicand, fracBundleRadicand, precisionAdjustment, err
-	}
-
-	numOfDigits = big.NewInt(0).Add(numOfDigits, bigOne)
-
-	mod := big.NewInt(0).Rem(numOfDigits,nthRoot.GetAbsoluteBigIntValue() )
-
-	if mod.Cmp(big.NewInt(0))==1 {
-		delta := big.NewInt(0).Sub(nthRoot.GetAbsoluteBigIntValue(), mod)
-		scaleVal := big.NewInt(0).Exp(big.NewInt(10), delta, nil)
-		fracBundleRadicand = big.NewInt(0).Mul(fracBundleRadicand,scaleVal)
-	}
-
-	err = nil
-
-	return intBundleRadicand, fracBundleRadicand, precisionAdjustment, err
-}
-*/
-
-// setupBundles - The purpose of this method is to modify and format the radicand for separation
-// into bundles of integers for computation of the Nth Root.
-//
-/*
-func (nthrt *BigIntMathNthRoot) setupBundles(
-			radicand, nthRoot BigIntNum) (intBundleRadicand, fracBundleRadicand *big.Int, err error) {
-
-	intBundleRadicand = big.NewInt(0)
-	fracBundleRadicand = big.NewInt(0)
-	err = nil
-
-	modX := big.NewInt(0)
-	scaleVal := big.NewInt(0).Exp(big.NewInt(10),
-		big.NewInt(int64(radicand.GetPrecisionUint())), nil)
-
-	intBundleRadicand, fracBundleRadicand = big.NewInt(0).QuoRem(radicand.GetAbsoluteBigIntValue(), scaleVal, modX)
-
-
-	magnitude, errx := BigIntMath{}.GetMagnitudeDigits(fracBundleRadicand)
-
-	if errx != nil {
-		ePrefix := "BigIntMathNthRoot.setupBundles() "
-		err =	fmt.Errorf(ePrefix +
-			"Error returned by BigIntMath{}.GetMagnitudeDigits(fracBundleRadicand). " +
-			"fracBundleRadicand='%v' Error='%v' ",
-			fracBundleRadicand.Text(10), err.Error())
-
-		intBundleRadicand = big.NewInt(0)
-		fracBundleRadicand = big.NewInt(0)
-
-		return intBundleRadicand, fracBundleRadicand, err
-	}
-
-
-	numOfDigits := big.NewInt(0).Add(magnitude, big.NewInt(1))
-
-	mod := big.NewInt(0).Rem(numOfDigits,nthRoot.GetAbsoluteBigIntValue() )
-
-
-	if mod.Cmp(big.NewInt(0))==1 {
-		delta := big.NewInt(0).Sub(nthRoot.GetAbsoluteBigIntValue(), mod)
-		scaleVal := big.NewInt(0).Exp(big.NewInt(10), delta, nil)
-		fracBundleRadicand = big.NewInt(0).Mul(fracBundleRadicand,scaleVal)
-	}
-
-	err = nil
-
-	return intBundleRadicand, fracBundleRadicand, err
-}
-*/
 
 // calcBundleLength - Calculates the final bundle length. These are bundles
 // of integers that are packaged for submission to the Nth Root calculation
@@ -1054,34 +940,6 @@ func (nthrt *BigIntMathNthRoot) getNextBundleBigIntValue(
 	fracExpectedActualDelta := big.NewInt(0).Sub(fracExpectedNumOfDigits, fracActualNumOfDigits)
 	fracIsZeroValue := fracBundleRadicand.IsZero()
 
-	/*
-	t1:= big.NewInt(0).Set(intActualNumOfDigits)
-
-	fmt.Println()
-	fmt.Println("==================================================")
-	fmt.Println("     Int Actual No Of Digits: ", t1.Text(10))
-
-	t1 = big.NewInt(0).Set(intExpectedNumOfDigits)
-	fmt.Println("   Int Expected No of Digits: ", t1.Text(10))
-
-	fmt.Println("                 Int Is Zero: ", intIsZeroValue)
-
-	t1 = big.NewInt(0).Set(intExpectedActualDelta)
-	fmt.Println("   Int Expected Actual Delta: ", t1.Text(10))
-
-
-	t1 = big.NewInt(0).Set(fracActualNumOfDigits)
-	fmt.Println("    Frac Actual No Of Digits: ", t1.Text(10))
-
-	t1 = big.NewInt(0).Set(fracExpectedNumOfDigits)
-	fmt.Println("  Frac Expected No Of Digits: ", t1.Text(10))
-
-	fmt.Println("                 Int Is Zero: ", fracIsZeroValue)
-
-	t1 = big.NewInt(0).Set(fracExpectedActualDelta)
-	fmt.Println("  Frac Expected Actual Delta: ", t1.Text(10))
-	*/
-
 	if (intExpectedActualDelta.Cmp(bigZero) > 0 &&
 		intExpectedActualDelta.Cmp(nthRoot.GetAbsoluteBigIntValue()) >= 0) ||
 		(intExpectedActualDelta.Cmp(bigZero) > 0 &&
@@ -1225,14 +1083,5 @@ func (nthrt *BigIntMathNthRoot) getNextBundleBigIntValue(
 		err = nil
 	}
 
-	/*
-	fmt.Println(" Original IntBundleRadicand: ", intBundleRadicand.GetNumStr())
-	fmt.Println("Original FracBundleRadicand: ", fracBundleRadicand.GetNumStr())
-	fmt.Println("            nextBundleValue: ", nextBundleValue.Text(10))
-	fmt.Println("       newIntBundleRadicand: ", newIntBundleRadicand.GetNumStr())
-	fmt.Println("      newFracBundleRadicand: ", newFracBundleRadicand.GetNumStr())
-	fmt.Println("====================================================")
-	fmt.Println("")
-	*/
 	return nextBundleValue, newIntBundleRadicand, newFracBundleRadicand, err
 }

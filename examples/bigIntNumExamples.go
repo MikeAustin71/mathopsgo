@@ -205,11 +205,14 @@ func ExampleBigIntNumPower_01(baseStr, exponentStr, expectedStr string, maxPreci
 
 	fmt.Println()
 	fmt.Println("*** BigIntMathPower{}.Pwr() ***")
+	fmt.Println("===============================")
 	if expectedStr != result.GetNumStr() {
 		fmt.Println("XXX FAILURE XXX")
 	} else {
 		fmt.Println("*** SUCCESS ***")
 	}
+	fmt.Println("===============================")
+
 	fmt.Println("Expected Result: ", expectedStr)
 	fmt.Println("  Actual Result: ", result.GetNumStr())
 	fmt.Println("   Elapsed Time: ", str)

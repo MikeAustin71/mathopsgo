@@ -776,3 +776,75 @@ func TestBigIntMathPower_Pwr_20(t *testing.T) {
 	}
 
 }
+
+func TestBigIntMathPower_Pwr_21(t *testing.T) {
+
+	// Time:
+	// 1-Milliseconds 998-Microseconds 800-Nanoseconds
+
+	baseStr := "-45.6"
+	exponentStr := "-3.2"
+	//                      12345678901234567890123456789012345
+	//                    0.00000491261243811417457984700270545
+	// 4.91261243811417457984700270545e-6
+
+	expectedNumStr := "0.00000491261243811417457984700270545"
+	maxPrecision := uint(35)
+
+	bINumBase, err := BigIntNum{}.NewNumStr(baseStr)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(baseStr). " +
+			"baseStr='%v' Error='%v' \n", baseStr, err.Error())
+	}
+
+	bINumExponent, err := BigIntNum{}.NewNumStr(exponentStr)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(exponentStr). " +
+			"exponentStr='%v' Error='%v' \n", exponentStr, err.Error())
+	}
+
+	result, err := BigIntMathPower{}.Pwr(bINumBase, bINumExponent, maxPrecision)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntMathPower{}.Pwr(bINumBase, bINumExponent, maxPrecision). " +
+			"bINumBase='%v' bINumExponent='%v' maxPrecision='%v' Error='%v' \n",
+			bINumBase.GetNumStr(), bINumExponent.GetNumStr(), maxPrecision, err.Error())
+	}
+
+	if expectedNumStr != result.GetNumStr() {
+		t.Errorf("Error: Expected Result='%v'. Instead, Result='%v'",
+			expectedNumStr, result.GetNumStr())
+	}
+
+}
+
+func TestBigIntMathPower_Pwr_22(t *testing.T) {
+
+	baseStr := "-45.632"
+	exponentStr := "-1.01579"
+	maxPrecision := uint(15)
+
+	bINumBase, err := BigIntNum{}.NewNumStr(baseStr)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(baseStr). " +
+			"baseStr='%v' Error='%v' \n", baseStr, err.Error())
+	}
+
+	bINumExponent, err := BigIntNum{}.NewNumStr(exponentStr)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(exponentStr). " +
+			"exponentStr='%v' Error='%v' \n", exponentStr, err.Error())
+	}
+
+	_, err = BigIntMathPower{}.Pwr(bINumBase, bINumExponent, maxPrecision)
+
+	if err == nil {
+		t.Error("Expected Error to be returned by BigIntMathPower{}.Pwr(bINumBase, bINumExponent, maxPrecision). " +
+			"NO ERROR WAS RETURNED! \n")
+	}
+
+}

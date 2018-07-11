@@ -90,10 +90,7 @@ func (bIPwr BigIntMathPower) Pwr(base, exponent BigIntNum, maxPrecision uint) (B
 		 if err != nil {
 		 	return BigIntNum{},
 		 		fmt.Errorf(ePrefix	+
-		 			"Error returned by bIPwr.raiseToPositiveFractionalPower(base, " +
-		 				"exponent, maxPrecision). base='%v' exponent='%v' " +
-		 				"maxPrecision='%v' Error='%v' ",
-		 					base.GetNumStr(), exponent.GetNumStr(), maxPrecision, err.Error())
+		 			" Error='%v' \n", err.Error())
 		 }
 
 		} else {
@@ -104,10 +101,7 @@ func (bIPwr BigIntMathPower) Pwr(base, exponent BigIntNum, maxPrecision uint) (B
 			if err != nil {
 				return BigIntNum{},
 					fmt.Errorf(ePrefix	+
-						"Error returned by bIPwr.raiseToNegativeFractionalPower(base, " +
-						"exponent, maxPrecision). base='%v' exponent='%v' " +
-						"maxPrecision='%v' Error='%v' ",
-						base.GetNumStr(), exponent.GetNumStr(), maxPrecision, err.Error())
+						"Error='%v' \n", err.Error())
 			}
 
 		}
@@ -150,6 +144,7 @@ func (bIPwr BigIntMathPower) raiseToNegativeFractionalPower(
 	}
 
 	exponentAbsVal := exponent.GetAbsoluteBigIntNumValue()
+
 	bINumResult, err :=
 							bIPwr.raiseToPositiveFractionalPower(
 											base,
@@ -160,11 +155,7 @@ func (bIPwr BigIntMathPower) raiseToNegativeFractionalPower(
 	if err != nil {
 		return BigIntNum{},
 		 fmt.Errorf(ePrefix +
-		 	"Error returned by bIPwr.raiseToPositiveFractionalPower(base," +
-			"exponent.GetAbsoluteBigIntNumValue(), maxPrecision)" +
-			"base='%v' exponentAbsValue='%v' maxPrecision='%v' Error='%v' ",
-			base.GetNumStr(), exponentAbsVal.GetNumStr(), maxPrecision,
-			err.Error())
+		 	"Error='%v' ",err.Error())
 	}
 
 	inverseResult, err := bINumResult.GetInverse(maxPrecision)
@@ -258,9 +249,8 @@ func (bIPwr BigIntMathPower) raiseToPositiveFractionalPower(
 
 		if isEvenNum {
 			return BigIntNum{}.NewZero(0),
-				fmt.Errorf(ePrefix +
-					"INVALID ENTRY - Cannot calculate nthRoot of a negative number when nthRoot is even. " +
-					"Original Number= %v  nthRoot= %v\n", pwr1Result.GetNumStr(), nthRoot.GetNumStr())
+				errors.New(ePrefix +
+					"INVALID ENTRY - Cannot calculate nthRoot of a negative number when nthRoot is even. \n")
 		}
 
 	}
@@ -305,6 +295,8 @@ func (bIPwr BigIntMathPower) raiseToNegativeIntegerPower(
 				"Only Negative Exponents can be processed by this method! exponent='%v'",
 				exponent.GetNumStr())
 	}
+
+
 
 	bigIBasePrecision := big.NewInt(int64(base.GetPrecisionUint()))
 

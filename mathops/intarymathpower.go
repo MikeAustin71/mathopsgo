@@ -93,76 +93,6 @@ func (iaPwr IntAryMathPower) Pwr(
 
 
 	return errors.New(ePrefix + "Error: input parameters failed to match valid calculation types!")
-
-	/*
-	if exponent.GetPrecision() == 0 {
-
-		// This is an integer Exponent!
-		bInt, err := exponent.GetBigInt()
-
-		if err != nil {
-			return fmt.Errorf(ePrefix +
-				"Error returned by exponent.GetBigInt() Error='%v'\n",
-				err.Error())
-		}
-
-		err = iaPwr.PwrByTwos(base, bInt, maxResultPrecision, maxResultPrecision + 10)
-
-		if err != nil {
-			return fmt.Errorf(ePrefix +
-				"Error returned by iaPwr.PwrByTwos(...) Error='%v' ", err.Error())
-		}
-
-		if base.GetPrecision() < minResultPrecision {
-			base.SetPrecision(minResultPrecision, false)
-		}
-
-		return nil
-	}
-
-	// exponent must be a fractional exponent
-	fracExponent := FracIntAry{}.NewFracIntAry(exponent)
-
-	ratFracExPonent, err := fracExponent.GetRationalValue(maxResultPrecision + 10)
-
-	if err != nil {
-		return fmt.Errorf(ePrefix +
-			"Error returned by fracExponent.GetRationalValue() Error='%v'", err.Error())
-	}
-
-	nthRoot := BigIntNum{}.NewBigInt(ratFracExPonent.Denom(), 0)
-
-	radicand, err := base.GetBigIntNum()
-
-	if err != nil {
-		return fmt.Errorf(ePrefix +
-			"Error returned by base.GetBigIntNum() Error='%v'", err.Error())
-	}
-
-	nthRootResult, err := BigIntMathNthRoot{}.GetNthRoot(radicand, nthRoot, uint(maxResultPrecision + 10))
-
-	if err != nil {
-		return fmt.Errorf(ePrefix +
-			"Error returned by BigIntMathNthRoot{}.GetNthRoot() Error='%v'", err.Error())
-	}
-
-	iaNthRootResult, err := nthRootResult.GetIntAry()
-
-	if err != nil {
-		return fmt.Errorf(ePrefix +
-			"Error returned by nthRootResult.GetIntAry() Error='%v'", err.Error())
-	}
-
-	iaPwr.PwrByTwos(
-						&iaNthRootResult,
-							ratFracExPonent.Num(),
-								maxResultPrecision,
-									maxResultPrecision + 10)
-
-	base.CopyIn(&iaNthRootResult, false)
-
-	return nil
-	*/
 }
 
 
@@ -200,10 +130,6 @@ func (iaPwr IntAryMathPower) PwrByMultiplication(
 		return &iaReturn, err
 	}
 
-	exponentPrecision := exponent.GetPrecision()
-  exponentSign := exponent.GetSign()
-
-
 	if base.IsZero() {
 		return &iaReturn,
 			errors.New(ePrefix + "'base' is Zero value. INVALID INPUT!")
@@ -221,7 +147,10 @@ func (iaPwr IntAryMathPower) PwrByMultiplication(
   	return &iaReturn, nil
 	}
 
-  if exponentPrecision == 0 && exponentSign == 1 {
+	exponentPrecision := exponent.GetPrecision()
+	exponentSign := exponent.GetSign()
+
+	if exponentPrecision == 0 && exponentSign == 1 {
   	return iaPwr.pwrMultiplyPositiveIntegerExponent(
   			base,
   				exponent,
@@ -257,7 +186,7 @@ func (iaPwr IntAryMathPower) PwrByMultiplication(
   	errors.New(ePrefix + "Error: input parameters failed to match valid calculation types!")
 }
 
-// PwrByTwos - Raises a *big.Int 'base', to the specified 'power'
+// pwrByTwos - Raises a *big.Int 'base', to the specified 'power'
 // using the Exponentiation by squaring algorithm.
 //
 // See:
@@ -303,7 +232,7 @@ func (iaPwr IntAryMathPower) PwrByMultiplication(
 //				the number of decimals places to right of the decimal
 //				point during internal multiplication operations.
 //
-func (iaPwr *IntAryMathPower) PwrByTwos(
+func (iaPwr *IntAryMathPower) pwrByTwos(
 					ia *IntAry,
 						power *big.Int,
 							maxResultPrecision,
@@ -835,6 +764,8 @@ func (iaPwr *IntAryMathPower) pwrMultiplyNegativeFractionalExponent(
 
 	fracIntAry := FracIntAry{}.NewFracIntAry(&newExponent)
 
+	internalMaxPrecision += 5
+
 	err = fracIntAry.ReduceToLowestCommonDenom(internalMaxPrecision)
 
 	if err != nil {
@@ -965,7 +896,7 @@ func (iaPwr *IntAryMathPower) pwrTwoPositiveIntegerExponent(
 
 	internalPrecision := maxResultPrecision + 100
 
-	err = iaPwr.PwrByTwos(base, bInt, maxResultPrecision, internalPrecision)
+	err = iaPwr.pwrByTwos(base, bInt, maxResultPrecision, internalPrecision)
 
 	if err != nil {
 		return fmt.Errorf(ePrefix +
@@ -1052,7 +983,7 @@ func (iaPwr *IntAryMathPower) pwrTwoNegativeIntegerExponent(
 
 	internalPrecision := maxResultPrecision + 100
 
-	err = iaPwr.PwrByTwos(base, bInt, maxResultPrecision, internalPrecision)
+	err = iaPwr.pwrByTwos(base, bInt, maxResultPrecision, internalPrecision)
 
 	if err != nil {
 		return fmt.Errorf(ePrefix +
@@ -1162,7 +1093,7 @@ func (iaPwr *IntAryMathPower) pwrTwoPositiveFractionalExponent(
 
 	internalMaxPrecision += 5
 
-	err = iaPwr.PwrByTwos(base, expBigInt, maxResultPrecision, internalMaxPrecision)
+	err = iaPwr.pwrByTwos(base, expBigInt, maxResultPrecision, internalMaxPrecision)
 
 	if err != nil {
 		return fmt.Errorf(ePrefix +
@@ -1246,7 +1177,7 @@ func (iaPwr *IntAryMathPower) pwrTwoNegativeFractionalExponent(
 
 	newExponent.ChangeSign()
 
-	newBase, err := base.Inverse(internalMaxPrecision)
+	newInverseBase, err := base.Inverse(internalMaxPrecision)
 
 	if err != nil {
 		return fmt.Errorf(ePrefix +
@@ -1254,9 +1185,30 @@ func (iaPwr *IntAryMathPower) pwrTwoNegativeFractionalExponent(
 			"Error='%v' ", err.Error())
 	}
 
-	base.CopyIn(&newBase, false)
 
-	expBigInt, err := newExponent.GetBigInt()
+	fracIntAry := FracIntAry{}.NewFracIntAry(&newExponent)
+
+	internalMaxPrecision += 5
+
+	err = fracIntAry.ReduceToLowestCommonDenom(internalMaxPrecision)
+
+	if err != nil {
+		return fmt.Errorf(ePrefix +
+				"Error returned by fracIntAry.ReduceToLowestCommonDenom(internalMaxPrecision) " +
+				"Error='%v' ", err.Error())
+	}
+
+	internalMaxPrecision+=5
+
+	newBase, err := NthRootOp{}.NewNthRoot(&newInverseBase, &fracIntAry.Denominator, internalMaxPrecision)
+
+	if err != nil {
+		return fmt.Errorf(ePrefix +
+				"Error returned by NthRootOp{}.NewNthRoot(...) " +
+				"Error='%v' ", err.Error())
+	}
+
+	expBigInt, err := fracIntAry.Numerator.GetBigInt()
 
 	if err != nil {
 		return fmt.Errorf(ePrefix +
@@ -1266,13 +1218,15 @@ func (iaPwr *IntAryMathPower) pwrTwoNegativeFractionalExponent(
 
 	internalMaxPrecision += 5
 
-	err = iaPwr.PwrByTwos(base, expBigInt, maxResultPrecision, internalMaxPrecision)
+	err = iaPwr.pwrByTwos(&newBase, expBigInt, maxResultPrecision, internalMaxPrecision)
 
 	if err != nil {
 		return fmt.Errorf(ePrefix +
 			"Error returned by iaPwr.PwrByTwos(...) " +
 			"Error='%v' ", err.Error())
 	}
+
+	base.CopyIn(&newBase, false)
 
 	if base.GetPrecision() > maxResultPrecision {
 		base.RoundToPrecision(maxResultPrecision)

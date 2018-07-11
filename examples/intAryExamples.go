@@ -151,14 +151,14 @@ func ExampleIntAryMultiplyPower_01(baseStr, exponentStr, expectedResultStr strin
 	actualResultStr := actualResult.GetNumStr()
 
 	fmt.Println()
-	fmt.Println("=====================")
 	fmt.Println("PwrByMultiplication()")
 	fmt.Println("=====================")
 	if expectedResultStr == actualResultStr {
 		fmt.Println("*** SUCCESS ***")
 	} else {
-		fmt.Println("@@@@ ERROR @@@@")
+		fmt.Println("XXX FAILURE XXX")
 	}
+	fmt.Println("=====================")
 
 	str := CodeDurationToStr(t1.Sub(t0))
 

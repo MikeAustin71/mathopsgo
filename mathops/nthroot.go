@@ -349,7 +349,7 @@ func (nthrt *NthRootOp) GetNthRootIntAry(radicand, nthRoot *IntAry, maxPrecision
 
 	if err != nil {
 		return IntAry{}.New(),
-			fmt.Errorf("NthRootOp.GetNthRootIntAry() Error returned from initializeAndExtract(..). " +
+			fmt.Errorf("NthRootOp.GetNthRootIntAry() Error returned from calcNthRootGateway(..). " +
 				"Error= %v", err.Error())
 	}
 
@@ -717,7 +717,7 @@ func (nthrt *NthRootOp) calcPositiveIntegerNthRoot(
 													radicand, nthRoot *IntAry,
 														maxPrecision int)  error {
 
-	ePrefix := "NthRootOp.calcNegativeIntegerNthRoot() "
+	ePrefix := "NthRootOp.calcPositiveIntegerNthRoot() "
 
 	if nthRoot.GetSign() != 1 {
 		return fmt.Errorf(ePrefix +
@@ -728,9 +728,8 @@ func (nthrt *NthRootOp) calcPositiveIntegerNthRoot(
 	if radicand.GetSign() == -1 {
 
 		if nthRoot.IsEvenNumber() {
-			return fmt.Errorf(ePrefix +
-				"INVALID ENTRY - Cannot calculate nthRoot of a negative number when nthRoot is even. " +
-				"Original Number= %v  nthRoot= %v", radicand.GetNumStr(), nthRoot.GetNumStr())
+			return errors.New(ePrefix +
+				"INVALID ENTRY - Cannot calculate nthRoot of a negative number when nthRoot is even.\n" )
 		}
 	}
 
@@ -775,9 +774,8 @@ func (nthrt *NthRootOp) calcNegativeIntegerNthRoot(
 	if radicand.GetSign() == -1 {
 
 		if nthRoot.IsEvenNumber() {
-			return fmt.Errorf(ePrefix +
-				"INVALID ENTRY - Cannot calculate nthRoot of a negative number when nthRoot is even. " +
-				"Original Number= %v  nthRoot= %v", radicand.GetNumStr(), nthRoot.GetNumStr())
+			return errors.New(ePrefix +
+				"INVALID ENTRY - Cannot calculate nthRoot of a negative number when nthRoot is even.\n")
 		}
 	}
 
@@ -887,9 +885,8 @@ func (nthrt *NthRootOp) calcPositiveFractionalNthRoot(
 	if newRadicand.GetSign() == -1 {
 
 		if fracIntAry.Numerator.IsEvenNumber() {
-			return fmt.Errorf(ePrefix +
-				"INVALID ENTRY - Cannot calculate nthRoot of a negative number when nthRoot is even. " +
-				"Original Number= %v  nthRoot= %v", newRadicand.GetNumStr(), fracIntAry.Numerator.GetNumStr())
+			return errors.New(ePrefix +
+				"INVALID ENTRY - Cannot calculate nthRoot of a negative number when nthRoot is even.\n" )
 		}
 	}
 
@@ -972,9 +969,8 @@ func (nthrt *NthRootOp) calcNegativeFractionalNthRoot(
 	if newRadicand.GetSign() == -1 {
 
 		if fracIntAry.Numerator.IsEvenNumber() {
-			return fmt.Errorf(ePrefix +
-				"INVALID ENTRY - Cannot calculate nthRoot of a negative number when nthRoot is even. " +
-				"Original Number= %v  nthRoot= %v", newRadicand.GetNumStr(), fracIntAry.Numerator.GetNumStr())
+			return errors.New(ePrefix +
+				"INVALID ENTRY - Cannot calculate nthRoot of a negative number when nthRoot is even. \n")
 		}
 	}
 
