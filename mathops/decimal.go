@@ -102,7 +102,7 @@ func (dec *Decimal) AddToThis(d2 Decimal) error {
 
 	if err != nil {
 		ePrefix := "Decimal.AddToThis() "
-		fmt.Errorf(ePrefix +
+		return fmt.Errorf(ePrefix +
 			"Error returned by dec.bigINum.SetNumericSeparatorsDto(numSeps) " +
 			"Error='%v' \n", err.Error())
 	}
@@ -153,7 +153,7 @@ func (dec *Decimal) AddToThisArray(decs []Decimal) error {
 	bINumResult.SetNumericSeparatorsDto(numSeps)
 
 	if err != nil {
-		fmt.Errorf(ePrefix +
+		return fmt.Errorf(ePrefix +
 			"Error returned by bINumResult.SetNumericSeparatorsDto(numSeps) " +
 			"Error='%v' \n", err.Error())
 	}
@@ -208,7 +208,7 @@ func (dec *Decimal) AddToThisMultiple(decs ...Decimal) error {
 	bINumResult.SetNumericSeparatorsDto(numSeps)
 
 	if err != nil {
-		fmt.Errorf(ePrefix +
+		return fmt.Errorf(ePrefix +
 			"Error returned by bINumResult.SetNumericSeparatorsDto(numSeps) " +
 			"Error='%v' \n", err.Error())
 	}
@@ -289,7 +289,9 @@ func (dec *Decimal) CopyOut() Decimal {
 }
 
 // Divide - Divides the current decimal value by the input
-// parameter 'divisor'.
+// parameter 'divisor' and returns the quotient as a new
+// Decimal instance.
+//
 func (dec *Decimal) Divide(divisor Decimal, maxPrecision uint) (Decimal, error) {
 
 	ePrefix := "Decimal.Divide() "
@@ -303,6 +305,8 @@ func (dec *Decimal) Divide(divisor Decimal, maxPrecision uint) (Decimal, error) 
 			"Error: The current Decimal Instance (dec) is INVALID! " +
 				"Error='%v' \n", err.Error())
 	}
+
+	numSeps := dec.GetNumericSeparatorsDto()
 
 	err = divisor.IsDecimalValid()
 
@@ -335,6 +339,14 @@ func (dec *Decimal) Divide(divisor Decimal, maxPrecision uint) (Decimal, error) 
 				"Error='%v' \n", err.Error())
 	}
 
+	err = d2Quotient.SetNumericSeparatorsDto(numSeps)
+
+	if err != nil {
+		return Decimal{}.NewZero(0),
+		fmt.Errorf(ePrefix +
+			"Error returned by d2Quotient.SetNumericSeparatorsDto(numSeps) " +
+			"Error='%v' \n", err.Error())
+	}
 
 	return d2Quotient, nil
 }
