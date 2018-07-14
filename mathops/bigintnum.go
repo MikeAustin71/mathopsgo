@@ -182,6 +182,9 @@ func (bNum *BigIntNum) CopyIn(bigN BigIntNum) {
 	bNum.scaleFactor = big.NewInt(0).Set(bigN.scaleFactor)
 	bNum.numberOfExpectedDigits = big.NewInt(0).Set(bigN.numberOfExpectedDigits)
 	bNum.sign = bigN.sign
+	bNum.decimalSeparator = bigN.decimalSeparator
+	bNum.thousandsSeparator = bigN.thousandsSeparator
+	bNum.currencySymbol = bigN.currencySymbol
 }
 
 // CopyOut - Makes a deep copy of the current BigIntNum instance
@@ -190,6 +193,9 @@ func (bNum *BigIntNum) CopyIn(bigN BigIntNum) {
 func (bNum *BigIntNum) CopyOut() BigIntNum {
 
 	b2 := BigIntNum{}.NewBigInt(big.NewInt(0).Set(bNum.bigInt), bNum.precision)
+	b2.decimalSeparator = bNum.decimalSeparator
+	b2.thousandsSeparator = bNum.thousandsSeparator
+	b2.currencySymbol = bNum.currencySymbol
 	b2.numberOfExpectedDigits = big.NewInt(0).Set(bNum.numberOfExpectedDigits)
 	return b2
 }
@@ -847,6 +853,13 @@ func (bNum *BigIntNum) GetAbsoluteNumStr() string {
 
 // GetAbsoluteBigIntNumValue - Returns the absolute numeric value
 // of this BigIntNum instance as a new BigIntNum Type.
+//
+// If the current BigIntNum value is'-123.456', this method will
+// return '123.456'.
+//
+// If the current BigIntNum value is'123.456', this method will
+// return '123.456'.
+//
 func (bNum *BigIntNum) GetAbsoluteBigIntNumValue() BigIntNum {
 
 	return BigIntNum{}.NewBigInt(bNum.absBigInt, bNum.precision)
@@ -1132,6 +1145,20 @@ func (bNum *BigIntNum) GetNumberOfDigits() int {
 	return digitCnt
 }
 
+// GetNumericSeparatorsDto - Returns a structure containing the
+// character or rune values for decimal point separator, thousands
+// separator and currency symbol.
+//
+func (bNum *BigIntNum) GetNumericSeparatorsDto() NumericSeparatorDto {
+
+	numSeps := NumericSeparatorDto{}
+	numSeps.DecimalSeparator = bNum.GetDecimalSeparator()
+	numSeps.ThousandsSeparator = bNum.GetThousandsSeparator()
+	numSeps.CurrencySymbol = bNum.GetCurrencySymbol()
+
+	return numSeps
+}
+
 // GetNumStr - Converts the current BigIntNum value to string of
 // numbers which includes the decimal point and decimal digits
 // if they exist.
@@ -1231,10 +1258,20 @@ func (bNum *BigIntNum) GetPrecisionUint() uint {
 	return bNum.precision
 }
 
-// GetThisPointer - Returns a pointer to the current
-// instance of this BigIntNum.
-func (bNum *BigIntNum) GetThisPointer() *BigIntNum {
-	return bNum
+// GetScaleFactor - Returns the scale value of the current
+// BigIntNum.  Scale value is a function of 'precision' or
+// the number of digits to the right of the decimal place.
+// Therefore, scale factor is defined by 10 raised to the
+// power BigIntNum precision.
+//
+// Example:
+// precision = 0 		Scale Factor = 10^0   	Scale Factor =    1
+// precision = 1		Scale Factor = 10^1			Scale Factor =   10
+// precision = 2		Scale Factor = 10^2			Scale Factor =  100
+// precision = 3    Scale Factor = 10^3			Scale Factor = 1000
+//
+func (bNum *BigIntNum) GetScaleFactor() *big.Int {
+	return big.NewInt(0).Set(bNum.scaleFactor)
 }
 
 
@@ -1252,18 +1289,10 @@ func (bNum *BigIntNum) GetSignedBigInt() *big.Int{
 	return bNum.bigInt
 }
 
-// GetScaleFactor - Returns the scale value of the current
-// BigIntNum.  Scale value is a function of 'precision' or
-// the number of digits to the right of the decimal place.
-//
-// Example:
-// precision = 0 		Scale Factor = 10^0   	Scale Factor =    1
-// precision = 1		Scale Factor = 10^1			Scale Factor =   10
-// precision = 2		Scale Factor = 10^2			Scale Factor =  100
-// precision = 3    Scale Factor = 10^3			Scale Factor = 1000
-//
-func (bNum *BigIntNum) GetScaleFactor() *big.Int {
-	return big.NewInt(0).Set(bNum.scaleFactor)
+// GetThisPointer - Returns a pointer to the current
+// instance of this BigIntNum.
+func (bNum *BigIntNum) GetThisPointer() *BigIntNum {
+	return bNum
 }
 
 // GetThousandsSeparator - returns a rune which represents
@@ -1385,6 +1414,19 @@ func (bNum *BigIntNum) IsEvenNumber() (bool, error) {
 	}
 
 	return mod.IsZero(), nil
+}
+
+// IsValid - returns a boolean value signaling whether the
+// current BigIntNum object is valid.
+//
+func (bNum *BigIntNum) IsValid() bool {
+
+	if bNum.bigInt == nil ||
+		  bNum.absBigInt == nil {
+		return false
+	}
+
+	return true
 }
 
 // IsZero - Returns a boolean signaling whether the current
@@ -2560,26 +2602,6 @@ func (bNum *BigIntNum) SetPrecision(newPrecision uint) {
 
 }
 
-// SetThousandsSeparator - Sets the value of the character which will be
-// used to separate thousands in the display of the NumStrDto number
-// string. In the USA the typical thousands separator is the comma.
-//
-// If if a zero value is submitted, the Thousands Separator will default
-// to the comma character.
-//
-// Example:
-// 1,000,000
-//
-func (bNum *BigIntNum) SetThousandsSeparator(thousandsSeparator rune) {
-
-	if thousandsSeparator == 0 {
-		thousandsSeparator = ','
-	}
-
-	bNum.thousandsSeparator = thousandsSeparator
-
-}
-
 // SetSeparators - Used to assign values for the Decimal and Thousands separators as well
 // as the Currency Symbol to be used in displaying the current number string.
 //
@@ -2619,6 +2641,208 @@ func (bNum *BigIntNum) SetSeparators(decimalSeparator, thousandsSeparator, curre
 	bNum.decimalSeparator = decimalSeparator
 	bNum.thousandsSeparator = thousandsSeparator
 	bNum.currencySymbol = currencySymbol
+}
+
+
+// SetNumericSeparatorsDto - Sets the values of numeric separators:
+// 		decimal point separator
+//		thousands separator
+//		currency symbol
+//
+// based on values transmitted through input parameter 'customSeparators'.
+//
+// If any of the values contained in input parameter 'customSeparators' is set
+// to zero, an error will be returned.
+//
+func (bNum *BigIntNum) SetNumericSeparatorsDto(customSeparators NumericSeparatorDto) error {
+
+	ePrefix := "BigIntNum.SetNumericSeparatorsDto() "
+
+	if customSeparators.DecimalSeparator == 0 {
+		return errors.New(ePrefix +
+			"Error: Input Parameter customSeparators.DecimalSeparator is set to '0' - Invalid rune!")
+	}
+
+	if customSeparators.ThousandsSeparator == 0 {
+		return errors.New(ePrefix +
+			"Error: Input Parameter customSeparators.ThousandsSeparator is set to '0' - Invalid rune!")
+	}
+
+	if customSeparators.CurrencySymbol == 0 {
+		return errors.New(ePrefix +
+			"Error: Input Parameter customSeparators.CurrencySymbol is set to '0' - Invalid rune!")
+	}
+
+	bNum.decimalSeparator = customSeparators.DecimalSeparator
+	bNum.thousandsSeparator = customSeparators.ThousandsSeparator
+	bNum.currencySymbol = customSeparators.CurrencySymbol
+
+	return nil
+}
+
+// SetSignValue - Sets the sign value of the current BigIntNum
+// to positive (+1) or negative (-1).
+//
+// If a value other than +1 or -1 is transmitted as an input
+// parameter, an error will be returned.
+//
+func (bNum *BigIntNum) SetSignValue(signVal int) error {
+
+	if signVal == 1 || signVal == -1 {
+
+		if bNum.GetSign() == signVal {
+			return nil
+		}
+
+		bNum.ChangeSign()
+
+		return nil
+
+	}
+
+	return fmt.Errorf("BigIntNum.SetSignValue() Error: Input parameter 'signVal' " +
+		"must be +1 or -1. signVal='%v' ", signVal)
+}
+
+// ShiftPrecisionLeft - shifts precision of the current BigIntNum instance
+// numeric value to the left by 'shiftLeftPlaces' decimal places. This is
+// a 'relative' shift-left operation. The shift is performed with the current
+// decimal point position as the starting point.
+//
+// This method performs a relative shift left of the decimal point position.
+// See Examples below.
+//
+// This operation is equivalent to:	result = BigIntNum value / 10^shiftLeftPrecision
+// or BigIntNum numeric value divided by 10 raised to the power of shiftLeftPrecision.
+//
+// Input Parameters
+// ================
+//
+//	shiftLeftPlaces uint	- The number of positions the decimal point will be
+// 													shifted left from its current position.
+//
+// Examples
+// ========
+//
+//                  shift-left
+// signed Number	   places				Result
+//  "123456.789"				3						"123456789"
+//  "123456.789"				2						"12345678.9"
+//  "123456.789"        6					  "123456789000"
+//  "123456789"	 			  6						"123456789000000"
+//  "123"               5	          "12300000"
+//  "0"								  3						"0"
+//  "123456.789"				0						"123456.789"		- Zero has no effect on original number string
+// "-123456.789"        0          "-123456.789"
+// "-123456.789"        3          "-123456789"
+// "-123456789"			    6					 "-123456789000000"
+//
+func (bNum *BigIntNum) ShiftPrecisionLeft(shiftLeftPlaces uint) {
+
+	if shiftLeftPlaces == 0 ||
+		bNum.IsZero() {
+		return
+	}
+
+	if shiftLeftPlaces > bNum.precision {
+		newPrecision := shiftLeftPlaces - bNum.precision
+		bigITen := big.NewInt(10)
+		exponent := big.NewInt(int64(newPrecision))
+		scaleFactor := big.NewInt(0).Exp(bigITen, exponent, nil)
+		newValue := big.NewInt(0).Mul(bNum.bigInt, scaleFactor)
+		bNum.SetBigInt(newValue, 0)
+
+	}
+
+	// shiftLeftPlaces Must Be Less than or equal to bNum.precision
+	newPrecision := bNum.precision - shiftLeftPlaces
+	bNum.SetPrecision(newPrecision)
+
+	return
+}
+
+// ShiftPrecisionRight - Shifts precision of the current Decimal instance
+// to the right by 'shiftRightPlaces' decimal places. This is a 'relative'
+// shift-right operation. The shift is performed with the current decimal
+// point position as the starting point.
+//
+// This is equivalent to: result = BigIntNum X 10^precision or signedNumStr
+// Multiplied by 10 raised to the power of precision.
+//
+// This method performs a relative shift right of the decimal point position.
+// See Examples below.
+//
+// Input Parameters
+// ================
+//
+//	shiftRightPlaces uint	- The number of positions the decimal point will be
+// 													shifted right from its current position.
+//
+// Examples:
+//                  shift-right
+// signed Number		  places				Result
+//  "123456.789"				3						"123456789"
+//  "123456.789"				2						"12345678.9"
+//  "123456.789"        6					  "123456789000"
+//  "123456789"	 			  6						"123456789000000"
+//  "123"               5	          "12300000"
+//  "0"								  3						"0"
+//  "123456.789"				0						"123456.789"		- Zero has no effect on original number string
+// "-123456.789"        0          "-123456.789"
+// "-123456.789"        3          "-123456789"
+// "-123456789"			    6					 "-123456789000000"
+//
+func (bNum *BigIntNum) ShiftPrecisionRight(shiftRightPlaces uint) {
+
+	if shiftRightPlaces == 0 ||
+								bNum.IsZero() {
+		return
+	}
+
+	if bNum.precision >= shiftRightPlaces {
+
+		newPrecision := bNum.precision - shiftRightPlaces
+
+		bNum.SetPrecision(newPrecision)
+
+		return
+	}
+
+	// bNum.precision Must Be less than shiftRightPlaces
+
+	newPrecision := shiftRightPlaces - bNum.precision
+
+	bigITen := big.NewInt(10)
+
+	exponent := big.NewInt(int64(newPrecision))
+
+	scaleFactor := big.NewInt(0).Exp(bigITen, exponent, nil)
+
+	newValue := big.NewInt(0).Mul(bNum.bigInt, scaleFactor)
+
+	bNum.SetBigInt(newValue, 0)
+
+	return
+}
+
+// SetThousandsSeparator - Sets the value of the character which will be
+// used to separate thousands in the display of the NumStrDto number
+// string. In the USA the typical thousands separator is the comma.
+//
+// If if a zero value is submitted, the Thousands Separator will default
+// to the comma character.
+//
+// Example:
+// 1,000,000
+//
+func (bNum *BigIntNum) SetThousandsSeparator(thousandsSeparator rune) {
+
+	if thousandsSeparator == 0 {
+		thousandsSeparator = ','
+	}
+
+	bNum.thousandsSeparator = thousandsSeparator
+
 }
 
 // TrimTrailingFracZeros - This method will delete non-significant

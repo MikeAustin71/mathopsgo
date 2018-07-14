@@ -137,3 +137,13 @@ const (
 )
 
 var NegativeValueFmtModeLabels = [...]string{"LeadingMinusSign", "SurroundingParentheses"}
+
+// Numeric Separator Data Transfer Object
+// Used to transmit symbols used for decimal point,
+// thousands separator and currency symbol.
+//
+type NumericSeparatorDto struct {
+	DecimalSeparator 				rune				// Character used to separate integer and fractional digits ('.')
+	ThousandsSeparator 			rune 				// Character used to separate thousands (1,000,000,000
+	CurrencySymbol 					rune				// Currency Symbol
+}
