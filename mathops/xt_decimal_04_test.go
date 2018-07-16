@@ -17,10 +17,10 @@ func TestDecimal_Pow_01(t *testing.T) {
 			"numStrDto='%v' Error = '%v' ",numStr, err.Error())
 	}
 
-	d2, err := d1.Pow(exp, 15)
+	d2, err := d1.PowInt(exp, 15)
 
 	if err != nil {
-		t.Errorf("Received error from d1.Pow(exp). exp='%v' Error= %v", exp, err)
+		t.Errorf("Received error from d1.PowInt(exp). exp='%v' Error= %v", exp, err)
 	}
 
 	expected := "43.330596923828125"
@@ -42,10 +42,10 @@ func TestDecimal_Pow_02(t *testing.T) {
 			"numStrDto='%v' Error = '%v' ",numStr, err.Error())
 	}
 
-	d2, err := d1.Pow(exp, 32)
+	d2, err := d1.PowInt(exp, 32)
 
 	if err != nil {
-		t.Errorf("Received error from d1.Pow(exp). exp='%v' Error= %v", exp, err)
+		t.Errorf("Received error from d1.PowInt(exp). exp='%v' Error= %v", exp, err)
 	}
 
 	expected := "0.02307838042845159759046157465153"
@@ -67,10 +67,10 @@ func TestDecimal_Pow_03(t *testing.T) {
 			"numStrDto='%v' Error = '%v' ",numStr, err.Error())
 	}
 
-	d2, err := d1.Pow(exp, 250)
+	d2, err := d1.PowInt(exp, 250)
 
 	if err != nil {
-		t.Errorf("Received error from d1.Pow(exp). exp='%v' Error= %v", exp, err)
+		t.Errorf("Received error from d1.PowInt(exp). exp='%v' Error= %v", exp, err)
 	}
 
 	expected := "0.0230783804284515975904615746515318091892352539727592285702010836302529057503678187310412245740240038257373805953698154109885713843013768287933221444131345621425256205378428954465132756326869536861810731644102187755527493261645362878092652992519669234"
@@ -547,11 +547,11 @@ func TestDecimal_SetFloat64_01(t *testing.T) {
 
 	fVal := float64(92.256)
 	eNumStr1 := "92.256"
-	ePrecision := uint(3)
+	ePrecision := 3
 	eSignVal := 1
 	d1 := Decimal{}.New()
 
-	err := d1.SetFloat64(fVal, int(ePrecision))
+	err := d1.SetFloat64(fVal)
 
 	if err != nil {
 		t.Errorf("Received error from d1.SetFloat64(fVal). fVal= '%v' Error= %v ", fVal, err)
@@ -584,7 +584,7 @@ func TestDecimal_SetFloat64_02(t *testing.T) {
 	eSignVal := -1
 	d1 := Decimal{}.New()
 
-	err := d1.SetFloat64(fVal, int(ePrecision))
+	err := d1.SetFloat64(fVal)
 
 	if err != nil {
 		t.Errorf("Received error from d1.SetFloat64(fVal). fVal= '%v' Error= %v ", fVal, err)

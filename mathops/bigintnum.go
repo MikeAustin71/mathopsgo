@@ -4,7 +4,6 @@ import (
 	"math/big"
 	"fmt"
 	"math"
-	"strconv"
 	"errors"
 )
 
@@ -36,7 +35,7 @@ type BigIntNum struct {
 	bigInt      						*big.Int
 	absBigInt   						*big.Int
 	precision   						uint        // Number of digits to the right of the decimal point.
-	scaleFactor 						*big.Int 		// Scale Factor =  10^(precision * -1)
+	scaleFactor 						*big.Int 		// Scale Factor =  10^(precision)
 	numberOfExpectedDigits	*big.Int		// Number of digits in the 'absBigInt' value
 	sign        						int      		// Valid values are -1 or +1. Indicates the sign of the
 																			// 		the 'bigInt' integer.
@@ -872,12 +871,39 @@ func (bNum *BigIntNum) GetAbsoluteBigIntValue() *big.Int {
 	return big.NewInt(0).Set(bNum.absBigInt)
 }
 
+// GetBigFloat - Returns the numeric value of the current
+// BigIntNum as *big.Float type.
+//
+func (bNum *BigIntNum) GetBigFloat() *big.Float {
+
+	numerator := big.NewInt(0).Set(bNum.bigInt)
+
+	denominator := big.NewInt(0).Set(bNum.scaleFactor)
+
+	bRat := big.NewRat(1,1).SetFrac(numerator, denominator)
+
+	return big.NewFloat(0).SetRat(bRat)
+}
+
 // GetBigInt - return the numeric value as an integer
 // of type *big.int.
 //
 func (bNum *BigIntNum) GetBigInt() (*big.Int, error) {
 
 	return big.NewInt(0).Set(bNum.bigInt), nil
+}
+
+// GetBigRat - Returns the numeric value of the current
+// BigIntNum as a *big.Rat type.
+//
+func (bNum *BigIntNum) GetBigRat() *big.Rat {
+
+	numerator := big.NewInt(0).Set(bNum.bigInt)
+
+	denominator := big.NewInt(0).Set(bNum.scaleFactor)
+
+	return big.NewRat(1,1).SetFrac(numerator, denominator)
+
 }
 
 // GetCurrencySymbol - Returns the character currently designated
@@ -1519,26 +1545,22 @@ func (bNum BigIntNum) NewBigIntExponent(bigI *big.Int, exponent int) BigIntNum {
 // bigFloat *big.Float	- This *big.Float value will be converted into an instance of
 //												BigIntNum.
 //
-// decimalPlaces int		- If greater than -1, this value designates the number
-// 												of decimal places which will be extracted from the
-//												*big.Float value. If 'decimalPlaces' = -1, the number
-//												of decimal places will be inferred. -1 uses the smallest
-// 												number of digits necessary return 'bigFloat' exactly.
-//												Any 'decimalPlaces' value less than zero will be
-//												automatically converted to -1. Be careful, -1 could
-//												generate a very, very large number of decimal places.
+// maxPrecision uint  - The maximum precision for the resulting BigIntNum after
+// 											conversion of input parameter 'f64'. Resulting precision
+// 											will never be greater than 'maxPrecision'; however, actual
+// 											precision may be less than 'maxPrecision'.
 //
-func (bNum BigIntNum) NewBigFloat(bigFloat *big.Float, decimalPlaces int) (BigIntNum, error) {
+func (bNum BigIntNum) NewBigFloat(bigFloat *big.Float, maxPrecision uint) (BigIntNum, error) {
+	
 	ePrefix := "BigIntNumNewFloat64() "
 
-	b := BigIntNum{}
-	b.Empty()
-
-	err := b.SetBigFloat(bigFloat, decimalPlaces)
+	b := BigIntNum{}.NewZero(0)
+	
+	err := b.SetBigFloat(bigFloat, maxPrecision)
 
 	if err != nil {
 		return BigIntNum{},
-			fmt.Errorf(ePrefix + "Error returned by b.SetBigFloat(bigFloat, decimalPlaces). " +
+			fmt.Errorf(ePrefix + "Error returned by b.SetBigFloat(bigFloat, maxPrecision). " +
 				"Error='%v' ", err.Error())
 	}
 
@@ -1584,24 +1606,21 @@ func (bNum BigIntNum) NewDecimal(decNum Decimal) (BigIntNum, error) {
 // f32 float32				- This float32 value will be converted into an instance of
 //											BigIntNum.
 //
-// decimalPlaces int	- If greater than -1, this value designates the number
-// 											of decimal places which will be extracted from the
-//											float32 value. If 'decimalPlaces' = -1, the number
-//											of decimal places will be inferred. -1 uses the smallest
-// 											number of digits necessary return 'f32' exactly.
-//											Any 'decimalPlaces' value less than zero will be
-//											automatically converted to -1.
+// maxPrecision uint  - The maximum precision for the result BigIntNum after conversion
+//											of input parameter f64. Precision will never be greater than
+//											'maxPrecision'; however, actual precision may be less than
+// 											'maxPrecision'.
 //
-func (bNum BigIntNum) NewFloat32(f32 float32, decimalPlaces int) (BigIntNum, error) {
+func (bNum BigIntNum) NewFloat32(f32 float32, maxPrecision uint) (BigIntNum, error) {
 	ePrefix := "BigIntNumNewFloat32() "
 
-	b := BigIntNum{}
-	b.Empty()
-	err := b.SetFloat32(f32, decimalPlaces)
+	b := BigIntNum{}.NewZero(0)
+
+	err := b.SetFloat32(f32, maxPrecision)
 
 	if err != nil {
 		return BigIntNum{},
-			fmt.Errorf(ePrefix + "Error returned by b.SetFloat32(f32, decimalPlaces). " +
+			fmt.Errorf(ePrefix + "Error returned by b.SetFloat32(f32, maxPrecision). " +
 				"Error='%v' ", err.Error())
 	}
 
@@ -1618,20 +1637,17 @@ func (bNum BigIntNum) NewFloat32(f32 float32, decimalPlaces int) (BigIntNum, err
 // f64 float64				- This float64 value will be converted into an instance of
 //											BigIntNum.
 //
-// decimalPlaces int	- If greater than -1, this value designates the number
-// 											of decimal places which will be extracted from the
-//											float64 value. If 'decimalPlaces' = -1, the number
-//											of decimal places will be inferred. -1 uses the smallest
-// 											number of digits necessary return 'f64' exactly.
-//											Any 'decimalPlaces' value less than zero will be
-//											automatically converted to -1.
+// maxPrecision uint  - The maximum precision for the result BigIntNum after conversion
+//											of input parameter f64. Precision will never be greater than
+//											'maxPrecision'; however, actual precision may be less than
+// 											'maxPrecision'.
 //
-func (bNum BigIntNum) NewFloat64(f64 float64, decimalPlaces int) (BigIntNum, error) {
+func (bNum BigIntNum) NewFloat64(f64 float64, maxPrecision uint) (BigIntNum, error) {
 	ePrefix := "BigIntNumNewFloat64() "
 
 	b := BigIntNum{}
 	b.Empty()
-	err := b.SetFloat64(f64, decimalPlaces)
+	err := b.SetFloat64(f64, maxPrecision)
 
 	if err != nil {
 		return BigIntNum{},
@@ -2017,7 +2033,9 @@ func (bNum BigIntNum) NewZero(precision uint) BigIntNum {
 	b := BigIntNum{}
 	b.Empty()
 	b.SetBigInt(big.NewInt(0), precision)
-
+	
+	b.setDefaultSeparators()
+	
 	return b
 
 }
@@ -2188,43 +2206,77 @@ func (bNum *BigIntNum) SetBigIntExponent(bigI *big.Int, exponent int) {
 // bigFloat *big.Float	- This float32 value will be converted into an instance of
 //												BigIntNum.
 //
-// decimalPlaces int		- If greater than -1, this value designates the number
-// 												of decimal places which will be extracted from the
-//												*big.Float value. If 'decimalPlaces' = -1, the number
-//												of decimal places will be inferred automatically.
-// 												-1 uses the smallest number of digits necessary return
-// 												the *big.Float value exactly.	Any 'decimalPlaces' value
-// 												less than zero will be automatically converted to -1. Be
-//												careful, -1 could generate a very, very large number of
-//												decimal places.
+// maxPrecision uint  - The maximum precision for the resulting BigIntNum after
+// 											conversion of input parameter 'ratNum'. Precision will
+// 											never be greater than 'maxPrecision'; however, actual
+// 											precision may be less than 'maxPrecision'.
 //
-func (bNum *BigIntNum) SetBigFloat(bigFloat *big.Float, decimalPlaces int) error {
+//
+// As part of the conversion of a BigFloat to a rational number the Accuracy flag is
+// is returned describing the rounding error associated with the conversion. The
+// Accuracy Flag is set as:
+//		Below Accuracy == -1
+//    Exact Accuracy == 0
+//    Above Accuracy == +1
+//
+// If Accuracy == 0, no error is issued by this method. However, if Accuracy == -1
+// or Accuracy == +1 an error will be returned. All conversions must be exact.
+//
+func (bNum *BigIntNum) SetBigFloat(bigFloat *big.Float, maxPrecision uint) error {
 
 	ePrefix := "NumStrDto.NewBigFloat() "
 
-	if decimalPlaces < 0 {
-		decimalPlaces = -1
+	rat, accuracyFlag := bigFloat.Rat(nil)
+
+	if accuracyFlag == -1 {
+		return errors.New(ePrefix +
+			"Error: Conversion of input parameter 'bigFloat' resulted in Accuacy Flag == -1 " +
+			"or 'Below Accuracy' Conversion is NOT Exact!")
 	}
 
-	numStr := bigFloat.Text('f', decimalPlaces)
+	if accuracyFlag == 1 {
+		return errors.New(ePrefix +
+			"Error: Conversion of input parameter 'bigFloat' resulted in Accuacy Flag == +1 " +
+			"or 'Above Accuracy' Conversion is NOT Exact!")
+	}
 
-	nDto, err := NumStrDto{}.NewNumStr(numStr)
+	err := bNum.SetBigRat(rat, maxPrecision)
 
 	if err != nil {
-		return 	fmt.Errorf(ePrefix	+
-			"Error returned by NumStrDto{}.NewNumStr(numStr). " +
-			"numStr='%v'  Error='%v'",
-			numStr, err.Error())
+		return fmt.Errorf(ePrefix +
+			"Error returned by bNum.SetBigRat(rat, maxPrecision). " +
+			"Error='%v' \n", err.Error())
 	}
 
-	bigI, err := nDto.GetBigInt()
+	return nil
+}
+
+// SetBigRat - Sets the current BigIntNum value to that of input parameter
+// 'ratNum', a rational number or *big.Rat type.
+//
+// maxPrecision uint  - The maximum precision for the resulting BigIntNum after
+// 											conversion of input parameter 'ratNum'. Precision will
+// 											never be greater than 'maxPrecision'; however, actual
+// 											precision may be less than 'maxPrecision'.
+//
+func (bNum *BigIntNum) SetBigRat(ratNum *big.Rat, maxPrecision uint) error {
+
+	ePrefix := "BigIntNum.SetBigRat() "
+
+	numerator := big.NewInt(0).Set(ratNum.Num())
+	denominator := big.NewInt(0).Set(ratNum.Denom())
+
+	biPair := BigIntPair{}.NewBase(numerator, 0, denominator, 0)
+
+	biNum, err := BigIntMathDivide{}.PairFracQuotient(biPair)
 
 	if err != nil {
-		fmt.Errorf(ePrefix + "Error returned by nDto.GetBigInt(). " +
-			"Error='%v'", err.Error())
+		fmt.Errorf(ePrefix +
+			"Error returned by BigIntMathDivide{}.PairFracQuotient(biPair). " +
+			"Error='%v'\n", err.Error())
 	}
 
-	bNum.SetBigInt(bigI, uint(nDto.GetPrecision()))
+	bNum.CopyIn(biNum)
 
 	return nil
 }
@@ -2285,40 +2337,24 @@ func (bNum *BigIntNum) SetDecimalSeparator(decimalSeparator rune) {
 // f32 float32				- This float32 value will be converted into an instance of
 //											BigIntNum.
 //
-// decimalPlaces int	- If greater than -1, this value designates the number
-// 											of decimal places which will be extracted from the
-//											float32 value. If 'decimalPlaces' = -1, the number
-//											of decimal places will be inferred. -1 uses the smallest
-// 											number of digits necessary return 'f32' exactly.
-//											Any 'decimalPlaces' value less than zero will be
-//											automatically converted to -1.
+// maxPrecision uint  - The maximum precision for the resulting BigIntNum after
+// 											conversion of input parameter 'ratNum'. Precision will
+// 											never be greater than 'maxPrecision'; however, actual
+// 											precision may be less than 'maxPrecision'.
 //
-func (bNum *BigIntNum) SetFloat32(f32 float32, decimalPlaces int) error {
+func (bNum *BigIntNum) SetFloat32(f32 float32, maxPrecision uint) error {
 
 	ePrefix := "BigIntNum.SetFloat32() "
 
-	if decimalPlaces < 0 {
-		decimalPlaces = -1
-	}
+	rat := big.NewRat(1,1).SetFloat64(float64(f32))
 
-	numStr := strconv.FormatFloat(float64(f32), 'f', decimalPlaces, 32)
-
-	nDto, err := NumStrDto{}.NewNumStr(numStr)
+	err := bNum.SetBigRat(rat, maxPrecision)
 
 	if err != nil {
-		return fmt.Errorf(ePrefix + "Error returned by NumStrDto{}.NewNumStr(numStr). " +
-			"numStr='%v' Error='%v'. ",
-			numStr, err.Error())
+		fmt.Errorf(ePrefix +
+			"Error returned by bNum.SetBigRat(rat, maxPrecision). " +
+			"Error='%v' \n", err.Error())
 	}
-
-	bigI, err := nDto.GetBigInt()
-
-	if err != nil {
-		fmt.Errorf(ePrefix + "Error returned by nDto.GetBigInt(). " +
-			"Error='%v'", err.Error())
-	}
-
-	bNum.SetBigInt(bigI, uint(nDto.GetPrecision()))
 
 	return nil
 }
@@ -2334,40 +2370,24 @@ func (bNum *BigIntNum) SetFloat32(f32 float32, decimalPlaces int) error {
 // f64 float64				- This float64 value will be converted into an instance of
 //											BigIntNum.
 //
-// decimalPlaces int	- If greater than -1, this value designates the number
-// 											of decimal places which will be extracted from the
-//											float64 value. If 'decimalPlaces' = -1, the number
-//											of decimal places will be inferred. -1 uses the smallest
-// 											number of digits necessary return 'f64' exactly.
-//											Any 'decimalPlaces' value less than zero will be
-//											automatically converted to -1.
+// maxPrecision uint  - The maximum precision for the resulting BigIntNum after
+// 											conversion of input parameter 'f64'. Resulting precision
+// 											will never be greater than 'maxPrecision'; however, actual
+// 											precision may be less than 'maxPrecision'.
 //
-func (bNum *BigIntNum) SetFloat64(f64 float64, decimalPlaces int) error {
+func (bNum *BigIntNum) SetFloat64(f64 float64, maxPrecision uint) error {
 
 	ePrefix := "BigIntNum.SetFloat64() "
 
-	if decimalPlaces < 0 {
-		decimalPlaces = -1
-	}
+	rat :=  big.NewRat(1,1).SetFloat64(f64)
 
-	numStr := strconv.FormatFloat(f64, 'f', decimalPlaces, 64)
-
-	nDto, err := NumStrDto{}.NewNumStr(numStr)
+	err := bNum.SetBigRat(rat, maxPrecision)
 
 	if err != nil {
-		return fmt.Errorf(ePrefix + "Error returned by NumStrDto{}.NewNumStr(numStr). " +
-			"numStr='%v' Error='%v'. ",
-			numStr, err.Error())
+		return fmt.Errorf(ePrefix +
+			"Error returned by bNum.SetBigRat(rat, maxPrecision). " +
+			"Error='%v' \n", err.Error())
 	}
-
-	bigI, err := nDto.GetBigInt()
-
-	if err != nil {
-		fmt.Errorf(ePrefix + "Error returned by nDto.GetBigInt(). " +
-			"Error='%v'", err.Error())
-	}
-
-	bNum.SetBigInt(bigI, uint(nDto.GetPrecision()))
 
 	return nil
 }

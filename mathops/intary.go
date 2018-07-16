@@ -3495,7 +3495,7 @@ func (ia *IntAry) OptimizeIntArrayLen(optimizeFracDigits bool) {
 
 }
 
-// Pow - Raises the value of the current intAry
+// PowInt - Raises the value of the current intAry
 // to the power designated by the input parameter 'power'.
 // This method calls ia.pwrByTwos() which raises
 // a number to a specified power using the
@@ -3534,7 +3534,7 @@ func (ia *IntAry) OptimizeIntArrayLen(optimizeFracDigits bool) {
 //
 func (ia *IntAry) Pow(power, maxResultPrecision, internalPrecision int) error {
 
-	ePrefix := "IntAry.Pow() "
+	ePrefix := "IntAry.PowInt() "
 
 	/*
 	pwr := big.NewInt(int64(power))

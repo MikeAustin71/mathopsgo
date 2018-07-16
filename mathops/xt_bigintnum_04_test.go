@@ -10,9 +10,9 @@ func TestBigIntNum_NewBigFloat_01(t *testing.T) {
 
 	bfloat := big.NewFloat(32.123)
 
-	expectedNumStr := "32.1230"
+	expectedNumStr := "32.123"
 
-	bINum, err := BigIntNum{}.NewBigFloat(bfloat, 4)
+	bINum, err := BigIntNum{}.NewBigFloat(bfloat, 3)
 
 	if err != nil {
 		t.Errorf("Error returned by BigIntNum{}.NewBigFloat(bfloat, 4) " +
@@ -30,7 +30,7 @@ func TestBigIntNum_NewBigFloat_01(t *testing.T) {
 
 func TestBigIntNum_NewBigFloat_02(t *testing.T) {
 
-	bFloat := big.NewFloat(32.129)
+	bFloat := big.NewFloat(float64(32.129))
 
 	expectedNumStr := "32.13"
 

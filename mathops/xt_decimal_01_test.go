@@ -731,7 +731,7 @@ func TestDecimal_Divide_01(t *testing.T) {
 	// str1 / str2
 	str1 := "575.63"
 	str2 := "2014.123"
-	ePrecision := 20
+	ePrecision := uint(20)
 	expected := "0.28579684557497233287"
 
 	d1 := Decimal{}.New()
@@ -800,7 +800,7 @@ func TestDecimal_Divide_02(t *testing.T) {
 	// str1 / str2
 	str1 := "-8076.63"
 	str2 := "12014.123"
-	ePrecision := 20
+	ePrecision := uint(20)
 
 	d1 := Decimal{}.New()
 
@@ -862,7 +862,7 @@ func TestDecimal_Divide_03(t *testing.T) {
 	// str1 / str2
 	str1 := "100"
 	str2 := "33"
-	ePrecision := 20
+	maxPrecision := uint(20)
 
 	d1 := Decimal{}.New()
 
@@ -880,7 +880,7 @@ func TestDecimal_Divide_03(t *testing.T) {
 		t.Errorf("Error thrown by d2.SetNumStr(str2). str2= '%v' Error= %v", str2, err)
 	}
 
-	d3, err := d1.Divide(d2, ePrecision)
+	d3, err := d1.Divide(d2, maxPrecision)
 
 	if err != nil {
 		t.Errorf("Error thrown by d1.Divide(d2, 20).  Error= %v", err)
@@ -926,7 +926,7 @@ func TestDecimal_Divide_04(t *testing.T) {
 	str1 := "975.69"
 	str2 := "589.7654321"
 	excelResult := "1.654369597"
-	ePrecision := 9
+	maxPrecision := uint(9)
 
 	d1 := Decimal{}.New()
 
@@ -944,7 +944,7 @@ func TestDecimal_Divide_04(t *testing.T) {
 		t.Errorf("Error thrown by d2.SetNumStr(str2). str2= '%v' Error= %v", str2, err)
 	}
 
-	d3, err := d1.Divide(d2, ePrecision)
+	d3, err := d1.Divide(d2, maxPrecision)
 
 	if err != nil {
 		t.Errorf("Error thrown by d1.Divide(d2, 20).  Error= %v", err)
@@ -967,7 +967,7 @@ func TestDecimal_Divide_04(t *testing.T) {
 
 	}
 
-	ia3, err := ia1.DivideThisBy(&ia2, 0, ePrecision )
+	ia3, err := ia1.DivideThisBy(&ia2, 0, int(maxPrecision))
 
 	if err != nil {
 		t.Errorf("Error returned from ia1.DivideThisBy(&ia2, 0, 20 ). " +
@@ -1354,11 +1354,8 @@ func TestDecimal_GetAbsoluteValue_01(t *testing.T) {
 		t.Errorf("Error returned from NewNumStr(str1). str1='%v' Error= %v", str1, err)
 	}
 
-	dAbs, err := d.GetAbsoluteValue()
+	dAbs := d.GetAbsoluteValue()
 
-	if err != nil {
-		t.Errorf("Error returned from d.GetAbsoluteBigIntValue(). Error= %v", err)
-	}
 
 	if expected != dAbs.GetNumStr() {
 		t.Errorf("Expected absolute value = '%v'. Instead, got '%v'.", expected, dAbs.GetNumStr())
@@ -1378,11 +1375,7 @@ func TestDecimal_GetAbsoluteValue_02(t *testing.T) {
 		t.Errorf("Error returned from NewNumStr(str1). str1='%v' Error= %v", str1, err)
 	}
 
-	dAbs, err := d.GetAbsoluteValue()
-
-	if err != nil {
-		t.Errorf("Error returned from d.GetAbsoluteBigIntValue(). Error= %v", err)
-	}
+	dAbs := d.GetAbsoluteValue()
 
 	if expected != dAbs.GetNumStr() {
 		t.Errorf("Expected absolute value = '%v'. Instead, got '%v'.", expected, dAbs.GetNumStr())
@@ -1406,12 +1399,7 @@ func TestDecimal_GetBigIntNum_01(t *testing.T) {
 			"Error='%v' ", err.Error())
 	}
 
-	bigINum, err := dec.GetBigIntNum()
-
-	if err != nil {
-		t.Errorf("Error returned by dec.GetBigIntNum(). " +
-			"Error='%v' ", err.Error())
-	}
+	bigINum := dec.GetBigIntNum()
 
 	if !expectedBigIntNum.Equal(bigINum) {
 		t.Errorf("Error: Expected BigIntNum NOT Equal to Actual BigIntNum! "+

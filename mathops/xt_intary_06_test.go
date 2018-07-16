@@ -90,7 +90,7 @@ func TestIntAry_Pow_01(t *testing.T) {
 	err := ia.Pow(power, ePrecision, -1)
 
 	if err != nil {
-		t.Errorf("Error returned from ia.Pow(power). Error= %v", err)
+		t.Errorf("Error returned from ia.PowInt(power). Error= %v", err)
 	}
 
 	if eStr != ia.GetNumStr() {
@@ -122,7 +122,7 @@ func TestIntAry_Pow_02(t *testing.T) {
 	err := ia.Pow(power, ePrecision, -1)
 
 	if err != nil {
-		t.Errorf("Error returned from ia.Pow(power). Error= %v", err)
+		t.Errorf("Error returned from ia.PowInt(power). Error= %v", err)
 	}
 
 	if eStr != ia.GetNumStr() {
@@ -154,7 +154,7 @@ func TestIntAry_Pow_03(t *testing.T) {
 	err := ia.Pow(power, ePrecision, -1)
 
 	if err != nil {
-		t.Errorf("Error returned from ia.Pow(power). Error= %v", err)
+		t.Errorf("Error returned from ia.PowInt(power). Error= %v", err)
 	}
 
 	if eStr != ia.GetNumStr() {
@@ -186,7 +186,7 @@ func TestIntAry_Pow_04(t *testing.T) {
 	err := ia.Pow(power, ePrecision, -1)
 
 	if err != nil {
-		t.Errorf("Error returned from ia.Pow(power). Error= %v", err)
+		t.Errorf("Error returned from ia.PowInt(power). Error= %v", err)
 	}
 
 	if eStr != ia.GetNumStr() {
@@ -219,7 +219,7 @@ func TestIntAry_Pow_05(t *testing.T) {
 	err := ia.Pow(power, maxPrecision, -1)
 
 	if err != nil {
-		t.Errorf("Error returned from ia.Pow(power). Error= %v", err)
+		t.Errorf("Error returned from ia.PowInt(power). Error= %v", err)
 	}
 
 	if eStr != ia.GetNumStr() {
@@ -253,7 +253,7 @@ func TestIntAry_Pow_06(t *testing.T) {
 	err := ia.Pow(power, maxPrecision, -1)
 
 	if err != nil {
-		t.Errorf("Error returned from ia.Pow(power). Error= %v", err)
+		t.Errorf("Error returned from ia.PowInt(power). Error= %v", err)
 	}
 
 	if eStr != ia.GetNumStr() {
