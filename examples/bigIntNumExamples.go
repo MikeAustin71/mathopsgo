@@ -1,11 +1,44 @@
 package examples
 
 import (
-	"../mathops"
 	"fmt"
 	"math/big"
 	"time"
+	"MikeAustin71/mathopsgo/mathops"
 )
+
+
+func ExampleSetBigFloat_01(bigFloat *big.Float, maxPrecision uint, expectedResult string) {
+
+	bINum := mathops.BigIntNum{}.NewZero(0)
+
+	err := bINum.SetBigFloat(bigFloat, maxPrecision)
+
+	if err != nil {
+		fmt.Printf("Error returned by bINum.SetBigFloat(bigFloat, maxPrecision). " +
+			"bigFloat='%v' maxPrecision='%v' Error='%v' \n",
+				bigFloat.Text('f', -1), maxPrecision, err.Error())
+		return
+	}
+
+	actualNumStr := bINum.GetNumStr()
+
+	fmt.Println()
+	fmt.Println("BigIntNum{}.SetBigFloat()")
+	fmt.Println("-------------------------")
+	if expectedResult == actualNumStr {
+		fmt.Println("*** SUCCESS ***")
+	} else {
+		fmt.Println("@@@ FAILURE @@@")
+	}
+	fmt.Println("-------------------------")
+	fmt.Println("       bigFloat: ", bigFloat.Text('f', -1))
+	fmt.Println("   maxPrecision: ", maxPrecision)
+	fmt.Println("  Actual Result: ", actualNumStr)
+	fmt.Println("Expected Result: ", expectedResult)
+
+
+}
 
 func ExampleBundleCount_01(bINumTarget, bINumNthRoot mathops.BigIntNum, expectedBundleCnt string) {
 

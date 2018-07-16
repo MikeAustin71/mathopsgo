@@ -3,7 +3,7 @@ package examples
 import (
 	"fmt"
 	"math/big"
-	"../mathops"
+	"MikeAustin71/mathopsgo/mathops"
 )
 
 
@@ -1043,7 +1043,7 @@ func ExampleDecimalDivide_01() {
 		return
 	}
 
-	d3, err := d1.Divide(d2, ePrecision)
+	d3, err := d1.Divide(d2, uint(ePrecision))
 
 	if err != nil {
 		fmt.Printf("Error returned from d1.Divide(d2, ePrecision). "+

@@ -76,9 +76,11 @@ func TestBigIntNum_NewFloat32_01(t *testing.T) {
 
 	numf32 := float32(32.123)
 
-	expectedNumStr := "32.1230"
+	expectedNumStr := "32.123"
 
-	bINum, err := BigIntNum{}.NewFloat32(numf32, 4)
+	maxPrecision := uint(4)
+
+	bINum, err := BigIntNum{}.NewFloat32(numf32, maxPrecision)
 
 	if err != nil {
 		t.Errorf("Error returned by BigIntNum{}.NewFloat32(numf32, 4) " +
@@ -142,9 +144,11 @@ func TestBigIntNum_NewFloat64_01(t *testing.T) {
 
 	numf32 := float64(32.123)
 
-	expectedNumStr := "32.1230"
+	expectedNumStr := "32.123"
 
-	bINum, err := BigIntNum{}.NewFloat64(numf32, 4)
+	maxPrecision := uint(3)
+
+	bINum, err := BigIntNum{}.NewFloat64(numf32, maxPrecision)
 
 	if err != nil {
 		t.Errorf("Error returned by BigIntNum{}.NewFloat64(numf32, 4) " +

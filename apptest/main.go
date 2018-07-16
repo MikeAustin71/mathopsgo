@@ -1,27 +1,31 @@
 package main
 
 import (
-	"../examples"
-
-	)
+	"MikeAustin71/mathopsgo/examples"
+	"math/big"
+)
 
 func main() {
 
-	// Time:
-	// 0-Milliseconds 0-Microseconds 0-Nanoseconds
+	/*
+	bigFloat := big.NewFloat(float64(32.129))
 
-	baseStr := "-45.632"
-	exponentStr := "-1.01579"
-	//                      12345678901234567890123456789012345
-	expectedNumStr := "-45.1"
-	maxPrecision := 15
-	minPrecision := 0
+	bigI, accuracy := bigFloat.Int(nil)
 
-	examples.ExampleIntAryPwrByTwos_01(baseStr, exponentStr, expectedNumStr, minPrecision, maxPrecision)
+	fmt.Println("       bigI: ", bigI.Text(10))
+	fmt.Println("   accuracy: ", accuracy)
 
-	examples.ExampleIntAryMultiplyPower_01(baseStr, exponentStr, expectedNumStr, minPrecision, maxPrecision)
+	rat, ratAccuracy := bigFloat.Rat(nil)
 
-	examples.ExampleBigIntNumPower_01(baseStr, exponentStr, expectedNumStr, uint(maxPrecision))
+	fmt.Println("         rat: ", rat.FloatString(2))
+	fmt.Println("rat accuracy: ", ratAccuracy)
+	*/
+
+	bigFloat := big.NewFloat(float64(32.129))
+	expectedNumStr := "32.129"
+	maxPrecision := uint(3)
+
+	examples.ExampleSetBigFloat_01(bigFloat, maxPrecision, expectedNumStr)
 }
 
 

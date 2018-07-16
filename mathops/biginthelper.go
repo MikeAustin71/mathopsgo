@@ -131,6 +131,10 @@ func (bPair BigIntPair) New() BigIntPair {
 
 // NewBase - Creates a BigIntPair instance using two sets of
 // *big.Int integers and their associated precision specifications.
+//
+// Before using BigIntPair in a math operation, it may be necessary
+// to specifically set 'BigIntPair.MaxPrecision'
+//
 func (bPair BigIntPair) NewBase(
 						b1 *big.Int,
 						b1Precision uint,
@@ -148,6 +152,10 @@ func (bPair BigIntPair) NewBase(
 
 // NewBigIntNum - Creates a new BigIntPair instance from input parameters
 // consisting of two 'BigIntNum' types.
+//
+// Before using BigIntPair in a math operation, it may be necessary
+// to specifically set 'BigIntPair.MaxPrecision'
+//
 func (bPair BigIntPair) NewBigIntNum(b1, b2 BigIntNum ) BigIntPair {
 
 	bd2 := BigIntPair{}

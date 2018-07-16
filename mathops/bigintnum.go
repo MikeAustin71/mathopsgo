@@ -2264,16 +2264,21 @@ func (bNum *BigIntNum) SetBigRat(ratNum *big.Rat, maxPrecision uint) error {
 	ePrefix := "BigIntNum.SetBigRat() "
 
 	numerator := big.NewInt(0).Set(ratNum.Num())
+
 	denominator := big.NewInt(0).Set(ratNum.Denom())
 
 	biPair := BigIntPair{}.NewBase(numerator, 0, denominator, 0)
+	biPair.MaxPrecision = maxPrecision
 
 	biNum, err := BigIntMathDivide{}.PairFracQuotient(biPair)
-
 	if err != nil {
 		fmt.Errorf(ePrefix +
 			"Error returned by BigIntMathDivide{}.PairFracQuotient(biPair). " +
 			"Error='%v'\n", err.Error())
+	}
+
+	if biNum.GetPrecisionUint() > maxPrecision{
+		biNum.SetPrecision(maxPrecision)
 	}
 
 	bNum.CopyIn(biNum)
