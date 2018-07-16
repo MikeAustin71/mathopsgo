@@ -6,7 +6,7 @@ import (
 )
 
 
-func TestDecimal_Pow_01(t *testing.T) {
+func TestDecimal_PowInt_01(t *testing.T) {
 
 	numStr := "2.125"
 	exp := 5
@@ -31,7 +31,7 @@ func TestDecimal_Pow_01(t *testing.T) {
 
 }
 
-func TestDecimal_Pow_02(t *testing.T) {
+func TestDecimal_PowInt_02(t *testing.T) {
 
 	numStr := "2.125"
 	exp := -5
@@ -56,7 +56,7 @@ func TestDecimal_Pow_02(t *testing.T) {
 
 }
 
-func TestDecimal_Pow_03(t *testing.T) {
+func TestDecimal_PowInt_03(t *testing.T) {
 
 	numStr := "2.125"
 	exp := -5

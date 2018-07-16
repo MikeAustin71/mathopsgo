@@ -1,31 +1,20 @@
 package main
 
-import (
-	"MikeAustin71/mathopsgo/examples"
-	"math/big"
-)
+import "../examples"
 
 func main() {
 
-	/*
-	bigFloat := big.NewFloat(float64(32.129))
 
-	bigI, accuracy := bigFloat.Int(nil)
+	baseStr := "2.125"
+	exponent := "-5"
+	maxPrecision := uint(32)
+	//                   12345678901234567890123456789012
+	expectedResult := "0.02307838042845159759046157465153"
 
-	fmt.Println("       bigI: ", bigI.Text(10))
-	fmt.Println("   accuracy: ", accuracy)
+	//examples.ExampleDecPowInt_01(baseStr, exponent, maxPrecision, expectedResult)
 
-	rat, ratAccuracy := bigFloat.Rat(nil)
+	examples.ExampleBigIntNumPower_01(baseStr, exponent, expectedResult, maxPrecision)
 
-	fmt.Println("         rat: ", rat.FloatString(2))
-	fmt.Println("rat accuracy: ", ratAccuracy)
-	*/
-
-	bigFloat := big.NewFloat(float64(32.129))
-	expectedNumStr := "32.129"
-	maxPrecision := uint(3)
-
-	examples.ExampleSetBigFloat_01(bigFloat, maxPrecision, expectedNumStr)
 }
 
 

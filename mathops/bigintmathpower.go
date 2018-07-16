@@ -296,19 +296,17 @@ func (bIPwr BigIntMathPower) raiseToNegativeIntegerPower(
 				exponent.GetNumStr())
 	}
 
-
-
 	bigIBasePrecision := big.NewInt(int64(base.GetPrecisionUint()))
 
-	bigINewPrecision := big.NewInt(0).Mul(bigIBasePrecision, exponent.bigInt)
+	bigINewPrecision := big.NewInt(0).Mul(bigIBasePrecision, exponent.absBigInt)
 
 	newPrecision := uint(bigINewPrecision.Int64())
 
-	result1 := big.NewInt(0).Exp(base.bigInt, exponent.absBigInt, nil)
+	result := big.NewInt(0).Exp(base.bigInt, exponent.absBigInt, nil)
 
-	bINumResult1 := BigIntNum{}.NewBigInt(result1, newPrecision)
+	bINumResult1 := BigIntNum{}.NewBigInt(result, newPrecision)
 
-	result, err := bINumResult1.GetInverse(maxPrecision)
+	inverseResult, err := bINumResult1.GetInverse(maxPrecision)
 
 	if err != nil {
 		return BigIntNum{},
@@ -317,7 +315,7 @@ func (bIPwr BigIntMathPower) raiseToNegativeIntegerPower(
 				 bINumResult1.GetNumStr(), maxPrecision, err.Error())
 	}
 
-	return result, nil
+	return inverseResult, nil
 }
 
 // raiseToPositiveIntegerPower - Assumes that input parameter 'exponent' is a positive

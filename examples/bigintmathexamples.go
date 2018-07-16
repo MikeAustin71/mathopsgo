@@ -3,7 +3,8 @@ package examples
 import (
 	"fmt"
 	"math/big"
-	"MikeAustin71/mathopsgo/mathops"
+	"../mathops"
+	"time"
 )
 
 
@@ -1012,6 +1013,68 @@ func ExampleBigIntMultiply_01() {
 
 }
 
+
+func ExampleBigIntNumPower_01(baseStr, exponentStr, expectedStr string, maxPrecision uint) {
+
+	bINumBase, err := mathops.BigIntNum{}.NewNumStr(baseStr)
+
+	if err != nil {
+		fmt.Printf("Error returned by BigIntNum{}.NewNumStr(baseStr). " +
+			"baseStr='%v' Error='%v' \n", baseStr, err.Error())
+		return
+	}
+
+	fmt.Println("Base= ", bINumBase.GetNumStr())
+
+	bINumExponent, err := mathops.BigIntNum{}.NewNumStr(exponentStr)
+
+	if err != nil {
+		fmt.Printf("Error returned by BigIntNum{}.NewNumStr(exponentStr). " +
+			"exponentStr='%v' Error='%v' \n", exponentStr, err.Error())
+		return
+	}
+
+	fmt.Println("Exponent= ", bINumExponent.GetNumStr())
+
+	var t0 time.Time
+	var t1 time.Time
+
+	t0 = time.Now()
+	result, err := mathops.BigIntMathPower{}.Pwr(bINumBase, bINumExponent, maxPrecision)
+	t1 = time.Now()
+
+	if err != nil {
+		fmt.Printf("Error returned by BigIntMathPower{}.Pwr(bINumBase, bINumExponent, maxPrecision). " +
+			"bINumBase='%v' bINumExponent='%v' maxPrecision='%v' Error='%v' \n",
+			bINumBase.GetNumStr(), bINumExponent.GetNumStr(), maxPrecision, err.Error())
+		return
+	}
+
+	str := CodeDurationToStr(t1.Sub(t0))
+
+	fmt.Println()
+	fmt.Println("*** BigIntMathPower{}.Pwr() ***")
+	fmt.Println("===============================")
+	if expectedStr != result.GetNumStr() {
+		fmt.Println("XXX FAILURE XXX")
+	} else {
+		fmt.Println("*** SUCCESS ***")
+	}
+	fmt.Println("===============================")
+
+	fmt.Println("Expected Result: ", expectedStr)
+	fmt.Println("  Actual Result: ", result.GetNumStr())
+	fmt.Println("   Elapsed Time: ", str)
+
+	bigIntAbs := bINumExponent.GetAbsoluteBigIntValue()
+
+	fmt.Println("              Base: ", bINumBase.GetNumStr())
+	fmt.Println("          Exponent: ", bINumExponent.GetNumStr())
+	fmt.Println("     Exponent Sign: ", bINumExponent.GetSign())
+	fmt.Println("Exponent AbsBigInt: ", bigIntAbs.Text(10))
+	fmt.Println("     Max Precision: ", maxPrecision)
+
+}
 
 func ExampleDecimalDivide_01() {
 	// str1 / str2
