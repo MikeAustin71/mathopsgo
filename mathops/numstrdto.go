@@ -2835,8 +2835,8 @@ func (nDto *NumStrDto) SetSeparators(decimalSeparator, thousandsSeparator, curre
 //
 // Examples
 // ========
-//										Requested
-//                      Shift
+//
+//                    Shift-Left
 //  signedNumStr			precision				Result
 //	 "123456.789"				  3						"123.456789"
 //	 "123456.789"				  2						"1234.56789"
@@ -2851,7 +2851,9 @@ func (nDto *NumStrDto) SetSeparators(decimalSeparator, thousandsSeparator, curre
 // "-123456.789"          3          "-123.456789"
 // "-123456789"						6					 "-123.456789"
 //
-func (nDto *NumStrDto) ShiftPrecisionLeft(signedNumStr string, shiftPrecision uint) (NumStrDto, error) {
+func (nDto *NumStrDto) ShiftPrecisionLeft(
+												signedNumStr string,
+													shiftLeftPrecision uint) (NumStrDto, error) {
 
 	ePrefix := "NumStrDto.ShiftPrecisionLeft() "
 
@@ -2889,7 +2891,7 @@ func (nDto *NumStrDto) ShiftPrecisionLeft(signedNumStr string, shiftPrecision ui
 	n2.decimalSeparator = nDto.decimalSeparator
 	n2.currencySymbol = nDto.currencySymbol
 	n2.signVal = n1.signVal
-	n2.precision = shiftPrecision + n1.precision
+	n2.precision = shiftLeftPrecision + n1.precision
 	iTotalSpecPrecision := int(n2.precision)
 	lenAbsAllNumRunes := len(n1.absAllNumRunes)
 	lenAbsIntRunes := n1.GetAbsIntRunesLength()

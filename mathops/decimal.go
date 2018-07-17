@@ -2482,16 +2482,20 @@ func (dec *Decimal) SetThousandsSeparator(thousandsSeparator rune) error {
 	return nil
 }
 
-// ShiftPrecisionLeft - shifts precision of the current Decimal instance
+// ShiftPrecisionLeft - Shifts precision of the current Decimal instance
 // numeric value to the left by 'shiftLeftPlaces' decimal places. This
-// is a 'relative' shift-left operation. The shift is performed with the
-// current decimal point position as the starting point.
-//
-// This method performs a relative shift left of the decimal point position.
-// See Examples below.
+// is a 'relative' shift-left operation. The shift left operation is
+// therefore performed with the current decimal point position as the
+// starting point.
 //
 // This operation is equivalent to:	result = Decimal value / 10^shiftLeftPlaces
 // or signed number divided by 10 raised to the power of shiftLeftPlaces.
+//
+// This method performs a relative shift left of the decimal point position.
+// Be careful, this is NOT Shift Number Left operation. This is Shift Precision
+// Left which means that the decimal point will be shifted left.
+//
+// See Examples below.
 //
 // Input Parameters
 // ================
@@ -2499,20 +2503,20 @@ func (dec *Decimal) SetThousandsSeparator(thousandsSeparator rune) error {
 //	shiftLeftPlaces int	- The number of positions the decimal point will be
 // 												shifted left from its current position.
 //
-// Examples
-// ========
-//
-// signedNumStr			precision			Result
-//  "123456.789"				3						"123456789"
-//  "123456.789"				2						"12345678.9"
-//  "123456.789"        6					  "123456789000"
-//  "123456789"	 			  6						"123456789000000"
-//  "123"               5	          "12300000"
+// Examples:
+// =========
+//                  shift-left
+// signed Number		  places				Result
+//  "123456.789"				3						"123.456789"
+//  "123456.789"				2						"1234.56789"
+//  "123456.789"        6					  "0.123456789"
+//  "123456789"	 			  6						"123.456789"
+//  "123"               5	          "0.00123"
 //  "0"								  3						"0"
 //  "123456.789"				0						"123456.789"		- Zero has no effect on original number string
 // "-123456.789"        0          "-123456.789"
-// "-123456.789"        3          "-123456789"
-// "-123456789"			    6					 "-123456789000000"
+// "-123456.789"        3          "-123.456789"
+// "-123456789"			    6					 "-123.456789"
 //
 func (dec *Decimal) ShiftPrecisionLeft(shiftLeftPlaces uint) error {
 
@@ -2541,14 +2545,18 @@ func (dec *Decimal) ShiftPrecisionLeft(shiftLeftPlaces uint) error {
 
 // ShiftPrecisionRight - Shifts precision of the current Decimal instance
 // numeric value to the right by 'shiftRightPlaces' decimal places. This
-// is a 'relative' shift-right operation. The shift is performed with the
-// current decimal point position as the starting point.
+// is a 'relative' shift-right operation. The shift right operation is
+// therefore performed with the current decimal point position as the
+// starting point.
 //
 // This is equivalent to: result = Decimal value X 10^shiftRightPrecision or
-// Decimal numeric value Multiplied by 10 raised to the power of
+// Decimal numeric value multiplied by 10 raised to the power of
 // shiftRightPrecision.
 //
 // This method performs a relative shift right of the decimal point position.
+// Be careful, this is NOT a Shift Number Right operation. This is Shift Precision
+// Right which means that the decimal point will be shifted right.
+//
 // See Examples below.
 //
 // Input Parameters
@@ -2558,7 +2566,9 @@ func (dec *Decimal) ShiftPrecisionLeft(shiftLeftPlaces uint) error {
 // 													shifted right from its current position.
 //
 // Examples:
-// signedNumStr			precision			Result
+// =========
+//                  shift-right
+// signed Number		  places				Result
 //  "123456.789"				3						"123456789"
 //  "123456.789"				2						"12345678.9"
 //  "123456.789"        6					  "123456789000"

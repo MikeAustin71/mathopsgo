@@ -2774,38 +2774,41 @@ func (bNum *BigIntNum) SetSignValue(signVal int) error {
 		"must be +1 or -1. signVal='%v' ", signVal)
 }
 
-// ShiftPrecisionLeft - shifts precision of the current BigIntNum instance
-// numeric value to the left by 'shiftLeftPlaces' decimal places. This is
-// a 'relative' shift-left operation. The shift is performed with the current
-// decimal point position as the starting point.
+// ShiftPrecisionLeft - Shifts precision of the current BigIntNum
+// numeric value to the left by 'shiftLeftPlaces' decimal places. This
+// is a 'relative' shift-left operation. The shift left operation is
+// therefore performed with the current decimal point position as the
+// starting point.
+//
+// This operation is equivalent to:	result = Decimal value / 10^shiftLeftPlaces
+// or signed number divided by 10 raised to the power of shiftLeftPlaces.
 //
 // This method performs a relative shift left of the decimal point position.
-// See Examples below.
+// Be careful, this is NOT Shift Number Left operation. This is Shift Precision
+// Left which means that the decimal point will be shifted left.
 //
-// This operation is equivalent to:	result = BigIntNum value / 10^shiftLeftPrecision
-// or BigIntNum numeric value divided by 10 raised to the power of shiftLeftPrecision.
+// See Examples below.
 //
 // Input Parameters
 // ================
 //
-//	shiftLeftPlaces uint	- The number of positions the decimal point will be
-// 													shifted left from its current position.
+//	shiftLeftPlaces int	- The number of positions the decimal point will be
+// 												shifted left from its current position.
 //
-// Examples
-// ========
-//
+// Examples:
+// =========
 //                  shift-left
-// signed Number	   places				Result
-//  "123456.789"				3						"123456789"
-//  "123456.789"				2						"12345678.9"
-//  "123456.789"        6					  "123456789000"
-//  "123456789"	 			  6						"123456789000000"
-//  "123"               5	          "12300000"
+// signed Number		  places				Result
+//  "123456.789"				3						"123.456789"
+//  "123456.789"				2						"1234.56789"
+//  "123456.789"        6					  "0.123456789"
+//  "123456789"	 			  6						"123.456789"
+//  "123"               5	          "0.00123"
 //  "0"								  3						"0"
 //  "123456.789"				0						"123456.789"		- Zero has no effect on original number string
 // "-123456.789"        0          "-123456.789"
-// "-123456.789"        3          "-123456789"
-// "-123456789"			    6					 "-123456789000000"
+// "-123456.789"        3          "-123.456789"
+// "-123456789"			    6					 "-123.456789"
 //
 func (bNum *BigIntNum) ShiftPrecisionLeft(shiftLeftPlaces uint) {
 
@@ -2814,41 +2817,36 @@ func (bNum *BigIntNum) ShiftPrecisionLeft(shiftLeftPlaces uint) {
 		return
 	}
 
-	if shiftLeftPlaces > bNum.precision {
-		newPrecision := shiftLeftPlaces - bNum.precision
-		bigITen := big.NewInt(10)
-		exponent := big.NewInt(int64(newPrecision))
-		scaleFactor := big.NewInt(0).Exp(bigITen, exponent, nil)
-		newValue := big.NewInt(0).Mul(bNum.bigInt, scaleFactor)
-		bNum.SetBigInt(newValue, 0)
-
-	}
-
-	// shiftLeftPlaces Must Be Less than or equal to bNum.precision
-	newPrecision := bNum.precision - shiftLeftPlaces
-	bNum.SetPrecision(newPrecision)
+	newPrecision := bNum.precision + shiftLeftPlaces
+	bNum.SetBigInt(bNum.bigInt, newPrecision)
 
 	return
 }
 
-// ShiftPrecisionRight - Shifts precision of the current Decimal instance
-// to the right by 'shiftRightPlaces' decimal places. This is a 'relative'
-// shift-right operation. The shift is performed with the current decimal
-// point position as the starting point.
+// ShiftPrecisionRight - Shifts precision of the current BigIntNum
+// numeric value to the right by 'shiftRightPlaces' decimal places. This
+// is a 'relative' shift-right operation. The shift right operation is
+// therefore performed with the current decimal point position as the
+// starting point.
 //
-// This is equivalent to: result = BigIntNum X 10^precision or signedNumStr
-// Multiplied by 10 raised to the power of precision.
+// This is equivalent to: result = Decimal value X 10^shiftRightPrecision or
+// Decimal numeric value multiplied by 10 raised to the power of
+// shiftRightPrecision.
 //
 // This method performs a relative shift right of the decimal point position.
+// Be careful, this is NOT a Shift Number Right operation. This is Shift Precision
+// Right which means that the decimal point will be shifted right.
+//
 // See Examples below.
 //
 // Input Parameters
 // ================
 //
-//	shiftRightPlaces uint	- The number of positions the decimal point will be
+//	shiftRightPlaces int	- The number of positions the decimal point will be
 // 													shifted right from its current position.
 //
 // Examples:
+// =========
 //                  shift-right
 // signed Number		  places				Result
 //  "123456.789"				3						"123456789"
@@ -2869,16 +2867,17 @@ func (bNum *BigIntNum) ShiftPrecisionRight(shiftRightPlaces uint) {
 		return
 	}
 
-	if bNum.precision >= shiftRightPlaces {
+
+	if shiftRightPlaces <= bNum.precision {
 
 		newPrecision := bNum.precision - shiftRightPlaces
 
-		bNum.SetPrecision(newPrecision)
+		bNum.SetBigInt(bNum.bigInt, newPrecision)
 
 		return
 	}
 
-	// bNum.precision Must Be less than shiftRightPlaces
+	// shiftRightPlaces > bNum.precision
 
 	newPrecision := shiftRightPlaces - bNum.precision
 
