@@ -3,7 +3,7 @@ package examples
 import (
 	
 	"fmt"
-	"MikeAustin71/mathopsgo/mathops"
+	"../mathops"
 )
 
 func TestNumberDelimiter() {

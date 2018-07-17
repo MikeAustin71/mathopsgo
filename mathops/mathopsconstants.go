@@ -131,12 +131,31 @@ func (negValFmtMode NegativeValueFmtMode) String() string {
 
 const (
 
+	// LEADMINUSNEGVALFMTMODE 		-	Negative values formatted with
+	//													 		a leading minus sign.
+	//															Example: -123456.78
+	//
 	LEADMINUSNEGVALFMTMODE NegativeValueFmtMode = iota
 
+
+
+	// PARENTHESESNEGVALFMTMODE	-	Negative values formatted with
+	//														surrounding parentheses.
+	//														Example: (123456.78)
+	//
 	PARENTHESESNEGVALFMTMODE
+
+
+
+	// ABSOLUTEPURENUMSTRFMTMODE - Formats a pure number string with
+	//														 absolute (positive) integer value
+	//														 and no decimal point separator.
+	//														Example: (12345678)
+	ABSOLUTEPURENUMSTRFMTMODE
+
 )
 
-var NegativeValueFmtModeLabels = [...]string{"LeadingMinusSign", "SurroundingParentheses"}
+var NegativeValueFmtModeLabels = [...]string{"LeadingMinusSign", "SurroundingParentheses", "AbsolutePureNumberString"}
 
 // Numeric Separator Data Transfer Object
 // Used to transmit symbols used for decimal point,
@@ -146,4 +165,24 @@ type NumericSeparatorDto struct {
 	DecimalSeparator 				rune				// Character used to separate integer and fractional digits ('.')
 	ThousandsSeparator 			rune 				// Character used to separate thousands (1,000,000,000
 	CurrencySymbol 					rune				// Currency Symbol
+}
+
+// Equal - Compares two NumericSeparatorDto's and returns 'true' if they
+// are equivalent.
+//
+func (numSep *NumericSeparatorDto) Equal(numSep2 NumericSeparatorDto) bool {
+
+	if numSep.DecimalSeparator != numSep2.DecimalSeparator {
+		return false
+	}
+
+	if numSep.ThousandsSeparator != numSep2.ThousandsSeparator {
+		return false
+	}
+
+	if numSep.CurrencySymbol != numSep2.CurrencySymbol {
+		return false
+	}
+
+	return true
 }

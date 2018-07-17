@@ -233,7 +233,7 @@ func (dec *Decimal) AddToThisMultiple(decs ...Decimal) error {
 func (dec *Decimal) AllDigitsNumStr(numStr string) (string, error) {
 
 
-	bINum, err := BigIntNum{}.NewNumStr(numStr)
+	bigIntNum, err := BigIntNum{}.NewNumStr(numStr)
 
 	if err != nil {
 		ePrefix := "Decimal.AllDigitsNumStr() "
@@ -243,7 +243,7 @@ func (dec *Decimal) AllDigitsNumStr(numStr string) (string, error) {
 			"numStr='%v' Error='%v' \n", numStr, err.Error())
 	}
 
-	return bINum.GetAbsoluteNumStr(), nil
+	return bigIntNum.FormatNumStr(ABSOLUTEPURENUMSTRFMTMODE), nil
 }
 
 // NumStrToDecimal - Creates a Decimal type from a number
@@ -389,11 +389,7 @@ func (dec *Decimal) GetAbsoluteAllDigitsStr() (string, error) {
 			"Error='%v'", err.Error())
 	}
 
-	bINum2 := dec.bigINum.GetAbsoluteBigIntNumValue()
-
-	bINum2.SetPrecision(0)
-
-	return bINum2.GetNumStr(), nil
+	return dec.bigINum.FormatNumStr(ABSOLUTEPURENUMSTRFMTMODE), nil
 }
 
 // GetBigFloat - returns big Float representation of the Decimal Value.
@@ -2009,10 +2005,11 @@ func (dec *Decimal) SetFloat32(f32 float32) error {
 // that of the passed-in float64 parameter.
 //
 // Example usage:
-// d:= Decimal{}.NewBigIntNum()
+// d:= Decimal{}.NewZero(0)
 // f64:= float64(123.456)
 // d.SetFloat32(f64)
 // Number String = "123.456"
+
 func (dec *Decimal) SetFloat64(f64 float64) error {
 
 	ePrefix := "Decimal.SetFloat64() "

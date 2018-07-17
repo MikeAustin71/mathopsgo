@@ -490,6 +490,8 @@ func TestDecimal_SetFloat_01(t *testing.T) {
 		t.Errorf("Received error from d1.SetFloat32(fVal). fVal= '%v' Error= %v ", fVal, err)
 	}
 
+	d1.SetPrecisionRound(ePrecision)
+
 	if  eNumStr1 != d1.GetNumStr() {
 		t.Errorf("Expected NumStr = '%v'. Instead got NumStr= '%v'", eNumStr1, d1.GetNumStr())
 	}
@@ -524,6 +526,8 @@ func TestDecimal_SetFloat_02(t *testing.T) {
 		t.Errorf("Received error from d1.SetFloat32(fVal). fVal= '%v' Error= %v ", fVal, err)
 	}
 
+	d1.SetPrecisionRound(ePrecision)
+
 	if  eNumStr1 != d1.GetNumStr() {
 		t.Errorf("Expected NumStr = '%v'. Instead got NumStr= '%v'", eNumStr1, d1.GetNumStr())
 	}
@@ -547,7 +551,7 @@ func TestDecimal_SetFloat64_01(t *testing.T) {
 
 	fVal := float64(92.256)
 	eNumStr1 := "92.256"
-	ePrecision := 3
+	ePrecision := uint(3)
 	eSignVal := 1
 	d1 := Decimal{}.New()
 
@@ -556,6 +560,8 @@ func TestDecimal_SetFloat64_01(t *testing.T) {
 	if err != nil {
 		t.Errorf("Received error from d1.SetFloat64(fVal). fVal= '%v' Error= %v ", fVal, err)
 	}
+
+	d1.SetPrecisionRound(ePrecision)
 
 	if eNumStr1 != d1.GetNumStr() {
 		t.Errorf("Expected NumStr = '%v'. Instead got NumStr= '%v'", eNumStr1, d1.GetNumStr())
@@ -589,6 +595,8 @@ func TestDecimal_SetFloat64_02(t *testing.T) {
 	if err != nil {
 		t.Errorf("Received error from d1.SetFloat64(fVal). fVal= '%v' Error= %v ", fVal, err)
 	}
+
+	d1.SetPrecisionRound(ePrecision)
 
 	if eNumStr1 != d1.GetNumStr() {
 		t.Errorf("Expected NumStr = '%v'. Instead got NumStr= '%v'", eNumStr1, d1.GetNumStr())
@@ -626,6 +634,8 @@ func TestDecimal_SetFloatBig_01(t *testing.T) {
 		t.Errorf("d1.SetFloatBig(fVal) returned an error. fVal= '%v' Error= %v", eNumStr1, err)
 	}
 
+	d1.SetPrecisionRound(ePrecision)
+
 	if eNumStr1 != d1.GetNumStr() {
 		t.Errorf("Expected NumStr = '%v'. Instead got NumStr= '%v'", eNumStr1, d1.GetNumStr())
 	}
@@ -662,6 +672,8 @@ func TestDecimal_SetFloatBig_02(t *testing.T) {
 	if err != nil {
 		t.Errorf("d1.SetFloatBig(fVal) returned an error. fVal= '%v' Error= %v", eNumStr1, err)
 	}
+
+	d1.SetPrecisionRound(2)
 
 	if eNumStr1 != d1.GetNumStr() {
 		t.Errorf("Expected NumStr = '%v'. Instead got NumStr= '%v'", eNumStr1, d1.GetNumStr())

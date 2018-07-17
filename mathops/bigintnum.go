@@ -358,6 +358,12 @@ func (bNum *BigIntNum) Floor() BigIntNum {
 //																																surrounding parentheses.
 //																																Example: ($123,456.78)
 //
+//
+//																		ABSOLUTEPURENUMSTRFMTMODE - Formats a pure number string with
+//																																absolute (positive) integer value
+//																																and no decimal point separator.
+//																																Example: ($12,345,678)
+//
 func (bNum *BigIntNum) FormatCurrencyStr(negValMode NegativeValueFmtMode) string {
 
 	if bNum.decimalSeparator == 0 {
@@ -385,7 +391,10 @@ func (bNum *BigIntNum) FormatCurrencyStr(negValMode NegativeValueFmtMode) string
 		outRunes = append(outRunes, '0')
 
 		if bNum.precision > 0 {
-			outRunes = append(outRunes, bNum.decimalSeparator)
+
+			if negValMode != ABSOLUTEPURENUMSTRFMTMODE {
+				outRunes = append(outRunes, bNum.decimalSeparator)
+			}
 
 			for h := 0; h < int(bNum.precision); h++ {
 				outRunes = append(outRunes, '0')
@@ -435,7 +444,8 @@ func (bNum *BigIntNum) FormatCurrencyStr(negValMode NegativeValueFmtMode) string
 		}
 
 		if bNum.precision > 0 &&
-			int(bNum.precision) == startIdx {
+			int(bNum.precision) == startIdx &&
+			negValMode != ABSOLUTEPURENUMSTRFMTMODE {
 
 			outRunes = append(outRunes, bNum.decimalSeparator)
 			startIdx++
@@ -453,10 +463,12 @@ func (bNum *BigIntNum) FormatCurrencyStr(negValMode NegativeValueFmtMode) string
 			startIdx++
 
 			if bNum.precision > 0 &&
-				int(bNum.precision) == startIdx {
+				int(bNum.precision) == startIdx &&
+				 negValMode != ABSOLUTEPURENUMSTRFMTMODE {
 
 				outRunes = append(outRunes, bNum.decimalSeparator)
 				startIdx++
+
 			}
 		}
 	}
@@ -475,11 +487,14 @@ func (bNum *BigIntNum) FormatCurrencyStr(negValMode NegativeValueFmtMode) string
 			outRunes = append(outRunes, '-')
 			startIdx++
 
-		}	else {
-			// MUST BE negValMode == PARENTHESESNEGVALFMTMODE
+		}	else if negValMode == PARENTHESESNEGVALFMTMODE {
+
 			outRunes = append(outRunes, '(')
 			startIdx+=2
 		}
+
+		// Must be negValMode == ABSOLUTEPURENUMSTRFMTMODE
+
 	}
 
 	sortLimit := startIdx / 2
@@ -521,6 +536,11 @@ func (bNum *BigIntNum) FormatCurrencyStr(negValMode NegativeValueFmtMode) string
 //																																surrounding parentheses.
 //																																Example: (123456.78)
 //
+//																		ABSOLUTEPURENUMSTRFMTMODE - Formats a pure number string with
+//																																absolute (positive) integer value
+//																																and no decimal point separator.
+//																																Example: (12345678)
+//
 func (bNum *BigIntNum) FormatNumStr(negValMode NegativeValueFmtMode) string {
 
 	if bNum.decimalSeparator == 0 {
@@ -538,7 +558,10 @@ func (bNum *BigIntNum) FormatNumStr(negValMode NegativeValueFmtMode) string {
 		outRunes = append(outRunes, '0')
 
 		if bNum.precision > 0 {
-			outRunes = append(outRunes, bNum.decimalSeparator)
+
+			if negValMode != ABSOLUTEPURENUMSTRFMTMODE {
+				outRunes = append(outRunes, bNum.decimalSeparator)
+			}
 
 			for h := 0; h < int(bNum.precision); h++ {
 				outRunes = append(outRunes, '0')
@@ -570,7 +593,8 @@ func (bNum *BigIntNum) FormatNumStr(negValMode NegativeValueFmtMode) string {
 		startIdx++
 
 		if bNum.precision > 0 &&
-			int(bNum.precision) == startIdx {
+			int(bNum.precision) == startIdx &&
+			 negValMode != ABSOLUTEPURENUMSTRFMTMODE {
 
 			outRunes = append(outRunes, bNum.decimalSeparator)
 			startIdx++
@@ -587,7 +611,8 @@ func (bNum *BigIntNum) FormatNumStr(negValMode NegativeValueFmtMode) string {
 			startIdx++
 
 			if bNum.precision > 0 &&
-				int(bNum.precision) == startIdx {
+				int(bNum.precision) == startIdx  &&
+				 negValMode != ABSOLUTEPURENUMSTRFMTMODE {
 
 				outRunes = append(outRunes, bNum.decimalSeparator)
 				startIdx++
@@ -604,11 +629,16 @@ func (bNum *BigIntNum) FormatNumStr(negValMode NegativeValueFmtMode) string {
 			outRunes = append(outRunes, '-')
 			startIdx++
 
-		}	else {
-			// MUST BE negValMode == PARENTHESESNEGVALFMTMODE
+		}	else if negValMode == PARENTHESESNEGVALFMTMODE{
 			outRunes = append(outRunes, '(')
 			startIdx+=2
 		}
+
+		/*
+			MUST BE negValMode == ABSOLUTEPURENUMSTRFMTMODE
+		  Do NOT Display Sign Character
+
+		*/
 	}
 
 	sortLimit := startIdx / 2
@@ -658,6 +688,12 @@ func (bNum *BigIntNum) FormatNumStr(negValMode NegativeValueFmtMode) string {
 //																																surrounding parentheses.
 //																																Example: (123,456.78)
 //
+//
+//																		ABSOLUTEPURENUMSTRFMTMODE - Formats a pure number string with
+//																																absolute (positive) integer value
+//																																and no decimal point separator.
+//																																Example: (12,345,678)
+//
 func (bNum *BigIntNum) FormatThousandsStr(negValMode NegativeValueFmtMode) string {
 
 	if bNum.decimalSeparator == 0 {
@@ -679,7 +715,11 @@ func (bNum *BigIntNum) FormatThousandsStr(negValMode NegativeValueFmtMode) strin
 		outRunes = append(outRunes, '0')
 
 		if bNum.precision > 0 {
-			outRunes = append(outRunes, bNum.decimalSeparator)
+
+			if negValMode != ABSOLUTEPURENUMSTRFMTMODE {
+				outRunes = append(outRunes, bNum.decimalSeparator)
+			}
+
 
 			for h := 0; h < int(bNum.precision); h++ {
 				outRunes = append(outRunes, '0')
@@ -729,7 +769,8 @@ func (bNum *BigIntNum) FormatThousandsStr(negValMode NegativeValueFmtMode) strin
 		}
 
 		if bNum.precision > 0 &&
-			int(bNum.precision) == startIdx {
+			int(bNum.precision) == startIdx &&
+			negValMode != ABSOLUTEPURENUMSTRFMTMODE {
 
 			outRunes = append(outRunes, bNum.decimalSeparator)
 			startIdx++
@@ -747,7 +788,8 @@ func (bNum *BigIntNum) FormatThousandsStr(negValMode NegativeValueFmtMode) strin
 			startIdx++
 
 			if bNum.precision > 0 &&
-				int(bNum.precision) == startIdx {
+				int(bNum.precision) == startIdx &&
+				negValMode != ABSOLUTEPURENUMSTRFMTMODE {
 
 				outRunes = append(outRunes, bNum.decimalSeparator)
 				startIdx++
@@ -764,11 +806,14 @@ func (bNum *BigIntNum) FormatThousandsStr(negValMode NegativeValueFmtMode) strin
 			outRunes = append(outRunes, '-')
 			startIdx++
 
-		}	else {
-			// MUST BE negValMode == PARENTHESESNEGVALFMTMODE
+		}	else if negValMode == PARENTHESESNEGVALFMTMODE {
+
 			outRunes = append(outRunes, '(')
 			startIdx+=2
 		}
+
+		// Must Be negValMode == ABSOLUTEPURENUMSTRFMTMODE
+
 	}
 
 	sortLimit := startIdx / 2

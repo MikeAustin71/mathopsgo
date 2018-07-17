@@ -32,6 +32,21 @@ func TestNegativeValueFmtMode_String_02(t *testing.T) {
 
 }
 
+func TestNegativeValueFmtMode_String_03(t *testing.T) {
+
+	r := ABSOLUTEPURENUMSTRFMTMODE
+
+	expectedStr := "AbsolutePureNumberString"
+
+	s := r.String()
+
+	if expectedStr != s {
+		t.Errorf("Expected ABSOLUTEPURENUMSTRFMTMODE string='%v'. Instead, string='%v' ",
+			expectedStr, s)
+	}
+
+}
+
 func TestNegativeValueFmtMode_Value_01(t *testing.T) {
 
 	var r NegativeValueFmtMode
@@ -60,6 +75,22 @@ func TestNegativeValueFmtMode_Value_02(t *testing.T) {
 
 	if i != 1 {
 		t.Errorf("Expected 'PARENTHESESNEGVALFMTMODE' value = 1. Instead, got %v", i)
+	}
+
+}
+
+func TestNegativeValueFmtMode_Value_03(t *testing.T) {
+
+	var r NegativeValueFmtMode
+
+	var i int
+
+	r = ABSOLUTEPURENUMSTRFMTMODE
+
+	i = int(r)
+
+	if i != 2 {
+		t.Errorf("Expected 'ABSOLUTEPURENUMSTRFMTMODE' value = 2. Instead, got %v", i)
 	}
 
 }
