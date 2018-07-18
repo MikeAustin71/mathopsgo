@@ -837,6 +837,74 @@ func TestBigIntNum_FormatNumStr_20(t *testing.T) {
 	}
 }
 
+func TestBigIntNum_FormatNumStr_21(t *testing.T) {
+
+	originalBInt := big.NewInt(-12345)
+	precision := uint(5)
+	expectedNumStr := "12345"
+	mode := ABSOLUTEPURENUMSTRFMTMODE
+
+	bINum := BigIntNum{}.NewBigInt(originalBInt, precision)
+
+	outStr := bINum.FormatNumStr(mode)
+
+	if expectedNumStr != outStr {
+		t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v'",
+			expectedNumStr, outStr)
+	}
+}
+
+func TestBigIntNum_FormatNumStr_22(t *testing.T) {
+
+	originalBInt := big.NewInt(12345)
+	precision := uint(2)
+	expectedNumStr := "12345"
+	mode := ABSOLUTEPURENUMSTRFMTMODE
+
+	bINum := BigIntNum{}.NewBigInt(originalBInt, precision)
+
+	outStr := bINum.FormatNumStr(mode)
+
+	if expectedNumStr != outStr {
+		t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v'",
+			expectedNumStr, outStr)
+	}
+}
+
+func TestBigIntNum_FormatNumStr_23(t *testing.T) {
+
+	originalBInt := big.NewInt(12345)
+	precision := uint(7)
+	expectedNumStr := "0012345"
+	mode := ABSOLUTEPURENUMSTRFMTMODE
+
+	bINum := BigIntNum{}.NewBigInt(originalBInt, precision)
+
+	outStr := bINum.FormatNumStr(mode)
+
+	if expectedNumStr != outStr {
+		t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v'",
+			expectedNumStr, outStr)
+	}
+}
+
+func TestBigIntNum_FormatNumStr_24(t *testing.T) {
+
+	originalBInt := big.NewInt(12345)
+	precision := uint(2)
+	expectedNumStr := "12345"
+	mode := ABSOLUTEPURENUMSTRFMTMODE
+
+	bINum := BigIntNum{}.NewBigInt(originalBInt, precision)
+
+	outStr := bINum.FormatNumStr(mode)
+
+	if expectedNumStr != outStr {
+		t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v'",
+			expectedNumStr, outStr)
+	}
+}
+
 func TestBigIntNum_FormatThousandsStr_01(t *testing.T) {
 
 	originalNumStr := "1234"
@@ -1277,6 +1345,74 @@ func TestBigIntNum_FormatThousandsStr_21(t *testing.T) {
 	precision := uint(5)
 	expectedNumStr := "(0.12345)"
 	mode := PARENTHESESNEGVALFMTMODE
+
+	bINum := BigIntNum{}.NewBigInt(originalBInt, precision)
+
+	outStr := bINum.FormatThousandsStr(mode)
+
+	if expectedNumStr != outStr {
+		t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v'",
+			expectedNumStr, outStr)
+	}
+}
+
+func TestBigIntNum_FormatThousandsStr_22(t *testing.T) {
+
+	originalBInt := big.NewInt(-12345)
+	precision := uint(5)
+	expectedNumStr := "12345"
+	mode := ABSOLUTEPURENUMSTRFMTMODE
+
+	bINum := BigIntNum{}.NewBigInt(originalBInt, precision)
+
+	outStr := bINum.FormatThousandsStr(mode)
+
+	if expectedNumStr != outStr {
+		t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v'",
+			expectedNumStr, outStr)
+	}
+}
+
+func TestBigIntNum_FormatThousandsStr_23(t *testing.T) {
+
+	originalBInt := big.NewInt(12345)
+	precision := uint(0)
+	expectedNumStr := "12,345"
+	mode := ABSOLUTEPURENUMSTRFMTMODE
+
+	bINum := BigIntNum{}.NewBigInt(originalBInt, precision)
+
+	outStr := bINum.FormatThousandsStr(mode)
+
+	if expectedNumStr != outStr {
+		t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v'",
+			expectedNumStr, outStr)
+	}
+}
+
+func TestBigIntNum_FormatThousandsStr_24(t *testing.T) {
+
+	originalBInt := big.NewInt(-12345)
+	precision := uint(0)
+	expectedNumStr := "12,345"
+	mode := ABSOLUTEPURENUMSTRFMTMODE
+
+	bINum := BigIntNum{}.NewBigInt(originalBInt, precision)
+
+	outStr := bINum.FormatThousandsStr(mode)
+
+	if expectedNumStr != outStr {
+		t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v'",
+			expectedNumStr, outStr)
+	}
+}
+
+func TestBigIntNum_FormatThousandsStr_25(t *testing.T) {
+
+	originalBInt := big.NewInt(123)
+	precision := uint(0)
+	expectedNumStr := "123"
+	mode := ABSOLUTEPURENUMSTRFMTMODE
 
 	bINum := BigIntNum{}.NewBigInt(originalBInt, precision)
 

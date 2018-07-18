@@ -396,7 +396,13 @@ func (bNum *BigIntNum) FormatCurrencyStr(negValMode NegativeValueFmtMode) string
 				outRunes = append(outRunes, bNum.decimalSeparator)
 			}
 
-			for h := 0; h < int(bNum.precision); h++ {
+			cnt := int(bNum.precision)
+
+			if negValMode == ABSOLUTEPURENUMSTRFMTMODE {
+				cnt--
+			}
+
+			for h := 0; h < cnt ; h++ {
 				outRunes = append(outRunes, '0')
 			}
 
@@ -457,6 +463,10 @@ func (bNum *BigIntNum) FormatCurrencyStr(negValMode NegativeValueFmtMode) string
 	if int(bNum.precision) >= digitCnt {
 
 		delta := int(bNum.precision) - digitCnt + 1
+
+		if negValMode == ABSOLUTEPURENUMSTRFMTMODE {
+			delta--
+		}
 
 		for k:=0; k < delta; k++ {
 			outRunes = append(outRunes, '0')
@@ -563,7 +573,13 @@ func (bNum *BigIntNum) FormatNumStr(negValMode NegativeValueFmtMode) string {
 				outRunes = append(outRunes, bNum.decimalSeparator)
 			}
 
-			for h := 0; h < int(bNum.precision); h++ {
+			cnt := int(bNum.precision)
+
+			if negValMode == ABSOLUTEPURENUMSTRFMTMODE {
+				cnt--
+			}
+
+			for h := 0; h < cnt; h++ {
 				outRunes = append(outRunes, '0')
 			}
 
@@ -605,6 +621,10 @@ func (bNum *BigIntNum) FormatNumStr(negValMode NegativeValueFmtMode) string {
 	if int(bNum.precision) >= digitCnt {
 
 		delta := int(bNum.precision) - digitCnt + 1
+
+		if negValMode == ABSOLUTEPURENUMSTRFMTMODE {
+			delta--
+		}
 
 		for k:=0; k < delta; k++ {
 			outRunes = append(outRunes, '0')
@@ -720,8 +740,13 @@ func (bNum *BigIntNum) FormatThousandsStr(negValMode NegativeValueFmtMode) strin
 				outRunes = append(outRunes, bNum.decimalSeparator)
 			}
 
+			cnt := int(bNum.precision)
 
-			for h := 0; h < int(bNum.precision); h++ {
+			if negValMode == ABSOLUTEPURENUMSTRFMTMODE {
+				cnt--
+			}
+
+			for h := 0; h < cnt; h++ {
 				outRunes = append(outRunes, '0')
 			}
 
@@ -782,6 +807,10 @@ func (bNum *BigIntNum) FormatThousandsStr(negValMode NegativeValueFmtMode) strin
 	if int(bNum.precision) >= digitCnt {
 
 		delta := int(bNum.precision) - digitCnt + 1
+
+		if negValMode == ABSOLUTEPURENUMSTRFMTMODE {
+			delta--
+		}
 
 		for k:=0; k < delta; k++ {
 			outRunes = append(outRunes, '0')
