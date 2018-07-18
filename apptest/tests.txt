@@ -703,7 +703,7 @@
 === RUN   TestBigIntMathNthRoot_GetNthRootBigNum_26
 --- PASS: TestBigIntMathNthRoot_GetNthRootBigNum_26 (0.00s)
 === RUN   TestBigIntMathNthRoot_GetNthRootBigNum_27
---- PASS: TestBigIntMathNthRoot_GetNthRootBigNum_27 (0.19s)
+--- PASS: TestBigIntMathNthRoot_GetNthRootBigNum_27 (0.16s)
 === RUN   TestBigIntMathPower_Pwr_01
 --- PASS: TestBigIntMathPower_Pwr_01 (0.00s)
 === RUN   TestBigIntMathPower_Pwr_02
@@ -1719,15 +1719,11 @@
 === RUN   TestDecimal_SetFloat_02
 --- PASS: TestDecimal_SetFloat_02 (0.00s)
 === RUN   TestDecimal_SetFloat64_01
---- FAIL: TestDecimal_SetFloat64_01 (0.00s)
-	xt_decimal_04_test.go:561: Expected NumStr = '92.256'. Instead got NumStr= '92.256000000000000227373675443232059478759765625'
-	xt_decimal_04_test.go:565: Expected precision= '3'. Intead, got precision= '45' 
+--- PASS: TestDecimal_SetFloat64_01 (0.00s)
 === RUN   TestDecimal_SetFloat64_02
 --- PASS: TestDecimal_SetFloat64_02 (0.00s)
 === RUN   TestDecimal_SetFloatBig_01
---- FAIL: TestDecimal_SetFloatBig_01 (0.00s)
-	xt_decimal_04_test.go:630: Expected NumStr = '92.256'. Instead got NumStr= '92.256000000000000227373675443232059478759765625'
-	xt_decimal_04_test.go:634: Expected precision= '3'. Intead, got precision= '45' 
+--- PASS: TestDecimal_SetFloatBig_01 (0.00s)
 === RUN   TestDecimal_SetFloatBig_02
 --- PASS: TestDecimal_SetFloatBig_02 (0.00s)
 === RUN   TestDecimal_SetIntFracStrings_01
@@ -1735,23 +1731,17 @@
 === RUN   TestDecimal_SetIntFracStrings_02
 --- PASS: TestDecimal_SetIntFracStrings_02 (0.00s)
 === RUN   TestDecimal_ShiftPrecisionLeft_01
---- FAIL: TestDecimal_ShiftPrecisionLeft_01 (0.00s)
-	xt_decimal_05_test.go:27: Error: Expected NumStr='123456.789'.  Instead, NumStr='123456789000'.
+--- PASS: TestDecimal_ShiftPrecisionLeft_01 (0.00s)
 === RUN   TestDecimal_ShiftPrecisionLeft_02
---- FAIL: TestDecimal_ShiftPrecisionLeft_02 (0.00s)
-	xt_decimal_05_test.go:55: Error: Expected NumStr='0.012345'.  Instead, NumStr='12345000000'.
+--- PASS: TestDecimal_ShiftPrecisionLeft_02 (0.00s)
 === RUN   TestDecimal_ShiftPrecisionLeft_03
---- FAIL: TestDecimal_ShiftPrecisionLeft_03 (0.00s)
-	xt_decimal_05_test.go:83: Error: Expected NumStr='0.000012345'.  Instead, NumStr='12345000000000'.
+--- PASS: TestDecimal_ShiftPrecisionLeft_03 (0.00s)
 === RUN   TestDecimal_ShiftPrecisionLeft_04
---- FAIL: TestDecimal_ShiftPrecisionLeft_04 (0.00s)
-	xt_decimal_05_test.go:111: Error: Expected NumStr='-123456.789'.  Instead, NumStr='-123456789000'.
+--- PASS: TestDecimal_ShiftPrecisionLeft_04 (0.00s)
 === RUN   TestDecimal_ShiftPrecisionLeft_05
---- FAIL: TestDecimal_ShiftPrecisionLeft_05 (0.00s)
-	xt_decimal_05_test.go:139: Error: Expected NumStr='-0.012345'.  Instead, NumStr='-12345000000'.
+--- PASS: TestDecimal_ShiftPrecisionLeft_05 (0.00s)
 === RUN   TestDecimal_ShiftPrecisionLeft_06
---- FAIL: TestDecimal_ShiftPrecisionLeft_06 (0.00s)
-	xt_decimal_05_test.go:167: Error: Expected NumStr='-0.000012345'.  Instead, NumStr='-12345000000000'.
+--- PASS: TestDecimal_ShiftPrecisionLeft_06 (0.00s)
 === RUN   TestDecimal_ShiftPrecisionRight_01
 --- PASS: TestDecimal_ShiftPrecisionRight_01 (0.00s)
 === RUN   TestDecimal_ShiftPrecisionRight_02
@@ -1759,11 +1749,9 @@
 === RUN   TestDecimal_ShiftPrecisionRight_03
 --- PASS: TestDecimal_ShiftPrecisionRight_03 (0.00s)
 === RUN   TestDecimal_ShiftPrecisionRight_04
---- FAIL: TestDecimal_ShiftPrecisionRight_04 (0.00s)
-	xt_decimal_05_test.go:280: Error: Expected NumStr='-123456789'.  Instead, NumStr='-123457'.
+--- PASS: TestDecimal_ShiftPrecisionRight_04 (0.00s)
 === RUN   TestDecimal_ShiftPrecisionRight_05
---- FAIL: TestDecimal_ShiftPrecisionRight_05 (0.00s)
-	xt_decimal_05_test.go:308: Error: Expected NumStr='-1234.5'.  Instead, NumStr='-12.3'.
+--- PASS: TestDecimal_ShiftPrecisionRight_05 (0.00s)
 === RUN   TestDecimal_ShiftPrecisionRight_06
 --- PASS: TestDecimal_ShiftPrecisionRight_06 (0.00s)
 === RUN   TestDecimal_Subtract_01
@@ -1793,7 +1781,7 @@
 === RUN   TestFracIntAry_GetRationalValue_06
 --- PASS: TestFracIntAry_GetRationalValue_06 (0.00s)
 === RUN   TestFracIntAry_GetRationalValue_07
---- PASS: TestFracIntAry_GetRationalValue_07 (0.99s)
+--- PASS: TestFracIntAry_GetRationalValue_07 (0.88s)
 === RUN   TestFracIntAry_NewFracIntAry_01
 --- PASS: TestFracIntAry_NewFracIntAry_01 (0.00s)
 === RUN   TestFracIntAry_NewFracIntAry_02
@@ -2139,7 +2127,7 @@
 === RUN   TestIntAry_DivideThisBy_12
 --- PASS: TestIntAry_DivideThisBy_12 (0.00s)
 === RUN   TestIntAry_DivideThisBy_13
---- PASS: TestIntAry_DivideThisBy_13 (0.84s)
+--- PASS: TestIntAry_DivideThisBy_13 (0.83s)
 === RUN   TestIntAry_DivideThisBy_14
 --- PASS: TestIntAry_DivideThisBy_14 (0.00s)
 === RUN   TestIntAry_DivideThisBy_15
@@ -2737,7 +2725,7 @@
 === RUN   TestIntAryMathPower_Pwr_20
 --- PASS: TestIntAryMathPower_Pwr_20 (0.00s)
 === RUN   TestIntAryMathPower_Pwr_21
---- PASS: TestIntAryMathPower_Pwr_21 (0.01s)
+--- PASS: TestIntAryMathPower_Pwr_21 (0.00s)
 === RUN   TestIntAryMathPower_Pwr_22
 --- PASS: TestIntAryMathPower_Pwr_22 (0.00s)
 === RUN   TestIntAryMathPower_Pwr_23
@@ -2751,7 +2739,7 @@
 === RUN   TestIntAryMathPower_PwrByMultiplication_04
 --- PASS: TestIntAryMathPower_PwrByMultiplication_04 (0.00s)
 === RUN   TestIntAryMathPower_PwrByMultiplication_05
---- PASS: TestIntAryMathPower_PwrByMultiplication_05 (0.00s)
+--- PASS: TestIntAryMathPower_PwrByMultiplication_05 (0.01s)
 === RUN   TestIntAryMathPower_PwrByMultiplication_06
 --- PASS: TestIntAryMathPower_PwrByMultiplication_06 (0.00s)
 === RUN   TestIntAryMathPower_PwrByMultiplication_07
@@ -2869,7 +2857,7 @@
 === RUN   TestNthRootOp_GetNthRootIntAry_26
 --- PASS: TestNthRootOp_GetNthRootIntAry_26 (0.00s)
 === RUN   TestNthRootOp_GetNthRootIntAry_27
---- PASS: TestNthRootOp_GetNthRootIntAry_27 (3.80s)
+--- PASS: TestNthRootOp_GetNthRootIntAry_27 (3.64s)
 === RUN   TestNthRootOp_GetSquareRootFloat32_01
 --- PASS: TestNthRootOp_GetSquareRootFloat32_01 (0.00s)
 === RUN   TestNthRootOp_GetSquareRootFloat64_01
@@ -3462,6 +3450,5 @@
 --- PASS: TestStrMathOp_SubtractN1N2_18 (0.00s)
 === RUN   TestStrMathOp_SubtractN1N2_19
 --- PASS: TestStrMathOp_SubtractN1N2_19 (0.00s)
-FAIL
-exit status 1
-FAIL	MikeAustin71/mathopsgo/mathops	10.854s
+PASS
+ok  	MikeAustin71/mathopsgo/mathops	8.684s

@@ -6,10 +6,10 @@ func main() {
 
 
 	baseStr := "123456.789"
-	shiftPlacesLeft := uint(3)
-	expectedResult := "123.456789"
+	shiftPlacesLeft := uint(6)
+	expectedResult := "123456789000"
 
-	examples.ExampleShiftPrecisionLeft(baseStr, shiftPlacesLeft, expectedResult)
+	examples.ExampleShiftPrecisionRight(baseStr, shiftPlacesLeft, expectedResult)
 
 }
 

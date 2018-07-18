@@ -6,6 +6,37 @@ import (
 	"../mathops"
 )
 
+func ExampleShiftPrecisionRight(baseNumStr string, shiftPlacesLeft uint, expectedResult string) {
+
+	bigIntNum, err := mathops.BigIntNum{}.NewNumStr(baseNumStr)
+
+	if err != nil {
+		fmt.Printf("Error returned by BigIntNum{}.NewNumStr(baseNumStr). " +
+			"baseNumStr='%v' Error='%v' \n",
+			baseNumStr, err.Error())
+		return
+	}
+
+	bigIntNum.ShiftPrecisionRight(shiftPlacesLeft)
+
+	actualResult := bigIntNum.GetNumStr()
+
+	fmt.Println()
+	fmt.Println("BigIntNum{}.ShiftPrecisionRight()")
+	fmt.Println("---------------------------------")
+	if expectedResult == actualResult {
+		fmt.Println("*** SUCCESS ***")
+	} else {
+		fmt.Println("@@@ FAILURE @@@")
+	}
+	fmt.Println("-------------------------")
+	fmt.Println("      Base Number: ", baseNumStr)
+	fmt.Println("Shift Places Left: ", shiftPlacesLeft)
+	fmt.Println("    Actual Result: ", actualResult)
+	fmt.Println("  Expected Result: ", expectedResult)
+
+}
+
 func ExampleShiftPrecisionLeft(baseNumStr string, shiftPlacesLeft uint, expectedResult string) {
 
 	bigIntNum, err := mathops.BigIntNum{}.NewNumStr(baseNumStr)
@@ -22,7 +53,7 @@ func ExampleShiftPrecisionLeft(baseNumStr string, shiftPlacesLeft uint, expected
 	actualResult := bigIntNum.GetNumStr()
 
 	fmt.Println()
-	fmt.Println("BigIntNum{}.SetBigFloat()")
+	fmt.Println("BigIntNum{}.ShiftPrecisionLeft()")
 	fmt.Println("-------------------------")
 	if expectedResult == actualResult {
 		fmt.Println("*** SUCCESS ***")
