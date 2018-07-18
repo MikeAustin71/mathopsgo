@@ -1295,51 +1295,19 @@ func (dec *Decimal) Mul(d2 Decimal) (Decimal, error) {
 			"Error='%v' ", err.Error())
 	}
 
-	x, err := dec.bigINum.GetBigInt()
+	numSeps := dec.GetNumericSeparatorsDto()
+
+	bigIntNum := BigIntMathMultiply{}.MultiplyBigIntNums(dec.bigINum, d2.bigINum)
+
+	d4 := Decimal{}.NewBigIntNum(bigIntNum)
+
+	err = d4.SetNumericSeparatorsDto(numSeps)
 
 	if err != nil {
-		return Decimal{},
-			fmt.Errorf(ePrefix + "Error returned by dec.bigINum.GetBigInt() " +
-				"Error='%v' ", err.Error())
-	}
-
-	decSignedAllDigitsBigInt := big.NewInt(0).Set(x)
-	decPrecision := dec.bigINum.precision
-	
-	x, err = d2.bigINum.GetBigInt()
-
-	if err != nil {
-		return Decimal{},
-			fmt.Errorf(ePrefix + "Error returned by d2.bigINum.GetBigInt() " +
-				"Error='%v' ", err.Error())
-	}
-
-	d2SignedAllDigitsBigInt := big.NewInt(0).Set(x)
-	d2Precision := d2.bigINum.precision
-	
-	s3Val := big.NewInt(0).Mul(decSignedAllDigitsBigInt, d2SignedAllDigitsBigInt)
-	s3Text := s3Val.Text(10)
-
-	newPrecision := uint( decPrecision + d2Precision)
-
-	// s3Text is now a pure number string with no decimal point.
-	nDto, err := NumStrDto{}.NewPtr().ShiftPrecisionLeft(s3Text, newPrecision)
-
-	if err != nil {
-		return Decimal{},
-			fmt.Errorf(ePrefix + "Error returned by NumStrDto{}.NewPtr()." +
-				"ShiftPrecisionLeft(s3Text, newPrecision) " +
-				"s3Text='%v' newPrecision='%v' Error='%v'",
-				s3Text, newPrecision, err.Error())
-	}
-
-	d4, err := dec.MakeDecimalFromNumStrDto(nDto)
-
-	if err != nil {
-		return Decimal{},
-			fmt.Errorf(ePrefix + "Error returned from dec.MakeDecimalFromNumStrDto(nDto) " +
-				"nDto.GetNumStr()='%v'  nDto.GetPrecision()='%v'  Error='%v'",
-				nDto.GetNumStr(), nDto.GetPrecision(), err.Error())
+		return Decimal{}.NewZero(0),
+		fmt.Errorf(ePrefix +
+			"Error returned by d4.SetNumericSeparatorsDto(numSeps) " +
+			"Error='%v' \n", err.Error())
 	}
 
 	return d4, nil
