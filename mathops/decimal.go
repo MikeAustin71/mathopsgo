@@ -1171,52 +1171,6 @@ func (dec *Decimal) IsZero() bool {
 	return dec.bigINum.IsZero()
 }
 
-// MakeDecimalBigIntPrecision - This method receives a *big.Int and a precision value which
-// are used to construct and return a Decimal Type. The value of 'precision' determines the
-// number of Big Int digits which will be placed to the right of the decimal place.
-func (dec *Decimal) MakeDecimalBigIntPrecision(iBig *big.Int, precision uint) (Decimal, error) {
-
-	ePrefix := "Decimal.MakeDecimalBigIntPrecision() "
-
-	base10 := big.NewInt(10)
-
-	exponent := big.NewInt(int64(precision))
-	scaleFactor := big.NewInt(0).Exp(base10, exponent, nil)
-	signedAllDigitsBigInt := big.NewInt(0).Set(iBig)
-
-	rDividend := big.NewRat(1, 1).SetInt(signedAllDigitsBigInt)
-	rDivisor := big.NewRat(1, 1).SetInt(scaleFactor)
-	rQuotient := big.NewRat(1, 1).Quo(rDividend, rDivisor)
-
-	var err error
-
-	numStrDto, err := NumStrDto{}.NewNumStr(rQuotient.FloatString(int(precision)))
-
-	if err != nil {
-		return Decimal{},
-		fmt.Errorf(ePrefix +
-			"Error returned by NumStrDto{}.NewNumStr(rQuotient.FloatString(int(precision))) " +
-			"Error='%v'", err.Error())
-	}
-
-
-	numStrDto.SetSeparators(dec.GetDecimalSeparator(),
-													dec.GetThousandsSeparator(),
-													dec.GetCurrencySymbol())
-
-	d2, err := dec.MakeDecimalFromNumStrDto(numStrDto)
-
-	if err != nil {
-
-		return Decimal{},
-			fmt.Errorf(ePrefix +
-				"Error returned by d2.bigINum.IsNumStrDtoValid() " +
-				"Error='%v'", err.Error())
-	}
-
-	return d2, nil
-}
-
 // MakeDecimalFromNumStrDto - generates a Decimal Type based on string information
 // provided by the 'nDto' NumStrDto parameter.
 func (dec *Decimal) MakeDecimalFromNumStrDto(nDto NumStrDto) (Decimal, error) {

@@ -2,58 +2,8 @@ package mathops
 
 import (
 	"testing"
-	"math/big"
-)
+	)
 
-
-func TestDecimal_MakeDecimalBigIntPrecision_01(t *testing.T) {
-	numStr := "123456123456"
-	bigI, isOk := big.NewInt(0).SetString(numStr, 10)
-
-	if !isOk {
-		t.Errorf("Failed to convert string to bigInt from numStrDto='%v'", numStr)
-	}
-
-	precision := uint(3)
-
-	d1 := Decimal{}
-	d2, err := d1.MakeDecimalBigIntPrecision(bigI, precision)
-
-	if err != nil {
-		t.Errorf("Error from MakeDecimalBigIntPrecision. Error:= %v \n", err)
-	}
-
-	expected := "123456123.456"
-
-	if expected != d2.GetNumStr() {
-		t.Errorf("Expected NumStr: %v. Instead, got %v", expected, d2.GetNumStr())
-	}
-
-}
-
-func TestDecimal_MakeDecimalBigIntPrecision_02(t *testing.T) {
-	numStr := "0"
-	expected := "0.00"
-	precision := uint(2)
-
-	bigI, isOk := big.NewInt(0).SetString(numStr, 10)
-
-	if !isOk {
-		t.Errorf("Failed to convert string to bigInt from numStrDto='%v'", numStr)
-	}
-
-	d1 := Decimal{}
-	d2, err := d1.MakeDecimalBigIntPrecision(bigI, precision)
-
-	if err != nil {
-		t.Errorf("Error from MakeDecimalBigIntPrecision. Error:= %v \n", err)
-	}
-
-	if expected != d2.GetNumStr() {
-		t.Errorf("Expected NumStr: %v. Instead, got %v", expected, d2.GetNumStr())
-	}
-
-}
 
 func TestDecimal_MakeDecimalFromIntAry_01(t *testing.T) {
 
@@ -220,7 +170,7 @@ func TestDecimal_Mul_03(t *testing.T) {
 
 }
 
-func TestDecimal_MulTotal_01(t *testing.T) {
+func TestDecimal_MulThis_01(t *testing.T) {
 	numStr := "3"
 	mul, err := Decimal{}.NewNumStr(numStr)
 
