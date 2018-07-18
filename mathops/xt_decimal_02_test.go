@@ -237,7 +237,7 @@ func TestDecimal_MulTotal_01(t *testing.T) {
 	}
 
 	for i := 0; i < 4; i++ {
-		d.MulTotal(mul)
+		d.MulThis(mul)
 	}
 
 	expected := "81"

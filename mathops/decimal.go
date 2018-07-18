@@ -1301,31 +1301,54 @@ func (dec *Decimal) Mul(d2 Decimal) (Decimal, error) {
 
 	d4 := Decimal{}.NewBigIntNum(bigIntNum)
 
-	err = d4.SetNumericSeparatorsDto(numSeps)
+	err = d4.bigINum.SetNumericSeparatorsDto(numSeps)
 
 	if err != nil {
 		return Decimal{}.NewZero(0),
 		fmt.Errorf(ePrefix +
-			"Error returned by d4.SetNumericSeparatorsDto(numSeps) " +
+			"Error returned by d4.bigINum.SetNumericSeparatorsDto(numSeps) " +
 			"Error='%v' \n", err.Error())
 	}
 
 	return d4, nil
 }
 
-// MulTotal - Multiplies the value of the incoming
+// MulThis - Multiplies the value of the incoming
 // Decimal type by the value of the current or receiving
 // Decimal type. The result of the multiplication is
 // stored in the current Decimal type.
-func (dec *Decimal) MulTotal(d2 Decimal) error {
+//
+// The original value of this current Decimal Type is
+// therefore destroyed and overwritten.
+//
+func (dec *Decimal) MulThis(d2 Decimal) error {
 
-	d3, err := dec.Mul(d2)
+	ePrefix := "Decimal.MulThis() "
+	err := dec.IsDecimalValid()
 
-	if err != nil {
-		return fmt.Errorf("MulTotal() Error from dec.Mul(d2). Error= %v", err)
+	if err != nil  {
+		return 	fmt.Errorf(ePrefix + "This Decimal object (dec) is INVALID! " +
+				"Error='%v' ", err.Error())
 	}
 
-	dec.CopyIn(d3)
+	err = d2.IsDecimalValid()
+
+	if err != nil {
+		return 	fmt.Errorf(ePrefix + "Incoming Decimal object (d2) is INVALID! " +
+				"Error='%v' ", err.Error())
+	}
+
+	numSeps := dec.GetNumericSeparatorsDto()
+
+	dec.bigINum = BigIntMathMultiply{}.MultiplyBigIntNums(dec.bigINum, d2.bigINum)
+
+	err = dec.bigINum.SetNumericSeparatorsDto(numSeps)
+
+	if err != nil {
+		return fmt.Errorf(ePrefix +
+			"Error returned by dec.bigINum.SetNumericSeparatorsDto(numSeps) . " +
+			"Error= %v", err.Error())
+	}
 
 	return nil
 }
