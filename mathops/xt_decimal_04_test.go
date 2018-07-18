@@ -703,7 +703,7 @@ func TestDecimal_SetIntFracStrings_01(t *testing.T) {
 
 	d1 := Decimal{}.New()
 
-	err := d1.SetIntFracStrings(eSignVal, intStr, fracStr)
+	err := d1.SetIntFracStrings(intStr, fracStr, eSignVal)
 
 	if err != nil {
 		t.Errorf("d1.SetIntFracStrings(eSignVal, intStr, fracStr) returned an error. eSignVal= '%v' intStr= '%v' fracStr= '%v' Error= %v", eSignVal, intStr, fracStr, err)
@@ -737,7 +737,7 @@ func TestDecimal_SetIntFracStrings_02(t *testing.T) {
 
 	d1 := Decimal{}.New()
 
-	err := d1.SetIntFracStrings(eSignVal, intStr, fracStr)
+	err := d1.SetIntFracStrings(intStr, fracStr, eSignVal)
 
 	if err != nil {
 		t.Errorf("d1.SetIntFracStrings(eSignVal, intStr, fracStr) returned an error. eSignVal= '%v' intStr= '%v' fracStr= '%v' Error= %v", eSignVal, intStr, fracStr, err)

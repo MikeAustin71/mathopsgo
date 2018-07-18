@@ -1670,6 +1670,38 @@ func (bNum BigIntNum) NewDecimal(decNum Decimal) (BigIntNum, error) {
 	return b, nil
 }
 
+// NewFromIntFracStrings - Creates a new BigIntNum instance based on an numeric
+// value represented by separate integer and fractional components.
+//
+// Input parameters 'intStr' and 'fracStr' are strings representing the integer and
+// fractional elements of the numeric value. These elements are combined by this
+// method to create a numeric value which is then assigned to the new BigIntNum
+// instance.
+//
+// Input parameter 'signVal' must be set to one of two values: +1 or -1. This value is
+// used to signal the sign of the resulting numeric value. +1 generates a positive number
+// and -1 generates a negative number.
+//
+func (bNum BigIntNum) NewFromIntFracStrings(
+					intStr, fracStr string, signVal int) (BigIntNum, error) {
+
+	b2 := BigIntNum{}
+
+	b2.setDefaultSeparators()
+
+	err := b2.SetFromIntFracStrings(intStr, fracStr, signVal)
+
+	if err != nil {
+		ePrefix := "BigIntNum.NewFromIntFracStrings() "
+		return BigIntNum{}.NewZero(0),
+		fmt.Errorf(ePrefix +
+			"Error returned by b2.SetFromIntFracStrings(intStr, fracStr, signVal). " +
+			"Error='%v' \n", err.Error())
+	}
+
+	return b2, nil
+}
+
 // NewFloat32 - Returns a new BigIntNum instance using a float32 floating point
 // input parameter.  The precision of the number is specified by the input
 // parameter, 'decimalPlaces'.
@@ -2404,6 +2436,86 @@ func (bNum *BigIntNum) SetDecimalSeparator(decimalSeparator rune) {
 	}
 
 	bNum.decimalSeparator = decimalSeparator
+}
+
+// SetFromIntFracStrings - Sets the value of the current BigIntNum instance based on
+// a numeric value represented by separate integer and fractional components.
+//
+// Input parameters 'intStr' and 'fracStr' are strings representing the integer and
+// fractional components. They are combined by this method to create a numeric value
+// which is assigned to the current BigIntNum instance.
+//
+// Input parameter 'signVal' must be set to one of two values: +1 or -1. This value is
+// used to signal the sign of the resulting numeric value. +1 generates a positive number
+// and -1 generates a negative number.
+//
+func (bNum *BigIntNum) SetFromIntFracStrings(intStr, fracStr string, signVal int) error {
+
+	ePrefix := "BigIntNum.SetFromIntFracStrings() "
+
+	cleanIntRuneAry := make([]rune, 0, 100)
+
+	zeroChar := uint8('0')
+	nineChar := uint8('9')
+
+	lStr := len(intStr)
+
+	if lStr == 0 {
+		return errors.New(ePrefix + "Error: Input Parameter 'intStr' is Zero Length!")
+	}
+
+	isFirstRune := true
+
+	// Create pure number string from 'intStr'
+	for i:= 0 ; i < lStr; i++ {
+
+		if intStr[i] >= zeroChar &&
+				intStr[i] <= nineChar {
+
+			if isFirstRune && signVal == -1 {
+				cleanIntRuneAry = append(cleanIntRuneAry, '-')
+			}
+
+			isFirstRune = false
+
+			cleanIntRuneAry = append(cleanIntRuneAry, rune(intStr[i]))
+		}
+	}
+
+	if len(cleanIntRuneAry) == 0 {
+		cleanIntRuneAry = append(cleanIntRuneAry, '0')
+	}
+
+	lStr = len(fracStr)
+
+	if lStr > 0 {
+
+		cleanFracRuneAry := make([]rune, 0, 100)
+
+		for j:= 0; j < lStr; j++ {
+
+			if fracStr[j] >= zeroChar &&
+				fracStr[j] <= nineChar {
+				cleanFracRuneAry = append(cleanFracRuneAry, rune(intStr[j]))
+			}
+		}
+
+		if len(cleanFracRuneAry) > 0 {
+			cleanIntRuneAry = append(cleanIntRuneAry, bNum.GetDecimalSeparator())
+			cleanIntRuneAry = append(cleanIntRuneAry, cleanFracRuneAry...)
+		}
+
+	}
+
+	err := bNum.SetNumStr(string(cleanIntRuneAry))
+
+	if err != nil {
+		return fmt.Errorf(ePrefix +
+			"Error returned by bNum.SetNumStr(string(cleanIntRuneAry)). " +
+			"cleanIntRuneAry='%v' Error='%v' ", string(cleanIntRuneAry), err.Error())
+	}
+
+	return nil
 }
 
 // SetFloat32 - Sets the value of a BigIntNum using a float32 floating point
