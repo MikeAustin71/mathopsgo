@@ -115,7 +115,7 @@
 === RUN   TestBigIntMathAdd_AddIntAryArray_02
 --- PASS: TestBigIntMathAdd_AddIntAryArray_02 (0.00s)
 === RUN   TestBigIntMathAdd_AddIntAryOutputToArray_01
---- PASS: TestBigIntMathAdd_AddIntAryOutputToArray_01 (0.01s)
+--- PASS: TestBigIntMathAdd_AddIntAryOutputToArray_01 (0.00s)
 === RUN   TestBigIntMathAdd_AddIntAryOutputToArray_02
 --- PASS: TestBigIntMathAdd_AddIntAryOutputToArray_02 (0.00s)
 === RUN   TestBigIntMathAdd_AddIntArySeries_01
@@ -385,7 +385,7 @@
 === RUN   TestBigIntMathDivide_INumMgrQuotientMod_04
 --- PASS: TestBigIntMathDivide_INumMgrQuotientMod_04 (0.00s)
 === RUN   TestBigIntMathDivide_INumMgrFracQuotient_01
---- PASS: TestBigIntMathDivide_INumMgrFracQuotient_01 (0.01s)
+--- PASS: TestBigIntMathDivide_INumMgrFracQuotient_01 (0.00s)
 === RUN   TestBigIntMathDivide_INumMgrFracQuotient_02
 --- PASS: TestBigIntMathDivide_INumMgrFracQuotient_02 (0.00s)
 === RUN   TestBigIntMathDivide_INumMgrFracQuotient_03
@@ -747,7 +747,7 @@
 === RUN   TestBigIntMathPower_Pwr_21
 --- PASS: TestBigIntMathPower_Pwr_21 (0.00s)
 === RUN   TestBigIntMathPower_Pwr_22
---- PASS: TestBigIntMathPower_Pwr_22 (0.03s)
+--- PASS: TestBigIntMathPower_Pwr_22 (0.04s)
 === RUN   TestBigIntMathPower_Pwr_23
 --- PASS: TestBigIntMathPower_Pwr_23 (0.00s)
 === RUN   TestBigIntMathSubtract_SubtractBigInts_01
@@ -1779,27 +1779,1728 @@
 === RUN   TestDecimal_SetFloatBig_02
 --- PASS: TestDecimal_SetFloatBig_02 (0.00s)
 === RUN   TestDecimal_SetIntFracStrings_01
---- FAIL: TestDecimal_SetIntFracStrings_01 (0.00s)
-	xt_decimal_04_test.go:713: Expected NumStr = '123.456'. Instead got NumStr= '123.123'
+--- PASS: TestDecimal_SetIntFracStrings_01 (0.00s)
 === RUN   TestDecimal_SetIntFracStrings_02
---- FAIL: TestDecimal_SetIntFracStrings_02 (0.00s)
-panic: runtime error: index out of range [recovered]
-	panic: runtime error: index out of range
-
-goroutine 937 [running]:
-testing.tRunner.func1(0xc0423194a0)
-	C:/Go/src/testing/testing.go:742 +0x2a4
-panic(0x8ed560, 0xbb2750)
-	C:/Go/src/runtime/panic.go:505 +0x237
-MikeAustin71/mathopsgo/mathops.(*BigIntNum).SetFromIntFracStrings(0xc042427d60, 0x91b303, 0x3, 0x91b52c, 0x4, 0xffffffffffffffff, 0x0, 0xc042118fa0)
-	D:/go/work/src/MikeAustin71/mathopsgo/mathops/bigintnum.go:2499 +0x82e
-MikeAustin71/mathopsgo/mathops.(*Decimal).SetIntFracStrings(0xc04204bf18, 0x91b303, 0x3, 0x91b52c, 0x4, 0xffffffffffffffff, 0x0, 0x0)
-	D:/go/work/src/MikeAustin71/mathopsgo/mathops/decimal.go:2078 +0x120
-MikeAustin71/mathopsgo/mathops.TestDecimal_SetIntFracStrings_02(0xc0423194a0)
-	D:/go/work/src/MikeAustin71/mathopsgo/mathops/xt_decimal_04_test.go:740 +0xbf
-testing.tRunner(0xc0423194a0, 0x956aa0)
-	C:/Go/src/testing/testing.go:777 +0xd7
-created by testing.(*T).Run
-	C:/Go/src/testing/testing.go:824 +0x2e7
-exit status 2
-FAIL	MikeAustin71/mathopsgo/mathops	3.452s
+--- PASS: TestDecimal_SetIntFracStrings_02 (0.00s)
+=== RUN   TestDecimal_ShiftPrecisionLeft_01
+--- PASS: TestDecimal_ShiftPrecisionLeft_01 (0.00s)
+=== RUN   TestDecimal_ShiftPrecisionLeft_02
+--- PASS: TestDecimal_ShiftPrecisionLeft_02 (0.00s)
+=== RUN   TestDecimal_ShiftPrecisionLeft_03
+--- PASS: TestDecimal_ShiftPrecisionLeft_03 (0.00s)
+=== RUN   TestDecimal_ShiftPrecisionLeft_04
+--- PASS: TestDecimal_ShiftPrecisionLeft_04 (0.00s)
+=== RUN   TestDecimal_ShiftPrecisionLeft_05
+--- PASS: TestDecimal_ShiftPrecisionLeft_05 (0.00s)
+=== RUN   TestDecimal_ShiftPrecisionLeft_06
+--- PASS: TestDecimal_ShiftPrecisionLeft_06 (0.00s)
+=== RUN   TestDecimal_ShiftPrecisionRight_01
+--- PASS: TestDecimal_ShiftPrecisionRight_01 (0.00s)
+=== RUN   TestDecimal_ShiftPrecisionRight_02
+--- PASS: TestDecimal_ShiftPrecisionRight_02 (0.00s)
+=== RUN   TestDecimal_ShiftPrecisionRight_03
+--- PASS: TestDecimal_ShiftPrecisionRight_03 (0.00s)
+=== RUN   TestDecimal_ShiftPrecisionRight_04
+--- PASS: TestDecimal_ShiftPrecisionRight_04 (0.00s)
+=== RUN   TestDecimal_ShiftPrecisionRight_05
+--- PASS: TestDecimal_ShiftPrecisionRight_05 (0.00s)
+=== RUN   TestDecimal_ShiftPrecisionRight_06
+--- PASS: TestDecimal_ShiftPrecisionRight_06 (0.00s)
+=== RUN   TestDecimal_Subtract_01
+--- PASS: TestDecimal_Subtract_01 (0.00s)
+=== RUN   TestDecimal_Subtract_02
+--- PASS: TestDecimal_Subtract_02 (0.00s)
+=== RUN   TestDecimal_Subtract_03
+--- PASS: TestDecimal_Subtract_03 (0.00s)
+=== RUN   TestDecimal_SubtractTotal_01
+--- PASS: TestDecimal_SubtractTotal_01 (0.00s)
+=== RUN   TestDecimal_SubtractTotal_02
+--- PASS: TestDecimal_SubtractTotal_02 (0.00s)
+=== RUN   TestDecimal_SubtractFromThisArray_01
+--- PASS: TestDecimal_SubtractFromThisArray_01 (0.00s)
+=== RUN   TestDecimal_SubtractFromThisMultiple_01
+--- PASS: TestDecimal_SubtractFromThisMultiple_01 (0.00s)
+=== RUN   TestFracIntAry_GetRationalValue_01
+--- PASS: TestFracIntAry_GetRationalValue_01 (0.00s)
+=== RUN   TestFracIntAry_GetRationalValue_02
+--- PASS: TestFracIntAry_GetRationalValue_02 (0.00s)
+=== RUN   TestFracIntAry_GetRationalValue_03
+--- PASS: TestFracIntAry_GetRationalValue_03 (0.00s)
+=== RUN   TestFracIntAry_GetRationalValue_04
+--- PASS: TestFracIntAry_GetRationalValue_04 (0.00s)
+=== RUN   TestFracIntAry_GetRationalValue_05
+--- PASS: TestFracIntAry_GetRationalValue_05 (0.00s)
+=== RUN   TestFracIntAry_GetRationalValue_06
+--- PASS: TestFracIntAry_GetRationalValue_06 (0.00s)
+=== RUN   TestFracIntAry_GetRationalValue_07
+--- PASS: TestFracIntAry_GetRationalValue_07 (0.89s)
+=== RUN   TestFracIntAry_NewFracIntAry_01
+--- PASS: TestFracIntAry_NewFracIntAry_01 (0.00s)
+=== RUN   TestFracIntAry_NewFracIntAry_02
+--- PASS: TestFracIntAry_NewFracIntAry_02 (0.00s)
+=== RUN   TestFracIntAry_NewFracIntAry_03
+--- PASS: TestFracIntAry_NewFracIntAry_03 (0.00s)
+=== RUN   TestFracIntAry_NewFracIntAry_04
+--- PASS: TestFracIntAry_NewFracIntAry_04 (0.00s)
+=== RUN   TestFracIntAry_NewFracIntAry_05
+--- PASS: TestFracIntAry_NewFracIntAry_05 (0.00s)
+=== RUN   TestFracIntAry_NewFracIntAry_06
+--- PASS: TestFracIntAry_NewFracIntAry_06 (0.00s)
+=== RUN   TestIntAry_AddMultipleToThis_01
+--- PASS: TestIntAry_AddMultipleToThis_01 (0.00s)
+=== RUN   TestIntAry_AddToThis_01
+--- PASS: TestIntAry_AddToThis_01 (0.00s)
+=== RUN   TestIntAry_AddToThis_02
+--- PASS: TestIntAry_AddToThis_02 (0.00s)
+=== RUN   TestIntAry_AddToThis_03
+--- PASS: TestIntAry_AddToThis_03 (0.00s)
+=== RUN   TestIntAry_AddToThis_04
+--- PASS: TestIntAry_AddToThis_04 (0.00s)
+=== RUN   TestIntAry_AddToThis_05
+--- PASS: TestIntAry_AddToThis_05 (0.00s)
+=== RUN   TestIntAry_AddToThis_06
+--- PASS: TestIntAry_AddToThis_06 (0.00s)
+=== RUN   TestIntAry_AddToThis_07
+--- PASS: TestIntAry_AddToThis_07 (0.00s)
+=== RUN   TestIntAry_AddToThis_08
+--- PASS: TestIntAry_AddToThis_08 (0.00s)
+=== RUN   TestIntAry_AddToThis_09
+--- PASS: TestIntAry_AddToThis_09 (0.00s)
+=== RUN   TestIntAry_AddToThis_10
+--- PASS: TestIntAry_AddToThis_10 (0.00s)
+=== RUN   TestIntAry_AddToThis_11
+--- PASS: TestIntAry_AddToThis_11 (0.00s)
+=== RUN   TestIntAry_AddToThis_12
+--- PASS: TestIntAry_AddToThis_12 (0.00s)
+=== RUN   TestIntAry_AddToThis_13
+--- PASS: TestIntAry_AddToThis_13 (0.00s)
+=== RUN   TestIntAry_AddToThis_14
+--- PASS: TestIntAry_AddToThis_14 (0.00s)
+=== RUN   TestIntAry_AddToThis_15
+--- PASS: TestIntAry_AddToThis_15 (0.00s)
+=== RUN   TestIntAry_AddToThis_16
+--- PASS: TestIntAry_AddToThis_16 (0.00s)
+=== RUN   TestIntAry_AddToThis_17
+--- PASS: TestIntAry_AddToThis_17 (0.00s)
+=== RUN   TestIntAry_AddToThis_18
+--- PASS: TestIntAry_AddToThis_18 (0.00s)
+=== RUN   TestIntAry_AddToThis_19
+--- PASS: TestIntAry_AddToThis_19 (0.00s)
+=== RUN   TestIntAry_AddToThis_20
+--- PASS: TestIntAry_AddToThis_20 (0.00s)
+=== RUN   TestIntAry_AddToThis_21
+--- PASS: TestIntAry_AddToThis_21 (0.00s)
+=== RUN   TestIntAry_AddToThis_22
+--- PASS: TestIntAry_AddToThis_22 (0.00s)
+=== RUN   TestIntAry_AddToThis_23
+--- PASS: TestIntAry_AddToThis_23 (0.00s)
+=== RUN   TestIntAry_AddToThis_24
+--- PASS: TestIntAry_AddToThis_24 (0.00s)
+=== RUN   TestIntAry_AddIntToThis_01
+--- PASS: TestIntAry_AddIntToThis_01 (0.00s)
+=== RUN   TestIntAry_AddIntToThis_02
+--- PASS: TestIntAry_AddIntToThis_02 (0.00s)
+=== RUN   TestIntAry_AddIntToThis_03
+--- PASS: TestIntAry_AddIntToThis_03 (0.00s)
+=== RUN   TestIntAry_AddIntToThis_04
+--- PASS: TestIntAry_AddIntToThis_04 (0.00s)
+=== RUN   TestIntAry_AddIntToThis_05
+--- PASS: TestIntAry_AddIntToThis_05 (0.00s)
+=== RUN   TestIntAry_AddIntToThis_06
+--- PASS: TestIntAry_AddIntToThis_06 (0.00s)
+=== RUN   TestIntAry_AddIntToThis_07
+--- PASS: TestIntAry_AddIntToThis_07 (0.00s)
+=== RUN   TestIntAry_AddIntToThis_08
+--- PASS: TestIntAry_AddIntToThis_08 (0.00s)
+=== RUN   TestIntAry_AddInt64ToThis_01
+--- PASS: TestIntAry_AddInt64ToThis_01 (0.00s)
+=== RUN   TestIntAry_AddInt64ToThis_02
+--- PASS: TestIntAry_AddInt64ToThis_02 (0.00s)
+=== RUN   TestIntAry_AddInt64ToThis_03
+--- PASS: TestIntAry_AddInt64ToThis_03 (0.00s)
+=== RUN   TestIntAry_AddInt64ToThis_04
+--- PASS: TestIntAry_AddInt64ToThis_04 (0.00s)
+=== RUN   TestIntAry_AddInt64ToThis_05
+--- PASS: TestIntAry_AddInt64ToThis_05 (0.00s)
+=== RUN   TestIntAry_AddInt64ToThis_06
+--- PASS: TestIntAry_AddInt64ToThis_06 (0.00s)
+=== RUN   TestIntAry_AddInt64ToThis_07
+--- PASS: TestIntAry_AddInt64ToThis_07 (0.00s)
+=== RUN   TestIntAry_AddInt64ToThis_08
+--- PASS: TestIntAry_AddInt64ToThis_08 (0.00s)
+=== RUN   TestIntAry_AddBigIntToThis_01
+--- PASS: TestIntAry_AddBigIntToThis_01 (0.00s)
+=== RUN   TestIntAry_AddBigIntToThis_02
+--- PASS: TestIntAry_AddBigIntToThis_02 (0.00s)
+=== RUN   TestIntAry_AddBigIntToThis_03
+--- PASS: TestIntAry_AddBigIntToThis_03 (0.00s)
+=== RUN   TestIntAry_AddBigIntToThis_04
+--- PASS: TestIntAry_AddBigIntToThis_04 (0.00s)
+=== RUN   TestIntAry_AddBigIntToThis_05
+--- PASS: TestIntAry_AddBigIntToThis_05 (0.00s)
+=== RUN   TestIntAry_AddBigIntToThis_06
+--- PASS: TestIntAry_AddBigIntToThis_06 (0.00s)
+=== RUN   TestIntAry_AddBigIntToThis_07
+--- PASS: TestIntAry_AddBigIntToThis_07 (0.00s)
+=== RUN   TestIntAry_AddBigIntToThis_08
+--- PASS: TestIntAry_AddBigIntToThis_08 (0.00s)
+=== RUN   TestIntAry_AddBigIntNumToThis_01
+--- PASS: TestIntAry_AddBigIntNumToThis_01 (0.00s)
+=== RUN   TestIntAry_AddBigIntNumToThis_02
+--- PASS: TestIntAry_AddBigIntNumToThis_02 (0.00s)
+=== RUN   TestIntAry_AddFloat32ToThis_01
+--- PASS: TestIntAry_AddFloat32ToThis_01 (0.00s)
+=== RUN   TestIntAry_AddFloat32ToThis_02
+--- PASS: TestIntAry_AddFloat32ToThis_02 (0.00s)
+=== RUN   TestIntAry_AddFloat32ToThis_03
+--- PASS: TestIntAry_AddFloat32ToThis_03 (0.00s)
+=== RUN   TestIntAry_AddFloat32ToThis_04
+--- PASS: TestIntAry_AddFloat32ToThis_04 (0.00s)
+=== RUN   TestIntAry_AddFloat32ToThis_05
+--- PASS: TestIntAry_AddFloat32ToThis_05 (0.00s)
+=== RUN   TestIntAry_AddFloat32ToThis_06
+--- PASS: TestIntAry_AddFloat32ToThis_06 (0.00s)
+=== RUN   TestIntAry_AddFloat32ToThis_07
+--- PASS: TestIntAry_AddFloat32ToThis_07 (0.00s)
+=== RUN   TestIntAry_AddFloat32ToThis_08
+--- PASS: TestIntAry_AddFloat32ToThis_08 (0.00s)
+=== RUN   TestIntAry_AddFloat32ToThis_09
+--- PASS: TestIntAry_AddFloat32ToThis_09 (0.00s)
+=== RUN   TestIntAry_AddFloat32ToThis_10
+--- PASS: TestIntAry_AddFloat32ToThis_10 (0.00s)
+=== RUN   TestIntAry_AddFloat32ToThis_11
+--- PASS: TestIntAry_AddFloat32ToThis_11 (0.00s)
+=== RUN   TestIntAry_AddFloat64ToThis_01
+--- PASS: TestIntAry_AddFloat64ToThis_01 (0.00s)
+=== RUN   TestIntAry_AddFloat64ToThis_02
+--- PASS: TestIntAry_AddFloat64ToThis_02 (0.00s)
+=== RUN   TestIntAry_AddFloat64ToThis_03
+--- PASS: TestIntAry_AddFloat64ToThis_03 (0.00s)
+=== RUN   TestIntAry_AddFloat64ToThis_04
+--- PASS: TestIntAry_AddFloat64ToThis_04 (0.00s)
+=== RUN   TestIntAry_AddFloat64ToThis_05
+--- PASS: TestIntAry_AddFloat64ToThis_05 (0.00s)
+=== RUN   TestIntAry_AddFloat64ToThis_06
+--- PASS: TestIntAry_AddFloat64ToThis_06 (0.00s)
+=== RUN   TestIntAry_AddFloat64ToThis_07
+--- PASS: TestIntAry_AddFloat64ToThis_07 (0.00s)
+=== RUN   TestIntAry_AddFloat64ToThis_08
+--- PASS: TestIntAry_AddFloat64ToThis_08 (0.00s)
+=== RUN   TestIntAry_AddFloat64ToThis_09
+--- PASS: TestIntAry_AddFloat64ToThis_09 (0.00s)
+=== RUN   TestIntAry_AddFloat64ToThis_10
+--- PASS: TestIntAry_AddFloat64ToThis_10 (0.00s)
+=== RUN   TestIntAry_AddFloatBigToThis_01
+--- PASS: TestIntAry_AddFloatBigToThis_01 (0.00s)
+=== RUN   TestIntAry_AddFloatBigToThis_02
+--- PASS: TestIntAry_AddFloatBigToThis_02 (0.00s)
+=== RUN   TestIntAry_AddFloatBigToThis_03
+--- PASS: TestIntAry_AddFloatBigToThis_03 (0.00s)
+=== RUN   TestIntAry_AddFloatBigToThis_04
+--- PASS: TestIntAry_AddFloatBigToThis_04 (0.00s)
+=== RUN   TestIntAry_AddFloatBigToThis_05
+--- PASS: TestIntAry_AddFloatBigToThis_05 (0.00s)
+=== RUN   TestIntAry_AddFloatBigToThis_06
+--- PASS: TestIntAry_AddFloatBigToThis_06 (0.00s)
+=== RUN   TestIntAry_AddFloatBigToThis_07
+--- PASS: TestIntAry_AddFloatBigToThis_07 (0.00s)
+=== RUN   TestIntAry_AddFloatBigToThis_08
+--- PASS: TestIntAry_AddFloatBigToThis_08 (0.00s)
+=== RUN   TestIntAry_AddFloatBigToThis_09
+--- PASS: TestIntAry_AddFloatBigToThis_09 (0.00s)
+=== RUN   TestIntAry_AddFloatBigToThis_10
+--- PASS: TestIntAry_AddFloatBigToThis_10 (0.00s)
+=== RUN   TestIntAry_Ceiling_01
+--- PASS: TestIntAry_Ceiling_01 (0.00s)
+=== RUN   TestIntAry_Ceiling_02
+--- PASS: TestIntAry_Ceiling_02 (0.00s)
+=== RUN   TestIntAry_Ceiling_03
+--- PASS: TestIntAry_Ceiling_03 (0.00s)
+=== RUN   TestIntAry_Ceiling_04
+--- PASS: TestIntAry_Ceiling_04 (0.00s)
+=== RUN   TestIntAry_Ceiling_05
+--- PASS: TestIntAry_Ceiling_05 (0.00s)
+=== RUN   TestIntAry_Ceiling_06
+--- PASS: TestIntAry_Ceiling_06 (0.00s)
+=== RUN   TestIntAry_Ceiling_07
+--- PASS: TestIntAry_Ceiling_07 (0.00s)
+=== RUN   TestIntAry_Ceiling_08
+--- PASS: TestIntAry_Ceiling_08 (0.00s)
+=== RUN   TestIntAry_Ceiling_09
+--- PASS: TestIntAry_Ceiling_09 (0.00s)
+=== RUN   TestIntAry_Ceiling_10
+--- PASS: TestIntAry_Ceiling_10 (0.00s)
+=== RUN   TestIntAry_Ceiling_11
+--- PASS: TestIntAry_Ceiling_11 (0.00s)
+=== RUN   TestIntAry_ChangeSign_01
+--- PASS: TestIntAry_ChangeSign_01 (0.00s)
+=== RUN   TestIntAry_ChangeSign_02
+--- PASS: TestIntAry_ChangeSign_02 (0.00s)
+=== RUN   TestIntAry_ChangeSign_03
+--- PASS: TestIntAry_ChangeSign_03 (0.00s)
+=== RUN   TestIntAry_ChangeSign_04
+--- PASS: TestIntAry_ChangeSign_04 (0.00s)
+=== RUN   TestIntAry_ChangeSign_05
+--- PASS: TestIntAry_ChangeSign_05 (0.00s)
+=== RUN   TestIntAry_Equals_01
+--- PASS: TestIntAry_Equals_01 (0.00s)
+=== RUN   TestIntAry_Equals_02
+--- PASS: TestIntAry_Equals_02 (0.00s)
+=== RUN   TestIntAry_Equals_03
+--- PASS: TestIntAry_Equals_03 (0.00s)
+=== RUN   TestIntAry_Equals_04
+--- PASS: TestIntAry_Equals_04 (0.00s)
+=== RUN   TestIntAry_Floor_01
+--- PASS: TestIntAry_Floor_01 (0.00s)
+=== RUN   TestIntAry_Floor_02
+--- PASS: TestIntAry_Floor_02 (0.00s)
+=== RUN   TestIntAry_Floor_03
+--- PASS: TestIntAry_Floor_03 (0.00s)
+=== RUN   TestIntAry_Floor_04
+--- PASS: TestIntAry_Floor_04 (0.00s)
+=== RUN   TestIntAry_Floor_05
+--- PASS: TestIntAry_Floor_05 (0.00s)
+=== RUN   TestIntAry_Floor_06
+--- PASS: TestIntAry_Floor_06 (0.00s)
+=== RUN   TestIntAry_Floor_07
+--- PASS: TestIntAry_Floor_07 (0.00s)
+=== RUN   TestIntAry_Floor_08
+--- PASS: TestIntAry_Floor_08 (0.00s)
+=== RUN   TestIntAry_Floor_09
+--- PASS: TestIntAry_Floor_09 (0.00s)
+=== RUN   TestIntAry_Floor_10
+--- PASS: TestIntAry_Floor_10 (0.00s)
+=== RUN   TestIntAry_Floor_11
+--- PASS: TestIntAry_Floor_11 (0.00s)
+=== RUN   TestIntAry_Floor_12
+--- PASS: TestIntAry_Floor_12 (0.00s)
+=== RUN   TestIntAry_CompareSignedValues_01
+--- PASS: TestIntAry_CompareSignedValues_01 (0.00s)
+=== RUN   TestIntAry_CompareSignedValues_02
+--- PASS: TestIntAry_CompareSignedValues_02 (0.00s)
+=== RUN   TestIntAry_CompareSignedValues_03
+--- PASS: TestIntAry_CompareSignedValues_03 (0.00s)
+=== RUN   TestIntAry_CompareSignedValues_04
+--- PASS: TestIntAry_CompareSignedValues_04 (0.00s)
+=== RUN   TestIntAry_CompareSignedValues_05
+--- PASS: TestIntAry_CompareSignedValues_05 (0.00s)
+=== RUN   TestIntAry_CompareSignedValues_06
+--- PASS: TestIntAry_CompareSignedValues_06 (0.00s)
+=== RUN   TestIntAry_CompareSignedValues_07
+--- PASS: TestIntAry_CompareSignedValues_07 (0.00s)
+=== RUN   TestIntAry_CompareSignedValues_08
+--- PASS: TestIntAry_CompareSignedValues_08 (0.00s)
+=== RUN   TestIntAry_CompareSignedValues_09
+--- PASS: TestIntAry_CompareSignedValues_09 (0.00s)
+=== RUN   TestIntAry_CompareSignedValues_10
+--- PASS: TestIntAry_CompareSignedValues_10 (0.00s)
+=== RUN   TestIntAry_CompareSignedValues_11
+--- PASS: TestIntAry_CompareSignedValues_11 (0.00s)
+=== RUN   TestIntAry_CompareSignedValues_12
+--- PASS: TestIntAry_CompareSignedValues_12 (0.00s)
+=== RUN   TestIntAry_CompareAbsoluteValues_01
+--- PASS: TestIntAry_CompareAbsoluteValues_01 (0.00s)
+=== RUN   TestIntAry_CompareAbsoluteValues_02
+--- PASS: TestIntAry_CompareAbsoluteValues_02 (0.00s)
+=== RUN   TestIntAry_CompareAbsoluteValues_03
+--- PASS: TestIntAry_CompareAbsoluteValues_03 (0.00s)
+=== RUN   TestIntAry_CompareAbsoluteValues_04
+--- PASS: TestIntAry_CompareAbsoluteValues_04 (0.00s)
+=== RUN   TestIntAry_CompareAbsoluteValues_05
+--- PASS: TestIntAry_CompareAbsoluteValues_05 (0.00s)
+=== RUN   TestIntAry_CompareAbsoluteValues_06
+--- PASS: TestIntAry_CompareAbsoluteValues_06 (0.00s)
+=== RUN   TestIntAry_CopyIn_01
+--- PASS: TestIntAry_CopyIn_01 (0.00s)
+=== RUN   TestIntAry_CopyIn_02
+--- PASS: TestIntAry_CopyIn_02 (0.00s)
+=== RUN   TestIntAry_CopyToBackUp_01
+--- PASS: TestIntAry_CopyToBackUp_01 (0.00s)
+=== RUN   TestIntAry_DecrementIntegerOne_01
+--- PASS: TestIntAry_DecrementIntegerOne_01 (0.00s)
+=== RUN   TestIntAry_DecrementIntegerOne_02
+--- PASS: TestIntAry_DecrementIntegerOne_02 (0.00s)
+=== RUN   TestIntAry_DecrementIntegerOne_03
+--- PASS: TestIntAry_DecrementIntegerOne_03 (0.00s)
+=== RUN   TestIntAry_DivideByInt64_01
+--- PASS: TestIntAry_DivideByInt64_01 (0.00s)
+=== RUN   TestIntAry_DivideByInt64_02
+--- PASS: TestIntAry_DivideByInt64_02 (0.00s)
+=== RUN   TestIntAry_DivideByInt64_03
+--- PASS: TestIntAry_DivideByInt64_03 (0.00s)
+=== RUN   TestIntAry_DivideByInt64_04
+--- PASS: TestIntAry_DivideByInt64_04 (0.00s)
+=== RUN   TestIntAry_DivideByInt64_05
+--- PASS: TestIntAry_DivideByInt64_05 (0.00s)
+=== RUN   TestIntAry_DivideByInt64_06
+--- PASS: TestIntAry_DivideByInt64_06 (0.00s)
+=== RUN   TestIntAry_DivideByTwo_01
+--- PASS: TestIntAry_DivideByTwo_01 (0.00s)
+=== RUN   TestIntAry_DivideByTwo_02
+--- PASS: TestIntAry_DivideByTwo_02 (0.00s)
+=== RUN   TestIntAry_DivideByTwo_03
+--- PASS: TestIntAry_DivideByTwo_03 (0.00s)
+=== RUN   TestIntAry_DivideByTwo_04
+--- PASS: TestIntAry_DivideByTwo_04 (0.00s)
+=== RUN   TestIntAry_DivideByTenToPower_01
+--- PASS: TestIntAry_DivideByTenToPower_01 (0.00s)
+=== RUN   TestIntAry_DivideByTenToPower_02
+--- PASS: TestIntAry_DivideByTenToPower_02 (0.00s)
+=== RUN   TestIntAry_DivideByTenToPower_03
+--- PASS: TestIntAry_DivideByTenToPower_03 (0.00s)
+=== RUN   TestIntAry_DivideByTenToPower_04
+--- PASS: TestIntAry_DivideByTenToPower_04 (0.00s)
+=== RUN   TestIntAry_DivideByTenToPower_05
+--- PASS: TestIntAry_DivideByTenToPower_05 (0.00s)
+=== RUN   TestIntAry_DivideByTenToPower_06
+--- PASS: TestIntAry_DivideByTenToPower_06 (0.00s)
+=== RUN   TestIntAry_DivideThisBy_01
+--- PASS: TestIntAry_DivideThisBy_01 (0.00s)
+=== RUN   TestIntAry_DivideThisBy_02
+--- PASS: TestIntAry_DivideThisBy_02 (0.00s)
+=== RUN   TestIntAry_DivideThisBy_03
+--- PASS: TestIntAry_DivideThisBy_03 (0.00s)
+=== RUN   TestIntAry_DivideThisBy_04
+--- PASS: TestIntAry_DivideThisBy_04 (0.00s)
+=== RUN   TestIntAry_DivideThisBy_05
+--- PASS: TestIntAry_DivideThisBy_05 (0.00s)
+=== RUN   TestIntAry_DivideThisBy_06
+--- PASS: TestIntAry_DivideThisBy_06 (0.00s)
+=== RUN   TestIntAry_DivideThisBy_07
+--- PASS: TestIntAry_DivideThisBy_07 (0.00s)
+=== RUN   TestIntAry_DivideThisBy_08
+--- PASS: TestIntAry_DivideThisBy_08 (0.00s)
+=== RUN   TestIntAry_DivideThisBy_09
+--- PASS: TestIntAry_DivideThisBy_09 (0.00s)
+=== RUN   TestIntAry_DivideThisBy_10
+--- PASS: TestIntAry_DivideThisBy_10 (0.00s)
+=== RUN   TestIntAry_DivideThisBy_11
+--- PASS: TestIntAry_DivideThisBy_11 (0.00s)
+=== RUN   TestIntAry_DivideThisBy_12
+--- PASS: TestIntAry_DivideThisBy_12 (0.00s)
+=== RUN   TestIntAry_DivideThisBy_13
+--- PASS: TestIntAry_DivideThisBy_13 (0.85s)
+=== RUN   TestIntAry_DivideThisBy_14
+--- PASS: TestIntAry_DivideThisBy_14 (0.00s)
+=== RUN   TestIntAry_DivideThisBy_15
+--- PASS: TestIntAry_DivideThisBy_15 (0.00s)
+=== RUN   TestIntAry_DivideThisBy_16
+--- PASS: TestIntAry_DivideThisBy_16 (0.06s)
+=== RUN   TestIntAry_GetAbsoluteValue_01
+--- PASS: TestIntAry_GetAbsoluteValue_01 (0.00s)
+=== RUN   TestIntAry_GetBigIntNum_01
+--- PASS: TestIntAry_GetBigIntNum_01 (0.00s)
+=== RUN   TestIntAry_GetCurrencySymbol_01
+--- PASS: TestIntAry_GetCurrencySymbol_01 (0.00s)
+=== RUN   TestIntAry_GetCurrencySymbol_03
+--- PASS: TestIntAry_GetCurrencySymbol_03 (0.00s)
+=== RUN   TestIntAry_GetCurrencySymbol_04
+--- PASS: TestIntAry_GetCurrencySymbol_04 (0.00s)
+=== RUN   TestIntAry_GetCurrencySymbol_05
+--- PASS: TestIntAry_GetCurrencySymbol_05 (0.00s)
+=== RUN   TestIntAry_GetDecimal_01
+--- PASS: TestIntAry_GetDecimal_01 (0.00s)
+=== RUN   TestIntAry_GetDecimalSeparator_01
+--- PASS: TestIntAry_GetDecimalSeparator_01 (0.00s)
+=== RUN   TestIntAry_GetDecimalSeparator_02
+--- PASS: TestIntAry_GetDecimalSeparator_02 (0.00s)
+=== RUN   TestIntAry_GetDecimalSeparator_03
+--- PASS: TestIntAry_GetDecimalSeparator_03 (0.00s)
+=== RUN   TestIntAry_GetDecimalSeparator_04
+--- PASS: TestIntAry_GetDecimalSeparator_04 (0.00s)
+=== RUN   TestIntAry_GetInt_01
+--- PASS: TestIntAry_GetInt_01 (0.00s)
+=== RUN   TestIntAry_GetInt_02
+--- PASS: TestIntAry_GetInt_02 (0.00s)
+=== RUN   TestIntAry_GetInt_03
+--- PASS: TestIntAry_GetInt_03 (0.00s)
+=== RUN   TestIntAry_GetInt_04
+--- PASS: TestIntAry_GetInt_04 (0.00s)
+=== RUN   TestIntAry_GetInt_05
+--- PASS: TestIntAry_GetInt_05 (0.00s)
+=== RUN   TestIntAry_GetIntAry_01
+--- PASS: TestIntAry_GetIntAry_01 (0.00s)
+=== RUN   TestIntAry_GetIntAry_02
+--- PASS: TestIntAry_GetIntAry_02 (0.00s)
+=== RUN   TestIntAry_GetIntAryDeepCopy
+--- PASS: TestIntAry_GetIntAryDeepCopy (0.00s)
+=== RUN   TestIntAry_GetIntAryDeepCopy_02
+--- PASS: TestIntAry_GetIntAryDeepCopy_02 (0.00s)
+=== RUN   TestIntAry_GetInt64_01
+--- PASS: TestIntAry_GetInt64_01 (0.00s)
+=== RUN   TestIntAry_GetInt64_02
+--- PASS: TestIntAry_GetInt64_02 (0.00s)
+=== RUN   TestIntAry_GetInt64_03
+--- PASS: TestIntAry_GetInt64_03 (0.00s)
+=== RUN   TestIntAry_GetInt64_04
+--- PASS: TestIntAry_GetInt64_04 (0.00s)
+=== RUN   TestIntAry_GetInt64_05
+--- PASS: TestIntAry_GetInt64_05 (0.00s)
+=== RUN   TestIntAry_GetInt64_06
+--- PASS: TestIntAry_GetInt64_06 (0.00s)
+=== RUN   TestIntAry_GetFractionalDigits_01
+--- PASS: TestIntAry_GetFractionalDigits_01 (0.00s)
+=== RUN   TestIntAry_GetFractionalDigits_02
+--- PASS: TestIntAry_GetFractionalDigits_02 (0.00s)
+=== RUN   TestIntAry_GetFractionalDigits_03
+--- PASS: TestIntAry_GetFractionalDigits_03 (0.00s)
+=== RUN   TestIntAry_GetFractionalDigits_04
+--- PASS: TestIntAry_GetFractionalDigits_04 (0.00s)
+=== RUN   TestIntAry_GetIntegerDigits_01
+--- PASS: TestIntAry_GetIntegerDigits_01 (0.00s)
+=== RUN   TestIntAry_GetIntegerDigits_02
+--- PASS: TestIntAry_GetIntegerDigits_02 (0.00s)
+=== RUN   TestIntAry_GetIntegerDigits_03
+--- PASS: TestIntAry_GetIntegerDigits_03 (0.00s)
+=== RUN   TestIntAry_GetIntegerDigits_04
+--- PASS: TestIntAry_GetIntegerDigits_04 (0.00s)
+=== RUN   TestIntAry_GetMagnitude_01
+--- PASS: TestIntAry_GetMagnitude_01 (0.00s)
+=== RUN   TestIntAry_GetMagnitude_02
+--- PASS: TestIntAry_GetMagnitude_02 (0.00s)
+=== RUN   TestIntAry_GetMagnitude_03
+--- PASS: TestIntAry_GetMagnitude_03 (0.00s)
+=== RUN   TestIntAry_GetMagnitudeDigits_01
+--- PASS: TestIntAry_GetMagnitudeDigits_01 (0.00s)
+=== RUN   TestIntAry_GetMagnitudeDigits_02
+--- PASS: TestIntAry_GetMagnitudeDigits_02 (0.00s)
+=== RUN   TestIntAry_GetMagnitudeDigits_03
+--- PASS: TestIntAry_GetMagnitudeDigits_03 (0.00s)
+=== RUN   TestIntAry_GetNthRootOfThis_01
+--- PASS: TestIntAry_GetNthRootOfThis_01 (0.00s)
+=== RUN   TestIntAry_GetNthRootOfThis_02
+--- PASS: TestIntAry_GetNthRootOfThis_02 (0.00s)
+=== RUN   TestIntAry_GetNthRootOfThis_03
+--- PASS: TestIntAry_GetNthRootOfThis_03 (0.00s)
+=== RUN   TestIntAry_GetNthRootOfThis_04
+--- PASS: TestIntAry_GetNthRootOfThis_04 (0.00s)
+=== RUN   TestIntAry_GetNthRootOfThis_05
+--- PASS: TestIntAry_GetNthRootOfThis_05 (0.00s)
+=== RUN   TestIntAry_GetNthRootOfThis_06
+--- PASS: TestIntAry_GetNthRootOfThis_06 (0.00s)
+=== RUN   TestIntAry_GetNthRootOfThis_07
+--- PASS: TestIntAry_GetNthRootOfThis_07 (0.00s)
+=== RUN   TestIntAry_GetNthRootOfThis_08
+--- PASS: TestIntAry_GetNthRootOfThis_08 (0.00s)
+=== RUN   TestIntAry_GetNumStrDto_01
+--- PASS: TestIntAry_GetNumStrDto_01 (0.00s)
+=== RUN   TestIntAry_GetScaleFactor_01
+--- PASS: TestIntAry_GetScaleFactor_01 (0.00s)
+=== RUN   TestIntAry_GetSquareRootInt_01
+--- PASS: TestIntAry_GetSquareRootInt_01 (0.00s)
+=== RUN   TestIntAry_GetThousandsSeparator_01
+--- PASS: TestIntAry_GetThousandsSeparator_01 (0.00s)
+=== RUN   TestIntAry_GetThousandsSeparator_02
+--- PASS: TestIntAry_GetThousandsSeparator_02 (0.00s)
+=== RUN   TestIntAry_GetThousandsSeparator_03
+--- PASS: TestIntAry_GetThousandsSeparator_03 (0.00s)
+=== RUN   TestIntAry_GetThousandsSeparator_04
+--- PASS: TestIntAry_GetThousandsSeparator_04 (0.00s)
+=== RUN   TestIntAry_IncrementIntegerOne_01
+--- PASS: TestIntAry_IncrementIntegerOne_01 (0.00s)
+=== RUN   TestIntAry_IncrementIntegerOne_02
+--- PASS: TestIntAry_IncrementIntegerOne_02 (0.00s)
+=== RUN   TestIntAry_IncrementIntegerOne_03
+--- PASS: TestIntAry_IncrementIntegerOne_03 (0.00s)
+=== RUN   TestIntAry_IncrementIntegerOne_04
+--- PASS: TestIntAry_IncrementIntegerOne_04 (0.00s)
+=== RUN   TestIntAry_Inverse_01
+--- PASS: TestIntAry_Inverse_01 (0.00s)
+=== RUN   TestIntAry_Inverse_02
+--- PASS: TestIntAry_Inverse_02 (0.00s)
+=== RUN   TestIntAry_Inverse_03
+--- PASS: TestIntAry_Inverse_03 (0.00s)
+=== RUN   TestIntAry_IsEvenNumber_01
+--- PASS: TestIntAry_IsEvenNumber_01 (0.00s)
+=== RUN   TestIntAry_IsEvenNumber_02
+--- PASS: TestIntAry_IsEvenNumber_02 (0.00s)
+=== RUN   TestIntAry_IsEvenNumber_03
+--- PASS: TestIntAry_IsEvenNumber_03 (0.00s)
+=== RUN   TestIntAry_IsEvenNumber_04
+--- PASS: TestIntAry_IsEvenNumber_04 (0.00s)
+=== RUN   TestIntAry_IsEvenNumber_05
+--- PASS: TestIntAry_IsEvenNumber_05 (0.00s)
+=== RUN   TestIntAry_IsEvenNumber_06
+--- PASS: TestIntAry_IsEvenNumber_06 (0.00s)
+=== RUN   TestIntAry_IsEvenNumber_07
+--- PASS: TestIntAry_IsEvenNumber_07 (0.00s)
+=== RUN   TestIntAry_MultiplyByTenToPower_01
+--- PASS: TestIntAry_MultiplyByTenToPower_01 (0.00s)
+=== RUN   TestIntAry_MultiplyByTenToPower_02
+--- PASS: TestIntAry_MultiplyByTenToPower_02 (0.00s)
+=== RUN   TestIntAry_MultiplyByTenToPower_03
+--- PASS: TestIntAry_MultiplyByTenToPower_03 (0.00s)
+=== RUN   TestIntAry_MultiplyByTenToPower_04
+--- PASS: TestIntAry_MultiplyByTenToPower_04 (0.00s)
+=== RUN   TestIntAry_MultiplyByTenToPower_05
+--- PASS: TestIntAry_MultiplyByTenToPower_05 (0.00s)
+=== RUN   TestIntAry_MultiplyByTenToPower_06
+--- PASS: TestIntAry_MultiplyByTenToPower_06 (0.00s)
+=== RUN   TestIntAry_MultiplyByTwoToPower_01
+--- PASS: TestIntAry_MultiplyByTwoToPower_01 (0.00s)
+=== RUN   TestIntAry_MultiplyByTwoToPower_02
+--- PASS: TestIntAry_MultiplyByTwoToPower_02 (0.00s)
+=== RUN   TestIntAry_MultiplyByTwoToPower_03
+--- PASS: TestIntAry_MultiplyByTwoToPower_03 (0.00s)
+=== RUN   TestIntAry_MultiplyThisBy_01
+--- PASS: TestIntAry_MultiplyThisBy_01 (0.00s)
+=== RUN   TestIntAry_MultiplyThisBy_02
+--- PASS: TestIntAry_MultiplyThisBy_02 (0.00s)
+=== RUN   TestIntAry_MultiplyThisBy_03
+--- PASS: TestIntAry_MultiplyThisBy_03 (0.00s)
+=== RUN   TestIntAry_MultiplyThisBy_04
+--- PASS: TestIntAry_MultiplyThisBy_04 (0.00s)
+=== RUN   TestIntAry_MultiplyThisBy_05
+--- PASS: TestIntAry_MultiplyThisBy_05 (0.00s)
+=== RUN   TestIntAry_MultiplyThisBy_06
+--- PASS: TestIntAry_MultiplyThisBy_06 (0.00s)
+=== RUN   TestIntAry_MultiplyThisBy_07
+--- PASS: TestIntAry_MultiplyThisBy_07 (0.00s)
+=== RUN   TestIntAry_MultiplyThisBy_08
+--- PASS: TestIntAry_MultiplyThisBy_08 (0.00s)
+=== RUN   TestIntAry_MultiplyThisBy_09
+--- PASS: TestIntAry_MultiplyThisBy_09 (0.00s)
+=== RUN   TestIntAry_NewNumStr_01
+--- PASS: TestIntAry_NewNumStr_01 (0.00s)
+=== RUN   TestIntAry_NewNumStr_02
+--- PASS: TestIntAry_NewNumStr_02 (0.00s)
+=== RUN   TestIntAry_NewBigInt_01
+--- PASS: TestIntAry_NewBigInt_01 (0.00s)
+=== RUN   TestIntAry_NewBigInt_02
+--- PASS: TestIntAry_NewBigInt_02 (0.00s)
+=== RUN   TestIntAry_NewFloatBig_01
+--- PASS: TestIntAry_NewFloatBig_01 (0.00s)
+=== RUN   TestIntAry_NewFloatBig_02
+--- PASS: TestIntAry_NewFloatBig_02 (0.00s)
+=== RUN   TestIntAry_NewFloatBig_03
+--- PASS: TestIntAry_NewFloatBig_03 (0.00s)
+=== RUN   TestIntAry_NewFloatBig_04
+--- PASS: TestIntAry_NewFloatBig_04 (0.00s)
+=== RUN   TestIntAry_NewFloat64_01
+--- PASS: TestIntAry_NewFloat64_01 (0.00s)
+=== RUN   TestIntAry_NewFloat64_02
+--- PASS: TestIntAry_NewFloat64_02 (0.00s)
+=== RUN   TestIntAry_NewFloat32_01
+--- PASS: TestIntAry_NewFloat32_01 (0.00s)
+=== RUN   TestIntAry_NewFloat32_02
+--- PASS: TestIntAry_NewFloat32_02 (0.00s)
+=== RUN   TestIntAry_NewInt64_01
+--- PASS: TestIntAry_NewInt64_01 (0.00s)
+=== RUN   TestIntAry_NewInt64_02
+--- PASS: TestIntAry_NewInt64_02 (0.00s)
+=== RUN   TestIntAry_NewInt32_01
+--- PASS: TestIntAry_NewInt32_01 (0.00s)
+=== RUN   TestIntAry_NewInt32_02
+--- PASS: TestIntAry_NewInt32_02 (0.00s)
+=== RUN   TestIntAry_NewInt_01
+--- PASS: TestIntAry_NewInt_01 (0.00s)
+=== RUN   TestIntAry_NewInt_02
+--- PASS: TestIntAry_NewInt_02 (0.00s)
+=== RUN   TestIntAry_NewOne_01
+--- PASS: TestIntAry_NewOne_01 (0.00s)
+=== RUN   TestIntAry_NewOne_02
+--- PASS: TestIntAry_NewOne_02 (0.00s)
+=== RUN   TestIntAry_NewFive_01
+--- PASS: TestIntAry_NewFive_01 (0.00s)
+=== RUN   TestIntAry_NewFive_02
+--- PASS: TestIntAry_NewFive_02 (0.00s)
+=== RUN   TestIntAry_NewTen_01
+--- PASS: TestIntAry_NewTen_01 (0.00s)
+=== RUN   TestIntAry_NewTen_02
+--- PASS: TestIntAry_NewTen_02 (0.00s)
+=== RUN   TestIntAry_NewThree_01
+--- PASS: TestIntAry_NewThree_01 (0.00s)
+=== RUN   TestIntAry_NewThree_02
+--- PASS: TestIntAry_NewThree_02 (0.00s)
+=== RUN   TestIntAry_NewTwo_01
+--- PASS: TestIntAry_NewTwo_01 (0.00s)
+=== RUN   TestIntAry_NewTwo_02
+--- PASS: TestIntAry_NewTwo_02 (0.00s)
+=== RUN   TestIntAry_OptimizeIntArrayLen_01
+--- PASS: TestIntAry_OptimizeIntArrayLen_01 (0.00s)
+=== RUN   TestIntAry_OptimizeIntArrayLen_02
+--- PASS: TestIntAry_OptimizeIntArrayLen_02 (0.00s)
+=== RUN   TestIntAry_OptimizeIntArrayLen_03
+--- PASS: TestIntAry_OptimizeIntArrayLen_03 (0.00s)
+=== RUN   TestIntAry_OptimizeIntArrayLen_04
+--- PASS: TestIntAry_OptimizeIntArrayLen_04 (0.00s)
+=== RUN   TestIntAry_OptimizeIntArrayLen_05
+--- PASS: TestIntAry_OptimizeIntArrayLen_05 (0.00s)
+=== RUN   TestIntAry_OptimizeIntArrayLen_06
+--- PASS: TestIntAry_OptimizeIntArrayLen_06 (0.00s)
+=== RUN   TestIntAry_OptimizeIntArrayLen_07
+--- PASS: TestIntAry_OptimizeIntArrayLen_07 (0.00s)
+=== RUN   TestIntAry_OptimizeIntArrayLen_08
+--- PASS: TestIntAry_OptimizeIntArrayLen_08 (0.00s)
+=== RUN   TestIntAry_OptimizeIntArrayLen_09
+--- PASS: TestIntAry_OptimizeIntArrayLen_09 (0.00s)
+=== RUN   TestIntAry_Pow_01
+--- PASS: TestIntAry_Pow_01 (0.00s)
+=== RUN   TestIntAry_Pow_02
+--- PASS: TestIntAry_Pow_02 (0.00s)
+=== RUN   TestIntAry_Pow_03
+--- PASS: TestIntAry_Pow_03 (0.00s)
+=== RUN   TestIntAry_Pow_04
+--- PASS: TestIntAry_Pow_04 (0.00s)
+=== RUN   TestIntAry_Pow_05
+--- PASS: TestIntAry_Pow_05 (0.00s)
+=== RUN   TestIntAry_Pow_06
+--- PASS: TestIntAry_Pow_06 (0.02s)
+=== RUN   TestIntAry_ResetFromBackUp_01
+--- PASS: TestIntAry_ResetFromBackUp_01 (0.00s)
+=== RUN   TestIntAry_RoundToPrecision_01
+--- PASS: TestIntAry_RoundToPrecision_01 (0.00s)
+=== RUN   TestIntAry_RoundToPrecision_02
+--- PASS: TestIntAry_RoundToPrecision_02 (0.00s)
+=== RUN   TestIntAry_RoundToPrecision_03
+--- PASS: TestIntAry_RoundToPrecision_03 (0.00s)
+=== RUN   TestIntAry_RoundToPrecision_04
+--- PASS: TestIntAry_RoundToPrecision_04 (0.00s)
+=== RUN   TestIntAry_RoundToPrecision_05
+--- PASS: TestIntAry_RoundToPrecision_05 (0.00s)
+=== RUN   TestIntAry_RoundToPrecision_06
+--- PASS: TestIntAry_RoundToPrecision_06 (0.00s)
+=== RUN   TestIntAry_RoundToPrecision_07
+--- PASS: TestIntAry_RoundToPrecision_07 (0.00s)
+=== RUN   TestIntAry_RoundToPrecision_08
+--- PASS: TestIntAry_RoundToPrecision_08 (0.00s)
+=== RUN   TestIntAry_RoundToPrecision_09
+--- PASS: TestIntAry_RoundToPrecision_09 (0.00s)
+=== RUN   TestIntAry_RoundToPrecision_10
+--- PASS: TestIntAry_RoundToPrecision_10 (0.00s)
+=== RUN   TestIntAry_SetAbsoluteValueThis_01
+--- PASS: TestIntAry_SetAbsoluteValueThis_01 (0.00s)
+=== RUN   TestIntAry_SetAbsoluteValueThis_02
+--- PASS: TestIntAry_SetAbsoluteValueThis_02 (0.00s)
+=== RUN   TestIntAry_SetCurrencySymbol_01
+--- PASS: TestIntAry_SetCurrencySymbol_01 (0.00s)
+=== RUN   TestIntAry_SetDecimalSeparator_01
+--- PASS: TestIntAry_SetDecimalSeparator_01 (0.00s)
+=== RUN   TestIntAry_SetEqualArrayLengths_01
+--- PASS: TestIntAry_SetEqualArrayLengths_01 (0.00s)
+=== RUN   TestIntAry_SetEqualArrayLengths_02
+--- PASS: TestIntAry_SetEqualArrayLengths_02 (0.00s)
+=== RUN   TestIntAry_SetEqualArrayLengths_03
+--- PASS: TestIntAry_SetEqualArrayLengths_03 (0.00s)
+=== RUN   TestIntAry_SetEqualArrayLengths_04
+--- PASS: TestIntAry_SetEqualArrayLengths_04 (0.00s)
+=== RUN   TestIntAry_SetEqualArrayLengths_05
+--- PASS: TestIntAry_SetEqualArrayLengths_05 (0.00s)
+=== RUN   TestIntAry_SetEqualArrayLengths_06
+--- PASS: TestIntAry_SetEqualArrayLengths_06 (0.00s)
+=== RUN   TestIntAry_SetEqualArrayLengths_07
+--- PASS: TestIntAry_SetEqualArrayLengths_07 (0.00s)
+=== RUN   TestIntAry_SetIntAryWithFloat_01
+--- PASS: TestIntAry_SetIntAryWithFloat_01 (0.00s)
+=== RUN   TestIntAry_SetIntAryWithFloat_02
+--- PASS: TestIntAry_SetIntAryWithFloat_02 (0.00s)
+=== RUN   TestIntAry_SetIntAryWithFloat_03
+--- PASS: TestIntAry_SetIntAryWithFloat_03 (0.00s)
+=== RUN   TestIntAry_SetIntAryWithFloat_04
+--- PASS: TestIntAry_SetIntAryWithFloat_04 (0.00s)
+=== RUN   TestIntAry_SetIntAryWithFloat64_01
+--- PASS: TestIntAry_SetIntAryWithFloat64_01 (0.00s)
+=== RUN   TestIntAry_SetIntAryWithFloat64_02
+--- PASS: TestIntAry_SetIntAryWithFloat64_02 (0.00s)
+=== RUN   TestIntAry_SetIntAryWithFloat64_03
+--- PASS: TestIntAry_SetIntAryWithFloat64_03 (0.00s)
+=== RUN   TestIntAry_SetIntAryWithFloat64_04
+--- PASS: TestIntAry_SetIntAryWithFloat64_04 (0.00s)
+=== RUN   TestIntAry_SetIntAryWithFloatBig_01
+--- PASS: TestIntAry_SetIntAryWithFloatBig_01 (0.00s)
+=== RUN   TestIntAry_SetIntAryWithFloatBig_02
+--- PASS: TestIntAry_SetIntAryWithFloatBig_02 (0.00s)
+=== RUN   TestIntAry_SetIntAryWithFloatBig_03
+--- PASS: TestIntAry_SetIntAryWithFloatBig_03 (0.00s)
+=== RUN   TestIntAry_SetIntAryWithFloatBig_04
+--- PASS: TestIntAry_SetIntAryWithFloatBig_04 (0.00s)
+=== RUN   TestIntAry_SetIntAryWithFloatBig_05
+--- PASS: TestIntAry_SetIntAryWithFloatBig_05 (0.00s)
+=== RUN   TestIntAry_SetIntAryWithFloatBig_06
+--- PASS: TestIntAry_SetIntAryWithFloatBig_06 (0.00s)
+=== RUN   TestIntAry_SetIntAryWithBigInt_01
+--- PASS: TestIntAry_SetIntAryWithBigInt_01 (0.00s)
+=== RUN   TestIntAry_SetIntAryWithBigInt_02
+--- PASS: TestIntAry_SetIntAryWithBigInt_02 (0.00s)
+=== RUN   TestIntAry_SetIntAryWithBigInt_03
+--- PASS: TestIntAry_SetIntAryWithBigInt_03 (0.00s)
+=== RUN   TestIntAry_SetIntAryWithInt_01
+--- PASS: TestIntAry_SetIntAryWithInt_01 (0.00s)
+=== RUN   TestIntAry_SetIntAryWithInt_02
+--- PASS: TestIntAry_SetIntAryWithInt_02 (0.00s)
+=== RUN   TestIntAry_SetIntAryWithInt_03
+--- PASS: TestIntAry_SetIntAryWithInt_03 (0.00s)
+=== RUN   TestIntAry_SetIntAryWithInt_04
+--- PASS: TestIntAry_SetIntAryWithInt_04 (0.00s)
+=== RUN   TestIntAry_SetIntAryWithInt_05
+--- PASS: TestIntAry_SetIntAryWithInt_05 (0.00s)
+=== RUN   TestIntAry_SetIntAryWithInt_06
+--- PASS: TestIntAry_SetIntAryWithInt_06 (0.00s)
+=== RUN   TestIntAry_SetIntAryWithInt32_01
+--- PASS: TestIntAry_SetIntAryWithInt32_01 (0.00s)
+=== RUN   TestIntAry_SetIntAryWithInt32_02
+--- PASS: TestIntAry_SetIntAryWithInt32_02 (0.00s)
+=== RUN   TestIntAry_SetIntAryWithInt32_03
+--- PASS: TestIntAry_SetIntAryWithInt32_03 (0.00s)
+=== RUN   TestIntAry_SetIntAryWithInt32_04
+--- PASS: TestIntAry_SetIntAryWithInt32_04 (0.00s)
+=== RUN   TestIntAry_SetIntAryWithInt32_05
+--- PASS: TestIntAry_SetIntAryWithInt32_05 (0.00s)
+=== RUN   TestIntAry_SetIntAryWithInt32_06
+--- PASS: TestIntAry_SetIntAryWithInt32_06 (0.00s)
+=== RUN   TestIntAry_SetIntAryWithUint64_01
+--- PASS: TestIntAry_SetIntAryWithUint64_01 (0.00s)
+=== RUN   TestIntAry_SetIntAryWithUint64_02
+--- PASS: TestIntAry_SetIntAryWithUint64_02 (0.00s)
+=== RUN   TestIntAry_SetIntAryWithUint64_03
+--- PASS: TestIntAry_SetIntAryWithUint64_03 (0.00s)
+=== RUN   TestIntAry_SetIntAryWithUint64_04
+--- PASS: TestIntAry_SetIntAryWithUint64_04 (0.00s)
+=== RUN   TestIntAry_SetIntAryWithUint64_05
+--- PASS: TestIntAry_SetIntAryWithUint64_05 (0.00s)
+=== RUN   TestIntAry_SetIntAryWithUint64_06
+--- PASS: TestIntAry_SetIntAryWithUint64_06 (0.00s)
+=== RUN   TestIntAry_SetIntAryWithInt64_01
+--- PASS: TestIntAry_SetIntAryWithInt64_01 (0.00s)
+=== RUN   TestIntAry_SetIntAryWithInt64_02
+--- PASS: TestIntAry_SetIntAryWithInt64_02 (0.00s)
+=== RUN   TestIntAry_SetIntAryWithInt64_03
+--- PASS: TestIntAry_SetIntAryWithInt64_03 (0.00s)
+=== RUN   TestIntAry_SetIntAryWithInt64_04
+--- PASS: TestIntAry_SetIntAryWithInt64_04 (0.00s)
+=== RUN   TestIntAry_SetIntAryWithInt64_05
+--- PASS: TestIntAry_SetIntAryWithInt64_05 (0.00s)
+=== RUN   TestIntAry_SetIntAryWithInt64_06
+--- PASS: TestIntAry_SetIntAryWithInt64_06 (0.00s)
+=== RUN   TestIntAry_SetIntAryWithIntAry_01
+--- PASS: TestIntAry_SetIntAryWithIntAry_01 (0.00s)
+=== RUN   TestIntAry_SetIntAryWithIntAry_02
+--- PASS: TestIntAry_SetIntAryWithIntAry_02 (0.00s)
+=== RUN   TestIntAry_SetIntAryWithIntAry_03
+--- PASS: TestIntAry_SetIntAryWithIntAry_03 (0.00s)
+=== RUN   TestIntAry_SetIntAryWithIntAry_04
+--- PASS: TestIntAry_SetIntAryWithIntAry_04 (0.00s)
+=== RUN   TestIntAry_SetIntAryWithIntAryObj_01
+--- PASS: TestIntAry_SetIntAryWithIntAryObj_01 (0.00s)
+=== RUN   TestIntAry_SetIntAryWithIntAryObj_02
+--- PASS: TestIntAry_SetIntAryWithIntAryObj_02 (0.00s)
+=== RUN   TestIntAry_SetIntAryWithUint8Ary_01
+--- PASS: TestIntAry_SetIntAryWithUint8Ary_01 (0.00s)
+=== RUN   TestIntAry_SetIntAryWithUint8Ary_02
+--- PASS: TestIntAry_SetIntAryWithUint8Ary_02 (0.00s)
+=== RUN   TestIntAry_SetIntAryWithUint8Ary_03
+--- PASS: TestIntAry_SetIntAryWithUint8Ary_03 (0.00s)
+=== RUN   TestIntAry_SetIntAryWithUint8Ary_04
+--- PASS: TestIntAry_SetIntAryWithUint8Ary_04 (0.00s)
+=== RUN   TestIntAry_SetSign_01
+--- PASS: TestIntAry_SetSign_01 (0.00s)
+=== RUN   TestIntAry_SetSign_02
+--- PASS: TestIntAry_SetSign_02 (0.00s)
+=== RUN   TestIntAry_SetSign_03
+--- PASS: TestIntAry_SetSign_03 (0.00s)
+=== RUN   TestIntAry_SetSign_04
+--- PASS: TestIntAry_SetSign_04 (0.00s)
+=== RUN   TestIntAry_SetSign_05
+--- PASS: TestIntAry_SetSign_05 (0.00s)
+=== RUN   TestIntAry_SetWithNumStr_01
+--- PASS: TestIntAry_SetWithNumStr_01 (0.00s)
+=== RUN   TestIntAry_SetWithNumStr_02
+--- PASS: TestIntAry_SetWithNumStr_02 (0.00s)
+=== RUN   TestIntAry_SetWithNumStr_03
+--- PASS: TestIntAry_SetWithNumStr_03 (0.00s)
+=== RUN   TestIntAry_SetPrecision_01
+--- PASS: TestIntAry_SetPrecision_01 (0.00s)
+=== RUN   TestIntAry_SetPrecision_02
+--- PASS: TestIntAry_SetPrecision_02 (0.00s)
+=== RUN   TestIntAry_SetPrecision_03
+--- PASS: TestIntAry_SetPrecision_03 (0.00s)
+=== RUN   TestIntAry_SetPrecision_04
+--- PASS: TestIntAry_SetPrecision_04 (0.00s)
+=== RUN   TestIntAry_SetPrecision_05
+--- PASS: TestIntAry_SetPrecision_05 (0.00s)
+=== RUN   TestIntAry_SetPrecision_06
+--- PASS: TestIntAry_SetPrecision_06 (0.00s)
+=== RUN   TestIntAry_SetSignificantDigitIdxs_01
+--- PASS: TestIntAry_SetSignificantDigitIdxs_01 (0.00s)
+=== RUN   TestIntAry_SetSignificantDigitIdxs_02
+--- PASS: TestIntAry_SetSignificantDigitIdxs_02 (0.00s)
+=== RUN   TestIntAry_SetSignificantDigitIdxs_03
+--- PASS: TestIntAry_SetSignificantDigitIdxs_03 (0.00s)
+=== RUN   TestIntAry_SetSignificantDigitIdxs_04
+--- PASS: TestIntAry_SetSignificantDigitIdxs_04 (0.00s)
+=== RUN   TestIntAry_SetSignificantDigitIdxs_05
+--- PASS: TestIntAry_SetSignificantDigitIdxs_05 (0.00s)
+=== RUN   TestIntAry_SetSignificantDigitIdxs_06
+--- PASS: TestIntAry_SetSignificantDigitIdxs_06 (0.00s)
+=== RUN   TestIntAry_SetThousandsSeparator_01
+--- PASS: TestIntAry_SetThousandsSeparator_01 (0.00s)
+=== RUN   TestIntAry_ShiftPrecisionLeft_01
+--- PASS: TestIntAry_ShiftPrecisionLeft_01 (0.00s)
+=== RUN   TestIntAry_ShiftPrecisionLeft_02
+--- PASS: TestIntAry_ShiftPrecisionLeft_02 (0.00s)
+=== RUN   TestIntAry_ShiftPrecisionLeft_03
+--- PASS: TestIntAry_ShiftPrecisionLeft_03 (0.00s)
+=== RUN   TestIntAry_ShiftPrecisionLeft_04
+--- PASS: TestIntAry_ShiftPrecisionLeft_04 (0.00s)
+=== RUN   TestIntAry_ShiftPrecisionLeft_05
+--- PASS: TestIntAry_ShiftPrecisionLeft_05 (0.00s)
+=== RUN   TestIntAry_ShiftPrecisionLeft_06
+--- PASS: TestIntAry_ShiftPrecisionLeft_06 (0.00s)
+=== RUN   TestIntAry_ShiftPrecisionRight_01
+--- PASS: TestIntAry_ShiftPrecisionRight_01 (0.00s)
+=== RUN   TestIntAry_ShiftPrecisionRight_02
+--- PASS: TestIntAry_ShiftPrecisionRight_02 (0.00s)
+=== RUN   TestIntAry_ShiftPrecisionRight_03
+--- PASS: TestIntAry_ShiftPrecisionRight_03 (0.00s)
+=== RUN   TestIntAry_ShiftPrecisionRight_04
+--- PASS: TestIntAry_ShiftPrecisionRight_04 (0.00s)
+=== RUN   TestIntAry_ShiftPrecisionRight_05
+--- PASS: TestIntAry_ShiftPrecisionRight_05 (0.00s)
+=== RUN   TestIntAry_ShiftPrecisionRight_06
+--- PASS: TestIntAry_ShiftPrecisionRight_06 (0.00s)
+=== RUN   TestIntAry_ShiftPrecisionRight_07
+--- PASS: TestIntAry_ShiftPrecisionRight_07 (0.00s)
+=== RUN   TestIntAry_ShiftPrecisionRight_08
+--- PASS: TestIntAry_ShiftPrecisionRight_08 (0.00s)
+=== RUN   TestIntAry_SubtractFromThis_01
+--- PASS: TestIntAry_SubtractFromThis_01 (0.00s)
+=== RUN   TestIntAry_SubtractFromThis_02
+--- PASS: TestIntAry_SubtractFromThis_02 (0.00s)
+=== RUN   TestIntAry_SubtractFromThis_03
+--- PASS: TestIntAry_SubtractFromThis_03 (0.00s)
+=== RUN   TestIntAry_SubtractFromThis_04
+--- PASS: TestIntAry_SubtractFromThis_04 (0.00s)
+=== RUN   TestIntAry_SubtractFromThis_05
+--- PASS: TestIntAry_SubtractFromThis_05 (0.00s)
+=== RUN   TestIntAry_SubtractFromThis_06
+--- PASS: TestIntAry_SubtractFromThis_06 (0.00s)
+=== RUN   TestIntAry_SubtractFromThis_07
+--- PASS: TestIntAry_SubtractFromThis_07 (0.00s)
+=== RUN   TestIntAry_SubtractFromThis_08
+--- PASS: TestIntAry_SubtractFromThis_08 (0.00s)
+=== RUN   TestIntAry_SubtractFromThis_09
+--- PASS: TestIntAry_SubtractFromThis_09 (0.00s)
+=== RUN   TestIntAry_SubtractFromThis_10
+--- PASS: TestIntAry_SubtractFromThis_10 (0.00s)
+=== RUN   TestIntAry_SubtractFromThis_11
+--- PASS: TestIntAry_SubtractFromThis_11 (0.00s)
+=== RUN   TestIntAry_SubtractFromThis_12
+--- PASS: TestIntAry_SubtractFromThis_12 (0.00s)
+=== RUN   TestIntAry_SubtractFromThis_13
+--- PASS: TestIntAry_SubtractFromThis_13 (0.00s)
+=== RUN   TestIntAry_SubtractFromThis_14
+--- PASS: TestIntAry_SubtractFromThis_14 (0.00s)
+=== RUN   TestIntAry_SubtractFromThis_15
+--- PASS: TestIntAry_SubtractFromThis_15 (0.00s)
+=== RUN   TestIntAry_SubtractFromThis_16
+--- PASS: TestIntAry_SubtractFromThis_16 (0.00s)
+=== RUN   TestIntAry_SubtractFromThis_17
+--- PASS: TestIntAry_SubtractFromThis_17 (0.00s)
+=== RUN   TestIntAry_SubtractFromThis_18
+--- PASS: TestIntAry_SubtractFromThis_18 (0.00s)
+=== RUN   TestIntAry_SubtractFromThis_19
+--- PASS: TestIntAry_SubtractFromThis_19 (0.00s)
+=== RUN   TestIntAry_SubtractMultipleFromThis_01
+--- PASS: TestIntAry_SubtractMultipleFromThis_01 (0.00s)
+=== RUN   TestIntAry_SubtractMultipleFromThis_02
+--- PASS: TestIntAry_SubtractMultipleFromThis_02 (0.00s)
+=== RUN   TestIntAry_SubtractMultipleFromThis_03
+--- PASS: TestIntAry_SubtractMultipleFromThis_03 (0.00s)
+=== RUN   TestIntAryMathAdd_Add_01
+--- PASS: TestIntAryMathAdd_Add_01 (0.00s)
+=== RUN   TestIntAryMathAdd_Add_02
+--- PASS: TestIntAryMathAdd_Add_02 (0.00s)
+=== RUN   TestIntAryMathAdd_Add_03
+--- PASS: TestIntAryMathAdd_Add_03 (0.00s)
+=== RUN   TestIntAryMathAdd_Add_04
+--- PASS: TestIntAryMathAdd_Add_04 (0.00s)
+=== RUN   TestIntAryMathAdd_Add_05
+--- PASS: TestIntAryMathAdd_Add_05 (0.00s)
+=== RUN   TestIntAryMathAdd_RunTotal_01
+--- PASS: TestIntAryMathAdd_RunTotal_01 (0.00s)
+=== RUN   TestIntAryMathAdd_AddManyArray_01
+--- PASS: TestIntAryMathAdd_AddManyArray_01 (0.00s)
+=== RUN   TestIntAryMathAdd_AddMany_01
+--- PASS: TestIntAryMathAdd_AddMany_01 (0.00s)
+=== RUN   TestIntAryMathDivide_Divide_01
+--- PASS: TestIntAryMathDivide_Divide_01 (0.00s)
+=== RUN   TestIntAryMathDivide_DivideByTwo_01
+--- PASS: TestIntAryMathDivide_DivideByTwo_01 (0.00s)
+=== RUN   TestIntAryMathMultiply_MultiplyInPlace_01
+--- PASS: TestIntAryMathMultiply_MultiplyInPlace_01 (0.00s)
+=== RUN   TestIntAryMathMultiply_MultiplyInPlace_02
+--- PASS: TestIntAryMathMultiply_MultiplyInPlace_02 (0.00s)
+=== RUN   TestIntAryMathMultiply_Multiply_01
+--- PASS: TestIntAryMathMultiply_Multiply_01 (0.00s)
+=== RUN   TestIntAryMathMultiply_MultiplyByTwoToPower_01
+--- PASS: TestIntAryMathMultiply_MultiplyByTwoToPower_01 (0.00s)
+=== RUN   TestIntAryMathMultiply_MultiplyByTenToPower_01
+--- PASS: TestIntAryMathMultiply_MultiplyByTenToPower_01 (0.00s)
+=== RUN   TestIntAryMathPower_Pwr_01
+--- PASS: TestIntAryMathPower_Pwr_01 (0.00s)
+=== RUN   TestIntAryMathPower_Pwr_02
+--- PASS: TestIntAryMathPower_Pwr_02 (0.00s)
+=== RUN   TestIntAryMathPower_Pwr_03
+--- PASS: TestIntAryMathPower_Pwr_03 (0.00s)
+=== RUN   TestIntAryMathPower_Pwr_04
+--- PASS: TestIntAryMathPower_Pwr_04 (0.00s)
+=== RUN   TestIntAryMathPower_Pwr_05
+--- PASS: TestIntAryMathPower_Pwr_05 (0.00s)
+=== RUN   TestIntAryMathPower_Pwr_06
+--- PASS: TestIntAryMathPower_Pwr_06 (0.00s)
+=== RUN   TestIntAryMathPower_Pwr_07
+--- PASS: TestIntAryMathPower_Pwr_07 (0.00s)
+=== RUN   TestIntAryMathPower_Pwr_08
+--- PASS: TestIntAryMathPower_Pwr_08 (0.00s)
+=== RUN   TestIntAryMathPower_Pwr_09
+--- PASS: TestIntAryMathPower_Pwr_09 (0.00s)
+=== RUN   TestIntAryMathPower_Pwr_10
+--- PASS: TestIntAryMathPower_Pwr_10 (0.00s)
+=== RUN   TestIntAryMathPower_Pwr_11
+--- PASS: TestIntAryMathPower_Pwr_11 (0.00s)
+=== RUN   TestIntAryMathPower_Pwr_12
+--- PASS: TestIntAryMathPower_Pwr_12 (0.00s)
+=== RUN   TestIntAryMathPower_Pwr_13
+--- PASS: TestIntAryMathPower_Pwr_13 (0.00s)
+=== RUN   TestIntAryMathPower_Pwr_14
+--- PASS: TestIntAryMathPower_Pwr_14 (0.00s)
+=== RUN   TestIntAryMathPower_Pwr_15
+--- PASS: TestIntAryMathPower_Pwr_15 (0.01s)
+=== RUN   TestIntAryMathPower_Pwr_16
+--- PASS: TestIntAryMathPower_Pwr_16 (0.00s)
+=== RUN   TestIntAryMathPower_Pwr_17
+--- PASS: TestIntAryMathPower_Pwr_17 (0.00s)
+=== RUN   TestIntAryMathPower_Pwr_18
+--- PASS: TestIntAryMathPower_Pwr_18 (0.00s)
+=== RUN   TestIntAryMathPower_Pwr_19
+--- PASS: TestIntAryMathPower_Pwr_19 (0.00s)
+=== RUN   TestIntAryMathPower_Pwr_20
+--- PASS: TestIntAryMathPower_Pwr_20 (0.00s)
+=== RUN   TestIntAryMathPower_Pwr_21
+--- PASS: TestIntAryMathPower_Pwr_21 (0.00s)
+=== RUN   TestIntAryMathPower_Pwr_22
+--- PASS: TestIntAryMathPower_Pwr_22 (0.00s)
+=== RUN   TestIntAryMathPower_Pwr_23
+--- PASS: TestIntAryMathPower_Pwr_23 (0.00s)
+=== RUN   TestIntAryMathPower_PwrByMultiplication_01
+--- PASS: TestIntAryMathPower_PwrByMultiplication_01 (0.00s)
+=== RUN   TestIntAryMathPower_PwrByMultiplication_02
+--- PASS: TestIntAryMathPower_PwrByMultiplication_02 (0.00s)
+=== RUN   TestIntAryMathPower_PwrByMultiplication_03
+--- PASS: TestIntAryMathPower_PwrByMultiplication_03 (0.00s)
+=== RUN   TestIntAryMathPower_PwrByMultiplication_04
+--- PASS: TestIntAryMathPower_PwrByMultiplication_04 (0.01s)
+=== RUN   TestIntAryMathPower_PwrByMultiplication_05
+--- PASS: TestIntAryMathPower_PwrByMultiplication_05 (0.01s)
+=== RUN   TestIntAryMathPower_PwrByMultiplication_06
+--- PASS: TestIntAryMathPower_PwrByMultiplication_06 (0.00s)
+=== RUN   TestIntAryMathPower_PwrByMultiplication_07
+--- PASS: TestIntAryMathPower_PwrByMultiplication_07 (0.01s)
+=== RUN   TestIntAryMathPower_PwrByMultiplication_08
+--- PASS: TestIntAryMathPower_PwrByMultiplication_08 (0.01s)
+=== RUN   TestIntAryMathPower_PwrByMultiplication_09
+--- PASS: TestIntAryMathPower_PwrByMultiplication_09 (0.00s)
+=== RUN   TestIntAryMathPower_PwrByMultiplication_10
+--- PASS: TestIntAryMathPower_PwrByMultiplication_10 (0.00s)
+=== RUN   TestIntAryMathPower_PwrByMultiplication_11
+--- PASS: TestIntAryMathPower_PwrByMultiplication_11 (0.00s)
+=== RUN   TestIntAryMathPower_PwrByMultiplication_12
+--- PASS: TestIntAryMathPower_PwrByMultiplication_12 (0.00s)
+=== RUN   TestIntAryMathPower_PwrByMultiplication_13
+--- PASS: TestIntAryMathPower_PwrByMultiplication_13 (0.00s)
+=== RUN   TestIntAryMathPower_PwrByMultiplication_14
+--- PASS: TestIntAryMathPower_PwrByMultiplication_14 (0.02s)
+=== RUN   TestIntAryMathPower_PwrByMultiplication_15
+--- PASS: TestIntAryMathPower_PwrByMultiplication_15 (0.01s)
+=== RUN   TestIntAryMathPower_PwrByMultiplication_16
+--- PASS: TestIntAryMathPower_PwrByMultiplication_16 (0.00s)
+=== RUN   TestIntAryMathPower_PwrByMultiplication_17
+--- PASS: TestIntAryMathPower_PwrByMultiplication_17 (0.00s)
+=== RUN   TestIntAryMathPower_PwrByMultiplication_18
+--- PASS: TestIntAryMathPower_PwrByMultiplication_18 (0.00s)
+=== RUN   TestIntAryMathPower_PwrByMultiplication_19
+--- PASS: TestIntAryMathPower_PwrByMultiplication_19 (0.00s)
+=== RUN   TestIntAryMathPower_PwrByMultiplication_20
+--- PASS: TestIntAryMathPower_PwrByMultiplication_20 (0.00s)
+=== RUN   TestIntAryMathPower_PwrByMultiplication_21
+--- PASS: TestIntAryMathPower_PwrByMultiplication_21 (0.01s)
+=== RUN   TestIntAryMathPower_PwrByMultiplication_22
+--- PASS: TestIntAryMathPower_PwrByMultiplication_22 (0.00s)
+=== RUN   TestIntAryMathPower_PwrByMultiplication_23
+--- PASS: TestIntAryMathPower_PwrByMultiplication_23 (0.00s)
+=== RUN   TestIntAryMathSubtract_SubtractTotal_01
+--- PASS: TestIntAryMathSubtract_SubtractTotal_01 (0.00s)
+=== RUN   TestIntAryMathSubtract_Subtract_01
+--- PASS: TestIntAryMathSubtract_Subtract_01 (0.00s)
+=== RUN   TestNegativeValueFmtMode_String_01
+--- PASS: TestNegativeValueFmtMode_String_01 (0.00s)
+=== RUN   TestNegativeValueFmtMode_String_02
+--- PASS: TestNegativeValueFmtMode_String_02 (0.00s)
+=== RUN   TestNegativeValueFmtMode_String_03
+--- PASS: TestNegativeValueFmtMode_String_03 (0.00s)
+=== RUN   TestNegativeValueFmtMode_Value_01
+--- PASS: TestNegativeValueFmtMode_Value_01 (0.00s)
+=== RUN   TestNegativeValueFmtMode_Value_02
+--- PASS: TestNegativeValueFmtMode_Value_02 (0.00s)
+=== RUN   TestNegativeValueFmtMode_Value_03
+--- PASS: TestNegativeValueFmtMode_Value_03 (0.00s)
+=== RUN   TestNthRootOp_GetNthRootFloat32_01
+--- PASS: TestNthRootOp_GetNthRootFloat32_01 (0.00s)
+=== RUN   TestNthRootOp_GetNthRootFloat64_01
+--- PASS: TestNthRootOp_GetNthRootFloat64_01 (0.00s)
+=== RUN   TestNthRootOp_GetNthRootBigFloat_01
+--- PASS: TestNthRootOp_GetNthRootBigFloat_01 (0.00s)
+=== RUN   TestNthRootOp_GetNthRootInt32_01
+--- PASS: TestNthRootOp_GetNthRootInt32_01 (0.00s)
+=== RUN   TestNthRootOp_GetNthRootInt64_01
+--- PASS: TestNthRootOp_GetNthRootInt64_01 (0.00s)
+=== RUN   TestNthRootOp_GetNthRootBigInt_01
+--- PASS: TestNthRootOp_GetNthRootBigInt_01 (0.00s)
+=== RUN   TestNthRootOp_GetNthRootIntAry_01
+--- PASS: TestNthRootOp_GetNthRootIntAry_01 (0.00s)
+=== RUN   TestNthRootOp_GetNthRootIntAry_02
+--- PASS: TestNthRootOp_GetNthRootIntAry_02 (0.00s)
+=== RUN   TestNthRootOp_GetNthRootIntAry_03
+--- PASS: TestNthRootOp_GetNthRootIntAry_03 (0.00s)
+=== RUN   TestNthRootOp_GetNthRootIntAry_04
+--- PASS: TestNthRootOp_GetNthRootIntAry_04 (0.00s)
+=== RUN   TestNthRootOp_GetNthRootIntAry_05
+--- PASS: TestNthRootOp_GetNthRootIntAry_05 (0.00s)
+=== RUN   TestNthRootOp_GetNthRootIntAry_06
+--- PASS: TestNthRootOp_GetNthRootIntAry_06 (0.00s)
+=== RUN   TestNthRootOp_GetNthRootIntAry_07
+--- PASS: TestNthRootOp_GetNthRootIntAry_07 (0.00s)
+=== RUN   TestNthRootOp_GetNthRootIntAry_08
+--- PASS: TestNthRootOp_GetNthRootIntAry_08 (0.00s)
+=== RUN   TestNthRootOp_GetNthRootIntAry_09
+--- PASS: TestNthRootOp_GetNthRootIntAry_09 (0.00s)
+=== RUN   TestNthRootOp_GetNthRootIntAry_10
+--- PASS: TestNthRootOp_GetNthRootIntAry_10 (0.00s)
+=== RUN   TestNthRootOp_GetNthRootIntAry_11
+--- PASS: TestNthRootOp_GetNthRootIntAry_11 (0.00s)
+=== RUN   TestNthRootOp_GetNthRootIntAry_12
+--- PASS: TestNthRootOp_GetNthRootIntAry_12 (0.00s)
+=== RUN   TestNthRootOp_GetNthRootIntAry_13
+--- PASS: TestNthRootOp_GetNthRootIntAry_13 (0.00s)
+=== RUN   TestNthRootOp_GetNthRootIntAry_14
+--- PASS: TestNthRootOp_GetNthRootIntAry_14 (0.00s)
+=== RUN   TestNthRootOp_GetNthRootIntAry_15
+--- PASS: TestNthRootOp_GetNthRootIntAry_15 (0.00s)
+=== RUN   TestNthRootOp_GetNthRootIntAry_16
+--- PASS: TestNthRootOp_GetNthRootIntAry_16 (0.00s)
+=== RUN   TestNthRootOp_GetNthRootIntAry_17
+--- PASS: TestNthRootOp_GetNthRootIntAry_17 (0.00s)
+=== RUN   TestNthRootOp_GetNthRootIntAry_18
+--- PASS: TestNthRootOp_GetNthRootIntAry_18 (0.00s)
+=== RUN   TestNthRootOp_GetNthRootIntAry_19
+--- PASS: TestNthRootOp_GetNthRootIntAry_19 (0.00s)
+=== RUN   TestNthRootOp_GetNthRootIntAry_20
+--- PASS: TestNthRootOp_GetNthRootIntAry_20 (0.00s)
+=== RUN   TestNthRootOp_GetNthRootIntAry_21
+--- PASS: TestNthRootOp_GetNthRootIntAry_21 (0.00s)
+=== RUN   TestNthRootOp_GetNthRootIntAry_22
+--- PASS: TestNthRootOp_GetNthRootIntAry_22 (0.00s)
+=== RUN   TestNthRootOp_GetNthRootIntAry_23
+--- PASS: TestNthRootOp_GetNthRootIntAry_23 (0.00s)
+=== RUN   TestNthRootOp_GetNthRootIntAry_24
+--- PASS: TestNthRootOp_GetNthRootIntAry_24 (0.01s)
+=== RUN   TestNthRootOp_GetNthRootIntAry_25
+--- PASS: TestNthRootOp_GetNthRootIntAry_25 (0.01s)
+=== RUN   TestNthRootOp_GetNthRootIntAry_26
+--- PASS: TestNthRootOp_GetNthRootIntAry_26 (0.00s)
+=== RUN   TestNthRootOp_GetNthRootIntAry_27
+--- PASS: TestNthRootOp_GetNthRootIntAry_27 (4.17s)
+=== RUN   TestNthRootOp_GetSquareRootFloat32_01
+--- PASS: TestNthRootOp_GetSquareRootFloat32_01 (0.00s)
+=== RUN   TestNthRootOp_GetSquareRootFloat64_01
+--- PASS: TestNthRootOp_GetSquareRootFloat64_01 (0.00s)
+=== RUN   TestNthRootOp_GetSquareRootBigFloat_01
+--- PASS: TestNthRootOp_GetSquareRootBigFloat_01 (0.00s)
+=== RUN   TestNthRootOp_GetSquareRootInt_01
+--- PASS: TestNthRootOp_GetSquareRootInt_01 (0.00s)
+=== RUN   TestNthRootOp_GetSquareRootInt32_01
+--- PASS: TestNthRootOp_GetSquareRootInt32_01 (0.00s)
+=== RUN   TestNthRootOp_GetSquareRootInt64_01
+--- PASS: TestNthRootOp_GetSquareRootInt64_01 (0.00s)
+=== RUN   TestNthRootOp_GetSquareRootBigInt_01
+--- PASS: TestNthRootOp_GetSquareRootBigInt_01 (0.00s)
+=== RUN   TestNthRootOp_GetSquareRootIntAry_01
+--- PASS: TestNthRootOp_GetSquareRootIntAry_01 (0.00s)
+=== RUN   TestNthRootOp_SetNthRootIntAry_01
+--- PASS: TestNthRootOp_SetNthRootIntAry_01 (0.00s)
+=== RUN   TestNthRootOp_SetNthRootIntAry_02
+--- PASS: TestNthRootOp_SetNthRootIntAry_02 (0.00s)
+=== RUN   TestNthRootOp_SetNthRootIntAry_03
+--- PASS: TestNthRootOp_SetNthRootIntAry_03 (0.00s)
+=== RUN   TestNumStrDto_AddNumStrs_01
+--- PASS: TestNumStrDto_AddNumStrs_01 (0.00s)
+=== RUN   TestNumStrDto_AddNumStrs_02
+--- PASS: TestNumStrDto_AddNumStrs_02 (0.00s)
+=== RUN   TestNumStrDto_AddNumStrs_03
+--- PASS: TestNumStrDto_AddNumStrs_03 (0.00s)
+=== RUN   TestNumStrDto_AddNumStrs_04
+--- PASS: TestNumStrDto_AddNumStrs_04 (0.00s)
+=== RUN   TestNumStrDto_AddNumStrs_05
+--- PASS: TestNumStrDto_AddNumStrs_05 (0.00s)
+=== RUN   TestNumStrDto_AddNumStrs_06
+--- PASS: TestNumStrDto_AddNumStrs_06 (0.00s)
+=== RUN   TestNumStrDto_AddNumStrs_07
+--- PASS: TestNumStrDto_AddNumStrs_07 (0.00s)
+=== RUN   TestNumStrDto_AddNumStrs_08
+--- PASS: TestNumStrDto_AddNumStrs_08 (0.00s)
+=== RUN   TestNumStrDto_AddNumStrs_09
+--- PASS: TestNumStrDto_AddNumStrs_09 (0.00s)
+=== RUN   TestNumStrDto_AddNumStrs_10
+--- PASS: TestNumStrDto_AddNumStrs_10 (0.00s)
+=== RUN   TestNumStrDto_AddNumStrs_11
+--- PASS: TestNumStrDto_AddNumStrs_11 (0.00s)
+=== RUN   TestNumStrDto_CompareAbsoluteVals_01
+--- PASS: TestNumStrDto_CompareAbsoluteVals_01 (0.00s)
+=== RUN   TestNumStrDto_CompareAbsoluteVals_02
+--- PASS: TestNumStrDto_CompareAbsoluteVals_02 (0.00s)
+=== RUN   TestNumStrDto_CompareAbsoluteVals_03
+--- PASS: TestNumStrDto_CompareAbsoluteVals_03 (0.00s)
+=== RUN   TestNumStrDto_CompareAbsoluteVals_04
+--- PASS: TestNumStrDto_CompareAbsoluteVals_04 (0.00s)
+=== RUN   TestNumStrDto_CompareAbsoluteVals_05
+--- PASS: TestNumStrDto_CompareAbsoluteVals_05 (0.00s)
+=== RUN   TestNumStrDto_CompareAbsoluteVals_06
+--- PASS: TestNumStrDto_CompareAbsoluteVals_06 (0.00s)
+=== RUN   TestNumStrDto_CompareAbsoluteVals_07
+--- PASS: TestNumStrDto_CompareAbsoluteVals_07 (0.00s)
+=== RUN   TestNumStrDto_CompareAbsoluteVals_08
+--- PASS: TestNumStrDto_CompareAbsoluteVals_08 (0.00s)
+=== RUN   TestNumStrDto_CompareSignedVals_01
+--- PASS: TestNumStrDto_CompareSignedVals_01 (0.00s)
+=== RUN   TestNumStrDto_CompareSignedVals_02
+--- PASS: TestNumStrDto_CompareSignedVals_02 (0.00s)
+=== RUN   TestNumStrDto_CompareSignedVals_03
+--- PASS: TestNumStrDto_CompareSignedVals_03 (0.00s)
+=== RUN   TestNumStrDto_CompareSignedVals_04
+--- PASS: TestNumStrDto_CompareSignedVals_04 (0.00s)
+=== RUN   TestNumStrDto_CompareSignedVals_05
+--- PASS: TestNumStrDto_CompareSignedVals_05 (0.00s)
+=== RUN   TestNumStrDto_CompareSignedVals_06
+--- PASS: TestNumStrDto_CompareSignedVals_06 (0.00s)
+=== RUN   TestNumStrDto_CompareSignedVals_07
+--- PASS: TestNumStrDto_CompareSignedVals_07 (0.00s)
+=== RUN   TestNumStrDto_CompareSignedVals_08
+--- PASS: TestNumStrDto_CompareSignedVals_08 (0.00s)
+=== RUN   TestNumStrDto_CopyIn_01
+--- PASS: TestNumStrDto_CopyIn_01 (0.00s)
+=== RUN   TestNumStrDto_CopyIn_02
+--- PASS: TestNumStrDto_CopyIn_02 (0.00s)
+=== RUN   TestNumStrDto_CopyOut_01
+--- PASS: TestNumStrDto_CopyOut_01 (0.00s)
+=== RUN   TestNumStrDto_CopyOut_02
+--- PASS: TestNumStrDto_CopyOut_02 (0.00s)
+=== RUN   TestNumStrDto_Divide_01
+--- PASS: TestNumStrDto_Divide_01 (0.00s)
+=== RUN   TestNumStrDto_FormatForMathOps_01
+--- PASS: TestNumStrDto_FormatForMathOps_01 (0.00s)
+=== RUN   TestNumStrDto_FormatForMathOps_02
+--- PASS: TestNumStrDto_FormatForMathOps_02 (0.00s)
+=== RUN   TestNumStrDto_FormatForMathOps_03
+--- PASS: TestNumStrDto_FormatForMathOps_03 (0.00s)
+=== RUN   TestNumStrDto_FormatForMathOps_04
+--- PASS: TestNumStrDto_FormatForMathOps_04 (0.00s)
+=== RUN   TestNumStrDto_FormatForMathOps_05
+--- PASS: TestNumStrDto_FormatForMathOps_05 (0.00s)
+=== RUN   TestNumStrDto_FormatForMathOps_06
+--- PASS: TestNumStrDto_FormatForMathOps_06 (0.00s)
+=== RUN   TestNumStrDto_GetAbsoluteBigInt_01
+--- PASS: TestNumStrDto_GetAbsoluteBigInt_01 (0.00s)
+=== RUN   TestNumStrDto_GetAbsFracRunes_01
+--- PASS: TestNumStrDto_GetAbsFracRunes_01 (0.00s)
+=== RUN   TestNumStrDto_GetAbsFracRunes_02
+--- PASS: TestNumStrDto_GetAbsFracRunes_02 (0.00s)
+=== RUN   TestNumStrDto_GetAbsIntRunes_01
+--- PASS: TestNumStrDto_GetAbsIntRunes_01 (0.00s)
+=== RUN   TestNumStrDto_GetAbsIntRunes_02
+--- PASS: TestNumStrDto_GetAbsIntRunes_02 (0.00s)
+=== RUN   TestNumStrDto_GetAbsIntRunes_03
+--- PASS: TestNumStrDto_GetAbsIntRunes_03 (0.00s)
+=== RUN   TestNumStrDto_GetBigIntNum_01
+--- PASS: TestNumStrDto_GetBigIntNum_01 (0.00s)
+=== RUN   TestNumStrDto_GetCurrencyStr_01
+--- PASS: TestNumStrDto_GetCurrencyStr_01 (0.00s)
+=== RUN   TestNumStrDto_GetCurrencyStr_02
+--- PASS: TestNumStrDto_GetCurrencyStr_02 (0.00s)
+=== RUN   TestNumStrDto_GetCurrencyStr_03
+--- PASS: TestNumStrDto_GetCurrencyStr_03 (0.00s)
+=== RUN   TestNumStrDto_GetCurrencyStr_04
+--- PASS: TestNumStrDto_GetCurrencyStr_04 (0.00s)
+=== RUN   TestNumStrDto_GetCurrencyStr_05
+--- PASS: TestNumStrDto_GetCurrencyStr_05 (0.00s)
+=== RUN   TestNumStrDto_GetCurrencyStr_06
+--- PASS: TestNumStrDto_GetCurrencyStr_06 (0.00s)
+=== RUN   TestNumStrDto_GetCurrencyStr_07
+--- PASS: TestNumStrDto_GetCurrencyStr_07 (0.00s)
+=== RUN   TestNumStrDto_GetCurrencyStr_08
+--- PASS: TestNumStrDto_GetCurrencyStr_08 (0.00s)
+=== RUN   TestNumStrDto_GetCurrencyStr_09
+--- PASS: TestNumStrDto_GetCurrencyStr_09 (0.00s)
+=== RUN   TestNumStrDto_GetCurrencyParen_01
+--- PASS: TestNumStrDto_GetCurrencyParen_01 (0.00s)
+=== RUN   TestNumStrDto_GetCurrencyParen_02
+--- PASS: TestNumStrDto_GetCurrencyParen_02 (0.00s)
+=== RUN   TestNumStrDto_GetCurrencyParen_03
+--- PASS: TestNumStrDto_GetCurrencyParen_03 (0.00s)
+=== RUN   TestNumStrDto_GetCurrencyParen_04
+--- PASS: TestNumStrDto_GetCurrencyParen_04 (0.00s)
+=== RUN   TestNumStrDto_GetCurrencyParen_05
+--- PASS: TestNumStrDto_GetCurrencyParen_05 (0.00s)
+=== RUN   TestNumStrDto_GetCurrencyParen_06
+--- PASS: TestNumStrDto_GetCurrencyParen_06 (0.00s)
+=== RUN   TestNumStrDto_GetCurrencyParen_07
+--- PASS: TestNumStrDto_GetCurrencyParen_07 (0.00s)
+=== RUN   TestNumStrDto_GetCurrencyParen_08
+--- PASS: TestNumStrDto_GetCurrencyParen_08 (0.00s)
+=== RUN   TestNumStrDto_GetDecimal_01
+--- PASS: TestNumStrDto_GetDecimal_01 (0.00s)
+=== RUN   TestNumStrDto_GetIntAry
+--- PASS: TestNumStrDto_GetIntAry (0.00s)
+=== RUN   TestNumStrDto_GetNumStr_01
+--- PASS: TestNumStrDto_GetNumStr_01 (0.00s)
+=== RUN   TestNumStrDto_GetNumStr_02
+--- PASS: TestNumStrDto_GetNumStr_02 (0.00s)
+=== RUN   TestNumStrDto_GetNumStr_03
+--- PASS: TestNumStrDto_GetNumStr_03 (0.00s)
+=== RUN   TestNumStrDto_GetNumStr_04
+--- PASS: TestNumStrDto_GetNumStr_04 (0.00s)
+=== RUN   TestNumStrDto_GetNumStr_05
+--- PASS: TestNumStrDto_GetNumStr_05 (0.00s)
+=== RUN   TestNumStrDto_GetNumStr_06
+--- PASS: TestNumStrDto_GetNumStr_06 (0.00s)
+=== RUN   TestNumStrDto_GetNumStr_07
+--- PASS: TestNumStrDto_GetNumStr_07 (0.00s)
+=== RUN   TestNumStrDto_GetNumStr_08
+--- PASS: TestNumStrDto_GetNumStr_08 (0.00s)
+=== RUN   TestNumStrDto_GetNumStr_09
+--- PASS: TestNumStrDto_GetNumStr_09 (0.00s)
+=== RUN   TestNumStrDto_GetNumStr_10
+--- PASS: TestNumStrDto_GetNumStr_10 (0.00s)
+=== RUN   TestNumStrDto_GetNumStr_11
+--- PASS: TestNumStrDto_GetNumStr_11 (0.00s)
+=== RUN   TestNumStrDto_GetNumParen_01
+--- PASS: TestNumStrDto_GetNumParen_01 (0.00s)
+=== RUN   TestNumStrDto_GetNumParen_02
+--- PASS: TestNumStrDto_GetNumParen_02 (0.00s)
+=== RUN   TestNumStrDto_GetNumParen_03
+--- PASS: TestNumStrDto_GetNumParen_03 (0.00s)
+=== RUN   TestNumStrDto_GetNumParen_04
+--- PASS: TestNumStrDto_GetNumParen_04 (0.00s)
+=== RUN   TestNumStrDto_GetNumParen_05
+--- PASS: TestNumStrDto_GetNumParen_05 (0.00s)
+=== RUN   TestNumStrDto_GetNumParen_06
+--- PASS: TestNumStrDto_GetNumParen_06 (0.00s)
+=== RUN   TestNumStrDto_GetNumParen_07
+--- PASS: TestNumStrDto_GetNumParen_07 (0.00s)
+=== RUN   TestNumStrDto_GetNumParen_08
+--- PASS: TestNumStrDto_GetNumParen_08 (0.00s)
+=== RUN   TestNumStrDto_GetNumParen_09
+--- PASS: TestNumStrDto_GetNumParen_09 (0.00s)
+=== RUN   TestNumStrDto_GetNumParen_10
+--- PASS: TestNumStrDto_GetNumParen_10 (0.00s)
+=== RUN   TestNumStrDto_GetNumParen_11
+--- PASS: TestNumStrDto_GetNumParen_11 (0.00s)
+=== RUN   TestNumStrDto_GetSignedBigInt_01
+--- PASS: TestNumStrDto_GetSignedBigInt_01 (0.00s)
+=== RUN   TestNumStrDto_GetThouStr_01
+--- PASS: TestNumStrDto_GetThouStr_01 (0.00s)
+=== RUN   TestNumStrDto_GetThouStr_02
+--- PASS: TestNumStrDto_GetThouStr_02 (0.00s)
+=== RUN   TestNumStrDto_GetThouStr_03
+--- PASS: TestNumStrDto_GetThouStr_03 (0.00s)
+=== RUN   TestNumStrDto_GetThouStr_04
+--- PASS: TestNumStrDto_GetThouStr_04 (0.00s)
+=== RUN   TestNumStrDto_GetThouStr_05
+--- PASS: TestNumStrDto_GetThouStr_05 (0.00s)
+=== RUN   TestNumStrDto_GetThouStr_06
+--- PASS: TestNumStrDto_GetThouStr_06 (0.00s)
+=== RUN   TestNumStrDto_GetThouStr_07
+--- PASS: TestNumStrDto_GetThouStr_07 (0.00s)
+=== RUN   TestNumStrDto_GetThouStr_08
+--- PASS: TestNumStrDto_GetThouStr_08 (0.00s)
+=== RUN   TestNumStrDto_GetThouStr_09
+--- PASS: TestNumStrDto_GetThouStr_09 (0.00s)
+=== RUN   TestNumStrDto_GetThouStr_10
+--- PASS: TestNumStrDto_GetThouStr_10 (0.00s)
+=== RUN   TestNumStrDto_GetThouParen_01
+--- PASS: TestNumStrDto_GetThouParen_01 (0.00s)
+=== RUN   TestNumStrDto_GetThouParen_02
+--- PASS: TestNumStrDto_GetThouParen_02 (0.00s)
+=== RUN   TestNumStrDto_GetThouParen_03
+--- PASS: TestNumStrDto_GetThouParen_03 (0.00s)
+=== RUN   TestNumStrDto_GetThouParen_04
+--- PASS: TestNumStrDto_GetThouParen_04 (0.00s)
+=== RUN   TestNumStrDto_GetThouParen_05
+--- PASS: TestNumStrDto_GetThouParen_05 (0.00s)
+=== RUN   TestNumStrDto_GetThouParen_06
+--- PASS: TestNumStrDto_GetThouParen_06 (0.00s)
+=== RUN   TestNumStrDto_GetThouParen_07
+--- PASS: TestNumStrDto_GetThouParen_07 (0.00s)
+=== RUN   TestNumStrDto_GetThouParen_08
+--- PASS: TestNumStrDto_GetThouParen_08 (0.00s)
+=== RUN   TestNumStrDto_GetThouParen_09
+--- PASS: TestNumStrDto_GetThouParen_09 (0.00s)
+=== RUN   TestNumStrDto_GetThouParen_10
+--- PASS: TestNumStrDto_GetThouParen_10 (0.00s)
+=== RUN   TestNumStrDto_GetThouParen_11
+--- PASS: TestNumStrDto_GetThouParen_11 (0.00s)
+=== RUN   TestNumStrDto_IsNumStrDtoValid_01
+--- PASS: TestNumStrDto_IsNumStrDtoValid_01 (0.00s)
+=== RUN   TestNumStrDto_Multiply_01
+--- PASS: TestNumStrDto_Multiply_01 (0.00s)
+=== RUN   TestNumStrDto_MultiplyNumStrs_01
+--- PASS: TestNumStrDto_MultiplyNumStrs_01 (0.00s)
+=== RUN   TestNumStrDto_MultiplyNumStrs_02
+--- PASS: TestNumStrDto_MultiplyNumStrs_02 (0.00s)
+=== RUN   TestNumStrDto_MultiplyNumStrs_03
+--- PASS: TestNumStrDto_MultiplyNumStrs_03 (0.00s)
+=== RUN   TestNumStrDto_MultiplyNumStrs_04
+--- PASS: TestNumStrDto_MultiplyNumStrs_04 (0.00s)
+=== RUN   TestNumStrDto_MultiplyNumStrs_05
+--- PASS: TestNumStrDto_MultiplyNumStrs_05 (0.00s)
+=== RUN   TestNumStrDto_MultiplyNumStrs_06
+--- PASS: TestNumStrDto_MultiplyNumStrs_06 (0.00s)
+=== RUN   TestNumStrDto_MultiplyNumStrs_07
+--- PASS: TestNumStrDto_MultiplyNumStrs_07 (0.00s)
+=== RUN   TestNumStrDto_MultiplyNumStrs_08
+--- PASS: TestNumStrDto_MultiplyNumStrs_08 (0.00s)
+=== RUN   TestNumStrDto_MultiplyNumStrs_09
+--- PASS: TestNumStrDto_MultiplyNumStrs_09 (0.00s)
+=== RUN   TestNumStrDto_MultiplyNumStrs_10
+--- PASS: TestNumStrDto_MultiplyNumStrs_10 (0.00s)
+=== RUN   TestNumStrDto_MultiplyNumStrs_11
+--- PASS: TestNumStrDto_MultiplyNumStrs_11 (0.00s)
+=== RUN   TestNumStrDto_MultiplyNumStrs_12
+--- PASS: TestNumStrDto_MultiplyNumStrs_12 (0.00s)
+=== RUN   TestNumStrDto_MultiplyNumStrs_13
+--- PASS: TestNumStrDto_MultiplyNumStrs_13 (0.00s)
+=== RUN   TestNumStrDto_MultiplyNumStrs_14
+--- PASS: TestNumStrDto_MultiplyNumStrs_14 (0.00s)
+=== RUN   TestNumStrDto_NewNumStr_01
+--- PASS: TestNumStrDto_NewNumStr_01 (0.00s)
+=== RUN   TestNumStrDto_NewNumStr_02
+--- PASS: TestNumStrDto_NewNumStr_02 (0.00s)
+=== RUN   TestNumStrDto_NewNumStr_03
+--- PASS: TestNumStrDto_NewNumStr_03 (0.00s)
+=== RUN   TestNumStrDto_NewNumStr_04
+--- PASS: TestNumStrDto_NewNumStr_04 (0.00s)
+=== RUN   TestNumStrDto_NewNumStr_05
+--- PASS: TestNumStrDto_NewNumStr_05 (0.00s)
+=== RUN   TestNumStrDto_NewBigIntNum_01
+--- PASS: TestNumStrDto_NewBigIntNum_01 (0.00s)
+=== RUN   TestNumStrDto_ParseNumStr_01
+--- PASS: TestNumStrDto_ParseNumStr_01 (0.00s)
+=== RUN   TestNumStrDto_ParseNumStr_02
+--- PASS: TestNumStrDto_ParseNumStr_02 (0.00s)
+=== RUN   TestNumStrDto_ParseNumStr_03
+--- PASS: TestNumStrDto_ParseNumStr_03 (0.00s)
+=== RUN   TestNumStrDto_ParseNumStr_04
+--- PASS: TestNumStrDto_ParseNumStr_04 (0.00s)
+=== RUN   TestNumStrDto_ParseNumStr_05
+--- PASS: TestNumStrDto_ParseNumStr_05 (0.00s)
+=== RUN   TestNumStrDto_ParseSignedBigInt_01
+--- PASS: TestNumStrDto_ParseSignedBigInt_01 (0.00s)
+=== RUN   TestNumStrDto_ParseSignedBigInt_02
+--- PASS: TestNumStrDto_ParseSignedBigInt_02 (0.00s)
+=== RUN   TestNumStrDto_ScaleNumStr_01
+--- PASS: TestNumStrDto_ScaleNumStr_01 (0.00s)
+=== RUN   TestNumStrDto_ScaleNumStr_02
+--- PASS: TestNumStrDto_ScaleNumStr_02 (0.00s)
+=== RUN   TestNumStrDto_ScaleNumStr_03
+--- PASS: TestNumStrDto_ScaleNumStr_03 (0.00s)
+=== RUN   TestNumStrDto_ScaleNumStr_04
+--- PASS: TestNumStrDto_ScaleNumStr_04 (0.00s)
+=== RUN   TestNumStrDto_ScaleNumStr_05
+--- PASS: TestNumStrDto_ScaleNumStr_05 (0.00s)
+=== RUN   TestNumStrDto_ScaleNumStr_06
+--- PASS: TestNumStrDto_ScaleNumStr_06 (0.00s)
+=== RUN   TestNumStrDto_ScaleNumStr_07
+--- PASS: TestNumStrDto_ScaleNumStr_07 (0.00s)
+=== RUN   TestNumStrDto_SetPrecision_01
+--- PASS: TestNumStrDto_SetPrecision_01 (0.00s)
+=== RUN   TestNumStrDto_SetPrecision_02
+--- PASS: TestNumStrDto_SetPrecision_02 (0.00s)
+=== RUN   TestNumStrDto_SetPrecision_03
+--- PASS: TestNumStrDto_SetPrecision_03 (0.00s)
+=== RUN   TestNumStrDto_SetPrecision_04
+--- PASS: TestNumStrDto_SetPrecision_04 (0.00s)
+=== RUN   TestNumStrDto_SetPrecision_05
+--- PASS: TestNumStrDto_SetPrecision_05 (0.00s)
+=== RUN   TestNumStrDto_SetPrecision_06
+--- PASS: TestNumStrDto_SetPrecision_06 (0.00s)
+=== RUN   TestNumStrDto_SetPrecision_07
+--- PASS: TestNumStrDto_SetPrecision_07 (0.00s)
+=== RUN   TestNumStrDto_SetPrecision_08
+--- PASS: TestNumStrDto_SetPrecision_08 (0.00s)
+=== RUN   TestNumStrDto_SetPrecision_09
+--- PASS: TestNumStrDto_SetPrecision_09 (0.00s)
+=== RUN   TestNumStrDto_SetPrecision_10
+--- PASS: TestNumStrDto_SetPrecision_10 (0.00s)
+=== RUN   TestNumStrDto_SetPrecision_11
+--- PASS: TestNumStrDto_SetPrecision_11 (0.00s)
+=== RUN   TestNumStrDto_SetPrecision_12
+--- PASS: TestNumStrDto_SetPrecision_12 (0.00s)
+=== RUN   TestNumStrDto_SetPrecision_13
+--- PASS: TestNumStrDto_SetPrecision_13 (0.00s)
+=== RUN   TestNumStrDto_SetPrecision_14
+--- PASS: TestNumStrDto_SetPrecision_14 (0.00s)
+=== RUN   TestNumStrDto_SetPrecision_15
+--- PASS: TestNumStrDto_SetPrecision_15 (0.00s)
+=== RUN   TestNumStrDto_SetPrecision_16
+--- PASS: TestNumStrDto_SetPrecision_16 (0.00s)
+=== RUN   TestNumStrDto_SetPrecision_17
+--- PASS: TestNumStrDto_SetPrecision_17 (0.00s)
+=== RUN   TestNumStrDto_SetPrecision_18
+--- PASS: TestNumStrDto_SetPrecision_18 (0.00s)
+=== RUN   TestNumStrDto_SetPrecision_19
+--- PASS: TestNumStrDto_SetPrecision_19 (0.00s)
+=== RUN   TestNumStrDto_SetThisPrecision_01
+--- PASS: TestNumStrDto_SetThisPrecision_01 (0.00s)
+=== RUN   TestNumStrDto_SetThisPrecision_02
+--- PASS: TestNumStrDto_SetThisPrecision_02 (0.00s)
+=== RUN   TestNumStrDto_ShiftPrecisionLeft_01
+--- PASS: TestNumStrDto_ShiftPrecisionLeft_01 (0.00s)
+=== RUN   TestNumStrDto_ShiftPrecisionLeft_02
+--- PASS: TestNumStrDto_ShiftPrecisionLeft_02 (0.00s)
+=== RUN   TestNumStrDto_ShiftPrecisionLeft_03
+--- PASS: TestNumStrDto_ShiftPrecisionLeft_03 (0.00s)
+=== RUN   TestNumStrDto_ShiftPrecisionLeft_04
+--- PASS: TestNumStrDto_ShiftPrecisionLeft_04 (0.00s)
+=== RUN   TestNumStrDto_ShiftPrecisionLeft_05
+--- PASS: TestNumStrDto_ShiftPrecisionLeft_05 (0.00s)
+=== RUN   TestNumStrDto_ShiftPrecisionLeft_06
+--- PASS: TestNumStrDto_ShiftPrecisionLeft_06 (0.00s)
+=== RUN   TestNumStrDto_ShiftPrecisionLeft_07
+--- PASS: TestNumStrDto_ShiftPrecisionLeft_07 (0.00s)
+=== RUN   TestNumStrDto_ShiftPrecisionLeft_08
+--- PASS: TestNumStrDto_ShiftPrecisionLeft_08 (0.00s)
+=== RUN   TestNumStrDto_ShiftPrecisionLeft_09
+--- PASS: TestNumStrDto_ShiftPrecisionLeft_09 (0.00s)
+=== RUN   TestNumStrDto_ShiftPrecisionLeft_10
+--- PASS: TestNumStrDto_ShiftPrecisionLeft_10 (0.00s)
+=== RUN   TestNumStrDto_ShiftPrecisionLeft_11
+--- PASS: TestNumStrDto_ShiftPrecisionLeft_11 (0.00s)
+=== RUN   TestNumStrDto_ShiftPrecisionRight_01
+--- PASS: TestNumStrDto_ShiftPrecisionRight_01 (0.00s)
+=== RUN   TestNumStrDto_ShiftPrecisionRight_02
+--- PASS: TestNumStrDto_ShiftPrecisionRight_02 (0.00s)
+=== RUN   TestNumStrDto_ShiftPrecisionRight_03
+--- PASS: TestNumStrDto_ShiftPrecisionRight_03 (0.00s)
+=== RUN   TestNumStrDto_ShiftPrecisionRight_04
+--- PASS: TestNumStrDto_ShiftPrecisionRight_04 (0.00s)
+=== RUN   TestNumStrDto_ShiftPrecisionRight_05
+--- PASS: TestNumStrDto_ShiftPrecisionRight_05 (0.00s)
+=== RUN   TestNumStrDto_ShiftPrecisionRight_06
+--- PASS: TestNumStrDto_ShiftPrecisionRight_06 (0.00s)
+=== RUN   TestNumStrDto_ShiftPrecisionRight_07
+--- PASS: TestNumStrDto_ShiftPrecisionRight_07 (0.00s)
+=== RUN   TestNumStrDto_ShiftPrecisionRight_08
+--- PASS: TestNumStrDto_ShiftPrecisionRight_08 (0.00s)
+=== RUN   TestNumStrDto_ShiftPrecisionRight_09
+--- PASS: TestNumStrDto_ShiftPrecisionRight_09 (0.00s)
+=== RUN   TestNumStrDto_ShiftPrecisionRight_10
+--- PASS: TestNumStrDto_ShiftPrecisionRight_10 (0.00s)
+=== RUN   TestNumStrDto_SubtractNumStrs_01
+--- PASS: TestNumStrDto_SubtractNumStrs_01 (0.00s)
+=== RUN   TestNumStrDto_SubtractNumStrs_02
+--- PASS: TestNumStrDto_SubtractNumStrs_02 (0.00s)
+=== RUN   TestNumStrDto_SubtractNumStrs_03
+--- PASS: TestNumStrDto_SubtractNumStrs_03 (0.00s)
+=== RUN   TestNumStrDto_SubtractNumStrs_04
+--- PASS: TestNumStrDto_SubtractNumStrs_04 (0.00s)
+=== RUN   TestNumStrDto_SubtractNumStrs_05
+--- PASS: TestNumStrDto_SubtractNumStrs_05 (0.00s)
+=== RUN   TestNumStrDto_SubtractNumStrs_06
+--- PASS: TestNumStrDto_SubtractNumStrs_06 (0.00s)
+=== RUN   TestNumStrFmtMode_String_01
+--- PASS: TestNumStrFmtMode_String_01 (0.00s)
+=== RUN   TestNumStrFmtMode_String_02
+--- PASS: TestNumStrFmtMode_String_02 (0.00s)
+=== RUN   TestNumStrFmtMode_String_03
+--- PASS: TestNumStrFmtMode_String_03 (0.00s)
+=== RUN   TestNumStrFmtMode_String_04
+--- PASS: TestNumStrFmtMode_String_04 (0.00s)
+=== RUN   TestNumStrFmtMode_Value_01
+--- PASS: TestNumStrFmtMode_Value_01 (0.00s)
+=== RUN   TestNumStrFmtMode_Value_02
+--- PASS: TestNumStrFmtMode_Value_02 (0.00s)
+=== RUN   TestNumStrFmtMode_Value_03
+--- PASS: TestNumStrFmtMode_Value_03 (0.00s)
+=== RUN   TestNumStrFmtMode_Value_04
+--- PASS: TestNumStrFmtMode_Value_04 (0.00s)
+=== RUN   TestNumStrUtility_DlimDecStr
+--- PASS: TestNumStrUtility_DlimDecStr (0.00s)
+=== RUN   TestNumStrUtility_DlimDecStr_With_DecimalCurrency
+--- PASS: TestNumStrUtility_DlimDecStr_With_DecimalCurrency (0.00s)
+=== RUN   TestNumStrUtility_DnumStr
+--- PASS: TestNumStrUtility_DnumStr (0.00s)
+=== RUN   TestNumStrUtility_DNumI64
+--- PASS: TestNumStrUtility_DNumI64 (0.00s)
+=== RUN   TestNumStrUtility_DNumI64_EvenThousands
+--- PASS: TestNumStrUtility_DNumI64_EvenThousands (0.00s)
+=== RUN   TestNumStrUtility_DLimInt
+--- PASS: TestNumStrUtility_DLimInt (0.00s)
+=== RUN   TestNumStrUtility_ConvertStrToInt64_01
+--- PASS: TestNumStrUtility_ConvertStrToInt64_01 (0.00s)
+=== RUN   TestNumStrUtility_ConvertStrToInt64_02
+--- PASS: TestNumStrUtility_ConvertStrToInt64_02 (0.00s)
+=== RUN   TestNumStrUtility_ConvertStrToInt64_03
+--- PASS: TestNumStrUtility_ConvertStrToInt64_03 (0.00s)
+=== RUN   TestNumStrUtility_ConvertStrToIntNumStr
+--- PASS: TestNumStrUtility_ConvertStrToIntNumStr (0.00s)
+=== RUN   TestNumStrUtility_SetCountryAndCurrency
+--- PASS: TestNumStrUtility_SetCountryAndCurrency (0.00s)
+=== RUN   TestNumStrUtility_ConvertInt64ToFractionalValue
+--- PASS: TestNumStrUtility_ConvertInt64ToFractionalValue (0.00s)
+=== RUN   TestNumStrUtility_ParseNumString_01
+--- PASS: TestNumStrUtility_ParseNumString_01 (0.00s)
+=== RUN   TestNumStrUtility_ParseNumString_02
+--- PASS: TestNumStrUtility_ParseNumString_02 (0.00s)
+=== RUN   TestNumStrUtility_ParseNumString_03
+--- PASS: TestNumStrUtility_ParseNumString_03 (0.00s)
+=== RUN   TestPrecisionScaleMode_String_01
+--- PASS: TestPrecisionScaleMode_String_01 (0.00s)
+=== RUN   TestPrecisionScaleMode_String_02
+--- PASS: TestPrecisionScaleMode_String_02 (0.00s)
+=== RUN   TestPrecisionScaleMode_Value_01
+--- PASS: TestPrecisionScaleMode_Value_01 (0.00s)
+=== RUN   TestPrecisionScaleMode_Value_02
+--- PASS: TestPrecisionScaleMode_Value_02 (0.00s)
+=== RUN   TestStrMathOp_AddN1N2_01
+--- PASS: TestStrMathOp_AddN1N2_01 (0.00s)
+=== RUN   TestStrMathOp_AddN1N2_02
+--- PASS: TestStrMathOp_AddN1N2_02 (0.00s)
+=== RUN   TestStrMathOp_AddN1N2_03
+--- PASS: TestStrMathOp_AddN1N2_03 (0.00s)
+=== RUN   TestStrMathOp_AddN1N2_04
+--- PASS: TestStrMathOp_AddN1N2_04 (0.00s)
+=== RUN   TestStrMathOp_AddN1N2_05
+--- PASS: TestStrMathOp_AddN1N2_05 (0.00s)
+=== RUN   TestStrMathOp_AddN1N2_06
+--- PASS: TestStrMathOp_AddN1N2_06 (0.00s)
+=== RUN   TestStrMathOp_AddN1N2_07
+--- PASS: TestStrMathOp_AddN1N2_07 (0.00s)
+=== RUN   TestStrMathOp_AddN1N2_08
+--- PASS: TestStrMathOp_AddN1N2_08 (0.00s)
+=== RUN   TestStrMathOp_AddN1N2_09
+--- PASS: TestStrMathOp_AddN1N2_09 (0.00s)
+=== RUN   TestStrMathOp_AddN1N2_10
+--- PASS: TestStrMathOp_AddN1N2_10 (0.00s)
+=== RUN   TestStrMathOp_AddN1N2_11
+--- PASS: TestStrMathOp_AddN1N2_11 (0.00s)
+=== RUN   TestStrMathOp_AddN1N2_12
+--- PASS: TestStrMathOp_AddN1N2_12 (0.00s)
+=== RUN   TestStrMathOp_AddN1N2_13
+--- PASS: TestStrMathOp_AddN1N2_13 (0.00s)
+=== RUN   TestStrMathOp_AddN1N2_14
+--- PASS: TestStrMathOp_AddN1N2_14 (0.00s)
+=== RUN   TestStrMathOp_AddN1N2_15
+--- PASS: TestStrMathOp_AddN1N2_15 (0.00s)
+=== RUN   TestStrMathOp_AddN1N2_16
+--- PASS: TestStrMathOp_AddN1N2_16 (0.00s)
+=== RUN   TestStrMathOp_AddN1N2_17
+--- PASS: TestStrMathOp_AddN1N2_17 (0.00s)
+=== RUN   TestStrMathOp_AddN1N2_18
+--- PASS: TestStrMathOp_AddN1N2_18 (0.00s)
+=== RUN   TestStrMathOp_AddN1N2_19
+--- PASS: TestStrMathOp_AddN1N2_19 (0.00s)
+=== RUN   TestStrMathOp_AddN1N2_20
+--- PASS: TestStrMathOp_AddN1N2_20 (0.00s)
+=== RUN   TestStrMathOp_AddN1N2_21
+--- PASS: TestStrMathOp_AddN1N2_21 (0.00s)
+=== RUN   TestStrMathOp_AddN1N2_22
+--- PASS: TestStrMathOp_AddN1N2_22 (0.00s)
+=== RUN   TestStrMathOp_AddN1N2_23
+--- PASS: TestStrMathOp_AddN1N2_23 (0.00s)
+=== RUN   TestStrMathOp_AddN1N2_24
+--- PASS: TestStrMathOp_AddN1N2_24 (0.00s)
+=== RUN   TestStrMathOp_Divide_01
+--- PASS: TestStrMathOp_Divide_01 (0.00s)
+=== RUN   TestStrMathOp_Divide_02
+--- PASS: TestStrMathOp_Divide_02 (0.00s)
+=== RUN   TestStrMathOp_Divide_03
+--- PASS: TestStrMathOp_Divide_03 (0.00s)
+=== RUN   TestStrMathOp_Divide_04
+--- PASS: TestStrMathOp_Divide_04 (0.00s)
+=== RUN   TestStrMathOp_Divide_05
+--- PASS: TestStrMathOp_Divide_05 (0.00s)
+=== RUN   TestStrMathOp_Divide_06
+--- PASS: TestStrMathOp_Divide_06 (0.00s)
+=== RUN   TestStrMathOp_MultiplyN1N2_01
+--- PASS: TestStrMathOp_MultiplyN1N2_01 (0.00s)
+=== RUN   TestStrMathOp_MultiplyN1N2_02
+--- PASS: TestStrMathOp_MultiplyN1N2_02 (0.00s)
+=== RUN   TestStrMathOp_MultiplyN1N2_03
+--- PASS: TestStrMathOp_MultiplyN1N2_03 (0.00s)
+=== RUN   TestStrMathOp_MultiplyN1N2_04
+--- PASS: TestStrMathOp_MultiplyN1N2_04 (0.00s)
+=== RUN   TestStrMathOp_MultiplyN1N2_05
+--- PASS: TestStrMathOp_MultiplyN1N2_05 (0.00s)
+=== RUN   TestStrMathOp_MultiplyN1N2_06
+--- PASS: TestStrMathOp_MultiplyN1N2_06 (0.00s)
+=== RUN   TestStrMathOp_MultiplyN1N2_07
+--- PASS: TestStrMathOp_MultiplyN1N2_07 (0.00s)
+=== RUN   TestStrMathOp_MultiplyN1N2_08
+--- PASS: TestStrMathOp_MultiplyN1N2_08 (0.00s)
+=== RUN   TestStrMathOp_RaiseToPower_01
+--- PASS: TestStrMathOp_RaiseToPower_01 (0.00s)
+=== RUN   TestStrMathOp_RaiseToPower_02
+--- PASS: TestStrMathOp_RaiseToPower_02 (0.00s)
+=== RUN   TestStrMathOp_RaiseToPower_03
+--- PASS: TestStrMathOp_RaiseToPower_03 (0.00s)
+=== RUN   TestStrMathOp_RaiseToPower_04
+--- PASS: TestStrMathOp_RaiseToPower_04 (0.00s)
+=== RUN   TestStrMathOp_RaiseToPower_06
+--- PASS: TestStrMathOp_RaiseToPower_06 (0.00s)
+=== RUN   TestStrMathOp_RaiseToPower_07
+--- PASS: TestStrMathOp_RaiseToPower_07 (0.00s)
+=== RUN   TestStrMathOp_RaiseToPower_08
+--- PASS: TestStrMathOp_RaiseToPower_08 (0.00s)
+=== RUN   TestStrMathOp_RaiseToPower_09
+--- PASS: TestStrMathOp_RaiseToPower_09 (0.00s)
+=== RUN   TestStrMathOp_RaiseToPower_10
+--- PASS: TestStrMathOp_RaiseToPower_10 (0.00s)
+=== RUN   TestStrMathOp_SubtractN1N2_01
+--- PASS: TestStrMathOp_SubtractN1N2_01 (0.00s)
+=== RUN   TestStrMathOp_SubtractN1N2_02
+--- PASS: TestStrMathOp_SubtractN1N2_02 (0.00s)
+=== RUN   TestStrMathOp_SubtractN1N2_03
+--- PASS: TestStrMathOp_SubtractN1N2_03 (0.00s)
+=== RUN   TestStrMathOp_SubtractN1N2_04
+--- PASS: TestStrMathOp_SubtractN1N2_04 (0.00s)
+=== RUN   TestStrMathOp_SubtractN1N2_05
+--- PASS: TestStrMathOp_SubtractN1N2_05 (0.00s)
+=== RUN   TestStrMathOp_SubtractN1N2_06
+--- PASS: TestStrMathOp_SubtractN1N2_06 (0.00s)
+=== RUN   TestStrMathOp_SubtractN1N2_07
+--- PASS: TestStrMathOp_SubtractN1N2_07 (0.00s)
+=== RUN   TestStrMathOp_SubtractN1N2_08
+--- PASS: TestStrMathOp_SubtractN1N2_08 (0.00s)
+=== RUN   TestStrMathOp_SubtractN1N2_09
+--- PASS: TestStrMathOp_SubtractN1N2_09 (0.00s)
+=== RUN   TestStrMathOp_SubtractN1N2_10
+--- PASS: TestStrMathOp_SubtractN1N2_10 (0.00s)
+=== RUN   TestStrMathOp_SubtractN1N2_11
+--- PASS: TestStrMathOp_SubtractN1N2_11 (0.00s)
+=== RUN   TestStrMathOp_SubtractN1N2_12
+--- PASS: TestStrMathOp_SubtractN1N2_12 (0.00s)
+=== RUN   TestStrMathOp_SubtractN1N2_13
+--- PASS: TestStrMathOp_SubtractN1N2_13 (0.00s)
+=== RUN   TestStrMathOp_SubtractN1N2_14
+--- PASS: TestStrMathOp_SubtractN1N2_14 (0.00s)
+=== RUN   TestStrMathOp_SubtractN1N2_15
+--- PASS: TestStrMathOp_SubtractN1N2_15 (0.00s)
+=== RUN   TestStrMathOp_SubtractN1N2_16
+--- PASS: TestStrMathOp_SubtractN1N2_16 (0.00s)
+=== RUN   TestStrMathOp_SubtractN1N2_17
+--- PASS: TestStrMathOp_SubtractN1N2_17 (0.00s)
+=== RUN   TestStrMathOp_SubtractN1N2_18
+--- PASS: TestStrMathOp_SubtractN1N2_18 (0.00s)
+=== RUN   TestStrMathOp_SubtractN1N2_19
+--- PASS: TestStrMathOp_SubtractN1N2_19 (0.00s)
+PASS
+ok  	MikeAustin71/mathopsgo/mathops	9.731s

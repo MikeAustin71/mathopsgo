@@ -1,5 +1,7 @@
 package mathops
 
+import "fmt"
+
 /*
 	Math Constants
 	==============
@@ -185,4 +187,12 @@ func (numSep *NumericSeparatorDto) Equal(numSep2 NumericSeparatorDto) bool {
 	}
 
 	return true
+}
+
+// String - Provides a formatted listing of the contents from the current
+// NumericSeparatorDto instance.
+//
+func (numSep *NumericSeparatorDto) String() string {
+	return fmt.Sprintf("Decimal Separator: %q  Thousands Separator: %q  Currency Symbol: %q",
+		numSep.DecimalSeparator, numSep.ThousandsSeparator, numSep.CurrencySymbol)
 }

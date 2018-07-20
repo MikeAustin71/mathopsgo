@@ -6,6 +6,61 @@ import (
 	"../mathops"
 )
 
+func ExampleBINumSetFromIntFracStrings(
+				intStr, fracStr, expectedResult string,
+							signVal int,
+									numSeps mathops.NumericSeparatorDto) {
+
+	bINum := mathops.BigIntNum{}
+
+	err := bINum.SetNumericSeparatorsDto(numSeps)
+
+	if err != nil {
+		fmt.Printf("Error returned by bINum.SetNumericSeparatorsDto(numSeps). " +
+			"numSeps='%v' Error='%v' \n",
+			numSeps.String(), err.Error())
+		return
+	}
+
+	err = bINum.SetFromIntFracStrings(intStr, fracStr, signVal)
+
+	if err != nil {
+		fmt.Printf("Error returned by bINum.SetFromIntFracStrings(intStr, fracStr, signVal). " +
+			"intStr='%v' fracStr='%v' signVal='%v' Error='%v' \n",
+			intStr, fracStr, signVal, err.Error())
+		return
+	}
+
+	actualResult := bINum.GetNumStr()
+
+	fmt.Println()
+	fmt.Println("BigIntNum{}.ShiftPrecisionRight()")
+	fmt.Println("---------------------------------")
+	if expectedResult == actualResult {
+		fmt.Println("*** SUCCESS ***")
+	} else {
+		fmt.Println("@@@ FAILURE @@@")
+	}
+	fmt.Println("-------------------------")
+	fmt.Println("      Int String: ", intStr)
+	fmt.Println("     Frac String: ", fracStr)
+	fmt.Println("   Actual Result: ", actualResult)
+	fmt.Println(" Expected Result: ", expectedResult)
+	fmt.Println("-------------------------")
+	actualSeparators := bINum.GetNumericSeparatorsDto()
+
+	if !numSeps.Equal(actualSeparators) {
+		fmt.Println("ERROR - Numeric Separators NOT Equal")
+	} else {
+		fmt.Println("SUCCESS - Numeric Separators ARE Equal!")
+	}
+
+	fmt.Println("-------------------------")
+	fmt.Println("  Actual Numeric Separators: ", actualSeparators.String())
+	fmt.Println("Expected Numeric Separators: ", numSeps.String())
+
+}
+
 func ExampleShiftPrecisionRight(baseNumStr string, shiftPlacesLeft uint, expectedResult string) {
 
 	bigIntNum, err := mathops.BigIntNum{}.NewNumStr(baseNumStr)

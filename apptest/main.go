@@ -1,15 +1,23 @@
 package main
 
-import "../examples"
+import (
+	"../examples"
+	"../mathops"
+)
 
 func main() {
 
 
-	baseStr := "123456.789"
-	shiftPlacesLeft := uint(6)
-	expectedResult := "123456789000"
+	intStr := "123"
+	fracStr := "456"
+	expectedResult := "123.456"
+	signVal := 1
+	numSeps := mathops.NumericSeparatorDto{}
+	numSeps.DecimalSeparator = '.'
+	numSeps.ThousandsSeparator = ','
+	numSeps.CurrencySymbol = '$'
 
-	examples.ExampleShiftPrecisionRight(baseStr, shiftPlacesLeft, expectedResult)
+	examples.ExampleBINumSetFromIntFracStrings(intStr, fracStr, expectedResult, signVal, numSeps)
 
 }
 

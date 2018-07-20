@@ -2490,21 +2490,22 @@ func (bNum *BigIntNum) SetFromIntFracStrings(intStr, fracStr string, signVal int
 
 	if lStr > 0 {
 
-		cleanFracRuneAry := make([]rune, 0, 100)
+		isFirstRune = true
 
 		for j:= 0; j < lStr; j++ {
 
 			if fracStr[j] >= zeroChar &&
 				fracStr[j] <= nineChar {
-				cleanFracRuneAry = append(cleanFracRuneAry, rune(intStr[j]))
+
+				if isFirstRune {
+					cleanIntRuneAry = append(cleanIntRuneAry, bNum.GetDecimalSeparator())
+					isFirstRune = false
+				}
+
+				cleanIntRuneAry = append(cleanIntRuneAry, rune(fracStr[j]))
 			}
-		}
 
-		if len(cleanFracRuneAry) > 0 {
-			cleanIntRuneAry = append(cleanIntRuneAry, bNum.GetDecimalSeparator())
-			cleanIntRuneAry = append(cleanIntRuneAry, cleanFracRuneAry...)
 		}
-
 	}
 
 	err := bNum.SetNumStr(string(cleanIntRuneAry))
