@@ -761,3 +761,127 @@ func TestDecimal_SetIntFracStrings_02(t *testing.T) {
 	}
 
 }
+
+func TestDecimal_SetIntFracStrings_03(t *testing.T) {
+
+	intStr := "-0"
+	fracStr := "04#5 6"
+	eNumStr := "0.0456"
+	eSignVal := 1
+	ePrecision := uint(4)
+
+	d1 := Decimal{}.New()
+
+	err := d1.SetIntFracStrings(intStr, fracStr, eSignVal)
+
+	if err != nil {
+		t.Errorf("d1.SetIntFracStrings(eSignVal, intStr, fracStr) returned an error. eSignVal= '%v' intStr= '%v' fracStr= '%v' Error= %v", eSignVal, intStr, fracStr, err)
+	}
+
+
+	if eNumStr != d1.GetNumStr() {
+		t.Errorf("Expected NumStr = '%v'. Instead got NumStr= '%v'", eNumStr, d1.GetNumStr())
+	}
+
+	if int(ePrecision) != d1.GetPrecision() {
+		t.Errorf("Expected precision= '%v'. Intead, got precision= '%v' ", ePrecision, d1.GetPrecision())
+	}
+
+	if eSignVal != d1.GetSign() {
+		t.Errorf("Expected sign Value= '%v'. Intead, got sign Value = '%v' ", eSignVal, d1.GetSign())
+	}
+
+	if !d1.GetIsValid() {
+		t.Errorf("Expected IsValid == 'true'. Instead got IsValid= '%v'", d1.GetIsValid())
+	}
+
+}
+
+func TestDecimal_SetIntFracStrings_04(t *testing.T) {
+
+	intStr := "-0"
+	fracStr := ".04#5 6"
+	eNumStr := "0.0456"
+	eSignVal := 1
+	ePrecision := uint(4)
+
+	d1 := Decimal{}.New()
+
+	err := d1.SetIntFracStrings(intStr, fracStr, eSignVal)
+
+	if err != nil {
+		t.Errorf("d1.SetIntFracStrings(eSignVal, intStr, fracStr) returned an error. eSignVal= '%v' intStr= '%v' fracStr= '%v' Error= %v", eSignVal, intStr, fracStr, err)
+	}
+
+
+	if eNumStr != d1.GetNumStr() {
+		t.Errorf("Expected NumStr = '%v'. Instead got NumStr= '%v'", eNumStr, d1.GetNumStr())
+	}
+
+	if int(ePrecision) != d1.GetPrecision() {
+		t.Errorf("Expected precision= '%v'. Intead, got precision= '%v' ", ePrecision, d1.GetPrecision())
+	}
+
+	if eSignVal != d1.GetSign() {
+		t.Errorf("Expected sign Value= '%v'. Intead, got sign Value = '%v' ", eSignVal, d1.GetSign())
+	}
+
+	if !d1.GetIsValid() {
+		t.Errorf("Expected IsValid == 'true'. Instead got IsValid= '%v'", d1.GetIsValid())
+	}
+
+}
+
+func TestDecimal_SetIntFracStrings_05(t *testing.T) {
+
+	intStr := "-0"
+	fracStr := ".04#5 6"
+	eNumStr := "0!0456"
+	eSignVal := 1
+	ePrecision := uint(4)
+
+	d1 := Decimal{}.New()
+
+	expectedNumSeps := NumericSeparatorDto{}
+	expectedNumSeps.DecimalSeparator = '!'
+	expectedNumSeps.ThousandsSeparator = 'X'
+	expectedNumSeps.CurrencySymbol = '^'
+
+	err := d1.SetNumericSeparatorsDto(expectedNumSeps)
+
+	if err != nil {
+		t.Errorf("Error returned by d1.SetNumericSeparatorsDto(expectedNumSeps) " +
+			"Error='%v' ", err.Error())
+	}
+
+	err = d1.SetIntFracStrings(intStr, fracStr, eSignVal)
+
+	if err != nil {
+		t.Errorf("d1.SetIntFracStrings(eSignVal, intStr, fracStr) returned an error. eSignVal= '%v' intStr= '%v' fracStr= '%v' Error= %v", eSignVal, intStr, fracStr, err)
+	}
+
+
+	if eNumStr != d1.GetNumStr() {
+		t.Errorf("Expected NumStr = '%v'. Instead got NumStr= '%v'", eNumStr, d1.GetNumStr())
+	}
+
+	if int(ePrecision) != d1.GetPrecision() {
+		t.Errorf("Expected precision= '%v'. Intead, got precision= '%v' ", ePrecision, d1.GetPrecision())
+	}
+
+	if eSignVal != d1.GetSign() {
+		t.Errorf("Expected sign Value= '%v'. Intead, got sign Value = '%v' ", eSignVal, d1.GetSign())
+	}
+
+	if !d1.GetIsValid() {
+		t.Errorf("Expected IsValid == 'true'. Instead got IsValid= '%v'", d1.GetIsValid())
+	}
+
+	actualNumSeps := d1.GetNumericSeparatorsDto()
+
+	if !actualNumSeps.Equal(expectedNumSeps) {
+		t.Errorf("Error: Expected numeric separators are NOT equal to actual numeric separators. " +
+			"Expected numSeps= %v   Actual numSeps= %v", expectedNumSeps.String(), actualNumSeps.String())
+	}
+
+}
