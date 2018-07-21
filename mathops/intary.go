@@ -331,17 +331,10 @@ func (iBa *BackUpIntAry) Empty() {
 	iBa.isIntegerZeroValue = true
 	iBa.precision = 0
 	iBa.signVal = 1
-	if iBa.decimalSeparator == 0 {
-		iBa.decimalSeparator = '.'
-	}
+	iBa.decimalSeparator = '.'
+	iBa.thousandsSeparator = ','
+	iBa.currencySymbol = '$'
 
-	if iBa.thousandsSeparator == 0 {
-		iBa.thousandsSeparator = ','
-	}
-
-	if iBa.currencySymbol == 0 {
-		iBa.currencySymbol = '$'
-	}
 }
 
 func (iBa *BackUpIntAry) CopyIn(iBa2 *BackUpIntAry) {
@@ -1599,17 +1592,8 @@ func (ia *IntAry) Empty() {
 	ia.precision = 0
 	ia.signVal = 1
 
-	if ia.decimalSeparator == 0 {
-		ia.decimalSeparator = '.'
-	}
+	ia.SetNumericSeparatorsToUSADefault()
 
-	if ia.currencySymbol == 0 {
-		ia.currencySymbol = '$'
-	}
-
-	if ia.thousandsSeparator == 0 {
-		ia.thousandsSeparator = ','
-	}
 }
 
 // EmptyBackUp - Deletes the values
@@ -1880,14 +1864,25 @@ func (ia *IntAry) GetDecimal() (Decimal, error) {
 		return Decimal{}, err
 	}
 
+	numSeps := ia.GetNumericSeparatorsDto()
+
 	dec, err := Decimal{}.NewNumStr(ia.GetNumStr())
 
 	if err != nil {
-		return Decimal{},
+		return Decimal{}.NewZero(0),
 		fmt.Errorf(ePrefix + "Error returned by Decimal{}.NewNumStr(ia.GetNumStr()) " +
 			"ia.GetNumStr()='%v' Error='%v'",
 				ia.GetNumStr(), err.Error())
 	}
+
+	err = dec.SetNumericSeparatorsDto(numSeps)
+
+	if err != nil {
+		return Decimal{}.NewZero(0),
+			fmt.Errorf(ePrefix + "Error returned by dec.SetNumericSeparatorsDto(numSeps)) " +
+				"Error='%v'", err.Error())
+	}
+
 
 	return dec, nil
 }
@@ -2317,6 +2312,58 @@ func (ia *IntAry) GetIntAryStats() IntAryStatsDto {
 	return iStats
 }
 
+// GetMagnitude - Returns the magnitude of the
+// integer portion of the current IntAry numeric
+// value. The integer portion of the number is
+// represented by the digits to the left of the
+// decimal point.
+//
+// Magnitude is defined here as the power of 10
+// which generates a value less than or equal to
+// the integer portion of the current IntAry numeric
+// value.
+//
+// 			10^magnitude  <= IntAry value
+//
+// Note: If the current IntAry value is negative,
+// an error will be generated.
+//
+func (ia *IntAry) GetMagnitude() (int, error) {
+
+	ia.SetInternalFlags()
+
+	if ia.signVal == -1 {
+		return -1, fmt.Errorf("IntAry.GetMagnitude() Error: current IntAry value is negative! " +
+			"value='%v' ", ia.GetNumStr())
+	}
+
+	return ia.intAryLen - ia.precision - ia.firstDigitIdx - 1, nil
+}
+
+// GetMagnitudeDigits - Returns the number of digits
+// in the integer portion of the current IntAry numeric
+// value.
+//
+func (ia *IntAry) GetMagnitudeDigits() int {
+	ia.SetInternalFlags()
+	return ia.intAryLen - ia.precision - ia.firstDigitIdx
+
+}
+
+// GetNumericSeparatorsDto - Returns a structure containing the
+// character or rune values for decimal point separator, thousands
+// separator and currency symbol.
+//
+func (ia *IntAry) GetNumericSeparatorsDto() NumericSeparatorDto {
+
+	numSeps := NumericSeparatorDto{}
+	numSeps.DecimalSeparator = ia.GetDecimalSeparator()
+	numSeps.ThousandsSeparator = ia.GetThousandsSeparator()
+	numSeps.CurrencySymbol = ia.GetCurrencySymbol()
+
+	return numSeps
+}
+
 // GetNumStr - returns the current value
 // of this intAry object as a number string.
 func (ia *IntAry) GetNumStr() string {
@@ -2372,44 +2419,6 @@ func (ia *IntAry) GetNumStrDto() (NumStrDto, error) {
 	nstrDto.SetCurrencySymbol(ia.GetCurrencySymbol())
 
 	return nstrDto, nil
-
-}
-
-// GetMagnitude - Returns the magnitude of the
-// integer portion of the current IntAry numeric
-// value. The integer portion of the number is
-// represented by the digits to the left of the
-// decimal point.
-//
-// Magnitude is defined here as the power of 10
-// which generates a value less than or equal to
-// the integer portion of the current IntAry numeric
-// value.
-//
-// 			10^magnitude  <= IntAry value
-//
-// Note: If the current IntAry value is negative,
-// an error will be generated.
-//
-func (ia *IntAry) GetMagnitude() (int, error) {
-
-	ia.SetInternalFlags()
-
-	if ia.signVal == -1 {
-		return -1, fmt.Errorf("IntAry.GetMagnitude() Error: current IntAry value is negative! " +
-			"value='%v' ", ia.GetNumStr())
-	}
-
-	return ia.intAryLen - ia.precision - ia.firstDigitIdx - 1, nil
-}
-
-// GetMagnitudeDigits - Returns the number of digits
-// in the integer portion of the current IntAry numeric
-// value.
-//
-func (ia *IntAry) GetMagnitudeDigits() int {
-	ia.SetInternalFlags()
-	return ia.intAryLen - ia.precision - ia.firstDigitIdx
 
 }
 
@@ -3303,6 +3312,38 @@ func (ia IntAry) NewInt(num int, precision int) (IntAry, error) {
 	return iAry, nil
 }
 
+// NewIntFracStr - Creates a new IntAry instance based on a numeric value represented
+// by separate integer and fractional components.
+//
+// Input parameters 'intStr' and 'fracStr' are strings representing the integer and
+// fractional components. They are combined by this method to create a numeric value
+// which is assigned to the new IntAry instance.
+//
+// Input parameter 'signVal' must be set to one of two values: +1 or -1. This value is
+// used to signal the sign of the resulting numeric value. +1 generates a positive number
+// and -1 generates a negative number. If input parameters 'inStr' or 'fracStr' contain
+// a leading minus or plus sign character, it will be ignored. The sign of the resulting
+// numeric value is controlled strictly by input parameter, 'signVal'.
+//
+func (ia IntAry) NewIntFracStr(intStr, fracStr string, signVal int) (IntAry, error) {
+
+	ia2 := IntAry{}.NewZero(0)
+
+	ia2.SetNumericSeparatorsToDefaultIfEmpty()
+
+	err := ia2.SetIntAryWithIntFracStr(intStr, fracStr, signVal)
+
+	if err != nil {
+		ePrefix := "IntAry.NewIntFracStr() "
+
+		return IntAry{}.NewZero(0),
+		fmt.Errorf(ePrefix + "Error returned by ia2.SetIntAryWithIntFracStr(intStr, fracStr, signVal) " +
+			"Error='%v' ", err.Error())
+	}
+
+	return ia2, nil
+}
+
 // NewNumStr - Creates a new intAry object initialized
 // to the value of input parameter 'num' which is passed
 // as type 'string'.
@@ -3890,6 +3931,7 @@ func (ia *IntAry) SetAbsoluteValueThis() {
 // the method GetCurrencySymbol().
 //
 // Note the default thousands separator character is the comma (',').
+//
 func (ia *IntAry) SetCurrencySymbol(currencySymbol rune) {
 	ia.currencySymbol = currencySymbol
 }
@@ -3912,7 +3954,6 @@ func (ia *IntAry) SetCurrencySymbol(currencySymbol rune) {
 func (ia *IntAry) SetDecimalSeparator(decimalSeparator rune) {
 	ia.decimalSeparator = decimalSeparator
 }
-
 
 // SetElement - Sets the value of an IntAry element
 // at a given index.
@@ -3976,6 +4017,135 @@ func (ia *IntAry) SetEqualArrayLengths(iAry2 *IntAry) {
 	}
 
 	return
+}
+
+// SetIntAryToFive - Sets the value of the intAry object to one ('1').
+func (ia *IntAry) SetIntAryToFive(precision int) error {
+
+	if precision < 0 {
+		return fmt.Errorf("SetIntAryToFive() - Error: precision is less than ZERO! precision= '%v'", precision)
+	}
+
+	ia.intAryLen = 1 + precision
+	ia.precision = precision
+	ia.intAry = make([]uint8, ia.intAryLen)
+	ia.intAry[0] = 5
+	ia.signVal = 1
+	ia.isZeroValue = false
+	ia.isIntegerZeroValue = false
+	ia.firstDigitIdx = 0
+	ia.lastDigitIdx = 0
+
+	ia.SetNumericSeparatorsToDefaultIfEmpty()
+
+	return nil
+}
+
+// SetIntAryToOne - Sets the value of the intAry object to one ('1').
+func (ia *IntAry) SetIntAryToOne(precision int) error {
+
+	if precision < 0 {
+		return fmt.Errorf("SetIntAryToOne() - Error: precision is less than ZERO! precision= '%v'", precision)
+	}
+
+	ia.intAryLen = 1 + precision
+	ia.precision = precision
+	ia.intAry = make([]uint8, ia.intAryLen)
+	ia.intAry[0] = 1
+	ia.signVal = 1
+	ia.isZeroValue = false
+	ia.isIntegerZeroValue = false
+	ia.firstDigitIdx = 0
+	ia.lastDigitIdx = 0
+
+	ia.SetNumericSeparatorsToDefaultIfEmpty()
+
+	return nil
+}
+
+// SetIntAryToTwo - Sets the value of the intAry object to one ('1').
+func (ia *IntAry) SetIntAryToTwo(precision int) error {
+
+	if precision < 0 {
+		return fmt.Errorf("SetIntAryToTwo() - Error: precision is less than ZERO! precision= '%v'", precision)
+	}
+
+	ia.intAryLen = 1 + precision
+	ia.precision = precision
+	ia.intAry = make([]uint8, ia.intAryLen)
+	ia.intAry[0] = 2
+	ia.signVal = 1
+	ia.isZeroValue = false
+	ia.isIntegerZeroValue = false
+	ia.firstDigitIdx = 0
+	ia.lastDigitIdx = 0
+
+	ia.SetNumericSeparatorsToDefaultIfEmpty()
+
+	return nil
+}
+
+// SetIntAryToThree - Sets the value of the intAry object to one ('1').
+func (ia *IntAry) SetIntAryToThree(precision int) error {
+
+	if precision < 0 {
+		return fmt.Errorf("SetIntAryToThree() - Error: precision is less than ZERO! precision= '%v'", precision)
+	}
+
+	ia.intAryLen = 1 + precision
+	ia.precision = precision
+	ia.intAry = make([]uint8, ia.intAryLen)
+	ia.intAry[0] = 3
+	ia.signVal = 1
+	ia.isZeroValue = false
+	ia.isIntegerZeroValue = false
+	ia.firstDigitIdx = 0
+	ia.lastDigitIdx = 0
+
+	ia.SetNumericSeparatorsToDefaultIfEmpty()
+
+	return nil
+}
+
+// SetIntAryToTen - Sets the value of the intAry object to Ten ('10')
+func (ia *IntAry) SetIntAryToTen(precision int) error {
+
+	if precision < 0 {
+		return fmt.Errorf("SetIntAryToTen() - Error: precision is less than ZERO! precision= '%v'", precision)
+	}
+
+	ia.intAryLen = 2 + precision
+	ia.precision = precision
+	ia.intAry = make([]uint8, ia.intAryLen)
+	ia.intAry[0] = 1
+	ia.signVal = 1
+	ia.isZeroValue = false
+	ia.isIntegerZeroValue = false
+	ia.firstDigitIdx = 0
+	ia.lastDigitIdx = 0
+
+	ia.SetNumericSeparatorsToDefaultIfEmpty()
+
+	return nil
+}
+
+// SetIntAryToZero - Sets the value of the intAry object to Zero ('0').
+func (ia *IntAry) SetIntAryToZero(precision int) error {
+
+	if precision < 0 {
+		return fmt.Errorf("SetIntAryToOne() - Error: precision is less than ZERO! precision= '%v'", precision)
+	}
+
+	ia.intAryLen = 1 + precision
+	ia.precision = precision
+	ia.intAry = make([]uint8, ia.intAryLen)
+	ia.signVal = 1
+
+	ia.SetNumericSeparatorsToDefaultIfEmpty()
+
+	ia.SetInternalFlags()
+
+	return nil
 }
 
 // SetIntAryWithInt - Sets the value of the current intAry object
@@ -4197,6 +4367,89 @@ func (ia *IntAry) SetIntAryWithInt64(intDigits int64, precision int) error {
 	return nil
 }
 
+// SetIntAryWithIntFracStr - Sets the value of the current IntAry instance based on
+// a numeric value represented by separate integer and fractional components.
+//
+// Input parameters 'intStr' and 'fracStr' are strings representing the integer and
+// fractional components. They are combined by this method to create a numeric value
+// which is assigned to the current IntAry instance.
+//
+// Input parameter 'signVal' must be set to one of two values: +1 or -1. This value is
+// used to signal the sign of the resulting numeric value. +1 generates a positive number
+// and -1 generates a negative number. If input parameters 'inStr' or 'fracStr' contain
+// a leading minus or plus sign character, it will be ignored. The sign of the resulting
+// numeric value is controlled strictly by input parameter, 'signVal'.
+//
+func (ia *IntAry) SetIntAryWithIntFracStr(intStr, fracStr string, signVal int) error {
+
+	ePrefix := "IntAry.SetIntFracStrings() "
+
+	cleanIntRuneAry := make([]rune, 0, 100)
+
+	zeroChar := uint8('0')
+	nineChar := uint8('9')
+
+	lStr := len(intStr)
+
+	if lStr == 0 {
+		return errors.New(ePrefix + "Error: Input Parameter 'intStr' is Zero Length!")
+	}
+
+	isFirstRune := true
+
+	// Create pure number string from 'intStr'
+	for i:= 0 ; i < lStr; i++ {
+
+		if intStr[i] >= zeroChar &&
+			intStr[i] <= nineChar {
+
+			if isFirstRune && signVal == -1 {
+				cleanIntRuneAry = append(cleanIntRuneAry, '-')
+			}
+
+			isFirstRune = false
+
+			cleanIntRuneAry = append(cleanIntRuneAry, rune(intStr[i]))
+		}
+	}
+
+	if len(cleanIntRuneAry) == 0 {
+		cleanIntRuneAry = append(cleanIntRuneAry, '0')
+	}
+
+	lStr = len(fracStr)
+
+	if lStr > 0 {
+
+		isFirstRune = true
+
+		for j:= 0; j < lStr; j++ {
+
+			if fracStr[j] >= zeroChar &&
+				fracStr[j] <= nineChar {
+
+				if isFirstRune {
+					cleanIntRuneAry = append(cleanIntRuneAry, ia.GetDecimalSeparator())
+					isFirstRune = false
+				}
+
+				cleanIntRuneAry = append(cleanIntRuneAry, rune(fracStr[j]))
+			}
+
+		}
+	}
+
+	err := ia.SetIntAryWithNumStr(string(cleanIntRuneAry))
+
+	if err != nil {
+		return fmt.Errorf(ePrefix +
+			"Error returned by bNum.SetNumStr(string(cleanIntRuneAry)). " +
+			"cleanIntRuneAry='%v' Error='%v' ", string(cleanIntRuneAry), err.Error())
+	}
+
+	return nil
+}
+
 // SetIntAryWithUint64 - Sets the value of the current intAry
 // object to that of the input parameter 'intDigits', a 64-bit
 // unsigned integer.
@@ -4360,6 +4613,10 @@ func (ia *IntAry) SetIntAryWithBigInt(intDigits *big.Int, precision int) error {
 // maximum value of 'int' (32-bit integer = 2,147,483,647 ), an error will
 // be returned.
 //
+// The value of Numeric Separators contained in BigINum will NOT be copied
+// into the current IntAry instance. IntAry will retain its
+// current numeric separator values.
+//
 func (ia *IntAry) SetIntAryWithBigIntNum(bigINum BigIntNum) error {
 
 	ePrefix := "IntAry.SetIntAryWithBigIntNum() "
@@ -4369,7 +4626,6 @@ func (ia *IntAry) SetIntAryWithBigIntNum(bigINum BigIntNum) error {
 				"which exceeds the MaxInt32 Value. MaxInt32='%v' bigINum.precision='%v' ",
 				math.MinInt32, bigINum.precision)
 	}
-
 
 	bInt, err := bigINum.GetBigInt()
 
@@ -4384,6 +4640,37 @@ func (ia *IntAry) SetIntAryWithBigIntNum(bigINum BigIntNum) error {
 		return fmt.Errorf(ePrefix + "Error returned by ia.SetIntAryWithBigInt(bInt, " +
 			"bigINum.GetPrecisionUint())).  Error='%v'",
 			err.Error())
+	}
+
+	return nil
+}
+
+// SetIntAryWithDecimal - Sets the value of the current IntAry
+// instance to the numeric value of input parameter, 'dec' which
+// is of Type Decimal.
+//
+// The value of Numeric Separators contained in 'dec' will NOT be
+// copied into the current IntAry instance. IntAry will retain its
+// current numeric separator values.
+//
+func (ia *IntAry) SetIntAryWithDecimal(dec Decimal) error {
+
+	ePrefix := "IntAry.SetIntAryWithDecimal() "
+
+	err := dec.IsDecimalValid()
+
+	if err != nil {
+		return fmt.Errorf(ePrefix +
+			"Error returned by dec.IsDecimalValid(). " +
+			"Error='%v' \n", err.Error())
+	}
+
+	err = ia.SetIntAryWithNumStr(dec.GetNumStr())
+
+	if err != nil {
+		return fmt.Errorf(ePrefix +
+			"Error returned by ia.SetIntAryWithNumStr(dec.GetNumStr()). " +
+			"Error='%v' \n", err.Error())
 	}
 
 	return nil
@@ -4644,9 +4931,18 @@ func (ia *IntAry) SetIntAryWithNumStr(str string) error {
 		return errors.New(ePrefix + "Error: received zero length number string")
 	}
 
+	numSeps := ia.GetNumericSeparatorsDto()
+
 	ia.Empty()
 
-	ia.setDefaultSeparators()
+	err := ia.SetNumericSeparatorsDto(numSeps)
+
+	if err != nil {
+		return fmt.Errorf(ePrefix +
+			"Error returned by ia.SetNumericSeparatorsDto(numSeps). " +
+			"Error='%v' \n", err.Error())
+	}
+
 
 	ia.signVal = 1
 	baseRunes := []rune(str)
@@ -4723,7 +5019,7 @@ func (ia *IntAry) SetIntAryWithNumStr(str string) error {
 
 
 	// Validate intAry object
-	err := ia.IsIntAryValid(ePrefix + "- ")
+	err = ia.IsIntAryValid(ePrefix + "- ")
 
 	if err != nil {
 		return err
@@ -4733,6 +5029,38 @@ func (ia *IntAry) SetIntAryWithNumStr(str string) error {
 	return nil
 }
 
+// SetIntAryWithNumStrDto - Sets the numeric value of the current
+// IntAry instance to that of input parameter 'nDto' which is of
+// Type NumStrDto.
+//
+// Note that the Numeric Separator values are NOT copied into the
+// current IntAry instance. The current IntAry numeric separators
+// remain unchanged.
+//
+func (ia *IntAry) SetIntAryWithNumStrDto(nDto NumStrDto) error {
+
+	ePrefix := "IntAry.SetIntAryWithNumStrDto() "
+
+	err := nDto.IsNumStrDtoValid(ePrefix + "'nDto' Invalid! " )
+
+	if err != nil {
+		return err
+	}
+
+	err = ia.SetIntAryWithNumStr(nDto.GetNumStr())
+
+	if err != nil {
+		return fmt.Errorf(ePrefix +
+			"Error returned by ia.SetIntAryWithNumStr(nDto.GetNumStr()). " +
+			"Error='%v' \n", err.Error())
+	}
+
+	return nil
+}
+
+// SetIntAryLength - Calculates the current IntAry string length
+// and sets internal variable 'ia.intAryLen'.
+//
 func (ia *IntAry) SetIntAryLength() {
 	ia.intAryLen = len(ia.intAry)
 }
@@ -4766,135 +5094,6 @@ func (ia *IntAry) SetIsZeroValue() {
 	ia.signVal = 1
 }
 
-// SetIntAryToFive - Sets the value of the intAry object to one ('1').
-func (ia *IntAry) SetIntAryToFive(precision int) error {
-
-	if precision < 0 {
-		return fmt.Errorf("SetIntAryToFive() - Error: precision is less than ZERO! precision= '%v'", precision)
-	}
-
-	ia.intAryLen = 1 + precision
-	ia.precision = precision
-	ia.intAry = make([]uint8, ia.intAryLen)
-	ia.intAry[0] = 5
-	ia.signVal = 1
-	ia.isZeroValue = false
-	ia.isIntegerZeroValue = false
-	ia.firstDigitIdx = 0
-	ia.lastDigitIdx = 0
-
-	ia.setDefaultSeparators()
-
-	return nil
-}
-
-// SetIntAryToOne - Sets the value of the intAry object to one ('1').
-func (ia *IntAry) SetIntAryToOne(precision int) error {
-
-	if precision < 0 {
-		return fmt.Errorf("SetIntAryToOne() - Error: precision is less than ZERO! precision= '%v'", precision)
-	}
-
-	ia.intAryLen = 1 + precision
-	ia.precision = precision
-	ia.intAry = make([]uint8, ia.intAryLen)
-	ia.intAry[0] = 1
-	ia.signVal = 1
-	ia.isZeroValue = false
-	ia.isIntegerZeroValue = false
-	ia.firstDigitIdx = 0
-	ia.lastDigitIdx = 0
-
-	ia.setDefaultSeparators()
-
-	return nil
-}
-
-// SetIntAryToTwo - Sets the value of the intAry object to one ('1').
-func (ia *IntAry) SetIntAryToTwo(precision int) error {
-
-	if precision < 0 {
-		return fmt.Errorf("SetIntAryToTwo() - Error: precision is less than ZERO! precision= '%v'", precision)
-	}
-
-	ia.intAryLen = 1 + precision
-	ia.precision = precision
-	ia.intAry = make([]uint8, ia.intAryLen)
-	ia.intAry[0] = 2
-	ia.signVal = 1
-	ia.isZeroValue = false
-	ia.isIntegerZeroValue = false
-	ia.firstDigitIdx = 0
-	ia.lastDigitIdx = 0
-
-	ia.setDefaultSeparators()
-
-	return nil
-}
-
-// SetIntAryToThree - Sets the value of the intAry object to one ('1').
-func (ia *IntAry) SetIntAryToThree(precision int) error {
-
-	if precision < 0 {
-		return fmt.Errorf("SetIntAryToThree() - Error: precision is less than ZERO! precision= '%v'", precision)
-	}
-
-	ia.intAryLen = 1 + precision
-	ia.precision = precision
-	ia.intAry = make([]uint8, ia.intAryLen)
-	ia.intAry[0] = 3
-	ia.signVal = 1
-	ia.isZeroValue = false
-	ia.isIntegerZeroValue = false
-	ia.firstDigitIdx = 0
-	ia.lastDigitIdx = 0
-
-	ia.setDefaultSeparators()
-
-	return nil
-}
-
-// SetIntAryToTen - Sets the value of the intAry object to Ten ('10')
-func (ia *IntAry) SetIntAryToTen(precision int) error {
-
-	if precision < 0 {
-		return fmt.Errorf("SetIntAryToTen() - Error: precision is less than ZERO! precision= '%v'", precision)
-	}
-
-	ia.intAryLen = 2 + precision
-	ia.precision = precision
-	ia.intAry = make([]uint8, ia.intAryLen)
-	ia.intAry[0] = 1
-	ia.signVal = 1
-	ia.isZeroValue = false
-	ia.isIntegerZeroValue = false
-	ia.firstDigitIdx = 0
-	ia.lastDigitIdx = 0
-
-	ia.setDefaultSeparators()
-
-	return nil
-}
-
-// SetIntAryToZero - Sets the value of the intAry object to Zero ('0').
-func (ia *IntAry) SetIntAryToZero(precision int) error {
-
-	if precision < 0 {
-		return fmt.Errorf("SetIntAryToOne() - Error: precision is less than ZERO! precision= '%v'", precision)
-	}
-
-	ia.intAryLen = 1 + precision
-	ia.precision = precision
-	ia.intAry = make([]uint8, ia.intAryLen)
-	ia.signVal = 1
-
-	ia.setDefaultSeparators()
-
-	ia.SetInternalFlags()
-
-	return nil
-}
-
 // SetInternalFlags - Sets Array Lengths and
 // test for zero values
 func (ia *IntAry) SetInternalFlags() {
@@ -4902,20 +5101,168 @@ func (ia *IntAry) SetInternalFlags() {
 }
 
 
-// SetTruncateToPrecision - Truncates the existing
-// value to precision specified by the 'precision'
-// parameter. No rounding is performed.
+// SetNumericSeparators - Used to assign values for the Decimal and Thousands separators
+// as well as the Currency Symbol to be used in displaying the current number string.
 //
-// If 'precision' is zero, the Int Ary value will
-// be truncated to an integer value with no
-// fractional digits.
+// Different nations and cultures use different symbols to delimit numerical values. In the
+// USA and many other countries, a period character ('.') is used to delimit integer and
+// fractional digits within a numeric value (123.45). Likewise, thousands may be delimited
+// by a comma (','). Currency signs very by nationality. For instance, the USA, Canada and
+// several other countries use the dollar sign ($) as a currency symbol.
+//
+// For a list of major world currency symbols see:
+// 	MikeAustin71\mathopsgo\mathops\mathopsconstants.go
+//  http://www.xe.com/symbols.php
+//
+// Note: If zero values are submitted as input for separator values, those values will default
+// to USA standards.
+//
+// USA Examples:
+//
+// Decimal Separator period ('.') 		= 123.456
+// Thousands Separator comma (',') 		= 1,000,000,000
+// Currency Symbol dollar sign ('$')	= $123
+//
+func (ia *IntAry) SetNumericSeparators(
+										decimalSeparator,
+											thousandsSeparator,
+												currencySymbol rune) {
+
+	ia.SetNumericSeparatorsToDefaultIfEmpty()
+
+	if decimalSeparator == 0 {
+		decimalSeparator = '.'
+	}
+
+	if thousandsSeparator == 0 {
+		thousandsSeparator = ','
+	}
+
+	if currencySymbol == 0 {
+		currencySymbol = '$'
+	}
+
+	ia.SetDecimalSeparator(decimalSeparator)
+	ia.SetThousandsSeparator(thousandsSeparator)
+	ia.SetCurrencySymbol(currencySymbol)
+}
+
+
+// SetNumericSeparatorsToDefaultIfEmpty - If numeric separators are
+// set to zero or nil, this method will set those numeric
+// separators to the USA defaults. This means that the
+// Decimal separator is set to ('.'), the Thousands separator
+// is set to (',') and the currency symbol is set to '$'.
+//
+// If the numeric separators were previously set to a value
+// other than zero or nil, that value is not altered by this
+// method.
+//
+// Effectively, this method ensures that numeric separators
+// are set to valid values.
+//
+func (ia *IntAry) SetNumericSeparatorsToDefaultIfEmpty() {
+
+	if ia.decimalSeparator == 0 {
+		ia.decimalSeparator = '.'
+	}
+
+	if ia.thousandsSeparator == 0 {
+		ia.thousandsSeparator = ','
+	}
+
+	if ia.currencySymbol == 0 {
+		ia.currencySymbol = '$'
+	}
+
+}
+
+// SetNumericSeparatorsToUSADefault - Sets Numeric separators:
+// 			Decimal Point Separator
+// 			Thousands Separator
+//			Currency Symbol
+//
+// to United States of America (USA) defaults.
+//
+// Call specific methods to set numeric separators for other countries or
+// cultures:
+// 		ia.SetDecimalSeparator()
+// 		ia.SetThousandsSeparator()
+// 		ia.SetCurrencySymbol()
+//
+func (ia *IntAry) SetNumericSeparatorsToUSADefault() {
+	ia.SetDecimalSeparator('.')
+	ia.SetThousandsSeparator(',')
+	ia.SetCurrencySymbol('$')
+}
+
+// SetNumericSeparatorsDto - Sets the values of numeric separators:
+// 		decimal point separator
+//		thousands separator
+//		currency symbol
+//
+// based on values transmitted through input parameter 'customSeparators'.
+//
+// If any of the values contained in input parameter 'customSeparators' are set
+// to zero, an error will be returned.
+//
+func (ia *IntAry) SetNumericSeparatorsDto(customSeparators NumericSeparatorDto) error {
+
+	ePrefix := "IntAry.SetNumericSeparatorsDto() "
+
+	if customSeparators.DecimalSeparator == 0 {
+		return errors.New(ePrefix +
+			"Error: Input Parameter customSeparators.DecimalSeparator is set to '0' - Invalid rune!")
+	}
+
+	if customSeparators.ThousandsSeparator == 0 {
+		return errors.New(ePrefix +
+			"Error: Input Parameter customSeparators.ThousandsSeparator is set to '0' - Invalid rune!")
+	}
+
+	if customSeparators.CurrencySymbol == 0 {
+		return errors.New(ePrefix +
+			"Error: Input Parameter customSeparators.CurrencySymbol is set to '0' - Invalid rune!")
+	}
+
+	ia.decimalSeparator = customSeparators.DecimalSeparator
+	ia.thousandsSeparator = customSeparators.ThousandsSeparator
+	ia.currencySymbol = customSeparators.CurrencySymbol
+
+	return nil
+}
+
+// SetPrecision - Sets the precision of the current
+// IntAry instance to the value of input parameter
+// 'precision'.
+//
+// If input parameter 'roundResult' is set to 'true',
+// the resulting numeric value will be rounded to the
+// number of decimal places specified by input parameter
+// 'precision'.
+//
+// If input parameter 'roundResult' is set to 'false',
+// the resulting numeric value will be truncated to the
+// number of decimal places specified by input parameter
+// 'precision'.
 //
 // If 'precision' is set to a value less than zero,
 // an error will be returned.
 //
 // If 'precision' is greater than the existing precision,
 // trailing zeros will be added
-
+// Examples:
+//
+// 	 Original       			'newPrecision'				Resulting
+//    Value								input parameter			  Value
+//  --------------				---------------     -------------
+//	654.123456									9							 654.123456000
+//	654.123456									4							 654.1235
+// -654.123456									9							-654.123456000
+// -654.123456									4							-654.1235
+//		0													3								 0.000
+//    0.000000									0								 0
+//
 func (ia *IntAry) SetPrecision(precision int, roundResult bool) error {
 
 	if precision < 0 {
@@ -5071,7 +5418,7 @@ func (ia *IntAry) SetSignificantDigitIdxs() {
 	}
 }
 
-// SetSeparators - Used to assign values for the Decimal and Thousands separators as well
+// SetNumericSeparators - Used to assign values for the Decimal and Thousands separators as well
 // as the Currency Symbol to be used in displaying the current intAry number string.
 //
 // Different nations and cultures use different symbols to delimit numerical values. In the
@@ -5110,42 +5457,6 @@ func (ia *IntAry) SetSeparators(decimalSeparator, thousandsSeparator, currencySy
 	ia.decimalSeparator = decimalSeparator
 	ia.thousandsSeparator = thousandsSeparator
 	ia.currencySymbol = currencySymbol
-}
-
-// SetThousandsSeparator is used to set the value of the thousands
-// separator character. The thousands separator character is used
-// to separate thousands when the value of this IntAry object is
-// expressed as a string. In the US, the thousands separator character
-// is a comma. In the following example, the ',' character separates
-// thousands in the integer number: Example - '1,000,000,000'.
-//
-// The SetThousandsSeparator method can be used to change the thousands
-// separator character in accordance with the customs of countries other
-// than the US.
-//
-// To examine the current setting for thousands separator, see
-// method GetIntAryStats().
-//
-// Note the default thousands separator character is the comma (',').
-func (ia *IntAry) SetThousandsSeparator(thousandsSeparator rune) {
-	ia.thousandsSeparator = thousandsSeparator
-}
-
-// SubtractFromThis - Subtracts the value of parameter
-// 'ia2' from the current intAry object.
-//
-// Input Parameters:
-// =================
-//
-// ia2 *intAry - Incoming intAry object whose value will be subtracted
-// 								from this current intAry value.
-//
-func (ia *IntAry) SubtractFromThis(ia2 *IntAry) error {
-
-	IntAryMathSubtract{}.SubtractTotal(ia, ia2)
-
-	return nil
-
 }
 
 // ShiftPrecisionLeft - Shifts the relative position of a decimal point within a number
@@ -5224,6 +5535,41 @@ func (ia *IntAry) ShiftPrecisionRight(shiftPrecision uint) {
 
 }
 
+// SetThousandsSeparator is used to set the value of the thousands
+// separator character. The thousands separator character is used
+// to separate thousands when the value of this IntAry object is
+// expressed as a string. In the US, the thousands separator character
+// is a comma. In the following example, the ',' character separates
+// thousands in the integer number: Example - '1,000,000,000'.
+//
+// The SetThousandsSeparator method can be used to change the thousands
+// separator character in accordance with the customs of countries other
+// than the US.
+//
+// To examine the current setting for thousands separator, see
+// method GetIntAryStats().
+//
+// Note the default thousands separator character is the comma (',').
+func (ia *IntAry) SetThousandsSeparator(thousandsSeparator rune) {
+	ia.thousandsSeparator = thousandsSeparator
+}
+
+// SubtractFromThis - Subtracts the value of parameter
+// 'ia2' from the current intAry object.
+//
+// Input Parameters:
+// =================
+//
+// ia2 *intAry - Incoming intAry object whose value will be subtracted
+// 								from this current intAry value.
+//
+func (ia *IntAry) SubtractFromThis(ia2 *IntAry) error {
+
+	IntAryMathSubtract{}.SubtractTotal(ia, ia2)
+
+	return nil
+
+}
 
 // String - Returns the numeric value of the current IntAry as
 // a string.
@@ -5250,24 +5596,4 @@ func (ia *IntAry) SubtractMultipleFromThis(iaMany ...*IntAry) error {
 	}
 
 	return nil
-}
-
-// Sets the default values for data fields decimalSeparator, thousandsSeparator
-// and currencySymbol.  If these values have not been previously set, they are
-// initialized to USA standard values.
-//
-func (ia *IntAry) setDefaultSeparators() {
-
-	if ia.decimalSeparator == 0 {
-		ia.decimalSeparator = '.'
-	}
-
-	if ia.thousandsSeparator == 0 {
-		ia.thousandsSeparator = ','
-	}
-
-	if ia.currencySymbol == 0 {
-		ia.currencySymbol = '$'
-	}
-
 }

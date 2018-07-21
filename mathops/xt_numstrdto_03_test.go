@@ -211,7 +211,7 @@ func TestNumStrDto_GetCurrencyStr_01(t *testing.T) {
 			"nStr='%v' Error='%v'", nStr, err.Error())
 	}
 
-	nDto.SetSeparators(decimalSeparator, thousandsSeparator, currencySymbol)
+	nDto.SetNumericSeparators(decimalSeparator, thousandsSeparator, currencySymbol)
 
 
 	if currencySymbol != nDto.GetCurrencySymbol() {
@@ -255,7 +255,7 @@ func TestNumStrDto_GetCurrencyStr_02(t *testing.T) {
 			"nStr='%v' Error='%v'", nStr, err.Error())
 	}
 
-	nDto.SetSeparators(decimalSeparator, thousandsSeparator, currencySymbol)
+	nDto.SetNumericSeparators(decimalSeparator, thousandsSeparator, currencySymbol)
 
 
 	if currencySymbol != nDto.GetCurrencySymbol() {
@@ -299,7 +299,7 @@ func TestNumStrDto_GetCurrencyStr_03(t *testing.T) {
 			"nStr='%v' Error='%v'", nStr, err.Error())
 	}
 
-	nDto.SetSeparators(decimalSeparator, thousandsSeparator, currencySymbol)
+	nDto.SetNumericSeparators(decimalSeparator, thousandsSeparator, currencySymbol)
 
 
 	if currencySymbol != nDto.GetCurrencySymbol() {
@@ -343,7 +343,7 @@ func TestNumStrDto_GetCurrencyStr_04(t *testing.T) {
 			"nStr='%v' Error='%v'", nStr, err.Error())
 	}
 
-	nDto.SetSeparators(decimalSeparator, thousandsSeparator, currencySymbol)
+	nDto.SetNumericSeparators(decimalSeparator, thousandsSeparator, currencySymbol)
 
 
 	if currencySymbol != nDto.GetCurrencySymbol() {
@@ -387,7 +387,7 @@ func TestNumStrDto_GetCurrencyStr_05(t *testing.T) {
 			"nStr='%v' Error='%v'", nStr, err.Error())
 	}
 
-	nDto.SetSeparators(decimalSeparator, thousandsSeparator, currencySymbol)
+	nDto.SetNumericSeparators(decimalSeparator, thousandsSeparator, currencySymbol)
 
 
 	if currencySymbol != nDto.GetCurrencySymbol() {
@@ -431,7 +431,7 @@ func TestNumStrDto_GetCurrencyStr_06(t *testing.T) {
 			"nStr='%v' Error='%v'", nStr, err.Error())
 	}
 
-	nDto.SetSeparators(decimalSeparator, thousandsSeparator, currencySymbol)
+	nDto.SetNumericSeparators(decimalSeparator, thousandsSeparator, currencySymbol)
 
 
 	if currencySymbol != nDto.GetCurrencySymbol() {
@@ -475,7 +475,7 @@ func TestNumStrDto_GetCurrencyStr_07(t *testing.T) {
 			"nStr='%v' Error='%v'", nStr, err.Error())
 	}
 
-	nDto.SetSeparators(decimalSeparator, thousandsSeparator, currencySymbol)
+	nDto.SetNumericSeparators(decimalSeparator, thousandsSeparator, currencySymbol)
 
 
 	if currencySymbol != nDto.GetCurrencySymbol() {
@@ -610,7 +610,7 @@ func TestNumStrDto_GetCurrencyParen_01(t *testing.T) {
 			"nStr='%v' Error='%v'", nStr, err.Error())
 	}
 
-	nDto.SetSeparators(decimalSeparator, thousandsSeparator, currencySymbol)
+	nDto.SetNumericSeparators(decimalSeparator, thousandsSeparator, currencySymbol)
 
 
 	if currencySymbol != nDto.GetCurrencySymbol() {
@@ -654,7 +654,7 @@ func TestNumStrDto_GetCurrencyParen_02(t *testing.T) {
 			"nStr='%v' Error='%v'", nStr, err.Error())
 	}
 
-	nDto.SetSeparators(decimalSeparator, thousandsSeparator, currencySymbol)
+	nDto.SetNumericSeparators(decimalSeparator, thousandsSeparator, currencySymbol)
 
 
 	if currencySymbol != nDto.GetCurrencySymbol() {
@@ -698,7 +698,7 @@ func TestNumStrDto_GetCurrencyParen_03(t *testing.T) {
 			"nStr='%v' Error='%v'", nStr, err.Error())
 	}
 
-	nDto.SetSeparators(decimalSeparator, thousandsSeparator, currencySymbol)
+	nDto.SetNumericSeparators(decimalSeparator, thousandsSeparator, currencySymbol)
 
 
 	if currencySymbol != nDto.GetCurrencySymbol() {
@@ -743,7 +743,7 @@ func TestNumStrDto_GetCurrencyParen_04(t *testing.T) {
 			"nStr='%v' Error='%v'", nStr, err.Error())
 	}
 
-	nDto.SetSeparators(decimalSeparator, thousandsSeparator, currencySymbol)
+	nDto.SetNumericSeparators(decimalSeparator, thousandsSeparator, currencySymbol)
 
 
 	if currencySymbol != nDto.GetCurrencySymbol() {
@@ -787,7 +787,7 @@ func TestNumStrDto_GetCurrencyParen_05(t *testing.T) {
 			"nStr='%v' Error='%v'", nStr, err.Error())
 	}
 
-	nDto.SetSeparators(decimalSeparator, thousandsSeparator, currencySymbol)
+	nDto.SetNumericSeparators(decimalSeparator, thousandsSeparator, currencySymbol)
 
 
 	if currencySymbol != nDto.GetCurrencySymbol() {
@@ -831,7 +831,7 @@ func TestNumStrDto_GetCurrencyParen_06(t *testing.T) {
 			"nStr='%v' Error='%v'", nStr, err.Error())
 	}
 
-	nDto.SetSeparators(decimalSeparator, thousandsSeparator, currencySymbol)
+	nDto.SetNumericSeparators(decimalSeparator, thousandsSeparator, currencySymbol)
 
 
 	if currencySymbol != nDto.GetCurrencySymbol() {
@@ -1038,7 +1038,7 @@ func TestNumStrDto_GetNumStr_01(t *testing.T) {
 			"nStr='%v' Error='%v'", nStr, err.Error())
 	}
 
-	nDto.SetSeparators(decimalSeparator, thousandsSeparator, currencySymbol)
+	nDto.SetNumericSeparators(decimalSeparator, thousandsSeparator, currencySymbol)
 
 
 	if currencySymbol != nDto.GetCurrencySymbol() {
@@ -1082,7 +1082,7 @@ func TestNumStrDto_GetNumStr_02(t *testing.T) {
 			"nStr='%v' Error='%v'", nStr, err.Error())
 	}
 
-	nDto.SetSeparators(decimalSeparator, thousandsSeparator, currencySymbol)
+	nDto.SetNumericSeparators(decimalSeparator, thousandsSeparator, currencySymbol)
 
 
 	if currencySymbol != nDto.GetCurrencySymbol() {
@@ -1126,7 +1126,7 @@ func TestNumStrDto_GetNumStr_03(t *testing.T) {
 			"nStr='%v' Error='%v'", nStr, err.Error())
 	}
 
-	nDto.SetSeparators(decimalSeparator, thousandsSeparator, currencySymbol)
+	nDto.SetNumericSeparators(decimalSeparator, thousandsSeparator, currencySymbol)
 
 
 	if currencySymbol != nDto.GetCurrencySymbol() {
@@ -1170,7 +1170,7 @@ func TestNumStrDto_GetNumStr_04(t *testing.T) {
 			"nStr='%v' Error='%v'", nStr, err.Error())
 	}
 
-	nDto.SetSeparators(decimalSeparator, thousandsSeparator, currencySymbol)
+	nDto.SetNumericSeparators(decimalSeparator, thousandsSeparator, currencySymbol)
 
 
 	if currencySymbol != nDto.GetCurrencySymbol() {
@@ -1214,7 +1214,7 @@ func TestNumStrDto_GetNumStr_05(t *testing.T) {
 			"nStr='%v' Error='%v'", nStr, err.Error())
 	}
 
-	nDto.SetSeparators(decimalSeparator, thousandsSeparator, currencySymbol)
+	nDto.SetNumericSeparators(decimalSeparator, thousandsSeparator, currencySymbol)
 
 
 	if currencySymbol != nDto.GetCurrencySymbol() {
@@ -1259,7 +1259,7 @@ func TestNumStrDto_GetNumStr_06(t *testing.T) {
 			"nStr='%v' Error='%v'", nStr, err.Error())
 	}
 
-	nDto.SetSeparators(decimalSeparator, thousandsSeparator, currencySymbol)
+	nDto.SetNumericSeparators(decimalSeparator, thousandsSeparator, currencySymbol)
 
 
 	if currencySymbol != nDto.GetCurrencySymbol() {
@@ -1303,7 +1303,7 @@ func TestNumStrDto_GetNumStr_07(t *testing.T) {
 			"nStr='%v' Error='%v'", nStr, err.Error())
 	}
 
-	nDto.SetSeparators(decimalSeparator, thousandsSeparator, currencySymbol)
+	nDto.SetNumericSeparators(decimalSeparator, thousandsSeparator, currencySymbol)
 
 
 	if currencySymbol != nDto.GetCurrencySymbol() {
@@ -1347,7 +1347,7 @@ func TestNumStrDto_GetNumStr_08(t *testing.T) {
 			"nStr='%v' Error='%v'", nStr, err.Error())
 	}
 
-	nDto.SetSeparators(decimalSeparator, thousandsSeparator, currencySymbol)
+	nDto.SetNumericSeparators(decimalSeparator, thousandsSeparator, currencySymbol)
 
 
 	if currencySymbol != nDto.GetCurrencySymbol() {
@@ -1391,7 +1391,7 @@ func TestNumStrDto_GetNumStr_09(t *testing.T) {
 			"nStr='%v' Error='%v'", nStr, err.Error())
 	}
 
-	nDto.SetSeparators(decimalSeparator, thousandsSeparator, currencySymbol)
+	nDto.SetNumericSeparators(decimalSeparator, thousandsSeparator, currencySymbol)
 
 
 	if currencySymbol != nDto.GetCurrencySymbol() {
@@ -1435,7 +1435,7 @@ func TestNumStrDto_GetNumStr_10(t *testing.T) {
 			"nStr='%v' Error='%v'", nStr, err.Error())
 	}
 
-	nDto.SetSeparators(decimalSeparator, thousandsSeparator, currencySymbol)
+	nDto.SetNumericSeparators(decimalSeparator, thousandsSeparator, currencySymbol)
 
 
 	if currencySymbol != nDto.GetCurrencySymbol() {
@@ -1479,7 +1479,7 @@ func TestNumStrDto_GetNumStr_11(t *testing.T) {
 			"nStr='%v' Error='%v'", nStr, err.Error())
 	}
 
-	nDto.SetSeparators(decimalSeparator, thousandsSeparator, currencySymbol)
+	nDto.SetNumericSeparators(decimalSeparator, thousandsSeparator, currencySymbol)
 
 
 	if currencySymbol != nDto.GetCurrencySymbol() {
@@ -1523,7 +1523,7 @@ func TestNumStrDto_GetNumParen_01(t *testing.T) {
 			"nStr='%v' Error='%v'", nStr, err.Error())
 	}
 
-	nDto.SetSeparators(decimalSeparator, thousandsSeparator, currencySymbol)
+	nDto.SetNumericSeparators(decimalSeparator, thousandsSeparator, currencySymbol)
 
 
 	if currencySymbol != nDto.GetCurrencySymbol() {
@@ -1567,7 +1567,7 @@ func TestNumStrDto_GetNumParen_02(t *testing.T) {
 			"nStr='%v' Error='%v'", nStr, err.Error())
 	}
 
-	nDto.SetSeparators(decimalSeparator, thousandsSeparator, currencySymbol)
+	nDto.SetNumericSeparators(decimalSeparator, thousandsSeparator, currencySymbol)
 
 
 	if currencySymbol != nDto.GetCurrencySymbol() {
@@ -1611,7 +1611,7 @@ func TestNumStrDto_GetNumParen_03(t *testing.T) {
 			"nStr='%v' Error='%v'", nStr, err.Error())
 	}
 
-	nDto.SetSeparators(decimalSeparator, thousandsSeparator, currencySymbol)
+	nDto.SetNumericSeparators(decimalSeparator, thousandsSeparator, currencySymbol)
 
 
 	if currencySymbol != nDto.GetCurrencySymbol() {
@@ -1655,7 +1655,7 @@ func TestNumStrDto_GetNumParen_04(t *testing.T) {
 			"nStr='%v' Error='%v'", nStr, err.Error())
 	}
 
-	nDto.SetSeparators(decimalSeparator, thousandsSeparator, currencySymbol)
+	nDto.SetNumericSeparators(decimalSeparator, thousandsSeparator, currencySymbol)
 
 
 	if currencySymbol != nDto.GetCurrencySymbol() {
@@ -1699,7 +1699,7 @@ func TestNumStrDto_GetNumParen_05(t *testing.T) {
 			"nStr='%v' Error='%v'", nStr, err.Error())
 	}
 
-	nDto.SetSeparators(decimalSeparator, thousandsSeparator, currencySymbol)
+	nDto.SetNumericSeparators(decimalSeparator, thousandsSeparator, currencySymbol)
 
 
 	if currencySymbol != nDto.GetCurrencySymbol() {
@@ -1744,7 +1744,7 @@ func TestNumStrDto_GetNumParen_06(t *testing.T) {
 			"nStr='%v' Error='%v'", nStr, err.Error())
 	}
 
-	nDto.SetSeparators(decimalSeparator, thousandsSeparator, currencySymbol)
+	nDto.SetNumericSeparators(decimalSeparator, thousandsSeparator, currencySymbol)
 
 
 	if currencySymbol != nDto.GetCurrencySymbol() {
@@ -1788,7 +1788,7 @@ func TestNumStrDto_GetNumParen_07(t *testing.T) {
 			"nStr='%v' Error='%v'", nStr, err.Error())
 	}
 
-	nDto.SetSeparators(decimalSeparator, thousandsSeparator, currencySymbol)
+	nDto.SetNumericSeparators(decimalSeparator, thousandsSeparator, currencySymbol)
 
 
 	if currencySymbol != nDto.GetCurrencySymbol() {
@@ -1832,7 +1832,7 @@ func TestNumStrDto_GetNumParen_08(t *testing.T) {
 			"nStr='%v' Error='%v'", nStr, err.Error())
 	}
 
-	nDto.SetSeparators(decimalSeparator, thousandsSeparator, currencySymbol)
+	nDto.SetNumericSeparators(decimalSeparator, thousandsSeparator, currencySymbol)
 
 
 	if currencySymbol != nDto.GetCurrencySymbol() {
@@ -1876,7 +1876,7 @@ func TestNumStrDto_GetNumParen_09(t *testing.T) {
 			"nStr='%v' Error='%v'", nStr, err.Error())
 	}
 
-	nDto.SetSeparators(decimalSeparator, thousandsSeparator, currencySymbol)
+	nDto.SetNumericSeparators(decimalSeparator, thousandsSeparator, currencySymbol)
 
 
 	if currencySymbol != nDto.GetCurrencySymbol() {
@@ -1920,7 +1920,7 @@ func TestNumStrDto_GetNumParen_10(t *testing.T) {
 			"nStr='%v' Error='%v'", nStr, err.Error())
 	}
 
-	nDto.SetSeparators(decimalSeparator, thousandsSeparator, currencySymbol)
+	nDto.SetNumericSeparators(decimalSeparator, thousandsSeparator, currencySymbol)
 
 
 	if currencySymbol != nDto.GetCurrencySymbol() {
@@ -1964,7 +1964,7 @@ func TestNumStrDto_GetNumParen_11(t *testing.T) {
 			"nStr='%v' Error='%v'", nStr, err.Error())
 	}
 
-	nDto.SetSeparators(decimalSeparator, thousandsSeparator, currencySymbol)
+	nDto.SetNumericSeparators(decimalSeparator, thousandsSeparator, currencySymbol)
 
 
 	if currencySymbol != nDto.GetCurrencySymbol() {

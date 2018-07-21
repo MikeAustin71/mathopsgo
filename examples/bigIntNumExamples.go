@@ -22,10 +22,10 @@ func ExampleBINumSetFromIntFracStrings(
 		return
 	}
 
-	err = bINum.SetFromIntFracStrings(intStr, fracStr, signVal)
+	err = bINum.SetIntFracStrings(intStr, fracStr, signVal)
 
 	if err != nil {
-		fmt.Printf("Error returned by bINum.SetFromIntFracStrings(intStr, fracStr, signVal). " +
+		fmt.Printf("Error returned by bINum.SetIntFracStrings(intStr, fracStr, signVal). " +
 			"intStr='%v' fracStr='%v' signVal='%v' Error='%v' \n",
 			intStr, fracStr, signVal, err.Error())
 		return

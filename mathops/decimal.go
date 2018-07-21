@@ -361,7 +361,7 @@ func (dec *Decimal) Equal(dec2 Decimal) bool {
 // fields to their 'zero' values.
 func (dec *Decimal) Empty() {
 	dec.bigINum =  BigIntNum{}.NewZero(0)
-	dec.SetEmptySeparatorsToDefault()
+	dec.SetNumericSeparatorsToUSADefault()
 }
 
 // GetAbsoluteBigIntValue - returns the absolute value of the
@@ -1859,10 +1859,20 @@ func (dec *Decimal) SetDecimalSeparator(decimalSeparator rune) error {
 	return nil
 }
 
-// SetEmptySeparatorsToDefault - Ensures that separators are set to a valid value.
-// If separator runes are zero, this methods sets the default values for
-// decimal separator, thousands separator and currency symbol.
-func (dec *Decimal) SetEmptySeparatorsToDefault() {
+// SetNumericSeparatorsToDefaultIfEmpty - If numeric separators are
+// set to zero or nil, this method will set those numeric
+// separators to the USA defaults. This means that the
+// Decimal separator is set to ('.'), the Thousands separator
+// is set to (',') and the currency symbol is set to '$'.
+//
+// If the numeric separators were previously set to a value
+// other than zero or nil, that value is not altered by this
+// method.
+//
+// Effectively, this method ensures that numeric separators
+// are set to valid values.
+
+func (dec *Decimal) SetDefaultNumericSeparators() {
 
 	if dec.GetDecimalSeparator() == 0 {
 		dec.SetDecimalSeparator('.')
@@ -1890,7 +1900,7 @@ func (dec *Decimal) SetFloat32(f32 float32) error {
 
 	ePrefix := "Decimal.SetFloat32() "
 
-	dec.SetEmptySeparatorsToDefault()
+	dec.SetDefaultNumericSeparators()
 
 	bigFloat := big.NewFloat(float64(f32))
 
@@ -1931,7 +1941,7 @@ func (dec *Decimal) SetFloat64(f64 float64) error {
 
 	ePrefix := "Decimal.SetFloat64() "
 
-	dec.SetEmptySeparatorsToDefault()
+	dec.SetDefaultNumericSeparators()
 
 	bigFloat := big.NewFloat(f64)
 
@@ -1971,7 +1981,7 @@ func (dec *Decimal) SetFloatBig(bigFloat *big.Float) error {
 
 	ePrefix := "Decimal.SetFloatBig() "
 
-	dec.SetEmptySeparatorsToDefault()
+	dec.SetDefaultNumericSeparators()
 
 	numSeps := dec.bigINum.GetNumericSeparatorsDto()
 
@@ -2048,7 +2058,7 @@ func (dec *Decimal) SetIntFracStrings(intNum, fracNum string, signVal int) error
 				err.Error())
 	}
 
-	err = binIntNum.SetFromIntFracStrings(intNum, fracNum, signVal)
+	err = binIntNum.SetIntFracStrings(intNum, fracNum, signVal)
 
 	if err != nil {
 		return fmt.Errorf(ePrefix +
@@ -2104,6 +2114,63 @@ func (dec *Decimal) SetNumericSeparatorsDto(customSeparators NumericSeparatorDto
 	return nil
 }
 
+
+// SetNumericSeparators - Used to assign values for the Decimal and Thousands separators as well
+// as the Currency Symbol to be used in displaying the current number string.
+//
+// Note: If zero values are submitted as input, the values will default to USA standards.
+//
+// USA Examples:
+//
+// Decimal Separator period ('.') 		= 123.456
+// Thousands Separator comma (',') 		= 1,000,000,000
+// Currency Symbol dollar sign ('$')	= $123
+//
+func (dec *Decimal) SetNumericSeparators(decimalSeparator, thousandsSeparator, currencySymbol rune) {
+
+	dec.bigINum.SetNumericSeparators(decimalSeparator, thousandsSeparator, currencySymbol)
+
+}
+
+// SetNumericSeparatorsToDefaultIfEmpty - If numeric separators are
+// set to zero or nil, this method will set those numeric
+// separators to the USA defaults. This means that the
+// Decimal separator is set to ('.'), the Thousands separator
+// is set to (',') and the currency symbol is set to '$'.
+//
+// If the numeric separators were previously set to a value
+// other than zero or nil, that value is not altered by this
+// method.
+//
+// Effectively, this method ensures that numeric separators
+// are set to valid values.
+//
+func (dec *Decimal) SetNumericSeparatorsToDefaultIfEmpty() {
+
+	dec.bigINum.SetNumericSeparatorsToDefaultIfEmpty()
+
+}
+
+// SetNumericSeparatorsToUSADefault - Sets Numeric separators:
+// 			Decimal Point Separator
+// 			Thousands Separator
+//			Currency Symbol
+//
+// to United States of America (USA) defaults.
+//
+// Call specific methods to set numeric separators for other countries or
+// cultures:
+// 		dec.SetDecimalSeparator()
+// 		dec.SetThousandsSeparator()
+// 		dec.SetCurrencySymbol()
+//
+func (dec *Decimal) SetNumericSeparatorsToUSADefault() {
+
+	dec.SetDecimalSeparator('.')
+	dec.SetThousandsSeparator(',')
+	dec.SetCurrencySymbol('$')
+}
+
 // SetNumStrPrecision - Sets the Decimal's value to a number string and
 // applies the appropriate 'precision' in order to determine placement
 // of the decimal point. For example, if the number string ('str') is passed
@@ -2126,7 +2193,7 @@ func (dec *Decimal) SetNumStrPrecision(str string, precision uint, roundResult b
 			"Error='%v' ", err.Error())
 	}
 
-	dec.SetEmptySeparatorsToDefault()
+	dec.SetDefaultNumericSeparators()
 
 	d2, err := dec.NewNumStrPrecision(str, precision, roundResult)
 
@@ -2152,7 +2219,7 @@ func (dec *Decimal) SetNumStrPrecision(str string, precision uint, roundResult b
 // Decimal Value = 123.456
 func (dec *Decimal) SetNumStr(str string) error {
 
-	dec.SetEmptySeparatorsToDefault()
+	dec.SetDefaultNumericSeparators()
 
 	d2, err := dec.NumStrToDecimal(str)
 
@@ -2245,43 +2312,6 @@ func (dec *Decimal) SetPrecisionTrunc(precision uint) error {
 	dec.bigINum.TruncToDecPlace(precision)
 
 	return nil
-}
-
-// SetSeparators - Used to assign values for the Decimal and Thousands separators as well
-// as the Currency Symbol to be used in displaying the current number string.
-//
-// Note: If zero values are submitted as input, the values will default to USA standards.
-//
-// USA Examples:
-//
-// Decimal Separator period ('.') 		= 123.456
-// Thousands Separator comma (',') 		= 1,000,000,000
-// Currency Symbol dollar sign ('$')	= $123
-//
-func (dec *Decimal) SetSeparators(decimalSeparator, thousandsSeparator, currencySymbol rune) {
-
-	dec.bigINum.SetSeparators(decimalSeparator, thousandsSeparator, currencySymbol)
-
-}
-
-
-// SetSeparatorsToUSADefault - Sets Numeric separators:
-// 			Decimal Point Separator
-// 			Thousands Separator
-//			Currency Symbol
-//
-// to United States of America (USA) defaults.
-//
-// Call specific methods to set numeric separators for other countries or
-// cultures:
-// 		dec.SetDecimalSeparator()
-// 		dec.SetThousandsSeparator()
-// 		dec.SetCurrencySymbol()
-//
-func (dec *Decimal) SetSeparatorsToUSADefault() {
-	dec.SetDecimalSeparator('.')
-	dec.SetThousandsSeparator(',')
-	dec.SetCurrencySymbol('$')
 }
 
 // SetSignValue - Sets the sign of the numeric value

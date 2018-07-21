@@ -429,23 +429,14 @@ func (nDto *NumStrDto) Empty() {
 	nDto.absAllNumRunes = []rune{}
 	nDto.precision = 0
 
-	if nDto.thousandsSeparator == 0 {
-		nDto.thousandsSeparator = ','
-	}
-
-	if nDto.decimalSeparator == 0 {
-		nDto.decimalSeparator = '.'
-	}
-
-	if nDto.currencySymbol == 0 {
-		nDto.currencySymbol = '$'
-	}
+	nDto.SetNumericSeparatorsToUSADefault()
 
 }
 
 // FindIntArraySignificantDigitLimits - Receives an array of integers and converts them
 // to a number string conisting of significant digits. Leading and trailing zeros are
 // eliminated. See Method: FindNumStrSignificantDigitLimits()
+//
 func (nDto *NumStrDto) FindIntArraySignificantDigitLimits(intArray []int, precision uint, signVal int) (NumStrDto, error) {
 
 	lenIntArray := len(intArray)
@@ -1321,16 +1312,27 @@ func (nDto *NumStrDto) GetBigInt() (*big.Int, error) {
 func (nDto *NumStrDto) GetBigIntNum() (BigIntNum, error) {
 	ePrefix := "NumStrDto.GetBigIntNum() "
 
+	numSeps := nDto.GetNumericSeparatorsDto()
+
 	bInt, err := nDto.GetBigInt()
 
 	if err != nil {
-		return BigIntNum{},
+		return BigIntNum{}.NewZero(0),
 		fmt.Errorf(ePrefix +
 			"Error returned by nDto.GetBigInt() " +
 			"Error='%v' ", err.Error())
 	}
 
 	bIntNum := BigIntNum{}.NewBigInt(bInt, nDto.precision)
+
+	err = bIntNum.SetNumericSeparatorsDto(numSeps)
+
+	if err != nil {
+		return BigIntNum{}.NewZero(0),
+			fmt.Errorf(ePrefix +
+				"Error returned by bIntNum.SetNumericSeparatorsDto(numSeps) " +
+				"Error='%v' \n", err.Error())
+	}
 
 	return bIntNum, nil
 }
@@ -1440,6 +1442,8 @@ func (nDto *NumStrDto) GetDecimal() (Decimal, error) {
 		return Decimal{}, err
 	}
 
+	numSeps := nDto.GetNumericSeparatorsDto()
+
 	dec, err := Decimal{}.NewNumStrDto(nDto.CopyOut())
 
 	if err != nil {
@@ -1448,6 +1452,16 @@ func (nDto *NumStrDto) GetDecimal() (Decimal, error) {
 			"Error returned by Decimal{}.NewNumStrDto(nDto.CopyOut()) " +
 			"Error='%v' ", err.Error())
 	}
+
+	err = dec.SetNumericSeparatorsDto(numSeps)
+
+	if err != nil {
+		return Decimal{},
+			fmt.Errorf(ePrefix +
+				"Error returned by dec.SetNumericSeparatorsDto(numSeps) " +
+				"Error='%v' ", err.Error())
+	}
+
 
 	return dec, nil
 }
@@ -1464,6 +1478,8 @@ func (nDto *NumStrDto) GetIntAry() (IntAry, error) {
 		return IntAry{}, err
 	}
 
+	numSeps := nDto.GetNumericSeparatorsDto()
+
 	ia, err := IntAry{}.NewNumStrDto(nDto.CopyOut())
 
 	if err != nil {
@@ -1472,8 +1488,29 @@ func (nDto *NumStrDto) GetIntAry() (IntAry, error) {
 			"nDto='%v' Error='%v'", nDto.GetNumStr(), err.Error())
 	}
 
+	err = ia.SetNumericSeparatorsDto(numSeps)
+
+	if err != nil {
+		return IntAry{},
+			fmt.Errorf(ePrefix + "Error returned by ia.SetNumericSeparatorsDto(numSeps). " +
+				"Error='%v'", err.Error())
+	}
 
 	return ia, nil
+}
+
+// GetNumericSeparatorsDto - Returns a structure containing the
+// character or rune values for decimal point separator, thousands
+// separator and currency symbol.
+//
+func (nDto *NumStrDto) GetNumericSeparatorsDto() NumericSeparatorDto {
+
+	numSeps := NumericSeparatorDto{}
+	numSeps.DecimalSeparator = nDto.GetDecimalSeparator()
+	numSeps.ThousandsSeparator = nDto.GetThousandsSeparator()
+	numSeps.CurrencySymbol = nDto.GetCurrencySymbol()
+
+	return numSeps
 }
 
 // GetNumParen - Returns the numeric value of the current NumStrDto
@@ -2104,7 +2141,7 @@ func (nDto NumStrDto) NewNumStr(numStr string) (NumStrDto, error) {
 
 	ePrefix := "NumStrDto.NewNumStr() "
 
-	n := NumStrDto{}
+	n := NumStrDto{}.New()
 
 	n2, err := n.ParseNumStr(numStr)
 
@@ -2338,6 +2375,9 @@ func (nDto NumStrDto) ParseBigIntNum(biNum BigIntNum) (NumStrDto, error) {
 
 	ePrefix := "NumStrDto.ParseBigIntNum() "
 
+	nDto.SetNumericSeparatorsToDefaultIfEmpty()
+	numSeps := nDto.GetNumericSeparatorsDto()
+
 	n2Dto := NumStrDto{}.New()
 
 	n2Dto.SetCurrencySymbol(biNum.GetCurrencySymbol())
@@ -2399,7 +2439,15 @@ func (nDto NumStrDto) ParseBigIntNum(biNum BigIntNum) (NumStrDto, error) {
 		}
 	}
 
-	err := n2Dto.IsNumStrDtoValid("")
+	err := n2Dto.SetNumericSeparatorsDto(numSeps)
+
+	if err != nil {
+		return NumStrDto{}.New(),
+			fmt.Errorf(ePrefix + "Error returned by n2Dto.SetNumericSeparatorsDto(numSeps) " +
+				"Error='%v' \n", err.Error())
+	}
+
+	err = n2Dto.IsNumStrDtoValid("")
 
 	if err != nil {
 		return NumStrDto{}.New(),
@@ -2417,7 +2465,8 @@ func (nDto NumStrDto) ParseSignedBigInt(signedBigInt *big.Int, precision uint) (
 
 	ePrefix := "NumStrDto.ParseSignedBigInt() "
 
-	nDto.SetEmptySeparatorsToDefault()
+	nDto.SetNumericSeparatorsToDefaultIfEmpty()
+	numSeps := nDto.GetNumericSeparatorsDto()
 
 	n2Dto := NumStrDto{}.New()
 
@@ -2478,7 +2527,17 @@ func (nDto NumStrDto) ParseSignedBigInt(signedBigInt *big.Int, precision uint) (
 		}
 	}
 
-	err := n2Dto.IsNumStrDtoValid("")
+
+	err := n2Dto.SetNumericSeparatorsDto(numSeps)
+
+	if err != nil {
+		return NumStrDto{}.New(),
+			fmt.Errorf(ePrefix + "Error returned by n2Dto.SetNumericSeparatorsDto(numSeps) " +
+				"Error='%v' \n", err.Error())
+	}
+
+
+	err = n2Dto.IsNumStrDtoValid("")
 
 	if err != nil {
 		return NumStrDto{}.New(),
@@ -2503,10 +2562,10 @@ func (nDto *NumStrDto) ParseNumStr(str string) (NumStrDto, error) {
 		return NumStrDto{}, errors.New(ePrefix + "Received zero length number string as input!")
 	}
 
-	nDto.SetEmptySeparatorsToDefault()
+	nDto.SetNumericSeparatorsToDefaultIfEmpty()
+  numSeps := nDto.GetNumericSeparatorsDto()
 
 	n2Dto := NumStrDto{}.New()
-
 
 	n2Dto.signVal = 1
 	n2Dto.SetThousandsSeparator(nDto.GetThousandsSeparator())
@@ -2626,12 +2685,29 @@ func (nDto *NumStrDto) ParseNumStr(str string) (NumStrDto, error) {
 		lenAbsAllNumRunes = len(n2Dto.absAllNumRunes)
 	}
 
-	// Validate n2Dto object
-	err := n2Dto.IsNumStrDtoValid(ePrefix)
+	err := n2Dto.SetNumericSeparatorsDto(numSeps)
 
 	if err != nil {
-		return NumStrDto{}, err
+		return NumStrDto{}.New(),
+		 fmt.Errorf(ePrefix + "Error returned by n2Dto.SetNumericSeparatorsDto(numSeps) " +
+		 	"Error='%v' \n", err.Error())
 	}
+
+	err = n2Dto.SetNumericSeparatorsDto(numSeps)
+
+	if err != nil {
+		return NumStrDto{}.New(),
+			fmt.Errorf(ePrefix + "Error returned by n2Dto.SetNumericSeparatorsDto(numSeps) " +
+				"Error='%v' \n", err.Error())
+	}
+
+	// Validate n2Dto object
+	err = n2Dto.IsNumStrDtoValid(ePrefix)
+
+	if err != nil {
+		return NumStrDto{}.New(), err
+	}
+
 
 	return n2Dto, nil
 }
@@ -2772,36 +2848,6 @@ func (nDto *NumStrDto) SetThousandsSeparator(thousandsSeparator rune) {
 	
 	nDto.thousandsSeparator = thousandsSeparator
 
-}
-
-// SetSeparators - Used to assign values for the Decimal and Thousands separators as well 
-// as the Currency Symbol to be used in displaying the current number string.
-//
-// Note: If zero values are submitted as input, the values will default to USA standards.
-//
-// USA Examples:
-// 
-// Decimal Separator period ('.') 		= 123.456
-// Thousands Separator comma (',') 		= 1,000,000,000
-// Currency Symbol dollar sign ('$')	= $123
-//
-func (nDto *NumStrDto) SetSeparators(decimalSeparator, thousandsSeparator, currencySymbol rune) {
-
-	if decimalSeparator == 0 {
-		decimalSeparator = '.'
-	}
-
-	if thousandsSeparator == 0 {
-		thousandsSeparator = ','
-	}
-	
-	if currencySymbol == 0 {
-		currencySymbol = '$'
-	}
-	
-	nDto.decimalSeparator = decimalSeparator
-	nDto.thousandsSeparator = thousandsSeparator
-	nDto.currencySymbol = currencySymbol
 }
 
 // ShiftPrecisionLeft - Shifts the relative position of a decimal point within a number
@@ -3055,10 +3101,89 @@ func (nDto *NumStrDto) ShiftPrecisionRight(signedNumStr string, precision uint) 
 	return n2, nil
 }
 
-// SetEmptySeparatorsToDefault - Ensures that separators are set to a valid value.
-// If separator runes are zero, this methods sets the default values for
-// decimal separator, thousands separator and currency symbol.
-func (nDto *NumStrDto) SetEmptySeparatorsToDefault() {
+// SetNumericSeparators - Used to assign values for the Decimal and Thousands separators as well
+// as the Currency Symbol to be used in displaying the current number string.
+//
+// Note: If zero values are submitted as input, the values will default to USA standards.
+//
+// USA Examples:
+//
+// Decimal Separator period ('.') 		= 123.456
+// Thousands Separator comma (',') 		= 1,000,000,000
+// Currency Symbol dollar sign ('$')	= $123
+//
+func (nDto *NumStrDto) SetNumericSeparators(
+					decimalSeparator,
+							thousandsSeparator,
+									currencySymbol rune) {
+
+	if decimalSeparator == 0 {
+		decimalSeparator = '.'
+	}
+
+	if thousandsSeparator == 0 {
+		thousandsSeparator = ','
+	}
+
+	if currencySymbol == 0 {
+		currencySymbol = '$'
+	}
+
+	nDto.decimalSeparator = decimalSeparator
+	nDto.thousandsSeparator = thousandsSeparator
+	nDto.currencySymbol = currencySymbol
+}
+
+// SetNumericSeparatorsDto - Sets the values of numeric separators:
+// 		decimal point separator
+//		thousands separator
+//		currency symbol
+//
+// based on values transmitted through input parameter 'customSeparators'.
+//
+// If any of the values contained in input parameter 'customSeparators' is set
+// to zero or nil, an error will be returned.
+//
+func (nDto *NumStrDto) SetNumericSeparatorsDto(customSeparators NumericSeparatorDto) error {
+
+	ePrefix := "BigIntNum.SetNumericSeparatorsDto() "
+
+	if customSeparators.DecimalSeparator == 0 {
+		return errors.New(ePrefix +
+			"Error: Input Parameter customSeparators.DecimalSeparator is set to '0' - Invalid rune!")
+	}
+
+	if customSeparators.ThousandsSeparator == 0 {
+		return errors.New(ePrefix +
+			"Error: Input Parameter customSeparators.ThousandsSeparator is set to '0' - Invalid rune!")
+	}
+
+	if customSeparators.CurrencySymbol == 0 {
+		return errors.New(ePrefix +
+			"Error: Input Parameter customSeparators.CurrencySymbol is set to '0' - Invalid rune!")
+	}
+
+	nDto.decimalSeparator = customSeparators.DecimalSeparator
+	nDto.thousandsSeparator = customSeparators.ThousandsSeparator
+	nDto.currencySymbol = customSeparators.CurrencySymbol
+
+	return nil
+}
+
+// SetNumericSeparatorsToDefaultIfEmpty - If numeric separators are
+// set to zero or nil, this method will set those numeric
+// separators to the USA defaults. This means that the
+// Decimal separator is set to ('.'), the Thousands separator
+// is set to (',') and the currency symbol is set to '$'.
+//
+// If the numeric separators were previously set to a value
+// other than zero or nil, that value is not altered by this
+// method.
+//
+// Effectively, this method ensures that numeric separators
+// are set to valid values.
+//
+func (nDto *NumStrDto) SetNumericSeparatorsToDefaultIfEmpty() {
 
 	if nDto.GetDecimalSeparator() == 0 {
 		nDto.SetDecimalSeparator('.')
@@ -3074,17 +3199,46 @@ func (nDto *NumStrDto) SetEmptySeparatorsToDefault() {
 
 }
 
+// SetNumericSeparatorsToUSADefault - Sets Numeric separators:
+// 			Decimal Point Separator
+// 			Thousands Separator
+//			Currency Symbol
+//
+// to United States of America (USA) defaults.
+//
+// Call specific methods to set numeric separators for other countries or
+// cultures:
+// 		nDto.SetDecimalSeparator()
+// 		nDto.SetThousandsSeparator()
+// 		nDto.SetCurrencySymbol()
+//
+func (nDto *NumStrDto) SetNumericSeparatorsToUSADefault() {
+	nDto.SetDecimalSeparator('.')
+	nDto.SetThousandsSeparator(',')
+	nDto.SetCurrencySymbol('$')
+}
+
 // SetNumStr - Sets the value of the current NumStrDto instance
 // to the number string received as input.
 func (nDto *NumStrDto) SetNumStr(numStr string) error {
 
 	ePrefix := "NumStrDto.SetNumStr() "
 
+  numSeps := nDto.GetNumericSeparatorsDto()
+
 	n2, err := NumStrDto{}.NewNumStr(numStr)
 
 	if err != nil {
 		return fmt.Errorf(ePrefix + "Error returned by NumStrDto{}.NewNumStr(numStr). " +
 			"numStr='%v' Error='%v' ", numStr, err.Error())
+	}
+
+	err = n2.SetNumericSeparatorsDto(numSeps)
+
+	if err != nil {
+		return fmt.Errorf(ePrefix +
+			"Error returned by n2.SetNumericSeparatorsDto(numSeps) " +
+			"Error='%v' \n", err.Error())
 	}
 
 	nDto.CopyIn(n2)
@@ -3286,6 +3440,25 @@ func (nDto *NumStrDto) SetPrecision(
 	return n2, nil
 }
 
+// SetSignValue - Sets the sign of the numeric value
+// for the current NumStrDto. Only two values are
+// allowed: +1 and -1. If any other value is passed
+// an error is thrown
+func (nDto *NumStrDto) SetSignValue(newSignVal int) error {
+
+	ePrefix := "NumStrDto.SetSignValue() "
+
+	if newSignVal != -1 && newSignVal != 1 {
+		return fmt.Errorf(ePrefix +
+			"Invalid sign value passed. sign must be +1 or -1. " +
+			"This sign value= %v", newSignVal)
+	}
+
+	nDto.signVal = newSignVal
+
+	return nil
+}
+
 // SetThisPrecision - Sets precision for the current NumStrDto instance.
 // 'precision' identifies the number of decimal places to the right of the
 // decimal point.
@@ -3322,25 +3495,6 @@ func (nDto *NumStrDto) SetThisPrecision(
  nDto.CopyIn(n2)
 
  return nil
-}
-
-// SetSignValue - Sets the sign of the numeric value
-// for the current NumStrDto. Only two values are
-// allowed: +1 and -1. If any other value is passed
-// an error is thrown
-func (nDto *NumStrDto) SetSignValue(newSignVal int) error {
-
-	ePrefix := "NumStrDto.SetSignValue() "
-
-	if newSignVal != -1 && newSignVal != 1 {
-		return fmt.Errorf(ePrefix +
-			"Invalid sign value passed. sign must be +1 or -1. " +
-			"This sign value= %v", newSignVal)
-	}
-
-	nDto.signVal = newSignVal
-
-	return nil
 }
 
 // Subtract - Subtracts the value of an input NumStrDto from the
