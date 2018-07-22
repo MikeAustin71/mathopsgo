@@ -467,7 +467,12 @@ func TestDecimal_SubtractTotal_01(t *testing.T) {
 				"nStrAry[i]='%v' Error = '%v' ", nStrAry[i], err.Error())
 		}
 
-		d.SubtractFromThis(dx)
+		err = d.SubtractFromThis(dx)
+
+		if err != nil {
+			t.Errorf("Error returned from d.SubtractFromThis(dx) " +
+				"Error='%v' ", err.Error())
+		}
 	}
 
 	if expected != d.GetNumStr() {
@@ -496,7 +501,13 @@ func TestDecimal_SubtractTotal_02(t *testing.T) {
 				"nStrAry[i]='%v' Error = '%v' ", nStrAry[i], err.Error())
 		}
 
-		d.SubtractFromThis(dx)
+		err = d.SubtractFromThis(dx)
+
+		if err != nil {
+			t.Errorf("Error returned from d.SubtractFromThis(dx). " +
+				"Error='%v' ", err.Error())
+		}
+
 	}
 
 	if expected != d.GetNumStr() {

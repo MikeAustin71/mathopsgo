@@ -1114,6 +1114,10 @@ func (bNum *BigIntNum) GetInt() (int, error) {
 // and 'currencySymbol' are transferred to the new IntAry instance returned to the
 // calling function.
 //
+// The returned IntAry type contains numeric separators (decimal separator,
+// thousands separator and currency symbol) copied from the current BigIntNum
+// instance.
+//
 func (bNum *BigIntNum) GetIntAry() (IntAry, error) {
 
 	ePrefix := "BigIntNum.GetIntAry() "
@@ -1262,6 +1266,10 @@ func (bNum *BigIntNum) GetNumStr() (string) {
 // GetNumStrDto - Converts the current BigIntNum value to a NumStrDto
 // instance. The resulting number string includes the decimal point
 // and decimal digits if they exist.
+//
+// The returned NumStrDto type contains numeric separators (decimal separator,
+// thousands separator and currency symbol) copied from the current BigIntNum
+// instance.
 //
 func (bNum *BigIntNum) GetNumStrDto() (NumStrDto, error) {
 
@@ -2201,6 +2209,10 @@ func (bNum BigIntNum) NewZero(precision uint) BigIntNum {
 //		0													3								 0.000
 //    0.000000									0								 0
 //
+//
+// Existing numeric separators (decimal separator, thousands separator
+// and currency symbol) remain unchanged and are not altered by this method.
+//
 func (bNum *BigIntNum) RoundToDecPlace(precision uint) {
 
 	if bNum.precision == precision {
@@ -2208,9 +2220,13 @@ func (bNum *BigIntNum) RoundToDecPlace(precision uint) {
 		return
 	}
 
+	bNum.SetNumericSeparatorsToDefaultIfEmpty()
+	numSeps := bNum.GetNumericSeparatorsDto()
+
 	// bigInt == zero, set precision an return
 	if bNum.bigInt.Cmp(big.NewInt(0)) == 0 {
 		bNum.CopyIn(BigIntNum{}.NewBigInt(big.NewInt(0), precision))
+		bNum.SetNumericSeparatorsDto(numSeps)
 		return
 	}
 
@@ -2219,6 +2235,7 @@ func (bNum *BigIntNum) RoundToDecPlace(precision uint) {
 	if bNum.precision < precision {
 		deltaPrecision := precision - bNum.precision
 		bNum.extendPrecision(deltaPrecision)
+		bNum.SetNumericSeparatorsDto(numSeps)
 		return
 	}
 
@@ -2240,6 +2257,8 @@ func (bNum *BigIntNum) RoundToDecPlace(precision uint) {
 	if bNum.sign < 0 {
 		result.bigInt = big.NewInt(0).Neg(result.bigInt)
 	}
+
+	bNum.SetNumericSeparatorsDto(numSeps)
 
 	bNum.SetBigInt(result.bigInt, precision)
 }
@@ -2264,6 +2283,9 @@ func (bNum *BigIntNum) RoundToDecPlace(precision uint) {
 // 									'precision' places. Example:
 //											Integer Value		precision			Numeric Value
 //											  123456					 3					  123.456
+//
+// Existing numeric separators (decimal separator, thousands separator
+// and currency symbol) remain unchanged and are not altered by this method.
 //
 func (bNum *BigIntNum) SetBigInt(bigI *big.Int, precision uint) {
 
@@ -2351,6 +2373,9 @@ func (bNum *BigIntNum) SetBigIntExponent(bigI *big.Int, exponent int) {
 // If Accuracy == 0, no error is issued by this method. However, if Accuracy == -1
 // or Accuracy == +1 an error will be returned. All conversions must be exact.
 //
+// Existing numeric separators (decimal separator, thousands separator
+// and currency symbol) remain unchanged and are not altered by this method.
+//
 func (bNum *BigIntNum) SetBigFloat(bigFloat *big.Float, maxPrecision uint) error {
 
 	ePrefix := "NumStrDto.NewBigFloat() "
@@ -2387,6 +2412,9 @@ func (bNum *BigIntNum) SetBigFloat(bigFloat *big.Float, maxPrecision uint) error
 // 											conversion of input parameter 'ratNum'. Precision will
 // 											never be greater than 'maxPrecision'; however, actual
 // 											precision may be less than 'maxPrecision'.
+//
+// Existing numeric separators (decimal separator, thousands separator
+// and currency symbol) remain unchanged and are not altered by this method.
 //
 func (bNum *BigIntNum) SetBigRat(ratNum *big.Rat, maxPrecision uint) error {
 
@@ -2477,6 +2505,9 @@ func (bNum *BigIntNum) SetDecimalSeparator(decimalSeparator rune) {
 // and -1 generates a negative number. If input parameters 'inStr' or 'fracStr' contain
 // a leading minus or plus sign character, it will be ignored. The sign of the resulting
 // numeric value is controlled strictly by input parameter, 'signVal'.
+//
+// Existing numeric separators (decimal separator, thousands separator
+// and currency symbol) remain unchanged and are not altered by this method.
 //
 func (bNum *BigIntNum) SetIntFracStrings(intStr, fracStr string, signVal int) error {
 
@@ -2669,9 +2700,12 @@ func (bNum *BigIntNum) SetINumMgr(numMgr INumMgr) error {
 // separator is used to separate integer and fractional numeric
 // digits within the number string.
 //
+// Existing numeric separators (decimal separator, thousands separator
+// and currency symbol) remain unchanged and are not altered by this method.
+//
 func (bNum *BigIntNum) SetNumStr(numStr string) error {
 
-	ePrefix := "BigIntNum) SetNumStr() "
+	ePrefix := "BigIntNum.SetNumStr() "
 
 	if len(numStr) == 0 {
 		return errors.New(ePrefix + "Error: Input parameter 'numStr' is an EMPTY string!")
@@ -2768,7 +2802,14 @@ func (bNum *BigIntNum) SetNumStr(numStr string) error {
 											big.NewInt(int64(newPrecision)),
 											nil)
 
-	bNum.SetNumericSeparatorsDto(numSeps)
+	err := bNum.SetNumericSeparatorsDto(numSeps)
+
+	if err != nil {
+		return fmt.Errorf(ePrefix +
+			"Error returned by err := bNum.SetNumericSeparatorsDto(numSeps) " +
+			"Error='%v' ", err.Error())
+	}
+
 	return nil
 }
 
@@ -2825,6 +2866,10 @@ func (bNum *BigIntNum) SetExpectedToActualNumberOfDigits() {
 // -654.123456									4							-654.1235
 //		0													3								 0.000
 //    0.000000									0								 0
+//
+//
+// Existing numeric separators (decimal separator, thousands separator
+// and currency symbol) remain unchanged and are not altered by this method.
 //
 func (bNum *BigIntNum) SetPrecision(newPrecision uint) {
 
@@ -3034,6 +3079,10 @@ func (bNum *BigIntNum) SetSignValue(signVal int) error {
 // "-123456.789"        3          "-123.456789"
 // "-123456789"			    6					 "-123.456789"
 //
+//
+// Existing numeric separators (decimal separator, thousands separator
+// and currency symbol) remain unchanged and are not altered by this method.
+//
 func (bNum *BigIntNum) ShiftPrecisionLeft(shiftLeftPlaces uint) {
 
 	if shiftLeftPlaces == 0 ||
@@ -3083,6 +3132,9 @@ func (bNum *BigIntNum) ShiftPrecisionLeft(shiftLeftPlaces uint) {
 // "-123456.789"        0          "-123456.789"
 // "-123456.789"        3          "-123456789"
 // "-123456789"			    6					 "-123456789000000"
+//
+// Existing numeric separators (decimal separator, thousands separator
+// and currency symbol) remain unchanged and are not altered by this method.
 //
 func (bNum *BigIntNum) ShiftPrecisionRight(shiftRightPlaces uint) {
 
@@ -3228,6 +3280,10 @@ func (bNum *BigIntNum) TrimTrailingFracZeros(){
 //		0													3								 0.000
 //    0.000000									0								 0
 //
+//
+// Existing numeric separators (decimal separator, thousands separator
+// and currency symbol) remain unchanged and are not altered by this method.
+//
 func (bNum *BigIntNum) TruncToDecPlace(precision uint) {
 
 	if bNum.precision == precision {
@@ -3272,17 +3328,24 @@ func (bNum *BigIntNum) TruncToDecPlace(precision uint) {
 // The number of trailing zeros to be added is determined by the
 // input parameter, 'deltaPrecision'.
 //
+// Existing numeric separators (decimal separator, thousands separator
+// and currency symbol) remain unchanged and are not altered by this method.
+//
 func (bNum *BigIntNum) extendPrecision(deltaPrecision uint) {
 
 	if deltaPrecision == 0 {
 		return
 	}
 
+	bNum.SetNumericSeparatorsToDefaultIfEmpty()
+	numSeps := bNum.GetNumericSeparatorsDto()
+
 	newPrecision := bNum.precision + deltaPrecision
 
 	// bigInt == zero, set precision an return
 	if bNum.bigInt.Cmp(big.NewInt(0)) == 0 {
 		bNum.CopyIn(BigIntNum{}.NewBigInt(big.NewInt(0), newPrecision))
+		bNum.SetNumericSeparatorsDto(numSeps)
 		return
 	}
 
@@ -3293,4 +3356,5 @@ func (bNum *BigIntNum) extendPrecision(deltaPrecision uint) {
 	bigINum = big.NewInt(0).Mul(bigINum, scaleVal)
 
 	bNum.CopyIn(BigIntNum{}.NewBigInt(bigINum, newPrecision))
+	bNum.SetNumericSeparatorsDto(numSeps)
 }
