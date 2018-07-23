@@ -171,23 +171,9 @@ func (bPair BigIntPair) NewBigIntNum(b1, b2 BigIntNum ) BigIntPair {
 //
 func (bPair BigIntPair) NewDecimal(dec1, dec2 Decimal) (BigIntPair, error) {
 
-	ePrefix := "BigIntPair.NewDecimal() "
+	b1Num := dec1.GetBigIntNum()
 
-	b1Num, err := BigIntNum{}.NewDecimal(dec1)
-
-	if err != nil {
-		return BigIntPair{},
-			fmt.Errorf(ePrefix + "Error returned by BigIntNum{}.NewDecimal(dec1). " +
-				"Error='%v' ", err.Error())
-	}
-
-	b2Num, err := BigIntNum{}.NewDecimal(dec2)
-
-	if err != nil {
-		return BigIntPair{},
-			fmt.Errorf(ePrefix + "Error returned by BigIntNum{}.NewDecimal(dec2). " +
-				"Error='%v' ", err.Error())
-	}
+	b2Num := dec2.GetBigIntNum()
 
 	bd2 := BigIntPair{}
 

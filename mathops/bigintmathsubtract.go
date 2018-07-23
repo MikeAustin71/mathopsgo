@@ -47,6 +47,8 @@ func (bSubtract BigIntMathSubtract) SubtractBigInts(
 											subtrahend *big.Int,
 												subPrecision uint) BigIntNum {
 
+
+
 	bPair := BigIntPair{}.NewBase(
 												minuend,
 													minPrecision,
@@ -66,13 +68,21 @@ func (bSubtract BigIntMathSubtract) SubtractBigInts(
 //
 //
 // After the subtraction operation, the 'difference' or 'result' is returned as a
-// Type BigIntNum.
+// Type BigIntNum. The returned BigIntNum 'result' will contain numeric separators
+// (decimal separator, thousands separator and currency symbol) copied from the
+// input parameter 'b1', the minuend.
 //
 func (bSubtract BigIntMathSubtract) SubtractBigIntNums(b1, b2 BigIntNum) BigIntNum {
 
+	numSeps := b1.GetNumericSeparatorsDto()
+
 	bPair := BigIntPair{}.NewBigIntNum(b1, b2)
 
-	return bSubtract.SubtractPair(bPair)
+	bigIntNumResult := bSubtract.SubtractPair(bPair)
+
+	bigIntNumResult.SetNumericSeparatorsDto(numSeps)
+
+	return bigIntNumResult
 }
 
 // SubtractBigIntNumArray - Receives one BigIntNum which is classified as the 'minuend'.
@@ -89,11 +99,15 @@ func (bSubtract BigIntMathSubtract) SubtractBigIntNums(b1, b2 BigIntNum) BigIntN
 //
 //
 // After the subtraction operation, the 'difference' or 'result' is returned as a
-// Type BigIntNum.
+// Type BigIntNum. The returned BigIntNum subtraction 'result' will contain numeric
+// separators (decimal separator, thousands separator and currency symbol) copied
+// from the input parameter 'minuend'.
 //
 func (bSubtract BigIntMathSubtract) SubtractBigIntNumArray(
 																				minuend BigIntNum,
 																					subtrahends []BigIntNum) BigIntNum {
+
+  numSeps := minuend.GetNumericSeparatorsDto()
 
 	finalResult := minuend.CopyOut()
 
@@ -110,6 +124,8 @@ func (bSubtract BigIntMathSubtract) SubtractBigIntNumArray(
 		finalResult = bSubtract.SubtractPair(bPair)
 
 	}
+
+	finalResult.SetNumericSeparatorsDto(numSeps)
 
 	return finalResult
 }
@@ -134,9 +150,15 @@ func (bSubtract BigIntMathSubtract) SubtractBigIntNumArray(
 //		10			-					subtrahends[5] = 9			=				  outputarray[5] =  1
 //
 //
+// Each of the BigIntNum instances included in the array of BigIntNum subtraction
+// results returned by this method, will contain numeric separators (decimal separator,
+// thousands separator and currency symbol) copied from input parameter 'minuend'.
+//
 func (bSubtract BigIntMathSubtract) SubtractBigIntNumOutputToArray(
 																				minuend BigIntNum,
 																					subtrahends []BigIntNum) []BigIntNum {
+
+  numSeps := minuend.GetNumericSeparatorsDto()
 
 	lenSubtrahends := len(subtrahends)
 
@@ -151,7 +173,7 @@ func (bSubtract BigIntMathSubtract) SubtractBigIntNumOutputToArray(
 		bPair := BigIntPair{}.NewBigIntNum(minuend, subtrahends[i])
 
 		resultsArray[i] = bSubtract.SubtractPair(bPair)
-
+		resultsArray[i].SetNumericSeparatorsDto(numSeps)
 	}
 
 	return resultsArray
@@ -174,19 +196,15 @@ func (bSubtract BigIntMathSubtract) SubtractBigIntNumOutputToArray(
 // After the subtraction operation, the 'difference' or 'result' is returned as a
 // Type BigIntNum.
 //
-// 					type BigIntNum struct {
-// 								Input BigIntPair
-//											Input.Big1		= minuend
-//											Input.Big2		= (last) subtrahend
-//
-// 								Result BigIntNum
-// 											Result.bigInt = difference or result
-//					}
-//
+// The subtraction result returned by this method as a Type BigIntNum will
+// contain numeric separators (decimal separator, thousands separator and currency
+// symbol) copied from input parameter 'minuend'.
 //
 func (bSubtract BigIntMathSubtract) SubtractBigIntNumSeries(
 																				minuend BigIntNum,
 																					subtrahends ... BigIntNum) BigIntNum {
+
+  numSeps := minuend.GetNumericSeparatorsDto()
 
 	finalResult := minuend.CopyOut()
 
@@ -196,6 +214,8 @@ func (bSubtract BigIntMathSubtract) SubtractBigIntNumSeries(
 
 		finalResult = bSubtract.SubtractPair(bPair)
 	}
+
+	finalResult.SetNumericSeparatorsDto(numSeps)
 
 	return finalResult
 }
@@ -212,23 +232,17 @@ func (bSubtract BigIntMathSubtract) SubtractBigIntNumSeries(
 //
 //
 // After the subtraction operation, the 'difference' or 'result' is returned as a
-// Type BigIntNum.
-//
-// 					type BigIntNum struct {
-// 								Input BigIntPair
-//											Input.Big1		= minuend
-//											Input.Big2		= subtrahend
-//
-// 								Result BigIntNum
-// 											Result.bigInt = difference or result
-//					}
-//
+// Type BigIntNum. This resulting BigIntNum instance will contain numeric separators
+// (decimal separator, thousands separator and currency symbol) copied from input
+// parameter 'decMinuend'.
 //
 func (bSubtract BigIntMathSubtract) SubtractDecimal(
 																			decMinuend Decimal,
 																				decSubtrahend Decimal) (BigIntNum, error) {
 
 	ePrefix := "BigIntMathSubtract.SubtractDecimal() "
+
+	numSeps := decMinuend.GetNumericSeparatorsDto()
 
 	bPair, err := BigIntPair{}.NewDecimal(decMinuend, decSubtrahend)
 
@@ -238,7 +252,18 @@ func (bSubtract BigIntMathSubtract) SubtractDecimal(
 				"Error='%v' ", err.Error())
 	}
 
-	return bSubtract.SubtractPair(bPair), nil
+	finalResult := bSubtract.SubtractPair(bPair)
+
+	err = finalResult.SetNumericSeparatorsDto(numSeps)
+
+	if err != nil {
+		return BigIntNum{},
+			fmt.Errorf(ePrefix +
+				"Error returned by finalResult.SetNumericSeparatorsDto(numSeps) " +
+				"Error='%v' \n", err.Error())
+	}
+
+	return finalResult, nil
 }
 
 // SubtractDecimalArray - Receives one Decimal parameter which is classified as
