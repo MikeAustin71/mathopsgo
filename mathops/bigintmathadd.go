@@ -487,6 +487,13 @@ func (bAdd BigIntMathAdd) AddIntAryArray(iarys []IntAry) (BigIntNum, error) {
 
 	for i := 0; i < lenIaArray; i++ {
 
+		err = iarys[i].IsIntAryValid(ePrefix +
+			fmt.Sprintf("iarys[%v] is INVALID!", i))
+
+		if err != nil {
+			return BigIntNum{}.New(), err
+		}
+
 		if i == 0 {
 
 			finalResult, err = BigIntNum{}.NewIntAry(iarys[i])
@@ -553,6 +560,12 @@ func (bAdd BigIntMathAdd) AddIntAryOutputToArray(
 
 	ePrefix := "BigIntMathAdd.AddIntAryOutputToArray() "
 
+	err := addend.IsIntAryValid(ePrefix + "'addend' INVALID! ")
+
+	if err != nil {
+		return []IntAry{}, err
+	}
+
 	lenIaArray := len(iarys)
 
 	if lenIaArray == 0 {
@@ -565,6 +578,13 @@ func (bAdd BigIntMathAdd) AddIntAryOutputToArray(
 	resultsArray := make([]IntAry, lenIaArray)
 	
 	for i := 0; i < lenIaArray; i++ {
+
+		err = iarys[i].IsIntAryValid(ePrefix +
+			fmt.Sprintf("iarys[%v] INVALID!", i))
+
+		if err != nil {
+			return []IntAry{}, err
+		}
 
 		bPair, err := BigIntPair{}.NewIntAry(addend, iarys[i])
 
@@ -615,6 +635,13 @@ func (bAdd BigIntMathAdd) AddIntArySeries(iarys ... IntAry) (BigIntNum, error) {
 	numSeps := NumericSeparatorDto{}
 
 	for i, ia := range iarys {
+
+		err = ia.IsIntAryValid(ePrefix +
+			fmt.Sprintf("ia index='%v' INVALID!", i))
+
+		if err != nil {
+			return BigIntNum{}.New(), err
+		}
 
 		if i == 0 {
 
@@ -1217,7 +1244,7 @@ func (bAdd BigIntMathAdd) AddNumStrDtoArray(nDtos []NumStrDto) (BigIntNum, error
 //		3			+					nDtos[4] = 6			=				  outputarray[4] =  9
 //		3			+					nDtos[5] = 9			=				  outputarray[5] = 12
 //
-// Each elemetn in the returned array of []NumStrDto resulting of this addition
+// Each element in the returned array of []NumStrDto resulting of this addition
 // operation will contain numeric separators (decimal separator, thousands separator
 // and currency symbol) copied from input parameter 'addend'.
 //
@@ -1248,6 +1275,11 @@ func (bAdd BigIntMathAdd) AddNumStrDtoOutputToArray(
 
 		err := nDtos[i].IsNumStrDtoValid(ePrefix +
 			fmt.Sprintf("nDtos[%v] INVALID! ", i))
+
+		if err != nil {
+			return []NumStrDto{}, err
+		}
+
 
 		bPair, err := BigIntPair{}.NewNumStrDto(addend, nDtos[i])
 
@@ -1286,6 +1318,10 @@ func (bAdd BigIntMathAdd) AddNumStrDtoOutputToArray(
 // AddNumStrDtoSeries - Adds a series of 'NumStrDto' types and returns the combined total
 // as an instance of Type, 'BigIntNum'.
 //
+// The returned BigIntNum resulting of this addition operation will contain numeric
+// separators (decimal separator, thousands separator and currency symbol) copied
+// from the first element of the input series 'nDtos'.
+//
 func (bAdd BigIntMathAdd) AddNumStrDtoSeries(nDtos ... NumStrDto) (BigIntNum, error) {
 
 	ePrefix := "BigIntMathAdd.AddNumStrDtoSeries() "
@@ -1298,10 +1334,20 @@ func (bAdd BigIntMathAdd) AddNumStrDtoSeries(nDtos ... NumStrDto) (BigIntNum, er
 	}
 
 	var err error
+	numSeps := NumericSeparatorDto{}
 
 	for i, nDto := range nDtos {
 
+		err = nDto.IsNumStrDtoValid(ePrefix +
+			fmt.Sprintf("nDto Index='%v' is INVALID! ",i))
+
+		if err != nil {
+			return BigIntNum{}.New(), err
+		}
+
 		if i == 0 {
+
+			numSeps = nDto.GetNumericSeparatorsDto()
 
 			finalResult, err = BigIntNum{}.NewNumStrDto(nDto)
 
@@ -1327,9 +1373,27 @@ func (bAdd BigIntMathAdd) AddNumStrDtoSeries(nDtos ... NumStrDto) (BigIntNum, er
 		finalResult = bAdd.addPairNoNumSeps(bPair)
 	}
 
+	err = finalResult.SetNumericSeparatorsDto(numSeps)
+
+	if err != nil {
+		return BigIntNum{}.New(),
+			fmt.Errorf(ePrefix +
+				"Error returned by finalResult.SetNumericSeparatorsDto(numSeps). " +
+				"Error='%v' ", err.Error())
+	}
+
 	return finalResult, nil
 }
 
+// AddPair - Receives a BigIntPair instance and proceeds to add b1.BigIntNum
+// to b2.BigIntNum.
+//
+// The result is returned as type BigIntNum.
+//
+// The BigIntNum 'result' returned by this addition operation will contain
+// numeric separators (decimal separator, thousands separator and currency
+// symbol) copied from b1.BigIntNum.
+//
 func (bAdd BigIntMathAdd) AddPair(bPair BigIntPair) BigIntNum {
 
 	numSeps := bPair.Big1.GetNumericSeparatorsDto()
