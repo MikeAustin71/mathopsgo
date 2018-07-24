@@ -262,8 +262,6 @@ func (dec *Decimal) NumStrToDecimal(numStr string) (Decimal, error) {
 
 	var err error
 
-	dec.SetNumericSeparatorsToDefaultIfEmpty()
-
 	numSeps := dec.GetNumericSeparatorsDto()
 
 	d2.bigINum, err = BigIntNum{}.NewNumStr(numStr)
@@ -1262,8 +1260,6 @@ func (dec *Decimal) Mul(d2 Decimal) (Decimal, error) {
 			"Error='%v' ", err.Error())
 	}
 
-	dec.bigINum.SetNumericSeparatorsToDefaultIfEmpty()
-
 	numSeps := dec.GetNumericSeparatorsDto()
 
 	bigIntNum := BigIntMathMultiply{}.MultiplyBigIntNums(dec.bigINum, d2.bigINum)
@@ -1310,8 +1306,6 @@ func (dec *Decimal) MulThis(d2 Decimal) error {
 		return 	fmt.Errorf(ePrefix + "Incoming Decimal object (d2) is INVALID! " +
 				"Error='%v' ", err.Error())
 	}
-
-	dec.bigINum.SetNumericSeparatorsToDefaultIfEmpty()
 
 	numSeps := dec.GetNumericSeparatorsDto()
 
@@ -1715,8 +1709,6 @@ func (dec *Decimal) NumStrPrecisionToDecimal(
 	ePrefix := "Decimal.NumStrPrecisionToDecimal() "
 	var err error
 
-	dec.SetNumericSeparatorsToDefaultIfEmpty()
-
 	numSeps := dec.GetNumericSeparatorsDto()
 
 	d2 := Decimal{}
@@ -1778,7 +1770,7 @@ func (dec *Decimal) Pow(exponent Decimal, maxPrecision uint) (Decimal, error) {
 				"Error='%v'", err.Error())
 	}
 
-	dec.bigINum.SetNumericSeparatorsToDefaultIfEmpty()
+	numSeps := dec.GetNumericSeparatorsDto()
 
 	bINumResult, err := BigIntMathPower{}.Pwr(dec.bigINum, exponent.bigINum, maxPrecision)
 
@@ -1791,7 +1783,7 @@ func (dec *Decimal) Pow(exponent Decimal, maxPrecision uint) (Decimal, error) {
 
 	d3 := Decimal{}.NewBigIntNum(bINumResult)
 
-	err = d3.SetNumericSeparatorsDto(dec.GetNumericSeparatorsDto())
+	err = d3.SetNumericSeparatorsDto(numSeps)
 
 	if err != nil {
 		return Decimal{}.NewZero(0),
@@ -1829,7 +1821,7 @@ func (dec *Decimal) PowInt(exponent int, maxPrecision uint) (Decimal, error) {
 				"Error='%v'", err.Error())
 	}
 
-	dec.bigINum.SetNumericSeparatorsToDefaultIfEmpty()
+	numSeps := dec.bigINum.GetNumericSeparatorsDto()
 
 	biNumExponent := BigIntNum{}.NewBigInt(big.NewInt(int64(exponent)), 0)
 
@@ -1844,7 +1836,7 @@ func (dec *Decimal) PowInt(exponent int, maxPrecision uint) (Decimal, error) {
 
 	d3 := Decimal{}.NewBigIntNum(bINumResult)
 
-	err = d3.SetNumericSeparatorsDto(dec.GetNumericSeparatorsDto())
+	err = d3.SetNumericSeparatorsDto(numSeps)
 
 	if err != nil {
 		return Decimal{}.NewZero(0),
@@ -2234,17 +2226,26 @@ func (dec *Decimal) SetNumStrPrecision(str string, precision uint, roundResult b
 	if err != nil {
 		return fmt.Errorf(ePrefix +
 			"This Decimal object (dec) is INVALID! Please Re-initialize. " +
-			"Error='%v' ", err.Error())
+			"Error='%v' \n", err.Error())
 	}
 
-	dec.SetNumericSeparatorsToDefaultIfEmpty()
+	numSeps := dec.GetNumericSeparatorsDto()
 
 	d2, err := dec.NewNumStrPrecision(str, precision, roundResult)
 
 	if err != nil {
 		return fmt.Errorf(ePrefix +
 			"NumStrPrecisionToDecimal(str) failed. str=%v. Error= %v",
-			str, err)
+			str, err.Error())
+	}
+
+	err = d2.SetNumericSeparatorsDto(numSeps)
+
+	if err != nil {
+		return fmt.Errorf(ePrefix +
+			"Error returned by d2.SetNumericSeparatorsDto(numSeps). Error= '%v' \n",
+			err.Error())
+
 	}
 
 	dec.CopyIn(d2)
@@ -2267,12 +2268,24 @@ func (dec *Decimal) SetNumStrPrecision(str string, precision uint, roundResult b
 //
 func (dec *Decimal) SetNumStr(str string) error {
 
-	dec.SetNumericSeparatorsToDefaultIfEmpty()
+	ePrefix := "Decimal.SetNumStr() "
+
+	numSeps := dec.GetNumericSeparatorsDto()
 
 	d2, err := dec.NumStrToDecimal(str)
 
 	if err != nil {
-		return fmt.Errorf("SetNumStr() Error. NumStrToDecimal(str) failed. str=%v. Error= %v.", str, err)
+		return fmt.Errorf(ePrefix +
+			"Error: NumStrToDecimal(str) failed. str=%v. Error= %v.",
+				str, err.Error())
+	}
+
+	err = d2.SetNumericSeparatorsDto(numSeps)
+
+	if err != nil {
+		return fmt.Errorf(ePrefix +
+			"Error returned by d2.SetNumericSeparatorsDto(numSeps). Error= %v.",
+			err.Error())
 	}
 
 	dec.CopyIn(d2)
@@ -2289,8 +2302,6 @@ func (dec *Decimal) SetNumStr(str string) error {
 func (dec *Decimal) SetNumStrDto(nDto NumStrDto) error {
 
 	ePrefix := "Decimal.SetNumStrDto() "
-
-	dec.SetNumericSeparatorsToDefaultIfEmpty()
 
 	numSeps := dec.GetNumericSeparatorsDto()
 
@@ -2568,7 +2579,6 @@ func (dec *Decimal) Subtract(d2 Decimal) (Decimal, error) {
 				"Error='%v' ", err.Error())
 	}
 
-	dec.bigINum.SetNumericSeparatorsToDefaultIfEmpty()
 	numSeps := dec.bigINum.GetNumericSeparatorsDto()
 
 	bINumResult := BigIntMathSubtract{}.SubtractBigIntNums(dec.bigINum, d2.bigINum)
@@ -2623,7 +2633,6 @@ func (dec *Decimal) SubtractFromThis(d2 Decimal) error {
 				"Error='%v' ", err.Error())
 	}
 
-	dec.bigINum.SetNumericSeparatorsToDefaultIfEmpty()
 	numSeps := dec.bigINum.GetNumericSeparatorsDto()
 
 	bINumResult := BigIntMathSubtract{}.SubtractBigIntNums(dec.bigINum, d2.bigINum)
@@ -2653,8 +2662,6 @@ func (dec *Decimal) SubtractFromThisMultiple(decs ...Decimal) error {
 
 	dec.bigINum.SetNumericSeparatorsToDefaultIfEmpty()
 
-	numSeps := dec.bigINum.GetNumericSeparatorsDto()
-
 	bINumResult := dec.bigINum.CopyOut()
 
 	for _, dx := range decs {
@@ -2662,14 +2669,6 @@ func (dec *Decimal) SubtractFromThisMultiple(decs ...Decimal) error {
 		bINumResult = BigIntMathSubtract{}.SubtractBigIntNums(bINumResult, dx.bigINum)
 	}
 
-	err := bINumResult.SetNumericSeparatorsDto(numSeps)
-
-	if err != nil {
-		ePrefix := "Decimal.SubtractFromThisMultiple() "
-		return fmt.Errorf(ePrefix +
-			"Error returned by bINumResult.SetNumericSeparatorsDto(numSeps) " +
-			"Error='%v' \n", err.Error())
-	}
 
 	dec.bigINum = bINumResult.CopyOut()
 
@@ -2687,22 +2686,12 @@ func (dec *Decimal) SubtractFromThisArray(decs []Decimal) error {
 
 	dec.bigINum.SetNumericSeparatorsToDefaultIfEmpty()
 
-	numSeps := dec.bigINum.GetNumericSeparatorsDto()
-
 	bINumResult := dec.bigINum.CopyOut()
 
 	for _, dx := range decs {
 
 		bINumResult = BigIntMathSubtract{}.SubtractBigIntNums(bINumResult, dx.bigINum)
 
-	}
-	err := bINumResult.SetNumericSeparatorsDto(numSeps)
-
-	if err != nil {
-		ePrefix := "Decimal.SubtractFromThisMultiple() "
-		return fmt.Errorf(ePrefix +
-			"Error returned by bINumResult.SetNumericSeparatorsDto(numSeps) " +
-			"Error='%v' \n", err.Error())
 	}
 
 	dec.bigINum = bINumResult.CopyOut()

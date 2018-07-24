@@ -307,6 +307,9 @@ func (bPair BigIntPair) NewNumStrDto(n1Dto, n2Dto NumStrDto) (BigIntPair, error)
 // respectively.
 //
 func (bPair *BigIntPair) SetBigIntPair(b1, b2 BigIntNum ) {
+
+	bPair.Empty()
+
 	bPair.Big1.CopyIn(b1)
 	bPair.Big2.CopyIn(b2)
 

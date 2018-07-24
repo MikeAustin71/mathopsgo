@@ -1278,16 +1278,23 @@ func (bNum *BigIntNum) GetNumStrDto() (NumStrDto, error) {
 	nDto, err := NumStrDto{}.NewBigInt(big.NewInt(0).Set(bNum.bigInt), uint(bNum.precision))
 
 	if err != nil {
-		return NumStrDto{},
+		return NumStrDto{}.New(),
 			fmt.Errorf (ePrefix +
 				"Error returned by NumStrDto{}.NewBigInt(bNum.bigInt, bNum.precision) " +
 				"bNum.bigInt='%v' bNum.precision='%v' Error='%v'",
 				bNum.bigInt.Text(10), bNum.precision, err.Error())
 	}
 
-	bNum.SetNumericSeparatorsToDefaultIfEmpty()
+	numSeps := bNum.GetNumericSeparatorsDto()
 
-	nDto.SetNumericSeparators(bNum.decimalSeparator, bNum.thousandsSeparator, bNum.currencySymbol)
+	err = nDto.SetNumericSeparatorsDto(numSeps)
+
+	if err != nil {
+		return NumStrDto{}.New(),
+			fmt.Errorf(ePrefix +
+				"Error returned by nDto.SetNumericSeparatorsDto(numSeps). " +
+				"Error='%v' \n", err.Error())
+	}
 
 	return nDto, nil
 }
