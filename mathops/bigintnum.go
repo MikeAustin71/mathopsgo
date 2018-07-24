@@ -1008,9 +1008,16 @@ func (bNum *BigIntNum) GetDecimal() (Decimal, error) {
 				bNum.bigInt.Text(10), bNum.precision, err.Error())
 	}
 
-	bNum.SetNumericSeparatorsToDefaultIfEmpty()
+	numSeps := bNum.GetNumericSeparatorsDto()
 
-	dec.SetNumericSeparators(bNum.decimalSeparator, bNum.thousandsSeparator, bNum.currencySymbol)
+	err = dec.SetNumericSeparatorsDto(numSeps)
+
+	if err != nil {
+		return Decimal{},
+			fmt.Errorf (ePrefix +
+				"Error returned by dec.SetNumericSeparatorsDto(numSeps) " +
+				"Error='%v'",	err.Error())
+	}
 
 	return dec, nil
 }
