@@ -242,7 +242,7 @@ func (bNum *BigIntNum) Empty() {
 	bNum.sign = 1
 	bNum.precision = 0
 
-	bNum.SetNumericSeparatorsToUSADefault()
+	bNum.SetNumericSeparatorsToDefaultIfEmpty()
 
 }
 
@@ -1139,8 +1139,17 @@ func (bNum *BigIntNum) GetIntAry() (IntAry, error) {
 				bNum.bigInt.Text(10), bNum.precision, err.Error())
 	}
 
-	bNum.SetNumericSeparatorsToDefaultIfEmpty()
-	ia.SetSeparators(bNum.decimalSeparator, bNum.thousandsSeparator, bNum.currencySymbol)
+	numSeps := bNum.GetNumericSeparatorsDto()
+
+	err = ia.SetNumericSeparatorsDto(numSeps)
+
+	if err != nil {
+		return IntAry{},
+			fmt.Errorf (ePrefix +
+				"Error returned by ia.SetNumericSeparatorsDto(numSeps) " +
+				"Error='%v' \n", err.Error())
+	}
+
 
 	return ia, nil
 }

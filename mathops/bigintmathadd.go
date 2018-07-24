@@ -416,9 +416,29 @@ func (bAdd BigIntMathAdd) AddDecimalSeries(decs ... Decimal) (BigIntNum, error) 
 //
 // The result is returned as type BigIntNum.
 //
+// The BigIntNum 'result' returned by this addition operation will contain numeric
+// separators (decimal separator, thousands separator and currency symbol) which
+// were copied from input parameter 'ia1'.
+//
 func (bAdd BigIntMathAdd) AddIntAry(ia1, ia2 IntAry) (BigIntNum, error) {
 
 	ePrefix := "BigIntMathAdd.AddNumStrDto() "
+
+	err := ia1.IsIntAryValid(ePrefix + "ia1 Invalid: ")
+
+	if err != nil {
+		return BigIntNum{}.New(),
+			err
+	}
+
+	err = ia2.IsIntAryValid(ePrefix + "ia2 Invalid: ")
+
+	if err != nil {
+		return BigIntNum{}.New(),
+			err
+	}
+
+	numSeps := ia1.GetNumericSeparatorsDto()
 
 	bPair, err := BigIntPair{}.NewIntAry(ia1, ia2)
 
@@ -428,11 +448,25 @@ func (bAdd BigIntMathAdd) AddIntAry(ia1, ia2 IntAry) (BigIntNum, error) {
 				"Error='%v' ", err.Error())
 	}
 
-	return bAdd.addPairNoNumSeps(bPair), nil
+	finalResult := bAdd.addPairNoNumSeps(bPair)
+
+	err = finalResult.SetNumericSeparatorsDto(numSeps)
+
+	if err != nil {
+		return BigIntNum{},
+			fmt.Errorf(ePrefix + "Error returned by finalResult.SetNumericSeparatorsDto(numSeps). " +
+				"Error='%v' ", err.Error())
+	}
+
+	return finalResult, nil
 }
 
 // AddIntAryArray - Receives an array of IntAry objects and totals their numeric values.
 // The total numeric value is returned in a BigIntNum instance.
+//
+// The BigIntNum 'result' returned by this addition operation will contain numeric
+// separators (decimal separator, thousands separator and currency symbol) which
+// were copied from the first element of the input array ([]IntAry) 'iarys'.
 //
 func (bAdd BigIntMathAdd) AddIntAryArray(iarys []IntAry) (BigIntNum, error) {
 
@@ -446,6 +480,8 @@ func (bAdd BigIntMathAdd) AddIntAryArray(iarys []IntAry) (BigIntNum, error) {
 		return finalResult,
 			errors.New(ePrefix + "Error: iarys array is Empty!")
 	}
+
+	numSeps := iarys[0].GetNumericSeparatorsDto()
 
 	var err error
 
@@ -477,6 +513,15 @@ func (bAdd BigIntMathAdd) AddIntAryArray(iarys []IntAry) (BigIntNum, error) {
 		finalResult = bAdd.addPairNoNumSeps(bPair)
 	}
 
+	err = finalResult.SetNumericSeparatorsDto(numSeps)
+
+	if err != nil {
+		return BigIntNum{}.New(),
+			fmt.Errorf(ePrefix +
+				"Error returned by finalResult.SetNumericSeparatorsDto(numSeps). " +
+				"Error='%v' \n", err.Error())
+	}
+
 	return finalResult, nil
 }
 
@@ -498,6 +543,9 @@ func (bAdd BigIntMathAdd) AddIntAryArray(iarys []IntAry) (BigIntNum, error) {
 //		3			+					iarys[4] = 6			=				  outputarray[4] =  9
 //		3			+					iarys[5] = 9			=				  outputarray[5] = 12
 //
+// Each element of the []IntAry returned by this addition operation will contain
+// numeric separators (decimal separator, thousands separator and currency symbol)
+// which were copied from input parameter 'addend'.
 //
 func (bAdd BigIntMathAdd) AddIntAryOutputToArray(
 														addend IntAry,
@@ -511,7 +559,9 @@ func (bAdd BigIntMathAdd) AddIntAryOutputToArray(
 		return []IntAry{},
 			errors.New(ePrefix + "Error: iarys array is Empty!")
 	}
-	
+
+	numSeps := addend.GetNumericSeparatorsDto()
+
 	resultsArray := make([]IntAry, lenIaArray)
 	
 	for i := 0; i < lenIaArray; i++ {
@@ -528,6 +578,15 @@ func (bAdd BigIntMathAdd) AddIntAryOutputToArray(
 
 		result := bAdd.addPairNoNumSeps(bPair)
 
+		err = result.SetNumericSeparatorsDto(numSeps)
+
+		if err != nil {
+			return []IntAry{},
+				fmt.Errorf(ePrefix +
+					"Error returned by result.SetNumericSeparatorsDto(numSeps). " +
+					"index='%v' Error='%v' ",	i, err.Error())
+		}
+
 		resultsArray[i], err = result.GetIntAry()
 	}
 
@@ -537,7 +596,12 @@ func (bAdd BigIntMathAdd) AddIntAryOutputToArray(
 // AddIntArySeries - Adds a series of IntAry objects and returns the total in a
 // BigIntNum.
 //
+// The BigIntNum result of this addition operation will contain numeric separators
+// (decimal separator, thousands separator and currency symbol) which were copied
+// from the first element input series 'iarys'.
+//
 func (bAdd BigIntMathAdd) AddIntArySeries(iarys ... IntAry) (BigIntNum, error) {
+
 	ePrefix := "BigIntMathAdd.AddIntArySeries() "
 
 	finalResult := BigIntNum{}.New()
@@ -548,10 +612,13 @@ func (bAdd BigIntMathAdd) AddIntArySeries(iarys ... IntAry) (BigIntNum, error) {
 	}
 
 	var err error
+	numSeps := NumericSeparatorDto{}
 
 	for i, ia := range iarys {
 
 		if i == 0 {
+
+			numSeps = ia.GetNumericSeparatorsDto()
 
 			finalResult, err = BigIntNum{}.NewIntAry(ia)
 
@@ -577,6 +644,15 @@ func (bAdd BigIntMathAdd) AddIntArySeries(iarys ... IntAry) (BigIntNum, error) {
 		finalResult = bAdd.addPairNoNumSeps(bPair)
 	}
 
+	err = finalResult.SetNumericSeparatorsDto(numSeps)
+
+	if err != nil {
+		return BigIntNum{}.New(),
+			fmt.Errorf(ePrefix +
+				"Error returned by finalResult.SetNumericSeparatorsDto(numSeps). " +
+				"Error='%v' \n", err.Error())
+	}
+
 	return finalResult, nil
 }
 
@@ -588,21 +664,38 @@ func (bAdd BigIntMathAdd) AddIntArySeries(iarys ... IntAry) (BigIntNum, error) {
 //
 // The result is returned as an instance of Type, 'BigIntNum'.
 //
+// The returned BigIntNum result of this addition operation will contain
+// numeric separators (decimal separator, thousands separator and currency
+// symbol) which were copied from the input parameter 'num1'.
+//
 func (bAdd BigIntMathAdd) AddINumMgr(num1, num2 INumMgr) (BigIntNum, error) {
 
 	ePrefix := "BigIntMathAdd.AddINumMgr() "
+
+	numSeps := num1.GetNumericSeparatorsDto()
 
 	bPair, err := BigIntPair{}.NewINumMgr(num1, num2)
 
 	if err != nil {
 		return BigIntNum{},
 			fmt.Errorf(ePrefix +
-				"Error returned by NBigIntPair{}.NewINumMgr(num1, num2). " +
+				"Error returned by BigIntPair{}.NewINumMgr(num1, num2). " +
 				"num1.GetNumStr()='%v', num2.GetNumStr()='%v' Error='%v' ",
 				num1.GetNumStr(), num2.GetNumStr(), err.Error())
 	}
 
-	return bAdd.addPairNoNumSeps(bPair), nil
+	finalResult := bAdd.addPairNoNumSeps(bPair)
+
+	err = finalResult.SetNumericSeparatorsDto(numSeps)
+
+	if err != nil {
+		return BigIntNum{},
+			fmt.Errorf(ePrefix +
+				"Error returned by finalResult.SetNumericSeparatorsDto(numSeps). " +
+				"Error='%v' ", err.Error())
+	}
+
+	return finalResult, nil
 }
 
 // AddINumMgrArray - Adds an array of objects which implement the 'INumMgr'
@@ -612,6 +705,11 @@ func (bAdd BigIntMathAdd) AddINumMgr(num1, num2 INumMgr) (BigIntNum, error) {
 // The INumMgr interface is implemented by types, BigIntNum, Decimal,
 // NumStrDto and IntAry. This allows the user to mix different types in
 // a single array and add their numeric values.
+//
+// The returned BigIntNum result of this addition operation will contain
+// numeric separators (decimal separator, thousands separator and currency
+// symbol) which were copied from the first element of the input parameter
+// array, nums (nums[0]).
 //
 func (bAdd BigIntMathAdd) AddINumMgrArray(nums []INumMgr) (BigIntNum, error) {
 
@@ -626,6 +724,8 @@ func (bAdd BigIntMathAdd) AddINumMgrArray(nums []INumMgr) (BigIntNum, error) {
 		return finalResult,
 			errors.New(ePrefix + "Error: 'nums' array is Empty!")
 	}
+
+	numSeps := nums[0].GetNumericSeparatorsDto()
 
 	for i:= 0; i < lenDecs; i++ {
 
@@ -656,6 +756,15 @@ func (bAdd BigIntMathAdd) AddINumMgrArray(nums []INumMgr) (BigIntNum, error) {
 		finalResult = bAdd.addPairNoNumSeps(bPair)
 	}
 
+	err = finalResult.SetNumericSeparatorsDto(numSeps)
+
+	if err != nil {
+		return BigIntNum{}.New(),
+			fmt.Errorf(ePrefix +
+				"Error returned by finalResult.SetNumericSeparatorsDto(numSeps). " +
+				"Error='%v' ", err.Error())
+	}
+
 	return finalResult, nil
 }
 
@@ -678,6 +787,9 @@ func (bAdd BigIntMathAdd) AddINumMgrArray(nums []INumMgr) (BigIntNum, error) {
 //		3			+					numMgrs[4] = 6			=				  outputarray[4] =  9
 //		3			+					numMgrs[5] = 9			=				  outputarray[5] = 12
 //
+// Each element of the returned []INumMgr array will contain numeric separators
+// (decimal separator, thousands separator and currency symbol) which were
+// copied from the input parameter 'addend'.
 //
 func (bAdd BigIntMathAdd) AddINumMgrOutputToArray(
 																	addend INumMgr,
@@ -691,6 +803,8 @@ func (bAdd BigIntMathAdd) AddINumMgrOutputToArray(
 		return []INumMgr{},
 			errors.New(ePrefix + "Error: 'numMgrs' array is Empty!")
 	}
+
+	numSeps := addend.GetNumericSeparatorsDto()
 
 	resultsArray := make([]INumMgr, lenDecs) 
 		
@@ -706,7 +820,17 @@ func (bAdd BigIntMathAdd) AddINumMgrOutputToArray(
 		}
 
 		bIntNum := bAdd.addPairNoNumSeps(bPair)
-		
+
+		err = bIntNum.SetNumericSeparatorsDto(numSeps)
+
+		if err != nil {
+			return []INumMgr{},
+				fmt.Errorf(ePrefix +
+					"Error returned by bIntNum.SetNumericSeparatorsDto(numSeps). " +
+					"Error='%v' ", err.Error())
+		}
+
+
 		resultsArray[i] = &bIntNum
 	}
 
@@ -722,6 +846,11 @@ func (bAdd BigIntMathAdd) AddINumMgrOutputToArray(
 // NumStrDto and IntAry. This allows the user to mix different types in
 // a single array and add their numeric values.
 //
+// The returned BigIntNum result of this addition operation will contain
+// numeric separators (decimal separator, thousands separator and currency
+// symbol) which were copied from the first element of the input parameter
+// 'nums'.
+//
 func (bAdd BigIntMathAdd) AddINumMgrSeries(nums ... INumMgr) (BigIntNum, error) {
 
 	ePrefix := "BigIntMathAdd.AddINumMgrSeries() "
@@ -733,11 +862,16 @@ func (bAdd BigIntMathAdd) AddINumMgrSeries(nums ... INumMgr) (BigIntNum, error) 
 			errors.New(ePrefix + "Error: 'nums' series is Empty!")
 	}
 
+
 	var err error
+
+	numSeps := NumericSeparatorDto{}
 
 	for i, num := range nums {
 
 		if i == 0 {
+
+			numSeps = num.GetNumericSeparatorsDto()
 
 			finalResult, err = BigIntNum{}.NewINumMgr(num)
 
@@ -765,6 +899,15 @@ func (bAdd BigIntMathAdd) AddINumMgrSeries(nums ... INumMgr) (BigIntNum, error) 
 		finalResult = bAdd.addPairNoNumSeps(bPair)
 	}
 
+	err = finalResult.SetNumericSeparatorsDto(numSeps)
+
+	if err != nil {
+		return BigIntNum{}.New(),
+			fmt.Errorf(ePrefix +
+				"Error returned by finalResult.SetNumericSeparatorsDto(numSeps). " +
+				"Error='%v' ", err.Error())
+	}
+
 	return finalResult, nil
 }
 
@@ -777,6 +920,10 @@ func (bAdd BigIntMathAdd) AddINumMgrSeries(nums ... INumMgr) (BigIntNum, error) 
 // fractional digits.
 //
 // The result is returned as type BigIntNum.
+//
+// The returned BigIntNum result of this addition operation will contain
+// default numeric separators (decimal separator, thousands separator and currency
+// symbol).
 //
 func (bAdd BigIntMathAdd) AddNumStr(n1NumStr, n2NumStr string) (BigIntNum, error) {
 
@@ -800,6 +947,10 @@ func (bAdd BigIntMathAdd) AddNumStr(n1NumStr, n2NumStr string) (BigIntNum, error
 // digits or number strings. Number strings may have a leading minus sign ('-')
 // to indicate the numeric sign value. In addition, the string of numeric digits
 // may include a decimal point ('.') to separate fraction digits.
+//
+// The returned BigIntNum result of this addition operation will contain
+// default numeric separators (decimal separator, thousands separator and currency
+// symbol).
 //
 func (bAdd BigIntMathAdd) AddNumStrArray(numStrs []string) (BigIntNum, error) {
 
@@ -919,6 +1070,10 @@ func (bAdd BigIntMathAdd) AddNumStrOutputToArray(
 // to indicate the numeric sign value. In addition, the string of numeric digits
 // may include a decimal point ('.') to separate fractional digits.
 //
+// The returned BigIntNum result of this addition operation will contain
+// default numeric separators (decimal separator, thousands separator and currency
+// symbol).
+//
 func (bAdd BigIntMathAdd) AddNumStrSeries(numStrs ... string) (BigIntNum, error) {
 	ePrefix := "BigIntMathAdd.AddNumStrSeries() "
 
@@ -960,12 +1115,18 @@ func (bAdd BigIntMathAdd) AddNumStrSeries(numStrs ... string) (BigIntNum, error)
 		finalResult = result.CopyOut()
 	}
 
+	finalResult.SetNumericSeparatorsToDefaultIfEmpty()
+
 	return finalResult, nil
 }
 
 // AddNumStrDto - Receives two NumStrDto instances and adds their numeric values.
 //
 // The result is returned as type BigIntNum.
+//
+// The returned BigIntNum result of this addition operation will contain
+// default numeric separators (decimal separator, thousands separator and currency
+// symbol).
 //
 func (bAdd BigIntMathAdd) AddNumStrDto(n1Dto, n2Dto NumStrDto) (BigIntNum, error) {
 
@@ -979,11 +1140,19 @@ func (bAdd BigIntMathAdd) AddNumStrDto(n1Dto, n2Dto NumStrDto) (BigIntNum, error
 				"Error='%v' ", err.Error())
 	}
 
-	return bAdd.addPairNoNumSeps(bPair), nil
+	finalResult := bAdd.addPairNoNumSeps(bPair)
+
+	finalResult.SetNumericSeparatorsToDefaultIfEmpty()
+
+	return finalResult, nil
 }
 
 // AddNumStrDtoArray - Adds an array of 'NumStrDto' types and returns the combined total
 // as an instance of Type, 'BigIntNum'.
+//
+// The returned BigIntNum result of this addition operation will contain
+// default numeric separators (decimal separator, thousands separator and currency
+// symbol).
 //
 func (bAdd BigIntMathAdd) AddNumStrDtoArray(nDtos []NumStrDto) (BigIntNum, error) {
 
@@ -1024,6 +1193,8 @@ func (bAdd BigIntMathAdd) AddNumStrDtoArray(nDtos []NumStrDto) (BigIntNum, error
 		finalResult = bAdd.addPairNoNumSeps(bPair)
 	}
 
+	finalResult.SetNumericSeparatorsToDefaultIfEmpty()
+
 	return finalResult, nil
 
 }
@@ -1046,12 +1217,21 @@ func (bAdd BigIntMathAdd) AddNumStrDtoArray(nDtos []NumStrDto) (BigIntNum, error
 //		3			+					nDtos[4] = 6			=				  outputarray[4] =  9
 //		3			+					nDtos[5] = 9			=				  outputarray[5] = 12
 //
+// Each elemetn in the returned array of []NumStrDto resulting of this addition
+// operation will contain numeric separators (decimal separator, thousands separator
+// and currency symbol) copied from input parameter 'addend'.
 //
 func (bAdd BigIntMathAdd) AddNumStrDtoOutputToArray(
 													addend NumStrDto,
 															nDtos []NumStrDto) ([]NumStrDto, error) {
 
 	ePrefix := "BigIntMathAdd.AddNumStrDtoOutputToArray() "
+
+	err := addend.IsNumStrDtoValid(ePrefix + "'addend' is INVALID! ")
+
+	if err != nil {
+		return []NumStrDto{}, err
+	}
 
 	lenDecs := len(nDtos)
 
@@ -1060,9 +1240,14 @@ func (bAdd BigIntMathAdd) AddNumStrDtoOutputToArray(
 			errors.New(ePrefix + "Error: 'nDtos' array is Empty!")
 	}
 
+	numSeps := addend.GetNumericSeparatorsDto()
+
 	resultsArray := make([]NumStrDto, lenDecs)
 
 	for i:= 0; i < lenDecs; i++ {
+
+		err := nDtos[i].IsNumStrDtoValid(ePrefix +
+			fmt.Sprintf("nDtos[%v] INVALID! ", i))
 
 		bPair, err := BigIntPair{}.NewNumStrDto(addend, nDtos[i])
 
@@ -1073,6 +1258,15 @@ func (bAdd BigIntMathAdd) AddNumStrDtoOutputToArray(
 		}
 
 		result := bAdd.addPairNoNumSeps(bPair)
+
+		err = result.SetNumericSeparatorsDto(numSeps)
+
+		if err != nil {
+			return []NumStrDto{},
+				fmt.Errorf(ePrefix +
+					"Error returned by result.SetNumericSeparatorsDto(numSeps). " +
+					"Error='%v' \n", err.Error())
+		}
 
 		resultsArray[i], err = result.GetNumStrDto()
 
