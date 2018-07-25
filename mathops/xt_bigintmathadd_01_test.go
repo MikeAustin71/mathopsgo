@@ -1240,6 +1240,80 @@ func TestBigIntMathAdd_AddDecimal_03(t *testing.T) {
 
 }
 
+func TestBigIntMathAdd_AddDecimal_04(t *testing.T) {
+	n1Str := "123456.789"
+
+	n2Str := "987.123456"
+
+	expectedNumStr 		:= "124443,912456"
+	expectedPrecision := uint(6)
+	expectedSign := 1
+
+
+	dec1, err := Decimal{}.NewNumStr(n1Str)
+
+	if err != nil {
+		t.Errorf("Error returned by Decimal{}.NewNumStr(n1Str). " +
+			"n1Str='%v' Error='%v' ", n1Str, err.Error())
+	}
+
+
+	expectedNumSeps := NumericSeparatorDto{}
+	frenchDecSeparator := ','
+	frenchThousandsSeparator := ' '
+	frenchCurrencySymbol := '€'
+
+	expectedNumSeps.DecimalSeparator = frenchDecSeparator
+	expectedNumSeps.ThousandsSeparator = frenchThousandsSeparator
+	expectedNumSeps.CurrencySymbol = frenchCurrencySymbol
+
+	err = dec1.SetNumericSeparatorsDto(expectedNumSeps)
+
+	if err != nil {
+		t.Errorf("Error returned by dec1.SetNumericSeparatorsDto(expectedNumSeps). "+
+			"Error='%v'", err.Error())
+	}
+
+	dec2, err := Decimal{}.NewNumStr(n2Str)
+
+	if err != nil {
+		t.Errorf("Error returned by Decimal{}.NewNumStr(n2Str). " +
+			"n2Str='%v' Error='%v' ", n2Str, err.Error())
+	}
+
+	result, err := BigIntMathAdd{}.AddDecimal(dec1, dec2)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntMathAdd{}.AddDecimal(dec1, dec2). " +
+			"Error='%v' ", err.Error())
+	}
+
+	actualNumStr := result.GetNumStr()
+
+	if expectedNumStr != actualNumStr {
+		t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v' ",
+			expectedNumStr, actualNumStr)
+	}
+
+	if expectedPrecision != result.precision {
+		t.Errorf("Error: Expected Result precision='%v'.  Instead, precision='%v'. ",
+			expectedPrecision, result.precision)
+	}
+
+	if expectedSign != result.sign {
+		t.Errorf("Error: Expected Result sign='%v'. Instead, sign='%v'. ",
+			expectedSign, result.sign)
+	}
+
+	actualNumSeps := result.GetNumericSeparatorsDto()
+
+	if !expectedNumSeps.Equal(actualNumSeps) {
+		t.Errorf("Error: Expected numSeps='%v'. Instead, numSeps='%v'",
+			expectedNumSeps.String(),actualNumSeps.String())
+	}
+
+}
+
 func TestBigIntMathAdd_AddDecimalArray_01(t *testing.T) {
 
 	numStrAry := []string{
@@ -1366,6 +1440,81 @@ func TestBigIntMathAdd_AddDecimalArray_02(t *testing.T) {
 	if expectedResultNumStr != actualTotalNumstr {
 		t.Errorf("Expected NumStr='%v'. Instead, NumStr='%v'",
 			expectedResultNumStr, actualTotalNumstr)
+	}
+
+}
+
+
+func TestBigIntMathAdd_AddDecimalArray_03(t *testing.T) {
+
+	numStrAry := []string{
+		"45.8",
+		"1.45962",
+		"58.71",
+		"-37.62174",
+		"89.8",
+	}
+
+	lenStrAry:= len(numStrAry)
+
+	expectedTotalStr := "158,14788"
+
+
+
+	decAry := make([]Decimal, lenStrAry)
+
+	for i:=0; i < lenStrAry; i++ {
+
+		dec, err := Decimal{}.NewNumStr(numStrAry[i])
+
+		if err != nil {
+
+			if err != nil {
+				t.Errorf("Error returned by Decimal{}.NewNumStr(numStrAry[i]) " +
+					"i='%v' numStrAry[i]='%v' Error='%v' ",i, numStrAry[i], err.Error())
+			}
+
+		}
+
+		decAry[i] = dec
+
+	}
+
+	expectedNumSeps := NumericSeparatorDto{}
+	frenchDecSeparator := ','
+	frenchThousandsSeparator := ' '
+	frenchCurrencySymbol := '€'
+
+	expectedNumSeps.DecimalSeparator = frenchDecSeparator
+	expectedNumSeps.ThousandsSeparator = frenchThousandsSeparator
+	expectedNumSeps.CurrencySymbol = frenchCurrencySymbol
+
+	err := decAry[0].SetNumericSeparatorsDto(expectedNumSeps)
+
+	if err != nil {
+		t.Errorf("Error returned by decAry[0].SetNumericSeparatorsDto(expectedNumSeps). "+
+			"Error='%v' ", err.Error())
+	}
+
+	total, err := BigIntMathAdd{}.AddDecimalArray(decAry)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntMathAdd{}.AddDecimalArray(decAry). " +
+			"Error='%v' ", err.Error())
+	}
+
+	actualTotalNumStr := total.GetNumStr()
+
+	if expectedTotalStr != actualTotalNumStr {
+		t.Errorf("Expected NumStr='%v'. Instead, NumStr='%v'",
+			expectedTotalStr, actualTotalNumStr)
+	}
+
+	actualNumSeps := total.GetNumericSeparatorsDto()
+
+	if !expectedNumSeps.Equal(actualNumSeps) {
+		t.Errorf("Error: Expected numSeps='%v'. Instead, numSeps='%v'",
+			expectedNumSeps.String(), actualNumSeps.String())
 	}
 
 }
