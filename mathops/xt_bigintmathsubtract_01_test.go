@@ -1798,6 +1798,118 @@ func TestBigIntMathSubtract_SubtractBigIntNumSeries_04(t *testing.T) {
 
 }
 
+func TestBigIntMathSubtract_SubtractBigIntNumSeries_05(t *testing.T) {
+
+	// minuend = 7328941.123456
+	minuendStr := "7328941.123456"
+
+	subtrahend0:= "123.894000"
+	subtrahend1:= "67.1"
+	subtrahend2:= "93.0"
+	subtrahend3:= "-124498.67158"
+	subtrahend4:= "647129.57"
+	subtrahend5:= "28"
+
+	// result = 6805998.231036
+	expectedBigINumStr := "6805998,231036"
+
+	var err error
+
+
+	minuendBiNum, err := BigIntNum{}.NewNumStr(minuendStr)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(minuendStr) " +
+			"minuendStr='%v'  Error='%v'. ", minuendStr, err.Error())
+	}
+
+	expectedNumSeps := NumericSeparatorDto{}
+	frenchDecSeparator := ','
+	frenchThousandsSeparator := ' '
+	frenchCurrencySymbol := '€'
+
+	expectedNumSeps.DecimalSeparator = frenchDecSeparator
+	expectedNumSeps.ThousandsSeparator = frenchThousandsSeparator
+	expectedNumSeps.CurrencySymbol = frenchCurrencySymbol
+
+	err = minuendBiNum.SetNumericSeparatorsDto(expectedNumSeps)
+
+	if err != nil {
+		t.Errorf("Error returned by minuendBiNum.SetNumericSeparatorsDto(expectedNumSeps). " +
+			"Error='%v' ", err.Error())
+	}
+
+	lenSubtrahends := 6
+
+	subtrahendAry := make([]BigIntNum, lenSubtrahends)
+
+	subtrahendAry[0], err = BigIntNum{}.NewNumStr(subtrahend0)
+
+	if err != nil {
+		t.Errorf("Error returned from BigIntNum{}.NewNumStr(subtrahend0). " +
+			"Error='%v'. ", err.Error())
+	}
+
+	subtrahendAry[1], err = BigIntNum{}.NewNumStr(subtrahend1)
+
+	if err != nil {
+		t.Errorf("Error returned from BigIntNum{}.NewNumStr(subtrahend1). " +
+			"Error='%v'. ", err.Error())
+	}
+
+	subtrahendAry[2], err = BigIntNum{}.NewNumStr(subtrahend2)
+
+	if err != nil {
+		t.Errorf("Error returned from BigIntNum{}.NewNumStr(subtrahend2). " +
+			"Error='%v'. ", err.Error())
+	}
+
+	subtrahendAry[3], err = BigIntNum{}.NewNumStr(subtrahend3)
+
+	if err != nil {
+		t.Errorf("Error returned from BigIntNum{}.NewNumStr(subtrahend3). " +
+			"Error='%v'. ", err.Error())
+	}
+
+	subtrahendAry[4], err = BigIntNum{}.NewNumStr(subtrahend4)
+
+	if err != nil {
+		t.Errorf("Error returned from BigIntNum{}.NewNumStr(subtrahend4). " +
+			"Error='%v'. ", err.Error())
+	}
+
+	subtrahendAry[5], err = BigIntNum{}.NewNumStr(subtrahend5)
+
+	if err != nil {
+		t.Errorf("Error returned from BigIntNum{}.NewNumStr(subtrahend5). " +
+			"Error='%v'. ", err.Error())
+	}
+
+	result := BigIntMathSubtract{}.SubtractBigIntNumSeries(
+		minuendBiNum,
+		subtrahendAry[0],
+		subtrahendAry[1],
+		subtrahendAry[2],
+		subtrahendAry[3],
+		subtrahendAry[4],
+		subtrahendAry[5])
+
+	actualResultStr := result.GetNumStr()
+
+	if expectedBigINumStr != actualResultStr {
+		t.Errorf("Comparison Error: Expected result='%v'. Instead, result='%v'. ",
+			expectedBigINumStr, actualResultStr)
+	}
+
+	actualNumSeps := result.GetNumericSeparatorsDto()
+
+	if !expectedNumSeps.Equal(actualNumSeps) {
+		t.Errorf("Error: Expected numSeps='%v'. Instead, numSeps='%v'",
+			expectedNumSeps.String(), actualNumSeps.String())
+	}
+
+}
+
 func TestBigIntMathSubtract_SubtractDecimal_01(t *testing.T) {
 	// minuend = 123.32
 	minuendStr := "123.32"
