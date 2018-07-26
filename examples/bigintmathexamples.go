@@ -5,7 +5,7 @@ import (
 	"math/big"
 	"../mathops"
 	"time"
-)
+	)
 
 
 //ExampleNumStrDtoBigIntParse_02
@@ -591,6 +591,140 @@ func ExampleSubtraction_02() {
 	fmt.Println("   Array Result: ", result.GetNumStr())
 
 }
+
+func Example_SubtractIntAryArray_01() {
+
+	var err error
+
+	// minuend = -18,973,642.1234567
+	minuendStr := "-18973642.1234567"
+
+	subtrahend0:= "737.21"
+	subtrahend1:= "9637591.879546"
+	subtrahend2:= "28"
+	subtrahend3:= "5284.9765"
+	subtrahend4:= "-189291837.12"
+	subtrahend5:= "7638932.12398765"
+
+	// result = 153,035,620.80650965
+	expectedBigINumStr := "153035620.80650965"
+
+	expectedBigINumSign := 1
+
+	iaMinuend, err := mathops.IntAry{}.NewNumStr(minuendStr)
+
+	if err != nil {
+		fmt.Printf("Error returned by IntAry{}.NewNumStr(minuendStr) " +
+			"minuendStr='%v' Error='%v' ", minuendStr, err.Error())
+		return
+	}
+
+	expectedBigINum, err := mathops.BigIntNum{}.NewNumStr(expectedBigINumStr)
+
+	if err!=nil {
+		fmt.Printf("Error returned by BigIntNum{}.NewNumStr(expectedBigINumStr) " +
+			"expectedBigINumStr='%v' Error='%v' ", expectedBigINumStr, err.Error())
+		return
+	}
+
+	lenSubtrahends := 6
+	subtrahendAry := make([]mathops.IntAry, lenSubtrahends)
+
+	subtrahendAry[0], err = mathops.IntAry{}.NewNumStr(subtrahend0)
+
+	if err != nil {
+		fmt.Printf("Error returned from IntAry{}.NewNumStr(subtrahend0). " +
+			"subtrahend0='%v' Error='%v'. ",
+			subtrahend0, err.Error())
+		return
+	}
+
+	subtrahendAry[1], err = mathops.IntAry{}.NewNumStr(subtrahend1)
+
+	if err != nil {
+		fmt.Printf("Error returned from IntAry{}.NewNumStr(subtrahend1). " +
+			"subtrahend1='%v' Error='%v'. ",
+			subtrahend1, err.Error())
+		return
+	}
+
+	subtrahendAry[2], err = mathops.IntAry{}.NewNumStr(subtrahend2)
+
+	if err != nil {
+		fmt.Printf("Error returned from IntAry{}.NewNumStr(subtrahend2). " +
+			"subtrahend2='%v' Error='%v'. ",
+			subtrahend2, err.Error())
+		return
+	}
+
+	subtrahendAry[3], err = mathops.IntAry{}.NewNumStr(subtrahend3)
+
+	if err != nil {
+		fmt.Printf("Error returned from IntAry{}.NewNumStr(subtrahend3). " +
+			"subtrahend3='%v' Error='%v'. ",
+			subtrahend3, err.Error())
+		return
+	}
+
+	subtrahendAry[4], err = mathops.IntAry{}.NewNumStr(subtrahend4)
+
+	if err != nil {
+		fmt.Printf("Error returned from IntAry{}.NewNumStr(subtrahend4). " +
+			"subtrahend4='%v' Error='%v'. ",
+			subtrahend4, err.Error())
+		return
+	}
+
+	subtrahendAry[5], err = mathops.IntAry{}.NewNumStr(subtrahend5)
+
+	if err != nil {
+		fmt.Printf("Error returned from IntAry{}.NewNumStr(subtrahend5). " +
+			"subtrahend5='%v' Error='%v'. ",
+			subtrahend5, err.Error())
+		return
+	}
+
+	result, err := mathops.BigIntMathSubtract{}.SubtractIntAryArray(iaMinuend, subtrahendAry)
+
+	if err != nil {
+		fmt.Printf("Error returned by BigIntMathSubtract{}.SubtractIntAryArray(" +
+			"iaMinuend, subtrahendAry). Error='%v' ", err.Error())
+		return
+	}
+
+	expectedBigInt, err := expectedBigINum.GetBigInt()
+
+	if err != nil {
+		fmt.Printf("Error returned by expectedBigINum.GetBigInt(). Error='%v' ", err.Error())
+		return
+	}
+
+	resultBigInt, err := result.GetBigInt()
+
+	if err != nil {
+		fmt.Printf("Error returned by result.GetBigInt(). Error='%v' ", err.Error())
+		return
+	}
+
+
+	if expectedBigInt.Cmp(resultBigInt) != 0 {
+		fmt.Printf("Comparison Error: Expected BigIntNum='%s'. Instead, BigIntNum= '%s'. ",
+			expectedBigInt.Text(10), resultBigInt.Text(10))
+		return
+	}
+
+	if expectedBigINumSign != result.GetSign() {
+		fmt.Printf("Error: Expected number sign='%v'. Instead, number sign='%v'",
+			expectedBigINumSign, result.GetSign)
+		return
+	}
+
+	fmt.Println("BigIntMathSubtract{}.SubtractIntAryArray")
+	fmt.Println("========================================")
+	fmt.Println("  Actual Result: ", result.GetNumStr())
+	fmt.Println("Expected Result: ", expectedBigINumStr)
+}
+
 
 func ExampleBigIntRounding_01() {
 	nStr := "0.000"

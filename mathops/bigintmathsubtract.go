@@ -579,13 +579,6 @@ func (bSubtract BigIntMathSubtract) SubtractIntAryArray(
 
 	for i:=0; i < lenSubtrahends; i++ {
 
-		err = subtrahends[i].IsIntAryValid(ePrefix +
-			fmt.Sprintf("subtrahends[%v] INVALID! ", i))
-
-		if err == nil {
-			return BigIntNum{}.New(), err
-		}
-
 		bigINum, err := BigIntNum{}.NewIntAry(subtrahends[i])
 
 		if err != nil {
