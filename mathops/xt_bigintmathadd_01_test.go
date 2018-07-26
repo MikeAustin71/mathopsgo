@@ -1460,7 +1460,6 @@ func TestBigIntMathAdd_AddDecimalArray_03(t *testing.T) {
 	expectedTotalStr := "158,14788"
 
 
-
 	decAry := make([]Decimal, lenStrAry)
 
 	for i:=0; i < lenStrAry; i++ {
@@ -1651,6 +1650,96 @@ func TestBigIntMathAdd_AddDecimalOutputToArray_02(t *testing.T) {
 	}
 }
 
+func TestBigIntMathAdd_AddDecimalOutputToArray_03(t *testing.T) {
+
+	var err error
+
+	// addendStr = 5
+	addendStr := "5"
+
+	// decNumStrs
+	decNumStrs :=  [] string {
+		"5",
+		"10.123",
+		"15",
+		"253.692",
+		"35",
+		"55",
+	}
+
+	// Expected Results Array
+	expectedNumStrs := [] string {
+		"10",
+		"15,123",
+		"20",
+		"258,692",
+		"40",
+		"60",
+	}
+
+
+	decAddend, err := Decimal{}.NewNumStr(addendStr)
+
+	if err != nil {
+		t.Errorf("Error returned by Decimal{}.NewNumStr(addendStr) " +
+			"addendStr='%v'  Error='%v'. ", addendStr, err.Error())
+	}
+
+	expectedNumSeps := NumericSeparatorDto{}
+	frenchDecSeparator := ','
+	frenchThousandsSeparator := ' '
+	frenchCurrencySymbol := '€'
+
+	expectedNumSeps.DecimalSeparator = frenchDecSeparator
+	expectedNumSeps.ThousandsSeparator = frenchThousandsSeparator
+	expectedNumSeps.CurrencySymbol = frenchCurrencySymbol
+
+	err = decAddend.SetNumericSeparatorsDto(expectedNumSeps)
+
+	if err != nil {
+		t.Errorf("Error returned by decAddend.SetNumericSeparatorsDto(expectedNumSeps). " +
+			"Error='%v' ", err.Error())
+	}
+
+	lenArray := len(decNumStrs)
+	decArray := make([]Decimal, lenArray)
+
+	for i:=0; i < lenArray; i++ {
+
+		decArray[i], err = 	Decimal{}.NewNumStr(decNumStrs[i])
+
+		if err != nil {
+			t.Errorf("Error returned by Decimal{}.NewNumStr(decNumStrs[i]) " +
+				"i='%v'  decNumStrs[i]='%v'  Error='%v'. ", i, decNumStrs[i], err.Error())
+		}
+
+	}
+
+	result, err := BigIntMathAdd{}.AddDecimalOutputToArray(decAddend, decArray)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntMathAdd{}.AddDecimalOutputToArray(" +
+			"decAddend, decArray) addendStr='%v'  Error='%v'. ",
+			addendStr, err.Error())
+	}
+
+	for j:=0; j < lenArray; j++ {
+
+		if expectedNumStrs[j] != result[j].GetNumStr()  {
+			t.Errorf("Error: Expected NumStr[%v]='%v'. Instead NumStr[%v]='%v'. ",
+				j, expectedNumStrs[j], j, result[j].GetNumStr())
+		}
+
+		actualNumSeps := result[j].GetNumericSeparatorsDto()
+
+		if !expectedNumSeps.Equal(actualNumSeps) {
+			t.Errorf("Error: Expected numSeps='%v'. Instead, numSeps='%v'.",
+				expectedNumSeps.String(), actualNumSeps.String())
+		}
+
+	}
+}
+
 func TestBigIntMathAdd_AddDecimalSeries_01(t *testing.T) {
 	n1Str := "45.8"
 	n2Str := "1.45962"
@@ -1807,6 +1896,97 @@ func TestBigIntMathAdd_AddDecimalSeries_02(t *testing.T) {
 	if expectedResultNumStr != actualTotalNumstr {
 		t.Errorf("Expected NumStr='%v'. Instead, NumStr='%v'",
 			expectedResultNumStr, actualTotalNumstr)
+	}
+
+}
+
+
+func TestBigIntMathAdd_AddDecimalSeries_03(t *testing.T) {
+	n1Str := "45.8"
+	n2Str := "1.45962"
+	n3Str := "58.71"
+	n4Str := "-37.62174"
+	n5Str := "89.8"
+
+	expectedTotalStr := "158,14788"
+
+
+	dec1, err := Decimal{}.NewNumStr(n1Str)
+
+	if err != nil {
+		t.Errorf("Error returned by  Decimal{}.NewNumStr(n1Str). " +
+			"n1Str='%v' Error='%v'. ",
+			n1Str, err.Error())
+	}
+
+	expectedNumSeps := NumericSeparatorDto{}
+	frenchDecSeparator := ','
+	frenchThousandsSeparator := ' '
+	frenchCurrencySymbol := '€'
+
+	expectedNumSeps.DecimalSeparator = frenchDecSeparator
+	expectedNumSeps.ThousandsSeparator = frenchThousandsSeparator
+	expectedNumSeps.CurrencySymbol = frenchCurrencySymbol
+
+	err = dec1.SetNumericSeparatorsDto(expectedNumSeps)
+
+	if err != nil {
+		t.Errorf("Error returned by dec1.SetNumericSeparatorsDto(expectedNumSeps). " +
+			"Error='%v' ", err.Error())
+	}
+
+	dec2, err := Decimal{}.NewNumStr(n2Str)
+
+	if err != nil {
+		t.Errorf("Error returned by  Decimal{}.NewNumStr(n2Str). " +
+			"n2Str='%v' Error='%v'. ",
+			n2Str, err.Error())
+	}
+
+	dec3, err := Decimal{}.NewNumStr(n3Str)
+
+	if err != nil {
+		t.Errorf("Error returned by  Decimal{}.NewNumStr(n3Str). " +
+			"n3Str='%v' Error='%v'. ",
+			n3Str, err.Error())
+	}
+
+	dec4, err := Decimal{}.NewNumStr(n4Str)
+
+	if err != nil {
+		t.Errorf("Error returned by  Decimal{}.NewNumStr(n4Str). " +
+			"n4Str='%v' Error='%v'. ",
+			n4Str, err.Error())
+	}
+
+	dec5, err := Decimal{}.NewNumStr(n5Str)
+
+	if err != nil {
+		t.Errorf("Error returned by  Decimal{}.NewNumStr(n5Str). " +
+			"n5Str='%v' Error='%v'. ",
+			n5Str, err.Error())
+	}
+
+	total, err := BigIntMathAdd{}.AddDecimalSeries(dec1, dec2, dec3, dec4, dec5)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntMathAdd{}.AddDecimalSeries(dec1, " +
+			"dec2, dec3, dec4, dec5). Error='%v' ", err.Error())
+	}
+
+	actualTotalStr := total.GetNumStr()
+
+	if expectedTotalStr != actualTotalStr {
+		t.Errorf("Error: Expected total='%v'. Instead, " +
+			"total='%v'. ",
+			expectedTotalStr, actualTotalStr)
+	}
+
+	actualNumSeps := total.GetNumericSeparatorsDto()
+
+	if !expectedNumSeps.Equal(actualNumSeps) {
+		t.Errorf("Error: Expected numSeps='%v'. Instead, numSeps='%v'",
+			expectedNumSeps.String(), actualNumSeps.String())
 	}
 
 }
