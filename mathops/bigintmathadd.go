@@ -424,14 +424,14 @@ func (bAdd BigIntMathAdd) AddIntAry(ia1, ia2 IntAry) (BigIntNum, error) {
 
 	ePrefix := "BigIntMathAdd.AddNumStrDto() "
 
-	err := ia1.IsIntAryValid(ePrefix + "ia1 Invalid: ")
+	err := ia1.IsValid(ePrefix + "ia1 Invalid: ")
 
 	if err != nil {
 		return BigIntNum{}.New(),
 			err
 	}
 
-	err = ia2.IsIntAryValid(ePrefix + "ia2 Invalid: ")
+	err = ia2.IsValid(ePrefix + "ia2 Invalid: ")
 
 	if err != nil {
 		return BigIntNum{}.New(),
@@ -487,7 +487,7 @@ func (bAdd BigIntMathAdd) AddIntAryArray(iarys []IntAry) (BigIntNum, error) {
 
 	for i := 0; i < lenIaArray; i++ {
 
-		err = iarys[i].IsIntAryValid(ePrefix +
+		err = iarys[i].IsValid(ePrefix +
 			fmt.Sprintf("iarys[%v] is INVALID!", i))
 
 		if err != nil {
@@ -560,7 +560,7 @@ func (bAdd BigIntMathAdd) AddIntAryOutputToArray(
 
 	ePrefix := "BigIntMathAdd.AddIntAryOutputToArray() "
 
-	err := addend.IsIntAryValid(ePrefix + "'addend' INVALID! ")
+	err := addend.IsValid(ePrefix + "'addend' INVALID! ")
 
 	if err != nil {
 		return []IntAry{}, err
@@ -579,7 +579,7 @@ func (bAdd BigIntMathAdd) AddIntAryOutputToArray(
 	
 	for i := 0; i < lenIaArray; i++ {
 
-		err = iarys[i].IsIntAryValid(ePrefix +
+		err = iarys[i].IsValid(ePrefix +
 			fmt.Sprintf("iarys[%v] INVALID!", i))
 
 		if err != nil {
@@ -636,7 +636,7 @@ func (bAdd BigIntMathAdd) AddIntArySeries(iarys ... IntAry) (BigIntNum, error) {
 
 	for i, ia := range iarys {
 
-		err = ia.IsIntAryValid(ePrefix +
+		err = ia.IsValid(ePrefix +
 			fmt.Sprintf("ia index='%v' INVALID!", i))
 
 		if err != nil {

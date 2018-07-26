@@ -1887,15 +1887,19 @@ func (bNum BigIntNum) NewInt64Exponent(i64 int64, exponent int) BigIntNum {
 //
 // Be careful, IntAry's can accommodate very, very large numbers.
 //
+// The new BigIntNum instance returned by this method will contain default
+// numeric separators (decimal separator, thousands separator and currency
+// symbol).
+//
 func (bNum BigIntNum) NewIntAry(ia IntAry) (BigIntNum, error) {
 	ePrefix := "BigIntNum.NewIntAry() "
 
-	err := ia.IsIntAryValid("")
+	err := ia.IsValid(ePrefix + "'ia' INVALID! ")
 
 	if err != nil {
 		return BigIntNum{},
 			fmt.Errorf(ePrefix + "Error: Input Parameter 'ia' is INVALID!. Error returned by " +
-				"ia.IsIntAryValid(\"\"). Error='%v'", err.Error())
+				"ia.IsValid(\"\"). Error='%v'", err.Error())
 	}
 
 	bInt,_ := ia.GetBigInt()

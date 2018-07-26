@@ -978,7 +978,7 @@ func (ia *IntAry) AppendToIntAry(num uint8) {
 //
 func (ia *IntAry) Ceiling() (IntAry, error) {
 
-	err := ia.IsIntAryValid("Ceiling() - ")
+	err := ia.IsValid("Ceiling() - ")
 
 	if err != nil {
 		return IntAry{}, err
@@ -1669,7 +1669,7 @@ func (ia *IntAry) Equals(iAry2 *IntAry) bool {
 // 						 -2					 	 -2
 func (ia *IntAry) Floor() (IntAry, error) {
 
-	err := ia.IsIntAryValid("Floor() - ")
+	err := ia.IsValid("Floor() - ")
 
 	if err != nil {
 		return IntAry{}, err
@@ -1788,11 +1788,11 @@ func (ia *IntAry) GetBigInt() (*big.Int, error) {
 
 	ePrefix := "IntAry.GetBigInt() "
 
-	err := ia.IsIntAryValid("")
+	err := ia.IsValid("")
 
 	if err!=nil {
 		return big.NewInt(0),
-		fmt.Errorf(ePrefix + "Error returned by ia.IsIntAryValid(). Error='%v'",
+		fmt.Errorf(ePrefix + "Error returned by ia.IsValid(). Error='%v'",
 			err.Error())
 	}
 
@@ -1820,11 +1820,11 @@ func (ia *IntAry) GetBigInt() (*big.Int, error) {
 func (ia *IntAry) GetBigIntNum() (BigIntNum, error) {
 	ePrefix := "IntAry.GetBigIntNum() "
 
-	err := ia.IsIntAryValid("")
+	err := ia.IsValid("")
 
 	if err != nil {
 		return BigIntNum{},
-			fmt.Errorf(ePrefix + "Error returned by ia.IsIntAryValid(). " +
+			fmt.Errorf(ePrefix + "Error returned by ia.IsValid(). " +
 				"Error='%v' ", err.Error())
 	}
 
@@ -1858,7 +1858,7 @@ func (ia *IntAry) GetDecimal() (Decimal, error) {
 
 	ePrefix := "IntAry.GetDecimal() "
 
-	err := ia.IsIntAryValid(ePrefix)
+	err := ia.IsValid(ePrefix)
 
 	if err != nil {
 		return Decimal{}, err
@@ -1919,7 +1919,7 @@ func (ia *IntAry) GetDecimalSeparator() rune {
 // a leading integer digit of zero. Example '0.5678'
 func (ia *IntAry) GetFractionalDigits() (IntAry, error) {
 
-	err := ia.IsIntAryValid("GetFractionalDigits() - ")
+	err := ia.IsValid("GetFractionalDigits() - ")
 
 	if err != nil {
 		return IntAry{}, err
@@ -1955,7 +1955,7 @@ func (ia *IntAry) GetFractionalDigits() (IntAry, error) {
 // intAry object.
 func (ia *IntAry) GetIntegerDigits() (IntAry, error) {
 
-	err := ia.IsIntAryValid("GetFractionalDigits() - ")
+	err := ia.IsValid("GetFractionalDigits() - ")
 
 	if err != nil {
 		return IntAry{}, err
@@ -2004,11 +2004,11 @@ func (ia *IntAry) GetInt() (int, error) {
 
 	ePrefix := "IntAry.GetInt() "
 
-	err := ia.IsIntAryValid("")
+	err := ia.IsValid("")
 
 	if err != nil {
 		return 0,
-			fmt.Errorf(ePrefix + "Error returned by ia.IsIntAryValid(). " +
+			fmt.Errorf(ePrefix + "Error returned by ia.IsValid(). " +
 				"Error='%v' ", err.Error())
 	}
 
@@ -2054,11 +2054,11 @@ func (ia *IntAry) GetInt64() (int64, error) {
 
 	ePrefix := "IntAry.GetInt64() "
 
-	err := ia.IsIntAryValid("")
+	err := ia.IsValid("")
 
 	if err != nil {
 		return int64(0),
-		fmt.Errorf(ePrefix + "Error returned by ia.IsIntAryValid() " +
+		fmt.Errorf(ePrefix + "Error returned by ia.IsValid() " +
 			"Error='%v' ", err.Error())
 	}
 
@@ -2522,7 +2522,7 @@ func (ia *IntAry) GetRuneArray() []rune {
 func (ia *IntAry) GetScaleFactor() (*big.Int, error) {
 	ia.SetInternalFlags()
 
-	err := ia.IsIntAryValid("GetScaleFactorBigInt() - ")
+	err := ia.IsValid("GetScaleFactorBigInt() - ")
 
 	if err != nil {
 		return big.NewInt(0), errors.New("This intAry is invalid")
@@ -2603,7 +2603,7 @@ func (ia *IntAry) GetThousandsSeparator() rune {
 // decimal place, the method returns 'true'.
 func (ia *IntAry) HasFractionalDigits() (bool, error) {
 
-	err := ia.IsIntAryValid("HasFractionalDigits() - ")
+	err := ia.IsValid("HasFractionalDigits() - ")
 
 	if err != nil {
 		return false, err
@@ -2722,12 +2722,12 @@ func (ia *IntAry) IncrementIntegerOne() error {
 	return nil
 }
 
-// IsIntAryValid - Examines the current intAry and returns
+// IsValid - Examines the current intAry and returns
 // an error if the intAry object is found to be invalid.
-func (ia *IntAry) IsIntAryValid(errName string) error {
+func (ia *IntAry) IsValid(errName string) error {
 
 	if errName == "" {
-		errName = "IntAry.IsIntAryValid() "
+		errName = "IntAry.IsValid() "
 	}
 
 	ia.SetInternalFlags()
@@ -2843,7 +2843,7 @@ func (ia *IntAry) IsOne() bool {
 //
 func (ia *IntAry) IsZero() bool {
 
-	err := ia.IsIntAryValid("")
+	err := ia.IsValid("")
 
 	if err != nil {
 		return true
@@ -3833,7 +3833,7 @@ func (ia *IntAry) RoundToPrecision(roundToPrecision int) error {
 		return nil
 	}
 
-	err := ia.IsIntAryValid("RoundToPrecision() - ")
+	err := ia.IsValid("RoundToPrecision() - ")
 
 	if err != nil {
 		return err
@@ -4880,7 +4880,7 @@ func (ia *IntAry) SetIntAryWithUint8Ary( iAry2 []uint8,precision uint, signVal i
 
 func (ia *IntAry) SetIntAryWithIntAryObj(iAry2 *IntAry, copyBackup bool) error {
 
-	err := iAry2.IsIntAryValid("SetIntAryWithIntAryObj()")
+	err := iAry2.IsValid("SetIntAryWithIntAryObj()")
 
 	if err != nil {
 		return fmt.Errorf("SetIntAryWithIntAryObj - Input parameter iAry2 is INVALID! Error= %v", err)
@@ -5019,7 +5019,7 @@ func (ia *IntAry) SetIntAryWithNumStr(str string) error {
 
 
 	// Validate intAry object
-	err = ia.IsIntAryValid(ePrefix + "- ")
+	err = ia.IsValid(ePrefix + "- ")
 
 	if err != nil {
 		return err
@@ -5269,7 +5269,7 @@ func (ia *IntAry) SetPrecision(precision int, roundResult bool) error {
 		return fmt.Errorf("SetPrecision() - Error: 'precision' value is less than ZERO! precision= '%v'", precision)
 	}
 
-	err := ia.IsIntAryValid("SetPrecision() - ")
+	err := ia.IsValid("SetPrecision() - ")
 
 	if err != nil {
 		return err

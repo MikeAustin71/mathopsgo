@@ -1212,7 +1212,7 @@ func (dec *Decimal) MakeDecimalFromIntAry(ia *IntAry) (Decimal, error) {
 
 	ia.SetInternalFlags()
 
-	err = ia.IsIntAryValid(ePrefix + "- ")
+	err = ia.IsValid(ePrefix + "- ")
 
 	if err != nil {
 		return Decimal{}.New(),

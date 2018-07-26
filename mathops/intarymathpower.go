@@ -29,13 +29,13 @@ func (iaPwr IntAryMathPower) Pwr(
 
 	ePrefix := "IntAryMathPower.Pwr() "
 
-	err := base.IsIntAryValid(ePrefix + "- base IntAry Error: ")
+	err := base.IsValid(ePrefix + "- base IntAry Error: ")
 
 	if err != nil {
 		return err
 	}
 
-	err = exponent.IsIntAryValid(ePrefix + "- exponent IntAry Error: ")
+	err = exponent.IsValid(ePrefix + "- exponent IntAry Error: ")
 
 	if err != nil {
 		return err
@@ -118,13 +118,13 @@ func (iaPwr IntAryMathPower) PwrByMultiplication(
   ePrefix := "IntAryMathPower.PwrByMultiplication() "
 	iaReturn := IntAry{}.NewZero(0)
 
-  err := base.IsIntAryValid(ePrefix + "Invalid 'base' - ")
+  err := base.IsValid(ePrefix + "Invalid 'base' - ")
 
   if err != nil {
 		return &iaReturn, err
 	}
 
-  err = exponent.IsIntAryValid(ePrefix + "Invalid 'exponent' - ")
+  err = exponent.IsValid(ePrefix + "Invalid 'exponent' - ")
 
 	if err != nil {
 		return &iaReturn, err

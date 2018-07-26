@@ -1031,13 +1031,13 @@ func (nthrt *NthRootOp) initialize(radicand, nthRoot *IntAry, maxPrecision int) 
 	ePrefix := "NthRootOp.initialize() "
 
 
-	err := radicand.IsIntAryValid(ePrefix + "'radicand' Invalid - ")
+	err := radicand.IsValid(ePrefix + "'radicand' Invalid - ")
 
 	if err != nil {
 		return err
 	}
 
-	err = nthRoot.IsIntAryValid(ePrefix + "'nthRoot' Invalid - ")
+	err = nthRoot.IsValid(ePrefix + "'nthRoot' Invalid - ")
 
 	if err != nil {
 		return err

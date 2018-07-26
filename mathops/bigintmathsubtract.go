@@ -486,29 +486,27 @@ func (bSubtract BigIntMathSubtract) SubtractIntAry(
 
 	ePrefix := "BigIntMathSubtract.SubtractIntAry() "
 
-	err := iaMinuend.IsIntAryValid(ePrefix + "'iaMinuend' INVALID! ")
+	// Method NewIntAry will test validity of iaMinuend
+	bINumMinuend, err := BigIntNum{}.NewIntAry(iaMinuend)
 
 	if err != nil {
-		return BigIntNum{}.New(), err
+		return BigIntNum{}.New(),
+		 fmt.Errorf(ePrefix + "Error returned from BigIntNum{}.NewIntAry(iaMinuend). " +
+		 	"Error='%v' ", err.Error())
 	}
 
-	err = iaSubtrahend.IsIntAryValid(ePrefix + "'iaSubtrahend' INVALID! ")
+	// Method NewIntAry will test validity of iaSubtrahend
+	bINumSubtrahend, err := BigIntNum{}.NewIntAry(iaSubtrahend)
 
 	if err != nil {
-		return BigIntNum{}.New(), err
+		return BigIntNum{}.New(),
+			fmt.Errorf(ePrefix + "Error returned from BigIntNum{}.NewIntAry(iaSubtrahend). " +
+				"Error='%v' ", err.Error())
 	}
-
 
 	numSeps := iaMinuend.GetNumericSeparatorsDto()
 
-	bPair, err := BigIntPair{}.NewIntAry(iaMinuend, iaSubtrahend)
-
-	if err != nil {
-		return BigIntNum{},
-			fmt.Errorf(ePrefix +
-				"Error returned by BigIntPair{}.NewIntAry(iaMinuend, iaSubtrahend). " +
-				"Error='%v' \n", err.Error())
-	}
+	bPair := BigIntPair{}.NewBigIntNum(bINumMinuend, bINumSubtrahend)
 
 	finalResult := bSubtract.subtractPairNoNumSeps(bPair)
 
@@ -552,14 +550,8 @@ func (bSubtract BigIntMathSubtract) SubtractIntAryArray(
 
 	ePrefix := "BigIntMathSubtract.SubtractInAryArray() "
 
-	err := minuend.IsIntAryValid(ePrefix + "'minuend' INVALID! ")
 
-	if err != nil {
-		return BigIntNum{}.New(), err
-	}
-
-	numSeps := minuend.GetNumericSeparatorsDto()
-
+	// NewIntAry method will test validity of 'minuend'
 	finalResult, err := BigIntNum{}.NewIntAry(minuend)
 
 	if err != nil {
@@ -568,6 +560,8 @@ func (bSubtract BigIntMathSubtract) SubtractIntAryArray(
 				"Error returned by BigIntNum{}.NewIntAry(minuend). " +
 				"minuend='%v' Error='%v'", minuend.GetNumStr(), err.Error())
 	}
+
+	numSeps := minuend.GetNumericSeparatorsDto()
 
 	lenSubtrahends := len(subtrahends)
 
@@ -579,6 +573,7 @@ func (bSubtract BigIntMathSubtract) SubtractIntAryArray(
 
 	for i:=0; i < lenSubtrahends; i++ {
 
+		// Method NewIntAry will test validity of subtrahends[i]
 		bigINum, err := BigIntNum{}.NewIntAry(subtrahends[i])
 
 		if err != nil {
@@ -635,10 +630,13 @@ func (bSubtract BigIntMathSubtract) SubtractIntAryOutputToArray(
 
 	ePrefix := "BigIntMathSubtract.SubtractIntAryOutputToArray() "
 
-	err := minuend.IsIntAryValid(ePrefix + "'minuend' INVALID! ")
+	// NewIntAry will test validity of 'minuend'
+	bINumMinuend, err := BigIntNum{}.NewIntAry(minuend)
 
 	if err != nil {
-		return []IntAry{}, err
+		return []IntAry{},
+		fmt.Errorf(ePrefix + "Error returned by BigIntNum{}.NewIntAry(minuend). " +
+			"Error='%v' ", err.Error())
 	}
 
 	lenSubtrahends := len(subtrahends)
@@ -654,21 +652,16 @@ func (bSubtract BigIntMathSubtract) SubtractIntAryOutputToArray(
 
 	for i:=0; i < lenSubtrahends; i++ {
 
-		err := subtrahends[i].IsIntAryValid(ePrefix + fmt.Sprintf("'subtrahend[%v] INVALID!", i))
-
-		if err != nil {
-			return []IntAry{}, err
-		}
-
-		bPair, err := BigIntPair{}.NewIntAry(minuend, subtrahends[i])
+		// Method NewIntAry will test validity of subtrahends[i]
+		bINumSubtrahend, err := BigIntNum{}.NewIntAry(subtrahends[i])
 
 		if err != nil {
 			return []IntAry{},
-				fmt.Errorf(ePrefix +
-					"Error returned by BigIntPair{}.NewIntAry(minuend, subtrahends[i]) " +
-					"minuend='%v' subtrahends[%v]='%v' Error='%v'. ",
-					minuend.GetNumStr(), i, subtrahends[i].GetNumStr(), err.Error())
+			fmt.Errorf(ePrefix + "Error returned by BigIntNum{}.NewIntAry(subtrahends[%v]). " +
+				"Error='%v' \n", i, err.Error())
 		}
+
+		bPair := BigIntPair{}.NewBigIntNum(bINumMinuend, bINumSubtrahend)
 
 		result := bSubtract.subtractPairNoNumSeps(bPair)
 
@@ -722,12 +715,7 @@ func (bSubtract BigIntMathSubtract) SubtractIntArySeries(
 
 	ePrefix := "BigIntMathSubtract.SubtractIntArySeries() "
 
-	err := minuend.IsIntAryValid(ePrefix + "'minuend' INVALID! ")
-
-	if err != nil {
-		return BigIntNum{}.New(), err
-	}
-
+	// Method New IntAry will test the validity of minuend
 	finalResult, err := BigIntNum{}.NewIntAry(minuend)
 
 	if err != nil {
@@ -747,12 +735,7 @@ func (bSubtract BigIntMathSubtract) SubtractIntArySeries(
 
 	for i, subtrahend := range subtrahends {
 
-		err := subtrahend.IsIntAryValid(ePrefix + fmt.Sprintf("subtrahend[%v] INVALID! ", i))
-
-		if err != nil {
-			return BigIntNum{}.New(), err
-		}
-
+	  // Method NewIntAry will test the validity of IntAry subtrahend
 		bigINumSubtrahend, err := BigIntNum{}.NewIntAry(subtrahend)
 
 		if err != nil {
@@ -767,7 +750,6 @@ func (bSubtract BigIntMathSubtract) SubtractIntArySeries(
 
 		finalResult = bSubtract.subtractPairNoNumSeps(bPair)
 	}
-
 
 	err = finalResult.SetNumericSeparatorsDto(numSeps)
 
