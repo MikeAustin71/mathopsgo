@@ -179,6 +179,12 @@ func (bPair BigIntPair) NewDecimal(dec1, dec2 Decimal) (BigIntPair, error) {
 		return BigIntPair{}, err
 	}
 
+	err = dec2.IsValid(ePrefix)
+
+	if err != nil {
+		return BigIntPair{}, err
+	}
+
 	b1Num := dec1.GetBigIntNum()
 
 	b2Num := dec2.GetBigIntNum()
@@ -192,6 +198,9 @@ func (bPair BigIntPair) NewDecimal(dec1, dec2 Decimal) (BigIntPair, error) {
 
 // NewIntAry - Creates a new BigIntPair instance from two
 // IntAry instances passed as input parameters.
+//
+// This method will test the validity of input parameters ia1 and
+// ia2.
 //
 // Be careful, IntAry's can accommodate very, very large numbers.
 //
@@ -226,9 +235,24 @@ func (bPair BigIntPair) NewIntAry(ia1, ia2 IntAry) (BigIntPair, error) {
 
 // NewINumMgr - Creates a new BigIntPair instance from two objects implementing the
 // INumMgr interface.
+//
+// This method will test the validity of num1 and num2
+//
 func (bPair BigIntPair) NewINumMgr(num1, num2 INumMgr) (BigIntPair, error) {
 
 	ePrefix := "BigIntPair.NewINumMgr() "
+
+	err := num1.IsValid(ePrefix + "'num1' INVALID! ")
+
+	if err != nil {
+		return BigIntPair{}, err
+	}
+
+	err = num2.IsValid(ePrefix + "'num2' INVALID! ")
+
+	if err != nil {
+		return BigIntPair{}, err
+	}
 
 	b1Num, err := num1.GetBigInt()
 
@@ -284,6 +308,8 @@ func (bPair BigIntPair) NewNumStr(n1NumStr, n2NumStr string) (BigIntPair, error)
 
 // NewNumStrDto - Creates a new BigIntPair instance from two NumStrDto
 // instances passed as input parameters.
+//
+// This method will test the validity of n1Dto and n2Dto
 //
 func (bPair BigIntPair) NewNumStrDto(n1Dto, n2Dto NumStrDto) (BigIntPair, error) {
 

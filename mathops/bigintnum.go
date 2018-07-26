@@ -2731,6 +2731,8 @@ func (bNum *BigIntNum) SetFloat64(f64 float64, maxPrecision uint) error {
 // 'numMgr' as a value. The pointer to the type is needed in or order to
 // call methods on 'numMgr'.
 //
+// This method will test the validity of input parameter, 'numMgr'.
+//
 // Example 1:
 //	dec, err := Decimal{}.NewNumStr(nStr)
 //	bINum := BigIntNum{}
@@ -2750,6 +2752,12 @@ func (bNum *BigIntNum) SetFloat64(f64 float64, maxPrecision uint) error {
 func (bNum *BigIntNum) SetINumMgr(numMgr INumMgr) error {
 
 	ePrefix := "BigIntNum.SetINumMgr() "
+
+	err := numMgr.IsValid(ePrefix + "numMgr INVALID! ")
+
+	if err != nil {
+		return err
+	}
 
 	bigInt, err := numMgr.GetBigInt()
 
