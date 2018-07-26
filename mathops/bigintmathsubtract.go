@@ -67,22 +67,18 @@ func (bSubtract BigIntMathSubtract) SubtractBigInts(
 // SubtractBigIntNums - Receives two 'BigIntNum' instances and proceeds to subtract
 // b2 from b2.
 //
-// 								b1 - b2 = difference
-//								'minuend' - 'subtrahend' = difference or result
-//								b1 = 'minuend'
-//								b2 = 'subtrahend'
-//
+// 								'minuend' - 'subtrahend' = difference or result
 //
 // After the subtraction operation, the 'difference' or 'result' is returned as a
 // Type BigIntNum. The returned BigIntNum 'result' will contain numeric separators
 // (decimal separator, thousands separator and currency symbol) copied from the
-// input parameter 'b1', the minuend.
+// input parameter, 'minuend'.
 //
-func (bSubtract BigIntMathSubtract) SubtractBigIntNums(b1, b2 BigIntNum) BigIntNum {
+func (bSubtract BigIntMathSubtract) SubtractBigIntNums(minuend, subtrahend BigIntNum) BigIntNum {
 
-	numSeps := b1.GetNumericSeparatorsDto()
+	numSeps := minuend.GetNumericSeparatorsDto()
 
-	bPair := BigIntPair{}.NewBigIntNum(b1, b2)
+	bPair := BigIntPair{}.NewBigIntNum(minuend, subtrahend)
 
 	bigIntNumResult := bSubtract.subtractPairNoNumSeps(bPair)
 

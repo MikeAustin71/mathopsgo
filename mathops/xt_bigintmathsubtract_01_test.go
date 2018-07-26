@@ -243,7 +243,6 @@ func TestBigIntMathSubtract_SubtractBigInts_04(t *testing.T) {
 
 }
 
-
 func TestBigIntMathSubtract_SubtractBigIntNums_01(t *testing.T) {
 	// minuend = 123.32
 	minuendStr := "123.32"
@@ -442,6 +441,65 @@ func TestBigIntMathSubtract_SubtractBigIntNums_04(t *testing.T) {
 	if expectedBigINumSign != result.sign {
 		t.Errorf("Error: Expected number sign='%v'. Instead, number sign='%v'",
 			expectedBigINumSign, result.sign)
+	}
+
+}
+
+func TestBigIntMathSubtract_SubtractBigIntNums_05(t *testing.T) {
+	// minuend = 123.32
+	minuendStr := "123.32"
+
+	// subtrahend = 23.321
+	subtrahendStr := "23.321"
+
+	// result = 99.999
+	expectedResultStr := "99,999"
+
+
+	minuendBiNum, err := BigIntNum{}.NewNumStr(minuendStr)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(minuendStr) " +
+			"minuendStr='%v'  Error='%v'. ", minuendStr, err.Error())
+	}
+
+	expectedNumSeps := NumericSeparatorDto{}
+	frenchDecSeparator := ','
+	frenchThousandsSeparator := ' '
+	frenchCurrencySymbol := '€'
+
+	expectedNumSeps.DecimalSeparator = frenchDecSeparator
+	expectedNumSeps.ThousandsSeparator = frenchThousandsSeparator
+	expectedNumSeps.CurrencySymbol = frenchCurrencySymbol
+
+	err = minuendBiNum.SetNumericSeparatorsDto(expectedNumSeps)
+
+	if err != nil {
+		t.Errorf("Error returned by minuendBiNum.SetNumericSeparatorsDto(expectedNumSeps). " +
+			"Error='%v' ", err.Error())
+	}
+
+	subtrahendBiNum, err := BigIntNum{}.NewNumStr(subtrahendStr)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(subtrahendStr) " +
+			"subtrahendStr='%v'  Error='%v'. ", subtrahendStr, err.Error())
+	}
+
+	result := BigIntMathSubtract{}.SubtractBigIntNums(minuendBiNum, subtrahendBiNum)
+
+	actualResultStr := result.GetNumStr()
+
+	if expectedResultStr != actualResultStr {
+		t.Errorf("Error: Expected BigIntNum='%v'. Instead, BigIntNum= '%v'. ",
+			expectedResultStr, actualResultStr)
+	}
+
+	actualNumSeps := result.GetNumericSeparatorsDto()
+
+	if !expectedNumSeps.Equal(actualNumSeps) {
+		t.Errorf("Error: Expected numSeps='%v'. Instead, numSeps='%v'. ",
+			expectedNumSeps.String(), actualNumSeps.String())
 	}
 
 }
