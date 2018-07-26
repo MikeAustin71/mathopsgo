@@ -3,8 +3,7 @@ package mathops
 import (
 	"testing"
 	"math/big"
-	"errors"
-)
+	)
 
 func TestBigIntNum_NewBigFloat_01(t *testing.T) {
 
@@ -374,7 +373,7 @@ func TestBigIntNum_NewINumMgr_01(t *testing.T) {
 	bOriginal, isOk := big.NewInt(0).SetString(nbStr, 10)
 
 	if !isOk {
-		errors.New("Error returned by big.NewInt(0).SetString(nbStr, 10).")
+		t.Error("Error returned by big.NewInt(0).SetString(nbStr, 10).")
 	}
 
 	expectedAbsBigInt := big.NewInt(0).Set(bOriginal)
@@ -444,7 +443,7 @@ func TestBigIntNum_NewINumMgr_02(t *testing.T) {
 	bOriginal, isOk := big.NewInt(0).SetString(nbStr, 10)
 
 	if !isOk {
-		errors.New("Error returned by big.NewInt(0).SetString(nbStr, 10).")
+		t.Error("Error returned by big.NewInt(0).SetString(nbStr, 10).")
 	}
 
 	expectedAbsBigInt := big.NewInt(0).Set(bOriginal)
@@ -515,7 +514,7 @@ func TestBigIntNum_NewINumMgr_03(t *testing.T) {
 	bOriginal, isOk := big.NewInt(0).SetString(nbStr, 10)
 
 	if !isOk {
-		errors.New("Error returned by big.NewInt(0).SetString(nbStr, 10).")
+		t.Error("Error returned by big.NewInt(0).SetString(nbStr, 10).")
 	}
 
 	expectedAbsBigInt := big.NewInt(0).Set(bOriginal)
@@ -585,7 +584,7 @@ func TestBigIntNum_NewINumMgr_04(t *testing.T) {
 	bOriginal, isOk := big.NewInt(0).SetString(nbStr, 10)
 
 	if !isOk {
-		errors.New("Error returned by big.NewInt(0).SetString(nbStr, 10).")
+		t.Error("Error returned by big.NewInt(0).SetString(nbStr, 10).")
 	}
 
 	expectedAbsBigInt := big.NewInt(0).Set(bOriginal)
@@ -656,7 +655,7 @@ func TestBigIntNum_NewINumMgr_05(t *testing.T) {
 	bOriginal, isOk := big.NewInt(0).SetString(nbStr, 10)
 
 	if !isOk {
-		errors.New("Error returned by big.NewInt(0).SetString(nbStr, 10).")
+		t.Error("Error returned by big.NewInt(0).SetString(nbStr, 10).")
 	}
 
 	expectedAbsBigInt := big.NewInt(0).Set(bOriginal)
@@ -727,7 +726,7 @@ func TestBigIntNum_NewNumStr_01(t *testing.T) {
 	bOriginal, isOk := big.NewInt(0).SetString(nbStr, 10)
 
 	if !isOk {
-		errors.New("Error returned by big.NewInt(0).SetString(nbStr, 10).")
+		t.Error("Error returned by big.NewInt(0).SetString(nbStr, 10).")
 	}
 
 	expectedAbsBigInt := big.NewInt(0).Set(bOriginal)
@@ -777,7 +776,7 @@ func TestBigIntNum_NewNumStr_02(t *testing.T) {
 	bOriginal, isOk := big.NewInt(0).SetString(nbStr, 10)
 
 	if !isOk {
-		errors.New("Error returned by big.NewInt(0).SetString(nbStr, 10).")
+		t.Error("Error returned by big.NewInt(0).SetString(nbStr, 10).")
 	}
 
 	expectedAbsBigInt := big.NewInt(0).Neg(bOriginal)
@@ -1194,7 +1193,7 @@ func TestBigIntNum_NumStrDto_01(t *testing.T) {
 	bOriginal, isOk := big.NewInt(0).SetString(nbStr, 10)
 
 	if !isOk {
-		errors.New("Error returned by big.NewInt(0).SetString(nbStr, 10).")
+		t.Error("Error returned by big.NewInt(0).SetString(nbStr, 10).")
 	}
 
 	expectedAbsBigInt := big.NewInt(0).Set(bOriginal)
@@ -1256,7 +1255,7 @@ func TestBigIntNum_NumStrDto_02(t *testing.T) {
 	bOriginal, isOk := big.NewInt(0).SetString(nbStr, 10)
 
 	if !isOk {
-		errors.New("Error returned by big.NewInt(0).SetString(nbStr, 10).")
+		t.Error("Error returned by big.NewInt(0).SetString(nbStr, 10).")
 	}
 
 	expectedAbsBigInt := big.NewInt(0).Neg(bOriginal)

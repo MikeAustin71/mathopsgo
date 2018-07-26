@@ -2449,13 +2449,13 @@ func (bNum *BigIntNum) SetBigFloat(bigFloat *big.Float, maxPrecision uint) error
 
 	if accuracyFlag == -1 {
 		return errors.New(ePrefix +
-			"Error: Conversion of input parameter 'bigFloat' resulted in Accuacy Flag == -1 " +
+			"Error: Conversion of input parameter 'bigFloat' resulted in Accuracy Flag == -1 " +
 			"or 'Below Accuracy' Conversion is NOT Exact!")
 	}
 
 	if accuracyFlag == 1 {
 		return errors.New(ePrefix +
-			"Error: Conversion of input parameter 'bigFloat' resulted in Accuacy Flag == +1 " +
+			"Error: Conversion of input parameter 'bigFloat' resulted in Accuracy Flag == +1 " +
 			"or 'Above Accuracy' Conversion is NOT Exact!")
 	}
 
@@ -2885,8 +2885,8 @@ func (bNum *BigIntNum) SetNumStr(numStr string) error {
 //
 // Useful in tracking leading zeros.
 //
-func (bNum *BigIntNum) SetExpectedNumberOfDigits(numOfDigts *big.Int) {
-		bNum.numberOfExpectedDigits = big.NewInt(0).Set(numOfDigts)
+func (bNum *BigIntNum) SetExpectedNumberOfDigits(numOfDigits *big.Int) {
+		bNum.numberOfExpectedDigits = big.NewInt(0).Set(numOfDigits)
 }
 
 // SetExpectedToActualNumberOfDigits - Sets the 'Expected' number of numeric

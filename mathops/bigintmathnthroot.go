@@ -26,10 +26,10 @@ type BigIntMathNthRoot struct {
 	IntBundleRadicand     BigIntNum
 	FracBundleRadicand    BigIntNum
 	BundleAddOnPrecision  *big.Int
-	FracBundleLength			*big.Int
+	FracBundleLength      *big.Int
 	TotalBundleLength     *big.Int
 	ResultBInt            *big.Int
-	AcutalResultPrecision *big.Int
+	ActualResultPrecision *big.Int
 	FracPrecision         *big.Int
 	//ResultPrecision    int
 	ResultBINum        BigIntNum
@@ -363,7 +363,7 @@ func (nthrt *BigIntMathNthRoot) calcPositiveFractionalNthRoot(radicand, nthRoot 
 		return radicand.CopyOut(), nil
 	}
 
-	// Denomerator of ratFraction is exponent for current radicand.
+	// Denominator of ratFraction is exponent for current radicand.
 	exponent := BigIntNum{}.NewBigInt(ratFraction.Denom(), 0)
 
 	radicandPrecision := BigIntNum{}.NewBigInt(big.NewInt(int64(radicand.GetPrecisionUint())),0)
@@ -503,7 +503,7 @@ func (nthrt *BigIntMathNthRoot) initialize(
 
 	radicandPrecision := big.NewInt(int64(nthrt.SetupRadicand.GetPrecisionUint()))
 
-	nthrt.AcutalResultPrecision, errx =
+	nthrt.ActualResultPrecision, errx =
 		nthrt.calcPrecision(radicandPrecision,
 													nthrt.FracBundleLength,
 														precisionAdjustment,
@@ -728,7 +728,7 @@ func (nthrt  *BigIntMathNthRoot) calcBundleLength(
 // result output by the Nth Root calculation.  Actual result precision is
 // equal to the Bundle Add On Precision + the quotient of radicand precision
 // divided by nthRoot.
-//			bundleAddOnPrecion + Quotient(radicandPrecision/nthRoot)
+//			bundleAddOnPrecision + Quotient(radicandPrecision/nthRoot)
 //
 func (nthrt *BigIntMathNthRoot) calcPrecision(
 			radicandPrecision,
@@ -795,7 +795,7 @@ func (nthrt *BigIntMathNthRoot) doRootExtraction() error {
 		nthrt.ResultBInt = big.NewInt(0).Neg(nthrt.ResultBInt)
 	}
 
-	actualPrecision := uint(nthrt.AcutalResultPrecision.Int64())
+	actualPrecision := uint(nthrt.ActualResultPrecision.Int64())
 
 	nthrt.ResultBINum = BigIntNum{}.NewBigInt(nthrt.ResultBInt, actualPrecision)
 

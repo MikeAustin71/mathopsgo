@@ -3,8 +3,7 @@ package mathops
 import (
 	"testing"
 	"math/big"
-	"errors"
-)
+	)
 
 
 func TestBigIntPair_Compare_01(t *testing.T) {
@@ -200,7 +199,7 @@ func TestBigIntPair_NewBase_01(t *testing.T) {
 	b1, oK := big.NewInt(0).SetString(num1Str, 10)
 
 	if !oK {
-		errors.New("Error returned from big.NewInt(0).SetString(num1Str, 10)")
+		t.Error("Error returned from big.NewInt(0).SetString(num1Str, 10)")
 	}
 
 	b1Precision := uint(4)
@@ -212,7 +211,7 @@ func TestBigIntPair_NewBase_01(t *testing.T) {
 	b2, oK := big.NewInt(0).SetString(num2Str, 10)
 
 	if !oK {
-		errors.New("Error returned from big.NewInt(0).SetString(num2Str, 10)")
+		t.Error("Error returned from big.NewInt(0).SetString(num2Str, 10)")
 	}
 
 	b2Precision := uint(2)
@@ -289,7 +288,7 @@ func TestBigIntPair_NewBase_02(t *testing.T) {
 	b1, oK := big.NewInt(0).SetString(num1Str, 10)
 
 	if !oK {
-		errors.New("Error returned from big.NewInt(0).SetString(num1Str, 10)")
+		t.Error("Error returned from big.NewInt(0).SetString(num1Str, 10)")
 	}
 
 	b1Precision := uint(4)
@@ -301,7 +300,7 @@ func TestBigIntPair_NewBase_02(t *testing.T) {
 	b2, oK := big.NewInt(0).SetString(num2Str, 10)
 
 	if !oK {
-		errors.New("Error returned from big.NewInt(0).SetString(num2Str, 10)")
+		t.Error("Error returned from big.NewInt(0).SetString(num2Str, 10)")
 	}
 
 	b2Precision := uint(2)
@@ -379,7 +378,7 @@ func TestBigIntPair_NewBigIntNum_01(t *testing.T) {
 	b1, oK := big.NewInt(0).SetString(num1Str, 10)
 
 	if !oK {
-		errors.New("Error returned from big.NewInt(0).SetString(num1Str, 10)")
+		t.Error("Error returned from big.NewInt(0).SetString(num1Str, 10)")
 	}
 
 	b1Precision := uint(4)
@@ -391,7 +390,7 @@ func TestBigIntPair_NewBigIntNum_01(t *testing.T) {
 	b2, oK := big.NewInt(0).SetString(num2Str, 10)
 
 	if !oK {
-		errors.New("Error returned from big.NewInt(0).SetString(num2Str, 10)")
+		t.Error("Error returned from big.NewInt(0).SetString(num2Str, 10)")
 	}
 
 	b2Precision := uint(2)
@@ -472,7 +471,7 @@ func TestBigIntPair_NewBigIntNum_02(t *testing.T) {
 	b1, oK := big.NewInt(0).SetString(num1Str, 10)
 
 	if !oK {
-		errors.New("Error returned from big.NewInt(0).SetString(num1Str, 10)")
+		t.Error("Error returned from big.NewInt(0).SetString(num1Str, 10)")
 	}
 
 	b1Precision := uint(4)
@@ -484,7 +483,7 @@ func TestBigIntPair_NewBigIntNum_02(t *testing.T) {
 	b2, oK := big.NewInt(0).SetString(num2Str, 10)
 
 	if !oK {
-		errors.New("Error returned from big.NewInt(0).SetString(num2Str, 10)")
+		t.Error("Error returned from big.NewInt(0).SetString(num2Str, 10)")
 	}
 
 	b2Precision := uint(2)
@@ -565,7 +564,7 @@ func TestBigIntPair_NewNumStr_01(t *testing.T) {
 	b1, oK := big.NewInt(0).SetString(num1Str, 10)
 
 	if !oK {
-		errors.New("Error returned from big.NewInt(0).SetString(num1Str, 10)")
+		t.Error("Error returned from big.NewInt(0).SetString(num1Str, 10)")
 	}
 
 	b1Precision := uint(4)
@@ -577,7 +576,7 @@ func TestBigIntPair_NewNumStr_01(t *testing.T) {
 	b2, oK := big.NewInt(0).SetString(num2Str, 10)
 
 	if !oK {
-		errors.New("Error returned from big.NewInt(0).SetString(num2Str, 10)")
+		t.Error("Error returned from big.NewInt(0).SetString(num2Str, 10)")
 	}
 
 	b2Precision := uint(2)
@@ -661,7 +660,7 @@ func TestBigIntPair_NewNumStr_02(t *testing.T) {
 	b1, oK := big.NewInt(0).SetString(num1Str, 10)
 
 	if !oK {
-		errors.New("Error returned from big.NewInt(0).SetString(num1Str, 10)")
+		t.Error("Error returned from big.NewInt(0).SetString(num1Str, 10)")
 	}
 
 	b1Precision := uint(4)
@@ -673,7 +672,7 @@ func TestBigIntPair_NewNumStr_02(t *testing.T) {
 	b2, oK := big.NewInt(0).SetString(num2Str, 10)
 
 	if !oK {
-		errors.New("Error returned from big.NewInt(0).SetString(num2Str, 10)")
+		t.Error("Error returned from big.NewInt(0).SetString(num2Str, 10)")
 	}
 
 	b2Precision := uint(2)
@@ -756,7 +755,7 @@ func TestBigIntPair_NewNumStrDto_01(t *testing.T) {
 	b1, oK := big.NewInt(0).SetString(num1Str, 10)
 
 	if !oK {
-		errors.New("Error returned from big.NewInt(0).SetString(num1Str, 10)")
+		t.Error("Error returned from big.NewInt(0).SetString(num1Str, 10)")
 	}
 
 	b1Precision := uint(4)
@@ -768,7 +767,7 @@ func TestBigIntPair_NewNumStrDto_01(t *testing.T) {
 	b2, oK := big.NewInt(0).SetString(num2Str, 10)
 
 	if !oK {
-		errors.New("Error returned from big.NewInt(0).SetString(num2Str, 10)")
+		t.Error("Error returned from big.NewInt(0).SetString(num2Str, 10)")
 	}
 
 	b2Precision := uint(2)
@@ -866,7 +865,7 @@ func TestBigIntPair_NewNumStrDto_02(t *testing.T) {
 	b1, oK := big.NewInt(0).SetString(num1Str, 10)
 
 	if !oK {
-		errors.New("Error returned from big.NewInt(0).SetString(num1Str, 10)")
+		t.Error("Error returned from big.NewInt(0).SetString(num1Str, 10)")
 	}
 
 	b1Precision := uint(4)
@@ -878,7 +877,7 @@ func TestBigIntPair_NewNumStrDto_02(t *testing.T) {
 	b2, oK := big.NewInt(0).SetString(num2Str, 10)
 
 	if !oK {
-		errors.New("Error returned from big.NewInt(0).SetString(num2Str, 10)")
+		t.Error("Error returned from big.NewInt(0).SetString(num2Str, 10)")
 	}
 
 	b2Precision := uint(2)
@@ -975,7 +974,7 @@ func TestBigIntPair_NewIntAry_01(t *testing.T) {
 	b1, oK := big.NewInt(0).SetString(num1Str, 10)
 
 	if !oK {
-		errors.New("Error returned from big.NewInt(0).SetString(num1Str, 10)")
+		t.Error("Error returned from big.NewInt(0).SetString(num1Str, 10)")
 	}
 
 	b1Precision := uint(4)
@@ -987,7 +986,7 @@ func TestBigIntPair_NewIntAry_01(t *testing.T) {
 	b2, oK := big.NewInt(0).SetString(num2Str, 10)
 
 	if !oK {
-		errors.New("Error returned from big.NewInt(0).SetString(num2Str, 10)")
+		t.Error("Error returned from big.NewInt(0).SetString(num2Str, 10)")
 	}
 
 	b2Precision := uint(2)
@@ -1085,7 +1084,7 @@ func TestBigIntPair_NewIntAry_02(t *testing.T) {
 	b1, oK := big.NewInt(0).SetString(num1Str, 10)
 
 	if !oK {
-		errors.New("Error returned from big.NewInt(0).SetString(num1Str, 10)")
+		t.Error("Error returned from big.NewInt(0).SetString(num1Str, 10)")
 	}
 
 	b1Precision := uint(4)
@@ -1097,7 +1096,7 @@ func TestBigIntPair_NewIntAry_02(t *testing.T) {
 	b2, oK := big.NewInt(0).SetString(num2Str, 10)
 
 	if !oK {
-		errors.New("Error returned from big.NewInt(0).SetString(num2Str, 10)")
+		t.Error("Error returned from big.NewInt(0).SetString(num2Str, 10)")
 	}
 
 	b2Precision := uint(2)
@@ -1194,7 +1193,7 @@ func TestBigIntPair_Decimal_01(t *testing.T) {
 	b1, oK := big.NewInt(0).SetString(num1Str, 10)
 
 	if !oK {
-		errors.New("Error returned from big.NewInt(0).SetString(num1Str, 10)")
+		t.Error("Error returned from big.NewInt(0).SetString(num1Str, 10)")
 	}
 
 	b1Precision := uint(4)
@@ -1206,7 +1205,7 @@ func TestBigIntPair_Decimal_01(t *testing.T) {
 	b2, oK := big.NewInt(0).SetString(num2Str, 10)
 
 	if !oK {
-		errors.New("Error returned from big.NewInt(0).SetString(num2Str, 10)")
+		t.Error("Error returned from big.NewInt(0).SetString(num2Str, 10)")
 	}
 
 	b2Precision := uint(2)
@@ -1304,7 +1303,7 @@ func TestBigIntPair_Decimal_02(t *testing.T) {
 	b1, oK := big.NewInt(0).SetString(num1Str, 10)
 
 	if !oK {
-		errors.New("Error returned from big.NewInt(0).SetString(num1Str, 10)")
+		t.Error("Error returned from big.NewInt(0).SetString(num1Str, 10)")
 	}
 
 	b1Precision := uint(4)
@@ -1316,7 +1315,7 @@ func TestBigIntPair_Decimal_02(t *testing.T) {
 	b2, oK := big.NewInt(0).SetString(num2Str, 10)
 
 	if !oK {
-		errors.New("Error returned from big.NewInt(0).SetString(num2Str, 10)")
+		t.Error("Error returned from big.NewInt(0).SetString(num2Str, 10)")
 	}
 
 	b2Precision := uint(2)

@@ -3235,7 +3235,7 @@ func TestBigIntMathSubtract_SubtractIntAryArray_01(t *testing.T) {
 	subtrahend5:= "28"
 
 	// result = 6805998.231036
-	expectedBigINumStr := "6805998.231036"
+	expectedBigINumStr := "6805998231036"
 	expectedBigINumSign := 1
 
 	iaMinuend, err := IntAry{}.NewNumStr(minuendStr)

@@ -757,7 +757,7 @@ func (iaPwr *IntAryMathPower) pwrMultiplyNegativeFractionalExponent(
 	newInverseBase, err := base.Inverse(internalMaxPrecision)
 
 	if err != nil {
-		fmt.Errorf(ePrefix +
+		return &iaErrReturn, fmt.Errorf(ePrefix +
 			"Error returned by base.Inverse(internalMaxPrecision) " +
 			"Error='%v' ", err.Error())
 	}

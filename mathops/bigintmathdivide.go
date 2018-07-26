@@ -82,17 +82,17 @@ func (bIDivide BigIntMathDivide) BigIntNumQuotientMod(
 
 	bPair.MaxPrecision = maxPrecision
 
-	var errx error
+	var err2 error
 
-	quotient, modulo, errx = BigIntMathDivide{}.PairQuotientMod(bPair)
+	quotient, modulo, err2 = BigIntMathDivide{}.PairQuotientMod(bPair)
 
-	if errx != nil {
+	if err2 != nil {
 		quotient = BigIntNum{}.NewBigInt(big.NewInt(0), 0)
 		modulo = BigIntNum{}.NewBigInt(big.NewInt(0), 0)
 		err = fmt.Errorf(ePrefix + "Error returned by BigIntMathDivide{}.PairQuotientMod(bPair) " +
 			"dividend='%v' divisor='%v' maxPrecision='%v' Error='%v'",
 				bPair.Big1.GetNumStr(), bPair.Big2.GetNumStr(),
-					bPair.MaxPrecision, errx.Error())
+					bPair.MaxPrecision, err2.Error())
 
 		return quotient, modulo, err
 	}
@@ -1495,7 +1495,7 @@ func (bIDivide BigIntMathDivide) INumMgrFracQuotient(
 }
 
 // INumMgrFracQuotientArray - Performs a division operation on input parameters
-// 'dividends' and 'divisor' which implement the INumMgr interfce. 'dividends'
+// 'dividends' and 'divisor' which implement the INumMgr interface. 'dividends'
 // is an array of types implementing the INumMgr interface. The division operation
 // is performed on each element of the 'dividends' array using a single 'divisor'.
 //

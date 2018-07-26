@@ -3,7 +3,6 @@ package mathops
 import (
 	"testing"
 	"math/big"
-	"errors"
 )
 
 func TestBigIntNum_GetFractionalPart_01(t *testing.T) {
@@ -1198,7 +1197,7 @@ func TestBigIntNum_IntAry_01(t *testing.T) {
 	bOriginal, isOk := big.NewInt(0).SetString(nbStr, 10)
 
 	if !isOk {
-		errors.New("Error returned by big.NewInt(0).SetString(nbStr, 10).")
+		t.Error("Error returned by big.NewInt(0).SetString(nbStr, 10).")
 	}
 
 	expectedAbsBigInt := big.NewInt(0).Set(bOriginal)
@@ -1263,7 +1262,7 @@ func TestBigIntNum_IntAry_02(t *testing.T) {
 	bOriginal, isOk := big.NewInt(0).SetString(nbStr, 10)
 
 	if !isOk {
-		errors.New("Error returned by big.NewInt(0).SetString(nbStr, 10).")
+		t.Error("Error returned by big.NewInt(0).SetString(nbStr, 10).")
 	}
 
 	expectedAbsBigInt := big.NewInt(0).Neg(bOriginal)
