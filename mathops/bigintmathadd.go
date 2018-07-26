@@ -466,7 +466,7 @@ func (bAdd BigIntMathAdd) AddIntAry(ia1, ia2 IntAry) (BigIntNum, error) {
 //
 // The BigIntNum 'result' returned by this addition operation will contain numeric
 // separators (decimal separator, thousands separator and currency symbol) which
-// were copied from the first element of the input array ([]IntAry) 'iarys'.
+// were copied from the first element of the input array, iarys[0].
 //
 func (bAdd BigIntMathAdd) AddIntAryArray(iarys []IntAry) (BigIntNum, error) {
 

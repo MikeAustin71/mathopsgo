@@ -3432,6 +3432,77 @@ func TestBigIntMathAdd_AddIntAryArray_02(t *testing.T) {
 
 }
 
+func TestBigIntMathAdd_AddIntAryArray_03(t *testing.T) {
+	numStrAry := []string{
+		"45.8",
+		"1.45962",
+		"58.71",
+		"-37.62174",
+		"89.8",
+	}
+
+	lenStrAry:= len(numStrAry)
+
+	expectedTotalStr := "158,14788"
+
+	iaArray := make([]IntAry, lenStrAry)
+
+	for i:=0; i < lenStrAry; i++ {
+
+		ia, err := IntAry{}.NewNumStr(numStrAry[i])
+
+		if err != nil {
+
+			if err != nil {
+				t.Errorf("Error returned by IntAry{}.NewNumStr(numStrAry[i]) " +
+					"i='%v' numStrAry[i]='%v' Error='%v' ",i, numStrAry[i], err.Error())
+			}
+
+		}
+
+		iaArray[i] = ia
+
+	}
+
+	expectedNumSeps := NumericSeparatorDto{}
+	frenchDecSeparator := ','
+	frenchThousandsSeparator := ' '
+	frenchCurrencySymbol := '€'
+
+	expectedNumSeps.DecimalSeparator = frenchDecSeparator
+	expectedNumSeps.ThousandsSeparator = frenchThousandsSeparator
+	expectedNumSeps.CurrencySymbol = frenchCurrencySymbol
+
+	err := iaArray[0].SetNumericSeparatorsDto(expectedNumSeps)
+
+	if err != nil {
+		t.Errorf("Error returned by iaArray[0].SetNumericSeparatorsDto(expectedNumSeps). " +
+			"Error='%v'", err.Error())
+	}
+
+	total, err := BigIntMathAdd{}.AddIntAryArray(iaArray)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntMathAdd{}.AddIntAryArray(iaArray). " +
+			"Error='%v' ", err.Error())
+	}
+
+	actualTotalNumstr := total.GetNumStr()
+
+	if expectedTotalStr != actualTotalNumstr {
+		t.Errorf("Expected NumStr='%v'. Instead, NumStr='%v'",
+			expectedTotalStr, actualTotalNumstr)
+	}
+
+	actualNumSeps := total.GetNumericSeparatorsDto()
+
+	if !expectedNumSeps.Equal(actualNumSeps) {
+		t.Errorf("Error: Expected numSeps='%v'. Instead, numSeps='%v'",
+			expectedNumSeps.String(), actualNumSeps.String())
+	}
+
+}
+
 func TestBigIntMathAdd_AddIntAryOutputToArray_01(t *testing.T) {
 
 	var err error
@@ -3560,6 +3631,96 @@ func TestBigIntMathAdd_AddIntAryOutputToArray_02(t *testing.T) {
 		if expectedNumStrs[j] != result[j].GetNumStr()  {
 			t.Errorf("Error: Expected NumStr[%v]='%v'. Instead NumStr[%v]='%v'. ",
 				j, expectedNumStrs[j], j, result[j].GetNumStr())
+		}
+	}
+}
+
+func TestBigIntMathAdd_AddIntAryOutputToArray_03(t *testing.T) {
+
+	var err error
+
+	// addendStr = 5
+	addendStr := "5"
+
+	// iaNumStrs
+	iaNumStrs :=  [] string {
+		"5",
+		"10.123",
+		"15",
+		"253.692",
+		"35",
+		"55",
+	}
+
+	// Expected Results Array
+	expectedNumStrs := [] string {
+		"10",
+		"15,123",
+		"20",
+		"258,692",
+		"40",
+		"60",
+	}
+
+
+	iaAddend, err := IntAry{}.NewNumStr(addendStr)
+
+	if err != nil {
+		t.Errorf("Error returned by IntAry{}.NewNumStr(addendStr) " +
+			"addendStr='%v'  Error='%v'. ", addendStr, err.Error())
+	}
+
+
+	expectedNumSeps := NumericSeparatorDto{}
+	frenchDecSeparator := ','
+	frenchThousandsSeparator := ' '
+	frenchCurrencySymbol := '€'
+
+	expectedNumSeps.DecimalSeparator = frenchDecSeparator
+	expectedNumSeps.ThousandsSeparator = frenchThousandsSeparator
+	expectedNumSeps.CurrencySymbol = frenchCurrencySymbol
+
+	err = iaAddend.SetNumericSeparatorsDto(expectedNumSeps)
+
+	if err != nil {
+		t.Errorf("Error returned by iaAddend.SetNumericSeparatorsDto(expectedNumSeps). " +
+			"Error='%v' ", err.Error())
+	}
+
+	lenArray := len(iaNumStrs)
+	iaArray := make([]IntAry, lenArray)
+
+	for i:=0; i < lenArray; i++ {
+
+		iaArray[i], err = 	IntAry{}.NewNumStr(iaNumStrs[i])
+
+		if err != nil {
+			t.Errorf("Error returned by IntAry{}.NewNumStr(iaNumStrs[i]) " +
+				"i='%v'  iaNumStrs[i]='%v'  Error='%v'. ", i, iaNumStrs[i], err.Error())
+		}
+
+	}
+
+	result, err := BigIntMathAdd{}.AddIntAryOutputToArray(iaAddend, iaArray)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntMathAdd{}.AddIntAryOutputToArray(" +
+			"iaAddend, iaArray) addendStr='%v'  Error='%v'. ",
+			addendStr, err.Error())
+	}
+
+	for j:=0; j < lenArray; j++ {
+
+		if expectedNumStrs[j] != result[j].GetNumStr()  {
+			t.Errorf("Error: Expected NumStr[%v]='%v'. Instead NumStr[%v]='%v'. ",
+				j, expectedNumStrs[j], j, result[j].GetNumStr())
+		}
+
+		actualNumSeps := result[j].GetNumericSeparatorsDto()
+
+		if !expectedNumSeps.Equal(actualNumSeps) {
+			t.Errorf("Error: Expected numSeps='%v'. Instead, numSeps='%v'.",
+				expectedNumSeps.String(), actualNumSeps.String())
 		}
 	}
 }
@@ -3698,6 +3859,82 @@ func TestBigIntMathAdd_AddIntArySeries_02(t *testing.T) {
 	if expectedResultNumStr != actualTotalNumstr {
 		t.Errorf("Expected NumStr='%v'. Instead, NumStr='%v'",
 			expectedResultNumStr, actualTotalNumstr)
+	}
+
+}
+
+func TestBigIntMathAdd_AddIntArySeries_03(t *testing.T) {
+	numStrAry := []string{
+		"45.8",
+		"1.45962",
+		"58.71",
+		"-37.62174",
+		"89.8",
+	}
+
+	lenStrAry:= len(numStrAry)
+
+	expectedTotalStr := "158,14788"
+
+	iaArray := make([]IntAry, lenStrAry)
+
+	for i:=0; i < lenStrAry; i++ {
+
+		ia, err := IntAry{}.NewNumStr(numStrAry[i])
+
+		if err != nil {
+
+			if err != nil {
+				t.Errorf("Error returned by IntAry{}.NewNumStr(numStrAry[i]) " +
+					"i='%v' numStrAry[i]='%v' Error='%v' ",i, numStrAry[i], err.Error())
+			}
+
+		}
+
+		iaArray[i] = ia
+	}
+
+
+	expectedNumSeps := NumericSeparatorDto{}
+	frenchDecSeparator := ','
+	frenchThousandsSeparator := ' '
+	frenchCurrencySymbol := '€'
+
+	expectedNumSeps.DecimalSeparator = frenchDecSeparator
+	expectedNumSeps.ThousandsSeparator = frenchThousandsSeparator
+	expectedNumSeps.CurrencySymbol = frenchCurrencySymbol
+
+	err := iaArray[0].SetNumericSeparatorsDto(expectedNumSeps)
+
+	if err != nil {
+		t.Errorf("Error returned by iaArray[0].SetNumericSeparatorsDto(expectedNumSeps). " +
+			"Error='%v' ", err.Error())
+	}
+
+	total, err := BigIntMathAdd{}.AddIntArySeries(
+		iaArray[0],
+		iaArray[1],
+		iaArray[2],
+		iaArray[3],
+		iaArray[4],)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntMathAdd{}.AddIntArySeries(...). " +
+			"Error='%v' ", err.Error())
+	}
+
+	actualTotalNumstr := total.GetNumStr()
+
+	if expectedTotalStr != actualTotalNumstr {
+		t.Errorf("Expected NumStr='%v'. Instead, NumStr='%v'",
+			expectedTotalStr, actualTotalNumstr)
+	}
+
+	actualNumSeps := total.GetNumericSeparatorsDto()
+
+	if !expectedNumSeps.Equal(actualNumSeps) {
+		t.Errorf("Error: Expected numSeps='%v'. Instead, numSeps='%v'. ",
+			expectedNumSeps.String(), actualNumSeps.String())
 	}
 
 }
