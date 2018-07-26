@@ -1152,24 +1152,45 @@ func (bAdd BigIntMathAdd) AddNumStrSeries(numStrs ... string) (BigIntNum, error)
 // The result is returned as type BigIntNum.
 //
 // The returned BigIntNum result of this addition operation will contain
-// default numeric separators (decimal separator, thousands separator and currency
-// symbol).
+// the numeric separators (decimal separator, thousands separator and currency
+// symbol) copied from input parameter 'n1Dto'.
 //
 func (bAdd BigIntMathAdd) AddNumStrDto(n1Dto, n2Dto NumStrDto) (BigIntNum, error) {
 
 	ePrefix := "BigIntMathAdd.AddNumStrDto() "
 
+	err := n1Dto.IsNumStrDtoValid(ePrefix + "'n1Dto' INVALID! ")
+
+	if err != nil {
+		return BigIntNum{}.New(), err
+	}
+
+	numSeps := n1Dto.GetNumericSeparatorsDto()
+
+	err = n2Dto.IsNumStrDtoValid(ePrefix + "'n2Dto' INVALID! ")
+
+	if err != nil {
+		return BigIntNum{}.New(), err
+	}
+
 	bPair, err := BigIntPair{}.NewNumStrDto(n1Dto, n2Dto)
 
 	if err != nil {
-		return BigIntNum{},
+		return BigIntNum{}.New(),
 			fmt.Errorf(ePrefix + "Error returned by BigIntPair{}.NewNumStrDto(n1Dto, n2Dto). " +
 				"Error='%v' ", err.Error())
 	}
 
 	finalResult := bAdd.addPairNoNumSeps(bPair)
 
-	finalResult.SetNumericSeparatorsToDefaultIfEmpty()
+	err = finalResult.SetNumericSeparatorsDto(numSeps)
+
+	if err != nil {
+		return BigIntNum{}.New(),
+			fmt.Errorf(ePrefix +
+				"Error returned by finalResult.SetNumericSeparatorsDto(numSeps). " +
+				"Error='%v'\n", err.Error())
+	}
 
 	return finalResult, nil
 }
@@ -1178,8 +1199,8 @@ func (bAdd BigIntMathAdd) AddNumStrDto(n1Dto, n2Dto NumStrDto) (BigIntNum, error
 // as an instance of Type, 'BigIntNum'.
 //
 // The returned BigIntNum result of this addition operation will contain
-// default numeric separators (decimal separator, thousands separator and currency
-// symbol).
+// numeric separators (decimal separator, thousands separator and currency
+// symbol) copied from the first element of the input array, nDtos[0].
 //
 func (bAdd BigIntMathAdd) AddNumStrDtoArray(nDtos []NumStrDto) (BigIntNum, error) {
 
@@ -1194,9 +1215,16 @@ func (bAdd BigIntMathAdd) AddNumStrDtoArray(nDtos []NumStrDto) (BigIntNum, error
 			errors.New(ePrefix + "Error: 'nDtos' array is Empty!")
 	}
 
+	numSeps := NumericSeparatorDto{}
+
 	for i:= 0; i < lenDecs; i++ {
 
+		err = nDtos[i].IsNumStrDtoValid(ePrefix +
+			fmt.Sprintf("nDtos[%v] is INVALID! ", i))
+
 		if i == 0 {
+
+			numSeps = nDtos[0].GetNumericSeparatorsDto()
 
 			finalResult, err = BigIntNum{}.NewNumStrDto(nDtos[i])
 
@@ -1220,7 +1248,13 @@ func (bAdd BigIntMathAdd) AddNumStrDtoArray(nDtos []NumStrDto) (BigIntNum, error
 		finalResult = bAdd.addPairNoNumSeps(bPair)
 	}
 
-	finalResult.SetNumericSeparatorsToDefaultIfEmpty()
+	err = finalResult.SetNumericSeparatorsDto(numSeps)
+
+	if err != nil {
+		return BigIntNum{}.New(),
+			fmt.Errorf(ePrefix + "Error returned by finalResult.SetNumericSeparatorsDto(numSeps). " +
+				"Error='%v' \n", err.Error())
+	}
 
 	return finalResult, nil
 
