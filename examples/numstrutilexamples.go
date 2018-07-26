@@ -388,6 +388,9 @@ func PrintDecimalContents(dec mathops.Decimal) {
 }
 
 func PrintNumStrDtoContents(originalInputStr string, nStr mathops.NumStrDto) {
+
+	err := nStr.IsValid("PrintNumStrDtoContents() 'nStr' INVALID! ")
+
 	fmt.Println()
 	fmt.Println("******************************************************")
 	fmt.Println("          Original Input Str: ", originalInputStr)
@@ -399,7 +402,12 @@ func PrintNumStrDtoContents(originalInputStr string, nStr mathops.NumStrDto) {
 	fmt.Println("         nStr.GetPrecision(): ", nStr.GetPrecision())
 	fmt.Println("     nStr.HasNumericDigits(): ", nStr.HasNumericDigits())
 	fmt.Println("      nStr.IsFractionalValue: ", nStr.IsFractionalValue())
-	fmt.Println("              nStr.IsValid(): ", nStr.IsValid())
+	if err != nil {
+		fmt.Println("              nStr.IsValid(): ", err.Error())
+	} else {
+		fmt.Println("              nStr.IsValid(): ", "nStr IS VALID!")
+	}
+
 	fmt.Println("nStr.GetThousandsSeparator(): ", nStr.GetThousandsSeparator())
 	fmt.Println("  nStr.GetDecimalSeparator(): ", nStr.GetDecimalSeparator())
 	fmt.Println("    nStr.GetCurrencySymbol(): ", nStr.GetCurrencySymbol())

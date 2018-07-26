@@ -1159,7 +1159,7 @@ func (bAdd BigIntMathAdd) AddNumStrDto(n1Dto, n2Dto NumStrDto) (BigIntNum, error
 
 	ePrefix := "BigIntMathAdd.AddNumStrDto() "
 
-	err := n1Dto.IsNumStrDtoValid(ePrefix + "'n1Dto' INVALID! ")
+	err := n1Dto.IsValid(ePrefix + "'n1Dto' INVALID! ")
 
 	if err != nil {
 		return BigIntNum{}.New(), err
@@ -1167,7 +1167,7 @@ func (bAdd BigIntMathAdd) AddNumStrDto(n1Dto, n2Dto NumStrDto) (BigIntNum, error
 
 	numSeps := n1Dto.GetNumericSeparatorsDto()
 
-	err = n2Dto.IsNumStrDtoValid(ePrefix + "'n2Dto' INVALID! ")
+	err = n2Dto.IsValid(ePrefix + "'n2Dto' INVALID! ")
 
 	if err != nil {
 		return BigIntNum{}.New(), err
@@ -1219,7 +1219,7 @@ func (bAdd BigIntMathAdd) AddNumStrDtoArray(nDtos []NumStrDto) (BigIntNum, error
 
 	for i:= 0; i < lenDecs; i++ {
 
-		err = nDtos[i].IsNumStrDtoValid(ePrefix +
+		err = nDtos[i].IsValid(ePrefix +
 			fmt.Sprintf("nDtos[%v] is INVALID! ", i))
 
 		if i == 0 {
@@ -1288,7 +1288,7 @@ func (bAdd BigIntMathAdd) AddNumStrDtoOutputToArray(
 
 	ePrefix := "BigIntMathAdd.AddNumStrDtoOutputToArray() "
 
-	err := addend.IsNumStrDtoValid(ePrefix + "'addend' is INVALID! ")
+	err := addend.IsValid(ePrefix + "'addend' is INVALID! ")
 
 	if err != nil {
 		return []NumStrDto{}, err
@@ -1307,7 +1307,7 @@ func (bAdd BigIntMathAdd) AddNumStrDtoOutputToArray(
 
 	for i:= 0; i < lenDecs; i++ {
 
-		err := nDtos[i].IsNumStrDtoValid(ePrefix +
+		err := nDtos[i].IsValid(ePrefix +
 			fmt.Sprintf("nDtos[%v] INVALID! ", i))
 
 		if err != nil {
@@ -1372,7 +1372,7 @@ func (bAdd BigIntMathAdd) AddNumStrDtoSeries(nDtos ... NumStrDto) (BigIntNum, er
 
 	for i, nDto := range nDtos {
 
-		err = nDto.IsNumStrDtoValid(ePrefix +
+		err = nDto.IsValid(ePrefix +
 			fmt.Sprintf("nDto Index='%v' is INVALID! ",i))
 
 		if err != nil {

@@ -207,7 +207,13 @@ func (ns *NumStrUtility) ConvertStrToIntNumStr(str string) string {
 
 	nDto, err := ns.ParseNumString(str)
 
-	if err != nil || !nDto.IsValid() {
+	if err != nil  {
+		return ""
+	}
+
+	err = nDto.IsValid("NumStrUtility.ConvertStrToIntNumStr() - 'nDto' INVALID! ")
+
+	if err != nil {
 		return ""
 	}
 

@@ -315,8 +315,10 @@ func TestNumStrDto_CopyIn_01(t *testing.T) {
 
 	}
 
-	if !nDto.IsValid() {
-		t.Errorf("Expected IsValid= 'true'. Instead, got %v", nDto.IsValid())
+	err = nDto.IsValid("Test 'nDto' is INVALID! ")
+
+	if err != nil {
+		t.Errorf("Error returned by nDto.IsValid() Error='%v'", err.Error())
 	}
 
 }
@@ -375,8 +377,10 @@ func TestNumStrDto_CopyIn_02(t *testing.T) {
 
 	}
 
-	if !nDto.IsValid() {
-		t.Errorf("Expected IsValid= 'true'. Instead, got %v", nDto.IsValid())
+	err = nDto.IsValid("Test 'nDto' is INVALID! ")
+
+	if err != nil {
+		t.Errorf("Error returned by nDto.IsValid() Error='%v'", err.Error())
 	}
 
 }
@@ -433,8 +437,10 @@ func TestNumStrDto_CopyOut_01(t *testing.T) {
 
 	}
 
-	if !nDto.IsValid() {
-		t.Errorf("Expected IsValid= 'true'. Instead, got %v", nDto.IsValid())
+	err = nDto.IsValid("Test 'nDto' is INVALID! ")
+
+	if err != nil {
+		t.Errorf("Error returned by nDto.IsValid() Error='%v'", err.Error())
 	}
 
 }
@@ -491,8 +497,10 @@ func TestNumStrDto_CopyOut_02(t *testing.T) {
 
 	}
 
-	if !nDto.IsValid() {
-		t.Errorf("Expected IsValid= 'true'. Instead, got %v", nDto.IsValid())
+	err = nDto.IsValid("Test 'nDto' is INVALID! ")
+
+	if err != nil {
+		t.Errorf("Error returned by nDto.IsValid() Error='%v'", err.Error())
 	}
 
 }

@@ -33,8 +33,10 @@ func TestNumStrDto_ScaleNumStr_01(t *testing.T) {
 		t.Errorf("Expected signVal='%v'. Instead, got %v.", signVal, nsDto.GetSign())
 	}
 
-	if !nsDto.IsValid() {
-		t.Errorf("Expected isValid='true'. Instead, got %v.", nsDto.IsValid())
+	err = nsDto.IsValid("Test 'nsDto' is INVALID! ")
+
+	if err != nil {
+		t.Errorf("Error returned by nsDto.IsValid() Error='%v'", err.Error())
 	}
 
 	if !nsDto.HasNumericDigits() {
@@ -82,8 +84,10 @@ func TestNumStrDto_ScaleNumStr_02(t *testing.T) {
 		t.Errorf("Expected signVal='%v'. Instead, got %v.", signVal, nsDto.GetSign())
 	}
 
-	if !nsDto.IsValid() {
-		t.Errorf("Expected isValid='true'. Instead, got %v.", nsDto.IsValid())
+	err = nsDto.IsValid("Test 'nsDto' is INVALID! ")
+
+	if err != nil {
+		t.Errorf("Error returned by nsDto.IsValid() Error='%v'", err.Error())
 	}
 
 	if !nsDto.HasNumericDigits() {
@@ -131,8 +135,10 @@ func TestNumStrDto_ScaleNumStr_03(t *testing.T) {
 		t.Errorf("Expected signVal='%v'. Instead, got %v.", signVal, nsDto.GetSign())
 	}
 
-	if !nsDto.IsValid() {
-		t.Errorf("Expected isValid='true'. Instead, got %v.", nsDto.IsValid())
+	err = nsDto.IsValid("Test 'nsDto' is INVALID! ")
+
+	if err != nil {
+		t.Errorf("Error returned by nsDto.IsValid() Error='%v'", err.Error())
 	}
 
 	if !nsDto.HasNumericDigits() {
@@ -180,8 +186,10 @@ func TestNumStrDto_ScaleNumStr_04(t *testing.T) {
 		t.Errorf("Expected signVal='%v'. Instead, got %v.", signVal, nsDto.GetSign())
 	}
 
-	if !nsDto.IsValid() {
-		t.Errorf("Expected isValid='true'. Instead, got %v.", nsDto.IsValid())
+	err = nsDto.IsValid("Test 'nsDto' is INVALID! ")
+
+	if err != nil {
+		t.Errorf("Error returned by nsDto.IsValid() Error='%v'", err.Error())
 	}
 
 	if !nsDto.HasNumericDigits() {
@@ -231,8 +239,10 @@ func TestNumStrDto_ScaleNumStr_05(t *testing.T) {
 				signVal, nsDto.GetSign())
 	}
 
-	if !nsDto.IsValid() {
-		t.Errorf("Expected isValid='true'. Instead, got %v.", nsDto.IsValid())
+	err = nsDto.IsValid("Test 'nsDto' is INVALID! ")
+
+	if err != nil {
+		t.Errorf("Error returned by nsDto.IsValid() Error='%v'", err.Error())
 	}
 
 	if !nsDto.HasNumericDigits() {
@@ -283,9 +293,10 @@ func TestNumStrDto_ScaleNumStr_06(t *testing.T) {
 				signVal, nsDto.GetSign())
 	}
 
-	if !nsDto.IsValid() {
-		t.Errorf("Expected isValid='true'. Instead, got %v.",
-				nsDto.IsValid())
+	err = nsDto.IsValid("Test 'nsDto' is INVALID! ")
+
+	if err != nil {
+		t.Errorf("Error returned by nsDto.IsValid() Error='%v'", err.Error())
 	}
 
 	if !nsDto.HasNumericDigits() {
@@ -333,8 +344,10 @@ func TestNumStrDto_ScaleNumStr_07(t *testing.T) {
 		t.Errorf("Expected signVal='%v'. Instead, got %v.", signVal, nsDto.GetSign())
 	}
 
-	if !nsDto.IsValid() {
-		t.Errorf("Expected isValid='true'. Instead, got %v.", nsDto.IsValid())
+	err = nsDto.IsValid("Test 'nsDto' is INVALID! ")
+
+	if err != nil {
+		t.Errorf("Error returned by nsDto.IsValid() Error='%v'", err.Error())
 	}
 
 	if !nsDto.HasNumericDigits() {

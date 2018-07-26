@@ -15,7 +15,7 @@ func TestNumStrDto_IsNumStrDtoValid_01(t *testing.T) {
 			lenAbsAllNumRunes)
 	}
 
-	nDto.IsNumStrDtoValid("")
+	nDto.IsValid("")
 
 	absAllNumRunes = nDto.GetAbsAllNumRunes()
 
@@ -110,7 +110,7 @@ func TestNumStrDto_MultiplyNumStrs_01(t *testing.T) {
 
 	}
 
-	err = nResult.IsNumStrDtoValid("TestNumStrDto_MultiplyNumStrs_01() - ")
+	err = nResult.IsValid("TestNumStrDto_MultiplyNumStrs_01() - ")
 
 	if err != nil {
 		t.Errorf("Resulting NumStr is INVALD. Error= %v", err)
@@ -173,7 +173,7 @@ func TestNumStrDto_MultiplyNumStrs_02(t *testing.T) {
 
 	}
 
-	err = nResult.IsNumStrDtoValid("TestNumStrDto_MultiplyNumStrs_01() - ")
+	err = nResult.IsValid("TestNumStrDto_MultiplyNumStrs_01() - ")
 
 	if err != nil {
 		t.Errorf("Resulting NumStr is INVALD. Error= %v", err)
@@ -236,7 +236,7 @@ func TestNumStrDto_MultiplyNumStrs_03(t *testing.T) {
 
 	}
 
-	err = nResult.IsNumStrDtoValid("TestNumStrDto_MultiplyNumStrs_01() - ")
+	err = nResult.IsValid("TestNumStrDto_MultiplyNumStrs_01() - ")
 
 	if err != nil {
 		t.Errorf("Resulting NumStr is INVALD. Error= %v", err)
@@ -299,7 +299,7 @@ func TestNumStrDto_MultiplyNumStrs_04(t *testing.T) {
 
 	}
 
-	err = nResult.IsNumStrDtoValid("TestNumStrDto_MultiplyNumStrs_01() - ")
+	err = nResult.IsValid("TestNumStrDto_MultiplyNumStrs_01() - ")
 
 	if err != nil {
 		t.Errorf("Resulting NumStr is INVALD. Error= %v", err)
@@ -362,7 +362,7 @@ func TestNumStrDto_MultiplyNumStrs_05(t *testing.T) {
 
 	}
 
-	err = nResult.IsNumStrDtoValid("TestNumStrDto_MultiplyNumStrs_01() - ")
+	err = nResult.IsValid("TestNumStrDto_MultiplyNumStrs_01() - ")
 
 	if err != nil {
 		t.Errorf("Resulting NumStr is INVALD. Error= %v", err)
@@ -425,7 +425,7 @@ func TestNumStrDto_MultiplyNumStrs_06(t *testing.T) {
 
 	}
 
-	err = nResult.IsNumStrDtoValid("TestNumStrDto_MultiplyNumStrs_01() - ")
+	err = nResult.IsValid("TestNumStrDto_MultiplyNumStrs_01() - ")
 
 	if err != nil {
 		t.Errorf("Resulting NumStr is INVALD. Error= %v", err)
@@ -488,7 +488,7 @@ func TestNumStrDto_MultiplyNumStrs_07(t *testing.T) {
 
 	}
 
-	err = nResult.IsNumStrDtoValid("TestNumStrDto_MultiplyNumStrs_01() - ")
+	err = nResult.IsValid("TestNumStrDto_MultiplyNumStrs_01() - ")
 
 	if err != nil {
 		t.Errorf("Resulting NumStr is INVALD. Error= %v", err)
@@ -551,7 +551,7 @@ func TestNumStrDto_MultiplyNumStrs_08(t *testing.T) {
 
 	}
 
-	err = nResult.IsNumStrDtoValid("TestNumStrDto_MultiplyNumStrs_01() - ")
+	err = nResult.IsValid("TestNumStrDto_MultiplyNumStrs_01() - ")
 
 	if err != nil {
 		t.Errorf("Resulting NumStr is INVALD. Error= %v", err)
@@ -614,7 +614,7 @@ func TestNumStrDto_MultiplyNumStrs_09(t *testing.T) {
 
 	}
 
-	err = nResult.IsNumStrDtoValid("TestNumStrDto_MultiplyNumStrs_01() - ")
+	err = nResult.IsValid("TestNumStrDto_MultiplyNumStrs_01() - ")
 
 	if err != nil {
 		t.Errorf("Resulting NumStr is INVALD. Error= %v", err)
@@ -677,7 +677,7 @@ func TestNumStrDto_MultiplyNumStrs_10(t *testing.T) {
 
 	}
 
-	err = nResult.IsNumStrDtoValid("TestNumStrDto_MultiplyNumStrs_01() - ")
+	err = nResult.IsValid("TestNumStrDto_MultiplyNumStrs_01() - ")
 
 	if err != nil {
 		t.Errorf("Resulting NumStr is INVALD. Error= %v", err)
@@ -740,7 +740,7 @@ func TestNumStrDto_MultiplyNumStrs_11(t *testing.T) {
 
 	}
 
-	err = nResult.IsNumStrDtoValid("TestNumStrDto_MultiplyNumStrs_01() - ")
+	err = nResult.IsValid("TestNumStrDto_MultiplyNumStrs_01() - ")
 
 	if err != nil {
 		t.Errorf("Resulting NumStr is INVALD. Error= %v", err)
@@ -803,7 +803,7 @@ func TestNumStrDto_MultiplyNumStrs_12(t *testing.T) {
 
 	}
 
-	err = nResult.IsNumStrDtoValid("TestNumStrDto_MultiplyNumStrs_01() - ")
+	err = nResult.IsValid("TestNumStrDto_MultiplyNumStrs_01() - ")
 
 	if err != nil {
 		t.Errorf("Resulting NumStr is INVALD. Error= %v", err)
@@ -866,7 +866,7 @@ func TestNumStrDto_MultiplyNumStrs_13(t *testing.T) {
 
 	}
 
-	err = nResult.IsNumStrDtoValid("TestNumStrDto_MultiplyNumStrs_01() - ")
+	err = nResult.IsValid("TestNumStrDto_MultiplyNumStrs_01() - ")
 
 	if err != nil {
 		t.Errorf("Resulting NumStr is INVALD. Error= %v", err)
@@ -929,7 +929,7 @@ func TestNumStrDto_MultiplyNumStrs_14(t *testing.T) {
 
 	}
 
-	err = nResult.IsNumStrDtoValid("TestNumStrDto_MultiplyNumStrs_01() - ")
+	err = nResult.IsValid("TestNumStrDto_MultiplyNumStrs_01() - ")
 
 	if err != nil {
 		t.Errorf("Resulting NumStr is INVALD. Error= %v", err)

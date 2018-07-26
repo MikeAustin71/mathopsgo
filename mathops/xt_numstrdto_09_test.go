@@ -30,8 +30,10 @@ func TestNumStrDto_ShiftPrecisionRight_01(t *testing.T) {
 		t.Errorf("Expected signVal='%v'. Instead, got %v.", signVal, nsDto.GetSign())
 	}
 
-	if !nsDto.IsValid() {
-		t.Errorf("Expected isValid='true'. Instead, got %v.", nsDto.IsValid())
+	err = nsDto.IsValid("Test 'nsDto' is INVALID! ")
+
+	if err != nil {
+		t.Errorf("Error returned by nsDto.IsValid() Error='%v'", err.Error())
 	}
 
 	if !nsDto.HasNumericDigits() {
@@ -80,8 +82,10 @@ func TestNumStrDto_ShiftPrecisionRight_02(t *testing.T) {
 		t.Errorf("Expected signVal='%v'. Instead, got %v.", signVal, nsDto.GetSign())
 	}
 
-	if !nsDto.IsValid() {
-		t.Errorf("Expected isValid='true'. Instead, got %v.", nsDto.IsValid())
+	err = nsDto.IsValid("Test 'nsDto' is INVALID! ")
+
+	if err != nil {
+		t.Errorf("Error returned by nsDto.IsValid() Error='%v'", err.Error())
 	}
 
 	if !nsDto.HasNumericDigits() {
@@ -130,8 +134,10 @@ func TestNumStrDto_ShiftPrecisionRight_03(t *testing.T) {
 		t.Errorf("Expected signVal='%v'. Instead, got %v.", signVal, nsDto.GetSign())
 	}
 
-	if !nsDto.IsValid() {
-		t.Errorf("Expected isValid='true'. Instead, got %v.", nsDto.IsValid())
+	err = nsDto.IsValid("Test 'nsDto' is INVALID! ")
+
+	if err != nil {
+		t.Errorf("Error returned by nsDto.IsValid() Error='%v'", err.Error())
 	}
 
 	if !nsDto.HasNumericDigits() {
@@ -180,8 +186,10 @@ func TestNumStrDto_ShiftPrecisionRight_04(t *testing.T) {
 		t.Errorf("Expected signVal='%v'. Instead, got %v.", signVal, nsDto.GetSign())
 	}
 
-	if !nsDto.IsValid() {
-		t.Errorf("Expected isValid='true'. Instead, got %v.", nsDto.IsValid())
+	err = nsDto.IsValid("Test 'nsDto' is INVALID! ")
+
+	if err != nil {
+		t.Errorf("Error returned by nsDto.IsValid() Error='%v'", err.Error())
 	}
 
 	if !nsDto.HasNumericDigits() {
@@ -230,8 +238,10 @@ func TestNumStrDto_ShiftPrecisionRight_05(t *testing.T) {
 		t.Errorf("Expected signVal='%v'. Instead, got %v.", signVal, nsDto.GetSign())
 	}
 
-	if !nsDto.IsValid() {
-		t.Errorf("Expected isValid='true'. Instead, got %v.", nsDto.IsValid())
+	err = nsDto.IsValid("Test 'nsDto' is INVALID! ")
+
+	if err != nil {
+		t.Errorf("Error returned by nsDto.IsValid() Error='%v'", err.Error())
 	}
 
 	if !nsDto.HasNumericDigits() {
@@ -280,8 +290,10 @@ func TestNumStrDto_ShiftPrecisionRight_06(t *testing.T) {
 		t.Errorf("Expected signVal='%v'. Instead, got %v.", signVal, nsDto.GetSign())
 	}
 
-	if !nsDto.IsValid() {
-		t.Errorf("Expected isValid='true'. Instead, got %v.", nsDto.IsValid())
+	err = nsDto.IsValid("Test 'nsDto' is INVALID! ")
+
+	if err != nil {
+		t.Errorf("Error returned by nsDto.IsValid() Error='%v'", err.Error())
 	}
 
 	if !nsDto.HasNumericDigits() {
@@ -330,8 +342,10 @@ func TestNumStrDto_ShiftPrecisionRight_07(t *testing.T) {
 		t.Errorf("Expected signVal='%v'. Instead, got %v.", signVal, nsDto.GetSign())
 	}
 
-	if !nsDto.IsValid() {
-		t.Errorf("Expected isValid='true'. Instead, got %v.", nsDto.IsValid())
+	err = nsDto.IsValid("Test 'nsDto' is INVALID! ")
+
+	if err != nil {
+		t.Errorf("Error returned by nsDto.IsValid() Error='%v'", err.Error())
 	}
 
 	if !nsDto.HasNumericDigits() {
@@ -380,8 +394,10 @@ func TestNumStrDto_ShiftPrecisionRight_08(t *testing.T) {
 		t.Errorf("Expected signVal='%v'. Instead, got %v.", signVal, nsDto.GetSign())
 	}
 
-	if !nsDto.IsValid() {
-		t.Errorf("Expected isValid='true'. Instead, got %v.", nsDto.IsValid())
+	err = nsDto.IsValid("Test 'nsDto' is INVALID! ")
+
+	if err != nil {
+		t.Errorf("Error returned by nsDto.IsValid() Error='%v'", err.Error())
 	}
 
 	if !nsDto.HasNumericDigits() {
@@ -430,8 +446,10 @@ func TestNumStrDto_ShiftPrecisionRight_09(t *testing.T) {
 		t.Errorf("Expected signVal='%v'. Instead, got %v.", signVal, nsDto.GetSign())
 	}
 
-	if !nsDto.IsValid() {
-		t.Errorf("Expected isValid='true'. Instead, got %v.", nsDto.IsValid())
+	err = nsDto.IsValid("Test 'nsDto' is INVALID! ")
+
+	if err != nil {
+		t.Errorf("Error returned by nsDto.IsValid() Error='%v'", err.Error())
 	}
 
 	if !nsDto.HasNumericDigits() {
@@ -480,8 +498,10 @@ func TestNumStrDto_ShiftPrecisionRight_10(t *testing.T) {
 		t.Errorf("Expected signVal='%v'. Instead, got %v.", signVal, nsDto.GetSign())
 	}
 
-	if !nsDto.IsValid() {
-		t.Errorf("Expected isValid='true'. Instead, got %v.", nsDto.IsValid())
+	err = nsDto.IsValid("Test 'nsDto' is INVALID! ")
+
+	if err != nil {
+		t.Errorf("Error returned by nsDto.IsValid() Error='%v'", err.Error())
 	}
 
 	if !nsDto.HasNumericDigits() {
@@ -558,8 +578,10 @@ func TestNumStrDto_SubtractNumStrs_01(t *testing.T) {
 
 	}
 
-	if !nDto.IsValid() {
-		t.Errorf("Expected IsValid= 'true'. Instead, got %v", nDto.IsValid())
+	err = nDto.IsValid("Test 'nDto' is INVALID! ")
+
+	if err != nil {
+		t.Errorf("Error returned by nDto.IsValid() Error='%v'", err.Error())
 	}
 
 }
@@ -620,8 +642,10 @@ func TestNumStrDto_SubtractNumStrs_02(t *testing.T) {
 
 	}
 
-	if !nDto.IsValid() {
-		t.Errorf("Expected IsValid= 'true'. Instead, got %v", nDto.IsValid())
+	err = nDto.IsValid("Test 'nDto' is INVALID! ")
+
+	if err != nil {
+		t.Errorf("Error returned by nDto.IsValid() Error='%v'", err.Error())
 	}
 
 }
@@ -682,8 +706,10 @@ func TestNumStrDto_SubtractNumStrs_03(t *testing.T) {
 
 	}
 
-	if !nDto.IsValid() {
-		t.Errorf("Expected IsValid= 'true'. Instead, got %v", nDto.IsValid())
+	err = nDto.IsValid("Test 'nDto' is INVALID! ")
+
+	if err != nil {
+		t.Errorf("Error returned by nDto.IsValid() Error='%v'", err.Error())
 	}
 
 }
@@ -745,8 +771,10 @@ func TestNumStrDto_SubtractNumStrs_04(t *testing.T) {
 
 	}
 
-	if !nDto.IsValid() {
-		t.Errorf("Expected IsValid= 'true'. Instead, got %v", nDto.IsValid())
+	err = nDto.IsValid("Test 'nDto' is INVALID! ")
+
+	if err != nil {
+		t.Errorf("Error returned by nDto.IsValid() Error='%v'", err.Error())
 	}
 
 }
@@ -808,8 +836,10 @@ func TestNumStrDto_SubtractNumStrs_05(t *testing.T) {
 
 	}
 
-	if !nDto.IsValid() {
-		t.Errorf("Expected IsValid= 'true'. Instead, got %v", nDto.IsValid())
+	err = nDto.IsValid("Test 'nDto' is INVALID! ")
+
+	if err != nil {
+		t.Errorf("Error returned by nDto.IsValid() Error='%v'", err.Error())
 	}
 
 }
@@ -871,8 +901,10 @@ func TestNumStrDto_SubtractNumStrs_06(t *testing.T) {
 
 	}
 
-	if !nDto.IsValid() {
-		t.Errorf("Expected IsValid= 'true'. Instead, got %v", nDto.IsValid())
+	err = nDto.IsValid("Test 'nDto' is INVALID! ")
+
+	if err != nil {
+		t.Errorf("Error returned by nDto.IsValid() Error='%v'", err.Error())
 	}
 
 }

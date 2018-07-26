@@ -3393,12 +3393,12 @@ func (ia IntAry) NewNumStrDto(numDto NumStrDto) (IntAry, error) {
 
 	ePrefix := "IntAry.NewNumStrDto() "
 
-	err := numDto.IsNumStrDtoValid(ePrefix)
+	err := numDto.IsValid(ePrefix)
 
 	if err != nil {
 		return IntAry{},
 		fmt.Errorf(ePrefix +
-			"Error returned by IsNumStrDtoValid(ePrefix). " +
+			"Error returned by IsValid(ePrefix). " +
 			"Error='%v' ", err.Error())
 	}
 
@@ -3826,7 +3826,7 @@ func (ia *IntAry) ResetFromBackUp() {
 func (ia *IntAry) RoundToPrecision(roundToPrecision int) error {
 
 	if roundToPrecision < 0 {
-		fmt.Errorf("RoundToPrecision() - Error: roundToPrecision is less than ZERO! roundToPrecision= '%v'", roundToPrecision)
+		return fmt.Errorf("RoundToPrecision() - Error: roundToPrecision is less than ZERO! roundToPrecision= '%v'", roundToPrecision)
 	}
 
 	if ia.precision == 0 {
@@ -5041,7 +5041,7 @@ func (ia *IntAry) SetIntAryWithNumStrDto(nDto NumStrDto) error {
 
 	ePrefix := "IntAry.SetIntAryWithNumStrDto() "
 
-	err := nDto.IsNumStrDtoValid(ePrefix + "'nDto' Invalid! " )
+	err := nDto.IsValid(ePrefix + "'nDto' Invalid! " )
 
 	if err != nil {
 		return err

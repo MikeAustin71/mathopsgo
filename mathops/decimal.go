@@ -1587,7 +1587,7 @@ func (dec Decimal) NewNumStrDto(numDto NumStrDto) (Decimal, error) {
 
 	ePrefix := "Decimal.NewNumStrDto() "
 
-	err := numDto.IsNumStrDtoValid("")
+	err := numDto.IsValid("")
 
 	if err != nil {
 		return Decimal{},

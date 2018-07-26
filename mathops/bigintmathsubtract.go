@@ -45,6 +45,9 @@ type BigIntMathSubtract struct {
 // default numeric separators (decimal separator, thousands separator and
 // currency symbol).
 //
+// The returned BigIntNum 'result' will contain default numeric separators (decimal
+// separator, thousands separator and currency symbol).
+//
 func (bSubtract BigIntMathSubtract) SubtractBigInts(
 									minuend *big.Int,
 										minPrecision uint,
@@ -576,6 +579,13 @@ func (bSubtract BigIntMathSubtract) SubtractIntAryArray(
 
 	for i:=0; i < lenSubtrahends; i++ {
 
+		err = subtrahends[i].IsIntAryValid(ePrefix +
+			fmt.Sprintf("subtrahends[%v] INVALID! ", i))
+
+		if err == nil {
+			return BigIntNum{}.New(), err
+		}
+
 		bigINum, err := BigIntNum{}.NewIntAry(subtrahends[i])
 
 		if err != nil {
@@ -803,6 +813,8 @@ func (bSubtract BigIntMathSubtract) SubtractINumMgr(
 							subtrahend INumMgr) (BigIntNum, error) {
 
 	ePrefix := "BigIntMathSubtract.SubtractINumMgr() "
+
+
 
 	bPair, err := BigIntPair{}.NewINumMgr(minuend, subtrahend)
 
@@ -1316,13 +1328,13 @@ func (bSubtract BigIntMathSubtract) SubtractNumStrDto(
 
 	ePrefix := "BigIntMathSubtract.SubtractNumStrDto() "
 
-	err := nDtoMinuend.IsNumStrDtoValid(ePrefix + "'nDtoMinuend' INVALID! ")
+	err := nDtoMinuend.IsValid(ePrefix + "'nDtoMinuend' INVALID! ")
 
 	if err != nil {
 		return BigIntNum{}.New(), err
 	}
 
-	err = nDtoSubtrahend.IsNumStrDtoValid(ePrefix + "'nDtoSubtrahend' INVALID! ")
+	err = nDtoSubtrahend.IsValid(ePrefix + "'nDtoSubtrahend' INVALID! ")
 
 	if err != nil {
 		return BigIntNum{}.New(), err
@@ -1380,7 +1392,7 @@ func (bSubtract BigIntMathSubtract) SubtractNumStrDtoArray(
 
 	ePrefix := "BigIntMathSubtract.SubtractNumStrDtoArray() "
 
-	err := minuend.IsNumStrDtoValid(ePrefix + "'minuend' INVALID! ")
+	err := minuend.IsValid(ePrefix + "'minuend' INVALID! ")
 
 	if err != nil {
 		return BigIntNum{}.New(), err
@@ -1407,7 +1419,7 @@ func (bSubtract BigIntMathSubtract) SubtractNumStrDtoArray(
 
 	for i:=0; i < lenSubtrahends; i++ {
 
-		err := subtrahends[i].IsNumStrDtoValid(ePrefix +
+		err := subtrahends[i].IsValid(ePrefix +
 								fmt.Sprintf("subtrahends[%v] INVALID!", i))
 
 		bigINum, err := BigIntNum{}.NewNumStrDto(subtrahends[i])
@@ -1471,7 +1483,7 @@ func (bSubtract BigIntMathSubtract) SubtractNumStrDtoOutputToArray(
 
 	lenSubtrahends := len(subtrahends)
 
-	err := minuend.IsNumStrDtoValid(ePrefix + "'minuend' INVALID! ")
+	err := minuend.IsValid(ePrefix + "'minuend' INVALID! ")
 
 	if err != nil {
 		return []NumStrDto{}, err
@@ -1488,7 +1500,7 @@ func (bSubtract BigIntMathSubtract) SubtractNumStrDtoOutputToArray(
 
 	for i:=0; i < lenSubtrahends; i++ {
 
-		err := subtrahends[i].IsNumStrDtoValid(ePrefix +
+		err := subtrahends[i].IsValid(ePrefix +
 			fmt.Sprintf("subtrahends[%v] INVALID! ", i))
 
 		bPair, err := BigIntPair{}.NewNumStrDto(minuend, subtrahends[i])
@@ -1553,7 +1565,7 @@ func (bSubtract BigIntMathSubtract) SubtractNumStrDtoSeries(
 
 	ePrefix := "BigIntMathSubtract.SubtractNumStrDtoSeries() "
 
-	err := minuend.IsNumStrDtoValid(ePrefix + "'minuend' INVALID! ")
+	err := minuend.IsValid(ePrefix + "'minuend' INVALID! ")
 
 	if err != nil {
 		return BigIntNum{}.New(), err
@@ -1580,7 +1592,7 @@ func (bSubtract BigIntMathSubtract) SubtractNumStrDtoSeries(
 
 	for i, subtrahend := range subtrahends {
 
-		err := subtrahend.IsNumStrDtoValid(ePrefix +
+		err := subtrahend.IsValid(ePrefix +
 			fmt.Sprintf("subtrahend index='%v' INVALID! ", i))
 
 		bigINumSubtrahend, err := BigIntNum{}.NewNumStrDto(subtrahend)

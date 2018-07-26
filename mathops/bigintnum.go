@@ -1538,14 +1538,28 @@ func (bNum *BigIntNum) IsEvenNumber() (bool, error) {
 }
 
 // IsValid - returns a boolean value signaling whether the
-// current BigIntNum object is valid.
+// current BigIntNum object is valid. For types of errors
+// corrective action is performed to restore the BigIntNum
+// instance.
 //
 func (bNum *BigIntNum) IsValid() bool {
 
-	if bNum.bigInt == nil ||
-		  bNum.absBigInt == nil {
+	if bNum.bigInt == nil  {
 		return false
 	}
+
+	if bNum.sign != -1 && bNum.sign != 1 {
+		bNum.Reset()
+		return true
+	}
+
+
+	if bNum.absBigInt == nil ||
+				bNum.scaleFactor == nil {
+		bNum.Reset()
+		return true
+	}
+
 
 	return true
 }
@@ -2025,11 +2039,11 @@ func (bNum BigIntNum) NewNumStrDto(nDto NumStrDto) (BigIntNum, error) {
 
 	ePrefix := "BigIntNum.NewNumStrDto() "
 
-	err := nDto.IsNumStrDtoValid("")
+	err := nDto.IsValid("")
 
 	if err != nil {
 		return BigIntNum{},
-			fmt.Errorf(ePrefix + "Error returned from nDto.IsNumStrDtoValid(\"\"). " +
+			fmt.Errorf(ePrefix + "Error returned from nDto.IsValid(\"\"). " +
 				"NumStr='%v' Error='%v'", nDto.GetNumStr(), err.Error())
 	}
 
@@ -2193,6 +2207,34 @@ func (bNum BigIntNum) NewZero(precision uint) BigIntNum {
 
 	return b
 
+}
+
+// Reset - Resets the current BigIntNum to a new
+// valid BigIntNum using the BigIntNum components
+// BigIntNum.bigInt and BigIntNum.precision. This
+// method is usually called after method bNum.IsValid()
+// returns false.
+//
+func (bNum *BigIntNum) Reset() {
+
+	if bNum.bigInt == nil {
+		bNum.SetBigInt(big.NewInt(0), uint(0))
+		return
+	}
+
+	if bNum.sign != 1 && bNum.sign != -1 {
+		newNum := big.NewInt(0).Set(bNum.bigInt)
+		bNum.SetBigInt(newNum, bNum.precision)
+		return
+	}
+
+	if bNum.absBigInt == nil || bNum.scaleFactor == nil {
+		newNum := big.NewInt(0).Set(bNum.bigInt)
+		bNum.SetBigInt(newNum, bNum.precision)
+		return
+	}
+
+	return
 }
 
 // RoundToDecPlace - Rounds the current BigIntNum instance to a specified
@@ -2454,7 +2496,7 @@ func (bNum *BigIntNum) SetBigRat(ratNum *big.Rat, maxPrecision uint) error {
 
 	biNum, err := BigIntMathDivide{}.PairFracQuotient(biPair)
 	if err != nil {
-		fmt.Errorf(ePrefix +
+		return fmt.Errorf(ePrefix +
 			"Error returned by BigIntMathDivide{}.PairFracQuotient(biPair). " +
 			"Error='%v'\n", err.Error())
 	}
@@ -2626,7 +2668,7 @@ func (bNum *BigIntNum) SetFloat32(f32 float32, maxPrecision uint) error {
 	err := bNum.SetBigRat(rat, maxPrecision)
 
 	if err != nil {
-		fmt.Errorf(ePrefix +
+		return fmt.Errorf(ePrefix +
 			"Error returned by bNum.SetBigRat(rat, maxPrecision). " +
 			"Error='%v' \n", err.Error())
 	}
