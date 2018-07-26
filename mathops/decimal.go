@@ -45,7 +45,7 @@ func (dec *Decimal) Add(d2 Decimal) (Decimal, error) {
 	ePrefix := "Decimal.Add() "
 	var err error
 
-	err = dec.IsDecimalValid()
+	err = dec.IsValid(ePrefix)
 
 	if err != nil {
 		return Decimal{}.NewZero(0),
@@ -55,7 +55,7 @@ func (dec *Decimal) Add(d2 Decimal) (Decimal, error) {
 
 	numSeps := dec.GetNumericSeparatorsDto()
 
-	err = d2.IsDecimalValid()
+	err = d2.IsValid(ePrefix)
 
 	if err != nil {
 		return Decimal{},
@@ -67,7 +67,7 @@ func (dec *Decimal) Add(d2 Decimal) (Decimal, error) {
 
 	d3 := Decimal{}.NewBigIntNum(bINumResult)
 
-	err = d3.IsDecimalValid()
+	err = d3.IsValid(ePrefix)
 
 	if err != nil {
 		return Decimal{}.NewZero(0),
@@ -116,7 +116,7 @@ func (dec *Decimal) AddToThisArray(decs []Decimal) error {
 	ePrefix := "Decimal.AddToThisArray() "
 	var err error
 
-	err = dec.IsDecimalValid()
+	err = dec.IsValid(ePrefix)
 
 	if err != nil {
 		return fmt.Errorf(ePrefix +
@@ -135,7 +135,7 @@ func (dec *Decimal) AddToThisArray(decs []Decimal) error {
 
 	for i, dx := range decs {
 
-		err = dx.IsDecimalValid()
+		err = dx.IsValid(ePrefix)
 
 		if err != nil {
 
@@ -158,7 +158,7 @@ func (dec *Decimal) AddToThisArray(decs []Decimal) error {
 
 	dec.SetBigIntNum(bINumResult)
 
-	err = dec.IsDecimalValid()
+	err = dec.IsValid(ePrefix)
 
 	if err != nil {
 		return fmt.Errorf(ePrefix +
@@ -176,7 +176,7 @@ func (dec *Decimal) AddToThisMultiple(decs ...Decimal) error {
 	ePrefix := "Decimal.AddToThisMultiple() "
 	var err error
 
-	err = dec.IsDecimalValid()
+	err = dec.IsValid(ePrefix)
 
 	if err != nil {
 		return fmt.Errorf(ePrefix +
@@ -191,7 +191,7 @@ func (dec *Decimal) AddToThisMultiple(decs ...Decimal) error {
 
 	for i, dx := range decs {
 
-		err = dx.IsDecimalValid()
+		err = dx.IsValid(ePrefix)
 
 		if err != nil {
 
@@ -213,7 +213,7 @@ func (dec *Decimal) AddToThisMultiple(decs ...Decimal) error {
 
 	dec.SetBigIntNum(bINumResult)
 
-	err = dec.IsDecimalValid()
+	err = dec.IsValid(ePrefix)
 
 	if err != nil {
 		return fmt.Errorf(ePrefix +
@@ -313,7 +313,7 @@ func (dec *Decimal) Divide(divisor Decimal, maxPrecision uint) (Decimal, error) 
 	ePrefix := "Decimal.Divide() "
 	var err error
 
-	err = dec.IsDecimalValid()
+	err = dec.IsValid(ePrefix)
 
 	if err != nil {
 		return Decimal{}.NewZero(0),
@@ -324,7 +324,7 @@ func (dec *Decimal) Divide(divisor Decimal, maxPrecision uint) (Decimal, error) 
 
 	numSeps := dec.GetNumericSeparatorsDto()
 
-	err = divisor.IsDecimalValid()
+	err = divisor.IsValid(ePrefix)
 
 	if err != nil {
 		return Decimal{}.NewZero(0),
@@ -355,7 +355,7 @@ func (dec *Decimal) Divide(divisor Decimal, maxPrecision uint) (Decimal, error) 
 				"Error='%v' \n", err.Error())
 	}
 
-	err = d2Quotient.IsDecimalValid()
+	err = d2Quotient.IsValid(ePrefix)
 
 	if err != nil {
 		return Decimal{}.NewZero(0),
@@ -398,7 +398,7 @@ func (dec *Decimal) GetAbsoluteValue() Decimal {
 func (dec *Decimal) GetAbsoluteAllDigitsStr() (string, error) {
 	ePrefix := "Decimal.GetAbsoluteAllDigitsStr() "
 
-	err := dec.IsDecimalValid()
+	err := dec.IsValid(ePrefix)
 
 	if err != nil {
 		return "",
@@ -413,7 +413,7 @@ func (dec *Decimal) GetAbsoluteAllDigitsStr() (string, error) {
 func (dec *Decimal) GetBigFloat() (*big.Float, error) {
 	ePrefix := "Decimal.GetBigFloat() "
 
-	err := dec.IsDecimalValid()
+	err := dec.IsValid(ePrefix)
 
 	if err!=nil {
 		return big.NewFloat(0.0),
@@ -433,7 +433,7 @@ func (dec *Decimal) GetBigFloatString(precision uint) (string, error) {
 
 	ePrefix := "Decimal.GetBigFloatString() "
 
-	err := dec.IsDecimalValid()
+	err := dec.IsValid(ePrefix)
 
 	if err != nil {
 		return "",
@@ -458,7 +458,7 @@ func (dec *Decimal) GetBigInt() (*big.Int, error) {
 
 	ePrefix := "Decimal.GetBigInt() "
 
-	err := dec.IsDecimalValid()
+	err := dec.IsValid(ePrefix)
 
 	if err != nil {
 		return big.NewInt(0),
@@ -592,7 +592,7 @@ func (dec *Decimal) GetFloat32() (float32, big.Accuracy, error) {
 
 	ePrefix := "Decimal.GetFloat32() "
 
-	err := dec.IsDecimalValid()
+	err := dec.IsValid(ePrefix)
 
 	if err != nil  {
 		return float32(0), big.Accuracy(0),
@@ -627,7 +627,7 @@ func (dec *Decimal) GetFloat64() (float64, big.Accuracy, error) {
 
 	ePrefix := "Decimal.GetFloat64() "
 
-	err := dec.IsDecimalValid()
+	err := dec.IsValid(ePrefix)
 
 	if err != nil {
 		return float64(0), big.Accuracy(0),
@@ -658,7 +658,7 @@ func (dec *Decimal) GetIntAry() (IntAry, error) {
 	
 	ePrefix := "Decimal.GetIntAry() "
 
-	err := dec.IsDecimalValid()
+	err := dec.IsValid(ePrefix)
 
 	if err != nil {
 		return IntAry{}.New(),
@@ -769,7 +769,7 @@ func (dec *Decimal) GetNthRoot(nthRoot, maxPrecision int) (Decimal, error) {
 
 	ePrefix := "Decimal.GetNthRoot() "
 
-	err := dec.IsDecimalValid()
+	err := dec.IsValid(ePrefix)
 
 	if err != nil {
 		return Decimal{}.New(),
@@ -875,7 +875,7 @@ func (dec *Decimal) GetRational() (*big.Rat, error) {
 
 	ePrefix := "Decimal.GetRational() "
 
-	err := dec.IsDecimalValid()
+	err := dec.IsValid(ePrefix)
 
 	if err != nil {
 		return big.NewRat(1, 1),
@@ -994,7 +994,7 @@ func (dec *Decimal) GetSquareRoot(maxPrecision int) (Decimal, error) {
 
 	ePrefix := "Decimal.GetSquareRoot() "
 
-	err := dec.IsDecimalValid()
+	err := dec.IsValid(ePrefix)
 
 	if err != nil {
 		return Decimal{},
@@ -1111,12 +1111,13 @@ func (dec *Decimal) GetThouParen() string {
 // method returns 'false'.
 //
 // Notice that this method relies on
-// Decimal.IsDecimalValid() which returns an
+// Decimal.IsValid(ePrefix) which returns an
 // 'error' type.
 //
 func (dec *Decimal) GetIsValid() bool {
 
-	err := dec.IsDecimalValid()
+	ePrefix := "Decimal.GetIsValid() "
+	err := dec.IsValid(ePrefix)
 
 	if err != nil {
 		return  false
@@ -1159,19 +1160,6 @@ func (dec *Decimal) Inverse(maxPrecision uint) (Decimal, error) {
 	return d2, nil
 }
 
-// IsDecimalValid - Performs an internal diagnostic on the current
-// Decimal instance and returns an 'error' if the instance is INVALID.
-//
-func (dec *Decimal) IsDecimalValid() error {
-
-	if !dec.bigINum.IsValid() {
-		return errors.New("Decimal) IsDecimalValid() Error: " +
-			"This Decimal instance is INVALID! \n")
-	}
-
-	return nil
-}
-
 // IsFraction - returns a boolean value. If 'true',
 // it signals that the Decimal has digits to the
 // right of the decimal place. If 'false', it
@@ -1181,7 +1169,7 @@ func (dec *Decimal) IsFraction() (bool, error) {
 
 	ePrefix := "Decimal.IsFraction() "
 
-	err := dec.IsDecimalValid()
+	err := dec.IsValid(ePrefix)
 
 	if err != nil {
 		return false,
@@ -1194,6 +1182,24 @@ func (dec *Decimal) IsFraction() (bool, error) {
 	}
 
 	return false, nil
+}
+
+// IsValid - Performs an internal diagnostic on the current
+// Decimal instance and returns an 'error' if the instance is INVALID.
+//
+func (dec *Decimal) IsValid(errName string) error {
+
+	if errName == "" {
+		errName = "IntAry.IsValid() "
+	}
+
+	err := dec.bigINum.IsValid(errName)
+
+	if err != nil {
+		return err
+	}
+
+	return nil
 }
 
 // IsZero - Returns true if the numeric value of the current
@@ -1244,7 +1250,7 @@ func (dec *Decimal) Mul(d2 Decimal) (Decimal, error) {
 
 	ePrefix := "Decimal.Mul() "
 
-	err := dec.IsDecimalValid()
+	err := dec.IsValid(ePrefix)
 
 	if err != nil  {
 		return Decimal{},
@@ -1252,7 +1258,7 @@ func (dec *Decimal) Mul(d2 Decimal) (Decimal, error) {
 			"Error='%v' ", err.Error())
 	}
 
-	err = d2.IsDecimalValid()
+	err = d2.IsValid(ePrefix)
 
 	if err != nil {
 		return Decimal{},
@@ -1293,14 +1299,14 @@ func (dec *Decimal) Mul(d2 Decimal) (Decimal, error) {
 func (dec *Decimal) MulThis(d2 Decimal) error {
 
 	ePrefix := "Decimal.MulThis() "
-	err := dec.IsDecimalValid()
+	err := dec.IsValid(ePrefix)
 
 	if err != nil  {
 		return 	fmt.Errorf(ePrefix + "This Decimal object (dec) is INVALID! " +
 				"Error='%v' ", err.Error())
 	}
 
-	err = d2.IsDecimalValid()
+	err = d2.IsValid(ePrefix)
 
 	if err != nil {
 		return 	fmt.Errorf(ePrefix + "Incoming Decimal object (d2) is INVALID! " +
@@ -1762,7 +1768,7 @@ func (dec *Decimal) Pow(exponent Decimal, maxPrecision uint) (Decimal, error) {
 
 	ePrefix := "Decimal.Pow() "
 
-	err := dec.IsDecimalValid()
+	err := dec.IsValid(ePrefix)
 
 	if err != nil {
 		return Decimal{}.NewZero(0),
@@ -1813,7 +1819,7 @@ func (dec *Decimal) PowInt(exponent int, maxPrecision uint) (Decimal, error) {
 
 	ePrefix := "Decimal.PowInt() "
 
-	err := dec.IsDecimalValid()
+	err := dec.IsValid(ePrefix)
 
 	if err != nil {
 		return Decimal{}.NewZero(0),
@@ -2221,7 +2227,7 @@ func (dec *Decimal) SetNumStrPrecision(str string, precision uint, roundResult b
 
 	ePrefix := "Decimal.SetNumStrPrecision() "
 
-	err := dec.IsDecimalValid()
+	err := dec.IsValid(ePrefix)
 
 	if err != nil {
 		return fmt.Errorf(ePrefix +
@@ -2339,7 +2345,7 @@ func (dec *Decimal) SetNumStrDto(nDto NumStrDto) error {
 func (dec *Decimal) SetPrecisionRound(precision uint) error {
 	ePrefix := "Decimal.SetPrecisionRound() "
 
-	err := dec.IsDecimalValid()
+	err := dec.IsValid(ePrefix)
 
 	if err != nil {
 		return fmt.Errorf(ePrefix +
@@ -2370,7 +2376,7 @@ func (dec *Decimal) SetPrecisionTrunc(precision uint) error {
 
 	ePrefix := "Decimal.SetPrecisionTrunc() "
 
-	err := dec.IsDecimalValid()
+	err := dec.IsValid(ePrefix)
 
 	if err != nil {
 		return fmt.Errorf(ePrefix +
@@ -2463,7 +2469,7 @@ func (dec *Decimal) ShiftPrecisionLeft(shiftLeftPlaces uint) error {
 
 	ePrefix := "Decimal.ShiftPrecisionLeft() "
 
-	err := dec.IsDecimalValid()
+	err := dec.IsValid(ePrefix)
 
 	if err != nil {
 		return fmt.Errorf(ePrefix +
@@ -2473,7 +2479,7 @@ func (dec *Decimal) ShiftPrecisionLeft(shiftLeftPlaces uint) error {
 
 	dec.bigINum.ShiftPrecisionLeft(shiftLeftPlaces)
 
-	err = dec.IsDecimalValid()
+	err = dec.IsValid(ePrefix)
 
 	if err != nil {
 		return fmt.Errorf(ePrefix +
@@ -2528,7 +2534,7 @@ func (dec *Decimal) ShiftPrecisionRight(shiftRightPlaces uint) error {
 
 	ePrefix := "Decimal.ShiftPrecisionRight() "
 
-	err := dec.IsDecimalValid()
+	err := dec.IsValid(ePrefix)
 
 	if err != nil {
 		return fmt.Errorf(ePrefix +
@@ -2538,7 +2544,7 @@ func (dec *Decimal) ShiftPrecisionRight(shiftRightPlaces uint) error {
 
 	dec.bigINum.ShiftPrecisionRight(shiftRightPlaces)
 
-	err = dec.IsDecimalValid()
+	err = dec.IsValid(ePrefix)
 
 	if err != nil {
 		return fmt.Errorf(ePrefix +
@@ -2563,7 +2569,7 @@ func (dec *Decimal) Subtract(d2 Decimal) (Decimal, error) {
 	ePrefix := "Decimal.Subtract() "
 	var err error
 
-	err = dec.IsDecimalValid()
+	err = dec.IsValid(ePrefix)
 
 	if err != nil {
 		return Decimal{}.NewZero(0),
@@ -2571,7 +2577,7 @@ func (dec *Decimal) Subtract(d2 Decimal) (Decimal, error) {
 			"Error='%v' ", err.Error())
 	}
 
-	err = d2.IsDecimalValid()
+	err = d2.IsValid(ePrefix)
 
 	if err != nil {
 		return Decimal{}.NewZero(0),
@@ -2594,7 +2600,7 @@ func (dec *Decimal) Subtract(d2 Decimal) (Decimal, error) {
 			"Error='%v' \n", err.Error())
 	}
 
-	err = d3.IsDecimalValid()
+	err = d3.IsValid(ePrefix)
 
 	if err != nil {
 		return Decimal{},
@@ -2619,14 +2625,14 @@ func (dec *Decimal) SubtractFromThis(d2 Decimal) error {
 	ePrefix := "Decimal.Subtract() "
 	var err error
 
-	err = dec.IsDecimalValid()
+	err = dec.IsValid(ePrefix)
 
 	if err != nil {
 		return fmt.Errorf(ePrefix + "Error: The current Decimal Instance (dec) is INVALID! " +
 				"Error='%v' ", err.Error())
 	}
 
-	err = d2.IsDecimalValid()
+	err = d2.IsValid(ePrefix)
 
 	if err != nil {
 		return fmt.Errorf(ePrefix + "Error: The Input Parameter (d2) is INVALID! " +

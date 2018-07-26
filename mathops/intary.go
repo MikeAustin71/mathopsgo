@@ -14,7 +14,7 @@ import (
 	IntAry Overveiw And General Usage:
 	==================================
 
-	Source file 'intary.txt' contains a structure, 'IntAry', which is designed
+	Source file 'intary.go' contains a structure, 'IntAry', which is designed
  	to perform a variety of math operations on integer strings.
 
 	This Type is capable of performing highly accurate operations on very large
@@ -3388,7 +3388,7 @@ func (ia IntAry) NewNumStrMaxPrecision(num string, maxPrecision int) (IntAry, er
 }
 
 // NewNumStrDto - Creates, initializes and returns an IntAry
-// Type using an input paramter of Type NumStrDto.
+// Type using an input parameter of Type NumStrDto.
 func (ia IntAry) NewNumStrDto(numDto NumStrDto) (IntAry, error) {
 
 	ePrefix := "IntAry.NewNumStrDto() "
@@ -4550,7 +4550,7 @@ func (ia *IntAry) SetIntAryWithBigInt(intDigits *big.Int, precision int) error {
 	quotient := big.NewInt(0)
 	mod := big.NewInt(0)
 	big10 := big.NewInt(10)
-	modx := big.NewInt(0)
+	modX := big.NewInt(0)
 
 	xIntDigits := big.NewInt(0).Set(intDigits)
 
@@ -4582,7 +4582,7 @@ func (ia *IntAry) SetIntAryWithBigInt(intDigits *big.Int, precision int) error {
 			break
 		}
 
-		quotient, mod = big.NewInt(0).QuoRem(xIntDigits, big10, modx)
+		quotient, mod = big.NewInt(0).QuoRem(xIntDigits, big10, modX)
 
 		ia.intAry = append(ia.intAry, uint8(mod.Int64()))
 		ia.intAryLen++
@@ -4657,11 +4657,11 @@ func (ia *IntAry) SetIntAryWithDecimal(dec Decimal) error {
 
 	ePrefix := "IntAry.SetIntAryWithDecimal() "
 
-	err := dec.IsDecimalValid()
+	err := dec.IsValid(ePrefix)
 
 	if err != nil {
 		return fmt.Errorf(ePrefix +
-			"Error returned by dec.IsDecimalValid(). " +
+			"Error returned by dec.IsValid(). " +
 			"Error='%v' \n", err.Error())
 	}
 

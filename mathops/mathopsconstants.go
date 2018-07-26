@@ -96,7 +96,7 @@ func (nstrFmtMode NumStrFmtMode) String() string {
 
 const (
 
-	// INTSTRDECIMALFMT - Specifies a pure number string with no decimal
+	// PUREINTEGERFMT - Specifies a pure number string with no decimal
 	// point, no thousands separators and no currency symbol.
 	// Example: 123456789
 	//

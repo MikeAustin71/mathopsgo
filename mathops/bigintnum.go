@@ -681,7 +681,7 @@ func (bNum *BigIntNum) FormatNumStr(negValMode NegativeValueFmtMode) string {
 // BigIntNum.SetThousandsSeparator().
 //
 // Example:
-// numstr = 1000000.234 converted to 1,000,000.234
+// numStr = 1000000.234 converted to 1,000,000.234
 //
 // Input Parameters
 // ================
@@ -1542,26 +1542,30 @@ func (bNum *BigIntNum) IsEvenNumber() (bool, error) {
 // corrective action is performed to restore the BigIntNum
 // instance.
 //
-func (bNum *BigIntNum) IsValid() bool {
+func (bNum *BigIntNum) IsValid(errName string) error {
+
+	if errName == "" {
+		errName = "BigIntNum.IsValid() "
+	}
+
+	errName += "BigIntNum INVALID! "
 
 	if bNum.bigInt == nil  {
-		return false
+		return fmt.Errorf(errName + "bNum.bigInt is EMPTY!")
 	}
 
 	if bNum.sign != -1 && bNum.sign != 1 {
 		bNum.Reset()
-		return true
+		return nil
 	}
-
 
 	if bNum.absBigInt == nil ||
 				bNum.scaleFactor == nil {
 		bNum.Reset()
-		return true
+		return nil
 	}
 
-
-	return true
+	return nil
 }
 
 // IsZero - Returns a boolean signaling whether the current
@@ -1681,12 +1685,12 @@ func (bNum BigIntNum) NewBigFloat(bigFloat *big.Float, maxPrecision uint) (BigIn
 func (bNum BigIntNum) NewDecimal(decNum Decimal) (BigIntNum, error) {
 	ePrefix := "BigIntNum.NewIntAry() "
 
-	err := decNum.IsDecimalValid()
+	err := decNum.IsValid(ePrefix)
 
 	if err != nil {
 		return BigIntNum{},
 			fmt.Errorf(ePrefix + "Error: Input Parameter 'decNum' is INVALID!. Error returned by " +
-				"decNum.IsDecimalValid(). Error='%v'", err.Error())
+				"decNum.IsValid(). Error='%v'", err.Error())
 	}
 
 	bInt, err := decNum.GetSignedBigInt()
@@ -2043,7 +2047,7 @@ func (bNum BigIntNum) NewNumStrDto(nDto NumStrDto) (BigIntNum, error) {
 
 	ePrefix := "BigIntNum.NewNumStrDto() "
 
-	err := nDto.IsValid("")
+	err := nDto.IsValid(ePrefix + "'nDto' INVALID! ")
 
 	if err != nil {
 		return BigIntNum{},

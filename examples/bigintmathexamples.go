@@ -238,7 +238,7 @@ func ExampleBigIntNumString_01(num1Str string) {
 
 	bINum := mathops.BigIntNum{}
 
-	fmt.Println("original numstr: ", num1Str)
+	fmt.Println("original numStr: ", num1Str)
 
 	err := bINum.SetNumStr(num1Str)
 
@@ -540,19 +540,19 @@ func ExampleSubtraction_02() {
 
 	result := mathops.BigIntMathSubtract{}.SubtractPair(bPair)
 
-	fmt.Println("Original Minued: ", iaMinuend.GetNumStr())
-	fmt.Println("       bigISub0: ", bigISub0.GetNumStr())
-	fmt.Println("        Result0: ", result.GetNumStr())
+	fmt.Println("Original Minuend: ", iaMinuend.GetNumStr())
+	fmt.Println("        bigISub0: ", bigISub0.GetNumStr())
+	fmt.Println("         Result0: ", result.GetNumStr())
 	iaMinuend.SubtractFromThis(&iaSub0)
-	fmt.Println("     ia Result0: ", iaMinuend.GetNumStr())
+	fmt.Println("      ia Result0: ", iaMinuend.GetNumStr())
 
 	iaMinuend.SubtractFromThis(&iaSub1)
 	bPair = mathops.BigIntPair{}.NewBigIntNum(result, bigISub1 )
 	result = mathops.BigIntMathSubtract{}.SubtractPair(bPair)
 
-	fmt.Println("       bigISub1: ", bigISub1.GetNumStr())
-	fmt.Println("        Result1: ", result.GetNumStr())
-	fmt.Println("     ia Result1: ", iaMinuend.GetNumStr())
+	fmt.Println("        bigISub1: ", bigISub1.GetNumStr())
+	fmt.Println("         Result1: ", result.GetNumStr())
+	fmt.Println("      ia Result1: ", iaMinuend.GetNumStr())
 
 	iaMinuend.SubtractFromThis(&iaSub2)
 	bPair = mathops.BigIntPair{}.NewBigIntNum(result, bigISub2 )
@@ -714,8 +714,9 @@ func Example_SubtractIntAryArray_01() {
 	}
 
 	if expectedBigINumSign != result.GetSign() {
-		fmt.Printf("Error: Expected number sign='%v'. Instead, number sign='%v'",
-			expectedBigINumSign, result.GetSign)
+
+		fmt.Printf("Error: Expected number sign= '%v'. Instead, number sign= '%v' ",
+			expectedBigINumSign, result.GetSign())
 		return
 	}
 

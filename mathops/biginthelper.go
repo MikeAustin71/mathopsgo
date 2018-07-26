@@ -171,6 +171,14 @@ func (bPair BigIntPair) NewBigIntNum(b1, b2 BigIntNum ) BigIntPair {
 //
 func (bPair BigIntPair) NewDecimal(dec1, dec2 Decimal) (BigIntPair, error) {
 
+	ePrefix := "BigIntPair.NewDecimal() "
+
+	err := dec1.IsValid(ePrefix)
+
+	if err != nil {
+		return BigIntPair{}, err
+	}
+
 	b1Num := dec1.GetBigIntNum()
 
 	b2Num := dec2.GetBigIntNum()
@@ -191,6 +199,7 @@ func (bPair BigIntPair) NewIntAry(ia1, ia2 IntAry) (BigIntPair, error) {
 
 	ePrefix := "BigIntPair.NewIntAry() "
 
+	// Method NewIntAry will test the validity of ia1
 	b1Num, err := BigIntNum{}.NewIntAry(ia1)
 
 	if err != nil {
@@ -199,6 +208,7 @@ func (bPair BigIntPair) NewIntAry(ia1, ia2 IntAry) (BigIntPair, error) {
 			"Error='%v' ", err.Error())
 	}
 
+	// Method NewIntAry will test the validity of ia2
 	b2Num, err := BigIntNum{}.NewIntAry(ia2)
 
 	if err != nil {
@@ -278,6 +288,8 @@ func (bPair BigIntPair) NewNumStr(n1NumStr, n2NumStr string) (BigIntPair, error)
 func (bPair BigIntPair) NewNumStrDto(n1Dto, n2Dto NumStrDto) (BigIntPair, error) {
 
 	ePrefix := "BigIntPair.NewNumStrDto() "
+
+	// This method will test the validity of n1Dto
 	b1Num, err := BigIntNum{}.NewNumStrDto(n1Dto)
 
 	if err != nil {
@@ -286,6 +298,7 @@ func (bPair BigIntPair) NewNumStrDto(n1Dto, n2Dto NumStrDto) (BigIntPair, error)
 			"numStr='%v' Error='%v' ", n1Dto.GetNumStr(), err.Error())
 	}
 
+	// This method will test the validity of n2Dto
 	b2Num, err := BigIntNum{}.NewNumStrDto(n2Dto)
 
 	if err != nil {
