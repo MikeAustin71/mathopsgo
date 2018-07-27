@@ -1085,7 +1085,6 @@ func TestBigIntMathSubtract_SubtractIntAry_01(t *testing.T) {
 
 }
 
-
 func TestBigIntMathSubtract_SubtractIntAry_02(t *testing.T) {
 	// minuend = 949321.6712
 	minuendStr := "949321.6712"
@@ -1250,6 +1249,70 @@ func TestBigIntMathSubtract_SubtractIntAry_04(t *testing.T) {
 	if expectedBigINumSign != result.sign {
 		t.Errorf("Error: Expected number sign='%v'. Instead, number sign='%v'",
 			expectedBigINumSign, result.sign)
+	}
+
+}
+
+func TestBigIntMathSubtract_SubtractIntAry_05(t *testing.T) {
+	// minuend = 123.32
+	minuendStr := "123.32"
+
+	// subtrahend = 23.321
+	subtrahendStr := "23.321"
+
+	// result = 99.999
+	expectedNumStr := "99,999"
+
+	iaMinuend, err := IntAry{}.NewNumStr(minuendStr)
+
+	if err != nil {
+		t.Errorf("Error returned by IntAry{}.NewNumStr(minuendStr) " +
+			"minuendStr='%v' Error='%v'", minuendStr, err.Error())
+	}
+
+	iaSubtrahend, err := IntAry{}.NewNumStr(subtrahendStr)
+
+	if err != nil  {
+		t.Errorf("Error returned by IntAry{}.NewNumStr(subtrahendStr) " +
+			"subtrahendStr='%v' Error='%v' ", subtrahendStr, err.Error())
+	}
+
+	expectedNumSeps := NumericSeparatorDto{}
+	frenchDecSeparator := ','
+	frenchThousandsSeparator := ' '
+	frenchCurrencySymbol := '€'
+
+	expectedNumSeps.DecimalSeparator = frenchDecSeparator
+	expectedNumSeps.ThousandsSeparator = frenchThousandsSeparator
+	expectedNumSeps.CurrencySymbol = frenchCurrencySymbol
+
+	err = iaMinuend.SetNumericSeparatorsDto(expectedNumSeps)
+
+	if err != nil {
+		t.Errorf("Error returned by iaMinuend.SetNumericSeparatorsDto(expectedNumSeps). " +
+			"Error='%v' ", err.Error())
+	}
+
+	result, err := BigIntMathSubtract{}.SubtractIntAry(iaMinuend, iaSubtrahend)
+
+	if err != nil  {
+		t.Errorf("Error returned by BigIntMathSubtract{}.SubtractIntAry(iaMinuend, "+
+			"iaSubtrahend) iaMinuend='%v' subtrahendStr='%v' Error='%v' ",
+			iaMinuend.GetNumStr() , iaSubtrahend.GetNumStr(), err.Error())
+	}
+
+	actualNumStr := result.GetNumStr()
+
+	if expectedNumStr != actualNumStr {
+		t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v'. ",
+			expectedNumStr, actualNumStr)
+	}
+
+	actualNumSeps := result.GetNumericSeparatorsDto()
+
+	if !expectedNumSeps.Equal(actualNumSeps) {
+		t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v'.",
+			expectedNumSeps.String(), actualNumSeps.String())
 	}
 
 }
