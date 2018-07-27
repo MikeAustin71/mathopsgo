@@ -784,6 +784,70 @@ func TestBigIntMathSubtract_SubtractINumMgr_04(t *testing.T) {
 
 }
 
+func TestBigIntMathSubtract_SubtractINumMgr_05(t *testing.T) {
+	// minuend = 123.32
+	minuendStr := "123.32"
+
+	// subtrahend = 23.321
+	subtrahendStr := "23.321"
+
+	// result = 99.999
+	expectedNumStr := "99,999"
+
+	decMinuend, err := Decimal{}.NewNumStr(minuendStr)
+
+	if err != nil {
+		t.Errorf("Error returned by Decimal{}.NewNumStr(minuendStr) " +
+			"minuendStr='%v' Error='%v'", minuendStr, err.Error())
+	}
+
+	expectedNumSeps := NumericSeparatorDto{}
+	frenchDecSeparator := ','
+	frenchThousandsSeparator := ' '
+	frenchCurrencySymbol := '€'
+
+	expectedNumSeps.DecimalSeparator = frenchDecSeparator
+	expectedNumSeps.ThousandsSeparator = frenchThousandsSeparator
+	expectedNumSeps.CurrencySymbol = frenchCurrencySymbol
+
+	err = decMinuend.SetNumericSeparatorsDto(expectedNumSeps)
+
+	if err != nil {
+		t.Errorf("Error returned by decMinuend.SetNumericSeparatorsDto(expectedNumSeps). " +
+			"Error='%v' ", err.Error())
+	}
+
+	nDtoSubtrahend, err := NumStrDto{}.NewNumStr(subtrahendStr)
+
+	if err != nil  {
+		t.Errorf("Error returned by NumStrDto{}.NewNumStr(subtrahendStr) " +
+			"subtrahendStr='%v' Error='%v' ", subtrahendStr, err.Error())
+	}
+
+	result, err := BigIntMathSubtract{}.SubtractINumMgr(&decMinuend, &nDtoSubtrahend)
+
+	if err != nil  {
+		t.Errorf("Error returned by BigIntMathSubtract{}.SubtractINumMgr(&decMinuend, "+
+			"&nDtoSubtrahend) minuendStr='%v' subtrahendStr='%v' Error='%v' ",
+			minuendStr ,subtrahendStr, err.Error())
+	}
+
+	actualNumStr := result.GetNumStr()
+
+	if expectedNumStr != actualNumStr {
+		t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr= '%v'. ",
+			expectedNumStr, actualNumStr)
+	}
+
+	actualNumSeps := result.GetNumericSeparatorsDto()
+
+	if !expectedNumSeps.Equal(actualNumSeps) {
+		t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v'. ",
+			expectedNumSeps.String(), actualNumSeps.String())
+	}
+}
+
+
 func TestBigIntMathSubtract_SubtractINumMgrArray_01(t *testing.T) {
 
 	var err error
