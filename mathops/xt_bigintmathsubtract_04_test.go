@@ -2061,6 +2061,103 @@ func TestBigIntMathSubtract_SubtractNumStrDtoOutputToArray_05(t *testing.T) {
 	}
 }
 
+func TestBigIntMathSubtract_SubtractNumStrDtoOutputToArray_06(t *testing.T) {
+
+	var err error
+
+	// minuend =   100
+	minuendStr := "100"
+
+	subtrahendStrs := []string{
+		"5",
+		"10",
+		"30",
+		"60.55",
+		"-100.1",
+		"-5.6",
+	}
+
+	expectedStrs := []string{
+		"95",
+		"90",
+		"70",
+		"39,45",
+		"200,1",
+		"105,6",
+	}
+
+	minuendNumStrDto, err := NumStrDto{}.NewNumStr(minuendStr)
+
+	if err != nil {
+		t.Errorf("Error returned by NumStrDto{}.NewNumStr(minuendStr) " +
+			"minuendStr='%v'  Error='%v'. ", minuendStr, err.Error())
+	}
+
+	expectedNumSeps := NumericSeparatorDto{}
+	frenchDecSeparator := ','
+	frenchThousandsSeparator := ' '
+	frenchCurrencySymbol := '€'
+
+	expectedNumSeps.DecimalSeparator = frenchDecSeparator
+	expectedNumSeps.ThousandsSeparator = frenchThousandsSeparator
+	expectedNumSeps.CurrencySymbol = frenchCurrencySymbol
+
+	err = minuendNumStrDto.SetNumericSeparatorsDto(expectedNumSeps)
+
+	if err != nil {
+		t.Errorf("Error returned by nDtoMinuend.SetNumericSeparatorsDto(expectedNumSeps). " +
+			"Error='%v' ", err.Error())
+	}
+
+
+	lenSubtrahends := len(subtrahendStrs)
+	subtrahendAry := make([]NumStrDto, lenSubtrahends)
+	expectedResultsAry := make([]NumStrDto, lenSubtrahends)
+
+	for i:=0; i < lenSubtrahends; i++ {
+
+		subtrahendAry[i], err = NumStrDto{}.NewNumStr(subtrahendStrs[i])
+
+		if err != nil {
+			t.Errorf("Error returned by NumStrDto{}.NewNumStr(subtrahendStrs[i]) " +
+				"subtrahendStrs[%v]='%v'  Error='%v'. ", i, subtrahendStrs[i], err.Error())
+		}
+
+		expectedResultsAry[i], err = NumStrDto{}.NewNumStr(expectedStrs[i])
+
+		if err != nil {
+			t.Errorf("Error returned by NumStrDto{}.NewNumStr(expectedStrs[i]) " +
+				"expectedStrs[%v]='%v'  Error='%v'. ", i, expectedStrs[i], err.Error())
+		}
+	}
+
+	resultArray, err :=
+		BigIntMathSubtract{}.SubtractNumStrDtoOutputToArray(minuendNumStrDto, subtrahendAry)
+
+	if err != nil {
+		t.Errorf("Error returned byBigIntMathSubtract{}.SubtractNumStrDtoOutputToArray" +
+			"(minuendNumStrDto, subtrahendAry) minuendNumStrDto='%v'  Error='%v'. ",
+			minuendNumStrDto.GetNumStr(), err.Error())
+	}
+
+	for k:=0; k < lenSubtrahends; k++ {
+
+		actualNumStr := resultArray[k].GetNumStr()
+
+		if expectedStrs[k] != actualNumStr {
+			t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v'. Index='%v'",
+				expectedStrs[k], actualNumStr, k)
+		}
+
+		actualNumSeps := resultArray[k].GetNumericSeparatorsDto()
+
+		if !expectedNumSeps.Equal(actualNumSeps) {
+			t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v'. Index='%v'",
+				expectedNumSeps.String(), actualNumSeps.String(), k)
+		}
+	}
+}
+
 func TestBigIntMathSubtract_SubtractNumStrDtoSeries_01(t *testing.T) {
 
 	var err error
