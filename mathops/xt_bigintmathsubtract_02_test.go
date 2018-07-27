@@ -1726,6 +1726,119 @@ func TestBigIntMathSubtract_SubtractIntAryArray_04(t *testing.T) {
 
 }
 
+func TestBigIntMathSubtract_SubtractIntAryArray_05(t *testing.T) {
+
+	var err error
+
+	// minuend = 7328941.123456
+	minuendStr := "7328941.123456"
+
+	subtrahend0:= "123.894000"
+	subtrahend1:= "67.1"
+	subtrahend2:= "93.0"
+	subtrahend3:= "-124498.67158"
+	subtrahend4:= "647129.57"
+	subtrahend5:= "28"
+
+	// result = 6805998.231036
+	expectedNumStr := "6805998,231036"
+
+	iaMinuend, err := IntAry{}.NewNumStr(minuendStr)
+
+	if err != nil {
+		t.Errorf("Error returned by IntAry{}.NewNumStr(minuendStr) " +
+			"minuendStr='%v' Error='%v' ", minuendStr, err.Error())
+	}
+
+	expectedNumSeps := NumericSeparatorDto{}
+	frenchDecSeparator := ','
+	frenchThousandsSeparator := ' '
+	frenchCurrencySymbol := '€'
+
+	expectedNumSeps.DecimalSeparator = frenchDecSeparator
+	expectedNumSeps.ThousandsSeparator = frenchThousandsSeparator
+	expectedNumSeps.CurrencySymbol = frenchCurrencySymbol
+
+	err = iaMinuend.SetNumericSeparatorsDto(expectedNumSeps)
+
+	if err != nil {
+		t.Errorf("Error returned by iaMinuend.SetNumericSeparatorsDto(expectedNumSeps). " +
+			"Error='%v' ", err.Error())
+	}
+
+	lenSubtrahends := 6
+	subtrahendAry := make([]IntAry, lenSubtrahends)
+
+	subtrahendAry[0], err = IntAry{}.NewNumStr(subtrahend0)
+
+	if err != nil {
+		t.Errorf("Error returned from IntAry{}.NewNumStr(subtrahend0). " +
+			"subtrahend0='%v' Error='%v'. ",
+			subtrahend0, err.Error())
+	}
+
+	subtrahendAry[1], err = IntAry{}.NewNumStr(subtrahend1)
+
+	if err != nil {
+		t.Errorf("Error returned from IntAry{}.NewNumStr(subtrahend1). " +
+			"subtrahend1='%v' Error='%v'. ",
+			subtrahend1, err.Error())
+	}
+
+	subtrahendAry[2], err = IntAry{}.NewNumStr(subtrahend2)
+
+	if err != nil {
+		t.Errorf("Error returned from IntAry{}.NewNumStr(subtrahend2). " +
+			"subtrahend2='%v' Error='%v'. ",
+			subtrahend2, err.Error())
+	}
+
+	subtrahendAry[3], err = IntAry{}.NewNumStr(subtrahend3)
+
+	if err != nil {
+		t.Errorf("Error returned from IntAry{}.NewNumStr(subtrahend3). " +
+			"subtrahend3='%v' Error='%v'. ",
+			subtrahend3, err.Error())
+	}
+
+	subtrahendAry[4], err = IntAry{}.NewNumStr(subtrahend4)
+
+	if err != nil {
+		t.Errorf("Error returned from IntAry{}.NewNumStr(subtrahend4). " +
+			"subtrahend4='%v' Error='%v'. ",
+			subtrahend4, err.Error())
+	}
+
+	subtrahendAry[5], err = IntAry{}.NewNumStr(subtrahend5)
+
+	if err != nil {
+		t.Errorf("Error returned from IntAry{}.NewNumStr(subtrahend5). " +
+			"subtrahend5='%v' Error='%v'. ",
+			subtrahend5, err.Error())
+	}
+
+	result, err := BigIntMathSubtract{}.SubtractIntAryArray(iaMinuend, subtrahendAry)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntMathSubtract{}.SubtractDecimalArray(" +
+			"iaMinuend, subtrahendAry). Error='%v' ", err.Error())
+	}
+
+	actualNumStr := result.GetNumStr()
+
+	if expectedNumStr != actualNumStr {
+		t.Errorf("Comparison Error: Expected NumStr='%v'. Instead, NumStr= '%v'. ",
+			expectedNumStr, actualNumStr)
+	}
+
+	actualNumSeps := result.GetNumericSeparatorsDto()
+
+	if !expectedNumSeps.Equal(actualNumSeps) {
+		t.Errorf("Error: Expected numSeps='%v'. Instead, numSeps='%v'",
+			expectedNumSeps.String(), actualNumSeps.String())
+	}
+}
+
 func TestBigIntMathSubtract_SubtractIntAryOutputToArray_01(t *testing.T) {
 
 	var err error
@@ -2022,7 +2135,6 @@ func TestBigIntMathSubtract_SubtractIntAryOutputToArray_04(t *testing.T) {
 
 }
 
-
 func TestBigIntMathSubtract_SubtractIntAryOutputToArray_05(t *testing.T) {
 
 	var err error
@@ -2093,6 +2205,103 @@ func TestBigIntMathSubtract_SubtractIntAryOutputToArray_05(t *testing.T) {
 				expectedResultsAry[k].GetNumStr(), resultArray[k].GetNumStr())
 		}
 
+	}
+}
+
+func TestBigIntMathSubtract_SubtractIntAryOutputToArray_06(t *testing.T) {
+
+	var err error
+
+	// minuend =   100
+	minuendStr := "100"
+
+	subtrahendStrs := []string{
+		"5",
+		"10",
+		"30",
+		"60.55",
+		"-100.1",
+		"-5.6",
+	}
+
+	expectedStrs := []string{
+		"95",
+		"90",
+		"70",
+		"39,45",
+		"200,1",
+		"105,6",
+	}
+
+	minuendIntAry, err := IntAry{}.NewNumStr(minuendStr)
+
+	if err != nil {
+		t.Errorf("Error returned by IntAry{}.NewNumStr(minuendStr) " +
+			"minuendStr='%v'  Error='%v'. ", minuendStr, err.Error())
+	}
+
+	expectedNumSeps := NumericSeparatorDto{}
+	frenchDecSeparator := ','
+	frenchThousandsSeparator := ' '
+	frenchCurrencySymbol := '€'
+
+	expectedNumSeps.DecimalSeparator = frenchDecSeparator
+	expectedNumSeps.ThousandsSeparator = frenchThousandsSeparator
+	expectedNumSeps.CurrencySymbol = frenchCurrencySymbol
+
+	err = minuendIntAry.SetNumericSeparatorsDto(expectedNumSeps)
+
+	if err != nil {
+		t.Errorf("Error returned by minuendIntAry.SetNumericSeparatorsDto(expectedNumSeps). " +
+			"Error='%v' ", err.Error())
+	}
+
+	lenSubtrahends := len(subtrahendStrs)
+	subtrahendAry := make([]IntAry, lenSubtrahends)
+	expectedResultsAry := make([]IntAry, lenSubtrahends)
+
+	for i:=0; i < lenSubtrahends; i++ {
+
+		subtrahendAry[i], err = IntAry{}.NewNumStr(subtrahendStrs[i])
+
+		if err != nil {
+			t.Errorf("Error returned by IntAry{}.NewNumStr(subtrahendStrs[i]) " +
+				"subtrahendStrs[%v]='%v'  Error='%v'. ", i, subtrahendStrs[i], err.Error())
+		}
+
+		expectedResultsAry[i], err = IntAry{}.NewNumStr(expectedStrs[i])
+
+		if err != nil {
+			t.Errorf("Error returned by IntAry{}.NewNumStr(expectedStrs[i]) " +
+				"expectedStrs[%v]='%v'  Error='%v'. ", i, expectedStrs[i], err.Error())
+		}
+
+	}
+
+	resultArray, err :=
+		BigIntMathSubtract{}.SubtractIntAryOutputToArray(minuendIntAry, subtrahendAry)
+
+	if err != nil {
+		t.Errorf("Error returned byBigIntMathSubtract{}.SubtractIntAryOutputToArray" +
+			"(minuendIntAry, subtrahendAry) minuendIntAry='%v'  Error='%v'. ",
+			minuendIntAry.GetNumStr(), err.Error())
+	}
+
+	for k:=0; k < lenSubtrahends; k++ {
+
+		actualNumStr := resultArray[k].GetNumStr()
+
+		if expectedStrs[k] != actualNumStr {
+			t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v'. ",
+				expectedStrs[k], actualNumStr)
+		}
+
+		actualNumSeps := resultArray[k].GetNumericSeparatorsDto()
+
+		if !expectedNumSeps.Equal(actualNumSeps) {
+			t.Errorf("Error: Expected numSeps='%v'. Instead, NumStr='%v'.",
+				expectedNumSeps.String(), actualNumSeps.String())
+		}
 	}
 }
 
