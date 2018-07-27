@@ -994,6 +994,10 @@ func (bNum *BigIntNum) GetCurrencySymbol() rune {
 // instance. The resulting number value includes the decimal point
 // and decimal digits if they exist.
 //
+// The returned Decimal instance contains numeric separators (decimal separator,
+// thousands separator and currency symbol) copied from the current BigIntNum
+// instance, 'bNum'.
+//
 func (bNum *BigIntNum) GetDecimal() (Decimal, error) {
 
 	ePrefix := "BigIntNum.GetDecimal() "
@@ -1312,6 +1316,12 @@ func (bNum *BigIntNum) GetNumStrDto() (NumStrDto, error) {
 				"Error='%v' \n", err.Error())
 	}
 
+	err = nDto.IsValid(ePrefix + "'nDto' INVALID! ")
+
+	if err != nil {
+		return NumStrDto{}.New(), err
+	}
+
 	return nDto, nil
 }
 
@@ -1611,6 +1621,9 @@ func (bNum BigIntNum) New() BigIntNum {
 //
 //											Integer Value		precision			Numeric Value
 //											  123456					 3					  123.456
+//
+// The new BigIntNum instance returned by this method will contain default numeric
+// separators (decimal separator, thousands separator and currency symbol).
 //
 func (bNum BigIntNum) NewBigInt(bigI *big.Int, precision uint) BigIntNum {
 	b := BigIntNum{}

@@ -3383,7 +3383,6 @@ func TestBigIntMathSubtract_SubtractPair_10(t *testing.T) {
 	// result = 99.999
 	expectedNumStr := "99,999"
 
-
 	maxPrecision := minuendPrecision
 
 	if subtrahendPrecision > maxPrecision {

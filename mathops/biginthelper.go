@@ -135,6 +135,10 @@ func (bPair BigIntPair) New() BigIntPair {
 // Before using BigIntPair in a math operation, it may be necessary
 // to specifically set 'BigIntPair.MaxPrecision'
 //
+// The BigIntNum instances created by this method will contain default
+// numeric separators (decimal separator, thousands separator and
+// currency symbol)
+//
 func (bPair BigIntPair) NewBase(
 						b1 *big.Int,
 						b1Precision uint,

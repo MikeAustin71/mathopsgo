@@ -2180,6 +2180,12 @@ func (nDto NumStrDto) NewBigInt(signedBigInt *big.Int, precision uint) (NumStrDt
 				signedBigInt.Text(10), precision,  err.Error())
 	}
 
+	err = n2.IsValid(ePrefix + "'n2' INVALID! ")
+
+	if err != nil {
+		return NumStrDto{}, err
+	}
+
 	return n2, nil
 }
 

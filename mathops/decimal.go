@@ -1385,6 +1385,7 @@ func (dec Decimal) NewBigInt(bigI *big.Int, precision uint) (Decimal, error) {
 				bigI.String(), precision, err.Error())
 	}
 
+
 	return d2, nil
 }
 

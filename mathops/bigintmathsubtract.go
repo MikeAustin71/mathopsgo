@@ -1587,8 +1587,8 @@ func (bSubtract BigIntMathSubtract) SubtractNumStrDtoSeries(
 }
 
 
-// subtractPairNoNumSeps - Performs the subtraction operation. This method receives a type
-// 'BigIntPair' and proceeds to subtract b2.bigInt from b1.bigInt.
+// SubtractPair - Performs the subtraction operation. This method receives a type
+// 'BigIntPair' and proceeds to subtract bPair.Big2 from bPair.Big1.
 //
 // After the subtraction operation, the 'difference' or 'result' is returned as a
 // Type BigIntNum.
@@ -1609,7 +1609,7 @@ func (bSubtract BigIntMathSubtract) SubtractPair(bPair BigIntPair) BigIntNum {
 }
 
 // subtractPairNoNumSeps - Performs the subtraction operation. This method receives a type
-// 'BigIntPair' and proceeds to subtract b2.bigInt from b1.bigInt.
+// 'BigIntPair' and proceeds to subtract bPair.Big1 from bPair.Big2.
 //
 // After the subtraction operation, the 'difference' or 'result' is returned as a
 // Type BigIntNum.
@@ -1618,7 +1618,6 @@ func (bSubtract BigIntMathSubtract) SubtractPair(bPair BigIntPair) BigIntNum {
 // default numeric separators (decimal separator, thousands separator and currency
 // symbol).
 //
-
 func (bSubtract BigIntMathSubtract) subtractPairNoNumSeps(bPair BigIntPair) BigIntNum {
 
 	bPair.MakePrecisionsEqual()
