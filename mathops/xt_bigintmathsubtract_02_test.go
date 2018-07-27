@@ -907,6 +907,127 @@ func TestBigIntMathSubtract_SubtractDecimalSeries_04(t *testing.T) {
 
 }
 
+func TestBigIntMathSubtract_SubtractDecimalSeries_05(t *testing.T) {
+
+	var err error
+
+	// minuend = 7328941.123456
+	minuendStr := "7328941.123456"
+
+	subtrahend0:= "123.894000"
+	subtrahend1:= "67.1"
+	subtrahend2:= "93.0"
+	subtrahend3:= "-124498.67158"
+	subtrahend4:= "647129.57"
+	subtrahend5:= "28"
+
+	// result = 6805998.231036
+	expectedNumStr := "6805998,231036"
+
+	decMinuend, err := Decimal{}.NewNumStr(minuendStr)
+
+	if err != nil {
+		t.Errorf("Error returned by Decimal{}.NewNumStr(minuendStr) " +
+			"minuendStr='%v' Error='%v' ", minuendStr, err.Error())
+	}
+
+	expectedNumSeps := NumericSeparatorDto{}
+	frenchDecSeparator := ','
+	frenchThousandsSeparator := ' '
+	frenchCurrencySymbol := '€'
+
+	expectedNumSeps.DecimalSeparator = frenchDecSeparator
+	expectedNumSeps.ThousandsSeparator = frenchThousandsSeparator
+	expectedNumSeps.CurrencySymbol = frenchCurrencySymbol
+
+	err = decMinuend.SetNumericSeparatorsDto(expectedNumSeps)
+
+	if err != nil {
+		t.Errorf("Error returned by decMinuend.SetNumericSeparatorsDto(expectedNumSeps). " +
+			"Error='%v' ", err.Error())
+	}
+
+	lenSubtrahends := 6
+	subtrahendAry := make([]Decimal, lenSubtrahends)
+
+	subtrahendAry[0], err = Decimal{}.NewNumStr(subtrahend0)
+
+	if err != nil {
+		t.Errorf("Error returned from Decimal{}.NewNumStr(subtrahend0). " +
+			"subtrahend0='%v' Error='%v'. ",
+			subtrahend0, err.Error())
+	}
+
+	subtrahendAry[1], err = Decimal{}.NewNumStr(subtrahend1)
+
+	if err != nil {
+		t.Errorf("Error returned from Decimal{}.NewNumStr(subtrahend1). " +
+			"subtrahend1='%v' Error='%v'. ",
+			subtrahend1, err.Error())
+	}
+
+	subtrahendAry[2], err = Decimal{}.NewNumStr(subtrahend2)
+
+	if err != nil {
+		t.Errorf("Error returned from Decimal{}.NewNumStr(subtrahend2). " +
+			"subtrahend2='%v' Error='%v'. ",
+			subtrahend2, err.Error())
+	}
+
+	subtrahendAry[3], err = Decimal{}.NewNumStr(subtrahend3)
+
+	if err != nil {
+		t.Errorf("Error returned from Decimal{}.NewNumStr(subtrahend3). " +
+			"subtrahend3='%v' Error='%v'. ",
+			subtrahend3, err.Error())
+	}
+
+	subtrahendAry[4], err = Decimal{}.NewNumStr(subtrahend4)
+
+	if err != nil {
+		t.Errorf("Error returned from Decimal{}.NewNumStr(subtrahend4). " +
+			"subtrahend4='%v' Error='%v'. ",
+			subtrahend4, err.Error())
+	}
+
+	subtrahendAry[5], err = Decimal{}.NewNumStr(subtrahend5)
+
+	if err != nil {
+		t.Errorf("Error returned from Decimal{}.NewNumStr(subtrahend5). " +
+			"subtrahend5='%v' Error='%v'. ",
+			subtrahend5, err.Error())
+	}
+
+	result, err := BigIntMathSubtract{}.SubtractDecimalSeries(
+		decMinuend,
+		subtrahendAry[0],
+		subtrahendAry[1],
+		subtrahendAry[2],
+		subtrahendAry[3],
+		subtrahendAry[4],
+		subtrahendAry[5] )
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntMathSubtract{}.SubtractDecimalSeries(" +
+			"decMinuend, ...). Error='%v' ", err.Error())
+	}
+
+	actualNumStr := result.GetNumStr()
+
+	if expectedNumStr != actualNumStr {
+		t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v'. ",
+			expectedNumStr, actualNumStr)
+	}
+
+	actualNumSeps := result.GetNumericSeparatorsDto()
+
+	if !expectedNumSeps.Equal(actualNumSeps) {
+		t.Errorf("Error: Expected numSeps='%v'. Instead, numSeps='%v'. ",
+			expectedNumSeps.String(), actualNumSeps.String())
+	}
+
+}
+
 func TestBigIntMathSubtract_SubtractIntAry_01(t *testing.T) {
 	// minuend = 123.32
 	minuendStr := "123.32"
