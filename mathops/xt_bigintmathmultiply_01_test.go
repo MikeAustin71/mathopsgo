@@ -865,7 +865,6 @@ func TestBigIntMathMultiply_MultiplyBigIntNums_05(t *testing.T) {
 
 }
 
-
 func TestBigIntMathMultiply_MultiplyBigIntNums_06(t *testing.T) {
 	// multiplier = 123.32
 	multiplierStr := "123.32"
@@ -1315,6 +1314,102 @@ func TestBigIntMathMultiply_MultiplyBigIntNumArray_04(t *testing.T) {
 		t.Errorf("Error: Expected actualNumStr='%v' " +
 			"Instead, actualNumStr='%v'",
 			iaResult.GetNumStr(), actualNumStr)
+	}
+
+}
+
+func TestBigIntMathMultiply_MultiplyBigIntNumArray_05(t *testing.T) {
+
+	var err error
+
+	// multiplier = 37.9876
+	multiplierStr := "37.9876"
+
+	// multiplicandStrs
+	multiplicandStrs :=  [] string {
+		"-27.9",
+		"48.123456",
+		"59.48721",
+		"-3",
+		"19.1",
+		"69",
+	}
+
+	// product = 11995826664,26376575446779648
+	expectedNumStr := "11995826664,26376575446779648"
+
+	multiplierBiNum, err := BigIntNum{}.NewNumStr(multiplierStr)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(multiplierStr) " +
+			"multiplierStr='%v'  Error='%v'. ", multiplierStr, err.Error())
+	}
+
+	expectedNumSeps := NumericSeparatorDto{}
+	frenchDecSeparator := ','
+	frenchThousandsSeparator := ' '
+	frenchCurrencySymbol := '€'
+
+	expectedNumSeps.DecimalSeparator = frenchDecSeparator
+	expectedNumSeps.ThousandsSeparator = frenchThousandsSeparator
+	expectedNumSeps.CurrencySymbol = frenchCurrencySymbol
+
+	err = multiplierBiNum.SetNumericSeparatorsDto(expectedNumSeps)
+
+	if err != nil {
+		t.Errorf("Error returned by multiplierBiNum.SetNumericSeparatorsDto(expectedNumSeps). " +
+			"Error='%v' ", err.Error())
+	}
+
+	lenArray := len(multiplicandStrs)
+	bINumArray := make([]BigIntNum, lenArray)
+
+	iaResult, err := IntAry{}.NewNumStr(multiplierStr)
+
+	if err != nil {
+		t.Errorf("Error returned by IntAry{}.NewNumStr(multiplierStr) " +
+			"multiplierStr='%v'  Error='%v'. ", multiplierStr, err.Error())
+	}
+
+	for i:=0; i < lenArray; i++ {
+
+		bINumArray[i], err = 	BigIntNum{}.NewNumStr(multiplicandStrs[i])
+
+		if err != nil {
+			t.Errorf("Error returned by BigIntNum{}.NewNumStr(multiplicandStrs[i]) " +
+				"i='%v'  multiplicandStrs[i]='%v'  Error='%v'. ", i, multiplicandStrs[i], err.Error())
+		}
+
+		ia, err := bINumArray[i].GetIntAry()
+
+		if err != nil {
+			t.Errorf("Error returned by bINumArray[i].GetIntAry() " +
+				"i='%v'  multiplicandStrs[i]='%v'  Error='%v'. ", i, multiplicandStrs[i], err.Error())
+		}
+
+		err = iaResult.MultiplyThisBy(&ia, -1, -1)
+
+		if err != nil {
+			t.Errorf("Error returned by iaResult.MultiplyThisBy(&ia, -1, -1) " +
+				"i='%v'  multiplicandStrs[i]='%v'  Error='%v'. ", i, multiplicandStrs[i], err.Error())
+		}
+
+	}
+
+	result := BigIntMathMultiply{}.MultiplyBigIntNumArray(multiplierBiNum, bINumArray)
+
+	actualNumStr := result.GetNumStr()
+
+	if expectedNumStr != actualNumStr {
+		t.Errorf("Error: Expected BigIntNum='%s'. Instead, BigIntNum= '%s'. ",
+			expectedNumStr, actualNumStr)
+	}
+
+	actualNumSeps := result.GetNumericSeparatorsDto()
+
+	if !expectedNumSeps.Equal(actualNumSeps) {
+		t.Errorf("Error: Expected numSeps='%v'. Instead, numSeps='%v'. ",
+			expectedNumSeps.String(), actualNumSeps.String())
 	}
 
 }
