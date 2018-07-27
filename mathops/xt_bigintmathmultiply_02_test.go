@@ -534,6 +534,72 @@ func TestBigIntMathMultiply_MultiplyDecimal_05(t *testing.T) {
 
 }
 
+func TestBigIntMathMultiply_MultiplyDecimal_06(t *testing.T) {
+	// multiplier = 123.32
+	multiplierStr := "123.32"
+
+	// multiplicand = 23.321
+	multiplicandStr := "23.321"
+
+	// product = 2875.94572
+	expectedNumStr := "2875,94572"
+
+	multiplierDecimal, err := Decimal{}.NewNumStr(multiplierStr)
+
+	if err != nil {
+		t.Errorf("Error returned by Decimal{}.NewNumStr(multiplierStr) " +
+			"multiplierStr='%v'  Error='%v'. ", multiplierStr, err.Error())
+	}
+
+
+	expectedNumSeps := NumericSeparatorDto{}
+	frenchDecSeparator := ','
+	frenchThousandsSeparator := ' '
+	frenchCurrencySymbol := '€'
+
+	expectedNumSeps.DecimalSeparator = frenchDecSeparator
+	expectedNumSeps.ThousandsSeparator = frenchThousandsSeparator
+	expectedNumSeps.CurrencySymbol = frenchCurrencySymbol
+
+	err = multiplierDecimal.SetNumericSeparatorsDto(expectedNumSeps)
+
+	if err != nil {
+		t.Errorf("Error returned by multiplierBiNum.SetNumericSeparatorsDto(expectedNumSeps). " +
+			"Error='%v' ", err.Error())
+	}
+
+	multiplicandDecimal, err := Decimal{}.NewNumStr(multiplicandStr)
+
+	if err != nil {
+		t.Errorf("Error returned by Decimal{}.NewNumStr(multiplicandStr) " +
+			"multiplicandStr='%v'  Error='%v'. ", multiplicandStr, err.Error())
+	}
+
+	result, err := BigIntMathMultiply{}.MultiplyDecimal(multiplierDecimal, multiplicandDecimal)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntMathMultiply{}.MultiplyDecimal" +
+			"(multiplierDecimal, multiplicandDecimal) " +
+			"multiplierDecimal='%v' multiplicandDecimal='%v' Error='%v'. ",
+			multiplierDecimal.GetNumStr(), multiplicandDecimal.GetNumStr(), err.Error())
+	}
+
+	actualNumStr := result.GetNumStr()
+
+	if expectedNumStr != actualNumStr {
+		t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v'. ",
+			expectedNumStr, actualNumStr)
+	}
+
+	actualNumSeps := result.GetNumericSeparatorsDto()
+
+	if !expectedNumSeps.Equal(actualNumSeps) {
+		t.Errorf("Error: Expected NumSeps='%v'. Instead, NumSeps='%v'. ",
+			expectedNumSeps.String(), actualNumSeps.String())
+	}
+
+}
+
 func TestBigIntMathMultiply_MultiplyDecimalArray_01(t *testing.T) {
 
 	var err error
