@@ -1108,6 +1108,72 @@ func TestBigIntMathSubtract_SubtractNumStrDto_04(t *testing.T) {
 	}
 }
 
+func TestBigIntMathSubtract_SubtractNumStrDto_05(t *testing.T) {
+	// minuend = 123.32
+	minuendStr := "123.32"
+
+	// subtrahend = 23.321
+	subtrahendStr := "23.321"
+
+	// result = 99.999
+	expectedNumStr := "99,999"
+
+	nDtoMinuend, err := NumStrDto{}.NewNumStr(minuendStr)
+
+	if err != nil {
+		t.Errorf("Error returned by NumStrDto{}.NewNumStr(minuendStr) " +
+			"minuendStr='%v' Error='%v'", minuendStr, err.Error())
+	}
+
+	expectedNumSeps := NumericSeparatorDto{}
+	frenchDecSeparator := ','
+	frenchThousandsSeparator := ' '
+	frenchCurrencySymbol := '€'
+
+	expectedNumSeps.DecimalSeparator = frenchDecSeparator
+	expectedNumSeps.ThousandsSeparator = frenchThousandsSeparator
+	expectedNumSeps.CurrencySymbol = frenchCurrencySymbol
+
+	err = nDtoMinuend.SetNumericSeparatorsDto(expectedNumSeps)
+
+	if err != nil {
+		t.Errorf("Error returned by nDtoMinuend.SetNumericSeparatorsDto(expectedNumSeps). " +
+			"Error='%v' ", err.Error())
+	}
+
+	nDtoSubtrahend, err := NumStrDto{}.NewNumStr(subtrahendStr)
+
+	if err != nil  {
+		t.Errorf("Error returned by NumStrDto{}.NewNumStr(subtrahendStr) " +
+			"subtrahendStr='%v' Error='%v' ", subtrahendStr, err.Error())
+	}
+
+
+	result, err := BigIntMathSubtract{}.SubtractNumStrDto(nDtoMinuend, nDtoSubtrahend)
+
+	if err != nil  {
+		t.Errorf("Error returned by BigIntMathSubtract{}.SubtractNumStrDto(nDtoMinuend, "+
+			"nDtoSubtrahend) minuendStr='%v' subtrahendStr='%v' Error='%v' ",
+			minuendStr, subtrahendStr, err.Error())
+	}
+
+	actualNumStr := result.GetNumStr()
+
+	if expectedNumStr != actualNumStr {
+		t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v'. ",
+			expectedNumStr, actualNumStr)
+	}
+
+	actualNumSeps := result.GetNumericSeparatorsDto()
+
+	if !expectedNumSeps.Equal(actualNumSeps) {
+		t.Errorf("Error: Expected numSeps='%v'. Instead, numSeps='%v'. ",
+			expectedNumSeps.String(), actualNumSeps.String())
+	}
+
+}
+
+
 func TestBigIntMathSubtract_SubtractNumStrDtoArray_01(t *testing.T) {
 
 	var err error
