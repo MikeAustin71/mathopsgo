@@ -533,6 +533,99 @@ func TestBigIntMathMultiply_MultiplyIntAry_05(t *testing.T) {
 
 }
 
+func TestBigIntMathMultiply_MultiplyIntAry_06(t *testing.T) {
+	// multiplier = 89637.9876
+	multiplierStr := "-89637.9876"
+
+	// multiplicand = -247632
+	multiplicandStr := "-247632"
+
+	// product = 22197234145.3632
+	expectedNumStr := "22197234145,3632"
+
+	multiplierIntAry, err := IntAry{}.NewNumStr(multiplierStr)
+
+	if err != nil {
+		t.Errorf("Error returned by IntAry{}.NewNumStr(multiplierStr) " +
+			"multiplierStr='%v'  Error='%v'. ", multiplierStr, err.Error())
+	}
+
+	expectedNumSeps := NumericSeparatorDto{}
+	frenchDecSeparator := ','
+	frenchThousandsSeparator := ' '
+	frenchCurrencySymbol := '€'
+
+	expectedNumSeps.DecimalSeparator = frenchDecSeparator
+	expectedNumSeps.ThousandsSeparator = frenchThousandsSeparator
+	expectedNumSeps.CurrencySymbol = frenchCurrencySymbol
+
+	err = multiplierIntAry.SetNumericSeparatorsDto(expectedNumSeps)
+
+	if err != nil {
+		t.Errorf("Error returned by multiplierBiNum.SetNumericSeparatorsDto(expectedNumSeps). " +
+			"Error='%v' ", err.Error())
+	}
+
+	multiplicandIntAry, err := IntAry{}.NewNumStr(multiplicandStr)
+
+	if err != nil {
+		t.Errorf("Error returned by IntAry{}.NewNumStr(multiplicandStr) " +
+			"multiplicandStr='%v'  Error='%v'. ", multiplicandStr, err.Error())
+	}
+
+	iaMultiplier, err := IntAry{}.NewNumStr(multiplierStr)
+
+	if err != nil {
+		t.Errorf("Error returned by IntAry{}.NewNumStr(multiplierStr) " +
+			"multiplierStr='%v'  Error='%v'. ", multiplierStr, err.Error())
+	}
+
+	iaMultiplicand, err := IntAry{}.NewNumStr(multiplicandStr)
+
+	if err != nil {
+		t.Errorf("Error returned by IntAry{}.NewNumStr(multiplicandStr) " +
+			"multiplicandStr='%v'  Error='%v'. ", multiplicandStr, err.Error())
+	}
+
+	iaResult := IntAry{}.New()
+
+	err =	iaMultiplier.Multiply(
+		&iaMultiplier,
+		&iaMultiplicand,
+		&iaResult,
+		-1,
+		-1)
+
+	if err != nil {
+		t.Errorf("Error returned by iaMultiplier.Multiply() " +
+			"Error='%v'. ", err.Error())
+	}
+
+	result, err := BigIntMathMultiply{}.MultiplyIntAry(multiplierIntAry, multiplicandIntAry)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntMathMultiply{}.MultiplyIntAry" +
+			"(multiplierIntAry, multiplicandIntAry) " +
+			"multiplierIntAry='%v' multiplicandIntAry='%v' Error='%v'. ",
+			multiplierIntAry.GetNumStr(), multiplicandIntAry.GetNumStr(), err.Error())
+	}
+
+	actualNumStr := result.GetNumStr()
+
+	if expectedNumStr != actualNumStr {
+		t.Errorf("Error: ExpectedNumStr='%v' " +
+			"Instead, actualNumStr='%v'",
+			expectedNumStr, actualNumStr)
+	}
+
+	actualNumSeps := result.GetNumericSeparatorsDto()
+
+	if !expectedNumSeps.Equal(actualNumSeps) {
+		t.Errorf("Error: Expected NumSeps='%v'. Instead, NumSeps='%v'. ",
+			expectedNumSeps.String(), actualNumSeps.String())
+	}
+}
+
 func TestBigIntMathMultiply_MultiplyIntAryArray_01(t *testing.T) {
 
 	var err error
