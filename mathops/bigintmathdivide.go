@@ -63,6 +63,10 @@ type BigIntMathDivide struct {
 //  -12.555     		/    			 - 2 				= 		 6							-0.555
 //  - 2.5	 					/ 				 -12.555		= 		 0							-2.5
 //
+// The returned BigIntNum division 'result' (quotient and modulo) will
+// contain numeric separators (decimal separator, thousands separator
+// and currency symbol) copied from input parameter, 'dividend'
+//
 func (bIDivide BigIntMathDivide) BigIntNumQuotientMod(
 								dividend,
 									divisor BigIntNum,
@@ -77,6 +81,8 @@ func (bIDivide BigIntMathDivide) BigIntNumQuotientMod(
 		err = fmt.Errorf(ePrefix + "Error: Attempted to divide by zero!")
 		return quotient, modulo, err
 	}
+
+	numSeps := dividend.GetNumericSeparatorsDto()
 
 	bPair := BigIntPair{}.NewBigIntNum(dividend, divisor)
 
@@ -93,6 +99,30 @@ func (bIDivide BigIntMathDivide) BigIntNumQuotientMod(
 			"dividend='%v' divisor='%v' maxPrecision='%v' Error='%v'",
 				bPair.Big1.GetNumStr(), bPair.Big2.GetNumStr(),
 					bPair.MaxPrecision, err2.Error())
+
+		return quotient, modulo, err
+	}
+
+	err2 = quotient.SetNumericSeparatorsDto(numSeps)
+
+	if err2 != nil {
+		quotient = BigIntNum{}.NewBigInt(big.NewInt(0), 0)
+		modulo = BigIntNum{}.NewBigInt(big.NewInt(0), 0)
+		err = fmt.Errorf(ePrefix +
+			"Error returned by quotient.SetNumericSeparatorsDto(numSeps) " +
+			"Error='%v'", err2.Error())
+
+		return quotient, modulo, err
+	}
+
+	err2 = modulo.SetNumericSeparatorsDto(numSeps)
+
+	if err2 != nil {
+		quotient = BigIntNum{}.NewBigInt(big.NewInt(0), 0)
+		modulo = BigIntNum{}.NewBigInt(big.NewInt(0), 0)
+		err = fmt.Errorf(ePrefix +
+			"Error returned by modulo.SetNumericSeparatorsDto(numSeps) " +
+			"Error='%v'", err2.Error())
 
 		return quotient, modulo, err
 	}
@@ -2292,7 +2322,6 @@ func (bIDivide BigIntMathDivide) NumStrDtoQuotientMod(
 
 	return quotient, modulo, err
 }
-
 
 // PairFracQuotient - Receives a BigIntPair type as an input parameter. 'BigIntPair.Big1'
 // is treated as the Dividend. 'BigIntPair.Big2' is considered the divisor.
