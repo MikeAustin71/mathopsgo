@@ -189,6 +189,35 @@ func (numSep *NumericSeparatorDto) Equal(numSep2 NumericSeparatorDto) bool {
 	return true
 }
 
+// New - Returns a new instance of NumericSeparatorDto. The
+// rune values are automatically set to USA defaults.
+func (numSep NumericSeparatorDto) New() NumericSeparatorDto {
+
+	n2 := NumericSeparatorDto{}
+
+	n2.SetDefaultsIfEmpty()
+
+	return  n2
+}
+
+// SetDefaultsIfEmpty - If any of the NumericSeparatorDTo rune values
+// are zero, this method will set those elements to USA default values.
+//
+func (numSep *NumericSeparatorDto) SetDefaultsIfEmpty() {
+
+	if numSep.DecimalSeparator == 0 {
+		numSep.DecimalSeparator = '.'
+	}
+
+	if numSep.ThousandsSeparator == 0 {
+		numSep.ThousandsSeparator = ','
+	}
+
+	if numSep.CurrencySymbol == 0 {
+		numSep.CurrencySymbol = '$'
+	}
+}
+
 // String - Provides a formatted listing of the contents from the current
 // NumericSeparatorDto instance.
 //

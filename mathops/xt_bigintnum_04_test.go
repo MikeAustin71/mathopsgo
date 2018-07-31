@@ -815,6 +815,56 @@ func TestBigIntNum_NewNumStr_02(t *testing.T) {
 
 }
 
+func TestBigIntNum_NewNumStrWithNumSeps_01(t *testing.T) {
+
+	nStr := "123,456"
+
+	expectedNumSeps := NumericSeparatorDto{}
+	frenchDecSeparator := ','
+	frenchThousandsSeparator := ' '
+	frenchCurrencySymbol := '€'
+
+	expectedNumSeps.DecimalSeparator = frenchDecSeparator
+	expectedNumSeps.ThousandsSeparator = frenchThousandsSeparator
+	expectedNumSeps.CurrencySymbol = frenchCurrencySymbol
+
+	bigINum, err := BigIntNum{}.NewNumStrWithNumSeps(nStr, expectedNumSeps)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewNumStrWithNumSeps(nStr, expectedNumSeps). " +
+			"Error='%v'", err.Error())
+	}
+
+	actualNumStr := bigINum.GetNumStr()
+
+	if nStr != actualNumStr {
+		t.Errorf("Error: Expected NumStr='%v'.  Instead, NumStr='%v'.",
+			nStr, actualNumStr)
+	}
+}
+
+func TestBigIntNum_NewNumStrWithNumSeps_02(t *testing.T) {
+
+	nStr := "123.456"
+
+	expectedNumSeps := NumericSeparatorDto{}
+	expectedNumSeps.SetDefaultsIfEmpty()
+
+	bigINum, err := BigIntNum{}.NewNumStrWithNumSeps(nStr, expectedNumSeps)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewNumStrWithNumSeps(nStr, expectedNumSeps). " +
+			"Error='%v'", err.Error())
+	}
+
+	actualNumStr := bigINum.GetNumStr()
+
+	if nStr != actualNumStr {
+		t.Errorf("Error: Expected NumStr='%v'.  Instead, NumStr='%v'.",
+			nStr, actualNumStr)
+	}
+}
+
 func TestBigIntNum_NewBigIntExponent_01(t *testing.T) {
 
 	n:= 123456

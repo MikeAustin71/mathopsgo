@@ -82,15 +82,13 @@ func (bIDivide BigIntMathDivide) BigIntNumQuotientMod(
 		return quotient, modulo, err
 	}
 
-	numSeps := dividend.GetNumericSeparatorsDto()
-
 	bPair := BigIntPair{}.NewBigIntNum(dividend, divisor)
 
 	bPair.MaxPrecision = maxPrecision
 
 	var err2 error
 
-	quotient, modulo, err2 = BigIntMathDivide{}.pairQuotientMod(bPair)
+	quotient, modulo, err2 = BigIntMathDivide{}.PairQuotientMod(bPair)
 
 	if err2 != nil {
 		quotient = BigIntNum{}.NewBigInt(big.NewInt(0), 0)
@@ -99,30 +97,6 @@ func (bIDivide BigIntMathDivide) BigIntNumQuotientMod(
 			"dividend='%v' divisor='%v' maxPrecision='%v' Error='%v'",
 				bPair.Big1.GetNumStr(), bPair.Big2.GetNumStr(),
 					bPair.MaxPrecision, err2.Error())
-
-		return quotient, modulo, err
-	}
-
-	err2 = quotient.SetNumericSeparatorsDto(numSeps)
-
-	if err2 != nil {
-		quotient = BigIntNum{}.NewBigInt(big.NewInt(0), 0)
-		modulo = BigIntNum{}.NewBigInt(big.NewInt(0), 0)
-		err = fmt.Errorf(ePrefix +
-			"Error returned by quotient.SetNumericSeparatorsDto(numSeps) " +
-			"Error='%v'", err2.Error())
-
-		return quotient, modulo, err
-	}
-
-	err2 = modulo.SetNumericSeparatorsDto(numSeps)
-
-	if err2 != nil {
-		quotient = BigIntNum{}.NewBigInt(big.NewInt(0), 0)
-		modulo = BigIntNum{}.NewBigInt(big.NewInt(0), 0)
-		err = fmt.Errorf(ePrefix +
-			"Error returned by modulo.SetNumericSeparatorsDto(numSeps) " +
-			"Error='%v'", err2.Error())
 
 		return quotient, modulo, err
 	}

@@ -2025,8 +2025,50 @@ func (bNum BigIntNum) NewNumStr(numStr string) (BigIntNum, error) {
 	return b, nil
 }
 
-// NewNumStr - Receives a number string as input and returns
-// a new BigIntNum instance.
+// NewNumStr - Receives a number string as input and returns a new BigIntNum
+// instance. The input parameter 'numSeps' contains numeric separators
+// (decimal separator, thousands separator and currency symbol) which will
+// be used to parse the number string.
+//
+// Input parameters 'numSeps' will be copied to the returned BigIntNum.
+//
+func (bNum BigIntNum) NewNumStrWithNumSeps(
+												numStr string,
+													numSeps NumericSeparatorDto) (BigIntNum, error) {
+
+  ePrefix := "BigIntNum.NewNumStrWithNumSeps() "
+
+	numSeps.SetDefaultsIfEmpty()
+
+	b2 := BigIntNum{}.New()
+
+	err := b2.SetNumericSeparatorsDto(numSeps)
+
+	if err != nil {
+		return BigIntNum{}.NewZero(0),
+			fmt.Errorf(ePrefix +
+				"Error returned by b2.SetNumericSeparatorsDto(numSeps) " +
+				"Error='%v' \n", err.Error())
+
+	}
+
+	err = b2.SetNumStr(numStr)
+
+	if err != nil {
+		return BigIntNum{}.NewZero(0),
+			fmt.Errorf(ePrefix +
+				"Error returned by b2.SetNumericSeparatorsDto(numSeps) " +
+				"Error='%v' \n", err.Error())
+	}
+
+
+	return b2, nil
+}
+
+// NewNumStrMaxPrecision - Receives a number string as input and returns
+// a new BigIntNum instance. If the resulting precision exceeds
+// input parameter 'maxPrecision', the returned BigIntNum result
+// will be rounded to 'maxPrecision' decimal places.
 //
 func (bNum BigIntNum) NewNumStrMaxPrecision(
 													numStr string,
