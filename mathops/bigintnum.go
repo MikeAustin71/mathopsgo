@@ -2515,10 +2515,10 @@ func (bNum *BigIntNum) SetBigRat(ratNum *big.Rat, maxPrecision uint) error {
 	biPair := BigIntPair{}.NewBase(numerator, 0, denominator, 0)
 	biPair.MaxPrecision = maxPrecision
 
-	biNum, err := BigIntMathDivide{}.PairFracQuotient(biPair)
+	biNum, err := BigIntMathDivide{}.pairFracQuotient(biPair)
 	if err != nil {
 		return fmt.Errorf(ePrefix +
-			"Error returned by BigIntMathDivide{}.PairFracQuotient(biPair). " +
+			"Error returned by BigIntMathDivide{}.pairFracQuotient(biPair). " +
 			"Error='%v'\n", err.Error())
 	}
 
