@@ -164,6 +164,10 @@ func (bIDivide BigIntMathDivide) BigIntNumQuotientMod(
 //    -12.555		/ 			  -2.5			=			     5
 //     12.555		/ 			  -2				=			    -6
 //
+// The returned BigIntNum division 'result' (quotient and modulo) will
+// contain numeric separators (decimal separator, thousands separator
+// and currency symbol) copied from input parameter, 'dividend'
+//
 func (bIDivide BigIntMathDivide) BigIntNumIntQuotient(
 				dividend,
 					divisor BigIntNum) (intQuotient BigIntNum, err error) {
@@ -176,6 +180,8 @@ func (bIDivide BigIntMathDivide) BigIntNumIntQuotient(
 		return intQuotient, err
 	}
 
+	numSeps := dividend.GetNumericSeparatorsDto()
+
 	bPair := BigIntPair{}.NewBigIntNum(dividend, divisor)
 
 	var errx error
@@ -183,14 +189,28 @@ func (bIDivide BigIntMathDivide) BigIntNumIntQuotient(
 	intQuotient, errx = BigIntMathDivide{}.pairIntQuotient(bPair)
 
 	if errx != nil {
-		intQuotient = BigIntNum{}.NewBigInt(big.NewInt(0), 0)
+		intQuotient = BigIntNum{}.NewZero(0)
 		err = fmt.Errorf(ePrefix + "Error returned by BigIntMathDivide{}.pairIntQuotient(bPair). " +
 			"dividend='%v' divisor='%v' Error='%v'",
 				bPair.Big1.GetNumStr(), bPair.Big2.GetNumStr(), errx.Error())
+
+		return intQuotient, err
 	}
 
+	errx = intQuotient.SetNumericSeparatorsDto(numSeps)
 
-	return intQuotient, nil
+	if errx != nil {
+		intQuotient = BigIntNum{}.NewZero(0)
+		err = fmt.Errorf(ePrefix +
+			"Error returned by intQuotient.SetNumericSeparatorsDto(numSeps). " +
+			"Error='%v'", errx.Error())
+
+		return intQuotient, err
+	}
+
+	err = nil
+
+	return intQuotient, err
 }
 
 // BigIntNumModulo - Performs a modulo operation on BigIntNum input
