@@ -3345,21 +3345,22 @@ func (ia IntAry) NewIntFracStr(intStr, fracStr string, signVal int) (IntAry, err
 }
 
 // NewNumStr - Creates a new intAry object initialized
-// to the value of input parameter 'num' which is passed
-// as type 'string'.
+// to the value of input parameter 'numStr', a string of
+// numbers and delimiters which is passed as type 'string'.
 //
 // Usage: ia := intAry{}.NewNumStr("123.456")
-func (ia IntAry) NewNumStr(num string) (IntAry, error) {
+//
+func (ia IntAry) NewNumStr(numStr string) (IntAry, error) {
 
 
 	iAry := IntAry{}.New()
-	err := iAry.SetIntAryWithNumStr(num)
+	err := iAry.SetIntAryWithNumStr(numStr)
 
 	if err != nil {
 		return IntAry{},
 		fmt.Errorf("IntAry.NewNumStr() Error returned by  " +
-			"iAry.SetIntAryWithNumStr(num). num='%v', Error='%v' ",
-			num, err.Error())
+			"iAry.SetIntAryWithNumStr(numStr). numStr='%v', Error='%v' ",
+			numStr, err.Error())
 	}
 
 
@@ -3367,11 +3368,55 @@ func (ia IntAry) NewNumStr(num string) (IntAry, error) {
 
 }
 
+// NewNumStrWithNumSeps - Receives a number string as input and returns a
+// new IntAry instance. The input parameter 'numSeps' contains numeric
+// separators (decimal separator, thousands separator and currency symbol)
+// which will be used to parse the number string.
+//
+// In addition, the numeric separators contained in input parameter 'numSeps'
+// will be copied to the returned IntAry instance.
+//
+func (ia IntAry) NewNumStrWithNumSeps(
+										numStr string,
+											numSeps NumericSeparatorDto) (IntAry, error) {
+
+	ePrefix :=  "IntAry.NewNumStrWithNumSeps() "
+
+	iAry := IntAry{}.New()
+
+	numSeps.SetDefaultsIfEmpty()
+
+	err := iAry.SetNumericSeparatorsDto(numSeps)
+
+	if err != nil {
+		return IntAry{},
+			fmt.Errorf(ePrefix +
+				"Error returned by  Ary.SetIntAryWithNumStr(numStr). " +
+				"Error='%v' ", err.Error())
+	}
+
+	err = iAry.SetIntAryWithNumStr(numStr)
+
+	if err != nil {
+		return IntAry{},
+			fmt.Errorf(ePrefix +
+				"Error returned by iAry.SetIntAryWithNumStr(numStr). " +
+				"numStr='%v', Error='%v' ", numStr, err.Error())
+	}
+
+	return iAry, nil
+}
+
 // NewNumStrMaxPrecision - Creates a new intAry object initialized
 // to the value of input parameter 'num' which is passed
 // as type 'string'.
 //
-// Usage: ia := intAry{}.NewNumStr("123.456")
+// If the number of decimal points to the right of the decimal place
+// exceeds input parameter 'maxPrecision', the resulting numeric value
+// will be rounded to 'maxPrecision' decimal places.
+//
+// Usage: ia := intAry{}.NewNumStr("123.456", 3)
+//
 func (ia IntAry) NewNumStrMaxPrecision(num string, maxPrecision int) (IntAry, error) {
 
 	iAry := IntAry{}.New()

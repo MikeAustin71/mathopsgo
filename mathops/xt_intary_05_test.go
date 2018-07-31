@@ -549,6 +549,124 @@ func TestIntAry_NewNumStr_02(t *testing.T) {
 
 }
 
+func TestIntAry_NewNumStrWithNumSeps_01(t *testing.T) {
+
+	nStr1 := "579,123456000"
+	ePrecision := 9
+	eSignVal := 1
+
+	expectedNumSeps := NumericSeparatorDto{}
+	frenchDecSeparator := ','
+	frenchThousandsSeparator := ' '
+	frenchCurrencySymbol := '€'
+
+	expectedNumSeps.DecimalSeparator = frenchDecSeparator
+	expectedNumSeps.ThousandsSeparator = frenchThousandsSeparator
+	expectedNumSeps.CurrencySymbol = frenchCurrencySymbol
+
+	ia, err := IntAry{}.NewNumStrWithNumSeps(nStr1, expectedNumSeps)
+
+	if err != nil {
+		t.Errorf("Error returned from intAry{}.NewNumStr(nStr1). Error= %v", err)
+	}
+
+	if nStr1 != ia.GetNumStr() {
+		t.Errorf("Expected ia.GetNumStr()== %v  .   Instead ia.GetNumStr() == %v", nStr1, ia.GetNumStr())
+	}
+
+	if ePrecision != ia.GetPrecision() {
+		t.Errorf("Expected ia.GetPrecision() == %v  .   Instead ia.GetPrecision() == %v", ePrecision, ia.GetPrecision())
+	}
+
+	if eSignVal != ia.GetSign() {
+		t.Errorf("Expected ia.GetSign() == %v  .   Instead ia.GetSign() == %v", eSignVal, ia.GetSign())
+	}
+
+	actualNumSeps := ia.GetNumericSeparatorsDto()
+
+	if !expectedNumSeps.Equal(actualNumSeps) {
+		t.Errorf("Error: Expected NumSeps='%v'. Instead, NumSeps='%v'. ",
+			 expectedNumSeps.String(), actualNumSeps.String())
+	}
+
+}
+
+func TestIntAry_NewNumStrWithNumSeps_02(t *testing.T) {
+
+	nStr1 := "579.123456000"
+	ePrecision := 9
+	eSignVal := 1
+
+	expectedNumSeps := NumericSeparatorDto{}
+
+	expectedNumSeps.DecimalSeparator = '.'
+	expectedNumSeps.ThousandsSeparator = ','
+	expectedNumSeps.CurrencySymbol = '$'
+
+	ia, err := IntAry{}.NewNumStrWithNumSeps(nStr1, expectedNumSeps)
+
+	if err != nil {
+		t.Errorf("Error returned from intAry{}.NewNumStr(nStr1). Error= %v", err)
+	}
+
+	if nStr1 != ia.GetNumStr() {
+		t.Errorf("Expected ia.GetNumStr()== %v  .   Instead ia.GetNumStr() == %v", nStr1, ia.GetNumStr())
+	}
+
+	if ePrecision != ia.GetPrecision() {
+		t.Errorf("Expected ia.GetPrecision() == %v  .   Instead ia.GetPrecision() == %v", ePrecision, ia.GetPrecision())
+	}
+
+	if eSignVal != ia.GetSign() {
+		t.Errorf("Expected ia.GetSign() == %v  .   Instead ia.GetSign() == %v", eSignVal, ia.GetSign())
+	}
+
+	actualNumSeps := ia.GetNumericSeparatorsDto()
+
+	if !expectedNumSeps.Equal(actualNumSeps) {
+		t.Errorf("Error: Expected NumSeps='%v'. Instead, NumSeps='%v'. ",
+			 expectedNumSeps.String(), actualNumSeps.String())
+	}
+
+}
+
+func TestIntAry_NewNumStrWithNumSeps_03(t *testing.T) {
+
+	nStr1 := "579.123456000"
+	ePrecision := 9
+	eSignVal := 1
+
+	expectedNumSeps := NumericSeparatorDto{}
+
+	ia, err := IntAry{}.NewNumStrWithNumSeps(nStr1, expectedNumSeps)
+
+	if err != nil {
+		t.Errorf("Error returned from intAry{}.NewNumStr(nStr1). Error= %v", err)
+	}
+
+	if nStr1 != ia.GetNumStr() {
+		t.Errorf("Expected ia.GetNumStr()== %v  .   Instead ia.GetNumStr() == %v", nStr1, ia.GetNumStr())
+	}
+
+	if ePrecision != ia.GetPrecision() {
+		t.Errorf("Expected ia.GetPrecision() == %v  .   Instead ia.GetPrecision() == %v", ePrecision, ia.GetPrecision())
+	}
+
+	if eSignVal != ia.GetSign() {
+		t.Errorf("Expected ia.GetSign() == %v  .   Instead ia.GetSign() == %v", eSignVal, ia.GetSign())
+	}
+
+	expectedNumSeps.SetDefaultsIfEmpty()
+
+	actualNumSeps := ia.GetNumericSeparatorsDto()
+
+	if !expectedNumSeps.Equal(actualNumSeps) {
+		t.Errorf("Error: Expected NumSeps='%v'. Instead, NumSeps='%v'. ",
+			 expectedNumSeps.String(), actualNumSeps.String())
+	}
+
+}
+
 func TestIntAry_NewBigInt_01(t *testing.T) {
 	num := big.NewInt(123456)
 	precision := 3

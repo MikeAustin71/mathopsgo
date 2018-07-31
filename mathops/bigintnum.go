@@ -2025,12 +2025,13 @@ func (bNum BigIntNum) NewNumStr(numStr string) (BigIntNum, error) {
 	return b, nil
 }
 
-// NewNumStr - Receives a number string as input and returns a new BigIntNum
-// instance. The input parameter 'numSeps' contains numeric separators
-// (decimal separator, thousands separator and currency symbol) which will
-// be used to parse the number string.
+// NewNumStrWithNumSeps - Receives a number string as input and returns a
+// new BigIntNum instance. The input parameter 'numSeps' contains numeric
+// separators (decimal separator, thousands separator and currency symbol)
+// which will be used to parse the number string.
 //
-// Input parameters 'numSeps' will be copied to the returned BigIntNum.
+// In addition, the numeric separators contained in input parameter 'numSeps'
+// will be copied to the returned BigIntNum instance.
 //
 func (bNum BigIntNum) NewNumStrWithNumSeps(
 												numStr string,
