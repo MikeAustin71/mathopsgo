@@ -2116,32 +2116,6 @@ func (nDto *NumStrDto) MultiplyNumStrs(n1Dto NumStrDto, n2Dto NumStrDto) (NumStr
 	return numStrOut, nil
 }
 
-// NewNumStr - Used to create a populated NumStrDto instance.
-// using a valid number string as an input parameter.
-//
-// Example:
-//
-// 		n, err := NumStrDto{}.NewNumStr("123.456")
-//
-func (nDto NumStrDto) NewNumStr(numStr string) (NumStrDto, error) {
-
-	ePrefix := "NumStrDto.NewNumStr() "
-
-	n := NumStrDto{}.New()
-
-	n2, err := n.ParseNumStr(numStr)
-
-	if err != nil {
-		return NumStrDto{},
-			fmt.Errorf(ePrefix + "Error returned by n.ParseNumStr(numStrDto). " +
-				"numStrDto='%v'  Error='%v'",
-				numStr, err.Error())
-	}
-
-	return n2, nil
-}
-
-
 // NewBigFloat - Creates a new NumStrDto instance from a Big Float value
 // (*big.Float) and a precision specification.
 func (nDto NumStrDto) NewBigFloat(bigFloat *big.Float, precision int) (NumStrDto, error) {
@@ -2325,6 +2299,71 @@ func (nDto NumStrDto) NewRational(bigRat *big.Rat, precision int) (NumStrDto, er
 			fmt.Errorf(ePrefix + "Error returned by n.ParseNumStr(numStr). " +
 				"numStr='%v'  Error='%v'",
 				numStr, err.Error())
+	}
+
+	return n2, nil
+}
+
+
+// NewNumStr - Used to create a populated NumStrDto instance.
+// using a valid number string as an input parameter.
+//
+// Example:
+//
+// 		n, err := NumStrDto{}.NewNumStr("123.456")
+//
+func (nDto NumStrDto) NewNumStr(numStr string) (NumStrDto, error) {
+
+	ePrefix := "NumStrDto.NewNumStr() "
+
+	n := NumStrDto{}.New()
+
+	n2, err := n.ParseNumStr(numStr)
+
+	if err != nil {
+		return NumStrDto{},
+			fmt.Errorf(ePrefix + "Error returned by n.ParseNumStr(numStrDto). " +
+				"numStrDto='%v'  Error='%v'",
+				numStr, err.Error())
+	}
+
+	return n2, nil
+}
+
+// NewNumStrWithNumSeps - Receives a number string as input and returns a
+// new NumStrDto instance. The input parameter 'numSeps' contains numeric
+// separators (decimal separator, thousands separator and currency symbol)
+// which will be used to parse the number string.
+//
+// In addition, the numeric separators contained in input parameter 'numSeps'
+// will be copied to the returned NumStrDto instance.
+//
+func (nDto NumStrDto) NewNumStrWithNumSeps(
+	numStr string,
+	numSeps NumericSeparatorDto) (NumStrDto, error) {
+
+	ePrefix :=  "IntAry.NewNumStrWithNumSeps() "
+
+	n := NumStrDto{}.New()
+
+	numSeps.SetDefaultsIfEmpty()
+
+	err := n.SetNumericSeparatorsDto(numSeps)
+
+	if err != nil {
+		return NumStrDto{},
+			fmt.Errorf(ePrefix +
+				"Error returned by  Ary.SetIntAryWithNumStr(numStr). " +
+				"Error='%v' ", err.Error())
+	}
+
+	n2, err := n.ParseNumStr(numStr)
+
+	if err != nil {
+		return NumStrDto{},
+			fmt.Errorf(ePrefix +
+				"Error returned by n.ParseNumStr(numStr). " +
+				"numStr='%v', Error='%v' ", numStr, err.Error())
 	}
 
 	return n2, nil
@@ -2546,6 +2585,11 @@ func (nDto NumStrDto) ParseSignedBigInt(signedBigInt *big.Int, precision uint) (
 // Returned number strings may consist of a leading negative sign ('-')
 // numeric digits and may include a decimal separator ('.'). The NumStrDto
 // breaks the string down into sign, Integer and Fractional components.
+//
+// The numeric separators (decimal separator, thousands separator and
+// currency symbol) taken from the current NumStrDto instance will be
+// copied to the NumStrDto instance returned by this method.
+//
 func (nDto *NumStrDto) ParseNumStr(str string) (NumStrDto, error) {
 
 	ePrefix := "NumStrDto.ParseNumStr() "
@@ -2555,7 +2599,174 @@ func (nDto *NumStrDto) ParseNumStr(str string) (NumStrDto, error) {
 	}
 
 	nDto.SetNumericSeparatorsToDefaultIfEmpty()
-  numSeps := nDto.GetNumericSeparatorsDto()
+	numSeps := nDto.GetNumericSeparatorsDto()
+	n2Dto := NumStrDto{}.New()
+
+	n2Dto.signVal = 1
+	n2Dto.SetNumericSeparatorsDto(numSeps)
+	baseRunes := []rune(str)
+	lBaseRunes := len(baseRunes)
+	isStartRunes := false
+	isEndRunes := false
+	//lCurRunes := len(NumStrCurrencySymbols)
+	//isSkip := false
+	isFractionalValue := false
+
+	var absFracRunes []rune
+	var absIntRunes []rune
+
+	for i := 0; i < lBaseRunes && isEndRunes == false; i++ {
+
+		/*
+			for j := 0; j < lCurRunes; j++ {
+				if baseRunes[i] == NumStrCurrencySymbols[j] {
+					isSkip = true
+					break
+				}
+			}
+
+
+			if isSkip == true || baseRunes[i] == '+' ||
+				baseRunes[i] == ' ' || baseRunes[i] == ',' ||
+				baseRunes[i] == '$' ||
+				baseRunes[i] == n2Dto.thousandsSeparator ||
+				baseRunes[i] == n2Dto.currencySymbol {
+
+				isSkip = false
+				continue
+			}
+
+			if baseRunes[i] == '+' ||
+				baseRunes[i] == n2Dto.thousandsSeparator ||
+				baseRunes[i] == n2Dto.currencySymbol {
+
+				continue
+			}
+		*/
+
+
+		if baseRunes[i] != '-' &&
+			(baseRunes[i] < '0' || baseRunes[i] > '9') &&
+			baseRunes[i] != n2Dto.decimalSeparator {
+
+				continue
+
+		} else	if baseRunes[i] == '-' &&
+			isStartRunes == false && isEndRunes == false &&
+			i+1 < lBaseRunes &&
+			((baseRunes[i+1] >= '0' && baseRunes[i+1] <= '9') ||
+				 baseRunes[i+1] == n2Dto.decimalSeparator) {
+
+			n2Dto.signVal = -1
+			isStartRunes = true
+			continue
+
+		} else if isEndRunes == false &&
+			baseRunes[i] >= '0' && baseRunes[i] <= '9' {
+
+			n2Dto.absAllNumRunes = append(n2Dto.absAllNumRunes, baseRunes[i])
+			isStartRunes = true
+
+			if isFractionalValue {
+				absFracRunes = append(absFracRunes, baseRunes[i])
+			} else {
+				absIntRunes = append(absIntRunes, baseRunes[i])
+			}
+
+		} else if isEndRunes == false &&
+			i+1 < lBaseRunes &&
+			baseRunes[i+1] >= '0' && baseRunes[i+1] <= '9' &&
+			baseRunes[i] == n2Dto.decimalSeparator {
+
+			isFractionalValue = true
+			continue
+
+		} else if isStartRunes && !isEndRunes {
+
+			isEndRunes = true
+		}
+	}
+
+	lenAbsAllNumRunes := len(n2Dto.absAllNumRunes)
+
+	if lenAbsAllNumRunes == 0 {
+		nZeroNumStr := nDto.GetZeroNumStrDto(0)
+		return nZeroNumStr, nil
+	}
+
+	lenAbsIntNumRunes := len(absIntRunes)
+	if lenAbsIntNumRunes == 0 {
+		absIntRunes = append(absIntRunes, '0')
+	}
+
+	lenAbsAllNumRunes = len(n2Dto.absAllNumRunes)
+	lenAbsIntNumRunes = len(absIntRunes)
+	lenAbsFracNumRunes := len(absFracRunes)
+
+	isZeroVal := true
+
+	for i := 0; i < lenAbsAllNumRunes; i++ {
+		if n2Dto.absAllNumRunes[i] != '0' {
+			isZeroVal = false
+		}
+	}
+
+	if isZeroVal {
+		nZeroDto := nDto.GetZeroNumStrDto(uint(lenAbsFracNumRunes))
+		return nZeroDto, nil
+	}
+
+	if isFractionalValue {
+		n2Dto.precision = uint(len(absFracRunes))
+	}
+
+	if lenAbsAllNumRunes != lenAbsIntNumRunes+lenAbsFracNumRunes {
+		n2Dto.absAllNumRunes = []rune{}
+		newLenAbsAllNumRunes := lenAbsIntNumRunes + lenAbsFracNumRunes
+
+		for i := 0; i < newLenAbsAllNumRunes; i++ {
+			if i < lenAbsIntNumRunes {
+				n2Dto.absAllNumRunes = append(n2Dto.absAllNumRunes, absIntRunes[i])
+			} else {
+				n2Dto.absAllNumRunes = append(n2Dto.absAllNumRunes, absFracRunes[i-lenAbsIntNumRunes])
+			}
+		}
+
+		lenAbsAllNumRunes = len(n2Dto.absAllNumRunes)
+	}
+
+	// Validate n2Dto object
+	err := n2Dto.IsValid(ePrefix)
+
+	if err != nil {
+		return NumStrDto{}, err
+	}
+
+	return n2Dto, nil
+
+}
+
+
+// ParseNumStr - receives a raw string and converts to a properly
+// formatted number string. The string is returned via a NumStrDto type.
+// Returned number strings may consist of a leading negative sign ('-')
+// numeric digits and may include a decimal separator ('.'). The NumStrDto
+// breaks the string down into sign, Integer and Fractional components.
+//
+// The numeric separators (decimal separator, thousands separator and
+// currency symbol) taken from the current NumStrDto instance will be
+// copied to the NumStrDto instance returned by this method.
+//
+/*
+func (nDto *NumStrDto) ParseNumStr(str string) (NumStrDto, error) {
+
+	ePrefix := "NumStrDto.ParseNumStr() "
+
+	if len(str) == 0 {
+		return NumStrDto{}, errors.New(ePrefix + "Received zero length number string as input!")
+	}
+
+	nDto.SetNumericSeparatorsToDefaultIfEmpty()
 
 	n2Dto := NumStrDto{}.New()
 
@@ -2573,7 +2784,7 @@ func (nDto *NumStrDto) ParseNumStr(str string) (NumStrDto, error) {
 
 	var absFracRunes []rune
 	var absIntRunes []rune
-	
+
 	for i := 0; i < lBaseRunes && isEndRunes == false; i++ {
 
 		for j := 0; j < lCurRunes; j++ {
@@ -2677,32 +2888,16 @@ func (nDto *NumStrDto) ParseNumStr(str string) (NumStrDto, error) {
 		lenAbsAllNumRunes = len(n2Dto.absAllNumRunes)
 	}
 
-	err := n2Dto.SetNumericSeparatorsDto(numSeps)
-
-	if err != nil {
-		return NumStrDto{}.New(),
-		 fmt.Errorf(ePrefix + "Error returned by n2Dto.SetNumericSeparatorsDto(numSeps) " +
-		 	"Error='%v' \n", err.Error())
-	}
-
-	err = n2Dto.SetNumericSeparatorsDto(numSeps)
-
-	if err != nil {
-		return NumStrDto{}.New(),
-			fmt.Errorf(ePrefix + "Error returned by n2Dto.SetNumericSeparatorsDto(numSeps) " +
-				"Error='%v' \n", err.Error())
-	}
-
 	// Validate n2Dto object
-	err = n2Dto.IsValid(ePrefix)
+	err := n2Dto.IsValid(ePrefix)
 
 	if err != nil {
-		return NumStrDto{}.New(), err
+		return NumStrDto{}, err
 	}
-
 
 	return n2Dto, nil
 }
+*/
 
 // ScaleNumStr - Shifts the position of the decimal point left or right depending
 // on the value of input parameter 'scaleMode'.

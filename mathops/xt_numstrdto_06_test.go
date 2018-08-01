@@ -299,6 +299,41 @@ func TestNumStrDto_NewNumStr_05(t *testing.T) {
 
 }
 
+func TestNumStrDto_NewNumStrWithNumSeps_01(t *testing.T) {
+	nStr := "123,456"
+
+	expectedNumSeps := NumericSeparatorDto{}
+	frenchDecSeparator := ','
+	frenchThousandsSeparator := ' '
+	frenchCurrencySymbol := '€'
+
+	expectedNumSeps.DecimalSeparator = frenchDecSeparator
+	expectedNumSeps.ThousandsSeparator = frenchThousandsSeparator
+	expectedNumSeps.CurrencySymbol = frenchCurrencySymbol
+
+	nDto, err := NumStrDto{}.NewNumStrWithNumSeps(nStr, expectedNumSeps)
+
+	if err != nil {
+		t.Errorf("Error returned by NumStrDto{}.NewNumStrWithNumSeps(" +
+			"nStr, expectedNumSeps) Error='%v'", err.Error() )
+	}
+
+	actualNumStr := nDto.GetNumStr()
+
+	if nStr != actualNumStr {
+		t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v'.",
+			nStr, actualNumStr)
+	}
+
+	actualNumSeps := nDto.GetNumericSeparatorsDto()
+
+	if !expectedNumSeps.Equal(actualNumSeps) {
+		t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v'.",
+			expectedNumSeps.String(), actualNumSeps.String())
+	}
+
+}
+
 func TestNumStrDto_NewBigIntNum_01(t *testing.T) {
 	nStr := "123.456"
 
@@ -565,6 +600,124 @@ func TestNumStrDto_ParseNumStr_05(t *testing.T) {
 	fracStr := "000"
 	signVal := 1
 	precision := uint(3)
+
+	nDto, err := NumStrDto{}.NewPtr().ParseNumStr(nStr)
+
+	if err != nil {
+		t.Errorf("Received error from NumStrDto.ParseNumStr(nStr). nStr= '%v' Error= %v", nStr, err)
+	}
+
+	s := nDto.GetNumStr()
+
+	if s != nStrOut {
+		t.Errorf("Expected NumStrOut = '%v'. Instead, got %v", nStrOut, s)
+	}
+
+	s = string(nDto.GetAbsIntRunes())
+
+	if iStr != s {
+		t.Errorf("Expected AbsIntRunes = '%v'. Instead, got %v", iStr, s)
+
+	}
+
+	s = string(nDto.GetAbsFracRunes())
+
+	if fracStr != s {
+		t.Errorf("Expected AbsFracRunes = '%v'. Instead, got %v", fracStr, s)
+	}
+
+	if nDto.GetSign() != signVal {
+		t.Errorf("Expected SignVal= '%v'. Instead, got %v", signVal, nDto.GetSign())
+	}
+
+	if !nDto.HasNumericDigits() {
+		t.Errorf("Expected HasNumericDigist= 'true'. Instead, got %v", nDto.HasNumericDigits())
+	}
+
+	if nDto.IsFractionalValue() != true {
+		t.Errorf("Expected IsFractionalValue= '%v'. Instead, got %v", true, nDto.IsFractionalValue())
+	}
+
+	if precision != nDto.GetPrecisionUint() {
+		t.Errorf("Expected precision= '%v'. Instead, got %v",
+				precision, nDto.GetPrecisionUint())
+
+	}
+
+	err = nDto.IsValid("Test 'nDto' is INVALID! ")
+
+	if err != nil {
+		t.Errorf("Error returned by nDto.IsValid() Error='%v'", err.Error())
+	}
+
+}
+
+func TestNumStrDto_ParseNumStr_06(t *testing.T) {
+	nStr := "-123.4567#"
+	nStrOut := "-123.4567"
+	iStr := "123"
+	fracStr := "4567"
+	signVal := -1
+	precision := uint(4)
+
+	nDto, err := NumStrDto{}.NewPtr().ParseNumStr(nStr)
+
+	if err != nil {
+		t.Errorf("Received error from NumStrDto.ParseNumStr(nStr). nStr= '%v' Error= %v", nStr, err)
+	}
+
+	s := nDto.GetNumStr()
+
+	if s != nStrOut {
+		t.Errorf("Expected NumStrOut = '%v'. Instead, got %v", nStrOut, s)
+	}
+
+	s = string(nDto.GetAbsIntRunes())
+
+	if iStr != s {
+		t.Errorf("Expected AbsIntRunes = '%v'. Instead, got %v", iStr, s)
+
+	}
+
+	s = string(nDto.GetAbsFracRunes())
+
+	if fracStr != s {
+		t.Errorf("Expected AbsFracRunes = '%v'. Instead, got %v", fracStr, s)
+	}
+
+	if nDto.GetSign() != signVal {
+		t.Errorf("Expected SignVal= '%v'. Instead, got %v", signVal, nDto.GetSign())
+	}
+
+	if !nDto.HasNumericDigits() {
+		t.Errorf("Expected HasNumericDigist= 'true'. Instead, got %v", nDto.HasNumericDigits())
+	}
+
+	if nDto.IsFractionalValue() != true {
+		t.Errorf("Expected IsFractionalValue= '%v'. Instead, got %v", true, nDto.IsFractionalValue())
+	}
+
+	if precision != nDto.GetPrecisionUint() {
+		t.Errorf("Expected precision= '%v'. Instead, got %v",
+				precision, nDto.GetPrecisionUint())
+
+	}
+
+	err = nDto.IsValid("Test 'nDto' is INVALID! ")
+
+	if err != nil {
+		t.Errorf("Error returned by nDto.IsValid() Error='%v'", err.Error())
+	}
+
+}
+
+func TestNumStrDto_ParseNumStr_07(t *testing.T) {
+	nStr := "-123.4#-567#"
+	nStrOut := "-123.4567"
+	iStr := "123"
+	fracStr := "4567"
+	signVal := -1
+	precision := uint(4)
 
 	nDto, err := NumStrDto{}.NewPtr().ParseNumStr(nStr)
 
