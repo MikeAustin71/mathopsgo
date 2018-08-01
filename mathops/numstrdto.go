@@ -2608,6 +2608,7 @@ func (nDto *NumStrDto) ParseNumStr(str string) (NumStrDto, error) {
 	lBaseRunes := len(baseRunes)
 	isStartRunes := false
 	isEndRunes := false
+	isMinusSignFound := false
 	//lCurRunes := len(NumStrCurrencySymbols)
 	//isSkip := false
 	isFractionalValue := false
@@ -2646,17 +2647,19 @@ func (nDto *NumStrDto) ParseNumStr(str string) (NumStrDto, error) {
 
 
 		if baseRunes[i] != '-' &&
-			(baseRunes[i] < '0' || baseRunes[i] > '9') &&
-			baseRunes[i] != n2Dto.decimalSeparator {
+			baseRunes[i] != n2Dto.decimalSeparator &&
+			(baseRunes[i] < '0' || baseRunes[i] > '9') {
 
 				continue
 
-		} else	if baseRunes[i] == '-' &&
+		} else if baseRunes[i] == '-' &&
+			isMinusSignFound == false &&
 			isStartRunes == false && isEndRunes == false &&
 			i+1 < lBaseRunes &&
 			((baseRunes[i+1] >= '0' && baseRunes[i+1] <= '9') ||
 				 baseRunes[i+1] == n2Dto.decimalSeparator) {
 
+			isMinusSignFound = true
 			n2Dto.signVal = -1
 			isStartRunes = true
 			continue
@@ -2681,10 +2684,14 @@ func (nDto *NumStrDto) ParseNumStr(str string) (NumStrDto, error) {
 			isFractionalValue = true
 			continue
 
-		} else if isStartRunes && !isEndRunes {
+		}
+
+		if i == lBaseRunes - 1 {
 
 			isEndRunes = true
+
 		}
+
 	}
 
 	lenAbsAllNumRunes := len(n2Dto.absAllNumRunes)

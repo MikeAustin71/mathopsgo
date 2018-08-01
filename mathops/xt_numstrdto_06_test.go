@@ -334,6 +334,65 @@ func TestNumStrDto_NewNumStrWithNumSeps_01(t *testing.T) {
 
 }
 
+func TestNumStrDto_NewNumStrWithNumSeps_02(t *testing.T) {
+	nStr := "123.456"
+
+	expectedNumSeps := NumericSeparatorDto{}
+	expectedNumSeps.SetDefaultsIfEmpty()
+
+	nDto, err := NumStrDto{}.NewNumStrWithNumSeps(nStr, expectedNumSeps)
+
+	if err != nil {
+		t.Errorf("Error returned by NumStrDto{}.NewNumStrWithNumSeps(" +
+			"nStr, expectedNumSeps) Error='%v'", err.Error() )
+	}
+
+	actualNumStr := nDto.GetNumStr()
+
+	if nStr != actualNumStr {
+		t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v'.",
+			nStr, actualNumStr)
+	}
+
+	actualNumSeps := nDto.GetNumericSeparatorsDto()
+
+	if !expectedNumSeps.Equal(actualNumSeps) {
+		t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v'.",
+			expectedNumSeps.String(), actualNumSeps.String())
+	}
+
+}
+
+func TestNumStrDto_NewNumStrWithNumSeps_03(t *testing.T) {
+	nStr := "123.456"
+
+	expectedNumSeps := NumericSeparatorDto{}
+
+	nDto, err := NumStrDto{}.NewNumStrWithNumSeps(nStr, expectedNumSeps)
+
+	if err != nil {
+		t.Errorf("Error returned by NumStrDto{}.NewNumStrWithNumSeps(" +
+			"nStr, expectedNumSeps) Error='%v'", err.Error() )
+	}
+
+	expectedNumSeps.SetDefaultsIfEmpty()
+
+	actualNumStr := nDto.GetNumStr()
+
+	if nStr != actualNumStr {
+		t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v'.",
+			nStr, actualNumStr)
+	}
+
+	actualNumSeps := nDto.GetNumericSeparatorsDto()
+
+	if !expectedNumSeps.Equal(actualNumSeps) {
+		t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v'.",
+			expectedNumSeps.String(), actualNumSeps.String())
+	}
+
+}
+
 func TestNumStrDto_NewBigIntNum_01(t *testing.T) {
 	nStr := "123.456"
 
