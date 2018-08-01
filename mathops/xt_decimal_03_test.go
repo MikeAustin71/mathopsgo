@@ -129,6 +129,102 @@ func TestDecimal_NewNumStr_04(t *testing.T) {
 
 }
 
+func TestDecimal_NewNumStrWithNumSeps_01(t *testing.T) {
+
+	nStr := "123,456"
+
+	expectedNumSeps := NumericSeparatorDto{}
+	frenchDecSeparator := ','
+	frenchThousandsSeparator := ' '
+	frenchCurrencySymbol := '€'
+
+	expectedNumSeps.DecimalSeparator = frenchDecSeparator
+	expectedNumSeps.ThousandsSeparator = frenchThousandsSeparator
+	expectedNumSeps.CurrencySymbol = frenchCurrencySymbol
+
+	dec, err := Decimal{}.NewNumStrWithNumSeps(nStr, expectedNumSeps)
+
+	if err != nil {
+		t.Errorf("Error returned by Decimal{}.NewNumStrWithNumSeps(nStr, expectedNumSeps). " +
+			"Error='%v' ", err.Error())
+	}
+
+	actualNumStr := dec.GetNumStr()
+
+	if nStr != actualNumStr {
+		t.Errorf("Error: Expected NumStr='%v'.  Instead, NumStr='%v'.",
+			nStr, actualNumStr)
+	}
+
+	actualNumSeps := dec.GetNumericSeparatorsDto()
+
+	if !expectedNumSeps.Equal(actualNumSeps) {
+		t.Errorf("Error: Expected NumSeps='%v'. Instead, NumSeps='%v'.",
+			expectedNumSeps.String(), actualNumSeps.String())
+	}
+}
+
+func TestDecimal_NewNumStrWithNumSeps_02(t *testing.T) {
+
+	nStr := "123.456"
+
+	expectedNumSeps := NumericSeparatorDto{}
+	expectedNumSeps.DecimalSeparator = '.'
+	expectedNumSeps.ThousandsSeparator = ','
+	expectedNumSeps.CurrencySymbol = '$'
+
+	dec, err := Decimal{}.NewNumStrWithNumSeps(nStr, expectedNumSeps)
+
+	if err != nil {
+		t.Errorf("Error returned by Decimal{}.NewNumStrWithNumSeps(nStr, expectedNumSeps). " +
+			"Error='%v' ", err.Error())
+	}
+
+	actualNumStr := dec.GetNumStr()
+
+	if nStr != actualNumStr {
+		t.Errorf("Error: Expected NumStr='%v'.  Instead, NumStr='%v'.",
+			nStr, actualNumStr)
+	}
+
+	actualNumSeps := dec.GetNumericSeparatorsDto()
+
+	if !expectedNumSeps.Equal(actualNumSeps) {
+		t.Errorf("Error: Expected NumSeps='%v'. Instead, NumSeps='%v'.",
+			expectedNumSeps.String(), actualNumSeps.String())
+	}
+}
+
+func TestDecimal_NewNumStrWithNumSeps_03(t *testing.T) {
+
+	nStr := "123.456"
+
+	expectedNumSeps := NumericSeparatorDto{}
+
+	dec, err := Decimal{}.NewNumStrWithNumSeps(nStr, expectedNumSeps)
+
+	if err != nil {
+		t.Errorf("Error returned by Decimal{}.NewNumStrWithNumSeps(nStr, expectedNumSeps). " +
+			"Error='%v' ", err.Error())
+	}
+
+	actualNumStr := dec.GetNumStr()
+
+	if nStr != actualNumStr {
+		t.Errorf("Error: Expected NumStr='%v'.  Instead, NumStr='%v'.",
+			nStr, actualNumStr)
+	}
+
+	actualNumSeps := dec.GetNumericSeparatorsDto()
+
+	expectedNumSeps.SetDefaultsIfEmpty()
+
+	if !expectedNumSeps.Equal(actualNumSeps) {
+		t.Errorf("Error: Expected NumSeps='%v'. Instead, NumSeps='%v'.",
+			expectedNumSeps.String(), actualNumSeps.String())
+	}
+}
+
 func TestDecimal_NewNumStrDto_01(t *testing.T) {
 	nStr1 := "1.35"
 	ePrecision := uint(2)

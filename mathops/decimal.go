@@ -264,22 +264,13 @@ func (dec *Decimal) NumStrToDecimal(numStr string) (Decimal, error) {
 
 	numSeps := dec.GetNumericSeparatorsDto()
 
-	d2.bigINum, err = BigIntNum{}.NewNumStr(numStr)
+	d2.bigINum, err = BigIntNum{}.NewNumStrWithNumSeps(numStr, numSeps)
 
 	if err != nil {
 		return Decimal{}.NewZero(0),
 		fmt.Errorf(ePrefix +
 			"Error returned by BigIntNum{}.NewNumStr(numStr). " +
 			"numStr='%v' Error='%v' ", numStr, err.Error())
-	}
-
-	err = d2.bigINum.SetNumericSeparatorsDto(numSeps)
-
-	if err != nil {
-		return Decimal{}.NewZero(0),
-			fmt.Errorf(ePrefix +
-			"Error returned by d2.bigINum.SetNumericSeparatorsDto(numSeps). " +
-			"Error='%v' \n", err.Error())
 	}
 
 	return d2, nil
@@ -1566,14 +1557,54 @@ func (dec Decimal) NewNumStrArray(numStrs []string) ([] Decimal, error) {
 // Example: Decimal{}.NewNumStr("123.456")
 //
 func (dec Decimal) NewNumStr(numStr string) (Decimal, error) {
+
 	d2 := Decimal{}.New()
 
 	err := d2.SetNumStr(numStr)
 
 	if err != nil {
+		ePrefix := "Decimal.NewNumStr() "
 		return Decimal{},
-			fmt.Errorf("Decimal.NewInt() Error returned by " +
-				"d2.SetNumStr(bigINum). bigINum='%v' Error='%v'",
+			fmt.Errorf(ePrefix + "Error returned by " +
+				"d2.SetNumStr(numStr). numStr='%v' Error='%v'",
+				numStr, err.Error())
+	}
+
+	return d2, nil
+}
+// NewNumStrWithNumSeps - Receives a number string as input and returns a
+// new Decimal instance. The input parameter 'numSeps' contains numeric
+// separators (decimal separator, thousands separator and currency symbol)
+// which will be used to parse the number string.
+//
+// In addition, the numeric separators contained in input parameter 'numSeps'
+// will be copied to the returned Decimal instance.
+//
+func (dec Decimal) NewNumStrWithNumSeps(
+					numStr string,
+						numSeps NumericSeparatorDto) (Decimal, error) {
+
+  ePrefix := "Decimal.NewNumStrWithNumSeps() "
+
+  numSeps.SetDefaultsIfEmpty()
+
+	d2 := Decimal{}.New()
+
+	err := d2.SetNumericSeparatorsDto(numSeps)
+
+	if err != nil {
+		return Decimal{},
+			fmt.Errorf(ePrefix + "Error returned by " +
+				"d2.SetNumericSeparatorsDto(numSeps). Error='%v'",
+				err.Error())
+	}
+
+	err = d2.SetNumStr(numStr)
+
+	if err != nil {
+		return Decimal{},
+			fmt.Errorf(ePrefix + "Error returned by " +
+				"d2.SetNumStr(numStr). numStr='%v' Error='%v'",
 				numStr, err.Error())
 	}
 
