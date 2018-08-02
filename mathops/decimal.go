@@ -572,6 +572,26 @@ func (dec *Decimal) GetCurrencyParen() string {
 	return dec.bigINum.FormatCurrencyStr(PARENTHESESNEGVALFMTMODE)
 }
 
+// GetDecimal - Returns a deep copy of the current Decimal instance.
+//
+// The returned BigIntNum type contains numeric separators (decimal separator,
+// thousands separator and currency symbol) copied from the current Decimal
+// instance.
+//
+// This method performs a validity test on the current Decimal instance.
+//
+func (dec *Decimal) GetDecimal() (Decimal, error) {
+
+	ePrefix := "Decimal.GetDecimal() "
+
+	err := dec.IsValid(ePrefix + "Decimal INVALID! ")
+
+	if err != nil {
+		return Decimal{}, err
+	}
+
+	return dec.CopyOut(), nil
+}
 
 // GetDecimalSeparator - returns the Decimal's current
 // value for Decimal Separator (i.e. '.')
