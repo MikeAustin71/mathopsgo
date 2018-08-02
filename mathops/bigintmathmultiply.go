@@ -828,7 +828,7 @@ func (bMultiply BigIntMathMultiply) MultiplyIntAryOutputToArray(
 		if err != nil {
 			return []IntAry{},
 				fmt.Errorf(ePrefix +
-					"Error returned by finalResult.Result.GetIntAry() " +
+					"Error returned by finalResult.Result.GetIntAryElements() " +
 					"i='%v' Error='%v'. ", i,  err.Error())
 		}
 	}

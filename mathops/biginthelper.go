@@ -173,6 +173,10 @@ func (bPair BigIntPair) NewBigIntNum(b1, b2 BigIntNum ) BigIntPair {
 // NewIntAry - Creates a new BigIntPair instance from two
 // Decimal instances passed as input parameters.
 //
+// The returned BigIntNum BigIntPair.Big1 will contain numeric separators (decimal
+// separator, thousands separator and currency symbol) copied from input parameter,
+// 'dec1'. BigIntPair.Big2 will contain numeric separators copied from 'dec2'.
+//
 func (bPair BigIntPair) NewDecimal(dec1, dec2 Decimal) (BigIntPair, error) {
 
 	ePrefix := "BigIntPair.NewDecimal() "
@@ -208,25 +212,29 @@ func (bPair BigIntPair) NewDecimal(dec1, dec2 Decimal) (BigIntPair, error) {
 //
 // Be careful, IntAry's can accommodate very, very large numbers.
 //
+// The returned BigIntNum BigIntPair.Big1 will contain numeric separators (decimal
+// separator, thousands separator and currency symbol) copied from input parameter,
+// 'ia1'. BigIntPair.Big2 will contain numeric separators copied from 'ia2'.
+//
 func (bPair BigIntPair) NewIntAry(ia1, ia2 IntAry) (BigIntPair, error) {
 
 	ePrefix := "BigIntPair.NewIntAry() "
 
 	// Method NewIntAry will test the validity of ia1
-	b1Num, err := BigIntNum{}.NewIntAry(ia1)
+	b1Num, err :=  ia1.GetBigIntNum()
 
 	if err != nil {
 		return BigIntPair{},
-		fmt.Errorf(ePrefix + "Error returned by BigIntNum{}.NewIntAry(ia1). " +
+		fmt.Errorf(ePrefix + "Error returned by ia1.GetBigIntNum(). " +
 			"Error='%v' ", err.Error())
 	}
 
 	// Method NewIntAry will test the validity of ia2
-	b2Num, err := BigIntNum{}.NewIntAry(ia2)
+	b2Num, err := ia2.GetBigIntNum()
 
 	if err != nil {
 		return BigIntPair{},
-			fmt.Errorf(ePrefix + "Error returned by BigIntNum{}.NewIntAry(ia2). " +
+			fmt.Errorf(ePrefix + "Error returned by ia2.GetBigIntNum(). " +
 				"Error='%v' ", err.Error())
 	}
 
@@ -241,6 +249,10 @@ func (bPair BigIntPair) NewIntAry(ia1, ia2 IntAry) (BigIntPair, error) {
 // INumMgr interface.
 //
 // This method will test the validity of num1 and num2
+//
+// The returned BigIntNum BigIntPair.Big1 will contain numeric separators (decimal
+// separator, thousands separator and currency symbol) copied from input parameter,
+// 'num1'. BigIntPair.Big2 will contain numeric separators copied from 'num2'.
 //
 func (bPair BigIntPair) NewINumMgr(num1, num2 INumMgr) (BigIntPair, error) {
 
@@ -258,6 +270,8 @@ func (bPair BigIntPair) NewINumMgr(num1, num2 INumMgr) (BigIntPair, error) {
 		return BigIntPair{}, err
 	}
 
+	numSeps := num1.GetNumericSeparatorsDto()
+
 	b1Num, err := num1.GetBigInt()
 
 	if err != nil {
@@ -267,6 +281,8 @@ func (bPair BigIntPair) NewINumMgr(num1, num2 INumMgr) (BigIntPair, error) {
 	}
 
 	b1Precision := num1.GetPrecisionUint()
+
+	numSeps2 := num2.GetNumericSeparatorsDto()
 
 	b2Num, err := num2.GetBigInt()
 
@@ -278,11 +294,35 @@ func (bPair BigIntPair) NewINumMgr(num1, num2 INumMgr) (BigIntPair, error) {
 
 	b2Precision := num2.GetPrecisionUint()
 
-	return BigIntPair{}.NewBase(b1Num, b1Precision, b2Num, b2Precision), nil
+
+	bPair2 := BigIntPair{}.NewBase(b1Num, b1Precision, b2Num, b2Precision)
+
+	err = bPair2.Big1.SetNumericSeparatorsDto(numSeps)
+
+	if err != nil {
+		return BigIntPair{},
+			fmt.Errorf(ePrefix +
+				"Error returned by bPair2.Big1.SetNumericSeparatorsDto(numSeps). " +
+				"Error='%v'. ", err.Error())
+	}
+
+	err = bPair2.Big2.SetNumericSeparatorsDto(numSeps2)
+
+	if err != nil {
+		return BigIntPair{},
+			fmt.Errorf(ePrefix +
+				"Error returned by bPair2.Big2.SetNumericSeparatorsDto(numSeps2). " +
+				"Error='%v'. ", err.Error())
+	}
+
+	return bPair2, nil
 }
 
 // NewNumStr - Creates a new BigIntPair instance from two number strings
 // passed as input parameters.
+//
+// The returned BigIntNum's BigIntPair.Big1 and BigIntPair.Big2 will contain default
+// numeric separators (decimal separator, thousands separator and currency symbol).
 //
 func (bPair BigIntPair) NewNumStr(n1NumStr, n2NumStr string) (BigIntPair, error) {
 	ePrefix := "BigIntPair.NewNumStrDto() "
@@ -315,25 +355,29 @@ func (bPair BigIntPair) NewNumStr(n1NumStr, n2NumStr string) (BigIntPair, error)
 //
 // This method will test the validity of n1Dto and n2Dto
 //
+// The returned BigIntNum BigIntPair.Big1 will contain numeric separators (decimal
+// separator, thousands separator and currency symbol) copied from input parameter,
+// 'n1Dto'. BigIntPair.Big2 will contain numeric separators copied from 'n2Dto'.
+//
 func (bPair BigIntPair) NewNumStrDto(n1Dto, n2Dto NumStrDto) (BigIntPair, error) {
 
 	ePrefix := "BigIntPair.NewNumStrDto() "
 
 	// This method will test the validity of n1Dto
-	b1Num, err := BigIntNum{}.NewNumStrDto(n1Dto)
+	b1Num, err := n1Dto.GetBigIntNum()
 
 	if err != nil {
 		return BigIntPair{},
-		fmt.Errorf(ePrefix + "Error returned by BigIntNum{}.NewNumStrDto(n1Dto). " +
+		fmt.Errorf(ePrefix + "Error returned by n1Dto.GetBigIntNum(). " +
 			"numStr='%v' Error='%v' ", n1Dto.GetNumStr(), err.Error())
 	}
 
 	// This method will test the validity of n2Dto
-	b2Num, err := BigIntNum{}.NewNumStrDto(n2Dto)
+	b2Num, err := n2Dto.GetBigIntNum()
 
 	if err != nil {
 		return BigIntPair{},
-			fmt.Errorf(ePrefix + "Error returned by BigIntNum{}.NewNumStrDto(n2Dto). " +
+			fmt.Errorf(ePrefix + "Error returned by n2Dto.GetBigIntNum(). " +
 				"numStr='%v' Error='%v' ", n2Dto.GetNumStr(), err.Error())
 	}
 
@@ -342,12 +386,15 @@ func (bPair BigIntPair) NewNumStrDto(n1Dto, n2Dto NumStrDto) (BigIntPair, error)
 	b2Pair.SetBigIntPair(b1Num, b2Num)
 
 	return b2Pair, nil
-
 }
 
 // SetBigIntPairSetBigIntPair -Sets the values of the current
 // BigIntPair instance to the input values of b1 and b2
 // respectively.
+//
+// This method will set BigIntNum BigIntPair.Big1 with numeric separators (decimal
+// separator, thousands separator and currency symbol) copied from BigIntNum input
+// parameter, 'b1'. BigIntPair.Big2 will contain numeric separators copied from 'b2'.
 //
 func (bPair *BigIntPair) SetBigIntPair(b1, b2 BigIntNum ) {
 
@@ -367,5 +414,4 @@ func (bPair *BigIntPair) SetBigIntPair(b1, b2 BigIntNum ) {
 		// Must be bPair.Big1.precision < bPair.Big2.precision
 		bPair.Precision1Compare = -1
 	}
-
 }

@@ -158,7 +158,7 @@ func TestBigIntMathMultiply_MultiplyNumStrDtoArray_02(t *testing.T) {
 		ia, err := nDtoArray[i].GetIntAry()
 
 		if err != nil {
-			t.Errorf("Error returned by nDtoArray[i].GetIntAry() " +
+			t.Errorf("Error returned by nDtoArray[i].GetIntAryElements() " +
 				"i='%v'  multiplicandStrs[i]='%v'  Error='%v'. ", i, multiplicandStrs[i], err.Error())
 		}
 
@@ -261,7 +261,7 @@ func TestBigIntMathMultiply_MultiplyNumStrDtoArray_03(t *testing.T) {
 		ia, err := nDtoArray[i].GetIntAry()
 
 		if err != nil {
-			t.Errorf("Error returned by nDtoArray[i].GetIntAry() " +
+			t.Errorf("Error returned by nDtoArray[i].GetIntAryElements() " +
 				"i='%v'  multiplicandStrs[i]='%v'  Error='%v'. ", i, multiplicandStrs[i], err.Error())
 		}
 
@@ -364,7 +364,7 @@ func TestBigIntMathMultiply_MultiplyNumStrDtoArray_04(t *testing.T) {
 		ia, err := nDtoArray[i].GetIntAry()
 
 		if err != nil {
-			t.Errorf("Error returned by nDtoArray[i].GetIntAry() " +
+			t.Errorf("Error returned by nDtoArray[i].GetIntAryElements() " +
 				"i='%v'  multiplicandStrs[i]='%v'  Error='%v'. ", i, multiplicandStrs[i], err.Error())
 		}
 
@@ -974,7 +974,7 @@ func TestBigIntMathMultiply_MultiplyNumStrDtoSeries_01(t *testing.T) {
 		ia, err := nDtoArray[i].GetIntAry()
 
 		if err != nil {
-			t.Errorf("Error returned by nDtoArray[i].GetIntAry() " +
+			t.Errorf("Error returned by nDtoArray[i].GetIntAryElements() " +
 				"i='%v'  multiplicandStrs[i]='%v'  Error='%v'. ", i, multiplicandStrs[i], err.Error())
 		}
 
@@ -1081,7 +1081,7 @@ func TestBigIntMathMultiply_MultiplyNumStrDtoSeries_02(t *testing.T) {
 		ia, err := nDtoArray[i].GetIntAry()
 
 		if err != nil {
-			t.Errorf("Error returned by nDtoArray[i].GetIntAry() " +
+			t.Errorf("Error returned by nDtoArray[i].GetIntAryElements() " +
 				"i='%v'  multiplicandStrs[i]='%v'  Error='%v'. ", i, multiplicandStrs[i], err.Error())
 		}
 
@@ -1191,7 +1191,7 @@ func TestBigIntMathMultiply_MultiplyNumStrDtoSeries_03(t *testing.T) {
 		ia, err := nDtoArray[i].GetIntAry()
 
 		if err != nil {
-			t.Errorf("Error returned by nDtoArray[i].GetIntAry() " +
+			t.Errorf("Error returned by nDtoArray[i].GetIntAryElements() " +
 				"i='%v'  multiplicandStrs[i]='%v'  Error='%v'. ", i, multiplicandStrs[i], err.Error())
 		}
 
@@ -1300,7 +1300,7 @@ func TestBigIntMathMultiply_MultiplyNumStrDtoSeries_04(t *testing.T) {
 		ia, err := nDtoArray[i].GetIntAry()
 
 		if err != nil {
-			t.Errorf("Error returned by nDtoArray[i].GetIntAry() " +
+			t.Errorf("Error returned by nDtoArray[i].GetIntAryElements() " +
 				"i='%v'  multiplicandStrs[i]='%v'  Error='%v'. ", i, multiplicandStrs[i], err.Error())
 		}
 

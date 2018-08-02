@@ -666,7 +666,7 @@ func (bSubtract BigIntMathSubtract) SubtractIntAryOutputToArray(
 		if err != nil {
 			return []IntAry{},
 				fmt.Errorf(ePrefix +
-					"Error returned by result.Result.GetIntAry() " +
+					"Error returned by result.Result.GetIntAryElements() " +
 					"i='%v' result.Result='%v' Error='%v'. ",
 					i, result.GetNumStr(), err.Error())
 		}

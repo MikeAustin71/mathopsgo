@@ -1817,10 +1817,14 @@ func (ia *IntAry) GetBigInt() (*big.Int, error) {
 // IntAry to 'BigIntNum' instance and returns it to the calling
 // function.
 //
+// The returned BigIntNum will contain numeric separators (decimal
+// separator, thousands separator and currency symbol) copied from
+// the current IntAry instance.
+//
 func (ia *IntAry) GetBigIntNum() (BigIntNum, error) {
 	ePrefix := "IntAry.GetBigIntNum() "
 
-	err := ia.IsValid("")
+	err := ia.IsValid(ePrefix)
 
 	if err != nil {
 		return BigIntNum{},
@@ -1828,10 +1832,27 @@ func (ia *IntAry) GetBigIntNum() (BigIntNum, error) {
 				"Error='%v' ", err.Error())
 	}
 
+	numSeps := ia.GetNumericSeparatorsDto()
 
-	bInt, _ := ia.GetBigInt()
+	bInt, err := ia.GetBigInt()
+
+	if err != nil {
+		return BigIntNum{},
+			fmt.Errorf(ePrefix +
+				"Error returned by ia.GetBigInt(). " +
+				"Error='%v' ", err.Error())
+	}
 
 	bIntNum := BigIntNum{}.NewBigInt(bInt, uint(ia.precision))
+
+	err = bIntNum.SetNumericSeparatorsDto(numSeps)
+
+	if err != nil {
+		return BigIntNum{},
+			fmt.Errorf(ePrefix +
+				"Error returned by bIntNum.SetNumericSeparatorsDto(numSeps). " +
+				"Error='%v' ", err.Error())
+	}
 
 	return bIntNum, nil
 }
@@ -1866,23 +1887,15 @@ func (ia *IntAry) GetDecimal() (Decimal, error) {
 
 	numSeps := ia.GetNumericSeparatorsDto()
 
-	dec, err := Decimal{}.NewNumStr(ia.GetNumStr())
+	dec, err := Decimal{}.NewNumStrWithNumSeps(ia.GetNumStr(), numSeps)
 
 	if err != nil {
 		return Decimal{}.NewZero(0),
-		fmt.Errorf(ePrefix + "Error returned by Decimal{}.NewNumStr(ia.GetNumStr()) " +
+		fmt.Errorf(ePrefix +
+			"Error returned by Decimal{}.NewNumStrWithNumSeps(ia.GetNumStr(), numSeps)) " +
 			"ia.GetNumStr()='%v' Error='%v'",
 				ia.GetNumStr(), err.Error())
 	}
-
-	err = dec.SetNumericSeparatorsDto(numSeps)
-
-	if err != nil {
-		return Decimal{}.NewZero(0),
-			fmt.Errorf(ePrefix + "Error returned by dec.SetNumericSeparatorsDto(numSeps)) " +
-				"Error='%v'", err.Error())
-	}
-
 
 	return dec, nil
 }
@@ -2169,13 +2182,39 @@ func (ia *IntAry) GetIntAryRune(index int) (rune, error) {
 
 }
 
+// GetIntAry - returns a deep copy of the current
+// IntAry instance. This method is necessary in
+// order to comply with the requirements of the
+// INumMgr interface.
+//
+// The returned IntAry copy will also contain numeric
+// separators (decimal separator, thousands separator
+// and currency symbol) copied from the current IntAry
+// instance.
+//
+// Before returning the new IntAry instance, this method
+// performs a validity test on the current IntAry instance.
+//
+func (ia *IntAry) GetIntAry() (IntAry, error) {
+	ePrefix := "IntAry.GetIntAry() "
+
+	err := ia.IsValid(ePrefix + "IntAry INVALID! ")
+
+	if err != nil {
+		return IntAry{}.New(), err
+	}
+
+	return ia.CopyOut(), nil
+}
+
+// GetIntAryElements returns the internal integer
+// array used by the IntAry object.
+//
 // ************************************************
 // BE CAREFUL!! This returns a reference (pointer)
 // to the internal integer array for this IntAry
 // object.
 // ************************************************
-// GetIntAry returns the internal integer
-// array used by the IntAry object.
 //
 // Return parameters:
 // []uint8 = an array of unsigned 8-bit integers
@@ -2203,7 +2242,7 @@ func (ia *IntAry) GetIntAryRune(index int) (rune, error) {
 //
 // To Append Elements to the internal integer array,
 // see method AppendToIntAry()
-func (ia *IntAry) GetIntAry() ([]uint8, int) {
+func (ia *IntAry) GetIntAryElements() ([]uint8, int) {
 
 	ia.SetInternalFlags()
 
@@ -2213,7 +2252,7 @@ func (ia *IntAry) GetIntAry() ([]uint8, int) {
 // GetIntAryDeepCopy - returns a deep copy of the
 // internal integer array maintained by this IntAry
 // object. Unlike the array returned by method
-// GetIntAry(), the array returned by this method
+// GetIntAryElements(), the array returned by this method
 // is not a reference or pointer.
 //
 // This means that the array returned by this method
@@ -2403,10 +2442,27 @@ func (ia *IntAry) GetNumStr() string {
 
 // GetNumStrDto - Converts the current IntAry to a NumStrDto
 // instance and returns it.
+//
+// The returned NumStrDto will contain numeric separators
+// (decimal separator, thousands separator and currency symbol)
+// copied from the current IntAry instance.
+//
+// Before returning the new NumStrDto instance, this method
+// performs a validity check on the current IntAry instance.
+//
 func (ia *IntAry) GetNumStrDto() (NumStrDto, error) {
+
 	ePrefix := "IntAry.GetNumStrDto() "
 
-	nstrDto, err := NumStrDto{}.NewNumStr(ia.GetNumStr())
+	err := ia.IsValid(ePrefix + " IntAry INVALID! ")
+
+	if err != nil {
+		return NumStrDto{}.New(), err
+	}
+
+	numSeps := ia.GetNumericSeparatorsDto()
+
+	nstrDto, err := NumStrDto{}.NewNumStrWithNumSeps(ia.GetNumStr(), numSeps)
 
 	if err != nil {
 		return NumStrDto{},
@@ -2414,12 +2470,7 @@ func (ia *IntAry) GetNumStrDto() (NumStrDto, error) {
 				"Error='%v'", err.Error())
 	}
 
-	nstrDto.SetThousandsSeparator(ia.GetThousandsSeparator())
-	nstrDto.SetDecimalSeparator(ia.GetDecimalSeparator())
-	nstrDto.SetCurrencySymbol(ia.GetCurrencySymbol())
-
 	return nstrDto, nil
-
 }
 
 // GetNthRootOfThis - Returns an intAry object equal to the 'nth Root'
@@ -5395,6 +5446,8 @@ func (ia *IntAry) SetSign(signVal int) error {
 // in the intAry) and records that index in the
 // local field variable, 'lastDigitIdx'.
 func (ia *IntAry) SetSignificantDigitIdxs() {
+
+	ia.SetNumericSeparatorsToDefaultIfEmpty()
 
 	ia.intAryLen = len(ia.intAry)
 

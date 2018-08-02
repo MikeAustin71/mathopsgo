@@ -1117,7 +1117,7 @@ func (bNum *BigIntNum) GetInt() (int, error) {
 
 }
 
-// GetIntAry - Converts the current BigIntNum value to an IntAry
+// GetIntAryElements - Converts the current BigIntNum value to an IntAry
 // instance. The resulting number value includes the decimal point
 // and fractional digits if they exist.
 //
@@ -1131,7 +1131,7 @@ func (bNum *BigIntNum) GetInt() (int, error) {
 //
 func (bNum *BigIntNum) GetIntAry() (IntAry, error) {
 
-	ePrefix := "BigIntNum.GetIntAry() "
+	ePrefix := "BigIntNum.GetIntAryElements() "
 
 	ia, err := IntAry{}.NewBigInt(big.NewInt(0).Set(bNum.bigInt), int(bNum.precision))
 

@@ -575,7 +575,7 @@ func TestIntAry_SetIntAryWithIntAry_01(t *testing.T) {
 
 	iaStats := ia.GetIntAryStats()
 
-	resultAry, iaLen := ia.GetIntAry()
+	resultAry, iaLen := ia.GetIntAryElements()
 
 	if iaStats.IntAryLen != iaLen {
 		t.Errorf("Expected iaStats.IntAryLen == results array length. Instead, iaStats.IntAryLen='%v' and result int array length='%v'", iaStats.IntAryLen, iaLen)
@@ -618,7 +618,7 @@ func TestIntAry_SetIntAryWithIntAry_02(t *testing.T) {
 
 	iaStats := ia.GetIntAryStats()
 
-	resultAry, iaLen := ia.GetIntAry()
+	resultAry, iaLen := ia.GetIntAryElements()
 
 	if iaStats.IntAryLen != iaLen {
 		t.Errorf("Expected iaStats.IntAryLen == results array length. Instead, iaStats.IntAryLen='%v' and result int array length='%v'", iaStats.IntAryLen, iaLen)
@@ -663,7 +663,7 @@ func TestIntAry_SetIntAryWithIntAry_03(t *testing.T) {
 
 	iaStats := ia.GetIntAryStats()
 
-	resultAry, iaLen := ia.GetIntAry()
+	resultAry, iaLen := ia.GetIntAryElements()
 
 	if iaStats.IntAryLen != iaLen {
 		t.Errorf("Expected iaStats.IntAryLen == results array length. Instead, iaStats.IntAryLen='%v' and result int array length='%v'", iaStats.IntAryLen, iaLen)
@@ -707,7 +707,7 @@ func TestIntAry_SetIntAryWithIntAry_04(t *testing.T) {
 
 	iaStats := ia.GetIntAryStats()
 
-	resultAry, iaLen := ia.GetIntAry()
+	resultAry, iaLen := ia.GetIntAryElements()
 
 	if iaStats.IntAryLen != iaLen {
 		t.Errorf("Expected iaStats.IntAryLen == results array length. Instead, iaStats.IntAryLen='%v' and result int array length='%v'", iaStats.IntAryLen, iaLen)
@@ -800,7 +800,7 @@ func TestIntAry_SetIntAryWithUint8Ary_01(t *testing.T) {
 
 	iaStats := ia.GetIntAryStats()
 
-	resultAry, iaLen := ia.GetIntAry()
+	resultAry, iaLen := ia.GetIntAryElements()
 
 	if iaStats.IntAryLen != iaLen {
 		t.Errorf("Expected iaStats.IntAryLen == results array length. Instead, iaStats.IntAryLen='%v' and result int array length='%v'", iaStats.IntAryLen, iaLen)
@@ -843,7 +843,7 @@ func TestIntAry_SetIntAryWithUint8Ary_02(t *testing.T) {
 
 	iaStats := ia.GetIntAryStats()
 
-	resultAry, iaLen := ia.GetIntAry()
+	resultAry, iaLen := ia.GetIntAryElements()
 
 	if iaStats.IntAryLen != iaLen {
 		t.Errorf("Expected iaStats.IntAryLen == results array length. Instead, iaStats.IntAryLen='%v' and result int array length='%v'", iaStats.IntAryLen, iaLen)
@@ -888,7 +888,7 @@ func TestIntAry_SetIntAryWithUint8Ary_03(t *testing.T) {
 
 	iaStats := ia.GetIntAryStats()
 
-	resultAry, iaLen := ia.GetIntAry()
+	resultAry, iaLen := ia.GetIntAryElements()
 
 	if iaStats.IntAryLen != iaLen {
 		t.Errorf("Expected iaStats.IntAryLen == results array length. Instead, iaStats.IntAryLen='%v' and result int array length='%v'", iaStats.IntAryLen, iaLen)
@@ -932,7 +932,7 @@ func TestIntAry_SetIntAryWithUint8Ary_04(t *testing.T) {
 
 	iaStats := ia.GetIntAryStats()
 
-	resultAry, iaLen := ia.GetIntAry()
+	resultAry, iaLen := ia.GetIntAryElements()
 
 	if iaStats.IntAryLen != iaLen {
 		t.Errorf("Expected iaStats.IntAryLen == results array length. Instead, iaStats.IntAryLen='%v' and result int array length='%v'", iaStats.IntAryLen, iaLen)

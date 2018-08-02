@@ -638,7 +638,7 @@ func (dec *Decimal) GetFloat64() (float64, big.Accuracy, error) {
 	return f64, accuracy, nil
 }
 
-// GetIntAry - Returns an IntAry structure initialized
+// GetIntAryElements - Returns an IntAry structure initialized
 // to the value of the current 'Decimal' object.
 //
 // The returned IntAry contains numeric separators (decimal
@@ -647,7 +647,7 @@ func (dec *Decimal) GetFloat64() (float64, big.Accuracy, error) {
 //
 func (dec *Decimal) GetIntAry() (IntAry, error) {
 	
-	ePrefix := "Decimal.GetIntAry() "
+	ePrefix := "Decimal.GetIntAryElements() "
 
 	err := dec.IsValid(ePrefix)
 
@@ -662,7 +662,7 @@ func (dec *Decimal) GetIntAry() (IntAry, error) {
 	if err != nil {
 		return IntAry{}.New(),
 		fmt.Errorf( ePrefix + "Error received from " +
-			"dec.bigINum.GetIntAry(). Error= %v",
+			"dec.bigINum.GetIntAryElements(). Error= %v",
 			err.Error())
 	}
 
@@ -773,7 +773,7 @@ func (dec *Decimal) GetNthRoot(nthRoot, maxPrecision int) (Decimal, error) {
 
 	if err != nil {
 		return Decimal{}.New(),
-		fmt.Errorf(ePrefix + "- Received error from dec.GetIntAry(). Error= %v \n",
+		fmt.Errorf(ePrefix + "- Received error from dec.GetIntAryElements(). Error= %v \n",
 			err.Error())
 	}
 
@@ -998,7 +998,7 @@ func (dec *Decimal) GetSquareRoot(maxPrecision int) (Decimal, error) {
 
 	if err != nil {
 		return Decimal{}.New(),
-			fmt.Errorf(ePrefix + "- Received error from dec.GetIntAry(). Error= %v", err)
+			fmt.Errorf(ePrefix + "- Received error from dec.GetIntAryElements(). Error= %v", err)
 	}
 
 	nrt := NthRootOp{}

@@ -1498,7 +1498,7 @@ func TestDecimal_GetIntAry_01(t *testing.T) {
 	ia, err := d.GetIntAry()
 
 	if err != nil {
-		t.Errorf("Error returned from d.GetIntAry(). Error= %v ", err)
+		t.Errorf("Error returned from d.GetIntAryElements(). Error= %v ", err)
 	}
 
 	if exStr != ia.GetNumStr() {
@@ -1532,7 +1532,7 @@ func TestDecimal_GetIntAry_02(t *testing.T) {
 	ia, err := d.GetIntAry()
 
 	if err != nil {
-		t.Errorf("Error returned from d.GetIntAry(). Error= %v ", err)
+		t.Errorf("Error returned from d.GetIntAryElements(). Error= %v ", err)
 	}
 
 	if exStr != ia.GetNumStr() {

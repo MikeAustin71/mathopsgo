@@ -1161,7 +1161,7 @@ func (nthrt *NthRootOp) bundleInts() error {
 
 	bundleIdx := bundleSize - 1
 	intAryIdx := 0
-	intAry, _ := intNums.GetIntAry()
+	intAry, _ := intNums.GetIntAryElements()
 	for j := intNumsStats.IntAryLen - 1; j >= 0; j -= nthrt.NthRootInt {
 		bundle := make([]int, nthrt.NthRootInt)
 		intAryIdx = j
@@ -1195,7 +1195,7 @@ func (nthrt *NthRootOp) bundleFracs() error {
 	fracNums, err := nthrt.Radicand.GetFractionalDigits()
 
 	iFracNumStats := fracNums.GetIntAryStats()
-	iFAry, _ := fracNums.GetIntAry()
+	iFAry, _ := fracNums.GetIntAryElements()
 
 	if err != nil {
 		return fmt.Errorf("NthRootOp.bundleFracs() Error Returned from nthrt.OriginalRadicand.GetFractionalDigits() - Error= %v", err)

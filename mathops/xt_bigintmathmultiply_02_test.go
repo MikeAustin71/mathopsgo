@@ -650,7 +650,7 @@ func TestBigIntMathMultiply_MultiplyDecimalArray_01(t *testing.T) {
 		ia, err := decimalArray[i].GetIntAry()
 
 		if err != nil {
-			t.Errorf("Error returned by decimalArray[i].GetIntAry() " +
+			t.Errorf("Error returned by decimalArray[i].GetIntAryElements() " +
 				"i='%v'  multiplicandStrs[i]='%v'  Error='%v'. ", i, multiplicandStrs[i], err.Error())
 		}
 
@@ -754,7 +754,7 @@ func TestBigIntMathMultiply_MultiplyDecimalArray_02(t *testing.T) {
 		ia, err := decimalArray[i].GetIntAry()
 
 		if err != nil {
-			t.Errorf("Error returned by decimalArray[i].GetIntAry() " +
+			t.Errorf("Error returned by decimalArray[i].GetIntAryElements() " +
 				"i='%v'  multiplicandStrs[i]='%v'  Error='%v'. ", i, multiplicandStrs[i], err.Error())
 		}
 
@@ -857,7 +857,7 @@ func TestBigIntMathMultiply_MultiplyDecimalArray_03(t *testing.T) {
 		ia, err := decimalArray[i].GetIntAry()
 
 		if err != nil {
-			t.Errorf("Error returned by decimalArray[i].GetIntAry() " +
+			t.Errorf("Error returned by decimalArray[i].GetIntAryElements() " +
 				"i='%v'  multiplicandStrs[i]='%v'  Error='%v'. ", i, multiplicandStrs[i], err.Error())
 		}
 
@@ -962,7 +962,7 @@ func TestBigIntMathMultiply_MultiplyDecimalArray_04(t *testing.T) {
 		ia, err := decimalArray[i].GetIntAry()
 
 		if err != nil {
-			t.Errorf("Error returned by decimalArray[i].GetIntAry() " +
+			t.Errorf("Error returned by decimalArray[i].GetIntAryElements() " +
 				"i='%v'  multiplicandStrs[i]='%v'  Error='%v'. ", i, multiplicandStrs[i], err.Error())
 		}
 
@@ -1080,7 +1080,7 @@ func TestBigIntMathMultiply_MultiplyDecimalArray_05(t *testing.T) {
 		ia, err := decimalArray[i].GetIntAry()
 
 		if err != nil {
-			t.Errorf("Error returned by decimalArray[i].GetIntAry() " +
+			t.Errorf("Error returned by decimalArray[i].GetIntAryElements() " +
 				"i='%v'  multiplicandStrs[i]='%v'  Error='%v'. ", i, multiplicandStrs[i], err.Error())
 		}
 
@@ -1590,7 +1590,7 @@ func TestBigIntMathMultiply_MultiplyDecimalSeries_01(t *testing.T) {
 		ia, err := decimalArray[i].GetIntAry()
 
 		if err != nil {
-			t.Errorf("Error returned by decimalArray[i].GetIntAry() " +
+			t.Errorf("Error returned by decimalArray[i].GetIntAryElements() " +
 				"i='%v'  multiplicandStrs[i]='%v'  Error='%v'. ", i, multiplicandStrs[i], err.Error())
 		}
 
@@ -1698,7 +1698,7 @@ func TestBigIntMathMultiply_MultiplyDecimalSeries_02(t *testing.T) {
 		ia, err := decimalArray[i].GetIntAry()
 
 		if err != nil {
-			t.Errorf("Error returned by decimalArray[i].GetIntAry() " +
+			t.Errorf("Error returned by decimalArray[i].GetIntAryElements() " +
 				"i='%v'  multiplicandStrs[i]='%v'  Error='%v'. ", i, multiplicandStrs[i], err.Error())
 		}
 
@@ -1808,7 +1808,7 @@ func TestBigIntMathMultiply_MultiplyDecimalSeries_03(t *testing.T) {
 		ia, err := decimalArray[i].GetIntAry()
 
 		if err != nil {
-			t.Errorf("Error returned by decimalArray[i].GetIntAry() " +
+			t.Errorf("Error returned by decimalArray[i].GetIntAryElements() " +
 				"i='%v'  multiplicandStrs[i]='%v'  Error='%v'. ", i, multiplicandStrs[i], err.Error())
 		}
 
@@ -1919,7 +1919,7 @@ func TestBigIntMathMultiply_MultiplyDecimalSeries_04(t *testing.T) {
 		ia, err := decimalArray[i].GetIntAry()
 
 		if err != nil {
-			t.Errorf("Error returned by decimalArray[i].GetIntAry() " +
+			t.Errorf("Error returned by decimalArray[i].GetIntAryElements() " +
 				"i='%v'  multiplicandStrs[i]='%v'  Error='%v'. ", i, multiplicandStrs[i], err.Error())
 		}
 
@@ -2042,7 +2042,7 @@ func TestBigIntMathMultiply_MultiplyDecimalSeries_05(t *testing.T) {
 		ia, err := decimalArray[i].GetIntAry()
 
 		if err != nil {
-			t.Errorf("Error returned by decimalArray[i].GetIntAry() " +
+			t.Errorf("Error returned by decimalArray[i].GetIntAryElements() " +
 				"i='%v'  multiplicandStrs[i]='%v'  Error='%v'. ", i, multiplicandStrs[i], err.Error())
 		}
 

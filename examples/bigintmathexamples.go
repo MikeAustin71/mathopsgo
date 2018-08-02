@@ -1040,7 +1040,7 @@ func ExampleBigIntMultiply_02() {
 		ia, err := bINumArray[i].GetIntAry()
 
 		if err != nil {
-			fmt.Printf("Error returned by bINumArray[i].GetIntAry() " +
+			fmt.Printf("Error returned by bINumArray[i].GetIntAryElements() " +
 				"i='%v'  multiplicandStrs[i]='%v'  Error='%v'. ", i, multiplicandStrs[i], err.Error())
 			return
 		}

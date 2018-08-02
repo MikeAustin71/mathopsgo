@@ -1006,7 +1006,7 @@ func TestNumStrDto_GetIntAry(t *testing.T) {
 	actualIa, err := controlNDto.GetIntAry()
 
 	if err != nil {
-		t.Errorf("Error returned by controlNDto.GetIntAry(). " +
+		t.Errorf("Error returned by controlNDto.GetIntAryElements(). " +
 			"numStr='%v'  Error='%v'", numStr, err.Error())
 	}
 

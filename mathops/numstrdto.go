@@ -1309,8 +1309,18 @@ func (nDto *NumStrDto) GetBigInt() (*big.Int, error) {
 // current NumStrDto to a 'BigIntNum' type and returns
 // it to the calling function.
 //
+// The returned BigIntNum will contain numeric separators
+// (decimal separator, thousands separator and currency
+// symbol) copied from the current NumStrDto instance.
+//
 func (nDto *NumStrDto) GetBigIntNum() (BigIntNum, error) {
 	ePrefix := "NumStrDto.GetBigIntNum() "
+
+	err := nDto.IsValid(ePrefix + " This NumStrDto INVALID! ")
+
+	if err != nil {
+		return BigIntNum{}.NewZero(0), err
+	}
 
 	numSeps := nDto.GetNumericSeparatorsDto()
 
@@ -1434,7 +1444,7 @@ func (nDto *NumStrDto) GetDecimalSeparator() rune {
 //
 func (nDto *NumStrDto) GetDecimal() (Decimal, error) {
 
-	ePrefix := "NumStrDto.GetIntAry() "
+	ePrefix := "NumStrDto.GetIntAryElements() "
 
 	err := nDto.IsValid(ePrefix)
 
@@ -1466,11 +1476,11 @@ func (nDto *NumStrDto) GetDecimal() (Decimal, error) {
 	return dec, nil
 }
 
-// GetIntAry - Converts the current NumStrDto instance
+// GetIntAryElements - Converts the current NumStrDto instance
 // to a Type IntAry and returns it to the calling function.
 //
 func (nDto *NumStrDto) GetIntAry() (IntAry, error) {
-	ePrefix := "NumStrDto.GetIntAry() "
+	ePrefix := "NumStrDto.GetIntAryElements() "
 
 	err := nDto.IsValid(ePrefix)
 

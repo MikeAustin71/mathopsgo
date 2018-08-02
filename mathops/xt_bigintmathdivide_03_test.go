@@ -286,10 +286,10 @@ func TestBigIntMathDivide_ModuloToDecimal_01(t *testing.T) {
 			"divisorStr='%v' error='%v'", divisorStr, err.Error())
 	}
 
-	iaModulo, err := BigIntMathDivide{}.ModuloToDecimal(iaDividend, iaDivisor, maxPrecision)
+	iaModulo, err := BigIntMathDivide{}.DecimalModuloToDecimal(iaDividend, iaDivisor, maxPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntMathDivide{}.ModuloToDecimal(iaDividend, " +
+		t.Errorf("Error returned by BigIntMathDivide{}.DecimalModuloToDecimal(iaDividend, " +
 			"iaDivisor, maxPrecision). Error='%v'", err.Error())
 
 	}
@@ -327,10 +327,10 @@ func TestBigIntMathDivide_ModuloToDecimal_02(t *testing.T) {
 			"divisorStr='%v' error='%v'", divisorStr, err.Error())
 	}
 
-	iaModulo, err := BigIntMathDivide{}.ModuloToDecimal(iaDividend, iaDivisor, maxPrecision)
+	iaModulo, err := BigIntMathDivide{}.DecimalModuloToDecimal(iaDividend, iaDivisor, maxPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntMathDivide{}.ModuloToDecimal(iaDividend, " +
+		t.Errorf("Error returned by BigIntMathDivide{}.DecimalModuloToDecimal(iaDividend, " +
 			"iaDivisor, maxPrecision). Error='%v'", err.Error())
 
 	}
@@ -368,10 +368,10 @@ func TestBigIntMathDivide_ModuloToDecimal_03(t *testing.T) {
 			"divisorStr='%v' error='%v'", divisorStr, err.Error())
 	}
 
-	iaModulo, err := BigIntMathDivide{}.ModuloToDecimal(iaDividend, iaDivisor, maxPrecision)
+	iaModulo, err := BigIntMathDivide{}.DecimalModuloToDecimal(iaDividend, iaDivisor, maxPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntMathDivide{}.ModuloToDecimal(iaDividend, " +
+		t.Errorf("Error returned by BigIntMathDivide{}.DecimalModuloToDecimal(iaDividend, " +
 			"iaDivisor, maxPrecision). Error='%v'", err.Error())
 
 	}
@@ -409,10 +409,10 @@ func TestBigIntMathDivide_ModuloToDecimal_04(t *testing.T) {
 			"divisorStr='%v' error='%v'", divisorStr, err.Error())
 	}
 
-	iaModulo, err := BigIntMathDivide{}.ModuloToDecimal(iaDividend, iaDivisor, maxPrecision)
+	iaModulo, err := BigIntMathDivide{}.DecimalModuloToDecimal(iaDividend, iaDivisor, maxPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntMathDivide{}.ModuloToDecimal(iaDividend, " +
+		t.Errorf("Error returned by BigIntMathDivide{}.DecimalModuloToDecimal(iaDividend, " +
 			"iaDivisor, maxPrecision). Error='%v'", err.Error())
 
 	}
@@ -1149,10 +1149,10 @@ func TestBigIntMathDivide_ModuloToIntAry_01(t *testing.T) {
 			"divisorStr='%v' error='%v'", divisorStr, err.Error())
 	}
 
-	iaModulo, err := BigIntMathDivide{}.ModuloToIntAry(iaDividend, iaDivisor, maxPrecision)
+	iaModulo, err := BigIntMathDivide{}.IntAryModuloToIntAry(iaDividend, iaDivisor, maxPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntMathDivide{}.ModuloToIntAry(iaDividend, " +
+		t.Errorf("Error returned by BigIntMathDivide{}.IntAryModuloToIntAry(iaDividend, " +
 			"iaDivisor, maxPrecision). Error='%v'", err.Error())
 
 	}
@@ -1190,10 +1190,10 @@ func TestBigIntMathDivide_ModuloToIntAry_02(t *testing.T) {
 			"divisorStr='%v' error='%v'", divisorStr, err.Error())
 	}
 
-	iaModulo, err := BigIntMathDivide{}.ModuloToIntAry(iaDividend, iaDivisor, maxPrecision)
+	iaModulo, err := BigIntMathDivide{}.IntAryModuloToIntAry(iaDividend, iaDivisor, maxPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntMathDivide{}.ModuloToIntAry(iaDividend, " +
+		t.Errorf("Error returned by BigIntMathDivide{}.IntAryModuloToIntAry(iaDividend, " +
 			"iaDivisor, maxPrecision). Error='%v'", err.Error())
 
 	}
@@ -1231,10 +1231,10 @@ func TestBigIntMathDivide_ModuloToIntAry_03(t *testing.T) {
 			"divisorStr='%v' error='%v'", divisorStr, err.Error())
 	}
 
-	iaModulo, err := BigIntMathDivide{}.ModuloToIntAry(iaDividend, iaDivisor, maxPrecision)
+	iaModulo, err := BigIntMathDivide{}.IntAryModuloToIntAry(iaDividend, iaDivisor, maxPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntMathDivide{}.ModuloToIntAry(iaDividend, " +
+		t.Errorf("Error returned by BigIntMathDivide{}.IntAryModuloToIntAry(iaDividend, " +
 			"iaDivisor, maxPrecision). Error='%v'", err.Error())
 
 	}
@@ -1272,10 +1272,10 @@ func TestBigIntMathDivide_ModuloToIntAry_04(t *testing.T) {
 			"divisorStr='%v' error='%v'", divisorStr, err.Error())
 	}
 
-	iaModulo, err := BigIntMathDivide{}.ModuloToIntAry(iaDividend, iaDivisor, maxPrecision)
+	iaModulo, err := BigIntMathDivide{}.IntAryModuloToIntAry(iaDividend, iaDivisor, maxPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntMathDivide{}.ModuloToIntAry(iaDividend, " +
+		t.Errorf("Error returned by BigIntMathDivide{}.IntAryModuloToIntAry(iaDividend, " +
 			"iaDivisor, maxPrecision). Error='%v'", err.Error())
 
 	}
