@@ -1313,6 +1313,9 @@ func (nDto *NumStrDto) GetBigInt() (*big.Int, error) {
 // (decimal separator, thousands separator and currency
 // symbol) copied from the current NumStrDto instance.
 //
+// Before returning the BigIntNum result, this method
+// performs a validity test on the current NumStrDto instance.
+//
 func (nDto *NumStrDto) GetBigIntNum() (BigIntNum, error) {
 	ePrefix := "NumStrDto.GetBigIntNum() "
 
@@ -1442,6 +1445,14 @@ func (nDto *NumStrDto) GetDecimalSeparator() rune {
 // to a Type 'Decimal' and returns it to the calling
 // function.
 //
+// The returned Decimal instance will contain numeric
+// separators (decimal separator, thousands separator
+// and currency symbol) copied from the current NumStrDto
+// instance.
+//
+// Before returning the Decimal result, this method
+// performs a validity test on the current NumStrDto instance.
+//
 func (nDto *NumStrDto) GetDecimal() (Decimal, error) {
 
 	ePrefix := "NumStrDto.GetIntAryElements() "
@@ -1454,24 +1465,14 @@ func (nDto *NumStrDto) GetDecimal() (Decimal, error) {
 
 	numSeps := nDto.GetNumericSeparatorsDto()
 
-	dec, err := Decimal{}.NewNumStrDto(nDto.CopyOut())
+	dec, err := Decimal{}.NewNumStrWithNumSeps(nDto.GetNumStr(), numSeps)
 
 	if err != nil {
 		return Decimal{},
 		fmt.Errorf(ePrefix +
-			"Error returned by Decimal{}.NewNumStrDto(nDto.CopyOut()) " +
+			"Error returned by Decimal{}.NewNumStrWithNumSeps(nDto.GetNumStr(), numSeps) " +
 			"Error='%v' ", err.Error())
 	}
-
-	err = dec.SetNumericSeparatorsDto(numSeps)
-
-	if err != nil {
-		return Decimal{},
-			fmt.Errorf(ePrefix +
-				"Error returned by dec.SetNumericSeparatorsDto(numSeps) " +
-				"Error='%v' ", err.Error())
-	}
-
 
 	return dec, nil
 }
@@ -1490,20 +1491,13 @@ func (nDto *NumStrDto) GetIntAry() (IntAry, error) {
 
 	numSeps := nDto.GetNumericSeparatorsDto()
 
-	ia, err := IntAry{}.NewNumStrDto(nDto.CopyOut())
+	ia, err := IntAry{}.NewNumStrWithNumSeps(nDto.GetNumStr(), numSeps)
 
 	if err != nil {
 		return IntAry{},
-		fmt.Errorf(ePrefix + "Error returned by IntAry{}.NewNumStrDto(nDto.CopyOut()). " +
+		fmt.Errorf(ePrefix +
+			"Error returned by IntAry{}.NewNumStrWithNumSeps(nDto.GetNumStr(), numSeps). " +
 			"nDto='%v' Error='%v'", nDto.GetNumStr(), err.Error())
-	}
-
-	err = ia.SetNumericSeparatorsDto(numSeps)
-
-	if err != nil {
-		return IntAry{},
-			fmt.Errorf(ePrefix + "Error returned by ia.SetNumericSeparatorsDto(numSeps). " +
-				"Error='%v'", err.Error())
 	}
 
 	return ia, nil
@@ -1574,6 +1568,34 @@ func (nDto *NumStrDto) GetNumStr() string {
 	}
 
 	return outStr
+}
+
+
+// GetNumStrDto - Returns a deep copy of the current NumStrDto
+// instance.
+//
+// The returned NumStrDto instance will contain numeric
+// separators (decimal separator, thousands separator
+// and currency symbol) copied from the current NumStrDto
+// instance.
+//
+// Before returning the NumStrDto result, this method
+// performs a validity test on the current NumStrDto instance.
+//
+// This method is necessary in order to fulfill the requirements
+// of the INumMgr interface.
+//
+func (nDto *NumStrDto) GetNumStrDto() (NumStrDto, error) {
+
+	ePrefix := "NumStrDto.GetNumStrDto() "
+
+	err := nDto.IsValid(ePrefix + "NumStrDto INVALID! ")
+
+	if err != nil {
+		return NumStrDto{}.New(), err
+	}
+
+	return nDto.CopyOut(), nil
 }
 
 // GetPrecision - Returns the precision of the current
