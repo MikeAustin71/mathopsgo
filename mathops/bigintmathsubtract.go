@@ -292,7 +292,14 @@ func (bSubtract BigIntMathSubtract) SubtractDecimalArray(
 
 	numSeps := minuend.GetNumericSeparatorsDto()
 
-	finalResult := minuend.GetBigIntNum()
+	finalResult, err := minuend.GetBigIntNum()
+
+	if err != nil {
+		return BigIntNum{},
+			fmt.Errorf(ePrefix +
+				"Error returned by minuend.GetBigIntNum(). Error='%v'",
+				err.Error())
+	}
 
 	lenSubtrahends := len(subtrahends)
 
@@ -310,7 +317,7 @@ func (bSubtract BigIntMathSubtract) SubtractDecimalArray(
 		finalResult = bSubtract.subtractPairNoNumSeps(bPair)
 	}
 
-	err := finalResult.SetNumericSeparatorsDto(numSeps)
+	err = finalResult.SetNumericSeparatorsDto(numSeps)
 
 	if err != nil {
 		return BigIntNum{},
@@ -367,17 +374,35 @@ func (bSubtract BigIntMathSubtract) SubtractDecimalOutputToArray(
 
 	numSeps := minuend.GetNumericSeparatorsDto()
 
-	bINumMinuend := minuend.GetBigIntNum()
+	bINumMinuend, err := minuend.GetBigIntNum()
+
+	if err != nil {
+		return []Decimal{},
+			fmt.Errorf(ePrefix +
+				"Error returned by minuend.GetBigIntNum(). " +
+				"Error='%v'", err.Error())
+	}
 
 	resultsArray := make([]Decimal, lenSubtrahends)
 
-	var err error
+	var bigINumSubtrahend, result BigIntNum
+
+	var bPair BigIntPair
 
 	for i:=0; i < lenSubtrahends; i++ {
 
-		bPair := BigIntPair{}.NewBigIntNum(bINumMinuend, subtrahends[i].GetBigIntNum())
+		bigINumSubtrahend, err = subtrahends[i].GetBigIntNum()
 
-		result := bSubtract.subtractPairNoNumSeps(bPair)
+		if err != nil {
+			return []Decimal{},
+				fmt.Errorf(ePrefix +
+					"Error returned by subtrahends[i].GetBigIntNum(). " +
+					"index='%v' Error='%v'", i, err.Error())
+		}
+
+		bPair = BigIntPair{}.NewBigIntNum(bINumMinuend, bigINumSubtrahend)
+
+		result = bSubtract.subtractPairNoNumSeps(bPair)
 
 		err = result.SetNumericSeparatorsDto(numSeps)
 
@@ -431,7 +456,13 @@ func (bSubtract BigIntMathSubtract) SubtractDecimalSeries(
 
 	numSeps := minuend.GetNumericSeparatorsDto()
 
-	finalResult := minuend.GetBigIntNum()
+	finalResult, err := minuend.GetBigIntNum()
+
+	if err != nil {
+		return BigIntNum{},
+		fmt.Errorf(ePrefix +
+			"Error returned by minuend.GetBigIntNum(). Error='%v'", err.Error())
+	}
 
 	if len(subtrahends) == 0 {
 		finalResult.SetNumericSeparatorsDto(numSeps)
@@ -439,14 +470,25 @@ func (bSubtract BigIntMathSubtract) SubtractDecimalSeries(
 			errors.New(ePrefix + "Error: subtrahends series is Empty!")
 	}
 
+	var bINumSubtrahend BigIntNum
+	var bPair BigIntPair
 	for _, subtrahend := range subtrahends {
 
-		bPair := BigIntPair{}.NewBigIntNum(finalResult, subtrahend.GetBigIntNum())
+		bINumSubtrahend, err = subtrahend.GetBigIntNum()
+
+		if err != nil {
+			return BigIntNum{},
+			fmt.Errorf(ePrefix +
+				"Error returned by subtrahend.GetBigIntNum(). Error='%v'",
+				err.Error())
+		}
+
+		bPair = BigIntPair{}.NewBigIntNum(finalResult, bINumSubtrahend)
 
 		finalResult = bSubtract.subtractPairNoNumSeps(bPair)
 	}
 
-	err := finalResult.SetNumericSeparatorsDto(numSeps)
+	err = finalResult.SetNumericSeparatorsDto(numSeps)
 
 	if err != nil {
 		return BigIntNum{},

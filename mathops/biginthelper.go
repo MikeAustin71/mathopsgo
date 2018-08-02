@@ -193,9 +193,21 @@ func (bPair BigIntPair) NewDecimal(dec1, dec2 Decimal) (BigIntPair, error) {
 		return BigIntPair{}, err
 	}
 
-	b1Num := dec1.GetBigIntNum()
+	b1Num, err := dec1.GetBigIntNum()
 
-	b2Num := dec2.GetBigIntNum()
+	if err != nil {
+		return BigIntPair{},
+			fmt.Errorf(ePrefix +
+				"Error returned by dec1.GetBigIntNum(). Error='%v'. ", err.Error())
+	}
+
+	b2Num, err := dec2.GetBigIntNum()
+
+	if err != nil {
+		return BigIntPair{},
+			fmt.Errorf(ePrefix +
+				"Error returned by dec2.GetBigIntNum(). Error='%v'. ", err.Error())
+	}
 
 	bd2 := BigIntPair{}
 

@@ -476,9 +476,19 @@ func (dec *Decimal) GetBigInt() (*big.Int, error) {
 // thousands separator and currency symbol) copied from the current Decimal
 // instance.
 //
-func (dec *Decimal) GetBigIntNum() BigIntNum {
+// This method performs a validity test on the current Decimal instance.
+//
+func (dec *Decimal) GetBigIntNum() (BigIntNum, error) {
 
-	return dec.bigINum.CopyOut()
+	ePrefix := "Decimal.GetBigIntNum() "
+
+	err := dec.IsValid(ePrefix + "Decimal INVALID! ")
+
+	if err != nil {
+		return BigIntNum{}, err
+	}
+
+	return dec.bigINum.CopyOut(), nil
 }
 
 // GetBigRat - Returns the current Decimal's numeric value expressed

@@ -1399,7 +1399,12 @@ func TestDecimal_GetBigIntNum_01(t *testing.T) {
 			"Error='%v' ", err.Error())
 	}
 
-	bigINum := dec.GetBigIntNum()
+	bigINum, err := dec.GetBigIntNum()
+
+	if err != nil {
+		t.Errorf("Error returned by dec.GetBigIntNum(). Error='%v'",
+			err.Error())
+	}
 
 	if !expectedBigIntNum.Equal(bigINum) {
 		t.Errorf("Error: Expected BigIntNum NOT Equal to Actual BigIntNum! "+
