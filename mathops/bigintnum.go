@@ -957,6 +957,32 @@ func (bNum *BigIntNum) GetBigInt() (*big.Int, error) {
 	return big.NewInt(0).Set(bNum.bigInt), nil
 }
 
+// GetBigIntNum - Returns a deep copy of the current BigIntNum
+// instance.
+//
+// The returned BigIntNum will contain numeric separators
+// (decimal separator, thousands separator and currency
+// symbol) copied from the current BigIntNum instance.
+//
+// Before returning the new BigIntNum copy, this method performs
+// a validity test on the current BigIntNum instance.
+//
+// This method is necessary in order to fulfill the requirements
+// of the INumMgr interface.
+//
+func (bNum *BigIntNum) GetBigIntNum() (BigIntNum, error) {
+
+	ePrefix := "BigIntNum.GetBigIntNum() "
+
+	err := bNum.IsValid(ePrefix + "BigIntNum INVALID! ")
+
+	if err != nil {
+		return BigIntNum{}.New(), err
+	}
+
+	return bNum.CopyOut(), nil
+}
+
 // GetBigRat - Returns the numeric value of the current
 // BigIntNum as a *big.Rat type.
 //
@@ -967,7 +993,6 @@ func (bNum *BigIntNum) GetBigRat() *big.Rat {
 	denominator := big.NewInt(0).Set(bNum.scaleFactor)
 
 	return big.NewRat(1,1).SetFrac(numerator, denominator)
-
 }
 
 // GetCurrencySymbol - Returns the character currently designated
@@ -998,9 +1023,17 @@ func (bNum *BigIntNum) GetCurrencySymbol() rune {
 // thousands separator and currency symbol) copied from the current BigIntNum
 // instance, 'bNum'.
 //
+// This method performs a validity test on the current BigIntNum instance.
+//
 func (bNum *BigIntNum) GetDecimal() (Decimal, error) {
 
 	ePrefix := "BigIntNum.GetDecimal() "
+
+	err := bNum.IsValid(ePrefix + "BigIntNum INVALID!")
+
+	if err != nil {
+		return Decimal{}, err
+	}
 
 	dec, err := Decimal{}.NewBigInt(big.NewInt(0).Set(bNum.bigInt), bNum.precision)
 
@@ -1012,15 +1045,19 @@ func (bNum *BigIntNum) GetDecimal() (Decimal, error) {
 				bNum.bigInt.Text(10), bNum.precision, err.Error())
 	}
 
-	numSeps := bNum.GetNumericSeparatorsDto()
-
-	err = dec.SetNumericSeparatorsDto(numSeps)
+	err = dec.SetNumericSeparatorsDto(bNum.GetNumericSeparatorsDto())
 
 	if err != nil {
 		return Decimal{},
 			fmt.Errorf (ePrefix +
-				"Error returned by dec.SetNumericSeparatorsDto(numSeps) " +
+				"Error returned by dec.SetNumericSeparatorsDto(bNum.GetNumericSeparatorsDto()) " +
 				"Error='%v'",	err.Error())
+	}
+
+	err = dec.IsValid(ePrefix + "dec INVALID! ")
+
+	if err != nil {
+		return Decimal{}, err
 	}
 
 	return dec, nil
@@ -1129,9 +1166,17 @@ func (bNum *BigIntNum) GetInt() (int, error) {
 // thousands separator and currency symbol) copied from the current BigIntNum
 // instance.
 //
+// This method performs a validity test on the current BigIntNum instance.
+//
 func (bNum *BigIntNum) GetIntAry() (IntAry, error) {
 
 	ePrefix := "BigIntNum.GetIntAryElements() "
+
+	err := bNum.IsValid(ePrefix + "BigIntNum INVALID! ")
+
+	if err != nil {
+		return IntAry{}, err
+	}
 
 	ia, err := IntAry{}.NewBigInt(big.NewInt(0).Set(bNum.bigInt), int(bNum.precision))
 
@@ -1143,17 +1188,20 @@ func (bNum *BigIntNum) GetIntAry() (IntAry, error) {
 				bNum.bigInt.Text(10), bNum.precision, err.Error())
 	}
 
-	numSeps := bNum.GetNumericSeparatorsDto()
-
-	err = ia.SetNumericSeparatorsDto(numSeps)
+	err = ia.SetNumericSeparatorsDto(bNum.GetNumericSeparatorsDto())
 
 	if err != nil {
 		return IntAry{},
 			fmt.Errorf (ePrefix +
-				"Error returned by ia.SetNumericSeparatorsDto(numSeps) " +
+				"Error returned by ia.SetNumericSeparatorsDto(bNum.GetNumericSeparatorsDto()) " +
 				"Error='%v' \n", err.Error())
 	}
 
+	err = ia.IsValid(ePrefix + "IntAry INVALID! ")
+
+	if err != nil {
+		return IntAry{}, err
+	}
 
 	return ia, nil
 }
@@ -1291,9 +1339,17 @@ func (bNum *BigIntNum) GetNumStr() (string) {
 // thousands separator and currency symbol) copied from the current BigIntNum
 // instance.
 //
+// This method performs a validity test on the current BigIntNum instance.
+//
 func (bNum *BigIntNum) GetNumStrDto() (NumStrDto, error) {
 
 	ePrefix := "BigIntNum.GetNumStrDto() "
+
+	err := bNum.IsValid(ePrefix + "BigIntNum INVALID! ")
+
+	if err != nil {
+		return NumStrDto{}, err
+	}
 
 	nDto, err := NumStrDto{}.NewBigInt(big.NewInt(0).Set(bNum.bigInt), uint(bNum.precision))
 
@@ -1305,14 +1361,12 @@ func (bNum *BigIntNum) GetNumStrDto() (NumStrDto, error) {
 				bNum.bigInt.Text(10), bNum.precision, err.Error())
 	}
 
-	numSeps := bNum.GetNumericSeparatorsDto()
-
-	err = nDto.SetNumericSeparatorsDto(numSeps)
+	err = nDto.SetNumericSeparatorsDto(bNum.GetNumericSeparatorsDto())
 
 	if err != nil {
 		return NumStrDto{}.New(),
 			fmt.Errorf(ePrefix +
-				"Error returned by nDto.SetNumericSeparatorsDto(numSeps). " +
+				"Error returned by nDto.SetNumericSeparatorsDto(bNum.GetNumericSeparatorsDto()). " +
 				"Error='%v' \n", err.Error())
 	}
 
