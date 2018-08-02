@@ -626,10 +626,10 @@ func TestBigIntMathDivide_ModuloToNumStrDto_01(t *testing.T) {
 			"divisorStr='%v' error='%v'", divisorStr, err.Error())
 	}
 
-	moduloNDto, err := BigIntMathDivide{}.ModuloToNumStrDto(nDtoDividend, nDtoDivisor, maxPrecision)
+	moduloNDto, err := BigIntMathDivide{}.NumStrDtoModuloToNumStrDto(nDtoDividend, nDtoDivisor, maxPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntMathDivide{}.ModuloToNumStrDto(nDtoDividend, " +
+		t.Errorf("Error returned by BigIntMathDivide{}.NumStrDtoModuloToNumStrDto(nDtoDividend, " +
 			"nDtoDivisor, maxPrecision). Error='%v'", err.Error())
 
 	}
@@ -668,10 +668,10 @@ func TestBigIntMathDivide_ModuloToNumStrDto_02(t *testing.T) {
 			"divisorStr='%v' error='%v'", divisorStr, err.Error())
 	}
 
-	moduloNDto, err := BigIntMathDivide{}.ModuloToNumStrDto(nDtoDividend, nDtoDivisor, maxPrecision)
+	moduloNDto, err := BigIntMathDivide{}.NumStrDtoModuloToNumStrDto(nDtoDividend, nDtoDivisor, maxPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntMathDivide{}.ModuloToNumStrDto(nDtoDividend, " +
+		t.Errorf("Error returned by BigIntMathDivide{}.NumStrDtoModuloToNumStrDto(nDtoDividend, " +
 			"nDtoDivisor, maxPrecision). Error='%v'", err.Error())
 
 	}
@@ -710,10 +710,10 @@ func TestBigIntMathDivide_ModuloToNumStrDto_03(t *testing.T) {
 			"divisorStr='%v' error='%v'", divisorStr, err.Error())
 	}
 
-	moduloNDto, err := BigIntMathDivide{}.ModuloToNumStrDto(nDtoDividend, nDtoDivisor, maxPrecision)
+	moduloNDto, err := BigIntMathDivide{}.NumStrDtoModuloToNumStrDto(nDtoDividend, nDtoDivisor, maxPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntMathDivide{}.ModuloToNumStrDto(nDtoDividend, " +
+		t.Errorf("Error returned by BigIntMathDivide{}.NumStrDtoModuloToNumStrDto(nDtoDividend, " +
 			"nDtoDivisor, maxPrecision). Error='%v'", err.Error())
 
 	}
@@ -751,10 +751,10 @@ func TestBigIntMathDivide_ModuloToNumStrDto_04(t *testing.T) {
 			"divisorStr='%v' error='%v'", divisorStr, err.Error())
 	}
 
-	moduloNDto, err := BigIntMathDivide{}.ModuloToNumStrDto(nDtoDividend, nDtoDivisor, maxPrecision)
+	moduloNDto, err := BigIntMathDivide{}.NumStrDtoModuloToNumStrDto(nDtoDividend, nDtoDivisor, maxPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntMathDivide{}.ModuloToNumStrDto(nDtoDividend, " +
+		t.Errorf("Error returned by BigIntMathDivide{}.NumStrDtoModuloToNumStrDto(nDtoDividend, " +
 			"nDtoDivisor, maxPrecision). Error='%v'", err.Error())
 
 	}

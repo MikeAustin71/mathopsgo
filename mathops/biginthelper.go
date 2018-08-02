@@ -282,50 +282,23 @@ func (bPair BigIntPair) NewINumMgr(num1, num2 INumMgr) (BigIntPair, error) {
 		return BigIntPair{}, err
 	}
 
-	numSeps := num1.GetNumericSeparatorsDto()
-
-	b1Num, err := num1.GetBigInt()
+	b1Num, err := num1.GetBigIntNum()
 
 	if err != nil {
 		return BigIntPair{},
-		fmt.Errorf(ePrefix + "Error returned by num1.GetBigInt(). " +
+		fmt.Errorf(ePrefix + "Error returned by num1.GetBigIntNum(). " +
 			"Error='%v'. ", err.Error())
 	}
 
-	b1Precision := num1.GetPrecisionUint()
-
-	numSeps2 := num2.GetNumericSeparatorsDto()
-
-	b2Num, err := num2.GetBigInt()
+	b2Num, err := num2.GetBigIntNum()
 
 	if err != nil {
 		return BigIntPair{},
-			fmt.Errorf(ePrefix + "Error returned by num2.GetBigInt(). " +
+			fmt.Errorf(ePrefix + "Error returned by num2.GetBigIntNum(). " +
 				"Error='%v'. ", err.Error())
 	}
 
-	b2Precision := num2.GetPrecisionUint()
-
-
-	bPair2 := BigIntPair{}.NewBase(b1Num, b1Precision, b2Num, b2Precision)
-
-	err = bPair2.Big1.SetNumericSeparatorsDto(numSeps)
-
-	if err != nil {
-		return BigIntPair{},
-			fmt.Errorf(ePrefix +
-				"Error returned by bPair2.Big1.SetNumericSeparatorsDto(numSeps). " +
-				"Error='%v'. ", err.Error())
-	}
-
-	err = bPair2.Big2.SetNumericSeparatorsDto(numSeps2)
-
-	if err != nil {
-		return BigIntPair{},
-			fmt.Errorf(ePrefix +
-				"Error returned by bPair2.Big2.SetNumericSeparatorsDto(numSeps2). " +
-				"Error='%v'. ", err.Error())
-	}
+	bPair2 := BigIntPair{}.NewBigIntNum(b1Num, b2Num)
 
 	return bPair2, nil
 }
