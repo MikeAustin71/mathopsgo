@@ -1712,14 +1712,11 @@ func (bIDivide BigIntMathDivide) INumMgrFracQuotientArray(
 
 	fracQuoArray = make([]INumMgr, lenAry, lenAry+20)
 
-	var errx error
-	var bPair BigIntPair
-	var bINum BigIntNum
-
 	for i:=0; i < lenAry; i++ {
 
 		if i > 0 {
-			errx = dividends[i].SetNumericSeparatorsDto(numSeps)
+
+			errx := dividends[i].SetNumericSeparatorsDto(numSeps)
 
 			if errx != nil {
 				fracQuoArray = []INumMgr{}
@@ -1732,7 +1729,7 @@ func (bIDivide BigIntMathDivide) INumMgrFracQuotientArray(
 
 		}
 
-		bPair, errx = BigIntPair{}.NewINumMgr(dividends[i], divisor)
+		bPair, errx := BigIntPair{}.NewINumMgr(dividends[i], divisor)
 
 		if errx != nil {
 			fracQuoArray = []INumMgr{}
@@ -1746,7 +1743,7 @@ func (bIDivide BigIntMathDivide) INumMgrFracQuotientArray(
 
 		bPair.MaxPrecision = maxPrecision
 
-		bINum, errx = BigIntMathDivide{}.PairFracQuotient(bPair)
+		bINum, errx := BigIntMathDivide{}.PairFracQuotient(bPair)
 
 		if errx != nil {
 			fracQuoArray = []INumMgr{}

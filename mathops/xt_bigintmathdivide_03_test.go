@@ -1729,7 +1729,6 @@ func TestBigIntMathDivide_INumMgrFracQuotient_04(t *testing.T) {
 	}
 }
 
-
 func TestBigIntMathDivide_INumMgrFracQuotientArray_01(t *testing.T) {
 
 	divisorStr := "2.5"
