@@ -38,6 +38,11 @@ func TestBigIntMathDivide_DecimalFracQuotientArray_01(t *testing.T) {
 		"-4.2",
 	}
 
+	expectedNumSeps := NumericSeparatorDto{}
+	expectedNumSeps.DecimalSeparator = '.'
+	expectedNumSeps.ThousandsSeparator = ','
+	expectedNumSeps.CurrencySymbol = '$'
+
 	lenDividends := len(dividendArrayStr)
 
 	divisor, err := Decimal{}.NewNumStr(divisorStr)
@@ -93,6 +98,13 @@ func TestBigIntMathDivide_DecimalFracQuotientArray_01(t *testing.T) {
 			t.Errorf("Error: Expected Result NOT Equal to Actual Result! " +
 				"Expected Value='%v'. Actual Value='%v' k='%v'",
 				expectedResults[k].GetNumStr(), resultArray[k].GetNumStr(), k)
+		}
+
+		actualNumSeps := resultArray[k].GetNumericSeparatorsDto()
+
+		if !expectedNumSeps.Equal(actualNumSeps) {
+			t.Errorf("Error: Expected NumSeps='%v'. Instead, NumSeps='%v'. Index='%v ",
+				expectedNumSeps.String(), actualNumSeps.String(), k)
 		}
 
 	}
@@ -165,6 +177,112 @@ func TestBigIntMathDivide_DecimalFracQuotientArray_02(t *testing.T) {
 	expectedNumSeps.DecimalSeparator = frenchDecSeparator
 	expectedNumSeps.ThousandsSeparator = frenchThousandsSeparator
 	expectedNumSeps.CurrencySymbol = frenchCurrencySymbol
+
+	err = dividends[0].SetNumericSeparatorsDto(expectedNumSeps)
+
+	if err != nil {
+		t.Errorf("Error returned by dividend.SetNumericSeparatorsDto(expectedNumSeps). " +
+			"Error='%v' ", err.Error())
+	}
+
+	resultArray, err := BigIntMathDivide{}.DecimalFracQuotientArray(dividends, divisor, maxPrecision )
+
+	if err != nil {
+		t.Errorf("Error returned by DecimalFracQuotientArray{}.DecimalFracQuotientArray"+
+			"(dividends, divisor, maxPrecision ). " +
+			"divisor='%v' maxPrecision='%v' Error='%v' ",
+			divisor.GetNumStr(), maxPrecision, err.Error())
+	}
+
+	lenResultArray := len(resultArray)
+
+	if lenDividends != lenResultArray {
+		t.Errorf("Error: Expected Results Array Length='%v'. Actual Array Length='%v'.",
+			lenDividends, lenResultArray)
+	}
+
+	for k:=0; k < lenDividends; k++ {
+
+		actualNumStr := resultArray[k].GetNumStr()
+		if  expectedArrayStr[k] != actualNumStr {
+			t.Errorf("Error: Expected NumStr='%v'. Instead NumStr='%v' Index='%v'",
+				expectedArrayStr[k], actualNumStr, k)
+
+		}
+
+		actualNumSeps := resultArray[k].GetNumericSeparatorsDto()
+
+		if !expectedNumSeps.Equal(actualNumSeps) {
+			t.Errorf("Error: Expected NumSeps='%v'. Instead, NumSeps='%v'. Index='%v ",
+				expectedNumSeps.String(), actualNumSeps.String(), k)
+		}
+
+	}
+}
+
+func TestBigIntMathDivide_DecimalFracQuotientArray_03(t *testing.T) {
+
+	divisorStr := "2.5"
+	maxPrecision := uint(15)
+
+	dividendArrayStr := [] string {
+		"10.5",
+		"10",
+		"11.5",
+		"2.5",
+		"-12.555",
+		"-2.5",
+		"12.555",
+		"-122.783",
+		"-6847.231",
+		"-2.5",
+		"-10",
+		"-10.5",
+	}
+
+	expectedArrayStr := [] string {
+		"4.2",
+		"4",
+		"4.6",
+		"1",
+		"-5.022",
+		"-1",
+		"5.022",
+		"-49.1132",
+		"-2738.8924",
+		"-1",
+		"-4",
+		"-4.2",
+	}
+
+	lenDividends := len(dividendArrayStr)
+
+	divisor, err := Decimal{}.NewNumStr(divisorStr)
+
+	if err != nil {
+		t.Errorf("Error returned by Decimal{}.NewNumStr(divisorStr). " +
+			"divisor='%v' Error='%v' ",
+			divisorStr, err.Error())
+	}
+
+	dividends := make([]Decimal, lenDividends)
+
+	for i:=0; i < lenDividends; i++ {
+
+		dividends[i], err = Decimal{}.NewNumStr(dividendArrayStr[i])
+
+		if err != nil {
+			t.Errorf("Error returned by Decimal{}.NewNumStr(dividendArrayStr[i]). " +
+				"dividendArrayStr[%v]='%v' Error='%v' ",
+				i, dividendArrayStr[i], err.Error())
+		}
+
+	}
+
+	expectedNumSeps := NumericSeparatorDto{}
+	expectedNumSeps.DecimalSeparator = '.'
+	expectedNumSeps.ThousandsSeparator = ','
+	expectedNumSeps.CurrencySymbol = '$'
 
 	err = dividends[0].SetNumericSeparatorsDto(expectedNumSeps)
 
