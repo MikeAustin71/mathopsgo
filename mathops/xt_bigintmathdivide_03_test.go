@@ -954,7 +954,6 @@ func TestBigIntMathDivide_DecimalModuloToDecimal_06(t *testing.T) {
 		t.Errorf("Error: Expected NumSeps='%v'. Instead, NumSeps='%v'",
 			expectedNumSeps.String(), actualNumSeps.String())
 	}
-
 }
 
 func TestBigIntMathDivide_IntAryQuotientMod_01(t *testing.T) {
@@ -1152,6 +1151,11 @@ func TestBigIntMathDivide_IntAryQuotientMod_04(t *testing.T) {
 	expectedModuloStr	:= "-0.555"
 	maxPrecision			:= uint(15)
 
+	expectedNumSeps := NumericSeparatorDto{}
+	expectedNumSeps.DecimalSeparator = '.'
+	expectedNumSeps.ThousandsSeparator = ','
+	expectedNumSeps.CurrencySymbol = '$'
+
 	dividend, err := IntAry{}.NewNumStr(dividendStr)
 
 	if err != nil {
@@ -1201,6 +1205,191 @@ func TestBigIntMathDivide_IntAryQuotientMod_04(t *testing.T) {
 	if !expectedModulo.Equal(modulo) {
 		t.Errorf("Error: Expected Modulo='%v'. Instead Modulo='%v'",
 			expectedModulo.GetNumStr(), modulo.GetNumStr())
+	}
+
+	actualNumSeps := quotient.GetNumericSeparatorsDto()
+
+	if !expectedNumSeps.Equal(actualNumSeps) {
+		t.Errorf("Error: Expected quotient NumSeps='%v'. Instead, quotient NumSeps='%v'",
+			expectedNumSeps.String(), actualNumSeps.String())
+	}
+
+	actualNumSeps = modulo.GetNumericSeparatorsDto()
+
+	if !expectedNumSeps.Equal(actualNumSeps) {
+		t.Errorf("Error: Expected modulo NumSeps='%v'. Instead, modulo NumSeps='%v'",
+			expectedNumSeps.String(), actualNumSeps.String())
+	}
+
+}
+
+func TestBigIntMathDivide_IntAryQuotientMod_05(t *testing.T) {
+	// Dividend			divided by		Divisor			=		Quotient			Modulo/Remainder
+	//   12,555  	 			/ 				 	 2  			= 		 6							 0,555
+	dividendStr 			:= "12,555"
+	divisorStr  			:= "2"
+	expectedQuoStr 		:= "6"
+	expectedModuloStr	:= "0,555"
+	maxPrecision			:= uint(15)
+
+	expectedNumSeps := NumericSeparatorDto{}
+	frenchDecSeparator := ','
+	frenchThousandsSeparator := ' '
+	frenchCurrencySymbol := '€'
+
+	expectedNumSeps.DecimalSeparator = frenchDecSeparator
+	expectedNumSeps.ThousandsSeparator = frenchThousandsSeparator
+	expectedNumSeps.CurrencySymbol = frenchCurrencySymbol
+
+	dividend, err := IntAry{}.NewNumStrWithNumSeps(dividendStr,expectedNumSeps)
+
+	if err != nil {
+		t.Errorf("Error returned by IntAry{}.NewNumStrWithNumSeps(" +
+			"dividendStr,expectedNumSeps). " +
+			"dividendStr='%v' Error='%v' ",
+			dividendStr, err.Error())
+	}
+
+	divisor, err := IntAry{}.NewNumStr(divisorStr)
+
+	if err != nil {
+		t.Errorf("Error returned by IntAry{}.NewNumStr(divisorStr). " +
+			"divisorStr='%v' Error='%v' ",
+			divisorStr, err.Error())
+	}
+
+	expectedQuo, err := BigIntNum{}.NewNumStrWithNumSeps(expectedQuoStr, expectedNumSeps)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewNumStrWithNumSeps(" +
+			"expectedQuoStr, expectedNumSeps). " +
+			"expectedQuoStr='%v' Error='%v' ",
+			expectedQuoStr, err.Error())
+	}
+
+	expectedModulo, err := BigIntNum{}.NewNumStrWithNumSeps(expectedModuloStr, expectedNumSeps)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewNumStrWithNumSeps(" +
+			"expectedModuloStr, expectedNumSeps). " +
+			"expectedModuloStr='%v' Error='%v' ",
+			expectedModuloStr, err.Error())
+	}
+
+	quotient, modulo, err :=
+		BigIntMathDivide{}.IntAryQuotientMod(dividend, divisor, maxPrecision)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntMathDivide{}.IntAryQuotientMod" +
+			"(dividend, divisor, maxPrecision).  Error='%v' ",
+			err.Error())
+	}
+
+	if !expectedQuo.Equal(quotient) {
+		t.Errorf("Error: Expected Quotient='%v'. Instead Quotient='%v'",
+			expectedQuo.GetNumStr(), quotient.GetNumStr())
+	}
+
+	if !expectedModulo.Equal(modulo) {
+		t.Errorf("Error: Expected Modulo='%v'. Instead Modulo='%v'",
+			expectedModulo.GetNumStr(), modulo.GetNumStr())
+	}
+
+	actualNumSeps := quotient.GetNumericSeparatorsDto()
+
+	if !expectedNumSeps.Equal(actualNumSeps) {
+		t.Errorf("Error: Expected quotient NumSeps='%v'. Instead, quotient NumSeps='%v'",
+			expectedNumSeps.String(), actualNumSeps.String())
+	}
+
+	actualNumSeps = modulo.GetNumericSeparatorsDto()
+
+	if !expectedNumSeps.Equal(actualNumSeps) {
+		t.Errorf("Error: Expected modulo NumSeps='%v'. Instead, modulo NumSeps='%v'",
+			expectedNumSeps.String(), actualNumSeps.String())
+	}
+
+}
+
+func TestBigIntMathDivide_IntAryQuotientMod_06(t *testing.T) {
+	// Dividend			divided by		Divisor			=		Quotient			Modulo/Remainder
+	//   12.555  	 			/ 				 	 2  			= 		 6							 0.555
+	dividendStr 			:= "12.555"
+	divisorStr  			:= "2"
+	expectedQuoStr 		:= "6"
+	expectedModuloStr	:= "0.555"
+	maxPrecision			:= uint(15)
+
+	expectedNumSeps := NumericSeparatorDto{}
+	expectedNumSeps.DecimalSeparator = '.'
+	expectedNumSeps.ThousandsSeparator = ','
+	expectedNumSeps.CurrencySymbol = '$'
+
+	dividend, err := IntAry{}.NewNumStrWithNumSeps(dividendStr,expectedNumSeps)
+
+	if err != nil {
+		t.Errorf("Error returned by IntAry{}.NewNumStrWithNumSeps(" +
+			"dividendStr,expectedNumSeps). " +
+			"dividendStr='%v' Error='%v' ",
+			dividendStr, err.Error())
+	}
+
+	divisor, err := IntAry{}.NewNumStr(divisorStr)
+
+	if err != nil {
+		t.Errorf("Error returned by IntAry{}.NewNumStr(divisorStr). " +
+			"divisorStr='%v' Error='%v' ",
+			divisorStr, err.Error())
+	}
+
+	expectedQuo, err := BigIntNum{}.NewNumStrWithNumSeps(expectedQuoStr, expectedNumSeps)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewNumStrWithNumSeps(" +
+			"expectedQuoStr, expectedNumSeps). " +
+			"expectedQuoStr='%v' Error='%v' ",
+			expectedQuoStr, err.Error())
+	}
+
+	expectedModulo, err := BigIntNum{}.NewNumStr(expectedModuloStr)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(expectedModuloStr). " +
+			"expectedModuloStr='%v' Error='%v' ",
+			expectedModuloStr, err.Error())
+	}
+
+	quotient, modulo, err :=
+		BigIntMathDivide{}.IntAryQuotientMod(dividend, divisor, maxPrecision)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntMathDivide{}.IntAryQuotientMod" +
+			"(dividend, divisor, maxPrecision).  Error='%v' ",
+			err.Error())
+	}
+
+	if !expectedQuo.Equal(quotient) {
+		t.Errorf("Error: Expected Quotient='%v'. Instead Quotient='%v'",
+			expectedQuo.GetNumStr(), quotient.GetNumStr())
+	}
+
+	if !expectedModulo.Equal(modulo) {
+		t.Errorf("Error: Expected Modulo='%v'. Instead Modulo='%v'",
+			expectedModulo.GetNumStr(), modulo.GetNumStr())
+	}
+
+	actualNumSeps := quotient.GetNumericSeparatorsDto()
+
+	if !expectedNumSeps.Equal(actualNumSeps) {
+		t.Errorf("Error: Expected quotient NumSeps='%v'. Instead, quotient NumSeps='%v'",
+			expectedNumSeps.String(), actualNumSeps.String())
+	}
+
+	actualNumSeps = modulo.GetNumericSeparatorsDto()
+
+	if !expectedNumSeps.Equal(actualNumSeps) {
+		t.Errorf("Error: Expected modulo NumSeps='%v'. Instead, modulo NumSeps='%v'",
+			expectedNumSeps.String(), actualNumSeps.String())
 	}
 
 }
