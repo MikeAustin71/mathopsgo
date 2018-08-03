@@ -694,7 +694,7 @@ func (bIDivide BigIntMathDivide) DecimalFracQuotientArray(
 	fracQuoArray = make([]Decimal, lenAry, lenAry+20)
 
 	var errx error
-	var bPair BigIntPair
+
 
 	for i:=0; i < lenAry; i++ {
 
@@ -712,7 +712,7 @@ func (bIDivide BigIntMathDivide) DecimalFracQuotientArray(
 			}
 		}
 
-		bPair, errx = BigIntPair{}.NewDecimal(dividends[i], divisor)
+		bPair, errx := BigIntPair{}.NewDecimal(dividends[i], divisor)
 
 		if errx != nil {
 			fracQuoArray = []Decimal{}
@@ -1200,14 +1200,12 @@ func (bIDivide BigIntMathDivide) IntAryFracQuotientArray(
 
 	fracQuoArray = make([]IntAry, lenAry, lenAry+20)
 
-	var bPair BigIntPair
-	var errx error
 
 	for i:=0; i < lenAry; i++ {
 
 		if i > 0 {
 
-			errx = dividends[i].SetNumericSeparatorsDto(numSeps)
+			errx := dividends[i].SetNumericSeparatorsDto(numSeps)
 
 			if errx != nil {
 
@@ -1222,7 +1220,7 @@ func (bIDivide BigIntMathDivide) IntAryFracQuotientArray(
 
 		}
 
-		bPair, errx = BigIntPair{}.NewIntAry(dividends[i], divisor)
+		bPair, errx := BigIntPair{}.NewIntAry(dividends[i], divisor)
 
 		if errx != nil {
 
@@ -2090,12 +2088,10 @@ func (bIDivide BigIntMathDivide) NumStrFracQuotientArray(
 	}
 
 	fracQuoArray = make([]BigIntNum, lenAry, lenAry+20)
-	var errx error
-	var bPair BigIntPair
 
 	for i:=0; i < lenAry; i++ {
 
-		bPair, errx = BigIntPair{}.NewNumStr(dividends[i], divisor)
+		bPair, errx := BigIntPair{}.NewNumStr(dividends[i], divisor)
 
 		if errx != nil {
 			fracQuoArray = []BigIntNum{}
