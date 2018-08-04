@@ -3530,7 +3530,6 @@ func TestBigIntMathDivide_INumMgrFracQuotientArray_01(t *testing.T) {
 		"-4.2",
 	}
 
-
 	expectedNumSeps := NumericSeparatorDto{}
 	expectedNumSeps.DecimalSeparator = '.'
 	expectedNumSeps.ThousandsSeparator = ','
@@ -3980,6 +3979,11 @@ func TestBigIntMathDivide_INumMgrModulo_04(t *testing.T) {
 	expectedModuloStr := "2.5"
 	maxPrecision := uint(15)
 
+	expectedNumSeps := NumericSeparatorDto{}
+	expectedNumSeps.DecimalSeparator = '.'
+	expectedNumSeps.ThousandsSeparator = ','
+	expectedNumSeps.CurrencySymbol = '$'
+
 	nDtoDividend, err := NumStrDto{}.NewNumStr(dividendStr)
 
 	if err != nil {
@@ -4010,5 +4014,123 @@ func TestBigIntMathDivide_INumMgrModulo_04(t *testing.T) {
 			expectedModuloStr, actualModuloStr)
 	}
 
+	actualNumSeps := moduloBINum.GetNumericSeparatorsDto()
+
+	if !expectedNumSeps.Equal(actualNumSeps) {
+		t.Errorf("Error: Expected NumSeps='%v'. Instead, NumSeps='%v'. ",
+			expectedNumSeps.String(), actualNumSeps.String())
+	}
 }
 
+func TestBigIntMathDivide_INumMgrModulo_05(t *testing.T) {
+	// Dividend			  mod by			Divisor			=			Modulo/Remainder
+	// --------				------			-------						----------------
+	//   12,555					%						 2.5			=			 0,055
+
+	dividendStr := "12,555"
+	divisorStr := "2.5"
+	expectedModuloStr := "0,055"
+	maxPrecision := uint(15)
+
+
+	expectedNumSeps := NumericSeparatorDto{}
+	frenchDecSeparator := ','
+	frenchThousandsSeparator := ' '
+	frenchCurrencySymbol := '€'
+
+	expectedNumSeps.DecimalSeparator = frenchDecSeparator
+	expectedNumSeps.ThousandsSeparator = frenchThousandsSeparator
+	expectedNumSeps.CurrencySymbol = frenchCurrencySymbol
+
+	decimalDividend, err :=
+			Decimal{}.NewNumStrWithNumSeps(dividendStr, expectedNumSeps)
+
+	if err != nil {
+		t.Errorf("Error returned by Decimal{}.NewNumStrWithNumSeps(" +
+			"dividendStr, expectedNumSeps). " +
+			"dividendStr='%v' error='%v'", dividendStr, err.Error())
+	}
+
+	nDtoDivisor, err := NumStrDto{}.NewNumStr(divisorStr)
+
+	if err != nil {
+		t.Errorf("Error returned by NumStrDto{}.NewNumStr(divisorStr). " +
+			"divisorStr='%v' error='%v'", divisorStr, err.Error())
+	}
+
+	moduloBINum, err := BigIntMathDivide{}.INumMgrModulo(&decimalDividend, &nDtoDivisor, maxPrecision)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntMathDivide{}.INumMgrModulo(&decimalDividend, " +
+			"&nDtoDivisor, maxPrecision). Error='%v'", err.Error())
+
+	}
+
+	actualModuloStr := moduloBINum.GetNumStr()
+
+	if expectedModuloStr != actualModuloStr {
+		t.Errorf("Error: Expected modulo='%v'. Instead modulo='%v'",
+			expectedModuloStr, actualModuloStr)
+	}
+
+	actualNumSeps := moduloBINum.GetNumericSeparatorsDto()
+
+	if !expectedNumSeps.Equal(actualNumSeps) {
+		t.Errorf("Error: Expected NumSeps='%v'. Instead, NumSeps='%v'. ",
+			expectedNumSeps.String(), actualNumSeps.String())
+	}
+}
+
+func TestBigIntMathDivide_INumMgrModulo_06(t *testing.T) {
+	// Dividend			  mod by			Divisor			=			Modulo/Remainder
+	// --------				------			-------						----------------
+	//   12.555					%						 2.5			=			 0.055
+
+	dividendStr := "12.555"
+	divisorStr := "2.5"
+	expectedModuloStr := "0.055"
+	maxPrecision := uint(15)
+
+	expectedNumSeps := NumericSeparatorDto{}
+	expectedNumSeps.DecimalSeparator = '.'
+	expectedNumSeps.ThousandsSeparator = ','
+	expectedNumSeps.CurrencySymbol = '$'
+
+	decimalDividend, err :=
+			Decimal{}.NewNumStrWithNumSeps(dividendStr, expectedNumSeps)
+
+	if err != nil {
+		t.Errorf("Error returned by Decimal{}.NewNumStrWithNumSeps(" +
+			"dividendStr, expectedNumSeps). " +
+			"dividendStr='%v' error='%v'", dividendStr, err.Error())
+	}
+
+	nDtoDivisor, err := NumStrDto{}.NewNumStr(divisorStr)
+
+	if err != nil {
+		t.Errorf("Error returned by NumStrDto{}.NewNumStr(divisorStr). " +
+			"divisorStr='%v' error='%v'", divisorStr, err.Error())
+	}
+
+	moduloBINum, err := BigIntMathDivide{}.INumMgrModulo(&decimalDividend, &nDtoDivisor, maxPrecision)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntMathDivide{}.INumMgrModulo(&decimalDividend, " +
+			"&nDtoDivisor, maxPrecision). Error='%v'", err.Error())
+
+	}
+
+	actualModuloStr := moduloBINum.GetNumStr()
+
+	if expectedModuloStr != actualModuloStr {
+		t.Errorf("Error: Expected modulo='%v'. Instead modulo='%v'",
+			expectedModuloStr, actualModuloStr)
+	}
+
+	actualNumSeps := moduloBINum.GetNumericSeparatorsDto()
+
+	if !expectedNumSeps.Equal(actualNumSeps) {
+		t.Errorf("Error: Expected NumSeps='%v'. Instead, NumSeps='%v'. ",
+			expectedNumSeps.String(), actualNumSeps.String())
+	}
+}
