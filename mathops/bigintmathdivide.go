@@ -1236,12 +1236,12 @@ func (bIDivide BigIntMathDivide) IntAryFracQuotientArray(
 
 		bPair.MaxPrecision = maxPrecision
 
-		bINum, errx := BigIntMathDivide{}.pairFracQuotient(bPair)
+		bINum, errx := BigIntMathDivide{}.PairFracQuotient(bPair)
 
 		if errx != nil {
 			fracQuoArray = []IntAry{}
 			err =	fmt.Errorf(ePrefix +
-				"Error returned by BigIntMathDivide{}.pairFracQuotient(bPair). " +
+				"Error returned by BigIntMathDivide{}.PairFracQuotient(bPair). " +
 				"dividend='%v' divisor='%v' maxPrecision='%v' Error='%v'",
 				bPair.Big1.GetNumStr(), bPair.Big2.GetNumStr(), bPair.MaxPrecision, errx.Error())
 			return fracQuoArray, err
