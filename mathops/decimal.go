@@ -1577,8 +1577,17 @@ func (dec Decimal) NewNumStrArray(numStrs []string) ([] Decimal, error) {
 }
 
 // NewNumStr - Returns a Decimal type based on a number string
-// input parameter. If an error is encountered, it will trigger
-// a panic condition.
+// input parameter.
+//
+// This method assumes that the input parameter 'numStr' is a string
+// of numeric digits which may be delimited by default USA numeric
+// separators. Default USA numeric separators are defined as:
+//  	decimal separator = '.'
+//    thousands separator = ','
+// 		currency symbol = '$'
+//
+// If the subject 'numStr' employs other national or cultural numeric
+// separators, see method Decimal.NewNumStrWithNumSeps(), below.
 //
 // The 'NewNumStr' method is designed to used in conjunction
 // with Decimal{} thereby allowing Decimal creation

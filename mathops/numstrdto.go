@@ -2340,7 +2340,17 @@ func (nDto NumStrDto) NewRational(bigRat *big.Rat, precision int) (NumStrDto, er
 // NewNumStr - Used to create a populated NumStrDto instance.
 // using a valid number string as an input parameter.
 //
-// Example:
+// This method assumes that the input parameter 'numStr' is a string
+// of numeric digits which may be delimited by default USA numeric
+// separators. Default USA numeric separators are defined as:
+//  	decimal separator = '.'
+//    thousands separator = ','
+// 		currency symbol = '$'
+//
+// If the subject 'numStr' employs other national or cultural numeric
+// separators, see method NumStrDto.NewNumStrWithNumSeps(), below.
+//
+// Usage Example:
 //
 // 		n, err := NumStrDto{}.NewNumStr("123.456")
 //

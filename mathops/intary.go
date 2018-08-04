@@ -3399,6 +3399,16 @@ func (ia IntAry) NewIntFracStr(intStr, fracStr string, signVal int) (IntAry, err
 // to the value of input parameter 'numStr', a string of
 // numbers and delimiters which is passed as type 'string'.
 //
+// This method assumes that the input parameter 'numStr' is a string
+// of numeric digits which may be delimited by default USA numeric
+// separators. Default USA numeric separators are defined as:
+//  	decimal separator = '.'
+//    thousands separator = ','
+// 		currency symbol = '$'
+//
+// If the subject 'numStr' employs other national or cultural numeric
+// separators, see method IntAry.NewNumStrWithNumSeps(), below.
+//
 // Usage: ia := intAry{}.NewNumStr("123.456")
 //
 func (ia IntAry) NewNumStr(numStr string) (IntAry, error) {
