@@ -2062,6 +2062,16 @@ func (bNum BigIntNum) NewINumMgr(numMgr INumMgr) (BigIntNum, error) {
 // NewNumStr - Receives a number string as input and returns
 // a new BigIntNum instance.
 //
+// This method assumes that the input parameter 'numStr' is a string
+// of numeric digits which may be delimited by default USA numeric
+// separators. Default USA numeric separators are defined as:
+//  	decimal separator = '.'
+//    thousands separator = ','
+// 		currency symbol = '$'
+//
+// If the subject 'numStr' employs other national or cultural numeric
+// separators, see method BigIntNum.NewNumStrWithNumSeps(), below.
+//
 func (bNum BigIntNum) NewNumStr(numStr string) (BigIntNum, error) {
 
 	ePrefix := "BigIntNum.NewNumStr() "

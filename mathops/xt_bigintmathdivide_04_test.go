@@ -12,6 +12,10 @@ func TestBigIntMathDivide_NumStrQuotientMod_01(t *testing.T) {
 	expectedModuloStr	:= "0.055"
 	maxPrecision			:= uint(15)
 
+	expectedNumSeps := NumericSeparatorDto{}
+	expectedNumSeps.DecimalSeparator = '.'
+	expectedNumSeps.ThousandsSeparator = ','
+	expectedNumSeps.CurrencySymbol = '$'
 
 	expectedQuo, err := BigIntNum{}.NewNumStr(expectedQuoStr)
 
@@ -51,6 +55,12 @@ func TestBigIntMathDivide_NumStrQuotientMod_01(t *testing.T) {
 			expectedModulo.GetNumStr(), modulo.GetNumStr())
 	}
 
+	actualNumSeps := modulo.GetNumericSeparatorsDto()
+
+	if !expectedNumSeps.Equal(actualNumSeps) {
+		t.Errorf("Error: Expected NumSeps='%v'. Instead NumSeps='%v'",
+			expectedNumSeps.String(), actualNumSeps.String())
+	}
 }
 
 func TestBigIntMathDivide_NumStrQuotientMod_02(t *testing.T) {
@@ -62,6 +72,11 @@ func TestBigIntMathDivide_NumStrQuotientMod_02(t *testing.T) {
 	expectedModuloStr	:= "0.555"
 	maxPrecision			:= uint(15)
 
+	expectedNumSeps := NumericSeparatorDto{}
+	expectedNumSeps.DecimalSeparator = '.'
+	expectedNumSeps.ThousandsSeparator = ','
+	expectedNumSeps.CurrencySymbol = '$'
+
 	expectedQuo, err := BigIntNum{}.NewNumStr(expectedQuoStr)
 
 	if err != nil {
@@ -100,6 +115,12 @@ func TestBigIntMathDivide_NumStrQuotientMod_02(t *testing.T) {
 			expectedModulo.GetNumStr(), modulo.GetNumStr())
 	}
 
+	actualNumSeps := modulo.GetNumericSeparatorsDto()
+
+	if !expectedNumSeps.Equal(actualNumSeps) {
+		t.Errorf("Error: Expected NumSeps='%v'. Instead NumSeps='%v'",
+			expectedNumSeps.String(), actualNumSeps.String())
+	}
 }
 
 func TestBigIntMathDivide_NumStrQuotientMod_03(t *testing.T) {
@@ -111,6 +132,11 @@ func TestBigIntMathDivide_NumStrQuotientMod_03(t *testing.T) {
 	expectedModuloStr	:= "-0.055"
 	maxPrecision			:= uint(15)
 
+	expectedNumSeps := NumericSeparatorDto{}
+	expectedNumSeps.DecimalSeparator = '.'
+	expectedNumSeps.ThousandsSeparator = ','
+	expectedNumSeps.CurrencySymbol = '$'
+
 	expectedQuo, err := BigIntNum{}.NewNumStr(expectedQuoStr)
 
 	if err != nil {
@@ -149,6 +175,12 @@ func TestBigIntMathDivide_NumStrQuotientMod_03(t *testing.T) {
 			expectedModulo.GetNumStr(), modulo.GetNumStr())
 	}
 
+	actualNumSeps := modulo.GetNumericSeparatorsDto()
+
+	if !expectedNumSeps.Equal(actualNumSeps) {
+		t.Errorf("Error: Expected NumSeps='%v'. Instead NumSeps='%v'",
+			expectedNumSeps.String(), actualNumSeps.String())
+	}
 }
 
 func TestBigIntMathDivide_NumStrQuotientMod_04(t *testing.T) {
@@ -160,6 +192,11 @@ func TestBigIntMathDivide_NumStrQuotientMod_04(t *testing.T) {
 	expectedModuloStr	:= "-0.555"
 	maxPrecision			:= uint(15)
 
+	expectedNumSeps := NumericSeparatorDto{}
+	expectedNumSeps.DecimalSeparator = '.'
+	expectedNumSeps.ThousandsSeparator = ','
+	expectedNumSeps.CurrencySymbol = '$'
+
 	expectedQuo, err := BigIntNum{}.NewNumStr(expectedQuoStr)
 
 	if err != nil {
@@ -196,6 +233,13 @@ func TestBigIntMathDivide_NumStrQuotientMod_04(t *testing.T) {
 	if !expectedModulo.Equal(modulo) {
 		t.Errorf("Error: Expected Modulo='%v'. Instead Modulo='%v'",
 			expectedModulo.GetNumStr(), modulo.GetNumStr())
+	}
+
+	actualNumSeps := modulo.GetNumericSeparatorsDto()
+
+	if !expectedNumSeps.Equal(actualNumSeps) {
+		t.Errorf("Error: Expected NumSeps='%v'. Instead NumSeps='%v'",
+			expectedNumSeps.String(), actualNumSeps.String())
 	}
 
 }
@@ -210,6 +254,11 @@ func TestBigIntMathDivide_NumStrQuotientMod_05(t *testing.T) {
 	expectedModuloStr	:= "0.055"
 	maxPrecision			:= uint(15)
 
+	expectedNumSeps := NumericSeparatorDto{}
+	expectedNumSeps.DecimalSeparator = '.'
+	expectedNumSeps.ThousandsSeparator = ','
+	expectedNumSeps.CurrencySymbol = '$'
+
 	expectedQuo, err := BigIntNum{}.NewNumStr(expectedQuoStr)
 
 	if err != nil {
@@ -246,6 +295,13 @@ func TestBigIntMathDivide_NumStrQuotientMod_05(t *testing.T) {
 	if !expectedModulo.Equal(modulo) {
 		t.Errorf("Error: Expected Modulo='%v'. Instead Modulo='%v'",
 			expectedModulo.GetNumStr(), modulo.GetNumStr())
+	}
+
+	actualNumSeps := modulo.GetNumericSeparatorsDto()
+
+	if !expectedNumSeps.Equal(actualNumSeps) {
+		t.Errorf("Error: Expected NumSeps='%v'. Instead NumSeps='%v'",
+			expectedNumSeps.String(), actualNumSeps.String())
 	}
 
 }
@@ -260,6 +316,11 @@ func TestBigIntMathDivide_NumStrQuotientMod_06(t *testing.T) {
 	expectedModuloStr	:= "0.555"
 	maxPrecision			:= uint(15)
 
+	expectedNumSeps := NumericSeparatorDto{}
+	expectedNumSeps.DecimalSeparator = '.'
+	expectedNumSeps.ThousandsSeparator = ','
+	expectedNumSeps.CurrencySymbol = '$'
+
 	expectedQuo, err := BigIntNum{}.NewNumStr(expectedQuoStr)
 
 	if err != nil {
@@ -298,6 +359,13 @@ func TestBigIntMathDivide_NumStrQuotientMod_06(t *testing.T) {
 			expectedModulo.GetNumStr(), modulo.GetNumStr())
 	}
 
+	actualNumSeps := modulo.GetNumericSeparatorsDto()
+
+	if !expectedNumSeps.Equal(actualNumSeps) {
+		t.Errorf("Error: Expected NumSeps='%v'. Instead NumSeps='%v'",
+			expectedNumSeps.String(), actualNumSeps.String())
+	}
+
 }
 
 func TestBigIntMathDivide_NumStrFracQuotient_01(t *testing.T) {
@@ -309,6 +377,11 @@ func TestBigIntMathDivide_NumStrFracQuotient_01(t *testing.T) {
 	expectedQuoStr 		:= "5.25"
 	maxPrecision			:= uint(15)
 
+	expectedNumSeps := NumericSeparatorDto{}
+	expectedNumSeps.DecimalSeparator = '.'
+	expectedNumSeps.ThousandsSeparator = ','
+	expectedNumSeps.CurrencySymbol = '$'
+
 	expectedQuo, err := BigIntNum{}.NewNumStr(expectedQuoStr)
 
 	if err != nil {
@@ -333,6 +406,14 @@ func TestBigIntMathDivide_NumStrFracQuotient_01(t *testing.T) {
 		t.Errorf("Error: Expected Quotient='%v'. Instead Quotient='%v'",
 			expectedQuo.GetNumStr(), quotient.GetNumStr())
 	}
+
+	actualNumSeps := quotient.GetNumericSeparatorsDto()
+
+	if !expectedNumSeps.Equal(actualNumSeps) {
+		t.Errorf("Error: Expected NumSeps='%v'. Instead NumSeps='%v'",
+			expectedNumSeps.String(), actualNumSeps.String())
+	}
+
 }
 
 func TestBigIntMathDivide_NumStrFracQuotient_02(t *testing.T) {
@@ -344,6 +425,11 @@ func TestBigIntMathDivide_NumStrFracQuotient_02(t *testing.T) {
 	expectedQuoStr 		:= "-5.022"
 	maxPrecision			:= uint(15)
 
+	expectedNumSeps := NumericSeparatorDto{}
+	expectedNumSeps.DecimalSeparator = '.'
+	expectedNumSeps.ThousandsSeparator = ','
+	expectedNumSeps.CurrencySymbol = '$'
+
 	expectedQuo, err := BigIntNum{}.NewNumStr(expectedQuoStr)
 
 	if err != nil {
@@ -368,6 +454,14 @@ func TestBigIntMathDivide_NumStrFracQuotient_02(t *testing.T) {
 		t.Errorf("Error: Expected Quotient='%v'. Instead Quotient='%v'",
 			expectedQuo.GetNumStr(), quotient.GetNumStr())
 	}
+
+	actualNumSeps := quotient.GetNumericSeparatorsDto()
+
+	if !expectedNumSeps.Equal(actualNumSeps) {
+		t.Errorf("Error: Expected NumSeps='%v'. Instead NumSeps='%v'",
+			expectedNumSeps.String(), actualNumSeps.String())
+	}
+
 }
 
 func TestBigIntMathDivide_NumStrFracQuotient_03(t *testing.T) {
@@ -379,6 +473,11 @@ func TestBigIntMathDivide_NumStrFracQuotient_03(t *testing.T) {
 	expectedQuoStr 		:= "-0.199123855037834"
 	maxPrecision			:= uint(15)
 
+	expectedNumSeps := NumericSeparatorDto{}
+	expectedNumSeps.DecimalSeparator = '.'
+	expectedNumSeps.ThousandsSeparator = ','
+	expectedNumSeps.CurrencySymbol = '$'
+
 	expectedQuo, err := BigIntNum{}.NewNumStr(expectedQuoStr)
 
 	if err != nil {
@@ -403,6 +502,14 @@ func TestBigIntMathDivide_NumStrFracQuotient_03(t *testing.T) {
 		t.Errorf("Error: Expected Quotient='%v'. Instead Quotient='%v'",
 			expectedQuo.GetNumStr(), quotient.GetNumStr())
 	}
+
+	actualNumSeps := quotient.GetNumericSeparatorsDto()
+
+	if !expectedNumSeps.Equal(actualNumSeps) {
+		t.Errorf("Error: Expected NumSeps='%v'. Instead NumSeps='%v'",
+			expectedNumSeps.String(), actualNumSeps.String())
+	}
+
 }
 
 func TestBigIntMathDivide_NumStrFracQuotient_04(t *testing.T) {
@@ -414,6 +521,11 @@ func TestBigIntMathDivide_NumStrFracQuotient_04(t *testing.T) {
 	expectedQuoStr 		:= "5.022"
 	maxPrecision			:= uint(15)
 
+	expectedNumSeps := NumericSeparatorDto{}
+	expectedNumSeps.DecimalSeparator = '.'
+	expectedNumSeps.ThousandsSeparator = ','
+	expectedNumSeps.CurrencySymbol = '$'
+
 	expectedQuo, err := BigIntNum{}.NewNumStr(expectedQuoStr)
 
 	if err != nil {
@@ -438,6 +550,14 @@ func TestBigIntMathDivide_NumStrFracQuotient_04(t *testing.T) {
 		t.Errorf("Error: Expected Quotient='%v'. Instead Quotient='%v'",
 			expectedQuo.GetNumStr(), quotient.GetNumStr())
 	}
+
+	actualNumSeps := quotient.GetNumericSeparatorsDto()
+
+	if !expectedNumSeps.Equal(actualNumSeps) {
+		t.Errorf("Error: Expected NumSeps='%v'. Instead NumSeps='%v'",
+			expectedNumSeps.String(), actualNumSeps.String())
+	}
+
 }
 
 
@@ -476,6 +596,12 @@ func TestBigIntMathDivide_NumStrFracQuotientArray_01(t *testing.T) {
 		"-4.2",
 	}
 
+
+	expectedNumSeps := NumericSeparatorDto{}
+	expectedNumSeps.DecimalSeparator = '.'
+	expectedNumSeps.ThousandsSeparator = ','
+	expectedNumSeps.CurrencySymbol = '$'
+
 	lenDividends := len(dividendArrayStr)
 
 	numSeps := NumericSeparatorDto{}.New()
@@ -504,6 +630,13 @@ func TestBigIntMathDivide_NumStrFracQuotientArray_01(t *testing.T) {
 				expectedArrayStr[k], resultArray[k].GetNumStr(), k)
 		}
 
+		actualNumSeps := resultArray[k].GetNumericSeparatorsDto()
+
+		if !expectedNumSeps.Equal(actualNumSeps) {
+			t.Errorf("Error: Expected NumSeps='%v'. Instead NumSeps='%v'",
+				expectedNumSeps.String(), actualNumSeps.String())
+		}
+
 	}
 }
 
@@ -516,6 +649,11 @@ func TestBigIntMathDivide_NumStrModulo_01(t *testing.T) {
 	divisorStr := "2.5"
 	expectedModuloStr := "0.055"
 	maxPrecision := uint(15)
+
+	expectedNumSeps := NumericSeparatorDto{}
+	expectedNumSeps.DecimalSeparator = '.'
+	expectedNumSeps.ThousandsSeparator = ','
+	expectedNumSeps.CurrencySymbol = '$'
 
 	numSeps := NumericSeparatorDto{}.New()
 
@@ -534,6 +672,13 @@ func TestBigIntMathDivide_NumStrModulo_01(t *testing.T) {
 	if expectedModuloStr != actualModuloStr {
 		t.Errorf("Error: Expected modulo='%v'. Instead modulo='%v'",
 			expectedModuloStr, actualModuloStr)
+	}
+
+	actualNumSeps := moduloBINum.GetNumericSeparatorsDto()
+
+	if !expectedNumSeps.Equal(actualNumSeps) {
+		t.Errorf("Error: Expected NumSeps='%v'. Instead NumSeps='%v'",
+			expectedNumSeps.String(), actualNumSeps.String())
 	}
 
 }
@@ -548,6 +693,11 @@ func TestBigIntMathDivide_NumStrModulo_02(t *testing.T) {
 	expectedModuloStr := "-0.055"
 	maxPrecision := uint(15)
 
+	expectedNumSeps := NumericSeparatorDto{}
+	expectedNumSeps.DecimalSeparator = '.'
+	expectedNumSeps.ThousandsSeparator = ','
+	expectedNumSeps.CurrencySymbol = '$'
+
 	numSeps := NumericSeparatorDto{}.New()
 
 	moduloBINum, err := BigIntMathDivide{}.NumStrModulo(dividendStr, divisorStr, numSeps, maxPrecision)
@@ -565,6 +715,13 @@ func TestBigIntMathDivide_NumStrModulo_02(t *testing.T) {
 	if expectedModuloStr != actualModuloStr {
 		t.Errorf("Error: Expected modulo='%v'. Instead modulo='%v'",
 			expectedModuloStr, actualModuloStr)
+	}
+
+	actualNumSeps := moduloBINum.GetNumericSeparatorsDto()
+
+	if !expectedNumSeps.Equal(actualNumSeps) {
+		t.Errorf("Error: Expected NumSeps='%v'. Instead NumSeps='%v'",
+			expectedNumSeps.String(), actualNumSeps.String())
 	}
 
 }
@@ -579,6 +736,11 @@ func TestBigIntMathDivide_NumStrModulo_03(t *testing.T) {
 	expectedModuloStr := "0.055"
 	maxPrecision := uint(15)
 
+	expectedNumSeps := NumericSeparatorDto{}
+	expectedNumSeps.DecimalSeparator = '.'
+	expectedNumSeps.ThousandsSeparator = ','
+	expectedNumSeps.CurrencySymbol = '$'
+
 	numSeps := NumericSeparatorDto{}.New()
 
 	moduloBINum, err := BigIntMathDivide{}.NumStrModulo(dividendStr, divisorStr, numSeps, maxPrecision)
@@ -598,6 +760,13 @@ func TestBigIntMathDivide_NumStrModulo_03(t *testing.T) {
 			expectedModuloStr, actualModuloStr)
 	}
 
+	actualNumSeps := moduloBINum.GetNumericSeparatorsDto()
+
+	if !expectedNumSeps.Equal(actualNumSeps) {
+		t.Errorf("Error: Expected NumSeps='%v'. Instead NumSeps='%v'",
+			expectedNumSeps.String(), actualNumSeps.String())
+	}
+
 }
 
 func TestBigIntMathDivide_NumStrModulo_04(t *testing.T) {
@@ -609,6 +778,11 @@ func TestBigIntMathDivide_NumStrModulo_04(t *testing.T) {
 	divisorStr := "-12.555"
 	expectedModuloStr := "2.5"
 	maxPrecision := uint(15)
+
+	expectedNumSeps := NumericSeparatorDto{}
+	expectedNumSeps.DecimalSeparator = '.'
+	expectedNumSeps.ThousandsSeparator = ','
+	expectedNumSeps.CurrencySymbol = '$'
 
 	numSeps := NumericSeparatorDto{}.New()
 
@@ -629,9 +803,16 @@ func TestBigIntMathDivide_NumStrModulo_04(t *testing.T) {
 			expectedModuloStr, actualModuloStr)
 	}
 
+	actualNumSeps := moduloBINum.GetNumericSeparatorsDto()
+
+	if !expectedNumSeps.Equal(actualNumSeps) {
+		t.Errorf("Error: Expected NumSeps='%v'. Instead NumSeps='%v'",
+			expectedNumSeps.String(), actualNumSeps.String())
+	}
+
 }
 
-func TestBigIntMathDivide_ModuloToNumStrDto_01(t *testing.T) {
+func TestBigIntMathDivide_NumStrDtoModuloToNumStrDto_01(t *testing.T) {
 	// Dividend			  mod by			Divisor			=			Modulo/Remainder
 	// --------				------			-------						----------------
 	//   12.555					%						 2.5			=			 0.055
@@ -641,8 +822,12 @@ func TestBigIntMathDivide_ModuloToNumStrDto_01(t *testing.T) {
 	expectedModuloStr := "0.055"
 	maxPrecision := uint(15)
 
-	nDtoDividend, err := NumStrDto{}.NewNumStr(dividendStr)
+	expectedNumSeps := NumericSeparatorDto{}
+	expectedNumSeps.DecimalSeparator = '.'
+	expectedNumSeps.ThousandsSeparator = ','
+	expectedNumSeps.CurrencySymbol = '$'
 
+	nDtoDividend, err := NumStrDto{}.NewNumStr(dividendStr)
 
 	if err != nil {
 		t.Errorf("Error returned by NumStrDto{}.NewNumStr(dividendStr). " +
@@ -671,9 +856,16 @@ func TestBigIntMathDivide_ModuloToNumStrDto_01(t *testing.T) {
 			expectedModuloStr, actualModuloStr)
 	}
 
+	actualNumSeps := moduloNDto.GetNumericSeparatorsDto()
+
+	if !expectedNumSeps.Equal(actualNumSeps) {
+		t.Errorf("Error: Expected NumSeps='%v'. Instead NumSeps='%v'",
+			expectedNumSeps.String(), actualNumSeps.String())
+	}
+
 }
 
-func TestBigIntMathDivide_ModuloToNumStrDto_02(t *testing.T) {
+func TestBigIntMathDivide_NumStrDtoModuloToNumStrDto_02(t *testing.T) {
 	// Dividend			  mod by			Divisor			=			Modulo/Remainder
 	// --------				------			-------						----------------
 	//   -12.555 				% 				 - 2.5 			= 		-0.055
@@ -715,7 +907,7 @@ func TestBigIntMathDivide_ModuloToNumStrDto_02(t *testing.T) {
 
 }
 
-func TestBigIntMathDivide_ModuloToNumStrDto_03(t *testing.T) {
+func TestBigIntMathDivide_NumStrDtoModuloToNumStrDto_03(t *testing.T) {
 	// Dividend			  mod by			Divisor			=			Modulo/Remainder
 	// --------				------			-------						----------------
 	//   12.555					% 				 - 2.5			=			 0.055
@@ -757,7 +949,7 @@ func TestBigIntMathDivide_ModuloToNumStrDto_03(t *testing.T) {
 
 }
 
-func TestBigIntMathDivide_ModuloToNumStrDto_04(t *testing.T) {
+func TestBigIntMathDivide_NumStrDtoModuloToNumStrDto_04(t *testing.T) {
 	// Dividend			  mod by			Divisor			=			Modulo/Remainder
 	// --------				------			-------						----------------
 	//    2.5 				  % 				 -12.555		= 		 2.5
