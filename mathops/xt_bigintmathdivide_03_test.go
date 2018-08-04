@@ -4032,7 +4032,6 @@ func TestBigIntMathDivide_INumMgrModulo_05(t *testing.T) {
 	expectedModuloStr := "0,055"
 	maxPrecision := uint(15)
 
-
 	expectedNumSeps := NumericSeparatorDto{}
 	frenchDecSeparator := ','
 	frenchThousandsSeparator := ' '
