@@ -1876,6 +1876,12 @@ func (bIDivide BigIntMathDivide) INumMgrModulo(
 // 'modulo' - The modulo operation finds the remainder after division of one
 // number by another. (r = D mod d = D − d ·q)
 //
+// Input parameter 'numSeps' is a type NumericSeparatorDto and is used to
+// parse the dividend and divisor number strings. 'numSeps' represents the
+// applicable decimal separator, thousands separator and currency symbol. In
+// addition, 'numSeps' is also used in configuring the return value for this
+// division operation.
+//
 // Input parameter 'maxPrecision' is used to control the maximum precision of the
 // resulting 'modulo'. Precision is defined as the the number of fractional digits
 // to the right of the decimal point. Be advised that these calculations can support
@@ -1899,13 +1905,14 @@ func (bIDivide BigIntMathDivide) INumMgrModulo(
 //  - 2.5	 					/ 				 -12.555		= 		 0							-2.5
 //
 // The returned BigIntNum division results ('quotient' and 'modulo') will contain
-// default numeric separators (decimal separator, thousands separator and currency
-// symbol).
+// numeric separators (decimal separator, thousands separator and currency
+// symbol) designated by the input parameter, 'numSeps'.
 //
 func (bIDivide BigIntMathDivide) NumStrQuotientMod(
 					dividend,
 						divisor string,
-							maxPrecision uint) (quotient, modulo BigIntNum, err error) {
+							numSeps NumericSeparatorDto,
+								maxPrecision uint) (quotient, modulo BigIntNum, err error) {
 
 	ePrefix := "BigIntMathDivide.NumStrQuotientMod() "
 
@@ -1913,31 +1920,49 @@ func (bIDivide BigIntMathDivide) NumStrQuotientMod(
 
 	modulo = BigIntNum{}.NewBigInt(big.NewInt(0), 0)
 
-	bPair, errx := BigIntPair{}.NewNumStr(dividend, divisor)
+	numSeps.SetDefaultsIfEmpty()
+
+	bigIDividend, errx := BigIntNum{}.NewNumStrWithNumSeps(dividend, numSeps)
 
 	if errx != nil {
-		err = fmt.Errorf(ePrefix + "Error returned by BigIntPair{}.NewNumStr(dividend, divisor) " +
-			"dividend='%v' divisor='%v' Error='%v' ",
-				dividend ,divisor, errx.Error())
+		err = fmt.Errorf(ePrefix +
+			"Error returned by BigIntNum{}.NewNumStrWithNumSeps(dividend, numSeps) " +
+			"dividend='%v' numSeps='%v' Error='%v' ",
+			dividend , numSeps.String(), errx.Error())
+
 		return quotient, modulo, err
 	}
 
-	if bPair.Big2.bigInt.Cmp(big.NewInt(0)) == 0 {
-		err = errors.New(ePrefix + "Error: Attempted Divide By ZERO!")
+	bigIDivisor, errx := BigIntNum{}.NewNumStrWithNumSeps(divisor, numSeps)
+
+	if errx != nil {
+		err = fmt.Errorf(ePrefix +
+			"Error returned by BigIntNum{}.NewNumStrWithNumSeps(divisor, numSeps) " +
+			"divisor='%v' numSeps='%v' Error='%v' ",
+			divisor , numSeps.String(), errx.Error())
+
 		return quotient, modulo, err
 	}
+
+	if bigIDivisor.IsZero() {
+		err = errors.New(ePrefix + "Error: Attempted Divide By ZERO!")
+
+		return quotient, modulo, err
+	}
+
+	bPair := BigIntPair{}.NewBigIntNum(bigIDividend, bigIDivisor)
 
 	bPair.MaxPrecision = maxPrecision
 
 	quotient, modulo, errx =
-		BigIntMathDivide{}.pairQuotientMod(bPair)
+		BigIntMathDivide{}.PairQuotientMod(bPair)
 
 	if errx != nil {
 		quotient = BigIntNum{}.New()
 		modulo = BigIntNum{}.New()
 
 		err = fmt.Errorf(ePrefix + "Error returned by BigIntMathDivide{}."+
-			"pairQuotientMod(bPair). " +
+			"PairQuotientMod(bPair). " +
 		  " dividend='%v' divisor='%v' maxPrecision='%v' Error='%v'",
 			bPair.Big1.GetNumStr(), bPair.Big2.GetNumStr(), bPair.MaxPrecision, errx.Error())
 
@@ -1954,6 +1979,12 @@ func (bIDivide BigIntMathDivide) NumStrQuotientMod(
 // result of the division operation expressed as integer and fractional digits.
 // Remember that the BigIntNum type specifies 'precision'. Precision is defined
 // as the number of fractional digits to the right of the decimal place.
+//
+// Input parameter 'numSeps' is a type NumericSeparatorDto and is used to
+// parse the dividend and divisor number strings. 'numSeps' represents the
+// applicable decimal separator, thousands separator and currency symbol. In
+// addition, 'numSeps' is also used in configuring the return value for this
+// division operation.
 //
 // The input parameter 'maxPrecision' is used to control the precision of the
 // resulting fractional quotient. Be advised that this method is capable of
@@ -1983,41 +2014,60 @@ func (bIDivide BigIntMathDivide) NumStrQuotientMod(
 //  - 2.5	 				/ 			-12.555		  = 		  199123855037834	   15				 0.199123855037834
 //  -10						/				- 2					=				5														 5
 //
-// The returned BigIntNum division result ('fracQuotient') will contain default numeric
-// separators (decimal separator, thousands separator and currency symbol).
+// The returned BigIntNum division result ('fracQuotient') will contain
+// numeric separators (decimal separator, thousands separator and currency
+// symbol) designated by the input parameter, 'numSeps'.
 //
 func (bIDivide BigIntMathDivide) NumStrFracQuotient(
 															dividend,
 																divisor string,
-																	maxPrecision uint) (fracQuotient BigIntNum, err error) {
+																	numSeps NumericSeparatorDto,
+																		maxPrecision uint) (fracQuotient BigIntNum, err error) {
 
 	ePrefix := "BigIntMathDivide.NumStrFracQuotient() "
 
-	bPair, errx := BigIntPair{}.NewNumStr(dividend, divisor)
+	fracQuotient = BigIntNum{}.NewZero(0)
+
+	numSeps.SetDefaultsIfEmpty()
+
+	bigIDividend, errx := BigIntNum{}.NewNumStrWithNumSeps(dividend, numSeps)
 
 	if errx != nil {
-		fracQuotient = BigIntNum{}
-		err = fmt.Errorf(ePrefix + "Error returned by BigIntNum{}.NewNumStr(dividend, divisor) " +
-			"dividend='%v' divisor='%v' maxPrecision='%v' Error='%v' ",
-			dividend, divisor, maxPrecision, errx.Error())
+		err = fmt.Errorf(ePrefix +
+			"Error returned by BigIntNum{}.NewNumStrWithNumSeps(dividend, numSeps) " +
+			"dividend='%v' numSeps='%v' Error='%v' ",
+			dividend , numSeps.String(), errx.Error())
 
 		return fracQuotient, err
 	}
 
-	if bPair.Big2.bigInt.Cmp(big.NewInt(0)) == 0 {
-		fracQuotient = BigIntNum{}.New()
-		err = errors.New(ePrefix + "Error: Attempted divide by zero!")
+	bigIDivisor, errx := BigIntNum{}.NewNumStrWithNumSeps(divisor, numSeps)
+
+	if errx != nil {
+		err = fmt.Errorf(ePrefix +
+			"Error returned by BigIntNum{}.NewNumStrWithNumSeps(divisor, numSeps) " +
+			"divisor='%v' numSeps='%v' Error='%v' ",
+			divisor , numSeps.String(), errx.Error())
+
 		return fracQuotient, err
 	}
+
+	if bigIDivisor.IsZero() {
+		err = errors.New(ePrefix + "Error: Attempted Divide By ZERO!")
+
+		return fracQuotient, err
+	}
+
+	bPair := BigIntPair{}.NewBigIntNum(bigIDividend, bigIDivisor)
 
 	bPair.MaxPrecision = maxPrecision
 
 	fracQuotient, errx =
-		BigIntMathDivide{}.pairFracQuotient(bPair)
+		BigIntMathDivide{}.PairFracQuotient(bPair)
 
 	if errx != nil {
 		fracQuotient = BigIntNum{}
-		err = fmt.Errorf(ePrefix + "Error returned by BigIntMathDivide{}.pairFracQuotient(" +
+		err = fmt.Errorf(ePrefix + "Error returned by BigIntMathDivide{}.PairFracQuotient(" +
 			"bPair)" +
 			"dividend='%v' divisor='%v' maxPrecision='%v' Error='%v' ",
 			bPair.Big1.GetNumStr(), bPair.Big2.GetNumStr(), bPair.MaxPrecision, errx.Error())
@@ -2042,6 +2092,12 @@ func (bIDivide BigIntMathDivide) NumStrFracQuotient(
 // The resulting quotients are returned as an array of BigIntNum types. The values
 // represent result of each division operation expressed as integer and fractional
 // digits.
+//
+// Input parameter 'numSeps' is a type NumericSeparatorDto and is used to
+// parse the dividends array and divisor number strings. 'numSeps' represents the
+// applicable decimal separator, thousands separator and currency symbol. In
+// addition, 'numSeps' is also used in configuring the return value for this
+// division operation.
 //
 // The input parameter 'maxPrecision' is used to control the precision of the
 // resulting fractional quotient. Precision is defined as the number of numeric
@@ -2069,36 +2125,61 @@ func (bIDivide BigIntMathDivide) NumStrFracQuotient(
 //	  -10						 /			  2.5				=			 fracQuoArray[10]   =  -   4
 //	  -10.5					 /			  2.5				=			 fracQuoArray[11]   =  -   4.2
 //
-// Each element of the returned BigIntNum Array ('fracQuoArray') will contain default
-// numeric separators (decimal separator, thousands separator and currency symbol).
+// Each element of the returned BigIntNum Array ('fracQuoArray') will contain
+// numeric separators (decimal separator, thousands separator and currency symbol)
+// specified by the 'numSeps' input parameter.
 //
 func (bIDivide BigIntMathDivide) NumStrFracQuotientArray(
 					dividends []string,
 						divisor string,
-							maxPrecision uint) (fracQuoArray [] BigIntNum, err error) {
+							numSeps NumericSeparatorDto,
+								maxPrecision uint) (fracQuoArray [] BigIntNum, err error) {
 
 	ePrefix := "BigIntMathDivide.NumStrFracQuotientArray() "
+
+	fracQuoArray = []BigIntNum{}
+
+	numSeps.SetDefaultsIfEmpty()
 
 	lenAry := len(dividends)
 
 	if lenAry == 0 {
-		fracQuoArray = []BigIntNum{}
 		err = errors.New(ePrefix + "Error: Input Parameter 'dividends' is an EMPTY Array!")
 		return fracQuoArray, err
 	}
 
 	fracQuoArray = make([]BigIntNum, lenAry, lenAry+20)
 
+	bigINumDivisor, errx := BigIntNum{}.NewNumStrWithNumSeps(divisor, numSeps)
+
+	if errx != nil {
+		err = fmt.Errorf("Error returned by NewNumStrWithNumSeps(divisor, numSeps). " +
+			"divisor='%v' numSeps='%v' Error='%v'. ",
+			divisor, numSeps.String(), err.Error())
+	}
+
 	for i:=0; i < lenAry; i++ {
 
-		bPair, errx := BigIntPair{}.NewNumStr(dividends[i], divisor)
+		bigINumDividend, errx := BigIntNum{}.NewNumStrWithNumSeps(dividends[i], numSeps)
 
 		if errx != nil {
-			fracQuoArray = []BigIntNum{}
 			err = fmt.Errorf(ePrefix +
-				"Error returned by BigIntPair{}.NewNumStr(dividends[i], divisor) " +
-				"dividends[%v]='%v' divisor='%v' Error='%v' ",
-				i, dividends[i], divisor, errx.Error())
+				"Error returned by BigIntPair{}.BigIntNum{}.NewNumStrWithNumSeps(" +
+				"dividends[i], numSeps) " +
+				"dividends[%v]='%v' numSeps='%v' Error='%v' ",
+				i, dividends[i], numSeps.String(), errx.Error())
+
+			return fracQuoArray, err
+
+		}
+
+		bPair := BigIntPair{}.NewBigIntNum(bigINumDividend, bigINumDivisor)
+
+		if errx != nil {
+			err = fmt.Errorf(ePrefix +
+				"Error returned by BigIntPair{}.NewBigIntNum(bigINumDividend, bigINumDivisor) " +
+				"bigINumDividend='%v', bigINumDivisor='%v' Index='%v' Error='%v' ",
+				bigINumDividend.GetNumStr(), bigINumDivisor.GetNumStr(), i, errx.Error())
 
 			return fracQuoArray, err
 		}
@@ -2106,12 +2187,12 @@ func (bIDivide BigIntMathDivide) NumStrFracQuotientArray(
 		bPair.MaxPrecision = maxPrecision
 
 		fracQuoArray[i], errx =
-			BigIntMathDivide{}.pairFracQuotient(bPair)
+			BigIntMathDivide{}.PairFracQuotient(bPair)
 
 		if errx != nil {
 			fracQuoArray = []BigIntNum{}
 			err = fmt.Errorf(ePrefix +
-				"Error returned by BigIntMathDivide{}.pairFracQuotient(bPair) " +
+				"Error returned by BigIntMathDivide{}.PairFracQuotient(bPair) " +
 				"dividend['%v']='%v' divisor='%v' maxPrecision='%v' Error='%v' ",
 				i, bPair.Big1.GetNumStr(), bPair.Big2.GetNumStr(), maxPrecision, errx.Error())
 
@@ -2150,6 +2231,12 @@ func (bIDivide BigIntMathDivide) NumStrFracQuotientArray(
 // The modulo operation finds the remainder after division of one
 // number by another. (r = D mod d = D − d ·q)
 //
+// Input parameter 'numSeps' is a type NumericSeparatorDto and is used to
+// parse the dividend and divisor number strings. 'numSeps' represents the
+// applicable decimal separator, thousands separator and currency symbol. In
+// addition, 'numSeps' is also used in configuring the return value for this
+// division operation.
+//
 // Input parameter 'maxPrecision' is used to control the maximum precision of the
 // resulting 'modulo'. Precision is defined as the the number of fractional digits
 // to the right of the decimal point. Be advised that these calculations can support
@@ -2180,36 +2267,53 @@ func (bIDivide BigIntMathDivide) NumStrFracQuotientArray(
 func (bIDivide BigIntMathDivide) NumStrModulo(
 											dividend,
 												divisor string,
-													maxPrecision uint) (modulo BigIntNum, err error) {
+													numSeps NumericSeparatorDto,
+														maxPrecision uint) (modulo BigIntNum, err error) {
 
 	ePrefix := "BigIntMathDivide.NumStrModulo() "
 
-	bPair, errx := BigIntPair{}.NewNumStr(dividend, divisor)
+	modulo = BigIntNum{}.NewZero(0)
+
+	numSeps.SetDefaultsIfEmpty()
+
+	bigIDividend, errx := BigIntNum{}.NewNumStrWithNumSeps(dividend, numSeps)
 
 	if errx != nil {
-		modulo = BigIntNum{}.New()
 		err = fmt.Errorf(ePrefix +
-			"Error returned by BigIntPair{}.NewNumStr(dividend, divisor). " +
-			"dividend='%v' divisor='%v' maxPrecision='%v' Error='%v'",
-			dividend, divisor, maxPrecision, errx.Error())
+			"Error returned by BigIntNum{}.NewNumStrWithNumSeps(dividend, numSeps) " +
+			"dividend='%v' numSeps='%v' Error='%v' ",
+			dividend , numSeps.String(), errx.Error())
 
 		return modulo, err
 	}
 
-	if bPair.Big2.IsZero() {
-		modulo = BigIntNum{}.New()
-		err = fmt.Errorf(ePrefix + "Error: Attempted to mod by zero!")
+	bigIDivisor, errx := BigIntNum{}.NewNumStrWithNumSeps(divisor, numSeps)
+
+	if errx != nil {
+		err = fmt.Errorf(ePrefix +
+			"Error returned by BigIntNum{}.NewNumStrWithNumSeps(divisor, numSeps) " +
+			"divisor='%v' numSeps='%v' Error='%v' ",
+			divisor , numSeps.String(), errx.Error())
+
 		return modulo, err
 	}
+
+	if bigIDivisor.IsZero() {
+		err = errors.New(ePrefix + "Error: Attempted Divide By ZERO!")
+
+		return modulo, err
+	}
+
+	bPair := BigIntPair{}.NewBigIntNum(bigIDividend, bigIDivisor)
 
 	bPair.MaxPrecision = maxPrecision
 
-	modulo, errx = BigIntMathDivide{}.pairMod(bPair)
+	modulo, errx = BigIntMathDivide{}.PairMod(bPair)
 
 	if errx != nil {
 		modulo = BigIntNum{}.New()
 		err = fmt.Errorf(ePrefix +
-			"Error returned by BigIntMathDivide{}.pairMod(bPair). " +
+			"Error returned by BigIntMathDivide{}.PairMod(bPair). " +
 			"dividend='%v' divisor='%v' maxPrecision='%v' Error='%v'",
 			bPair.Big1.GetNumStr(), bPair.Big2.GetNumStr(),
 			bPair.MaxPrecision, errx.Error())

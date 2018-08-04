@@ -29,8 +29,10 @@ func TestBigIntMathDivide_NumStrQuotientMod_01(t *testing.T) {
 			expectedModuloStr, err.Error())
 	}
 
+	numSeps := NumericSeparatorDto{}.New()
+
 	quotient, modulo, err :=
-		BigIntMathDivide{}.NumStrQuotientMod(dividendStr, divisorStr, maxPrecision)
+		BigIntMathDivide{}.NumStrQuotientMod(dividendStr, divisorStr, numSeps, maxPrecision)
 
 	if err != nil {
 		t.Errorf("Error returned by BigIntMathDivide{}.NumStrQuotientMod" +
@@ -76,8 +78,10 @@ func TestBigIntMathDivide_NumStrQuotientMod_02(t *testing.T) {
 			expectedModuloStr, err.Error())
 	}
 
+	numSeps := NumericSeparatorDto{}.New()
+
 	quotient, modulo, err :=
-		BigIntMathDivide{}.NumStrQuotientMod(dividendStr, divisorStr, maxPrecision)
+		BigIntMathDivide{}.NumStrQuotientMod(dividendStr, divisorStr, numSeps, maxPrecision)
 
 	if err != nil {
 		t.Errorf("Error returned by BigIntMathDivide{}.NumStrQuotientMod" +
@@ -123,8 +127,10 @@ func TestBigIntMathDivide_NumStrQuotientMod_03(t *testing.T) {
 			expectedModuloStr, err.Error())
 	}
 
+	numSeps := NumericSeparatorDto{}.New()
+
 	quotient, modulo, err :=
-		BigIntMathDivide{}.NumStrQuotientMod(dividendStr, divisorStr, maxPrecision)
+		BigIntMathDivide{}.NumStrQuotientMod(dividendStr, divisorStr, numSeps, maxPrecision)
 
 	if err != nil {
 		t.Errorf("Error returned by BigIntMathDivide{}.NumStrQuotientMod" +
@@ -170,8 +176,10 @@ func TestBigIntMathDivide_NumStrQuotientMod_04(t *testing.T) {
 			expectedModuloStr, err.Error())
 	}
 
+	numSeps := NumericSeparatorDto{}.New()
+
 	quotient, modulo, err :=
-		BigIntMathDivide{}.NumStrQuotientMod(dividendStr, divisorStr, maxPrecision)
+		BigIntMathDivide{}.NumStrQuotientMod(dividendStr, divisorStr, numSeps, maxPrecision)
 
 	if err != nil {
 		t.Errorf("Error returned by BigIntMathDivide{}.NumStrQuotientMod" +
@@ -218,8 +226,10 @@ func TestBigIntMathDivide_NumStrQuotientMod_05(t *testing.T) {
 			expectedModuloStr, err.Error())
 	}
 
+	numSeps := NumericSeparatorDto{}.New()
+
 	quotient, modulo, err :=
-		BigIntMathDivide{}.NumStrQuotientMod(dividendStr, divisorStr, maxPrecision)
+		BigIntMathDivide{}.NumStrQuotientMod(dividendStr, divisorStr, numSeps, maxPrecision)
 
 	if err != nil {
 		t.Errorf("Error returned by BigIntMathDivide{}.NumStrQuotientMod" +
@@ -266,8 +276,10 @@ func TestBigIntMathDivide_NumStrQuotientMod_06(t *testing.T) {
 			expectedModuloStr, err.Error())
 	}
 
+	numSeps := NumericSeparatorDto{}.New()
+
 	quotient, modulo, err :=
-		BigIntMathDivide{}.NumStrQuotientMod(dividendStr, divisorStr, maxPrecision)
+		BigIntMathDivide{}.NumStrQuotientMod(dividendStr, divisorStr, numSeps, maxPrecision)
 
 	if err != nil {
 		t.Errorf("Error returned by BigIntMathDivide{}.NumStrQuotientMod" +
@@ -305,8 +317,10 @@ func TestBigIntMathDivide_NumStrFracQuotient_01(t *testing.T) {
 			expectedQuoStr, err.Error())
 	}
 
+	numSeps := NumericSeparatorDto{}.New()
+
 	quotient, err :=
-		BigIntMathDivide{}.NumStrFracQuotient(dividendStr, divisorStr, maxPrecision)
+		BigIntMathDivide{}.NumStrFracQuotient(dividendStr, divisorStr, numSeps, maxPrecision)
 
 	if err != nil {
 		t.Errorf("Error returned by BigIntMathDivide{}.NumStrFracQuotient" +
@@ -338,8 +352,10 @@ func TestBigIntMathDivide_NumStrFracQuotient_02(t *testing.T) {
 			expectedQuoStr, err.Error())
 	}
 
+	numSeps := NumericSeparatorDto{}.New()
+
 	quotient, err :=
-		BigIntMathDivide{}.NumStrFracQuotient(dividendStr, divisorStr, maxPrecision)
+		BigIntMathDivide{}.NumStrFracQuotient(dividendStr, divisorStr, numSeps, maxPrecision)
 
 	if err != nil {
 		t.Errorf("Error returned by BigIntMathDivide{}.NumStrFracQuotient" +
@@ -371,8 +387,10 @@ func TestBigIntMathDivide_NumStrFracQuotient_03(t *testing.T) {
 			expectedQuoStr, err.Error())
 	}
 
+	numSeps := NumericSeparatorDto{}.New()
+
 	quotient, err :=
-		BigIntMathDivide{}.NumStrFracQuotient(dividendStr, divisorStr, maxPrecision)
+		BigIntMathDivide{}.NumStrFracQuotient(dividendStr, divisorStr, numSeps, maxPrecision)
 
 	if err != nil {
 		t.Errorf("Error returned by BigIntMathDivide{}.NumStrFracQuotient" +
@@ -404,8 +422,10 @@ func TestBigIntMathDivide_NumStrFracQuotient_04(t *testing.T) {
 			expectedQuoStr, err.Error())
 	}
 
+	numSeps := NumericSeparatorDto{}.New()
+
 	quotient, err :=
-		BigIntMathDivide{}.NumStrFracQuotient(dividendStr, divisorStr, maxPrecision)
+		BigIntMathDivide{}.NumStrFracQuotient(dividendStr, divisorStr, numSeps, maxPrecision)
 
 	if err != nil {
 		t.Errorf("Error returned by BigIntMathDivide{}.NumStrFracQuotient" +
@@ -458,8 +478,10 @@ func TestBigIntMathDivide_NumStrFracQuotientArray_01(t *testing.T) {
 
 	lenDividends := len(dividendArrayStr)
 
+	numSeps := NumericSeparatorDto{}.New()
+
 	resultArray, err :=
-		BigIntMathDivide{}.NumStrFracQuotientArray(dividendArrayStr, divisorStr, maxPrecision)
+		BigIntMathDivide{}.NumStrFracQuotientArray(dividendArrayStr, divisorStr, numSeps, maxPrecision)
 
 	if err != nil {
 		t.Errorf("Error returned by BigIntMathDivide{}.NumStrFracQuotientArray"+
@@ -495,7 +517,9 @@ func TestBigIntMathDivide_NumStrModulo_01(t *testing.T) {
 	expectedModuloStr := "0.055"
 	maxPrecision := uint(15)
 
-	moduloBINum, err := BigIntMathDivide{}.NumStrModulo(dividendStr, divisorStr, maxPrecision)
+	numSeps := NumericSeparatorDto{}.New()
+
+	moduloBINum, err := BigIntMathDivide{}.NumStrModulo(dividendStr, divisorStr, numSeps, maxPrecision)
 
 	if err != nil {
 		t.Errorf("Error returned by BigIntMathDivide{}.NumStrDtoModulo(dividendStr, " +
@@ -524,7 +548,9 @@ func TestBigIntMathDivide_NumStrModulo_02(t *testing.T) {
 	expectedModuloStr := "-0.055"
 	maxPrecision := uint(15)
 
-	moduloBINum, err := BigIntMathDivide{}.NumStrModulo(dividendStr, divisorStr, maxPrecision)
+	numSeps := NumericSeparatorDto{}.New()
+
+	moduloBINum, err := BigIntMathDivide{}.NumStrModulo(dividendStr, divisorStr, numSeps, maxPrecision)
 
 	if err != nil {
 		t.Errorf("Error returned by BigIntMathDivide{}.NumStrDtoModulo(dividendStr, " +
@@ -553,7 +579,9 @@ func TestBigIntMathDivide_NumStrModulo_03(t *testing.T) {
 	expectedModuloStr := "0.055"
 	maxPrecision := uint(15)
 
-	moduloBINum, err := BigIntMathDivide{}.NumStrModulo(dividendStr, divisorStr, maxPrecision)
+	numSeps := NumericSeparatorDto{}.New()
+
+	moduloBINum, err := BigIntMathDivide{}.NumStrModulo(dividendStr, divisorStr, numSeps, maxPrecision)
 
 	if err != nil {
 		t.Errorf("Error returned by BigIntMathDivide{}.NumStrDtoModulo(dividendStr, " +
@@ -582,7 +610,9 @@ func TestBigIntMathDivide_NumStrModulo_04(t *testing.T) {
 	expectedModuloStr := "2.5"
 	maxPrecision := uint(15)
 
-	moduloBINum, err := BigIntMathDivide{}.NumStrModulo(dividendStr, divisorStr, maxPrecision)
+	numSeps := NumericSeparatorDto{}.New()
+
+	moduloBINum, err := BigIntMathDivide{}.NumStrModulo(dividendStr, divisorStr, numSeps, maxPrecision)
 
 	if err != nil {
 		t.Errorf("Error returned by BigIntMathDivide{}.NumStrDtoModulo(dividendStr, " +
