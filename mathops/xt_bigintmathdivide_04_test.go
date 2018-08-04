@@ -622,6 +622,55 @@ func TestBigIntMathDivide_NumStrFracQuotient_04(t *testing.T) {
 
 }
 
+func TestBigIntMathDivide_NumStrFracQuotient_05(t *testing.T) {
+	// Dividend		divided by		Divisor			=		Quotient
+	// 	 10,5  				/ 					2 				= 	 5,25
+
+	dividendStr 			:= "10,5"
+	divisorStr  			:= "2"
+	expectedQuoStr 		:= "5,25"
+	maxPrecision			:= uint(15)
+
+	expectedNumSeps := NumericSeparatorDto{}
+	frenchDecSeparator := ','
+	frenchThousandsSeparator := ' '
+	frenchCurrencySymbol := '€'
+
+	expectedNumSeps.DecimalSeparator = frenchDecSeparator
+	expectedNumSeps.ThousandsSeparator = frenchThousandsSeparator
+	expectedNumSeps.CurrencySymbol = frenchCurrencySymbol
+
+	expectedQuo, err := BigIntNum{}.NewNumStrWithNumSeps(expectedQuoStr, expectedNumSeps)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewNumStrWithNumSeps(expectedQuoStr, expectedNumSeps). " +
+			"expectedQuoStr='%v' Error='%v' ",
+			expectedQuoStr, err.Error())
+	}
+
+	quotient, err :=
+		BigIntMathDivide{}.NumStrFracQuotient(dividendStr, divisorStr, expectedNumSeps, maxPrecision)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntMathDivide{}.NumStrFracQuotient" +
+			"(dividendStr, divisorStr, maxPrecision).  " +
+			"dividendStr='%v' divisorStr='%v' maxPrecision='%v' Error='%v' ",
+			dividendStr, divisorStr, maxPrecision,err.Error())
+	}
+
+	if !expectedQuo.Equal(quotient) {
+		t.Errorf("Error: Expected Quotient='%v'. Instead Quotient='%v'",
+			expectedQuo.GetNumStr(), quotient.GetNumStr())
+	}
+
+	actualNumSeps := quotient.GetNumericSeparatorsDto()
+
+	if !expectedNumSeps.Equal(actualNumSeps) {
+		t.Errorf("Error: Expected NumSeps='%v'. Instead NumSeps='%v'",
+			expectedNumSeps.String(), actualNumSeps.String())
+	}
+
+}
 
 func TestBigIntMathDivide_NumStrFracQuotientArray_01(t *testing.T) {
 
