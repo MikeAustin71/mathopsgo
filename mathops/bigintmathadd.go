@@ -432,17 +432,7 @@ func (bAdd BigIntMathAdd) AddIntAry(ia1, ia2 IntAry) (BigIntNum, error) {
 				"Error='%v' ", err.Error())
 	}
 
-	numSeps := ia1.GetNumericSeparatorsDto()
-
-	finalResult := bAdd.addPairNoNumSeps(bPair)
-
-	err = finalResult.SetNumericSeparatorsDto(numSeps)
-
-	if err != nil {
-		return BigIntNum{},
-			fmt.Errorf(ePrefix + "Error returned by finalResult.SetNumericSeparatorsDto(numSeps). " +
-				"Error='%v' ", err.Error())
-	}
+	finalResult := bAdd.AddPair(bPair)
 
 	return finalResult, nil
 }
