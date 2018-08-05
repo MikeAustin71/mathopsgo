@@ -806,8 +806,6 @@ func (bSubtract BigIntMathSubtract) SubtractINumMgr(
 
 	ePrefix := "BigIntMathSubtract.SubtractINumMgr() "
 
-
-
 	bPair, err := BigIntPair{}.NewINumMgr(minuend, subtrahend)
 
 	if err != nil {
@@ -818,18 +816,7 @@ func (bSubtract BigIntMathSubtract) SubtractINumMgr(
 				minuend.GetNumStr(), subtrahend.GetNumStr(), err.Error())
 	}
 
-	numSeps := minuend.GetNumericSeparatorsDto()
-
-	finalResult := bSubtract.subtractPairNoNumSeps(bPair)
-
-	err = finalResult.SetNumericSeparatorsDto(numSeps)
-
-	if err != nil {
-		return BigIntNum{}.New(),
-			fmt.Errorf(ePrefix +
-				"Error returned by finalResult.SetNumericSeparatorsDto(numSeps) " +
-				"Error='%v' \n", err.Error())
-	}
+	finalResult := bSubtract.SubtractPair(bPair)
 
 	return finalResult, nil
 }
