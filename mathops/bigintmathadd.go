@@ -907,7 +907,7 @@ func (bAdd BigIntMathAdd) AddINumMgrSeries(nums ... INumMgr) (BigIntNum, error) 
 // as strings of numeric digits, or number strings. Number strings may have
 // a leading minus sign ('-') to indicate the numeric sign value. In addition,
 // the string of numeric digits may include a delimiting decimal separator
-// to separate fractional digits. The number strings are parsed based on the
+// to identify fractional digits. The number strings are parsed based on the
 // decimal separator character specified by input parameter 'numSeps'.
 //
 // Input parameter 'numSeps' is a type NumericSeparatorDto and is used to
@@ -944,16 +944,27 @@ func (bAdd BigIntMathAdd) AddNumStr(n1NumStr, n2NumStr string, numSeps NumericSe
 //
 // All the elements of the 'numStrs' array must be formatted as strings of numeric
 // digits or number strings. Number strings may have a leading minus sign ('-')
-// to indicate the numeric sign value. In addition, the string of numeric digits
-// may include a decimal point ('.') to separate fraction digits.
+// to indicate the numeric sign value.  In addition, the string of numeric digits
+// may include a delimiting decimal separator to identify fractional digits. The
+// number strings are parsed based on the decimal separator character specified
+// by input parameter 'numSeps'.
+//
+// Input parameter 'numSeps' is a type NumericSeparatorDto and is used to parse
+// the number strings contained in the 'numStrs' array. Input parameter, 'numSeps',
+// represents the applicable decimal separator, thousands separator and currency
+// symbol. 'numSeps' is also used in configuring the BigIntNum return value for
+// this addition operation.
 //
 // The returned BigIntNum result of this addition operation will contain
-// default numeric separators (decimal separator, thousands separator and currency
-// symbol).
+// numeric separators (decimal separator, thousands separator and currency
+// symbol) as specified by input parameter 'numSeps'.
 //
-func (bAdd BigIntMathAdd) AddNumStrArray(numStrs []string) (BigIntNum, error) {
+func (bAdd BigIntMathAdd) AddNumStrArray(
+								numStrs []string, numSeps NumericSeparatorDto) (BigIntNum, error) {
 
 	ePrefix := "BigIntMathAdd.AddNumStrArray() "
+
+	numSeps.SetDefaultsIfEmpty()
 
 	finalResult := BigIntNum{}.New()
 	var err error
@@ -969,22 +980,24 @@ func (bAdd BigIntMathAdd) AddNumStrArray(numStrs []string) (BigIntNum, error) {
 
 		if i == 0 {
 
-			finalResult, err = BigIntNum{}.NewNumStr(numStrs[i])
+			finalResult, err = BigIntNum{}.NewNumStrWithNumSeps(numStrs[i], numSeps)
 
 			if err != nil {
 				return BigIntNum{}.New(),
-					fmt.Errorf(ePrefix + "Error returned by BigIntNum{}.NewNumStr(numStrs[i]). " +
+					fmt.Errorf(ePrefix +
+						"Error returned by NewNumStrWithNumSeps(numStrs[i], numSeps). " +
 						" i='%v' NumStr='%v' Error='%v' ", i, numStrs[i], err.Error())
 			}
 
 			continue
 		}
 
-		b2Num, err := BigIntNum{}.NewNumStr(numStrs[i])
+		b2Num, err := BigIntNum{}.NewNumStrWithNumSeps(numStrs[i], numSeps)
 
 		if err != nil {
 			return BigIntNum{}.New(),
-				fmt.Errorf(ePrefix + "Error returned by BigIntNum{}.NewNumStr(numStrs[i]). " +
+				fmt.Errorf(ePrefix +
+					"Error returned by BigIntNum{}.NewNumStrWithNumSeps(numStrs[i], numSeps). " +
 					" i='%v' NumStr='%v' Error='%v' ", i, numStrs[i], err.Error())
 		}
 
@@ -998,13 +1011,21 @@ func (bAdd BigIntMathAdd) AddNumStrArray(numStrs []string) (BigIntNum, error) {
 // is a string Type labeled, 'addend'.  The second element is an 
 // array of string types labeled 'numStrs'. The 'addend' is added to 
 // each element of the 'numStrs' array with the result output to another
-// array of string types which is returned to the calling function.
+// array of string types. This output array of strings is then returned
+// to the calling function.
 //
 // Input parameters 'addend' and all elements of the 'numStrs' array must
 // be formatted as strings of numeric digits or number strings. Number strings
 // may have a leading minus sign ('-') to indicate the numeric sign value. In
-// addition, the string of numeric digits may include a decimal point ('.') to
-// separate fraction digits.
+// addition, the string of numeric digits may include a delimiting decimal
+// separator to identify fractional digits. The number strings are parsed based
+// on the decimal separator character specified by input parameter 'numSeps'.
+//
+// Input parameter 'numSeps' is a type NumericSeparatorDto and is used to parse
+// the number strings contained in 'addend' and the 'numStrs' array . Input
+// parameter, 'numSeps', represents the applicable decimal separator, thousands
+// separator and currency symbol. 'numSeps' is also used in configuring the output
+// string array returned by this addition operation.
 //
 // Example
 // =======
@@ -1021,9 +1042,12 @@ func (bAdd BigIntMathAdd) AddNumStrArray(numStrs []string) (BigIntNum, error) {
 //
 func (bAdd BigIntMathAdd) AddNumStrOutputToArray(
 													addend string, 
-														numStrs []string) ([]string, error) {
+														numStrs []string,
+															numSeps NumericSeparatorDto) ([]string, error) {
 
 	ePrefix := "BigIntMathAdd.AddNumStrOutputToArray() "
+
+	numSeps.SetDefaultsIfEmpty()
 
 	lenNumStrs := len(numStrs)
 
@@ -1032,11 +1056,12 @@ func (bAdd BigIntMathAdd) AddNumStrOutputToArray(
 			errors.New(ePrefix + "Error: 'numStrs' array is Empty!")
 	}
 
-	bINumAddend, err := BigIntNum{}.NewNumStr(addend)
+	bINumAddend, err := BigIntNum{}.NewNumStrWithNumSeps(addend, numSeps)
 
 	if err != nil {
 		return []string{},
-			fmt.Errorf(ePrefix + "Error returned by BigIntNum{}.NewNumStr(addend). " +
+			fmt.Errorf(ePrefix +
+				"Error returned by BigIntNum{}.NewNumStrWithNumSeps(addend, numSeps). " +
 				" addend='%v' Error='%v' ", addend, err.Error())
 	}
 	
@@ -1044,15 +1069,16 @@ func (bAdd BigIntMathAdd) AddNumStrOutputToArray(
 	
 	for i:= 0; i < lenNumStrs; i++ {
 
-		b2Num, err := BigIntNum{}.NewNumStr(numStrs[i])
+		b2Num, err := BigIntNum{}.NewNumStrWithNumSeps(numStrs[i], numSeps)
 
 		if err != nil {
 			return []string{},
-				fmt.Errorf(ePrefix + "Error returned by BigIntNum{}.NewNumStr(numStrs[i]). " +
+				fmt.Errorf(ePrefix +
+					"Error returned by BigIntNum{}.NewNumStrWithNumSeps(numStrs[i], numSeps). " +
 					" i='%v' NumStr='%v' Error='%v' ", i, numStrs[i], err.Error())
 		}
 
-		result := bAdd.addPairNoNumSeps(BigIntPair{}.NewBigIntNum(bINumAddend, b2Num))
+		result := bAdd.AddPair(BigIntPair{}.NewBigIntNum(bINumAddend, b2Num))
 
 		resultsArray[i] = result.GetNumStr()
 		
