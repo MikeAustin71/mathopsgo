@@ -525,38 +525,16 @@ func (bSubtract BigIntMathSubtract) SubtractIntAry(
 
 	ePrefix := "BigIntMathSubtract.SubtractIntAry() "
 
-	// Method NewIntAry will test validity of iaMinuend
-	bINumMinuend, err := BigIntNum{}.NewIntAry(iaMinuend)
+	// Method NewIntAry will test validity of iaMinuend and iaSubtrahend
+	bPair, err := BigIntPair{}.NewIntAry(iaMinuend, iaSubtrahend)
 
 	if err != nil {
 		return BigIntNum{}.New(),
-		 fmt.Errorf(ePrefix + "Error returned from BigIntNum{}.NewIntAry(iaMinuend). " +
+		 fmt.Errorf(ePrefix + "Error returned from iaMinuend.GetBigIntNum(). " +
 		 	"Error='%v' ", err.Error())
 	}
 
-	// Method NewIntAry will test validity of iaSubtrahend
-	bINumSubtrahend, err := BigIntNum{}.NewIntAry(iaSubtrahend)
-
-	if err != nil {
-		return BigIntNum{}.New(),
-			fmt.Errorf(ePrefix + "Error returned from BigIntNum{}.NewIntAry(iaSubtrahend). " +
-				"Error='%v' ", err.Error())
-	}
-
-	numSeps := iaMinuend.GetNumericSeparatorsDto()
-
-	bPair := BigIntPair{}.NewBigIntNum(bINumMinuend, bINumSubtrahend)
-
-	finalResult := bSubtract.subtractPairNoNumSeps(bPair)
-
-	err = finalResult.SetNumericSeparatorsDto(numSeps)
-
-	if err != nil {
-		return BigIntNum{},
-			fmt.Errorf(ePrefix +
-				"Error returned by finalResult.SetNumericSeparatorsDto(numSeps). " +
-				"Error='%v' \n", err.Error())
-	}
+	finalResult := bSubtract.SubtractPair(bPair)
 
 	return finalResult, nil
 }
