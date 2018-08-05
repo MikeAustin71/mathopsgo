@@ -11,6 +11,29 @@ type BigIntMathAdd struct {
 	Result BigIntNum
 }
 
+// AddBigInts - Adds two *big.Int numbers. Each *big.Int number
+// is passed to the method with an associated decimal place precision
+// specification.
+//
+// The BigIntNum 'result' returned by this addition operation will contain
+// USA default numeric separators (decimal separator, thousands separator and
+// currency symbol).
+//
+func (bAdd BigIntMathAdd) AddBigInts(
+	b1 *big.Int,
+	precision1 uint,
+	b2 *big.Int,
+	precision2 uint ) BigIntNum {
+
+	b1Pair := BigIntPair{}.NewBase(b1, precision1, b2, precision2)
+
+	finalResult := bAdd.addPairNoNumSeps(b1Pair)
+
+	finalResult.SetNumericSeparatorsToDefaultIfEmpty()
+
+	return finalResult
+}
+
 // AddBigIntNums - Adds two BigIntNums and returns the result in a new
 // BigIntNum instance
 //
@@ -142,29 +165,6 @@ func (bAdd BigIntMathAdd) AddBigIntNumSeries(bNums ... BigIntNum) BigIntNum {
 	}
 
 	finalResult.SetNumericSeparatorsDto(numSeps)
-
-	return finalResult
-}
-
-// AddBigInts - Adds two *big.Int numbers. Each *big.Int number
-// is passed to the method with an associated decimal place precision
-// specification.
-//
-// The BigIntNum 'result' returned by this addition operation will contain
-// default numeric separators (decimal separator, thousands separator and
-// currency symbol).
-//
-func (bAdd BigIntMathAdd) AddBigInts(
-														b1 *big.Int,
-															precision1 uint,
-																b2 *big.Int,
-																	precision2 uint ) BigIntNum {
-
-	b1Pair := BigIntPair{}.NewBase(b1, precision1, b2, precision2)
-
-	finalResult := bAdd.addPairNoNumSeps(b1Pair)
-
-	finalResult.SetNumericSeparatorsToDefaultIfEmpty()
 
 	return finalResult
 }
