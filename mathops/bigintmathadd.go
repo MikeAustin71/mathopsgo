@@ -903,23 +903,32 @@ func (bAdd BigIntMathAdd) AddINumMgrSeries(nums ... INumMgr) (BigIntNum, error) 
 
 // AddNumStr - Receives two number strings and adds their numeric values.
 //
-// The two input parameters, 'n1NumStr' and 'n2NumStr' must be formatted
+// The first two input parameters, 'n1NumStr' and 'n2NumStr' must be formatted
 // as strings of numeric digits, or number strings. Number strings may have
 // a leading minus sign ('-') to indicate the numeric sign value. In addition,
-// the string of numeric digits may include a decimal point ('.') to separate
-// fractional digits.
+// the string of numeric digits may include a delimiting decimal separator
+// to separate fractional digits. The number strings are parsed based on the
+// decimal separator character specified by input parameter 'numSeps'.
+//
+// Input parameter 'numSeps' is a type NumericSeparatorDto and is used to
+// parse the number strings 'n1NumStr' and 'n2NumStr'. 'numSeps' represents the
+// applicable decimal separator, thousands separator and currency symbol. In
+// addition, 'numSeps' is also used in configuring the return value for this
+// addition operation.
 //
 // The result is returned as type BigIntNum.
 //
 // The returned BigIntNum result of this addition operation will contain
-// default numeric separators (decimal separator, thousands separator and currency
-// symbol).
+// numeric separators (decimal separator, thousands separator and currency
+// symbol) specified by input parameter, 'numSeps'.
 //
-func (bAdd BigIntMathAdd) AddNumStr(n1NumStr, n2NumStr string) (BigIntNum, error) {
+func (bAdd BigIntMathAdd) AddNumStr(n1NumStr, n2NumStr string, numSeps NumericSeparatorDto) (BigIntNum, error) {
 
 	ePrefix := "BigIntMathAdd.AddNumStr() "
 
-	bPair, err := BigIntPair{}.NewNumStr(n1NumStr, n2NumStr)
+	numSeps.SetDefaultsIfEmpty()
+
+	bPair, err := BigIntPair{}.NewNumStrWithNumSeps(n1NumStr, n2NumStr, numSeps)
 
 	if err != nil {
 		return BigIntNum{},
@@ -927,7 +936,7 @@ func (bAdd BigIntMathAdd) AddNumStr(n1NumStr, n2NumStr string) (BigIntNum, error
 				"Error='%v' ", err.Error())
 	}
 
-	return bAdd.addPairNoNumSeps(bPair), nil
+	return bAdd.AddPair(bPair), nil
 }
 
 // AddNumStrArray - Adds a series of number strings and returns the combined total

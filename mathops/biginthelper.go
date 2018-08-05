@@ -335,6 +335,45 @@ func (bPair BigIntPair) NewNumStr(n1NumStr, n2NumStr string) (BigIntPair, error)
 
 }
 
+// NewNumStr - Creates a new BigIntPair instance from two number strings
+// passed as input parameters.
+//
+// The returned BigIntNum's BigIntPair.Big1 and BigIntPair.Big2 will contain default
+// numeric separators (decimal separator, thousands separator and currency symbol).
+//
+func (bPair BigIntPair) NewNumStrWithNumSeps(
+			n1NumStr, n2NumStr string, numSeps NumericSeparatorDto) (BigIntPair, error) {
+
+	ePrefix := "BigIntPair.NewNumStrDto() "
+
+	numSeps.SetDefaultsIfEmpty()
+
+	b1Num, err := BigIntNum{}.NewNumStrWithNumSeps(n1NumStr, numSeps)
+
+	if err != nil {
+		return BigIntPair{},
+		fmt.Errorf(ePrefix +
+			"Error returned by BigIntNum{}.NewNumStrWithNumSeps(" +
+			"n1NumStr, numSeps). " +
+			"n1NumStr='%v' Error='%v' ", n1NumStr, err.Error())
+	}
+
+	b2Num, err := BigIntNum{}.NewNumStrWithNumSeps(n2NumStr, numSeps)
+
+	if err != nil {
+		return BigIntPair{},
+			fmt.Errorf(ePrefix +
+				"Error returned by BigIntNum{}.NewNumStrWithNumSeps(n2NumStr, numSeps). " +
+				"n2NumStr='%v' Error='%v' ", n2NumStr, err.Error())
+	}
+
+	b2Pair := BigIntPair{}
+
+	b2Pair.SetBigIntPair(b1Num, b2Num)
+
+	return b2Pair, nil
+}
+
 // NewNumStrDto - Creates a new BigIntPair instance from two NumStrDto
 // instances passed as input parameters.
 //

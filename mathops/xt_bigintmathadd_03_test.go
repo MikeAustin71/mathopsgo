@@ -11,6 +11,7 @@ func TestBigIntMathAdd_AddNumStr_01(t *testing.T) {
 	n2Str := "987.123456"
 	// Result = 	124443.912456
 	expectedResultStr := "124443912456"
+	expectedNumStr := "124443.912456"
 	expectedPrecision := uint(6)
 	expectedSign := 1
 
@@ -21,7 +22,9 @@ func TestBigIntMathAdd_AddNumStr_01(t *testing.T) {
 			"big.NewInt(0).SetString(expectedResultStr, 10)")
 	}
 
-	result, err := BigIntMathAdd{}.AddNumStr(n1Str, n2Str)
+	expectedNumSeps := NumericSeparatorDto{}.New()
+
+	result, err := BigIntMathAdd{}.AddNumStr(n1Str, n2Str, expectedNumSeps)
 
 	if err != nil {
 		t.Errorf("Error returned by BigIntMathAdd{}.AddNumStr(n1Str, n2Str). " +
@@ -39,8 +42,22 @@ func TestBigIntMathAdd_AddNumStr_01(t *testing.T) {
 	}
 
 	if expectedSign != result.sign {
-		t.Errorf("Error: Expected Recult sign='%v'. Instead, Result sign='%v' ",
+		t.Errorf("Error: Expected Result sign='%v'. Instead, Result sign='%v' ",
 			expectedSign, result.sign)
+	}
+
+	actualNumStr := result.GetNumStr()
+
+	if expectedNumStr != actualNumStr {
+		t.Errorf("Error: Expected Result NumStr='%v'. Instead, Result NumStr='%v' ",
+			expectedNumStr, actualNumStr)
+	}
+
+	actualNumSeps := result.GetNumericSeparatorsDto()
+
+	if !expectedNumSeps.Equal(actualNumSeps) {
+		t.Errorf("Error: Expected Result NumSeps='%v'. Instead, Result NumSeps='%v' ",
+			expectedNumSeps.String(), actualNumSeps.String())
 	}
 
 }
@@ -51,6 +68,7 @@ func TestBigIntMathAdd_AddNumStr_02(t *testing.T) {
 	n2Str := "-987.123456"
 
 	expectedResultStr := "122469665544"
+	expectedNumStr := "122469.665544"
 	expectedPrecision := uint(6)
 	expectedSign := 1
 
@@ -61,7 +79,9 @@ func TestBigIntMathAdd_AddNumStr_02(t *testing.T) {
 			"big.NewInt(0).SetString(expectedResultStr, 10)")
 	}
 
-	result,err := BigIntMathAdd{}.AddNumStr(n1Str, n2Str)
+	expectedNumSeps := NumericSeparatorDto{}.New()
+
+	result, err := BigIntMathAdd{}.AddNumStr(n1Str, n2Str, expectedNumSeps)
 
 	if err != nil {
 		t.Errorf("Error returned by BigIntMathAdd{}.AddNumStr(n1Str, n2Str). " +
@@ -81,6 +101,20 @@ func TestBigIntMathAdd_AddNumStr_02(t *testing.T) {
 	if expectedSign != result.sign {
 		t.Errorf("Error: Expected Recult sign='%v'. Instead, Result sign='%v' ",
 			expectedSign, result.sign)
+	}
+
+	actualNumStr := result.GetNumStr()
+
+	if expectedNumStr != actualNumStr {
+		t.Errorf("Error: Expected Result NumStr='%v'. Instead, Result NumStr='%v' ",
+			expectedNumStr, actualNumStr)
+	}
+
+	actualNumSeps := result.GetNumericSeparatorsDto()
+
+	if !expectedNumSeps.Equal(actualNumSeps) {
+		t.Errorf("Error: Expected Result NumSeps='%v'. Instead, Result NumSeps='%v' ",
+			expectedNumSeps.String(), actualNumSeps.String())
 	}
 
 }
@@ -92,6 +126,7 @@ func TestBigIntMathAdd_AddNumStr_03(t *testing.T) {
 
 	// Result := -122469.665544
 	expectedResultStr := "-122469665544"
+	expectedNumStr := "-122469.665544"
 	expectedPrecision := uint(6)
 	expectedSign := -1
 
@@ -102,7 +137,9 @@ func TestBigIntMathAdd_AddNumStr_03(t *testing.T) {
 			"big.NewInt(0).SetString(expectedResultStr, 10)")
 	}
 
-	result, err := BigIntMathAdd{}.AddNumStr(n1Str, n2Str)
+	expectedNumSeps := NumericSeparatorDto{}.New()
+
+	result, err := BigIntMathAdd{}.AddNumStr(n1Str, n2Str, expectedNumSeps)
 
 	if err != nil {
 		t.Errorf("Error returned by BigIntMathAdd{}.AddNumStr(n1Str, n2Str). " +
@@ -122,6 +159,20 @@ func TestBigIntMathAdd_AddNumStr_03(t *testing.T) {
 	if expectedSign != result.sign {
 		t.Errorf("Error: Expected Recult sign='%v'. Instead, Result sign='%v' ",
 			expectedSign, result.sign)
+	}
+
+	actualNumStr := result.GetNumStr()
+
+	if expectedNumStr != actualNumStr {
+		t.Errorf("Error: Expected Result NumStr='%v'. Instead, Result NumStr='%v' ",
+			expectedNumStr, actualNumStr)
+	}
+
+	actualNumSeps := result.GetNumericSeparatorsDto()
+
+	if !expectedNumSeps.Equal(actualNumSeps) {
+		t.Errorf("Error: Expected Result NumSeps='%v'. Instead, Result NumSeps='%v' ",
+			expectedNumSeps.String(), actualNumSeps.String())
 	}
 
 }
@@ -133,6 +184,7 @@ func TestBigIntMathAdd_AddNumStr_04(t *testing.T) {
 
 	// Result := -124443.912456
 	expectedResultStr := "-124443912456"
+	expectedNumStr:= "-124443.912456"
 	expectedPrecision := uint(6)
 	expectedSign := -1
 
@@ -143,12 +195,16 @@ func TestBigIntMathAdd_AddNumStr_04(t *testing.T) {
 			"big.NewInt(0).SetString(expectedResultStr, 10)")
 	}
 
-	result, err := BigIntMathAdd{}.AddNumStr(n1Str, n2Str)
+	expectedNumSeps := NumericSeparatorDto{}
+
+	result, err := BigIntMathAdd{}.AddNumStr(n1Str, n2Str, expectedNumSeps)
 
 	if err != nil {
 		t.Errorf("Error returned by BigIntMathAdd{}.AddNumStr(n1Str, n2Str). " +
 			"Error='%v' ", err.Error())
 	}
+
+	expectedNumSeps.SetDefaultsIfEmpty()
 
 	if biExpectedResult.Cmp(result.bigInt) != 0 {
 		t.Errorf("Error: Expected Result='%v'.  Instead, Result='%v'. ",
@@ -165,6 +221,20 @@ func TestBigIntMathAdd_AddNumStr_04(t *testing.T) {
 			expectedSign, result.sign)
 	}
 
+	actualNumStr := result.GetNumStr()
+
+	if expectedNumStr != actualNumStr {
+		t.Errorf("Error: Expected Result NumStr='%v'. Instead, Result NumStr='%v' ",
+			expectedNumStr, actualNumStr)
+	}
+
+	actualNumSeps := result.GetNumericSeparatorsDto()
+
+	if !expectedNumSeps.Equal(actualNumSeps) {
+		t.Errorf("Error: Expected Result NumSeps='%v'. Instead, Result NumSeps='%v' ",
+			expectedNumSeps.String(), actualNumSeps.String())
+	}
+
 }
 
 func TestBigIntMathAdd_AddNumStr_05(t *testing.T) {
@@ -172,6 +242,7 @@ func TestBigIntMathAdd_AddNumStr_05(t *testing.T) {
 	n1Str := "123456.789"
 	n2Str := "987.123456"
 	// Result = 	124443.912456
+	expectedNumStr := "124443.912456"
 	expectedResultStr := "124443912456"
 	expectedPrecision := uint(6)
 	expectedSign := 1
@@ -183,7 +254,12 @@ func TestBigIntMathAdd_AddNumStr_05(t *testing.T) {
 			"big.NewInt(0).SetString(expectedResultStr, 10)")
 	}
 
-	result, err := BigIntMathAdd{}.AddNumStr(n1Str, n2Str)
+	expectedNumSeps := NumericSeparatorDto{}
+	expectedNumSeps.DecimalSeparator = '.'
+	expectedNumSeps.ThousandsSeparator = ','
+	expectedNumSeps.CurrencySymbol = '$'
+
+	result, err := BigIntMathAdd{}.AddNumStr(n1Str, n2Str, expectedNumSeps)
 
 	if err != nil {
 		t.Errorf("Error returned by BigIntMathAdd{}.AddNumStr(n1Str, n2Str). " +
@@ -205,10 +281,12 @@ func TestBigIntMathAdd_AddNumStr_05(t *testing.T) {
 			expectedSign, result.sign)
 	}
 
-	expectedNumSeps := NumericSeparatorDto{}
-	expectedNumSeps.DecimalSeparator = '.'
-	expectedNumSeps.ThousandsSeparator = ','
-	expectedNumSeps.CurrencySymbol = '$'
+	actualNumStr := result.GetNumStr()
+
+	if expectedNumStr != actualNumStr {
+		t.Errorf("Error: Expected Result NumStr='%v'. Instead, Result NumStr='%v' ",
+			expectedNumStr, actualNumStr)
+	}
 
 	actualNumSeps := result.GetNumericSeparatorsDto()
 
@@ -216,7 +294,6 @@ func TestBigIntMathAdd_AddNumStr_05(t *testing.T) {
 		t.Errorf("Error: Expected numSeps='%v'.  Instead, numSeps='%v'",
 			expectedNumSeps.String(), actualNumSeps.String())
 	}
-
 }
 
 func TestBigIntMathAdd_AddNumStrOutputToArray_01(t *testing.T) {
