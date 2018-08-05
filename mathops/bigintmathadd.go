@@ -1168,9 +1168,6 @@ func (bAdd BigIntMathAdd) AddNumStrDto(n1Dto, n2Dto NumStrDto) (BigIntNum, error
 
 	ePrefix := "BigIntMathAdd.AddNumStrDto() "
 
-
-	numSeps := n1Dto.GetNumericSeparatorsDto()
-
 	// This method will test the validity of n1Dto and n2Dto
 	bPair, err := BigIntPair{}.NewNumStrDto(n1Dto, n2Dto)
 
@@ -1180,16 +1177,7 @@ func (bAdd BigIntMathAdd) AddNumStrDto(n1Dto, n2Dto NumStrDto) (BigIntNum, error
 				"Error='%v' ", err.Error())
 	}
 
-	finalResult := bAdd.addPairNoNumSeps(bPair)
-
-	err = finalResult.SetNumericSeparatorsDto(numSeps)
-
-	if err != nil {
-		return BigIntNum{}.New(),
-			fmt.Errorf(ePrefix +
-				"Error returned by finalResult.SetNumericSeparatorsDto(numSeps). " +
-				"Error='%v'\n", err.Error())
-	}
+	finalResult := bAdd.AddPair(bPair)
 
 	return finalResult, nil
 }
@@ -1232,7 +1220,6 @@ func (bAdd BigIntMathAdd) AddNumStrDtoArray(nDtos []NumStrDto) (BigIntNum, error
 
 			numSeps = nDtos[0].GetNumericSeparatorsDto()
 
-
 			continue
 		}
 
@@ -1256,7 +1243,6 @@ func (bAdd BigIntMathAdd) AddNumStrDtoArray(nDtos []NumStrDto) (BigIntNum, error
 	}
 
 	return finalResult, nil
-
 }
 
 // AddNumStrDtoOutputToArray - The first input parameter to this method
@@ -1294,7 +1280,7 @@ func (bAdd BigIntMathAdd) AddNumStrDtoOutputToArray(
 			errors.New(ePrefix + "Error: 'nDtos' array is Empty!")
 	}
 
-	numSeps := NumericSeparatorDto{}
+	numSeps := addend.GetNumericSeparatorsDto()
 
 	resultsArray := make([]NumStrDto, lenDecs)
 
@@ -1314,10 +1300,6 @@ func (bAdd BigIntMathAdd) AddNumStrDtoOutputToArray(
 			return []NumStrDto{},
 				fmt.Errorf(ePrefix + "Error returned by BigIntPair{}.NewNumStrDto(addend, nDtos[i]). " +
 					" i='%v' dec[i].GetNumStr()='%v' Error='%v' ", i, nDtos[i].GetNumStr(), err.Error())
-		}
-
-		if i == 0 {
-			numSeps = addend.GetNumericSeparatorsDto()
 		}
 
 		result := bAdd.addPairNoNumSeps(bPair)
@@ -1398,7 +1380,6 @@ func (bAdd BigIntMathAdd) AddNumStrDtoSeries(nDtos ... NumStrDto) (BigIntNum, er
 		bPair := BigIntPair{}.NewBigIntNum(finalResult, bINumNextAddend)
 
 		finalResult = bAdd.addPairNoNumSeps(bPair)
-
 	}
 
 	err = finalResult.SetNumericSeparatorsDto(numSeps)
