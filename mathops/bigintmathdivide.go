@@ -2506,7 +2506,6 @@ func (bIDivide BigIntMathDivide) NumStrDtoFracQuotient(
 	return fracQuotient, nil
 }
 
-// TODO Add tests for NumStrDtoFracQuotientArray
 // NumStrDtoFracQuotientArray - Performs a division operation on NumStrDto input
 // parameters 'dividends' and 'divisor'. 'dividends' is an array of NumStrDto
 // Types. The division operation is performed on each element of the 'dividends'
