@@ -146,8 +146,6 @@ func (bAdd BigIntMathAdd) AddBigIntNumSeries(bNums ... BigIntNum) BigIntNum {
 	return finalResult
 }
 
-
-
 // AddBigInts - Adds two *big.Int numbers. Each *big.Int number
 // is passed to the method with an associated decimal place precision
 // specification.
@@ -184,8 +182,6 @@ func (bAdd BigIntMathAdd) AddDecimal(dec1, dec2 Decimal) (BigIntNum, error) {
 
 	ePrefix := "BigIntMathAdd.AddNumStrDto() "
 
-	numSeps := dec1.GetNumericSeparatorsDto()
-
 	// This method tests the validity of dec1 and dec2
 	bPair, err := BigIntPair{}.NewDecimal(dec1, dec2)
 
@@ -196,16 +192,7 @@ func (bAdd BigIntMathAdd) AddDecimal(dec1, dec2 Decimal) (BigIntNum, error) {
 				"Error='%v' ", err.Error())
 	}
 
-	finalResult := bAdd.addPairNoNumSeps(bPair)
-
-	err = finalResult.SetNumericSeparatorsDto(numSeps)
-
-	if err != nil {
-		return BigIntNum{}.New(),
-		fmt.Errorf(ePrefix +
-			"Error returned by finalResult.SetNumericSeparatorsDto(numSeps). " +
-			"Error='%v' ", err.Error())
-	}
+	finalResult := bAdd.AddPair(bPair)
 
 	return finalResult, nil
 }
