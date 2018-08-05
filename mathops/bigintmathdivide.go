@@ -2421,7 +2421,6 @@ func (bIDivide BigIntMathDivide) NumStrDtoQuotientMod(
 	return quotient, modulo, err
 }
 
-// TODO - Add tests for NumStrDtoFracQuotient
 // NumStrDtoFracQuotient - Performs a division operation on NumStrDto Type input
 // parameters 'dividend' and 'divisor'.
 //

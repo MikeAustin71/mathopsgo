@@ -1178,7 +1178,6 @@ func TestBigIntMathDivide_IntAryFracQuotientArray_03(t *testing.T) {
 	}
 }
 
-
 func TestBigIntMathDivide_IntAryModulo_01(t *testing.T) {
 	// Dividend			  mod by			Divisor			=			Modulo/Remainder
 	// --------				------			-------						----------------
