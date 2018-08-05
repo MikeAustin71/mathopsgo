@@ -52,7 +52,7 @@ func (bAdd BigIntMathAdd) AddBigIntNumArray(bNums []BigIntNum ) BigIntNum {
 
 		bPair := BigIntPair{}.NewBigIntNum(finalResult, bNums[i])
 
-		finalResult =  bAdd.AddPair(bPair)
+		finalResult =  bAdd.addPairNoNumSeps(bPair)
 	}
 
 	finalResult.SetNumericSeparatorsDto(numSeps)
@@ -136,7 +136,9 @@ func (bAdd BigIntMathAdd) AddBigIntNumSeries(bNums ... BigIntNum) BigIntNum {
 			continue
 		}
 
-		finalResult = bAdd.AddBigIntNums(finalResult, bNum)
+		bPair := BigIntPair{}.NewBigIntNum(finalResult, bNum)
+
+		finalResult =  bAdd.addPairNoNumSeps(bPair)
 	}
 
 	finalResult.SetNumericSeparatorsDto(numSeps)
