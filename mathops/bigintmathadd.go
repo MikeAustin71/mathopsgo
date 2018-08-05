@@ -50,7 +50,9 @@ func (bAdd BigIntMathAdd) AddBigIntNumArray(bNums []BigIntNum ) BigIntNum {
 			continue
 		}
 
-		finalResult =  bAdd.AddBigIntNums(finalResult, bNums[i])
+		bPair := BigIntPair{}.NewBigIntNum(finalResult, bNums[i])
+
+		finalResult =  bAdd.AddPair(bPair)
 	}
 
 	finalResult.SetNumericSeparatorsDto(numSeps)
