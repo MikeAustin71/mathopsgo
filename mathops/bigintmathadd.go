@@ -584,7 +584,6 @@ func (bAdd BigIntMathAdd) AddIntAryOutputToArray(
 					"index='%v', result='%v', Error='%v' ",
 					i, result.GetNumStr(), err.Error())
 		}
-
 	}
 
 	return resultsArray, nil
@@ -671,8 +670,6 @@ func (bAdd BigIntMathAdd) AddINumMgr(num1, num2 INumMgr) (BigIntNum, error) {
 
 	ePrefix := "BigIntMathAdd.AddINumMgr() "
 
-	numSeps := num1.GetNumericSeparatorsDto()
-
 	// This method will test the validity of num1 and num2
 	bPair, err := BigIntPair{}.NewINumMgr(num1, num2)
 
@@ -684,16 +681,7 @@ func (bAdd BigIntMathAdd) AddINumMgr(num1, num2 INumMgr) (BigIntNum, error) {
 				num1.GetNumStr(), num2.GetNumStr(), err.Error())
 	}
 
-	finalResult := bAdd.addPairNoNumSeps(bPair)
-
-	err = finalResult.SetNumericSeparatorsDto(numSeps)
-
-	if err != nil {
-		return BigIntNum{},
-			fmt.Errorf(ePrefix +
-				"Error returned by finalResult.SetNumericSeparatorsDto(numSeps). " +
-				"Error='%v' ", err.Error())
-	}
+	finalResult := bAdd.AddPair(bPair)
 
 	return finalResult, nil
 }
