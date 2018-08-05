@@ -203,7 +203,7 @@ func (bAdd BigIntMathAdd) AddDecimal(dec1, dec2 Decimal) (BigIntNum, error) {
 //
 // The BigIntNum 'result' returned by this addition operation will contain
 // numeric separators (decimal separator, thousands separator and currency symbol)
-// which were copied from the first element of the input []Decimal 'decs' (decs[0]).
+// which were copied from the first element of the input (decs[0]).
 //
 func (bAdd BigIntMathAdd) AddDecimalArray(decs []Decimal) (BigIntNum, error) {
 
@@ -384,17 +384,18 @@ func (bAdd BigIntMathAdd) AddDecimalSeries(decs ... Decimal) (BigIntNum, error) 
 			continue
 		}
 
-		bPair, err := BigIntPair{}.NewINumMgr(&finalResult, &dec)
+		bigINumNextAddend, err := dec.GetBigIntNum()
 
 		if err != nil {
 			return BigIntNum{}.New(),
 				fmt.Errorf(ePrefix +
-					"Error returned by BigIntPair{}.NewINumMgr(&finalResult.Result, &dec). " +
-					" i='%v' dec.GetNumStr()='%v' Error='%v' ", i, dec.GetNumStr(), err.Error())
+					"Error returned by dec.GetBigIntNum(). " +
+					" i='%v' dec='%v' Error='%v' ", i, dec.GetNumStr(), err.Error())
 		}
 
-		finalResult = bAdd.addPairNoNumSeps(bPair)
+		bPair := BigIntPair{}.NewBigIntNum(finalResult, bigINumNextAddend)
 
+		finalResult = bAdd.addPairNoNumSeps(bPair)
 	}
 
 	err = finalResult.SetNumericSeparatorsDto(numSeps)
