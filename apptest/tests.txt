@@ -145,7 +145,7 @@
 === RUN   TestBigIntMathAdd_AddIntAryArray_03
 --- PASS: TestBigIntMathAdd_AddIntAryArray_03 (0.00s)
 === RUN   TestBigIntMathAdd_AddIntAryOutputToArray_01
---- PASS: TestBigIntMathAdd_AddIntAryOutputToArray_01 (0.01s)
+--- PASS: TestBigIntMathAdd_AddIntAryOutputToArray_01 (0.00s)
 === RUN   TestBigIntMathAdd_AddIntAryOutputToArray_02
 --- PASS: TestBigIntMathAdd_AddIntAryOutputToArray_02 (0.00s)
 === RUN   TestBigIntMathAdd_AddIntAryOutputToArray_03
@@ -590,6 +590,10 @@
 --- PASS: TestBigIntMathDivide_NumStrDtoModulo_03 (0.00s)
 === RUN   TestBigIntMathDivide_NumStrDtoModulo_04
 --- PASS: TestBigIntMathDivide_NumStrDtoModulo_04 (0.00s)
+=== RUN   TestBigIntMathDivide_NumStrDtoModulo_05
+--- PASS: TestBigIntMathDivide_NumStrDtoModulo_05 (0.00s)
+=== RUN   TestBigIntMathDivide_NumStrDtoModulo_06
+--- PASS: TestBigIntMathDivide_NumStrDtoModulo_06 (0.00s)
 === RUN   TestBigIntMathDivide_NumStrDtoQuotientMod_01
 --- PASS: TestBigIntMathDivide_NumStrDtoQuotientMod_01 (0.00s)
 === RUN   TestBigIntMathDivide_NumStrDtoQuotientMod_02
@@ -937,7 +941,7 @@
 === RUN   TestBigIntMathPower_Pwr_21
 --- PASS: TestBigIntMathPower_Pwr_21 (0.00s)
 === RUN   TestBigIntMathPower_Pwr_22
---- PASS: TestBigIntMathPower_Pwr_22 (0.04s)
+--- PASS: TestBigIntMathPower_Pwr_22 (0.03s)
 === RUN   TestBigIntMathPower_Pwr_23
 --- PASS: TestBigIntMathPower_Pwr_23 (0.00s)
 === RUN   TestBigIntMathSubtract_SubtractBigInts_01
@@ -2427,7 +2431,7 @@
 === RUN   TestIntAry_DivideThisBy_12
 --- PASS: TestIntAry_DivideThisBy_12 (0.00s)
 === RUN   TestIntAry_DivideThisBy_13
---- PASS: TestIntAry_DivideThisBy_13 (0.84s)
+--- PASS: TestIntAry_DivideThisBy_13 (0.85s)
 === RUN   TestIntAry_DivideThisBy_14
 --- PASS: TestIntAry_DivideThisBy_14 (0.00s)
 === RUN   TestIntAry_DivideThisBy_15
@@ -3065,7 +3069,7 @@
 === RUN   TestIntAryMathPower_PwrByMultiplication_14
 --- PASS: TestIntAryMathPower_PwrByMultiplication_14 (0.01s)
 === RUN   TestIntAryMathPower_PwrByMultiplication_15
---- PASS: TestIntAryMathPower_PwrByMultiplication_15 (0.01s)
+--- PASS: TestIntAryMathPower_PwrByMultiplication_15 (0.02s)
 === RUN   TestIntAryMathPower_PwrByMultiplication_16
 --- PASS: TestIntAryMathPower_PwrByMultiplication_16 (0.00s)
 === RUN   TestIntAryMathPower_PwrByMultiplication_17
@@ -3163,7 +3167,7 @@
 === RUN   TestNthRootOp_GetNthRootIntAry_26
 --- PASS: TestNthRootOp_GetNthRootIntAry_26 (0.00s)
 === RUN   TestNthRootOp_GetNthRootIntAry_27
---- PASS: TestNthRootOp_GetNthRootIntAry_27 (3.68s)
+--- PASS: TestNthRootOp_GetNthRootIntAry_27 (3.82s)
 === RUN   TestNthRootOp_GetSquareRootFloat32_01
 --- PASS: TestNthRootOp_GetSquareRootFloat32_01 (0.00s)
 === RUN   TestNthRootOp_GetSquareRootFloat64_01
@@ -3767,4 +3771,4 @@
 === RUN   TestStrMathOp_SubtractN1N2_19
 --- PASS: TestStrMathOp_SubtractN1N2_19 (0.00s)
 PASS
-ok  	MikeAustin71/mathopsgo/mathops	9.251s
+ok  	MikeAustin71/mathopsgo/mathops	9.667s
