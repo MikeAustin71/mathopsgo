@@ -296,6 +296,44 @@ func TestBigIntMathAdd_AddNumStr_05(t *testing.T) {
 	}
 }
 
+func TestBigIntMathAdd_AddNumStr_06(t *testing.T) {
+
+	n1Str := "123456,789"
+	n2Str := "987,123456"
+	// Result = 	124443,912456
+	expectedNumStr := "124443,912456"
+
+	expectedNumSeps := NumericSeparatorDto{}
+	frenchDecSeparator := ','
+	frenchThousandsSeparator := ' '
+	frenchCurrencySymbol := '€'
+
+	expectedNumSeps.DecimalSeparator = frenchDecSeparator
+	expectedNumSeps.ThousandsSeparator = frenchThousandsSeparator
+	expectedNumSeps.CurrencySymbol = frenchCurrencySymbol
+
+	result, err := BigIntMathAdd{}.AddNumStr(n1Str, n2Str, expectedNumSeps)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntMathAdd{}.AddNumStr(n1Str, n2Str). " +
+			"Error='%v' ", err.Error())
+	}
+
+	actualNumStr := result.GetNumStr()
+
+	if expectedNumStr != actualNumStr {
+		t.Errorf("Error: Expected Result NumStr='%v'. Instead, Result NumStr='%v' ",
+			expectedNumStr, actualNumStr)
+	}
+
+	actualNumSeps := result.GetNumericSeparatorsDto()
+
+	if !expectedNumSeps.Equal(actualNumSeps) {
+		t.Errorf("Error: Expected numSeps='%v'.  Instead, numSeps='%v'",
+			expectedNumSeps.String(), actualNumSeps.String())
+	}
+}
+
 func TestBigIntMathAdd_AddNumStrOutputToArray_01(t *testing.T) {
 
 	var err error
