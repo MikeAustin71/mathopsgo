@@ -576,6 +576,15 @@ func (bAdd BigIntMathAdd) AddIntAryOutputToArray(
 		}
 
 		resultsArray[i], err = result.GetIntAry()
+
+		if err != nil {
+			return []IntAry{},
+				fmt.Errorf(ePrefix +
+					"Error returned by result.GetIntAry(). " +
+					"index='%v', result='%v', Error='%v' ",
+					i, result.GetNumStr(), err.Error())
+		}
+
 	}
 
 	return resultsArray, nil
