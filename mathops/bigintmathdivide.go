@@ -2890,12 +2890,12 @@ func (bIDivide BigIntMathDivide) PairQuotientMod(
 
 	var err2 error
 
-	quotient, modulo, err2 = bIDivide.pairQuotientMod(bPair)
+	quotient, modulo, err2 = bIDivide.pairQuotientModNoNumSeps(bPair)
 
 	if err2 != nil {
 		quotient = BigIntNum{}.NewZero(0)
 		modulo = BigIntNum{}.NewZero(0)
-		err = fmt.Errorf(ePrefix + "Error returned by bIDivide.pairQuotientMod(bPair). " +
+		err = fmt.Errorf(ePrefix + "Error returned by bIDivide.pairQuotientModNoNumSeps(bPair). " +
 			"Error='%v'", err2.Error())
 
 		return quotient, modulo, err
@@ -2994,12 +2994,12 @@ func (bIDivide BigIntMathDivide) PairMod(
 
 	var err2 error
 
-	modulo, err2 = bIDivide.pairMod(bPair)
+	modulo, err2 = bIDivide.pairModNoNumSeps(bPair)
 
 	if err2 != nil {
 		modulo = BigIntNum{}.NewZero(0)
 		err = fmt.Errorf(ePrefix +
-			"Error returned by bIDivide.pairMod(bPair). " +
+			"Error returned by bIDivide.pairModNoNumSeps(bPair). " +
 			"Error='%v' ", err2.Error())
 
 		return modulo, err
@@ -3070,12 +3070,12 @@ func (bIDivide BigIntMathDivide) PairIntQuotient(bPair BigIntPair) (intQuotient 
 
 	var err2 error
 
-	intQuotient, err2 = bIDivide.pairIntQuotient(bPair)
+	intQuotient, err2 = bIDivide.pairIntQuotientNoNumSeps(bPair)
 
 	if err2 != nil {
 		intQuotient = BigIntNum{}.NewZero(0)
 		err = fmt.Errorf(ePrefix +
-			"Error returned by bIDivide.pairIntQuotient(bPair). " +
+			"Error returned by bIDivide.pairIntQuotientNoNumSeps(bPair). " +
 			"Error='%v' ", err2.Error())
 
 		return intQuotient, err
@@ -3154,18 +3154,18 @@ func (bIDivide BigIntMathDivide) PairIntQuotient(bPair BigIntPair) (intQuotient 
 func (bIDivide BigIntMathDivide) PairFracQuotient(
 									bPair BigIntPair) (fracQuotient BigIntNum, err error) {
 
-	ePrefix := "BigIntMathDivide.pairFracQuotient() "
+	ePrefix := "BigIntMathDivide.pairFracQuotientNoNumSeps() "
 
 	numSeps := bPair.Big1.GetNumericSeparatorsDto()
 
 	var err2 error
 
-	fracQuotient, err2 = bIDivide.pairFracQuotient(bPair)
+	fracQuotient, err2 = bIDivide.pairFracQuotientNoNumSeps(bPair)
 
 	if err2 != nil {
 		fracQuotient = BigIntNum{}.NewZero(0)
 		err = fmt.Errorf(ePrefix +
-			"Error returned by bIDivide.pairFracQuotient(bPair). " +
+			"Error returned by bIDivide.pairFracQuotientNoNumSeps(bPair). " +
 			"Error='%v' ", err2.Error())
 
 		return fracQuotient, err
@@ -3188,7 +3188,7 @@ func (bIDivide BigIntMathDivide) PairFracQuotient(
 }
 
 
-// pairFracQuotient - Receives a BigIntPair type as an input parameter.
+// pairFracQuotientNoNumSeps - Receives a BigIntPair type as an input parameter.
 // 'BigIntPair.Big1' is treated as the Dividend. 'BigIntPair.Big2' is considered
 // the divisor.
 //
@@ -3242,10 +3242,10 @@ func (bIDivide BigIntMathDivide) PairFracQuotient(
 // numeric separators (decimal separator, thousands separator and currency
 // symbol).
 //
-func (bIDivide BigIntMathDivide) pairFracQuotient(
+func (bIDivide BigIntMathDivide) pairFracQuotientNoNumSeps(
 										bPair BigIntPair) (fracQuotient BigIntNum, err error) {
 
-	ePrefix := "BigIntMathDivide.pairFracQuotient() "
+	ePrefix := "BigIntMathDivide.pairFracQuotientNoNumSeps() "
 	fracQuotient = BigIntNum{}.New()
 
 	if bPair.Big2.bigInt.Cmp(big.NewInt(0)) == 0 {
@@ -3282,7 +3282,7 @@ func (bIDivide BigIntMathDivide) pairFracQuotient(
 	return fracQuotient, err
 }
 
-// pairIntQuotient - Performs integer division on two BigIntNum types passed as
+// pairIntQuotientNoNumSeps - Performs integer division on two BigIntNum types passed as
 // BigIntPair input parameters. 'dividend' is BigIntPair.Big1 and 'divisor' is
 // BigIntPair.Big2.
 //
@@ -3322,13 +3322,13 @@ func (bIDivide BigIntMathDivide) pairFracQuotient(
 // numeric separators (decimal separator, thousands separator and currency
 // symbol).
 //
-func (bIDivide BigIntMathDivide) pairIntQuotient(
+func (bIDivide BigIntMathDivide) pairIntQuotientNoNumSeps(
 												bPair BigIntPair) (intQuotient BigIntNum, err error) {
 
 	intQuotient = BigIntNum{}.New()
 
 	if bPair.Big2.IsZero() {
-		ePrefix := "BigIntMathDivide.pairIntQuotient() "
+		ePrefix := "BigIntMathDivide.pairIntQuotientNoNumSeps() "
 		err = fmt.Errorf(ePrefix + "Error: Attempted to divide by zero!")
 		return intQuotient, err
 	}
@@ -3346,7 +3346,7 @@ func (bIDivide BigIntMathDivide) pairIntQuotient(
 	return intQuotient, err
 }
 
-// pairMod - Receives a BigIntPair type as an input parameter. 'BigIntPair.Big1'
+// pairModNoNumSeps - Receives a BigIntPair type as an input parameter. 'BigIntPair.Big1'
 // is treated as the Dividend. 'BigIntPair.Big2' is considered the Divisor.
 // The method proceeds to performs a modulo operation on input parameters 'dividend'
 // (BigIntPair.Big1) and 'divisor' (BigIntPair.Big2). The modulo result is returned
@@ -3402,12 +3402,12 @@ func (bIDivide BigIntMathDivide) pairIntQuotient(
 // contain default numeric separators (decimal separator, thousands
 // separator and currency symbol).
 //
-func (bIDivide BigIntMathDivide) pairMod(bPair BigIntPair) (modulo BigIntNum, err error) {
+func (bIDivide BigIntMathDivide) pairModNoNumSeps(bPair BigIntPair) (modulo BigIntNum, err error) {
 
 	modulo = BigIntNum{}.New()
 
 	if bPair.Big2.bigInt.Cmp(big.NewInt(0)) == 0 {
-		ePrefix := "BigIntMathDivide.pairMod() "
+		ePrefix := "BigIntMathDivide.pairModNoNumSeps() "
 		err = errors.New(ePrefix + "Error: Attempted divide by ZERO!")
 		return modulo, err
 	}
@@ -3431,7 +3431,7 @@ func (bIDivide BigIntMathDivide) pairMod(bPair BigIntPair) (modulo BigIntNum, er
 	return modulo, err
 }
 
-// pairQuotientMod -  Receives a BigIntPair type as an input parameter. 'BigIntPair.Big1'
+// pairQuotientModNoNumSeps -  Receives a BigIntPair type as an input parameter. 'BigIntPair.Big1'
 // is treated as the Dividend. 'BigIntPair.Big2' is considered the Divisor.
 // 'BigIntPair.MaxPrecision' is used to control the precision of the resulting
 // fractional quotient. Be advised that this method is capable of calculating
@@ -3488,7 +3488,7 @@ func (bIDivide BigIntMathDivide) pairMod(bPair BigIntPair) (modulo BigIntNum, er
 // contain default numeric separators (decimal separator, thousands
 // separator and currency symbol).
 //
-func (bIDivide BigIntMathDivide) pairQuotientMod(
+func (bIDivide BigIntMathDivide) pairQuotientModNoNumSeps(
 								bPair BigIntPair) (quotient, modulo BigIntNum, err error) {
 
 	quotient = BigIntNum{}.New()
@@ -3496,7 +3496,7 @@ func (bIDivide BigIntMathDivide) pairQuotientMod(
 
 	if bPair.Big2.bigInt.Cmp(big.NewInt(0)) == 0 {
 
-		ePrefix := "BigIntMathDivide.pairQuotientMod() "
+		ePrefix := "BigIntMathDivide.pairQuotientModNoNumSeps() "
 
 		err = errors.New(ePrefix +
 			"Error: Attempted Divide By ZERO!")
