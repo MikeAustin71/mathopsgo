@@ -189,6 +189,9 @@ func (iaMultiply IntAryMathMultiply) MultiplyInPlace(
 //								point in the result. Be advised that a very, very large number
 //								of decimal digits may be accommodated by the IntAry Type.
 //
+// The returned parameter 'iaResult' will contain numeric separators (decimal separator,
+// thousands separator and currency symbol) copied from input parameter, 'ia1'.
+//
 func (iaMultiply IntAryMathMultiply) Multiply(
 								ia1, ia2, iaResult *IntAry,
 										minimumResultPrecision,
@@ -207,6 +210,20 @@ func (iaMultiply IntAryMathMultiply) Multiply(
 			"Error: Input Parameter 'minimumResultPrecision is less than -1. " +
 			"minimumResultPrecision='%v' ", minimumResultPrecision)
 	}
+
+	err := ia1.IsValid(ePrefix + "ia1 INVALID! ")
+
+	if err != nil {
+		return err
+	}
+
+	err = ia2.IsValid(ePrefix + "ia2 INVALID! ")
+
+	if err != nil {
+		return err
+	}
+
+	numSeps := ia1.GetNumericSeparatorsDto()
 
 	if minimumResultPrecision > maxResultPrecision &&
 		maxResultPrecision != -1 {
@@ -308,6 +325,13 @@ func (iaMultiply IntAryMathMultiply) Multiply(
 		iaResult.SetPrecision(maxResultPrecision, true)
 	}
 
-	return nil
+	err = iaResult.SetNumericSeparatorsDto(numSeps)
 
+	if err != nil {
+		return fmt.Errorf(ePrefix +
+			"Error returned by iaResult.SetNumericSeparatorsDto(numSeps). " +
+			"Error='%v'", err.Error())
+	}
+
+	return nil
 }
