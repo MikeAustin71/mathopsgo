@@ -595,7 +595,6 @@ func TestBigIntMathDivide_INumMgrFracQuotient_04(t *testing.T) {
 	expectedQuoStr 		:= "5.022"
 	maxPrecision			:= uint(15)
 
-
 	expectedNumSeps := NumericSeparatorDto{}
 	expectedNumSeps.DecimalSeparator = '.'
 	expectedNumSeps.ThousandsSeparator = ','

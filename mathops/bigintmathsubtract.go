@@ -1043,9 +1043,17 @@ func (bSubtract BigIntMathSubtract) SubtractINumMgrSeries(
 // SubtractNumStr - Receives two number strings and proceeds to subtract
 // n2 from n1.
 //
-// The strings passed to this method are 'number' strings in that they consist
-// of a string of numeric digits which may include a period ('.') or decimal point
-// used to separate fractional numeric digits.
+// The 'n1' and 'n2' strings passed to this method are 'number strings in that they
+// consist of a string of numeric digits representing a numeric value. This string
+// of numeric digits may include a delimiting decimal separator to identify fractional
+// digits. The number strings are parsed based on the decimal separator character
+// specified by input parameter 'numSeps'.
+//
+// Input parameter 'numSeps' is a type NumericSeparatorDto and is used to
+// parse the number strings 'n1NumStr' and 'n2NumStr'. 'numSeps' represents the
+// applicable decimal separator, thousands separator and currency symbol. In
+// addition, 'numSeps' is also used in configuring the return value for this
+// subtraction operation.
 //
 // In the subtraction operation:
 // 								n1 - n2 = difference or result
@@ -1058,15 +1066,18 @@ func (bSubtract BigIntMathSubtract) SubtractINumMgrSeries(
 //
 // The BigIntNum 'result' returned by this subtraction operation will contain
 // numeric separators (decimal separator, thousands separator and currency symbol)
-// set to default values.
+// specified by input parameter, 'numSeps'.
 //
 func (bSubtract BigIntMathSubtract) SubtractNumStr(
 													n1 string,
-														n2 string) (BigIntNum, error) {
+														n2 string,
+															numSeps NumericSeparatorDto) (BigIntNum, error) {
 
 	ePrefix := "BigIntMathSubtract.SubtractNumStr() "
 
-	bPair, err := BigIntPair{}.NewNumStr(n1, n2)
+	numSeps.SetDefaultsIfEmpty()
+
+	bPair, err := BigIntPair{}.NewNumStrWithNumSeps(n1, n2, numSeps)
 
 	if err != nil {
 		return BigIntNum{},
@@ -1074,9 +1085,7 @@ func (bSubtract BigIntMathSubtract) SubtractNumStr(
 				"Error='%v' ", err.Error())
 	}
 
-	finalResult := bSubtract.subtractPairNoNumSeps(bPair)
-
-	finalResult.SetNumericSeparatorsToDefaultIfEmpty()
+	finalResult := bSubtract.SubtractPair(bPair)
 
 	return finalResult, nil
 }
@@ -1085,40 +1094,51 @@ func (bSubtract BigIntMathSubtract) SubtractNumStr(
 // the 'minuend'. The second input parameter is an array of strings labeled,
 // 'subtrahends'.
 //
-// The strings passed to this method are 'number' strings in that they consist
-// of a string of numeric digits which may include a period ('.') or decimal point
-// used to separate fractional numeric digits.
+// The array of 'subtrahends' is subtracted from the 'minuend' and the summary
+// result of this transaction operation is returned as a BigIntNum type.
 //
-// The array of 'subtrahends' is subtracted from the 'minuend'.
+// The 'minuend' string and 'subtrahends' string array are passed to this method
+// as number strings. As such, each number string consists of a string of numeric
+// digits representing a numeric value. The strings of numeric digits may include
+// a delimiting decimal separator to identify fractional digits. These number
+// strings are parsed based on the decimal separator character specified by input
+// parameter 'numSeps'.
+//
+// Input parameter 'numSeps' is a type NumericSeparatorDto and is used to
+// parse the number strings 'minuend' and 'subtrahends'. 'numSeps' represents the
+// applicable decimal separator, thousands separator and currency symbol. In
+// addition, 'numSeps' is also used in configuring the return value for this
+// subtraction operation.
 //
 // In the subtraction operation:
-// 								b1 - b2 = difference or result
 //								'minuend' - 'subtrahend' = difference or result
-//								b1 = 'minuend'
-//								b2 = 'subtrahend'
 //
 // In this method, the 'subtrahend' is an array of string Types.
 //
-// After the subtraction operation, the 'difference' or 'result' is returned as a
-// Type BigIntNum.
+// After all subtraction operations have been completed, the summary 'difference'
+// or 'result' is returned as a Type BigIntNum.
 //
 // The BigIntNum 'result' returned by this subtraction operation will contain
 // numeric separators (decimal separator, thousands separator and currency symbol)
-// set to default values.
+// specified by input parameter, 'numSeps'.
 //
 func (bSubtract BigIntMathSubtract) SubtractNumStrArray(
 				minuend string,
-					subtrahends []string) (BigIntNum, error) {
+					subtrahends []string,
+						numSeps NumericSeparatorDto) (BigIntNum, error) {
 
 	ePrefix := "BigIntMathSubtract.SubtractNumStrArray() "
 
-	finalResult, err := BigIntNum{}.NewNumStr(minuend)
+	numSeps.SetDefaultsIfEmpty()
+
+	finalResult, err := BigIntNum{}.NewNumStrWithNumSeps(minuend, numSeps)
 
 	if err != nil {
 		return BigIntNum{},
 			fmt.Errorf(ePrefix +
-				"Error returned by BigIntNum{}.NewNumStr(minuend). " +
-				"minuend='%v' Error='%v'", minuend, err.Error())
+				"Error returned by BigIntNum{}.NewNumStrWithNumSeps(minuend, numSeps). " +
+				"minuend='%v' numSeps='%v' Error='%v'",
+				minuend, numSeps.String(), err.Error())
 	}
 
 	lenSubtrahends := len(subtrahends)
@@ -1130,12 +1150,12 @@ func (bSubtract BigIntMathSubtract) SubtractNumStrArray(
 
 	for i:=0; i < lenSubtrahends; i++ {
 
-		bigINum, err := BigIntNum{}.NewNumStr(subtrahends[i])
+		bigINum, err := BigIntNum{}.NewNumStrWithNumSeps(subtrahends[i], numSeps)
 
 		if err != nil {
 			return BigIntNum{},
 				fmt.Errorf(ePrefix +
-					"Error returned by BigIntNum{}.NewNumStr(subtrahends[i]). " +
+					"Error returned by BigIntNum{}.NewNumStrWithNumSeps(subtrahends[i], numSeps). " +
 					"i='%v' subtrahend='%v' Error='%v'",
 					i, subtrahends[i], err.Error())
 		}
@@ -1145,11 +1165,18 @@ func (bSubtract BigIntMathSubtract) SubtractNumStrArray(
 		finalResult = bSubtract.subtractPairNoNumSeps(bPair)
 	}
 
-	finalResult.SetNumericSeparatorsToDefaultIfEmpty()
+	err = finalResult.SetNumericSeparatorsDto(numSeps)
+
+	if err != nil {
+		return BigIntNum{},
+			fmt.Errorf(ePrefix +
+				"Error returned by finalResult.SetNumericSeparatorsDto(numSeps). " +
+				"numSeps='%v' Error='%v'",
+				numSeps.String(), err.Error())
+	}
 
 	return finalResult, nil
 }
-
 
 // SubtractNumStrOutputToArray - The first input parameter to this method
 // is a string Type labeled, 'minuend'.  The second input parameter is an
@@ -1157,6 +1184,18 @@ func (bSubtract BigIntMathSubtract) SubtractNumStrArray(
 // from each element of the 'subtrahends' array with the result output to
 // another 'results' array of strings which is then returned to the calling
 // function.
+//
+// The 'minuend' string and 'subtrahends' string array are passed to this method
+// as number strings. Each number string consists of a string of numeric digits
+// representing a numeric value. The strings of numeric digits may include a
+// delimiting decimal separator to identify fractional digits. These number
+// strings are parsed based on the decimal separator character specified by input
+// parameter 'numSeps'.
+//
+// Input parameter 'numSeps' is a type NumericSeparatorDto and is used to
+// parse the number strings 'minuend' and 'subtrahends'. 'numSeps' represents the
+// applicable decimal separator, thousands separator and currency symbol. 'numSeps'
+// is also used in configuring the return value for this subtraction operation.
 //
 // Example
 // =======
@@ -1173,9 +1212,12 @@ func (bSubtract BigIntMathSubtract) SubtractNumStrArray(
 //
 func (bSubtract BigIntMathSubtract) SubtractNumStrOutputToArray(
 														minuend string,
-															subtrahends []string) ([]string, error) {
+															subtrahends []string,
+																numSeps NumericSeparatorDto) ([]string, error) {
 
 	ePrefix := "BigIntMathSubtract.SubtractNumStrOutputToArray() "
+
+	numSeps.SetDefaultsIfEmpty()
 
 	lenSubtrahends := len(subtrahends)
 
@@ -1188,17 +1230,17 @@ func (bSubtract BigIntMathSubtract) SubtractNumStrOutputToArray(
 
 	for i:=0; i < lenSubtrahends; i++ {
 
-		bPair, err := BigIntPair{}.NewNumStr(minuend, subtrahends[i])
+		bPair, err := BigIntPair{}.NewNumStrWithNumSeps(minuend, subtrahends[i], numSeps)
 
 		if err != nil {
 			return []string{},
 				fmt.Errorf(ePrefix +
-					"Error returned by BigIntPair{}.NewNumStr(minuend, subtrahends[i]) " +
-					"minuend='%v' subtrahends[%v]='%v' Error='%v'. ",
-					minuend, i, subtrahends[i], err.Error())
+					"Error returned by BigIntPair{}.NewNumStrWithNumSeps(minuend, subtrahends[i], numSeps) " +
+					"minuend='%v' subtrahends[%v]='%v' numSeps='%v' Error='%v'. ",
+					minuend, i, subtrahends[i], numSeps.String(), err.Error())
 		}
 
-		result := bSubtract.subtractPairNoNumSeps(bPair)
+		result := bSubtract.SubtractPair(bPair)
 
 		resultsArray[i] = result.GetNumStr()
 
@@ -1214,45 +1256,55 @@ func (bSubtract BigIntMathSubtract) SubtractNumStrOutputToArray(
 	return resultsArray, nil
 }
 
-
 // SubtractNumStrSeries - Receives one 'string' Type which is classified as
 // the 'minuend'. The second input parameter, 'subtrahends' is a series of
 // 'strings' .
 //
-// The strings passed to this method are 'number' strings in that they consist
-// of a string of numeric digits which may include a period ('.') or decimal point
-// used to separate fractional numeric digits.
+// The 'minuend' string and 'subtrahends' string series are passed to this method
+// as number strings. Each number string consists of a string of numeric digits
+// representing a numeric value. The strings of numeric digits may include a
+// delimiting decimal separator to identify fractional digits. These number
+// strings are parsed based on the decimal separator character specified by input
+// parameter 'numSeps'.
 //
-// The 'subtrahends' series is subtracted from the 'minuend'.
+// Input parameter 'numSeps' is a type NumericSeparatorDto and is used to
+// parse the number strings contained in the 'minuend' and 'subtrahends' input
+// parameters. 'numSeps' represents the applicable decimal separator, thousands
+// separator and currency symbol. 'numSeps' is also used in configuring the return
+// value for this subtraction operation.
+//
+// The 'subtrahends' series is subtracted from the 'minuend' to produce a
+// cumulative result.
 //
 // In the subtraction operation:
-// 								b1 - b2 = difference or result
+//
 //								'minuend' - 'subtrahend' = difference or result
-//								b1 = 'minuend'
-//								b2 = 'subtrahend'
 //
 // In this method, the 'subtrahend' is a series of strings.
 //
-// After the subtraction operation, the 'difference' or 'result' is returned as a
-// Type BigIntNum.
+// After the subtraction operation, the cumulative 'difference' or 'result' is returned
+// as a Type BigIntNum.
 //
 // The BigIntNum 'result' returned by this subtraction operation will contain
 // numeric separators (decimal separator, thousands separator and currency symbol)
-// which are set to their default values.
+// specified by the input parameter, 'numSeps'.
 //
 func (bSubtract BigIntMathSubtract) SubtractNumStrSeries(
-															minuend string,
-																subtrahends ... string) (BigIntNum, error) {
+															numSeps NumericSeparatorDto,
+																minuend string,
+																	subtrahends ... string) (BigIntNum, error) {
 
 	ePrefix := "BigIntMathSubtract.SubtractNumStrSeries() "
 
-	finalResult, err := BigIntNum{}.NewNumStr(minuend)
+	numSeps.SetDefaultsIfEmpty()
+
+	finalResult, err := BigIntNum{}.NewNumStrWithNumSeps(minuend, numSeps)
 
 	if err != nil {
 		return BigIntNum{}.New(),
 			fmt.Errorf(ePrefix +
-				"Error returned by BigIntNum{}.NewNumStr(minuend). " +
-				"minuend='%v' Error='%v'", minuend, err.Error())
+				"Error returned by BigIntNum{}.NewNumStrWithNumSeps(minuend, numSeps). " +
+				"minuend='%v' numSeps='%v' Error='%v'", minuend, numSeps.String(), err.Error())
 	}
 
 	if len(subtrahends) == 0 {
@@ -1262,14 +1314,14 @@ func (bSubtract BigIntMathSubtract) SubtractNumStrSeries(
 
 	for i, subtrahend := range subtrahends {
 
-		bigINumSubtrahend, err := BigIntNum{}.NewNumStr(subtrahend)
+		bigINumSubtrahend, err := BigIntNum{}.NewNumStrWithNumSeps(subtrahend, numSeps)
 
 		if err != nil {
 			return BigIntNum{}.New(),
 				fmt.Errorf(ePrefix +
-					"Error returned by BigIntNum{}.NewNumStr(subtrahend). " +
-					"index='%v' subtrahend='%v' Error='%v'",
-					i, subtrahend, err.Error())
+					"Error returned by BigIntNum{}.NewNumStrWithNumSeps(subtrahend, numSeps). " +
+					"index='%v' subtrahend='%v' numSeps='%v' Error='%v'",
+					i, subtrahend, numSeps.String(), err.Error())
 		}
 
 		bPair := BigIntPair{}.NewBigIntNum(finalResult, bigINumSubtrahend)
@@ -1277,11 +1329,17 @@ func (bSubtract BigIntMathSubtract) SubtractNumStrSeries(
 		finalResult = bSubtract.subtractPairNoNumSeps(bPair)
 	}
 
-	finalResult.SetNumericSeparatorsToDefaultIfEmpty()
+	err = finalResult.SetNumericSeparatorsDto(numSeps)
+
+	if err != nil {
+		return BigIntNum{}.New(),
+		fmt.Errorf(ePrefix +
+			"Error returned by finalResult.SetNumericSeparatorsDto(numSeps). " +
+			"numSeps='%v' Error='%v'", numSeps.String(), err.Error())
+	}
 
 	return finalResult, nil
 }
-
 
 // SubtractNumStrDto - Receives two 'NumStrDto' instances and proceeds to subtract
 // 'nDtoSubtrahend' from 'nDtoMinuend'.
