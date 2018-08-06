@@ -9,6 +9,10 @@ type IntAryMathAdd struct {
 // AddManyArray - Adds the contents of the []IntAry, 'iaMany' to the
 // the value of 'total'.
 //
+// The original 'total' numeric separators will remain unchanged.
+// Numeric separators consist of the decimal separator, thousands
+// separator and currency symbol.
+//
 func (iaAdd IntAryMathAdd) AddManyArray(total *IntAry, iaMany []IntAry) {
 
 	lAry := len(iaMany)
@@ -24,6 +28,10 @@ func (iaAdd IntAryMathAdd) AddManyArray(total *IntAry, iaMany []IntAry) {
 // AddMany - Adds multiple IntAry instances and returns the result in
 // input parameter 'total'.
 //
+// The original 'total' numeric separators will remain unchanged.
+// Numeric separators consist of the decimal separator, thousands
+// separator and currency symbol.
+//
 func (iaAdd IntAryMathAdd) AddMany(total *IntAry, iaMany ... *IntAry) {
 
 	for _, iAry := range iaMany {
@@ -37,6 +45,11 @@ func (iaAdd IntAryMathAdd) AddMany(total *IntAry, iaMany ... *IntAry) {
 
 // Adds Two IntAry instances and returns the result as a new
 // IntAry Instance.
+//
+// The return value 'IntAry' will contain the numeric separators
+// (decimal separator, thousands separator and currency symbol)
+// copied from input parameter 'ia1'.
+//
 func (iaAdd IntAryMathAdd) Add(ia1, ia2 *IntAry) IntAry {
 
 	ia3 := ia1.CopyOut()
@@ -48,7 +61,13 @@ func (iaAdd IntAryMathAdd) Add(ia1, ia2 *IntAry) IntAry {
 
 
 // RunTotal- Adds to IntAry input parameters and returns the results
-// in the first parameter.
+// in the first parameter, 'ia'.
+//
+// The returned addition 'result' in 'ia' will contain numeric separators
+// (decimal separator, thousands separator and currency symbol) copied from
+// the original 'ia' structure. In other words, the 'ia' numeric separators
+// will remain unchanged.
+//
 func (iaAdd IntAryMathAdd) RunTotal(ia, ia2 *IntAry) {
 
 	ia.SetEqualArrayLengths(ia2)
@@ -56,6 +75,8 @@ func (iaAdd IntAryMathAdd) RunTotal(ia, ia2 *IntAry) {
 	if ia2.isZeroValue {
 		return
 	}
+
+	numSeps := ia.GetNumericSeparatorsDto()
 
 	compare := ia.CompareAbsoluteValues(ia2)
 
@@ -125,6 +146,8 @@ func (iaAdd IntAryMathAdd) RunTotal(ia, ia2 *IntAry) {
 	}
 
 	iaAdd.addToSubtract(ia, ia2, newSignVal, doAdd, isZeroResult, doReverseNums)
+
+	ia.SetNumericSeparatorsDto(numSeps)
 
 	return
 }
