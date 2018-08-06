@@ -935,8 +935,8 @@ func (bMultiply BigIntMathMultiply) MultiplyNumStr(
 //
 // The 'multiplier' string and 'multiplicands' string array passed to this method are number
 // strings which consist of a string of numeric digits representing a numeric value. A leading
-// minus sign may be included to indicate a negative numeric value. This string of numeric
-// digits may include a delimiting decimal separator to identify fractional digits. The number
+// minus sign (-) may be included to indicate a negative numeric value. This string of numeric
+// digits may also include a delimiting decimal separator to identify fractional digits. Number
 // strings are parsed based on the decimal separator character specified by input parameter,
 // 'numSeps'.
 //

@@ -1856,10 +1856,12 @@ func (bIDivide BigIntMathDivide) INumMgrModulo(
 	return modulo, err
 }
 
-// NumStNumber strings are strings of numeric digits which may,
-//// or may not, include a decimal separator ('.') used to separate integer and fractional digits..rQuotientMod - Performs a division operation on input parameters 'dividend' and 'divisor'
-// which are comprised as number strings. Number strings are strings of numeric digits which may,
-// or may not, include a decimal separator ('.') used to separate integer and fractional digits..
+
+// NumStrQuotientMod - Performs a division operation on input parameters 'dividend' and 'divisor'
+// which are comprised as number strings. Number strings are strings of numeric digits representing
+// a numeric value. Number strings may include a leading minus sign (-) indicating a negative
+// numeric value. Number strings may also include a decimal separator used to separate integer
+// and fractional digits. The decimal separator character is specified by input parameter, 'numSeps'.
 //
 // There are two BigIntNum return values: 'quotient' and 'modulo'.
 //
@@ -1972,8 +1974,16 @@ func (bIDivide BigIntMathDivide) NumStrQuotientMod(
 	return quotient, modulo, nil
 }
 
-// NumStrFracQuotient - Performs a division operation on NumStr Type input
-// parameters 'dividend' and 'divisor'.
+// NumStrFracQuotient - Performs a division operation on input parameters
+// 'dividend' and 'divisor' and returns the 'quotient' of this division
+// operation.
+//
+// The input parameters, 'dividend' and 'divisor', are number strings consisting
+// of strings of numeric digits representing a specific numeric value. Number
+// strings may include a leading minus sign (-) indicating a negative numeric
+// value. In addition, number strings may include decimal separators used to
+// separate integer and fractional digits. The decimal separator character is
+// specified by the input parameter, 'numSeps'.
 //
 // The resulting quotient is returned as a BigIntNum type representing the
 // result of the division operation expressed as integer and fractional digits.
@@ -2083,8 +2093,11 @@ func (bIDivide BigIntMathDivide) NumStrFracQuotient(
 // NumStrFracQuotientArray - Performs a division operation on input parameters
 // 'dividends' and 'divisor' which are formatted as number strings.
 //
-// 	Number strings are strings of numeric digits which may, or may not, include
-//  a decimal separator ('.') to separate integer and fractional digits.
+// Number strings are strings of numeric digits representing a specific numeric
+// value. Number strings may include a leading minus sign (-) indicating a negative
+// numeric value. In addition, number strings may include a decimal separator used
+// to separate integer and fractional digits. The decimal separator character is
+// specified by the input parameter, 'numSeps'.
 //
 // 'dividends' is an array of number strings. The division operation is performed
 // on each element of the 'dividends' array using a single 'divisor'.
@@ -2209,8 +2222,11 @@ func (bIDivide BigIntMathDivide) NumStrFracQuotientArray(
 
 // NumStrModulo - Performs a modulo operation on input parameters 'dividend'
 // and 'divisor'. Both input parameters are formatted a number strings. Number
-// strings are strings of numeric digits which may,/ or may not, include a decimal
-// separator ('.') used to separate integer and fractional digits.
+// strings are strings of numeric digits which represent a specific numeric value.
+// Number strings may include a leading minus sign indicating a negative numeric
+// value. In addition, number strings may also include a decimal separator used
+// to separate integer and fractional digits. The decimal separator character is
+// specified by input parameter, 'numSeps'.
 //
 // The modulo operation finds the remainder after division of one number
 // by another (sometimes called modulus).

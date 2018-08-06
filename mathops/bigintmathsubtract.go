@@ -1043,11 +1043,12 @@ func (bSubtract BigIntMathSubtract) SubtractINumMgrSeries(
 // SubtractNumStr - Receives two number strings and proceeds to subtract
 // n2 from n1.
 //
-// The 'n1' and 'n2' strings passed to this method are 'number strings in that they
-// consist of a string of numeric digits representing a numeric value. This string
-// of numeric digits may include a delimiting decimal separator to identify fractional
-// digits. The number strings are parsed based on the decimal separator character
-// specified by input parameter 'numSeps'.
+// The 'n1' and 'n2' strings passed to this method are number strings in that they
+// consist of a string of numeric digits representing a numeric value. Number strings
+// may contain leading minus signs (-) to indicate a negative numeric value. The
+// numeric digits string may also include a delimiting decimal separator to identify
+// fractional digits. The number strings are parsed based on the decimal separator
+// character specified by input parameter 'numSeps'.
 //
 // Input parameter 'numSeps' is a type NumericSeparatorDto and is used to
 // parse the number strings 'n1NumStr' and 'n2NumStr'. 'numSeps' represents the
@@ -1099,10 +1100,11 @@ func (bSubtract BigIntMathSubtract) SubtractNumStr(
 //
 // The 'minuend' string and 'subtrahends' string array are passed to this method
 // as number strings. As such, each number string consists of a string of numeric
-// digits representing a numeric value. The strings of numeric digits may include
-// a delimiting decimal separator to identify fractional digits. These number
-// strings are parsed based on the decimal separator character specified by input
-// parameter 'numSeps'.
+// digits representing a numeric value. Number strings may include a leading minus
+// sign indicating a negative numeric value. These strings of numeric digits may
+// also include a delimiting decimal separator to identify fractional digits. The
+// number strings are parsed based on the decimal separator character specified by
+// input parameter 'numSeps'.
 //
 // Input parameter 'numSeps' is a type NumericSeparatorDto and is used to
 // parse the number strings 'minuend' and 'subtrahends'. 'numSeps' represents the
@@ -1187,7 +1189,8 @@ func (bSubtract BigIntMathSubtract) SubtractNumStrArray(
 //
 // The 'minuend' string and 'subtrahends' string array are passed to this method
 // as number strings. Each number string consists of a string of numeric digits
-// representing a numeric value. The strings of numeric digits may include a
+// representing a numeric value. Number strings may include a leading minus sign
+// (-) indicating a negative numeric value. Numeric strings may also include a
 // delimiting decimal separator to identify fractional digits. These number
 // strings are parsed based on the decimal separator character specified by input
 // parameter 'numSeps'.
@@ -1262,7 +1265,8 @@ func (bSubtract BigIntMathSubtract) SubtractNumStrOutputToArray(
 //
 // The 'minuend' string and 'subtrahends' string series are passed to this method
 // as number strings. Each number string consists of a string of numeric digits
-// representing a numeric value. The strings of numeric digits may include a
+// representing a numeric value. Number strings may include a leading minus sign
+// (-) indicating a negative numeric value. Number strings may also include a
 // delimiting decimal separator to identify fractional digits. These number
 // strings are parsed based on the decimal separator character specified by input
 // parameter 'numSeps'.
