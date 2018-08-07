@@ -1676,7 +1676,7 @@ func (bNum BigIntNum) New() BigIntNum {
 //											Integer Value		precision			Numeric Value
 //											  123456					 3					  123.456
 //
-// The new BigIntNum instance returned by this method will contain default numeric
+// The new BigIntNum instance returned by this method will contain USA default numeric
 // separators (decimal separator, thousands separator and currency symbol).
 //
 func (bNum BigIntNum) NewBigInt(bigI *big.Int, precision uint) BigIntNum {
@@ -2206,6 +2206,9 @@ func (bNum BigIntNum) NewNumStrDto(nDto NumStrDto) (BigIntNum, error) {
 //    2								1.00
 // 		3								1.000
 //
+// The new BigIntNum instance returned by this method will contain USA default numeric
+// separators (decimal separator, thousands separator and currency symbol).
+//
 func (bNum BigIntNum) NewOne(precision uint) BigIntNum {
 
 	b := BigIntNum{}.NewZero(0)
@@ -2238,6 +2241,9 @@ func (bNum BigIntNum) NewOne(precision uint) BigIntNum {
 //    2								2.00
 // 		3								2.000
 //
+// The new BigIntNum instance returned by this method will contain USA default numeric
+// separators (decimal separator, thousands separator and currency symbol).
+//
 func (bNum BigIntNum) NewTwo(precision uint) BigIntNum {
 
 	b := BigIntNum{}.NewZero(0)
@@ -2269,6 +2275,9 @@ func (bNum BigIntNum) NewTwo(precision uint) BigIntNum {
 //    2								3.00
 // 		3								3.000
 //
+// The new BigIntNum instance returned by this method will contain USA default numeric
+// separators (decimal separator, thousands separator and currency symbol).
+//
 func (bNum BigIntNum) NewThree(precision uint) BigIntNum {
 
 	b := BigIntNum{}.NewZero(0)
@@ -2280,6 +2289,38 @@ func (bNum BigIntNum) NewThree(precision uint) BigIntNum {
 
 	scaleVal := big.NewInt(0).Exp(big.NewInt(10), big.NewInt(int64(precision)), nil)
 	newVal := big.NewInt(0).Mul(big.NewInt(3), scaleVal)
+	b.SetBigInt(newVal, precision)
+
+	return b
+}
+
+// NewFive - Returns a BigIntNum with integer value of  '5' (five).
+// The number of zeros created after the decimal place holder
+// (fractional digits) is determined by the input parameter 'precision'.
+// To create an integer with a value equal to '10', set 'precision' equal
+// to zero (0).
+//
+// 'precision'
+//   value 					Result
+// 		0								 5
+//		1								 5.0
+//    2								 5.00
+// 		3								 5.000
+//
+// The new BigIntNum instance returned by this method will contain USA default numeric
+// separators (decimal separator, thousands separator and currency symbol).
+//
+func (bNum BigIntNum) NewFive(precision uint) BigIntNum {
+
+	b := BigIntNum{}.NewZero(0)
+
+	if precision == 0 {
+		b.SetBigInt(big.NewInt(5), 0)
+		return b
+	}
+
+	scaleVal := big.NewInt(0).Exp(big.NewInt(10), big.NewInt(int64(precision)), nil)
+	newVal := big.NewInt(0).Mul(big.NewInt(5), scaleVal)
 	b.SetBigInt(newVal, precision)
 
 	return b
@@ -2297,6 +2338,9 @@ func (bNum BigIntNum) NewThree(precision uint) BigIntNum {
 //		1								10.0
 //    2								10.00
 // 		3								10.000
+//
+// The new BigIntNum instance returned by this method will contain USA default numeric
+// separators (decimal separator, thousands separator and currency symbol).
 //
 func (bNum BigIntNum) NewTen(precision uint) BigIntNum {
 
