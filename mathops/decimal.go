@@ -773,20 +773,28 @@ func (dec *Decimal) GetNumStrDto() (NumStrDto, error) {
 	return nDto, nil
 }
 
-// GetNthRoot - Calculates the nth root of the current Decimal value.
+// GetNthRoot - Calculates the nth root of the current Decimal value. The numeric value of
+// the current Decimal instance constitutes the radicand.
 //
-// Input parameters:
+// Input Parameters:
+// =================
 //
-//  nthRoot uint - Nth root specifies the root which will be calculated for parameter, 'num'.
-// 									Example, square root, cube root, 4th root, 9th root etc.
+//  nthRoot Decimal - Nth root specifies the root which will be calculated using the current
+// 										Decimal instance as the radicand.
+// 										Example, square root, cube root, 4th root, 9th root etc.
 //
-// maxPrecision uint -  Specifies the number of decimals to the right of the decimal place to
-// 											which the Nth root will be calculated.
+// maxPrecision uint -  Specifies the maximum number of decimals to the right of the decimal
+// 											place to which the Nth root will be calculated. If the internal
+// 											calculation exceeds the limit the nth root result will be rounded
+//											to 'maxPrecision' decimal places.
 //
-// The calculation result is returned as an IntAry object.
+// Returns:
+// ========
+// The calculation result is returned as a Decimal instance. The returned Decimal instance
+// will contain	numeric separators (decimal separator, thousands separator and currency symbol)
+// copied from the current Decimal instance (radicand).
 //
-// Note: A negative Decimal value with an even nthRoot will generate an error.
-func (dec *Decimal) GetNthRoot(nthRoot, maxPrecision int) (Decimal, error) {
+func (dec *Decimal) GetNthRoot(nthRoot Decimal, maxPrecision uint) (Decimal, error) {
 
 	ePrefix := "Decimal.GetNthRoot() "
 
@@ -794,47 +802,58 @@ func (dec *Decimal) GetNthRoot(nthRoot, maxPrecision int) (Decimal, error) {
 
 	if err != nil {
 		return Decimal{}.New(),
-		fmt.Errorf(ePrefix +
-			"- The current Decimal object is INVALID! Please re-initialize." +
-			"Error='%v' ", err.Error())
+			fmt.Errorf(ePrefix +
+				"- The current Decimal object is INVALID!" +
+				"Error='%v' ", err.Error())
 	}
 
-	ia, err := dec.GetIntAry()
-
-	if err != nil {
-		return Decimal{}.New(),
-		fmt.Errorf(ePrefix + "- Received error from dec.GetIntAryElements(). Error= %v \n",
-			err.Error())
-	}
-
-	iaNthRoot, err := IntAry{}.NewInt(nthRoot, 0)
+	err = nthRoot.IsValid(ePrefix)
 
 	if err != nil {
 		return Decimal{}.New(),
 			fmt.Errorf(ePrefix +
-				"- Error returned by IntAry{}.NewInt(nthRoot, 0). Error= %v \n",
-				err.Error())
+				"- The nthRoot Input Parameter is INVALID!" +
+				"Error='%v' ", err.Error())
+	}
+
+	// If the radicand is zero, the result will always be zero
+	if dec.IsZero() {
+		return Decimal{}.NewZero(0), nil
 	}
 
 
-	nrt := NthRootOp{}
+	// If nth root is zero, the result is always one.
+	if nthRoot.IsZero() {
+		return Decimal{}.NewOne(0), nil
+	}
 
-	iaNth, err := nrt.GetNthRootIntAry(&ia, &iaNthRoot, maxPrecision)
+	nthRootIsEven, err := nthRoot.IsEvenNumber()
 
 	if err != nil {
-		return Decimal{}.New(),
-		fmt.Errorf(ePrefix +
-					"- Received error from  NthRootOp.GetNthRootIntAry(). Error= %v", err)
+		return Decimal{}.NewZero(0),
+		fmt.Errorf(ePrefix + "Error returned by nthRoot.IsEvenNumber(). " +
+			"Error='%v'\n", err.Error())
 	}
 
-	dOut, err := dec.MakeDecimalFromIntAry(&iaNth)
+	if dec.GetSign() == -1  && nthRootIsEven {
+
+		return Decimal{}.NewZero(0),
+			errors.New(ePrefix + "INVALID ENTRY! Cannot calculate nth root of a negative radicand " +
+				"when nthRoot is even.")
+	}
+
+	dec2 := Decimal{}
+
+	dec2.bigINum, err =
+			BigIntMathNthRoot{}.GetNthRoot(dec.bigINum, nthRoot.bigINum, maxPrecision)
 
 	if err != nil {
-		return Decimal{}.New(),
-		fmt.Errorf(ePrefix + "- Received error from  dec.MakeDecimalFromIntAry(&iaNth). Error= %v", err.Error())
+		return Decimal{}.NewZero(0),
+			fmt.Errorf(ePrefix + "Error returned by BigIntMathNthRoot{}.GetNthRoot(...). " +
+				"Error='%v'\n", err.Error())
 	}
 
-	return dOut, nil
+	return dec2, nil
 }
 
 // GetPrecision - returns the Decimal's current precision
@@ -1179,6 +1198,15 @@ func (dec *Decimal) Inverse(maxPrecision uint) (Decimal, error) {
 	}
 
 	return d2, nil
+}
+
+// IsEvenNumber - If the numeric value of the current Decimal instance
+// is evenly divisible by two, with no remainder, it is classified as
+// an even number and this method will return 'true'.
+//
+func (dec Decimal) IsEvenNumber() (bool, error) {
+
+	return dec.bigINum.IsEvenNumber()
 }
 
 // IsFraction - returns a boolean value. If 'true',

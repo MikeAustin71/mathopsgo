@@ -1556,8 +1556,8 @@ func TestDecimal_GetIntAry_02(t *testing.T) {
 
 func TestDecimal_GetNthRoot_01(t *testing.T) {
 	numStr1 := "125"
-	nthRoot := 5
-	maxPrecision := 14
+	nthRootStr := "5"
+	maxPrecision := uint(14)
 	expected := "2.62652780440377"
 	eSignVal := 1
 
@@ -1569,7 +1569,15 @@ func TestDecimal_GetNthRoot_01(t *testing.T) {
 			 numStr1, err.Error())
 	}
 
-	d2, err := d1.GetNthRoot(nthRoot, maxPrecision)
+	decNthRoot, err := Decimal{}.NewNumStr(nthRootStr)
+
+	if err != nil {
+		t.Errorf("Error returned by Decimal{}.NewNumStr(nthRootStr) " +
+			"nthRootStr='%v' Error = '%v' ",
+			nthRootStr, err.Error())
+	}
+
+	d2, err := d1.GetNthRoot(decNthRoot, maxPrecision)
 
 	if err != nil {
 		t.Errorf("Error returned from d1.GetNthRoot(nthRoot, maxPrecision). Error= %v ", err)
@@ -1591,8 +1599,8 @@ func TestDecimal_GetNthRoot_01(t *testing.T) {
 
 func TestDecimal_GetNthRoot_02(t *testing.T) {
 	numStr1 := "5604423"
-	nthRoot := 6
-	maxPrecision := 13
+	nthRootStr := "6"
+	maxPrecision := uint(13)
 	expected := "13.3276982415963"
 	eSignVal := 1
 
@@ -1603,7 +1611,15 @@ func TestDecimal_GetNthRoot_02(t *testing.T) {
 			"numStr1='%v' Error = '%v' ",numStr1, err.Error())
 	}
 
-	d2, err := d1.GetNthRoot(nthRoot, maxPrecision)
+	decNthRoot, err := Decimal{}.NewNumStr(nthRootStr)
+
+	if err != nil {
+		t.Errorf("Error returned by Decimal{}.NewNumStr(nthRootStr) " +
+			"nthRootStr='%v' Error = '%v' ",
+			nthRootStr, err.Error())
+	}
+
+	d2, err := d1.GetNthRoot(decNthRoot, maxPrecision)
 
 	if err != nil {
 		t.Errorf("Error returned from d1.GetNthRoot(nthRoot, maxPrecision). Error= %v ", err)
@@ -1625,8 +1641,8 @@ func TestDecimal_GetNthRoot_02(t *testing.T) {
 
 func TestDecimal_GetNthRoot_03(t *testing.T) {
 	numStr1 := "5604423.924"
-	nthRoot := 6
-	maxPrecision := 13
+	nthRootStr := "6"
+	maxPrecision := uint(13)
 	expected := "13.3276986078187"
 	eSignVal := 1
 
@@ -1637,7 +1653,15 @@ func TestDecimal_GetNthRoot_03(t *testing.T) {
 			"numStr1='%v' Error = '%v' ",numStr1, err.Error())
 	}
 
-	d2, err := d1.GetNthRoot(nthRoot, maxPrecision)
+	decNthRoot, err := Decimal{}.NewNumStr(nthRootStr)
+
+	if err != nil {
+		t.Errorf("Error returned by Decimal{}.NewNumStr(nthRootStr) " +
+			"nthRootStr='%v' Error = '%v' ",
+			nthRootStr, err.Error())
+	}
+
+	d2, err := d1.GetNthRoot(decNthRoot, maxPrecision)
 
 	if err != nil {
 		t.Errorf("Error returned from d1.GetNthRoot(nthRoot, maxPrecision). Error= %v ", err)
@@ -1659,8 +1683,8 @@ func TestDecimal_GetNthRoot_03(t *testing.T) {
 
 func TestDecimal_GetNthRoot_04(t *testing.T) {
 	numStr1 := "-27"
-	nthRoot := 3
-	maxPrecision := 2
+	nthRootStr := "3"
+	maxPrecision := uint(2)
 	expected := "-3.00"
 	eSignVal := -1
 
@@ -1671,7 +1695,15 @@ func TestDecimal_GetNthRoot_04(t *testing.T) {
 			"numStr1='%v' Error = '%v' ",numStr1, err.Error())
 	}
 
-	d2, err := d1.GetNthRoot(nthRoot, maxPrecision)
+	decNthRoot, err := Decimal{}.NewNumStr(nthRootStr)
+
+	if err != nil {
+		t.Errorf("Error returned by Decimal{}.NewNumStr(nthRootStr) " +
+			"nthRootStr='%v' Error = '%v' ",
+			nthRootStr, err.Error())
+	}
+
+	d2, err := d1.GetNthRoot(decNthRoot, maxPrecision)
 
 	if err != nil {
 		t.Errorf("Error returned from d1.GetNthRoot(nthRoot, maxPrecision). Error= %v ", err)
@@ -1693,8 +1725,8 @@ func TestDecimal_GetNthRoot_04(t *testing.T) {
 
 func TestDecimal_GetNthRoot_05(t *testing.T) {
 	numStr1 := "-27"
-	nthRoot := 4
-	maxPrecision := 2
+	nthRootStr := "4"
+	maxPrecision := uint(2)
 
 	d1, err := Decimal{}.NewNumStr(numStr1)
 
@@ -1703,7 +1735,15 @@ func TestDecimal_GetNthRoot_05(t *testing.T) {
 			"numStr1='%v' Error = '%v' ",numStr1, err.Error())
 	}
 
-	_, err = d1.GetNthRoot(nthRoot, maxPrecision)
+	decNthRoot, err := Decimal{}.NewNumStr(nthRootStr)
+
+	if err != nil {
+		t.Errorf("Error returned by Decimal{}.NewNumStr(nthRootStr) " +
+			"nthRootStr='%v' Error = '%v' ",
+			nthRootStr, err.Error())
+	}
+
+	_, err = d1.GetNthRoot(decNthRoot, maxPrecision)
 
 	if err == nil {
 		t.Error("Expected Error from d1.GetNthRoot(nthRoot, maxPrecision) for negative number with even nthRoot. No Error triggered")

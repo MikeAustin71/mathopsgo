@@ -223,7 +223,7 @@ func TestBigIntMathNthRoot_GetNthRootBigNum_07(t *testing.T) {
 	baseStr := "5604423.924"
 	nthRootStr := "0"
 	maxPrecision := uint(1)
-	expectedResult := "1.0"
+	expectedResult := "1"
 
 	bINumBase, err  := BigIntNum{}.NewNumStr(baseStr)
 

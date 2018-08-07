@@ -105,7 +105,9 @@ func (nthrt *BigIntMathNthRoot) Empty() {
 //	=======
 //
 //	BigIntNum - If successful the nth root result will be returned as a
-//							BigIntNum type.
+//							BigIntNum type. This returned BigIntNum nth root will contain
+//							numeric separators (decimal separator, thousands separator
+//							and currency symbol) copied from input parameter,'radicand'.
 //
 //	error			- If the calculation completes successfully, the 'error' type
 //							returned will be set equal to 'nil'. If an error is encountered
@@ -115,9 +117,7 @@ func (nthrt BigIntMathNthRoot) GetNthRoot(
 					radicand, nthRoot BigIntNum,
 						maxPrecision uint) (BigIntNum, error) {
 
-
 	ePrefix := "BigIntMathNthRoot.GetNthRoot() "
-
 
 	if radicand.GetSign() == -1 {
 
@@ -133,7 +133,7 @@ func (nthrt BigIntMathNthRoot) GetNthRoot(
 		if isEvenNum {
 			return BigIntNum{}.NewZero(0),
 				fmt.Errorf(ePrefix +
-					"INVALID ENTRY - Cannot calculate nthRoot of a negative number when nthRoot is even. " +
+					"INVALID ENTRY - Cannot calculate nthRoot of a negative radicand when nthRoot is even. " +
 					"Original Number= %v  nthRoot= %v\n", radicand.GetNumStr(), nthRoot.GetNumStr())
 		}
 
@@ -144,12 +144,23 @@ func (nthrt BigIntMathNthRoot) GetNthRoot(
 		return radicand, nil
 	}
 
-	// If nthRoot is zero, the result will always be '1'
-	if nthRoot.IsZero() {
-		return BigIntNum{}.NewOne(maxPrecision), nil
+	numSeps := radicand.GetNumericSeparatorsDto()
+	bigINumOne := BigIntNum{}.NewOne(0)
+
+	var err error
+
+	err = bigINumOne.SetNumericSeparatorsDto(numSeps)
+
+	if err != nil {
+		return BigIntNum{}.NewZero(0),
+		fmt.Errorf(ePrefix + "Error returned by bigINumOne.SetNumericSeparatorsDto(numSeps).")
 	}
 
-	bigINumOne := BigIntNum{}.NewOne(0)
+	// If nthRoot is zero, the result will always be '1'
+	if nthRoot.IsZero() {
+		return bigINumOne, nil
+	}
+
 	// Error if nthRoot == 1
 	if nthRoot.Cmp(bigINumOne) == 0 {
 		return BigIntNum{}.NewZero(0),
@@ -158,7 +169,6 @@ func (nthrt BigIntMathNthRoot) GetNthRoot(
 	}
 
 	var nthRootResult BigIntNum
-	var err error
 
 	if nthRoot.GetSign() == -1 {
 
@@ -180,6 +190,13 @@ func (nthrt BigIntMathNthRoot) GetNthRoot(
 					"Error='%v' \n", err.Error())
 		}
 
+	}
+
+	err = nthRootResult.SetNumericSeparatorsDto(numSeps)
+
+	if err != nil {
+		return BigIntNum{}.NewZero(0),
+			fmt.Errorf(ePrefix + "Error returned by nthRootResult.SetNumericSeparatorsDto(numSeps).")
 	}
 
 	return nthRootResult, nil
