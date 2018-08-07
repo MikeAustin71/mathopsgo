@@ -1470,6 +1470,34 @@ func (dec Decimal) NewI64(i64 int64, precision uint) (Decimal, error) {
 	return d2, nil
 }
 
+// NewFive - Returns a Decimal Type with a value equal to '5' (five).
+// The number of zeros created after the decimal place holder
+// (fractional digits) is determined by the input parameter 'precision'.
+// To create an integer with a value equal to '5', set 'precision' equal
+// to zero (0).
+//
+// Examples:
+// =========
+//
+// 'precision'
+//   value 					Result
+// 		0								5
+//		1								5.0
+//    2								5.00
+// 		3								5.000
+//
+// The new Decimal instance returned by this method will contain USA default
+// numeric separators (decimal separator, thousands separator and currency symbol).
+//
+func (dec Decimal) NewFive(precision uint) Decimal {
+
+	bINum := BigIntNum{}.NewFive(precision)
+	d2 := Decimal{}.New()
+	d2.SetBigIntNum(bINum)
+
+	return d2
+}
+
 // NewFloat32 - Creates a new Decimal instance based on a float32
 // input.
 func (dec Decimal) NewFloat32(f32 float32) (Decimal, error) {
@@ -1715,6 +1743,34 @@ func (dec Decimal) NewNumStrPrecision(numStr string, precision uint, roundResult
 	return d2, nil
 }
 
+// NewOne - Returns a Decimal Type with a value equal to '1' (one).
+// The number of zeros created after the decimal place holder
+// (fractional digits) is determined by the input parameter 'precision'.
+// To create an integer with a value equal to '1', set 'precision' equal
+// to zero (0).
+//
+// Examples:
+// =========
+//
+// 'precision'
+//   value 					Result
+// 		0								1
+//		1								1.0
+//    2								1.00
+// 		3								1.000
+//
+// The new Decimal instance returned by this method will contain USA default
+// numeric separators (decimal separator, thousands separator and currency symbol).
+//
+func (dec Decimal) NewOne(precision uint) Decimal {
+
+	bINum := BigIntNum{}.NewOne(precision)
+	d2 := Decimal{}.New()
+	d2.SetNumericSeparatorsToDefaultIfEmpty()
+	d2.SetBigIntNum(bINum)
+
+	return d2
+}
 
 // NewRationalNum - Creates a new Decimal instance based on input parameters consisting
 // of a Rational Number (*big.Rat) and the specified 'precision' to be implemented in
@@ -1722,7 +1778,7 @@ func (dec Decimal) NewNumStrPrecision(numStr string, precision uint, roundResult
 //
 // For information on *big.Rat see https://golang.org/pkg/math/big/
 //
-func (dec *Decimal) NewRationalNum(bigRat *big.Rat, maxPrecision uint ) (Decimal, error) {
+func (dec Decimal) NewRationalNum(bigRat *big.Rat, maxPrecision uint ) (Decimal, error) {
 
 	ePrefix := "Decimal.NewRationalNum() "
 
@@ -1752,15 +1808,114 @@ func (dec *Decimal) NewRationalNum(bigRat *big.Rat, maxPrecision uint ) (Decimal
 	return d2, nil
 }
 
-// NewZero - Creates a New Decimal Instance with a
-// value of zero. Input parameter 'precision' indicates
-// the number of zeros formatted to the right of the
-// decimal point.
+// NewTen - Returns a Decimal Type with a value equal to '10' (ten).
+// The number of zeros created after the decimal place holder
+// (fractional digits) is determined by the input parameter 'precision'.
+// To create an integer with a value equal to '10', set 'precision' equal
+// to zero (0).
+//
+// Examples:
+// =========
+//
+// 'precision'
+//   value 					Result
+// 		0							 10
+//		1							 10.0
+//    2							 10.00
+// 		3							 10.000
+//
+// The new Decimal instance returned by this method will contain USA default
+// numeric separators (decimal separator, thousands separator and currency symbol).
+//
+func (dec Decimal) NewTen(precision uint) Decimal {
+
+	bINum := BigIntNum{}.NewTen(precision)
+	d2 := Decimal{}.New()
+	d2.SetBigIntNum(bINum)
+
+	return d2
+}
+
+// NewThree - Returns a Decimal Type with a value equal to '3' (three).
+// The number of zeros created after the decimal place holder
+// (fractional digits) is determined by the input parameter 'precision'.
+// To create an integer with a value equal to '3', set 'precision' equal
+// to zero (0).
+//
+// Examples:
+// =========
+//
+// 'precision'
+//   value 					Result
+// 		0								3
+//		1								3.0
+//    2								3.00
+// 		3								3.000
+//
+// The new Decimal instance returned by this method will contain USA default
+// numeric separators (decimal separator, thousands separator and currency symbol).
+//
+func (dec Decimal) NewThree(precision uint) Decimal {
+
+	bINum := BigIntNum{}.NewThree(precision)
+	d2 := Decimal{}.New()
+	d2.SetBigIntNum(bINum)
+
+	return d2
+}
+
+// NewTwo - Returns a Decimal Type with a value equal to '2' (two).
+// The number of zeros created after the decimal place holder
+// (fractional digits) is determined by the input parameter 'precision'.
+// To create an integer with a value equal to '2', set 'precision' equal
+// to zero (0).
+//
+// Examples:
+// =========
+//
+// 'precision'
+//   value 					Result
+// 		0								2
+//		1								2.0
+//    2								2.00
+// 		3								2.000
+//
+// The new Decimal instance returned by this method will contain USA default
+// numeric separators (decimal separator, thousands separator and currency symbol).
+//
+func (dec Decimal) NewTwo(precision uint) Decimal {
+
+	bINum := BigIntNum{}.NewTwo(precision)
+	d2 := Decimal{}.New()
+	d2.SetBigIntNum(bINum)
+
+	return d2
+}
+
+// NewZero - Creates a New Decimal Instance with a value of zero. Input
+// parameter 'precision' indicates the number of zeros formatted to the
+// right of the decimal place.
+//
+// Examples:
+// =========
+//
+// 'precision'
+//   value 					Result
+// 		0								0
+//		1								0.0
+//    2								0.00
+// 		3								0.000
+//
+// The new Decimal instance returned by this method will contain USA default
+// numeric separators (decimal separator, thousands separator and currency symbol).
 //
 func (dec Decimal) NewZero(precision uint) Decimal {
-	d2 := Decimal{}
+	
+	biNum := BigIntNum{}.NewZero(precision)
+	
+	d2 := Decimal{}.New()
 	d2.SetNumericSeparatorsToDefaultIfEmpty()
-	d2.SetBigInt(big.NewInt(0), precision)
+	d2.SetBigIntNum(biNum)
 
 	return d2
 }
