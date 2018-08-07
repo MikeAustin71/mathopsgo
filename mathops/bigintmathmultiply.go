@@ -326,6 +326,7 @@ func (bMultiply BigIntMathMultiply) MultiplyBigIntNumByTenToPower (
 				"Error='%v'", err.Error())
 	}
 
+	// result numSeps are copied from from 'base'
 	result := bMultiply.MultiplyBigIntNums(base, scale)
 
 	if result.precision > maxPrecision {
