@@ -124,9 +124,10 @@ func (bNum *BigIntNum) ChangeSign() {
 //
 // Note: Unlike method CmpBigInt() below, this method does more than
 // just compare the root *big.Int. In making it's comparision, this
-// method takes into account, numeric sign values and precision. Therefore,
-// this method provides a true and comprehensive picture of the relationship
-// between two BigIntNum values.
+// method takes into account, numeric sign values and precision. Therefore
+// this method effectively compares numeric values. As such, this method
+// provides a true and comprehensive picture of the relationship between
+// two BigIntNum values.
 //
 // Return Values:
 // bNum == bigIntNum 				Return  0
@@ -247,7 +248,12 @@ func (bNum *BigIntNum) Empty() {
 }
 
 // Equal - Compares two BigIntNum instances and returns 'true'
-// if the two instances are equal in value.
+// if the two instances are equal in all respects.
+//
+// Be careful, two BigIntNum instances could have equal
+// values with different precisions. In that case this
+// method would return 'false'. To test for equivalent
+// values, see method BigIntNum.EqualValue(), below.
 //
 // If they are not Equal, the method returns 'false'.
 //
@@ -274,6 +280,23 @@ func (bNum *BigIntNum) Equal(b2 BigIntNum) bool {
 	}
 
 	return true
+}
+
+// EqualValue - Compares the values of the current BigIntNum instance
+// and the input parameter BigIntNum, 'b2'. If the two numeric values
+// are equal, this method returns 'true'.
+//
+func (bNum *BigIntNum) EqualValue(b2 BigIntNum) bool {
+
+	difference := BigIntMathSubtract{}.SubtractBigIntNums(
+									bNum.CopyOut(),
+											b2)
+
+	if difference.IsZero() {
+		return true
+	}
+
+	return false
 }
 
 // Floor - returns the greatest integer less than or equal to

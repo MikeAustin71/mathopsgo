@@ -360,10 +360,29 @@ func (dec *Decimal) Divide(divisor Decimal, maxPrecision uint) (Decimal, error) 
 
 // Equal - Returns true if the input Decimal instance is equal
 // in all respects to the current Decimal instance.
+//
+// Note: this method will return false if two decimal instances
+// being compared have equal numeric values but different precisions
+// or different numeric separators.
+//
+// To perform an equivalency test of numeric values, see method
+// Decimal{}.EqualValue() below.
+//
 func (dec *Decimal) Equal(dec2 Decimal) bool {
 
 	return dec.bigINum.Equal(dec2.bigINum)
 }
+
+// EqualValue - Returns 'true' if the input Decimal instance holds
+// a numeric value equal to that of the current Decimal
+// instance.
+//
+func (dec *Decimal) EqualValue(dec2 Decimal) bool {
+
+	return dec.bigINum.EqualValue(dec2.bigINum)
+}
+
+
 
 // Empty - Sets all values of the current Decimal's
 // fields to their 'zero' values.
