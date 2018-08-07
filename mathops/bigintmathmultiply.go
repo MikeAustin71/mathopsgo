@@ -315,7 +315,7 @@ func (bMultiply BigIntMathMultiply) MultiplyBigIntNumByTenToPower (
 
 	ePrefix := "BigIntMathMultiply.MultiplyByTenToPower() "
 
-	bigINumTen := BigIntNum{}.NewBigInt(big.NewInt(10), 0)
+	bigINumTen := BigIntNum{}.NewTen(0)
 
 	scale, err := BigIntMathPower{}.Pwr(bigINumTen, tenExponent, (maxPrecision + 20))
 
