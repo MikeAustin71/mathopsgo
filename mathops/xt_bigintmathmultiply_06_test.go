@@ -114,8 +114,9 @@ func TestBigIntMathMultiply_MultiplyBigIntNumByTenToPower_03(t *testing.T) {
 	tenExponentStr := "3.9"
   // 10^3.9 = 7943.2823472428150206591828283639
 
-  expectedStr := "278014,8821534985257230713989927365"
+  expectedStr := "278014,88215349852572307139899274"
 	// 278014.8821534985257230713989927365
+	maxPrecision := uint(26)
 
 	expectedNumSeps := NumericSeparatorDto{}.New()
 	frenchDecSeparator := ','
@@ -146,7 +147,7 @@ func TestBigIntMathMultiply_MultiplyBigIntNumByTenToPower_03(t *testing.T) {
 			tenExponentStr, alternateNumSeps.String(), err.Error())
 	}
 
-	result, err := BigIntMathMultiply{}.MultiplyBigIntNumByTenToPower(baseBINum, tenExpBINum, 28)
+	result, err := BigIntMathMultiply{}.MultiplyBigIntNumByTenToPower(baseBINum, tenExpBINum, maxPrecision)
 
 	actualNumStr := result.GetNumStr()
 

@@ -292,10 +292,12 @@ func (bMultiply BigIntMathMultiply) MultiplyBigIntNumSeries(
 // The exponent can be a negative value and/or a fractional value.
 //
 // Input parameter 'maxPrecision' is used to control the maximum precision for the
-// operation 10^tenExponent. Precision is defined as the the number of fractional
-// digits to the right of the decimal point. Maximum precision therefore controls
-// the maximum number of decimal digits to the right of the decimal place. Be
-// advised that these calculations can support very large precision values.
+// result returned by this method. Precision is defined as the the number of fractional
+// digits to the right of the decimal place. Maximum precision therefore controls
+// the maximum number of decimal digits to the right of the decimal place. If the
+// returned result from this operation contains a number of fractional digits which
+// is greater than 'maxPrecision' the result will be rounded to 'maxPrecision' decimal
+// places. Be advised that these calculations can support very large precision values.
 //
 // Return Value
 // ============
@@ -303,6 +305,9 @@ func (bMultiply BigIntMathMultiply) MultiplyBigIntNumSeries(
 // multiplication operation described above. This returned BigIntNum multiplication
 // 'result' will contain numeric separators (decimal separator, thousands separator
 // and currency symbol) copied from input parameter,'base'.
+//
+// If the precision of the return value precision exceeds input parameter 'maxPrecision',
+// the return value will be rounded to 'maxPrecision' decimal places.
 //
 func (bMultiply BigIntMathMultiply) MultiplyBigIntNumByTenToPower (
 																			base, tenExponent BigIntNum,
@@ -312,7 +317,7 @@ func (bMultiply BigIntMathMultiply) MultiplyBigIntNumByTenToPower (
 
 	bigINumTen := BigIntNum{}.NewBigInt(big.NewInt(10), 0)
 
-	scale, err := BigIntMathPower{}.Pwr(bigINumTen, tenExponent, maxPrecision)
+	scale, err := BigIntMathPower{}.Pwr(bigINumTen, tenExponent, (maxPrecision + 20))
 
 	if err != nil {
 		return BigIntNum{}.NewZero(0),
@@ -321,7 +326,13 @@ func (bMultiply BigIntMathMultiply) MultiplyBigIntNumByTenToPower (
 				"Error='%v'", err.Error())
 	}
 
-	return bMultiply.MultiplyBigIntNums(base, scale), nil
+	result := bMultiply.MultiplyBigIntNums(base, scale)
+
+	if result.precision > maxPrecision {
+		result.RoundToDecPlace(maxPrecision)
+	}
+
+	return result, nil
 }
 
 // MultiplyDecimal - Receives two Decimal instances and multiplies their
