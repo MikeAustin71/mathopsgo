@@ -28,6 +28,11 @@ type BigIntMathPower struct {
 //  3.7						-2.8							32 								 0.02564691737189623971146450249457
 // -2							-3.8							32								 0.07179364718731468792491418417362
 // -2              3.8              30								13.928809012737986226180320279676
+//
+// The return value, a type BigIntNum, represents the result of the base^exponent operation described above.
+// This returned BigIntNum 'result' will contain numeric separators (decimal separator, thousands separator
+// and currency symbol) copied from input parameter,'base'.
+//
 func (bIPwr BigIntMathPower) Pwr(base, exponent BigIntNum, maxPrecision uint) (BigIntNum, error) {
 	ePrefix := "BigIntMathPower.Pwr() "
 
@@ -42,6 +47,8 @@ func (bIPwr BigIntMathPower) Pwr(base, exponent BigIntNum, maxPrecision uint) (B
 	if exponent.IsZero() {
 		return BigIntNum{}.NewOne(0), nil
 	}
+
+	numSeps := base.GetNumericSeparatorsDto()
 
 	bigOne := BigIntNum{}.NewOne(exponent.GetPrecisionUint())
 
@@ -76,7 +83,6 @@ func (bIPwr BigIntMathPower) Pwr(base, exponent BigIntNum, maxPrecision uint) (B
 						"base='%v' exponent='%v' maxPrecision='%v' Error='%v' ",
 						base.GetNumStr(), exponent.GetNumStr(), maxPrecision, err.Error())
 			}
-
 		}
 
 	} else {
@@ -110,6 +116,8 @@ func (bIPwr BigIntMathPower) Pwr(base, exponent BigIntNum, maxPrecision uint) (B
 	if result.precision > maxPrecision {
 		result.SetPrecision(maxPrecision)
 	}
+
+	err = result.SetNumericSeparatorsDto(numSeps)
 
 	return result, nil
 }

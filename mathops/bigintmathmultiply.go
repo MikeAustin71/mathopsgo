@@ -283,6 +283,47 @@ func (bMultiply BigIntMathMultiply) MultiplyBigIntNumSeries(
 	return finalResult
 }
 
+// MultiplyBigIntNumByTenToPower - Receives two BigIntNum input parameters, 'base'
+// and 'tenExponent'. This method then proceeds to multiply 'base' time 10 to the
+// exponent, 'tenExponent'.
+//
+//		result = base X 10^tenExponent
+//
+// The exponent can be a negative value and/or a fractional value.
+//
+// Input parameter 'maxPrecision' is used to control the maximum precision for the
+// operation 10^tenExponent. Precision is defined as the the number of fractional
+// digits to the right of the decimal point. Maximum precision therefore controls
+// the maximum number of decimal digits to the right of the decimal place. Be
+// advised that these calculations can support very large precision values.
+//
+// Return Value
+// ============
+// The return value is of type BigIntNum and represents the result of the
+// multiplication operation described above. This returned BigIntNum multiplication
+// 'result' will contain numeric separators (decimal separator, thousands separator
+// and currency symbol) copied from input parameter,'base'.
+//
+func (bMultiply BigIntMathMultiply) MultiplyBigIntNumByTenToPower (
+																			base, tenExponent BigIntNum,
+																				maxPrecision uint) (BigIntNum, error) {
+
+	ePrefix := "BigIntMathMultiply.MultiplyByTenToPower() "
+
+	bigINumTen := BigIntNum{}.NewBigInt(big.NewInt(10), 0)
+
+	scale, err := BigIntMathPower{}.Pwr(bigINumTen, tenExponent, maxPrecision)
+
+	if err != nil {
+		return BigIntNum{}.NewZero(0),
+			fmt.Errorf(ePrefix +
+				"Error returned by BigIntMathPower{}.Pwr(bigINumTen, tenExponent, 100) " +
+				"Error='%v'", err.Error())
+	}
+
+	return bMultiply.MultiplyBigIntNums(base, scale), nil
+}
+
 // MultiplyDecimal - Receives two Decimal instances and multiplies their
 // numeric values. The result or 'product' is returned as a 'BigIntNum'
 // type.
