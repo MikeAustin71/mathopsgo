@@ -339,10 +339,9 @@ func TestDecimal_ShiftPrecisionRight_06(t *testing.T) {
 
 }
 
-
 func TestDecimal_SquareRoot_01(t *testing.T) {
 	numStr1 := "2686.5"
-	maxPrecision := 30
+	maxPrecision := uint(30)
 	expected := "51.831457629512986714934518985668"
 	eSignVal := 1
 
@@ -374,7 +373,7 @@ func TestDecimal_SquareRoot_01(t *testing.T) {
 
 func TestDecimal_SquareRoot_02(t *testing.T) {
 	numStr1 := "390626"
-	maxPrecision := 29
+	maxPrecision := uint(29)
 	expected := "625.00079999948800065535895142588"
 	eSignVal := 1
 
@@ -406,7 +405,7 @@ func TestDecimal_SquareRoot_02(t *testing.T) {
 
 func TestDecimal_SquareRoot_03(t *testing.T) {
 	numStr1 := "-390626"
-	maxPrecision := 29
+	maxPrecision := uint(29)
 
 	d1, err := Decimal{}.NewNumStr(numStr1)
 

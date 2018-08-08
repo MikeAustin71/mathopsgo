@@ -2896,7 +2896,7 @@ func (dec *Decimal) ShiftPrecisionRight(shiftRightPlaces uint) error {
 // will contain	numeric separators (decimal separator, thousands separator and currency symbol)
 // copied from the current Decimal instance (dec).
 //
-func (dec *Decimal) SquareRoot(maxPrecision int) (Decimal, error) {
+func (dec *Decimal) SquareRoot(maxPrecision uint) (Decimal, error) {
 
 	ePrefix := "Decimal.SquareRoot() "
 
