@@ -329,7 +329,7 @@ func (iaDivide IntAryMathDivide) DivideByTenToPower(ia *IntAry, power uint) {
 
 }
 
-// DivideByTwo - Receives an input parameter of pointer to
+// DivideByTwoQuoMod - Receives an input parameter of pointer to
 // an IntAry instance ('ia'). 'ia' is then divided by two (2)
 // and the result is returned in the input parameter 'ia'.
 //

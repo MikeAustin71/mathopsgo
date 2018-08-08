@@ -1424,10 +1424,10 @@ func TestBigIntNum_DivideByTwo_01(t *testing.T) {
 			err.Error())
 	}
 
-	quotient, modulo, err := base.DivideByTwo(maxPrecision)
+	quotient, modulo, err := base.DivideByTwoQuoMod(maxPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by base.DivideByTwo(maxPrecision). Error='%v' ",
+		t.Errorf("Error returned by base.DivideByTwoQuoMod(maxPrecision). Error='%v' ",
 			err.Error())
 	}
 
@@ -1462,10 +1462,10 @@ func TestBigIntNum_DivideByTwo_02(t *testing.T) {
 			err.Error())
 	}
 
-	quotient, modulo, err := base.DivideByTwo(maxPrecision)
+	quotient, modulo, err := base.DivideByTwoQuoMod(maxPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by base.DivideByTwo(maxPrecision). Error='%v' ",
+		t.Errorf("Error returned by base.DivideByTwoQuoMod(maxPrecision). Error='%v' ",
 			err.Error())
 	}
 

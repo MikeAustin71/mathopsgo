@@ -200,7 +200,151 @@ func (bNum *BigIntNum) CopyOut() BigIntNum {
 	return b2
 }
 
-// DivideByTwo - Divides the numerical value of the current BigIntNum by two ('2')
+// DivideByFiveFracQuo - Divides the numerical value of the current BigIntNum by
+// five ('5') and returns the resulting quotient as a floating point value expressed
+// as a BigIntNum Type.
+//
+// 												quotient = bNum / 5
+//
+// Input parameter 'maxPrecision' is used to control the maximum precision of the
+// resulting fractional quotient. Precision is defined as the the number of fractional
+// digits to the right of the decimal point. Be advised that these calculations can support
+// very large precision values.
+//
+func (bNum *BigIntNum) DivideByFiveFracQuo(
+	maxPrecision uint) (fracQuotient BigIntNum, err error) {
+
+	ePrefix := "BigIntNum.DivideByFiveFracQuo() "
+
+	var errx error
+
+	fracQuotient, errx =
+		BigIntMathDivide{}.BigIntNumDivideByFiveFracQuo(bNum.CopyOut(), maxPrecision)
+
+	if errx != nil {
+		fracQuotient = BigIntNum{}.New()
+		err = fmt.Errorf(ePrefix + "Error returned by " +
+			"BigIntMathDivide{}.BigIntNumDivideByFiveFracQuo(bNum.CopyOut(), maxPrecision) " +
+			"bNum='%v' Error='%v' \n",
+			bNum.GetNumStr(), errx.Error())
+
+		return fracQuotient, err
+	}
+
+	err = nil
+
+	return fracQuotient, err
+}
+
+// DivideByTenFracQuo - Divides the numerical value of the current BigIntNum by
+// ten ('10') and returns the resulting quotient as a floating point value expressed
+// as a BigIntNum Type.
+//
+// 												quotient = bNum / 10
+//
+// Input parameter 'maxPrecision' is used to control the maximum precision of the
+// resulting fractional quotient. Precision is defined as the the number of fractional
+// digits to the right of the decimal point. Be advised that these calculations can support
+// very large precision values.
+//
+func (bNum *BigIntNum) DivideByTenFracQuo(
+	maxPrecision uint) (fracQuotient BigIntNum, err error) {
+
+	ePrefix := "BigIntNum.DivideByTenFracQuo() "
+
+	var errx error
+
+	fracQuotient, errx =
+		BigIntMathDivide{}.BigIntNumDivideByTenFracQuo(bNum.CopyOut(), maxPrecision)
+
+	if errx != nil {
+		fracQuotient = BigIntNum{}.New()
+		err = fmt.Errorf(ePrefix + "Error returned by " +
+			"BigIntMathDivide{}.BigIntNumDivideByTenFracQuo(bNum.CopyOut(), maxPrecision) " +
+			"bNum='%v' Error='%v' \n",
+			bNum.GetNumStr(), errx.Error())
+
+		return fracQuotient, err
+	}
+
+	err = nil
+
+	return fracQuotient, err
+}
+
+// DivideByThreeFracQuo - Divides the numerical value of the current BigIntNum by
+// three ('3') and returns the resulting quotient as a floating point value expressed
+// as a BigIntNum Type.
+//
+// 												quotient = bNum / 3
+//
+// Input parameter 'maxPrecision' is used to control the maximum precision of the
+// resulting fractional quotient. Precision is defined as the the number of fractional
+// digits to the right of the decimal point. Be advised that these calculations can support
+// very large precision values.
+//
+func (bNum *BigIntNum) DivideByThreeFracQuo(
+	maxPrecision uint) (fracQuotient BigIntNum, err error) {
+
+	ePrefix := "BigIntNum.DivideByThreeFracQuo() "
+
+	var errx error
+
+	fracQuotient, errx =
+		BigIntMathDivide{}.BigIntNumDivideByThreeFracQuo(bNum.CopyOut(), maxPrecision)
+
+	if errx != nil {
+		fracQuotient = BigIntNum{}.New()
+		err = fmt.Errorf(ePrefix + "Error returned by " +
+			"BigIntMathDivide{}.BigIntNumDivideByThreeFracQuo(bNum.CopyOut(), maxPrecision) " +
+			"bNum='%v' Error='%v' \n",
+			bNum.GetNumStr(), errx.Error())
+
+		return fracQuotient, err
+	}
+
+	err = nil
+
+	return fracQuotient, err
+}
+
+// DivideByTwoFracQuo - Divides the numerical value of the current BigIntNum
+// by two ('2') and returns the resulting quotient as a floating point value
+// expressed as a BigIntNum type.
+//
+// 												quotient = bNum / 2
+//
+// Input parameter 'maxPrecision' is used to control the maximum precision of the
+// resulting fractional quotient. Precision is defined as the the number of fractional
+// digits to the right of the decimal point. Be advised that these calculations can
+// support very large precision values.
+//
+func (bNum *BigIntNum) DivideByTwoFracQuo(
+	maxPrecision uint) (fracQuotient BigIntNum, err error) {
+
+	ePrefix := "BigIntNum.DivideByTwoFracQuo() "
+
+	var errx error
+
+	fracQuotient, errx =
+		BigIntMathDivide{}.BigIntNumDivideByTwoFracQuo(bNum.CopyOut(), maxPrecision)
+
+	if errx != nil {
+		fracQuotient = BigIntNum{}.New()
+		err = fmt.Errorf(ePrefix + "Error returned by " +
+			"BigIntMathDivide{}.BigIntNumDivideByTwoFracQuo(bNum.CopyOut(), maxPrecision) " +
+			"bNum='%v' Error='%v' \n",
+			bNum.GetNumStr(), errx.Error())
+
+		return fracQuotient, err
+	}
+
+	err = nil
+
+	return fracQuotient, err
+}
+
+// DivideByTwoQuoMod - Divides the numerical value of the current BigIntNum by two ('2')
 // and returns the result as an integer quotient and a floating point modulo.
 //
 // If modulo equals zero ('0'), it signals the the current numerical value is 'even'
@@ -211,22 +355,22 @@ func (bNum *BigIntNum) CopyOut() BigIntNum {
 // to the right of the decimal point. Be advised that these calculations can support
 // very large precision values.
 //
-func (bNum *BigIntNum) DivideByTwo(maxPrecision uint) (intQuotient, modulo BigIntNum, err error) {
+func (bNum *BigIntNum) DivideByTwoQuoMod(
+												maxPrecision uint) (intQuotient,	modulo BigIntNum, err error) {
 
-	biNum2 := BigIntNum{}.NewTwo(0)
-
+	ePrefix := "BigIntNum) DivideByTwoQuoMod() "
 	var errx error
 
 	intQuotient, modulo, errx =
-			BigIntMathDivide{}.BigIntNumQuotientMod(bNum.CopyOut(), biNum2, maxPrecision)
+			BigIntMathDivide{}.BigIntNumDivideByTwoQuoMod(bNum.CopyOut(), maxPrecision)
 
 	if errx != nil {
 		intQuotient = BigIntNum{}.New()
 		modulo = BigIntNum{}.New()
-		err = fmt.Errorf("BigIntNum.DivideByTwo() - Error returned by " +
-			"BigIntMathDivide{}.BigIntNumQuotientMod(bNum.CopyOut(), biNum2, 15) " +
-			"bNum='%v' biNum2='%v' Error='%v'",
-			bNum.GetNumStr(), biNum2.GetNumStr(), err.Error())
+		err = fmt.Errorf(ePrefix + "Error returned by BigIntMathDivide{}." + 
+			"BigIntNumDivideByTwoQuoMod(bNum.CopyOut(), maxPrecision). " +
+			"bNum='%v' Error='%v'\n",
+			bNum.GetNumStr(), errx.Error())
 
 		return intQuotient, modulo, err
 	}
@@ -1708,6 +1852,77 @@ func (bNum *BigIntNum) IsZero() bool {
 	}
 
 	return false
+}
+
+// Multiply - Multiplies the numerical value of the current BigIntNum
+// instance times input parameter 'b2'. The product is returned as a 
+// BigIntNum.
+//
+//									product = bNum X b2
+//
+// The BigIntNum instance returned by this method will contain numeric
+// separators (decimal separator, thousands separator and currency
+// symbol) copied from the original BigIntNum instance.
+// 
+func (bNum *BigIntNum) Multiply(b2 BigIntNum) BigIntNum {
+	
+	return BigIntMathMultiply{}.MultiplyBigIntNums(bNum.CopyOut(), b2) 
+}
+
+// MultiplyByFive - Multiplies the numerical value of the current BigIntNum
+// instance times five (5). The product is returned as a BigIntNum.
+//
+//										product = bNum X 5
+//
+// The BigIntNum instance returned by this method will contain numeric
+// separators (decimal separator, thousands separator and currency
+// symbol) copied from the original BigIntNum instance.
+// 
+func (bNum *BigIntNum) MultiplyByFive() BigIntNum {
+
+	return BigIntMathMultiply{}.MultiplyBigIntNumByFive(bNum.CopyOut())
+}
+
+// MultiplyByTen - Multiplies the numerical value of the current BigIntNum
+// instance times ten (10). The product is returned as a BigIntNum.
+//
+//										product = bNum X 10
+//
+// The BigIntNum instance returned by this method will contain numeric
+// separators (decimal separator, thousands separator and currency
+// symbol) copied from the original BigIntNum instance.
+// 
+func (bNum *BigIntNum) MultiplyByTen() BigIntNum {
+
+	return BigIntMathMultiply{}.MultiplyBigIntNumByTen(bNum.CopyOut())
+}
+
+// MultiplyByThree - Multiplies the numerical value of the current BigIntNum
+// instance times three (3). The product is returned as a BigIntNum.
+//
+//										product = bNum X 3
+//
+// The BigIntNum instance returned by this method will contain numeric
+// separators (decimal separator, thousands separator and currency
+// symbol) copied from the original BigIntNum instance.
+// 
+func (bNum *BigIntNum) MultiplyByThree() BigIntNum {
+
+	return BigIntMathMultiply{}.MultiplyBigIntNumByThree(bNum.CopyOut())
+}
+
+// MultiplyByTwo - Multiplies the numerical value of the current BigIntNum
+// instance times two (2). The product is returned as a BigIntNum.
+//
+//										product = bNum X 2
+//
+// The BigIntNum instance returned by this method will contain numeric
+// separators (decimal separator, thousands separator and currency
+// symbol) copied from the original BigIntNum instance.
+// 
+func (bNum *BigIntNum) MultiplyByTwo() BigIntNum {
+	
+	return BigIntMathMultiply{}.MultiplyBigIntNumByTwo(bNum.CopyOut()) 
 }
 
 // New - returns a new BigIntNum instance initialized to

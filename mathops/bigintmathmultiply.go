@@ -283,6 +283,74 @@ func (bMultiply BigIntMathMultiply) MultiplyBigIntNumSeries(
 	return finalResult
 }
 
+// MultiplyBigIntNumByTwo - Receives a BigIntNum input parameter 'base' and then
+// proceeds to multiply this value times two (2).
+//
+// 								product = base X 2
+//
+// The product of this multiplication operation is returned as a BigIntNum.
+// This returned BigIntNum 'product' will contain numeric separators (decimal
+// separator, thousands separator and currency symbol) copied from input
+// parameter,'base'.
+//
+func (bMultiply BigIntMathMultiply) MultiplyBigIntNumByTwo(base BigIntNum) BigIntNum {
+	
+	bPair := BigIntPair{}.NewBigIntNum(base, BigIntNum{}.NewTwo(0))
+	
+	return bMultiply.MultiplyPair(bPair)
+} 
+
+// MultiplyBigIntNumByThree - Receives a BigIntNum input parameter 'base' and then
+// proceeds to multiply this value times three (3).
+//
+// 								product = base X 3
+//
+// The product of this multiplication operation is returned as a BigIntNum.
+// This returned BigIntNum 'product' will contain numeric separators (decimal
+// separator, thousands separator and currency symbol) copied from input
+// parameter,'base'.
+//
+func (bMultiply BigIntMathMultiply) MultiplyBigIntNumByThree(base BigIntNum) BigIntNum {
+	
+	bPair := BigIntPair{}.NewBigIntNum(base, BigIntNum{}.NewThree(0))
+	
+	return bMultiply.MultiplyPair(bPair)
+}
+
+// MultiplyBigIntNumByFive - Receives a BigIntNum input parameter 'base' and then
+// proceeds to multiply this value times five (5).
+//
+// 								product = base X 5
+//
+// The product of this multiplication operation is returned as a BigIntNum.
+// This returned BigIntNum 'product' will contain numeric separators (decimal
+// separator, thousands separator and currency symbol) copied from input
+// parameter,'base'.
+//
+func (bMultiply BigIntMathMultiply) MultiplyBigIntNumByFive(base BigIntNum) BigIntNum {
+	
+	bPair := BigIntPair{}.NewBigIntNum(base, BigIntNum{}.NewFive(0))
+	
+	return bMultiply.MultiplyPair(bPair)
+}
+
+// MultiplyBigIntNumByTen - Receives a BigIntNum input parameter 'base' and then
+// proceeds to multiply this value times ten (10).
+//
+// 								product = base X 10
+//
+// The product of this multiplication operation is returned as a BigIntNum.
+// This returned BigIntNum 'product' will contain numeric separators (decimal
+// separator, thousands separator and currency symbol) copied from input
+// parameter,'base'.
+//
+func (bMultiply BigIntMathMultiply) MultiplyBigIntNumByTen(base BigIntNum) BigIntNum {
+
+	bPair := BigIntPair{}.NewBigIntNum(base, BigIntNum{}.NewTen(0))
+
+	return bMultiply.MultiplyPair(bPair)
+}
+
 // MultiplyBigIntNumByTenToPower - Receives two BigIntNum input parameters, 'base'
 // and 'tenExponent'. This method then proceeds to multiply 'base' time 10 to the
 // exponent, 'tenExponent'.
@@ -317,7 +385,7 @@ func (bMultiply BigIntMathMultiply) MultiplyBigIntNumByTenToPower (
 
 	bigINumTen := BigIntNum{}.NewTen(0)
 
-	scale, err := BigIntMathPower{}.Pwr(bigINumTen, tenExponent, (maxPrecision + 20))
+	scale, err := BigIntMathPower{}.Pwr(bigINumTen, tenExponent, maxPrecision + 20)
 
 	if err != nil {
 		return BigIntNum{}.NewZero(0),

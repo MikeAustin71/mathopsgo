@@ -1505,7 +1505,7 @@ func (ia *IntAry) DecrementIntegerOne() error {
 	return nil
 }
 
-// DivideByTwo - Divides the current value of
+// DivideByTwoQuoMod - Divides the current value of
 // intAry by 2.
 func (ia *IntAry) DivideByTwo() {
 
