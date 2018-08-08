@@ -1408,6 +1408,82 @@ func TestBigIntNum_Decimal_02(t *testing.T) {
 
 }
 
+func TestBigIntNum_DivideByTwo_01(t *testing.T) {
+
+	numStr := "658.78562347"
+	// expectedNumStr := "329.392811735"
+	expectedQuoStr := "329"
+	expectedModStr := "0.78562347"
+
+	maxPrecision := uint(10)
+
+	base, err := BigIntNum{}.NewNumStr(numStr)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(num1Str). Error='%v' ",
+			err.Error())
+	}
+
+	quotient, modulo, err := base.DivideByTwo(maxPrecision)
+
+	if err != nil {
+		t.Errorf("Error returned by base.DivideByTwo(maxPrecision). Error='%v' ",
+			err.Error())
+	}
+
+	actualNumStr := quotient.GetNumStr()
+
+	if expectedQuoStr != actualNumStr {
+		t.Errorf("Error: Expected quotient NumStr='%v'. Instead, quotient NumStr='%v'. ",
+			expectedQuoStr, actualNumStr)
+	}
+
+	actualNumStr = modulo.GetNumStr()
+
+	if expectedModStr != actualNumStr {
+		t.Errorf("Error: Expected modulo NumStr='%v'. Instead, modulo NumStr='%v'. ",
+			expectedModStr, actualNumStr)
+	}
+}
+
+func TestBigIntNum_DivideByTwo_02(t *testing.T) {
+
+	numStr := "8"
+
+	expectedQuoStr := "4"
+	expectedModStr := "0"
+
+	maxPrecision := uint(10)
+
+	base, err := BigIntNum{}.NewNumStr(numStr)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(num1Str). Error='%v' ",
+			err.Error())
+	}
+
+	quotient, modulo, err := base.DivideByTwo(maxPrecision)
+
+	if err != nil {
+		t.Errorf("Error returned by base.DivideByTwo(maxPrecision). Error='%v' ",
+			err.Error())
+	}
+
+	actualNumStr := quotient.GetNumStr()
+
+	if expectedQuoStr != actualNumStr {
+		t.Errorf("Error: Expected quotient NumStr='%v'. Instead, quotient NumStr='%v'. ",
+			expectedQuoStr, actualNumStr)
+	}
+
+	actualNumStr = modulo.GetNumStr()
+
+	if expectedModStr != actualNumStr {
+		t.Errorf("Error: Expected modulo NumStr='%v'. Instead, modulo NumStr='%v'. ",
+			expectedModStr, actualNumStr)
+	}
+}
+
 func TestBigIntNum_ExtendPrecision_01(t *testing.T) {
 
 	num1Str := "654.123"
@@ -1427,7 +1503,7 @@ func TestBigIntNum_ExtendPrecision_01(t *testing.T) {
 			err.Error())
 	}
 
-	bNum1.extendPrecision(2)
+	bNum1.ExtendPrecision(2)
 
 	if !expectedNum.Equal(bNum1) {
 		t.Errorf("Error: Expected bNum1='%v'.  Instead, bNum2='%v'",
@@ -1455,7 +1531,7 @@ func TestBigIntNum_ExtendPrecision_02(t *testing.T) {
 			err.Error())
 	}
 
-	bNum1.extendPrecision(2)
+	bNum1.ExtendPrecision(2)
 
 	if !expectedNum.Equal(bNum1) {
 		t.Errorf("Error: Expected bNum1='%v'.  Instead, bNum2='%v'",
@@ -1483,7 +1559,7 @@ func TestBigIntNum_ExtendPrecision_03(t *testing.T) {
 			err.Error())
 	}
 
-	bNum1.extendPrecision(2)
+	bNum1.ExtendPrecision(2)
 
 	if !expectedNum.Equal(bNum1) {
 		t.Errorf("Error: Expected bNum1='%v'.  Instead, bNum2='%v'",
@@ -1511,7 +1587,7 @@ func TestBigIntNum_ExtendPrecision_04(t *testing.T) {
 			err.Error())
 	}
 
-	bNum1.extendPrecision(2)
+	bNum1.ExtendPrecision(2)
 
 	if !expectedNum.Equal(bNum1) {
 		t.Errorf("Error: Expected bNum1='%v'.  Instead, bNum2='%v'",

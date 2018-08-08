@@ -206,14 +206,19 @@ func (bNum *BigIntNum) CopyOut() BigIntNum {
 // If modulo equals zero ('0'), it signals the the current numerical value is 'even'
 // and divisible by two.
 //
-func (bNum *BigIntNum) DivideByTwo() (intQuotient, modulo BigIntNum, err error) {
+// Input parameter 'maxPrecision' is used to control the maximum precision of the
+// resulting 'modulo'. Precision is defined as the the number of fractional digits
+// to the right of the decimal point. Be advised that these calculations can support
+// very large precision values.
+//
+func (bNum *BigIntNum) DivideByTwo(maxPrecision uint) (intQuotient, modulo BigIntNum, err error) {
 
 	biNum2 := BigIntNum{}.NewTwo(0)
 
 	var errx error
 
 	intQuotient, modulo, errx =
-			BigIntMathDivide{}.BigIntNumQuotientMod(bNum.CopyOut(), biNum2, 15)
+			BigIntMathDivide{}.BigIntNumQuotientMod(bNum.CopyOut(), biNum2, maxPrecision)
 
 	if errx != nil {
 		intQuotient = BigIntNum{}.New()
@@ -297,6 +302,47 @@ func (bNum *BigIntNum) EqualValue(b2 BigIntNum) bool {
 	}
 
 	return false
+}
+
+
+// ExtendPrecision - Extends the current precision.
+//
+// Precision is the number of fractional digits to the right
+// of the decimal place. This method will extend the number of
+// digits to the right of the decimal place by adding trailing
+// zeros to the current numeric value of this 'BigIntNum' instance.
+// The number of trailing zeros to be added is determined by the
+// input parameter, 'deltaPrecision'.
+//
+// Existing numeric separators (decimal separator, thousands separator
+// and currency symbol) remain unchanged and are not altered by this method.
+//
+func (bNum *BigIntNum) ExtendPrecision(deltaPrecision uint) {
+
+	if deltaPrecision == 0 {
+		return
+	}
+
+	bNum.SetNumericSeparatorsToDefaultIfEmpty()
+	numSeps := bNum.GetNumericSeparatorsDto()
+
+	newPrecision := bNum.precision + deltaPrecision
+
+	// bigInt == zero, set precision an return
+	if bNum.bigInt.Cmp(big.NewInt(0)) == 0 {
+		bNum.CopyIn(BigIntNum{}.NewBigInt(big.NewInt(0), newPrecision))
+		bNum.SetNumericSeparatorsDto(numSeps)
+		return
+	}
+
+	base10 := big.NewInt(10)
+	scaleVal := big.NewInt(0).Exp(base10,big.NewInt(int64(deltaPrecision)), nil)
+	bigINum := big.NewInt(0).Set(bNum.bigInt)
+
+	bigINum = big.NewInt(0).Mul(bigINum, scaleVal)
+
+	bNum.CopyIn(BigIntNum{}.NewBigInt(bigINum, newPrecision))
+	bNum.SetNumericSeparatorsDto(numSeps)
 }
 
 // Floor - returns the greatest integer less than or equal to
@@ -1609,9 +1655,7 @@ func (bNum *BigIntNum) IsEvenNumber() (bool, error) {
 		return true, nil
 	}
 
-	bigINumTwo := BigIntNum{}.NewTwo(0)
-
-	_, mod, err := BigIntMathDivide{}.BigIntNumQuotientMod(bNum.CopyOut(), bigINumTwo, 0)
+	_, mod, err := BigIntMathDivide{}.BigIntNumDivideByTwoQuoMod(bNum.CopyOut(), 50)
 
 	if err != nil {
 		ePrefix := "BigIntNum.IsEvenNumber() "
@@ -2494,7 +2538,7 @@ func (bNum *BigIntNum) RoundToDecPlace(precision uint) {
 	// add trailing zeros, set new precision parameter and return.
 	if bNum.precision < precision {
 		deltaPrecision := precision - bNum.precision
-		bNum.extendPrecision(deltaPrecision)
+		bNum.ExtendPrecision(deltaPrecision)
 		bNum.SetNumericSeparatorsDto(numSeps)
 		return
 	}
@@ -3152,7 +3196,7 @@ func (bNum *BigIntNum) SetPrecision(newPrecision uint) {
 
 	deltaPrecision := newPrecision - bNum.precision
 	// bNum.precision must be less than newPrecision
-	bNum.extendPrecision(deltaPrecision)
+	bNum.ExtendPrecision(deltaPrecision)
 	return
 
 }
@@ -3569,7 +3613,7 @@ func (bNum *BigIntNum) TruncToDecPlace(precision uint) {
 	// add trailing zeros, set new precision parameter and return.
 	if bNum.precision < precision {
 
-		bNum.extendPrecision(precision - bNum.precision)
+		bNum.ExtendPrecision(precision - bNum.precision)
 		return
 	}
 
@@ -3585,44 +3629,4 @@ func (bNum *BigIntNum) TruncToDecPlace(precision uint) {
 	}
 
 	bNum.SetBigInt(newBigInt, precision)
-}
-
-// extendPrecision - Extends the current precision.
-//
-// Precision is the number of fractional digits to the right
-// of the decimal place. This method will extend the number of
-// digits to the right of the decimal place by adding trailing
-// zeros to the current numeric value of this 'BigIntNum' instance.
-// The number of trailing zeros to be added is determined by the
-// input parameter, 'deltaPrecision'.
-//
-// Existing numeric separators (decimal separator, thousands separator
-// and currency symbol) remain unchanged and are not altered by this method.
-//
-func (bNum *BigIntNum) extendPrecision(deltaPrecision uint) {
-
-	if deltaPrecision == 0 {
-		return
-	}
-
-	bNum.SetNumericSeparatorsToDefaultIfEmpty()
-	numSeps := bNum.GetNumericSeparatorsDto()
-
-	newPrecision := bNum.precision + deltaPrecision
-
-	// bigInt == zero, set precision an return
-	if bNum.bigInt.Cmp(big.NewInt(0)) == 0 {
-		bNum.CopyIn(BigIntNum{}.NewBigInt(big.NewInt(0), newPrecision))
-		bNum.SetNumericSeparatorsDto(numSeps)
-		return
-	}
-
-	base10 := big.NewInt(10)
-	scaleVal := big.NewInt(0).Exp(base10,big.NewInt(int64(deltaPrecision)), nil)
-	bigINum := big.NewInt(0).Set(bNum.bigInt)
-
-	bigINum = big.NewInt(0).Mul(bigINum, scaleVal)
-
-	bNum.CopyIn(BigIntNum{}.NewBigInt(bigINum, newPrecision))
-	bNum.SetNumericSeparatorsDto(numSeps)
 }

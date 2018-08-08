@@ -452,6 +452,331 @@ func (bIDivide BigIntMathDivide) BigIntNumFracQuotientArray(
 	return fracQuoArray, nil
 }
 
+// BigIntNumDivideByTwoQuoMod - Performs a division operation on BigIntNum input
+// parameter 'dividend'. This method will divide 'dividend' by the integer numeric
+// value two ('2'). There are two BigIntNum return values: 'quotient' and
+// 'modulo'.
+//
+// The calculation of 'quotient' and 'modulo' is based on T-Division (Truncate Division).
+// See "Division and Modulus for Computer Scientists", DAAN LEIJEN, University of Utrecht
+// Dept. of Computer Science, PO.Box 80.089, 3508 TB Utrecht The Netherlands:
+// https://www.microsoft.com/en-us/research/wp-content/uploads/2016/02/divmodnote-letter.pdf
+// Also available at ../notes/divmodnote-letter.pdf.
+// So for q=quotient; D=Dividend d=Divisor r=Remainder or 'modulo' :
+//   						q = D div d = f(D/d) r = D mod d = D − d ·q
+//
+// 'quotient' is the integer result of dividing the 'dividend' by two
+//
+// 'modulo' - The modulo operation finds the remainder after division of one
+// number by another. (r = D mod d = D − d ·q)
+//
+// Input parameter 'maxPrecision' is used to control the maximum precision of the
+// resulting 'modulo'. Precision is defined as the the number of fractional digits
+// to the right of the decimal point. Be advised that these calculations can support
+// very large precision values.
+//
+// Examples:
+// =========
+//
+// Dividend			divided by		Divisor			=		Quotient			Modulo/Remainder
+//    4							/						 2			  =			 2							 0
+//    5  	 					/ 				 	 2  			= 		 2							 1
+//    2.5 					/ 				 	 2				= 	   1							 0.5
+//	-12.555 				/ 				   2  			= 		-6							-0.555
+//    0 						/ 				 	 2 				= 		 0							 0
+//  -19	 						/ 				   2    		= 		-9							-1
+//
+// The returned BigIntNum division 'result' (quotient and modulo) will
+// contain numeric separators (decimal separator, thousands separator
+// and currency symbol) copied from input parameter, 'dividend'
+//
+func (bIDivide BigIntMathDivide) BigIntNumDivideByTwoQuoMod(
+										dividend BigIntNum,
+											maxPrecision uint) (quotient, modulo BigIntNum, err error) {
+
+	bINumTwo := BigIntNum{}.NewTwo(0)												
+
+	return bIDivide.BigIntNumQuotientMod(dividend, bINumTwo, maxPrecision)												
+}
+
+// BigIntNumDivideByThreeQuoMod - Performs a division operation on BigIntNum input
+// parameter 'dividend'. This method will divide 'dividend' by the integer numeric
+// value three ('3'). There are two BigIntNum return values: 'quotient' and
+// 'modulo'.
+//
+// The calculation of 'quotient' and 'modulo' is based on T-Division (Truncate Division).
+// See "Division and Modulus for Computer Scientists", DAAN LEIJEN, University of Utrecht
+// Dept. of Computer Science, PO.Box 80.089, 3508 TB Utrecht The Netherlands:
+// https://www.microsoft.com/en-us/research/wp-content/uploads/2016/02/divmodnote-letter.pdf
+// Also available at ../notes/divmodnote-letter.pdf.
+// So for q=quotient; D=Dividend d=Divisor r=Remainder or 'modulo' :
+//   						q = D div d = f(D/d) r = D mod d = D − d ·q
+//
+// 'quotient' is the integer result of dividing the 'dividend' by three
+//
+// 'modulo' - The modulo operation finds the remainder after division of one
+// number by another. (r = D mod d = D − d ·q)
+//
+// Input parameter 'maxPrecision' is used to control the maximum precision of the
+// resulting 'modulo'. Precision is defined as the the number of fractional digits
+// to the right of the decimal point. Be advised that these calculations can support
+// very large precision values.
+//
+// Examples:
+// =========
+//
+// Dividend			divided by		Divisor			=		Quotient			Modulo/Remainder
+//    4							/						 3			  =			  1							 	1
+//    5  	 					/ 				 	 3  			= 		  1							 	2
+//    8 						/ 				 	 3				= 	    2							 	2
+//   12							/            3				=				4								0
+//
+// The returned BigIntNum division 'result' (quotient and modulo) will
+// contain numeric separators (decimal separator, thousands separator
+// and currency symbol) copied from input parameter, 'dividend'
+//
+func (bIDivide BigIntMathDivide) BigIntNumDivideByThreeQuoMod(
+										dividend BigIntNum,
+											maxPrecision uint) (quotient, modulo BigIntNum, err error) {
+
+	bINumThree := BigIntNum{}.NewThree(0)												
+
+	return bIDivide.BigIntNumQuotientMod(dividend, bINumThree, maxPrecision)												
+}
+
+// BigIntNumDivideByFiveQuoMod - Performs a division operation on BigIntNum input
+// parameter 'dividend'. This method will divide 'dividend' by the integer numeric
+// value five ('5'). There are two BigIntNum return values: 'quotient' and
+// 'modulo'.
+//
+// The calculation of 'quotient' and 'modulo' is based on T-Division (Truncate Division).
+// See "Division and Modulus for Computer Scientists", DAAN LEIJEN, University of Utrecht
+// Dept. of Computer Science, PO.Box 80.089, 3508 TB Utrecht The Netherlands:
+// https://www.microsoft.com/en-us/research/wp-content/uploads/2016/02/divmodnote-letter.pdf
+// Also available at ../notes/divmodnote-letter.pdf.
+// So for q=quotient; D=Dividend d=Divisor r=Remainder or 'modulo' :
+//   						q = D div d = f(D/d) r = D mod d = D − d ·q
+//
+// 'quotient' is the integer result of dividing the 'dividend' by five
+//
+// 'modulo' - The modulo operation finds the remainder after division of one
+// number by another. (r = D mod d = D − d ·q)
+//
+// Input parameter 'maxPrecision' is used to control the maximum precision of the
+// resulting 'modulo'. Precision is defined as the the number of fractional digits
+// to the right of the decimal point. Be advised that these calculations can support
+// very large precision values.
+//
+// Examples:
+// =========
+//
+// Dividend			divided by		Divisor			=		Quotient			Modulo/Remainder
+//    6							/						 5			  =			 1							 1
+//   12  	 					/ 				 	 5  			= 		 2							 2
+//   16 						/ 				 	 5				= 	   3							 1
+//
+// The returned BigIntNum division 'result' (quotient and modulo) will
+// contain numeric separators (decimal separator, thousands separator
+// and currency symbol) copied from input parameter, 'dividend'
+//
+func (bIDivide BigIntMathDivide) BigIntNumDivideByFiveQuoMod(
+										dividend BigIntNum,
+											maxPrecision uint) (quotient, modulo BigIntNum, err error) {
+
+	bINumFive := BigIntNum{}.NewFive(0)												
+
+	return bIDivide.BigIntNumQuotientMod(dividend, bINumFive, maxPrecision)												
+}
+
+// BigIntNumDivideByTenQuoMod - Performs a division operation on BigIntNum input
+// parameter 'dividend'. This method will divide 'dividend' by the integer numeric
+// value 10 ('10'). There are two BigIntNum return values: 'quotient' and
+// 'modulo'.
+//
+// The calculation of 'quotient' and 'modulo' is based on T-Division (Truncate Division).
+// See "Division and Modulus for Computer Scientists", DAAN LEIJEN, University of Utrecht
+// Dept. of Computer Science, PO.Box 80.089, 3508 TB Utrecht The Netherlands:
+// https://www.microsoft.com/en-us/research/wp-content/uploads/2016/02/divmodnote-letter.pdf
+// Also available at ../notes/divmodnote-letter.pdf.
+// So for q=quotient; D=Dividend d=Divisor r=Remainder or 'modulo' :
+//   						q = D div d = f(D/d) r = D mod d = D − d ·q
+//
+// 'quotient' is the integer result of dividing the 'dividend' by 10
+//
+// 'modulo' - The modulo operation finds the remainder after division of one
+// number by another. (r = D mod d = D − d ·q)
+//
+// Input parameter 'maxPrecision' is used to control the maximum precision of the
+// resulting 'modulo'. Precision is defined as the the number of fractional digits
+// to the right of the decimal point. Be advised that these calculations can support
+// very large precision values.
+//
+// Examples:
+// =========
+//
+// Dividend			divided by		Divisor			=		Quotient			Modulo/Remainder
+//   16							/						 10			  =			 1							 6
+//   32  	 					/ 				 	 10  			= 		 3							 2
+//   96 						/ 				 	 10				= 	   9							 6
+//
+// The returned BigIntNum division 'result' (quotient and modulo) will
+// contain numeric separators (decimal separator, thousands separator
+// and currency symbol) copied from input parameter, 'dividend'
+//
+func (bIDivide BigIntMathDivide) BigIntNumDivideByTenQuoMod(
+										dividend BigIntNum,
+											maxPrecision uint) (quotient, modulo BigIntNum, err error) {
+
+	bINumTen := BigIntNum{}.NewTen(0)												
+
+	return bIDivide.BigIntNumQuotientMod(dividend, bINumTen, maxPrecision)												
+}
+
+// BigIntNumDivideByTwoFracQuo - Performs a division operation on BigIntNum input
+// parameter 'dividend'. This method will divide 'dividend' by the integer numeric
+// value two ('2').
+//
+// The result of this division operation is returned as a BigIntNum type representing
+// quotient as integer and fractional digits. Remember that the BigIntNum type specifies
+// 'precision'. Precision is defined as the number of fractional digits to the right of
+// the decimal place.
+//
+// Examples:
+// =========
+//
+//  Dividend		divided by	Divisor		  =		 	Precision	 		 	Result
+//  -------- 	  ----------	--------				  ---------	 	 		------
+// 	 10.5  				/ 				   2 				= 			  2  			 	 	 5.25
+// 	 10    				/ 				   2 				= 			 	0  			 	 	 5
+//  -12.555     	/    			   2  			= 		  	4						-6.2775
+//
+// The input parameter 'maxPrecision' is used to control the maximum precision of the
+// resulting fractional quotient. Be advised that this method is capable of calculating
+// quotients with very long strings of fractional digits.
+//
+// The returned BigIntNum division result ('fracQuotient') will contain numeric
+// separators (decimal separator, thousands separator and currency symbol)
+// copied from input parameter, 'dividend'.
+//
+func (bIDivide BigIntMathDivide) BigIntNumDivideByTwoFracQuo(
+										dividend BigIntNum,
+											maxPrecision uint) (fracQuotient BigIntNum, err error) {
+
+	bINumTwo := BigIntNum{}.NewTwo(0)												
+
+	return bIDivide.BigIntNumFracQuotient(dividend, bINumTwo, maxPrecision)												
+}
+
+// BigIntNumDivideByThreeFracQuo - Performs a division operation on BigIntNum input
+// parameter 'dividend'. This method will divide 'dividend' by the integer numeric
+// value three ('3').
+//
+// The result of this division operation is returned as a BigIntNum type representing
+// quotient as integer and fractional digits. Remember that the BigIntNum type specifies
+// 'precision'. Precision is defined as the number of fractional digits to the right of
+// the decimal place.
+//
+// Examples:
+// =========
+//  For this example, assume that 'maxPrecision' = 15
+//
+//  Dividend		divided by	Divisor		  =		 	Precision	 		 	Result
+//  -------- 	  ----------	--------				  ---------	 	 		------
+// 	 9.5  				/ 				   3 				= 			  2  			 	 	 3.166666666666667
+// 	 10    				/ 				   3 				= 			 	0  			 	 	 3.333333333333333
+//   12						/						 3			  =					0						 4
+//  -12     			/    			   3  			= 		  	0						-4
+//
+// The input parameter 'maxPrecision' is used to control the maximum precision of the
+// resulting fractional quotient. Be advised that this method is capable of calculating
+// quotients with very long strings of fractional digits.
+//
+// The returned BigIntNum division result ('fracQuotient') will contain numeric
+// separators (decimal separator, thousands separator and currency symbol)
+// copied from input parameter, 'dividend'.
+//
+func (bIDivide BigIntMathDivide) BigIntNumDivideByThreeFracQuo(
+										dividend BigIntNum,
+											maxPrecision uint) (fracQuotient BigIntNum, err error) {
+
+	bINumThree := BigIntNum{}.NewThree(0)												
+
+	return bIDivide.BigIntNumFracQuotient(dividend, bINumThree, maxPrecision)												
+}
+
+// BigIntNumDivideByFiveFracQuo - Performs a division operation on BigIntNum input
+// parameter 'dividend'. This method will divide 'dividend' by the integer numeric
+// value five ('5').
+//
+// The result of this division operation is returned as a BigIntNum type representing
+// quotient as integer and fractional digits. Remember that the BigIntNum type specifies
+// 'precision'. Precision is defined as the number of fractional digits to the right of
+// the decimal place.
+//
+// Examples:
+// =========
+//
+//  Dividend		divided by	Divisor		  =		 	Precision	 		 	Result
+//  -------- 	  ----------	--------				  ---------	 	 		------
+// 	 16.2  				/ 				   5 				= 			  2  			 	 	 3.24
+// 	 10    				/ 				   5 				= 			 	0  			 	 	 2
+//   12						/						 5			  =					1						 2.4
+//  -12     			/    			   5  			= 		  	1						-2.4
+//
+// The input parameter 'maxPrecision' is used to control the maximum precision of the
+// resulting fractional quotient. Be advised that this method is capable of calculating
+// quotients with very long strings of fractional digits.
+//
+// The returned BigIntNum division result ('fracQuotient') will contain numeric
+// separators (decimal separator, thousands separator and currency symbol)
+// copied from input parameter, 'dividend'.
+//
+func (bIDivide BigIntMathDivide) BigIntNumDivideByFiveFracQuo(
+										dividend BigIntNum,
+											maxPrecision uint) (fracQuotient BigIntNum, err error) {
+
+	bINumFive := BigIntNum{}.NewFive(0)												
+
+	return bIDivide.BigIntNumFracQuotient(dividend, bINumFive, maxPrecision)												
+}
+
+// BigIntNumDivideByTenFracQuo - Performs a division operation on BigIntNum input
+// parameter 'dividend'. This method will divide 'dividend' by the integer numeric
+// value ten ('10').
+//
+// The result of this division operation is returned as a BigIntNum type representing
+// quotient as integer and fractional digits. Remember that the BigIntNum type specifies
+// 'precision'. Precision is defined as the number of fractional digits to the right of
+// the decimal place.
+//
+// Examples:
+// =========
+//  For this example, assume that 'maxPrecision' = 15
+//
+//  Dividend		divided by	Divisor		  =		 	Precision	 		 	Result
+//  -------- 	  ----------	--------				  ---------	 	 		------
+// 	 16.2  				/ 				  10				= 			  2  			 	 	 1.62
+// 	 10    				/ 				  10 				= 			 	0  			 	 	 1
+//   12						/						10			  =					1						 1.2
+//  -12     			/    			  10  			= 		  	1						-1.2
+//
+// The input parameter 'maxPrecision' is used to control the maximum precision of the
+// resulting fractional quotient. Be advised that this method is capable of calculating
+// quotients with very long strings of fractional digits.
+//
+// The returned BigIntNum division result ('fracQuotient') will contain numeric
+// separators (decimal separator, thousands separator and currency symbol)
+// copied from input parameter, 'dividend'.
+//
+func (bIDivide BigIntMathDivide) BigIntNumDivideByTenFracQuo(
+										dividend BigIntNum,
+											maxPrecision uint) (fracQuotient BigIntNum, err error) {
+
+	bINumTen := BigIntNum{}.NewTen(0)												
+
+	return bIDivide.BigIntNumFracQuotient(dividend, bINumTen, maxPrecision)												
+}
+
 // DecimalQuotientMod - Performs a division operation on Decimal type input
 // parameters, 'dividend' and 'divisor'.
 //
