@@ -295,6 +295,21 @@ func (dec *Decimal) CopyOut() Decimal {
 	return d2
 }
 
+// Cmp - Performs a comparison of two Decimal numeric values
+// and returns an integer value indicating the the relationship
+// between the two numeric values (i.e. greater than, less than,
+// or equal).
+//
+// Return Values:
+// dec == dec2 							Return  0
+// dec > 	dec2							Return +1
+// dec < 	dec2							Return -1
+//
+func (dec *Decimal) Cmp(dec2 Decimal) int {
+
+	return dec.bigINum.Cmp(dec2.bigINum)
+}
+
 // Divide - Divides the current decimal value by the input
 // parameter 'divisor' and returns the quotient as a new
 // Decimal instance.

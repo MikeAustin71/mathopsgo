@@ -117,7 +117,7 @@ func (bNum *BigIntNum) ChangeSign() {
 	return
 }
 
-// Cmp - Performs a true comparison of two BigIntNum values
+// Cmp - Performs a comparison of two BigIntNum numeric values
 // and returns an integer value indicating the the relationship
 // between the two numeric values (i.e. greater than, less than,
 // or equal).

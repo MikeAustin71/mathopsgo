@@ -727,6 +727,151 @@ func TestDecimal_AddToThisMultiple_02(t *testing.T) {
 
 }
 
+func TestDecimal_Cmp_01(t *testing.T) {
+
+	n1Str := "123.456"
+	n2Str := "123.455"
+	expectedCmpResult := 1
+
+	decNum1, err := Decimal{}.NewNumStr(n1Str)
+
+	if err != nil {
+		t.Errorf("Error returned by Decimal{}.NewNumStr(n1Str). " +
+			"n1Str='%v' Error='%v'", n1Str, err.Error())
+	}
+
+	decNum2, err := Decimal{}.NewNumStr(n2Str)
+
+	if err != nil {
+		t.Errorf("Error returned by Decimal{}.NewNumStr(n2Str). " +
+			"n2Str='%v' Error='%v'", n2Str, err.Error())
+	}
+
+	cmpResult := decNum1.Cmp(decNum2)
+
+	if expectedCmpResult != cmpResult {
+		t.Errorf("Error: Expected Comparision Result='%v'.  Instead, Result='%v'",
+			expectedCmpResult, cmpResult)
+	}
+
+}
+
+func TestDecimal_Cmp_02(t *testing.T) {
+
+	n1Str := "123.456"
+	n2Str := "123.457"
+	expectedCmpResult := -1
+
+	dec1, err := Decimal{}.NewNumStr(n1Str)
+
+	if err != nil {
+		t.Errorf("Error returned by Decimal{}.NewNumStr(n1Str). " +
+			"n1Str='%v' Error='%v'", n1Str, err.Error())
+	}
+
+	dec2, err := Decimal{}.NewNumStr(n2Str)
+
+	if err != nil {
+		t.Errorf("Error returned by Decimal{}.NewNumStr(n2Str). " +
+			"n2Str='%v' Error='%v'", n2Str, err.Error())
+	}
+
+	cmpResult := dec1.Cmp(dec2)
+
+	if expectedCmpResult != cmpResult {
+		t.Errorf("Error: Expected Comparision Result='%v'.  Instead, Result='%v'",
+			expectedCmpResult, cmpResult)
+	}
+
+}
+
+func TestDecimal_Cmp_03(t *testing.T) {
+
+	n1Str := "123.456"
+	n2Str := "123.456"
+	expectedCmpResult := 0
+
+	dec1, err := Decimal{}.NewNumStr(n1Str)
+
+	if err != nil {
+		t.Errorf("Error returned by Decimal{}.NewNumStr(n1Str). " +
+			"n1Str='%v' Error='%v'", n1Str, err.Error())
+	}
+
+	dec2, err := Decimal{}.NewNumStr(n2Str)
+
+	if err != nil {
+		t.Errorf("Error returned by Decimal{}.NewNumStr(n2Str). " +
+			"n2Str='%v' Error='%v'", n2Str, err.Error())
+	}
+
+	cmpResult := dec1.Cmp(dec2)
+
+	if expectedCmpResult != cmpResult {
+		t.Errorf("Error: Expected Comparision Result='%v'.  Instead, Result='%v'",
+			expectedCmpResult, cmpResult)
+	}
+
+}
+
+func TestDecimal_Cmp_04(t *testing.T) {
+
+	n1Str := "-123.456"
+	n2Str := "-123.457"
+	expectedCmpResult := 1
+
+	dec1, err := Decimal{}.NewNumStr(n1Str)
+
+	if err != nil {
+		t.Errorf("Error returned by Decimal{}.NewNumStr(n1Str). " +
+			"n1Str='%v' Error='%v'", n1Str, err.Error())
+	}
+
+	dec2, err := Decimal{}.NewNumStr(n2Str)
+
+	if err != nil {
+		t.Errorf("Error returned by Decimal{}.NewNumStr(n2Str). " +
+			"n2Str='%v' Error='%v'", n2Str, err.Error())
+	}
+
+	cmpResult := dec1.Cmp(dec2)
+
+	if expectedCmpResult != cmpResult {
+		t.Errorf("Error: Expected Comparision Result='%v'.  Instead, Result='%v'",
+			expectedCmpResult, cmpResult)
+	}
+
+}
+
+func TestDecimal_Cmp_05(t *testing.T) {
+
+	n1Str := "-123.456"
+	n2Str := "-123.455"
+	expectedCmpResult := -1
+
+	dec1, err := Decimal{}.NewNumStr(n1Str)
+
+	if err != nil {
+		t.Errorf("Error returned by Decimal{}.NewNumStr(n1Str). " +
+			"n1Str='%v' Error='%v'", n1Str, err.Error())
+	}
+
+	dec2, err := Decimal{}.NewNumStr(n2Str)
+
+	if err != nil {
+		t.Errorf("Error returned by Decimal{}.NewNumStr(n2Str). " +
+			"n2Str='%v' Error='%v'", n2Str, err.Error())
+	}
+
+	cmpResult := dec1.Cmp(dec2)
+
+	if expectedCmpResult != cmpResult {
+		t.Errorf("Error: Expected Comparision Result='%v'.  Instead, Result='%v'",
+			expectedCmpResult, cmpResult)
+	}
+
+}
+
 func TestDecimal_Divide_01(t *testing.T) {
 	// str1 / str2
 	str1 := "575.63"
