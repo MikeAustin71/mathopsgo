@@ -310,14 +310,54 @@ func (dec *Decimal) Cmp(dec2 Decimal) int {
 	return dec.bigINum.Cmp(dec2.bigINum)
 }
 
-func (dec *Decimal) CubeRoot(maxPrecision int) (Decimal, error) {
+// CubeRoot - Returns a Decimal instance with a numeric value equal to the
+// cube root of the current Decimal numeric value. The current Decimal instance
+// is the radicand.
+//
+// Returns:
+// ========
+// The calculation result is returned as a Decimal instance. The returned Decimal instance
+// will contain	numeric separators (decimal separator, thousands separator and currency symbol)
+// copied from the current Decimal instance (dec).
+//
+func (dec *Decimal) CubeRoot(maxPrecision uint) (Decimal, error) {
 
-	return Decimal{}.New(), nil
+	ePrefix := "Decimal.CubeRoot() "
+
+	err := dec.IsValid(ePrefix + "Current Decimal instance is INVALID! ")
+
+	if err != nil {
+		return Decimal{}, err
+	}
+
+	bINumThree := BigIntNum{}.NewThree(0)
+
+	decCubeRoot := Decimal{}.New()
+
+	decCubeRoot.bigINum, err =
+		BigIntMathNthRoot{}.GetNthRoot(dec.bigINum, bINumThree, maxPrecision )
+
+	if err != nil {
+		return Decimal{}.NewZero(0),
+			fmt.Errorf(ePrefix + "Error returned by BigIntMathNthRoot{}.NthRoot(...). " +
+				"Error='%v'\n", err.Error())
+	}
+
+	err = decCubeRoot.IsValid(ePrefix + "decCubeRoot INVALID! ")
+
+	if err != nil {
+		return Decimal{}.New(), err
+	}
+
+	return decCubeRoot, nil
 }
 
-// Divide - Divides the current decimal value by the input
-// parameter 'divisor' and returns the quotient as a new
-// Decimal instance.
+// Divide - Divides the current decimal value by the input parameter 'divisor'
+// and returns the quotient as a new Decimal instance.
+//
+// The calculation result is returned as a Decimal instance. The returned Decimal
+// instance will contain	numeric separators (decimal separator, thousands separator
+// and currency symbol) copied from the current Decimal instance (dec).
 //
 func (dec *Decimal) Divide(divisor Decimal, maxPrecision uint) (Decimal, error) {
 
@@ -333,8 +373,6 @@ func (dec *Decimal) Divide(divisor Decimal, maxPrecision uint) (Decimal, error) 
 				"Error='%v' \n", err.Error())
 	}
 
-	numSeps := dec.GetNumericSeparatorsDto()
-
 	err = divisor.IsValid(ePrefix)
 
 	if err != nil {
@@ -344,7 +382,9 @@ func (dec *Decimal) Divide(divisor Decimal, maxPrecision uint) (Decimal, error) 
 				"Error='%v' \n", err.Error())
 	}
 
-  bINumQuotient, err :=
+	d2Quotient := Decimal{}.New()
+
+  d2Quotient.bigINum, err =
   		BigIntMathDivide{}.BigIntNumFracQuotient(
   				dec.bigINum, divisor.bigINum, maxPrecision)
 
@@ -353,17 +393,6 @@ func (dec *Decimal) Divide(divisor Decimal, maxPrecision uint) (Decimal, error) 
 			fmt.Errorf(ePrefix +
 				"Error returned by BigIntMathDivide{}.BigIntNumFracQuotient() " +
 				"Error='%v' ", err.Error())
-	}
-
-	d2Quotient := Decimal{}.NewBigIntNum(bINumQuotient)
-
-	err = d2Quotient.SetNumericSeparatorsDto(numSeps)
-
-	if err != nil {
-		return Decimal{}.NewZero(0),
-			fmt.Errorf(ePrefix +
-				"Error returned by d2Quotient.SetNumericSeparatorsDto(numSeps) " +
-				"Error='%v' \n", err.Error())
 	}
 
 	err = d2Quotient.IsValid(ePrefix)
@@ -2854,11 +2883,12 @@ func (dec *Decimal) ShiftPrecisionRight(shiftRightPlaces uint) error {
 	return nil
 }
 
-// SquareRoot - Returns a Decimal object equal to the square root
-// of the current Decimal value.
+// SquareRoot - Returns a Decimal instance with a numeric value equal to the
+// square root of the current Decimal numeric value. The current Decimal instance
+// is the radicand.
 //
-// Note: If the current Decimal value is a negative value, an error will
-// be generated. You cannot take the square root of a negative number.
+// Note: If the current Decimal value is a negative value, an error will be generated.
+// You cannot take the square root of a negative number.
 //
 // Returns:
 // ========
