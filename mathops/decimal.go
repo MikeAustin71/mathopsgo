@@ -169,11 +169,11 @@ func (dec *Decimal) AddToThisArray(decs []Decimal) error {
 	return nil
 }
 
-// AddToThisMultiple - Receives multiple Decimal objects and
+// AddToThisSeries - Receives multiple Decimal objects and
 // adds them to the current Decimal value.
-func (dec *Decimal) AddToThisMultiple(decs ...Decimal) error {
+func (dec *Decimal) AddToThisSeries(decs ...Decimal) error {
 
-	ePrefix := "Decimal.AddToThisMultiple() "
+	ePrefix := "Decimal.AddToThisSeries() "
 	var err error
 
 	err = dec.IsValid(ePrefix)
@@ -805,89 +805,6 @@ func (dec *Decimal) GetNumStrDto() (NumStrDto, error) {
 	}
 
 	return nDto, nil
-}
-
-// GetNthRoot - Calculates the nth root of the current Decimal value. The numeric value of
-// the current Decimal instance constitutes the radicand.
-//
-// Input Parameters:
-// =================
-//
-//  nthRoot Decimal - Nth root specifies the root which will be calculated using the current
-// 										Decimal instance as the radicand.
-// 										Example, square root, cube root, 4th root, 9th root etc.
-//
-// maxPrecision uint -  Specifies the maximum number of decimals to the right of the decimal
-// 											place to which the Nth root will be calculated. If the internal
-// 											calculation exceeds the limit the nth root result will be rounded
-//											to 'maxPrecision' decimal places.
-//
-// Returns:
-// ========
-// The calculation result is returned as a Decimal instance. The returned Decimal instance
-// will contain	numeric separators (decimal separator, thousands separator and currency symbol)
-// copied from the current Decimal instance (radicand).
-//
-func (dec *Decimal) GetNthRoot(nthRoot Decimal, maxPrecision uint) (Decimal, error) {
-
-	ePrefix := "Decimal.GetNthRoot() "
-
-	err := dec.IsValid(ePrefix)
-
-	if err != nil {
-		return Decimal{}.New(),
-			fmt.Errorf(ePrefix +
-				"- The current Decimal object is INVALID!" +
-				"Error='%v' ", err.Error())
-	}
-
-	err = nthRoot.IsValid(ePrefix)
-
-	if err != nil {
-		return Decimal{}.New(),
-			fmt.Errorf(ePrefix +
-				"- The nthRoot Input Parameter is INVALID!" +
-				"Error='%v' ", err.Error())
-	}
-
-	// If the radicand is zero, the result will always be zero
-	if dec.IsZero() {
-		return Decimal{}.NewZero(0), nil
-	}
-
-
-	// If nth root is zero, the result is always one.
-	if nthRoot.IsZero() {
-		return Decimal{}.NewOne(0), nil
-	}
-
-	nthRootIsEven, err := nthRoot.IsEvenNumber()
-
-	if err != nil {
-		return Decimal{}.NewZero(0),
-		fmt.Errorf(ePrefix + "Error returned by nthRoot.IsEvenNumber(). " +
-			"Error='%v'\n", err.Error())
-	}
-
-	if dec.GetSign() == -1  && nthRootIsEven {
-
-		return Decimal{}.NewZero(0),
-			errors.New(ePrefix + "INVALID ENTRY! Cannot calculate nth root of a negative radicand " +
-				"when nthRoot is even.")
-	}
-
-	dec2 := Decimal{}
-
-	dec2.bigINum, err =
-			BigIntMathNthRoot{}.GetNthRoot(dec.bigINum, nthRoot.bigINum, maxPrecision)
-
-	if err != nil {
-		return Decimal{}.NewZero(0),
-			fmt.Errorf(ePrefix + "Error returned by BigIntMathNthRoot{}.GetNthRoot(...). " +
-				"Error='%v'\n", err.Error())
-	}
-
-	return dec2, nil
 }
 
 // GetPrecision - returns the Decimal's current precision
@@ -1988,6 +1905,89 @@ func (dec Decimal) NewZero(precision uint) Decimal {
 	return d2
 }
 
+// NthRoot - Calculates the nth root of the current Decimal value. The numeric value of
+// the current Decimal instance constitutes the radicand.
+//
+// Input Parameters:
+// =================
+//
+//  nthRoot Decimal - Nth root specifies the root which will be calculated using the current
+// 										Decimal instance as the radicand.
+// 										Example, square root, cube root, 4th root, 9th root etc.
+//
+// maxPrecision uint -  Specifies the maximum number of decimals to the right of the decimal
+// 											place to which the Nth root will be calculated. If the internal
+// 											calculation exceeds the limit the nth root result will be rounded
+//											to 'maxPrecision' decimal places.
+//
+// Returns:
+// ========
+// The calculation result is returned as a Decimal instance. The returned Decimal instance
+// will contain	numeric separators (decimal separator, thousands separator and currency symbol)
+// copied from the current Decimal instance (radicand).
+//
+func (dec *Decimal) NthRoot(nthRoot Decimal, maxPrecision uint) (Decimal, error) {
+
+	ePrefix := "Decimal.NthRoot() "
+
+	err := dec.IsValid(ePrefix)
+
+	if err != nil {
+		return Decimal{}.New(),
+			fmt.Errorf(ePrefix +
+				"- The current Decimal object is INVALID!" +
+				"Error='%v' ", err.Error())
+	}
+
+	err = nthRoot.IsValid(ePrefix)
+
+	if err != nil {
+		return Decimal{}.New(),
+			fmt.Errorf(ePrefix +
+				"- The nthRoot Input Parameter is INVALID!" +
+				"Error='%v' ", err.Error())
+	}
+
+	// If the radicand is zero, the result will always be zero
+	if dec.IsZero() {
+		return Decimal{}.NewZero(0), nil
+	}
+
+
+	// If nth root is zero, the result is always one.
+	if nthRoot.IsZero() {
+		return Decimal{}.NewOne(0), nil
+	}
+
+	nthRootIsEven, err := nthRoot.IsEvenNumber()
+
+	if err != nil {
+		return Decimal{}.NewZero(0),
+			fmt.Errorf(ePrefix + "Error returned by nthRoot.IsEvenNumber(). " +
+				"Error='%v'\n", err.Error())
+	}
+
+	if dec.GetSign() == -1  && nthRootIsEven {
+
+		return Decimal{}.NewZero(0),
+			errors.New(ePrefix + "INVALID ENTRY! Cannot calculate nth root of a negative radicand " +
+				"when nthRoot is even.")
+	}
+
+	dec2 := Decimal{}
+
+	dec2.bigINum, err =
+		BigIntMathNthRoot{}.GetNthRoot(dec.bigINum, nthRoot.bigINum, maxPrecision)
+
+	if err != nil {
+		return Decimal{}.NewZero(0),
+			fmt.Errorf(ePrefix + "Error returned by BigIntMathNthRoot{}.NthRoot(...). " +
+				"Error='%v'\n", err.Error())
+	}
+
+	return dec2, nil
+}
+
 // NumStrPrecisionToDecimal - receives a number string and a
 // precision value as parameters. This method creates a Decimal
 // Type containing the converted numeric value and returns it.
@@ -2044,11 +2044,16 @@ func (dec *Decimal) NumStrPrecisionToDecimal(
 	return d2, nil
 }
 
-// Pow - Raises the current Decimal to the power of input parameter 'exponent'
-// which is a Decimal Type. The result is returned as a Decimal type.
+// Pow - Raises the numeric value of the current Decimal instance to the power of
+// input parameter Decimal Type 'exponent'. The result is returned as a new Decimal
+// instance.
 //
 // Note that this method can process positive, negative, integer and fractional
 // exponents.
+//
+// exponent Decimal -		The numerical value of the current Decimal instance
+//                      will be raised to the power of 'exponent'.
+//                        			 result = dec^exponent
 //
 // maxPrecision uint - 	Determines the maximum number of digits
 // 											to the right of the	decimal point returned
@@ -2072,7 +2077,9 @@ func (dec *Decimal) Pow(exponent Decimal, maxPrecision uint) (Decimal, error) {
 
 	numSeps := dec.GetNumericSeparatorsDto()
 
-	bINumResult, err := BigIntMathPower{}.Pwr(dec.bigINum, exponent.bigINum, maxPrecision)
+	d3 := Decimal{}.New()
+
+	d3.bigINum, err = BigIntMathPower{}.Pwr(dec.bigINum, exponent.bigINum, maxPrecision)
 
 	if err != nil {
 		return Decimal{}.NewZero(0),
@@ -2080,8 +2087,6 @@ func (dec *Decimal) Pow(exponent Decimal, maxPrecision uint) (Decimal, error) {
 				"Error returned by BigIntMathPower{}.Pwr(dec.bigINum, biNumExponent, maxPrecision). " +
 				"Error='%v'", err.Error())
 	}
-
-	d3 := Decimal{}.NewBigIntNum(bINumResult)
 
 	err = d3.SetNumericSeparatorsDto(numSeps)
 
@@ -2092,14 +2097,23 @@ func (dec *Decimal) Pow(exponent Decimal, maxPrecision uint) (Decimal, error) {
 				"Error='%v'", err.Error())
 	}
 
+	err = d3.IsValid(ePrefix + "d3 INVALID! ")
+
+	if err != nil {
+		return Decimal{}.New(), err
+	}
+
 	return d3, nil
 }
 
-// PowInt - raises the current Decimal to the power of
-// an integer 'exponent'. The result is returned as
-// a Decimal type.
+// PowInt - raises the current Decimal to the power of an integer 'exponent'.
+// The result is returned as a Decimal type.
 //
 // Input Parameters:
+//
+// exponent 		int	 -	The numerical value of the current Decimal instance
+//                      will be raised to the power of 'exponent'.
+//                        			 result = dec^exponent
 //
 // maxPrecision uint - 	Determines the maximum number of digits
 // 											to the right of the	decimal point returned

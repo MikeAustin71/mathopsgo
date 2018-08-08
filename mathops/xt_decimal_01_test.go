@@ -605,7 +605,7 @@ func TestDecimal_AddToThisArray_02(t *testing.T) {
 
 }
 
-func TestDecimal_AddToThisMultiple_01(t *testing.T) {
+func TestDecimal_AddToThisSeries_01(t *testing.T) {
 
 	ePrecision := 3
 	eSignVal := 1
@@ -616,8 +616,6 @@ func TestDecimal_AddToThisMultiple_01(t *testing.T) {
 		t.Errorf("Error returned by Decimal{}.NewNumStr(\"25.72\") " +
 			"Error = '%v' ", err.Error())
 	}
-
-
 
 	d1, err:= Decimal{}.NewNumStr("150")
 
@@ -648,10 +646,10 @@ func TestDecimal_AddToThisMultiple_01(t *testing.T) {
 			"Error = '%v' ", err.Error())
 	}
 
-	err = base.AddToThisMultiple(d1, d2, d3, d4)
+	err = base.AddToThisSeries(d1, d2, d3, d4)
 
 	if err!=nil {
-		t.Errorf("Received error from base.AddToThisMultiple(d1, d2, d3, d4). Error= %v", err)
+		t.Errorf("Received error from base.AddToThisSeries(d1, d2, d3, d4). Error= %v", err)
 	}
 
 	expected := "830.005"
@@ -670,7 +668,7 @@ func TestDecimal_AddToThisMultiple_01(t *testing.T) {
 
 }
 
-func TestDecimal_AddToThisMultiple_02(t *testing.T) {
+func TestDecimal_AddToThisSeries_02(t *testing.T) {
 
 	ePrecision := 3
 	eSignVal := -1
@@ -709,7 +707,7 @@ func TestDecimal_AddToThisMultiple_02(t *testing.T) {
 			"Error = '%v' ", err.Error())
 	}
 
-	base.AddToThisMultiple(d1, d2, d3, d4)
+	base.AddToThisSeries(d1, d2, d3, d4)
 
 	expected := "-5870.495"
 
@@ -1696,204 +1694,6 @@ func TestDecimal_GetIntAry_02(t *testing.T) {
 	if signVal != ia.GetSign() {
 		t.Errorf("Expected ia.SignVal== %v .   Instead, ia.SignVal== %v", signVal, ia.GetSign())
 	}
-
-}
-
-func TestDecimal_GetNthRoot_01(t *testing.T) {
-	numStr1 := "125"
-	nthRootStr := "5"
-	maxPrecision := uint(14)
-	expected := "2.62652780440377"
-	eSignVal := 1
-
-	d1, err := Decimal{}.NewNumStr(numStr1)
-
-	if err != nil {
-		t.Errorf("Error returned by Decimal{}.NewNumStr(numStr1) " +
-			"numStr1='%v' Error = '%v' ",
-			 numStr1, err.Error())
-	}
-
-	decNthRoot, err := Decimal{}.NewNumStr(nthRootStr)
-
-	if err != nil {
-		t.Errorf("Error returned by Decimal{}.NewNumStr(nthRootStr) " +
-			"nthRootStr='%v' Error = '%v' ",
-			nthRootStr, err.Error())
-	}
-
-	d2, err := d1.GetNthRoot(decNthRoot, maxPrecision)
-
-	if err != nil {
-		t.Errorf("Error returned from d1.GetNthRoot(nthRoot, maxPrecision). Error= %v ", err)
-	}
-
-	if expected != d2.GetNumStr() {
-		t.Errorf("Expected NumStr: %v. Instead, got %v", expected, d2.GetNumStr())
-	}
-
-	if eSignVal != d2.GetSign() {
-		t.Errorf("Expected sign Value= '%v'. Instead, got sign Value= '%v' ", eSignVal, d2.GetSign())
-	}
-
-	if int(maxPrecision) != d2.GetPrecision() {
-		t.Errorf("Expected precision= '%v'. Instead, got precision= '%v' ", maxPrecision, d2.GetPrecision())
-	}
-
-}
-
-func TestDecimal_GetNthRoot_02(t *testing.T) {
-	numStr1 := "5604423"
-	nthRootStr := "6"
-	maxPrecision := uint(13)
-	expected := "13.3276982415963"
-	eSignVal := 1
-
-	d1, err := Decimal{}.NewNumStr(numStr1)
-
-	if err != nil {
-		t.Errorf("Error returned by Decimal{}.NewNumStr(numStr1) " +
-			"numStr1='%v' Error = '%v' ",numStr1, err.Error())
-	}
-
-	decNthRoot, err := Decimal{}.NewNumStr(nthRootStr)
-
-	if err != nil {
-		t.Errorf("Error returned by Decimal{}.NewNumStr(nthRootStr) " +
-			"nthRootStr='%v' Error = '%v' ",
-			nthRootStr, err.Error())
-	}
-
-	d2, err := d1.GetNthRoot(decNthRoot, maxPrecision)
-
-	if err != nil {
-		t.Errorf("Error returned from d1.GetNthRoot(nthRoot, maxPrecision). Error= %v ", err)
-	}
-
-	if expected != d2.GetNumStr() {
-		t.Errorf("Expected NumStr: %v. Instead, got %v", expected, d2.GetNumStr())
-	}
-
-	if eSignVal != d2.GetSign() {
-		t.Errorf("Expected sign Value= '%v'. Instead, got sign Value= '%v' ", eSignVal, d2.GetSign())
-	}
-
-	if int(maxPrecision) != d2.GetPrecision() {
-		t.Errorf("Expected precision= '%v'. Instead, got precision= '%v' ", maxPrecision, d2.GetPrecision())
-	}
-
-}
-
-func TestDecimal_GetNthRoot_03(t *testing.T) {
-	numStr1 := "5604423.924"
-	nthRootStr := "6"
-	maxPrecision := uint(13)
-	expected := "13.3276986078187"
-	eSignVal := 1
-
-	d1, err := Decimal{}.NewNumStr(numStr1)
-
-	if err != nil {
-		t.Errorf("Error returned by Decimal{}.NewNumStr(numStr1) " +
-			"numStr1='%v' Error = '%v' ",numStr1, err.Error())
-	}
-
-	decNthRoot, err := Decimal{}.NewNumStr(nthRootStr)
-
-	if err != nil {
-		t.Errorf("Error returned by Decimal{}.NewNumStr(nthRootStr) " +
-			"nthRootStr='%v' Error = '%v' ",
-			nthRootStr, err.Error())
-	}
-
-	d2, err := d1.GetNthRoot(decNthRoot, maxPrecision)
-
-	if err != nil {
-		t.Errorf("Error returned from d1.GetNthRoot(nthRoot, maxPrecision). Error= %v ", err)
-	}
-
-	if expected != d2.GetNumStr() {
-		t.Errorf("Expected NumStr: %v. Instead, got %v", expected, d2.GetNumStr())
-	}
-
-	if eSignVal != d2.GetSign() {
-		t.Errorf("Expected sign Value= '%v'. Instead, got sign Value= '%v' ", eSignVal, d2.GetSign())
-	}
-
-	if int(maxPrecision) != d2.GetPrecision() {
-		t.Errorf("Expected precision= '%v'. Instead, got precision= '%v' ", maxPrecision, d2.GetPrecision())
-	}
-
-}
-
-func TestDecimal_GetNthRoot_04(t *testing.T) {
-	numStr1 := "-27"
-	nthRootStr := "3"
-	maxPrecision := uint(2)
-	expected := "-3.00"
-	eSignVal := -1
-
-	d1, err := Decimal{}.NewNumStr(numStr1)
-
-	if err != nil {
-		t.Errorf("Error returned by Decimal{}.NewNumStr(numStr1) " +
-			"numStr1='%v' Error = '%v' ",numStr1, err.Error())
-	}
-
-	decNthRoot, err := Decimal{}.NewNumStr(nthRootStr)
-
-	if err != nil {
-		t.Errorf("Error returned by Decimal{}.NewNumStr(nthRootStr) " +
-			"nthRootStr='%v' Error = '%v' ",
-			nthRootStr, err.Error())
-	}
-
-	d2, err := d1.GetNthRoot(decNthRoot, maxPrecision)
-
-	if err != nil {
-		t.Errorf("Error returned from d1.GetNthRoot(nthRoot, maxPrecision). Error= %v ", err)
-	}
-
-	if expected != d2.GetNumStr() {
-		t.Errorf("Expected NumStr: %v. Instead, got %v", expected, d2.GetNumStr())
-	}
-
-	if eSignVal != d2.GetSign() {
-		t.Errorf("Expected sign Value= '%v'. Instead, got sign Value= '%v' ", eSignVal, d2.GetSign())
-	}
-
-	if int(maxPrecision) != d2.GetPrecision() {
-		t.Errorf("Expected precision= '%v'. Instead, got precision= '%v' ", maxPrecision, d2.GetPrecision())
-	}
-
-}
-
-func TestDecimal_GetNthRoot_05(t *testing.T) {
-	numStr1 := "-27"
-	nthRootStr := "4"
-	maxPrecision := uint(2)
-
-	d1, err := Decimal{}.NewNumStr(numStr1)
-
-	if err != nil {
-		t.Errorf("Error returned by Decimal{}.NewNumStr(numStr1) " +
-			"numStr1='%v' Error = '%v' ",numStr1, err.Error())
-	}
-
-	decNthRoot, err := Decimal{}.NewNumStr(nthRootStr)
-
-	if err != nil {
-		t.Errorf("Error returned by Decimal{}.NewNumStr(nthRootStr) " +
-			"nthRootStr='%v' Error = '%v' ",
-			nthRootStr, err.Error())
-	}
-
-	_, err = d1.GetNthRoot(decNthRoot, maxPrecision)
-
-	if err == nil {
-		t.Error("Expected Error from d1.GetNthRoot(nthRoot, maxPrecision) for negative number with even nthRoot. No Error triggered")
-	}
-
 
 }
 

@@ -28,7 +28,7 @@ func TestBigIntMathNthRoot_GetNthRootBigNum_01(t *testing.T) {
 	result, err := bIMathNthRoot.GetNthRoot(bINumBase, bINumNthRoot, maxPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned from bIMathNthRoot.GetNthRoot(). " +
+		t.Errorf("Error returned from bIMathNthRoot.NthRoot(). " +
 			"Error='%v' ", err.Error())
 	}
 
@@ -65,7 +65,7 @@ func TestBigIntMathNthRoot_GetNthRootBigNum_02(t *testing.T) {
 	result, err := bIMathNthRoot.GetNthRoot(bINumBase, bINumNthRoot, maxPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned from bIMathNthRoot.GetNthRoot(). " +
+		t.Errorf("Error returned from bIMathNthRoot.NthRoot(). " +
 			"Error='%v' ", err.Error())
 	}
 
@@ -102,7 +102,7 @@ func TestBigIntMathNthRoot_GetNthRootBigNum_03(t *testing.T) {
 	result, err := bIMathNthRoot.GetNthRoot(bINumBase, bINumNthRoot, maxPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned from bIMathNthRoot.GetNthRoot(). " +
+		t.Errorf("Error returned from bIMathNthRoot.NthRoot(). " +
 			"Error='%v' ", err.Error())
 	}
 
@@ -140,7 +140,7 @@ func TestBigIntMathNthRoot_GetNthRootBigNum_04(t *testing.T) {
 	result, err := bIMathNthRoot.GetNthRoot(bINumBase, bINumNthRoot, maxPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned from bIMathNthRoot.GetNthRoot(). " +
+		t.Errorf("Error returned from bIMathNthRoot.NthRoot(). " +
 			"Error='%v' ", err.Error())
 	}
 
@@ -176,7 +176,7 @@ func TestBigIntMathNthRoot_GetNthRootBigNum_05(t *testing.T) {
 	_, err = bIMathNthRoot.GetNthRoot(bINumBase, bINumNthRoot, maxPrecision)
 
 	if err == nil {
-		t.Error("Expected Error from nRt.GetNthRoot() for negative number with even nthRoot. No Error triggered")
+		t.Error("Expected Error from nRt.NthRoot() for negative number with even nthRoot. No Error triggered")
 	}
 
 }
@@ -207,7 +207,7 @@ func TestBigIntMathNthRoot_GetNthRootBigNum_06(t *testing.T) {
 	result, err := bIMathNthRoot.GetNthRoot(bINumBase, bINumNthRoot, maxPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned from bIMathNthRoot.GetNthRoot(). " +
+		t.Errorf("Error returned from bIMathNthRoot.NthRoot(). " +
 			"Error='%v' ", err.Error())
 	}
 
@@ -244,7 +244,7 @@ func TestBigIntMathNthRoot_GetNthRootBigNum_07(t *testing.T) {
 	result, err := bIMathNthRoot.GetNthRoot(bINumBase, bINumNthRoot, maxPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned from bIMathNthRoot.GetNthRoot(). " +
+		t.Errorf("Error returned from bIMathNthRoot.NthRoot(). " +
 			"Error='%v' ", err.Error())
 	}
 
@@ -280,7 +280,7 @@ func TestBigIntMathNthRoot_GetNthRootBigNum_08(t *testing.T) {
 	_, err = bIMathNthRoot.GetNthRoot(bINumBase, bINumNthRoot, maxPrecision)
 
 	if err == nil {
-		t.Error("Expected Error from nRt.GetNthRoot() for nthRoot == 1. No Error triggered")
+		t.Error("Expected Error from nRt.NthRoot() for nthRoot == 1. No Error triggered")
 	}
 
 }
@@ -311,7 +311,7 @@ func TestBigIntMathNthRoot_GetNthRootBigNum_09(t *testing.T) {
 	result, err := bIMathNthRoot.GetNthRoot(bINumBase, bINumNthRoot, maxPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned from bIMathNthRoot.GetNthRoot(). " +
+		t.Errorf("Error returned from bIMathNthRoot.NthRoot(). " +
 			"Error='%v' ", err.Error())
 	}
 
@@ -348,7 +348,7 @@ func TestBigIntMathNthRoot_GetNthRootBigNum_10(t *testing.T) {
 	result, err := bIMathNthRoot.GetNthRoot(bINumBase, bINumNthRoot, maxPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned from bIMathNthRoot.GetNthRoot(). " +
+		t.Errorf("Error returned from bIMathNthRoot.NthRoot(). " +
 			"Error='%v' ", err.Error())
 	}
 
@@ -385,7 +385,7 @@ func TestBigIntMathNthRoot_GetNthRootBigNum_11(t *testing.T) {
 	result, err := bIMathNthRoot.GetNthRoot(bINumBase, bINumNthRoot, maxPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned from bIMathNthRoot.GetNthRoot(). " +
+		t.Errorf("Error returned from bIMathNthRoot.NthRoot(). " +
 			"Error='%v' ", err.Error())
 	}
 
@@ -422,7 +422,7 @@ func TestBigIntMathNthRoot_GetNthRootBigNum_12(t *testing.T) {
 	result, err := bIMathNthRoot.GetNthRoot(bINumBase, bINumNthRoot, maxPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned from bIMathNthRoot.GetNthRoot(). " +
+		t.Errorf("Error returned from bIMathNthRoot.NthRoot(). " +
 			"Error='%v' ", err.Error())
 	}
 
@@ -459,7 +459,7 @@ func TestBigIntMathNthRoot_GetNthRootBigNum_13(t *testing.T) {
 	result, err := bIMathNthRoot.GetNthRoot(bINumBase, bINumNthRoot, maxPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned from bIMathNthRoot.GetNthRoot(). " +
+		t.Errorf("Error returned from bIMathNthRoot.NthRoot(). " +
 			"Error='%v' ", err.Error())
 	}
 
@@ -496,7 +496,7 @@ func TestBigIntMathNthRoot_GetNthRootBigNum_14(t *testing.T) {
 	result, err := bIMathNthRoot.GetNthRoot(bINumBase, bINumNthRoot, maxPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned from bIMathNthRoot.GetNthRoot(). " +
+		t.Errorf("Error returned from bIMathNthRoot.NthRoot(). " +
 			"Error='%v' ", err.Error())
 	}
 
@@ -533,7 +533,7 @@ func TestBigIntMathNthRoot_GetNthRootBigNum_15(t *testing.T) {
 	result, err := bIMathNthRoot.GetNthRoot(bINumBase, bINumNthRoot, maxPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned from bIMathNthRoot.GetNthRoot(). " +
+		t.Errorf("Error returned from bIMathNthRoot.NthRoot(). " +
 			"Error='%v' ", err.Error())
 	}
 
@@ -570,7 +570,7 @@ func TestBigIntMathNthRoot_GetNthRootBigNum_16(t *testing.T) {
 	result, err := bIMathNthRoot.GetNthRoot(bINumBase, bINumNthRoot, maxPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned from bIMathNthRoot.GetNthRoot(). " +
+		t.Errorf("Error returned from bIMathNthRoot.NthRoot(). " +
 			"Error='%v' ", err.Error())
 	}
 
@@ -607,7 +607,7 @@ func TestBigIntMathNthRoot_GetNthRootBigNum_17(t *testing.T) {
 	result, err := bIMathNthRoot.GetNthRoot(bINumBase, bINumNthRoot, maxPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned from bIMathNthRoot.GetNthRoot(). " +
+		t.Errorf("Error returned from bIMathNthRoot.NthRoot(). " +
 			"Error='%v' ", err.Error())
 	}
 
@@ -644,7 +644,7 @@ func TestBigIntMathNthRoot_GetNthRootBigNum_18(t *testing.T) {
 	result, err := bIMathNthRoot.GetNthRoot(bINumBase, bINumNthRoot, maxPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned from bIMathNthRoot.GetNthRoot(). " +
+		t.Errorf("Error returned from bIMathNthRoot.NthRoot(). " +
 			"Error='%v' ", err.Error())
 	}
 
@@ -681,7 +681,7 @@ func TestBigIntMathNthRoot_GetNthRootBigNum_19(t *testing.T) {
 	result, err := bIMathNthRoot.GetNthRoot(bINumBase, bINumNthRoot, maxPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned from bIMathNthRoot.GetNthRoot(). " +
+		t.Errorf("Error returned from bIMathNthRoot.NthRoot(). " +
 			"Error='%v' ", err.Error())
 	}
 
@@ -718,7 +718,7 @@ func TestBigIntMathNthRoot_GetNthRootBigNum_20(t *testing.T) {
 	result, err := bIMathNthRoot.GetNthRoot(bINumBase, bINumNthRoot, maxPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned from bIMathNthRoot.GetNthRoot(). " +
+		t.Errorf("Error returned from bIMathNthRoot.NthRoot(). " +
 			"Error='%v' ", err.Error())
 	}
 
@@ -785,7 +785,7 @@ func TestBigIntMathNthRoot_GetNthRootBigNum_22(t *testing.T) {
 	nthRootResult, err := bIMathNthRoot.GetNthRoot(bINumBase, bINumNthRoot, maxPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by bIMathNthRoot.GetNthRoot(bINumBase, " +
+		t.Errorf("Error returned by bIMathNthRoot.NthRoot(bINumBase, " +
 			"bINumNthRoot, maxPrecision) bINumBase='%v' bINumNthRoot='%v' " +
 			" maxPrecision='%v' Error='%v'.", bINumBase.GetNumStr(),
 				bINumNthRoot.GetNumStr(), maxPrecision, err.Error())
@@ -824,7 +824,7 @@ func TestBigIntMathNthRoot_GetNthRootBigNum_23(t *testing.T) {
 	nthRootResult, err := bIMathNthRoot.GetNthRoot(bINumBase, bINumNthRoot, maxPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by bIMathNthRoot.GetNthRoot(bINumBase, " +
+		t.Errorf("Error returned by bIMathNthRoot.NthRoot(bINumBase, " +
 			"bINumNthRoot, maxPrecision) bINumBase='%v' bINumNthRoot='%v' " +
 			" maxPrecision='%v' Error='%v'.", bINumBase.GetNumStr(),
 				bINumNthRoot.GetNumStr(), maxPrecision, err.Error())
@@ -863,7 +863,7 @@ func TestBigIntMathNthRoot_GetNthRootBigNum_24(t *testing.T) {
 	nthRootResult, err := bIMathNthRoot.GetNthRoot(bINumBase, bINumNthRoot, maxPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by bIMathNthRoot.GetNthRoot(bINumBase, " +
+		t.Errorf("Error returned by bIMathNthRoot.NthRoot(bINumBase, " +
 			"bINumNthRoot, maxPrecision) bINumBase='%v' bINumNthRoot='%v' " +
 			" maxPrecision='%v' Error='%v'.", bINumBase.GetNumStr(),
 				bINumNthRoot.GetNumStr(), maxPrecision, err.Error())
@@ -903,7 +903,7 @@ func TestBigIntMathNthRoot_GetNthRootBigNum_25(t *testing.T) {
 	nthRootResult, err := bIMathNthRoot.GetNthRoot(bINumBase, bINumNthRoot, maxPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by bIMathNthRoot.GetNthRoot(bINumBase, " +
+		t.Errorf("Error returned by bIMathNthRoot.NthRoot(bINumBase, " +
 			"bINumNthRoot, maxPrecision) bINumBase='%v' bINumNthRoot='%v' " +
 			" maxPrecision='%v' Error='%v'.", bINumBase.GetNumStr(),
 				bINumNthRoot.GetNumStr(), maxPrecision, err.Error())
@@ -975,7 +975,7 @@ func TestBigIntMathNthRoot_GetNthRootBigNum_27(t *testing.T) {
 	nthRootResult, err := bIMathNthRoot.GetNthRoot(bINumBase, bINumNthRoot, maxPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by bIMathNthRoot.GetNthRoot(bINumBase, " +
+		t.Errorf("Error returned by bIMathNthRoot.NthRoot(bINumBase, " +
 			"bINumNthRoot, maxPrecision) bINumBase='%v' bINumNthRoot='%v' " +
 			" maxPrecision='%v' Error='%v'.", bINumBase.GetNumStr(),
 			bINumNthRoot.GetNumStr(), maxPrecision, err.Error())
