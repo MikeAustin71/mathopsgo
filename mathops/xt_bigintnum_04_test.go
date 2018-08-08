@@ -5,6 +5,163 @@ import (
 	"math/big"
 	)
 
+
+func TestBigIntNum_Multiply_01(t *testing.T) {
+
+	str1 := "575.63"
+	str2 := "2014.123"
+	expected := "1159389.62249"
+
+	bINum1 := BigIntNum{}.New()
+
+	err := bINum1.SetNumStr(str1)
+
+	if err != nil {
+		t.Errorf("Error thrown on bINum1.SetNumStr(str1). str1= '%v' Error= %v", str1, err)
+	}
+
+	bINum2 := BigIntNum{}.New()
+
+	err = bINum2.SetNumStr(str2)
+
+	if err != nil {
+		t.Errorf("Error thrown on bINum1.SetNumStr(str2). str1= '%v' Error= %v", str2, err)
+	}
+
+	bINum3 := bINum1.Multiply(bINum2)
+
+	if bINum3.GetNumStr() != expected {
+		t.Errorf("Error. Expected %v. Instead, got %v", expected, bINum3.GetNumStr())
+	}
+
+}
+
+func TestBigIntNum_Multiply_02(t *testing.T) {
+
+	str1 := "-575.63"
+	str2 := "2014.123"
+	expected := "-1159389.62249"
+
+	bINum1 := BigIntNum{}.New()
+
+	err := bINum1.SetNumStr(str1)
+
+	if err != nil {
+		t.Errorf("Error thrown on bINum1.SetNumStr(str1). str1= '%v' Error= %v", str1, err)
+	}
+
+	bINum2 := BigIntNum{}.New()
+
+	err = bINum2.SetNumStr(str2)
+
+	if err != nil {
+		t.Errorf("Error thrown on bINum1.SetNumStr(str2). str1= '%v' Error= %v", str2, err)
+	}
+
+	bINum3 := bINum1.Multiply(bINum2)
+
+	if expected != bINum3.GetNumStr() {
+		t.Errorf("Error. Expected %v. Instead, got %v", expected, bINum3.GetNumStr())
+	}
+
+}
+
+func TestBigIntNum_Multiply_03(t *testing.T) {
+
+	str1 := "-575.63"
+	str2 := "-2014.123"
+	expected := "1159389.62249"
+
+	bINum1 := BigIntNum{}.New()
+
+	err := bINum1.SetNumStr(str1)
+
+	if err != nil {
+		t.Errorf("Error thrown on bINum1.SetNumStr(str1). str1= '%v' Error= %v", str1, err)
+	}
+
+	bINum2 := BigIntNum{}.New()
+
+	err = bINum2.SetNumStr(str2)
+
+	if err != nil {
+		t.Errorf("Error thrown on bINum1.SetNumStr(str2). str1= '%v' Error= %v", str2, err)
+	}
+
+	bINum3 := bINum1.Multiply(bINum2)
+
+	if expected != bINum3.GetNumStr() {
+		t.Errorf("Error. Expected %v. Instead, got %v", expected, bINum3.GetNumStr())
+	}
+
+}
+
+func TestBigIntNum_Multiply_04(t *testing.T) {
+
+	str1 := "0"
+	str2 := "-2014.123"
+	expected := "0"
+
+	bINum1 := BigIntNum{}.New()
+
+	err := bINum1.SetNumStr(str1)
+
+	if err != nil {
+		t.Errorf("Error thrown on bINum1.SetNumStr(str1). str1= '%v' Error= %v", str1, err)
+	}
+
+	bINum2 := BigIntNum{}.New()
+
+	err = bINum2.SetNumStr(str2)
+
+	if err != nil {
+		t.Errorf("Error thrown on bINum1.SetNumStr(str2). str1= '%v' Error= %v", str2, err)
+	}
+
+	bINum3 := bINum1.Multiply(bINum2)
+
+	if expected != bINum3.GetNumStr() {
+		t.Errorf("Error. Expected %v. Instead, got %v", expected, bINum3.GetNumStr())
+	}
+
+}
+
+func TestBigIntNum_Multiply_05(t *testing.T) {
+	numStr := "3"
+	mul, err := BigIntNum{}.NewNumStr(numStr)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(numStrDto) " +
+			"numStrDto='%v'  Error = '%v' ",numStr, err.Error())
+	}
+
+	bigIntNum, err := BigIntNum{}.NewNumStr("1")
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(\"1\") " +
+			"Error = '%v' ", err.Error())
+	}
+
+	for i := 0; i < 4; i++ {
+
+		bigIntNum = bigIntNum.Multiply(mul)
+
+		if err != nil {
+			t.Errorf("Error returned by bigIntNum.Multiply(mul). " +
+				"i='%v' bigIntNum='%v', mul='%v' Error='%v'",
+				i, bigIntNum.GetNumStr(), mul.GetNumStr(), err.Error())
+		}
+	}
+
+	expected := "81"
+
+	if expected != bigIntNum.GetNumStr() {
+		t.Errorf("Error. Expected %v. Instead, got %v", expected, bigIntNum.GetNumStr())
+	}
+
+}
+
+
 func TestBigIntNum_NewBigFloat_01(t *testing.T) {
 
 	bfloat := big.NewFloat(32.123)

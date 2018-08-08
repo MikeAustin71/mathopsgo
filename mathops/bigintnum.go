@@ -34,7 +34,7 @@ import (
 type BigIntNum struct {
 	bigInt      						*big.Int
 	absBigInt   						*big.Int
-	precision   						uint        // Number of digits to the right of the decimal point.
+	precision   						uint        // Number of digits to the right of the decimal place.
 	scaleFactor 						*big.Int 		// Scale Factor =  10^(precision)
 	numberOfExpectedDigits	*big.Int		// Number of digits in the 'absBigInt' value
 	sign        						int      		// Valid values are -1 or +1. Indicates the sign of the
@@ -200,21 +200,61 @@ func (bNum *BigIntNum) CopyOut() BigIntNum {
 	return b2
 }
 
-// DivideByFiveFracQuo - Divides the numerical value of the current BigIntNum by
-// five ('5') and returns the resulting quotient as a floating point value expressed
-// as a BigIntNum Type.
+// Divide - Performs a division operation. The current BigIntNum instance is the 'dividend'
+// is divided by the input parameter, 'divisor'. The result of this division operation is
+// the 'fracQuotient' which is returned as a BigIntNum type.
 //
-// 												quotient = bNum / 5
+// The return value may be an integer or a floating point value as determined by the results
+// of the division operation. For floating point values, the number of digits to the right
+// of the decimal place is limited by input parameter, 'maxPrecision'.
 //
-// Input parameter 'maxPrecision' is used to control the maximum precision of the
-// resulting fractional quotient. Precision is defined as the the number of fractional
-// digits to the right of the decimal point. Be advised that these calculations can support
-// very large precision values.
+//										bNum = dividend
+// 										dividend / divisor = quotient
 //
-func (bNum *BigIntNum) DivideByFiveFracQuo(
+// Input parameter 'maxPrecision' is used to control the maximum precision of the resulting
+// quotient. Precision is defined as the the number of fractional digits to the right of
+// the decimal place. Be advised that these calculations can support very large precision
+// values.
+//
+// This returned BigIntNum 'fracQuotient' will contain numeric separators (decimal separator,
+// thousands separator and currency symbol) copied from the current BigIntNum instance (bNum).
+//
+func (bNum *BigIntNum) Divide(
+				divisor BigIntNum,
+						maxPrecision uint) (fracQuotient BigIntNum, err error) {
+
+	ePrefix := "BigIntNum.Divide() "
+
+	if divisor.IsZero() {
+		return BigIntNum{}, errors.New(ePrefix + "ERROR: Attempted Divide by Zero!")
+	}
+
+	return BigIntMathDivide{}.BigIntNumFracQuotient(bNum.CopyOut(), divisor, maxPrecision)
+}
+
+
+// DivideByFive - Divides the numerical value of the current BigIntNum by five ('5'). The
+// result of this division operation is the 'fracQuotient' which is returned as a BigIntNum
+// type.
+//
+// The return value may be an integer or a floating point value as determined by the results
+// of the division operation. For floating point values, the number of digits to the right
+// of the decimal place is limited by input parameter, 'maxPrecision'.
+//
+// 												bNum / 5 = fracQuotient
+//
+// Input parameter 'maxPrecision' is used to control the maximum precision of the resulting
+// fractional quotient. Precision is defined as the the number of fractional digits to the
+// right of the decimal place. Be advised that these calculations can support very large
+// precision values.
+//
+// This returned BigIntNum 'fracQuotient' will contain numeric separators (decimal separator,
+// thousands separator and currency symbol) copied from the current BigIntNum instance (bNum).
+//
+func (bNum *BigIntNum) DivideByFive(
 	maxPrecision uint) (fracQuotient BigIntNum, err error) {
 
-	ePrefix := "BigIntNum.DivideByFiveFracQuo() "
+	ePrefix := "BigIntNum.DivideByFive() "
 
 	var errx error
 
@@ -236,21 +276,28 @@ func (bNum *BigIntNum) DivideByFiveFracQuo(
 	return fracQuotient, err
 }
 
-// DivideByTenFracQuo - Divides the numerical value of the current BigIntNum by
-// ten ('10') and returns the resulting quotient as a floating point value expressed
-// as a BigIntNum Type.
+// DivideByTen - Divides the numerical value of the current BigIntNum by ten ('10'). The
+// result of this division operation is the 'fracQuotient' which is returned as a BigIntNum
+// type.
 //
-// 												quotient = bNum / 10
+// The return value may be an integer or a floating point value as determined by the results
+// of the division operation. For floating point values, the number of digits to the right
+// of the decimal place is limited by input parameter, 'maxPrecision'.
 //
-// Input parameter 'maxPrecision' is used to control the maximum precision of the
-// resulting fractional quotient. Precision is defined as the the number of fractional
-// digits to the right of the decimal point. Be advised that these calculations can support
-// very large precision values.
+// 												bNum / 10 = fracQuotient
 //
-func (bNum *BigIntNum) DivideByTenFracQuo(
-	maxPrecision uint) (fracQuotient BigIntNum, err error) {
+// Input parameter 'maxPrecision' is used to control the maximum precision of the resulting
+// fractional quotient. Precision is defined as the the number of fractional digits to the
+// right of the decimal place. Be advised that these calculations can support very large
+// precision values.
+//
+// This returned BigIntNum 'fracQuotient' will contain numeric separators (decimal separator,
+// thousands separator and currency symbol) copied from the current BigIntNum instance (bNum).
+//
+func (bNum *BigIntNum) DivideByTen(
+												maxPrecision uint) (fracQuotient BigIntNum, err error) {
 
-	ePrefix := "BigIntNum.DivideByTenFracQuo() "
+	ePrefix := "BigIntNum.DivideByTen() "
 
 	var errx error
 
@@ -272,21 +319,29 @@ func (bNum *BigIntNum) DivideByTenFracQuo(
 	return fracQuotient, err
 }
 
-// DivideByThreeFracQuo - Divides the numerical value of the current BigIntNum by
-// three ('3') and returns the resulting quotient as a floating point value expressed
-// as a BigIntNum Type.
+// DivideByThree - Divides the numerical value of the current BigIntNum by three ('3').
+// The result of this division operation is the 'fracQuotient' which is returned as a
+// BigIntNum type.
 //
-// 												quotient = bNum / 3
+// The return value may be an integer or a floating point value as determined by the results
+// of the division operation. For floating point values, the number of digits to the right
+// of the decimal place is limited by input parameter, 'maxPrecision'.
 //
-// Input parameter 'maxPrecision' is used to control the maximum precision of the
-// resulting fractional quotient. Precision is defined as the the number of fractional
-// digits to the right of the decimal point. Be advised that these calculations can support
-// very large precision values.
 //
-func (bNum *BigIntNum) DivideByThreeFracQuo(
-	maxPrecision uint) (fracQuotient BigIntNum, err error) {
+// 													bNum / 3 = fracQuotient
+//
+// Input parameter 'maxPrecision' is used to control the maximum precision of the resulting
+// fractional quotient. Precision is defined as the the number of fractional digits to the
+// right of the decimal place. Be advised that these calculations can support very large
+// precision values.
+//
+// This returned BigIntNum 'fracQuotient' will contain numeric separators (decimal separator,
+// thousands separator and currency symbol) copied from the current BigIntNum instance (bNum).
+//
+func (bNum *BigIntNum) DivideByThree(
+												maxPrecision uint) (fracQuotient BigIntNum, err error) {
 
-	ePrefix := "BigIntNum.DivideByThreeFracQuo() "
+	ePrefix := "BigIntNum.DivideByThree() "
 
 	var errx error
 
@@ -308,21 +363,29 @@ func (bNum *BigIntNum) DivideByThreeFracQuo(
 	return fracQuotient, err
 }
 
-// DivideByTwoFracQuo - Divides the numerical value of the current BigIntNum
-// by two ('2') and returns the resulting quotient as a floating point value
-// expressed as a BigIntNum type.
+// DivideByTwo - Divides the numerical value of the current BigIntNum by two ('2'). The
+// result of this division operation is the 'fracQuotient' which is returned as a BigIntNum
+// type.
 //
-// 												quotient = bNum / 2
+// The return value may be an integer or a floating point value as determined by the results
+// of the division operation. For floating point values, the number of digits to the right
+// of the decimal place is limited by input parameter, 'maxPrecision'.
 //
-// Input parameter 'maxPrecision' is used to control the maximum precision of the
-// resulting fractional quotient. Precision is defined as the the number of fractional
-// digits to the right of the decimal point. Be advised that these calculations can
-// support very large precision values.
+// The return value may be an integer or a floating point value as determined by the results
+// of the division operation. For floating point values, the number of digits to the right
+// of the decimal place is limited by input parameter, 'maxPrecision'.
 //
-func (bNum *BigIntNum) DivideByTwoFracQuo(
-	maxPrecision uint) (fracQuotient BigIntNum, err error) {
+// 												bNum / 2 = fracQuotient
+//
+// Input parameter 'maxPrecision' is used to control the maximum precision of the resulting
+// fractional quotient. Precision is defined as the the number of fractional digits to the
+// right of the decimal place. Be advised that these calculations can support very large
+// precision values.
+//
+func (bNum *BigIntNum) DivideByTwo(
+												maxPrecision uint) (fracQuotient BigIntNum, err error) {
 
-	ePrefix := "BigIntNum.DivideByTwoFracQuo() "
+	ePrefix := "BigIntNum.DivideByTwo() "
 
 	var errx error
 
@@ -344,16 +407,23 @@ func (bNum *BigIntNum) DivideByTwoFracQuo(
 	return fracQuotient, err
 }
 
-// DivideByTwoQuoMod - Divides the numerical value of the current BigIntNum by two ('2')
-// and returns the result as an integer quotient and a floating point modulo.
+// DivideByTwoQuoMod - Divides the numerical value of the current BigIntNum by two ('2').
+// The result of the division operation is returned as an integer quotient, 'intQuotient',
+// and a floating point modulo or remainder, 'modulo'.
 //
-// If modulo equals zero ('0'), it signals the the current numerical value is 'even'
-// and divisible by two.
+// 										bNum / 2 = integer quotient and floating point modulo
 //
-// Input parameter 'maxPrecision' is used to control the maximum precision of the
-// resulting 'modulo'. Precision is defined as the the number of fractional digits
-// to the right of the decimal point. Be advised that these calculations can support
-// very large precision values.
+// If 'modulo' equals zero ('0'), it signals the the current BigIntNum numerical value is
+// 'even'; that is, it is evenly divisible by two.
+//
+// Input parameter 'maxPrecision' is used to control the maximum precision of the resulting
+// floating point 'modulo'. Precision is defined as the the number of fractional digits to
+// the right of the decimal place. Be advised that these calculations can support very large
+// precision values.
+//
+// Both returned BigIntNum 'intQuotient' and 'modulo' BigIntNum types will contain numeric
+// separators (decimal separator, thousands separator and currency symbol) copied from the
+// current BigIntNum instance (bNum).
 //
 func (bNum *BigIntNum) DivideByTwoQuoMod(
 												maxPrecision uint) (intQuotient,	modulo BigIntNum, err error) {
@@ -564,7 +634,7 @@ func (bNum *BigIntNum) Floor() BigIntNum {
 //
 //																		ABSOLUTEPURENUMSTRFMTMODE - Formats a pure number string with
 //																																absolute (positive) integer value
-//																																and no decimal point separator.
+//																																and no decimal place separator.
 //																																Example: ($12,345,678)
 //
 func (bNum *BigIntNum) FormatCurrencyStr(negValMode NegativeValueFmtMode) string {
@@ -726,7 +796,7 @@ func (bNum *BigIntNum) FormatCurrencyStr(negValMode NegativeValueFmtMode) string
 
 // FormatNumStr - Formats the numeric value of the current BigIntNum
 // instance as number string consisting of integer digits to the left
-// of the decimal point and fractional digits to the right of the decimal
+// of the decimal place and fractional digits to the right of the decimal
 // point, if such fractional digits exist. The resulting number string
 // will NOT contain a currency symbol or thousands separators.
 //
@@ -751,7 +821,7 @@ func (bNum *BigIntNum) FormatCurrencyStr(negValMode NegativeValueFmtMode) string
 //
 //																		ABSOLUTEPURENUMSTRFMTMODE - Formats a pure number string with
 //																																absolute (positive) integer value
-//																																and no decimal point separator.
+//																																and no decimal place separator.
 //																																Example: (12345678)
 //
 func (bNum *BigIntNum) FormatNumStr(negValMode NegativeValueFmtMode) string {
@@ -914,7 +984,7 @@ func (bNum *BigIntNum) FormatNumStr(negValMode NegativeValueFmtMode) string {
 //
 //																		ABSOLUTEPURENUMSTRFMTMODE - Formats a pure number string with
 //																																absolute (positive) integer value
-//																																and no decimal point separator.
+//																																and no decimal place separator.
 //																																Example: (12,345,678)
 //
 func (bNum *BigIntNum) FormatThousandsStr(negValMode NegativeValueFmtMode) string {
@@ -1110,7 +1180,7 @@ func (bNum *BigIntNum) GetActualNumberOfDigits() (
 }
 
 // GetAbsoluteNumStr - Returns the absolute integer value (positive value) of the
-// *big.Int value encapsulated by this BigIntNum. No decimal point is included.
+// *big.Int value encapsulated by this BigIntNum. No decimal place is included.
 //
 // If an error is encountered, an empty string is returned.
 //
@@ -1229,7 +1299,7 @@ func (bNum *BigIntNum) GetCurrencySymbol() rune {
 }
 
 // GetDecimal - Converts the current BigIntNum value to a Type Decimal
-// instance. The resulting number value includes the decimal point
+// instance. The resulting number value includes the decimal place
 // and decimal digits if they exist.
 //
 // The returned Decimal instance contains numeric separators (decimal separator,
@@ -1368,7 +1438,7 @@ func (bNum *BigIntNum) GetInt() (int, error) {
 }
 
 // GetIntAryElements - Converts the current BigIntNum value to an IntAry
-// instance. The resulting number value includes the decimal point
+// instance. The resulting number value includes the decimal place
 // and fractional digits if they exist.
 //
 // Note that the BigIntNum settings for 'decimalSeparator', 'thousandsSeparator'
@@ -1521,7 +1591,7 @@ func (bNum *BigIntNum) GetNumberOfDigits() int {
 }
 
 // GetNumericSeparatorsDto - Returns a structure containing the
-// character or rune values for decimal point separator, thousands
+// character or rune values for decimal place separator, thousands
 // separator and currency symbol.
 //
 func (bNum *BigIntNum) GetNumericSeparatorsDto() NumericSeparatorDto {
@@ -1535,7 +1605,7 @@ func (bNum *BigIntNum) GetNumericSeparatorsDto() NumericSeparatorDto {
 }
 
 // GetNumStr - Converts the current BigIntNum value to string of
-// numbers which includes the decimal point and decimal digits
+// numbers which includes the decimal place and decimal digits
 // if they exist.
 //
 func (bNum *BigIntNum) GetNumStr() (string) {
@@ -1545,7 +1615,7 @@ func (bNum *BigIntNum) GetNumStr() (string) {
 }
 
 // GetNumStrDto - Converts the current BigIntNum value to a NumStrDto
-// instance. The resulting number string includes the decimal point
+// instance. The resulting number string includes the decimal place
 // and decimal digits if they exist.
 //
 // The returned NumStrDto type contains numeric separators (decimal separator,
@@ -1597,7 +1667,7 @@ func (bNum *BigIntNum) GetNumStrDto() (NumStrDto, error) {
 //
 // precision is defined as the number of numeric digits to
 // the right of the decimal place. To compute the location
-// of the decimal point in a string of numeric digits, go
+// of the decimal place in a string of numeric digits, go
 // to the right most digit in the number string and count
 // left 'precision' digits.
 //
@@ -1619,7 +1689,7 @@ func (bNum *BigIntNum) GetPrecision() int {
 //
 // precision is defined as the number of numeric digits to
 // the right of the decimal place. To compute the location
-// of the decimal point in a string of numeric digits, go
+// of the decimal place in a string of numeric digits, go
 // to the right most digit in the number string and count
 // left 'precision' digits.
 //
@@ -1639,7 +1709,7 @@ func (bNum *BigIntNum) GetPrecisionBigInt() *big.Int {
 //
 // precision is defined as the number of numeric digits to
 // the right of the decimal place. To compute the location
-// of the decimal point in a string of numeric digits, go
+// of the decimal place in a string of numeric digits, go
 // to the right most digit in the number string and count
 // left 'precision' digits.
 //
@@ -1854,19 +1924,48 @@ func (bNum *BigIntNum) IsZero() bool {
 	return false
 }
 
-// Multiply - Multiplies the numerical value of the current BigIntNum
-// instance times input parameter 'b2'. The product is returned as a 
-// BigIntNum.
+// Mod - performs a modulo operation where the current BigIntNum numeric value is the
+// dividend and the divisor is the input parameter, 'divisor'.  The modulo operation finds
+// the remainder after division of one number by another (sometimes called modulus).
+// (Wikipedia: https://en.wikipedia.org/wiki/Modulo_operation)
 //
-//									product = bNum X b2
+// 	 									dividend = bNum
+//   									dividend % divisor = modulo
 //
-// The BigIntNum instance returned by this method will contain numeric
-// separators (decimal separator, thousands separator and currency
-// symbol) copied from the original BigIntNum instance.
+// The result of this modulo operation is returned as a BigIntNum, 'modulo'. 'modulo' may
+// consist of an integer or a floating point value consisting of integer and fractional
+// digits.
+//
+// Input parameter 'maxPrecision' is used to control the maximum precision of the resulting
+// floating point 'modulo'. Precision is defined as the the number of fractional digits to
+// the right of the decimal place. Be advised that these calculations can support very large
+// precision values.
+//
+// The returned BigIntNum instance, 'modulo', will contain numeric separators (decimal
+// separator, thousands separator and currency symbol) copied from the current BigIntNum
+// instance (bNum).
+//
+func (bNum *BigIntNum) Mod(
+													divisor BigIntNum,
+														maxPrecision uint) (modulo BigIntNum, err error) {
+
+	return BigIntMathDivide{}.BigIntNumModulo(bNum.CopyOut(), divisor, maxPrecision)
+}
+
+// Multiply - Multiplies the numerical value of the current BigIntNum instance
+// ('multiplier') times input parameter 'multiplicand'. The 'product' of this
+// multiplication operation is returned as a BigIntNum.
+//
+//									multiplier = bNum
+//									multiplier X multiplicand = product
+//
+// The BigIntNum instance returned by this method, 'product', will contain numeric
+// separators (decimal separator, thousands separator and currency symbol)
+// copied from the current BigIntNum instance.
 // 
-func (bNum *BigIntNum) Multiply(b2 BigIntNum) BigIntNum {
-	
-	return BigIntMathMultiply{}.MultiplyBigIntNums(bNum.CopyOut(), b2) 
+func (bNum *BigIntNum) Multiply(multiplicand BigIntNum) (product BigIntNum) {
+
+	return BigIntMathMultiply{}.MultiplyBigIntNums(bNum.CopyOut(), multiplicand)
 }
 
 // MultiplyByFive - Multiplies the numerical value of the current BigIntNum
@@ -1938,8 +2037,8 @@ func (bNum BigIntNum) New() BigIntNum {
 // associated precision.
 //
 // The 'precision' parameter specifies the number of digits to the right
-// of the decimal point. The Numeric value is equal to bigI x 10^(precision x -1).
-// This effectively locates the decimal point by counting from the extreme right
+// of the decimal place. The Numeric value is equal to bigI x 10^(precision x -1).
+// This effectively locates the decimal place by counting from the extreme right
 // of the integer number, 'precision' places to the left. See the example below.
 //
 // Input Parameters
@@ -1948,8 +2047,8 @@ func (bNum BigIntNum) New() BigIntNum {
 //									out decimal digits.
 //
 // precision int	- This unsigned integer (always a positive value) identifies
-// 									the location of the decimal point in the integer value 'bigI'.
-// 									The decimal point location is calculated by starting with the
+// 									the location of the decimal place in the integer value 'bigI'.
+// 									The decimal place location is calculated by starting with the
 // 									right most digit in the integer number and counting	left,
 // 									'precision' places.
 //
@@ -2786,8 +2885,8 @@ func (bNum *BigIntNum) RoundToDecPlace(precision uint) {
 // the input parameters *big.Int integer and precision.
 //
 // The 'precision' parameter specifies the number of digits to the right
-// of the decimal point. The Numeric value is equal to bigI x 10^(precision x -1).
-// This effectively locates the decimal point by counting from the extreme right
+// of the decimal place. The Numeric value is equal to bigI x 10^(precision x -1).
+// This effectively locates the decimal place by counting from the extreme right
 // of the integer number, 'precision' places to the left. See the example below.
 //
 // Input Parameters
@@ -2796,8 +2895,8 @@ func (bNum *BigIntNum) RoundToDecPlace(precision uint) {
 //									out decimal digits.
 //
 // precision uint	- This unsigned integer (always a positive value) identifies
-// 									the location of the decimal point in the integer value 'bigI'.
-// 									The decimal point location is calculated by starting with the
+// 									the location of the decimal place in the integer value 'bigI'.
+// 									The decimal place location is calculated by starting with the
 // 									right most digit in the integer number and counting	left,
 // 									'precision' places. Example:
 //											Integer Value		precision			Numeric Value
@@ -3463,7 +3562,7 @@ func (bNum *BigIntNum) SetNumericSeparators(
 }
 
 // SetNumericSeparatorsDto - Sets the values of numeric separators:
-// 		decimal point separator
+// 		decimal place separator
 //		thousands separator
 //		currency symbol
 //
@@ -3573,22 +3672,22 @@ func (bNum *BigIntNum) SetSignValue(signVal int) error {
 // ShiftPrecisionLeft - Shifts precision of the current BigIntNum
 // numeric value to the left by 'shiftLeftPlaces' decimal places. This
 // is a 'relative' shift-left operation. The shift left operation is
-// therefore performed with the current decimal point position as the
+// therefore performed with the current decimal place position as the
 // starting point.
 //
 // This operation is equivalent to:	result = Decimal value / 10^shiftLeftPlaces
 // or signed number divided by 10 raised to the power of shiftLeftPlaces.
 //
-// This method performs a relative shift left of the decimal point position.
+// This method performs a relative shift left of the decimal place position.
 // Be careful, this is NOT Shift Number Left operation. This is Shift Precision
-// Left which means that the decimal point will be shifted left.
+// Left which means that the decimal place will be shifted left.
 //
 // See Examples below.
 //
 // Input Parameters
 // ================
 //
-//	shiftLeftPlaces int	- The number of positions the decimal point will be
+//	shiftLeftPlaces int	- The number of positions the decimal place will be
 // 												shifted left from its current position.
 //
 // Examples:
@@ -3626,23 +3725,23 @@ func (bNum *BigIntNum) ShiftPrecisionLeft(shiftLeftPlaces uint) {
 // ShiftPrecisionRight - Shifts precision of the current BigIntNum
 // numeric value to the right by 'shiftRightPlaces' decimal places. This
 // is a 'relative' shift-right operation. The shift right operation is
-// therefore performed with the current decimal point position as the
+// therefore performed with the current decimal place position as the
 // starting point.
 //
 // This is equivalent to: result = Decimal value X 10^shiftRightPrecision or
 // Decimal numeric value multiplied by 10 raised to the power of
 // shiftRightPrecision.
 //
-// This method performs a relative shift right of the decimal point position.
+// This method performs a relative shift right of the decimal place position.
 // Be careful, this is NOT a Shift Number Right operation. This is Shift Precision
-// Right which means that the decimal point will be shifted right.
+// Right which means that the decimal place will be shifted right.
 //
 // See Examples below.
 //
 // Input Parameters
 // ================
 //
-//	shiftRightPlaces int	- The number of positions the decimal point will be
+//	shiftRightPlaces int	- The number of positions the decimal place will be
 // 													shifted right from its current position.
 //
 // Examples:

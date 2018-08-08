@@ -68,8 +68,7 @@ func TestDecimal_MakeDecimalFromIntAry_02(t *testing.T) {
 
 }
 
-
-func TestDecimal_Mul_01(t *testing.T) {
+func TestDecimal_Multiply_01(t *testing.T) {
 
 	str1 := "575.63"
 	str2 := "2014.123"
@@ -91,10 +90,10 @@ func TestDecimal_Mul_01(t *testing.T) {
 		t.Errorf("Error thrown on d1.SetNumStr(str2). str1= '%v' Error= %v", str2, err)
 	}
 
-	d3, err := d1.Mul(d2)
+	d3, err := d1.Multiply(d2)
 
 	if err != nil {
-		t.Errorf("Error thrown on d1.Mul(d2). Error= %v", err)
+		t.Errorf("Error thrown on d1.Multiply(d2). Error= %v", err)
 	}
 
 	if d3.GetNumStr() != expected {
@@ -103,7 +102,7 @@ func TestDecimal_Mul_01(t *testing.T) {
 
 }
 
-func TestDecimal_Mul_02(t *testing.T) {
+func TestDecimal_Multiply_02(t *testing.T) {
 
 	str1 := "-575.63"
 	str2 := "2014.123"
@@ -125,10 +124,10 @@ func TestDecimal_Mul_02(t *testing.T) {
 		t.Errorf("Error thrown on d1.SetNumStr(str2). str1= '%v' Error= %v", str2, err)
 	}
 
-	d3, err := d1.Mul(d2)
+	d3, err := d1.Multiply(d2)
 
 	if err != nil {
-		t.Errorf("Error thrown on d1.Mul(d2). Error= %v", err)
+		t.Errorf("Error thrown on d1.Multiply(d2). Error= %v", err)
 	}
 
 	if expected != d3.GetNumStr() {
@@ -136,7 +135,8 @@ func TestDecimal_Mul_02(t *testing.T) {
 	}
 
 }
-func TestDecimal_Mul_03(t *testing.T) {
+
+func TestDecimal_Multiply_03(t *testing.T) {
 
 	str1 := "-575.63"
 	str2 := "-2014.123"
@@ -158,7 +158,7 @@ func TestDecimal_Mul_03(t *testing.T) {
 		t.Errorf("Error thrown on d1.SetNumStr(str2). str1= '%v' Error= %v", str2, err)
 	}
 
-	d3, err := d1.Mul(d2)
+	d3, err := d1.Multiply(d2)
 
 	if err != nil {
 		t.Errorf("Error thrown on d1.Mul(d2). Error= %v", err)
@@ -170,7 +170,41 @@ func TestDecimal_Mul_03(t *testing.T) {
 
 }
 
-func TestDecimal_MulThis_01(t *testing.T) {
+func TestDecimal_Multiply_04(t *testing.T) {
+
+	str1 := "0"
+	str2 := "-2014.123"
+	expected := "0"
+
+	dec1 := Decimal{}.New()
+
+	err := dec1.SetNumStr(str1)
+
+	if err != nil {
+		t.Errorf("Error thrown on dec1.SetNumStr(str1). str1= '%v' Error= %v", str1, err)
+	}
+
+	dec2 := Decimal{}.New()
+
+	err = dec2.SetNumStr(str2)
+
+	if err != nil {
+		t.Errorf("Error thrown on dec1.SetNumStr(str2). str1= '%v' Error= %v", str2, err)
+	}
+
+	dec3, err := dec1.Multiply(dec2)
+
+	if err != nil {
+		t.Errorf("Error thrown on dec1.Multiply(dec2). dec2= '%v' Error= %v", dec2.GetNumStr(), err)
+	}
+
+	if expected != dec3.GetNumStr() {
+		t.Errorf("Error. Expected %v. Instead, got %v", expected, dec3.GetNumStr())
+	}
+
+}
+
+func TestDecimal_Multiply_05(t *testing.T) {
 	numStr := "3"
 	mul, err := Decimal{}.NewNumStr(numStr)
 
@@ -187,7 +221,13 @@ func TestDecimal_MulThis_01(t *testing.T) {
 	}
 
 	for i := 0; i < 4; i++ {
-		d.MulThis(mul)
+		d, err = d.Multiply(mul)
+
+		if err != nil {
+			t.Errorf("Error returned by d.Multiply(mul). " +
+				"i='%v' d='%v', mul='%v' Error='%v'",
+				i,d.GetNumStr(), mul.GetNumStr(), err.Error())
+		}
 	}
 
 	expected := "81"

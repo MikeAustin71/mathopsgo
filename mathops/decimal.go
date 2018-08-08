@@ -1321,94 +1321,100 @@ func (dec *Decimal) MakeDecimalFromIntAry(ia *IntAry) (Decimal, error) {
 	return d2, nil
 }
 
-// Mul - Multiplies the incoming Decimal value, by the
-// current Decimal Value and returns the result in a
-// Decimal Type.
+
+// Mod - performs a modulo operation where the current BigIntNum numeric value is the
+// dividend and the divisor is the input parameter, 'divisor'.  The modulo operation finds
+// the remainder after division of one number by another (sometimes called modulus).
+// (Wikipedia: https://en.wikipedia.org/wiki/Modulo_operation)
 //
-// The returned Decimal type contains numeric separators
-// (decimal separator, thousands separator and currency
-// symbol) copied from the current Decimal instance.
+// 	 									dividend = bNum
+//   									dividend % divisor = modulo
 //
-func (dec *Decimal) Mul(d2 Decimal) (Decimal, error) {
+// The result of this modulo operation is returned as a BigIntNum, 'modulo'. 'modulo' may
+// consist of an integer or a floating point value consisting of integer and fractional
+// digits.
+//
+// Input parameter 'maxPrecision' is used to control the maximum precision of the resulting
+// floating point 'modulo'. Precision is defined as the the number of fractional digits to
+// the right of the decimal place. Be advised that these calculations can support very large
+// precision values.
+//
+// The returned BigIntNum instance, 'modulo', will contain numeric separators (decimal
+// separator, thousands separator and currency symbol) copied from the current BigIntNum
+// instance (bNum).
+//
+func (dec *Decimal) Mod(divisor Decimal,
+													maxPrecision uint) (modulo Decimal, err error) {
 
-	ePrefix := "Decimal.Mul() "
+  ePrefix := "Decimal.Mod() "
+	modulo = Decimal{}.New()
+	var errx error
 
-	err := dec.IsValid(ePrefix)
+	modulo.bigINum, errx =  BigIntMathDivide{}.BigIntNumModulo(
+									dec.bigINum.CopyOut(), divisor.bigINum, maxPrecision)
 
-	if err != nil  {
-		return Decimal{},
-		fmt.Errorf(ePrefix + "This Decimal object (dec) is INVALID! " +
-			"Error='%v' ", err.Error())
+	if errx != nil {
+		modulo = Decimal{}.NewZero(0)
+		err = fmt.Errorf(ePrefix + "" +
+			"Error returned by BigIntMathDivide{}.BigIntNumModulo(dec, divisor, maxPrecision). " +
+			"dec='%v' divisor='%v' maxPrecision='%v' Error='%v'\n",
+			dec.GetNumStr(), divisor.GetNumStr(), maxPrecision, errx.Error())
+
+		return modulo, err
 	}
 
-	err = d2.IsValid(ePrefix)
+	err = nil
 
-	if err != nil {
-		return Decimal{},
-		fmt.Errorf(ePrefix + "Incoming Decimal object (d2) is INVALID! " +
-			"Error='%v' ", err.Error())
-	}
-
-	numSeps := dec.GetNumericSeparatorsDto()
-
-	bigIntNum := BigIntMathMultiply{}.MultiplyBigIntNums(dec.bigINum, d2.bigINum)
-
-	d4 := Decimal{}.NewBigIntNum(bigIntNum)
-
-	err = d4.bigINum.SetNumericSeparatorsDto(numSeps)
-
-	if err != nil {
-		return Decimal{}.NewZero(0),
-		fmt.Errorf(ePrefix +
-			"Error returned by d4.bigINum.SetNumericSeparatorsDto(numSeps) " +
-			"Error='%v' \n", err.Error())
-	}
-
-	return d4, nil
+	return modulo, err
 }
 
-// MulThis - Multiplies the value of the incoming
-// Decimal type by the value of the current or receiving
-// Decimal type. The result of the multiplication is
-// stored in the current Decimal type.
+// Multiply - Multiplies the numeric value of the current Decimal instance
+// (multiplier) by input parameter Decimal type 'multiplicand' and returns
+// the product as a new Decimal instance.
 //
-// The original value of this current Decimal Type is
-// therefore destroyed and overwritten.
+// Before the multiplication operation is initiated, this method performs a
+// validity check on both the current Decimal instance and the input
+// parameter.
 //
-// The numeric separators (decimal separator, thousands
-// separator and currency symbol) from the current Decimal
-// instance are not changed and remain unaltered.
+// The returned 'product' Decimal instance will contain numeric separators
+// (decimal separator, thousands separator and currency symbol) copied from
+// the current Decimal instance.
 //
-func (dec *Decimal) MulThis(d2 Decimal) error {
+func (dec *Decimal) Multiply(multiplicand Decimal) (product Decimal, err error) {
 
-	ePrefix := "Decimal.MulThis() "
-	err := dec.IsValid(ePrefix)
+	ePrefix := "Decimal.Multiply() "
+	product = Decimal{}.New()
+
+	err = dec.IsValid(ePrefix + "The current Decimal instance (dec) is INVALID! ")
 
 	if err != nil  {
-		return 	fmt.Errorf(ePrefix + "This Decimal object (dec) is INVALID! " +
-				"Error='%v' ", err.Error())
+		return product, err
 	}
 
-	err = d2.IsValid(ePrefix)
+	err = multiplicand.IsValid(ePrefix)
 
 	if err != nil {
-		return 	fmt.Errorf(ePrefix + "Incoming Decimal object (d2) is INVALID! " +
-				"Error='%v' ", err.Error())
+		return product, err
 	}
 
 	numSeps := dec.GetNumericSeparatorsDto()
 
-	dec.bigINum = BigIntMathMultiply{}.MultiplyBigIntNums(dec.bigINum, d2.bigINum)
+	product.bigINum = BigIntMathMultiply{}.MultiplyBigIntNums(dec.bigINum, multiplicand.bigINum)
 
-	err = dec.bigINum.SetNumericSeparatorsDto(numSeps)
+	errx := product.bigINum.SetNumericSeparatorsDto(numSeps)
 
-	if err != nil {
-		return fmt.Errorf(ePrefix +
-			"Error returned by dec.bigINum.SetNumericSeparatorsDto(numSeps) . " +
-			"Error= %v", err.Error())
+	if errx != nil {
+		product = Decimal{}.NewZero(0)
+		err = fmt.Errorf(ePrefix +
+			"Error returned by product.bigINum.SetNumericSeparatorsDto(numSeps). " +
+			"Error='%v' ", errx.Error())
+
+		return product, err
 	}
 
-	return nil
+	err = nil
+
+	return product, err
 }
 
 // NewBigIntNum - Creates and returns a Decimal type.
