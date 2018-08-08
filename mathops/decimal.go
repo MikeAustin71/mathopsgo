@@ -310,6 +310,11 @@ func (dec *Decimal) Cmp(dec2 Decimal) int {
 	return dec.bigINum.Cmp(dec2.bigINum)
 }
 
+func (dec *Decimal) CubeRoot(maxPrecision int) (Decimal, error) {
+
+	return Decimal{}.New(), nil
+}
+
 // Divide - Divides the current decimal value by the input
 // parameter 'divisor' and returns the quotient as a new
 // Decimal instance.
@@ -976,52 +981,6 @@ func (dec *Decimal) GetSignedBigInt() (*big.Int, error) {
 	return big.NewInt(0).Set(bInt), nil
 }
 
-// GetSquareRoot - Returns a Decimal object equal to the square root
-// of the current Decimal value.
-//
-// Note: If the current Decimal value is a negative value, an error will
-// be generated. You cannot take the square root of a negative number.
-func (dec *Decimal) GetSquareRoot(maxPrecision int) (Decimal, error) {
-
-	ePrefix := "Decimal.GetSquareRoot() "
-
-	err := dec.IsValid(ePrefix)
-
-	if err != nil {
-		return Decimal{},
-			fmt.Errorf(ePrefix + "This Decimal object is INVALID! Please re-initialize. " +
-				"Error='%v' ", err.Error())
-	}
-
-
-	ia, err := dec.GetIntAry()
-
-	if err != nil {
-		return Decimal{}.New(),
-			fmt.Errorf(ePrefix + "- Received error from dec.GetIntAryElements(). Error= %v", err)
-	}
-
-	nrt := NthRootOp{}
-
-	iaSq, err := nrt.GetSquareRootIntAry(&ia, maxPrecision)
-
-	if err != nil {
-		return Decimal{}.New(),
-			fmt.Errorf(ePrefix +
-					"- Received error from  NthRootOp.GetSquareRootIntAry(). Error= %v", err)
-	}
-
-	dOut, err := dec.MakeDecimalFromIntAry(&iaSq)
-
-	if err != nil {
-		return Decimal{}.New(),
-		fmt.Errorf(ePrefix +
-			"- Received error from  dec.MakeDecimalFromIntAry(&iaSq). Error= %v", err)
-	}
-
-	return dOut, nil
-}
-
 // GetThisPointer - Returns a pointer to the current Decimal instance
 //
 func (dec *Decimal) GetThisPointer() *Decimal {
@@ -1334,11 +1293,14 @@ func (dec *Decimal) Multiply(multiplicand Decimal) (product Decimal, err error) 
 	return product, err
 }
 
-// NewBigIntNum - Creates and returns a Decimal type.
-// The Decimal value is initialized to zero.
+// New() - Creates and returns a Decimal type. The Decimal numeric value is
+// initialized to zero.
+//
+// The returned new Decimal instance will contain USA default numeric separators
+// (decimal separator, thousands separator and currency symbol).
 //
 // Example Usage:
-//   d := Decimal{}.NewBigIntNum()
+//   d := Decimal{}.New()
 //
 // This is the recommended procedure for creating
 // a Decimal type.
@@ -1349,6 +1311,28 @@ func (dec Decimal) New() Decimal {
 
 	return d
 
+}
+
+// NewWithNumSeps() - Creates and returns a new Decimal instance.
+// The returned new Decimal instance will contain numeric separators
+// (decimal separator, thousands separator and currency symbol)
+// copied from the input parameter, 'numSeps'.
+//
+// The Decimal value is initialized to zero.
+//
+// Example Usage:
+//   d := Decimal{}.NewWithNumSeps(numSeps)
+//
+func (dec Decimal) NewWithNumSeps(numSeps NumericSeparatorDto) Decimal {
+
+	d := Decimal{}
+	d.Empty()
+
+	numSeps.SetDefaultsIfEmpty()
+
+	d.SetNumericSeparatorsDto(numSeps)
+
+	return d
 }
 
 // NewPtr - Creates and returns a pointer to
@@ -1922,9 +1906,9 @@ func (dec Decimal) NewZero(precision uint) Decimal {
 //
 // Returns:
 // ========
-// The calculation result is returned as a Decimal instance. The returned Decimal instance
-// will contain	numeric separators (decimal separator, thousands separator and currency symbol)
-// copied from the current Decimal instance (radicand).
+// The nth root calculation result is returned as a Decimal instance. The returned Decimal
+// instance will contain	numeric separators (decimal separator, thousands separator and
+// currency symbol) copied from the current Decimal instance (radicand).
 //
 func (dec *Decimal) NthRoot(nthRoot Decimal, maxPrecision uint) (Decimal, error) {
 
@@ -1953,7 +1937,6 @@ func (dec *Decimal) NthRoot(nthRoot Decimal, maxPrecision uint) (Decimal, error)
 		return Decimal{}.NewZero(0), nil
 	}
 
-
 	// If nth root is zero, the result is always one.
 	if nthRoot.IsZero() {
 		return Decimal{}.NewOne(0), nil
@@ -1974,18 +1957,26 @@ func (dec *Decimal) NthRoot(nthRoot Decimal, maxPrecision uint) (Decimal, error)
 				"when nthRoot is even.")
 	}
 
-	dec2 := Decimal{}
+	decNthRoot := Decimal{}.New()
 
-	dec2.bigINum, err =
+	decNthRoot.bigINum, err =
 		BigIntMathNthRoot{}.GetNthRoot(dec.bigINum, nthRoot.bigINum, maxPrecision)
 
 	if err != nil {
 		return Decimal{}.NewZero(0),
-			fmt.Errorf(ePrefix + "Error returned by BigIntMathNthRoot{}.NthRoot(...). " +
-				"Error='%v'\n", err.Error())
+			fmt.Errorf(ePrefix +
+				"Error returned by BigIntMathNthRoot{}.NthRoot(dec, nthRoot, maxPrecision). " +
+				"dec='%v' nthRoot='%v' maxPrecision='%v' Error='%v'\n",
+				dec.GetNumStr(), nthRoot.GetNumStr(), maxPrecision, err.Error())
 	}
 
-	return dec2, nil
+	err = decNthRoot.IsValid(ePrefix + "decNthRoot result INVALID!")
+
+	if err != nil {
+		return Decimal{}.NewZero(0), err
+	}
+
+	return decNthRoot, nil
 }
 
 // NumStrPrecisionToDecimal - receives a number string and a
@@ -2861,6 +2852,57 @@ func (dec *Decimal) ShiftPrecisionRight(shiftRightPlaces uint) error {
 	}
 
 	return nil
+}
+
+// SquareRoot - Returns a Decimal object equal to the square root
+// of the current Decimal value.
+//
+// Note: If the current Decimal value is a negative value, an error will
+// be generated. You cannot take the square root of a negative number.
+//
+// Returns:
+// ========
+// The calculation result is returned as a Decimal instance. The returned Decimal instance
+// will contain	numeric separators (decimal separator, thousands separator and currency symbol)
+// copied from the current Decimal instance (dec).
+//
+func (dec *Decimal) SquareRoot(maxPrecision int) (Decimal, error) {
+
+	ePrefix := "Decimal.SquareRoot() "
+
+	err := dec.IsValid(ePrefix + "Current Decimal instance is INVALID! ")
+
+	if err != nil {
+		return Decimal{}, err
+	}
+
+	if dec.GetSign() == -1 {
+
+		return Decimal{}.NewZero(0),
+			errors.New(ePrefix + "INVALID ENTRY! Cannot calculate nth root of a negative radicand " +
+				"when nthRoot is even.")
+	}
+
+	bINumTwo := BigIntNum{}.NewTwo(0)
+
+	decSqRoot := Decimal{}.New()
+
+	decSqRoot.bigINum, err =
+		BigIntMathNthRoot{}.GetNthRoot(dec.bigINum, bINumTwo, uint(maxPrecision))
+
+	if err != nil {
+		return Decimal{}.NewZero(0),
+			fmt.Errorf(ePrefix + "Error returned by BigIntMathNthRoot{}.NthRoot(...). " +
+				"Error='%v'\n", err.Error())
+	}
+
+	err = decSqRoot.IsValid(ePrefix + "decSqRoot INVALID! ")
+
+	if err != nil {
+		return Decimal{}.New(), err
+	}
+
+	return decSqRoot, nil
 }
 
 // Subtract - Subtracts the incoming Decimal from the current
