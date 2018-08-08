@@ -870,6 +870,103 @@ func TestDecimal_Cmp_05(t *testing.T) {
 
 }
 
+func TestDecimal_CubeRoot_01(t *testing.T) {
+	numStr1 := "2686.5"
+	maxPrecision := uint(30)
+	expected := "13.901519768959674425418091364468"
+	eSignVal := 1
+
+	d1, err := Decimal{}.NewNumStr(numStr1)
+
+	if err != nil {
+		t.Errorf("Error returned by Decimal{}.NewNumStr(numStr1) " +
+			"numStr1='%v' Error = '%v' ",numStr1, err.Error())
+	}
+
+	decCubeRoot, err := d1.CubeRoot(maxPrecision)
+
+	if err != nil {
+		t.Errorf("Error returned from d1.CubeRoot(maxPrecision). Error = %v ", err)
+	}
+
+	if expected != decCubeRoot.GetNumStr() {
+		t.Errorf("Expected NumStr: %v. Instead, got %v", expected, decCubeRoot.GetNumStr())
+	}
+
+	if eSignVal != decCubeRoot.GetSign() {
+		t.Errorf("Expected sign Value= '%v'. Instead, got sign Value= '%v' ", eSignVal, decCubeRoot.GetSign())
+	}
+
+	if int(maxPrecision) != decCubeRoot.GetPrecision() {
+		t.Errorf("Expected precision= '%v'. Instead, got precision= '%v' ", maxPrecision, decCubeRoot.GetPrecision())
+	}
+}
+
+func TestDecimal_CubeRoot_02(t *testing.T) {
+	numStr1 := "390626"
+	maxPrecision := uint(29)
+	expected := "73.10050583431350346938081010498"
+	eSignVal := 1
+
+	d1, err := Decimal{}.NewNumStr(numStr1)
+
+	if err != nil {
+		t.Errorf("Error returned by Decimal{}.NewNumStr(numStr1) " +
+			"numStr1='%v' Error = '%v' ",numStr1, err.Error())
+	}
+
+	decCubeRoot, err := d1.CubeRoot(maxPrecision)
+
+	if err != nil {
+		t.Errorf("Error returned from d1.CubeRoot(maxPrecision). Error = %v ", err)
+	}
+
+	if expected != decCubeRoot.GetNumStr() {
+		t.Errorf("Expected NumStr: %v. Instead, got %v", expected, decCubeRoot.GetNumStr())
+	}
+
+	if eSignVal != decCubeRoot.GetSign() {
+		t.Errorf("Expected sign Value= '%v'. Instead, got sign Value= '%v' ", eSignVal, decCubeRoot.GetSign())
+	}
+
+	if int(maxPrecision) != decCubeRoot.GetPrecision() {
+		t.Errorf("Expected precision= '%v'. Instead, got precision= '%v' ", maxPrecision, decCubeRoot.GetPrecision())
+	}
+}
+
+func TestDecimal_CubeRoot_03(t *testing.T) {
+	numStr1 := "-390626"
+	maxPrecision := uint(29)
+	expected := "-73.10050583431350346938081010498"
+	eSignVal := -1
+
+	d1, err := Decimal{}.NewNumStr(numStr1)
+
+	if err != nil {
+		t.Errorf("Error returned by Decimal{}.NewNumStr(numStr1) " +
+			"numStr1='%v' Error = '%v' ",numStr1, err.Error())
+	}
+
+	decCubeRoot, err := d1.CubeRoot(maxPrecision)
+
+	if err != nil {
+		t.Errorf("Error returned from d1.CubeRoot(maxPrecision). Error = %v ", err)
+	}
+
+	if expected != decCubeRoot.GetNumStr() {
+		t.Errorf("Expected NumStr: %v. Instead, got %v", expected, decCubeRoot.GetNumStr())
+	}
+
+	if eSignVal != decCubeRoot.GetSign() {
+		t.Errorf("Expected sign Value= '%v'. Instead, got sign Value= '%v' ", eSignVal, decCubeRoot.GetSign())
+	}
+
+	if int(maxPrecision) != decCubeRoot.GetPrecision() {
+		t.Errorf("Expected precision= '%v'. Instead, got precision= '%v' ", maxPrecision, decCubeRoot.GetPrecision())
+	}
+
+}
+
 func TestDecimal_Divide_01(t *testing.T) {
 	// str1 / str2
 	str1 := "575.63"
