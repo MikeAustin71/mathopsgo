@@ -4,17 +4,42 @@ type IntAryMathSubtract struct {
 	Input  IntAryPair
 	Result IntAry
 }
+// Subtract - Receives two input parameters of type *IntAry. The second parameter
+// 'subtrahend' is subtracted from the first parameter, 'minuend'. The result, or
+// difference, is returned as a new IntAry instance.
+//
+// 					'minuend' - 'subtrahend' = difference or result
+//
+// The two input parameters, 'miunuend' and 'subtrahend', are assumed to be valid
+// IntAry instances properly initialized. No validation is performed on 'minuend'
+// or 'subtrahend'.
+//
+// The result of this subtraction operation is returned as an IntAry instance. This
+// IntAry will contain numeric separators (decimal separator, thousands separator
+// and currency symbol) copied from input parameter 'minuend'.
 
-func (iaSubtract IntAryMathSubtract) Subtract(ia1, ia2 *IntAry) IntAry {
+func (iaSubtract IntAryMathSubtract) Subtract(minuend, subtrahend *IntAry) IntAry {
 
-	ia3 := ia1.CopyOut()
+	ia3 := minuend.CopyOut()
 
-	iaSubtract.SubtractTotal(&ia3, ia2)
+	iaSubtract.SubtractTotal(&ia3, subtrahend)
 
 	return ia3
 }
 
+// SubtractTotal - This method performs a subtraction operation subtracting
+// input parameter 'ia2' from input parameter 'ia1'. The result, or difference,
+// is returned through use of a pointer in 'ia1'. This means that the original
+// value of 'ia1' will be overwritten and destroyed by the subtraction operation.
+//
+// The returned 'ia1' IntAry will contain numeric separators (decimal separator,
+// thousands separator and currency symbol) from the original 'ia1' IntAry
+// instance. This means that the numeric separators contained in the original
+// ia1 IntAry will remain unchanged.
+//
 func (iaSubtract IntAryMathSubtract) SubtractTotal(ia1, ia2 *IntAry) {
+
+	numSeps := ia1.GetNumericSeparatorsDto()
 
 	ia1.SetEqualArrayLengths(ia2)
 
@@ -93,12 +118,15 @@ func (iaSubtract IntAryMathSubtract) SubtractTotal(ia1, ia2 *IntAry) {
 
 	iaSubtract.addToSubtract(ia1, ia2, newSignVal, doAdd, isZeroResult, doReverseNums)
 
+	ia1.SetNumericSeparatorsDto(numSeps)
+
 	return
 }
 
 
-// addToSubtract - Adds or subtracts two IntAry instances
-// and returns the result in the first IntAry parameter.
+// addToSubtract - Adds or subtracts two IntAry instances and returns the result
+// in the first IntAry parameter,'ia1'.
+//
 func (iaSubtract *IntAryMathSubtract) addToSubtract(
 																				ia1, ia2 *IntAry,
 																					newSignVal int,
