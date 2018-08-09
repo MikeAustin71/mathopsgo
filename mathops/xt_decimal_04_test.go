@@ -6,6 +6,292 @@ import (
 )
 
 
+func TestDecimal_Pow_01(t *testing.T) {
+
+	baseStr := "2.325"
+	exponentStr := "3.8"
+	expectedNumStr := "24.683528241199594112131040124684"
+	maxPrecision := uint(30)
+
+	expectedNumSeps := NumericSeparatorDto{}.New()
+
+	decBase, err := Decimal{}.NewNumStr(baseStr)
+
+	if err != nil {
+		t.Errorf("Error returned by Decimal{}.NewNumStr(baseStr) " +
+			"baseStr='%v' Error = '%v' ",baseStr, err.Error())
+	}
+
+	decExponent, err := Decimal{}.NewNumStr(exponentStr)
+
+	if err != nil {
+		t.Errorf("Error returned by Decimal{}.NewNumStr(exponentStr) " +
+			"exponentStr='%v' Error = '%v' ",exponentStr, err.Error())
+	}
+
+	decResult, err := decBase.Pow(decExponent, maxPrecision)
+
+	if err != nil {
+		t.Errorf("Error returned by decBase.Pow(decExponent, maxPrecision) " +
+			"decExponent='%v' maxPrecision='%v' Error = '%v' ",
+			decExponent.GetNumStr(), maxPrecision, err.Error())
+	}
+
+	actualNumStr := decResult.GetNumStr()
+
+	if expectedNumStr != actualNumStr {
+		t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v'.",
+			expectedNumStr, actualNumStr)
+	}
+
+	actualNumSeps := decResult.GetNumericSeparatorsDto()
+
+	if !expectedNumSeps.Equal(actualNumSeps) {
+		t.Errorf("Error: Expected NumSeps='%v'. Instead, NumSeps='%v'.",
+			expectedNumSeps.String(), actualNumSeps.String())
+	}
+}
+
+func TestDecimal_Pow_02(t *testing.T) {
+
+	baseStr := "-2.19"
+	exponentStr := "8.256"
+	//                              1         2        2
+	//                     12345678901234567890123456789
+	expectedNumStr := "646.70558582734148834284281249154"
+	maxPrecision := uint(29)
+
+	expectedNumSeps := NumericSeparatorDto{}.New()
+
+	decBase, err := Decimal{}.NewNumStr(baseStr)
+
+	if err != nil {
+		t.Errorf("Error returned by Decimal{}.NewNumStr(baseStr) " +
+			"baseStr='%v' Error = '%v' ",baseStr, err.Error())
+	}
+
+	decExponent, err := Decimal{}.NewNumStr(exponentStr)
+
+	if err != nil {
+		t.Errorf("Error returned by Decimal{}.NewNumStr(exponentStr) " +
+			"exponentStr='%v' Error = '%v' ",exponentStr, err.Error())
+	}
+
+	decResult, err := decBase.Pow(decExponent, maxPrecision)
+
+	if err != nil {
+		t.Errorf("Error returned by decBase.Pow(decExponent, maxPrecision) " +
+			"decExponent='%v' maxPrecision='%v' Error = '%v' ",
+			decExponent.GetNumStr(), maxPrecision, err.Error())
+	}
+
+	actualNumStr := decResult.GetNumStr()
+
+	if expectedNumStr != actualNumStr {
+		t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v'.",
+			expectedNumStr, actualNumStr)
+	}
+
+	actualNumSeps := decResult.GetNumericSeparatorsDto()
+
+	if !expectedNumSeps.Equal(actualNumSeps) {
+		t.Errorf("Error: Expected NumSeps='%v'. Instead, NumSeps='%v'.",
+			expectedNumSeps.String(), actualNumSeps.String())
+	}
+}
+
+func TestDecimal_Pow_03(t *testing.T) {
+
+	baseStr := "2.19"
+	exponentStr := "-8.256"
+	//                            1         2         3
+	//                   12345678901234567890123456789012
+	expectedNumStr := "0.00154629868972089198924071380209"
+	maxPrecision := uint(32)
+
+	expectedNumSeps := NumericSeparatorDto{}.New()
+
+	decBase, err := Decimal{}.NewNumStr(baseStr)
+
+	if err != nil {
+		t.Errorf("Error returned by Decimal{}.NewNumStr(baseStr) " +
+			"baseStr='%v' Error = '%v' ",baseStr, err.Error())
+	}
+
+	decExponent, err := Decimal{}.NewNumStr(exponentStr)
+
+	if err != nil {
+		t.Errorf("Error returned by Decimal{}.NewNumStr(exponentStr) " +
+			"exponentStr='%v' Error = '%v' ",exponentStr, err.Error())
+	}
+
+	decResult, err := decBase.Pow(decExponent, maxPrecision)
+
+	if err != nil {
+		t.Errorf("Error returned by decBase.Pow(decExponent, maxPrecision) " +
+			"decExponent='%v' maxPrecision='%v' Error = '%v' ",
+			decExponent.GetNumStr(), maxPrecision, err.Error())
+	}
+
+	actualNumStr := decResult.GetNumStr()
+
+	if expectedNumStr != actualNumStr {
+		t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v'.",
+			expectedNumStr, actualNumStr)
+	}
+
+	actualNumSeps := decResult.GetNumericSeparatorsDto()
+
+	if !expectedNumSeps.Equal(actualNumSeps) {
+		t.Errorf("Error: Expected NumSeps='%v'. Instead, NumSeps='%v'.",
+			expectedNumSeps.String(), actualNumSeps.String())
+	}
+}
+
+func TestDecimal_Pow_04(t *testing.T) {
+
+	baseStr := "2"
+	exponentStr := "36"
+	//                                      1         2         3
+	//                           0.12345678901234567890123456789012
+	expectedNumStr := "68719476736"
+	maxPrecision := uint(1)
+
+	expectedNumSeps := NumericSeparatorDto{}.New()
+
+	decBase, err := Decimal{}.NewNumStr(baseStr)
+
+	if err != nil {
+		t.Errorf("Error returned by Decimal{}.NewNumStr(baseStr) " +
+			"baseStr='%v' Error = '%v' ",baseStr, err.Error())
+	}
+
+	decExponent, err := Decimal{}.NewNumStr(exponentStr)
+
+	if err != nil {
+		t.Errorf("Error returned by Decimal{}.NewNumStr(exponentStr) " +
+			"exponentStr='%v' Error = '%v' ",exponentStr, err.Error())
+	}
+
+	decResult, err := decBase.Pow(decExponent, maxPrecision)
+
+	if err != nil {
+		t.Errorf("Error returned by decBase.Pow(decExponent, maxPrecision) " +
+			"decExponent='%v' maxPrecision='%v' Error = '%v' ",
+			decExponent.GetNumStr(), maxPrecision, err.Error())
+	}
+
+	actualNumStr := decResult.GetNumStr()
+
+	if expectedNumStr != actualNumStr {
+		t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v'.",
+			expectedNumStr, actualNumStr)
+	}
+
+	actualNumSeps := decResult.GetNumericSeparatorsDto()
+
+	if !expectedNumSeps.Equal(actualNumSeps) {
+		t.Errorf("Error: Expected NumSeps='%v'. Instead, NumSeps='%v'.",
+			expectedNumSeps.String(), actualNumSeps.String())
+	}
+}
+
+func TestDecimal_Pow_05(t *testing.T) {
+
+	baseStr := "87"
+	exponentStr := "0"
+	//                                      1         2         3
+	//                           0.12345678901234567890123456789012
+	expectedNumStr := "1"
+	maxPrecision := uint(1)
+
+	expectedNumSeps := NumericSeparatorDto{}.New()
+
+	decBase, err := Decimal{}.NewNumStr(baseStr)
+
+	if err != nil {
+		t.Errorf("Error returned by Decimal{}.NewNumStr(baseStr) " +
+			"baseStr='%v' Error = '%v' ",baseStr, err.Error())
+	}
+
+	decExponent, err := Decimal{}.NewNumStr(exponentStr)
+
+	if err != nil {
+		t.Errorf("Error returned by Decimal{}.NewNumStr(exponentStr) " +
+			"exponentStr='%v' Error = '%v' ",exponentStr, err.Error())
+	}
+
+	decResult, err := decBase.Pow(decExponent, maxPrecision)
+
+	if err != nil {
+		t.Errorf("Error returned by decBase.Pow(decExponent, maxPrecision) " +
+			"decExponent='%v' maxPrecision='%v' Error = '%v' ",
+			decExponent.GetNumStr(), maxPrecision, err.Error())
+	}
+
+	actualNumStr := decResult.GetNumStr()
+
+	if expectedNumStr != actualNumStr {
+		t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v'.",
+			expectedNumStr, actualNumStr)
+	}
+
+	actualNumSeps := decResult.GetNumericSeparatorsDto()
+
+	if !expectedNumSeps.Equal(actualNumSeps) {
+		t.Errorf("Error: Expected NumSeps='%v'. Instead, NumSeps='%v'.",
+			expectedNumSeps.String(), actualNumSeps.String())
+	}
+}
+
+func TestDecimal_Pow_06(t *testing.T) {
+
+	baseStr := "0"
+	exponentStr := "87"
+	//                                      1         2         3
+	//                           0.12345678901234567890123456789012
+	expectedNumStr := "0"
+	maxPrecision := uint(1)
+
+	expectedNumSeps := NumericSeparatorDto{}.New()
+
+	decBase, err := Decimal{}.NewNumStr(baseStr)
+
+	if err != nil {
+		t.Errorf("Error returned by Decimal{}.NewNumStr(baseStr) " +
+			"baseStr='%v' Error = '%v' ",baseStr, err.Error())
+	}
+
+	decExponent, err := Decimal{}.NewNumStr(exponentStr)
+
+	if err != nil {
+		t.Errorf("Error returned by Decimal{}.NewNumStr(exponentStr) " +
+			"exponentStr='%v' Error = '%v' ",exponentStr, err.Error())
+	}
+
+	decResult, err := decBase.Pow(decExponent, maxPrecision)
+
+	if err != nil {
+		t.Errorf("Error returned by decBase.Pow(decExponent, maxPrecision) " +
+			"decExponent='%v' maxPrecision='%v' Error = '%v' ",
+			decExponent.GetNumStr(), maxPrecision, err.Error())
+	}
+
+	actualNumStr := decResult.GetNumStr()
+
+	if expectedNumStr != actualNumStr {
+		t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v'.",
+			expectedNumStr, actualNumStr)
+	}
+
+	actualNumSeps := decResult.GetNumericSeparatorsDto()
+
+	if !expectedNumSeps.Equal(actualNumSeps) {
+		t.Errorf("Error: Expected NumSeps='%v'. Instead, NumSeps='%v'.",
+			expectedNumSeps.String(), actualNumSeps.String())
+	}
+}
+
 func TestDecimal_PowInt_01(t *testing.T) {
 
 	numStr := "2.125"

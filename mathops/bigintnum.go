@@ -2024,12 +2024,32 @@ func (bNum *BigIntNum) MultiplyByTwo() BigIntNum {
 	return BigIntMathMultiply{}.MultiplyBigIntNumByTwo(bNum.CopyOut()) 
 }
 
-// New - returns a new BigIntNum instance initialized to
-// zero.
+// New - returns a new BigIntNum instance initialized to zero.
+//
+// The BigIntNum instance returned by this method will contain USA
+// default numeric separators (decimal separator, thousands separator
+// and currency symbol).
 //
 func (bNum BigIntNum) New() BigIntNum {
 	b := BigIntNum{}
 	b.Empty()
+	return b
+}
+
+// NewWithNumSeps - returns a new BigIntNum instance initialized to zero.
+//
+// The BigIntNum instance returned by this method will contain USA
+// default numeric separators (decimal separator, thousands separator
+// and currency symbol).
+//
+func (bNum BigIntNum) NewWithNumSeps(numSeps NumericSeparatorDto) BigIntNum {
+
+	numSeps.SetDefaultsIfEmpty()
+
+	b := BigIntNum{}
+	b.Empty()
+	b.SetNumericSeparatorsDto(numSeps)
+
 	return b
 }
 

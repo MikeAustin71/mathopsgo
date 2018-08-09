@@ -632,6 +632,7 @@ func TestBigIntMathPower_Pwr_17(t *testing.T) {
 
 	baseStr := "0"
 	exponentStr := "5"
+	expectedNumStr := "0"
 	maxPrecision := uint(35)
 
 	bINumBase, err := BigIntNum{}.NewNumStr(baseStr)
@@ -648,11 +649,18 @@ func TestBigIntMathPower_Pwr_17(t *testing.T) {
 			"exponentStr='%v' Error='%v' \n", exponentStr, err.Error())
 	}
 
-	_, err = BigIntMathPower{}.Pwr(bINumBase, bINumExponent, maxPrecision)
+	result, err := BigIntMathPower{}.Pwr(bINumBase, bINumExponent, maxPrecision)
 
-	if err == nil {
-		t.Error("Error: Expected an Error return. " +
-			"NO ERROR WAS GENERATED!! \n")
+	if err != nil {
+		t.Errorf("Error returned by BigIntMathPower{}.Pwr(bINumBase, bINumExponent, maxPrecision)"  +
+			"Error='%v' \n", err.Error())
+	}
+
+	actualNumStr := result.GetNumStr()
+
+	if expectedNumStr != actualNumStr {
+		t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v'. ",
+			expectedNumStr, actualNumStr)
 	}
 
 }

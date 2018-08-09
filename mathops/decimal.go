@@ -2095,8 +2095,6 @@ func (dec *Decimal) Pow(exponent Decimal, maxPrecision uint) (Decimal, error) {
 				"Error='%v'", err.Error())
 	}
 
-	numSeps := dec.GetNumericSeparatorsDto()
-
 	d3 := Decimal{}.New()
 
 	d3.bigINum, err = BigIntMathPower{}.Pwr(dec.bigINum, exponent.bigINum, maxPrecision)
@@ -2105,15 +2103,6 @@ func (dec *Decimal) Pow(exponent Decimal, maxPrecision uint) (Decimal, error) {
 		return Decimal{}.NewZero(0),
 			fmt.Errorf(ePrefix +
 				"Error returned by BigIntMathPower{}.Pwr(dec.bigINum, biNumExponent, maxPrecision). " +
-				"Error='%v'", err.Error())
-	}
-
-	err = d3.SetNumericSeparatorsDto(numSeps)
-
-	if err != nil {
-		return Decimal{}.NewZero(0),
-			fmt.Errorf(ePrefix +
-				"Error returned by d3.SetNumericSeparatorsDto(dec.GetNumericSeparatorsDto()). " +
 				"Error='%v'", err.Error())
 	}
 

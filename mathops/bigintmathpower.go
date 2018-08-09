@@ -34,14 +34,15 @@ type BigIntMathPower struct {
 // and currency symbol) copied from input parameter,'base'.
 //
 func (bIPwr BigIntMathPower) Pwr(base, exponent BigIntNum, maxPrecision uint) (BigIntNum, error) {
+
 	ePrefix := "BigIntMathPower.Pwr() "
 
-	result := BigIntNum{}
+	result := BigIntNum{}.NewWithNumSeps(base.GetNumericSeparatorsDto())
 	var err error
 
 	if base.IsZero() {
-		return result,
-		 errors.New(ePrefix + "Error: 'base' input parameter is Zero. INVALID INPUT!")
+		// If 'base' is zero, return zero value.
+		return result, nil
 	}
 
 	if exponent.IsZero() {
