@@ -19,9 +19,19 @@ type IntAryMathPower struct {
 // This method is based on revised code taken in part from Ye Lin Aung.
 // https://stackoverflow.com/questions/30182129/calculating-large-exponentiation-in-golang
 // This algorithm modified by Mike Rapp to achieve improved performance.
+// The result of raising 'base' to the power of 'exponent' will return
+// the result in 'base'. As such the original value of 'base' will be
+// overwritten. The returned value 'base' will contain the same numeric
+// separators (decimal separator, thousands separator and currency symbol)
+// as that of the original 'base instance.'base' numeric separators will
+// therefore remain unchanged.
 //
-// The result of raising 'base' to the power of 'exponent' will return the result in
-// 'base'. As such the original value of 'base' will be overwritten.
+//										base = base^exponent
+//
+// Input parameter 'maxResultPrecision' will round the result to this
+// number of decimal places after the decimal point if the result is
+// greater than 'maxResultPrecision'.  If the value of 'maxResultPrecision'
+// is less than zero, it will be automatically set to a value of '4096'.
 //
 func (iaPwr IntAryMathPower) Pwr(
 					base, exponent *IntAry,
@@ -96,9 +106,18 @@ func (iaPwr IntAryMathPower) Pwr(
 }
 
 
-// PwrByMultiplication - raises base to the power of exponent using repetitive multiplication.
-// This method may be slower than the method IntAryMathPower.Pwr(); however, this method is
-// capable of handling very large exponents.
+// PwrByMultiplication - raises base to the power of exponent using
+// repetitive multiplication. This method may be slower than the method
+// IntAryMathPower.Pwr(); however, this method is capable of handling
+// very large exponents. Effectively, input parameter 'base' is raised
+// to the power of exponent.
+//
+//								result = base^exponent
+//
+// The result of this operation is returned as pointer to an IntAry
+// instance. This returned IntAry instance will contain numeric
+// separators (decimal separator, thousands separator and currency
+// symbol) copied from input parameter 'base'.
 //
 // Input parameter 'maxResultPrecision' will round the result to this
 // number of decimal places after the decimal point if the result is
@@ -118,7 +137,9 @@ func (iaPwr IntAryMathPower) PwrByMultiplication(
   ePrefix := "IntAryMathPower.PwrByMultiplication() "
 	iaReturn := IntAry{}.NewZero(0)
 
-  err := base.IsValid(ePrefix + "Invalid 'base' - ")
+	iaReturn.SetNumericSeparatorsDto(base.GetNumericSeparatorsDto())
+
+	err := base.IsValid(ePrefix + "Invalid 'base' - ")
 
   if err != nil {
 		return &iaReturn, err
@@ -201,7 +222,7 @@ func (iaPwr IntAryMathPower) PwrByMultiplication(
 //
 // 'ia' *IntAry -
 //			The base which will be raised to an exponent specified by input
-//			parameter 'power'
+//			parameter 'power'.
 //
 // 'power' *big.Int -
 // 				The input parameter 'power' may be either
@@ -232,6 +253,20 @@ func (iaPwr IntAryMathPower) PwrByMultiplication(
 //				the number of decimals places to right of the decimal
 //				point during internal multiplication operations.
 //
+//  Return Values
+//  =============
+//
+//  ia			The result of this operation is returned through the pointer to
+//					input parameter, 'ia'. As such, the original value of 'ia' will
+//					be overwritten. The The returned value 'ia' will contain the same
+// 					numeric separators (decimal separator, thousands separator and
+// 					currency symbol) as that of the original 'ia' instance. 'ia'
+// 					numeric separators will therefore remain unchanged.
+//
+//  error		If, during the execution of this method, an error is identified,
+//					method will set the returned error to a non nil value and return
+//					an error message.
+//
 func (iaPwr *IntAryMathPower) pwrByTwos(
 					ia *IntAry,
 						power *big.Int,
@@ -252,6 +287,8 @@ func (iaPwr *IntAryMathPower) pwrByTwos(
 			"internalPrecision= %v", internalPrecision)
 	}
 
+  numSeps := ia.GetNumericSeparatorsDto()
+
   if maxResultPrecision == internalPrecision {
   	internalPrecision += 20
 	}
@@ -264,6 +301,7 @@ func (iaPwr *IntAryMathPower) pwrByTwos(
 
 	if ia.isZeroValue {
 		ia.SetIntAryToZero(0)
+		ia.SetNumericSeparatorsDto(numSeps)
 		return nil
 	}
 
@@ -283,9 +321,11 @@ func (iaPwr *IntAryMathPower) pwrByTwos(
 
 		} else if tPower.Cmp(one) == 0 {
 			// no change in value. x^1 == x
+			ia.SetNumericSeparatorsDto(numSeps)
 			return nil
 		} else if tPower.Cmp(zero) == 0 {
 			ia.SetIntAryToOne(0)
+			ia.SetNumericSeparatorsDto(numSeps)
 			return nil
 		}
 
@@ -314,6 +354,7 @@ func (iaPwr *IntAryMathPower) pwrByTwos(
 					ia.SetPrecision(maxResultPrecision, true)
 				}
 
+				ia.SetNumericSeparatorsDto(numSeps)
 				return nil
 			}
 		}
@@ -328,6 +369,8 @@ func (iaPwr *IntAryMathPower) pwrByTwos(
 
 		tPower = big.NewInt(0).Div(tPower, two)
 	}
+
+	ia.SetNumericSeparatorsDto(numSeps)
 
 	if maxResultPrecision == -1 {
 		return nil
@@ -364,7 +407,9 @@ func (iaPwr *IntAryMathPower) pwrByTwos(
 //
 // The result of the power operation is returned as a pointer to a new
 // 'result' IntAry. None of the input parameters are altered by this
-// operation.
+// operation. The returned 'result' IntAry will contain numeric separators
+// (decimal separator, thousands separator and currency symbol) copied from
+// input parameter 'base'.
 //
 // Note: This method does not perform tests for base==0, exponent==0 or exponent==1.
 // It is assumed that these tests were performed before calling this method.
@@ -392,6 +437,8 @@ func (iaPwr *IntAryMathPower) pwrMultiplyPositiveIntegerExponent(
 			"Instead, 'exponent' is a fractional value! exponent='%v'",
 			exponent.GetNumStr())
 	}
+
+	numSeps := base.GetNumericSeparatorsDto()
 
 	if maxResultPrecision < 0 {
 		maxResultPrecision = 4096
@@ -434,6 +481,15 @@ func (iaPwr *IntAryMathPower) pwrMultiplyPositiveIntegerExponent(
 		result.SetPrecision(minResultPrecision, false)
 	}
 
+  err := result.SetNumericSeparatorsDto(numSeps)
+
+	if err != nil {
+		return &iaErrReturn,
+			fmt.Errorf(ePrefix +
+				"Error returned by result.SetNumericSeparatorsDto(numSeps) " +
+				"Error='%v' ", err.Error())
+	}
+
 	return &result, nil
 }
 
@@ -458,9 +514,11 @@ func (iaPwr *IntAryMathPower) pwrMultiplyPositiveIntegerExponent(
 // specification. If the value of 'minResultPrecision' is less than zero,
 // 'minResultPrecision' will be automatically set to a value of zero.
 //
-// The result of the power operation is returned as a pointer to a new
+// The result of this power operation is returned as a pointer to a new
 // 'result' IntAry. None of the input parameters are altered by this
-// operation.
+// operation. The returned 'result' IntAry will contain numeric separators
+// (decimal separator, thousands separator and currency symbol) copied from
+// input parameter 'base'.
 //
 // Note: This method does not perform tests for base==0 .
 // It is assumed that this test was performed before calling this method.
@@ -487,6 +545,8 @@ func (iaPwr *IntAryMathPower) pwrMultiplyNegativeIntegerExponent(
 				"Instead, 'exponent' is a fractional value! exponent='%v'",
 				exponent.GetNumStr())
 	}
+
+	numSeps := base.GetNumericSeparatorsDto()
 
 	if maxResultPrecision < 0 {
 		maxResultPrecision = 4096
@@ -538,7 +598,16 @@ func (iaPwr *IntAryMathPower) pwrMultiplyNegativeIntegerExponent(
 	if result.GetPrecision() < minResultPrecision {
 		result.SetPrecision(minResultPrecision, false)
 	}
-	
+
+	err = result.SetNumericSeparatorsDto(numSeps)
+
+	if err != nil {
+		return &iaErrReturn,
+			fmt.Errorf(ePrefix +
+				"Error returned by SetNumericSeparatorsDto(numSeps) " +
+				"Error='%v' ", err.Error())
+	}
+
 	return &result, nil
 }
 
@@ -567,17 +636,19 @@ func (iaPwr *IntAryMathPower) pwrMultiplyNegativeIntegerExponent(
 // specification. If the value of 'minResultPrecision' is less than zero,
 // 'minResultPrecision' will be automatically set to a value of zero.
 //
-// The result of the power operation is returned as a pointer to a new
+// The result of this power operation is returned as a pointer to a new
 // 'result' IntAry. None of the input parameters are altered by this
-// operation.
+// operation. The returned 'result' IntAry will contain numeric separators
+// (decimal separator, thousands separator and currency symbol) copied from
+// input parameter 'base'.
 //
 // Note: This method does not perform tests for base==0, exponent==0
 //       or exponent==1. Is is assumed that these tests were performed
 //       before calling this method.
 //
 func (iaPwr *IntAryMathPower) pwrMultiplyPositiveFractionalExponent(
-	base, exponent *IntAry,
-	minResultPrecision, maxResultPrecision int) (*IntAry, error) {
+										base, exponent *IntAry,
+											minResultPrecision, maxResultPrecision int) (*IntAry, error) {
 
 	ePrefix := "IntAryMathPower.pwrMultiplyPositiveFractionalExponent() "
 	iaErrReturn := IntAry{}.NewZero(0)
@@ -597,6 +668,8 @@ func (iaPwr *IntAryMathPower) pwrMultiplyPositiveFractionalExponent(
 				"Instead, 'exponent' is an integer value! exponent='%v'",
 				exponent.GetNumStr())
 	}
+
+	numSeps := base.GetNumericSeparatorsDto()
 
 	if maxResultPrecision < 0 {
 		maxResultPrecision = 4096
@@ -633,7 +706,6 @@ func (iaPwr *IntAryMathPower) pwrMultiplyPositiveFractionalExponent(
 			"Error returned by NthRootOp{}.NewNthRoot(...) " +
 			"Error='%v' ", err.Error())
 	}
-
 
 	result := IntAry{}.NewOne(0)
 	internalMaxPrecision += 5
@@ -676,6 +748,15 @@ func (iaPwr *IntAryMathPower) pwrMultiplyPositiveFractionalExponent(
 		result.SetPrecision(minResultPrecision, false)
 	}
 
+	err = result.SetNumericSeparatorsDto(numSeps)
+
+	if err != nil {
+		return &iaErrReturn,
+			fmt.Errorf(ePrefix +
+				"Error returned by fracIntAry.Numerator.DecrementIntegerOne() " +
+				"Error='%v' ", err.Error())
+	}
+
 	return &result, nil
 }
 
@@ -705,9 +786,11 @@ func (iaPwr *IntAryMathPower) pwrMultiplyPositiveFractionalExponent(
 // specification. If the value of 'minResultPrecision' is less than zero,
 // 'minResultPrecision' will be automatically set to a value of zero.
 //
-// The result of the power operation is returned as a pointer to a new
+// The result of this power operation is returned as a pointer to a new
 // 'result' IntAry. None of the input parameters are altered by this
-// operation.
+// operation. The returned 'result' IntAry will contain numeric separators
+// (decimal separator, thousands separator and currency symbol) copied from
+// input parameter 'base'.
 //
 // Note: This method does not perform a test for base==0. It is assumed
 //       this test was performed before calling this method.
@@ -734,6 +817,8 @@ func (iaPwr *IntAryMathPower) pwrMultiplyNegativeFractionalExponent(
 				"Instead, 'exponent' is an integer value! exponent='%v'",
 				exponent.GetNumStr())
 	}
+
+	numSeps := base.GetNumericSeparatorsDto()
 
 	if maxResultPrecision < 0 {
 		maxResultPrecision = 4096
@@ -817,7 +902,6 @@ func (iaPwr *IntAryMathPower) pwrMultiplyNegativeFractionalExponent(
 					"Error returned by fracIntAry.Numerator.DecrementIntegerOne() " +
 					"Error='%v' ", err.Error())
 		}
-
 	}
 
 	if result.GetPrecision() > maxResultPrecision {
@@ -826,6 +910,15 @@ func (iaPwr *IntAryMathPower) pwrMultiplyNegativeFractionalExponent(
 
 	if result.GetPrecision() < minResultPrecision {
 		result.SetPrecision(minResultPrecision, false)
+	}
+
+	err = result.SetNumericSeparatorsDto(numSeps)
+
+	if err != nil {
+		return &iaErrReturn,
+			fmt.Errorf(ePrefix +
+				"Error returned by result.SetNumericSeparatorsDto(numSeps) " +
+				"Error='%v' ", err.Error())
 	}
 
 	return &result, nil
@@ -852,6 +945,10 @@ func (iaPwr *IntAryMathPower) pwrMultiplyNegativeFractionalExponent(
 //
 // The result of the power operation is returned in the input parameter
 // 'base'. During this procedure the original value of 'base' is destroyed.
+// The returned IntAry object 'base' will contain same numeric separators
+// (decimal separator, thousands separator and currency symbol) as those
+// in the original 'base' instance. As such, the 'base' numeric separators
+// will remain unchanged.
 //
 func (iaPwr *IntAryMathPower) pwrTwoPositiveIntegerExponent(
 																base, exponent *IntAry,
@@ -872,6 +969,8 @@ func (iaPwr *IntAryMathPower) pwrTwoPositiveIntegerExponent(
 			"Instead, 'exponent' is a fractional value! exponent='%v'",
 			exponent.GetNumStr())
 	}
+
+  numSeps := base.GetNumericSeparatorsDto()
 
   if maxResultPrecision < 0 {
   	maxResultPrecision = 4096
@@ -911,8 +1010,15 @@ func (iaPwr *IntAryMathPower) pwrTwoPositiveIntegerExponent(
 		base.SetPrecision(minResultPrecision, false)
 	}
 
-	return nil
+	err = base.SetNumericSeparatorsDto(numSeps)
 
+	if err != nil {
+		return fmt.Errorf(ePrefix +
+			"Error returned by base.SetNumericSeparatorsDto(numSeps) Error='%v' ",
+			err.Error())
+	}
+
+	return nil
 }
 
 // pwrTwoNegativeIntegerExponent - raises 'base' to the power of 'exponent'.
@@ -939,6 +1045,10 @@ func (iaPwr *IntAryMathPower) pwrTwoPositiveIntegerExponent(
 //
 // The result of the power operation is returned in the input parameter
 // 'base'. During this procedure the original value of 'base' is destroyed.
+// The returned IntAry object 'base' will contain same numeric separators
+// (decimal separator, thousands separator and currency symbol) as those
+// in the original 'base' instance. As such, the 'base' numeric separators
+// will remain unchanged.
 //
 func (iaPwr *IntAryMathPower) pwrTwoNegativeIntegerExponent(
 																base, exponent *IntAry,
@@ -959,6 +1069,8 @@ func (iaPwr *IntAryMathPower) pwrTwoNegativeIntegerExponent(
 			"Instead, 'exponent' is a fractional value! exponent='%v'",
 			exponent.GetNumStr())
 	}
+
+	numSeps := base.GetNumericSeparatorsDto()
 
 	if maxResultPrecision < 0 {
 		maxResultPrecision = 4096
@@ -990,13 +1102,20 @@ func (iaPwr *IntAryMathPower) pwrTwoNegativeIntegerExponent(
 			"Error returned by iaPwr.PwrByTwos(...) Error='%v' ", err.Error())
 	}
 
-
 	if base.GetPrecision() > maxResultPrecision {
 		base.RoundToPrecision(maxResultPrecision)
 	}
 
 	if base.GetPrecision() < minResultPrecision {
 		base.SetPrecision(minResultPrecision, false)
+	}
+
+	err = base.SetNumericSeparatorsDto(numSeps)
+
+	if err != nil {
+		return fmt.Errorf(ePrefix +
+			"Error returned by base.SetNumericSeparatorsDto(numSeps) Error='%v' ",
+			err.Error())
 	}
 
 	return nil
@@ -1026,6 +1145,10 @@ func (iaPwr *IntAryMathPower) pwrTwoNegativeIntegerExponent(
 //
 // The result of the power operation is returned in the input parameter
 // 'base'. During this procedure the original value of 'base' is destroyed.
+// The returned IntAry object 'base' will contain same numeric separators
+// (decimal separator, thousands separator and currency symbol) as those
+// in the original 'base' instance. As such, the 'base' numeric separators
+// will remain unchanged.
 //
 func (iaPwr *IntAryMathPower) pwrTwoPositiveFractionalExponent(
 																base, exponent *IntAry,
@@ -1046,6 +1169,8 @@ func (iaPwr *IntAryMathPower) pwrTwoPositiveFractionalExponent(
 			"Instead, 'exponent' is an integer value! exponent='%v'",
 			exponent.GetNumStr())
 	}
+
+	numSeps := base.GetNumericSeparatorsDto()
 
 	if maxResultPrecision < 0 {
 		maxResultPrecision = 4096
@@ -1109,6 +1234,14 @@ func (iaPwr *IntAryMathPower) pwrTwoPositiveFractionalExponent(
 		base.SetPrecision(minResultPrecision, false)
 	}
 
+	err = base.SetNumericSeparatorsDto(numSeps)
+
+	if err != nil {
+		return fmt.Errorf(ePrefix +
+			"Error returned by base.SetNumericSeparatorsDto(numSeps) " +
+			"Error='%v' ", err.Error())
+	}
+
 	return nil
 }
 
@@ -1136,6 +1269,10 @@ func (iaPwr *IntAryMathPower) pwrTwoPositiveFractionalExponent(
 //
 // The result of the power operation is returned in the input parameter
 // 'base'. During this procedure the original value of 'base' is destroyed.
+// The returned IntAry object 'base' will contain same numeric separators
+// (decimal separator, thousands separator and currency symbol) as those
+// in the original 'base' instance. As such, the 'base' numeric separators
+// will remain unchanged.
 //
 func (iaPwr *IntAryMathPower) pwrTwoNegativeFractionalExponent(
 																base, exponent *IntAry,
@@ -1157,6 +1294,8 @@ func (iaPwr *IntAryMathPower) pwrTwoNegativeFractionalExponent(
 			"Instead, 'exponent' is an integer value! exponent='%v'",
 			exponent.GetNumStr())
 	}
+
+	numSeps := base.GetNumericSeparatorsDto()
 
 	if maxResultPrecision < 0 {
 		maxResultPrecision = 4096
@@ -1234,6 +1373,14 @@ func (iaPwr *IntAryMathPower) pwrTwoNegativeFractionalExponent(
 
 	if base.GetPrecision() < minResultPrecision {
 		base.SetPrecision(minResultPrecision, false)
+	}
+
+	base.SetNumericSeparatorsDto(numSeps)
+
+	if err != nil {
+		return fmt.Errorf(ePrefix +
+			"Error returned by base.SetNumericSeparatorsDto(numSeps) " +
+			"Error='%v' ", err.Error())
 	}
 
   return nil
