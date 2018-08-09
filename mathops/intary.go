@@ -3043,8 +3043,13 @@ func (ia *IntAry) Multiply(ia1, ia2, iaResult *IntAry, minimumResultPrecision, m
 	return IntAryMathMultiply{}.Multiply(ia1, ia2, iaResult, minimumResultPrecision, maxResultPrecision)
 }
 
-// NewBigIntNum - Creates a new blank intAry object.
-// Usage: ia := intAry{}.NewBigIntNum()
+// New() - Creates and returns a new blank intAry object.
+//
+// The returned IntAry instance will contain USA default numeric separators
+// (decimal separator, thousands separator and currency symbol).
+//
+// Usage: ia := intAry{}.New()
+//
 func (ia IntAry) New() IntAry {
 	iAry := IntAry{}
 	iAry.intAry = []uint8{}
@@ -3064,6 +3069,25 @@ func (ia IntAry) New() IntAry {
 	iAry.BackUp = BackUpIntAry{}.New()
 
 	return iAry
+}
+
+// NewWithNumSeps() - Creates and retunrs a new blank intAry object.
+//
+// The returned IntAry instance will contain numeric separators (decimal
+// separator, thousands separator and currency symbol) as specified
+// by input parameter, 'numSeps'.
+//
+// Usage: ia := intAry{}.New()
+//
+func (ia IntAry) NewWithNumSeps(numSeps NumericSeparatorDto) IntAry {
+
+	numSeps.SetDefaultsIfEmpty()
+
+	ia2 := IntAry{}.New()
+
+	ia2.SetNumericSeparatorsDto(numSeps)
+
+	return ia2
 }
 
 // NewBigInt - Creates a new intAry object initialized
