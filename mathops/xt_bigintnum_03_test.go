@@ -676,6 +676,30 @@ func TestBigIntNum_GetNumberOfDigits_11(t *testing.T) {
 
 }
 
+func TestBigIntNum_Increment_01(t *testing.T) {
+
+	numStr := "8"
+	expectedNumStr := "9"
+	expectedNumSeps := NumericSeparatorDto{}.New()
+
+	bINum, err := BigIntNum{}.NewNumStrWithNumSeps(numStr, expectedNumSeps)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewNumStrWithNumSeps(numStr, expectedNumSeps). " +
+			"numStr='%v' Error='%v' \n", numStr, err.Error())
+	}
+
+	bINum.Increment()
+
+	actualNumStr := bINum.GetNumStr()
+
+	if expectedNumStr != actualNumStr {
+		t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v'",
+			expectedNumStr, actualNumStr)
+	}
+
+}
+
 func TestBigIntNum_Inverse_01(t *testing.T) {
 	testNumStr := "4"
 	expectedNumStr := "0.25"

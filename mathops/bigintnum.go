@@ -200,6 +200,24 @@ func (bNum *BigIntNum) CopyOut() BigIntNum {
 	return b2
 }
 
+// Decrement - Subtracts a value of +1 (plus one) from the numeric
+// value of the current BigIntNum instance.
+//
+// The numeric separators (decimal separator, thousands separator
+// and currency symbol) from the original BigIntNum will remain
+// unchanged.
+//
+func (bNum *BigIntNum) Decrement() {
+
+	biNumOne := BigIntNum{}.NewOne(bNum.precision)
+
+	bPair := BigIntPair{}.NewBigIntNum(bNum.CopyOut(), biNumOne)
+
+	result := BigIntMathSubtract{}.SubtractPair(bPair)
+
+	bNum.CopyIn(result)
+}
+
 // Divide - Performs a division operation. The current BigIntNum instance is the 'dividend'
 // is divided by the input parameter, 'divisor'. The result of this division operation is
 // the 'fracQuotient' which is returned as a BigIntNum type.
@@ -1880,6 +1898,25 @@ func (bNum *BigIntNum) IsEvenNumber() (bool, error) {
 	}
 
 	return mod.IsZero(), nil
+}
+
+// Increment - Adds a value of +1 (plus one) to the numeric
+// value of the current BigIntNum instance.
+//
+// The numeric separators (decimal separator, thousands separator
+// and currency symbol) from the original BigIntNum will remain
+// unchanged.
+//
+func (bNum *BigIntNum) Increment() {
+	
+	biNumOne := BigIntNum{}.NewOne(bNum.precision)
+	
+	bPair := BigIntPair{}.NewBigIntNum(bNum.CopyOut(), biNumOne)
+	
+	result := BigIntMathAdd{}.AddPair(bPair)
+	
+	bNum.CopyIn(result)
+	
 }
 
 // IsValid - returns a boolean value signaling whether the
