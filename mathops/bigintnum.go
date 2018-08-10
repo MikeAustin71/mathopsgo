@@ -1846,11 +1846,17 @@ func (bNum *BigIntNum) GetUInt64() (uint64, error) {
 	return bNum.bigInt.Uint64(), nil
 }
 
-// Inverse - Returns the inverse of the current BigIntNum
-// value. The inverse of the value is equal to one ('1')
-// divided by the numeric value of the current BigIntNum.
+// Inverse - Returns the inverse of the current BigIntNum value.
+// The inverse of the value is equal to one ('1') divided by the
+// numeric value of the current BigIntNum.
+//
+// The BigIntNum return value for this operation will contain will
+// contain numeric separators (decimal separator, thousands separator
+// and currency symbol) copied from the original BigIntNum instance.
 //
 func (bNum *BigIntNum) Inverse(maxPrecision uint) (BigIntNum, error) {
+
+	ePrefix := "BigIntNum.Inverse() "
 
 	if bNum.IsZero() {
 		return BigIntNum{}.NewZero(0), nil
@@ -1858,10 +1864,18 @@ func (bNum *BigIntNum) Inverse(maxPrecision uint) (BigIntNum, error) {
 
 	bIOne := BigIntNum{}.NewOne(0)
 
+	err := bIOne.SetNumericSeparatorsDto(bNum.GetNumericSeparatorsDto())
+
+	if err != nil {
+		return BigIntNum{}.NewZero(0),
+			fmt.Errorf(ePrefix +
+				"Error returned by bIOne.SetNumericSeparatorsDto(bNum.GetNumericSeparatorsDto()) " +
+				"Error='%v' \n", err.Error())
+	}
+
 	inverse, err := BigIntMathDivide{}.BigIntNumFracQuotient(bIOne, bNum.CopyOut(), maxPrecision )
 
 	if err != nil {
-		ePrefix := "BigIntNum.Inverse() "
 		return BigIntNum{}.NewZero(0),
 		fmt.Errorf(ePrefix +
 			"Error returned by BigIntMathDivide{}.BigIntNumFracQuotient(...) " +
