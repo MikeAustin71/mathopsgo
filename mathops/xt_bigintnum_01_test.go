@@ -1408,6 +1408,124 @@ func TestBigIntNum_Decimal_02(t *testing.T) {
 
 }
 
+func TestBigIntNum_Decrement_01(t *testing.T) {
+
+	numStr := "8"
+	expectedNumStr := "7"
+	expectedNumSeps := NumericSeparatorDto{}.New()
+
+	bINum, err := BigIntNum{}.NewNumStrWithNumSeps(numStr, expectedNumSeps)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewNumStrWithNumSeps(numStr, expectedNumSeps). " +
+			"numStr='%v' Error='%v' \n", numStr, err.Error())
+	}
+
+	bINum.Decrement()
+
+	actualNumStr := bINum.GetNumStr()
+
+	if expectedNumStr != actualNumStr {
+		t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v'",
+			expectedNumStr, actualNumStr)
+	}
+
+}
+
+func TestBigIntNum_Decrement_02(t *testing.T) {
+
+	numStr := "8.2"
+	expectedNumStr := "7.2"
+	expectedNumSeps := NumericSeparatorDto{}.New()
+
+	bINum, err := BigIntNum{}.NewNumStrWithNumSeps(numStr, expectedNumSeps)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewNumStrWithNumSeps(numStr, expectedNumSeps). " +
+			"numStr='%v' Error='%v' \n", numStr, err.Error())
+	}
+
+	bINum.Decrement()
+
+	actualNumStr := bINum.GetNumStr()
+
+	if expectedNumStr != actualNumStr {
+		t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v'",
+			expectedNumStr, actualNumStr)
+	}
+
+}
+
+func TestBigIntNum_Decrement_03(t *testing.T) {
+
+	numStr := "-8.2"
+	expectedNumStr := "-9.2"
+	expectedNumSeps := NumericSeparatorDto{}.New()
+
+	bINum, err := BigIntNum{}.NewNumStrWithNumSeps(numStr, expectedNumSeps)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewNumStrWithNumSeps(numStr, expectedNumSeps). " +
+			"numStr='%v' Error='%v' \n", numStr, err.Error())
+	}
+
+	bINum.Decrement()
+
+	actualNumStr := bINum.GetNumStr()
+
+	if expectedNumStr != actualNumStr {
+		t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v'",
+			expectedNumStr, actualNumStr)
+	}
+
+	actualNumSeps := bINum.GetNumericSeparatorsDto()
+
+	if !expectedNumSeps.Equal(actualNumSeps) {
+		t.Errorf("Error: Expected NumSeps='%v'. Instead, NumSeps='%v'",
+			expectedNumSeps.String(), actualNumSeps.String())
+	}
+
+}
+
+func TestBigIntNum_Decrement_04(t *testing.T) {
+
+	numStr := "8"
+	expectedNumStr := "7"
+
+	expectedNumSeps := NumericSeparatorDto{}
+	frenchDecSeparator := ','
+	frenchThousandsSeparator := ' '
+	frenchCurrencySymbol := '€'
+
+	expectedNumSeps.DecimalSeparator = frenchDecSeparator
+	expectedNumSeps.ThousandsSeparator = frenchThousandsSeparator
+	expectedNumSeps.CurrencySymbol = frenchCurrencySymbol
+
+	bINum, err := BigIntNum{}.NewNumStrWithNumSeps(numStr, expectedNumSeps)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewNumStrWithNumSeps(numStr, expectedNumSeps). " +
+			"numStr='%v' Error='%v' \n", numStr, err.Error())
+	}
+
+	bINum.Decrement()
+
+	actualNumStr := bINum.GetNumStr()
+
+	if expectedNumStr != actualNumStr {
+		t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v'",
+			expectedNumStr, actualNumStr)
+	}
+
+	actualNumSeps := bINum.GetNumericSeparatorsDto()
+
+	if !expectedNumSeps.Equal(actualNumSeps) {
+		t.Errorf("Error: Expected NumSeps='%v'. Instead, NumSeps='%v'",
+			expectedNumSeps.String(), actualNumSeps.String())
+	}
+
+}
+
 func TestBigIntNum_DivideByTwo_01(t *testing.T) {
 
 	numStr := "658.78562347"
