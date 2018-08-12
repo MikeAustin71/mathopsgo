@@ -20,6 +20,9 @@ type BigIntMath struct {
 //
 // If target is a negative number, an error will be returned.
 //
+// WARNING: This method fails on 'target' numbers with values greater than 10^10,000,000
+//
+//
 // Examples:
 // =========
 //
@@ -30,6 +33,8 @@ type BigIntMath struct {
 //									 2						0
 //									32						1
 // 			 8,456,123,921					  9
+//
+//
 //
 func (bIntMath BigIntMath) GetMagnitude(target *big.Int) (*big.Int, error) {
 
