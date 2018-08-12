@@ -1,37 +1,37 @@
 package main
 
 import (
-	"../mathops"
 	"fmt"
+	"MikeAustin71/mathopsgo/mathops"
 )
 
 func main() {
 
-	nStr := "123,456"
+	numStr := "1"
 
-	expectedNumSeps := mathops.NumericSeparatorDto{}
-	frenchDecSeparator := ','
-	frenchThousandsSeparator := ' '
-	frenchCurrencySymbol := '€'
+	expectedStr := "1.00e+10000000"
+	maxPrecision:= uint(2)
+	exponent := uint64(10000000)
 
-	expectedNumSeps.DecimalSeparator = frenchDecSeparator
-	expectedNumSeps.ThousandsSeparator = frenchThousandsSeparator
-	expectedNumSeps.CurrencySymbol = frenchCurrencySymbol
+	bINum, _ := mathops.BigIntNum{}.NewNumStr(numStr)
 
-	n1 := mathops.NumStrDto{}
+	bIBigNum := mathops.BigIntMathMultiply{}.MultiplyBigIntNumByTenToIntPower(bINum, exponent, 0)
 
-	n1.SetNumericSeparatorsDto(expectedNumSeps)
+	sciNotStr := bIBigNum.GetSciNotationStr(maxPrecision)
 
-	n2, err := n1.ParseNumStr(nStr)
+	fmt.Println(" Sci Notation: ", sciNotStr)
+	fmt.Println("     Expected: ", expectedStr)
 
-	if err != nil {
-		fmt.Println("Error returned by n1.ParseNumStr(nStr). Error=", err.Error())
-		return
-	}
+/*
+	actualNumStr := bIBigNum.GetNumStr()
+	sciNotStr := bIBigNum.GetSciNotationStr(maxPrecision)
 
-	fmt.Println(" n2 Result= ", n2.GetNumStr())
-	fmt.Println("Frac Runes= ", string(n2.GetAbsFracRunes()))
-	fmt.Println(" Int Runes= ", string(n2.GetAbsIntRunes()))
+	fmt.Println("                 nStr= ", nStr)
+	fmt.Println("    bINum.GetNumStr()= ", actualNumStr)
+	fmt.Println(" Scientific Notation = ", sciNotStr)
+	fmt.Println("Expected Notation Str= ", expectedStr)
+
+*/
 }
 
 

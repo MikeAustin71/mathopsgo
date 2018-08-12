@@ -404,6 +404,50 @@ func (bMultiply BigIntMathMultiply) MultiplyBigIntNumByTenToPower (
 	return result, nil
 }
 
+// MultiplyBigIntNumByTenToIntPower - Receives a BigIntNum input parameter, 'base'
+// and a uint64 input parameter, 'tenExponent'. This method then proceeds to multiply
+// 'base' time 10 to the exponent, 'tenExponent'.
+//
+//										result = base X 10^tenExponent
+//
+// Input parameter 'maxPrecision' is used to control the maximum precision for the
+// result returned by this method. Precision is defined as the the number of fractional
+// digits to the right of the decimal place. Maximum precision therefore controls
+// the maximum number of decimal digits to the right of the decimal place. If the
+// returned result from this operation contains a number of fractional digits which
+// is greater than 'maxPrecision' the result will be rounded to 'maxPrecision' decimal
+// places. Be advised that these calculations can support very large precision values.
+//
+// Return Value
+// ============
+// The return value is of type BigIntNum and represents the result of the
+// multiplication operation described above. This returned BigIntNum multiplication
+// 'result' will contain numeric separators (decimal separator, thousands separator
+// and currency symbol) copied from input parameter,'base'.
+//
+// If the precision of the return value precision exceeds input parameter 'maxPrecision',
+// the return value will be rounded to 'maxPrecision' decimal places.
+//
+func (bMultiply BigIntMathMultiply) MultiplyBigIntNumByTenToIntPower (
+																			base BigIntNum,
+																				tenExponent uint64,
+																				maxPrecision uint) BigIntNum {
+
+	scale :=
+		big.NewInt(0).Exp(big.NewInt(10), big.NewInt(0).SetUint64(tenExponent), nil )
+
+	bINumScale := BigIntNum{}.NewBigInt(scale, 0)
+
+	// result numSeps are copied from from 'base'
+	result := bMultiply.MultiplyBigIntNums(base, bINumScale)
+
+	if result.precision > maxPrecision {
+		result.RoundToDecPlace(maxPrecision)
+	}
+
+	return result
+}
+
 // MultiplyDecimal - Receives two Decimal instances and multiplies their
 // numeric values. The result or 'product' is returned as a 'BigIntNum'
 // type.

@@ -75,5 +75,44 @@ func TestBigIntMath_GetMagnitude_04(t *testing.T) {
 			"NO ERROR WAS TRIGGERED! ")
 	}
 
+}
+
+func TestBigIntMath_GetMagnitude_05(t *testing.T) {
+
+	target := big.NewInt(2)
+	expectedMagnitude := big.NewInt(0)
+
+	magnitude, err := BigIntMath{}.GetMagnitude(target)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntMath{}.GetMagnitudeDigits(target). " +
+			"target='%v' Error='%v' ",
+			target.Text(10), err.Error())
+	}
+
+	if expectedMagnitude.Cmp(magnitude) != 0 {
+		t.Errorf("Error: Expected Magnitude='%v'. Instead, Magnitude='%v'.",
+			expectedMagnitude.Text(10),magnitude.Text(10))
+	}
+
+}
+
+func TestBigIntMath_GetMagnitude_06(t *testing.T) {
+
+	target := big.NewInt(85652647928)
+	expectedMagnitude := big.NewInt(10)
+
+	magnitude, err := BigIntMath{}.GetMagnitude(target)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntMath{}.GetMagnitudeDigits(target). " +
+			"target='%v' Error='%v' ",
+			target.Text(10), err.Error())
+	}
+
+	if expectedMagnitude.Cmp(magnitude) != 0 {
+		t.Errorf("Error: Expected Magnitude='%v'. Instead, Magnitude='%v'.",
+			expectedMagnitude.Text(10),magnitude.Text(10))
+	}
 
 }

@@ -632,6 +632,56 @@ func (bIDivide BigIntMathDivide) BigIntNumDivideByTenQuoMod(
 	return bIDivide.BigIntNumQuotientMod(dividend, bINumTen, maxPrecision)												
 }
 
+// BigIntNumDivideByTenToPowerQuoMod - Performs a division operation on BigIntNum input
+// parameter 'dividend'. This method will divide 'dividend' by the numeric value of ten
+// (10) to the power of input parameter 'exponent'. There are two BigIntNum return
+// values: 'quotient' and 'modulo'.
+//
+//								quotient, modulo = dividend / (10^exponent)
+//
+// The calculation of 'quotient' and 'modulo' is based on T-Division (Truncate Division).
+// See "Division and Modulus for Computer Scientists", DAAN LEIJEN, University of Utrecht
+// Dept. of Computer Science, PO.Box 80.089, 3508 TB Utrecht The Netherlands:
+// https://www.microsoft.com/en-us/research/wp-content/uploads/2016/02/divmodnote-letter.pdf
+// Also available at ../notes/divmodnote-letter.pdf.
+// So for q=quotient; D=Dividend d=Divisor r=Remainder or 'modulo' :
+//   						q = D div d = f(D/d) r = D mod d = D − d ·q
+//
+// 'quotient' is the integer result of dividing the 'dividend' by 10
+//
+// 'modulo' - The modulo operation finds the remainder after division of one
+// number by another. (r = D mod d = D − d ·q)
+//
+// Input parameter 'maxPrecision' is used to control the maximum precision of the
+// resulting 'modulo'. Precision is defined as the the number of fractional digits
+// to the right of the decimal point. Be advised that these calculations can support
+// very large precision values.
+//
+// The returned BigIntNum division 'result' (quotient and modulo) will
+// contain numeric separators (decimal separator, thousands separator
+// and currency symbol) copied from input parameter, 'dividend'
+//
+func (bIDivide BigIntMathDivide) BigIntNumDivideByTenToPowerQuoMod(
+										dividend, exponent BigIntNum,
+											maxPrecision uint) (quotient, modulo BigIntNum, err error) {
+
+	ePrefix := "BigIntMathDivide.BigIntNumDivideByTenToPowerQuoMod() "
+	quotient = BigIntNum{}.NewZero(0)
+	modulo = BigIntNum{}.NewZero(0)
+
+	scaleValue, err :=
+		BigIntMathPower{}.Pwr(BigIntNum{}.NewTen(0), exponent, maxPrecision + 10)
+
+	if err != nil {
+		return  quotient, modulo,
+			fmt.Errorf(ePrefix +
+				"Error returned by BigIntMathPower{}.Pwr(10, exponent, maxPrecision + 10) " +
+				"Error='%v'", err.Error())
+	}
+
+	return bIDivide.BigIntNumQuotientMod(dividend, scaleValue, maxPrecision)
+}
+
 // BigIntNumDivideByTwoFracQuo - Performs a division operation on BigIntNum input
 // parameter 'dividend'. This method will divide 'dividend' by the integer numeric
 // value two ('2').
@@ -775,6 +825,147 @@ func (bIDivide BigIntMathDivide) BigIntNumDivideByTenFracQuo(
 	bINumTen := BigIntNum{}.NewTen(0)												
 
 	return bIDivide.BigIntNumFracQuotient(dividend, bINumTen, maxPrecision)												
+}
+
+// BigIntNumDivideByTenToPowerFracQuo - Performs a division operation on BigIntNum input
+// parameter 'dividend'. This method will divide 'dividend' by the numeric value ten
+// ('10') to the power of input parameter 'exponent'.
+//
+//						fractional quotient = dividend / (10^exponent)
+//
+// The result of this division operation is returned as a BigIntNum type representing
+// quotient as integer and fractional digits. Remember that the BigIntNum type specifies
+// 'precision'. Precision is defined as the number of fractional digits to the right of
+// the decimal place.
+//
+// The input parameter 'maxPrecision' is used to control the maximum precision of the
+// resulting fractional quotient. Be advised that this method is capable of calculating
+// quotients with very long strings of fractional digits.
+//
+// The returned BigIntNum division result ('fracQuotient') will contain numeric
+// separators (decimal separator, thousands separator and currency symbol)
+// copied from input parameter, 'dividend'.
+//
+func (bIDivide BigIntMathDivide) BigIntNumDivideByTenToPowerFracQuo(
+										dividend,
+											exponent BigIntNum,
+												maxPrecision uint) (fracQuotient BigIntNum, err error) {
+
+  ePrefix := "BigIntMathDivide.BigIntNumDivideByTenToPowerFracQuo() "
+  fracQuotient = BigIntNum{}.NewZero(0)
+
+	scaleValue, err :=
+			BigIntMathPower{}.Pwr(BigIntNum{}.NewTen(0), exponent, maxPrecision + 10)
+
+	if err != nil {
+		return fracQuotient,
+			fmt.Errorf(ePrefix +
+				"Error returned by BigIntMathPower{}.Pwr(10, exponent, maxPrecision + 10) " +
+				"Error='%v'", err.Error())
+	}
+
+	return bIDivide.BigIntNumFracQuotient(dividend, scaleValue, maxPrecision)
+}
+
+// BigIntNumDivideByTenToPowerIntQuo - Performs a division operation on BigIntNum input
+// parameter 'dividend'. This method will divide 'dividend' by the numeric value ten
+// ('10') to the power of input parameter 'exponent'.
+//
+//						integer quotient = dividend / (10^exponent)
+//
+// The result of this division operation is returned as a BigIntNum type representing
+// 'quotient' as an integer value.
+//
+// The input parameter 'maxPrecision' is used to control the maximum precision of the
+// internal calculations for those cases with 'exponent' is a fractional or floating
+// point number. Be advised that this method is capable of calculating quotients with very
+// long strings of fractional digits.
+//
+// The returned BigIntNum division result ('intQuotient') will contain numeric
+// separators (decimal separator, thousands separator and currency symbol)
+// copied from input parameter, 'dividend'.
+//
+func (bIDivide BigIntMathDivide) BigIntNumDivideByTenToPowerIntQuo(
+										dividend,
+											exponent BigIntNum,
+												maxPrecision uint) (intQuotient BigIntNum, err error) {
+
+  ePrefix := "BigIntMathDivide.BigIntNumDivideByTenToPowerIntQuo() "
+  intQuotient = BigIntNum{}.NewZero(0)
+
+	scaleValue, err :=
+			BigIntMathPower{}.Pwr(BigIntNum{}.NewTen(0), exponent, maxPrecision + 10)
+
+	if err != nil {
+		return intQuotient,
+			fmt.Errorf(ePrefix +
+				"Error returned by BigIntMathPower{}.Pwr(10, exponent, maxPrecision + 10) " +
+				"Error='%v'", err.Error())
+	}
+
+	return bIDivide.BigIntNumIntQuotient(dividend, scaleValue)
+}
+
+// BigIntNumDivideByTenToPowerMod - Performs a modulo operation on BigIntNum input
+// parameters 'dividend' and ten (10) to the power of exponent.
+//
+// 						modulo = dividend / (10^exponent)
+//
+// The modulo operation finds the remainder after division of one number
+// by another (sometimes called modulus).
+// 				Wikipedia https://en.wikipedia.org/wiki/Modulo_operation
+//
+// This method returns one BigIntNum value: 'modulo'.
+//
+// The calculation of 'modulo' is based on T-Division (Truncate Division). See
+// "Division and Modulus for Computer Scientists", DAAN LEIJEN, University of
+// Utrecht Dept. of Computer Science, PO.Box 80.089, 3508 TB Utrecht The Netherlands:
+// https://www.microsoft.com/en-us/research/wp-content/uploads/2016/02/divmodnote-letter.pdf
+// Also available at ../notes/divmodnote-letter.pdf.
+//
+// So, for q=quotient; D=Dividend d=Divisor r=Remainder or 'modulo' :
+//   						q = D div d = f(D/d)
+// 							r = D mod d = D − d ·q
+//
+// The modulo operation finds the remainder after division of one
+// number by another. (r = D mod d = D − d ·q)
+//
+// Input parameter 'maxPrecision' is used to control the maximum precision of the
+// resulting 'modulo'. Precision is defined as the the number of fractional digits
+// to the right of the decimal point. Be advised that these calculations can support
+// very large precision values.
+//
+// Examples:
+// =========
+//
+//  Dividend			  mod by	Power 		Divisor			=			Modulo/Remainder
+// ---------				------	-----		  -------						----------------
+//  1200.555					%				2		 			100			  =			 		0.555
+// 10235.555					%				3		 		 1000			  =			 	235.555
+//
+// The returned BigIntNum division 'result' (modulo) will
+// contain numeric separators (decimal separator, thousands separator
+// and currency symbol) copied from input parameter, 'dividend'.
+//
+func (bIDivide BigIntMathDivide) BigIntNumDivideByTenToPowerMod(
+										dividend,
+											exponent BigIntNum,
+												maxPrecision uint) (modulo BigIntNum, err error) {
+
+  ePrefix := "BigIntMathDivide.BigIntNumDivideByTenToPowerIntQuo() "
+	modulo = BigIntNum{}.NewZero(0)
+
+	scaleValue, err :=
+			BigIntMathPower{}.Pwr(BigIntNum{}.NewTen(0), exponent, maxPrecision + 10)
+
+	if err != nil {
+		return modulo,
+			fmt.Errorf(ePrefix +
+				"Error returned by BigIntMathPower{}.Pwr(10, exponent, maxPrecision + 10) " +
+				"Error='%v'", err.Error())
+	}
+
+	return bIDivide.BigIntNumModulo(dividend, scaleValue, maxPrecision)
 }
 
 // DecimalQuotientMod - Performs a division operation on Decimal type input

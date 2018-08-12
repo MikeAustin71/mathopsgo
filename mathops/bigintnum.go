@@ -1775,6 +1775,77 @@ func (bNum *BigIntNum) GetSignedBigInt() *big.Int{
 	return bNum.bigInt
 }
 
+// GetSciNotationStr - Returns a string expressing the current BigIntNum
+// numerical value as scientific notation.
+//
+// Input parameter 'mantissaLen' is used to express the number of
+// fractional digits displayed in the returned scientific notation
+// string. If 'mantissaLen' is less than '2' (two), 'mantissaLen'
+// will be automatically set to '2' (two).
+//
+func (bNum *BigIntNum) GetSciNotationStr(mantissaLen uint) string {
+
+	outStr := ""
+	exponentChar := "e"
+
+	if bNum.IsZero() {
+		zeroNum := BigIntNum{}.NewZero(mantissaLen)
+		outStr += zeroNum.GetNumStr()
+		outStr += exponentChar
+		outStr += "+0"
+		return outStr
+	}
+
+		// convert to absolute value
+	if bNum.sign == -1 {
+		bNum.ChangeSign()
+	}
+
+
+	if bNum.sign == -1 {
+		outStr += "-"
+	}
+
+	bINumIntPart := bNum.GetIntegerPart()
+
+	bINumFracPart := bNum.GetFractionalPart()
+
+
+	if !bINumIntPart.IsZero() {
+
+		magnitudeInt, _ := BigIntMath{}.GetMagnitude(bINumIntPart.bigInt)
+
+		scaleVal := big.NewInt(0).Exp(big.NewInt(10), magnitudeInt, nil)
+		bINumScaleVal := BigIntNum{}.NewBigInt(scaleVal, 0)
+
+		newBINum, _ := BigIntMathDivide{}.BigIntNumFracQuotient(bNum.CopyOut(), bINumScaleVal, mantissaLen)
+
+		newBINum.SetPrecision(mantissaLen)
+
+		outStr += newBINum.GetNumStr()
+		outStr += exponentChar
+		outStr += "+"
+		outStr += magnitudeInt.Text(10)
+
+	} else {
+		// Must be bINumFracPart > 0
+		magnitudeFrac, _ := BigIntMath{}.GetMagnitude(bINumFracPart.bigInt)
+		precisionFrac := big.NewInt(int64(bINumFracPart.precision))
+
+		newBINum := BigIntNum{}.NewBigInt(bINumFracPart.bigInt, uint(magnitudeFrac.Uint64()))
+
+		newBINum.SetPrecision(mantissaLen)
+
+		bINumScale := BigIntNum{}.NewBigInt(big.NewInt(0).Sub(magnitudeFrac, precisionFrac),0)
+
+		outStr += newBINum.GetNumStr()
+		outStr += exponentChar
+		outStr += bINumScale.GetNumStr()
+	}
+
+	return outStr
+}
+
 // GetThisPointer - Returns a pointer to the current
 // instance of this BigIntNum.
 func (bNum *BigIntNum) GetThisPointer() *BigIntNum {
