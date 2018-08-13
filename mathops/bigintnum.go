@@ -1775,6 +1775,50 @@ func (bNum *BigIntNum) GetSignedBigInt() *big.Int{
 	return bNum.bigInt
 }
 
+
+// GetSciNotationNumber - Converts the numeric value of the current
+// BigIntNum instance into scientific notation and returns this value
+// as an instance of type SciNotationNum.
+func (bNum *BigIntNum) GetSciNotationNumber() SciNotationNum {
+
+	sciNotationNum := SciNotationNum{}.New()
+
+	if bNum.IsZero() {
+		sciNotationNum.SetSciNotationElements(bNum.CopyOut(), BigIntNum{}.NewZero(0) )
+		return sciNotationNum
+	}
+
+	bINumIntPart := bNum.GetIntegerPart()
+
+	bINumFracPart := bNum.GetFractionalPart()
+
+
+	if !bINumIntPart.IsZero() {
+
+		magnitudeInt, _ := BigIntMath{}.GetMagnitude(bINumIntPart.bigInt)
+
+		scaleVal := big.NewInt(0).Exp(big.NewInt(10), magnitudeInt, nil)
+		bINumScaleVal := BigIntNum{}.NewBigInt(scaleVal, 0)
+
+		newBINum, _ := BigIntMathDivide{}.BigIntNumFracQuotient(bNum.CopyOut(), bINumScaleVal, bNum.GetPrecisionUint())
+
+		sciNotationNum.SetSciNotationElements(newBINum, BigIntNum{}.NewBigInt(magnitudeInt, 0) )
+
+	} else {
+		// Must be bINumFracPart > 0
+		magnitudeFrac, _ := BigIntMath{}.GetMagnitude(bINumFracPart.bigInt)
+		precisionFrac := big.NewInt(int64(bINumFracPart.precision))
+
+		newBINum := BigIntNum{}.NewBigInt(bINumFracPart.bigInt, uint(magnitudeFrac.Uint64()))
+
+		bINumScale := BigIntNum{}.NewBigInt(big.NewInt(0).Sub(magnitudeFrac, precisionFrac),0)
+
+		sciNotationNum.SetSciNotationElements(newBINum, bINumScale )
+	}
+
+	return sciNotationNum
+}
+
 // GetSciNotationStr - Returns a string expressing the current BigIntNum
 // numerical value as scientific notation.
 //

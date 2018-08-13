@@ -7,11 +7,11 @@ import (
 
 func main() {
 
-	numStr := "1"
+	numStr := "34"
+	exponent := uint64(10)
+	maxPrecision := uint(5)
+	expectedStr := "340"
 
-	expectedStr := "1.00e+10000000"
-	maxPrecision:= uint(2)
-	exponent := uint64(10000000)
 
 	bINum, _ := mathops.BigIntNum{}.NewNumStr(numStr)
 
