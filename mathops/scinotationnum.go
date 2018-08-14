@@ -86,16 +86,37 @@ func (sciNotan *SciNotationNum) GetExponentUsesLeadingPlus() bool {
 	return sciNotan.exponentUsesLeadingPlus
 }
 
+// GetNumStr - Returns a scientific notation string representing
+// the underlying numeric value. The number of decimals in the
+// mantissa will default to the current value of sciNotan.mantissaLength.
+//
+func (sciNotan *SciNotationNum) GetNumStr() string {
+
+	sciNotan.SetMantissaLengthIfEmpty()
+
+	return sciNotan.GetSciNotationStr(sciNotan.mantissaLength)
+}
+
+
 // GetSciNotationStr - Returns a string containing the scientific
-// notation display.
+// notation display.  This method differs from method SciNotationNum.GetNumStr()
+// in that this method requires the user to provide input parameter 'mantissaLen'
+// which sets the number of decimal places in the significand of the returned
+// science notation string.
 //
 // Default Example
 // ---------------
 // 2.652e+8
 //
-func (sciNotan *SciNotationNum) GetSciNotationStr() string {
+func (sciNotan *SciNotationNum) GetSciNotationStr(mantissaLen uint) string {
 
 	outStr := ""
+
+	if mantissaLen == 0 {
+		mantissaLen = 2
+	}
+
+	sciNotan.SetMantissaLength(mantissaLen)
 
 	sciNotan.SetDecimalSeparatorIfEmpty()
 
@@ -236,6 +257,9 @@ func (sciNotan *SciNotationNum) SetExponentUsesLeadingPlus(useLeadingPlus bool) 
 // fractional digits which will be displayed in the the significand
 // when SciNotationNum.GetSciNotationStr() is called.
 //
+// If input parameter mantissaLen is set equal to zero, this method will
+// automatically set the value to two ('2').
+//
 // Example Scientific Notation
 // ===========================
 //
@@ -246,6 +270,10 @@ func (sciNotan *SciNotationNum) SetExponentUsesLeadingPlus(useLeadingPlus bool) 
 //  exponent    = '8'  (10^8)
 //
 func (sciNotan *SciNotationNum) SetMantissaLength(mantissaLen uint) {
+
+	if mantissaLen == 0 {
+		mantissaLen = 2
+	}
 
 	sciNotan.mantissaLength = mantissaLen
 

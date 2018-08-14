@@ -7,20 +7,22 @@ import (
 
 func main() {
 
-	numStr := "34"
-	exponent := uint64(10)
-	maxPrecision := uint(5)
-	expectedStr := "340"
+	numStr := "0.000000034"
+	mantissaLen := uint(2)
+	expectedStr := "3.40e-8"
 
 
 	bINum, _ := mathops.BigIntNum{}.NewNumStr(numStr)
 
-	bIBigNum := mathops.BigIntMathMultiply{}.MultiplyBigIntNumByTenToIntPower(bINum, exponent, 0)
+	sciNotStr := bINum.GetSciNotationStr(mantissaLen)
 
-	sciNotStr := bIBigNum.GetSciNotationStr(maxPrecision)
+	sciNotNum := bINum.GetSciNotationNumber()
+
+	actualSciNotStr := sciNotNum.GetSciNotationStr(2)
 
 	fmt.Println(" Sci Notation: ", sciNotStr)
 	fmt.Println("     Expected: ", expectedStr)
+	fmt.Println("  Sci Not Num: ", actualSciNotStr)
 
 /*
 	actualNumStr := bIBigNum.GetNumStr()
