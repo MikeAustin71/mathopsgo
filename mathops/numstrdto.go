@@ -1227,6 +1227,11 @@ func (nDto *NumStrDto) GetAbsFracRunesLength() int {
 // first position and therefore represents the absolute or positive
 // value of all the integer digits. The integer digits of a NumStrDto
 // numeric includes all of the digits to the left of the decimal point.
+//
+// If the current NumStrDto consists of zero integers and fractional
+// digits (Example: '0.123456'), this method will return a rune array
+// consisting one array element with a '0' value.
+//
 func (nDto *NumStrDto) GetAbsIntRunes() []rune {
 
 	lenAllNum := len(nDto.absAllNumRunes)
@@ -1266,7 +1271,8 @@ func (nDto *NumStrDto) GetAbsNumStr() string {
 
 
 // GetAbsIntRunesLength - Returns the length of the
-// integer portion of the number setring.
+// integer portion of the number string.
+//
 func (nDto *NumStrDto) GetAbsIntRunesLength() int {
 
 	lenAllNums := len(nDto.absAllNumRunes)
@@ -1742,6 +1748,103 @@ func (nDto *NumStrDto) GetScaleFactor() (*big.Int, error) {
 
 	return scaleFactor, nil
 
+}
+
+// GetSciNotationNumber - Converts the numeric value of the current
+// NumStrDto instance into scientific notation and returns this value
+// as an instance of type SciNotationNum.
+//
+// Input Parameter
+// ===============
+//
+// mantissaLen uint	- Specifies the length of the mantissa in the returned
+//										scientific notation string. If the value of 'mantissaLen'
+//										is less than two ('2'), this method will automatically set
+//										the 'mantissaLen' to a default value of two ('2').
+//
+// 										Example Scientific Notation:
+// 										----------------------------
+//
+//  										scientific notation string: '2.652e+8'
+//
+//  										significand = '2.652'
+//  										significand integer digit = '2'
+//											mantissa		= significand factional digits = '.652'
+//  										exponent    = '8'  (10^8)
+//
+func (nDto *NumStrDto) GetSciNotationNumber(mantissaLen uint) (SciNotationNum, error) {
+
+	ePrefix := "NumStrDto.GetSciNotationNumber() "
+
+	bINum, err := nDto.GetBigIntNum()
+
+	if err != nil {
+		return SciNotationNum{}.New(),
+			fmt.Errorf(ePrefix +
+				"Error returned by nDto.GetBigIntNum(). Error='%v'",
+				err.Error())
+	}
+
+	sciNotn, err := bINum.GetSciNotationNumber(mantissaLen)
+
+	if err != nil {
+		return SciNotationNum{}.New(),
+			fmt.Errorf(ePrefix +
+				"Error returned by bINum.GetSciNotationNumber(mantissaLen). Error='%v'",
+				err.Error())
+	}
+
+	return sciNotn, nil
+}
+
+// GetSciNotationStr - Returns a string expressing the current NumStrDto
+// numerical value as scientific notation.
+//
+// Input Parameter
+// ===============
+//
+// mantissaLen uint	- Specifies the length of the mantissa in the returned
+//										scientific notation string. If the value of 'mantissaLen'
+//										is less than two ('2'), this method will automatically set
+//										the 'mantissaLen' to a default value of two ('2').
+//
+// 										Example Scientific Notation:
+// 										----------------------------
+//
+//  										scientific notation string: '2.652e+8'
+//
+//  										significand = '2.652'
+//  										significand integer digit = '2'
+//											mantissa		= significand factional digits = '.652'
+//  										exponent    = '8'  (10^8)
+//
+func (nDto *NumStrDto) GetSciNotationStr(mantissaLen uint) (string, error) {
+
+	ePrefix := "NumStrDto.GetSciNotationStr() "
+
+	if mantissaLen < 2 {
+		mantissaLen = 2
+	}
+
+	sciNotn, err := nDto.GetSciNotationNumber(mantissaLen)
+
+	if err != nil {
+		return "",
+			fmt.Errorf(ePrefix +
+				"Error returned by bNum.GetSciNotationNumber(mantissaLen). " +
+				"Error='%v'", err.Error())
+	}
+
+	result, err := sciNotn.GetSciNotationStr(mantissaLen)
+
+	if err != nil {
+		return "",
+			fmt.Errorf(ePrefix +
+				"Error returned by sciNotn.GetSciNotationStr(mantissaLen). " +
+				"Error='%v'", err.Error())
+	}
+
+	return result, nil
 }
 
 // GetSign - Returns the sign value for this NumStrDto

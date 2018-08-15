@@ -8,8 +8,19 @@ import (
 func main() {
 
 	numStr := "0.000003451234"
-	mantissaLen := uint(2)
-	expectedStr := "3.45e-6"
+	//mantissaLen := uint(2)
+	//expectedStr := "3.45e-6"
+
+	nDto, _ := mathops.NumStrDto{}.NewNumStr(numStr)
+
+	intRunes := nDto.GetAbsIntRunes()
+
+	intLength := nDto.GetAbsIntRunesLength()
+
+	fmt.Println(" intRunes: ", string(intRunes))
+	fmt.Println("intLength: ", intLength)
+
+	/*
 
 	iaNum, _ := mathops.IntAry{}.NewNumStr(numStr)
 
@@ -31,7 +42,6 @@ func main() {
 	//fmt.Println("Sci Not Significand: ", actualSignificand.GetNumStr())
 	fmt.Println("Sci Not    Exponent: ", actualExponent.GetNumStr())
 
-	/*
 
 	base := uint(987654321)
 	exponent := 3

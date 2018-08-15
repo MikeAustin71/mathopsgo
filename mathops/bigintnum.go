@@ -1795,7 +1795,6 @@ func (bNum *BigIntNum) GetSignedBigInt() *big.Int{
 	return bNum.bigInt
 }
 
-
 // GetSciNotationNumber - Converts the numeric value of the current
 // BigIntNum instance into scientific notation and returns this value
 // as an instance of type SciNotationNum.
@@ -1891,53 +1890,6 @@ func (bNum *BigIntNum) GetSciNotationNumber(mantissaLen uint) (SciNotationNum, e
 	return sciNotationNum, nil
 }
 
-
-/*
-func (bNum *BigIntNum) GetSciNotationNumber(mantissaLen uint) SciNotationNum {
-
-	sciNotationNum := SciNotationNum{}.New()
-
-	if mantissaLen < 2 {
-		mantissaLen = 2
-	}
-
-	if bNum.IsZero() {
-		sciNotationNum.SetBigIntNumElements(bNum.CopyOut(), BigIntNum{}.NewZero(0) )
-		return sciNotationNum
-	}
-
-	bINumIntPart := bNum.GetIntegerPart()
-
-	bINumFracPart := bNum.GetFractionalPart()
-
-
-	if !bINumIntPart.IsZero() {
-
-		magnitudeInt, _ := BigIntMath{}.GetMagnitude(bINumIntPart.bigInt)
-
-		scaleVal := big.NewInt(0).Exp(big.NewInt(10), magnitudeInt, nil)
-		bINumScaleVal := BigIntNum{}.NewBigInt(scaleVal, 0)
-
-		newBINum, _ := BigIntMathDivide{}.BigIntNumFracQuotient(bNum.CopyOut(), bINumScaleVal, bNum.GetPrecisionUint())
-
-		sciNotationNum.SetBigIntNumElements(newBINum, BigIntNum{}.NewBigInt(magnitudeInt, 0) )
-
-	} else {
-		// Must be bINumFracPart > 0
-		magnitudeFrac, _ := BigIntMath{}.GetMagnitude(bINumFracPart.bigInt)
-		precisionFrac := big.NewInt(int64(bINumFracPart.precision))
-
-		newBINum := BigIntNum{}.NewBigInt(bINumFracPart.bigInt, uint(magnitudeFrac.Uint64()))
-
-		bINumScale := BigIntNum{}.NewBigInt(big.NewInt(0).Sub(magnitudeFrac, precisionFrac),0)
-
-		sciNotationNum.SetBigIntNumElements(newBINum, bINumScale )
-	}
-
-	return sciNotationNum
-}
-*/
-
 // GetSciNotationStr - Returns a string expressing the current BigIntNum
 // numerical value as scientific notation.
 //
@@ -1959,71 +1911,33 @@ func (bNum *BigIntNum) GetSciNotationNumber(mantissaLen uint) SciNotationNum {
 //											mantissa		= significand factional digits = '.652'
 //  										exponent    = '8'  (10^8)
 //
-func (bNum *BigIntNum) GetSciNotationStr(mantissaLen uint) string {
+func (bNum *BigIntNum) GetSciNotationStr(mantissaLen uint) (string, error) {
 
-	outStr := ""
-	exponentChar := "e"
+	ePrefix := "BigIntNum.GetSciNotationStr() "
 
 	if mantissaLen < 2 {
 		mantissaLen = 2
 	}
 
-	if bNum.IsZero() {
-		zeroNum := BigIntNum{}.NewZero(mantissaLen)
-		outStr += zeroNum.GetNumStr()
-		outStr += exponentChar
-		outStr += "+0"
-		return outStr
+	sciNotn, err := bNum.GetSciNotationNumber(mantissaLen)
+
+	if err != nil {
+		return "",
+		fmt.Errorf(ePrefix +
+			"Error returned by bNum.GetSciNotationNumber(mantissaLen). " +
+			"Error='%v'", err.Error())
 	}
 
-		// convert to absolute value
-	if bNum.sign == -1 {
-		bNum.ChangeSign()
+	result, err := sciNotn.GetSciNotationStr(mantissaLen)
+
+	if err != nil {
+		return "",
+			fmt.Errorf(ePrefix +
+				"Error returned by sciNotn.GetSciNotationStr(mantissaLen). " +
+				"Error='%v'", err.Error())
 	}
 
-
-	if bNum.sign == -1 {
-		outStr += "-"
-	}
-
-	bINumIntPart := bNum.GetIntegerPart()
-
-	bINumFracPart := bNum.GetFractionalPart()
-
-
-	if !bINumIntPart.IsZero() {
-
-		magnitudeInt, _ := BigIntMath{}.GetMagnitude(bINumIntPart.bigInt)
-
-		scaleVal := big.NewInt(0).Exp(big.NewInt(10), magnitudeInt, nil)
-		bINumScaleVal := BigIntNum{}.NewBigInt(scaleVal, 0)
-
-		newBINum, _ := BigIntMathDivide{}.BigIntNumFracQuotient(bNum.CopyOut(), bINumScaleVal, mantissaLen)
-
-		newBINum.SetPrecision(mantissaLen)
-
-		outStr += newBINum.GetNumStr()
-		outStr += exponentChar
-		outStr += "+"
-		outStr += magnitudeInt.Text(10)
-
-	} else {
-		// Must be bINumFracPart > 0
-		magnitudeFrac, _ := BigIntMath{}.GetMagnitude(bINumFracPart.bigInt)
-		precisionFrac := big.NewInt(int64(bINumFracPart.precision))
-
-		newBINum := BigIntNum{}.NewBigInt(bINumFracPart.bigInt, uint(magnitudeFrac.Uint64()))
-
-		newBINum.SetPrecision(mantissaLen)
-
-		bINumScale := BigIntNum{}.NewBigInt(big.NewInt(0).Sub(magnitudeFrac, precisionFrac),0)
-
-		outStr += newBINum.GetNumStr()
-		outStr += exponentChar
-		outStr += bINumScale.GetNumStr()
-	}
-
-	return outStr
+	return result, nil
 }
 
 // GetThisPointer - Returns a pointer to the current
