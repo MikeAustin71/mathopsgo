@@ -1539,12 +1539,14 @@ func (ia *IntAry) DivideByInt64(divisor int64, maxPrecision int) error {
 	return nil
 }
 
-// DivideByTenToPower - Divide intAry value by 10 raised to the
-// power of the input parameter, 'power'.
+// DivideByTenToPower - Divide the numerical value of the current IntAry
+// instance  by 10 raised to the power of the input parameter, 'exponent'.
 //
-func (ia *IntAry) DivideByTenToPower(power uint) {
+// 								ia = ia / (10^exponent)
+//
+func (ia *IntAry) DivideByTenToPower(exponent uint) {
 
-	IntAryMathDivide{}.DivideByTenToPower(ia, power)
+	IntAryMathDivide{}.DivideByTenToPower(ia, exponent)
 }
 
 // DivideThisBy - Divides the current value of intAry by the parameter iAry2.
@@ -2591,6 +2593,140 @@ func (ia *IntAry) GetScaleFactor() (*big.Int, error) {
 
 	return scaleFactor, nil
 
+}
+
+// GetSciNotationNumber - Converts the numeric value of the current
+// BigIntNum instance into scientific notation and returns this value
+// as an instance of type SciNotationNum.
+//
+// Input Parameter
+// ===============
+//
+// mantissaLen uint	- Specifies the length of the mantissa in the returned
+//										scientific notation string. If the value of 'mantissaLen'
+//										is less than two ('2'), this method will automatically set
+//										the 'mantissaLen' to a default value of two ('2').
+//
+// 										Example Scientific Notation:
+// 										----------------------------
+//
+//  										scientific notation string: '2.652e+8'
+//
+//  										significand = '2.652'
+//  										significand integer digit = '2'
+//											mantissa		= significand factional digits = '.652'
+//  										exponent    = '8'  (10^8)
+//
+func (ia *IntAry) GetSciNotationNumber(mantissaLen uint) (SciNotationNum, error) {
+
+	ePrefix := "IntAry.GetSciNotationNumber() "
+
+	if mantissaLen < 2 {
+		mantissaLen = 2
+	}
+
+	sciNotationNum := SciNotationNum{}.New()
+
+	err := ia.IsValid(ePrefix + "Current IntAry INVALID! ")
+
+	if err != nil {
+		return SciNotationNum{}.New(), err
+	}
+
+	if ia.IsZero() {
+
+		err = sciNotationNum.SetBigIntNumElements(BigIntNum{}.NewZero(2), BigIntNum{}.NewZero(0) )
+
+		if err != nil {
+			return SciNotationNum{}.New(),
+			fmt.Errorf(ePrefix +
+				"Error returned by sciNotationNum.SetBigIntNumElements(...). "+
+				"Error='%v'", err.Error())
+		}
+
+		return sciNotationNum, nil
+	}
+
+	iaIntPart, err := ia.GetIntegerDigits()
+
+	if err != nil {
+		return SciNotationNum{}.New(),
+			fmt.Errorf(ePrefix +
+				"Error returned by ia.GetIntegerDigits(). "+
+				"Error='%v'", err.Error())
+	}
+
+
+	if !iaIntPart.IsZero() {
+
+		magnitudeInt, _ := ia.GetMagnitude()
+
+		iaNew := ia.CopyOut()
+
+		iaNew.DivideByTenToPower(uint(magnitudeInt))
+
+		iaMagnitude, _ := IntAry{}.NewInt(magnitudeInt, 0)
+
+		sciNotationNum.SetIntAryElements(iaNew, iaMagnitude )
+
+	} else {
+		// Must be number with zero integers and fractional digits.
+		// Example: 0.256
+
+		iaFracPart, _ := ia.GetFractionalDigits()
+		precisionFrac := uint(iaFracPart.precision)
+		iaFracPart.MultiplyByTenToPower(precisionFrac)
+		iaFracPart.SetPrecision(0, false)
+
+		// Must be iaFracPart > 0
+		intMagnitudeFrac := int(precisionFrac) - 1
+
+		iaFracPart.DivideByTenToPower(uint(intMagnitudeFrac))
+
+		iaFracPart.SetPrecision(int(mantissaLen), true)
+
+		iaMagnitude, _ := IntAry{}.NewInt(intMagnitudeFrac, 0)
+
+		sciNotationNum.SetIntAryElements(iaFracPart, iaMagnitude )
+	}
+
+	return sciNotationNum, nil
+}
+
+
+// GetSciNotationStr - Returns a string expressing the current IntAry
+// numerical value as scientific notation.
+//
+// Input parameter 'mantissaLen' is used to express the number of
+// fractional digits displayed in the returned scientific notation
+// string. If 'mantissaLen' is less than '2' (two), 'mantissaLen'
+// will be automatically set to '2' (two).
+//
+// Input Parameter
+// ===============
+//
+// mantissaLen uint	- Specifies the length of the mantissa in the returned
+//										scientific notation string.
+//
+// 										Example Scientific Notation:
+// 										----------------------------
+//
+//  										scientific notation string: '2.652e+8'
+//
+//  										significand = '2.652'
+//  										significand integer digit = '2'
+//											mantissa		= significand factional digits = '.652'
+//  										exponent    = '8'  (10^8)
+//
+func (ia *IntAry) GetSciNotationStr(mantissaLen uint) string {
+
+	if mantissaLen < 2 {
+		mantissaLen = 2
+	}
+
+	sciNotnNum, _ := ia.GetSciNotationNumber(mantissaLen)
+
+	return sciNotnNum.GetSciNotationStr(mantissaLen)
 }
 
 // GetSign - returns the sign of the current

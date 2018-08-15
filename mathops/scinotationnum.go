@@ -12,7 +12,8 @@ import (
 //  2.652e+8
 //
 //  significand 		= '2.652'
-//	mantissa				= factional digits = '.652'
+//  significand integer digits = '2'
+//	mantissa				= significand factional digits = '.652'
 //  exponent    		= '8'  (10^8)
 //	mantissaLength	= length of fractional digits displayed in scientific notation.
 //
@@ -51,6 +52,25 @@ func (sciNotan *SciNotationNum) GetDecimalSeparator() rune {
 	}
 
 	return sciNotan.decimalSeparator
+}
+
+
+// GetExponent - Returns the exponent element of the scientific
+// notation as a BigIntNum.
+// Example Scientific Notation
+// ===========================
+//
+//  2.652e+8
+//
+//  significand 		= '2.652'
+//  significand integer digits = '2'
+//	mantissa				= significand factional digits = '.652'
+//  exponent    		= '8'  (10^8)
+//	mantissaLength	= length of fractional digits displayed in scientific notation.
+//
+func (sciNotan *SciNotationNum) GetExponent() BigIntNum {
+
+	return sciNotan.exponent.CopyOut()
 }
 
 // GetExponentChar - Returns the current exponent char
@@ -144,6 +164,25 @@ func (sciNotan *SciNotationNum) GetSciNotationStr(mantissaLen uint) string {
 	outStr += sciNotan.exponent.GetNumStr()
 
 	return outStr
+}
+
+// GetSignificand - Returns the significand component of the
+// scientific notation as a BigIntNum.
+//
+// Example Scientific Notation
+// ===========================
+//
+//  2.652e+8
+//
+//  significand 		= '2.652'
+//  significand integer digits = '2'
+//	mantissa				= significand factional digits = '.652'
+//  exponent    		= '8'  (10^8)
+//	mantissaLength	= length of fractional digits displayed in scientific notation.
+//
+func (sciNotan *SciNotationNum) GetSignificand() BigIntNum {
+
+	return sciNotan.significand.CopyOut()
 }
 
 // New() - Creates and returns an empty SciNotationNum
@@ -266,7 +305,8 @@ func (sciNotan *SciNotationNum) SetExponentUsesLeadingPlus(useLeadingPlus bool) 
 //  2.652e+8
 //
 //  significand = '2.652'
-//	mantissa		= factional digits = '.652'
+//  significand integer digit = '2'
+//	mantissa		= significand factional digits = '.652'
 //  exponent    = '8'  (10^8)
 //
 func (sciNotan *SciNotationNum) SetMantissaLength(mantissaLen uint) {
@@ -304,7 +344,7 @@ func (sciNotan *SciNotationNum) SetMantissaLengthIfEmpty() {
 
 }
 
-// SetSciNotationElements - Sets the components of the current SciNotationNum
+// SetBigIntNumElements - Sets the components of the current SciNotationNum
 // instance based on two BigIntNum input parameters.
 //
 // Input Parameters
@@ -318,10 +358,10 @@ func (sciNotan *SciNotationNum) SetMantissaLengthIfEmpty() {
 //														If exponent is NOT an integer value and contains
 //														fractional digits, an error will be triggered.
 //
-func (sciNotan *SciNotationNum) SetSciNotationElements(
+func (sciNotan *SciNotationNum) SetBigIntNumElements(
 										significand, exponent BigIntNum) error {
 
-  ePrefix := "SciNotationNum.SetSciNotationElements() "
+  ePrefix := "SciNotationNum.SetBigIntNumElements() "
 
 	if exponent.GetPrecisionUint() > 0 {
 		return fmt.Errorf(ePrefix +
@@ -334,6 +374,54 @@ func (sciNotan *SciNotationNum) SetSciNotationElements(
   sciNotan.decimalSeparator = significand.GetDecimalSeparator()
   sciNotan.mantissaLength = sciNotan.significand.GetPrecisionUint()
   sciNotan.exponent.CopyIn(exponent)
+
+  return nil
+}
+// SetIntAryElements - Sets the components of the current SciNotationNum
+// instance based on two IntAry input parameters.
+//
+// Input Parameters
+// ================
+//
+// significand 	IntAry 			- In the example scientific notation '2.652e+8',
+// 														the significand is represented by '2.652'.
+//
+// exponent  		IntAry			- In the example '2.652e+8' the exponent component
+//														is represented by the integer value, '8'. Note:
+//														If exponent is NOT an integer value and contains
+//														fractional digits, an error will be triggered.
+//
+func (sciNotan *SciNotationNum) SetIntAryElements(
+										significand, exponent IntAry) error {
+
+  ePrefix := "SciNotationNum.SetBigIntNumElements() "
+
+	if exponent.GetPrecisionUint() > 0 {
+		return fmt.Errorf(ePrefix +
+			"Error: Input parameter 'exponent' contains fractional digits!")
+	}
+
+  sciNotan.SetExponentCharIfEmpty()
+
+  biNumSignificand, err := significand.GetBigIntNum()
+
+  if err != nil {
+  	return fmt.Errorf(ePrefix + "Error returned by significand.GetBigIntNum(). " +
+  		"Error='%v'", err.Error())
+	}
+
+  sciNotan.significand = biNumSignificand.CopyOut()
+  sciNotan.decimalSeparator = significand.GetDecimalSeparator()
+  sciNotan.mantissaLength = sciNotan.significand.GetPrecisionUint()
+
+  biNumExponent, err := exponent.GetBigIntNum()
+
+	if err != nil {
+		return fmt.Errorf(ePrefix + "Error returned by exponent.GetBigIntNum(). " +
+			"Error='%v'", err.Error())
+	}
+
+  sciNotan.exponent.CopyIn(biNumExponent)
 
   return nil
 }

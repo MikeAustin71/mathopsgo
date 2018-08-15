@@ -337,6 +337,26 @@ func (bNum *BigIntNum) DivideByTen(
 	return fracQuotient, err
 }
 
+// DivideByTenToPower - Divides the numerical value of the current BigIntNum
+// instance by 10 raised to the power of the input parameter, 'exponent'.
+//
+// 								bNum = bNum / (10^exponent)
+//
+// The original value of the current BigIntNum will be destroyed and overwritten
+// by this method.
+//
+// The final BigIntNum will retain the original numeric separators (decimal separator,
+// thousands separator and currency symbol).
+//
+func (bNum *BigIntNum) DivideByTenToPower(exponent uint) {
+
+	newPrecision := bNum.precision + exponent
+
+	result := BigIntNum{}.NewBigInt(bNum.bigInt, newPrecision)
+
+	bNum.CopyIn(result)
+}
+
 // DivideByThree - Divides the numerical value of the current BigIntNum by three ('3').
 // The result of this division operation is the 'fracQuotient' which is returned as a
 // BigIntNum type.
@@ -1779,12 +1799,110 @@ func (bNum *BigIntNum) GetSignedBigInt() *big.Int{
 // GetSciNotationNumber - Converts the numeric value of the current
 // BigIntNum instance into scientific notation and returns this value
 // as an instance of type SciNotationNum.
-func (bNum *BigIntNum) GetSciNotationNumber() SciNotationNum {
+//
+// Input Parameter
+// ===============
+//
+// mantissaLen uint	- Specifies the length of the mantissa in the returned
+//										scientific notation string. If the value of 'mantissaLen'
+//										is less than two ('2'), this method will automatically set
+//										the 'mantissaLen' to a default value of two ('2').
+//
+// 										Example Scientific Notation:
+// 										----------------------------
+//
+//  										scientific notation string: '2.652e+8'
+//
+//  										significand = '2.652'
+//  										significand integer digit = '2'
+//											mantissa		= significand factional digits = '.652'
+//  										exponent    = '8'  (10^8)
+//
+func (bNum *BigIntNum) GetSciNotationNumber(mantissaLen uint) (SciNotationNum, error) {
+
+	ePrefix := "BigIntNum.GetSciNotationNumber() "
 
 	sciNotationNum := SciNotationNum{}.New()
 
+	if mantissaLen < 2 {
+		mantissaLen = 2
+	}
+
 	if bNum.IsZero() {
-		sciNotationNum.SetSciNotationElements(bNum.CopyOut(), BigIntNum{}.NewZero(0) )
+		sciNotationNum.SetBigIntNumElements(bNum.CopyOut(), BigIntNum{}.NewZero(0) )
+		return sciNotationNum, nil
+	}
+
+	bigIntMaxUint32 := big.NewInt(0).SetUint64(math.MaxUint32)
+
+	bINumIntPart := bNum.GetIntegerPart()
+
+	if !bINumIntPart.IsZero() {
+
+		magnitudeBigInt, err := BigIntMath{}.GetMagnitude(bINumIntPart.bigInt)
+
+		if err != nil {
+			return SciNotationNum{}.New(),
+			fmt.Errorf(ePrefix +
+				"Error returned by BigIntMath{}.GetMagnitude(bINumIntPart.bigInt) " +
+				"Error='%v'", err.Error())
+		}
+
+		if magnitudeBigInt.Cmp(bigIntMaxUint32) == 1 {
+			return SciNotationNum{}.New(),
+			errors.New(ePrefix + "Integer Magnitude greater than Max Uint32")
+		}
+
+		uintMagnitude := uint(magnitudeBigInt.Uint64())
+
+		newBINum := BigIntNum{}.NewBigInt(bNum.bigInt, bNum.precision + uintMagnitude)
+
+		sciNotationNum.SetBigIntNumElements(
+				newBINum, BigIntNum{}.NewBigInt(magnitudeBigInt, 0) )
+
+	} else {
+		// Must be bINumFracPart > 0
+		magnitudeBigInt, err := BigIntMath{}.GetMagnitude(bNum.bigInt)
+
+		if err != nil {
+			return SciNotationNum{}.New(),
+			fmt.Errorf(ePrefix +
+				"Error returned by BigIntMath{}.GetMagnitude(bNum.bigInt). " +
+				"Error='%v'", err.Error())
+		}
+
+		if magnitudeBigInt.Cmp(bigIntMaxUint32) == 1 {
+			return SciNotationNum{}.New(),
+				errors.New(ePrefix + "Fractional Magnitude greater than Max Uint32")
+		}
+
+		uintMagnitude := uint(magnitudeBigInt.Uint64())
+
+		bINumFracPart := BigIntNum{}.NewBigInt(bNum.bigInt, uintMagnitude)
+		precisionFrac := int64(uintMagnitude) - int64(bNum.precision)
+
+		bINumScale := BigIntNum{}.NewInt64Exponent(precisionFrac,0)
+
+		sciNotationNum.SetBigIntNumElements(bINumFracPart, bINumScale )
+	}
+
+	sciNotationNum.SetMantissaLength(mantissaLen)
+
+	return sciNotationNum, nil
+}
+
+
+/*
+func (bNum *BigIntNum) GetSciNotationNumber(mantissaLen uint) SciNotationNum {
+
+	sciNotationNum := SciNotationNum{}.New()
+
+	if mantissaLen < 2 {
+		mantissaLen = 2
+	}
+
+	if bNum.IsZero() {
+		sciNotationNum.SetBigIntNumElements(bNum.CopyOut(), BigIntNum{}.NewZero(0) )
 		return sciNotationNum
 	}
 
@@ -1802,7 +1920,7 @@ func (bNum *BigIntNum) GetSciNotationNumber() SciNotationNum {
 
 		newBINum, _ := BigIntMathDivide{}.BigIntNumFracQuotient(bNum.CopyOut(), bINumScaleVal, bNum.GetPrecisionUint())
 
-		sciNotationNum.SetSciNotationElements(newBINum, BigIntNum{}.NewBigInt(magnitudeInt, 0) )
+		sciNotationNum.SetBigIntNumElements(newBINum, BigIntNum{}.NewBigInt(magnitudeInt, 0) )
 
 	} else {
 		// Must be bINumFracPart > 0
@@ -1813,24 +1931,42 @@ func (bNum *BigIntNum) GetSciNotationNumber() SciNotationNum {
 
 		bINumScale := BigIntNum{}.NewBigInt(big.NewInt(0).Sub(magnitudeFrac, precisionFrac),0)
 
-		sciNotationNum.SetSciNotationElements(newBINum, bINumScale )
+		sciNotationNum.SetBigIntNumElements(newBINum, bINumScale )
 	}
 
 	return sciNotationNum
 }
+*/
 
 // GetSciNotationStr - Returns a string expressing the current BigIntNum
 // numerical value as scientific notation.
 //
-// Input parameter 'mantissaLen' is used to express the number of
-// fractional digits displayed in the returned scientific notation
-// string. If 'mantissaLen' is less than '2' (two), 'mantissaLen'
-// will be automatically set to '2' (two).
+// Input Parameter
+// ===============
+//
+// mantissaLen uint	- Specifies the length of the mantissa in the returned
+//										scientific notation string. If the value of 'mantissaLen'
+//										is less than two ('2'), this method will automatically set
+//										the 'mantissaLen' to a default value of two ('2').
+//
+// 										Example Scientific Notation:
+// 										----------------------------
+//
+//  										scientific notation string: '2.652e+8'
+//
+//  										significand = '2.652'
+//  										significand integer digit = '2'
+//											mantissa		= significand factional digits = '.652'
+//  										exponent    = '8'  (10^8)
 //
 func (bNum *BigIntNum) GetSciNotationStr(mantissaLen uint) string {
 
 	outStr := ""
 	exponentChar := "e"
+
+	if mantissaLen < 2 {
+		mantissaLen = 2
+	}
 
 	if bNum.IsZero() {
 		zeroNum := BigIntNum{}.NewZero(mantissaLen)
@@ -2160,6 +2296,45 @@ func (bNum *BigIntNum) MultiplyByFive() BigIntNum {
 func (bNum *BigIntNum) MultiplyByTen() BigIntNum {
 
 	return BigIntMathMultiply{}.MultiplyBigIntNumByTen(bNum.CopyOut())
+}
+
+// MultiplyByTenToPower - Multiplies the numerical value of the current BigIntNum
+// instance times ten (10). The product is returned as the new value for the
+// current BigIntNum. The original value of the BigIntNum instance will be
+// overwritten and destroyed.
+//
+//										bNum = bNum X 10^exponent
+//
+// The BigIntNum instance returned by this method will contain numeric
+// separators (decimal separator, thousands separator and currency
+// symbol) copied from the original BigIntNum instance.
+//
+func (bNum *BigIntNum) MultiplyByTenToPower(exponent uint) {
+
+
+	if bNum.precision >= exponent {
+		bNum.CopyIn(BigIntNum{}.NewBigInt(bNum.bigInt, bNum.precision - exponent))
+
+	} else {
+		// exponent > bNum.precision
+		scaleVal :=
+			big.NewInt(0).Exp(big.NewInt(10), big.NewInt(int64(exponent - bNum.precision)), nil)
+
+		newVal := big.NewInt(0).Mul(bNum.bigInt, scaleVal)
+
+		bNum.CopyIn(BigIntNum{}.NewBigInt(newVal, 0))
+	}
+
+	return
+	/*
+	maxPrecision := bNum.precision + exponent + 3
+
+	result :=
+		BigIntMathMultiply{}.MultiplyBigIntNumByTenToIntPower(
+			bNum.CopyOut(), uint64(exponent), maxPrecision)
+
+	bNum.CopyIn(result)
+	*/
 }
 
 // MultiplyByThree - Multiplies the numerical value of the current BigIntNum
@@ -2948,6 +3123,29 @@ func (bNum BigIntNum) NewZero(precision uint) BigIntNum {
 
 }
 
+// NewUintExponent - This method returns a new BigIntNum instance in which
+// the numeric value is set using an unsigned integer multiplied by 10 raised
+// to the power of the input parameter, 'exponent'.
+//
+// 				numeric value = unsigned integer X 10^exponent
+//
+// Examples:
+//
+//	biNum := BigIntNum{}.NewInt32Exponent(123456, -3) = "123.456" precision = 3
+//
+//	biNum := BigIntNum{}.NewInt32Exponent(123456, 3) = "123456.000" precision = 3
+//
+func (bNum BigIntNum) NewUintExponent(base uint, exponent int) BigIntNum {
+
+	baseBInt := big.NewInt(int64(base))
+
+	b2 := BigIntNum{}.New()
+
+	b2.SetBigIntExponent(baseBInt, exponent)
+
+	return b2
+}
+
 // Reset - Resets the current BigIntNum to a new
 // valid BigIntNum using the BigIntNum components
 // BigIntNum.bigInt and BigIntNum.precision. This
@@ -3126,10 +3324,16 @@ func (bNum *BigIntNum) SetBigInt(bigI *big.Int, precision uint) {
 // 				numeric value = integer X 10^exponent
 //
 // If exponent is less than +1, precision is set equal to exponent and
-// bigI is unchanged.
+// bigI is unchanged. Example:
+//
+//    bigI				exponent			BigIntNum Result
+//	 123456		 		  -3							123.456
 //
 // If exponent is greater than 0, bigI is multiplied by 10 raised to the
 // power of exponent and precision is set equal to zero.
+//
+//    bigI				exponent			BigIntNum Result
+//	 123456		 		   +3							123456.000
 //
 func (bNum *BigIntNum) SetBigIntExponent(bigI *big.Int, exponent int) {
 
@@ -3147,7 +3351,8 @@ func (bNum *BigIntNum) SetBigIntExponent(bigI *big.Int, exponent int) {
 	scaleValue := big.NewInt(0).Exp(big10, scale, nil)
 	newBigI := big.NewInt(0).Mul(bigI, scaleValue)
 
-	bNum.SetBigInt(newBigI, uint(0))
+	bNum.SetBigInt(newBigI, uint(exponent))
+
 	return
 }
 
