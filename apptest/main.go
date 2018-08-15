@@ -7,28 +7,28 @@ import (
 
 func main() {
 
-	numStr := "345123"
+	numStr := "0.000003451234"
 	mantissaLen := uint(2)
-	expectedStr := "3.45e+5"
+	expectedStr := "3.45e-6"
 
-	bINum, _ := mathops.BigIntNum{}.NewNumStr(numStr)
+	iaNum, _ := mathops.IntAry{}.NewNumStr(numStr)
 
-	sciNotNum, err := bINum.GetSciNotationNumber(mantissaLen)
+	sciNotNum, err := iaNum.GetSciNotationNumber(mantissaLen)
 
 	if err != nil {
-		fmt.Printf("Error returned by bINum.GetSciNotationNumber(mantissaLen). " +
+		fmt.Printf("Error returned by iaNum.GetSciNotationNumber(mantissaLen). " +
 			"Error='%v'\n", err.Error())
 		return
 	}
 
 	actualSciNotStr := sciNotNum.GetNumStr()
-	actualSignificand := sciNotNum.GetSignificand()
+	//actualSignificand := sciNotNum.GetSignificand()
 	actualExponent := sciNotNum.GetExponent()
 
-	fmt.Println("     Original bINum: ", bINum.GetNumStr())
+	//fmt.Println("     Original iaNum: ", iaNum.GetNumStr())
 	fmt.Println("           Expected: ", expectedStr)
 	fmt.Println("        Sci Not Num: ", actualSciNotStr)
-	fmt.Println("Sci Not Significand: ", actualSignificand.GetNumStr())
+	//fmt.Println("Sci Not Significand: ", actualSignificand.GetNumStr())
 	fmt.Println("Sci Not    Exponent: ", actualExponent.GetNumStr())
 
 	/*
@@ -57,7 +57,7 @@ func main() {
 			sciNotStr := bIBigNum.GetSciNotationStr(maxPrecision)
 
 			fmt.Println("                 nStr= ", nStr)
-			fmt.Println("    bINum.GetNumStr()= ", actualNumStr)
+			fmt.Println("    iaNum.GetNumStr()= ", actualNumStr)
 			fmt.Println(" Scientific Notation = ", sciNotStr)
 			fmt.Println("Expected Notation Str= ", expectedStr)
 			*/

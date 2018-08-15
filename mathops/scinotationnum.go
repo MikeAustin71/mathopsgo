@@ -114,7 +114,9 @@ func (sciNotan *SciNotationNum) GetNumStr() string {
 
 	sciNotan.SetMantissaLengthIfEmpty()
 
-	return sciNotan.GetSciNotationStr(sciNotan.mantissaLength)
+	result, _ := sciNotan.GetSciNotationStr(sciNotan.mantissaLength)
+
+	return result
 }
 
 
@@ -128,7 +130,7 @@ func (sciNotan *SciNotationNum) GetNumStr() string {
 // ---------------
 // 2.652e+8
 //
-func (sciNotan *SciNotationNum) GetSciNotationStr(mantissaLen uint) string {
+func (sciNotan *SciNotationNum) GetSciNotationStr(mantissaLen uint) (string, error) {
 
 	outStr := ""
 
@@ -163,7 +165,7 @@ func (sciNotan *SciNotationNum) GetSciNotationStr(mantissaLen uint) string {
 
 	outStr += sciNotan.exponent.GetNumStr()
 
-	return outStr
+	return outStr, nil
 }
 
 // GetSignificand - Returns the significand component of the

@@ -1341,6 +1341,10 @@ func (ia *IntAry) CopyIn(iAry2 *IntAry, copyBackUp bool) {
 	}
 }
 
+// CopyOut - Makes a deep copy of the current IntAry
+// instance with backup and returns it as a new IntAry
+// object.
+//
 func (ia *IntAry) CopyOut() IntAry {
 	ia.SetInternalFlags()
 	iAry2 := IntAry{}.New()
@@ -1366,6 +1370,73 @@ func (ia *IntAry) CopyOut() IntAry {
 	iAry2.currencySymbol = ia.currencySymbol
 
 	iAry2.BackUp.CopyIn(&ia.BackUp)
+
+	return iAry2
+}
+
+// CopyOut - Makes a deep copy of the current IntAry
+// instance with NO backup. The method then returns
+// the deep copy as a new IntAry object.
+//
+func (ia *IntAry) CopyOutNoBackup() IntAry {
+	ia.SetInternalFlags()
+	iAry2 := IntAry{}.New()
+
+	iAry2.intAry = make([]uint8, ia.intAryLen)
+
+	for i := 0; i < ia.intAryLen; i++ {
+		iAry2.intAry[i] = ia.intAry[i]
+	}
+
+	iAry2.intAryLen = ia.intAryLen
+	iAry2.integerLen = ia.integerLen
+	iAry2.significantIntegerLen = ia.significantIntegerLen
+	iAry2.significantFractionLen = ia.significantFractionLen
+	iAry2.firstDigitIdx = ia.firstDigitIdx
+	iAry2.lastDigitIdx = ia.lastDigitIdx
+	iAry2.isZeroValue = ia.isZeroValue
+	iAry2.isIntegerZeroValue = ia.isIntegerZeroValue
+	iAry2.precision = ia.precision
+	iAry2.signVal = ia.signVal
+	iAry2.decimalSeparator = ia.decimalSeparator
+	iAry2.thousandsSeparator = ia.thousandsSeparator
+	iAry2.currencySymbol = ia.currencySymbol
+
+	iAry2.BackUp = BackUpIntAry{}.New()
+
+	return iAry2
+}
+// CopyOut - Makes a deep copy of the current IntAry
+// instance with NO backup. This method uses input
+// parameter 'digitsToCopy' to copy a specified
+// number of digits to the new copy. No backup
+// of the original IntAry is returned in this copy.
+//
+//
+func (ia *IntAry) CopyOutDigits(digitsToCopy int) IntAry {
+
+	ia.SetInternalFlags()
+	iAry2 := IntAry{}.New()
+
+	iAry2.intAry = make([]uint8, digitsToCopy)
+
+	for i := 0; i < digitsToCopy; i++ {
+		iAry2.intAry[i] = ia.intAry[i]
+	}
+
+	iAry2.intAryLen = digitsToCopy
+	if ia.integerLen < digitsToCopy {
+		iAry2.precision = digitsToCopy - ia.integerLen
+	} else {
+		iAry2.precision = 0
+	}
+
+	iAry2.signVal = ia.signVal
+	iAry2.decimalSeparator = ia.decimalSeparator
+	iAry2.thousandsSeparator = ia.thousandsSeparator
+	iAry2.currencySymbol = ia.currencySymbol
+	iAry2.BackUp = BackUpIntAry{}.New()
+	iAry2.SetInternalFlags()
 
 	return iAry2
 }
@@ -2617,6 +2688,10 @@ func (ia *IntAry) GetScaleFactor() (*big.Int, error) {
 //											mantissa		= significand factional digits = '.652'
 //  										exponent    = '8'  (10^8)
 //
+//
+// Note the maximum number of digits which will be retained in the significand is
+// 50,000.
+//
 func (ia *IntAry) GetSciNotationNumber(mantissaLen uint) (SciNotationNum, error) {
 
 	ePrefix := "IntAry.GetSciNotationNumber() "
@@ -2633,9 +2708,10 @@ func (ia *IntAry) GetSciNotationNumber(mantissaLen uint) (SciNotationNum, error)
 		return SciNotationNum{}.New(), err
 	}
 
-	if ia.IsZero() {
+	if ia.isZeroValue {
 
-		err = sciNotationNum.SetBigIntNumElements(BigIntNum{}.NewZero(2), BigIntNum{}.NewZero(0) )
+		err = sciNotationNum.SetBigIntNumElements(
+						BigIntNum{}.NewZero(mantissaLen), BigIntNum{}.NewZero(0) )
 
 		if err != nil {
 			return SciNotationNum{}.New(),
@@ -2647,17 +2723,7 @@ func (ia *IntAry) GetSciNotationNumber(mantissaLen uint) (SciNotationNum, error)
 		return sciNotationNum, nil
 	}
 
-	iaIntPart, err := ia.GetIntegerDigits()
-
-	if err != nil {
-		return SciNotationNum{}.New(),
-			fmt.Errorf(ePrefix +
-				"Error returned by ia.GetIntegerDigits(). "+
-				"Error='%v'", err.Error())
-	}
-
-
-	if !iaIntPart.IsZero() {
+	if !ia.isIntegerZeroValue {
 
 		magnitudeInt, _ := ia.GetMagnitude()
 
@@ -2667,6 +2733,10 @@ func (ia *IntAry) GetSciNotationNumber(mantissaLen uint) (SciNotationNum, error)
 
 		iaMagnitude, _ := IntAry{}.NewInt(magnitudeInt, 0)
 
+		if ia.precision > 50000 {
+			iaNew.SetPrecision(50000, true)
+		}
+
 		sciNotationNum.SetIntAryElements(iaNew, iaMagnitude )
 
 	} else {
@@ -2674,21 +2744,46 @@ func (ia *IntAry) GetSciNotationNumber(mantissaLen uint) (SciNotationNum, error)
 		// Example: 0.256
 
 		iaFracPart, _ := ia.GetFractionalDigits()
-		precisionFrac := uint(iaFracPart.precision)
-		iaFracPart.MultiplyByTenToPower(precisionFrac)
-		iaFracPart.SetPrecision(0, false)
 
-		// Must be iaFracPart > 0
-		intMagnitudeFrac := int(precisionFrac) - 1
+		iaFracPart.MultiplyByTenToPower(uint(iaFracPart.precision))
+
+		iaFracPart.OptimizeIntArrayLen(false)
+
+		intMagnitudeFrac, err := iaFracPart.GetMagnitude()
+
+		if err != nil {
+			return SciNotationNum{}.New(),
+				fmt.Errorf(ePrefix +
+					"Error returned by IntAry{}.NewInt(intMagnitudeFrac, 0). "+
+					"Error='%v'", err.Error())
+		}
 
 		iaFracPart.DivideByTenToPower(uint(intMagnitudeFrac))
 
-		iaFracPart.SetPrecision(int(mantissaLen), true)
+		intMagnitudeFrac = intMagnitudeFrac - ia.precision
 
-		iaMagnitude, _ := IntAry{}.NewInt(intMagnitudeFrac, 0)
+		iaMagnitude, err := IntAry{}.NewInt(intMagnitudeFrac, 0)
 
-		sciNotationNum.SetIntAryElements(iaFracPart, iaMagnitude )
+		if err != nil {
+			return SciNotationNum{}.New(),
+				fmt.Errorf(ePrefix +
+					"Error returned by IntAry{}.NewInt(intMagnitudeFrac, 0). "+
+					"Error='%v'", err.Error())
+		}
+
+		err = sciNotationNum.SetIntAryElements(iaFracPart, iaMagnitude )
+
+		if err != nil {
+			return SciNotationNum{}.New(),
+				fmt.Errorf(ePrefix +
+					"Error returned by sciNotationNum.SetIntAryElements(" +
+					"iaFracPart, iaMagnitude ). Error='%v'",
+					err.Error())
+		}
+
 	}
+
+	sciNotationNum.SetMantissaLength(mantissaLen)
 
 	return sciNotationNum, nil
 }
@@ -2718,15 +2813,30 @@ func (ia *IntAry) GetSciNotationNumber(mantissaLen uint) (SciNotationNum, error)
 //											mantissa		= significand factional digits = '.652'
 //  										exponent    = '8'  (10^8)
 //
-func (ia *IntAry) GetSciNotationStr(mantissaLen uint) string {
+func (ia *IntAry) GetSciNotationStr(mantissaLen uint) (string, error) {
+
+	ePrefix := "IntAry.GetSciNotationStr() "
 
 	if mantissaLen < 2 {
 		mantissaLen = 2
 	}
 
-	sciNotnNum, _ := ia.GetSciNotationNumber(mantissaLen)
+	sciNotnNum, err := ia.GetSciNotationNumber(mantissaLen)
 
-	return sciNotnNum.GetSciNotationStr(mantissaLen)
+	if err != nil {
+		return "",
+			fmt.Errorf(ePrefix + "Error returned by ia.GetSciNotationNumber(mantissaLen) ")
+	}
+
+	result, err := sciNotnNum.GetSciNotationStr(mantissaLen)
+
+	if err != nil {
+		return "",
+			fmt.Errorf(ePrefix + "Error returned by sciNotnNum.GetSciNotationStr(mantissaLen) ")
+	}
+
+
+	return result, nil
 }
 
 // GetSign - returns the sign of the current
