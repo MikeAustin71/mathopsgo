@@ -35,6 +35,8 @@ type SciNotationNum struct {
 	  															//  '2.652e+8'
 }
 
+
+
 // GetDecimalSeparator - returns the current decimal separator
 // character as a string.
 //

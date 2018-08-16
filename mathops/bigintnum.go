@@ -2361,7 +2361,7 @@ func (bNum BigIntNum) NewBigInt(bigI *big.Int, precision uint) BigIntNum {
 // 			BigIntNum{}.NewBigIntExponent(big.NewInt(int64(123456)), -3) = "123.456"  precision = 3
 //
 //	biNum :=
-// 			BigIntNum{}.NewBigIntExponent(big.NewInt(int64(123456)), 3) = "123456000" precision = 0
+// 			BigIntNum{}.NewBigIntExponent(big.NewInt(int64(123456)), 3) = "123456.000" precision = 3
 //
 func (bNum BigIntNum) NewBigIntExponent(bigI *big.Int, exponent int) BigIntNum {
 

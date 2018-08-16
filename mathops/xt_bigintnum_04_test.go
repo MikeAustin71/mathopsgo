@@ -368,7 +368,7 @@ func TestBigIntNum_NewIntExponent_01(t *testing.T) {
 
 	numInt := 1234
 
-	expectedNumStr := "1234000"
+	expectedNumStr := "1234.000"
 
 	bINum := BigIntNum{}.NewIntExponent(numInt, 3)
 
@@ -419,7 +419,7 @@ func TestBigIntNum_NewInt32Exponent_01(t *testing.T) {
 
 	numInt := int32(1234)
 
-	expectedNumStr := "1234000"
+	expectedNumStr := "1234.000"
 
 	bINum := BigIntNum{}.NewInt32Exponent(numInt, 3)
 
@@ -470,7 +470,7 @@ func TestBigIntNum_NewInt64Exponent_01(t *testing.T) {
 
 	numInt := int64(1234)
 
-	expectedNumStr := "1234000"
+	expectedNumStr := "1234.000"
 
 	bINum := BigIntNum{}.NewInt64Exponent(numInt, 3)
 
@@ -1026,8 +1026,8 @@ func TestBigIntNum_NewBigIntExponent_01(t *testing.T) {
 
 	n:= 123456
 	exponent := 3
-	expectedPrecision := uint(0)
-	expectedNumStr := "123456000"
+	expectedPrecision := uint(3)
+	expectedNumStr := "123456.000"
 	bExpected := big.NewInt(int64(123456000))
 	expectedSignVal := 1
 
@@ -1102,8 +1102,8 @@ func TestBigIntNum_NewBigIntExponent_03(t *testing.T) {
 
 	n:= -123456
 	exponent := 3
-	expectedPrecision := uint(0)
-	expectedNumStr := "-123456000"
+	expectedPrecision := uint(3)
+	expectedNumStr := "-123456.000"
 	bExpected := big.NewInt(int64(-123456000))
 	expectedSignVal := -1
 

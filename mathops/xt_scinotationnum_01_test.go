@@ -8,6 +8,8 @@ func TestSciNotationNum_SetNumStr_01(t *testing.T) {
 
 	expectedStr := "2.652e+4"
 
+	mantissaLen := uint(3)
+
 	sciNot1 := SciNotationNum{}.New()
 
 	err := sciNot1.SetNumStr(numStr)
@@ -16,7 +18,12 @@ func TestSciNotationNum_SetNumStr_01(t *testing.T) {
 		t.Errorf("Error returned by sciNot1.SetNumStr(numStr). Error='%v'", err.Error())
 	}
 
-	resultStr := sciNot1.GetSciNotationStr()
+	resultStr, err := sciNot1.GetSciNotationStr(mantissaLen)
+
+	if err != nil {
+		t.Errorf("Error returned by sciNot1.GetSciNotationStr(mantissaLen). " +
+			"Error='%v'", err.Error())
+	}
 
 	if expectedStr != resultStr {
 		t.Errorf("Error: Expected result='%v'. Instead, result='%v'",
