@@ -5,6 +5,76 @@ import (
 	"math/big"
 )
 
+func TestBigIntNum_GetActualNumberOfDigits_01(t *testing.T) {
+
+	nStr := "123.456"
+	expectedDigits := 6
+	shouldBeZeroVal := false
+
+	bINum, err := BigIntNum{}.NewNumStr(nStr)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(nStr). " +
+			" nStr='%v'  Error='%v'",
+			nStr, err.Error())
+	}
+
+	numOfDigits, isZeroVal, err := bINum.GetActualNumberOfDigits()
+
+	if err != nil {
+		t.Errorf("Error returned by bINum.GetActualNumberOfDigits(). " +
+			"Error='%v'", err.Error())
+	}
+
+	if shouldBeZeroVal != isZeroVal {
+		t.Errorf("Error: Expected Zero Val flag='%v'. Instead Zero Val flag='%v'. ",
+			shouldBeZeroVal, isZeroVal)
+	}
+
+	intNumOfDigits := int(numOfDigits.Int64())
+
+	if expectedDigits != intNumOfDigits {
+		t.Errorf("Error: Expected Number of Digits='%v'. Instead Number of Digits='%v'. ",
+			expectedDigits, intNumOfDigits)
+	}
+
+}
+
+func TestBigIntNum_GetActualNumberOfDigits_02(t *testing.T) {
+
+	nStr := "0.000"
+	expectedDigits := 1
+	shouldBeZeroVal := true
+
+	bINum, err := BigIntNum{}.NewNumStr(nStr)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(nStr). " +
+			" nStr='%v'  Error='%v'",
+			nStr, err.Error())
+	}
+
+	numOfDigits, isZeroVal, err := bINum.GetActualNumberOfDigits()
+
+	if err != nil {
+		t.Errorf("Error returned by bINum.GetActualNumberOfDigits(). " +
+			"Error='%v'", err.Error())
+	}
+
+	if shouldBeZeroVal != isZeroVal {
+		t.Errorf("Error: Expected Zero Val flag='%v'. Instead Zero Val flag='%v'. ",
+			shouldBeZeroVal, isZeroVal)
+	}
+
+	intNumOfDigits := int(numOfDigits.Int64())
+
+	if expectedDigits != intNumOfDigits {
+		t.Errorf("Error: Expected Number of Digits='%v'. Instead Number of Digits='%v'. ",
+			expectedDigits, intNumOfDigits)
+	}
+
+}
+
 func TestBigIntNum_GetFractionalPart_01(t *testing.T) {
 
 	nStr := "123.456"

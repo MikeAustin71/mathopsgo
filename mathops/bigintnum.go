@@ -1597,10 +1597,10 @@ func (bNum *BigIntNum) GetInverse(maxPrecision uint) (BigIntNum, error) {
 //          5                               1
 //
 // Note: The returned integer number will always be a positive number.
+//       Also, GetActualNumberOfDigits() will be faster for larger
+// 			 numbers.
 //
 func (bNum *BigIntNum) GetNumberOfDigits() int {
-
-	outRunes := make([]rune, 0, 300)
 
 	scratchNum := big.NewInt(0).Set(bNum.absBigInt)
 	baseZero := big.NewInt(0)
@@ -1613,16 +1613,11 @@ func (bNum *BigIntNum) GetNumberOfDigits() int {
 		return digitCnt
 	}
 
-	modulo := big.NewInt(0)
 	baseTen := big.NewInt(10)
 
 	for scratchNum.Cmp(baseZero) == 1 {
-
-		modX := big.NewInt(0)
-		scratchNum, modulo = big.NewInt(0).QuoRem(scratchNum, baseTen, modX)
-		outRunes = append(outRunes, rune(modulo.Int64() + int64(48)))
+		scratchNum = big.NewInt(0).Quo(scratchNum, baseTen)
 		digitCnt++
-
 	}
 
 	return digitCnt
