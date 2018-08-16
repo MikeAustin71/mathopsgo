@@ -3,7 +3,7 @@ package mathops
 import (
 	"fmt"
 	"math/big"
-			"errors"
+	"errors"
 )
 
 /*
@@ -964,6 +964,90 @@ func (dec *Decimal) GetRelevantPrecision() uint {
 func (dec *Decimal) GetScaleVal() (*big.Int, error) {
 
 	return dec.bigINum.GetScaleFactor(), nil
+}
+
+// GetSciNotationNumber - Converts the numeric value of the current
+// Decimal instance into scientific notation and returns this value
+// as an instance of type SciNotationNum.
+//
+// Input Parameter
+// ===============
+//
+// mantissaLen uint	- Specifies the length of the mantissa in the returned
+//										scientific notation string. If the value of 'mantissaLen'
+//										is less than two ('2'), this method will automatically set
+//										the 'mantissaLen' to a default value of two ('2').
+//
+// 										Example Scientific Notation:
+// 										----------------------------
+//
+//  										scientific notation string: '2.652e+8'
+//
+//  										significand = '2.652'
+//  										significand integer digit = '2'
+//											mantissa		= significand factional digits = '.652'
+//  										exponent    = '8'  (10^8)
+//
+func (dec *Decimal) GetSciNotationNumber(mantissaLen uint) (SciNotationNum, error) {
+
+	sciNotationNum, err := dec.bigINum.GetSciNotationNumber(mantissaLen)
+
+	if err != nil {
+		ePrefix := "Decimal.GetSciNotationNumber() "
+		return SciNotationNum{}.New(),
+			fmt.Errorf(ePrefix +
+				"Error returned by dec.bigINum.GetSciNotationNumber(mantissaLen). " +
+				"Error='%v' ", err.Error())
+	}
+
+
+	return sciNotationNum, nil
+}
+
+// GetSciNotationStr - Returns a string expressing the current Decimal
+// numerical value as scientific notation.
+//
+// Input Parameter
+// ===============
+//
+// mantissaLen uint	- Specifies the length of the mantissa in the returned
+//										scientific notation string. If the value of 'mantissaLen'
+//										is less than two ('2'), this method will automatically set
+//										the 'mantissaLen' to a default value of two ('2').
+//
+// 										Example Scientific Notation:
+// 										----------------------------
+//
+//  										scientific notation string: '2.652e+8'
+//
+//  										significand = '2.652'
+//  										significand integer digit = '2'
+//											mantissa		= significand factional digits = '.652'
+//  										exponent    = '8'  (10^8)
+//
+func (dec *Decimal) GetSciNotationStr(mantissaLen uint) (string, error) {
+
+	ePrefix := "BigIntNum.GetSciNotationStr() "
+
+	sciNotn, err := dec.bigINum.GetSciNotationNumber(mantissaLen)
+
+	if err != nil {
+		return "",
+			fmt.Errorf(ePrefix +
+				"Error returned by dec.bigINum.GetSciNotationNumber(mantissaLen). " +
+				"Error='%v'", err.Error())
+	}
+
+	result, err := sciNotn.GetSciNotationStr(mantissaLen)
+
+	if err != nil {
+		return "",
+			fmt.Errorf(ePrefix +
+				"Error returned by sciNotn.GetSciNotationStr(mantissaLen). " +
+				"Error='%v'", err.Error())
+	}
+
+	return result, nil
 }
 
 // GetSignedAllDigitsStr - Returns the Decimal's internal

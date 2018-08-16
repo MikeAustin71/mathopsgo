@@ -1915,10 +1915,6 @@ func (bNum *BigIntNum) GetSciNotationStr(mantissaLen uint) (string, error) {
 
 	ePrefix := "BigIntNum.GetSciNotationStr() "
 
-	if mantissaLen < 2 {
-		mantissaLen = 2
-	}
-
 	sciNotn, err := bNum.GetSciNotationNumber(mantissaLen)
 
 	if err != nil {
