@@ -161,6 +161,120 @@ func TestBigIntNum_Multiply_05(t *testing.T) {
 
 }
 
+func TestBigIntNum_MultiplyByTenToPower_01(t *testing.T) {
+	numStr := "85.621"
+	exponent := uint(3)
+	expectedStr := "85621"
+
+	bINum, err := BigIntNum{}.NewNumStr(numStr)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(numStr). "+
+			"Error='%v'", err.Error())
+	}
+
+	bINum.MultiplyByTenToPower(exponent)
+
+	actualStr := bINum.GetNumStr()
+
+	if expectedStr != actualStr {
+		t.Errorf("Error: Expected result='%v'.  Instead, result='%v'",
+			expectedStr, actualStr)
+	}
+
+}
+
+func TestBigIntNum_MultiplyByTenToPower_02(t *testing.T) {
+	numStr := "85.621"
+	exponent := uint(5)
+	expectedStr := "8562100"
+
+	bINum, err := BigIntNum{}.NewNumStr(numStr)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(numStr). "+
+			"Error='%v'", err.Error())
+	}
+
+	bINum.MultiplyByTenToPower(exponent)
+
+	actualStr := bINum.GetNumStr()
+
+	if expectedStr != actualStr {
+		t.Errorf("Error: Expected result='%v'.  Instead, result='%v'",
+			expectedStr, actualStr)
+	}
+
+}
+
+func TestBigIntNum_MultiplyByTenToPower_03(t *testing.T) {
+	numStr := "-85.621"
+	exponent := uint(3)
+	expectedStr := "-85621"
+
+	bINum, err := BigIntNum{}.NewNumStr(numStr)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(numStr). "+
+			"Error='%v'", err.Error())
+	}
+
+	bINum.MultiplyByTenToPower(exponent)
+
+	actualStr := bINum.GetNumStr()
+
+	if expectedStr != actualStr {
+		t.Errorf("Error: Expected result='%v'.  Instead, result='%v'",
+			expectedStr, actualStr)
+	}
+
+}
+
+func TestBigIntNum_MultiplyByTenToPower_04(t *testing.T) {
+	numStr := "-85.621"
+	exponent := uint(5)
+	expectedStr := "-8562100"
+
+	bINum, err := BigIntNum{}.NewNumStr(numStr)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(numStr). "+
+			"Error='%v'", err.Error())
+	}
+
+	bINum.MultiplyByTenToPower(exponent)
+
+	actualStr := bINum.GetNumStr()
+
+	if expectedStr != actualStr {
+		t.Errorf("Error: Expected result='%v'.  Instead, result='%v'",
+			expectedStr, actualStr)
+	}
+
+}
+
+func TestBigIntNum_MultiplyByTenToPower_06(t *testing.T) {
+	numStr := "-85.621"
+	exponent := uint(0)
+	expectedStr := "-85.621"
+
+	bINum, err := BigIntNum{}.NewNumStr(numStr)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(numStr). "+
+			"Error='%v'", err.Error())
+	}
+
+	bINum.MultiplyByTenToPower(exponent)
+
+	actualStr := bINum.GetNumStr()
+
+	if expectedStr != actualStr {
+		t.Errorf("Error: Expected result='%v'.  Instead, result='%v'",
+			expectedStr, actualStr)
+	}
+
+}
 
 func TestBigIntNum_NewBigFloat_01(t *testing.T) {
 

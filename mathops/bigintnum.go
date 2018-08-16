@@ -2221,8 +2221,8 @@ func (bNum *BigIntNum) MultiplyByTen() BigIntNum {
 //
 func (bNum *BigIntNum) MultiplyByTenToPower(exponent uint) {
 
-
 	if bNum.precision >= exponent {
+
 		bNum.CopyIn(BigIntNum{}.NewBigInt(bNum.bigInt, bNum.precision - exponent))
 
 	} else {
@@ -2236,15 +2236,6 @@ func (bNum *BigIntNum) MultiplyByTenToPower(exponent uint) {
 	}
 
 	return
-	/*
-	maxPrecision := bNum.precision + exponent + 3
-
-	result :=
-		BigIntMathMultiply{}.MultiplyBigIntNumByTenToIntPower(
-			bNum.CopyOut(), uint64(exponent), maxPrecision)
-
-	bNum.CopyIn(result)
-	*/
 }
 
 // MultiplyByThree - Multiplies the numerical value of the current BigIntNum
