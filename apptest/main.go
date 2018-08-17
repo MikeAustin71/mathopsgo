@@ -7,7 +7,27 @@ import (
 
 func main() {
 
-	numStr := "0.000003451234"
+
+	numInt := 7
+	lowerLimit := 0
+	expectedResult := "5040"
+
+	result, err := mathops.NFactorial{}.CalcFactorialValueInt(numInt, lowerLimit)
+
+	if err != nil {
+		fmt.Printf("Error returned by NFactorial{}.CalcFactorialValueInt(numInt, 1) " +
+			"Error='%v' ", err.Error())
+		return
+	}
+
+	fmt.Println("  NFactorial Of: ", numInt)
+	fmt.Println("     lowerLimit: ", lowerLimit)
+	fmt.Println("         Result: ", result.GetNumStr())
+	fmt.Println("Expected Result: ", expectedResult)
+
+
+	/*
+
 	//mantissaLen := uint(2)
 	//expectedStr := "3.45e-6"
 
@@ -20,7 +40,6 @@ func main() {
 	fmt.Println(" intRunes: ", string(intRunes))
 	fmt.Println("intLength: ", intLength)
 
-	/*
 
 	iaNum, _ := mathops.IntAry{}.NewNumStr(numStr)
 
