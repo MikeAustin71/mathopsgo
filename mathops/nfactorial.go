@@ -13,8 +13,8 @@ type FactorialDto struct {
 
 
 type NFactorial struct {
-	NFac 				uint64
-	LowerLimit 	uint64
+	NumOfTrials	uint64
+	NFac 				FactorialDto
 }
 
 func (nFac NFactorial) GetFactorialArray(nFactorial int) []int{
