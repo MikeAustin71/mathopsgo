@@ -5,8 +5,16 @@ import (
 	"fmt"
 )
 
+type FactorialDto struct {
+	UpperLimit uint64
+	LowerLimit uint64
+}
+
+
+
 type NFactorial struct {
-	nFacInitialValue uint64
+	NFac 				uint64
+	LowerLimit 	uint64
 }
 
 func (nFac NFactorial) GetFactorialArray(nFactorial int) []int{
@@ -188,6 +196,51 @@ func (nFac NFactorial) CalcFactorialValueInt64(nFactorial, lowerLimit int64) (Bi
 	lowerLimitBigInt := big.NewInt(lowerLimit)
 
 	return nFac.CalcFactorialValueBigInt(nFacBigInt, lowerLimitBigInt)
+}
+
+// CalcFactorialValueInt64 - Computes the value of nFactorial! and returns that value as a
+// BigIntNum.
+//
+// Input Parameters:
+// =================
+//
+// nFactorial	FactorialDto		- This structure contains a value of 'UpperLimit' or initial starting value
+// 															of the the factorial calculation. In addition, the structure contains a
+//															data field, 'LowerLimit', which specifies the lower boundary for the factorial
+//															calculation.
+//
+// Examples:
+// =========
+//
+//				1.	nFactorial.UpperLimit = 7  and nFactorial.LowerLimit = 3
+//
+// 						The input parameter 'LowerLimit' specifies the lower boundary for the calculation.
+// 						'UpperLimit' = 7 and 'LowerLimit' = 3  will yield a calculation of:
+//														7x6x5x4 = 840
+//
+//				2.	'UpperLimit' = 7 and 'LowerLimit' = 7
+// 						Equivalent of 0! and 0! = 1
+//
+//        3.	nFactorial = 7 and lowerLimit = 1
+//														7x6x5x4x3x2 = 5040
+//
+func (nFac NFactorial) CalcFactorialDtoValue(nFactorial FactorialDto) (BigIntNum, error) {
+
+	ePrefix := "NFactorial.CalcFactorialDtoValue() "
+
+	nFacBigInt := big.NewInt(0).SetUint64(nFactorial.UpperLimit)
+
+	lowerLimitBigInt := big.NewInt(0).SetUint64(nFactorial.LowerLimit)
+
+	result, err := nFac.CalcFactorialValueBigInt(nFacBigInt, lowerLimitBigInt)
+
+	if err != nil {
+		return BigIntNum{}.NewZero(0),
+		fmt.Errorf(ePrefix + "Error returned by nFac.CalcFactorialValueBigInt(nFacBigInt, lowerLimitBigInt) " +
+			"Error='%v'\n", err.Error())
+	}
+
+	return result, nil
 }
 
 

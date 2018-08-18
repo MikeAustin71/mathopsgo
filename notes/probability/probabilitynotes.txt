@@ -1,0 +1,26 @@
+/*
+	Permutations
+  ============
+
+	nPr	 =    n!
+            -----
+            (n-r)!
+
+	n things taken r at a time
+
+  Combinations
+  ============
+
+	nCr		=        n!
+                -----------
+				  (n-r)! (r!)
+
+
+possibilities
+	5 coin tosses = 2^5 possibilities
+  probability of getting k-heads in n flips of fair coin.
+  P(k)
+  # of possibilities = 2^n or 2^5 = 32
+https://www.youtube.com/watch?v=AOsWph2FNLw&index=11&list=PL06A16C388F14E6FE
+
+ */
