@@ -1,4 +1,14 @@
 /*
+
+Windows 10 Math Symbols
+https://img.webnots.com/2013/04/Maths-Symbols.png
+
+https://www.youtube.com/watch?v=xw6utjoyMi4&list=PL06A16C388F14E6FE&index=25
+
+Mario
+https://www.youtube.com/watch?v=NEGxh_D7yKU
+
+
 	Permutations
   ============
 
@@ -16,11 +26,609 @@
 				  (n-r)! (r!)
 
 
+
+
 possibilities
 	5 coin tosses = 2^5 possibilities
   probability of getting k-heads in n flips of fair coin.
   P(k)
   # of possibilities = 2^n or 2^5 = 32
-https://www.youtube.com/watch?v=AOsWph2FNLw&index=11&list=PL06A16C388F14E6FE
+
+
+
+Probabiltiy
+
+                No. of Outcomes Which Meet Constraints
+                --------------------------------------
+                       No. Of Possible Outcomes
+
+Coin toss
+P(H)  = Probability of Heads
+
+                                 1
+                                ---     = 50%
+                                 2
+
+Die - 6-possibilities
+
+P(Rolling A 1)
+                                  1
+                                 ---
+                                  6
+
+P(Rolling a '1' OR a '6')
+                                   2         1
+                                  ---    =  --- = 33%
+                                   6         3
+
+
+P(Rolling an even number)
+
+                                    3
+                                   ---    =  50%
+                                    6
+
+
+Cards
+4 suits spades, diamonds, clubs, hearts
+Each suit has 13 types of cards  Ace, 2,3,4,5,6,7,8,9,10 J Q K
+
+52- cards
+
+P(Drawing a Jack)
+                                    4
+                                   ---
+                                    52
+
+P(Drawing a Heart)
+                                    13
+                                   ----       = 25%
+                                    52
+
+P(Jack and Heart)
+                                     1
+                                    ---
+                                     52
+
+P(Jack OR Heart)
+                          4        13        1      16     4
+                         ---   +  ----   -  ---- = ---- = ---    4 Jacks + 13 Hears - (one which is Jack & Heart)
+                          52       52        52     52     13
+
+
+------------
+ 8 Green Cubes
+ 9 Green Spheres
+ 5 Yellow Cubes
+ 7 Yellow Spheres
+----------------
+29 Objects
+
+P(Cube)
+                           13
+                          ----
+                           29
+
+
+P(Yellow Object)
+                           12
+                          ----
+                           29
+
+
+P(Yellow Cube)
+                           5
+                          ----
+                           29
+
+P(Yellow OR Cube of any color)
+
+                           12      13     5          20
+                          ----- + ---- - ----  =   -----
+                           29      29     29         29
+
+                          P(Y)  +  P(Cube)  - P(Yellow & Cube)
+
+P(A OR B) = P(A) + P(B) - P(A Union B)
+
+Bag of Marbles
+9 red marbles
+2 blue marbles
+3 green marbles
+
+What is probability of selecting non-blue marble from bag
+
+                      12     6
+                     -----  ---
+                      14     7
+
+If a number is chosen at random from the following list, what is the
+chance that the number is a multiple of 5?
+[32, 49, 55, 30, 56, 28, 50, 40, 40, 45, 3, 25]  12-numbers
+         x    x          x   x   x    x     x     7-number that meet constraint
+
+                                                   7
+                                                 ----
+                                                  12
+
+The circumference of a circle is 36π. Contained in that circle is
+a smaller circle with area 16π. A point selected at random from
+inside the larger circle. What is the probability that the point also
+lies in the smaller circle?
+
+A=πr²
+C=2πr
+r Big Circle = 18
+A Big Circle = π (18)² = 324π
+
+                16       4
+                ---  =  ---
+                324      81
+
+
+Flipping Coins Independent Flips
+
+P(H)  =  1/2
+
+Flip Coin twice
+
+P(HH)
+
+     2² = 4 possiblities  = posibilities^no of flips
+
+     1/4 = HH
+
+     P(HH) = P(H) X P(H)
+             Probability of getting heads on first flip TIMES
+             probability of getting heads on second flip!
+
+
+In order
+P(THT)   1/2 X 1/2 X 1/2   1/8
+
+Fair Coin Flip 3 times
+
+P(at least 1 H)
+
+2^3  = 8
+
+--------------
+10 Flips
+
+P(At least one head)
+
+2^10 = 1024
+
+  1- 1/1024 = 1023/1024 of getting 1 head
+               99.9%
+
+
+--------------------
+Fair Coin Flip 4 times
+
+P(Exactly one heads)
+ No of possibilites  2^4 = 16
+
+ P(Exactly one heads)  = P(HTTT) + P(THTT) + P(TTHT) + P(TTTH)
+ P(Exactly one heads)  = 4/16 = 1/4
+
+
+ P(Exactly two heads)  = 6/16
+
+  Ha   Hb
+  4    3   =     12/16   / 2  = 6/16
+
+  Ha Hb T T
+  Hb Ha T T     ignore
+
+------------------------------------
+Fair Coin Flip 5 times
+
+P(exactly 3 Heads)
+
+ 2^5 = 32 Possibilities
+
+Ha Hb Hc  = Order is NOT important here
+
+
+______  _____ ______ ______ ______
+ 5       4     3
+
+If you cared about order
+
+ 5 X 4 X 3 = 60
+
+ 3 X 2 X 1 = 6 Number of ways you could arrange 3 Heads (To eliminate permutations due to ordering)
+
+        5 X 4 X 3
+        ---------  =  10 = Number of ways to get 3 Heads in any order (NOT sensitive to order)
+        3 X 2 X 1
+
+
+We Don't care about order
+
+            10
+          ------ =   5/16 = 31.25%
+            32
+
+-------------------------
+Probability of getting 'k' heads in 'n' flips of a fair coin
+
+2^n possibilities
+
+1st k = n possibilities
+2nd k = n-1 possibilities
+3rd k = n-2 possibilities
+... k = n-(k-1) possibilities
+
+n, n-1 ... n-(k-1)
+
+n=5
+
+k=3
+
+5 , 4, 3
+
+n, n-1 ... n-(k-1)
+------------------
+ k, k-1, k-2 ... 1   = No of ways to order k
+
+     n!
+-----------   = Combinations
+ (n-k)! r!
+
+ Given that you have n buckets and you put k things into them
+ WITHOUT having differentiate between them.
+
+                 OR
+
+If you have n buckets and you want to choose k of them
+
+     nCk = Combinations
+
+Probability of getting 'k' heads in 'n' flips of a fair coin
+2^n = no of possibilities
+
+
+                 nCk
+                -----
+                 2^n
+
+-------------------------
+Probability of getting 5 Heads in a row
+
+P(H,H,H,H,H) Order is NOT significant 2 = r
+
+2^5 = 32 possibilities
+
+       n!                 5x4x3x2x1          5!              1           1
+    ========     =       ===========     =   ====  =  1 =   ===         ===
+    (n-k)! r!             0! x (5!)          5!              2^n         32
+   ==========
+     2^n
+
+---------------------------
+7 Trials - Probability of NOT getting any heads
+
+P(TTTTTTT)
+
+       n!                   7!                7!              1            1
+    ========     =       ===========     =   ====  =  1 =    ===          ===
+    (n-k)! r!             0! x (7!)           7!              2^7         128
+   ==========
+     2^n
+
+------------------------------------------
+5 Trials
+2 Possible Outcomes Per Trial
+Probability of Getting 5 Heads in a row
+
+P(H,H,H,H,H) - 1/2^5 = 1/32
+Multiply 1/2 5 times.
+
+------------------------------------------
+7 Trials
+2 Possible Outcomes Per Trial
+Probability of NOT Getting ANY Heads
+= Probability of GETTING ALL Tails
+= 7 Tails in a row
+
+P(T,T,T,T,T,T,T) - 1/2^7 = 1/128
+Multiply 1/2 7 times.
+
+-------------------------------------------
+5 Trials
+2 Possible Outcomes Per Trial
+Probability of Getting EXACTLY 1 Heads
+
+
+TTTTH
+TTTHT
+TTHTT
+THTTT
+HTTTT
+
+  5/2^5 = 5/32
+
+-------------------------------------------
+5 Trials
+2 Possible Outcomes Per Trial
+Probability of NOT Getting EXACTLY 1 Heads
+
+1 - Probability of Getting EXACTLY 1 Heads
+
+1 - 5/32 = 27/32
+
+
+---------------------------------------------
+Probability - Where probabilities of outcome are not equal
+Basketball - Free throw percentage is 80%
+
+What is Probability of making 3-Free Throws in a row
+3 Trials
+2 PossibleOutComesPerTrial
+Probability of Free Throw success 80%
+
+.8 x .8 x .8 = 51.2%
+
+---------------------------------------------
+Probability - Where probabilities of outcome are not equal
+Basketball - Free throw percentage is 80%
+In game we are 1point behind.
+I have 3-Free Throws
+What is Probability of exactly tying the game ?
+
+.8 x .2 x .2 = 3.2 %
+
+
+
+
+What is Probability of Winning
+
+(.8 x .8 x .2 ) + (.8 x .8 x .8) = .128 + .512 = .64 = 64%
+
+
+---------------------------------------------
+Dice
+
+P(7)
+1
+2
+3
+4
+5
+6
+
+4+3
+5+2
+
+---------------------------------
+Bag Of Coins Dependent Probability
+You have 8 coins in a bag. 3 of them are unfair in that they have a 60%
+chance of coming up heads when flipped (the rest are fair coins). You randomly
+choose one coin from the bag and flip it 2 times. What is the percent probability of
+getting 2 heads.
+
+--- 3/8   x  3/5  X 3/5  = 27/200 = 13.5%
+
+--- 5/8   x 1/2  x 1/2   = 5/32  =  15.625%
+                   13.5 + 15.625 =  29.125%
+
+------------------------------------
+Bayes Theorem
+prob of 5 out 5 and 2Sided Coin
+p(5/5∩2S) = p(5/5|2S) X p(2S)
+            prob of 5/5 given 2Sided Coin X prob of 2Sided Coin
+
+
+prob a and b  prob given b times prob of b
+p(a⋂b)      =  p(a|b) X p(b)
+
+p(a|b) X p(b) = p(b|a) X p(a)
+         p(a|b) X p(b)
+p(b|a) = -------------
+              p(a)
+
+**************************************
+Bayes Theorem - Bayes Law
+**************************************
+
+          p(a|b) * p(b)
+p(b|a) =  -------------
+             p(a)
+
+
+p(2S | 5/5H)
+  b      a
+
+               p(5/5H | 2S) X p(2S)
+p(2S | 5/5H) = --------------------
+                    p(5/5H)
+
+=     1 * 1/10
+      --------  = 32/41 = Prob you picked 2S coin
+        41/320
+
+--------------------------------------
+Permutations
+https://www.youtube.com/watch?v=XqQTXW7XfYA&list=PL06A16C388F14E6FE&index=21
+
+3 - chairs
+7 - people
+
+Chairs          People
+1   2   3       A B C D E F G
+
+7 Sit in chair 1
+6 Sit in chair 2
+5 Sit in chair 3
+How many ways can I put these 7-people into these 3-chairs
+ 7 x 6 x 5 = 210 possibilities
+
+
+             3!        7!           7X6X5
+3P7 =       ----  =  -------  =   -------- =   210
+            (3-7)      4!             1
+
+
+------------------------------
+
+2 cups
+U  U
+
+3-balls = Brown Ball, Magenta Ball, Yellow Ball
+How many different ways can I put these 3-balls into these 2-cups.
+
+Brown Ball = A
+Magenta Ball = B
+Yellow Ball = C
+
+U   U
+3 x 2 = 6 possibilities
+
+AB AC BC
+
+BA CA CB
+
+If we DID NOT care about order we could get rid of the bottom line.
+
+----------------------------------
+Permutations - How many ways could you put 7 things into 3 spaces
+               when order is significant
+
+             3!      3 x 2 x 1
+3P2 =       ----  =  ----------  =   6
+             1!         1
+
+             3!      3 x 2 x 1
+2P3 = 3P2 = ----  =  ----------  =   6
+             1!         1
+
+*** FORMULA FOR PERMUTATIONS ****
+      WHEN ORDER MATTERS!
+
+	          n!
+ nPk =      -----
+            (n-k)!
+
+*************************************************************
+     COMBINATIONS!!!
+https://www.youtube.com/watch?v=bCxMhncR7PU&list=PL06A16C388F14E6FE&index=22
+
+
+Combinations:
+
+	nCk		=        n!
+                -----------
+				  (n-k)! (k!)
+
+5-Seats 3-People
+
+                         5!          n!         5x4x3
+Permutations =  5P3 =   ----- =   -------   =   -----  =   60
+                         2!        (n-k)!         1
+
+We are counting order of seating - So for
+each combination (ABC) there are a total of 6
+permutations. There are 6 times as many permutations
+as combinations.
+
+ABC
+ACB
+BAC
+BCA
+CAB
+CBA
+                          5!          n!         5x4x3     60
+Combinations =  5C3 =   ------- = -----------    -----  = ----  =  10
+                         2!x3!     (n-k)! k!       3!       6
+
+
+Combinations:
+
+			          n!
+    nCk         --------------
+				  (n-k)! (k!)
+
+
+    OR (Equivalent formula)
+
+                    nPk
+   nCk      =   -------------
+                    k!
+
+----------------------------------------------------------------
+Flip a fair coin 8 times.
+https://www.youtube.com/watch?v=Xqfcy1rqMbI&list=PL06A16C388F14E6FE&index=23
+What is probability of getting exactly 3-Heads?
+
+    # of constraint events
+    ======================
+    total no of possible outcomes
+
+
+total possible of outcomes 2^8 = 256
+
+
+          8!       8x7x6     8x6
+8C3 =  ------- =   ----- =  ----- = 56
+        5! 3!        3!       1
+
+
+                       56       14     7
+Probability =         -----  = ---- = --- = 21.875%
+                       256      64     32
+
+----------------------------------------------------------------------------
+Basket ball  https://www.youtube.com/watch?v=W7DmsJKLoxc&index=24&list=PL06A16C388F14E6FE
+
+Free Throw Percentage = 80%
+Miss it = 20%
+
+What is probability I make 3 of 5 Free Throws
+
+No Of Trials = 5
+Outcomes Per Trial = 2
+Possible outcomes = 2^5 = 32
+
+Out of 5 FreeThrows what is number of ways I can make 3-hits
+
+		         n!                      5!       5x4     20
+    nCk =   -------------  =   5C3 =   ------- =  --- =  ==== =  10
+		     (n-k)! (k!)                2! 3!      2!      2
+
+5 throws =  _____ _____ _____ _____ _____
+              1      2    3     4     5
+
+Probability of Getting 3-his and 2-misses
+
+              .8     .8   .8    .2    .2   = .8^3 x .2^2
+
+
+.8^3 x .2^2 x 10 = .512 x .04 x 10 = .2048
+
+----------------------------------------------
+What is probability of getting at least 3-baskets out of 5-throws
+
+P of at least 3 out 5 = P(3/5) + P(4/5) + P(5/5)
+
+P(3/5) = .2048 from last problem
+
+P(4/5) =
+                 5!          5
+     5C4 =     -------  =  -----  = 5
+                1!x4!        1
+
+ =  .8^4 x .2 x 5 = 0.4096
+
+
+P(5/5)
+
+  5C5   =      1
+
+ P(5/5) =  .8^5 x 1 = 0.32768
+
+P of at least 3 =
+     .2048 + .4096 + .32768 = 0.94208  = 94.208%
 
  */

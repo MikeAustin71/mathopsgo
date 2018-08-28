@@ -1,0 +1,12 @@
+http://sites.psu.edu/symbolcodes/accents/math/mathchart/
+https://img.webnots.com/2013/04/Maths-Symbols.png
+
+Arial Unicode MS
+⋃   U+22C3 Union
+⋂   U+22C2 Intersection
+π   U+03C0  Pi
+√   U+221A	Square Root
+∛  U+221B  Cube Root
+∜  U+221C  4th Root
+
+

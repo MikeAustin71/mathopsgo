@@ -8,11 +8,13 @@ import (
 func main() {
 
 
-	numInt := 7
-	lowerLimit := 0
-	expectedResult := "5040"
+	numOfItems := uint64(3)
 
-	result, err := mathops.NFactorial{}.CalcFactorialValueInt(numInt, lowerLimit)
+	numOfItemsChosen := uint64(2)
+
+	expectedPermutations := 3
+
+	permutations, err := mathops.Probability{}.PermutationsUint64(numOfItems, numOfItemsChosen)
 
 	if err != nil {
 		fmt.Printf("Error returned by NFactorial{}.CalcFactorialValueInt(numInt, 1) " +
@@ -20,10 +22,10 @@ func main() {
 		return
 	}
 
-	fmt.Println("  NFactorial Of: ", numInt)
-	fmt.Println("     lowerLimit: ", lowerLimit)
-	fmt.Println("         Result: ", result.GetNumStr())
-	fmt.Println("Expected Result: ", expectedResult)
+	fmt.Println("       Num Of Items: ", numOfItems)
+	fmt.Println("Num Of Items Chosen: ", numOfItemsChosen)
+	fmt.Println("       PermutationsUint64: ", permutations.GetNumStr())
+	fmt.Println("Expected Result: ", expectedPermutations)
 
 
 	/*

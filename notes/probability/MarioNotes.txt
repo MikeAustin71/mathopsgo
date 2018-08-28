@@ -1,0 +1,46 @@
+
+
+Mario
+Probability vs Odds
+
+https://www.youtube.com/watch?v=Vu4x2DKn12g&feature=youtu.be
+
+               No of Successful Outcomes
+probability =  -------------------------
+                Total Possible Outcomes
+
+
+                   Favorable Outcomes
+odds        =  --------------------------
+                  Unfavorable Outcomes
+
+-------------------------------------------------------
+Hat contains Marbles
+
+3-Red Marbles
+2-Blue Marbles
+1-Black Marble
+
+6 = Total Marbles
+
+                                          3            1
+Probability of getting Red Marble =  ------------  =  ---
+                                          6            2
+
+                                    3            3-things you want
+Odds of getting red marble =   -----------  =    -----------------------
+                                    3             3-things you don't want
+Odds are  1 to 1  or 1:1
+
+++++++++++++++++++++++++++++++++++++++++++
+Spinner  with 4 outcomes 1 to 4
+
+                                           1
+What is probability you land on 2 =    --------
+                                           4
+
+                                      1-thing you want
+What are odds of landing on 2  = -------------------------  =    1 to 3
+                                   3-things you don't want
+
+Odds against landing on 2 = 3 to 1
