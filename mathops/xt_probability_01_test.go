@@ -1,6 +1,9 @@
 package mathops
 
-import "testing"
+import (
+	"math/big"
+	"testing"
+)
 
 
 
@@ -25,5 +28,28 @@ func TestProbability_PermutationsUint64_01(t *testing.T) {
 			expectedResultStr, actualNumStr)
 	}
 
+
+}
+
+func TestProbability_PermutationsBigInt_01(t *testing.T) {
+
+	n := big.NewInt(5)
+	r := big.NewInt(3)
+
+	expectedResultStr := "60"
+
+	result, err := Probability{}.PermutationsBigInt(n, r)
+
+	if err != nil {
+		t.Errorf("Error returned by Probability{}.PermutationsBigInt(n, r) " +
+			"Error='%v' ", err.Error())
+	}
+
+	actualResultStr := result.GetNumStr()
+
+	if expectedResultStr != actualResultStr {
+		t.Errorf("Error: Expected result='%v'. Instead, result='%v'",
+			expectedResultStr, actualResultStr)
+	}
 
 }
