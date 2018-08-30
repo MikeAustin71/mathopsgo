@@ -132,3 +132,27 @@ func TestNFactorial_CalcFactorialValueBigInt_06(t *testing.T) {
 	}
 
 }
+
+func TestNFactorial_CalcFactorialValueBigInt_07(t *testing.T) {
+
+	n := big.NewInt(23)
+
+	lowerLimit := big.NewInt(0)
+
+	expectedResultStr := "25852016738884976640000"
+
+	result, err := NFactorial{}.CalcFactorialValueBigInt(n, lowerLimit)
+
+	if err != nil {
+		t.Errorf("Error returned by NFactorial{}.CalcFactorialValueBigInt(n, lowerLimit). " +
+			"Error='%v' ", err.Error())
+	}
+
+	actualResultStr := result.GetNumStr()
+
+	if expectedResultStr != actualResultStr {
+		t.Errorf("Error: Expected result='%v'. Instead, result='%v' ",
+			expectedResultStr, actualResultStr)
+	}
+
+}
