@@ -208,7 +208,7 @@ func (nFac NFactorial) CalcFactorialValueInt64(nFactorial, lowerLimit int64) (Bi
 // nFactorial	FactorialDto		- This structure contains a value of 'UpperLimit' or initial starting value
 // 															of the the factorial calculation. In addition, the structure contains a
 //															data field, 'LowerLimit', which specifies the lower boundary for the factorial
-//															calculation.
+//															calculation. Both 'UpperLimit' and 'LowerLimit' are uint64 types.
 //
 // Examples:
 // =========

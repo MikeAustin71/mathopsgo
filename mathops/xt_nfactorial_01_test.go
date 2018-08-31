@@ -190,6 +190,30 @@ func TestNFactorial_CalcFactorialValueBigInt_09(t *testing.T) {
 }
 
 
+func TestNFactorial_CalcFactorialValueBigInt_10(t *testing.T) {
+
+	n := big.NewInt(23)
+
+	lowerLimit := big.NewInt(20)
+
+	expectedResultStr := "10626"
+
+	result, err := NFactorial{}.CalcFactorialValueBigInt(n, lowerLimit)
+
+	if err != nil {
+		t.Errorf("Error returned by NFactorial{}.CalcFactorialValueBigInt(n, lowerLimit). " +
+			"Error='%v' ", err.Error())
+	}
+
+	actualResultStr := result.GetNumStr()
+
+	if expectedResultStr != actualResultStr {
+		t.Errorf("Error: Expected result='%v'. Instead, result='%v' ",
+			expectedResultStr, actualResultStr)
+	}
+
+}
+
 func TestNFactorial_CalcFactorialValueInt_01(t *testing.T) {
 
 	n := 5
@@ -434,6 +458,275 @@ func TestNFactorial_CalcFactorialValueInt32_06(t *testing.T) {
 
 	if err != nil {
 		t.Errorf("Error returned by NFactorial{}.CalcFactorialValueInt32(n, lowerLimit). " +
+			"Error='%v' ", err.Error())
+	}
+
+	actualResultStr := result.GetNumStr()
+
+	if expectedResultStr != actualResultStr {
+		t.Errorf("Error: Expected result='%v'. Instead, result='%v' ",
+			expectedResultStr, actualResultStr)
+	}
+
+}
+
+func TestNFactorial_CalcFactorialValueInt64_01(t *testing.T) {
+
+	n := int64(5)
+
+	lowerLimit := int64(1)
+
+	expectedResultStr := "120"
+
+	result, err := NFactorial{}.CalcFactorialValueInt64(n, lowerLimit)
+
+	if err != nil {
+		t.Errorf("Error returned by NFactorial{}.CalcFactorialValueInt64(n, lowerLimit). " +
+			"Error='%v' ", err.Error())
+	}
+
+	actualResultStr := result.GetNumStr()
+
+	if expectedResultStr != actualResultStr {
+		t.Errorf("Error: Expected result='%v'. Instead, result='%v' ",
+			expectedResultStr, actualResultStr)
+	}
+
+}
+
+func TestNFactorial_CalcFactorialValueInt64_02(t *testing.T) {
+
+	n := int64(5)
+
+	lowerLimit := int64(0)
+
+	expectedResultStr := "120"
+
+	result, err := NFactorial{}.CalcFactorialValueInt64(n, lowerLimit)
+
+	if err != nil {
+		t.Errorf("Error returned by NFactorial{}.CalcFactorialValueInt64(n, lowerLimit). " +
+			"Error='%v' ", err.Error())
+	}
+
+	actualResultStr := result.GetNumStr()
+
+	if expectedResultStr != actualResultStr {
+		t.Errorf("Error: Expected result='%v'. Instead, result='%v' ",
+			expectedResultStr, actualResultStr)
+	}
+
+}
+
+func TestNFactorial_CalcFactorialValueInt64_03(t *testing.T) {
+
+	n := int64(-5)
+
+	lowerLimit := int64(0)
+
+	_, err := NFactorial{}.CalcFactorialValueInt64(n, lowerLimit)
+
+	if err == nil {
+		t.Error("Expected error return from CalcFactorialValueInt64(n, lowerLimit) " +
+			"n=-5")
+
+	}
+
+}
+
+func TestNFactorial_CalcFactorialValueInt64_04(t *testing.T) {
+
+	n := int64(5)
+
+	lowerLimit := int64(-2)
+
+	_, err := NFactorial{}.CalcFactorialValueInt64(n, lowerLimit)
+
+	if err == nil {
+		t.Error("Expected error return from CalcFactorialValueInt64(n, lowerLimit) " +
+			"lower limit =-2")
+
+	}
+
+}
+
+func TestNFactorial_CalcFactorialValueInt64_05(t *testing.T) {
+
+	n := int64(5)
+
+	lowerLimit := int64(2)
+
+	expectedResultStr := "60"
+
+	result, err := NFactorial{}.CalcFactorialValueInt64(n, lowerLimit)
+
+	if err != nil {
+		t.Errorf("Error returned by NFactorial{}.CalcFactorialValueInt64(n, lowerLimit). " +
+			"Error='%v' ", err.Error())
+	}
+
+	actualResultStr := result.GetNumStr()
+
+	if expectedResultStr != actualResultStr {
+		t.Errorf("Error: Expected result='%v'. Instead, result='%v' ",
+			expectedResultStr, actualResultStr)
+	}
+
+}
+
+func TestNFactorial_CalcFactorialValueInt64_06(t *testing.T) {
+
+	n := int64(5)
+
+	lowerLimit := int64(4)
+
+	expectedResultStr := "5"
+
+	result, err := NFactorial{}.CalcFactorialValueInt64(n, lowerLimit)
+
+	if err != nil {
+		t.Errorf("Error returned by NFactorial{}.CalcFactorialValueInt64(n, lowerLimit). " +
+			"Error='%v' ", err.Error())
+	}
+
+	actualResultStr := result.GetNumStr()
+
+	if expectedResultStr != actualResultStr {
+		t.Errorf("Error: Expected result='%v'. Instead, result='%v' ",
+			expectedResultStr, actualResultStr)
+	}
+
+}
+
+func TestNFactorial_CalcNFactorialValue_01(t *testing.T) {
+
+	nFac := FactorialDto{}
+
+	nFac.UpperLimit = uint64(5)
+
+	nFac.LowerLimit = uint64(1)
+
+	expectedResultStr := "120"
+
+	result, err := NFactorial{}.CalcNFactorialValue(nFac)
+
+	if err != nil {
+		t.Errorf("Error returned by NFactorial{}.CalcNFactorialValue(n, lowerLimit). " +
+			"Error='%v' ", err.Error())
+	}
+
+	actualResultStr := result.GetNumStr()
+
+	if expectedResultStr != actualResultStr {
+		t.Errorf("Error: Expected result='%v'. Instead, result='%v' ",
+			expectedResultStr, actualResultStr)
+	}
+
+}
+
+func TestNFactorial_CalcNFactorialValue_02(t *testing.T) {
+
+	nFac := FactorialDto{}
+
+	nFac.UpperLimit = uint64(5)
+
+	nFac.LowerLimit = uint64(0)
+
+	expectedResultStr := "120"
+
+	result, err := NFactorial{}.CalcNFactorialValue(nFac)
+
+	if err != nil {
+		t.Errorf("Error returned by NFactorial{}.CalcNFactorialValue(n, lowerLimit). " +
+			"Error='%v' ", err.Error())
+	}
+
+	actualResultStr := result.GetNumStr()
+
+	if expectedResultStr != actualResultStr {
+		t.Errorf("Error: Expected result='%v'. Instead, result='%v' ",
+			expectedResultStr, actualResultStr)
+	}
+
+}
+
+func TestNFactorial_CalcNFactorialValue_03(t *testing.T) {
+
+	nFac := FactorialDto{}
+
+	nFac.UpperLimit = uint64(5)
+
+	nFac.LowerLimit = uint64(94)
+
+
+	_, err := NFactorial{}.CalcNFactorialValue(nFac)
+
+	if err == nil {
+		t.Error("Expected error return from CalcNFactorialValue(n, lowerLimit) " +
+			"n=-5")
+
+	}
+
+}
+
+func TestNFactorial_CalcNFactorialValue_04(t *testing.T) {
+
+	nFac := FactorialDto{}
+
+	nFac.UpperLimit = uint64(0)
+
+	nFac.LowerLimit = uint64(2)
+
+	_, err := NFactorial{}.CalcNFactorialValue(nFac)
+
+	if err == nil {
+		t.Error("Expected error return from CalcNFactorialValue(n, lowerLimit) " +
+			"lower limit =-2")
+
+	}
+
+}
+
+func TestNFactorial_CalcNFactorialValue_05(t *testing.T) {
+
+	nFac := FactorialDto{}
+
+	nFac.UpperLimit = uint64(5)
+
+	nFac.LowerLimit = uint64(2)
+
+	expectedResultStr := "60"
+
+	result, err := NFactorial{}.CalcNFactorialValue(nFac)
+
+	if err != nil {
+		t.Errorf("Error returned by NFactorial{}.CalcNFactorialValue(nFac). " +
+			"Error='%v' ", err.Error())
+	}
+
+	actualResultStr := result.GetNumStr()
+
+	if expectedResultStr != actualResultStr {
+		t.Errorf("Error: Expected result='%v'. Instead, result='%v' ",
+			expectedResultStr, actualResultStr)
+	}
+
+}
+
+func TestNFactorial_CalcNFactorialValue_06(t *testing.T) {
+
+	nFac := FactorialDto{}
+
+	nFac.UpperLimit = uint64(5)
+
+	nFac.LowerLimit = uint64(4)
+
+	expectedResultStr := "5"
+
+	result, err := NFactorial{}.CalcNFactorialValue(nFac)
+
+	if err != nil {
+		t.Errorf("Error returned by NFactorial{}.CalcNFactorialValue(nFac). " +
 			"Error='%v' ", err.Error())
 	}
 
