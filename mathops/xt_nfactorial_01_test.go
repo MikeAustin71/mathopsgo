@@ -188,3 +188,132 @@ func TestNFactorial_CalcFactorialValueBigInt_09(t *testing.T) {
 	}
 
 }
+
+
+func TestNFactorial_CalcFactorialValueInt_01(t *testing.T) {
+
+	n := 5
+
+	lowerLimit := 1
+
+	expectedResultStr := "120"
+
+	result, err := NFactorial{}.CalcFactorialValueInt(n, lowerLimit)
+
+	if err != nil {
+		t.Errorf("Error returned by NFactorial{}.CalcFactorialValueInt(n, lowerLimit). " +
+			"Error='%v' ", err.Error())
+	}
+
+	actualResultStr := result.GetNumStr()
+
+	if expectedResultStr != actualResultStr {
+		t.Errorf("Error: Expected result='%v'. Instead, result='%v' ",
+			expectedResultStr, actualResultStr)
+	}
+
+}
+
+func TestNFactorial_CalcFactorialValueInt_02(t *testing.T) {
+
+	n := 5
+
+	lowerLimit := 0
+
+	expectedResultStr := "120"
+
+	result, err := NFactorial{}.CalcFactorialValueInt(n, lowerLimit)
+
+	if err != nil {
+		t.Errorf("Error returned by NFactorial{}.CalcFactorialValueInt(n, lowerLimit). " +
+			"Error='%v' ", err.Error())
+	}
+
+	actualResultStr := result.GetNumStr()
+
+	if expectedResultStr != actualResultStr {
+		t.Errorf("Error: Expected result='%v'. Instead, result='%v' ",
+			expectedResultStr, actualResultStr)
+	}
+
+}
+
+func TestNFactorial_CalcFactorialValueInt_03(t *testing.T) {
+
+	n := -5
+
+	lowerLimit := 0
+
+	_, err := NFactorial{}.CalcFactorialValueInt(n, lowerLimit)
+
+	if err == nil {
+		t.Error("Expected error return from CalcFactorialValueBigInt(n, lowerLimit) " +
+			"n=-5")
+
+	}
+
+}
+
+func TestNFactorial_CalcFactorialValueInt_04(t *testing.T) {
+
+	n := 5
+
+	lowerLimit := -2
+
+	_, err := NFactorial{}.CalcFactorialValueInt(n, lowerLimit)
+
+	if err == nil {
+		t.Error("Expected error return from CalcFactorialValueInt(n, lowerLimit) " +
+			"lower limit =-2")
+
+	}
+
+}
+
+func TestNFactorial_CalcFactorialValueInt_05(t *testing.T) {
+
+	n := 5
+
+	lowerLimit := 2
+
+	expectedResultStr := "60"
+
+	result, err := NFactorial{}.CalcFactorialValueInt(n, lowerLimit)
+
+	if err != nil {
+		t.Errorf("Error returned by NFactorial{}.CalcFactorialValueInt(n, lowerLimit). " +
+			"Error='%v' ", err.Error())
+	}
+
+	actualResultStr := result.GetNumStr()
+
+	if expectedResultStr != actualResultStr {
+		t.Errorf("Error: Expected result='%v'. Instead, result='%v' ",
+			expectedResultStr, actualResultStr)
+	}
+
+}
+
+func TestNFactorial_CalcFactorialValueInt_06(t *testing.T) {
+
+	n := 5
+
+	lowerLimit := 4
+
+	expectedResultStr := "5"
+
+	result, err := NFactorial{}.CalcFactorialValueInt(n, lowerLimit)
+
+	if err != nil {
+		t.Errorf("Error returned by NFactorial{}.CalcFactorialValueInt(n, lowerLimit). " +
+			"Error='%v' ", err.Error())
+	}
+
+	actualResultStr := result.GetNumStr()
+
+	if expectedResultStr != actualResultStr {
+		t.Errorf("Error: Expected result='%v'. Instead, result='%v' ",
+			expectedResultStr, actualResultStr)
+	}
+
+}
