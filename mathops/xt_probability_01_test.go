@@ -170,3 +170,88 @@ func TestProbability_PermutationsBigInt_06(t *testing.T) {
 	}
 
 }
+
+func TestProbability_PermutationsBigInt_07(t *testing.T) {
+
+	nInt := 4
+	rInt := 63
+	n := big.NewInt(int64(nInt))
+	r := big.NewInt(int64(rInt))
+
+
+	_, err := Probability{}.PermutationsBigInt(n, r)
+
+	if err == nil {
+		t.Errorf("Error: Expected error return from Probability{}.PermutationsBigInt(n, r) " +
+			"However no error was generated. r > n;  n='%v' r='%v' ", nInt, rInt)
+	}
+
+}
+
+func TestProbability_PermutationsBigInt_08(t *testing.T) {
+
+	nInt := 63
+	rInt := -1
+	n := big.NewInt(int64(nInt))
+	r := big.NewInt(int64(rInt))
+
+
+	_, err := Probability{}.PermutationsBigInt(n, r)
+
+	if err == nil {
+		t.Errorf("Error: Expected error return from Probability{}.PermutationsBigInt(n, r) " +
+			"However no error was generated. r < 0;  n='%v' r='%v' ", nInt, rInt)
+	}
+
+}
+
+func TestProbability_PermutationsBigInt_09(t *testing.T) {
+
+	nInt := -63
+	rInt := 4
+	n := big.NewInt(int64(nInt))
+	r := big.NewInt(int64(rInt))
+
+
+	_, err := Probability{}.PermutationsBigInt(n, r)
+
+	if err == nil {
+		t.Errorf("Error: Expected error return from Probability{}.PermutationsBigInt(n, r) " +
+			"However no error was generated. n < 0;  n='%v' r='%v' ", nInt, rInt)
+	}
+
+}
+
+func TestProbability_PermutationsBigInt_10(t *testing.T) {
+
+	nInt := 0
+	rInt := 4
+	n := big.NewInt(int64(nInt))
+	r := big.NewInt(int64(rInt))
+
+
+	_, err := Probability{}.PermutationsBigInt(n, r)
+
+	if err == nil {
+		t.Errorf("Error: Expected error return from Probability{}.PermutationsBigInt(n, r) " +
+			"However no error was generated. n == 0;  n='%v' r='%v' ", nInt, rInt)
+	}
+
+}
+
+func TestProbability_PermutationsBigInt_11(t *testing.T) {
+
+	nInt := 15
+	rInt := 0
+	n := big.NewInt(int64(nInt))
+	r := big.NewInt(int64(rInt))
+
+
+	_, err := Probability{}.PermutationsBigInt(n, r)
+
+	if err == nil {
+		t.Errorf("Error: Expected error return from Probability{}.PermutationsBigInt(n, r) " +
+			"However no error was generated. r == 0;  n='%v' r='%v' ", nInt, rInt)
+	}
+
+}
