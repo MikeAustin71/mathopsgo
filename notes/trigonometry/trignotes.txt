@@ -1,0 +1,21 @@
+Basic Trigonometry
+https://www.youtube.com/watch?v=F21S9Wpi0y8
+
+Uses right triangle
+
+θ   U+03B8  Theta lower case
+
+θ Usually represents the angle you want to find the
+  trig function of.
+
+
+5     3
+
+      4
+
+Right triangle with dimensions.
+ Sin θ = ?
+
+ Numonic to remember
+ Soh  Cah   Toa
+

@@ -63,7 +63,7 @@ func TestNFactorial_CalcFactorialValueBigInt_03(t *testing.T) {
 
 	if err == nil {
 		t.Error("Expected error return from CalcFactorialValueBigInt(n, lowerLimit) " +
-			"n=-1")
+			"n=-5")
 
 	}
 
@@ -153,6 +153,38 @@ func TestNFactorial_CalcFactorialValueBigInt_07(t *testing.T) {
 	if expectedResultStr != actualResultStr {
 		t.Errorf("Error: Expected result='%v'. Instead, result='%v' ",
 			expectedResultStr, actualResultStr)
+	}
+
+}
+
+func TestNFactorial_CalcFactorialValueBigInt_08(t *testing.T) {
+
+	n := big.NewInt(5)
+
+	lowerLimit := big.NewInt(9)
+
+	_, err := NFactorial{}.CalcFactorialValueBigInt(n, lowerLimit)
+
+	if err == nil {
+		t.Error("Expected error return from CalcFactorialValueBigInt(n, lowerLimit) " +
+			"n=5 lower limit =9")
+
+	}
+
+}
+
+func TestNFactorial_CalcFactorialValueBigInt_09(t *testing.T) {
+
+	n := big.NewInt(0)
+
+	lowerLimit := big.NewInt(1)
+
+	_, err := NFactorial{}.CalcFactorialValueBigInt(n, lowerLimit)
+
+	if err == nil {
+		t.Error("Expected error return from CalcFactorialValueBigInt(n, lowerLimit) " +
+			"n=0 lower limit =1")
+
 	}
 
 }
