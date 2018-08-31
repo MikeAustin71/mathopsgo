@@ -53,3 +53,50 @@ func TestProbability_PermutationsBigInt_01(t *testing.T) {
 	}
 
 }
+
+func TestProbability_PermutationsBigInt_02(t *testing.T) {
+
+	n := big.NewInt(12)
+	r := big.NewInt(2)
+
+	expectedResultStr := "132"
+
+	result, err := Probability{}.PermutationsBigInt(n, r)
+
+	if err != nil {
+		t.Errorf("Error returned by Probability{}.PermutationsBigInt(n, r) " +
+			"Error='%v' ", err.Error())
+	}
+
+	actualResultStr := result.GetNumStr()
+
+	if expectedResultStr != actualResultStr {
+		t.Errorf("Error: Expected result='%v'. Instead, result='%v'",
+			expectedResultStr, actualResultStr)
+	}
+
+}
+
+
+func TestProbability_PermutationsBigInt_03(t *testing.T) {
+
+	n := big.NewInt(20)
+	r := big.NewInt(5)
+
+	expectedResultStr := "1860480"
+
+	result, err := Probability{}.PermutationsBigInt(n, r)
+
+	if err != nil {
+		t.Errorf("Error returned by Probability{}.PermutationsBigInt(n, r) " +
+			"Error='%v' ", err.Error())
+	}
+
+	actualResultStr := result.GetNumStr()
+
+	if expectedResultStr != actualResultStr {
+		t.Errorf("Error: Expected result='%v'. Instead, result='%v'",
+			expectedResultStr, actualResultStr)
+	}
+
+}
