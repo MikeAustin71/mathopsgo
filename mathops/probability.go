@@ -163,6 +163,12 @@ func (prob Probability) PermutationsNoRepsBigInt(
 //
 // *** This calculation assumes REPETITIONS ARE ALLOWED! ***
 //
+//  Example
+//  =======
+// 				Combination lock with 3 numbers: there are 10 numbers to choose from
+// 					(0,1,2,3,4,5,6,7,8,9) and we choose 3 of them (repetitions allowed):
+// 						10 × 10 × ... (3 times) = 10^3 = 1,000 permutations
+//
 func (prob Probability) PermutationsWithRepsBigInt(
 						numOfItems, numOfItemsPicked *big.Int) (BigIntNum, error) {
 
@@ -316,6 +322,8 @@ func (prob Probability) PermutationsBigIntNum(
 // 				Where n is the number of things to choose from,
 //				and we choose r of them, repetition IS allowed,
 // 				and order matters.
+//
+//
 //
 func (prob Probability) PermutationsInt(
 				numOfItems, numOfItemsPicked int,
