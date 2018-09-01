@@ -1,9 +1,354 @@
 package mathops
 
 import (
-	"testing"
 	"math/big"
+	"testing"
 )
+
+func TestNumStrDto_NewInt_01(t *testing.T) {
+
+	intNum := 7
+	precision := uint(0)
+
+	expectedStr := "7"
+
+	nDto, err := NumStrDto{}.NewInt(intNum,precision)
+
+	if err != nil {
+		t.Errorf("Error returned by NumStrDto{}.NewInt(intNum,precision) " +
+			"Error='%v' ", err.Error())
+	}
+
+	actualNumStr := nDto.GetNumStr()
+
+	if expectedStr != actualNumStr {
+		t.Errorf("Expected nDto.GetNumStr()='%v'. Instead, nDto.GetNumStr()='%v'.",
+			expectedStr, nDto.GetNumStr())
+	}
+
+}
+
+func TestNumStrDto_NewInt_02(t *testing.T) {
+
+	intNum := 7
+	precision := uint(1)
+
+	expectedStr := "7.0"
+
+	nDto, err := NumStrDto{}.NewInt(intNum,precision)
+
+	if err != nil {
+		t.Errorf("Error returned by NumStrDto{}.NewInt(intNum,precision) " +
+			"Error='%v' ", err.Error())
+	}
+
+	actualNumStr := nDto.GetNumStr()
+
+	if expectedStr != actualNumStr {
+		t.Errorf("Expected nDto.GetNumStr()='%v'. Instead, nDto.GetNumStr()='%v'.",
+			expectedStr, nDto.GetNumStr())
+	}
+
+}
+
+func TestNumStrDto_NewInt_03(t *testing.T) {
+
+	intNum := 7
+	precision := uint(3)
+
+	expectedStr := "7.000"
+
+	nDto, err := NumStrDto{}.NewInt(intNum,precision)
+
+	if err != nil {
+		t.Errorf("Error returned by NumStrDto{}.NewInt(intNum,precision) " +
+			"Error='%v' ", err.Error())
+	}
+
+	actualNumStr := nDto.GetNumStr()
+
+	if expectedStr != actualNumStr {
+		t.Errorf("Expected nDto.GetNumStr()='%v'. Instead, nDto.GetNumStr()='%v'.",
+			expectedStr, nDto.GetNumStr())
+	}
+
+}
+
+func TestNumStrDto_NewInt_04(t *testing.T) {
+
+	intNum := -7
+	precision := uint(3)
+
+	expectedStr := "-7.000"
+
+	nDto, err := NumStrDto{}.NewInt(intNum,precision)
+
+	if err != nil {
+		t.Errorf("Error returned by NumStrDto{}.NewInt(intNum,precision) " +
+			"Error='%v' ", err.Error())
+	}
+
+	actualNumStr := nDto.GetNumStr()
+
+	if expectedStr != actualNumStr {
+		t.Errorf("Expected nDto.GetNumStr()='%v'. Instead, nDto.GetNumStr()='%v'.",
+			expectedStr, nDto.GetNumStr())
+	}
+
+}
+
+func TestNumStrDto_NewInt_05(t *testing.T) {
+
+	intNum := -7
+	precision := uint(0)
+
+	expectedStr := "-7"
+
+	nDto, err := NumStrDto{}.NewInt(intNum,precision)
+
+	if err != nil {
+		t.Errorf("Error returned by NumStrDto{}.NewInt(intNum,precision) " +
+			"Error='%v' ", err.Error())
+	}
+
+	actualNumStr := nDto.GetNumStr()
+
+	if expectedStr != actualNumStr {
+		t.Errorf("Expected nDto.GetNumStr()='%v'. Instead, nDto.GetNumStr()='%v'.",
+			expectedStr, nDto.GetNumStr())
+	}
+
+}
+
+func TestNumStrDto_NewInt32_01(t *testing.T) {
+
+	intNum := int32(7)
+	precision := uint(0)
+
+	expectedStr := "7"
+
+	nDto, err := NumStrDto{}.NewInt32(intNum,precision)
+
+	if err != nil {
+		t.Errorf("Error returned by NumStrDto{}.NewInt32(intNum,precision) " +
+			"Error='%v' ", err.Error())
+	}
+
+	actualNumStr := nDto.GetNumStr()
+
+	if expectedStr != actualNumStr {
+		t.Errorf("Expected nDto.GetNumStr()='%v'. Instead, nDto.GetNumStr()='%v'.",
+			expectedStr, nDto.GetNumStr())
+	}
+
+}
+
+func TestNumStrDto_NewInt32_02(t *testing.T) {
+
+	intNum := int32(7)
+	precision := uint(1)
+
+	expectedStr := "7.0"
+
+	nDto, err := NumStrDto{}.NewInt32(intNum,precision)
+
+	if err != nil {
+		t.Errorf("Error returned by NumStrDto{}.NewInt32(intNum,precision) " +
+			"Error='%v' ", err.Error())
+	}
+
+	actualNumStr := nDto.GetNumStr()
+
+	if expectedStr != actualNumStr {
+		t.Errorf("Expected nDto.GetNumStr()='%v'. Instead, nDto.GetNumStr()='%v'.",
+			expectedStr, nDto.GetNumStr())
+	}
+
+}
+
+func TestNumStrDto_NewInt32_03(t *testing.T) {
+
+	intNum := int32(7)
+	precision := uint(3)
+
+	expectedStr := "7.000"
+
+	nDto, err := NumStrDto{}.NewInt32(intNum,precision)
+
+	if err != nil {
+		t.Errorf("Error returned by NumStrDto{}.NewInt32(intNum,precision) " +
+			"Error='%v' ", err.Error())
+	}
+
+	actualNumStr := nDto.GetNumStr()
+
+	if expectedStr != actualNumStr {
+		t.Errorf("Expected nDto.GetNumStr()='%v'. Instead, nDto.GetNumStr()='%v'.",
+			expectedStr, nDto.GetNumStr())
+	}
+
+}
+
+func TestNumStrDto_NewInt32_04(t *testing.T) {
+
+	intNum := int32(-7)
+	precision := uint(3)
+
+	expectedStr := "-7.000"
+
+	nDto, err := NumStrDto{}.NewInt32(intNum,precision)
+
+	if err != nil {
+		t.Errorf("Error returned by NumStrDto{}.NewInt32(intNum,precision) " +
+			"Error='%v' ", err.Error())
+	}
+
+	actualNumStr := nDto.GetNumStr()
+
+	if expectedStr != actualNumStr {
+		t.Errorf("Expected nDto.GetNumStr()='%v'. Instead, nDto.GetNumStr()='%v'.",
+			expectedStr, nDto.GetNumStr())
+	}
+
+}
+
+func TestNumStrDto_NewInt32_05(t *testing.T) {
+
+	intNum := int32(-7)
+	precision := uint(0)
+
+	expectedStr := "-7"
+
+	nDto, err := NumStrDto{}.NewInt32(intNum,precision)
+
+	if err != nil {
+		t.Errorf("Error returned by NumStrDto{}.NewInt32(intNum,precision) " +
+			"Error='%v' ", err.Error())
+	}
+
+	actualNumStr := nDto.GetNumStr()
+
+	if expectedStr != actualNumStr {
+		t.Errorf("Expected nDto.GetNumStr()='%v'. Instead, nDto.GetNumStr()='%v'.",
+			expectedStr, nDto.GetNumStr())
+	}
+
+}
+
+func TestNumStrDto_NewInt64_01(t *testing.T) {
+
+	intNum := int64(7)
+	precision := uint(0)
+
+	expectedStr := "7"
+
+	nDto, err := NumStrDto{}.NewInt64(intNum,precision)
+
+	if err != nil {
+		t.Errorf("Error returned by NumStrDto{}.NewInt64(intNum,precision) " +
+			"Error='%v' ", err.Error())
+	}
+
+	actualNumStr := nDto.GetNumStr()
+
+	if expectedStr != actualNumStr {
+		t.Errorf("Expected nDto.GetNumStr()='%v'. Instead, nDto.GetNumStr()='%v'.",
+			expectedStr, nDto.GetNumStr())
+	}
+
+}
+
+func TestNumStrDto_NewInt64_02(t *testing.T) {
+
+	intNum := int64(7)
+	precision := uint(1)
+
+	expectedStr := "7.0"
+
+	nDto, err := NumStrDto{}.NewInt64(intNum,precision)
+
+	if err != nil {
+		t.Errorf("Error returned by NumStrDto{}.NewInt64(intNum,precision) " +
+			"Error='%v' ", err.Error())
+	}
+
+	actualNumStr := nDto.GetNumStr()
+
+	if expectedStr != actualNumStr {
+		t.Errorf("Expected nDto.GetNumStr()='%v'. Instead, nDto.GetNumStr()='%v'.",
+			expectedStr, nDto.GetNumStr())
+	}
+
+}
+
+func TestNumStrDto_NewInt64_03(t *testing.T) {
+
+	intNum := int64(7)
+	precision := uint(3)
+
+	expectedStr := "7.000"
+
+	nDto, err := NumStrDto{}.NewInt64(intNum,precision)
+
+	if err != nil {
+		t.Errorf("Error returned by NumStrDto{}.NewInt64(intNum,precision) " +
+			"Error='%v' ", err.Error())
+	}
+
+	actualNumStr := nDto.GetNumStr()
+
+	if expectedStr != actualNumStr {
+		t.Errorf("Expected nDto.GetNumStr()='%v'. Instead, nDto.GetNumStr()='%v'.",
+			expectedStr, nDto.GetNumStr())
+	}
+
+}
+
+func TestNumStrDto_NewInt64_04(t *testing.T) {
+
+	intNum := int64(-7)
+	precision := uint(3)
+
+	expectedStr := "-7.000"
+
+	nDto, err := NumStrDto{}.NewInt64(intNum,precision)
+
+	if err != nil {
+		t.Errorf("Error returned by NumStrDto{}.NewInt64(intNum,precision) " +
+			"Error='%v' ", err.Error())
+	}
+
+	actualNumStr := nDto.GetNumStr()
+
+	if expectedStr != actualNumStr {
+		t.Errorf("Expected nDto.GetNumStr()='%v'. Instead, nDto.GetNumStr()='%v'.",
+			expectedStr, nDto.GetNumStr())
+	}
+
+}
+
+func TestNumStrDto_NewInt64_05(t *testing.T) {
+
+	intNum := int64(-7)
+	precision := uint(0)
+
+	expectedStr := "-7"
+
+	nDto, err := NumStrDto{}.NewInt64(intNum,precision)
+
+	if err != nil {
+		t.Errorf("Error returned by NumStrDto{}.NewInt64(intNum,precision) " +
+			"Error='%v' ", err.Error())
+	}
+
+	actualNumStr := nDto.GetNumStr()
+
+	if expectedStr != actualNumStr {
+		t.Errorf("Expected nDto.GetNumStr()='%v'. Instead, nDto.GetNumStr()='%v'.",
+			expectedStr, nDto.GetNumStr())
+	}
+
+}
 
 func TestNumStrDto_NewNumStr_01(t *testing.T) {
 	nStr := "123.456"
@@ -418,6 +763,48 @@ func TestNumStrDto_NewBigIntNum_01(t *testing.T) {
 			nStr, nDto.GetNumStr())
 	}
 
+}
+
+func TestNumStrDto_NewZero_01(t *testing.T) {
+
+	expectedStr := "0"
+
+	nDto := NumStrDto{}.NewZero(0)
+
+	actualNumStr := nDto.GetNumStr()
+
+	if expectedStr != actualNumStr {
+		t.Errorf("Expected nDto.GetNumStr()='%v'. Instead, nDto.GetNumStr()='%v'.",
+			expectedStr, nDto.GetNumStr())
+	}
+}
+
+func TestNumStrDto_NewZero_02(t *testing.T) {
+
+	expectedStr := "0.00"
+
+	nDto := NumStrDto{}.NewZero(2)
+
+	actualNumStr := nDto.GetNumStr()
+
+	if expectedStr != actualNumStr {
+		t.Errorf("Expected nDto.GetNumStr()='%v'. Instead, nDto.GetNumStr()='%v'.",
+			expectedStr, nDto.GetNumStr())
+	}
+}
+
+func TestNumStrDto_NewZero_03(t *testing.T) {
+
+	expectedStr := "0.0000"
+
+	nDto := NumStrDto{}.NewZero(4)
+
+	actualNumStr := nDto.GetNumStr()
+
+	if expectedStr != actualNumStr {
+		t.Errorf("Expected nDto.GetNumStr()='%v'. Instead, nDto.GetNumStr()='%v'.",
+			expectedStr, nDto.GetNumStr())
+	}
 }
 
 func TestNumStrDto_ParseNumStr_01(t *testing.T) {

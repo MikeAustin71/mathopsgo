@@ -2484,8 +2484,8 @@ func (nDto NumStrDto) NewNumStr(numStr string) (NumStrDto, error) {
 // will be copied to the returned NumStrDto instance.
 //
 func (nDto NumStrDto) NewNumStrWithNumSeps(
-	numStr string,
-	numSeps NumericSeparatorDto) (NumStrDto, error) {
+						numStr string,
+								numSeps NumericSeparatorDto) (NumStrDto, error) {
 
 	ePrefix :=  "IntAry.NewNumStrWithNumSeps() "
 
