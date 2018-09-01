@@ -2544,6 +2544,26 @@ func (nDto NumStrDto) NewPtr() *NumStrDto {
 	return &n
 }
 
+
+// Creates a new NumStrDto with a value of zero and a precision specified by
+// input parameter 'precision'.
+func (nDto NumStrDto) NewZero(precision uint) NumStrDto {
+
+	numStr := "0"
+
+	if precision > 0 {
+		numStr += "."
+
+		for i:=uint(0); i < precision; i++ {
+			numStr += "0"
+		}
+	}
+
+	n2, _ := NumStrDto{}.NewPtr().ParseNumStr(numStr)
+
+	return n2
+}
+
 // ParseBigIntNum - Receives a BigIntNum instance and coverts it to a NumStrDto
 // instance which is returned to the calling function.
 //

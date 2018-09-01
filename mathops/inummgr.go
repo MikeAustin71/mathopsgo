@@ -11,6 +11,7 @@ type INumMgr interface {
 	GetNumericSeparatorsDto() NumericSeparatorDto
 	GetNumStrDto() (NumStrDto, error)
 	GetPrecisionUint() uint
+	GetSign() int
 	IsValid(errName string) error
 	IsZero() bool
 	SetNumericSeparatorsToDefaultIfEmpty()
