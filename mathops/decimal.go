@@ -1,9 +1,9 @@
 package mathops
 
 import (
+	"errors"
 	"fmt"
 	"math/big"
-	"errors"
 )
 
 /*
@@ -1522,6 +1522,33 @@ func (dec Decimal) NewInt(iNum int, precision uint) (Decimal, error) {
 		fmt.Errorf("Decimal.NewInt() Error returned by " +
 			"d2.SetInt(iNum, precision). iNum='%v' precision='%v' Error='%v'",
 				iNum, precision, err.Error())
+	}
+
+	return d2, nil
+}
+
+// NewI32 - Returns a Decimal type based on int32 and precision
+// input parameters. If an error is encountered, it will trigger
+// a panic condition.
+//
+// The 'NewI32' method is designed to used in conjunction
+// with Decimal{} thereby allowing Decimal creation
+// and initialization in one step.
+//
+// Example: Decimal{}.NewI32(i32, precision)
+//	Decimal{}.NewI32(123456, 3) = 123.456
+//
+func (dec Decimal) NewI32(i64 int32, precision uint) (Decimal, error) {
+
+	d2 := Decimal{}.New()
+
+	err := d2.SetInt64(int64(i64), precision)
+
+	if err != nil {
+		return Decimal{},
+			fmt.Errorf("Decimal.NewInt() Error returned by " +
+				"d2.SetInt64(i64, precision). i64='%v' precision='%v' Error='%v'",
+				i64, precision, err.Error())
 	}
 
 	return d2, nil
