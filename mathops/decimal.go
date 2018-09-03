@@ -2451,14 +2451,16 @@ func (dec *Decimal) SetFloatBig(bigFloat *big.Float) error {
 	return nil
 }
 
-// Sets the value of the current Decimal to the input parameter 'iNum'
-// scaled to the value of precision. In other words, if 'iNum' is set
-// to a value of '123456' and precision is set to '3', the current
+// SetInt - Sets the value of the current Decimal to the input parameter 'iNum'
+// scaled to the value of input parameter 'precision'. In other words, if 'iNum'
+// is set to a value of '123456' and precision is set to '3', the current
 // Decimal will be set to a value of '123.456'.
 //
 // Example usage:
-// d:= Decimal{}.NewBigIntNum()
-// d.SetInt(123456, 3)
+// d:= Decimal{}.NewBigIntNum(9876)
+// The numeric value of 'd' is now, 9876.
+//
+// d.SetInt(123456, 3) yields a new value for 'd' of 123.456.
 //
 // Existing numeric separators (decimal separator, thousands separator
 // and currency symbol) remain unchanged and are not altered by this method.
@@ -2468,6 +2470,36 @@ func (dec *Decimal) SetInt(iNum int, precision uint) {
 	iBig := big.NewInt(int64(iNum))
 
 	dec.bigINum.SetBigInt(iBig, precision)
+
+	return
+}
+
+// SetInt32 - Sets the value of the current Decimal to the input parameter
+// 'int32Num' scaled to the value of input parameter, 'precision'. In other
+// words, if 'int64Num' is set to a value of '123456' and precision is set
+// to '3', the current Decimal will be set to a numeric value of '123.456'.
+//
+// Using the same example, an int32 value of '123456' and a precision
+// value of zero ('0') will yield an integer value of '123456'.
+//
+// Input parameter 'int32Num' is an int32 type.
+//
+// Input parameter 'precision' is an uint type which indicates the number
+// of digits to be formatted to the right of the decimal place.
+//
+// Existing numeric separators (decimal separator, thousands separator
+// and currency symbol) remain unchanged and are not altered by this method.
+//
+// Example usage:
+// d:= Decimal{}.NewBigIntNum(956789) yields numeric value of decimal instance 'd'
+//     equals 956789.
+//
+// int32Num:= int32(123456)
+// d.SetInt32(int32Num, 3) sets the numeric value of Decimal instance 'd' to 123.456.
+//
+func (dec *Decimal) SetInt32(int32Num int32, precision uint) {
+
+	dec.bigINum.SetBigInt(big.NewInt(int64(int32Num)), precision)
 
 	return
 }
@@ -2846,7 +2878,67 @@ func (dec *Decimal) SetThousandsSeparator(thousandsSeparator rune) error {
 }
 
 
-// SetUint64 - Sets the value of the current Decimal instamce to the input
+// SetUint - Sets the value of the current Decimal instance to the input
+// parameter 'uintNum' scaled to the value of input parameter 'precision'.
+// In other words, if 'uintNum' is set to a value of '123456' and precision
+// is set to '3', the current Decimal will be set to a numeric value of
+// '123.456'.
+//
+// Using the same example, an uint32 value of '123456' and a precision value
+// of zero ('0') will yield a numeric value of '123456'.
+//
+// Input parameter 'uintNum' is an uint type.
+//
+// Input parameter 'precision' is an uint type which indicates the number
+// of digits to be formatted to the right of the decimal place.
+//
+// Existing numeric separators (decimal separator, thousands separator
+// and currency symbol) remain unchanged and are not altered by this method.
+//
+// Example usage:
+// d:= Decimal{}.NewBigIntNum(956789) = numeric value of decimal instance 'd'
+//     equals 956789.
+//
+// uintNum := uint(123456)
+// d.SetUint(uintNum, 3) sets the numeric value of Decimal instance 'd' to 123.456.
+//
+func (dec *Decimal) SetUint(uintNum uint, precision uint) {
+
+	dec.bigINum.SetBigInt(big.NewInt(0).SetUint64(uint64(uintNum)), precision)
+
+}
+
+// SetUint32 - Sets the value of the current Decimal instance to the input
+// parameter 'uint32Num' scaled to the value of input parameter 'precision'.
+// In other words, if 'uint32Num' is set to a value of '123456' and precision
+// is set to '3', the current Decimal will be set to a numeric value of
+// '123.456'.
+//
+// Using the same example, an uint32 value of '123456' and a precision value
+// of zero ('0') will yield a numeric value of '123456'.
+//
+// Input parameter 'uint32Num' is an uint32 type.
+//
+// Input parameter 'precision' is an uint type which indicates the number
+// of digits to be formatted to the right of the decimal place.
+//
+// Existing numeric separators (decimal separator, thousands separator
+// and currency symbol) remain unchanged and are not altered by this method.
+//
+// Example usage:
+// d:= Decimal{}.NewBigIntNum(956789) = numeric value of decimal instance 'd'
+//     equals 956789.
+//
+// uint32Num := uint32(123456)
+// d.SetUint32(uint32Num, 3) sets the numeric value of Decimal instance 'd' to 123.456.
+//
+func (dec *Decimal) SetUint32(uint32Num uint32, precision uint) {
+
+	dec.bigINum.SetBigInt(big.NewInt(0).SetUint64(uint64(uint32Num)), precision)
+
+}
+
+// SetUint64 - Sets the value of the current Decimal instance to the input
 // parameter 'uint64Num' scaled to the value of input parameter 'precision'.
 // In other words, if 'uint64Num' is set to a value of '123456' and precision
 // is set to '3', the current Decimal will be set to a numeric value of

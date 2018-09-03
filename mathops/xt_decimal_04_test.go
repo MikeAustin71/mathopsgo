@@ -1172,6 +1172,262 @@ func TestDecimal_SetIntFracStrings_05(t *testing.T) {
 
 }
 
+func TestDecimal_SetUint_01(t *testing.T) {
+
+	fVal := uint(9225)
+	eNumStr := "92.25"
+	ePrecision := uint(2)
+
+	d1 := Decimal{}.New()
+
+	d1.SetUint(fVal, ePrecision)
+
+	if !d1.GetIsValid() {
+		t.Errorf("Expected IsValid == 'true'. Instead got IsValid= '%v'", d1.GetIsValid())
+	}
+
+	actualNumStr := d1.GetNumStr()
+
+	if eNumStr != actualNumStr {
+		t.Errorf("Error: Expected result='%v'. Instead, result='%v'. ",
+			eNumStr, actualNumStr)
+	}
+
+}
+
+func TestDecimal_SetUint_02(t *testing.T) {
+
+	fVal := uint(9225)
+	eNumStr := "9.225"
+	ePrecision := uint(3)
+
+	d1 := Decimal{}.New()
+
+	d1.SetUint(fVal, ePrecision)
+
+	if !d1.GetIsValid() {
+		t.Errorf("Expected IsValid == 'true'. Instead got IsValid= '%v'", d1.GetIsValid())
+	}
+
+	actualNumStr := d1.GetNumStr()
+
+	if eNumStr != actualNumStr {
+		t.Errorf("Error: Expected result='%v'. Instead, result='%v'. ",
+			eNumStr, actualNumStr)
+	}
+
+}
+
+func TestDecimal_SetUint_03(t *testing.T) {
+
+	origNumStr := "123.456"
+
+	d1, err := Decimal{}.NewNumStr(origNumStr)
+
+	if err != nil {
+		t.Errorf("Error returned by Decimal{}.NewNumStr(origNumStr). ")
+	}
+
+	actualNumStr := d1.GetNumStr()
+
+	if origNumStr != actualNumStr {
+		t.Errorf("Error: Expected origNumStr='%v'. Instead, origNumStr='%v'. ",
+			origNumStr, actualNumStr)
+	}
+
+	fVal := uint(9225)
+	eNumStr := "9225"
+	ePrecision := uint(0)
+
+	d1.SetUint(fVal, ePrecision)
+
+	if !d1.GetIsValid() {
+		t.Errorf("Expected IsValid == 'true'. Instead got IsValid= '%v'", d1.GetIsValid())
+	}
+
+	actualNumStr = d1.GetNumStr()
+
+	if eNumStr != actualNumStr {
+		t.Errorf("Error: Expected result='%v'. Instead, result='%v'. ",
+			eNumStr, actualNumStr)
+	}
+
+}
+
+func TestDecimal_SetUint_04(t *testing.T) {
+
+	fVal := uint(0)
+	eNumStr := "0"
+	ePrecision := uint(0)
+
+	d1 := Decimal{}.New()
+
+	d1.SetUint(fVal, ePrecision)
+
+	if !d1.GetIsValid() {
+		t.Errorf("Expected IsValid == 'true'. Instead got IsValid= '%v'", d1.GetIsValid())
+	}
+
+	actualNumStr := d1.GetNumStr()
+
+	if eNumStr != actualNumStr {
+		t.Errorf("Error: Expected result='%v'. Instead, result='%v'. ",
+			eNumStr, actualNumStr)
+	}
+
+}
+
+func TestDecimal_SetUint_05(t *testing.T) {
+
+	fVal := uint(0)
+	eNumStr := "0.000"
+	ePrecision := uint(3)
+
+	d1 := Decimal{}.New()
+
+	d1.SetUint(fVal, ePrecision)
+
+	if !d1.GetIsValid() {
+		t.Errorf("Expected IsValid == 'true'. Instead got IsValid= '%v'", d1.GetIsValid())
+	}
+
+	actualNumStr := d1.GetNumStr()
+
+	if eNumStr != actualNumStr {
+		t.Errorf("Error: Expected result='%v'. Instead, result='%v'. ",
+			eNumStr, actualNumStr)
+	}
+
+}
+
+func TestDecimal_SetUint32_01(t *testing.T) {
+
+	fVal := uint32(9225)
+	eNumStr := "92.25"
+	ePrecision := uint(2)
+
+	d1 := Decimal{}.New()
+
+	d1.SetUint32(fVal, ePrecision)
+
+	if !d1.GetIsValid() {
+		t.Errorf("Expected IsValid == 'true'. Instead got IsValid= '%v'", d1.GetIsValid())
+	}
+
+	actualNumStr := d1.GetNumStr()
+
+	if eNumStr != actualNumStr {
+		t.Errorf("Error: Expected result='%v'. Instead, result='%v'. ",
+			eNumStr, actualNumStr)
+	}
+
+}
+
+func TestDecimal_SetUint32_02(t *testing.T) {
+
+	fVal := uint32(9225)
+	eNumStr := "9.225"
+	ePrecision := uint(3)
+
+	d1 := Decimal{}.New()
+
+	d1.SetUint32(fVal, ePrecision)
+
+	if !d1.GetIsValid() {
+		t.Errorf("Expected IsValid == 'true'. Instead got IsValid= '%v'", d1.GetIsValid())
+	}
+
+	actualNumStr := d1.GetNumStr()
+
+	if eNumStr != actualNumStr {
+		t.Errorf("Error: Expected result='%v'. Instead, result='%v'. ",
+			eNumStr, actualNumStr)
+	}
+
+}
+
+func TestDecimal_SetUint32_03(t *testing.T) {
+
+	origNumStr := "123.456"
+
+	d1, err := Decimal{}.NewNumStr(origNumStr)
+
+	if err != nil {
+		t.Errorf("Error returned by Decimal{}.NewNumStr(origNumStr). ")
+	}
+
+	actualNumStr := d1.GetNumStr()
+
+	if origNumStr != actualNumStr {
+		t.Errorf("Error: Expected origNumStr='%v'. Instead, origNumStr='%v'. ",
+			origNumStr, actualNumStr)
+	}
+
+	fVal := uint32(9225)
+	eNumStr := "9225"
+	ePrecision := uint(0)
+
+	d1.SetUint32(fVal, ePrecision)
+
+	if !d1.GetIsValid() {
+		t.Errorf("Expected IsValid == 'true'. Instead got IsValid= '%v'", d1.GetIsValid())
+	}
+
+	actualNumStr = d1.GetNumStr()
+
+	if eNumStr != actualNumStr {
+		t.Errorf("Error: Expected result='%v'. Instead, result='%v'. ",
+			eNumStr, actualNumStr)
+	}
+
+}
+
+func TestDecimal_SetUint32_04(t *testing.T) {
+
+	fVal := uint32(0)
+	eNumStr := "0"
+	ePrecision := uint(0)
+
+	d1 := Decimal{}.New()
+
+	d1.SetUint32(fVal, ePrecision)
+
+	if !d1.GetIsValid() {
+		t.Errorf("Expected IsValid == 'true'. Instead got IsValid= '%v'", d1.GetIsValid())
+	}
+
+	actualNumStr := d1.GetNumStr()
+
+	if eNumStr != actualNumStr {
+		t.Errorf("Error: Expected result='%v'. Instead, result='%v'. ",
+			eNumStr, actualNumStr)
+	}
+
+}
+
+func TestDecimal_SetUint32_05(t *testing.T) {
+
+	fVal := uint32(0)
+	eNumStr := "0.000"
+	ePrecision := uint(3)
+
+	d1 := Decimal{}.New()
+
+	d1.SetUint32(fVal, ePrecision)
+
+	if !d1.GetIsValid() {
+		t.Errorf("Expected IsValid == 'true'. Instead got IsValid= '%v'", d1.GetIsValid())
+	}
+
+	actualNumStr := d1.GetNumStr()
+
+	if eNumStr != actualNumStr {
+		t.Errorf("Error: Expected result='%v'. Instead, result='%v'. ",
+			eNumStr, actualNumStr)
+	}
+
+}
+
 func TestDecimal_SetUint64_01(t *testing.T) {
 
 	fVal := uint64(9225)
