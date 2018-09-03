@@ -31,10 +31,10 @@ func TestDecimal_NewI64_01(t *testing.T) {
 	i64 := int64(123456)
 	precision := uint(3)
 	expected := "123.456"
-	d, err := Decimal{}.NewI64(i64, precision)
+	d, err := Decimal{}.NewInt64(i64, precision)
 
 	if err != nil {
-		t.Errorf("Error returned by Decimal{}.NewI64(i64, precision) " +
+		t.Errorf("Error returned by Decimal{}.NewInt64(i64, precision) " +
 			"i64='%v' precision='%v'  Error = '%v' ",
 			i64, precision, err.Error())
 	}

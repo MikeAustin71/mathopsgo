@@ -1513,16 +1513,10 @@ func (dec Decimal) NewBigIntNum(bigINum BigIntNum) Decimal {
 // Example: Decimal{}.NewInt(123456, 3) = 123.456
 //
 func (dec Decimal) NewInt(iNum int, precision uint) (Decimal, error) {
+
 	d2 := Decimal{}.New()
 
-	err := d2.SetInt(iNum, precision)
-
-	if err != nil {
-		return Decimal{},
-		fmt.Errorf("Decimal.NewInt() Error returned by " +
-			"d2.SetInt(iNum, precision). iNum='%v' precision='%v' Error='%v'",
-				iNum, precision, err.Error())
-	}
+	d2.SetInt(iNum, precision)
 
 	return d2, nil
 }
@@ -1544,39 +1538,26 @@ func (dec Decimal) NewInt32(i64 int32, precision uint) (Decimal, error) {
 
 	d2 := Decimal{}.New()
 
-	err := d2.SetInt64(int64(i64), precision)
-
-	if err != nil {
-		return Decimal{},
-			fmt.Errorf("Decimal.NewInt() Error returned by " +
-				"d2.SetInt64(i64, precision). i64='%v' precision='%v' Error='%v'",
-				i64, precision, err.Error())
-	}
+	d2.SetInt64(int64(i64), precision)
 
 	return d2, nil
 }
 
-// NewI64 - Returns a Decimal type based on int64 and precision
+// NewInt64 - Returns a Decimal type based on int64 and precision
 // input parameters. If an error is encountered, it will trigger
 // a panic condition.
 //
-// The 'NewI64' method is designed to used in conjunction
+// The 'NewInt64' method is designed to used in conjunction
 // with Decimal{} thereby allowing Decimal creation
 // and initialization in one step.
 //
-// Example: Decimal{}.NewI64(i64, precision)
-//	Decimal{}.NewI64(123456, 3) = 123.456
+// Example: Decimal{}.NewInt64(i64, precision)
+//	Decimal{}.NewInt64(123456, 3) = 123.456
 //
-func (dec Decimal) NewI64(i64 int64, precision uint) (Decimal, error) {
+func (dec Decimal) NewInt64(int64Num int64, precision uint) (Decimal, error) {
 	d2 := Decimal{}.New()
-	err := d2.SetInt64(i64, precision)
 
-	if err != nil {
-		return Decimal{},
-			fmt.Errorf("Decimal.NewInt() Error returned by " +
-				"d2.SetInt64(i64, precision). i64='%v' precision='%v' Error='%v'",
-				i64, precision, err.Error())
-	}
+	d2.SetInt64(int64Num, precision)
 
 	return d2, nil
 }
@@ -2482,13 +2463,43 @@ func (dec *Decimal) SetFloatBig(bigFloat *big.Float) error {
 // Existing numeric separators (decimal separator, thousands separator
 // and currency symbol) remain unchanged and are not altered by this method.
 //
-func (dec *Decimal) SetInt(iNum int, precision uint) error {
+func (dec *Decimal) SetInt(iNum int, precision uint) {
 
 	iBig := big.NewInt(int64(iNum))
 
 	dec.bigINum.SetBigInt(iBig, precision)
 
-	return nil
+	return
+}
+
+// SetInt64 - Sets the value of the current Decimal to the input parameter
+// 'i64' scaled to the value of precision. In other words, if 'i64' is set
+// to a value of '123456' and precision is set to '3', the current
+// Decimal will be set to a numeric value of '123.456'.
+//
+// Using the same example, an int64 value of '123456' and a precision
+// value of zero ('0') will yield an integer value of '123456'.
+//
+// Input parameter 'i64' is an int64 type.
+//
+// Input parameter 'precision' is an uint type which indicates the number
+// of digits to be formatted to the right of the decimal place.
+//
+// Existing numeric separators (decimal separator, thousands separator
+// and currency symbol) remain unchanged and are not altered by this method.
+//
+// Example usage:
+// d:= Decimal{}.NewBigIntNum(956789) = numeric value of decimal instance 'd'
+//     equals 956789.
+//
+// i64:= int64(123456)
+// d.SetInt64(i64, 3) sets the numeric value of Decimal instance 'd' to 123.456.
+//
+func (dec *Decimal) SetInt64(i64 int64, precision uint) {
+
+	dec.bigINum.SetBigInt(big.NewInt(i64), precision)
+
+	return
 }
 
 // SetIntFracStrings - Sets the value of a decimal based on separate
@@ -2532,36 +2543,6 @@ func (dec *Decimal) SetIntFracStrings(intNum, fracNum string, signVal int) error
 	}
 
 	dec.bigINum.CopyIn(binIntNum)
-
-	return nil
-}
-
-// SetInt64 - Sets the value of the current Decimal to the input parameter
-// 'i64' scaled to the value of precision. In other words, if 'i64' is set
-// to a value of '123456' and precision is set to '3', the current
-// Decimal will be set to a numeric value of '123.456'.
-//
-// Using the same example, an int64 value of '123456' and a precision
-// value of zero ('0') will yield an integer value of '123456'.
-//
-// Input parameter 'i64' is an int64 type.
-//
-// Input parameter 'precision' is an uint type which indicates the number
-// of digits to be formatted to the right of the decimal place.
-//
-// Existing numeric separators (decimal separator, thousands separator
-// and currency symbol) remain unchanged and are not altered by this method.
-//
-// Example usage:
-// d:= Decimal{}.NewBigIntNum(956789) = numeric value of decimal instance 'd'
-//     equals 956789.
-//
-// i64:= int64(123456)
-// d.SetInt64(i64, 3) sets the numeric value of Decimal instance 'd' to 123.456.
-//
-func (dec *Decimal) SetInt64(i64 int64, precision uint) error {
-
-	dec.bigINum.SetBigInt(big.NewInt(i64), precision)
 
 	return nil
 }
