@@ -2370,20 +2370,17 @@ func (nDto NumStrDto) NewFloat64(f64 float64, precision int) (NumStrDto, error) 
 // instance with a numeric value of 123.456.
 //
 func (nDto NumStrDto) NewInt(intNum int, precision uint) (NumStrDto, error) {
-	ePrefix := "NumStrDto.NewInt() "
 
-	numStr := strconv.FormatInt(int64(intNum), 10)
-
-	n2, err := NumStrDto{}.NewPtr().ParseNumStr(numStr)
+	n2, err := NumStrDto{}.NewInt64(int64(intNum), precision)
 
 	if err != nil {
-		return NumStrDto{},
-			fmt.Errorf(ePrefix + "Error returned by n.ParseNumStr(numStr). " +
-				"numStr='%v'  Error='%v'",
-				numStr, err.Error())
-	}
 
-	n2.SetThisPrecision(precision, true)
+		ePrefix := "NumStrDto.NewInt() "
+
+		return NumStrDto{},
+		fmt.Errorf(ePrefix + "Error returned by NumStrDto{}.NewInt64(intNum, precision). " +
+			"Error='%v' ", err.Error())
+	}
 
 	return n2, nil
 }
@@ -2408,27 +2405,7 @@ func (nDto NumStrDto) NewInt(intNum int, precision uint) (NumStrDto, error) {
 //
 func (nDto NumStrDto) NewIntExponent(intNum int, exponent int) NumStrDto {
 
-	numStr := strconv.FormatInt(int64(intNum), 10)
-
-	if exponent > 0 {
-		for i:= 0; i < exponent; i++ {
-			numStr += "0"
-		}
-	}
-
-	if exponent < 0 {
-		exponent = exponent * -1
-	}
-
-	var n2 NumStrDto
-
-	if exponent == 0 {
-		n2, _ = NumStrDto{}.NewNumStr(numStr)
-	} else {
-		n2, _ = nDto.ShiftPrecisionLeft(numStr, uint(exponent))
-	}
-
-	return n2
+	return NumStrDto{}.NewInt64Exponent(int64(intNum), exponent)
 }
 
 // NewInt32 - Creates a new NumStrDto instance from an int32 and a
@@ -2444,21 +2421,18 @@ func (nDto NumStrDto) NewIntExponent(intNum int, exponent int) NumStrDto {
 // Example: NumStrDto{}.NewInt32(123456, 3) yields a new NumStrDto
 // instance with a numeric value of 123.456.
 //
-func (nDto NumStrDto) NewInt32(i32 int32, precision uint) (NumStrDto, error) {
-	ePrefix := "NumStrDto.NewInt32() "
+func (nDto NumStrDto) NewInt32(int32Num int32, precision uint) (NumStrDto, error) {
 
-	numStr := strconv.FormatInt(int64(i32), 10)
-
-	n2, err := NumStrDto{}.NewPtr().ParseNumStr(numStr)
+	n2, err := NumStrDto{}.NewInt64(int64(int32Num), precision)
 
 	if err != nil {
-		return NumStrDto{},
-			fmt.Errorf(ePrefix + "Error returned by n.ParseNumStr(numStr). " +
-				"numStr='%v'  Error='%v'",
-				numStr, err.Error())
-	}
 
-	n2.SetThisPrecision(precision, true)
+		ePrefix := "NumStrDto.NewInt32() "
+
+		return NumStrDto{},
+			fmt.Errorf(ePrefix + "Error returned by NumStrDto{}.NewInt64(intNum, precision). " +
+				"Error='%v' ", err.Error())
+	}
 
 	return n2, nil
 }
@@ -2483,27 +2457,7 @@ func (nDto NumStrDto) NewInt32(i32 int32, precision uint) (NumStrDto, error) {
 //
 func (nDto NumStrDto) NewInt32Exponent(int32Num int32, exponent int) NumStrDto {
 
-	numStr := strconv.FormatInt(int64(int32Num), 10)
-
-	if exponent > 0 {
-		for i:= 0; i < exponent; i++ {
-			numStr += "0"
-		}
-	}
-
-	if exponent < 0 {
-		exponent = exponent * -1
-	}
-
-	var n2 NumStrDto
-
-	if exponent == 0 {
-		n2, _ = NumStrDto{}.NewNumStr(numStr)
-	} else {
-		n2, _ = nDto.ShiftPrecisionLeft(numStr, uint(exponent))
-	}
-
-	return n2
+	return NumStrDto{}.NewInt64Exponent(int64(int32Num), exponent)
 }
 
 // NewInt64 - Creates a new NumStrDto instance from an int64 and a
