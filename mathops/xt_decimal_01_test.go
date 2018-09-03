@@ -1632,12 +1632,7 @@ func TestDecimal_GetBigIntNum_01(t *testing.T) {
 
 	expectedBigIntNum := BigIntNum{}.NewBigInt(bigI, precision)
 
-	dec, err := Decimal{}.NewBigInt(bigI, precision)
-
-	if err != nil {
-		t.Errorf("Error returned by Decimal{}.NewBigInt(bigI, precision). " +
-			"Error='%v' ", err.Error())
-	}
+	dec := Decimal{}.NewBigInt(bigI, precision)
 
 	bigINum, err := dec.GetBigIntNum()
 
@@ -1730,13 +1725,7 @@ func TestDecimal_GetIntAry_01(t *testing.T) {
 	bigI := big.NewInt(int64(123456123456))
 	precision := uint(6)
 	exStr := "123456.123456"
-	d, err := Decimal{}.NewBigInt(bigI, precision)
-
-	if err != nil {
-		t.Errorf("Error returned by Decimal{}.NewBigInt(bigI, precision). " +
-			"Error='%v' ", err.Error())
-	}
-
+	d := Decimal{}.NewBigInt(bigI, precision)
 
 	signVal := 1
 
@@ -1764,13 +1753,7 @@ func TestDecimal_GetIntAry_02(t *testing.T) {
 	bigI := big.NewInt(int64(-123456123456))
 	precision := uint(6)
 	exStr := "-123456.123456"
-	d, err := Decimal{}.NewBigInt(bigI, precision)
-
-	if err != nil {
-		t.Errorf("Error returned by Decimal{}.NewBigInt(bigI, precision). " +
-			"bigI='%v' precision='%v' Error='%v' ",
-				bigI.String(), precision, err.Error())
-	}
+	d := Decimal{}.NewBigInt(bigI, precision)
 
 	signVal := -1
 

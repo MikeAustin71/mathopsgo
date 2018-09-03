@@ -1474,22 +1474,13 @@ func (dec Decimal) NewPtr() *Decimal {
 // bigI := big.NewInt(123456)
 // Decimal{}.NewBigInt(bigI, 3) = 123.456
 //
-func (dec Decimal) NewBigInt(bigI *big.Int, precision uint) (Decimal, error) {
+func (dec Decimal) NewBigInt(bigI *big.Int, precision uint) Decimal {
 
 	d2 := Decimal{}.New()
 
-	err := d2.SetBigInt(bigI, precision)
+	d2.SetBigInt(bigI, precision)
 
-	if err != nil {
-		return Decimal{},
-		fmt.Errorf("Decimal.NewBigInt() Error returned by " +
-			"d2.SetBigInt(bigI, precision) " +
-			"bigI='%v' precision='%v' Error='%v'",
-				bigI.String(), precision, err.Error())
-	}
-
-
-	return d2, nil
+	return d2
 }
 
 // NewBigIntNum - Returns a Decimal instance based on input
@@ -1524,7 +1515,7 @@ func (dec Decimal) NewBigIntNum(bigINum BigIntNum) Decimal {
 //
 // Examples:
 // ---------
-//   intNum				precision			BigIntNum Result
+//   intNum				precision			Decimal Result
 //	 123456		 		   4							12.3456
 //   123456          0              123456
 //   123456          1              12345.6
@@ -1581,7 +1572,9 @@ func (dec Decimal) NewIntExponent(intNum int, exponent int) Decimal {
 //
 // Input parameter 'int32Num' is of type int32.
 //
-// Input parameter 'exponent' is of type int.
+// Input parameter 'precision' indicates the number of digits to be
+// formatted to the right of the decimal place. Input parameter
+// 'precision' is of type uint.
 //
 // Usage:
 // ------
@@ -1596,7 +1589,7 @@ func (dec Decimal) NewIntExponent(intNum int, exponent int) Decimal {
 //
 // Examples:
 // ---------
-//   int32Num			precision			BigIntNum Result
+//   int32Num			precision			Decimal Result
 //	 123456		 		   4							12.3456
 //   123456          0              123456
 //   123456          1              12345.6
@@ -1673,7 +1666,7 @@ func (dec Decimal) NewInt32Exponent(int32Num int32, exponent int) Decimal {
 //
 // Examples:
 // ---------
-//   int32Num			precision			BigIntNum Result
+//   int32Num			precision			 Decimal Result
 //	 123456		 		   4							12.3456
 //   123456          0              123456
 //   123456          1              12345.6
@@ -2150,6 +2143,44 @@ func (dec Decimal) NewTwo(precision uint) Decimal {
 	return d2
 }
 
+
+// NewUint64 - Returns a new Decimal instance based on input parameters
+// 'uint64Num' and 'precision'.
+//
+// Input parameter 'uint64Num' is of type uint64.
+//
+// Input parameter 'precision' indicates the number of digits to be
+// formatted to the right of the decimal place. Input parameter
+// 'precision' is of type uint.
+//
+// Usage:
+// ------
+// This method is designed to be used in conjunction with the Decimal{}
+// syntax thereby allowing Decimal type creation and initialization in
+// one step.
+//
+// 				uint64Num := uint64(123456)
+// 				precision := uint(3)
+// 				dec := Decimal{}.NewUint64(int32Num, precision)
+//        dec is now equal to 123.456
+//
+// Examples:
+// ---------
+//  uint64Num			precision			Decimal Result
+//	 123456		 		   4							12.3456
+//   123456          0              123456
+//   123456          1              12345.6
+//
+func (dec Decimal) NewUint64(uint64Num uint64, precision uint) Decimal {
+
+	d2 := Decimal{}.New()
+	d2.bigINum.SetBigInt(big.NewInt(0).SetUint64(uint64Num), precision)
+	d2.bigINum.SetNumericSeparatorsDto(dec.GetNumericSeparatorsDto())
+
+	return d2
+}
+
+
 // NewZero - Creates a New Decimal Instance with a value of zero. Input
 // parameter 'precision' indicates the number of zeros formatted to the
 // right of the decimal place.
@@ -2465,23 +2496,17 @@ func (dec *Decimal) SetBigIntNum(bigINum BigIntNum) {
 // d:= Decimal{}.NewBigIntNum()
 // iBig := big.NewInt(int64(123))
 // d.SetBigInt(iBig, 1)
+// This yields a numeric value of d = 12.3
 //
-func (dec *Decimal) SetBigInt(iBig *big.Int, precision uint) error {
+func (dec *Decimal) SetBigInt(iBig *big.Int, precision uint) {
 
 	numSeps := dec.bigINum.GetNumericSeparatorsDto()
 
 	dec.bigINum = BigIntNum{}.NewBigInt(iBig, precision)
 
-	err := dec.bigINum.SetNumericSeparatorsDto(numSeps)
+	dec.bigINum.SetNumericSeparatorsDto(numSeps)
 
-	if err != nil {
-		ePrefix := "Decimal.SetBigInt() "
-		return fmt.Errorf(ePrefix +
-			"Error returned by dec.bigINum.SetNumericSeparatorsDto(numSeps). ")
-	}
-
-	return nil
-
+	return
 }
 
 // SetCurrencySymbol - sets the character which serves as the

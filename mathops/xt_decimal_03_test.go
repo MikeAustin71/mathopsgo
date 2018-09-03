@@ -11,14 +11,7 @@ func TestDecimal_NewBigInt_01(t *testing.T) {
 	bigI := big.NewInt(int64(123456123456))
 	precision := uint(6)
 	expected := "123456.123456"
-	d, err  := Decimal{}.NewBigInt(bigI, precision)
-
-	if err != nil {
-		t.Errorf("Error Returned by Decimal{}.NewBigInt(bigI, precision). " +
-			"bigI= '%v' precision= '%v' Error= %v",
-			bigI.String(), precision, err)
-	}
-
+	d := Decimal{}.NewBigInt(bigI, precision)
 
 	if expected != d.GetNumStr() {
 		t.Errorf("Expected NumStr: %v. Instead, got %v", expected, d.GetNumStr())

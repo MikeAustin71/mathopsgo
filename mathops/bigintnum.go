@@ -1356,15 +1356,7 @@ func (bNum *BigIntNum) GetDecimal() (Decimal, error) {
 		return Decimal{}, err
 	}
 
-	dec, err := Decimal{}.NewBigInt(big.NewInt(0).Set(bNum.bigInt), bNum.precision)
-
-	if err != nil {
-		return Decimal{},
-			fmt.Errorf (ePrefix +
-				"Error returned by Decimal{}.NewBigInt(bNum.bigInt, bNum.precision) " +
-				"bNum.bigInt='%v' bNum.precision='%v' Error='%v'",
-				bNum.bigInt.Text(10), bNum.precision, err.Error())
-	}
+	dec := Decimal{}.NewBigInt(big.NewInt(0).Set(bNum.bigInt), bNum.precision)
 
 	err = dec.SetNumericSeparatorsDto(bNum.GetNumericSeparatorsDto())
 
