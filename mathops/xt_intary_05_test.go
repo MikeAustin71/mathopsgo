@@ -1,8 +1,8 @@
 package mathops
 
 import (
-	"testing"
 	"math/big"
+	"testing"
 )
 
 func TestIntAry_MultiplyByTenToPower_01(t *testing.T) {
@@ -1016,14 +1016,10 @@ func TestIntAry_NewInt32_02(t *testing.T) {
 
 func TestIntAry_NewInt_01(t *testing.T) {
 	num := int(123456)
-	precision := 3
-	ia, err := IntAry{}.NewInt(num, precision)
+	precision := uint(3)
+	ia := IntAry{}.NewInt(num, precision)
 	eStr := "123.456"
 	eSignVal := 1
-
-	if err != nil {
-		t.Errorf("Error returned from intAry{}.NewInt(num, precision). num= %v  precision= %v  Error= %v", num, precision, err)
-	}
 
 	if eStr != ia.GetNumStr() {
 		t.Errorf("Expected ia.GetNumStr()== %v  .   Instead ia.GetNumStr() == %v", eStr, ia.GetNumStr())
@@ -1041,14 +1037,10 @@ func TestIntAry_NewInt_01(t *testing.T) {
 
 func TestIntAry_NewInt_02(t *testing.T) {
 	num := int(-123456)
-	precision := 3
-	ia, err := IntAry{}.NewInt(num, precision)
+	precision := uint(3)
+	ia := IntAry{}.NewInt(num, precision)
 	eStr := "-123.456"
 	eSignVal := -1
-
-	if err != nil {
-		t.Errorf("Error returned from intAry{}.NewInt32(num, precision). num= %v  precision= %v Error= %v", num, precision, err)
-	}
 
 	if eStr != ia.GetNumStr() {
 		t.Errorf("Expected ia.GetNumStr()== %v  .   Instead ia.GetNumStr() == %v", eStr, ia.GetNumStr())

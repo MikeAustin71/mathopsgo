@@ -632,7 +632,7 @@ func (ia *IntAry) AddToThis(ia2 *IntAry) error {
 //
 //	num int 				-	The integer number to be added to the current IntAry object.
 //
-//  precision int 	- The precision which should be applied to the int64 input
+//  precision uint 	- The precision which should be applied to the int64 input
 //										parameter to designate the number of digits to the right
 //										of the decimal point. Example:  num = 123456, precision = 3
 //										Result = 123.456 will be added to the current value of the
@@ -646,17 +646,13 @@ func (ia *IntAry) AddToThis(ia2 *IntAry) error {
 //  -946254  			   3					      -946.254
 //  -946254				   0						    -946254
 //
-func (ia *IntAry) AddIntToThis(num int, precision int) error {
+func (ia *IntAry) AddIntToThis(num int, precision uint)  {
 
-	ia2, err := IntAry{}.NewInt(num, precision)
-
-	if err != nil {
-		return err
-	}
+	ia2 := IntAry{}.NewInt(num, precision)
 
 	IntAryMathAdd{}.RunTotal(ia, &ia2)
 
-	return nil
+	return
 }
 
 // AddInt64ToThis - Adds an integer (int64) to the value of the
@@ -2555,15 +2551,7 @@ func (ia *IntAry) GetNumStrDto() (NumStrDto, error) {
 //									to the right of the decimal place in the result.
 func (ia *IntAry) GetNthRootOfThis(nthRoot, maxPrecision int) (IntAry, error) {
 
-	iaNthRoot, err := IntAry{}.NewInt(nthRoot, 0)
-
-	if err != nil {
-		ePrefix := "IntAry.GetNthRootOfThis() "
-		return IntAry{}.NewZero(0),
-		fmt.Errorf(ePrefix +
-			"Error returned by IntAry{}.NewInt(nthRoot, 0) Error='%v' ",
-				err.Error())
-	}
+	iaNthRoot := IntAry{}.NewInt(nthRoot, 0)
 
 	nthRt := NthRootOp{}
 
@@ -2731,7 +2719,7 @@ func (ia *IntAry) GetSciNotationNumber(mantissaLen uint) (SciNotationNum, error)
 
 		iaNew.DivideByTenToPower(uint(magnitudeInt))
 
-		iaMagnitude, _ := IntAry{}.NewInt(magnitudeInt, 0)
+		iaMagnitude := IntAry{}.NewInt(magnitudeInt, 0)
 
 		if ia.precision > 50000 {
 			iaNew.SetPrecision(50000, true)
@@ -2762,14 +2750,7 @@ func (ia *IntAry) GetSciNotationNumber(mantissaLen uint) (SciNotationNum, error)
 
 		intMagnitudeFrac = intMagnitudeFrac - ia.precision
 
-		iaMagnitude, err := IntAry{}.NewInt(intMagnitudeFrac, 0)
-
-		if err != nil {
-			return SciNotationNum{}.New(),
-				fmt.Errorf(ePrefix +
-					"Error returned by IntAry{}.NewInt(intMagnitudeFrac, 0). "+
-					"Error='%v'", err.Error())
-		}
+		iaMagnitude := IntAry{}.NewInt(intMagnitudeFrac, 0)
 
 		err = sciNotationNum.SetIntAryElements(iaFracPart, iaMagnitude )
 
@@ -3174,11 +3155,7 @@ func (ia *IntAry) Inverse(maxPrecision int) (IntAry, error) {
 
 	internalPrecision := maxPrecision + 50
 
-	iaOne, err := IntAry{}.NewInt(1, 0)
-
-	if err != nil {
-		return IntAry{}.New(), fmt.Errorf("InverseOfThis() - Error returned from intAry{}.NewInt(1, 0). Error= %v", err)
-	}
+	iaOne := IntAry{}.NewInt(1, 0)
 
 	iaInverse, err := iaOne.DivideThisBy(ia, 0, internalPrecision)
 
@@ -3568,20 +3545,16 @@ func (ia IntAry) NewFloatBig(num *big.Float, precision int) (IntAry, error) {
 // ia, err := intAry{}.NewInt32(num, precision)
 // - Yields 123.456
 //
-func (ia IntAry) NewInt(num int, precision int) (IntAry, error) {
+func (ia IntAry) NewInt(num int, precision uint) IntAry {
 
 	iAry := IntAry{}.New()
-	err := iAry.SetIntAryWithInt(num, precision)
+	iAry.SetIntAryWithInt(num, precision)
 
-	if err != nil {
-		return IntAry{}, err
-	}
-
-	return iAry, nil
+	return iAry
 }
 
 // NewInt32 - Creates a new intAry object initialized
-// to the value of input parameter 'num' which is passed
+// to the value of input parameter 'int32Num' which is passed
 // as type 'int32'.
 //
 // Input parameter 'precision' indicates the number of digits
@@ -3591,13 +3564,13 @@ func (ia IntAry) NewInt(num int, precision int) (IntAry, error) {
 //
 // Usage:
 // num := int32(123456)
-// precision := uint(3)
+// precision := int(3)
 // ia, err := intAry{}.NewInt32(num, precision)
 //
-func (ia IntAry) NewInt32(num int32, precision int) (IntAry, error) {
+func (ia IntAry) NewInt32(int32Num int32, precision int) (IntAry, error) {
 
 	iAry := IntAry{}.New()
-	err := iAry.SetIntAryWithInt32(num, precision)
+	err := iAry.SetIntAryWithInt32(int32Num, precision)
 
 	if err != nil {
 		return IntAry{}, err
@@ -3958,15 +3931,9 @@ func (ia *IntAry) Pow(power, maxResultPrecision, internalPrecision int) error {
 	pwr := big.NewInt(int64(power))
 	return ia.pwrByTwos(pwr, maxResultPrecision, internalPrecision)
 	*/
-	iaPower, err := IntAry{}.NewInt(power, 0)
+	iaPower := IntAry{}.NewInt(power, 0)
 
-	if err != nil {
-		return fmt.Errorf(ePrefix +
-			"Error returned by IntAry{}.NewInt(power, 0). " +
-			"Error='%v' ", err.Error())
-	}
-
-	err = IntAryMathPower{}.Pwr(ia, &iaPower, 0, maxResultPrecision )
+	err := IntAryMathPower{}.Pwr(ia, &iaPower, 0, maxResultPrecision )
 
 	if err != nil {
 		return fmt.Errorf(ePrefix +
@@ -4526,11 +4493,12 @@ func (ia *IntAry) SetIntAryToZero(precision int) error {
 }
 
 // SetIntAryWithInt - Sets the value of the current intAry object
-// to that of the input parameter 'intDigits', an integer of type 'int'.
+// to that of the input parameter 'intDigits', an integer of type
+// 'int'.
 //
-// Input parameter 'precision' to indicate the number of
-// digits to the right of the decimal place. If the value of input
-// parameter 'precision' is negative, an error will be returned.
+// Input parameter 'precision' to indicate the number of digits
+// to the right of the decimal place. Input parameter 'precision'
+// is of type uint.
 //
 // The numeric sign (plus or minus) of the resulting intAry value
 // is determined by the sign of input parameter,'intDigits'.
@@ -4541,7 +4509,7 @@ func (ia *IntAry) SetIntAryToZero(precision int) error {
 //  -946254  			   3					      -946.254
 //  -946254				   0						    -946254
 //
-func (ia *IntAry) SetIntAryWithInt(intDigits int, precision int) error {
+func (ia *IntAry) SetIntAryWithInt(intDigits int, precision uint) {
 	quotient := 0
 	mod := 0
 
@@ -4557,7 +4525,7 @@ func (ia *IntAry) SetIntAryWithInt(intDigits int, precision int) error {
 
 	if intDigits == 0 {
 		ia.SetIntAryToZero(int(precision))
-		return nil
+		return
 	}
 
 	for true {
@@ -4589,7 +4557,7 @@ func (ia *IntAry) SetIntAryWithInt(intDigits int, precision int) error {
 
 	ia.SetInternalFlags()
 
-	return nil
+	return
 }
 
 // SetIntAryWithInt32 - Sets the value of the current intAry object

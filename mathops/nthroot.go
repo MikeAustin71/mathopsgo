@@ -1,9 +1,9 @@
 package mathops
 
 import (
-	"math/big"
-	"fmt"
 	"errors"
+	"fmt"
+	"math/big"
 )
 
 /*
@@ -111,14 +111,7 @@ func (nthrt *NthRootOp) GetNthRootFloat32(radicand float32, precision, nthRoot ,
 				"radicand= %v, precision=%v Error= %v \n", radicand, precision, err)
 	}
 
-	iaNthRoot, err := IntAry{}.NewInt(nthRoot,0)
-
-	if err != nil {
-		return IntAry{}.New(), fmt.Errorf(ePrefix +
-			"- Error IntAry{}.NewInt(nthRoot, precision) " +
-			"radicand= %v, precision=%v Error= %v \n", radicand, precision, err)
-	}
-
+	iaNthRoot := IntAry{}.NewInt(nthRoot,0)
 
 	return nthrt.GetNthRootIntAry(&ai, &iaNthRoot, maxPrecision)
 
@@ -155,9 +148,7 @@ func (nthrt *NthRootOp) GetNthRootFloat64(radicand float64, precision, nthRoot, 
 			"nthRoot= %v, precision=%v Error= %v ", nthRoot, precision, err)
 	}
 
-	iaNthRoot, err := IntAry{}.NewInt(nthRoot, 0)
-
-
+	iaNthRoot := IntAry{}.NewInt(nthRoot, 0)
 
 	return nthrt.GetNthRootIntAry(&ai, &iaNthRoot, maxPrecision)
 }
@@ -190,13 +181,7 @@ func (nthrt *NthRootOp) GetNthRootBigFloat(radicand *big.Float, nthRoot, maxPrec
 				radicand, err.Error())
 	}
 
-	iaNthRoot, err := IntAry{}.NewInt(nthRoot, 0)
-
-	if err != nil {
-		return IntAry{}.New(), fmt.Errorf(ePrefix +
-			"- Error ai.SetIntAryWithFloatBig(radicand) radicand= %v Error= %v ",
-			radicand, err.Error())
-	}
+	iaNthRoot := IntAry{}.NewInt(nthRoot, 0)
 
 	return nthrt.GetNthRootIntAry(&ai, &iaNthRoot, maxPrecision)
 }
@@ -206,7 +191,8 @@ func (nthrt *NthRootOp) GetNthRootBigFloat(radicand *big.Float, nthRoot, maxPrec
 // input parameters for 'precision', 'nthRoot' and 'maxPrecision'.
 //
 // 'precision' specifies the number of digits in the int64 parameter, 'radicand', which
-// will be positioned to the right of the decimal place.
+// will be positioned to the right of the decimal place. If 'precision' is a negative
+// value, an error will be returned.
 //
 // Nth root specifies the root which will be calculated for parameter, 'radicand'. Example,
 // square root, cube root, 4th root etc.
@@ -224,23 +210,27 @@ func (nthrt *NthRootOp) GetNthRootInt(radicand, precision, nthRoot, maxPrecision
 
 	ai := IntAry{}.New()
 
-	err := ai.SetIntAryWithInt(radicand, precision)
-
-	if err != nil {
-		return IntAry{}.New(), fmt.Errorf(ePrefix +
-			"- Error ai.SetIntAryWithInt32(radicand, precision) " +
-			"radicand= %v, precision=%v Error= %v ", radicand, precision, err.Error())
+	if precision < 0 {
+		return IntAry{},
+		fmt.Errorf(ePrefix +
+			"Error: Input parameter 'precision' is a negative value! precision='%v'",
+			precision)
 	}
 
-	iaNthRoot, err := IntAry{}.NewInt(nthRoot, 0)
+	ai.SetIntAryWithInt(radicand, uint(precision))
+
+	iaNthRoot := IntAry{}.NewInt(nthRoot, 0)
+
+	iaResult, err := nthrt.GetNthRootIntAry(&ai, &iaNthRoot, maxPrecision)
 
 	if err != nil {
-		return IntAry{}.New(), fmt.Errorf(ePrefix +
-			"- Error ai.SetIntAryWithInt32(radicand, precision) " +
-			"radicand= %v, precision=%v Error= %v ", radicand, precision, err.Error())
+		return IntAry{},
+		 fmt.Errorf(ePrefix +
+		 	"Error returned by nthrt.GetNthRootIntAry(&ai, &iaNthRoot, maxPrecision) " +
+		 	"Error='%v' ", err.Error())
 	}
 
-	return nthrt.GetNthRootIntAry(&ai, &iaNthRoot, maxPrecision)
+	return iaResult, nil
 }
 
 // GetNthRootInt64 - Calculates the Nth Root of a positive real number ('radicand')
@@ -274,13 +264,7 @@ func (nthrt *NthRootOp) GetNthRootInt64(radicand int64, precision, nthRoot, maxP
 			"radicand= %v, precision=%v Error= %v ", radicand, precision, err.Error())
 	}
 
-	iaNthRoot, err := IntAry{}.NewInt(nthRoot, 0)
-
-	if err != nil {
-		return IntAry{}.New(), fmt.Errorf(ePrefix +
-			"- Error returned by IntAry{}.NewInt(nthRoot, 0) " +
-			"nthRoot= %v, Error= %v \n", nthRoot, err.Error())
-	}
+	iaNthRoot := IntAry{}.NewInt(nthRoot, 0)
 
 	return nthrt.GetNthRootIntAry(&ai, &iaNthRoot, maxPrecision)
 }
@@ -316,13 +300,7 @@ func (nthrt *NthRootOp) GetNthRootBigInt(radicand *big.Int, precision, nthRoot, 
 			"radicand= %v, precision=%v Error= %v \n", radicand, precision, err.Error())
 	}
 
-	iaNthRoot, err := IntAry{}.NewInt(nthRoot, 0)
-
-	if err != nil {
-		return IntAry{}.New(), fmt.Errorf(ePrefix +
-			"- Error returned by IntAry{}.NewInt(nthRoot, 0) " +
-			"nthRoot= %v, Error= %v \n", radicand, err.Error())
-	}
+	iaNthRoot := IntAry{}.NewInt(nthRoot, 0)
 
 	return nthrt.GetNthRootIntAry(&ai, &iaNthRoot, maxPrecision)
 }
@@ -453,7 +431,8 @@ func (nthrt *NthRootOp) GetSquareRootBigFloat(radicand *big.Float, maxPrecision 
 // parameters for 'precision' and 'maxPrecision'.
 //
 // 'precision' specifies the number of digits in the 'int' parameter, 'radicand', which
-// will be positioned to the right of the decimal place.
+// will be positioned to the right of the decimal place. If 'precision' is a negative
+// value an error will be returned.
 //
 // 'maxPrecision' specifies the number of decimals to the right of the decimal place to
 // which the square root will be calculated.
@@ -464,16 +443,18 @@ func (nthrt *NthRootOp) GetSquareRootBigFloat(radicand *big.Float, maxPrecision 
 //
 func (nthrt *NthRootOp) GetSquareRootInt(radicand int, precision, maxPrecision int) (IntAry, error) {
 
+	ePrefix := "NthRootOp.GetSquareRootInt() "
+
 	ai := IntAry{}.New()
 
-	err := ai.SetIntAryWithInt(radicand, precision)
-
-	if err != nil {
-		return IntAry{}.New(),
-		fmt.Errorf("NthRootOp.GetSquareRootInt() - " +
-			"Error ai.SetIntAryWithInt(radicand, precision) " +
-			"radicand= %v, precision=%v Error= %v ", radicand, precision, err.Error())
+	if precision < 0 {
+		return IntAry{},
+		fmt.Errorf(ePrefix +
+			"Error: Input parameter 'precision' is a negative value! precision='%v'",
+			precision)
 	}
+
+	ai.SetIntAryWithInt(radicand, uint(precision))
 
 	return nthrt.GetSquareRootIntAry(&ai, maxPrecision)
 }

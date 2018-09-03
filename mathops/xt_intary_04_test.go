@@ -176,7 +176,8 @@ func TestIntAry_GetDecimalSeparator_02(t *testing.T) {
 }
 
 func TestIntAry_GetDecimalSeparator_03(t *testing.T) {
-	ia, _ := IntAry{}.NewInt(5064, 2)
+
+	ia := IntAry{}.NewInt(5064, 2)
 
 	decimalSeparator := ia.GetDecimalSeparator()
 

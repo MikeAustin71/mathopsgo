@@ -1,23 +1,18 @@
 package mathops
 
 import (
-	"testing"
 	"math/big"
+	"testing"
 )
 
 func TestIntAry_AddIntToThis_01(t *testing.T) {
 	ia1, _ := IntAry{}.NewNumStr("25")
 
 	num := 50
-	precision := 0
+	precision := uint(0)
 	expected := "75"
 
-	err := ia1.AddIntToThis(num, precision)
-
-
-	if err != nil {
-		t.Errorf("Error returned from ia1.AddIntToThis(50, 0). err='%v'", err)
-	}
+	ia1.AddIntToThis(num, precision)
 
 	result := ia1.GetNumStr()
 
@@ -30,15 +25,11 @@ func TestIntAry_AddIntToThis_02(t *testing.T) {
 	ia1, _ := IntAry{}.NewNumStr("100")
 
 	num := -25
-	precision := 0
+	precision := uint(0)
 
-	err := ia1.AddIntToThis(num, precision)
+	ia1.AddIntToThis(num, precision)
 
 	expected := "75"
-
-	if err != nil {
-		t.Errorf("Error returned from ia1.AddIntToThis(num, 0). num='%v' err='%v'", num, err)
-	}
 
 	result := ia1.GetNumStr()
 
@@ -51,15 +42,11 @@ func TestIntAry_AddIntToThis_03(t *testing.T) {
 	ia1, _ := IntAry{}.NewNumStr("-100")
 
 	num := -25
-	precision := 0
+	precision := uint(0)
 
-	err := ia1.AddIntToThis(num, precision)
+	ia1.AddIntToThis(num, precision)
 
 	expected := "-125"
-
-	if err != nil {
-		t.Errorf("Error returned from ia1.AddIntToThis(num, 0). num='%v' err='%v'", num, err)
-	}
 
 	result := ia1.GetNumStr()
 
@@ -67,7 +54,7 @@ func TestIntAry_AddIntToThis_03(t *testing.T) {
 		t.Errorf("Expected result='%v'. Instead, result='%v' ",expected, result)
 	}
 
-	if ia1.GetPrecision() != precision {
+	if ia1.GetPrecisionUint() != precision {
 		t.Errorf("Expected ia1.GetPrecision= '%v'.  Instead, ia1.GetPrecision='%v' ",
 			precision, ia1.GetPrecision())
 	}
@@ -77,15 +64,10 @@ func TestIntAry_AddIntToThis_04(t *testing.T) {
 	ia1, _ := IntAry{}.NewNumStr("25.75")
 
 	num := 5050
-	precision := 2
+	precision := uint(2)
 	expected := "76.25"
 
-	err := ia1.AddIntToThis(num, precision)
-
-
-	if err != nil {
-		t.Errorf("Error returned from ia1.AddIntToThis(num, precision). num='%v' precision='%v' err='%v'",num, precision, err)
-	}
+	ia1.AddIntToThis(num, precision)
 
 	result := ia1.GetNumStr()
 
@@ -98,15 +80,11 @@ func TestIntAry_AddIntToThis_05(t *testing.T) {
 	ia1, _ := IntAry{}.NewNumStr("100.925")
 
 	num := -25967
-	precision := 3
+	precision := uint(3)
 
-	err := ia1.AddIntToThis(num, precision)
+	ia1.AddIntToThis(num, precision)
 
 	expected := "74.958"
-
-	if err != nil {
-		t.Errorf("Error returned from ia1.AddIntToThis(num, precision). num='%v' precision='%v' err='%v'", num, precision, err)
-	}
 
 	result := ia1.GetNumStr()
 
@@ -114,7 +92,7 @@ func TestIntAry_AddIntToThis_05(t *testing.T) {
 		t.Errorf("Error: Expected result='%v'. Instead, result='%v' ",expected, result)
 	}
 
-	if precision != ia1.GetPrecision() {
+	if precision != ia1.GetPrecisionUint() {
 		t.Errorf("Error: Expected precision='%v'.  Instead precision='%v'", precision, ia1.GetPrecision())
 	}
 
@@ -124,16 +102,12 @@ func TestIntAry_AddIntToThis_06(t *testing.T) {
 	ia1, _ := IntAry{}.NewNumStr("-100.35842")
 
 	num := -1256984
-	precision := 4
-	outPrecision := 5
+	precision := uint(4)
+	outPrecision := uint(5)
 
-	err := ia1.AddIntToThis(num, precision)
+	ia1.AddIntToThis(num, precision)
 
 	expected := "-226.05682"
-
-	if err != nil {
-		t.Errorf("Error returned from ia1.AddIntToThis(num, precision). num='%v' precision='%v' err='%v'", num, precision, err)
-	}
 
 	result := ia1.GetNumStr()
 
@@ -141,7 +115,7 @@ func TestIntAry_AddIntToThis_06(t *testing.T) {
 		t.Errorf("Expected result='%v'. Instead, result='%v' ",expected, result)
 	}
 
-	if ia1.GetPrecision() != outPrecision {
+	if ia1.GetPrecisionUint() != outPrecision {
 		t.Errorf("Expected ia1.GetPrecision= '%v'.  Instead, ia1.GetPrecision='%v' ", outPrecision, ia1.GetPrecision())
 	}
 }
@@ -150,16 +124,12 @@ func TestIntAry_AddIntToThis_07(t *testing.T) {
 	ia1, _ := IntAry{}.NewNumStr("0")
 
 	num := 0
-	precision := 0
-	outPrecision := 0
+	precision := uint(0)
+	outPrecision := uint(0)
 
-	err := ia1.AddIntToThis(num, precision)
+	ia1.AddIntToThis(num, precision)
 
 	expected := "0"
-
-	if err != nil {
-		t.Errorf("Error returned from ia1.AddIntToThis(num, precision). num='%v' precision='%v' err='%v'", num, precision, err)
-	}
 
 	result := ia1.GetNumStr()
 
@@ -167,7 +137,7 @@ func TestIntAry_AddIntToThis_07(t *testing.T) {
 		t.Errorf("Expected result='%v'. Instead, result='%v' ",expected, result)
 	}
 
-	if ia1.GetPrecision() != outPrecision {
+	if ia1.GetPrecisionUint() != outPrecision {
 		t.Errorf("Expected ia1.GetPrecision= '%v'.  Instead, ia1.GetPrecision='%v' ", outPrecision, ia1.GetPrecision())
 	}
 }
@@ -176,16 +146,12 @@ func TestIntAry_AddIntToThis_08(t *testing.T) {
 	ia1, _ := IntAry{}.NewNumStr("0.00")
 
 	num := 000
-	precision := 2
-	outPrecision := 2
+	precision := uint(2)
+	outPrecision := uint(2)
 
-	err := ia1.AddIntToThis(num, precision)
+	ia1.AddIntToThis(num, precision)
 
 	expected := "0.00"
-
-	if err != nil {
-		t.Errorf("Error returned from ia1.AddIntToThis(num, precision). num='%v' precision='%v' err='%v'", num, precision, err)
-	}
 
 	result := ia1.GetNumStr()
 
@@ -193,7 +159,7 @@ func TestIntAry_AddIntToThis_08(t *testing.T) {
 		t.Errorf("Expected result='%v'. Instead, result='%v' ",expected, result)
 	}
 
-	if ia1.GetPrecision() != outPrecision {
+	if ia1.GetPrecisionUint() != outPrecision {
 		t.Errorf("Expected ia1.GetPrecision= '%v'.  Instead, ia1.GetPrecision='%v' ", outPrecision, ia1.GetPrecision())
 	}
 }
@@ -206,7 +172,6 @@ func TestIntAry_AddInt64ToThis_01(t *testing.T) {
 	expected := "75"
 
 	err := ia1.AddInt64ToThis(num, precision)
-
 
 	if err != nil {
 		t.Errorf("Error returned from ia1.AddInt64ToThis(50, 0). err='%v'", err)

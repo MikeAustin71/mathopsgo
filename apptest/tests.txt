@@ -321,7 +321,7 @@
 === RUN   TestBigIntMathDivide_BigIntNumModulo_04
 --- PASS: TestBigIntMathDivide_BigIntNumModulo_04 (0.00s)
 === RUN   TestBigIntMathDivide_BigIntNumModulo_05
---- PASS: TestBigIntMathDivide_BigIntNumModulo_05 (0.01s)
+--- PASS: TestBigIntMathDivide_BigIntNumModulo_05 (0.00s)
 === RUN   TestBigIntMathDivide_BigIntNumModulo_06
 --- PASS: TestBigIntMathDivide_BigIntNumModulo_06 (0.00s)
 === RUN   TestBigIntMathDivide_BigIntNumModulo_07
@@ -2855,7 +2855,7 @@
 === RUN   TestIntAry_DivideThisBy_12
 --- PASS: TestIntAry_DivideThisBy_12 (0.00s)
 === RUN   TestIntAry_DivideThisBy_13
---- PASS: TestIntAry_DivideThisBy_13 (0.84s)
+--- PASS: TestIntAry_DivideThisBy_13 (0.85s)
 === RUN   TestIntAry_DivideThisBy_14
 --- PASS: TestIntAry_DivideThisBy_14 (0.00s)
 === RUN   TestIntAry_DivideThisBy_15
@@ -3739,7 +3739,7 @@
 === RUN   TestNthRootOp_GetNthRootIntAry_26
 --- PASS: TestNthRootOp_GetNthRootIntAry_26 (0.00s)
 === RUN   TestNthRootOp_GetNthRootIntAry_27
---- PASS: TestNthRootOp_GetNthRootIntAry_27 (2.88s)
+--- PASS: TestNthRootOp_GetNthRootIntAry_27 (2.89s)
 === RUN   TestNthRootOp_GetSquareRootFloat32_01
 --- PASS: TestNthRootOp_GetSquareRootFloat32_01 (0.00s)
 === RUN   TestNthRootOp_GetSquareRootFloat64_01
@@ -4757,4 +4757,4 @@
 === RUN   TestStrMathOp_SubtractN1N2_19
 --- PASS: TestStrMathOp_SubtractN1N2_19 (0.00s)
 PASS
-ok  	MikeAustin71/mathopsgo/mathops	8.962s
+ok  	MikeAustin71/mathopsgo/mathops	12.059s
