@@ -1,8 +1,8 @@
 package mathops
 
 import (
-	"testing"
 	"math/big"
+	"testing"
 )
 
 
@@ -1168,6 +1168,134 @@ func TestDecimal_SetIntFracStrings_05(t *testing.T) {
 	if !actualNumSeps.Equal(expectedNumSeps) {
 		t.Errorf("Error: Expected numeric separators are NOT equal to actual numeric separators. " +
 			"Expected numSeps= %v   Actual numSeps= %v", expectedNumSeps.String(), actualNumSeps.String())
+	}
+
+}
+
+func TestDecimal_SetUint64_01(t *testing.T) {
+
+	fVal := uint64(9225)
+	eNumStr := "92.25"
+	ePrecision := uint(2)
+
+	d1 := Decimal{}.New()
+
+	d1.SetUint64(fVal, ePrecision)
+
+	if !d1.GetIsValid() {
+		t.Errorf("Expected IsValid == 'true'. Instead got IsValid= '%v'", d1.GetIsValid())
+	}
+
+	actualNumStr := d1.GetNumStr()
+
+	if eNumStr != actualNumStr {
+		t.Errorf("Error: Expected result='%v'. Instead, result='%v'. ",
+			eNumStr, actualNumStr)
+	}
+
+}
+
+func TestDecimal_SetUint64_02(t *testing.T) {
+
+	fVal := uint64(9225)
+	eNumStr := "9.225"
+	ePrecision := uint(3)
+
+	d1 := Decimal{}.New()
+
+	d1.SetUint64(fVal, ePrecision)
+
+	if !d1.GetIsValid() {
+		t.Errorf("Expected IsValid == 'true'. Instead got IsValid= '%v'", d1.GetIsValid())
+	}
+
+	actualNumStr := d1.GetNumStr()
+
+	if eNumStr != actualNumStr {
+		t.Errorf("Error: Expected result='%v'. Instead, result='%v'. ",
+			eNumStr, actualNumStr)
+	}
+
+}
+
+func TestDecimal_SetUint64_03(t *testing.T) {
+
+	origNumStr := "123.456"
+
+	d1, err := Decimal{}.NewNumStr(origNumStr)
+
+	if err != nil {
+		t.Errorf("Error returned by Decimal{}.NewNumStr(origNumStr). ")
+	}
+
+	actualNumStr := d1.GetNumStr()
+
+	if origNumStr != actualNumStr {
+		t.Errorf("Error: Expected origNumStr='%v'. Instead, origNumStr='%v'. ",
+			origNumStr, actualNumStr)
+	}
+
+	fVal := uint64(9225)
+	eNumStr := "9225"
+	ePrecision := uint(0)
+
+	d1.SetUint64(fVal, ePrecision)
+
+	if !d1.GetIsValid() {
+		t.Errorf("Expected IsValid == 'true'. Instead got IsValid= '%v'", d1.GetIsValid())
+	}
+
+	actualNumStr = d1.GetNumStr()
+
+	if eNumStr != actualNumStr {
+		t.Errorf("Error: Expected result='%v'. Instead, result='%v'. ",
+			eNumStr, actualNumStr)
+	}
+
+}
+
+func TestDecimal_SetUint64_04(t *testing.T) {
+
+	fVal := uint64(0)
+	eNumStr := "0"
+	ePrecision := uint(0)
+
+	d1 := Decimal{}.New()
+
+	d1.SetUint64(fVal, ePrecision)
+
+	if !d1.GetIsValid() {
+		t.Errorf("Expected IsValid == 'true'. Instead got IsValid= '%v'", d1.GetIsValid())
+	}
+
+	actualNumStr := d1.GetNumStr()
+
+	if eNumStr != actualNumStr {
+		t.Errorf("Error: Expected result='%v'. Instead, result='%v'. ",
+			eNumStr, actualNumStr)
+	}
+
+}
+
+func TestDecimal_SetUint64_05(t *testing.T) {
+
+	fVal := uint64(0)
+	eNumStr := "0.000"
+	ePrecision := uint(3)
+
+	d1 := Decimal{}.New()
+
+	d1.SetUint64(fVal, ePrecision)
+
+	if !d1.GetIsValid() {
+		t.Errorf("Expected IsValid == 'true'. Instead got IsValid= '%v'", d1.GetIsValid())
+	}
+
+	actualNumStr := d1.GetNumStr()
+
+	if eNumStr != actualNumStr {
+		t.Errorf("Error: Expected result='%v'. Instead, result='%v'. ",
+			eNumStr, actualNumStr)
 	}
 
 }

@@ -5,7 +5,6 @@ import (
 	"testing"
 )
 
-
 func TestNumStrDto_NewBigIntNum_01(t *testing.T) {
 	nStr := "123.456"
 
