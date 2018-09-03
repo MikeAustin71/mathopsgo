@@ -2521,7 +2521,7 @@ func (bNum BigIntNum) NewFloat64(f64 float64, maxPrecision uint) (BigIntNum, err
 //
 // 				num := int(123456)
 // 				precision := uint(3)
-// 				bINum, err := BigIntNum{}.NewInt(num, precision)
+// 				bINum := BigIntNum{}.NewInt(num, precision)
 //        bINum is now equal to 123.456
 //
 // Examples:
@@ -2592,7 +2592,7 @@ func (bNum BigIntNum) NewIntExponent(intNum int, exponent int) BigIntNum {
 //
 // 				num := int32(123456)
 // 				precision := uint(3)
-// 				bINum, err := BigIntNum{}.NewInt32(num, precision)
+// 				bINum := BigIntNum{}.NewInt32(num, precision)
 //        bINum is now equal to 123.456
 //
 // Examples:
@@ -2664,7 +2664,7 @@ func (bNum BigIntNum) NewInt32Exponent(int32Num int32, exponent int) BigIntNum {
 //
 // 				num := int64(123456)
 // 				precision := uint(3)
-// 				bINum, err := BigIntNum{}.NewInt64(num, precision)
+// 				bINum := BigIntNum{}.NewInt64(num, precision)
 //        bINum is now equal to 123.456
 //
 // Examples:
@@ -3160,7 +3160,7 @@ func (bNum BigIntNum) NewZero(precision uint) BigIntNum {
 //
 // 				num := uint(123456)
 // 				precision := uint(3)
-// 				bINum, err := BigIntNum{}.NewUint(num, precision)
+// 				bINum := BigIntNum{}.NewUint(num, precision)
 //        bINum is now equal to 123.456
 //
 // Examples:
@@ -3231,7 +3231,7 @@ func (bNum BigIntNum) NewUintExponent(uintNum uint, exponent int) BigIntNum {
 //
 // 				num := uint32(123456)
 // 				precision := uint(3)
-// 				bINum, err := BigIntNum{}.NewUint32(num, precision)
+// 				bINum := BigIntNum{}.NewUint32(num, precision)
 //        bINum is now equal to 123.456
 //
 // Examples:
@@ -3302,7 +3302,7 @@ func (bNum BigIntNum) NewUint32Exponent(uint32Num uint32, exponent int) BigIntNu
 //
 // 				num := uint64(123456)
 // 				precision := uint(3)
-// 				bINum, err := BigIntNum{}.NewUint64(num, precision)
+// 				bINum := BigIntNum{}.NewUint64(num, precision)
 //        bINum is now equal to 123.456
 //
 // Examples:

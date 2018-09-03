@@ -1,8 +1,8 @@
 package mathops
 
 import (
-	"testing"
 	"math/big"
+	"testing"
 )
 
 
@@ -49,13 +49,73 @@ func TestDecimal_NewInt_01(t *testing.T) {
 	iNum := int(123456)
 	precision := uint(3)
 	expected := "123.456"
-	d, err := Decimal{}.NewInt(iNum, precision)
+	d := Decimal{}.NewInt(iNum, precision)
 
-	if err != nil {
-		t.Errorf("Error returned by Decimal{}.NewInt(iNum, precision). " +
-			"iNum='%v' precision='%v' Error='%v'",
-			iNum, precision, err.Error())
+	if expected != d.GetNumStr() {
+		t.Errorf("Expected NumStr: %v. Instead, got %v", expected, d.GetNumStr())
 	}
+}
+
+func TestDecimal_NewInt_02(t *testing.T) {
+	iNum := int(123456)
+	precision := uint(0)
+	expected := "123456"
+	d := Decimal{}.NewInt(iNum, precision)
+
+	if expected != d.GetNumStr() {
+		t.Errorf("Expected NumStr: %v. Instead, got %v", expected, d.GetNumStr())
+	}
+}
+
+func TestDecimal_NewInt_03(t *testing.T) {
+	iNum := int(-123456)
+	precision := uint(3)
+	expected := "-123.456"
+	d := Decimal{}.NewInt(iNum, precision)
+
+	if expected != d.GetNumStr() {
+		t.Errorf("Expected NumStr: %v. Instead, got %v", expected, d.GetNumStr())
+	}
+}
+
+func TestDecimal_NewInt_04(t *testing.T) {
+	iNum := int(-123456)
+	precision := uint(0)
+	expected := "-123456"
+	d := Decimal{}.NewInt(iNum, precision)
+
+	if expected != d.GetNumStr() {
+		t.Errorf("Expected NumStr: %v. Instead, got %v", expected, d.GetNumStr())
+	}
+}
+
+func TestDecimal_NewInt_05(t *testing.T) {
+	iNum := int(0)
+	precision := uint(0)
+	expected := "0"
+	d := Decimal{}.NewInt(iNum, precision)
+
+	if expected != d.GetNumStr() {
+		t.Errorf("Expected NumStr: %v. Instead, got %v", expected, d.GetNumStr())
+	}
+}
+
+func TestDecimal_NewInt_06(t *testing.T) {
+	iNum := int(0)
+	precision := uint(0)
+	expected := "0"
+	d := Decimal{}.NewInt(iNum, precision)
+
+	if expected != d.GetNumStr() {
+		t.Errorf("Expected NumStr: %v. Instead, got %v", expected, d.GetNumStr())
+	}
+}
+
+func TestDecimal_NewInt_07(t *testing.T) {
+	iNum := int(0)
+	precision := uint(4)
+	expected := "0.0000"
+	d := Decimal{}.NewInt(iNum, precision)
 
 	if expected != d.GetNumStr() {
 		t.Errorf("Expected NumStr: %v. Instead, got %v", expected, d.GetNumStr())

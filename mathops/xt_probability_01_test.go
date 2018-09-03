@@ -706,19 +706,9 @@ func TestProbability_PermutationsBigIntNum_12(t *testing.T) {
 
 func TestProbability_PermutationsDecimal_01(t *testing.T) {
 
-	numOfItems, err  := Decimal{}.NewInt(3,0)
+	numOfItems := Decimal{}.NewInt(3,0)
 
-	if err != nil {
-		t.Errorf("Error returned by Decimal{}.NewInt(3,0). " +
-			"Error='%v' ", err.Error())
-	}
-
-	numOfItemsPicked, err := Decimal{}.NewInt(2, 0)
-
-	if err != nil {
-		t.Errorf("Error returned by Decimal{}.NewInt(2,0). " +
-			"Error='%v' ", err.Error())
-	}
+	numOfItemsPicked := Decimal{}.NewInt(2, 0)
 
 	allowRepetitions := false
 
@@ -743,19 +733,9 @@ func TestProbability_PermutationsDecimal_01(t *testing.T) {
 
 func TestProbability_PermutationsDecimal_02(t *testing.T) {
 
-	numOfItems, err  := Decimal{}.NewInt(3,0)
+	numOfItems := Decimal{}.NewInt(3,0)
 
-	if err != nil {
-		t.Errorf("Error returned by Decimal{}.NewInt(3,0). " +
-			"Error='%v' ", err.Error())
-	}
-
-	numOfItemsPicked, err := Decimal{}.NewInt(2, 0)
-
-	if err != nil {
-		t.Errorf("Error returned by Decimal{}.NewInt(2,0). " +
-			"Error='%v' ", err.Error())
-	}
+	numOfItemsPicked := Decimal{}.NewInt(2, 0)
 
 	allowRepetitions := true
 	expectedResultStr := "9"
@@ -778,19 +758,9 @@ func TestProbability_PermutationsDecimal_02(t *testing.T) {
 
 func TestProbability_PermutationsDecimal_03(t *testing.T) {
 
-	numOfItems, err  := Decimal{}.NewInt(10,0)
+	numOfItems := Decimal{}.NewInt(10,0)
 
-	if err != nil {
-		t.Errorf("Error returned by Decimal{}.NewInt(3,0). " +
-			"Error='%v' ", err.Error())
-	}
-
-	numOfItemsPicked, err := Decimal{}.NewInt(3, 0)
-
-	if err != nil {
-		t.Errorf("Error returned by Decimal{}.NewInt(2,0). " +
-			"Error='%v' ", err.Error())
-	}
+	numOfItemsPicked := Decimal{}.NewInt(3, 0)
 
 	allowRepetitions := true
 	expectedResultStr := "1000"
@@ -814,19 +784,10 @@ func TestProbability_PermutationsDecimal_03(t *testing.T) {
 
 func TestProbability_PermutationsDecimal_04(t *testing.T) {
 
-	numOfItems, err  := Decimal{}.NewInt(20,0)
+	numOfItems := Decimal{}.NewInt(20,0)
 
-	if err != nil {
-		t.Errorf("Error returned by Decimal{}.NewInt(20,0). " +
-			"Error='%v' ", err.Error())
-	}
 
-	numOfItemsPicked, err := Decimal{}.NewInt(5, 0)
-
-	if err != nil {
-		t.Errorf("Error returned by Decimal{}.NewInt(5,0). " +
-			"Error='%v' ", err.Error())
-	}
+	numOfItemsPicked := Decimal{}.NewInt(5, 0)
 
 	allowRepetitions := false
 	expectedResultStr := "1860480"
@@ -850,19 +811,9 @@ func TestProbability_PermutationsDecimal_04(t *testing.T) {
 
 func TestProbability_PermutationsDecimal_05(t *testing.T) {
 
-	numOfItems, err  := Decimal{}.NewInt(52,0)
+	numOfItems := Decimal{}.NewInt(52,0)
 
-	if err != nil {
-		t.Errorf("Error returned by Decimal{}.NewInt(52,0). " +
-			"Error='%v' ", err.Error())
-	}
-
-	numOfItemsPicked, err := Decimal{}.NewInt(5, 0)
-
-	if err != nil {
-		t.Errorf("Error returned by Decimal{}.NewInt(5,0). " +
-			"Error='%v' ", err.Error())
-	}
+	numOfItemsPicked := Decimal{}.NewInt(5, 0)
 
 	allowRepetitions := false
 	expectedResultStr := "311875200"
@@ -886,19 +837,9 @@ func TestProbability_PermutationsDecimal_05(t *testing.T) {
 
 func TestProbability_PermutationsDecimal_06(t *testing.T) {
 
-	numOfItems, err  := Decimal{}.NewInt(5,0)
+	numOfItems := Decimal{}.NewInt(5,0)
 
-	if err != nil {
-		t.Errorf("Error returned by Decimal{}.NewInt(5,0). " +
-			"Error='%v' ", err.Error())
-	}
-
-	numOfItemsPicked, err := Decimal{}.NewInt(3, 0)
-
-	if err != nil {
-		t.Errorf("Error returned by Decimal{}.NewInt(3,0). " +
-			"Error='%v' ", err.Error())
-	}
+	numOfItemsPicked := Decimal{}.NewInt(3, 0)
 
 	allowRepetitions := true
 	expectedResultStr := "125"
@@ -922,19 +863,9 @@ func TestProbability_PermutationsDecimal_06(t *testing.T) {
 
 func TestProbability_PermutationsDecimal_07(t *testing.T) {
 
-	numOfItems, err  := Decimal{}.NewInt(20,0)
+	numOfItems := Decimal{}.NewInt(20,0)
 
-	if err != nil {
-		t.Errorf("Error returned by Decimal{}.NewInt(20,0). " +
-			"Error='%v' ", err.Error())
-	}
-
-	numOfItemsPicked, err := Decimal{}.NewInt(5, 0)
-
-	if err != nil {
-		t.Errorf("Error returned by Decimal{}.NewInt(5,0). " +
-			"Error='%v' ", err.Error())
-	}
+	numOfItemsPicked := Decimal{}.NewInt(5, 0)
 
 	allowRepetitions := true
 	expectedResultStr := "3200000"
@@ -961,23 +892,13 @@ func TestProbability_PermutationsDecimal_08(t *testing.T) {
 	nDecimal := 20
 	rDecimal := 58
 
-	numOfItems, err  := Decimal{}.NewInt(nDecimal,0)
+	numOfItems := Decimal{}.NewInt(nDecimal,0)
 
-	if err != nil {
-		t.Errorf("Error returned by Decimal{}.NewInt(20,0). " +
-			"Error='%v' ", err.Error())
-	}
-
-	numOfItemsPicked, err := Decimal{}.NewInt(rDecimal, 0)
-
-	if err != nil {
-		t.Errorf("Error returned by Decimal{}.NewInt(58,0). " +
-			"Error='%v' ", err.Error())
-	}
+	numOfItemsPicked := Decimal{}.NewInt(rDecimal, 0)
 
 	allowRepetitions := true
 
-	_, err = Probability{}.PermutationsDecimal(numOfItems, numOfItemsPicked, allowRepetitions)
+	_, err := Probability{}.PermutationsDecimal(numOfItems, numOfItemsPicked, allowRepetitions)
 
 	if err == nil {
 		t.Errorf("Error: Expected error return from Probability{}.PermutationsDecimal(n, r) " +
@@ -990,23 +911,13 @@ func TestProbability_PermutationsDecimal_09(t *testing.T) {
 	nDecimal := 0
 	rDecimal := 4
 
-	numOfItems, err  := Decimal{}.NewInt(nDecimal,0)
+	numOfItems := Decimal{}.NewInt(nDecimal,0)
 
-	if err != nil {
-		t.Errorf("Error returned by Decimal{}.NewInt(0,0). " +
-			"Error='%v' ", err.Error())
-	}
-
-	numOfItemsPicked, err := Decimal{}.NewInt(rDecimal, 0)
-
-	if err != nil {
-		t.Errorf("Error returned by Decimal{}.NewInt(4,0). " +
-			"Error='%v' ", err.Error())
-	}
+	numOfItemsPicked := Decimal{}.NewInt(rDecimal, 0)
 
 	allowRepetitions := true
 
-	_, err = Probability{}.PermutationsDecimal(numOfItems, numOfItemsPicked, allowRepetitions)
+	_, err := Probability{}.PermutationsDecimal(numOfItems, numOfItemsPicked, allowRepetitions)
 
 	if err == nil {
 		t.Errorf("Error: Expected error return from Probability{}.PermutationsDecimal(n, r) " +
@@ -1019,23 +930,13 @@ func TestProbability_PermutationsDecimal_10(t *testing.T) {
 	nInt := 15
 	rInt := 0
 
-	numOfItems, err  := Decimal{}.NewInt(nInt,0)
+	numOfItems := Decimal{}.NewInt(nInt,0)
 
-	if err != nil {
-		t.Errorf("Error returned by Decimal{}.NewInt(0,0). " +
-			"Error='%v' ", err.Error())
-	}
-
-	numOfItemsPicked, err := Decimal{}.NewInt(rInt, 0)
-
-	if err != nil {
-		t.Errorf("Error returned by Decimal{}.NewInt(4,0). " +
-			"Error='%v' ", err.Error())
-	}
+	numOfItemsPicked := Decimal{}.NewInt(rInt, 0)
 
 	allowRepetitions := true
 
-	_, err = Probability{}.PermutationsDecimal(numOfItems, numOfItemsPicked, allowRepetitions)
+	_, err := Probability{}.PermutationsDecimal(numOfItems, numOfItemsPicked, allowRepetitions)
 
 	if err == nil {
 		t.Errorf("Error: Expected error return from Probability{}.PermutationsDecimal(n, r) " +
@@ -1048,23 +949,13 @@ func TestProbability_PermutationsDecimal_11(t *testing.T) {
 	nInt := -15
 	rInt := 2
 
-	numOfItems, err  := Decimal{}.NewInt(nInt,0)
+	numOfItems := Decimal{}.NewInt(nInt,0)
 
-	if err != nil {
-		t.Errorf("Error returned by Decimal{}.NewInt(-15,0). " +
-			"Error='%v' ", err.Error())
-	}
-
-	numOfItemsPicked, err := Decimal{}.NewInt(rInt, 0)
-
-	if err != nil {
-		t.Errorf("Error returned by Decimal{}.NewInt(2,0). " +
-			"Error='%v' ", err.Error())
-	}
+	numOfItemsPicked := Decimal{}.NewInt(rInt, 0)
 
 	allowRepetitions := true
 
-	_, err = Probability{}.PermutationsDecimal(numOfItems, numOfItemsPicked, allowRepetitions)
+	_, err := Probability{}.PermutationsDecimal(numOfItems, numOfItemsPicked, allowRepetitions)
 
 	if err == nil {
 		t.Errorf("Error: Expected error return from Probability{}.PermutationsDecimal(n, r) " +
@@ -1077,23 +968,13 @@ func TestProbability_PermutationsDecimal_12(t *testing.T) {
 	nInt := 15
 	rInt := -2
 
-	numOfItems, err  := Decimal{}.NewInt(nInt,0)
+	numOfItems := Decimal{}.NewInt(nInt,0)
 
-	if err != nil {
-		t.Errorf("Error returned by Decimal{}.NewInt(15,0). " +
-			"Error='%v' ", err.Error())
-	}
-
-	numOfItemsPicked, err := Decimal{}.NewInt(rInt, 0)
-
-	if err != nil {
-		t.Errorf("Error returned by Decimal{}.NewInt(-2,0). " +
-			"Error='%v' ", err.Error())
-	}
+	numOfItemsPicked := Decimal{}.NewInt(rInt, 0)
 
 	allowRepetitions := true
 
-	_, err = Probability{}.PermutationsDecimal(numOfItems, numOfItemsPicked, allowRepetitions)
+	_, err := Probability{}.PermutationsDecimal(numOfItems, numOfItemsPicked, allowRepetitions)
 
 	if err == nil {
 		t.Errorf("Error: Expected error return from Probability{}.PermutationsDecimal(n, r) " +
@@ -1502,12 +1383,7 @@ func TestProbability_PermutationsIntAry_12(t *testing.T) {
 
 func TestProbability_PermutationsINumMgr_01(t *testing.T) {
 
-	numOfItems, err  := Decimal{}.NewInt(3,0)
-
-	if err != nil {
-		t.Errorf("Error returned by Decimal{}.NewInt(3,0). " +
-			"Error='%v' ", err.Error())
-	}
+	numOfItems := Decimal{}.NewInt(3,0)
 
 	numOfItemsPicked, err := IntAry{}.NewInt(2, 0)
 
@@ -1606,12 +1482,7 @@ func TestProbability_PermutationsINumMgr_03(t *testing.T) {
 
 func TestProbability_PermutationsINumMgr_04(t *testing.T) {
 
-	numOfItems, err  := Decimal{}.NewInt(20,0)
-
-	if err != nil {
-		t.Errorf("Error returned by INumMgr{}.NewInt(20,0). " +
-			"Error='%v' ", err.Error())
-	}
+	numOfItems := Decimal{}.NewInt(20,0)
 
 	numOfItemsPicked, err := NumStrDto{}.NewInt(5, 0)
 
@@ -1679,12 +1550,7 @@ func TestProbability_PermutationsINumMgr_06(t *testing.T) {
 
 	numOfItems  := BigIntNum{}.NewInt(5,0)
 
-	numOfItemsPicked, err := Decimal{}.NewInt(3, 0)
-
-	if err != nil {
-		t.Errorf("Error returned by Decimal{}.NewInt(3,0). " +
-			"Error='%v' ", err.Error())
-	}
+	numOfItemsPicked := Decimal{}.NewInt(3, 0)
 
 	allowRepetitions := true
 	expectedResultStr := "125"
@@ -1708,12 +1574,7 @@ func TestProbability_PermutationsINumMgr_06(t *testing.T) {
 
 func TestProbability_PermutationsINumMgr_07(t *testing.T) {
 
-	numOfItems, err  := Decimal{}.NewInt(20,0)
-
-	if err != nil {
-		t.Errorf("Error returned by Decimal{}.NewInt(20,0). " +
-			"Error='%v' ", err.Error())
-	}
+	numOfItems := Decimal{}.NewInt(20,0)
 
 	numOfItemsPicked := BigIntNum{}.NewInt(5, 0)
 
@@ -1800,18 +1661,13 @@ func TestProbability_PermutationsINumMgr_10(t *testing.T) {
 	nInt := 15
 	rInt := 0
 
-	numOfItems, err  := Decimal{}.NewInt(nInt,0)
-
-	if err != nil {
-		t.Errorf("Error returned by Decimal{}.NewInt(0,0). " +
-			"Error='%v' ", err.Error())
-	}
+	numOfItems := Decimal{}.NewInt(nInt,0)
 
 	numOfItemsPicked := BigIntNum{}.NewInt(rInt, 0)
 
 	allowRepetitions := true
 
-	_, err = Probability{}.PermutationsINumMgr(&numOfItems, &numOfItemsPicked, allowRepetitions)
+	_, err := Probability{}.PermutationsINumMgr(&numOfItems, &numOfItemsPicked, allowRepetitions)
 
 	if err == nil {
 		t.Errorf("Error: Expected error return from Probability{}.PermutationsINumMgr(n, r) " +
@@ -1853,23 +1709,13 @@ func TestProbability_PermutationsINumMgr_12(t *testing.T) {
 	nInt := 15
 	rInt := -2
 
-	numOfItems, err  := Decimal{}.NewInt(nInt,0)
+	numOfItems := Decimal{}.NewInt(nInt,0)
 
-	if err != nil {
-		t.Errorf("Error returned by Decimal{}.NewInt(15,0). " +
-			"Error='%v' ", err.Error())
-	}
-
-	numOfItemsPicked, err := Decimal{}.NewInt(rInt, 0)
-
-	if err != nil {
-		t.Errorf("Error returned by Decimal{}.NewInt(-2,0). " +
-			"Error='%v' ", err.Error())
-	}
+	numOfItemsPicked := Decimal{}.NewInt(rInt, 0)
 
 	allowRepetitions := true
 
-	_, err = Probability{}.PermutationsINumMgr(&numOfItems, &numOfItemsPicked, allowRepetitions)
+	_, err := Probability{}.PermutationsINumMgr(&numOfItems, &numOfItemsPicked, allowRepetitions)
 
 	if err == nil {
 		t.Errorf("Error: Expected error return from Probability{}.PermutationsINumMgr(n, r) " +

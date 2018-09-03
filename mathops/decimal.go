@@ -1510,19 +1510,31 @@ func (dec Decimal) NewBigIntNum(bigINum BigIntNum) Decimal {
 // Input parameter 'precision' indicates the number of digits to be
 // formatted to the right of the decimal place.
 //
-// The 'NewInt' method is designed to be used in conjunction with the
-// Decimal{} syntax thereby allowing Decimal creation and initialization
-// in one step.
+// Usage:
+// ------
+// This method is designed to be used in conjunction with the Decimal{}
+// syntax thereby allowing Decimal type creation and initialization in
+// one step.
 //
-// Example: Decimal{}.NewInt(123456, 3) = 123.456
+// 				num := int(123456)
+// 				precision := uint(3)
+// 				dec := Decimal{}.NewInt(num, precision)
+//        dec is now equal to 123.456
 //
-func (dec Decimal) NewInt(intNum int, precision uint) (Decimal, error) {
+// Examples:
+// ---------
+//   intNum				precision			BigIntNum Result
+//	 123456		 		   4							12.3456
+//   123456          0              123456
+//   123456          1              12345.6
+//
+func (dec Decimal) NewInt(intNum int, precision uint) Decimal {
 
 	d2 := Decimal{}.New()
 
 	d2.SetInt(intNum, precision)
 
-	return d2, nil
+	return d2
 }
 
 // NewIntExponent - This method returns a new Decimal instance in which the
