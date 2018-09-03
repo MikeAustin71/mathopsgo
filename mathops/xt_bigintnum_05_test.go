@@ -1,6 +1,509 @@
 package mathops
 
-import "testing"
+import (
+	"math/big"
+	"testing"
+)
+
+func TestBigIntNum_NumStrDto_01(t *testing.T) {
+
+	nStr:="123.456"
+	expectedPrecision := uint(3)
+	nbStr := "123456"
+	expectedScale := big.NewInt(1000)
+	expectedSignVal := 1
+
+	bOriginal, isOk := big.NewInt(0).SetString(nbStr, 10)
+
+	if !isOk {
+		t.Error("Error returned by big.NewInt(0).SetString(nbStr, 10).")
+	}
+
+	expectedAbsBigInt := big.NewInt(0).Set(bOriginal)
+
+	nDto, err := NumStrDto{}.NewNumStr(nStr)
+
+	if err != nil {
+		t.Errorf("Error returned by NumStrDto{}.NewNumStr(nStr) " +
+			"Error='%v' ", err.Error())
+	}
+
+	bINum, err := BigIntNum{}.NewNumStrDto(nDto)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewNumStrDto(nDto) " +
+			"Error='%v' ", err.Error())
+	}
+
+	if bOriginal.Cmp(bINum.bigInt) != 0 {
+		t.Errorf("Expected bigInt='%v'  Instead, bigInt='%v'. ",
+			bOriginal.Text(10), bINum.bigInt.Text(10))
+	}
+
+	if expectedPrecision != bINum.precision {
+		t.Errorf("Expected precision='%v' Instead, precision='%v' ",
+			expectedPrecision, bINum.precision)
+	}
+
+	if bINum.scaleFactor.Cmp(expectedScale) != 0 {
+		t.Errorf("Expected Scale Value='%v' Instead, Scale Value='%v' ",
+			expectedScale.Text(10), bINum.scaleFactor.Text(10))
+	}
+
+	if expectedAbsBigInt.Cmp(bINum.absBigInt) != 0 {
+		t.Errorf("Expected absBigInt='%v'  Instead, absBigInt='%v'. ",
+			expectedAbsBigInt.Text(10), bINum.absBigInt.Text(10))
+	}
+
+	if expectedSignVal != bINum.sign {
+		t.Errorf("Expected sign Value='%v'. Instead, sign Value='%v'. ",
+			expectedSignVal, bINum.sign)
+	}
+
+	if nStr != nDto.GetNumStr() {
+		t.Errorf("Expected NumStr='%v'. Instead, NumStr='%v'. ",
+			nStr, nDto.GetNumStr())
+	}
+
+}
+
+func TestBigIntNum_NumStrDto_02(t *testing.T) {
+
+	nStr:="-123.456"
+	expectedPrecision := uint(3)
+	nbStr := "-123456"
+	expectedScale := big.NewInt(1000)
+	expectedSignVal := -1
+
+	bOriginal, isOk := big.NewInt(0).SetString(nbStr, 10)
+
+	if !isOk {
+		t.Error("Error returned by big.NewInt(0).SetString(nbStr, 10).")
+	}
+
+	expectedAbsBigInt := big.NewInt(0).Neg(bOriginal)
+
+	nDto, err := NumStrDto{}.NewNumStr(nStr)
+
+	if err != nil {
+		t.Errorf("Error returned by NumStrDto{}.NewNumStr(nStr) " +
+			"Error='%v' ", err.Error())
+	}
+
+	bINum, err := BigIntNum{}.NewNumStrDto(nDto)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewNumStrDto(nDto) " +
+			"Error='%v' ", err.Error())
+	}
+
+	if bOriginal.Cmp(bINum.bigInt) != 0 {
+		t.Errorf("Expected bigInt='%v'  Instead, bigInt='%v'. ",
+			bOriginal.Text(10), bINum.bigInt.Text(10))
+	}
+
+	if expectedPrecision != bINum.precision {
+		t.Errorf("Expected precision='%v' Instead, precision='%v' ",
+			expectedPrecision, bINum.precision)
+	}
+
+	if bINum.scaleFactor.Cmp(expectedScale) != 0 {
+		t.Errorf("Expected Scale Value='%v' Instead, Scale Value='%v' ",
+			expectedScale.Text(10), bINum.scaleFactor.Text(10))
+	}
+
+	if expectedAbsBigInt.Cmp(bINum.absBigInt) != 0 {
+		t.Errorf("Expected absBigInt='%v'  Instead, absBigInt='%v'. ",
+			expectedAbsBigInt.Text(10), bINum.absBigInt.Text(10))
+	}
+
+	if expectedSignVal != bINum.sign {
+		t.Errorf("Expected sign Value='%v'. Instead, sign Value='%v'. ",
+			expectedSignVal, bINum.sign)
+	}
+
+	if nStr != nDto.GetNumStr() {
+		t.Errorf("Expected NumStr='%v'. Instead, NumStr='%v'. ",
+			nStr, nDto.GetNumStr())
+	}
+
+}
+
+func TestBigIntNum_RoundToDecPlace_01(t *testing.T) {
+
+	nStr := "-123.567"
+	expectedNumStr := "-123.57"
+	roundToDec := uint(2)
+
+	bINum1, err := BigIntNum{}.NewNumStr(nStr)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(nStr). " +
+			" nStr='%v'  Error='%v'",
+			nStr, err.Error())
+	}
+
+	bINum1.RoundToDecPlace(roundToDec)
+
+	actualNumStr := bINum1.GetNumStr()
+
+	if expectedNumStr != actualNumStr {
+		t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v'. ",
+			expectedNumStr, actualNumStr )
+	}
+
+}
+
+func TestBigIntNum_RoundToDecPlace_02(t *testing.T) {
+
+	nStr := "123.567"
+	expectedNumStr := "123.57"
+	roundToDec := uint(2)
+
+	bINum1, err := BigIntNum{}.NewNumStr(nStr)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(nStr). " +
+			" nStr='%v'  Error='%v'",
+			nStr, err.Error())
+	}
+
+	bINum1.RoundToDecPlace(roundToDec)
+
+	actualNumStr := bINum1.GetNumStr()
+
+	if expectedNumStr != actualNumStr {
+		t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v'. ",
+			expectedNumStr, actualNumStr )
+	}
+
+}
+
+func TestBigIntNum_RoundToDecPlace_03(t *testing.T) {
+
+	nStr := "123.567"
+	expectedNumStr := "123.567"
+	roundToDec := uint(3)
+
+	bINum1, err := BigIntNum{}.NewNumStr(nStr)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(nStr). " +
+			" nStr='%v'  Error='%v'",
+			nStr, err.Error())
+	}
+
+	bINum1.RoundToDecPlace(roundToDec)
+
+	actualNumStr := bINum1.GetNumStr()
+
+	if expectedNumStr != actualNumStr {
+		t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v'. ",
+			expectedNumStr, actualNumStr )
+	}
+
+}
+
+func TestBigIntNum_RoundToDecPlace_04(t *testing.T) {
+
+	nStr := "123.567"
+	expectedNumStr := "123.5670"
+	roundToDec := uint(4)
+
+	bINum1, err := BigIntNum{}.NewNumStr(nStr)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(nStr). " +
+			" nStr='%v'  Error='%v'",
+			nStr, err.Error())
+	}
+
+	bINum1.RoundToDecPlace(roundToDec)
+
+	actualNumStr := bINum1.GetNumStr()
+
+	if expectedNumStr != actualNumStr {
+		t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v'. ",
+			expectedNumStr, actualNumStr )
+	}
+
+}
+
+func TestBigIntNum_RoundToDecPlace_05(t *testing.T) {
+
+	nStr := "-123.567"
+	expectedNumStr := "-123.5670"
+	roundToDec := uint(4)
+
+	bINum1, err := BigIntNum{}.NewNumStr(nStr)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(nStr). " +
+			" nStr='%v'  Error='%v'",
+			nStr, err.Error())
+	}
+
+	bINum1.RoundToDecPlace(roundToDec)
+
+	actualNumStr := bINum1.GetNumStr()
+
+	if expectedNumStr != actualNumStr {
+		t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v'. ",
+			expectedNumStr, actualNumStr )
+	}
+
+}
+
+func TestBigIntNum_RoundToDecPlace_06(t *testing.T) {
+
+	nStr := "0.000"
+	expectedNumStr := "0.00"
+	roundToDec := uint(2)
+
+	bINum1, err := BigIntNum{}.NewNumStr(nStr)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(nStr). " +
+			" nStr='%v'  Error='%v'",
+			nStr, err.Error())
+	}
+
+	bINum1.RoundToDecPlace(roundToDec)
+
+	actualNumStr := bINum1.GetNumStr()
+
+	if expectedNumStr != actualNumStr {
+		t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v'. ",
+			expectedNumStr, actualNumStr )
+	}
+
+}
+
+func TestBigIntNum_RoundToDecPlace_07(t *testing.T) {
+
+	nStr := "654.123456"
+	expectedNumStr := "654.123"
+	roundToDec := uint(3)
+
+	bINum1, err := BigIntNum{}.NewNumStr(nStr)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(nStr). " +
+			" nStr='%v'  Error='%v'",
+			nStr, err.Error())
+	}
+
+	bINum1.RoundToDecPlace(roundToDec)
+
+	actualNumStr := bINum1.GetNumStr()
+
+	if expectedNumStr != actualNumStr {
+		t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v'. ",
+			expectedNumStr, actualNumStr )
+	}
+
+}
+
+func TestBigIntNum_RoundToDecPlace_08(t *testing.T) {
+
+	nStr := "654.123456"
+	expectedNumStr := "654.1235"
+	roundToDec := uint(4)
+
+	bINum1, err := BigIntNum{}.NewNumStr(nStr)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(nStr). " +
+			" nStr='%v'  Error='%v'",
+			nStr, err.Error())
+	}
+
+	bINum1.RoundToDecPlace(roundToDec)
+
+	actualNumStr := bINum1.GetNumStr()
+
+	if expectedNumStr != actualNumStr {
+		t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v'. ",
+			expectedNumStr, actualNumStr )
+	}
+
+}
+
+func TestBigIntNum_RoundToDecPlace_09(t *testing.T) {
+
+	nStr := "-654.123456"
+	expectedNumStr := "-654.123"
+	roundToDec := uint(3)
+
+	bINum1, err := BigIntNum{}.NewNumStr(nStr)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(nStr). " +
+			" nStr='%v'  Error='%v'",
+			nStr, err.Error())
+	}
+
+	bINum1.RoundToDecPlace(roundToDec)
+
+	actualNumStr := bINum1.GetNumStr()
+
+	if expectedNumStr != actualNumStr {
+		t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v'. ",
+			expectedNumStr, actualNumStr )
+	}
+
+}
+
+func TestBigIntNum_RoundToDecPlace_10(t *testing.T) {
+
+	nStr := "-654.123456"
+	expectedNumStr := "-654.1235"
+	roundToDec := uint(4)
+
+	bINum1, err := BigIntNum{}.NewNumStr(nStr)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(nStr). " +
+			" nStr='%v'  Error='%v'",
+			nStr, err.Error())
+	}
+
+	bINum1.RoundToDecPlace(roundToDec)
+
+	actualNumStr := bINum1.GetNumStr()
+
+	if expectedNumStr != actualNumStr {
+		t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v'. ",
+			expectedNumStr, actualNumStr )
+	}
+
+}
+
+func TestBigIntNum_RoundToDecPlace_11(t *testing.T) {
+
+	nStr := "654"
+	expectedNumStr := "654.0000"
+	roundToDec := uint(4)
+
+	bINum1, err := BigIntNum{}.NewNumStr(nStr)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(nStr). " +
+			" nStr='%v'  Error='%v'",
+			nStr, err.Error())
+	}
+
+	bINum1.RoundToDecPlace(roundToDec)
+
+	actualNumStr := bINum1.GetNumStr()
+
+	if expectedNumStr != actualNumStr {
+		t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v'. ",
+			expectedNumStr, actualNumStr )
+	}
+
+}
+
+func TestBigIntNum_RoundToDecPlace_12(t *testing.T) {
+
+	nStr := "654.123"
+	expectedNumStr := "654.123000000"
+	roundToDec := uint(9)
+
+	bINum1, err := BigIntNum{}.NewNumStr(nStr)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(nStr). " +
+			" nStr='%v'  Error='%v'",
+			nStr, err.Error())
+	}
+
+	bINum1.RoundToDecPlace(roundToDec)
+
+	actualNumStr := bINum1.GetNumStr()
+
+	if expectedNumStr != actualNumStr {
+		t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v'. ",
+			expectedNumStr, actualNumStr )
+	}
+
+}
+
+func TestBigIntNum_RoundToDecPlace_13(t *testing.T) {
+
+	nStr := "-654.123"
+	expectedNumStr := "-654.123000000"
+	roundToDec := uint(9)
+
+	bINum1, err := BigIntNum{}.NewNumStr(nStr)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(nStr). " +
+			" nStr='%v'  Error='%v'",
+			nStr, err.Error())
+	}
+
+	bINum1.RoundToDecPlace(roundToDec)
+
+	actualNumStr := bINum1.GetNumStr()
+
+	if expectedNumStr != actualNumStr {
+		t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v'. ",
+			expectedNumStr, actualNumStr )
+	}
+
+}
+
+func TestBigIntNum_RoundToDecPlace_14(t *testing.T) {
+
+	nStr := "-654"
+	expectedNumStr := "-654.0000"
+	roundToDec := uint(4)
+
+	bINum1, err := BigIntNum{}.NewNumStr(nStr)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(nStr). " +
+			" nStr='%v'  Error='%v'",
+			nStr, err.Error())
+	}
+
+	bINum1.RoundToDecPlace(roundToDec)
+
+	actualNumStr := bINum1.GetNumStr()
+
+	if expectedNumStr != actualNumStr {
+		t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v'. ",
+			expectedNumStr, actualNumStr )
+	}
+
+}
+
+
+func TestBigIntNum_RoundToDecPlace_15(t *testing.T) {
+
+	nStr := "0"
+	expectedNumStr := "0.0000"
+	roundToDec := uint(4)
+
+	bINum1, err := BigIntNum{}.NewNumStr(nStr)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(nStr). " +
+			" nStr='%v'  Error='%v'",
+			nStr, err.Error())
+	}
+
+	bINum1.RoundToDecPlace(roundToDec)
+
+	actualNumStr := bINum1.GetNumStr()
+
+	if expectedNumStr != actualNumStr {
+		t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v'. ",
+			expectedNumStr, actualNumStr )
+	}
+
+}
 
 func TestBigIntNum_ShiftPrecisionLeft_01(t *testing.T) {
 	basicNumStr := "123456.789"
