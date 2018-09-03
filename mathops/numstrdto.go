@@ -2358,6 +2358,13 @@ func (nDto NumStrDto) NewFloat64(f64 float64, precision int) (NumStrDto, error) 
 }
 
 // Creates a new NumStrDto from an int and a precision specification.
+//
+// The 'NewInt' method is designed to used in conjunction
+// with NumStrDto{} thereby allowing Decimal type creation and
+// initialization in one step.
+//
+// Example: NumStrDto{}.NewInt(123456, 3) = 123.456
+//
 func (nDto NumStrDto) NewInt(intNum int, precision uint) (NumStrDto, error) {
 	ePrefix := "NumStrDto.NewInt() "
 

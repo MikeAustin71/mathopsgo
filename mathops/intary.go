@@ -1,11 +1,11 @@
 package mathops
 
 import (
+	"bytes"
 	"errors"
 	"fmt"
-		"math/big"
-		"bytes"
 	"math"
+	"math/big"
 	"strconv"
 )
 
@@ -3620,6 +3620,7 @@ func (ia IntAry) NewInt64(num int64, precision int) (IntAry, error) {
 // num := int(123456)
 // precision := uint(3)
 // ia, err := intAry{}.NewInt32(num, precision)
+// - Yields 123.456
 //
 func (ia IntAry) NewInt(num int, precision int) (IntAry, error) {
 

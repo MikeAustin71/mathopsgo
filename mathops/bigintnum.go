@@ -1,10 +1,10 @@
 package mathops
 
 import (
-	"math/big"
+	"errors"
 	"fmt"
 	"math"
-	"errors"
+	"math/big"
 )
 
 /*
@@ -2504,6 +2504,32 @@ func (bNum BigIntNum) NewFloat64(f64 float64, maxPrecision uint) (BigIntNum, err
 	}
 
 	return b, nil
+}
+
+// NewInt This method is designed to used in conjunction
+// with BigIntNum{} syntax thereby allowing BigIntNum type
+// creation and initialization in one step.
+//
+//
+// If input parameter precision exceeds the maximum int value
+// of +2147483647, an error will be returned.
+//
+// Example: BigIntNum{}.NewInt(123456, 3) = 123.456
+//
+//
+func (bNum BigIntNum) NewInt(iNum int, precision uint) (BigIntNum, error) {
+
+	ePrefix := "BigIntNum.NewInt() "
+	maxInt := uint(math.MaxInt32)
+
+	if precision > maxInt {
+		return BigIntNum{}.NewZero(0),
+		fmt.Errorf(ePrefix +
+			"Error: Input parameter 'precision' exceeds maximum int value '%v'.  " +
+			"precision='%v' ", maxInt, precision)
+	}
+
+	return BigIntNum{}.NewIntExponent(iNum, int(precision)), nil
 }
 
 // NewIntExponent - New Int Exponent returns a new BigIntNum instance in which
