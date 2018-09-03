@@ -631,6 +631,108 @@ func TestBigIntNum_NewIntExponent_03(t *testing.T) {
 
 }
 
+func TestBigIntNum_NewInt32_01(t *testing.T) {
+
+	numInt := int32(1234)
+	precision := uint(3)
+	expectedNumStr := "1.234"
+
+	bINum := BigIntNum{}.NewInt32(numInt, precision)
+
+	actualNumStr := bINum.GetNumStr()
+
+	if expectedNumStr != actualNumStr {
+		t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v' ",
+			expectedNumStr, actualNumStr)
+	}
+
+}
+
+func TestBigIntNum_NewInt32_02(t *testing.T) {
+
+	numInt := int32(1234)
+	precision := uint(0)
+	expectedNumStr := "1234"
+
+	bINum := BigIntNum{}.NewInt32(numInt, precision)
+
+	actualNumStr := bINum.GetNumStr()
+
+	if expectedNumStr != actualNumStr {
+		t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v' ",
+			expectedNumStr, actualNumStr)
+	}
+
+}
+
+func TestBigIntNum_NewInt32_03(t *testing.T) {
+
+	numInt := int32(-1234)
+	precision := uint(3)
+	expectedNumStr := "-1.234"
+
+	bINum := BigIntNum{}.NewInt32(numInt, precision)
+
+	actualNumStr := bINum.GetNumStr()
+
+	if expectedNumStr != actualNumStr {
+		t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v' ",
+			expectedNumStr, actualNumStr)
+	}
+
+}
+
+func TestBigIntNum_NewInt32_04(t *testing.T) {
+
+	numInt := int32(-1234)
+	precision := uint(0)
+	expectedNumStr := "-1234"
+
+	bINum := BigIntNum{}.NewInt32(numInt, precision)
+
+	actualNumStr := bINum.GetNumStr()
+
+	if expectedNumStr != actualNumStr {
+		t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v' ",
+			expectedNumStr, actualNumStr)
+	}
+
+}
+
+func TestBigIntNum_NewInt32_05(t *testing.T) {
+
+	numInt := int32(0)
+	precision := uint(0)
+	expectedNumStr := "0"
+
+	bINum := BigIntNum{}.NewInt32(numInt, precision)
+
+	actualNumStr := bINum.GetNumStr()
+
+	if expectedNumStr != actualNumStr {
+		t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v' ",
+			expectedNumStr, actualNumStr)
+	}
+
+}
+
+func TestBigIntNum_NewInt32_06(t *testing.T) {
+
+	numInt := int32(0)
+	precision := uint(3)
+	expectedNumStr := "0.000"
+
+	bINum := BigIntNum{}.NewInt32(numInt, precision)
+
+	actualNumStr := bINum.GetNumStr()
+
+	if expectedNumStr != actualNumStr {
+		t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v' ",
+			expectedNumStr, actualNumStr)
+	}
+
+}
+
 func TestBigIntNum_NewInt32Exponent_01(t *testing.T) {
 
 	numInt := int32(1234)
@@ -672,6 +774,108 @@ func TestBigIntNum_NewInt32Exponent_03(t *testing.T) {
 	expectedNumStr := "123456"
 
 	bINum := BigIntNum{}.NewInt32Exponent(numInt, 0)
+
+	actualNumStr := bINum.GetNumStr()
+
+	if expectedNumStr != actualNumStr {
+		t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v' ",
+			expectedNumStr, actualNumStr)
+	}
+
+}
+
+func TestBigIntNum_NewInt64_01(t *testing.T) {
+
+	numInt := int64(1234)
+	precision := uint(3)
+	expectedNumStr := "1.234"
+
+	bINum := BigIntNum{}.NewInt64(numInt, precision)
+
+	actualNumStr := bINum.GetNumStr()
+
+	if expectedNumStr != actualNumStr {
+		t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v' ",
+			expectedNumStr, actualNumStr)
+	}
+
+}
+
+func TestBigIntNum_NewInt64_02(t *testing.T) {
+
+	numInt := int64(1234)
+	precision := uint(0)
+	expectedNumStr := "1234"
+
+	bINum := BigIntNum{}.NewInt64(numInt, precision)
+
+	actualNumStr := bINum.GetNumStr()
+
+	if expectedNumStr != actualNumStr {
+		t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v' ",
+			expectedNumStr, actualNumStr)
+	}
+
+}
+
+func TestBigIntNum_NewInt64_03(t *testing.T) {
+
+	numInt := int64(-1234)
+	precision := uint(3)
+	expectedNumStr := "-1.234"
+
+	bINum := BigIntNum{}.NewInt64(numInt, precision)
+
+	actualNumStr := bINum.GetNumStr()
+
+	if expectedNumStr != actualNumStr {
+		t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v' ",
+			expectedNumStr, actualNumStr)
+	}
+
+}
+
+func TestBigIntNum_NewInt64_04(t *testing.T) {
+
+	numInt := int64(-1234)
+	precision := uint(0)
+	expectedNumStr := "-1234"
+
+	bINum := BigIntNum{}.NewInt64(numInt, precision)
+
+	actualNumStr := bINum.GetNumStr()
+
+	if expectedNumStr != actualNumStr {
+		t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v' ",
+			expectedNumStr, actualNumStr)
+	}
+
+}
+
+func TestBigIntNum_NewInt64_05(t *testing.T) {
+
+	numInt := int64(0)
+	precision := uint(0)
+	expectedNumStr := "0"
+
+	bINum := BigIntNum{}.NewInt64(numInt, precision)
+
+	actualNumStr := bINum.GetNumStr()
+
+	if expectedNumStr != actualNumStr {
+		t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v' ",
+			expectedNumStr, actualNumStr)
+	}
+
+}
+
+func TestBigIntNum_NewInt64_06(t *testing.T) {
+
+	numInt := int64(0)
+	precision := uint(3)
+	expectedNumStr := "0.000"
+
+	bINum := BigIntNum{}.NewInt64(numInt, precision)
 
 	actualNumStr := bINum.GetNumStr()
 
@@ -1752,6 +1956,74 @@ func TestBigIntNum_NewTen_03(t *testing.T) {
 
 }
 
+func TestBigIntNum_NewUint_01(t *testing.T) {
+
+	numInt := uint(1234)
+	precision := uint(3)
+	expectedNumStr := "1.234"
+
+	bINum := BigIntNum{}.NewUint(numInt, precision)
+
+	actualNumStr := bINum.GetNumStr()
+
+	if expectedNumStr != actualNumStr {
+		t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v' ",
+			expectedNumStr, actualNumStr)
+	}
+
+}
+
+func TestBigIntNum_NewUint_02(t *testing.T) {
+
+	numInt := uint(1234)
+	precision := uint(0)
+	expectedNumStr := "1234"
+
+	bINum := BigIntNum{}.NewUint(numInt, precision)
+
+	actualNumStr := bINum.GetNumStr()
+
+	if expectedNumStr != actualNumStr {
+		t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v' ",
+			expectedNumStr, actualNumStr)
+	}
+
+}
+
+func TestBigIntNum_NewUint_03(t *testing.T) {
+
+	numInt := uint(0)
+	precision := uint(0)
+	expectedNumStr := "0"
+
+	bINum := BigIntNum{}.NewUint(numInt, precision)
+
+	actualNumStr := bINum.GetNumStr()
+
+	if expectedNumStr != actualNumStr {
+		t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v' ",
+			expectedNumStr, actualNumStr)
+	}
+
+}
+
+func TestBigIntNum_NewUint_04(t *testing.T) {
+
+	numInt := uint(0)
+	precision := uint(3)
+	expectedNumStr := "0.000"
+
+	bINum := BigIntNum{}.NewUint(numInt, precision)
+
+	actualNumStr := bINum.GetNumStr()
+
+	if expectedNumStr != actualNumStr {
+		t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v' ",
+			expectedNumStr, actualNumStr)
+	}
+
+}
+
 func TestBigIntNum_NewUintExponent_01(t *testing.T) {
 
 	numInt := uint(1234)
@@ -1837,6 +2109,74 @@ func TestBigIntNum_NewUintExponent_05(t *testing.T) {
 
 }
 
+func TestBigIntNum_NewUint32_01(t *testing.T) {
+
+	num32Uint := uint32(1234)
+	precision := uint(3)
+	expectedNumStr := "1.234"
+
+	bINum := BigIntNum{}.NewUint32(num32Uint, precision)
+
+	actualNumStr := bINum.GetNumStr()
+
+	if expectedNumStr != actualNumStr {
+		t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v' ",
+			expectedNumStr, actualNumStr)
+	}
+
+}
+
+func TestBigIntNum_NewUint32_02(t *testing.T) {
+
+	num32Uint := uint32(1234)
+	precision := uint(0)
+	expectedNumStr := "1234"
+
+	bINum := BigIntNum{}.NewUint32(num32Uint, precision)
+
+	actualNumStr := bINum.GetNumStr()
+
+	if expectedNumStr != actualNumStr {
+		t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v' ",
+			expectedNumStr, actualNumStr)
+	}
+
+}
+
+func TestBigIntNum_NewUint32_03(t *testing.T) {
+
+	num32Uint := uint32(0)
+	precision := uint(0)
+	expectedNumStr := "0"
+
+	bINum := BigIntNum{}.NewUint32(num32Uint, precision)
+
+	actualNumStr := bINum.GetNumStr()
+
+	if expectedNumStr != actualNumStr {
+		t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v' ",
+			expectedNumStr, actualNumStr)
+	}
+
+}
+
+func TestBigIntNum_NewUint32_04(t *testing.T) {
+
+	num32Uint := uint32(0)
+	precision := uint(3)
+	expectedNumStr := "0.000"
+
+	bINum := BigIntNum{}.NewUint32(num32Uint, precision)
+
+	actualNumStr := bINum.GetNumStr()
+
+	if expectedNumStr != actualNumStr {
+		t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v' ",
+			expectedNumStr, actualNumStr)
+	}
+
+}
+
 func TestBigIntNum_NewUint32Exponent_01(t *testing.T) {
 
 	numInt := uint32(1234)
@@ -1912,6 +2252,74 @@ func TestBigIntNum_NewUint32Exponent_05(t *testing.T) {
 	expectedNumStr := "0.000"
 
 	bINum := BigIntNum{}.NewUint32Exponent(numInt, exponent)
+
+	actualNumStr := bINum.GetNumStr()
+
+	if expectedNumStr != actualNumStr {
+		t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v' ",
+			expectedNumStr, actualNumStr)
+	}
+
+}
+
+func TestBigIntNum_NewUint64_01(t *testing.T) {
+
+	num64Uint := uint64(1234)
+	precision := uint(3)
+	expectedNumStr := "1.234"
+
+	bINum := BigIntNum{}.NewUint64(num64Uint, precision)
+
+	actualNumStr := bINum.GetNumStr()
+
+	if expectedNumStr != actualNumStr {
+		t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v' ",
+			expectedNumStr, actualNumStr)
+	}
+
+}
+
+func TestBigIntNum_NewUint64_02(t *testing.T) {
+
+	num64Uint := uint64(1234)
+	precision := uint(0)
+	expectedNumStr := "1234"
+
+	bINum := BigIntNum{}.NewUint64(num64Uint, precision)
+
+	actualNumStr := bINum.GetNumStr()
+
+	if expectedNumStr != actualNumStr {
+		t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v' ",
+			expectedNumStr, actualNumStr)
+	}
+
+}
+
+func TestBigIntNum_NewUint64_03(t *testing.T) {
+
+	num64Uint := uint64(0)
+	precision := uint(0)
+	expectedNumStr := "0"
+
+	bINum := BigIntNum{}.NewUint64(num64Uint, precision)
+
+	actualNumStr := bINum.GetNumStr()
+
+	if expectedNumStr != actualNumStr {
+		t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v' ",
+			expectedNumStr, actualNumStr)
+	}
+
+}
+
+func TestBigIntNum_NewUint64_04(t *testing.T) {
+
+	num64Uint := uint64(0)
+	precision := uint(3)
+	expectedNumStr := "0.000"
+
+	bINum := BigIntNum{}.NewUint64(num64Uint, precision)
 
 	actualNumStr := bINum.GetNumStr()
 
