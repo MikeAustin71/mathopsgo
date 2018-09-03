@@ -5,6 +5,62 @@ import (
 	"testing"
 )
 
+
+func TestNumStrDto_NewBigIntNum_01(t *testing.T) {
+	nStr := "123.456"
+
+	bINum, err := BigIntNum{}.NewNumStr(nStr)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(nStr). " +
+			"nStr='%v' Error='%v ",
+			nStr, err.Error())
+	}
+
+	nDto, err := NumStrDto{}.NewBigIntNum(bINum)
+
+
+	if err != nil {
+		t.Errorf("Error returned by NumStrDto{}.NewBigIntNum(bINum). " +
+			"bINum='%v' Error='%v ",
+			bINum.GetNumStr(), err.Error())
+	}
+
+	if nStr != nDto.GetNumStr() {
+		t.Errorf("Expected nDto.GetNumStr()='%v'. Instead, nDto.GetNumStr()='%v'.",
+			nStr, nDto.GetNumStr())
+	}
+
+}
+
+func TestNumStrDto_NewBigIntNum_02(t *testing.T) {
+	nStr := "-123.456"
+
+	bINum, err := BigIntNum{}.NewNumStr(nStr)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(nStr). " +
+			"nStr='%v' Error='%v ",
+			nStr, err.Error())
+	}
+
+	nDto, err := NumStrDto{}.NewBigIntNum(bINum)
+
+
+	if err != nil {
+		t.Errorf("Error returned by NumStrDto{}.NewBigIntNum(bINum). " +
+			"bINum='%v' Error='%v ",
+			bINum.GetNumStr(), err.Error())
+	}
+
+	if nStr != nDto.GetNumStr() {
+		t.Errorf("Expected nDto.GetNumStr()='%v'. Instead, nDto.GetNumStr()='%v'.",
+			nStr, nDto.GetNumStr())
+	}
+
+}
+
+
 func TestNumStrDto_NewInt_01(t *testing.T) {
 
 	intNum := 7
@@ -656,7 +712,6 @@ func TestNumStrDto_NewInt64Exponent_06(t *testing.T) {
 
 }
 
-
 func TestNumStrDto_NewNumStr_01(t *testing.T) {
 	nStr := "123.456"
 	iStr := "123"
@@ -1045,29 +1100,219 @@ func TestNumStrDto_NewNumStrWithNumSeps_03(t *testing.T) {
 
 }
 
-func TestNumStrDto_NewBigIntNum_01(t *testing.T) {
-	nStr := "123.456"
+func TestNumStrDto_NewUint64_01(t *testing.T) {
 
-	bINum, err := BigIntNum{}.NewNumStr(nStr)
+	intNum := uint64(7)
+	precision := uint(0)
 
-	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(nStr). " +
-			"nStr='%v' Error='%v ",
-				nStr, err.Error())
-	}
+	expectedStr := "7"
 
-	nDto, err := NumStrDto{}.NewBigIntNum(bINum)
-
+	nDto, err := NumStrDto{}.NewUint64(intNum,precision)
 
 	if err != nil {
-		t.Errorf("Error returned by NumStrDto{}.NewBigIntNum(bINum). " +
-			"bINum='%v' Error='%v ",
-			bINum.GetNumStr(), err.Error())
+		t.Errorf("Error returned by NumStrDto{}.NewUuint64(intNum,precision) " +
+			"Error='%v' ", err.Error())
 	}
 
-	if nStr != nDto.GetNumStr() {
+	actualNumStr := nDto.GetNumStr()
+
+	if expectedStr != actualNumStr {
 		t.Errorf("Expected nDto.GetNumStr()='%v'. Instead, nDto.GetNumStr()='%v'.",
-			nStr, nDto.GetNumStr())
+			expectedStr, nDto.GetNumStr())
+	}
+
+}
+
+func TestNumStrDto_NewUint64_02(t *testing.T) {
+
+	intNum := uint64(7)
+	precision := uint(1)
+
+	expectedStr := "7.0"
+
+	nDto, err := NumStrDto{}.NewUint64(intNum,precision)
+
+	if err != nil {
+		t.Errorf("Error returned by NumStrDto{}.NewUuint64(intNum,precision) " +
+			"Error='%v' ", err.Error())
+	}
+
+	actualNumStr := nDto.GetNumStr()
+
+	if expectedStr != actualNumStr {
+		t.Errorf("Expected nDto.GetNumStr()='%v'. Instead, nDto.GetNumStr()='%v'.",
+			expectedStr, nDto.GetNumStr())
+	}
+
+}
+
+func TestNumStrDto_NewUint64_03(t *testing.T) {
+
+	intNum := uint64(7)
+	precision := uint(3)
+
+	expectedStr := "7.000"
+
+	nDto, err := NumStrDto{}.NewUint64(intNum,precision)
+
+	if err != nil {
+		t.Errorf("Error returned by NumStrDto{}.NewUuint64(intNum,precision) " +
+			"Error='%v' ", err.Error())
+	}
+
+	actualNumStr := nDto.GetNumStr()
+
+	if expectedStr != actualNumStr {
+		t.Errorf("Expected nDto.GetNumStr()='%v'. Instead, nDto.GetNumStr()='%v'.",
+			expectedStr, nDto.GetNumStr())
+	}
+
+}
+
+func TestNumStrDto_NewUint64_04(t *testing.T) {
+
+	intNum := uint64(792)
+	precision := uint(3)
+
+	expectedStr := "792.000"
+
+	nDto, err := NumStrDto{}.NewUint64(intNum,precision)
+
+	if err != nil {
+		t.Errorf("Error returned by NumStrDto{}.NewUuint64(intNum,precision) " +
+			"Error='%v' ", err.Error())
+	}
+
+	actualNumStr := nDto.GetNumStr()
+
+	if expectedStr != actualNumStr {
+		t.Errorf("Expected nDto.GetNumStr()='%v'. Instead, nDto.GetNumStr()='%v'.",
+			expectedStr, nDto.GetNumStr())
+	}
+
+}
+
+func TestNumStrDto_NewUint64_05(t *testing.T) {
+
+	intNum := uint64(792)
+	precision := uint(0)
+
+	expectedStr := "792"
+
+	nDto, err := NumStrDto{}.NewUint64(intNum,precision)
+
+	if err != nil {
+		t.Errorf("Error returned by NumStrDto{}.NewUuint64(intNum,precision) " +
+			"Error='%v' ", err.Error())
+	}
+
+	actualNumStr := nDto.GetNumStr()
+
+	if expectedStr != actualNumStr {
+		t.Errorf("Expected nDto.GetNumStr()='%v'. Instead, nDto.GetNumStr()='%v'.",
+			expectedStr, nDto.GetNumStr())
+	}
+
+}
+
+func TestNumStrDto_NewUint64Exponent_01(t *testing.T) {
+	intNum := uint64(7)
+	exponent := 3
+
+	expectedStr := "7.000"
+
+	nDto := NumStrDto{}.NewUint64Exponent(intNum, exponent)
+
+	actualNumStr := nDto.GetNumStr()
+
+	if expectedStr != actualNumStr {
+		t.Errorf("Expected nDto.GetNumStr()='%v'. Instead, nDto.GetNumStr()='%v'.",
+			expectedStr, nDto.GetNumStr())
+	}
+
+}
+
+func TestNumStrDto_NewUint64Exponent_02(t *testing.T) {
+	intNum := uint64(7123)
+	exponent := -3
+
+	expectedStr := "7.123"
+
+	nDto := NumStrDto{}.NewUint64Exponent(intNum, exponent)
+
+	actualNumStr := nDto.GetNumStr()
+
+	if expectedStr != actualNumStr {
+		t.Errorf("Expected nDto.GetNumStr()='%v'. Instead, nDto.GetNumStr()='%v'.",
+			expectedStr, nDto.GetNumStr())
+	}
+
+}
+
+func TestNumStrDto_NewUint64Exponent_03(t *testing.T) {
+	intNum := uint64(872)
+	exponent := 3
+
+	expectedStr := "872.000"
+
+	nDto := NumStrDto{}.NewUint64Exponent(intNum, exponent)
+
+	actualNumStr := nDto.GetNumStr()
+
+	if expectedStr != actualNumStr {
+		t.Errorf("Expected nDto.GetNumStr()='%v'. Instead, nDto.GetNumStr()='%v'.",
+			expectedStr, nDto.GetNumStr())
+	}
+
+}
+
+func TestNumStrDto_NewUint64Exponent_04(t *testing.T) {
+	intNum := uint64(872123)
+	exponent := -3
+
+	expectedStr := "872.123"
+
+	nDto := NumStrDto{}.NewUint64Exponent(intNum, exponent)
+
+	actualNumStr := nDto.GetNumStr()
+
+	if expectedStr != actualNumStr {
+		t.Errorf("Expected nDto.GetNumStr()='%v'. Instead, nDto.GetNumStr()='%v'.",
+			expectedStr, nDto.GetNumStr())
+	}
+
+}
+
+func TestNumStrDto_NewUint64Exponent_05(t *testing.T) {
+	intNum := uint64(72)
+	exponent := 0
+
+	expectedStr := "72"
+
+	nDto := NumStrDto{}.NewUint64Exponent(intNum, exponent)
+
+	actualNumStr := nDto.GetNumStr()
+
+	if expectedStr != actualNumStr {
+		t.Errorf("Expected nDto.GetNumStr()='%v'. Instead, nDto.GetNumStr()='%v'.",
+			expectedStr, nDto.GetNumStr())
+	}
+
+}
+
+func TestNumStrDto_NewUint64Exponent_06(t *testing.T) {
+	intNum := uint64(472)
+	exponent := 0
+
+	expectedStr := "472"
+
+	nDto := NumStrDto{}.NewUint64Exponent(intNum, exponent)
+
+	actualNumStr := nDto.GetNumStr()
+
+	if expectedStr != actualNumStr {
+		t.Errorf("Expected nDto.GetNumStr()='%v'. Instead, nDto.GetNumStr()='%v'.",
+			expectedStr, nDto.GetNumStr())
 	}
 
 }

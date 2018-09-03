@@ -2535,6 +2535,83 @@ func (nDto NumStrDto) NewInt64Exponent(int64Num int64, exponent int) NumStrDto {
 	return n2
 }
 
+// NewUint64 - Creates a new NumStrDto instance from an uint64 and a
+// precision specification.
+//
+// Input parameter 'precision' indicates the number of digits to be
+// formatted to the right of the decimal place.
+//
+// The 'NewUint64' method is designed to used in conjunction with
+// NumStrDto{} syntax thereby allowing NumStrDto type creation and
+// initialization in one step.
+//
+// Example: NumStrDto{}.NewUint64(123456, 3) yields a NumStrDto instance
+// with a numeric value of 123.456.
+//
+func (nDto NumStrDto) NewUint64(uint64Num uint64, precision uint ) (NumStrDto, error) {
+
+	ePrefix := "NumStrDto.NewUint64() "
+
+	numStr := strconv.FormatUint(uint64Num, 10)
+
+	n2, err := NumStrDto{}.NewPtr().ParseNumStr(numStr)
+
+	if err != nil {
+		return NumStrDto{},
+			fmt.Errorf(ePrefix + "Error returned by n.ParseNumStr(numStr). " +
+				"numStr='%v'  Error='%v'",
+				numStr, err.Error())
+	}
+
+	n2.SetThisPrecision(precision, true)
+
+	return n2, nil
+}
+
+
+// NewInt64Exponent - Returns a new NumStrDto instance. The numeric
+// value is set using an int64 value multiplied by 10 raised to the
+// power of the 'exponent' parameter.
+//
+// 				numeric value = int64 X 10^exponent
+//
+// For example, if exponent is -3, precision is set equal to 'int64Num'
+// divided by 10^+3. Example:
+//
+//   int32Num			exponent			NumStrDto Result
+//	 123456		 		  -3							123.456
+//
+// If exponent is +3, int64Num is multiplied by 10 raised to the
+// power of exponent and precision is set equal to exponent.
+//
+//   int32Num			exponent			NumStrDto Result
+//	 123456		 		   +3							123456.000
+//
+func (nDto NumStrDto) NewUint64Exponent(uint64Num uint64, exponent int) NumStrDto {
+
+	numStr := strconv.FormatUint(uint64Num, 10)
+
+	if exponent > 0 {
+		for i:= 0; i < exponent; i++ {
+			numStr += "0"
+		}
+	}
+
+	if exponent < 0 {
+		exponent = exponent * -1
+	}
+
+	var n2 NumStrDto
+
+	if exponent == 0 {
+		n2, _ = NumStrDto{}.NewNumStr(numStr)
+	} else {
+		n2, _ = nDto.ShiftPrecisionLeft(numStr, uint(exponent))
+	}
+
+	return n2
+}
+
 // NewRational - Creates a new NumStrDto instance from a rational number and a precision
 // specification.
 //
