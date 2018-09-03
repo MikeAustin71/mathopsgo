@@ -2360,14 +2360,14 @@ func (nDto NumStrDto) NewFloat64(f64 float64, precision int) (NumStrDto, error) 
 // Creates a new NumStrDto from an int and a precision specification.
 //
 // Input parameter 'precision' indicates the number of digits to be
-// formatted to the right of the decimal place. If the value of input
-// parameter is negative, an error will be returned.
+// formatted to the right of the decimal place.
 //
-// The 'NewInt' method is designed to used in conjunction
-// with NumStrDto{} thereby allowing Decimal type creation and
+// The 'NewInt' method is designed to used in conjunction with 
+// NumStrDto{} syntax thereby allowing NumStrDto type creation and
 // initialization in one step.
 //
-// Example: NumStrDto{}.NewInt(123456, 3) yields 123.456
+// Example: NumStrDto{}.NewInt(123456, 3) yields a new NumStrDto
+// instance with a numeric value of 123.456.
 //
 func (nDto NumStrDto) NewInt(intNum int, precision uint) (NumStrDto, error) {
 	ePrefix := "NumStrDto.NewInt() "
@@ -2397,13 +2397,13 @@ func (nDto NumStrDto) NewInt(intNum int, precision uint) (NumStrDto, error) {
 // For example, if exponent is -3, precision is set equal to 'intNum'
 // divided by 10^+3. Example:
 //
-//   intNum				exponent			BigIntNum Result
+//   intNum				exponent			NumStrDto Result
 //	 123456		 		  -3							123.456
 //
 // If exponent is +3, intNum is multiplied by 10 raised to the
 // power of exponent and precision is set equal to exponent.
 //
-//    bigI				exponent			BigIntNum Result
+//   intNum				exponent			NumStrDto Result
 //	 123456		 		   +3							123456.000
 //
 func (nDto NumStrDto) NewIntExponent(intNum int, exponent int) NumStrDto {
@@ -2431,7 +2431,19 @@ func (nDto NumStrDto) NewIntExponent(intNum int, exponent int) NumStrDto {
 	return n2
 }
 
-// NewInt32 - Creates a new NumStrDto from an int32 and a precision specification.
+// NewInt32 - Creates a new NumStrDto instance from an int32 and a
+// precision specification.
+//
+// Input parameter 'precision' indicates the number of digits to be
+// formatted to the right of the decimal place.
+//
+// The 'NewInt32' method is designed to used in conjunction with 
+// NumStrDto{} syntax thereby allowing NumStrDto type creation and
+// initialization in one step.
+//
+// Example: NumStrDto{}.NewInt32(123456, 3) yields a new NumStrDto
+// instance with a numeric value of 123.456.
+//
 func (nDto NumStrDto) NewInt32(i32 int32, precision uint) (NumStrDto, error) {
 	ePrefix := "NumStrDto.NewInt32() "
 
@@ -2451,7 +2463,62 @@ func (nDto NumStrDto) NewInt32(i32 int32, precision uint) (NumStrDto, error) {
 	return n2, nil
 }
 
-// NewInt64 - Creates a new NumStrDto from an int64 and a precision specification.
+// NewInt32Exponent - Returns a new NumStrDto instance. The numeric
+// value is set using an int32 value multiplied by 10 raised to the
+// power of the 'exponent' parameter.
+//
+// 				numeric value = int32 X 10^exponent
+//
+// For example, if exponent is -3, precision is set equal to 'int32Num'
+// divided by 10^+3. Example:
+//
+//   int32Num			exponent			NumStrDto Result
+//	 123456		 		  -3							123.456
+//
+// If exponent is +3, int32Num is multiplied by 10 raised to the
+// power of exponent and precision is set equal to exponent.
+//
+//   int32Num			exponent			NumStrDto Result
+//	 123456		 		   +3							123456.000
+//
+func (nDto NumStrDto) NewInt32Exponent(int32Num int32, exponent int) NumStrDto {
+
+	numStr := strconv.FormatInt(int64(int32Num), 10)
+
+	if exponent > 0 {
+		for i:= 0; i < exponent; i++ {
+			numStr += "0"
+		}
+	}
+
+	if exponent < 0 {
+		exponent = exponent * -1
+	}
+
+	var n2 NumStrDto
+
+	if exponent == 0 {
+		n2, _ = NumStrDto{}.NewNumStr(numStr)
+	} else {
+		n2, _ = nDto.ShiftPrecisionLeft(numStr, uint(exponent))
+	}
+
+	return n2
+}
+
+// NewInt64 - Creates a new NumStrDto instance from an int64 and a
+// precision specification.
+//
+// Input parameter 'precision' indicates the number of digits to be
+// formatted to the right of the decimal place.
+//
+// The 'NewInt64' method is designed to used in conjunction with 
+// NumStrDto{} syntax thereby allowing NumStrDto type creation and
+// initialization in one step.
+//
+// Example: NumStrDto{}.NewInt64(123456, 3) yields a NumStrDto instance
+// with a numeric value of 123.456.
+//
 func (nDto NumStrDto) NewInt64(i64 int64, precision uint) (NumStrDto, error) {
 	ePrefix := "NumStrDto.NewInt64() "
 
@@ -2469,6 +2536,49 @@ func (nDto NumStrDto) NewInt64(i64 int64, precision uint) (NumStrDto, error) {
 	n2.SetThisPrecision(precision, true)
 
 	return n2, nil
+}
+
+// NewInt64Exponent - Returns a new NumStrDto instance. The numeric
+// value is set using an int64 value multiplied by 10 raised to the
+// power of the 'exponent' parameter.
+//
+// 				numeric value = int64 X 10^exponent
+//
+// For example, if exponent is -3, precision is set equal to 'int64Num'
+// divided by 10^+3. Example:
+//
+//   int32Num			exponent			NumStrDto Result
+//	 123456		 		  -3							123.456
+//
+// If exponent is +3, int64Num is multiplied by 10 raised to the
+// power of exponent and precision is set equal to exponent.
+//
+//   int32Num			exponent			NumStrDto Result
+//	 123456		 		   +3							123456.000
+//
+func (nDto NumStrDto) NewInt64Exponent(int64Num int64, exponent int) NumStrDto {
+
+	numStr := strconv.FormatInt(int64Num, 10)
+
+	if exponent > 0 {
+		for i:= 0; i < exponent; i++ {
+			numStr += "0"
+		}
+	}
+
+	if exponent < 0 {
+		exponent = exponent * -1
+	}
+
+	var n2 NumStrDto
+
+	if exponent == 0 {
+		n2, _ = NumStrDto{}.NewNumStr(numStr)
+	} else {
+		n2, _ = nDto.ShiftPrecisionLeft(numStr, uint(exponent))
+	}
+
+	return n2
 }
 
 // NewRational - Creates a new NumStrDto instance from a rational number and a precision
