@@ -1717,6 +1717,8 @@ func (dec Decimal) NewInt64Exponent(int64Num int64, exponent int) Decimal {
 
 	d2.bigINum.SetBigIntExponent(bigI, exponent)
 
+	d2.SetNumericSeparatorsDto(dec.GetNumericSeparatorsDto())
+	
 	return d2
 
 }
@@ -2143,6 +2145,161 @@ func (dec Decimal) NewTwo(precision uint) Decimal {
 	return d2
 }
 
+// NewUint - Returns a new Decimal instance based on input parameters
+// 'uintNum' and 'precision'.
+//
+// Input parameter 'uintNum' is of type uint.
+//
+// Input parameter 'precision' indicates the number of digits to be
+// formatted to the right of the decimal place. Input parameter
+// 'precision' is of type uint.
+//
+// Usage:
+// ------
+// This method is designed to be used in conjunction with the Decimal{}
+// syntax thereby allowing Decimal type creation and initialization in
+// one step.
+//
+// 				uintNum := uint(123456)
+// 				precision := uint(3)
+// 				dec := Decimal{}.NewUint(int32Num, precision)
+//        dec is now equal to 123.456
+//
+// Examples:
+// ---------
+//  uintNum			 precision	  	  Decimal Result
+//	 123456		 		   4							12.3456
+//   123456          0              123456
+//   123456          1              12345.6
+//
+func (dec Decimal) NewUint(uintNum uint, precision uint) Decimal {
+
+	d2 := Decimal{}.New()
+	d2.bigINum.SetBigInt(big.NewInt(0).SetUint64( uint64(uintNum)), precision)
+	d2.bigINum.SetNumericSeparatorsDto(dec.GetNumericSeparatorsDto())
+
+	return d2
+}
+
+// NewUintExponent - This method returns a new Decimal instance in which
+// the numeric value is set using an integer ('uintNum') multiplied by 10
+// raised to the power of the input parameter, 'exponent'.
+//
+// 				numeric value = integer X 10^exponent
+//
+// Input parameter 'uintNum' is of type uint.
+//
+// Input parameter 'exponent' is of type int.
+//
+// Usage:
+// ------
+// This method is designed to be used in conjunction with the Decimal{}
+// syntax thereby allowing Decimal type creation and initialization in
+// one step.
+//
+//	decNum := Decimal{}.NewUintExponent(123456, -3)
+//  -- decNum is now equal to "123.456", precision = 3
+//
+//	decNum := Decimal{}.NewUintExponent(123456, 3)
+//  -- decNum is now equal to "123456.000", precision = 3
+//
+// Examples:
+// ---------
+//  uintNum		    exponent		  	Decimal Result
+//	 123456		 		  -3							123.456
+//	 123456		 		   3							123456.000
+//   123456          0              123456
+//
+func (dec Decimal) NewUintExponent(uintNum uint, exponent int) Decimal {
+
+	d2 := Decimal{}.New()
+
+	d2.bigINum.SetBigIntExponent(
+		big.NewInt(0).SetUint64(uint64(uintNum)), 
+			exponent)
+
+	d2.SetNumericSeparatorsDto(dec.GetNumericSeparatorsDto())
+
+	return d2
+}
+
+// NewUint32 - Returns a new Decimal instance based on input parameters
+// 'uint32Num' and 'precision'.
+//
+// Input parameter 'uint32Num' is of type uint32.
+//
+// Input parameter 'precision' indicates the number of digits to be
+// formatted to the right of the decimal place. Input parameter
+// 'precision' is of type uint.
+//
+// Usage:
+// ------
+// This method is designed to be used in conjunction with the Decimal{}
+// syntax thereby allowing Decimal type creation and initialization in
+// one step.
+//
+// 				uint32Num := uint32(123456)
+// 				precision := uint(3)
+// 				dec := Decimal{}.NewUint32(int32Num, precision)
+//        dec is now equal to 123.456
+//
+// Examples:
+// ---------
+//  uint32Num			precision			Decimal Result
+//	 123456		 		   4							12.3456
+//   123456          0              123456
+//   123456          1              12345.6
+//
+func (dec Decimal) NewUint32(uint32Num uint32, precision uint) Decimal {
+
+	d2 := Decimal{}.New()
+	d2.bigINum.SetBigInt(big.NewInt(0).SetUint64( uint64(uint32Num)), precision)
+	d2.bigINum.SetNumericSeparatorsDto(dec.GetNumericSeparatorsDto())
+
+	return d2
+}
+
+// NewUint32Exponent - This method returns a new Decimal instance in which the
+// numeric value is set using an integer ('uint32Num') multiplied by 10 raised
+// to the power of the input parameter, 'exponent'.
+//
+// 				numeric value = integer X 10^exponent
+//
+// Input parameter 'uint32Num' is of type uint32.
+//
+// Input parameter 'exponent' is of type int.
+//
+// Usage:
+// ------
+// This method is designed to be used in conjunction with the Decimal{}
+// syntax thereby allowing Decimal type creation and initialization in
+// one step.
+//
+//	decNum := Decimal{}.NewUint32Exponent(123456, -3)
+//  -- decNum is now equal to "123.456", precision = 3
+//
+//	decNum := Decimal{}.NewUint32Exponent(123456, 3)
+//  -- decNum is now equal to "123456.000", precision = 3
+//
+// Examples:
+// ---------
+//  uint32Num		 exponent			  	Decimal Result
+//	 123456		 		  -3							123.456
+//	 123456		 		   3							123456.000
+//   123456          0              123456
+//
+func (dec Decimal) NewUint32Exponent(uint32Num uint32, exponent int) Decimal {
+
+	d2 := Decimal{}.New()
+
+	d2.bigINum.SetBigIntExponent(
+		big.NewInt(0).SetUint64(uint64(uint32Num)), 
+			exponent)
+
+	d2.SetNumericSeparatorsDto(dec.GetNumericSeparatorsDto())
+
+	return d2
+}
 
 // NewUint64 - Returns a new Decimal instance based on input parameters
 // 'uint64Num' and 'precision'.
@@ -2180,6 +2337,48 @@ func (dec Decimal) NewUint64(uint64Num uint64, precision uint) Decimal {
 	return d2
 }
 
+
+// NewUint64Exponent - This method returns a new Decimal instance in which the
+// numeric value is set using an integer ('uint64Num') multiplied by 10 raised
+// to the power of the input parameter, 'exponent'.
+//
+// 				numeric value = integer X 10^exponent
+//
+// Input parameter 'uint64Num' is of type uint64.
+//
+// Input parameter 'exponent' is of type int.
+//
+// Usage:
+// ------
+// This method is designed to be used in conjunction with the Decimal{}
+// syntax thereby allowing Decimal type creation and initialization in
+// one step.
+//
+//	decNum := Decimal{}.NewUint64Exponent(123456, -3)
+//  -- decNum is now equal to "123.456", precision = 3
+//
+//	decNum := Decimal{}.NewUint64Exponent(123456, 3)
+//  -- decNum is now equal to "123456.000", precision = 3
+//
+// Examples:
+// ---------
+//  uint64Num		 exponent			  	Decimal Result
+//	 123456		 		  -3							123.456
+//	 123456		 		   3							123456.000
+//   123456          0              123456
+//
+func (dec Decimal) NewUint64Exponent(uint64Num uint64, exponent int) Decimal {
+
+	d2 := Decimal{}.New()
+
+	d2.bigINum.SetBigIntExponent(
+		big.NewInt(0).SetUint64(uint64Num), 
+			exponent)
+
+	d2.SetNumericSeparatorsDto(dec.GetNumericSeparatorsDto())
+
+	return d2
+}
 
 // NewZero - Creates a New Decimal Instance with a value of zero. Input
 // parameter 'precision' indicates the number of zeros formatted to the

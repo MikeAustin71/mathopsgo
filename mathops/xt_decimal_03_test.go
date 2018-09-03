@@ -447,6 +447,17 @@ func TestDecimal_NewInt64Exponent_06(t *testing.T) {
 	}
 }
 
+func TestDecimal_NewInt64Exponent_07(t *testing.T) {
+	int64Num := int64(0)
+	exponent := int(-3)
+	expected := "0.000"
+	d := Decimal{}.NewInt64Exponent(int64Num, exponent)
+
+	if expected != d.GetNumStr() {
+		t.Errorf("Expected NumStr: %v. Instead, got %v", expected, d.GetNumStr())
+	}
+}
+
 func TestDecimal_NewOne_01(t *testing.T) {
 	expectedNumStr := "1.000"
 	expectedPrecision := uint(3)
@@ -1170,6 +1181,116 @@ func TestDecimal_NewNumStrPrecision_07(t *testing.T) {
 		t.Errorf("Expected NumStr: %v. Instead, got %v", expected, d.GetNumStr())
 	}
 
+}
+
+func TestDecimal_NewUint64_01(t *testing.T) {
+	uint64Num := uint64(123456)
+	precision := uint(3)
+	expected := "123.456"
+	d := Decimal{}.NewUint64(uint64Num, precision)
+
+	if expected != d.GetNumStr() {
+		t.Errorf("Expected NumStr: %v. Instead, got %v", expected, d.GetNumStr())
+	}
+}
+
+func TestDecimal_NewUint64_02(t *testing.T) {
+	uint64Num := uint64(123456)
+	precision := uint(0)
+	expected := "123456"
+	d := Decimal{}.NewUint64(uint64Num, precision)
+
+	if expected != d.GetNumStr() {
+		t.Errorf("Expected NumStr: %v. Instead, got %v", expected, d.GetNumStr())
+	}
+}
+
+func TestDecimal_NewUint64_03(t *testing.T) {
+	uint64Num := uint64(0)
+	precision := uint(0)
+	expected := "0"
+	d := Decimal{}.NewUint64(uint64Num, precision)
+
+	if expected != d.GetNumStr() {
+		t.Errorf("Expected NumStr: %v. Instead, got %v", expected, d.GetNumStr())
+	}
+}
+
+func TestDecimal_NewUint64_04(t *testing.T) {
+	uint64Num := uint64(0)
+	precision := uint(0)
+	expected := "0"
+	d := Decimal{}.NewUint64(uint64Num, precision)
+
+	if expected != d.GetNumStr() {
+		t.Errorf("Expected NumStr: %v. Instead, got %v", expected, d.GetNumStr())
+	}
+}
+
+func TestDecimal_NewUint64_05(t *testing.T) {
+	uint64Num := uint64(0)
+	precision := uint(4)
+	expected := "0.0000"
+	d := Decimal{}.NewUint64(uint64Num, precision)
+
+	if expected != d.GetNumStr() {
+		t.Errorf("Expected NumStr: %v. Instead, got %v", expected, d.GetNumStr())
+	}
+}
+
+func TestDecimal_NewUint64Exponent_01(t *testing.T) {
+	uint64Num := uint64(123456)
+	exponent := int(3)
+	expected := "123456.000"
+	d := Decimal{}.NewUint64Exponent(uint64Num, exponent)
+
+	if expected != d.GetNumStr() {
+		t.Errorf("Expected NumStr: %v. Instead, got %v", expected, d.GetNumStr())
+	}
+}
+
+func TestDecimal_NewUint64Exponent_02(t *testing.T) {
+	uint64Num := uint64(123456)
+	exponent := int(-3)
+	expected := "123.456"
+	d := Decimal{}.NewUint64Exponent(uint64Num, exponent)
+
+	if expected != d.GetNumStr() {
+		t.Errorf("Expected NumStr: %v. Instead, got %v", expected, d.GetNumStr())
+	}
+}
+
+func TestDecimal_NewUint64Exponent_03(t *testing.T) {
+	uint64Num := uint64(0)
+	exponent := int(0)
+	expected := "0"
+	d := Decimal{}.NewUint64Exponent(uint64Num, exponent)
+
+	if expected != d.GetNumStr() {
+		t.Errorf("Expected NumStr: %v. Instead, got %v", expected, d.GetNumStr())
+	}
+}
+
+func TestDecimal_NewUint64Exponent_04(t *testing.T) {
+	uint64Num := uint64(0)
+	exponent := int(3)
+	expected := "0.000"
+	d := Decimal{}.NewUint64Exponent(uint64Num, exponent)
+
+	if expected != d.GetNumStr() {
+		t.Errorf("Expected NumStr: %v. Instead, got %v", expected, d.GetNumStr())
+	}
+}
+
+func TestDecimal_NewUint64Exponent_05(t *testing.T) {
+	uint64Num := uint64(0)
+	exponent := int(-3)
+	expected := "0.000"
+	d := Decimal{}.NewUint64Exponent(uint64Num, exponent)
+
+	if expected != d.GetNumStr() {
+		t.Errorf("Expected NumStr: %v. Instead, got %v", expected, d.GetNumStr())
+	}
 }
 
 func TestDecimal_NthRoot_01(t *testing.T) {
