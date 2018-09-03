@@ -3298,7 +3298,7 @@ func (bNum *BigIntNum) SetBigInt(bigI *big.Int, precision uint) {
 //	 123456		 		  -3							123.456
 //
 // If exponent is greater than 0, bigI is multiplied by 10 raised to the
-// power of exponent and precision is set equal to zero.
+// power of exponent and precision is set equal to exponent.
 //
 //    bigI				exponent			BigIntNum Result
 //	 123456		 		   +3							123456.000

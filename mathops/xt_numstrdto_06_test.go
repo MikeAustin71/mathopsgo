@@ -120,6 +120,74 @@ func TestNumStrDto_NewInt_05(t *testing.T) {
 
 }
 
+func TestNumStrDto_NewIntExponent_01(t *testing.T) {
+	intNum := 7
+	exponent := 3
+
+	expectedStr := "7.000"
+
+	nDto := NumStrDto{}.NewIntExponent(intNum, exponent)
+
+	actualNumStr := nDto.GetNumStr()
+
+	if expectedStr != actualNumStr {
+		t.Errorf("Expected nDto.GetNumStr()='%v'. Instead, nDto.GetNumStr()='%v'.",
+			expectedStr, nDto.GetNumStr())
+	}
+
+}
+
+func TestNumStrDto_NewIntExponent_02(t *testing.T) {
+	intNum := 7123
+	exponent := -3
+
+	expectedStr := "7.123"
+
+	nDto := NumStrDto{}.NewIntExponent(intNum, exponent)
+
+	actualNumStr := nDto.GetNumStr()
+
+	if expectedStr != actualNumStr {
+		t.Errorf("Expected nDto.GetNumStr()='%v'. Instead, nDto.GetNumStr()='%v'.",
+			expectedStr, nDto.GetNumStr())
+	}
+
+}
+
+func TestNumStrDto_NewIntExponent_03(t *testing.T) {
+	intNum := -72
+	exponent := 3
+
+	expectedStr := "-72.000"
+
+	nDto := NumStrDto{}.NewIntExponent(intNum, exponent)
+
+	actualNumStr := nDto.GetNumStr()
+
+	if expectedStr != actualNumStr {
+		t.Errorf("Expected nDto.GetNumStr()='%v'. Instead, nDto.GetNumStr()='%v'.",
+			expectedStr, nDto.GetNumStr())
+	}
+
+}
+
+func TestNumStrDto_NewIntExponent_04(t *testing.T) {
+	intNum := -72123
+	exponent := -3
+
+	expectedStr := "-72.123"
+
+	nDto := NumStrDto{}.NewIntExponent(intNum, exponent)
+
+	actualNumStr := nDto.GetNumStr()
+
+	if expectedStr != actualNumStr {
+		t.Errorf("Expected nDto.GetNumStr()='%v'. Instead, nDto.GetNumStr()='%v'.",
+			expectedStr, nDto.GetNumStr())
+	}
+
+}
+
 func TestNumStrDto_NewInt32_01(t *testing.T) {
 
 	intNum := int32(7)

@@ -3,8 +3,8 @@ package mathops
 import (
 	"errors"
 	"fmt"
-		"math/big"
 	"math"
+	"math/big"
 	"strconv"
 )
 
@@ -2359,11 +2359,15 @@ func (nDto NumStrDto) NewFloat64(f64 float64, precision int) (NumStrDto, error) 
 
 // Creates a new NumStrDto from an int and a precision specification.
 //
+// Input parameter 'precision' indicates the number of digits to be
+// formatted to the right of the decimal place. If the value of input
+// parameter is negative, an error will be returned.
+//
 // The 'NewInt' method is designed to used in conjunction
 // with NumStrDto{} thereby allowing Decimal type creation and
 // initialization in one step.
 //
-// Example: NumStrDto{}.NewInt(123456, 3) = 123.456
+// Example: NumStrDto{}.NewInt(123456, 3) yields 123.456
 //
 func (nDto NumStrDto) NewInt(intNum int, precision uint) (NumStrDto, error) {
 	ePrefix := "NumStrDto.NewInt() "
@@ -2382,6 +2386,49 @@ func (nDto NumStrDto) NewInt(intNum int, precision uint) (NumStrDto, error) {
 	n2.SetThisPrecision(precision, true)
 
 	return n2, nil
+}
+
+// NewIntExponent - Returns a new NumStrDto instance. The numeric
+// value is set using an integer multiplied by 10 raised to the
+// power of the 'exponent' parameter.
+//
+// 				numeric value = integer X 10^exponent
+//
+// For example, if exponent is -3, precision is set equal to 'intNum'
+// divided by 10^+3. Example:
+//
+//   intNum				exponent			BigIntNum Result
+//	 123456		 		  -3							123.456
+//
+// If exponent is +3, intNum is multiplied by 10 raised to the
+// power of exponent and precision is set equal to exponent.
+//
+//    bigI				exponent			BigIntNum Result
+//	 123456		 		   +3							123456.000
+//
+func (nDto NumStrDto) NewIntExponent(intNum int, exponent int) NumStrDto {
+
+	numStr := strconv.FormatInt(int64(intNum), 10)
+
+	if exponent > 0 {
+		for i:= 0; i < exponent; i++ {
+			numStr += "0"
+		}
+	}
+
+	if exponent < 0 {
+		exponent = exponent * -1
+	}
+
+	var n2 NumStrDto
+
+	if exponent == 0 {
+		n2, _ = NumStrDto{}.NewNumStr(numStr)
+	} else {
+		n2, _ = nDto.ShiftPrecisionLeft(numStr, uint(exponent))
+	}
+
+	return n2
 }
 
 // NewInt32 - Creates a new NumStrDto from an int32 and a precision specification.
