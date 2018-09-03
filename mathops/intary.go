@@ -3553,6 +3553,33 @@ func (ia IntAry) NewFloatBig(num *big.Float, precision int) (IntAry, error) {
 	return iAry, nil
 }
 
+// NewInt - Creates a new intAry object initialized
+// to the value of input parameter 'num' which is passed
+// as type 'int32'.
+//
+// Input parameter 'precision' indicates the number of digits
+// to be formatted to the right of the decimal place. If the
+// value of input parameter is negative, an error will be
+// returned.
+//
+// Usage:
+// num := int(123456)
+// precision := uint(3)
+// ia, err := intAry{}.NewInt32(num, precision)
+// - Yields 123.456
+//
+func (ia IntAry) NewInt(num int, precision int) (IntAry, error) {
+
+	iAry := IntAry{}.New()
+	err := iAry.SetIntAryWithInt(num, precision)
+
+	if err != nil {
+		return IntAry{}, err
+	}
+
+	return iAry, nil
+}
+
 // NewInt32 - Creates a new intAry object initialized
 // to the value of input parameter 'num' which is passed
 // as type 'int32'.
@@ -3605,33 +3632,6 @@ func (ia IntAry) NewInt64(num int64, precision int) (IntAry, error) {
 
 	return iAry, nil
 
-}
-
-// NewInt - Creates a new intAry object initialized
-// to the value of input parameter 'num' which is passed
-// as type 'int32'.
-//
-// Input parameter 'precision' indicates the number of digits
-// to be formatted to the right of the decimal place. If the
-// value of input parameter is negative, an error will be
-// returned.
-//
-// Usage:
-// num := int(123456)
-// precision := uint(3)
-// ia, err := intAry{}.NewInt32(num, precision)
-// - Yields 123.456
-//
-func (ia IntAry) NewInt(num int, precision int) (IntAry, error) {
-
-	iAry := IntAry{}.New()
-	err := iAry.SetIntAryWithInt(num, precision)
-
-	if err != nil {
-		return IntAry{}, err
-	}
-
-	return iAry, nil
 }
 
 // NewIntFracStr - Creates a new IntAry instance based on a numeric value represented

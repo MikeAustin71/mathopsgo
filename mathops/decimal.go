@@ -1502,45 +1502,131 @@ func (dec Decimal) NewBigIntNum(bigINum BigIntNum) Decimal {
 	return d2
 }
 
-// NewInt - Returns a Decimal type based on int and precision input
-// parameters. If an error is encountered, it will trigger a panic
-// condition.
+// NewInt - Returns a Decimal type based on input parameters 'intNum'
+// and 'precision'.
 //
-// The 'NewInt' method is designed to used in conjunction
-// with Decimal{} thereby allowing Decimal creation and
-// initialization in one step.
-//
-// Example: Decimal{}.NewInt(123456, 3) = 123.456
-//
-func (dec Decimal) NewInt(iNum int, precision uint) (Decimal, error) {
-
-	d2 := Decimal{}.New()
-
-	d2.SetInt(iNum, precision)
-
-	return d2, nil
-}
-
-// NewInt32 - Returns a Decimal type based on int32 and precision
-// input parameters.
+// Input parameter 'intNum' is of type int.
 //
 // Input parameter 'precision' indicates the number of digits to be
 // formatted to the right of the decimal place.
 //
-// The 'NewInt32' method is designed to used in conjunction
-// with Decimal{} thereby allowing Decimal creation
-// and initialization in one step.
+// The 'NewInt' method is designed to be used in conjunction with the
+// Decimal{} syntax thereby allowing Decimal creation and initialization
+// in one step.
+//
+// Example: Decimal{}.NewInt(123456, 3) = 123.456
+//
+func (dec Decimal) NewInt(intNum int, precision uint) (Decimal, error) {
+
+	d2 := Decimal{}.New()
+
+	d2.SetInt(intNum, precision)
+
+	return d2, nil
+}
+
+// NewIntExponent - This method returns a new Decimal instance in which the
+// numeric value is set using an integer ('intNum') multiplied by 10 raised
+// to the power of the input parameter, 'exponent'.
+//
+// 				numeric value = integer X 10^exponent
+//
+// Input parameter 'intNum' is of type int.
+//
+// Input parameter 'precision' indicates the number of digits to be
+// formatted to the right of the decimal place.
+//
+// Examples:
+//
+// If exponent is -3, precision is set equal to 'intNum' divided by 10^+3:
+//
+//   intNum				exponent			Decimal Result
+//	 123456		 		  -3							123.456
+//
+// If exponent is +3, intNum is multiplied by 10 raised to the power of
+// exponent and precision is set equal to exponent:
+//
+//   intNum				exponent			Decimal Result
+//	 123456		 		   +3							123456.000
+//
+//	dec := Decimal{}.NewIntExponent(123456, -3) = "123.456" precision = 3
+//
+//	dec := Decimal{}.NewIntExponent(123456, 3) = "123456.000" precision = 3
+//
+func (dec Decimal) NewIntExponent(intNum int, exponent int) Decimal {
+
+	d2 := Decimal{}.New()
+
+	bigI := big.NewInt(int64(intNum))
+
+	d2.bigINum.SetBigIntExponent(bigI, exponent)
+
+	return d2
+	
+}
+
+// NewInt32 - Returns a Decimal type based on input parameters 'int32Num'
+// and 'precision'.
+//
+// Input parameter 'int32Num' is of type int32.
+//
+// Input parameter 'precision' indicates the number of digits to be
+// formatted to the right of the decimal place.
+//
+// The 'NewInt32' method is designed to used in conjunction with the
+// Decimal{} syntax thereby allowing Decimal creation and initialization
+// in one step.
 //
 // Example: Decimal{}.NewInt32(i32, precision)
 //	Decimal{}.NewInt32(123456, 3) = 123.456
 //
-func (dec Decimal) NewInt32(i64 int32, precision uint) (Decimal, error) {
+func (dec Decimal) NewInt32(int32Num int32, precision uint) (Decimal, error) {
 
 	d2 := Decimal{}.New()
 
-	d2.SetInt64(int64(i64), precision)
+	d2.SetInt64(int64(int32Num), precision)
 
 	return d2, nil
+}
+
+// NewInt32Exponent - This method returns a new Decimal instance in which the
+// numeric value is set using an integer ('int32Num') multiplied by 10 raised
+// to the power of the input parameter, 'exponent'.
+//
+// 				numeric value = integer X 10^exponent
+//
+// Input parameter 'int32Num' is of type int32.
+//
+// Input parameter 'precision' indicates the number of digits to be formatted to
+// the right of the decimal place.
+//
+// Examples:
+//
+// If exponent is -3, the numeric value is set equal to 'int32Num' divided by 10^+3:
+//
+//   int32Num			exponent			Decimal Result
+//	 123456		 		  -3							123.456
+//
+// If exponent is +3, intNum is multiplied by 10 raised to the power of exponent
+// and precision is set equal to exponent.
+//
+//   int32Num			exponent			Decimal Result
+//	 123456		 		   +3							123456.000
+//
+//	dec := Decimal{}.NewInt32Exponent(123456, -3) = "123.456" precision = 3
+//
+//	dec := Decimal{}.NewInt32Exponent(123456, 3) = "123456.000" precision = 3
+//
+func (dec Decimal) NewInt32Exponent(int32Num int32, exponent int) Decimal {
+
+	d2 := Decimal{}.New()
+
+	bigI := big.NewInt(int64(int32Num))
+
+	d2.bigINum.SetBigIntExponent(bigI, exponent)
+
+	return d2
+
 }
 
 // NewInt64 - Returns a Decimal type based on int64 and precision
@@ -1560,6 +1646,46 @@ func (dec Decimal) NewInt64(int64Num int64, precision uint) (Decimal, error) {
 	d2.SetInt64(int64Num, precision)
 
 	return d2, nil
+}
+
+// NewInt64Exponent - This method returns a new Decimal instance in which the
+// numeric value is set using an integer ('int64Num') multiplied by 10 raised
+// to the power of the input parameter, 'exponent'.
+//
+// 				numeric value = integer X 10^exponent
+//
+// Input parameter 'int64Num' is of type int64.
+//
+// Input parameter 'precision' indicates the number of digits to be formatted to
+// the right of the decimal place.
+//
+// Examples:
+//
+// If exponent is -3, the numeric value is set equal to 'int64Num' divided by 10^+3:
+//
+//   int64Num			exponent			Decimal Result
+//	 123456		 		  -3							123.456
+//
+// If exponent is +3, intNum is multiplied by 10 raised to the power of exponent
+// and precision is set equal to exponent.
+//
+//   int64Num			exponent			Decimal Result
+//	 123456		 		   +3							123456.000
+//
+//	dec := Decimal{}.NewInt64Exponent(123456, -3) = "123.456" precision = 3
+//
+//	dec := Decimal{}.NewInt64Exponent(123456, 3) = "123456.000" precision = 3
+//
+func (dec Decimal) NewInt64Exponent(int64Num int64, exponent int) Decimal {
+
+	d2 := Decimal{}.New()
+
+	bigI := big.NewInt(int64Num)
+
+	d2.bigINum.SetBigIntExponent(bigI, exponent)
+
+	return d2
+
 }
 
 // NewFive - Returns a Decimal Type with a value equal to '5' (five).

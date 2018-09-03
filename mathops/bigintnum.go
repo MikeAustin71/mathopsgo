@@ -2532,27 +2532,37 @@ func (bNum BigIntNum) NewInt(iNum int, precision uint) (BigIntNum, error) {
 	return BigIntNum{}.NewIntExponent(iNum, int(precision)), nil
 }
 
-// NewIntExponent - New Int Exponent returns a new BigIntNum instance in which
+// NewIntExponent - This method returns a new BigIntNum instance in which
 // the numeric value is set using an integer multiplied by 10 raised to
 // the power of the 'exponent' parameter.
 //
 // 				numeric value = integer X 10^exponent
 //
-// If exponent is less than +1, precision is set equal to exponent and
-// 'iNum' is unchanged.
+// Input parameter 'intNum' is of type int.
 //
-// If exponent is greater than 0, 'iNum' is multiplied by 10 raised to the power
-// of 'exponent' and precision is set equal to zero.
+// Input parameter 'precision' indicates the number of digits to be
+// formatted to the right of the decimal place.
 //
 // Examples:
+//
+// If exponent is -3, precision is set equal to 'intNum' divided by 10^+3:
+//
+//   intNum				exponent			BigIntNum Result
+//	 123456		 		  -3							123.456
+//
+// If exponent is +3, 'intNum' is multiplied by 10 raised to the power of
+// exponent and precision is set equal to exponent.
+//
+//   intNum				exponent			BigIntNum Result
+//	 123456		 		   +3							123456.000
 //
 //	biNum := BigIntNum{}.NewIntExponent(123456, -3) = "123.456" precision = 3
 //
-//	biNum := BigIntNum{}.NewIntExponent(123456, 3) = "123456000" precision = 0
+//	biNum := BigIntNum{}.NewIntExponent(123456, 3) = "123456.000" precision = 3
 //
-func (bNum BigIntNum) NewIntExponent(iNum int, exponent int) BigIntNum {
+func (bNum BigIntNum) NewIntExponent(intNum int, exponent int) BigIntNum {
 
-	bigI := big.NewInt(int64(iNum))
+	bigI := big.NewInt(int64(intNum))
 
 	b := BigIntNum{}.NewZero(0)
 
@@ -2561,27 +2571,37 @@ func (bNum BigIntNum) NewIntExponent(iNum int, exponent int) BigIntNum {
 	return b
 }
 
-// NewInt32Exponent - New Int32 Exponent returns a new BigIntNum instance in
-// which the numeric value is set using an integer multiplied by 10 raised
-// to the power of the 'exponent' parameter.
+// NewInt32Exponent -This method returns a new BigIntNum instance in which
+// the numeric value is set using an integer multiplied by 10 raised to
+// the power of the 'exponent' parameter.
 //
 // 				numeric value = integer X 10^exponent
 //
-// If exponent is less than +1, precision is set equal to exponent and
-// 'i32' is unchanged.
+// Input parameter 'int32Num' is of type int32.
 //
-// If exponent is greater than 0, 'i32' is multiplied by 10 raised to the power
-// of 'exponent' and precision is set equal to zero.
+// Input parameter 'precision' indicates the number of digits to be
+// formatted to the right of the decimal place.
 //
 // Examples:
+//
+// If exponent is -3, precision is set equal to 'int32Num' divided by 10^+3:
+//
+//   int32Num			exponent			BigIntNum Result
+//	 123456		 		  -3							123.456
+//
+// If exponent is +3, 'int32Num' is multiplied by 10 raised to the power of
+// exponent and precision is set equal to exponent.
+//
+//   int32Num			exponent			BigIntNum Result
+//	 123456		 		   +3							123456.000
 //
 //	biNum := BigIntNum{}.NewInt32Exponent(123456, -3) = "123.456" precision = 3
 //
-//	biNum := BigIntNum{}.NewInt32Exponent(123456, 3) = "123456000" precision = 0
+//	biNum := BigIntNum{}.NewInt32Exponent(123456, 3) = "123456.000" precision = 3
 //
-func (bNum BigIntNum) NewInt32Exponent(i32 int32, exponent int) BigIntNum {
+func (bNum BigIntNum) NewInt32Exponent(int32Num int32, exponent int) BigIntNum {
 
-	bigI := big.NewInt(int64(i32))
+	bigI := big.NewInt(int64(int32Num))
 
 	b := BigIntNum{}.NewZero(0)
 
@@ -2590,27 +2610,37 @@ func (bNum BigIntNum) NewInt32Exponent(i32 int32, exponent int) BigIntNum {
 	return b
 }
 
-// NewInt64Exponent - New Int64 Exponent returns a new BigIntNum instance in
-// which the numeric value is set using an integer multiplied by 10 raised
-// to the power of the 'exponent' parameter.
+// NewInt64Exponent -This method returns a new BigIntNum instance in which
+// the numeric value is set using an integer multiplied by 10 raised to
+// the power of the 'exponent' parameter.
 //
 // 				numeric value = integer X 10^exponent
 //
-// If exponent is less than +1, precision is set equal to exponent and
-// 'i64' is unchanged.
+// Input parameter 'int64Num' is of type int64.
 //
-// If exponent is greater than 0, 'i64' is multiplied by 10 raised to the power
-// of 'exponent' and precision is set equal to zero.
+// Input parameter 'precision' indicates the number of digits to be
+// formatted to the right of the decimal place.
 //
 // Examples:
 //
+// If exponent is -3, precision is set equal to 'int64Num' divided by 10^+3:
+//
+//   int64Num			exponent			BigIntNum Result
+//	 123456		 		  -3							123.456
+//
+// If exponent is +3, 'int64Num' is multiplied by 10 raised to the power of
+// exponent and precision is set equal to exponent.
+//
+//   int64Num			exponent			BigIntNum Result
+//	 123456		 		   +3							123456.000
+//
 //	biNum := BigIntNum{}.NewInt64Exponent(123456, -3) = "123.456" precision = 3
 //
-//	biNum := BigIntNum{}.NewInt64Exponent(123456, 3) = "123456000" precision = 0
+//	biNum := BigIntNum{}.NewInt64Exponent(123456, 3) = "123456.000" precision = 3
 //
-func (bNum BigIntNum) NewInt64Exponent(i64 int64, exponent int) BigIntNum {
+func (bNum BigIntNum) NewInt64Exponent(int64Num int64, exponent int) BigIntNum {
 
-	bigI := big.NewInt(i64)
+	bigI := big.NewInt(int64Num)
 	b := BigIntNum{}.NewZero(0)
 	b.SetBigIntExponent(bigI, exponent)
 	return b
@@ -3046,20 +3076,36 @@ func (bNum BigIntNum) NewZero(precision uint) BigIntNum {
 }
 
 // NewUintExponent - This method returns a new BigIntNum instance in which
-// the numeric value is set using an unsigned integer multiplied by 10 raised
-// to the power of the input parameter, 'exponent'.
+// the numeric value is set using an integer multiplied by 10 raised to
+// the power of the 'exponent' parameter.
 //
-// 				numeric value = unsigned integer X 10^exponent
+// 				numeric value = integer X 10^exponent
+//
+// Input parameter 'uintNum' is of type uint.
+//
+// Input parameter 'precision' indicates the number of digits to be
+// formatted to the right of the decimal place.
 //
 // Examples:
+//
+// If exponent is -3, precision is set equal to 'uintNum' divided by 10^+3:
+//
+//   uintNum			exponent			BigIntNum Result
+//	 123456		 		  -3							123.456
+//
+// If exponent is +3, 'uintNum' is multiplied by 10 raised to the power of
+// exponent and precision is set equal to exponent.
+//
+//   uintNum			exponent			BigIntNum Result
+//	 123456		 		   +3							123456.000
 //
 //	biNum := BigIntNum{}.NewUintExponent(123456, -3) = "123.456" precision = 3
 //
 //	biNum := BigIntNum{}.NewUintExponent(123456, 3) = "123456.000" precision = 3
 //
-func (bNum BigIntNum) NewUintExponent(base uint, exponent int) BigIntNum {
+func (bNum BigIntNum) NewUintExponent(uintNum uint, exponent int) BigIntNum {
 
-	baseBInt := big.NewInt(int64(base))
+	baseBInt := big.NewInt(int64(uintNum))
 
 	b2 := BigIntNum{}.New()
 
@@ -3069,20 +3115,36 @@ func (bNum BigIntNum) NewUintExponent(base uint, exponent int) BigIntNum {
 }
 
 // NewUint32Exponent - This method returns a new BigIntNum instance in which
-// the numeric value is set using an unsigned 32-bit integer multiplied by 10
-// raised to the power of the input parameter, 'exponent'.
+// the numeric value is set using an integer multiplied by 10 raised to
+// the power of the 'exponent' parameter.
 //
-// 				numeric value = unsigned 32-bit integer X 10^exponent
+// 				numeric value = integer X 10^exponent
+//
+// Input parameter 'uint32Num' is of type uint32.
+//
+// Input parameter 'precision' indicates the number of digits to be
+// formatted to the right of the decimal place.
 //
 // Examples:
+//
+// If exponent is -3, precision is set equal to 'uint32Num' divided by 10^+3:
+//
+//   uint32Num		exponent			BigIntNum Result
+//	 123456		 		  -3							123.456
+//
+// If exponent is +3, 'uint32Num' is multiplied by 10 raised to the power of
+// exponent and precision is set equal to exponent.
+//
+//   uint32Num		exponent			BigIntNum Result
+//	 123456		 		   +3							123456.000
 //
 //	biNum := BigIntNum{}.NewUint32Exponent(123456, -3) = "123.456" precision = 3
 //
 //	biNum := BigIntNum{}.NewUint32Exponent(123456, 3) = "123456.000" precision = 3
 //
-func (bNum BigIntNum) NewUint32Exponent(base uint32, exponent int) BigIntNum {
+func (bNum BigIntNum) NewUint32Exponent(uint32Num uint32, exponent int) BigIntNum {
 
-	baseBInt := big.NewInt(int64(base))
+	baseBInt := big.NewInt(int64(uint32Num))
 
 	b2 := BigIntNum{}.New()
 
@@ -3092,20 +3154,36 @@ func (bNum BigIntNum) NewUint32Exponent(base uint32, exponent int) BigIntNum {
 }
 
 // NewUint64Exponent - This method returns a new BigIntNum instance in which
-// the numeric value is set using an unsigned 64-bit integer multiplied by 10
-// raised to the power of the input parameter, 'exponent'.
+// the numeric value is set using an integer multiplied by 10 raised to
+// the power of the 'exponent' parameter.
 //
-// 				numeric value = unsigned 64-bit integer X 10^exponent
+// 				numeric value = integer X 10^exponent
+//
+// Input parameter 'uint64Num' is of type uint32.
+//
+// Input parameter 'precision' indicates the number of digits to be
+// formatted to the right of the decimal place.
 //
 // Examples:
+//
+// If exponent is -3, precision is set equal to 'uint64Num' divided by 10^+3:
+//
+//   uint64Num		exponent			BigIntNum Result
+//	 123456		 		  -3							123.456
+//
+// If exponent is +3, 'uint64Num' is multiplied by 10 raised to the power of
+// exponent and precision is set equal to exponent.
+//
+//   uint64Num		exponent			BigIntNum Result
+//	 123456		 		   +3							123456.000
 //
 //	biNum := BigIntNum{}.NewUint64Exponent(123456, -3) = "123.456" precision = 3
 //
 //	biNum := BigIntNum{}.NewUint64Exponent(123456, 3) = "123456.000" precision = 3
 //
-func (bNum BigIntNum) NewUint64Exponent(base uint64, exponent int) BigIntNum {
+func (bNum BigIntNum) NewUint64Exponent(uint64Num uint64, exponent int) BigIntNum {
 
-	baseBInt := big.NewInt(0).SetUint64(base)
+	baseBInt := big.NewInt(0).SetUint64(uint64Num)
 
 	b2 := BigIntNum{}.New()
 
