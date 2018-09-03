@@ -2544,8 +2544,7 @@ func (bNum BigIntNum) NewInt(intNum int, precision uint) BigIntNum {
 //
 // Input parameter 'intNum' is of type int.
 //
-// Input parameter 'precision' indicates the number of digits to be
-// formatted to the right of the decimal place.
+// Input parameter 'exponent' is of type int.
 //
 // Usage:
 // ------
@@ -2615,8 +2614,7 @@ func (bNum BigIntNum) NewInt32(int32Num int32, precision uint) BigIntNum {
 //
 // Input parameter 'int32Num' is of type int32.
 //
-// Input parameter 'precision' indicates the number of digits to be
-// formatted to the right of the decimal place.
+// Input parameter 'exponent' is of type int.
 //
 // Usage:
 // ------
@@ -2687,8 +2685,7 @@ func (bNum BigIntNum) NewInt64(int64Num int64, precision uint) BigIntNum {
 //
 // Input parameter 'int64Num' is of type int64.
 //
-// Input parameter 'precision' indicates the number of digits to be
-// formatted to the right of the decimal place.
+// Input parameter 'exponent' is of type int.
 //
 // Usage:
 // ------
@@ -3183,8 +3180,7 @@ func (bNum BigIntNum) NewUint(uintNum uint, precision uint) BigIntNum {
 //
 // Input parameter 'uintNum' is of type uint.
 //
-// Input parameter 'precision' indicates the number of digits to be
-// formatted to the right of the decimal place.
+// Input parameter 'exponent' is of type int.
 //
 // Usage:
 // ------
@@ -3254,8 +3250,7 @@ func (bNum BigIntNum) NewUint32(uint32Num uint32, precision uint) BigIntNum {
 //
 // Input parameter 'uint32Num' is of type uint32.
 //
-// Input parameter 'precision' indicates the number of digits to be
-// formatted to the right of the decimal place.
+// Input parameter 'exponent' is of type int.
 //
 // Usage:
 // ------
@@ -3325,8 +3320,7 @@ func (bNum BigIntNum) NewUint64(uint64Num uint64, precision uint) BigIntNum {
 //
 // Input parameter 'uint64Num' is of type uint64.
 //
-// Input parameter 'precision' indicates the number of digits to be
-// formatted to the right of the decimal place.
+// Input parameter 'exponent' is of type int.
 //
 // Usage:
 // ------
@@ -3535,6 +3529,10 @@ func (bNum *BigIntNum) SetBigInt(bigI *big.Int, precision uint) {
 //
 // 				numeric value = integer X 10^exponent
 //
+// Input parameter 'bigI' is of type *big.Int.
+//
+// Input parameter 'exponent' is of type int.
+//
 // If exponent is less than +1, precision is set equal to exponent and
 // bigI is unchanged. Example:
 //
@@ -3545,7 +3543,7 @@ func (bNum *BigIntNum) SetBigInt(bigI *big.Int, precision uint) {
 // power of exponent and precision is set equal to exponent.
 //
 //    bigI				exponent			BigIntNum Result
-//	 123456		 		   +3							123456.000
+//	 123456		 		   3							123456.000
 //
 func (bNum *BigIntNum) SetBigIntExponent(bigI *big.Int, exponent int) {
 

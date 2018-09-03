@@ -1508,7 +1508,8 @@ func (dec Decimal) NewBigIntNum(bigINum BigIntNum) Decimal {
 // Input parameter 'intNum' is of type int.
 //
 // Input parameter 'precision' indicates the number of digits to be
-// formatted to the right of the decimal place.
+// formatted to the right of the decimal place. Input parameter
+// 'precision' is of type uint.
 //
 // Usage:
 // ------
@@ -1545,60 +1546,68 @@ func (dec Decimal) NewInt(intNum int, precision uint) Decimal {
 //
 // Input parameter 'intNum' is of type int.
 //
-// Input parameter 'precision' indicates the number of digits to be
-// formatted to the right of the decimal place.
+// Input parameter 'exponent' is of type int.
+//
+// Usage:
+// ------
+// This method is designed to be used in conjunction with the Decimal{}
+// syntax thereby allowing Decimal type creation and initialization in
+// one step.
+//
+//	decNum := Decimal{}.NewIntExponent(123456, -3)
+//  -- decNum is now equal to "123.456", precision = 3
+//
+//	decNum := Decimal{}.NewIntExponent(123456, 3)
+//  -- decNum is now equal to "123456.000", precision = 3
 //
 // Examples:
-//
-// If exponent is -3, precision is set equal to 'intNum' divided by 10^+3:
-//
-//   intNum				exponent			Decimal Result
+// ---------
+//   intNum			 exponent			  	Decimal Result
 //	 123456		 		  -3							123.456
-//
-// If exponent is +3, intNum is multiplied by 10 raised to the power of
-// exponent and precision is set equal to exponent:
-//
-//   intNum				exponent			Decimal Result
-//	 123456		 		   +3							123456.000
-//
-//	dec := Decimal{}.NewIntExponent(123456, -3) = "123.456" precision = 3
-//
-//	dec := Decimal{}.NewIntExponent(123456, 3) = "123456.000" precision = 3
+//	 123456		 		   3							123456.000
+//   123456          0              123456
 //
 func (dec Decimal) NewIntExponent(intNum int, exponent int) Decimal {
 
 	d2 := Decimal{}.New()
 
-	bigI := big.NewInt(int64(intNum))
-
-	d2.bigINum.SetBigIntExponent(bigI, exponent)
+	d2.bigINum.SetBigIntExponent(big.NewInt(int64(intNum)), exponent)
 
 	return d2
-	
 }
 
-// NewInt32 - Returns a Decimal type based on input parameters 'int32Num'
-// and 'precision'.
+// NewInt32 - Returns a new Decimal instance based on input parameters
+// 'int32Num' and 'precision'.
 //
 // Input parameter 'int32Num' is of type int32.
 //
-// Input parameter 'precision' indicates the number of digits to be
-// formatted to the right of the decimal place.
+// Input parameter 'exponent' is of type int.
 //
-// The 'NewInt32' method is designed to used in conjunction with the
-// Decimal{} syntax thereby allowing Decimal creation and initialization
-// in one step.
+// Usage:
+// ------
+// This method is designed to be used in conjunction with the Decimal{}
+// syntax thereby allowing Decimal type creation and initialization in
+// one step.
 //
-// Example: Decimal{}.NewInt32(i32, precision)
-//	Decimal{}.NewInt32(123456, 3) = 123.456
+// 				int32Num := int32(123456)
+// 				precision := uint(3)
+// 				dec := Decimal{}.NewInt32(int32Num, precision)
+//        dec is now equal to 123.456
 //
-func (dec Decimal) NewInt32(int32Num int32, precision uint) (Decimal, error) {
+// Examples:
+// ---------
+//   int32Num			precision			BigIntNum Result
+//	 123456		 		   4							12.3456
+//   123456          0              123456
+//   123456          1              12345.6
+//
+func (dec Decimal) NewInt32(int32Num int32, precision uint) Decimal {
 
 	d2 := Decimal{}.New()
 
 	d2.SetInt64(int64(int32Num), precision)
 
-	return d2, nil
+	return d2
 }
 
 // NewInt32Exponent - This method returns a new Decimal instance in which the
@@ -1609,25 +1618,26 @@ func (dec Decimal) NewInt32(int32Num int32, precision uint) (Decimal, error) {
 //
 // Input parameter 'int32Num' is of type int32.
 //
-// Input parameter 'precision' indicates the number of digits to be formatted to
-// the right of the decimal place.
+// Input parameter 'exponent' is of type int.
+//
+// Usage:
+// ------
+// This method is designed to be used in conjunction with the Decimal{}
+// syntax thereby allowing Decimal type creation and initialization in
+// one step.
+//
+//	decNum := Decimal{}.NewInt32Exponent(123456, -3)
+//  -- decNum is now equal to "123.456", precision = 3
+//
+//	decNum := Decimal{}.NewInt32Exponent(123456, 3)
+//  -- decNum is now equal to "123456.000", precision = 3
 //
 // Examples:
-//
-// If exponent is -3, the numeric value is set equal to 'int32Num' divided by 10^+3:
-//
-//   int32Num			exponent			Decimal Result
+// ---------
+//   int32Num		 exponent			  	Decimal Result
 //	 123456		 		  -3							123.456
-//
-// If exponent is +3, intNum is multiplied by 10 raised to the power of exponent
-// and precision is set equal to exponent.
-//
-//   int32Num			exponent			Decimal Result
-//	 123456		 		   +3							123456.000
-//
-//	dec := Decimal{}.NewInt32Exponent(123456, -3) = "123.456" precision = 3
-//
-//	dec := Decimal{}.NewInt32Exponent(123456, 3) = "123456.000" precision = 3
+//	 123456		 		   3							123456.000
+//   123456          0              123456
 //
 func (dec Decimal) NewInt32Exponent(int32Num int32, exponent int) Decimal {
 
@@ -1641,22 +1651,40 @@ func (dec Decimal) NewInt32Exponent(int32Num int32, exponent int) Decimal {
 
 }
 
-// NewInt64 - Returns a Decimal type based on int64 and precision
-// input parameters.
+// NewInt64 - Returns a new Decimal instance based on input parameters
+// 'int64Num' and 'precision'.
 //
-// The 'NewInt64' method is designed to used in conjunction
-// with Decimal{} thereby allowing Decimal creation
-// and initialization in one step.
+// Input parameter 'int64Num' is of type int64.
 //
-// Example: Decimal{}.NewInt64(i64, precision)
-//	Decimal{}.NewInt64(123456, 3) = 123.456
+// Input parameter 'precision' indicates the number of digits to be
+// formatted to the right of the decimal place. Input parameter
+// 'precision' is of type uint.
 //
-func (dec Decimal) NewInt64(int64Num int64, precision uint) (Decimal, error) {
+// Usage:
+// ------
+// This method is designed to be used in conjunction with the Decimal{}
+// syntax thereby allowing Decimal type creation and initialization in
+// one step.
+//
+// 				int64Num := int64(123456)
+// 				precision := uint(3)
+// 				dec := Decimal{}.NewInt64(int64Num, precision)
+//        dec is now equal to 123.456
+//
+// Examples:
+// ---------
+//   int32Num			precision			BigIntNum Result
+//	 123456		 		   4							12.3456
+//   123456          0              123456
+//   123456          1              12345.6
+//
+func (dec Decimal) NewInt64(int64Num int64, precision uint) Decimal {
+
 	d2 := Decimal{}.New()
 
 	d2.SetInt64(int64Num, precision)
 
-	return d2, nil
+	return d2
 }
 
 // NewInt64Exponent - This method returns a new Decimal instance in which the
@@ -1667,25 +1695,26 @@ func (dec Decimal) NewInt64(int64Num int64, precision uint) (Decimal, error) {
 //
 // Input parameter 'int64Num' is of type int64.
 //
-// Input parameter 'precision' indicates the number of digits to be formatted to
-// the right of the decimal place.
+// Input parameter 'exponent' is of type int.
+//
+// Usage:
+// ------
+// This method is designed to be used in conjunction with the Decimal{}
+// syntax thereby allowing Decimal type creation and initialization in
+// one step.
+//
+//	decNum := Decimal{}.NewInt64Exponent(123456, -3)
+//  -- decNum is now equal to "123.456", precision = 3
+//
+//	decNum := Decimal{}.NewInt64Exponent(123456, 3)
+//  -- decNum is now equal to "123456.000", precision = 3
 //
 // Examples:
-//
-// If exponent is -3, the numeric value is set equal to 'int64Num' divided by 10^+3:
-//
-//   int64Num			exponent			Decimal Result
+// ---------
+//   int64Num		 exponent			  	Decimal Result
 //	 123456		 		  -3							123.456
-//
-// If exponent is +3, intNum is multiplied by 10 raised to the power of exponent
-// and precision is set equal to exponent.
-//
-//   int64Num			exponent			Decimal Result
-//	 123456		 		   +3							123456.000
-//
-//	dec := Decimal{}.NewInt64Exponent(123456, -3) = "123.456" precision = 3
-//
-//	dec := Decimal{}.NewInt64Exponent(123456, 3) = "123456.000" precision = 3
+//	 123456		 		   3							123456.000
+//   123456          0              123456
 //
 func (dec Decimal) NewInt64Exponent(int64Num int64, exponent int) Decimal {
 
