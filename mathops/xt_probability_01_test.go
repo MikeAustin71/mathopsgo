@@ -1677,12 +1677,7 @@ func TestProbability_PermutationsINumMgr_05(t *testing.T) {
 
 func TestProbability_PermutationsINumMgr_06(t *testing.T) {
 
-	numOfItems, err  := BigIntNum{}.NewInt(5,0)
-
-	if err != nil {
-		t.Errorf("Error returned by INumMgr{}.NewInt(5,0). " +
-			"Error='%v' ", err.Error())
-	}
+	numOfItems  := BigIntNum{}.NewInt(5,0)
 
 	numOfItemsPicked, err := Decimal{}.NewInt(3, 0)
 
@@ -1720,12 +1715,7 @@ func TestProbability_PermutationsINumMgr_07(t *testing.T) {
 			"Error='%v' ", err.Error())
 	}
 
-	numOfItemsPicked, err := BigIntNum{}.NewInt(5, 0)
-
-	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewInt(5,0). " +
-			"Error='%v' ", err.Error())
-	}
+	numOfItemsPicked := BigIntNum{}.NewInt(5, 0)
 
 	allowRepetitions := true
 	expectedResultStr := "3200000"
@@ -1817,12 +1807,7 @@ func TestProbability_PermutationsINumMgr_10(t *testing.T) {
 			"Error='%v' ", err.Error())
 	}
 
-	numOfItemsPicked, err := BigIntNum{}.NewInt(rInt, 0)
-
-	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewInt(4,0). " +
-			"Error='%v' ", err.Error())
-	}
+	numOfItemsPicked := BigIntNum{}.NewInt(rInt, 0)
 
 	allowRepetitions := true
 

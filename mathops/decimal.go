@@ -1630,8 +1630,7 @@ func (dec Decimal) NewInt32Exponent(int32Num int32, exponent int) Decimal {
 }
 
 // NewInt64 - Returns a Decimal type based on int64 and precision
-// input parameters. If an error is encountered, it will trigger
-// a panic condition.
+// input parameters.
 //
 // The 'NewInt64' method is designed to used in conjunction
 // with Decimal{} thereby allowing Decimal creation
