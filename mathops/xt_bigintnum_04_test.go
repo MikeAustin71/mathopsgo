@@ -1,9 +1,9 @@
 package mathops
 
 import (
-	"testing"
 	"math/big"
-	)
+	"testing"
+)
 
 
 func TestBigIntNum_Multiply_01(t *testing.T) {
@@ -1646,6 +1646,176 @@ func TestBigIntNum_NewTen_03(t *testing.T) {
 	if expectedPrecision != bINum.GetPrecisionUint() {
 		t.Errorf("Error: Expected Precision='%v'. Instead, Precision='%v'",
 			expectedPrecision, bINum.GetPrecisionUint())
+	}
+
+}
+
+func TestBigIntNum_NewUintExponent_01(t *testing.T) {
+
+	numInt := uint(1234)
+	exponent := 3
+	expectedNumStr := "1234.000"
+
+	bINum := BigIntNum{}.NewUintExponent(numInt, exponent)
+
+	actualNumStr := bINum.GetNumStr()
+
+	if expectedNumStr != actualNumStr {
+		t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v' ",
+			expectedNumStr, actualNumStr)
+	}
+
+}
+
+func TestBigIntNum_NewUintExponent_02(t *testing.T) {
+
+	numInt := uint(123456)
+	exponent := -2
+	expectedNumStr := "1234.56"
+
+	bINum := BigIntNum{}.NewUintExponent(numInt, exponent)
+
+	actualNumStr := bINum.GetNumStr()
+
+	if expectedNumStr != actualNumStr {
+		t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v' ",
+			expectedNumStr, actualNumStr)
+	}
+
+}
+
+func TestBigIntNum_NewUintExponent_03(t *testing.T) {
+
+	numInt := uint(123456)
+	exponent := 0
+	expectedNumStr := "123456"
+
+	bINum := BigIntNum{}.NewUintExponent(numInt, exponent)
+
+	actualNumStr := bINum.GetNumStr()
+
+	if expectedNumStr != actualNumStr {
+		t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v' ",
+			expectedNumStr, actualNumStr)
+	}
+
+}
+
+func TestBigIntNum_NewUintExponent_04(t *testing.T) {
+
+	numInt := uint(0)
+	exponent := 0
+	expectedNumStr := "0"
+
+	bINum := BigIntNum{}.NewUintExponent(numInt, exponent)
+
+	actualNumStr := bINum.GetNumStr()
+
+	if expectedNumStr != actualNumStr {
+		t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v' ",
+			expectedNumStr, actualNumStr)
+	}
+
+}
+
+func TestBigIntNum_NewUintExponent_05(t *testing.T) {
+
+	numInt := uint(0)
+	exponent := 3
+	expectedNumStr := "0.000"
+
+	bINum := BigIntNum{}.NewUintExponent(numInt, exponent)
+
+	actualNumStr := bINum.GetNumStr()
+
+	if expectedNumStr != actualNumStr {
+		t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v' ",
+			expectedNumStr, actualNumStr)
+	}
+
+}
+
+func TestBigIntNum_NewUint32Exponent_01(t *testing.T) {
+
+	numInt := uint32(1234)
+	exponent := 3
+	expectedNumStr := "1234.000"
+
+	bINum := BigIntNum{}.NewUint32Exponent(numInt, exponent)
+
+	actualNumStr := bINum.GetNumStr()
+
+	if expectedNumStr != actualNumStr {
+		t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v' ",
+			expectedNumStr, actualNumStr)
+	}
+
+}
+
+func TestBigIntNum_NewUint32Exponent_02(t *testing.T) {
+
+	numInt := uint32(123456)
+	exponent := -2
+	expectedNumStr := "1234.56"
+
+	bINum := BigIntNum{}.NewUint32Exponent(numInt, exponent)
+
+	actualNumStr := bINum.GetNumStr()
+
+	if expectedNumStr != actualNumStr {
+		t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v' ",
+			expectedNumStr, actualNumStr)
+	}
+
+}
+
+func TestBigIntNum_NewUint32Exponent_03(t *testing.T) {
+
+	numInt := uint32(123456)
+	exponent := 0
+	expectedNumStr := "123456"
+
+	bINum := BigIntNum{}.NewUint32Exponent(numInt, exponent)
+
+	actualNumStr := bINum.GetNumStr()
+
+	if expectedNumStr != actualNumStr {
+		t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v' ",
+			expectedNumStr, actualNumStr)
+	}
+
+}
+
+func TestBigIntNum_NewUint32Exponent_04(t *testing.T) {
+
+	numInt := uint32(0)
+	exponent := 0
+	expectedNumStr := "0"
+
+	bINum := BigIntNum{}.NewUint32Exponent(numInt, exponent)
+
+	actualNumStr := bINum.GetNumStr()
+
+	if expectedNumStr != actualNumStr {
+		t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v' ",
+			expectedNumStr, actualNumStr)
+	}
+
+}
+
+func TestBigIntNum_NewUint32Exponent_05(t *testing.T) {
+
+	numInt := uint32(0)
+	exponent := 3
+	expectedNumStr := "0.000"
+
+	bINum := BigIntNum{}.NewUint32Exponent(numInt, exponent)
+
+	actualNumStr := bINum.GetNumStr()
+
+	if expectedNumStr != actualNumStr {
+		t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v' ",
+			expectedNumStr, actualNumStr)
 	}
 
 }
