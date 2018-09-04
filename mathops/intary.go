@@ -4009,6 +4009,184 @@ func (ia IntAry) NewTwo(precision int) IntAry {
 	return ia1
 }
 
+// NewUint - Creates a new intAry object initialized to the
+// value of input parameter 'uintNum' which is passed as type
+// 'uint'.
+//
+// Input parameter 'precision' indicates the number of digits
+// to be formatted to the right of the decimal place. Input
+// parameter 'precision' is of type uint. The maximum value
+// allowed for 'precision' is 2147483645 (the max int32 value
+// minus 2). If 'precision' exceeds this maximum value it will
+// be reset to that maximum value.
+//
+// Usage:
+// ------
+// This method is designed to be used in conjunction with the
+// IntAry{} syntax thereby allowing IntAry type creation and
+// initialization in one step.
+//
+// 				uintNum := uint(123456)
+// 				precision := uint(3)
+// 				iAry := IntAry{}.NewUint(uintNum, precision)
+//        iAry is now equal to 123.456
+//
+// Examples:
+// ---------
+//  uintNum			precision			 IntAry Result
+//	 123456		 		   4							12.3456
+//   123456          0              123456
+//   123456          1              12345.6
+//
+func (ia IntAry) NewUint(uintNum uint, precision uint) IntAry {
+
+	iAry := IntAry{}.New()
+	precision = ia.validateUintToMaxPrecision(precision)
+	iAry.SetIntAryWithUint64(uint64(uintNum), precision)
+	iAry.SetNumericSeparatorsDto(ia.GetNumericSeparatorsDto())
+
+	return iAry
+}
+
+// NewUintExponent - Returns a new IntAry instance. The numeric
+// value is set using an uint value multiplied by 10 raised to the
+// power of the 'exponent' parameter.
+//
+// 				numeric value = uint X 10^exponent
+//
+// Input parameter 'uintNum' is of type uint.
+//
+// Input parameter 'exponent' is of type int.
+//
+// Usage:
+// ------
+// This method is designed to be used in conjunction with the IntAry{}
+// syntax thereby allowing IntAry type creation and initialization in
+// one step.
+//
+//	iAry := IntAry{}.NewUintExponent(123456, -3)
+//  -- iAry is now equal to "123.456", precision = 3
+//
+//	iAry := IntAry{}.NewUintExponent(123456, 3)
+//  -- iAry is now equal to "123456.000", precision = 3
+//
+// Examples:
+// ---------
+//  uintNum		    exponent		  	IntAry Result
+//	 123456		 		  -3							123.456
+//	 123456		 		   3							123456.000
+//   123456          0              123456
+//
+func (ia IntAry) NewUintExponent(uintNum uint, exponent int) IntAry {
+
+	uintTen := uint(10)
+
+	if exponent > 0 {
+		for i:= 0; i < exponent; i++ {
+			uintNum *= uintTen
+		}
+	}
+
+	if exponent < 0 {
+		exponent = exponent * -1
+	}
+
+	iAry := IntAry{}.New()
+	iAry.SetIntAryWithUint64(uint64(uintNum), uint(exponent))
+	iAry.SetNumericSeparatorsDto(ia.GetNumericSeparatorsDto())
+
+	return iAry
+}
+
+// NewUint32 - Creates a new intAry object initialized to the
+// value of input parameter 'uint32Num' which is passed as type
+// 'uint32'.
+//
+// Input parameter 'precision' indicates the number of digits
+// to be formatted to the right of the decimal place. Input
+// parameter 'precision' is of type uint. The maximum value
+// allowed for 'precision' is 2147483645 (the max int32 value
+// minus 2). If 'precision' exceeds this maximum value it will
+// be reset to that maximum value.
+//
+// Usage:
+// ------
+// This method is designed to be used in conjunction with the
+// IntAry{} syntax thereby allowing IntAry type creation and
+// initialization in one step.
+//
+// 				uint32Num := uint32(123456)
+// 				precision := uint(3)
+// 				iAry := IntAry{}.NewUint32(uint32Num, precision)
+//        iAry is now equal to 123.456
+//
+// Examples:
+// ---------
+//  uint32Num			precision			 IntAry Result
+//	 123456		 		   4							12.3456
+//   123456          0              123456
+//   123456          1              12345.6
+//
+func (ia IntAry) NewUint32(uint32Num uint32, precision uint) IntAry {
+
+	iAry := IntAry{}.New()
+	precision = ia.validateUintToMaxPrecision(precision)
+	iAry.SetIntAryWithUint64(uint64(uint32Num), precision)
+	iAry.SetNumericSeparatorsDto(ia.GetNumericSeparatorsDto())
+
+	return iAry
+}
+
+// NewUint32Exponent - Returns a new IntAry instance. The numeric
+// value is set using an uint32 value multiplied by 10 raised to the
+// power of the 'exponent' parameter.
+//
+// 				numeric value = uint32 X 10^exponent
+//
+// Input parameter 'uint32Num' is of type uint32.
+//
+// Input parameter 'exponent' is of type int.
+//
+// Usage:
+// ------
+// This method is designed to be used in conjunction with the IntAry{}
+// syntax thereby allowing IntAry type creation and initialization in
+// one step.
+//
+//	iAry := IntAry{}.NewUint32Exponent(123456, -3)
+//  -- iAry is now equal to "123.456", precision = 3
+//
+//	iAry := IntAry{}.NewUint32Exponent(123456, 3)
+//  -- iAry is now equal to "123456.000", precision = 3
+//
+// Examples:
+// ---------
+//  uint32Num		  exponent		  	IntAry Result
+//	 123456		 		  -3							123.456
+//	 123456		 		   3							123456.000
+//   123456          0              123456
+//
+func (ia IntAry) NewUint32Exponent(uint32Num uint32, exponent int) IntAry {
+
+	uint32Ten := uint32(10)
+
+	if exponent > 0 {
+		for i:= 0; i < exponent; i++ {
+			uint32Num *= uint32Ten
+		}
+	}
+
+	if exponent < 0 {
+		exponent = exponent * -1
+	}
+
+	iAry := IntAry{}.New()
+	iAry.SetIntAryWithUint64(uint64(uint32Num), uint(exponent))
+	iAry.SetNumericSeparatorsDto(ia.GetNumericSeparatorsDto())
+
+	return iAry
+}
+
 // NewUint64 - Creates a new intAry object initialized to the
 // value of input parameter 'uint64Num' which is passed as type
 // 'uint64'.

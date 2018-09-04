@@ -1501,6 +1501,284 @@ func TestIntAry_NewTwo_02(t *testing.T) {
 
 }
 
+func TestIntAry_NewUint_01(t *testing.T) {
+	uintNum := uint(123456)
+	precision := uint(3)
+	ia := IntAry{}.NewUint(uintNum, precision)
+	eStr := "123.456"
+
+	if eStr != ia.GetNumStr() {
+		t.Errorf("Expected ia.GetNumStr()== %v  .   Instead ia.GetNumStr() == %v", eStr, ia.GetNumStr())
+	}
+
+	if int(precision) != ia.GetPrecision() {
+		t.Errorf("Expected ia.GetPrecision() == %v  .   Instead ia.GetPrecision() == %v", precision, ia.GetPrecision())
+	}
+
+}
+
+func TestIntAry_NewUint_02(t *testing.T) {
+	uintNum := uint(123456)
+	precision := uint(5)
+	ia := IntAry{}.NewUint(uintNum, precision)
+	eStr := "1.23456"
+
+	if eStr != ia.GetNumStr() {
+		t.Errorf("Expected ia.GetNumStr()== %v  .   Instead ia.GetNumStr() == %v", eStr, ia.GetNumStr())
+	}
+
+	if int(precision) != ia.GetPrecision() {
+		t.Errorf("Expected ia.GetPrecision() == %v  .   Instead ia.GetPrecision() == %v", precision, ia.GetPrecision())
+	}
+}
+
+func TestIntAry_NewUint_03(t *testing.T) {
+	uintNum := uint(0)
+	precision := uint(3)
+	ia := IntAry{}.NewUint(uintNum, precision)
+	eStr := "0.000"
+
+	if eStr != ia.GetNumStr() {
+		t.Errorf("Expected ia.GetNumStr()== %v  .   Instead ia.GetNumStr() == %v", eStr, ia.GetNumStr())
+	}
+
+	if int(precision) != ia.GetPrecision() {
+		t.Errorf("Expected ia.GetPrecision() == %v  .   Instead ia.GetPrecision() == %v", precision, ia.GetPrecision())
+	}
+}
+
+func TestIntAry_NewUint_04(t *testing.T) {
+	uintNum := uint(0)
+	precision := uint(0)
+	ia := IntAry{}.NewUint(uintNum, precision)
+	eStr := "0"
+
+	if eStr != ia.GetNumStr() {
+		t.Errorf("Expected ia.GetNumStr()== %v  .   Instead ia.GetNumStr() == %v", eStr, ia.GetNumStr())
+	}
+
+	if int(precision) != ia.GetPrecision() {
+		t.Errorf("Expected ia.GetPrecision() == %v  .   Instead ia.GetPrecision() == %v", precision, ia.GetPrecision())
+	}
+}
+
+func TestIntAry_NewUintExponent_01(t *testing.T) {
+
+	uintNum := uint(123456)
+	exponent := 3
+	eStr := "123456.000"
+
+	ia := IntAry{}.NewUintExponent(uintNum, exponent)
+
+	if eStr != ia.GetNumStr() {
+		t.Errorf("Expected ia.GetNumStr()== %v  .   Instead ia.GetNumStr() == %v", eStr, ia.GetNumStr())
+	}
+}
+
+func TestIntAry_NewUintExponent_02(t *testing.T) {
+
+	uintNum := uint(123456)
+	exponent := -3
+	eStr := "123.456"
+
+	ia := IntAry{}.NewUintExponent(uintNum, exponent)
+
+	if eStr != ia.GetNumStr() {
+		t.Errorf("Expected ia.GetNumStr()== %v  .   Instead ia.GetNumStr() == %v", eStr, ia.GetNumStr())
+	}
+}
+
+func TestIntAry_NewUintExponent_03(t *testing.T) {
+
+	uintNum := uint(123456)
+	exponent := 0
+	eStr := "123456"
+
+	ia := IntAry{}.NewUintExponent(uintNum, exponent)
+
+	if eStr != ia.GetNumStr() {
+		t.Errorf("Expected ia.GetNumStr()== %v  .   Instead ia.GetNumStr() == %v", eStr, ia.GetNumStr())
+	}
+}
+
+func TestIntAry_NewUintExponent_04(t *testing.T) {
+
+	uintNum := uint(0)
+	exponent := 0
+	eStr := "0"
+
+	ia := IntAry{}.NewUintExponent(uintNum, exponent)
+
+	if eStr != ia.GetNumStr() {
+		t.Errorf("Expected ia.GetNumStr()== %v  .   Instead ia.GetNumStr() == %v", eStr, ia.GetNumStr())
+	}
+}
+
+func TestIntAry_NewUintExponent_05(t *testing.T) {
+
+	uintNum := uint(0)
+	exponent := 3
+	eStr := "0.000"
+
+	ia := IntAry{}.NewUintExponent(uintNum, exponent)
+
+	if eStr != ia.GetNumStr() {
+		t.Errorf("Expected ia.GetNumStr()== %v  .   Instead ia.GetNumStr() == %v", eStr, ia.GetNumStr())
+	}
+}
+
+func TestIntAry_NewUintExponent_06(t *testing.T) {
+
+	num := uint(0)
+	exponent := -3
+	eStr := "0.000"
+
+	ia := IntAry{}.NewUintExponent(num, exponent)
+
+	if eStr != ia.GetNumStr() {
+		t.Errorf("Expected ia.GetNumStr()== %v  .   Instead ia.GetNumStr() == %v", eStr, ia.GetNumStr())
+	}
+}
+
+func TestIntAry_NewUint32_01(t *testing.T) {
+	uint32Num := uint32(123456)
+	precision := uint(3)
+	ia := IntAry{}.NewUint32(uint32Num, precision)
+	eStr := "123.456"
+
+	if eStr != ia.GetNumStr() {
+		t.Errorf("Expected ia.GetNumStr()== %v  .   Instead ia.GetNumStr() == %v", eStr, ia.GetNumStr())
+	}
+
+	if int(precision) != ia.GetPrecision() {
+		t.Errorf("Expected ia.GetPrecision() == %v  .   Instead ia.GetPrecision() == %v", precision, ia.GetPrecision())
+	}
+
+}
+
+func TestIntAry_NewUint32_02(t *testing.T) {
+	uint32Num := uint32(123456)
+	precision := uint(5)
+	ia := IntAry{}.NewUint32(uint32Num, precision)
+	eStr := "1.23456"
+
+	if eStr != ia.GetNumStr() {
+		t.Errorf("Expected ia.GetNumStr()== %v  .   Instead ia.GetNumStr() == %v", eStr, ia.GetNumStr())
+	}
+
+	if int(precision) != ia.GetPrecision() {
+		t.Errorf("Expected ia.GetPrecision() == %v  .   Instead ia.GetPrecision() == %v", precision, ia.GetPrecision())
+	}
+}
+
+func TestIntAry_NewUint32_03(t *testing.T) {
+	uint32Num := uint32(0)
+	precision := uint(3)
+	ia := IntAry{}.NewUint32(uint32Num, precision)
+	eStr := "0.000"
+
+	if eStr != ia.GetNumStr() {
+		t.Errorf("Expected ia.GetNumStr()== %v  .   Instead ia.GetNumStr() == %v", eStr, ia.GetNumStr())
+	}
+
+	if int(precision) != ia.GetPrecision() {
+		t.Errorf("Expected ia.GetPrecision() == %v  .   Instead ia.GetPrecision() == %v", precision, ia.GetPrecision())
+	}
+}
+
+func TestIntAry_NewUint32_04(t *testing.T) {
+	uint32Num := uint32(0)
+	precision := uint(0)
+	ia := IntAry{}.NewUint32(uint32Num, precision)
+	eStr := "0"
+
+	if eStr != ia.GetNumStr() {
+		t.Errorf("Expected ia.GetNumStr()== %v  .   Instead ia.GetNumStr() == %v", eStr, ia.GetNumStr())
+	}
+
+	if int(precision) != ia.GetPrecision() {
+		t.Errorf("Expected ia.GetPrecision() == %v  .   Instead ia.GetPrecision() == %v", precision, ia.GetPrecision())
+	}
+}
+
+func TestIntAry_NewUint32Exponent_01(t *testing.T) {
+
+	uint32Num := uint32(123456)
+	exponent := 3
+	eStr := "123456.000"
+
+	ia := IntAry{}.NewUint32Exponent(uint32Num, exponent)
+
+	if eStr != ia.GetNumStr() {
+		t.Errorf("Expected ia.GetNumStr()== %v  .   Instead ia.GetNumStr() == %v", eStr, ia.GetNumStr())
+	}
+}
+
+func TestIntAry_NewUint32Exponent_02(t *testing.T) {
+
+	uint32Num := uint32(123456)
+	exponent := -3
+	eStr := "123.456"
+
+	ia := IntAry{}.NewUint32Exponent(uint32Num, exponent)
+
+	if eStr != ia.GetNumStr() {
+		t.Errorf("Expected ia.GetNumStr()== %v  .   Instead ia.GetNumStr() == %v", eStr, ia.GetNumStr())
+	}
+}
+
+func TestIntAry_NewUint32Exponent_03(t *testing.T) {
+
+	uint32Num := uint32(123456)
+	exponent := 0
+	eStr := "123456"
+
+	ia := IntAry{}.NewUint32Exponent(uint32Num, exponent)
+
+	if eStr != ia.GetNumStr() {
+		t.Errorf("Expected ia.GetNumStr()== %v  .   Instead ia.GetNumStr() == %v", eStr, ia.GetNumStr())
+	}
+}
+
+func TestIntAry_NewUint32Exponent_04(t *testing.T) {
+
+	uint32Num := uint32(0)
+	exponent := 0
+	eStr := "0"
+
+	ia := IntAry{}.NewUint32Exponent(uint32Num, exponent)
+
+	if eStr != ia.GetNumStr() {
+		t.Errorf("Expected ia.GetNumStr()== %v  .   Instead ia.GetNumStr() == %v", eStr, ia.GetNumStr())
+	}
+}
+
+func TestIntAry_NewUint32Exponent_05(t *testing.T) {
+
+	uint32Num := uint32(0)
+	exponent := 3
+	eStr := "0.000"
+
+	ia := IntAry{}.NewUint32Exponent(uint32Num, exponent)
+
+	if eStr != ia.GetNumStr() {
+		t.Errorf("Expected ia.GetNumStr()== %v  .   Instead ia.GetNumStr() == %v", eStr, ia.GetNumStr())
+	}
+}
+
+func TestIntAry_NewUint32Exponent_06(t *testing.T) {
+
+	num := uint32(0)
+	exponent := -3
+	eStr := "0.000"
+
+	ia := IntAry{}.NewUint32Exponent(num, exponent)
+
+	if eStr != ia.GetNumStr() {
+		t.Errorf("Expected ia.GetNumStr()== %v  .   Instead ia.GetNumStr() == %v", eStr, ia.GetNumStr())
+	}
+}
+
 func TestIntAry_NewUint64_01(t *testing.T) {
 	uint64Num := uint64(123456)
 	precision := uint(3)
