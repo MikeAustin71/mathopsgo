@@ -957,6 +957,84 @@ func TestIntAry_NewInt_02(t *testing.T) {
 
 }
 
+func TestIntAry_NewIntExponent_01(t *testing.T) {
+
+	intNum := int(123456)
+	exponent := 3
+	eStr := "123456.000"
+
+	ia := IntAry{}.NewIntExponent(intNum, exponent)
+
+	if eStr != ia.GetNumStr() {
+		t.Errorf("Expected ia.GetNumStr()== %v  .   Instead ia.GetNumStr() == %v", eStr, ia.GetNumStr())
+	}
+}
+
+func TestIntAry_NewIntExponent_02(t *testing.T) {
+
+	intNum := int(123456)
+	exponent := -3
+	eStr := "123.456"
+
+	ia := IntAry{}.NewIntExponent(intNum, exponent)
+
+	if eStr != ia.GetNumStr() {
+		t.Errorf("Expected ia.GetNumStr()== %v  .   Instead ia.GetNumStr() == %v", eStr, ia.GetNumStr())
+	}
+}
+
+func TestIntAry_NewIntExponent_03(t *testing.T) {
+
+	intNum := int(123456)
+	exponent := 0
+	eStr := "123456"
+
+	ia := IntAry{}.NewIntExponent(intNum, exponent)
+
+	if eStr != ia.GetNumStr() {
+		t.Errorf("Expected ia.GetNumStr()== %v  .   Instead ia.GetNumStr() == %v", eStr, ia.GetNumStr())
+	}
+}
+
+func TestIntAry_NewIntExponent_04(t *testing.T) {
+
+	intNum := int(0)
+	exponent := 0
+	eStr := "0"
+
+	ia := IntAry{}.NewIntExponent(intNum, exponent)
+
+	if eStr != ia.GetNumStr() {
+		t.Errorf("Expected ia.GetNumStr()== %v  .   Instead ia.GetNumStr() == %v", eStr, ia.GetNumStr())
+	}
+}
+
+func TestIntAry_NewIntExponent_05(t *testing.T) {
+
+	intNum := int(0)
+	exponent := 3
+	eStr := "0.000"
+
+	ia := IntAry{}.NewIntExponent(intNum, exponent)
+
+	if eStr != ia.GetNumStr() {
+		t.Errorf("Expected ia.GetNumStr()== %v  .   Instead ia.GetNumStr() == %v", eStr, ia.GetNumStr())
+	}
+}
+
+func TestIntAry_NewIntExponent_06(t *testing.T) {
+
+	intNum := int(0)
+	exponent := -3
+	eStr := "0.000"
+
+	ia := IntAry{}.NewIntExponent(intNum, exponent)
+
+	if eStr != ia.GetNumStr() {
+		t.Errorf("Expected ia.GetNumStr()== %v  .   Instead ia.GetNumStr() == %v", eStr, ia.GetNumStr())
+	}
+}
+
 func TestIntAry_NewInt32_01(t *testing.T) {
 	num := int32(123456)
 	precision := uint(3)

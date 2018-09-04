@@ -3526,8 +3526,11 @@ func (ia IntAry) NewFloatBig(num *big.Float, precision int) (IntAry, error) {
 // of input parameter 'intNum' which is passed as type 'int'.
 //
 // Input parameter 'precision' indicates the number of digits
-// to be formatted to the right of the decimal place. Input 
-// parameter 'precision' is of type uint.
+// to be formatted to the right of the decimal place. Input
+// parameter 'precision' is of type uint. The maximum value
+// allowed for 'precision' is 2147483645 (the max int32 value
+// minus 2). If 'precision' exceeds this maximum value it will
+// be reset to that maximum value.
 //
 // Usage:
 // ------
@@ -3549,12 +3552,58 @@ func (ia IntAry) NewFloatBig(num *big.Float, precision int) (IntAry, error) {
 //
 func (ia IntAry) NewInt(intNum int, precision uint) IntAry {
 
-	precision = ia.validateUintToMaxPrecision(precision)
-
 	iAry := IntAry{}.New()
 	iAry.SetIntAryWithInt(intNum, precision)
 	iAry.SetNumericSeparatorsDto(ia.GetNumericSeparatorsDto())
 	
+	return iAry
+}
+
+// NewIntExponent - Returns a new IntAry instance. The numeric
+// value is set using an int value multiplied by 10 raised to the
+// power of the 'exponent' parameter.
+//
+// 				numeric value = int X 10^exponent
+//
+// Input parameter 'intNum' is of type int.
+//
+// Input parameter 'exponent' is of type int.
+//
+// Usage:
+// ------
+// This method is designed to be used in conjunction with the IntAry{}
+// syntax thereby allowing IntAry type creation and initialization in
+// one step.
+//
+//	iAry := IntAry{}.NewIntExponent(123456, -3)
+//  -- iAry is now equal to "123.456", precision = 3
+//
+//	iAry := IntAry{}.NewIntExponent(123456, 3)
+//  -- iAry is now equal to "123456.000", precision = 3
+//
+// Examples:
+// ---------
+//   intNum		 exponent			  	IntAry Result
+//	 123456		 		  -3							123.456
+//	 123456		 		   3							123456.000
+//   123456          0              123456
+//
+func (ia IntAry) NewIntExponent(intNum int, exponent int) IntAry {
+
+	if exponent > 0 {
+		for i:= 0; i < exponent; i++ {
+			intNum *= 10
+		}
+	}
+
+	if exponent < 0 {
+		exponent = exponent * -1
+	}
+
+	iAry := IntAry{}.New()
+	iAry.SetIntAryWithInt(intNum, uint(exponent))
+	iAry.SetNumericSeparatorsDto(ia.GetNumericSeparatorsDto())
+
 	return iAry
 }
 
@@ -3596,7 +3645,6 @@ func (ia IntAry) NewInt32(int32Num int32, precision uint) IntAry {
 	return iAry
 
 }
-
 
 // NewInt32Exponent - Returns a new IntAry instance. The numeric
 // value is set using an int32 value multiplied by 10 raised to the
