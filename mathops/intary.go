@@ -3597,6 +3597,55 @@ func (ia IntAry) NewInt32(int32Num int32, precision uint) IntAry {
 
 }
 
+
+// NewInt32Exponent - Returns a new IntAry instance. The numeric
+// value is set using an int32 value multiplied by 10 raised to the
+// power of the 'exponent' parameter.
+//
+// 				numeric value = int32 X 10^exponent
+//
+// Input parameter 'int32Num' is of type int32.
+//
+// Input parameter 'exponent' is of type int.
+//
+// Usage:
+// ------
+// This method is designed to be used in conjunction with the IntAry{}
+// syntax thereby allowing IntAry type creation and initialization in
+// one step.
+//
+//	iAry := IntAry{}.NewInt32Exponent(123456, -3)
+//  -- iAry is now equal to "123.456", precision = 3
+//
+//	iAry := IntAry{}.NewInt32Exponent(123456, 3)
+//  -- iAry is now equal to "123456.000", precision = 3
+//
+// Examples:
+// ---------
+//   int32Num		 exponent			  	IntAry Result
+//	 123456		 		  -3							123.456
+//	 123456		 		   3							123456.000
+//   123456          0              123456
+//
+func (ia IntAry) NewInt32Exponent(int32Num int32, exponent int) IntAry {
+
+	if exponent > 0 {
+		for i:= 0; i < exponent; i++ {
+			int32Num *= 10
+		}
+	}
+
+	if exponent < 0 {
+		exponent = exponent * -1
+	}
+
+	iAry := IntAry{}.New()
+	iAry.SetIntAryWithInt32(int32Num, uint(exponent))
+	iAry.SetNumericSeparatorsDto(ia.GetNumericSeparatorsDto())
+
+	return iAry
+}
+
 // NewInt64 - Creates a new intAry object initialized
 // to the value of input parameter 'int64Num' which is passed
 // as type 'int64'.
