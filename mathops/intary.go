@@ -4009,6 +4009,94 @@ func (ia IntAry) NewTwo(precision int) IntAry {
 	return ia1
 }
 
+// NewUint64 - Creates a new intAry object initialized to the
+// value of input parameter 'uint64Num' which is passed as type
+// 'uint64'.
+//
+// Input parameter 'precision' indicates the number of digits
+// to be formatted to the right of the decimal place. Input
+// parameter 'precision' is of type uint. The maximum value
+// allowed for 'precision' is 2147483645 (the max int32 value
+// minus 2). If 'precision' exceeds this maximum value it will
+// be reset to that maximum value.
+//
+// Usage:
+// ------
+// This method is designed to be used in conjunction with the
+// IntAry{} syntax thereby allowing IntAry type creation and
+// initialization in one step.
+//
+// 				uint64Num := uint64(123456)
+// 				precision := uint(3)
+// 				iAry := IntAry{}.NewUint64(uint64Num, precision)
+//        iAry is now equal to 123.456
+//
+// Examples:
+// ---------
+//  uint64Num			precision			 IntAry Result
+//	 123456		 		   4							12.3456
+//   123456          0              123456
+//   123456          1              12345.6
+//
+func (ia IntAry) NewUint64(uint64Num uint64, precision uint) IntAry {
+
+	iAry := IntAry{}.New()
+	precision = ia.validateUintToMaxPrecision(precision)
+	iAry.SetIntAryWithUint64(uint64Num, precision)
+	iAry.SetNumericSeparatorsDto(ia.GetNumericSeparatorsDto())
+
+	return iAry
+}
+
+// NewUint64Exponent - Returns a new IntAry instance. The numeric
+// value is set using an uint64 value multiplied by 10 raised to the
+// power of the 'exponent' parameter.
+//
+// 				numeric value = uint64 X 10^exponent
+//
+// Input parameter 'uint64Num' is of type uint64.
+//
+// Input parameter 'exponent' is of type int.
+//
+// Usage:
+// ------
+// This method is designed to be used in conjunction with the IntAry{}
+// syntax thereby allowing IntAry type creation and initialization in
+// one step.
+//
+//	iAry := IntAry{}.NewUint64Exponent(123456, -3)
+//  -- iAry is now equal to "123.456", precision = 3
+//
+//	iAry := IntAry{}.NewUint64Exponent(123456, 3)
+//  -- iAry is now equal to "123456.000", precision = 3
+//
+// Examples:
+// ---------
+//  uint64Num		  exponent		  	IntAry Result
+//	 123456		 		  -3							123.456
+//	 123456		 		   3							123456.000
+//   123456          0              123456
+//
+func (ia IntAry) NewUint64Exponent(uint64Num uint64, exponent int) IntAry {
+
+	uint64Ten := uint64(10)
+
+	if exponent > 0 {
+		for i:= 0; i < exponent; i++ {
+			uint64Num *= uint64Ten
+		}
+	}
+
+	if exponent < 0 {
+		exponent = exponent * -1
+	}
+
+	iAry := IntAry{}.New()
+	iAry.SetIntAryWithUint64(uint64Num, uint(exponent))
+	iAry.SetNumericSeparatorsDto(ia.GetNumericSeparatorsDto())
+
+	return iAry
+}
 
 // NewZero - Creates a new IntAry instance and sets
 // the value to Zero.
@@ -4999,17 +5087,15 @@ func (ia *IntAry) SetIntAryWithIntFracStr(intStr, fracStr string, signVal int) e
 //  946254				0					-1			-946254
 //
 //
-func (ia *IntAry) SetIntAryWithUint64(intDigits uint64, precision uint, signVal int) error {
+func (ia *IntAry) SetIntAryWithUint64(intDigits uint64, precision uint) {
 
-	if signVal != 1 && signVal != -1 {
-		return fmt.Errorf("ERROR - Input parameter must be equal to +1 or -1. Input signVal= %v", signVal)
-	}
-
-	ia.signVal = signVal
+	precision = ia.validateUintToMaxPrecision(precision)
+	
+	ia.signVal = 1
 
 	if intDigits == 0 {
 		ia.SetIntAryToZero(precision)
-		return nil
+		return
 	}
 
 	ia.precision = int(precision)
@@ -5048,7 +5134,7 @@ func (ia *IntAry) SetIntAryWithUint64(intDigits uint64, precision uint, signVal 
 
 	ia.SetInternalFlags()
 
-	return nil
+	return
 }
 
 // SetIntAryWithBigInt - Sets the current value of the intAry to the value
