@@ -959,14 +959,11 @@ func TestIntAry_NewInt_02(t *testing.T) {
 
 func TestIntAry_NewInt32_01(t *testing.T) {
 	num := int32(123456)
-	precision := 3
-	ia, err := IntAry{}.NewInt32(num, precision)
+	precision := uint(3)
 	eStr := "123.456"
 	eSignVal := 1
 
-	if err != nil {
-		t.Errorf("Error returned from intAry{}.NewInt32(num, precision). num= %v  precision= %v  Error= %v", num, precision, err)
-	}
+	ia := IntAry{}.NewInt32(num, precision)
 
 	if eStr != ia.GetNumStr() {
 		t.Errorf("Expected ia.GetNumStr()== %v  .   Instead ia.GetNumStr() == %v", eStr, ia.GetNumStr())
@@ -983,15 +980,13 @@ func TestIntAry_NewInt32_01(t *testing.T) {
 }
 
 func TestIntAry_NewInt32_02(t *testing.T) {
+
 	num := int32(-123456)
-	precision := 3
-	ia, err := IntAry{}.NewInt32(num, precision)
+	precision := uint(3)
 	eStr := "-123.456"
 	eSignVal := -1
 
-	if err != nil {
-		t.Errorf("Error returned from intAry{}.NewInt32(num, precision). num= %v  precision= %v Error= %v", num, precision, err)
-	}
+	ia := IntAry{}.NewInt32(num, precision)
 
 	if eStr != ia.GetNumStr() {
 		t.Errorf("Expected ia.GetNumStr()== %v  .   Instead ia.GetNumStr() == %v", eStr, ia.GetNumStr())
@@ -1003,6 +998,42 @@ func TestIntAry_NewInt32_02(t *testing.T) {
 
 	if eSignVal != ia.GetSign() {
 		t.Errorf("Expected ia.GetSign() == %v  .   Instead ia.GetSign() == %v", eSignVal, ia.GetSign())
+	}
+
+}
+
+func TestIntAry_NewInt32_03(t *testing.T) {
+
+	num := int32(0)
+	precision := uint(0)
+	eStr := "0"
+
+	ia := IntAry{}.NewInt32(num, precision)
+
+	if eStr != ia.GetNumStr() {
+		t.Errorf("Expected ia.GetNumStr()== %v  .   Instead ia.GetNumStr() == %v", eStr, ia.GetNumStr())
+	}
+
+	if int(precision) != ia.GetPrecision() {
+		t.Errorf("Expected ia.GetPrecision() == %v  .   Instead ia.GetPrecision() == %v", precision, ia.GetPrecision())
+	}
+
+}
+
+func TestIntAry_NewInt32_04(t *testing.T) {
+
+	num := int32(0)
+	precision := uint(3)
+	eStr := "0.000"
+
+	ia := IntAry{}.NewInt32(num, precision)
+
+	if eStr != ia.GetNumStr() {
+		t.Errorf("Expected ia.GetNumStr()== %v  .   Instead ia.GetNumStr() == %v", eStr, ia.GetNumStr())
+	}
+
+	if int(precision) != ia.GetPrecision() {
+		t.Errorf("Expected ia.GetPrecision() == %v  .   Instead ia.GetPrecision() == %v", precision, ia.GetPrecision())
 	}
 
 }

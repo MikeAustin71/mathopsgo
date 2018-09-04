@@ -475,7 +475,8 @@ func (nthrt *NthRootOp) GetSquareRootInt(radicand int, precision, maxPrecision i
 // parameters for 'precision' and 'maxPrecision'.
 //
 // 'precision' specifies the number of digits in the 'int32' parameter, 'radicand', which
-// will be positioned to the right of the decimal place.
+// will be positioned to the right of the decimal place. 'precision' MUST BE a positive
+// value. Negative values will trigger an error.
 //
 // 'maxPrecision' specifies the number of decimals to the right of the decimal place to
 // which the square root will be calculated.
@@ -485,15 +486,30 @@ func (nthrt *NthRootOp) GetSquareRootInt(radicand int, precision, maxPrecision i
 // Note: A negative 'radicand' value with an even nthRoot will generate an error.
 //
 func (nthrt *NthRootOp) GetSquareRootInt32(radicand int32, precision, maxPrecision int) (IntAry, error) {
-	ai := IntAry{}.New()
 
-	err := ai.SetIntAryWithInt32(radicand, precision)
+	ePrefix := "NthRootOp.GetSquareRootInt32() "
 
-	if err != nil {
-		return IntAry{}.New(), fmt.Errorf("NthRootOp.GetSquareRootInt32() - Error ai.SetIntAryWithInt32(radicand, precision) radicand= %v, precision=%v Error= %v ", radicand, precision, err)
+	if precision < 0 {
+		return IntAry{}.New(),
+		fmt.Errorf(ePrefix +
+			"Error: Input parameter 'precision' is less than zero. INVALID! " +
+			"precision='%v' ", precision)
 	}
 
-	return nthrt.GetSquareRootIntAry(&ai, maxPrecision)
+	ai := IntAry{}.New()
+
+	ai.SetIntAryWithInt32(radicand, uint(precision))
+
+	iaResult, err := nthrt.GetSquareRootIntAry(&ai, maxPrecision)
+
+	if err != nil {
+		return IntAry{}.New(),
+			fmt.Errorf(ePrefix +
+				"Error returned by nthrt.GetSquareRootIntAry(&ai, maxPrecision). " +
+				"Error='%v' ", err.Error())
+	}
+
+	return iaResult, nil
 }
 
 // GetSquareRootInt64 - Calculates the Square Root of a positive real number ('radicand')
@@ -663,19 +679,11 @@ func (nthrt *NthRootOp) calcNthRootGateway(radicand, nthRoot *IntAry, maxPrecisi
 
 	ePrefix := "NthRootOp.calcNthRootGateway() "
 
-	var err error
-
 	if maxPrecision < 0 {
 		maxPrecision = 4096
 	}
 
-	nthrt.ResultAry, err = IntAry{}.NewInt32(0,0)
-
-	if err != nil {
-		return fmt.Errorf(ePrefix +
-			"Error returned by IntAry{}.NewInt32(0,0). " +
-			"Error='%v' ", err.Error())
-	}
+	nthrt.ResultAry = IntAry{}.NewInt32(0,0)
 
 	// If radicand is zero, the result will always be zero.
 	if radicand.IsZero() {

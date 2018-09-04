@@ -680,7 +680,7 @@ func (ia *IntAry) AddIntToThis(num int, precision uint)  {
 //
 func (ia *IntAry) AddInt64ToThis(int64Num int64, precision uint) {
 
-	precision = ia.setUintToMaxPrecision(precision)
+	precision = ia.validateUintToMaxPrecision(precision)
 
 	ia2 := IntAry{}.NewInt64(int64Num, precision)
 
@@ -3549,7 +3549,7 @@ func (ia IntAry) NewFloatBig(num *big.Float, precision int) (IntAry, error) {
 //
 func (ia IntAry) NewInt(intNum int, precision uint) IntAry {
 
-	precision = ia.setUintToMaxPrecision(precision)
+	precision = ia.validateUintToMaxPrecision(precision)
 
 	iAry := IntAry{}.New()
 	iAry.SetIntAryWithInt(intNum, precision)
@@ -3563,38 +3563,50 @@ func (ia IntAry) NewInt(intNum int, precision uint) IntAry {
 // as type 'int32'.
 //
 // Input parameter 'precision' indicates the number of digits
-// to be formatted to the right of the decimal place and must
-// be passed as a positive value. Negative precision values
-// will trigger an error.
+// to be formatted to the right of the decimal place. Input
+// parameter 'precision' is of type uint. The maximum value
+// allowed for 'precision' is 2147483645 (the max int32 value
+// minus 2). If 'precision' exceeds this maximum value it will
+// be reset to that maximum value.
 //
 // Usage:
-// num := int32(123456)
-// precision := int(3)
-// ia, err := intAry{}.NewInt32(num, precision)
+// ------
+// This method is designed to be used in conjunction with the
+// IntAry{} syntax thereby allowing IntAry type creation and
+// initialization in one step.
 //
-func (ia IntAry) NewInt32(int32Num int32, precision int) (IntAry, error) {
+// 				int32Num := int64(123456)
+// 				precision := uint(3)
+// 				iAry := IntAry{}.NewInt32(int32Num, precision)
+//        iAry is now equal to 123.456
+//
+// Examples:
+// ---------
+//   int32Num			precision			 IntAry Result
+//	 123456		 		   4							12.3456
+//   123456          0              123456
+//   123456          1              12345.6
+//
+func (ia IntAry) NewInt32(int32Num int32, precision uint) IntAry {
 
 	iAry := IntAry{}.New()
-	err := iAry.SetIntAryWithInt32(int32Num, precision)
-
-	if err != nil {
-		return IntAry{}, err
-	}
-
-	return iAry, nil
+	iAry.SetIntAryWithInt32(int32Num, precision)
+	iAry.SetNumericSeparatorsDto(ia.GetNumericSeparatorsDto())
+	
+	return iAry
 
 }
 
 // NewInt64 - Creates a new intAry object initialized
-// to the value of input parameter 'num' which is passed
+// to the value of input parameter 'int64Num' which is passed
 // as type 'int64'.
 //
 // Input parameter 'precision' indicates the number of digits
 // to be formatted to the right of the decimal place. Input
 // parameter 'precision' is of type uint. The maximum value
-// allowed for 'precision' is 2147483647 (the max int32 value).
-// If 'precision' exceeds this maximum value it will be reset
-// to the maximum value.
+// allowed for 'precision' is 2147483645 (the max int32 value
+// minus 2). If 'precision' exceeds this maximum value it will
+// be reset to that maximum value.
 //
 // Usage:
 // ------
@@ -3617,7 +3629,7 @@ func (ia IntAry) NewInt32(int32Num int32, precision int) (IntAry, error) {
 func (ia IntAry) NewInt64(int64Num int64, precision uint) IntAry {
 
 	iAry := IntAry{}.New()
-	precision = ia.setUintToMaxPrecision(precision)
+	precision = ia.validateUintToMaxPrecision(precision)
 	iAry.SetIntAryWithInt64(int64Num, precision)
 	iAry.SetNumericSeparatorsDto(ia.GetNumericSeparatorsDto())
 
@@ -4553,7 +4565,7 @@ func (ia *IntAry) SetIntAryToTen(precision int) error {
 // SetIntAryToZero - Sets the value of the intAry object to Zero ('0').
 func (ia *IntAry) SetIntAryToZero(precision uint) {
 
-	precision = ia.setUintToMaxPrecision(precision)
+	precision = ia.validateUintToMaxPrecision(precision)
 
 	ia.intAryLen = 1 + int(precision)
 	ia.precision = int(precision)
@@ -4588,7 +4600,7 @@ func (ia *IntAry) SetIntAryWithInt(intDigits int, precision uint) {
 	quotient := 0
 	mod := 0
 
-	precision = ia.setUintToMaxPrecision(precision)
+	precision = ia.validateUintToMaxPrecision(precision)
 
 	ia.intAry = []uint8{}
 	ia.intAryLen = 0
@@ -4640,25 +4652,26 @@ func (ia *IntAry) SetIntAryWithInt(intDigits int, precision uint) {
 // SetIntAryWithInt32 - Sets the value of the current intAry object
 // to that of the input parameter 'intDigits', a 32-bit integer.
 //
-// Input parameter 'precision' to indicate the number of
-// digits to the right of the decimal place.
+// Input parameter 'precision' indicates the number of digits
+// to be formatted to the right of the decimal place. Input
+// parameter 'precision' is of type uint. The maximum value
+// allowed for 'precision' is 2147483645 (the max int32 value
+// minus 2). If 'precision' exceeds this maximum value it will
+// be reset to that maximum value.
 //
 // The numeric sign (plus or minus) of the resulting intAry value
-// is determined by the sign of input parameter 'intDigits'.
+// is determined by the sign of input parameter 'int32Num'.
+
 // Example:
-//  intDigits     precision     	    result
+//  int32Num     precision     	       result
 //  946254  			   3							   946.254
 //  946254				   0							   946254
 //  -946254  			   3					      -946.254
 //  -946254				   0						    -946254
 //
-func (ia *IntAry) SetIntAryWithInt32(intDigits int32, precision int) error {
+func (ia *IntAry) SetIntAryWithInt32(int32Num int32, precision uint) {
 
-	if precision < 0 {
-		ePrefix := "IntAry.SetIntAryWithInt32() "
-		return fmt.Errorf(ePrefix + "Error: input parameter 'precision' is a negative value! " +
-			"precision='%v' ", precision)
-	}
+	precision = ia.validateUintToMaxPrecision(precision)
 
 	tenI32 := int32(10)
 	quotient := int32(0)
@@ -4666,33 +4679,33 @@ func (ia *IntAry) SetIntAryWithInt32(intDigits int32, precision int) error {
 
 	ia.intAry = []uint8{}
 	ia.intAryLen = 0
-	ia.precision = precision
+	ia.precision = int(precision)
 	ia.signVal = 1
 
-	if intDigits < 0 {
-		intDigits = intDigits * -1
+	if int32Num < 0 {
+		int32Num = int32Num * -1
 		ia.signVal = -1
 	}
 
-	if intDigits == 0 {
-		ia.SetIntAryToZero(uint(precision))
-		return nil
+	if int32Num == 0 {
+		ia.SetIntAryToZero(precision)
+		return
 	}
 
 	for true {
 
-		if intDigits == 0 {
+		if int32Num == 0 {
 			break
 		}
 
-		quotient = intDigits / tenI32
+		quotient = int32Num / tenI32
 
-		mod = intDigits - (quotient * tenI32)
+		mod = int32Num - (quotient * tenI32)
 
 		ia.intAry = append(ia.intAry, uint8(mod))
 		ia.intAryLen++
 
-		intDigits = quotient
+		int32Num = quotient
 
 	}
 
@@ -4708,31 +4721,33 @@ func (ia *IntAry) SetIntAryWithInt32(intDigits int32, precision int) error {
 
 	ia.SetInternalFlags()
 
-	return nil
+	return
 }
 
 // SetIntAryWithInt64 - Sets the value of the current intAry
-// object to that of the input parameter 'intDigits', a 64-bit
+// object to that of the input parameter 'int64Num', a 64-bit
 // integer.
 //
-// Input parameter 'precision' is used to indicate the number
-// of digits to the right of the decimal place. Input parameter
-// 'precision' is of type uint.
+// Input parameter 'precision' indicates the number of digits
+// to be formatted to the right of the decimal place. Input
+// parameter 'precision' is of type uint. The maximum value
+// allowed for 'precision' is 2147483645 (the max int32 value
+// minus 2). If 'precision' exceeds this maximum value it will
+// be reset to that maximum value.
 //
 // The numeric sign (plus or minus) of the resulting intAry value
-// is determined by the sign of input parameter 'intDigits'.
+// is determined by the sign of input parameter 'int64Num'.
 //
 // Example:
-//  intDigits     precision     	    result
+//  int64Num     precision     	    result
 //  946254  			   3							   946.254
 //  946254				   0							   946254
 //  -946254  			   3					      -946.254
 //  -946254				   0						    -946254
 //
-func (ia *IntAry) SetIntAryWithInt64(intDigits int64, precision uint) {
+func (ia *IntAry) SetIntAryWithInt64(int64Num int64, precision uint) {
 
-
-	precision = ia.setUintToMaxPrecision(precision)
+	precision = ia.validateUintToMaxPrecision(precision)
 
 	quotient := int64(0)
 	mod := int64(0)
@@ -4743,30 +4758,30 @@ func (ia *IntAry) SetIntAryWithInt64(intDigits int64, precision uint) {
 	ia.precision = int(precision)
 	ia.signVal = 1
 
-	if intDigits < 0 {
-		intDigits = intDigits * int64(-1)
+	if int64Num < 0 {
+		int64Num = int64Num * int64(-1)
 		ia.signVal = -1
 	}
 
-	if intDigits == 0 {
+	if int64Num == 0 {
 		ia.SetIntAryToZero(precision)
 		return
 	}
 
 	for true {
 
-		if intDigits == 0 {
+		if int64Num == 0 {
 			break
 		}
 
-		quotient = intDigits / i64Ten
+		quotient = int64Num / i64Ten
 
-		mod = intDigits - (quotient * i64Ten)
+		mod = int64Num - (quotient * i64Ten)
 
 		ia.intAry = append(ia.intAry, uint8(mod))
 		ia.intAryLen++
 
-		intDigits = quotient
+		int64Num = quotient
 
 	}
 
@@ -6018,22 +6033,6 @@ func (ia *IntAry) SubtractMultipleFromThis(iaMany ...*IntAry) error {
 	return nil
 }
 
-// setUintToMaxPrecision - The purpose of this method is to ensure that
-// a precision value does not exceed the maximum precision capacity of
-// the IntAry Type. The maximum allowable precision value is computed
-// as an unsigned int.
-//
-func (ia *IntAry) setUintToMaxPrecision(origPrecision uint) uint {
-
-	maxTypePrecision := ia.getMaximumPrecision()
-
-	if origPrecision > maxTypePrecision {
-		return maxTypePrecision
-	}
-
-	return origPrecision
-}
-
 // getMaximumPrecision - Returns the maximum allowable precision for
 // the IntAry type as an unsigned integer (uint). Currently the
 // maximum allowable precision is computed as:
@@ -6045,4 +6044,20 @@ func (ia *IntAry) setUintToMaxPrecision(origPrecision uint) uint {
 func (ia *IntAry) getMaximumPrecision() uint {
 
 	return uint(math.MaxInt32) - uint(2)
+}
+
+// validateUintToMaxPrecision - The purpose of this method is to ensure that
+// a precision value does not exceed the maximum precision capacity of
+// the IntAry Type. The maximum allowable precision value is computed
+// as an unsigned int.
+//
+func (ia *IntAry) validateUintToMaxPrecision(origPrecision uint) uint {
+
+	maxTypePrecision := ia.getMaximumPrecision()
+
+	if origPrecision > maxTypePrecision {
+		return maxTypePrecision
+	}
+
+	return origPrecision
 }
