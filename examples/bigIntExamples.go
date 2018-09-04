@@ -1,9 +1,9 @@
 package examples
 
 import (
-	"math/big"
+	"../mathops"
 	"fmt"
-	"MikeAustin71/mathopsgo/mathops"
+	"math/big"
 )
 
 func ExampleBigIntMagnitude_01(target *big.Int) {

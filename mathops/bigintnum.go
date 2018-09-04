@@ -2511,9 +2511,9 @@ func (bNum BigIntNum) NewFloat64(f64 float64, maxPrecision uint) (BigIntNum, err
 // syntax thereby allowing BigIntNum type creation and initialization in
 // one step.
 //
-// 				num := int(123456)
+// 				intNum := int(123456)
 // 				precision := uint(3)
-// 				bINum := BigIntNum{}.NewInt(num, precision)
+// 				bINum := BigIntNum{}.NewInt(intNum, precision)
 //        bINum is now equal to 123.456
 //
 // Examples:
@@ -2525,7 +2525,10 @@ func (bNum BigIntNum) NewFloat64(f64 float64, maxPrecision uint) (BigIntNum, err
 //
 func (bNum BigIntNum) NewInt(intNum int, precision uint) BigIntNum {
 
-	return BigIntNum{}.NewBigInt(big.NewInt(int64(intNum)), precision)
+	b2 := BigIntNum{}.NewBigInt(big.NewInt(int64(intNum)), precision)
+	b2.SetNumericSeparatorsDto(bNum.GetNumericSeparatorsDto())
+
+	return b2
 }
 
 // NewIntExponent - This method returns a new BigIntNum instance in which

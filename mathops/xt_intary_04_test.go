@@ -84,7 +84,7 @@ func TestIntAry_GetCurrencySymbol_03(t *testing.T) {
 }
 
 func TestIntAry_GetCurrencySymbol_04(t *testing.T) {
-	ia, _ := IntAry{}.NewInt64(int64(5034), 2)
+	ia := IntAry{}.NewInt64(int64(5034), 2)
 
 	curSymbol := ia.GetCurrencySymbol()
 

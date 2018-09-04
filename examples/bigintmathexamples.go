@@ -1,11 +1,11 @@
 package examples
 
 import (
+	"../mathops"
 	"fmt"
 	"math/big"
-	"../mathops"
 	"time"
-	)
+)
 
 
 //ExampleNumStrDtoBigIntParse_02
@@ -772,8 +772,9 @@ func ExampleBigIntAddNumStr_01() {
 	expectedResultStr := "1000123"
 	expectedPrecision := uint(6)
 
+	numSeps :=  mathops.NumericSeparatorDto{}.New()
 
-	result, err := mathops.BigIntMathAdd{}.AddNumStr(n1Str, n2Str)
+	result, err := mathops.BigIntMathAdd{}.AddNumStr(n1Str, n2Str, numSeps)
 
 	if err != nil {
 		fmt.Printf("Error returned by mathops.BigIntMathAdd{}.AddNumStr(n1Str, n2Str). " +
@@ -797,8 +798,9 @@ func ExampleBigIntAddNumStr_02() {
 	expectedResultStr := "001123"
 	expectedPrecision := uint(6)
 
+	numSeps := mathops.NumericSeparatorDto{}.New()
 
-	result, err := mathops.BigIntMathAdd{}.AddNumStr(n1Str, n2Str)
+	result, err := mathops.BigIntMathAdd{}.AddNumStr(n1Str, n2Str, numSeps)
 
 	if err != nil {
 		fmt.Printf("Error returned by mathops.BigIntMathAdd{}.AddNumStr(n1Str, n2Str). " +

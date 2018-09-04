@@ -1,8 +1,8 @@
 package mathops
 
 import (
-	"fmt"
 	"errors"
+	"fmt"
 )
 
 /*
@@ -104,7 +104,7 @@ func (sMathOp *StrMathOp) RaiseToPower(power int) error {
 	resultPrecision := sMathOp.N1.GetPrecision()
 
 	if sMathOp.N1.IsZero() {
-		sMathOp.IFinal.SetIntAryToZero(resultPrecision)
+		sMathOp.IFinal.SetIntAryToZero(uint(resultPrecision))
 		return nil
 	}
 

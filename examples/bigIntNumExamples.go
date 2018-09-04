@@ -1,9 +1,9 @@
 package examples
 
 import (
+	"../mathops"
 	"fmt"
 	"math/big"
-	"../mathops"
 )
 
 func ExampleBINumSetFromIntFracStrings(

@@ -1,9 +1,9 @@
 package examples
 
 import (
+	"MikeAustin71/mathopsgo/mathops"
 	"fmt"
 	"time"
-	"MikeAustin71/mathopsgo/mathops"
 )
 
 func ExampleIntAryPwrByTwos_01(

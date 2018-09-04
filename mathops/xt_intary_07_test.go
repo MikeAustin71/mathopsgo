@@ -372,16 +372,12 @@ func TestIntAry_SetIntAryWithInt64_01(t *testing.T) {
 	num := int64(123456789)
 
 	eNumStr := "123456.789"
-	ePrecision := 3
+	ePrecision := uint(3)
 	eSignVal := 1
 
 	ia := IntAry{}.New()
 
-	err := ia.SetIntAryWithInt64(num, ePrecision)
-
-	if err != nil {
-		t.Errorf("Error returned from ia.SetIntAryWithInt64(num, ePrecision). num= %v  ePrecision= %v  .", num, ePrecision)
-	}
+	ia.SetIntAryWithInt64(num, ePrecision)
 
 	if eNumStr != ia.GetNumStr() {
 		t.Errorf("Expected ia.GetNumStr()= '%v' . Instead, ia.GetNumStr()= '%v'", eNumStr, ia.GetNumStr())
@@ -402,16 +398,12 @@ func TestIntAry_SetIntAryWithInt64_02(t *testing.T) {
 	num := int64(-123456789)
 
 	eNumStr := "-12345.6789"
-	ePrecision := 4
+	ePrecision := uint(4)
 	eSignVal := -1
 
 	ia := IntAry{}.New()
 
-	err := ia.SetIntAryWithInt64(num, ePrecision)
-
-	if err != nil {
-		t.Errorf("Error returned from ia.SetIntAryWithInt64(num, ePrecision). num= %v  ePrecision= %v .", num, ePrecision)
-	}
+	ia.SetIntAryWithInt64(num, ePrecision)
 
 	if eNumStr != ia.GetNumStr() {
 		t.Errorf("Expected ia.GetNumStr()= '%v' . Instead, ia.GetNumStr()= '%v'", eNumStr, ia.GetNumStr())
@@ -432,16 +424,12 @@ func TestIntAry_SetIntAryWithInt64_03(t *testing.T) {
 	num := int64(0)
 
 	eNumStr := "0.0000"
-	ePrecision := 4
+	ePrecision := uint(4)
 	eSignVal := 1
 
 	ia := IntAry{}.New()
 
-	err := ia.SetIntAryWithInt64(num, ePrecision)
-
-	if err != nil {
-		t.Errorf("Error returned from ia.SetIntAryWithInt64(num, ePrecision). num= %v  ePrecision= %v  .", num, ePrecision)
-	}
+	ia.SetIntAryWithInt64(num, ePrecision)
 
 	if eNumStr != ia.GetNumStr() {
 		t.Errorf("Expected ia.GetNumStr()= '%v' . Instead, ia.GetNumStr()= '%v'", eNumStr, ia.GetNumStr())
@@ -462,16 +450,12 @@ func TestIntAry_SetIntAryWithInt64_04(t *testing.T) {
 	num := int64(32)
 
 	eNumStr := "0.0032"
-	ePrecision := 4
+	ePrecision := uint(4)
 	eSignVal := 1
 
 	ia := IntAry{}.New()
 
-	err := ia.SetIntAryWithInt64(num, ePrecision)
-
-	if err != nil {
-		t.Errorf("Error returned from ia.SetIntAryWithInt64(num, ePrecision, eSignVal). num= %v  ePrecision= %v  .", num, ePrecision)
-	}
+	ia.SetIntAryWithInt64(num, ePrecision)
 
 	if eNumStr != ia.GetNumStr() {
 		t.Errorf("Expected ia.GetNumStr()= '%v' . Instead, ia.GetNumStr()= '%v'", eNumStr, ia.GetNumStr())
@@ -492,16 +476,12 @@ func TestIntAry_SetIntAryWithInt64_05(t *testing.T) {
 	num := int64(-32)
 
 	eNumStr := "-32"
-	ePrecision := 0
+	ePrecision := uint(0)
 	eSignVal := -1
 
 	ia := IntAry{}.New()
 
-	err := ia.SetIntAryWithInt64(num, ePrecision)
-
-	if err != nil {
-		t.Errorf("Error returned from ia.SetIntAryWithInt64(num, ePrecision). num= %v  ePrecision= %v  .", num, ePrecision)
-	}
+	ia.SetIntAryWithInt64(num, ePrecision)
 
 	if eNumStr != ia.GetNumStr() {
 		t.Errorf("Expected ia.GetNumStr()= '%v' . Instead, ia.GetNumStr()= '%v'", eNumStr, ia.GetNumStr())
@@ -522,16 +502,12 @@ func TestIntAry_SetIntAryWithInt64_06(t *testing.T) {
 	num := int64(32)
 
 	eNumStr := "0.32"
-	ePrecision := 2
+	ePrecision := uint(2)
 	eSignVal := 1
 
 	ia := IntAry{}.New()
 
-	err := ia.SetIntAryWithInt64(num, ePrecision)
-
-	if err != nil {
-		t.Errorf("Error returned from ia.SetIntAryWithInt64(num, ePrecision). num= %v  ePrecision= %v  .", num, ePrecision)
-	}
+	ia.SetIntAryWithInt64(num, ePrecision)
 
 	if eNumStr != ia.GetNumStr() {
 		t.Errorf("Expected ia.GetNumStr()= '%v' . Instead, ia.GetNumStr()= '%v'", eNumStr, ia.GetNumStr())

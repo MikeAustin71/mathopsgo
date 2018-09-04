@@ -1525,6 +1525,7 @@ func (dec Decimal) NewInt(intNum int, precision uint) Decimal {
 	d2 := Decimal{}.New()
 
 	d2.SetInt(intNum, precision)
+	d2.SetNumericSeparatorsDto(dec.GetNumericSeparatorsDto())
 
 	return d2
 }
@@ -1666,7 +1667,7 @@ func (dec Decimal) NewInt32Exponent(int32Num int32, exponent int) Decimal {
 //
 // Examples:
 // ---------
-//   int32Num			precision			 Decimal Result
+//   int64Num			precision			 Decimal Result
 //	 123456		 		   4							12.3456
 //   123456          0              123456
 //   123456          1              12345.6

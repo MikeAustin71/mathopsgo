@@ -1,9 +1,9 @@
 package mathops
 
 import (
-	"math/big"
-	"fmt"
 	"errors"
+	"fmt"
+	"math/big"
 )
 
 type IntAryMathPower struct {

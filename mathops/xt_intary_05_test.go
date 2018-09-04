@@ -916,14 +916,11 @@ func TestIntAry_NewFloat32_02(t *testing.T) {
 
 func TestIntAry_NewInt64_01(t *testing.T) {
 	num := int64(123456)
-	precision := 3
-	ia, err := IntAry{}.NewInt64(num, precision)
+	precision := uint(3)
+	ia := IntAry{}.NewInt64(num, precision)
 	eStr := "123.456"
 	eSignVal := 1
 
-	if err != nil {
-		t.Errorf("Error returned from intAry{}.NewInt64(num, precision). num= %v  precision= %v  Error= %v", num, precision, err)
-	}
 
 	if eStr != ia.GetNumStr() {
 		t.Errorf("Expected ia.GetNumStr()== %v  .   Instead ia.GetNumStr() == %v", eStr, ia.GetNumStr())
@@ -941,14 +938,11 @@ func TestIntAry_NewInt64_01(t *testing.T) {
 
 func TestIntAry_NewInt64_02(t *testing.T) {
 	num := int64(-123456)
-	precision :=3
-	ia, err := IntAry{}.NewInt64(num, precision)
+	precision := uint(3)
+	ia := IntAry{}.NewInt64(num, precision)
 	eStr := "-123.456"
 	eSignVal := -1
 
-	if err != nil {
-		t.Errorf("Error returned from intAry{}.NewInt64(num, precision). num= %v  precision= %v Error= %v", num, precision, err)
-	}
 
 	if eStr != ia.GetNumStr() {
 		t.Errorf("Expected ia.GetNumStr()== %v  .   Instead ia.GetNumStr() == %v", eStr, ia.GetNumStr())

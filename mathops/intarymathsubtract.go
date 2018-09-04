@@ -44,7 +44,7 @@ func (iaSubtract IntAryMathSubtract) SubtractTotal(ia1, ia2 *IntAry) {
 	ia1.SetEqualArrayLengths(ia2)
 
 	if ia1.isZeroValue && ia2.isZeroValue {
-		ia1.SetIntAryToZero(ia1.precision)
+		ia1.SetIntAryToZero(ia1.GetPrecisionUint())
 		return
 	}
 
@@ -135,7 +135,7 @@ func (iaSubtract *IntAryMathSubtract) addToSubtract(
 																								doReverseNums bool) {
 
 	if isZeroResult {
-		ia1.SetIntAryToZero(ia1.precision)
+		ia1.SetIntAryToZero(ia1.GetPrecisionUint())
 		return
 	}
 

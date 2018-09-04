@@ -163,7 +163,7 @@ func (iaAdd *IntAryMathAdd) addToSubtract(
 												doReverseNums bool) {
 
 	if isZeroResult {
-		ia1.SetIntAryToZero(ia1.precision)
+		ia1.SetIntAryToZero(ia1.GetPrecisionUint())
 		return
 	}
 

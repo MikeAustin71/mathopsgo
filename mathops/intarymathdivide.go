@@ -261,7 +261,7 @@ func (iaDivide IntAryMathDivide) DivideByInt64(
 
 	if ia.isZeroValue {
 
-		ia.SetIntAryToZero(ia.precision)
+		ia.SetIntAryToZero(ia.GetPrecisionUint())
 		return nil
 	}
 
@@ -393,7 +393,7 @@ func (iaDivide IntAryMathDivide) DivideByTwo(ia *IntAry) {
 
 	if ia.isZeroValue {
 
-		ia.SetIntAryToZero(ia.precision)
+		ia.SetIntAryToZero(ia.GetPrecisionUint())
 
 		return
 	}

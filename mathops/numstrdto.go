@@ -2391,17 +2391,28 @@ func (nDto NumStrDto) NewInt(intNum int, precision uint) (NumStrDto, error) {
 //
 // 				numeric value = integer X 10^exponent
 //
-// For example, if exponent is -3, precision is set equal to 'intNum'
-// divided by 10^+3. Example:
+// Input parameter 'intNum' is of type int.
 //
-//   intNum				exponent			NumStrDto Result
+// Input parameter 'exponent' is of type int.
+//
+// Usage:
+// ------
+// This method is designed to be used in conjunction with the Decimal{}
+// syntax thereby allowing Decimal type creation and initialization in
+// one step.
+//
+//	nDto := NumStrDto{}.NewIntExponent(123456, -3)
+//  -- nDto is now equal to "123.456", precision = 3
+//
+//	nDto := NumStrDto{}.NewIntExponent(123456, 3)
+//  -- decNum is now equal to "123456.000", precision = 3
+//
+// Examples:
+// ---------
+//   intNum			 exponent			  	NumStrDto Result
 //	 123456		 		  -3							123.456
-//
-// If exponent is +3, intNum is multiplied by 10 raised to the
-// power of exponent and precision is set equal to exponent.
-//
-//   intNum				exponent			NumStrDto Result
-//	 123456		 		   +3							123456.000
+//	 123456		 		   3							123456.000
+//   123456          0              123456
 //
 func (nDto NumStrDto) NewIntExponent(intNum int, exponent int) NumStrDto {
 
@@ -2498,17 +2509,29 @@ func (nDto NumStrDto) NewInt64(i64 int64, precision uint) (NumStrDto, error) {
 //
 // 				numeric value = int64 X 10^exponent
 //
-// For example, if exponent is -3, precision is set equal to 'int64Num'
-// divided by 10^+3. Example:
 //
-//   int32Num			exponent			NumStrDto Result
+// Input parameter 'int64Num' is of type int64.
+//
+// Input parameter 'exponent' is of type int.
+//
+// Usage:
+// ------
+// This method is designed to be used in conjunction with the NumStrDto{}
+// syntax thereby allowing NumStrDto type creation and initialization in
+// one step.
+//
+//	nDto := NumStrDto{}.NewInt64Exponent(123456, -3)
+//  -- nDto is now equal to "123.456", precision = 3
+//
+//	nDto := NumStrDto{}.NewInt64Exponent(123456, 3)
+//  -- decNum is now equal to "123456.000", precision = 3
+//
+// Examples:
+// ---------
+//   int64Num		 exponent			  	Decimal Result
 //	 123456		 		  -3							123.456
-//
-// If exponent is +3, int64Num is multiplied by 10 raised to the
-// power of exponent and precision is set equal to exponent.
-//
-//   int32Num			exponent			NumStrDto Result
-//	 123456		 		   +3							123456.000
+//	 123456		 		   3							123456.000
+//   123456          0              123456
 //
 func (nDto NumStrDto) NewInt64Exponent(int64Num int64, exponent int) NumStrDto {
 

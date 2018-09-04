@@ -241,7 +241,7 @@ func (iaMultiply IntAryMathMultiply) Multiply(
 			minimumResultPrecision = 0
 		}
 
-		iaResult.SetIntAryToZero(minimumResultPrecision)
+		iaResult.SetIntAryToZero(uint(minimumResultPrecision))
 
 		return nil
 	}
