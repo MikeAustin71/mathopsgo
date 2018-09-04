@@ -3549,6 +3549,8 @@ func (ia IntAry) NewFloatBig(num *big.Float, precision int) (IntAry, error) {
 //
 func (ia IntAry) NewInt(intNum int, precision uint) IntAry {
 
+	precision = ia.setUintToMaxPrecision(precision)
+
 	iAry := IntAry{}.New()
 	iAry.SetIntAryWithInt(intNum, precision)
 	iAry.SetNumericSeparatorsDto(ia.GetNumericSeparatorsDto())
@@ -4586,6 +4588,8 @@ func (ia *IntAry) SetIntAryWithInt(intDigits int, precision uint) {
 	quotient := 0
 	mod := 0
 
+	precision = ia.setUintToMaxPrecision(precision)
+
 	ia.intAry = []uint8{}
 	ia.intAryLen = 0
 	ia.precision = int(precision)
@@ -4726,6 +4730,9 @@ func (ia *IntAry) SetIntAryWithInt32(intDigits int32, precision int) error {
 //  -946254				   0						    -946254
 //
 func (ia *IntAry) SetIntAryWithInt64(intDigits int64, precision uint) {
+
+
+	precision = ia.setUintToMaxPrecision(precision)
 
 	quotient := int64(0)
 	mod := int64(0)
@@ -6011,13 +6018,31 @@ func (ia *IntAry) SubtractMultipleFromThis(iaMany ...*IntAry) error {
 	return nil
 }
 
+// setUintToMaxPrecision - The purpose of this method is to ensure that
+// a precision value does not exceed the maximum precision capacity of
+// the IntAry Type. The maximum allowable precision value is computed
+// as an unsigned int.
+//
 func (ia *IntAry) setUintToMaxPrecision(origPrecision uint) uint {
 
-	maxUintPrecision := uint(math.MaxInt32)
+	maxTypePrecision := ia.getMaximumPrecision()
 
-	if origPrecision > maxUintPrecision {
-		return maxUintPrecision
+	if origPrecision > maxTypePrecision {
+		return maxTypePrecision
 	}
 
 	return origPrecision
+}
+
+// getMaximumPrecision - Returns the maximum allowable precision for
+// the IntAry type as an unsigned integer (uint). Currently the
+// maximum allowable precision is computed as:
+//
+//   21474836472147483647 - 2 = 21474836472147483645
+//
+// Effectively this is the maximum value of an int32 minus 2.
+//
+func (ia *IntAry) getMaximumPrecision() uint {
+
+	return uint(math.MaxInt32) - uint(2)
 }
