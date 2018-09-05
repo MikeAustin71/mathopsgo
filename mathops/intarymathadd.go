@@ -5,7 +5,6 @@ type IntAryMathAdd struct {
 	Result IntAry
 }
 
-
 // AddManyArray - Adds the contents of the []IntAry, 'iaMany' to the
 // the value of 'total'.
 //
@@ -17,7 +16,7 @@ func (iaAdd IntAryMathAdd) AddManyArray(total *IntAry, iaMany []IntAry) {
 
 	lAry := len(iaMany)
 
-	for i:=0; i < lAry; i++ {
+	for i := 0; i < lAry; i++ {
 
 		iaAdd.RunTotal(total, &iaMany[i])
 
@@ -32,7 +31,7 @@ func (iaAdd IntAryMathAdd) AddManyArray(total *IntAry, iaMany []IntAry) {
 // Numeric separators consist of the decimal separator, thousands
 // separator and currency symbol.
 //
-func (iaAdd IntAryMathAdd) AddMany(total *IntAry, iaMany ... *IntAry) {
+func (iaAdd IntAryMathAdd) AddMany(total *IntAry, iaMany ...*IntAry) {
 
 	for _, iAry := range iaMany {
 
@@ -58,7 +57,6 @@ func (iaAdd IntAryMathAdd) Add(ia1, ia2 *IntAry) IntAry {
 
 	return ia3
 }
-
 
 // RunTotal- Adds to IntAry input parameters and returns the results
 // in the first parameter, 'ia'.
@@ -152,15 +150,14 @@ func (iaAdd IntAryMathAdd) RunTotal(ia, ia2 *IntAry) {
 	return
 }
 
-
 // addToSubtract - Adds or subtracts two IntAry instances
 // and returns the result in the first IntAry parameter.
 func (iaAdd *IntAryMathAdd) addToSubtract(
-					ia1, ia2 *IntAry,
-							newSignVal int,
-									doAdd bool,
-										isZeroResult bool,
-												doReverseNums bool) {
+	ia1, ia2 *IntAry,
+	newSignVal int,
+	doAdd bool,
+	isZeroResult bool,
+	doReverseNums bool) {
 
 	if isZeroResult {
 		ia1.SetIntAryToZero(ia1.GetPrecisionUint())
@@ -232,4 +229,3 @@ func (iaAdd *IntAryMathAdd) addToSubtract(
 
 	return
 }
-

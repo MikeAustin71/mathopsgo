@@ -131,7 +131,7 @@ func TestIntAry_MultiplyByTenToPower_03(t *testing.T) {
 	}
 
 	for i := 0; i < lEArray; i++ {
-		if element, _:= ia.GetIntAryElement(i); eIAry[i] != element {
+		if element, _ := ia.GetIntAryElement(i); eIAry[i] != element {
 
 			t.Errorf("Error: Expected intAry Array does NOT match ia IntAry element! index='%v'", i)
 			return
@@ -177,7 +177,7 @@ func TestIntAry_MultiplyByTenToPower_04(t *testing.T) {
 	}
 
 	for i := 0; i < lEArray; i++ {
-		if element, _:= ia.GetIntAryElement(i); eIAry[i] != element {
+		if element, _ := ia.GetIntAryElement(i); eIAry[i] != element {
 
 			t.Errorf("Error: Expected intAry Array does NOT match ia IntAry element! index='%v'", i)
 			return
@@ -222,7 +222,7 @@ func TestIntAry_MultiplyByTenToPower_05(t *testing.T) {
 	}
 
 	for i := 0; i < lEArray; i++ {
-		if element, _:= ia.GetIntAryElement(i); eIAry[i] != element {
+		if element, _ := ia.GetIntAryElement(i); eIAry[i] != element {
 
 			t.Errorf("Error: Expected intAry Array does NOT match ia IntAry element! index='%v' ", i)
 			return
@@ -267,7 +267,7 @@ func TestIntAry_MultiplyByTenToPower_06(t *testing.T) {
 	}
 
 	for i := 0; i < lEArray; i++ {
-		if element, _:= ia.GetIntAryElement(i); eIAry[i] != element {
+		if element, _ := ia.GetIntAryElement(i); eIAry[i] != element {
 
 			t.Errorf("Error: Expected intAry Array does NOT match ia IntAry element! index='%v' ", i)
 			return
@@ -317,7 +317,6 @@ func TestIntAry_MultiplyByTwoToPower_03(t *testing.T) {
 	}
 
 }
-
 
 func TestIntAry_MultiplyThisBy_01(t *testing.T) {
 
@@ -390,7 +389,7 @@ func TestIntAry_MultiplyThisBy_05(t *testing.T) {
 	expected := "830433.200958"
 	maxPrecision := 6
 
-	this.MultiplyThisBy(&ia2,maxPrecision, maxPrecision)
+	this.MultiplyThisBy(&ia2, maxPrecision, maxPrecision)
 
 	resultStr := this.GetNumStr()
 
@@ -403,7 +402,6 @@ func TestIntAry_MultiplyThisBy_05(t *testing.T) {
 	}
 
 }
-
 
 func TestIntAry_MultiplyThisBy_06(t *testing.T) {
 
@@ -458,12 +456,12 @@ func TestIntAry_MultiplyThisBy_08(t *testing.T) {
 	}
 
 	if thisStats.IntegerLen != 2 {
-		t.Errorf("Expected this this IntegerLen = 2 .  " +
+		t.Errorf("Expected this this IntegerLen = 2 .  "+
 			"Instead this IntegerLen= %v .", thisStats.IntegerLen)
 	}
 
 	if this.GetPrecision() != 0 {
-		t.Errorf("Expected this this.GetPrecision() = 0 .  " +
+		t.Errorf("Expected this this.GetPrecision() = 0 .  "+
 			"Instead this.GetPrecision= %v .", this.GetPrecision())
 	}
 }
@@ -497,7 +495,6 @@ func TestIntAry_MultiplyThisBy_09(t *testing.T) {
 	}
 
 }
-
 
 func TestIntAry_NewNumStr_01(t *testing.T) {
 	nStr1 := "579.123456000"
@@ -586,7 +583,7 @@ func TestIntAry_NewNumStrWithNumSeps_01(t *testing.T) {
 
 	if !expectedNumSeps.Equal(actualNumSeps) {
 		t.Errorf("Error: Expected NumSeps='%v'. Instead, NumSeps='%v'. ",
-			 expectedNumSeps.String(), actualNumSeps.String())
+			expectedNumSeps.String(), actualNumSeps.String())
 	}
 
 }
@@ -625,7 +622,7 @@ func TestIntAry_NewNumStrWithNumSeps_02(t *testing.T) {
 
 	if !expectedNumSeps.Equal(actualNumSeps) {
 		t.Errorf("Error: Expected NumSeps='%v'. Instead, NumSeps='%v'. ",
-			 expectedNumSeps.String(), actualNumSeps.String())
+			expectedNumSeps.String(), actualNumSeps.String())
 	}
 
 }
@@ -662,7 +659,7 @@ func TestIntAry_NewNumStrWithNumSeps_03(t *testing.T) {
 
 	if !expectedNumSeps.Equal(actualNumSeps) {
 		t.Errorf("Error: Expected NumSeps='%v'. Instead, NumSeps='%v'. ",
-			 expectedNumSeps.String(), actualNumSeps.String())
+			expectedNumSeps.String(), actualNumSeps.String())
 	}
 
 }
@@ -817,7 +814,6 @@ func TestIntAry_NewFloatBig_04(t *testing.T) {
 
 }
 
-
 func TestIntAry_NewFloat64_01(t *testing.T) {
 	num := float64(123.456111)
 	precision := 3
@@ -913,7 +909,6 @@ func TestIntAry_NewFloat32_02(t *testing.T) {
 		t.Errorf("Expected ia.GetSign() == %v  .   Instead ia.GetSign() == %v", eSignVal, ia.GetSign())
 	}
 }
-
 
 func TestIntAry_NewInt_01(t *testing.T) {
 	num := int(123456)
@@ -1201,7 +1196,6 @@ func TestIntAry_NewInt64_01(t *testing.T) {
 	eStr := "123.456"
 	eSignVal := 1
 
-
 	if eStr != ia.GetNumStr() {
 		t.Errorf("Expected ia.GetNumStr()== %v  .   Instead ia.GetNumStr() == %v", eStr, ia.GetNumStr())
 	}
@@ -1222,7 +1216,6 @@ func TestIntAry_NewInt64_02(t *testing.T) {
 	ia := IntAry{}.NewInt64(int64Num, precision)
 	eStr := "-123.456"
 	eSignVal := -1
-
 
 	if eStr != ia.GetNumStr() {
 		t.Errorf("Expected ia.GetNumStr()== %v  .   Instead ia.GetNumStr() == %v", eStr, ia.GetNumStr())
@@ -1245,7 +1238,6 @@ func TestIntAry_NewInt64_03(t *testing.T) {
 	eStr := "0.000"
 	eSignVal := 1
 
-
 	if eStr != ia.GetNumStr() {
 		t.Errorf("Expected ia.GetNumStr()== %v  .   Instead ia.GetNumStr() == %v", eStr, ia.GetNumStr())
 	}
@@ -1266,7 +1258,6 @@ func TestIntAry_NewInt64_04(t *testing.T) {
 	ia := IntAry{}.NewInt64(int64Num, precision)
 	eStr := "0"
 	eSignVal := 1
-
 
 	if eStr != ia.GetNumStr() {
 		t.Errorf("Expected ia.GetNumStr()== %v  .   Instead ia.GetNumStr() == %v", eStr, ia.GetNumStr())
@@ -1361,31 +1352,31 @@ func TestIntAry_NewInt64Exponent_06(t *testing.T) {
 }
 
 func TestIntAry_NewOne_01(t *testing.T) {
-	
+
 	expected := "1"
 	ePrecision := 0
-	
-	ia := IntAry{}.NewOne(ePrecision) 
+
+	ia := IntAry{}.NewOne(ePrecision)
 
 	if expected != ia.GetNumStr() {
 		t.Errorf("Error: Expected result='%v'. Instead, result='%v' ",
-			expected, ia.GetNumStr() )
+			expected, ia.GetNumStr())
 	}
-	
+
 }
 
 func TestIntAry_NewOne_02(t *testing.T) {
-	
+
 	expected := "1.00"
 	ePrecision := 2
-	
-	ia := IntAry{}.NewOne(ePrecision) 
+
+	ia := IntAry{}.NewOne(ePrecision)
 
 	if expected != ia.GetNumStr() {
 		t.Errorf("Error: Expected result='%v'. Instead, result='%v' ",
-			expected, ia.GetNumStr() )
+			expected, ia.GetNumStr())
 	}
-	
+
 }
 
 func TestIntAry_NewFive_01(t *testing.T) {
@@ -1397,7 +1388,7 @@ func TestIntAry_NewFive_01(t *testing.T) {
 
 	if expected != ia.GetNumStr() {
 		t.Errorf("Error: Expected result='%v'. Instead, result='%v' ",
-			expected, ia.GetNumStr() )
+			expected, ia.GetNumStr())
 	}
 
 }
@@ -1411,7 +1402,7 @@ func TestIntAry_NewFive_02(t *testing.T) {
 
 	if expected != ia.GetNumStr() {
 		t.Errorf("Error: Expected result='%v'. Instead, result='%v' ",
-			expected, ia.GetNumStr() )
+			expected, ia.GetNumStr())
 	}
 
 }
@@ -1425,7 +1416,7 @@ func TestIntAry_NewTen_01(t *testing.T) {
 
 	if expected != ia.GetNumStr() {
 		t.Errorf("Error: Expected result='%v'. Instead, result='%v' ",
-			expected, ia.GetNumStr() )
+			expected, ia.GetNumStr())
 	}
 
 }
@@ -1439,7 +1430,7 @@ func TestIntAry_NewTen_02(t *testing.T) {
 
 	if expected != ia.GetNumStr() {
 		t.Errorf("Error: Expected result='%v'. Instead, result='%v' ",
-			expected, ia.GetNumStr() )
+			expected, ia.GetNumStr())
 	}
 
 }
@@ -1453,7 +1444,7 @@ func TestIntAry_NewThree_01(t *testing.T) {
 
 	if expected != ia.GetNumStr() {
 		t.Errorf("Error: Expected result='%v'. Instead, result='%v' ",
-			expected, ia.GetNumStr() )
+			expected, ia.GetNumStr())
 	}
 
 }
@@ -1467,11 +1458,10 @@ func TestIntAry_NewThree_02(t *testing.T) {
 
 	if expected != ia.GetNumStr() {
 		t.Errorf("Error: Expected result='%v'. Instead, result='%v' ",
-			expected, ia.GetNumStr() )
+			expected, ia.GetNumStr())
 	}
 
 }
-
 
 func TestIntAry_NewTwo_01(t *testing.T) {
 
@@ -1482,7 +1472,7 @@ func TestIntAry_NewTwo_01(t *testing.T) {
 
 	if expected != ia.GetNumStr() {
 		t.Errorf("Error: Expected result='%v'. Instead, result='%v' ",
-			expected, ia.GetNumStr() )
+			expected, ia.GetNumStr())
 	}
 
 }
@@ -1496,7 +1486,7 @@ func TestIntAry_NewTwo_02(t *testing.T) {
 
 	if expected != ia.GetNumStr() {
 		t.Errorf("Error: Expected result='%v'. Instead, result='%v' ",
-			expected, ia.GetNumStr() )
+			expected, ia.GetNumStr())
 	}
 
 }
@@ -2057,5 +2047,3 @@ func TestIntAry_OptimizeIntArrayLen_06(t *testing.T) {
 	}
 
 }
-
-

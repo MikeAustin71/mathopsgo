@@ -43,7 +43,7 @@ import (
  ===========
  MikeAustin71\mathopsgo\mathops\intary.txt
 
- */
+*/
 
 // FracIntAry - A fraction represented by a numerator and a denominator.
 // Both numerator and denominator are of type intAry
@@ -62,15 +62,15 @@ func (fIa FracIntAry) NewBigInts(numerator, denominator *big.Int) (FracIntAry, e
 
 	if err != nil {
 		return FracIntAry{},
-		fmt.Errorf(ePrefix + "- Error returned by IntAry{}.NewBigInt(numerator, 0) " +
-			"Error='%v' ", err)
+			fmt.Errorf(ePrefix+"- Error returned by IntAry{}.NewBigInt(numerator, 0) "+
+				"Error='%v' ", err)
 	}
 
 	iaDenominator, err := IntAry{}.NewBigInt(denominator, 0)
 
 	if err != nil {
 		return FracIntAry{},
-			fmt.Errorf(ePrefix + "- Error returned by IntAry{}.NewBigInt(denominator, 0) " +
+			fmt.Errorf(ePrefix+"- Error returned by IntAry{}.NewBigInt(denominator, 0) "+
 				"Error='%v' ", err)
 	}
 
@@ -92,7 +92,7 @@ func (fIa FracIntAry) NewNumStrs(numerator, denominator string) (FracIntAry, err
 	fIa2.Numerator, err = IntAry{}.NewNumStr(numerator)
 
 	if err != nil {
-		return FracIntAry{}, fmt.Errorf(ePrefix +
+		return FracIntAry{}, fmt.Errorf(ePrefix+
 			"- Error returned from intAry{}.NewNumStr(numerator). Error= %v", err)
 	}
 
@@ -100,7 +100,7 @@ func (fIa FracIntAry) NewNumStrs(numerator, denominator string) (FracIntAry, err
 
 	if err != nil {
 		return FracIntAry{},
-			fmt.Errorf(ePrefix +
+			fmt.Errorf(ePrefix+
 				"- Error returned from intAry{}.NewNumStr(denominator). Error= %v", err)
 	}
 
@@ -118,7 +118,6 @@ func (fIa FracIntAry) NewIntArys(numerator, denominator *IntAry) FracIntAry {
 
 	return fIa2
 }
-
 
 // NewFracIntAry - Creates a FracIntAry instance from a single IntAry object.
 // The IntAry input parameter is converted into an equivalent fraction.
@@ -143,7 +142,7 @@ func (fIa FracIntAry) NewFracIntAry(ia *IntAry) FracIntAry {
 	}
 
 	fIa2.Denominator = IntAry{}.NewOne(0)
-	IntAryMathMultiply{}.MultiplyByTenToPower(&fIa2.Denominator, uint(precision) )
+	IntAryMathMultiply{}.MultiplyByTenToPower(&fIa2.Denominator, uint(precision))
 
 	return fIa2
 }
@@ -236,8 +235,8 @@ func (fIa *FracIntAry) GetLowestCommonDenom(maxPrecision int) (FracIntAry, error
 
 	if err != nil {
 		return FracIntAry{},
-		fmt.Errorf(ePrefix +
-			"Error returned by fIa.GetRationalValue(4096) ")
+			fmt.Errorf(ePrefix +
+				"Error returned by fIa.GetRationalValue(4096) ")
 	}
 
 	newFAry, err := fIa.NewBigInts(ratFrac.Num(), ratFrac.Denom())
@@ -247,7 +246,6 @@ func (fIa *FracIntAry) GetLowestCommonDenom(maxPrecision int) (FracIntAry, error
 			fmt.Errorf(ePrefix +
 				"Error returned by fIa.NewBigInts(ratFrac.Num(), ratFrac.Denom()) ")
 	}
-
 
 	return newFAry, nil
 }
@@ -268,8 +266,8 @@ func (fIa *FracIntAry) ReduceToLowestCommonDenom(maxPrecision int) error {
 
 	if err != nil {
 		ePrefix := "FracIntAry.ReduceToLowestCommonDenom() "
-		return fmt.Errorf(ePrefix +
-			"Error returned by fIa.GetLowestCommonDenom(maxPrecision). " +
+		return fmt.Errorf(ePrefix+
+			"Error returned by fIa.GetLowestCommonDenom(maxPrecision). "+
 			"Error='%v' ", err.Error())
 	}
 
@@ -293,9 +291,9 @@ type BackUpIntAry struct {
 	decimalSeparator       rune // https://docs.oracle.com/cd/E19455-01/806-0169/overview-9/index.html
 	thousandsSeparator     rune // https://docs.oracle.com/cd/E19455-01/806-0169/overview-9/index.html
 	currencySymbol         rune // See Currency Symbol References below:
-															// https://gist.github.com/bzerangue/5484121
-															// http://symbologic.info/currency.htm
-															// http://www.xe.com/symbols.php
+	// https://gist.github.com/bzerangue/5484121
+	// http://symbologic.info/currency.htm
+	// http://www.xe.com/symbols.php
 }
 
 func (iBa BackUpIntAry) New() BackUpIntAry {
@@ -414,7 +412,7 @@ func (iBa *BackUpIntAry) Equals(iBa2 *BackUpIntAry) bool {
 		iBa.signVal != iBa2.signVal ||
 		iBa.decimalSeparator != iBa2.decimalSeparator ||
 		iBa.thousandsSeparator != iBa2.thousandsSeparator ||
-		iBa.currencySymbol != iBa2.currencySymbol	{
+		iBa.currencySymbol != iBa2.currencySymbol {
 
 		return false
 	}
@@ -433,7 +431,7 @@ func (iBa *BackUpIntAry) GetIntAryStats() IntAryStatsDto {
 	iStats.SignificantIntegerLen = iBa.significantIntegerLen
 	iStats.SignificantFractionLen = iBa.significantFractionLen
 	iStats.Precision = iBa.precision
-	iStats.SignVal	= iBa.signVal
+	iStats.SignVal = iBa.signVal
 	iStats.FirstDigitIdx = iBa.firstDigitIdx
 	iStats.LastDigitIdx = iBa.lastDigitIdx
 	iStats.IsZeroValue = iBa.isZeroValue
@@ -462,14 +460,14 @@ func (iBa *BackUpIntAry) GetNumStr() string {
 
 	intLen := iBa.intAryLen - iBa.precision
 
-	for i:=0 ; i < intLen; i++ {
+	for i := 0; i < intLen; i++ {
 		buffer.WriteRune(rune(iBa.intAry[i] + 48))
 	}
 
 	if iBa.precision > 0 {
 		buffer.WriteRune(iBa.decimalSeparator)
 
-		for j:= 0; j < iBa.precision; j++ {
+		for j := 0; j < iBa.precision; j++ {
 			buffer.WriteRune(rune(iBa.intAry[intLen] + 48))
 			intLen++
 		}
@@ -484,12 +482,9 @@ func (iBa *BackUpIntAry) GetPrecision() int {
 	return iBa.precision
 }
 
-
 func (iBa *BackUpIntAry) GetSignValue() int {
 	return iBa.signVal
 }
-
-
 
 func (iBa *BackUpIntAry) SetInternalFlags() {
 
@@ -646,7 +641,7 @@ func (ia *IntAry) AddToThis(ia2 *IntAry) error {
 //  -946254  			   3					      -946.254
 //  -946254				   0						    -946254
 //
-func (ia *IntAry) AddIntToThis(num int, precision uint)  {
+func (ia *IntAry) AddIntToThis(num int, precision uint) {
 
 	ia2 := IntAry{}.NewInt(num, precision)
 
@@ -739,7 +734,7 @@ func (ia *IntAry) AddBigIntNumToThis(bINum BigIntNum) error {
 
 	if err != nil {
 		ePrefix := "IntAry.AddBigIntNumToThis() "
-		return fmt.Errorf(ePrefix + "Error returned by IntAry{}.NewBigIntNum(bINum). " +
+		return fmt.Errorf(ePrefix+"Error returned by IntAry{}.NewBigIntNum(bINum). "+
 			"Error='%v'", err.Error())
 	}
 
@@ -867,7 +862,6 @@ func (ia *IntAry) AddFloatBigToThis(num *big.Float, precision int) error {
 		return fmt.Errorf("AddFloatBigToThis() Error: Input parameter 'precision' is invalid. 'precision' must be greater than or equal to -1. 'precision'= '%v'", precision)
 	}
 
-
 	ia2, err := IntAry{}.NewFloatBig(num, precision)
 
 	if err != nil {
@@ -932,13 +926,12 @@ func (ia *IntAry) AddArrayLengthRight(addLen int) {
 	ia.SetIntAryLength()
 }
 
-
 // AppendToIntAry - appends an integer of
 // type uint8 to the internal Integer Array
 // of the current IntAry object.
 func (ia *IntAry) AppendToIntAry(num uint8) {
 	ia.intAry = append(ia.intAry, num)
-	ia.intAryLen  = len(ia.intAry)
+	ia.intAryLen = len(ia.intAry)
 	ia.integerLen = ia.intAryLen - ia.precision
 	if num > 0 {
 		ia.isZeroValue = false
@@ -1028,10 +1021,10 @@ func (ia *IntAry) Ceiling() (IntAry, error) {
 
 		} else {
 
-			if int(n1) + carry < 0 {
+			if int(n1)+carry < 0 {
 				n2 = 10 + n1
 				carry = -1
-			} else if int(n1) + carry > 9 {
+			} else if int(n1)+carry > 9 {
 				n2 = n1 - 10
 				carry = 1
 			} else {
@@ -1300,7 +1293,6 @@ func (ia *IntAry) CompareAbsoluteValues(iAry2 *IntAry) int {
 
 }
 
-
 func (ia *IntAry) CopyIn(iAry2 *IntAry, copyBackUp bool) {
 	iAry2.SetInternalFlags()
 	ia.Empty()
@@ -1394,6 +1386,7 @@ func (ia *IntAry) CopyOutNoBackup() IntAry {
 
 	return iAry2
 }
+
 // CopyOut - Makes a deep copy of the current IntAry
 // instance with NO backup. This method uses input
 // parameter 'digitsToCopy' to copy a specified
@@ -1484,7 +1477,7 @@ func (ia *IntAry) DecrementIntegerOne() error {
 	intIdx := intLen - 1
 	lastIdx := ia.intAryLen - 1
 
-	n1 :=0
+	n1 := 0
 	n2 := 0
 	carry := 0
 
@@ -1524,7 +1517,7 @@ func (ia *IntAry) DecrementIntegerOne() error {
 		} else {
 			// Must be i < intIdx
 
-			n2 = n1 + ( (ia.signVal * carry) * -1)
+			n2 = n1 + ((ia.signVal * carry) * -1)
 
 			if n2 < 0 {
 				n2 = n1 + 10 - carry
@@ -1588,10 +1581,10 @@ func (ia *IntAry) DivideByInt64(divisor int64, maxPrecision int) error {
 
 	err := IntAryMathDivide{}.DivideByInt64(ia, divisor, maxPrecision)
 
-	if err !=nil {
+	if err != nil {
 		ePrefix := "IntAry.DivideByInt64() "
-		return fmt.Errorf(ePrefix +
-			"Error returned by IntAryMathDivide{}.DivideByInt64() " +
+		return fmt.Errorf(ePrefix+
+			"Error returned by IntAryMathDivide{}.DivideByInt64() "+
 			"Error='%v' \n", err.Error())
 	}
 
@@ -1625,14 +1618,14 @@ func (ia *IntAry) DivideByTenToPower(exponent uint) {
 // 'minPrecision' specifies the minimum precision of the final result.
 // If 'minPrecision' is less than zero, it is automatically set to zero.
 //
-func (ia *IntAry) DivideThisBy(iAry2 *IntAry, minPrecision,  maxPrecision int) (IntAry, error) {
+func (ia *IntAry) DivideThisBy(iAry2 *IntAry, minPrecision, maxPrecision int) (IntAry, error) {
 
 	quotient, err := IntAryMathDivide{}.Divide(ia, iAry2, minPrecision, maxPrecision)
 
 	if err != nil {
 		ePrefix := "IntAry.DivideThisBy() "
 		return IntAry{}.NewZero(0),
-			fmt.Errorf(ePrefix + "Error='%v'\n", err.Error())
+			fmt.Errorf(ePrefix+"Error='%v'\n", err.Error())
 	}
 
 	return quotient, nil
@@ -1851,10 +1844,10 @@ func (ia *IntAry) GetBigInt() (*big.Int, error) {
 
 	err := ia.IsValid("")
 
-	if err!=nil {
+	if err != nil {
 		return big.NewInt(0),
-		fmt.Errorf(ePrefix + "Error returned by ia.IsValid(). Error='%v'",
-			err.Error())
+			fmt.Errorf(ePrefix+"Error returned by ia.IsValid(). Error='%v'",
+				err.Error())
 	}
 
 	result := big.NewInt(0).SetInt64(0)
@@ -1889,7 +1882,7 @@ func (ia *IntAry) GetBigIntNum() (BigIntNum, error) {
 
 	if err != nil {
 		return BigIntNum{},
-			fmt.Errorf(ePrefix + "Error returned by ia.IsValid(). " +
+			fmt.Errorf(ePrefix+"Error returned by ia.IsValid(). "+
 				"Error='%v' ", err.Error())
 	}
 
@@ -1899,8 +1892,8 @@ func (ia *IntAry) GetBigIntNum() (BigIntNum, error) {
 
 	if err != nil {
 		return BigIntNum{},
-			fmt.Errorf(ePrefix +
-				"Error returned by ia.GetBigInt(). " +
+			fmt.Errorf(ePrefix+
+				"Error returned by ia.GetBigInt(). "+
 				"Error='%v' ", err.Error())
 	}
 
@@ -1910,8 +1903,8 @@ func (ia *IntAry) GetBigIntNum() (BigIntNum, error) {
 
 	if err != nil {
 		return BigIntNum{},
-			fmt.Errorf(ePrefix +
-				"Error returned by bIntNum.SetNumericSeparatorsDto(numSeps). " +
+			fmt.Errorf(ePrefix+
+				"Error returned by bIntNum.SetNumericSeparatorsDto(numSeps). "+
 				"Error='%v' ", err.Error())
 	}
 
@@ -1952,9 +1945,9 @@ func (ia *IntAry) GetDecimal() (Decimal, error) {
 
 	if err != nil {
 		return Decimal{}.NewZero(0),
-		fmt.Errorf(ePrefix +
-			"Error returned by Decimal{}.NewNumStrWithNumSeps(ia.GetNumStr(), numSeps)) " +
-			"ia.GetNumStr()='%v' Error='%v'",
+			fmt.Errorf(ePrefix+
+				"Error returned by Decimal{}.NewNumStrWithNumSeps(ia.GetNumStr(), numSeps)) "+
+				"ia.GetNumStr()='%v' Error='%v'",
 				ia.GetNumStr(), err.Error())
 	}
 
@@ -2082,7 +2075,7 @@ func (ia *IntAry) GetInt() (int, error) {
 
 	if err != nil {
 		return 0,
-			fmt.Errorf(ePrefix + "Error returned by ia.IsValid(). " +
+			fmt.Errorf(ePrefix+"Error returned by ia.IsValid(). "+
 				"Error='%v' ", err.Error())
 	}
 
@@ -2096,16 +2089,16 @@ func (ia *IntAry) GetInt() (int, error) {
 
 	if compare == 1 {
 		return int(0),
-		errors.New(ePrefix + "Error: the value of this intAry object " +
-			"exceeds the maximum allowable value for the int type")
+			errors.New(ePrefix + "Error: the value of this intAry object " +
+				"exceeds the maximum allowable value for the int type")
 	}
 
 	compare = result.Cmp(minInt)
 
 	if compare == -1 {
 		return int(0),
-		errors.New(ePrefix +
-			"Error: the value of this intAry object is less " +
+			errors.New(ePrefix +
+				"Error: the value of this intAry object is less " +
 				"than the minimum allowable value for the int type")
 
 	}
@@ -2132,8 +2125,8 @@ func (ia *IntAry) GetInt64() (int64, error) {
 
 	if err != nil {
 		return int64(0),
-		fmt.Errorf(ePrefix + "Error returned by ia.IsValid() " +
-			"Error='%v' ", err.Error())
+			fmt.Errorf(ePrefix+"Error returned by ia.IsValid() "+
+				"Error='%v' ", err.Error())
 	}
 
 	maxI64 := big.NewInt(0).SetInt64(math.MaxInt64)
@@ -2157,7 +2150,6 @@ func (ia *IntAry) GetInt64() (int64, error) {
 	return result.Int64(), nil
 }
 
-
 // GetIntAryElement - Returns an element of the
 // internal integer array maintained by the
 // current IntAry object.
@@ -2174,11 +2166,10 @@ func (ia *IntAry) GetInt64() (int64, error) {
 //								integer array at the specified index.
 func (ia *IntAry) GetIntAryElement(index int) (uint8, error) {
 
-
-	if index < 0 || index > (ia.intAryLen - 1) {
+	if index < 0 || index > (ia.intAryLen-1) {
 		return 0,
-		fmt.Errorf("Error: GetIntAryElement(index int) - Index is INVALID! index Out Of Array Bounds! " +
-			"index= '%v'", index)
+			fmt.Errorf("Error: GetIntAryElement(index int) - Index is INVALID! index Out Of Array Bounds! "+
+				"index= '%v'", index)
 	}
 
 	result := ia.intAry[index]
@@ -2186,7 +2177,6 @@ func (ia *IntAry) GetIntAryElement(index int) (uint8, error) {
 	return result, nil
 
 }
-
 
 // GetIntAryInt - Returns an element of the
 // internal integer array maintained by the
@@ -2205,15 +2195,14 @@ func (ia *IntAry) GetIntAryElement(index int) (uint8, error) {
 //								integer array at the specified index.
 func (ia *IntAry) GetIntAryInt(index int) (int, error) {
 
-	if index < 0 || index > (ia.intAryLen - 1) {
+	if index < 0 || index > (ia.intAryLen-1) {
 		return 0,
-		fmt.Errorf("Error: GetIntAryInt(index int) - Index is INVALID! index Out Of Array Bounds! " +
+			fmt.Errorf("Error: GetIntAryInt(index int) - Index is INVALID! index Out Of Array Bounds! "+
 				"index= '%v'", index)
 	}
 
 	return int(ia.intAry[index]), nil
 }
-
 
 // GetIntAryRune - Returns an element of the
 // internal integer array maintained by the
@@ -2233,10 +2222,10 @@ func (ia *IntAry) GetIntAryInt(index int) (int, error) {
 //
 func (ia *IntAry) GetIntAryRune(index int) (rune, error) {
 
-	if index < 0 || index > (ia.intAryLen - 1) {
+	if index < 0 || index > (ia.intAryLen-1) {
 		return 0,
-		fmt.Errorf("Error: GetIntAryRune(index int) - Index is INVALID! index Out Of Array Bounds! " +
-			"index= '%v'", index)
+			fmt.Errorf("Error: GetIntAryRune(index int) - Index is INVALID! index Out Of Array Bounds! "+
+				"index= '%v'", index)
 	}
 
 	return rune(ia.intAry[index] + 48), nil
@@ -2324,7 +2313,7 @@ func (ia *IntAry) GetIntAryDeepCopy() ([]uint8, int) {
 	ia.SetInternalFlags()
 	ary := make([]uint8, ia.intAryLen)
 
-	for i:= 0; i < ia.intAryLen; i++ {
+	for i := 0; i < ia.intAryLen; i++ {
 		ary[i] = ia.intAry[i]
 	}
 
@@ -2401,7 +2390,7 @@ func (ia *IntAry) GetIntAryStats() IntAryStatsDto {
 	iStats.SignificantFractionLen = ia.significantFractionLen
 	iStats.Precision = ia.precision
 	iStats.SignVal = ia.signVal
-	iStats.FirstDigitIdx =  ia.firstDigitIdx
+	iStats.FirstDigitIdx = ia.firstDigitIdx
 	iStats.LastDigitIdx = ia.lastDigitIdx
 	iStats.IsZeroValue = ia.isZeroValue
 	iStats.IsIntegerZeroValue = ia.isIntegerZeroValue
@@ -2433,7 +2422,7 @@ func (ia *IntAry) GetMagnitude() (int, error) {
 	ia.SetInternalFlags()
 
 	if ia.signVal == -1 {
-		return -1, fmt.Errorf("IntAry.GetMagnitude() Error: current IntAry value is negative! " +
+		return -1, fmt.Errorf("IntAry.GetMagnitude() Error: current IntAry value is negative! "+
 			"value='%v' ", ia.GetNumStr())
 	}
 
@@ -2482,14 +2471,14 @@ func (ia *IntAry) GetNumStr() string {
 
 	intLen := ia.intAryLen - ia.precision
 
-	for i:=0 ; i < intLen; i++ {
+	for i := 0; i < intLen; i++ {
 		buffer.WriteRune(rune(ia.intAry[i] + 48))
 	}
 
 	if ia.precision > 0 {
 		buffer.WriteRune(ia.decimalSeparator)
 
-		for j:= 0; j < ia.precision; j++ {
+		for j := 0; j < ia.precision; j++ {
 			buffer.WriteRune(rune(ia.intAry[intLen] + 48))
 			intLen++
 		}
@@ -2527,7 +2516,7 @@ func (ia *IntAry) GetNumStrDto() (NumStrDto, error) {
 
 	if err != nil {
 		return NumStrDto{},
-			fmt.Errorf(ePrefix + "Error returned by NewNumStr(ia.GetNumStr()) " +
+			fmt.Errorf(ePrefix+"Error returned by NewNumStr(ia.GetNumStr()) "+
 				"Error='%v'", err.Error())
 	}
 
@@ -2613,7 +2602,7 @@ func (ia *IntAry) GetRuneArray() []rune {
 
 	outRunes := make([]rune, aLen)
 
-	for i:= 0; i < aLen; i++ {
+	for i := 0; i < aLen; i++ {
 		outRunes[i] = rune(ia.intAry[i] + 48)
 	}
 
@@ -2691,13 +2680,13 @@ func (ia *IntAry) GetSciNotationNumber(mantissaLen uint) (SciNotationNum, error)
 	if ia.isZeroValue {
 
 		err = sciNotationNum.SetBigIntNumElements(
-						BigIntNum{}.NewZero(mantissaLen), BigIntNum{}.NewZero(0) )
+			BigIntNum{}.NewZero(mantissaLen), BigIntNum{}.NewZero(0))
 
 		if err != nil {
 			return SciNotationNum{}.New(),
-			fmt.Errorf(ePrefix +
-				"Error returned by sciNotationNum.SetBigIntNumElements(...). "+
-				"Error='%v'", err.Error())
+				fmt.Errorf(ePrefix+
+					"Error returned by sciNotationNum.SetBigIntNumElements(...). "+
+					"Error='%v'", err.Error())
 		}
 
 		return sciNotationNum, nil
@@ -2717,7 +2706,7 @@ func (ia *IntAry) GetSciNotationNumber(mantissaLen uint) (SciNotationNum, error)
 			iaNew.SetPrecision(50000, true)
 		}
 
-		sciNotationNum.SetIntAryElements(iaNew, iaMagnitude )
+		sciNotationNum.SetIntAryElements(iaNew, iaMagnitude)
 
 	} else {
 		// Must be number with zero integers and fractional digits.
@@ -2733,7 +2722,7 @@ func (ia *IntAry) GetSciNotationNumber(mantissaLen uint) (SciNotationNum, error)
 
 		if err != nil {
 			return SciNotationNum{}.New(),
-				fmt.Errorf(ePrefix +
+				fmt.Errorf(ePrefix+
 					"Error returned by IntAry{}.NewInt(intMagnitudeFrac, 0). "+
 					"Error='%v'", err.Error())
 		}
@@ -2744,12 +2733,12 @@ func (ia *IntAry) GetSciNotationNumber(mantissaLen uint) (SciNotationNum, error)
 
 		iaMagnitude := IntAry{}.NewInt(intMagnitudeFrac, 0)
 
-		err = sciNotationNum.SetIntAryElements(iaFracPart, iaMagnitude )
+		err = sciNotationNum.SetIntAryElements(iaFracPart, iaMagnitude)
 
 		if err != nil {
 			return SciNotationNum{}.New(),
-				fmt.Errorf(ePrefix +
-					"Error returned by sciNotationNum.SetIntAryElements(" +
+				fmt.Errorf(ePrefix+
+					"Error returned by sciNotationNum.SetIntAryElements("+
 					"iaFracPart, iaMagnitude ). Error='%v'",
 					err.Error())
 		}
@@ -2760,7 +2749,6 @@ func (ia *IntAry) GetSciNotationNumber(mantissaLen uint) (SciNotationNum, error)
 
 	return sciNotationNum, nil
 }
-
 
 // GetSciNotationStr - Returns a string expressing the current IntAry
 // numerical value as scientific notation.
@@ -2807,7 +2795,6 @@ func (ia *IntAry) GetSciNotationStr(mantissaLen uint) (string, error) {
 		return "",
 			fmt.Errorf(ePrefix + "Error returned by sciNotnNum.GetSciNotationStr(mantissaLen) ")
 	}
-
 
 	return result, nil
 }
@@ -3010,16 +2997,15 @@ func (ia *IntAry) IsValid(errName string) error {
 		return fmt.Errorf("%v precision Value is INVALID! sign Value= '%v'\n", errName, ia.precision)
 	}
 
-
 	if ia.precision >= ia.intAryLen {
-		return fmt.Errorf("%v error: precision is greater than or equal to IntArray length " +
+		return fmt.Errorf("%v error: precision is greater than or equal to IntArray length "+
 			"- ia.precision= %v  ia.intAryLen= %v \n", errName, ia.precision, ia.intAryLen)
 
 	}
 
 	if ia.integerLen == 0 {
 		return fmt.Errorf("%v error: integer length is zero - missing leading integer zero\n",
-							errName)
+			errName)
 	}
 
 	return nil
@@ -3051,7 +3037,6 @@ func (ia *IntAry) IsEvenNumber() bool {
 
 	return true
 }
-
 
 // IsOne - Returns 'true' if the value of the current
 // IntAry is minus one (-1).
@@ -3118,7 +3103,6 @@ func (ia *IntAry) IsZero() bool {
 	if err != nil {
 		return true
 	}
-
 
 	return ia.isZeroValue
 
@@ -3332,8 +3316,8 @@ func (ia IntAry) NewBigInt(num *big.Int, precision int) (IntAry, error) {
 
 	if precision < 0 {
 		return IntAry{},
-		fmt.Errorf(ePrefix + "Error: Input parameter 'precision' is a negative value! " +
-			"precision='%v' ", precision)
+			fmt.Errorf(ePrefix+"Error: Input parameter 'precision' is a negative value! "+
+				"precision='%v' ", precision)
 	}
 
 	iAry := IntAry{}.New()
@@ -3367,17 +3351,17 @@ func (ia IntAry) NewBigIntNum(bINum BigIntNum) (IntAry, error) {
 
 	if bINum.precision > uint(math.MaxInt32) {
 		return iAry,
-			fmt.Errorf(ePrefix + "Error: Input parameter bINum has a 'precision' value " +
+			fmt.Errorf(ePrefix+"Error: Input parameter bINum has a 'precision' value "+
 				"which exceeds the MaxInt32 Value. MaxInt32='%v' bINum.precision='%v' ",
-					math.MinInt32, bINum.precision)
+				math.MinInt32, bINum.precision)
 	}
 
 	err := iAry.SetIntAryWithBigIntNum(bINum)
 
 	if err != nil {
 		return IntAry{},
-		fmt.Errorf(ePrefix + "Error returned by iAry.SetIntAryWithBigIntNum(bINum). " +
-			"bINum='%v' Error='%v'",
+			fmt.Errorf(ePrefix+"Error returned by iAry.SetIntAryWithBigIntNum(bINum). "+
+				"bINum='%v' Error='%v'",
 				bINum.GetNumStr(), err.Error())
 	}
 
@@ -3398,7 +3382,6 @@ func (ia IntAry) NewFive(precision int) IntAry {
 
 	return ia1
 }
-
 
 // NewFloat32 - Creates a new intAry object initialized
 // to the value of input parameter 'num' which is passed
@@ -3429,7 +3412,6 @@ func (ia IntAry) NewFloat32(num float32, precision int) (IntAry, error) {
 	if precision < -1 {
 		return iAry, fmt.Errorf("NewFloat32() Error: 'precision' INVALID. 'precision' must be greater than or equal to -1. precision='%v'", precision)
 	}
-
 
 	err := iAry.SetIntAryWithFloat32(num, precision)
 
@@ -3469,7 +3451,6 @@ func (ia IntAry) NewFloat64(num float64, precision int) (IntAry, error) {
 		return iAry, fmt.Errorf("NewFloat64() Error: 'precision' INVALID. 'precision' must be greater than or equal to -1. precision='%v'", precision)
 	}
 
-
 	err := iAry.SetIntAryWithFloat64(num, precision)
 
 	if err != nil {
@@ -3478,7 +3459,6 @@ func (ia IntAry) NewFloat64(num float64, precision int) (IntAry, error) {
 
 	return iAry, nil
 }
-
 
 // NewFloatBig - Creates a new intAry object initialized
 // to the value of input parameter 'num' which is passed
@@ -3555,7 +3535,7 @@ func (ia IntAry) NewInt(intNum int, precision uint) IntAry {
 	iAry := IntAry{}.New()
 	iAry.SetIntAryWithInt(intNum, precision)
 	iAry.SetNumericSeparatorsDto(ia.GetNumericSeparatorsDto())
-	
+
 	return iAry
 }
 
@@ -3591,7 +3571,7 @@ func (ia IntAry) NewInt(intNum int, precision uint) IntAry {
 func (ia IntAry) NewIntExponent(intNum int, exponent int) IntAry {
 
 	if exponent > 0 {
-		for i:= 0; i < exponent; i++ {
+		for i := 0; i < exponent; i++ {
 			intNum *= 10
 		}
 	}
@@ -3641,7 +3621,7 @@ func (ia IntAry) NewInt32(int32Num int32, precision uint) IntAry {
 	iAry := IntAry{}.New()
 	iAry.SetIntAryWithInt32(int32Num, precision)
 	iAry.SetNumericSeparatorsDto(ia.GetNumericSeparatorsDto())
-	
+
 	return iAry
 
 }
@@ -3678,7 +3658,7 @@ func (ia IntAry) NewInt32(int32Num int32, precision uint) IntAry {
 func (ia IntAry) NewInt32Exponent(int32Num int32, exponent int) IntAry {
 
 	if exponent > 0 {
-		for i:= 0; i < exponent; i++ {
+		for i := 0; i < exponent; i++ {
 			int32Num *= 10
 		}
 	}
@@ -3765,7 +3745,7 @@ func (ia IntAry) NewInt64(int64Num int64, precision uint) IntAry {
 func (ia IntAry) NewInt64Exponent(int64Num int64, exponent int) IntAry {
 
 	if exponent > 0 {
-		for i:= 0; i < exponent; i++ {
+		for i := 0; i < exponent; i++ {
 			int64Num *= 10
 		}
 	}
@@ -3806,8 +3786,8 @@ func (ia IntAry) NewIntFracStr(intStr, fracStr string, signVal int) (IntAry, err
 		ePrefix := "IntAry.NewIntFracStr() "
 
 		return IntAry{}.NewZero(0),
-		fmt.Errorf(ePrefix + "Error returned by ia2.SetIntAryWithIntFracStr(intStr, fracStr, signVal) " +
-			"Error='%v' ", err.Error())
+			fmt.Errorf(ePrefix+"Error returned by ia2.SetIntAryWithIntFracStr(intStr, fracStr, signVal) "+
+				"Error='%v' ", err.Error())
 	}
 
 	return ia2, nil
@@ -3831,17 +3811,15 @@ func (ia IntAry) NewIntFracStr(intStr, fracStr string, signVal int) (IntAry, err
 //
 func (ia IntAry) NewNumStr(numStr string) (IntAry, error) {
 
-
 	iAry := IntAry{}.New()
 	err := iAry.SetIntAryWithNumStr(numStr)
 
 	if err != nil {
 		return IntAry{},
-		fmt.Errorf("IntAry.NewNumStr() Error returned by  " +
-			"iAry.SetIntAryWithNumStr(numStr). numStr='%v', Error='%v' ",
-			numStr, err.Error())
+			fmt.Errorf("IntAry.NewNumStr() Error returned by  "+
+				"iAry.SetIntAryWithNumStr(numStr). numStr='%v', Error='%v' ",
+				numStr, err.Error())
 	}
-
 
 	return iAry, nil
 
@@ -3856,10 +3834,10 @@ func (ia IntAry) NewNumStr(numStr string) (IntAry, error) {
 // will be copied to the returned IntAry instance.
 //
 func (ia IntAry) NewNumStrWithNumSeps(
-										numStr string,
-											numSeps NumericSeparatorDto) (IntAry, error) {
+	numStr string,
+	numSeps NumericSeparatorDto) (IntAry, error) {
 
-	ePrefix :=  "IntAry.NewNumStrWithNumSeps() "
+	ePrefix := "IntAry.NewNumStrWithNumSeps() "
 
 	iAry := IntAry{}.New()
 
@@ -3869,8 +3847,8 @@ func (ia IntAry) NewNumStrWithNumSeps(
 
 	if err != nil {
 		return IntAry{},
-			fmt.Errorf(ePrefix +
-				"Error returned by  Ary.SetIntAryWithNumStr(numStr). " +
+			fmt.Errorf(ePrefix+
+				"Error returned by  Ary.SetIntAryWithNumStr(numStr). "+
 				"Error='%v' ", err.Error())
 	}
 
@@ -3878,8 +3856,8 @@ func (ia IntAry) NewNumStrWithNumSeps(
 
 	if err != nil {
 		return IntAry{},
-			fmt.Errorf(ePrefix +
-				"Error returned by iAry.SetIntAryWithNumStr(numStr). " +
+			fmt.Errorf(ePrefix+
+				"Error returned by iAry.SetIntAryWithNumStr(numStr). "+
 				"numStr='%v', Error='%v' ", numStr, err.Error())
 	}
 
@@ -3903,9 +3881,9 @@ func (ia IntAry) NewNumStrMaxPrecision(num string, maxPrecision int) (IntAry, er
 
 	if err != nil {
 		return IntAry{},
-		fmt.Errorf("IntAry.NewNumStr() Error returned by  " +
-			"iAry.SetIntAryWithNumStrMaxPrecision(num). num='%v', Error='%v' ",
-			num, err.Error())
+			fmt.Errorf("IntAry.NewNumStr() Error returned by  "+
+				"iAry.SetIntAryWithNumStrMaxPrecision(num). num='%v', Error='%v' ",
+				num, err.Error())
 	}
 
 	return iAry, nil
@@ -3921,9 +3899,9 @@ func (ia IntAry) NewNumStrDto(numDto NumStrDto) (IntAry, error) {
 
 	if err != nil {
 		return IntAry{},
-		fmt.Errorf(ePrefix +
-			"Error returned by IsValid(ePrefix). " +
-			"Error='%v' ", err.Error())
+			fmt.Errorf(ePrefix+
+				"Error returned by IsValid(ePrefix). "+
+				"Error='%v' ", err.Error())
 	}
 
 	iAry := IntAry{}.New()
@@ -3932,8 +3910,8 @@ func (ia IntAry) NewNumStrDto(numDto NumStrDto) (IntAry, error) {
 
 	if err != nil {
 		return IntAry{},
-			fmt.Errorf("IntAry.NewNumStr() Error returned by  " +
-				"iAry.SetIntAryWithNumStr(numDto.NumStrOut). " +
+			fmt.Errorf("IntAry.NewNumStr() Error returned by  "+
+				"iAry.SetIntAryWithNumStr(numDto.NumStrOut). "+
 				"numDto.NumStrOut='%v', Error='%v' ",
 				numDto.GetNumStr(), err.Error())
 	}
@@ -3977,7 +3955,6 @@ func (ia IntAry) NewTen(precision int) IntAry {
 
 	return ia1
 }
-
 
 // NewThree - Creates a new IntAry instance with a
 // value of '3'.
@@ -4082,7 +4059,7 @@ func (ia IntAry) NewUintExponent(uintNum uint, exponent int) IntAry {
 	uintTen := uint(10)
 
 	if exponent > 0 {
-		for i:= 0; i < exponent; i++ {
+		for i := 0; i < exponent; i++ {
 			uintNum *= uintTen
 		}
 	}
@@ -4171,7 +4148,7 @@ func (ia IntAry) NewUint32Exponent(uint32Num uint32, exponent int) IntAry {
 	uint32Ten := uint32(10)
 
 	if exponent > 0 {
-		for i:= 0; i < exponent; i++ {
+		for i := 0; i < exponent; i++ {
 			uint32Num *= uint32Ten
 		}
 	}
@@ -4260,7 +4237,7 @@ func (ia IntAry) NewUint64Exponent(uint64Num uint64, exponent int) IntAry {
 	uint64Ten := uint64(10)
 
 	if exponent > 0 {
-		for i:= 0; i < exponent; i++ {
+		for i := 0; i < exponent; i++ {
 			uint64Num *= uint64Ten
 		}
 	}
@@ -4327,7 +4304,7 @@ func (ia *IntAry) OptimizeIntArrayLen(optimizeFracDigits bool) {
 
 	if optimizeFracDigits {
 
-		ia.intAry = ia.intAry[ia.firstDigitIdx: ia.lastDigitIdx+1]
+		ia.intAry = ia.intAry[ia.firstDigitIdx : ia.lastDigitIdx+1]
 		ia.intAryLen = ia.lastDigitIdx - ia.firstDigitIdx + 1
 	} else {
 		ia.intAry = ia.intAry[ia.firstDigitIdx:]
@@ -4380,16 +4357,16 @@ func (ia *IntAry) Pow(power, maxResultPrecision, internalPrecision int) error {
 	ePrefix := "IntAry.PowInt() "
 
 	/*
-	pwr := big.NewInt(int64(power))
-	return ia.pwrByTwos(pwr, maxResultPrecision, internalPrecision)
+		pwr := big.NewInt(int64(power))
+		return ia.pwrByTwos(pwr, maxResultPrecision, internalPrecision)
 	*/
 	iaPower := IntAry{}.NewInt(power, 0)
 
-	err := IntAryMathPower{}.Pwr(ia, &iaPower, 0, maxResultPrecision )
+	err := IntAryMathPower{}.Pwr(ia, &iaPower, 0, maxResultPrecision)
 
 	if err != nil {
-		return fmt.Errorf(ePrefix +
-			"Error returned by IntAryMathPower{}.Pwr(). " +
+		return fmt.Errorf(ePrefix+
+			"Error returned by IntAryMathPower{}.Pwr(). "+
 			"Error='%v' ", err.Error())
 	}
 
@@ -4399,11 +4376,10 @@ func (ia *IntAry) Pow(power, maxResultPrecision, internalPrecision int) error {
 // PowThisSquared - Raises the value of the current intAry object
 // to a power of '2'.  Essentially the new value of this intAry object
 // is equal to the original value squared.
-func (ia *IntAry)PowThisSquared() error {
+func (ia *IntAry) PowThisSquared() error {
 
 	return ia.MultiplyThisBy(ia, ia.GetPrecision(), -1)
 }
-
 
 // PowByTwos - Raises the value of the current intAry to the power indicated by the parameter,
 // 'power'.
@@ -4441,10 +4417,8 @@ func (ia *IntAry)PowThisSquared() error {
 //
 func (ia *IntAry) PowByTwos(power *big.Int, maxResultPrecision, internalPrecision int) error {
 
-
 	return ia.pwrByTwos(power, maxResultPrecision, internalPrecision)
 }
-
 
 // pwrByTwos - Raises a *big.Int 'base', to the specified 'power'
 // using the Exponentiation by squaring algorithm.
@@ -4486,7 +4460,7 @@ func (ia *IntAry) PowByTwos(power *big.Int, maxResultPrecision, internalPrecisio
 //				the number of decimals places to right of the decimal
 //				point during internal multiplication operations.
 //
-func (ia *IntAry) pwrByTwos(power *big.Int, maxResultPrecision, internalPrecision int ) error {
+func (ia *IntAry) pwrByTwos(power *big.Int, maxResultPrecision, internalPrecision int) error {
 
 	if maxResultPrecision < -1 {
 		return fmt.Errorf("Error: Parameter maxResultPrecision is less than -1. maxResultPrecision= %v", maxResultPrecision)
@@ -4495,7 +4469,6 @@ func (ia *IntAry) pwrByTwos(power *big.Int, maxResultPrecision, internalPrecisio
 	if internalPrecision < -1 {
 		return fmt.Errorf("Error: Parameter internalPrecision is less than -1. internalPrecision= %v", internalPrecision)
 	}
-
 
 	ia.SetInternalFlags()
 	tPower := big.NewInt(0).Set(power)
@@ -4557,13 +4530,11 @@ func (ia *IntAry) pwrByTwos(power *big.Int, maxResultPrecision, internalPrecisio
 			}
 		}
 
-
-		err:= tBase.MultiplyThisBy(&tBase, -1,  internalPrecision)
+		err := tBase.MultiplyThisBy(&tBase, -1, internalPrecision)
 
 		if err != nil {
 			return fmt.Errorf("intAry.pwrByTwos() - Error From tBase.MultiplyThisBy(&temp, true). Error= %v", err)
 		}
-
 
 		tPower = big.NewInt(0).Div(tPower, two)
 	}
@@ -4572,7 +4543,7 @@ func (ia *IntAry) pwrByTwos(power *big.Int, maxResultPrecision, internalPrecisio
 		return nil
 	}
 
-	if maxResultPrecision > -1 && maxResultPrecision < ia.GetPrecision()  {
+	if maxResultPrecision > -1 && maxResultPrecision < ia.GetPrecision() {
 		ia.SetPrecision(maxResultPrecision, true)
 	}
 
@@ -4584,8 +4555,8 @@ func (ia *IntAry) pwrByTwos(power *big.Int, maxResultPrecision, internalPrecisio
 // integer array maintained by the current
 // IntAry object.
 func (ia *IntAry) PrefixToIntAry(num uint8) {
-	ia.intAry = append([]uint8{num}, ia.intAry ...)
-	ia.intAryLen  = len(ia.intAry)
+	ia.intAry = append([]uint8{num}, ia.intAry...)
+	ia.intAryLen = len(ia.intAry)
 	ia.integerLen = ia.intAryLen - ia.precision
 	if num > 0 {
 		ia.isZeroValue = false
@@ -4759,12 +4730,11 @@ func (ia *IntAry) SetElement(index, val int) error {
 
 	if val > math.MaxUint8 {
 
-		return fmt.Errorf(ePrefix +
+		return fmt.Errorf(ePrefix+
 			"Error: Input parameter 'val' Exceeds Maximum for Unsigned Integer! MaxUint8='%v'",
-				math.MaxUint8)
+			math.MaxUint8)
 
 	}
-
 
 	if val < 0 {
 		return errors.New(ePrefix + "Error: Input parameter 'val' is less than ZERO!")
@@ -4774,7 +4744,7 @@ func (ia *IntAry) SetElement(index, val int) error {
 		return errors.New(ePrefix + "Error: Input parameter 'index' is less than ZERO!")
 	}
 
-	if index > ia.GetIntAryLength() - 1 {
+	if index > ia.GetIntAryLength()-1 {
 		return errors.New(ePrefix + "Error: Input parameter 'index' EXCEEDS Int Array Length!")
 	}
 
@@ -5194,7 +5164,7 @@ func (ia *IntAry) SetIntAryWithIntFracStr(intStr, fracStr string, signVal int) e
 	isFirstRune := true
 
 	// Create pure number string from 'intStr'
-	for i:= 0 ; i < lStr; i++ {
+	for i := 0; i < lStr; i++ {
 
 		if intStr[i] >= zeroChar &&
 			intStr[i] <= nineChar {
@@ -5219,7 +5189,7 @@ func (ia *IntAry) SetIntAryWithIntFracStr(intStr, fracStr string, signVal int) e
 
 		isFirstRune = true
 
-		for j:= 0; j < lStr; j++ {
+		for j := 0; j < lStr; j++ {
 
 			if fracStr[j] >= zeroChar &&
 				fracStr[j] <= nineChar {
@@ -5238,8 +5208,8 @@ func (ia *IntAry) SetIntAryWithIntFracStr(intStr, fracStr string, signVal int) e
 	err := ia.SetIntAryWithNumStr(string(cleanIntRuneAry))
 
 	if err != nil {
-		return fmt.Errorf(ePrefix +
-			"Error returned by bNum.SetNumStr(string(cleanIntRuneAry)). " +
+		return fmt.Errorf(ePrefix+
+			"Error returned by bNum.SetNumStr(string(cleanIntRuneAry)). "+
 			"cleanIntRuneAry='%v' Error='%v' ", string(cleanIntRuneAry), err.Error())
 	}
 
@@ -5268,7 +5238,7 @@ func (ia *IntAry) SetIntAryWithIntFracStr(intStr, fracStr string, signVal int) e
 func (ia *IntAry) SetIntAryWithUint64(intDigits uint64, precision uint) {
 
 	precision = ia.validateUintToMaxPrecision(precision)
-	
+
 	ia.signVal = 1
 
 	if intDigits == 0 {
@@ -5334,11 +5304,10 @@ func (ia *IntAry) SetIntAryWithBigInt(intDigits *big.Int, precision int) error {
 	if precision < 0 {
 		ePrefix := "IntAry.SetIntAryWithBigInt() "
 
-		return fmt.Errorf(ePrefix + "Error: Input parameter 'precision' is a negative value! " +
+		return fmt.Errorf(ePrefix+"Error: Input parameter 'precision' is a negative value! "+
 			"precision='%v' ", precision)
 
 	}
-
 
 	bigZero := big.NewInt(0)
 	quotient := big.NewInt(0)
@@ -5353,7 +5322,6 @@ func (ia *IntAry) SetIntAryWithBigInt(intDigits *big.Int, precision int) error {
 	ia.intAry = []uint8{}
 	ia.intAryLen = 0
 	ia.precision = precision
-
 
 	ia.signVal = 1
 
@@ -5416,22 +5384,22 @@ func (ia *IntAry) SetIntAryWithBigIntNum(bigINum BigIntNum) error {
 	ePrefix := "IntAry.SetIntAryWithBigIntNum() "
 
 	if bigINum.precision > uint(math.MaxInt32) {
-		return  fmt.Errorf(ePrefix + "Error: Input parameter bigINum has a 'precision' value " +
-				"which exceeds the MaxInt32 Value. MaxInt32='%v' bigINum.precision='%v' ",
-				math.MinInt32, bigINum.precision)
+		return fmt.Errorf(ePrefix+"Error: Input parameter bigINum has a 'precision' value "+
+			"which exceeds the MaxInt32 Value. MaxInt32='%v' bigINum.precision='%v' ",
+			math.MinInt32, bigINum.precision)
 	}
 
 	bInt, err := bigINum.GetBigInt()
 
 	if err != nil {
-		return fmt.Errorf(ePrefix + "Error returned by bigINum.GetBigInt(). Error='%v'",
+		return fmt.Errorf(ePrefix+"Error returned by bigINum.GetBigInt(). Error='%v'",
 			err.Error())
 	}
 
 	err = ia.SetIntAryWithBigInt(bInt, int(bigINum.GetPrecisionUint()))
 
 	if err != nil {
-		return fmt.Errorf(ePrefix + "Error returned by ia.SetIntAryWithBigInt(bInt, " +
+		return fmt.Errorf(ePrefix+"Error returned by ia.SetIntAryWithBigInt(bInt, "+
 			"bigINum.GetPrecisionUint())).  Error='%v'",
 			err.Error())
 	}
@@ -5454,16 +5422,16 @@ func (ia *IntAry) SetIntAryWithDecimal(dec Decimal) error {
 	err := dec.IsValid(ePrefix)
 
 	if err != nil {
-		return fmt.Errorf(ePrefix +
-			"Error returned by dec.IsValid(). " +
+		return fmt.Errorf(ePrefix+
+			"Error returned by dec.IsValid(). "+
 			"Error='%v' \n", err.Error())
 	}
 
 	err = ia.SetIntAryWithNumStr(dec.GetNumStr())
 
 	if err != nil {
-		return fmt.Errorf(ePrefix +
-			"Error returned by ia.SetIntAryWithNumStr(dec.GetNumStr()). " +
+		return fmt.Errorf(ePrefix+
+			"Error returned by ia.SetIntAryWithNumStr(dec.GetNumStr()). "+
 			"Error='%v' \n", err.Error())
 	}
 
@@ -5535,12 +5503,12 @@ func (ia *IntAry) SetIntAryWithFloat64(floatNum float64, precision int) error {
 		return fmt.Errorf("SetIntAryWithFloat64() Error: Invalid input parameter 'precision'. 'precision' must be greater than or equal to -1. precision= '%v'", precision)
 	}
 
-	numStr :=  strconv.FormatFloat(floatNum, 'f', -1, 64)
+	numStr := strconv.FormatFloat(floatNum, 'f', -1, 64)
 
 	err := ia.SetIntAryWithNumStr(numStr)
 
 	if err != nil {
-		return fmt.Errorf("SetIntAryWithFloat64() - ia.SetIntAryWithNumStr(numStrDto) returned error. numStrDto='%v' Error='%v'",numStr, err)
+		return fmt.Errorf("SetIntAryWithFloat64() - ia.SetIntAryWithNumStr(numStrDto) returned error. numStrDto='%v' Error='%v'", numStr, err)
 	}
 
 	if precision > -1 {
@@ -5551,7 +5519,6 @@ func (ia *IntAry) SetIntAryWithFloat64(floatNum float64, precision int) error {
 		}
 
 	}
-
 
 	return nil
 }
@@ -5646,7 +5613,7 @@ func (ia *IntAry) SetIntAryWithIntAry(iAry2 []int, precision uint, signVal int) 
 // Input parameter 'signVal' must be either +1 or -1 indicating the sign of the
 // number represented by the integer array. Note: If signVal is not equal to +1 or -1,
 // an error is generated.
-func (ia *IntAry) SetIntAryWithUint8Ary( iAry2 []uint8,precision uint, signVal int) error {
+func (ia *IntAry) SetIntAryWithUint8Ary(iAry2 []uint8, precision uint, signVal int) error {
 
 	if signVal != 1 && signVal != -1 {
 		return fmt.Errorf("SetIntAryWithUint8Ary() - Error: signVal parameter is INVALID! signVal must be -1 or +1. signVal='%v'", signVal)
@@ -5670,7 +5637,6 @@ func (ia *IntAry) SetIntAryWithUint8Ary( iAry2 []uint8,precision uint, signVal i
 
 	return nil
 }
-
 
 func (ia *IntAry) SetIntAryWithIntAryObj(iAry2 *IntAry, copyBackup bool) error {
 
@@ -5702,9 +5668,9 @@ func (ia *IntAry) SetIntAryWithNumStrMaxPrecision(str string, maxPrecision int) 
 	err := ia.SetIntAryWithNumStr(str)
 
 	if err != nil {
-		return fmt.Errorf(ePrefix + "Error returned by ia.SetIntAryWithNumStr(str)" +
+		return fmt.Errorf(ePrefix+"Error returned by ia.SetIntAryWithNumStr(str)"+
 			"str='%v' Error='%v' ",
-				str, err.Error())
+			str, err.Error())
 	}
 
 	if ia.precision > maxPrecision {
@@ -5732,11 +5698,10 @@ func (ia *IntAry) SetIntAryWithNumStr(str string) error {
 	err := ia.SetNumericSeparatorsDto(numSeps)
 
 	if err != nil {
-		return fmt.Errorf(ePrefix +
-			"Error returned by ia.SetNumericSeparatorsDto(numSeps). " +
+		return fmt.Errorf(ePrefix+
+			"Error returned by ia.SetNumericSeparatorsDto(numSeps). "+
 			"Error='%v' \n", err.Error())
 	}
-
 
 	ia.signVal = 1
 	baseRunes := []rune(str)
@@ -5811,14 +5776,12 @@ func (ia *IntAry) SetIntAryWithNumStr(str string) error {
 		return nil
 	}
 
-
 	// Validate intAry object
 	err = ia.IsValid(ePrefix + "- ")
 
 	if err != nil {
 		return err
 	}
-
 
 	return nil
 }
@@ -5835,7 +5798,7 @@ func (ia *IntAry) SetIntAryWithNumStrDto(nDto NumStrDto) error {
 
 	ePrefix := "IntAry.SetIntAryWithNumStrDto() "
 
-	err := nDto.IsValid(ePrefix + "'nDto' Invalid! " )
+	err := nDto.IsValid(ePrefix + "'nDto' Invalid! ")
 
 	if err != nil {
 		return err
@@ -5844,8 +5807,8 @@ func (ia *IntAry) SetIntAryWithNumStrDto(nDto NumStrDto) error {
 	err = ia.SetIntAryWithNumStr(nDto.GetNumStr())
 
 	if err != nil {
-		return fmt.Errorf(ePrefix +
-			"Error returned by ia.SetIntAryWithNumStr(nDto.GetNumStr()). " +
+		return fmt.Errorf(ePrefix+
+			"Error returned by ia.SetIntAryWithNumStr(nDto.GetNumStr()). "+
 			"Error='%v' \n", err.Error())
 	}
 
@@ -5894,7 +5857,6 @@ func (ia *IntAry) SetInternalFlags() {
 	ia.SetSignificantDigitIdxs()
 }
 
-
 // SetNumericSeparators - Used to assign values for the Decimal and Thousands separators
 // as well as the Currency Symbol to be used in displaying the current number string.
 //
@@ -5918,9 +5880,9 @@ func (ia *IntAry) SetInternalFlags() {
 // Currency Symbol dollar sign ('$')	= $123
 //
 func (ia *IntAry) SetNumericSeparators(
-										decimalSeparator,
-											thousandsSeparator,
-												currencySymbol rune) {
+	decimalSeparator,
+	thousandsSeparator,
+	currencySymbol rune) {
 
 	ia.SetNumericSeparatorsToDefaultIfEmpty()
 
@@ -5940,7 +5902,6 @@ func (ia *IntAry) SetNumericSeparators(
 	ia.SetThousandsSeparator(thousandsSeparator)
 	ia.SetCurrencySymbol(currencySymbol)
 }
-
 
 // SetNumericSeparatorsToDefaultIfEmpty - If numeric separators are
 // set to zero or nil, this method will set those numeric

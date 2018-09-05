@@ -2,8 +2,7 @@ package mathops
 
 import (
 	"testing"
-	)
-
+)
 
 func TestDecimal_MakeDecimalFromIntAry_01(t *testing.T) {
 
@@ -56,7 +55,6 @@ func TestDecimal_MakeDecimalFromIntAry_02(t *testing.T) {
 	if d2.GetNumStr() != ia.GetNumStr() {
 		t.Errorf("Expected NumStr== %v .  Instead, NumStr== %v", d2.GetNumStr(), ia.GetNumStr())
 	}
-
 
 	if int(precision) != d2.GetPrecision() {
 		t.Errorf("Expected precision== %v .  Instead, precision== %v", precision, d2.GetPrecision())
@@ -209,14 +207,14 @@ func TestDecimal_Multiply_05(t *testing.T) {
 	mul, err := Decimal{}.NewNumStr(numStr)
 
 	if err != nil {
-		t.Errorf("Error returned by Decimal{}.NewNumStr(numStrDto) " +
-			"numStrDto='%v'  Error = '%v' ",numStr, err.Error())
+		t.Errorf("Error returned by Decimal{}.NewNumStr(numStrDto) "+
+			"numStrDto='%v'  Error = '%v' ", numStr, err.Error())
 	}
 
 	d, err := Decimal{}.NewNumStr("1")
 
 	if err != nil {
-		t.Errorf("Error returned by Decimal{}.NewNumStr(\"1\") " +
+		t.Errorf("Error returned by Decimal{}.NewNumStr(\"1\") "+
 			"Error = '%v' ", err.Error())
 	}
 
@@ -224,9 +222,9 @@ func TestDecimal_Multiply_05(t *testing.T) {
 		d, err = d.Multiply(mul)
 
 		if err != nil {
-			t.Errorf("Error returned by d.Multiply(mul). " +
+			t.Errorf("Error returned by d.Multiply(mul). "+
 				"i='%v' d='%v', mul='%v' Error='%v'",
-				i,d.GetNumStr(), mul.GetNumStr(), err.Error())
+				i, d.GetNumStr(), mul.GetNumStr(), err.Error())
 		}
 	}
 
@@ -237,5 +235,3 @@ func TestDecimal_Multiply_05(t *testing.T) {
 	}
 
 }
-
-

@@ -10,14 +10,14 @@ func TestDecimal_ShiftPrecisionLeft_01(t *testing.T) {
 	d1, err := Decimal{}.NewNumStr(nStr1)
 
 	if err != nil {
-		t.Errorf("Error returned by Decimal{}.NewNumStr(nStr1). " +
+		t.Errorf("Error returned by Decimal{}.NewNumStr(nStr1). "+
 			"Error='%v' ", err.Error())
 	}
 
 	err = d1.ShiftPrecisionLeft(3)
 
 	if err != nil {
-		t.Errorf("Error returned by d1.ShiftPrecisionLeft(3). " +
+		t.Errorf("Error returned by d1.ShiftPrecisionLeft(3). "+
 			"Error='%v' ", err.Error())
 	}
 
@@ -38,14 +38,14 @@ func TestDecimal_ShiftPrecisionLeft_02(t *testing.T) {
 	d1, err := Decimal{}.NewNumStr(nStr1)
 
 	if err != nil {
-		t.Errorf("Error returned by Decimal{}.NewNumStr(nStr1). " +
+		t.Errorf("Error returned by Decimal{}.NewNumStr(nStr1). "+
 			"Error='%v' ", err.Error())
 	}
 
 	err = d1.ShiftPrecisionLeft(6)
 
 	if err != nil {
-		t.Errorf("Error returned by d1.ShiftPrecisionLeft(3). " +
+		t.Errorf("Error returned by d1.ShiftPrecisionLeft(3). "+
 			"Error='%v' ", err.Error())
 	}
 
@@ -66,14 +66,14 @@ func TestDecimal_ShiftPrecisionLeft_03(t *testing.T) {
 	d1, err := Decimal{}.NewNumStr(nStr1)
 
 	if err != nil {
-		t.Errorf("Error returned by Decimal{}.NewNumStr(nStr1). " +
+		t.Errorf("Error returned by Decimal{}.NewNumStr(nStr1). "+
 			"Error='%v' ", err.Error())
 	}
 
 	err = d1.ShiftPrecisionLeft(9)
 
 	if err != nil {
-		t.Errorf("Error returned by d1.ShiftPrecisionLeft(3). " +
+		t.Errorf("Error returned by d1.ShiftPrecisionLeft(3). "+
 			"Error='%v' ", err.Error())
 	}
 
@@ -94,14 +94,14 @@ func TestDecimal_ShiftPrecisionLeft_04(t *testing.T) {
 	d1, err := Decimal{}.NewNumStr(nStr1)
 
 	if err != nil {
-		t.Errorf("Error returned by Decimal{}.NewNumStr(nStr1). " +
+		t.Errorf("Error returned by Decimal{}.NewNumStr(nStr1). "+
 			"Error='%v' ", err.Error())
 	}
 
 	err = d1.ShiftPrecisionLeft(3)
 
 	if err != nil {
-		t.Errorf("Error returned by d1.ShiftPrecisionLeft(3). " +
+		t.Errorf("Error returned by d1.ShiftPrecisionLeft(3). "+
 			"Error='%v' ", err.Error())
 	}
 
@@ -122,14 +122,14 @@ func TestDecimal_ShiftPrecisionLeft_05(t *testing.T) {
 	d1, err := Decimal{}.NewNumStr(nStr1)
 
 	if err != nil {
-		t.Errorf("Error returned by Decimal{}.NewNumStr(nStr1). " +
+		t.Errorf("Error returned by Decimal{}.NewNumStr(nStr1). "+
 			"Error='%v' ", err.Error())
 	}
 
 	err = d1.ShiftPrecisionLeft(6)
 
 	if err != nil {
-		t.Errorf("Error returned by d1.ShiftPrecisionLeft(3). " +
+		t.Errorf("Error returned by d1.ShiftPrecisionLeft(3). "+
 			"Error='%v' ", err.Error())
 	}
 
@@ -150,14 +150,14 @@ func TestDecimal_ShiftPrecisionLeft_06(t *testing.T) {
 	d1, err := Decimal{}.NewNumStr(nStr1)
 
 	if err != nil {
-		t.Errorf("Error returned by Decimal{}.NewNumStr(nStr1). " +
+		t.Errorf("Error returned by Decimal{}.NewNumStr(nStr1). "+
 			"Error='%v' ", err.Error())
 	}
 
 	err = d1.ShiftPrecisionLeft(9)
 
 	if err != nil {
-		t.Errorf("Error returned by d1.ShiftPrecisionLeft(3). " +
+		t.Errorf("Error returned by d1.ShiftPrecisionLeft(3). "+
 			"Error='%v' ", err.Error())
 	}
 
@@ -178,14 +178,14 @@ func TestDecimal_ShiftPrecisionRight_01(t *testing.T) {
 	d1, err := Decimal{}.NewNumStr(nStr1)
 
 	if err != nil {
-		t.Errorf("Error returned by Decimal{}.NewNumStr(nStr1). " +
+		t.Errorf("Error returned by Decimal{}.NewNumStr(nStr1). "+
 			"Error='%v' ", err.Error())
 	}
 
 	err = d1.ShiftPrecisionRight(3)
 
 	if err != nil {
-		t.Errorf("Error returned by d1.ShiftPrecisionLeft(3). " +
+		t.Errorf("Error returned by d1.ShiftPrecisionLeft(3). "+
 			"Error='%v' ", err.Error())
 	}
 
@@ -198,7 +198,6 @@ func TestDecimal_ShiftPrecisionRight_01(t *testing.T) {
 
 }
 
-
 func TestDecimal_ShiftPrecisionRight_02(t *testing.T) {
 
 	nStr1 := "12345"
@@ -207,14 +206,14 @@ func TestDecimal_ShiftPrecisionRight_02(t *testing.T) {
 	d1, err := Decimal{}.NewNumStr(nStr1)
 
 	if err != nil {
-		t.Errorf("Error returned by Decimal{}.NewNumStr(nStr1). " +
+		t.Errorf("Error returned by Decimal{}.NewNumStr(nStr1). "+
 			"Error='%v' ", err.Error())
 	}
 
 	err = d1.ShiftPrecisionRight(6)
 
 	if err != nil {
-		t.Errorf("Error returned by d1.ShiftPrecisionLeft(3). " +
+		t.Errorf("Error returned by d1.ShiftPrecisionLeft(3). "+
 			"Error='%v' ", err.Error())
 	}
 
@@ -235,14 +234,14 @@ func TestDecimal_ShiftPrecisionRight_03(t *testing.T) {
 	d1, err := Decimal{}.NewNumStr(nStr1)
 
 	if err != nil {
-		t.Errorf("Error returned by Decimal{}.NewNumStr(nStr1). " +
+		t.Errorf("Error returned by Decimal{}.NewNumStr(nStr1). "+
 			"Error='%v' ", err.Error())
 	}
 
 	err = d1.ShiftPrecisionRight(9)
 
 	if err != nil {
-		t.Errorf("Error returned by d1.ShiftPrecisionLeft(3). " +
+		t.Errorf("Error returned by d1.ShiftPrecisionLeft(3). "+
 			"Error='%v' ", err.Error())
 	}
 
@@ -263,14 +262,14 @@ func TestDecimal_ShiftPrecisionRight_04(t *testing.T) {
 	d1, err := Decimal{}.NewNumStr(nStr1)
 
 	if err != nil {
-		t.Errorf("Error returned by Decimal{}.NewNumStr(nStr1). " +
+		t.Errorf("Error returned by Decimal{}.NewNumStr(nStr1). "+
 			"Error='%v' ", err.Error())
 	}
 
 	err = d1.ShiftPrecisionRight(3)
 
 	if err != nil {
-		t.Errorf("Error returned by d1.ShiftPrecisionLeft(3). " +
+		t.Errorf("Error returned by d1.ShiftPrecisionLeft(3). "+
 			"Error='%v' ", err.Error())
 	}
 
@@ -291,14 +290,14 @@ func TestDecimal_ShiftPrecisionRight_05(t *testing.T) {
 	d1, err := Decimal{}.NewNumStr(nStr1)
 
 	if err != nil {
-		t.Errorf("Error returned by Decimal{}.NewNumStr(nStr1). " +
+		t.Errorf("Error returned by Decimal{}.NewNumStr(nStr1). "+
 			"Error='%v' ", err.Error())
 	}
 
 	err = d1.ShiftPrecisionRight(2)
 
 	if err != nil {
-		t.Errorf("Error returned by d1.ShiftPrecisionLeft(3). " +
+		t.Errorf("Error returned by d1.ShiftPrecisionLeft(3). "+
 			"Error='%v' ", err.Error())
 	}
 
@@ -319,14 +318,14 @@ func TestDecimal_ShiftPrecisionRight_06(t *testing.T) {
 	d1, err := Decimal{}.NewNumStr(nStr1)
 
 	if err != nil {
-		t.Errorf("Error returned by Decimal{}.NewNumStr(nStr1). " +
+		t.Errorf("Error returned by Decimal{}.NewNumStr(nStr1). "+
 			"Error='%v' ", err.Error())
 	}
 
 	err = d1.ShiftPrecisionRight(4)
 
 	if err != nil {
-		t.Errorf("Error returned by d1.ShiftPrecisionLeft(3). " +
+		t.Errorf("Error returned by d1.ShiftPrecisionLeft(3). "+
 			"Error='%v' ", err.Error())
 	}
 
@@ -348,8 +347,8 @@ func TestDecimal_SquareRoot_01(t *testing.T) {
 	d1, err := Decimal{}.NewNumStr(numStr1)
 
 	if err != nil {
-		t.Errorf("Error returned by Decimal{}.NewNumStr(numStr1) " +
-			"numStr1='%v' Error = '%v' ",numStr1, err.Error())
+		t.Errorf("Error returned by Decimal{}.NewNumStr(numStr1) "+
+			"numStr1='%v' Error = '%v' ", numStr1, err.Error())
 	}
 
 	d2, err := d1.SquareRoot(maxPrecision)
@@ -380,8 +379,8 @@ func TestDecimal_SquareRoot_02(t *testing.T) {
 	d1, err := Decimal{}.NewNumStr(numStr1)
 
 	if err != nil {
-		t.Errorf("Error returned by Decimal{}.NewNumStr(numStr1) " +
-			"numStr1='%v' Error = '%v' ",numStr1, err.Error())
+		t.Errorf("Error returned by Decimal{}.NewNumStr(numStr1) "+
+			"numStr1='%v' Error = '%v' ", numStr1, err.Error())
 	}
 
 	d2, err := d1.SquareRoot(maxPrecision)
@@ -410,8 +409,8 @@ func TestDecimal_SquareRoot_03(t *testing.T) {
 	d1, err := Decimal{}.NewNumStr(numStr1)
 
 	if err != nil {
-		t.Errorf("Error returned by Decimal{}.NewNumStr(numStr1) " +
-			"numStr1='%v' Error = '%v' ",numStr1, err.Error())
+		t.Errorf("Error returned by Decimal{}.NewNumStr(numStr1) "+
+			"numStr1='%v' Error = '%v' ", numStr1, err.Error())
 	}
 
 	_, err = d1.SquareRoot(maxPrecision)
@@ -463,7 +462,7 @@ func TestDecimal_Subtract_02(t *testing.T) {
 	d1, err := Decimal{}.NewNumStr(nStr1)
 
 	if err != nil {
-		t.Errorf("Error returned by Decimal{}.NewNumStr(nStr1) " +
+		t.Errorf("Error returned by Decimal{}.NewNumStr(nStr1) "+
 			"nStr1='%v' Error = '%v' ", nStr1, err.Error())
 	}
 
@@ -472,7 +471,7 @@ func TestDecimal_Subtract_02(t *testing.T) {
 	d2, err := Decimal{}.NewNumStr(nStr2)
 
 	if err != nil {
-		t.Errorf("Error returned by Decimal{}.NewNumStr(nStr2) " +
+		t.Errorf("Error returned by Decimal{}.NewNumStr(nStr2) "+
 			"nStr2='%v' Error = '%v' ", nStr2, err.Error())
 	}
 
@@ -497,7 +496,7 @@ func TestDecimal_Subtract_03(t *testing.T) {
 	d1, err := Decimal{}.NewNumStr(nStr1)
 
 	if err != nil {
-		t.Errorf("Error returned by Decimal{}.NewNumStr(nStr1) " +
+		t.Errorf("Error returned by Decimal{}.NewNumStr(nStr1) "+
 			"nStr1='%v' Error = '%v' ", nStr1, err.Error())
 	}
 
@@ -506,7 +505,7 @@ func TestDecimal_Subtract_03(t *testing.T) {
 	d2, err := Decimal{}.NewNumStr(nStr2)
 
 	if err != nil {
-		t.Errorf("Error returned by Decimal{}.NewNumStr(nStr2) " +
+		t.Errorf("Error returned by Decimal{}.NewNumStr(nStr2) "+
 			"nStr2='%v' Error = '%v' ", nStr2, err.Error())
 	}
 
@@ -535,7 +534,7 @@ func TestDecimal_SubtractTotal_01(t *testing.T) {
 	d, err := Decimal{}.NewNumStr("500.00")
 
 	if err != nil {
-		t.Errorf("Error returned by Decimal{}.NewNumStr(\"500.00\") " +
+		t.Errorf("Error returned by Decimal{}.NewNumStr(\"500.00\") "+
 			"Error = '%v' ", err.Error())
 	}
 
@@ -545,14 +544,14 @@ func TestDecimal_SubtractTotal_01(t *testing.T) {
 		dx, err := Decimal{}.NewNumStr(nStrAry[i])
 
 		if err != nil {
-			t.Errorf("Error returned by Decimal{}.NewNumStr(nStrAry[i]) " +
+			t.Errorf("Error returned by Decimal{}.NewNumStr(nStrAry[i]) "+
 				"nStrAry[i]='%v' Error = '%v' ", nStrAry[i], err.Error())
 		}
 
 		err = d.SubtractFromThis(dx)
 
 		if err != nil {
-			t.Errorf("Error returned from d.SubtractFromThis(dx) " +
+			t.Errorf("Error returned from d.SubtractFromThis(dx) "+
 				"Error='%v' ", err.Error())
 		}
 	}
@@ -579,14 +578,14 @@ func TestDecimal_SubtractTotal_02(t *testing.T) {
 		dx, err := Decimal{}.NewNumStr(nStrAry[i])
 
 		if err != nil {
-			t.Errorf("Error returned by Decimal{}.NewNumStr(nStrAry[i]) " +
+			t.Errorf("Error returned by Decimal{}.NewNumStr(nStrAry[i]) "+
 				"nStrAry[i]='%v' Error = '%v' ", nStrAry[i], err.Error())
 		}
 
 		err = d.SubtractFromThis(dx)
 
 		if err != nil {
-			t.Errorf("Error returned from d.SubtractFromThis(dx). " +
+			t.Errorf("Error returned from d.SubtractFromThis(dx). "+
 				"Error='%v' ", err.Error())
 		}
 
@@ -610,7 +609,7 @@ func TestDecimal_SubtractFromThisArray_01(t *testing.T) {
 	decs, err := Decimal{}.NewNumStrArray(nStrAry)
 
 	if err != nil {
-		t.Errorf("Error returned by Decimal{}.NewNumStrArray(nStrAry) " +
+		t.Errorf("Error returned by Decimal{}.NewNumStrArray(nStrAry) "+
 			"Error = '%v' ",
 			err.Error())
 	}
@@ -618,7 +617,7 @@ func TestDecimal_SubtractFromThisArray_01(t *testing.T) {
 	total, err := Decimal{}.NewNumStr("0.0")
 
 	if err != nil {
-		t.Errorf("Error returned by Decimal{}.NewNumStr(\"0.0\") " +
+		t.Errorf("Error returned by Decimal{}.NewNumStr(\"0.0\") "+
 			"Error = '%v' ",
 			err.Error())
 	}
@@ -628,7 +627,7 @@ func TestDecimal_SubtractFromThisArray_01(t *testing.T) {
 	err = total.SubtractFromThisArray(decs)
 
 	if err != nil {
-		t.Errorf("Error returned by total.SubtractFromThisArray(decs) " +
+		t.Errorf("Error returned by total.SubtractFromThisArray(decs) "+
 			"Error = '%v' ",
 			err.Error())
 	}
@@ -644,7 +643,7 @@ func TestDecimal_SubtractFromThisMultiple_01(t *testing.T) {
 	dec1, err := Decimal{}.NewNumStr("5.50")
 
 	if err != nil {
-		t.Errorf("Error returned by Decimal{}.NewNumStr(\"5.50\") " +
+		t.Errorf("Error returned by Decimal{}.NewNumStr(\"5.50\") "+
 			"Error = '%v' ",
 			err.Error())
 	}
@@ -652,7 +651,7 @@ func TestDecimal_SubtractFromThisMultiple_01(t *testing.T) {
 	dec2, err := Decimal{}.NewNumStr("6.50")
 
 	if err != nil {
-		t.Errorf("Error returned by Decimal{}.NewNumStr(\"6.50\") " +
+		t.Errorf("Error returned by Decimal{}.NewNumStr(\"6.50\") "+
 			"Error = '%v' ",
 			err.Error())
 	}
@@ -660,7 +659,7 @@ func TestDecimal_SubtractFromThisMultiple_01(t *testing.T) {
 	dec3, err := Decimal{}.NewNumStr("7.00")
 
 	if err != nil {
-		t.Errorf("Error returned by Decimal{}.NewNumStr(\"7.00\") " +
+		t.Errorf("Error returned by Decimal{}.NewNumStr(\"7.00\") "+
 			"Error = '%v' ",
 			err.Error())
 	}
@@ -668,7 +667,7 @@ func TestDecimal_SubtractFromThisMultiple_01(t *testing.T) {
 	dec4, err := Decimal{}.NewNumStr("8.25")
 
 	if err != nil {
-		t.Errorf("Error returned by Decimal{}.NewNumStr(\"8.25\") " +
+		t.Errorf("Error returned by Decimal{}.NewNumStr(\"8.25\") "+
 			"Error = '%v' ",
 			err.Error())
 	}
@@ -676,7 +675,7 @@ func TestDecimal_SubtractFromThisMultiple_01(t *testing.T) {
 	total, err := Decimal{}.NewNumStr("0.0")
 
 	if err != nil {
-		t.Errorf("Error returned by Decimal{}.NewNumStr(\"0.0\") " +
+		t.Errorf("Error returned by Decimal{}.NewNumStr(\"0.0\") "+
 			"Error = '%v' ",
 			err.Error())
 	}
@@ -684,14 +683,14 @@ func TestDecimal_SubtractFromThisMultiple_01(t *testing.T) {
 	expected := "-27.25"
 
 	err = total.SubtractFromThisMultiple(
-												dec1,
-												dec2,
-												dec3,
-												dec4,
-									)
+		dec1,
+		dec2,
+		dec3,
+		dec4,
+	)
 
 	if err != nil {
-		t.Errorf("Error returned by total.SubtractFromThisMultiple(...) " +
+		t.Errorf("Error returned by total.SubtractFromThisMultiple(...) "+
 			"Error = '%v' ",
 			err.Error())
 	}
@@ -701,5 +700,3 @@ func TestDecimal_SubtractFromThisMultiple_01(t *testing.T) {
 	}
 
 }
-
-

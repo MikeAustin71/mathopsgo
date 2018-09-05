@@ -4,7 +4,6 @@ import (
 	"testing"
 )
 
-
 func TestIntAry_AddMultipleToThis_01(t *testing.T) {
 
 	nStr1 := "457.3"
@@ -84,7 +83,7 @@ func TestIntAry_AddToThis_01(t *testing.T) {
 
 	for i := 0; i < lEArray; i++ {
 
-		if element, _ := ia1.GetIntAryElement(i);  eIAry[i] != element {
+		if element, _ := ia1.GetIntAryElement(i); eIAry[i] != element {
 
 			t.Error("Error: Expected intAry Array does NOT match ia1 IntAry Element! ")
 			return
@@ -288,7 +287,7 @@ func TestIntAry_AddToThis_05(t *testing.T) {
 	}
 
 	for i := 0; i < lEArray; i++ {
-		if element, _ := ia1.GetIntAryElement(i) ; eIAry[i] != element {
+		if element, _ := ia1.GetIntAryElement(i); eIAry[i] != element {
 
 			t.Errorf("Error: Expected intAry Array does NOT match ia1 integer array element. index='%v' ", i)
 			return
@@ -387,7 +386,7 @@ func TestIntAry_AddToThis_07(t *testing.T) {
 
 	for i := 0; i < lEArray; i++ {
 
-		if element, _ := ia1.GetIntAryElement(i); eIAry[i] != element  {
+		if element, _ := ia1.GetIntAryElement(i); eIAry[i] != element {
 			t.Errorf("Error: Expected intAry Array does NOT match ia1 integer array element. index='%v'", i)
 		}
 	}
@@ -883,7 +882,7 @@ func TestIntAry_AddToThis_17(t *testing.T) {
 	for i := 0; i < lEArray; i++ {
 		if element, _ := ia1.GetIntAryElement(i); eIAry[i] != element {
 
-			t.Errorf("Error: Expected intAry Array does NOT match ia integer array element! index='%v'",i)
+			t.Errorf("Error: Expected intAry Array does NOT match ia integer array element! index='%v'", i)
 			return
 
 		}

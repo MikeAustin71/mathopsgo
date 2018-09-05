@@ -19,7 +19,7 @@ import "fmt"
 	This source file is used to store constants used by various Types
 	in the 'mathops' Library.
 
- */
+*/
 
 // Source Currency Info
 // https://gist.github.com/bzerangue/5484121
@@ -77,14 +77,12 @@ func (scaleMode PrecisionScaleMode) String() string {
 }
 
 const (
-
-	SCALEPRECISIONRIGHT	PrecisionScaleMode = iota
+	SCALEPRECISIONRIGHT PrecisionScaleMode = iota
 
 	SCALEPRECISIONLEFT
-
 )
 
-var PrecisionScaleModeLabels = [...]string{"ScalePrecisionRight","ScalePrecisionLeft"}
+var PrecisionScaleModeLabels = [...]string{"ScalePrecisionRight", "ScalePrecisionLeft"}
 
 // NumStrFmtMode - Designates the type of number string formatting
 // applied when converting a number to a string.
@@ -122,8 +120,7 @@ const (
 	CURRENCYNUMSTRFMT
 )
 
-var NumStrFmtModeLabels = [...]string{"PureIntegerString","IntegerDecimalString", "ThousandsNumString", "CurrencyNumString"}
-
+var NumStrFmtModeLabels = [...]string{"PureIntegerString", "IntegerDecimalString", "ThousandsNumString", "CurrencyNumString"}
 
 type NegativeValueFmtMode int
 
@@ -139,22 +136,17 @@ const (
 	//
 	LEADMINUSNEGVALFMTMODE NegativeValueFmtMode = iota
 
-
-
 	// PARENTHESESNEGVALFMTMODE	-	Negative values formatted with
 	//														surrounding parentheses.
 	//														Example: (123456.78)
 	//
 	PARENTHESESNEGVALFMTMODE
 
-
-
 	// ABSOLUTEPURENUMSTRFMTMODE - Formats a pure number string with
 	//														 absolute (positive) integer value
 	//														 and no decimal point separator.
 	//														Example: (12345678)
 	ABSOLUTEPURENUMSTRFMTMODE
-
 )
 
 var NegativeValueFmtModeLabels = [...]string{"LeadingMinusSign", "SurroundingParentheses", "AbsolutePureNumberString"}
@@ -164,9 +156,9 @@ var NegativeValueFmtModeLabels = [...]string{"LeadingMinusSign", "SurroundingPar
 // thousands separator and currency symbol.
 //
 type NumericSeparatorDto struct {
-	DecimalSeparator 				rune				// Character used to separate integer and fractional digits ('.')
-	ThousandsSeparator 			rune 				// Character used to separate thousands (1,000,000,000
-	CurrencySymbol 					rune				// Currency Symbol
+	DecimalSeparator   rune // Character used to separate integer and fractional digits ('.')
+	ThousandsSeparator rune // Character used to separate thousands (1,000,000,000
+	CurrencySymbol     rune // Currency Symbol
 }
 
 // Equal - Compares two NumericSeparatorDto's and returns 'true' if they
@@ -197,7 +189,7 @@ func (numSep NumericSeparatorDto) New() NumericSeparatorDto {
 
 	n2.SetDefaultsIfEmpty()
 
-	return  n2
+	return n2
 }
 
 // SetDefaultsIfEmpty - If any of the NumericSeparatorDTo rune values

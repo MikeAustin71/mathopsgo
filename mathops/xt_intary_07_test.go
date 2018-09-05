@@ -1,11 +1,8 @@
 package mathops
 
 import (
-
 	"testing"
 )
-
-
 
 func TestIntAry_SetIntAryWithInt32_01(t *testing.T) {
 
@@ -474,7 +471,7 @@ func TestIntAry_SetIntAryWithIntAry_01(t *testing.T) {
 		t.Errorf("Expected iaStats.IntAryLen == results array length. Instead, iaStats.IntAryLen='%v' and result int array length='%v'", iaStats.IntAryLen, iaLen)
 	}
 
-	for i:=0; i < iaLen; i++ {
+	for i := 0; i < iaLen; i++ {
 		if uint8(iAry[i]) != resultAry[i] {
 			t.Errorf("Expected uint8(iAry[i])==resultAry[i]. Instead i='%v' uint8(iAry[i])='%v' resultAry[i]='%v' ", i, iAry[i], resultAry[i])
 			return
@@ -517,19 +514,18 @@ func TestIntAry_SetIntAryWithIntAry_02(t *testing.T) {
 		t.Errorf("Expected iaStats.IntAryLen == results array length. Instead, iaStats.IntAryLen='%v' and result int array length='%v'", iaStats.IntAryLen, iaLen)
 	}
 
-	for i:=0; i < iaLen; i++ {
+	for i := 0; i < iaLen; i++ {
 		if uint8(iAry[i]) != resultAry[i] {
 			t.Errorf("Expected uint8(iAry[i])==resultAry[i]. Instead i='%v' uint8(iAry[i])='%v' resultAry[i]='%v' ", i, iAry[i], resultAry[i])
 			return
 		}
 	}
 
-
 }
 
 func TestIntAry_SetIntAryWithIntAry_03(t *testing.T) {
 	iAry := []int{3, 2}
-	iOutAry := []int{0,0,0,3,2}
+	iOutAry := []int{0, 0, 0, 3, 2}
 	eNumStr := "0.0032"
 	ePrecision := uint(4)
 	eSignVal := 1
@@ -562,7 +558,7 @@ func TestIntAry_SetIntAryWithIntAry_03(t *testing.T) {
 		t.Errorf("Expected iaStats.IntAryLen == results array length. Instead, iaStats.IntAryLen='%v' and result int array length='%v'", iaStats.IntAryLen, iaLen)
 	}
 
-	for i:=0; i < iaLen; i++ {
+	for i := 0; i < iaLen; i++ {
 		if uint8(iOutAry[i]) != resultAry[i] {
 			t.Errorf("Expected uint8(iAry[i])==resultAry[i]. Instead i='%v' uint8(iAry[i])='%v' resultAry[i]='%v' ", i, iAry[i], resultAry[i])
 			return
@@ -573,7 +569,7 @@ func TestIntAry_SetIntAryWithIntAry_03(t *testing.T) {
 
 func TestIntAry_SetIntAryWithIntAry_04(t *testing.T) {
 	iAry := []int{3, 2}
-	iOutAry := []int{0,3,2}
+	iOutAry := []int{0, 3, 2}
 	eNumStr := "0.32"
 	ePrecision := uint(2)
 	eSignVal := 1
@@ -606,7 +602,7 @@ func TestIntAry_SetIntAryWithIntAry_04(t *testing.T) {
 		t.Errorf("Expected iaStats.IntAryLen == results array length. Instead, iaStats.IntAryLen='%v' and result int array length='%v'", iaStats.IntAryLen, iaLen)
 	}
 
-	for i:=0; i < iaLen; i++ {
+	for i := 0; i < iaLen; i++ {
 		if uint8(iOutAry[i]) != resultAry[i] {
 			t.Errorf("Expected uint8(iAry[i])==resultAry[i]. Instead i='%v' uint8(iAry[i])='%v' resultAry[i]='%v' ", i, iAry[i], resultAry[i])
 			return
@@ -699,7 +695,7 @@ func TestIntAry_SetIntAryWithUint8Ary_01(t *testing.T) {
 		t.Errorf("Expected iaStats.IntAryLen == results array length. Instead, iaStats.IntAryLen='%v' and result int array length='%v'", iaStats.IntAryLen, iaLen)
 	}
 
-	for i:=0; i < iaLen; i++ {
+	for i := 0; i < iaLen; i++ {
 		if iAry[i] != resultAry[i] {
 			t.Errorf("Expected iAry[i]==resultAry[i]. Instead i='%v' iAry[i]='%v' resultAry[i]='%v' ", i, iAry[i], resultAry[i])
 			return
@@ -742,19 +738,18 @@ func TestIntAry_SetIntAryWithUint8Ary_02(t *testing.T) {
 		t.Errorf("Expected iaStats.IntAryLen == results array length. Instead, iaStats.IntAryLen='%v' and result int array length='%v'", iaStats.IntAryLen, iaLen)
 	}
 
-	for i:=0; i < iaLen; i++ {
+	for i := 0; i < iaLen; i++ {
 		if iAry[i] != resultAry[i] {
 			t.Errorf("Expected iAry[i]==resultAry[i]. Instead i='%v' iAry[i]='%v' resultAry[i]='%v' ", i, iAry[i], resultAry[i])
 			return
 		}
 	}
 
-
 }
 
 func TestIntAry_SetIntAryWithUint8Ary_03(t *testing.T) {
 	iAry := []uint8{3, 2}
-	iOutAry := []uint8{0,0,0,3,2}
+	iOutAry := []uint8{0, 0, 0, 3, 2}
 	eNumStr := "0.0032"
 	ePrecision := uint(4)
 	eSignVal := 1
@@ -787,7 +782,7 @@ func TestIntAry_SetIntAryWithUint8Ary_03(t *testing.T) {
 		t.Errorf("Expected iaStats.IntAryLen == results array length. Instead, iaStats.IntAryLen='%v' and result int array length='%v'", iaStats.IntAryLen, iaLen)
 	}
 
-	for i:=0; i < iaLen; i++ {
+	for i := 0; i < iaLen; i++ {
 		if iOutAry[i] != resultAry[i] {
 			t.Errorf("Expected iAry[i]==resultAry[i]. Instead i='%v' uint8(iAry[i])='%v' resultAry[i]='%v' ", i, iAry[i], resultAry[i])
 			return
@@ -798,7 +793,7 @@ func TestIntAry_SetIntAryWithUint8Ary_03(t *testing.T) {
 
 func TestIntAry_SetIntAryWithUint8Ary_04(t *testing.T) {
 	iAry := []uint8{3, 2}
-	iOutAry := []uint8{0,3,2}
+	iOutAry := []uint8{0, 3, 2}
 	eNumStr := "0.32"
 	ePrecision := uint(2)
 	eSignVal := 1
@@ -831,7 +826,7 @@ func TestIntAry_SetIntAryWithUint8Ary_04(t *testing.T) {
 		t.Errorf("Expected iaStats.IntAryLen == results array length. Instead, iaStats.IntAryLen='%v' and result int array length='%v'", iaStats.IntAryLen, iaLen)
 	}
 
-	for i:=0; i < iaLen; i++ {
+	for i := 0; i < iaLen; i++ {
 		if iOutAry[i] != resultAry[i] {
 			t.Errorf("Expected iAry[i]==resultAry[i]. Instead i='%v' iAry[i]='%v' resultAry[i]='%v' ", i, iAry[i], resultAry[i])
 			return
@@ -839,7 +834,6 @@ func TestIntAry_SetIntAryWithUint8Ary_04(t *testing.T) {
 	}
 
 }
-
 
 func TestIntAry_SetSign_01(t *testing.T) {
 
@@ -849,7 +843,7 @@ func TestIntAry_SetSign_01(t *testing.T) {
 	eSignVal := -1
 	ePrecision := 3
 
-	ia, err:= IntAry{}.NewNumStr(nStr)
+	ia, err := IntAry{}.NewNumStr(nStr)
 
 	if err != nil {
 		t.Errorf("Error returned from intAry{}.NewNumStr(nStr). Error= %v", err)
@@ -860,7 +854,6 @@ func TestIntAry_SetSign_01(t *testing.T) {
 	if err != nil {
 		t.Errorf("Error returned from ia.SetSign(eSignVal). Error= %v", err)
 	}
-
 
 	if eStr != ia.GetNumStr() {
 		t.Errorf("Expected ia.GetNumStr() == %v . Instead ia.GetNumStr() == %v", eStr, ia.GetNumStr())
@@ -884,7 +877,7 @@ func TestIntAry_SetSign_02(t *testing.T) {
 	eSignVal := 1
 	ePrecision := 3
 
-	ia, err:= IntAry{}.NewNumStr(nStr)
+	ia, err := IntAry{}.NewNumStr(nStr)
 
 	if err != nil {
 		t.Errorf("Error returned from intAry{}.NewNumStr(nStr). Error= %v", err)
@@ -895,7 +888,6 @@ func TestIntAry_SetSign_02(t *testing.T) {
 	if err != nil {
 		t.Errorf("Error returned from ia.SetSign(eSignVal). Error= %v", err)
 	}
-
 
 	if eStr != ia.GetNumStr() {
 		t.Errorf("Expected ia.GetNumStr() == %v . Instead ia.GetNumStr() == %v", eStr, ia.GetNumStr())
@@ -919,7 +911,7 @@ func TestIntAry_SetSign_03(t *testing.T) {
 	eSignVal := 1
 	ePrecision := 3
 
-	ia, err:= IntAry{}.NewNumStr(nStr)
+	ia, err := IntAry{}.NewNumStr(nStr)
 
 	if err != nil {
 		t.Errorf("Error returned from intAry{}.NewNumStr(nStr). Error= %v", err)
@@ -930,7 +922,6 @@ func TestIntAry_SetSign_03(t *testing.T) {
 	if err != nil {
 		t.Errorf("Error returned from ia.SetSign(eSignVal). Error= %v", err)
 	}
-
 
 	if eStr != ia.GetNumStr() {
 		t.Errorf("Expected ia.GetNumStr() == %v . Instead ia.GetNumStr() == %v", eStr, ia.GetNumStr())
@@ -954,7 +945,7 @@ func TestIntAry_SetSign_04(t *testing.T) {
 	eSignVal := -1
 	ePrecision := 3
 
-	ia, err:= IntAry{}.NewNumStr(nStr)
+	ia, err := IntAry{}.NewNumStr(nStr)
 
 	if err != nil {
 		t.Errorf("Error returned from intAry{}.NewNumStr(nStr). Error= %v", err)
@@ -965,7 +956,6 @@ func TestIntAry_SetSign_04(t *testing.T) {
 	if err != nil {
 		t.Errorf("Error returned from ia.SetSign(eSignVal). Error= %v", err)
 	}
-
 
 	if eStr != ia.GetNumStr() {
 		t.Errorf("Expected ia.GetNumStr() == %v . Instead ia.GetNumStr() == %v", eStr, ia.GetNumStr())
@@ -990,7 +980,7 @@ func TestIntAry_SetSign_05(t *testing.T) {
 	eSignVal := 1
 	ePrecision := 1
 
-	ia, err:= IntAry{}.NewNumStr(nStr)
+	ia, err := IntAry{}.NewNumStr(nStr)
 
 	if err != nil {
 		t.Errorf("Error returned from intAry{}.NewNumStr(nStr). Error= %v", err)
@@ -1001,7 +991,6 @@ func TestIntAry_SetSign_05(t *testing.T) {
 	if err != nil {
 		t.Errorf("Error returned from ia.SetSign(eSignVal). Error= %v", err)
 	}
-
 
 	if eStr != ia.GetNumStr() {
 		t.Errorf("Expected ia.GetNumStr() == %v . Instead ia.GetNumStr() == %v", eStr, ia.GetNumStr())
@@ -1016,7 +1005,6 @@ func TestIntAry_SetSign_05(t *testing.T) {
 	}
 
 }
-
 
 func TestIntAry_SetWithNumStr_01(t *testing.T) {
 	nStr := "123.456"
@@ -1050,8 +1038,8 @@ func TestIntAry_SetWithNumStr_01(t *testing.T) {
 
 	for i := 0; i < lEArray; i++ {
 
-		if element, _ := ia.GetIntAryElement(i) ; eIAry[i] != element {
-	t.Errorf("Error: Expected intAry Array element does NOT match ia IntAry element! Index='%v'", i)
+		if element, _ := ia.GetIntAryElement(i); eIAry[i] != element {
+			t.Errorf("Error: Expected intAry Array element does NOT match ia IntAry element! Index='%v'", i)
 			return
 
 		}

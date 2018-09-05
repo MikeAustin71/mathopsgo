@@ -30,7 +30,7 @@ import (
 		intary.go
 		nthroot.go
 
- */
+*/
 
 type NumStrUtility struct {
 	Nation             string
@@ -207,7 +207,7 @@ func (ns *NumStrUtility) ConvertStrToIntNumStr(str string) string {
 
 	nDto, err := ns.ParseNumString(str)
 
-	if err != nil  {
+	if err != nil {
 		return ""
 	}
 
@@ -257,7 +257,6 @@ func (ns NumStrUtility) ConvertInt64ToStr(num int64) (string, error) {
 
 	return numStr, nil
 }
-
 
 // ConvertRunesToInt64 - Converts a rune array to an int64 value.
 //
@@ -355,7 +354,6 @@ func (ns *NumStrUtility) ConvertStrToIntNumRunes(str string) []rune {
 
 }
 
-
 // ConvertStrToFloat64 - Converts a string of numbers to a float64 value.
 //
 func (ns *NumStrUtility) ConvertStrToFloat64(str string) (float64, error) {
@@ -365,7 +363,7 @@ func (ns *NumStrUtility) ConvertStrToFloat64(str string) (float64, error) {
 	nDto, err := NumStrDto{}.NewPtr().ParseNumStr(str)
 
 	if err != nil {
-		return numF64, fmt.Errorf("ConvertStrToFloat64() - Error returned from NumStrDto.ParseNumStr(str). str= '%v' Error= %v",str, err)
+		return numF64, fmt.Errorf("ConvertStrToFloat64() - Error returned from NumStrDto.ParseNumStr(str). str= '%v' Error= %v", str, err)
 	}
 
 	numF64, err = strconv.ParseFloat(nDto.GetNumStr(), 64)
@@ -377,11 +375,10 @@ func (ns *NumStrUtility) ConvertStrToFloat64(str string) (float64, error) {
 	return numF64, nil
 }
 
-
 // ConvertInt64ToIntegerFloat64Value - Receives an int64 value and converts to a
 // float64 value.  All of the digits are positioned to the right of the decimal
 // place.
-func (ns *NumStrUtility) ConvertInt64ToIntegerFloat64Value(i64 int64) (float64, error){
+func (ns *NumStrUtility) ConvertInt64ToIntegerFloat64Value(i64 int64) (float64, error) {
 
 	f64 := float64(i64)
 
@@ -420,7 +417,7 @@ func (ns *NumStrUtility) ConvertInt64ToFractionalValue(i64 int64) (float64, erro
 //
 func (ns *NumStrUtility) ScaleNumStr(str string, precision uint, roundResult bool) (NumStrDto, error) {
 
-	return NumStrDto{}.NewPtr().SetPrecision(str,precision, roundResult)
+	return NumStrDto{}.NewPtr().SetPrecision(str, precision, roundResult)
 
 }
 

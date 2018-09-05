@@ -7,13 +7,13 @@ import (
 )
 
 func ExampleIntAryPwrByTwos_01(
-						baseStr, exponentStr, expectedResult string,
-							minResultPrecision, maxResultPrecision int) {
+	baseStr, exponentStr, expectedResult string,
+	minResultPrecision, maxResultPrecision int) {
 
 	iaBase, err := mathops.IntAry{}.NewNumStr(baseStr)
 
 	if err != nil {
-		fmt.Printf("Error returned by IntAry{}.NewNumStr(numStr). " +
+		fmt.Printf("Error returned by IntAry{}.NewNumStr(numStr). "+
 			"baseStr='%v' Error='%v' \n", baseStr, err.Error())
 		return
 	}
@@ -21,7 +21,7 @@ func ExampleIntAryPwrByTwos_01(
 	iaExponent, err := mathops.IntAry{}.NewNumStr(exponentStr)
 
 	if err != nil {
-		fmt.Printf("Error returned by IntAry{}.NewNumStr(exponentStr). " +
+		fmt.Printf("Error returned by IntAry{}.NewNumStr(exponentStr). "+
 			"exponentStr='%v' Error='%v' \n", exponentStr, err.Error())
 		return
 	}
@@ -31,19 +31,18 @@ func ExampleIntAryPwrByTwos_01(
 
 	t0 = time.Now()
 	err = mathops.IntAryMathPower{}.Pwr(
-					&iaBase,
-						&iaExponent,
-							minResultPrecision,
-								maxResultPrecision)
+		&iaBase,
+		&iaExponent,
+		minResultPrecision,
+		maxResultPrecision)
 
 	t1 = time.Now()
 
 	if err != nil {
-		fmt.Printf("Error returned by mathops.IntAryMathPower{}.Pwr(...). " +
+		fmt.Printf("Error returned by mathops.IntAryMathPower{}.Pwr(...). "+
 			"Error='%v' \n", err.Error())
 		return
 	}
-
 
 	actualResult := iaBase.GetNumStr()
 	timeStr := CodeDurationToStr(t1.Sub(t0))
@@ -66,12 +65,12 @@ func ExampleIntAryPwrByTwos_01(
 
 }
 
-func ExampleIntAryGetMagnitude_01(numStr string, expectedMagnitude int ) {
+func ExampleIntAryGetMagnitude_01(numStr string, expectedMagnitude int) {
 
 	iaNum, err := mathops.IntAry{}.NewNumStr(numStr)
 
 	if err != nil {
-		fmt.Printf("Error returned by IntAry{}.NewNumStr(numStr). " +
+		fmt.Printf("Error returned by IntAry{}.NewNumStr(numStr). "+
 			"numStr='%v' Error='%v' \n", numStr, err.Error())
 		return
 	}
@@ -79,7 +78,7 @@ func ExampleIntAryGetMagnitude_01(numStr string, expectedMagnitude int ) {
 	bInt, err := iaNum.GetBigInt()
 
 	if err != nil {
-		fmt.Printf("Error returned by iaNum.GetBigInt(). " +
+		fmt.Printf("Error returned by iaNum.GetBigInt(). "+
 			"Error='%v' \n", err.Error())
 		return
 	}
@@ -87,7 +86,7 @@ func ExampleIntAryGetMagnitude_01(numStr string, expectedMagnitude int ) {
 	bIMagnitude, err := mathops.BigIntMath{}.GetMagnitude(bInt)
 
 	if err != nil {
-		fmt.Printf("Error returned by BigIntMath{}.GetMagnitudeDigits(bInt). " +
+		fmt.Printf("Error returned by BigIntMath{}.GetMagnitudeDigits(bInt). "+
 			"Error='%v' \n", err.Error())
 		return
 	}
@@ -97,11 +96,10 @@ func ExampleIntAryGetMagnitude_01(numStr string, expectedMagnitude int ) {
 	iaMagnitude, err := iaNum.GetMagnitude()
 
 	if err != nil {
-		fmt.Printf("Error returned by iaNum.GetMagnitude(). " +
+		fmt.Printf("Error returned by iaNum.GetMagnitude(). "+
 			"Error='%v' \n", err.Error())
 		return
 	}
-
 
 	fmt.Println("       Target Number: ", numStr)
 	fmt.Println("    Actual Magnitude: ", magnitude)
@@ -110,7 +108,6 @@ func ExampleIntAryGetMagnitude_01(numStr string, expectedMagnitude int ) {
 	fmt.Println("-------------------------------------")
 	fmt.Println("BigIntMath Magnitude: ", bIMagnitude.Text(10))
 
-
 }
 
 func ExampleIntAryMultiplyPower_01(baseStr, exponentStr, expectedResultStr string, minPrecision, maxPrecision int) {
@@ -118,11 +115,10 @@ func ExampleIntAryMultiplyPower_01(baseStr, exponentStr, expectedResultStr strin
 	var t1 time.Time
 	var t0 time.Time
 
-
 	iaBase, err := mathops.IntAry{}.NewNumStr(baseStr)
 
 	if err != nil {
-		fmt.Printf("Error returned by IntAry{}.NewNumStr(baseStr). " +
+		fmt.Printf("Error returned by IntAry{}.NewNumStr(baseStr). "+
 			"baseStr='%v' Error='%v' \n", baseStr, err.Error())
 		return
 
@@ -131,7 +127,7 @@ func ExampleIntAryMultiplyPower_01(baseStr, exponentStr, expectedResultStr strin
 	iaExponent, err := mathops.IntAry{}.NewNumStr(exponentStr)
 
 	if err != nil {
-		fmt.Printf("Error returned by IntAry{}.NewNumStr(exponentStr). " +
+		fmt.Printf("Error returned by IntAry{}.NewNumStr(exponentStr). "+
 			"exponentStr='%v' Error='%v' \n", exponentStr, err.Error())
 		return
 
@@ -142,7 +138,7 @@ func ExampleIntAryMultiplyPower_01(baseStr, exponentStr, expectedResultStr strin
 	t1 = time.Now()
 
 	if err != nil {
-		fmt.Printf("Error returned by IntAryMathPower{}.PwrByMultiplication(...). " +
+		fmt.Printf("Error returned by IntAryMathPower{}.PwrByMultiplication(...). "+
 			"Error='%v' \n", err.Error())
 		return
 
@@ -175,7 +171,7 @@ func ExampleIntAryDivide_01(dividendStr, divisorStr, eQuotient string, minPrecis
 	dividend, err := mathops.IntAry{}.NewNumStr(dividendStr)
 
 	if err != nil {
-		fmt.Printf("Error returned by IntAry{}.NewNumStr(dividendStr). " +
+		fmt.Printf("Error returned by IntAry{}.NewNumStr(dividendStr). "+
 			"dividendStr='%v' Error='%v' \n", dividendStr, err.Error())
 		return
 
@@ -184,7 +180,7 @@ func ExampleIntAryDivide_01(dividendStr, divisorStr, eQuotient string, minPrecis
 	divisor, err := mathops.IntAry{}.NewNumStr(divisorStr)
 
 	if err != nil {
-		fmt.Printf("Error returned by IntAry{}.NewNumStr(divisorStr). " +
+		fmt.Printf("Error returned by IntAry{}.NewNumStr(divisorStr). "+
 			"divisorStr='%v' Error='%v' \n", divisorStr, err.Error())
 		return
 
@@ -197,8 +193,8 @@ func ExampleIntAryDivide_01(dividendStr, divisorStr, eQuotient string, minPrecis
 		maxPrecision)
 
 	if err != nil {
-		fmt.Printf("Error returned by IntAryMathDivide{}.Divide(). " +
-			"dividendStr='%v' divisorStr='%v' minPrecision='%v' maxPrecision='%v'" +
+		fmt.Printf("Error returned by IntAryMathDivide{}.Divide(). "+
+			"dividendStr='%v' divisorStr='%v' minPrecision='%v' maxPrecision='%v'"+
 			"Error='%v' \n",
 			dividendStr, divisorStr, minPrecision, maxPrecision, err.Error())
 
@@ -220,4 +216,3 @@ func ExampleIntAryDivide_01(dividendStr, divisorStr, eQuotient string, minPrecis
 	fmt.Println("          Divisor: ", divisorStr)
 
 }
-

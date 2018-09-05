@@ -25,21 +25,21 @@ func TestBigIntMathSubtract_SubtractPair_01(t *testing.T) {
 	minuendBiNum, err := BigIntNum{}.NewNumStr(minuendStr)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(minuendStr) " +
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(minuendStr) "+
 			"minuendStr='%v'  Error='%v'. ", minuendStr, err.Error())
 	}
 
 	subtrahendBiNum, err := BigIntNum{}.NewNumStr(subtrahendStr)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(subtrahendStr) " +
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(subtrahendStr) "+
 			"subtrahendStr='%v'  Error='%v'. ", subtrahendStr, err.Error())
 	}
 
 	expectedBigINum, err := BigIntNum{}.NewNumStr(expectedBigINumStr)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(expectedBigINumStr) " +
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(expectedBigINumStr) "+
 			"expectedBigINumStr='%v'  Error='%v'. ", expectedBigINumStr, err.Error())
 	}
 
@@ -98,21 +98,21 @@ func TestBigIntMathSubtract_SubtractPair_02(t *testing.T) {
 	minuendBiNum, err := BigIntNum{}.NewNumStr(minuendStr)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(minuendStr) " +
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(minuendStr) "+
 			"minuendStr='%v'  Error='%v'. ", minuendStr, err.Error())
 	}
 
 	subtrahendBiNum, err := BigIntNum{}.NewNumStr(subtrahendStr)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(subtrahendStr) " +
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(subtrahendStr) "+
 			"subtrahendStr='%v'  Error='%v'. ", subtrahendStr, err.Error())
 	}
 
 	expectedBigINum, err := BigIntNum{}.NewNumStr(expectedBigINumStr)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(expectedBigINumStr) " +
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(expectedBigINumStr) "+
 			"expectedBigINumStr='%v'  Error='%v'. ", expectedBigINumStr, err.Error())
 	}
 
@@ -171,21 +171,21 @@ func TestBigIntMathSubtract_SubtractPair_03(t *testing.T) {
 	minuendBiNum, err := BigIntNum{}.NewNumStr(minuendStr)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(minuendStr) " +
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(minuendStr) "+
 			"minuendStr='%v'  Error='%v'. ", minuendStr, err.Error())
 	}
 
 	subtrahendBiNum, err := BigIntNum{}.NewNumStr(subtrahendStr)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(subtrahendStr) " +
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(subtrahendStr) "+
 			"subtrahendStr='%v'  Error='%v'. ", subtrahendStr, err.Error())
 	}
 
 	expectedBigINum, err := BigIntNum{}.NewNumStr(expectedBigINumStr)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(expectedBigINumStr) " +
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(expectedBigINumStr) "+
 			"expectedBigINumStr='%v'  Error='%v'. ", expectedBigINumStr, err.Error())
 	}
 
@@ -244,21 +244,21 @@ func TestBigIntMathSubtract_SubtractPair_04(t *testing.T) {
 	minuendBiNum, err := BigIntNum{}.NewNumStr(minuendStr)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(minuendStr) " +
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(minuendStr) "+
 			"minuendStr='%v'  Error='%v'. ", minuendStr, err.Error())
 	}
 
 	subtrahendBiNum, err := BigIntNum{}.NewNumStr(subtrahendStr)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(subtrahendStr) " +
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(subtrahendStr) "+
 			"subtrahendStr='%v'  Error='%v'. ", subtrahendStr, err.Error())
 	}
 
 	expectedBigINum, err := BigIntNum{}.NewNumStr(expectedBigINumStr)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(expectedBigINumStr) " +
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(expectedBigINumStr) "+
 			"expectedBigINumStr='%v'  Error='%v'. ", expectedBigINumStr, err.Error())
 	}
 
@@ -317,21 +317,21 @@ func TestBigIntMathSubtract_SubtractPair_05(t *testing.T) {
 	minuendBiNum, err := BigIntNum{}.NewNumStr(minuendStr)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(minuendStr) " +
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(minuendStr) "+
 			"minuendStr='%v'  Error='%v'. ", minuendStr, err.Error())
 	}
 
 	subtrahendBiNum, err := BigIntNum{}.NewNumStr(subtrahendStr)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(subtrahendStr) " +
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(subtrahendStr) "+
 			"subtrahendStr='%v'  Error='%v'. ", subtrahendStr, err.Error())
 	}
 
 	expectedBigINum, err := BigIntNum{}.NewNumStr(expectedBigINumStr)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(expectedBigINumStr) " +
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(expectedBigINumStr) "+
 			"expectedBigINumStr='%v'  Error='%v'. ", expectedBigINumStr, err.Error())
 	}
 
@@ -390,21 +390,21 @@ func TestBigIntMathSubtract_SubtractPair_06(t *testing.T) {
 	minuendBiNum, err := BigIntNum{}.NewNumStr(minuendStr)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(minuendStr) " +
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(minuendStr) "+
 			"minuendStr='%v'  Error='%v'. ", minuendStr, err.Error())
 	}
 
 	subtrahendBiNum, err := BigIntNum{}.NewNumStr(subtrahendStr)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(subtrahendStr) " +
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(subtrahendStr) "+
 			"subtrahendStr='%v'  Error='%v'. ", subtrahendStr, err.Error())
 	}
 
 	expectedBigINum, err := BigIntNum{}.NewNumStr(expectedBigINumStr)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(expectedBigINumStr) " +
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(expectedBigINumStr) "+
 			"expectedBigINumStr='%v'  Error='%v'. ", expectedBigINumStr, err.Error())
 	}
 
@@ -463,21 +463,21 @@ func TestBigIntMathSubtract_SubtractPair_07(t *testing.T) {
 	minuendBiNum, err := BigIntNum{}.NewNumStr(minuendStr)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(minuendStr) " +
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(minuendStr) "+
 			"minuendStr='%v'  Error='%v'. ", minuendStr, err.Error())
 	}
 
 	subtrahendBiNum, err := BigIntNum{}.NewNumStr(subtrahendStr)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(subtrahendStr) " +
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(subtrahendStr) "+
 			"subtrahendStr='%v'  Error='%v'. ", subtrahendStr, err.Error())
 	}
 
 	expectedBigINum, err := BigIntNum{}.NewNumStr(expectedBigINumStr)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(expectedBigINumStr) " +
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(expectedBigINumStr) "+
 			"expectedBigINumStr='%v'  Error='%v'. ", expectedBigINumStr, err.Error())
 	}
 
@@ -536,21 +536,21 @@ func TestBigIntMathSubtract_SubtractPair_08(t *testing.T) {
 	minuendBiNum, err := BigIntNum{}.NewNumStr(minuendStr)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(minuendStr) " +
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(minuendStr) "+
 			"minuendStr='%v'  Error='%v'. ", minuendStr, err.Error())
 	}
 
 	subtrahendBiNum, err := BigIntNum{}.NewNumStr(subtrahendStr)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(subtrahendStr) " +
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(subtrahendStr) "+
 			"subtrahendStr='%v'  Error='%v'. ", subtrahendStr, err.Error())
 	}
 
 	expectedBigINum, err := BigIntNum{}.NewNumStr(expectedBigINumStr)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(expectedBigINumStr) " +
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(expectedBigINumStr) "+
 			"expectedBigINumStr='%v'  Error='%v'. ", expectedBigINumStr, err.Error())
 	}
 
@@ -609,21 +609,21 @@ func TestBigIntMathSubtract_SubtractPair_09(t *testing.T) {
 	minuendBiNum, err := BigIntNum{}.NewNumStr(minuendStr)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(minuendStr) " +
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(minuendStr) "+
 			"minuendStr='%v'  Error='%v'. ", minuendStr, err.Error())
 	}
 
 	subtrahendBiNum, err := BigIntNum{}.NewNumStr(subtrahendStr)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(subtrahendStr) " +
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(subtrahendStr) "+
 			"subtrahendStr='%v'  Error='%v'. ", subtrahendStr, err.Error())
 	}
 
 	expectedBigINum, err := BigIntNum{}.NewNumStr(expectedBigINumStr)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(expectedBigINumStr) " +
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(expectedBigINumStr) "+
 			"expectedBigINumStr='%v'  Error='%v'. ", expectedBigINumStr, err.Error())
 	}
 
@@ -681,7 +681,7 @@ func TestBigIntMathSubtract_SubtractPair_10(t *testing.T) {
 	minuendBiNum, err := BigIntNum{}.NewNumStr(minuendStr)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(minuendStr) " +
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(minuendStr) "+
 			"minuendStr='%v'  Error='%v'. ", minuendStr, err.Error())
 	}
 
@@ -697,19 +697,18 @@ func TestBigIntMathSubtract_SubtractPair_10(t *testing.T) {
 	err = minuendBiNum.SetNumericSeparatorsDto(expectedNumSeps)
 
 	if err != nil {
-		t.Errorf("Error returned by nDtoMinuend.SetNumericSeparatorsDto(expectedNumSeps). " +
+		t.Errorf("Error returned by nDtoMinuend.SetNumericSeparatorsDto(expectedNumSeps). "+
 			"Error='%v' ", err.Error())
 	}
 
 	subtrahendBiNum, err := BigIntNum{}.NewNumStr(subtrahendStr)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(subtrahendStr) " +
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(subtrahendStr) "+
 			"subtrahendStr='%v'  Error='%v'. ", subtrahendStr, err.Error())
 	}
 
 	bPair := BigIntPair{}.NewBigIntNum(minuendBiNum, subtrahendBiNum)
-
 
 	result := BigIntMathSubtract{}.SubtractPair(bPair)
 
@@ -728,5 +727,3 @@ func TestBigIntMathSubtract_SubtractPair_10(t *testing.T) {
 	}
 
 }
-
-

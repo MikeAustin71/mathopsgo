@@ -1,8 +1,8 @@
 package mathops
 
 import (
-	"testing"
 	"math/big"
+	"testing"
 )
 
 func TestBigIntNum_Floor_01(t *testing.T) {
@@ -13,7 +13,7 @@ func TestBigIntNum_Floor_01(t *testing.T) {
 	bINum1, err := BigIntNum{}.NewNumStr(nStr)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(nStr). " +
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(nStr). "+
 			" nStr='%v'  Error='%v'",
 			nStr, err.Error())
 	}
@@ -23,13 +23,13 @@ func TestBigIntNum_Floor_01(t *testing.T) {
 	actualNumStr := floor.GetNumStr()
 
 	if expectedNumStr != actualNumStr {
-		t.Errorf("Error: Expected Floor NumStr='%v'. " +
+		t.Errorf("Error: Expected Floor NumStr='%v'. "+
 			"Instead, NumStr='%v'. ",
-			expectedNumStr, actualNumStr )
+			expectedNumStr, actualNumStr)
 	}
 
 	if expectedPrecision != floor.GetPrecisionUint() {
-		t.Errorf("Error: Expected Floor precision='%v' " +
+		t.Errorf("Error: Expected Floor precision='%v' "+
 			"Instead, precision='%v'",
 			expectedPrecision, floor.GetPrecisionUint())
 	}
@@ -43,7 +43,7 @@ func TestBigIntNum_Floor_02(t *testing.T) {
 	bINum1, err := BigIntNum{}.NewNumStr(nStr)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(nStr). " +
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(nStr). "+
 			" nStr='%v'  Error='%v'",
 			nStr, err.Error())
 	}
@@ -53,13 +53,13 @@ func TestBigIntNum_Floor_02(t *testing.T) {
 	actualNumStr := floor.GetNumStr()
 
 	if expectedNumStr != actualNumStr {
-		t.Errorf("Error: Expected Floor NumStr='%v'. " +
+		t.Errorf("Error: Expected Floor NumStr='%v'. "+
 			"Instead, NumStr='%v'. ",
-			expectedNumStr, actualNumStr )
+			expectedNumStr, actualNumStr)
 	}
 
 	if expectedPrecision != floor.GetPrecisionUint() {
-		t.Errorf("Error: Expected Floor precision='%v' " +
+		t.Errorf("Error: Expected Floor precision='%v' "+
 			"Instead, precision='%v'",
 			expectedPrecision, floor.GetPrecisionUint())
 	}
@@ -73,7 +73,7 @@ func TestBigIntNum_Floor_03(t *testing.T) {
 	bINum1, err := BigIntNum{}.NewNumStr(nStr)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(nStr). " +
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(nStr). "+
 			" nStr='%v'  Error='%v'",
 			nStr, err.Error())
 	}
@@ -83,13 +83,13 @@ func TestBigIntNum_Floor_03(t *testing.T) {
 	actualNumStr := floor.GetNumStr()
 
 	if expectedNumStr != actualNumStr {
-		t.Errorf("Error: Expected Floor NumStr='%v'. " +
+		t.Errorf("Error: Expected Floor NumStr='%v'. "+
 			"Instead, NumStr='%v'. ",
-			expectedNumStr, actualNumStr )
+			expectedNumStr, actualNumStr)
 	}
 
 	if expectedPrecision != floor.GetPrecisionUint() {
-		t.Errorf("Error: Expected Floor precision='%v' " +
+		t.Errorf("Error: Expected Floor precision='%v' "+
 			"Instead, precision='%v'",
 			expectedPrecision, floor.GetPrecisionUint())
 	}
@@ -103,7 +103,7 @@ func TestBigIntNum_Floor_04(t *testing.T) {
 	bINum1, err := BigIntNum{}.NewNumStr(nStr)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(nStr). " +
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(nStr). "+
 			" nStr='%v'  Error='%v'",
 			nStr, err.Error())
 	}
@@ -113,13 +113,13 @@ func TestBigIntNum_Floor_04(t *testing.T) {
 	actualNumStr := floor.GetNumStr()
 
 	if expectedNumStr != actualNumStr {
-		t.Errorf("Error: Expected Floor NumStr='%v'. " +
+		t.Errorf("Error: Expected Floor NumStr='%v'. "+
 			"Instead, NumStr='%v'. ",
-			expectedNumStr, actualNumStr )
+			expectedNumStr, actualNumStr)
 	}
 
 	if expectedPrecision != floor.GetPrecisionUint() {
-		t.Errorf("Error: Expected Floor precision='%v' " +
+		t.Errorf("Error: Expected Floor precision='%v' "+
 			"Instead, precision='%v'",
 			expectedPrecision, floor.GetPrecisionUint())
 	}
@@ -133,7 +133,7 @@ func TestBigIntNum_Floor_05(t *testing.T) {
 	bINum1, err := BigIntNum{}.NewNumStr(nStr)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(nStr). " +
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(nStr). "+
 			" nStr='%v'  Error='%v'",
 			nStr, err.Error())
 	}
@@ -143,13 +143,13 @@ func TestBigIntNum_Floor_05(t *testing.T) {
 	actualNumStr := floor.GetNumStr()
 
 	if expectedNumStr != actualNumStr {
-		t.Errorf("Error: Expected Floor NumStr='%v'. " +
+		t.Errorf("Error: Expected Floor NumStr='%v'. "+
 			"Instead, NumStr='%v'. ",
-			expectedNumStr, actualNumStr )
+			expectedNumStr, actualNumStr)
 	}
 
 	if expectedPrecision != floor.GetPrecisionUint() {
-		t.Errorf("Error: Expected Floor precision='%v' " +
+		t.Errorf("Error: Expected Floor precision='%v' "+
 			"Instead, precision='%v'",
 			expectedPrecision, floor.GetPrecisionUint())
 	}
@@ -163,7 +163,7 @@ func TestBigIntNum_Floor_06(t *testing.T) {
 	bINum1, err := BigIntNum{}.NewNumStr(nStr)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(nStr). " +
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(nStr). "+
 			" nStr='%v'  Error='%v'",
 			nStr, err.Error())
 	}
@@ -173,13 +173,13 @@ func TestBigIntNum_Floor_06(t *testing.T) {
 	actualNumStr := floor.GetNumStr()
 
 	if expectedNumStr != actualNumStr {
-		t.Errorf("Error: Expected Floor NumStr='%v'. " +
+		t.Errorf("Error: Expected Floor NumStr='%v'. "+
 			"Instead, NumStr='%v'. ",
-			expectedNumStr, actualNumStr )
+			expectedNumStr, actualNumStr)
 	}
 
 	if expectedPrecision != floor.GetPrecisionUint() {
-		t.Errorf("Error: Expected Floor precision='%v' " +
+		t.Errorf("Error: Expected Floor precision='%v' "+
 			"Instead, precision='%v'",
 			expectedPrecision, floor.GetPrecisionUint())
 	}
@@ -193,7 +193,7 @@ func TestBigIntNum_Floor_07(t *testing.T) {
 	bINum1, err := BigIntNum{}.NewNumStr(nStr)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(nStr). " +
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(nStr). "+
 			" nStr='%v'  Error='%v'",
 			nStr, err.Error())
 	}
@@ -203,13 +203,13 @@ func TestBigIntNum_Floor_07(t *testing.T) {
 	actualNumStr := floor.GetNumStr()
 
 	if expectedNumStr != actualNumStr {
-		t.Errorf("Error: Expected Floor NumStr='%v'. " +
+		t.Errorf("Error: Expected Floor NumStr='%v'. "+
 			"Instead, NumStr='%v'. ",
-			expectedNumStr, actualNumStr )
+			expectedNumStr, actualNumStr)
 	}
 
 	if expectedPrecision != floor.GetPrecisionUint() {
-		t.Errorf("Error: Expected Floor precision='%v' " +
+		t.Errorf("Error: Expected Floor precision='%v' "+
 			"Instead, precision='%v'",
 			expectedPrecision, floor.GetPrecisionUint())
 	}
@@ -223,7 +223,7 @@ func TestBigIntNum_Floor_08(t *testing.T) {
 	bINum1, err := BigIntNum{}.NewNumStr(nStr)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(nStr). " +
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(nStr). "+
 			" nStr='%v'  Error='%v'",
 			nStr, err.Error())
 	}
@@ -233,13 +233,13 @@ func TestBigIntNum_Floor_08(t *testing.T) {
 	actualNumStr := floor.GetNumStr()
 
 	if expectedNumStr != actualNumStr {
-		t.Errorf("Error: Expected Floor NumStr='%v'. " +
+		t.Errorf("Error: Expected Floor NumStr='%v'. "+
 			"Instead, NumStr='%v'. ",
-			expectedNumStr, actualNumStr )
+			expectedNumStr, actualNumStr)
 	}
 
 	if expectedPrecision != floor.GetPrecisionUint() {
-		t.Errorf("Error: Expected Floor precision='%v' " +
+		t.Errorf("Error: Expected Floor precision='%v' "+
 			"Instead, precision='%v'",
 			expectedPrecision, floor.GetPrecisionUint())
 	}
@@ -253,7 +253,7 @@ func TestBigIntNum_Floor_09(t *testing.T) {
 	bINum1, err := BigIntNum{}.NewNumStr(nStr)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(nStr). " +
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(nStr). "+
 			" nStr='%v'  Error='%v'",
 			nStr, err.Error())
 	}
@@ -263,13 +263,13 @@ func TestBigIntNum_Floor_09(t *testing.T) {
 	actualNumStr := floor.GetNumStr()
 
 	if expectedNumStr != actualNumStr {
-		t.Errorf("Error: Expected Floor NumStr='%v'. " +
+		t.Errorf("Error: Expected Floor NumStr='%v'. "+
 			"Instead, NumStr='%v'. ",
-			expectedNumStr, actualNumStr )
+			expectedNumStr, actualNumStr)
 	}
 
 	if expectedPrecision != floor.GetPrecisionUint() {
-		t.Errorf("Error: Expected Floor precision='%v' " +
+		t.Errorf("Error: Expected Floor precision='%v' "+
 			"Instead, precision='%v'",
 			expectedPrecision, floor.GetPrecisionUint())
 	}
@@ -283,7 +283,7 @@ func TestBigIntNum_Floor_10(t *testing.T) {
 	bINum1, err := BigIntNum{}.NewNumStr(nStr)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(nStr). " +
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(nStr). "+
 			" nStr='%v'  Error='%v'",
 			nStr, err.Error())
 	}
@@ -293,13 +293,13 @@ func TestBigIntNum_Floor_10(t *testing.T) {
 	actualNumStr := floor.GetNumStr()
 
 	if expectedNumStr != actualNumStr {
-		t.Errorf("Error: Expected Floor NumStr='%v'. " +
+		t.Errorf("Error: Expected Floor NumStr='%v'. "+
 			"Instead, NumStr='%v'. ",
-			expectedNumStr, actualNumStr )
+			expectedNumStr, actualNumStr)
 	}
 
 	if expectedPrecision != floor.GetPrecisionUint() {
-		t.Errorf("Error: Expected Floor precision='%v' " +
+		t.Errorf("Error: Expected Floor precision='%v' "+
 			"Instead, precision='%v'",
 			expectedPrecision, floor.GetPrecisionUint())
 	}
@@ -313,7 +313,7 @@ func TestBigIntNum_Floor_11(t *testing.T) {
 	bINum1, err := BigIntNum{}.NewNumStr(nStr)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(nStr). " +
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(nStr). "+
 			" nStr='%v'  Error='%v'",
 			nStr, err.Error())
 	}
@@ -323,13 +323,13 @@ func TestBigIntNum_Floor_11(t *testing.T) {
 	actualNumStr := floor.GetNumStr()
 
 	if expectedNumStr != actualNumStr {
-		t.Errorf("Error: Expected Floor NumStr='%v'. " +
+		t.Errorf("Error: Expected Floor NumStr='%v'. "+
 			"Instead, NumStr='%v'. ",
-			expectedNumStr, actualNumStr )
+			expectedNumStr, actualNumStr)
 	}
 
 	if expectedPrecision != floor.GetPrecisionUint() {
-		t.Errorf("Error: Expected Floor precision='%v' " +
+		t.Errorf("Error: Expected Floor precision='%v' "+
 			"Instead, precision='%v'",
 			expectedPrecision, floor.GetPrecisionUint())
 	}
@@ -343,7 +343,7 @@ func TestBigIntNum_Floor_12(t *testing.T) {
 	bINum1, err := BigIntNum{}.NewNumStr(nStr)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(nStr). " +
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(nStr). "+
 			" nStr='%v'  Error='%v'",
 			nStr, err.Error())
 	}
@@ -353,13 +353,13 @@ func TestBigIntNum_Floor_12(t *testing.T) {
 	actualNumStr := floor.GetNumStr()
 
 	if expectedNumStr != actualNumStr {
-		t.Errorf("Error: Expected Floor NumStr='%v'. " +
+		t.Errorf("Error: Expected Floor NumStr='%v'. "+
 			"Instead, NumStr='%v'. ",
-			expectedNumStr, actualNumStr )
+			expectedNumStr, actualNumStr)
 	}
 
 	if expectedPrecision != floor.GetPrecisionUint() {
-		t.Errorf("Error: Expected Floor precision='%v' " +
+		t.Errorf("Error: Expected Floor precision='%v' "+
 			"Instead, precision='%v'",
 			expectedPrecision, floor.GetPrecisionUint())
 	}
@@ -373,7 +373,7 @@ func TestBigIntNum_Floor_13(t *testing.T) {
 	bINum1, err := BigIntNum{}.NewNumStr(nStr)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(nStr). " +
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(nStr). "+
 			" nStr='%v'  Error='%v'",
 			nStr, err.Error())
 	}
@@ -383,13 +383,13 @@ func TestBigIntNum_Floor_13(t *testing.T) {
 	actualNumStr := floor.GetNumStr()
 
 	if expectedNumStr != actualNumStr {
-		t.Errorf("Error: Expected Floor NumStr='%v'. " +
+		t.Errorf("Error: Expected Floor NumStr='%v'. "+
 			"Instead, NumStr='%v'. ",
-			expectedNumStr, actualNumStr )
+			expectedNumStr, actualNumStr)
 	}
 
 	if expectedPrecision != floor.GetPrecisionUint() {
-		t.Errorf("Error: Expected Floor precision='%v' " +
+		t.Errorf("Error: Expected Floor precision='%v' "+
 			"Instead, precision='%v'",
 			expectedPrecision, floor.GetPrecisionUint())
 	}
@@ -403,7 +403,7 @@ func TestBigIntNum_Floor_14(t *testing.T) {
 	bINum1, err := BigIntNum{}.NewNumStr(nStr)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(nStr). " +
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(nStr). "+
 			" nStr='%v'  Error='%v'",
 			nStr, err.Error())
 	}
@@ -413,13 +413,13 @@ func TestBigIntNum_Floor_14(t *testing.T) {
 	actualNumStr := floor.GetNumStr()
 
 	if expectedNumStr != actualNumStr {
-		t.Errorf("Error: Expected Floor NumStr='%v'. " +
+		t.Errorf("Error: Expected Floor NumStr='%v'. "+
 			"Instead, NumStr='%v'. ",
-			expectedNumStr, actualNumStr )
+			expectedNumStr, actualNumStr)
 	}
 
 	if expectedPrecision != floor.GetPrecisionUint() {
-		t.Errorf("Error: Expected Floor precision='%v' " +
+		t.Errorf("Error: Expected Floor precision='%v' "+
 			"Instead, precision='%v'",
 			expectedPrecision, floor.GetPrecisionUint())
 	}
@@ -433,7 +433,7 @@ func TestBigIntNum_Floor_15(t *testing.T) {
 	bINum1, err := BigIntNum{}.NewNumStr(nStr)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(nStr). " +
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(nStr). "+
 			" nStr='%v'  Error='%v'",
 			nStr, err.Error())
 	}
@@ -443,13 +443,13 @@ func TestBigIntNum_Floor_15(t *testing.T) {
 	actualNumStr := floor.GetNumStr()
 
 	if expectedNumStr != actualNumStr {
-		t.Errorf("Error: Expected Floor NumStr='%v'. " +
+		t.Errorf("Error: Expected Floor NumStr='%v'. "+
 			"Instead, NumStr='%v'. ",
-			expectedNumStr, actualNumStr )
+			expectedNumStr, actualNumStr)
 	}
 
 	if expectedPrecision != floor.GetPrecisionUint() {
-		t.Errorf("Error: Expected Floor precision='%v' " +
+		t.Errorf("Error: Expected Floor precision='%v' "+
 			"Instead, precision='%v'",
 			expectedPrecision, floor.GetPrecisionUint())
 	}

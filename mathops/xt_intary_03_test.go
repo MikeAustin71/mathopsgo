@@ -4,7 +4,6 @@ import (
 	"testing"
 )
 
-
 func TestIntAry_CompareSignedValues_01(t *testing.T) {
 
 	nStr1 := "451.3"
@@ -559,7 +558,7 @@ func TestIntAry_CopyIn_02(t *testing.T) {
 	}
 
 	if iaStats.DecimalSeparator != '.' {
-		t.Errorf("Error Expected ia DecimalSeparator= '.'  .   Instead, ia DecimalSeparator= '%v' .",  iaStats.DecimalSeparator)
+		t.Errorf("Error Expected ia DecimalSeparator= '.'  .   Instead, ia DecimalSeparator= '%v' .", iaStats.DecimalSeparator)
 	}
 
 	for i := 0; i < ia.GetIntAryLength(); i++ {
@@ -1417,7 +1416,7 @@ func TestIntAry_DivideThisBy_09(t *testing.T) {
 	ia2 := IntAry{}.New()
 	ia2.SetIntAryWithNumStr(divisor)
 
-	quotient, err := ia1.DivideThisBy(&ia2, 0,maxPrecision)
+	quotient, err := ia1.DivideThisBy(&ia2, 0, maxPrecision)
 
 	if err != nil {
 		t.Errorf("Error returned from ia1.DivideThisBy(&ia2, maxPrecision). Error= %v", err)
@@ -1631,7 +1630,6 @@ func TestIntAry_DivideThisBy_15(t *testing.T) {
 
 }
 
-
 func TestIntAry_DivideThisBy_16(t *testing.T) {
 	// Test Condition were actual decimal places are
 	// 21+ and maxPrecision is set to zero
@@ -1647,7 +1645,7 @@ func TestIntAry_DivideThisBy_16(t *testing.T) {
 	ia2 := IntAry{}.New()
 	ia2.SetIntAryWithNumStr(divisor)
 
-	quotient, err := ia1.DivideThisBy(&ia2,0, maxPrecision)
+	quotient, err := ia1.DivideThisBy(&ia2, 0, maxPrecision)
 
 	if err != nil {
 		t.Errorf("Error returned from ia1.DivideThisBy(&ia2, maxPrecision). Error= %v", err)

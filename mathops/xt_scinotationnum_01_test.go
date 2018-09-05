@@ -21,7 +21,7 @@ func TestSciNotationNum_SetNumStr_01(t *testing.T) {
 	resultStr, err := sciNot1.GetSciNotationStr(mantissaLen)
 
 	if err != nil {
-		t.Errorf("Error returned by sciNot1.GetSciNotationStr(mantissaLen). " +
+		t.Errorf("Error returned by sciNot1.GetSciNotationStr(mantissaLen). "+
 			"Error='%v'", err.Error())
 	}
 

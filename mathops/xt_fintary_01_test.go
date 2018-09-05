@@ -1,4 +1,3 @@
-
 package mathops
 
 import (
@@ -8,8 +7,8 @@ import (
 func TestFracIntAry_GetRationalValue_01(t *testing.T) {
 	numStrNum := "2"
 	numStrDenom := "3"
-  eFrac := "0.66666666666666666666666666666667"
-  precision := 32
+	eFrac := "0.66666666666666666666666666666667"
+	precision := 32
 	fIary, _ := FracIntAry{}.NewNumStrs(numStrNum, numStrDenom)
 
 	ratNum, err := fIary.GetRationalValue(precision)
@@ -41,8 +40,8 @@ func TestFracIntAry_GetRationalValue_01(t *testing.T) {
 func TestFracIntAry_GetRationalValue_02(t *testing.T) {
 	numStrNum := "3"
 	numStrDenom := "4"
-  eFrac := "0.75"
-  precision:= 2
+	eFrac := "0.75"
+	precision := 2
 	fIary, _ := FracIntAry{}.NewNumStrs(numStrNum, numStrDenom)
 
 	ratNum, err := fIary.GetRationalValue(precision)
@@ -75,9 +74,9 @@ func TestFracIntAry_GetRationalValue_03(t *testing.T) {
 	numStrNum := "1000"
 	eNum := "1"
 	numStrDenom := "2000"
-	eDenom:= "2"
-  eFrac := "0.5"
-  precision := 1
+	eDenom := "2"
+	eFrac := "0.5"
+	precision := 1
 	fIary, _ := FracIntAry{}.NewNumStrs(numStrNum, numStrDenom)
 
 	ratNum, err := fIary.GetRationalValue(precision)
@@ -110,9 +109,9 @@ func TestFracIntAry_GetRationalValue_04(t *testing.T) {
 	numStrNum := "9.24"
 	eNum := "291115311909262759924385633270321361058601"
 	numStrDenom := "15.87"
-	eDenom:= "500000000000000000000000000000000000000000"
-  eFrac := "0.582230623818525519848771266540642722117202"
-  precision := 42
+	eDenom := "500000000000000000000000000000000000000000"
+	eFrac := "0.582230623818525519848771266540642722117202"
+	precision := 42
 	fIary, _ := FracIntAry{}.NewNumStrs(numStrNum, numStrDenom)
 
 	ratNum, err := fIary.GetRationalValue(precision)
@@ -136,7 +135,7 @@ func TestFracIntAry_GetRationalValue_04(t *testing.T) {
 	fStr := ratNum.FloatString(precision)
 
 	if eFrac != fStr {
-		t.Errorf("Expected %v-digit decimal string = %v  .   Instead, decimal string = %v .",precision, eFrac, fStr)
+		t.Errorf("Expected %v-digit decimal string = %v  .   Instead, decimal string = %v .", precision, eFrac, fStr)
 	}
 
 }
@@ -145,7 +144,7 @@ func TestFracIntAry_GetRationalValue_05(t *testing.T) {
 	numStrNum := "3"
 	numStrDenom := "4"
 	eFrac := "0.75"
-	precision:= 2
+	precision := 2
 	iaNum, _ := IntAry{}.NewNumStr(numStrNum)
 
 	iaDenom, _ := IntAry{}.NewNumStr(numStrDenom)
@@ -182,7 +181,7 @@ func TestFracIntAry_GetRationalValue_06(t *testing.T) {
 	numStrNum := "-3"
 	numStrDenom := "4"
 	eFrac := "-0.75"
-	precision:= 2
+	precision := 2
 	iaNum, _ := IntAry{}.NewNumStr(numStrNum)
 
 	iaDenom, _ := IntAry{}.NewNumStr(numStrDenom)
@@ -249,7 +248,7 @@ func TestFracIntAry_NewFracIntAry_01(t *testing.T) {
 	iaNum, err := IntAry{}.NewNumStr(numStr)
 
 	if err != nil {
-		t.Errorf("Error returned by IntAry{}.NewNumStr(numStr). " +
+		t.Errorf("Error returned by IntAry{}.NewNumStr(numStr). "+
 			"numStr='%v' Error='%v' ", numStr, err.Error())
 	}
 
@@ -276,7 +275,7 @@ func TestFracIntAry_NewFracIntAry_02(t *testing.T) {
 	iaNum, err := IntAry{}.NewNumStr(numStr)
 
 	if err != nil {
-		t.Errorf("Error returned by IntAry{}.NewNumStr(numStr). " +
+		t.Errorf("Error returned by IntAry{}.NewNumStr(numStr). "+
 			"numStr='%v' Error='%v' ", numStr, err.Error())
 	}
 
@@ -303,7 +302,7 @@ func TestFracIntAry_NewFracIntAry_03(t *testing.T) {
 	iaNum, err := IntAry{}.NewNumStr(numStr)
 
 	if err != nil {
-		t.Errorf("Error returned by IntAry{}.NewNumStr(numStr). " +
+		t.Errorf("Error returned by IntAry{}.NewNumStr(numStr). "+
 			"numStr='%v' Error='%v' ", numStr, err.Error())
 	}
 
@@ -330,7 +329,7 @@ func TestFracIntAry_NewFracIntAry_04(t *testing.T) {
 	iaNum, err := IntAry{}.NewNumStr(numStr)
 
 	if err != nil {
-		t.Errorf("Error returned by IntAry{}.NewNumStr(numStr). " +
+		t.Errorf("Error returned by IntAry{}.NewNumStr(numStr). "+
 			"numStr='%v' Error='%v' ", numStr, err.Error())
 	}
 
@@ -357,7 +356,7 @@ func TestFracIntAry_NewFracIntAry_05(t *testing.T) {
 	iaNum, err := IntAry{}.NewNumStr(numStr)
 
 	if err != nil {
-		t.Errorf("Error returned by IntAry{}.NewNumStr(numStr). " +
+		t.Errorf("Error returned by IntAry{}.NewNumStr(numStr). "+
 			"numStr='%v' Error='%v' ", numStr, err.Error())
 	}
 
@@ -384,7 +383,7 @@ func TestFracIntAry_NewFracIntAry_06(t *testing.T) {
 	iaNum, err := IntAry{}.NewNumStr(numStr)
 
 	if err != nil {
-		t.Errorf("Error returned by IntAry{}.NewNumStr(numStr). " +
+		t.Errorf("Error returned by IntAry{}.NewNumStr(numStr). "+
 			"numStr='%v' Error='%v' ", numStr, err.Error())
 	}
 

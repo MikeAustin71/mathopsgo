@@ -1,13 +1,13 @@
 package mathops
 
 import (
-	"math/big"
 	"fmt"
+	"math/big"
 )
 
 type BigIntMath struct {
-	Input 		*big.Int
-	Output		*big.Int
+	Input  *big.Int
+	Output *big.Int
 }
 
 // GetMagnitude - Returns the magnitude of a *big.Int number passed as an input
@@ -43,7 +43,7 @@ func (bIntMath BigIntMath) GetMagnitude(target *big.Int) (*big.Int, error) {
 	if compareResult == -1 {
 		ePrefix := "BigIntMath.GetMagnitude() "
 		return big.NewInt(0),
-			fmt.Errorf(ePrefix + "Error: Input parameter 'target' is a negative number. " +
+			fmt.Errorf(ePrefix+"Error: Input parameter 'target' is a negative number. "+
 				"target='%v' ", target.Text(10))
 	}
 
@@ -52,7 +52,7 @@ func (bIntMath BigIntMath) GetMagnitude(target *big.Int) (*big.Int, error) {
 	}
 
 	// Conversion constant 3.3219281
-	conversionConst := BigIntNum{}.NewInt64Exponent(33219281, -7 )
+	conversionConst := BigIntNum{}.NewInt64Exponent(33219281, -7)
 	biNumBitLen := BigIntNum{}.NewInt64Exponent(int64(target.BitLen()), 0)
 
 	bINumNextMag, _ :=

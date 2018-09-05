@@ -2,7 +2,7 @@ package mathops
 
 import (
 	"testing"
-	)
+)
 
 func TestIntAryMathPower_PwrByMultiplication_01(t *testing.T) {
 
@@ -17,7 +17,7 @@ func TestIntAryMathPower_PwrByMultiplication_01(t *testing.T) {
 	iaBase, err := IntAry{}.NewNumStr(baseStr)
 
 	if err != nil {
-		t.Errorf("Error returned by IntAry{}.NewNumStr(baseStr). " +
+		t.Errorf("Error returned by IntAry{}.NewNumStr(baseStr). "+
 			"baseStr='%v' Error='%v' \n", baseStr, err.Error())
 		return
 
@@ -26,7 +26,7 @@ func TestIntAryMathPower_PwrByMultiplication_01(t *testing.T) {
 	iaExponent, err := IntAry{}.NewNumStr(exponentStr)
 
 	if err != nil {
-		t.Errorf("Error returned by IntAry{}.NewNumStr(exponentStr). " +
+		t.Errorf("Error returned by IntAry{}.NewNumStr(exponentStr). "+
 			"exponentStr='%v' Error='%v' \n", exponentStr, err.Error())
 		return
 
@@ -35,7 +35,7 @@ func TestIntAryMathPower_PwrByMultiplication_01(t *testing.T) {
 	actualResult, err := IntAryMathPower{}.PwrByMultiplication(&iaBase, &iaExponent, minPrecision, maxPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by IntAryMathPower{}.PwrByMultiplication(...). " +
+		t.Errorf("Error returned by IntAryMathPower{}.PwrByMultiplication(...). "+
 			"Error='%v' \n", err.Error())
 		return
 
@@ -62,7 +62,7 @@ func TestIntAryMathPower_PwrByMultiplication_02(t *testing.T) {
 	iaBase, err := IntAry{}.NewNumStr(baseStr)
 
 	if err != nil {
-		t.Errorf("Error returned by IntAry{}.NewNumStr(baseStr). " +
+		t.Errorf("Error returned by IntAry{}.NewNumStr(baseStr). "+
 			"baseStr='%v' Error='%v' \n", baseStr, err.Error())
 		return
 
@@ -71,7 +71,7 @@ func TestIntAryMathPower_PwrByMultiplication_02(t *testing.T) {
 	iaExponent, err := IntAry{}.NewNumStr(exponentStr)
 
 	if err != nil {
-		t.Errorf("Error returned by IntAry{}.NewNumStr(exponentStr). " +
+		t.Errorf("Error returned by IntAry{}.NewNumStr(exponentStr). "+
 			"exponentStr='%v' Error='%v' \n", exponentStr, err.Error())
 		return
 
@@ -80,7 +80,7 @@ func TestIntAryMathPower_PwrByMultiplication_02(t *testing.T) {
 	actualResult, err := IntAryMathPower{}.PwrByMultiplication(&iaBase, &iaExponent, minPrecision, maxPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by IntAryMathPower{}.PwrByMultiplication(...). " +
+		t.Errorf("Error returned by IntAryMathPower{}.PwrByMultiplication(...). "+
 			"Error='%v' \n", err.Error())
 		return
 
@@ -107,7 +107,7 @@ func TestIntAryMathPower_PwrByMultiplication_03(t *testing.T) {
 	iaBase, err := IntAry{}.NewNumStr(baseStr)
 
 	if err != nil {
-		t.Errorf("Error returned by IntAry{}.NewNumStr(baseStr). " +
+		t.Errorf("Error returned by IntAry{}.NewNumStr(baseStr). "+
 			"baseStr='%v' Error='%v' \n", baseStr, err.Error())
 		return
 
@@ -116,7 +116,7 @@ func TestIntAryMathPower_PwrByMultiplication_03(t *testing.T) {
 	iaExponent, err := IntAry{}.NewNumStr(exponentStr)
 
 	if err != nil {
-		t.Errorf("Error returned by IntAry{}.NewNumStr(exponentStr). " +
+		t.Errorf("Error returned by IntAry{}.NewNumStr(exponentStr). "+
 			"exponentStr='%v' Error='%v' \n", exponentStr, err.Error())
 		return
 
@@ -125,7 +125,7 @@ func TestIntAryMathPower_PwrByMultiplication_03(t *testing.T) {
 	actualResult, err := IntAryMathPower{}.PwrByMultiplication(&iaBase, &iaExponent, minPrecision, maxPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by IntAryMathPower{}.PwrByMultiplication(...). " +
+		t.Errorf("Error returned by IntAryMathPower{}.PwrByMultiplication(...). "+
 			"Error='%v' \n", err.Error())
 		return
 
@@ -152,7 +152,7 @@ func TestIntAryMathPower_PwrByMultiplication_04(t *testing.T) {
 	iaBase, err := IntAry{}.NewNumStr(baseStr)
 
 	if err != nil {
-		t.Errorf("Error returned by IntAry{}.NewNumStr(baseStr). " +
+		t.Errorf("Error returned by IntAry{}.NewNumStr(baseStr). "+
 			"baseStr='%v' Error='%v' \n", baseStr, err.Error())
 		return
 
@@ -161,7 +161,7 @@ func TestIntAryMathPower_PwrByMultiplication_04(t *testing.T) {
 	iaExponent, err := IntAry{}.NewNumStr(exponentStr)
 
 	if err != nil {
-		t.Errorf("Error returned by IntAry{}.NewNumStr(exponentStr). " +
+		t.Errorf("Error returned by IntAry{}.NewNumStr(exponentStr). "+
 			"exponentStr='%v' Error='%v' \n", exponentStr, err.Error())
 		return
 
@@ -170,7 +170,7 @@ func TestIntAryMathPower_PwrByMultiplication_04(t *testing.T) {
 	actualResult, err := IntAryMathPower{}.PwrByMultiplication(&iaBase, &iaExponent, minPrecision, maxPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by IntAryMathPower{}.PwrByMultiplication(...). " +
+		t.Errorf("Error returned by IntAryMathPower{}.PwrByMultiplication(...). "+
 			"Error='%v' \n", err.Error())
 		return
 
@@ -198,7 +198,7 @@ func TestIntAryMathPower_PwrByMultiplication_05(t *testing.T) {
 	iaBase, err := IntAry{}.NewNumStr(baseStr)
 
 	if err != nil {
-		t.Errorf("Error returned by IntAry{}.NewNumStr(baseStr). " +
+		t.Errorf("Error returned by IntAry{}.NewNumStr(baseStr). "+
 			"baseStr='%v' Error='%v' \n", baseStr, err.Error())
 		return
 
@@ -207,7 +207,7 @@ func TestIntAryMathPower_PwrByMultiplication_05(t *testing.T) {
 	iaExponent, err := IntAry{}.NewNumStr(exponentStr)
 
 	if err != nil {
-		t.Errorf("Error returned by IntAry{}.NewNumStr(exponentStr). " +
+		t.Errorf("Error returned by IntAry{}.NewNumStr(exponentStr). "+
 			"exponentStr='%v' Error='%v' \n", exponentStr, err.Error())
 		return
 
@@ -216,7 +216,7 @@ func TestIntAryMathPower_PwrByMultiplication_05(t *testing.T) {
 	actualResult, err := IntAryMathPower{}.PwrByMultiplication(&iaBase, &iaExponent, minPrecision, maxPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by IntAryMathPower{}.PwrByMultiplication(...). " +
+		t.Errorf("Error returned by IntAryMathPower{}.PwrByMultiplication(...). "+
 			"Error='%v' \n", err.Error())
 		return
 
@@ -244,7 +244,7 @@ func TestIntAryMathPower_PwrByMultiplication_06(t *testing.T) {
 	iaBase, err := IntAry{}.NewNumStr(baseStr)
 
 	if err != nil {
-		t.Errorf("Error returned by IntAry{}.NewNumStr(baseStr). " +
+		t.Errorf("Error returned by IntAry{}.NewNumStr(baseStr). "+
 			"baseStr='%v' Error='%v' \n", baseStr, err.Error())
 		return
 
@@ -253,7 +253,7 @@ func TestIntAryMathPower_PwrByMultiplication_06(t *testing.T) {
 	iaExponent, err := IntAry{}.NewNumStr(exponentStr)
 
 	if err != nil {
-		t.Errorf("Error returned by IntAry{}.NewNumStr(exponentStr). " +
+		t.Errorf("Error returned by IntAry{}.NewNumStr(exponentStr). "+
 			"exponentStr='%v' Error='%v' \n", exponentStr, err.Error())
 		return
 
@@ -262,7 +262,7 @@ func TestIntAryMathPower_PwrByMultiplication_06(t *testing.T) {
 	actualResult, err := IntAryMathPower{}.PwrByMultiplication(&iaBase, &iaExponent, minPrecision, maxPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by IntAryMathPower{}.PwrByMultiplication(...). " +
+		t.Errorf("Error returned by IntAryMathPower{}.PwrByMultiplication(...). "+
 			"Error='%v' \n", err.Error())
 		return
 
@@ -290,7 +290,7 @@ func TestIntAryMathPower_PwrByMultiplication_07(t *testing.T) {
 	iaBase, err := IntAry{}.NewNumStr(baseStr)
 
 	if err != nil {
-		t.Errorf("Error returned by IntAry{}.NewNumStr(baseStr). " +
+		t.Errorf("Error returned by IntAry{}.NewNumStr(baseStr). "+
 			"baseStr='%v' Error='%v' \n", baseStr, err.Error())
 		return
 
@@ -299,7 +299,7 @@ func TestIntAryMathPower_PwrByMultiplication_07(t *testing.T) {
 	iaExponent, err := IntAry{}.NewNumStr(exponentStr)
 
 	if err != nil {
-		t.Errorf("Error returned by IntAry{}.NewNumStr(exponentStr). " +
+		t.Errorf("Error returned by IntAry{}.NewNumStr(exponentStr). "+
 			"exponentStr='%v' Error='%v' \n", exponentStr, err.Error())
 		return
 
@@ -308,7 +308,7 @@ func TestIntAryMathPower_PwrByMultiplication_07(t *testing.T) {
 	actualResult, err := IntAryMathPower{}.PwrByMultiplication(&iaBase, &iaExponent, minPrecision, maxPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by IntAryMathPower{}.PwrByMultiplication(...). " +
+		t.Errorf("Error returned by IntAryMathPower{}.PwrByMultiplication(...). "+
 			"Error='%v' \n", err.Error())
 		return
 
@@ -336,7 +336,7 @@ func TestIntAryMathPower_PwrByMultiplication_08(t *testing.T) {
 	iaBase, err := IntAry{}.NewNumStr(baseStr)
 
 	if err != nil {
-		t.Errorf("Error returned by IntAry{}.NewNumStr(baseStr). " +
+		t.Errorf("Error returned by IntAry{}.NewNumStr(baseStr). "+
 			"baseStr='%v' Error='%v' \n", baseStr, err.Error())
 		return
 
@@ -345,7 +345,7 @@ func TestIntAryMathPower_PwrByMultiplication_08(t *testing.T) {
 	iaExponent, err := IntAry{}.NewNumStr(exponentStr)
 
 	if err != nil {
-		t.Errorf("Error returned by IntAry{}.NewNumStr(exponentStr). " +
+		t.Errorf("Error returned by IntAry{}.NewNumStr(exponentStr). "+
 			"exponentStr='%v' Error='%v' \n", exponentStr, err.Error())
 		return
 
@@ -354,7 +354,7 @@ func TestIntAryMathPower_PwrByMultiplication_08(t *testing.T) {
 	actualResult, err := IntAryMathPower{}.PwrByMultiplication(&iaBase, &iaExponent, minPrecision, maxPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by IntAryMathPower{}.PwrByMultiplication(...). " +
+		t.Errorf("Error returned by IntAryMathPower{}.PwrByMultiplication(...). "+
 			"Error='%v' \n", err.Error())
 		return
 
@@ -382,7 +382,7 @@ func TestIntAryMathPower_PwrByMultiplication_09(t *testing.T) {
 	iaBase, err := IntAry{}.NewNumStr(baseStr)
 
 	if err != nil {
-		t.Errorf("Error returned by IntAry{}.NewNumStr(baseStr). " +
+		t.Errorf("Error returned by IntAry{}.NewNumStr(baseStr). "+
 			"baseStr='%v' Error='%v' \n", baseStr, err.Error())
 		return
 
@@ -391,7 +391,7 @@ func TestIntAryMathPower_PwrByMultiplication_09(t *testing.T) {
 	iaExponent, err := IntAry{}.NewNumStr(exponentStr)
 
 	if err != nil {
-		t.Errorf("Error returned by IntAry{}.NewNumStr(exponentStr). " +
+		t.Errorf("Error returned by IntAry{}.NewNumStr(exponentStr). "+
 			"exponentStr='%v' Error='%v' \n", exponentStr, err.Error())
 		return
 
@@ -400,7 +400,7 @@ func TestIntAryMathPower_PwrByMultiplication_09(t *testing.T) {
 	actualResult, err := IntAryMathPower{}.PwrByMultiplication(&iaBase, &iaExponent, minPrecision, maxPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by IntAryMathPower{}.PwrByMultiplication(...). " +
+		t.Errorf("Error returned by IntAryMathPower{}.PwrByMultiplication(...). "+
 			"Error='%v' \n", err.Error())
 		return
 
@@ -428,7 +428,7 @@ func TestIntAryMathPower_PwrByMultiplication_10(t *testing.T) {
 	iaBase, err := IntAry{}.NewNumStr(baseStr)
 
 	if err != nil {
-		t.Errorf("Error returned by IntAry{}.NewNumStr(baseStr). " +
+		t.Errorf("Error returned by IntAry{}.NewNumStr(baseStr). "+
 			"baseStr='%v' Error='%v' \n", baseStr, err.Error())
 		return
 
@@ -437,7 +437,7 @@ func TestIntAryMathPower_PwrByMultiplication_10(t *testing.T) {
 	iaExponent, err := IntAry{}.NewNumStr(exponentStr)
 
 	if err != nil {
-		t.Errorf("Error returned by IntAry{}.NewNumStr(exponentStr). " +
+		t.Errorf("Error returned by IntAry{}.NewNumStr(exponentStr). "+
 			"exponentStr='%v' Error='%v' \n", exponentStr, err.Error())
 		return
 
@@ -446,7 +446,7 @@ func TestIntAryMathPower_PwrByMultiplication_10(t *testing.T) {
 	actualResult, err := IntAryMathPower{}.PwrByMultiplication(&iaBase, &iaExponent, minPrecision, maxPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by IntAryMathPower{}.PwrByMultiplication(...). " +
+		t.Errorf("Error returned by IntAryMathPower{}.PwrByMultiplication(...). "+
 			"Error='%v' \n", err.Error())
 		return
 
@@ -474,7 +474,7 @@ func TestIntAryMathPower_PwrByMultiplication_11(t *testing.T) {
 	iaBase, err := IntAry{}.NewNumStr(baseStr)
 
 	if err != nil {
-		t.Errorf("Error returned by IntAry{}.NewNumStr(baseStr). " +
+		t.Errorf("Error returned by IntAry{}.NewNumStr(baseStr). "+
 			"baseStr='%v' Error='%v' \n", baseStr, err.Error())
 		return
 
@@ -483,7 +483,7 @@ func TestIntAryMathPower_PwrByMultiplication_11(t *testing.T) {
 	iaExponent, err := IntAry{}.NewNumStr(exponentStr)
 
 	if err != nil {
-		t.Errorf("Error returned by IntAry{}.NewNumStr(exponentStr). " +
+		t.Errorf("Error returned by IntAry{}.NewNumStr(exponentStr). "+
 			"exponentStr='%v' Error='%v' \n", exponentStr, err.Error())
 		return
 
@@ -492,7 +492,7 @@ func TestIntAryMathPower_PwrByMultiplication_11(t *testing.T) {
 	actualResult, err := IntAryMathPower{}.PwrByMultiplication(&iaBase, &iaExponent, minPrecision, maxPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by IntAryMathPower{}.PwrByMultiplication(...). " +
+		t.Errorf("Error returned by IntAryMathPower{}.PwrByMultiplication(...). "+
 			"Error='%v' \n", err.Error())
 		return
 
@@ -520,7 +520,7 @@ func TestIntAryMathPower_PwrByMultiplication_12(t *testing.T) {
 	iaBase, err := IntAry{}.NewNumStr(baseStr)
 
 	if err != nil {
-		t.Errorf("Error returned by IntAry{}.NewNumStr(baseStr). " +
+		t.Errorf("Error returned by IntAry{}.NewNumStr(baseStr). "+
 			"baseStr='%v' Error='%v' \n", baseStr, err.Error())
 		return
 
@@ -529,7 +529,7 @@ func TestIntAryMathPower_PwrByMultiplication_12(t *testing.T) {
 	iaExponent, err := IntAry{}.NewNumStr(exponentStr)
 
 	if err != nil {
-		t.Errorf("Error returned by IntAry{}.NewNumStr(exponentStr). " +
+		t.Errorf("Error returned by IntAry{}.NewNumStr(exponentStr). "+
 			"exponentStr='%v' Error='%v' \n", exponentStr, err.Error())
 		return
 
@@ -538,7 +538,7 @@ func TestIntAryMathPower_PwrByMultiplication_12(t *testing.T) {
 	actualResult, err := IntAryMathPower{}.PwrByMultiplication(&iaBase, &iaExponent, minPrecision, maxPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by IntAryMathPower{}.PwrByMultiplication(...). " +
+		t.Errorf("Error returned by IntAryMathPower{}.PwrByMultiplication(...). "+
 			"Error='%v' \n", err.Error())
 		return
 
@@ -566,7 +566,7 @@ func TestIntAryMathPower_PwrByMultiplication_13(t *testing.T) {
 	iaBase, err := IntAry{}.NewNumStr(baseStr)
 
 	if err != nil {
-		t.Errorf("Error returned by IntAry{}.NewNumStr(baseStr). " +
+		t.Errorf("Error returned by IntAry{}.NewNumStr(baseStr). "+
 			"baseStr='%v' Error='%v' \n", baseStr, err.Error())
 		return
 
@@ -575,7 +575,7 @@ func TestIntAryMathPower_PwrByMultiplication_13(t *testing.T) {
 	iaExponent, err := IntAry{}.NewNumStr(exponentStr)
 
 	if err != nil {
-		t.Errorf("Error returned by IntAry{}.NewNumStr(exponentStr). " +
+		t.Errorf("Error returned by IntAry{}.NewNumStr(exponentStr). "+
 			"exponentStr='%v' Error='%v' \n", exponentStr, err.Error())
 		return
 
@@ -584,7 +584,7 @@ func TestIntAryMathPower_PwrByMultiplication_13(t *testing.T) {
 	actualResult, err := IntAryMathPower{}.PwrByMultiplication(&iaBase, &iaExponent, minPrecision, maxPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by IntAryMathPower{}.PwrByMultiplication(...). " +
+		t.Errorf("Error returned by IntAryMathPower{}.PwrByMultiplication(...). "+
 			"Error='%v' \n", err.Error())
 		return
 
@@ -613,7 +613,7 @@ func TestIntAryMathPower_PwrByMultiplication_14(t *testing.T) {
 	iaBase, err := IntAry{}.NewNumStr(baseStr)
 
 	if err != nil {
-		t.Errorf("Error returned by IntAry{}.NewNumStr(baseStr). " +
+		t.Errorf("Error returned by IntAry{}.NewNumStr(baseStr). "+
 			"baseStr='%v' Error='%v' \n", baseStr, err.Error())
 		return
 
@@ -622,7 +622,7 @@ func TestIntAryMathPower_PwrByMultiplication_14(t *testing.T) {
 	iaExponent, err := IntAry{}.NewNumStr(exponentStr)
 
 	if err != nil {
-		t.Errorf("Error returned by IntAry{}.NewNumStr(exponentStr). " +
+		t.Errorf("Error returned by IntAry{}.NewNumStr(exponentStr). "+
 			"exponentStr='%v' Error='%v' \n", exponentStr, err.Error())
 		return
 
@@ -631,7 +631,7 @@ func TestIntAryMathPower_PwrByMultiplication_14(t *testing.T) {
 	actualResult, err := IntAryMathPower{}.PwrByMultiplication(&iaBase, &iaExponent, minPrecision, maxPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by IntAryMathPower{}.PwrByMultiplication(...). " +
+		t.Errorf("Error returned by IntAryMathPower{}.PwrByMultiplication(...). "+
 			"Error='%v' \n", err.Error())
 		return
 
@@ -660,7 +660,7 @@ func TestIntAryMathPower_PwrByMultiplication_15(t *testing.T) {
 	iaBase, err := IntAry{}.NewNumStr(baseStr)
 
 	if err != nil {
-		t.Errorf("Error returned by IntAry{}.NewNumStr(baseStr). " +
+		t.Errorf("Error returned by IntAry{}.NewNumStr(baseStr). "+
 			"baseStr='%v' Error='%v' \n", baseStr, err.Error())
 		return
 
@@ -669,7 +669,7 @@ func TestIntAryMathPower_PwrByMultiplication_15(t *testing.T) {
 	iaExponent, err := IntAry{}.NewNumStr(exponentStr)
 
 	if err != nil {
-		t.Errorf("Error returned by IntAry{}.NewNumStr(exponentStr). " +
+		t.Errorf("Error returned by IntAry{}.NewNumStr(exponentStr). "+
 			"exponentStr='%v' Error='%v' \n", exponentStr, err.Error())
 		return
 
@@ -678,7 +678,7 @@ func TestIntAryMathPower_PwrByMultiplication_15(t *testing.T) {
 	actualResult, err := IntAryMathPower{}.PwrByMultiplication(&iaBase, &iaExponent, minPrecision, maxPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by IntAryMathPower{}.PwrByMultiplication(...). " +
+		t.Errorf("Error returned by IntAryMathPower{}.PwrByMultiplication(...). "+
 			"Error='%v' \n", err.Error())
 		return
 
@@ -707,7 +707,7 @@ func TestIntAryMathPower_PwrByMultiplication_16(t *testing.T) {
 	iaBase, err := IntAry{}.NewNumStr(baseStr)
 
 	if err != nil {
-		t.Errorf("Error returned by IntAry{}.NewNumStr(baseStr). " +
+		t.Errorf("Error returned by IntAry{}.NewNumStr(baseStr). "+
 			"baseStr='%v' Error='%v' \n", baseStr, err.Error())
 		return
 
@@ -716,7 +716,7 @@ func TestIntAryMathPower_PwrByMultiplication_16(t *testing.T) {
 	iaExponent, err := IntAry{}.NewNumStr(exponentStr)
 
 	if err != nil {
-		t.Errorf("Error returned by IntAry{}.NewNumStr(exponentStr). " +
+		t.Errorf("Error returned by IntAry{}.NewNumStr(exponentStr). "+
 			"exponentStr='%v' Error='%v' \n", exponentStr, err.Error())
 		return
 
@@ -725,7 +725,7 @@ func TestIntAryMathPower_PwrByMultiplication_16(t *testing.T) {
 	actualResult, err := IntAryMathPower{}.PwrByMultiplication(&iaBase, &iaExponent, minPrecision, maxPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by IntAryMathPower{}.PwrByMultiplication(...). " +
+		t.Errorf("Error returned by IntAryMathPower{}.PwrByMultiplication(...). "+
 			"Error='%v' \n", err.Error())
 		return
 
@@ -753,7 +753,7 @@ func TestIntAryMathPower_PwrByMultiplication_17(t *testing.T) {
 	iaBase, err := IntAry{}.NewNumStr(baseStr)
 
 	if err != nil {
-		t.Errorf("Error returned by IntAry{}.NewNumStr(baseStr). " +
+		t.Errorf("Error returned by IntAry{}.NewNumStr(baseStr). "+
 			"baseStr='%v' Error='%v' \n", baseStr, err.Error())
 		return
 
@@ -762,7 +762,7 @@ func TestIntAryMathPower_PwrByMultiplication_17(t *testing.T) {
 	iaExponent, err := IntAry{}.NewNumStr(exponentStr)
 
 	if err != nil {
-		t.Errorf("Error returned by IntAry{}.NewNumStr(exponentStr). " +
+		t.Errorf("Error returned by IntAry{}.NewNumStr(exponentStr). "+
 			"exponentStr='%v' Error='%v' \n", exponentStr, err.Error())
 		return
 
@@ -793,7 +793,7 @@ func TestIntAryMathPower_PwrByMultiplication_18(t *testing.T) {
 	iaBase, err := IntAry{}.NewNumStr(baseStr)
 
 	if err != nil {
-		t.Errorf("Error returned by IntAry{}.NewNumStr(baseStr). " +
+		t.Errorf("Error returned by IntAry{}.NewNumStr(baseStr). "+
 			"baseStr='%v' Error='%v' \n", baseStr, err.Error())
 		return
 
@@ -802,7 +802,7 @@ func TestIntAryMathPower_PwrByMultiplication_18(t *testing.T) {
 	iaExponent, err := IntAry{}.NewNumStr(exponentStr)
 
 	if err != nil {
-		t.Errorf("Error returned by IntAry{}.NewNumStr(exponentStr). " +
+		t.Errorf("Error returned by IntAry{}.NewNumStr(exponentStr). "+
 			"exponentStr='%v' Error='%v' \n", exponentStr, err.Error())
 		return
 
@@ -811,7 +811,7 @@ func TestIntAryMathPower_PwrByMultiplication_18(t *testing.T) {
 	actualResult, err := IntAryMathPower{}.PwrByMultiplication(&iaBase, &iaExponent, minPrecision, maxPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by IntAryMathPower{}.PwrByMultiplication(...). " +
+		t.Errorf("Error returned by IntAryMathPower{}.PwrByMultiplication(...). "+
 			"Error='%v' \n", err.Error())
 		return
 
@@ -840,7 +840,7 @@ func TestIntAryMathPower_PwrByMultiplication_19(t *testing.T) {
 	iaBase, err := IntAry{}.NewNumStr(baseStr)
 
 	if err != nil {
-		t.Errorf("Error returned by IntAry{}.NewNumStr(baseStr). " +
+		t.Errorf("Error returned by IntAry{}.NewNumStr(baseStr). "+
 			"baseStr='%v' Error='%v' \n", baseStr, err.Error())
 		return
 
@@ -849,7 +849,7 @@ func TestIntAryMathPower_PwrByMultiplication_19(t *testing.T) {
 	iaExponent, err := IntAry{}.NewNumStr(exponentStr)
 
 	if err != nil {
-		t.Errorf("Error returned by IntAry{}.NewNumStr(exponentStr). " +
+		t.Errorf("Error returned by IntAry{}.NewNumStr(exponentStr). "+
 			"exponentStr='%v' Error='%v' \n", exponentStr, err.Error())
 		return
 
@@ -858,7 +858,7 @@ func TestIntAryMathPower_PwrByMultiplication_19(t *testing.T) {
 	actualResult, err := IntAryMathPower{}.PwrByMultiplication(&iaBase, &iaExponent, minPrecision, maxPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by IntAryMathPower{}.PwrByMultiplication(...). " +
+		t.Errorf("Error returned by IntAryMathPower{}.PwrByMultiplication(...). "+
 			"Error='%v' \n", err.Error())
 		return
 
@@ -887,7 +887,7 @@ func TestIntAryMathPower_PwrByMultiplication_20(t *testing.T) {
 	iaBase, err := IntAry{}.NewNumStr(baseStr)
 
 	if err != nil {
-		t.Errorf("Error returned by IntAry{}.NewNumStr(baseStr). " +
+		t.Errorf("Error returned by IntAry{}.NewNumStr(baseStr). "+
 			"baseStr='%v' Error='%v' \n", baseStr, err.Error())
 		return
 
@@ -896,7 +896,7 @@ func TestIntAryMathPower_PwrByMultiplication_20(t *testing.T) {
 	iaExponent, err := IntAry{}.NewNumStr(exponentStr)
 
 	if err != nil {
-		t.Errorf("Error returned by IntAry{}.NewNumStr(exponentStr). " +
+		t.Errorf("Error returned by IntAry{}.NewNumStr(exponentStr). "+
 			"exponentStr='%v' Error='%v' \n", exponentStr, err.Error())
 		return
 
@@ -905,7 +905,7 @@ func TestIntAryMathPower_PwrByMultiplication_20(t *testing.T) {
 	actualResult, err := IntAryMathPower{}.PwrByMultiplication(&iaBase, &iaExponent, minPrecision, maxPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by IntAryMathPower{}.PwrByMultiplication(...). " +
+		t.Errorf("Error returned by IntAryMathPower{}.PwrByMultiplication(...). "+
 			"Error='%v' \n", err.Error())
 		return
 
@@ -937,7 +937,7 @@ func TestIntAryMathPower_PwrByMultiplication_21(t *testing.T) {
 	iaBase, err := IntAry{}.NewNumStr(baseStr)
 
 	if err != nil {
-		t.Errorf("Error returned by IntAry{}.NewNumStr(baseStr). " +
+		t.Errorf("Error returned by IntAry{}.NewNumStr(baseStr). "+
 			"baseStr='%v' Error='%v' \n", baseStr, err.Error())
 		return
 
@@ -946,7 +946,7 @@ func TestIntAryMathPower_PwrByMultiplication_21(t *testing.T) {
 	iaExponent, err := IntAry{}.NewNumStr(exponentStr)
 
 	if err != nil {
-		t.Errorf("Error returned by IntAry{}.NewNumStr(exponentStr). " +
+		t.Errorf("Error returned by IntAry{}.NewNumStr(exponentStr). "+
 			"exponentStr='%v' Error='%v' \n", exponentStr, err.Error())
 		return
 
@@ -955,7 +955,7 @@ func TestIntAryMathPower_PwrByMultiplication_21(t *testing.T) {
 	actualResult, err := IntAryMathPower{}.PwrByMultiplication(&iaBase, &iaExponent, minPrecision, maxPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by IntAryMathPower{}.PwrByMultiplication(...). " +
+		t.Errorf("Error returned by IntAryMathPower{}.PwrByMultiplication(...). "+
 			"Error='%v' \n", err.Error())
 		return
 
@@ -968,7 +968,6 @@ func TestIntAryMathPower_PwrByMultiplication_21(t *testing.T) {
 			expectedNumStr, actualResultStr)
 	}
 }
-
 
 func TestIntAryMathPower_PwrByMultiplication_22(t *testing.T) {
 
@@ -1018,7 +1017,7 @@ func TestIntAryMathPower_PwrByMultiplication_23(t *testing.T) {
 	iaBase, err := IntAry{}.NewNumStr(baseStr)
 
 	if err != nil {
-		t.Errorf("Error returned by IntAry{}.NewNumStr(baseStr). " +
+		t.Errorf("Error returned by IntAry{}.NewNumStr(baseStr). "+
 			"baseStr='%v' Error='%v' \n", baseStr, err.Error())
 		return
 
@@ -1027,7 +1026,7 @@ func TestIntAryMathPower_PwrByMultiplication_23(t *testing.T) {
 	iaExponent, err := IntAry{}.NewNumStr(exponentStr)
 
 	if err != nil {
-		t.Errorf("Error returned by IntAry{}.NewNumStr(exponentStr). " +
+		t.Errorf("Error returned by IntAry{}.NewNumStr(exponentStr). "+
 			"exponentStr='%v' Error='%v' \n", exponentStr, err.Error())
 		return
 
@@ -1036,7 +1035,7 @@ func TestIntAryMathPower_PwrByMultiplication_23(t *testing.T) {
 	actualResult, err := IntAryMathPower{}.PwrByMultiplication(&iaBase, &iaExponent, minPrecision, maxPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by IntAryMathPower{}.PwrByMultiplication(...). " +
+		t.Errorf("Error returned by IntAryMathPower{}.PwrByMultiplication(...). "+
 			"Error='%v' \n", err.Error())
 		return
 

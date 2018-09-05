@@ -12,17 +12,16 @@ func TestIntAryMathMultiply_MultiplyInPlace_01(t *testing.T) {
 	ia1, err := IntAry{}.NewNumStr(nStr1)
 
 	if err != nil {
-		t.Errorf("Error returned by IntAry{}.NewNumStr(nStr1). " +
+		t.Errorf("Error returned by IntAry{}.NewNumStr(nStr1). "+
 			"nStr1='%v' Error='%v' ", nStr1, err.Error())
 	}
 
 	ia2, err := IntAry{}.NewNumStr(nStr2)
 
 	if err != nil {
-		t.Errorf("Error returned by IntAry{}.NewNumStr(nStr2). " +
+		t.Errorf("Error returned by IntAry{}.NewNumStr(nStr2). "+
 			"nStr2='%v' Error='%v' ", nStr2, err.Error())
 	}
-
 
 	IntAryMathMultiply{}.MultiplyInPlace(&ia1, &ia2, minimumPrecision, maximumPrecision)
 
@@ -43,17 +42,16 @@ func TestIntAryMathMultiply_MultiplyInPlace_02(t *testing.T) {
 	ia1, err := IntAry{}.NewNumStr(nStr1)
 
 	if err != nil {
-		t.Errorf("Error returned by IntAry{}.NewNumStr(nStr1). " +
+		t.Errorf("Error returned by IntAry{}.NewNumStr(nStr1). "+
 			"nStr1='%v' Error='%v' ", nStr1, err.Error())
 	}
 
 	ia2, err := IntAry{}.NewNumStr(nStr2)
 
 	if err != nil {
-		t.Errorf("Error returned by IntAry{}.NewNumStr(nStr2). " +
+		t.Errorf("Error returned by IntAry{}.NewNumStr(nStr2). "+
 			"nStr2='%v' Error='%v' ", nStr2, err.Error())
 	}
-
 
 	IntAryMathMultiply{}.MultiplyInPlace(&ia1, &ia2, minimumPrecision, maximumPrecision)
 
@@ -74,14 +72,14 @@ func TestIntAryMathMultiply_Multiply_01(t *testing.T) {
 	ia1, err := IntAry{}.NewNumStr(nStr1)
 
 	if err != nil {
-		t.Errorf("Error returned by IntAry{}.NewNumStr(nStr1). " +
+		t.Errorf("Error returned by IntAry{}.NewNumStr(nStr1). "+
 			"nStr1='%v' Error='%v' ", nStr1, err.Error())
 	}
 
 	ia2, err := IntAry{}.NewNumStr(nStr2)
 
 	if err != nil {
-		t.Errorf("Error returned by IntAry{}.NewNumStr(nStr2). " +
+		t.Errorf("Error returned by IntAry{}.NewNumStr(nStr2). "+
 			"nStr2='%v' Error='%v' ", nStr2, err.Error())
 	}
 
@@ -104,7 +102,7 @@ func TestIntAryMathMultiply_MultiplyByTwoToPower_01(t *testing.T) {
 	ia1, err := IntAry{}.NewNumStr(nStr1)
 
 	if err != nil {
-		t.Errorf("Error returned by IntAry{}.NewNumStr(nStr1). " +
+		t.Errorf("Error returned by IntAry{}.NewNumStr(nStr1). "+
 			"nStr1='%v' Error='%v' ", nStr1, err.Error())
 	}
 
@@ -115,7 +113,6 @@ func TestIntAryMathMultiply_MultiplyByTwoToPower_01(t *testing.T) {
 			expectedStr, ia1.GetNumStr())
 	}
 
-
 }
 
 func TestIntAryMathMultiply_MultiplyByTenToPower_01(t *testing.T) {
@@ -125,7 +122,7 @@ func TestIntAryMathMultiply_MultiplyByTenToPower_01(t *testing.T) {
 	ia1, err := IntAry{}.NewNumStr(nStr1)
 
 	if err != nil {
-		t.Errorf("Error returned by IntAry{}.NewNumStr(nStr1). " +
+		t.Errorf("Error returned by IntAry{}.NewNumStr(nStr1). "+
 			"nStr1='%v' Error='%v' ", nStr1, err.Error())
 	}
 

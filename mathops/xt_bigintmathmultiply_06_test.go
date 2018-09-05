@@ -15,7 +15,7 @@ func TestBigIntMathMultiply_MultiplyBigIntNumByTenToPower_01(t *testing.T) {
 	baseBINum, err := BigIntNum{}.NewNumStrWithNumSeps(baseStr, expectedNumSeps)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStrWithNumSeps(baseStr, expectedNumSeps). " +
+		t.Errorf("Error returned by BigIntNum{}.NewNumStrWithNumSeps(baseStr, expectedNumSeps). "+
 			"baseStr='%v', expectedNumSeps='%v' Error='%v'",
 			baseStr, expectedNumSeps.String(), err.Error())
 	}
@@ -31,7 +31,7 @@ func TestBigIntMathMultiply_MultiplyBigIntNumByTenToPower_01(t *testing.T) {
 	tenExpBINum, err := BigIntNum{}.NewNumStrWithNumSeps(tenExponentStr, alternateNumSeps)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStrWithNumSeps(tenExponentStr, alternateNumSeps). " +
+		t.Errorf("Error returned by BigIntNum{}.NewNumStrWithNumSeps(tenExponentStr, alternateNumSeps). "+
 			"tenExponentStr='%v', alternateNumSeps='%v' Error='%v'",
 			tenExponentStr, alternateNumSeps.String(), err.Error())
 	}
@@ -72,7 +72,7 @@ func TestBigIntMathMultiply_MultiplyBigIntNumByTenToPower_02(t *testing.T) {
 	baseBINum, err := BigIntNum{}.NewNumStrWithNumSeps(baseStr, expectedNumSeps)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStrWithNumSeps(baseStr, expectedNumSeps). " +
+		t.Errorf("Error returned by BigIntNum{}.NewNumStrWithNumSeps(baseStr, expectedNumSeps). "+
 			"baseStr='%v', expectedNumSeps='%v' Error='%v'",
 			baseStr, expectedNumSeps.String(), err.Error())
 	}
@@ -85,7 +85,7 @@ func TestBigIntMathMultiply_MultiplyBigIntNumByTenToPower_02(t *testing.T) {
 	tenExpBINum, err := BigIntNum{}.NewNumStrWithNumSeps(tenExponentStr, alternateNumSeps)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStrWithNumSeps(tenExponentStr, alternateNumSeps). " +
+		t.Errorf("Error returned by BigIntNum{}.NewNumStrWithNumSeps(tenExponentStr, alternateNumSeps). "+
 			"tenExponentStr='%v', alternateNumSeps='%v' Error='%v'",
 			tenExponentStr, alternateNumSeps.String(), err.Error())
 	}
@@ -112,9 +112,9 @@ func TestBigIntMathMultiply_MultiplyBigIntNumByTenToPower_03(t *testing.T) {
 	baseStr := "35"
 
 	tenExponentStr := "3.9"
-  // 10^3.9 = 7943.2823472428150206591828283639
+	// 10^3.9 = 7943.2823472428150206591828283639
 
-  expectedStr := "278014,88215349852572307139899274"
+	expectedStr := "278014,88215349852572307139899274"
 	// 278014.8821534985257230713989927365
 	maxPrecision := uint(26)
 
@@ -129,7 +129,7 @@ func TestBigIntMathMultiply_MultiplyBigIntNumByTenToPower_03(t *testing.T) {
 	baseBINum, err := BigIntNum{}.NewNumStrWithNumSeps(baseStr, expectedNumSeps)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStrWithNumSeps(baseStr, expectedNumSeps). " +
+		t.Errorf("Error returned by BigIntNum{}.NewNumStrWithNumSeps(baseStr, expectedNumSeps). "+
 			"baseStr='%v', expectedNumSeps='%v' Error='%v'",
 			baseStr, expectedNumSeps.String(), err.Error())
 	}
@@ -142,7 +142,7 @@ func TestBigIntMathMultiply_MultiplyBigIntNumByTenToPower_03(t *testing.T) {
 	tenExpBINum, err := BigIntNum{}.NewNumStrWithNumSeps(tenExponentStr, alternateNumSeps)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStrWithNumSeps(tenExponentStr, alternateNumSeps). " +
+		t.Errorf("Error returned by BigIntNum{}.NewNumStrWithNumSeps(tenExponentStr, alternateNumSeps). "+
 			"tenExponentStr='%v', alternateNumSeps='%v' Error='%v'",
 			tenExponentStr, alternateNumSeps.String(), err.Error())
 	}

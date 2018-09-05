@@ -25,7 +25,7 @@ func TestNumStrDto_SetPrecision_01(t *testing.T) {
 
 	if outPrecision != nsDto.GetPrecisionUint() {
 		t.Errorf("Expected precision='%v'. Instead, got %v.",
-				outPrecision, nsDto.GetPrecisionUint())
+			outPrecision, nsDto.GetPrecisionUint())
 	}
 
 	if signVal != nsDto.GetSign() {
@@ -1025,7 +1025,7 @@ func TestNumStrDto_SetThisPrecision_01(t *testing.T) {
 	nsDto, err := NumStrDto{}.NewNumStr(nStr)
 
 	if err != nil {
-		t.Errorf("Error returned by NumStrDto{}.NewNumStr(nStr). " +
+		t.Errorf("Error returned by NumStrDto{}.NewNumStr(nStr). "+
 			"Err='%v' ", err.Error())
 	}
 
@@ -1037,7 +1037,7 @@ func TestNumStrDto_SetThisPrecision_01(t *testing.T) {
 	nsDto.SetThisPrecision(precision, roundResult)
 
 	if err != nil {
-		t.Errorf("Received error from nsu.SetThisPrecision(precision, roundResult). " +
+		t.Errorf("Received error from nsu.SetThisPrecision(precision, roundResult). "+
 			"precision= '%v'. Error= %v", precision, err)
 	}
 
@@ -1077,7 +1077,6 @@ func TestNumStrDto_SetThisPrecision_01(t *testing.T) {
 
 }
 
-
 func TestNumStrDto_SetThisPrecision_02(t *testing.T) {
 
 	nStr := "123456.789"
@@ -1093,7 +1092,7 @@ func TestNumStrDto_SetThisPrecision_02(t *testing.T) {
 	nsDto, err := NumStrDto{}.NewNumStr(nStr)
 
 	if err != nil {
-		t.Errorf("Error returned by NumStrDto{}.NewNumStr(nStr). " +
+		t.Errorf("Error returned by NumStrDto{}.NewNumStr(nStr). "+
 			"Err='%v' ", err.Error())
 	}
 
@@ -1105,7 +1104,7 @@ func TestNumStrDto_SetThisPrecision_02(t *testing.T) {
 	nsDto.SetThisPrecision(precision, roundResult)
 
 	if err != nil {
-		t.Errorf("Received error from nsu.SetThisPrecision(precision, roundResult). " +
+		t.Errorf("Received error from nsu.SetThisPrecision(precision, roundResult). "+
 			"precision= '%v'. Error= %v", precision, err)
 	}
 
@@ -1404,7 +1403,6 @@ func TestNumStrDto_ShiftPrecisionLeft_05(t *testing.T) {
 	}
 
 }
-
 
 func TestNumStrDto_ShiftPrecisionLeft_06(t *testing.T) {
 
@@ -1717,4 +1715,3 @@ func TestNumStrDto_ShiftPrecisionLeft_11(t *testing.T) {
 	}
 
 }
-

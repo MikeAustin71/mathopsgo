@@ -60,7 +60,7 @@ func TestNumStrDto_AddNumStrs_01(t *testing.T) {
 
 	}
 
-	err = nResult.IsValid( "TestNumStrDto_AddNumStrs_01() - ")
+	err = nResult.IsValid("TestNumStrDto_AddNumStrs_01() - ")
 
 	if err != nil {
 		t.Errorf("Error returned from nDto.IsValid(&nResult). Error= %v", err)
@@ -188,7 +188,7 @@ func TestNumStrDto_AddNumStrs_03(t *testing.T) {
 
 	}
 
-	err = nResult.IsValid( "TestNumStrDto_AddNumStrs_03() - ")
+	err = nResult.IsValid("TestNumStrDto_AddNumStrs_03() - ")
 
 	if err != nil {
 		t.Errorf("Error returned from nDto.IsValid(&nResult). Error= %v", err)

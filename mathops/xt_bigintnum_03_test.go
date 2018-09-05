@@ -1,8 +1,8 @@
 package mathops
 
 import (
-	"testing"
 	"math/big"
+	"testing"
 )
 
 func TestBigIntNum_GetActualNumberOfDigits_01(t *testing.T) {
@@ -14,7 +14,7 @@ func TestBigIntNum_GetActualNumberOfDigits_01(t *testing.T) {
 	bINum, err := BigIntNum{}.NewNumStr(nStr)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(nStr). " +
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(nStr). "+
 			" nStr='%v'  Error='%v'",
 			nStr, err.Error())
 	}
@@ -22,7 +22,7 @@ func TestBigIntNum_GetActualNumberOfDigits_01(t *testing.T) {
 	numOfDigits, isZeroVal, err := bINum.GetActualNumberOfDigits()
 
 	if err != nil {
-		t.Errorf("Error returned by bINum.GetActualNumberOfDigits(). " +
+		t.Errorf("Error returned by bINum.GetActualNumberOfDigits(). "+
 			"Error='%v'", err.Error())
 	}
 
@@ -49,7 +49,7 @@ func TestBigIntNum_GetActualNumberOfDigits_02(t *testing.T) {
 	bINum, err := BigIntNum{}.NewNumStr(nStr)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(nStr). " +
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(nStr). "+
 			" nStr='%v'  Error='%v'",
 			nStr, err.Error())
 	}
@@ -57,7 +57,7 @@ func TestBigIntNum_GetActualNumberOfDigits_02(t *testing.T) {
 	numOfDigits, isZeroVal, err := bINum.GetActualNumberOfDigits()
 
 	if err != nil {
-		t.Errorf("Error returned by bINum.GetActualNumberOfDigits(). " +
+		t.Errorf("Error returned by bINum.GetActualNumberOfDigits(). "+
 			"Error='%v'", err.Error())
 	}
 
@@ -84,7 +84,7 @@ func TestBigIntNum_GetFractionalPart_01(t *testing.T) {
 	bINum1, err := BigIntNum{}.NewNumStr(nStr)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(nStr). " +
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(nStr). "+
 			" nStr='%v'  Error='%v'",
 			nStr, err.Error())
 	}
@@ -94,13 +94,13 @@ func TestBigIntNum_GetFractionalPart_01(t *testing.T) {
 	actualNumStr := fractionalPart.GetNumStr()
 
 	if expectedNumStr != actualNumStr {
-		t.Errorf("Error: Expected Fractional Part NumStr='%v'. " +
+		t.Errorf("Error: Expected Fractional Part NumStr='%v'. "+
 			"Instead, NumStr='%v'. ",
-			expectedNumStr, actualNumStr )
+			expectedNumStr, actualNumStr)
 	}
 
 	if expectedPrecision != fractionalPart.GetPrecisionUint() {
-		t.Errorf("Error: Expected Fractional Part precision='%v' " +
+		t.Errorf("Error: Expected Fractional Part precision='%v' "+
 			"Instead, precision='%v'",
 			expectedPrecision, fractionalPart.GetPrecisionUint())
 	}
@@ -115,7 +115,7 @@ func TestBigIntNum_GetFractionalPart_02(t *testing.T) {
 	bINum1, err := BigIntNum{}.NewNumStr(nStr)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(nStr). " +
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(nStr). "+
 			" nStr='%v'  Error='%v'",
 			nStr, err.Error())
 	}
@@ -125,13 +125,13 @@ func TestBigIntNum_GetFractionalPart_02(t *testing.T) {
 	actualNumStr := fractionalPart.GetNumStr()
 
 	if expectedNumStr != actualNumStr {
-		t.Errorf("Error: Expected Fractional Part NumStr='%v'. " +
+		t.Errorf("Error: Expected Fractional Part NumStr='%v'. "+
 			"Instead, NumStr='%v'. ",
-			expectedNumStr, actualNumStr )
+			expectedNumStr, actualNumStr)
 	}
 
 	if expectedPrecision != fractionalPart.GetPrecisionUint() {
-		t.Errorf("Error: Expected Fractional Part precision='%v' " +
+		t.Errorf("Error: Expected Fractional Part precision='%v' "+
 			"Instead, precision='%v'",
 			expectedPrecision, fractionalPart.GetPrecisionUint())
 	}
@@ -146,7 +146,7 @@ func TestBigIntNum_GetFractionalPart_03(t *testing.T) {
 	bINum1, err := BigIntNum{}.NewNumStr(nStr)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(nStr). " +
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(nStr). "+
 			" nStr='%v'  Error='%v'",
 			nStr, err.Error())
 	}
@@ -156,13 +156,13 @@ func TestBigIntNum_GetFractionalPart_03(t *testing.T) {
 	actualNumStr := fractionalPart.GetNumStr()
 
 	if expectedNumStr != actualNumStr {
-		t.Errorf("Error: Expected Fractional Part NumStr='%v'. " +
+		t.Errorf("Error: Expected Fractional Part NumStr='%v'. "+
 			"Instead, NumStr='%v'. ",
-			expectedNumStr, actualNumStr )
+			expectedNumStr, actualNumStr)
 	}
 
 	if expectedPrecision != fractionalPart.GetPrecisionUint() {
-		t.Errorf("Error: Expected Fractional Part precision='%v' " +
+		t.Errorf("Error: Expected Fractional Part precision='%v' "+
 			"Instead, precision='%v'",
 			expectedPrecision, fractionalPart.GetPrecisionUint())
 	}
@@ -177,7 +177,7 @@ func TestBigIntNum_GetFractionalPart_04(t *testing.T) {
 	bINum1, err := BigIntNum{}.NewNumStr(nStr)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(nStr). " +
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(nStr). "+
 			" nStr='%v'  Error='%v'",
 			nStr, err.Error())
 	}
@@ -187,13 +187,13 @@ func TestBigIntNum_GetFractionalPart_04(t *testing.T) {
 	actualNumStr := fractionalPart.GetNumStr()
 
 	if expectedNumStr != actualNumStr {
-		t.Errorf("Error: Expected Fractional Part NumStr='%v'. " +
+		t.Errorf("Error: Expected Fractional Part NumStr='%v'. "+
 			"Instead, NumStr='%v'. ",
-			expectedNumStr, actualNumStr )
+			expectedNumStr, actualNumStr)
 	}
 
 	if expectedPrecision != fractionalPart.GetPrecisionUint() {
-		t.Errorf("Error: Expected Fractional Part precision='%v' " +
+		t.Errorf("Error: Expected Fractional Part precision='%v' "+
 			"Instead, precision='%v'",
 			expectedPrecision, fractionalPart.GetPrecisionUint())
 	}
@@ -208,7 +208,7 @@ func TestBigIntNum_GetFractionalPart_05(t *testing.T) {
 	bINum1, err := BigIntNum{}.NewNumStr(nStr)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(nStr). " +
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(nStr). "+
 			" nStr='%v'  Error='%v'",
 			nStr, err.Error())
 	}
@@ -218,13 +218,13 @@ func TestBigIntNum_GetFractionalPart_05(t *testing.T) {
 	actualNumStr := fractionalPart.GetNumStr()
 
 	if expectedNumStr != actualNumStr {
-		t.Errorf("Error: Expected Fractional Part NumStr='%v'. " +
+		t.Errorf("Error: Expected Fractional Part NumStr='%v'. "+
 			"Instead, NumStr='%v'. ",
-			expectedNumStr, actualNumStr )
+			expectedNumStr, actualNumStr)
 	}
 
 	if expectedPrecision != fractionalPart.GetPrecisionUint() {
-		t.Errorf("Error: Expected Fractional Part precision='%v' " +
+		t.Errorf("Error: Expected Fractional Part precision='%v' "+
 			"Instead, precision='%v'",
 			expectedPrecision, fractionalPart.GetPrecisionUint())
 	}
@@ -239,7 +239,7 @@ func TestBigIntNum_GetFractionalPart_06(t *testing.T) {
 	bINum1, err := BigIntNum{}.NewNumStr(nStr)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(nStr). " +
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(nStr). "+
 			" nStr='%v'  Error='%v'",
 			nStr, err.Error())
 	}
@@ -249,13 +249,13 @@ func TestBigIntNum_GetFractionalPart_06(t *testing.T) {
 	actualNumStr := fractionalPart.GetNumStr()
 
 	if expectedNumStr != actualNumStr {
-		t.Errorf("Error: Expected Fractional Part NumStr='%v'. " +
+		t.Errorf("Error: Expected Fractional Part NumStr='%v'. "+
 			"Instead, NumStr='%v'. ",
-			expectedNumStr, actualNumStr )
+			expectedNumStr, actualNumStr)
 	}
 
 	if expectedPrecision != fractionalPart.GetPrecisionUint() {
-		t.Errorf("Error: Expected Fractional Part precision='%v' " +
+		t.Errorf("Error: Expected Fractional Part precision='%v' "+
 			"Instead, precision='%v'",
 			expectedPrecision, fractionalPart.GetPrecisionUint())
 	}
@@ -274,13 +274,13 @@ func TestBigIntNum_GetDecimal_01(t *testing.T) {
 	decActual, err := bINum.GetDecimal()
 
 	if expectedStr != decActual.GetNumStr() {
-		t.Errorf("Error: Expected decActual.GetNumStr()='%v'. " +
+		t.Errorf("Error: Expected decActual.GetNumStr()='%v'. "+
 			"Instead, decActual.GetNumStr()='%v'.",
 			expectedStr, decActual.GetNumStr())
 	}
 
 	if ePrecision != decActual.GetPrecisionUint() {
-		t.Errorf("Error: Expected decActual.GetPrecisionUint()='%v'. " +
+		t.Errorf("Error: Expected decActual.GetPrecisionUint()='%v'. "+
 			"Instead, decActual.GetPrecisionUint()='%v'.",
 			ePrecision, decActual.GetPrecisionUint())
 	}
@@ -300,13 +300,13 @@ func TestBigIntNum_GetNumStrDto_01(t *testing.T) {
 	numStrDto, err := bINum.GetNumStrDto()
 
 	if expectedStr != numStrDto.GetNumStr() {
-		t.Errorf("Error: Expected numStrDto.GetNumStr()='%v'. " +
+		t.Errorf("Error: Expected numStrDto.GetNumStr()='%v'. "+
 			"Instead, numStrDto.GetNumStr()='%v'.",
 			expectedStr, numStrDto.GetNumStr())
 	}
 
 	if ePrecision != numStrDto.GetPrecisionUint() {
-		t.Errorf("Error: Expected numStrDto.GetPrecisionUint()='%v'. " +
+		t.Errorf("Error: Expected numStrDto.GetPrecisionUint()='%v'. "+
 			"Instead, numStrDto.GetPrecisionUint()='%v'.",
 			ePrecision, numStrDto.GetPrecisionUint())
 	}
@@ -326,13 +326,13 @@ func TestBigIntNum_GetIntAry_01(t *testing.T) {
 	intAry, err := bINum.GetIntAry()
 
 	if expectedStr != intAry.GetNumStr() {
-		t.Errorf("Error: Expected intAry.GetNumStr()='%v'. " +
+		t.Errorf("Error: Expected intAry.GetNumStr()='%v'. "+
 			"Instead, intAry.GetNumStr()='%v'.",
 			expectedStr, intAry.GetNumStr())
 	}
 
 	if ePrecision != intAry.GetPrecisionUint() {
-		t.Errorf("Error: Expected intAry.GetPrecisionUint()='%v'. " +
+		t.Errorf("Error: Expected intAry.GetPrecisionUint()='%v'. "+
 			"Instead, intAry.GetPrecisionUint()='%v'.",
 			ePrecision, intAry.GetPrecisionUint())
 	}
@@ -348,7 +348,7 @@ func TestBigIntNum_GetIntegerPart_01(t *testing.T) {
 	bINum1, err := BigIntNum{}.NewNumStr(nStr)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(nStr). " +
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(nStr). "+
 			" nStr='%v'  Error='%v'",
 			nStr, err.Error())
 	}
@@ -358,13 +358,13 @@ func TestBigIntNum_GetIntegerPart_01(t *testing.T) {
 	actualNumStr := integerPart.GetNumStr()
 
 	if expectedNumStr != actualNumStr {
-		t.Errorf("Error: Expected Integer Part NumStr='%v'. " +
+		t.Errorf("Error: Expected Integer Part NumStr='%v'. "+
 			"Instead, NumStr='%v'. ",
-			expectedNumStr, actualNumStr )
+			expectedNumStr, actualNumStr)
 	}
 
 	if expectedPrecision != integerPart.GetPrecisionUint() {
-		t.Errorf("Error: Expected Integer Part precision='%v' " +
+		t.Errorf("Error: Expected Integer Part precision='%v' "+
 			"Instead, precision='%v'",
 			expectedPrecision, integerPart.GetPrecisionUint())
 	}
@@ -380,7 +380,7 @@ func TestBigIntNum_GetIntegerPart_02(t *testing.T) {
 	bINum1, err := BigIntNum{}.NewNumStr(nStr)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(nStr). " +
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(nStr). "+
 			" nStr='%v'  Error='%v'",
 			nStr, err.Error())
 	}
@@ -390,13 +390,13 @@ func TestBigIntNum_GetIntegerPart_02(t *testing.T) {
 	actualNumStr := integerPart.GetNumStr()
 
 	if expectedNumStr != actualNumStr {
-		t.Errorf("Error: Expected Integer Part NumStr='%v'. " +
+		t.Errorf("Error: Expected Integer Part NumStr='%v'. "+
 			"Instead, NumStr='%v'. ",
-			expectedNumStr, actualNumStr )
+			expectedNumStr, actualNumStr)
 	}
 
 	if expectedPrecision != integerPart.GetPrecisionUint() {
-		t.Errorf("Error: Expected Integer Part precision='%v' " +
+		t.Errorf("Error: Expected Integer Part precision='%v' "+
 			"Instead, precision='%v'",
 			expectedPrecision, integerPart.GetPrecisionUint())
 	}
@@ -412,7 +412,7 @@ func TestBigIntNum_GetIntegerPart_03(t *testing.T) {
 	bINum1, err := BigIntNum{}.NewNumStr(nStr)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(nStr). " +
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(nStr). "+
 			" nStr='%v'  Error='%v'",
 			nStr, err.Error())
 	}
@@ -422,13 +422,13 @@ func TestBigIntNum_GetIntegerPart_03(t *testing.T) {
 	actualNumStr := integerPart.GetNumStr()
 
 	if expectedNumStr != actualNumStr {
-		t.Errorf("Error: Expected Integer Part NumStr='%v'. " +
+		t.Errorf("Error: Expected Integer Part NumStr='%v'. "+
 			"Instead, NumStr='%v'. ",
-			expectedNumStr, actualNumStr )
+			expectedNumStr, actualNumStr)
 	}
 
 	if expectedPrecision != integerPart.GetPrecisionUint() {
-		t.Errorf("Error: Expected Integer Part precision='%v' " +
+		t.Errorf("Error: Expected Integer Part precision='%v' "+
 			"Instead, precision='%v'",
 			expectedPrecision, integerPart.GetPrecisionUint())
 	}
@@ -444,7 +444,7 @@ func TestBigIntNum_GetIntegerPart_04(t *testing.T) {
 	bINum1, err := BigIntNum{}.NewNumStr(nStr)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(nStr). " +
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(nStr). "+
 			" nStr='%v'  Error='%v'",
 			nStr, err.Error())
 	}
@@ -454,13 +454,13 @@ func TestBigIntNum_GetIntegerPart_04(t *testing.T) {
 	actualNumStr := integerPart.GetNumStr()
 
 	if expectedNumStr != actualNumStr {
-		t.Errorf("Error: Expected Integer Part NumStr='%v'. " +
+		t.Errorf("Error: Expected Integer Part NumStr='%v'. "+
 			"Instead, NumStr='%v'. ",
-			expectedNumStr, actualNumStr )
+			expectedNumStr, actualNumStr)
 	}
 
 	if expectedPrecision != integerPart.GetPrecisionUint() {
-		t.Errorf("Error: Expected Integer Part precision='%v' " +
+		t.Errorf("Error: Expected Integer Part precision='%v' "+
 			"Instead, precision='%v'",
 			expectedPrecision, integerPart.GetPrecisionUint())
 	}
@@ -476,7 +476,7 @@ func TestBigIntNum_GetIntegerPart_05(t *testing.T) {
 	bINum1, err := BigIntNum{}.NewNumStr(nStr)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(nStr). " +
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(nStr). "+
 			" nStr='%v'  Error='%v'",
 			nStr, err.Error())
 	}
@@ -486,13 +486,13 @@ func TestBigIntNum_GetIntegerPart_05(t *testing.T) {
 	actualNumStr := integerPart.GetNumStr()
 
 	if expectedNumStr != actualNumStr {
-		t.Errorf("Error: Expected Integer Part NumStr='%v'. " +
+		t.Errorf("Error: Expected Integer Part NumStr='%v'. "+
 			"Instead, NumStr='%v'. ",
-			expectedNumStr, actualNumStr )
+			expectedNumStr, actualNumStr)
 	}
 
 	if expectedPrecision != integerPart.GetPrecisionUint() {
-		t.Errorf("Error: Expected Integer Part precision='%v' " +
+		t.Errorf("Error: Expected Integer Part precision='%v' "+
 			"Instead, precision='%v'",
 			expectedPrecision, integerPart.GetPrecisionUint())
 	}
@@ -508,7 +508,7 @@ func TestBigIntNum_GetIntegerPart_06(t *testing.T) {
 	bINum1, err := BigIntNum{}.NewNumStr(nStr)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(nStr). " +
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(nStr). "+
 			" nStr='%v'  Error='%v'",
 			nStr, err.Error())
 	}
@@ -518,13 +518,13 @@ func TestBigIntNum_GetIntegerPart_06(t *testing.T) {
 	actualNumStr := integerPart.GetNumStr()
 
 	if expectedNumStr != actualNumStr {
-		t.Errorf("Error: Expected Integer Part NumStr='%v'. " +
+		t.Errorf("Error: Expected Integer Part NumStr='%v'. "+
 			"Instead, NumStr='%v'. ",
-			expectedNumStr, actualNumStr )
+			expectedNumStr, actualNumStr)
 	}
 
 	if expectedPrecision != integerPart.GetPrecisionUint() {
-		t.Errorf("Error: Expected Integer Part precision='%v' " +
+		t.Errorf("Error: Expected Integer Part precision='%v' "+
 			"Instead, precision='%v'",
 			expectedPrecision, integerPart.GetPrecisionUint())
 	}
@@ -538,7 +538,7 @@ func TestBigIntNum_GetNumberOfDigits_01(t *testing.T) {
 	bINum, err := BigIntNum{}.NewNumStr(nStr)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(nStr). " +
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(nStr). "+
 			"Error='%v' ", err.Error())
 	}
 
@@ -558,7 +558,7 @@ func TestBigIntNum_GetNumberOfDigits_02(t *testing.T) {
 	bINum, err := BigIntNum{}.NewNumStr(nStr)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(nStr). " +
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(nStr). "+
 			"Error='%v' ", err.Error())
 	}
 
@@ -578,7 +578,7 @@ func TestBigIntNum_GetNumberOfDigits_03(t *testing.T) {
 	bINum, err := BigIntNum{}.NewNumStr(nStr)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(nStr). " +
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(nStr). "+
 			"Error='%v' ", err.Error())
 	}
 
@@ -598,7 +598,7 @@ func TestBigIntNum_GetNumberOfDigits_04(t *testing.T) {
 	bINum, err := BigIntNum{}.NewNumStr(nStr)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(nStr). " +
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(nStr). "+
 			"Error='%v' ", err.Error())
 	}
 
@@ -633,7 +633,7 @@ func TestBigIntNum_GetNumberOfDigits_06(t *testing.T) {
 	bINum, err := BigIntNum{}.NewNumStr(nStr)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(nStr). " +
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(nStr). "+
 			"Error='%v' ", err.Error())
 	}
 
@@ -653,7 +653,7 @@ func TestBigIntNum_GetNumberOfDigits_07(t *testing.T) {
 	bINum, err := BigIntNum{}.NewNumStr(nStr)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(nStr). " +
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(nStr). "+
 			"Error='%v' ", err.Error())
 	}
 
@@ -673,7 +673,7 @@ func TestBigIntNum_GetNumberOfDigits_08(t *testing.T) {
 	bINum, err := BigIntNum{}.NewNumStr(nStr)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(nStr). " +
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(nStr). "+
 			"Error='%v' ", err.Error())
 	}
 
@@ -693,7 +693,7 @@ func TestBigIntNum_GetNumberOfDigits_09(t *testing.T) {
 	bINum, err := BigIntNum{}.NewNumStr(nStr)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(nStr). " +
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(nStr). "+
 			"Error='%v' ", err.Error())
 	}
 
@@ -713,7 +713,7 @@ func TestBigIntNum_GetNumberOfDigits_10(t *testing.T) {
 	bINum, err := BigIntNum{}.NewNumStr(nStr)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(nStr). " +
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(nStr). "+
 			"Error='%v' ", err.Error())
 	}
 
@@ -733,7 +733,7 @@ func TestBigIntNum_GetNumberOfDigits_11(t *testing.T) {
 	bINum, err := BigIntNum{}.NewNumStr(nStr)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(nStr). " +
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(nStr). "+
 			"Error='%v' ", err.Error())
 	}
 
@@ -755,7 +755,7 @@ func TestBigIntNum_Increment_01(t *testing.T) {
 	bINum, err := BigIntNum{}.NewNumStrWithNumSeps(numStr, expectedNumSeps)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStrWithNumSeps(numStr, expectedNumSeps). " +
+		t.Errorf("Error returned by BigIntNum{}.NewNumStrWithNumSeps(numStr, expectedNumSeps). "+
 			"numStr='%v' Error='%v' \n", numStr, err.Error())
 	}
 
@@ -779,7 +779,7 @@ func TestBigIntNum_Increment_02(t *testing.T) {
 	bINum, err := BigIntNum{}.NewNumStrWithNumSeps(numStr, expectedNumSeps)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStrWithNumSeps(numStr, expectedNumSeps). " +
+		t.Errorf("Error returned by BigIntNum{}.NewNumStrWithNumSeps(numStr, expectedNumSeps). "+
 			"numStr='%v' Error='%v' \n", numStr, err.Error())
 	}
 
@@ -803,7 +803,7 @@ func TestBigIntNum_Increment_03(t *testing.T) {
 	bINum, err := BigIntNum{}.NewNumStrWithNumSeps(numStr, expectedNumSeps)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStrWithNumSeps(numStr, expectedNumSeps). " +
+		t.Errorf("Error returned by BigIntNum{}.NewNumStrWithNumSeps(numStr, expectedNumSeps). "+
 			"numStr='%v' Error='%v' \n", numStr, err.Error())
 	}
 
@@ -842,7 +842,7 @@ func TestBigIntNum_Increment_04(t *testing.T) {
 	bINum, err := BigIntNum{}.NewNumStrWithNumSeps(numStr, expectedNumSeps)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStrWithNumSeps(numStr, expectedNumSeps). " +
+		t.Errorf("Error returned by BigIntNum{}.NewNumStrWithNumSeps(numStr, expectedNumSeps). "+
 			"numStr='%v' Error='%v' \n", numStr, err.Error())
 	}
 
@@ -872,14 +872,14 @@ func TestBigIntNum_Inverse_01(t *testing.T) {
 	bINum, err := BigIntNum{}.NewNumStr(testNumStr)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(testNumStr). " +
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(testNumStr). "+
 			"testNumStr='%v' Error='%v' \n", testNumStr, err.Error())
 	}
 
 	actualInverse, err := bINum.Inverse(maxPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by bINum.Inverse(maxPrecision). " +
+		t.Errorf("Error returned by bINum.Inverse(maxPrecision). "+
 			"maxPrecision='%v' Error='%v' \n", maxPrecision, err.Error())
 	}
 
@@ -897,14 +897,14 @@ func TestBigIntNum_Inverse_02(t *testing.T) {
 	bINum, err := BigIntNum{}.NewNumStr(testNumStr)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(testNumStr). " +
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(testNumStr). "+
 			"testNumStr='%v' Error='%v' \n", testNumStr, err.Error())
 	}
 
 	actualInverse, err := bINum.Inverse(maxPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by bINum.Inverse(maxPrecision). " +
+		t.Errorf("Error returned by bINum.Inverse(maxPrecision). "+
 			"maxPrecision='%v' Error='%v' \n", maxPrecision, err.Error())
 	}
 
@@ -922,14 +922,14 @@ func TestBigIntNum_Inverse_03(t *testing.T) {
 	bINum, err := BigIntNum{}.NewNumStr(testNumStr)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(testNumStr). " +
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(testNumStr). "+
 			"testNumStr='%v' Error='%v' \n", testNumStr, err.Error())
 	}
 
 	actualInverse, err := bINum.Inverse(maxPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by bINum.Inverse(maxPrecision). " +
+		t.Errorf("Error returned by bINum.Inverse(maxPrecision). "+
 			"maxPrecision='%v' Error='%v' \n", maxPrecision, err.Error())
 	}
 
@@ -947,14 +947,14 @@ func TestBigIntNum_Inverse_04(t *testing.T) {
 	bINum, err := BigIntNum{}.NewNumStr(testNumStr)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(testNumStr). " +
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(testNumStr). "+
 			"testNumStr='%v' Error='%v' \n", testNumStr, err.Error())
 	}
 
 	actualInverse, err := bINum.Inverse(maxPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by bINum.Inverse(maxPrecision). " +
+		t.Errorf("Error returned by bINum.Inverse(maxPrecision). "+
 			"maxPrecision='%v' Error='%v' \n", maxPrecision, err.Error())
 	}
 
@@ -972,14 +972,14 @@ func TestBigIntNum_Inverse_09(t *testing.T) {
 	bINum, err := BigIntNum{}.NewNumStr(testNumStr)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(testNumStr). " +
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(testNumStr). "+
 			"testNumStr='%v' Error='%v' \n", testNumStr, err.Error())
 	}
 
 	actualInverse, err := bINum.Inverse(maxPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by bINum.Inverse(maxPrecision). " +
+		t.Errorf("Error returned by bINum.Inverse(maxPrecision). "+
 			"maxPrecision='%v' Error='%v' \n", maxPrecision, err.Error())
 	}
 
@@ -997,14 +997,14 @@ func TestBigIntNum_Inverse_10(t *testing.T) {
 	bINum, err := BigIntNum{}.NewNumStr(testNumStr)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(testNumStr). " +
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(testNumStr). "+
 			"testNumStr='%v' Error='%v' \n", testNumStr, err.Error())
 	}
 
 	actualInverse, err := bINum.Inverse(maxPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by bINum.Inverse(maxPrecision). " +
+		t.Errorf("Error returned by bINum.Inverse(maxPrecision). "+
 			"maxPrecision='%v' Error='%v' \n", maxPrecision, err.Error())
 	}
 
@@ -1021,14 +1021,14 @@ func TestBigIntNum_IsEvenNumber_01(t *testing.T) {
 	bINum, err := BigIntNum{}.NewNumStr(testNumStr)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(testNumStr). " +
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(testNumStr). "+
 			"testNumStr='%v' Error='%v' ", testNumStr, err.Error())
 	}
 
 	isEven, err := bINum.IsEvenNumber()
 
 	if err != nil {
-		t.Errorf("Error returned by bINum.IsEvenNumber(). " +
+		t.Errorf("Error returned by bINum.IsEvenNumber(). "+
 			"bINum='%v' Error='%v' ", bINum.GetNumStr(), err.Error())
 
 	}
@@ -1047,14 +1047,14 @@ func TestBigIntNum_IsEvenNumber_02(t *testing.T) {
 	bINum, err := BigIntNum{}.NewNumStr(testNumStr)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(testNumStr). " +
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(testNumStr). "+
 			"testNumStr='%v' Error='%v' ", testNumStr, err.Error())
 	}
 
 	isEven, err := bINum.IsEvenNumber()
 
 	if err != nil {
-		t.Errorf("Error returned by bINum.IsEvenNumber(). " +
+		t.Errorf("Error returned by bINum.IsEvenNumber(). "+
 			"bINum='%v' Error='%v' ", bINum.GetNumStr(), err.Error())
 
 	}
@@ -1073,14 +1073,14 @@ func TestBigIntNum_IsEvenNumber_03(t *testing.T) {
 	bINum, err := BigIntNum{}.NewNumStr(testNumStr)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(testNumStr). " +
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(testNumStr). "+
 			"testNumStr='%v' Error='%v' ", testNumStr, err.Error())
 	}
 
 	isEven, err := bINum.IsEvenNumber()
 
 	if err != nil {
-		t.Errorf("Error returned by bINum.IsEvenNumber(). " +
+		t.Errorf("Error returned by bINum.IsEvenNumber(). "+
 			"bINum='%v' Error='%v' ", bINum.GetNumStr(), err.Error())
 
 	}
@@ -1099,14 +1099,14 @@ func TestBigIntNum_IsEvenNumber_04(t *testing.T) {
 	bINum, err := BigIntNum{}.NewNumStr(testNumStr)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(testNumStr). " +
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(testNumStr). "+
 			"testNumStr='%v' Error='%v' ", testNumStr, err.Error())
 	}
 
 	isEven, err := bINum.IsEvenNumber()
 
 	if err != nil {
-		t.Errorf("Error returned by bINum.IsEvenNumber(). " +
+		t.Errorf("Error returned by bINum.IsEvenNumber(). "+
 			"bINum='%v' Error='%v' ", bINum.GetNumStr(), err.Error())
 
 	}
@@ -1125,14 +1125,14 @@ func TestBigIntNum_IsEvenNumber_05(t *testing.T) {
 	bINum, err := BigIntNum{}.NewNumStr(testNumStr)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(testNumStr). " +
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(testNumStr). "+
 			"testNumStr='%v' Error='%v' ", testNumStr, err.Error())
 	}
 
 	isEven, err := bINum.IsEvenNumber()
 
 	if err != nil {
-		t.Errorf("Error returned by bINum.IsEvenNumber(). " +
+		t.Errorf("Error returned by bINum.IsEvenNumber(). "+
 			"bINum='%v' Error='%v' ", bINum.GetNumStr(), err.Error())
 
 	}
@@ -1151,14 +1151,14 @@ func TestBigIntNum_IsEvenNumber_06(t *testing.T) {
 	bINum, err := BigIntNum{}.NewNumStr(testNumStr)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(testNumStr). " +
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(testNumStr). "+
 			"testNumStr='%v' Error='%v' ", testNumStr, err.Error())
 	}
 
 	isEven, err := bINum.IsEvenNumber()
 
 	if err != nil {
-		t.Errorf("Error returned by bINum.IsEvenNumber(). " +
+		t.Errorf("Error returned by bINum.IsEvenNumber(). "+
 			"bINum='%v' Error='%v' ", bINum.GetNumStr(), err.Error())
 
 	}
@@ -1177,14 +1177,14 @@ func TestBigIntNum_IsEvenNumber_07(t *testing.T) {
 	bINum, err := BigIntNum{}.NewNumStr(testNumStr)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(testNumStr). " +
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(testNumStr). "+
 			"testNumStr='%v' Error='%v' ", testNumStr, err.Error())
 	}
 
 	isEven, err := bINum.IsEvenNumber()
 
 	if err != nil {
-		t.Errorf("Error returned by bINum.IsEvenNumber(). " +
+		t.Errorf("Error returned by bINum.IsEvenNumber(). "+
 			"bINum='%v' Error='%v' ", bINum.GetNumStr(), err.Error())
 
 	}
@@ -1203,14 +1203,14 @@ func TestBigIntNum_IsEvenNumber_08(t *testing.T) {
 	bINum, err := BigIntNum{}.NewNumStr(testNumStr)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(testNumStr). " +
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(testNumStr). "+
 			"testNumStr='%v' Error='%v' ", testNumStr, err.Error())
 	}
 
 	isEven, err := bINum.IsEvenNumber()
 
 	if err != nil {
-		t.Errorf("Error returned by bINum.IsEvenNumber(). " +
+		t.Errorf("Error returned by bINum.IsEvenNumber(). "+
 			"bINum='%v' Error='%v' ", bINum.GetNumStr(), err.Error())
 
 	}
@@ -1229,14 +1229,14 @@ func TestBigIntNum_IsEvenNumber_09(t *testing.T) {
 	bINum, err := BigIntNum{}.NewNumStr(testNumStr)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(testNumStr). " +
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(testNumStr). "+
 			"testNumStr='%v' Error='%v' ", testNumStr, err.Error())
 	}
 
 	isEven, err := bINum.IsEvenNumber()
 
 	if err != nil {
-		t.Errorf("Error returned by bINum.IsEvenNumber(). " +
+		t.Errorf("Error returned by bINum.IsEvenNumber(). "+
 			"bINum='%v' Error='%v' ", bINum.GetNumStr(), err.Error())
 
 	}
@@ -1255,14 +1255,14 @@ func TestBigIntNum_IsEvenNumber_10(t *testing.T) {
 	bINum, err := BigIntNum{}.NewNumStr(testNumStr)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(testNumStr). " +
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(testNumStr). "+
 			"testNumStr='%v' Error='%v' ", testNumStr, err.Error())
 	}
 
 	isEven, err := bINum.IsEvenNumber()
 
 	if err != nil {
-		t.Errorf("Error returned by bINum.IsEvenNumber(). " +
+		t.Errorf("Error returned by bINum.IsEvenNumber(). "+
 			"bINum='%v' Error='%v' ", bINum.GetNumStr(), err.Error())
 
 	}
@@ -1282,7 +1282,7 @@ func TestBigIntNum_IsZero_01(t *testing.T) {
 	bINum, err := BigIntNum{}.NewNumStr(testNumStr)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(testNumStr). " +
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(testNumStr). "+
 			"testNumStr='%v' Error='%v' ", testNumStr, err.Error())
 	}
 
@@ -1302,7 +1302,7 @@ func TestBigIntNum_IsZero_02(t *testing.T) {
 	bINum, err := BigIntNum{}.NewNumStr(testNumStr)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(testNumStr). " +
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(testNumStr). "+
 			"testNumStr='%v' Error='%v' ", testNumStr, err.Error())
 	}
 
@@ -1322,7 +1322,7 @@ func TestBigIntNum_IsZero_03(t *testing.T) {
 	bINum, err := BigIntNum{}.NewNumStr(testNumStr)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(testNumStr). " +
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(testNumStr). "+
 			"testNumStr='%v' Error='%v' ", testNumStr, err.Error())
 	}
 
@@ -1342,7 +1342,7 @@ func TestBigIntNum_IsZero_04(t *testing.T) {
 	bINum, err := BigIntNum{}.NewNumStr(testNumStr)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(testNumStr). " +
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(testNumStr). "+
 			"testNumStr='%v' Error='%v' ", testNumStr, err.Error())
 	}
 
@@ -1362,7 +1362,7 @@ func TestBigIntNum_IsZero_05(t *testing.T) {
 	bINum, err := BigIntNum{}.NewNumStr(testNumStr)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(testNumStr). " +
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(testNumStr). "+
 			"testNumStr='%v' Error='%v' ", testNumStr, err.Error())
 	}
 
@@ -1376,7 +1376,7 @@ func TestBigIntNum_IsZero_05(t *testing.T) {
 
 func TestBigIntNum_IntAry_01(t *testing.T) {
 
-	nStr:="123.456"
+	nStr := "123.456"
 	expectedPrecision := uint(3)
 	nbStr := "123456"
 	expectedScale := big.NewInt(1000)
@@ -1395,17 +1395,16 @@ func TestBigIntNum_IntAry_01(t *testing.T) {
 	bINum, err := BigIntNum{}.NewIntAry(ia)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewIntAry(ia) " +
+		t.Errorf("Error returned by BigIntNum{}.NewIntAry(ia) "+
 			"Error='%v' ", err.Error())
 	}
 
 	nDto, err := NumStrDto{}.NewBigInt(bINum.bigInt, bINum.precision)
 
 	if err != nil {
-		t.Errorf("Error returned by NumStrDto{}.NewBigInt(bINum.bigInt, bINum.precision) " +
+		t.Errorf("Error returned by NumStrDto{}.NewBigInt(bINum.bigInt, bINum.precision) "+
 			"Error='%v' ", err.Error())
 	}
-
 
 	if bOriginal.Cmp(bINum.bigInt) != 0 {
 		t.Errorf("Expected bigInt='%v'  Instead, bigInt='%v'. ",
@@ -1441,7 +1440,7 @@ func TestBigIntNum_IntAry_01(t *testing.T) {
 
 func TestBigIntNum_IntAry_02(t *testing.T) {
 
-	nStr:="-123.456"
+	nStr := "-123.456"
 	expectedPrecision := uint(3)
 	nbStr := "-123456"
 	expectedScale := big.NewInt(1000)
@@ -1460,17 +1459,16 @@ func TestBigIntNum_IntAry_02(t *testing.T) {
 	bINum, err := BigIntNum{}.NewIntAry(ia)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewIntAry(ia) " +
+		t.Errorf("Error returned by BigIntNum{}.NewIntAry(ia) "+
 			"Error='%v' ", err.Error())
 	}
 
 	nDto, err := NumStrDto{}.NewBigInt(bINum.bigInt, bINum.precision)
 
 	if err != nil {
-		t.Errorf("Error returned by NumStrDto{}.NewBigInt(bINum.bigInt, bINum.precision) " +
+		t.Errorf("Error returned by NumStrDto{}.NewBigInt(bINum.bigInt, bINum.precision) "+
 			"Error='%v' ", err.Error())
 	}
-
 
 	if bOriginal.Cmp(bINum.bigInt) != 0 {
 		t.Errorf("Expected bigInt='%v'  Instead, bigInt='%v'. ",

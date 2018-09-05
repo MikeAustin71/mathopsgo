@@ -74,7 +74,6 @@ func TestNumStrUtility_ConvertNumStrToDecimal_02(t *testing.T) {
 		t.Errorf("Expected NumStrOut= '%v'. Instead, got %v", str, dec.GetNumStr())
 	}
 
-
 	if dec.GetPrecision() != 6 {
 		t.Errorf("Expected precision = '6'. Instead, got %v", dec.GetPrecision())
 	}
@@ -120,7 +119,6 @@ func TestNumStrUtility_ConvertNumStrToDecimal_03(t *testing.T) {
 	if str != dec.GetNumStr() {
 		t.Errorf("Expected NumStrOut= '%v'. Instead, got %v", str, dec.GetNumStr())
 	}
-
 
 	if dec.GetPrecision() != 6 {
 		t.Errorf("Expected precision = '6'. Instead, got %v", dec.GetPrecision())
@@ -232,15 +230,15 @@ func TestDecimal_Add_02(t *testing.T) {
 	dec1, err := Decimal{}.NewNumStr(numStr1)
 
 	if err != nil {
-		t.Errorf("Error returned by Decimal{}.NewNumStr(numStr1). " +
+		t.Errorf("Error returned by Decimal{}.NewNumStr(numStr1). "+
 			"numStr1='%v'  Error='%v'",
-				numStr1, err.Error())
+			numStr1, err.Error())
 	}
 
 	dec2, err := Decimal{}.NewNumStr(numStr2)
 
 	if err != nil {
-		t.Errorf("Error returned by Decimal{}.NewNumStr(numStr2). " +
+		t.Errorf("Error returned by Decimal{}.NewNumStr(numStr2). "+
 			"numStr1='%v'  Error='%v'",
 			numStr2, err.Error())
 	}
@@ -275,7 +273,7 @@ func TestDecimal_Add_03(t *testing.T) {
 	dec1, err := Decimal{}.NewNumStr(numStr1)
 
 	if err != nil {
-		t.Errorf("Error returned by Decimal{}.NewNumStr(numStr1). " +
+		t.Errorf("Error returned by Decimal{}.NewNumStr(numStr1). "+
 			"numStr1='%v'  Error='%v'",
 			numStr1, err.Error())
 	}
@@ -283,7 +281,7 @@ func TestDecimal_Add_03(t *testing.T) {
 	dec2, err := Decimal{}.NewNumStr(numStr2)
 
 	if err != nil {
-		t.Errorf("Error returned by Decimal{}.NewNumStr(numStr2). " +
+		t.Errorf("Error returned by Decimal{}.NewNumStr(numStr2). "+
 			"numStr2='%v'  Error='%v'",
 			numStr2, err.Error())
 	}
@@ -306,7 +304,7 @@ func TestDecimal_Add_03(t *testing.T) {
 	decy, err := Decimal{}.NewNumStr(numStr3)
 
 	if err != nil {
-		t.Errorf("Error returned by Decimal{}.NewNumStr(numStr3). " +
+		t.Errorf("Error returned by Decimal{}.NewNumStr(numStr3). "+
 			"numStr3='%v'  Error='%v'",
 			numStr3, err.Error())
 	}
@@ -353,7 +351,7 @@ func TestDecimal_Add_04(t *testing.T) {
 	d2, err := Decimal{}.NewNumStr(numStr2)
 
 	if err != nil {
-		t.Errorf("Error returned by Decimal{}.NewNumStr(numStr2). " +
+		t.Errorf("Error returned by Decimal{}.NewNumStr(numStr2). "+
 			"numStr2='%v'  Error='%v'",
 			numStr2, err.Error())
 	}
@@ -380,7 +378,7 @@ func TestDecimal_Add_05(t *testing.T) {
 	d2, err := Decimal{}.NewNumStr(numStr2)
 
 	if err != nil {
-		t.Errorf("Error returned by Decimal{}.NewNumStr(numStr2). " +
+		t.Errorf("Error returned by Decimal{}.NewNumStr(numStr2). "+
 			"numStr2='%v'  Error='%v'",
 			numStr2, err.Error())
 	}
@@ -416,7 +414,7 @@ func TestDecimal_AddToThis_01(t *testing.T) {
 	d, err := Decimal{}.NewNumStr("0")
 
 	if err != nil {
-		t.Errorf("Error returned by Decimal{}.NewNumStr(\"0\"). " +
+		t.Errorf("Error returned by Decimal{}.NewNumStr(\"0\"). "+
 			"Error='%v'",
 			err.Error())
 	}
@@ -472,7 +470,7 @@ func TestDecimal_AddToThis_03(t *testing.T) {
 	d, err := Decimal{}.NewNumStr("150")
 
 	if err != nil {
-		t.Errorf("Error returned by Decimal{}.NewNumStr(\"150\"). " +
+		t.Errorf("Error returned by Decimal{}.NewNumStr(\"150\"). "+
 			"Error='%v'",
 			err.Error())
 	}
@@ -492,45 +490,43 @@ func TestDecimal_AddToThis_03(t *testing.T) {
 func TestDecimal_AddToThisArray_01(t *testing.T) {
 	ePrecision := 4
 	eSignVal := 1
-	expected:= "68139.6265"
+	expected := "68139.6265"
 	base, err := Decimal{}.NewNumStr("25.72")
 
 	if err != nil {
-		t.Errorf("Error returned by Decimal{}.NewNumStr(\"25.72\") " +
+		t.Errorf("Error returned by Decimal{}.NewNumStr(\"25.72\") "+
 			"Error = '%v' ", err.Error())
 	}
-
 
 	d, err := Decimal{}.NewNumStrsMultiple(
-		       "351.7",
-						    "6224.894",
-								    "34.8",
-								  	 "150",
-						 		"150726.9",
-							"-89421.6175",
-										"47.23",
-					 )
+		"351.7",
+		"6224.894",
+		"34.8",
+		"150",
+		"150726.9",
+		"-89421.6175",
+		"47.23",
+	)
 
 	if err != nil {
-		t.Errorf("Error returned by Decimal{}.NewNumStrsMultiple(...) " +
+		t.Errorf("Error returned by Decimal{}.NewNumStrsMultiple(...) "+
 			"Error = '%v' ", err.Error())
 	}
 
-
 	/*
-	d:= [] Decimal { Decimal{}.NewNumStr("351.7"),
-		Decimal{}.NewNumStr("6224.894"),
-		Decimal{}.NewNumStr("34.8"),
-		Decimal{}.NewNumStr("150"),
-		Decimal{}.NewNumStr("150726.9"),
-		Decimal{}.NewNumStr("-89421.6175"),
-		Decimal{}.NewNumStr("47.23"),
-	}
-*/
+		d:= [] Decimal { Decimal{}.NewNumStr("351.7"),
+			Decimal{}.NewNumStr("6224.894"),
+			Decimal{}.NewNumStr("34.8"),
+			Decimal{}.NewNumStr("150"),
+			Decimal{}.NewNumStr("150726.9"),
+			Decimal{}.NewNumStr("-89421.6175"),
+			Decimal{}.NewNumStr("47.23"),
+		}
+	*/
 
 	err = base.AddToThisArray(d)
 
-	if err!=nil {
+	if err != nil {
 		t.Errorf("Received error from base.AddToThisArray(d). Error= %v", err)
 	}
 
@@ -551,43 +547,43 @@ func TestDecimal_AddToThisArray_01(t *testing.T) {
 func TestDecimal_AddToThisArray_02(t *testing.T) {
 	ePrecision := 4
 	eSignVal := -1
-	expected:= "-233314.1735"
+	expected := "-233314.1735"
 	base, err := Decimal{}.NewNumStr("25.72")
 
 	if err != nil {
-		t.Errorf("Error returned by Decimal{}.NewNumStr(\"25.72\") " +
+		t.Errorf("Error returned by Decimal{}.NewNumStr(\"25.72\") "+
 			"Error = '%v' ", err.Error())
 	}
 
 	d, err := Decimal{}.NewNumStrsMultiple(
-		 "351.7",
-		      "6224.894",
-		          "34.8",
-		           "150",
-		     "-150726.9",
-		   "-89421.6175",
-		         "47.23",
-	     )
+		"351.7",
+		"6224.894",
+		"34.8",
+		"150",
+		"-150726.9",
+		"-89421.6175",
+		"47.23",
+	)
 
 	if err != nil {
-		t.Errorf("Error returned by Decimal{}.NewNumStrsMultiple(...) " +
+		t.Errorf("Error returned by Decimal{}.NewNumStrsMultiple(...) "+
 			"Error = '%v' ", err.Error())
 	}
 
 	/*
-	d:= [] Decimal { Decimal{}.NewNumStr("351.7"),
-		Decimal{}.NewNumStr("6224.894"),
-		Decimal{}.NewNumStr("34.8"),
-		Decimal{}.NewNumStr("150"),
-		Decimal{}.NewNumStr("-150726.9"),
-		Decimal{}.NewNumStr("-89421.6175"),
-		Decimal{}.NewNumStr("47.23"),
-	}
- */
+		d:= [] Decimal { Decimal{}.NewNumStr("351.7"),
+			Decimal{}.NewNumStr("6224.894"),
+			Decimal{}.NewNumStr("34.8"),
+			Decimal{}.NewNumStr("150"),
+			Decimal{}.NewNumStr("-150726.9"),
+			Decimal{}.NewNumStr("-89421.6175"),
+			Decimal{}.NewNumStr("47.23"),
+		}
+	*/
 
 	err = base.AddToThisArray(d)
 
-	if err!=nil {
+	if err != nil {
 		t.Errorf("Received error from base.AddToThisArray(d). Error= %v", err)
 	}
 
@@ -613,42 +609,41 @@ func TestDecimal_AddToThisSeries_01(t *testing.T) {
 	base, err := Decimal{}.NewNumStr("25.72")
 
 	if err != nil {
-		t.Errorf("Error returned by Decimal{}.NewNumStr(\"25.72\") " +
+		t.Errorf("Error returned by Decimal{}.NewNumStr(\"25.72\") "+
 			"Error = '%v' ", err.Error())
 	}
 
-	d1, err:= Decimal{}.NewNumStr("150")
+	d1, err := Decimal{}.NewNumStr("150")
 
 	if err != nil {
-		t.Errorf("Error returned by Decimal{}.NewNumStr(\"150\") " +
+		t.Errorf("Error returned by Decimal{}.NewNumStr(\"150\") "+
 			"Error = '%v' ", err.Error())
 	}
-
 
 	d2, err := Decimal{}.NewNumStr("650.25")
 
 	if err != nil {
-		t.Errorf("Error returned by Decimal{}.NewNumStr(\"650.25\") " +
+		t.Errorf("Error returned by Decimal{}.NewNumStr(\"650.25\") "+
 			"Error = '%v' ", err.Error())
 	}
 
-	d3, err:= Decimal{}.NewNumStr("20.625")
+	d3, err := Decimal{}.NewNumStr("20.625")
 
 	if err != nil {
-		t.Errorf("Error returned by Decimal{}.NewNumStr(\"20.625\") " +
+		t.Errorf("Error returned by Decimal{}.NewNumStr(\"20.625\") "+
 			"Error = '%v' ", err.Error())
 	}
 
 	d4, err := Decimal{}.NewNumStr("-16.59")
 
 	if err != nil {
-		t.Errorf("Error returned by Decimal{}.NewNumStr(\"-16.59\") " +
+		t.Errorf("Error returned by Decimal{}.NewNumStr(\"-16.59\") "+
 			"Error = '%v' ", err.Error())
 	}
 
 	err = base.AddToThisSeries(d1, d2, d3, d4)
 
-	if err!=nil {
+	if err != nil {
 		t.Errorf("Received error from base.AddToThisSeries(d1, d2, d3, d4). Error= %v", err)
 	}
 
@@ -676,34 +671,34 @@ func TestDecimal_AddToThisSeries_02(t *testing.T) {
 	base, err := Decimal{}.NewNumStr("25.72")
 
 	if err != nil {
-		t.Errorf("Error returned by Decimal{}.NewNumStr(\"25.72\") " +
+		t.Errorf("Error returned by Decimal{}.NewNumStr(\"25.72\") "+
 			"Error = '%v' ", err.Error())
 	}
 
-	d1, err:= Decimal{}.NewNumStr("150")
+	d1, err := Decimal{}.NewNumStr("150")
 
 	if err != nil {
-		t.Errorf("Error returned by Decimal{}.NewNumStr(\"150\") " +
+		t.Errorf("Error returned by Decimal{}.NewNumStr(\"150\") "+
 			"Error = '%v' ", err.Error())
 	}
 
-	d2, err:= Decimal{}.NewNumStr("-6050.25")
+	d2, err := Decimal{}.NewNumStr("-6050.25")
 	if err != nil {
-		t.Errorf("Error returned by Decimal{}.NewNumStr(\"-6050.25\") " +
+		t.Errorf("Error returned by Decimal{}.NewNumStr(\"-6050.25\") "+
 			"Error = '%v' ", err.Error())
 	}
 
-	d3, err:= Decimal{}.NewNumStr("20.625")
+	d3, err := Decimal{}.NewNumStr("20.625")
 
 	if err != nil {
-		t.Errorf("Error returned by Decimal{}.NewNumStr(\"20.625\") " +
+		t.Errorf("Error returned by Decimal{}.NewNumStr(\"20.625\") "+
 			"Error = '%v' ", err.Error())
 	}
 
-	d4, err:= Decimal{}.NewNumStr("-16.59")
+	d4, err := Decimal{}.NewNumStr("-16.59")
 
 	if err != nil {
-		t.Errorf("Error returned by Decimal{}.NewNumStr(\"-16.59\") " +
+		t.Errorf("Error returned by Decimal{}.NewNumStr(\"-16.59\") "+
 			"Error = '%v' ", err.Error())
 	}
 
@@ -734,14 +729,14 @@ func TestDecimal_Cmp_01(t *testing.T) {
 	decNum1, err := Decimal{}.NewNumStr(n1Str)
 
 	if err != nil {
-		t.Errorf("Error returned by Decimal{}.NewNumStr(n1Str). " +
+		t.Errorf("Error returned by Decimal{}.NewNumStr(n1Str). "+
 			"n1Str='%v' Error='%v'", n1Str, err.Error())
 	}
 
 	decNum2, err := Decimal{}.NewNumStr(n2Str)
 
 	if err != nil {
-		t.Errorf("Error returned by Decimal{}.NewNumStr(n2Str). " +
+		t.Errorf("Error returned by Decimal{}.NewNumStr(n2Str). "+
 			"n2Str='%v' Error='%v'", n2Str, err.Error())
 	}
 
@@ -763,14 +758,14 @@ func TestDecimal_Cmp_02(t *testing.T) {
 	dec1, err := Decimal{}.NewNumStr(n1Str)
 
 	if err != nil {
-		t.Errorf("Error returned by Decimal{}.NewNumStr(n1Str). " +
+		t.Errorf("Error returned by Decimal{}.NewNumStr(n1Str). "+
 			"n1Str='%v' Error='%v'", n1Str, err.Error())
 	}
 
 	dec2, err := Decimal{}.NewNumStr(n2Str)
 
 	if err != nil {
-		t.Errorf("Error returned by Decimal{}.NewNumStr(n2Str). " +
+		t.Errorf("Error returned by Decimal{}.NewNumStr(n2Str). "+
 			"n2Str='%v' Error='%v'", n2Str, err.Error())
 	}
 
@@ -792,14 +787,14 @@ func TestDecimal_Cmp_03(t *testing.T) {
 	dec1, err := Decimal{}.NewNumStr(n1Str)
 
 	if err != nil {
-		t.Errorf("Error returned by Decimal{}.NewNumStr(n1Str). " +
+		t.Errorf("Error returned by Decimal{}.NewNumStr(n1Str). "+
 			"n1Str='%v' Error='%v'", n1Str, err.Error())
 	}
 
 	dec2, err := Decimal{}.NewNumStr(n2Str)
 
 	if err != nil {
-		t.Errorf("Error returned by Decimal{}.NewNumStr(n2Str). " +
+		t.Errorf("Error returned by Decimal{}.NewNumStr(n2Str). "+
 			"n2Str='%v' Error='%v'", n2Str, err.Error())
 	}
 
@@ -821,14 +816,14 @@ func TestDecimal_Cmp_04(t *testing.T) {
 	dec1, err := Decimal{}.NewNumStr(n1Str)
 
 	if err != nil {
-		t.Errorf("Error returned by Decimal{}.NewNumStr(n1Str). " +
+		t.Errorf("Error returned by Decimal{}.NewNumStr(n1Str). "+
 			"n1Str='%v' Error='%v'", n1Str, err.Error())
 	}
 
 	dec2, err := Decimal{}.NewNumStr(n2Str)
 
 	if err != nil {
-		t.Errorf("Error returned by Decimal{}.NewNumStr(n2Str). " +
+		t.Errorf("Error returned by Decimal{}.NewNumStr(n2Str). "+
 			"n2Str='%v' Error='%v'", n2Str, err.Error())
 	}
 
@@ -850,14 +845,14 @@ func TestDecimal_Cmp_05(t *testing.T) {
 	dec1, err := Decimal{}.NewNumStr(n1Str)
 
 	if err != nil {
-		t.Errorf("Error returned by Decimal{}.NewNumStr(n1Str). " +
+		t.Errorf("Error returned by Decimal{}.NewNumStr(n1Str). "+
 			"n1Str='%v' Error='%v'", n1Str, err.Error())
 	}
 
 	dec2, err := Decimal{}.NewNumStr(n2Str)
 
 	if err != nil {
-		t.Errorf("Error returned by Decimal{}.NewNumStr(n2Str). " +
+		t.Errorf("Error returned by Decimal{}.NewNumStr(n2Str). "+
 			"n2Str='%v' Error='%v'", n2Str, err.Error())
 	}
 
@@ -879,8 +874,8 @@ func TestDecimal_CubeRoot_01(t *testing.T) {
 	d1, err := Decimal{}.NewNumStr(numStr1)
 
 	if err != nil {
-		t.Errorf("Error returned by Decimal{}.NewNumStr(numStr1) " +
-			"numStr1='%v' Error = '%v' ",numStr1, err.Error())
+		t.Errorf("Error returned by Decimal{}.NewNumStr(numStr1) "+
+			"numStr1='%v' Error = '%v' ", numStr1, err.Error())
 	}
 
 	decCubeRoot, err := d1.CubeRoot(maxPrecision)
@@ -911,8 +906,8 @@ func TestDecimal_CubeRoot_02(t *testing.T) {
 	d1, err := Decimal{}.NewNumStr(numStr1)
 
 	if err != nil {
-		t.Errorf("Error returned by Decimal{}.NewNumStr(numStr1) " +
-			"numStr1='%v' Error = '%v' ",numStr1, err.Error())
+		t.Errorf("Error returned by Decimal{}.NewNumStr(numStr1) "+
+			"numStr1='%v' Error = '%v' ", numStr1, err.Error())
 	}
 
 	decCubeRoot, err := d1.CubeRoot(maxPrecision)
@@ -943,8 +938,8 @@ func TestDecimal_CubeRoot_03(t *testing.T) {
 	d1, err := Decimal{}.NewNumStr(numStr1)
 
 	if err != nil {
-		t.Errorf("Error returned by Decimal{}.NewNumStr(numStr1) " +
-			"numStr1='%v' Error = '%v' ",numStr1, err.Error())
+		t.Errorf("Error returned by Decimal{}.NewNumStr(numStr1) "+
+			"numStr1='%v' Error = '%v' ", numStr1, err.Error())
 	}
 
 	decCubeRoot, err := d1.CubeRoot(maxPrecision)
@@ -1019,10 +1014,10 @@ func TestDecimal_Divide_01(t *testing.T) {
 		return
 	}
 
-	ia3, err := ia1.DivideThisBy(&ia2, 0, 20 )
+	ia3, err := ia1.DivideThisBy(&ia2, 0, 20)
 
 	if err != nil {
-		t.Errorf("Error returned from ia1.DivideThisBy(&ia2, 0, 20 ). " +
+		t.Errorf("Error returned from ia1.DivideThisBy(&ia2, 0, 20 ). "+
 			"Error='%v \n", err.Error())
 		return
 	}
@@ -1030,7 +1025,7 @@ func TestDecimal_Divide_01(t *testing.T) {
 	chkResult := ia3.GetNumStr()
 
 	if chkResult != actualResult {
-		t.Errorf("Error: Expected result='%v'. Instead, result='%v'. " +
+		t.Errorf("Error: Expected result='%v'. Instead, result='%v'. "+
 			chkResult, actualResult)
 	}
 
@@ -1081,10 +1076,10 @@ func TestDecimal_Divide_02(t *testing.T) {
 		return
 	}
 
-	ia3, err := ia1.DivideThisBy(&ia2, 0, 20 )
+	ia3, err := ia1.DivideThisBy(&ia2, 0, 20)
 
 	if err != nil {
-		t.Errorf("Error returned from ia1.DivideThisBy(&ia2, 0, 20 ). " +
+		t.Errorf("Error returned from ia1.DivideThisBy(&ia2, 0, 20 ). "+
 			"Error='%v \n", err.Error())
 		return
 	}
@@ -1092,7 +1087,7 @@ func TestDecimal_Divide_02(t *testing.T) {
 	chkResult := ia3.GetNumStr()
 
 	if chkResult != actualResult {
-		t.Errorf("Error: Expected result='%v'. Instead, result='%v'. " +
+		t.Errorf("Error: Expected result='%v'. Instead, result='%v'. "+
 			chkResult, actualResult)
 	}
 
@@ -1143,10 +1138,10 @@ func TestDecimal_Divide_03(t *testing.T) {
 		return
 	}
 
-	ia3, err := ia1.DivideThisBy(&ia2, 0, 20 )
+	ia3, err := ia1.DivideThisBy(&ia2, 0, 20)
 
 	if err != nil {
-		t.Errorf("Error returned from ia1.DivideThisBy(&ia2, 0, 20 ). " +
+		t.Errorf("Error returned from ia1.DivideThisBy(&ia2, 0, 20 ). "+
 			"Error='%v \n", err.Error())
 		return
 	}
@@ -1154,12 +1149,11 @@ func TestDecimal_Divide_03(t *testing.T) {
 	chkResult := ia3.GetNumStr()
 
 	if chkResult != actualResult {
-		t.Errorf("Error: Expected result='%v'. Instead, result='%v'. " +
+		t.Errorf("Error: Expected result='%v'. Instead, result='%v'. "+
 			chkResult, actualResult)
 	}
 
 }
-
 
 func TestDecimal_Divide_04(t *testing.T) {
 	// str1 / str2
@@ -1210,7 +1204,7 @@ func TestDecimal_Divide_04(t *testing.T) {
 	ia3, err := ia1.DivideThisBy(&ia2, 0, int(maxPrecision))
 
 	if err != nil {
-		t.Errorf("Error returned from ia1.DivideThisBy(&ia2, 0, 20 ). " +
+		t.Errorf("Error returned from ia1.DivideThisBy(&ia2, 0, 20 ). "+
 			"Error='%v \n", err.Error())
 
 	}
@@ -1218,7 +1212,7 @@ func TestDecimal_Divide_04(t *testing.T) {
 	chkResult := ia3.GetNumStr()
 
 	if chkResult != actualResult {
-		t.Errorf("Error: IntAry Expected result='%v'. Instead, result='%v'. " +
+		t.Errorf("Error: IntAry Expected result='%v'. Instead, result='%v'. "+
 			chkResult, actualResult)
 	}
 
@@ -1236,7 +1230,7 @@ func TestDecimal_GetNumStr_01(t *testing.T) {
 	d1, err := Decimal{}.NewNumStr(str1)
 
 	if err != nil {
-		t.Errorf("Error returned by Decimal{}.NewNumStr(str1). " +
+		t.Errorf("Error returned by Decimal{}.NewNumStr(str1). "+
 			"Error='%v' ", err.Error())
 	}
 
@@ -1249,7 +1243,6 @@ func TestDecimal_GetNumStr_01(t *testing.T) {
 
 }
 
-
 func TestDecimal_GetNumStr_02(t *testing.T) {
 
 	str1 := "-575.63"
@@ -1257,7 +1250,7 @@ func TestDecimal_GetNumStr_02(t *testing.T) {
 	d1, err := Decimal{}.NewNumStr(str1)
 
 	if err != nil {
-		t.Errorf("Error returned by Decimal{}.NewNumStr(str1). " +
+		t.Errorf("Error returned by Decimal{}.NewNumStr(str1). "+
 			"Error='%v' ", err.Error())
 	}
 
@@ -1277,7 +1270,7 @@ func TestDecimal_GetNumParen_01(t *testing.T) {
 	d1, err := Decimal{}.NewNumStr(str1)
 
 	if err != nil {
-		t.Errorf("Error returned by Decimal{}.NewNumStr(str1). " +
+		t.Errorf("Error returned by Decimal{}.NewNumStr(str1). "+
 			"Error='%v' ", err.Error())
 	}
 
@@ -1290,7 +1283,6 @@ func TestDecimal_GetNumParen_01(t *testing.T) {
 
 }
 
-
 func TestDecimal_GetNumParen_02(t *testing.T) {
 
 	str1 := "-575.63"
@@ -1299,7 +1291,7 @@ func TestDecimal_GetNumParen_02(t *testing.T) {
 	d1, err := Decimal{}.NewNumStr(str1)
 
 	if err != nil {
-		t.Errorf("Error returned by Decimal{}.NewNumStr(str1). " +
+		t.Errorf("Error returned by Decimal{}.NewNumStr(str1). "+
 			"Error='%v' ", err.Error())
 	}
 
@@ -1321,7 +1313,7 @@ func TestDecimal_GetThouStr_01(t *testing.T) {
 	d1, err := Decimal{}.NewNumStr(str1)
 
 	if err != nil {
-		t.Errorf("Error returned by Decimal{}.NewNumStr(str1). " +
+		t.Errorf("Error returned by Decimal{}.NewNumStr(str1). "+
 			"Error='%v' ", err.Error())
 	}
 
@@ -1334,7 +1326,6 @@ func TestDecimal_GetThouStr_01(t *testing.T) {
 
 }
 
-
 func TestDecimal_GetThouStr_02(t *testing.T) {
 
 	str1 := "-2567894.63"
@@ -1344,7 +1335,7 @@ func TestDecimal_GetThouStr_02(t *testing.T) {
 	d1, err := Decimal{}.NewNumStr(str1)
 
 	if err != nil {
-		t.Errorf("Error returned by Decimal{}.NewNumStr(str1). " +
+		t.Errorf("Error returned by Decimal{}.NewNumStr(str1). "+
 			"Error='%v' ", err.Error())
 	}
 
@@ -1366,7 +1357,7 @@ func TestDecimal_GetThouParen_01(t *testing.T) {
 	d1, err := Decimal{}.NewNumStr(str1)
 
 	if err != nil {
-		t.Errorf("Error returned by Decimal{}.NewNumStr(str1). " +
+		t.Errorf("Error returned by Decimal{}.NewNumStr(str1). "+
 			"Error='%v' ", err.Error())
 	}
 
@@ -1378,7 +1369,6 @@ func TestDecimal_GetThouParen_01(t *testing.T) {
 	}
 
 }
-
 
 func TestDecimal_GetThouParen_02(t *testing.T) {
 
@@ -1389,7 +1379,7 @@ func TestDecimal_GetThouParen_02(t *testing.T) {
 	d1, err := Decimal{}.NewNumStr(str1)
 
 	if err != nil {
-		t.Errorf("Error returned by Decimal{}.NewNumStr(str1). " +
+		t.Errorf("Error returned by Decimal{}.NewNumStr(str1). "+
 			"Error='%v' ", err.Error())
 	}
 
@@ -1402,7 +1392,6 @@ func TestDecimal_GetThouParen_02(t *testing.T) {
 
 }
 
-
 func TestDecimal_GetCurrencyStr_01(t *testing.T) {
 
 	str1 := "2567894.63"
@@ -1412,7 +1401,7 @@ func TestDecimal_GetCurrencyStr_01(t *testing.T) {
 	d1, err := Decimal{}.NewNumStr(str1)
 
 	if err != nil {
-		t.Errorf("Error returned by Decimal{}.NewNumStr(str1). " +
+		t.Errorf("Error returned by Decimal{}.NewNumStr(str1). "+
 			"Error='%v' ", err.Error())
 	}
 
@@ -1434,7 +1423,7 @@ func TestDecimal_GetCurrencyStr_02(t *testing.T) {
 	d1, err := Decimal{}.NewNumStr(str1)
 
 	if err != nil {
-		t.Errorf("Error returned by Decimal{}.NewNumStr(str1). " +
+		t.Errorf("Error returned by Decimal{}.NewNumStr(str1). "+
 			"Error='%v' ", err.Error())
 	}
 
@@ -1450,7 +1439,6 @@ func TestDecimal_GetCurrencyStr_02(t *testing.T) {
 
 }
 
-
 func TestDecimal_GetCurrencyStr_03(t *testing.T) {
 
 	str1 := "-2567894.63"
@@ -1460,7 +1448,7 @@ func TestDecimal_GetCurrencyStr_03(t *testing.T) {
 	d1, err := Decimal{}.NewNumStr(str1)
 
 	if err != nil {
-		t.Errorf("Error returned by Decimal{}.NewNumStr(str1). " +
+		t.Errorf("Error returned by Decimal{}.NewNumStr(str1). "+
 			"Error='%v' ", err.Error())
 	}
 
@@ -1482,7 +1470,7 @@ func TestDecimal_GetCurrencyParen_01(t *testing.T) {
 	d1, err := Decimal{}.NewNumStr(str1)
 
 	if err != nil {
-		t.Errorf("Error returned by Decimal{}.NewNumStr(str1). " +
+		t.Errorf("Error returned by Decimal{}.NewNumStr(str1). "+
 			"Error='%v' ", err.Error())
 	}
 
@@ -1504,7 +1492,7 @@ func TestDecimal_GetCurrencyParen_02(t *testing.T) {
 	d1, err := Decimal{}.NewNumStr(str1)
 
 	if err != nil {
-		t.Errorf("Error returned by Decimal{}.NewNumStr(str1). " +
+		t.Errorf("Error returned by Decimal{}.NewNumStr(str1). "+
 			"Error='%v' ", err.Error())
 	}
 
@@ -1520,7 +1508,6 @@ func TestDecimal_GetCurrencyParen_02(t *testing.T) {
 
 }
 
-
 func TestDecimal_GetCurrencyParen_03(t *testing.T) {
 
 	str1 := "-2567894.63"
@@ -1530,7 +1517,7 @@ func TestDecimal_GetCurrencyParen_03(t *testing.T) {
 	d1, err := Decimal{}.NewNumStr(str1)
 
 	if err != nil {
-		t.Errorf("Error returned by Decimal{}.NewNumStr(str1). " +
+		t.Errorf("Error returned by Decimal{}.NewNumStr(str1). "+
 			"Error='%v' ", err.Error())
 	}
 
@@ -1596,7 +1583,6 @@ func TestDecimal_GetAbsoluteValue_01(t *testing.T) {
 
 	dAbs := d.GetAbsoluteValue()
 
-
 	if expected != dAbs.GetNumStr() {
 		t.Errorf("Expected absolute value = '%v'. Instead, got '%v'.", expected, dAbs.GetNumStr())
 	}
@@ -1644,74 +1630,74 @@ func TestDecimal_GetBigIntNum_01(t *testing.T) {
 	if !expectedBigIntNum.Equal(bigINum) {
 		t.Errorf("Error: Expected BigIntNum NOT Equal to Actual BigIntNum! "+
 			"expectedBi='%v', expectedPrecision='%v'. actualBi='%v' actualPrecision='%v'",
-				expectedBigIntNum.bigInt.Text(10), expectedBigIntNum.precision,
-					bigINum.bigInt.Text(10), bigINum.precision)
+			expectedBigIntNum.bigInt.Text(10), expectedBigIntNum.precision,
+			bigINum.bigInt.Text(10), bigINum.precision)
 	}
 
 	actualNumStr := bigINum.GetNumStr()
 
 	if err != nil {
-		t.Errorf("Error returned by bigINum.GetNumStrErr(). " +
+		t.Errorf("Error returned by bigINum.GetNumStrErr(). "+
 			"Error='%v' ", err.Error())
 	}
 
 	if err != nil {
-		t.Errorf("Error returned by bigINum.GetNumStrErr(). " +
+		t.Errorf("Error returned by bigINum.GetNumStrErr(). "+
 			"Error='%v' ", err.Error())
 	}
 
 	if err != nil {
-		t.Errorf("Error returned by bigINum.GetNumStrErr(). " +
+		t.Errorf("Error returned by bigINum.GetNumStrErr(). "+
 			"Error='%v' ", err.Error())
 	}
 
 	if err != nil {
-		t.Errorf("Error returned by bigINum.GetNumStrErr(). " +
+		t.Errorf("Error returned by bigINum.GetNumStrErr(). "+
 			"Error='%v' ", err.Error())
 	}
 
 	if err != nil {
-		t.Errorf("Error returned by bigINum.GetNumStrErr(). " +
+		t.Errorf("Error returned by bigINum.GetNumStrErr(). "+
 			"Error='%v' ", err.Error())
 	}
 
 	if err != nil {
-		t.Errorf("Error returned by bigINum.GetNumStrErr(). " +
+		t.Errorf("Error returned by bigINum.GetNumStrErr(). "+
 			"Error='%v' ", err.Error())
 	}
 
 	if err != nil {
-		t.Errorf("Error returned by bigINum.GetNumStrErr(). " +
+		t.Errorf("Error returned by bigINum.GetNumStrErr(). "+
 			"Error='%v' ", err.Error())
 	}
 
 	if err != nil {
-		t.Errorf("Error returned by bigINum.GetNumStrErr(). " +
+		t.Errorf("Error returned by bigINum.GetNumStrErr(). "+
 			"Error='%v' ", err.Error())
 	}
 
 	if err != nil {
-		t.Errorf("Error returned by bigINum.GetNumStrErr(). " +
+		t.Errorf("Error returned by bigINum.GetNumStrErr(). "+
 			"Error='%v' ", err.Error())
 	}
 
 	if err != nil {
-		t.Errorf("Error returned by bigINum.GetNumStrErr(). " +
+		t.Errorf("Error returned by bigINum.GetNumStrErr(). "+
 			"Error='%v' ", err.Error())
 	}
 
 	if err != nil {
-		t.Errorf("Error returned by bigINum.GetNumStrErr(). " +
+		t.Errorf("Error returned by bigINum.GetNumStrErr(). "+
 			"Error='%v' ", err.Error())
 	}
 
 	if err != nil {
-		t.Errorf("Error returned by bigINum.GetNumStrErr(). " +
+		t.Errorf("Error returned by bigINum.GetNumStrErr(). "+
 			"Error='%v' ", err.Error())
 	}
 
 	if err != nil {
-		t.Errorf("Error returned by bigINum.GetNumStrErr(). " +
+		t.Errorf("Error returned by bigINum.GetNumStrErr(). "+
 			"Error='%v' ", err.Error())
 	}
 
@@ -1783,8 +1769,8 @@ func TestDecimal_GetRelevantPrecision(t *testing.T) {
 	d1, err := Decimal{}.NewNumStr(str1)
 
 	if err != nil {
-		t.Errorf("Error returned by Decimal{}.NewNumStr(str1) " +
-			"str1='%v' Error = '%v' ",str1, err.Error())
+		t.Errorf("Error returned by Decimal{}.NewNumStr(str1) "+
+			"str1='%v' Error = '%v' ", str1, err.Error())
 	}
 
 	rP := d1.GetRelevantPrecision()

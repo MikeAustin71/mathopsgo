@@ -18,24 +18,21 @@ import (
 //	mantissaLength	= length of fractional digits displayed in scientific notation.
 //
 type SciNotationNum struct {
-
-		significand BigIntNum		// The significand consists of the leading integer and
-														//	fractional digits of the scientific notation.
-		exponent BigIntNum			// The exponent portion of the scientific notation string
-		exponentChar rune				// 	defaults to 'e'. May be customized to 'E'
-		decimalSeparator rune   // The decimal separator used to separate integer and
-														// 	fractional digits in the significand. The default is
-														// 	the standard USA decimal separator, the decimal point ('.').
-		mantissaLength uint			// The length of the fractional digits in
-														// 	the significand which will be displayed
-														// 	when SciNotationNum.GetSciNotationStr()
-														// 	is called.
-	  exponentUsesLeadingPlus	bool	// If true, positive exponent values are
-	  															// 	prefixed with a leading plus (+) sign.
-	  															//  '2.652e+8'
+	significand BigIntNum // The significand consists of the leading integer and
+	//	fractional digits of the scientific notation.
+	exponent         BigIntNum // The exponent portion of the scientific notation string
+	exponentChar     rune      // 	defaults to 'e'. May be customized to 'E'
+	decimalSeparator rune      // The decimal separator used to separate integer and
+	// 	fractional digits in the significand. The default is
+	// 	the standard USA decimal separator, the decimal point ('.').
+	mantissaLength uint // The length of the fractional digits in
+	// 	the significand which will be displayed
+	// 	when SciNotationNum.GetSciNotationStr()
+	// 	is called.
+	exponentUsesLeadingPlus bool // If true, positive exponent values are
+	// 	prefixed with a leading plus (+) sign.
+	//  '2.652e+8'
 }
-
-
 
 // GetDecimalSeparator - returns the current decimal separator
 // character as a string.
@@ -55,7 +52,6 @@ func (sciNotan *SciNotationNum) GetDecimalSeparator() rune {
 
 	return sciNotan.decimalSeparator
 }
-
 
 // GetExponent - Returns the exponent element of the scientific
 // notation as a BigIntNum.
@@ -120,7 +116,6 @@ func (sciNotan *SciNotationNum) GetNumStr() string {
 
 	return result
 }
-
 
 // GetSciNotationStr - Returns a string containing the scientific
 // notation display.  This method differs from method SciNotationNum.GetNumStr()
@@ -222,7 +217,7 @@ func (sciNotan SciNotationNum) NewNumStr(sciNotationStr string) (SciNotationNum,
 	if err != nil {
 		ePrefix := "SciNotationNum.NewNumStr() "
 		return SciNotationNum{}.New(),
-			fmt.Errorf(ePrefix +
+			fmt.Errorf(ePrefix+
 				"Error returned by s2.SetNumStr(sciNotationStr). Error='%v'\n", err.Error())
 	}
 
@@ -363,24 +358,25 @@ func (sciNotan *SciNotationNum) SetMantissaLengthIfEmpty() {
 //														fractional digits, an error will be triggered.
 //
 func (sciNotan *SciNotationNum) SetBigIntNumElements(
-										significand, exponent BigIntNum) error {
+	significand, exponent BigIntNum) error {
 
-  ePrefix := "SciNotationNum.SetBigIntNumElements() "
+	ePrefix := "SciNotationNum.SetBigIntNumElements() "
 
 	if exponent.GetPrecisionUint() > 0 {
 		return fmt.Errorf(ePrefix +
 			"Error: Input parameter 'exponent' contains fractional digits!")
 	}
 
-  sciNotan.SetExponentCharIfEmpty()
+	sciNotan.SetExponentCharIfEmpty()
 
-  sciNotan.significand.CopyIn(significand)
-  sciNotan.decimalSeparator = significand.GetDecimalSeparator()
-  sciNotan.mantissaLength = sciNotan.significand.GetPrecisionUint()
-  sciNotan.exponent.CopyIn(exponent)
+	sciNotan.significand.CopyIn(significand)
+	sciNotan.decimalSeparator = significand.GetDecimalSeparator()
+	sciNotan.mantissaLength = sciNotan.significand.GetPrecisionUint()
+	sciNotan.exponent.CopyIn(exponent)
 
-  return nil
+	return nil
 }
+
 // SetIntAryElements - Sets the components of the current SciNotationNum
 // instance based on two IntAry input parameters.
 //
@@ -396,38 +392,38 @@ func (sciNotan *SciNotationNum) SetBigIntNumElements(
 //														fractional digits, an error will be triggered.
 //
 func (sciNotan *SciNotationNum) SetIntAryElements(
-										significand, exponent IntAry) error {
+	significand, exponent IntAry) error {
 
-  ePrefix := "SciNotationNum.SetBigIntNumElements() "
+	ePrefix := "SciNotationNum.SetBigIntNumElements() "
 
 	if exponent.GetPrecisionUint() > 0 {
 		return fmt.Errorf(ePrefix +
 			"Error: Input parameter 'exponent' contains fractional digits!")
 	}
 
-  sciNotan.SetExponentCharIfEmpty()
+	sciNotan.SetExponentCharIfEmpty()
 
-  biNumSignificand, err := significand.GetBigIntNum()
-
-  if err != nil {
-  	return fmt.Errorf(ePrefix + "Error returned by significand.GetBigIntNum(). " +
-  		"Error='%v'", err.Error())
-	}
-
-  sciNotan.significand = biNumSignificand.CopyOut()
-  sciNotan.decimalSeparator = significand.GetDecimalSeparator()
-  sciNotan.mantissaLength = sciNotan.significand.GetPrecisionUint()
-
-  biNumExponent, err := exponent.GetBigIntNum()
+	biNumSignificand, err := significand.GetBigIntNum()
 
 	if err != nil {
-		return fmt.Errorf(ePrefix + "Error returned by exponent.GetBigIntNum(). " +
+		return fmt.Errorf(ePrefix+"Error returned by significand.GetBigIntNum(). "+
 			"Error='%v'", err.Error())
 	}
 
-  sciNotan.exponent.CopyIn(biNumExponent)
+	sciNotan.significand = biNumSignificand.CopyOut()
+	sciNotan.decimalSeparator = significand.GetDecimalSeparator()
+	sciNotan.mantissaLength = sciNotan.significand.GetPrecisionUint()
 
-  return nil
+	biNumExponent, err := exponent.GetBigIntNum()
+
+	if err != nil {
+		return fmt.Errorf(ePrefix+"Error returned by exponent.GetBigIntNum(). "+
+			"Error='%v'", err.Error())
+	}
+
+	sciNotan.exponent.CopyIn(biNumExponent)
+
+	return nil
 }
 
 // SetNumStr - Receives a properly formatted scientific notation string as
@@ -461,11 +457,10 @@ func (sciNotan *SciNotationNum) SetNumStr(sciNotationStr string) error {
 	sciNotan.SetDecimalSeparatorIfEmpty()
 	sciNotan.SetExponentCharIfEmpty()
 
-
 	i := strings.Index(sciNotationStr, "e")
 
 	if i == -1 {
-		i = strings.Index( sciNotationStr,"E")
+		i = strings.Index(sciNotationStr, "E")
 	}
 
 	if i == -1 {
@@ -483,7 +478,7 @@ func (sciNotan *SciNotationNum) SetNumStr(sciNotationStr string) error {
 
 	}
 
-	exponentStr := sciNotationStr[i+1 :]
+	exponentStr := sciNotationStr[i+1:]
 
 	if exponentStr == "" {
 		return errors.New(ePrefix +
@@ -500,16 +495,16 @@ func (sciNotan *SciNotationNum) SetNumStr(sciNotationStr string) error {
 	err := bINumSignificand.SetNumStr(significandStr)
 
 	if err != nil {
-		return fmt.Errorf(ePrefix +
-			"Error returned by bINumSignificand.SetNumStr(significandStr). " +
+		return fmt.Errorf(ePrefix+
+			"Error returned by bINumSignificand.SetNumStr(significandStr). "+
 			"significand='%v' Error='%v'\n", significandStr, err.Error())
 	}
 
 	bINumExponent, err := BigIntNum{}.NewNumStr(exponentStr)
 
 	if err != nil {
-		return fmt.Errorf(ePrefix +
-			"Error returned by BigIntNum{}.NewNumStr(exponentStr). " +
+		return fmt.Errorf(ePrefix+
+			"Error returned by BigIntNum{}.NewNumStr(exponentStr). "+
 			"exponentStr='%v' Error='%v'\n", exponentStr, err.Error())
 	}
 

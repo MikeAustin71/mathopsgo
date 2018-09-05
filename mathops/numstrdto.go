@@ -14,7 +14,7 @@ import (
 
 	The source file decimal.go is located in directory:
 		MikeAustin71/mathopsgo/mathops/numstrdto.go
- */
+*/
 
 // NumStrDto - This Type contains data fields and methods used
 // to manage, store and transport number strings.
@@ -22,15 +22,15 @@ import (
 // The NumStrDto Type implements the INumMgr interface.
 //
 type NumStrDto struct {
-	signVal            	int				// An integer value indicating the numeric sign of this number string.
-																// 		Valid values are +1 or -1
-	absAllNumRunes     	[]rune		// An array of runes containing all the numeric digits in a number with
-																//		no preceding plus or minus sign character. Example: 123.456 =
-																//		[]rune{'1','2','3','4','5','6'}
-	precision          	uint			// The number of digits to the right of the decimal point.
-	thousandsSeparator 	rune			// Separates thousands in the integer number: '1,000,000,000
-	decimalSeparator   	rune			// Separates integer and fractional elements of a number. '123.456'
-	currencySymbol     	rune			// Currency symbol used in currency string displays
+	signVal int // An integer value indicating the numeric sign of this number string.
+	// 		Valid values are +1 or -1
+	absAllNumRunes []rune // An array of runes containing all the numeric digits in a number with
+	//		no preceding plus or minus sign character. Example: 123.456 =
+	//		[]rune{'1','2','3','4','5','6'}
+	precision          uint // The number of digits to the right of the decimal point.
+	thousandsSeparator rune // Separates thousands in the integer number: '1,000,000,000
+	decimalSeparator   rune // Separates integer and fractional elements of a number. '123.456'
+	currencySymbol     rune // Currency symbol used in currency string displays
 }
 
 // Add - Adds the value of input NumStrDto to the current NumStrDto
@@ -42,7 +42,7 @@ func (nDto *NumStrDto) Add(n2Dto NumStrDto) error {
 	nResult, err := nDto.AddNumStrs(n1Dto, n2Dto)
 
 	if err != nil {
-		return fmt.Errorf(ePrefix + "Error returned by nDto.AddNumStrs(n1Dto, n2Dto). " +
+		return fmt.Errorf(ePrefix+"Error returned by nDto.AddNumStrs(n1Dto, n2Dto). "+
 			"Error='%v'", err.Error())
 	}
 
@@ -237,8 +237,8 @@ func (nDto *NumStrDto) CompareAbsoluteVals(n1Dto, n2Dto *NumStrDto) int {
 	// lenN1IntRunes Must Be Equal to lenN2IntRunes
 
 	for i := 0; i < lenN1IntRunes; i++ {
-		n1 :=  n1DtoAbsIntRunes[i] - 48
-		n2 :=  n2DtoAbsIntRunes[i] - 48
+		n1 := n1DtoAbsIntRunes[i] - 48
+		n2 := n2DtoAbsIntRunes[i] - 48
 
 		if n1 > n2 {
 			return 1
@@ -330,30 +330,29 @@ func (nDto *NumStrDto) CopyIn(nInDto NumStrDto) {
 // 'minimumPrecision' specifies the minimum precision of the final result.
 // If 'minimumPrecision' is less than zero, it is automatically set to zero.
 //
-func (nDto *NumStrDto) Divide(n2Dto NumStrDto, minimumPrecision, maximumPrecision int ) error {
+func (nDto *NumStrDto) Divide(n2Dto NumStrDto, minimumPrecision, maximumPrecision int) error {
 
 	ePrefix := "NumStrDto.Divide() "
 
 	ia1, err := IntAry{}.NewNumStrDto(nDto.CopyOut())
 
 	if err != nil {
-		return fmt.Errorf(ePrefix + "Error returned by IntAry{}.NewNumStrDto(nDto.CopyOut()). " +
+		return fmt.Errorf(ePrefix+"Error returned by IntAry{}.NewNumStrDto(nDto.CopyOut()). "+
 			"Error='%v'", err.Error())
 	}
 
 	ia2, err := IntAry{}.NewNumStrDto(n2Dto)
 
 	if err != nil {
-		return fmt.Errorf(ePrefix + "Error returned by IntAry{}.NewNumStrDto(n2Dto). " +
+		return fmt.Errorf(ePrefix+"Error returned by IntAry{}.NewNumStrDto(n2Dto). "+
 			"Error='%v'", err.Error())
 	}
 
-
- iaResult, err :=	ia1.DivideThisBy(&ia2, minimumPrecision, maximumPrecision)
+	iaResult, err := ia1.DivideThisBy(&ia2, minimumPrecision, maximumPrecision)
 
 	if err != nil {
-		return fmt.Errorf(ePrefix +
-			"ia1.DivideThisBy(&ia2, minimumPrecision, maximumPrecision). " +
+		return fmt.Errorf(ePrefix+
+			"ia1.DivideThisBy(&ia2, minimumPrecision, maximumPrecision). "+
 			"minimumPrecision='%v' maximumPrecision='%v' Error='%v'",
 			minimumPrecision, maximumPrecision, err.Error())
 	}
@@ -361,7 +360,7 @@ func (nDto *NumStrDto) Divide(n2Dto NumStrDto, minimumPrecision, maximumPrecisio
 	nResultDto, err := iaResult.GetNumStrDto()
 
 	if err != nil {
-		return fmt.Errorf(ePrefix + "Error returned by iaResult.GetNumStrDto(). " +
+		return fmt.Errorf(ePrefix+"Error returned by iaResult.GetNumStrDto(). "+
 			"Error='%v'", err.Error())
 	}
 
@@ -370,8 +369,8 @@ func (nDto *NumStrDto) Divide(n2Dto NumStrDto, minimumPrecision, maximumPrecisio
 		err = nResultDto.SetThisPrecision(uint(minimumPrecision), false)
 
 		if err != nil {
-			return fmt.Errorf(ePrefix +
-				"Error returned by nResultDto.SetThisPrecision(uint(minimumPrecision), false). " +
+			return fmt.Errorf(ePrefix+
+				"Error returned by nResultDto.SetThisPrecision(uint(minimumPrecision), false). "+
 				"Error='%v'", err.Error())
 		}
 
@@ -405,15 +404,15 @@ func (nDto *NumStrDto) Equal(n2Dto NumStrDto) bool {
 	lenAbsRuneArray := len(nDto.absAllNumRunes)
 
 	if nDto.signVal != n2Dto.signVal ||
-			lenAbsRuneArray != len(n2Dto.absAllNumRunes) ||
-			nDto.precision != n2Dto.precision ||
-			nDto.thousandsSeparator != n2Dto.thousandsSeparator ||
-			nDto.decimalSeparator != n2Dto.decimalSeparator ||
-			nDto.currencySymbol != n2Dto.currencySymbol {
-				return false
+		lenAbsRuneArray != len(n2Dto.absAllNumRunes) ||
+		nDto.precision != n2Dto.precision ||
+		nDto.thousandsSeparator != n2Dto.thousandsSeparator ||
+		nDto.decimalSeparator != n2Dto.decimalSeparator ||
+		nDto.currencySymbol != n2Dto.currencySymbol {
+		return false
 	}
 
-	for i:=0; i < lenAbsRuneArray; i++ {
+	for i := 0; i < lenAbsRuneArray; i++ {
 		if nDto.absAllNumRunes[i] != n2Dto.absAllNumRunes[i] {
 			return false
 		}
@@ -542,7 +541,6 @@ func (nDto *NumStrDto) FormatForMathOps(n1Dto, n2Dto NumStrDto) (n1DtoOut NumStr
 
 	ePrefix := "NumStrDto.FormatForMathOps() "
 
-
 	lenN1AllRunes := 0
 	lenN1IntRunes := 0
 	lenN1FracRunes := 0
@@ -583,8 +581,6 @@ func (nDto *NumStrDto) FormatForMathOps(n1Dto, n2Dto NumStrDto) (n1DtoOut NumStr
 
 	n2DtoOutAbsIntRunes := n2DtoOut.GetAbsIntRunes()
 	n2DtoOutAbsFracRunes := n2DtoOut.GetAbsFracRunes()
-
-
 
 	if n1DtoOut.precision > n2DtoOut.precision {
 
@@ -711,26 +707,26 @@ func (nDto *NumStrDto) FormatForMathOps(n1Dto, n2Dto NumStrDto) (n1DtoOut NumStr
 
 	if lenN1AllRunes != lenN2AllRunes {
 		return NumStrDto{}, NumStrDto{}, 0, false,
-				fmt.Errorf("FormatForMathOps() - n1 and n2 AllNumRune arrays are NOT equal in length. " +
-					"n1 length= '%v' n2 length= '%v'", lenN1AllRunes, lenN2AllRunes)
+			fmt.Errorf("FormatForMathOps() - n1 and n2 AllNumRune arrays are NOT equal in length. "+
+				"n1 length= '%v' n2 length= '%v'", lenN1AllRunes, lenN2AllRunes)
 	}
 
 	if lenN1IntRunes != lenN2IntRunes {
 		return NumStrDto{}, NumStrDto{}, 0, false,
-		fmt.Errorf("FormatForMathOps() - n1 and n2 IntRunes arrays are NOT equal in length. " +
-			"n1 length= '%v' n2 length= '%v'", lenN1IntRunes, lenN2IntRunes)
+			fmt.Errorf("FormatForMathOps() - n1 and n2 IntRunes arrays are NOT equal in length. "+
+				"n1 length= '%v' n2 length= '%v'", lenN1IntRunes, lenN2IntRunes)
 	}
 
 	if lenN1FracRunes != lenN2FracRunes {
 		return NumStrDto{}, NumStrDto{}, 0, false,
-		fmt.Errorf("FormatForMathOps() - n1 and n2 FracRunes arrays are NOT equal in length. " +
-			"n1 length= '%v' n2 length= '%v'", lenN1FracRunes, lenN2FracRunes)
+			fmt.Errorf("FormatForMathOps() - n1 and n2 FracRunes arrays are NOT equal in length. "+
+				"n1 length= '%v' n2 length= '%v'", lenN1FracRunes, lenN2FracRunes)
 	}
 
 	if n1DtoOut.precision != n2DtoOut.precision {
 		return NumStrDto{}, NumStrDto{}, 0, false,
-		fmt.Errorf("FormatForMathOps() - n1 and n2 FracRunes arrays are NOT equal in length. " +
-			"n1 length= '%v' n2 length= '%v'", lenN1FracRunes, lenN2FracRunes)
+			fmt.Errorf("FormatForMathOps() - n1 and n2 FracRunes arrays are NOT equal in length. "+
+				"n1 length= '%v' n2 length= '%v'", lenN1FracRunes, lenN2FracRunes)
 
 	}
 
@@ -792,7 +788,7 @@ func (nDto *NumStrDto) FormatCurrencyStr(negValMode NegativeValueFmtMode) (strin
 
 	if err != nil {
 		return "",
-		fmt.Errorf(ePrefix + "")
+			fmt.Errorf(ePrefix + "")
 	}
 
 	lenAllNumRunes := len(nDto.absAllNumRunes)
@@ -806,7 +802,7 @@ func (nDto *NumStrDto) FormatCurrencyStr(negValMode NegativeValueFmtMode) (strin
 	mod := lenIntRunes - (seps * 3)
 
 	if mod == 0 {
-		seps --
+		seps--
 	}
 
 	// adjust for thousands delimiters
@@ -837,32 +833,32 @@ func (nDto *NumStrDto) FormatCurrencyStr(negValMode NegativeValueFmtMode) (strin
 	// If negative value and parenthesis formatting
 	// specified, format trailing parenthesis.
 	if nDto.signVal == -1 &&
-		 negValMode == PARENTHESESNEGVALFMTMODE {
-		 	outRunes[outIdx] = ')'
-		 	outIdx--
+		negValMode == PARENTHESESNEGVALFMTMODE {
+		outRunes[outIdx] = ')'
+		outIdx--
 	}
 
 	if nDto.precision > 0 {
 
-		for i := 0 ; i < int(nDto.precision) ; i++	{
+		for i := 0; i < int(nDto.precision); i++ {
 			outRunes[outIdx] = nDto.absAllNumRunes[allNumsIdx]
 			outIdx--
 			allNumsIdx--
 		}
 
 		outRunes[outIdx] = nDto.decimalSeparator
-		outIdx --
+		outIdx--
 	}
 
 	sepCnt := 0
 
-	for i:= 0 ; i < lenIntRunes; i++ {
+	for i := 0; i < lenIntRunes; i++ {
 
 		sepCnt++
 
 		if sepCnt == 4 && seps > 0 {
 			sepCnt = 1
-			seps --
+			seps--
 			outRunes[outIdx] = nDto.thousandsSeparator
 			outIdx--
 		}
@@ -878,7 +874,7 @@ func (nDto *NumStrDto) FormatCurrencyStr(negValMode NegativeValueFmtMode) (strin
 	// If required, add leading negative
 	// value sign
 	if nDto.signVal == -1 &&
-		negValMode== PARENTHESESNEGVALFMTMODE{
+		negValMode == PARENTHESESNEGVALFMTMODE {
 		outRunes[0] = '('
 	} else if nDto.signVal == -1 {
 		outRunes[0] = '-'
@@ -919,7 +915,7 @@ func (nDto *NumStrDto) FormatNumStr(negValMode NegativeValueFmtMode) (string, er
 	err := nDto.IsValid("")
 
 	if err != nil {
-		return "", fmt.Errorf(ePrefix + "NumStrDto INVALID! Error='%v'",
+		return "", fmt.Errorf(ePrefix+"NumStrDto INVALID! Error='%v'",
 			err.Error())
 	}
 
@@ -932,8 +928,8 @@ func (nDto *NumStrDto) FormatNumStr(negValMode NegativeValueFmtMode) (string, er
 	// adjust for negative sign value
 	if nDto.signVal == -1 {
 		if negValMode == LEADMINUSNEGVALFMTMODE {
-			lenOut ++
-		}	else {
+			lenOut++
+		} else {
 			// MUST BE negValMode == PARENTHESESNEGVALFMTMODE
 			lenOut += 2
 		}
@@ -942,7 +938,7 @@ func (nDto *NumStrDto) FormatNumStr(negValMode NegativeValueFmtMode) (string, er
 
 	// adjust for decimal point
 	if nDto.precision > 0 {
-		lenOut ++
+		lenOut++
 	}
 
 	outRunes := make([]rune, lenOut)
@@ -958,18 +954,17 @@ func (nDto *NumStrDto) FormatNumStr(negValMode NegativeValueFmtMode) (string, er
 
 	if nDto.precision > 0 {
 
-		for i := 0 ; i < int(nDto.precision) ; i++	{
+		for i := 0; i < int(nDto.precision); i++ {
 			outRunes[outIdx] = nDto.absAllNumRunes[allNumsIdx]
 			outIdx--
 			allNumsIdx--
 		}
 
 		outRunes[outIdx] = nDto.decimalSeparator
-		outIdx --
+		outIdx--
 	}
 
-
-	for i:= 0 ; i < lenIntRunes; i++ {
+	for i := 0; i < lenIntRunes; i++ {
 
 		outRunes[outIdx] = nDto.absAllNumRunes[allNumsIdx]
 		outIdx--
@@ -1016,7 +1011,6 @@ func (nDto *NumStrDto) FormatThousandsStr(negValMode NegativeValueFmtMode) (stri
 
 	ePrefix := "NumStrDto.FormatThousandsStr() "
 
-
 	if nDto.thousandsSeparator == 0 {
 		nDto.thousandsSeparator = ','
 	}
@@ -1028,7 +1022,7 @@ func (nDto *NumStrDto) FormatThousandsStr(negValMode NegativeValueFmtMode) (stri
 	err := nDto.IsValid("")
 
 	if err != nil {
-		return "", fmt.Errorf(ePrefix + "NumStrDto INVALID! Error='%v'",
+		return "", fmt.Errorf(ePrefix+"NumStrDto INVALID! Error='%v'",
 			err.Error())
 	}
 
@@ -1043,7 +1037,7 @@ func (nDto *NumStrDto) FormatThousandsStr(negValMode NegativeValueFmtMode) (stri
 	mod := lenIntRunes - (seps * 3)
 
 	if mod == 0 {
-		seps --
+		seps--
 	}
 
 	// adjust for thousands delimiters
@@ -1052,8 +1046,8 @@ func (nDto *NumStrDto) FormatThousandsStr(negValMode NegativeValueFmtMode) (stri
 	// adjust for negative sign value
 	if nDto.signVal == -1 {
 		if negValMode == LEADMINUSNEGVALFMTMODE {
-			lenOut ++
-		}	else {
+			lenOut++
+		} else {
 			// MUST BE negValMode == PARENTHESESNEGVALFMTMODE
 			lenOut += 2
 		}
@@ -1062,7 +1056,7 @@ func (nDto *NumStrDto) FormatThousandsStr(negValMode NegativeValueFmtMode) (stri
 
 	// adjust for decimal point
 	if nDto.precision > 0 {
-		lenOut ++
+		lenOut++
 	}
 
 	outRunes := make([]rune, lenOut)
@@ -1070,33 +1064,33 @@ func (nDto *NumStrDto) FormatThousandsStr(negValMode NegativeValueFmtMode) (stri
 
 	if nDto.signVal == -1 &&
 		negValMode == PARENTHESESNEGVALFMTMODE {
-			outRunes[outIdx] = ')'
-			outIdx--
+		outRunes[outIdx] = ')'
+		outIdx--
 	}
 
 	allNumsIdx := lenAllNumRunes - 1
 
 	if nDto.precision > 0 {
 
-		for i := 0 ; i < int(nDto.precision) ; i++	{
+		for i := 0; i < int(nDto.precision); i++ {
 			outRunes[outIdx] = nDto.absAllNumRunes[allNumsIdx]
 			outIdx--
 			allNumsIdx--
 		}
 
 		outRunes[outIdx] = nDto.decimalSeparator
-		outIdx --
+		outIdx--
 	}
 
 	sepCnt := 0
 
-	for i:= 0 ; i < lenIntRunes; i++ {
+	for i := 0; i < lenIntRunes; i++ {
 
 		sepCnt++
 
 		if sepCnt == 4 && seps > 0 {
 			sepCnt = 1
-			seps --
+			seps--
 			outRunes[outIdx] = nDto.thousandsSeparator
 			outIdx--
 		}
@@ -1134,12 +1128,12 @@ func (nDto *NumStrDto) GetAbsoluteBigInt() (*big.Int, error) {
 
 	if err != nil {
 		return big.NewInt(0),
-			fmt.Errorf(ePrefix + "This NumStrDto instance is INVALID! Error='%v'", err.Error())
+			fmt.Errorf(ePrefix+"This NumStrDto instance is INVALID! Error='%v'", err.Error())
 	}
 
 	lenAllNumRunes := len(nDto.absAllNumRunes)
 
-	if  lenAllNumRunes == 0  {
+	if lenAllNumRunes == 0 {
 		s := ePrefix +
 			"- The existing NumStrDto is a Zero length number. " +
 			"Re-initialize the NumStrDto object and try again."
@@ -1150,11 +1144,11 @@ func (nDto *NumStrDto) GetAbsoluteBigInt() (*big.Int, error) {
 	base10 := big.NewInt(int64(10))
 	absBigInt := big.NewInt(0)
 
-	for i:=0; i < lenAllNumRunes; i++ {
+	for i := 0; i < lenAllNumRunes; i++ {
 
 		absBigInt = big.NewInt(0).Mul(absBigInt, base10)
 		absBigInt = big.NewInt(0).Add(absBigInt,
-											big.NewInt( int64(nDto.absAllNumRunes[i] - 48)))
+			big.NewInt(int64(nDto.absAllNumRunes[i]-48)))
 
 	}
 
@@ -1176,9 +1170,9 @@ func (nDto *NumStrDto) GetAbsAllNumRunes() []rune {
 		return []rune{}
 	}
 
-	outRunes := make([]rune, lenAbsAllNumRunes, lenAbsAllNumRunes + 50 )
+	outRunes := make([]rune, lenAbsAllNumRunes, lenAbsAllNumRunes+50)
 
-	for i:= 0; i < lenAbsAllNumRunes; i++ {
+	for i := 0; i < lenAbsAllNumRunes; i++ {
 		outRunes[i] = nDto.absAllNumRunes[i]
 	}
 
@@ -1199,8 +1193,8 @@ func (nDto *NumStrDto) GetAbsFracRunes() []rune {
 	lenAllNums := len(nDto.absAllNumRunes)
 
 	if lenAllNums == 0 ||
-			precision < 0 ||
-				precision > lenAllNums  {
+		precision < 0 ||
+		precision > lenAllNums {
 		return []rune{}
 	}
 
@@ -1208,7 +1202,7 @@ func (nDto *NumStrDto) GetAbsFracRunes() []rune {
 
 	lenIntNums := lenAllNums - int(nDto.precision)
 
-	for i:= lenIntNums; i < lenAllNums ; i++ {
+	for i := lenIntNums; i < lenAllNums; i++ {
 		absFracRunes[i-lenIntNums] = nDto.absAllNumRunes[i]
 	}
 
@@ -1239,8 +1233,8 @@ func (nDto *NumStrDto) GetAbsIntRunes() []rune {
 	precision := int(nDto.precision)
 
 	if lenAllNum == 0 ||
-			precision < 0 ||
-				precision >= lenAllNum {
+		precision < 0 ||
+		precision >= lenAllNum {
 		return []rune{}
 	}
 
@@ -1248,7 +1242,7 @@ func (nDto *NumStrDto) GetAbsIntRunes() []rune {
 
 	absIntRunes := make([]rune, lenIntNum, lenIntNum+50)
 
-	for i:= 0; i < lenIntNum; i++ {
+	for i := 0; i < lenIntNum; i++ {
 		absIntRunes[i] = nDto.absAllNumRunes[i]
 	}
 
@@ -1268,7 +1262,6 @@ func (nDto *NumStrDto) GetAbsIntRunes() []rune {
 func (nDto *NumStrDto) GetAbsNumStr() string {
 	return string(nDto.absAllNumRunes)
 }
-
 
 // GetAbsIntRunesLength - Returns the length of the
 // integer portion of the number string.
@@ -1294,7 +1287,7 @@ func (nDto *NumStrDto) GetBigInt() (*big.Int, error) {
 
 	if err != nil {
 		return big.NewInt(0),
-			fmt.Errorf(ePrefix + "NumStrDto is INVALID! Error='%v' ", err.Error())
+			fmt.Errorf(ePrefix+"NumStrDto is INVALID! Error='%v' ", err.Error())
 	}
 
 	absBigInt, err := nDto.GetAbsoluteBigInt()
@@ -1337,9 +1330,9 @@ func (nDto *NumStrDto) GetBigIntNum() (BigIntNum, error) {
 
 	if err != nil {
 		return BigIntNum{}.NewZero(0),
-		fmt.Errorf(ePrefix +
-			"Error returned by nDto.GetBigInt() " +
-			"Error='%v' ", err.Error())
+			fmt.Errorf(ePrefix+
+				"Error returned by nDto.GetBigInt() "+
+				"Error='%v' ", err.Error())
 	}
 
 	bIntNum := BigIntNum{}.NewBigInt(bInt, nDto.precision)
@@ -1348,8 +1341,8 @@ func (nDto *NumStrDto) GetBigIntNum() (BigIntNum, error) {
 
 	if err != nil {
 		return BigIntNum{}.NewZero(0),
-			fmt.Errorf(ePrefix +
-				"Error returned by bIntNum.SetNumericSeparatorsDto(numSeps) " +
+			fmt.Errorf(ePrefix+
+				"Error returned by bIntNum.SetNumericSeparatorsDto(numSeps) "+
 				"Error='%v' \n", err.Error())
 	}
 
@@ -1402,7 +1395,6 @@ func (nDto *NumStrDto) GetCurrencyParen() string {
 
 }
 
-
 // GetCurrencyStr - Returns the number string delimited with the
 // nDto.thousandsSeparator character and the currency symbol.
 // If the value is negative, a leading minus sign will be prefixed
@@ -1446,7 +1438,6 @@ func (nDto *NumStrDto) GetDecimalSeparator() rune {
 
 }
 
-
 // GetDecimal - Converts the current NumStrDto instance
 // to a Type 'Decimal' and returns it to the calling
 // function.
@@ -1475,9 +1466,9 @@ func (nDto *NumStrDto) GetDecimal() (Decimal, error) {
 
 	if err != nil {
 		return Decimal{},
-		fmt.Errorf(ePrefix +
-			"Error returned by Decimal{}.NewNumStrWithNumSeps(nDto.GetNumStr(), numSeps) " +
-			"Error='%v' ", err.Error())
+			fmt.Errorf(ePrefix+
+				"Error returned by Decimal{}.NewNumStrWithNumSeps(nDto.GetNumStr(), numSeps) "+
+				"Error='%v' ", err.Error())
 	}
 
 	return dec, nil
@@ -1501,9 +1492,9 @@ func (nDto *NumStrDto) GetIntAry() (IntAry, error) {
 
 	if err != nil {
 		return IntAry{},
-		fmt.Errorf(ePrefix +
-			"Error returned by IntAry{}.NewNumStrWithNumSeps(nDto.GetNumStr(), numSeps). " +
-			"nDto='%v' Error='%v'", nDto.GetNumStr(), err.Error())
+			fmt.Errorf(ePrefix+
+				"Error returned by IntAry{}.NewNumStrWithNumSeps(nDto.GetNumStr(), numSeps). "+
+				"nDto='%v' Error='%v'", nDto.GetNumStr(), err.Error())
 	}
 
 	return ia, nil
@@ -1575,7 +1566,6 @@ func (nDto *NumStrDto) GetNumStr() string {
 
 	return outStr
 }
-
 
 // GetNumStrDto - Returns a deep copy of the current NumStrDto
 // instance.
@@ -1651,7 +1641,6 @@ func (nDto *NumStrDto) GetPrecisionUint() uint {
 	return nDto.precision
 }
 
-
 // GetRationalNumber - returns the sign value of the number string, plus the
 // numeric value of the number string expressed as a Rational Number.
 //
@@ -1675,8 +1664,8 @@ func (nDto *NumStrDto) GetRationalNumber() (int, *big.Rat, error) {
 	err := nDto.IsValid("")
 
 	if err != nil {
-		return 0, big.NewRat(1,1),
-			fmt.Errorf(ePrefix + "This NumStrDto instance is INVALID! Error='%v'", err.Error())
+		return 0, big.NewRat(1, 1),
+			fmt.Errorf(ePrefix+"This NumStrDto instance is INVALID! Error='%v'", err.Error())
 	}
 
 	ratZero := big.NewRat(0, 1)
@@ -1694,8 +1683,8 @@ func (nDto *NumStrDto) GetRationalNumber() (int, *big.Rat, error) {
 	absInt, isOk := big.NewInt(0).SetString(string(nDto.absAllNumRunes), 10)
 
 	if !isOk {
-		return 0, ratZero, fmt.Errorf(ePrefix +
-			"- Conversion of nDto.absAllNumRunes to big.Int Failed! " +
+		return 0, ratZero, fmt.Errorf(ePrefix+
+			"- Conversion of nDto.absAllNumRunes to big.Int Failed! "+
 			"nDto.absIntRunes= '%v'", nDto.absAllNumRunes)
 	}
 
@@ -1725,10 +1714,10 @@ func (nDto *NumStrDto) GetScaleFactor() (*big.Int, error) {
 
 	if err != nil {
 		return big.NewInt(0),
-		fmt.Errorf(ePrefix + "This NumStrDto instance is INVALID! Error='%v'", err.Error())
+			fmt.Errorf(ePrefix+"This NumStrDto instance is INVALID! Error='%v'", err.Error())
 	}
 
-	if len(nDto.absAllNumRunes) == 0  {
+	if len(nDto.absAllNumRunes) == 0 {
 		s := ePrefix +
 			"- The existing NumStrDto is a Zero length number. " +
 			"Re-initialize the NumStrDto object and try again."
@@ -1780,7 +1769,7 @@ func (nDto *NumStrDto) GetSciNotationNumber(mantissaLen uint) (SciNotationNum, e
 
 	if err != nil {
 		return SciNotationNum{}.New(),
-			fmt.Errorf(ePrefix +
+			fmt.Errorf(ePrefix+
 				"Error returned by nDto.GetBigIntNum(). Error='%v'",
 				err.Error())
 	}
@@ -1789,7 +1778,7 @@ func (nDto *NumStrDto) GetSciNotationNumber(mantissaLen uint) (SciNotationNum, e
 
 	if err != nil {
 		return SciNotationNum{}.New(),
-			fmt.Errorf(ePrefix +
+			fmt.Errorf(ePrefix+
 				"Error returned by bINum.GetSciNotationNumber(mantissaLen). Error='%v'",
 				err.Error())
 	}
@@ -1830,8 +1819,8 @@ func (nDto *NumStrDto) GetSciNotationStr(mantissaLen uint) (string, error) {
 
 	if err != nil {
 		return "",
-			fmt.Errorf(ePrefix +
-				"Error returned by bNum.GetSciNotationNumber(mantissaLen). " +
+			fmt.Errorf(ePrefix+
+				"Error returned by bNum.GetSciNotationNumber(mantissaLen). "+
 				"Error='%v'", err.Error())
 	}
 
@@ -1839,8 +1828,8 @@ func (nDto *NumStrDto) GetSciNotationStr(mantissaLen uint) (string, error) {
 
 	if err != nil {
 		return "",
-			fmt.Errorf(ePrefix +
-				"Error returned by sciNotn.GetSciNotationStr(mantissaLen). " +
+			fmt.Errorf(ePrefix+
+				"Error returned by sciNotn.GetSciNotationStr(mantissaLen). "+
 				"Error='%v'", err.Error())
 	}
 
@@ -1874,7 +1863,7 @@ func (nDto *NumStrDto) GetThisPointer() *NumStrDto {
 // Note: If the current NumStrDto is invalid, this method
 // returns an empty string.
 //
-func (nDto *NumStrDto)GetThouParen() string {
+func (nDto *NumStrDto) GetThouParen() string {
 
 	outStr, err := nDto.FormatThousandsStr(PARENTHESESNEGVALFMTMODE)
 
@@ -1899,7 +1888,7 @@ func (nDto *NumStrDto)GetThouParen() string {
 // Note: If the current NumStrDto is invalid, this method
 // returns an empty string.
 //
-func (nDto *NumStrDto)GetThouStr() string {
+func (nDto *NumStrDto) GetThouStr() string {
 
 	outStr, err := nDto.FormatThousandsStr(LEADMINUSNEGVALFMTMODE)
 
@@ -1993,7 +1982,6 @@ func (nDto *NumStrDto) HasNumericDigits() bool {
 	return true
 }
 
-
 // IsNumStrZeroValue - Returns 'true' if all the digits in the number
 // string for the current NumStrDto instance are zero.
 func (nDto *NumStrDto) IsNumStrZeroValue(numDto *NumStrDto) bool {
@@ -2066,7 +2054,7 @@ func (nDto *NumStrDto) IsValid(errName string) error {
 			errName, nDto.signVal)
 	}
 
-	for i:= 0; i < lenAbsAllNumRunes; i++ {
+	for i := 0; i < lenAbsAllNumRunes; i++ {
 
 		if nDto.absAllNumRunes[i] < '0' || nDto.absAllNumRunes[i] > '9' {
 
@@ -2089,7 +2077,7 @@ func (nDto *NumStrDto) IsZero() bool {
 		return true
 	}
 
-	for i:=0; i < lenRunes; i++ {
+	for i := 0; i < lenRunes; i++ {
 		if nDto.absAllNumRunes[i] != '0' {
 			return false
 		}
@@ -2102,14 +2090,14 @@ func (nDto *NumStrDto) IsZero() bool {
 // parameter NumStrDto and stores the result in the current
 // NumStrDto.
 func (nDto *NumStrDto) Multiply(n2Dto NumStrDto) error {
-	ePrefix :="NumStrDto.Multiply() "
+	ePrefix := "NumStrDto.Multiply() "
 
 	n1Dto := nDto.CopyOut()
 
 	nResult, err := nDto.MultiplyNumStrs(n1Dto, n2Dto)
 
 	if err != nil {
-		return fmt.Errorf(ePrefix + "Error returned by MultiplyNumStrs(n1Dto, n2Dto). " +
+		return fmt.Errorf(ePrefix+"Error returned by MultiplyNumStrs(n1Dto, n2Dto). "+
 			"Error='%v'", err.Error())
 	}
 
@@ -2123,15 +2111,15 @@ func (nDto *NumStrDto) Multiply(n2Dto NumStrDto) error {
 func (nDto *NumStrDto) MultiplyNumStrs(n1Dto NumStrDto, n2Dto NumStrDto) (NumStrDto, error) {
 	ePrefix := "NumStrDto.MultiplyNumStrs() "
 
-	if err := n1Dto.IsValid(ePrefix +"- "); err != nil {
+	if err := n1Dto.IsValid(ePrefix + "- "); err != nil {
 		return NumStrDto{},
-		fmt.Errorf(ePrefix +
-			"- n1Dto, first NumStrDto is invalid! Error= %v", err)
+			fmt.Errorf(ePrefix+
+				"- n1Dto, first NumStrDto is invalid! Error= %v", err)
 	}
 
 	if err := n2Dto.IsValid(ePrefix + "- "); err != nil {
 		return NumStrDto{},
-		fmt.Errorf(ePrefix + "- n2Dto, second NumStrDto is invalid! Error= %v", err)
+			fmt.Errorf(ePrefix+"- n2Dto, second NumStrDto is invalid! Error= %v", err)
 	}
 
 	lenN1AbsAllRunes := len(n1Dto.absAllNumRunes)
@@ -2153,7 +2141,6 @@ func (nDto *NumStrDto) MultiplyNumStrs(n1Dto NumStrDto, n2Dto NumStrDto) (NumStr
 
 	}
 
-
 	newPrecision := n1Setup.precision + n2Setup.precision
 	newSignVal := 1
 
@@ -2163,7 +2150,6 @@ func (nDto *NumStrDto) MultiplyNumStrs(n1Dto NumStrDto, n2Dto NumStrDto) (NumStr
 		// Must be n1Setup.signVal != n2Setup.signVal
 		newSignVal = -1
 	}
-
 
 	lenN1AbsAllRunes = len(n1Setup.absAllNumRunes)
 	lenN2AbsAllRunes = len(n2Setup.absAllNumRunes)
@@ -2243,9 +2229,9 @@ func (nDto *NumStrDto) MultiplyNumStrs(n1Dto NumStrDto, n2Dto NumStrDto) (NumStr
 
 	if err != nil {
 		return NumStrDto{},
-		fmt.Errorf(ePrefix +
-			"- Error returned from nDto.FindIntArraySignificantDigitLimits(intFinalAry,newPrecision, " +
-			"newSignVal). Error= %v", err)
+			fmt.Errorf(ePrefix+
+				"- Error returned from nDto.FindIntArraySignificantDigitLimits(intFinalAry,newPrecision, "+
+				"newSignVal). Error= %v", err)
 	}
 
 	return numStrOut, nil
@@ -2263,7 +2249,7 @@ func (nDto NumStrDto) NewBigFloat(bigFloat *big.Float, precision int) (NumStrDto
 
 	if err != nil {
 		return NumStrDto{},
-			fmt.Errorf(ePrefix + "Error returned by n.ParseNumStr(numStr). " +
+			fmt.Errorf(ePrefix+"Error returned by n.ParseNumStr(numStr). "+
 				"numStr='%v'  Error='%v'",
 				numStr, err.Error())
 	}
@@ -2279,14 +2265,14 @@ func (nDto NumStrDto) NewBigInt(signedBigInt *big.Int, precision uint) (NumStrDt
 	ePrefix := "NumStrDto.NewBigInt() "
 
 	n2, err := NumStrDto{}.ParseSignedBigInt(
-								big.NewInt(0).Set(signedBigInt),
-									precision)
+		big.NewInt(0).Set(signedBigInt),
+		precision)
 
 	if err != nil {
 		return NumStrDto{},
-			fmt.Errorf(ePrefix + "Error returned by ParseSignedBigInt(signedBigInt, precision). " +
+			fmt.Errorf(ePrefix+"Error returned by ParseSignedBigInt(signedBigInt, precision). "+
 				"signedBigInt='%v' precision='%v'  Error='%v'",
-				signedBigInt.Text(10), precision,  err.Error())
+				signedBigInt.Text(10), precision, err.Error())
 	}
 
 	err = n2.IsValid(ePrefix + "'n2' INVALID! ")
@@ -2307,9 +2293,9 @@ func (nDto NumStrDto) NewBigIntNum(bINum BigIntNum) (NumStrDto, error) {
 
 	if err != nil {
 		return NumStrDto{},
-			fmt.Errorf(ePrefix + "Error returned by ParseBigIntNum(bINum). " +
+			fmt.Errorf(ePrefix+"Error returned by ParseBigIntNum(bINum). "+
 				"bINum='%v'  Error='%v'",
-				bINum.GetNumStr(),  err.Error())
+				bINum.GetNumStr(), err.Error())
 	}
 
 	return n2, nil
@@ -2328,7 +2314,7 @@ func (nDto NumStrDto) NewFloat32(f32 float32, precision int) (NumStrDto, error) 
 
 	if err != nil {
 		return NumStrDto{},
-			fmt.Errorf(ePrefix + "Error returned by n.ParseNumStr(numStr). " +
+			fmt.Errorf(ePrefix+"Error returned by n.ParseNumStr(numStr). "+
 				"numStr='%v'  Error='%v'",
 				numStr, err.Error())
 	}
@@ -2349,7 +2335,7 @@ func (nDto NumStrDto) NewFloat64(f64 float64, precision int) (NumStrDto, error) 
 
 	if err != nil {
 		return NumStrDto{},
-			fmt.Errorf(ePrefix + "Error returned by n.ParseNumStr(numStr). " +
+			fmt.Errorf(ePrefix+"Error returned by n.ParseNumStr(numStr). "+
 				"numStr='%v'  Error='%v'",
 				numStr, err.Error())
 	}
@@ -2362,7 +2348,7 @@ func (nDto NumStrDto) NewFloat64(f64 float64, precision int) (NumStrDto, error) 
 // Input parameter 'precision' indicates the number of digits to be
 // formatted to the right of the decimal place.
 //
-// The 'NewInt' method is designed to used in conjunction with 
+// The 'NewInt' method is designed to used in conjunction with
 // NumStrDto{} syntax thereby allowing NumStrDto type creation and
 // initialization in one step.
 //
@@ -2378,8 +2364,8 @@ func (nDto NumStrDto) NewInt(intNum int, precision uint) (NumStrDto, error) {
 		ePrefix := "NumStrDto.NewInt() "
 
 		return NumStrDto{},
-		fmt.Errorf(ePrefix + "Error returned by NumStrDto{}.NewInt64(intNum, precision). " +
-			"Error='%v' ", err.Error())
+			fmt.Errorf(ePrefix+"Error returned by NumStrDto{}.NewInt64(intNum, precision). "+
+				"Error='%v' ", err.Error())
 	}
 
 	return n2, nil
@@ -2425,7 +2411,7 @@ func (nDto NumStrDto) NewIntExponent(intNum int, exponent int) NumStrDto {
 // Input parameter 'precision' indicates the number of digits to be
 // formatted to the right of the decimal place.
 //
-// The 'NewInt32' method is designed to used in conjunction with 
+// The 'NewInt32' method is designed to used in conjunction with
 // NumStrDto{} syntax thereby allowing NumStrDto type creation and
 // initialization in one step.
 //
@@ -2441,7 +2427,7 @@ func (nDto NumStrDto) NewInt32(int32Num int32, precision uint) (NumStrDto, error
 		ePrefix := "NumStrDto.NewInt32() "
 
 		return NumStrDto{},
-			fmt.Errorf(ePrefix + "Error returned by NumStrDto{}.NewInt64(intNum, precision). " +
+			fmt.Errorf(ePrefix+"Error returned by NumStrDto{}.NewInt64(intNum, precision). "+
 				"Error='%v' ", err.Error())
 	}
 
@@ -2477,7 +2463,7 @@ func (nDto NumStrDto) NewInt32Exponent(int32Num int32, exponent int) NumStrDto {
 // Input parameter 'precision' indicates the number of digits to be
 // formatted to the right of the decimal place.
 //
-// The 'NewInt64' method is designed to used in conjunction with 
+// The 'NewInt64' method is designed to used in conjunction with
 // NumStrDto{} syntax thereby allowing NumStrDto type creation and
 // initialization in one step.
 //
@@ -2493,7 +2479,7 @@ func (nDto NumStrDto) NewInt64(i64 int64, precision uint) (NumStrDto, error) {
 
 	if err != nil {
 		return NumStrDto{},
-			fmt.Errorf(ePrefix + "Error returned by n.ParseNumStr(numStr). " +
+			fmt.Errorf(ePrefix+"Error returned by n.ParseNumStr(numStr). "+
 				"numStr='%v'  Error='%v'",
 				numStr, err.Error())
 	}
@@ -2538,7 +2524,7 @@ func (nDto NumStrDto) NewInt64Exponent(int64Num int64, exponent int) NumStrDto {
 	numStr := strconv.FormatInt(int64Num, 10)
 
 	if exponent > 0 {
-		for i:= 0; i < exponent; i++ {
+		for i := 0; i < exponent; i++ {
 			numStr += "0"
 		}
 	}
@@ -2583,7 +2569,7 @@ func (nDto NumStrDto) NewInt64Exponent(int64Num int64, exponent int) NumStrDto {
 //   123456          0              123456
 //   123456          1              12345.6
 //
-func (nDto NumStrDto) NewUint(uintNum uint, precision uint ) NumStrDto {
+func (nDto NumStrDto) NewUint(uintNum uint, precision uint) NumStrDto {
 
 	n2 := NumStrDto{}.NewUint64(uint64(uintNum), precision)
 
@@ -2646,7 +2632,7 @@ func (nDto NumStrDto) NewUintExponent(uintNum uint, exponent int) NumStrDto {
 //   123456          0              123456
 //   123456          1              12345.6
 //
-func (nDto NumStrDto) NewUint32(uint32Num uint32, precision uint ) NumStrDto {
+func (nDto NumStrDto) NewUint32(uint32Num uint32, precision uint) NumStrDto {
 
 	n2 := NumStrDto{}.NewUint64(uint64(uint32Num), precision)
 
@@ -2687,7 +2673,6 @@ func (nDto NumStrDto) NewUint32Exponent(uint32Num uint32, exponent int) NumStrDt
 	return nDto.NewUint64Exponent(uint64(uint32Num), exponent)
 }
 
-
 // NewUint64 - Creates a new NumStrDto instance from an uint64 and a
 // precision specification.
 //
@@ -2712,7 +2697,7 @@ func (nDto NumStrDto) NewUint32Exponent(uint32Num uint32, exponent int) NumStrDt
 //   123456          0              123456
 //   123456          1              12345.6
 //
-func (nDto NumStrDto) NewUint64(uint64Num uint64, precision uint ) NumStrDto {
+func (nDto NumStrDto) NewUint64(uint64Num uint64, precision uint) NumStrDto {
 
 	ePrefix := "NumStrDto.NewUint64() "
 
@@ -2720,20 +2705,19 @@ func (nDto NumStrDto) NewUint64(uint64Num uint64, precision uint ) NumStrDto {
 
 	n2, err := NumStrDto{}.NewPtr().ParseNumStr(numStr)
 	// This should NEVER produce an error
-	if err !=nil {
-		sError := fmt.Sprintf(ePrefix + 
-			"Fatal Error returned by NumStrDto{}.NewPtr().ParseNumStr(numStr) " +
+	if err != nil {
+		sError := fmt.Sprintf(ePrefix+
+			"Fatal Error returned by NumStrDto{}.NewPtr().ParseNumStr(numStr) "+
 			"numStr='%v' Error='%v' ", numStr, err.Error())
 		panic(sError)
 	}
-	
+
 	n2.SetThisPrecision(precision, true)
 
 	n2.SetNumericSeparatorsDto(nDto.GetNumericSeparatorsDto())
 
 	return n2
 }
-
 
 // NewUint64Exponent - Returns a new NumStrDto instance. The numeric
 // value is set using an uint64 value multiplied by 10 raised to the
@@ -2765,12 +2749,12 @@ func (nDto NumStrDto) NewUint64(uint64Num uint64, precision uint ) NumStrDto {
 //   123456          0              123456
 //
 func (nDto NumStrDto) NewUint64Exponent(uint64Num uint64, exponent int) NumStrDto {
- 
+
 	ePrefix := "NumStrDto.NewUint64Exponent() "
 	numStr := strconv.FormatUint(uint64Num, 10)
 
 	if exponent > 0 {
-		for i:= 0; i < exponent; i++ {
+		for i := 0; i < exponent; i++ {
 			numStr += "0"
 		}
 	}
@@ -2781,30 +2765,30 @@ func (nDto NumStrDto) NewUint64Exponent(uint64Num uint64, exponent int) NumStrDt
 
 	var n2 NumStrDto
 	var err error
-	
+
 	if exponent == 0 {
 		n2, err = NumStrDto{}.NewNumStr(numStr)
 		// This should never produce an error.
 		if err != nil {
-			sErr := fmt.Sprintf(ePrefix +
-				"Fatal Error returned by NumStrDto{}.NewNumStr(numStr). " +
-				"numStr='%v' uint64Num='%v' Error='%v'", 
+			sErr := fmt.Sprintf(ePrefix+
+				"Fatal Error returned by NumStrDto{}.NewNumStr(numStr). "+
+				"numStr='%v' uint64Num='%v' Error='%v'",
 				numStr, uint64Num, err.Error())
 			panic(sErr)
 		}
-		
+
 	} else {
 		n2, err = nDto.ShiftPrecisionLeft(numStr, uint(exponent))
 		// This should never produce an error.
 		if err != nil {
-			sErr := fmt.Sprintf(ePrefix +
-				"Fatal Error returned by nDto.ShiftPrecisionLeft(" + 
-				"numStr, uint(exponent)). " +
+			sErr := fmt.Sprintf(ePrefix+
+				"Fatal Error returned by nDto.ShiftPrecisionLeft("+
+				"numStr, uint(exponent)). "+
 				"numStr='%v' uint64Num='%v' exponent='%v' Error='%v'",
 				numStr, uint64Num, exponent, err.Error())
 			panic(sErr)
 		}
-		
+
 	}
 
 	n2.SetNumericSeparatorsDto(nDto.GetNumericSeparatorsDto())
@@ -2826,14 +2810,13 @@ func (nDto NumStrDto) NewRational(bigRat *big.Rat, precision int) (NumStrDto, er
 
 	if err != nil {
 		return NumStrDto{},
-			fmt.Errorf(ePrefix + "Error returned by n.ParseNumStr(numStr). " +
+			fmt.Errorf(ePrefix+"Error returned by n.ParseNumStr(numStr). "+
 				"numStr='%v'  Error='%v'",
 				numStr, err.Error())
 	}
 
 	return n2, nil
 }
-
 
 // NewNumStr - Used to create a populated NumStrDto instance.
 // using a valid number string as an input parameter.
@@ -2862,7 +2845,7 @@ func (nDto NumStrDto) NewNumStr(numStr string) (NumStrDto, error) {
 
 	if err != nil {
 		return NumStrDto{},
-			fmt.Errorf(ePrefix + "Error returned by n.ParseNumStr(numStrDto). " +
+			fmt.Errorf(ePrefix+"Error returned by n.ParseNumStr(numStrDto). "+
 				"numStrDto='%v'  Error='%v'",
 				numStr, err.Error())
 	}
@@ -2879,10 +2862,10 @@ func (nDto NumStrDto) NewNumStr(numStr string) (NumStrDto, error) {
 // will be copied to the returned NumStrDto instance.
 //
 func (nDto NumStrDto) NewNumStrWithNumSeps(
-						numStr string,
-								numSeps NumericSeparatorDto) (NumStrDto, error) {
+	numStr string,
+	numSeps NumericSeparatorDto) (NumStrDto, error) {
 
-	ePrefix :=  "IntAry.NewNumStrWithNumSeps() "
+	ePrefix := "IntAry.NewNumStrWithNumSeps() "
 
 	n := NumStrDto{}.New()
 
@@ -2892,8 +2875,8 @@ func (nDto NumStrDto) NewNumStrWithNumSeps(
 
 	if err != nil {
 		return NumStrDto{},
-			fmt.Errorf(ePrefix +
-				"Error returned by  Ary.SetIntAryWithNumStr(numStr). " +
+			fmt.Errorf(ePrefix+
+				"Error returned by  Ary.SetIntAryWithNumStr(numStr). "+
 				"Error='%v' ", err.Error())
 	}
 
@@ -2901,8 +2884,8 @@ func (nDto NumStrDto) NewNumStrWithNumSeps(
 
 	if err != nil {
 		return NumStrDto{},
-			fmt.Errorf(ePrefix +
-				"Error returned by n.ParseNumStr(numStr). " +
+			fmt.Errorf(ePrefix+
+				"Error returned by n.ParseNumStr(numStr). "+
 				"numStr='%v', Error='%v' ", numStr, err.Error())
 	}
 
@@ -2939,7 +2922,6 @@ func (nDto NumStrDto) NewPtr() *NumStrDto {
 	return &n
 }
 
-
 // Creates a new NumStrDto with a value of zero and a precision specified by
 // input parameter 'precision'.
 func (nDto NumStrDto) NewZero(precision uint) NumStrDto {
@@ -2949,7 +2931,7 @@ func (nDto NumStrDto) NewZero(precision uint) NumStrDto {
 	if precision > 0 {
 		numStr += "."
 
-		for i:=uint(0); i < precision; i++ {
+		for i := uint(0); i < precision; i++ {
 			numStr += "0"
 		}
 	}
@@ -2959,8 +2941,8 @@ func (nDto NumStrDto) NewZero(precision uint) NumStrDto {
 	// This should NEVER produce an error.
 	if err != nil {
 		ePrefix := "NumStrDto.NewZero() "
-		sErr := fmt.Sprintf(ePrefix +
-			"Error returned by NumStrDto{}.NewPtr().ParseNumStr(numStr). " +
+		sErr := fmt.Sprintf(ePrefix+
+			"Error returned by NumStrDto{}.NewPtr().ParseNumStr(numStr). "+
 			"numStr='%v' Error='%v' ", numStr, err.Error())
 		panic(sErr)
 	}
@@ -2993,7 +2975,7 @@ func (nDto NumStrDto) ParseBigIntNum(biNum BigIntNum) (NumStrDto, error) {
 	}
 
 	bigZero := big.NewInt(0)
-	bigTen  := big.NewInt(int64(10))
+	bigTen := big.NewInt(int64(10))
 	modulo := big.NewInt(0)
 	modX := big.NewInt(0)
 	n2Dto.absAllNumRunes = make([]rune, 0, 100)
@@ -3006,20 +2988,20 @@ func (nDto NumStrDto) ParseBigIntNum(biNum BigIntNum) (NumStrDto, error) {
 
 		for scratchNum.Cmp(bigZero) == 1 {
 
-				scratchNum, modulo = big.NewInt(0).QuoRem(scratchNum,bigTen, modX)
+			scratchNum, modulo = big.NewInt(0).QuoRem(scratchNum, bigTen, modX)
 
-			  n2Dto.absAllNumRunes = append(n2Dto.absAllNumRunes, rune(modulo.Int64() + int64(48)))
+			n2Dto.absAllNumRunes = append(n2Dto.absAllNumRunes, rune(modulo.Int64()+int64(48)))
 		}
 	}
 
 	lenAllNumRunes := len(n2Dto.absAllNumRunes)
 
-	if int(n2Dto.precision) >= lenAllNumRunes   {
+	if int(n2Dto.precision) >= lenAllNumRunes {
 
 		deltaNumRunes := int(n2Dto.precision) - lenAllNumRunes + 1
 
-		for k:=0; k < deltaNumRunes; k++ {
-			n2Dto.absAllNumRunes  =  append(n2Dto.absAllNumRunes, '0')
+		for k := 0; k < deltaNumRunes; k++ {
+			n2Dto.absAllNumRunes = append(n2Dto.absAllNumRunes, '0')
 			lenAllNumRunes++
 		}
 
@@ -3031,11 +3013,11 @@ func (nDto NumStrDto) ParseBigIntNum(biNum BigIntNum) (NumStrDto, error) {
 		xLen := lenAllNumRunes - 1
 		sortLimit := xLen / 2
 		yCnt := 0
-		for i:= xLen; i > sortLimit ; i-- {
-				tRune = n2Dto.absAllNumRunes[yCnt]
-				n2Dto.absAllNumRunes[yCnt] = n2Dto.absAllNumRunes[i]
-				n2Dto.absAllNumRunes[i] = tRune
-				yCnt++
+		for i := xLen; i > sortLimit; i-- {
+			tRune = n2Dto.absAllNumRunes[yCnt]
+			n2Dto.absAllNumRunes[yCnt] = n2Dto.absAllNumRunes[i]
+			n2Dto.absAllNumRunes[i] = tRune
+			yCnt++
 		}
 	}
 
@@ -3043,7 +3025,7 @@ func (nDto NumStrDto) ParseBigIntNum(biNum BigIntNum) (NumStrDto, error) {
 
 	if err != nil {
 		return NumStrDto{}.New(),
-			fmt.Errorf(ePrefix + "Error returned by n2Dto.SetNumericSeparatorsDto(numSeps) " +
+			fmt.Errorf(ePrefix+"Error returned by n2Dto.SetNumericSeparatorsDto(numSeps) "+
 				"Error='%v' \n", err.Error())
 	}
 
@@ -3051,9 +3033,9 @@ func (nDto NumStrDto) ParseBigIntNum(biNum BigIntNum) (NumStrDto, error) {
 
 	if err != nil {
 		return NumStrDto{}.New(),
-		fmt.Errorf(ePrefix +
-			"NumStrDto INVALID! Error='%v'",
-			err.Error())
+			fmt.Errorf(ePrefix+
+				"NumStrDto INVALID! Error='%v'",
+				err.Error())
 	}
 
 	return n2Dto, nil
@@ -3083,7 +3065,7 @@ func (nDto NumStrDto) ParseSignedBigInt(signedBigInt *big.Int, precision uint) (
 		n2Dto.signVal = -1
 	}
 
-	bigTen  := big.NewInt(int64(10))
+	bigTen := big.NewInt(int64(10))
 	modulo := big.NewInt(0)
 	n2Dto.absAllNumRunes = make([]rune, 0, 100)
 
@@ -3095,19 +3077,19 @@ func (nDto NumStrDto) ParseSignedBigInt(signedBigInt *big.Int, precision uint) (
 
 		for scratchNum.Cmp(bigZero) == 1 {
 			modulo = big.NewInt(0).Rem(scratchNum, bigTen)
-			scratchNum = big.NewInt(0).Quo(scratchNum,bigTen)
-			n2Dto.absAllNumRunes = append(n2Dto.absAllNumRunes, rune(modulo.Int64() + int64(48)))
+			scratchNum = big.NewInt(0).Quo(scratchNum, bigTen)
+			n2Dto.absAllNumRunes = append(n2Dto.absAllNumRunes, rune(modulo.Int64()+int64(48)))
 		}
 	}
 
 	lenAllNumRunes := len(n2Dto.absAllNumRunes)
 
-	if int(n2Dto.precision) >= lenAllNumRunes   {
+	if int(n2Dto.precision) >= lenAllNumRunes {
 
 		deltaNumRunes := int(n2Dto.precision) - lenAllNumRunes + 1
 
-		for k:=0; k < deltaNumRunes; k++ {
-			n2Dto.absAllNumRunes  =  append(n2Dto.absAllNumRunes, '0')
+		for k := 0; k < deltaNumRunes; k++ {
+			n2Dto.absAllNumRunes = append(n2Dto.absAllNumRunes, '0')
 			lenAllNumRunes++
 		}
 
@@ -3119,7 +3101,7 @@ func (nDto NumStrDto) ParseSignedBigInt(signedBigInt *big.Int, precision uint) (
 		xLen := lenAllNumRunes - 1
 		sortLimit := xLen / 2
 		yCnt := 0
-		for i:= xLen; i > sortLimit ; i-- {
+		for i := xLen; i > sortLimit; i-- {
 			tRune = n2Dto.absAllNumRunes[yCnt]
 			n2Dto.absAllNumRunes[yCnt] = n2Dto.absAllNumRunes[i]
 			n2Dto.absAllNumRunes[i] = tRune
@@ -3127,21 +3109,19 @@ func (nDto NumStrDto) ParseSignedBigInt(signedBigInt *big.Int, precision uint) (
 		}
 	}
 
-
 	err := n2Dto.SetNumericSeparatorsDto(numSeps)
 
 	if err != nil {
 		return NumStrDto{}.New(),
-			fmt.Errorf(ePrefix + "Error returned by n2Dto.SetNumericSeparatorsDto(numSeps) " +
+			fmt.Errorf(ePrefix+"Error returned by n2Dto.SetNumericSeparatorsDto(numSeps) "+
 				"Error='%v' \n", err.Error())
 	}
-
 
 	err = n2Dto.IsValid("")
 
 	if err != nil {
 		return NumStrDto{}.New(),
-			fmt.Errorf(ePrefix +
+			fmt.Errorf(ePrefix+
 				"NumStrDto INVALID! Error='%v'",
 				err.Error())
 	}
@@ -3191,14 +3171,14 @@ func (nDto *NumStrDto) ParseNumStr(str string) (NumStrDto, error) {
 			baseRunes[i] != n2Dto.decimalSeparator &&
 			(baseRunes[i] < '0' || baseRunes[i] > '9') {
 
-				continue
+			continue
 
 		} else if baseRunes[i] == '-' &&
 			isMinusSignFound == false &&
 			isStartRunes == false && isEndRunes == false &&
 			i+1 < lBaseRunes &&
 			((baseRunes[i+1] >= '0' && baseRunes[i+1] <= '9') ||
-				 baseRunes[i+1] == n2Dto.decimalSeparator) {
+				baseRunes[i+1] == n2Dto.decimalSeparator) {
 
 			isMinusSignFound = true
 			n2Dto.signVal = -1
@@ -3227,7 +3207,7 @@ func (nDto *NumStrDto) ParseNumStr(str string) (NumStrDto, error) {
 
 		}
 
-		if i == lBaseRunes - 1 {
+		if i == lBaseRunes-1 {
 
 			isEndRunes = true
 
@@ -3323,8 +3303,8 @@ func (nDto *NumStrDto) ParseNumStr(str string) (NumStrDto, error) {
 //				for additional information.
 //
 func (nDto *NumStrDto) ScaleNumStr(signedNumStr string,
-																		shiftPrecision uint,
-																			scaleMode PrecisionScaleMode) (NumStrDto, error) {
+	shiftPrecision uint,
+	scaleMode PrecisionScaleMode) (NumStrDto, error) {
 
 	ePrefix := "NumStrDto.ScaleNumStr() "
 
@@ -3351,7 +3331,7 @@ func (nDto *NumStrDto) ScaleNumStr(signedNumStr string,
 
 		if err != nil {
 			return NumStrDto{},
-				fmt.Errorf(ePrefix +
+				fmt.Errorf(ePrefix+
 					"Error returned from nDto.ShiftPrecisionRight(signedNumStr, shiftPrecision) "+
 					"signedNumStr='%v' shiftPrecision='%v' scaleMode='%v' Error='%v' ",
 					signedNumStr, shiftPrecision, scaleMode.String(), err.Error())
@@ -3360,17 +3340,17 @@ func (nDto *NumStrDto) ScaleNumStr(signedNumStr string,
 	} else {
 
 		return NumStrDto{},
-			fmt.Errorf(ePrefix +
+			fmt.Errorf(ePrefix+
 				"Error! Scale Mode is INVALID! "+
 				"Scale Mode is NOT Equal to SCALEPRECISIONLEFT or SCALEPRECISIONRIGHT. scaleMode='%v' ",
-				 scaleMode.String())
+				scaleMode.String())
 
 	}
 
 	return n2Dto, nil
 }
 
-// SetCurrencySymbol - assigns the input parameter rune as the 
+// SetCurrencySymbol - assigns the input parameter rune as the
 // currency symbol to be used by the NumStrDto.
 //
 // In the USA, the currency symbol is the dollar sign ('$').
@@ -3384,19 +3364,19 @@ func (nDto *NumStrDto) ScaleNumStr(signedNumStr string,
 // Example: $123.45
 //
 func (nDto *NumStrDto) SetCurrencySymbol(currencySymbol rune) {
-	
+
 	if currencySymbol == 0 {
 		currencySymbol = '$'
 	}
-	
-	nDto.currencySymbol = currencySymbol	
+
+	nDto.currencySymbol = currencySymbol
 }
 
 // SetDecimalSeparator - Assigns a rune or character to the internal
 // data field, 'decimalSeparator'. The Decimal Separator is used to
 // separate the integer and fractional elements of a number string.
 //
-// In the USA, the Decimal Separator is a period character ('.'). 
+// In the USA, the Decimal Separator is a period character ('.').
 //
 // Note: If a zero value is submitted as input, the Decimal Separator
 // will default to the USA standard period character ('.').
@@ -3404,15 +3384,15 @@ func (nDto *NumStrDto) SetCurrencySymbol(currencySymbol rune) {
 // Example: 123.456
 //
 func (nDto *NumStrDto) SetDecimalSeparator(decimalSeparator rune) {
-	
+
 	if decimalSeparator == 0 {
 		decimalSeparator = '.'
 	}
-	
+
 	nDto.decimalSeparator = decimalSeparator
 }
 
-// SetThousandsSeparator - Sets the value of the character which will be 
+// SetThousandsSeparator - Sets the value of the character which will be
 // used to separate thousands in the display of the NumStrDto number
 // string. In the USA the typical thousands separator is the comma.
 //
@@ -3427,7 +3407,7 @@ func (nDto *NumStrDto) SetThousandsSeparator(thousandsSeparator rune) {
 	if thousandsSeparator == 0 {
 		thousandsSeparator = ','
 	}
-	
+
 	nDto.thousandsSeparator = thousandsSeparator
 
 }
@@ -3480,8 +3460,8 @@ func (nDto *NumStrDto) SetThousandsSeparator(thousandsSeparator rune) {
 // "-123456789"						6					 "-123.456789"
 //
 func (nDto *NumStrDto) ShiftPrecisionLeft(
-												signedNumStr string,
-													shiftLeftPrecision uint) (NumStrDto, error) {
+	signedNumStr string,
+	shiftLeftPrecision uint) (NumStrDto, error) {
 
 	ePrefix := "NumStrDto.ShiftPrecisionLeft() "
 
@@ -3507,8 +3487,8 @@ func (nDto *NumStrDto) ShiftPrecisionLeft(
 	n1, err := NumStrDto{}.NewPtr().ParseNumStr(signedNumStr)
 
 	if err != nil {
-		return NumStrDto{}, fmt.Errorf(ePrefix +
-			"Received Error from NumStrDto.ParseNumStr(signedNumStr). " +
+		return NumStrDto{}, fmt.Errorf(ePrefix+
+			"Received Error from NumStrDto.ParseNumStr(signedNumStr). "+
 			"str= '%v' Error= %v",
 			signedNumStr, err)
 	}
@@ -3553,8 +3533,8 @@ func (nDto *NumStrDto) ShiftPrecisionLeft(
 	lenAbsIntRunes = lenAbsAllNumRunes - lenAbsFracRunes
 
 	if lenAbsIntRunes <= 0 {
-		return NumStrDto{}, fmt.Errorf(ePrefix +
-			"Calculated number of integer digits is less than or equal to ZERO. " +
+		return NumStrDto{}, fmt.Errorf(ePrefix+
+			"Calculated number of integer digits is less than or equal to ZERO. "+
 			"lenAbsIntRunes= '%v' ",
 			lenAbsIntRunes)
 	}
@@ -3614,7 +3594,7 @@ func (nDto *NumStrDto) ShiftPrecisionRight(signedNumStr string, precision uint) 
 	n1, err := NumStrDto{}.NewPtr().ParseNumStr(signedNumStr)
 
 	if err != nil {
-		return NumStrDto{}, fmt.Errorf(ePrefix + "- Received Error from NumStrDto.ParseNumStr(signedNumStr). str= '%v' Error= %v", signedNumStr, err)
+		return NumStrDto{}, fmt.Errorf(ePrefix+"- Received Error from NumStrDto.ParseNumStr(signedNumStr). str= '%v' Error= %v", signedNumStr, err)
 	}
 
 	n2 := NumStrDto{}.New()
@@ -3668,13 +3648,13 @@ func (nDto *NumStrDto) ShiftPrecisionRight(signedNumStr string, precision uint) 
 
 	if lenAbsIntRunes <= 0 {
 		return NumStrDto{},
-		fmt.Errorf(ePrefix + "- Calculated number of integer digits is less than or equal to ZERO. " +
-			"lenAbsIntRunes= '%v' ", lenAbsIntRunes)
+			fmt.Errorf(ePrefix+"- Calculated number of integer digits is less than or equal to ZERO. "+
+				"lenAbsIntRunes= '%v' ", lenAbsIntRunes)
 	}
 
 	lenAbsFracRunes = n2.GetAbsFracRunesLength()
 
-	err = n2.IsValid( ePrefix)
+	err = n2.IsValid(ePrefix)
 
 	if err != nil {
 		return NumStrDto{}, err
@@ -3695,9 +3675,9 @@ func (nDto *NumStrDto) ShiftPrecisionRight(signedNumStr string, precision uint) 
 // Currency Symbol dollar sign ('$')	= $123
 //
 func (nDto *NumStrDto) SetNumericSeparators(
-					decimalSeparator,
-							thousandsSeparator,
-									currencySymbol rune) {
+	decimalSeparator,
+	thousandsSeparator,
+	currencySymbol rune) {
 
 	if decimalSeparator == 0 {
 		decimalSeparator = '.'
@@ -3806,20 +3786,20 @@ func (nDto *NumStrDto) SetNumStr(numStr string) error {
 
 	ePrefix := "NumStrDto.SetNumStr() "
 
-  numSeps := nDto.GetNumericSeparatorsDto()
+	numSeps := nDto.GetNumericSeparatorsDto()
 
 	n2, err := NumStrDto{}.NewNumStr(numStr)
 
 	if err != nil {
-		return fmt.Errorf(ePrefix + "Error returned by NumStrDto{}.NewNumStr(numStr). " +
+		return fmt.Errorf(ePrefix+"Error returned by NumStrDto{}.NewNumStr(numStr). "+
 			"numStr='%v' Error='%v' ", numStr, err.Error())
 	}
 
 	err = n2.SetNumericSeparatorsDto(numSeps)
 
 	if err != nil {
-		return fmt.Errorf(ePrefix +
-			"Error returned by n2.SetNumericSeparatorsDto(numSeps) " +
+		return fmt.Errorf(ePrefix+
+			"Error returned by n2.SetNumericSeparatorsDto(numSeps) "+
 			"Error='%v' \n", err.Error())
 	}
 
@@ -3876,9 +3856,9 @@ func (nDto *NumStrDto) SetNumStr(numStr string) error {
 // 19 	"-123457"							1							true						"-123457.0"
 //
 func (nDto *NumStrDto) SetPrecision(
-							signedNumStr string,
-								precision uint,
-									roundResult bool) (NumStrDto, error) {
+	signedNumStr string,
+	precision uint,
+	roundResult bool) (NumStrDto, error) {
 
 	ePrefix := "NumStrDto.SetPrecision() "
 
@@ -3910,8 +3890,8 @@ func (nDto *NumStrDto) SetPrecision(
 
 	if err != nil {
 		return NumStrDto{},
-			fmt.Errorf(ePrefix +
-				"Error returned from ns.ParseNumString(signedNumStr). " +
+			fmt.Errorf(ePrefix+
+				"Error returned from ns.ParseNumString(signedNumStr). "+
 				"signedNumStr='%v' Error= %v", signedNumStr, err)
 	}
 
@@ -3940,7 +3920,7 @@ func (nDto *NumStrDto) SetPrecision(
 
 		if !isOk {
 			return NumStrDto{},
-				fmt.Errorf(ePrefix + "Error: Failed to convert string to big.Int(). " +
+				fmt.Errorf(ePrefix+"Error: Failed to convert string to big.Int(). "+
 					"big.Int.SetString(n1.absAllNumRunes). n1.absAllNumRunes='%v' ",
 					string(n1.absAllNumRunes))
 		}
@@ -3975,8 +3955,8 @@ func (nDto *NumStrDto) SetPrecision(
 		if lenN1AbsAllNumRunes != (lenN1AbsIntRunes + lenN1AbsFracRunes) {
 
 			return NumStrDto{},
-				fmt.Errorf(ePrefix + "Error on Rounding. lenN1AbsAllNumRunes != " +
-					"(lenN1AbsIntRunes + lenN1AbsFracRunes). lenN1AbsAllNumRunes= '%v' " +
+				fmt.Errorf(ePrefix+"Error on Rounding. lenN1AbsAllNumRunes != "+
+					"(lenN1AbsIntRunes + lenN1AbsFracRunes). lenN1AbsAllNumRunes= '%v' "+
 					"lenN1AbsIntRunes= '%v' lenN1AbsFracRunes= '%v'",
 					lenN1AbsAllNumRunes, lenN1AbsIntRunes, lenN1AbsFracRunes)
 		}
@@ -4031,8 +4011,8 @@ func (nDto *NumStrDto) SetSignValue(newSignVal int) error {
 	ePrefix := "NumStrDto.SetSignValue() "
 
 	if newSignVal != -1 && newSignVal != 1 {
-		return fmt.Errorf(ePrefix +
-			"Invalid sign value passed. sign must be +1 or -1. " +
+		return fmt.Errorf(ePrefix+
+			"Invalid sign value passed. sign must be +1 or -1. "+
 			"This sign value= %v", newSignVal)
 	}
 
@@ -4059,24 +4039,23 @@ func (nDto *NumStrDto) SetSignValue(newSignVal int) error {
 //													include rounding the last digit.
 //
 func (nDto *NumStrDto) SetThisPrecision(
-														precision uint,
-															roundResult bool) error {
+	precision uint,
+	roundResult bool) error {
 
- ePrefix := "NumStrDto.SetThisPrecision() "
+	ePrefix := "NumStrDto.SetThisPrecision() "
 
+	n2, err := nDto.SetPrecision(nDto.GetNumStr(), precision, roundResult)
 
- n2, err := nDto.SetPrecision(nDto.GetNumStr(), precision, roundResult)
+	if err != nil {
+		return fmt.Errorf(ePrefix+
+			"Error returned by nDto.SetPrecision(signedNumStr, precision, "+
+			"roundResult). nDto.numStrDto='%v' precision='%v', roundResult='%v'",
+			nDto.GetNumStr(), precision, roundResult)
+	}
 
- if err != nil {
- 	return fmt.Errorf(ePrefix +
- 		"Error returned by nDto.SetPrecision(signedNumStr, precision, " +
- 		"roundResult). nDto.numStrDto='%v' precision='%v', roundResult='%v'",
-		nDto.GetNumStr(), precision, roundResult)
- }
+	nDto.CopyIn(n2)
 
- nDto.CopyIn(n2)
-
- return nil
+	return nil
 }
 
 // Subtract - Subtracts the value of an input NumStrDto from the
@@ -4090,7 +4069,7 @@ func (nDto *NumStrDto) Subtract(n2Dto NumStrDto) error {
 	nResult, err := nDto.SubtractNumStrs(n1Dto, n2Dto)
 
 	if err != nil {
-		return fmt.Errorf(ePrefix + "Error returned by nDto.SubtractNumStrs(n1Dto, n2Dto). "+
+		return fmt.Errorf(ePrefix+"Error returned by nDto.SubtractNumStrs(n1Dto, n2Dto). "+
 			"Error='%v'", err.Error())
 	}
 
@@ -4109,7 +4088,7 @@ func (nDto *NumStrDto) SubtractNumStrs(n1Dto, n2Dto NumStrDto) (NumStrDto, error
 
 	if err != nil {
 		return NumStrDto{},
-			fmt.Errorf(ePrefix + "- Error from nDto.FormatForMathOps(n1Dto, n2Dto). " +
+			fmt.Errorf(ePrefix+"- Error from nDto.FormatForMathOps(n1Dto, n2Dto). "+
 				"Error= %v", err)
 	}
 
@@ -4126,22 +4105,22 @@ func (nDto *NumStrDto) SubtractNumStrs(n1Dto, n2Dto NumStrDto) (NumStrDto, error
 
 		if err != nil {
 			return NumStrDto{},
-			fmt.Errorf(ePrefix + "- Error from n1NumDto.SetSignValue(1). Error= %v", err)
+				fmt.Errorf(ePrefix+"- Error from n1NumDto.SetSignValue(1). Error= %v", err)
 		}
 
 		err = n2NumDto.SetSignValue(1)
 
 		if err != nil {
 			return NumStrDto{},
-			fmt.Errorf(ePrefix + "- Error from n2NumDto.SetSignValue(1). Error= %v", err)
+				fmt.Errorf(ePrefix+"- Error from n2NumDto.SetSignValue(1). Error= %v", err)
 		}
 
 		nOutDto, err := nDto.AddNumStrs(n1NumDto, n2NumDto)
 
 		if err != nil {
 			return NumStrDto{},
-			fmt.Errorf(ePrefix + "- Error from nDto.AddNumStrs(n1NumDto, n2NumDto). " +
-				"Error= %v", err)
+				fmt.Errorf(ePrefix+"- Error from nDto.AddNumStrs(n1NumDto, n2NumDto). "+
+					"Error= %v", err)
 		}
 
 		nOutDto.SetSignValue(newSignVal)
@@ -4197,9 +4176,9 @@ func (nDto *NumStrDto) SubtractNumStrs(n1Dto, n2Dto NumStrDto) (NumStrDto, error
 
 	if err != nil {
 		return NumStrDto{},
-		fmt.Errorf(ePrefix + "- Error from final nDto.FindIntArraySignificantDigitLimits" +
-			"(n3IntAry, precision, newSignVal). precision='%v' newSignVal='%v' Error= %v",
-			precision, newSignVal, err)
+			fmt.Errorf(ePrefix+"- Error from final nDto.FindIntArraySignificantDigitLimits"+
+				"(n3IntAry, precision, newSignVal). precision='%v' newSignVal='%v' Error= %v",
+				precision, newSignVal, err)
 	}
 
 	return nOutDto, nil

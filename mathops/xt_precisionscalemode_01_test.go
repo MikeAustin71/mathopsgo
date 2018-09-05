@@ -1,10 +1,8 @@
 package mathops
 
-
 import (
 	"testing"
 )
-
 
 func TestPrecisionScaleMode_String_01(t *testing.T) {
 
@@ -16,7 +14,7 @@ func TestPrecisionScaleMode_String_01(t *testing.T) {
 
 	if expectedStr != s {
 		t.Errorf("Expected SCALEPRECISIONRIGHT string='%v'. Instead, string='%v' ",
-					expectedStr, s)
+			expectedStr, s)
 	}
 
 }
@@ -66,4 +64,3 @@ func TestPrecisionScaleMode_Value_02(t *testing.T) {
 	}
 
 }
-

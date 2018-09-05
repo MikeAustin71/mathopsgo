@@ -1,8 +1,8 @@
 package examples
 
 import (
-	"time"
 	"fmt"
+	"time"
 )
 
 func CodeDurationToStr(tDuration time.Duration) string {
@@ -25,11 +25,11 @@ func CodeDurationToStr(tDuration time.Duration) string {
 		totNanoSecs = tMinutes * int64(time.Minute)
 	}
 
-  if i64TDur >= int64(time.Second) {
-  	tSeconds = i64TDur / int64(time.Second)
+	if i64TDur >= int64(time.Second) {
+		tSeconds = i64TDur / int64(time.Second)
 		outStr += fmt.Sprintf("%v-Seconds ", tSeconds)
-  	i64TDur -= tSeconds * int64(time.Second)
-  	totNanoSecs += tSeconds * int64(time.Second)
+		i64TDur -= tSeconds * int64(time.Second)
+		totNanoSecs += tSeconds * int64(time.Second)
 	}
 
 	if i64TDur >= int64(time.Millisecond) {
@@ -49,7 +49,7 @@ func CodeDurationToStr(tDuration time.Duration) string {
 
 	if totNanoSecs != int64(tDuration) {
 		return fmt.Sprintf("Error: Total Calculated Duration= '%v'. Total Actual Duration= '%v'",
-			totNanoSecs , int64(tDuration))
+			totNanoSecs, int64(tDuration))
 	}
 
 	outStr += fmt.Sprintf("%v-Milliseconds ", tMilliseconds)

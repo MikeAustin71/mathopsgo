@@ -4,6 +4,7 @@ type IntAryMathSubtract struct {
 	Input  IntAryPair
 	Result IntAry
 }
+
 // Subtract - Receives two input parameters of type *IntAry. The second parameter
 // 'subtrahend' is subtracted from the first parameter, 'minuend'. The result, or
 // difference, is returned as a new IntAry instance.
@@ -123,16 +124,15 @@ func (iaSubtract IntAryMathSubtract) SubtractTotal(ia1, ia2 *IntAry) {
 	return
 }
 
-
 // addToSubtract - Adds or subtracts two IntAry instances and returns the result
 // in the first IntAry parameter,'ia1'.
 //
 func (iaSubtract *IntAryMathSubtract) addToSubtract(
-																				ia1, ia2 *IntAry,
-																					newSignVal int,
-																						doAdd bool,
-																							isZeroResult bool,
-																								doReverseNums bool) {
+	ia1, ia2 *IntAry,
+	newSignVal int,
+	doAdd bool,
+	isZeroResult bool,
+	doReverseNums bool) {
 
 	if isZeroResult {
 		ia1.SetIntAryToZero(ia1.GetPrecisionUint())
@@ -204,4 +204,3 @@ func (iaSubtract *IntAryMathSubtract) addToSubtract(
 
 	return
 }
-

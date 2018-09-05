@@ -48,8 +48,8 @@ type IntAryMathDivide struct {
 //						contain an error message.
 //
 func (iaDivide IntAryMathDivide) Divide(
-						dividend, divisor *IntAry,
-									minPrecision,  maxPrecision int) (IntAry, error) {
+	dividend, divisor *IntAry,
+	minPrecision, maxPrecision int) (IntAry, error) {
 
 	ePrefix := "IntAryMathDivide.Divide() "
 
@@ -62,8 +62,8 @@ func (iaDivide IntAryMathDivide) Divide(
 
 	if maxPrecision < -1 {
 		return IntAry{}.New(),
-		errors.New(ePrefix +
-			"Error: Input parameter 'maxPrecision' is INVALID. 'maxPrecision' is less than -1")
+			errors.New(ePrefix +
+				"Error: Input parameter 'maxPrecision' is INVALID. 'maxPrecision' is less than -1")
 	}
 
 	if maxPrecision == -1 {
@@ -149,8 +149,8 @@ func (iaDivide IntAryMathDivide) Divide(
 
 			if err != nil {
 				return IntAry{}.New(),
-					fmt.Errorf(ePrefix +
-						"Error returned by quotient.SetNumericSeparatorsDto(numSeps). " +
+					fmt.Errorf(ePrefix+
+						"Error returned by quotient.SetNumericSeparatorsDto(numSeps). "+
 						"Error='%v' ", err.Error())
 			}
 
@@ -178,8 +178,8 @@ func (iaDivide IntAryMathDivide) Divide(
 
 			if err != nil {
 				return IntAry{}.New(),
-					fmt.Errorf(ePrefix +
-						"Error returned by quotient.SetNumericSeparatorsDto(numSeps). " +
+					fmt.Errorf(ePrefix+
+						"Error returned by quotient.SetNumericSeparatorsDto(numSeps). "+
 						"Error='%v' ", err.Error())
 			}
 
@@ -216,8 +216,8 @@ func (iaDivide IntAryMathDivide) Divide(
 
 	if err != nil {
 		return IntAry{}.New(),
-			fmt.Errorf(ePrefix +
-				"Error returned by quotient.SetNumericSeparatorsDto(numSeps). " +
+			fmt.Errorf(ePrefix+
+				"Error returned by quotient.SetNumericSeparatorsDto(numSeps). "+
 				"Error='%v' ", err.Error())
 	}
 
@@ -239,17 +239,16 @@ func (iaDivide IntAryMathDivide) Divide(
 // If 'maxPrecision' is less than -1, an error will be returned.
 //
 func (iaDivide IntAryMathDivide) DivideByInt64(
-															ia *IntAry, divisor int64, maxPrecision int) error {
+	ia *IntAry, divisor int64, maxPrecision int) error {
 
 	ePrefix := "iaDivide IntAryMathDivide() "
-
 
 	if divisor == 0 {
 		return errors.New(ePrefix + "'divisor' Equals Zero. Cannot divide by zero! \n")
 	}
 
 	if maxPrecision < -1 {
-		return fmt.Errorf(ePrefix + "Error: Input Parameter 'maxPrecision' is less than -1! " +
+		return fmt.Errorf(ePrefix+"Error: Input Parameter 'maxPrecision' is less than -1! "+
 			"maxPrecision='%v' \n", maxPrecision)
 	}
 

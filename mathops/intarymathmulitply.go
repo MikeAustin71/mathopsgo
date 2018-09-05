@@ -7,7 +7,6 @@ type IntAryMathMultiply struct {
 	Result IntAry
 }
 
-
 // MultiplyByTenToPower - Input parameter 'base' is multiplied by 10 to the exponent
 // power. The result is stored in base.
 //
@@ -135,19 +134,17 @@ func (iaMultiply IntAryMathMultiply) MultiplyByTwoToPower(base *IntAry, power ui
 //								of decimal digits may be accommodated by the IntAry Type.
 //
 func (iaMultiply IntAryMathMultiply) MultiplyInPlace(
-					ia1, ia2 *IntAry,
-						minimumResultPrecision, maxResultPrecision int) error {
-
+	ia1, ia2 *IntAry,
+	minimumResultPrecision, maxResultPrecision int) error {
 
 	ePrefix := "IntAryMathMultiply.MultiplyInPlace() "
 
 	err := iaMultiply.Multiply(ia1, ia2, ia1, minimumResultPrecision, maxResultPrecision)
 
 	if err != nil {
-		return fmt.Errorf(ePrefix +
+		return fmt.Errorf(ePrefix+
 			"Error returned by iaMultiply.Multiply(). Error='%v'", err.Error())
 	}
-
 
 	return nil
 }
@@ -193,21 +190,21 @@ func (iaMultiply IntAryMathMultiply) MultiplyInPlace(
 // thousands separator and currency symbol) copied from input parameter, 'ia1'.
 //
 func (iaMultiply IntAryMathMultiply) Multiply(
-								ia1, ia2, iaResult *IntAry,
-										minimumResultPrecision,
-												maxResultPrecision int) error {
+	ia1, ia2, iaResult *IntAry,
+	minimumResultPrecision,
+	maxResultPrecision int) error {
 
 	ePrefix := "IntAryMathMultiply.MultiplyInPlace() "
 
 	if maxResultPrecision < -1 {
-		return fmt.Errorf(ePrefix +
-			"Error: Input Parameter 'maxResultPrecision' is less than -1. " +
+		return fmt.Errorf(ePrefix+
+			"Error: Input Parameter 'maxResultPrecision' is less than -1. "+
 			"maxResultPrecision= %v\n", maxResultPrecision)
 	}
 
 	if minimumResultPrecision < -1 {
-		return fmt.Errorf(ePrefix +
-			"Error: Input Parameter 'minimumResultPrecision is less than -1. " +
+		return fmt.Errorf(ePrefix+
+			"Error: Input Parameter 'minimumResultPrecision is less than -1. "+
 			"minimumResultPrecision='%v' ", minimumResultPrecision)
 	}
 
@@ -233,7 +230,6 @@ func (iaMultiply IntAryMathMultiply) Multiply(
 
 	ia1.SetInternalFlags()
 	ia2.SetInternalFlags()
-
 
 	if ia1.isZeroValue || ia2.isZeroValue {
 
@@ -265,12 +261,12 @@ func (iaMultiply IntAryMathMultiply) Multiply(
 	resultIdx := 0
 	offset := 0
 
-	for i := ia2.intAryLen -1; i >=0 ; i-- {
+	for i := ia2.intAryLen - 1; i >= 0; i-- {
 		multiplicand = ia2.intAry[i]
 		offset++
 		nextResultIdx := newIntAryLen - offset
 
-		for j := ia1.intAryLen - 1; j >= 0 ; j-- {
+		for j := ia1.intAryLen - 1; j >= 0; j-- {
 
 			multiplier = ia1.intAry[j]
 
@@ -278,8 +274,7 @@ func (iaMultiply IntAryMathMultiply) Multiply(
 
 			resultIdx = nextResultIdx
 
-			resultAry[resultIdx]+= product
-
+			resultAry[resultIdx] += product
 
 			for resultAry[resultIdx] > 9 {
 				carry = resultAry[resultIdx] / 10
@@ -287,7 +282,7 @@ func (iaMultiply IntAryMathMultiply) Multiply(
 
 				resultIdx--
 
-				resultAry[resultIdx]+= carry
+				resultAry[resultIdx] += carry
 
 			}
 
@@ -297,8 +292,7 @@ func (iaMultiply IntAryMathMultiply) Multiply(
 
 	}
 
-
-	if newIntAryLen - newPrecision > 1 && resultAry[0] == 0 {
+	if newIntAryLen-newPrecision > 1 && resultAry[0] == 0 {
 
 		iaResult.intAry = resultAry[1:]
 		newIntAryLen--
@@ -328,8 +322,8 @@ func (iaMultiply IntAryMathMultiply) Multiply(
 	err = iaResult.SetNumericSeparatorsDto(numSeps)
 
 	if err != nil {
-		return fmt.Errorf(ePrefix +
-			"Error returned by iaResult.SetNumericSeparatorsDto(numSeps). " +
+		return fmt.Errorf(ePrefix+
+			"Error returned by iaResult.SetNumericSeparatorsDto(numSeps). "+
 			"Error='%v'", err.Error())
 	}
 

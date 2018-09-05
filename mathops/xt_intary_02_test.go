@@ -17,7 +17,7 @@ func TestIntAry_AddIntToThis_01(t *testing.T) {
 	result := ia1.GetNumStr()
 
 	if expected != result {
-		t.Errorf("Expected result='%v'. Instead, result='%v' ",expected, result)
+		t.Errorf("Expected result='%v'. Instead, result='%v' ", expected, result)
 	}
 }
 
@@ -34,7 +34,7 @@ func TestIntAry_AddIntToThis_02(t *testing.T) {
 	result := ia1.GetNumStr()
 
 	if expected != result {
-		t.Errorf("Expected result='%v'. Instead, result='%v' ",expected, result)
+		t.Errorf("Expected result='%v'. Instead, result='%v' ", expected, result)
 	}
 }
 
@@ -51,7 +51,7 @@ func TestIntAry_AddIntToThis_03(t *testing.T) {
 	result := ia1.GetNumStr()
 
 	if expected != result {
-		t.Errorf("Expected result='%v'. Instead, result='%v' ",expected, result)
+		t.Errorf("Expected result='%v'. Instead, result='%v' ", expected, result)
 	}
 
 	if ia1.GetPrecisionUint() != precision {
@@ -72,7 +72,7 @@ func TestIntAry_AddIntToThis_04(t *testing.T) {
 	result := ia1.GetNumStr()
 
 	if expected != result {
-		t.Errorf("Expected result='%v'. Instead, result='%v' ",expected, result)
+		t.Errorf("Expected result='%v'. Instead, result='%v' ", expected, result)
 	}
 }
 
@@ -89,7 +89,7 @@ func TestIntAry_AddIntToThis_05(t *testing.T) {
 	result := ia1.GetNumStr()
 
 	if expected != result {
-		t.Errorf("Error: Expected result='%v'. Instead, result='%v' ",expected, result)
+		t.Errorf("Error: Expected result='%v'. Instead, result='%v' ", expected, result)
 	}
 
 	if precision != ia1.GetPrecisionUint() {
@@ -112,7 +112,7 @@ func TestIntAry_AddIntToThis_06(t *testing.T) {
 	result := ia1.GetNumStr()
 
 	if expected != result {
-		t.Errorf("Expected result='%v'. Instead, result='%v' ",expected, result)
+		t.Errorf("Expected result='%v'. Instead, result='%v' ", expected, result)
 	}
 
 	if ia1.GetPrecisionUint() != outPrecision {
@@ -134,7 +134,7 @@ func TestIntAry_AddIntToThis_07(t *testing.T) {
 	result := ia1.GetNumStr()
 
 	if expected != result {
-		t.Errorf("Expected result='%v'. Instead, result='%v' ",expected, result)
+		t.Errorf("Expected result='%v'. Instead, result='%v' ", expected, result)
 	}
 
 	if ia1.GetPrecisionUint() != outPrecision {
@@ -156,7 +156,7 @@ func TestIntAry_AddIntToThis_08(t *testing.T) {
 	result := ia1.GetNumStr()
 
 	if expected != result {
-		t.Errorf("Expected result='%v'. Instead, result='%v' ",expected, result)
+		t.Errorf("Expected result='%v'. Instead, result='%v' ", expected, result)
 	}
 
 	if ia1.GetPrecisionUint() != outPrecision {
@@ -176,7 +176,7 @@ func TestIntAry_AddInt64ToThis_01(t *testing.T) {
 	result := ia1.GetNumStr()
 
 	if expected != result {
-		t.Errorf("Expected result='%v'. Instead, result='%v' ",expected, result)
+		t.Errorf("Expected result='%v'. Instead, result='%v' ", expected, result)
 	}
 }
 
@@ -193,7 +193,7 @@ func TestIntAry_AddInt64ToThis_02(t *testing.T) {
 	result := ia1.GetNumStr()
 
 	if expected != result {
-		t.Errorf("Expected result='%v'. Instead, result='%v' ",expected, result)
+		t.Errorf("Expected result='%v'. Instead, result='%v' ", expected, result)
 	}
 }
 
@@ -210,7 +210,7 @@ func TestIntAry_AddInt64ToThis_03(t *testing.T) {
 	result := ia1.GetNumStr()
 
 	if expected != result {
-		t.Errorf("Expected result='%v'. Instead, result='%v' ",expected, result)
+		t.Errorf("Expected result='%v'. Instead, result='%v' ", expected, result)
 	}
 
 	if ia1.GetPrecisionUint() != precision {
@@ -230,7 +230,7 @@ func TestIntAry_AddInt64ToThis_04(t *testing.T) {
 	result := ia1.GetNumStr()
 
 	if expected != result {
-		t.Errorf("Expected result='%v'. Instead, result='%v' ",expected, result)
+		t.Errorf("Expected result='%v'. Instead, result='%v' ", expected, result)
 	}
 }
 
@@ -247,7 +247,7 @@ func TestIntAry_AddInt64ToThis_05(t *testing.T) {
 	result := ia1.GetNumStr()
 
 	if expected != result {
-		t.Errorf("Error: Expected result='%v'. Instead, result='%v' ",expected, result)
+		t.Errorf("Error: Expected result='%v'. Instead, result='%v' ", expected, result)
 	}
 
 	if precision != ia1.GetPrecisionUint() {
@@ -270,7 +270,7 @@ func TestIntAry_AddInt64ToThis_06(t *testing.T) {
 	result := ia1.GetNumStr()
 
 	if expected != result {
-		t.Errorf("Expected result='%v'. Instead, result='%v' ",expected, result)
+		t.Errorf("Expected result='%v'. Instead, result='%v' ", expected, result)
 	}
 
 	if ia1.GetPrecisionUint() != outPrecision {
@@ -292,7 +292,7 @@ func TestIntAry_AddInt64ToThis_07(t *testing.T) {
 	result := ia1.GetNumStr()
 
 	if expected != result {
-		t.Errorf("Expected result='%v'. Instead, result='%v' ",expected, result)
+		t.Errorf("Expected result='%v'. Instead, result='%v' ", expected, result)
 	}
 
 	if ia1.GetPrecisionUint() != outPrecision {
@@ -314,7 +314,7 @@ func TestIntAry_AddInt64ToThis_08(t *testing.T) {
 	result := ia1.GetNumStr()
 
 	if expected != result {
-		t.Errorf("Expected result='%v'. Instead, result='%v' ",expected, result)
+		t.Errorf("Expected result='%v'. Instead, result='%v' ", expected, result)
 	}
 
 	if ia1.GetPrecisionUint() != outPrecision {
@@ -331,7 +331,6 @@ func TestIntAry_AddBigIntToThis_01(t *testing.T) {
 
 	err := ia1.AddBigIntToThis(num, precision)
 
-
 	if err != nil {
 		t.Errorf("Error returned from ia1.AddBigIntToThis(50, 0). err='%v'", err)
 	}
@@ -339,7 +338,7 @@ func TestIntAry_AddBigIntToThis_01(t *testing.T) {
 	result := ia1.GetNumStr()
 
 	if expected != result {
-		t.Errorf("Expected result='%v'. Instead, result='%v' ",expected, result)
+		t.Errorf("Expected result='%v'. Instead, result='%v' ", expected, result)
 	}
 }
 
@@ -360,7 +359,7 @@ func TestIntAry_AddBigIntToThis_02(t *testing.T) {
 	result := ia1.GetNumStr()
 
 	if expected != result {
-		t.Errorf("Expected result='%v'. Instead, result='%v' ",expected, result)
+		t.Errorf("Expected result='%v'. Instead, result='%v' ", expected, result)
 	}
 }
 
@@ -381,7 +380,7 @@ func TestIntAry_AddBigIntToThis_03(t *testing.T) {
 	result := ia1.GetNumStr()
 
 	if expected != result {
-		t.Errorf("Expected result='%v'. Instead, result='%v' ",expected, result)
+		t.Errorf("Expected result='%v'. Instead, result='%v' ", expected, result)
 	}
 
 	if ia1.GetPrecision() != precision {
@@ -398,15 +397,14 @@ func TestIntAry_AddBigIntToThis_04(t *testing.T) {
 
 	err := ia1.AddBigIntToThis(num, precision)
 
-
 	if err != nil {
-		t.Errorf("Error returned from ia1.AddBigIntToThis(num, precision). num='%v' precision='%v' err='%v'",num, precision, err)
+		t.Errorf("Error returned from ia1.AddBigIntToThis(num, precision). num='%v' precision='%v' err='%v'", num, precision, err)
 	}
 
 	result := ia1.GetNumStr()
 
 	if expected != result {
-		t.Errorf("Expected result='%v'. Instead, result='%v' ",expected, result)
+		t.Errorf("Expected result='%v'. Instead, result='%v' ", expected, result)
 	}
 }
 
@@ -427,7 +425,7 @@ func TestIntAry_AddBigIntToThis_05(t *testing.T) {
 	result := ia1.GetNumStr()
 
 	if expected != result {
-		t.Errorf("Error: Expected result='%v'. Instead, result='%v' ",expected, result)
+		t.Errorf("Error: Expected result='%v'. Instead, result='%v' ", expected, result)
 	}
 
 	if precision != ia1.GetPrecision() {
@@ -454,7 +452,7 @@ func TestIntAry_AddBigIntToThis_06(t *testing.T) {
 	result := ia1.GetNumStr()
 
 	if expected != result {
-		t.Errorf("Expected result='%v'. Instead, result='%v' ",expected, result)
+		t.Errorf("Expected result='%v'. Instead, result='%v' ", expected, result)
 	}
 
 	if ia1.GetPrecision() != outPrecision {
@@ -480,7 +478,7 @@ func TestIntAry_AddBigIntToThis_07(t *testing.T) {
 	result := ia1.GetNumStr()
 
 	if expected != result {
-		t.Errorf("Expected result='%v'. Instead, result='%v' ",expected, result)
+		t.Errorf("Expected result='%v'. Instead, result='%v' ", expected, result)
 	}
 
 	if ia1.GetPrecision() != outPrecision {
@@ -506,7 +504,7 @@ func TestIntAry_AddBigIntToThis_08(t *testing.T) {
 	result := ia1.GetNumStr()
 
 	if expected != result {
-		t.Errorf("Expected result='%v'. Instead, result='%v' ",expected, result)
+		t.Errorf("Expected result='%v'. Instead, result='%v' ", expected, result)
 	}
 
 	if ia1.GetPrecision() != outPrecision {
@@ -515,7 +513,6 @@ func TestIntAry_AddBigIntToThis_08(t *testing.T) {
 }
 
 func TestIntAry_AddBigIntNumToThis_01(t *testing.T) {
-
 
 	ia1, _ := IntAry{}.NewNumStr("1.05")
 
@@ -526,19 +523,18 @@ func TestIntAry_AddBigIntNumToThis_01(t *testing.T) {
 	err := ia1.AddBigIntNumToThis(bINum)
 
 	if err != nil {
-		t.Errorf("Error returned by ia1.AddBigIntNumToThis(bINum). " +
+		t.Errorf("Error returned by ia1.AddBigIntNumToThis(bINum). "+
 			"bINum='%v' Error='%v' ", bINum.GetNumStr(), err.Error())
 	}
 
 	if expectedStr != ia1.GetNumStr() {
 		t.Errorf("Error: Expected result='%v'. Instead, result='%v' ",
-			expectedStr, ia1.GetNumStr() )
+			expectedStr, ia1.GetNumStr())
 	}
 
 }
 
 func TestIntAry_AddBigIntNumToThis_02(t *testing.T) {
-
 
 	ia1, _ := IntAry{}.NewNumStr("-1.05")
 
@@ -549,13 +545,13 @@ func TestIntAry_AddBigIntNumToThis_02(t *testing.T) {
 	err := ia1.AddBigIntNumToThis(bINum)
 
 	if err != nil {
-		t.Errorf("Error returned by ia1.AddBigIntNumToThis(bINum). " +
+		t.Errorf("Error returned by ia1.AddBigIntNumToThis(bINum). "+
 			"bINum='%v' Error='%v' ", bINum.GetNumStr(), err.Error())
 	}
 
 	if expectedStr != ia1.GetNumStr() {
 		t.Errorf("Error: Expected result='%v'. Instead, result='%v' ",
-			expectedStr, ia1.GetNumStr() )
+			expectedStr, ia1.GetNumStr())
 	}
 
 }
@@ -578,7 +574,7 @@ func TestIntAry_AddFloat32ToThis_01(t *testing.T) {
 	result := ia1.GetNumStr()
 
 	if expected != result {
-		t.Errorf("Expected result='%v'. Instead, result='%v' ",expected, result)
+		t.Errorf("Expected result='%v'. Instead, result='%v' ", expected, result)
 	}
 
 	if ia1.GetPrecision() != outPrecision {
@@ -605,7 +601,7 @@ func TestIntAry_AddFloat32ToThis_02(t *testing.T) {
 	result := ia1.GetNumStr()
 
 	if expected != result {
-		t.Errorf("Expected result='%v'. Instead, result='%v' ",expected, result)
+		t.Errorf("Expected result='%v'. Instead, result='%v' ", expected, result)
 	}
 
 	if ia1.GetPrecision() != outPrecision {
@@ -632,7 +628,7 @@ func TestIntAry_AddFloat32ToThis_03(t *testing.T) {
 	result := ia1.GetNumStr()
 
 	if expected != result {
-		t.Errorf("Expected result='%v'. Instead, result='%v' ",expected, result)
+		t.Errorf("Expected result='%v'. Instead, result='%v' ", expected, result)
 	}
 
 	if ia1.GetPrecision() != outPrecision {
@@ -659,7 +655,7 @@ func TestIntAry_AddFloat32ToThis_04(t *testing.T) {
 	result := ia1.GetNumStr()
 
 	if expected != result {
-		t.Errorf("Expected result='%v'. Instead, result='%v' ",expected, result)
+		t.Errorf("Expected result='%v'. Instead, result='%v' ", expected, result)
 	}
 
 	if ia1.GetPrecision() != outPrecision {
@@ -686,7 +682,7 @@ func TestIntAry_AddFloat32ToThis_05(t *testing.T) {
 	result := ia1.GetNumStr()
 
 	if expected != result {
-		t.Errorf("Expected result='%v'. Instead, result='%v' ",expected, result)
+		t.Errorf("Expected result='%v'. Instead, result='%v' ", expected, result)
 	}
 
 	if ia1.GetPrecision() != outPrecision {
@@ -713,7 +709,7 @@ func TestIntAry_AddFloat32ToThis_06(t *testing.T) {
 	result := ia1.GetNumStr()
 
 	if expected != result {
-		t.Errorf("Expected result='%v'. Instead, result='%v' ",expected, result)
+		t.Errorf("Expected result='%v'. Instead, result='%v' ", expected, result)
 	}
 
 	if ia1.GetPrecision() != outPrecision {
@@ -740,7 +736,7 @@ func TestIntAry_AddFloat32ToThis_07(t *testing.T) {
 	result := ia1.GetNumStr()
 
 	if expected != result {
-		t.Errorf("Expected result='%v'. Instead, result='%v' ",expected, result)
+		t.Errorf("Expected result='%v'. Instead, result='%v' ", expected, result)
 	}
 
 	if ia1.GetPrecision() != outPrecision {
@@ -767,7 +763,7 @@ func TestIntAry_AddFloat32ToThis_08(t *testing.T) {
 	result := ia1.GetNumStr()
 
 	if expected != result {
-		t.Errorf("Expected result='%v'. Instead, result='%v' ",expected, result)
+		t.Errorf("Expected result='%v'. Instead, result='%v' ", expected, result)
 	}
 
 	if ia1.GetPrecision() != outPrecision {
@@ -794,7 +790,7 @@ func TestIntAry_AddFloat32ToThis_09(t *testing.T) {
 	result := ia1.GetNumStr()
 
 	if expected != result {
-		t.Errorf("Expected result='%v'. Instead, result='%v' ",expected, result)
+		t.Errorf("Expected result='%v'. Instead, result='%v' ", expected, result)
 	}
 
 	if ia1.GetPrecision() != outPrecision {
@@ -821,7 +817,7 @@ func TestIntAry_AddFloat32ToThis_10(t *testing.T) {
 	result := ia1.GetNumStr()
 
 	if expected != result {
-		t.Errorf("Expected result='%v'. Instead, result='%v' ",expected, result)
+		t.Errorf("Expected result='%v'. Instead, result='%v' ", expected, result)
 	}
 
 	if ia1.GetPrecision() != outPrecision {
@@ -848,14 +844,13 @@ func TestIntAry_AddFloat32ToThis_11(t *testing.T) {
 	result := ia1.GetNumStr()
 
 	if expected != result {
-		t.Errorf("Expected result='%v'. Instead, result='%v' ",expected, result)
+		t.Errorf("Expected result='%v'. Instead, result='%v' ", expected, result)
 	}
 
 	if ia1.GetPrecision() != outPrecision {
 		t.Errorf("Expected ia1.GetPrecision= '%v'.  Instead, ia1.GetPrecision='%v' ", outPrecision, ia1.GetPrecision())
 	}
 }
-
 
 func TestIntAry_AddFloat64ToThis_01(t *testing.T) {
 	ia1, _ := IntAry{}.NewNumStr("1.00")
@@ -875,7 +870,7 @@ func TestIntAry_AddFloat64ToThis_01(t *testing.T) {
 	result := ia1.GetNumStr()
 
 	if expected != result {
-		t.Errorf("Expected result='%v'. Instead, result='%v' ",expected, result)
+		t.Errorf("Expected result='%v'. Instead, result='%v' ", expected, result)
 	}
 
 	if ia1.GetPrecision() != outPrecision {
@@ -902,7 +897,7 @@ func TestIntAry_AddFloat64ToThis_02(t *testing.T) {
 	result := ia1.GetNumStr()
 
 	if expected != result {
-		t.Errorf("Expected result='%v'. Instead, result='%v' ",expected, result)
+		t.Errorf("Expected result='%v'. Instead, result='%v' ", expected, result)
 	}
 
 	if ia1.GetPrecision() != outPrecision {
@@ -929,7 +924,7 @@ func TestIntAry_AddFloat64ToThis_03(t *testing.T) {
 	result := ia1.GetNumStr()
 
 	if expected != result {
-		t.Errorf("Expected result='%v'. Instead, result='%v' ",expected, result)
+		t.Errorf("Expected result='%v'. Instead, result='%v' ", expected, result)
 	}
 
 	if ia1.GetPrecision() != outPrecision {
@@ -956,7 +951,7 @@ func TestIntAry_AddFloat64ToThis_04(t *testing.T) {
 	result := ia1.GetNumStr()
 
 	if expected != result {
-		t.Errorf("Expected result='%v'. Instead, result='%v' ",expected, result)
+		t.Errorf("Expected result='%v'. Instead, result='%v' ", expected, result)
 	}
 
 	if ia1.GetPrecision() != outPrecision {
@@ -983,7 +978,7 @@ func TestIntAry_AddFloat64ToThis_05(t *testing.T) {
 	result := ia1.GetNumStr()
 
 	if expected != result {
-		t.Errorf("Expected result='%v'. Instead, result='%v' ",expected, result)
+		t.Errorf("Expected result='%v'. Instead, result='%v' ", expected, result)
 	}
 
 	if ia1.GetPrecision() != outPrecision {
@@ -1010,7 +1005,7 @@ func TestIntAry_AddFloat64ToThis_06(t *testing.T) {
 	result := ia1.GetNumStr()
 
 	if expected != result {
-		t.Errorf("Expected result='%v'. Instead, result='%v' ",expected, result)
+		t.Errorf("Expected result='%v'. Instead, result='%v' ", expected, result)
 	}
 
 	if ia1.GetPrecision() != outPrecision {
@@ -1037,7 +1032,7 @@ func TestIntAry_AddFloat64ToThis_07(t *testing.T) {
 	result := ia1.GetNumStr()
 
 	if expected != result {
-		t.Errorf("Expected result='%v'. Instead, result='%v' ",expected, result)
+		t.Errorf("Expected result='%v'. Instead, result='%v' ", expected, result)
 	}
 
 	if ia1.GetPrecision() != outPrecision {
@@ -1064,7 +1059,7 @@ func TestIntAry_AddFloat64ToThis_08(t *testing.T) {
 	result := ia1.GetNumStr()
 
 	if expected != result {
-		t.Errorf("Expected result='%v'. Instead, result='%v' ",expected, result)
+		t.Errorf("Expected result='%v'. Instead, result='%v' ", expected, result)
 	}
 
 	if ia1.GetPrecision() != outPrecision {
@@ -1091,7 +1086,7 @@ func TestIntAry_AddFloat64ToThis_09(t *testing.T) {
 	result := ia1.GetNumStr()
 
 	if expected != result {
-		t.Errorf("Expected result='%v'. Instead, result='%v' ",expected, result)
+		t.Errorf("Expected result='%v'. Instead, result='%v' ", expected, result)
 	}
 
 	if ia1.GetPrecision() != outPrecision {
@@ -1118,7 +1113,7 @@ func TestIntAry_AddFloat64ToThis_10(t *testing.T) {
 	result := ia1.GetNumStr()
 
 	if expected != result {
-		t.Errorf("Expected result='%v'. Instead, result='%v' ",expected, result)
+		t.Errorf("Expected result='%v'. Instead, result='%v' ", expected, result)
 	}
 
 	if ia1.GetPrecision() != outPrecision {
@@ -1144,7 +1139,7 @@ func TestIntAry_AddFloatBigToThis_01(t *testing.T) {
 	result := ia1.GetNumStr()
 
 	if expected != result {
-		t.Errorf("Expected result='%v'. Instead, result='%v' ",expected, result)
+		t.Errorf("Expected result='%v'. Instead, result='%v' ", expected, result)
 	}
 
 	if ia1.GetPrecision() != outPrecision {
@@ -1171,7 +1166,7 @@ func TestIntAry_AddFloatBigToThis_02(t *testing.T) {
 	result := ia1.GetNumStr()
 
 	if expected != result {
-		t.Errorf("Expected result='%v'. Instead, result='%v' ",expected, result)
+		t.Errorf("Expected result='%v'. Instead, result='%v' ", expected, result)
 	}
 
 	if ia1.GetPrecision() != outPrecision {
@@ -1198,7 +1193,7 @@ func TestIntAry_AddFloatBigToThis_03(t *testing.T) {
 	result := ia1.GetNumStr()
 
 	if expected != result {
-		t.Errorf("Expected result='%v'. Instead, result='%v' ",expected, result)
+		t.Errorf("Expected result='%v'. Instead, result='%v' ", expected, result)
 	}
 
 	if ia1.GetPrecision() != outPrecision {
@@ -1225,7 +1220,7 @@ func TestIntAry_AddFloatBigToThis_04(t *testing.T) {
 	result := ia1.GetNumStr()
 
 	if expected != result {
-		t.Errorf("Expected result='%v'. Instead, result='%v' ",expected, result)
+		t.Errorf("Expected result='%v'. Instead, result='%v' ", expected, result)
 	}
 
 	if ia1.GetPrecision() != outPrecision {
@@ -1252,7 +1247,7 @@ func TestIntAry_AddFloatBigToThis_05(t *testing.T) {
 	result := ia1.GetNumStr()
 
 	if expected != result {
-		t.Errorf("Expected result='%v'. Instead, result='%v' ",expected, result)
+		t.Errorf("Expected result='%v'. Instead, result='%v' ", expected, result)
 	}
 
 	if ia1.GetPrecision() != outPrecision {
@@ -1279,7 +1274,7 @@ func TestIntAry_AddFloatBigToThis_06(t *testing.T) {
 	result := ia1.GetNumStr()
 
 	if expected != result {
-		t.Errorf("Expected result='%v'. Instead, result='%v' ",expected, result)
+		t.Errorf("Expected result='%v'. Instead, result='%v' ", expected, result)
 	}
 
 	if ia1.GetPrecision() != outPrecision {
@@ -1307,7 +1302,7 @@ func TestIntAry_AddFloatBigToThis_07(t *testing.T) {
 	result := ia1.GetNumStr()
 
 	if expected != result {
-		t.Errorf("Expected result='%v'. Instead, result='%v' ",expected, result)
+		t.Errorf("Expected result='%v'. Instead, result='%v' ", expected, result)
 	}
 
 	if ia1.GetPrecision() != outPrecision {
@@ -1334,7 +1329,7 @@ func TestIntAry_AddFloatBigToThis_08(t *testing.T) {
 	result := ia1.GetNumStr()
 
 	if expected != result {
-		t.Errorf("Expected result='%v'. Instead, result='%v' ",expected, result)
+		t.Errorf("Expected result='%v'. Instead, result='%v' ", expected, result)
 	}
 
 	if ia1.GetPrecision() != outPrecision {
@@ -1361,7 +1356,7 @@ func TestIntAry_AddFloatBigToThis_09(t *testing.T) {
 	result := ia1.GetNumStr()
 
 	if expected != result {
-		t.Errorf("Expected result='%v'. Instead, result='%v' ",expected, result)
+		t.Errorf("Expected result='%v'. Instead, result='%v' ", expected, result)
 	}
 
 	if ia1.GetPrecision() != outPrecision {
@@ -1388,7 +1383,7 @@ func TestIntAry_AddFloatBigToThis_10(t *testing.T) {
 	result := ia1.GetNumStr()
 
 	if expected != result {
-		t.Errorf("Expected result='%v'. Instead, result='%v' ",expected, result)
+		t.Errorf("Expected result='%v'. Instead, result='%v' ", expected, result)
 	}
 
 	if ia1.GetPrecision() != outPrecision {
@@ -1674,17 +1669,17 @@ func TestIntAry_ChangeSign_01(t *testing.T) {
 	nStr := "-572"
 	expectedStr := "572"
 
-  ia, err := IntAry{}.NewNumStr(nStr)
+	ia, err := IntAry{}.NewNumStr(nStr)
 
-  if err != nil {
-  	t.Errorf("Error returned by IntAry{}.NewNumStr(nStr). " +
-  		"nStr='%v' Error='%v'", nStr, err.Error())
+	if err != nil {
+		t.Errorf("Error returned by IntAry{}.NewNumStr(nStr). "+
+			"nStr='%v' Error='%v'", nStr, err.Error())
 	}
 
-  ia.ChangeSign()
+	ia.ChangeSign()
 
-  if expectedStr != ia.GetNumStr() {
-  	t.Errorf("Error: Expected ia.GetNumStr='%v'. Instead, ia.GetNumStr='%v' ",
+	if expectedStr != ia.GetNumStr() {
+		t.Errorf("Error: Expected ia.GetNumStr='%v'. Instead, ia.GetNumStr='%v' ",
 			expectedStr, ia.GetNumStr())
 	}
 
@@ -1694,17 +1689,17 @@ func TestIntAry_ChangeSign_02(t *testing.T) {
 	nStr := "572"
 	expectedStr := "-572"
 
-  ia, err := IntAry{}.NewNumStr(nStr)
+	ia, err := IntAry{}.NewNumStr(nStr)
 
-  if err != nil {
-  	t.Errorf("Error returned by IntAry{}.NewNumStr(nStr). " +
-  		"nStr='%v' Error='%v'", nStr, err.Error())
+	if err != nil {
+		t.Errorf("Error returned by IntAry{}.NewNumStr(nStr). "+
+			"nStr='%v' Error='%v'", nStr, err.Error())
 	}
 
-  ia.ChangeSign()
+	ia.ChangeSign()
 
-  if expectedStr != ia.GetNumStr() {
-  	t.Errorf("Error: Expected ia.GetNumStr='%v'. Instead, ia.GetNumStr='%v' ",
+	if expectedStr != ia.GetNumStr() {
+		t.Errorf("Error: Expected ia.GetNumStr='%v'. Instead, ia.GetNumStr='%v' ",
 			expectedStr, ia.GetNumStr())
 	}
 
@@ -1714,17 +1709,17 @@ func TestIntAry_ChangeSign_03(t *testing.T) {
 	nStr := "0"
 	expectedStr := "0"
 
-  ia, err := IntAry{}.NewNumStr(nStr)
+	ia, err := IntAry{}.NewNumStr(nStr)
 
-  if err != nil {
-  	t.Errorf("Error returned by IntAry{}.NewNumStr(nStr). " +
-  		"nStr='%v' Error='%v'", nStr, err.Error())
+	if err != nil {
+		t.Errorf("Error returned by IntAry{}.NewNumStr(nStr). "+
+			"nStr='%v' Error='%v'", nStr, err.Error())
 	}
 
-  ia.ChangeSign()
+	ia.ChangeSign()
 
-  if expectedStr != ia.GetNumStr() {
-  	t.Errorf("Error: Expected ia.GetNumStr='%v'. Instead, ia.GetNumStr='%v' ",
+	if expectedStr != ia.GetNumStr() {
+		t.Errorf("Error: Expected ia.GetNumStr='%v'. Instead, ia.GetNumStr='%v' ",
 			expectedStr, ia.GetNumStr())
 	}
 
@@ -1734,17 +1729,17 @@ func TestIntAry_ChangeSign_04(t *testing.T) {
 	nStr := "-12.456"
 	expectedStr := "12.456"
 
-  ia, err := IntAry{}.NewNumStr(nStr)
+	ia, err := IntAry{}.NewNumStr(nStr)
 
-  if err != nil {
-  	t.Errorf("Error returned by IntAry{}.NewNumStr(nStr). " +
-  		"nStr='%v' Error='%v'", nStr, err.Error())
+	if err != nil {
+		t.Errorf("Error returned by IntAry{}.NewNumStr(nStr). "+
+			"nStr='%v' Error='%v'", nStr, err.Error())
 	}
 
-  ia.ChangeSign()
+	ia.ChangeSign()
 
-  if expectedStr != ia.GetNumStr() {
-  	t.Errorf("Error: Expected ia.GetNumStr='%v'. Instead, ia.GetNumStr='%v' ",
+	if expectedStr != ia.GetNumStr() {
+		t.Errorf("Error: Expected ia.GetNumStr='%v'. Instead, ia.GetNumStr='%v' ",
 			expectedStr, ia.GetNumStr())
 	}
 
@@ -1754,17 +1749,17 @@ func TestIntAry_ChangeSign_05(t *testing.T) {
 	nStr := "12.456"
 	expectedStr := "-12.456"
 
-  ia, err := IntAry{}.NewNumStr(nStr)
+	ia, err := IntAry{}.NewNumStr(nStr)
 
-  if err != nil {
-  	t.Errorf("Error returned by IntAry{}.NewNumStr(nStr). " +
-  		"nStr='%v' Error='%v'", nStr, err.Error())
+	if err != nil {
+		t.Errorf("Error returned by IntAry{}.NewNumStr(nStr). "+
+			"nStr='%v' Error='%v'", nStr, err.Error())
 	}
 
-  ia.ChangeSign()
+	ia.ChangeSign()
 
-  if expectedStr != ia.GetNumStr() {
-  	t.Errorf("Error: Expected ia.GetNumStr='%v'. Instead, ia.GetNumStr='%v' ",
+	if expectedStr != ia.GetNumStr() {
+		t.Errorf("Error: Expected ia.GetNumStr='%v'. Instead, ia.GetNumStr='%v' ",
 			expectedStr, ia.GetNumStr())
 	}
 

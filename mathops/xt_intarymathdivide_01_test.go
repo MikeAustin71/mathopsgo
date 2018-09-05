@@ -15,27 +15,27 @@ func TestIntAryMathDivide_Divide_01(t *testing.T) {
 	dividend, err := IntAry{}.NewNumStr(dividendStr)
 
 	if err != nil {
-		t.Errorf("Error returned by IntAry{}.NewNumStr(nStr1). " +
+		t.Errorf("Error returned by IntAry{}.NewNumStr(nStr1). "+
 			"dividendStr='%v' Error='%v' ", dividendStr, err.Error())
 	}
 
 	divisor, err := IntAry{}.NewNumStr(divisorStr)
 
 	if err != nil {
-		t.Errorf("Error returned by IntAry{}.NewNumStr(nStr2). " +
+		t.Errorf("Error returned by IntAry{}.NewNumStr(nStr2). "+
 			"divisorStr='%v' Error='%v' ", divisorStr, err.Error())
 	}
 
 	quotient, err := IntAryMathDivide{}.Divide(&dividend, &divisor, minPrecision, maxPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by IntAryMathDivide{}.Divide() " +
+		t.Errorf("Error returned by IntAryMathDivide{}.Divide() "+
 			"dividend='%v' divisor='%v' Error='%v'", dividend, divisor, err.Error())
 	}
 
 	if expectedStr != quotient.GetNumStr() {
 		t.Errorf("Error: Expected quotient='%v'. Instead, quotient='%v' ",
-			expectedStr, quotient.GetNumStr() )
+			expectedStr, quotient.GetNumStr())
 	}
 
 }
@@ -51,7 +51,7 @@ func TestIntAryMathDivide_DivideByTwo_01(t *testing.T) {
 	ia, err := IntAry{}.NewNumStr(nStr1)
 
 	if err != nil {
-		t.Errorf("Error returned by IntAry{}.NewNumStr(nStr1). " +
+		t.Errorf("Error returned by IntAry{}.NewNumStr(nStr1). "+
 			"nStr1='%v' Error='%v' ", nStr1, err.Error())
 	}
 

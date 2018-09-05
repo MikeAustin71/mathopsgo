@@ -4,7 +4,6 @@ import (
 	"testing"
 )
 
-
 func TestNumStrDto_CompareAbsoluteVals_01(t *testing.T) {
 	nStr1 := "-12567.218956"
 	nStr2 := "-9211.40"
@@ -372,7 +371,7 @@ func TestNumStrDto_CopyIn_02(t *testing.T) {
 		t.Errorf("Expected IsFractionalValue= 'true'. Instead, got %v", nDto.IsFractionalValue())
 	}
 
-	if precision!= nDto.GetPrecisionUint()  {
+	if precision != nDto.GetPrecisionUint() {
 		t.Errorf("Expected precision= '%v'. Instead, got %v", precision, nDto.GetPrecisionUint())
 
 	}
@@ -514,15 +513,15 @@ func TestNumStrDto_Divide_01(t *testing.T) {
 	n1Dto, err := NumStrDto{}.NewNumStr(nStr1)
 
 	if err != nil {
-		t.Errorf("Error returned from NumStrDto{}.NewNumStr(nStr1). " +
+		t.Errorf("Error returned from NumStrDto{}.NewNumStr(nStr1). "+
 			"nStr1='%v' Error= %v",
-			 nStr1, err.Error())
+			nStr1, err.Error())
 	}
 
 	n2Dto, err := NumStrDto{}.NewNumStr(nStr2)
 
 	if err != nil {
-		t.Errorf("Error returned from NumStrDto{}.NewNumStr(nStr2). " +
+		t.Errorf("Error returned from NumStrDto{}.NewNumStr(nStr2). "+
 			"nStr2='%v' Error= %v",
 			nStr2, err.Error())
 	}
@@ -530,7 +529,7 @@ func TestNumStrDto_Divide_01(t *testing.T) {
 	err = n1Dto.Divide(n2Dto, 1, 5)
 
 	if err != nil {
-		t.Errorf("Error returned from n1Dto.Divide(n2Dto, 1, 5). " +
+		t.Errorf("Error returned from n1Dto.Divide(n2Dto, 1, 5). "+
 			" Error= %v", err.Error())
 	}
 

@@ -26,7 +26,6 @@ func TestNumStrDto_IsNumStrDtoValid_01(t *testing.T) {
 			lenAbsAllNumRunes)
 	}
 
-
 }
 
 func TestNumStrDto_Multiply_01(t *testing.T) {

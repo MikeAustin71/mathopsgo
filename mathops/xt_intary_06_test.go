@@ -74,7 +74,6 @@ func TestIntAry_OptimizeIntArrayLen_09(t *testing.T) {
 
 }
 
-
 func TestIntAry_Pow_01(t *testing.T) {
 
 	nStr1 := "3"
@@ -209,7 +208,7 @@ func TestIntAry_Pow_05(t *testing.T) {
 	power := -3
 	eStr := "0.015625"
 	eSignVal := 1
-	maxPrecision:= 10
+	maxPrecision := 10
 	ePrecision := 6
 
 	ia := IntAry{}.New()
@@ -236,14 +235,13 @@ func TestIntAry_Pow_05(t *testing.T) {
 
 }
 
-
 func TestIntAry_Pow_06(t *testing.T) {
 
 	nStr1 := "92"
 	power := -8
 	eStr := "0.00000000000000019484864106545884795863650193677353127108077765624198799946139576907821793952688449765949765741908569104624237348062845911009040417592239998725345624987067642919240414862531015586495108191971721439283981366869555221526775365563032086453618016763974266053775613202784420219175865536764500972234932644532359373163382073933684236312884196"
 	eSignVal := 1
-	maxPrecision:= 350
+	maxPrecision := 350
 	ePrecision := 350
 
 	ia := IntAry{}.New()
@@ -269,7 +267,6 @@ func TestIntAry_Pow_06(t *testing.T) {
 	}
 
 }
-
 
 func TestIntAry_ResetFromBackUp_01(t *testing.T) {
 	nStr1 := "99.4564"
@@ -561,7 +558,7 @@ func TestIntAry_SetCurrencySymbol_01(t *testing.T) {
 
 	ia, _ := IntAry{}.NewNumStr("50.37")
 
-	var poundSym  rune
+	var poundSym rune
 
 	poundSym = '\U000000a3'
 
@@ -1208,7 +1205,7 @@ func TestIntAry_SetIntAryWithFloatBig_03(t *testing.T) {
 
 func TestIntAry_SetIntAryWithFloatBig_04(t *testing.T) {
 
-	num :=  big.NewFloat(float64(-475.8956))
+	num := big.NewFloat(float64(-475.8956))
 	expectedNumStr := "-475.8956"
 	precision := 4
 	signVal := -1
@@ -1261,7 +1258,6 @@ func TestIntAry_SetIntAryWithFloatBig_05(t *testing.T) {
 	}
 }
 
-
 func TestIntAry_SetIntAryWithFloatBig_06(t *testing.T) {
 	num := big.NewFloat(float64(4756625.8957))
 	expectedNumStr := "4756625.896"
@@ -1288,7 +1284,6 @@ func TestIntAry_SetIntAryWithFloatBig_06(t *testing.T) {
 		t.Errorf("Expected ia.GetSign()= '%v' .  Instead, ia.GetSign()= '%v' .", signVal, ia.GetSign())
 	}
 }
-
 
 func TestIntAry_SetIntAryWithBigInt_01(t *testing.T) {
 
@@ -1325,7 +1320,7 @@ func TestIntAry_SetIntAryWithBigInt_02(t *testing.T) {
 	num := big.NewInt(int64(-123456789))
 
 	eNumStr := "-123456.789"
-	ePrecision :=3
+	ePrecision := 3
 	eSignVal := -1
 
 	ia := IntAry{}.New()

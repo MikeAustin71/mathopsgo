@@ -4,7 +4,6 @@ import (
 	"testing"
 )
 
-
 func TestIntAry_SetSignificantDigitIdxs_01(t *testing.T) {
 	nStr := ".7770"
 	eAryLen := 5
@@ -496,7 +495,7 @@ func TestIntAry_ShiftPrecisionLeft_01(t *testing.T) {
 	ia1, err := IntAry{}.NewNumStr(nStr1)
 
 	if err != nil {
-		t.Errorf("Error returned by IntAry{}.NewNumStr(nStr1) " +
+		t.Errorf("Error returned by IntAry{}.NewNumStr(nStr1) "+
 			"nStr1='%v' Error='%v' ", nStr1, err.Error())
 	}
 
@@ -518,7 +517,7 @@ func TestIntAry_ShiftPrecisionLeft_02(t *testing.T) {
 	ia1, err := IntAry{}.NewNumStr(nStr1)
 
 	if err != nil {
-		t.Errorf("Error returned by IntAry{}.NewNumStr(nStr1) " +
+		t.Errorf("Error returned by IntAry{}.NewNumStr(nStr1) "+
 			"nStr1='%v' Error='%v' ", nStr1, err.Error())
 	}
 
@@ -540,7 +539,7 @@ func TestIntAry_ShiftPrecisionLeft_03(t *testing.T) {
 	ia1, err := IntAry{}.NewNumStr(nStr1)
 
 	if err != nil {
-		t.Errorf("Error returned by IntAry{}.NewNumStr(nStr1) " +
+		t.Errorf("Error returned by IntAry{}.NewNumStr(nStr1) "+
 			"nStr1='%v' Error='%v' ", nStr1, err.Error())
 	}
 
@@ -562,7 +561,7 @@ func TestIntAry_ShiftPrecisionLeft_04(t *testing.T) {
 	ia1, err := IntAry{}.NewNumStr(nStr1)
 
 	if err != nil {
-		t.Errorf("Error returned by IntAry{}.NewNumStr(nStr1) " +
+		t.Errorf("Error returned by IntAry{}.NewNumStr(nStr1) "+
 			"nStr1='%v' Error='%v' ", nStr1, err.Error())
 	}
 
@@ -584,7 +583,7 @@ func TestIntAry_ShiftPrecisionLeft_05(t *testing.T) {
 	ia1, err := IntAry{}.NewNumStr(nStr1)
 
 	if err != nil {
-		t.Errorf("Error returned by IntAry{}.NewNumStr(nStr1) " +
+		t.Errorf("Error returned by IntAry{}.NewNumStr(nStr1) "+
 			"nStr1='%v' Error='%v' ", nStr1, err.Error())
 	}
 
@@ -606,7 +605,7 @@ func TestIntAry_ShiftPrecisionLeft_06(t *testing.T) {
 	ia1, err := IntAry{}.NewNumStr(nStr1)
 
 	if err != nil {
-		t.Errorf("Error returned by IntAry{}.NewNumStr(nStr1) " +
+		t.Errorf("Error returned by IntAry{}.NewNumStr(nStr1) "+
 			"nStr1='%v' Error='%v' ", nStr1, err.Error())
 	}
 
@@ -628,7 +627,7 @@ func TestIntAry_ShiftPrecisionRight_01(t *testing.T) {
 	ia1, err := IntAry{}.NewNumStr(nStr1)
 
 	if err != nil {
-		t.Errorf("Error returned by IntAry{}.NewNumStr(nStr1) " +
+		t.Errorf("Error returned by IntAry{}.NewNumStr(nStr1) "+
 			"nStr1='%v' Error='%v' ", nStr1, err.Error())
 	}
 
@@ -650,7 +649,7 @@ func TestIntAry_ShiftPrecisionRight_02(t *testing.T) {
 	ia1, err := IntAry{}.NewNumStr(nStr1)
 
 	if err != nil {
-		t.Errorf("Error returned by IntAry{}.NewNumStr(nStr1) " +
+		t.Errorf("Error returned by IntAry{}.NewNumStr(nStr1) "+
 			"nStr1='%v' Error='%v' ", nStr1, err.Error())
 	}
 
@@ -672,7 +671,7 @@ func TestIntAry_ShiftPrecisionRight_03(t *testing.T) {
 	ia1, err := IntAry{}.NewNumStr(nStr1)
 
 	if err != nil {
-		t.Errorf("Error returned by IntAry{}.NewNumStr(nStr1) " +
+		t.Errorf("Error returned by IntAry{}.NewNumStr(nStr1) "+
 			"nStr1='%v' Error='%v' ", nStr1, err.Error())
 	}
 
@@ -694,7 +693,7 @@ func TestIntAry_ShiftPrecisionRight_04(t *testing.T) {
 	ia1, err := IntAry{}.NewNumStr(nStr1)
 
 	if err != nil {
-		t.Errorf("Error returned by IntAry{}.NewNumStr(nStr1) " +
+		t.Errorf("Error returned by IntAry{}.NewNumStr(nStr1) "+
 			"nStr1='%v' Error='%v' ", nStr1, err.Error())
 	}
 
@@ -716,7 +715,7 @@ func TestIntAry_ShiftPrecisionRight_05(t *testing.T) {
 	ia1, err := IntAry{}.NewNumStr(nStr1)
 
 	if err != nil {
-		t.Errorf("Error returned by IntAry{}.NewNumStr(nStr1) " +
+		t.Errorf("Error returned by IntAry{}.NewNumStr(nStr1) "+
 			"nStr1='%v' Error='%v' ", nStr1, err.Error())
 	}
 
@@ -738,7 +737,7 @@ func TestIntAry_ShiftPrecisionRight_06(t *testing.T) {
 	ia1, err := IntAry{}.NewNumStr(nStr1)
 
 	if err != nil {
-		t.Errorf("Error returned by IntAry{}.NewNumStr(nStr1) " +
+		t.Errorf("Error returned by IntAry{}.NewNumStr(nStr1) "+
 			"nStr1='%v' Error='%v' ", nStr1, err.Error())
 	}
 
@@ -760,7 +759,7 @@ func TestIntAry_ShiftPrecisionRight_07(t *testing.T) {
 	ia1, err := IntAry{}.NewNumStr(nStr1)
 
 	if err != nil {
-		t.Errorf("Error returned by IntAry{}.NewNumStr(nStr1) " +
+		t.Errorf("Error returned by IntAry{}.NewNumStr(nStr1) "+
 			"nStr1='%v' Error='%v' ", nStr1, err.Error())
 	}
 
@@ -782,7 +781,7 @@ func TestIntAry_ShiftPrecisionRight_08(t *testing.T) {
 	ia1, err := IntAry{}.NewNumStr(nStr1)
 
 	if err != nil {
-		t.Errorf("Error returned by IntAry{}.NewNumStr(nStr1) " +
+		t.Errorf("Error returned by IntAry{}.NewNumStr(nStr1) "+
 			"nStr1='%v' Error='%v' ", nStr1, err.Error())
 	}
 
@@ -1384,7 +1383,6 @@ func TestIntAry_SubtractFromThis_19(t *testing.T) {
 
 }
 
-
 func TestIntAry_SubtractMultipleFromThis_01(t *testing.T) {
 	nStrBase := "197.452"
 	nStr1 := "1.122"
@@ -1405,7 +1403,7 @@ func TestIntAry_SubtractMultipleFromThis_01(t *testing.T) {
 	ia2.SetIntAryWithNumStr(nStr2)
 	ia3.SetIntAryWithNumStr(nStr3)
 	ia4.SetIntAryWithNumStr(nStr4)
-	err := iaBase.SubtractMultipleFromThis( &ia1, &ia2, &ia3, &ia4)
+	err := iaBase.SubtractMultipleFromThis(&ia1, &ia2, &ia3, &ia4)
 
 	if err != nil {
 		t.Errorf("Error returned from iaBase.SubtractMultipleFromThis(true, ia...). Error= %v", err)
@@ -1445,7 +1443,7 @@ func TestIntAry_SubtractMultipleFromThis_02(t *testing.T) {
 	ia2.SetIntAryWithNumStr(nStr2)
 	ia3.SetIntAryWithNumStr(nStr3)
 	ia4.SetIntAryWithNumStr(nStr4)
-	err := iaBase.SubtractMultipleFromThis( &ia1, &ia2, &ia3, &ia4)
+	err := iaBase.SubtractMultipleFromThis(&ia1, &ia2, &ia3, &ia4)
 
 	if err != nil {
 		t.Errorf("Error returned from iaBase.SubtractMultipleFromThis(true, ia...). Error= %v", err)
@@ -1485,7 +1483,7 @@ func TestIntAry_SubtractMultipleFromThis_03(t *testing.T) {
 	ia2.SetIntAryWithNumStr(nStr2)
 	ia3.SetIntAryWithNumStr(nStr3)
 	ia4.SetIntAryWithNumStr(nStr4)
-	err := iaBase.SubtractMultipleFromThis( &ia1, &ia2, &ia3, &ia4)
+	err := iaBase.SubtractMultipleFromThis(&ia1, &ia2, &ia3, &ia4)
 
 	if err != nil {
 		t.Errorf("Error returned from iaBase.SubtractMultipleFromThis(true, ia...). Error= %v", err)

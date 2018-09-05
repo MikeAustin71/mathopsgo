@@ -10,19 +10,18 @@ type FactorialDto struct {
 	LowerLimit uint64
 }
 
-
 type NFactorial struct {
-	NumOfTrials	uint64
-	NFac 				FactorialDto
+	NumOfTrials uint64
+	NFac        FactorialDto
 }
 
-func (nFac NFactorial) GetFactorialArray(nFactorial int) []int{
+func (nFac NFactorial) GetFactorialArray(nFactorial int) []int {
 
 	limit := nFactorial
 
 	result := make([]int, limit)
 
-	for i:= 0; i < limit; i++ {
+	for i := 0; i < limit; i++ {
 
 		result[i] = nFactorial
 		nFactorial--
@@ -66,18 +65,18 @@ func (nFac NFactorial) CalcFactorialValueInt(nFactorial, lowerLimit int) (BigInt
 
 	if nFactorial < 0 {
 		return BigIntNum{}.NewZero(0),
-		 fmt.Errorf(ePrefix +
-		 	"Error: Input parameter 'nFactorial' is less than zero! " +
-		 	"'nFactorial' must be a positive integer. 'nFactorial'='%v' ",
-		 	nFactorial)
+			fmt.Errorf(ePrefix+
+				"Error: Input parameter 'nFactorial' is less than zero! "+
+				"'nFactorial' must be a positive integer. 'nFactorial'='%v' ",
+				nFactorial)
 	}
 
 	if lowerLimit < 0 {
 		return BigIntNum{}.NewZero(0),
-		 fmt.Errorf(ePrefix +
-		 	"Error: Input parameter 'lowerLimit' is less than zero! " +
-		 	"'lowerLimit' must be a positive integer. 'lowerLimit'='%v' ",
-			 lowerLimit)
+			fmt.Errorf(ePrefix+
+				"Error: Input parameter 'lowerLimit' is less than zero! "+
+				"'lowerLimit' must be a positive integer. 'lowerLimit'='%v' ",
+				lowerLimit)
 	}
 
 	nFacBigInt := big.NewInt(int64(nFactorial))
@@ -121,18 +120,18 @@ func (nFac NFactorial) CalcFactorialValueInt32(nFactorial, lowerLimit int32) (Bi
 
 	if nFactorial < 0 {
 		return BigIntNum{}.NewZero(0),
-		 fmt.Errorf(ePrefix +
-		 	"Error: Input parameter 'nFactorial' is less than zero! " +
-		 	"'nFactorial' must be a positive integer. 'nFactorial'='%v' ",
-		 	nFactorial)
+			fmt.Errorf(ePrefix+
+				"Error: Input parameter 'nFactorial' is less than zero! "+
+				"'nFactorial' must be a positive integer. 'nFactorial'='%v' ",
+				nFactorial)
 	}
 
 	if lowerLimit < 0 {
 		return BigIntNum{}.NewZero(0),
-		 fmt.Errorf(ePrefix +
-		 	"Error: Input parameter 'lowerLimit' is less than zero! " +
-		 	"'lowerLimit' must be a positive integer. 'lowerLimit'='%v' ",
-			 lowerLimit)
+			fmt.Errorf(ePrefix+
+				"Error: Input parameter 'lowerLimit' is less than zero! "+
+				"'lowerLimit' must be a positive integer. 'lowerLimit'='%v' ",
+				lowerLimit)
 	}
 
 	nFacBigInt := big.NewInt(int64(nFactorial))
@@ -176,18 +175,18 @@ func (nFac NFactorial) CalcFactorialValueInt64(nFactorial, lowerLimit int64) (Bi
 
 	if nFactorial < 0 {
 		return BigIntNum{}.NewZero(0),
-		 fmt.Errorf(ePrefix +
-		 	"Error: Input parameter 'nFactorial' is less than zero! " +
-		 	"'nFactorial' must be a positive integer. 'nFactorial'='%v' ",
-		 	nFactorial)
+			fmt.Errorf(ePrefix+
+				"Error: Input parameter 'nFactorial' is less than zero! "+
+				"'nFactorial' must be a positive integer. 'nFactorial'='%v' ",
+				nFactorial)
 	}
 
 	if lowerLimit < 0 {
 		return BigIntNum{}.NewZero(0),
-		 fmt.Errorf(ePrefix +
-		 	"Error: Input parameter 'lowerLimit' is less than zero! " +
-		 	"'lowerLimit' must be a positive integer. 'lowerLimit'='%v' ",
-			 lowerLimit)
+			fmt.Errorf(ePrefix+
+				"Error: Input parameter 'lowerLimit' is less than zero! "+
+				"'lowerLimit' must be a positive integer. 'lowerLimit'='%v' ",
+				lowerLimit)
 	}
 
 	nFacBigInt := big.NewInt(nFactorial)
@@ -231,7 +230,7 @@ func (nFac NFactorial) CalcNFactorialValue(nFactorial FactorialDto) (BigIntNum, 
 
 	if nFactorial.LowerLimit > nFactorial.UpperLimit {
 		return BigIntNum{}.NewZero(0),
-		 fmt.Errorf(ePrefix + "Error: 'nFactorial' Upper Limit is LESS THAN Lower Limit!")
+			fmt.Errorf(ePrefix + "Error: 'nFactorial' Upper Limit is LESS THAN Lower Limit!")
 	}
 
 	if nFactorial.LowerLimit < 1 {
@@ -246,7 +245,6 @@ func (nFac NFactorial) CalcNFactorialValue(nFactorial FactorialDto) (BigIntNum, 
 		return BigIntNum{}.NewOne(0), nil
 	}
 
-
 	nFacUpperLimit := big.NewInt(0).SetUint64(nFactorial.UpperLimit)
 
 	nFacLowerLimit := big.NewInt(0).SetUint64(nFactorial.LowerLimit)
@@ -255,8 +253,8 @@ func (nFac NFactorial) CalcNFactorialValue(nFactorial FactorialDto) (BigIntNum, 
 
 	if err != nil {
 		return BigIntNum{}.NewZero(0),
-		fmt.Errorf(ePrefix + "Error returned by nFac.CalcFactorialValueBigInt(nFacUpperLimit, nFacLowerLimit) " +
-			"Error='%v'\n", err.Error())
+			fmt.Errorf(ePrefix+"Error returned by nFac.CalcFactorialValueBigInt(nFacUpperLimit, nFacLowerLimit) "+
+				"Error='%v'\n", err.Error())
 	}
 
 	return result, nil
@@ -311,7 +309,7 @@ func (nFac NFactorial) CalcNFactorialValue(nFactorial FactorialDto) (BigIntNum, 
 //														7x6x5x4x3x2 = 5040
 //
 func (nFac NFactorial) CalcFactorialValueBigIntNum(
-																nFacUpperLimit, nFacLowerLimit BigIntNum ) (BigIntNum, error) {
+	nFacUpperLimit, nFacLowerLimit BigIntNum) (BigIntNum, error) {
 
 	return nFac.CalcFactorialValueBigInt(nFacUpperLimit.bigInt, nFacLowerLimit.bigInt)
 }
@@ -424,7 +422,6 @@ func (nFac NFactorial) CalcFactorialValueUint32(nFactorial, lowerLimit uint32) (
 	return nFac.CalcFactorialValueBigInt(nFacBigInt, lowerLimitBigInt)
 }
 
-
 // CalcFactorialValueUint64 - Computes the value of n factorial as expressed by the
 // upper and lower limits of the input parameters, 'nFacUpperLimit' and 'nFacLowerLimit'.
 // Both input parameters are passed to this method as type, uint64
@@ -479,7 +476,6 @@ func (nFac NFactorial) CalcFactorialValueUint64(nFactorial, lowerLimit uint64) (
 	return nFac.CalcFactorialValueBigInt(nFacBigInt, lowerLimitBigInt)
 }
 
-
 // CalcFactorialValueBigInt - Calculates the value of n factorial using an upper and lower limit.
 // Both the upper limit, 'nFacUpperLimit', and the lower limit, 'nFacLowerLimit', are passed as
 // *big.Int types.
@@ -526,7 +522,7 @@ func (nFac NFactorial) CalcFactorialValueUint64(nFactorial, lowerLimit uint64) (
 //														7x6x5x4x3x2 = 5040
 //
 func (nFac NFactorial) CalcFactorialValueBigInt(
-												nFacUpperLimit, nFacLowerLimit *big.Int) (result BigIntNum, err error) {
+	nFacUpperLimit, nFacLowerLimit *big.Int) (result BigIntNum, err error) {
 
 	ePrefix := "NFactorial.CalcFactorialValueBigInt() "
 
@@ -536,8 +532,8 @@ func (nFac NFactorial) CalcFactorialValueBigInt(
 	cmpResult := nFacLowerLimit.Cmp(big.NewInt(0))
 
 	// lower limit Must be at least '1'
-	if  cmpResult == -1 {
-		err = fmt.Errorf(ePrefix +
+	if cmpResult == -1 {
+		err = fmt.Errorf(ePrefix+
 			"Error: Lower Limit is less than '0'. nFacLowerLimit='%v'", nFacLowerLimit.Text(10))
 		return result, err
 	}
@@ -546,12 +542,11 @@ func (nFac NFactorial) CalcFactorialValueBigInt(
 		nFacLowerLimit = big.NewInt(1)
 	}
 
-
 	cmpResult = nFacUpperLimit.Cmp(nFacLowerLimit)
 
 	if cmpResult == -1 {
-		err = fmt.Errorf(ePrefix +
-			"Error: 'nFacUpperLimit' is less than 'nFacLowerLimit'. " +
+		err = fmt.Errorf(ePrefix+
+			"Error: 'nFacUpperLimit' is less than 'nFacLowerLimit'. "+
 			"nFacUpperLimit='%v' nFacLowerLimit='%v'", nFacUpperLimit.Text(10), nFacLowerLimit.Text(10))
 		return result, err
 	}

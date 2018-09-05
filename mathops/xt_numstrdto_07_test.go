@@ -13,7 +13,6 @@ func TestNumStrDto_ScaleNumStr_01(t *testing.T) {
 	fracStr := "456789"
 	signVal := 1
 
-
 	nsDto, err := NumStrDto{}.NewPtr().ScaleNumStr(nStr, scale, scaleMode)
 
 	if err != nil {
@@ -26,7 +25,7 @@ func TestNumStrDto_ScaleNumStr_01(t *testing.T) {
 
 	if ePrecision != nsDto.GetPrecisionUint() {
 		t.Errorf("Expected precision='%v'. Instead, got %v.",
-				ePrecision, nsDto.GetPrecisionUint())
+			ePrecision, nsDto.GetPrecisionUint())
 	}
 
 	if signVal != nsDto.GetSign() {
@@ -77,7 +76,7 @@ func TestNumStrDto_ScaleNumStr_02(t *testing.T) {
 
 	if precision != nsDto.GetPrecisionUint() {
 		t.Errorf("Expected precision='%v'. Instead, got %v.",
-				precision, nsDto.GetPrecisionUint())
+			precision, nsDto.GetPrecisionUint())
 	}
 
 	if signVal != nsDto.GetSign() {
@@ -128,7 +127,7 @@ func TestNumStrDto_ScaleNumStr_03(t *testing.T) {
 
 	if precision != nsDto.GetPrecisionUint() {
 		t.Errorf("Expected precision='%v'. Instead, got %v.",
-				precision, nsDto.GetPrecisionUint())
+			precision, nsDto.GetPrecisionUint())
 	}
 
 	if signVal != nsDto.GetSign() {
@@ -179,7 +178,7 @@ func TestNumStrDto_ScaleNumStr_04(t *testing.T) {
 
 	if precision != nsDto.GetPrecisionUint() {
 		t.Errorf("Expected precision='%v'. Instead, got %v.",
-				precision, nsDto.GetPrecisionUint())
+			precision, nsDto.GetPrecisionUint())
 	}
 
 	if signVal != nsDto.GetSign() {
@@ -226,17 +225,17 @@ func TestNumStrDto_ScaleNumStr_05(t *testing.T) {
 
 	if nsDto.GetNumStr() != expected {
 		t.Errorf("Expected NumStrOut='%v'. Instead, got %v.",
-				expected, nsDto.GetNumStr())
+			expected, nsDto.GetNumStr())
 	}
 
 	if precision != nsDto.GetPrecisionUint() {
 		t.Errorf("Expected precision='%v'. Instead, got %v.",
-				precision, nsDto.GetPrecisionUint())
+			precision, nsDto.GetPrecisionUint())
 	}
 
 	if signVal != nsDto.GetSign() {
 		t.Errorf("Expected signVal='%v'. Instead, got %v.",
-				signVal, nsDto.GetSign())
+			signVal, nsDto.GetSign())
 	}
 
 	err = nsDto.IsValid("Test 'nsDto' is INVALID! ")
@@ -247,7 +246,7 @@ func TestNumStrDto_ScaleNumStr_05(t *testing.T) {
 
 	if !nsDto.HasNumericDigits() {
 		t.Errorf("Expected HasNumericDigits='true'. Instead, got %v.",
-				nsDto.HasNumericDigits())
+			nsDto.HasNumericDigits())
 	}
 
 	s := string(nsDto.GetAbsIntRunes())
@@ -280,17 +279,17 @@ func TestNumStrDto_ScaleNumStr_06(t *testing.T) {
 
 	if nsDto.GetNumStr() != expected {
 		t.Errorf("Expected NumStrOut='%v'. Instead, got %v.",
-				expected, nsDto.GetNumStr())
+			expected, nsDto.GetNumStr())
 	}
 
 	if precision != nsDto.GetPrecisionUint() {
 		t.Errorf("Expected precision='%v'. Instead, got %v.",
-				precision, nsDto.GetPrecisionUint())
+			precision, nsDto.GetPrecisionUint())
 	}
 
 	if signVal != nsDto.GetSign() {
 		t.Errorf("Expected signVal='%v'. Instead, got %v.",
-				signVal, nsDto.GetSign())
+			signVal, nsDto.GetSign())
 	}
 
 	err = nsDto.IsValid("Test 'nsDto' is INVALID! ")
@@ -301,7 +300,7 @@ func TestNumStrDto_ScaleNumStr_06(t *testing.T) {
 
 	if !nsDto.HasNumericDigits() {
 		t.Errorf("Expected HasNumericDigits='true'. Instead, got %v.",
-				nsDto.HasNumericDigits())
+			nsDto.HasNumericDigits())
 	}
 
 	s := string(nsDto.GetAbsIntRunes())

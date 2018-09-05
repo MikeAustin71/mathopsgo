@@ -32,16 +32,16 @@ import (
 
 */
 type BigIntNum struct {
-	bigInt      						*big.Int
-	absBigInt   						*big.Int
-	precision   						uint        // Number of digits to the right of the decimal place.
-	scaleFactor 						*big.Int 		// Scale Factor =  10^(precision)
-	numberOfExpectedDigits	*big.Int		// Number of digits in the 'absBigInt' value
-	sign        						int      		// Valid values are -1 or +1. Indicates the sign of the
-																			// 		the 'bigInt' integer.
-	decimalSeparator 				rune				// Character used to separate integer and fractional digits ('.')
-	thousandsSeparator 			rune 				// Character used to separate thousands (1,000,000,000
-	currencySymbol 					rune				// Currency Symbol
+	bigInt                 *big.Int
+	absBigInt              *big.Int
+	precision              uint     // Number of digits to the right of the decimal place.
+	scaleFactor            *big.Int // Scale Factor =  10^(precision)
+	numberOfExpectedDigits *big.Int // Number of digits in the 'absBigInt' value
+	sign                   int      // Valid values are -1 or +1. Indicates the sign of the
+	// 		the 'bigInt' integer.
+	decimalSeparator   rune // Character used to separate integer and fractional digits ('.')
+	thousandsSeparator rune // Character used to separate thousands (1,000,000,000
+	currencySymbol     rune // Currency Symbol
 }
 
 // Ceiling - Ceiling: The least, or lowest value integer, which is greater than
@@ -76,7 +76,7 @@ func (bNum *BigIntNum) Ceiling() BigIntNum {
 	scaleVal := big.NewInt(0).Exp(big.NewInt(10),
 		big.NewInt(int64(bNum.precision)), nil)
 
-	absQuotient:= big.NewInt(0).Quo(bNum.absBigInt, scaleVal)
+	absQuotient := big.NewInt(0).Quo(bNum.absBigInt, scaleVal)
 
 	// absQuotient IS NOT EQUAL TO bNum.absBigInt
 
@@ -139,15 +139,15 @@ func (bNum *BigIntNum) Cmp(bigIntNum BigIntNum) int {
 	b1Sign := bNum.GetSign()
 	b2Sign := bigIntNum.GetSign()
 
-	if b1Sign != b2Sign{
+	if b1Sign != b2Sign {
 		return b1Sign
 	}
 
 	// The signs must be equal
 
 	difference := BigIntMathSubtract{}.SubtractBigIntNums(
-									bNum.CopyOut(),
-										bigIntNum)
+		bNum.CopyOut(),
+		bigIntNum)
 
 	if difference.IsZero() {
 		return 0
@@ -238,8 +238,8 @@ func (bNum *BigIntNum) Decrement() {
 // thousands separator and currency symbol) copied from the current BigIntNum instance (bNum).
 //
 func (bNum *BigIntNum) Divide(
-				divisor BigIntNum,
-						maxPrecision uint) (fracQuotient BigIntNum, err error) {
+	divisor BigIntNum,
+	maxPrecision uint) (fracQuotient BigIntNum, err error) {
 
 	ePrefix := "BigIntNum.Divide() "
 
@@ -249,7 +249,6 @@ func (bNum *BigIntNum) Divide(
 
 	return BigIntMathDivide{}.BigIntNumFracQuotient(bNum.CopyOut(), divisor, maxPrecision)
 }
-
 
 // DivideByFive - Divides the numerical value of the current BigIntNum by five ('5'). The
 // result of this division operation is the 'fracQuotient' which is returned as a BigIntNum
@@ -281,8 +280,8 @@ func (bNum *BigIntNum) DivideByFive(
 
 	if errx != nil {
 		fracQuotient = BigIntNum{}.New()
-		err = fmt.Errorf(ePrefix + "Error returned by " +
-			"BigIntMathDivide{}.BigIntNumDivideByFiveFracQuo(bNum.CopyOut(), maxPrecision) " +
+		err = fmt.Errorf(ePrefix+"Error returned by "+
+			"BigIntMathDivide{}.BigIntNumDivideByFiveFracQuo(bNum.CopyOut(), maxPrecision) "+
 			"bNum='%v' Error='%v' \n",
 			bNum.GetNumStr(), errx.Error())
 
@@ -313,7 +312,7 @@ func (bNum *BigIntNum) DivideByFive(
 // thousands separator and currency symbol) copied from the current BigIntNum instance (bNum).
 //
 func (bNum *BigIntNum) DivideByTen(
-												maxPrecision uint) (fracQuotient BigIntNum, err error) {
+	maxPrecision uint) (fracQuotient BigIntNum, err error) {
 
 	ePrefix := "BigIntNum.DivideByTen() "
 
@@ -324,8 +323,8 @@ func (bNum *BigIntNum) DivideByTen(
 
 	if errx != nil {
 		fracQuotient = BigIntNum{}.New()
-		err = fmt.Errorf(ePrefix + "Error returned by " +
-			"BigIntMathDivide{}.BigIntNumDivideByTenFracQuo(bNum.CopyOut(), maxPrecision) " +
+		err = fmt.Errorf(ePrefix+"Error returned by "+
+			"BigIntMathDivide{}.BigIntNumDivideByTenFracQuo(bNum.CopyOut(), maxPrecision) "+
 			"bNum='%v' Error='%v' \n",
 			bNum.GetNumStr(), errx.Error())
 
@@ -377,7 +376,7 @@ func (bNum *BigIntNum) DivideByTenToPower(exponent uint) {
 // thousands separator and currency symbol) copied from the current BigIntNum instance (bNum).
 //
 func (bNum *BigIntNum) DivideByThree(
-												maxPrecision uint) (fracQuotient BigIntNum, err error) {
+	maxPrecision uint) (fracQuotient BigIntNum, err error) {
 
 	ePrefix := "BigIntNum.DivideByThree() "
 
@@ -388,8 +387,8 @@ func (bNum *BigIntNum) DivideByThree(
 
 	if errx != nil {
 		fracQuotient = BigIntNum{}.New()
-		err = fmt.Errorf(ePrefix + "Error returned by " +
-			"BigIntMathDivide{}.BigIntNumDivideByThreeFracQuo(bNum.CopyOut(), maxPrecision) " +
+		err = fmt.Errorf(ePrefix+"Error returned by "+
+			"BigIntMathDivide{}.BigIntNumDivideByThreeFracQuo(bNum.CopyOut(), maxPrecision) "+
 			"bNum='%v' Error='%v' \n",
 			bNum.GetNumStr(), errx.Error())
 
@@ -421,7 +420,7 @@ func (bNum *BigIntNum) DivideByThree(
 // precision values.
 //
 func (bNum *BigIntNum) DivideByTwo(
-												maxPrecision uint) (fracQuotient BigIntNum, err error) {
+	maxPrecision uint) (fracQuotient BigIntNum, err error) {
 
 	ePrefix := "BigIntNum.DivideByTwo() "
 
@@ -432,8 +431,8 @@ func (bNum *BigIntNum) DivideByTwo(
 
 	if errx != nil {
 		fracQuotient = BigIntNum{}.New()
-		err = fmt.Errorf(ePrefix + "Error returned by " +
-			"BigIntMathDivide{}.BigIntNumDivideByTwoFracQuo(bNum.CopyOut(), maxPrecision) " +
+		err = fmt.Errorf(ePrefix+"Error returned by "+
+			"BigIntMathDivide{}.BigIntNumDivideByTwoFracQuo(bNum.CopyOut(), maxPrecision) "+
 			"bNum='%v' Error='%v' \n",
 			bNum.GetNumStr(), errx.Error())
 
@@ -464,19 +463,19 @@ func (bNum *BigIntNum) DivideByTwo(
 // current BigIntNum instance (bNum).
 //
 func (bNum *BigIntNum) DivideByTwoQuoMod(
-												maxPrecision uint) (intQuotient,	modulo BigIntNum, err error) {
+	maxPrecision uint) (intQuotient, modulo BigIntNum, err error) {
 
 	ePrefix := "BigIntNum) DivideByTwoQuoMod() "
 	var errx error
 
 	intQuotient, modulo, errx =
-			BigIntMathDivide{}.BigIntNumDivideByTwoQuoMod(bNum.CopyOut(), maxPrecision)
+		BigIntMathDivide{}.BigIntNumDivideByTwoQuoMod(bNum.CopyOut(), maxPrecision)
 
 	if errx != nil {
 		intQuotient = BigIntNum{}.New()
 		modulo = BigIntNum{}.New()
-		err = fmt.Errorf(ePrefix + "Error returned by BigIntMathDivide{}." + 
-			"BigIntNumDivideByTwoQuoMod(bNum.CopyOut(), maxPrecision). " +
+		err = fmt.Errorf(ePrefix+"Error returned by BigIntMathDivide{}."+
+			"BigIntNumDivideByTwoQuoMod(bNum.CopyOut(), maxPrecision). "+
 			"bNum='%v' Error='%v'\n",
 			bNum.GetNumStr(), errx.Error())
 
@@ -546,8 +545,8 @@ func (bNum *BigIntNum) Equal(b2 BigIntNum) bool {
 func (bNum *BigIntNum) EqualValue(b2 BigIntNum) bool {
 
 	difference := BigIntMathSubtract{}.SubtractBigIntNums(
-									bNum.CopyOut(),
-											b2)
+		bNum.CopyOut(),
+		b2)
 
 	if difference.IsZero() {
 		return true
@@ -555,7 +554,6 @@ func (bNum *BigIntNum) EqualValue(b2 BigIntNum) bool {
 
 	return false
 }
-
 
 // ExtendPrecision - Extends the current precision.
 //
@@ -588,7 +586,7 @@ func (bNum *BigIntNum) ExtendPrecision(deltaPrecision uint) {
 	}
 
 	base10 := big.NewInt(10)
-	scaleVal := big.NewInt(0).Exp(base10,big.NewInt(int64(deltaPrecision)), nil)
+	scaleVal := big.NewInt(0).Exp(base10, big.NewInt(int64(deltaPrecision)), nil)
 	bigINum := big.NewInt(0).Set(bNum.bigInt)
 
 	bigINum = big.NewInt(0).Mul(bigINum, scaleVal)
@@ -639,7 +637,7 @@ func (bNum *BigIntNum) Floor() BigIntNum {
 	absQuotient = big.NewInt(0).Add(absQuotient, big.NewInt(1))
 
 	return BigIntNum{}.NewBigInt(
-											big.NewInt(0).Neg(absQuotient),0)
+		big.NewInt(0).Neg(absQuotient), 0)
 }
 
 // FormatCurrencyStr - Formats the current BigIntNum numeric value as a currency string.
@@ -713,7 +711,7 @@ func (bNum *BigIntNum) FormatCurrencyStr(negValMode NegativeValueFmtMode) string
 				cnt--
 			}
 
-			for h := 0; h < cnt ; h++ {
+			for h := 0; h < cnt; h++ {
 				outRunes = append(outRunes, '0')
 			}
 
@@ -732,11 +730,10 @@ func (bNum *BigIntNum) FormatCurrencyStr(negValMode NegativeValueFmtMode) string
 		thouCnt = 0
 	}
 
-
 	for scratchNum.Cmp(baseZero) == 1 {
 
-		if startIdx==0 &&
-			bNum.sign == -1  &&
+		if startIdx == 0 &&
+			bNum.sign == -1 &&
 			negValMode == PARENTHESESNEGVALFMTMODE {
 
 			outRunes = append(outRunes, ')')
@@ -744,7 +741,7 @@ func (bNum *BigIntNum) FormatCurrencyStr(negValMode NegativeValueFmtMode) string
 
 		modX := big.NewInt(0)
 		scratchNum, modulo = big.NewInt(0).QuoRem(scratchNum, baseTen, modX)
-		outRunes = append(outRunes, rune(modulo.Int64() + int64(48)))
+		outRunes = append(outRunes, rune(modulo.Int64()+int64(48)))
 		digitCnt++
 		startIdx++
 
@@ -753,7 +750,7 @@ func (bNum *BigIntNum) FormatCurrencyStr(negValMode NegativeValueFmtMode) string
 		}
 
 		if scratchNum.Cmp(baseZero) == 1 &&
-			thouCnt==3 {
+			thouCnt == 3 {
 
 			outRunes = append(outRunes, bNum.thousandsSeparator)
 			startIdx++
@@ -779,13 +776,13 @@ func (bNum *BigIntNum) FormatCurrencyStr(negValMode NegativeValueFmtMode) string
 			delta--
 		}
 
-		for k:=0; k < delta; k++ {
+		for k := 0; k < delta; k++ {
 			outRunes = append(outRunes, '0')
 			startIdx++
 
 			if bNum.precision > 0 &&
 				int(bNum.precision) == startIdx &&
-				 negValMode != ABSOLUTEPURENUMSTRFMTMODE {
+				negValMode != ABSOLUTEPURENUMSTRFMTMODE {
 
 				outRunes = append(outRunes, bNum.decimalSeparator)
 				startIdx++
@@ -800,7 +797,6 @@ func (bNum *BigIntNum) FormatCurrencyStr(negValMode NegativeValueFmtMode) string
 	outRunes = append(outRunes, bNum.currencySymbol)
 	startIdx++
 
-
 	// adjust for negative sign value
 	if bNum.sign == -1 {
 
@@ -808,10 +804,10 @@ func (bNum *BigIntNum) FormatCurrencyStr(negValMode NegativeValueFmtMode) string
 			outRunes = append(outRunes, '-')
 			startIdx++
 
-		}	else if negValMode == PARENTHESESNEGVALFMTMODE {
+		} else if negValMode == PARENTHESESNEGVALFMTMODE {
 
 			outRunes = append(outRunes, '(')
-			startIdx+=2
+			startIdx += 2
 		}
 
 		// Must be negValMode == ABSOLUTEPURENUMSTRFMTMODE
@@ -822,7 +818,7 @@ func (bNum *BigIntNum) FormatCurrencyStr(negValMode NegativeValueFmtMode) string
 	tRune := rune(0)
 	yCnt := 0
 
-	for i:= startIdx; i > sortLimit ; i-- {
+	for i := startIdx; i > sortLimit; i-- {
 		tRune = outRunes[yCnt]
 		outRunes[yCnt] = outRunes[i]
 		outRunes[i] = tRune
@@ -906,8 +902,8 @@ func (bNum *BigIntNum) FormatNumStr(negValMode NegativeValueFmtMode) string {
 
 	for scratchNum.Cmp(baseZero) == 1 {
 
-		if startIdx==0 &&
-			bNum.sign == -1  &&
+		if startIdx == 0 &&
+			bNum.sign == -1 &&
 			negValMode == PARENTHESESNEGVALFMTMODE {
 
 			outRunes = append(outRunes, ')')
@@ -915,13 +911,13 @@ func (bNum *BigIntNum) FormatNumStr(negValMode NegativeValueFmtMode) string {
 
 		modX := big.NewInt(0)
 		scratchNum, modulo = big.NewInt(0).QuoRem(scratchNum, baseTen, modX)
-		outRunes = append(outRunes, rune(modulo.Int64() + int64(48)))
+		outRunes = append(outRunes, rune(modulo.Int64()+int64(48)))
 		digitCnt++
 		startIdx++
 
 		if bNum.precision > 0 &&
 			int(bNum.precision) == startIdx &&
-			 negValMode != ABSOLUTEPURENUMSTRFMTMODE {
+			negValMode != ABSOLUTEPURENUMSTRFMTMODE {
 
 			outRunes = append(outRunes, bNum.decimalSeparator)
 			startIdx++
@@ -937,13 +933,13 @@ func (bNum *BigIntNum) FormatNumStr(negValMode NegativeValueFmtMode) string {
 			delta--
 		}
 
-		for k:=0; k < delta; k++ {
+		for k := 0; k < delta; k++ {
 			outRunes = append(outRunes, '0')
 			startIdx++
 
 			if bNum.precision > 0 &&
-				int(bNum.precision) == startIdx  &&
-				 negValMode != ABSOLUTEPURENUMSTRFMTMODE {
+				int(bNum.precision) == startIdx &&
+				negValMode != ABSOLUTEPURENUMSTRFMTMODE {
 
 				outRunes = append(outRunes, bNum.decimalSeparator)
 				startIdx++
@@ -960,14 +956,14 @@ func (bNum *BigIntNum) FormatNumStr(negValMode NegativeValueFmtMode) string {
 			outRunes = append(outRunes, '-')
 			startIdx++
 
-		}	else if negValMode == PARENTHESESNEGVALFMTMODE{
+		} else if negValMode == PARENTHESESNEGVALFMTMODE {
 			outRunes = append(outRunes, '(')
-			startIdx+=2
+			startIdx += 2
 		}
 
 		/*
-			MUST BE negValMode == ABSOLUTEPURENUMSTRFMTMODE
-		  Do NOT Display Sign Character
+				MUST BE negValMode == ABSOLUTEPURENUMSTRFMTMODE
+			  Do NOT Display Sign Character
 
 		*/
 	}
@@ -976,7 +972,7 @@ func (bNum *BigIntNum) FormatNumStr(negValMode NegativeValueFmtMode) string {
 	tRune := rune(0)
 	yCnt := 0
 
-	for i:= startIdx; i > sortLimit ; i-- {
+	for i := startIdx; i > sortLimit; i-- {
 		tRune = outRunes[yCnt]
 		outRunes[yCnt] = outRunes[i]
 		outRunes[i] = tRune
@@ -1076,11 +1072,10 @@ func (bNum *BigIntNum) FormatThousandsStr(negValMode NegativeValueFmtMode) strin
 		thouCnt = 0
 	}
 
-
 	for scratchNum.Cmp(baseZero) == 1 {
 
-		if startIdx==0 &&
-			bNum.sign == -1  &&
+		if startIdx == 0 &&
+			bNum.sign == -1 &&
 			negValMode == PARENTHESESNEGVALFMTMODE {
 
 			outRunes = append(outRunes, ')')
@@ -1088,7 +1083,7 @@ func (bNum *BigIntNum) FormatThousandsStr(negValMode NegativeValueFmtMode) strin
 
 		modX := big.NewInt(0)
 		scratchNum, modulo = big.NewInt(0).QuoRem(scratchNum, baseTen, modX)
-		outRunes = append(outRunes, rune(modulo.Int64() + int64(48)))
+		outRunes = append(outRunes, rune(modulo.Int64()+int64(48)))
 		digitCnt++
 		startIdx++
 
@@ -1097,7 +1092,7 @@ func (bNum *BigIntNum) FormatThousandsStr(negValMode NegativeValueFmtMode) strin
 		}
 
 		if scratchNum.Cmp(baseZero) == 1 &&
-			thouCnt==3 {
+			thouCnt == 3 {
 
 			outRunes = append(outRunes, bNum.thousandsSeparator)
 			startIdx++
@@ -1123,7 +1118,7 @@ func (bNum *BigIntNum) FormatThousandsStr(negValMode NegativeValueFmtMode) strin
 			delta--
 		}
 
-		for k:=0; k < delta; k++ {
+		for k := 0; k < delta; k++ {
 			outRunes = append(outRunes, '0')
 			startIdx++
 
@@ -1146,10 +1141,10 @@ func (bNum *BigIntNum) FormatThousandsStr(negValMode NegativeValueFmtMode) strin
 			outRunes = append(outRunes, '-')
 			startIdx++
 
-		}	else if negValMode == PARENTHESESNEGVALFMTMODE {
+		} else if negValMode == PARENTHESESNEGVALFMTMODE {
 
 			outRunes = append(outRunes, '(')
-			startIdx+=2
+			startIdx += 2
 		}
 
 		// Must Be negValMode == ABSOLUTEPURENUMSTRFMTMODE
@@ -1160,7 +1155,7 @@ func (bNum *BigIntNum) FormatThousandsStr(negValMode NegativeValueFmtMode) strin
 	tRune := rune(0)
 	yCnt := 0
 
-	for i:= startIdx; i > sortLimit ; i-- {
+	for i := startIdx; i > sortLimit; i-- {
 		tRune = outRunes[yCnt]
 		outRunes[yCnt] = outRunes[i]
 		outRunes[i] = tRune
@@ -1203,7 +1198,7 @@ func (bNum *BigIntNum) GetActualNumberOfDigits() (
 
 	if errx != nil {
 		ePrefix := "BigIntNum.GetActualNumberOfDigits() "
-		err = fmt.Errorf(ePrefix + "Error returned by BigIntMath{}.GetMagnitudeDigits(bNum.absBigInt) " +
+		err = fmt.Errorf(ePrefix+"Error returned by BigIntMath{}.GetMagnitudeDigits(bNum.absBigInt) "+
 			"bNum.absBigInt='%v' Error='%v' ", bNum.absBigInt.Text(10), err.Error())
 		return numberOfDigits, isZeroValue, err
 	}
@@ -1252,7 +1247,7 @@ func (bNum *BigIntNum) GetAbsoluteBigIntNumValue() BigIntNum {
 // GetAbsoluteBigIntValue - returns the absolute value of the
 // *big.Int value encapsulated by the current BigIntNum.
 func (bNum *BigIntNum) GetAbsoluteBigIntValue() *big.Int {
-	
+
 	return big.NewInt(0).Set(bNum.absBigInt)
 }
 
@@ -1265,7 +1260,7 @@ func (bNum *BigIntNum) GetBigFloat() *big.Float {
 
 	denominator := big.NewInt(0).Set(bNum.scaleFactor)
 
-	bRat := big.NewRat(1,1).SetFrac(numerator, denominator)
+	bRat := big.NewRat(1, 1).SetFrac(numerator, denominator)
 
 	return big.NewFloat(0).SetRat(bRat)
 }
@@ -1313,7 +1308,7 @@ func (bNum *BigIntNum) GetBigRat() *big.Rat {
 
 	denominator := big.NewInt(0).Set(bNum.scaleFactor)
 
-	return big.NewRat(1,1).SetFrac(numerator, denominator)
+	return big.NewRat(1, 1).SetFrac(numerator, denominator)
 }
 
 // GetCurrencySymbol - Returns the character currently designated
@@ -1362,9 +1357,9 @@ func (bNum *BigIntNum) GetDecimal() (Decimal, error) {
 
 	if err != nil {
 		return Decimal{},
-			fmt.Errorf (ePrefix +
-				"Error returned by dec.SetNumericSeparatorsDto(bNum.GetNumericSeparatorsDto()) " +
-				"Error='%v'",	err.Error())
+			fmt.Errorf(ePrefix+
+				"Error returned by dec.SetNumericSeparatorsDto(bNum.GetNumericSeparatorsDto()) "+
+				"Error='%v'", err.Error())
 	}
 
 	err = dec.IsValid(ePrefix + "dec INVALID! ")
@@ -1375,7 +1370,6 @@ func (bNum *BigIntNum) GetDecimal() (Decimal, error) {
 
 	return dec, nil
 }
-
 
 // GetDecimalSeparator - returns the character designated
 // as the decimal separator for the current NumStrDto instance.
@@ -1422,14 +1416,14 @@ func (bNum *BigIntNum) GetExpectedNumberOfDigits() *big.Int {
 // 			  123								 0
 // 			 -123								 0
 //
-func (bNum *BigIntNum) GetFractionalPart() BigIntNum{
+func (bNum *BigIntNum) GetFractionalPart() BigIntNum {
 
 	if bNum.IsZero() {
 		return BigIntNum{}.NewBigInt(big.NewInt(0), 0)
 	}
 
 	scaleVal := big.NewInt(0).Exp(big.NewInt(10),
-								big.NewInt(int64(bNum.precision)), nil)
+		big.NewInt(int64(bNum.precision)), nil)
 
 	modulo := big.NewInt(0).Rem(bNum.bigInt, scaleVal)
 
@@ -1454,13 +1448,13 @@ func (bNum *BigIntNum) GetInt() (int, error) {
 	bIMinInt := big.NewInt(int64(math.MinInt32))
 
 	if bNum.bigInt.Cmp(bIMaxInt) == 1 {
-		return math.MaxInt32, fmt.Errorf(ePrefix + "Error: BigIntNum Value is GREATER than Int32 Maximum! "+
-			"Int32 Maximum Value='%v' BigIntNum Value='%v'",bIMaxInt.Text(10), bNum.GetNumStr())
+		return math.MaxInt32, fmt.Errorf(ePrefix+"Error: BigIntNum Value is GREATER than Int32 Maximum! "+
+			"Int32 Maximum Value='%v' BigIntNum Value='%v'", bIMaxInt.Text(10), bNum.GetNumStr())
 	}
 
 	if bNum.bigInt.Cmp(bIMinInt) == -1 {
-		return math.MinInt32, fmt.Errorf(ePrefix + "Error: BigIntNum Value is LESS than Int32 Minmum! "+
-			"Int32 Minimum Value='%v' BigIntNum Value='%v'",bIMinInt.Text(10), bNum.GetNumStr())
+		return math.MinInt32, fmt.Errorf(ePrefix+"Error: BigIntNum Value is LESS than Int32 Minmum! "+
+			"Int32 Minimum Value='%v' BigIntNum Value='%v'", bIMinInt.Text(10), bNum.GetNumStr())
 	}
 
 	return int(bNum.bigInt.Int64()), nil
@@ -1495,8 +1489,8 @@ func (bNum *BigIntNum) GetIntAry() (IntAry, error) {
 
 	if err != nil {
 		return IntAry{},
-			fmt.Errorf (ePrefix +
-				"Error returned by IntAry{}.NewBigInt(bNum.bigInt, bNum.precision) " +
+			fmt.Errorf(ePrefix+
+				"Error returned by IntAry{}.NewBigInt(bNum.bigInt, bNum.precision) "+
 				"bNum.bigInt='%v' bNum.precision='%v' Error='%v'",
 				bNum.bigInt.Text(10), bNum.precision, err.Error())
 	}
@@ -1505,8 +1499,8 @@ func (bNum *BigIntNum) GetIntAry() (IntAry, error) {
 
 	if err != nil {
 		return IntAry{},
-			fmt.Errorf (ePrefix +
-				"Error returned by ia.SetNumericSeparatorsDto(bNum.GetNumericSeparatorsDto()) " +
+			fmt.Errorf(ePrefix+
+				"Error returned by ia.SetNumericSeparatorsDto(bNum.GetNumericSeparatorsDto()) "+
 				"Error='%v' \n", err.Error())
 	}
 
@@ -1540,7 +1534,7 @@ func (bNum *BigIntNum) GetIntegerPart() BigIntNum {
 	}
 
 	scaleVal := big.NewInt(0).Exp(big.NewInt(10),
-								big.NewInt(int64(bNum.precision)), nil)
+		big.NewInt(int64(bNum.precision)), nil)
 
 	quotient := big.NewInt(0).Quo(bNum.bigInt, scaleVal)
 
@@ -1557,9 +1551,9 @@ func (bNum *BigIntNum) GetInverse(maxPrecision uint) (BigIntNum, error) {
 
 	if err != nil {
 		return BigIntNum{},
-		fmt.Errorf("BigIntNum.GetInverse() - Error returned by BigIntMathDivide{}." +
-			"BigIntNumFracQuotient(bINumOne, bNum.CopyOut(), maxPrecision)" +
-			"bNum='%v' Error='%v' ", bNum.GetNumStr(), err.Error())
+			fmt.Errorf("BigIntNum.GetInverse() - Error returned by BigIntMathDivide{}."+
+				"BigIntNumFracQuotient(bINumOne, bNum.CopyOut(), maxPrecision)"+
+				"bNum='%v' Error='%v' ", bNum.GetNumStr(), err.Error())
 	}
 
 	return result, nil
@@ -1633,7 +1627,7 @@ func (bNum *BigIntNum) GetNumericSeparatorsDto() NumericSeparatorDto {
 // numbers which includes the decimal place and decimal digits
 // if they exist.
 //
-func (bNum *BigIntNum) GetNumStr() (string) {
+func (bNum *BigIntNum) GetNumStr() string {
 
 	return bNum.FormatNumStr(LEADMINUSNEGVALFMTMODE)
 
@@ -1663,8 +1657,8 @@ func (bNum *BigIntNum) GetNumStrDto() (NumStrDto, error) {
 
 	if err != nil {
 		return NumStrDto{}.New(),
-			fmt.Errorf (ePrefix +
-				"Error returned by NumStrDto{}.NewBigInt(bNum.bigInt, bNum.precision) " +
+			fmt.Errorf(ePrefix+
+				"Error returned by NumStrDto{}.NewBigInt(bNum.bigInt, bNum.precision) "+
 				"bNum.bigInt='%v' bNum.precision='%v' Error='%v'",
 				bNum.bigInt.Text(10), bNum.precision, err.Error())
 	}
@@ -1673,8 +1667,8 @@ func (bNum *BigIntNum) GetNumStrDto() (NumStrDto, error) {
 
 	if err != nil {
 		return NumStrDto{}.New(),
-			fmt.Errorf(ePrefix +
-				"Error returned by nDto.SetNumericSeparatorsDto(bNum.GetNumericSeparatorsDto()). " +
+			fmt.Errorf(ePrefix+
+				"Error returned by nDto.SetNumericSeparatorsDto(bNum.GetNumericSeparatorsDto()). "+
 				"Error='%v' \n", err.Error())
 	}
 
@@ -1767,7 +1761,6 @@ func (bNum *BigIntNum) GetScaleFactor() *big.Int {
 	return big.NewInt(0).Set(bNum.scaleFactor)
 }
 
-
 // GetSign - Returns the numeric sign associated
 // with the current numeric value encapsulated by
 // this BigIntNum.
@@ -1778,7 +1771,7 @@ func (bNum *BigIntNum) GetSign() int {
 // Returns the the integer value of the current BigIntNum
 // as a signed *big.Int Type.
 //
-func (bNum *BigIntNum) GetSignedBigInt() *big.Int{
+func (bNum *BigIntNum) GetSignedBigInt() *big.Int {
 	return bNum.bigInt
 }
 
@@ -1815,7 +1808,7 @@ func (bNum *BigIntNum) GetSciNotationNumber(mantissaLen uint) (SciNotationNum, e
 	}
 
 	if bNum.IsZero() {
-		sciNotationNum.SetBigIntNumElements(bNum.CopyOut(), BigIntNum{}.NewZero(0) )
+		sciNotationNum.SetBigIntNumElements(bNum.CopyOut(), BigIntNum{}.NewZero(0))
 		return sciNotationNum, nil
 	}
 
@@ -1829,22 +1822,22 @@ func (bNum *BigIntNum) GetSciNotationNumber(mantissaLen uint) (SciNotationNum, e
 
 		if err != nil {
 			return SciNotationNum{}.New(),
-			fmt.Errorf(ePrefix +
-				"Error returned by BigIntMath{}.GetMagnitude(bINumIntPart.bigInt) " +
-				"Error='%v'", err.Error())
+				fmt.Errorf(ePrefix+
+					"Error returned by BigIntMath{}.GetMagnitude(bINumIntPart.bigInt) "+
+					"Error='%v'", err.Error())
 		}
 
 		if magnitudeBigInt.Cmp(bigIntMaxUint32) == 1 {
 			return SciNotationNum{}.New(),
-			errors.New(ePrefix + "Integer Magnitude greater than Max Uint32")
+				errors.New(ePrefix + "Integer Magnitude greater than Max Uint32")
 		}
 
 		uintMagnitude := uint(magnitudeBigInt.Uint64())
 
-		newBINum := BigIntNum{}.NewBigInt(bNum.bigInt, bNum.precision + uintMagnitude)
+		newBINum := BigIntNum{}.NewBigInt(bNum.bigInt, bNum.precision+uintMagnitude)
 
 		sciNotationNum.SetBigIntNumElements(
-				newBINum, BigIntNum{}.NewBigInt(magnitudeBigInt, 0) )
+			newBINum, BigIntNum{}.NewBigInt(magnitudeBigInt, 0))
 
 	} else {
 		// Must be bINumFracPart > 0
@@ -1852,9 +1845,9 @@ func (bNum *BigIntNum) GetSciNotationNumber(mantissaLen uint) (SciNotationNum, e
 
 		if err != nil {
 			return SciNotationNum{}.New(),
-			fmt.Errorf(ePrefix +
-				"Error returned by BigIntMath{}.GetMagnitude(bNum.bigInt). " +
-				"Error='%v'", err.Error())
+				fmt.Errorf(ePrefix+
+					"Error returned by BigIntMath{}.GetMagnitude(bNum.bigInt). "+
+					"Error='%v'", err.Error())
 		}
 
 		if magnitudeBigInt.Cmp(bigIntMaxUint32) == 1 {
@@ -1867,9 +1860,9 @@ func (bNum *BigIntNum) GetSciNotationNumber(mantissaLen uint) (SciNotationNum, e
 		bINumFracPart := BigIntNum{}.NewBigInt(bNum.bigInt, uintMagnitude)
 		precisionFrac := int64(uintMagnitude) - int64(bNum.precision)
 
-		bINumScale := BigIntNum{}.NewInt64Exponent(precisionFrac,0)
+		bINumScale := BigIntNum{}.NewInt64Exponent(precisionFrac, 0)
 
-		sciNotationNum.SetBigIntNumElements(bINumFracPart, bINumScale )
+		sciNotationNum.SetBigIntNumElements(bINumFracPart, bINumScale)
 	}
 
 	sciNotationNum.SetMantissaLength(mantissaLen)
@@ -1906,17 +1899,17 @@ func (bNum *BigIntNum) GetSciNotationStr(mantissaLen uint) (string, error) {
 
 	if err != nil {
 		return "",
-		fmt.Errorf(ePrefix +
-			"Error returned by bNum.GetSciNotationNumber(mantissaLen). " +
-			"Error='%v'", err.Error())
+			fmt.Errorf(ePrefix+
+				"Error returned by bNum.GetSciNotationNumber(mantissaLen). "+
+				"Error='%v'", err.Error())
 	}
 
 	result, err := sciNotn.GetSciNotationStr(mantissaLen)
 
 	if err != nil {
 		return "",
-			fmt.Errorf(ePrefix +
-				"Error returned by sciNotn.GetSciNotationStr(mantissaLen). " +
+			fmt.Errorf(ePrefix+
+				"Error returned by sciNotn.GetSciNotationStr(mantissaLen). "+
 				"Error='%v'", err.Error())
 	}
 
@@ -1972,7 +1965,7 @@ func (bNum *BigIntNum) GetUInt() (uint, error) {
 			fmt.Errorf("Error: BigIntNum is GREATER THAN maximum 'uint' value.")
 	}
 
-	return  uint(bNum.bigInt.Uint64()), nil
+	return uint(bNum.bigInt.Uint64()), nil
 }
 
 // Returns the integer value of BigIntNum.bigInt as a  64-bit
@@ -1986,8 +1979,8 @@ func (bNum *BigIntNum) GetUInt64() (uint64, error) {
 
 	if bNum.bigInt.Cmp(bIntMaxUint64) == 1 {
 		return uint64(0),
-		fmt.Errorf("BigIntNum.GetUInt64() - Error: The value of this BigIntNum instance " +
-			"exceeds the maximum value of the unsigned 64-bit integer. BigIntNum='%v' MaxUint64='%v' ",
+			fmt.Errorf("BigIntNum.GetUInt64() - Error: The value of this BigIntNum instance "+
+				"exceeds the maximum value of the unsigned 64-bit integer. BigIntNum='%v' MaxUint64='%v' ",
 				bNum.bigInt.Text(10), bIntMaxUint64.Text(10))
 	}
 
@@ -2016,18 +2009,18 @@ func (bNum *BigIntNum) Inverse(maxPrecision uint) (BigIntNum, error) {
 
 	if err != nil {
 		return BigIntNum{}.NewZero(0),
-			fmt.Errorf(ePrefix +
-				"Error returned by bIOne.SetNumericSeparatorsDto(bNum.GetNumericSeparatorsDto()) " +
+			fmt.Errorf(ePrefix+
+				"Error returned by bIOne.SetNumericSeparatorsDto(bNum.GetNumericSeparatorsDto()) "+
 				"Error='%v' \n", err.Error())
 	}
 
-	inverse, err := BigIntMathDivide{}.BigIntNumFracQuotient(bIOne, bNum.CopyOut(), maxPrecision )
+	inverse, err := BigIntMathDivide{}.BigIntNumFracQuotient(bIOne, bNum.CopyOut(), maxPrecision)
 
 	if err != nil {
 		return BigIntNum{}.NewZero(0),
-		fmt.Errorf(ePrefix +
-			"Error returned by BigIntMathDivide{}.BigIntNumFracQuotient(...) " +
-			"Error='%v' \n", err.Error())
+			fmt.Errorf(ePrefix+
+				"Error returned by BigIntMathDivide{}.BigIntNumFracQuotient(...) "+
+				"Error='%v' \n", err.Error())
 	}
 
 	return inverse, nil
@@ -2054,8 +2047,8 @@ func (bNum *BigIntNum) IsEvenNumber() (bool, error) {
 	if err != nil {
 		ePrefix := "BigIntNum.IsEvenNumber() "
 		return false,
-			fmt.Errorf(ePrefix +
-				"Error returned by BigIntMathDivide{}.BigIntNumQuotientMod(nthRoot, bigINumTwo, 0) " +
+			fmt.Errorf(ePrefix+
+				"Error returned by BigIntMathDivide{}.BigIntNumQuotientMod(nthRoot, bigINumTwo, 0) "+
 				"Error='%v' ", err.Error())
 	}
 
@@ -2070,15 +2063,15 @@ func (bNum *BigIntNum) IsEvenNumber() (bool, error) {
 // unchanged.
 //
 func (bNum *BigIntNum) Increment() {
-	
+
 	biNumOne := BigIntNum{}.NewOne(bNum.precision)
-	
+
 	bPair := BigIntPair{}.NewBigIntNum(bNum.CopyOut(), biNumOne)
-	
+
 	result := BigIntMathAdd{}.AddPair(bPair)
-	
+
 	bNum.CopyIn(result)
-	
+
 }
 
 // IsValid - returns a boolean value signaling whether the
@@ -2094,7 +2087,7 @@ func (bNum *BigIntNum) IsValid(errName string) error {
 
 	errName += "BigIntNum INVALID! "
 
-	if bNum.bigInt == nil  {
+	if bNum.bigInt == nil {
 		return fmt.Errorf(errName + "bNum.bigInt is EMPTY!")
 	}
 
@@ -2104,7 +2097,7 @@ func (bNum *BigIntNum) IsValid(errName string) error {
 	}
 
 	if bNum.absBigInt == nil ||
-				bNum.scaleFactor == nil {
+		bNum.scaleFactor == nil {
 		bNum.Reset()
 		return nil
 	}
@@ -2145,8 +2138,8 @@ func (bNum *BigIntNum) IsZero() bool {
 // instance (bNum).
 //
 func (bNum *BigIntNum) Mod(
-													divisor BigIntNum,
-														maxPrecision uint) (modulo BigIntNum, err error) {
+	divisor BigIntNum,
+	maxPrecision uint) (modulo BigIntNum, err error) {
 
 	return BigIntMathDivide{}.BigIntNumModulo(bNum.CopyOut(), divisor, maxPrecision)
 }
@@ -2161,7 +2154,7 @@ func (bNum *BigIntNum) Mod(
 // The BigIntNum instance returned by this method, 'product', will contain numeric
 // separators (decimal separator, thousands separator and currency symbol)
 // copied from the current BigIntNum instance.
-// 
+//
 func (bNum *BigIntNum) Multiply(multiplicand BigIntNum) (product BigIntNum) {
 
 	return BigIntMathMultiply{}.MultiplyBigIntNums(bNum.CopyOut(), multiplicand)
@@ -2175,7 +2168,7 @@ func (bNum *BigIntNum) Multiply(multiplicand BigIntNum) (product BigIntNum) {
 // The BigIntNum instance returned by this method will contain numeric
 // separators (decimal separator, thousands separator and currency
 // symbol) copied from the original BigIntNum instance.
-// 
+//
 func (bNum *BigIntNum) MultiplyByFive() BigIntNum {
 
 	return BigIntMathMultiply{}.MultiplyBigIntNumByFive(bNum.CopyOut())
@@ -2189,7 +2182,7 @@ func (bNum *BigIntNum) MultiplyByFive() BigIntNum {
 // The BigIntNum instance returned by this method will contain numeric
 // separators (decimal separator, thousands separator and currency
 // symbol) copied from the original BigIntNum instance.
-// 
+//
 func (bNum *BigIntNum) MultiplyByTen() BigIntNum {
 
 	return BigIntMathMultiply{}.MultiplyBigIntNumByTen(bNum.CopyOut())
@@ -2210,12 +2203,12 @@ func (bNum *BigIntNum) MultiplyByTenToPower(exponent uint) {
 
 	if bNum.precision >= exponent {
 
-		bNum.CopyIn(BigIntNum{}.NewBigInt(bNum.bigInt, bNum.precision - exponent))
+		bNum.CopyIn(BigIntNum{}.NewBigInt(bNum.bigInt, bNum.precision-exponent))
 
 	} else {
 		// exponent > bNum.precision
 		scaleVal :=
-			big.NewInt(0).Exp(big.NewInt(10), big.NewInt(int64(exponent - bNum.precision)), nil)
+			big.NewInt(0).Exp(big.NewInt(10), big.NewInt(int64(exponent-bNum.precision)), nil)
 
 		newVal := big.NewInt(0).Mul(bNum.bigInt, scaleVal)
 
@@ -2233,7 +2226,7 @@ func (bNum *BigIntNum) MultiplyByTenToPower(exponent uint) {
 // The BigIntNum instance returned by this method will contain numeric
 // separators (decimal separator, thousands separator and currency
 // symbol) copied from the original BigIntNum instance.
-// 
+//
 func (bNum *BigIntNum) MultiplyByThree() BigIntNum {
 
 	return BigIntMathMultiply{}.MultiplyBigIntNumByThree(bNum.CopyOut())
@@ -2247,10 +2240,10 @@ func (bNum *BigIntNum) MultiplyByThree() BigIntNum {
 // The BigIntNum instance returned by this method will contain numeric
 // separators (decimal separator, thousands separator and currency
 // symbol) copied from the original BigIntNum instance.
-// 
+//
 func (bNum *BigIntNum) MultiplyByTwo() BigIntNum {
-	
-	return BigIntMathMultiply{}.MultiplyBigIntNumByTwo(bNum.CopyOut()) 
+
+	return BigIntMathMultiply{}.MultiplyBigIntNumByTwo(bNum.CopyOut())
 }
 
 // New - returns a new BigIntNum instance initialized to zero.
@@ -2361,16 +2354,16 @@ func (bNum BigIntNum) NewBigIntExponent(bigI *big.Int, exponent int) BigIntNum {
 // 											precision may be less than 'maxPrecision'.
 //
 func (bNum BigIntNum) NewBigFloat(bigFloat *big.Float, maxPrecision uint) (BigIntNum, error) {
-	
+
 	ePrefix := "BigIntNumNewFloat64() "
 
 	b := BigIntNum{}.NewZero(0)
-	
+
 	err := b.SetBigFloat(bigFloat, maxPrecision)
 
 	if err != nil {
 		return BigIntNum{},
-			fmt.Errorf(ePrefix + "Error returned by b.SetBigFloat(bigFloat, maxPrecision). " +
+			fmt.Errorf(ePrefix+"Error returned by b.SetBigFloat(bigFloat, maxPrecision). "+
 				"Error='%v' ", err.Error())
 	}
 
@@ -2386,7 +2379,7 @@ func (bNum BigIntNum) NewDecimal(decNum Decimal) (BigIntNum, error) {
 
 	if err != nil {
 		return BigIntNum{},
-			fmt.Errorf(ePrefix + "Error: Input Parameter 'decNum' is INVALID!. Error returned by " +
+			fmt.Errorf(ePrefix+"Error: Input Parameter 'decNum' is INVALID!. Error returned by "+
 				"decNum.IsValid(). Error='%v'", err.Error())
 	}
 
@@ -2394,7 +2387,7 @@ func (bNum BigIntNum) NewDecimal(decNum Decimal) (BigIntNum, error) {
 
 	if err != nil {
 		return BigIntNum{},
-			fmt.Errorf(ePrefix + "Error returned by decNum.GetBigInt(). " +
+			fmt.Errorf(ePrefix+"Error returned by decNum.GetBigInt(). "+
 				"Error='%v'", err.Error())
 	}
 
@@ -2419,7 +2412,7 @@ func (bNum BigIntNum) NewDecimal(decNum Decimal) (BigIntNum, error) {
 // and -1 generates a negative number.
 //
 func (bNum BigIntNum) NewFromIntFracStrings(
-					intStr, fracStr string, signVal int) (BigIntNum, error) {
+	intStr, fracStr string, signVal int) (BigIntNum, error) {
 
 	b2 := BigIntNum{}.NewZero(0)
 
@@ -2428,9 +2421,9 @@ func (bNum BigIntNum) NewFromIntFracStrings(
 	if err != nil {
 		ePrefix := "BigIntNum.NewFromIntFracStrings() "
 		return BigIntNum{}.NewZero(0),
-		fmt.Errorf(ePrefix +
-			"Error returned by b2.SetIntFracStrings(intStr, fracStr, signVal). " +
-			"Error='%v' \n", err.Error())
+			fmt.Errorf(ePrefix+
+				"Error returned by b2.SetIntFracStrings(intStr, fracStr, signVal). "+
+				"Error='%v' \n", err.Error())
 	}
 
 	return b2, nil
@@ -2460,7 +2453,7 @@ func (bNum BigIntNum) NewFloat32(f32 float32, maxPrecision uint) (BigIntNum, err
 
 	if err != nil {
 		return BigIntNum{},
-			fmt.Errorf(ePrefix + "Error returned by b.SetFloat32(f32, maxPrecision). " +
+			fmt.Errorf(ePrefix+"Error returned by b.SetFloat32(f32, maxPrecision). "+
 				"Error='%v' ", err.Error())
 	}
 
@@ -2491,7 +2484,7 @@ func (bNum BigIntNum) NewFloat64(f64 float64, maxPrecision uint) (BigIntNum, err
 
 	if err != nil {
 		return BigIntNum{},
-			fmt.Errorf(ePrefix + "Error returned by b.SetFloat64(f64, decimalPlaces). " +
+			fmt.Errorf(ePrefix+"Error returned by b.SetFloat64(f64, decimalPlaces). "+
 				"Error='%v' ", err.Error())
 	}
 
@@ -2641,7 +2634,6 @@ func (bNum BigIntNum) NewInt32Exponent(int32Num int32, exponent int) BigIntNum {
 	return b
 }
 
-
 // New64Int - Creates a new BigIntNum instance initialized to the value
 // of input parameter 'int64Num' which is passed as type 'int64'.
 //
@@ -2725,11 +2717,11 @@ func (bNum BigIntNum) NewIntAry(ia IntAry) (BigIntNum, error) {
 
 	if err != nil {
 		return BigIntNum{},
-			fmt.Errorf(ePrefix + "Error: Input Parameter 'ia' is INVALID!. Error returned by " +
+			fmt.Errorf(ePrefix+"Error: Input Parameter 'ia' is INVALID!. Error returned by "+
 				"ia.IsValid(\"\"). Error='%v'", err.Error())
 	}
 
-	bInt,_ := ia.GetBigInt()
+	bInt, _ := ia.GetBigInt()
 
 	precision := ia.GetPrecisionUint()
 
@@ -2762,7 +2754,7 @@ func (bNum BigIntNum) NewIntFracStr(intStr, fracStr string, signVal int) (BigInt
 		ePrefix := "BigIntNum.NewIntFracStr() "
 
 		return BigIntNum{}.NewZero(0),
-			fmt.Errorf(ePrefix + "Error returned by bIntNum.SetIntFracStrings(intStr, fracStr, signVal) " +
+			fmt.Errorf(ePrefix+"Error returned by bIntNum.SetIntFracStrings(intStr, fracStr, signVal) "+
 				"Error='%v' \n", err.Error())
 
 	}
@@ -2808,7 +2800,7 @@ func (bNum BigIntNum) NewINumMgr(numMgr INumMgr) (BigIntNum, error) {
 
 	if err != nil {
 		return BigIntNum{},
-			fmt.Errorf(ePrefix + "Error returned by bINum.SetINumMgr(numMgr). " +
+			fmt.Errorf(ePrefix+"Error returned by bINum.SetINumMgr(numMgr). "+
 				"Error='%v' ", err.Error())
 	}
 
@@ -2837,9 +2829,9 @@ func (bNum BigIntNum) NewNumStr(numStr string) (BigIntNum, error) {
 
 	if err != nil {
 		return BigIntNum{},
-			fmt.Errorf(ePrefix + "Error returned by b.SetNumStr(numStr). " +
+			fmt.Errorf(ePrefix+"Error returned by b.SetNumStr(numStr). "+
 				"numStr='%v' Error='%v'",
-						numStr, err.Error())
+				numStr, err.Error())
 	}
 
 	return b, nil
@@ -2854,10 +2846,10 @@ func (bNum BigIntNum) NewNumStr(numStr string) (BigIntNum, error) {
 // will be copied to the returned BigIntNum instance.
 //
 func (bNum BigIntNum) NewNumStrWithNumSeps(
-												numStr string,
-													numSeps NumericSeparatorDto) (BigIntNum, error) {
+	numStr string,
+	numSeps NumericSeparatorDto) (BigIntNum, error) {
 
-  ePrefix := "BigIntNum.NewNumStrWithNumSeps() "
+	ePrefix := "BigIntNum.NewNumStrWithNumSeps() "
 
 	numSeps.SetDefaultsIfEmpty()
 
@@ -2867,8 +2859,8 @@ func (bNum BigIntNum) NewNumStrWithNumSeps(
 
 	if err != nil {
 		return BigIntNum{}.NewZero(0),
-			fmt.Errorf(ePrefix +
-				"Error returned by b2.SetNumericSeparatorsDto(numSeps) " +
+			fmt.Errorf(ePrefix+
+				"Error returned by b2.SetNumericSeparatorsDto(numSeps) "+
 				"Error='%v' \n", err.Error())
 
 	}
@@ -2877,11 +2869,10 @@ func (bNum BigIntNum) NewNumStrWithNumSeps(
 
 	if err != nil {
 		return BigIntNum{}.NewZero(0),
-			fmt.Errorf(ePrefix +
-				"Error returned by b2.SetNumericSeparatorsDto(numSeps) " +
+			fmt.Errorf(ePrefix+
+				"Error returned by b2.SetNumericSeparatorsDto(numSeps) "+
 				"Error='%v' \n", err.Error())
 	}
-
 
 	return b2, nil
 }
@@ -2892,21 +2883,21 @@ func (bNum BigIntNum) NewNumStrWithNumSeps(
 // will be rounded to 'maxPrecision' decimal places.
 //
 func (bNum BigIntNum) NewNumStrMaxPrecision(
-													numStr string,
-															maxPrecision uint) (BigIntNum, error) {
+	numStr string,
+	maxPrecision uint) (BigIntNum, error) {
 
 	b := BigIntNum{}.NewZero(0)
 
-	err:= b.SetNumStr(numStr)
+	err := b.SetNumStr(numStr)
 
 	if err != nil {
 
 		ePrefix := "BigIntNum.NewNumStr() "
 
 		return BigIntNum{},
-			fmt.Errorf(ePrefix + "Error returned by b.SetNumStr(numStr). " +
+			fmt.Errorf(ePrefix+"Error returned by b.SetNumStr(numStr). "+
 				"numStr='%v' Error='%v' ",
-					numStr, err.Error())
+				numStr, err.Error())
 	}
 
 	if b.precision > maxPrecision {
@@ -2927,7 +2918,7 @@ func (bNum BigIntNum) NewNumStrDto(nDto NumStrDto) (BigIntNum, error) {
 
 	if err != nil {
 		return BigIntNum{},
-			fmt.Errorf(ePrefix + "Error returned from nDto.IsValid(\"\"). " +
+			fmt.Errorf(ePrefix+"Error returned from nDto.IsValid(\"\"). "+
 				"NumStr='%v' Error='%v'", nDto.GetNumStr(), err.Error())
 	}
 
@@ -2935,7 +2926,7 @@ func (bNum BigIntNum) NewNumStrDto(nDto NumStrDto) (BigIntNum, error) {
 
 	if err != nil {
 		return BigIntNum{},
-			fmt.Errorf(ePrefix + "Error returned by nDto.GetBigInt(). " +
+			fmt.Errorf(ePrefix+"Error returned by nDto.GetBigInt(). "+
 				"Error='%v'", err.Error())
 	}
 
@@ -3445,7 +3436,7 @@ func (bNum *BigIntNum) RoundToDecPlace(precision uint) {
 	// Must be: bNum.precision >  precision
 
 	bigNumRound5 :=
-		BigIntNum{}.NewBigInt(big.NewInt(5), uint(precision + 1))
+		BigIntNum{}.NewBigInt(big.NewInt(5), uint(precision+1))
 
 	bigNumBase := BigIntNum{}.NewBigInt(bNum.absBigInt, bNum.precision)
 
@@ -3453,7 +3444,7 @@ func (bNum *BigIntNum) RoundToDecPlace(precision uint) {
 
 	// 10^deltaPrecision
 	scaleVal := big.NewInt(0).Exp(big.NewInt(10),
-								big.NewInt(int64(bNum.precision - precision)), nil)
+		big.NewInt(int64(bNum.precision-precision)), nil)
 
 	result.bigInt = big.NewInt(0).Quo(result.bigInt, scaleVal)
 
@@ -3491,7 +3482,6 @@ func (bNum *BigIntNum) RoundToDecPlace(precision uint) {
 // and currency symbol) remain unchanged and are not altered by this method.
 //
 func (bNum *BigIntNum) SetBigInt(bigI *big.Int, precision uint) {
-
 
 	numSeps := bNum.GetNumericSeparatorsDto()
 
@@ -3611,8 +3601,8 @@ func (bNum *BigIntNum) SetBigFloat(bigFloat *big.Float, maxPrecision uint) error
 	err := bNum.SetBigRat(rat, maxPrecision)
 
 	if err != nil {
-		return fmt.Errorf(ePrefix +
-			"Error returned by bNum.SetBigRat(rat, maxPrecision). " +
+		return fmt.Errorf(ePrefix+
+			"Error returned by bNum.SetBigRat(rat, maxPrecision). "+
 			"Error='%v' \n", err.Error())
 	}
 
@@ -3645,12 +3635,12 @@ func (bNum *BigIntNum) SetBigRat(ratNum *big.Rat, maxPrecision uint) error {
 
 	biNum, err := BigIntMathDivide{}.pairFracQuotientNoNumSeps(biPair)
 	if err != nil {
-		return fmt.Errorf(ePrefix +
-			"Error returned by BigIntMathDivide{}.pairFracQuotientNoNumSeps(biPair). " +
+		return fmt.Errorf(ePrefix+
+			"Error returned by BigIntMathDivide{}.pairFracQuotientNoNumSeps(biPair). "+
 			"Error='%v'\n", err.Error())
 	}
 
-	if biNum.GetPrecisionUint() > maxPrecision{
+	if biNum.GetPrecisionUint() > maxPrecision {
 		biNum.SetPrecision(maxPrecision)
 	}
 
@@ -3741,10 +3731,10 @@ func (bNum *BigIntNum) SetIntFracStrings(intStr, fracStr string, signVal int) er
 	isFirstRune := true
 
 	// Create pure number string from 'intStr'
-	for i:= 0 ; i < lStr; i++ {
+	for i := 0; i < lStr; i++ {
 
 		if intStr[i] >= zeroChar &&
-				intStr[i] <= nineChar {
+			intStr[i] <= nineChar {
 
 			if isFirstRune && signVal == -1 {
 				cleanIntRuneAry = append(cleanIntRuneAry, '-')
@@ -3766,7 +3756,7 @@ func (bNum *BigIntNum) SetIntFracStrings(intStr, fracStr string, signVal int) er
 
 		isFirstRune = true
 
-		for j:= 0; j < lStr; j++ {
+		for j := 0; j < lStr; j++ {
 
 			if fracStr[j] >= zeroChar &&
 				fracStr[j] <= nineChar {
@@ -3785,8 +3775,8 @@ func (bNum *BigIntNum) SetIntFracStrings(intStr, fracStr string, signVal int) er
 	err := bNum.SetNumStr(string(cleanIntRuneAry))
 
 	if err != nil {
-		return fmt.Errorf(ePrefix +
-			"Error returned by bNum.SetNumStr(string(cleanIntRuneAry)). " +
+		return fmt.Errorf(ePrefix+
+			"Error returned by bNum.SetNumStr(string(cleanIntRuneAry)). "+
 			"cleanIntRuneAry='%v' Error='%v' ", string(cleanIntRuneAry), err.Error())
 	}
 
@@ -3812,19 +3802,18 @@ func (bNum *BigIntNum) SetFloat32(f32 float32, maxPrecision uint) error {
 
 	ePrefix := "BigIntNum.SetFloat32() "
 
-	rat := big.NewRat(1,1).SetFloat64(float64(f32))
+	rat := big.NewRat(1, 1).SetFloat64(float64(f32))
 
 	err := bNum.SetBigRat(rat, maxPrecision)
 
 	if err != nil {
-		return fmt.Errorf(ePrefix +
-			"Error returned by bNum.SetBigRat(rat, maxPrecision). " +
+		return fmt.Errorf(ePrefix+
+			"Error returned by bNum.SetBigRat(rat, maxPrecision). "+
 			"Error='%v' \n", err.Error())
 	}
 
 	return nil
 }
-
 
 // SetFloat64 - Sets the value of a BigIntNum using a float64 floating point
 // input parameter.  The precision of the number is specified by the input
@@ -3845,13 +3834,13 @@ func (bNum *BigIntNum) SetFloat64(f64 float64, maxPrecision uint) error {
 
 	ePrefix := "BigIntNum.SetFloat64() "
 
-	rat :=  big.NewRat(1,1).SetFloat64(f64)
+	rat := big.NewRat(1, 1).SetFloat64(f64)
 
 	err := bNum.SetBigRat(rat, maxPrecision)
 
 	if err != nil {
-		return fmt.Errorf(ePrefix +
-			"Error returned by bNum.SetBigRat(rat, maxPrecision). " +
+		return fmt.Errorf(ePrefix+
+			"Error returned by bNum.SetBigRat(rat, maxPrecision). "+
 			"Error='%v' \n", err.Error())
 	}
 
@@ -3903,8 +3892,8 @@ func (bNum *BigIntNum) SetINumMgr(numMgr INumMgr) error {
 	bigInt, err := numMgr.GetBigInt()
 
 	if err != nil {
-		return fmt.Errorf(ePrefix + "Error returned by numMgr.GetBigInt(). " +
-			"Error='%v'", err.Error() )
+		return fmt.Errorf(ePrefix+"Error returned by numMgr.GetBigInt(). "+
+			"Error='%v'", err.Error())
 	}
 
 	bNum.SetBigInt(bigInt, numMgr.GetPrecisionUint())
@@ -3936,7 +3925,7 @@ func (bNum *BigIntNum) SetNumStr(numStr string) error {
 	baseRunes := []rune(numStr)
 	lBaseRunes := len(baseRunes)
 
-	numSeps:=bNum.GetNumericSeparatorsDto()
+	numSeps := bNum.GetNumericSeparatorsDto()
 
 	newSign := 1
 	newPrecision := uint(0)
@@ -3949,7 +3938,7 @@ func (bNum *BigIntNum) SetNumStr(numStr string) error {
 	for i := 0; i < lBaseRunes && isEndRunes == false; i++ {
 
 		if baseRunes[i] == '+' ||
-			baseRunes[i] == ' '  ||
+			baseRunes[i] == ' ' ||
 			baseRunes[i] == bNum.thousandsSeparator ||
 			baseRunes[i] == bNum.currencySymbol {
 
@@ -3985,7 +3974,7 @@ func (bNum *BigIntNum) SetNumStr(numStr string) error {
 			newAbsBigInt = big.NewInt(0).Mul(newAbsBigInt, baseTen)
 
 			newAbsBigInt = big.NewInt(0).Add(newAbsBigInt,
-					big.NewInt(int64(baseRunes[i]-48)))
+				big.NewInt(int64(baseRunes[i]-48)))
 
 			isStartRunes = true
 
@@ -4021,20 +4010,19 @@ func (bNum *BigIntNum) SetNumStr(numStr string) error {
 	}
 
 	bNum.scaleFactor = big.NewInt(0).Exp(baseTen,
-											big.NewInt(int64(newPrecision)),
-											nil)
+		big.NewInt(int64(newPrecision)),
+		nil)
 
 	err := bNum.SetNumericSeparatorsDto(numSeps)
 
 	if err != nil {
-		return fmt.Errorf(ePrefix +
-			"Error returned by err := bNum.SetNumericSeparatorsDto(numSeps) " +
+		return fmt.Errorf(ePrefix+
+			"Error returned by err := bNum.SetNumericSeparatorsDto(numSeps) "+
 			"Error='%v' ", err.Error())
 	}
 
 	return nil
 }
-
 
 // SetExpectedNumberOfDigits - Sets the number of expected digits associated with the
 // Absolute Value of this 'BigIntNum.absBigInt'. The value is stored in the data
@@ -4043,7 +4031,7 @@ func (bNum *BigIntNum) SetNumStr(numStr string) error {
 // Useful in tracking leading zeros.
 //
 func (bNum *BigIntNum) SetExpectedNumberOfDigits(numOfDigits *big.Int) {
-		bNum.numberOfExpectedDigits = big.NewInt(0).Set(numOfDigits)
+	bNum.numberOfExpectedDigits = big.NewInt(0).Set(numOfDigits)
 }
 
 // SetExpectedToActualNumberOfDigits - Sets the 'Expected' number of numeric
@@ -4052,7 +4040,7 @@ func (bNum *BigIntNum) SetExpectedNumberOfDigits(numOfDigits *big.Int) {
 //
 func (bNum *BigIntNum) SetExpectedToActualNumberOfDigits() {
 
-	actNumOfDigits, _, _ :=	 bNum.GetActualNumberOfDigits()
+	actNumOfDigits, _, _ := bNum.GetActualNumberOfDigits()
 
 	bNum.numberOfExpectedDigits = big.NewInt(0).Set(actNumOfDigits)
 
@@ -4134,9 +4122,9 @@ func (bNum *BigIntNum) SetPrecision(newPrecision uint) {
 // Currency Symbol dollar sign ('$')	= $123
 //
 func (bNum *BigIntNum) SetNumericSeparators(
-					decimalSeparator,
-							thousandsSeparator,
-								currencySymbol rune) {
+	decimalSeparator,
+	thousandsSeparator,
+	currencySymbol rune) {
 
 	bNum.SetNumericSeparatorsToDefaultIfEmpty()
 
@@ -4261,7 +4249,7 @@ func (bNum *BigIntNum) SetSignValue(signVal int) error {
 
 	}
 
-	return fmt.Errorf("BigIntNum.SetSignValue() Error: Input parameter 'signVal' " +
+	return fmt.Errorf("BigIntNum.SetSignValue() Error: Input parameter 'signVal' "+
 		"must be +1 or -1. signVal='%v' ", signVal)
 }
 
@@ -4361,10 +4349,9 @@ func (bNum *BigIntNum) ShiftPrecisionLeft(shiftLeftPlaces uint) {
 func (bNum *BigIntNum) ShiftPrecisionRight(shiftRightPlaces uint) {
 
 	if shiftRightPlaces == 0 ||
-								bNum.IsZero() {
+		bNum.IsZero() {
 		return
 	}
-
 
 	if shiftRightPlaces <= bNum.precision {
 
@@ -4423,7 +4410,7 @@ func (bNum *BigIntNum) SetThousandsSeparator(thousandsSeparator rune) {
 //			7.0						 7
 //	 -456.123000			-456.123
 //
-func (bNum *BigIntNum) TrimTrailingFracZeros(){
+func (bNum *BigIntNum) TrimTrailingFracZeros() {
 
 	if bNum.precision == 0 {
 		return
@@ -4437,7 +4424,6 @@ func (bNum *BigIntNum) TrimTrailingFracZeros(){
 		return
 	}
 
-
 	biBase10 := big.NewInt(10)
 
 	mod10 := big.NewInt(0).Mod(bNum.bigInt, biBase10)
@@ -4445,7 +4431,7 @@ func (bNum *BigIntNum) TrimTrailingFracZeros(){
 
 	for mod10.Cmp(biBaseZero) == 0 && bNum.precision > 0 {
 		bNum.bigInt = big.NewInt(0).Quo(bNum.bigInt, biBase10)
-		bNum.precision --
+		bNum.precision--
 		doReset = true
 		mod10 = big.NewInt(0).Mod(bNum.bigInt, biBase10)
 	}

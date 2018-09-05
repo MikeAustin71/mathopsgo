@@ -1,26 +1,26 @@
 package mathops
 
 import (
-	"testing"
 	"math/big"
+	"testing"
 )
 
 func TestBigIntMath_GetMagnitude_01(t *testing.T) {
 
-	target := big.NewInt(98327123	)
+	target := big.NewInt(98327123)
 	expectedMagnitude := big.NewInt(7)
 
 	magnitude, err := BigIntMath{}.GetMagnitude(target)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntMath{}.GetMagnitudeDigits(target). " +
+		t.Errorf("Error returned by BigIntMath{}.GetMagnitudeDigits(target). "+
 			"target='%v' Error='%v' ",
-				target.Text(10), err.Error())
+			target.Text(10), err.Error())
 	}
 
 	if expectedMagnitude.Cmp(magnitude) != 0 {
 		t.Errorf("Error: Expected Magnitude='%v'. Instead, Magnitude='%v'.",
-			expectedMagnitude.Text(10),magnitude.Text(10))
+			expectedMagnitude.Text(10), magnitude.Text(10))
 	}
 
 }
@@ -33,14 +33,14 @@ func TestBigIntMath_GetMagnitude_02(t *testing.T) {
 	magnitude, err := BigIntMath{}.GetMagnitude(target)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntMath{}.GetMagnitudeDigits(target). " +
+		t.Errorf("Error returned by BigIntMath{}.GetMagnitudeDigits(target). "+
 			"target='%v' Error='%v' ",
-				target.Text(10), err.Error())
+			target.Text(10), err.Error())
 	}
 
 	if expectedMagnitude.Cmp(magnitude) != 0 {
 		t.Errorf("Error: Expected Magnitude='%v'. Instead, Magnitude='%v'.",
-			expectedMagnitude.Text(10),magnitude.Text(10))
+			expectedMagnitude.Text(10), magnitude.Text(10))
 	}
 
 }
@@ -53,14 +53,14 @@ func TestBigIntMath_GetMagnitude_03(t *testing.T) {
 	magnitude, err := BigIntMath{}.GetMagnitude(target)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntMath{}.GetMagnitudeDigits(target). " +
+		t.Errorf("Error returned by BigIntMath{}.GetMagnitudeDigits(target). "+
 			"target='%v' Error='%v' ",
-				target.Text(10), err.Error())
+			target.Text(10), err.Error())
 	}
 
 	if expectedMagnitude.Cmp(magnitude) != 0 {
 		t.Errorf("Error: Expected Magnitude='%v'. Instead, Magnitude='%v'.",
-			expectedMagnitude.Text(10),magnitude.Text(10))
+			expectedMagnitude.Text(10), magnitude.Text(10))
 	}
 
 }
@@ -85,14 +85,14 @@ func TestBigIntMath_GetMagnitude_05(t *testing.T) {
 	magnitude, err := BigIntMath{}.GetMagnitude(target)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntMath{}.GetMagnitudeDigits(target). " +
+		t.Errorf("Error returned by BigIntMath{}.GetMagnitudeDigits(target). "+
 			"target='%v' Error='%v' ",
 			target.Text(10), err.Error())
 	}
 
 	if expectedMagnitude.Cmp(magnitude) != 0 {
 		t.Errorf("Error: Expected Magnitude='%v'. Instead, Magnitude='%v'.",
-			expectedMagnitude.Text(10),magnitude.Text(10))
+			expectedMagnitude.Text(10), magnitude.Text(10))
 	}
 
 }
@@ -105,14 +105,14 @@ func TestBigIntMath_GetMagnitude_06(t *testing.T) {
 	magnitude, err := BigIntMath{}.GetMagnitude(target)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntMath{}.GetMagnitudeDigits(target). " +
+		t.Errorf("Error returned by BigIntMath{}.GetMagnitudeDigits(target). "+
 			"target='%v' Error='%v' ",
 			target.Text(10), err.Error())
 	}
 
 	if expectedMagnitude.Cmp(magnitude) != 0 {
 		t.Errorf("Error: Expected Magnitude='%v'. Instead, Magnitude='%v'.",
-			expectedMagnitude.Text(10),magnitude.Text(10))
+			expectedMagnitude.Text(10), magnitude.Text(10))
 	}
 
 }

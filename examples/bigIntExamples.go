@@ -11,7 +11,7 @@ func ExampleBigIntMagnitude_01(target *big.Int) {
 	magnitude, err := mathops.BigIntMath{}.GetMagnitude(target)
 
 	if err != nil {
-		fmt.Printf("Error returned by BigIntMath{}.GetMagnitudeDigits(target). " +
+		fmt.Printf("Error returned by BigIntMath{}.GetMagnitudeDigits(target). "+
 			"target='%v' Error='%v' ", target.Text(10), err.Error())
 		return
 	}
@@ -38,7 +38,7 @@ func ExampleBigIntExpTest_01(baseStr, exponentStr, expectedStr string) {
 	bINumBase, err := mathops.BigIntNum{}.NewNumStr(baseStr)
 
 	if err != nil {
-		fmt.Printf("Error returned by BigIntNum{}.NewNumStr(baseStr). " +
+		fmt.Printf("Error returned by BigIntNum{}.NewNumStr(baseStr). "+
 			"baseStr='%v' Error='%v' \n", baseStr, err.Error())
 		return
 	}
@@ -46,16 +46,15 @@ func ExampleBigIntExpTest_01(baseStr, exponentStr, expectedStr string) {
 	bIBase, err := bINumBase.GetBigInt()
 
 	if err != nil {
-		fmt.Printf("Error returned by bINumBase.GetBigInt(). " +
+		fmt.Printf("Error returned by bINumBase.GetBigInt(). "+
 			"bINumBase='%v' Error='%v' \n", bINumBase.GetNumStr(), err.Error())
 		return
 	}
 
-
 	bINumExponent, err := mathops.BigIntNum{}.NewNumStr(exponentStr)
 
 	if err != nil {
-		fmt.Printf("Error returned by BigIntNum{}.NewNumStr(exponentStr). " +
+		fmt.Printf("Error returned by BigIntNum{}.NewNumStr(exponentStr). "+
 			"exponentStr='%v' Error='%v' \n", exponentStr, err.Error())
 		return
 	}
@@ -63,7 +62,7 @@ func ExampleBigIntExpTest_01(baseStr, exponentStr, expectedStr string) {
 	bIExponent, err := bINumExponent.GetBigInt()
 
 	if err != nil {
-		fmt.Printf("Error returned by bINumExponent.GetBigInt(). " +
+		fmt.Printf("Error returned by bINumExponent.GetBigInt(). "+
 			"bINumExponent='%v' Error='%v' \n", bINumExponent.GetNumStr(), err.Error())
 		return
 	}
@@ -80,4 +79,3 @@ func ExampleBigIntExpTest_01(baseStr, exponentStr, expectedStr string) {
 	fmt.Println("-------------------------------")
 	fmt.Println("    ModM: ", modM.Text(10))
 }
-

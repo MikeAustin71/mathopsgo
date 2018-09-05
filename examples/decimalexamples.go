@@ -5,18 +5,18 @@ import (
 	"fmt"
 )
 
-func ExampleDecPowInt_01(baseStr string, exponent int, maxPrecision uint, expectedStr string ) {
+func ExampleDecPowInt_01(baseStr string, exponent int, maxPrecision uint, expectedStr string) {
 	d1, err := mathops.Decimal{}.NewNumStr(baseStr)
 
 	if err != nil {
-		fmt.Printf("Error returned by Decimal{}.NewNumStr(numStrDto) " +
-			"numStrDto='%v' Error = '%v' \n",baseStr, err.Error())
+		fmt.Printf("Error returned by Decimal{}.NewNumStr(numStrDto) "+
+			"numStrDto='%v' Error = '%v' \n", baseStr, err.Error())
 	}
 
 	d2, err := d1.PowInt(exponent, maxPrecision)
 
 	if err != nil {
-		fmt.Printf("Error returned by d1.PowInt(exp, maxPrecision) " +
+		fmt.Printf("Error returned by d1.PowInt(exp, maxPrecision) "+
 			"exp='%v' maxPrecision='%v' Error = '%v' \n",
 			exponent, maxPrecision, err.Error())
 	}

@@ -3,7 +3,7 @@ package mathops
 import (
 	"math/big"
 	"testing"
-	)
+)
 
 func TestIntAry_GetAbsoluteValue_01(t *testing.T) {
 	numStr := "-927.351"
@@ -35,14 +35,14 @@ func TestIntAry_GetBigIntNum_01(t *testing.T) {
 	intAry, err := IntAry{}.NewBigInt(bigI, precision)
 
 	if err != nil {
-		t.Errorf("Error returned by IntAry{}.NewBigInt(bigI, precision). " +
+		t.Errorf("Error returned by IntAry{}.NewBigInt(bigI, precision). "+
 			"Error='%v' ", err.Error())
 	}
 
 	bigINum, err := intAry.GetBigIntNum()
 
 	if err != nil {
-		t.Errorf("Error returned by intAry.GetBigIntNum(). " +
+		t.Errorf("Error returned by intAry.GetBigIntNum(). "+
 			"Error='%v' ", err.Error())
 	}
 
@@ -98,7 +98,7 @@ func TestIntAry_GetCurrencySymbol_05(t *testing.T) {
 
 	ia, _ := IntAry{}.NewNumStr("50.37")
 
-	var poundSym  rune
+	var poundSym rune
 
 	poundSym = '\U000000a3'
 
@@ -118,15 +118,15 @@ func TestIntAry_GetDecimal_01(t *testing.T) {
 	controlDecimal, err := Decimal{}.NewNumStr(numStr)
 
 	if err != nil {
-		t.Errorf("Error returned by controlDecimal = Decimal{}.NewNumStr(numStr). " +
+		t.Errorf("Error returned by controlDecimal = Decimal{}.NewNumStr(numStr). "+
 			"numStr='%v' Error='%v'",
-				numStr, err.Error())
+			numStr, err.Error())
 	}
 
 	ia, err := IntAry{}.NewNumStr(numStr)
 
 	if err != nil {
-		t.Errorf("Error returned by ia = IntAry{}.NewNumStr(numStr). " +
+		t.Errorf("Error returned by ia = IntAry{}.NewNumStr(numStr). "+
 			"numStr='%v' Error='%v'",
 			numStr, err.Error())
 	}
@@ -134,18 +134,18 @@ func TestIntAry_GetDecimal_01(t *testing.T) {
 	decActual, err := ia.GetDecimal()
 
 	if err != nil {
-		t.Errorf("Error returned by decActual = ia.GetDecimal(). " +
-			"Error='%v'",	err.Error())
+		t.Errorf("Error returned by decActual = ia.GetDecimal(). "+
+			"Error='%v'", err.Error())
 	}
 
 	if numStr != decActual.GetNumStr() {
-		t.Errorf("Error: Expected decActual.GetNumStr()='%v'. Instead, " +
+		t.Errorf("Error: Expected decActual.GetNumStr()='%v'. Instead, "+
 			"decActual.GetNumStr()='%v'.",
 			numStr, decActual.GetNumStr())
 	}
 
 	if !controlDecimal.Equal(decActual) {
-		t.Errorf("Error: controlDecimal NOT EQUAL to decActual! " +
+		t.Errorf("Error: controlDecimal NOT EQUAL to decActual! "+
 			"controlDecimal='%v' decActual='%v'",
 			controlDecimal.GetNumStr(), decActual.GetNumStr())
 	}
@@ -162,7 +162,6 @@ func TestIntAry_GetDecimalSeparator_01(t *testing.T) {
 	}
 
 }
-
 
 func TestIntAry_GetDecimalSeparator_02(t *testing.T) {
 	ia, _ := IntAry{}.NewNumStr("50.37")
@@ -218,7 +217,6 @@ func TestIntAry_GetDecimalSeparator_04(t *testing.T) {
 	}
 
 }
-
 
 func TestIntAry_GetInt_01(t *testing.T) {
 
@@ -307,7 +305,7 @@ func TestIntAry_GetInt_05(t *testing.T) {
 
 func TestIntAry_GetIntAry_01(t *testing.T) {
 
-	expectedAry := []uint8{1,2,3,4,5,6,9,4,8,2,9}
+	expectedAry := []uint8{1, 2, 3, 4, 5, 6, 9, 4, 8, 2, 9}
 
 	ia, _ := IntAry{}.NewNumStr("12345694829")
 
@@ -319,7 +317,7 @@ func TestIntAry_GetIntAry_01(t *testing.T) {
 		t.Errorf("Error: Expected Retrned Int Ary Length= '%v'. Actual Int Ary Length= '%v'", expectedLen, iAryLen)
 	}
 
-	for i:= 0 ; i < iAryLen; i++ {
+	for i := 0; i < iAryLen; i++ {
 		if expectedAry[i] != iAry[i] {
 			t.Errorf("Error: Returned Int Ary Element NOT EQUAL to expected Array Element. i= '%v' Expected Value='%v'. Actual Value='%v'", i, expectedAry[i], iAry[i])
 		}
@@ -328,7 +326,6 @@ func TestIntAry_GetIntAry_01(t *testing.T) {
 }
 
 func TestIntAry_GetIntAry_02(t *testing.T) {
-
 
 	ia, _ := IntAry{}.NewNumStr("12345694829")
 
@@ -341,7 +338,6 @@ func TestIntAry_GetIntAry_02(t *testing.T) {
 	if expectedLen != iAryLen {
 		t.Errorf("Error: Expected Retrned Int Ary Length= '%v'. Actual Int Ary Length= '%v'", expectedLen, iAryLen)
 	}
-
 
 	iAry2, _ := ia.GetIntAryElements()
 
@@ -354,7 +350,7 @@ func TestIntAry_GetIntAry_02(t *testing.T) {
 
 func TestIntAry_GetIntAryDeepCopy(t *testing.T) {
 
-	expectedAry := []uint8{1,2,3,4,5,6,9,4,8,2,9}
+	expectedAry := []uint8{1, 2, 3, 4, 5, 6, 9, 4, 8, 2, 9}
 
 	ia, _ := IntAry{}.NewNumStr("12345694829")
 
@@ -366,7 +362,7 @@ func TestIntAry_GetIntAryDeepCopy(t *testing.T) {
 		t.Errorf("Error: Expected Retrned Int Ary Length= '%v'. Actual Int Ary Length= '%v'", expectedLen, iAryLen)
 	}
 
-	for i:= 0 ; i < iAryLen; i++ {
+	for i := 0; i < iAryLen; i++ {
 		if expectedAry[i] != iAry[i] {
 			t.Errorf("Error: Returned Int Ary Element NOT EQUAL to expected Array Element. i= '%v' Expected Value='%v'. Actual Value='%v'", i, expectedAry[i], iAry[i])
 		}
@@ -375,7 +371,6 @@ func TestIntAry_GetIntAryDeepCopy(t *testing.T) {
 }
 
 func TestIntAry_GetIntAryDeepCopy_02(t *testing.T) {
-
 
 	ia, _ := IntAry{}.NewNumStr("12345694829")
 
@@ -388,7 +383,6 @@ func TestIntAry_GetIntAryDeepCopy_02(t *testing.T) {
 	if expectedLen != iAryLen {
 		t.Errorf("Error: Expected Retrned Int Ary Length= '%v'. Actual Int Ary Length= '%v'", expectedLen, iAryLen)
 	}
-
 
 	iAry2, _ := ia.GetIntAryDeepCopy()
 
@@ -772,10 +766,9 @@ func TestIntAry_GetIntegerDigits_04(t *testing.T) {
 	err := ia.SetIntAryWithNumStr(nStr1)
 
 	if err != nil {
-		t.Errorf("Error returned by ia.SetIntAryWithNumStr(nStr1) " +
+		t.Errorf("Error returned by ia.SetIntAryWithNumStr(nStr1) "+
 			"nStr1='%v' Error='%v' ", nStr1, err.Error())
 	}
-
 
 	iAry2, err := ia.GetIntegerDigits()
 
@@ -812,14 +805,14 @@ func TestIntAry_GetMagnitude_01(t *testing.T) {
 	iaNum, err := IntAry{}.NewNumStr(numStr)
 
 	if err != nil {
-		t.Errorf("Error returned by ia.SetIntAryWithNumStr(nStr1) " +
+		t.Errorf("Error returned by ia.SetIntAryWithNumStr(nStr1) "+
 			"numStr='%v' Error='%v' ", numStr, err.Error())
 	}
 
 	actualMagnitude, err := iaNum.GetMagnitude()
 
 	if err != nil {
-		t.Errorf("Error returned by iaNum.GetMagnitude() " +
+		t.Errorf("Error returned by iaNum.GetMagnitude() "+
 			"Error='%v' ", err.Error())
 	}
 
@@ -838,14 +831,14 @@ func TestIntAry_GetMagnitude_02(t *testing.T) {
 	iaNum, err := IntAry{}.NewNumStr(numStr)
 
 	if err != nil {
-		t.Errorf("Error returned by ia.SetIntAryWithNumStr(nStr1) " +
+		t.Errorf("Error returned by ia.SetIntAryWithNumStr(nStr1) "+
 			"numStr='%v' Error='%v' ", numStr, err.Error())
 	}
 
 	actualMagnitude, err := iaNum.GetMagnitude()
 
 	if err != nil {
-		t.Errorf("Error returned by iaNum.GetMagnitude() " +
+		t.Errorf("Error returned by iaNum.GetMagnitude() "+
 			"Error='%v' ", err.Error())
 	}
 
@@ -863,14 +856,14 @@ func TestIntAry_GetMagnitude_03(t *testing.T) {
 	iaNum, err := IntAry{}.NewNumStr(numStr)
 
 	if err != nil {
-		t.Errorf("Error returned by ia.SetIntAryWithNumStr(nStr1) " +
+		t.Errorf("Error returned by ia.SetIntAryWithNumStr(nStr1) "+
 			"numStr='%v' Error='%v' ", numStr, err.Error())
 	}
 
 	_, err = iaNum.GetMagnitude()
 
 	if err == nil {
-		t.Error("Error: Expected error return from iaNum.GetMagnitude(). NO ERROR RETURNED! " )
+		t.Error("Error: Expected error return from iaNum.GetMagnitude(). NO ERROR RETURNED! ")
 	}
 
 }
@@ -883,12 +876,11 @@ func TestIntAry_GetMagnitudeDigits_01(t *testing.T) {
 	iaNum, err := IntAry{}.NewNumStr(numStr)
 
 	if err != nil {
-		t.Errorf("Error returned by ia.SetIntAryWithNumStr(nStr1) " +
+		t.Errorf("Error returned by ia.SetIntAryWithNumStr(nStr1) "+
 			"numStr='%v' Error='%v' ", numStr, err.Error())
 	}
 
 	actualMagnitude := iaNum.GetMagnitudeDigits()
-
 
 	if expectedMagnitude != actualMagnitude {
 		t.Errorf("Error: Expected Digits Magnitude='%v'.  Instead, Digits Magnitude='%v' ",
@@ -905,12 +897,11 @@ func TestIntAry_GetMagnitudeDigits_02(t *testing.T) {
 	iaNum, err := IntAry{}.NewNumStr(numStr)
 
 	if err != nil {
-		t.Errorf("Error returned by ia.SetIntAryWithNumStr(nStr1) " +
+		t.Errorf("Error returned by ia.SetIntAryWithNumStr(nStr1) "+
 			"numStr='%v' Error='%v' ", numStr, err.Error())
 	}
 
 	actualMagnitude := iaNum.GetMagnitudeDigits()
-
 
 	if expectedMagnitude != actualMagnitude {
 		t.Errorf("Error: Expected Digits Magnitude='%v'.  Instead, Digits Magnitude='%v' ",
@@ -927,12 +918,11 @@ func TestIntAry_GetMagnitudeDigits_03(t *testing.T) {
 	iaNum, err := IntAry{}.NewNumStr(numStr)
 
 	if err != nil {
-		t.Errorf("Error returned by ia.SetIntAryWithNumStr(nStr1) " +
+		t.Errorf("Error returned by ia.SetIntAryWithNumStr(nStr1) "+
 			"numStr='%v' Error='%v' ", numStr, err.Error())
 	}
 
 	actualMagnitude := iaNum.GetMagnitudeDigits()
-
 
 	if expectedMagnitude != actualMagnitude {
 		t.Errorf("Error: Expected Digits Magnitude='%v'.  Instead, Digits Magnitude='%v' ",
@@ -1028,7 +1018,7 @@ func TestIntAry_GetNthRootOfThis_05(t *testing.T) {
 
 	if err == nil {
 		t.Error("Expected Error from iaResult.GetNthRootOfThis(...) for negative number " +
-				"with even nthRoot. No Error triggered")
+			"with even nthRoot. No Error triggered")
 	}
 
 }
@@ -1091,22 +1081,21 @@ func TestIntAry_GetNumStrDto_01(t *testing.T) {
 	controlNDto, err := NumStrDto{}.NewNumStr(numStr)
 
 	if err != nil {
-		t.Errorf("Error returned by NumStrDto{}.NewNumStr(numStr). " +
+		t.Errorf("Error returned by NumStrDto{}.NewNumStr(numStr). "+
 			"numStr='%v'  Error='%v'", numStr, err.Error())
 	}
-
 
 	ia, err := IntAry{}.NewNumStr(numStr)
 
 	if err != nil {
-		t.Errorf("Error returned by IntAry{}.NewNumStr(numStr). " +
+		t.Errorf("Error returned by IntAry{}.NewNumStr(numStr). "+
 			"numStr='%v'  Error='%v'", numStr, err.Error())
 	}
 
 	nDto, err := ia.GetNumStrDto()
 
 	if err != nil {
-		t.Errorf("Error returned by ia.GetNumStrDto(). " +
+		t.Errorf("Error returned by ia.GetNumStrDto(). "+
 			"ia.GetNumStr()='%v'  Error='%v'", ia.GetNumStr(), err.Error())
 	}
 
@@ -1116,9 +1105,9 @@ func TestIntAry_GetNumStrDto_01(t *testing.T) {
 	}
 
 	if !controlNDto.Equal(nDto) {
-		t.Errorf("Error: controlNDto NOT EQUAL to actual nDto! " +
+		t.Errorf("Error: controlNDto NOT EQUAL to actual nDto! "+
 			"controlNDto='%v' nDto='%v'",
-				controlNDto.GetNumStr(), nDto.GetNumStr())
+			controlNDto.GetNumStr(), nDto.GetNumStr())
 	}
 
 }
@@ -1241,7 +1230,6 @@ func TestIntAry_GetThousandsSeparator_04(t *testing.T) {
 
 }
 
-
 func TestIntAry_IncrementIntegerOne_01(t *testing.T) {
 	expected := "100.123"
 	nStr1 := "-100.123"
@@ -1324,7 +1312,7 @@ func TestIntAry_Inverse_01(t *testing.T) {
 	}
 
 	if eNumStr != iaInverse.GetNumStr() {
-		t.Errorf("Expected NumStr= %v .  Instead, NumStr= %v .", eNumStr, iaInverse.GetNumStr() )
+		t.Errorf("Expected NumStr= %v .  Instead, NumStr= %v .", eNumStr, iaInverse.GetNumStr())
 	}
 
 	if maxPrecision != iaInverse.GetPrecision() {
@@ -1351,7 +1339,7 @@ func TestIntAry_Inverse_02(t *testing.T) {
 	}
 
 	if eNumStr != iaInverse.GetNumStr() {
-		t.Errorf("Expected NumStr= %v .  Instead, NumStr= %v .", eNumStr, iaInverse.GetNumStr() )
+		t.Errorf("Expected NumStr= %v .  Instead, NumStr= %v .", eNumStr, iaInverse.GetNumStr())
 	}
 
 	if maxPrecision != iaInverse.GetPrecision() {
@@ -1378,7 +1366,7 @@ func TestIntAry_Inverse_03(t *testing.T) {
 	}
 
 	if eNumStr != iaInverse.GetNumStr() {
-		t.Errorf("Expected NumStr= %v .  Instead, NumStr= %v .", eNumStr, iaInverse.GetNumStr() )
+		t.Errorf("Expected NumStr= %v .  Instead, NumStr= %v .", eNumStr, iaInverse.GetNumStr())
 	}
 
 	if maxPrecision != iaInverse.GetPrecision() {
@@ -1397,7 +1385,7 @@ func TestIntAry_IsEvenNumber_01(t *testing.T) {
 	ia, err := IntAry{}.NewNumStr(nStr)
 
 	if err != nil {
-		t.Errorf("Error returned by IntAry{}.NewNumStr(nStr). " +
+		t.Errorf("Error returned by IntAry{}.NewNumStr(nStr). "+
 			"nStr='%v' Error='%v' ", nStr, err.Error())
 	}
 
@@ -1417,7 +1405,7 @@ func TestIntAry_IsEvenNumber_02(t *testing.T) {
 	ia, err := IntAry{}.NewNumStr(nStr)
 
 	if err != nil {
-		t.Errorf("Error returned by IntAry{}.NewNumStr(nStr). " +
+		t.Errorf("Error returned by IntAry{}.NewNumStr(nStr). "+
 			"nStr='%v' Error='%v' ", nStr, err.Error())
 	}
 
@@ -1437,7 +1425,7 @@ func TestIntAry_IsEvenNumber_03(t *testing.T) {
 	ia, err := IntAry{}.NewNumStr(nStr)
 
 	if err != nil {
-		t.Errorf("Error returned by IntAry{}.NewNumStr(nStr). " +
+		t.Errorf("Error returned by IntAry{}.NewNumStr(nStr). "+
 			"nStr='%v' Error='%v' ", nStr, err.Error())
 	}
 
@@ -1457,7 +1445,7 @@ func TestIntAry_IsEvenNumber_04(t *testing.T) {
 	ia, err := IntAry{}.NewNumStr(nStr)
 
 	if err != nil {
-		t.Errorf("Error returned by IntAry{}.NewNumStr(nStr). " +
+		t.Errorf("Error returned by IntAry{}.NewNumStr(nStr). "+
 			"nStr='%v' Error='%v' ", nStr, err.Error())
 	}
 
@@ -1477,7 +1465,7 @@ func TestIntAry_IsEvenNumber_05(t *testing.T) {
 	ia, err := IntAry{}.NewNumStr(nStr)
 
 	if err != nil {
-		t.Errorf("Error returned by IntAry{}.NewNumStr(nStr). " +
+		t.Errorf("Error returned by IntAry{}.NewNumStr(nStr). "+
 			"nStr='%v' Error='%v' ", nStr, err.Error())
 	}
 
@@ -1497,7 +1485,7 @@ func TestIntAry_IsEvenNumber_06(t *testing.T) {
 	ia, err := IntAry{}.NewNumStr(nStr)
 
 	if err != nil {
-		t.Errorf("Error returned by IntAry{}.NewNumStr(nStr). " +
+		t.Errorf("Error returned by IntAry{}.NewNumStr(nStr). "+
 			"nStr='%v' Error='%v' ", nStr, err.Error())
 	}
 
@@ -1517,7 +1505,7 @@ func TestIntAry_IsEvenNumber_07(t *testing.T) {
 	ia, err := IntAry{}.NewNumStr(nStr)
 
 	if err != nil {
-		t.Errorf("Error returned by IntAry{}.NewNumStr(nStr). " +
+		t.Errorf("Error returned by IntAry{}.NewNumStr(nStr). "+
 			"nStr='%v' Error='%v' ", nStr, err.Error())
 	}
 

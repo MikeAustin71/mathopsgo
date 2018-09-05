@@ -35,7 +35,7 @@ func TestStrMathOp_AddN1N2_01(t *testing.T) {
 
 	if mOps.IFinal.GetPrecision() != ePrecision {
 		t.Errorf("Error: Expected precision= '%v'. Instead received precision= '%v'",
-									ePrecision, mOps.IFinal.GetPrecision())
+			ePrecision, mOps.IFinal.GetPrecision())
 	}
 
 	if eSignVal != mOps.IFinal.GetSign() {
@@ -52,22 +52,22 @@ func TestStrMathOp_AddN1N2_01(t *testing.T) {
 	}
 
 	for i := 0; i < lNRunes; i++ {
-		
+
 		element, _ := mOps.IFinal.GetIntAryRune(i)
-		
+
 		if nRunes[i] != element {
-			t.Errorf("Error: Expected nRunes Array does NOT match ia.NumRunes Array! " +
+			t.Errorf("Error: Expected nRunes Array does NOT match ia.NumRunes Array! "+
 				" nRunes[i]='%v' element='%v'",
-					nRunes[i], element)
+				nRunes[i], element)
 			return
 		}
 
 	}
 
 	for i := 0; i < lEArray; i++ {
-		
+
 		element, _ := mOps.IFinal.GetIntAryElement(i)
-		
+
 		if eIAry[i] != int(element) {
 
 			t.Error("Error: Expected IntAry Array does NOT match ia.IntAry! ")
@@ -1584,7 +1584,7 @@ func TestStrMathOp_AddN1N2_24(t *testing.T) {
 func TestStrMathOp_Divide_01(t *testing.T) {
 
 	dividend := "-9360"
-	divisor :=  "24.48"
+	divisor := "24.48"
 	eQuotient := "-382.35294117647058823529411764706"
 	eSignVal := -1
 	maxPrecision := 29
@@ -1611,7 +1611,7 @@ func TestStrMathOp_Divide_01(t *testing.T) {
 func TestStrMathOp_Divide_02(t *testing.T) {
 
 	dividend := "48"
-	divisor :=  "24"
+	divisor := "24"
 	eQuotient := "2"
 	eSignVal := 1
 	maxPrecision := 0
@@ -1638,7 +1638,7 @@ func TestStrMathOp_Divide_02(t *testing.T) {
 func TestStrMathOp_Divide_03(t *testing.T) {
 
 	dividend := "54"
-	divisor :=  "24"
+	divisor := "24"
 	eQuotient := "2.25"
 	eSignVal := 1
 	maxPrecision := 7
@@ -1666,7 +1666,7 @@ func TestStrMathOp_Divide_03(t *testing.T) {
 func TestStrMathOp_Divide_04(t *testing.T) {
 
 	dividend := "0"
-	divisor :=  "24"
+	divisor := "24"
 	eQuotient := "0"
 	eSignVal := 1
 	maxPrecision := 7
@@ -1694,7 +1694,7 @@ func TestStrMathOp_Divide_04(t *testing.T) {
 func TestStrMathOp_Divide_05(t *testing.T) {
 
 	dividend := "5"
-	divisor :=  "24"
+	divisor := "24"
 	eQuotient := "0.20833333333333333333333333333333"
 	eSignVal := 1
 	maxPrecision := 32
@@ -1722,7 +1722,7 @@ func TestStrMathOp_Divide_05(t *testing.T) {
 func TestStrMathOp_Divide_06(t *testing.T) {
 
 	dividend := "0.05"
-	divisor :=  "24"
+	divisor := "24"
 	eQuotient := "0.00208333333333333333333333333333"
 	eSignVal := 1
 	maxPrecision := 32
@@ -2427,7 +2427,6 @@ func TestStrMathOp_RaiseToPower_09(t *testing.T) {
 
 }
 
-
 func TestStrMathOp_RaiseToPower_10(t *testing.T) {
 	nStr1 := "-25.25"
 	power := 4
@@ -2448,7 +2447,6 @@ func TestStrMathOp_RaiseToPower_10(t *testing.T) {
 	}
 
 }
-
 
 func TestStrMathOp_SubtractN1N2_01(t *testing.T) {
 	nStr1 := "900.777"

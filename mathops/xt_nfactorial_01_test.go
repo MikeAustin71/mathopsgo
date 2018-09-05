@@ -16,7 +16,7 @@ func TestNFactorial_CalcFactorialValueBigInt_01(t *testing.T) {
 	result, err := NFactorial{}.CalcFactorialValueBigInt(n, lowerLimit)
 
 	if err != nil {
-		t.Errorf("Error returned by NFactorial{}.CalcFactorialValueBigInt(n, lowerLimit). " +
+		t.Errorf("Error returned by NFactorial{}.CalcFactorialValueBigInt(n, lowerLimit). "+
 			"Error='%v' ", err.Error())
 	}
 
@@ -40,7 +40,7 @@ func TestNFactorial_CalcFactorialValueBigInt_02(t *testing.T) {
 	result, err := NFactorial{}.CalcFactorialValueBigInt(n, lowerLimit)
 
 	if err != nil {
-		t.Errorf("Error returned by NFactorial{}.CalcFactorialValueBigInt(n, lowerLimit). " +
+		t.Errorf("Error returned by NFactorial{}.CalcFactorialValueBigInt(n, lowerLimit). "+
 			"Error='%v' ", err.Error())
 	}
 
@@ -96,7 +96,7 @@ func TestNFactorial_CalcFactorialValueBigInt_05(t *testing.T) {
 	result, err := NFactorial{}.CalcFactorialValueBigInt(n, lowerLimit)
 
 	if err != nil {
-		t.Errorf("Error returned by NFactorial{}.CalcFactorialValueBigInt(n, lowerLimit). " +
+		t.Errorf("Error returned by NFactorial{}.CalcFactorialValueBigInt(n, lowerLimit). "+
 			"Error='%v' ", err.Error())
 	}
 
@@ -120,7 +120,7 @@ func TestNFactorial_CalcFactorialValueBigInt_06(t *testing.T) {
 	result, err := NFactorial{}.CalcFactorialValueBigInt(n, lowerLimit)
 
 	if err != nil {
-		t.Errorf("Error returned by NFactorial{}.CalcFactorialValueBigInt(n, lowerLimit). " +
+		t.Errorf("Error returned by NFactorial{}.CalcFactorialValueBigInt(n, lowerLimit). "+
 			"Error='%v' ", err.Error())
 	}
 
@@ -144,7 +144,7 @@ func TestNFactorial_CalcFactorialValueBigInt_07(t *testing.T) {
 	result, err := NFactorial{}.CalcFactorialValueBigInt(n, lowerLimit)
 
 	if err != nil {
-		t.Errorf("Error returned by NFactorial{}.CalcFactorialValueBigInt(n, lowerLimit). " +
+		t.Errorf("Error returned by NFactorial{}.CalcFactorialValueBigInt(n, lowerLimit). "+
 			"Error='%v' ", err.Error())
 	}
 
@@ -189,7 +189,6 @@ func TestNFactorial_CalcFactorialValueBigInt_09(t *testing.T) {
 
 }
 
-
 func TestNFactorial_CalcFactorialValueBigInt_10(t *testing.T) {
 
 	n := big.NewInt(23)
@@ -201,7 +200,7 @@ func TestNFactorial_CalcFactorialValueBigInt_10(t *testing.T) {
 	result, err := NFactorial{}.CalcFactorialValueBigInt(n, lowerLimit)
 
 	if err != nil {
-		t.Errorf("Error returned by NFactorial{}.CalcFactorialValueBigInt(n, lowerLimit). " +
+		t.Errorf("Error returned by NFactorial{}.CalcFactorialValueBigInt(n, lowerLimit). "+
 			"Error='%v' ", err.Error())
 	}
 
@@ -225,7 +224,7 @@ func TestNFactorial_CalcFactorialValueBigIntNum_01(t *testing.T) {
 	result, err := NFactorial{}.CalcFactorialValueBigIntNum(n, lowerLimit)
 
 	if err != nil {
-		t.Errorf("Error returned by NFactorial{}.CalcFactorialValueBigIntNum(n, lowerLimit). " +
+		t.Errorf("Error returned by NFactorial{}.CalcFactorialValueBigIntNum(n, lowerLimit). "+
 			"Error='%v' ", err.Error())
 	}
 
@@ -249,7 +248,7 @@ func TestNFactorial_CalcFactorialValueBigIntNum_02(t *testing.T) {
 	result, err := NFactorial{}.CalcFactorialValueBigIntNum(n, lowerLimit)
 
 	if err != nil {
-		t.Errorf("Error returned by NFactorial{}.CalcFactorialValueBigIntNum(n, lowerLimit). " +
+		t.Errorf("Error returned by NFactorial{}.CalcFactorialValueBigIntNum(n, lowerLimit). "+
 			"Error='%v' ", err.Error())
 	}
 
@@ -305,7 +304,7 @@ func TestNFactorial_CalcFactorialValueBigIntNum_05(t *testing.T) {
 	result, err := NFactorial{}.CalcFactorialValueBigIntNum(n, lowerLimit)
 
 	if err != nil {
-		t.Errorf("Error returned by NFactorial{}.CalcFactorialValueBigIntNum(n, lowerLimit). " +
+		t.Errorf("Error returned by NFactorial{}.CalcFactorialValueBigIntNum(n, lowerLimit). "+
 			"Error='%v' ", err.Error())
 	}
 
@@ -329,7 +328,7 @@ func TestNFactorial_CalcFactorialValueBigIntNum_06(t *testing.T) {
 	result, err := NFactorial{}.CalcFactorialValueBigIntNum(n, lowerLimit)
 
 	if err != nil {
-		t.Errorf("Error returned by NFactorial{}.CalcFactorialValueBigIntNum(n, lowerLimit). " +
+		t.Errorf("Error returned by NFactorial{}.CalcFactorialValueBigIntNum(n, lowerLimit). "+
 			"Error='%v' ", err.Error())
 	}
 
@@ -353,7 +352,7 @@ func TestNFactorial_CalcFactorialValueBigIntNum_07(t *testing.T) {
 	result, err := NFactorial{}.CalcFactorialValueBigIntNum(n, lowerLimit)
 
 	if err != nil {
-		t.Errorf("Error returned by NFactorial{}.CalcFactorialValueBigIntNum(n, lowerLimit). " +
+		t.Errorf("Error returned by NFactorial{}.CalcFactorialValueBigIntNum(n, lowerLimit). "+
 			"Error='%v' ", err.Error())
 	}
 
@@ -377,7 +376,7 @@ func TestNFactorial_CalcFactorialValueInt_01(t *testing.T) {
 	result, err := NFactorial{}.CalcFactorialValueInt(n, lowerLimit)
 
 	if err != nil {
-		t.Errorf("Error returned by NFactorial{}.CalcFactorialValueInt(n, lowerLimit). " +
+		t.Errorf("Error returned by NFactorial{}.CalcFactorialValueInt(n, lowerLimit). "+
 			"Error='%v' ", err.Error())
 	}
 
@@ -401,7 +400,7 @@ func TestNFactorial_CalcFactorialValueInt_02(t *testing.T) {
 	result, err := NFactorial{}.CalcFactorialValueInt(n, lowerLimit)
 
 	if err != nil {
-		t.Errorf("Error returned by NFactorial{}.CalcFactorialValueInt(n, lowerLimit). " +
+		t.Errorf("Error returned by NFactorial{}.CalcFactorialValueInt(n, lowerLimit). "+
 			"Error='%v' ", err.Error())
 	}
 
@@ -457,7 +456,7 @@ func TestNFactorial_CalcFactorialValueInt_05(t *testing.T) {
 	result, err := NFactorial{}.CalcFactorialValueInt(n, lowerLimit)
 
 	if err != nil {
-		t.Errorf("Error returned by NFactorial{}.CalcFactorialValueInt(n, lowerLimit). " +
+		t.Errorf("Error returned by NFactorial{}.CalcFactorialValueInt(n, lowerLimit). "+
 			"Error='%v' ", err.Error())
 	}
 
@@ -481,7 +480,7 @@ func TestNFactorial_CalcFactorialValueInt_06(t *testing.T) {
 	result, err := NFactorial{}.CalcFactorialValueInt(n, lowerLimit)
 
 	if err != nil {
-		t.Errorf("Error returned by NFactorial{}.CalcFactorialValueInt(n, lowerLimit). " +
+		t.Errorf("Error returned by NFactorial{}.CalcFactorialValueInt(n, lowerLimit). "+
 			"Error='%v' ", err.Error())
 	}
 
@@ -505,7 +504,7 @@ func TestNFactorial_CalcFactorialValueInt_07(t *testing.T) {
 	result, err := NFactorial{}.CalcFactorialValueInt(n, lowerLimit)
 
 	if err != nil {
-		t.Errorf("Error returned by NFactorial{}.CalcFactorialValueInt(n, lowerLimit). " +
+		t.Errorf("Error returned by NFactorial{}.CalcFactorialValueInt(n, lowerLimit). "+
 			"Error='%v' ", err.Error())
 	}
 
@@ -518,7 +517,6 @@ func TestNFactorial_CalcFactorialValueInt_07(t *testing.T) {
 
 }
 
-
 func TestNFactorial_CalcFactorialValueInt32_01(t *testing.T) {
 
 	n := int32(5)
@@ -530,7 +528,7 @@ func TestNFactorial_CalcFactorialValueInt32_01(t *testing.T) {
 	result, err := NFactorial{}.CalcFactorialValueInt32(n, lowerLimit)
 
 	if err != nil {
-		t.Errorf("Error returned by NFactorial{}.CalcFactorialValueInt32(n, lowerLimit). " +
+		t.Errorf("Error returned by NFactorial{}.CalcFactorialValueInt32(n, lowerLimit). "+
 			"Error='%v' ", err.Error())
 	}
 
@@ -554,7 +552,7 @@ func TestNFactorial_CalcFactorialValueInt32_02(t *testing.T) {
 	result, err := NFactorial{}.CalcFactorialValueInt32(n, lowerLimit)
 
 	if err != nil {
-		t.Errorf("Error returned by NFactorial{}.CalcFactorialValueInt32(n, lowerLimit). " +
+		t.Errorf("Error returned by NFactorial{}.CalcFactorialValueInt32(n, lowerLimit). "+
 			"Error='%v' ", err.Error())
 	}
 
@@ -610,7 +608,7 @@ func TestNFactorial_CalcFactorialValueInt32_05(t *testing.T) {
 	result, err := NFactorial{}.CalcFactorialValueInt32(n, lowerLimit)
 
 	if err != nil {
-		t.Errorf("Error returned by NFactorial{}.CalcFactorialValueInt32(n, lowerLimit). " +
+		t.Errorf("Error returned by NFactorial{}.CalcFactorialValueInt32(n, lowerLimit). "+
 			"Error='%v' ", err.Error())
 	}
 
@@ -634,7 +632,7 @@ func TestNFactorial_CalcFactorialValueInt32_06(t *testing.T) {
 	result, err := NFactorial{}.CalcFactorialValueInt32(n, lowerLimit)
 
 	if err != nil {
-		t.Errorf("Error returned by NFactorial{}.CalcFactorialValueInt32(n, lowerLimit). " +
+		t.Errorf("Error returned by NFactorial{}.CalcFactorialValueInt32(n, lowerLimit). "+
 			"Error='%v' ", err.Error())
 	}
 
@@ -658,7 +656,7 @@ func TestNFactorial_CalcFactorialValueInt32_07(t *testing.T) {
 	result, err := NFactorial{}.CalcFactorialValueInt32(n, lowerLimit)
 
 	if err != nil {
-		t.Errorf("Error returned by NFactorial{}.CalcFactorialValueInt32(n, lowerLimit). " +
+		t.Errorf("Error returned by NFactorial{}.CalcFactorialValueInt32(n, lowerLimit). "+
 			"Error='%v' ", err.Error())
 	}
 
@@ -682,7 +680,7 @@ func TestNFactorial_CalcFactorialValueInt64_01(t *testing.T) {
 	result, err := NFactorial{}.CalcFactorialValueInt64(n, lowerLimit)
 
 	if err != nil {
-		t.Errorf("Error returned by NFactorial{}.CalcFactorialValueInt64(n, lowerLimit). " +
+		t.Errorf("Error returned by NFactorial{}.CalcFactorialValueInt64(n, lowerLimit). "+
 			"Error='%v' ", err.Error())
 	}
 
@@ -706,7 +704,7 @@ func TestNFactorial_CalcFactorialValueInt64_02(t *testing.T) {
 	result, err := NFactorial{}.CalcFactorialValueInt64(n, lowerLimit)
 
 	if err != nil {
-		t.Errorf("Error returned by NFactorial{}.CalcFactorialValueInt64(n, lowerLimit). " +
+		t.Errorf("Error returned by NFactorial{}.CalcFactorialValueInt64(n, lowerLimit). "+
 			"Error='%v' ", err.Error())
 	}
 
@@ -762,7 +760,7 @@ func TestNFactorial_CalcFactorialValueInt64_05(t *testing.T) {
 	result, err := NFactorial{}.CalcFactorialValueInt64(n, lowerLimit)
 
 	if err != nil {
-		t.Errorf("Error returned by NFactorial{}.CalcFactorialValueInt64(n, lowerLimit). " +
+		t.Errorf("Error returned by NFactorial{}.CalcFactorialValueInt64(n, lowerLimit). "+
 			"Error='%v' ", err.Error())
 	}
 
@@ -786,7 +784,7 @@ func TestNFactorial_CalcFactorialValueInt64_06(t *testing.T) {
 	result, err := NFactorial{}.CalcFactorialValueInt64(n, lowerLimit)
 
 	if err != nil {
-		t.Errorf("Error returned by NFactorial{}.CalcFactorialValueInt64(n, lowerLimit). " +
+		t.Errorf("Error returned by NFactorial{}.CalcFactorialValueInt64(n, lowerLimit). "+
 			"Error='%v' ", err.Error())
 	}
 
@@ -810,7 +808,7 @@ func TestNFactorial_CalcFactorialValueInt64_07(t *testing.T) {
 	result, err := NFactorial{}.CalcFactorialValueInt64(n, lowerLimit)
 
 	if err != nil {
-		t.Errorf("Error returned by NFactorial{}.CalcFactorialValueInt64(n, lowerLimit). " +
+		t.Errorf("Error returned by NFactorial{}.CalcFactorialValueInt64(n, lowerLimit). "+
 			"Error='%v' ", err.Error())
 	}
 
@@ -836,7 +834,7 @@ func TestNFactorial_CalcNFactorialValue_01(t *testing.T) {
 	result, err := NFactorial{}.CalcNFactorialValue(nFac)
 
 	if err != nil {
-		t.Errorf("Error returned by NFactorial{}.CalcNFactorialValue(n, lowerLimit). " +
+		t.Errorf("Error returned by NFactorial{}.CalcNFactorialValue(n, lowerLimit). "+
 			"Error='%v' ", err.Error())
 	}
 
@@ -862,7 +860,7 @@ func TestNFactorial_CalcNFactorialValue_02(t *testing.T) {
 	result, err := NFactorial{}.CalcNFactorialValue(nFac)
 
 	if err != nil {
-		t.Errorf("Error returned by NFactorial{}.CalcNFactorialValue(n, lowerLimit). " +
+		t.Errorf("Error returned by NFactorial{}.CalcNFactorialValue(n, lowerLimit). "+
 			"Error='%v' ", err.Error())
 	}
 
@@ -882,7 +880,6 @@ func TestNFactorial_CalcNFactorialValue_03(t *testing.T) {
 	nFac.UpperLimit = uint64(5)
 
 	nFac.LowerLimit = uint64(94)
-
 
 	_, err := NFactorial{}.CalcNFactorialValue(nFac)
 
@@ -925,7 +922,7 @@ func TestNFactorial_CalcNFactorialValue_05(t *testing.T) {
 	result, err := NFactorial{}.CalcNFactorialValue(nFac)
 
 	if err != nil {
-		t.Errorf("Error returned by NFactorial{}.CalcNFactorialValue(nFac). " +
+		t.Errorf("Error returned by NFactorial{}.CalcNFactorialValue(nFac). "+
 			"Error='%v' ", err.Error())
 	}
 
@@ -951,7 +948,7 @@ func TestNFactorial_CalcNFactorialValue_06(t *testing.T) {
 	result, err := NFactorial{}.CalcNFactorialValue(nFac)
 
 	if err != nil {
-		t.Errorf("Error returned by NFactorial{}.CalcNFactorialValue(nFac). " +
+		t.Errorf("Error returned by NFactorial{}.CalcNFactorialValue(nFac). "+
 			"Error='%v' ", err.Error())
 	}
 
@@ -977,7 +974,7 @@ func TestNFactorial_CalcNFactorialValue_07(t *testing.T) {
 	result, err := NFactorial{}.CalcNFactorialValue(nFac)
 
 	if err != nil {
-		t.Errorf("Error returned by NFactorial{}.CalcFactorialValueInt64(n, lowerLimit). " +
+		t.Errorf("Error returned by NFactorial{}.CalcFactorialValueInt64(n, lowerLimit). "+
 			"Error='%v' ", err.Error())
 	}
 
@@ -1001,7 +998,7 @@ func TestNFactorial_CalcFactorialValueUint_01(t *testing.T) {
 	result, err := NFactorial{}.CalcFactorialValueUint(n, lowerLimit)
 
 	if err != nil {
-		t.Errorf("Error returned by NFactorial{}.CalcFactorialValueUint(n, lowerLimit). " +
+		t.Errorf("Error returned by NFactorial{}.CalcFactorialValueUint(n, lowerLimit). "+
 			"Error='%v' ", err.Error())
 	}
 
@@ -1025,7 +1022,7 @@ func TestNFactorial_CalcFactorialValueUint_02(t *testing.T) {
 	result, err := NFactorial{}.CalcFactorialValueUint(n, lowerLimit)
 
 	if err != nil {
-		t.Errorf("Error returned by NFactorial{}.CalcFactorialValueUint(n, lowerLimit). " +
+		t.Errorf("Error returned by NFactorial{}.CalcFactorialValueUint(n, lowerLimit). "+
 			"Error='%v' ", err.Error())
 	}
 
@@ -1081,7 +1078,7 @@ func TestNFactorial_CalcFactorialValueUint_05(t *testing.T) {
 	result, err := NFactorial{}.CalcFactorialValueUint(n, lowerLimit)
 
 	if err != nil {
-		t.Errorf("Error returned by NFactorial{}.CalcFactorialValueUint(n, lowerLimit). " +
+		t.Errorf("Error returned by NFactorial{}.CalcFactorialValueUint(n, lowerLimit). "+
 			"Error='%v' ", err.Error())
 	}
 
@@ -1105,7 +1102,7 @@ func TestNFactorial_CalcFactorialValueUint_06(t *testing.T) {
 	result, err := NFactorial{}.CalcFactorialValueUint(n, lowerLimit)
 
 	if err != nil {
-		t.Errorf("Error returned by NFactorial{}.CalcFactorialValueUint(n, lowerLimit). " +
+		t.Errorf("Error returned by NFactorial{}.CalcFactorialValueUint(n, lowerLimit). "+
 			"Error='%v' ", err.Error())
 	}
 
@@ -1129,7 +1126,7 @@ func TestNFactorial_CalcFactorialValueUint_07(t *testing.T) {
 	result, err := NFactorial{}.CalcFactorialValueUint(n, lowerLimit)
 
 	if err != nil {
-		t.Errorf("Error returned by NFactorial{}.CalcFactorialValueInt64(n, lowerLimit). " +
+		t.Errorf("Error returned by NFactorial{}.CalcFactorialValueInt64(n, lowerLimit). "+
 			"Error='%v' ", err.Error())
 	}
 
@@ -1153,7 +1150,7 @@ func TestNFactorial_CalcFactorialValueUint32_01(t *testing.T) {
 	result, err := NFactorial{}.CalcFactorialValueUint32(n, lowerLimit)
 
 	if err != nil {
-		t.Errorf("Error returned by NFactorial{}.CalcFactorialValueUint32(n, lowerLimit). " +
+		t.Errorf("Error returned by NFactorial{}.CalcFactorialValueUint32(n, lowerLimit). "+
 			"Error='%v' ", err.Error())
 	}
 
@@ -1177,7 +1174,7 @@ func TestNFactorial_CalcFactorialValueUint32_02(t *testing.T) {
 	result, err := NFactorial{}.CalcFactorialValueUint32(n, lowerLimit)
 
 	if err != nil {
-		t.Errorf("Error returned by NFactorial{}.CalcFactorialValueUint32(n, lowerLimit). " +
+		t.Errorf("Error returned by NFactorial{}.CalcFactorialValueUint32(n, lowerLimit). "+
 			"Error='%v' ", err.Error())
 	}
 
@@ -1233,7 +1230,7 @@ func TestNFactorial_CalcFactorialValueUint32_05(t *testing.T) {
 	result, err := NFactorial{}.CalcFactorialValueUint32(n, lowerLimit)
 
 	if err != nil {
-		t.Errorf("Error returned by NFactorial{}.CalcFactorialValueUint32(n, lowerLimit). " +
+		t.Errorf("Error returned by NFactorial{}.CalcFactorialValueUint32(n, lowerLimit). "+
 			"Error='%v' ", err.Error())
 	}
 
@@ -1257,7 +1254,7 @@ func TestNFactorial_CalcFactorialValueUint32_06(t *testing.T) {
 	result, err := NFactorial{}.CalcFactorialValueUint32(n, lowerLimit)
 
 	if err != nil {
-		t.Errorf("Error returned by NFactorial{}.CalcFactorialValueUint32(n, lowerLimit). " +
+		t.Errorf("Error returned by NFactorial{}.CalcFactorialValueUint32(n, lowerLimit). "+
 			"Error='%v' ", err.Error())
 	}
 
@@ -1281,7 +1278,7 @@ func TestNFactorial_CalcFactorialValueUint32_07(t *testing.T) {
 	result, err := NFactorial{}.CalcFactorialValueUint32(n, lowerLimit)
 
 	if err != nil {
-		t.Errorf("Error returned by NFactorial{}.CalcFactorialValueInt64(n, lowerLimit). " +
+		t.Errorf("Error returned by NFactorial{}.CalcFactorialValueInt64(n, lowerLimit). "+
 			"Error='%v' ", err.Error())
 	}
 
@@ -1305,7 +1302,7 @@ func TestNFactorial_CalcFactorialValueUint64_01(t *testing.T) {
 	result, err := NFactorial{}.CalcFactorialValueUint64(n, lowerLimit)
 
 	if err != nil {
-		t.Errorf("Error returned by NFactorial{}.CalcFactorialValueUint64(n, lowerLimit). " +
+		t.Errorf("Error returned by NFactorial{}.CalcFactorialValueUint64(n, lowerLimit). "+
 			"Error='%v' ", err.Error())
 	}
 
@@ -1329,7 +1326,7 @@ func TestNFactorial_CalcFactorialValueUint64_02(t *testing.T) {
 	result, err := NFactorial{}.CalcFactorialValueUint64(n, lowerLimit)
 
 	if err != nil {
-		t.Errorf("Error returned by NFactorial{}.CalcFactorialValueUint64(n, lowerLimit). " +
+		t.Errorf("Error returned by NFactorial{}.CalcFactorialValueUint64(n, lowerLimit). "+
 			"Error='%v' ", err.Error())
 	}
 
@@ -1385,7 +1382,7 @@ func TestNFactorial_CalcFactorialValueUint64_05(t *testing.T) {
 	result, err := NFactorial{}.CalcFactorialValueUint64(n, lowerLimit)
 
 	if err != nil {
-		t.Errorf("Error returned by NFactorial{}.CalcFactorialValueUint64(n, lowerLimit). " +
+		t.Errorf("Error returned by NFactorial{}.CalcFactorialValueUint64(n, lowerLimit). "+
 			"Error='%v' ", err.Error())
 	}
 
@@ -1409,7 +1406,7 @@ func TestNFactorial_CalcFactorialValueUint64_06(t *testing.T) {
 	result, err := NFactorial{}.CalcFactorialValueUint64(n, lowerLimit)
 
 	if err != nil {
-		t.Errorf("Error returned by NFactorial{}.CalcFactorialValueUint64(n, lowerLimit). " +
+		t.Errorf("Error returned by NFactorial{}.CalcFactorialValueUint64(n, lowerLimit). "+
 			"Error='%v' ", err.Error())
 	}
 
@@ -1433,7 +1430,7 @@ func TestNFactorial_CalcFactorialValueUint64_07(t *testing.T) {
 	result, err := NFactorial{}.CalcFactorialValueUint64(n, lowerLimit)
 
 	if err != nil {
-		t.Errorf("Error returned by NFactorial{}.CalcFactorialValueInt64(n, lowerLimit). " +
+		t.Errorf("Error returned by NFactorial{}.CalcFactorialValueInt64(n, lowerLimit). "+
 			"Error='%v' ", err.Error())
 	}
 

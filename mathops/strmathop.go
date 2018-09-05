@@ -63,8 +63,6 @@ func (sMathOp *StrMathOp) Empty() {
 
 }
 
-
-
 // AddN1N2 - Adds the values in the N1 and N2 arrays
 // and returns the sum in the IFinal Array. Arrays
 // N1 and N2 must be first correctly populated before
@@ -76,9 +74,9 @@ func (sMathOp *StrMathOp) AddN1N2() error {
 	err := sMathOp.IFinal.AddToThis(&sMathOp.N2)
 
 	if err != nil {
-		return fmt.Errorf("StrMathOp.AddN1N2() Error returned by " +
+		return fmt.Errorf("StrMathOp.AddN1N2() Error returned by "+
 			"sMathOp.IFinal.AddToThis(&sMathOp.N2). Error='%v'",
-				err.Error())
+			err.Error())
 	}
 
 	return nil
@@ -96,7 +94,6 @@ func (sMathOp *StrMathOp) RaiseToPower(power int) error {
 		return fmt.Errorf("error: power is less than zero - power= '%v'", power)
 	}
 
-
 	sMathOp.N1.SetInternalFlags()
 
 	sMathOp.IFinal = sMathOp.N1.CopyOut()
@@ -108,23 +105,20 @@ func (sMathOp *StrMathOp) RaiseToPower(power int) error {
 		return nil
 	}
 
-
 	if power == 0 {
 
 		sMathOp.IFinal.SetIntAryToOne(resultPrecision)
 		return nil
 	}
 
-
 	if power == 1 {
 
 		return nil
 	}
 
-
 	resultPrecision = resultPrecision * power
 
-	sMathOp.IFinal.Pow(power, resultPrecision , resultPrecision + 1500)
+	sMathOp.IFinal.Pow(power, resultPrecision, resultPrecision+1500)
 
 	return nil
 }
@@ -153,11 +147,10 @@ func (sMathOp *StrMathOp) MultiplyN1N2() error {
 	err := sMathOp.IFinal.MultiplyThisBy(&sMathOp.N2, greatestPrecision, maxPrecision)
 
 	if err != nil {
-		return fmt.Errorf("StrMathOp.MultiplyN1N2() Error returned by " +
-			"sMathOp.IFinal.MultiplyThisBy(&sMathOp.N2, maxPrecision) " +
+		return fmt.Errorf("StrMathOp.MultiplyN1N2() Error returned by "+
+			"sMathOp.IFinal.MultiplyThisBy(&sMathOp.N2, maxPrecision) "+
 			"Error='%v' ", err.Error())
 	}
-
 
 	return nil
 }
@@ -209,7 +202,6 @@ func (sMathOp *StrMathOp) Divide(maxPrecision int) error {
 		deltaMag = uint(dividendMag - divisorMag)
 		tensCount.MultiplyByTenToPower(deltaMag)
 		incrementVal.MultiplyThisBy(&tensCount, -1, -1)
-
 
 	} else if divisorMag > dividendMag {
 		deltaMag = uint(divisorMag - dividendMag)
@@ -309,9 +301,7 @@ func (sMathOp *StrMathOp) DivideBySubtraction() {
 	return
 }
 
-func (sMathOp *StrMathOp) SubtractDivArys()  {
-
-
+func (sMathOp *StrMathOp) SubtractDivArys() {
 
 }
 
@@ -321,15 +311,14 @@ func (sMathOp *StrMathOp) SubtractDivArys()  {
 //
 func (sMathOp *StrMathOp) SubtractN1N2() error {
 
-
 	sMathOp.IFinal = sMathOp.N1.CopyOut()
 
 	err := sMathOp.IFinal.SubtractFromThis(&sMathOp.N2)
 
 	if err != nil {
-		return fmt.Errorf("StrMathOp.SubtractN1N2() Error returned by " +
+		return fmt.Errorf("StrMathOp.SubtractN1N2() Error returned by "+
 			"sMathOp.IFinal.SubtractFromThis(&sMathOp.N2). Error='%v'",
-				err.Error())
+			err.Error())
 	}
 
 	return nil
