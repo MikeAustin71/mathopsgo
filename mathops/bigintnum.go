@@ -3150,9 +3150,9 @@ func (bNum BigIntNum) NewZero(precision uint) BigIntNum {
 // syntax thereby allowing BigIntNum type creation and initialization in
 // one step.
 //
-// 				num := uint(123456)
+// 				uintNum := uint(123456)
 // 				precision := uint(3)
-// 				bINum := BigIntNum{}.NewUint(num, precision)
+// 				bINum := BigIntNum{}.NewUint(uintNum, precision)
 //        bINum is now equal to 123.456
 //
 // Examples:
@@ -3212,7 +3212,7 @@ func (bNum BigIntNum) NewUintExponent(uintNum uint, exponent int) BigIntNum {
 //
 // Input parameter 'precision' indicates the number of digits to be
 // formatted to the right of the decimal place and is passed as type
-// 'uint'
+// 'uint'.
 //
 // Usage:
 // ------
@@ -3220,9 +3220,9 @@ func (bNum BigIntNum) NewUintExponent(uintNum uint, exponent int) BigIntNum {
 // syntax thereby allowing BigIntNum type creation and initialization in
 // one step.
 //
-// 				num := uint32(123456)
+// 				uint32Num := uint32(123456)
 // 				precision := uint(3)
-// 				bINum := BigIntNum{}.NewUint32(num, precision)
+// 				bINum := BigIntNum{}.NewUint32(uint32Num, precision)
 //        bINum is now equal to 123.456
 //
 // Examples:
@@ -3290,9 +3290,9 @@ func (bNum BigIntNum) NewUint32Exponent(uint32Num uint32, exponent int) BigIntNu
 // syntax thereby allowing BigIntNum type creation and initialization in
 // one step.
 //
-// 				num := uint64(123456)
+// 				uint64Num := uint64(123456)
 // 				precision := uint(3)
-// 				bINum := BigIntNum{}.NewUint64(num, precision)
+// 				bINum := BigIntNum{}.NewUint64(uint64Num, precision)
 //        bINum is now equal to 123.456
 //
 // Examples:

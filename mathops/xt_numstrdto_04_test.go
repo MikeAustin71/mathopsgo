@@ -1,8 +1,8 @@
 package mathops
 
 import (
-	"testing"
 	"math/big"
+	"testing"
 )
 
 
