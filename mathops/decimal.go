@@ -1508,9 +1508,9 @@ func (dec Decimal) NewBigIntNum(bigINum BigIntNum) Decimal {
 // syntax thereby allowing Decimal type creation and initialization in
 // one step.
 //
-// 				num := int(123456)
+// 				intNum := int(123456)
 // 				precision := uint(3)
-// 				dec := Decimal{}.NewInt(num, precision)
+// 				dec := Decimal{}.NewInt(intNum, precision)
 //        dec is now equal to 123.456
 //
 // Examples:
@@ -1590,7 +1590,7 @@ func (dec Decimal) NewIntExponent(intNum int, exponent int) Decimal {
 //
 // Examples:
 // ---------
-//   int32Num			precision			Decimal Result
+//  int32Num			precision			Decimal Result
 //	 123456		 		   4							12.3456
 //   123456          0              123456
 //   123456          1              12345.6
@@ -1616,9 +1616,9 @@ func (dec Decimal) NewInt32(int32Num int32, precision uint) Decimal {
 //
 // Usage:
 // ------
-// This method is designed to be used in conjunction with the Decimal{}
-// syntax thereby allowing Decimal type creation and initialization in
-// one step.
+// This method is designed to be used in conjunction
+// with the Decimal{} syntax thereby allowing Decimal
+// type creation and initialization in one step.
 //
 //	decNum := Decimal{}.NewInt32Exponent(123456, -3)
 //  -- decNum is now equal to "123.456", precision = 3
@@ -1650,15 +1650,15 @@ func (dec Decimal) NewInt32Exponent(int32Num int32, exponent int) Decimal {
 //
 // Input parameter 'int64Num' is of type int64.
 //
-// Input parameter 'precision' indicates the number of digits to be
-// formatted to the right of the decimal place. Input parameter
-// 'precision' is of type uint.
+// Input parameter 'precision' indicates the number
+// of digits to be formatted to the right of the decimal
+// place. Input parameter 'precision' is of type uint.
 //
 // Usage:
 // ------
-// This method is designed to be used in conjunction with the Decimal{}
-// syntax thereby allowing Decimal type creation and initialization in
-// one step.
+// This method is designed to be used in conjunction
+// with the Decimal{} syntax thereby allowing Decimal
+// type creation and initialization in one step.
 //
 // 				int64Num := int64(123456)
 // 				precision := uint(3)

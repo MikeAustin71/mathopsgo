@@ -2655,9 +2655,9 @@ func (bNum BigIntNum) NewInt32Exponent(int32Num int32, exponent int) BigIntNum {
 // syntax thereby allowing BigIntNum type creation and initialization in
 // one step.
 //
-// 				num := int64(123456)
+// 				int64Num := int64(123456)
 // 				precision := uint(3)
-// 				bINum := BigIntNum{}.NewInt64(num, precision)
+// 				bINum := BigIntNum{}.NewInt64(int64Num, precision)
 //        bINum is now equal to 123.456
 //
 // Examples:

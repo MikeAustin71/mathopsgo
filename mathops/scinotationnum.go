@@ -2,8 +2,8 @@ package mathops
 
 import (
 	"errors"
-	"strings"
 	"fmt"
+	"strings"
 )
 
 // Example Scientific Notation

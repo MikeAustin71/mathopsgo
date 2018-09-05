@@ -2954,7 +2954,16 @@ func (nDto NumStrDto) NewZero(precision uint) NumStrDto {
 		}
 	}
 
-	n2, _ := NumStrDto{}.NewPtr().ParseNumStr(numStr)
+	n2, err := NumStrDto{}.NewPtr().ParseNumStr(numStr)
+
+	// This should NEVER produce an error.
+	if err != nil {
+		ePrefix := "NumStrDto.NewZero() "
+		sErr := fmt.Sprintf(ePrefix +
+			"Error returned by NumStrDto{}.NewPtr().ParseNumStr(numStr). " +
+			"numStr='%v' Error='%v' ", numStr, err.Error())
+		panic(sErr)
+	}
 
 	return n2
 }
