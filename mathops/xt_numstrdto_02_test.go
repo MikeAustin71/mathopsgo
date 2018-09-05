@@ -12,7 +12,7 @@ func TestNumStrDto_CompareAbsoluteVals_01(t *testing.T) {
 	n1, _ := nDto.ParseNumStr(nStr1)
 	n2, _ := nDto.ParseNumStr(nStr2)
 
-	cmpSgn := nDto.CompareAbsoluteVals(&n1, &n2)
+	cmpSgn := nDto.CompareAbsoluteValues(&n1, &n2)
 
 	if cmpSgn != expectedCompare {
 		t.Errorf("Compared Absolute Values n1= '%v' and n2='%v'. Expected Comparison= '%v'. Instead got '%v'", nStr1, nStr2, expectedCompare, cmpSgn)
@@ -28,7 +28,7 @@ func TestNumStrDto_CompareAbsoluteVals_02(t *testing.T) {
 	n1, _ := nDto.ParseNumStr(nStr1)
 	n2, _ := nDto.ParseNumStr(nStr2)
 
-	cmpSgn := nDto.CompareAbsoluteVals(&n1, &n2)
+	cmpSgn := nDto.CompareAbsoluteValues(&n1, &n2)
 
 	if cmpSgn != expectedCompare {
 		t.Errorf("Compared Absolute Values n1= '%v' and n2='%v'. Expected Comparison= '%v'. Instead got '%v'", nStr1, nStr2, expectedCompare, cmpSgn)
@@ -44,7 +44,7 @@ func TestNumStrDto_CompareAbsoluteVals_03(t *testing.T) {
 	n1, _ := nDto.ParseNumStr(nStr1)
 	n2, _ := nDto.ParseNumStr(nStr2)
 
-	cmpSgn := nDto.CompareAbsoluteVals(&n1, &n2)
+	cmpSgn := nDto.CompareAbsoluteValues(&n1, &n2)
 
 	if cmpSgn != expectedCompare {
 		t.Errorf("Compared Absolute Values n1= '%v' and n2='%v'. Expected Comparison= '%v'. Instead got '%v'", nStr1, nStr2, expectedCompare, cmpSgn)
@@ -60,7 +60,7 @@ func TestNumStrDto_CompareAbsoluteVals_04(t *testing.T) {
 	n1, _ := nDto.ParseNumStr(nStr1)
 	n2, _ := nDto.ParseNumStr(nStr2)
 
-	cmpSgn := nDto.CompareAbsoluteVals(&n1, &n2)
+	cmpSgn := nDto.CompareAbsoluteValues(&n1, &n2)
 
 	if cmpSgn != expectedCompare {
 		t.Errorf("Compared Absolute Values n1= '%v' and n2='%v'. Expected Comparison= '%v'. Instead got '%v'", nStr1, nStr2, expectedCompare, cmpSgn)
@@ -76,7 +76,7 @@ func TestNumStrDto_CompareAbsoluteVals_05(t *testing.T) {
 	n1, _ := nDto.ParseNumStr(nStr1)
 	n2, _ := nDto.ParseNumStr(nStr2)
 
-	cmpSgn := nDto.CompareAbsoluteVals(&n1, &n2)
+	cmpSgn := nDto.CompareAbsoluteValues(&n1, &n2)
 
 	if cmpSgn != expectedCompare {
 		t.Errorf("Compared Absolute Values n1= '%v' and n2='%v'. Expected Comparison= '%v'. Instead got '%v'", nStr1, nStr2, expectedCompare, cmpSgn)
@@ -92,7 +92,7 @@ func TestNumStrDto_CompareAbsoluteVals_06(t *testing.T) {
 	n1, _ := nDto.ParseNumStr(nStr1)
 	n2, _ := nDto.ParseNumStr(nStr2)
 
-	cmpSgn := nDto.CompareAbsoluteVals(&n1, &n2)
+	cmpSgn := nDto.CompareAbsoluteValues(&n1, &n2)
 
 	if cmpSgn != expectedCompare {
 		t.Errorf("Compared Absolute Values n1= '%v' and n2='%v'. Expected Comparison= '%v'. Instead got '%v'", nStr1, nStr2, expectedCompare, cmpSgn)
@@ -108,7 +108,7 @@ func TestNumStrDto_CompareAbsoluteVals_07(t *testing.T) {
 	n1, _ := nDto.ParseNumStr(nStr1)
 	n2, _ := nDto.ParseNumStr(nStr2)
 
-	cmpSgn := nDto.CompareAbsoluteVals(&n1, &n2)
+	cmpSgn := nDto.CompareAbsoluteValues(&n1, &n2)
 
 	if cmpSgn != expectedCompare {
 		t.Errorf("Compared Absolute Values n1= '%v' and n2='%v'. Expected Comparison= '%v'. Instead got '%v'", nStr1, nStr2, expectedCompare, cmpSgn)
@@ -124,7 +124,7 @@ func TestNumStrDto_CompareAbsoluteVals_08(t *testing.T) {
 	n1, _ := nDto.ParseNumStr(nStr1)
 	n2, _ := nDto.ParseNumStr(nStr2)
 
-	cmpSgn := nDto.CompareAbsoluteVals(&n1, &n2)
+	cmpSgn := nDto.CompareAbsoluteValues(&n1, &n2)
 
 	if cmpSgn != expectedCompare {
 		t.Errorf("Compared Absolute Values n1= '%v' and n2='%v'. Expected Comparison= '%v'. Instead got '%v'", nStr1, nStr2, expectedCompare, cmpSgn)
@@ -140,7 +140,7 @@ func TestNumStrDto_CompareSignedVals_01(t *testing.T) {
 	n1, _ := nDto.ParseNumStr(nStr1)
 	n2, _ := nDto.ParseNumStr(nStr2)
 
-	cmpSgn := nDto.CompareSignedVals(&n1, &n2)
+	cmpSgn := nDto.CompareSignedValues(&n1, &n2)
 
 	if cmpSgn != expectedCompare {
 		t.Errorf("Compared Signed Values n1= '%v' and n2='%v'. Expected Comparison= '%v'. Instead got '%v'", nStr1, nStr2, expectedCompare, cmpSgn)
@@ -156,7 +156,7 @@ func TestNumStrDto_CompareSignedVals_02(t *testing.T) {
 	n1, _ := nDto.ParseNumStr(nStr1)
 	n2, _ := nDto.ParseNumStr(nStr2)
 
-	cmpSgn := nDto.CompareSignedVals(&n1, &n2)
+	cmpSgn := nDto.CompareSignedValues(&n1, &n2)
 
 	if cmpSgn != expectedCompare {
 		t.Errorf("Compared Signed Values n1= '%v' and n2='%v'. Expected Comparison= '%v'. Instead got '%v'", nStr1, nStr2, expectedCompare, cmpSgn)
@@ -172,7 +172,7 @@ func TestNumStrDto_CompareSignedVals_03(t *testing.T) {
 	n1, _ := nDto.ParseNumStr(nStr1)
 	n2, _ := nDto.ParseNumStr(nStr2)
 
-	cmpSgn := nDto.CompareSignedVals(&n1, &n2)
+	cmpSgn := nDto.CompareSignedValues(&n1, &n2)
 
 	if cmpSgn != expectedCompare {
 		t.Errorf("Compared Signed Values n1= '%v' and n2='%v'. Expected Comparison= '%v'. Instead got '%v'", nStr1, nStr2, expectedCompare, cmpSgn)
@@ -188,7 +188,7 @@ func TestNumStrDto_CompareSignedVals_04(t *testing.T) {
 	n1, _ := nDto.ParseNumStr(nStr1)
 	n2, _ := nDto.ParseNumStr(nStr2)
 
-	cmpSgn := nDto.CompareSignedVals(&n1, &n2)
+	cmpSgn := nDto.CompareSignedValues(&n1, &n2)
 
 	if cmpSgn != expectedCompare {
 		t.Errorf("Compared Signed Values n1= '%v' and n2='%v'. Expected Comparison= '%v'. Instead got '%v'", nStr1, nStr2, expectedCompare, cmpSgn)
@@ -204,7 +204,7 @@ func TestNumStrDto_CompareSignedVals_05(t *testing.T) {
 	n1, _ := nDto.ParseNumStr(nStr1)
 	n2, _ := nDto.ParseNumStr(nStr2)
 
-	cmpSgn := nDto.CompareSignedVals(&n1, &n2)
+	cmpSgn := nDto.CompareSignedValues(&n1, &n2)
 
 	if cmpSgn != expectedCompare {
 		t.Errorf("Compared Signed Values n1= '%v' and n2='%v'. Expected Comparison= '%v'. Instead got '%v'", nStr1, nStr2, expectedCompare, cmpSgn)
@@ -220,7 +220,7 @@ func TestNumStrDto_CompareSignedVals_06(t *testing.T) {
 	n1, _ := nDto.ParseNumStr(nStr1)
 	n2, _ := nDto.ParseNumStr(nStr2)
 
-	cmpSgn := nDto.CompareSignedVals(&n1, &n2)
+	cmpSgn := nDto.CompareSignedValues(&n1, &n2)
 
 	if cmpSgn != expectedCompare {
 		t.Errorf("Compared Signed Values n1= '%v' and n2='%v'. Expected Comparison= '%v'. Instead got '%v'", nStr1, nStr2, expectedCompare, cmpSgn)
@@ -236,7 +236,7 @@ func TestNumStrDto_CompareSignedVals_07(t *testing.T) {
 	n1, _ := nDto.ParseNumStr(nStr1)
 	n2, _ := nDto.ParseNumStr(nStr2)
 
-	cmpSgn := nDto.CompareSignedVals(&n1, &n2)
+	cmpSgn := nDto.CompareSignedValues(&n1, &n2)
 
 	if cmpSgn != expectedCompare {
 		t.Errorf("Compared Signed Values n1= '%v' and n2='%v'. Expected Comparison= '%v'. Instead got '%v'", nStr1, nStr2, expectedCompare, cmpSgn)
@@ -252,7 +252,7 @@ func TestNumStrDto_CompareSignedVals_08(t *testing.T) {
 	n1, _ := nDto.ParseNumStr(nStr1)
 	n2, _ := nDto.ParseNumStr(nStr2)
 
-	cmpSgn := nDto.CompareSignedVals(&n1, &n2)
+	cmpSgn := nDto.CompareSignedValues(&n1, &n2)
 
 	if cmpSgn != expectedCompare {
 		t.Errorf("Compared Signed Values n1= '%v' and n2='%v'. Expected Comparison= '%v'. Instead got '%v'", nStr1, nStr2, expectedCompare, cmpSgn)

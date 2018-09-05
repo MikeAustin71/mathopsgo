@@ -1895,7 +1895,7 @@ func (bNum *BigIntNum) GetSciNotationStr(mantissaLen uint) (string, error) {
 
 	ePrefix := "BigIntNum.GetSciNotationStr() "
 
-	sciNotn, err := bNum.GetSciNotationNumber(mantissaLen)
+	sciNotation, err := bNum.GetSciNotationNumber(mantissaLen)
 
 	if err != nil {
 		return "",
@@ -1904,12 +1904,12 @@ func (bNum *BigIntNum) GetSciNotationStr(mantissaLen uint) (string, error) {
 				"Error='%v'", err.Error())
 	}
 
-	result, err := sciNotn.GetSciNotationStr(mantissaLen)
+	result, err := sciNotation.GetSciNotationStr(mantissaLen)
 
 	if err != nil {
 		return "",
 			fmt.Errorf(ePrefix+
-				"Error returned by sciNotn.GetSciNotationStr(mantissaLen). "+
+				"Error returned by sciNotation.GetSciNotationStr(mantissaLen). "+
 				"Error='%v'", err.Error())
 	}
 

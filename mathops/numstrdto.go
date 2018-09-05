@@ -116,9 +116,24 @@ func (nDto *NumStrDto) AddNumStrs(n1Dto NumStrDto, n2Dto NumStrDto) (NumStrDto, 
 
 }
 
-func (nDto *NumStrDto) CompareSignedVals(n1Dto, n2Dto *NumStrDto) int {
+// CompareSignedValues - compares the signed numeric values
+// of two NumStrDto objects.
+//
+// Return Values:
+// -1 = n1Dto is less than n2Dto
+//  0 = n1Dto is equal to n2Dto
+//  1 = n1Dto is greater than n2Dto
+//
+// Examples:
+// 	n1        			n2           	Result
+// 	-9691.23				91.245				 	-1
+//  9691.23					91.245					 1
+//  -5							82							-1
+//   5							 5							 0
+//
+func (nDto *NumStrDto) CompareSignedValues(n1Dto, n2Dto *NumStrDto) int {
 
-	cmpAbs := nDto.CompareAbsoluteVals(n1Dto, n2Dto)
+	cmpAbs := nDto.CompareAbsoluteValues(n1Dto, n2Dto)
 
 	if cmpAbs == 0 {
 
@@ -184,7 +199,7 @@ func (nDto *NumStrDto) CompareSignedVals(n1Dto, n2Dto *NumStrDto) int {
 	return -1
 }
 
-// CompareAbsoluteVals - compares the absolute numeric values
+// CompareAbsoluteValues - compares the absolute numeric values
 // of two NumStrDto objects. The signs (+ or -) of the two
 // compared numeric values are ignored. Only the absolute
 // numeric values are compared.
@@ -200,7 +215,7 @@ func (nDto *NumStrDto) CompareSignedVals(n1Dto, n2Dto *NumStrDto) int {
 //  -5							82							-1
 //   5							 5							 0
 //
-func (nDto *NumStrDto) CompareAbsoluteVals(n1Dto, n2Dto *NumStrDto) int {
+func (nDto *NumStrDto) CompareAbsoluteValues(n1Dto, n2Dto *NumStrDto) int {
 
 	n1DtoAbsFracRunes := n1Dto.GetAbsFracRunes()
 	n2DtoAbsFracRunes := n2Dto.GetAbsFracRunes()
@@ -433,7 +448,7 @@ func (nDto *NumStrDto) Empty() {
 }
 
 // FindIntArraySignificantDigitLimits - Receives an array of integers and converts them
-// to a number string conisting of significant digits. Leading and trailing zeros are
+// to a number string consisting of significant digits. Leading and trailing zeros are
 // eliminated. See Method: FindNumStrSignificantDigitLimits()
 //
 func (nDto *NumStrDto) FindIntArraySignificantDigitLimits(intArray []int, precision uint, signVal int) (NumStrDto, error) {
@@ -560,7 +575,7 @@ func (nDto *NumStrDto) FormatForMathOps(n1Dto, n2Dto NumStrDto) (n1DtoOut NumStr
 		return NumStrDto{}, NumStrDto{}, 0, false, err
 	}
 
-	compare = nDto.CompareAbsoluteVals(&n1Dto, &n2Dto)
+	compare = nDto.CompareAbsoluteValues(&n1Dto, &n2Dto)
 
 	if compare == 1 {
 		n1DtoOut = n1Dto.CopyOut()
@@ -1774,7 +1789,7 @@ func (nDto *NumStrDto) GetSciNotationNumber(mantissaLen uint) (SciNotationNum, e
 				err.Error())
 	}
 
-	sciNotn, err := bINum.GetSciNotationNumber(mantissaLen)
+	sciNotation, err := bINum.GetSciNotationNumber(mantissaLen)
 
 	if err != nil {
 		return SciNotationNum{}.New(),
@@ -1783,7 +1798,7 @@ func (nDto *NumStrDto) GetSciNotationNumber(mantissaLen uint) (SciNotationNum, e
 				err.Error())
 	}
 
-	return sciNotn, nil
+	return sciNotation, nil
 }
 
 // GetSciNotationStr - Returns a string expressing the current NumStrDto
@@ -1815,7 +1830,7 @@ func (nDto *NumStrDto) GetSciNotationStr(mantissaLen uint) (string, error) {
 		mantissaLen = 2
 	}
 
-	sciNotn, err := nDto.GetSciNotationNumber(mantissaLen)
+	sciNotation, err := nDto.GetSciNotationNumber(mantissaLen)
 
 	if err != nil {
 		return "",
@@ -1824,12 +1839,12 @@ func (nDto *NumStrDto) GetSciNotationStr(mantissaLen uint) (string, error) {
 				"Error='%v'", err.Error())
 	}
 
-	result, err := sciNotn.GetSciNotationStr(mantissaLen)
+	result, err := sciNotation.GetSciNotationStr(mantissaLen)
 
 	if err != nil {
 		return "",
 			fmt.Errorf(ePrefix+
-				"Error returned by sciNotn.GetSciNotationStr(mantissaLen). "+
+				"Error returned by sciNotation.GetSciNotationStr(mantissaLen). "+
 				"Error='%v'", err.Error())
 	}
 

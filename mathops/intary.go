@@ -11,7 +11,7 @@ import (
 
 /*
 
-	IntAry Overveiw And General Usage:
+	IntAry Overview And General Usage:
 	==================================
 
 	Source file 'intary.go' contains a structure, 'IntAry', which is designed
@@ -606,7 +606,7 @@ type IntAry struct {
 // AddToThis - Adds the value of intAry parameter ia2 to the value
 // of the current intAry object.
 //
-// Paramters:
+// Parameters:
 //
 // ia2 *intAry - Incoming intAry object whose value will be subtracted
 // 								from this current intAry value.
@@ -746,7 +746,7 @@ func (ia *IntAry) AddBigIntNumToThis(bINum BigIntNum) error {
 // AddFloat32ToThis - Adds the value of input number (float32)
 // to the current value of this IntAry object.
 //
-// Intput Parameters:
+// Input Parameters:
 //
 // num float32 		- The number which will be added to the current
 //									IntAry object.
@@ -2512,7 +2512,7 @@ func (ia *IntAry) GetNumStrDto() (NumStrDto, error) {
 
 	numSeps := ia.GetNumericSeparatorsDto()
 
-	nstrDto, err := NumStrDto{}.NewNumStrWithNumSeps(ia.GetNumStr(), numSeps)
+	nDto, err := NumStrDto{}.NewNumStrWithNumSeps(ia.GetNumStr(), numSeps)
 
 	if err != nil {
 		return NumStrDto{},
@@ -2520,7 +2520,7 @@ func (ia *IntAry) GetNumStrDto() (NumStrDto, error) {
 				"Error='%v'", err.Error())
 	}
 
-	return nstrDto, nil
+	return nDto, nil
 }
 
 // GetNthRootOfThis - Returns an intAry object equal to the 'nth Root'
@@ -2782,18 +2782,18 @@ func (ia *IntAry) GetSciNotationStr(mantissaLen uint) (string, error) {
 		mantissaLen = 2
 	}
 
-	sciNotnNum, err := ia.GetSciNotationNumber(mantissaLen)
+	sciNotationNum, err := ia.GetSciNotationNumber(mantissaLen)
 
 	if err != nil {
 		return "",
 			fmt.Errorf(ePrefix + "Error returned by ia.GetSciNotationNumber(mantissaLen) ")
 	}
 
-	result, err := sciNotnNum.GetSciNotationStr(mantissaLen)
+	result, err := sciNotationNum.GetSciNotationStr(mantissaLen)
 
 	if err != nil {
 		return "",
-			fmt.Errorf(ePrefix + "Error returned by sciNotnNum.GetSciNotationStr(mantissaLen) ")
+			fmt.Errorf(ePrefix + "Error returned by sciNotationNum.GetSciNotationStr(mantissaLen) ")
 	}
 
 	return result, nil
@@ -3270,7 +3270,7 @@ func (ia IntAry) New() IntAry {
 	return iAry
 }
 
-// NewWithNumSeps() - Creates and retunrs a new blank intAry object.
+// NewWithNumSeps() - Creates and returns a new blank intAry object.
 //
 // The returned IntAry instance will contain numeric separators (decimal
 // separator, thousands separator and currency symbol) as specified
