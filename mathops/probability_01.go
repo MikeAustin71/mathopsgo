@@ -7,34 +7,49 @@ import (
 )
 
 /*
-https://www.mathsisfun.com/combinatorics/combinations-permutations.html
 
-	Permutations
-  ============
-  This calculation assumes NO REPETITIONS!
+This file contains Probability source code for 'Permutations'.  For 'Combinations' see
+source code file MikeAustin71\mathopsgo\mathops\probability_02.go
 
-  n things taken r at a time
+														Permutations
+  													============
 
-	nPr	 =     n!
-            ----
-            (n-r)!
+Reference
+#########
+
+	https://www.mathsisfun.com/combinatorics/combinations-permutations.html
+	https://www.youtube.com/watch?v=XqQTXW7XfYA&list=PL06A16C388F14E6FE&index=21
+	https://www.probabilitycourse.com/courses.php
+
+$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+  *** This permutation calculation assumes NO REPETITIONS! ***
+$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+
+ In the following permutation formula, n= 'numOfItems'  and r = 'numOfItemsPicked'
+
+              						n!
+ 							nPr	 =		------
+ 												(n-r)!
+             ----------------------
+
+ 				Where n is the number of things to choose from,
+				and we choose r of them, repetition is NOT allowed,
+ 				and order matters.
 
 
+$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+ *** This Permutation calculation assumes REPETITIONS ARE ALLOWED! ***
+$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+
+In the following permutation formula, n= 'numOfItems'  and r = 'numOfItemsPicked'
 
 
+ 									nPr	 =		n^r
+                  -------------
 
-  Combinations
-  ============
- This calculation assumes NO REPETITIONS!
-
-	nCr		=            n!
-                -----------
-								(n-r)! (r!)
-
-
-possibilities
-	5 coin tosses = 2^5 possibilities
-  probability of getting k-heads in n flips.
+ 				Where n is the number of things to choose from,
+				and we choose r of them, repetition is allowed,
+ 				and order matters.
 
 
 */
@@ -64,13 +79,14 @@ type Probability struct {
 // 							nPr	 =		------
 // 												(n-r)!
 //             ----------------------
-// 										Note: 0! = 1
 //
-// 				Where n is the number of things to choose from,
-//				and we choose r of them, repetition is NOT allowed,
+// 				Where n is the number of things to select from,
+//				and we pick r of them, repetition is NOT allowed,
 // 				and order matters.
 //
 // *** This calculation assumes NO REPETITIONS! ***
+//
+// Note: 0! = 1
 //
 func (prob Probability) PermutationsNoRepsBigInt(
 	numOfItems, numOfItemsPicked *big.Int) (BigIntNum, error) {
@@ -1411,82 +1427,4 @@ func (prob Probability) PermutationsUint64(
 	}
 
 	return Probability{}.PermutationsWithRepsBigInt(n, r)
-}
-
-// Combinations - Calculates the number of combinations associated with a collection of 'numOfItems'
-// from which one chooses 'numOfItemsChosen'. Order is NOT significant.
-//
-//	Combinations
-//	============
-//
-//                 n!
-// nCr	 =		-----------
-// 						 (n-r)! r!
-//
-//
-// Note: 0! = 1
-//
-// *** This calculation assumes NO REPETITIONS! ***
-//
-func (prob Probability) Combinations(numOfItems, numOfItemsChosen uint64) (BigIntNum, error) {
-
-	ePrefix := "Probability.PermutationsUint64() "
-
-	if numOfItems < numOfItemsChosen {
-		return BigIntNum{}.NewZero(0),
-			errors.New(ePrefix + "Error: 'numOfItems' is LESS THAN 'numOfItemsChosen'! ")
-
-	}
-
-	//          5!           5!         5!
-	//      ---------  =  -------  =  ----- = 1
-	//      (5-5)! 5!      0! 5!        5!
-
-	if numOfItems == numOfItemsChosen {
-		return BigIntNum{}.NewOne(0), nil
-	}
-
-	// Numerator
-	n := FactorialDto{}
-	n.UpperLimit = numOfItems
-	n.LowerLimit = 1
-
-	// Denominator
-
-	nMinusR := FactorialDto{}
-
-	if numOfItems == numOfItemsChosen {
-		nMinusR.UpperLimit = 1
-	} else {
-		nMinusR.UpperLimit = numOfItems - numOfItemsChosen
-	}
-
-	nMinusR.LowerLimit = 1
-
-	if nMinusR.UpperLimit > 1 {
-
-		n.LowerLimit = nMinusR.UpperLimit
-
-	}
-
-	upperLimit := big.NewInt(0).SetUint64(n.UpperLimit)
-	lowerLimit := big.NewInt(0).SetUint64(n.LowerLimit)
-
-	numerator, err := NFactorial{}.CalcFactorialValueBigInt(upperLimit, lowerLimit)
-
-	if err != nil {
-		return BigIntNum{}.NewZero(0),
-			fmt.Errorf(ePrefix+"Error returned by NFactorial{}.CalcFactorialValueBigInt(...). "+
-				"upperLimit='%v' lowerLimit='%v' Error='%v'. \n", n.UpperLimit, n.LowerLimit, err.Error())
-	}
-
-	r := FactorialDto{}
-	r.UpperLimit = numOfItemsChosen
-	r.LowerLimit = 1
-
-	if r.UpperLimit < 2 {
-		return numerator, nil
-	}
-
-	return numerator, nil
 }
