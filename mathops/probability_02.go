@@ -61,8 +61,7 @@ $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
          nCr = (n==5 r==3) = 5C3 = Answer: 35
 
 
- */
-
+*/
 
 // CombinationsNoRepsBigInt - Calculates the number of combinations from
 // 'numOfItems' and 'numOfItemsChosen' or 'n' things chosen 'r' at a time
@@ -77,9 +76,9 @@ $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 //                                'numOfItems' must be greater than or equal to
 // 																'numOfItemsChosen'.
 //
-// numOfItemsChosen 	*big.Int	- Must be a positive integer number greater than or
-//                                equal to zero. 'numOfItemsChosen' must be less than
-//                                or equal to 'numOfItems'.
+// numOfItemsChosen 	*big.Int	- Must be a positive integer number greater than zero.
+// 																'numOfItemsChosen' must be less than or equal to
+// 																'numOfItems'.
 //
 // Returns
 // =======
@@ -111,6 +110,17 @@ $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 // *** This calculation assumes NO REPETITIONS! ***
 //    (a.k.a. as unordered sampling without replacement)
 //
+// Example WITHOUT Repetitions
+// ===========================
+//
+// There are 16 pool balls. How many ways to choose 3 pool balls with NO repetitions
+// or No repeats.
+//
+//                  16!            16 x 15 x 14
+//	16C3 =    -------------  =    --------------  =    560
+//            (16-3)! x 3!            3 x 2
+//
+//
 // Note: 0! = 1
 //
 func (prob Probability) CombinationsNoRepsBigInt(
@@ -141,8 +151,10 @@ func (prob Probability) CombinationsNoRepsBigInt(
 	}
 
 	if numOfItemsChosen.Cmp(bigZero) == 0 {
-		return BigIntNum{}.NewInt(1, 0), nil
+		return BigIntNum{}.NewZero(0),
+			errors.New(ePrefix + "Error: 'numOfItemsChosen' is ZERO! ")
 	}
+
 	numeratorNUpperLimit := big.NewInt(0).Set(numOfItemsChosen)
 	numeratorNLowerLimit := big.NewInt(1)
 
@@ -161,16 +173,16 @@ func (prob Probability) CombinationsNoRepsBigInt(
 		numeratorNLowerLimit = big.NewInt(0).Set(nMinusR)
 
 		nFactorial, err = NFactorial{}.CalcFactorialValueBigInt(
-														numeratorNUpperLimit, numeratorNLowerLimit)
+			numeratorNUpperLimit, numeratorNLowerLimit)
 
 		if err != nil {
 			return BigIntNum{}.NewZero(0),
-			fmt.Errorf(ePrefix +
-				"Error returned by NFactorial{}.CalcFactorialValueBigInt(" +
-				"numeratorNUpperLimit, numeratorNLowerLimit). " +
-				"numeratorNUpperLimit='%v'  numeratorNLowerLimit=nMinusR='%v' Error='%v'",
-				numeratorNUpperLimit.Text(10), numeratorNLowerLimit.Text(10),
-				err.Error())
+				fmt.Errorf(ePrefix+
+					"Error returned by NFactorial{}.CalcFactorialValueBigInt("+
+					"numeratorNUpperLimit, numeratorNLowerLimit). "+
+					"numeratorNUpperLimit='%v'  numeratorNLowerLimit=nMinusR='%v' Error='%v'",
+					numeratorNUpperLimit.Text(10), numeratorNLowerLimit.Text(10),
+					err.Error())
 		}
 
 		rUpperLimit := big.NewInt(0).Set(numOfItemsChosen)
@@ -181,9 +193,9 @@ func (prob Probability) CombinationsNoRepsBigInt(
 
 		if err != nil {
 			return BigIntNum{}.NewZero(0),
-				fmt.Errorf(ePrefix +
-					"Error returned by NFactorial{}.CalcFactorialValueBigInt(" +
-					"rUpperLimit, rLowerLimit). " +
+				fmt.Errorf(ePrefix+
+					"Error returned by NFactorial{}.CalcFactorialValueBigInt("+
+					"rUpperLimit, rLowerLimit). "+
 					"rUpperLimit='%v'  rLowerLimit='%v' Error='%v'",
 					rUpperLimit.Text(10), rLowerLimit.Text(10),
 					err.Error())
@@ -199,9 +211,9 @@ func (prob Probability) CombinationsNoRepsBigInt(
 
 		if err != nil {
 			return BigIntNum{}.NewZero(0),
-				fmt.Errorf(ePrefix +
-					"Error returned by NFactorial{}.CalcFactorialValueBigInt(" +
-					"numeratorNUpperLimit, numeratorNLowerLimit). " +
+				fmt.Errorf(ePrefix+
+					"Error returned by NFactorial{}.CalcFactorialValueBigInt("+
+					"numeratorNUpperLimit, numeratorNLowerLimit). "+
 					"numeratorNUpperLimit='%v'  numeratorNLowerLimit=numOfItemsChosen='%v' Error='%v'",
 					numeratorNUpperLimit.Text(10), numeratorNLowerLimit.Text(10),
 					err.Error())
@@ -212,9 +224,9 @@ func (prob Probability) CombinationsNoRepsBigInt(
 
 		if err != nil {
 			return BigIntNum{}.NewZero(0),
-				fmt.Errorf(ePrefix +
-					"Error returned by NFactorial{}.CalcFactorialValueBigInt(" +
-					"nMinusR, 1). " +
+				fmt.Errorf(ePrefix+
+					"Error returned by NFactorial{}.CalcFactorialValueBigInt("+
+					"nMinusR, 1). "+
 					"UpperLimit=nMinusR='%v'  Error='%v'",
 					nMinusR.Text(10), err.Error())
 		}
@@ -223,12 +235,143 @@ func (prob Probability) CombinationsNoRepsBigInt(
 	combinationsResult, err :=
 		BigIntMathDivide{}.BigIntNumFracQuotient(nFactorial, rFactorial, 10)
 
+	if err != nil {
+		return BigIntNum{}.NewZero(0),
+			fmt.Errorf(ePrefix+
+				"Error returned by BigIntMathDivide{}.BigIntNumFracQuotient("+
+				"nFactorial, rFactorial, 10)). "+
+				"nFactorial='%v'  rFactorial='%v' Error='%v'",
+				nFactorial.GetNumStr(), rFactorial.GetNumStr(),
+				err.Error())
+	}
+
+	return combinationsResult, nil
+}
+
+// CombinationsWithRepsBigInt - Calculates the number of combinations from
+// 'numOfItems' and 'numOfItemsChosen' or 'n' things chosen 'r' at a time
+// WITH repetitions and order does NOT matter. This is also referred to
+// as an unordered sampling WITH replacement. The calculation result is
+// returned as a BigIntNum type.
+//
+// Input Parameters
+// ================
+//
+// numOfItems 				*big.Int	- Must be a positive integer number greater than zero.
+//                                'numOfItems' must be greater than or equal to
+// 																'numOfItemsChosen'.
+//
+// numOfItemsChosen 	*big.Int	- Must be a positive integer number greater than zero.
+// 																'numOfItemsChosen' must be less than or equal to
+// 																'numOfItems'.
+//
+// Returns
+// =======
+//
+// BigIntNum			- If the calculation is successful, the result is returned as a
+//                  BigIntNum type. If the calculation fails, the error return is
+//                  populated.
+//
+// error					- If the calculation is successful, this return value is 'nil'. If
+//                  the calculation fails, 'error' is populated with an appropriate
+//                  error message.
+//
+// Calculation
+// ===========
+//
+// The calculation performed by this method uses the following combinations formula,
+// n= 'numOfItems' and r = 'numOfItemsChosen'.
+//
+// 															(r + n - 1)!
+// 								nCr    =  -------------------
+// 											 				 r! (n-1)!
+//
+// Example WITH Repetitions:
+// -------------------------
+// Let us say there are five flavors of icecream:
+// (1) banana, (2) chocolate, (3) lemon, (4) strawberry and (5) vanilla.
+//
+// We can have three scoops. How many variations will there be?
+// nCr = (n==5 r==3) = 5C3 = Answer: 35
+//
+// Note: 0! = 1
+//
+func (prob Probability) CombinationsWithRepsBigInt(
+	numOfItems, numOfItemsChosen *big.Int) (BigIntNum, error) {
+
+	ePrefix := "Probability.CombinationsWithRepsBigInt() "
+	bigZero := big.NewInt(0)
+
+	if numOfItems.Cmp(bigZero) == 0 {
+		return BigIntNum{}.NewZero(0),
+			fmt.Errorf(ePrefix + "Error: Input parameter 'numOfItems' is ZERO!")
+	}
+
+	if numOfItems.Cmp(bigZero) < 0 {
+		return BigIntNum{}.NewZero(0),
+			fmt.Errorf(ePrefix + "Error: Input parameter 'numOfItems' is LESS THAN ZERO!")
+	}
+
+	if numOfItemsChosen.Cmp(bigZero) < 0 {
+		return BigIntNum{}.NewZero(0),
+			fmt.Errorf(ePrefix + "Error: Input parameter 'numOfItemsChosen' is LESS THAN ZERO!")
+	}
+
+	if numOfItems.Cmp(numOfItemsChosen) < 0 {
+		return BigIntNum{}.NewZero(0),
+			errors.New(ePrefix + "Error: 'numOfItems' is LESS THAN 'numOfItemsChosen'! ")
+
+	}
+
+	if numOfItemsChosen.Cmp(bigZero) == 0 {
+		return BigIntNum{}.NewZero(0),
+			errors.New(ePrefix + "Error: 'numOfItemsChosen' is ZERO! ")
+	}
+
+	bigOne := big.NewInt(1)
+
+	temp1 := big.NewInt(0).Add(numOfItems, numOfItemsChosen)
+
+	numeratorUpperLimit := big.NewInt(0).Sub(temp1, bigOne)
+	numeratorLowerLimit := big.NewInt(0).Sub(numOfItems, bigOne)
+
+	nFactorial, err := NFactorial{}.CalcFactorialValueBigInt(
+		numeratorUpperLimit, numeratorLowerLimit)
 
 	if err != nil {
 		return BigIntNum{}.NewZero(0),
-			fmt.Errorf(ePrefix +
-				"Error returned by BigIntMathDivide{}.BigIntNumFracQuotient(" +
-				"nFactorial, rFactorial, 10)). " +
+			fmt.Errorf(ePrefix+
+				"Error returned by NFactorial{}.CalcFactorialValueBigInt("+
+				"numeratorUpperLimit, numeratorLowerLimit). "+
+				"numeratorNUpperLimit='%v'  numeratorNLowerLimit='%v' Error='%v'",
+				numeratorUpperLimit.Text(10), numeratorLowerLimit.Text(10),
+				err.Error())
+	}
+
+	rUpperLimit := big.NewInt(0).Set(numOfItemsChosen)
+	rLowerLimit := big.NewInt(1)
+
+	rFactorial, err := NFactorial{}.CalcFactorialValueBigInt(
+		rUpperLimit, rLowerLimit)
+
+	if err != nil {
+		return BigIntNum{}.NewZero(0),
+			fmt.Errorf(ePrefix+
+				"Error returned by NFactorial{}.CalcFactorialValueBigInt("+
+				"rUpperLimit, rLowerLimit). "+
+				"rUpperLimit='%v'  rLowerLimit='%v' Error='%v'",
+				rUpperLimit.Text(10), rLowerLimit.Text(10),
+				err.Error())
+	}
+
+	combinationsResult, err :=
+		BigIntMathDivide{}.BigIntNumFracQuotient(nFactorial, rFactorial, 10)
+
+	if err != nil {
+		return BigIntNum{}.NewZero(0),
+			fmt.Errorf(ePrefix+
+				"Error returned by BigIntMathDivide{}.BigIntNumFracQuotient("+
+				"nFactorial, rFactorial, 10)). "+
 				"nFactorial='%v'  rFactorial='%v' Error='%v'",
 				nFactorial.GetNumStr(), rFactorial.GetNumStr(),
 				err.Error())
@@ -314,4 +457,3 @@ func (prob Probability) Combinations(numOfItems, numOfItemsChosen uint64) (BigIn
 
 	return numerator, nil
 }
-

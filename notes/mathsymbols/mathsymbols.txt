@@ -1,4 +1,9 @@
 http://sites.psu.edu/symbolcodes/accents/math/mathchart/
+
+Math Symbols
+------------
+http://xahlee.info/comp/unicode_math_operators.html
+
 https://img.webnots.com/2013/04/Maths-Symbols.png
 
 Use character map. Copy code into Unicode text box.
@@ -13,3 +18,16 @@ Arial Unicode MS
 ∜  U+221C  4th Root
 θ   U+03B8  Theta lower case
 
+(
+␀
+
+Brackets
+23a7    23ab
+23aa    23ac
+23a8
+23a9    23ad
+
+⎧  ⎫
+⎪  ⎪
+⎨  ⎬
+⎩  ⎭

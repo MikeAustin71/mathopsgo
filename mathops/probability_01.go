@@ -71,9 +71,33 @@ type Probability struct {
 // input parameters must be non-zero, positive integer numbers. 'numOfItems' must be equal to or
 // greater than 'numOfItemsPicked'.
 //
-// The result of this permutation calculation is returned as a type BigIntNum.
+// Input Parameters
+// ================
 //
-// In the following permutation formula, n= 'numOfItems'  and r = 'numOfItemsPicked'
+// numOfItems 				*big.Int	- Must be a positive integer number greater than zero.
+//                                'numOfItems' must be greater than or equal to
+// 																'numOfItemsPicked'.
+//
+// numOfItemsPicked 	*big.Int	- Must be a positive integer number greater than zero.
+// 																'numOfItemsChosen' must be less than or equal to
+// 																'numOfItems'.
+//
+//
+// Returns
+// =======
+//
+// BigIntNum			- If the calculation is successful, the result is returned as a
+//                  BigIntNum type. If the calculation fails, the error return is
+//                  populated.
+//
+// error					- If the calculation is successful, this return value is 'nil'. If
+//                  the calculation fails, 'error' is populated with an appropriate
+//                  error message.
+//
+// Calculation
+// ===========
+//
+// In the following permutation formula, n= 'numOfItems' and r = 'numOfItemsPicked'
 //
 //              						n!
 // 							nPr	 =		------
@@ -85,6 +109,14 @@ type Probability struct {
 // 				and order matters.
 //
 // *** This calculation assumes NO REPETITIONS! ***
+//
+// Example
+// =======
+// How many ways can first and second place be awarded to 10 people?
+//
+//                         10!
+// Answer = 10P2 =       ------ =   10 x 9 = 90
+//                         8!
 //
 // Note: 0! = 1
 //
@@ -159,16 +191,34 @@ func (prob Probability) PermutationsNoRepsBigInt(
 	return result, nil
 }
 
-// PermutationsWithRepsBigInt - Calculates the number of permutations associated with a collection
-// of 'numOfItems' from which one picks 'numOfItemsPicked'. Order IS significant. This calculation
-// assumes that REPETITIONS ARE ALLOWED.
+// PermutationsWithRepsBigInt - Calculates the number of permutations associated with
+// a collection of 'numOfItems' from which one picks 'numOfItemsPicked'. Order IS
+// significant. This calculation assumes that REPETITIONS ARE ALLOWED.
 //
-// Input parameters 'numOfItems' and 'numOfItemsPicked' are passed as type *big.Int. Both input
-// parameters must be non-zero, positive integer numbers. 'numOfItems' must be equal to or greater
-// than 'numOfItemsPicked'.
+// Input Parameters
+// ================
 //
-// The result of this permutation calculation is returned as a type BigIntNum.
+// numOfItems 				*big.Int	- Must be a positive integer number greater than zero.
+//                                'numOfItems' must be greater than or equal to
+// 																'numOfItemsPicked'.
 //
+// numOfItemsPicked 	*big.Int	- Must be a positive integer number greater than zero.
+// 																'numOfItemsChosen' must be less than or equal to
+// 																'numOfItems'.
+//
+// Returns
+// =======
+//
+// BigIntNum			- If the calculation is successful, the result is returned as a
+//                  BigIntNum type. If the calculation fails, the error return is
+//                  populated.
+//
+// error					- If the calculation is successful, this return value is 'nil'. If
+//                  the calculation fails, 'error' is populated with an appropriate
+//                  error message.
+//
+// Calculation
+// ===========
 // In the following permutation formula, n= 'numOfItems'  and r = 'numOfItemsPicked'
 //
 //
@@ -185,8 +235,8 @@ func (prob Probability) PermutationsNoRepsBigInt(
 //  Example
 //  =======
 // 				Combination lock with 3 numbers: there are 10 numbers to choose from
-// 					(0,1,2,3,4,5,6,7,8,9) and we choose 3 of them (repetitions allowed):
-// 						10 × 10 × ... (3 times) = 10^3 = 1,000 permutations
+// 				(0,1,2,3,4,5,6,7,8,9) and we choose 3 of them (repetitions allowed):
+// 							10 × 10 × ... (3 times) = 10^3 = 1,000 permutations
 //
 func (prob Probability) PermutationsWithRepsBigInt(
 	numOfItems, numOfItemsPicked *big.Int) (BigIntNum, error) {
