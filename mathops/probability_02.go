@@ -155,10 +155,10 @@ func (prob Probability) CombinationsNoRepsBigInt(
 			errors.New(ePrefix + "Error: 'numOfItemsChosen' is ZERO! ")
 	}
 
-	numeratorNUpperLimit := big.NewInt(0).Set(numOfItemsChosen)
+	numeratorNUpperLimit := big.NewInt(0).Set(numOfItems)
 	numeratorNLowerLimit := big.NewInt(1)
 
-	nMinusR := big.NewInt(0).Sub(numOfItemsChosen, numOfItemsChosen)
+	nMinusR := big.NewInt(0).Sub(numOfItems, numOfItemsChosen)
 
 	if nMinusR.Cmp(bigZero) == 0 {
 		nMinusR = big.NewInt(1)
@@ -171,7 +171,6 @@ func (prob Probability) CombinationsNoRepsBigInt(
 	if nMinusR.Cmp(numOfItemsChosen) == 1 {
 		// nMinusR is Greater Than numOfItemsChosen
 		numeratorNLowerLimit = big.NewInt(0).Set(nMinusR)
-
 		nFactorial, err = NFactorial{}.CalcFactorialValueBigInt(
 			numeratorNUpperLimit, numeratorNLowerLimit)
 
