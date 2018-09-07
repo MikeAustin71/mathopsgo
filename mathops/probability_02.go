@@ -155,6 +155,10 @@ func (prob Probability) CombinationsNoRepsBigInt(
 			errors.New(ePrefix + "Error: 'numOfItemsChosen' is ZERO! ")
 	}
 
+	if numOfItems.Cmp(numOfItemsChosen) == 0 {
+		return BigIntNum{}.NewInt(1, 0), nil
+	}
+
 	numeratorNUpperLimit := big.NewInt(0).Set(numOfItems)
 	numeratorNLowerLimit := big.NewInt(1)
 
