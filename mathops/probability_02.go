@@ -108,7 +108,7 @@ $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 // 						and order does NOT matter.
 //
 // *** This calculation assumes NO REPETITIONS! ***
-//    (a.k.a. as unordered sampling without replacement)
+//    (a.k.a. as unordered sampling WITHOUT replacement)
 //
 // Example WITHOUT Repetitions
 // ===========================
@@ -159,13 +159,19 @@ func (prob Probability) CombinationsNoRepsBigInt(
 		return BigIntNum{}.NewInt(1, 0), nil
 	}
 
+	bigOne := big.NewInt(1)
+
+	if numOfItemsChosen.Cmp(bigOne) == 0 {
+		return BigIntNum{}.NewBigInt(numOfItems, 0), nil
+	}
+
 	numeratorNUpperLimit := big.NewInt(0).Set(numOfItems)
-	numeratorNLowerLimit := big.NewInt(1)
+	numeratorNLowerLimit := big.NewInt(0).Set(bigOne)
 
 	nMinusR := big.NewInt(0).Sub(numOfItems, numOfItemsChosen)
 
 	if nMinusR.Cmp(bigZero) == 0 {
-		nMinusR = big.NewInt(1)
+		nMinusR = big.NewInt(0).Set(bigOne)
 	}
 
 	var nFactorial BigIntNum

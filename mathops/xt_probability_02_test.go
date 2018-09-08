@@ -143,7 +143,31 @@ func TestProbability_PermutationsNoRepsBigInt_06(t *testing.T) {
 
 }
 
+
 func TestProbability_PermutationsNoRepsBigInt_07(t *testing.T) {
+
+	n := big.NewInt(63)
+	r := big.NewInt(1)
+
+	expectedResultStr := "63"
+
+	result, err := Probability{}.PermutationsNoRepsBigInt(n, r)
+
+	if err != nil {
+		t.Errorf("Error returned by Probability{}.PermutationsNoRepsBigInt(n, r) "+
+			"Error='%v' ", err.Error())
+	}
+
+	actualResultStr := result.GetNumStr()
+
+	if expectedResultStr != actualResultStr {
+		t.Errorf("Error: Expected result='%v'. Instead, result='%v'",
+			expectedResultStr, actualResultStr)
+	}
+
+}
+
+func TestProbability_PermutationsNoRepsBigInt_08(t *testing.T) {
 
 	nInt := 4
 	rInt := 63
@@ -159,7 +183,7 @@ func TestProbability_PermutationsNoRepsBigInt_07(t *testing.T) {
 
 }
 
-func TestProbability_PermutationsNoRepsBigInt_08(t *testing.T) {
+func TestProbability_PermutationsNoRepsBigInt_09(t *testing.T) {
 
 	nInt := 63
 	rInt := -1
@@ -175,7 +199,7 @@ func TestProbability_PermutationsNoRepsBigInt_08(t *testing.T) {
 
 }
 
-func TestProbability_PermutationsNoRepsBigInt_09(t *testing.T) {
+func TestProbability_PermutationsNoRepsBigInt_10(t *testing.T) {
 
 	nInt := -63
 	rInt := 4
@@ -191,7 +215,7 @@ func TestProbability_PermutationsNoRepsBigInt_09(t *testing.T) {
 
 }
 
-func TestProbability_PermutationsNoRepsBigInt_10(t *testing.T) {
+func TestProbability_PermutationsNoRepsBigInt_11(t *testing.T) {
 
 	nInt := 0
 	rInt := 4
@@ -207,7 +231,7 @@ func TestProbability_PermutationsNoRepsBigInt_10(t *testing.T) {
 
 }
 
-func TestProbability_PermutationsNoRepsBigInt_11(t *testing.T) {
+func TestProbability_PermutationsNoRepsBigInt_12(t *testing.T) {
 
 	nInt := 15
 	rInt := 0
