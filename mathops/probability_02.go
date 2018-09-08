@@ -261,12 +261,8 @@ func (prob Probability) CombinationsNoRepsBigInt(
 // ================
 //
 // numOfItems 				*big.Int	- Must be a positive integer number greater than zero.
-//                                'numOfItems' must be greater than or equal to
-// 																'numOfItemsChosen'.
 //
 // numOfItemsChosen 	*big.Int	- Must be a positive integer number greater than zero.
-// 																'numOfItemsChosen' must be less than or equal to
-// 																'numOfItems'.
 //
 // Returns
 // =======
@@ -283,7 +279,8 @@ func (prob Probability) CombinationsNoRepsBigInt(
 // ===========
 //
 // The calculation performed by this method uses the following combinations formula,
-// n= 'numOfItems' and r = 'numOfItemsChosen'.
+// n= 'numOfItems' and r = 'numOfItemsChosen'. Since this calculation applies to
+// unordered sampling WITH replacement, 'numOfItemsChosen' may exceed 'numOfItems'.
 //
 // 															(r + n - 1)!
 // 								nCr    =  -------------------
@@ -320,18 +317,18 @@ func (prob Probability) CombinationsWithRepsBigInt(
 			fmt.Errorf(ePrefix + "Error: Input parameter 'numOfItemsChosen' is LESS THAN ZERO!")
 	}
 
-	if numOfItems.Cmp(numOfItemsChosen) < 0 {
-		return BigIntNum{}.NewZero(0),
-			errors.New(ePrefix + "Error: 'numOfItems' is LESS THAN 'numOfItemsChosen'! ")
-
-	}
-
 	if numOfItemsChosen.Cmp(bigZero) == 0 {
 		return BigIntNum{}.NewZero(0),
 			errors.New(ePrefix + "Error: 'numOfItemsChosen' is ZERO! ")
 	}
 
 	bigOne := big.NewInt(1)
+
+	// If 'numOfItemsChosen' == 1, result is always equal to 'numOfItems'.
+	if numOfItemsChosen.Cmp(bigOne) == 0 {
+		return BigIntNum{}.NewBigInt(numOfItems, 0), nil
+	}
+
 
 	temp1 := big.NewInt(0).Add(numOfItems, numOfItemsChosen)
 
