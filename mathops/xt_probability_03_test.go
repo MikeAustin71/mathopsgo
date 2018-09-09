@@ -795,6 +795,207 @@ func TestProbability_PermutationsBigIntNum_08(t *testing.T) {
 }
 
 func TestProbability_PermutationsBigIntNum_09(t *testing.T) {
+
+	numOfItems := BigIntNum{}.NewIntExponent(56, 0)
+	numOfItemsPicked := BigIntNum{}.NewIntExponent(5, 0)
+
+	allowRepetitions := false
+	expectedResultStr := "458377920"
+
+	result, err := Probability{}.PermutationsBigIntNum(numOfItems, numOfItemsPicked, allowRepetitions)
+
+	if err != nil {
+		t.Errorf("Error returned by Probability{}.PermutationsBigIntNum(numOfItems, numOfItemsPicked). "+
+			"numOfItems='%v' numOfItemsPicked='%v' Error='%v'",
+			numOfItems, numOfItemsPicked, err.Error())
+	}
+
+	actualNumStr := result.GetNumStr()
+
+	if expectedResultStr != actualNumStr {
+		t.Errorf("Error: Expected permutations='%v'. Instead, permutations='%v'. ",
+			expectedResultStr, actualNumStr)
+	}
+
+}
+
+func TestProbability_PermutationsBigIntNum_10(t *testing.T) {
+
+	numOfItems := BigIntNum{}.NewIntExponent(9, 0)
+	numOfItemsPicked := BigIntNum{}.NewIntExponent(3, 0)
+
+	allowRepetitions := false
+	expectedResultStr := "504"
+
+	result, err := Probability{}.PermutationsBigIntNum(numOfItems, numOfItemsPicked, allowRepetitions)
+
+	if err != nil {
+		t.Errorf("Error returned by Probability{}.PermutationsBigIntNum(numOfItems, numOfItemsPicked). "+
+			"numOfItems='%v' numOfItemsPicked='%v' Error='%v'",
+			numOfItems, numOfItemsPicked, err.Error())
+	}
+
+	actualNumStr := result.GetNumStr()
+
+	if expectedResultStr != actualNumStr {
+		t.Errorf("Error: Expected permutations='%v'. Instead, permutations='%v'. ",
+			expectedResultStr, actualNumStr)
+	}
+
+}
+
+func TestProbability_PermutationsBigIntNum_11(t *testing.T) {
+
+	numOfItems := BigIntNum{}.NewIntExponent(12, 0)
+	numOfItemsPicked := BigIntNum{}.NewIntExponent(7, 0)
+
+	allowRepetitions := false
+	expectedResultStr := "3991680"
+
+	result, err := Probability{}.PermutationsBigIntNum(numOfItems, numOfItemsPicked, allowRepetitions)
+
+	if err != nil {
+		t.Errorf("Error returned by Probability{}.PermutationsBigIntNum(numOfItems, numOfItemsPicked). "+
+			"numOfItems='%v' numOfItemsPicked='%v' Error='%v'",
+			numOfItems, numOfItemsPicked, err.Error())
+	}
+
+	actualNumStr := result.GetNumStr()
+
+	if expectedResultStr != actualNumStr {
+		t.Errorf("Error: Expected permutations='%v'. Instead, permutations='%v'. ",
+			expectedResultStr, actualNumStr)
+	}
+
+}
+
+func TestProbability_PermutationsBigIntNum_12(t *testing.T) {
+
+	numOfItems := BigIntNum{}.NewIntExponent(18, 0)
+	numOfItemsPicked := BigIntNum{}.NewIntExponent(8, 0)
+
+	allowRepetitions := false
+	expectedResultStr := "1764322560"
+
+	result, err := Probability{}.PermutationsBigIntNum(numOfItems, numOfItemsPicked, allowRepetitions)
+
+	if err != nil {
+		t.Errorf("Error returned by Probability{}.PermutationsBigIntNum(numOfItems, numOfItemsPicked). "+
+			"numOfItems='%v' numOfItemsPicked='%v' Error='%v'",
+			numOfItems, numOfItemsPicked, err.Error())
+	}
+
+	actualNumStr := result.GetNumStr()
+
+	if expectedResultStr != actualNumStr {
+		t.Errorf("Error: Expected permutations='%v'. Instead, permutations='%v'. ",
+			expectedResultStr, actualNumStr)
+	}
+
+}
+
+func TestProbability_PermutationsBigIntNum_13(t *testing.T) {
+
+	numOfItems := BigIntNum{}.NewIntExponent(9, 0)
+	numOfItemsPicked := BigIntNum{}.NewIntExponent(9, 0)
+
+	allowRepetitions := false
+	expectedResultStr := "362880"
+
+	result, err := Probability{}.PermutationsBigIntNum(numOfItems, numOfItemsPicked, allowRepetitions)
+
+	if err != nil {
+		t.Errorf("Error returned by Probability{}.PermutationsBigIntNum(numOfItems, numOfItemsPicked). "+
+			"numOfItems='%v' numOfItemsPicked='%v' Error='%v'",
+			numOfItems, numOfItemsPicked, err.Error())
+	}
+
+	actualNumStr := result.GetNumStr()
+
+	if expectedResultStr != actualNumStr {
+		t.Errorf("Error: Expected permutations='%v'. Instead, permutations='%v'. ",
+			expectedResultStr, actualNumStr)
+	}
+
+}
+
+func TestProbability_PermutationsBigIntNum_14(t *testing.T) {
+
+	numOfItems := BigIntNum{}.NewIntExponent(9, 0)
+	numOfItemsPicked := BigIntNum{}.NewIntExponent(9, 0)
+
+	allowRepetitions := true
+	expectedResultStr := "387420489"
+
+	result, err := Probability{}.PermutationsBigIntNum(numOfItems, numOfItemsPicked, allowRepetitions)
+
+	if err != nil {
+		t.Errorf("Error returned by Probability{}.PermutationsBigIntNum(numOfItems, numOfItemsPicked). "+
+			"numOfItems='%v' numOfItemsPicked='%v' Error='%v'",
+			numOfItems, numOfItemsPicked, err.Error())
+	}
+
+	actualNumStr := result.GetNumStr()
+
+	if expectedResultStr != actualNumStr {
+		t.Errorf("Error: Expected permutations='%v'. Instead, permutations='%v'. ",
+			expectedResultStr, actualNumStr)
+	}
+
+}
+
+func TestProbability_PermutationsBigIntNum_15(t *testing.T) {
+
+	numOfItems := BigIntNum{}.NewIntExponent(9, 0)
+	numOfItemsPicked := BigIntNum{}.NewIntExponent(1, 0)
+
+	allowRepetitions := false
+	expectedResultStr := "9"
+
+	result, err := Probability{}.PermutationsBigIntNum(numOfItems, numOfItemsPicked, allowRepetitions)
+
+	if err != nil {
+		t.Errorf("Error returned by Probability{}.PermutationsBigIntNum(numOfItems, numOfItemsPicked). "+
+			"numOfItems='%v' numOfItemsPicked='%v' Error='%v'",
+			numOfItems, numOfItemsPicked, err.Error())
+	}
+
+	actualNumStr := result.GetNumStr()
+
+	if expectedResultStr != actualNumStr {
+		t.Errorf("Error: Expected permutations='%v'. Instead, permutations='%v'. ",
+			expectedResultStr, actualNumStr)
+	}
+
+}
+
+
+func TestProbability_PermutationsBigIntNum_16(t *testing.T) {
+
+	numOfItems := BigIntNum{}.NewIntExponent(9, 0)
+	numOfItemsPicked := BigIntNum{}.NewIntExponent(1, 0)
+
+	allowRepetitions := true
+	expectedResultStr := "9"
+
+	result, err := Probability{}.PermutationsBigIntNum(numOfItems, numOfItemsPicked, allowRepetitions)
+
+	if err != nil {
+		t.Errorf("Error returned by Probability{}.PermutationsBigIntNum(numOfItems, numOfItemsPicked). "+
+			"numOfItems='%v' numOfItemsPicked='%v' Error='%v'",
+			numOfItems, numOfItemsPicked, err.Error())
+	}
+
+	actualNumStr := result.GetNumStr()
+
+	if expectedResultStr != actualNumStr {
+		t.Errorf("Error: Expected permutations='%v'. Instead, permutations='%v'. ",
+			expectedResultStr, actualNumStr)
+	}
+
+}
+
+func TestProbability_PermutationsBigIntNum_17(t *testing.T) {
 	nBigIntNum := 0
 	rBigIntNum := 4
 	numOfItems := BigIntNum{}.NewIntExponent(nBigIntNum, 0)
@@ -810,7 +1011,7 @@ func TestProbability_PermutationsBigIntNum_09(t *testing.T) {
 
 }
 
-func TestProbability_PermutationsBigIntNum_10(t *testing.T) {
+func TestProbability_PermutationsBigIntNum_18(t *testing.T) {
 	nInt := 15
 	rInt := 0
 	numOfItems := BigIntNum{}.NewIntExponent(nInt, 0)
@@ -826,7 +1027,7 @@ func TestProbability_PermutationsBigIntNum_10(t *testing.T) {
 
 }
 
-func TestProbability_PermutationsBigIntNum_11(t *testing.T) {
+func TestProbability_PermutationsBigIntNum_19(t *testing.T) {
 	nInt := -15
 	rInt := 2
 	numOfItems := BigIntNum{}.NewIntExponent(nInt, 0)
@@ -842,7 +1043,7 @@ func TestProbability_PermutationsBigIntNum_11(t *testing.T) {
 
 }
 
-func TestProbability_PermutationsBigIntNum_12(t *testing.T) {
+func TestProbability_PermutationsBigIntNum_20(t *testing.T) {
 	nInt := 15
 	rInt := -2
 	numOfItems := BigIntNum{}.NewIntExponent(nInt, 0)
@@ -858,7 +1059,7 @@ func TestProbability_PermutationsBigIntNum_12(t *testing.T) {
 
 }
 
-func TestProbability_PermutationsBigIntNum_13(t *testing.T) {
+func TestProbability_PermutationsBigIntNum_21(t *testing.T) {
 	nInt := 5
 	rInt := 11
 	numOfItems := BigIntNum{}.NewIntExponent(nInt, 0)
@@ -875,7 +1076,7 @@ func TestProbability_PermutationsBigIntNum_13(t *testing.T) {
 }
 
 
-func TestProbability_PermutationsBigIntNum_14(t *testing.T) {
+func TestProbability_PermutationsBigIntNum_22(t *testing.T) {
 	nBigIntNum := 0
 	rBigIntNum := 4
 	numOfItems := BigIntNum{}.NewIntExponent(nBigIntNum, 0)
@@ -891,7 +1092,7 @@ func TestProbability_PermutationsBigIntNum_14(t *testing.T) {
 
 }
 
-func TestProbability_PermutationsBigIntNum_15(t *testing.T) {
+func TestProbability_PermutationsBigIntNum_23(t *testing.T) {
 	nInt := 15
 	rInt := 0
 	numOfItems := BigIntNum{}.NewIntExponent(nInt, 0)
@@ -907,7 +1108,7 @@ func TestProbability_PermutationsBigIntNum_15(t *testing.T) {
 
 }
 
-func TestProbability_PermutationsBigIntNum_16(t *testing.T) {
+func TestProbability_PermutationsBigIntNum_24(t *testing.T) {
 	nInt := -15
 	rInt := 2
 	numOfItems := BigIntNum{}.NewIntExponent(nInt, 0)
@@ -923,7 +1124,7 @@ func TestProbability_PermutationsBigIntNum_16(t *testing.T) {
 
 }
 
-func TestProbability_PermutationsBigIntNum_17(t *testing.T) {
+func TestProbability_PermutationsBigIntNum_25(t *testing.T) {
 	nInt := 15
 	rInt := -2
 	numOfItems := BigIntNum{}.NewIntExponent(nInt, 0)
