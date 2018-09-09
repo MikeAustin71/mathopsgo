@@ -1161,7 +1161,8 @@ func TestProbability_PermutationsDecimal_13(t *testing.T) {
 	_, err := Probability{}.PermutationsDecimal(numOfItems, numOfItemsPicked, allowRepetitions)
 
 	if err == nil {
-		t.Errorf("Error: Expected error return from Probability{}.PermutationsBigIntNum(n, r) "+
+		t.Errorf("Error: Expected error return from Probability{}.PermutationsDecimal(" +
+			"numOfItems, numOfItemsPicked, allowRepetitions) " +
 			"However no error was generated. r > n;  n='%v' r='%v' ", nInt, rInt)
 	}
 
@@ -1540,7 +1541,8 @@ func TestProbability_PermutationsIntAry_13(t *testing.T) {
 	_, err := Probability{}.PermutationsIntAry(numOfItems, numOfItemsPicked, allowRepetitions)
 
 	if err == nil {
-		t.Errorf("Error: Expected error return from Probability{}.PermutationsBigIntNum(n, r) "+
+		t.Errorf("Error: Expected error return from Probability{}.PermutationsIntAry(" +
+			"numOfItems, numOfItemsPicked, allowRepetitions) " +
 			"However no error was generated. r > n;  n='%v' r='%v' ", nInt, rInt)
 	}
 
@@ -1916,7 +1918,8 @@ func TestProbability_PermutationsINumMgr_13(t *testing.T) {
 	_, err := Probability{}.PermutationsINumMgr(&numOfItems, &numOfItemsPicked, allowRepetitions)
 
 	if err == nil {
-		t.Errorf("Error: Expected error return from Probability{}.PermutationsBigIntNum(n, r) "+
+		t.Errorf("Error: Expected error return from Probability{}.PermutationsINumMgr(" +
+			"&numOfItems, &numOfItemsPicked, allowRepetitions) " +
 			"However no error was generated. r > n;  n='%v' r='%v' ", nInt, rInt)
 	}
 
@@ -2259,7 +2262,8 @@ func TestProbability_PermutationsInt_13(t *testing.T) {
 	_, err := Probability{}.PermutationsInt(numOfItems, numOfItemsPicked, allowRepetitions)
 
 	if err == nil {
-		t.Errorf("Error: Expected error return from Probability{}.PermutationsBigIntNum(n, r) "+
+		t.Errorf("Error: Expected error return from Probability{}.PermutationsInt(" +
+			"numOfItems, numOfItemsPicked, allowRepetitions) " +
 			"However no error was generated. r > n;  n='%v' r='%v' ", nInt, rInt)
 	}
 
