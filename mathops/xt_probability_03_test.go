@@ -539,7 +539,7 @@ func TestProbability_PermutationsBigIntNum_01(t *testing.T) {
 	actualNumStr := result.GetNumStr()
 
 	if expectedResultStr != actualNumStr {
-		t.Errorf("Error: Expected pemutations='%v'. Instead, permutations='%v'. ",
+		t.Errorf("Error: Expected permutations='%v'. Instead, permutations='%v'. ",
 			expectedResultStr, actualNumStr)
 	}
 
@@ -564,7 +564,7 @@ func TestProbability_PermutationsBigIntNum_02(t *testing.T) {
 	actualNumStr := result.GetNumStr()
 
 	if expectedResultStr != actualNumStr {
-		t.Errorf("Error: Expected pemutations='%v'. Instead, permutations='%v'. ",
+		t.Errorf("Error: Expected permutations='%v'. Instead, permutations='%v'. ",
 			expectedResultStr, actualNumStr)
 	}
 }
@@ -588,7 +588,7 @@ func TestProbability_PermutationsBigIntNum_03(t *testing.T) {
 	actualNumStr := result.GetNumStr()
 
 	if expectedResultStr != actualNumStr {
-		t.Errorf("Error: Expected pemutations='%v'. Instead, permutations='%v'. ",
+		t.Errorf("Error: Expected permutations='%v'. Instead, permutations='%v'. ",
 			expectedResultStr, actualNumStr)
 	}
 
@@ -613,7 +613,7 @@ func TestProbability_PermutationsBigIntNum_04(t *testing.T) {
 	actualNumStr := result.GetNumStr()
 
 	if expectedResultStr != actualNumStr {
-		t.Errorf("Error: Expected pemutations='%v'. Instead, permutations='%v'. ",
+		t.Errorf("Error: Expected permutations='%v'. Instead, permutations='%v'. ",
 			expectedResultStr, actualNumStr)
 	}
 
@@ -638,7 +638,7 @@ func TestProbability_PermutationsBigIntNum_05(t *testing.T) {
 	actualNumStr := result.GetNumStr()
 
 	if expectedResultStr != actualNumStr {
-		t.Errorf("Error: Expected pemutations='%v'. Instead, permutations='%v'. ",
+		t.Errorf("Error: Expected permutations='%v'. Instead, permutations='%v'. ",
 			expectedResultStr, actualNumStr)
 	}
 
@@ -663,7 +663,7 @@ func TestProbability_PermutationsBigIntNum_06(t *testing.T) {
 	actualNumStr := result.GetNumStr()
 
 	if expectedResultStr != actualNumStr {
-		t.Errorf("Error: Expected pemutations='%v'. Instead, permutations='%v'. ",
+		t.Errorf("Error: Expected permutations='%v'. Instead, permutations='%v'. ",
 			expectedResultStr, actualNumStr)
 	}
 
@@ -688,7 +688,7 @@ func TestProbability_PermutationsBigIntNum_07(t *testing.T) {
 	actualNumStr := result.GetNumStr()
 
 	if expectedResultStr != actualNumStr {
-		t.Errorf("Error: Expected pemutations='%v'. Instead, permutations='%v'. ",
+		t.Errorf("Error: Expected permutations='%v'. Instead, permutations='%v'. ",
 			expectedResultStr, actualNumStr)
 	}
 
@@ -713,7 +713,7 @@ func TestProbability_PermutationsBigIntNum_08(t *testing.T) {
 	actualNumStr := result.GetNumStr()
 
 	if expectedResultStr != actualNumStr {
-		t.Errorf("Error: Expected pemutations='%v'. Instead, permutations='%v'. ",
+		t.Errorf("Error: Expected permutations='%v'. Instead, permutations='%v'. ",
 			expectedResultStr, actualNumStr)
 	}
 
@@ -885,7 +885,7 @@ func TestProbability_PermutationsDecimal_01(t *testing.T) {
 	actualNumStr := result.GetNumStr()
 
 	if expectedResultStr != actualNumStr {
-		t.Errorf("Error: Expected pemutations='%v'. Instead, permutations='%v'. ",
+		t.Errorf("Error: Expected permutations='%v'. Instead, permutations='%v'. ",
 			expectedResultStr, actualNumStr)
 	}
 
@@ -911,7 +911,7 @@ func TestProbability_PermutationsDecimal_02(t *testing.T) {
 	actualNumStr := result.GetNumStr()
 
 	if expectedResultStr != actualNumStr {
-		t.Errorf("Error: Expected pemutations='%v'. Instead, permutations='%v'. ",
+		t.Errorf("Error: Expected permutations='%v'. Instead, permutations='%v'. ",
 			expectedResultStr, actualNumStr)
 	}
 }
@@ -936,7 +936,7 @@ func TestProbability_PermutationsDecimal_03(t *testing.T) {
 	actualNumStr := result.GetNumStr()
 
 	if expectedResultStr != actualNumStr {
-		t.Errorf("Error: Expected pemutations='%v'. Instead, permutations='%v'. ",
+		t.Errorf("Error: Expected permutations='%v'. Instead, permutations='%v'. ",
 			expectedResultStr, actualNumStr)
 	}
 
@@ -962,7 +962,7 @@ func TestProbability_PermutationsDecimal_04(t *testing.T) {
 	actualNumStr := result.GetNumStr()
 
 	if expectedResultStr != actualNumStr {
-		t.Errorf("Error: Expected pemutations='%v'. Instead, permutations='%v'. ",
+		t.Errorf("Error: Expected permutations='%v'. Instead, permutations='%v'. ",
 			expectedResultStr, actualNumStr)
 	}
 
@@ -988,7 +988,7 @@ func TestProbability_PermutationsDecimal_05(t *testing.T) {
 	actualNumStr := result.GetNumStr()
 
 	if expectedResultStr != actualNumStr {
-		t.Errorf("Error: Expected pemutations='%v'. Instead, permutations='%v'. ",
+		t.Errorf("Error: Expected permutations='%v'. Instead, permutations='%v'. ",
 			expectedResultStr, actualNumStr)
 	}
 
@@ -1014,7 +1014,7 @@ func TestProbability_PermutationsDecimal_06(t *testing.T) {
 	actualNumStr := result.GetNumStr()
 
 	if expectedResultStr != actualNumStr {
-		t.Errorf("Error: Expected pemutations='%v'. Instead, permutations='%v'. ",
+		t.Errorf("Error: Expected permutations='%v'. Instead, permutations='%v'. ",
 			expectedResultStr, actualNumStr)
 	}
 
@@ -1040,7 +1040,7 @@ func TestProbability_PermutationsDecimal_07(t *testing.T) {
 	actualNumStr := result.GetNumStr()
 
 	if expectedResultStr != actualNumStr {
-		t.Errorf("Error: Expected pemutations='%v'. Instead, permutations='%v'. ",
+		t.Errorf("Error: Expected permutations='%v'. Instead, permutations='%v'. ",
 			expectedResultStr, actualNumStr)
 	}
 
@@ -1066,13 +1066,170 @@ func TestProbability_PermutationsDecimal_08(t *testing.T) {
 	actualNumStr := result.GetNumStr()
 
 	if expectedResultStr != actualNumStr {
-		t.Errorf("Error: Expected pemutations='%v'. Instead, permutations='%v'. ",
+		t.Errorf("Error: Expected permutations='%v'. Instead, permutations='%v'. ",
 			expectedResultStr, actualNumStr)
 	}
 
 }
 
 func TestProbability_PermutationsDecimal_09(t *testing.T) {
+
+	numOfItems := Decimal{}.NewInt(56, 0)
+
+	numOfItemsPicked := Decimal{}.NewInt(5, 0)
+
+	allowRepetitions := false
+	expectedResultStr := "458377920"
+
+	result, err := Probability{}.PermutationsDecimal(numOfItems, numOfItemsPicked, allowRepetitions)
+
+	if err != nil {
+		t.Errorf("Error returned by Probability{}.PermutationsDecimal(numOfItems, numOfItemsPicked). "+
+			"numOfItems='%v' numOfItemsPicked='%v' Error='%v'",
+			numOfItems, numOfItemsPicked, err.Error())
+	}
+
+	actualNumStr := result.GetNumStr()
+
+	if expectedResultStr != actualNumStr {
+		t.Errorf("Error: Expected permutations='%v'. Instead, permutations='%v'. ",
+			expectedResultStr, actualNumStr)
+	}
+
+}
+
+func TestProbability_PermutationsDecimal_10(t *testing.T) {
+
+	numOfItems := Decimal{}.NewInt(9, 0)
+
+	numOfItemsPicked := Decimal{}.NewInt(3, 0)
+
+	allowRepetitions := false
+	expectedResultStr := "504"
+
+	result, err := Probability{}.PermutationsDecimal(numOfItems, numOfItemsPicked, allowRepetitions)
+
+	if err != nil {
+		t.Errorf("Error returned by Probability{}.PermutationsDecimal(numOfItems, numOfItemsPicked). "+
+			"numOfItems='%v' numOfItemsPicked='%v' Error='%v'",
+			numOfItems, numOfItemsPicked, err.Error())
+	}
+
+	actualNumStr := result.GetNumStr()
+
+	if expectedResultStr != actualNumStr {
+		t.Errorf("Error: Expected permutations='%v'. Instead, permutations='%v'. ",
+			expectedResultStr, actualNumStr)
+	}
+
+}
+
+func TestProbability_PermutationsDecimal_11(t *testing.T) {
+
+	numOfItems := Decimal{}.NewInt(12, 0)
+
+	numOfItemsPicked := Decimal{}.NewInt(7, 0)
+
+	allowRepetitions := false
+	expectedResultStr := "3991680"
+
+	result, err := Probability{}.PermutationsDecimal(numOfItems, numOfItemsPicked, allowRepetitions)
+
+	if err != nil {
+		t.Errorf("Error returned by Probability{}.PermutationsDecimal(numOfItems, numOfItemsPicked). "+
+			"numOfItems='%v' numOfItemsPicked='%v' Error='%v'",
+			numOfItems, numOfItemsPicked, err.Error())
+	}
+
+	actualNumStr := result.GetNumStr()
+
+	if expectedResultStr != actualNumStr {
+		t.Errorf("Error: Expected permutations='%v'. Instead, permutations='%v'. ",
+			expectedResultStr, actualNumStr)
+	}
+
+}
+
+func TestProbability_PermutationsDecimal_12(t *testing.T) {
+
+	numOfItems := Decimal{}.NewInt(18, 0)
+
+	numOfItemsPicked := Decimal{}.NewInt(8, 0)
+
+	allowRepetitions := false
+	expectedResultStr := "1764322560"
+
+	result, err := Probability{}.PermutationsDecimal(numOfItems, numOfItemsPicked, allowRepetitions)
+
+	if err != nil {
+		t.Errorf("Error returned by Probability{}.PermutationsDecimal(numOfItems, numOfItemsPicked). "+
+			"numOfItems='%v' numOfItemsPicked='%v' Error='%v'",
+			numOfItems, numOfItemsPicked, err.Error())
+	}
+
+	actualNumStr := result.GetNumStr()
+
+	if expectedResultStr != actualNumStr {
+		t.Errorf("Error: Expected permutations='%v'. Instead, permutations='%v'. ",
+			expectedResultStr, actualNumStr)
+	}
+
+}
+
+func TestProbability_PermutationsDecimal_13(t *testing.T) {
+
+	numOfItems := Decimal{}.NewInt(9, 0)
+
+	numOfItemsPicked := Decimal{}.NewInt(9, 0)
+
+	allowRepetitions := false
+	expectedResultStr := "362880"
+
+	result, err := Probability{}.PermutationsDecimal(numOfItems, numOfItemsPicked, allowRepetitions)
+
+	if err != nil {
+		t.Errorf("Error returned by Probability{}.PermutationsDecimal(numOfItems, numOfItemsPicked). "+
+			"numOfItems='%v' numOfItemsPicked='%v' Error='%v'",
+			numOfItems, numOfItemsPicked, err.Error())
+	}
+
+	actualNumStr := result.GetNumStr()
+
+	if expectedResultStr != actualNumStr {
+		t.Errorf("Error: Expected permutations='%v'. Instead, permutations='%v'. ",
+			expectedResultStr, actualNumStr)
+	}
+
+}
+
+func TestProbability_PermutationsDecimal_14(t *testing.T) {
+
+	numOfItems := Decimal{}.NewInt(9, 0)
+
+	numOfItemsPicked := Decimal{}.NewInt(9, 0)
+
+	allowRepetitions := true
+	expectedResultStr := "387420489"
+
+	result, err := Probability{}.PermutationsDecimal(numOfItems, numOfItemsPicked, allowRepetitions)
+
+	if err != nil {
+		t.Errorf("Error returned by Probability{}.PermutationsDecimal(numOfItems, numOfItemsPicked). "+
+			"numOfItems='%v' numOfItemsPicked='%v' Error='%v'",
+			numOfItems, numOfItemsPicked, err.Error())
+	}
+
+	actualNumStr := result.GetNumStr()
+
+	if expectedResultStr != actualNumStr {
+		t.Errorf("Error: Expected permutations='%v'. Instead, permutations='%v'. ",
+			expectedResultStr, actualNumStr)
+	}
+
+}
+
+
+func TestProbability_PermutationsDecimal_15(t *testing.T) {
 	nDecimal := 0
 	rDecimal := 4
 
@@ -1091,7 +1248,7 @@ func TestProbability_PermutationsDecimal_09(t *testing.T) {
 
 }
 
-func TestProbability_PermutationsDecimal_10(t *testing.T) {
+func TestProbability_PermutationsDecimal_16(t *testing.T) {
 	nInt := 15
 	rInt := 0
 
@@ -1110,7 +1267,7 @@ func TestProbability_PermutationsDecimal_10(t *testing.T) {
 
 }
 
-func TestProbability_PermutationsDecimal_11(t *testing.T) {
+func TestProbability_PermutationsDecimal_17(t *testing.T) {
 	nInt := -15
 	rInt := 2
 
@@ -1129,7 +1286,7 @@ func TestProbability_PermutationsDecimal_11(t *testing.T) {
 
 }
 
-func TestProbability_PermutationsDecimal_12(t *testing.T) {
+func TestProbability_PermutationsDecimal_18(t *testing.T) {
 	nInt := 15
 	rInt := -2
 
@@ -1148,7 +1305,7 @@ func TestProbability_PermutationsDecimal_12(t *testing.T) {
 
 }
 
-func TestProbability_PermutationsDecimal_13(t *testing.T) {
+func TestProbability_PermutationsDecimal_19(t *testing.T) {
 	nInt := 5
 	rInt := 11
 
@@ -1168,7 +1325,7 @@ func TestProbability_PermutationsDecimal_13(t *testing.T) {
 
 }
 
-func TestProbability_PermutationsDecimal_14(t *testing.T) {
+func TestProbability_PermutationsDecimal_20(t *testing.T) {
 	nDecimal := 0
 	rDecimal := 4
 
@@ -1187,7 +1344,7 @@ func TestProbability_PermutationsDecimal_14(t *testing.T) {
 
 }
 
-func TestProbability_PermutationsDecimal_15(t *testing.T) {
+func TestProbability_PermutationsDecimal_21(t *testing.T) {
 	nInt := 15
 	rInt := 0
 
@@ -1206,7 +1363,7 @@ func TestProbability_PermutationsDecimal_15(t *testing.T) {
 
 }
 
-func TestProbability_PermutationsDecimal_16(t *testing.T) {
+func TestProbability_PermutationsDecimal_22(t *testing.T) {
 	nInt := -15
 	rInt := 2
 
@@ -1225,7 +1382,7 @@ func TestProbability_PermutationsDecimal_16(t *testing.T) {
 
 }
 
-func TestProbability_PermutationsDecimal_17(t *testing.T) {
+func TestProbability_PermutationsDecimal_23(t *testing.T) {
 	nInt := 15
 	rInt := -2
 
@@ -1265,7 +1422,7 @@ func TestProbability_PermutationsIntAry_01(t *testing.T) {
 	actualNumStr := result.GetNumStr()
 
 	if expectedResultStr != actualNumStr {
-		t.Errorf("Error: Expected pemutations='%v'. Instead, permutations='%v'. ",
+		t.Errorf("Error: Expected permutations='%v'. Instead, permutations='%v'. ",
 			expectedResultStr, actualNumStr)
 	}
 
@@ -1291,7 +1448,7 @@ func TestProbability_PermutationsIntAry_02(t *testing.T) {
 	actualNumStr := result.GetNumStr()
 
 	if expectedResultStr != actualNumStr {
-		t.Errorf("Error: Expected pemutations='%v'. Instead, permutations='%v'. ",
+		t.Errorf("Error: Expected permutations='%v'. Instead, permutations='%v'. ",
 			expectedResultStr, actualNumStr)
 	}
 }
@@ -1316,7 +1473,7 @@ func TestProbability_PermutationsIntAry_03(t *testing.T) {
 	actualNumStr := result.GetNumStr()
 
 	if expectedResultStr != actualNumStr {
-		t.Errorf("Error: Expected pemutations='%v'. Instead, permutations='%v'. ",
+		t.Errorf("Error: Expected permutations='%v'. Instead, permutations='%v'. ",
 			expectedResultStr, actualNumStr)
 	}
 
@@ -1342,7 +1499,7 @@ func TestProbability_PermutationsIntAry_04(t *testing.T) {
 	actualNumStr := result.GetNumStr()
 
 	if expectedResultStr != actualNumStr {
-		t.Errorf("Error: Expected pemutations='%v'. Instead, permutations='%v'. ",
+		t.Errorf("Error: Expected permutations='%v'. Instead, permutations='%v'. ",
 			expectedResultStr, actualNumStr)
 	}
 
@@ -1368,7 +1525,7 @@ func TestProbability_PermutationsIntAry_05(t *testing.T) {
 	actualNumStr := result.GetNumStr()
 
 	if expectedResultStr != actualNumStr {
-		t.Errorf("Error: Expected pemutations='%v'. Instead, permutations='%v'. ",
+		t.Errorf("Error: Expected permutations='%v'. Instead, permutations='%v'. ",
 			expectedResultStr, actualNumStr)
 	}
 
@@ -1394,7 +1551,7 @@ func TestProbability_PermutationsIntAry_06(t *testing.T) {
 	actualNumStr := result.GetNumStr()
 
 	if expectedResultStr != actualNumStr {
-		t.Errorf("Error: Expected pemutations='%v'. Instead, permutations='%v'. ",
+		t.Errorf("Error: Expected permutations='%v'. Instead, permutations='%v'. ",
 			expectedResultStr, actualNumStr)
 	}
 
@@ -1420,7 +1577,7 @@ func TestProbability_PermutationsIntAry_07(t *testing.T) {
 	actualNumStr := result.GetNumStr()
 
 	if expectedResultStr != actualNumStr {
-		t.Errorf("Error: Expected pemutations='%v'. Instead, permutations='%v'. ",
+		t.Errorf("Error: Expected permutations='%v'. Instead, permutations='%v'. ",
 			expectedResultStr, actualNumStr)
 	}
 
@@ -1446,7 +1603,7 @@ func TestProbability_PermutationsIntAry_08(t *testing.T) {
 	actualNumStr := result.GetNumStr()
 
 	if expectedResultStr != actualNumStr {
-		t.Errorf("Error: Expected pemutations='%v'. Instead, permutations='%v'. ",
+		t.Errorf("Error: Expected permutations='%v'. Instead, permutations='%v'. ",
 			expectedResultStr, actualNumStr)
 	}
 
@@ -1644,7 +1801,7 @@ func TestProbability_PermutationsINumMgr_01(t *testing.T) {
 	actualNumStr := result.GetNumStr()
 
 	if expectedResultStr != actualNumStr {
-		t.Errorf("Error: Expected pemutations='%v'. Instead, permutations='%v'. ",
+		t.Errorf("Error: Expected permutations='%v'. Instead, permutations='%v'. ",
 			expectedResultStr, actualNumStr)
 	}
 
@@ -1670,7 +1827,7 @@ func TestProbability_PermutationsINumMgr_02(t *testing.T) {
 	actualNumStr := result.GetNumStr()
 
 	if expectedResultStr != actualNumStr {
-		t.Errorf("Error: Expected pemutations='%v'. Instead, permutations='%v'. ",
+		t.Errorf("Error: Expected permutations='%v'. Instead, permutations='%v'. ",
 			expectedResultStr, actualNumStr)
 	}
 }
@@ -1695,7 +1852,7 @@ func TestProbability_PermutationsINumMgr_03(t *testing.T) {
 	actualNumStr := result.GetNumStr()
 
 	if expectedResultStr != actualNumStr {
-		t.Errorf("Error: Expected pemutations='%v'. Instead, permutations='%v'. ",
+		t.Errorf("Error: Expected permutations='%v'. Instead, permutations='%v'. ",
 			expectedResultStr, actualNumStr)
 	}
 
@@ -1721,7 +1878,7 @@ func TestProbability_PermutationsINumMgr_04(t *testing.T) {
 	actualNumStr := result.GetNumStr()
 
 	if expectedResultStr != actualNumStr {
-		t.Errorf("Error: Expected pemutations='%v'. Instead, permutations='%v'. ",
+		t.Errorf("Error: Expected permutations='%v'. Instead, permutations='%v'. ",
 			expectedResultStr, actualNumStr)
 	}
 }
@@ -1746,7 +1903,7 @@ func TestProbability_PermutationsINumMgr_05(t *testing.T) {
 	actualNumStr := result.GetNumStr()
 
 	if expectedResultStr != actualNumStr {
-		t.Errorf("Error: Expected pemutations='%v'. Instead, permutations='%v'. ",
+		t.Errorf("Error: Expected permutations='%v'. Instead, permutations='%v'. ",
 			expectedResultStr, actualNumStr)
 	}
 }
@@ -1771,7 +1928,7 @@ func TestProbability_PermutationsINumMgr_06(t *testing.T) {
 	actualNumStr := result.GetNumStr()
 
 	if expectedResultStr != actualNumStr {
-		t.Errorf("Error: Expected pemutations='%v'. Instead, permutations='%v'. ",
+		t.Errorf("Error: Expected permutations='%v'. Instead, permutations='%v'. ",
 			expectedResultStr, actualNumStr)
 	}
 
@@ -1797,7 +1954,7 @@ func TestProbability_PermutationsINumMgr_07(t *testing.T) {
 	actualNumStr := result.GetNumStr()
 
 	if expectedResultStr != actualNumStr {
-		t.Errorf("Error: Expected pemutations='%v'. Instead, permutations='%v'. ",
+		t.Errorf("Error: Expected permutations='%v'. Instead, permutations='%v'. ",
 			expectedResultStr, actualNumStr)
 	}
 
@@ -1823,7 +1980,7 @@ func TestProbability_PermutationsINumMgr_08(t *testing.T) {
 	actualNumStr := result.GetNumStr()
 
 	if expectedResultStr != actualNumStr {
-		t.Errorf("Error: Expected pemutations='%v'. Instead, permutations='%v'. ",
+		t.Errorf("Error: Expected permutations='%v'. Instead, permutations='%v'. ",
 			expectedResultStr, actualNumStr)
 	}
 
@@ -2015,7 +2172,7 @@ func TestProbability_PermutationsInt_01(t *testing.T) {
 	actualNumStr := result.GetNumStr()
 
 	if expectedResultStr != actualNumStr {
-		t.Errorf("Error: Expected pemutations='%v'. Instead, permutations='%v'. ",
+		t.Errorf("Error: Expected permutations='%v'. Instead, permutations='%v'. ",
 			expectedResultStr, actualNumStr)
 	}
 
@@ -2039,7 +2196,7 @@ func TestProbability_PermutationsInt_02(t *testing.T) {
 	actualNumStr := result.GetNumStr()
 
 	if expectedResultStr != actualNumStr {
-		t.Errorf("Error: Expected pemutations='%v'. Instead, permutations='%v'. ",
+		t.Errorf("Error: Expected permutations='%v'. Instead, permutations='%v'. ",
 			expectedResultStr, actualNumStr)
 	}
 
@@ -2063,7 +2220,7 @@ func TestProbability_PermutationsInt_03(t *testing.T) {
 	actualNumStr := result.GetNumStr()
 
 	if expectedResultStr != actualNumStr {
-		t.Errorf("Error: Expected pemutations='%v'. Instead, permutations='%v'. ",
+		t.Errorf("Error: Expected permutations='%v'. Instead, permutations='%v'. ",
 			expectedResultStr, actualNumStr)
 	}
 
@@ -2087,7 +2244,7 @@ func TestProbability_PermutationsInt_04(t *testing.T) {
 	actualNumStr := result.GetNumStr()
 
 	if expectedResultStr != actualNumStr {
-		t.Errorf("Error: Expected pemutations='%v'. Instead, permutations='%v'. ",
+		t.Errorf("Error: Expected permutations='%v'. Instead, permutations='%v'. ",
 			expectedResultStr, actualNumStr)
 	}
 
@@ -2111,7 +2268,7 @@ func TestProbability_PermutationsInt_05(t *testing.T) {
 	actualNumStr := result.GetNumStr()
 
 	if expectedResultStr != actualNumStr {
-		t.Errorf("Error: Expected pemutations='%v'. Instead, permutations='%v'. ",
+		t.Errorf("Error: Expected permutations='%v'. Instead, permutations='%v'. ",
 			expectedResultStr, actualNumStr)
 	}
 
@@ -2135,7 +2292,7 @@ func TestProbability_PermutationsInt_06(t *testing.T) {
 	actualNumStr := result.GetNumStr()
 
 	if expectedResultStr != actualNumStr {
-		t.Errorf("Error: Expected pemutations='%v'. Instead, permutations='%v'. ",
+		t.Errorf("Error: Expected permutations='%v'. Instead, permutations='%v'. ",
 			expectedResultStr, actualNumStr)
 	}
 
@@ -2159,7 +2316,7 @@ func TestProbability_PermutationsInt_07(t *testing.T) {
 	actualNumStr := result.GetNumStr()
 
 	if expectedResultStr != actualNumStr {
-		t.Errorf("Error: Expected pemutations='%v'. Instead, permutations='%v'. ",
+		t.Errorf("Error: Expected permutations='%v'. Instead, permutations='%v'. ",
 			expectedResultStr, actualNumStr)
 	}
 
@@ -2183,7 +2340,7 @@ func TestProbability_PermutationsInt_08(t *testing.T) {
 	actualNumStr := result.GetNumStr()
 
 	if expectedResultStr != actualNumStr {
-		t.Errorf("Error: Expected pemutations='%v'. Instead, permutations='%v'. ",
+		t.Errorf("Error: Expected permutations='%v'. Instead, permutations='%v'. ",
 			expectedResultStr, actualNumStr)
 	}
 }
