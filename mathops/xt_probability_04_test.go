@@ -731,6 +731,198 @@ func TestProbability_PermutationsInt64_08(t *testing.T) {
 }
 
 func TestProbability_PermutationsInt64_09(t *testing.T) {
+
+	numOfItems := int64(56)
+	numOfItemsPicked := int64(5)
+	allowRepetitions := false
+	expectedResultStr := "458377920"
+
+	result, err := Probability{}.PermutationsInt64(numOfItems, numOfItemsPicked, allowRepetitions)
+
+	if err != nil {
+		t.Errorf("Error returned by Probability{}.PermutationsInt64(numOfItems, numOfItemsPicked). "+
+			"numOfItems='%v' numOfItemsPicked='%v' Error='%v'",
+			numOfItems, numOfItemsPicked, err.Error())
+	}
+
+	actualNumStr := result.GetNumStr()
+
+	if expectedResultStr != actualNumStr {
+		t.Errorf("Error: Expected pemutations='%v'. Instead, permutations='%v'. ",
+			expectedResultStr, actualNumStr)
+	}
+
+}
+
+func TestProbability_PermutationsInt64_10(t *testing.T) {
+
+	numOfItems := int64(9)
+	numOfItemsPicked := int64(3)
+	allowRepetitions := false
+	expectedResultStr := "504"
+
+	result, err := Probability{}.PermutationsInt64(numOfItems, numOfItemsPicked, allowRepetitions)
+
+	if err != nil {
+		t.Errorf("Error returned by Probability{}.PermutationsInt64(numOfItems, numOfItemsPicked). "+
+			"numOfItems='%v' numOfItemsPicked='%v' Error='%v'",
+			numOfItems, numOfItemsPicked, err.Error())
+	}
+
+	actualNumStr := result.GetNumStr()
+
+	if expectedResultStr != actualNumStr {
+		t.Errorf("Error: Expected pemutations='%v'. Instead, permutations='%v'. ",
+			expectedResultStr, actualNumStr)
+	}
+
+}
+
+func TestProbability_PermutationsInt64_11(t *testing.T) {
+
+	numOfItems := int64(12)
+	numOfItemsPicked := int64(7)
+	allowRepetitions := false
+	expectedResultStr := "3991680"
+
+	result, err := Probability{}.PermutationsInt64(numOfItems, numOfItemsPicked, allowRepetitions)
+
+	if err != nil {
+		t.Errorf("Error returned by Probability{}.PermutationsInt64(numOfItems, numOfItemsPicked). "+
+			"numOfItems='%v' numOfItemsPicked='%v' Error='%v'",
+			numOfItems, numOfItemsPicked, err.Error())
+	}
+
+	actualNumStr := result.GetNumStr()
+
+	if expectedResultStr != actualNumStr {
+		t.Errorf("Error: Expected pemutations='%v'. Instead, permutations='%v'. ",
+			expectedResultStr, actualNumStr)
+	}
+
+}
+
+func TestProbability_PermutationsInt64_12(t *testing.T) {
+
+	numOfItems := int64(18)
+	numOfItemsPicked := int64(8)
+	allowRepetitions := false
+	expectedResultStr := "1764322560"
+
+	result, err := Probability{}.PermutationsInt64(numOfItems, numOfItemsPicked, allowRepetitions)
+
+	if err != nil {
+		t.Errorf("Error returned by Probability{}.PermutationsInt64(numOfItems, numOfItemsPicked). "+
+			"numOfItems='%v' numOfItemsPicked='%v' Error='%v'",
+			numOfItems, numOfItemsPicked, err.Error())
+	}
+
+	actualNumStr := result.GetNumStr()
+
+	if expectedResultStr != actualNumStr {
+		t.Errorf("Error: Expected pemutations='%v'. Instead, permutations='%v'. ",
+			expectedResultStr, actualNumStr)
+	}
+
+}
+
+func TestProbability_PermutationsInt64_13(t *testing.T) {
+
+	numOfItems := int64(9)
+	numOfItemsPicked := int64(9)
+	allowRepetitions := false
+	expectedResultStr := "362880"
+
+	result, err := Probability{}.PermutationsInt64(numOfItems, numOfItemsPicked, allowRepetitions)
+
+	if err != nil {
+		t.Errorf("Error returned by Probability{}.PermutationsInt64(numOfItems, numOfItemsPicked). "+
+			"numOfItems='%v' numOfItemsPicked='%v' Error='%v'",
+			numOfItems, numOfItemsPicked, err.Error())
+	}
+
+	actualNumStr := result.GetNumStr()
+
+	if expectedResultStr != actualNumStr {
+		t.Errorf("Error: Expected pemutations='%v'. Instead, permutations='%v'. ",
+			expectedResultStr, actualNumStr)
+	}
+
+}
+
+func TestProbability_PermutationsInt64_14(t *testing.T) {
+
+	numOfItems := int64(9)
+	numOfItemsPicked := int64(9)
+	allowRepetitions := true
+	expectedResultStr := "387420489"
+
+	result, err := Probability{}.PermutationsInt64(numOfItems, numOfItemsPicked, allowRepetitions)
+
+	if err != nil {
+		t.Errorf("Error returned by Probability{}.PermutationsInt64(numOfItems, numOfItemsPicked). "+
+			"numOfItems='%v' numOfItemsPicked='%v' Error='%v'",
+			numOfItems, numOfItemsPicked, err.Error())
+	}
+
+	actualNumStr := result.GetNumStr()
+
+	if expectedResultStr != actualNumStr {
+		t.Errorf("Error: Expected pemutations='%v'. Instead, permutations='%v'. ",
+			expectedResultStr, actualNumStr)
+	}
+
+}
+
+func TestProbability_PermutationsInt64_15(t *testing.T) {
+
+	numOfItems := int64(9)
+	numOfItemsPicked := int64(1)
+	allowRepetitions := false
+	expectedResultStr := "9"
+
+	result, err := Probability{}.PermutationsInt64(numOfItems, numOfItemsPicked, allowRepetitions)
+
+	if err != nil {
+		t.Errorf("Error returned by Probability{}.PermutationsInt64(numOfItems, numOfItemsPicked). "+
+			"numOfItems='%v' numOfItemsPicked='%v' Error='%v'",
+			numOfItems, numOfItemsPicked, err.Error())
+	}
+
+	actualNumStr := result.GetNumStr()
+
+	if expectedResultStr != actualNumStr {
+		t.Errorf("Error: Expected pemutations='%v'. Instead, permutations='%v'. ",
+			expectedResultStr, actualNumStr)
+	}
+
+}
+
+func TestProbability_PermutationsInt64_16(t *testing.T) {
+
+	numOfItems := int64(9)
+	numOfItemsPicked := int64(1)
+	allowRepetitions := true
+	expectedResultStr := "9"
+
+	result, err := Probability{}.PermutationsInt64(numOfItems, numOfItemsPicked, allowRepetitions)
+
+	if err != nil {
+		t.Errorf("Error returned by Probability{}.PermutationsInt64(numOfItems, numOfItemsPicked). "+
+			"numOfItems='%v' numOfItemsPicked='%v' Error='%v'",
+			numOfItems, numOfItemsPicked, err.Error())
+	}
+
+	actualNumStr := result.GetNumStr()
+
+	if expectedResultStr != actualNumStr {
+		t.Errorf("Error: Expected pemutations='%v'. Instead, permutations='%v'. ",
+			expectedResultStr, actualNumStr)
+	}
+
+}
+
+func TestProbability_PermutationsInt64_17(t *testing.T) {
 	nInt := 0
 	rInt := 4
 	numOfItems := int64(nInt)
@@ -747,7 +939,7 @@ func TestProbability_PermutationsInt64_09(t *testing.T) {
 
 }
 
-func TestProbability_PermutationsInt64_10(t *testing.T) {
+func TestProbability_PermutationsInt64_18(t *testing.T) {
 	nInt := 15
 	rInt := 0
 	numOfItems := int64(nInt)
@@ -764,7 +956,7 @@ func TestProbability_PermutationsInt64_10(t *testing.T) {
 
 }
 
-func TestProbability_PermutationsInt64_11(t *testing.T) {
+func TestProbability_PermutationsInt64_19(t *testing.T) {
 	nInt := -15
 	rInt := 2
 	numOfItems := int64(nInt)
@@ -781,7 +973,7 @@ func TestProbability_PermutationsInt64_11(t *testing.T) {
 
 }
 
-func TestProbability_PermutationsInt64_12(t *testing.T) {
+func TestProbability_PermutationsInt64_20(t *testing.T) {
 	nInt := 15
 	rInt := -2
 	numOfItems := int64(nInt)
@@ -798,7 +990,7 @@ func TestProbability_PermutationsInt64_12(t *testing.T) {
 
 }
 
-func TestProbability_PermutationsInt64_13(t *testing.T) {
+func TestProbability_PermutationsInt64_21(t *testing.T) {
 	nInt := 5
 	rInt := 11
 	numOfItems := int64(nInt)
@@ -813,7 +1005,7 @@ func TestProbability_PermutationsInt64_13(t *testing.T) {
 	}
 }
 
-func TestProbability_PermutationsInt64_14(t *testing.T) {
+func TestProbability_PermutationsInt64_22(t *testing.T) {
 	nInt := 0
 	rInt := 4
 	numOfItems := int64(nInt)
@@ -829,7 +1021,7 @@ func TestProbability_PermutationsInt64_14(t *testing.T) {
 	}
 }
 
-func TestProbability_PermutationsInt64_15(t *testing.T) {
+func TestProbability_PermutationsInt64_23(t *testing.T) {
 	nInt := 15
 	rInt := 0
 	numOfItems := int64(nInt)
@@ -846,7 +1038,7 @@ func TestProbability_PermutationsInt64_15(t *testing.T) {
 
 }
 
-func TestProbability_PermutationsInt64_16(t *testing.T) {
+func TestProbability_PermutationsInt64_24(t *testing.T) {
 	nInt := -15
 	rInt := 2
 	numOfItems := int64(nInt)
@@ -863,7 +1055,7 @@ func TestProbability_PermutationsInt64_16(t *testing.T) {
 
 }
 
-func TestProbability_PermutationsInt64_17(t *testing.T) {
+func TestProbability_PermutationsInt64_25(t *testing.T) {
 	nInt := 15
 	rInt := -2
 	numOfItems := int64(nInt)
