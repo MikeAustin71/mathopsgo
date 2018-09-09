@@ -155,10 +155,6 @@ func (prob Probability) CombinationsNoRepsBigInt(
 			errors.New(ePrefix + "Error: 'numOfItemsChosen' is ZERO! ")
 	}
 
-	if numOfItems.Cmp(numOfItemsChosen) == 0 {
-		return BigIntNum{}.NewInt(1, 0), nil
-	}
-
 	bigOne := big.NewInt(1)
 
 	if numOfItemsChosen.Cmp(bigOne) == 0 {
@@ -195,7 +191,7 @@ func (prob Probability) CombinationsNoRepsBigInt(
 		}
 
 		rUpperLimit := big.NewInt(0).Set(numOfItemsChosen)
-		rLowerLimit := big.NewInt(1)
+		rLowerLimit := big.NewInt(0).Set(bigOne)
 
 		rFactorial, err = NFactorial{}.CalcFactorialValueBigInt(
 			rUpperLimit, rLowerLimit)
@@ -229,7 +225,7 @@ func (prob Probability) CombinationsNoRepsBigInt(
 		}
 
 		rFactorial, err = NFactorial{}.CalcFactorialValueBigInt(
-			nMinusR, big.NewInt(1))
+			nMinusR, big.NewInt(0).Set(bigOne))
 
 		if err != nil {
 			return BigIntNum{}.NewZero(0),

@@ -146,16 +146,22 @@ func (prob Probability) PermutationsNoRepsBigInt(
 			fmt.Errorf(ePrefix + "Error: Input parameter 'numOfItemsPicked' is LESS THAN ZERO!")
 	}
 
-	if numOfItems.Cmp(numOfItemsPicked) < 0 {
+	if numOfItemsPicked.Cmp(numOfItems) == 1 {
 		return BigIntNum{}.NewZero(0),
-			errors.New(ePrefix + "Error: 'numOfItems' is LESS THAN 'numOfItemsPicked'! ")
+			errors.New(ePrefix + "Error: 'numOfItemsPicked' is GREATER THAN 'numOfItems'! ")
 
+	}
+
+	bigOne := big.NewInt(1)
+
+	if numOfItemsPicked.Cmp(bigOne) == 0 {
+		return BigIntNum{}.NewBigInt(numOfItems, 0), nil
 	}
 
 	// Numerator
 
 	nUpperLimit := big.NewInt(0).Set(numOfItems)
-	nLowerLimit := big.NewInt(1)
+	nLowerLimit := big.NewInt(0).Set(bigOne)
 
 	if numOfItems.Cmp(numOfItemsPicked) == 0 {
 		//                             n!
@@ -193,18 +199,15 @@ func (prob Probability) PermutationsNoRepsBigInt(
 
 // PermutationsWithRepsBigInt - Calculates the number of permutations associated with
 // a collection of 'numOfItems' from which one picks 'numOfItemsPicked'. Order IS
-// significant. This calculation assumes that REPETITIONS ARE ALLOWED.
+// significant. This calculation assumes that REPETITIONS ARE ALLOWED. This is also
+// referred to as 'ordered sampling with replacement'.
 //
 // Input Parameters
 // ================
 //
 // numOfItems 				*big.Int	- Must be a positive integer number greater than zero.
-//                                'numOfItems' must be greater than or equal to
-// 																'numOfItemsPicked'.
 //
 // numOfItemsPicked 	*big.Int	- Must be a positive integer number greater than zero.
-// 																'numOfItemsChosen' must be less than or equal to
-// 																'numOfItems'.
 //
 // Returns
 // =======
@@ -231,6 +234,9 @@ func (prob Probability) PermutationsNoRepsBigInt(
 //
 //
 // *** This calculation assumes REPETITIONS ARE ALLOWED! ***
+// This is also known as 'ordered sampling with replacement'. Since this calculation
+// allows repetitions or replacements, the 'numOfItemsPicked' may be greater than
+// 'numOfItems'.
 //
 //  Example
 //  =======
@@ -264,10 +270,11 @@ func (prob Probability) PermutationsWithRepsBigInt(
 			fmt.Errorf(ePrefix + "Error: Input parameter 'numOfItemsPicked' is LESS THAN ZERO!")
 	}
 
-	if numOfItems.Cmp(numOfItemsPicked) < 0 {
-		return BigIntNum{}.NewZero(0),
-			errors.New(ePrefix + "Error: 'numOfItems' is LESS THAN 'numOfItemsPicked'! ")
 
+	bigOne := big.NewInt(1)
+
+	if numOfItemsPicked.Cmp(bigOne) == 0 {
+		return BigIntNum{}.NewBigInt(numOfItems, 0), nil
 	}
 
 	resultBigInt := big.NewInt(0).Exp(numOfItems, numOfItemsPicked, nil)
@@ -280,8 +287,7 @@ func (prob Probability) PermutationsWithRepsBigInt(
 // PermutationsBigIntNum - Calculates the number of permutations associated with a collection of
 // 'numOfItems' from which one picks 'numOfItemsPicked'. Order IS significant. Input parameters
 // 'numOfItems' and 'numOfItemsPicked' are passed as type BigIntNum. Both input parameters must
-// be non-zero, positive integer numbers. 'numOfItems' must be equal to or greater than
-// 'numOfItemsPicked'.
+// be non-zero, positive integer numbers.
 //
 // The input parameter 'allowRepetitions' is a boolean value which will determine whether the
 // calculation results will allow repetitions or not. The formula for the permutation will
@@ -306,6 +312,9 @@ func (prob Probability) PermutationsWithRepsBigInt(
 //				and we choose r of them, repetition is NOT allowed,
 // 				and order matters.
 //
+//      When 'allowRepetitions' = false, 'numOfItemsPicked' must be a positive integer number
+//      which is less than or equal to 'numOfItems'.
+//
 //      ====================================================================
 // 			'allowRepetitions' = true
 //
@@ -315,6 +324,9 @@ func (prob Probability) PermutationsWithRepsBigInt(
 // 				Where n is the number of things to choose from,
 //				and we choose r of them, repetition IS allowed,
 // 				and order matters.
+//
+//      When 'allowRepetitions' = true, 'numOfItemsPicked' must be a positive integer number.
+//      'numOfItemsPicked' can be greater than, equal to or less than 'numOfItems'.
 //
 func (prob Probability) PermutationsBigIntNum(
 	numOfItems, numOfItemsPicked BigIntNum,
@@ -342,7 +354,7 @@ func (prob Probability) PermutationsBigIntNum(
 			fmt.Errorf(ePrefix + "Error: Input parameter 'numOfItemsPicked' is LESS THAN ZERO!")
 	}
 
-	if numOfItems.Cmp(numOfItemsPicked) < 0 {
+	if !allowRepetitions && numOfItems.Cmp(numOfItemsPicked) < 0 {
 		return BigIntNum{}.NewZero(0),
 			errors.New(ePrefix + "Error: 'numOfItems' is LESS THAN 'numOfItemsPicked'! ")
 
@@ -358,8 +370,7 @@ func (prob Probability) PermutationsBigIntNum(
 // PermutationsDecimal - Calculates the number of permutations associated with a collection
 // of 'numOfItems' from which one picks 'numOfItemsPicked'. Order IS significant. Input
 // parameters 'numOfItems' and 'numOfItemsPicked' are passed as type Decimal. Both input
-// parameters must be non-zero, positive integer numbers. 'numOfItems' must be equal to or
-// greater than 'numOfItemsPicked'.
+// parameters must be non-zero, positive integer numbers.
 //
 // The input parameter 'allowRepetitions' is a boolean value which will determine whether the
 // calculation results will allow repetitions or not. The formula for the permutation will
@@ -384,6 +395,9 @@ func (prob Probability) PermutationsBigIntNum(
 //				and we choose r of them, repetition is NOT allowed,
 // 				and order matters.
 //
+//      When 'allowRepetitions' = false, 'numOfItemsPicked' must be a positive integer number
+//      which is less than or equal to 'numOfItems'.
+//
 //      ====================================================================
 // 			'allowRepetitions' = true
 //
@@ -393,6 +407,9 @@ func (prob Probability) PermutationsBigIntNum(
 // 				Where n is the number of things to choose from,
 //				and we choose r of them, repetition IS allowed,
 // 				and order matters.
+//
+//      When 'allowRepetitions' = true, 'numOfItemsPicked' must be a positive integer number.
+//      'numOfItemsPicked' can be greater than, equal to or less than 'numOfItems'.
 //
 func (prob Probability) PermutationsDecimal(
 	numOfItems, numOfItemsPicked Decimal,
@@ -446,7 +463,7 @@ func (prob Probability) PermutationsDecimal(
 				"Error='%v' \n", err.Error())
 	}
 
-	if r.Cmp(n) == 1 {
+	if !allowRepetitions && r.Cmp(n) == 1 {
 		return Decimal{}.NewZero(0),
 			fmt.Errorf(ePrefix+
 				"Error: 'numOfItemsPicked' is GREATER THAN 'numOfItems'.  "+
@@ -495,8 +512,7 @@ func (prob Probability) PermutationsDecimal(
 // PermutationsIntAry - Calculates the number of permutations associated with a collection
 // of 'numOfItems' from which one picks 'numOfItemsPicked'. Order IS significant. Input
 // parameters 'numOfItems' and 'numOfItemsPicked' are passed as type IntAry. Both input
-// parameters must be non-zero, positive integer numbers. 'numOfItems' must be equal to or
-// greater than 'numOfItemsPicked'.
+// parameters must be non-zero, positive integer numbers.
 //
 // The input parameter 'allowRepetitions' is a boolean value which will determine whether the
 // calculation results will allow repetitions or not. The formula for the permutation will
@@ -521,6 +537,9 @@ func (prob Probability) PermutationsDecimal(
 //				and we choose r of them, repetition is NOT allowed,
 // 				and order matters.
 //
+//      When 'allowRepetitions' = false, 'numOfItemsPicked' must be a positive integer number
+//      which is less than or equal to 'numOfItems'.
+//
 //      ====================================================================
 // 			'allowRepetitions' = true
 //
@@ -531,7 +550,8 @@ func (prob Probability) PermutationsDecimal(
 //				and we choose r of them, repetition IS allowed,
 // 				and order matters.
 //
-//
+//      When 'allowRepetitions' = true, 'numOfItemsPicked' must be a positive integer number.
+//      'numOfItemsPicked' can be greater than, equal to or less than 'numOfItems'.
 //
 func (prob Probability) PermutationsIntAry(
 	numOfItems, numOfItemsPicked IntAry,
@@ -585,7 +605,7 @@ func (prob Probability) PermutationsIntAry(
 				"Error='%v' \n", err.Error())
 	}
 
-	if r.Cmp(n) == 1 {
+	if !allowRepetitions && r.Cmp(n) == 1 {
 		return IntAry{}.NewZero(0),
 			fmt.Errorf(ePrefix+
 				"Error: 'numOfItemsPicked' is GREATER THAN 'numOfItems'.  "+
@@ -634,8 +654,7 @@ func (prob Probability) PermutationsIntAry(
 // PermutationsINumMgr - Calculates the number of permutations associated with a collection
 // of 'numOfItems' from which one picks 'numOfItemsPicked'. Order IS significant. Input
 // parameters 'numOfItems' and 'numOfItemsPicked' are passed as type INumMgr. Both input
-// parameters must be non-zero, positive integer numbers. 'numOfItems' must be equal to or
-// greater than 'numOfItemsPicked'.
+// parameters must be non-zero, positive integer numbers.
 //
 // The input parameter 'allowRepetitions' is a boolean value which will determine whether the
 // calculation results will allow repetitions or not. The formula for the permutation will
@@ -660,6 +679,9 @@ func (prob Probability) PermutationsIntAry(
 //				and we choose r of them, repetition is NOT allowed,
 // 				and order matters.
 //
+//      When 'allowRepetitions' = false, 'numOfItemsPicked' must be a positive integer number
+//      which is less than or equal to 'numOfItems'.
+//
 //      ====================================================================
 // 			'allowRepetitions' = true
 //
@@ -670,7 +692,8 @@ func (prob Probability) PermutationsIntAry(
 //				and we choose r of them, repetition IS allowed,
 // 				and order matters.
 //
-//
+//      When 'allowRepetitions' = true, 'numOfItemsPicked' must be a positive integer number.
+//      'numOfItemsPicked' can be greater than, equal to or less than 'numOfItems'.
 //
 func (prob Probability) PermutationsINumMgr(
 	numOfItems, numOfItemsPicked INumMgr,
@@ -724,7 +747,7 @@ func (prob Probability) PermutationsINumMgr(
 				"Error='%v' \n", err.Error())
 	}
 
-	if r.Cmp(n) == 1 {
+	if !allowRepetitions && r.Cmp(n) == 1 {
 		return BigIntNum{}.NewZero(0),
 			fmt.Errorf(ePrefix+
 				"Error: 'numOfItemsPicked' is GREATER THAN 'numOfItems'.  "+
@@ -790,6 +813,9 @@ func (prob Probability) PermutationsINumMgr(
 //				and we choose r of them, repetition is NOT allowed,
 // 				and order matters.
 //
+//      When 'allowRepetitions' = false, 'numOfItemsPicked' must be a positive integer number
+//      which is less than or equal to 'numOfItems'.
+//
 //      ====================================================================
 // 			'allowRepetitions' = true
 //
@@ -800,6 +826,8 @@ func (prob Probability) PermutationsINumMgr(
 //				and we choose r of them, repetition IS allowed,
 // 				and order matters.
 //
+//      When 'allowRepetitions' = true, 'numOfItemsPicked' must be a positive integer number.
+//      'numOfItemsPicked' can be greater than, equal to or less than 'numOfItems'.
 //
 //
 func (prob Probability) PermutationsNumStrDto(
@@ -854,7 +882,8 @@ func (prob Probability) PermutationsNumStrDto(
 				"Error='%v' \n", err.Error())
 	}
 
-	if r.Cmp(n) == 1 {
+	// r > n
+	if !allowRepetitions && r.Cmp(n) == 1 {
 		return NumStrDto{}.NewZero(0),
 			fmt.Errorf(ePrefix+
 				"Error: 'numOfItemsPicked' is GREATER THAN 'numOfItems'.  "+
@@ -909,8 +938,7 @@ func (prob Probability) PermutationsNumStrDto(
 // separator. If the numeric value is a fractional value, the fractional digits must be
 // preceded by a period ('.') or decimal separator.
 //
-// Both input parameters must be non-zero, positive integer numbers. 'numOfItems' must be equal
-// to or greater than 'numOfItemsPicked'.
+// Both input parameters must be non-zero, positive integer numbers.
 //
 // The input parameter 'allowRepetitions' is a boolean value which will determine whether the
 // calculation results will allow repetitions or not. The formula for the permutation will
@@ -935,6 +963,9 @@ func (prob Probability) PermutationsNumStrDto(
 //				and we choose r of them, repetition is NOT allowed,
 // 				and order matters.
 //
+//      When 'allowRepetitions' = false, 'numOfItemsPicked' must be a positive integer number
+//      which is less than or equal to 'numOfItems'.
+//
 //      ====================================================================
 // 			'allowRepetitions' = true
 //
@@ -944,6 +975,9 @@ func (prob Probability) PermutationsNumStrDto(
 // 				Where n is the number of things to choose from,
 //				and we choose r of them, repetition IS allowed,
 // 				and order matters.
+//
+//      When 'allowRepetitions' = true, 'numOfItemsPicked' must be a positive integer number.
+//      'numOfItemsPicked' can be greater than, equal to or less than 'numOfItems'.
 //
 func (prob Probability) PermutationsNumberStr(
 	numOfItems, numOfItemsPicked string,
@@ -1002,7 +1036,7 @@ func (prob Probability) PermutationsNumberStr(
 			errors.New(ePrefix + "Error: Input parameter 'numOfItemsPicked' is NOT an Integer!")
 	}
 
-	if rBigINum.Cmp(nBigINum) == 1 {
+	if !allowRepetitions && rBigINum.Cmp(nBigINum) == 1 {
 		return BigIntNum{}.NewZero(0),
 			fmt.Errorf(ePrefix+
 				"Error: 'numOfItemsPicked' is GREATER THAN 'numOfItems'.  "+
@@ -1042,8 +1076,7 @@ func (prob Probability) PermutationsNumberStr(
 // PermutationsInt - Calculates the number of permutations associated with a collection of
 // 'numOfItems' from which one picks 'numOfItemsPicked'. Order IS significant. Input
 // parameters 'numOfItems' and 'numOfItemsPicked' are passed as type int. Both input parameters
-// must be non-zero, positive integer numbers. 'numOfItems' must be equal to or greater than
-// 'numOfItemsPicked'.
+// must be non-zero, positive integer numbers.
 //
 // The input parameter 'allowRepetitions' is a boolean value which will determine whether the
 // calculation results will allow repetitions or not. The formula for the permutation will
@@ -1068,6 +1101,9 @@ func (prob Probability) PermutationsNumberStr(
 //				and we choose r of them, repetition is NOT allowed,
 // 				and order matters.
 //
+//      When 'allowRepetitions' = false, 'numOfItemsPicked' must be a positive integer number
+//      which is less than or equal to 'numOfItems'.
+//
 //      ====================================================================
 // 			'allowRepetitions' = true
 //
@@ -1078,7 +1114,8 @@ func (prob Probability) PermutationsNumberStr(
 //				and we choose r of them, repetition IS allowed,
 // 				and order matters.
 //
-//
+//      When 'allowRepetitions' = true, 'numOfItemsPicked' must be a positive integer number.
+//      'numOfItemsPicked' can be greater than, equal to or less than 'numOfItems'.
 //
 func (prob Probability) PermutationsInt(
 	numOfItems, numOfItemsPicked int,
@@ -1104,6 +1141,14 @@ func (prob Probability) PermutationsInt(
 	if numOfItemsPicked < 0 {
 		return BigIntNum{}.NewZero(0),
 			fmt.Errorf(ePrefix + "Error: Input parameter 'numOfItemsPicked' is LESS THAN ZERO!")
+	}
+
+	if !allowRepetitions && numOfItemsPicked > numOfItems {
+		return BigIntNum{}.NewZero(0),
+			fmt.Errorf(ePrefix+
+				"Error: 'numOfItemsPicked' is GREATER THAN 'numOfItems'.  "+
+				"numOfItems='%v' numOfItemsPicked='%v' \n",
+				numOfItems, numOfItemsPicked)
 	}
 
 	n := big.NewInt(int64(numOfItems))
@@ -1145,6 +1190,8 @@ func (prob Probability) PermutationsInt(
 //				and we choose r of them, repetition is NOT allowed,
 // 				and order matters.
 //
+//      When 'allowRepetitions' = false, 'numOfItemsPicked' must be a positive integer number
+//      which is less than or equal to 'numOfItems'.
 //
 //      ====================================================================
 // 			'allowRepetitions' = true
@@ -1154,6 +1201,9 @@ func (prob Probability) PermutationsInt(
 // 				Where n is the number of things to choose from,
 //				and we choose r of them, repetition is allowed,
 // 				and order matters.
+//
+//      When 'allowRepetitions' = true, 'numOfItemsPicked' must be a positive integer number.
+//      'numOfItemsPicked' can be greater than, equal to or less than 'numOfItems'.
 //
 func (prob Probability) PermutationsInt32(
 	numOfItems, numOfItemsPicked int32,
@@ -1179,6 +1229,15 @@ func (prob Probability) PermutationsInt32(
 	if numOfItemsPicked < 0 {
 		return BigIntNum{}.NewZero(0),
 			fmt.Errorf(ePrefix + "Error: Input parameter 'numOfItemsPicked' is LESS THAN ZERO!")
+	}
+
+	if !allowRepetitions && numOfItemsPicked > numOfItems {
+		return BigIntNum{}.NewZero(0),
+			fmt.Errorf(ePrefix+
+				"Error: 'numOfItemsPicked' is GREATER THAN 'numOfItems'.  "+
+				"numOfItems='%v' numOfItemsPicked='%v' \n",
+				numOfItems, numOfItemsPicked)
+
 	}
 
 	n := big.NewInt(int64(numOfItems))
@@ -1220,6 +1279,8 @@ func (prob Probability) PermutationsInt32(
 //				and we choose r of them, repetition is NOT allowed,
 // 				and order matters.
 //
+//      When 'allowRepetitions' = false, 'numOfItemsPicked' must be a positive integer number
+//      which is less than or equal to 'numOfItems'.
 //
 //      ====================================================================
 // 			'allowRepetitions' = true
@@ -1230,6 +1291,9 @@ func (prob Probability) PermutationsInt32(
 // 				Where n is the number of things to choose from,
 //				and we choose r of them, repetition is allowed,
 // 				and order matters.
+//
+//      When 'allowRepetitions' = true, 'numOfItemsPicked' must be a positive integer number.
+//      'numOfItemsPicked' can be greater than, equal to or less than 'numOfItems'.
 //
 func (prob Probability) PermutationsInt64(
 	numOfItems, numOfItemsPicked int64,
@@ -1252,9 +1316,12 @@ func (prob Probability) PermutationsInt64(
 			fmt.Errorf(ePrefix + "Error: Input parameter 'numOfItems' is LESS THAN ZERO!")
 	}
 
-	if numOfItemsPicked < 0 {
+	if !allowRepetitions && numOfItemsPicked > numOfItems {
 		return BigIntNum{}.NewZero(0),
-			fmt.Errorf(ePrefix + "Error: Input parameter 'numOfItemsPicked' is LESS THAN ZERO!")
+			fmt.Errorf(ePrefix+
+				"Error: 'numOfItemsPicked' is GREATER THAN 'numOfItems'.  "+
+				"numOfItems='%v' numOfItemsPicked='%v' \n",
+				numOfItems, numOfItemsPicked)
 	}
 
 	n := big.NewInt(numOfItems)
@@ -1295,6 +1362,8 @@ func (prob Probability) PermutationsInt64(
 //				and we choose r of them, repetition is NOT allowed,
 // 				and order matters.
 //
+//      When 'allowRepetitions' = false, 'numOfItemsPicked' must be a positive integer number
+//      which is less than or equal to 'numOfItems'.
 //
 //      ====================================================================
 // 			'allowRepetitions' = true
@@ -1305,6 +1374,9 @@ func (prob Probability) PermutationsInt64(
 // 				Where n is the number of things to choose from,
 //				and we choose r of them, repetition is allowed,
 // 				and order matters.
+//
+//      When 'allowRepetitions' = true, 'numOfItemsPicked' must be a positive integer number.
+//      'numOfItemsPicked' can be greater than, equal to or less than 'numOfItems'.
 //
 func (prob Probability) PermutationsUint(
 	numOfItems, numOfItemsPicked uint,
@@ -1322,10 +1394,12 @@ func (prob Probability) PermutationsUint(
 			errors.New(ePrefix + "Error: 'numOfItemsPicked' is ZERO! ")
 	}
 
-	if numOfItems < numOfItemsPicked {
+	if !allowRepetitions && numOfItemsPicked > numOfItems {
 		return BigIntNum{}.NewZero(0),
-			errors.New(ePrefix + "Error: 'numOfItems' is LESS THAN 'numOfItemsPicked'! ")
-
+			fmt.Errorf(ePrefix+
+				"Error: 'numOfItemsPicked' is GREATER THAN 'numOfItems'.  "+
+				"numOfItems='%v' numOfItemsPicked='%v' \n",
+				numOfItems, numOfItemsPicked)
 	}
 
 	n := big.NewInt(int64(numOfItems))
@@ -1366,6 +1440,8 @@ func (prob Probability) PermutationsUint(
 //				and we choose r of them, repetition is NOT allowed,
 // 				and order matters.
 //
+//      When 'allowRepetitions' = false, 'numOfItemsPicked' must be a positive integer number
+//      which is less than or equal to 'numOfItems'.
 //
 //      ====================================================================
 // 			'allowRepetitions' = true
@@ -1376,6 +1452,9 @@ func (prob Probability) PermutationsUint(
 // 				Where n is the number of things to choose from,
 //				and we choose r of them, repetition is allowed,
 // 				and order matters.
+//
+//      When 'allowRepetitions' = true, 'numOfItemsPicked' must be a positive integer number.
+//      'numOfItemsPicked' can be greater than, equal to or less than 'numOfItems'.
 //
 func (prob Probability) PermutationsUint32(
 	numOfItems, numOfItemsPicked uint32,
@@ -1393,10 +1472,12 @@ func (prob Probability) PermutationsUint32(
 			errors.New(ePrefix + "Error: 'numOfItemsPicked' is ZERO! ")
 	}
 
-	if numOfItems < numOfItemsPicked {
+	if !allowRepetitions && numOfItemsPicked > numOfItems {
 		return BigIntNum{}.NewZero(0),
-			errors.New(ePrefix + "Error: 'numOfItems' is LESS THAN 'numOfItemsPicked'! ")
-
+			fmt.Errorf(ePrefix+
+				"Error: 'numOfItemsPicked' is GREATER THAN 'numOfItems'.  "+
+				"numOfItems='%v' numOfItemsPicked='%v' \n",
+				numOfItems, numOfItemsPicked)
 	}
 
 	n := big.NewInt(int64(numOfItems))
@@ -1437,6 +1518,9 @@ func (prob Probability) PermutationsUint32(
 //				and we choose r of them, repetition is NOT allowed,
 // 				and order matters.
 //
+//      When 'allowRepetitions' = false, 'numOfItemsPicked' must be a positive integer number
+//      which is less than or equal to 'numOfItems'.
+//
 //      ====================================================================
 // 			'allowRepetitions' = true
 //
@@ -1446,6 +1530,9 @@ func (prob Probability) PermutationsUint32(
 // 				Where n is the number of things to choose from,
 //				and we choose r of them, repetition is allowed,
 // 				and order matters.
+//
+//      When 'allowRepetitions' = true, 'numOfItemsPicked' must be a positive integer number.
+//      'numOfItemsPicked' can be greater than, equal to or less than 'numOfItems'.
 //
 func (prob Probability) PermutationsUint64(
 	numOfItems, numOfItemsPicked uint64,
@@ -1463,10 +1550,12 @@ func (prob Probability) PermutationsUint64(
 			errors.New(ePrefix + "Error: 'numOfItemsPicked' is ZERO! ")
 	}
 
-	if numOfItems < numOfItemsPicked {
+	if !allowRepetitions && numOfItemsPicked > numOfItems {
 		return BigIntNum{}.NewZero(0),
-			errors.New(ePrefix + "Error: 'numOfItems' is LESS THAN 'numOfItemsPicked'! ")
-
+			fmt.Errorf(ePrefix+
+				"Error: 'numOfItemsPicked' is GREATER THAN 'numOfItems'.  "+
+				"numOfItems='%v' numOfItemsPicked='%v' \n",
+				numOfItems, numOfItemsPicked)
 	}
 
 	n := big.NewInt(int64(numOfItems))

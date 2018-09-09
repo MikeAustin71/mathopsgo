@@ -64,12 +64,7 @@ func TestNumStrDto_NewInt_01(t *testing.T) {
 
 	expectedStr := "7"
 
-	nDto, err := NumStrDto{}.NewInt(intNum, precision)
-
-	if err != nil {
-		t.Errorf("Error returned by NumStrDto{}.NewInt(intNum,precision) "+
-			"Error='%v' ", err.Error())
-	}
+	nDto := NumStrDto{}.NewInt(intNum, precision)
 
 	actualNumStr := nDto.GetNumStr()
 
@@ -87,12 +82,7 @@ func TestNumStrDto_NewInt_02(t *testing.T) {
 
 	expectedStr := "7.0"
 
-	nDto, err := NumStrDto{}.NewInt(intNum, precision)
-
-	if err != nil {
-		t.Errorf("Error returned by NumStrDto{}.NewInt(intNum,precision) "+
-			"Error='%v' ", err.Error())
-	}
+	nDto := NumStrDto{}.NewInt(intNum, precision)
 
 	actualNumStr := nDto.GetNumStr()
 
@@ -110,12 +100,7 @@ func TestNumStrDto_NewInt_03(t *testing.T) {
 
 	expectedStr := "7.000"
 
-	nDto, err := NumStrDto{}.NewInt(intNum, precision)
-
-	if err != nil {
-		t.Errorf("Error returned by NumStrDto{}.NewInt(intNum,precision) "+
-			"Error='%v' ", err.Error())
-	}
+	nDto := NumStrDto{}.NewInt(intNum, precision)
 
 	actualNumStr := nDto.GetNumStr()
 
@@ -133,12 +118,7 @@ func TestNumStrDto_NewInt_04(t *testing.T) {
 
 	expectedStr := "-7.000"
 
-	nDto, err := NumStrDto{}.NewInt(intNum, precision)
-
-	if err != nil {
-		t.Errorf("Error returned by NumStrDto{}.NewInt(intNum,precision) "+
-			"Error='%v' ", err.Error())
-	}
+	nDto := NumStrDto{}.NewInt(intNum, precision)
 
 	actualNumStr := nDto.GetNumStr()
 
@@ -156,12 +136,7 @@ func TestNumStrDto_NewInt_05(t *testing.T) {
 
 	expectedStr := "-7"
 
-	nDto, err := NumStrDto{}.NewInt(intNum, precision)
-
-	if err != nil {
-		t.Errorf("Error returned by NumStrDto{}.NewInt(intNum,precision) "+
-			"Error='%v' ", err.Error())
-	}
+	nDto := NumStrDto{}.NewInt(intNum, precision)
 
 	actualNumStr := nDto.GetNumStr()
 
@@ -281,12 +256,7 @@ func TestNumStrDto_NewInt32_01(t *testing.T) {
 
 	expectedStr := "7"
 
-	nDto, err := NumStrDto{}.NewInt32(intNum, precision)
-
-	if err != nil {
-		t.Errorf("Error returned by NumStrDto{}.NewInt32(intNum,precision) "+
-			"Error='%v' ", err.Error())
-	}
+	nDto := NumStrDto{}.NewInt32(intNum, precision)
 
 	actualNumStr := nDto.GetNumStr()
 
@@ -304,12 +274,7 @@ func TestNumStrDto_NewInt32_02(t *testing.T) {
 
 	expectedStr := "7.0"
 
-	nDto, err := NumStrDto{}.NewInt32(intNum, precision)
-
-	if err != nil {
-		t.Errorf("Error returned by NumStrDto{}.NewInt32(intNum,precision) "+
-			"Error='%v' ", err.Error())
-	}
+	nDto := NumStrDto{}.NewInt32(intNum, precision)
 
 	actualNumStr := nDto.GetNumStr()
 
@@ -327,12 +292,7 @@ func TestNumStrDto_NewInt32_03(t *testing.T) {
 
 	expectedStr := "7.000"
 
-	nDto, err := NumStrDto{}.NewInt32(intNum, precision)
-
-	if err != nil {
-		t.Errorf("Error returned by NumStrDto{}.NewInt32(intNum,precision) "+
-			"Error='%v' ", err.Error())
-	}
+	nDto := NumStrDto{}.NewInt32(intNum, precision)
 
 	actualNumStr := nDto.GetNumStr()
 
@@ -350,12 +310,7 @@ func TestNumStrDto_NewInt32_04(t *testing.T) {
 
 	expectedStr := "-7.000"
 
-	nDto, err := NumStrDto{}.NewInt32(intNum, precision)
-
-	if err != nil {
-		t.Errorf("Error returned by NumStrDto{}.NewInt32(intNum,precision) "+
-			"Error='%v' ", err.Error())
-	}
+	nDto := NumStrDto{}.NewInt32(intNum, precision)
 
 	actualNumStr := nDto.GetNumStr()
 
@@ -373,12 +328,7 @@ func TestNumStrDto_NewInt32_05(t *testing.T) {
 
 	expectedStr := "-7"
 
-	nDto, err := NumStrDto{}.NewInt32(intNum, precision)
-
-	if err != nil {
-		t.Errorf("Error returned by NumStrDto{}.NewInt32(intNum,precision) "+
-			"Error='%v' ", err.Error())
-	}
+	nDto := NumStrDto{}.NewInt32(intNum, precision)
 
 	actualNumStr := nDto.GetNumStr()
 
@@ -498,12 +448,7 @@ func TestNumStrDto_NewInt64_01(t *testing.T) {
 
 	expectedStr := "7"
 
-	nDto, err := NumStrDto{}.NewInt64(intNum, precision)
-
-	if err != nil {
-		t.Errorf("Error returned by NumStrDto{}.NewInt64(intNum,precision) "+
-			"Error='%v' ", err.Error())
-	}
+	nDto := NumStrDto{}.NewInt64(intNum, precision)
 
 	actualNumStr := nDto.GetNumStr()
 
@@ -521,12 +466,7 @@ func TestNumStrDto_NewInt64_02(t *testing.T) {
 
 	expectedStr := "7.0"
 
-	nDto, err := NumStrDto{}.NewInt64(intNum, precision)
-
-	if err != nil {
-		t.Errorf("Error returned by NumStrDto{}.NewInt64(intNum,precision) "+
-			"Error='%v' ", err.Error())
-	}
+	nDto := NumStrDto{}.NewInt64(intNum, precision)
 
 	actualNumStr := nDto.GetNumStr()
 
@@ -544,12 +484,7 @@ func TestNumStrDto_NewInt64_03(t *testing.T) {
 
 	expectedStr := "7.000"
 
-	nDto, err := NumStrDto{}.NewInt64(intNum, precision)
-
-	if err != nil {
-		t.Errorf("Error returned by NumStrDto{}.NewInt64(intNum,precision) "+
-			"Error='%v' ", err.Error())
-	}
+	nDto := NumStrDto{}.NewInt64(intNum, precision)
 
 	actualNumStr := nDto.GetNumStr()
 
@@ -567,12 +502,7 @@ func TestNumStrDto_NewInt64_04(t *testing.T) {
 
 	expectedStr := "-7.000"
 
-	nDto, err := NumStrDto{}.NewInt64(intNum, precision)
-
-	if err != nil {
-		t.Errorf("Error returned by NumStrDto{}.NewInt64(intNum,precision) "+
-			"Error='%v' ", err.Error())
-	}
+	nDto := NumStrDto{}.NewInt64(intNum, precision)
 
 	actualNumStr := nDto.GetNumStr()
 
@@ -590,12 +520,7 @@ func TestNumStrDto_NewInt64_05(t *testing.T) {
 
 	expectedStr := "-7"
 
-	nDto, err := NumStrDto{}.NewInt64(intNum, precision)
-
-	if err != nil {
-		t.Errorf("Error returned by NumStrDto{}.NewInt64(intNum,precision) "+
-			"Error='%v' ", err.Error())
-	}
+	nDto := NumStrDto{}.NewInt64(intNum, precision)
 
 	actualNumStr := nDto.GetNumStr()
 

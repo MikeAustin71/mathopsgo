@@ -3,35 +3,31 @@ package main
 import (
 	"../mathops"
 	"fmt"
-	"math/big"
 )
 
 func main() {
 
-	numOfItemsInt := 16
-	numOfItemsChosenInt := 12
-	numOfItems := big.NewInt(int64(numOfItemsInt))
-	numOfItemsChosen := big.NewInt(int64(numOfItemsChosenInt))
-	expectedResultStr := "1820"
+	nInt := 15
+	rInt := -2
+	numOfItems := mathops.NumStrDto{}.NewInt(nInt, 0)
+	numOfItemsPicked := mathops.NumStrDto{}.NewInt(rInt, 0)
+	allowRepetitions := true
 
-	result, err := mathops.Probability{}.CombinationsNoRepsBigInt(numOfItems, numOfItemsChosen)
+
+	result, err := mathops.Probability{}.PermutationsNumStrDto(
+							numOfItems, numOfItemsPicked, allowRepetitions)
 
 	if err != nil {
-		fmt.Printf("Error returned by Probability{}.CombinationsNoRepsBigInt(" +
-			"numOfItems, numOfItemsChosen). Error='%v' ", err.Error())
+		fmt.Printf("Error: error returned from Probability{}.PermutationsNumStrDto(n, r) "+
+			"n='%v' r='%v' Error='%v'", nInt, rInt, err.Error())
 		return
 	}
 
 	actualResultStr := result.GetNumStr()
 
-	if expectedResultStr != actualResultStr {
-		fmt.Printf("Error: Expected result='%v'. Instead, result='%v'. ",
-			expectedResultStr, actualResultStr)
-		return
-	}
-
 	fmt.Println("       Num Of Items: ", numOfItems)
-	fmt.Println("Num Of Items Chosen: ", numOfItemsChosen)
-	fmt.Println(" CombinationsNoReps: ", actualResultStr)
-	fmt.Println("    Expected Result: ", expectedResultStr)
+	fmt.Println("Num Of Items Picked: ", numOfItemsPicked)
+	fmt.Println("  Allow Repetitions: ", allowRepetitions)
+	fmt.Println(" Permutation Result: ", actualResultStr)
+
 }
