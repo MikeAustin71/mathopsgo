@@ -82,7 +82,15 @@ digits to the right of the decimal place.
 
 Location: MikeAustin71/mathopsgo/mathops/decimal.go
 
-### 4. NthRootOp
+
+### 4. Scientific Notation 
+Type SciNotationNum will express numbers in scientific notation. 
+               Example 1.3456E+70
+
+Location: MikeAustin71/mathopsgo/mathops/scinotationnum.go
+
+
+### 5. NthRootOp
 Type NthRootOp is used to extract square roots and nth roots of positive
 and negative real numbers. Currently nth roots may only be passed as
 integer values. The technique employed to calculate nth roots is known as
@@ -90,7 +98,7 @@ the "shifting nth-root algorithm".
 
 Location: MikeAustin71/mathopsgo/mathops/nthroot.go
 
-### 5. NumStrDto 
+### 6. NumStrDto 
 A 'lite' data transfer object containing data fields and methods
 used to manage, store and transport number strings. 
 
@@ -103,13 +111,13 @@ and management routines primarily focused on number strings.
 
 Location: MikeAustin71/mathopsgo/mathops/numstrutility.go
 
-### 7. StrMathOp 
+### 8. StrMathOp 
 This Type performs various math operations on a series of
 IntAry's and stores the results internally.
 
 Location: MikeAustin71/mathopsgo/mathops/strmathop.go
 
-### 8. Math Constants
+### 9. Math Constants
 This source file is used to store constants used by various
 Types in the 'mathops' Library.
 
