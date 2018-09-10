@@ -15,7 +15,7 @@ func TestProbability_CombinationsNoRepsBigInt_01(t *testing.T) {
 	result, err := Probability{}.CombinationsNoRepsBigInt(numOfItems, numOfItemsChosen)
 
 	if err != nil {
-		t.Errorf("Error returned by Probability{}.CombinationsNoRepsBigInt(" +
+		t.Errorf("Error returned by Probability{}.CombinationsNoRepsBigInt("+
 			"numOfItems, numOfItemsChosen). Error='%v' ", err.Error())
 	}
 
@@ -38,7 +38,7 @@ func TestProbability_CombinationsNoRepsBigInt_02(t *testing.T) {
 	result, err := Probability{}.CombinationsNoRepsBigInt(numOfItems, numOfItemsChosen)
 
 	if err != nil {
-		t.Errorf("Error returned by Probability{}.CombinationsNoRepsBigInt(" +
+		t.Errorf("Error returned by Probability{}.CombinationsNoRepsBigInt("+
 			"numOfItems, numOfItemsChosen). Error='%v' ", err.Error())
 	}
 
@@ -61,7 +61,7 @@ func TestProbability_CombinationsNoRepsBigInt_03(t *testing.T) {
 	result, err := Probability{}.CombinationsNoRepsBigInt(numOfItems, numOfItemsChosen)
 
 	if err != nil {
-		t.Errorf("Error returned by Probability{}.CombinationsNoRepsBigInt(" +
+		t.Errorf("Error returned by Probability{}.CombinationsNoRepsBigInt("+
 			"numOfItems, numOfItemsChosen). Error='%v' ", err.Error())
 	}
 
@@ -85,7 +85,7 @@ func TestProbability_CombinationsNoRepsBigInt_04(t *testing.T) {
 	result, err := Probability{}.CombinationsNoRepsBigInt(numOfItems, numOfItemsChosen)
 
 	if err != nil {
-		t.Errorf("Error returned by Probability{}.CombinationsNoRepsBigInt(" +
+		t.Errorf("Error returned by Probability{}.CombinationsNoRepsBigInt("+
 			"numOfItems, numOfItemsChosen). Error='%v' ", err.Error())
 	}
 
@@ -109,7 +109,7 @@ func TestProbability_CombinationsNoRepsBigInt_05(t *testing.T) {
 	result, err := Probability{}.CombinationsNoRepsBigInt(numOfItems, numOfItemsChosen)
 
 	if err != nil {
-		t.Errorf("Error returned by Probability{}.CombinationsNoRepsBigInt(" +
+		t.Errorf("Error returned by Probability{}.CombinationsNoRepsBigInt("+
 			"numOfItems, numOfItemsChosen). Error='%v' ", err.Error())
 	}
 
@@ -133,7 +133,7 @@ func TestProbability_CombinationsNoRepsBigInt_06(t *testing.T) {
 	result, err := Probability{}.CombinationsNoRepsBigInt(numOfItems, numOfItemsChosen)
 
 	if err != nil {
-		t.Errorf("Error returned by Probability{}.CombinationsNoRepsBigInt(" +
+		t.Errorf("Error returned by Probability{}.CombinationsNoRepsBigInt("+
 			"numOfItems, numOfItemsChosen). Error='%v' ", err.Error())
 	}
 
@@ -157,7 +157,7 @@ func TestProbability_CombinationsNoRepsBigInt_07(t *testing.T) {
 	result, err := Probability{}.CombinationsNoRepsBigInt(numOfItems, numOfItemsChosen)
 
 	if err != nil {
-		t.Errorf("Error returned by Probability{}.CombinationsNoRepsBigInt(" +
+		t.Errorf("Error returned by Probability{}.CombinationsNoRepsBigInt("+
 			"numOfItems, numOfItemsChosen). Error='%v' ", err.Error())
 	}
 
@@ -181,7 +181,7 @@ func TestProbability_CombinationsNoRepsBigInt_08(t *testing.T) {
 	result, err := Probability{}.CombinationsNoRepsBigInt(numOfItems, numOfItemsChosen)
 
 	if err != nil {
-		t.Errorf("Error returned by Probability{}.CombinationsNoRepsBigInt(" +
+		t.Errorf("Error returned by Probability{}.CombinationsNoRepsBigInt("+
 			"numOfItems, numOfItemsChosen). Error='%v' ", err.Error())
 	}
 
@@ -205,7 +205,7 @@ func TestProbability_CombinationsNoRepsBigInt_09(t *testing.T) {
 	result, err := Probability{}.CombinationsNoRepsBigInt(numOfItems, numOfItemsChosen)
 
 	if err != nil {
-		t.Errorf("Error returned by Probability{}.CombinationsNoRepsBigInt(" +
+		t.Errorf("Error returned by Probability{}.CombinationsNoRepsBigInt("+
 			"numOfItems, numOfItemsChosen). Error='%v' ", err.Error())
 	}
 
@@ -229,7 +229,7 @@ func TestProbability_CombinationsNoRepsBigInt_10(t *testing.T) {
 	result, err := Probability{}.CombinationsNoRepsBigInt(numOfItems, numOfItemsChosen)
 
 	if err != nil {
-		t.Errorf("Error returned by Probability{}.CombinationsNoRepsBigInt(" +
+		t.Errorf("Error returned by Probability{}.CombinationsNoRepsBigInt("+
 			"numOfItems, numOfItemsChosen). Error='%v' ", err.Error())
 	}
 
@@ -242,24 +242,21 @@ func TestProbability_CombinationsNoRepsBigInt_10(t *testing.T) {
 
 }
 
-
 func TestProbability_CombinationsNoRepsBigInt_11(t *testing.T) {
 	numOfItemsInt := 26
 	numOfItemsChosenInt := 52
 	numOfItems := big.NewInt(int64(numOfItemsInt))
 	numOfItemsChosen := big.NewInt(int64(numOfItemsChosenInt))
 
-
 	_, err := Probability{}.CombinationsNoRepsBigInt(numOfItems, numOfItemsChosen)
 
 	if err == nil {
-		t.Errorf("Error: Expected an error to be returned. Instead  err==nil " +
+		t.Errorf("Error: Expected an error to be returned. Instead  err==nil "+
 			"numOfItems < numOfItemsChosen. numOfItems='%v' numOfItemsChosen='%v'",
 			numOfItemsInt, numOfItemsChosenInt)
 	}
 
 }
-
 
 func TestProbability_CombinationsNoRepsBigInt_12(t *testing.T) {
 	numOfItemsInt := 52
@@ -267,11 +264,10 @@ func TestProbability_CombinationsNoRepsBigInt_12(t *testing.T) {
 	numOfItems := big.NewInt(int64(numOfItemsInt))
 	numOfItemsChosen := big.NewInt(int64(numOfItemsChosenInt))
 
-
 	_, err := Probability{}.CombinationsNoRepsBigInt(numOfItems, numOfItemsChosen)
 
 	if err == nil {
-		t.Errorf("Error: Expected an error to be returned. Instead  err==nil " +
+		t.Errorf("Error: Expected an error to be returned. Instead  err==nil "+
 			"numOfItemsChosen=0. numOfItems='%v' numOfItemsChosen='%v'",
 			numOfItemsInt, numOfItemsChosenInt)
 	}
@@ -284,11 +280,10 @@ func TestProbability_CombinationsNoRepsBigInt_13(t *testing.T) {
 	numOfItems := big.NewInt(int64(numOfItemsInt))
 	numOfItemsChosen := big.NewInt(int64(numOfItemsChosenInt))
 
-
 	_, err := Probability{}.CombinationsNoRepsBigInt(numOfItems, numOfItemsChosen)
 
 	if err == nil {
-		t.Errorf("Error: Expected an error to be returned. Instead  err==nil " +
+		t.Errorf("Error: Expected an error to be returned. Instead  err==nil "+
 			"numOfItems=0. numOfItems='%v' numOfItemsChosen='%v'",
 			numOfItemsInt, numOfItemsChosenInt)
 	}
@@ -301,11 +296,10 @@ func TestProbability_CombinationsNoRepsBigInt_14(t *testing.T) {
 	numOfItems := big.NewInt(int64(numOfItemsInt))
 	numOfItemsChosen := big.NewInt(int64(numOfItemsChosenInt))
 
-
 	_, err := Probability{}.CombinationsNoRepsBigInt(numOfItems, numOfItemsChosen)
 
 	if err == nil {
-		t.Errorf("Error: Expected an error to be returned. Instead  err==nil " +
+		t.Errorf("Error: Expected an error to be returned. Instead  err==nil "+
 			"numOfItems < 0. numOfItems='%v' numOfItemsChosen='%v'",
 			numOfItemsInt, numOfItemsChosenInt)
 	}
@@ -318,11 +312,10 @@ func TestProbability_CombinationsNoRepsBigInt_15(t *testing.T) {
 	numOfItems := big.NewInt(int64(numOfItemsInt))
 	numOfItemsChosen := big.NewInt(int64(numOfItemsChosenInt))
 
-
 	_, err := Probability{}.CombinationsNoRepsBigInt(numOfItems, numOfItemsChosen)
 
 	if err == nil {
-		t.Errorf("Error: Expected an error to be returned. Instead  err==nil " +
+		t.Errorf("Error: Expected an error to be returned. Instead  err==nil "+
 			"numOfItemsChosen < 0. numOfItems='%v' numOfItemsChosen='%v'",
 			numOfItemsInt, numOfItemsChosenInt)
 	}
@@ -339,7 +332,7 @@ func TestProbability_CombinationsWithRepsBigInt_01(t *testing.T) {
 	result, err := Probability{}.CombinationsWithRepsBigInt(numOfItems, numOfItemsChosen)
 
 	if err != nil {
-		t.Errorf("Error returned by Probability{}.CombinationsWithRepsBigInt(" +
+		t.Errorf("Error returned by Probability{}.CombinationsWithRepsBigInt("+
 			"numOfItems, numOfItemsChosen). Error='%v' ", err.Error())
 	}
 
@@ -362,7 +355,7 @@ func TestProbability_CombinationsWithRepsBigInt_02(t *testing.T) {
 	result, err := Probability{}.CombinationsWithRepsBigInt(numOfItems, numOfItemsChosen)
 
 	if err != nil {
-		t.Errorf("Error returned by Probability{}.CombinationsWithRepsBigInt(" +
+		t.Errorf("Error returned by Probability{}.CombinationsWithRepsBigInt("+
 			"numOfItems, numOfItemsChosen). Error='%v' ", err.Error())
 	}
 
@@ -385,7 +378,7 @@ func TestProbability_CombinationsWithRepsBigInt_03(t *testing.T) {
 	result, err := Probability{}.CombinationsWithRepsBigInt(numOfItems, numOfItemsChosen)
 
 	if err != nil {
-		t.Errorf("Error returned by Probability{}.CombinationsWithRepsBigInt(" +
+		t.Errorf("Error returned by Probability{}.CombinationsWithRepsBigInt("+
 			"numOfItems, numOfItemsChosen). Error='%v' ", err.Error())
 	}
 
@@ -408,7 +401,7 @@ func TestProbability_CombinationsWithRepsBigInt_04(t *testing.T) {
 	result, err := Probability{}.CombinationsWithRepsBigInt(numOfItems, numOfItemsChosen)
 
 	if err != nil {
-		t.Errorf("Error returned by Probability{}.CombinationsWithRepsBigInt(" +
+		t.Errorf("Error returned by Probability{}.CombinationsWithRepsBigInt("+
 			"numOfItems, numOfItemsChosen). Error='%v' ", err.Error())
 	}
 
@@ -431,7 +424,7 @@ func TestProbability_CombinationsWithRepsBigInt_05(t *testing.T) {
 	result, err := Probability{}.CombinationsWithRepsBigInt(numOfItems, numOfItemsChosen)
 
 	if err != nil {
-		t.Errorf("Error returned by Probability{}.CombinationsWithRepsBigInt(" +
+		t.Errorf("Error returned by Probability{}.CombinationsWithRepsBigInt("+
 			"numOfItems, numOfItemsChosen). Error='%v' ", err.Error())
 	}
 
@@ -454,7 +447,7 @@ func TestProbability_CombinationsWithRepsBigInt_06(t *testing.T) {
 	result, err := Probability{}.CombinationsWithRepsBigInt(numOfItems, numOfItemsChosen)
 
 	if err != nil {
-		t.Errorf("Error returned by Probability{}.CombinationsWithRepsBigInt(" +
+		t.Errorf("Error returned by Probability{}.CombinationsWithRepsBigInt("+
 			"numOfItems, numOfItemsChosen). Error='%v' ", err.Error())
 	}
 
@@ -477,7 +470,7 @@ func TestProbability_CombinationsWithRepsBigInt_07(t *testing.T) {
 	result, err := Probability{}.CombinationsWithRepsBigInt(numOfItems, numOfItemsChosen)
 
 	if err != nil {
-		t.Errorf("Error returned by Probability{}.CombinationsWithRepsBigInt(" +
+		t.Errorf("Error returned by Probability{}.CombinationsWithRepsBigInt("+
 			"numOfItems, numOfItemsChosen). Error='%v' ", err.Error())
 	}
 
@@ -500,7 +493,7 @@ func TestProbability_CombinationsWithRepsBigInt_08(t *testing.T) {
 	result, err := Probability{}.CombinationsWithRepsBigInt(numOfItems, numOfItemsChosen)
 
 	if err != nil {
-		t.Errorf("Error returned by Probability{}.CombinationsWithRepsBigInt(" +
+		t.Errorf("Error returned by Probability{}.CombinationsWithRepsBigInt("+
 			"numOfItems, numOfItemsChosen). Error='%v' ", err.Error())
 	}
 
@@ -523,7 +516,7 @@ func TestProbability_CombinationsWithRepsBigInt_09(t *testing.T) {
 	result, err := Probability{}.CombinationsWithRepsBigInt(numOfItems, numOfItemsChosen)
 
 	if err != nil {
-		t.Errorf("Error returned by Probability{}.CombinationsWithRepsBigInt(" +
+		t.Errorf("Error returned by Probability{}.CombinationsWithRepsBigInt("+
 			"numOfItems, numOfItemsChosen). Error='%v' ", err.Error())
 	}
 
@@ -546,7 +539,7 @@ func TestProbability_CombinationsWithRepsBigInt_10(t *testing.T) {
 	result, err := Probability{}.CombinationsWithRepsBigInt(numOfItems, numOfItemsChosen)
 
 	if err != nil {
-		t.Errorf("Error returned by Probability{}.CombinationsWithRepsBigInt(" +
+		t.Errorf("Error returned by Probability{}.CombinationsWithRepsBigInt("+
 			"numOfItems, numOfItemsChosen). Error='%v' ", err.Error())
 	}
 
@@ -569,7 +562,7 @@ func TestProbability_CombinationsWithRepsBigInt_11(t *testing.T) {
 	result, err := Probability{}.CombinationsWithRepsBigInt(numOfItems, numOfItemsChosen)
 
 	if err != nil {
-		t.Errorf("Error returned by Probability{}.CombinationsWithRepsBigInt(" +
+		t.Errorf("Error returned by Probability{}.CombinationsWithRepsBigInt("+
 			"numOfItems, numOfItemsChosen). Error='%v' ", err.Error())
 	}
 
@@ -582,7 +575,6 @@ func TestProbability_CombinationsWithRepsBigInt_11(t *testing.T) {
 
 }
 
-
 func TestProbability_CombinationsWithRepsBigInt_12(t *testing.T) {
 	numOfItemsInt := 12
 	numOfItemsChosenInt := 1
@@ -593,7 +585,7 @@ func TestProbability_CombinationsWithRepsBigInt_12(t *testing.T) {
 	result, err := Probability{}.CombinationsWithRepsBigInt(numOfItems, numOfItemsChosen)
 
 	if err != nil {
-		t.Errorf("Error returned by Probability{}.CombinationsWithRepsBigInt(" +
+		t.Errorf("Error returned by Probability{}.CombinationsWithRepsBigInt("+
 			"numOfItems, numOfItemsChosen). Error='%v' ", err.Error())
 	}
 
@@ -615,7 +607,7 @@ func TestProbability_CombinationsWithRepsBigInt_13(t *testing.T) {
 	_, err := Probability{}.CombinationsWithRepsBigInt(numOfItems, numOfItemsChosen)
 
 	if err == nil {
-		t.Errorf("Error: Expected an error to be returned. Instead err==nil " +
+		t.Errorf("Error: Expected an error to be returned. Instead err==nil "+
 			"numOfItems == 0. numOfItems='%v' numOfItemsChosen='%v'",
 			numOfItemsInt, numOfItemsChosenInt)
 	}
@@ -631,7 +623,7 @@ func TestProbability_CombinationsWithRepsBigInt_14(t *testing.T) {
 	_, err := Probability{}.CombinationsWithRepsBigInt(numOfItems, numOfItemsChosen)
 
 	if err == nil {
-		t.Errorf("Error: Expected an error to be returned. Instead err==nil " +
+		t.Errorf("Error: Expected an error to be returned. Instead err==nil "+
 			"numOfItemsChosen == 0. numOfItems='%v' numOfItemsChosen='%v'",
 			numOfItemsInt, numOfItemsChosenInt)
 	}
@@ -647,7 +639,7 @@ func TestProbability_CombinationsWithRepsBigInt_15(t *testing.T) {
 	_, err := Probability{}.CombinationsWithRepsBigInt(numOfItems, numOfItemsChosen)
 
 	if err == nil {
-		t.Errorf("Error: Expected an error to be returned. Instead err==nil " +
+		t.Errorf("Error: Expected an error to be returned. Instead err==nil "+
 			"numOfItems < 0. numOfItems='%v' numOfItemsChosen='%v'",
 			numOfItemsInt, numOfItemsChosenInt)
 	}
@@ -663,7 +655,7 @@ func TestProbability_CombinationsWithRepsBigInt_16(t *testing.T) {
 	_, err := Probability{}.CombinationsWithRepsBigInt(numOfItems, numOfItemsChosen)
 
 	if err == nil {
-		t.Errorf("Error: Expected an error to be returned. Instead err==nil " +
+		t.Errorf("Error: Expected an error to be returned. Instead err==nil "+
 			"numOfItemsChosen < 0. numOfItems='%v' numOfItemsChosen='%v'",
 			numOfItemsInt, numOfItemsChosenInt)
 	}

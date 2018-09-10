@@ -108,7 +108,7 @@ type Probability struct {
 //				and we pick r of them, repetition is NOT allowed,
 // 				and order matters.
 //
-// *** This calculation assumes NO REPETITIONS! ***
+// *** This permutation calculation assumes NO REPETITIONS! ***
 //
 // Example
 // =======
@@ -233,7 +233,7 @@ func (prob Probability) PermutationsNoRepsBigInt(
 // 				and order matters.
 //
 //
-// *** This calculation assumes REPETITIONS ARE ALLOWED! ***
+// *** This permutation calculation assumes REPETITIONS ARE ALLOWED! ***
 // This is also known as 'ordered sampling with replacement'. Since this calculation
 // allows repetitions or replacements, the 'numOfItemsPicked' may be greater than
 // 'numOfItems'.
@@ -269,7 +269,6 @@ func (prob Probability) PermutationsWithRepsBigInt(
 		return BigIntNum{}.NewZero(0),
 			fmt.Errorf(ePrefix + "Error: Input parameter 'numOfItemsPicked' is LESS THAN ZERO!")
 	}
-
 
 	bigOne := big.NewInt(1)
 
@@ -336,22 +335,32 @@ func (prob Probability) PermutationsBigIntNum(
 
 	if numOfItems.IsZero() {
 		return BigIntNum{}.NewZero(0),
-			fmt.Errorf(ePrefix + "Error: Input parameter 'numOfItems' is ZERO!")
+			errors.New(ePrefix + "Error: Input parameter 'numOfItems' is ZERO!")
 	}
 
 	if numOfItemsPicked.IsZero() {
 		return BigIntNum{}.NewZero(0),
-			fmt.Errorf(ePrefix + "Error: Input parameter 'numOfItemsPicked' is ZERO!")
+			errors.New(ePrefix + "Error: Input parameter 'numOfItemsPicked' is ZERO!")
 	}
 
 	if numOfItems.GetSign() == -1 {
 		return BigIntNum{}.NewZero(0),
-			fmt.Errorf(ePrefix + "Error: Input parameter 'numOfItems' is LESS THAN ZERO!")
+			errors.New(ePrefix + "Error: Input parameter 'numOfItems' is LESS THAN ZERO!")
 	}
 
 	if numOfItemsPicked.GetSign() == -1 {
 		return BigIntNum{}.NewZero(0),
-			fmt.Errorf(ePrefix + "Error: Input parameter 'numOfItemsPicked' is LESS THAN ZERO!")
+			errors.New(ePrefix + "Error: Input parameter 'numOfItemsPicked' is LESS THAN ZERO!")
+	}
+
+	if numOfItems.GetPrecisionUint() > 0 {
+		return BigIntNum{}.NewZero(0),
+			errors.New(ePrefix + "Error: Input parameter 'numOfItems' is NOT an Integer!")
+	}
+
+	if numOfItemsPicked.GetPrecisionUint() > 0 {
+		return BigIntNum{}.NewZero(0),
+			errors.New(ePrefix + "Error: Input parameter 'numOfItemsPicked' is NOT an Integer!")
 	}
 
 	if !allowRepetitions && numOfItems.Cmp(numOfItemsPicked) < 0 {
@@ -497,7 +506,7 @@ func (prob Probability) PermutationsDecimal(
 
 	}
 
-	iaDecimal, err := result.GetDecimal()
+	resultDecimal, err := result.GetDecimal()
 
 	if err != nil {
 		return Decimal{}.NewZero(0),
@@ -506,7 +515,7 @@ func (prob Probability) PermutationsDecimal(
 				"Error='%v' \n", err.Error())
 	}
 
-	return iaDecimal, nil
+	return resultDecimal, nil
 }
 
 // PermutationsIntAry - Calculates the number of permutations associated with a collection
@@ -984,6 +993,18 @@ func (prob Probability) PermutationsNumberStr(
 	allowRepetitions bool) (BigIntNum, error) {
 
 	ePrefix := "Probability.PermutationsNumberStr() "
+
+	if numOfItems == "" {
+		return BigIntNum{}.NewZero(0),
+			errors.New(ePrefix +
+				"Error: Input Parameter 'numOfItems' is an EMPTY string!")
+	}
+
+	if numOfItemsPicked == "" {
+		return BigIntNum{}.NewZero(0),
+			errors.New(ePrefix +
+				"Error: Input Parameter 'numOfItemsPicked' is an EMPTY string!")
+	}
 
 	nBigINum, err := BigIntNum{}.NewNumStr(numOfItems)
 

@@ -507,8 +507,8 @@ func TestProbability_PermutationsIntAry_21(t *testing.T) {
 	_, err := Probability{}.PermutationsIntAry(numOfItems, numOfItemsPicked, allowRepetitions)
 
 	if err == nil {
-		t.Errorf("Error: Expected error return from Probability{}.PermutationsIntAry(" +
-			"numOfItems, numOfItemsPicked, allowRepetitions) " +
+		t.Errorf("Error: Expected error return from Probability{}.PermutationsIntAry("+
+			"numOfItems, numOfItemsPicked, allowRepetitions) "+
 			"However no error was generated. r > n;  n='%v' r='%v' ", nInt, rInt)
 	}
 
@@ -1069,7 +1069,6 @@ func TestProbability_PermutationsINumMgr_20(t *testing.T) {
 
 	numOfItemsPicked := Decimal{}.NewInt(rInt, 0)
 
-
 	_, err := Probability{}.PermutationsINumMgr(&numOfItems, &numOfItemsPicked, allowRepetitions)
 
 	if err == nil {
@@ -1088,12 +1087,11 @@ func TestProbability_PermutationsINumMgr_21(t *testing.T) {
 
 	numOfItemsPicked := Decimal{}.NewInt(rInt, 0)
 
-
 	_, err := Probability{}.PermutationsINumMgr(&numOfItems, &numOfItemsPicked, allowRepetitions)
 
 	if err == nil {
-		t.Errorf("Error: Expected error return from Probability{}.PermutationsINumMgr(" +
-			"&numOfItems, &numOfItemsPicked, allowRepetitions) " +
+		t.Errorf("Error: Expected error return from Probability{}.PermutationsINumMgr("+
+			"&numOfItems, &numOfItemsPicked, allowRepetitions) "+
 			"However no error was generated. r > n;  n='%v' r='%v' ", nInt, rInt)
 	}
 
@@ -1620,8 +1618,8 @@ func TestProbability_PermutationsInt_21(t *testing.T) {
 	_, err := Probability{}.PermutationsInt(numOfItems, numOfItemsPicked, allowRepetitions)
 
 	if err == nil {
-		t.Errorf("Error: Expected error return from Probability{}.PermutationsInt(" +
-			"numOfItems, numOfItemsPicked, allowRepetitions) " +
+		t.Errorf("Error: Expected error return from Probability{}.PermutationsInt("+
+			"numOfItems, numOfItemsPicked, allowRepetitions) "+
 			"However no error was generated. r > n;  n='%v' r='%v' ", nInt, rInt)
 	}
 
@@ -1690,4 +1688,3 @@ func TestProbability_PermutationsInt_25(t *testing.T) {
 	}
 
 }
-

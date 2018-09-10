@@ -969,7 +969,6 @@ func TestProbability_PermutationsBigIntNum_15(t *testing.T) {
 
 }
 
-
 func TestProbability_PermutationsBigIntNum_16(t *testing.T) {
 
 	numOfItems := BigIntNum{}.NewIntExponent(9, 0)
@@ -1074,7 +1073,6 @@ func TestProbability_PermutationsBigIntNum_21(t *testing.T) {
 	}
 
 }
-
 
 func TestProbability_PermutationsBigIntNum_22(t *testing.T) {
 	nBigIntNum := 0
@@ -1556,7 +1554,6 @@ func TestProbability_PermutationsDecimal_16(t *testing.T) {
 
 }
 
-
 func TestProbability_PermutationsDecimal_17(t *testing.T) {
 	nDecimal := 0
 	rDecimal := 4
@@ -1646,8 +1643,8 @@ func TestProbability_PermutationsDecimal_21(t *testing.T) {
 	_, err := Probability{}.PermutationsDecimal(numOfItems, numOfItemsPicked, allowRepetitions)
 
 	if err == nil {
-		t.Errorf("Error: Expected error return from Probability{}.PermutationsDecimal(" +
-			"numOfItems, numOfItemsPicked, allowRepetitions) " +
+		t.Errorf("Error: Expected error return from Probability{}.PermutationsDecimal("+
+			"numOfItems, numOfItemsPicked, allowRepetitions) "+
 			"However no error was generated. r > n;  n='%v' r='%v' ", nInt, rInt)
 	}
 
