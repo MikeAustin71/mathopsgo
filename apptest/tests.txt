@@ -187,7 +187,7 @@
 === RUN   TestBigIntMathAdd_AddNumStrArray_04
 --- PASS: TestBigIntMathAdd_AddNumStrArray_04 (0.00s)
 === RUN   TestBigIntMathAdd_AddNumStrSeries_01
---- PASS: TestBigIntMathAdd_AddNumStrSeries_01 (0.02s)
+--- PASS: TestBigIntMathAdd_AddNumStrSeries_01 (0.00s)
 === RUN   TestBigIntMathAdd_AddNumStrSeries_02
 --- PASS: TestBigIntMathAdd_AddNumStrSeries_02 (0.00s)
 === RUN   TestBigIntMathAdd_AddNumStrSeries_03
@@ -643,7 +643,7 @@
 === RUN   TestBigIntMathDivide_NumStrDtoQuotientMod_08
 --- PASS: TestBigIntMathDivide_NumStrDtoQuotientMod_08 (0.00s)
 === RUN   TestBigIntMathMultiply_MultiplyBigInts_01
---- PASS: TestBigIntMathMultiply_MultiplyBigInts_01 (0.00s)
+--- PASS: TestBigIntMathMultiply_MultiplyBigInts_01 (0.01s)
 === RUN   TestBigIntMathMultiply_MultiplyBigInts_02
 --- PASS: TestBigIntMathMultiply_MultiplyBigInts_02 (0.00s)
 === RUN   TestBigIntMathMultiply_MultiplyBigInts_03
@@ -733,7 +733,7 @@
 === RUN   TestBigIntMathMultiply_MultiplyDecimalSeries_01
 --- PASS: TestBigIntMathMultiply_MultiplyDecimalSeries_01 (0.00s)
 === RUN   TestBigIntMathMultiply_MultiplyDecimalSeries_02
---- PASS: TestBigIntMathMultiply_MultiplyDecimalSeries_02 (0.01s)
+--- PASS: TestBigIntMathMultiply_MultiplyDecimalSeries_02 (0.00s)
 === RUN   TestBigIntMathMultiply_MultiplyDecimalSeries_03
 --- PASS: TestBigIntMathMultiply_MultiplyDecimalSeries_03 (0.00s)
 === RUN   TestBigIntMathMultiply_MultiplyDecimalSeries_04
@@ -947,7 +947,7 @@
 === RUN   TestBigIntMathNthRoot_GetNthRootBigNum_26
 --- PASS: TestBigIntMathNthRoot_GetNthRootBigNum_26 (0.00s)
 === RUN   TestBigIntMathNthRoot_GetNthRootBigNum_27
---- PASS: TestBigIntMathNthRoot_GetNthRootBigNum_27 (0.15s)
+--- PASS: TestBigIntMathNthRoot_GetNthRootBigNum_27 (0.11s)
 === RUN   TestBigIntMathPower_Pwr_01
 --- PASS: TestBigIntMathPower_Pwr_01 (0.00s)
 === RUN   TestBigIntMathPower_Pwr_02
@@ -991,7 +991,7 @@
 === RUN   TestBigIntMathPower_Pwr_21
 --- PASS: TestBigIntMathPower_Pwr_21 (0.00s)
 === RUN   TestBigIntMathPower_Pwr_22
---- PASS: TestBigIntMathPower_Pwr_22 (0.04s)
+--- PASS: TestBigIntMathPower_Pwr_22 (0.03s)
 === RUN   TestBigIntMathPower_Pwr_23
 --- PASS: TestBigIntMathPower_Pwr_23 (0.00s)
 === RUN   TestBigIntMathSubtract_SubtractBigInts_01
@@ -2855,7 +2855,7 @@
 === RUN   TestIntAry_DivideThisBy_12
 --- PASS: TestIntAry_DivideThisBy_12 (0.00s)
 === RUN   TestIntAry_DivideThisBy_13
---- PASS: TestIntAry_DivideThisBy_13 (0.85s)
+--- PASS: TestIntAry_DivideThisBy_13 (0.86s)
 === RUN   TestIntAry_DivideThisBy_14
 --- PASS: TestIntAry_DivideThisBy_14 (0.00s)
 === RUN   TestIntAry_DivideThisBy_15
@@ -3593,7 +3593,7 @@
 === RUN   TestIntAryMathPower_PwrByMultiplication_04
 --- PASS: TestIntAryMathPower_PwrByMultiplication_04 (0.00s)
 === RUN   TestIntAryMathPower_PwrByMultiplication_05
---- PASS: TestIntAryMathPower_PwrByMultiplication_05 (0.00s)
+--- PASS: TestIntAryMathPower_PwrByMultiplication_05 (0.01s)
 === RUN   TestIntAryMathPower_PwrByMultiplication_06
 --- PASS: TestIntAryMathPower_PwrByMultiplication_06 (0.00s)
 === RUN   TestIntAryMathPower_PwrByMultiplication_07
@@ -3843,7 +3843,7 @@
 === RUN   TestNthRootOp_GetNthRootIntAry_26
 --- PASS: TestNthRootOp_GetNthRootIntAry_26 (0.00s)
 === RUN   TestNthRootOp_GetNthRootIntAry_27
---- PASS: TestNthRootOp_GetNthRootIntAry_27 (3.01s)
+--- PASS: TestNthRootOp_GetNthRootIntAry_27 (2.95s)
 === RUN   TestNthRootOp_GetSquareRootFloat32_01
 --- PASS: TestNthRootOp_GetSquareRootFloat32_01 (0.00s)
 === RUN   TestNthRootOp_GetSquareRootFloat64_01
@@ -4454,48 +4454,6 @@
 --- PASS: TestPrecisionScaleMode_Value_01 (0.00s)
 === RUN   TestPrecisionScaleMode_Value_02
 --- PASS: TestPrecisionScaleMode_Value_02 (0.00s)
-=== RUN   TestProbability_CombinationsNoRepsBigInt_01
---- PASS: TestProbability_CombinationsNoRepsBigInt_01 (0.00s)
-=== RUN   TestProbability_CombinationsNoRepsBigInt_02
---- PASS: TestProbability_CombinationsNoRepsBigInt_02 (0.00s)
-=== RUN   TestProbability_CombinationsNoRepsBigInt_03
---- PASS: TestProbability_CombinationsNoRepsBigInt_03 (0.00s)
-=== RUN   TestProbability_CombinationsNoRepsBigInt_04
---- PASS: TestProbability_CombinationsNoRepsBigInt_04 (0.00s)
-=== RUN   TestProbability_CombinationsNoRepsBigInt_05
---- PASS: TestProbability_CombinationsNoRepsBigInt_05 (0.00s)
-=== RUN   TestProbability_CombinationsNoRepsBigInt_06
---- PASS: TestProbability_CombinationsNoRepsBigInt_06 (0.00s)
-=== RUN   TestProbability_CombinationsNoRepsBigInt_07
---- PASS: TestProbability_CombinationsNoRepsBigInt_07 (0.00s)
-=== RUN   TestProbability_CombinationsNoRepsBigInt_08
---- PASS: TestProbability_CombinationsNoRepsBigInt_08 (0.00s)
-=== RUN   TestProbability_CombinationsNoRepsBigInt_09
---- PASS: TestProbability_CombinationsNoRepsBigInt_09 (0.00s)
-=== RUN   TestProbability_CombinationsNoRepsBigInt_10
---- PASS: TestProbability_CombinationsNoRepsBigInt_10 (0.00s)
-=== RUN   TestProbability_CombinationsWithRepsBigInt_01
---- PASS: TestProbability_CombinationsWithRepsBigInt_01 (0.00s)
-=== RUN   TestProbability_CombinationsWithRepsBigInt_02
---- PASS: TestProbability_CombinationsWithRepsBigInt_02 (0.00s)
-=== RUN   TestProbability_CombinationsWithRepsBigInt_03
---- PASS: TestProbability_CombinationsWithRepsBigInt_03 (0.00s)
-=== RUN   TestProbability_CombinationsWithRepsBigInt_04
---- PASS: TestProbability_CombinationsWithRepsBigInt_04 (0.00s)
-=== RUN   TestProbability_CombinationsWithRepsBigInt_05
---- PASS: TestProbability_CombinationsWithRepsBigInt_05 (0.00s)
-=== RUN   TestProbability_CombinationsWithRepsBigInt_06
---- PASS: TestProbability_CombinationsWithRepsBigInt_06 (0.00s)
-=== RUN   TestProbability_CombinationsWithRepsBigInt_07
---- PASS: TestProbability_CombinationsWithRepsBigInt_07 (0.00s)
-=== RUN   TestProbability_CombinationsWithRepsBigInt_08
---- PASS: TestProbability_CombinationsWithRepsBigInt_08 (0.00s)
-=== RUN   TestProbability_CombinationsWithRepsBigInt_09
---- PASS: TestProbability_CombinationsWithRepsBigInt_09 (0.00s)
-=== RUN   TestProbability_CombinationsWithRepsBigInt_10
---- PASS: TestProbability_CombinationsWithRepsBigInt_10 (0.00s)
-=== RUN   TestProbability_CombinationsWithRepsBigInt_11
---- PASS: TestProbability_CombinationsWithRepsBigInt_11 (0.00s)
 === RUN   TestProbability_PermutationsNoRepsBigInt_01
 --- PASS: TestProbability_PermutationsNoRepsBigInt_01 (0.00s)
 === RUN   TestProbability_PermutationsNoRepsBigInt_02
@@ -5160,6 +5118,68 @@
 --- PASS: TestProbability_PermutationsNumberStr_26 (0.00s)
 === RUN   TestProbability_PermutationsNumberStr_27
 --- PASS: TestProbability_PermutationsNumberStr_27 (0.00s)
+=== RUN   TestProbability_CombinationsNoRepsBigInt_01
+--- PASS: TestProbability_CombinationsNoRepsBigInt_01 (0.00s)
+=== RUN   TestProbability_CombinationsNoRepsBigInt_02
+--- PASS: TestProbability_CombinationsNoRepsBigInt_02 (0.00s)
+=== RUN   TestProbability_CombinationsNoRepsBigInt_03
+--- PASS: TestProbability_CombinationsNoRepsBigInt_03 (0.00s)
+=== RUN   TestProbability_CombinationsNoRepsBigInt_04
+--- PASS: TestProbability_CombinationsNoRepsBigInt_04 (0.00s)
+=== RUN   TestProbability_CombinationsNoRepsBigInt_05
+--- PASS: TestProbability_CombinationsNoRepsBigInt_05 (0.00s)
+=== RUN   TestProbability_CombinationsNoRepsBigInt_06
+--- PASS: TestProbability_CombinationsNoRepsBigInt_06 (0.00s)
+=== RUN   TestProbability_CombinationsNoRepsBigInt_07
+--- PASS: TestProbability_CombinationsNoRepsBigInt_07 (0.00s)
+=== RUN   TestProbability_CombinationsNoRepsBigInt_08
+--- PASS: TestProbability_CombinationsNoRepsBigInt_08 (0.00s)
+=== RUN   TestProbability_CombinationsNoRepsBigInt_09
+--- PASS: TestProbability_CombinationsNoRepsBigInt_09 (0.00s)
+=== RUN   TestProbability_CombinationsNoRepsBigInt_10
+--- PASS: TestProbability_CombinationsNoRepsBigInt_10 (0.00s)
+=== RUN   TestProbability_CombinationsNoRepsBigInt_11
+--- PASS: TestProbability_CombinationsNoRepsBigInt_11 (0.00s)
+=== RUN   TestProbability_CombinationsNoRepsBigInt_12
+--- PASS: TestProbability_CombinationsNoRepsBigInt_12 (0.00s)
+=== RUN   TestProbability_CombinationsNoRepsBigInt_13
+--- PASS: TestProbability_CombinationsNoRepsBigInt_13 (0.00s)
+=== RUN   TestProbability_CombinationsNoRepsBigInt_14
+--- PASS: TestProbability_CombinationsNoRepsBigInt_14 (0.00s)
+=== RUN   TestProbability_CombinationsNoRepsBigInt_15
+--- PASS: TestProbability_CombinationsNoRepsBigInt_15 (0.00s)
+=== RUN   TestProbability_CombinationsWithRepsBigInt_01
+--- PASS: TestProbability_CombinationsWithRepsBigInt_01 (0.00s)
+=== RUN   TestProbability_CombinationsWithRepsBigInt_02
+--- PASS: TestProbability_CombinationsWithRepsBigInt_02 (0.00s)
+=== RUN   TestProbability_CombinationsWithRepsBigInt_03
+--- PASS: TestProbability_CombinationsWithRepsBigInt_03 (0.00s)
+=== RUN   TestProbability_CombinationsWithRepsBigInt_04
+--- PASS: TestProbability_CombinationsWithRepsBigInt_04 (0.00s)
+=== RUN   TestProbability_CombinationsWithRepsBigInt_05
+--- PASS: TestProbability_CombinationsWithRepsBigInt_05 (0.00s)
+=== RUN   TestProbability_CombinationsWithRepsBigInt_06
+--- PASS: TestProbability_CombinationsWithRepsBigInt_06 (0.00s)
+=== RUN   TestProbability_CombinationsWithRepsBigInt_07
+--- PASS: TestProbability_CombinationsWithRepsBigInt_07 (0.00s)
+=== RUN   TestProbability_CombinationsWithRepsBigInt_08
+--- PASS: TestProbability_CombinationsWithRepsBigInt_08 (0.00s)
+=== RUN   TestProbability_CombinationsWithRepsBigInt_09
+--- PASS: TestProbability_CombinationsWithRepsBigInt_09 (0.00s)
+=== RUN   TestProbability_CombinationsWithRepsBigInt_10
+--- PASS: TestProbability_CombinationsWithRepsBigInt_10 (0.00s)
+=== RUN   TestProbability_CombinationsWithRepsBigInt_11
+--- PASS: TestProbability_CombinationsWithRepsBigInt_11 (0.00s)
+=== RUN   TestProbability_CombinationsWithRepsBigInt_12
+--- PASS: TestProbability_CombinationsWithRepsBigInt_12 (0.00s)
+=== RUN   TestProbability_CombinationsWithRepsBigInt_13
+--- PASS: TestProbability_CombinationsWithRepsBigInt_13 (0.00s)
+=== RUN   TestProbability_CombinationsWithRepsBigInt_14
+--- PASS: TestProbability_CombinationsWithRepsBigInt_14 (0.00s)
+=== RUN   TestProbability_CombinationsWithRepsBigInt_15
+--- PASS: TestProbability_CombinationsWithRepsBigInt_15 (0.00s)
+=== RUN   TestProbability_CombinationsWithRepsBigInt_16
+--- PASS: TestProbability_CombinationsWithRepsBigInt_16 (0.00s)
 === RUN   TestSciNotationNum_SetNumStr_01
 --- PASS: TestSciNotationNum_SetNumStr_01 (0.00s)
 === RUN   TestStrMathOp_AddN1N2_01
@@ -5295,4 +5315,4 @@
 === RUN   TestStrMathOp_SubtractN1N2_19
 --- PASS: TestStrMathOp_SubtractN1N2_19 (0.00s)
 PASS
-ok  	MikeAustin71/mathopsgo/mathops	11.575s
+ok  	MikeAustin71/mathopsgo/mathops	10.092s
