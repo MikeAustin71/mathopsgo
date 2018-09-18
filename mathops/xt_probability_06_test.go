@@ -717,7 +717,6 @@ func TestProbability_CombinationsDecimal_31(t *testing.T) {
 	}
 }
 
-
 func TestProbability_CombinationsIntAry_01(t *testing.T) {
 
 	numOfItemsInt := 16
