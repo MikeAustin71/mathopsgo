@@ -85,7 +85,7 @@ Location: MikeAustin71/mathopsgo/mathops/decimal.go
 
 ### 4. Scientific Notation 
 Type SciNotationNum will express numbers in scientific notation. 
-               Example 1.3456E+70
+               Example- 1.3456E+70
 
 Location: MikeAustin71/mathopsgo/mathops/scinotationnum.go
 
