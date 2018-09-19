@@ -1318,10 +1318,10 @@ func (prob Probability) PermutationsNumberStr(
 			errors.New(ePrefix + "Error: Input parameter 'numOfItemsPicked' is NOT an Integer!")
 	}
 
-	if !allowRepetitions && rBigINum.Cmp(nBigINum) == 1 {
+	if !allowRepetitions && nBigINum.Cmp(rBigINum) < 0 {
 		return BigIntNum{}.NewZero(0),
 			fmt.Errorf(ePrefix+
-				"Error: 'numOfItemsPicked' is GREATER THAN 'numOfItems'.  "+
+				"Error: 'numOfItems' is LESS THAN 'numOfItemsPicked'.  "+
 				"numOfItems='%v' numOfItemsPicked='%v' \n",
 				numOfItems, numOfItemsPicked)
 	}
