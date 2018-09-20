@@ -947,7 +947,7 @@
 === RUN   TestBigIntMathNthRoot_GetNthRootBigNum_26
 --- PASS: TestBigIntMathNthRoot_GetNthRootBigNum_26 (0.00s)
 === RUN   TestBigIntMathNthRoot_GetNthRootBigNum_27
---- PASS: TestBigIntMathNthRoot_GetNthRootBigNum_27 (0.10s)
+--- PASS: TestBigIntMathNthRoot_GetNthRootBigNum_27 (0.15s)
 === RUN   TestBigIntMathPower_Pwr_01
 --- PASS: TestBigIntMathPower_Pwr_01 (0.00s)
 === RUN   TestBigIntMathPower_Pwr_02
@@ -991,7 +991,7 @@
 === RUN   TestBigIntMathPower_Pwr_21
 --- PASS: TestBigIntMathPower_Pwr_21 (0.00s)
 === RUN   TestBigIntMathPower_Pwr_22
---- PASS: TestBigIntMathPower_Pwr_22 (0.03s)
+--- PASS: TestBigIntMathPower_Pwr_22 (0.04s)
 === RUN   TestBigIntMathPower_Pwr_23
 --- PASS: TestBigIntMathPower_Pwr_23 (0.00s)
 === RUN   TestBigIntMathSubtract_SubtractBigInts_01
@@ -2509,7 +2509,7 @@
 === RUN   TestFracIntAry_GetRationalValue_06
 --- PASS: TestFracIntAry_GetRationalValue_06 (0.00s)
 === RUN   TestFracIntAry_GetRationalValue_07
---- PASS: TestFracIntAry_GetRationalValue_07 (0.94s)
+--- PASS: TestFracIntAry_GetRationalValue_07 (1.03s)
 === RUN   TestFracIntAry_NewFracIntAry_01
 --- PASS: TestFracIntAry_NewFracIntAry_01 (0.00s)
 === RUN   TestFracIntAry_NewFracIntAry_02
@@ -2855,7 +2855,7 @@
 === RUN   TestIntAry_DivideThisBy_12
 --- PASS: TestIntAry_DivideThisBy_12 (0.00s)
 === RUN   TestIntAry_DivideThisBy_13
---- PASS: TestIntAry_DivideThisBy_13 (0.90s)
+--- PASS: TestIntAry_DivideThisBy_13 (0.85s)
 === RUN   TestIntAry_DivideThisBy_14
 --- PASS: TestIntAry_DivideThisBy_14 (0.00s)
 === RUN   TestIntAry_DivideThisBy_15
@@ -3593,7 +3593,7 @@
 === RUN   TestIntAryMathPower_PwrByMultiplication_04
 --- PASS: TestIntAryMathPower_PwrByMultiplication_04 (0.00s)
 === RUN   TestIntAryMathPower_PwrByMultiplication_05
---- PASS: TestIntAryMathPower_PwrByMultiplication_05 (0.01s)
+--- PASS: TestIntAryMathPower_PwrByMultiplication_05 (0.00s)
 === RUN   TestIntAryMathPower_PwrByMultiplication_06
 --- PASS: TestIntAryMathPower_PwrByMultiplication_06 (0.00s)
 === RUN   TestIntAryMathPower_PwrByMultiplication_07
@@ -3843,7 +3843,7 @@
 === RUN   TestNthRootOp_GetNthRootIntAry_26
 --- PASS: TestNthRootOp_GetNthRootIntAry_26 (0.00s)
 === RUN   TestNthRootOp_GetNthRootIntAry_27
---- PASS: TestNthRootOp_GetNthRootIntAry_27 (3.03s)
+--- PASS: TestNthRootOp_GetNthRootIntAry_27 (2.94s)
 === RUN   TestNthRootOp_GetSquareRootFloat32_01
 --- PASS: TestNthRootOp_GetSquareRootFloat32_01 (0.00s)
 === RUN   TestNthRootOp_GetSquareRootFloat64_01
@@ -5428,6 +5428,192 @@
 --- PASS: TestProbability_CombinationsINumMgr_30 (0.00s)
 === RUN   TestProbability_CombinationsINumMgr_31
 --- PASS: TestProbability_CombinationsINumMgr_31 (0.00s)
+=== RUN   TestProbability_CombinationsInt_01
+--- PASS: TestProbability_CombinationsInt_01 (0.00s)
+=== RUN   TestProbability_CombinationsInt_02
+--- PASS: TestProbability_CombinationsInt_02 (0.00s)
+=== RUN   TestProbability_CombinationsInt_03
+--- PASS: TestProbability_CombinationsInt_03 (0.00s)
+=== RUN   TestProbability_CombinationsInt_04
+--- PASS: TestProbability_CombinationsInt_04 (0.00s)
+=== RUN   TestProbability_CombinationsInt_05
+--- PASS: TestProbability_CombinationsInt_05 (0.00s)
+=== RUN   TestProbability_CombinationsInt_06
+--- PASS: TestProbability_CombinationsInt_06 (0.00s)
+=== RUN   TestProbability_CombinationsInt_07
+--- PASS: TestProbability_CombinationsInt_07 (0.00s)
+=== RUN   TestProbability_CombinationsInt_08
+--- PASS: TestProbability_CombinationsInt_08 (0.00s)
+=== RUN   TestProbability_CombinationsInt_09
+--- PASS: TestProbability_CombinationsInt_09 (0.00s)
+=== RUN   TestProbability_CombinationsInt_10
+--- PASS: TestProbability_CombinationsInt_10 (0.00s)
+=== RUN   TestProbability_CombinationsInt_11
+--- PASS: TestProbability_CombinationsInt_11 (0.00s)
+=== RUN   TestProbability_CombinationsInt_12
+--- PASS: TestProbability_CombinationsInt_12 (0.00s)
+=== RUN   TestProbability_CombinationsInt_13
+--- PASS: TestProbability_CombinationsInt_13 (0.00s)
+=== RUN   TestProbability_CombinationsInt_14
+--- PASS: TestProbability_CombinationsInt_14 (0.00s)
+=== RUN   TestProbability_CombinationsInt_15
+--- PASS: TestProbability_CombinationsInt_15 (0.00s)
+=== RUN   TestProbability_CombinationsInt_16
+--- PASS: TestProbability_CombinationsInt_16 (0.00s)
+=== RUN   TestProbability_CombinationsInt_17
+--- PASS: TestProbability_CombinationsInt_17 (0.00s)
+=== RUN   TestProbability_CombinationsInt_18
+--- PASS: TestProbability_CombinationsInt_18 (0.00s)
+=== RUN   TestProbability_CombinationsInt_19
+--- PASS: TestProbability_CombinationsInt_19 (0.00s)
+=== RUN   TestProbability_CombinationsInt_20
+--- PASS: TestProbability_CombinationsInt_20 (0.00s)
+=== RUN   TestProbability_CombinationsInt_21
+--- PASS: TestProbability_CombinationsInt_21 (0.00s)
+=== RUN   TestProbability_CombinationsInt_22
+--- PASS: TestProbability_CombinationsInt_22 (0.00s)
+=== RUN   TestProbability_CombinationsInt_23
+--- PASS: TestProbability_CombinationsInt_23 (0.00s)
+=== RUN   TestProbability_CombinationsInt_24
+--- PASS: TestProbability_CombinationsInt_24 (0.00s)
+=== RUN   TestProbability_CombinationsInt_25
+--- PASS: TestProbability_CombinationsInt_25 (0.00s)
+=== RUN   TestProbability_CombinationsInt_26
+--- PASS: TestProbability_CombinationsInt_26 (0.00s)
+=== RUN   TestProbability_CombinationsInt_27
+--- PASS: TestProbability_CombinationsInt_27 (0.00s)
+=== RUN   TestProbability_CombinationsInt_28
+--- PASS: TestProbability_CombinationsInt_28 (0.00s)
+=== RUN   TestProbability_CombinationsInt_29
+--- PASS: TestProbability_CombinationsInt_29 (0.00s)
+=== RUN   TestProbability_CombinationsInt_30
+--- PASS: TestProbability_CombinationsInt_30 (0.00s)
+=== RUN   TestProbability_CombinationsInt_31
+--- PASS: TestProbability_CombinationsInt_31 (0.00s)
+=== RUN   TestProbability_CombinationsInt32_01
+--- PASS: TestProbability_CombinationsInt32_01 (0.00s)
+=== RUN   TestProbability_CombinationsInt32_02
+--- PASS: TestProbability_CombinationsInt32_02 (0.00s)
+=== RUN   TestProbability_CombinationsInt32_03
+--- PASS: TestProbability_CombinationsInt32_03 (0.00s)
+=== RUN   TestProbability_CombinationsInt32_04
+--- PASS: TestProbability_CombinationsInt32_04 (0.00s)
+=== RUN   TestProbability_CombinationsInt32_05
+--- PASS: TestProbability_CombinationsInt32_05 (0.00s)
+=== RUN   TestProbability_CombinationsInt32_06
+--- PASS: TestProbability_CombinationsInt32_06 (0.00s)
+=== RUN   TestProbability_CombinationsInt32_07
+--- PASS: TestProbability_CombinationsInt32_07 (0.00s)
+=== RUN   TestProbability_CombinationsInt32_08
+--- PASS: TestProbability_CombinationsInt32_08 (0.00s)
+=== RUN   TestProbability_CombinationsInt32_09
+--- PASS: TestProbability_CombinationsInt32_09 (0.00s)
+=== RUN   TestProbability_CombinationsInt32_10
+--- PASS: TestProbability_CombinationsInt32_10 (0.00s)
+=== RUN   TestProbability_CombinationsInt32_11
+--- PASS: TestProbability_CombinationsInt32_11 (0.00s)
+=== RUN   TestProbability_CombinationsInt32_12
+--- PASS: TestProbability_CombinationsInt32_12 (0.00s)
+=== RUN   TestProbability_CombinationsInt32_13
+--- PASS: TestProbability_CombinationsInt32_13 (0.00s)
+=== RUN   TestProbability_CombinationsInt32_14
+--- PASS: TestProbability_CombinationsInt32_14 (0.00s)
+=== RUN   TestProbability_CombinationsInt32_15
+--- PASS: TestProbability_CombinationsInt32_15 (0.00s)
+=== RUN   TestProbability_CombinationsInt32_16
+--- PASS: TestProbability_CombinationsInt32_16 (0.00s)
+=== RUN   TestProbability_CombinationsInt32_17
+--- PASS: TestProbability_CombinationsInt32_17 (0.00s)
+=== RUN   TestProbability_CombinationsInt32_18
+--- PASS: TestProbability_CombinationsInt32_18 (0.00s)
+=== RUN   TestProbability_CombinationsInt32_19
+--- PASS: TestProbability_CombinationsInt32_19 (0.00s)
+=== RUN   TestProbability_CombinationsInt32_20
+--- PASS: TestProbability_CombinationsInt32_20 (0.00s)
+=== RUN   TestProbability_CombinationsInt32_21
+--- PASS: TestProbability_CombinationsInt32_21 (0.00s)
+=== RUN   TestProbability_CombinationsInt32_22
+--- PASS: TestProbability_CombinationsInt32_22 (0.00s)
+=== RUN   TestProbability_CombinationsInt32_23
+--- PASS: TestProbability_CombinationsInt32_23 (0.00s)
+=== RUN   TestProbability_CombinationsInt32_24
+--- PASS: TestProbability_CombinationsInt32_24 (0.00s)
+=== RUN   TestProbability_CombinationsInt32_25
+--- PASS: TestProbability_CombinationsInt32_25 (0.00s)
+=== RUN   TestProbability_CombinationsInt32_26
+--- PASS: TestProbability_CombinationsInt32_26 (0.00s)
+=== RUN   TestProbability_CombinationsInt32_27
+--- PASS: TestProbability_CombinationsInt32_27 (0.00s)
+=== RUN   TestProbability_CombinationsInt32_28
+--- PASS: TestProbability_CombinationsInt32_28 (0.00s)
+=== RUN   TestProbability_CombinationsInt32_29
+--- PASS: TestProbability_CombinationsInt32_29 (0.00s)
+=== RUN   TestProbability_CombinationsInt32_30
+--- PASS: TestProbability_CombinationsInt32_30 (0.00s)
+=== RUN   TestProbability_CombinationsInt32_31
+--- PASS: TestProbability_CombinationsInt32_31 (0.00s)
+=== RUN   TestProbability_CombinationsInt64_01
+--- PASS: TestProbability_CombinationsInt64_01 (0.00s)
+=== RUN   TestProbability_CombinationsInt64_02
+--- PASS: TestProbability_CombinationsInt64_02 (0.00s)
+=== RUN   TestProbability_CombinationsInt64_03
+--- PASS: TestProbability_CombinationsInt64_03 (0.00s)
+=== RUN   TestProbability_CombinationsInt64_04
+--- PASS: TestProbability_CombinationsInt64_04 (0.00s)
+=== RUN   TestProbability_CombinationsInt64_05
+--- PASS: TestProbability_CombinationsInt64_05 (0.00s)
+=== RUN   TestProbability_CombinationsInt64_06
+--- PASS: TestProbability_CombinationsInt64_06 (0.00s)
+=== RUN   TestProbability_CombinationsInt64_07
+--- PASS: TestProbability_CombinationsInt64_07 (0.00s)
+=== RUN   TestProbability_CombinationsInt64_08
+--- PASS: TestProbability_CombinationsInt64_08 (0.00s)
+=== RUN   TestProbability_CombinationsInt64_09
+--- PASS: TestProbability_CombinationsInt64_09 (0.00s)
+=== RUN   TestProbability_CombinationsInt64_10
+--- PASS: TestProbability_CombinationsInt64_10 (0.00s)
+=== RUN   TestProbability_CombinationsInt64_11
+--- PASS: TestProbability_CombinationsInt64_11 (0.00s)
+=== RUN   TestProbability_CombinationsInt64_12
+--- PASS: TestProbability_CombinationsInt64_12 (0.00s)
+=== RUN   TestProbability_CombinationsInt64_13
+--- PASS: TestProbability_CombinationsInt64_13 (0.00s)
+=== RUN   TestProbability_CombinationsInt64_14
+--- PASS: TestProbability_CombinationsInt64_14 (0.00s)
+=== RUN   TestProbability_CombinationsInt64_15
+--- PASS: TestProbability_CombinationsInt64_15 (0.00s)
+=== RUN   TestProbability_CombinationsInt64_16
+--- PASS: TestProbability_CombinationsInt64_16 (0.00s)
+=== RUN   TestProbability_CombinationsInt64_17
+--- PASS: TestProbability_CombinationsInt64_17 (0.00s)
+=== RUN   TestProbability_CombinationsInt64_18
+--- PASS: TestProbability_CombinationsInt64_18 (0.00s)
+=== RUN   TestProbability_CombinationsInt64_19
+--- PASS: TestProbability_CombinationsInt64_19 (0.00s)
+=== RUN   TestProbability_CombinationsInt64_20
+--- PASS: TestProbability_CombinationsInt64_20 (0.00s)
+=== RUN   TestProbability_CombinationsInt64_21
+--- PASS: TestProbability_CombinationsInt64_21 (0.00s)
+=== RUN   TestProbability_CombinationsInt64_22
+--- PASS: TestProbability_CombinationsInt64_22 (0.00s)
+=== RUN   TestProbability_CombinationsInt64_23
+--- PASS: TestProbability_CombinationsInt64_23 (0.00s)
+=== RUN   TestProbability_CombinationsInt64_24
+--- PASS: TestProbability_CombinationsInt64_24 (0.00s)
+=== RUN   TestProbability_CombinationsInt64_25
+--- PASS: TestProbability_CombinationsInt64_25 (0.00s)
+=== RUN   TestProbability_CombinationsInt64_26
+--- PASS: TestProbability_CombinationsInt64_26 (0.00s)
+=== RUN   TestProbability_CombinationsInt64_27
+--- PASS: TestProbability_CombinationsInt64_27 (0.00s)
+=== RUN   TestProbability_CombinationsInt64_28
+--- PASS: TestProbability_CombinationsInt64_28 (0.00s)
+=== RUN   TestProbability_CombinationsInt64_29
+--- PASS: TestProbability_CombinationsInt64_29 (0.00s)
+=== RUN   TestProbability_CombinationsInt64_30
+--- PASS: TestProbability_CombinationsInt64_30 (0.00s)
+=== RUN   TestProbability_CombinationsInt64_31
+--- PASS: TestProbability_CombinationsInt64_31 (0.00s)
 === RUN   TestSciNotationNum_SetNumStr_01
 --- PASS: TestSciNotationNum_SetNumStr_01 (0.00s)
 === RUN   TestStrMathOp_AddN1N2_01
@@ -5563,4 +5749,4 @@
 === RUN   TestStrMathOp_SubtractN1N2_19
 --- PASS: TestStrMathOp_SubtractN1N2_19 (0.00s)
 PASS
-ok  	MikeAustin71/mathopsgo/mathops	10.512s
+ok  	MikeAustin71/mathopsgo/mathops	9.574s
