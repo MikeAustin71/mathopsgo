@@ -8,8 +8,10 @@ import (
 
 /*
 
-This file contains Probability source code for 'Permutations'.  For 'Combinations' see
-source code file MikeAustin71\mathopsgo\mathops\probability_02.go
+This file contains Probability source code for 'Permutations'.
+
+For 'Combinations' see source code file:
+		MikeAustin71\mathopsgo\mathops\probability_01.go
 
 														Permutations
   													============

@@ -10,8 +10,8 @@ import (
 
 This file contains Probability source code for 'Combinations'.
 
-For 'Permutations' see:
-source code file MikeAustin71\mathopsgo\mathops\probability_02.go
+For 'Permutations' see source code file:
+	MikeAustin71\mathopsgo\mathops\probability_02.go
 
 
                                 Combinations
