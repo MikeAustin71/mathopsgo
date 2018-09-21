@@ -6,6 +6,9 @@ import "fmt"
 	The TimeValOfMoney type contains functions which apply the standard time value
   of money formulas.
 
+	Reference :
+		https://www.youtube.com/watch?v=m3azU7gYHc0
+
  */
 
 type TimeValOfMoney struct {
