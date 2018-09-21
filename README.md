@@ -1,5 +1,6 @@
 # mathopsgo
-Math Operations Library using the Go Programming Language
+A Math Operations (MathOps) Library written in the
+Go Programming Language.
 
 The source code repository of the 'mathops' Library 
 is located here:
@@ -45,13 +46,14 @@ syntax. Example:
 1. Make 'MikeAustin71/mathopsgo/mathops/' the current directory.
 
 2. Execute the following command:
-
     
     go test -v > ../apptest/tests.txt
 
-
 3. This will send test results output to a text file in the
    directory, 'MikeAustin71/mathopsgo/apptest' 
+
+4. There are currently over 3,000 tests associated with the 
+   'MathOps' Library.
 
 
 ## Overview
