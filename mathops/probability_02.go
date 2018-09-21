@@ -56,15 +56,6 @@ In the following permutation formula, n= 'numOfItems'  and r = 'numOfItemsPicked
 
 */
 
-type Probability struct {
-	NoOfTrials                   BigIntNum
-	PossibleOutcomesPerTrial     BigIntNum
-	NoSuccessfulOutcomesPerTrial BigIntNum
-	TotPossibleOutcomes          BigIntNum
-	TotSuccessfulOutcomes        BigIntNum
-	PercentCertainty             BigIntNum
-}
-
 // PermutationsNoRepsBigInt - Calculates the number of permutations associated with a collection of
 // 'numOfItems' from which one picks 'numOfItemsPicked'. Order IS significant. This calculation
 // assumes that repetitions ARE NOT allowed.

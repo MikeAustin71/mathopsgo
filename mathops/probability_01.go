@@ -68,6 +68,15 @@ $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
 */
 
+type Probability struct {
+	NoOfTrials                   BigIntNum
+	PossibleOutcomesPerTrial     BigIntNum
+	NoSuccessfulOutcomesPerTrial BigIntNum
+	TotPossibleOutcomes          BigIntNum
+	TotSuccessfulOutcomes        BigIntNum
+	PercentCertainty             BigIntNum
+}
+
 // CombinationsNoRepsBigInt - Calculates the number of combinations from
 // 'numOfItems' and 'numOfItemsChosen' or 'n' things chosen 'r' at a time
 // with NO repetitions and order does NOT matter. This is also referred to
