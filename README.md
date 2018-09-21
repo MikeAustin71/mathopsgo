@@ -40,8 +40,21 @@ syntax. Example:
         "../mathops"
     )
 
+## Running Tests
 
-### Overview
+1. Make 'MikeAustin71/mathopsgo/mathops/' the current directory.
+
+2. Execute the following command:
+
+    
+    go test -v > ../apptest/tests.txt
+
+
+3. This will send test results output to a text file in the
+   directory, 'MikeAustin71/mathopsgo/apptest' 
+
+
+## Overview
 
 The Math Operations Utilities are written in the Go Programming Language.
 
