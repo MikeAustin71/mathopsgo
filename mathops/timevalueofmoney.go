@@ -1,13 +1,19 @@
 package mathops
 
-import "fmt"
+import (
+	"fmt"
+	"math"
+)
 
 /*
 	The TimeValOfMoney type contains functions which apply the standard time value
   of money formulas.
 
 	Reference :
+		https://www.khanacademy.org/economics-finance-domain/core-finance/interest-tutorial/present-value/v/time-value-of-money
 		https://www.youtube.com/watch?v=m3azU7gYHc0
+		http://www.tvmcalcs.com/index.php/tvm/formulas/tvm_formulas
+		https://en.wikipedia.org/wiki/Time_value_of_money
 
  */
 
@@ -21,13 +27,15 @@ type TimeValOfMoney struct {
 }
 
 
-// FutureValueBigIntNum - Computes the future value of a present value amount
-// given an interest rate and a number of periods.
+// LumpSumFVBigIntNum - Computes and returns the future value of a present value
+// lump sum amount given a risk free interest rate and a specific number of
+// compounding periods.
 //
 // PV = Present Value
 // FV = Future Value
-//  i = interest paid by the investment per period (expressed as a decimal fraction)
-//  N = Number of periods the investment will be held
+//  i = risk free interest paid by the investment per period
+// 			(expressed as a decimal fraction)
+//  N = Number of compounding periods the investment will be held
 //
 // Future Value Formula:
 // =====================
@@ -37,11 +45,10 @@ type TimeValOfMoney struct {
 // Input Parameters:
 // =================
 //
-// presentValue BigIntNum - Present Value (PV) amount. Must be a positive integer
-//                          or fractional value.
+// presentValue BigIntNum - Present Value (PV) amount.
 //
-// interestRate	BigIntNum	- Interest Rate (i) per period. Can be  expressed either
-// 													a positive or negative value.
+// interestRate	BigIntNum	- Risk Free interest rate (i) per period. Can be
+// 													expressed as either a positive or negative value.
 //
 // numOfPeriods BigIntNum - Number of periods (N) investment will be held. Must
 //                          be a positive value.
@@ -62,18 +69,11 @@ type TimeValOfMoney struct {
 //              is returned in this 'error' type. If the calculation is successful, this
 //              value is 'nil'.
 //
-func (tvm TimeValOfMoney) FutureValueBigIntNum(
+func (tvm TimeValOfMoney) LumpSumFVBigIntNum(
 		presentValue, interestRate, numOfPeriods BigIntNum,
 		futureValueMaxPrecision uint ) (BigIntNum, error) {
 
-	ePrefix := "TimeValOfMoney.FutureValueBigInt() "
-
-	if presentValue.GetSign() == -1 {
-		return BigIntNum{}.NewZero(0),
-			fmt.Errorf(ePrefix +
-				"Error: Input parameter 'presentValue' is a negative value. " +
-				"presentValue='%v' ", presentValue.GetNumStr())
-	}
+	ePrefix := "TimeValOfMoney.LumpSumFVBigIntNum() "
 
 	if numOfPeriods.GetSign() == -1 {
 		return BigIntNum{}.NewZero(0),
@@ -108,30 +108,91 @@ func (tvm TimeValOfMoney) FutureValueBigIntNum(
 }
 
 
+// LumpSumPVBigIntNum - Computes and returns the Present Value (PV) of a
+// Future Value discounted at risk free discount rate (DR).
+//
+// Present Value Formula:
+// ======================
+//
+// Reference:
+// https://www.khanacademy.org/economics-finance-domain/core-finance/interest-tutorial/present-value/v/introduction-to-present-value
+// https://www.khanacademy.org/economics-finance-domain/core-finance/interest-tutorial/present-value/v/present-value-2
+// https://www.khanacademy.org/economics-finance-domain/core-finance/interest-tutorial/present-value/v/present-value-3
+//
+// PV = Present Value
+// FV = Future Value
+// DR = risk free discount rate paid on the investment per period
+// 			(expressed as a decimal fraction)
+//  N = Number of compounding periods
+//
+// 					PV = FV / (1 + DR)^N
+//
+//
+func (tvm TimeValOfMoney) LumpSumPVBigIntNum(
+	futureValue, discountRate, numOfPeriods BigIntNum,
+	presentValueMaxPrecision uint) (BigIntNum, error) {
+
+	ePrefix := "TimeValOfMoney.LumpSumPVBigIntNum() "
+	onePlusDr :=
+		BigIntMathAdd{}.AddBigIntNums(
+			BigIntNum{}.NewOne(0), discountRate)
+
+	xNumOfPeriods := numOfPeriods.CopyOut()
+
+	xNumOfPeriods.RoundToDecPlace(0)
+
+	xUint, err := xNumOfPeriods.GetUInt()
+
+	if err != nil {
+		xUint = math.MaxUint32
+	}
+
+	maxPrecision := xUint * onePlusDr.GetPrecisionUint()
+	maxPrecision += 10
+
+	DRtoPwr, err := BigIntMathPower{}.Pwr(onePlusDr, numOfPeriods, maxPrecision )
+
+	presentValue, err :=
+		BigIntMathDivide{}.BigIntNumFracQuotient(futureValue, DRtoPwr, presentValueMaxPrecision)
+
+	if err != nil {
+		return BigIntNum{}.NewZero(0),
+		fmt.Errorf(ePrefix +
+			"Error returned by BigIntMathDivide{}.BigIntNumFracQuotient( " +
+			"futureValue, onePlusDr, maxPrecision) " +
+			"futureValue='%v' onePlusDr='%v' maxPrecision='%v' Error='%v'",
+			futureValue.GetNumStr(), onePlusDr.GetNumStr(), maxPrecision, err.Error())
+	}
+
+	return presentValue, nil
+}
+
+
 // SimpleInterestBigIntNum - Computes future value of an investment using simple
 // the interest formula.
 //
 // Simple Interest Formula:
 // ========================
 //
-// PV = Initial Investment (initialInvestment)
-//  i = Interest Rate per period (interestRate)
-//  N = Number of periods (numOfPeriods)
-// FV = Future Value. The result of applying the simple interest formula
+// PV = Present Value
+// FV = Future Value
+//  i = risk free interest paid by the investment per period
+// 			(expressed as a decimal fraction)
+//  N = Number of compounding periods the investment will be held
 //
 // FV = PV x ( 1 + ( i x N) )
 //
 // Input Parameters:
 // =================
 //
-// initialInvestment	BigIntNum - The present value amount or Initial Investment (PV).
-//                                Must be expressed as a positive value.
+// initialInvestment	BigIntNum - The present value amount or Initial Investment
+// 																(PV). Must be expressed as a positive value.
 //
-// interestRate				BigIntNum - The interest rate per period (i). Can be expressed
+// interestRate				BigIntNum - The risk free interest rate per period (i). Can be expressed
 //                                as either a positive or negative value.
 //
-// numOfPeriods				BigIntNum - Number of periods (N). Must be expressed as
-//                                a positive value.
+// numOfPeriods				BigIntNum - Number of compounding periods (N). Must be
+// 																expressed as a positive value.
 //
 // futureValueMaxPrecision uint - The maximum precision allowed in the future
 //                                value amount resulting from this simple interest
