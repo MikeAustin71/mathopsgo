@@ -4,6 +4,112 @@ import (
 	"testing"
 )
 
+func TestBigIntMathPower_MinimumRequiredPrecision_01(t *testing.T) {
+
+	base := BigIntNum{}.NewInt(312,2)
+	exponent := BigIntNum{}.NewInt(4, 0)
+	expectedResult := uint(8)
+
+
+	result, err := BigIntMathPower{}.MinimumRequiredPrecision(base, exponent)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntMathPower{}." +
+			"MinimumRequiredPrecision(base, exponent)" +
+			"Error='%v' ", err.Error())
+	}
+
+	if expectedResult != result {
+		t.Errorf("Error: Expected result='%v'. Instead, result='%v'",
+			expectedResult, result)
+	}
+
+}
+
+func TestBigIntMathPower_MinimumRequiredPrecision_02(t *testing.T) {
+
+	base := BigIntNum{}.NewInt(312345,5)
+	exponent := BigIntNum{}.NewInt(18, 0)
+	expectedResult := uint(90)
+
+
+	result, err := BigIntMathPower{}.MinimumRequiredPrecision(base, exponent)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntMathPower{}." +
+			"MinimumRequiredPrecision(base, exponent)" +
+			"Error='%v' ", err.Error())
+	}
+
+	if expectedResult != result {
+		t.Errorf("Error: Expected result='%v'. Instead, result='%v'",
+			expectedResult, result)
+	}
+
+}
+
+func TestBigIntMathPower_MinimumRequiredPrecision_03(t *testing.T) {
+
+	base := BigIntNum{}.NewInt(-312345,5)
+	exponent := BigIntNum{}.NewInt(18, 0)
+	expectedResult := uint(90)
+
+
+	result, err := BigIntMathPower{}.MinimumRequiredPrecision(base, exponent)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntMathPower{}." +
+			"MinimumRequiredPrecision(base, exponent)" +
+			"Error='%v' ", err.Error())
+	}
+
+	if expectedResult != result {
+		t.Errorf("Error: Expected result='%v'. Instead, result='%v'",
+			expectedResult, result)
+	}
+
+}
+
+func TestBigIntMathPower_MinimumRequiredPrecision_04(t *testing.T) {
+
+	base := BigIntNum{}.NewInt(312345,5)
+	exponent := BigIntNum{}.NewInt(-18, 0)
+	expectedResult := uint(90)
+
+
+	result, err := BigIntMathPower{}.MinimumRequiredPrecision(base, exponent)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntMathPower{}." +
+			"MinimumRequiredPrecision(base, exponent)" +
+			"Error='%v' ", err.Error())
+	}
+
+	if expectedResult != result {
+		t.Errorf("Error: Expected result='%v'. Instead, result='%v'",
+			expectedResult, result)
+	}
+
+}
+
+func TestBigIntMathPower_MinimumRequiredPrecision_05(t *testing.T) {
+
+	base := BigIntNum{}.NewInt(312345,5)
+	exponent := BigIntNum{}.NewUint64(12345678901234567890, 0)
+
+	result, err := BigIntMathPower{}.MinimumRequiredPrecision(base, exponent)
+
+	if err == nil {
+		t.Error("Error: Expected error be returned. NO ERROR RETURNED!")
+	}
+
+	if result != uint(4294967295) {
+		t.Errorf("Error: Expected result='4294967295'. Instead, result='%v'",
+			result)
+	}
+
+}
+
 func TestBigIntMathPower_Pwr_01(t *testing.T) {
 	// Time:
 	// 0-Milliseconds 0-Microseconds 0-Nanoseconds
