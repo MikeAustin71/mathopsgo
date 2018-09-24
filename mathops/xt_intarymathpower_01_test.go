@@ -2,6 +2,109 @@ package mathops
 
 import "testing"
 
+func TestIntAryMathPower_MinimumRequiredPrecision_01(t *testing.T) {
+
+	base := IntAry{}.NewInt(312, 2)
+	exponent := IntAry{}.NewInt(4, 0)
+	expectedResult := 8
+
+	result, err := IntAryMathPower{}.MinimumRequiredPrecision(&base, &exponent)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntMathPower{}."+
+			"MinimumRequiredPrecision(base, exponent)"+
+			"Error='%v' ", err.Error())
+	}
+
+	if expectedResult != result {
+		t.Errorf("Error: Expected result='%v'. Instead, result='%v'",
+			expectedResult, result)
+	}
+
+}
+
+func TestIntAryMathPower_MinimumRequiredPrecision_02(t *testing.T) {
+
+	base := IntAry{}.NewInt(312345, 5)
+	exponent := IntAry{}.NewInt(18, 0)
+	expectedResult := 90
+
+	result, err := IntAryMathPower{}.MinimumRequiredPrecision(&base, &exponent)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntMathPower{}."+
+			"MinimumRequiredPrecision(base, exponent)"+
+			"Error='%v' ", err.Error())
+	}
+
+	if expectedResult != result {
+		t.Errorf("Error: Expected result='%v'. Instead, result='%v'",
+			expectedResult, result)
+	}
+
+}
+
+func TestIntAryMathPower_MinimumRequiredPrecision_03(t *testing.T) {
+
+	base := IntAry{}.NewInt(-312345, 5)
+	exponent := IntAry{}.NewInt(18, 0)
+	expectedResult := 90
+
+	result, err := IntAryMathPower{}.MinimumRequiredPrecision(&base, &exponent)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntMathPower{}."+
+			"MinimumRequiredPrecision(base, exponent)"+
+			"Error='%v' ", err.Error())
+	}
+
+	if expectedResult != result {
+		t.Errorf("Error: Expected result='%v'. Instead, result='%v'",
+			expectedResult, result)
+	}
+
+}
+
+func TestIntAryMathPower_MinimumRequiredPrecision_04(t *testing.T) {
+
+	base := IntAry{}.NewInt(312345, 5)
+	exponent := IntAry{}.NewInt(-18, 0)
+	expectedResult := 90
+
+	result, err := IntAryMathPower{}.MinimumRequiredPrecision(&base, &exponent)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntMathPower{}."+
+			"MinimumRequiredPrecision(base, exponent)"+
+			"Error='%v' ", err.Error())
+	}
+
+	if expectedResult != result {
+		t.Errorf("Error: Expected result='%v'. Instead, result='%v'",
+			expectedResult, result)
+	}
+
+}
+
+func TestIntAryMathPower_MinimumRequiredPrecision_05(t *testing.T) {
+
+	base := IntAry{}.NewInt(312345,5)
+	exponent := IntAry{}.NewUint64(12345678901234567890, 0)
+
+
+	result, err := IntAryMathPower{}.MinimumRequiredPrecision(&base, &exponent)
+
+	if err == nil {
+		t.Error("Error: Expected error be returned. NO ERROR RETURNED!")
+	}
+
+	if result != int(2147483646) {
+		t.Errorf("Error: Expected result='2147483646'. Instead, result='%v'",
+			result)
+	}
+
+}
+
 func TestIntAryMathPower_Pwr_01(t *testing.T) {
 
 	// Time

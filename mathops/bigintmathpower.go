@@ -28,9 +28,8 @@ type BigIntMathPower struct {
 // The calculated minimum required precision is returned as type 'uint'.
 //
 // If the minimum required precision exceeds the maximum value for type
-// 'uint' ( 4,294,967,295, which equals 2^32 − 1), an error message is returned
-// in addition to the maximum uint value (4,294,967,295).
-//
+// 'uint' (+4,294,967,295, which equals 2^32 − 1), an error message is returned
+// in addition to the maximum uint value (+4,294,967,295).
 //
 func (bIPwr BigIntMathPower) MinimumRequiredPrecision(
 	base, exponent BigIntNum) (uint, error) {
