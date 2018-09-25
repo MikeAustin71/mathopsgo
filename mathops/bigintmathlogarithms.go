@@ -11,6 +11,9 @@ log[b](x) = y exactly if b^y = x
 
 log[10](450) = 2.6532125137753436793763169117857
 precision = 31
+
+LogN(1500000;4) = log[4](1500000) = 10.2582655350227
+
  */
 
 type BigIntMathLogarithms struct {
@@ -31,7 +34,7 @@ func (bLog BigIntMathLogarithms) LogBaseOfX(
 	base, xNum BigIntNum, maxPrecision uint) (BigIntNum, error) {
 
 	ePrefix := "BigIntMathLogarithms.LogBaseOfX() "
-	maxInternalPrecision := xNum.GetPrecisionUint() + uint(100)
+	maxInternalPrecision := xNum.GetPrecisionUint() + uint(10)
 	bigZero := BigIntNum{}.NewZero(0)
 
 	digits, residualXNum, err := bLog.GetIntDigits(base, xNum, maxInternalPrecision)
@@ -48,7 +51,21 @@ func (bLog BigIntMathLogarithms) LogBaseOfX(
 	result := digits.CopyOut()
 
 	digits.SetBigInt(big.NewInt(0), 0)
+
+	bigTen := BigIntNum{}.NewInt(10, 0)
+
+	residualXNum, err = BigIntMathPower{}.Pwr(residualXNum, bigTen, maxInternalPrecision)
+
+	if err != nil {
+		return bigZero,
+			fmt.Errorf(ePrefix +
+				"Error returned by BigIntMathPower{}.Pwr(residualXNum, bigTen, maxInternalPrecision). " +
+				"residualXNum='%v', maxPrecision='%v' Error='%v'",
+				residualXNum.GetNumStr(), maxPrecision, err.Error())
+	}
+
 	maxPrecision++
+
 	for x := uint(0); x < maxPrecision; x++ {
 
 		digits, residualXNum, err = bLog.GetNextDecimalDigit(base, residualXNum, maxInternalPrecision)
@@ -66,6 +83,8 @@ func (bLog BigIntMathLogarithms) LogBaseOfX(
 		}
 	}
 
+
+	result.ShiftPrecisionLeft(maxPrecision)
 	maxPrecision--
 	result.RoundToDecPlace(maxPrecision)
 
@@ -118,26 +137,30 @@ func (bLog BigIntMathLogarithms) GetNextDecimalDigit(
 	newResidualXNum = residualXNum.CopyOut()
 	err = nil
 	var errX error
+	bigTen := BigIntNum{}.NewInt(10, 0)
 
 	if newResidualXNum.Cmp(base) == -1 {
 
-		bigTen := BigIntNum{}.NewInt(10, 0)
-
-		residualXNum, errX = BigIntMathPower{}.Pwr(residualXNum, bigTen, maxPrecision)
+		newResidualXNum, errX = BigIntMathPower{}.Pwr(newResidualXNum, bigTen, maxPrecision)
 
 		if errX != nil {
 			err =
 				fmt.Errorf(ePrefix +
-					"Error returned by BigIntMathPower{}.Pwr(residualXNum, bigTen, maxPrecision) #1. " +
-					"residualXNum='%v', maxPrecision='%v' Error='%v'",
-					residualXNum.GetNumStr(), maxPrecision, errX.Error())
+					"Error returned by BigIntMathPower{}.Pwr(newResidualXNum, bigTen, maxPrecision) #1. " +
+					"newResidualXNum='%v', maxPrecision='%v' Error='%v'",
+					newResidualXNum.GetNumStr(), maxPrecision, errX.Error())
 			return digit, newResidualXNum, err
 		}
 
-		return digit, residualXNum, err
+		return digit, newResidualXNum, err
 	}
 
+
+
+
 	for newResidualXNum.Cmp(base) > -1 {
+
+		fmt.Println("Before newResidualXNum= ", newResidualXNum.GetNumStr())
 
 		newResidualXNum, errX =
 			BigIntMathDivide{}.BigIntNumFracQuotient(newResidualXNum, base, maxPrecision)
@@ -153,11 +176,31 @@ func (bLog BigIntMathLogarithms) GetNextDecimalDigit(
 			return digit, newResidualXNum, err
 		}
 
+		fmt.Println("After newResidualXNum= ", newResidualXNum.GetNumStr())
+
 		digit.Increment()
 
 	}
 
+
+	if !newResidualXNum.IsZero() && newResidualXNum.Cmp(base) == -1	{
+
+		newResidualXNum, errX = BigIntMathPower{}.Pwr(newResidualXNum, bigTen, maxPrecision)
+
+		if errX != nil {
+			err =
+				fmt.Errorf(ePrefix +
+					"Error returned by BigIntMathPower{}.Pwr(residualXNum, bigTen, maxPrecision) #2. " +
+					"residualXNum='%v', maxPrecision='%v' Error='%v'",
+					residualXNum.GetNumStr(), maxPrecision, errX.Error())
+			return digit, newResidualXNum, err
+		}
+
+	}
+
+
+
 	err = nil
 
-	return digit, residualXNum, err
+	return digit, newResidualXNum, err
 }
