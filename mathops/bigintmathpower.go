@@ -45,6 +45,7 @@ func (bIPwr BigIntMathPower) MinimumRequiredPrecision(
 	minRequiredPrecision :=
 		BigIntMathMultiply{}.MultiplyBigIntNums(basePrecision, tExponent)
 
+	minRequiredPrecision.RoundToDecPlace(0)
 
 	return minRequiredPrecision.GetUInt()
 }

@@ -2,7 +2,6 @@ package mathops
 
 import (
 	"fmt"
-	"math"
 )
 
 /*
@@ -33,8 +32,10 @@ type TimeValOfMoney struct {
 //
 // PV = Present Value
 // FV = Future Value
-//  i = risk free interest paid by the investment per period
-// 			(expressed as a decimal fraction)
+//  i = risk free percentage interest rate paid by the investment per period. The
+//      interest rate percentage must be expressed as a decimal fraction. For example,
+//      3% would be passed to this method as 0.03 or percentage / 100
+//
 //  N = Number of compounding periods the investment will be held
 //
 // Future Value Formula:
@@ -47,11 +48,15 @@ type TimeValOfMoney struct {
 //
 // presentValue BigIntNum - Present Value (PV) amount.
 //
-// interestRate	BigIntNum	- Risk Free interest rate (i) per period. Can be
-// 													expressed as either a positive or negative value.
+// interestRate	BigIntNum	- Risk Free interest rate percentage (i) per period. The
+//                          percentage must be expressed as a decimal value. For
+//                          example 3% must be submitted as 0.03 or percentage/100.
+//                          The interest rate may be a positive or negative numeric
+//                          value.
 //
-// numOfPeriods BigIntNum - Number of periods (N) investment will be held. Must
-//                          be a positive value.
+//
+// numOfPeriods BigIntNum - Number of periods (N) investment will be held with compounding
+//                          applied for each period. Must be a positive value.
 //
 // futureValueMaxPrecision uint	- The maximum precision required in the resulting
 // 																Future Value calculation result. Amounts will be
@@ -86,7 +91,7 @@ func (tvm TimeValOfMoney) LumpSumFVBigIntNum(
 
 	onePlusI := BigIntMathAdd{}.AddBigIntNums(binumOne, interestRate)
 
-	maxPrecision:= interestRate.GetPrecisionUint() + uint(500)
+	maxPrecision, _ := BigIntMathPower{}.MinimumRequiredPrecision(onePlusI, numOfPeriods)
 
 	pwrN, err := BigIntMathPower{}.Pwr(onePlusI, numOfPeriods, maxPrecision)
 
@@ -121,8 +126,10 @@ func (tvm TimeValOfMoney) LumpSumFVBigIntNum(
 //
 // PV = Present Value
 // FV = Future Value
-// DR = risk free discount rate paid on the investment per period
-// 			(expressed as a decimal fraction)
+//  i = risk free discount rate percentage paid on the investment per period. The discount
+//      rate percentage must be submitted as a decimal fraction. For example, 3% must be
+//      passed to this method as 0.03 or percentage/100.
+//
 //  N = Number of compounding periods
 //
 // 					PV = FV / (1 + DR)^N
@@ -137,18 +144,8 @@ func (tvm TimeValOfMoney) LumpSumPVBigIntNum(
 		BigIntMathAdd{}.AddBigIntNums(
 			BigIntNum{}.NewOne(0), discountRate)
 
-	xNumOfPeriods := numOfPeriods.CopyOut()
 
-	xNumOfPeriods.RoundToDecPlace(0)
-
-	xUint, err := xNumOfPeriods.GetUInt()
-
-	if err != nil {
-		xUint = math.MaxUint32
-	}
-
-	maxPrecision := xUint * onePlusDr.GetPrecisionUint()
-	maxPrecision += 10
+	maxPrecision, _ := BigIntMathPower{}.MinimumRequiredPrecision(onePlusDr, numOfPeriods)
 
 	DRtoPwr, err := BigIntMathPower{}.Pwr(onePlusDr, numOfPeriods, maxPrecision )
 
@@ -176,8 +173,10 @@ func (tvm TimeValOfMoney) LumpSumPVBigIntNum(
 //
 // PV = Present Value
 // FV = Future Value
-//  i = risk free interest paid by the investment per period
-// 			(expressed as a decimal fraction)
+//  i = risk free interest rate percentage paid by the investment per period. The
+//      interest rate percentage must be submitted as a decimal fraction. For example,
+//      3% must be passed to this method as 0.03 or percentage/100.
+//
 //  N = Number of compounding periods the investment will be held
 //
 // FV = PV x ( 1 + ( i x N) )
@@ -188,7 +187,10 @@ func (tvm TimeValOfMoney) LumpSumPVBigIntNum(
 // initialInvestment	BigIntNum - The present value amount or Initial Investment
 // 																(PV). Must be expressed as a positive value.
 //
-// interestRate				BigIntNum - The risk free interest rate per period (i). Can be expressed
+// interestRate				BigIntNum - The risk free percentage interest rate per period (i).
+//                                The percentage must be expressed as a decimal fraction.
+//                                For example, 3% must be passed to this method as 0.03 or
+//                                percentage/ 100. The interest rate can be expressed
 //                                as either a positive or negative value.
 //
 // numOfPeriods				BigIntNum - Number of compounding periods (N). Must be

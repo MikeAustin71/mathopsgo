@@ -35,6 +35,8 @@ type IntAryMathPower struct {
 func (iaPwr IntAryMathPower) MinimumRequiredPrecision(
 	base, exponent *IntAry) (int, error) {
 
+	ePrefix := "IntAryMathPower.MinimumRequiredPrecision() "
+
 	maxValue := 2147483646
 
 	basePrecision := IntAry{}.NewUint(base.GetPrecisionUint(), 0)
@@ -55,10 +57,16 @@ func (iaPwr IntAryMathPower) MinimumRequiredPrecision(
 		return maxValue, err
 	}
 
+	if iaResult.GetPrecisionUint() > 0 {
+
+		iaResult.RoundToPrecision(0)
+
+	}
+
 	intVal, err := iaResult.GetInt()
 
 	if err != nil {
-		ePrefix := "IntAryMathPower.MinimumRequiredPrecision() "
+
 		return maxValue,
 			fmt.Errorf(ePrefix+
 				"Error: Minimum Required Precision exceeded maximum value of %v",
