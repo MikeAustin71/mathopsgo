@@ -84,6 +84,16 @@ func (bMultiply BigIntMathMultiply) MultiplyBigInts(
 	multiplicand *big.Int,
 	multiplicandPrecision uint) BigIntNum {
 
+	product := big.NewInt(0).Mul(multiplier, multiplicand)
+
+	biNumProduct := BigIntNum{}.NewBigInt(
+							product, multiplierPrecision + multiplicandPrecision)
+
+	biNumProduct.TrimTrailingFracZeros()
+
+	return biNumProduct
+
+  /*
 	bPair := BigIntPair{}.NewBase(
 		multiplier,
 		multiplierPrecision,
@@ -91,6 +101,7 @@ func (bMultiply BigIntMathMultiply) MultiplyBigInts(
 		multiplicandPrecision)
 
 	return bMultiply.multiplyPairNoNumSeps(bPair)
+  */
 }
 
 // MultiplyBigIntNums - Receives two BigIntNum types as input parameters and then
