@@ -21,7 +21,10 @@ type BigIntMathMultiply struct {
 // of two and returns the result as a BigIntNum type.
 //
 // Example:
-// result = multiplier X 2^exponent
+// 						result = multiplier X 2^exponent
+//
+// The returned BigIntNum multiplication 'result' will contain default numeric
+// separators (decimal separator, thousands separator and currency symbol)
 //
 func (bMultiply BigIntMathMultiply) MultiplyBigIntByTwoToPower(
 	multiplier *big.Int,
