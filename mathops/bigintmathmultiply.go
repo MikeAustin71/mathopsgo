@@ -92,16 +92,6 @@ func (bMultiply BigIntMathMultiply) MultiplyBigInts(
 	biNumProduct.TrimTrailingFracZeros()
 
 	return biNumProduct
-
-  /*
-	bPair := BigIntPair{}.NewBase(
-		multiplier,
-		multiplierPrecision,
-		multiplicand,
-		multiplicandPrecision)
-
-	return bMultiply.multiplyPairNoNumSeps(bPair)
-  */
 }
 
 // MultiplyBigIntNums - Receives two BigIntNum types as input parameters and then
