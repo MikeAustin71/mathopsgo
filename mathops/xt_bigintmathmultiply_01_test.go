@@ -917,6 +917,254 @@ func TestBigIntMathMultiply_MultiplyBigIntNums_06(t *testing.T) {
 
 }
 
+func TestBigIntMathMultiply_MultiplyBigIntNumByTwo_01(t *testing.T) {
+	num1Int := 242
+	precision := uint(2)
+	expectedNum1 := "2.42"
+	expectedResult:= "4.84"
+
+	num1 := BigIntNum{}.NewInt(num1Int, precision)
+
+	result := BigIntMathMultiply{}.MultiplyBigIntNumByTwo(num1)
+
+	if expectedResult != result.GetNumStr() {
+		t.Errorf("Error: Expected result='%v'. Instead, result='%v' ",
+			expectedResult, result.GetNumStr())
+	}
+
+	if expectedNum1 != num1.GetNumStr() {
+		t.Errorf("Error: Expected result='%v'. Instead, result='%v' ",
+			expectedNum1, num1.GetNumStr())
+	}
+
+}
+
+func TestBigIntMathMultiply_MultiplyBigIntNumByTwo_02(t *testing.T) {
+	num1Int := 921123
+	precision := uint(3)
+	expectedNum1 := "921.123"
+	expectedResult:= "1842.246"
+
+	num1 := BigIntNum{}.NewInt(num1Int, precision)
+
+	result := BigIntMathMultiply{}.MultiplyBigIntNumByTwo(num1)
+
+	if expectedResult != result.GetNumStr() {
+		t.Errorf("Error: Expected result='%v'. Instead, result='%v' ",
+			expectedResult, result.GetNumStr())
+	}
+
+	if expectedNum1 != num1.GetNumStr() {
+		t.Errorf("Error: Expected result='%v'. Instead, result='%v'",
+			expectedNum1, num1.GetNumStr())
+	}
+
+}
+
+func TestBigIntMathMultiply_MultiplyBigIntNumByTwo_03(t *testing.T) {
+	num1Int := -4751
+	precision := uint(1)
+	expectedNum1 := "-475.1"
+	expectedResult:= "-950.2"
+
+	num1 := BigIntNum{}.NewInt(num1Int, precision)
+
+	result := BigIntMathMultiply{}.MultiplyBigIntNumByTwo(num1)
+
+	if expectedResult != result.GetNumStr() {
+		t.Errorf("Error: Expected result='%v'. Instead, result='%v' ",
+			expectedResult, result.GetNumStr())
+	}
+
+	if expectedNum1 != num1.GetNumStr() {
+		t.Errorf("Error: Expected result='%v'. Instead, result='%v'",
+			expectedNum1, num1.GetNumStr())
+	}
+
+}
+
+func TestBigIntMathMultiply_MultiplyBigIntNumByTwo_04(t *testing.T) {
+	num1Int := 475
+	precision := uint(0)
+	expectedNum1 := "475"
+	expectedResult:= "950"
+
+	num1 := BigIntNum{}.NewInt(num1Int, precision)
+
+	result := BigIntMathMultiply{}.MultiplyBigIntNumByTwo(num1)
+
+	if expectedResult != result.GetNumStr() {
+		t.Errorf("Error: Expected result='%v'. Instead, result='%v' ",
+			expectedResult, result.GetNumStr())
+	}
+
+	if expectedNum1 != num1.GetNumStr() {
+		t.Errorf("Error: Expected result='%v'. Instead, result='%v'",
+			expectedNum1, num1.GetNumStr())
+	}
+
+}
+
+func TestBigIntMathMultiply_MultiplyBigIntNumByTwo_05(t *testing.T) {
+	num1Int := 0
+	precision := uint(0)
+	expectedNum1 := "0"
+	expectedResult:= "0"
+
+	num1 := BigIntNum{}.NewInt(num1Int, precision)
+
+	result := BigIntMathMultiply{}.MultiplyBigIntNumByTwo(num1)
+
+	if expectedResult != result.GetNumStr() {
+		t.Errorf("Error: Expected result='%v'. Instead, result='%v' ",
+			expectedResult, result.GetNumStr())
+	}
+
+	if expectedNum1 != num1.GetNumStr() {
+		t.Errorf("Error: Expected result='%v'. Instead, result='%v'",
+			expectedNum1, num1.GetNumStr())
+	}
+
+}
+
+func TestBigIntMathMultiply_MultiplyBigIntNumByTwoToPower_01(t *testing.T) {
+	num1Int := 242
+	precision := uint(2)
+	exponent := uint(1)
+	expectedNum1 := "2.42"
+	expectedResult:= "4.84"
+
+	num1 := BigIntNum{}.NewInt(num1Int, precision)
+
+	result := BigIntMathMultiply{}.MultiplyBigIntNumByTwoToPower(num1, exponent)
+
+	if expectedResult != result.GetNumStr() {
+		t.Errorf("Error: Expected result='%v'. Instead, result='%v' ",
+			expectedResult, result.GetNumStr())
+	}
+
+	if expectedNum1 != num1.GetNumStr() {
+		t.Errorf("Error: Expected result='%v'. Instead, result='%v' ",
+			expectedNum1, num1.GetNumStr())
+	}
+
+}
+
+func TestBigIntMathMultiply_MultiplyBigIntNumByTwoToPower_02(t *testing.T) {
+	num1Int := 242
+	precision := uint(2)
+	exponent := uint(2)
+	expectedNum1 := "2.42"
+	expectedResult:= "9.68"
+
+	num1 := BigIntNum{}.NewInt(num1Int, precision)
+
+	result := BigIntMathMultiply{}.MultiplyBigIntNumByTwoToPower(num1, exponent)
+
+	if expectedResult != result.GetNumStr() {
+		t.Errorf("Error: Expected result='%v'. Instead, result='%v' ",
+			expectedResult, result.GetNumStr())
+	}
+
+	if expectedNum1 != num1.GetNumStr() {
+		t.Errorf("Error: Expected result='%v'. Instead, result='%v' ",
+			expectedNum1, num1.GetNumStr())
+	}
+
+}
+
+func TestBigIntMathMultiply_MultiplyBigIntNumByTwoToPower_03(t *testing.T) {
+	num1Int := 97123
+	precision := uint(3)
+	exponent := uint(4)
+	expectedNum1 := "97.123"
+	expectedResult:= "1553.968"
+
+	num1 := BigIntNum{}.NewInt(num1Int, precision)
+
+	result := BigIntMathMultiply{}.MultiplyBigIntNumByTwoToPower(num1, exponent)
+
+	if expectedResult != result.GetNumStr() {
+		t.Errorf("Error: Expected result='%v'. Instead, result='%v' ",
+			expectedResult, result.GetNumStr())
+	}
+
+	if expectedNum1 != num1.GetNumStr() {
+		t.Errorf("Error: Expected result='%v'. Instead, result='%v' ",
+			expectedNum1, num1.GetNumStr())
+	}
+
+}
+
+func TestBigIntMathMultiply_MultiplyBigIntNumByTwoToPower_04(t *testing.T) {
+	num1Int := -97123
+	precision := uint(3)
+	exponent := uint(4)
+	expectedNum1 := "-97.123"
+	expectedResult:= "-1553.968"
+
+	num1 := BigIntNum{}.NewInt(num1Int, precision)
+
+	result := BigIntMathMultiply{}.MultiplyBigIntNumByTwoToPower(num1, exponent)
+
+	if expectedResult != result.GetNumStr() {
+		t.Errorf("Error: Expected result='%v'. Instead, result='%v' ",
+			expectedResult, result.GetNumStr())
+	}
+
+	if expectedNum1 != num1.GetNumStr() {
+		t.Errorf("Error: Expected result='%v'. Instead, result='%v' ",
+			expectedNum1, num1.GetNumStr())
+	}
+
+}
+
+func TestBigIntMathMultiply_MultiplyBigIntNumByTwoToPower_05(t *testing.T) {
+	num1Int := 7
+	precision := uint(0)
+	exponent := uint(10)
+	expectedNum1 := "7"
+	expectedResult:= "7168"
+
+	num1 := BigIntNum{}.NewInt(num1Int, precision)
+
+	result := BigIntMathMultiply{}.MultiplyBigIntNumByTwoToPower(num1, exponent)
+
+	if expectedResult != result.GetNumStr() {
+		t.Errorf("Error: Expected result='%v'. Instead, result='%v' ",
+			expectedResult, result.GetNumStr())
+	}
+
+	if expectedNum1 != num1.GetNumStr() {
+		t.Errorf("Error: Expected result='%v'. Instead, result='%v' ",
+			expectedNum1, num1.GetNumStr())
+	}
+
+}
+
+func TestBigIntMathMultiply_MultiplyBigIntNumByTwoToPower_06(t *testing.T) {
+	num1Int := 0
+	precision := uint(0)
+	exponent := uint(10)
+	expectedNum1 := "0"
+	expectedResult:= "0"
+
+	num1 := BigIntNum{}.NewInt(num1Int, precision)
+
+	result := BigIntMathMultiply{}.MultiplyBigIntNumByTwoToPower(num1, exponent)
+
+	if expectedResult != result.GetNumStr() {
+		t.Errorf("Error: Expected result='%v'. Instead, result='%v' ",
+			expectedResult, result.GetNumStr())
+	}
+
+	if expectedNum1 != num1.GetNumStr() {
+		t.Errorf("Error: Expected result='%v'. Instead, result='%v' ",
+			expectedNum1, num1.GetNumStr())
+	}
+
+}
+
 func TestBigIntMathMultiply_MultiplyBigIntNumArray_01(t *testing.T) {
 
 	var err error

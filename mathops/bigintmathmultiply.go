@@ -17,6 +17,22 @@ type BigIntMathMultiply struct {
 	Result BigIntNum
 }
 
+// MultiplyBigIntByTwoToPower - Multiplies a *big.Int number by powers
+// of two and returns the result as a BigIntNum type.
+//
+// Example:
+// result = multiplier X 2^exponent
+//
+func (bMultiply BigIntMathMultiply) MultiplyBigIntByTwoToPower(
+	multiplier *big.Int,
+	multiplierPrecision,
+	exponent uint) BigIntNum {
+
+	result := big.NewInt(0).Lsh(multiplier, exponent)
+
+	return BigIntNum{}.NewBigInt(result, multiplierPrecision)
+}
+
 // New - Creates a BigIntMathMultiply instance with data
 // variables initialized to zero.
 //
@@ -294,9 +310,34 @@ func (bMultiply BigIntMathMultiply) MultiplyBigIntNumSeries(
 //
 func (bMultiply BigIntMathMultiply) MultiplyBigIntNumByTwo(base BigIntNum) BigIntNum {
 
-	bPair := BigIntPair{}.NewBigIntNum(base, BigIntNum{}.NewTwo(0))
+	result := big.NewInt(0).Lsh(base.bigInt, 1)
 
-	return bMultiply.MultiplyPair(bPair)
+	bINumResult :=  BigIntNum{}.NewBigInt(result, base.GetPrecisionUint())
+
+	bINumResult.SetNumericSeparatorsDto(base.GetNumericSeparatorsDto())
+
+	return bINumResult
+}
+
+// MultiplyBigIntNumByTwo - Receives a BigIntNum input parameter 'base' and then
+// proceeds to multiply this value times two to the power of 'exponent'.
+//
+// 								product = base X 2^exponent
+//
+// The product of this multiplication operation is returned as a BigIntNum.
+// This returned BigIntNum 'product' will contain numeric separators (decimal
+// separator, thousands separator and currency symbol) copied from input
+// parameter,'base'.
+//
+func (bMultiply BigIntMathMultiply) MultiplyBigIntNumByTwoToPower(base BigIntNum, exponent uint) BigIntNum {
+
+	result := big.NewInt(0).Lsh(base.bigInt, exponent)
+
+	bINumResult := BigIntNum{}.NewBigInt(result, base.GetPrecisionUint())
+
+	bINumResult.SetNumericSeparatorsDto(base.GetNumericSeparatorsDto())
+
+	return bINumResult
 }
 
 // MultiplyBigIntNumByThree - Receives a BigIntNum input parameter 'base' and then
