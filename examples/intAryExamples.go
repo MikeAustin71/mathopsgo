@@ -1,7 +1,7 @@
 package examples
 
 import (
-	"MikeAustin71/mathopsgo/mathops"
+	"../mathops"
 	"fmt"
 	"time"
 )

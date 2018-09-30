@@ -303,8 +303,6 @@ func (bIPwr BigIntMathPower) raiseToPositiveFractionalPower(
 
 	}
 
-	fmt.Println("pwr1Result: ", pwr1Result.GetNumStr())
-	fmt.Println("   nthRoot: ", nthRoot.GetNumStr())
 	biNumResult, err := BigIntMathNthRoot{}.GetNthRoot(pwr1Result, nthRoot, maxPrecision)
 
 	if err != nil {
@@ -413,10 +411,6 @@ func (bIPwr BigIntMathPower) raiseToPositiveIntegerPower(
 	bigINewPrecision := big.NewInt(0).Mul(bigIBasePrecision, exponent.bigInt)
 
 	newPrecision := uint(bigINewPrecision.Int64())
-	fmt.Println("           base: ", base.GetNumStr())
-	fmt.Println("    base bigInt: ", base.bigInt.Text(10))
-	fmt.Println("       exponent: ", exponent.GetNumStr())
-	fmt.Println("exponent.bigInt: ", exponent.bigInt.Text(10))
 
 	result := big.NewInt(0).Exp(base.bigInt, exponent.bigInt, nil)
 

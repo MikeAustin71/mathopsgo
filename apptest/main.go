@@ -1,81 +1,126 @@
 package main
 
 import (
-	"MikeAustin71/mathopsgo/mathops"
+	"../examples"
+	"../mathops"
 	"fmt"
-	"math/big"
+	"time"
 )
 
 func main() {
 
-	num1 := big.NewInt(902)
-	precision1 := uint(2)
-	rotations := uint(3)
+	nCycles := int64(100)
+	expectedXValue := "1500000"
+	exponentStr := "14.220975666072438486085961843571"
+	aStr := "12"
+	exponent, err := mathops.BigIntNum{}.NewNumStr(exponentStr)
 
-	BigIntMultiplyBy2(num1, rotations, precision1)
+	if err != nil {
+		fmt.Printf("Error returned by " +
+			"BigIntNum{}.NewNumStr(exponentStr) " +
+			"exponentStr='%v' Error='%v'",exponentStr, err.Error())
+		return
+	}
 
-}
+	binA, err := mathops.BigIntNum{}.NewNumStr(aStr)
 
-func BigIntDivideBy2(num1 *big.Int, rotations, precision1 uint) {
+	if err != nil {
+		fmt.Printf("Error returned by " +
+			"BigIntNum{}.NewNumStr(aStr) " +
+			"aStr='%v' Error='%v'",aStr, err.Error())
+		return
+	}
 
-	fmt.Println("BigIntDivideBy2")
+	timeStart := time.Now()
 
-	fmt.Println("   num1 before: ", num1.Text(10))
+	xValue, err := mathops.BigIntMathLogarithms{}.EPwrXFromTaylorSeries(exponent, binA, nCycles)
+	timeEnd := time.Now()
 
-	result := big.NewInt(0).Rsh(num1, rotations)
+	fmt.Println(" nCycles: ", nCycles)
+	fmt.Println("exponent: ", exponent.GetNumStr())
+	fmt.Println("  xValue: ", xValue.GetNumStr())
+	fmt.Println("expectedXValue: ", expectedXValue)
+	fmt.Println("StartTime: ", timeStart.String())
+	fmt.Println("  EndTime: ", timeEnd.String())
 
-	fmt.Println(" num1 after: ", num1.Text(10))
-	fmt.Println(" precision1: ", precision1)
-	fmt.Println("  rotations: ", rotations)
-	fmt.Println("  result: ", result.Text(10))
+	timeDuration := timeEnd.Sub(timeStart)
 
-
-}
-
-func BigIntMultiplyBy2(num1 *big.Int, rotations, precision1 uint) {
-
-	fmt.Println("BigIntMultiplyBy2")
-	fmt.Println("   num1 before: ", num1.Text(10))
-
-	result := big.NewInt(0).Lsh(num1, rotations)
-
-	fmt.Println("      num1 after: ", num1.Text(10))
-	fmt.Println("       rotations: ", rotations)
-	fmt.Println("          result: ", result.Text(10))
-	bINum := mathops.BigIntNum{}.NewBigInt(result, precision1)
-	fmt.Println("BigIntNum Result: ", bINum.GetNumStr())
-
-}
-
-func BigIntDivide(num1, num2 *big.Int, precision1, precision2 uint) {
-
-	xRemainder := big.NewInt(0)
-	quotient, remainder := big.NewInt(0).QuoRem(num1, num2, xRemainder)
-
-	// productPrecision := precision1 + precision2
-
-	//biNum := mathops.BigIntNum{}.NewBigInt(product, productPrecision)
-	fmt.Println("              num1: ", num1.Text(10))
-	fmt.Println("              num2: ", num2.Text(10))
-	fmt.Println("          quotient: ", quotient.Text(10))
-	fmt.Println("         remainder: ", remainder.Text(10))
-	fmt.Println("        xRemainder: ", xRemainder.Text(10))
-	//fmt.Println(" product precision: ", productPrecision)
-	//fmt.Println(" BigIntNum Product: ", biNum.GetNumStr())
-	fmt.Println("        precision1: ", precision1)
-	fmt.Println("        precision2: ", precision2)
+	duration := examples.CodeDurationToStr(timeDuration)
+	fmt.Println("Time Duration: ", duration)
 
 }
 
 /*
-  // Logarithm test code
-	xNumInt := 1500000
-	baseInt := 4
+	//xNumInt := 1500000
+	baseInt := 10
 	maxPrecision := uint(15)
-	expectedLogValue := "10.2582655350227"
-	// closer expectedLogValue = "10.258265535022667"
-	xNum := mathops.BigIntNum{}.NewInt(xNumInt, 0)
+	// "6.1760912590556812420812890085306"
+	expectedLogValue := "6.17609125905568"
+
+	exponent, err := mathops.BigIntNum{}.NewNumStr(expectedLogValue)
+
+	if err != nil {
+		fmt.Printf("Error returned by BigIntNum{}.NewNumStr(expectedLogValue). " +
+			"Error='%v'", err.Error())
+	}
+
 	base := mathops.BigIntNum{}.NewInt(baseInt, 0)
+
+	//xNum := mathops.BigIntNum{}.NewInt(xNumInt, 0)
+
+	PowerTest_01(base, exponent, maxPrecision)
+
+ */
+
+func PowerTest_01(base, exponent mathops.BigIntNum, maxPrecision, i uint) {
+
+	powerValue, err := mathops.BigIntMathPower{}.Pwr(base, exponent, maxPrecision)
+
+	if err != nil {
+		fmt.Printf("Error returned by BigIntMathPower{}.Pwr(base, exponent, maxPrecision) " +
+			"Error='%v' ", err.Error())
+		return
+	}
+
+	fmt.Println()
+	fmt.Println("--------------------------------------")
+	fmt.Println("     Index: ", i)
+	fmt.Println("      base: ", base.GetNumStr())
+	fmt.Println("  exponent: ", exponent.GetNumStr())
+	fmt.Println("powerValue: ", powerValue.GetNumStr())
+	fmt.Println("--------------------------------------")
+	fmt.Println()
+}
+
+/*
+		xNumInt := 1500000
+		baseInt := 4
+		maxPrecision := uint(15)
+		//expectedLogValue := "10.2582655350227"
+		// closer expectedLogValue = "10.258265535022667"
+	  expectedLogValue := "10.258265535022667"
+
+		xNumInt := 150
+		baseInt := 3
+		maxPrecision := uint(6)
+	  expectedLogValue := "4.560877"
+------------------------------------------------
+ log Value:  10.258265535016932
+ Expected log Value:  10.258265535022667
+               base:  4
+               xNum:  1500000
+
+		xNumInt := 1500000
+		baseInt := 10
+		maxPrecision := uint(15)
+		expectedLogValue := "6.17609125905568"
+
+
+ */
+
+func LogTest001(base, xNum mathops.BigIntNum, maxPrecision uint, expectedLogValue string) {
+	// Logarithm test code
+
 
 	logValue, err := mathops.BigIntMathLogarithms{}.LogBaseOfX(base, xNum, maxPrecision)
 
@@ -88,10 +133,35 @@ func BigIntDivide(num1, num2 *big.Int, precision1, precision2 uint) {
 		return
 	}
 
+	/*
+
+	checkValue, err := mathops.BigIntMathPower{}.Pwr(base, logValue, 50)
+
+	if err != nil {
+		fmt.Printf("Error returned by BigIntMathPower{}.Pwr(base, logValue, 50). ")
+		return
+	}
+	errorVariance := mathops.BigIntMathSubtract{}.SubtractBigIntNums(xNum, checkValue)
+
+	errSciNot, err := errorVariance.GetSciNotationStr(20)
+
+	if err != nil {
+		fmt.Printf("Error returned by errorVariance.GetSciNotationStr(20). ")
+		return
+	}
+	*/
+
+
 	fmt.Println("GetNextDecimalDigit() ")
 	fmt.Println("          log Value: ", logValue.GetNumStr())
 	fmt.Println(" Expected log Value: ", expectedLogValue)
+	//fmt.Println("					Check Value: ", checkValue.GetNumStr())
+	//fmt.Println("     Error Variance: ", errorVariance.GetNumStr())
+	//fmt.Println(" Error Sci-Notation: ", errSciNot)
 	fmt.Println("               base: ", base.GetNumStr())
 	fmt.Println("               xNum: ", xNum.GetNumStr())
+	fmt.Println("       maxPrecision: ", maxPrecision)
 
- */
+
+}
+
