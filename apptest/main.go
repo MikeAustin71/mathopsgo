@@ -4,36 +4,66 @@ import (
 	"../examples"
 	"../mathops"
 	"fmt"
+	"math/big"
 	"time"
 )
 
 func main() {
 
-	nCycles := int64(100)
-	expectedXValue := "1500000"
-	exponentStr := "14.220975666072438486085961843571"
-	aStr := "12"
-	exponent, err := mathops.BigIntNum{}.NewNumStr(exponentStr)
+	base := big.NewInt(3712)
+	basePrecision := uint(2)
+	exponent := uint(14)
+	internalMaxPrecision := uint(100)
+	outputMaxPrecision := uint(50)
+	expectedResult := "9429996806358208317884.5551325619"
 
-	if err != nil {
-		fmt.Printf("Error returned by " +
-			"BigIntNum{}.NewNumStr(exponentStr) " +
-			"exponentStr='%v' Error='%v'",exponentStr, err.Error())
-		return
-	}
+	TestBigIntPwr(base, basePrecision, exponent, internalMaxPrecision, outputMaxPrecision, expectedResult)
 
-	binA, err := mathops.BigIntNum{}.NewNumStr(aStr)
+}
 
-	if err != nil {
-		fmt.Printf("Error returned by " +
-			"BigIntNum{}.NewNumStr(aStr) " +
-			"aStr='%v' Error='%v'",aStr, err.Error())
-		return
-	}
+func TestBigIntPwr(
+	base *big.Int,
+	basePrecision,
+	exponent,
+	internalMaxPrecision,
+	outputMaxPrecision uint,
+	expectedResult string) {
+
+	baseToPwr, baseToPwrPrecision := mathops.BigIntMathPower{}.BigIntPwr(
+																			base,
+																			basePrecision,
+																			exponent,
+																			internalMaxPrecision,
+																			outputMaxPrecision)
+
+
+	fmt.Println("TestBigIntPwr")
+	fmt.Println("                     base: ", base.Text(10))
+	fmt.Println("            basePrecision: ", basePrecision)
+	fmt.Println("                 exponent: ", exponent)
+	fmt.Println("     internalMaxPrecision: ", internalMaxPrecision)
+	fmt.Println("       outputMaxPrecision: ", outputMaxPrecision)
+	fmt.Println("----------------------------------------------")
+	fmt.Println("         Result baseToPwr: ", baseToPwr.Text(10))
+	fmt.Println("Result baseToPwrPrecision: ", baseToPwrPrecision)
+	bINumResult := mathops.BigIntNum{}.NewBigInt(baseToPwr, baseToPwrPrecision)
+	fmt.Println("  Result BigIntNum NumStr: ", bINumResult.GetNumStr())
+	fmt.Println("          Expected Result: ", expectedResult)
+
+}
+
+func TestEPwrXFromTaylorSeries(exponent, binA mathops.BigIntNum, nCycles int64, expectedXValue string) {
 
 	timeStart := time.Now()
 
 	xValue, err := mathops.BigIntMathLogarithms{}.EPwrXFromTaylorSeries(exponent, binA, nCycles)
+	if err != nil {
+		fmt.Printf("Error returned by " +
+			"BigIntMathLogarithms{}.EPwrXFromTaylorSeries(exponent, binA, nCycles) " +
+			"Error='%v' ", err.Error())
+		return
+	}
+
 	timeEnd := time.Now()
 
 	fmt.Println(" nCycles: ", nCycles)

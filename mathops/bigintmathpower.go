@@ -12,6 +12,89 @@ type BigIntMathPower struct {
 	Result   BigIntNum
 }
 
+// BigIntPwr - Raises input parameter 'base' to the power of exponent. This
+// method of raising a base to an exponent uses iterative multiplication and
+// manages the internal precision of each iterative multiplication. If, during
+// the process of multiplying the base time itself the internal precision exceeds
+// the 'internalMaxPrecision' limit, that number is rounded down to
+// 'internalMaxPrecision'.
+//
+// Before the final result is returned to the caller, the final precision will be
+// rounded to ensure that it does not exceed the limit imposed by input parameter,
+// 'outputMaxPrecision'.
+//
+func (bIPwr BigIntMathPower) BigIntPwr(
+	base *big.Int,
+	basePrecision,
+	exponent,
+	internalMaxPrecision,
+	outputMaxPrecision uint) (baseToPwr *big.Int, baseToPwrPrecision uint) {
+
+	baseToPwrPrecision = 0
+
+	exponent++
+	bigIZero := big.NewInt(0)
+
+	if base.Cmp(bigIZero) == 0 {
+		baseToPwr = big.NewInt(0)
+		baseToPwrPrecision = 0
+		return baseToPwr, baseToPwrPrecision
+	}
+
+	if base.Cmp(big.NewInt(1)) == 0 {
+		baseToPwr = big.NewInt(0).Set(base)
+		baseToPwrPrecision = basePrecision
+		return baseToPwr, baseToPwrPrecision
+	}
+
+	bigIFive := big.NewInt(5)
+	bigITen := big.NewInt(10)
+
+	for i := uint(0); i < exponent; i++ {
+
+		if i == 0 {
+			baseToPwr = big.NewInt(1)
+			baseToPwrPrecision = 0
+		} else if i == 1 {
+			baseToPwr = big.NewInt(0).Set(base)
+			baseToPwrPrecision = basePrecision
+		} else {
+			baseToPwr = big.NewInt(0).Mul(baseToPwr, base)
+			baseToPwrPrecision = baseToPwrPrecision + basePrecision
+		}
+
+		if baseToPwrPrecision > internalMaxPrecision {
+			delta := baseToPwrPrecision - internalMaxPrecision - 1
+			scale := big.NewInt(0).Exp(bigITen, big.NewInt(int64(delta)), nil)
+			round := big.NewInt(0).Mul(bigIFive, scale)
+			if baseToPwr.Cmp(bigIZero) == -1 {
+				round = big.NewInt(0).Mul(round, big.NewInt(-1))
+			}
+			baseToPwr = big.NewInt(0).Add(baseToPwr, round)
+			scale = big.NewInt(0).Mul(scale, bigITen)
+			baseToPwr = big.NewInt(0).Quo(baseToPwr, scale)
+			baseToPwrPrecision = internalMaxPrecision
+		}
+
+	}
+
+	if baseToPwrPrecision > outputMaxPrecision {
+		delta := baseToPwrPrecision - outputMaxPrecision - 1
+		scale := big.NewInt(0).Exp(bigITen, big.NewInt(int64(delta)), nil)
+		round := big.NewInt(0).Mul(bigIFive, scale)
+		if baseToPwr.Cmp(bigIZero) == -1 {
+			round = big.NewInt(0).Mul(round, big.NewInt(-1))
+		}
+		baseToPwr = big.NewInt(0).Add(baseToPwr, round)
+		scale = big.NewInt(0).Mul(scale, bigITen)
+		baseToPwr = big.NewInt(0).Quo(baseToPwr, scale)
+		baseToPwrPrecision = outputMaxPrecision
+
+	}
+
+	return baseToPwr, baseToPwrPrecision
+}
+
 // MinimumRequiredPrecision - designed to be used with the power function
 // below. This method will compute the minimum number of decimal places
 // required to support the result of raising a 'base' value to a specified
@@ -34,7 +117,7 @@ type BigIntMathPower struct {
 func (bIPwr BigIntMathPower) MinimumRequiredPrecision(
 	base, exponent BigIntNum) (uint, error) {
 
-	basePrecision := BigIntNum{}.NewUint(base.GetPrecisionUint(),0)
+	basePrecision := BigIntNum{}.NewUint(base.GetPrecisionUint(), 0)
 
 	tExponent := exponent.CopyOut()
 
@@ -49,7 +132,6 @@ func (bIPwr BigIntMathPower) MinimumRequiredPrecision(
 
 	return minRequiredPrecision.GetUInt()
 }
-
 
 // Pwr - Raises 'base' to the power of 'exponent'.  Both 'base' and 'exponent' are Type BigIntNum.
 // Upon computing the result of 'base' raised to the power of 'exponent' (base^exponent), the result
@@ -161,7 +243,6 @@ func (bIPwr BigIntMathPower) Pwr(base, exponent BigIntNum, maxPrecision uint) (B
 
 	return result, nil
 }
-
 
 // raiseToNegativeFractionalPower - Assumes that input parameter 'exponent' is negative and a
 // fractional number (precision > 0 - has fractional digits). If 'exponent' is positive or if
