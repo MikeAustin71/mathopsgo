@@ -1716,11 +1716,17 @@ func (bSubtract BigIntMathSubtract) BigIntSubtract(
 		subtrahend = big.NewInt(0)
 	}
 
+	bigZero := big.NewInt(0)
+
 	if minPrecision == subPrecision {
 		// Precisions are equal.
 
 		result = big.NewInt(0).Sub(minuend, subtrahend)
 		resultPrecision = minPrecision
+
+		if result.Cmp(bigZero) == 0 {
+			resultPrecision = 0
+		}
 
 		return result, resultPrecision
 	}
@@ -1735,6 +1741,10 @@ func (bSubtract BigIntMathSubtract) BigIntSubtract(
 		result = big.NewInt(0).Sub(minuend, newSubInt)
 		resultPrecision = minPrecision
 
+		if result.Cmp(bigZero) == 0 {
+			resultPrecision = 0
+		}
+
 		return result, resultPrecision
 
 	}
@@ -1746,6 +1756,10 @@ func (bSubtract BigIntMathSubtract) BigIntSubtract(
 
 	result = big.NewInt(0).Sub(newMinuendInt, subtrahend)
 	resultPrecision = subPrecision
+
+	if result.Cmp(bigZero) == 0 {
+		resultPrecision = 0
+	}
 
 	return result, resultPrecision
 }
