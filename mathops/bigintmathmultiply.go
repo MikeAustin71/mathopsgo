@@ -78,6 +78,62 @@ func (bMultiply BigIntMathMultiply) BigIntMultiply(
 	return product, productPrecision
 }
 
+
+// MultiplyBigInts - Receives two BigIntFixedDecimal types. This method then
+// proceeds to perform a multiplication operation by multiplying the 'multiplier'
+// by the 'multiplicand' to generate the 'product'.
+//
+// In the multiplication operation, the number to be multiplied is called the
+// "multiplicand", while the number of times the multiplicand is to be multiplied
+// comes from the "multiplier". Usually the multiplier is placed first and the
+// multiplicand is placed second.
+//
+// For example, in the problem 5 x 3 equals 15, the 5 is the 'multiplier',
+// 3 is the 'multiplicand' and 15 is the 'product' or result.
+//
+//							multiplier x multiplicand = product or result
+//
+// Input Parameters
+// ================
+//
+//	multiplier BigIntFixedDecimal		- The number to be multiplied by 'multiplicand'
+//                                  	The BigIntFixedDecimal type encapsulates a
+//                                  	*big.Int type and a precision specification.
+//                                  	Taken together, they describe a numeric value
+//                                  	with a fixed number of decimal digits.
+//
+//	multiplicand BigIntFixedDecimal - The number to be multiplied by the 'multiplier'.
+//                                  	The BigIntFixedDecimal type encapsulates a
+//                                  	*big.Int type and a precision specification.
+//                                  	Taken together, they describe a numeric value
+//                                  	with a fixed number of decimal digits.
+//
+// Return Values
+// =============
+//
+// product			BigIntFixedDecimal	- The product of the multiplier multiplied by
+//                                		the multiplicand.
+//
+func (bMultiply BigIntMathMultiply) FixedDecimalMultiply(
+	multiplier BigIntFixedDecimal,
+	multiplicand BigIntFixedDecimal) (product BigIntFixedDecimal) {
+
+	product = BigIntFixedDecimal{}.NewZero(0)
+
+	multiplier.IsValid()
+	multiplicand.IsValid()
+
+	result, resultPrecision :=
+		BigIntMathMultiply{}.BigIntMultiply(
+			multiplier.GetInteger(),
+			multiplier.GetPrecision(),
+			multiplicand.GetInteger(),
+			multiplicand.GetPrecision())
+
+	product.SetNumericValue(result, resultPrecision)
+	return product
+}
+
 // MultiplyBigIntByTwoToPower - Multiplies a *big.Int number by powers
 // of two and returns the result as a BigIntNum type.
 //
