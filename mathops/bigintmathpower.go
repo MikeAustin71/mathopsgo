@@ -19,9 +19,55 @@ type BigIntMathPower struct {
 // the 'internalMaxPrecision' limit, that number is rounded down to
 // 'internalMaxPrecision'.
 //
+//
 // Before the final result is returned to the caller, the final precision will be
 // rounded to ensure that it does not exceed the limit imposed by input parameter,
 // 'outputMaxPrecision'.
+//
+// Input Parameter
+// ===============
+//
+// base							*big.Int	-	The base which will be raised to the power of 'exponent'.
+//                        			result = base^exponent
+//
+// basePrecision				uint	- The number of digits to the right of the decimal place
+//                        			in the numeric sequence represented by 'base'.
+//
+// exponent							uint	- 'base' will be raised to the power of exponent.
+//                        			result = base^exponent
+//
+// internalMaxPrecision uint	- This value is imposed as a limit on the precision of
+//                              internal calculations necessary to compute the result
+//                              of this power operation. If during the calculation an
+//                              interim or temporary result is generated which exceeds
+//                              this limit, that temporary result will be rounded to
+//             									'internalMaxPrecision'. The term precision defines the
+//                              number of digits to the right of the decimal place.
+//
+//                              If 'internalMaxPrecision' is less than 'outputMaxPrecision',
+//                              'internalMaxPrecision' will be automatically set to a value
+//                              of 'outputMaxPrecision' + 100.
+//
+// outputMaxPrecision		uint	- This value is imposed as a limit on the precision of
+//                              the final calculated result of the power operation.
+// 															If the number of digits to the right of the decimal
+//                              point in the final calculated result of this power
+//                              operation exceeds this limit, that final result will
+// 															be rounded to 'outputMaxPrecision'. The term precision
+// 															defines the number of digits to the right of the decimal
+// 															place.
+//
+// Return Values
+// =============
+//
+// baseToPwr						*big.Int	-	This function returns the result of 'base' raised
+//                               		to the power of 'exponent'. This result, 'baseToPwr'
+//                                  is returned as a type *big.Int.
+//                                  				baseToPwr = base^exponent
+//
+// baseToPwrPrecision		uint			- Specifies the number of digits to the the right
+//                                  of the decimal place in the numeric sequence represented
+// 																	by the calculation result, 'baseToPwr'.
 //
 func (bIPwr BigIntMathPower) BigIntPwr(
 	base *big.Int,
@@ -33,7 +79,9 @@ func (bIPwr BigIntMathPower) BigIntPwr(
 	baseToPwrPrecision = 0
 
 	exponent++
+
 	bigIZero := big.NewInt(0)
+
 
 	if base.Cmp(bigIZero) == 0 {
 		baseToPwr = big.NewInt(0)
@@ -47,8 +95,15 @@ func (bIPwr BigIntMathPower) BigIntPwr(
 		return baseToPwr, baseToPwrPrecision
 	}
 
-	bigIFive := big.NewInt(5)
+	if internalMaxPrecision < outputMaxPrecision {
+		internalMaxPrecision = outputMaxPrecision + 100
+	}
+
+	bigIPlusFive := big.NewInt(5)
+	bigIMinusFive := big.NewInt(-5)
 	bigITen := big.NewInt(10)
+	roundFactor := big.NewInt(0)
+	cmpResult := 0
 
 	for i := uint(0); i < exponent; i++ {
 
@@ -64,16 +119,33 @@ func (bIPwr BigIntMathPower) BigIntPwr(
 		}
 
 		if baseToPwrPrecision > internalMaxPrecision {
+			// beforeRounding := BigIntNum{}.NewBigInt(baseToPwr, baseToPwrPrecision)
 			delta := baseToPwrPrecision - internalMaxPrecision - 1
 			scale := big.NewInt(0).Exp(bigITen, big.NewInt(int64(delta)), nil)
-			round := big.NewInt(0).Mul(bigIFive, scale)
-			if baseToPwr.Cmp(bigIZero) == -1 {
-				round = big.NewInt(0).Mul(round, big.NewInt(-1))
+
+			cmpResult = baseToPwr.Cmp(bigIZero)
+			if cmpResult == 1 {
+				// baseToPwr is GREATER Than Zero
+				roundFactor = big.NewInt(0).Mul(bigIPlusFive, scale)
+			} else if cmpResult == -1 {
+				// baseToPwr is LESS Than Zero
+				roundFactor = big.NewInt(0).Mul(bigIMinusFive, scale)
+			}	else {
+				baseToPwrPrecision = 0
+				continue
 			}
-			baseToPwr = big.NewInt(0).Add(baseToPwr, round)
+
+			baseToPwr = big.NewInt(0).Add(baseToPwr, roundFactor)
 			scale = big.NewInt(0).Mul(scale, bigITen)
 			baseToPwr = big.NewInt(0).Quo(baseToPwr, scale)
 			baseToPwrPrecision = internalMaxPrecision
+			/*
+			afterRounding := BigIntNum{}.NewBigInt(baseToPwr, baseToPwrPrecision)
+			fmt.Println()
+			fmt.Println("BeforeRounding: ", beforeRounding.GetNumStr())
+			fmt.Println(" AfterRounding: ", afterRounding.GetNumStr())
+			fmt.Println("-----------------------------------------------")
+			*/
 		}
 
 	}
@@ -81,7 +153,7 @@ func (bIPwr BigIntMathPower) BigIntPwr(
 	if baseToPwrPrecision > outputMaxPrecision {
 		delta := baseToPwrPrecision - outputMaxPrecision - 1
 		scale := big.NewInt(0).Exp(bigITen, big.NewInt(int64(delta)), nil)
-		round := big.NewInt(0).Mul(bigIFive, scale)
+		round := big.NewInt(0).Mul(bigIPlusFive, scale)
 		if baseToPwr.Cmp(bigIZero) == -1 {
 			round = big.NewInt(0).Mul(round, big.NewInt(-1))
 		}
@@ -384,8 +456,8 @@ func (bIPwr BigIntMathPower) raiseToPositiveFractionalPower(
 
 	}
 
-	fmt.Println("pwr1Result: ", pwr1Result.GetNumStr())
-	fmt.Println("   nthRoot: ", nthRoot.GetNumStr())
+	// fmt.Println("pwr1Result: ", pwr1Result.GetNumStr())
+	// fmt.Println("   nthRoot: ", nthRoot.GetNumStr())
 	biNumResult, err := BigIntMathNthRoot{}.GetNthRoot(pwr1Result, nthRoot, maxPrecision)
 
 	if err != nil {
@@ -494,10 +566,10 @@ func (bIPwr BigIntMathPower) raiseToPositiveIntegerPower(
 	bigINewPrecision := big.NewInt(0).Mul(bigIBasePrecision, exponent.bigInt)
 
 	newPrecision := uint(bigINewPrecision.Int64())
-	fmt.Println("           base: ", base.GetNumStr())
-	fmt.Println("    base bigInt: ", base.bigInt.Text(10))
-	fmt.Println("       exponent: ", exponent.GetNumStr())
-	fmt.Println("exponent.bigInt: ", exponent.bigInt.Text(10))
+	//"           base: ", base.GetNumStr())
+	// fmt.Println("    base bigInt: ", base.bigInt.Text(10))
+	// fmt.Println("       exponent: ", exponent.GetNumStr())
+	// fmt.Println("exponent.bigInt: ", exponent.bigInt.Text(10))
 
 	result := big.NewInt(0).Exp(base.bigInt, exponent.bigInt, nil)
 

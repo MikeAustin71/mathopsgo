@@ -10,12 +10,29 @@ import (
 
 func main() {
 
-	base := big.NewInt(3712)
-	basePrecision := uint(2)
-	exponent := uint(14)
-	internalMaxPrecision := uint(100)
-	outputMaxPrecision := uint(50)
-	expectedResult := "9429996806358208317884.5551325619"
+	eNum, err := mathops.BigIntMathLogarithms{}.GetEulersNumberE1050()
+	if err != nil {
+		fmt.Printf("Error returned by " +
+			"BigIntMathLogarithms{}.GetEulersNumberE1050(). Error='%v'",
+			err.Error())
+		return
+	}
+
+	base, err := eNum.GetBigInt()
+
+	if err != nil {
+		fmt.Printf("Error returned by " +
+			"eNum.GetBigInt(). Error='%v'",
+			err.Error())
+		return
+
+	}
+
+	basePrecision := eNum.GetPrecisionUint()
+	exponent := uint(9)
+	internalMaxPrecision := uint((9*basePrecision) + 1)
+	outputMaxPrecision := uint(28)
+	expectedResult := "8103.0839275753840077099966894328"
 
 	TestBigIntPwr(base, basePrecision, exponent, internalMaxPrecision, outputMaxPrecision, expectedResult)
 
