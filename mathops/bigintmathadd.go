@@ -1455,10 +1455,10 @@ func (bAdd BigIntMathAdd) BigIntAdd(
 	b1 *big.Int,
 	precision1 uint,
 	b2 *big.Int,
-	precision2 uint) (result *big.Int, precision uint) {
+	precision2 uint) (result *big.Int, resultPrecision uint) {
 
 	result = big.NewInt(0)
-	precision = 0
+	resultPrecision = 0
 
 	if b1 == nil {
 		b1 = big.NewInt(0)
@@ -1468,11 +1468,24 @@ func (bAdd BigIntMathAdd) BigIntAdd(
 		b2 = big.NewInt(0)
 	}
 
+	bigZero := big.NewInt(0)
+
+	if b1.Cmp(bigZero) == 0 &&
+		 b2.Cmp(bigZero) == 0 {
+		 	result = big.NewInt(0)
+		 	resultPrecision = 0
+		 	return result, resultPrecision
+	}
+
 	if precision1 == precision2 {
 		result = big.NewInt(0).Add(b1, b2	)
-		precision = precision1
+		resultPrecision = precision1
 
-		return result, precision
+		if result.Cmp(bigZero) == 0 {
+			resultPrecision = 0
+		}
+
+		return result, resultPrecision
 	}
 
 	bigTen := big.NewInt(10)
@@ -1486,9 +1499,13 @@ func (bAdd BigIntMathAdd) BigIntAdd(
 		b2ToScale := big.NewInt(0).Mul(b2, scale)
 
 		result = big.NewInt(0).Add(b1, b2ToScale)
-		precision = precision1
+		resultPrecision = precision1
 
-		return result, precision
+		if result.Cmp(bigZero) == 0 {
+			resultPrecision = 0
+		}
+
+		return result, resultPrecision
 
 	}
 
@@ -1501,9 +1518,13 @@ func (bAdd BigIntMathAdd) BigIntAdd(
 	b1ToScale := big.NewInt(0).Mul(b1, scale)
 
 	result = big.NewInt(0).Add(b1ToScale, b2)
-	precision = precision2
+	resultPrecision = precision2
 
-	return result, precision
+	if result.Cmp(bigZero) == 0 {
+		resultPrecision = 0
+	}
+
+	return result, resultPrecision
 }
 
 // FixedDecimalAdd - Adds two BigIntFixedDecimal types. The BigIntFixedDecimal

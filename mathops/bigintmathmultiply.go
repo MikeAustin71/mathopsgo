@@ -17,6 +17,67 @@ type BigIntMathMultiply struct {
 	Result BigIntNum
 }
 
+// MultiplyBigInts - Receives two *big.Int numbers and their associated precision
+// specifications. This method then proceeds to perform a multiplication operation
+// by multiplying the 'multiplier' by the 'multiplicand' to generate the 'product'.
+//
+// In the multiplication operation, the number to be multiplied is called the
+// "multiplicand", while the number of times the multiplicand is to be multiplied
+// comes from the "multiplier". Usually the multiplier is placed first and the
+// multiplicand is placed second.
+//
+// For example, in the problem 5 x 3 equals 15, the 5 is the 'multiplier',
+// 3 is the 'multiplicand' and 15 is the 'product' or result.
+//
+//							multiplier x multiplicand = product or result
+//
+// Input Parameters
+// ================
+//
+//	multiplier *big.Int					- The number to be multiplied by 'multiplicand'
+//	multiplierPrecision uint,		- The 'multiplier' precision or numeric digits after
+//																	the decimal point.
+//	multiplicand *big.Int,			- The number to be multiplied by the 'multiplier'.
+//	multiplicandPrecision uint  - The 'multiplicand' precision or numeric digits after
+//																	the decimal point.
+//
+// Return Values
+// =============
+//
+// product				*big.Int			- The product of the multiplier multiplied by
+//                                the multiplicand.
+//
+// productPrecision		uint			- The precision specification for the returned
+//                                product. Here, the term precision is defined as
+//                                the number of fractional digits to the
+//                                right of the decimal place in the returned
+//                                'product'.
+//
+func (bMultiply BigIntMathMultiply) BigIntMultiply(
+	multiplier *big.Int,
+	multiplierPrecision uint,
+	multiplicand *big.Int,
+	multiplicandPrecision uint) (product *big.Int, productPrecision uint) {
+
+	if multiplier == nil {
+		multiplier = big.NewInt(0)
+	}
+
+	if multiplicand == nil {
+		multiplicand = big.NewInt(0)
+	}
+
+	productPrecision = multiplierPrecision + multiplicandPrecision
+
+	product = big.NewInt(0).Mul(multiplier, multiplicand)
+
+	if product.Cmp(big.NewInt(0)) == 0 {
+		productPrecision = 0
+	}
+
+	return product, productPrecision
+}
+
 // MultiplyBigIntByTwoToPower - Multiplies a *big.Int number by powers
 // of two and returns the result as a BigIntNum type.
 //

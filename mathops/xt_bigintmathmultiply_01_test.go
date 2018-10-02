@@ -5,6 +5,383 @@ import (
 	"testing"
 )
 
+func TestBigIntMathMultiply_BigIntMultiply_01(t *testing.T) {
+	// multiplier = 123.32
+	multiplierStr := "123.32"
+
+	// multiplicand = 23.321
+	multiplicandStr := "23.321"
+
+	// product = 2875.94572
+	expectedBigINumStr := "2875.94572"
+
+	multiplierBiNum, err := BigIntNum{}.NewNumStr(multiplierStr)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(multiplierStr) "+
+			"multiplierStr='%v'  Error='%v'. ", multiplierStr, err.Error())
+	}
+
+	multiplicandBiNum, err := BigIntNum{}.NewNumStr(multiplicandStr)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(multiplicandStr) "+
+			"multiplicandStr='%v'  Error='%v'. ", multiplicandStr, err.Error())
+	}
+
+	expectedBigINum, err := BigIntNum{}.NewNumStr(expectedBigINumStr)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(expectedBigINumStr) "+
+			"expectedBigINumStr='%v'  Error='%v'. ", expectedBigINumStr, err.Error())
+	}
+
+	bIMultiplier := big.NewInt(0).Set(multiplierBiNum.bigInt)
+	multiplierPrecision := multiplierBiNum.GetPrecisionUint()
+	biMultiplicand := big.NewInt(0).Set(multiplicandBiNum.bigInt)
+	multiplicandPrecision := multiplicandBiNum.GetPrecisionUint()
+
+	result, resultPrecision := BigIntMathMultiply{}.BigIntMultiply(
+		bIMultiplier,
+		multiplierPrecision,
+		biMultiplicand,
+		multiplicandPrecision)
+
+	if expectedBigINum.GetIntegerValue().Cmp(result) != 0 {
+		t.Errorf("Error: Expected result='%v'. Instead, result= '%s'. ",
+			expectedBigINum.GetIntegerValue().Text(10), result.Text(10))
+	}
+
+	if expectedBigINum.GetPrecisionUint() != resultPrecision {
+		t.Errorf("Expected result precision='%v'. Instead, result precision='%v'",
+			expectedBigINum.GetPrecisionUint(), resultPrecision)
+	}
+}
+
+func TestBigIntMathMultiply_BigIntMultiply_02(t *testing.T) {
+	// multiplier = 57638422123.327890123
+	multiplierStr := "57638422123.327890123"
+
+	// multiplicand = 537621943.12345
+	multiplicandStr := "537621943.12345"
+
+	// product = 30987680500513189125.14259702468435
+	expectedBigINumStr := "30987680500513189125.14259702468435"
+
+	multiplierBiNum, err := BigIntNum{}.NewNumStr(multiplierStr)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(multiplierStr) "+
+			"multiplierStr='%v'  Error='%v'. ", multiplierStr, err.Error())
+	}
+
+	iaMultiplier, err := IntAry{}.NewNumStr(multiplierStr)
+
+	if err != nil {
+		t.Errorf("Error returned by IntAry{}.NewNumStr(multiplierStr) "+
+			"multiplierStr='%v'  Error='%v'. ", multiplierStr, err.Error())
+	}
+
+	multiplicandBiNum, err := BigIntNum{}.NewNumStr(multiplicandStr)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(multiplicandStr) "+
+			"multiplicandStr='%v'  Error='%v'. ", multiplicandStr, err.Error())
+	}
+
+	iaMultiplicand, err := IntAry{}.NewNumStr(multiplicandStr)
+
+	if err != nil {
+		t.Errorf("Error returned by IntAry{}.NewNumStr(multiplicandStr) "+
+			"multiplicandStr='%v'  Error='%v'. ", multiplicandStr, err.Error())
+	}
+
+	iaResult := IntAry{}.New()
+
+	err = iaMultiplier.Multiply(
+		&iaMultiplier,
+		&iaMultiplicand,
+		&iaResult,
+		-1,
+		-1)
+
+	if err != nil {
+		t.Errorf("Error returned by iaMultiplier.Multiply() "+
+			"Error='%v'. ", err.Error())
+	}
+
+	expectedBigINum, err := BigIntNum{}.NewNumStr(expectedBigINumStr)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(expectedBigINumStr) "+
+			"expectedBigINumStr='%v'  Error='%v'. ", expectedBigINumStr, err.Error())
+	}
+
+	bIMultiplier := big.NewInt(0).Set(multiplierBiNum.bigInt)
+	multiplierPrecision := multiplierBiNum.GetPrecisionUint()
+	biMultiplicand := big.NewInt(0).Set(multiplicandBiNum.bigInt)
+	multiplicandPrecision := multiplicandBiNum.GetPrecisionUint()
+
+	result, resultPrecision := BigIntMathMultiply{}.BigIntMultiply(
+		bIMultiplier,
+		multiplierPrecision,
+		biMultiplicand,
+		multiplicandPrecision)
+
+	if expectedBigINum.GetIntegerValue().Cmp(result) != 0 {
+		t.Errorf("Error: Expected result='%v'. Instead, result= '%s'. ",
+			expectedBigINum.GetIntegerValue().Text(10), result.Text(10))
+	}
+
+	if expectedBigINum.GetPrecisionUint() != resultPrecision {
+		t.Errorf("Expected result precision='%v'. Instead, result precision='%v'",
+			expectedBigINum.GetPrecisionUint(), resultPrecision)
+	}
+}
+
+func TestBigIntMathMultiply_BigIntMultiply_03(t *testing.T) {
+	// multiplier = 123.32
+	multiplierStr := "57638422123.327890123"
+
+	// multiplicand = -537621943.12345
+	multiplicandStr := "-537621943.12345"
+
+	// product = -30987680500513189125.14259702468435
+	expectedBigINumStr := "-30987680500513189125.14259702468435"
+
+	multiplierBiNum, err := BigIntNum{}.NewNumStr(multiplierStr)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(multiplierStr) "+
+			"multiplierStr='%v'  Error='%v'. ", multiplierStr, err.Error())
+	}
+
+	iaMultiplier, err := IntAry{}.NewNumStr(multiplierStr)
+
+	if err != nil {
+		t.Errorf("Error returned by IntAry{}.NewNumStr(multiplierStr) "+
+			"multiplierStr='%v'  Error='%v'. ", multiplierStr, err.Error())
+	}
+
+	multiplicandBiNum, err := BigIntNum{}.NewNumStr(multiplicandStr)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(multiplicandStr) "+
+			"multiplicandStr='%v'  Error='%v'. ", multiplicandStr, err.Error())
+	}
+
+	iaMultiplicand, err := IntAry{}.NewNumStr(multiplicandStr)
+
+	if err != nil {
+		t.Errorf("Error returned by IntAry{}.NewNumStr(multiplicandStr) "+
+			"multiplicandStr='%v'  Error='%v'. ", multiplicandStr, err.Error())
+	}
+
+	iaResult := IntAry{}.New()
+
+	err = iaMultiplier.Multiply(
+		&iaMultiplier,
+		&iaMultiplicand,
+		&iaResult,
+		-1,
+		-1)
+
+	if err != nil {
+		t.Errorf("Error returned by iaMultiplier.Multiply() "+
+			"Error='%v'. ", err.Error())
+	}
+
+	expectedBigINum, err := BigIntNum{}.NewNumStr(expectedBigINumStr)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(expectedBigINumStr) "+
+			"expectedBigINumStr='%v'  Error='%v'. ", expectedBigINumStr, err.Error())
+	}
+
+	bIMultiplier := big.NewInt(0).Set(multiplierBiNum.bigInt)
+	multiplierPrecision := multiplierBiNum.GetPrecisionUint()
+	biMultiplicand := big.NewInt(0).Set(multiplicandBiNum.bigInt)
+	multiplicandPrecision := multiplicandBiNum.GetPrecisionUint()
+
+	result, resultPrecision := BigIntMathMultiply{}.BigIntMultiply(
+		bIMultiplier,
+		multiplierPrecision,
+		biMultiplicand,
+		multiplicandPrecision)
+
+	if expectedBigINum.GetIntegerValue().Cmp(result) != 0 {
+		t.Errorf("Error: Expected result='%v'. Instead, result= '%s'. ",
+			expectedBigINum.GetIntegerValue().Text(10), result.Text(10))
+	}
+
+	if expectedBigINum.GetPrecisionUint() != resultPrecision {
+		t.Errorf("Expected result precision='%v'. Instead, result precision='%v'",
+			expectedBigINum.GetPrecisionUint(), resultPrecision)
+	}
+}
+
+func TestBigIntMathMultiply_BigIntMultiply_04(t *testing.T) {
+	// multiplier = 89637.9876
+	multiplierStr := "-89637.9876"
+
+	// multiplicand = -247632
+	multiplicandStr := "-247632"
+
+	// product = 22197234145.3632
+	expectedBigINumStr := "22197234145.3632"
+
+	multiplierBiNum, err := BigIntNum{}.NewNumStr(multiplierStr)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(multiplierStr) "+
+			"multiplierStr='%v'  Error='%v'. ", multiplierStr, err.Error())
+	}
+
+	iaMultiplier, err := IntAry{}.NewNumStr(multiplierStr)
+
+	if err != nil {
+		t.Errorf("Error returned by IntAry{}.NewNumStr(multiplierStr) "+
+			"multiplierStr='%v'  Error='%v'. ", multiplierStr, err.Error())
+	}
+
+	multiplicandBiNum, err := BigIntNum{}.NewNumStr(multiplicandStr)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(multiplicandStr) "+
+			"multiplicandStr='%v'  Error='%v'. ", multiplicandStr, err.Error())
+	}
+
+	iaMultiplicand, err := IntAry{}.NewNumStr(multiplicandStr)
+
+	if err != nil {
+		t.Errorf("Error returned by IntAry{}.NewNumStr(multiplicandStr) "+
+			"multiplicandStr='%v'  Error='%v'. ", multiplicandStr, err.Error())
+	}
+
+	iaResult := IntAry{}.New()
+
+	err = iaMultiplier.Multiply(
+		&iaMultiplier,
+		&iaMultiplicand,
+		&iaResult,
+		-1,
+		-1)
+
+	if err != nil {
+		t.Errorf("Error returned by iaMultiplier.Multiply() "+
+			"Error='%v'. ", err.Error())
+	}
+
+	expectedBigINum, err := BigIntNum{}.NewNumStr(expectedBigINumStr)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(expectedBigINumStr) "+
+			"expectedBigINumStr='%v'  Error='%v'. ", expectedBigINumStr, err.Error())
+	}
+
+	bIMultiplier := big.NewInt(0).Set(multiplierBiNum.bigInt)
+	multiplierPrecision := multiplierBiNum.GetPrecisionUint()
+	biMultiplicand := big.NewInt(0).Set(multiplicandBiNum.bigInt)
+	multiplicandPrecision := multiplicandBiNum.GetPrecisionUint()
+
+	result, resultPrecision := BigIntMathMultiply{}.BigIntMultiply(
+		bIMultiplier,
+		multiplierPrecision,
+		biMultiplicand,
+		multiplicandPrecision)
+
+	if expectedBigINum.GetIntegerValue().Cmp(result) != 0 {
+		t.Errorf("Error: Expected result='%v'. Instead, result= '%s'. ",
+			expectedBigINum.GetIntegerValue().Text(10), result.Text(10))
+	}
+
+	if expectedBigINum.GetPrecisionUint() != resultPrecision {
+		t.Errorf("Expected result precision='%v'. Instead, result precision='%v'",
+			expectedBigINum.GetPrecisionUint(), resultPrecision)
+	}
+}
+
+func TestBigIntMathMultiply_BigIntMultiply_05(t *testing.T) {
+	// multiplier = -89637.9876
+	multiplierStr := "-89637.9876"
+
+	// multiplicand = 0.00
+	multiplicandStr := "0.00"
+
+	// product = 0.00
+	expectedBigINumStr := "0"
+
+	multiplierBiNum, err := BigIntNum{}.NewNumStr(multiplierStr)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(multiplierStr) "+
+			"multiplierStr='%v'  Error='%v'. ", multiplierStr, err.Error())
+	}
+
+	iaMultiplier, err := IntAry{}.NewNumStr(multiplierStr)
+
+	if err != nil {
+		t.Errorf("Error returned by IntAry{}.NewNumStr(multiplierStr) "+
+			"multiplierStr='%v'  Error='%v'. ", multiplierStr, err.Error())
+	}
+
+	multiplicandBiNum, err := BigIntNum{}.NewNumStr(multiplicandStr)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(multiplicandStr) "+
+			"multiplicandStr='%v'  Error='%v'. ", multiplicandStr, err.Error())
+	}
+
+	iaMultiplicand, err := IntAry{}.NewNumStr(multiplicandStr)
+
+	if err != nil {
+		t.Errorf("Error returned by IntAry{}.NewNumStr(multiplicandStr) "+
+			"multiplicandStr='%v'  Error='%v'. ", multiplicandStr, err.Error())
+	}
+
+	iaResult := IntAry{}.New()
+
+	err = iaMultiplier.Multiply(
+		&iaMultiplier,
+		&iaMultiplicand,
+		&iaResult,
+		-1,
+		-1)
+
+	if err != nil {
+		t.Errorf("Error returned by iaMultiplier.Multiply() "+
+			"Error='%v'. ", err.Error())
+	}
+
+	expectedBigINum, err := BigIntNum{}.NewNumStr(expectedBigINumStr)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(expectedBigINumStr) "+
+			"expectedBigINumStr='%v'  Error='%v'. ", expectedBigINumStr, err.Error())
+	}
+
+	bIMultiplier := big.NewInt(0).Set(multiplierBiNum.bigInt)
+	multiplierPrecision := multiplierBiNum.GetPrecisionUint()
+	biMultiplicand := big.NewInt(0).Set(multiplicandBiNum.bigInt)
+	multiplicandPrecision := multiplicandBiNum.GetPrecisionUint()
+
+	result, resultPrecision := BigIntMathMultiply{}.BigIntMultiply(
+		bIMultiplier,
+		multiplierPrecision,
+		biMultiplicand,
+		multiplicandPrecision)
+
+	if expectedBigINum.GetIntegerValue().Cmp(result) != 0 {
+		t.Errorf("Error: Expected result='%v'. Instead, result= '%s'. ",
+			expectedBigINum.GetIntegerValue().Text(10), result.Text(10))
+	}
+
+	if expectedBigINum.GetPrecisionUint() != resultPrecision {
+		t.Errorf("Expected result precision='%v'. Instead, result precision='%v'",
+			expectedBigINum.GetPrecisionUint(), resultPrecision)
+	}
+}
+
 func TestBigIntMathMultiply_MultiplyBigInts_01(t *testing.T) {
 	// multiplier = 123.32
 	multiplierStr := "123.32"

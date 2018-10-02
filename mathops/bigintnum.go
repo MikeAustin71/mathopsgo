@@ -1273,6 +1273,8 @@ func (bNum *BigIntNum) GetBigInt() (*big.Int, error) {
 	return big.NewInt(0).Set(bNum.bigInt), nil
 }
 
+// GetBigIntFixedDecimal - returns a BigIntFixedDecimal instance
+// which contains a copy of the current BigIntNum values.
 func (bNum *BigIntNum) GetBigIntFixedDecimal() BigIntFixedDecimal {
 	return BigIntFixedDecimal{}.New(bNum.bigInt, bNum.precision)
 
@@ -2367,6 +2369,11 @@ func (bNum BigIntNum) NewWithNumSeps(numSeps NumericSeparatorDto) BigIntNum {
 // separators (decimal separator, thousands separator and currency symbol).
 //
 func (bNum BigIntNum) NewBigInt(bigI *big.Int, precision uint) BigIntNum {
+
+	if bigI == nil {
+		bigI = big.NewInt(0)
+	}
+
 	b := BigIntNum{}
 	b.Empty()
 	b.SetBigInt(bigI, precision)
@@ -2461,6 +2468,17 @@ func (bNum BigIntNum) NewDecimal(decNum Decimal) (BigIntNum, error) {
 	b.Empty()
 	b.SetBigInt(bInt, precision)
 	return b, nil
+}
+
+// NewBigIntFixedDecimal - Creates and returns a new BigIntNum instance based
+// on input parameter 'fd' of type BigIntFixedDecimal.
+//
+func (bNum BigIntNum) NewBigIntFixedDecimal(fd BigIntFixedDecimal) BigIntNum {
+
+	fd.IsValid()
+
+	return BigIntNum{}.NewBigInt(fd.GetInteger(), fd.GetPrecision())
+
 }
 
 // NewFromIntFracStrings - Creates a new BigIntNum instance based on an numeric

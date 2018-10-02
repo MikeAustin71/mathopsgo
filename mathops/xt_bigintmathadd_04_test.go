@@ -1459,6 +1459,84 @@ func TestBigIntMathAdd_BigIntAdd_04(t *testing.T) {
 
 }
 
+func TestBigIntMathAdd_BigIntAdd_05(t *testing.T) {
+
+	b1Str := "0000"
+	b1Precision := uint(3)
+	b1Big, oK := big.NewInt(0).SetString(b1Str, 10)
+
+	if !oK {
+		t.Error("Error returned by big.NewInt(0).SetString(b1Str, 10)")
+	}
+
+
+	b2Str := "0000000"
+	b2Precision := uint(6)
+	b2Big, oK := big.NewInt(0).SetString(b2Str, 10)
+
+	if !oK {
+		t.Error("Error returned by big.NewInt(0).SetString(b2Str, 10)")
+	}
+
+
+	expectedResultStr := "0"
+	expectedPrecision := uint(0)
+
+	biExpectedResult, oK := big.NewInt(0).SetString(expectedResultStr, 10)
+
+	result, resultPrecision := BigIntMathAdd{}.BigIntAdd(b1Big, b1Precision, b2Big, b2Precision)
+
+	if biExpectedResult.Cmp(result) != 0 {
+		t.Errorf("Error: Expected Result='%v'.  Instead, Result='%v'. ",
+			biExpectedResult.Text(10), result.Text(10))
+	}
+
+	if expectedPrecision != resultPrecision {
+		t.Errorf("Error: Expected Result precision='%v'. Instead, Result precision='%v'. ",
+			expectedPrecision, resultPrecision)
+	}
+
+}
+
+func TestBigIntMathAdd_BigIntAdd_06(t *testing.T) {
+
+	b1Str := "51"
+	b1Precision := uint(1)
+	b1Big, oK := big.NewInt(0).SetString(b1Str, 10)
+
+	if !oK {
+		t.Error("Error returned by big.NewInt(0).SetString(b1Str, 10)")
+	}
+
+
+	b2Str := "-51"
+	b2Precision := uint(1)
+	b2Big, oK := big.NewInt(0).SetString(b2Str, 10)
+
+	if !oK {
+		t.Error("Error returned by big.NewInt(0).SetString(b2Str, 10)")
+	}
+
+
+	expectedResultStr := "0"
+	expectedPrecision := uint(0)
+
+	biExpectedResult, oK := big.NewInt(0).SetString(expectedResultStr, 10)
+
+	result, resultPrecision := BigIntMathAdd{}.BigIntAdd(b1Big, b1Precision, b2Big, b2Precision)
+
+	if biExpectedResult.Cmp(result) != 0 {
+		t.Errorf("Error: Expected Result='%v'.  Instead, Result='%v'. ",
+			biExpectedResult.Text(10), result.Text(10))
+	}
+
+	if expectedPrecision != resultPrecision {
+		t.Errorf("Error: Expected Result precision='%v'. Instead, Result precision='%v'. ",
+			expectedPrecision, resultPrecision)
+	}
+
+}
+
 func TestBigIntMathAdd_FixedDecimalAdd_01(t *testing.T) {
 
 	// n1Str := 123456.789
