@@ -23,6 +23,41 @@ type BigIntMathDivide struct {
 	// to the right of the decimal place.
 }
 
+func (bIDivide BigIntMathDivide) BigIntFracQuotient(
+	dividend *big.Int,
+	dividendPrecision uint,
+	divisor *big.Int,
+	divisorPrecision uint,
+	maxPrecision uint) (quotient *big.Int, quotientPrecision uint, err error) {
+
+	ePrefix := "BigIntMathDivide.BigIntFracQuotient() "
+
+	quotient = big.NewInt(0)
+	quotientPrecision = 0
+	err = nil
+
+	if dividend == nil {
+		dividend = big.NewInt(0)
+	}
+
+	if divisor == nil {
+		divisor = big.NewInt(0)
+		err = fmt.Errorf(ePrefix + "Error - Divide by Zero!")
+		return quotient, quotientPrecision, err
+	}
+
+
+	intQuotient, _ := big.NewInt(0).QuoRem(dividend, divisor, big.NewInt(0))
+
+	quotient = big.NewInt(0).Set(intQuotient)
+
+	quotientPrecision = 0
+
+	err = nil
+
+	return quotient, quotientPrecision, err
+}
+
 // BigIntNumQuotientMod - Performs a division operation on BigIntNum input
 // parameters 'dividend' and 'divisor'.
 //
