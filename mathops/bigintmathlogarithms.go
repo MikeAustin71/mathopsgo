@@ -32,7 +32,7 @@ type BigIntMathLogarithms struct {
 // LogBaseOfX - Computes the log[base](xNum). 'base' and 'xNum' are passed as
 // BigIntNum types.
 //
-// 'maxPrecision' is an uint specifying the precision or number of digits to the
+// 'maxPrecision' is an uint specifying the precision or integerNum of digits to the
 // right of the decimal place in the result.
 //
 //
@@ -47,7 +47,7 @@ type BigIntMathLogarithms struct {
 // Input Parameters:
 // =================
 //
-// base		BigIntNum	- The base of the logarithm. 'base' must be an integer number
+// base		BigIntNum	- The base of the logarithm. 'base' must be an integer integerNum
 // 										greater than one (base > +1).
 //
 // xNum		BigIntNum - The 'x' value such that base^y = 'x'.  xNum must be greater
@@ -251,9 +251,9 @@ func (bLog BigIntMathLogarithms) GetNextDecimalDigit(
 }
 
 // EPwrXFromMaclaurinSeries = Computes value of e^exponent where e is the mathematical
-// constant, "Euler's number".
+// constant, "Euler's integerNum".
 //
-// "Euler's number" or 'e' truncated to 50 decimal places is:
+// "Euler's integerNum" or 'e' truncated to 50 decimal places is:
 //     2.71828182845904523536028747135266249775724709369995
 // Rounded to 50-decimal places is:
 //     2.71828182845904523536028747135266249775724709369996
@@ -270,7 +270,7 @@ func (bLog BigIntMathLogarithms) GetNextDecimalDigit(
 // exponent	BigIntNum - The exponent to which the mathematical constant 'e' will
 //                      be raised in order to compute the value of e^exponent.
 //
-// n				int64			- The number of cycles in the Taylor series which will
+// n				int64			- The integerNum of cycles in the Taylor series which will
 //                      be used to compute the value of e^exponent
 //
 // Return Values
@@ -325,7 +325,7 @@ func (bLog BigIntMathLogarithms) EPwrXFromTaylorSeries(
 
 	ePrefix := "BigIntMathLogarithms.EPwrXFromTaylorSeries() "
 
-	e, err := bLog.GetEulersNumberE104()
+	e, err := bLog.GetEulersNumberE1050()
 
 	if err != nil {
 		return BigIntNum{}.NewZero(0),
@@ -334,16 +334,33 @@ func (bLog BigIntMathLogarithms) EPwrXFromTaylorSeries(
 			err.Error())
 	}
 
-	eSquared, err := BigIntMathPower{}.Pwr(e, a, 500)
+	aValue, err := a.GetUInt()
 
-	if err !=nil {
+	if err != nil {
 		return BigIntNum{}.NewZero(0),
 			fmt.Errorf(ePrefix +
-				"Error returned by BigIntMathPower{}.Pwr(e, a, 500). Error='%v'",
+				"Error returned by a.GetUInt. Error='%v'",
 				err.Error())
+
 	}
 
-	//eSquared := BigIntMathMultiply{}.MultiplyBigIntNums(e.CopyOut(), e.CopyOut())
+	internalMaxPrecision := uint(20000)
+
+	outputMaxPrecision := uint(1100)
+
+	ePwrBigInt, ePwrBigIntPrecision :=
+		BigIntMathPower{}.BigIntPwr(
+			e.GetIntegerValue(),
+			e.GetPrecisionUint(),
+			aValue,
+			internalMaxPrecision,
+			outputMaxPrecision )
+
+	eToPwr := BigIntNum{}.NewBigInt(ePwrBigInt, ePwrBigIntPrecision)
+
+	// eToPwr, err := BigIntMathPower{}.Pwr(e, a, 500)
+
+	//eToPwr := BigIntMathMultiply{}.MultiplyBigIntNums(e.CopyOut(), e.CopyOut())
 
 	// sum = 0
 	sum := BigIntNum{}.NewInt(0,0)
@@ -369,14 +386,14 @@ func (bLog BigIntMathLogarithms) EPwrXFromTaylorSeries(
 			nFact = BigIntMathMultiply{}.MultiplyBigIntNums(nFact, BigIntNum{}.NewInt64(n, 0))
 		}
 
-		factor1, err := BigIntMathDivide{}.BigIntNumFracQuotient(eSquared, nFact, 500)
+		factor1, err := BigIntMathDivide{}.BigIntNumFracQuotient(eToPwr, nFact, 500)
 
 		if err != nil {
 			return BigIntNum{}.NewZero(0),
 				fmt.Errorf(ePrefix +
-					"Error returned by BigIntMathDivide{}.BigIntNumFracQuotient(eSquared, nFact, 500) "+
-					"eSquared='%v' nFact='%v' Error='%v' ",
-					eSquared.GetNumStr(), nFact.GetNumStr(), err.Error())
+					"Error returned by BigIntMathDivide{}.BigIntNumFracQuotient(eToPwr, nFact, 500) "+
+					"eToPwr='%v' nFact='%v' Error='%v' ",
+					eToPwr.GetNumStr(), nFact.GetNumStr(), err.Error())
 		}
 
 		factor2:= BigIntMathMultiply{}.MultiplyBigIntNums(factor1, xMinusANth)
@@ -391,9 +408,49 @@ func (bLog BigIntMathLogarithms) EPwrXFromTaylorSeries(
 
 }
 
+/*
+func (bLog BigIntMathLogarithms) EPwrXFromTaylorSeriesBigInt(
+	exponent BigIntFixedDecimal, a, nCycles uint) (BigIntNum, error) {
+
+	ePrefix := "BigIntMathLogarithms.EPwrXFromTaylorSeries() "
+
+	e, err := bLog.GetEulersNumberE1050()
+
+	if err != nil {
+		return BigIntNum{}.NewZero(0),
+			fmt.Errorf(ePrefix +
+				"Error returned by bLog.GetEulersNumberE104(). Error='%v'",
+				err.Error())
+	}
+
+	internalMaxPrecision := uint(20000)
+
+	outputMaxPrecision := uint(1100)
+
+	ePwrBigInt, ePwrBigIntPrecision :=
+		BigIntMathPower{}.BigIntPwr(
+			e.GetIntegerValue(),
+			e.GetPrecisionUint(),
+			a,
+			internalMaxPrecision,
+			outputMaxPrecision )
+
+	// sum = 0
+	sum := big.NewInt(0)
+	sumPrecision := uint(0)
+
+	xNum := exponent.GetInteger()
+	xNumPrecision := exponent.GetPrecision()
+
+	aBigInt
+
+	return BigIntNum{}, nil
+}
+*/
+
 
 // GetEulersNumberE1050 - Returns mathematical constant 'e' otherwise known as
-// Euler's number.
+// Euler's integerNum.
 //
 // The constant is returned as a BigIntNum with 1050-digits to the right of the
 // decimal place.
@@ -408,7 +465,7 @@ func (bLog BigIntMathLogarithms) GetEulersNumberE1050() (BigIntNum, error) {
 	ePrefix := "BigIntMathLogarithms.GetEulersNumberE1000()"
 	// Arranged 75-digits per line
 	// Source: http://www-history.mcs.st-and.ac.uk/HistTopics/e_10000.html
-	// 10,000 digits of Euler's number are provided. Only, 1,000 digits
+	// 10,000 digits of Euler's integerNum are provided. Only, 1,000 digits
 	// to the right of the decimal place are used here.
 	// First line 75-digits to the right of the decimal place
 	// Total 14-lines @ 75-decimal digits each = 1050-decimal digits to the
@@ -575,7 +632,7 @@ func (bLog BigIntMathLogarithms) GetEulersNumberE1050() (BigIntNum, error) {
 
 
 // GetEulersNumberE104 - Returns mathematical constant 'e' otherwise known as
-// Euler's number.
+// Euler's integerNum.
 //
 // The constant is returned as a BigIntNum with 104-digits to the right of the
 // decimal place.

@@ -223,14 +223,14 @@ func (bNum *BigIntNum) Decrement() {
 // the 'fracQuotient' which is returned as a BigIntNum type.
 //
 // The return value may be an integer or a floating point value as determined by the results
-// of the division operation. For floating point values, the number of digits to the right
+// of the division operation. For floating point values, the integerNum of digits to the right
 // of the decimal place is limited by input parameter, 'maxPrecision'.
 //
 //										bNum = dividend
 // 										dividend / divisor = quotient
 //
 // Input parameter 'maxPrecision' is used to control the maximum precision of the resulting
-// quotient. Precision is defined as the the number of fractional digits to the right of
+// quotient. Precision is defined as the the integerNum of fractional digits to the right of
 // the decimal place. Be advised that these calculations can support very large precision
 // values.
 //
@@ -255,13 +255,13 @@ func (bNum *BigIntNum) Divide(
 // type.
 //
 // The return value may be an integer or a floating point value as determined by the results
-// of the division operation. For floating point values, the number of digits to the right
+// of the division operation. For floating point values, the integerNum of digits to the right
 // of the decimal place is limited by input parameter, 'maxPrecision'.
 //
 // 												bNum / 5 = fracQuotient
 //
 // Input parameter 'maxPrecision' is used to control the maximum precision of the resulting
-// fractional quotient. Precision is defined as the the number of fractional digits to the
+// fractional quotient. Precision is defined as the the integerNum of fractional digits to the
 // right of the decimal place. Be advised that these calculations can support very large
 // precision values.
 //
@@ -298,13 +298,13 @@ func (bNum *BigIntNum) DivideByFive(
 // type.
 //
 // The return value may be an integer or a floating point value as determined by the results
-// of the division operation. For floating point values, the number of digits to the right
+// of the division operation. For floating point values, the integerNum of digits to the right
 // of the decimal place is limited by input parameter, 'maxPrecision'.
 //
 // 												bNum / 10 = fracQuotient
 //
 // Input parameter 'maxPrecision' is used to control the maximum precision of the resulting
-// fractional quotient. Precision is defined as the the number of fractional digits to the
+// fractional quotient. Precision is defined as the the integerNum of fractional digits to the
 // right of the decimal place. Be advised that these calculations can support very large
 // precision values.
 //
@@ -361,14 +361,14 @@ func (bNum *BigIntNum) DivideByTenToPower(exponent uint) {
 // BigIntNum type.
 //
 // The return value may be an integer or a floating point value as determined by the results
-// of the division operation. For floating point values, the number of digits to the right
+// of the division operation. For floating point values, the integerNum of digits to the right
 // of the decimal place is limited by input parameter, 'maxPrecision'.
 //
 //
 // 													bNum / 3 = fracQuotient
 //
 // Input parameter 'maxPrecision' is used to control the maximum precision of the resulting
-// fractional quotient. Precision is defined as the the number of fractional digits to the
+// fractional quotient. Precision is defined as the the integerNum of fractional digits to the
 // right of the decimal place. Be advised that these calculations can support very large
 // precision values.
 //
@@ -405,17 +405,17 @@ func (bNum *BigIntNum) DivideByThree(
 // type.
 //
 // The return value may be an integer or a floating point value as determined by the results
-// of the division operation. For floating point values, the number of digits to the right
+// of the division operation. For floating point values, the integerNum of digits to the right
 // of the decimal place is limited by input parameter, 'maxPrecision'.
 //
 // The return value may be an integer or a floating point value as determined by the results
-// of the division operation. For floating point values, the number of digits to the right
+// of the division operation. For floating point values, the integerNum of digits to the right
 // of the decimal place is limited by input parameter, 'maxPrecision'.
 //
 // 												bNum / 2 = fracQuotient
 //
 // Input parameter 'maxPrecision' is used to control the maximum precision of the resulting
-// fractional quotient. Precision is defined as the the number of fractional digits to the
+// fractional quotient. Precision is defined as the the integerNum of fractional digits to the
 // right of the decimal place. Be advised that these calculations can support very large
 // precision values.
 //
@@ -454,7 +454,7 @@ func (bNum *BigIntNum) DivideByTwo(
 // 'even'; that is, it is evenly divisible by two.
 //
 // Input parameter 'maxPrecision' is used to control the maximum precision of the resulting
-// floating point 'modulo'. Precision is defined as the the number of fractional digits to
+// floating point 'modulo'. Precision is defined as the the integerNum of fractional digits to
 // the right of the decimal place. Be advised that these calculations can support very large
 // precision values.
 //
@@ -557,11 +557,11 @@ func (bNum *BigIntNum) EqualValue(b2 BigIntNum) bool {
 
 // ExtendPrecision - Extends the current precision.
 //
-// Precision is the number of fractional digits to the right
-// of the decimal place. This method will extend the number of
+// Precision is the integerNum of fractional digits to the right
+// of the decimal place. This method will extend the integerNum of
 // digits to the right of the decimal place by adding trailing
 // zeros to the current numeric value of this 'BigIntNum' instance.
-// The number of trailing zeros to be added is determined by the
+// The integerNum of trailing zeros to be added is determined by the
 // input parameter, 'deltaPrecision'.
 //
 // Existing numeric separators (decimal separator, thousands separator
@@ -668,7 +668,7 @@ func (bNum *BigIntNum) Floor() BigIntNum {
 //																																Example: ($123,456.78)
 //
 //
-//																		ABSOLUTEPURENUMSTRFMTMODE - Formats a pure number string with
+//																		ABSOLUTEPURENUMSTRFMTMODE - Formats a pure integerNum string with
 //																																absolute (positive) integer value
 //																																and no decimal place separator.
 //																																Example: ($12,345,678)
@@ -829,9 +829,9 @@ func (bNum *BigIntNum) FormatCurrencyStr(negValMode NegativeValueFmtMode) string
 }
 
 // FormatNumStr - Formats the numeric value of the current BigIntNum
-// instance as number string consisting of integer digits to the left
+// instance as integerNum string consisting of integer digits to the left
 // of the decimal place and fractional digits to the right of the decimal
-// point, if such fractional digits exist. The resulting number string
+// point, if such fractional digits exist. The resulting integerNum string
 // will NOT contain a currency symbol or thousands separators.
 //
 // If the Decimal Separator was not previously set for this BigIntNum,
@@ -853,7 +853,7 @@ func (bNum *BigIntNum) FormatCurrencyStr(negValMode NegativeValueFmtMode) string
 //																																surrounding parentheses.
 //																																Example: (123456.78)
 //
-//																		ABSOLUTEPURENUMSTRFMTMODE - Formats a pure number string with
+//																		ABSOLUTEPURENUMSTRFMTMODE - Formats a pure integerNum string with
 //																																absolute (positive) integer value
 //																																and no decimal place separator.
 //																																Example: (12345678)
@@ -982,7 +982,7 @@ func (bNum *BigIntNum) FormatNumStr(negValMode NegativeValueFmtMode) string {
 	return string(outRunes)
 }
 
-// FormatThousandsStr - Returns the number string delimited with the
+// FormatThousandsStr - Returns the integerNum string delimited with the
 // BigIntNum ThousandsSeparator character plus the Decimal Separator
 // character if applicable. See methods BigIntNum.SetThousandsSeparator()
 // and BigIntNum.SetDecimalSeparator().
@@ -1016,7 +1016,7 @@ func (bNum *BigIntNum) FormatNumStr(negValMode NegativeValueFmtMode) string {
 //																																Example: (123,456.78)
 //
 //
-//																		ABSOLUTEPURENUMSTRFMTMODE - Formats a pure number string with
+//																		ABSOLUTEPURENUMSTRFMTMODE - Formats a pure integerNum string with
 //																																absolute (positive) integer value
 //																																and no decimal place separator.
 //																																Example: (12,345,678)
@@ -1166,7 +1166,7 @@ func (bNum *BigIntNum) FormatThousandsStr(negValMode NegativeValueFmtMode) strin
 
 }
 
-// GetActualNumberOfDigits - Returns the number of numeric digits
+// GetActualNumberOfDigits - Returns the integerNum of numeric digits
 // int the absolute value of this BigIntNum instance. In addition,
 // a boolean value is returned indicating whether the absolute value
 // is zero.
@@ -1273,6 +1273,11 @@ func (bNum *BigIntNum) GetBigInt() (*big.Int, error) {
 	return big.NewInt(0).Set(bNum.bigInt), nil
 }
 
+func (bNum *BigIntNum) GetBigIntFixedDecimal() BigIntFixedDecimal {
+	return BigIntFixedDecimal{}.New(bNum.bigInt, bNum.precision)
+
+}
+
 // GetBigIntNum - Returns a deep copy of the current BigIntNum
 // instance.
 //
@@ -1332,7 +1337,7 @@ func (bNum *BigIntNum) GetCurrencySymbol() rune {
 }
 
 // GetDecimal - Converts the current BigIntNum value to a Type Decimal
-// instance. The resulting number value includes the decimal place
+// instance. The resulting integerNum value includes the decimal place
 // and decimal digits if they exist.
 //
 // The returned Decimal instance contains numeric separators (decimal separator,
@@ -1388,7 +1393,7 @@ func (bNum *BigIntNum) GetDecimalSeparator() rune {
 
 }
 
-// GetExpectedNumberOfDigits - Returns the number of expected numeric
+// GetExpectedNumberOfDigits - Returns the integerNum of expected numeric
 // digits associated with this BigIntNum instance. The returned value
 // is stored in data field, BigIntNum.numberOfExpectedDigits. The value
 // is set by calling method BigIntNum.SetExpectedNumberOfDigits().
@@ -1462,7 +1467,7 @@ func (bNum *BigIntNum) GetInt() (int, error) {
 }
 
 // GetIntAryElements - Converts the current BigIntNum value to an IntAry
-// instance. The resulting number value includes the decimal place
+// instance. The resulting integerNum value includes the decimal place
 // and fractional digits if they exist.
 //
 // Note that the BigIntNum settings for 'decimalSeparator', 'thousandsSeparator'
@@ -1541,6 +1546,21 @@ func (bNum *BigIntNum) GetIntegerPart() BigIntNum {
 	return BigIntNum{}.NewBigInt(quotient, 0)
 }
 
+
+// Returns the internal *big.Int number for the current
+// BigIntNum instance.
+//
+func (bNum *BigIntNum) GetIntegerValue() *big.Int {
+
+	if bNum.bigInt == nil {
+		bNum.bigInt = big.NewInt(0)
+	}
+
+	return big.NewInt(0).Set(bNum.bigInt)
+}
+
+
+
 // GetInverse - Returns the value of one (1) divided by the current
 // BigIntNum instance as a new BigIntNum Type.
 func (bNum *BigIntNum) GetInverse(maxPrecision uint) (BigIntNum, error) {
@@ -1559,9 +1579,9 @@ func (bNum *BigIntNum) GetInverse(maxPrecision uint) (BigIntNum, error) {
 	return result, nil
 }
 
-// GetNumberOfDigits - Returns the number of digits in the numeric value of the
+// GetNumberOfDigits - Returns the integerNum of digits in the numeric value of the
 // current BigIntNum instance. The count only includes numeric digits and as such
-// EXCLUDES number signs ('-' or '+' ), thousands separators (',') and decimal
+// EXCLUDES integerNum signs ('-' or '+' ), thousands separators (',') and decimal
 // separators.
 //
 // Examples:
@@ -1582,7 +1602,7 @@ func (bNum *BigIntNum) GetInverse(maxPrecision uint) (BigIntNum, error) {
 //  1,234,567.800													 10
 //          5                               1
 //
-// Note: The returned integer number will always be a positive number.
+// Note: The returned integer integerNum will always be a positive integerNum.
 //       Also, GetActualNumberOfDigits() will be faster for larger
 // 			 numbers.
 //
@@ -1634,7 +1654,7 @@ func (bNum *BigIntNum) GetNumStr() string {
 }
 
 // GetNumStrDto - Converts the current BigIntNum value to a NumStrDto
-// instance. The resulting number string includes the decimal place
+// instance. The resulting integerNum string includes the decimal place
 // and decimal digits if they exist.
 //
 // The returned NumStrDto type contains numeric separators (decimal separator,
@@ -1684,10 +1704,10 @@ func (bNum *BigIntNum) GetNumStrDto() (NumStrDto, error) {
 // GetPrecision - Returns precision as an integer of
 // type 'int'.
 //
-// precision is defined as the number of numeric digits to
+// precision is defined as the integerNum of numeric digits to
 // the right of the decimal place. To compute the location
 // of the decimal place in a string of numeric digits, go
-// to the right most digit in the number string and count
+// to the right most digit in the integerNum string and count
 // left 'precision' digits.
 //
 // Example:
@@ -1706,10 +1726,10 @@ func (bNum *BigIntNum) GetPrecision() int {
 // GetPrecisionBigInt - Returns the 'precision' of the current
 // BigIntNum instance as a *big.Int Type.
 //
-// precision is defined as the number of numeric digits to
+// precision is defined as the integerNum of numeric digits to
 // the right of the decimal place. To compute the location
 // of the decimal place in a string of numeric digits, go
-// to the right most digit in the number string and count
+// to the right most digit in the integerNum string and count
 // left 'precision' digits.
 //
 // Example:
@@ -1726,10 +1746,10 @@ func (bNum *BigIntNum) GetPrecisionBigInt() *big.Int {
 // GetPrecisionUint - Returns precision as an unsigned
 // integer (uint).
 //
-// precision is defined as the number of numeric digits to
+// precision is defined as the integerNum of numeric digits to
 // the right of the decimal place. To compute the location
 // of the decimal place in a string of numeric digits, go
-// to the right most digit in the number string and count
+// to the right most digit in the integerNum string and count
 // left 'precision' digits.
 //
 // Example:
@@ -1747,7 +1767,7 @@ func (bNum *BigIntNum) GetPrecisionUint() uint {
 
 // GetScaleFactor - Returns the scale value of the current
 // BigIntNum.  Scale value is a function of 'precision' or
-// the number of digits to the right of the decimal place.
+// the integerNum of digits to the right of the decimal place.
 // Therefore, scale factor is defined by 10 raised to the
 // power BigIntNum precision.
 //
@@ -2118,7 +2138,7 @@ func (bNum *BigIntNum) IsZero() bool {
 
 // Mod - performs a modulo operation where the current BigIntNum numeric value is the
 // dividend and the divisor is the input parameter, 'divisor'.  The modulo operation finds
-// the remainder after division of one number by another (sometimes called modulus).
+// the remainder after division of one integerNum by another (sometimes called modulus).
 // (Wikipedia: https://en.wikipedia.org/wiki/Modulo_operation)
 //
 // 	 									dividend = bNum
@@ -2129,7 +2149,7 @@ func (bNum *BigIntNum) IsZero() bool {
 // digits.
 //
 // Input parameter 'maxPrecision' is used to control the maximum precision of the resulting
-// floating point 'modulo'. Precision is defined as the the number of fractional digits to
+// floating point 'modulo'. Precision is defined as the the integerNum of fractional digits to
 // the right of the decimal place. Be advised that these calculations can support very large
 // precision values.
 //
@@ -2322,20 +2342,20 @@ func (bNum BigIntNum) NewWithNumSeps(numSeps NumericSeparatorDto) BigIntNum {
 // NewBigInt - Creates a new BigIntNum instance using a *big.Int type and its
 // associated precision.
 //
-// The 'precision' parameter specifies the number of digits to the right
+// The 'precision' parameter specifies the integerNum of digits to the right
 // of the decimal place. The Numeric value is equal to bigI x 10^(precision x -1).
 // This effectively locates the decimal place by counting from the extreme right
-// of the integer number, 'precision' places to the left. See the example below.
+// of the integer integerNum, 'precision' places to the left. See the example below.
 //
 // Input Parameters
 // bigI *big.Int	- 'bigI' is a type *big.Int and represents the integer
-//									value of the number; that is, the numeric value with
+//									value of the integerNum; that is, the numeric value with
 //									out decimal digits.
 //
 // precision int	- This unsigned integer (always a positive value) identifies
 // 									the location of the decimal place in the integer value 'bigI'.
 // 									The decimal place location is calculated by starting with the
-// 									right most digit in the integer number and counting	left,
+// 									right most digit in the integer integerNum and counting	left,
 // 									'precision' places.
 //
 // 									Example:
@@ -2383,7 +2403,7 @@ func (bNum BigIntNum) NewBigIntExponent(bigI *big.Int, exponent int) BigIntNum {
 }
 
 // NewBigFloat - Returns a new BigIntNum instance using a *big.Float floating point
-// input parameter.  The precision of the number is specified by the input
+// input parameter.  The precision of the integerNum is specified by the input
 // parameter, 'decimalPlaces'.
 //
 // Input Parameters
@@ -2452,8 +2472,8 @@ func (bNum BigIntNum) NewDecimal(decNum Decimal) (BigIntNum, error) {
 // instance.
 //
 // Input parameter 'signVal' must be set to one of two values: +1 or -1. This value is
-// used to signal the sign of the resulting numeric value. +1 generates a positive number
-// and -1 generates a negative number.
+// used to signal the sign of the resulting numeric value. +1 generates a positive integerNum
+// and -1 generates a negative integerNum.
 //
 func (bNum BigIntNum) NewFromIntFracStrings(
 	intStr, fracStr string, signVal int) (BigIntNum, error) {
@@ -2474,7 +2494,7 @@ func (bNum BigIntNum) NewFromIntFracStrings(
 }
 
 // NewFloat32 - Returns a new BigIntNum instance using a float32 floating point
-// input parameter.  The precision of the number is specified by the input
+// input parameter.  The precision of the integerNum is specified by the input
 // parameter, 'decimalPlaces'.
 //
 // Input Parameters
@@ -2505,7 +2525,7 @@ func (bNum BigIntNum) NewFloat32(f32 float32, maxPrecision uint) (BigIntNum, err
 }
 
 // NewFloat64 - Returns a new BigIntNum instance using a float64 floating point
-// input parameter.  The precision of the number is specified by the input
+// input parameter.  The precision of the integerNum is specified by the input
 // parameter, 'decimalPlaces'.
 //
 // Input Parameters
@@ -2538,7 +2558,7 @@ func (bNum BigIntNum) NewFloat64(f64 float64, maxPrecision uint) (BigIntNum, err
 // NewInt - Creates a new BigIntNum instance initialized to the value
 // of input parameter 'intNum' which is passed as type 'int'.
 //
-// Input parameter 'precision' indicates the number of digits to be
+// Input parameter 'precision' indicates the integerNum of digits to be
 // formatted to the right of the decimal place and is passed as type
 // 'uint'
 //
@@ -2611,7 +2631,7 @@ func (bNum BigIntNum) NewIntExponent(intNum int, exponent int) BigIntNum {
 // New32Int - Creates a new BigIntNum instance initialized to the value
 // of input parameter 'int32Num' which is passed as type 'int32'.
 //
-// Input parameter 'precision' indicates the number of digits to be
+// Input parameter 'precision' indicates the integerNum of digits to be
 // formatted to the right of the decimal place and is passed as type
 // 'uint'
 //
@@ -2681,7 +2701,7 @@ func (bNum BigIntNum) NewInt32Exponent(int32Num int32, exponent int) BigIntNum {
 // New64Int - Creates a new BigIntNum instance initialized to the value
 // of input parameter 'int64Num' which is passed as type 'int64'.
 //
-// Input parameter 'precision' indicates the number of digits to be
+// Input parameter 'precision' indicates the integerNum of digits to be
 // formatted to the right of the decimal place and is passed as type
 // 'uint'
 //
@@ -2782,8 +2802,8 @@ func (bNum BigIntNum) NewIntAry(ia IntAry) (BigIntNum, error) {
 // which is assigned to the current BigIntNum instance.
 //
 // Input parameter 'signVal' must be set to one of two values: +1 or -1. This value is
-// used to signal the sign of the resulting numeric value. +1 generates a positive number
-// and -1 generates a negative number. If input parameters 'inStr' or 'fracStr' contain
+// used to signal the sign of the resulting numeric value. +1 generates a positive integerNum
+// and -1 generates a negative integerNum. If input parameters 'inStr' or 'fracStr' contain
 // a leading minus or plus sign character, it will be ignored. The sign of the resulting
 // numeric value is controlled strictly by input parameter, 'signVal'.
 //
@@ -2851,7 +2871,7 @@ func (bNum BigIntNum) NewINumMgr(numMgr INumMgr) (BigIntNum, error) {
 	return bINum, nil
 }
 
-// NewNumStr - Receives a number string as input and returns
+// NewNumStr - Receives a integerNum string as input and returns
 // a new BigIntNum instance.
 //
 // This method assumes that the input parameter 'numStr' is a string
@@ -2881,10 +2901,10 @@ func (bNum BigIntNum) NewNumStr(numStr string) (BigIntNum, error) {
 	return b, nil
 }
 
-// NewNumStrWithNumSeps - Receives a number string as input and returns a
+// NewNumStrWithNumSeps - Receives a integerNum string as input and returns a
 // new BigIntNum instance. The input parameter 'numSeps' contains numeric
 // separators (decimal separator, thousands separator and currency symbol)
-// which will be used to parse the number string.
+// which will be used to parse the integerNum string.
 //
 // In addition, the numeric separators contained in input parameter 'numSeps'
 // will be copied to the returned BigIntNum instance.
@@ -2921,7 +2941,7 @@ func (bNum BigIntNum) NewNumStrWithNumSeps(
 	return b2, nil
 }
 
-// NewNumStrMaxPrecision - Receives a number string as input and returns
+// NewNumStrMaxPrecision - Receives a integerNum string as input and returns
 // a new BigIntNum instance. If the resulting precision exceeds
 // input parameter 'maxPrecision', the returned BigIntNum result
 // will be rounded to 'maxPrecision' decimal places.
@@ -2982,7 +3002,7 @@ func (bNum BigIntNum) NewNumStrDto(nDto NumStrDto) (BigIntNum, error) {
 }
 
 // NewOne - Returns a BigIntNum Type with a value equal to '1' (one).
-// The number of zeros created after the decimal place holder
+// The integerNum of zeros created after the decimal place holder
 // (fractional digits) is determined by the input parameter 'precision'.
 // To create an integer with a value equal to '1', set 'precision' equal
 // to zero (0).
@@ -3017,7 +3037,7 @@ func (bNum BigIntNum) NewOne(precision uint) BigIntNum {
 }
 
 // NewTwo - Returns a BigIntNum Type with a value equal to  '2' (two).
-// The number of zeros created after the decimal place holder
+// The integerNum of zeros created after the decimal place holder
 // (fractional digits) is determined by the input parameter 'precision'.
 // To create an integer with a value equal to '1', set 'precision' equal
 // to zero (0).
@@ -3052,7 +3072,7 @@ func (bNum BigIntNum) NewTwo(precision uint) BigIntNum {
 }
 
 // NewThree - Returns a BigIntNum Type with a value equal to  '3' (three).
-// The number of zeros created after the decimal place holder
+// The integerNum of zeros created after the decimal place holder
 // (fractional digits) is determined by the input parameter 'precision'.
 // To create an integer with a value equal to '1', set 'precision' equal
 // to zero (0).
@@ -3086,7 +3106,7 @@ func (bNum BigIntNum) NewThree(precision uint) BigIntNum {
 }
 
 // NewFive - Returns a BigIntNum with integer value of  '5' (five).
-// The number of zeros created after the decimal place holder
+// The integerNum of zeros created after the decimal place holder
 // (fractional digits) is determined by the input parameter 'precision'.
 // To create an integer with a value equal to '10', set 'precision' equal
 // to zero (0).
@@ -3118,7 +3138,7 @@ func (bNum BigIntNum) NewFive(precision uint) BigIntNum {
 }
 
 // NewTen - Returns a BigIntNum with integer value of  '10' (ten).
-// The number of zeros created after the decimal place holder
+// The integerNum of zeros created after the decimal place holder
 // (fractional digits) is determined by the input parameter 'precision'.
 // To create an integer with a value equal to '10', set 'precision' equal
 // to zero (0).
@@ -3151,7 +3171,7 @@ func (bNum BigIntNum) NewTen(precision uint) BigIntNum {
 }
 
 // New Zero - Returns a BigIntNum instance with a value equal to zero.
-// The number of zeros created after the decimal place holder
+// The integerNum of zeros created after the decimal place holder
 // (fractional digits) is determined by the input parameter 'precision'.
 // To create an integer with a value equal to '0', set 'precision' equal
 // to zero (0).
@@ -3175,7 +3195,7 @@ func (bNum BigIntNum) NewZero(precision uint) BigIntNum {
 // NewUint - Creates a new BigIntNum instance initialized to the value
 // of input parameter 'uintNum' which is passed as type 'uint'.
 //
-// Input parameter 'precision' indicates the number of digits to be
+// Input parameter 'precision' indicates the integerNum of digits to be
 // formatted to the right of the decimal place and is passed as type
 // 'uint'
 //
@@ -3245,7 +3265,7 @@ func (bNum BigIntNum) NewUintExponent(uintNum uint, exponent int) BigIntNum {
 // NewUint32 - Creates a new BigIntNum instance initialized to the value
 // of input parameter 'uint32Num' which is passed as type 'uint32'.
 //
-// Input parameter 'precision' indicates the number of digits to be
+// Input parameter 'precision' indicates the integerNum of digits to be
 // formatted to the right of the decimal place and is passed as type
 // 'uint'.
 //
@@ -3315,7 +3335,7 @@ func (bNum BigIntNum) NewUint32Exponent(uint32Num uint32, exponent int) BigIntNu
 // NewUint64 - Creates a new BigIntNum instance initialized to the value
 // of input parameter 'uint64Num' which is passed as type 'uint64'.
 //
-// Input parameter 'precision' indicates the number of digits to be
+// Input parameter 'precision' indicates the integerNum of digits to be
 // formatted to the right of the decimal place and is passed as type
 // 'uint'
 //
@@ -3411,9 +3431,9 @@ func (bNum *BigIntNum) Reset() {
 }
 
 // RoundToDecPlace - Rounds the current BigIntNum instance to a specified
-// number of decimal places.
+// integerNum of decimal places.
 //
-// 'precision' equals the number of digits to the right of the decimal
+// 'precision' equals the integerNum of digits to the right of the decimal
 // place.
 //
 // Example:
@@ -3423,15 +3443,15 @@ func (bNum *BigIntNum) Reset() {
 // remain unaltered. However, the BigIntNum.precision value will be set equal to
 // input parameter, 'precision'.
 //
-// If the number of decimal places specified for rounding ('precision") is
+// If the integerNum of decimal places specified for rounding ('precision") is
 // equal to the current BigIntNum.precision, no action is taken.
 //
-// If the number of decimal places specified for rounding ('precision') is
+// If the integerNum of decimal places specified for rounding ('precision') is
 // greater than the current BigIntNum.precision value, trailing zeros are added to
 // the current BigIntNum.bigInt value and BigIntNum.precision is set equal
 // to input parameter, 'precision'.
 //
-// Finally, if the number of decimal places specified for rounding ('precision') is
+// Finally, if the integerNum of decimal places specified for rounding ('precision') is
 // less than the current BigIntNum.precision value, the fractional digits will be
 // rounded in accordance with the input parameter, 'precision'.
 //
@@ -3504,20 +3524,20 @@ func (bNum *BigIntNum) RoundToDecPlace(precision uint) {
 // SetBigInt - Sets the value of the current BigIntNum instance using
 // the input parameters *big.Int integer and precision.
 //
-// The 'precision' parameter specifies the number of digits to the right
+// The 'precision' parameter specifies the integerNum of digits to the right
 // of the decimal place. The Numeric value is equal to bigI x 10^(precision x -1).
 // This effectively locates the decimal place by counting from the extreme right
-// of the integer number, 'precision' places to the left. See the example below.
+// of the integer integerNum, 'precision' places to the left. See the example below.
 //
 // Input Parameters
 // bigI *big.Int	- 'bigI' is a type *big.Int and represents the integer
-//									value of the number; that is, the numeric value with
+//									value of the integerNum; that is, the numeric value with
 //									out decimal digits.
 //
 // precision uint	- This unsigned integer (always a positive value) identifies
 // 									the location of the decimal place in the integer value 'bigI'.
 // 									The decimal place location is calculated by starting with the
-// 									right most digit in the integer number and counting	left,
+// 									right most digit in the integer integerNum and counting	left,
 // 									'precision' places. Example:
 //											Integer Value		precision			Numeric Value
 //											  123456					 3					  123.456
@@ -3596,7 +3616,7 @@ func (bNum *BigIntNum) SetBigIntExponent(bigI *big.Int, exponent int) {
 }
 
 // SetBigFloat - Sets the value of a BigIntNum using a *big.Float floating point
-// input parameter.  The precision of the number is specified by the input
+// input parameter.  The precision of the integerNum is specified by the input
 // parameter, 'decimalPlaces'.
 //
 // Input Parameters
@@ -3611,7 +3631,7 @@ func (bNum *BigIntNum) SetBigIntExponent(bigI *big.Int, exponent int) {
 // 											precision may be less than 'maxPrecision'.
 //
 //
-// As part of the conversion of a BigFloat to a rational number the Accuracy flag is
+// As part of the conversion of a BigFloat to a rational integerNum the Accuracy flag is
 // is returned describing the rounding error associated with the conversion. The
 // Accuracy Flag is set as:
 //		Below Accuracy == -1
@@ -3654,7 +3674,7 @@ func (bNum *BigIntNum) SetBigFloat(bigFloat *big.Float, maxPrecision uint) error
 }
 
 // SetBigRat - Sets the current BigIntNum value to that of input parameter
-// 'ratNum', a rational number or *big.Rat type.
+// 'ratNum', a rational integerNum or *big.Rat type.
 //
 // maxPrecision uint  - The maximum precision for the resulting BigIntNum after
 // 											conversion of input parameter 'ratNum'. Precision will
@@ -3697,7 +3717,7 @@ func (bNum *BigIntNum) SetBigRat(ratNum *big.Rat, maxPrecision uint) error {
 
 // SetCurrencySymbol - assigns the input parameter rune as the
 // currency symbol to be used by the BigIntNum when generating
-// number strings for display.
+// integerNum strings for display.
 //
 // In the USA, the currency symbol is the dollar sign ('$').
 //
@@ -3720,9 +3740,9 @@ func (bNum *BigIntNum) SetCurrencySymbol(currencySymbol rune) {
 
 // SetDecimalSeparator - Assigns a rune or character to the internal
 // data field, 'decimalSeparator'. The Decimal Separator is used to
-// separate the integer and fractional elements of a number string.
+// separate the integer and fractional elements of a integerNum string.
 //
-// The BigIntNum Type uses this character when generating number strings
+// The BigIntNum Type uses this character when generating integerNum strings
 // for display.
 //
 // In the USA, the Decimal Separator is a period character ('.').
@@ -3749,8 +3769,8 @@ func (bNum *BigIntNum) SetDecimalSeparator(decimalSeparator rune) {
 // which is assigned to the current BigIntNum instance.
 //
 // Input parameter 'signVal' must be set to one of two values: +1 or -1. This value is
-// used to signal the sign of the resulting numeric value. +1 generates a positive number
-// and -1 generates a negative number. If input parameters 'inStr' or 'fracStr' contain
+// used to signal the sign of the resulting numeric value. +1 generates a positive integerNum
+// and -1 generates a negative integerNum. If input parameters 'inStr' or 'fracStr' contain
 // a leading minus or plus sign character, it will be ignored. The sign of the resulting
 // numeric value is controlled strictly by input parameter, 'signVal'.
 //
@@ -3774,7 +3794,7 @@ func (bNum *BigIntNum) SetIntFracStrings(intStr, fracStr string, signVal int) er
 
 	isFirstRune := true
 
-	// Create pure number string from 'intStr'
+	// Create pure integerNum string from 'intStr'
 	for i := 0; i < lStr; i++ {
 
 		if intStr[i] >= zeroChar &&
@@ -3828,7 +3848,7 @@ func (bNum *BigIntNum) SetIntFracStrings(intStr, fracStr string, signVal int) er
 }
 
 // SetFloat32 - Sets the value of a BigIntNum using a float32 floating point
-// input parameter.  The precision of the number is specified by the input
+// input parameter.  The precision of the integerNum is specified by the input
 // parameter, 'decimalPlaces'.
 //
 // Input Parameters
@@ -3860,7 +3880,7 @@ func (bNum *BigIntNum) SetFloat32(f32 float32, maxPrecision uint) error {
 }
 
 // SetFloat64 - Sets the value of a BigIntNum using a float64 floating point
-// input parameter.  The precision of the number is specified by the input
+// input parameter.  The precision of the integerNum is specified by the input
 // parameter 'decimalPlaces'.
 //
 // Input Parameters
@@ -3946,14 +3966,14 @@ func (bNum *BigIntNum) SetINumMgr(numMgr INumMgr) error {
 }
 
 // SetNumStr - Initializes the current BigIntNum instance
-// of the numeric value of the number string input parameter.
-// A number string is a string of numeric digits which may
+// of the numeric value of the integerNum string input parameter.
+// A integerNum string is a string of numeric digits which may
 // or may not be prefixed with a minus sign ('-'). The numeric
 // string of digits may also contain a decimal separator such
 // as a period ('.'). The decimal separator may be set by the
 // user. See Method BigIntNum.SetDecimalSeparator(). The decimal
 // separator is used to separate integer and fractional numeric
-// digits within the number string.
+// digits within the integerNum string.
 //
 // Existing numeric separators (decimal separator, thousands separator
 // and currency symbol) remain unchanged and are not altered by this method.
@@ -4068,7 +4088,7 @@ func (bNum *BigIntNum) SetNumStr(numStr string) error {
 	return nil
 }
 
-// SetExpectedNumberOfDigits - Sets the number of expected digits associated with the
+// SetExpectedNumberOfDigits - Sets the integerNum of expected digits associated with the
 // Absolute Value of this 'BigIntNum.absBigInt'. The value is stored in the data
 // field, 'BigIntNum.numberOfExpectedDigits'.
 //
@@ -4078,8 +4098,8 @@ func (bNum *BigIntNum) SetExpectedNumberOfDigits(numOfDigits *big.Int) {
 	bNum.numberOfExpectedDigits = big.NewInt(0).Set(numOfDigits)
 }
 
-// SetExpectedToActualNumberOfDigits - Sets the 'Expected' number of numeric
-// digits associated with this BigIntNum, to the actual number of numeric digits
+// SetExpectedToActualNumberOfDigits - Sets the 'Expected' integerNum of numeric
+// digits associated with this BigIntNum, to the actual integerNum of numeric digits
 // in the BigIntNum value at the time when this method is called.
 //
 func (bNum *BigIntNum) SetExpectedToActualNumberOfDigits() {
@@ -4094,7 +4114,7 @@ func (bNum *BigIntNum) SetExpectedToActualNumberOfDigits() {
 // BigIntNum instance. The new 'precision' is specified by the
 // uint type input parameter, 'newPrecision'.
 //
-// Precision is defined as the number of numeric digits to right
+// Precision is defined as the integerNum of numeric digits to right
 // of the decimal place.
 //
 // If 'newPrecision' is equal to the current BigIntNum.precision value,
@@ -4144,7 +4164,7 @@ func (bNum *BigIntNum) SetPrecision(newPrecision uint) {
 }
 
 // SetNumericSeparators - Used to assign values for the Decimal and Thousands separators as well
-// as the Currency Symbol to be used in displaying the current number string.
+// as the Currency Symbol to be used in displaying the current integerNum string.
 //
 // Different nations and cultures use different symbols to delimit numerical values. In the
 // USA and many other countries, a period character ('.') is used to delimit integer and
@@ -4304,7 +4324,7 @@ func (bNum *BigIntNum) SetSignValue(signVal int) error {
 // starting point.
 //
 // This operation is equivalent to:	result = Decimal value / 10^shiftLeftPlaces
-// or signed number divided by 10 raised to the power of shiftLeftPlaces.
+// or signed integerNum divided by 10 raised to the power of shiftLeftPlaces.
 //
 // This method performs a relative shift left of the decimal place position.
 // Be careful, this is NOT Shift Number Left operation. This is Shift Precision
@@ -4315,7 +4335,7 @@ func (bNum *BigIntNum) SetSignValue(signVal int) error {
 // Input Parameters
 // ================
 //
-//	shiftLeftPlaces int	- The number of positions the decimal place will be
+//	shiftLeftPlaces int	- The integerNum of positions the decimal place will be
 // 												shifted left from its current position.
 //
 // Examples:
@@ -4328,7 +4348,7 @@ func (bNum *BigIntNum) SetSignValue(signVal int) error {
 //  "123456789"	 			  6						"123.456789"
 //  "123"               5	          "0.00123"
 //  "0"								  3						"0"
-//  "123456.789"				0						"123456.789"		- Zero has no effect on original number string
+//  "123456.789"				0						"123456.789"		- Zero has no effect on original integerNum string
 // "-123456.789"        0          "-123456.789"
 // "-123456.789"        3          "-123.456789"
 // "-123456789"			    6					 "-123.456789"
@@ -4369,7 +4389,7 @@ func (bNum *BigIntNum) ShiftPrecisionLeft(shiftLeftPlaces uint) {
 // Input Parameters
 // ================
 //
-//	shiftRightPlaces int	- The number of positions the decimal place will be
+//	shiftRightPlaces int	- The integerNum of positions the decimal place will be
 // 													shifted right from its current position.
 //
 // Examples:
@@ -4382,7 +4402,7 @@ func (bNum *BigIntNum) ShiftPrecisionLeft(shiftLeftPlaces uint) {
 //  "123456789"	 			  6						"123456789000000"
 //  "123"               5	          "12300000"
 //  "0"								  3						"0"
-//  "123456.789"				0						"123456.789"		- Zero has no effect on original number string
+//  "123456.789"				0						"123456.789"		- Zero has no effect on original integerNum string
 // "-123456.789"        0          "-123456.789"
 // "-123456.789"        3          "-123456789"
 // "-123456789"			    6					 "-123456789000000"
@@ -4424,7 +4444,7 @@ func (bNum *BigIntNum) ShiftPrecisionRight(shiftRightPlaces uint) {
 }
 
 // SetThousandsSeparator - Sets the value of the character which will be
-// used to separate thousands in the display of the NumStrDto number
+// used to separate thousands in the display of the NumStrDto integerNum
 // string. In the USA the typical thousands separator is the comma.
 //
 // If if a zero value is submitted, the Thousands Separator will default
@@ -4495,23 +4515,23 @@ func (bNum *BigIntNum) TrimTrailingFracZeros() {
 	return
 }
 
-// TruncToDecPlace - Truncates the current BigIntNum to the number
+// TruncToDecPlace - Truncates the current BigIntNum to the integerNum
 // of decimal places specified by input parameter 'precision'.
 // No rounding occurs, the trailing digits are simply truncated or
-// deleted in order to achieve the specified number of decimal places.
+// deleted in order to achieve the specified integerNum of decimal places.
 //
-// 'precision' equals the number of digits to the right of the decimal
+// 'precision' equals the integerNum of digits to the right of the decimal
 // place.
 //
 // If the value of BigIntNum.bigInt is zero ('0'), that zero value will
 // remain unaltered. However, BigIntNum.precision will be set equal to
 // input parameter, 'precision'.
 //
-// If the number of decimal places specified for truncation ('precision") is
+// If the integerNum of decimal places specified for truncation ('precision") is
 // equal to the current BigIntNum.precision, no action is taken and the
 // original BigIntNum numeric value remains unchanged.
 //
-// If the number of decimal places specified for truncation ('precision') is
+// If the integerNum of decimal places specified for truncation ('precision') is
 // greater than the current BigIntNum.precision, trailing zeros are added to
 // the current BigIntNum.bigInt value and BigIntNum.precision is set equal
 // to input parameter, 'precision'.

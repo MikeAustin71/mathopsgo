@@ -5,6 +5,199 @@ import (
 	"math/big"
 )
 
+
+// BigIntFixedDecimal - A light data transfer structure used to represent
+// a numeric value with a fixed integerNum of decimal digits.
+//
+type BigIntFixedDecimal struct {
+
+	integerNum *big.Int // All of the numeric digits, both integer and fraction in
+											// the numeric value represented by this BigIntFixedDecimal
+											// type.
+
+	precision  uint			// Specifies the number of digits to the right of the decimal
+											// place in the numeric value represented by this BigIntFixedDecimal
+	  									// type.
+
+}
+
+
+// CopyIn - Receives a BigIntFixedDecimal type and copies the
+// value to the current BigIntFixedDecimal instance.
+//
+func (bigIFd *BigIntFixedDecimal) CopyIn(fd BigIntFixedDecimal) {
+
+	intVal := fd.GetInteger()
+
+	if intVal == nil {
+		intVal = big.NewInt(0)
+	}
+
+	bigIFd.integerNum = big.NewInt(0).Set(intVal)
+	bigIFd.precision = fd.GetPrecision()
+
+}
+
+// CopyIn - Receives a pointer to a BigIntFixedDecimal type and
+// copies the value to the current BigIntFixedDecimal instance.
+//
+func (bigIFd *BigIntFixedDecimal) CopyInPtr(fd *BigIntFixedDecimal) {
+
+	intVal := fd.GetInteger()
+
+	if intVal == nil {
+		intVal = big.NewInt(0)
+	}
+
+	bigIFd.integerNum = big.NewInt(0).Set(intVal)
+	bigIFd.precision = fd.GetPrecision()
+
+}
+
+// CopyOut - Returns a new BigIntFixedDecimal instance which is
+// a deep copy of the current BigIntFixedDecimal instance.
+//
+func (bigIFd *BigIntFixedDecimal) CopyOut() (BigIntFixedDecimal) {
+
+	return BigIntFixedDecimal{}.New(bigIFd.integerNum, bigIFd.precision)
+}
+
+
+// GetInteger - Returns the 'integerNum' for the current
+// BigIntFixedDecimal instance. The returned *big.Int type
+// contains all the numeric digits which comprise the fixed
+// decimal numerical value represented by this BigIntFixedDecimal
+// instance.
+//
+func (bigIFd *BigIntFixedDecimal) GetInteger() (*big.Int) {
+
+	if bigIFd.integerNum == nil {
+		bigIFd.integerNum = big.NewInt(0)
+	}
+
+	return big.NewInt(0).Set(bigIFd.integerNum)
+}
+
+
+// GetNumericValue - Returns the 'integerNum' and 'precision' values for the
+// current BigIntFixedDecimal instance.
+func (bigIFd *BigIntFixedDecimal) GetNumericValue() (*big.Int, uint) {
+
+	if bigIFd.integerNum == nil {
+		bigIFd.integerNum = big.NewInt(0)
+	}
+
+	return big.NewInt(0).Set(bigIFd.integerNum), bigIFd.precision
+}
+
+// GetPrecision - Returns the 'precision' value for the current
+// BigIntFixedDecimal instance. 'precision' specifies the number
+// of digits to the right of the decimal place in the
+// BigIntFixedDecimal.integerNum.
+func (bigIFd *BigIntFixedDecimal) GetPrecision() (uint) {
+
+	return bigIFd.precision
+}
+
+
+// IsValid - IsValid test the validity of the internal
+// data field BigIntFixedDecimal.integerNum. If this
+// data field is 'nil', BigIntFixedDecimal.integerNum
+// is set to zero and the function returns 'false'.
+//
+// Otherwise, the function returns 'true'.
+//
+func (bigIFd *BigIntFixedDecimal) IsValid() bool {
+
+	if bigIFd.integerNum == nil {
+		bigIFd.integerNum = big.NewInt(0)
+		return false
+	}
+
+	return true
+}
+
+// New - Creates and returns a new BigIntFixedDecimal type based on input parameters,
+// 'integer' and 'precision'.
+//
+// Input Parameters
+// ================
+//
+// integer	*big.Int	- Specifies the sequence of numerical digits in the numeric value.
+//
+// precision		uint	- Specifies the integerNum of digits to the right of the decimal point
+// 											in input parameter, 'integer'.
+//
+func (bigIFd BigIntFixedDecimal) New(integer *big.Int, precision uint) BigIntFixedDecimal {
+
+	num := BigIntFixedDecimal{}
+
+	num.SetNumericValue(integer, precision)
+
+	return num
+}
+
+// NewZero - Creates and returns a new BigIntFixedDecimal type with a zero value. The
+// number of digits to the right of the decimal place is specified by input parameter,
+// precision.
+//
+// Input Parameters
+// ================
+//
+// precision		uint	- Specifies the integerNum of digits to the right of the decimal point.
+//
+//
+func (bigIFd BigIntFixedDecimal) NewZero(precision uint) BigIntFixedDecimal {
+
+	num := BigIntFixedDecimal{}
+
+	num.SetNumericValue(big.NewInt(0), precision)
+
+	return num
+}
+
+// SetNumericValue - Sets the 'integerNum' or integer value for the current
+// BigIntFixedDecimal instance.
+//
+func (bigIFd *BigIntFixedDecimal) SetIntegerValue(integer *big.Int) {
+
+	if integer == nil {
+		bigIFd.integerNum = big.NewInt(0)
+	} else {
+		bigIFd.integerNum = big.NewInt(0).Set(integer)
+	}
+
+}
+
+// SetNumericValue - Sets the 'integerNum' and 'precision' values for the current
+// BigIntFixedDecimal instance. Taken together, 'integerNum' and 'precision' describe
+// a numeric value with a fixed integerNum of fractional digits to the right of the
+// decimal place.
+//
+func (bigIFd *BigIntFixedDecimal) SetNumericValue(integer *big.Int, precision uint) {
+
+	if integer == nil {
+		bigIFd.integerNum = big.NewInt(0)
+	} else {
+		bigIFd.integerNum = big.NewInt(0).Set(integer)
+	}
+
+	bigIFd.precision = precision
+
+}
+
+// SetPrecision - Sets the 'precision' value for the current BigIntFixedDecimal
+// instance. 'precision' specifies the integerNum of fractional digits to the right
+// of the decimal place.
+//
+func (bigIFd *BigIntFixedDecimal) SetPrecisionValue(precision uint) {
+
+	bigIFd.precision = precision
+
+}
+
+
+
 // BigIntPair - contains a pair of 'BitIntNum' types. This structure
 // is used to set up calculations involving *big.Int types.
 type BigIntPair struct {
@@ -298,7 +491,7 @@ func (bPair BigIntPair) NewINumMgr(num1, num2 INumMgr) (BigIntPair, error) {
 	return bPair2, nil
 }
 
-// NewNumStr - Creates a new BigIntPair instance from two number strings
+// NewNumStr - Creates a new BigIntPair instance from two integerNum strings
 // passed as input parameters.
 //
 // The returned BigIntNum's BigIntPair.Big1 and BigIntPair.Big2 will contain default
@@ -330,7 +523,7 @@ func (bPair BigIntPair) NewNumStr(n1NumStr, n2NumStr string) (BigIntPair, error)
 
 }
 
-// NewNumStr - Creates a new BigIntPair instance from two number strings
+// NewNumStr - Creates a new BigIntPair instance from two integerNum strings
 // passed as input parameters.
 //
 // The returned BigIntNum's BigIntPair.Big1 and BigIntPair.Big2 will contain default

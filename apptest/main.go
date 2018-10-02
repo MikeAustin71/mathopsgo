@@ -10,32 +10,23 @@ import (
 
 func main() {
 
-	eNum, err := mathops.BigIntMathLogarithms{}.GetEulersNumberE1050()
+	//exponentStr := "14.2209756660724000"
+	exponentStr := "14.220975666072438486085961843571"
+	exponent, err := mathops.BigIntNum{}.NewNumStr(exponentStr)
+
 	if err != nil {
-		fmt.Printf("Error returned by " +
-			"BigIntMathLogarithms{}.GetEulersNumberE1050(). Error='%v'",
-			err.Error())
+		fmt.Println("Error returned from " +
+			"BigIntNum{}.NewNumStr(exponentStr) Error='%v'", err.Error())
 		return
 	}
 
-	base, err := eNum.GetBigInt()
+	a := mathops.BigIntNum{}.NewInt(13,0)
 
-	if err != nil {
-		fmt.Printf("Error returned by " +
-			"eNum.GetBigInt(). Error='%v'",
-			err.Error())
-		return
+	nCycles:= int64(100)
 
-	}
+	expectedXValue:= "1500000"
 
-	basePrecision := eNum.GetPrecisionUint()
-	exponent := uint(9)
-	internalMaxPrecision := uint((9*basePrecision) + 1)
-	outputMaxPrecision := uint(28)
-	expectedResult := "8103.0839275753840077099966894328"
-
-	TestBigIntPwr(base, basePrecision, exponent, internalMaxPrecision, outputMaxPrecision, expectedResult)
-
+	TestEPwrXFromTaylorSeries(exponent, a, nCycles, expectedXValue)
 }
 
 func TestBigIntPwr(
@@ -70,6 +61,16 @@ func TestBigIntPwr(
 }
 
 func TestEPwrXFromTaylorSeries(exponent, binA mathops.BigIntNum, nCycles int64, expectedXValue string) {
+
+	/*
+	 nCycles:  100
+exponent:  14.220975666072438486085961843571
+  xValue:  1500000.00000000000000000000000069842673210096714730191927902756767566221044250079066725104319314718146994887137115606630049648677768442699335030922790812019670241810296532052911125642686515441075033029443544985829219134240541457261865552972313790517758927060887095319054568787905518252632621321481449139361504466251586088509990238677768615813699307919896788360901752254114404836468448172504734768548195745297400040354523658702608708071939461214809351415323715083214351186140083204203595589902644394289238026
+expectedXValue:  1500000
+StartTime:  2018-10-01 23:47:04.3386444 -0500 CDT m=+0.009993801
+  EndTime:  2018-10-01 23:47:04.372625 -0500 CDT m=+0.043974401
+Time Duration:  33-Milliseconds 980-Microseconds 600-Nanoseconds
+	 */
 
 	timeStart := time.Now()
 
