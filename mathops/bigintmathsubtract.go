@@ -53,13 +53,14 @@ func (bSubtract BigIntMathSubtract) SubtractBigInts(
 	subtrahend *big.Int,
 	subPrecision uint) BigIntNum {
 
-	bPair := BigIntPair{}.NewBase(
-		minuend,
-		minPrecision,
-		subtrahend,
-		subPrecision)
+	result, resultPrecision :=
+		BigIntMathSubtract{}.BigIntSubtract(
+			minuend,
+			minPrecision,
+			subtrahend,
+			subPrecision)
 
-	return bSubtract.subtractPairNoNumSeps(bPair)
+	return BigIntNum{}.NewBigInt(result, resultPrecision)
 }
 
 // SubtractBigIntNums - Receives two 'BigIntNum' instances and proceeds to subtract
@@ -1707,6 +1708,13 @@ func (bSubtract BigIntMathSubtract) BigIntSubtract(
 	subtrahend *big.Int,
 	subPrecision uint) (result *big.Int, resultPrecision uint) {
 
+	if minuend == nil {
+		minuend = big.NewInt(0)
+	}
+
+	if subtrahend == nil {
+		subtrahend = big.NewInt(0)
+	}
 
 	if minPrecision == subPrecision {
 		// Precisions are equal.
@@ -1716,7 +1724,6 @@ func (bSubtract BigIntMathSubtract) BigIntSubtract(
 
 		return result, resultPrecision
 	}
-
 
 	base10 := big.NewInt(10)
 
@@ -1743,6 +1750,57 @@ func (bSubtract BigIntMathSubtract) BigIntSubtract(
 	return result, resultPrecision
 }
 
+// FixedDecimalSubtract - Performs the subtraction operation on two
+// BigIntFixedDecimal types. The subtraction result is returned as
+// a BigIntFixedDecimal type.
+//
+// In the subtraction operation:
+// 								b1 - b2 = difference or result
+//								'minuend' - 'subtrahend' = difference or result
+//								b1 = 'minuend'
+//								b2 = 'subtrahend'
+//
+// Input Parameters
+// ================
+//
+//	minuend BigIntFixedDecimal		- The number from which the subtrahend will be subtracted.
+//                                	The BigIntFixedDecimal type contains a *big.Int integer
+//                                	value and a precision specification. Taken together, they
+//                                	describe a numeric value with a fixed number of fractional
+//                                	digits to the right of the decimal point.
+//
+//	subtrahend BigIntFixedDecimal	- The number to be subtracted from the 'minuend'.
+//                                	The BigIntFixedDecimal type contains a *big.Int integer
+//                                	value and a precision specification. Taken together, they
+//                                	describe a numeric value with a fixed number of fractional
+//                                	digits to the right of the decimal point.
+//
+// Return Values
+// =============
+//
+// result BigIntFixedDecimal				- The difference or result of the subtraction operation
+//                          					returned as a BigIntFixedDecimal type.
+//
+func (bSubtract BigIntMathSubtract) FixedDecimalSubtract(
+	minuend BigIntFixedDecimal,
+	subtrahend BigIntFixedDecimal) (result BigIntFixedDecimal) {
+
+	result = BigIntFixedDecimal{}.NewZero(0)
+
+	minuend.IsValid()
+	subtrahend.IsValid()
+
+	rBigInt, rBigIntPrecision :=
+		BigIntMathSubtract{}.BigIntSubtract(
+			minuend.GetInteger(),
+			minuend.GetPrecision(),
+			subtrahend.GetInteger(),
+			subtrahend.GetPrecision())
+
+	result.SetNumericValue(rBigInt, rBigIntPrecision)
+
+	return result
+}
 
 // subtractPairNoNumSeps - Performs the subtraction operation. This method receives a type
 // 'BigIntPair' and proceeds to subtract bPair.Big1 from bPair.Big2.
