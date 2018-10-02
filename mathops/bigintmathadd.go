@@ -25,14 +25,49 @@ func (bAdd BigIntMathAdd) AddBigInts(
 	b2 *big.Int,
 	precision2 uint) BigIntNum {
 
-	b1Pair := BigIntPair{}.NewBase(b1, precision1, b2, precision2)
+	result, resultPrecision := BigIntMathAdd{}.BigIntAdd(b1, precision1, b2, precision2)
 
-	finalResult := bAdd.addPairNoNumSeps(b1Pair)
+	return BigIntNum{}.NewBigInt(result, resultPrecision)
 
-	finalResult.SetNumericSeparatorsToDefaultIfEmpty()
+	/*
+	bigIntResult := big.NewInt(0)
 
-	return finalResult
+	if precision1 == precision2 {
+		bigIntResult = big.NewInt(0).Add(b1, b2	)
+		return BigIntNum{}.NewBigInt(bigIntResult, precision1)
+	}
+
+	bigTen := big.NewInt(10)
+
+	if precision1 > precision2 {
+
+		delta := int64(precision1 - precision2)
+
+		scale := big.NewInt(0).Exp(bigTen, big.NewInt(delta), nil)
+
+		b2ToScale := big.NewInt(0).Mul(b2, scale)
+
+		bigIntResult = big.NewInt(0).Add(b1, b2ToScale)
+
+		return BigIntNum{}.NewBigInt(bigIntResult, precision1)
+
+	}
+
+	// precision2 must be GREATER than precision1
+
+	delta := int64(precision2 - precision1)
+
+	scale := big.NewInt(0).Exp(bigTen, big.NewInt(delta), nil)
+
+	b1ToScale := big.NewInt(0).Mul(b1, scale)
+
+	bigIntResult = big.NewInt(0).Add(b1ToScale, b2)
+
+	return BigIntNum{}.NewBigInt(bigIntResult, precision2)
+*/
+
 }
+
 
 // AddBigIntNums - Adds two BigIntNums and returns the result in a new
 // BigIntNum instance
@@ -1408,6 +1443,98 @@ func (bAdd BigIntMathAdd) AddPair(bPair BigIntPair) BigIntNum {
 
 	return finalResult
 }
+
+// BigIntAdd - Adds two *big.Int numbers. Each *big.Int number
+// is passed to the method with an associated decimal place precision
+// specification.
+//
+// The result of the addition operation will be returned as a *big.Int
+// type and a precision specification.
+//
+func (bAdd BigIntMathAdd) BigIntAdd(
+	b1 *big.Int,
+	precision1 uint,
+	b2 *big.Int,
+	precision2 uint) (result *big.Int, precision uint) {
+
+	result = big.NewInt(0)
+	precision = 0
+
+	if b1 == nil {
+		b1 = big.NewInt(0)
+	}
+
+	if b2 == nil {
+		b2 = big.NewInt(0)
+	}
+
+	if precision1 == precision2 {
+		result = big.NewInt(0).Add(b1, b2	)
+		precision = precision1
+
+		return result, precision
+	}
+
+	bigTen := big.NewInt(10)
+
+	if precision1 > precision2 {
+
+		delta := int64(precision1 - precision2)
+
+		scale := big.NewInt(0).Exp(bigTen, big.NewInt(delta), nil)
+
+		b2ToScale := big.NewInt(0).Mul(b2, scale)
+
+		result = big.NewInt(0).Add(b1, b2ToScale)
+		precision = precision1
+
+		return result, precision
+
+	}
+
+	// precision2 must be GREATER than precision1
+
+	delta := int64(precision2 - precision1)
+
+	scale := big.NewInt(0).Exp(bigTen, big.NewInt(delta), nil)
+
+	b1ToScale := big.NewInt(0).Mul(b1, scale)
+
+	result = big.NewInt(0).Add(b1ToScale, b2)
+	precision = precision2
+
+	return result, precision
+}
+
+// FixedDecimalAdd - Adds two BigIntFixedDecimal types. The BigIntFixedDecimal
+// type includes a *big.Int integer value and a precision specification. Taken
+// together they represent a fixed length decimal numeric value.
+//
+// The result of the addition operation will be returned as a BigIntFixedDecimal
+// type.
+//
+func (bAdd BigIntMathAdd) FixedDecimalAdd(
+	b1,
+	b2 BigIntFixedDecimal ) (result BigIntFixedDecimal) {
+
+	result = BigIntFixedDecimal{}.NewZero(0)
+
+	b1.IsValid()
+
+	b2.IsValid()
+
+	bIResult, bIPrecision :=
+		BigIntMathAdd{}.BigIntAdd(
+			b1.GetInteger(),
+			b1.GetPrecision(),
+			b2.GetInteger(),
+			b2.GetPrecision())
+
+	result.SetNumericValue(bIResult, bIPrecision)
+
+	return result
+}
+
 
 // addPairNoNumSeps - Receives a BigIntPair and proceeds to add b1.BigIntNum to
 // b2.BigIntNum.
