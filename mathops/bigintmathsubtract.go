@@ -1672,6 +1672,78 @@ func (bSubtract BigIntMathSubtract) SubtractPair(bPair BigIntPair) BigIntNum {
 	return finalResult
 }
 
+// BigIntSubtract - Performs the subtraction operation on two *big.Int types.
+//
+// In the subtraction operation:
+// 								b1 - b2 = difference or result
+//								'minuend' - 'subtrahend' = difference or result
+//								b1 = 'minuend'
+//								b2 = 'subtrahend'
+//
+// Input Parameters
+// ================
+//
+//	minuend *big.Int					- The number from which the subtrahend will be subtracted
+//	minPrecision uint,				- The 'minuend' precision or numeric digits after
+//																	the decimal point.
+//	subtrahend *big.Int,			- The number to be subtracted from the 'minuend'.
+//	subPrecision uint  				- The 'subtrahend' precision or numeric digits after
+//																	the decimal point.
+//
+// Return Values
+// =============
+//
+// result *big.Int				- The difference or result of the subtraction operation
+//                          returned as a *big.Int type.
+//
+// resultPrecision uint   - The precision specification for the returned
+//                          subtraction 'result'. Precision specifies the
+//                          number of fractional digits to the right of the
+//                          decimal place.
+//
+func (bSubtract BigIntMathSubtract) BigIntSubtract(
+	minuend *big.Int,
+	minPrecision uint,
+	subtrahend *big.Int,
+	subPrecision uint) (result *big.Int, resultPrecision uint) {
+
+
+	if minPrecision == subPrecision {
+		// Precisions are equal.
+
+		result = big.NewInt(0).Sub(minuend, subtrahend)
+		resultPrecision = minPrecision
+
+		return result, resultPrecision
+	}
+
+
+	base10 := big.NewInt(10)
+
+	if minPrecision > subPrecision {
+		deltaPrecision := big.NewInt(int64(minPrecision - subPrecision))
+		deltaPrecisionScale := big.NewInt(0).Exp(base10, deltaPrecision, nil)
+		newSubInt := big.NewInt(0).Mul(subtrahend, deltaPrecisionScale)
+
+		result = big.NewInt(0).Sub(minuend, newSubInt)
+		resultPrecision = minPrecision
+
+		return result, resultPrecision
+
+	}
+
+	// Must be subPrecision GREATER THAN minPrecision
+	deltaPrecision := big.NewInt(int64(subPrecision - minPrecision))
+	deltaPrecisionScale := big.NewInt(0).Exp(base10, deltaPrecision, nil)
+	newMinuendInt := big.NewInt(0).Mul(minuend, deltaPrecisionScale)
+
+	result = big.NewInt(0).Sub(newMinuendInt, subtrahend)
+	resultPrecision = subPrecision
+
+	return result, resultPrecision
+}
+
+
 // subtractPairNoNumSeps - Performs the subtraction operation. This method receives a type
 // 'BigIntPair' and proceeds to subtract bPair.Big1 from bPair.Big2.
 //

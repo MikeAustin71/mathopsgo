@@ -1,6 +1,9 @@
 package mathops
 
-import "testing"
+import (
+	"math/big"
+	"testing"
+)
 
 func TestBigIntMathSubtract_SubtractPair_01(t *testing.T) {
 	// minuend = 123.32
@@ -726,4 +729,434 @@ func TestBigIntMathSubtract_SubtractPair_10(t *testing.T) {
 			expectedNumSeps.String(), actualNumSeps.String())
 	}
 
+}
+
+
+func TestBigIntMathSubtract_BigIntSubtract_01(t *testing.T) {
+	// minuend = 123.32
+	minuendStr := "123.32"
+
+	// subtrahend = 23.321
+	subtrahendStr := "23.321"
+
+	// result = 99.999
+	expectedBigINumStr := "99.999"
+
+	minuendBiNum, err := BigIntNum{}.NewNumStr(minuendStr)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(minuendStr) "+
+			"minuendStr='%v'  Error='%v'. ", minuendStr, err.Error())
+	}
+
+	subtrahendBiNum, err := BigIntNum{}.NewNumStr(subtrahendStr)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(subtrahendStr) "+
+			"subtrahendStr='%v'  Error='%v'. ", subtrahendStr, err.Error())
+	}
+
+	expectedBigINum, err := BigIntNum{}.NewNumStr(expectedBigINumStr)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(expectedBigINumStr) "+
+			"expectedBigINumStr='%v'  Error='%v'. ", expectedBigINumStr, err.Error())
+	}
+
+	bIMinuend := big.NewInt(0).Set(minuendBiNum.bigInt)
+	minuendPrecision := minuendBiNum.GetPrecisionUint()
+	biSubtrahend := big.NewInt(0).Set(subtrahendBiNum.bigInt)
+	subtrahendPrecision := subtrahendBiNum.GetPrecisionUint()
+
+	result, resultPrecision := BigIntMathSubtract{}.BigIntSubtract(
+		bIMinuend,
+		minuendPrecision,
+		biSubtrahend,
+		subtrahendPrecision)
+
+	expectedBI := expectedBigINum.GetIntegerValue()
+
+	if expectedBI.Cmp(result) != 0 {
+		t.Errorf("Error: Expected BigIntNum='%s'. Instead, BigIntNum= '%s'. ",
+			expectedBI.Text(10), result.Text(10))
+	}
+
+	if expectedBigINum.GetPrecisionUint() != resultPrecision {
+		t.Errorf("Error: Expected result precision='%v'. Instead, result precision='%v'. ",
+			expectedBigINum.GetPrecisionUint(), resultPrecision)
+	}
+}
+
+func TestBigIntMathSubtract_BigIntSubtract_02(t *testing.T) {
+	// minuend = 949321.6712
+	minuendStr := "949321.6712"
+
+	// subtrahend = 45678.21
+	subtrahendStr := "45678.21"
+
+	// result = 903643.4612
+	expectedBigINumStr := "903643.4612"
+
+	minuendBiNum, err := BigIntNum{}.NewNumStr(minuendStr)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(minuendStr) "+
+			"minuendStr='%v'  Error='%v'. ", minuendStr, err.Error())
+	}
+
+	subtrahendBiNum, err := BigIntNum{}.NewNumStr(subtrahendStr)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(subtrahendStr) "+
+			"subtrahendStr='%v'  Error='%v'. ", subtrahendStr, err.Error())
+	}
+
+	expectedBigINum, err := BigIntNum{}.NewNumStr(expectedBigINumStr)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(expectedBigINumStr) "+
+			"expectedBigINumStr='%v'  Error='%v'. ", expectedBigINumStr, err.Error())
+	}
+
+	bIMinuend := big.NewInt(0).Set(minuendBiNum.bigInt)
+	minuendPrecision := minuendBiNum.GetPrecisionUint()
+	biSubtrahend := big.NewInt(0).Set(subtrahendBiNum.bigInt)
+	subtrahendPrecision := subtrahendBiNum.GetPrecisionUint()
+
+	result, resultPrecision := BigIntMathSubtract{}.BigIntSubtract(
+		bIMinuend,
+		minuendPrecision,
+		biSubtrahend,
+		subtrahendPrecision)
+
+	expectedBI := expectedBigINum.GetIntegerValue()
+
+	if expectedBI.Cmp(result) != 0 {
+		t.Errorf("Error: Expected BigIntNum='%s'. Instead, BigIntNum= '%s'. ",
+			expectedBI.Text(10), result.Text(10))
+	}
+
+	if expectedBigINum.GetPrecisionUint() != resultPrecision {
+		t.Errorf("Error: Expected result precision='%v'. Instead, result precision='%v'. ",
+			expectedBigINum.GetPrecisionUint(), resultPrecision)
+	}
+
+}
+
+func TestBigIntMathSubtract_BigIntSubtract_03(t *testing.T) {
+	// minuend = -5876458.56789012
+	minuendStr := "-5876458.56789012"
+
+	// subtrahend = 847129.876
+	subtrahendStr := "847129.876"
+
+	// result = -6723588.44389012
+	expectedBigINumStr := "-6723588.44389012"
+
+	minuendBiNum, err := BigIntNum{}.NewNumStr(minuendStr)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(minuendStr) "+
+			"minuendStr='%v'  Error='%v'. ", minuendStr, err.Error())
+	}
+
+	subtrahendBiNum, err := BigIntNum{}.NewNumStr(subtrahendStr)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(subtrahendStr) "+
+			"subtrahendStr='%v'  Error='%v'. ", subtrahendStr, err.Error())
+	}
+
+	expectedBigINum, err := BigIntNum{}.NewNumStr(expectedBigINumStr)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(expectedBigINumStr) "+
+			"expectedBigINumStr='%v'  Error='%v'. ", expectedBigINumStr, err.Error())
+	}
+
+	bIMinuend := big.NewInt(0).Set(minuendBiNum.bigInt)
+	minuendPrecision := minuendBiNum.GetPrecisionUint()
+	biSubtrahend := big.NewInt(0).Set(subtrahendBiNum.bigInt)
+	subtrahendPrecision := subtrahendBiNum.GetPrecisionUint()
+
+	result, resultPrecision := BigIntMathSubtract{}.BigIntSubtract(
+		bIMinuend,
+		minuendPrecision,
+		biSubtrahend,
+		subtrahendPrecision)
+
+	expectedBI := expectedBigINum.GetIntegerValue()
+
+	if expectedBI.Cmp(result) != 0 {
+		t.Errorf("Error: Expected BigIntNum='%s'. Instead, BigIntNum= '%s'. ",
+			expectedBI.Text(10), result.Text(10))
+	}
+
+	if expectedBigINum.GetPrecisionUint() != resultPrecision {
+		t.Errorf("Error: Expected result precision='%v'. Instead, result precision='%v'. ",
+			expectedBigINum.GetPrecisionUint(), resultPrecision)
+	}
+}
+
+func TestBigIntMathSubtract_BigIntSubtract_04(t *testing.T) {
+	// minuend = -289.673849
+	minuendStr := "-289.673849"
+
+	// subtrahend = -14579.012
+	subtrahendStr := "-14579.012"
+
+	// result = 14289.338151
+	expectedBigINumStr := "14289.338151"
+
+	minuendBiNum, err := BigIntNum{}.NewNumStr(minuendStr)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(minuendStr) "+
+			"minuendStr='%v'  Error='%v'. ", minuendStr, err.Error())
+	}
+
+	subtrahendBiNum, err := BigIntNum{}.NewNumStr(subtrahendStr)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(subtrahendStr) "+
+			"subtrahendStr='%v'  Error='%v'. ", subtrahendStr, err.Error())
+	}
+
+	expectedBigINum, err := BigIntNum{}.NewNumStr(expectedBigINumStr)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(expectedBigINumStr) "+
+			"expectedBigINumStr='%v'  Error='%v'. ", expectedBigINumStr, err.Error())
+	}
+
+	bIMinuend := big.NewInt(0).Set(minuendBiNum.bigInt)
+	minuendPrecision := minuendBiNum.GetPrecisionUint()
+	biSubtrahend := big.NewInt(0).Set(subtrahendBiNum.bigInt)
+	subtrahendPrecision := subtrahendBiNum.GetPrecisionUint()
+
+	result, resultPrecision := BigIntMathSubtract{}.BigIntSubtract(
+		bIMinuend,
+		minuendPrecision,
+		biSubtrahend,
+		subtrahendPrecision)
+
+	expectedBI := expectedBigINum.GetIntegerValue()
+
+	if expectedBI.Cmp(result) != 0 {
+		t.Errorf("Error: Expected BigIntNum='%s'. Instead, BigIntNum= '%s'. ",
+			expectedBI.Text(10), result.Text(10))
+	}
+
+	if expectedBigINum.GetPrecisionUint() != resultPrecision {
+		t.Errorf("Error: Expected result precision='%v'. Instead, result precision='%v'. ",
+			expectedBigINum.GetPrecisionUint(), resultPrecision)
+	}
+}
+
+func TestBigIntMathSubtract_BigIntSubtract_05(t *testing.T) {
+
+	minuendStr := "5"
+
+
+	subtrahendStr := "5"
+
+
+	expectedBigINumStr := "0"
+
+	minuendBiNum, err := BigIntNum{}.NewNumStr(minuendStr)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(minuendStr) "+
+			"minuendStr='%v'  Error='%v'. ", minuendStr, err.Error())
+	}
+
+	subtrahendBiNum, err := BigIntNum{}.NewNumStr(subtrahendStr)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(subtrahendStr) "+
+			"subtrahendStr='%v'  Error='%v'. ", subtrahendStr, err.Error())
+	}
+
+	expectedBigINum, err := BigIntNum{}.NewNumStr(expectedBigINumStr)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(expectedBigINumStr) "+
+			"expectedBigINumStr='%v'  Error='%v'. ", expectedBigINumStr, err.Error())
+	}
+
+	bIMinuend := big.NewInt(0).Set(minuendBiNum.bigInt)
+	minuendPrecision := minuendBiNum.GetPrecisionUint()
+	biSubtrahend := big.NewInt(0).Set(subtrahendBiNum.bigInt)
+	subtrahendPrecision := subtrahendBiNum.GetPrecisionUint()
+
+	result, resultPrecision := BigIntMathSubtract{}.BigIntSubtract(
+		bIMinuend,
+		minuendPrecision,
+		biSubtrahend,
+		subtrahendPrecision)
+
+	expectedBI := expectedBigINum.GetIntegerValue()
+
+	if expectedBI.Cmp(result) != 0 {
+		t.Errorf("Error: Expected BigIntNum='%s'. Instead, BigIntNum= '%s'. ",
+			expectedBI.Text(10), result.Text(10))
+	}
+
+	if expectedBigINum.GetPrecisionUint() != resultPrecision {
+		t.Errorf("Error: Expected result precision='%v'. Instead, result precision='%v'. ",
+			expectedBigINum.GetPrecisionUint(), resultPrecision)
+	}
+}
+
+func TestBigIntMathSubtract_BigIntSubtract_06(t *testing.T) {
+
+	minuendStr := "-5"
+	subtrahendStr := "5"
+	expectedBigINumStr := "-10"
+
+	minuendBiNum, err := BigIntNum{}.NewNumStr(minuendStr)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(minuendStr) "+
+			"minuendStr='%v'  Error='%v'. ", minuendStr, err.Error())
+	}
+
+	subtrahendBiNum, err := BigIntNum{}.NewNumStr(subtrahendStr)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(subtrahendStr) "+
+			"subtrahendStr='%v'  Error='%v'. ", subtrahendStr, err.Error())
+	}
+
+	expectedBigINum, err := BigIntNum{}.NewNumStr(expectedBigINumStr)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(expectedBigINumStr) "+
+			"expectedBigINumStr='%v'  Error='%v'. ", expectedBigINumStr, err.Error())
+	}
+
+	bIMinuend := big.NewInt(0).Set(minuendBiNum.bigInt)
+	minuendPrecision := minuendBiNum.GetPrecisionUint()
+	biSubtrahend := big.NewInt(0).Set(subtrahendBiNum.bigInt)
+	subtrahendPrecision := subtrahendBiNum.GetPrecisionUint()
+
+	result, resultPrecision := BigIntMathSubtract{}.BigIntSubtract(
+		bIMinuend,
+		minuendPrecision,
+		biSubtrahend,
+		subtrahendPrecision)
+
+	expectedBI := expectedBigINum.GetIntegerValue()
+
+	if expectedBI.Cmp(result) != 0 {
+		t.Errorf("Error: Expected BigIntNum='%s'. Instead, BigIntNum= '%s'. ",
+			expectedBI.Text(10), result.Text(10))
+	}
+
+	if expectedBigINum.GetPrecisionUint() != resultPrecision {
+		t.Errorf("Error: Expected result precision='%v'. Instead, result precision='%v'. ",
+			expectedBigINum.GetPrecisionUint(), resultPrecision)
+	}
+}
+
+func TestBigIntMathSubtract_BigIntSubtract_07(t *testing.T) {
+
+	minuendStr := "0"
+	subtrahendStr := "0"
+	expectedBigINumStr := "0"
+
+	minuendBiNum, err := BigIntNum{}.NewNumStr(minuendStr)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(minuendStr) "+
+			"minuendStr='%v'  Error='%v'. ", minuendStr, err.Error())
+	}
+
+	subtrahendBiNum, err := BigIntNum{}.NewNumStr(subtrahendStr)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(subtrahendStr) "+
+			"subtrahendStr='%v'  Error='%v'. ", subtrahendStr, err.Error())
+	}
+
+	expectedBigINum, err := BigIntNum{}.NewNumStr(expectedBigINumStr)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(expectedBigINumStr) "+
+			"expectedBigINumStr='%v'  Error='%v'. ", expectedBigINumStr, err.Error())
+	}
+
+	bIMinuend := big.NewInt(0).Set(minuendBiNum.bigInt)
+	minuendPrecision := minuendBiNum.GetPrecisionUint()
+	biSubtrahend := big.NewInt(0).Set(subtrahendBiNum.bigInt)
+	subtrahendPrecision := subtrahendBiNum.GetPrecisionUint()
+
+	result, resultPrecision := BigIntMathSubtract{}.BigIntSubtract(
+		bIMinuend,
+		minuendPrecision,
+		biSubtrahend,
+		subtrahendPrecision)
+
+	expectedBI := expectedBigINum.GetIntegerValue()
+
+	if expectedBI.Cmp(result) != 0 {
+		t.Errorf("Error: Expected BigIntNum='%s'. Instead, BigIntNum= '%s'. ",
+			expectedBI.Text(10), result.Text(10))
+	}
+
+	if expectedBigINum.GetPrecisionUint() != resultPrecision {
+		t.Errorf("Error: Expected result precision='%v'. Instead, result precision='%v'. ",
+			expectedBigINum.GetPrecisionUint(), resultPrecision)
+	}
+}
+
+func TestBigIntMathSubtract_BigIntSubtract_08(t *testing.T) {
+
+	minuendStr := "50.0"
+	subtrahendStr := "2.60134"
+	expectedBigINumStr := "47.39866"
+
+	minuendBiNum, err := BigIntNum{}.NewNumStr(minuendStr)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(minuendStr) "+
+			"minuendStr='%v'  Error='%v'. ", minuendStr, err.Error())
+	}
+
+	subtrahendBiNum, err := BigIntNum{}.NewNumStr(subtrahendStr)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(subtrahendStr) "+
+			"subtrahendStr='%v'  Error='%v'. ", subtrahendStr, err.Error())
+	}
+
+	expectedBigINum, err := BigIntNum{}.NewNumStr(expectedBigINumStr)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(expectedBigINumStr) "+
+			"expectedBigINumStr='%v'  Error='%v'. ", expectedBigINumStr, err.Error())
+	}
+
+	bIMinuend := big.NewInt(0).Set(minuendBiNum.bigInt)
+	minuendPrecision := minuendBiNum.GetPrecisionUint()
+	biSubtrahend := big.NewInt(0).Set(subtrahendBiNum.bigInt)
+	subtrahendPrecision := subtrahendBiNum.GetPrecisionUint()
+
+	result, resultPrecision := BigIntMathSubtract{}.BigIntSubtract(
+		bIMinuend,
+		minuendPrecision,
+		biSubtrahend,
+		subtrahendPrecision)
+
+	expectedBI := expectedBigINum.GetIntegerValue()
+
+	if expectedBI.Cmp(result) != 0 {
+		t.Errorf("Error: Expected BigIntNum='%s'. Instead, BigIntNum= '%s'. ",
+			expectedBI.Text(10), result.Text(10))
+	}
+
+	if expectedBigINum.GetPrecisionUint() != resultPrecision {
+		t.Errorf("Error: Expected result precision='%v'. Instead, result precision='%v'. ",
+			expectedBigINum.GetPrecisionUint(), resultPrecision)
+	}
 }
