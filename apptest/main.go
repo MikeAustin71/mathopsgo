@@ -9,24 +9,121 @@ import (
 )
 
 func main() {
+/*
+	dividendStr := "10.5"
+	divisorStr := "2"
+	expectedQuoStr := "5.25"
+	maxPrecision := uint(15)
+	//    2.5					/				 	12.555			=		0.199123855037834
+	// maxPrecision = 15
 
-	//exponentStr := "14.2209756660724000"
-	exponentStr := "14.220975666072438486085961843571"
-	exponent, err := mathops.BigIntNum{}.NewNumStr(exponentStr)
+// Dividend		divided by		Divisor			=					Quotient
+	//  -10						/					- 2					=						5
+*/
+	dividend := big.NewInt(-10)
+	dividendPrecision := uint(0)
+
+	divisor := big.NewInt(-2)
+	divisorPrecision := uint(0)
+	expectedResult := "5"
+	maxPrecision := uint(32)
+
+	// expectedResult := "0.41436922386282680615600815856503"
+	//                "0.41436922386282680615600815856503"
+	//               "-0.41436922386282680615600815856503"
+	// expectedResult := "-0.41436922386282680615600815856503"
+
+	TestBigIntDivide(
+		dividend,
+		dividendPrecision,
+		divisor,
+		divisorPrecision,
+		maxPrecision,
+		expectedResult)
+}
+
+func TestBigIntDivide(
+	dividend *big.Int,
+	dividendPrecision uint,
+	divisor *big.Int,
+	divisorPrecision,
+	maxPrecision uint,
+	expectedResult string) {
+
+	quotient, quotientPrecision, err :=
+		mathops.BigIntMathDivide{}.BigIntFracQuotient(
+			dividend,
+			dividendPrecision,
+			divisor,
+			divisorPrecision,
+			maxPrecision)
 
 	if err != nil {
-		fmt.Println("Error returned from " +
-			"BigIntNum{}.NewNumStr(exponentStr) Error='%v'", err.Error())
+		fmt.Printf("Error returned by "+
+			"BigIntMathDivide{}.BigIntFracQuotient() " +
+			"Error='%v'", err.Error())
 		return
 	}
 
-	a := mathops.BigIntNum{}.NewInt(13,0)
+	biNumResult := mathops.BigIntNum{}.NewBigInt(quotient,quotientPrecision)
+	timeStart := time.Now()
+	biNumExpectedResult, err := mathops.BigIntNum{}.NewNumStr(expectedResult)
+	timeEnd := time.Now()
 
-	nCycles:= int64(100)
+	if err != nil {
+		fmt.Printf("Error returned by "+
+			"BigIntNum{}.NewNumStr(expectedResult) " +
+			"Error='%v'", err.Error())
+		return
+	}
 
-	expectedXValue:= "1500000"
+	fmt.Println("** Test BigIntMathDivide{}.BigIntFracQuotient() **")
+	fmt.Println("--------------------------------------------------")
+	fmt.Println("                 dividend: ", dividend.Text(10))
+	fmt.Println("        dividendPrecision: ", dividendPrecision)
+	fmt.Println("                  divisor: ", divisor.Text(10))
+	fmt.Println("         divisorPrecision: ", divisorPrecision)
+	fmt.Println("                 quotient: ", quotient.Text(10))
+	fmt.Println("             maxPrecision: ", maxPrecision)
+	fmt.Println("        quotientPrecision: ", quotientPrecision)
+	fmt.Println("          quotient Result: ", biNumResult.GetNumStr())
+	fmt.Println("quotient Result Precision: ", biNumResult.GetPrecisionUint())
+	fmt.Println("          expected Result: ", expectedResult)
+	fmt.Println("   bi Num Expected Result: ", biNumExpectedResult.GetNumStr())
+	fmt.Println("bi Num Expected Precision: ", biNumExpectedResult.GetPrecisionUint())
+	fmt.Println("====================================================")
+	if biNumExpectedResult.GetNumStr() == biNumResult.GetNumStr() {
+		fmt.Println("Success! Expected Result Matches Actual Result!")
+	} else {
+		fmt.Println("Failure! Expected Result DOES NOT Match Actual Result!")
+	}
+	fmt.Println("====================================================")
 
-	TestEPwrXFromTaylorSeries(exponent, a, nCycles, expectedXValue)
+	timeDuration := timeEnd.Sub(timeStart)
+
+	duration := examples.CodeDurationToStr(timeDuration)
+	fmt.Println("Time Duration: ", duration)
+	fmt.Println("====================================================")
+	biNumDividend := mathops.BigIntNum{}.NewBigInt(dividend, dividendPrecision)
+	biNumDivisor := mathops.BigIntNum{}.NewBigInt(divisor, divisorPrecision)
+	timeStart = time.Now()
+	biNumQuotient, err :=mathops.BigIntMathDivide{}.BigIntNumFracQuotient(biNumDividend, biNumDivisor, maxPrecision)
+	if err != nil {
+		fmt.Printf("Error returned by BigIntMathDivide{}.BigIntNumFracQuotient() " +
+			"Error='%v' ", err.Error())
+		return
+	}
+	timeEnd = time.Now()
+	timeDuration = timeEnd.Sub(timeStart)
+	duration = examples.CodeDurationToStr(timeDuration)
+	fmt.Println("-- BigIntMathDivide{}.BigIntNumFracQuotient() --")
+	fmt.Println("--------------------------------------------------")
+	fmt.Println("dividend: ", biNumDividend.GetNumStr())
+	fmt.Println(" divisor: ", biNumDivisor.GetNumStr())
+	fmt.Println("quotient: ", biNumQuotient.GetNumStr())
+	fmt.Println("====================================================")
+	fmt.Println("Time Duration: ", duration)
+
 }
 
 func TestBigIntPwr(

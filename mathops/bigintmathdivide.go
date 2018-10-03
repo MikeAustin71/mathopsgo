@@ -23,6 +23,12 @@ type BigIntMathDivide struct {
 	// to the right of the decimal place.
 }
 
+// BigIntFracQuotient - Performs a division on integers of type *big.Int.
+// The result is returned a as a type *big.Int with an accompanying precision
+// specification. Taken together, the returned *big.Int quotient and precision
+// specification describe a floating point numeric value with a a fixed number
+// of digits after the decimal place.
+//
 func (bIDivide BigIntMathDivide) BigIntFracQuotient(
 	dividend *big.Int,
 	dividendPrecision uint,
@@ -42,16 +48,131 @@ func (bIDivide BigIntMathDivide) BigIntFracQuotient(
 
 	if divisor == nil {
 		divisor = big.NewInt(0)
-		err = fmt.Errorf(ePrefix + "Error - Divide by Zero!")
+	}
+
+	bigZero := big.NewInt(0)
+
+	if divisor.Cmp(bigZero) == 0 {
+		err = fmt.Errorf(ePrefix + "Error - Divide by ZERO! Input parameter 'divisor' is ZERO!")
 		return quotient, quotientPrecision, err
 	}
 
+	if dividend.Cmp(bigZero) == 0 {
+		err = nil
+		return quotient, quotientPrecision, err
+	}
 
-	intQuotient, _ := big.NewInt(0).QuoRem(dividend, divisor, big.NewInt(0))
+	// Prepare divisor
+	// Setting to absolute value of divisor
+	denomnatrDivsr := big.NewInt(0).Set(divisor)
+	denomnatrDivsrSign := int64(1)
+
+	if divisor.Cmp(bigZero) == -1 {
+		denomnatrDivsrSign = -1
+		denomnatrDivsr.Mul(denomnatrDivsr, big.NewInt(denomnatrDivsrSign))
+	}
+
+
+	// Prepare dividend
+	// Setting to absolute value of dividend
+	bigTen := big.NewInt(10)
+
+	numratrDivdnd := big.NewInt(0).Set(dividend)
+	numratrDivdndSign := int64(1)
+
+	if dividend.Cmp(bigZero) == -1 {
+		numratrDivdndSign = -1
+		numratrDivdnd.Mul(numratrDivdnd, big.NewInt(numratrDivdndSign))
+	}
+
+	denomnatrDivsrShift := int64(divisorPrecision)
+	numratrDivdndShift := int64(dividendPrecision)
+	scale := big.NewInt(0)
+
+	if numratrDivdndShift > 0 {
+		denomnatrDivsrShift -= numratrDivdndShift
+		if denomnatrDivsrShift < 0 {
+			scale = big.NewInt(0).Exp(bigTen, big.NewInt(denomnatrDivsrShift*-1), nil)
+			denomnatrDivsr.Mul(denomnatrDivsr, scale)
+		}
+
+		numratrDivdndShift = 0
+  }
+
+	if denomnatrDivsrShift > 0 {
+		numratrDivdndShift -= denomnatrDivsrShift
+		if numratrDivdndShift < 0 {
+
+			scale = big.NewInt(0).Exp(bigTen, big.NewInt(numratrDivdndShift*-1), nil)
+			numratrDivdnd.Mul(numratrDivdnd, scale)
+
+		}
+	}
+
+	// Do integer division
+
+	intQuotient, intRemndr := big.NewInt(0).QuoRem(numratrDivdnd, denomnatrDivsr, big.NewInt(0))
 
 	quotient = big.NewInt(0).Set(intQuotient)
 
-	quotientPrecision = 0
+	// Calculate fractional digits out to maxPrecision + 1
+
+	i64MaxPrecision := int64(maxPrecision)
+	i64MaxPrecision++
+	lastNonZeroDigitIdx := int64(-1)
+	for i:=int64(0); i < i64MaxPrecision; i++ {
+
+		numratrDivdnd = big.NewInt(0).Mul(intRemndr, bigTen)
+		intQuotient, intRemndr = big.NewInt(0).QuoRem(numratrDivdnd, denomnatrDivsr, big.NewInt(0))
+
+		if intQuotient.Cmp(bigZero) == 1 {
+			lastNonZeroDigitIdx = i
+		}
+
+		quotient.Mul(quotient, bigTen)
+		quotient.Add(quotient, intQuotient)
+
+	}
+
+	if lastNonZeroDigitIdx == -1 {
+
+		scale = big.NewInt(0).Exp(bigTen, big.NewInt(i64MaxPrecision), nil)
+		quotient.Quo(quotient, scale)
+		quotientPrecision = 0
+
+
+	}	else if lastNonZeroDigitIdx < (i64MaxPrecision-1) {
+		/*
+		fmt.Println("lastNotZeroDigitIdx ", lastNonZeroDigitIdx)
+		fmt.Println("    i64MaxPrecision ", i64MaxPrecision)
+		*/
+
+		scale =
+			big.NewInt(0).Exp(bigTen, big.NewInt(i64MaxPrecision-lastNonZeroDigitIdx-1), nil)
+
+			quotient.Quo(quotient, scale)
+
+		  quotientPrecision = uint(lastNonZeroDigitIdx + 1)
+		  /*
+		  fmt.Println("   lastNonZeroDigitIdx: ", lastNonZeroDigitIdx)
+		  fmt.Println("       i64MaxPrecision: ", i64MaxPrecision)
+			fmt.Println("New quotient precision: ", quotientPrecision)
+		  */
+	} else {
+
+		//fmt.Println("before quotient: ", quotient.Text(10))
+		quotient.Add(quotient, big.NewInt(5))
+
+		quotient.Quo(quotient,bigTen)
+		//fmt.Println("after quotient: ", quotient.Text(10))
+		i64MaxPrecision--
+		quotientPrecision = uint(i64MaxPrecision)
+
+	}
+
+	if numratrDivdndSign != denomnatrDivsrSign {
+		quotient.Mul(quotient, big.NewInt(-1))
+	}
 
 	err = nil
 
