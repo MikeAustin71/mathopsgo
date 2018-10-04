@@ -409,8 +409,10 @@ func (bLog BigIntMathLogarithms) EPwrXFromTaylorSeries(
 }
 
 /*
+// EPwrXFromTaylorSeriesBigInt
 func (bLog BigIntMathLogarithms) EPwrXFromTaylorSeriesBigInt(
-	exponent BigIntFixedDecimal, a, nCycles uint) (BigIntNum, error) {
+	exponentX BigIntFixedDecimal,
+	a, nCycles uint) (BigIntNum, error) {
 
 	ePrefix := "BigIntMathLogarithms.EPwrXFromTaylorSeries() "
 
@@ -435,19 +437,61 @@ func (bLog BigIntMathLogarithms) EPwrXFromTaylorSeriesBigInt(
 			internalMaxPrecision,
 			outputMaxPrecision )
 
+	eToPwr :=  BigIntFixedDecimal{}.New(ePwrBigInt, ePwrBigIntPrecision)
+
+	fixedDecA := BigIntFixedDecimal{}.New(big.NewInt(int64(a)), 0)
+
 	// sum = 0
-	sum := big.NewInt(0)
-	sumPrecision := uint(0)
+	sum := BigIntFixedDecimal{}.NewZero(0)
 
-	xNum := exponent.GetInteger()
-	xNumPrecision := exponent.GetPrecision()
+	xNum := exponentX.CopyOut()
 
-	aBigInt
+	xMinusA := BigIntMathSubtract{}.FixedDecimalSubtract(xNum, fixedDecA )
+
+	xMinusANth := BigIntFixedDecimal{}.NewZero(0)
+
+	nFact := BigIntFixedDecimal{}.NewZero(0)
+
+	for n:=uint(0); n < nCycles; n++ {
+
+		if n==0 {
+
+			xMinusANth = BigIntFixedDecimal{}.New(big.NewInt(1), 0)
+			nFact = BigIntFixedDecimal{}.New(big.NewInt(1), 0)
+
+		} else if n==1 {
+
+			xMinusANth = xMinusA.CopyOut()
+			nFact =  BigIntFixedDecimal{}.New(big.NewInt(int64(n)), 0)
+
+		} else {
+
+			xMinusANth = BigIntMathMultiply{}.FixedDecimalMultiply(xMinusANth, xMinusA)
+
+			nFact =
+				BigIntMathMultiply{}.FixedDecimalMultiply(
+					nFact,
+					BigIntFixedDecimal{}.New(big.NewInt(int64(n)), 0))
+
+		}
+
+		factor1, err := BigIntMathDivide{}.FixedDecimalFracQuotient(eToPwr, nFact,500)
+
+		if err != nil {
+			return BigIntNum{}.NewZero(0),
+				fmt.Errorf(ePrefix +
+					"Error returned by BigIntMathDivide{}.BigIntNumFracQuotient(eToPwr, nFact, 500) "+
+					"eToPwr='%v' nFact='%v' Error='%v' ",
+					eToPwr.GetNumStr(), nFact.GetNumStr(), err.Error())
+		}
+
+	}
+
 
 	return BigIntNum{}, nil
 }
-*/
 
+*/
 
 // GetEulersNumberE1050 - Returns mathematical constant 'e' otherwise known as
 // Euler's integerNum.

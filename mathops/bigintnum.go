@@ -860,6 +860,10 @@ func (bNum *BigIntNum) FormatCurrencyStr(negValMode NegativeValueFmtMode) string
 //
 func (bNum *BigIntNum) FormatNumStr(negValMode NegativeValueFmtMode) string {
 
+	if bNum.bigInt == nil {
+		bNum.bigInt = big.NewInt(0)
+	}
+
 	if bNum.decimalSeparator == 0 {
 		bNum.decimalSeparator = '.'
 	}
