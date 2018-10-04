@@ -27,7 +27,79 @@ type BigIntMathDivide struct {
 // The result is returned a as a type *big.Int with an accompanying precision
 // specification. Taken together, the returned *big.Int quotient and precision
 // specification describe a floating point numeric value with a a fixed number
-// of digits after the decimal place.
+// of digits after the decimal place. The input parameter, 'maxPrecision' is
+// used to configure the maximum number of fractional digits to the right of
+// the decimal place in the returned quotient.
+//
+// Example
+// =======
+// This division operation will produce a quotient which may include a fixed
+// number of fractional digits to the right of the decimal place:
+//
+//  								quotient = dividend / divisor
+//
+// For the example
+// 									quotient =	752.314 / 21.67894
+//
+// 'dividend' and 'divisor' would be configured as follows:
+//									dividend 						= 752314
+//                  dividendPrecision		= 3
+//                  divisor 						= 2167894
+//                  divisorPrecision    = 5
+//
+// Assuming a 'maxPrecision' value of '30', the quotient would be
+// calculated as follows:
+//									quotient 						= 34702526968569496479071393712054
+//                  quotientPrecision   = 30
+//
+// Input Parameters
+// ================
+//
+// dividend				*big.Int	- The 'dividend' value will be divided by the 'divisor'
+//                          	to produce a 'quotient'.
+//
+// dividendPrecision	uint	- This unsigned integer value is a precision specification
+//                            associated with input parameter 'dividend'. The precision
+//                            specifies the number if digits to right of the decimal
+//                            place in the series of integer digits contained in
+//                            'dividend'.
+//
+// divisor				*big.Int	- The 'dividend' value will be divided by the 'divisor'
+//                          	to produce a 'quotient'.
+//
+// divisorPrecision		uint	- This unsigned integer value is a precision specification
+//                            associated with input parameter 'divisor'. The precision
+//                            specifies the number if digits to right of the decimal
+//                            place in the series of integer digits contained in
+//                            'divisor'.
+//
+// 'maxPrecision' 		uint	-	Maximum precision specifies the maximum number of
+//                            decimal digits to which the result or 'quotient'
+//                            will calculated and returned to the caller. The
+//                            quotient may consist of actual fractional digits
+//                            which number less than 'maxPrecision'. However, if
+//                            the number of digits to the right of the decimal
+//                            place exceeds 'maxPrecision', the returned quotient
+//                            will be rounded to 'maxPrecision' fractional digits
+//                            to the right of the decimal place.
+//
+// Return Values
+// =============
+//
+// quotient				*big.Int	- The result of the division operation expressed
+//                            as an integer.
+//
+// quotientPrecision	uint	- An unsigned integer which specifies the number of
+//                            fractional digits to the right of the decimal place
+//                            in the series of integer digits defined by 'quotient'
+//
+// err							 error	- If an error is encountered, this function will
+//                            return a quotient set equal to zero and an error
+//                            object will be returned containing an appropriate
+// 														error message. If the function completes the division
+// 														operation successfully, the returned 'quotient' will
+//                            be populated with the correct result and 'err' will
+// 														be set equal to 'nil'.
 //
 func (bIDivide BigIntMathDivide) BigIntFracQuotient(
 	dividend *big.Int,
@@ -72,7 +144,6 @@ func (bIDivide BigIntMathDivide) BigIntFracQuotient(
 		denomnatrDivsr.Mul(denomnatrDivsr, big.NewInt(denomnatrDivsrSign))
 	}
 
-
 	// Prepare dividend
 	// Setting to absolute value of dividend
 	bigTen := big.NewInt(10)
@@ -97,7 +168,7 @@ func (bIDivide BigIntMathDivide) BigIntFracQuotient(
 		}
 
 		numratrDivdndShift = 0
-  }
+	}
 
 	if denomnatrDivsrShift > 0 {
 		numratrDivdndShift -= denomnatrDivsrShift
@@ -120,7 +191,7 @@ func (bIDivide BigIntMathDivide) BigIntFracQuotient(
 	i64MaxPrecision := int64(maxPrecision)
 	i64MaxPrecision++
 	lastNonZeroDigitIdx := int64(-1)
-	for i:=int64(0); i < i64MaxPrecision; i++ {
+	for i := int64(0); i < i64MaxPrecision; i++ {
 
 		numratrDivdnd = big.NewInt(0).Mul(intRemndr, bigTen)
 		intQuotient, intRemndr = big.NewInt(0).QuoRem(numratrDivdnd, denomnatrDivsr, big.NewInt(0))
@@ -140,30 +211,29 @@ func (bIDivide BigIntMathDivide) BigIntFracQuotient(
 		quotient.Quo(quotient, scale)
 		quotientPrecision = 0
 
-
-	}	else if lastNonZeroDigitIdx < (i64MaxPrecision-1) {
+	} else if lastNonZeroDigitIdx < (i64MaxPrecision - 1) {
 		/*
-		fmt.Println("lastNotZeroDigitIdx ", lastNonZeroDigitIdx)
-		fmt.Println("    i64MaxPrecision ", i64MaxPrecision)
+			fmt.Println("lastNotZeroDigitIdx ", lastNonZeroDigitIdx)
+			fmt.Println("    i64MaxPrecision ", i64MaxPrecision)
 		*/
 
 		scale =
 			big.NewInt(0).Exp(bigTen, big.NewInt(i64MaxPrecision-lastNonZeroDigitIdx-1), nil)
 
-			quotient.Quo(quotient, scale)
+		quotient.Quo(quotient, scale)
 
-		  quotientPrecision = uint(lastNonZeroDigitIdx + 1)
-		  /*
-		  fmt.Println("   lastNonZeroDigitIdx: ", lastNonZeroDigitIdx)
-		  fmt.Println("       i64MaxPrecision: ", i64MaxPrecision)
-			fmt.Println("New quotient precision: ", quotientPrecision)
-		  */
+		quotientPrecision = uint(lastNonZeroDigitIdx + 1)
+		/*
+			  fmt.Println("   lastNonZeroDigitIdx: ", lastNonZeroDigitIdx)
+			  fmt.Println("       i64MaxPrecision: ", i64MaxPrecision)
+				fmt.Println("New quotient precision: ", quotientPrecision)
+		*/
 	} else {
 
 		//fmt.Println("before quotient: ", quotient.Text(10))
 		quotient.Add(quotient, big.NewInt(5))
 
-		quotient.Quo(quotient,bigTen)
+		quotient.Quo(quotient, bigTen)
 		//fmt.Println("after quotient: ", quotient.Text(10))
 		i64MaxPrecision--
 		quotientPrecision = uint(i64MaxPrecision)
@@ -1624,6 +1694,120 @@ func (bIDivide BigIntMathDivide) DecimalModuloToDecimal(
 	err = nil
 
 	return modulo, err
+}
+
+// FixedDecimalFracQuotient - Performs a division operation on objects
+// of type BigIntFixedDecimal. The result is also returned a as a type
+// BigIntFixedDecimal.
+//
+// Example
+// =======
+// This division operation will produce a quotient which may include a fixed
+// length floating point number:
+//
+//  								quotient = dividend / divisor
+//
+// The BigIntFixedDecimal structure is defined as
+// type BigIntFixedDecimal struct {
+//	integerNum *big.Int  -	All of the numeric digits, both integer and fractional,
+// 													necessary to define a fixed length floating point number.
+// 													The number of digits to the right of the decimal place
+// 													is specified by the data field,
+// 													BigIntFixedDecimal.precision.
+//
+//	precision  uint				- Specifies the number of digits to the right of the decimal
+// 													place in the series of numeric digits represented by data
+// 													field BigIntFixedDecimal.integerNum.
+//
+// }
+//
+// Example:
+// ========
+//
+// 	To represent the floating point number 52.459
+// 	a BigIntDecimal Structure would be configured as follows:
+// 			BigIntFixedDecimal.integerNum	= 52459
+// 			BigIntFixedDecimal.precision	= 3
+//
+//  Consider the following division example
+// 									quotient =	752.314 / 21.67894
+//
+// 'dividend' and 'divisor' would be configured as follows:
+//									dividend.integerNum	= 752314
+//                  dividend.precision	= 3
+//                  divisor.integerNum	= 2167894
+//                  divisor.precision		= 5
+//
+// Assuming a 'maxPrecision' value of '30', the quotient would be
+// calculated as follows:
+//									quotient.integerNum	= 34702526968569496479071393712054
+//                  quotient.precision  = 30
+//
+// Input Parameters
+// ================
+//
+// dividend	BigIntFixedDecimal	- The 'dividend' value will be divided by the 'divisor'
+//                          			to produce a 'quotient'.
+//
+// divisor	BigIntFixedDecimal	- The 'dividend' value will be divided by the 'divisor'
+//                          			to produce a 'quotient'.
+//
+// 'maxPrecision' 				uint	-	Maximum precision will determine the maximum number
+//                                of decimal digits to which the result or 'quotient'
+//                            		will calculated and returned to the caller. The
+//                            		quotient may consist of actual fractional digits
+//                            		which number less than 'maxPrecision'. However, if
+//                            		the number of digits to the right of the decimal
+//                            		place exceeds 'maxPrecision', the returned quotient
+//                            		will be rounded to 'maxPrecision' fractional digits
+//                            		to the right of the decimal place.
+//
+// Return Values
+// =============
+//
+// quotient	BigIntFixedDecimal	- The result of the division operation expressed
+//                            		as a type BigIntFixedDecimal.
+//
+// err			error								- If an error is encountered, this function will
+//                                return a quotient set equal to zero and an
+//                                error object will be returned containing an
+//                                appropriate error message. If the function
+//                                completes the division operation successfully,
+//                                the returned 'quotient' will be populated with
+// 																the correct result and 'err' will be set equal
+//                                to 'nil'.
+//
+func (bIDivide BigIntMathDivide) FixedDecimalFracQuotient(
+	dividend BigIntFixedDecimal,
+	divisor BigIntFixedDecimal,
+	maxPrecision uint) (quotient BigIntFixedDecimal, err error) {
+
+	quotient = BigIntFixedDecimal{}.NewZero(0)
+	err = nil
+
+	dividend.IsValid()
+	divisor.IsValid()
+
+	result, resultPrecision, errX :=
+		BigIntMathDivide{}.BigIntFracQuotient(
+			dividend.GetInteger(),
+			dividend.GetPrecision(),
+			divisor.GetInteger(),
+			divisor.GetPrecision(),
+			maxPrecision)
+
+	if errX != nil {
+		ePrefix := "BigIntMathDivide.FixedDecimalFracQuotient() "
+		err = fmt.Errorf(ePrefix+"Error returned by "+
+			"BigIntMathDivide{}.BigIntFracQuotient(). Error='%v' ",
+			errX.Error())
+		return quotient, err
+	}
+
+	quotient.SetNumericValue(result, resultPrecision)
+	err = nil
+
+	return quotient, nil
 }
 
 // IntAryQuotientMod - Performs a division operation on IntAry type input

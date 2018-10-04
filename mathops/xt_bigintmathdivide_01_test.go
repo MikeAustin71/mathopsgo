@@ -1083,3 +1083,113 @@ func TestBigIntMathDivide_BigIntFracQuotient_20(t *testing.T) {
 
 }
 
+func TestBigIntMathDivide_BigIntFracQuotient_21(t *testing.T) {
+	// Dividend		 divided by		Divisor							=		Quotient
+	// 0.000009218 		 /        35829.8234	     		= 2.572717118108932683156903307539e-10
+
+	dividendStr := "0.000009218"
+	divisorStr := "35829.8234"
+	expectedResult, err :=
+		BigIntNum{}.NewNumStr("0.0000000002572717118108932683156903307539")
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(dividendStr). "+
+			"dividendStr='%v' Error='%v' ",
+			dividendStr, err.Error())
+	}
+
+	maxPrecision := expectedResult.GetPrecisionUint()
+
+	dividend, err := BigIntNum{}.NewNumStr(dividendStr)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(dividendStr). "+
+			"dividendStr='%v' Error='%v' ",
+			dividendStr, err.Error())
+	}
+
+	divisor, err := BigIntNum{}.NewNumStr(divisorStr)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(divisorStr). "+
+			"divisorStr='%v' Error='%v' ",
+			divisorStr, err.Error())
+	}
+
+	bIntQuotient, bIntQuotientPrecision, err :=
+		BigIntMathDivide{}.BigIntFracQuotient(
+			dividend.GetIntegerValue(),
+			dividend.GetPrecisionUint(),
+			divisor.GetIntegerValue(),
+			divisor.GetPrecisionUint(),
+			maxPrecision)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntMathDivide{}.BigIntFracQuotient(). "+
+			"Error='%v' ", err.Error())
+	}
+
+	actualResult:= BigIntNum{}.NewBigInt(bIntQuotient, bIntQuotientPrecision)
+
+	if expectedResult.GetNumStr() != actualResult.GetNumStr() {
+		t.Errorf("Error: Expected Result='%v'. Instead, Result='%v'",
+			expectedResult.GetNumStr(), actualResult.GetNumStr())
+	}
+
+}
+
+func TestBigIntMathDivide_BigIntFracQuotient_22(t *testing.T) {
+	// Dividend		 divided by		Divisor							=		Quotient
+	// 35829.8234 	 /        	 0.000009218     		= 3886941136.9060533738338034280755
+
+	dividendStr := "35829.8234"
+	divisorStr := "0.000009218"
+	expectedResultStr := "3886941136.9060533738338034280755"
+	expectedResult, err :=
+		BigIntNum{}.NewNumStr(expectedResultStr)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(expectedResultStr). "+
+			"expectedResultStr='%v' Error='%v' ",
+			expectedResultStr, err.Error())
+	}
+
+	maxPrecision := expectedResult.GetPrecisionUint()
+
+	dividend, err := BigIntNum{}.NewNumStr(dividendStr)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(dividendStr). "+
+			"dividendStr='%v' Error='%v' ",
+			dividendStr, err.Error())
+	}
+
+	divisor, err := BigIntNum{}.NewNumStr(divisorStr)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(divisorStr). "+
+			"divisorStr='%v' Error='%v' ",
+			divisorStr, err.Error())
+	}
+
+	bIntQuotient, bIntQuotientPrecision, err :=
+		BigIntMathDivide{}.BigIntFracQuotient(
+			dividend.GetIntegerValue(),
+			dividend.GetPrecisionUint(),
+			divisor.GetIntegerValue(),
+			divisor.GetPrecisionUint(),
+			maxPrecision)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntMathDivide{}.BigIntFracQuotient(). "+
+			"Error='%v' ", err.Error())
+	}
+
+	actualResult:= BigIntNum{}.NewBigInt(bIntQuotient, bIntQuotientPrecision)
+
+	if expectedResult.GetNumStr() != actualResult.GetNumStr() {
+		t.Errorf("Error: Expected Result='%v'. Instead, Result='%v'",
+			expectedResult.GetNumStr(), actualResult.GetNumStr())
+	}
+}
+

@@ -11,14 +11,19 @@ import (
 //
 type BigIntFixedDecimal struct {
 
-	integerNum *big.Int // All of the numeric digits, both integer and fraction in
-											// the numeric value represented by this BigIntFixedDecimal
-											// type.
+	integerNum *big.Int // All of the numeric digits, both integer and fractional,
+											// necessary to define a fixed length floating point number.
+											// The number of digits to the right of the decimal place
+											// is specified by the data field, BigIntFixedDecimal.precision.
 
 	precision  uint			// Specifies the number of digits to the right of the decimal
-											// place in the numeric value represented by this BigIntFixedDecimal
-	  									// type.
+											// place in the series of numeric digits represented by
+	  									// BigIntFixedDecimal.precision.
 
+	  									// Example: To represent the floating point number 52.459
+	  									// a BigIntDecimal Structure would be configured as follows:
+	  									// 			BigIntFixedDecimal.integerNum	= 52459
+	  									// 			BigIntFixedDecimal.precision	= 3
 }
 
 

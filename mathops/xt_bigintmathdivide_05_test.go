@@ -2,445 +2,7 @@ package mathops
 
 import "testing"
 
-func TestBigIntMathDivide_IntAryQuotientMod_01(t *testing.T) {
-	// Dividend			divided by		Divisor			=		Quotient			Modulo/Remainder
-	//   12.555					/						 2.5			=			 5							 0.055
-	dividendStr := "12.555"
-	divisorStr := "2.5"
-	expectedQuoStr := "5"
-	expectedModuloStr := "0.055"
-	maxPrecision := uint(15)
-
-	dividend, err := IntAry{}.NewNumStr(dividendStr)
-
-	if err != nil {
-		t.Errorf("Error returned by IntAry{}.NewNumStr(dividendStr). "+
-			"dividendStr='%v' Error='%v' ",
-			dividendStr, err.Error())
-	}
-
-	divisor, err := IntAry{}.NewNumStr(divisorStr)
-
-	if err != nil {
-		t.Errorf("Error returned by IntAry{}.NewNumStr(divisorStr). "+
-			"divisorStr='%v' Error='%v' ",
-			divisorStr, err.Error())
-	}
-
-	expectedQuo, err := BigIntNum{}.NewNumStr(expectedQuoStr)
-
-	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(expectedQuoStr). "+
-			"expectedQuoStr='%v' Error='%v' ",
-			expectedQuoStr, err.Error())
-	}
-
-	expectedModulo, err := BigIntNum{}.NewNumStr(expectedModuloStr)
-
-	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(expectedModuloStr). "+
-			"expectedModuloStr='%v' Error='%v' ",
-			expectedModuloStr, err.Error())
-	}
-
-	quotient, modulo, err :=
-		BigIntMathDivide{}.IntAryQuotientMod(dividend, divisor, maxPrecision)
-
-	if err != nil {
-		t.Errorf("Error returned by BigIntMathDivide{}.IntAryQuotientMod"+
-			"(dividend, divisor, maxPrecision).  Error='%v' ",
-			err.Error())
-	}
-
-	if !expectedQuo.Equal(quotient) {
-		t.Errorf("Error: Expected Quotient='%v'. Instead Quotient='%v'",
-			expectedQuo.GetNumStr(), quotient.GetNumStr())
-	}
-
-	if !expectedModulo.Equal(modulo) {
-		t.Errorf("Error: Expected Modulo='%v'. Instead Modulo='%v'",
-			expectedModulo.GetNumStr(), modulo.GetNumStr())
-	}
-
-}
-
-func TestBigIntMathDivide_IntAryQuotientMod_02(t *testing.T) {
-	// Dividend			divided by		Divisor			=		Quotient			Modulo/Remainder
-	//   12.555  	 			/ 				 	 2  			= 		 6							 0.555
-	dividendStr := "12.555"
-	divisorStr := "2"
-	expectedQuoStr := "6"
-	expectedModuloStr := "0.555"
-	maxPrecision := uint(15)
-
-	dividend, err := IntAry{}.NewNumStr(dividendStr)
-
-	if err != nil {
-		t.Errorf("Error returned by IntAry{}.NewNumStr(dividendStr). "+
-			"dividendStr='%v' Error='%v' ",
-			dividendStr, err.Error())
-	}
-
-	divisor, err := IntAry{}.NewNumStr(divisorStr)
-
-	if err != nil {
-		t.Errorf("Error returned by IntAry{}.NewNumStr(divisorStr). "+
-			"divisorStr='%v' Error='%v' ",
-			divisorStr, err.Error())
-	}
-
-	expectedQuo, err := BigIntNum{}.NewNumStr(expectedQuoStr)
-
-	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(expectedQuoStr). "+
-			"expectedQuoStr='%v' Error='%v' ",
-			expectedQuoStr, err.Error())
-	}
-
-	expectedModulo, err := BigIntNum{}.NewNumStr(expectedModuloStr)
-
-	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(expectedModuloStr). "+
-			"expectedModuloStr='%v' Error='%v' ",
-			expectedModuloStr, err.Error())
-	}
-
-	quotient, modulo, err :=
-		BigIntMathDivide{}.IntAryQuotientMod(dividend, divisor, maxPrecision)
-
-	if err != nil {
-		t.Errorf("Error returned by BigIntMathDivide{}.IntAryQuotientMod"+
-			"(dividend, divisor, maxPrecision).  Error='%v' ",
-			err.Error())
-	}
-
-	if !expectedQuo.Equal(quotient) {
-		t.Errorf("Error: Expected Quotient='%v'. Instead Quotient='%v'",
-			expectedQuo.GetNumStr(), quotient.GetNumStr())
-	}
-
-	if !expectedModulo.Equal(modulo) {
-		t.Errorf("Error: Expected Modulo='%v'. Instead Modulo='%v'",
-			expectedModulo.GetNumStr(), modulo.GetNumStr())
-	}
-
-}
-
-func TestBigIntMathDivide_IntAryQuotientMod_03(t *testing.T) {
-	// Dividend			divided by		Divisor			=		Quotient			Modulo/Remainder
-	//	-12.555 				/ 				   2.5 			= 		-5							-0.055
-	dividendStr := "-12.555"
-	divisorStr := "2.5"
-	expectedQuoStr := "-5"
-	expectedModuloStr := "-0.055"
-	maxPrecision := uint(15)
-
-	dividend, err := IntAry{}.NewNumStr(dividendStr)
-
-	if err != nil {
-		t.Errorf("Error returned by IntAry{}.NewNumStr(dividendStr). "+
-			"dividendStr='%v' Error='%v' ",
-			dividendStr, err.Error())
-	}
-
-	divisor, err := IntAry{}.NewNumStr(divisorStr)
-
-	if err != nil {
-		t.Errorf("Error returned by IntAry{}.NewNumStr(divisorStr). "+
-			"divisorStr='%v' Error='%v' ",
-			divisorStr, err.Error())
-	}
-
-	expectedQuo, err := BigIntNum{}.NewNumStr(expectedQuoStr)
-
-	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(expectedQuoStr). "+
-			"expectedQuoStr='%v' Error='%v' ",
-			expectedQuoStr, err.Error())
-	}
-
-	expectedModulo, err := BigIntNum{}.NewNumStr(expectedModuloStr)
-
-	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(expectedModuloStr). "+
-			"expectedModuloStr='%v' Error='%v' ",
-			expectedModuloStr, err.Error())
-	}
-
-	quotient, modulo, err :=
-		BigIntMathDivide{}.IntAryQuotientMod(dividend, divisor, maxPrecision)
-
-	if err != nil {
-		t.Errorf("Error returned by BigIntMathDivide{}.IntAryQuotientMod"+
-			"(dividend, divisor, maxPrecision).  Error='%v' ",
-			err.Error())
-	}
-
-	if !expectedQuo.Equal(quotient) {
-		t.Errorf("Error: Expected Quotient='%v'. Instead Quotient='%v'",
-			expectedQuo.GetNumStr(), quotient.GetNumStr())
-	}
-
-	if !expectedModulo.Equal(modulo) {
-		t.Errorf("Error: Expected Modulo='%v'. Instead Modulo='%v'",
-			expectedModulo.GetNumStr(), modulo.GetNumStr())
-	}
-
-}
-
-func TestBigIntMathDivide_IntAryQuotientMod_04(t *testing.T) {
-	// Dividend			divided by		Divisor			=		Quotient			Modulo/Remainder
-	//  -12.555     		/    			 	 2  			= 		-6							-0.555
-	dividendStr := "-12.555"
-	divisorStr := "2"
-	expectedQuoStr := "-6"
-	expectedModuloStr := "-0.555"
-	maxPrecision := uint(15)
-
-	expectedNumSeps := NumericSeparatorDto{}
-	expectedNumSeps.DecimalSeparator = '.'
-	expectedNumSeps.ThousandsSeparator = ','
-	expectedNumSeps.CurrencySymbol = '$'
-
-	dividend, err := IntAry{}.NewNumStr(dividendStr)
-
-	if err != nil {
-		t.Errorf("Error returned by IntAry{}.NewNumStr(dividendStr). "+
-			"dividendStr='%v' Error='%v' ",
-			dividendStr, err.Error())
-	}
-
-	divisor, err := IntAry{}.NewNumStr(divisorStr)
-
-	if err != nil {
-		t.Errorf("Error returned by IntAry{}.NewNumStr(divisorStr). "+
-			"divisorStr='%v' Error='%v' ",
-			divisorStr, err.Error())
-	}
-
-	expectedQuo, err := BigIntNum{}.NewNumStr(expectedQuoStr)
-
-	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(expectedQuoStr). "+
-			"expectedQuoStr='%v' Error='%v' ",
-			expectedQuoStr, err.Error())
-	}
-
-	expectedModulo, err := BigIntNum{}.NewNumStr(expectedModuloStr)
-
-	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(expectedModuloStr). "+
-			"expectedModuloStr='%v' Error='%v' ",
-			expectedModuloStr, err.Error())
-	}
-
-	quotient, modulo, err :=
-		BigIntMathDivide{}.IntAryQuotientMod(dividend, divisor, maxPrecision)
-
-	if err != nil {
-		t.Errorf("Error returned by BigIntMathDivide{}.IntAryQuotientMod"+
-			"(dividend, divisor, maxPrecision).  Error='%v' ",
-			err.Error())
-	}
-
-	if !expectedQuo.Equal(quotient) {
-		t.Errorf("Error: Expected Quotient='%v'. Instead Quotient='%v'",
-			expectedQuo.GetNumStr(), quotient.GetNumStr())
-	}
-
-	if !expectedModulo.Equal(modulo) {
-		t.Errorf("Error: Expected Modulo='%v'. Instead Modulo='%v'",
-			expectedModulo.GetNumStr(), modulo.GetNumStr())
-	}
-
-	actualNumSeps := quotient.GetNumericSeparatorsDto()
-
-	if !expectedNumSeps.Equal(actualNumSeps) {
-		t.Errorf("Error: Expected quotient NumSeps='%v'. Instead, quotient NumSeps='%v'",
-			expectedNumSeps.String(), actualNumSeps.String())
-	}
-
-	actualNumSeps = modulo.GetNumericSeparatorsDto()
-
-	if !expectedNumSeps.Equal(actualNumSeps) {
-		t.Errorf("Error: Expected modulo NumSeps='%v'. Instead, modulo NumSeps='%v'",
-			expectedNumSeps.String(), actualNumSeps.String())
-	}
-
-}
-
-func TestBigIntMathDivide_IntAryQuotientMod_05(t *testing.T) {
-	// Dividend			divided by		Divisor			=		Quotient			Modulo/Remainder
-	//   12,555  	 			/ 				 	 2  			= 		 6							 0,555
-	dividendStr := "12,555"
-	divisorStr := "2"
-	expectedQuoStr := "6"
-	expectedModuloStr := "0,555"
-	maxPrecision := uint(15)
-
-	expectedNumSeps := NumericSeparatorDto{}
-	frenchDecSeparator := ','
-	frenchThousandsSeparator := ' '
-	frenchCurrencySymbol := '€'
-
-	expectedNumSeps.DecimalSeparator = frenchDecSeparator
-	expectedNumSeps.ThousandsSeparator = frenchThousandsSeparator
-	expectedNumSeps.CurrencySymbol = frenchCurrencySymbol
-
-	dividend, err := IntAry{}.NewNumStrWithNumSeps(dividendStr, expectedNumSeps)
-
-	if err != nil {
-		t.Errorf("Error returned by IntAry{}.NewNumStrWithNumSeps("+
-			"dividendStr,expectedNumSeps). "+
-			"dividendStr='%v' Error='%v' ",
-			dividendStr, err.Error())
-	}
-
-	divisor, err := IntAry{}.NewNumStr(divisorStr)
-
-	if err != nil {
-		t.Errorf("Error returned by IntAry{}.NewNumStr(divisorStr). "+
-			"divisorStr='%v' Error='%v' ",
-			divisorStr, err.Error())
-	}
-
-	expectedQuo, err := BigIntNum{}.NewNumStrWithNumSeps(expectedQuoStr, expectedNumSeps)
-
-	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStrWithNumSeps("+
-			"expectedQuoStr, expectedNumSeps). "+
-			"expectedQuoStr='%v' Error='%v' ",
-			expectedQuoStr, err.Error())
-	}
-
-	expectedModulo, err := BigIntNum{}.NewNumStrWithNumSeps(expectedModuloStr, expectedNumSeps)
-
-	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStrWithNumSeps("+
-			"expectedModuloStr, expectedNumSeps). "+
-			"expectedModuloStr='%v' Error='%v' ",
-			expectedModuloStr, err.Error())
-	}
-
-	quotient, modulo, err :=
-		BigIntMathDivide{}.IntAryQuotientMod(dividend, divisor, maxPrecision)
-
-	if err != nil {
-		t.Errorf("Error returned by BigIntMathDivide{}.IntAryQuotientMod"+
-			"(dividend, divisor, maxPrecision).  Error='%v' ",
-			err.Error())
-	}
-
-	if !expectedQuo.Equal(quotient) {
-		t.Errorf("Error: Expected Quotient='%v'. Instead Quotient='%v'",
-			expectedQuo.GetNumStr(), quotient.GetNumStr())
-	}
-
-	if !expectedModulo.Equal(modulo) {
-		t.Errorf("Error: Expected Modulo='%v'. Instead Modulo='%v'",
-			expectedModulo.GetNumStr(), modulo.GetNumStr())
-	}
-
-	actualNumSeps := quotient.GetNumericSeparatorsDto()
-
-	if !expectedNumSeps.Equal(actualNumSeps) {
-		t.Errorf("Error: Expected quotient NumSeps='%v'. Instead, quotient NumSeps='%v'",
-			expectedNumSeps.String(), actualNumSeps.String())
-	}
-
-	actualNumSeps = modulo.GetNumericSeparatorsDto()
-
-	if !expectedNumSeps.Equal(actualNumSeps) {
-		t.Errorf("Error: Expected modulo NumSeps='%v'. Instead, modulo NumSeps='%v'",
-			expectedNumSeps.String(), actualNumSeps.String())
-	}
-
-}
-
-func TestBigIntMathDivide_IntAryQuotientMod_06(t *testing.T) {
-	// Dividend			divided by		Divisor			=		Quotient			Modulo/Remainder
-	//   12.555  	 			/ 				 	 2  			= 		 6							 0.555
-	dividendStr := "12.555"
-	divisorStr := "2"
-	expectedQuoStr := "6"
-	expectedModuloStr := "0.555"
-	maxPrecision := uint(15)
-
-	expectedNumSeps := NumericSeparatorDto{}
-	expectedNumSeps.DecimalSeparator = '.'
-	expectedNumSeps.ThousandsSeparator = ','
-	expectedNumSeps.CurrencySymbol = '$'
-
-	dividend, err := IntAry{}.NewNumStrWithNumSeps(dividendStr, expectedNumSeps)
-
-	if err != nil {
-		t.Errorf("Error returned by IntAry{}.NewNumStrWithNumSeps("+
-			"dividendStr,expectedNumSeps). "+
-			"dividendStr='%v' Error='%v' ",
-			dividendStr, err.Error())
-	}
-
-	divisor, err := IntAry{}.NewNumStr(divisorStr)
-
-	if err != nil {
-		t.Errorf("Error returned by IntAry{}.NewNumStr(divisorStr). "+
-			"divisorStr='%v' Error='%v' ",
-			divisorStr, err.Error())
-	}
-
-	expectedQuo, err := BigIntNum{}.NewNumStrWithNumSeps(expectedQuoStr, expectedNumSeps)
-
-	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStrWithNumSeps("+
-			"expectedQuoStr, expectedNumSeps). "+
-			"expectedQuoStr='%v' Error='%v' ",
-			expectedQuoStr, err.Error())
-	}
-
-	expectedModulo, err := BigIntNum{}.NewNumStr(expectedModuloStr)
-
-	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(expectedModuloStr). "+
-			"expectedModuloStr='%v' Error='%v' ",
-			expectedModuloStr, err.Error())
-	}
-
-	quotient, modulo, err :=
-		BigIntMathDivide{}.IntAryQuotientMod(dividend, divisor, maxPrecision)
-
-	if err != nil {
-		t.Errorf("Error returned by BigIntMathDivide{}.IntAryQuotientMod"+
-			"(dividend, divisor, maxPrecision).  Error='%v' ",
-			err.Error())
-	}
-
-	if !expectedQuo.Equal(quotient) {
-		t.Errorf("Error: Expected Quotient='%v'. Instead Quotient='%v'",
-			expectedQuo.GetNumStr(), quotient.GetNumStr())
-	}
-
-	if !expectedModulo.Equal(modulo) {
-		t.Errorf("Error: Expected Modulo='%v'. Instead Modulo='%v'",
-			expectedModulo.GetNumStr(), modulo.GetNumStr())
-	}
-
-	actualNumSeps := quotient.GetNumericSeparatorsDto()
-
-	if !expectedNumSeps.Equal(actualNumSeps) {
-		t.Errorf("Error: Expected quotient NumSeps='%v'. Instead, quotient NumSeps='%v'",
-			expectedNumSeps.String(), actualNumSeps.String())
-	}
-
-	actualNumSeps = modulo.GetNumericSeparatorsDto()
-
-	if !expectedNumSeps.Equal(actualNumSeps) {
-		t.Errorf("Error: Expected modulo NumSeps='%v'. Instead, modulo NumSeps='%v'",
-			expectedNumSeps.String(), actualNumSeps.String())
-	}
-
-}
-
-func TestBigIntMathDivide_IntAryFracQuotient_01(t *testing.T) {
+func TestBigIntMathDivide_FixedDecimalFracQuotient_01(t *testing.T) {
 	// Dividend		divided by		Divisor			=		Quotient
 	// 	 10.5  				/ 					2 				= 	 5.25
 
@@ -449,18 +11,18 @@ func TestBigIntMathDivide_IntAryFracQuotient_01(t *testing.T) {
 	expectedQuoStr := "5.25"
 	maxPrecision := uint(15)
 
-	dividend, err := IntAry{}.NewNumStr(dividendStr)
+	dividend, err := BigIntNum{}.NewNumStr(dividendStr)
 
 	if err != nil {
-		t.Errorf("Error returned by IntAry{}.NewNumStr(dividendStr). "+
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(dividendStr). "+
 			"dividendStr='%v' Error='%v' ",
 			dividendStr, err.Error())
 	}
 
-	divisor, err := IntAry{}.NewNumStr(divisorStr)
+	divisor, err := BigIntNum{}.NewNumStr(divisorStr)
 
 	if err != nil {
-		t.Errorf("Error returned by IntAry{}.NewNumStr(divisorStr). "+
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(divisorStr). "+
 			"divisorStr='%v' Error='%v' ",
 			divisorStr, err.Error())
 	}
@@ -473,22 +35,235 @@ func TestBigIntMathDivide_IntAryFracQuotient_01(t *testing.T) {
 			expectedQuoStr, err.Error())
 	}
 
-	quotient, err :=
-		BigIntMathDivide{}.IntAryFracQuotient(dividend, divisor, maxPrecision)
+	dividendFixDec :=
+		BigIntFixedDecimal{}.New(
+			dividend.GetIntegerValue(),
+			dividend.GetPrecisionUint())
+
+
+	divisorFixDec := BigIntFixedDecimal{}.New(
+		divisor.GetIntegerValue(),
+		divisor.GetPrecisionUint())
+
+	fracQuotient, err :=
+		BigIntMathDivide{}.FixedDecimalFracQuotient(
+			dividendFixDec,
+			divisorFixDec,
+			maxPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntMathDivide{}.IntAryFracQuotient"+
-			"(dividend, divisor, maxPrecision).  Error='%v' ",
-			err.Error())
+		t.Errorf("Error returned by BigIntMathDivide{}.FixedDecimalFracQuotient(...) " +
+			"Error='%v' ", err.Error())
 	}
 
-	if !expectedQuo.Equal(quotient) {
+	actualQuo :=
+		BigIntNum{}.NewBigInt(
+			fracQuotient.GetInteger(),
+			fracQuotient.GetPrecision())
+
+	if expectedQuo.GetNumStr() != actualQuo.GetNumStr() {
 		t.Errorf("Error: Expected Quotient='%v'. Instead Quotient='%v'",
-			expectedQuo.GetNumStr(), quotient.GetNumStr())
+			expectedQuo.GetNumStr(), actualQuo.GetNumStr())
 	}
 }
 
-func TestBigIntMathDivide_IntAryFracQuotient_02(t *testing.T) {
+func TestBigIntMathDivide_FixedDecimalFracQuotient_02(t *testing.T) {
+	// Dividend		divided by		Divisor			=		Quotient
+	// 	 10    				/ 					2 				= 			5
+
+	dividendStr := "10"
+	divisorStr := "2"
+	expectedQuoStr := "5"
+	maxPrecision := uint(15)
+
+	dividend, err := BigIntNum{}.NewNumStr(dividendStr)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(dividendStr). "+
+			"dividendStr='%v' Error='%v' ",
+			dividendStr, err.Error())
+	}
+
+	divisor, err := BigIntNum{}.NewNumStr(divisorStr)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(divisorStr). "+
+			"divisorStr='%v' Error='%v' ",
+			divisorStr, err.Error())
+	}
+
+	expectedQuo, err := BigIntNum{}.NewNumStr(expectedQuoStr)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(expectedQuoStr). "+
+			"expectedQuoStr='%v' Error='%v' ",
+			expectedQuoStr, err.Error())
+	}
+
+
+	dividendFixDec :=
+		BigIntFixedDecimal{}.New(
+			dividend.GetIntegerValue(),
+			dividend.GetPrecisionUint())
+
+
+	divisorFixDec := BigIntFixedDecimal{}.New(
+		divisor.GetIntegerValue(),
+		divisor.GetPrecisionUint())
+
+	fracQuotient, err :=
+		BigIntMathDivide{}.FixedDecimalFracQuotient(
+			dividendFixDec,
+			divisorFixDec,
+			maxPrecision)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntMathDivide{}.FixedDecimalFracQuotient(...) " +
+			"Error='%v' ", err.Error())
+	}
+
+	actualQuo :=
+		BigIntNum{}.NewBigInt(
+			fracQuotient.GetInteger(),
+			fracQuotient.GetPrecision())
+
+	if expectedQuo.GetNumStr() != actualQuo.GetNumStr() {
+		t.Errorf("Error: Expected Quotient='%v'. Instead Quotient='%v'",
+			expectedQuo.GetNumStr(), actualQuo.GetNumStr())
+	}
+}
+
+func TestBigIntMathDivide_FixedDecimalFracQuotient_03(t *testing.T) {
+	// Dividend		divided by		Divisor			=		Quotient
+	//   11.5  				/         	2.5				=  		4.6
+
+	dividendStr := "11.5"
+	divisorStr := "2.5"
+	expectedQuoStr := "4.6"
+	maxPrecision := uint(15)
+
+	dividend, err := BigIntNum{}.NewNumStr(dividendStr)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(dividendStr). "+
+			"dividendStr='%v' Error='%v' ",
+			dividendStr, err.Error())
+	}
+
+	divisor, err := BigIntNum{}.NewNumStr(divisorStr)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(divisorStr). "+
+			"divisorStr='%v' Error='%v' ",
+			divisorStr, err.Error())
+	}
+
+	expectedQuo, err := BigIntNum{}.NewNumStr(expectedQuoStr)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(expectedQuoStr). "+
+			"expectedQuoStr='%v' Error='%v' ",
+			expectedQuoStr, err.Error())
+	}
+
+	dividendFixDec :=
+		BigIntFixedDecimal{}.New(
+			dividend.GetIntegerValue(),
+			dividend.GetPrecisionUint())
+
+
+	divisorFixDec := BigIntFixedDecimal{}.New(
+		divisor.GetIntegerValue(),
+		divisor.GetPrecisionUint())
+
+	fracQuotient, err :=
+		BigIntMathDivide{}.FixedDecimalFracQuotient(
+			dividendFixDec,
+			divisorFixDec,
+			maxPrecision)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntMathDivide{}.FixedDecimalFracQuotient(...) " +
+			"Error='%v' ", err.Error())
+	}
+
+	actualQuo :=
+		BigIntNum{}.NewBigInt(
+			fracQuotient.GetInteger(),
+			fracQuotient.GetPrecision())
+
+	if expectedQuo.GetNumStr() != actualQuo.GetNumStr() {
+		t.Errorf("Error: Expected Quotient='%v'. Instead Quotient='%v'",
+			expectedQuo.GetNumStr(), actualQuo.GetNumStr())
+	}
+}
+
+func TestBigIntMathDivide_FixedDecimalFracQuotient_04(t *testing.T) {
+	// Dividend		divided by		Divisor			=		Quotient
+	//    2.5					/				 	12.555			=		0.199123855037834
+
+	dividendStr := "2.5"
+	divisorStr := "12.555"
+	expectedQuoStr := "0.199123855037834"
+	maxPrecision := uint(15)
+
+	dividend, err := BigIntNum{}.NewNumStr(dividendStr)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(dividendStr). "+
+			"dividendStr='%v' Error='%v' ",
+			dividendStr, err.Error())
+	}
+
+	divisor, err := BigIntNum{}.NewNumStr(divisorStr)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(divisorStr). "+
+			"divisorStr='%v' Error='%v' ",
+			divisorStr, err.Error())
+	}
+
+	expectedQuo, err := BigIntNum{}.NewNumStr(expectedQuoStr)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(expectedQuoStr). "+
+			"expectedQuoStr='%v' Error='%v' ",
+			expectedQuoStr, err.Error())
+	}
+
+	dividendFixDec :=
+		BigIntFixedDecimal{}.New(
+			dividend.GetIntegerValue(),
+			dividend.GetPrecisionUint())
+
+
+	divisorFixDec := BigIntFixedDecimal{}.New(
+		divisor.GetIntegerValue(),
+		divisor.GetPrecisionUint())
+
+	fracQuotient, err :=
+		BigIntMathDivide{}.FixedDecimalFracQuotient(
+			dividendFixDec,
+			divisorFixDec,
+			maxPrecision)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntMathDivide{}.FixedDecimalFracQuotient(...) " +
+			"Error='%v' ", err.Error())
+	}
+
+	actualQuo :=
+		BigIntNum{}.NewBigInt(
+			fracQuotient.GetInteger(),
+			fracQuotient.GetPrecision())
+
+	if expectedQuo.GetNumStr() != actualQuo.GetNumStr() {
+		t.Errorf("Error: Expected Quotient='%v'. Instead Quotient='%v'",
+			expectedQuo.GetNumStr(), actualQuo.GetNumStr())
+	}
+}
+
+func TestBigIntMathDivide_FixedDecimalFracQuotient_05(t *testing.T) {
 	// Dividend		divided by		Divisor			=		Quotient
 	//	-12.555 			/ 					2.5 			= 		-5.022
 
@@ -497,18 +272,18 @@ func TestBigIntMathDivide_IntAryFracQuotient_02(t *testing.T) {
 	expectedQuoStr := "-5.022"
 	maxPrecision := uint(15)
 
-	dividend, err := IntAry{}.NewNumStr(dividendStr)
+	dividend, err := BigIntNum{}.NewNumStr(dividendStr)
 
 	if err != nil {
-		t.Errorf("Error returned by IntAry{}.NewNumStr(dividendStr). "+
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(dividendStr). "+
 			"dividendStr='%v' Error='%v' ",
 			dividendStr, err.Error())
 	}
 
-	divisor, err := IntAry{}.NewNumStr(divisorStr)
+	divisor, err := BigIntNum{}.NewNumStr(divisorStr)
 
 	if err != nil {
-		t.Errorf("Error returned by IntAry{}.NewNumStr(divisorStr). "+
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(divisorStr). "+
 			"divisorStr='%v' Error='%v' ",
 			divisorStr, err.Error())
 	}
@@ -521,22 +296,104 @@ func TestBigIntMathDivide_IntAryFracQuotient_02(t *testing.T) {
 			expectedQuoStr, err.Error())
 	}
 
-	quotient, err :=
-		BigIntMathDivide{}.IntAryFracQuotient(dividend, divisor, maxPrecision)
+	dividendFixDec :=
+		BigIntFixedDecimal{}.New(
+			dividend.GetIntegerValue(),
+			dividend.GetPrecisionUint())
+
+
+	divisorFixDec := BigIntFixedDecimal{}.New(
+		divisor.GetIntegerValue(),
+		divisor.GetPrecisionUint())
+
+	fracQuotient, err :=
+		BigIntMathDivide{}.FixedDecimalFracQuotient(
+			dividendFixDec,
+			divisorFixDec,
+			maxPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntMathDivide{}.IntAryFracQuotient"+
-			"(dividend, divisor, maxPrecision).  Error='%v' ",
-			err.Error())
+		t.Errorf("Error returned by BigIntMathDivide{}.FixedDecimalFracQuotient(...) " +
+			"Error='%v' ", err.Error())
 	}
 
-	if !expectedQuo.Equal(quotient) {
+	actualQuo :=
+		BigIntNum{}.NewBigInt(
+			fracQuotient.GetInteger(),
+			fracQuotient.GetPrecision())
+
+	if expectedQuo.GetNumStr() != actualQuo.GetNumStr() {
 		t.Errorf("Error: Expected Quotient='%v'. Instead Quotient='%v'",
-			expectedQuo.GetNumStr(), quotient.GetNumStr())
+			expectedQuo.GetNumStr(), actualQuo.GetNumStr())
 	}
 }
 
-func TestBigIntMathDivide_IntAryFracQuotient_03(t *testing.T) {
+func TestBigIntMathDivide_FixedDecimalFracQuotient_06(t *testing.T) {
+	// Dividend		divided by		Divisor			=		Quotient
+	//  -12.555     	/    				2  			  = 	 -6.2775
+
+	dividendStr := "-12.555"
+	divisorStr := "2"
+	expectedQuoStr := "-6.2775"
+	maxPrecision := uint(15)
+
+	dividend, err := BigIntNum{}.NewNumStr(dividendStr)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(dividendStr). "+
+			"dividendStr='%v' Error='%v' ",
+			dividendStr, err.Error())
+	}
+
+	divisor, err := BigIntNum{}.NewNumStr(divisorStr)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(divisorStr). "+
+			"divisorStr='%v' Error='%v' ",
+			divisorStr, err.Error())
+	}
+
+	expectedQuo, err := BigIntNum{}.NewNumStr(expectedQuoStr)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(expectedQuoStr). "+
+			"expectedQuoStr='%v' Error='%v' ",
+			expectedQuoStr, err.Error())
+	}
+
+	dividendFixDec :=
+		BigIntFixedDecimal{}.New(
+			dividend.GetIntegerValue(),
+			dividend.GetPrecisionUint())
+
+
+	divisorFixDec := BigIntFixedDecimal{}.New(
+		divisor.GetIntegerValue(),
+		divisor.GetPrecisionUint())
+
+	fracQuotient, err :=
+		BigIntMathDivide{}.FixedDecimalFracQuotient(
+			dividendFixDec,
+			divisorFixDec,
+			maxPrecision)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntMathDivide{}.FixedDecimalFracQuotient(...) " +
+			"Error='%v' ", err.Error())
+	}
+
+	actualQuo :=
+		BigIntNum{}.NewBigInt(
+			fracQuotient.GetInteger(),
+			fracQuotient.GetPrecision())
+
+	if expectedQuo.GetNumStr() != actualQuo.GetNumStr() {
+		t.Errorf("Error: Expected Quotient='%v'. Instead Quotient='%v'",
+			expectedQuo.GetNumStr(), actualQuo.GetNumStr())
+	}
+}
+
+func TestBigIntMathDivide_FixedDecimalFracQuotient_07(t *testing.T) {
 	// Dividend		divided by		Divisor			=		Quotient
 	//  - 2.5 				/ 			 	12.555		  = 	-0.199123855037834
 
@@ -545,18 +402,18 @@ func TestBigIntMathDivide_IntAryFracQuotient_03(t *testing.T) {
 	expectedQuoStr := "-0.199123855037834"
 	maxPrecision := uint(15)
 
-	dividend, err := IntAry{}.NewNumStr(dividendStr)
+	dividend, err := BigIntNum{}.NewNumStr(dividendStr)
 
 	if err != nil {
-		t.Errorf("Error returned by IntAry{}.NewNumStr(dividendStr). "+
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(dividendStr). "+
 			"dividendStr='%v' Error='%v' ",
 			dividendStr, err.Error())
 	}
 
-	divisor, err := IntAry{}.NewNumStr(divisorStr)
+	divisor, err := BigIntNum{}.NewNumStr(divisorStr)
 
 	if err != nil {
-		t.Errorf("Error returned by IntAry{}.NewNumStr(divisorStr). "+
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(divisorStr). "+
 			"divisorStr='%v' Error='%v' ",
 			divisorStr, err.Error())
 	}
@@ -569,22 +426,234 @@ func TestBigIntMathDivide_IntAryFracQuotient_03(t *testing.T) {
 			expectedQuoStr, err.Error())
 	}
 
-	quotient, err :=
-		BigIntMathDivide{}.IntAryFracQuotient(dividend, divisor, maxPrecision)
+	dividendFixDec :=
+		BigIntFixedDecimal{}.New(
+			dividend.GetIntegerValue(),
+			dividend.GetPrecisionUint())
+
+
+	divisorFixDec := BigIntFixedDecimal{}.New(
+		divisor.GetIntegerValue(),
+		divisor.GetPrecisionUint())
+
+	fracQuotient, err :=
+		BigIntMathDivide{}.FixedDecimalFracQuotient(
+			dividendFixDec,
+			divisorFixDec,
+			maxPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntMathDivide{}.IntAryFracQuotient"+
-			"(dividend, divisor, maxPrecision).  Error='%v' ",
-			err.Error())
+		t.Errorf("Error returned by BigIntMathDivide{}.FixedDecimalFracQuotient(...) " +
+			"Error='%v' ", err.Error())
 	}
 
-	if !expectedQuo.Equal(quotient) {
+	actualQuo :=
+		BigIntNum{}.NewBigInt(
+			fracQuotient.GetInteger(),
+			fracQuotient.GetPrecision())
+
+	if expectedQuo.GetNumStr() != actualQuo.GetNumStr() {
 		t.Errorf("Error: Expected Quotient='%v'. Instead Quotient='%v'",
-			expectedQuo.GetNumStr(), quotient.GetNumStr())
+			expectedQuo.GetNumStr(), actualQuo.GetNumStr())
 	}
 }
 
-func TestBigIntMathDivide_IntAryFracQuotient_04(t *testing.T) {
+func TestBigIntMathDivide_FixedDecimalFracQuotient_08(t *testing.T) {
+	// Dividend		divided by		Divisor			=		Quotient
+	// 	 12.555				/ 				- 2.5			  =		 -5.022
+
+	dividendStr := "12.555"
+	divisorStr := "-2.5"
+	expectedQuoStr := "-5.022"
+	maxPrecision := uint(15)
+
+	dividend, err := BigIntNum{}.NewNumStr(dividendStr)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(dividendStr). "+
+			"dividendStr='%v' Error='%v' ",
+			dividendStr, err.Error())
+	}
+
+	divisor, err := BigIntNum{}.NewNumStr(divisorStr)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(divisorStr). "+
+			"divisorStr='%v' Error='%v' ",
+			divisorStr, err.Error())
+	}
+
+	expectedQuo, err := BigIntNum{}.NewNumStr(expectedQuoStr)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(expectedQuoStr). "+
+			"expectedQuoStr='%v' Error='%v' ",
+			expectedQuoStr, err.Error())
+	}
+
+	dividendFixDec :=
+		BigIntFixedDecimal{}.New(
+			dividend.GetIntegerValue(),
+			dividend.GetPrecisionUint())
+
+
+	divisorFixDec := BigIntFixedDecimal{}.New(
+		divisor.GetIntegerValue(),
+		divisor.GetPrecisionUint())
+
+	fracQuotient, err :=
+		BigIntMathDivide{}.FixedDecimalFracQuotient(
+			dividendFixDec,
+			divisorFixDec,
+			maxPrecision)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntMathDivide{}.FixedDecimalFracQuotient(...) " +
+			"Error='%v' ", err.Error())
+	}
+
+	actualQuo :=
+		BigIntNum{}.NewBigInt(
+			fracQuotient.GetInteger(),
+			fracQuotient.GetPrecision())
+
+	if expectedQuo.GetNumStr() != actualQuo.GetNumStr() {
+		t.Errorf("Error: Expected Quotient='%v'. Instead Quotient='%v'",
+			expectedQuo.GetNumStr(), actualQuo.GetNumStr())
+	}
+}
+
+func TestBigIntMathDivide_FixedDecimalFracQuotient_09(t *testing.T) {
+	// Dividend		divided by		Divisor			=		Quotient
+	//   12.555 			/ 				 -2 				=    -6.2775
+
+	dividendStr := "12.555"
+	divisorStr := "-2"
+	expectedQuoStr := "-6.2775"
+	maxPrecision := uint(15)
+
+	dividend, err := BigIntNum{}.NewNumStr(dividendStr)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(dividendStr). "+
+			"dividendStr='%v' Error='%v' ",
+			dividendStr, err.Error())
+	}
+
+	divisor, err := BigIntNum{}.NewNumStr(divisorStr)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(divisorStr). "+
+			"divisorStr='%v' Error='%v' ",
+			divisorStr, err.Error())
+	}
+
+	expectedQuo, err := BigIntNum{}.NewNumStr(expectedQuoStr)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(expectedQuoStr). "+
+			"expectedQuoStr='%v' Error='%v' ",
+			expectedQuoStr, err.Error())
+	}
+
+	dividendFixDec :=
+		BigIntFixedDecimal{}.New(
+			dividend.GetIntegerValue(),
+			dividend.GetPrecisionUint())
+
+
+	divisorFixDec := BigIntFixedDecimal{}.New(
+		divisor.GetIntegerValue(),
+		divisor.GetPrecisionUint())
+
+	fracQuotient, err :=
+		BigIntMathDivide{}.FixedDecimalFracQuotient(
+			dividendFixDec,
+			divisorFixDec,
+			maxPrecision)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntMathDivide{}.FixedDecimalFracQuotient(...) " +
+			"Error='%v' ", err.Error())
+	}
+
+	actualQuo :=
+		BigIntNum{}.NewBigInt(
+			fracQuotient.GetInteger(),
+			fracQuotient.GetPrecision())
+
+	if expectedQuo.GetNumStr() != actualQuo.GetNumStr() {
+		t.Errorf("Error: Expected Quotient='%v'. Instead Quotient='%v'",
+			expectedQuo.GetNumStr(), actualQuo.GetNumStr())
+	}
+}
+
+func TestBigIntMathDivide_FixedDecimalFracQuotient_10(t *testing.T) {
+	// Dividend		divided by		Divisor			=		Quotient
+	//    2.5 				/ 				-12.555		  = 	-0.199123855037834
+
+	dividendStr := "2.5"
+	divisorStr := "-12.555"
+	expectedQuoStr := "-0.199123855037834"
+	maxPrecision := uint(15)
+
+	dividend, err := BigIntNum{}.NewNumStr(dividendStr)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(dividendStr). "+
+			"dividendStr='%v' Error='%v' ",
+			dividendStr, err.Error())
+	}
+
+	divisor, err := BigIntNum{}.NewNumStr(divisorStr)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(divisorStr). "+
+			"divisorStr='%v' Error='%v' ",
+			divisorStr, err.Error())
+	}
+
+	expectedQuo, err := BigIntNum{}.NewNumStr(expectedQuoStr)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(expectedQuoStr). "+
+			"expectedQuoStr='%v' Error='%v' ",
+			expectedQuoStr, err.Error())
+	}
+
+	dividendFixDec :=
+		BigIntFixedDecimal{}.New(
+			dividend.GetIntegerValue(),
+			dividend.GetPrecisionUint())
+
+
+	divisorFixDec := BigIntFixedDecimal{}.New(
+		divisor.GetIntegerValue(),
+		divisor.GetPrecisionUint())
+
+	fracQuotient, err :=
+		BigIntMathDivide{}.FixedDecimalFracQuotient(
+			dividendFixDec,
+			divisorFixDec,
+			maxPrecision)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntMathDivide{}.FixedDecimalFracQuotient(...) " +
+			"Error='%v' ", err.Error())
+	}
+
+	actualQuo :=
+		BigIntNum{}.NewBigInt(
+			fracQuotient.GetInteger(),
+			fracQuotient.GetPrecision())
+
+	if expectedQuo.GetNumStr() != actualQuo.GetNumStr() {
+		t.Errorf("Error: Expected Quotient='%v'. Instead Quotient='%v'",
+			expectedQuo.GetNumStr(), actualQuo.GetNumStr())
+	}
+}
+
+func TestBigIntMathDivide_FixedDecimalFracQuotient_11(t *testing.T) {
 	// Dividend		divided by		Divisor			=		Quotient
 	// 	-12.555 			/ 				 -2.5 			= 	 5.022
 
@@ -593,23 +662,18 @@ func TestBigIntMathDivide_IntAryFracQuotient_04(t *testing.T) {
 	expectedQuoStr := "5.022"
 	maxPrecision := uint(15)
 
-	expectedNumSeps := NumericSeparatorDto{}
-	expectedNumSeps.DecimalSeparator = '.'
-	expectedNumSeps.ThousandsSeparator = ','
-	expectedNumSeps.CurrencySymbol = '$'
-
-	dividend, err := IntAry{}.NewNumStr(dividendStr)
+	dividend, err := BigIntNum{}.NewNumStr(dividendStr)
 
 	if err != nil {
-		t.Errorf("Error returned by IntAry{}.NewNumStr(dividendStr). "+
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(dividendStr). "+
 			"dividendStr='%v' Error='%v' ",
 			dividendStr, err.Error())
 	}
 
-	divisor, err := IntAry{}.NewNumStr(divisorStr)
+	divisor, err := BigIntNum{}.NewNumStr(divisorStr)
 
 	if err != nil {
-		t.Errorf("Error returned by IntAry{}.NewNumStr(divisorStr). "+
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(divisorStr). "+
 			"divisorStr='%v' Error='%v' ",
 			divisorStr, err.Error())
 	}
@@ -622,55 +686,59 @@ func TestBigIntMathDivide_IntAryFracQuotient_04(t *testing.T) {
 			expectedQuoStr, err.Error())
 	}
 
-	quotient, err :=
-		BigIntMathDivide{}.IntAryFracQuotient(dividend, divisor, maxPrecision)
+	dividendFixDec :=
+		BigIntFixedDecimal{}.New(
+			dividend.GetIntegerValue(),
+			dividend.GetPrecisionUint())
+
+
+	divisorFixDec := BigIntFixedDecimal{}.New(
+		divisor.GetIntegerValue(),
+		divisor.GetPrecisionUint())
+
+	fracQuotient, err :=
+		BigIntMathDivide{}.FixedDecimalFracQuotient(
+			dividendFixDec,
+			divisorFixDec,
+			maxPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntMathDivide{}.IntAryFracQuotient"+
-			"(dividend, divisor, maxPrecision).  Error='%v' ",
-			err.Error())
+		t.Errorf("Error returned by BigIntMathDivide{}.FixedDecimalFracQuotient(...) " +
+			"Error='%v' ", err.Error())
 	}
 
-	if !expectedQuo.Equal(quotient) {
+	actualQuo :=
+		BigIntNum{}.NewBigInt(
+			fracQuotient.GetInteger(),
+			fracQuotient.GetPrecision())
+
+	if expectedQuo.GetNumStr() != actualQuo.GetNumStr() {
 		t.Errorf("Error: Expected Quotient='%v'. Instead Quotient='%v'",
-			expectedQuo.GetNumStr(), quotient.GetNumStr())
+			expectedQuo.GetNumStr(), actualQuo.GetNumStr())
 	}
-
-	actualNumSeps := quotient.GetNumericSeparatorsDto()
-
-	if !expectedNumSeps.Equal(actualNumSeps) {
-		t.Errorf("Error: Expected NumSeps='%v'. Instead, NumSeps='%v'",
-			expectedNumSeps.String(), actualNumSeps.String())
-	}
-
 }
 
-func TestBigIntMathDivide_IntAryFracQuotient_05(t *testing.T) {
+func TestBigIntMathDivide_FixedDecimalFracQuotient_12(t *testing.T) {
 	// Dividend		divided by		Divisor			=		Quotient
-	// 	 10.5  				/ 					2 				= 	 5.25
+	//  -12.555     	/    			 -2 				= 		6.2775
 
-	dividendStr := "10.5"
-	divisorStr := "2"
-	expectedQuoStr := "5.25"
+	dividendStr := "-12.555"
+	divisorStr := "-2"
+	expectedQuoStr := "6.2775"
 	maxPrecision := uint(15)
 
-	expectedNumSeps := NumericSeparatorDto{}
-	expectedNumSeps.DecimalSeparator = '.'
-	expectedNumSeps.ThousandsSeparator = ','
-	expectedNumSeps.CurrencySymbol = '$'
-
-	dividend, err := IntAry{}.NewNumStr(dividendStr)
+	dividend, err := BigIntNum{}.NewNumStr(dividendStr)
 
 	if err != nil {
-		t.Errorf("Error returned by IntAry{}.NewNumStr(dividendStr). "+
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(dividendStr). "+
 			"dividendStr='%v' Error='%v' ",
 			dividendStr, err.Error())
 	}
 
-	divisor, err := IntAry{}.NewNumStr(divisorStr)
+	divisor, err := BigIntNum{}.NewNumStr(divisorStr)
 
 	if err != nil {
-		t.Errorf("Error returned by IntAry{}.NewNumStr(divisorStr). "+
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(divisorStr). "+
 			"divisorStr='%v' Error='%v' ",
 			divisorStr, err.Error())
 	}
@@ -683,915 +751,314 @@ func TestBigIntMathDivide_IntAryFracQuotient_05(t *testing.T) {
 			expectedQuoStr, err.Error())
 	}
 
-	quotient, err :=
-		BigIntMathDivide{}.IntAryFracQuotient(dividend, divisor, maxPrecision)
+	dividendFixDec :=
+		BigIntFixedDecimal{}.New(
+			dividend.GetIntegerValue(),
+			dividend.GetPrecisionUint())
+
+
+	divisorFixDec := BigIntFixedDecimal{}.New(
+		divisor.GetIntegerValue(),
+		divisor.GetPrecisionUint())
+
+	fracQuotient, err :=
+		BigIntMathDivide{}.FixedDecimalFracQuotient(
+			dividendFixDec,
+			divisorFixDec,
+			maxPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntMathDivide{}.IntAryFracQuotient"+
-			"(dividend, divisor, maxPrecision).  Error='%v' ",
-			err.Error())
+		t.Errorf("Error returned by BigIntMathDivide{}.FixedDecimalFracQuotient(...) " +
+			"Error='%v' ", err.Error())
 	}
 
-	if !expectedQuo.Equal(quotient) {
+	actualQuo :=
+		BigIntNum{}.NewBigInt(
+			fracQuotient.GetInteger(),
+			fracQuotient.GetPrecision())
+
+	if expectedQuo.GetNumStr() != actualQuo.GetNumStr() {
 		t.Errorf("Error: Expected Quotient='%v'. Instead Quotient='%v'",
-			expectedQuo.GetNumStr(), quotient.GetNumStr())
+			expectedQuo.GetNumStr(), actualQuo.GetNumStr())
 	}
-
-	actualNumSeps := quotient.GetNumericSeparatorsDto()
-
-	if !expectedNumSeps.Equal(actualNumSeps) {
-		t.Errorf("Error: Expected NumSeps='%v'. Instead NumSeps='%v'",
-			expectedNumSeps.String(), actualNumSeps.String())
-	}
-
 }
 
-func TestBigIntMathDivide_IntAryFracQuotient_06(t *testing.T) {
-	// Dividend		divided by		Divisor			=		Quotient
-	// 	 10,5  				/ 					2 				= 	 5,25
+func TestBigIntMathDivide_FixedDecimalFracQuotient_13(t *testing.T) {
+	// Dividend		divided by		Divisor			=					Quotient
+	//  - 2.5	 				/ 				-12.555		  = 		0.199123855037834
 
-	dividendStr := "10,5"
-	divisorStr := "2"
-	expectedQuoStr := "5,25"
+	dividendStr := "-2.5"
+	divisorStr := "-12.555"
+	expectedQuoStr := "0.199123855037834"
 	maxPrecision := uint(15)
 
-	expectedNumSeps := NumericSeparatorDto{}
-	frenchDecSeparator := ','
-	frenchThousandsSeparator := ' '
-	frenchCurrencySymbol := '€'
-
-	expectedNumSeps.DecimalSeparator = frenchDecSeparator
-	expectedNumSeps.ThousandsSeparator = frenchThousandsSeparator
-	expectedNumSeps.CurrencySymbol = frenchCurrencySymbol
-
-	dividend, err := IntAry{}.NewNumStrWithNumSeps(dividendStr, expectedNumSeps)
+	dividend, err := BigIntNum{}.NewNumStr(dividendStr)
 
 	if err != nil {
-		t.Errorf("Error returned by IntAry{}.NewNumStrWithNumSeps("+
-			"dividendStr,expectedNumSeps). "+
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(dividendStr). "+
 			"dividendStr='%v' Error='%v' ",
 			dividendStr, err.Error())
 	}
 
-	divisor, err := IntAry{}.NewNumStr(divisorStr)
+	divisor, err := BigIntNum{}.NewNumStr(divisorStr)
 
 	if err != nil {
-		t.Errorf("Error returned by IntAry{}.NewNumStr(divisorStr). "+
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(divisorStr). "+
 			"divisorStr='%v' Error='%v' ",
 			divisorStr, err.Error())
 	}
 
-	expectedQuo, err := BigIntNum{}.NewNumStrWithNumSeps(expectedQuoStr, expectedNumSeps)
+	expectedQuo, err := BigIntNum{}.NewNumStr(expectedQuoStr)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStrWithNumSeps(expectedQuoStr,expectedNumSeps). "+
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(expectedQuoStr). "+
 			"expectedQuoStr='%v' Error='%v' ",
 			expectedQuoStr, err.Error())
 	}
 
-	quotient, err :=
-		BigIntMathDivide{}.IntAryFracQuotient(dividend, divisor, maxPrecision)
+	dividendFixDec :=
+		BigIntFixedDecimal{}.New(
+			dividend.GetIntegerValue(),
+			dividend.GetPrecisionUint())
+
+
+	divisorFixDec := BigIntFixedDecimal{}.New(
+		divisor.GetIntegerValue(),
+		divisor.GetPrecisionUint())
+
+	fracQuotient, err :=
+		BigIntMathDivide{}.FixedDecimalFracQuotient(
+			dividendFixDec,
+			divisorFixDec,
+			maxPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntMathDivide{}.IntAryFracQuotient"+
-			"(dividend, divisor, maxPrecision).  Error='%v' ",
-			err.Error())
+		t.Errorf("Error returned by BigIntMathDivide{}.FixedDecimalFracQuotient(...) " +
+			"Error='%v' ", err.Error())
 	}
 
-	if !expectedQuo.Equal(quotient) {
+	actualQuo :=
+		BigIntNum{}.NewBigInt(
+			fracQuotient.GetInteger(),
+			fracQuotient.GetPrecision())
+
+	if expectedQuo.GetNumStr() != actualQuo.GetNumStr() {
 		t.Errorf("Error: Expected Quotient='%v'. Instead Quotient='%v'",
-			expectedQuo.GetNumStr(), quotient.GetNumStr())
+			expectedQuo.GetNumStr(), actualQuo.GetNumStr())
 	}
-
-	actualNumSeps := quotient.GetNumericSeparatorsDto()
-
-	if !expectedNumSeps.Equal(actualNumSeps) {
-		t.Errorf("Error: Expected NumSeps='%v'. Instead NumSeps='%v'",
-			expectedNumSeps.String(), actualNumSeps.String())
-	}
-
 }
 
-func TestBigIntMathDivide_IntAryFracQuotient_07(t *testing.T) {
-	// Dividend		divided by		Divisor			=		Quotient
-	// 	 10.5  				/ 					2 				= 	 5.25
+func TestBigIntMathDivide_FixedDecimalFracQuotient_14(t *testing.T) {
+	// Dividend		divided by		Divisor			=					Quotient
+	//  -10						/					- 2					=						5
 
-	dividendStr := "10.5"
-	divisorStr := "2"
-	expectedQuoStr := "5.25"
+	dividendStr := "-10"
+	divisorStr := "-2"
+	expectedQuoStr := "5"
 	maxPrecision := uint(15)
 
-	expectedNumSeps := NumericSeparatorDto{}
-	expectedNumSeps.DecimalSeparator = '.'
-	expectedNumSeps.ThousandsSeparator = ','
-	expectedNumSeps.CurrencySymbol = '$'
-
-	dividend, err := IntAry{}.NewNumStrWithNumSeps(dividendStr, expectedNumSeps)
+	dividend, err := BigIntNum{}.NewNumStr(dividendStr)
 
 	if err != nil {
-		t.Errorf("Error returned by IntAry{}.NewNumStrWithNumSeps("+
-			"dividendStr,expectedNumSeps). "+
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(dividendStr). "+
 			"dividendStr='%v' Error='%v' ",
 			dividendStr, err.Error())
 	}
 
-	divisor, err := IntAry{}.NewNumStr(divisorStr)
+	divisor, err := BigIntNum{}.NewNumStr(divisorStr)
 
 	if err != nil {
-		t.Errorf("Error returned by IntAry{}.NewNumStr(divisorStr). "+
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(divisorStr). "+
 			"divisorStr='%v' Error='%v' ",
 			divisorStr, err.Error())
 	}
 
-	expectedQuo, err := BigIntNum{}.NewNumStrWithNumSeps(expectedQuoStr, expectedNumSeps)
+	expectedQuo, err := BigIntNum{}.NewNumStr(expectedQuoStr)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStrWithNumSeps(expectedQuoStr,expectedNumSeps). "+
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(expectedQuoStr). "+
 			"expectedQuoStr='%v' Error='%v' ",
 			expectedQuoStr, err.Error())
 	}
 
-	quotient, err :=
-		BigIntMathDivide{}.IntAryFracQuotient(dividend, divisor, maxPrecision)
+	dividendFixDec :=
+		BigIntFixedDecimal{}.New(
+			dividend.GetIntegerValue(),
+			dividend.GetPrecisionUint())
+
+
+	divisorFixDec := BigIntFixedDecimal{}.New(
+		divisor.GetIntegerValue(),
+		divisor.GetPrecisionUint())
+
+	fracQuotient, err :=
+		BigIntMathDivide{}.FixedDecimalFracQuotient(
+			dividendFixDec,
+			divisorFixDec,
+			maxPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntMathDivide{}.IntAryFracQuotient"+
-			"(dividend, divisor, maxPrecision).  Error='%v' ",
-			err.Error())
+		t.Errorf("Error returned by BigIntMathDivide{}.FixedDecimalFracQuotient(...) " +
+			"Error='%v' ", err.Error())
 	}
 
-	if !expectedQuo.Equal(quotient) {
+	actualQuo :=
+		BigIntNum{}.NewBigInt(
+			fracQuotient.GetInteger(),
+			fracQuotient.GetPrecision())
+
+	if expectedQuo.GetNumStr() != actualQuo.GetNumStr() {
 		t.Errorf("Error: Expected Quotient='%v'. Instead Quotient='%v'",
-			expectedQuo.GetNumStr(), quotient.GetNumStr())
-	}
-
-	actualNumSeps := quotient.GetNumericSeparatorsDto()
-
-	if !expectedNumSeps.Equal(actualNumSeps) {
-		t.Errorf("Error: Expected NumSeps='%v'. Instead NumSeps='%v'",
-			expectedNumSeps.String(), actualNumSeps.String())
-	}
-
-}
-
-func TestBigIntMathDivide_IntAryFracQuotientArray_01(t *testing.T) {
-
-	divisorStr := "2.5"
-	maxPrecision := uint(15)
-
-	dividendArrayStr := []string{
-		"10.5",
-		"10",
-		"11.5",
-		"2.5",
-		"-12.555",
-		"-2.5",
-		"12.555",
-		"-122.783",
-		"-6847.231",
-		"-2.5",
-		"-10",
-		"-10.5",
-	}
-
-	expectedArrayStr := []string{
-		"4.2",
-		"4",
-		"4.6",
-		"1",
-		"-5.022",
-		"-1",
-		"5.022",
-		"-49.1132",
-		"-2738.8924",
-		"-1",
-		"-4",
-		"-4.2",
-	}
-
-	expectedNumSeps := NumericSeparatorDto{}
-	expectedNumSeps.DecimalSeparator = '.'
-	expectedNumSeps.ThousandsSeparator = ','
-	expectedNumSeps.CurrencySymbol = '$'
-
-	lenDividends := len(dividendArrayStr)
-
-	divisor, err := IntAry{}.NewNumStr(divisorStr)
-
-	if err != nil {
-		t.Errorf("Error returned by IntAry{}.NewNumStr(divisorStr). "+
-			"divisor='%v' Error='%v' ",
-			divisorStr, err.Error())
-	}
-
-	dividends := make([]IntAry, lenDividends)
-	expectedResults := make([]IntAry, lenDividends)
-
-	for i := 0; i < lenDividends; i++ {
-
-		dividends[i], err = IntAry{}.NewNumStr(dividendArrayStr[i])
-
-		if err != nil {
-			t.Errorf("Error returned by IntAry{}.NewNumStr(dividendArrayStr[i]). "+
-				"dividendArrayStr[%v]='%v' Error='%v' ",
-				i, dividendArrayStr[i], err.Error())
-		}
-
-		expectedResults[i], err = IntAry{}.NewNumStr(expectedArrayStr[i])
-
-		if err != nil {
-			t.Errorf("Error returned by IntAry{}.NewNumStr(expectedArrayStr[i]). "+
-				"expectedArrayStr[%v]='%v' Error='%v' ",
-				i, expectedArrayStr[i], err.Error())
-		}
-
-	}
-
-	resultArray, err := BigIntMathDivide{}.IntAryFracQuotientArray(dividends, divisor, maxPrecision)
-
-	if err != nil {
-		t.Errorf("Error returned by BigIntMathDivide{}.IntAryFracQuotientArray"+
-			"(dividends, divisor, maxPrecision ). "+
-			"divisor='%v' maxPrecision='%v' Error='%v' ",
-			divisor.GetNumStr(), maxPrecision, err.Error())
-	}
-
-	lenResultArray := len(resultArray)
-
-	if lenDividends != lenResultArray {
-		t.Errorf("Error: Expected Results Array Length='%v'. Actual Array Length='%v'.",
-			lenDividends, lenResultArray)
-	}
-
-	for k := 0; k < lenDividends; k++ {
-
-		if !resultArray[k].Equal(expectedResults[k]) {
-			t.Errorf("Error: Expected Result NOT Equal to Actual Result! "+
-				"Expected Value='%v'. Actual Value='%v' k='%v'",
-				expectedResults[k].GetNumStr(), resultArray[k].GetNumStr(), k)
-		}
-
-		actualNumSeps := resultArray[k].GetNumericSeparatorsDto()
-
-		if !expectedNumSeps.Equal(actualNumSeps) {
-			t.Errorf("Error: Expected NumSeps='%v'. Instead, NumSeps='%v'. ",
-				expectedNumSeps.String(), actualNumSeps.String())
-		}
-
+			expectedQuo.GetNumStr(), actualQuo.GetNumStr())
 	}
 }
 
-func TestBigIntMathDivide_IntAryFracQuotientArray_02(t *testing.T) {
+func TestBigIntMathDivide_FixedDecimalFracQuotient_15(t *testing.T) {
+	// Dividend		divided by		Divisor			=					Quotient
+	//  0							/					- 2					=						0
 
-	divisorStr := "2.5"
+	dividendStr := "0"
+	divisorStr := "-2"
+	expectedQuoStr := "0"
 	maxPrecision := uint(15)
 
-	dividendArrayStr := []string{
-		"10.5",
-		"10",
-		"11.5",
-		"2.5",
-		"-12.555",
-		"-2.5",
-		"12.555",
-		"-122.783",
-		"-6847.231",
-		"-2.5",
-		"-10",
-		"-10.5",
-	}
-
-	expectedArrayStr := []string{
-		"4,2",
-		"4",
-		"4,6",
-		"1",
-		"-5,022",
-		"-1",
-		"5,022",
-		"-49,1132",
-		"-2738,8924",
-		"-1",
-		"-4",
-		"-4,2",
-	}
-
-	expectedNumSeps := NumericSeparatorDto{}
-	frenchDecSeparator := ','
-	frenchThousandsSeparator := ' '
-	frenchCurrencySymbol := '€'
-
-	expectedNumSeps.DecimalSeparator = frenchDecSeparator
-	expectedNumSeps.ThousandsSeparator = frenchThousandsSeparator
-	expectedNumSeps.CurrencySymbol = frenchCurrencySymbol
-
-	lenDividends := len(dividendArrayStr)
-
-	divisor, err := IntAry{}.NewNumStr(divisorStr)
+	dividend, err := BigIntNum{}.NewNumStr(dividendStr)
 
 	if err != nil {
-		t.Errorf("Error returned by IntAry{}.NewNumStr(divisorStr). "+
-			"divisor='%v' Error='%v' ",
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(dividendStr). "+
+			"dividendStr='%v' Error='%v' ",
+			dividendStr, err.Error())
+	}
+
+	divisor, err := BigIntNum{}.NewNumStr(divisorStr)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(divisorStr). "+
+			"divisorStr='%v' Error='%v' ",
 			divisorStr, err.Error())
 	}
 
-	dividends := make([]IntAry, lenDividends)
-	expectedResults := make([]IntAry, lenDividends)
-
-	for i := 0; i < lenDividends; i++ {
-
-		dividends[i], err = IntAry{}.NewNumStr(dividendArrayStr[i])
-
-		if err != nil {
-			t.Errorf("Error returned by IntAry{}.NewNumStr(dividendArrayStr[i]). "+
-				"dividendArrayStr[%v]='%v' Error='%v' ",
-				i, dividendArrayStr[i], err.Error())
-		}
-
-		expectedResults[i], err = IntAry{}.NewNumStrWithNumSeps(expectedArrayStr[i], expectedNumSeps)
-
-		if err != nil {
-			t.Errorf("Error returned by IntAry{}.NewNumStrWithNumSeps"+
-				"(expectedArrayStr[i], expectedNumSeps). "+
-				"expectedArrayStr[%v]='%v' Error='%v' ",
-				i, expectedArrayStr[i], err.Error())
-		}
-
-	}
-
-	err = dividends[0].SetNumericSeparatorsDto(expectedNumSeps)
+	expectedQuo, err := BigIntNum{}.NewNumStr(expectedQuoStr)
 
 	if err != nil {
-		t.Errorf("Error returned by dividends[0].SetNumericSeparatorsDto(expectedNumSeps). "+
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(expectedQuoStr). "+
+			"expectedQuoStr='%v' Error='%v' ",
+			expectedQuoStr, err.Error())
+	}
+
+	dividendFixDec :=
+		BigIntFixedDecimal{}.New(
+			dividend.GetIntegerValue(),
+			dividend.GetPrecisionUint())
+
+
+	divisorFixDec := BigIntFixedDecimal{}.New(
+		divisor.GetIntegerValue(),
+		divisor.GetPrecisionUint())
+
+	fracQuotient, err :=
+		BigIntMathDivide{}.FixedDecimalFracQuotient(
+			dividendFixDec,
+			divisorFixDec,
+			maxPrecision)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntMathDivide{}.FixedDecimalFracQuotient(...) " +
 			"Error='%v' ", err.Error())
 	}
 
-	resultArray, err := BigIntMathDivide{}.IntAryFracQuotientArray(dividends, divisor, maxPrecision)
+	actualQuo :=
+		BigIntNum{}.NewBigInt(
+			fracQuotient.GetInteger(),
+			fracQuotient.GetPrecision())
 
-	if err != nil {
-		t.Errorf("Error returned by BigIntMathDivide{}.IntAryFracQuotientArray"+
-			"(dividends, divisor, maxPrecision ). "+
-			"divisor='%v' maxPrecision='%v' Error='%v' ",
-			divisor.GetNumStr(), maxPrecision, err.Error())
-	}
-
-	lenResultArray := len(resultArray)
-
-	if lenDividends != lenResultArray {
-		t.Errorf("Error: Expected Results Array Length='%v'. Actual Array Length='%v'.",
-			lenDividends, lenResultArray)
-	}
-
-	for k := 0; k < lenDividends; k++ {
-
-		if !resultArray[k].Equal(expectedResults[k]) {
-			t.Errorf("Error: Expected Result NOT Equal to Actual Result! "+
-				"Expected Value='%v'. Actual Value='%v' k='%v'",
-				expectedResults[k].GetNumStr(), resultArray[k].GetNumStr(), k)
-		}
-
-		actualNumSeps := resultArray[k].GetNumericSeparatorsDto()
-
-		if !expectedNumSeps.Equal(actualNumSeps) {
-			t.Errorf("Error: Expected NumSeps='%v'. Instead, NumSeps='%v'. ",
-				expectedNumSeps.String(), actualNumSeps.String())
-		}
-
+	if expectedQuo.GetNumStr() != actualQuo.GetNumStr() {
+		t.Errorf("Error: Expected Quotient='%v'. Instead Quotient='%v'",
+			expectedQuo.GetNumStr(), actualQuo.GetNumStr())
 	}
 }
 
-func TestBigIntMathDivide_IntAryFracQuotientArray_03(t *testing.T) {
+func TestBigIntMathDivide_FixedDecimalFracQuotient_16(t *testing.T) {
+	// Dividend		divided by		Divisor			=					Quotient
+	//  0							/					  2					=						0
 
-	divisorStr := "2.5"
+	dividendStr := "0"
+	divisorStr := "2"
+	expectedQuoStr := "0"
 	maxPrecision := uint(15)
 
-	dividendArrayStr := []string{
-		"10.5",
-		"10",
-		"11.5",
-		"2.5",
-		"-12.555",
-		"-2.5",
-		"12.555",
-		"-122.783",
-		"-6847.231",
-		"-2.5",
-		"-10",
-		"-10.5",
-	}
-
-	expectedArrayStr := []string{
-		"4.2",
-		"4",
-		"4.6",
-		"1",
-		"-5.022",
-		"-1",
-		"5.022",
-		"-49.1132",
-		"-2738.8924",
-		"-1",
-		"-4",
-		"-4.2",
-	}
-
-	expectedNumSeps := NumericSeparatorDto{}
-	expectedNumSeps.DecimalSeparator = '.'
-	expectedNumSeps.ThousandsSeparator = ','
-	expectedNumSeps.CurrencySymbol = '$'
-
-	lenDividends := len(dividendArrayStr)
-
-	divisor, err := IntAry{}.NewNumStr(divisorStr)
+	dividend, err := BigIntNum{}.NewNumStr(dividendStr)
 
 	if err != nil {
-		t.Errorf("Error returned by IntAry{}.NewNumStr(divisorStr). "+
-			"divisor='%v' Error='%v' ",
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(dividendStr). "+
+			"dividendStr='%v' Error='%v' ",
+			dividendStr, err.Error())
+	}
+
+	divisor, err := BigIntNum{}.NewNumStr(divisorStr)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(divisorStr). "+
+			"divisorStr='%v' Error='%v' ",
 			divisorStr, err.Error())
 	}
 
-	dividends := make([]IntAry, lenDividends)
-	expectedResults := make([]IntAry, lenDividends)
-
-	for i := 0; i < lenDividends; i++ {
-
-		dividends[i], err = IntAry{}.NewNumStr(dividendArrayStr[i])
-
-		if err != nil {
-			t.Errorf("Error returned by IntAry{}.NewNumStr(dividendArrayStr[i]). "+
-				"dividendArrayStr[%v]='%v' Error='%v' ",
-				i, dividendArrayStr[i], err.Error())
-		}
-
-		expectedResults[i], err = IntAry{}.NewNumStrWithNumSeps(expectedArrayStr[i], expectedNumSeps)
-
-		if err != nil {
-			t.Errorf("Error returned by IntAry{}.NewNumStrWithNumSeps"+
-				"(expectedArrayStr[i], expectedNumSeps). "+
-				"expectedArrayStr[%v]='%v' Error='%v' ",
-				i, expectedArrayStr[i], err.Error())
-		}
-
-	}
-
-	err = dividends[0].SetNumericSeparatorsDto(expectedNumSeps)
+	expectedQuo, err := BigIntNum{}.NewNumStr(expectedQuoStr)
 
 	if err != nil {
-		t.Errorf("Error returned by dividends[0].SetNumericSeparatorsDto(expectedNumSeps). "+
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(expectedQuoStr). "+
+			"expectedQuoStr='%v' Error='%v' ",
+			expectedQuoStr, err.Error())
+	}
+
+	dividendFixDec :=
+		BigIntFixedDecimal{}.New(
+			dividend.GetIntegerValue(),
+			dividend.GetPrecisionUint())
+
+
+	divisorFixDec := BigIntFixedDecimal{}.New(
+		divisor.GetIntegerValue(),
+		divisor.GetPrecisionUint())
+
+	fracQuotient, err :=
+		BigIntMathDivide{}.FixedDecimalFracQuotient(
+			dividendFixDec,
+			divisorFixDec,
+			maxPrecision)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntMathDivide{}.FixedDecimalFracQuotient(...) " +
 			"Error='%v' ", err.Error())
 	}
 
-	resultArray, err := BigIntMathDivide{}.IntAryFracQuotientArray(dividends, divisor, maxPrecision)
+	actualQuo :=
+		BigIntNum{}.NewBigInt(
+			fracQuotient.GetInteger(),
+			fracQuotient.GetPrecision())
 
-	if err != nil {
-		t.Errorf("Error returned by BigIntMathDivide{}.IntAryFracQuotientArray"+
-			"(dividends, divisor, maxPrecision ). "+
-			"divisor='%v' maxPrecision='%v' Error='%v' ",
-			divisor.GetNumStr(), maxPrecision, err.Error())
-	}
-
-	lenResultArray := len(resultArray)
-
-	if lenDividends != lenResultArray {
-		t.Errorf("Error: Expected Results Array Length='%v'. Actual Array Length='%v'.",
-			lenDividends, lenResultArray)
-	}
-
-	for k := 0; k < lenDividends; k++ {
-
-		if !resultArray[k].Equal(expectedResults[k]) {
-			t.Errorf("Error: Expected Result NOT Equal to Actual Result! "+
-				"Expected Value='%v'. Actual Value='%v' k='%v'",
-				expectedResults[k].GetNumStr(), resultArray[k].GetNumStr(), k)
-		}
-
-		actualNumSeps := resultArray[k].GetNumericSeparatorsDto()
-
-		if !expectedNumSeps.Equal(actualNumSeps) {
-			t.Errorf("Error: Expected NumSeps='%v'. Instead, NumSeps='%v'. ",
-				expectedNumSeps.String(), actualNumSeps.String())
-		}
-
+	if expectedQuo.GetNumStr() != actualQuo.GetNumStr() {
+		t.Errorf("Error: Expected Quotient='%v'. Instead Quotient='%v'",
+			expectedQuo.GetNumStr(), actualQuo.GetNumStr())
 	}
 }
 
-func TestBigIntMathDivide_IntAryModulo_01(t *testing.T) {
-	// Dividend			  mod by			Divisor			=			Modulo/Remainder
-	// --------				------			-------						----------------
-	//   12.555					%						 2.5			=			 0.055
+func TestBigIntMathDivide_FixedDecimalFracQuotient_17(t *testing.T) {
+	// Dividend		divided by		Divisor			=					Quotient
+	//  11.5				  /				  2.5					=						4.6
 
-	dividendStr := "12.555"
+	dividendStr := "11.5"
 	divisorStr := "2.5"
-	expectedModuloStr := "0.055"
+	expectedQuoStr := "4.6"
 	maxPrecision := uint(15)
 
-	iaDividend, err := IntAry{}.NewNumStr(dividendStr)
+	dividend, err := BigIntNum{}.NewNumStr(dividendStr)
 
 	if err != nil {
-		t.Errorf("Error returned by IntAry{}.NewNumStr(dividendStr). "+
-			"dividendStr='%v' error='%v'", dividendStr, err.Error())
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(dividendStr). "+
+			"dividendStr='%v' Error='%v' ",
+			dividendStr, err.Error())
 	}
-
-	iaDivisor, err := IntAry{}.NewNumStr(divisorStr)
-
-	if err != nil {
-		t.Errorf("Error returned by IntAry{}.NewNumStr(divisorStr). "+
-			"divisorStr='%v' error='%v'", divisorStr, err.Error())
-	}
-
-	moduloBINum, err := BigIntMathDivide{}.IntAryModulo(iaDividend, iaDivisor, maxPrecision)
-
-	if err != nil {
-		t.Errorf("Error returned by BigIntMathDivide{}.IntAryModulo(iaDividend, "+
-			"iaDivisor, maxPrecision). Error='%v'", err.Error())
-
-	}
-
-	actualModuloStr := moduloBINum.GetNumStr()
-
-	if expectedModuloStr != actualModuloStr {
-		t.Errorf("Error: Expected modulo='%v'. Instead modulo='%v'",
-			expectedModuloStr, actualModuloStr)
-	}
-
-}
-
-func TestBigIntMathDivide_IntAryModulo_02(t *testing.T) {
-	// Dividend			  mod by			Divisor			=			Modulo/Remainder
-	// --------				------			-------						----------------
-	//   -12.555 				% 				 - 2.5 			= 		-0.055
-
-	dividendStr := "-12.555"
-	divisorStr := "-2.5"
-	expectedModuloStr := "-0.055"
-	maxPrecision := uint(15)
-
-	iaDividend, err := IntAry{}.NewNumStr(dividendStr)
-
-	if err != nil {
-		t.Errorf("Error returned by IntAry{}.NewNumStr(dividendStr). "+
-			"dividendStr='%v' error='%v'", dividendStr, err.Error())
-	}
-
-	iaDivisor, err := IntAry{}.NewNumStr(divisorStr)
-
-	if err != nil {
-		t.Errorf("Error returned by IntAry{}.NewNumStr(divisorStr). "+
-			"divisorStr='%v' error='%v'", divisorStr, err.Error())
-	}
-
-	moduloBINum, err := BigIntMathDivide{}.IntAryModulo(iaDividend, iaDivisor, maxPrecision)
-
-	if err != nil {
-		t.Errorf("Error returned by BigIntMathDivide{}.IntAryModulo(iaDividend, "+
-			"iaDivisor, maxPrecision). Error='%v'", err.Error())
-
-	}
-
-	actualModuloStr := moduloBINum.GetNumStr()
-
-	if expectedModuloStr != actualModuloStr {
-		t.Errorf("Error: Expected modulo='%v'. Instead modulo='%v'",
-			expectedModuloStr, actualModuloStr)
-	}
-
-}
-
-func TestBigIntMathDivide_IntAryModulo_03(t *testing.T) {
-	// Dividend			  mod by			Divisor			=			Modulo/Remainder
-	// --------				------			-------						----------------
-	//   12.555					% 				 - 2.5			=			 0.055
-
-	dividendStr := "12.555"
-	divisorStr := "-2.5"
-	expectedModuloStr := "0.055"
-	maxPrecision := uint(15)
-
-	iaDividend, err := IntAry{}.NewNumStr(dividendStr)
-
-	if err != nil {
-		t.Errorf("Error returned by IntAry{}.NewNumStr(dividendStr). "+
-			"dividendStr='%v' error='%v'", dividendStr, err.Error())
-	}
-
-	iaDivisor, err := IntAry{}.NewNumStr(divisorStr)
-
-	if err != nil {
-		t.Errorf("Error returned by IntAry{}.NewNumStr(divisorStr). "+
-			"divisorStr='%v' error='%v'", divisorStr, err.Error())
-	}
-
-	moduloBINum, err := BigIntMathDivide{}.IntAryModulo(iaDividend, iaDivisor, maxPrecision)
-
-	if err != nil {
-		t.Errorf("Error returned by BigIntMathDivide{}.IntAryModulo(iaDividend, "+
-			"iaDivisor, maxPrecision). Error='%v'", err.Error())
-
-	}
-
-	actualModuloStr := moduloBINum.GetNumStr()
-
-	if expectedModuloStr != actualModuloStr {
-		t.Errorf("Error: Expected modulo='%v'. Instead modulo='%v'",
-			expectedModuloStr, actualModuloStr)
-	}
-
-}
-
-func TestBigIntMathDivide_IntAryModulo_04(t *testing.T) {
-	// Dividend			  mod by			Divisor			=			Modulo/Remainder
-	// --------				------			-------						----------------
-	//    2.5 				  % 				 -12.555		= 		 2.5
-
-	dividendStr := "2.5"
-	divisorStr := "-12.555"
-	expectedModuloStr := "2.5"
-	maxPrecision := uint(15)
-
-	expectedNumSeps := NumericSeparatorDto{}
-	expectedNumSeps.DecimalSeparator = '.'
-	expectedNumSeps.ThousandsSeparator = ','
-	expectedNumSeps.CurrencySymbol = '$'
-
-	iaDividend, err := IntAry{}.NewNumStr(dividendStr)
-
-	if err != nil {
-		t.Errorf("Error returned by IntAry{}.NewNumStr(dividendStr). "+
-			"dividendStr='%v' error='%v'", dividendStr, err.Error())
-	}
-
-	iaDivisor, err := IntAry{}.NewNumStr(divisorStr)
-
-	if err != nil {
-		t.Errorf("Error returned by IntAry{}.NewNumStr(divisorStr). "+
-			"divisorStr='%v' error='%v'", divisorStr, err.Error())
-	}
-
-	moduloBINum, err := BigIntMathDivide{}.IntAryModulo(iaDividend, iaDivisor, maxPrecision)
-
-	if err != nil {
-		t.Errorf("Error returned by BigIntMathDivide{}.IntAryModulo(iaDividend, "+
-			"iaDivisor, maxPrecision). Error='%v'", err.Error())
-
-	}
-
-	actualModuloStr := moduloBINum.GetNumStr()
-
-	if expectedModuloStr != actualModuloStr {
-		t.Errorf("Error: Expected moduloBINum='%v'. Instead moduloBINum='%v'",
-			expectedModuloStr, actualModuloStr)
-	}
-
-	actualNumSeps := moduloBINum.GetNumericSeparatorsDto()
-
-	if !expectedNumSeps.Equal(actualNumSeps) {
-		t.Errorf("Error: Expected NumSeps='%v'. Instead, NumSeps='%v'. ",
-			expectedNumSeps.String(), actualNumSeps.String())
-	}
-}
-
-func TestBigIntMathDivide_IntAryModulo_05(t *testing.T) {
-	// Dividend			  mod by			Divisor			=			Modulo/Remainder
-	// --------				------			-------						----------------
-	//   12,555					%						 2.5			=			 0,055
-
-	dividendStr := "12,555"
-	divisorStr := "2.5"
-	expectedModuloStr := "0,055"
-	maxPrecision := uint(15)
-
-	expectedNumSeps := NumericSeparatorDto{}
-	frenchDecSeparator := ','
-	frenchThousandsSeparator := ' '
-	frenchCurrencySymbol := '€'
-
-	expectedNumSeps.DecimalSeparator = frenchDecSeparator
-	expectedNumSeps.ThousandsSeparator = frenchThousandsSeparator
-	expectedNumSeps.CurrencySymbol = frenchCurrencySymbol
-
-	iaDividend, err := IntAry{}.NewNumStrWithNumSeps(dividendStr, expectedNumSeps)
-
-	if err != nil {
-		t.Errorf("Error returned by IntAry{}.NewNumStrWithNumSeps("+
-			"dividendStr, expectedNumSeps). "+
-			"dividendStr='%v' Error='%v'", dividendStr, err.Error())
-	}
-
-	iaDivisor, err := IntAry{}.NewNumStr(divisorStr)
-
-	if err != nil {
-		t.Errorf("Error returned by IntAry{}.NewNumStr(divisorStr). "+
-			"divisorStr='%v' error='%v'", divisorStr, err.Error())
-	}
-
-	moduloBINum, err := BigIntMathDivide{}.IntAryModulo(iaDividend, iaDivisor, maxPrecision)
-
-	if err != nil {
-		t.Errorf("Error returned by BigIntMathDivide{}.IntAryModulo(iaDividend, "+
-			"iaDivisor, maxPrecision). Error='%v'", err.Error())
-
-	}
-
-	actualModuloStr := moduloBINum.GetNumStr()
-
-	if expectedModuloStr != actualModuloStr {
-		t.Errorf("Error: Expected modulo='%v'. Instead modulo='%v'",
-			expectedModuloStr, actualModuloStr)
-	}
-
-	actualNumSeps := moduloBINum.GetNumericSeparatorsDto()
-
-	if !expectedNumSeps.Equal(actualNumSeps) {
-		t.Errorf("Error: Expected NumSeps='%v'. Instead, NumSeps='%v'. ",
-			expectedNumSeps.String(), actualNumSeps.String())
-	}
-}
-
-func TestBigIntMathDivide_IntAryModulo_06(t *testing.T) {
-	// Dividend			  mod by			Divisor			=			Modulo/Remainder
-	// --------				------			-------						----------------
-	//   12.555					%						 2.5			=			 0.055
-
-	dividendStr := "12.555"
-	divisorStr := "2.5"
-	expectedModuloStr := "0.055"
-	maxPrecision := uint(15)
-
-	expectedNumSeps := NumericSeparatorDto{}
-	expectedNumSeps.DecimalSeparator = '.'
-	expectedNumSeps.ThousandsSeparator = ','
-	expectedNumSeps.CurrencySymbol = '$'
-
-	iaDividend, err := IntAry{}.NewNumStrWithNumSeps(dividendStr, expectedNumSeps)
-
-	if err != nil {
-		t.Errorf("Error returned by IntAry{}.NewNumStrWithNumSeps("+
-			"dividendStr, expectedNumSeps). "+
-			"dividendStr='%v' Error='%v'", dividendStr, err.Error())
-	}
-
-	iaDivisor, err := IntAry{}.NewNumStr(divisorStr)
-
-	if err != nil {
-		t.Errorf("Error returned by IntAry{}.NewNumStr(divisorStr). "+
-			"divisorStr='%v' error='%v'", divisorStr, err.Error())
-	}
-
-	moduloBINum, err := BigIntMathDivide{}.IntAryModulo(iaDividend, iaDivisor, maxPrecision)
-
-	if err != nil {
-		t.Errorf("Error returned by BigIntMathDivide{}.IntAryModulo(iaDividend, "+
-			"iaDivisor, maxPrecision). Error='%v'", err.Error())
-
-	}
-
-	actualModuloStr := moduloBINum.GetNumStr()
-
-	if expectedModuloStr != actualModuloStr {
-		t.Errorf("Error: Expected modulo='%v'. Instead modulo='%v'",
-			expectedModuloStr, actualModuloStr)
-	}
-
-	actualNumSeps := moduloBINum.GetNumericSeparatorsDto()
-
-	if !expectedNumSeps.Equal(actualNumSeps) {
-		t.Errorf("Error: Expected NumSeps='%v'. Instead, NumSeps='%v'. ",
-			expectedNumSeps.String(), actualNumSeps.String())
-	}
-}
-
-func TestBigIntMathDivide_IntAryModuloToIntAry_01(t *testing.T) {
-	// Dividend			  mod by			Divisor			=			Modulo/Remainder
-	// --------				------			-------						----------------
-	//   12.555					%						 2.5			=			 0.055
-
-	dividendStr := "12.555"
-	divisorStr := "2.5"
-	expectedModuloStr := "0.055"
-	maxPrecision := uint(15)
-
-	iaDividend, err := IntAry{}.NewNumStr(dividendStr)
-
-	if err != nil {
-		t.Errorf("Error returned by IntAry{}.NewNumStr(dividendStr). "+
-			"dividendStr='%v' error='%v'", dividendStr, err.Error())
-	}
-
-	iaDivisor, err := IntAry{}.NewNumStr(divisorStr)
-
-	if err != nil {
-		t.Errorf("Error returned by IntAry{}.NewNumStr(divisorStr). "+
-			"divisorStr='%v' error='%v'", divisorStr, err.Error())
-	}
-
-	iaModulo, err := BigIntMathDivide{}.IntAryModuloToIntAry(iaDividend, iaDivisor, maxPrecision)
-
-	if err != nil {
-		t.Errorf("Error returned by BigIntMathDivide{}.IntAryModuloToIntAry(iaDividend, "+
-			"iaDivisor, maxPrecision). Error='%v'", err.Error())
-
-	}
-
-	actualModuloStr := iaModulo.GetNumStr()
-
-	if expectedModuloStr != actualModuloStr {
-		t.Errorf("Error: Expected modulo='%v'. Instead modulo='%v'",
-			expectedModuloStr, actualModuloStr)
-	}
-
-}
-
-func TestBigIntMathDivide_IntAryModuloToIntAry_02(t *testing.T) {
-	// Dividend			  mod by			Divisor			=			Modulo/Remainder
-	// --------				------			-------						----------------
-	//   -12.555 				% 				 - 2.5 			= 		-0.055
-
-	dividendStr := "-12.555"
-	divisorStr := "-2.5"
-	expectedModuloStr := "-0.055"
-	maxPrecision := uint(15)
-
-	iaDividend, err := IntAry{}.NewNumStr(dividendStr)
-
-	if err != nil {
-		t.Errorf("Error returned by IntAry{}.NewNumStr(dividendStr). "+
-			"dividendStr='%v' error='%v'", dividendStr, err.Error())
-	}
-
-	iaDivisor, err := IntAry{}.NewNumStr(divisorStr)
-
-	if err != nil {
-		t.Errorf("Error returned by IntAry{}.NewNumStr(divisorStr). "+
-			"divisorStr='%v' error='%v'", divisorStr, err.Error())
-	}
-
-	iaModulo, err := BigIntMathDivide{}.IntAryModuloToIntAry(iaDividend, iaDivisor, maxPrecision)
-
-	if err != nil {
-		t.Errorf("Error returned by BigIntMathDivide{}.IntAryModuloToIntAry(iaDividend, "+
-			"iaDivisor, maxPrecision). Error='%v'", err.Error())
-
-	}
-
-	actualModuloStr := iaModulo.GetNumStr()
-
-	if expectedModuloStr != actualModuloStr {
-		t.Errorf("Error: Expected modulo='%v'. Instead modulo='%v'",
-			expectedModuloStr, actualModuloStr)
-	}
-
-}
-
-func TestBigIntMathDivide_IntAryModuloToIntAry_03(t *testing.T) {
-	// Dividend			  mod by			Divisor			=			Modulo/Remainder
-	// --------				------			-------						----------------
-	//   12.555					% 				 - 2.5			=			 0.055
-
-	dividendStr := "12.555"
-	divisorStr := "-2.5"
-	expectedModuloStr := "0.055"
-	maxPrecision := uint(15)
-
-	iaDividend, err := IntAry{}.NewNumStr(dividendStr)
-
-	if err != nil {
-		t.Errorf("Error returned by IntAry{}.NewNumStr(dividendStr). "+
-			"dividendStr='%v' error='%v'", dividendStr, err.Error())
-	}
-
-	iaDivisor, err := IntAry{}.NewNumStr(divisorStr)
-
-	if err != nil {
-		t.Errorf("Error returned by IntAry{}.NewNumStr(divisorStr). "+
-			"divisorStr='%v' error='%v'", divisorStr, err.Error())
-	}
-
-	iaModulo, err := BigIntMathDivide{}.IntAryModuloToIntAry(iaDividend, iaDivisor, maxPrecision)
-
-	if err != nil {
-		t.Errorf("Error returned by BigIntMathDivide{}.IntAryModuloToIntAry(iaDividend, "+
-			"iaDivisor, maxPrecision). Error='%v'", err.Error())
-
-	}
-
-	actualModuloStr := iaModulo.GetNumStr()
-
-	if expectedModuloStr != actualModuloStr {
-		t.Errorf("Error: Expected modulo='%v'. Instead modulo='%v'",
-			expectedModuloStr, actualModuloStr)
-	}
-
-}
-
-func TestBigIntMathDivide_IntAryModuloToIntAry_04(t *testing.T) {
-	// Dividend			  mod by			Divisor			=			Modulo/Remainder
-	// --------				------			-------						----------------
-	//    2.5 				  % 				 -12.555		= 		 2.5
-
-	dividendStr := "2.5"
-	divisorStr := "-12.555"
-	expectedModuloStr := "2.5"
-	maxPrecision := uint(15)
 
 	expectedNumSeps := NumericSeparatorDto{}
 
@@ -1599,149 +1066,359 @@ func TestBigIntMathDivide_IntAryModuloToIntAry_04(t *testing.T) {
 	expectedNumSeps.ThousandsSeparator = ','
 	expectedNumSeps.CurrencySymbol = '$'
 
-	iaDividend, err := IntAry{}.NewNumStr(dividendStr)
+	divisor, err := BigIntNum{}.NewNumStr(divisorStr)
 
 	if err != nil {
-		t.Errorf("Error returned by IntAry{}.NewNumStr(dividendStr). "+
-			"dividendStr='%v' error='%v'", dividendStr, err.Error())
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(divisorStr). "+
+			"divisorStr='%v' Error='%v' ",
+			divisorStr, err.Error())
 	}
 
-	iaDivisor, err := IntAry{}.NewNumStr(divisorStr)
+	expectedQuo, err := BigIntNum{}.NewNumStr(expectedQuoStr)
 
 	if err != nil {
-		t.Errorf("Error returned by IntAry{}.NewNumStr(divisorStr). "+
-			"divisorStr='%v' error='%v'", divisorStr, err.Error())
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(expectedQuoStr). "+
+			"expectedQuoStr='%v' Error='%v' ",
+			expectedQuoStr, err.Error())
 	}
 
-	iaModulo, err := BigIntMathDivide{}.IntAryModuloToIntAry(iaDividend, iaDivisor, maxPrecision)
+	dividendFixDec :=
+		BigIntFixedDecimal{}.New(
+			dividend.GetIntegerValue(),
+			dividend.GetPrecisionUint())
+
+
+	divisorFixDec := BigIntFixedDecimal{}.New(
+		divisor.GetIntegerValue(),
+		divisor.GetPrecisionUint())
+
+	fracQuotient, err :=
+		BigIntMathDivide{}.FixedDecimalFracQuotient(
+			dividendFixDec,
+			divisorFixDec,
+			maxPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntMathDivide{}.IntAryModuloToIntAry(iaDividend, "+
-			"iaDivisor, maxPrecision). Error='%v'", err.Error())
-
+		t.Errorf("Error returned by BigIntMathDivide{}.FixedDecimalFracQuotient(...) " +
+			"Error='%v' ", err.Error())
 	}
 
-	actualModuloStr := iaModulo.GetNumStr()
+	actualQuo :=
+		BigIntNum{}.NewBigInt(
+			fracQuotient.GetInteger(),
+			fracQuotient.GetPrecision())
 
-	if expectedModuloStr != actualModuloStr {
-		t.Errorf("Error: Expected iaModulo='%v'. Instead iaModulo='%v'",
-			expectedModuloStr, actualModuloStr)
-	}
-
-	actualNumSeps := iaModulo.GetNumericSeparatorsDto()
-
-	if !expectedNumSeps.Equal(actualNumSeps) {
-		t.Errorf("Error: Expected NumSeps='%v'. Instead, NumSeps='%v'. ",
-			expectedNumSeps.String(), actualNumSeps.String())
+	if expectedQuo.GetNumStr() != actualQuo.GetNumStr() {
+		t.Errorf("Error: Expected Quotient='%v'. Instead Quotient='%v'",
+			expectedQuo.GetNumStr(), actualQuo.GetNumStr())
 	}
 }
 
-func TestBigIntMathDivide_IntAryModuloToIntAry_05(t *testing.T) {
-	// Dividend			  mod by			Divisor			=			Modulo/Remainder
-	// --------				------			-------						----------------
-	//   12,555					%						 2.5			=			 0,055
+func TestBigIntMathDivide_FixedDecimalFracQuotient_18(t *testing.T) {
+	// Dividend		divided by		Divisor			=					Quotient
+	//  11.5				  /				  2.5					=						4.6
 
-	dividendStr := "12,555"
+	dividendStr := "11.5"
 	divisorStr := "2.5"
-	expectedModuloStr := "0,055"
+	expectedQuoStr := "4.6"
 	maxPrecision := uint(15)
 
-	expectedNumSeps := NumericSeparatorDto{}
-	frenchDecSeparator := ','
-	frenchThousandsSeparator := ' '
-	frenchCurrencySymbol := '€'
 
-	expectedNumSeps.DecimalSeparator = frenchDecSeparator
-	expectedNumSeps.ThousandsSeparator = frenchThousandsSeparator
-	expectedNumSeps.CurrencySymbol = frenchCurrencySymbol
-
-	iaDividend, err := IntAry{}.NewNumStrWithNumSeps(dividendStr, expectedNumSeps)
+	dividend, err := BigIntNum{}.NewNumStr(dividendStr)
 
 	if err != nil {
-		t.Errorf("Error returned by IntAry{}.NewNumStrWithNumSeps("+
-			"dividendStr, expectedNumSeps). "+
-			"dividendStr='%v' Error='%v'", dividendStr, err.Error())
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(dividendStr). "+
+			"dividendStr='%v' Error='%v' ",
+			dividendStr, err.Error())
 	}
 
-	iaDivisor, err := IntAry{}.NewNumStr(divisorStr)
+	divisor, err := BigIntNum{}.NewNumStr(divisorStr)
 
 	if err != nil {
-		t.Errorf("Error returned by IntAry{}.NewNumStr(divisorStr). "+
-			"divisorStr='%v' error='%v'", divisorStr, err.Error())
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(divisorStr). "+
+			"divisorStr='%v' Error='%v' ",
+			divisorStr, err.Error())
 	}
 
-	iaModulo, err := BigIntMathDivide{}.IntAryModuloToIntAry(iaDividend, iaDivisor, maxPrecision)
+	expectedQuo, err := BigIntNum{}.NewNumStr(expectedQuoStr)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntMathDivide{}.IntAryModuloToIntAry(iaDividend, "+
-			"iaDivisor, maxPrecision). Error='%v'", err.Error())
-
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(expectedQuoStr). "+
+			"expectedQuoStr='%v' Error='%v' ",
+			expectedQuoStr, err.Error())
 	}
 
-	actualModuloStr := iaModulo.GetNumStr()
+	dividendFixDec :=
+		BigIntFixedDecimal{}.New(
+			dividend.GetIntegerValue(),
+			dividend.GetPrecisionUint())
 
-	if expectedModuloStr != actualModuloStr {
-		t.Errorf("Error: Expected modulo='%v'. Instead modulo='%v'",
-			expectedModuloStr, actualModuloStr)
+
+	divisorFixDec := BigIntFixedDecimal{}.New(
+		divisor.GetIntegerValue(),
+		divisor.GetPrecisionUint())
+
+	fracQuotient, err :=
+		BigIntMathDivide{}.FixedDecimalFracQuotient(
+			dividendFixDec,
+			divisorFixDec,
+			maxPrecision)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntMathDivide{}.FixedDecimalFracQuotient(...) " +
+			"Error='%v' ", err.Error())
 	}
 
-	actualNumSeps := iaModulo.GetNumericSeparatorsDto()
+	actualQuo :=
+		BigIntNum{}.NewBigInt(
+			fracQuotient.GetInteger(),
+			fracQuotient.GetPrecision())
 
-	if !expectedNumSeps.Equal(actualNumSeps) {
-		t.Errorf("Error: Expected NumSeps='%v'. Instead, NumSeps='%v'. ",
-			expectedNumSeps.String(), actualNumSeps.String())
+	if expectedQuo.GetNumStr() != actualQuo.GetNumStr() {
+		t.Errorf("Error: Expected Quotient='%v'. Instead Quotient='%v'",
+			expectedQuo.GetNumStr(), actualQuo.GetNumStr())
 	}
 }
 
-func TestBigIntMathDivide_IntAryModuloToIntAry_06(t *testing.T) {
-	// Dividend			  mod by			Divisor			=			Modulo/Remainder
-	// --------				------			-------						----------------
-	//   12.555					%						 2.5			=			 0.055
+func TestBigIntMathDivide_FixedDecimalFracQuotient_19(t *testing.T) {
+	// Dividend		divided by		Divisor			=		Quotient
+	//    0 				 / 	  			 12.555		  = 	0
 
-	dividendStr := "12.555"
-	divisorStr := "2.5"
-	expectedModuloStr := "0.055"
+	dividendStr := "0"
+	divisorStr := "12.555"
+	expectedQuoStr := "0"
 	maxPrecision := uint(15)
 
-	expectedNumSeps := NumericSeparatorDto{}
-	expectedNumSeps.DecimalSeparator = '.'
-	expectedNumSeps.ThousandsSeparator = ','
-	expectedNumSeps.CurrencySymbol = '$'
-
-	iaDividend, err := IntAry{}.NewNumStrWithNumSeps(dividendStr, expectedNumSeps)
+	dividend, err := BigIntNum{}.NewNumStr(dividendStr)
 
 	if err != nil {
-		t.Errorf("Error returned by IntAry{}.NewNumStrWithNumSeps("+
-			"dividendStr, expectedNumSeps). "+
-			"dividendStr='%v' Error='%v'", dividendStr, err.Error())
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(dividendStr). "+
+			"dividendStr='%v' Error='%v' ",
+			dividendStr, err.Error())
 	}
 
-	iaDivisor, err := IntAry{}.NewNumStr(divisorStr)
+	divisor, err := BigIntNum{}.NewNumStr(divisorStr)
 
 	if err != nil {
-		t.Errorf("Error returned by IntAry{}.NewNumStr(divisorStr). "+
-			"divisorStr='%v' error='%v'", divisorStr, err.Error())
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(divisorStr). "+
+			"divisorStr='%v' Error='%v' ",
+			divisorStr, err.Error())
 	}
 
-	iaModulo, err := BigIntMathDivide{}.IntAryModuloToIntAry(iaDividend, iaDivisor, maxPrecision)
+	expectedQuo, err := BigIntNum{}.NewNumStr(expectedQuoStr)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntMathDivide{}.IntAryModuloToIntAry(iaDividend, "+
-			"iaDivisor, maxPrecision). Error='%v'", err.Error())
-
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(expectedQuoStr). "+
+			"expectedQuoStr='%v' Error='%v' ",
+			expectedQuoStr, err.Error())
 	}
 
-	actualModuloStr := iaModulo.GetNumStr()
+	dividendFixDec :=
+		BigIntFixedDecimal{}.New(
+			dividend.GetIntegerValue(),
+			dividend.GetPrecisionUint())
 
-	if expectedModuloStr != actualModuloStr {
-		t.Errorf("Error: Expected modulo='%v'. Instead modulo='%v'",
-			expectedModuloStr, actualModuloStr)
+
+	divisorFixDec := BigIntFixedDecimal{}.New(
+		divisor.GetIntegerValue(),
+		divisor.GetPrecisionUint())
+
+	fracQuotient, err :=
+		BigIntMathDivide{}.FixedDecimalFracQuotient(
+			dividendFixDec,
+			divisorFixDec,
+			maxPrecision)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntMathDivide{}.FixedDecimalFracQuotient(...) " +
+			"Error='%v' ", err.Error())
 	}
 
-	actualNumSeps := iaModulo.GetNumericSeparatorsDto()
+	actualQuo :=
+		BigIntNum{}.NewBigInt(
+			fracQuotient.GetInteger(),
+			fracQuotient.GetPrecision())
 
-	if !expectedNumSeps.Equal(actualNumSeps) {
-		t.Errorf("Error: Expected NumSeps='%v'. Instead, NumSeps='%v'. ",
-			expectedNumSeps.String(), actualNumSeps.String())
+	if expectedQuo.GetNumStr() != actualQuo.GetNumStr() {
+		t.Errorf("Error: Expected Quotient='%v'. Instead Quotient='%v'",
+			expectedQuo.GetNumStr(), actualQuo.GetNumStr())
 	}
 }
+
+
+func TestBigIntMathDivide_FixedDecimalFracQuotient_20(t *testing.T) {
+	// Dividend		divided by		Divisor			=		Quotient
+	//    15.8 			 / 	  			 0		  		= 	ERROR
+
+	dividendStr := "15.8"
+	divisorStr := "0"
+	maxPrecision := uint(15)
+
+	dividend, err := BigIntNum{}.NewNumStr(dividendStr)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(dividendStr). "+
+			"dividendStr='%v' Error='%v' ",
+			dividendStr, err.Error())
+	}
+
+	divisor, err := BigIntNum{}.NewNumStr(divisorStr)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(divisorStr). "+
+			"divisorStr='%v' Error='%v' ",
+			divisorStr, err.Error())
+	}
+
+	dividendFixDec :=
+		BigIntFixedDecimal{}.New(
+			dividend.GetIntegerValue(),
+			dividend.GetPrecisionUint())
+
+
+	divisorFixDec := BigIntFixedDecimal{}.New(
+		divisor.GetIntegerValue(),
+		divisor.GetPrecisionUint())
+
+		_, err =
+		BigIntMathDivide{}.FixedDecimalFracQuotient(
+			dividendFixDec,
+			divisorFixDec,
+			maxPrecision)
+
+	if err == nil {
+		t.Error("Error - Expected Divide By Zero Error. NO ERROR Returned! ")
+	}
+
+}
+
+func TestBigIntMathDivide_FixedDecimalFracQuotient_21(t *testing.T) {
+	// Dividend		 divided by		Divisor							=		Quotient
+	// 0.000009218 		 /        35829.8234	     		= 2.572717118108932683156903307539e-10
+
+	dividendStr := "0.000009218"
+	divisorStr := "35829.8234"
+	expectedQuo, err :=
+		BigIntNum{}.NewNumStr("0.0000000002572717118108932683156903307539")
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(numStr). "+
+			 "Error='%v' ",	 err.Error())
+	}
+
+	maxPrecision := expectedQuo.GetPrecisionUint()
+
+	dividend, err := BigIntNum{}.NewNumStr(dividendStr)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(dividendStr). "+
+			"dividendStr='%v' Error='%v' ",
+			dividendStr, err.Error())
+	}
+
+	divisor, err := BigIntNum{}.NewNumStr(divisorStr)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(divisorStr). "+
+			"divisorStr='%v' Error='%v' ",
+			divisorStr, err.Error())
+	}
+
+	dividendFixDec :=
+		BigIntFixedDecimal{}.New(
+			dividend.GetIntegerValue(),
+			dividend.GetPrecisionUint())
+
+
+	divisorFixDec := BigIntFixedDecimal{}.New(
+		divisor.GetIntegerValue(),
+		divisor.GetPrecisionUint())
+
+	fracQuotient, err :=
+		BigIntMathDivide{}.FixedDecimalFracQuotient(
+			dividendFixDec,
+			divisorFixDec,
+			maxPrecision)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntMathDivide{}.FixedDecimalFracQuotient(...) " +
+			"Error='%v' ", err.Error())
+	}
+
+	actualQuo :=
+		BigIntNum{}.NewBigInt(
+			fracQuotient.GetInteger(),
+			fracQuotient.GetPrecision())
+
+	if expectedQuo.GetNumStr() != actualQuo.GetNumStr() {
+		t.Errorf("Error: Expected Quotient='%v'. Instead Quotient='%v'",
+			expectedQuo.GetNumStr(), actualQuo.GetNumStr())
+	}
+}
+
+func TestBigIntMathDivide_FixedDecimalFracQuotient_22(t *testing.T) {
+	// Dividend		 divided by		Divisor							=		Quotient
+	// 35829.8234 	 /        	 0.000009218     		= 3886941136.9060533738338034280755
+
+	dividendStr := "35829.8234"
+	divisorStr := "0.000009218"
+	expectedResultStr := "3886941136.9060533738338034280755"
+
+	expectedQuo, err :=
+		BigIntNum{}.NewNumStr(expectedResultStr)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(expectedResultStr). "+
+			"expectedResultStr='%v' Error='%v' ",expectedResultStr, err.Error())
+	}
+
+	maxPrecision := expectedQuo.GetPrecisionUint()
+
+	dividend, err := BigIntNum{}.NewNumStr(dividendStr)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(dividendStr). "+
+			"dividendStr='%v' Error='%v' ",
+			dividendStr, err.Error())
+	}
+
+	divisor, err := BigIntNum{}.NewNumStr(divisorStr)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(divisorStr). "+
+			"divisorStr='%v' Error='%v' ",
+			divisorStr, err.Error())
+	}
+
+	dividendFixDec :=
+		BigIntFixedDecimal{}.New(
+			dividend.GetIntegerValue(),
+			dividend.GetPrecisionUint())
+
+
+	divisorFixDec := BigIntFixedDecimal{}.New(
+		divisor.GetIntegerValue(),
+		divisor.GetPrecisionUint())
+
+	fracQuotient, err :=
+		BigIntMathDivide{}.FixedDecimalFracQuotient(
+			dividendFixDec,
+			divisorFixDec,
+			maxPrecision)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntMathDivide{}.FixedDecimalFracQuotient(...) " +
+			"Error='%v' ", err.Error())
+	}
+
+	actualQuo :=
+		BigIntNum{}.NewBigInt(
+			fracQuotient.GetInteger(),
+			fracQuotient.GetPrecision())
+
+	if expectedQuo.GetNumStr() != actualQuo.GetNumStr() {
+		t.Errorf("Error: Expected Quotient='%v'. Instead Quotient='%v'",
+			expectedQuo.GetNumStr(), actualQuo.GetNumStr())
+	}
+}
+
