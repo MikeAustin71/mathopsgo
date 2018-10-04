@@ -1700,8 +1700,8 @@ func (bIDivide BigIntMathDivide) DecimalModuloToDecimal(
 // of type BigIntFixedDecimal. The result is also returned a as a type
 // BigIntFixedDecimal.
 //
-// Example
-// =======
+// Examples:
+// =========
 // This division operation will produce a quotient which may include a fixed
 // length floating point number:
 //
@@ -1721,8 +1721,6 @@ func (bIDivide BigIntMathDivide) DecimalModuloToDecimal(
 //
 // }
 //
-// Example:
-// ========
 //
 // 	To represent the floating point number 52.459
 // 	a BigIntDecimal Structure would be configured as follows:

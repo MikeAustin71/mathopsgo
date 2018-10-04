@@ -1444,21 +1444,73 @@ func (bAdd BigIntMathAdd) AddPair(bPair BigIntPair) BigIntNum {
 	return finalResult
 }
 
-// BigIntAdd - Adds two *big.Int numbers. Each *big.Int number
-// is passed to the method with an associated decimal place precision
-// specification.
+// BigIntAdd - Adds two fixed length floating point numbers and generates
+// the sum or total resulting from that addition. The two numbers added
+// together are configured as pairs of *big.Int integer numbers and precision
+// specifications. Each integer precision pair is used to define a fixed
+// length floating point number.
 //
-// The result of the addition operation will be returned as a *big.Int
-// type and a precision specification.
+// Examples:
+// =========
+//
+// In the addition operation:
+// 						b1 + b2 = total or sum
+//
+// This method provides for the addition of fixed length
+// floating point values by means of integer and precision
+// specification pairs.
+//
+// As an example, consider the following addition operation
+// 						752.314 + 21.67894 = 773.99294 = total
+//              b1    +     b2   =   total
+//
+// In this case 'b1', 'b2' and 'total' would be configured as integer
+// precision pairs:
+//									b1 							= 752314
+//                  b1Precision			= 3
+//                  b2 							= 2167894
+//                  b2Precision 		= 5
+//
+//                  total						= 77399294
+//                  totalPrecision 	= 5
+//
+// In this way, the method uses integer, precision pairs to define fixed
+// length floating point numbers.
+//
+// Input Parameters
+// ================
+//
+//	b1 			*big.Int	- The the first number which will be added to 'b2' to
+//                    	generate a total.
+//
+//	b1Precision	uint	- The 'b1' precision or the number of fractional digits
+//											after the decimal place.
+//
+//	b2 			*big.Int	- The second number which is added to 'b1' in order to
+//                 			generate a total.
+//
+//	b2Precision	uint  - The 'b2' precision or the number of fractional digits
+//											after the decimal place.
+//
+// Return Values
+// =============
+//
+// total 			*big.Int		- The sum or total of 'b1' and 'b2' input values.
+//
+// totalPrecision uint   	- The 'total' precision or the number of fractional
+// 													digits after the decimal place.
+//
+// Taken together, 'total' and 'totalPrecision' can define a fixed
+// length floating point number.
 //
 func (bAdd BigIntMathAdd) BigIntAdd(
 	b1 *big.Int,
 	precision1 uint,
 	b2 *big.Int,
-	precision2 uint) (result *big.Int, resultPrecision uint) {
+	precision2 uint) (total *big.Int, totalPrecision uint) {
 
-	result = big.NewInt(0)
-	resultPrecision = 0
+	total = big.NewInt(0)
+	totalPrecision = 0
 
 	if b1 == nil {
 		b1 = big.NewInt(0)
@@ -1472,20 +1524,20 @@ func (bAdd BigIntMathAdd) BigIntAdd(
 
 	if b1.Cmp(bigZero) == 0 &&
 		 b2.Cmp(bigZero) == 0 {
-		 	result = big.NewInt(0)
-		 	resultPrecision = 0
-		 	return result, resultPrecision
+		 	total = big.NewInt(0)
+		 	totalPrecision = 0
+		 	return total, totalPrecision
 	}
 
 	if precision1 == precision2 {
-		result = big.NewInt(0).Add(b1, b2	)
-		resultPrecision = precision1
+		total = big.NewInt(0).Add(b1, b2	)
+		totalPrecision = precision1
 
-		if result.Cmp(bigZero) == 0 {
-			resultPrecision = 0
+		if total.Cmp(bigZero) == 0 {
+			totalPrecision = 0
 		}
 
-		return result, resultPrecision
+		return total, totalPrecision
 	}
 
 	bigTen := big.NewInt(10)
@@ -1498,14 +1550,14 @@ func (bAdd BigIntMathAdd) BigIntAdd(
 
 		b2ToScale := big.NewInt(0).Mul(b2, scale)
 
-		result = big.NewInt(0).Add(b1, b2ToScale)
-		resultPrecision = precision1
+		total = big.NewInt(0).Add(b1, b2ToScale)
+		totalPrecision = precision1
 
-		if result.Cmp(bigZero) == 0 {
-			resultPrecision = 0
+		if total.Cmp(bigZero) == 0 {
+			totalPrecision = 0
 		}
 
-		return result, resultPrecision
+		return total, totalPrecision
 
 	}
 
@@ -1517,28 +1569,90 @@ func (bAdd BigIntMathAdd) BigIntAdd(
 
 	b1ToScale := big.NewInt(0).Mul(b1, scale)
 
-	result = big.NewInt(0).Add(b1ToScale, b2)
-	resultPrecision = precision2
+	total = big.NewInt(0).Add(b1ToScale, b2)
+	totalPrecision = precision2
 
-	if result.Cmp(bigZero) == 0 {
-		resultPrecision = 0
+	if total.Cmp(bigZero) == 0 {
+		totalPrecision = 0
 	}
 
-	return result, resultPrecision
+	return total, totalPrecision
 }
 
-// FixedDecimalAdd - Adds two BigIntFixedDecimal types. The BigIntFixedDecimal
-// type includes a *big.Int integer value and a precision specification. Taken
-// together they represent a fixed length decimal numeric value.
-//
-// The result of the addition operation will be returned as a BigIntFixedDecimal
+// FixedDecimalAdd - Performs an addition operation using two BigIntFixedDecimal
+// types. The addition result or total is also returned as a BigIntFixedDecimal
 // type.
+//
+// Examples:
+// =========
+//
+// In the addition operation:
+//
+// 						b1 + b2 = total or sum
+//
+// For this method 'b1', 'b2' and 'total' are all configured as BigIntFixedDecimal
+// types.
+//
+// The BigIntFixedDecimal type is used to defined fixed length floating point
+// numbers and is defined as follows:
+//
+// type BigIntFixedDecimal struct {
+//
+//	integerNum *big.Int  -	All of the numeric digits, both integer and fractional,
+// 													necessary to define a fixed length floating point number.
+// 													The number of digits to the right of the decimal place
+// 													is specified by the data field,
+// 													BigIntFixedDecimal.precision.
+//
+//	precision  uint				- Specifies the number of digits to the right of the decimal
+// 													place in the series of numeric digits represented by data
+// 													field BigIntFixedDecimal.integerNum.
+//
+// }
+//
+//
+// 	To represent the floating point number 52.459	a BigIntDecimal Structure
+// 	would be configured as follows:
+//
+// 			BigIntFixedDecimal.integerNum	= 52459
+// 			BigIntFixedDecimal.precision	= 3
+//
+// As an example consider the following addition operation:
+// 						752.314 + 21.67894 = 773.99294 = total
+//              b1    +     b2   =   total
+//
+// In this case 'b1', 'b2' and 'total' would be configured as BigIntDecimal
+// types:
+//									b1.integerNum			= 752314
+//                  b1.precision			= 3
+//                  b2.integerNum			= 2167894
+//                  b2.precision 			= 5
+//
+//                  total.integerNum	= 77399294
+//                  total.precision 	= 5
+//
+// In this way, the method uses BigIntFixedDecimal types to define fixed
+// length floating point numbers.
+//
+// Input Parameters
+// ================
+//
+//	b1 BigIntFixedDecimal	- The the first number which will be added to 'b2' to
+//                    			generate a total.
+//
+//	b2 BigIntFixedDecimal	- The second number which is added to 'b1' in order to
+//                 					generate a total.
+//
+// Return Values
+// =============
+//
+// total BigIntFixedDecimal	- The sum or total of 'b1' and 'b2' input values.
 //
 func (bAdd BigIntMathAdd) FixedDecimalAdd(
 	b1,
-	b2 BigIntFixedDecimal ) (result BigIntFixedDecimal) {
+	b2 BigIntFixedDecimal ) (total BigIntFixedDecimal) {
 
-	result = BigIntFixedDecimal{}.NewZero(0)
+	total = BigIntFixedDecimal{}.NewZero(0)
 
 	b1.IsValid()
 
@@ -1551,9 +1665,9 @@ func (bAdd BigIntMathAdd) FixedDecimalAdd(
 			b2.GetInteger(),
 			b2.GetPrecision())
 
-	result.SetNumericValue(bIResult, bIPrecision)
+	total.SetNumericValue(bIResult, bIPrecision)
 
-	return result
+	return total
 }
 
 

@@ -20,6 +20,13 @@ type BigIntMathMultiply struct {
 // MultiplyBigInts - Receives two *big.Int numbers and their associated precision
 // specifications. This method then proceeds to perform a multiplication operation
 // by multiplying the 'multiplier' by the 'multiplicand' to generate the 'product'.
+// 'multiplier', 'multiplicand' and 'product' are configured as pairs of *big.Int
+// integer numbers and precision specifications. Taken together, an integer number
+// and precision specification are used to defined a fixed length floating point
+// number.
+//
+// Examples
+// ========
 //
 // In the multiplication operation, the number to be multiplied is called the
 // "multiplicand", while the number of times the multiplicand is to be multiplied
@@ -30,6 +37,23 @@ type BigIntMathMultiply struct {
 // 3 is the 'multiplicand' and 15 is the 'product' or result.
 //
 //							multiplier x multiplicand = product or result
+//
+// Consider the following multiplication example.
+//
+//							752.314 x 21.67894 = product
+//
+// 'multiplier' and 'multiplicand' would be configured as follows:
+//									multiplier 						= 752314
+//                  multiplierPrecision		= 3
+//                  multiplicand 					= 2167894
+//                  multiplicandPrecision = 5
+//
+// The 'product' value (16309.37006716) of 'multiplier' and 'multiplicand' would be calculated
+// and configured as follows:
+//
+// 									product						= 1630937006716
+//                  productPrecision	= 8
+//
 //
 // Input Parameters
 // ================
@@ -79,40 +103,72 @@ func (bMultiply BigIntMathMultiply) BigIntMultiply(
 }
 
 
-// MultiplyBigInts - Receives two BigIntFixedDecimal types. This method then
-// proceeds to perform a multiplication operation by multiplying the 'multiplier'
-// by the 'multiplicand' to generate the 'product'.
+// FixedDecimalMultiply - This method receives two BigIntFixedDecimal
+// types and then proceeds to perform a multiplication operation by
+// multiplying the 'multiplier' by the 'multiplicand' to generate the
+// 'product'.
 //
-// In the multiplication operation, the number to be multiplied is called the
-// "multiplicand", while the number of times the multiplicand is to be multiplied
-// comes from the "multiplier". Usually the multiplier is placed first and the
-// multiplicand is placed second.
+// In the multiplication operation, the number to be multiplied is called
+// the "multiplicand", while the number of times the multiplicand is to
+// be multiplied comes from the "multiplier". Usually the multiplier is
+// placed first and the multiplicand is placed second.
+//
+// Examples
+// ========
 //
 // For example, in the problem 5 x 3 equals 15, the 5 is the 'multiplier',
 // 3 is the 'multiplicand' and 15 is the 'product' or result.
 //
 //							multiplier x multiplicand = product or result
 //
+// 'multiplier', 'multiplicand' and 'product' are BigIntFixed Decimal types
+// which may be used to defined fixed length floating point numbers.
+//
+// The BigIntFixedDecimal structure is defined as
+// type BigIntFixedDecimal struct {
+//	integerNum *big.Int  -	All of the numeric digits, both integer and fractional,
+// 													necessary to define a fixed length floating point number.
+// 													The number of digits to the right of the decimal place
+// 													is specified by the data field,
+// 													BigIntFixedDecimal.precision.
+//
+//	precision  uint				- Specifies the number of digits to the right of the decimal
+// 													place in the series of numeric digits represented by data
+// 													field BigIntFixedDecimal.integerNum.
+//
+// }
+//
+//
+// 	To represent the floating point number 52.459
+// 	a BigIntDecimal Structure would be configured as follows:
+// 			BigIntFixedDecimal.integerNum	= 52459
+// 			BigIntFixedDecimal.precision	= 3
+//
+//  Consider the following multiplication example:
+// 						product =	752.314 x 21.67894 = 16309.37006716
+//
+// 'multiplier' and 'multiplicand' would be configured as follows:
+//									multiplier.integerNum		= 752314
+//                  multiplier.precision		= 3
+//                  multiplicand.integerNum	= 2167894
+//                  multiplicand.precision	= 5
+//
+// The 'product' would be calculated as follows:
+//									product.integerNum	= 1630937006716
+//                  product.precision  	= 8
+//
 // Input Parameters
 // ================
 //
 //	multiplier BigIntFixedDecimal		- The number to be multiplied by 'multiplicand'
-//                                  	The BigIntFixedDecimal type encapsulates a
-//                                  	*big.Int type and a precision specification.
-//                                  	Taken together, they describe a numeric value
-//                                  	with a fixed number of decimal digits.
 //
 //	multiplicand BigIntFixedDecimal - The number to be multiplied by the 'multiplier'.
-//                                  	The BigIntFixedDecimal type encapsulates a
-//                                  	*big.Int type and a precision specification.
-//                                  	Taken together, they describe a numeric value
-//                                  	with a fixed number of decimal digits.
 //
 // Return Values
 // =============
 //
-// product			BigIntFixedDecimal	- The product of the multiplier multiplied by
-//                                		the multiplicand.
+// product			BigIntFixedDecimal	- The product of the 'multiplier' multiplied by
+//                                		the 'multiplicand'.
 //
 func (bMultiply BigIntMathMultiply) FixedDecimalMultiply(
 	multiplier BigIntFixedDecimal,
