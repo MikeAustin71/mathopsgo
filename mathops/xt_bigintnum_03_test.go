@@ -75,6 +75,36 @@ func TestBigIntNum_GetActualNumberOfDigits_02(t *testing.T) {
 
 }
 
+func TestBigIntNum_GetBigIntFixedDecimal(t *testing.T) {
+	nStr := "123.456"
+
+	bINum1, err := BigIntNum{}.NewNumStr(nStr)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(nStr). "+
+			" nStr='%v'  Error='%v'",
+			nStr, err.Error())
+	}
+
+	fixedDec := bINum1.GetBigIntFixedDecimal()
+
+	bigIntExpected := bINum1.GetIntegerValue()
+
+	precisionExpected := bINum1.GetPrecisionUint()
+
+	if bigIntExpected.Cmp(fixedDec.GetInteger()) != 0 {
+		t.Errorf("Expected BigInt num='%v'. Instead, BigInt num='%v'.",
+			bigIntExpected.Text(10), fixedDec.GetInteger().Text(10))
+	}
+
+	if precisionExpected != fixedDec.GetPrecision() {
+		t.Errorf("Expected precision='%v'. Instead, precision='%v'.",
+			precisionExpected, fixedDec.GetPrecision())
+
+	}
+
+}
+
 func TestBigIntNum_GetFractionalPart_01(t *testing.T) {
 
 	nStr := "123.456"
