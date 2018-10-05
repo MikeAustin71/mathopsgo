@@ -288,3 +288,266 @@ func TestBigIntFixedDecimal_RoundToDecPlace_15(t *testing.T) {
 	}
 }
 
+
+func TestBigIntFixedDecimal_TruncToDecPlace_01(t *testing.T) {
+
+	num := -123567
+	precision := uint(3)
+	expectedNumStr := "-123.56"
+	truncToDec := uint(2)
+
+	fixedDec := BigIntFixedDecimal{}.NewInt(num, precision)
+
+	fixedDec.TruncToDecPlace(truncToDec)
+
+	actualNumStr := fixedDec.GetNumStr()
+
+	if expectedNumStr != actualNumStr {
+		t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v'. ",
+			expectedNumStr, actualNumStr)
+	}
+}
+
+func TestBigIntFixedDecimal_TruncToDecPlace_02(t *testing.T) {
+	num := 123567
+	precision := uint(3)
+	expectedNumStr := "123.56"
+	truncToDec := uint(2)
+
+	fixedDec := BigIntFixedDecimal{}.NewInt(num, precision)
+
+	fixedDec.TruncToDecPlace(truncToDec)
+
+	actualNumStr := fixedDec.GetNumStr()
+
+	if expectedNumStr != actualNumStr {
+		t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v'. ",
+			expectedNumStr, actualNumStr)
+	}
+}
+
+func TestBigIntFixedDecimal_TruncToDecPlace_03(t *testing.T) {
+
+	num := 123567
+	precision := uint(3)
+	expectedNumStr := "123.567"
+	truncToDec := uint(3)
+
+	fixedDec := BigIntFixedDecimal{}.NewInt(num, precision)
+
+	fixedDec.TruncToDecPlace(truncToDec)
+
+	actualNumStr := fixedDec.GetNumStr()
+
+	if expectedNumStr != actualNumStr {
+		t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v'. ",
+			expectedNumStr, actualNumStr)
+	}
+}
+
+func TestBigIntFixedDecimal_TruncToDecPlace_04(t *testing.T) {
+
+	num := 123567
+	precision := uint(3)
+	expectedNumStr := "123.5670"
+	truncToDec := uint(4)
+
+	fixedDec := BigIntFixedDecimal{}.NewInt(num, precision)
+
+	fixedDec.TruncToDecPlace(truncToDec)
+
+	actualNumStr := fixedDec.GetNumStr()
+
+	if expectedNumStr != actualNumStr {
+		t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v'. ",
+			expectedNumStr, actualNumStr)
+	}
+}
+
+func TestBigIntFixedDecimal_TruncToDecPlace_05(t *testing.T) {
+
+	num := -123567
+	precision := uint(3)
+	expectedNumStr := "-123.5670"
+	truncToDec := uint(4)
+
+	fixedDec := BigIntFixedDecimal{}.NewInt(num, precision)
+
+	fixedDec.TruncToDecPlace(truncToDec)
+
+	actualNumStr := fixedDec.GetNumStr()
+
+	if expectedNumStr != actualNumStr {
+		t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v'. ",
+			expectedNumStr, actualNumStr)
+	}
+}
+
+func TestBigIntFixedDecimal_TruncToDecPlace_06(t *testing.T) {
+	num := 0
+	precision := uint(3)
+	expectedNumStr := "0.00"
+	truncToDec := uint(2)
+
+	fixedDec := BigIntFixedDecimal{}.NewInt(num, precision)
+
+	fixedDec.TruncToDecPlace(truncToDec)
+
+	actualNumStr := fixedDec.GetNumStr()
+
+	if expectedNumStr != actualNumStr {
+		t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v'. ",
+			expectedNumStr, actualNumStr)
+	}
+}
+
+func TestBigIntFixedDecimal_TruncToDecPlace_07(t *testing.T) {
+
+	num := 654123456
+	precision := uint(6)
+	expectedNumStr := "654.123"
+	truncToDec := uint(3)
+
+	fixedDec := BigIntFixedDecimal{}.NewInt(num, precision)
+
+	fixedDec.TruncToDecPlace(truncToDec)
+
+	actualNumStr := fixedDec.GetNumStr()
+
+	if expectedNumStr != actualNumStr {
+		t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v'. ",
+			expectedNumStr, actualNumStr)
+	}
+}
+
+func TestBigIntFixedDecimal_TruncToDecPlace_08(t *testing.T) {
+
+	num := 654123456789
+	precision := uint(9)
+	expectedNumStr := "654.1234"
+	truncToDec := uint(4)
+
+	fixedDec := BigIntFixedDecimal{}.NewInt(num, precision)
+
+	fixedDec.TruncToDecPlace(truncToDec)
+
+	actualNumStr := fixedDec.GetNumStr()
+
+	if expectedNumStr != actualNumStr {
+		t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v'. ",
+			expectedNumStr, actualNumStr)
+	}
+}
+
+func TestBigIntFixedDecimal_TruncToDecPlace_09(t *testing.T) {
+
+	num := 654123456789
+	precision := uint(9)
+	expectedNumStr := "654"
+	truncToDec := uint(0)
+
+	fixedDec := BigIntFixedDecimal{}.NewInt(num, precision)
+
+	fixedDec.TruncToDecPlace(truncToDec)
+
+	actualNumStr := fixedDec.GetNumStr()
+
+	if expectedNumStr != actualNumStr {
+		t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v'. ",
+			expectedNumStr, actualNumStr)
+	}
+}
+
+func TestBigIntFixedDecimal_TruncToDecPlace_10(t *testing.T) {
+
+	num := 654
+	precision := uint(0)
+	expectedNumStr := "654.00000"
+	truncToDec := uint(5)
+
+	fixedDec := BigIntFixedDecimal{}.NewInt(num, precision)
+
+	fixedDec.TruncToDecPlace(truncToDec)
+
+	actualNumStr := fixedDec.GetNumStr()
+
+	if expectedNumStr != actualNumStr {
+		t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v'. ",
+			expectedNumStr, actualNumStr)
+	}
+}
+
+func TestBigIntFixedDecimal_TruncToDecPlace_11(t *testing.T) {
+
+	num := 654123
+	precision := uint(3)
+	expectedNumStr := "654.123000000"
+	truncToDec := uint(9)
+
+	fixedDec := BigIntFixedDecimal{}.NewInt(num, precision)
+
+	fixedDec.TruncToDecPlace(truncToDec)
+
+	actualNumStr := fixedDec.GetNumStr()
+
+	if expectedNumStr != actualNumStr {
+		t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v'. ",
+			expectedNumStr, actualNumStr)
+	}
+}
+
+func TestBigIntFixedDecimal_TruncToDecPlace_12(t *testing.T) {
+
+	num := 0
+	precision := uint(0)
+	expectedNumStr := "0.000000"
+	truncToDec := uint(6)
+
+	fixedDec := BigIntFixedDecimal{}.NewInt(num, precision)
+
+	fixedDec.TruncToDecPlace(truncToDec)
+
+	actualNumStr := fixedDec.GetNumStr()
+
+	if expectedNumStr != actualNumStr {
+		t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v'. ",
+			expectedNumStr, actualNumStr)
+	}
+}
+
+func TestBigIntFixedDecimal_TruncToDecPlace_13(t *testing.T) {
+
+	num := 0
+	precision := uint(6)
+	expectedNumStr := "0"
+	truncToDec := uint(0)
+
+	fixedDec := BigIntFixedDecimal{}.NewInt(num, precision)
+
+	fixedDec.TruncToDecPlace(truncToDec)
+
+	actualNumStr := fixedDec.GetNumStr()
+
+	if expectedNumStr != actualNumStr {
+		t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v'. ",
+			expectedNumStr, actualNumStr)
+	}
+}
+
+func TestBigIntFixedDecimal_TruncToDecPlace_14(t *testing.T) {
+	num := 654123456789015
+	precision := uint(12)
+	expectedNumStr := "654.12345678901"
+	truncToDec := uint(11)
+
+	fixedDec := BigIntFixedDecimal{}.NewInt(num, precision)
+
+	fixedDec.TruncToDecPlace(truncToDec)
+
+	actualNumStr := fixedDec.GetNumStr()
+
+	if expectedNumStr != actualNumStr {
+		t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v'. ",
+			expectedNumStr, actualNumStr)
+	}
+}
