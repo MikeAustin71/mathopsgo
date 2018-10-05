@@ -861,7 +861,7 @@ func (bNum *BigIntNum) FormatCurrencyStr(negValMode NegativeValueFmtMode) string
 func (bNum *BigIntNum) FormatNumStr(negValMode NegativeValueFmtMode) string {
 
 	if bNum.bigInt == nil {
-		bNum.bigInt = big.NewInt(0)
+		bNum.SetBigInt(big.NewInt(0), bNum.precision)
 	}
 
 	if bNum.decimalSeparator == 0 {
@@ -2114,7 +2114,7 @@ func (bNum *BigIntNum) IsValid(errName string) error {
 	errName += "BigIntNum INVALID! "
 
 	if bNum.bigInt == nil {
-		return fmt.Errorf(errName + "bNum.bigInt is EMPTY!")
+		bNum.SetBigInt(big.NewInt(0), bNum.precision)
 	}
 
 	if bNum.sign != -1 && bNum.sign != 1 {

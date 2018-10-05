@@ -5,6 +5,196 @@ import (
 	"testing"
 )
 
+func TestBigIntFixedDecimal_CopyIn_01(t *testing.T) {
+	expectedNumStr := "-123.45"
+
+	originalNum := big.NewInt(-12345)
+	originalNumPrecision := uint(2)
+
+	fixedDec := BigIntFixedDecimal{}.New(originalNum, originalNumPrecision)
+
+	fD2 := BigIntFixedDecimal{}
+
+	fD2.CopyIn(fixedDec)
+
+	if expectedNumStr != fD2.GetNumStr() {
+		t.Errorf("Error: Expected result='%v'. Instead, result='%v'",
+			expectedNumStr, fD2.GetNumStr())
+	}
+
+}
+
+func TestBigIntFixedDecimal_CopyIn_02(t *testing.T) {
+	expectedNumStr := "123.45"
+
+	originalNum := big.NewInt(12345)
+	originalNumPrecision := uint(2)
+
+	fixedDec := BigIntFixedDecimal{}.New(originalNum, originalNumPrecision)
+
+	fD2 := BigIntFixedDecimal{}
+
+	fD2.CopyIn(fixedDec)
+
+	if expectedNumStr != fD2.GetNumStr() {
+		t.Errorf("Error: Expected result='%v'. Instead, result='%v'",
+			expectedNumStr, fD2.GetNumStr())
+	}
+
+}
+
+func TestBigIntFixedDecimal_CopyIn_03(t *testing.T) {
+	expectedNumStr := "12345"
+
+	originalNum := big.NewInt(12345)
+	originalNumPrecision := uint(0)
+
+	fixedDec := BigIntFixedDecimal{}.New(originalNum, originalNumPrecision)
+
+	fD2 := BigIntFixedDecimal{}
+
+	fD2.CopyIn(fixedDec)
+
+	if expectedNumStr != fD2.GetNumStr() {
+		t.Errorf("Error: Expected result='%v'. Instead, result='%v'",
+			expectedNumStr, fD2.GetNumStr())
+	}
+
+}
+
+func TestBigIntFixedDecimal_CopyIn_04(t *testing.T) {
+	expectedNumStr := "-12345"
+
+	originalNum := big.NewInt(-12345)
+	originalNumPrecision := uint(0)
+
+	fixedDec := BigIntFixedDecimal{}.New(originalNum, originalNumPrecision)
+
+	fD2 := BigIntFixedDecimal{}
+
+	fD2.CopyIn(fixedDec)
+
+	if expectedNumStr != fD2.GetNumStr() {
+		t.Errorf("Error: Expected result='%v'. Instead, result='%v'",
+			expectedNumStr, fD2.GetNumStr())
+	}
+
+}
+
+func TestBigIntFixedDecimal_CopyIn_05(t *testing.T) {
+	expectedNumStr := "0.000"
+
+	originalNum := big.NewInt(0)
+	originalNumPrecision := uint(3)
+
+	fixedDec := BigIntFixedDecimal{}.New(originalNum, originalNumPrecision)
+
+	fD2 := BigIntFixedDecimal{}
+
+	fD2.CopyIn(fixedDec)
+
+	if expectedNumStr != fD2.GetNumStr() {
+		t.Errorf("Error: Expected result='%v'. Instead, result='%v'",
+			expectedNumStr, fD2.GetNumStr())
+	}
+
+}
+
+func TestBigIntFixedDecimal_CopyInPtr_01(t *testing.T) {
+	expectedNumStr := "-123.45"
+
+	originalNum := big.NewInt(-12345)
+	originalNumPrecision := uint(2)
+
+	fixedDec := BigIntFixedDecimal{}.New(originalNum, originalNumPrecision)
+
+	fD2 := BigIntFixedDecimal{}
+
+	fD2.CopyInPtr(&fixedDec)
+
+	if expectedNumStr != fD2.GetNumStr() {
+		t.Errorf("Error: Expected result='%v'. Instead, result='%v'",
+			expectedNumStr, fD2.GetNumStr())
+	}
+
+}
+
+func TestBigIntFixedDecimal_CopyInPtr_02(t *testing.T) {
+	expectedNumStr := "123.45"
+
+	originalNum := big.NewInt(12345)
+	originalNumPrecision := uint(2)
+
+	fixedDec := BigIntFixedDecimal{}.New(originalNum, originalNumPrecision)
+
+	fD2 := BigIntFixedDecimal{}
+
+	fD2.CopyInPtr(&fixedDec)
+
+	if expectedNumStr != fD2.GetNumStr() {
+		t.Errorf("Error: Expected result='%v'. Instead, result='%v'",
+			expectedNumStr, fD2.GetNumStr())
+	}
+
+}
+
+func TestBigIntFixedDecimal_CopyInPtr_03(t *testing.T) {
+	expectedNumStr := "12345"
+
+	originalNum := big.NewInt(12345)
+	originalNumPrecision := uint(0)
+
+	fixedDec := BigIntFixedDecimal{}.New(originalNum, originalNumPrecision)
+
+	fD2 := BigIntFixedDecimal{}
+
+	fD2.CopyInPtr(&fixedDec)
+
+	if expectedNumStr != fD2.GetNumStr() {
+		t.Errorf("Error: Expected result='%v'. Instead, result='%v'",
+			expectedNumStr, fD2.GetNumStr())
+	}
+
+}
+
+func TestBigIntFixedDecimal_CopyInPtr_04(t *testing.T) {
+	expectedNumStr := "-12345"
+
+	originalNum := big.NewInt(-12345)
+	originalNumPrecision := uint(0)
+
+	fixedDec := BigIntFixedDecimal{}.New(originalNum, originalNumPrecision)
+
+	fD2 := BigIntFixedDecimal{}
+
+	fD2.CopyInPtr(&fixedDec)
+
+	if expectedNumStr != fD2.GetNumStr() {
+		t.Errorf("Error: Expected result='%v'. Instead, result='%v'",
+			expectedNumStr, fD2.GetNumStr())
+	}
+
+}
+
+func TestBigIntFixedDecimal_CopyInPtr_05(t *testing.T) {
+	expectedNumStr := "0.000"
+
+	originalNum := big.NewInt(0)
+	originalNumPrecision := uint(3)
+
+	fixedDec := BigIntFixedDecimal{}.New(originalNum, originalNumPrecision)
+
+	fD2 := BigIntFixedDecimal{}
+
+	fD2.CopyInPtr(&fixedDec)
+
+	if expectedNumStr != fD2.GetNumStr() {
+		t.Errorf("Error: Expected result='%v'. Instead, result='%v'",
+			expectedNumStr, fD2.GetNumStr())
+	}
+
+}
+
 func TestBigIntFixedDecimal_FormatNumStr_01(t *testing.T) {
 
 	expectedNumStr := "-123.45"
