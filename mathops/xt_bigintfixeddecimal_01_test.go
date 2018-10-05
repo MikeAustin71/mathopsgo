@@ -412,3 +412,56 @@ func TestBigIntFixedDecimal_FormatNumStr_24(t *testing.T) {
 
 }
 
+func TestBigIntFixedDecimal_GetNumStr_01(t *testing.T) {
+
+	expectedNumStr := "123.45"
+
+	originalNum := 12345
+	originalNumPrecision := uint(2)
+
+	fixedDec := BigIntFixedDecimal{}.NewInt(originalNum, originalNumPrecision)
+
+	outStr := fixedDec.GetNumStr()
+
+	if expectedNumStr != outStr {
+		t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v'",
+			expectedNumStr, outStr)
+	}
+
+}
+
+func TestBigIntFixedDecimal_GetNumStr_02(t *testing.T) {
+
+	expectedNumStr := "-123.45"
+
+	originalNum := -12345
+	originalNumPrecision := uint(2)
+
+	fixedDec := BigIntFixedDecimal{}.NewInt(originalNum, originalNumPrecision)
+
+	outStr := fixedDec.GetNumStr()
+
+	if expectedNumStr != outStr {
+		t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v'",
+			expectedNumStr, outStr)
+	}
+
+}
+
+func TestBigIntFixedDecimal_GetNumStr_03(t *testing.T) {
+
+	expectedNumStr := "0.000"
+
+	originalNum := 0
+	originalNumPrecision := uint(3)
+
+	fixedDec := BigIntFixedDecimal{}.NewInt(originalNum, originalNumPrecision)
+
+	outStr := fixedDec.GetNumStr()
+
+	if expectedNumStr != outStr {
+		t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v'",
+			expectedNumStr, outStr)
+	}
+
+}
