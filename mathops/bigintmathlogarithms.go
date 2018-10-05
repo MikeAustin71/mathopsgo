@@ -412,14 +412,14 @@ func (bLog BigIntMathLogarithms) EPwrXFromTaylorSeries(
 // EPwrXFromTaylorSeriesBigInt
 func (bLog BigIntMathLogarithms) EPwrXFromTaylorSeriesBigInt(
 	exponentX BigIntFixedDecimal,
-	a, nCycles uint) (BigIntNum, error) {
+	a, nCycles uint) (BigIntFixedDecimal, error) {
 
 	ePrefix := "BigIntMathLogarithms.EPwrXFromTaylorSeries() "
 
 	e, err := bLog.GetEulersNumberE1050()
 
 	if err != nil {
-		return BigIntNum{}.NewZero(0),
+		return BigIntFixedDecimal{}.NewZero(0),
 			fmt.Errorf(ePrefix +
 				"Error returned by bLog.GetEulersNumberE104(). Error='%v'",
 				err.Error())
@@ -456,13 +456,13 @@ func (bLog BigIntMathLogarithms) EPwrXFromTaylorSeriesBigInt(
 
 		if n==0 {
 
-			xMinusANth = BigIntFixedDecimal{}.New(big.NewInt(1), 0)
-			nFact = BigIntFixedDecimal{}.New(big.NewInt(1), 0)
+			xMinusANth = BigIntFixedDecimal{}.NewInt(1, 0)
+			nFact = BigIntFixedDecimal{}.NewInt(1, 0)
 
 		} else if n==1 {
 
 			xMinusANth = xMinusA.CopyOut()
-			nFact =  BigIntFixedDecimal{}.New(big.NewInt(int64(n)), 0)
+			nFact =  BigIntFixedDecimal{}.NewUInt(n, 0)
 
 		} else {
 
@@ -478,20 +478,25 @@ func (bLog BigIntMathLogarithms) EPwrXFromTaylorSeriesBigInt(
 		factor1, err := BigIntMathDivide{}.FixedDecimalFracQuotient(eToPwr, nFact,500)
 
 		if err != nil {
-			return BigIntNum{}.NewZero(0),
+			return BigIntFixedDecimal{}.NewZero(0),
 				fmt.Errorf(ePrefix +
 					"Error returned by BigIntMathDivide{}.BigIntNumFracQuotient(eToPwr, nFact, 500) "+
 					"eToPwr='%v' nFact='%v' Error='%v' ",
 					eToPwr.GetNumStr(), nFact.GetNumStr(), err.Error())
 		}
 
+		factor2 := BigIntMathMultiply{}.FixedDecimalMultiply(factor1, xMinusANth)
+
+		sum = BigIntMathAdd{}.FixedDecimalAdd(sum, factor2)
+
 	}
 
+	sum.RoundToDecPlace(500)
 
-	return BigIntNum{}, nil
+	return sum, nil
 }
-
 */
+
 
 // GetEulersNumberE1050 - Returns mathematical constant 'e' otherwise known as
 // Euler's integerNum.
