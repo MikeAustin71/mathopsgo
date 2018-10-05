@@ -484,7 +484,7 @@ func (bigIFd BigIntFixedDecimal) NewZero(precision uint) BigIntFixedDecimal {
 //    0.000000									0								 0
 //
 //
-func (bigIFd BigIntFixedDecimal) RoundToDecPlace(precision uint) {
+func (bigIFd *BigIntFixedDecimal) RoundToDecPlace(precision uint) {
 
 	if bigIFd.integerNum == nil {
 		bigIFd.SetNumericValue(big.NewInt(0), precision)
@@ -530,7 +530,7 @@ func (bigIFd BigIntFixedDecimal) RoundToDecPlace(precision uint) {
 			big.NewInt(-1))
 	}
 
-	result := BigIntMathAdd{}.FixedDecimalAdd(bigIFd, bigNumRound5)
+	result := BigIntMathAdd{}.FixedDecimalAdd(bigIFd.CopyOut(), bigNumRound5)
 
 	// 10^deltaPrecision
 	scale.Exp(big.NewInt(10),
