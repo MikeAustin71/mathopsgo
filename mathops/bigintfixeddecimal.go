@@ -60,6 +60,48 @@ func (bigIFd *BigIntFixedDecimal) CopyOut() BigIntFixedDecimal {
 
 	return BigIntFixedDecimal{}.New(bigIFd.integerNum, bigIFd.precision)
 }
+// DivideByTenToPwr - Divides the numeric value of the current
+// BigIntFixedDecimal by 10 to the power of 'exponent'.
+//
+//       result = BigIntFixedDecimal / 10^exponent
+//
+//
+// Input Parameter
+// ===============
+//
+// exponent	uint	- The value of the current BigIntFixedDecimal
+//									instance will be divided by ten raised to
+// 									the power of 'exponent'.
+//
+// This method will destroy and overwrite the previous value of
+// the current BigIntFixedDecimal instance with the results of
+// this calculation.
+//
+func (bigIFd *BigIntFixedDecimal) DivideByTenToPwr(exponent uint) {
+
+	if bigIFd.integerNum == nil {
+		bigIFd.SetNumericValue(big.NewInt(0), bigIFd.precision)
+	}
+
+	if bigIFd.integerNum.Cmp(big.NewInt(0)) == 0 {
+
+		bigIFd.precision += exponent
+
+		return
+	}
+
+	scale :=
+		big.NewInt(0).Exp(
+			big.NewInt(10),
+			big.NewInt(int64(exponent)), nil)
+
+	factor := BigIntFixedDecimal{}.New(scale, 0)
+
+	result := BigIntMathMultiply{}.FixedDecimalMultiply(bigIFd.CopyOut(), factor)
+
+	bigIFd.CopyIn(result)
+
+}
 
 // FormatNumStr - converts the numeric value of the current BigIntFixedDecimal
 // instance to a number string. The returned number string will consist of a
@@ -285,6 +327,52 @@ func (bigIFd *BigIntFixedDecimal) IsValid() bool {
 	}
 
 	return true
+}
+
+// MultiplyByTenToPwr - Multiplies the numeric value of the current
+// BigIntFixedDecimal by 10 to the power of 'exponent'.
+//
+//       result = BigIntFixedDecimal x 10^exponent
+//
+// Input Parameter
+// ===============
+//
+// exponent	uint	- The value of the current BigIntFixedDecimal
+//									instance will be multiplied by ten raised to
+// 									the power of 'exponent'.
+//
+// This method will destroy and overwrite the previous value of
+// the current BigIntFixedDecimal instance with the results of
+// this calculation.
+//
+func (bigIFd *BigIntFixedDecimal) MultiplyByTenToPwr(exponent uint) {
+
+
+	if bigIFd.integerNum == nil {
+		bigIFd.SetNumericValue(big.NewInt(0), bigIFd.precision)
+	}
+
+	if bigIFd.integerNum.Cmp(big.NewInt(0)) == 0 {
+
+		if exponent >= bigIFd.precision {
+			bigIFd.precision = 0
+		} else {
+			bigIFd.precision -= exponent
+		}
+
+	}
+
+	scale :=
+		big.NewInt(0).Exp(
+			big.NewInt(10),
+			big.NewInt(int64(exponent)), nil)
+
+	factor := BigIntFixedDecimal{}.New(scale, 0)
+
+	result := BigIntMathMultiply{}.FixedDecimalMultiply(bigIFd.CopyOut(), factor)
+
+	bigIFd.CopyIn(result)
+
 }
 
 // New - Creates and returns a new BigIntFixedDecimal type based on input parameters,
