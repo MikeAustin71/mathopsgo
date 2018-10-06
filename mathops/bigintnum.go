@@ -4545,16 +4545,17 @@ func (bNum *BigIntNum) TrimTrailingFracZeros() {
 		return
 	}
 
+	// bNum.precision must be greater than zero
 	biBase10 := big.NewInt(10)
-
-	mod10 := big.NewInt(0).Mod(bNum.bigInt, biBase10)
+	scrap := big.NewInt(0)
+	newBigIntNum, mod10 := big.NewInt(0).QuoRem(bNum.bigInt, biBase10, scrap)
 	doReset := false
 
 	for mod10.Cmp(biBaseZero) == 0 && bNum.precision > 0 {
-		bNum.bigInt = big.NewInt(0).Quo(bNum.bigInt, biBase10)
+		bNum.bigInt.Set(newBigIntNum)
 		bNum.precision--
+		newBigIntNum, mod10 = big.NewInt(0).QuoRem(bNum.bigInt, biBase10, scrap)
 		doReset = true
-		mod10 = big.NewInt(0).Mod(bNum.bigInt, biBase10)
 	}
 
 	if doReset {

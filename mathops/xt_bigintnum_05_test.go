@@ -1359,6 +1359,121 @@ func TestBigIntNum_SetPrecision_11(t *testing.T) {
 
 }
 
+func TestBigIntNum_TrimTrailingFracZeros_01(t *testing.T) {
+
+	nStr := "-123.000"
+	expectedNumStr := "-123"
+
+	bINum1, err := BigIntNum{}.NewNumStr(nStr)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(nStr). "+
+			" nStr='%v'  Error='%v'",
+			nStr, err.Error())
+	}
+
+	bINum1.TrimTrailingFracZeros()
+
+	actualNumStr := bINum1.GetNumStr()
+
+	if expectedNumStr != actualNumStr {
+		t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v'. ",
+			expectedNumStr, actualNumStr)
+	}
+}
+
+func TestBigIntNum_TrimTrailingFracZeros_02(t *testing.T) {
+
+	nStr := "123.000"
+	expectedNumStr := "123"
+
+	bINum1, err := BigIntNum{}.NewNumStr(nStr)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(nStr). "+
+			" nStr='%v'  Error='%v'",
+			nStr, err.Error())
+	}
+
+	bINum1.TrimTrailingFracZeros()
+
+	actualNumStr := bINum1.GetNumStr()
+
+	if expectedNumStr != actualNumStr {
+		t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v'. ",
+			expectedNumStr, actualNumStr)
+	}
+}
+
+func TestBigIntNum_TrimTrailingFracZeros_03(t *testing.T) {
+
+	nStr := "123.0090"
+	expectedNumStr := "123.009"
+
+	bINum1, err := BigIntNum{}.NewNumStr(nStr)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(nStr). "+
+			" nStr='%v'  Error='%v'",
+			nStr, err.Error())
+	}
+
+	bINum1.TrimTrailingFracZeros()
+
+	actualNumStr := bINum1.GetNumStr()
+
+	if expectedNumStr != actualNumStr {
+		t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v'. ",
+			expectedNumStr, actualNumStr)
+	}
+}
+
+func TestBigIntNum_TrimTrailingFracZeros_04(t *testing.T) {
+
+	nStr := "-123.0090"
+	expectedNumStr := "-123.009"
+
+	bINum1, err := BigIntNum{}.NewNumStr(nStr)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(nStr). "+
+			" nStr='%v'  Error='%v'",
+			nStr, err.Error())
+	}
+
+	bINum1.TrimTrailingFracZeros()
+
+	actualNumStr := bINum1.GetNumStr()
+
+	if expectedNumStr != actualNumStr {
+		t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v'. ",
+			expectedNumStr, actualNumStr)
+	}
+}
+
+func TestBigIntNum_TrimTrailingFracZeros_05(t *testing.T) {
+
+	nStr := "0.000"
+	expectedNumStr := "0"
+
+	bINum1, err := BigIntNum{}.NewNumStr(nStr)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(nStr). "+
+			" nStr='%v'  Error='%v'",
+			nStr, err.Error())
+	}
+
+	bINum1.TrimTrailingFracZeros()
+
+	actualNumStr := bINum1.GetNumStr()
+
+	if expectedNumStr != actualNumStr {
+		t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v'. ",
+			expectedNumStr, actualNumStr)
+	}
+}
+
 func TestBigIntNum_TruncToDecPlace_01(t *testing.T) {
 
 	nStr := "-123.567"
