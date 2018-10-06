@@ -9,60 +9,25 @@ import (
 )
 
 func main() {
-	// multiplier = 0.12345
-	multiplierStr := "0.12345"
 
-	// multiplicand = 32768
-	multiplicandStr := "32768"
+	num := 654
+	expectedNumStr := "654.0000"
+	precision := uint(0)
+	roundToDec := uint(4)
 
-	// product = 4045.2096
-	expectedBigINumStr := "4045.2096"
-
-	multiplierBiNum, err := mathops.BigIntNum{}.NewNumStr(multiplierStr)
-
-	if err != nil {
-		fmt.Printf("Error returned by BigIntNum{}.NewNumStr(multiplierStr) "+
-			"multiplierStr='%v'  Error='%v'. ", multiplierStr, err.Error())
-		return
-	}
-
-	multiplicandBiNum, err := mathops.BigIntNum{}.NewNumStr(multiplicandStr)
-
-	if err != nil {
-		fmt.Printf("Error returned by BigIntNum{}.NewNumStr(multiplicandStr) "+
-			"multiplicandStr='%v'  Error='%v'. ", multiplicandStr, err.Error())
-		return
-	}
-
-	expectedBigINum, err := mathops.BigIntNum{}.NewNumStr(expectedBigINumStr)
-
-	if err != nil {
-		fmt.Printf("Error returned by BigIntNum{}.NewNumStr(expectedBigINumStr) "+
-			"expectedBigINumStr='%v'  Error='%v'. ", expectedBigINumStr, err.Error())
-		return
-	}
-
-	multiplier :=
-		mathops.BigIntFixedDecimal{}.New(
-			multiplierBiNum.GetIntegerValue(),
-			multiplierBiNum.GetPrecisionUint())
-
-	multiplicand :=
-		mathops.BigIntFixedDecimal{}.New(
-			multiplicandBiNum.GetIntegerValue(),
-			multiplicandBiNum.GetPrecisionUint())
-
-	result := mathops.BigIntMathMultiply{}.FixedDecimalMultiply(
-		multiplier,
-		multiplicand)
+	fixDec := mathops.BigIntFixedDecimal{}.NewInt(num, precision)
 
 
-	fmt.Println("Expected Result: ", expectedBigINum.GetNumStr())
-	fmt.Println("  Actual Result: ", result.GetNumStr())
-	if expectedBigINum.GetNumStr() != result.GetNumStr() {
-		fmt.Printf("Error: Expected result='%v'. Instead, result= '%s'. ",
-			expectedBigINum.GetNumStr() != result.GetNumStr())
-		return
+	fixDec.RoundToDecPlace(roundToDec)
+
+	actualNumStr := fixDec.GetNumStr()
+
+	fmt.Println("Expected Result: ", expectedNumStr)
+	fmt.Println("  Actual Result: ", actualNumStr)
+
+	if expectedNumStr != actualNumStr {
+		fmt.Printf("Error: Expected NumStr='%v'. Instead, NumStr='%v'. ",
+			expectedNumStr, actualNumStr)
 	}
 
 }

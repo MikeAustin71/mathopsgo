@@ -327,10 +327,21 @@ func (bigIFd *BigIntFixedDecimal) IsValid() bool {
 	return true
 }
 
-// MultiplyByTenToPwr - Multiplies the numeric value of the current
+// MultiplyByTenToPower - Multiplies the numeric value of the current
 // BigIntFixedDecimal by 10 to the power of 'exponent'.
 //
 //       result = BigIntFixedDecimal x 10^exponent
+//
+// Examples:
+// =========
+// 	BigIntFixedDecimal
+//			Value									Exponent							   Result
+//  ------------------        --------              -----------------
+//   105.6752										 0										      105.6752
+//   105.6752                    1									       1056.752
+//   105.6752                    2                        10567.52
+//   105.6752                    3                       105675.2
+//   105.6752                    8                  10567520000
 //
 // Input Parameter
 // ===============
@@ -343,7 +354,7 @@ func (bigIFd *BigIntFixedDecimal) IsValid() bool {
 // the current BigIntFixedDecimal instance with the results of
 // this calculation.
 //
-func (bigIFd *BigIntFixedDecimal) MultiplyByTenToPwr(exponent uint) {
+func (bigIFd *BigIntFixedDecimal) MultiplyByTenToPower(exponent uint) {
 
 
 	if bigIFd.integerNum == nil {
@@ -351,6 +362,7 @@ func (bigIFd *BigIntFixedDecimal) MultiplyByTenToPwr(exponent uint) {
 	}
 
 	if bigIFd.integerNum.Cmp(big.NewInt(0)) == 0 {
+		 bigIFd.precision = 0
 		return
 	}
 
@@ -362,6 +374,8 @@ func (bigIFd *BigIntFixedDecimal) MultiplyByTenToPwr(exponent uint) {
 	factor := BigIntFixedDecimal{}.New(scale, 0)
 
 	result := BigIntMathMultiply{}.FixedDecimalMultiply(bigIFd.CopyOut(), factor)
+
+	result.TrimTrailingFracZeros()
 
 	bigIFd.CopyIn(result)
 
@@ -564,6 +578,9 @@ func (bigIFd BigIntFixedDecimal) NewZero(precision uint) BigIntFixedDecimal {
 //    0.000000									0								 0
 //
 //
+// Note: This method does NOT trim or delete trailing fractional zero
+// digits.
+//
 func (bigIFd *BigIntFixedDecimal) RoundToDecPlace(precision uint) {
 
 	if bigIFd.integerNum == nil {
@@ -585,17 +602,24 @@ func (bigIFd *BigIntFixedDecimal) RoundToDecPlace(precision uint) {
 	}
 
 	scale := big.NewInt(0)
+	base10 := big.NewInt(10)
 
 	// If existing precision is less than new specified precision,
 	// add trailing zeros, set new precision parameter and return.
 	if bigIFd.precision < precision {
+
 		deltaPrecision := precision - bigIFd.precision
+
 		scale =
-			big.NewInt(0).Mul(
-				big.NewInt(10),
-				big.NewInt(int64(deltaPrecision)))
-		bigIFd.integerNum.Exp(bigIFd.integerNum, scale, nil)
-		bigIFd.precision += precision
+			big.NewInt(0).Exp(
+				base10,
+				big.NewInt(int64(deltaPrecision)),
+				nil)
+
+		bigIFd.integerNum.Mul(bigIFd.integerNum, scale)
+
+		bigIFd.precision += deltaPrecision
+
 		return
 	}
 
