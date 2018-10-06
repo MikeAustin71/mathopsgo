@@ -90,6 +90,7 @@ func (bSubtract BigIntMathSubtract) BigIntSubtract(
 	}
 
 	bigZero := big.NewInt(0)
+	base10 := big.NewInt(10)
 
 	if minPrecision == subPrecision {
 		// Precisions are equal.
@@ -101,12 +102,8 @@ func (bSubtract BigIntMathSubtract) BigIntSubtract(
 			differencePrecision = 0
 		}
 
-		return difference, differencePrecision
-	}
+	} else if minPrecision > subPrecision {
 
-	base10 := big.NewInt(10)
-
-	if minPrecision > subPrecision {
 		deltaPrecision := big.NewInt(int64(minPrecision - subPrecision))
 		deltaPrecisionScale := big.NewInt(0).Exp(base10, deltaPrecision, nil)
 		newSubInt := big.NewInt(0).Mul(subtrahend, deltaPrecisionScale)
@@ -118,20 +115,32 @@ func (bSubtract BigIntMathSubtract) BigIntSubtract(
 			differencePrecision = 0
 		}
 
-		return difference, differencePrecision
+	} else {
+		// subPrecision must be GREATER THAN minPrecision
+		deltaPrecision := big.NewInt(int64(subPrecision - minPrecision))
+		deltaPrecisionScale := big.NewInt(0).Exp(base10, deltaPrecision, nil)
+		newMinuendInt := big.NewInt(0).Mul(minuend, deltaPrecisionScale)
 
+		difference = big.NewInt(0).Sub(newMinuendInt, subtrahend)
+		differencePrecision = subPrecision
+
+		if difference.Cmp(bigZero) == 0 {
+			differencePrecision = 0
+		}
 	}
 
-	// Must be subPrecision GREATER THAN minPrecision
-	deltaPrecision := big.NewInt(int64(subPrecision - minPrecision))
-	deltaPrecisionScale := big.NewInt(0).Exp(base10, deltaPrecision, nil)
-	newMinuendInt := big.NewInt(0).Mul(minuend, deltaPrecisionScale)
+	// Delete trailing fractional zeros
+	if differencePrecision > 0 {
+		scrap := big.NewInt(0)
+		biBase10 := big.NewInt(10)
+		biBaseZero := big.NewInt(0)
+		newDifference, mod10 := big.NewInt(0).QuoRem(difference, biBase10, scrap)
 
-	difference = big.NewInt(0).Sub(newMinuendInt, subtrahend)
-	differencePrecision = subPrecision
-
-	if difference.Cmp(bigZero) == 0 {
-		differencePrecision = 0
+		for mod10.Cmp(biBaseZero) == 0 && differencePrecision > 0 {
+			difference.Set(newDifference)
+			differencePrecision--
+			newDifference, mod10 = big.NewInt(0).QuoRem(difference, biBase10, scrap)
+		}
 	}
 
 	return difference, differencePrecision

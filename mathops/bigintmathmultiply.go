@@ -99,10 +99,10 @@ func (bMultiply BigIntMathMultiply) BigIntMultiply(
 		productPrecision = 0
 	}
 
-	scrap := big.NewInt(0)
 
 	// Delete trailing fractional zeros
 	if productPrecision > 0 {
+		scrap := big.NewInt(0)
 		biBase10 := big.NewInt(10)
 		biBaseZero := big.NewInt(0)
 		newProduct, mod10 := big.NewInt(0).QuoRem(product, biBase10, scrap)
@@ -110,7 +110,7 @@ func (bMultiply BigIntMathMultiply) BigIntMultiply(
 		for mod10.Cmp(biBaseZero) == 0 && productPrecision > 0 {
 			product.Set(newProduct)
 			productPrecision--
-			mod10 = big.NewInt(0).Mod(product, biBase10)
+			newProduct, mod10 = big.NewInt(0).QuoRem(product, biBase10, scrap)
 		}
 	}
 
