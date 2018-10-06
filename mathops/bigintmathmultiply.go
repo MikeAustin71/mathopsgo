@@ -99,7 +99,6 @@ func (bMultiply BigIntMathMultiply) BigIntMultiply(
 		productPrecision = 0
 	}
 
-
 	// Delete trailing fractional zeros
 	if productPrecision > 0 {
 		scrap := big.NewInt(0)
@@ -116,7 +115,6 @@ func (bMultiply BigIntMathMultiply) BigIntMultiply(
 
 	return product, productPrecision
 }
-
 
 // FixedDecimalMultiply - This method receives two BigIntFixedDecimal
 // types and then proceeds to perform a multiplication operation by
@@ -294,7 +292,7 @@ func (bMultiply BigIntMathMultiply) MultiplyBigInts(
 	product := big.NewInt(0).Mul(multiplier, multiplicand)
 
 	biNumProduct := BigIntNum{}.NewBigInt(
-							product, multiplierPrecision + multiplicandPrecision)
+		product, multiplierPrecision+multiplicandPrecision)
 
 	biNumProduct.TrimTrailingFracZeros()
 
@@ -503,7 +501,7 @@ func (bMultiply BigIntMathMultiply) MultiplyBigIntNumByTwo(base BigIntNum) BigIn
 
 	result := big.NewInt(0).Lsh(base.bigInt, 1)
 
-	bINumResult :=  BigIntNum{}.NewBigInt(result, base.GetPrecisionUint())
+	bINumResult := BigIntNum{}.NewBigInt(result, base.GetPrecisionUint())
 
 	bINumResult.SetNumericSeparatorsDto(base.GetNumericSeparatorsDto())
 

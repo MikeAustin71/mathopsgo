@@ -16,7 +16,6 @@ type BigIntMathSubtract struct {
 	Result BigIntNum  // The result of the subtraction otherwise known as the 'difference'
 }
 
-
 // BigIntSubtract - Performs the subtraction operation on two
 // numeric values. The 'minuend' is the number from which the
 // 'subtrahend' is subtracted in order to generate a result or
@@ -91,6 +90,8 @@ func (bSubtract BigIntMathSubtract) BigIntSubtract(
 
 	bigZero := big.NewInt(0)
 	base10 := big.NewInt(10)
+	deltaPrecision := big.NewInt(0)
+	scale := big.NewInt(0)
 
 	if minPrecision == subPrecision {
 		// Precisions are equal.
@@ -98,35 +99,27 @@ func (bSubtract BigIntMathSubtract) BigIntSubtract(
 		difference = big.NewInt(0).Sub(minuend, subtrahend)
 		differencePrecision = minPrecision
 
-		if difference.Cmp(bigZero) == 0 {
-			differencePrecision = 0
-		}
-
 	} else if minPrecision > subPrecision {
 
-		deltaPrecision := big.NewInt(int64(minPrecision - subPrecision))
-		deltaPrecisionScale := big.NewInt(0).Exp(base10, deltaPrecision, nil)
-		newSubInt := big.NewInt(0).Mul(subtrahend, deltaPrecisionScale)
+		deltaPrecision = big.NewInt(int64(minPrecision - subPrecision))
+		scale = big.NewInt(0).Exp(base10, deltaPrecision, nil)
+		newSubInt := big.NewInt(0).Mul(subtrahend, scale)
 
 		difference = big.NewInt(0).Sub(minuend, newSubInt)
 		differencePrecision = minPrecision
 
-		if difference.Cmp(bigZero) == 0 {
-			differencePrecision = 0
-		}
-
 	} else {
 		// subPrecision must be GREATER THAN minPrecision
-		deltaPrecision := big.NewInt(int64(subPrecision - minPrecision))
-		deltaPrecisionScale := big.NewInt(0).Exp(base10, deltaPrecision, nil)
-		newMinuendInt := big.NewInt(0).Mul(minuend, deltaPrecisionScale)
+		deltaPrecision = big.NewInt(int64(subPrecision - minPrecision))
+		scale = big.NewInt(0).Exp(base10, deltaPrecision, nil)
+		newMinuendInt := big.NewInt(0).Mul(minuend, scale)
 
 		difference = big.NewInt(0).Sub(newMinuendInt, subtrahend)
 		differencePrecision = subPrecision
+	}
 
-		if difference.Cmp(bigZero) == 0 {
-			differencePrecision = 0
-		}
+	if difference.Cmp(bigZero) == 0 {
+		differencePrecision = 0
 	}
 
 	// Delete trailing fractional zeros

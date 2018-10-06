@@ -30,44 +30,43 @@ func (bAdd BigIntMathAdd) AddBigInts(
 	return BigIntNum{}.NewBigInt(result, resultPrecision)
 
 	/*
-	bigIntResult := big.NewInt(0)
+		bigIntResult := big.NewInt(0)
 
-	if precision1 == precision2 {
-		bigIntResult = big.NewInt(0).Add(b1, b2	)
-		return BigIntNum{}.NewBigInt(bigIntResult, precision1)
-	}
+		if precision1 == precision2 {
+			bigIntResult = big.NewInt(0).Add(b1, b2	)
+			return BigIntNum{}.NewBigInt(bigIntResult, precision1)
+		}
 
-	bigTen := big.NewInt(10)
+		bigTen := big.NewInt(10)
 
-	if precision1 > precision2 {
+		if precision1 > precision2 {
 
-		delta := int64(precision1 - precision2)
+			delta := int64(precision1 - precision2)
+
+			scale := big.NewInt(0).Exp(bigTen, big.NewInt(delta), nil)
+
+			b2ToScale := big.NewInt(0).Mul(b2, scale)
+
+			bigIntResult = big.NewInt(0).Add(b1, b2ToScale)
+
+			return BigIntNum{}.NewBigInt(bigIntResult, precision1)
+
+		}
+
+		// precision2 must be GREATER than precision1
+
+		delta := int64(precision2 - precision1)
 
 		scale := big.NewInt(0).Exp(bigTen, big.NewInt(delta), nil)
 
-		b2ToScale := big.NewInt(0).Mul(b2, scale)
+		b1ToScale := big.NewInt(0).Mul(b1, scale)
 
-		bigIntResult = big.NewInt(0).Add(b1, b2ToScale)
+		bigIntResult = big.NewInt(0).Add(b1ToScale, b2)
 
-		return BigIntNum{}.NewBigInt(bigIntResult, precision1)
-
-	}
-
-	// precision2 must be GREATER than precision1
-
-	delta := int64(precision2 - precision1)
-
-	scale := big.NewInt(0).Exp(bigTen, big.NewInt(delta), nil)
-
-	b1ToScale := big.NewInt(0).Mul(b1, scale)
-
-	bigIntResult = big.NewInt(0).Add(b1ToScale, b2)
-
-	return BigIntNum{}.NewBigInt(bigIntResult, precision2)
-*/
+		return BigIntNum{}.NewBigInt(bigIntResult, precision2)
+	*/
 
 }
-
 
 // AddBigIntNums - Adds two BigIntNums and returns the result in a new
 // BigIntNum instance
@@ -1523,57 +1522,60 @@ func (bAdd BigIntMathAdd) BigIntAdd(
 	bigZero := big.NewInt(0)
 
 	if b1.Cmp(bigZero) == 0 &&
-		 b2.Cmp(bigZero) == 0 {
-		 	total = big.NewInt(0)
-		 	totalPrecision = 0
-		 	return total, totalPrecision
-	}
-
-	if precision1 == precision2 {
-		total = big.NewInt(0).Add(b1, b2	)
-		totalPrecision = precision1
-
-		if total.Cmp(bigZero) == 0 {
-			totalPrecision = 0
-		}
-
+		b2.Cmp(bigZero) == 0 {
+		total = big.NewInt(0)
+		totalPrecision = 0
 		return total, totalPrecision
 	}
 
 	bigTen := big.NewInt(10)
+	delta := int64(0)
+	scale := big.NewInt(0)
 
-	if precision1 > precision2 {
+	if precision1 == precision2 {
+		total = big.NewInt(0).Add(b1, b2)
+		totalPrecision = precision1
 
-		delta := int64(precision1 - precision2)
+	} else if precision1 > precision2 {
 
-		scale := big.NewInt(0).Exp(bigTen, big.NewInt(delta), nil)
+		delta = int64(precision1 - precision2)
+		scale = big.NewInt(0).Exp(bigTen, big.NewInt(delta), nil)
 
 		b2ToScale := big.NewInt(0).Mul(b2, scale)
 
 		total = big.NewInt(0).Add(b1, b2ToScale)
 		totalPrecision = precision1
 
-		if total.Cmp(bigZero) == 0 {
-			totalPrecision = 0
-		}
+	} else {
+		// precision2 must be GREATER than precision1
+		delta = int64(precision2 - precision1)
 
-		return total, totalPrecision
+		scale = big.NewInt(0).Exp(bigTen, big.NewInt(delta), nil)
+
+		b1ToScale := big.NewInt(0).Mul(b1, scale)
+
+		total = big.NewInt(0).Add(b1ToScale, b2)
+		
+		totalPrecision = precision2
 
 	}
 
-	// precision2 must be GREATER than precision1
-
-	delta := int64(precision2 - precision1)
-
-	scale := big.NewInt(0).Exp(bigTen, big.NewInt(delta), nil)
-
-	b1ToScale := big.NewInt(0).Mul(b1, scale)
-
-	total = big.NewInt(0).Add(b1ToScale, b2)
-	totalPrecision = precision2
-
 	if total.Cmp(bigZero) == 0 {
 		totalPrecision = 0
+	}
+
+	// Delete trailing fractional zeros
+	if totalPrecision > 0 {
+		scrap := big.NewInt(0)
+		biBase10 := big.NewInt(10)
+		biBaseZero := big.NewInt(0)
+		newTotal, mod10 := big.NewInt(0).QuoRem(total, biBase10, scrap)
+
+		for mod10.Cmp(biBaseZero) == 0 && totalPrecision > 0 {
+			total.Set(newTotal)
+			totalPrecision--
+			newTotal, mod10 = big.NewInt(0).QuoRem(total, biBase10, scrap)
+		}
 	}
 
 	return total, totalPrecision
@@ -1650,7 +1652,7 @@ func (bAdd BigIntMathAdd) BigIntAdd(
 //
 func (bAdd BigIntMathAdd) FixedDecimalAdd(
 	b1,
-	b2 BigIntFixedDecimal ) (total BigIntFixedDecimal) {
+	b2 BigIntFixedDecimal) (total BigIntFixedDecimal) {
 
 	total = BigIntFixedDecimal{}.NewZero(0)
 
@@ -1669,7 +1671,6 @@ func (bAdd BigIntMathAdd) FixedDecimalAdd(
 
 	return total
 }
-
 
 // addPairNoNumSeps - Receives a BigIntPair and proceeds to add b1.BigIntNum to
 // b2.BigIntNum.
