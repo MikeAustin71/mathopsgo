@@ -706,3 +706,136 @@ func TestBigIntFixedDecimal_GetNumStr_03(t *testing.T) {
 	}
 
 }
+
+func TestBigIntFixedDecimal_DivideByTenToPwr_01(t *testing.T) {
+
+	expectedNumStr := "-0.12345"
+
+	originalNum := -12345
+	originalNumPrecision := uint(2)
+	exponent := uint(3)
+
+	fixedDec := BigIntFixedDecimal{}.NewInt(originalNum, originalNumPrecision)
+
+	fixedDec.DivideByTenToPwr(exponent)
+
+	if expectedNumStr != fixedDec.GetNumStr() {
+		t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v'",
+			expectedNumStr, fixedDec.GetNumStr())
+	}
+
+}
+
+func TestBigIntFixedDecimal_DivideByTenToPwr_02(t *testing.T) {
+
+	expectedNumStr := "12.345"
+
+	originalNum := 12345
+	originalNumPrecision := uint(2)
+	exponent := uint(1)
+
+	fixedDec := BigIntFixedDecimal{}.NewInt(originalNum, originalNumPrecision)
+
+	fixedDec.DivideByTenToPwr(exponent)
+
+	if expectedNumStr != fixedDec.GetNumStr() {
+		t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v'",
+			expectedNumStr, fixedDec.GetNumStr())
+	}
+
+}
+
+func TestBigIntFixedDecimal_DivideByTenToPwr_03(t *testing.T) {
+
+	expectedNumStr := "-12.345"
+
+	originalNum := -12345
+	originalNumPrecision := uint(2)
+	exponent := uint(1)
+
+	fixedDec := BigIntFixedDecimal{}.NewInt(originalNum, originalNumPrecision)
+
+	fixedDec.DivideByTenToPwr(exponent)
+
+	if expectedNumStr != fixedDec.GetNumStr() {
+		t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v'",
+			expectedNumStr, fixedDec.GetNumStr())
+	}
+
+}
+
+func TestBigIntFixedDecimal_DivideByTenToPwr_04(t *testing.T) {
+
+	expectedNumStr := "0.00012345"
+
+	originalNum := 12345
+	originalNumPrecision := uint(0)
+	exponent := uint(8)
+
+	fixedDec := BigIntFixedDecimal{}.NewInt(originalNum, originalNumPrecision)
+
+	fixedDec.DivideByTenToPwr(exponent)
+
+	if expectedNumStr != fixedDec.GetNumStr() {
+		t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v'",
+			expectedNumStr, fixedDec.GetNumStr())
+	}
+
+}
+
+func TestBigIntFixedDecimal_DivideByTenToPwr_05(t *testing.T) {
+
+	expectedNumStr := "-0.00012345"
+
+	originalNum := -12345
+	originalNumPrecision := uint(0)
+	exponent := uint(8)
+
+	fixedDec := BigIntFixedDecimal{}.NewInt(originalNum, originalNumPrecision)
+
+	fixedDec.DivideByTenToPwr(exponent)
+
+	if expectedNumStr != fixedDec.GetNumStr() {
+		t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v'",
+			expectedNumStr, fixedDec.GetNumStr())
+	}
+
+}
+
+func TestBigIntFixedDecimal_DivideByTenToPwr_06(t *testing.T) {
+
+	expectedNumStr := "0.0057"
+
+	originalNum := 57
+	originalNumPrecision := uint(0)
+	exponent := uint(4)
+
+	fixedDec := BigIntFixedDecimal{}.NewInt(originalNum, originalNumPrecision)
+
+	fixedDec.DivideByTenToPwr(exponent)
+
+	if expectedNumStr != fixedDec.GetNumStr() {
+		t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v'",
+			expectedNumStr, fixedDec.GetNumStr())
+	}
+
+}
+
+func TestBigIntFixedDecimal_DivideByTenToPwr_07(t *testing.T) {
+
+	expectedNumStr := "0"
+
+	originalNum := 0
+	originalNumPrecision := uint(0)
+	exponent := uint(4)
+
+	fixedDec := BigIntFixedDecimal{}.NewInt(originalNum, originalNumPrecision)
+
+	fixedDec.DivideByTenToPwr(exponent)
+
+	if expectedNumStr != fixedDec.GetNumStr() {
+		t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v'",
+			expectedNumStr, fixedDec.GetNumStr())
+	}
+
+}

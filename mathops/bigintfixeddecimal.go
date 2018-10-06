@@ -84,9 +84,6 @@ func (bigIFd *BigIntFixedDecimal) DivideByTenToPwr(exponent uint) {
 	}
 
 	if bigIFd.integerNum.Cmp(big.NewInt(0)) == 0 {
-
-		bigIFd.precision += exponent
-
 		return
 	}
 
@@ -97,10 +94,11 @@ func (bigIFd *BigIntFixedDecimal) DivideByTenToPwr(exponent uint) {
 
 	factor := BigIntFixedDecimal{}.New(scale, 0)
 
-	result := BigIntMathMultiply{}.FixedDecimalMultiply(bigIFd.CopyOut(), factor)
+	result, _ :=
+		BigIntMathDivide{}.FixedDecimalFracQuotient(
+			bigIFd.CopyOut(), factor, bigIFd.precision + exponent )
 
 	bigIFd.CopyIn(result)
-
 }
 
 // FormatNumStr - converts the numeric value of the current BigIntFixedDecimal
@@ -353,13 +351,7 @@ func (bigIFd *BigIntFixedDecimal) MultiplyByTenToPwr(exponent uint) {
 	}
 
 	if bigIFd.integerNum.Cmp(big.NewInt(0)) == 0 {
-
-		if exponent >= bigIFd.precision {
-			bigIFd.precision = 0
-		} else {
-			bigIFd.precision -= exponent
-		}
-
+		return
 	}
 
 	scale :=

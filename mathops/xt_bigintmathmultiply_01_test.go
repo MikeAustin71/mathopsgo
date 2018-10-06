@@ -939,6 +939,58 @@ func TestBigIntMathMultiply_FixedDecimalMultiply_06(t *testing.T) {
 	}
 }
 
+func TestBigIntMathMultiply_FixedDecimalMultiply_07(t *testing.T) {
+	// multiplier = 0.12345
+	multiplierStr := "0.12345"
+
+	// multiplicand = 32768
+	multiplicandStr := "32768"
+
+	// product = 4045.2096
+	expectedBigINumStr := "4045.2096"
+
+	multiplierBiNum, err := BigIntNum{}.NewNumStr(multiplierStr)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(multiplierStr) "+
+			"multiplierStr='%v'  Error='%v'. ", multiplierStr, err.Error())
+	}
+
+	multiplicandBiNum, err := BigIntNum{}.NewNumStr(multiplicandStr)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(multiplicandStr) "+
+			"multiplicandStr='%v'  Error='%v'. ", multiplicandStr, err.Error())
+	}
+
+	expectedBigINum, err := BigIntNum{}.NewNumStr(expectedBigINumStr)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(expectedBigINumStr) "+
+			"expectedBigINumStr='%v'  Error='%v'. ", expectedBigINumStr, err.Error())
+	}
+
+	multiplier :=
+		BigIntFixedDecimal{}.New(
+			multiplierBiNum.GetIntegerValue(),
+			multiplierBiNum.GetPrecisionUint())
+
+	multiplicand :=
+		BigIntFixedDecimal{}.New(
+			multiplicandBiNum.GetIntegerValue(),
+			multiplicandBiNum.GetPrecisionUint())
+
+	result := BigIntMathMultiply{}.FixedDecimalMultiply(
+		multiplier,
+		multiplicand)
+
+	if expectedBigINum.GetNumStr() != result.GetNumStr() {
+		t.Errorf("Error: Expected result='%v'. Instead, result= '%v'. ",
+			expectedBigINum.GetNumStr(), result.GetNumStr())
+	}
+}
+
+
 func TestBigIntMathMultiply_MultiplyBigInts_01(t *testing.T) {
 	// multiplier = 123.32
 	multiplierStr := "123.32"

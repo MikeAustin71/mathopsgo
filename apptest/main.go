@@ -9,6 +9,66 @@ import (
 )
 
 func main() {
+	// multiplier = 0.12345
+	multiplierStr := "0.12345"
+
+	// multiplicand = 32768
+	multiplicandStr := "32768"
+
+	// product = 4045.2096
+	expectedBigINumStr := "4045.2096"
+
+	multiplierBiNum, err := mathops.BigIntNum{}.NewNumStr(multiplierStr)
+
+	if err != nil {
+		fmt.Printf("Error returned by BigIntNum{}.NewNumStr(multiplierStr) "+
+			"multiplierStr='%v'  Error='%v'. ", multiplierStr, err.Error())
+		return
+	}
+
+	multiplicandBiNum, err := mathops.BigIntNum{}.NewNumStr(multiplicandStr)
+
+	if err != nil {
+		fmt.Printf("Error returned by BigIntNum{}.NewNumStr(multiplicandStr) "+
+			"multiplicandStr='%v'  Error='%v'. ", multiplicandStr, err.Error())
+		return
+	}
+
+	expectedBigINum, err := mathops.BigIntNum{}.NewNumStr(expectedBigINumStr)
+
+	if err != nil {
+		fmt.Printf("Error returned by BigIntNum{}.NewNumStr(expectedBigINumStr) "+
+			"expectedBigINumStr='%v'  Error='%v'. ", expectedBigINumStr, err.Error())
+		return
+	}
+
+	multiplier :=
+		mathops.BigIntFixedDecimal{}.New(
+			multiplierBiNum.GetIntegerValue(),
+			multiplierBiNum.GetPrecisionUint())
+
+	multiplicand :=
+		mathops.BigIntFixedDecimal{}.New(
+			multiplicandBiNum.GetIntegerValue(),
+			multiplicandBiNum.GetPrecisionUint())
+
+	result := mathops.BigIntMathMultiply{}.FixedDecimalMultiply(
+		multiplier,
+		multiplicand)
+
+
+	fmt.Println("Expected Result: ", expectedBigINum.GetNumStr())
+	fmt.Println("  Actual Result: ", result.GetNumStr())
+	if expectedBigINum.GetNumStr() != result.GetNumStr() {
+		fmt.Printf("Error: Expected result='%v'. Instead, result= '%s'. ",
+			expectedBigINum.GetNumStr() != result.GetNumStr())
+		return
+	}
+
+}
+
+/*
+func main() {
 /*
 	dividendStr := "10.5"
 	divisorStr := "2"
@@ -19,7 +79,7 @@ func main() {
 
 // Dividend		divided by		Divisor			=					Quotient
 	//  -10						/					- 2					=						5
-*/
+
 	dividend := big.NewInt(-10)
 	dividendPrecision := uint(0)
 
@@ -41,7 +101,7 @@ func main() {
 		maxPrecision,
 		expectedResult)
 }
-
+*/
 func TestBigIntDivide(
 	dividend *big.Int,
 	dividendPrecision uint,
