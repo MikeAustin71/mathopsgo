@@ -463,6 +463,134 @@ func TestBigIntMathMultiply_BigIntMultiply_06(t *testing.T) {
 	}
 }
 
+
+func TestBigIntMathMultiply_BigIntMultiplyByTwoToPower_01(t *testing.T) {
+
+	// multiplicand = 23.321
+	multiplicandBInt := big.NewInt(23321)
+	multiplicandPrecision := uint(3)
+	exponent := uint(5)
+	expectedResult := "746.272"
+
+	product, productPrecision :=
+		BigIntMathMultiply{}.BigIntMultiplyByTwoToPower(
+			multiplicandBInt, multiplicandPrecision, exponent)
+
+	result := BigIntNum{}.NewBigInt(product, productPrecision)
+
+	if expectedResult != result.GetNumStr() {
+		t.Errorf("Error: Expected result='%v'. Instead, result='%v'. ",
+			expectedResult, result.GetNumStr())
+	}
+
+}
+
+func TestBigIntMathMultiply_BigIntMultiplyByTwoToPower_02(t *testing.T) {
+
+	// multiplicand = 8
+	multiplicandBInt := big.NewInt(8)
+	multiplicandPrecision := uint(0)
+	exponent := uint(10)
+	expectedResult := "8192"
+
+	product, productPrecision :=
+		BigIntMathMultiply{}.BigIntMultiplyByTwoToPower(
+			multiplicandBInt, multiplicandPrecision, exponent)
+
+	result := BigIntNum{}.NewBigInt(product, productPrecision)
+
+	if expectedResult != result.GetNumStr() {
+		t.Errorf("Error: Expected result='%v'. Instead, result='%v'. ",
+			expectedResult, result.GetNumStr())
+	}
+
+}
+
+func TestBigIntMathMultiply_BigIntMultiplyByTwoToPower_03(t *testing.T) {
+
+	// multiplicand = 9.871234
+	multiplicandBInt := big.NewInt(9871234)
+	multiplicandPrecision := uint(6)
+	exponent := uint(1)
+	expectedResult := "19.742468"
+
+	product, productPrecision :=
+		BigIntMathMultiply{}.BigIntMultiplyByTwoToPower(
+			multiplicandBInt, multiplicandPrecision, exponent)
+
+	result := BigIntNum{}.NewBigInt(product, productPrecision)
+
+	if expectedResult != result.GetNumStr() {
+		t.Errorf("Error: Expected result='%v'. Instead, result='%v'. ",
+			expectedResult, result.GetNumStr())
+	}
+
+}
+
+func TestBigIntMathMultiply_BigIntMultiplyByTwoToPower_04(t *testing.T) {
+
+	// multiplicand = -9.871234
+	multiplicandBInt := big.NewInt(-9871234)
+	multiplicandPrecision := uint(6)
+	exponent := uint(3)
+	expectedResult := "-78.969872"
+
+	product, productPrecision :=
+		BigIntMathMultiply{}.BigIntMultiplyByTwoToPower(
+			multiplicandBInt, multiplicandPrecision, exponent)
+
+	result := BigIntNum{}.NewBigInt(product, productPrecision)
+
+	if expectedResult != result.GetNumStr() {
+		t.Errorf("Error: Expected result='%v'. Instead, result='%v'. ",
+			expectedResult, result.GetNumStr())
+	}
+
+}
+
+func TestBigIntMathMultiply_BigIntMultiplyByTwoToPower_05(t *testing.T) {
+
+	// multiplicand = 8
+	multiplicandBInt := big.NewInt(8)
+	multiplicandPrecision := uint(0)
+	exponent := uint(0)
+	expectedResult := "8"
+
+	product, productPrecision :=
+		BigIntMathMultiply{}.BigIntMultiplyByTwoToPower(
+			multiplicandBInt, multiplicandPrecision, exponent)
+
+	result := BigIntNum{}.NewBigInt(product, productPrecision)
+
+	if expectedResult != result.GetNumStr() {
+		t.Errorf("Error: Expected result='%v'. Instead, result='%v'. ",
+			expectedResult, result.GetNumStr())
+	}
+
+}
+
+func TestBigIntMathMultiply_BigIntMultiplyByTwoToPower_06(t *testing.T) {
+
+	// (0.12345 x 2^15 = 4045.2096)
+	multiplicandBInt := big.NewInt(12345)
+	multiplicandPrecision := uint(5)
+	exponent := uint(15)
+	expectedResult := "4045.2096"
+
+	product, productPrecision :=
+		BigIntMathMultiply{}.BigIntMultiplyByTwoToPower(
+			multiplicandBInt, multiplicandPrecision, exponent)
+
+	result := BigIntNum{}.NewBigInt(product, productPrecision)
+
+	if expectedResult != result.GetNumStr() {
+		t.Errorf("Error: Expected result='%v'. Instead, result='%v'. ",
+			expectedResult, result.GetNumStr())
+	}
+
+}
+
+
 func TestBigIntMathMultiply_FixedDecimalMultiply_01(t *testing.T) {
 	// multiplier = 123.32
 	multiplierStr := "123.32"

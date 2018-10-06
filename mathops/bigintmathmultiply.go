@@ -77,6 +77,9 @@ type BigIntMathMultiply struct {
 //                                right of the decimal place in the returned
 //                                'product'.
 //
+// Note: This method removes trailing fractional zeros from the result.
+//			 Example: 3.1200 is returned as 3.12
+//
 func (bMultiply BigIntMathMultiply) BigIntMultiply(
 	multiplier *big.Int,
 	multiplierPrecision uint,
@@ -115,6 +118,124 @@ func (bMultiply BigIntMathMultiply) BigIntMultiply(
 
 	return product, productPrecision
 }
+
+// BigIntMultiplyByTenToPower - Multiplies a *big.Int number by ten
+// to the power of 'exponent'. 'exponent' is an input parameter of
+// type uint.
+//
+// 				product = multiplier x 10^exponent
+//
+// The result is returned as a *big.Int type ('product') with a precision
+// specification ('productPrecision').
+//
+// Note: 	This method will remove trailing fractional zeros from the
+// 				final result.
+//
+func (bMultiply BigIntMathMultiply) BigIntMultiplyByTenToPower(
+	multiplier *big.Int,
+	multiplierPrecision,
+	exponent uint) (product *big.Int, productPrecision uint) {
+
+	bigZero := big.NewInt(0)
+
+	if multiplier.Cmp(bigZero) == 0 {
+		product = big.NewInt(0)
+		productPrecision = 0
+		return product, productPrecision
+	}
+
+	delta := big.NewInt(0)
+	scale := big.NewInt(0)
+	bigTen := big.NewInt(10)
+
+	if exponent == 0 {
+		product.Set(multiplier)
+		productPrecision = multiplierPrecision
+	} else if exponent == multiplierPrecision {
+		product.Set(multiplier)
+		productPrecision = 0
+
+	} else if exponent > multiplierPrecision {
+		delta = big.NewInt( int64(exponent - multiplierPrecision))
+		scale = big.NewInt(0).Exp(bigTen,delta, nil)
+		product = big.NewInt(0).Mul(multiplier,scale)
+		productPrecision = multiplierPrecision + (exponent - multiplierPrecision)
+	} else {
+		// multiplierPrecision must be GREATER THAN exponent
+		product.Set(multiplier)
+		productPrecision = multiplierPrecision - exponent
+	}
+
+	// Delete trailing fractional zeros
+	if productPrecision > 0 {
+		scrap := big.NewInt(0)
+
+		newProduct, mod10 := big.NewInt(0).QuoRem(product, bigTen, scrap)
+
+		for mod10.Cmp(bigZero) == 0 && productPrecision > 0 {
+			product.Set(newProduct)
+			productPrecision--
+			newProduct, mod10 = big.NewInt(0).QuoRem(product, bigTen, scrap)
+		}
+	}
+
+	return product, productPrecision
+}
+
+// MultiplyBigIntByTwoToPower - Multiplies a *big.Int number by powers
+// of two and returns the result as a *big.Int value and associated
+// precision specification.
+//
+//
+// 						product = multiplier X 2^exponent
+//            productPrecision = multiplierPrecision
+//
+// Examples:
+// =========
+//	multiplier			multiplierPrecision 	exponent		product
+//
+//	12345										5								15				4045.2096
+//								(0.12345 x 2^15 = 4045.2096)
+// -------------------------------------------------------------
+//
+//  571											1									8			 14617.6
+//                (57.1 x 2^8 = 14617.6)
+//
+// Note: This method will delete trailing fractional zeros from
+// 			 the returned product.
+//
+func (bMultiply BigIntMathMultiply) BigIntMultiplyByTwoToPower(
+	multiplier *big.Int,
+	multiplierPrecision,
+	exponent uint) (product *big.Int, productPrecision uint) {
+
+
+	if multiplier.Cmp(big.NewInt(0)) == 0 {
+		product = big.NewInt(0)
+		productPrecision = 0
+		return product, productPrecision
+	}
+
+	product = big.NewInt(0).Lsh(multiplier, exponent)
+	productPrecision =  multiplierPrecision
+
+	// Delete trailing fractional zeros
+	if productPrecision > 0 {
+		scrap := big.NewInt(0)
+		biBase10 := big.NewInt(10)
+		biBaseZero := big.NewInt(0)
+		newProduct, mod10 := big.NewInt(0).QuoRem(product, biBase10, scrap)
+
+		for mod10.Cmp(biBaseZero) == 0 && productPrecision > 0 {
+			product.Set(newProduct)
+			productPrecision--
+			newProduct, mod10 = big.NewInt(0).QuoRem(product, biBase10, scrap)
+		}
+	}
+
+	return product, productPrecision
+}
+
 
 // FixedDecimalMultiply - This method receives two BigIntFixedDecimal
 // types and then proceeds to perform a multiplication operation by
@@ -206,8 +327,24 @@ func (bMultiply BigIntMathMultiply) FixedDecimalMultiply(
 // MultiplyBigIntByTwoToPower - Multiplies a *big.Int number by powers
 // of two and returns the result as a BigIntNum type.
 //
-// Example:
-// 						result = multiplier X 2^exponent
+// Examples:
+// ========
+//
+// 						product = multiplier X 2^exponent
+//
+// ------------------------------------------------------------
+//	multiplier			multiplierPrecision 	exponent		product
+// ------------------------------------------------------------
+//
+//	12345										5								15				4045.2096
+//								(0.12345 x 2^15 = 4045.2096)
+// -------------------------------------------------------------
+//
+//  571											1									8			 14617.6
+//                (57.1 x 2^8 = 14617.6)
+//
+// Note: This method will delete trailing fractional zeros from
+// 			 the returned product.
 //
 // The returned BigIntNum multiplication 'result' will contain default numeric
 // separators (decimal separator, thousands separator and currency symbol)
@@ -217,9 +354,13 @@ func (bMultiply BigIntMathMultiply) MultiplyBigIntByTwoToPower(
 	multiplierPrecision,
 	exponent uint) BigIntNum {
 
-	result := big.NewInt(0).Lsh(multiplier, exponent)
+  product, productPrecision :=
+  	BigIntMathMultiply{}.BigIntMultiplyByTwoToPower(
+  			multiplier,
+  			multiplierPrecision,
+  			exponent)
 
-	return BigIntNum{}.NewBigInt(result, multiplierPrecision)
+  return BigIntNum{}.NewBigInt(product, productPrecision)
 }
 
 // New - Creates a BigIntMathMultiply instance with data
