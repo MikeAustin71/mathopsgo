@@ -4520,11 +4520,11 @@ func (bNum *BigIntNum) SetThousandsSeparator(thousandsSeparator rune) {
 // numerical value.
 //
 // Examples:
-//  Initial Value			Trimmed Value
-//		456.123000 			 456.123
-//			0.000					 0
-//			7.0						 7
-//	 -456.123000			-456.123
+//						Initial Value			Trimmed Value
+//							456.123000 			 456.123
+//								0.000					 0
+//								7.0						 7
+//						 -456.123000			-456.123
 //
 func (bNum *BigIntNum) TrimTrailingFracZeros() {
 

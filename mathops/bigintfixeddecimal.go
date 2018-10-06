@@ -660,6 +660,44 @@ func (bigIFd *BigIntFixedDecimal) SetPrecisionValue(precision uint) {
 	bigIFd.precision = precision
 
 }
+// TrimTrailingFracZeros - This method will delete non-significant
+// trailing zeros from the fractional digits of the current
+// BigIntFixedDecimal numerical value.
+//
+// Examples:
+//					Initial Value			Trimmed Value
+//						456.123000 			 456.123
+//							0.000					 0
+//							7.0						 7
+//					 -456.123000			-456.123
+//
+func (bigIFd *BigIntFixedDecimal) TrimTrailingFracZeros() {
+
+	if bigIFd.integerNum == nil {
+		bigIFd.integerNum = big.NewInt(0)
+		bigIFd.precision = 0
+		return
+	}
+
+	if bigIFd.precision == 0 {
+		return
+	}
+
+	// bigIFd.precision must be GREATER THAN ZERO
+	// Delete trailing fractional zeros
+
+	scrap := big.NewInt(0)
+	biBase10 := big.NewInt(10)
+	biBaseZero := big.NewInt(0)
+	newintegerNum, mod10 := big.NewInt(0).QuoRem(bigIFd.integerNum, biBase10, scrap)
+
+	for mod10.Cmp(biBaseZero) == 0 && bigIFd.precision > 0 {
+		bigIFd.integerNum.Set(newintegerNum)
+		bigIFd.precision--
+		newintegerNum, mod10 = big.NewInt(0).QuoRem(bigIFd.integerNum, biBase10, scrap)
+	}
+
+}
 
 // TruncToDecPlace - Truncates the current BigIntFixedDecimal to the
 // number of decimal places specified by input parameter 'precision'.

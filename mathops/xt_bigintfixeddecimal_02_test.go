@@ -288,6 +288,100 @@ func TestBigIntFixedDecimal_RoundToDecPlace_15(t *testing.T) {
 	}
 }
 
+func TestBigIntFixedDecimal_TrimTrailingFracZeros_01(t *testing.T) {
+
+	num := 456123000
+	precision := uint(6)
+	expectedNumStr := "456.123"
+
+	fixedDec := BigIntFixedDecimal{}.NewInt(num, precision)
+
+	fixedDec.TrimTrailingFracZeros()
+
+	actualNumStr := fixedDec.GetNumStr()
+
+	if expectedNumStr != actualNumStr {
+		t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v'. ",
+			expectedNumStr, actualNumStr)
+	}
+
+}
+
+func TestBigIntFixedDecimal_TrimTrailingFracZeros_02(t *testing.T) {
+
+	num := -456123000
+	precision := uint(6)
+	expectedNumStr := "-456.123"
+
+	fixedDec := BigIntFixedDecimal{}.NewInt(num, precision)
+
+	fixedDec.TrimTrailingFracZeros()
+
+	actualNumStr := fixedDec.GetNumStr()
+
+	if expectedNumStr != actualNumStr {
+		t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v'. ",
+			expectedNumStr, actualNumStr)
+	}
+
+}
+
+func TestBigIntFixedDecimal_TrimTrailingFracZeros_03(t *testing.T) {
+
+	num := 0
+	precision := uint(3)
+	expectedNumStr := "0"
+
+	fixedDec := BigIntFixedDecimal{}.NewInt(num, precision)
+
+	fixedDec.TrimTrailingFracZeros()
+
+	actualNumStr := fixedDec.GetNumStr()
+
+	if expectedNumStr != actualNumStr {
+		t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v'. ",
+			expectedNumStr, actualNumStr)
+	}
+
+}
+
+func TestBigIntFixedDecimal_TrimTrailingFracZeros_04(t *testing.T) {
+
+	num := 70
+	precision := uint(1)
+	expectedNumStr := "7"
+
+	fixedDec := BigIntFixedDecimal{}.NewInt(num, precision)
+
+	fixedDec.TrimTrailingFracZeros()
+
+	actualNumStr := fixedDec.GetNumStr()
+
+	if expectedNumStr != actualNumStr {
+		t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v'. ",
+			expectedNumStr, actualNumStr)
+	}
+
+}
+
+func TestBigIntFixedDecimal_TrimTrailingFracZeros_05(t *testing.T) {
+
+	num := uint64(7000000000000000000)
+	precision := uint(17)
+	expectedNumStr := "70"
+
+	fixedDec := BigIntFixedDecimal{}.NewUInt64(num, precision)
+
+	fixedDec.TrimTrailingFracZeros()
+
+	actualNumStr := fixedDec.GetNumStr()
+
+	if expectedNumStr != actualNumStr {
+		t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v'. ",
+			expectedNumStr, actualNumStr)
+	}
+
+}
 
 func TestBigIntFixedDecimal_TruncToDecPlace_01(t *testing.T) {
 
