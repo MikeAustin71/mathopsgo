@@ -86,6 +86,9 @@ func (bMultiply BigIntMathMultiply) BigIntMultiply(
 	multiplicand *big.Int,
 	multiplicandPrecision uint) (product *big.Int, productPrecision uint) {
 
+	product = big.NewInt(0)
+	productPrecision = 0
+
 	if multiplier == nil {
 		multiplier = big.NewInt(0)
 	}
@@ -136,21 +139,23 @@ func (bMultiply BigIntMathMultiply) BigIntMultiplyByTenToPower(
 	multiplierPrecision,
 	exponent uint) (product *big.Int, productPrecision uint) {
 
-	bigZero := big.NewInt(0)
+	product = big.NewInt(0)
+	productPrecision = 0
 
-	if multiplier.Cmp(bigZero) == 0 {
-		product = big.NewInt(0)
-		productPrecision = 0
-		return product, productPrecision
-	}
+	bigZero := big.NewInt(0)
 
 	delta := big.NewInt(0)
 	scale := big.NewInt(0)
 	bigTen := big.NewInt(10)
 
-	if exponent == 0 {
+	if multiplier.Cmp(bigZero) == 0 {
+		product = big.NewInt(0)
+		productPrecision = 0
+
+	} else if exponent == 0 {
 		product.Set(multiplier)
 		productPrecision = multiplierPrecision
+
 	} else if exponent == multiplierPrecision {
 		product.Set(multiplier)
 		productPrecision = 0
@@ -159,7 +164,8 @@ func (bMultiply BigIntMathMultiply) BigIntMultiplyByTenToPower(
 		delta = big.NewInt( int64(exponent - multiplierPrecision))
 		scale = big.NewInt(0).Exp(bigTen,delta, nil)
 		product = big.NewInt(0).Mul(multiplier,scale)
-		productPrecision = multiplierPrecision + (exponent - multiplierPrecision)
+		productPrecision = 0
+
 	} else {
 		// multiplierPrecision must be GREATER THAN exponent
 		product.Set(multiplier)
@@ -209,6 +215,7 @@ func (bMultiply BigIntMathMultiply) BigIntMultiplyByTwoToPower(
 	multiplierPrecision,
 	exponent uint) (product *big.Int, productPrecision uint) {
 
+	product = big.NewInt(0)
 
 	if multiplier.Cmp(big.NewInt(0)) == 0 {
 		product = big.NewInt(0)
