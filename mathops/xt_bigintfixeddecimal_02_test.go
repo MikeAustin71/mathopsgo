@@ -1,6 +1,9 @@
 package mathops
 
-import "testing"
+import (
+	"math/big"
+	"testing"
+)
 
 func TestBigIntFixedDecimal_MultiplyByTenToPwr_01(t *testing.T) {
 
@@ -160,6 +163,114 @@ func TestBigIntFixedDecimal_MultiplyByTenToPwr_08(t *testing.T) {
 			expectedNumStr, actualNumStr)
 	}
 
+}
+
+func TestBigIntFixedDecimal_BigIntMultiplyByTwoToPower_01(t *testing.T) {
+
+	// multiplicand = 23.321
+	multiplicandBInt := big.NewInt(23321)
+	multiplicandPrecision := uint(3)
+	exponent := uint(5)
+	expectedResult := "746.272"
+
+	fixDec := BigIntFixedDecimal{}.New(multiplicandBInt, multiplicandPrecision)
+
+	fixDec.MultiplyByTwoToPower(exponent)
+
+	if expectedResult != fixDec.GetNumStr() {
+		t.Errorf("Error: Expected result='%v'. Instead, result='%v'. ",
+			expectedResult, fixDec.GetNumStr())
+	}
+}
+
+func TestBigIntFixedDecimal_BigIntMultiplyByTwoToPower_02(t *testing.T) {
+
+	// multiplicand = 8
+	multiplicandBInt := big.NewInt(8)
+	multiplicandPrecision := uint(0)
+	exponent := uint(10)
+	expectedResult := "8192"
+
+	fixDec := BigIntFixedDecimal{}.New(multiplicandBInt, multiplicandPrecision)
+
+	fixDec.MultiplyByTwoToPower(exponent)
+
+	if expectedResult != fixDec.GetNumStr() {
+		t.Errorf("Error: Expected result='%v'. Instead, result='%v'. ",
+			expectedResult, fixDec.GetNumStr())
+	}
+}
+
+func TestBigIntFixedDecimal_BigIntMultiplyByTwoToPower_03(t *testing.T) {
+
+	// multiplicand = 9.871234
+	multiplicandBInt := big.NewInt(9871234)
+	multiplicandPrecision := uint(6)
+	exponent := uint(1)
+	expectedResult := "19.742468"
+
+	fixDec := BigIntFixedDecimal{}.New(multiplicandBInt, multiplicandPrecision)
+
+	fixDec.MultiplyByTwoToPower(exponent)
+
+	if expectedResult != fixDec.GetNumStr() {
+		t.Errorf("Error: Expected result='%v'. Instead, result='%v'. ",
+			expectedResult, fixDec.GetNumStr())
+	}
+}
+
+func TestBigIntFixedDecimal_BigIntMultiplyByTwoToPower_04(t *testing.T) {
+
+	// multiplicand = -9.871234
+	multiplicandBInt := big.NewInt(-9871234)
+	multiplicandPrecision := uint(6)
+	exponent := uint(3)
+	expectedResult := "-78.969872"
+
+	fixDec := BigIntFixedDecimal{}.New(multiplicandBInt, multiplicandPrecision)
+
+	fixDec.MultiplyByTwoToPower(exponent)
+
+	if expectedResult != fixDec.GetNumStr() {
+		t.Errorf("Error: Expected result='%v'. Instead, result='%v'. ",
+			expectedResult, fixDec.GetNumStr())
+	}
+}
+
+func TestBigIntFixedDecimal_BigIntMultiplyByTwoToPower_05(t *testing.T) {
+
+	// multiplicand = 8
+	multiplicandBInt := big.NewInt(8)
+	multiplicandPrecision := uint(0)
+	exponent := uint(0)
+	expectedResult := "8"
+
+	fixDec := BigIntFixedDecimal{}.New(multiplicandBInt, multiplicandPrecision)
+
+	fixDec.MultiplyByTwoToPower(exponent)
+
+	if expectedResult != fixDec.GetNumStr() {
+		t.Errorf("Error: Expected result='%v'. Instead, result='%v'. ",
+			expectedResult, fixDec.GetNumStr())
+	}
+}
+
+func TestBigIntFixedDecimal_BigIntMultiplyByTwoToPower_06(t *testing.T) {
+
+	// (0.12345 x 2^15 = 4045.2096)
+	multiplicandBInt := big.NewInt(12345)
+	multiplicandPrecision := uint(5)
+	exponent := uint(15)
+	expectedResult := "4045.2096"
+
+	fixDec := BigIntFixedDecimal{}.New(multiplicandBInt, multiplicandPrecision)
+
+	fixDec.MultiplyByTwoToPower(exponent)
+
+	if expectedResult != fixDec.GetNumStr() {
+		t.Errorf("Error: Expected result='%v'. Instead, result='%v'. ",
+			expectedResult, fixDec.GetNumStr())
+	}
 }
 
 func TestBigIntFixedDecimal_RoundToDecPlace_01(t *testing.T) {

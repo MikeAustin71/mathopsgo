@@ -381,6 +381,51 @@ func (bigIFd *BigIntFixedDecimal) MultiplyByTenToPower(exponent uint) {
 
 }
 
+// MultiplyByTwoToPower - Multiplies the numeric value of the current
+// BigIntFixedDecimal by 2 to the power of 'exponent'.
+//
+//        product = BigIntFixedDecimal x 2^exponent
+
+// When the calculation is completed, the value of 'product' will
+// replace the old value of BigIntFixedDecimal.
+//
+// Examples:
+// =========
+//
+//	 BigIntFixedDecimal 			 	exponent		  product
+//	interNum		Precision
+// -------------------------------------------------------------
+//	12345						5								15				4045.2096
+//								(0.12345 x 2^15 = 4045.2096)
+// -------------------------------------------------------------
+//
+//    571						1								 8			 14617.6
+//                (57.1 x 2^8 = 14617.6)
+// -------------------------------------------------------------
+//
+// Note:	(1)	This method will delete trailing fractional zeros from
+// 			 			the returned product.
+//
+// 				(2)	This method will destroy and overwrite the previous value
+// 						of the current BigIntFixedDecimal instance with the results
+// 						of this calculation.
+//
+func (bigIFd *BigIntFixedDecimal) MultiplyByTwoToPower(exponent uint) {
+
+	if bigIFd.integerNum == nil {
+		bigIFd.integerNum = big.NewInt(0)
+		bigIFd.precision = 0
+		return
+	}
+
+	bigIFd.integerNum, bigIFd.precision =
+		BigIntMathMultiply{}.BigIntMultiplyByTwoToPower(
+			bigIFd.integerNum,
+			bigIFd.precision,
+			exponent)
+
+}
+
 // New - Creates and returns a new BigIntFixedDecimal type based on input parameters,
 // 'integer' and 'precision'.
 //

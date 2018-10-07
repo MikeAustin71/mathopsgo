@@ -204,8 +204,9 @@ func (bMultiply BigIntMathMultiply) BigIntMultiplyByTenToPower(
 //								(0.12345 x 2^15 = 4045.2096)
 // -------------------------------------------------------------
 //
-//  571											1									8			 14617.6
+//    571										1									8			 14617.6
 //                (57.1 x 2^8 = 14617.6)
+// -------------------------------------------------------------
 //
 // Note: This method will delete trailing fractional zeros from
 // 			 the returned product.
