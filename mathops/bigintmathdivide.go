@@ -23,6 +23,33 @@ type BigIntMathDivide struct {
 	// to the right of the decimal place.
 }
 
+// BigIntDividedByTwoToPower - Performs integer division by two using
+// a 'right-shift' technique. Remainders from this division operation
+// are discarded, only the integer quotient is returned.
+//
+// Example:
+// ========
+//
+//            quotient =  dividend / 2^(exponent)
+//
+// In the example of 33,333 / 2^8:
+//		(1) The fractional quotient of 33,333/256 (or 2^8) is 4166.625.
+//
+//    (2) This method will use a right shift technique 33,333 / 2^(8) to generate
+//    		a quotient of 4166. In other words the fractional digits 0.625 are
+//    		discarded and only the integer quotient of 4166 is returned.
+//
+func (bIDivide BigIntMathDivide) BigIntDividedByTwoToPower(
+	dividend *big.Int,
+	exponent uint) (integerQuotient *big.Int) {
+
+	integerQuotient = big.NewInt(0)
+
+	integerQuotient.Rsh(dividend, exponent)
+
+	return integerQuotient
+}
+
 // BigIntFracQuotient - Performs a division on integers of type *big.Int.
 // The result is returned a as a type *big.Int with an accompanying precision
 // specification. Taken together, the returned *big.Int quotient and precision

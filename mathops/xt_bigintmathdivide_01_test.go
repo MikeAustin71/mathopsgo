@@ -1,6 +1,112 @@
 package mathops
 
-import "testing"
+import (
+	"math/big"
+	"testing"
+)
+
+func TestBigIntMathDivide_BigIntDividedByTwoToPower_01(t *testing.T) {
+
+	num := int64(33333)
+	exponent := uint(8)
+	expectedNum := int64(130)
+  expectedValue := big.NewInt(expectedNum)
+
+	dividend := big.NewInt(num)
+
+	intQuotient := BigIntMathDivide{}.BigIntDividedByTwoToPower(dividend, exponent)
+
+	if expectedValue.Cmp(intQuotient) != 0 {
+		t.Errorf("Error: Expected result='%v'. Instead, result='%v'.",
+			expectedValue.Text(10), intQuotient.Text(10))
+	}
+
+}
+
+func TestBigIntMathDivide_BigIntDividedByTwoToPower_02(t *testing.T) {
+
+	num := int64(4)
+	exponent := uint(9)
+  expectedValue := big.NewInt(int64(0))
+
+	dividend := big.NewInt(num)
+
+	intQuotient := BigIntMathDivide{}.BigIntDividedByTwoToPower(dividend, exponent)
+
+	if expectedValue.Cmp(intQuotient) != 0 {
+		t.Errorf("Error: Expected result='%v'. Instead, result='%v'.",
+			expectedValue.Text(10), intQuotient.Text(10))
+	}
+
+}
+
+func TestBigIntMathDivide_BigIntDividedByTwoToPower_03(t *testing.T) {
+
+	num := int64(-8123456789012345)
+	exponent := uint(12)
+	expectedNum := int64(-1983265817630)
+	expectedValue := big.NewInt(expectedNum)
+
+	dividend := big.NewInt(num)
+
+	intQuotient := BigIntMathDivide{}.BigIntDividedByTwoToPower(dividend, exponent)
+
+	if expectedValue.Cmp(intQuotient) != 0 {
+		t.Errorf("Error: Expected result='%v'. Instead, result='%v'.",
+			expectedValue.Text(10), intQuotient.Text(10))
+	}
+}
+
+func TestBigIntMathDivide_BigIntDividedByTwoToPower_04(t *testing.T) {
+
+	num := int64(8123456789012345)
+	exponent := uint(12)
+	expectedNum := int64(1983265817629)
+	expectedValue := big.NewInt(expectedNum)
+
+	dividend := big.NewInt(num)
+
+	intQuotient := BigIntMathDivide{}.BigIntDividedByTwoToPower(dividend, exponent)
+
+	if expectedValue.Cmp(intQuotient) != 0 {
+		t.Errorf("Error: Expected result='%v'. Instead, result='%v'.",
+			expectedValue.Text(10), intQuotient.Text(10))
+	}
+}
+
+func TestBigIntMathDivide_BigIntDividedByTwoToPower_05(t *testing.T) {
+
+	num := int64(4)
+	exponent := uint(1)
+	expectedNum := int64(2)
+	expectedValue := big.NewInt(expectedNum)
+
+	dividend := big.NewInt(num)
+
+	intQuotient := BigIntMathDivide{}.BigIntDividedByTwoToPower(dividend, exponent)
+
+	if expectedValue.Cmp(intQuotient) != 0 {
+		t.Errorf("Error: Expected result='%v'. Instead, result='%v'.",
+			expectedValue.Text(10), intQuotient.Text(10))
+	}
+}
+
+func TestBigIntMathDivide_BigIntDividedByTwoToPower_06(t *testing.T) {
+
+	num := int64(-4)
+	exponent := uint(1)
+	expectedNum := int64(-2)
+	expectedValue := big.NewInt(expectedNum)
+
+	dividend := big.NewInt(num)
+
+	intQuotient := BigIntMathDivide{}.BigIntDividedByTwoToPower(dividend, exponent)
+
+	if expectedValue.Cmp(intQuotient) != 0 {
+		t.Errorf("Error: Expected result='%v'. Instead, result='%v'.",
+			expectedValue.Text(10), intQuotient.Text(10))
+	}
+}
 
 func TestBigIntMathDivide_BigIntFracQuotient_01(t *testing.T) {
 	// Dividend		divided by		Divisor			=		Quotient
