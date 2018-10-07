@@ -60,7 +60,8 @@ func (bigIFd *BigIntFixedDecimal) CopyOut() BigIntFixedDecimal {
 
 	return BigIntFixedDecimal{}.New(bigIFd.integerNum, bigIFd.precision)
 }
-// DivideByTenToPwr - Divides the numeric value of the current
+
+// DivideByTenToPower - Divides the numeric value of the current
 // BigIntFixedDecimal by 10 to the power of 'exponent'.
 //
 //       result = BigIntFixedDecimal / 10^exponent
@@ -77,7 +78,7 @@ func (bigIFd *BigIntFixedDecimal) CopyOut() BigIntFixedDecimal {
 // the current BigIntFixedDecimal instance with the results of
 // this calculation.
 //
-func (bigIFd *BigIntFixedDecimal) DivideByTenToPwr(exponent uint) {
+func (bigIFd *BigIntFixedDecimal) DivideByTenToPower(exponent uint) {
 
 	if bigIFd.integerNum == nil {
 		bigIFd.SetNumericValue(big.NewInt(0), bigIFd.precision)
@@ -96,9 +97,60 @@ func (bigIFd *BigIntFixedDecimal) DivideByTenToPwr(exponent uint) {
 
 	result, _ :=
 		BigIntMathDivide{}.FixedDecimalFracQuotient(
-			bigIFd.CopyOut(), factor, bigIFd.precision + exponent )
+			bigIFd.CopyOut(), factor, bigIFd.precision+exponent)
 
 	bigIFd.CopyIn(result)
+}
+
+// DivideByTwoToPower - Performs integer division by two using a 'right-shift'
+// technique. Remainders from this division operation are discarded, only the
+// integer quotient is returned. When the calculation is completed, the value
+// of the integer quotient will replace the old value of the current BigIntFixedDecimal
+// instance.
+//
+// Example:
+// ========
+//
+//            quotient =  BigIntFixedDecimal / 2^(exponent)
+//
+// In this example BigIntFixedDecimal= 33,123.456, so 33,123.456/ 2^8:
+//
+//		(1) The fractional quotient of 33,123.456/256 (or 2^8) is 129.3885.
+//
+//    (2) This method will use a right shift technique on the integer value
+//        33123456 / 2^(8) to generate an integer quotient of 129388.
+//
+// Consider the example BigIntFixedDecimal = 33123456 (no decimal fraction):
+//
+//    Dividing 33123456 / 2^8 = fractional quotient = 129388.5
+//    Be careful when using this method.
+//
+// **************************************************************************
+// (1) 	Be sure to consider the outcomes when sending a decimal fraction to
+// 			this method.
+//
+// (2)	Results returned by this method will always have precision = 0
+//
+// **************************************************************************
+//
+// Note:	This method will destroy and overwrite the previous value
+// 				of the current BigIntFixedDecimal instance with the results
+// 				of this calculation.
+//
+func (bigIFd *BigIntFixedDecimal) DivideByTwoToPower(exponent uint) {
+
+	if bigIFd.integerNum == nil {
+		bigIFd.integerNum = big.NewInt(0)
+		bigIFd.precision = 0
+		return
+	}
+
+	bigIFd.integerNum =
+		BigIntMathDivide{}.BigIntDividedByTwoToPower(
+			bigIFd.integerNum,
+			exponent)
+
+	bigIFd.precision = 0
 }
 
 // FormatNumStr - converts the numeric value of the current BigIntFixedDecimal
@@ -350,19 +402,22 @@ func (bigIFd *BigIntFixedDecimal) IsValid() bool {
 //									instance will be multiplied by ten raised to
 // 									the power of 'exponent'.
 //
-// This method will destroy and overwrite the previous value of
-// the current BigIntFixedDecimal instance with the results of
-// this calculation.
+//
+// Note:	(1)	This method will delete trailing fractional zeros from
+// 			 			the returned product.
+//
+// 				(2)	This method will destroy and overwrite the previous value
+// 						of the current BigIntFixedDecimal instance with the results
+// 						of this calculation.
 //
 func (bigIFd *BigIntFixedDecimal) MultiplyByTenToPower(exponent uint) {
-
 
 	if bigIFd.integerNum == nil {
 		bigIFd.SetNumericValue(big.NewInt(0), bigIFd.precision)
 	}
 
 	if bigIFd.integerNum.Cmp(big.NewInt(0)) == 0 {
-		 bigIFd.precision = 0
+		bigIFd.precision = 0
 		return
 	}
 
@@ -385,9 +440,9 @@ func (bigIFd *BigIntFixedDecimal) MultiplyByTenToPower(exponent uint) {
 // BigIntFixedDecimal by 2 to the power of 'exponent'.
 //
 //        product = BigIntFixedDecimal x 2^exponent
-
+//
 // When the calculation is completed, the value of 'product' will
-// replace the old value of BigIntFixedDecimal.
+// replace the old value of the current BigIntFixedDecimal instance.
 //
 // Examples:
 // =========
@@ -729,6 +784,7 @@ func (bigIFd *BigIntFixedDecimal) SetPrecisionValue(precision uint) {
 	bigIFd.precision = precision
 
 }
+
 // TrimTrailingFracZeros - This method will delete non-significant
 // trailing zeros from the fractional digits of the current
 // BigIntFixedDecimal numerical value.
@@ -844,5 +900,5 @@ func (bigIFd *BigIntFixedDecimal) TruncToDecPlace(precision uint) {
 	scale.Exp(big10, big.NewInt(int64(delta)), nil)
 	bigIFd.integerNum.Quo(bigIFd.integerNum, scale)
 	bigIFd.precision = precision
-	
+
 }

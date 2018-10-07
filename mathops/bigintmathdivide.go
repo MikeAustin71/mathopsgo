@@ -33,11 +33,10 @@ type BigIntMathDivide struct {
 //            quotient =  dividend / 2^(exponent)
 //
 // In the example of 33,333 / 2^8:
-//		(1) The fractional quotient of 33,333/256 (or 2^8) is 4166.625.
+//		(1) The fractional quotient of 33,333/256 (or 2^8) is 130.
 //
 //    (2) This method will use a right shift technique 33,333 / 2^(8) to generate
-//    		a quotient of 4166. In other words the fractional digits 0.625 are
-//    		discarded and only the integer quotient of 4166 is returned.
+//    		a quotient of 130.
 //
 func (bIDivide BigIntMathDivide) BigIntDividedByTwoToPower(
 	dividend *big.Int,
