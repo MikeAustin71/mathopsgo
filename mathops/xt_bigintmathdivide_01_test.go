@@ -20,7 +20,6 @@ func TestBigIntMathDivide_BigIntDividedByTwoToPower_01(t *testing.T) {
 		t.Errorf("Error: Expected result='%v'. Instead, result='%v'.",
 			expectedValue.Text(10), intQuotient.Text(10))
 	}
-
 }
 
 func TestBigIntMathDivide_BigIntDividedByTwoToPower_02(t *testing.T) {
