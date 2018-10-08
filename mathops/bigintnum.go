@@ -4095,6 +4095,10 @@ func (bNum *BigIntNum) SetNumStr(numStr string) error {
 
 	ePrefix := "BigIntNum.SetNumStr() "
 
+	if bNum.bigInt == nil {
+		bNum.SetBigInt(big.NewInt(0), 0)
+	}
+
 	if len(numStr) == 0 {
 		return errors.New(ePrefix + "Error: Input parameter 'numStr' is an EMPTY string!")
 	}
@@ -4114,6 +4118,7 @@ func (bNum *BigIntNum) SetNumStr(numStr string) error {
 	hasMinusSign := false
 	hasLeftParen := false
 	hasRightParen := false
+	numOfNumericDigits := 0
 
 
 	for i := 0; i < lBaseRunes; i++ {
@@ -4164,6 +4169,7 @@ func (bNum *BigIntNum) SetNumStr(numStr string) error {
 				big.NewInt(int64(baseRunes[i]-48)))
 
 			isStartNumericDigits = true
+			numOfNumericDigits++
 
 			if isFractionalValue {
 				newPrecision++
@@ -4171,6 +4177,12 @@ func (bNum *BigIntNum) SetNumStr(numStr string) error {
 
 		}
 
+	}
+
+	if numOfNumericDigits==0 {
+		return fmt.Errorf(ePrefix +
+			"Error: No numeric digits were found in input parameter 'numStr'. " +
+			"numStr='%v'", numStr)
 	}
 
 	if hasMinusSign == true ||
