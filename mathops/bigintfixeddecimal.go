@@ -6,8 +6,220 @@ import (
 	"math/big"
 )
 
+
+
+// FixedDecimalReadOnly - encapsulates a Read Only
+// BigIntFixedDecimal objects. This type is designed
+// to be used with constant numeric values that should
+// not be changed.
+//
+// A series of related functions provides the means to
+// read the numeric value encapsulated by the FixedDecimalReadOnly
+// type.
+//
+type FixedDecimalReadOnly struct {
+
+	fixedDecimal BigIntFixedDecimal
+
+}
+
+// GetFixedDecimal - Returns a deep copy of the underlying
+// BigIntFixedDecimal value.
+func (fDecRO *FixedDecimalReadOnly) GetFixedDecimal() BigIntFixedDecimal {
+	return fDecRO.fixedDecimal.CopyOut()
+}
+
+// GetInteger - Returns the *big.Int integer value from the
+// underlying BigIntFixedDecimal
+func (fDecRO *FixedDecimalReadOnly) GetInteger() *big.Int {
+
+	return fDecRO.fixedDecimal.GetInteger()
+
+}
+
+// GetNumStr - Converts the underlying BigIntFixedDecimal
+// value to a string of numbers which includes the decimal
+// place and decimal digits if they exist. Note that
+// the period ('.') is the decimal separator character
+// always used in the returned number string to separate
+// integer and fractional digits.
+//
+func (fDecRO *FixedDecimalReadOnly) GetNumStr() string {
+
+	return fDecRO.fixedDecimal.GetNumStr()
+
+}
+
+// GetPrecision
+func (fDecRO *FixedDecimalReadOnly) GetPrecision() uint {
+
+	return fDecRO.fixedDecimal.GetPrecision()
+
+}
+
+// NewZero - Creates and returns a new FixedDecimalReadOnly
+// instance initialized to the value of the number string
+// input parameter, 'numStr'.
+//
+// A number string is a string of numeric digits which may,
+// or may not, be prefixed with a minus sign ('-') indicating
+// a negative number. If the numeric string of digits is prefixed
+// by a left parenthesis ('(') and suffixed by a corresponding
+// right parenthesis (')'), this also indicates a negative value.
+//
+// The numeric string of digits may also contain a period
+// ('.') which is treated as a decimal separator and used to
+// separate integer and fractional digits within the number
+// string.
+//
+// The only decimal separator recognized by this method is the
+// period ('.').
+//
+func (fDecRO FixedDecimalReadOnly) NewNumStr(numStr string) (FixedDecimalReadOnly, error) {
+	ePrefix := "FixedDecimalReadOnly.NewNumStr() "
+
+	fo2 := FixedDecimalReadOnly{}
+
+	fo2.fixedDecimal = BigIntFixedDecimal{}.NewZero(0)
+
+	err := fo2.fixedDecimal.SetNumStr(numStr)
+
+	if err != nil {
+		return FixedDecimalReadOnly{}.NewZero(0),
+			fmt.Errorf(ePrefix )
+	}
+
+	return fo2, nil
+}
+
+// NewFixedDecimal - Receives a BigIntFixedDecimal instance
+// as an input parameter and returns a new FixedDecimalReadOnly
+// object.
+//
+func (fDecRO FixedDecimalReadOnly) NewFixedDecimal(
+	fixedDecimal BigIntFixedDecimal) FixedDecimalReadOnly {
+
+	fixedDecimal.IsValid()
+
+	f2 := FixedDecimalReadOnly{}.NewZero(0)
+	f2.fixedDecimal.CopyIn(fixedDecimal)
+
+	return f2
+}
+
+// NewInt - Creates and returns a new FixedDecimalReadOnly instance initialized
+// to by the input parameters 'intValue' and 'precision'. 'precision' specifies
+// the number of digits to the right of the decimal place in 'intValue.
+//
+func (fDecRO FixedDecimalReadOnly) NewInt(
+	intValue int,
+	precision uint) FixedDecimalReadOnly {
+
+	f2 := FixedDecimalReadOnly{}
+
+	f2.fixedDecimal = BigIntFixedDecimal{}.NewInt(intValue, precision)
+
+	return f2
+
+}
+
+// NewInt32 - Creates and returns a new FixedDecimalReadOnly instance initialized
+// to by the input parameters 'int32Value' and 'precision'. 'precision' specifies
+// the number of digits to the right of the decimal place in 'intValue.
+//
+func (fDecRO FixedDecimalReadOnly) NewInt32(
+	int32Value int32,
+	precision uint) FixedDecimalReadOnly {
+
+	f2 := FixedDecimalReadOnly{}
+
+	f2.fixedDecimal = BigIntFixedDecimal{}.NewInt32(int32Value, precision)
+
+	return f2
+
+}
+
+// NewInt64 - Creates and returns a new FixedDecimalReadOnly instance initialized
+// to by the input parameters 'int64Value' and 'precision'. 'precision' specifies
+// the number of digits to the right of the decimal place in 'intValue.
+//
+func (fDecRO FixedDecimalReadOnly) NewInt64(
+	int64Value int64,
+	precision uint) FixedDecimalReadOnly {
+
+	f2 := FixedDecimalReadOnly{}
+
+	f2.fixedDecimal = BigIntFixedDecimal{}.NewInt64(int64Value, precision)
+
+	return f2
+
+}
+
+// NewUInt - Creates and returns a new FixedDecimalReadOnly instance initialized
+// to by the input parameters 'uintValue' and 'precision'. 'precision' specifies
+// the number of digits to the right of the decimal place in 'intValue.
+//
+func (fDecRO FixedDecimalReadOnly) NewUInt(
+	uintValue,
+	precision uint) FixedDecimalReadOnly {
+
+	f2 := FixedDecimalReadOnly{}
+
+	f2.fixedDecimal = BigIntFixedDecimal{}.NewUInt(uintValue, precision)
+
+	return f2
+
+}
+
+// NewUInt32 - Creates and returns a new FixedDecimalReadOnly instance initialized
+// to by the input parameters 'uintValue' and 'precision'. 'precision' specifies
+// the number of digits to the right of the decimal place in 'intValue.
+//
+func (fDecRO FixedDecimalReadOnly) NewUInt32(
+	uint32Value uint32,
+	precision uint) FixedDecimalReadOnly {
+
+	f2 := FixedDecimalReadOnly{}
+
+	f2.fixedDecimal = BigIntFixedDecimal{}.NewUInt32(uint32Value, precision)
+
+	return f2
+
+}
+
+// NewUInt64 - Creates and returns a new FixedDecimalReadOnly instance initialized
+// to by the input parameters 'uintValue' and 'precision'. 'precision' specifies
+// the number of digits to the right of the decimal place in 'intValue.
+//
+func (fDecRO FixedDecimalReadOnly) NewUInt64(
+	uint64Value uint64,
+	precision uint) FixedDecimalReadOnly {
+
+	f2 := FixedDecimalReadOnly{}
+
+	f2.fixedDecimal = BigIntFixedDecimal{}.NewUInt64(uint64Value, precision)
+
+	return f2
+}
+
+// NewZero - Creates and returns a new FixedDecimalReadOnly instance initialized
+// to zero. The input parameter 'precision' specifies the number of zero digits
+// to the right of the decimal place.
+//
+func (fDecRO FixedDecimalReadOnly) NewZero(precision uint) FixedDecimalReadOnly {
+
+	f2 := FixedDecimalReadOnly{}
+
+	f2.fixedDecimal = BigIntFixedDecimal{}.NewZero(0)
+
+	return f2
+
+}
+
+
 // BigIntFixedDecimal - A light data transfer structure used to represent
-// a numeric value with a fixed number of decimal digits.
+// a numeric value with a fixed number of decimal digits. Used primarily
+// for intensive and complex calculations.
 //
 type BigIntFixedDecimal struct {
 	integerNum *big.Int // All of the numeric digits, both integer and fractional,
@@ -30,6 +242,13 @@ type BigIntFixedDecimal struct {
 //
 func (bigIFd *BigIntFixedDecimal) CopyIn(fd BigIntFixedDecimal) {
 
+
+	if bigIFd.integerNum == nil {
+		bigIFd.SetNumericValue(big.NewInt(0), bigIFd.precision)
+	}
+
+	fd.IsValid()
+
 	intVal := fd.GetInteger()
 
 	if intVal == nil {
@@ -46,6 +265,12 @@ func (bigIFd *BigIntFixedDecimal) CopyIn(fd BigIntFixedDecimal) {
 //
 func (bigIFd *BigIntFixedDecimal) CopyInPtr(fd *BigIntFixedDecimal) {
 
+	if bigIFd.integerNum == nil {
+		bigIFd.SetNumericValue(big.NewInt(0), bigIFd.precision)
+	}
+
+	fd.IsValid()
+
 	intVal := fd.GetInteger()
 
 	if intVal == nil {
@@ -61,6 +286,10 @@ func (bigIFd *BigIntFixedDecimal) CopyInPtr(fd *BigIntFixedDecimal) {
 // a deep copy of the current BigIntFixedDecimal instance.
 //
 func (bigIFd *BigIntFixedDecimal) CopyOut() BigIntFixedDecimal {
+
+	if bigIFd.integerNum == nil {
+		bigIFd.SetNumericValue(big.NewInt(0), bigIFd.precision)
+	}
 
 	return BigIntFixedDecimal{}.New(bigIFd.integerNum, bigIFd.precision)
 }
@@ -155,6 +384,17 @@ func (bigIFd *BigIntFixedDecimal) DivideByTwoToPower(exponent uint) {
 			exponent)
 
 	bigIFd.precision = 0
+}
+
+
+// Empty - Reinitialize the current BigIntFixedDecimal instance
+// to a zero value with zero precision.
+//
+func (bigIFd *BigIntFixedDecimal) Empty() {
+
+	bigIFd.integerNum = big.NewInt(0)
+	bigIFd.precision = 0
+
 }
 
 // FormatNumStr - converts the numeric value of the current BigIntFixedDecimal
@@ -321,6 +561,18 @@ func (bigIFd *BigIntFixedDecimal) FormatNumStr(negValMode NegativeValueFmtMode) 
 	return string(outRunes)
 }
 
+// GetBigIntNum - Returns a new BigIntNum object initialized
+// to the value of the current BigIntFixedDecimal instance.
+//
+func (bigIFd *BigIntFixedDecimal) GetBigIntNum() BigIntNum {
+
+	if bigIFd.integerNum == nil {
+		bigIFd.integerNum = big.NewInt(0)
+	}
+
+	return BigIntNum{}.NewBigInt(bigIFd.integerNum, bigIFd.precision)
+}
+
 // GetInteger - Returns the 'integerNum' for the current
 // BigIntFixedDecimal instance. The returned *big.Int type
 // contains all the numeric digits which comprise the fixed
@@ -334,6 +586,26 @@ func (bigIFd *BigIntFixedDecimal) GetInteger() *big.Int {
 	}
 
 	return big.NewInt(0).Set(bigIFd.integerNum)
+}
+
+// GetIntAry - Returns a new IntAry instance initialized to the
+// value of the current BigIntFixedDecimal object.
+func (bigIFd *BigIntFixedDecimal) GetIntAry() (IntAry, error) {
+
+	ePrefix := "BigIntFixedDecimal.GetIntAry() "
+
+	if bigIFd.integerNum == nil {
+		bigIFd.integerNum = big.NewInt(0)
+	}
+
+	ia, err := IntAry{}.NewBigInt(bigIFd.integerNum, int(bigIFd.precision))
+
+	if err != nil {
+		return IntAry{}.NewZero(0),
+		 fmt.Errorf(ePrefix + "Error returned: %v", err.Error())
+	}
+
+	return ia, nil
 }
 
 // GetNumericValue - Returns the 'integerNum' and 'precision' values for the
@@ -362,6 +634,10 @@ func (bigIFd *BigIntFixedDecimal) GetNumStr() string {
 // of digits to the right of the decimal place in the
 // BigIntFixedDecimal.integerNum.
 func (bigIFd *BigIntFixedDecimal) GetPrecision() uint {
+
+	if bigIFd.integerNum == nil {
+		bigIFd.integerNum = big.NewInt(0)
+	}
 
 	return bigIFd.precision
 }
@@ -930,6 +1206,10 @@ func (bigIFd *BigIntFixedDecimal) SetNumericValue(integer *big.Int, precision ui
 // of the decimal place.
 //
 func (bigIFd *BigIntFixedDecimal) SetPrecisionValue(precision uint) {
+
+	if bigIFd.integerNum == nil {
+		bigIFd.integerNum = big.NewInt(0)
+	}
 
 	bigIFd.precision = precision
 

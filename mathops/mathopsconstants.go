@@ -23,7 +23,7 @@ import "fmt"
 
 
 
-var EulersNumber1050 BigIntFixedDecimal
+var EulersNumber1050 FixedDecimalReadOnly
 
 var PINumber1000 BigIntFixedDecimal
 
@@ -116,9 +116,9 @@ func InitializeEulerNum1050() {
 		panic(erx)
 	}
 
-	EulersNumber1050 = BigIntFixedDecimal{}.NewZero(0)
-	EulersNumber1050.CopyIn(xEuler)
 
+	EulersNumber1050 = FixedDecimalReadOnly{}.NewFixedDecimal(xEuler)
+	EulersNumber1050.GetInteger()
 }
 
 func InitializePi1000() {

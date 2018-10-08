@@ -152,6 +152,10 @@ type BigIntNum struct {
 //
 func (bNum *BigIntNum) Ceiling() BigIntNum {
 
+	if bNum.bigInt == nil {
+		bNum.SetBigInt(big.NewInt(0), bNum.precision)
+	}
+
 	if bNum.IsZero() {
 		return BigIntNum{}.NewBigInt(big.NewInt(0), 0)
 	}
@@ -188,6 +192,10 @@ func (bNum *BigIntNum) Ceiling() BigIntNum {
 //
 func (bNum *BigIntNum) ChangeSign() {
 
+	if bNum.bigInt == nil {
+		bNum.SetBigInt(big.NewInt(0), bNum.precision)
+	}
+
 	if bNum.IsZero() {
 		bNum.sign = 1
 		return
@@ -223,6 +231,12 @@ func (bNum *BigIntNum) ChangeSign() {
 //
 func (bNum *BigIntNum) Cmp(bigIntNum BigIntNum) int {
 
+	if bNum.bigInt == nil {
+		bNum.SetBigInt(big.NewInt(0), bNum.precision)
+	}
+
+	bigIntNum.IsValid("")
+
 	b1Sign := bNum.GetSign()
 	b2Sign := bigIntNum.GetSign()
 
@@ -254,6 +268,12 @@ func (bNum *BigIntNum) Cmp(bigIntNum BigIntNum) int {
 // bNum < bigIntNum					Return -1
 func (bNum *BigIntNum) CmpBigInt(bigIntNum BigIntNum) int {
 
+	if bNum.bigInt == nil {
+		bNum.SetBigInt(big.NewInt(0), bNum.precision)
+	}
+
+	bigIntNum.IsValid("")
+
 	return bNum.bigInt.Cmp(bigIntNum.bigInt)
 
 }
@@ -262,6 +282,8 @@ func (bNum *BigIntNum) CmpBigInt(bigIntNum BigIntNum) int {
 // copies the value into the current BigIntNum instance.
 //
 func (bNum *BigIntNum) CopyIn(bigN BigIntNum) {
+
+	bigN.IsValid("")
 
 	bNum.bigInt = big.NewInt(0).Set(bigN.bigInt)
 	bNum.absBigInt = big.NewInt(0).Set(bigN.absBigInt)
@@ -279,6 +301,10 @@ func (bNum *BigIntNum) CopyIn(bigN BigIntNum) {
 //
 func (bNum *BigIntNum) CopyOut() BigIntNum {
 
+	if bNum.bigInt == nil {
+		bNum.SetBigInt(big.NewInt(0), bNum.precision)
+	}
+
 	b2 := BigIntNum{}.NewBigInt(big.NewInt(0).Set(bNum.bigInt), bNum.precision)
 	b2.decimalSeparator = bNum.decimalSeparator
 	b2.thousandsSeparator = bNum.thousandsSeparator
@@ -295,6 +321,10 @@ func (bNum *BigIntNum) CopyOut() BigIntNum {
 // unchanged.
 //
 func (bNum *BigIntNum) Decrement() {
+
+	if bNum.bigInt == nil {
+		bNum.SetBigInt(big.NewInt(0), bNum.precision)
+	}
 
 	biNumOne := BigIntNum{}.NewOne(bNum.precision)
 
@@ -328,6 +358,10 @@ func (bNum *BigIntNum) Divide(
 	divisor BigIntNum,
 	maxPrecision uint) (fracQuotient BigIntNum, err error) {
 
+	if bNum.bigInt == nil {
+		bNum.SetBigInt(big.NewInt(0), bNum.precision)
+	}
+
 	ePrefix := "BigIntNum.Divide() "
 
 	if divisor.IsZero() {
@@ -357,6 +391,10 @@ func (bNum *BigIntNum) Divide(
 //
 func (bNum *BigIntNum) DivideByFive(
 	maxPrecision uint) (fracQuotient BigIntNum, err error) {
+
+	if bNum.bigInt == nil {
+		bNum.SetBigInt(big.NewInt(0), bNum.precision)
+	}
 
 	ePrefix := "BigIntNum.DivideByFive() "
 
@@ -401,6 +439,10 @@ func (bNum *BigIntNum) DivideByFive(
 func (bNum *BigIntNum) DivideByTen(
 	maxPrecision uint) (fracQuotient BigIntNum, err error) {
 
+	if bNum.bigInt == nil {
+		bNum.SetBigInt(big.NewInt(0), bNum.precision)
+	}
+
 	ePrefix := "BigIntNum.DivideByTen() "
 
 	var errx error
@@ -436,6 +478,10 @@ func (bNum *BigIntNum) DivideByTen(
 //
 func (bNum *BigIntNum) DivideByTenToPower(exponent uint) {
 
+	if bNum.bigInt == nil {
+		bNum.SetBigInt(big.NewInt(0), bNum.precision)
+	}
+
 	newPrecision := bNum.precision + exponent
 
 	result := BigIntNum{}.NewBigInt(bNum.bigInt, newPrecision)
@@ -466,6 +512,10 @@ func (bNum *BigIntNum) DivideByThree(
 	maxPrecision uint) (fracQuotient BigIntNum, err error) {
 
 	ePrefix := "BigIntNum.DivideByThree() "
+
+	if bNum.bigInt == nil {
+		bNum.SetBigInt(big.NewInt(0), bNum.precision)
+	}
 
 	var errx error
 
@@ -511,6 +561,10 @@ func (bNum *BigIntNum) DivideByTwo(
 
 	ePrefix := "BigIntNum.DivideByTwo() "
 
+	if bNum.bigInt == nil {
+		bNum.SetBigInt(big.NewInt(0), bNum.precision)
+	}
+
 	var errx error
 
 	fracQuotient, errx =
@@ -554,6 +608,10 @@ func (bNum *BigIntNum) DivideByTwoQuoMod(
 
 	ePrefix := "BigIntNum) DivideByTwoQuoMod() "
 	var errx error
+
+	if bNum.bigInt == nil {
+		bNum.SetBigInt(big.NewInt(0), bNum.precision)
+	}
 
 	intQuotient, modulo, errx =
 		BigIntMathDivide{}.BigIntNumDivideByTwoQuoMod(bNum.CopyOut(), maxPrecision)
@@ -631,6 +689,12 @@ func (bNum *BigIntNum) Equal(b2 BigIntNum) bool {
 //
 func (bNum *BigIntNum) EqualValue(b2 BigIntNum) bool {
 
+	if bNum.bigInt == nil {
+		bNum.SetBigInt(big.NewInt(0), bNum.precision)
+	}
+
+	b2.IsValid("")
+
 	difference := BigIntMathSubtract{}.SubtractBigIntNums(
 		bNum.CopyOut(),
 		b2)
@@ -655,6 +719,10 @@ func (bNum *BigIntNum) EqualValue(b2 BigIntNum) bool {
 // and currency symbol) remain unchanged and are not altered by this method.
 //
 func (bNum *BigIntNum) ExtendPrecision(deltaPrecision uint) {
+
+	if bNum.bigInt == nil {
+		bNum.SetBigInt(big.NewInt(0), bNum.precision)
+	}
 
 	if deltaPrecision == 0 {
 		return
@@ -699,6 +767,10 @@ func (bNum *BigIntNum) ExtendPrecision(deltaPrecision uint) {
 // 						 -2					 	 -2
 //
 func (bNum *BigIntNum) Floor() BigIntNum {
+
+	if bNum.bigInt == nil {
+		bNum.SetBigInt(big.NewInt(0), bNum.precision)
+	}
 
 	if bNum.IsZero() {
 		return BigIntNum{}.NewBigInt(big.NewInt(0), 0)
@@ -761,6 +833,11 @@ func (bNum *BigIntNum) Floor() BigIntNum {
 //																																Example: ($12,345,678)
 //
 func (bNum *BigIntNum) FormatCurrencyStr(negValMode NegativeValueFmtMode) string {
+
+
+	if bNum.bigInt == nil {
+		bNum.SetBigInt(big.NewInt(0), bNum.precision)
+	}
 
 	if bNum.decimalSeparator == 0 {
 		bNum.decimalSeparator = '.'
