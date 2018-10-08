@@ -408,7 +408,7 @@ func (bLog BigIntMathLogarithms) EPwrXFromTaylorSeries(
 
 }
 
-/*
+
 // EPwrXFromTaylorSeriesBigInt
 func (bLog BigIntMathLogarithms) EPwrXFromTaylorSeriesBigInt(
 	exponentX BigIntFixedDecimal,
@@ -427,7 +427,7 @@ func (bLog BigIntMathLogarithms) EPwrXFromTaylorSeriesBigInt(
 
 	internalMaxPrecision := uint(20000)
 
-	outputMaxPrecision := uint(1100)
+	outputMaxPrecision := uint(1500)
 
 	ePwrBigInt, ePwrBigIntPrecision :=
 		BigIntMathPower{}.BigIntPwr(
@@ -495,7 +495,7 @@ func (bLog BigIntMathLogarithms) EPwrXFromTaylorSeriesBigInt(
 
 	return sum, nil
 }
-*/
+
 
 
 // GetEulersNumberE1050 - Returns mathematical constant 'e' otherwise known as

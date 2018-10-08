@@ -10,6 +10,15 @@ import (
 
 func main() {
 
+
+	fmt.Println("Pi 10000 Digits: ", mathops.PINumber1000.GetNumStr())
+	
+
+}
+
+/*
+func main() {
+
 	num := 654
 	expectedNumStr := "654.0000"
 	precision := uint(0)
@@ -31,42 +40,140 @@ func main() {
 	}
 
 }
+*/
 
 /*
 func main() {
-/*
-	dividendStr := "10.5"
-	divisorStr := "2"
-	expectedQuoStr := "5.25"
-	maxPrecision := uint(15)
-	//    2.5					/				 	12.555			=		0.199123855037834
-	// maxPrecision = 15
+//             1	       2         3
+//    123456789012345678901234567890
+// 14.220975666072438486085961843571
 
-// Dividend		divided by		Divisor			=					Quotient
-	//  -10						/					- 2					=						5
+exponentStr:= "14.220975666072438486085961843571"
+exponentBigIntNum, err := mathops.BigIntNum{}.NewNumStr(exponentStr)
 
-	dividend := big.NewInt(-10)
-	dividendPrecision := uint(0)
+if err != nil {
+	fmt.Printf("Error returned by BigIntNum{}.NewNumStr(exponentStr). " +
+		"exponentStr='%v' err='%v' ", exponentStr, err.Error())
+}
 
-	divisor := big.NewInt(-2)
-	divisorPrecision := uint(0)
-	expectedResult := "5"
-	maxPrecision := uint(32)
+exponentX := mathops.BigIntFixedDecimal{}.New(
+	exponentBigIntNum.GetIntegerValue(),
+	exponentBigIntNum.GetPrecisionUint())
+
+
+aValue := uint(14)
+nyCycles := uint(20)
+//xValue:  1500000.00000000000000000000000069842673210096714730191927902756767566221044250079066725104319314718146994887137115606630049648677768442699335030922790812019670241810296532052911125642686515441075033029443544985829219134240541457261865552972313790517758927060887095319054568787905518252632621321481449139361504466251586088509990238677768615813699307919896788360901752254114404836468448172504734768548195745297400040354523658702608708071939461214809351415323715083214351186140083204203595589902644394289238026
+expectedValue:="1500000.000000000000000000000000000"
 
 	// expectedResult := "0.41436922386282680615600815856503"
 	//                "0.41436922386282680615600815856503"
 	//               "-0.41436922386282680615600815856503"
 	// expectedResult := "-0.41436922386282680615600815856503"
 
-	TestBigIntDivide(
-		dividend,
-		dividendPrecision,
-		divisor,
-		divisorPrecision,
-		maxPrecision,
-		expectedResult)
+	TestEPwrXFromTaylorSeriesBigInt(
+		exponentX,
+		aValue,
+		nyCycles,
+		expectedValue)
 }
 */
+
+func TestEPwrXFromTaylorSeriesBigInt(
+		exponentX mathops.BigIntFixedDecimal,
+			a, nCycles uint, expectedResult string) {
+
+	timeStart := time.Now()
+
+	result, err := mathops.BigIntMathLogarithms{}.EPwrXFromTaylorSeriesBigInt(
+		exponentX,
+		a,
+		nCycles)
+
+	timeEnd := time.Now()
+
+	if err != nil {
+			fmt.Printf("Error returned by BigIntMathLogarithms{}.EPwrXFromTaylorSeriesBigInt() " +
+				"Error='%v' ", err.Error())
+	}
+
+	fmt.Println("           nCycles: ", nCycles)
+	fmt.Println("           A-Value: ", a)
+	fmt.Println("          exponent: ", exponentX.GetNumStr())
+	fmt.Println("exponent Precision: ", exponentX.GetPrecision())
+	fmt.Println("            xValue: ", result.GetNumStr())
+	fmt.Println("    expectedXValue: ", expectedResult)
+	fmt.Println("  xValue Precision: ", result.GetPrecision())
+	fmt.Println("         StartTime: ", timeStart.String())
+	fmt.Println("           EndTime: ", timeEnd.String())
+
+	timeDuration := timeEnd.Sub(timeStart)
+
+	duration := examples.CodeDurationToStr(timeDuration)
+	fmt.Println("   Time Duration: ", duration)
+}
+
+func TestEPwrXFromTaylorSeries(exponent, binA mathops.BigIntNum, nCycles int64, expectedXValue string) {
+
+	/*
+exponent:  14.220975666072438486085961843571
+	  binA:  12
+  xValue:  1500000.00000000000000000000000069842673210096714730191927902756767566221044250079066725104319314718146994887137115606630049648677768442699335030922790812019670241810296532052911125642686515441075033029443544985829219134240541457261865552972313790517758927060887095319054568787905518252632621321481449139361504466251586088509990238677768615813699307919896788360901752254114404836468448172504734768548195745297400040354523658702608708071939461214809351415323715083214351186140083204203595589902644394289238026
+expectedXValue:  1500000
+StartTime:  2018-10-01 23:47:04.3386444 -0500 CDT m=+0.009993801
+  EndTime:  2018-10-01 23:47:04.372625 -0500 CDT m=+0.043974401
+Time Duration:  33-Milliseconds 980-Microseconds 600-Nanoseconds
+	 */
+
+	timeStart := time.Now()
+
+	xValue, err := mathops.BigIntMathLogarithms{}.EPwrXFromTaylorSeries(exponent, binA, nCycles)
+	if err != nil {
+		fmt.Printf("Error returned by " +
+			"BigIntMathLogarithms{}.EPwrXFromTaylorSeries(exponent, binA, nCycles) " +
+			"Error='%v' ", err.Error())
+		return
+	}
+
+	timeEnd := time.Now()
+
+	fmt.Println(" nCycles: ", nCycles)
+	fmt.Println("exponent: ", exponent.GetNumStr())
+	fmt.Println("  xValue: ", xValue.GetNumStr())
+	fmt.Println("expectedXValue: ", expectedXValue)
+	fmt.Println("StartTime: ", timeStart.String())
+	fmt.Println("  EndTime: ", timeEnd.String())
+
+	timeDuration := timeEnd.Sub(timeStart)
+
+	duration := examples.CodeDurationToStr(timeDuration)
+	fmt.Println("Time Duration: ", duration)
+
+}
+
+/*
+	//xNumInt := 1500000
+	baseInt := 10
+	maxPrecision := uint(15)
+	// "6.1760912590556812420812890085306"
+	expectedLogValue := "6.17609125905568"
+
+	exponent, err := mathops.BigIntNum{}.NewNumStr(expectedLogValue)
+
+	if err != nil {
+		fmt.Printf("Error returned by BigIntNum{}.NewNumStr(expectedLogValue). " +
+			"Error='%v'", err.Error())
+	}
+
+	base := mathops.BigIntNum{}.NewInt(baseInt, 0)
+
+	//xNum := mathops.BigIntNum{}.NewInt(xNumInt, 0)
+
+	PowerTest_01(base, exponent, maxPrecision)
+
+ */
+
+
 func TestBigIntDivide(
 	dividend *big.Int,
 	dividendPrecision uint,
@@ -181,66 +288,6 @@ func TestBigIntPwr(
 	fmt.Println("          Expected Result: ", expectedResult)
 
 }
-
-func TestEPwrXFromTaylorSeries(exponent, binA mathops.BigIntNum, nCycles int64, expectedXValue string) {
-
-	/*
-	 nCycles:  100
-exponent:  14.220975666072438486085961843571
-  xValue:  1500000.00000000000000000000000069842673210096714730191927902756767566221044250079066725104319314718146994887137115606630049648677768442699335030922790812019670241810296532052911125642686515441075033029443544985829219134240541457261865552972313790517758927060887095319054568787905518252632621321481449139361504466251586088509990238677768615813699307919896788360901752254114404836468448172504734768548195745297400040354523658702608708071939461214809351415323715083214351186140083204203595589902644394289238026
-expectedXValue:  1500000
-StartTime:  2018-10-01 23:47:04.3386444 -0500 CDT m=+0.009993801
-  EndTime:  2018-10-01 23:47:04.372625 -0500 CDT m=+0.043974401
-Time Duration:  33-Milliseconds 980-Microseconds 600-Nanoseconds
-	 */
-
-	timeStart := time.Now()
-
-	xValue, err := mathops.BigIntMathLogarithms{}.EPwrXFromTaylorSeries(exponent, binA, nCycles)
-	if err != nil {
-		fmt.Printf("Error returned by " +
-			"BigIntMathLogarithms{}.EPwrXFromTaylorSeries(exponent, binA, nCycles) " +
-			"Error='%v' ", err.Error())
-		return
-	}
-
-	timeEnd := time.Now()
-
-	fmt.Println(" nCycles: ", nCycles)
-	fmt.Println("exponent: ", exponent.GetNumStr())
-	fmt.Println("  xValue: ", xValue.GetNumStr())
-	fmt.Println("expectedXValue: ", expectedXValue)
-	fmt.Println("StartTime: ", timeStart.String())
-	fmt.Println("  EndTime: ", timeEnd.String())
-
-	timeDuration := timeEnd.Sub(timeStart)
-
-	duration := examples.CodeDurationToStr(timeDuration)
-	fmt.Println("Time Duration: ", duration)
-
-}
-
-/*
-	//xNumInt := 1500000
-	baseInt := 10
-	maxPrecision := uint(15)
-	// "6.1760912590556812420812890085306"
-	expectedLogValue := "6.17609125905568"
-
-	exponent, err := mathops.BigIntNum{}.NewNumStr(expectedLogValue)
-
-	if err != nil {
-		fmt.Printf("Error returned by BigIntNum{}.NewNumStr(expectedLogValue). " +
-			"Error='%v'", err.Error())
-	}
-
-	base := mathops.BigIntNum{}.NewInt(baseInt, 0)
-
-	//xNum := mathops.BigIntNum{}.NewInt(xNumInt, 0)
-
-	PowerTest_01(base, exponent, maxPrecision)
-
- */
 
 func PowerTest_01(base, exponent mathops.BigIntNum, maxPrecision, i uint) {
 

@@ -1,6 +1,10 @@
 package mathops
 
-import "math/big"
+import (
+	"errors"
+	"fmt"
+	"math/big"
+)
 
 // BigIntFixedDecimal - A light data transfer structure used to represent
 // a numeric value with a fixed number of decimal digits.
@@ -561,6 +565,42 @@ func (bigIFd BigIntFixedDecimal) NewInt64(integer int64, precision uint) BigIntF
 	return num
 }
 
+
+// NewNumStr - Receives a number string as input and returns
+// a new BigIntFixedDecimal instance.
+//
+// A number string is a string of numeric digits which may,
+// or may not, be prefixed with a minus sign ('-') indicating
+// a negative number. If the numeric string of digits is prefixed
+// by a left parenthesis and suffixed by a corresponding right
+// parenthesis, this also indicates a negative value.
+//
+// The numeric string of digits may also contain a period
+// ('.') which is treated as a decimal separator and used to
+// separate integer and fractional digits within the number
+// string.
+//
+// The only decimal separator recognized by this method is the
+// period ('.').
+//
+func (bigIFd BigIntFixedDecimal) NewNumStr(numStr string) (BigIntFixedDecimal, error) {
+
+	ePrefix := "BigIntFixedDecimal.NewNumStr() "
+
+	fixedDecimal := BigIntFixedDecimal{}
+
+	err := fixedDecimal.SetNumStr(numStr)
+
+	if err != nil {
+		return BigIntFixedDecimal{},
+			fmt.Errorf(ePrefix + "Error returned by fixedDecimal.SetNumStr(numStr). " +
+				"Error='%v' ", err.Error())
+	}
+
+	return fixedDecimal, nil
+}
+
+
 // NewUInt - Creates and returns a new BigIntFixedDecimal type based on input parameters,
 // 'integer' and 'precision'.
 //
@@ -756,6 +796,107 @@ func (bigIFd *BigIntFixedDecimal) SetIntegerValue(integer *big.Int) {
 		bigIFd.integerNum = big.NewInt(0).Set(integer)
 	}
 
+}
+
+// SetNumStr - Initializes the current BigIntFixedDecimal
+// instance of the numeric value of the number string input
+// parameter.
+//
+// A number string is a string of numeric digits which may
+// or may not be prefixed with a minus sign ('-'). The numeric
+// string of digits may also contain a decimal separator period
+// ('.') which is used to separate integer and fractional digits
+// within the number string.
+//
+// The only decimal separator recognized by this method is the
+// period ('.').
+//
+func (bigIFd *BigIntFixedDecimal) SetNumStr(numStr string) error {
+
+	ePrefix := "BigIntFixedDecimal.SetNumStr() "
+
+	if bigIFd.integerNum == nil {
+		bigIFd.integerNum = big.NewInt(0)
+		bigIFd.precision = 0
+	}
+
+	if len(numStr) == 0 {
+		return errors.New(ePrefix + "Error: Input parameter 'numStr' is an EMPTY string!")
+	}
+
+	decimalSeparator := '.'
+
+	baseRunes := []rune(numStr)
+	lBaseRunes := len(baseRunes)
+
+	newPrecision := uint(0)
+	newAbsBigInt := big.NewInt(0)
+	baseTen := big.NewInt(10)
+	hasLeftParen := false
+	hasRightParen := false
+	hasMinusSign := false
+	startFractionalDigits := false
+	isStartNumericDigits := false
+	isEndNumericDigits := false
+	numOfNumericDigits := uint(0)
+
+	for i := 0; i < lBaseRunes; i++ {
+
+		if isEndNumericDigits == true {
+			continue
+		}
+
+		if baseRunes[i] == '-' && isStartNumericDigits==false {
+			hasMinusSign = true
+			continue
+		}
+
+		if baseRunes[i] == '(' && isStartNumericDigits==false {
+			hasLeftParen = true
+			continue
+		}
+
+		if baseRunes[i] == ')' && isStartNumericDigits == true {
+			hasRightParen = true
+			isEndNumericDigits = true
+		}
+
+		if baseRunes[i] == decimalSeparator {
+			startFractionalDigits = true
+			continue
+		}
+
+		if baseRunes[i] >= '0' &&
+			baseRunes[i] <= '9' {
+			isStartNumericDigits = true
+			newAbsBigInt.Mul(newAbsBigInt,baseTen)
+			newAbsBigInt.Add(newAbsBigInt, big.NewInt(int64(baseRunes[i]-48)))
+			numOfNumericDigits++
+			if startFractionalDigits == true {
+				newPrecision ++
+			}
+
+			continue
+		}
+
+	}
+
+	if numOfNumericDigits==0 {
+		return fmt.Errorf(ePrefix +
+			"Error: No numeric digits were found in input parameter 'numStr'. " +
+			"numStr='%v'", numStr)
+	}
+
+	if hasMinusSign == true || (hasLeftParen==true && hasRightParen==true) {
+
+		newAbsBigInt.Neg(newAbsBigInt)
+
+	}
+
+	bigIFd.integerNum.Set(newAbsBigInt)
+	bigIFd.precision = newPrecision
+
+	return nil
 }
 
 // SetNumericValue - Sets the 'integerNum' and 'precision' values for the current

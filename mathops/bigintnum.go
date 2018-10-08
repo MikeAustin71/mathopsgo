@@ -7,6 +7,93 @@ import (
 	"math/big"
 )
 
+type BigIntNumReadOnly struct {
+	bigIntNum	BigIntNum
+}
+
+// GetIntegerValue - Returns all of the numeric digits in the
+// base BigIntNum as a *big.Int integer value
+func (birO *BigIntNumReadOnly) GetIntegerValue() *big.Int {
+
+	return birO.bigIntNum.GetIntegerValue()
+}
+
+// GetPrecisionUint - Returns the precision of the underlying
+// BigIntNum as a type uint.
+func (birO *BigIntNumReadOnly) GetPrecisionUint() uint {
+
+	return birO.bigIntNum.GetPrecisionUint()
+}
+
+
+// GetBigIntNum - Returns a deep copy of the underlying
+// BigIntNum.
+func (birO *BigIntNumReadOnly) GetBigIntNum() BigIntNum {
+
+	return birO.bigIntNum.CopyOut()
+}
+
+// GetFixedDecimal - Returns a deep copy of the underlying BigIntNum
+// numeric value as a type BigIntFixedDecimal
+func (birO *BigIntNumReadOnly) GetFixedDecimal() BigIntFixedDecimal {
+
+	return birO.bigIntNum.GetBigIntFixedDecimal()
+}
+
+// NewBigIntNum - Receives a BigIntNum parameter and returns a new BigIntNumReadOnly
+// instance.
+//
+func (birO BigIntNumReadOnly) NewBigIntNum(biNum BigIntNum) BigIntNumReadOnly {
+
+	birO2 := BigIntNumReadOnly{}
+	birO2.bigIntNum = BigIntNum{}.NewZero(0)
+	birO2.bigIntNum.CopyIn(biNum)
+	return birO2
+}
+
+// NewBigIntNum - Receives a BigIntFixedDecimal parameter and returns a new
+// BigIntNumReadOnly instance.
+//
+func (birO BigIntNumReadOnly) NewFixedDecimal(fixedDec BigIntFixedDecimal) BigIntNumReadOnly {
+
+	birO2 := BigIntNumReadOnly{}
+	birO2.bigIntNum = BigIntNum{}.NewBigIntFixedDecimal(fixedDec)
+	return birO2
+}
+
+
+// NewNumStr - Receives a number string as input and returns
+// a new BigIntNumReadOnly instance.
+//
+// This method assumes that the input parameter 'numStr' is a string
+// of numeric digits which may be delimited by default USA numeric
+// separators. Default USA numeric separators are defined as:
+//  	decimal separator = '.'
+//    thousands separator = ','
+// 		currency symbol = '$'
+//
+func (birO BigIntNumReadOnly) NewNumStr(numStr string) (BigIntNumReadOnly, error) {
+
+	ePrefix := "BigIntNumReadOnly.NewNumStr() "
+
+	readOnly, err := BigIntNum{}.NewNumStr(numStr)
+
+
+	if err != nil {
+		return BigIntNumReadOnly{},
+			fmt.Errorf(ePrefix + "Error returned by BigIntNum{}.NewNumStr(numStr). " +
+				"Error='%v' ", err.Error())
+	}
+
+	biRo := BigIntNumReadOnly{}
+
+	biRo.bigIntNum = BigIntNum{}.NewZero(0)
+	biRo.bigIntNum.CopyIn(readOnly)
+
+	return biRo, nil
+}
+
+
 /*
  BigIntNum - wraps a *big.Int integer and its associated
  precision and sign Value. While the numeric value is
@@ -4021,11 +4108,11 @@ func (bNum *BigIntNum) SetNumStr(numStr string) error {
 	newPrecision := uint(0)
 	newAbsBigInt := big.NewInt(0)
 	baseTen := big.NewInt(10)
-	isStartRunes := false
-	isEndRunes := false
+	isStartNumericDigits := false
+	isEndNumericDigits := false
 	isFractionalValue := false
 
-	for i := 0; i < lBaseRunes && isEndRunes == false; i++ {
+	for i := 0; i < lBaseRunes && isEndNumericDigits == false; i++ {
 
 		if baseRunes[i] == '+' ||
 			baseRunes[i] == ' ' ||
@@ -4040,8 +4127,8 @@ func (bNum *BigIntNum) SetNumStr(numStr string) error {
 			continue
 		}
 
-		if isStartRunes == true &&
-			isEndRunes == false &&
+		if isStartNumericDigits == true &&
+			isEndNumericDigits == false &&
 			isFractionalValue &&
 			baseRunes[i] == bNum.decimalSeparator {
 
@@ -4049,16 +4136,16 @@ func (bNum *BigIntNum) SetNumStr(numStr string) error {
 		}
 
 		if baseRunes[i] == '-' &&
-			isStartRunes == false && isEndRunes == false &&
+			isStartNumericDigits == false && isEndNumericDigits == false &&
 			i+1 < lBaseRunes &&
 			((baseRunes[i+1] >= '0' && baseRunes[i+1] <= '9') ||
 				baseRunes[i+1] == bNum.decimalSeparator) {
 
 			newSign = -1
-			isStartRunes = true
+			isStartNumericDigits = true
 			continue
 
-		} else if isEndRunes == false &&
+		} else if isEndNumericDigits == false &&
 			baseRunes[i] >= '0' && baseRunes[i] <= '9' {
 
 			newAbsBigInt = big.NewInt(0).Mul(newAbsBigInt, baseTen)
@@ -4066,13 +4153,13 @@ func (bNum *BigIntNum) SetNumStr(numStr string) error {
 			newAbsBigInt = big.NewInt(0).Add(newAbsBigInt,
 				big.NewInt(int64(baseRunes[i]-48)))
 
-			isStartRunes = true
+			isStartNumericDigits = true
 
 			if isFractionalValue {
 				newPrecision++
 			}
 
-		} else if isEndRunes == false &&
+		} else if isEndNumericDigits == false &&
 			i+1 < lBaseRunes &&
 			baseRunes[i+1] >= '0' && baseRunes[i+1] <= '9' &&
 			baseRunes[i] == bNum.decimalSeparator {
@@ -4080,9 +4167,9 @@ func (bNum *BigIntNum) SetNumStr(numStr string) error {
 			isFractionalValue = true
 			continue
 
-		} else if isStartRunes && !isEndRunes {
+		} else if isStartNumericDigits && !isEndNumericDigits {
 
-			isEndRunes = true
+			isEndNumericDigits = true
 
 		}
 
