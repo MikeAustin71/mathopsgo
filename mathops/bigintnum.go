@@ -4111,42 +4111,52 @@ func (bNum *BigIntNum) SetNumStr(numStr string) error {
 	isStartNumericDigits := false
 	isEndNumericDigits := false
 	isFractionalValue := false
+	hasMinusSign := false
+	hasLeftParen := false
+	hasRightParen := false
 
-	for i := 0; i < lBaseRunes && isEndNumericDigits == false; i++ {
 
-		if baseRunes[i] == '+' ||
-			baseRunes[i] == ' ' ||
-			baseRunes[i] == bNum.thousandsSeparator ||
-			baseRunes[i] == bNum.currencySymbol {
+	for i := 0; i < lBaseRunes; i++ {
 
+		if isEndNumericDigits {
 			continue
-
 		}
 
 		if baseRunes[i] == ',' && bNum.decimalSeparator != ',' {
 			continue
 		}
 
-		if isStartNumericDigits == true &&
-			isEndNumericDigits == false &&
-			isFractionalValue &&
-			baseRunes[i] == bNum.decimalSeparator {
+		if baseRunes[i] == '-' {
+			hasMinusSign = true
+			continue
+		}
+
+		if baseRunes[i] == '(' {
+
+			if isStartNumericDigits== false {
+				hasLeftParen = true
+			}
+			continue
+		}
+
+		if baseRunes[i] == ')' {
+
+			if isStartNumericDigits==true &&
+						hasLeftParen == true {
+				hasRightParen = true
+				isEndNumericDigits = true
+			}
 
 			continue
 		}
 
-		if baseRunes[i] == '-' &&
-			isStartNumericDigits == false && isEndNumericDigits == false &&
-			i+1 < lBaseRunes &&
-			((baseRunes[i+1] >= '0' && baseRunes[i+1] <= '9') ||
-				baseRunes[i+1] == bNum.decimalSeparator) {
-
-			newSign = -1
-			isStartNumericDigits = true
+		if baseRunes[i] == bNum.decimalSeparator {
+			isFractionalValue = true
 			continue
+		}
 
-		} else if isEndNumericDigits == false &&
-			baseRunes[i] >= '0' && baseRunes[i] <= '9' {
+		if baseRunes[i] >= '0' && baseRunes[i] <= '9'  &&
+				isEndNumericDigits == false {
 
 			newAbsBigInt = big.NewInt(0).Mul(newAbsBigInt, baseTen)
 
@@ -4159,20 +4169,13 @@ func (bNum *BigIntNum) SetNumStr(numStr string) error {
 				newPrecision++
 			}
 
-		} else if isEndNumericDigits == false &&
-			i+1 < lBaseRunes &&
-			baseRunes[i+1] >= '0' && baseRunes[i+1] <= '9' &&
-			baseRunes[i] == bNum.decimalSeparator {
-
-			isFractionalValue = true
-			continue
-
-		} else if isStartNumericDigits && !isEndNumericDigits {
-
-			isEndNumericDigits = true
-
 		}
 
+	}
+
+	if hasMinusSign == true ||
+		(hasLeftParen == true && hasRightParen ==true) {
+			newSign = -1
 	}
 
 	bNum.Empty()

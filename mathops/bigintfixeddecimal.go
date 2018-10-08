@@ -856,9 +856,13 @@ func (bigIFd *BigIntFixedDecimal) SetNumStr(numStr string) error {
 			continue
 		}
 
-		if baseRunes[i] == ')' && isStartNumericDigits == true {
+		if baseRunes[i] == ')' 	&&
+				isStartNumericDigits == true &&
+					hasLeftParen == true {
+
 			hasRightParen = true
 			isEndNumericDigits = true
+
 		}
 
 		if baseRunes[i] == decimalSeparator {
@@ -868,10 +872,15 @@ func (bigIFd *BigIntFixedDecimal) SetNumStr(numStr string) error {
 
 		if baseRunes[i] >= '0' &&
 			baseRunes[i] <= '9' {
+
 			isStartNumericDigits = true
+
 			newAbsBigInt.Mul(newAbsBigInt,baseTen)
+
 			newAbsBigInt.Add(newAbsBigInt, big.NewInt(int64(baseRunes[i]-48)))
+
 			numOfNumericDigits++
+
 			if startFractionalDigits == true {
 				newPrecision ++
 			}
