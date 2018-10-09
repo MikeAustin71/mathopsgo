@@ -282,6 +282,67 @@ type BigIntFixedDecimal struct {
 	// 			BigIntFixedDecimal.precision	= 3
 }
 
+
+// Ceiling - Returns the ceiling integer value for the current
+// BigIntFixedDecimal instance.
+//
+// Ceiling is defined as: The least, or lowest value integer,
+// which is greater than or equal to the numeric value of the
+// current BigIntFixedDecimal.
+//
+// Reference Wikipedia:
+// 				https://en.wikipedia.org/wiki/Floor_and_ceiling_functions
+//
+// Examples
+// ========
+//
+// 						Initial 		 Ceiling
+//  					 Value				Value
+// 						-------      -------
+//  						5.95					6
+//  						5.05					6
+//  						5							5
+// 						 -5.05			 	 -5
+//  						2.4				  	3
+//  						2.9					 	3
+// 						 -2.7				 	 -2
+// 						 -2					 	 -2
+//
+func (bigIFd *BigIntFixedDecimal) Ceiling() BigIntFixedDecimal {
+
+	if bigIFd.integerNum == nil {
+		bigIFd.integerNum = big.NewInt(0)
+		bigIFd.precision = 0
+	}
+
+	cmpZeroResult := bigIFd.integerNum.Cmp(big.NewInt(0))
+
+	if cmpZeroResult == 0 {
+		return BigIntFixedDecimal{}.NewZero(0)
+	}
+
+	ceiling := big.NewInt(0).Set(bigIFd.integerNum)
+
+	if bigIFd.precision > 0 {
+
+		scale := big.NewInt(0).Exp(
+			big.NewInt(10),
+			big.NewInt(int64(bigIFd.precision)),
+			nil)
+
+		ceiling.Quo(ceiling, scale)
+
+		if cmpZeroResult == 1 {
+			// signVal must be plus
+			ceiling.Add(ceiling, big.NewInt(1))
+		}
+
+	}
+
+	// else bigIFd.precision must be zero
+	return BigIntFixedDecimal{}.New(ceiling, 0)
+}
+
 // CopyIn - Receives a BigIntFixedDecimal type and copies the
 // value to the current BigIntFixedDecimal instance.
 //
