@@ -525,7 +525,7 @@ func TestBigIntNum_Ceil_10(t *testing.T) {
 	}
 }
 
-func TestBigIntNum_Ceil_12(t *testing.T) {
+func TestBigIntNum_Ceil_11(t *testing.T) {
 	nStr := "159876231.9999999999"
 	expectedNumStr := "159876232"
 	expectedPrecision := uint(0)
@@ -555,7 +555,7 @@ func TestBigIntNum_Ceil_12(t *testing.T) {
 	}
 }
 
-func TestBigIntNum_Ceil_13(t *testing.T) {
+func TestBigIntNum_Ceil_12(t *testing.T) {
 	nStr := "-159876231.9999999999"
 	expectedNumStr := "-159876231"
 	expectedPrecision := uint(0)
@@ -585,7 +585,7 @@ func TestBigIntNum_Ceil_13(t *testing.T) {
 	}
 }
 
-func TestBigIntNum_Ceil_14(t *testing.T) {
+func TestBigIntNum_Ceil_13(t *testing.T) {
 	nStr := "159876231.0000000000000001"
 	expectedNumStr := "159876232"
 	expectedPrecision := uint(0)
@@ -615,7 +615,7 @@ func TestBigIntNum_Ceil_14(t *testing.T) {
 	}
 }
 
-func TestBigIntNum_Ceil_15(t *testing.T) {
+func TestBigIntNum_Ceil_14(t *testing.T) {
 	nStr := "-159876231.0000000000000001"
 	expectedNumStr := "-159876231"
 	expectedPrecision := uint(0)
@@ -645,7 +645,7 @@ func TestBigIntNum_Ceil_15(t *testing.T) {
 	}
 }
 
-func TestBigIntNum_Ceil_16(t *testing.T) {
+func TestBigIntNum_Ceil_15(t *testing.T) {
 	nStr := "-0.0000000000000001"
 	expectedNumStr := "0"
 	expectedPrecision := uint(0)
@@ -675,9 +675,39 @@ func TestBigIntNum_Ceil_16(t *testing.T) {
 	}
 }
 
-func TestBigIntNum_Ceil_17(t *testing.T) {
+func TestBigIntNum_Ceil_16(t *testing.T) {
 	nStr := "0.0000000000000001"
 	expectedNumStr := "1"
+	expectedPrecision := uint(0)
+
+	bINum1, err := BigIntNum{}.NewNumStr(nStr)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewNumStr(nStr). "+
+			" nStr='%v'  Error='%v'",
+			nStr, err.Error())
+	}
+
+	ceiling := bINum1.Ceiling()
+
+	actualNumStr := ceiling.GetNumStr()
+
+	if expectedNumStr != actualNumStr {
+		t.Errorf("Error: Expected Ceiling NumStr='%v'. "+
+			"Instead, NumStr='%v'. ",
+			expectedNumStr, actualNumStr)
+	}
+
+	if expectedPrecision != ceiling.GetPrecisionUint() {
+		t.Errorf("Error: Expected Ceiling precision='%v' "+
+			"Instead, precision='%v'",
+			expectedPrecision, ceiling.GetPrecisionUint())
+	}
+}
+
+func TestBigIntNum_Ceil_17(t *testing.T) {
+	nStr := "-0.0000000000000001"
+	expectedNumStr := "0"
 	expectedPrecision := uint(0)
 
 	bINum1, err := BigIntNum{}.NewNumStr(nStr)
