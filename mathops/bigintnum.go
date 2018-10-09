@@ -131,8 +131,12 @@ type BigIntNum struct {
 	currencySymbol     rune // Currency Symbol
 }
 
-// Ceiling - Ceiling: The least, or lowest value integer, which is greater than
-// or equal to the numeric value of the current BigIntNum. Reference Wikipedia:
+// Ceiling - Returns the ceiling integer value of the current BigIntNum
+// instance.
+//
+// Ceiling is defined as: The least, or lowest value integer, which is greater
+// than or equal to the numeric value of the current BigIntNum.
+// Reference Wikipedia:
 // 				https://en.wikipedia.org/wiki/Floor_and_ceiling_functions
 //
 // Examples
