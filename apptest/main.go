@@ -10,9 +10,28 @@ import (
 
 func main() {
 
+	numStr := "-859.123456"
+	expectedInt := "-859"
+	expectedFrac := "-0.123456"
 
-	fmt.Println("Pi 10000 Digits: ", mathops.GetPiTo1000().GetNumStr())
-	
+	fixDec, err := mathops.BigIntFixedDecimal{}.NewNumStr(numStr)
+
+	if err != nil {
+		fmt.Printf("Error returned by BigIntFixedDecimal{}.NewNumStr(numStr). " +
+			"numStr='%v' Error='%v'", numStr, err.Error())
+		return
+	}
+
+	actualInt, actualFrac := fixDec.GetIntegerFractionalParts()
+
+	fmt.Println("GetIntegerFractionalParts()")
+	fmt.Println("-------------------------------------")
+	fmt.Println("   Actual Integer: ", actualInt.GetNumStr())
+	fmt.Println(" Expected Integer: ", expectedInt)
+	fmt.Println("-------------------------------------")
+	fmt.Println("  Actual Fraction: ", actualFrac.GetNumStr())
+	fmt.Println("Expected Fraction: ", expectedFrac)
+
 
 }
 

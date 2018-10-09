@@ -343,6 +343,24 @@ func (bigIFd *BigIntFixedDecimal) Ceiling() BigIntFixedDecimal {
 	return BigIntFixedDecimal{}.New(ceiling, 0)
 }
 
+// ChangeSign - This method will change the sign of the
+// current BigIntFixedDecimal numeric value. If the value
+// is negative, this method will change the sign to
+// positive. Likewise, if the sign is currently positive,
+// calling this method will change the sign to negative.
+func (bigIFd *BigIntFixedDecimal) ChangeSign() {
+	if bigIFd.integerNum == nil {
+		bigIFd.integerNum = big.NewInt(0)
+		bigIFd.precision = 0
+	}
+
+	if bigIFd.integerNum.Cmp(big.NewInt(0))==0 {
+		return
+	}
+
+	bigIFd.integerNum.Neg(bigIFd.integerNum)
+}
+
 // CopyIn - Receives a BigIntFixedDecimal type and copies the
 // value to the current BigIntFixedDecimal instance.
 //
@@ -742,7 +760,16 @@ func (bigIFd *BigIntFixedDecimal) GetBigIntNum() BigIntNum {
 // BigIntFixedDecimal instance. The returned *big.Int type
 // contains all the numeric digits which comprise the fixed
 // decimal numerical value represented by this BigIntFixedDecimal
-// instance.
+// instance. If the value includes fractional digits, these
+// too are included in the returned integer value.
+//
+// Example:
+// ========
+//
+// BigIntFixedDecimal      Returned
+//  Numeric Value        Integer Value
+// ------------------    -------------
+//		582.12345            58212345
 //
 func (bigIFd *BigIntFixedDecimal) GetInteger() *big.Int {
 
@@ -751,6 +778,48 @@ func (bigIFd *BigIntFixedDecimal) GetInteger() *big.Int {
 	}
 
 	return big.NewInt(0).Set(bigIFd.integerNum)
+}
+
+// GetIntegerFractionalParts - Returns two BigIntFixedDecimals comprising the integer
+// and fractional parts of the current BigIntFixedDecimal numeric value.
+//
+// Examples:
+// =========
+//
+// BigIntFixedDecimal              Returned         Returned
+//   Numeric Value              Integer Value    Fractional Value
+// ------------------           -------------    ----------------
+//
+//  859649.123456789								859649					0.123456789
+// -859649.123456789							 -859649				 -0.123456789
+//
+func (bigIFd *BigIntFixedDecimal) GetIntegerFractionalParts() (integer BigIntFixedDecimal, fraction BigIntFixedDecimal) {
+
+		integer = bigIFd.CopyOut()
+
+		fraction = bigIFd.CopyOut()
+
+		if integer.integerNum.Cmp(big.NewInt(0)) == 0 {
+			integer.precision = 0
+			return integer, fraction
+		}
+
+		scale :=
+			big.NewInt(0).Exp(
+				big.NewInt(10),
+				big.NewInt(int64(bigIFd.precision)),
+				nil)
+
+		integer.integerNum.Quo(integer.integerNum,scale)
+		integer.precision = 0
+
+		scratch := integer.CopyOut()
+
+		scratch.integerNum.Mul(scratch.integerNum, scale)
+
+		fraction.integerNum.Sub(fraction.integerNum, scratch.integerNum)
+
+		return integer, fraction
 }
 
 // GetIntAry - Returns a new IntAry instance initialized to the
