@@ -386,6 +386,140 @@ func TestBigIntFixedDecimal_Ceiling_17(t *testing.T) {
 }
 
 
+func TestBigIntFixedDecimal_ChangeSign_01(t *testing.T) {
+
+	numStr := "859"
+	expectedStr := "-859"
+
+	fixedDec, err := BigIntFixedDecimal{}.NewNumStr(numStr)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntFixedDecimal{}.NewNumStr(numStr). " +
+			"numStr='%v' Error='%v'", numStr, err.Error())
+	}
+
+	fixedDec.ChangeSign()
+
+
+	if expectedStr != fixedDec.GetNumStr() {
+		t.Errorf("Error: Expected result='%v'. Instead, result='%v'. ",
+			expectedStr, fixedDec.GetNumStr())
+	}
+
+}
+
+func TestBigIntFixedDecimal_ChangeSign_02(t *testing.T) {
+
+	numStr := "-859"
+	expectedStr := "859"
+
+	fixedDec, err := BigIntFixedDecimal{}.NewNumStr(numStr)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntFixedDecimal{}.NewNumStr(numStr). " +
+			"numStr='%v' Error='%v'", numStr, err.Error())
+	}
+
+	fixedDec.ChangeSign()
+
+
+	if expectedStr != fixedDec.GetNumStr() {
+		t.Errorf("Error: Expected result='%v'. Instead, result='%v'. ",
+			expectedStr, fixedDec.GetNumStr())
+	}
+
+}
+
+func TestBigIntFixedDecimal_ChangeSign_03(t *testing.T) {
+
+	numStr := "859.123456"
+	expectedStr := "-859.123456"
+
+	fixedDec, err := BigIntFixedDecimal{}.NewNumStr(numStr)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntFixedDecimal{}.NewNumStr(numStr). " +
+			"numStr='%v' Error='%v'", numStr, err.Error())
+	}
+
+	fixedDec.ChangeSign()
+
+
+	if expectedStr != fixedDec.GetNumStr() {
+		t.Errorf("Error: Expected result='%v'. Instead, result='%v'. ",
+			expectedStr, fixedDec.GetNumStr())
+	}
+
+}
+
+func TestBigIntFixedDecimal_ChangeSign_04(t *testing.T) {
+
+	numStr := "-859.123456"
+	expectedStr := "859.123456"
+
+	fixedDec, err := BigIntFixedDecimal{}.NewNumStr(numStr)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntFixedDecimal{}.NewNumStr(numStr). " +
+			"numStr='%v' Error='%v'", numStr, err.Error())
+	}
+
+	fixedDec.ChangeSign()
+
+
+	if expectedStr != fixedDec.GetNumStr() {
+		t.Errorf("Error: Expected result='%v'. Instead, result='%v'. ",
+			expectedStr, fixedDec.GetNumStr())
+	}
+
+}
+
+func TestBigIntFixedDecimal_ChangeSign_05(t *testing.T) {
+
+	numStr := "0"
+	expectedStr := "0"
+
+	fixedDec, err := BigIntFixedDecimal{}.NewNumStr(numStr)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntFixedDecimal{}.NewNumStr(numStr). " +
+			"numStr='%v' Error='%v'", numStr, err.Error())
+	}
+
+	fixedDec.ChangeSign()
+
+
+	if expectedStr != fixedDec.GetNumStr() {
+		t.Errorf("Error: Expected result='%v'. Instead, result='%v'. ",
+			expectedStr, fixedDec.GetNumStr())
+	}
+
+}
+
+
+func TestBigIntFixedDecimal_ChangeSign_06(t *testing.T) {
+
+	numStr := "0.000"
+	expectedStr := "0.000"
+
+	fixedDec, err := BigIntFixedDecimal{}.NewNumStr(numStr)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntFixedDecimal{}.NewNumStr(numStr). " +
+			"numStr='%v' Error='%v'", numStr, err.Error())
+	}
+
+	fixedDec.ChangeSign()
+
+
+	if expectedStr != fixedDec.GetNumStr() {
+		t.Errorf("Error: Expected result='%v'. Instead, result='%v'. ",
+			expectedStr, fixedDec.GetNumStr())
+	}
+
+}
+
+
 func TestBigIntFixedDecimal_CopyIn_01(t *testing.T) {
 	expectedNumStr := "-123.45"
 
