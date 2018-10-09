@@ -432,15 +432,15 @@ func TestBigIntNum_NewNumStr_17(t *testing.T) {
 
 	expectedPrecision := uint(1050)
 
-	bigINum, err := BigIntFixedDecimal{}.NewNumStr(EulersNum1050)
+	bigINum, err := BigIntFixedDecimal{}.NewNumStr(EulersNum1050Str)
 
 	if err!= nil {
 		t.Errorf("Error returned by %v", err.Error() )
 	}
 
-	if EulersNum1050 != bigINum.GetNumStr() {
+	if EulersNum1050Str != bigINum.GetNumStr() {
 		t.Errorf("Error: Expected result='%v'. Instead, result='%v'",
-			EulersNum1050, bigINum.GetNumStr())
+			EulersNum1050Str, bigINum.GetNumStr())
 	}
 
 	if expectedPrecision != bigINum.GetPrecision() {

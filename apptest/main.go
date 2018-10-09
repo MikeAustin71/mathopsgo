@@ -11,7 +11,7 @@ import (
 func main() {
 
 
-	fmt.Println("Pi 10000 Digits: ", mathops.PINumber1000.GetNumStr())
+	fmt.Println("Pi 10000 Digits: ", mathops.GetPiTo1000().GetNumStr())
 	
 
 }

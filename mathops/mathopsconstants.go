@@ -21,18 +21,28 @@ import "fmt"
 
 */
 
+func GetEulersNum1050() BigIntFixedDecimal {
+	return eulersNumber1050.GetFixedDecimal()
+}
 
+func GetPiTo1000() BigIntFixedDecimal {
+	return piNumber1000.GetFixedDecimal()
+}
 
-var EulersNumber1050 FixedDecimalReadOnly
+func GetNatLogOfTwoTo99() BigIntFixedDecimal {
+	return natLogTwo99.GetFixedDecimal()
+}
 
-var PINumber1000 BigIntFixedDecimal
+var eulersNumber1050 FixedDecimalReadOnly
 
-var NatLogTwo99 BigIntFixedDecimal
+var piNumber1000 FixedDecimalReadOnly
+
+var natLogTwo99 FixedDecimalReadOnly
 
 // A002162
 //Decimal expansion of the natural logarithm of 2. (Formerly M4074 N1689)
 // https://oeis.org/A002162
-var NatLog2_99 =
+var NatLog2_99Str =
  "0.693147180559945309417232121458176568075500134360255254120680009493393621969694715605863326996418687"
 //  1234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890
 //           1         2         3         4         5         6         7         8         9         0
@@ -46,7 +56,7 @@ var NatLog2_99 =
 // http://www-groups.dcs.st-and.ac.uk/history/
 // http://www-groups.dcs.st-and.ac.uk/history/HistTopics/1000_places.html
 // 50-digits per row
-var Pi1000 = "3." +
+var Pi1000Str = "3." +
 "14159265358979323846264338327950288419716939937510" +
 "58209749445923078164062862089986280348253421170679" +
 "82148086513282306647093844609550582231725359408128" +
@@ -76,7 +86,7 @@ var Pi1000 = "3." +
 // Total 14-lines @ 75-decimal digits each = 1050-decimal digits to the
 // right of the decimal place.
 //
-var EulersNum1050 =
+var EulersNum1050Str =
 "2.718281828459045235360287471352662497757247093699959574966967627724076630353" +
   "547594571382178525166427427466391932003059921817413596629043572900334295260" +
   "595630738132328627943490763233829880753195251019011573834187930702154089149" +
@@ -102,11 +112,11 @@ func init() {
 
 func InitializeEulerNum1050() {
 
-  ePrefix := "mathopsconstants.go EulersNumber1050 Initialization Failed!"
+  ePrefix := "mathopsconstants.go eulersNumber1050 Initialization Failed! "
 
 
 
-	xEuler, err := BigIntFixedDecimal{}.NewNumStr(EulersNum1050)
+	xEuler, err := BigIntFixedDecimal{}.NewNumStr(EulersNum1050Str)
 
 	if err != nil {
 		erx :=
@@ -117,16 +127,20 @@ func InitializeEulerNum1050() {
 	}
 
 
-	EulersNumber1050 = FixedDecimalReadOnly{}.NewFixedDecimal(xEuler)
-	EulersNumber1050.GetInteger()
+	eulersNumber1050 = FixedDecimalReadOnly{}.NewFixedDecimal(xEuler)
+	if !eulersNumber1050.IsValid() {
+		erx := ePrefix + "eulersNumber1050 object INVALID!"
+		panic(erx)
+	}
+
 }
 
 func InitializePi1000() {
 
-	ePrefix := "mathopsconstants.go EulersNumber1050 Initialization Failed!"
+	ePrefix := "mathopsconstants.go eulersNumber1050 Initialization Failed! "
 
 
-	xPiNum, err := BigIntFixedDecimal{}.NewNumStr(Pi1000)
+	xPiNum, err := BigIntFixedDecimal{}.NewNumStr(Pi1000Str)
 
 	if err != nil {
 		erx :=
@@ -136,16 +150,19 @@ func InitializePi1000() {
 		panic(erx)
 	}
 
-	PINumber1000 = BigIntFixedDecimal{}.NewZero(0)
-	PINumber1000.CopyIn(xPiNum)
+	piNumber1000 = FixedDecimalReadOnly{}.NewFixedDecimal(xPiNum)
+	if !piNumber1000.IsValid() {
+		erx := ePrefix + "piNumber1000 INVALID!"
+		panic(erx)
+	}
+
 }
 
 func InitializeNatLogTwo() {
 
-	ePrefix := "mathopsconstants.go Natural Log of 2 Initialization Failed!"
+	ePrefix := "mathopsconstants.go Natural Log of 2 Initialization Failed! "
 
-
-	xNatLog2, err := BigIntFixedDecimal{}.NewNumStr(NatLog2_99)
+	xNatLog2, err := BigIntFixedDecimal{}.NewNumStr(NatLog2_99Str)
 
 	if err != nil {
 		erx :=
@@ -155,8 +172,12 @@ func InitializeNatLogTwo() {
 		panic(erx)
 	}
 
-	NatLogTwo99 = BigIntFixedDecimal{}.NewZero(0)
-	NatLogTwo99.CopyIn(xNatLog2)
+	natLogTwo99 = FixedDecimalReadOnly{}.NewFixedDecimal(xNatLog2)
+	if !natLogTwo99.IsValid() {
+		erx := ePrefix + "natLogTwo99 INVALID!"
+		panic(erx)
+	}
+
 }
 
 // Source Currency Info

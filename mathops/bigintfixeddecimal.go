@@ -23,15 +23,40 @@ type FixedDecimalReadOnly struct {
 
 }
 
+// GetBigIntNum - returns the numeric value of the underlying BigIntFixedDecimal
+// as a type BigIntNum.
+//
+func (fDecRO *FixedDecimalReadOnly) GetBigIntNum() BigIntNum {
+
+	fDecRO.fixedDecimal.IsValid()
+
+	return fDecRO.fixedDecimal.GetBigIntNum()
+}
+
+// GetIntAry - Returns the numeric value of the underlying BigIntFixedDecimal
+// as a type IntAry.
+//
+func (fDecRO *FixedDecimalReadOnly) GetIntAry() (IntAry,error) {
+
+	fDecRO.fixedDecimal.IsValid()
+
+	return fDecRO.fixedDecimal.GetIntAry()
+}
+
 // GetFixedDecimal - Returns a deep copy of the underlying
 // BigIntFixedDecimal value.
 func (fDecRO *FixedDecimalReadOnly) GetFixedDecimal() BigIntFixedDecimal {
+
+	fDecRO.fixedDecimal.IsValid()
+
 	return fDecRO.fixedDecimal.CopyOut()
 }
 
 // GetInteger - Returns the *big.Int integer value from the
 // underlying BigIntFixedDecimal
 func (fDecRO *FixedDecimalReadOnly) GetInteger() *big.Int {
+
+	fDecRO.fixedDecimal.IsValid()
 
 	return fDecRO.fixedDecimal.GetInteger()
 
@@ -46,15 +71,35 @@ func (fDecRO *FixedDecimalReadOnly) GetInteger() *big.Int {
 //
 func (fDecRO *FixedDecimalReadOnly) GetNumStr() string {
 
+	fDecRO.fixedDecimal.IsValid()
+
 	return fDecRO.fixedDecimal.GetNumStr()
 
 }
 
-// GetPrecision
+// GetPrecision - returns a unsigned integer specifying
+// the number of digits to the right of the decimal place.
+//
 func (fDecRO *FixedDecimalReadOnly) GetPrecision() uint {
+
+	fDecRO.fixedDecimal.IsValid()
 
 	return fDecRO.fixedDecimal.GetPrecision()
 
+}
+
+// IsValid - Performs diagnostic and remedial actions on
+// the underlying BigIntFixedDecimal instance. Returns
+// 'false' if the instance is uninitialized.
+//
+func (fDecRO *FixedDecimalReadOnly) IsValid() bool {
+
+	return fDecRO.fixedDecimal.IsValid()
+}
+
+func (fDecRO *FixedDecimalReadOnly) IsZero() bool {
+
+	return fDecRO.fixedDecimal.IsZero()
 }
 
 // NewZero - Creates and returns a new FixedDecimalReadOnly
@@ -397,6 +442,65 @@ func (bigIFd *BigIntFixedDecimal) Empty() {
 
 }
 
+// Floor - Returns the floor integer value for the current
+// BigIntFixedDecimal.
+//
+// In mathematics and computer science, the floor function
+// is the function that takes as input a real number x dnd
+// gives as output the greatest integer less than or equal
+// to x.
+//
+// Source:
+// https://en.wikipedia.org/wiki/Floor_and_ceiling_functions
+//
+// Examples
+// ========
+//
+//				 BigIntFixedDecimal           Floor
+//							Value                   Value
+//				 ------------------         ----------
+//              0													0
+//              4                         4
+//							3.2												3
+//							2.9	                      2
+//						 -2.7											 -3
+//						 -2                        -2
+//
+func (bigIFd *BigIntFixedDecimal) Floor() BigIntFixedDecimal {
+
+	if bigIFd.integerNum == nil {
+		bigIFd.integerNum = big.NewInt(0)
+		bigIFd.precision = 0
+	}
+
+	cmpZeroResult := bigIFd.integerNum.Cmp(big.NewInt(0))
+
+	if cmpZeroResult == 0 {
+		return BigIntFixedDecimal{}.NewZero(0)
+	}
+
+	floor := big.NewInt(0).Set(bigIFd.integerNum)
+
+	if bigIFd.precision > 0 {
+
+		scale := big.NewInt(0).Exp(
+			big.NewInt(10),
+			big.NewInt(int64(bigIFd.precision)),
+			nil)
+
+		floor.Quo(floor, scale)
+
+		if cmpZeroResult == -1 {
+			// signVal must be -1
+			floor.Add(floor, big.NewInt(-1))
+		}
+
+	}
+
+	// else bigIFd.precision must be zero
+	return BigIntFixedDecimal{}.New(floor, 0)
+}
+
 // FormatNumStr - converts the numeric value of the current BigIntFixedDecimal
 // instance to a number string. The returned number string will consist of a
 // string of numeric digits. If the number contains fractional digits, the
@@ -657,6 +761,19 @@ func (bigIFd *BigIntFixedDecimal) IsValid() bool {
 	}
 
 	return true
+}
+
+func (bigIFd *BigIntFixedDecimal) IsZero() bool {
+
+	if bigIFd.integerNum == nil {
+		bigIFd.integerNum = big.NewInt(0)
+	}
+
+	if bigIFd.integerNum.Cmp(big.NewInt(0))==0 {
+		return true
+	}
+
+	return false
 }
 
 // MultiplyByTenToPower - Multiplies the numeric value of the current

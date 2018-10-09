@@ -302,23 +302,11 @@ func TestBigIntMathPower_BigIntPwr_09(t *testing.T) {
 
 func TestBigIntMathPower_BigIntPwr_10(t *testing.T) {
 
-	eNum, err := BigIntMathLogarithms{}.GetEulersNumberE1050()
+	eNum := eulersNumber1050
 
-	if err != nil {
-		t.Errorf("Error returned by " +
-			"BigIntMathLogarithms{}.GetEulersNumberE1050(). Error='%v'",
-			err.Error())
-	}
+	base := eNum.GetInteger()
 
-	base, err := eNum.GetBigInt()
-
-	if err != nil {
-		t.Errorf("Error returned by " +
-			"eNum.GetBigInt(). Error='%v'",
-			err.Error())
-	}
-
-	basePrecision := eNum.GetPrecisionUint()
+	basePrecision := eNum.GetPrecision()
 	exponent := uint(9)
 	internalMaxPrecision := uint((9*basePrecision) + 10)
 	outputMaxPrecision := uint(28)

@@ -1030,15 +1030,15 @@ func TestBigIntNum_SetNumStr_17(t *testing.T) {
 		t.Errorf("Error returned by %v", err.Error() )
 	}
 
-	bigINum.SetNumStr(EulersNum1050)
+	bigINum.SetNumStr(EulersNum1050Str)
 
 	if err!= nil {
 		t.Errorf("Error returned by %v", err.Error() )
 	}
 
-	if EulersNum1050 != bigINum.GetNumStr() {
+	if EulersNum1050Str != bigINum.GetNumStr() {
 		t.Errorf("Error: Expected result='%v'. Instead, result='%v'",
-			EulersNum1050, bigINum.GetNumStr())
+			EulersNum1050Str, bigINum.GetNumStr())
 	}
 
 	if expectedPrecision != bigINum.GetPrecisionUint() {

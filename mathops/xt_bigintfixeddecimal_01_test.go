@@ -572,6 +572,312 @@ func TestBigIntFixedDecimal_BigIntDividedByTwoToPower_10(t *testing.T) {
 	}
 }
 
+func TestBigIntFixedDecimal_Floor_01(t *testing.T) {
+	num := 0
+	precision := uint(0)
+
+	expectedNumStr := "0"
+
+	fixDec := BigIntFixedDecimal{}.NewInt(num,precision)
+
+	floor := fixDec.Floor()
+
+	if expectedNumStr != floor.GetNumStr() {
+		t.Errorf("Error: Expected result='%v'. Instead, result='%v' ",
+			expectedNumStr, floor.GetNumStr())
+	}
+}
+
+func TestBigIntFixedDecimal_Floor_02(t *testing.T) {
+	num := 4
+	precision := uint(0)
+
+	expectedNumStr := "4"
+
+	fixDec := BigIntFixedDecimal{}.NewInt(num,precision)
+
+	floor := fixDec.Floor()
+
+	if expectedNumStr != floor.GetNumStr() {
+		t.Errorf("Error: Expected result='%v'. Instead, result='%v' ",
+			expectedNumStr, floor.GetNumStr())
+	}
+}
+
+func TestBigIntFixedDecimal_Floor_03(t *testing.T) {
+	num := 32
+	precision := uint(1)
+
+	expectedNumStr := "3"
+
+	fixDec := BigIntFixedDecimal{}.NewInt(num,precision)
+
+	floor := fixDec.Floor()
+
+	if expectedNumStr != floor.GetNumStr() {
+		t.Errorf("Error: Expected result='%v'. Instead, result='%v' ",
+			expectedNumStr, floor.GetNumStr())
+	}
+
+}
+
+func TestBigIntFixedDecimal_Floor_04(t *testing.T) {
+	num := 29
+	precision := uint(1)
+
+	expectedNumStr := "2"
+
+	fixDec := BigIntFixedDecimal{}.NewInt(num,precision)
+
+	floor := fixDec.Floor()
+
+	if expectedNumStr != floor.GetNumStr() {
+		t.Errorf("Error: Expected result='%v'. Instead, result='%v' ",
+			expectedNumStr, floor.GetNumStr())
+	}
+}
+
+func TestBigIntFixedDecimal_Floor_05(t *testing.T) {
+	num := -27
+	precision := uint(1)
+
+	expectedNumStr := "-3"
+
+	fixDec := BigIntFixedDecimal{}.NewInt(num,precision)
+
+	floor := fixDec.Floor()
+
+	if expectedNumStr != floor.GetNumStr() {
+		t.Errorf("Error: Expected result='%v'. Instead, result='%v' ",
+			expectedNumStr, floor.GetNumStr())
+	}
+}
+
+func TestBigIntFixedDecimal_Floor_06(t *testing.T) {
+	num := -2
+	precision := uint(0)
+
+	expectedNumStr := "-2"
+
+	fixDec := BigIntFixedDecimal{}.NewInt(num,precision)
+
+	floor := fixDec.Floor()
+
+	if expectedNumStr != floor.GetNumStr() {
+		t.Errorf("Error: Expected result='%v'. Instead, result='%v' ",
+			expectedNumStr, floor.GetNumStr())
+	}
+}
+
+func TestBigIntFixedDecimal_Floor_07(t *testing.T) {
+	num := 595
+	precision := uint(2)
+
+	expectedNumStr := "5"
+
+	fixDec := BigIntFixedDecimal{}.NewInt(num,precision)
+
+	floor := fixDec.Floor()
+
+	if expectedNumStr != floor.GetNumStr() {
+		t.Errorf("Error: Expected result='%v'. Instead, result='%v' ",
+			expectedNumStr, floor.GetNumStr())
+	}
+}
+
+func TestBigIntFixedDecimal_Floor_08(t *testing.T) {
+	num := 505
+	precision := uint(2)
+
+	expectedNumStr := "5"
+
+	fixDec := BigIntFixedDecimal{}.NewInt(num,precision)
+
+	floor := fixDec.Floor()
+
+	if expectedNumStr != floor.GetNumStr() {
+		t.Errorf("Error: Expected result='%v'. Instead, result='%v' ",
+			expectedNumStr, floor.GetNumStr())
+	}
+}
+
+func TestBigIntFixedDecimal_Floor_09(t *testing.T) {
+	num := -505
+	precision := uint(2)
+
+	expectedNumStr := "-6"
+
+	fixDec := BigIntFixedDecimal{}.NewInt(num,precision)
+
+	floor := fixDec.Floor()
+
+	if expectedNumStr != floor.GetNumStr() {
+		t.Errorf("Error: Expected result='%v'. Instead, result='%v' ",
+			expectedNumStr, floor.GetNumStr())
+	}
+}
+
+func TestBigIntFixedDecimal_Floor_10(t *testing.T) {
+	num := 29
+	precision := uint(1)
+
+	expectedNumStr := "2"
+
+	fixDec := BigIntFixedDecimal{}.NewInt(num,precision)
+
+	floor := fixDec.Floor()
+
+	if expectedNumStr != floor.GetNumStr() {
+		t.Errorf("Error: Expected result='%v'. Instead, result='%v' ",
+			expectedNumStr, floor.GetNumStr())
+	}
+}
+
+func TestBigIntFixedDecimal_Floor_11(t *testing.T) {
+	num := -27
+	precision := uint(1)
+
+	expectedNumStr := "-3"
+
+	fixDec := BigIntFixedDecimal{}.NewInt(num,precision)
+
+	floor := fixDec.Floor()
+
+	if expectedNumStr != floor.GetNumStr() {
+		t.Errorf("Error: Expected result='%v'. Instead, result='%v' ",
+			expectedNumStr, floor.GetNumStr())
+	}
+}
+
+func TestBigIntFixedDecimal_Floor_12(t *testing.T) {
+	num := 0
+	precision := uint(0)
+
+	expectedNumStr := "0"
+
+	fixDec := BigIntFixedDecimal{}.NewInt(num,precision)
+
+	floor := fixDec.Floor()
+
+	if expectedNumStr != floor.GetNumStr() {
+		t.Errorf("Error: Expected result='%v'. Instead, result='%v' ",
+			expectedNumStr, floor.GetNumStr())
+	}
+}
+
+func TestBigIntFixedDecimal_Floor_13(t *testing.T) {
+
+	numStr := "18972.0000000000001"
+
+	expectedNumStr := "18972"
+
+	fixDec, err :=
+		BigIntFixedDecimal{}.NewNumStr(numStr)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntFixedDecimal{}." +
+			"NewNumStr(numStr). numStr='%v' Error='%v'",
+			numStr, err.Error())
+	}
+
+	floor := fixDec.Floor()
+
+	if expectedNumStr != floor.GetNumStr() {
+		t.Errorf("Error: Expected result='%v'. Instead, result='%v' ",
+			expectedNumStr, floor.GetNumStr())
+	}
+}
+
+func TestBigIntFixedDecimal_Floor_14(t *testing.T) {
+
+	numStr := "-18972.0000000000001"
+
+	expectedNumStr := "-18973"
+
+	fixDec, err :=
+		BigIntFixedDecimal{}.NewNumStr(numStr)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntFixedDecimal{}." +
+			"NewNumStr(numStr). numStr='%v' Error='%v'",
+			numStr, err.Error())
+	}
+
+	floor := fixDec.Floor()
+
+	if expectedNumStr != floor.GetNumStr() {
+		t.Errorf("Error: Expected result='%v'. Instead, result='%v' ",
+			expectedNumStr, floor.GetNumStr())
+	}
+}
+
+func TestBigIntFixedDecimal_Floor_15(t *testing.T) {
+
+	numStr := "0.0000000000001"
+
+	expectedNumStr := "0"
+
+	fixDec, err :=
+		BigIntFixedDecimal{}.NewNumStr(numStr)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntFixedDecimal{}." +
+			"NewNumStr(numStr). numStr='%v' Error='%v'",
+			numStr, err.Error())
+	}
+
+	floor := fixDec.Floor()
+
+	if expectedNumStr != floor.GetNumStr() {
+		t.Errorf("Error: Expected result='%v'. Instead, result='%v' ",
+			expectedNumStr, floor.GetNumStr())
+	}
+}
+
+func TestBigIntFixedDecimal_Floor_16(t *testing.T) {
+
+	numStr := "-189765342891.0000000000001"
+	expectedNumStr := "-189765342892"
+
+	fixDec, err :=
+		BigIntFixedDecimal{}.NewNumStr(numStr)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntFixedDecimal{}." +
+			"NewNumStr(numStr). numStr='%v' Error='%v'",
+			numStr, err.Error())
+	}
+
+	floor := fixDec.Floor()
+
+	if expectedNumStr != floor.GetNumStr() {
+		t.Errorf("Error: Expected result='%v'. Instead, result='%v' ",
+			expectedNumStr, floor.GetNumStr())
+	}
+}
+
+func TestBigIntFixedDecimal_Floor_17(t *testing.T) {
+
+	numStr := "189765342891.0000000000001"
+	expectedNumStr := "189765342891"
+
+	fixDec, err :=
+		BigIntFixedDecimal{}.NewNumStr(numStr)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntFixedDecimal{}." +
+			"NewNumStr(numStr). numStr='%v' Error='%v'",
+			numStr, err.Error())
+	}
+
+	floor := fixDec.Floor()
+
+	if expectedNumStr != floor.GetNumStr() {
+		t.Errorf("Error: Expected result='%v'. Instead, result='%v' ",
+			expectedNumStr, floor.GetNumStr())
+	}
+}
+
 func TestBigIntFixedDecimal_FormatNumStr_01(t *testing.T) {
 
 	expectedNumStr := "-123.45"
