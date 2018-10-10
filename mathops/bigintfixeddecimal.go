@@ -361,6 +361,66 @@ func (bigIFd *BigIntFixedDecimal) ChangeSign() {
 	bigIFd.integerNum.Neg(bigIFd.integerNum)
 }
 
+// Cmp - Compares the numeric values of two BigIntFixedDecimal
+// instances.
+//
+// If the current BigIntFixedDecimal value is greater than input
+// parameter 'fd2', the method returns '1'.
+//
+// If the current BigIntFixedDecimal value is equal to that of the
+// input parameter 'fd2', the method returns '0'.
+//
+// If the current BigIntFixedDecimal value is less than the input
+// parameter 'fd2', the method returns '-1'.
+//
+// Examples
+// ========
+//					BigIntFixedDecimal         'fd2'        Return
+//								Value                Value        Value
+//					------------------         ------       -------
+//                 5                     2             1
+//                 5.2                   5.1           1
+//                 5.2                   5.2           0
+//            837123.4              837123.5          -1
+//                 0                     0.1          -1
+//                35.123456             40.5          -1
+//                35.123456              2.5           1
+//
+func (bigIFd *BigIntFixedDecimal) Cmp(fd2 BigIntFixedDecimal) int {
+
+
+	if bigIFd.integerNum == nil {
+		bigIFd.SetNumericValue(big.NewInt(0), bigIFd.precision)
+	}
+
+	fd2.IsValid()
+
+	if bigIFd.precision == fd2.precision {
+		return bigIFd.integerNum.Cmp(fd2.integerNum)
+	}
+
+
+	bigTen := big.NewInt(10)
+
+	if fd2.precision > bigIFd.precision {
+		delta := int64(fd2.precision - bigIFd.precision)
+		fdValue := big.NewInt(0).Set(bigIFd.integerNum)
+		scale := big.NewInt(0).Exp(bigTen, big.NewInt(delta), nil)
+		fdValue.Mul(fdValue,scale)
+
+		return fdValue.Cmp(fd2.integerNum)
+
+	}
+
+	// MUST BE bigIFd.precision > fd2.precision
+	delta := int64(bigIFd.precision - fd2.precision)
+	fd2Value := big.NewInt(0).Set(fd2.integerNum)
+	scale := big.NewInt(0).Exp(bigTen, big.NewInt(delta), nil)
+	fd2Value.Mul(fd2Value,scale)
+
+	return bigIFd.integerNum.Cmp(fd2Value)
+}
+
 // CopyIn - Receives a BigIntFixedDecimal type and copies the
 // value to the current BigIntFixedDecimal instance.
 //

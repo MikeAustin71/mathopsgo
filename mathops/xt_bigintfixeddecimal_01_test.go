@@ -519,6 +519,335 @@ func TestBigIntFixedDecimal_ChangeSign_06(t *testing.T) {
 
 }
 
+func TestBigIntFixedDecimal_Cmp_01(t *testing.T) {
+
+	num1Str := "5"
+	num2Str := "2"
+	expectedResult := 1
+
+	fd1, err := BigIntFixedDecimal{}.NewNumStr(num1Str)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntFixedDecimal{}.NewNumStr(num1Str). " +
+			"num1Str='%v' Error='%v'", num1Str, err.Error())
+	}
+
+	fd2, err := BigIntFixedDecimal{}.NewNumStr(num2Str)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntFixedDecimal{}.NewNumStr(num2Str). " +
+			"num2Str='%v' Error='%v'", num2Str, err.Error())
+	}
+
+	cmpResult := fd1.Cmp(fd2)
+
+	if expectedResult != cmpResult {
+		t.Errorf("Error: Expected compare result='%v'. " +
+			"Instead, compare result='%v' ",
+			expectedResult, cmpResult)
+	}
+
+}
+
+func TestBigIntFixedDecimal_Cmp_02(t *testing.T) {
+
+	num1Str := "5.2"
+	num2Str := "5.1"
+	expectedResult := 1
+
+	fd1, err := BigIntFixedDecimal{}.NewNumStr(num1Str)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntFixedDecimal{}.NewNumStr(num1Str). " +
+			"num1Str='%v' Error='%v'", num1Str, err.Error())
+	}
+
+	fd2, err := BigIntFixedDecimal{}.NewNumStr(num2Str)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntFixedDecimal{}.NewNumStr(num2Str). " +
+			"num2Str='%v' Error='%v'", num2Str, err.Error())
+	}
+
+	cmpResult := fd1.Cmp(fd2)
+
+	if expectedResult != cmpResult {
+		t.Errorf("Error: Expected compare result='%v'. " +
+			"Instead, compare result='%v' ",
+			expectedResult, cmpResult)
+	}
+
+}
+
+func TestBigIntFixedDecimal_Cmp_03(t *testing.T) {
+
+	num1Str := "5.2"
+	num2Str := "5.2"
+	expectedResult := 0
+
+	fd1, err := BigIntFixedDecimal{}.NewNumStr(num1Str)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntFixedDecimal{}.NewNumStr(num1Str). " +
+			"num1Str='%v' Error='%v'", num1Str, err.Error())
+	}
+
+	fd2, err := BigIntFixedDecimal{}.NewNumStr(num2Str)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntFixedDecimal{}.NewNumStr(num2Str). " +
+			"num2Str='%v' Error='%v'", num2Str, err.Error())
+	}
+
+	cmpResult := fd1.Cmp(fd2)
+
+	if expectedResult != cmpResult {
+		t.Errorf("Error: Expected compare result='%v'. " +
+			"Instead, compare result='%v' ",
+			expectedResult, cmpResult)
+	}
+
+}
+
+func TestBigIntFixedDecimal_Cmp_04(t *testing.T) {
+
+	num1Str := "837123.4"
+	num2Str := "837123.5"
+	expectedResult := -1
+
+	fd1, err := BigIntFixedDecimal{}.NewNumStr(num1Str)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntFixedDecimal{}.NewNumStr(num1Str). " +
+			"num1Str='%v' Error='%v'", num1Str, err.Error())
+	}
+
+	fd2, err := BigIntFixedDecimal{}.NewNumStr(num2Str)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntFixedDecimal{}.NewNumStr(num2Str). " +
+			"num2Str='%v' Error='%v'", num2Str, err.Error())
+	}
+
+	cmpResult := fd1.Cmp(fd2)
+
+	if expectedResult != cmpResult {
+		t.Errorf("Error: Expected compare result='%v'. " +
+			"Instead, compare result='%v' ",
+			expectedResult, cmpResult)
+	}
+
+}
+
+func TestBigIntFixedDecimal_Cmp_05(t *testing.T) {
+
+	num1Str := "0"
+	num2Str := "0.1"
+	expectedResult := -1
+
+	fd1, err := BigIntFixedDecimal{}.NewNumStr(num1Str)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntFixedDecimal{}.NewNumStr(num1Str). " +
+			"num1Str='%v' Error='%v'", num1Str, err.Error())
+	}
+
+	fd2, err := BigIntFixedDecimal{}.NewNumStr(num2Str)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntFixedDecimal{}.NewNumStr(num2Str). " +
+			"num2Str='%v' Error='%v'", num2Str, err.Error())
+	}
+
+	cmpResult := fd1.Cmp(fd2)
+
+	if expectedResult != cmpResult {
+		t.Errorf("Error: Expected compare result='%v'. " +
+			"Instead, compare result='%v' ",
+			expectedResult, cmpResult)
+	}
+
+}
+
+func TestBigIntFixedDecimal_Cmp_06(t *testing.T) {
+
+	num1Str := "35.123456"
+	num2Str := "40.5"
+	expectedResult := -1
+
+	fd1, err := BigIntFixedDecimal{}.NewNumStr(num1Str)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntFixedDecimal{}.NewNumStr(num1Str). " +
+			"num1Str='%v' Error='%v'", num1Str, err.Error())
+	}
+
+	fd2, err := BigIntFixedDecimal{}.NewNumStr(num2Str)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntFixedDecimal{}.NewNumStr(num2Str). " +
+			"num2Str='%v' Error='%v'", num2Str, err.Error())
+	}
+
+	cmpResult := fd1.Cmp(fd2)
+
+	if expectedResult != cmpResult {
+		t.Errorf("Error: Expected compare result='%v'. " +
+			"Instead, compare result='%v' ",
+			expectedResult, cmpResult)
+	}
+
+}
+
+func TestBigIntFixedDecimal_Cmp_07(t *testing.T) {
+
+	num1Str := "35.123456"
+	num2Str := "2.5"
+	expectedResult := 1
+
+	fd1, err := BigIntFixedDecimal{}.NewNumStr(num1Str)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntFixedDecimal{}.NewNumStr(num1Str). " +
+			"num1Str='%v' Error='%v'", num1Str, err.Error())
+	}
+
+	fd2, err := BigIntFixedDecimal{}.NewNumStr(num2Str)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntFixedDecimal{}.NewNumStr(num2Str). " +
+			"num2Str='%v' Error='%v'", num2Str, err.Error())
+	}
+
+	cmpResult := fd1.Cmp(fd2)
+
+	if expectedResult != cmpResult {
+		t.Errorf("Error: Expected compare result='%v'. " +
+			"Instead, compare result='%v' ",
+			expectedResult, cmpResult)
+	}
+
+}
+
+func TestBigIntFixedDecimal_Cmp_08(t *testing.T) {
+
+	num1Str := "35.123456"
+	num2Str := "2.123456789012345"
+	expectedResult := 1
+
+	fd1, err := BigIntFixedDecimal{}.NewNumStr(num1Str)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntFixedDecimal{}.NewNumStr(num1Str). " +
+			"num1Str='%v' Error='%v'", num1Str, err.Error())
+	}
+
+	fd2, err := BigIntFixedDecimal{}.NewNumStr(num2Str)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntFixedDecimal{}.NewNumStr(num2Str). " +
+			"num2Str='%v' Error='%v'", num2Str, err.Error())
+	}
+
+	cmpResult := fd1.Cmp(fd2)
+
+	if expectedResult != cmpResult {
+		t.Errorf("Error: Expected compare result='%v'. " +
+			"Instead, compare result='%v' ",
+			expectedResult, cmpResult)
+	}
+
+}
+
+func TestBigIntFixedDecimal_Cmp_09(t *testing.T) {
+
+	num1Str := "-35.123456"
+	num2Str := "2.123456789012345"
+	expectedResult := -1
+
+	fd1, err := BigIntFixedDecimal{}.NewNumStr(num1Str)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntFixedDecimal{}.NewNumStr(num1Str). " +
+			"num1Str='%v' Error='%v'", num1Str, err.Error())
+	}
+
+	fd2, err := BigIntFixedDecimal{}.NewNumStr(num2Str)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntFixedDecimal{}.NewNumStr(num2Str). " +
+			"num2Str='%v' Error='%v'", num2Str, err.Error())
+	}
+
+	cmpResult := fd1.Cmp(fd2)
+
+	if expectedResult != cmpResult {
+		t.Errorf("Error: Expected compare result='%v'. " +
+			"Instead, compare result='%v' ",
+			expectedResult, cmpResult)
+	}
+
+}
+
+func TestBigIntFixedDecimal_Cmp_10(t *testing.T) {
+
+	num1Str := "-35.123456"
+	num2Str := "-35.123455"
+	expectedResult := -1
+
+	fd1, err := BigIntFixedDecimal{}.NewNumStr(num1Str)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntFixedDecimal{}.NewNumStr(num1Str). " +
+			"num1Str='%v' Error='%v'", num1Str, err.Error())
+	}
+
+	fd2, err := BigIntFixedDecimal{}.NewNumStr(num2Str)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntFixedDecimal{}.NewNumStr(num2Str). " +
+			"num2Str='%v' Error='%v'", num2Str, err.Error())
+	}
+
+	cmpResult := fd1.Cmp(fd2)
+
+	if expectedResult != cmpResult {
+		t.Errorf("Error: Expected compare result='%v'. " +
+			"Instead, compare result='%v' ",
+			expectedResult, cmpResult)
+	}
+
+}
+
+func TestBigIntFixedDecimal_Cmp_11(t *testing.T) {
+
+	num1Str := "-35.123455"
+	num2Str := "-35.123456"
+	expectedResult := 1
+
+	fd1, err := BigIntFixedDecimal{}.NewNumStr(num1Str)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntFixedDecimal{}.NewNumStr(num1Str). " +
+			"num1Str='%v' Error='%v'", num1Str, err.Error())
+	}
+
+	fd2, err := BigIntFixedDecimal{}.NewNumStr(num2Str)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntFixedDecimal{}.NewNumStr(num2Str). " +
+			"num2Str='%v' Error='%v'", num2Str, err.Error())
+	}
+
+	cmpResult := fd1.Cmp(fd2)
+
+	if expectedResult != cmpResult {
+		t.Errorf("Error: Expected compare result='%v'. " +
+			"Instead, compare result='%v' ",
+			expectedResult, cmpResult)
+	}
+
+}
 
 func TestBigIntFixedDecimal_CopyIn_01(t *testing.T) {
 	expectedNumStr := "-123.45"
