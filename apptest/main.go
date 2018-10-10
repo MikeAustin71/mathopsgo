@@ -10,14 +10,18 @@ import (
 
 func main() {
 
-	numStr := "131.072"
+	/*
+		numStr := "131.072"
+		expectedMag := "5"
+
+
+		numStr := "98327123"
+		expectedMag := "7"
+	*/
+
+	numStr := "-643,212.123"
 	expectedMag := "5"
 
-
-/*
-	numStr := "98327123"
-	expectedMag := "7"
-*/
 	fixDec, err := mathops.BigIntFixedDecimal{}.NewNumStr(numStr)
 
 	if err != nil {
@@ -28,7 +32,8 @@ func main() {
 
 	//intPart, _  := fixDec.GetIntegerFractionalParts()
 	timeStart := time.Now()
-	actualMag, err := mathops.BigIntMath{}.GetMagnitude(fixDec.GetInteger())
+	//actualMag, err := mathops.BigIntMath{}.GetMagnitude(fixDec.GetInteger())
+	actualMag, err := fixDec.GetMagnitude()
 	timeEnd := time.Now()
 	if err != nil {
 		fmt.Printf("Error returned by BigIntMath{}.GetMagnitude(fixDec.GetInteger()). " +

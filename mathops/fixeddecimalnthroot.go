@@ -18,8 +18,5 @@ func (fdNRt FixedDecimalNthRoot) GetNextIntegerBundle(
 	integerResidual = big.NewInt(0)
 	err = nil
 
-
-
-
 	return nextBundle, integerResidual, err
 }

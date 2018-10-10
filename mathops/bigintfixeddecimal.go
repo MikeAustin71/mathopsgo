@@ -842,6 +842,63 @@ func (bigIFd *BigIntFixedDecimal) GetIntAry() (IntAry, error) {
 	return ia, nil
 }
 
+
+// GetMagnitude - Returns the magnitude of the current BigIntFixedDecimal
+// as a type *big.Int integer value.
+//
+// Magnitude as used here is defined as the power of 10 which generates a
+// value less than or equal to the current BigIntFixedDecimal value
+//
+// 							10^magnitude  <= BigIntFixedDecimal
+//
+// Examples
+// ========
+//         BigIntFixedDecimal
+//			   			Value									magnitude
+//              ------        				---------
+//
+//			  		 963,256										5
+//									 2										0
+//									32										1
+// 			 8,456,123,921					  				9
+//                   2.2									0
+//       8,456,123,912.123                9
+//            -643,212.123								5
+//                 324.123456             2
+//
+func (bigIFd *BigIntFixedDecimal) GetMagnitude() (*big.Int, error) {
+
+			bigZero := big.NewInt(0)
+
+			if bigIFd.integerNum == nil {
+				bigIFd.integerNum = big.NewInt(0)
+				bigIFd.precision = 0
+				return bigZero, nil
+			}
+
+			target := big.NewInt(0).Set(bigIFd.integerNum)
+			bigTen := big.NewInt(10)
+
+			if bigIFd.precision > 0 {
+				target.Quo(
+					target,
+					big.NewInt(0).Exp(bigTen,big.NewInt(int64(bigIFd.precision)),
+						nil))
+			}
+
+			magnitude, err := BigIntMath{}.GetMagnitude(target)
+
+			if err != nil {
+				ePrefix := "BigIntFixedDecimal.GetMagnitude() "
+				return bigZero,
+					fmt.Errorf(ePrefix +
+						"Error returned " +
+						"Error='%v' ",err.Error())
+			}
+
+			return magnitude, nil
+}
+
 // GetNumericValue - Returns the 'integerNum' and 'precision' values for the
 // current BigIntFixedDecimal instance.
 func (bigIFd *BigIntFixedDecimal) GetNumericValue() (*big.Int, uint) {

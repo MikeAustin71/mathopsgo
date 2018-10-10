@@ -75,29 +75,28 @@ func (bIntMath BigIntMath) GetMagnitude(initialValue *big.Int) (magnitude *big.I
 		return magnitude, err
 	}
 
+	bigTen := big.NewInt(10)
+
+	if target.Cmp(bigTen) == -1 {
+		// magnitude = 0; err=nil
+		return magnitude, err
+	}
+
 	bitLen := target.BitLen()
 
 	if bitLen <= 0 {
-		err = fmt.Errorf(ePrefix + "Error: target.BitLen() = %v - Negative value!",
+		err = fmt.Errorf(ePrefix+"Error: target.BitLen() = %v - Negative value!",
 			bitLen)
 		return magnitude, err
 	}
 
-	if bitLen > -1 && bitLen < 4  {
-		// magnitude == 0  err==nil
-		return magnitude, err
-	}
-
-	bigTen := big.NewInt(10)
-
 	tenToPowerPrecision := uint(0)
 
 	// Note: logTwo is a global constant
+
 	// ************************************
 	// target MUST BE <= 2^(bit length)
 	// ************************************
-
-
 	magnitude, tenToPowerPrecision =
 		BigIntMathMultiply{}.BigIntMultiply(
 			big.NewInt(int64(bitLen)),
@@ -105,9 +104,8 @@ func (bIntMath BigIntMath) GetMagnitude(initialValue *big.Int) (magnitude *big.I
 			logTwo.GetInteger(),
 			logTwo.GetPrecision())
 
-
 	if tenToPowerPrecision > 0 {
-		scale:=
+		scale :=
 			big.NewInt(0).Exp(
 				bigTen,
 				big.NewInt(int64(tenToPowerPrecision)),
@@ -116,10 +114,10 @@ func (bIntMath BigIntMath) GetMagnitude(initialValue *big.Int) (magnitude *big.I
 		magnitude.Quo(magnitude, scale)
 	}
 
-	testNum := big.NewInt(0).Exp(bigTen,magnitude, nil)
+	testNum := big.NewInt(0).Exp(bigTen, magnitude, nil)
 
 	if testNum.Cmp(target) == 1 {
-		magnitude.Sub(magnitude,big.NewInt(1))
+		magnitude.Sub(magnitude, big.NewInt(1))
 	}
 
 	return magnitude, err

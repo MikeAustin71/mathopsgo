@@ -549,6 +549,222 @@ func TestBigIntFixedDecimal_GetIntegerFractionalParts_05(t *testing.T) {
 
 }
 
+func TestBigIntFixedDecimal_GetMagnitude_01(t *testing.T) {
+
+	numStr := "963256"
+	expectedMagnitude := big.NewInt(5)
+
+	fixDec, err := BigIntFixedDecimal{}.NewNumStr(numStr)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntFixedDecimal{}.NewNumStr(numStr). " +
+			"numStr='%v' Error='%v'", numStr, err.Error())
+	}
+
+	magnitude, err := fixDec.GetMagnitude()
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntMath{}.GetMagnitudeDigits(target). "+
+			"target='%v' Error='%v' ",
+			fixDec.GetNumStr(), err.Error())
+	}
+
+	if expectedMagnitude.Cmp(magnitude) != 0 {
+		t.Errorf("Error: Expected Magnitude='%v'. Instead, Magnitude='%v'.",
+			expectedMagnitude.Text(10), magnitude.Text(10))
+	}
+
+}
+
+func TestBigIntFixedDecimal_GetMagnitude_02(t *testing.T) {
+
+	numStr := "2"
+	expectedMagnitude := big.NewInt(0)
+
+	fixDec, err := BigIntFixedDecimal{}.NewNumStr(numStr)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntFixedDecimal{}.NewNumStr(numStr). " +
+			"numStr='%v' Error='%v'", numStr, err.Error())
+	}
+
+	magnitude, err := fixDec.GetMagnitude()
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntMath{}.GetMagnitudeDigits(target). "+
+			"target='%v' Error='%v' ",
+			fixDec.GetNumStr(), err.Error())
+	}
+
+	if expectedMagnitude.Cmp(magnitude) != 0 {
+		t.Errorf("Error: Expected Magnitude='%v'. Instead, Magnitude='%v'.",
+			expectedMagnitude.Text(10), magnitude.Text(10))
+	}
+
+}
+
+func TestBigIntFixedDecimal_GetMagnitude_03(t *testing.T) {
+
+	numStr := "32"
+	expectedMagnitude := big.NewInt(1)
+
+	fixDec, err := BigIntFixedDecimal{}.NewNumStr(numStr)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntFixedDecimal{}.NewNumStr(numStr). " +
+			"numStr='%v' Error='%v'", numStr, err.Error())
+	}
+
+	magnitude, err := fixDec.GetMagnitude()
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntMath{}.GetMagnitudeDigits(target). "+
+			"target='%v' Error='%v' ",
+			fixDec.GetNumStr(), err.Error())
+	}
+
+	if expectedMagnitude.Cmp(magnitude) != 0 {
+		t.Errorf("Error: Expected Magnitude='%v'. Instead, Magnitude='%v'.",
+			expectedMagnitude.Text(10), magnitude.Text(10))
+	}
+
+}
+
+func TestBigIntFixedDecimal_GetMagnitude_04(t *testing.T) {
+
+	numStr := "8456123921"
+	expectedMagnitude := big.NewInt(9)
+
+	fixDec, err := BigIntFixedDecimal{}.NewNumStr(numStr)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntFixedDecimal{}.NewNumStr(numStr). " +
+			"numStr='%v' Error='%v'", numStr, err.Error())
+	}
+
+	magnitude, err := fixDec.GetMagnitude()
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntMath{}.GetMagnitudeDigits(target). "+
+			"target='%v' Error='%v' ",
+			fixDec.GetNumStr(), err.Error())
+	}
+
+	if expectedMagnitude.Cmp(magnitude) != 0 {
+		t.Errorf("Error: Expected Magnitude='%v'. Instead, Magnitude='%v'.",
+			expectedMagnitude.Text(10), magnitude.Text(10))
+	}
+
+}
+
+func TestBigIntFixedDecimal_GetMagnitude_05(t *testing.T) {
+
+	numStr := "2.2"
+	expectedMagnitude := big.NewInt(0)
+
+	fixDec, err := BigIntFixedDecimal{}.NewNumStr(numStr)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntFixedDecimal{}.NewNumStr(numStr). " +
+			"numStr='%v' Error='%v'", numStr, err.Error())
+	}
+
+	magnitude, err := fixDec.GetMagnitude()
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntMath{}.GetMagnitudeDigits(target). "+
+			"target='%v' Error='%v' ",
+			fixDec.GetNumStr(), err.Error())
+	}
+
+	if expectedMagnitude.Cmp(magnitude) != 0 {
+		t.Errorf("Error: Expected Magnitude='%v'. Instead, Magnitude='%v'.",
+			expectedMagnitude.Text(10), magnitude.Text(10))
+	}
+
+}
+
+func TestBigIntFixedDecimal_GetMagnitude_06(t *testing.T) {
+
+	numStr := "8456123912.123"
+	expectedMagnitude := big.NewInt(9)
+
+	fixDec, err := BigIntFixedDecimal{}.NewNumStr(numStr)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntFixedDecimal{}.NewNumStr(numStr). " +
+			"numStr='%v' Error='%v'", numStr, err.Error())
+	}
+
+	magnitude, err := fixDec.GetMagnitude()
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntMath{}.GetMagnitudeDigits(target). "+
+			"target='%v' Error='%v' ",
+			fixDec.GetNumStr(), err.Error())
+	}
+
+	if expectedMagnitude.Cmp(magnitude) != 0 {
+		t.Errorf("Error: Expected Magnitude='%v'. Instead, Magnitude='%v'.",
+			expectedMagnitude.Text(10), magnitude.Text(10))
+	}
+
+}
+
+func TestBigIntFixedDecimal_GetMagnitude_07(t *testing.T) {
+
+	numStr := "-643,212.123"
+	expectedMagnitude := big.NewInt(5)
+
+	fixDec, err := BigIntFixedDecimal{}.NewNumStr(numStr)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntFixedDecimal{}.NewNumStr(numStr). " +
+			"numStr='%v' Error='%v'", numStr, err.Error())
+	}
+
+	magnitude, err := fixDec.GetMagnitude()
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntMath{}.GetMagnitudeDigits(target). "+
+			"target='%v' Error='%v' ",
+			fixDec.GetNumStr(), err.Error())
+	}
+
+	if expectedMagnitude.Cmp(magnitude) != 0 {
+		t.Errorf("Error: Expected Magnitude='%v'. Instead, Magnitude='%v'.",
+			expectedMagnitude.Text(10), magnitude.Text(10))
+	}
+
+}
+
+func TestBigIntFixedDecimal_GetMagnitude_08(t *testing.T) {
+
+	numStr := "324.123456"
+	expectedMagnitude := big.NewInt(2)
+
+	fixDec, err := BigIntFixedDecimal{}.NewNumStr(numStr)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntFixedDecimal{}.NewNumStr(numStr). " +
+			"numStr='%v' Error='%v'", numStr, err.Error())
+	}
+
+	magnitude, err := fixDec.GetMagnitude()
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntMath{}.GetMagnitudeDigits(target). "+
+			"target='%v' Error='%v' ",
+			fixDec.GetNumStr(), err.Error())
+	}
+
+	if expectedMagnitude.Cmp(magnitude) != 0 {
+		t.Errorf("Error: Expected Magnitude='%v'. Instead, Magnitude='%v'.",
+			expectedMagnitude.Text(10), magnitude.Text(10))
+	}
+
+}
+
 func TestBigIntFixedDecimal_GetNumStr_01(t *testing.T) {
 
 	expectedNumStr := "123.45"
