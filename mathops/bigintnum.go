@@ -1339,7 +1339,7 @@ func (bNum *BigIntNum) FormatThousandsStr(negValMode NegativeValueFmtMode) strin
 }
 
 // GetActualNumberOfDigits - Returns the number of numeric digits
-// int the absolute value of this BigIntNum instance. In addition,
+// in the absolute value of this BigIntNum instance. In addition,
 // a boolean value is returned indicating whether the absolute value
 // is zero.
 //

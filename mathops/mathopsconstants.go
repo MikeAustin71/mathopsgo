@@ -39,6 +39,8 @@ var piNumber1000 FixedDecimalReadOnly
 
 var natLogTwo99 FixedDecimalReadOnly
 
+var logTwo FixedDecimalReadOnly
+
 // A002162
 //Decimal expansion of the natural logarithm of 2. (Formerly M4074 N1689)
 // https://oeis.org/A002162
@@ -102,12 +104,13 @@ var EulersNum1050Str =
   "768396424378140592714563549061303107208510383750510115747704171898610687396" +
   "965521267154688957035035402123407849819334321068170121005627880235193033225"
 
-
+var Log2Num32Str = "0.30102999566398119521373889472449"
 
 func init() {
 	InitializeEulerNum1050()
 	InitializePi1000()
 	InitializeNatLogTwo()
+	InitializeLog2()
 }
 
 func InitializeEulerNum1050() {
@@ -178,6 +181,27 @@ func InitializeNatLogTwo() {
 		panic(erx)
 	}
 
+}
+
+func InitializeLog2() {
+	ePrefix := "mathopsconstants.go Log Base 10 of 2 Initialization Failed! "
+
+	xLog2, err := BigIntFixedDecimal{}.NewNumStr(Log2Num32Str)
+
+	if err != nil {
+		erx :=
+			fmt.Sprintf(ePrefix +
+				" Error='%v'", err.Error())
+
+		panic(erx)
+	}
+
+	logTwo = FixedDecimalReadOnly{}.NewFixedDecimal(xLog2)
+
+	if !logTwo.IsValid() {
+		erx := ePrefix + "natLogTwo99 INVALID!"
+		panic(erx)
+	}
 }
 
 // Source Currency Info

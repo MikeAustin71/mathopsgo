@@ -603,3 +603,23 @@ func TestBigIntFixedDecimal_GetNumStr_03(t *testing.T) {
 
 }
 
+func TestBigIntFixedDecimal_GetNumStr_04(t *testing.T) {
+
+	expectedNumStr := "9876543210.12345678901234"
+
+	fixedDec, err := BigIntFixedDecimal{}.NewNumStr(expectedNumStr)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntFixedDecimal{}.NewNumStr(expectedNumStr) " +
+			"expectedNumStr='%v' Error='%v' ", expectedNumStr, err.Error())
+	}
+
+	outStr := fixedDec.GetNumStr()
+
+	if expectedNumStr != outStr {
+		t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v'",
+			expectedNumStr, outStr)
+	}
+
+}
+

@@ -238,10 +238,6 @@ func (bIDivide BigIntMathDivide) BigIntFracQuotient(
 		quotientPrecision = 0
 
 	} else if lastNonZeroDigitIdx < (i64MaxPrecision - 1) {
-		/*
-			fmt.Println("lastNotZeroDigitIdx ", lastNonZeroDigitIdx)
-			fmt.Println("    i64MaxPrecision ", i64MaxPrecision)
-		*/
 
 		scale =
 			big.NewInt(0).Exp(bigTen, big.NewInt(i64MaxPrecision-lastNonZeroDigitIdx-1), nil)
@@ -249,11 +245,7 @@ func (bIDivide BigIntMathDivide) BigIntFracQuotient(
 		quotient.Quo(quotient, scale)
 
 		quotientPrecision = uint(lastNonZeroDigitIdx + 1)
-		/*
-			  fmt.Println("   lastNonZeroDigitIdx: ", lastNonZeroDigitIdx)
-			  fmt.Println("       i64MaxPrecision: ", i64MaxPrecision)
-				fmt.Println("New quotient precision: ", quotientPrecision)
-		*/
+
 	} else {
 
 		//fmt.Println("before quotient: ", quotient.Text(10))

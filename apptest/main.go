@@ -10,10 +10,14 @@ import (
 
 func main() {
 
-	numStr := "-859.123456"
-	expectedInt := "-859"
-	expectedFrac := "-0.123456"
+	numStr := "131.072"
+	expectedMag := "5"
 
+
+/*
+	numStr := "98327123"
+	expectedMag := "7"
+*/
 	fixDec, err := mathops.BigIntFixedDecimal{}.NewNumStr(numStr)
 
 	if err != nil {
@@ -22,15 +26,29 @@ func main() {
 		return
 	}
 
-	actualInt, actualFrac := fixDec.GetIntegerFractionalParts()
+	//intPart, _  := fixDec.GetIntegerFractionalParts()
+	timeStart := time.Now()
+	actualMag, err := mathops.BigIntMath{}.GetMagnitude(fixDec.GetInteger())
+	timeEnd := time.Now()
+	if err != nil {
+		fmt.Printf("Error returned by BigIntMath{}.GetMagnitude(fixDec.GetInteger()). " +
+			"intPart.GetInteger()='%v' Error='%v'", fixDec.GetNumStr(), err.Error())
+		return
+	}
 
-	fmt.Println("GetIntegerFractionalParts()")
+
+	fmt.Println("GetMagnitude()")
 	fmt.Println("-------------------------------------")
-	fmt.Println("   Actual Integer: ", actualInt.GetNumStr())
-	fmt.Println(" Expected Integer: ", expectedInt)
+	fmt.Println("     fixDec.BigInt: ", fixDec.GetInteger().Text(10))
+	fmt.Println("     Initial Value: ", fixDec.GetNumStr())
+	fmt.Println("  Actual Magnitude: ", actualMag.Text(10))
+	fmt.Println("Expected Magnitude: ", expectedMag)
 	fmt.Println("-------------------------------------")
-	fmt.Println("  Actual Fraction: ", actualFrac.GetNumStr())
-	fmt.Println("Expected Fraction: ", expectedFrac)
+
+	timeDuration := timeEnd.Sub(timeStart)
+
+	duration := examples.CodeDurationToStr(timeDuration)
+	fmt.Println("   Time Duration: ", duration)
 
 
 }

@@ -624,7 +624,7 @@ func (bigIFd *BigIntFixedDecimal) FormatNumStr(negValMode NegativeValueFmtMode) 
 	absBigInt := big.NewInt(0).Set(bigIFd.integerNum)
 
 	if absBigInt.Cmp(baseZero) == -1 {
-		absBigInt.Mul(absBigInt, big.NewInt(-1))
+		absBigInt.Neg(absBigInt)
 	}
 
 	outRunes := make([]rune, 0, 300)
