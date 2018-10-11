@@ -10,53 +10,62 @@ import (
 
 func main() {
 
+	base := mathops.BigIntNum{}.NewInt(10, 0)
+	xNum := mathops.BigIntNum{}.NewInt(2, 0)
+	maxPrecision := uint(100)
+	expectedValue := mathops.Log2Num32Str
+
+	LogTest001(base, xNum, maxPrecision, expectedValue)
+}
+
+
+func LogTest001(base, xNum mathops.BigIntNum, maxPrecision uint, expectedLogValue string) {
+	// Logarithm test code
+
+
+	logValue, err := mathops.BigIntMathLogarithms{}.LogBaseOfX(base, xNum, maxPrecision)
+
+	if err != nil {
+		fmt.Printf("Error: error returned from BigIntMathLogarithms{}.GetIntDigits(" +
+			"base, xNum, maxPrecision) "+
+			"base='%v' xNum='%v' Error='%v'",
+			base.GetNumStr(), xNum.GetNumStr(), err.Error())
+
+		return
+	}
+
 	/*
-		numStr := "131.072"
-		expectedMag := "5"
 
+	checkValue, err := mathops.BigIntMathPower{}.Pwr(base, logValue, 50)
 
-		numStr := "98327123"
-		expectedMag := "7"
+	if err != nil {
+		fmt.Printf("Error returned by BigIntMathPower{}.Pwr(base, logValue, 50). ")
+		return
+	}
+	errorVariance := mathops.BigIntMathSubtract{}.SubtractBigIntNums(xNum, checkValue)
+
+	errSciNot, err := errorVariance.GetSciNotationStr(20)
+
+	if err != nil {
+		fmt.Printf("Error returned by errorVariance.GetSciNotationStr(20). ")
+		return
+	}
 	*/
 
-	numStr := "-643,212.123"
-	expectedMag := "5"
 
-	fixDec, err := mathops.BigIntFixedDecimal{}.NewNumStr(numStr)
-
-	if err != nil {
-		fmt.Printf("Error returned by BigIntFixedDecimal{}.NewNumStr(numStr). " +
-			"numStr='%v' Error='%v'", numStr, err.Error())
-		return
-	}
-
-	//intPart, _  := fixDec.GetIntegerFractionalParts()
-	timeStart := time.Now()
-	//actualMag, err := mathops.BigIntMath{}.GetMagnitude(fixDec.GetInteger())
-	actualMag, err := fixDec.GetMagnitude()
-	timeEnd := time.Now()
-	if err != nil {
-		fmt.Printf("Error returned by BigIntMath{}.GetMagnitude(fixDec.GetInteger()). " +
-			"intPart.GetInteger()='%v' Error='%v'", fixDec.GetNumStr(), err.Error())
-		return
-	}
-
-
-	fmt.Println("GetMagnitude()")
-	fmt.Println("-------------------------------------")
-	fmt.Println("     fixDec.BigInt: ", fixDec.GetInteger().Text(10))
-	fmt.Println("     Initial Value: ", fixDec.GetNumStr())
-	fmt.Println("  Actual Magnitude: ", actualMag.Text(10))
-	fmt.Println("Expected Magnitude: ", expectedMag)
-	fmt.Println("-------------------------------------")
-
-	timeDuration := timeEnd.Sub(timeStart)
-
-	duration := examples.CodeDurationToStr(timeDuration)
-	fmt.Println("   Time Duration: ", duration)
+	fmt.Println("GetNextDecimalDigit() ")
+	fmt.Println("          log Value: ", logValue.GetNumStr())
+	fmt.Println(" Expected log Value: ", expectedLogValue)
+	//fmt.Println("					Check Value: ", checkValue.GetNumStr())
+	//fmt.Println("     Error Variance: ", errorVariance.GetNumStr())
+	//fmt.Println(" Error Sci-Notation: ", errSciNot)
+	fmt.Println("               base: ", base.GetNumStr())
+	fmt.Println("               xNum: ", xNum.GetNumStr())
+	fmt.Println("       maxPrecision: ", maxPrecision)
 
 
 }
+
 
 /*
 func main() {
@@ -376,51 +385,4 @@ func PowerTest_01(base, exponent mathops.BigIntNum, maxPrecision, i uint) {
 
 
  */
-
-func LogTest001(base, xNum mathops.BigIntNum, maxPrecision uint, expectedLogValue string) {
-	// Logarithm test code
-
-
-	logValue, err := mathops.BigIntMathLogarithms{}.LogBaseOfX(base, xNum, maxPrecision)
-
-	if err != nil {
-		fmt.Printf("Error: error returned from BigIntMathLogarithms{}.GetIntDigits(" +
-			"base, xNum, maxPrecision) "+
-			"base='%v' xNum='%v' Error='%v'",
-			base.GetNumStr(), xNum.GetNumStr(), err.Error())
-
-		return
-	}
-
-	/*
-
-	checkValue, err := mathops.BigIntMathPower{}.Pwr(base, logValue, 50)
-
-	if err != nil {
-		fmt.Printf("Error returned by BigIntMathPower{}.Pwr(base, logValue, 50). ")
-		return
-	}
-	errorVariance := mathops.BigIntMathSubtract{}.SubtractBigIntNums(xNum, checkValue)
-
-	errSciNot, err := errorVariance.GetSciNotationStr(20)
-
-	if err != nil {
-		fmt.Printf("Error returned by errorVariance.GetSciNotationStr(20). ")
-		return
-	}
-	*/
-
-
-	fmt.Println("GetNextDecimalDigit() ")
-	fmt.Println("          log Value: ", logValue.GetNumStr())
-	fmt.Println(" Expected log Value: ", expectedLogValue)
-	//fmt.Println("					Check Value: ", checkValue.GetNumStr())
-	//fmt.Println("     Error Variance: ", errorVariance.GetNumStr())
-	//fmt.Println(" Error Sci-Notation: ", errSciNot)
-	fmt.Println("               base: ", base.GetNumStr())
-	fmt.Println("               xNum: ", xNum.GetNumStr())
-	fmt.Println("       maxPrecision: ", maxPrecision)
-
-
-}
 
