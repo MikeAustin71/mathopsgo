@@ -10,18 +10,68 @@ import (
 
 func main() {
 
-	nthRoot := big.NewInt(3)
-	integer:= big.NewInt(12345678901)
-	intTotalDigits, err := mathops.BigIntMath{}.GetMagnitude(integer)
+	nthRoot := big.NewInt(5)
+	nStr := "1234567"
+	fracInteger, success := big.NewInt(0).SetString(nStr, 10)
 
-	if err != nil {
-		fmt.Printf("Error returned by BigIntMath{}.GetMagnitude(integer). "+
-			"Error='%v' ", err.Error())
+	if !success {
+		fmt.Printf("Failed to convert string to BigInt. " +
+			"Input String='%v'  ", nStr)
 	}
 
-	intTotalDigits.Add(intTotalDigits, big.NewInt(1))
 
-	TestFixDecNthRootNextIntBundle(integer, intTotalDigits, nthRoot)
+	TestFixDecNthRootFmtFracDigits(fracInteger, nthRoot)
+
+}
+
+func TestFixDecNthRootFmtFracDigits(
+	fracInteger,
+	nthRoot *big.Int) {
+
+	initialTotalDigits, err := mathops.BigIntMath{}.GetMagnitude(fracInteger)
+
+	if err != nil {
+		fmt.Printf("Error returned from BigIntMath{}.GetMagnitude(fracInteger) " +
+			"fracInteger='%v'   Error='%v'",fracInteger.Text(10),  err.Error())
+		return
+	}
+
+	initialTotalDigits.Add(initialTotalDigits, big.NewInt(1))
+
+	timeStart := time.Now()
+
+	formattedFracInteger, fracTotalDigits, err :=
+		mathops.FixedDecimalNthRoot{}.FormatFractionalIntegerFromRadicand(
+			fracInteger,
+			nthRoot)
+
+	if err != nil {
+		fmt.Printf("Error returned from FixedDecimalNthRoot{}.FormatFractionalIntegerFromRadicand() " +
+			"%v", err.Error())
+		return
+	}
+
+	timeEnd := time.Now()
+
+	fmt.Println()
+	fmt.Println()
+	fmt.Println("FixedDecimalNthRoot{}.FormatFractionalIntegerFromRadicand() ")
+	fmt.Println("============================================================")
+	fmt.Println("                  nthRoot: ", nthRoot.Text(10))
+	fmt.Println("             frac integer: ", fracInteger.Text(10))
+	fmt.Println("frac initial total digits: ", initialTotalDigits.Text(10))
+	fmt.Println("------------------------------------------------------------")
+	fmt.Println("   formatted frac integer: ", formattedFracInteger.Text(10))
+	fmt.Println("        frac Total Digits: ", fracTotalDigits.Text(10))
+	fmt.Println("------------------------------------------------------------")
+	timeDuration := timeEnd.Sub(timeStart)
+
+	duration := examples.CodeDurationToStr(timeDuration)
+	fmt.Println("         Time Duration: ", duration)
+
+	fmt.Println("============================================================")
+	fmt.Println()
+
 
 }
 
@@ -38,24 +88,30 @@ func TestFixDecNthRootNextIntBundle(
 
 	fmt.Println()
 	fmt.Println()
-	fmt.Println("FixedDecimalNthRoot{}.GetNextIntegerBundle() ")
+	fmt.Println("FixedDecimalNthRoot{}.GetNextIntegerBundleFromRadicand() ")
 	fmt.Println("=============================================")
 	fmt.Println("       integer: ", integer.Text(10))
 	fmt.Println("intTotalDigits: ", intTotalDigits.Text(10))
 	fmt.Println("       nthRoot: ", nthRoot.Text(10))
 	fmt.Println("=============================================")
 
+	timeStart := time.Now()
+	timeEnd := time.Now()
 
 	for intTotalDigits.Cmp(bigZero)==1{
 
+		timeStart = time.Now()
+
 		nextBundle, nextBundleTotDigits, integer, intTotalDigits, err =
-			mathops.FixedDecimalNthRoot{}.GetNextIntegerBundle(
+			mathops.FixedDecimalNthRoot{}.GetNextIntegerBundleFromRadicand(
 			integer,
 			intTotalDigits,
 			nthRoot)
 
+		timeEnd = time.Now()
+
 		if err != nil {
-			fmt.Printf("Error returned from FixedDecimalNthRoot{}.GetNextIntegerBundle() " +
+			fmt.Printf("Error returned from FixedDecimalNthRoot{}.GetNextIntegerBundleFromRadicand() " +
 				"Error='%v' ", err.Error())
 			return
 		}
@@ -68,6 +124,11 @@ func TestFixDecNthRootNextIntBundle(
 		fmt.Println("               integer: ", integer.Text(10))
 		fmt.Println("     Num of Int Digits: ", intTotalDigits.Text(10))
 		fmt.Println("               nthRoot: ", nthRoot.Text(10))
+		timeDuration := timeEnd.Sub(timeStart)
+
+		duration := examples.CodeDurationToStr(timeDuration)
+		fmt.Println("         Time Duration: ", duration)
+
 		fmt.Println("--------------------------------------------------------")
 		fmt.Println()
 

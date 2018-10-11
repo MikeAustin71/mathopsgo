@@ -2,6 +2,7 @@ package mathops
 
 import (
 	"errors"
+	"fmt"
 	"math/big"
 )
 
@@ -11,8 +12,48 @@ type FixedDecimalNthRoot struct {
 	Root     BigIntFixedDecimal
 }
 
-// GetNextIntegerBundle - Returns the next bundle for an integer value.
-func (fdNRt FixedDecimalNthRoot) GetNextIntegerBundle(
+// FormatFractionalIntegerFromRadicand - Formats the fractional part
+// of the radicand for bundle allocation.
+func (fdNRt FixedDecimalNthRoot) FormatFractionalIntegerFromRadicand(
+	fracInteger,
+	nthRoot *big.Int) (formattedFracInteger, fracTotalDigits *big.Int, err error) {
+
+	ePrefix := "FixedDecimalNthRoot.GetNextIntegerBundleFromRadicand() "
+
+	formattedFracInteger = big.NewInt(0).Set(fracInteger)
+	fracTotalDigits = big.NewInt(0)
+	err = nil
+	var errX error
+
+	fracTotalDigits, errX = BigIntMath{}.GetMagnitude(fracInteger)
+
+	if errX != nil {
+		err = fmt.Errorf(ePrefix +
+			"Error returned from %v", errX.Error())
+		formattedFracInteger.Set(big.NewInt(0))
+		return formattedFracInteger, fracTotalDigits, err
+	}
+
+	fracTotalDigits.Add(fracTotalDigits, big.NewInt(1))
+	scratch := big.NewInt(0)
+
+	_, remainingDigits := big.NewInt(0).QuoRem(fracTotalDigits, nthRoot, scratch)
+
+	if remainingDigits.Cmp(big.NewInt(0)) == 1 {
+		remainingDigits.Sub(nthRoot, remainingDigits)
+		scale := big.NewInt(0).Exp(big.NewInt(10), remainingDigits, nil)
+
+		formattedFracInteger.Mul(formattedFracInteger,scale)
+		fracTotalDigits.Add(fracTotalDigits, remainingDigits)
+
+	}
+
+
+	return formattedFracInteger, fracTotalDigits, err
+}
+
+// GetNextIntegerBundleFromRadicand - Returns the next bundle for an integer value.
+func (fdNRt FixedDecimalNthRoot) GetNextIntegerBundleFromRadicand(
 	integer,
 	intTotalDigits,
 	nthRoot *big.Int) (nextBundle,
@@ -27,7 +68,7 @@ func (fdNRt FixedDecimalNthRoot) GetNextIntegerBundle(
 	intResidualTotalDigits = big.NewInt(0)
 	err = nil
 
-	ePrefix := "FixedDecimalNthRoot.GetNextIntegerBundle() "
+	ePrefix := "FixedDecimalNthRoot.GetNextIntegerBundleFromRadicand() "
 
 	bigZero := big.NewInt(0)
 
