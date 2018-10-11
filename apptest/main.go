@@ -10,14 +10,70 @@ import (
 
 func main() {
 
-	base := mathops.BigIntNum{}.NewInt(10, 0)
-	xNum := mathops.BigIntNum{}.NewInt(2, 0)
-	maxPrecision := uint(100)
-	expectedValue := mathops.Log2Num32Str
+	nthRoot := big.NewInt(3)
+	integer:= big.NewInt(12345678901)
+	intTotalDigits, err := mathops.BigIntMath{}.GetMagnitude(integer)
 
-	LogTest001(base, xNum, maxPrecision, expectedValue)
+	if err != nil {
+		fmt.Printf("Error returned by BigIntMath{}.GetMagnitude(integer). "+
+			"Error='%v' ", err.Error())
+	}
+
+	intTotalDigits.Add(intTotalDigits, big.NewInt(1))
+
+	TestFixDecNthRootNextIntBundle(integer, intTotalDigits, nthRoot)
+
 }
 
+func TestFixDecNthRootNextIntBundle(
+	integer,
+	intTotalDigits,
+	nthRoot *big.Int) {
+
+	bigZero := big.NewInt(0)
+	nextBundle := big.NewInt(0)
+	nextBundleTotDigits := big.NewInt(0)
+	var err error
+	cycle := 0
+
+	fmt.Println()
+	fmt.Println()
+	fmt.Println("FixedDecimalNthRoot{}.GetNextIntegerBundle() ")
+	fmt.Println("=============================================")
+	fmt.Println("       integer: ", integer.Text(10))
+	fmt.Println("intTotalDigits: ", intTotalDigits.Text(10))
+	fmt.Println("       nthRoot: ", nthRoot.Text(10))
+	fmt.Println("=============================================")
+
+
+	for intTotalDigits.Cmp(bigZero)==1{
+
+		nextBundle, nextBundleTotDigits, integer, intTotalDigits, err =
+			mathops.FixedDecimalNthRoot{}.GetNextIntegerBundle(
+			integer,
+			intTotalDigits,
+			nthRoot)
+
+		if err != nil {
+			fmt.Printf("Error returned from FixedDecimalNthRoot{}.GetNextIntegerBundle() " +
+				"Error='%v' ", err.Error())
+			return
+		}
+
+		cycle++
+
+		fmt.Println("                 Cycle: ", cycle)
+		fmt.Println("           Next Bundle: ", nextBundle.Text(10))
+		fmt.Println("Next Bundle Tot-Digits: ",nextBundleTotDigits.Text(10))
+		fmt.Println("               integer: ", integer.Text(10))
+		fmt.Println("     Num of Int Digits: ", intTotalDigits.Text(10))
+		fmt.Println("               nthRoot: ", nthRoot.Text(10))
+		fmt.Println("--------------------------------------------------------")
+		fmt.Println()
+
+	}
+
+}
 
 func LogTest001(base, xNum mathops.BigIntNum, maxPrecision uint, expectedLogValue string) {
 	// Logarithm test code
