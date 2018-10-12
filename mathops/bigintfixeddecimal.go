@@ -846,12 +846,12 @@ func (bigIFd *BigIntFixedDecimal) GetInteger() *big.Int {
 // Examples:
 // =========
 //
-// BigIntFixedDecimal              Returned         Returned
-//   Numeric Value              Integer Value    Fractional Value
-// ------------------           -------------    ----------------
+// BigIntFixedDecimal              Returned       Integer    		 Returned					 Fraction
+//   Numeric Value              Integer Value    Precision		Fractional Value	   Precision
+// ------------------           -------------   ----------		----------------     ---------
 //
-//  859649.123456789								859649					0.123456789
-// -859649.123456789							 -859649				 -0.123456789
+//  859649.123456789								859649					0						0.123456789            9
+// -859649.123456789							 -859649				 	0					 -0.123456789            9
 //
 func (bigIFd *BigIntFixedDecimal) GetIntegerFractionalParts() (integer BigIntFixedDecimal, fraction BigIntFixedDecimal) {
 

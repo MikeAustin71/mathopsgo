@@ -415,6 +415,7 @@ func TestBigIntFixedDecimal_GetIntegerFractionalParts_01(t *testing.T) {
 	expectedInt := "8596"
 	expectedFrac:= "0.1234567"
 
+
 	fixedDec, err := BigIntFixedDecimal{}.NewNumStr(numStr)
 
 	if err != nil {
@@ -526,6 +527,62 @@ func TestBigIntFixedDecimal_GetIntegerFractionalParts_05(t *testing.T) {
 	numStr := "-859"
 	expectedInt := "-859"
 	expectedFrac:= "0"
+
+	fixedDec, err := BigIntFixedDecimal{}.NewNumStr(numStr)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntFixedDecimal{}.NewNumStr(numStr). " +
+			"numStr='%v' Error='%v'", numStr, err.Error())
+	}
+
+	intPart, fracPart := fixedDec.GetIntegerFractionalParts()
+
+
+	if expectedInt != intPart.GetNumStr() {
+		t.Errorf("Error: Expected integer part='%v'. Instead, integer part='%v'. ",
+			expectedInt, intPart.GetNumStr())
+	}
+
+	if expectedFrac != fracPart.GetNumStr() {
+		t.Errorf("Error: Expected fractional part='%v'. Instead, fractional part='%v'. ",
+			expectedFrac, fracPart.GetNumStr())
+	}
+
+}
+
+func TestBigIntFixedDecimal_GetIntegerFractionalParts_06(t *testing.T) {
+
+	numStr := "-859.00123456"
+	expectedInt := "-859"
+	expectedFrac:= "-0.00123456"
+
+	fixedDec, err := BigIntFixedDecimal{}.NewNumStr(numStr)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntFixedDecimal{}.NewNumStr(numStr). " +
+			"numStr='%v' Error='%v'", numStr, err.Error())
+	}
+
+	intPart, fracPart := fixedDec.GetIntegerFractionalParts()
+
+
+	if expectedInt != intPart.GetNumStr() {
+		t.Errorf("Error: Expected integer part='%v'. Instead, integer part='%v'. ",
+			expectedInt, intPart.GetNumStr())
+	}
+
+	if expectedFrac != fracPart.GetNumStr() {
+		t.Errorf("Error: Expected fractional part='%v'. Instead, fractional part='%v'. ",
+			expectedFrac, fracPart.GetNumStr())
+	}
+
+}
+
+func TestBigIntFixedDecimal_GetIntegerFractionalParts_07(t *testing.T) {
+
+	numStr := "859.00123456"
+	expectedInt := "859"
+	expectedFrac:= "0.00123456"
 
 	fixedDec, err := BigIntFixedDecimal{}.NewNumStr(numStr)
 

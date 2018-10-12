@@ -10,39 +10,42 @@ import (
 
 func main() {
 
-	nthRoot := big.NewInt(5)
-	nStr := "1234567"
-	fracInteger, success := big.NewInt(0).SetString(nStr, 10)
+	nthRoot := big.NewInt(3)
+	nStr := "859.00001234567"
+	fixDec, err := mathops.BigIntFixedDecimal{}.NewNumStr(nStr)
 
-	if !success {
+	if err != nil {
+		fmt.Printf("Error returned from BigIntFixedDecimal{}.NewNumStr(nStr) " +
+			"nStr='%v'   Error='%v'",nStr,  err.Error())
+		return
+	}
+
+	_, fracInteger := fixDec.GetIntegerFractionalParts()
+
+	if err !=nil {
 		fmt.Printf("Failed to convert string to BigInt. " +
 			"Input String='%v'  ", nStr)
 	}
 
+	fmt.Println("Original nStr= ", nStr)
+	fmt.Println("  fracInteger= ", fracInteger.GetInteger().Text(10))
+	fmt.Println("fracPrecision= ", fracInteger.GetPrecision())
 
-	TestFixDecNthRootFmtFracDigits(fracInteger, nthRoot)
+	TestFixDecNthRootFmtFracDigits(fracInteger.GetInteger(), fracInteger.GetPrecision(), nthRoot)
 
 }
 
 func TestFixDecNthRootFmtFracDigits(
-	fracInteger,
+	fracInteger *big.Int,
+	fracIntPrecision uint,
 	nthRoot *big.Int) {
-
-	initialTotalDigits, err := mathops.BigIntMath{}.GetMagnitude(fracInteger)
-
-	if err != nil {
-		fmt.Printf("Error returned from BigIntMath{}.GetMagnitude(fracInteger) " +
-			"fracInteger='%v'   Error='%v'",fracInteger.Text(10),  err.Error())
-		return
-	}
-
-	initialTotalDigits.Add(initialTotalDigits, big.NewInt(1))
 
 	timeStart := time.Now()
 
 	formattedFracInteger, fracTotalDigits, err :=
 		mathops.FixedDecimalNthRoot{}.FormatFractionalIntegerFromRadicand(
 			fracInteger,
+			fracIntPrecision,
 			nthRoot)
 
 	if err != nil {
@@ -59,7 +62,7 @@ func TestFixDecNthRootFmtFracDigits(
 	fmt.Println("============================================================")
 	fmt.Println("                  nthRoot: ", nthRoot.Text(10))
 	fmt.Println("             frac integer: ", fracInteger.Text(10))
-	fmt.Println("frac initial total digits: ", initialTotalDigits.Text(10))
+	fmt.Println("   frac integer precision: ", fracIntPrecision)
 	fmt.Println("------------------------------------------------------------")
 	fmt.Println("   formatted frac integer: ", formattedFracInteger.Text(10))
 	fmt.Println("        frac Total Digits: ", fracTotalDigits.Text(10))
