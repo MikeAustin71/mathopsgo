@@ -43,13 +43,13 @@ func TestFixDecNthRootFmtFracDigits(
 	timeStart := time.Now()
 
 	formattedFracInteger, fracTotalDigits, err :=
-		mathops.FixedDecimalNthRoot{}.FormatFractionalIntegerFromRadicand(
+		mathops.FixedDecimalNthRoot{}.FormatFractionalDigitsFromRadicand(
 			fracInteger,
 			fracIntPrecision,
 			nthRoot)
 
 	if err != nil {
-		fmt.Printf("Error returned from FixedDecimalNthRoot{}.FormatFractionalIntegerFromRadicand() " +
+		fmt.Printf("Error returned from FixedDecimalNthRoot{}.FormatFractionalDigitsFromRadicand() " +
 			"%v", err.Error())
 		return
 	}
@@ -58,7 +58,7 @@ func TestFixDecNthRootFmtFracDigits(
 
 	fmt.Println()
 	fmt.Println()
-	fmt.Println("FixedDecimalNthRoot{}.FormatFractionalIntegerFromRadicand() ")
+	fmt.Println("FixedDecimalNthRoot{}.FormatFractionalDigitsFromRadicand() ")
 	fmt.Println("============================================================")
 	fmt.Println("                  nthRoot: ", nthRoot.Text(10))
 	fmt.Println("             frac integer: ", fracInteger.Text(10))

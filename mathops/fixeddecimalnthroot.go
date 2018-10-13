@@ -11,12 +11,9 @@ type FixedDecimalNthRoot struct {
 	Root      BigIntFixedDecimal
 	fracMask1 *big.Int
 	fracMask2 *big.Int
-	fracMask3 *big.Int
-	fracMask4 *big.Int
-	fracMask5 *big.Int
 }
 
-// FormatFractionalIntegerFromRadicand - Performs two tasks:
+// FormatFractionalDigitsFromRadicand - Performs two tasks:
 // 	(1) Formats the fractional part of the radicand for bundle allocation.
 //  (2) Creates calculation constants which will be stored in parent
 //      structure for used in method GetNextFractionalBundleFromRadicand()
@@ -83,18 +80,21 @@ type FixedDecimalNthRoot struct {
 //                                  set to 'nil'. If an error occurs, the returned error instance
 //                                  will include an appropriate error message.
 //
-func (fdNthRoot *FixedDecimalNthRoot) FormatFractionalIntegerFromRadicand(
+// ** IMPORTANT **
+// This function must be called prior to calling GetNextFractionalBundleFromRadicand()
+//
+func (fdNthRoot *FixedDecimalNthRoot) FormatFractionalDigitsFromRadicand(
 	fracRadicand *big.Int,
 	fracRadicandPrecision uint,
 	nthRoot *big.Int) (formattedFracInteger, fracPrecision *big.Int, err error) {
 
 	ePrefix := "FixedDecimalNthRoot.GetNextIntegerBundleFromRadicand() "
 
-	bigZero := big.NewInt(0)
-
 	formattedFracInteger = big.NewInt(0)
 	fracPrecision = big.NewInt(0)
 	err = nil
+	fdNthRoot.fracMask1 = big.NewInt(0)
+	fdNthRoot.fracMask2 = big.NewInt(0)
 
 	if nthRoot.Cmp(big.NewInt(2)) == -1 {
 
@@ -104,6 +104,8 @@ func (fdNthRoot *FixedDecimalNthRoot) FormatFractionalIntegerFromRadicand(
 
 		return formattedFracInteger, fracPrecision, err
 	}
+
+	bigZero := big.NewInt(0)
 
 	cmpFracRadicandZero := fracRadicand.Cmp(bigZero)
 
@@ -117,16 +119,10 @@ func (fdNthRoot *FixedDecimalNthRoot) FormatFractionalIntegerFromRadicand(
 	}
 
 	if cmpFracRadicandZero == 0 {
-		fdNthRoot.fracMask1 = big.NewInt(0)
-		fdNthRoot.fracMask2 = big.NewInt(0)
-		fdNthRoot.fracMask3 = big.NewInt(0)
-		fdNthRoot.fracMask4 = big.NewInt(0)
-		fdNthRoot.fracMask5 = big.NewInt(0)
 
 		// formattedFracInteger == 0; fracPrecision==0; err==nil
 		return formattedFracInteger, fracPrecision, err
 	}
-
 
 	bigTen := big.NewInt(10)
 
@@ -145,6 +141,9 @@ func (fdNthRoot *FixedDecimalNthRoot) FormatFractionalIntegerFromRadicand(
 	}
 
 	bigOne := big.NewInt(1)
+
+	// Only fracMask1 and fracMask2 are
+	// calculation constants
 	fdNthRoot.fracMask1 =
 		big.NewInt(0).Mul(
 			bigEleven,
@@ -158,25 +157,6 @@ func (fdNthRoot *FixedDecimalNthRoot) FormatFractionalIntegerFromRadicand(
 		big.NewInt(0).Add(
 			nthRoot,
 			bigOne), nil)
-
-	fdNthRoot.fracMask3 =
-		big.NewInt(0).Exp(
-			bigTen,
-			big.NewInt(0).Sub(
-				fracPrecision,
-				nthRoot),
-			nil)
-
-	fdNthRoot.fracMask4 =
-		big.NewInt(0).Mul(fdNthRoot.fracMask3, bigEleven)
-
-	fdNthRoot.fracMask5 =
-		big.NewInt(0).Exp(
-			bigTen,
-			big.NewInt(0).Add(
-				fracPrecision,
-				bigOne),
-			nil)
 
 	return formattedFracInteger, fracPrecision, err
 }
@@ -200,90 +180,119 @@ func (fdNthRoot *FixedDecimalNthRoot) FormatFractionalIntegerFromRadicand(
 //
 //    Return Values:
 //								nextBundle = 123
-//                fracIntResidue = 1.456
-//                fracIntResiduePrecision = 3
+//                residualFracNum = 1.456
+//                residualFracPrecision = 3
 //
 // Input Parameters
 // ================
 //
-// formattedFracDigits	*big.Int	- The Radicand fractional digits formatted with a
-//                                  leading integer, '1'. Example: radicand fractional
+// fmtFracNum					*big.Int	- The Radicand fractional digits formatted with a
+//                                  leading integer, '11'. Example: radicand fractional
 //                                  digits, '123456' with a precision of '9', must be
-//                                  formatted as '1.000123456'. If 'formattedFracDigits'
-//                                  is less than '1', an error will be returned.
+//                                  formatted as '11.000123456'. If 'fmtFracNum'
+//                                  is less than '11', an error will be returned.
+//                                  A value of '11' signals that all fractional digits
+//                                  have been processed and the next bundle will be
+//                                  set to zero.
 //
 // fracPrecision				*big.Int	- The number of digits to the right of the decimal
-//                                  place in formattedFracDigits. If fracPrecision is
+//                                  place in fmtFracNum. If fracPrecision is
 //                                  NOT evenly divisible by nthRoot, an error will
 //                                  be returned.
 //
-/*
+// nthRoot							*big.Int	- The nthRoot for which this root will be calculated.
+//																	'nthRoot' must be greater than or equal to two.
+//
+// Return Values
+// =============
+//
+// nextBundle						*big.Int	- The next bundle of digits to be processed for the
+//                                  nthRoot calculation.
+//
+// residualFracNum			*big.Int	- The remaining fractional digits to be processed
+//
+// residualFracPrecision *big.Int	- The precision specification for 'residualFracNum.
+//
 func (fdNthRoot FixedDecimalNthRoot) GetNextFractionalBundleFromRadicand(
-	formattedFracDigits,
+	fmtFracNum,
 	fracPrecision,
-	nthRoot *big.Int,) (
-		nextBundle,
-		fracIntResidual,
-		fracIntResidualPrecision *big.Int,
-		err error){
+	nthRoot *big.Int) (
+	nextBundle,
+	residualFracNum,
+	residualFracPrecision *big.Int,
+	err error) {
 
 	nextBundle = big.NewInt(0)
-	fracIntResidual = big.NewInt(0)
-	fracIntResidualPrecision = big.NewInt(0)
+	residualFracNum = big.NewInt(0)
+	residualFracPrecision = big.NewInt(0)
 	err = nil
 
 	ePrefix := "FixedDecimalNthRoot.GetNextFractionalBundleFromRadicand() "
 
-
 	if nthRoot.Cmp(big.NewInt(2)) == -1 {
-		err = fmt.Errorf(ePrefix +
-			"Error: Input parameter 'nthRoot' is less than 2!! " +
+		err = fmt.Errorf(ePrefix+
+			"Error: Input parameter 'nthRoot' is less than 2!! "+
 			"nthRoot='%v' ", nthRoot.Text(10))
 
-		return nextBundle, fracIntResidual, fracIntResidualPrecision, err
-	}
-
-	bigTen := big.NewInt(10)
-	oneToPrecision := big.NewInt(0).Exp(bigTen, fracPrecision, nil)
-
-
-	if formattedFracDigits.Cmp(oneToPrecision) == -1 {
-		err = fmt.Errorf(ePrefix +
-			"Error: Input parameter 'formattedFracDigits' is less than 1!! " +
-			"formattedFracDigits='%v' ", formattedFracDigits.Text(10))
-
-		return nextBundle, fracIntResidual, fracIntResidualPrecision, err
+		return nextBundle, residualFracNum, residualFracPrecision, err
 	}
 
 	bigZero := big.NewInt(0)
+	bigEleven := big.NewInt(0)
 
-	if fracPrecision.Cmp(bigZero) ==  1 {
+	if fracPrecision.Cmp(bigZero) == 0 ||
+		fmtFracNum.Cmp(bigEleven) == 0 {
 		// If fracPrecision is zero, it signals there are no more digits
-		// left to process. nextBundle == Zero
+		// left to process. fmtFracNum == 11 also signals
+		// that there are no fractional digits to process. In either
+		// of these cases, nextBundle == Zero
 		err = nil
-		return nextBundle, fracIntResidual, fracIntResidualPrecision, err
+		return nextBundle, residualFracNum, residualFracPrecision, err
 	}
 
-	scratchNum := big.NewInt(0)
-	quotient,remainder := big.NewInt(0).QuoRem(fracPrecision, nthRoot,scratchNum)
+	fracPrecisionRemainder := big.NewInt(0).Rem(fracPrecision, nthRoot)
 
-	if remainder.Cmp(bigZero) == 1 {
-		err = fmt.Errorf(ePrefix +
-			"Error: Input parameter 'fracPrecision' is NOT evenly divisible by 'nthRoot'!!! " +
+	if fracPrecisionRemainder.Cmp(bigZero) == 1 {
+		err = fmt.Errorf(ePrefix+
+			"Error: Input parameter 'fracPrecision' is NOT evely divisible by 'nthRoot'! "+
 			"fracPrecision='%v' nthRoot='%v' ", fracPrecision.Text(10), nthRoot.Text(10))
 
-		return nextBundle, fracIntResidual, fracIntResidualPrecision, err
+		return nextBundle, residualFracNum, residualFracPrecision, err
 	}
 
-	nthRootMinusPrecision := big.NewInt(0).Sub(fracPrecision, nthRoot)
+	bigTen := big.NewInt(10)
+	bigOne := big.NewInt(1)
 
-	scale := big.NewInt(0).Exp(bigTen, nthRootMinusPrecision, nil)
+	// fdNthRoot.fracMask1 and fdNthRoot.fracMask2 are static and
+	// were previously calculated in the call to FormatFractionalDigitsFromRadicand()
 
-	nextBundle = big.NewInt(0).Quo(formattedFracDigits, nthRootMinusPrecision)
+	fracMask3 := big.NewInt(0).Exp(
+		bigTen,
+		big.NewInt(0).Sub(
+			fracPrecision,
+			nthRoot), nil)
 
-	return nextBundle, fracIntResidual, fracIntResidualPrecision, err
+	fracMask4 := big.NewInt(0).Mul(bigEleven, fracMask3)
+
+	fracMask5 := big.NewInt(0).Exp(
+		bigTen,
+		big.NewInt(0).Sub(
+			fracPrecision,
+			bigOne),
+		nil)
+
+	adjustedBundle := big.NewInt(0).Quo(fmtFracNum, fracMask3)
+	nextBundle = big.NewInt(0).Sub(adjustedBundle, fdNthRoot.fracMask1)
+	adjustedBundle2 := big.NewInt(0).Sub(adjustedBundle, fdNthRoot.fracMask2)
+	adjustedBundle3 := big.NewInt(0).Mul(adjustedBundle2, fracMask3)
+	adjustedFracNum1 := big.NewInt(0).Sub(fmtFracNum, adjustedBundle3)
+	adjustedFracNum2 := big.NewInt(0).Add(fracMask4, adjustedFracNum1)
+	residualFracNum = big.NewInt(0).Sub(adjustedFracNum2, fracMask5)
+	residualFracPrecision = big.NewInt(0).Sub(fracPrecision, nthRoot)
+	err = nil
+
+	return nextBundle, residualFracNum, residualFracPrecision, err
 }
-*/
 
 // GetNextIntegerBundleFromRadicand - Returns the next bundle for an integer value.
 func (fdNthRoot *FixedDecimalNthRoot) GetNextIntegerBundleFromRadicand(
