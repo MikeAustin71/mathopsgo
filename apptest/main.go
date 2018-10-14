@@ -10,40 +10,104 @@ import (
 
 func main() {
 
+	numStr := "987654.4321123456789"
 	nthRoot := big.NewInt(3)
-	nStr := "859.00001234567"
-	fixDec, err := mathops.BigIntFixedDecimal{}.NewNumStr(nStr)
+
+	fDec, err := mathops.BigIntFixedDecimal{}.NewNumStr(numStr)
 
 	if err != nil {
-		fmt.Printf("Error returned from BigIntFixedDecimal{}.NewNumStr(nStr) " +
-			"nStr='%v'   Error='%v'",nStr,  err.Error())
+		fmt.Printf("Error returned by BigIntFixedDecimal{}.NewNumStr(numStr). " +
+			"numStr='%v' Error='%v' ", numStr, err.Error())
 		return
 	}
 
-	_, fracInteger := fixDec.GetIntegerFractionalParts()
+	_, fracPart := fDec.GetIntegerFractionalParts()
+	fracPrecision := big.NewInt(int64(fDec.GetPrecision()))
 
-	if err !=nil {
-		fmt.Printf("Failed to convert string to BigInt. " +
-			"Input String='%v'  ", nStr)
+
+	TestFixDecNthRootGetNextFracBundle(
+		fracPart.GetInteger(),
+		fracPrecision,
+		nthRoot)
+}
+
+func TestFixDecNthRootGetNextFracBundle(
+									fracNum,
+									fracPrecision,
+									nthRoot *big.Int) {
+
+	nthRootCalc := mathops.FixedDecimalNthRoot{}
+
+	fmtFracNum, fmtFracPrecision, err :=
+		nthRootCalc.FormatFractionalDigitsFromRadicand(
+			fracNum,
+			fracPrecision,
+			nthRoot)
+
+	if err != nil {
+		fmt.Printf("Error returned from FixedDecimalNthRoot{}.FormatFractionalDigitsFromRadicand() " +
+			"%v", err.Error())
+		return
 	}
 
-	fmt.Println("Original nStr= ", nStr)
-	fmt.Println("  fracInteger= ", fracInteger.GetInteger().Text(10))
-	fmt.Println("fracPrecision= ", fracInteger.GetPrecision())
 
-	TestFixDecNthRootFmtFracDigits(fracInteger.GetInteger(), fracInteger.GetPrecision(), nthRoot)
+	fmt.Println()
+	fmt.Println("FixedDecimalNthRoot.GetNextFractionalBundleFromRadicand()")
+	fmt.Println("=========================================================")
+	fmt.Println("   fmtFracNum: ", fmtFracNum.Text(10))
+	fmt.Println("fracPrecision: ", fmtFracPrecision.Text(10))
+	fmt.Println("      nthRoot: ", nthRoot.Text(10))
+	fmt.Println("=========================================================")
+	fmt.Println()
+	fmt.Println("---------------------------------------------------------")
+	bigZero := big.NewInt(0)
+	nextBundle := big.NewInt(0)
+	cycle := 0
+	timeStart := time.Now()
+	timeEnd := time.Now()
+
+	for fmtFracPrecision.Cmp(bigZero)==1 {
+
+		timeStart = time.Now()
+
+		nextBundle, fmtFracNum, fmtFracPrecision, err =
+		 	nthRootCalc.GetNextFractionalBundleFromRadicand(
+		 		fmtFracNum,
+				fmtFracPrecision,
+		 		nthRoot)
+
+		timeEnd = time.Now()
+
+		if err != nil {
+			fmt.Printf("Error returned bynthRootCalc.GetNextFractionalBundleFromRadicand(...). " +
+				"Error='%v' ", err.Error())
+			return
+		}
+
+		cycle++
+		timeDuration := timeEnd.Sub(timeStart)
+
+		duration := examples.CodeDurationToStr(timeDuration)
+		fmt.Println("           Cycle: ", cycle)
+		fmt.Println("Next Frac Bundle: ", nextBundle.Text(10))
+		fmt.Println("         fracNum: ", fmtFracNum.Text(10))
+		fmt.Println("   fracPrecision: ", fmtFracPrecision.Text(10))
+		fmt.Println("   Time Duration: ", duration)
+		fmt.Println("---------------------------------------------------------")
+		fmt.Println()
+	}
 
 }
 
 func TestFixDecNthRootFmtFracDigits(
-	fracInteger *big.Int,
-	fracIntPrecision uint,
+	fracInteger,
+	fracIntPrecision,
 	nthRoot *big.Int) {
-
+	nthRootCalc := mathops.FixedDecimalNthRoot{}
 	timeStart := time.Now()
 
 	formattedFracInteger, fracTotalDigits, err :=
-		mathops.FixedDecimalNthRoot{}.FormatFractionalDigitsFromRadicand(
+		nthRootCalc.FormatFractionalDigitsFromRadicand(
 			fracInteger,
 			fracIntPrecision,
 			nthRoot)
@@ -70,8 +134,10 @@ func TestFixDecNthRootFmtFracDigits(
 	timeDuration := timeEnd.Sub(timeStart)
 
 	duration := examples.CodeDurationToStr(timeDuration)
-	fmt.Println("         Time Duration: ", duration)
-
+	fmt.Println("            Time Duration: ", duration)
+	fmt.Println("------------------------------------------------------------")
+	fmt.Println("                FracMask1: ", nthRootCalc.FracMask1.Text(10))
+	fmt.Println("                FracMask2: ", nthRootCalc.FracMask2.Text(10))
 	fmt.Println("============================================================")
 	fmt.Println()
 
@@ -79,7 +145,7 @@ func TestFixDecNthRootFmtFracDigits(
 }
 
 func TestFixDecNthRootNextIntBundle(
-	integer,
+	integerNum,
 	intTotalDigits,
 	nthRoot *big.Int) {
 
@@ -93,10 +159,11 @@ func TestFixDecNthRootNextIntBundle(
 	fmt.Println()
 	fmt.Println("FixedDecimalNthRoot{}.GetNextIntegerBundleFromRadicand() ")
 	fmt.Println("=============================================")
-	fmt.Println("       integer: ", integer.Text(10))
+	fmt.Println("       integerNum: ", integerNum.Text(10))
 	fmt.Println("intTotalDigits: ", intTotalDigits.Text(10))
 	fmt.Println("       nthRoot: ", nthRoot.Text(10))
 	fmt.Println("=============================================")
+	fmt.Println("--------------------------------------------------------")
 
 	timeStart := time.Now()
 	timeEnd := time.Now()
@@ -104,10 +171,10 @@ func TestFixDecNthRootNextIntBundle(
 	for intTotalDigits.Cmp(bigZero)==1{
 
 		timeStart = time.Now()
-
-		nextBundle, nextBundleTotDigits, integer, intTotalDigits, err =
-			mathops.FixedDecimalNthRoot{}.GetNextIntegerBundleFromRadicand(
-			integer,
+		nthRootCalc := mathops.FixedDecimalNthRoot{}
+		nextBundle, nextBundleTotDigits, integerNum, intTotalDigits, err =
+			nthRootCalc.GetNextIntegerBundleFromRadicand(
+				integerNum,
 			intTotalDigits,
 			nthRoot)
 
@@ -124,14 +191,13 @@ func TestFixDecNthRootNextIntBundle(
 		fmt.Println("                 Cycle: ", cycle)
 		fmt.Println("           Next Bundle: ", nextBundle.Text(10))
 		fmt.Println("Next Bundle Tot-Digits: ",nextBundleTotDigits.Text(10))
-		fmt.Println("               integer: ", integer.Text(10))
+		fmt.Println("               integerNum: ", integerNum.Text(10))
 		fmt.Println("     Num of Int Digits: ", intTotalDigits.Text(10))
 		fmt.Println("               nthRoot: ", nthRoot.Text(10))
 		timeDuration := timeEnd.Sub(timeStart)
 
 		duration := examples.CodeDurationToStr(timeDuration)
 		fmt.Println("         Time Duration: ", duration)
-
 		fmt.Println("--------------------------------------------------------")
 		fmt.Println()
 
