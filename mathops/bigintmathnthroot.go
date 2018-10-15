@@ -752,7 +752,7 @@ func (nthrt *BigIntMathNthRoot) calcPrecision(
 	if nthRoot.Cmp(bigZero) == 0 {
 		ePrefix := "BigIntMathNthRoot.calcPrecision() "
 		err = errors.New(ePrefix +
-			"Error: nthRoot=0. Division by nthRoot is Division by Zero and will FAIL!")
+			"Error: nthRoot=0. Division by nthRoot is Division by zero and will FAIL!")
 		return actualPrecision, err
 
 	}
@@ -967,7 +967,7 @@ func (nthrt *BigIntMathNthRoot) getNextBundleBigIntValue(
 
 	} else if !intBundleRadicand.IsZero() {
 
-		// fmt.Println("Calc inBundleRadicand is NOT Zero")
+		// fmt.Println("Calc inBundleRadicand is NOT zero")
 
 		magnitude, errx = BigIntMath{}.GetMagnitude(intBundleRadicand.GetAbsoluteBigIntValue())
 
@@ -1040,7 +1040,7 @@ func (nthrt *BigIntMathNthRoot) getNextBundleBigIntValue(
 
 	} else if !fracBundleRadicand.IsZero() {
 
-		// fmt.Println("Calc fracBundleRadicand Is NOT Zero")
+		// fmt.Println("Calc fracBundleRadicand Is NOT zero")
 
 		magnitude, errx = BigIntMath{}.GetMagnitude(fracBundleRadicand.GetAbsoluteBigIntValue())
 

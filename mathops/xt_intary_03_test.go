@@ -682,7 +682,7 @@ func TestIntAry_DivideByInt64_02(t *testing.T) {
 	err := ia.DivideByInt64(divisor, maxPrecision)
 
 	if err == nil {
-		t.Errorf("Expected Divide By Zero Error. No Error Presented. Error = %v", err)
+		t.Errorf("Expected Divide By zero Error. No Error Presented. Error = %v", err)
 	}
 
 }
@@ -1334,7 +1334,7 @@ func TestIntAry_DivideThisBy_06(t *testing.T) {
 	_, err := ia1.DivideThisBy(&ia2, 0, 15)
 
 	if err == nil {
-		t.Error("Expected an error from Divideby Zero. No Error Received!")
+		t.Error("Expected an error from Divideby zero. No Error Received!")
 	}
 
 }

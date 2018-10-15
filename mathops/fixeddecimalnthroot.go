@@ -5,18 +5,191 @@ import (
 	"math/big"
 )
 
+type NthRootBeta struct {
+
+	LastGuessIdx int
+	NextGuessIdx int
+	Idx 			int
+	Beta 			*big.Int
+	Term1			*big.Int
+	By        *big.Int
+	Term2b    *big.Int
+	RPrime		*big.Int
+	YPrime		*big.Int
+
+}
+
+func (nRootBeta NthRootBeta) New(idx, betaNum int) NthRootBeta {
+
+	beta := NthRootBeta{}
+	beta.Idx = idx
+	beta.Beta = big.NewInt(int64(betaNum))
+	beta.Term1 = big.NewInt(0)
+	beta.RPrime = big.NewInt(0)
+	beta.YPrime = big.NewInt(0)
+
+	return beta
+}
+
 type FixedDecimalNthRoot struct {
 	NthRoot   BigIntFixedDecimal
 	Radicand  BigIntFixedDecimal
 	Root      BigIntFixedDecimal
 	FracMask1 *big.Int
 	FracMask2 *big.Int
+	B         *big.Int // B = base number system (always 10)
+	BPwrN     *big.Int // B^n
+	N         *big.Int // NthRoot as *big.Int type
+	zero      *big.Int // zero
+	one       *big.Int // one
+	two       *big.Int // two
+	ten       *big.Int // ten
+	eleven    *big.Int // eleven
+	betas  [] NthRootBeta
 }
 
-// FormatFractionalDigitsFromRadicand - Performs two tasks:
-// 	(1) Formats the fractional part of the radicand for bundle allocation.
-//  (2) Creates calculation constants which will be stored in parent
-//      structure for used in method GetNextFractionalBundleFromRadicand()
+// fdNthRoot.NthRoot and fdNthRoot.BPwrN have already been set.
+//
+func (fdNthRoot *FixedDecimalNthRoot) ComputeBeta(
+				r,
+				alpha,
+				y *big.Int) (
+											rPrime,
+											yPrime *big.Int,
+											err error) {
+
+	rPrime = big.NewInt(0)
+	yPrime = big.NewInt(0)
+	err = nil
+
+
+	term2b := big.NewInt(0).Exp(y, fdNthRoot.N, nil)
+	term2b.Mul(term2b, fdNthRoot.BPwrN)
+
+	By := big.NewInt(0).Mul(fdNthRoot.B, y)
+
+	term1 := big.NewInt(0).Mul(fdNthRoot.BPwrN, r)
+	term1.Add(term1, alpha)
+
+	i:= 0
+
+	for i=0; i < 10; i++ {
+
+		fdNthRoot.betas[i].NextGuessIdx = i+1
+
+		if i > 0 {
+			fdNthRoot.betas[i].LastGuessIdx = i-1
+		}
+
+		fdNthRoot.betas[i].Term1.Set(term1)
+		fdNthRoot.betas[i].By.Set(By)
+		fdNthRoot.betas[i].Term2b.Set(term2b)
+
+		fdNthRoot.GuessBeta(&fdNthRoot.betas[i])
+
+		if fdNthRoot.betas[i].RPrime.Cmp(fdNthRoot.zero) == -1 {
+			break
+		}
+	}
+
+	i--
+
+	rPrime.Set(fdNthRoot.betas[i].RPrime)
+	yPrime.Set(fdNthRoot.betas[i].YPrime)
+	err = nil
+
+	return rPrime, yPrime, err
+}
+
+func (fdNthRoot *FixedDecimalNthRoot)GuessBeta(
+	beta *NthRootBeta)  {
+
+	term2a := big.NewInt(0).Add(beta.By, beta.Beta)
+	term2a.Exp(term2a, fdNthRoot.N,nil)
+	term2:= big.NewInt(0).Sub(term2a,beta.Term2b)
+	beta.RPrime.Sub(beta.Term1, term2)
+	beta.YPrime.Set(beta.Beta)
+	return
+}
+
+
+// FormatCalculationConstants - Generates calculation constants to be used in
+// computing the nthRoot of the target radicand.
+//
+// Input Parameters
+// ================
+//
+// nthRoot								*big.Int	- The nthRoot must be defined as positive value greater than
+// 																		or equal to '2'.
+//
+func (fdNthRoot *FixedDecimalNthRoot) FormatCalculationConstants(nthRoot *big.Int) error {
+
+	ePrefix := "FixedDecimalNthRoot.FormatCalculationConstants() "
+
+	if nthRoot.Cmp(big.NewInt(2)) == -1 {
+
+		return fmt.Errorf(ePrefix+
+			"Error: Input parameter 'nthRoot' is less than two!. "+
+			"nthRoot='%v' ", nthRoot.Text(10))
+	}
+
+
+
+	// Set bigZero
+	fdNthRoot.zero = big.NewInt(0)
+
+	// Set bigOne
+	fdNthRoot.one = big.NewInt(1)
+
+	// Set bigTwo
+	fdNthRoot.two = big.NewInt(2)
+
+	// Set bigTen
+	fdNthRoot.ten = big.NewInt(10)
+
+	// Set bigEleven
+	fdNthRoot.eleven = big.NewInt(11)
+
+	// Setting number system base = 10
+	fdNthRoot.B = big.NewInt(10)
+
+	// Setting N
+	fdNthRoot.N = big.NewInt(0).Set(nthRoot)
+
+	// B^n
+	fdNthRoot.BPwrN = big.NewInt(0).Exp(fdNthRoot.ten, nthRoot, nil)
+
+
+	// FracMask1 and FracMask2 are
+	// calculation constants used in
+	// calculating bundles of fractional
+	// digits.
+	fdNthRoot.FracMask1 =
+		big.NewInt(0).Mul(
+			big.NewInt(11),
+			big.NewInt(0).Exp(
+				fdNthRoot.ten,
+				nthRoot,
+				nil))
+
+	fdNthRoot.FracMask2 = big.NewInt(0).Exp(
+		fdNthRoot.ten,
+		big.NewInt(0).Add(
+			nthRoot,
+			big.NewInt(1)), nil)
+
+	// Set up Beta guesses
+	fdNthRoot.betas = make([]NthRootBeta, 10, 0)
+
+	for i:= 0; i < 10; i++ {
+		fdNthRoot.betas[i] = NthRootBeta{}.New(i,i)
+	}
+
+	return nil
+}
+
+// FormatFractionalDigitsFromRadicand - Formats the fractional digits of
+// the radicand for bundle allocation.
 //
 // The fractionalRadicand is received as a type *big.Int integer with
 // an associated precision specification. Together these two parameters
@@ -64,7 +237,7 @@ type FixedDecimalNthRoot struct {
 //                                		Example: fracRadicand = 123456; fracRadicandPrecision=7 defines
 //                                         	 a value of 0.0123456.
 //
-//                                  	Note: If fracRadicandPrecision is less than Zero, an error
+//                                  	Note: If fracRadicandPrecision is less than zero, an error
 //                                  	will be returned.
 //
 // nthRoot								*big.Int	- The nthRoot must be defined as positive value greater than
@@ -97,21 +270,17 @@ func (fdNthRoot *FixedDecimalNthRoot) FormatFractionalDigitsFromRadicand(
 	formattedFracInteger = big.NewInt(0)
 	fracPrecision = big.NewInt(0)
 	err = nil
-	fdNthRoot.FracMask1 = big.NewInt(0)
-	fdNthRoot.FracMask2 = big.NewInt(0)
 
 	if nthRoot.Cmp(big.NewInt(2)) == -1 {
 
 		err = fmt.Errorf(ePrefix+
-			"Error: Input parameter 'nthRoot' is less than Two!. "+
+			"Error: Input parameter 'nthRoot' is less than two!. "+
 			"nthRoot='%v' ", nthRoot.Text(10))
 
 		return formattedFracInteger, fracPrecision, err
 	}
 
-	bigZero := big.NewInt(0)
-
-	if fracRadicandPrecision.Cmp(bigZero) == - 1{
+	if fracRadicandPrecision.Cmp(fdNthRoot.zero) == - 1{
 		err = fmt.Errorf(ePrefix+
 			"Error: Input parameter 'fracRadicandPrecision' is less than ZERO!. "+
 			"fracRadicandPrecision='%v' ", fracRadicandPrecision.Text(10))
@@ -119,7 +288,7 @@ func (fdNthRoot *FixedDecimalNthRoot) FormatFractionalDigitsFromRadicand(
 		return formattedFracInteger, fracPrecision, err
 	}
 
-	cmpFracRadicandZero := fracRadicand.Cmp(bigZero)
+	cmpFracRadicandZero := fracRadicand.Cmp(fdNthRoot.zero)
 
 	if cmpFracRadicandZero == -1 {
 
@@ -136,40 +305,23 @@ func (fdNthRoot *FixedDecimalNthRoot) FormatFractionalDigitsFromRadicand(
 		return formattedFracInteger, fracPrecision, err
 	}
 
-	bigTen := big.NewInt(10)
+
 	fracPrecision.Set(fracRadicandPrecision)
 
-	scale := big.NewInt(0).Exp(bigTen, fracPrecision, nil)
-	bigEleven := big.NewInt(11)
-	leadingOneOne := big.NewInt(0).Mul(bigEleven, scale)
+	scale := big.NewInt(0).Exp(fdNthRoot.ten, fracPrecision, nil)
+
+	leadingOneOne := big.NewInt(0).Mul(big.NewInt(11), scale)
 	formattedFracInteger = big.NewInt(0).Add(fracRadicand, leadingOneOne)
 
 	precisionRemainder := big.NewInt(0).Rem(fracPrecision, nthRoot)
 
-	if precisionRemainder.Cmp(bigZero) == 1 {
+	if precisionRemainder.Cmp(fdNthRoot.zero) == 1 {
 		nthRootMinusRmdr := big.NewInt(0).Sub(nthRoot, precisionRemainder)
-		scale = big.NewInt(0).Exp(bigTen, nthRootMinusRmdr, nil)
+		scale = big.NewInt(0).Exp(fdNthRoot.ten, nthRootMinusRmdr, nil)
 		formattedFracInteger.Mul(formattedFracInteger, scale)
 		fracPrecision.Add(fracPrecision, nthRootMinusRmdr)
 	}
 
-	bigOne := big.NewInt(1)
-
-	// Only FracMask1 and FracMask2 are
-	// calculation constants
-	fdNthRoot.FracMask1 =
-		big.NewInt(0).Mul(
-			bigEleven,
-			big.NewInt(0).Exp(
-				bigTen,
-				nthRoot,
-				nil))
-
-	fdNthRoot.FracMask2 = big.NewInt(0).Exp(
-		bigTen,
-		big.NewInt(0).Add(
-			nthRoot,
-			bigOne), nil)
 
 	return formattedFracInteger, fracPrecision, err
 }
@@ -250,22 +402,20 @@ func (fdNthRoot FixedDecimalNthRoot) GetNextFractionalBundleFromRadicand(
 		return nextBundle, residualFracNum, residualFracPrecision, err
 	}
 
-	bigZero := big.NewInt(0)
-	bigEleven := big.NewInt(11)
 
-	if fmtFracPrecision.Cmp(bigZero) == 0 ||
-		fmtFracNum.Cmp(bigEleven) == 0 {
+	if fmtFracPrecision.Cmp(fdNthRoot.zero) == 0 ||
+		fmtFracNum.Cmp(fdNthRoot.eleven) == 0 {
 		// If fmtFracPrecision is zero, it signals there are no more digits
 		// left to process. fmtFracNum == 11 also signals
 		// that there are no fractional digits to process. In either
-		// of these cases, nextBundle == Zero
+		// of these cases, nextBundle == zero
 		err = nil
 		return nextBundle, residualFracNum, residualFracPrecision, err
 	}
 
 	fracPrecisionRemainder := big.NewInt(0).Rem(fmtFracPrecision, nthRoot)
 
-	if fracPrecisionRemainder.Cmp(bigZero) == 1 {
+	if fracPrecisionRemainder.Cmp(fdNthRoot.zero) == 1 {
 		err = fmt.Errorf(ePrefix+
 			"Error: Input parameter 'fmtFracPrecision' is NOT evely divisible by 'nthRoot'! "+
 			"fmtFracPrecision='%v' nthRoot='%v' ", fmtFracPrecision.Text(10), nthRoot.Text(10))
@@ -273,25 +423,22 @@ func (fdNthRoot FixedDecimalNthRoot) GetNextFractionalBundleFromRadicand(
 		return nextBundle, residualFracNum, residualFracPrecision, err
 	}
 
-	bigTen := big.NewInt(10)
-	bigOne := big.NewInt(1)
-
 	// fdNthRoot.FracMask1 and fdNthRoot.FracMask2 are static and
 	// were previously calculated in the call to FormatFractionalDigitsFromRadicand()
 
 	fracMask3 := big.NewInt(0).Exp(
-		bigTen,
+		fdNthRoot.ten,
 		big.NewInt(0).Sub(
 			fmtFracPrecision,
 			nthRoot), nil)
 
-	fracMask4 := big.NewInt(0).Mul(bigEleven, fracMask3)
+	fracMask4 := big.NewInt(0).Mul(fdNthRoot.eleven, fracMask3)
 
 	fracMask5 := big.NewInt(0).Exp(
-		bigTen,
+		fdNthRoot.ten,
 		big.NewInt(0).Add(
 			fmtFracPrecision,
-			bigOne),
+			fdNthRoot.one),
 		nil)
 
 	adjustedBundle := big.NewInt(0).Quo(fmtFracNum, fracMask3)
@@ -352,16 +499,14 @@ func (fdNthRoot *FixedDecimalNthRoot) GetNextIntegerBundleFromRadicand(
 
 	ePrefix := "FixedDecimalNthRoot.GetNextIntegerBundleFromRadicand() "
 
-	bigZero := big.NewInt(0)
-
-	if integerNum.Cmp(bigZero) == -1 {
+	if integerNum.Cmp(fdNthRoot.zero) == -1 {
 		err = fmt.Errorf(ePrefix+"Error: Input Parameter 'integerNum' is less than zero! "+
 			"integerNum='%v' ", integerNum.Text(10))
 
 		return nextBundle, nextBundleTotalDigits, residualInteger, residualIntTotalDigits, err
 	}
 
-	if intTotalDigits.Cmp(bigZero) == -1 {
+	if intTotalDigits.Cmp(fdNthRoot.zero) == -1 {
 		err = fmt.Errorf(ePrefix+"Error: Input Parameter 'intTotalDigits' is less than zero! "+
 			"intTotalDigits='%v' ", intTotalDigits.Text(10))
 
@@ -380,8 +525,8 @@ func (fdNthRoot *FixedDecimalNthRoot) GetNextIntegerBundleFromRadicand(
 
 	numOfBundlesInThisInteger, remainingDigits := big.NewInt(0).QuoRem(intTotalDigits, nthRoot, scratch)
 
-	cmpNumOfBundles := numOfBundlesInThisInteger.Cmp(bigZero)
-	cmpRemainDigits := remainingDigits.Cmp(bigZero)
+	cmpNumOfBundles := numOfBundlesInThisInteger.Cmp(fdNthRoot.zero)
+	cmpRemainDigits := remainingDigits.Cmp(fdNthRoot.zero)
 
 	if cmpNumOfBundles == 0 && cmpRemainDigits == 0 {
 		return nextBundle, nextBundleTotalDigits, residualInteger, residualIntTotalDigits, err

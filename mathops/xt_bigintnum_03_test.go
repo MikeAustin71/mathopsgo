@@ -27,7 +27,7 @@ func TestBigIntNum_GetActualNumberOfDigits_01(t *testing.T) {
 	}
 
 	if shouldBeZeroVal != isZeroVal {
-		t.Errorf("Error: Expected Zero Val flag='%v'. Instead Zero Val flag='%v'. ",
+		t.Errorf("Error: Expected zero Val flag='%v'. Instead zero Val flag='%v'. ",
 			shouldBeZeroVal, isZeroVal)
 	}
 
@@ -62,7 +62,7 @@ func TestBigIntNum_GetActualNumberOfDigits_02(t *testing.T) {
 	}
 
 	if shouldBeZeroVal != isZeroVal {
-		t.Errorf("Error: Expected Zero Val flag='%v'. Instead Zero Val flag='%v'. ",
+		t.Errorf("Error: Expected zero Val flag='%v'. Instead zero Val flag='%v'. ",
 			shouldBeZeroVal, isZeroVal)
 	}
 

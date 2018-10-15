@@ -369,7 +369,7 @@ func (bNum *BigIntNum) Divide(
 	ePrefix := "BigIntNum.Divide() "
 
 	if divisor.IsZero() {
-		return BigIntNum{}, errors.New(ePrefix + "ERROR: Attempted Divide by Zero!")
+		return BigIntNum{}, errors.New(ePrefix + "ERROR: Attempted Divide by zero!")
 	}
 
 	return BigIntMathDivide{}.BigIntNumFracQuotient(bNum.CopyOut(), divisor, maxPrecision)
@@ -3360,7 +3360,7 @@ func (bNum BigIntNum) NewTen(precision uint) BigIntNum {
 
 }
 
-// New Zero - Returns a BigIntNum instance with a value equal to zero.
+// New zero - Returns a BigIntNum instance with a value equal to zero.
 // The number of zeros created after the decimal place holder
 // (fractional digits) is determined by the input parameter 'precision'.
 // To create an integer with a value equal to '0', set 'precision' equal
@@ -3983,7 +3983,7 @@ func (bNum *BigIntNum) SetIntFracStrings(intStr, fracStr string, signVal int) er
 	lStr := len(intStr)
 
 	if lStr == 0 {
-		return errors.New(ePrefix + "Error: Input Parameter 'intStr' is Zero Length!")
+		return errors.New(ePrefix + "Error: Input Parameter 'intStr' is zero Length!")
 	}
 
 	isFirstRune := true
@@ -4574,7 +4574,7 @@ func (bNum *BigIntNum) SetSignValue(signVal int) error {
 //  "123456789"	 			  6						"123.456789"
 //  "123"               5	          "0.00123"
 //  "0"								  3						"0"
-//  "123456.789"				0						"123456.789"		- Zero has no effect on original number string
+//  "123456.789"				0						"123456.789"		- zero has no effect on original number string
 // "-123456.789"        0          "-123456.789"
 // "-123456.789"        3          "-123.456789"
 // "-123456789"			    6					 "-123.456789"
@@ -4632,7 +4632,7 @@ func (bNum *BigIntNum) ShiftPrecisionLeft(shiftLeftPlaces uint) {
 //  "123456789"	 			  6						"123456789000000"
 //  "123"               5	          "12300000"
 //  "0"								  3						"0"
-//  "123456.789"				0						"123456.789"		- Zero has no effect on original number string
+//  "123456.789"				0						"123456.789"		- zero has no effect on original number string
 // "-123456.789"        0          "-123456.789"
 // "-123456.789"        3          "-123456789"
 // "-123456789"			    6					 "-123456789000000"

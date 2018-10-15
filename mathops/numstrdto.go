@@ -1150,7 +1150,7 @@ func (nDto *NumStrDto) GetAbsoluteBigInt() (*big.Int, error) {
 
 	if lenAllNumRunes == 0 {
 		s := ePrefix +
-			"- The existing NumStrDto is a Zero length number. " +
+			"- The existing NumStrDto is a zero length number. " +
 			"Re-initialize the NumStrDto object and try again."
 		return big.NewInt(0), errors.New(s)
 
@@ -1734,7 +1734,7 @@ func (nDto *NumStrDto) GetScaleFactor() (*big.Int, error) {
 
 	if len(nDto.absAllNumRunes) == 0 {
 		s := ePrefix +
-			"- The existing NumStrDto is a Zero length number. " +
+			"- The existing NumStrDto is a zero length number. " +
 			"Re-initialize the NumStrDto object and try again."
 		return big.NewInt(0), errors.New(s)
 
@@ -3284,7 +3284,7 @@ func (nDto *NumStrDto) ParseNumStr(str string) (NumStrDto, error) {
 //
 // shiftPrecision 	 			 uint -		The number of positions which the decimal point
 //																	will be shifted. If 'shiftPrecision is Equal to
-//																	Zero, no action will be taken, no error will be
+//																	zero, no action will be taken, no error will be
 //																	issued and the original signedNumStr will be
 //																	returned.
 //
@@ -3453,7 +3453,7 @@ func (nDto *NumStrDto) SetThousandsSeparator(thousandsSeparator rune) {
 //	 "123"								5						"0.00123"
 //   "0"									3						"0.000"
 // 	 "0.000"							2						"0.00000"
-//  "123456.789"					0						"123456.789"		- Zero 'shiftPrecision' has no effect on
+//  "123456.789"					0						"123456.789"		- zero 'shiftPrecision' has no effect on
 // 																											original number string
 // "-123456.789"          0          "-123.456789"
 // "-123456.789"          3          "-123.456789"
@@ -3564,7 +3564,7 @@ func (nDto *NumStrDto) ShiftPrecisionLeft(
 //  "123456789"	 			  6						"123456789000000"
 //  "123"               5	          "12300000"
 //  "0"								  3						"0"
-//  "123456.789"				0						"123456.789"		- Zero has no effect on original number string
+//  "123456.789"				0						"123456.789"		- zero has no effect on original number string
 // "-123456.789"        0          "-123456.789"
 // "-123456.789"        3          "-123456789"
 // "-123456789"			    6					 "-123456789000000"

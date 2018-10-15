@@ -4254,7 +4254,7 @@ func (ia IntAry) NewUint64Exponent(uint64Num uint64, exponent int) IntAry {
 }
 
 // NewZero - Creates a new IntAry instance and sets
-// the value to Zero.
+// the value to zero.
 //
 // Input parameter 'precision' indicates the number of digits
 // to be formatted to the right of the decimal place. Input
@@ -4873,7 +4873,7 @@ func (ia *IntAry) SetIntAryToThree(precision int) error {
 	return nil
 }
 
-// SetIntAryToTen - Sets the value of the intAry object to Ten ('10')
+// SetIntAryToTen - Sets the value of the intAry object to ten ('10')
 func (ia *IntAry) SetIntAryToTen(precision int) error {
 
 	if precision < 0 {
@@ -4895,7 +4895,7 @@ func (ia *IntAry) SetIntAryToTen(precision int) error {
 	return nil
 }
 
-// SetIntAryToZero - Sets the value of the intAry object to Zero ('0').
+// SetIntAryToZero - Sets the value of the intAry object to zero ('0').
 func (ia *IntAry) SetIntAryToZero(precision uint) {
 
 	precision = ia.validateUintToMaxPrecision(precision)
@@ -5158,7 +5158,7 @@ func (ia *IntAry) SetIntAryWithIntFracStr(intStr, fracStr string, signVal int) e
 	lStr := len(intStr)
 
 	if lStr == 0 {
-		return errors.New(ePrefix + "Error: Input Parameter 'intStr' is Zero Length!")
+		return errors.New(ePrefix + "Error: Input Parameter 'intStr' is zero Length!")
 	}
 
 	isFirstRune := true
@@ -6244,7 +6244,7 @@ func (ia *IntAry) SetSeparators(decimalSeparator, thousandsSeparator, currencySy
 //	 "123"								5						"0.00123"
 //   "0"									3						"0.000"
 // 	 "0.000"							2						"0.00000"
-//  "123456.789"					0						"123456.789"		- Zero 'shiftPrecision' has no effect on
+//  "123456.789"					0						"123456.789"		- zero 'shiftPrecision' has no effect on
 // 																											original number string
 // "-123456.789"          0          "-123.456789"
 // "-123456.789"          3          "-123.456789"
@@ -6281,7 +6281,7 @@ func (ia *IntAry) ShiftPrecisionLeft(shiftPrecision uint) {
 //  "123456789"	 			  6						"123456789000000"
 //  "123"               5	          "12300000"
 //  "0"								  3						"0"
-//  "123456.789"				0						"123456.789"		- Zero has no effect on original number string
+//  "123456.789"				0						"123456.789"		- zero has no effect on original number string
 // "-123456.789"        0          "-123456.789"
 // "-123456.789"        3          "-123456789"
 // "-123456789"			    6					 "-123456789000000"

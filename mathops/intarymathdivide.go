@@ -244,7 +244,7 @@ func (iaDivide IntAryMathDivide) DivideByInt64(
 	ePrefix := "iaDivide IntAryMathDivide() "
 
 	if divisor == 0 {
-		return errors.New(ePrefix + "'divisor' Equals Zero. Cannot divide by zero! \n")
+		return errors.New(ePrefix + "'divisor' Equals zero. Cannot divide by zero! \n")
 	}
 
 	if maxPrecision < -1 {

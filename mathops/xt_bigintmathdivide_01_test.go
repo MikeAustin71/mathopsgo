@@ -1183,7 +1183,7 @@ func TestBigIntMathDivide_BigIntFracQuotient_20(t *testing.T) {
 			maxPrecision)
 
 	if err == nil {
-		t.Error("Error - Expected Divide By Zero Error. NO ERROR Returned! ")
+		t.Error("Error - Expected Divide By zero Error. NO ERROR Returned! ")
 	}
 
 }

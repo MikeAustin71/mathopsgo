@@ -216,7 +216,7 @@ func (iaPwr IntAryMathPower) PwrByMultiplication(
 
 	if base.IsZero() {
 		return &iaReturn,
-			errors.New(ePrefix + "'base' is Zero value. INVALID INPUT!")
+			errors.New(ePrefix + "'base' is zero value. INVALID INPUT!")
 	}
 
 	if exponent.IsZero() {

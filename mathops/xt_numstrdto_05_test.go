@@ -11,7 +11,7 @@ func TestNumStrDto_IsNumStrDtoValid_01(t *testing.T) {
 	lenAbsAllNumRunes := len(absAllNumRunes)
 
 	if lenAbsAllNumRunes != 0 {
-		t.Errorf("Expected Zero Length absAllNumRunes array. Array length was '%v'",
+		t.Errorf("Expected zero Length absAllNumRunes array. Array length was '%v'",
 			lenAbsAllNumRunes)
 	}
 

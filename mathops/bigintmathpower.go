@@ -127,10 +127,10 @@ func (bIPwr BigIntMathPower) BigIntPwr(
 
 			cmpResult = baseToPwr.Cmp(bigIZero)
 			if cmpResult == 1 {
-				// baseToPwr is GREATER Than Zero
+				// baseToPwr is GREATER Than zero
 				roundFactor = big.NewInt(0).Mul(bigIPlusFive, scale)
 			} else if cmpResult == -1 {
-				// baseToPwr is LESS Than Zero
+				// baseToPwr is LESS Than zero
 				roundFactor = big.NewInt(0).Mul(bigIMinusFive, scale)
 			}	else {
 				baseToPwrPrecision = 0

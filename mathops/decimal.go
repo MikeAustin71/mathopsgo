@@ -3377,7 +3377,7 @@ func (dec *Decimal) SetUint64(uint64Num uint64, precision uint) {
 //  "123456789"	 			  6						"123.456789"
 //  "123"               5	          "0.00123"
 //  "0"								  3						"0"
-//  "123456.789"				0						"123456.789"		- Zero has no effect on original number string
+//  "123456.789"				0						"123456.789"		- zero has no effect on original number string
 // "-123456.789"        0          "-123456.789"
 // "-123456.789"        3          "-123.456789"
 // "-123456789"			    6					 "-123.456789"
@@ -3442,7 +3442,7 @@ func (dec *Decimal) ShiftPrecisionLeft(shiftLeftPlaces uint) error {
 //  "123456789"	 			  6						"123456789000000"
 //  "123"               5	          "12300000"
 //  "0"								  3						"0"
-//  "123456.789"				0						"123456.789"		- Zero has no effect on original number string
+//  "123456.789"				0						"123456.789"		- zero has no effect on original number string
 // "-123456.789"        0          "-123456.789"
 // "-123456.789"        3          "-123456789"
 // "-123456789"			    6					 "-123456789000000"

@@ -42,7 +42,7 @@ func (iaAdd IntAryMathAdd) AddMany(total *IntAry, iaMany ...*IntAry) {
 	return
 }
 
-// Adds Two IntAry instances and returns the result as a new
+// Adds two IntAry instances and returns the result as a new
 // IntAry Instance.
 //
 // The return value 'IntAry' will contain the numeric separators

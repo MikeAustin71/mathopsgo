@@ -21,14 +21,14 @@ func ExampleBigIntMagnitude_01(target *big.Int) {
 
 	fmt.Println("   target= ", target.Text(10))
 	fmt.Println("magnitude= ", magnitude.Text(10))
-	fmt.Println("Ten Value= ", val.Text(10))
+	fmt.Println("ten Value= ", val.Text(10))
 
 	bigTarget := mathops.BigIntNum{}.NewBigInt(target, 0)
 	bigMagnitude := mathops.BigIntNum{}.NewBigInt(magnitude, 0)
 	bigTenValue := mathops.BigIntNum{}.NewBigInt(val, 0)
 	fmt.Println("========================================")
 	fmt.Println("   Target Str: ", bigTarget.FormatThousandsStr(mathops.LEADMINUSNEGVALFMTMODE))
-	fmt.Println("Ten Value Str: ", bigTenValue.FormatThousandsStr(mathops.LEADMINUSNEGVALFMTMODE))
+	fmt.Println("ten Value Str: ", bigTenValue.FormatThousandsStr(mathops.LEADMINUSNEGVALFMTMODE))
 	fmt.Println("    Magnitude: ", bigMagnitude.GetNumStr())
 
 }
