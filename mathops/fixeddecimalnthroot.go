@@ -197,12 +197,12 @@ type FixedDecimalNthRoot struct {
 	betas                 		[] NthRootBeta // Array of beta guesses
 }
 
-func (fdNthRoot *FixedDecimalNthRoot) GetNthRoot(
+func (fdNthRoot *FixedDecimalNthRoot) FixedDecNthRoot(
 	radicand,
 	nthRoot BigIntFixedDecimal,
 	maxPrecision uint64) (root BigIntFixedDecimal, err error) {
 
-	ePrefix := "FixedDecimalNthRoot.GetNthRoot() "
+	ePrefix := "FixedDecimalNthRoot.FixedDecNthRoot() "
 
 	root = BigIntFixedDecimal{}.NewZero(0)
 	err = nil
@@ -382,6 +382,7 @@ func (fdNthRoot *FixedDecimalNthRoot) CalculateRoot() (result BigIntFixedDecimal
 
 		return result, err
 }
+
 
 func (fdNthRoot *FixedDecimalNthRoot) ComputeBeta(
 	r,

@@ -896,3 +896,235 @@ func TestBigIntFixedDecimal_GetNumStr_04(t *testing.T) {
 
 }
 
+func TestBigIntFixedDecimal_IsEven_01(t *testing.T) {
+
+	numStr := "4"
+	expectedValue := true
+
+	fixedDec, err := BigIntFixedDecimal{}.NewNumStr(numStr)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntFixedDecimal{}.NewNumStr(numStr) " +
+			"numStr='%v' Error='%v' ", numStr, err.Error())
+	}
+
+	isEven := fixedDec.IsEven()
+
+	if expectedValue != isEven {
+		t.Errorf("Error: Expected result='%v'. Instead, result='%v'",
+			expectedValue, isEven)
+	}
+
+}
+
+func TestBigIntFixedDecimal_IsEven_02(t *testing.T) {
+
+	numStr := "-4"
+	expectedValue := true
+
+	fixedDec, err := BigIntFixedDecimal{}.NewNumStr(numStr)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntFixedDecimal{}.NewNumStr(numStr) " +
+			"numStr='%v' Error='%v' ", numStr, err.Error())
+	}
+
+	isEven := fixedDec.IsEven()
+
+	if expectedValue != isEven {
+		t.Errorf("Error: Expected result='%v'. Instead, result='%v'",
+			expectedValue, isEven)
+	}
+
+}
+
+func TestBigIntFixedDecimal_IsEven_03(t *testing.T) {
+
+	numStr := "0"
+	expectedValue := true
+
+	fixedDec, err := BigIntFixedDecimal{}.NewNumStr(numStr)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntFixedDecimal{}.NewNumStr(numStr) " +
+			"numStr='%v' Error='%v' ", numStr, err.Error())
+	}
+
+	isEven := fixedDec.IsEven()
+
+	if expectedValue != isEven {
+		t.Errorf("Error: Expected result='%v'. Instead, result='%v'",
+			expectedValue, isEven)
+	}
+
+}
+
+func TestBigIntFixedDecimal_IsEven_04(t *testing.T) {
+
+	numStr := "5"
+	expectedValue := false
+
+	fixedDec, err := BigIntFixedDecimal{}.NewNumStr(numStr)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntFixedDecimal{}.NewNumStr(numStr) " +
+			"numStr='%v' Error='%v' ", numStr, err.Error())
+	}
+
+	isEven := fixedDec.IsEven()
+
+	if expectedValue != isEven {
+		t.Errorf("Error: Expected result='%v'. Instead, result='%v'",
+			expectedValue, isEven)
+	}
+
+}
+
+func TestBigIntFixedDecimal_IsEven_05(t *testing.T) {
+
+	numStr := "-5"
+	expectedValue := false
+
+	fixedDec, err := BigIntFixedDecimal{}.NewNumStr(numStr)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntFixedDecimal{}.NewNumStr(numStr) " +
+			"numStr='%v' Error='%v' ", numStr, err.Error())
+	}
+
+	isEven := fixedDec.IsEven()
+
+	if expectedValue != isEven {
+		t.Errorf("Error: Expected result='%v'. Instead, result='%v'",
+			expectedValue, isEven)
+	}
+
+}
+
+
+func TestBigIntFixedDecimal_IsEven_06(t *testing.T) {
+
+	numStr := "2.2"
+	expectedValue := false
+
+	fixedDec, err := BigIntFixedDecimal{}.NewNumStr(numStr)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntFixedDecimal{}.NewNumStr(numStr) " +
+			"numStr='%v' Error='%v' ", numStr, err.Error())
+	}
+
+	isEven := fixedDec.IsEven()
+
+	if expectedValue != isEven {
+		t.Errorf("Error: Expected result='%v'. Instead, result='%v'",
+			expectedValue, isEven)
+	}
+
+}
+
+func TestBigIntFixedDecimal_IsEven_07(t *testing.T) {
+
+	numStr := "-2.2"
+	expectedValue := false
+
+	fixedDec, err := BigIntFixedDecimal{}.NewNumStr(numStr)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntFixedDecimal{}.NewNumStr(numStr) " +
+			"numStr='%v' Error='%v' ", numStr, err.Error())
+	}
+
+	isEven := fixedDec.IsEven()
+
+	if expectedValue != isEven {
+		t.Errorf("Error: Expected result='%v'. Instead, result='%v'",
+			expectedValue, isEven)
+	}
+
+}
+
+func TestBigIntFixedDecimal_IsEven_08(t *testing.T) {
+
+	numStr := "8388608"
+	expectedValue := true
+
+	fixedDec, err := BigIntFixedDecimal{}.NewNumStr(numStr)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntFixedDecimal{}.NewNumStr(numStr) " +
+			"numStr='%v' Error='%v' ", numStr, err.Error())
+	}
+
+	isEven := fixedDec.IsEven()
+
+	if expectedValue != isEven {
+		t.Errorf("Error: Expected result='%v'. Instead, result='%v'",
+			expectedValue, isEven)
+	}
+
+}
+
+func TestBigIntFixedDecimal_IsEven_09(t *testing.T) {
+
+	numStr := "-8388608"
+	expectedValue := true
+
+	fixedDec, err := BigIntFixedDecimal{}.NewNumStr(numStr)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntFixedDecimal{}.NewNumStr(numStr) " +
+			"numStr='%v' Error='%v' ", numStr, err.Error())
+	}
+
+	isEven := fixedDec.IsEven()
+
+	if expectedValue != isEven {
+		t.Errorf("Error: Expected result='%v'. Instead, result='%v'",
+			expectedValue, isEven)
+	}
+
+}
+
+func TestBigIntFixedDecimal_IsEven_10(t *testing.T) {
+
+	numStr := "8388609"
+	expectedValue := false
+
+	fixedDec, err := BigIntFixedDecimal{}.NewNumStr(numStr)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntFixedDecimal{}.NewNumStr(numStr) " +
+			"numStr='%v' Error='%v' ", numStr, err.Error())
+	}
+
+	isEven := fixedDec.IsEven()
+
+	if expectedValue != isEven {
+		t.Errorf("Error: Expected result='%v'. Instead, result='%v'",
+			expectedValue, isEven)
+	}
+
+}
+
+func TestBigIntFixedDecimal_IsEven_11(t *testing.T) {
+
+	numStr := "-8388609"
+	expectedValue := false
+
+	fixedDec, err := BigIntFixedDecimal{}.NewNumStr(numStr)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntFixedDecimal{}.NewNumStr(numStr) " +
+			"numStr='%v' Error='%v' ", numStr, err.Error())
+	}
+
+	isEven := fixedDec.IsEven()
+
+	if expectedValue != isEven {
+		t.Errorf("Error: Expected result='%v'. Instead, result='%v'",
+			expectedValue, isEven)
+	}
+
+}
+

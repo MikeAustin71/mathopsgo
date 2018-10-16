@@ -2223,8 +2223,18 @@ func (bNum *BigIntNum) Inverse(maxPrecision uint) (BigIntNum, error) {
 // IsEvenNumber - Returns true if the current BigIntNum value is
 // evenly divisible by 2.
 //
-// Even Number Definition:
+// Even Number Definitions:
 // 	https://www.mathsisfun.com/definitions/even-number.html
+//
+// "In mathematics, parity is the property of an
+// integer's inclusion in one of two categories:
+// even or odd. An integer is even if it is evenly
+// divisible by two and odd if it is not even."
+//
+// "Examples of even numbers include −4, 0, 82 and 178."
+// In particular, zero is an even number."
+//
+// https://en.wikipedia.org/wiki/Parity_(mathematics)
 //
 func (bNum *BigIntNum) IsEvenNumber() (bool, error) {
 

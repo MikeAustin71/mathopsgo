@@ -152,12 +152,12 @@ func TestGetNthRoot(radicand, nthRoot mathops.BigIntFixedDecimal, maxPrecision u
 
 	timeStart := time.Now()
 
-	root, err := nthRootCalc.GetNthRoot(radicand, nthRoot, maxPrecision)
+	root, err := nthRootCalc.FixedDecNthRoot(radicand, nthRoot, maxPrecision)
 
 	timeEnd := time.Now()
 
 	if err != nil {
-		fmt.Printf("Error retrned by nthRootCalc.GetNthRoot(...). " +
+		fmt.Printf("Error retrned by nthRootCalc.FixedDecNthRoot(...). " +
 			"Error='%v'", err.Error())
 		return
 	}
@@ -167,7 +167,7 @@ func TestGetNthRoot(radicand, nthRoot mathops.BigIntFixedDecimal, maxPrecision u
 	duration := examples.CodeDurationToStr(timeDuration)
 
 	fmt.Println()
-	fmt.Println("FixedDecimalNthRoot.GetNthRoot()")
+	fmt.Println("FixedDecimalNthRoot.FixedDecNthRoot()")
 	fmt.Println("=========================================================")
 	fmt.Println("     radicand: ", radicand.GetNumStr())
 	fmt.Println("      nthRoot: ", nthRoot.GetNumStr())
@@ -187,7 +187,7 @@ func TestGetNthRoot(radicand, nthRoot mathops.BigIntFixedDecimal, maxPrecision u
 	timeEnd = time.Now()
 
 	if err != nil {
-		fmt.Printf("Error retrned by BigIntMathNthRoot{}.GetNthRoot(...). " +
+		fmt.Printf("Error retrned by BigIntMathNthRoot{}.FixedDecNthRoot(...). " +
 			"%v", err.Error())
 		return
 	}

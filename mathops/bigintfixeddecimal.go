@@ -349,10 +349,13 @@ func (bigIFd *BigIntFixedDecimal) Ceiling() BigIntFixedDecimal {
 // positive. Likewise, if the sign is currently positive,
 // calling this method will change the sign to negative.
 func (bigIFd *BigIntFixedDecimal) ChangeSign() {
+
 	if bigIFd.integerNum == nil {
 		bigIFd.integerNum = big.NewInt(0)
 		bigIFd.precision = 0
+		return
 	}
+
 
 	if bigIFd.integerNum.Cmp(big.NewInt(0))==0 {
 		return
@@ -388,9 +391,9 @@ func (bigIFd *BigIntFixedDecimal) ChangeSign() {
 //
 func (bigIFd *BigIntFixedDecimal) Cmp(fd2 BigIntFixedDecimal) int {
 
-
 	if bigIFd.integerNum == nil {
-		bigIFd.SetNumericValue(big.NewInt(0), bigIFd.precision)
+		bigIFd.integerNum = big.NewInt(0)
+		bigIFd.precision = 0
 	}
 
 	fd2.IsValid()
@@ -421,14 +424,32 @@ func (bigIFd *BigIntFixedDecimal) Cmp(fd2 BigIntFixedDecimal) int {
 	return bigIFd.integerNum.Cmp(fd2Value)
 }
 
+
+// CmpZero Compares the current BigIntFixedDecimal to Zero and
+// returns an integer flag as follows:
+//
+// +1 = BigIntFixedDecimal > 0
+//  0 = BigIntFixedDecimal == 0
+// -1 = BigINtFixedDecimal < 0
+//
+func (bigIFd *BigIntFixedDecimal) CmpZero(fd BigIntFixedDecimal) int {
+
+	if bigIFd.integerNum == nil {
+		bigIFd.integerNum = big.NewInt(0)
+		bigIFd.precision = 0
+	}
+
+	return bigIFd.integerNum.Cmp(big.NewInt(0))
+}
+
 // CopyIn - Receives a BigIntFixedDecimal type and copies the
 // value to the current BigIntFixedDecimal instance.
 //
 func (bigIFd *BigIntFixedDecimal) CopyIn(fd BigIntFixedDecimal) {
 
-
 	if bigIFd.integerNum == nil {
-		bigIFd.SetNumericValue(big.NewInt(0), bigIFd.precision)
+		bigIFd.integerNum = big.NewInt(0)
+		bigIFd.precision = 0
 	}
 
 	fd.IsValid()
@@ -450,7 +471,8 @@ func (bigIFd *BigIntFixedDecimal) CopyIn(fd BigIntFixedDecimal) {
 func (bigIFd *BigIntFixedDecimal) CopyInPtr(fd *BigIntFixedDecimal) {
 
 	if bigIFd.integerNum == nil {
-		bigIFd.SetNumericValue(big.NewInt(0), bigIFd.precision)
+		bigIFd.integerNum = big.NewInt(0)
+		bigIFd.precision = 0
 	}
 
 	fd.IsValid()
@@ -498,7 +520,8 @@ func (bigIFd *BigIntFixedDecimal) CopyOut() BigIntFixedDecimal {
 func (bigIFd *BigIntFixedDecimal) DivideByTenToPower(exponent uint) {
 
 	if bigIFd.integerNum == nil {
-		bigIFd.SetNumericValue(big.NewInt(0), bigIFd.precision)
+		bigIFd.integerNum = big.NewInt(0)
+		bigIFd.precision = 0
 	}
 
 	if bigIFd.integerNum.Cmp(big.NewInt(0)) == 0 {
@@ -671,6 +694,7 @@ func (bigIFd *BigIntFixedDecimal) FormatNumStr(negValMode NegativeValueFmtMode) 
 
 	if bigIFd.integerNum == nil {
 		bigIFd.integerNum = big.NewInt(0)
+		bigIFd.precision = 0
 	}
 
 	decimalSeparator := '.'
@@ -811,6 +835,7 @@ func (bigIFd *BigIntFixedDecimal) GetBigIntNum() BigIntNum {
 
 	if bigIFd.integerNum == nil {
 		bigIFd.integerNum = big.NewInt(0)
+		bigIFd.precision = 0
 	}
 
 	return BigIntNum{}.NewBigInt(bigIFd.integerNum, bigIFd.precision)
@@ -835,6 +860,7 @@ func (bigIFd *BigIntFixedDecimal) GetInteger() *big.Int {
 
 	if bigIFd.integerNum == nil {
 		bigIFd.integerNum = big.NewInt(0)
+		bigIFd.precision = 0
 	}
 
 	return big.NewInt(0).Set(bigIFd.integerNum)
@@ -855,31 +881,36 @@ func (bigIFd *BigIntFixedDecimal) GetInteger() *big.Int {
 //
 func (bigIFd *BigIntFixedDecimal) GetIntegerFractionalParts() (integer BigIntFixedDecimal, fraction BigIntFixedDecimal) {
 
-		integer = bigIFd.CopyOut()
+	if bigIFd.integerNum == nil {
+		bigIFd.integerNum = big.NewInt(0)
+		bigIFd.precision = 0
+	}
 
-		fraction = bigIFd.CopyOut()
+	integer = bigIFd.CopyOut()
 
-		if integer.integerNum.Cmp(big.NewInt(0)) == 0 {
-			integer.precision = 0
-			return integer, fraction
-		}
+	fraction = bigIFd.CopyOut()
 
-		scale :=
-			big.NewInt(0).Exp(
-				big.NewInt(10),
-				big.NewInt(int64(bigIFd.precision)),
-				nil)
-
-		integer.integerNum.Quo(integer.integerNum,scale)
+	if integer.integerNum.Cmp(big.NewInt(0)) == 0 {
 		integer.precision = 0
-
-		scratch := integer.CopyOut()
-
-		scratch.integerNum.Mul(scratch.integerNum, scale)
-
-		fraction.integerNum.Sub(fraction.integerNum, scratch.integerNum)
-
 		return integer, fraction
+	}
+
+	scale :=
+		big.NewInt(0).Exp(
+			big.NewInt(10),
+			big.NewInt(int64(bigIFd.precision)),
+			nil)
+
+	integer.integerNum.Quo(integer.integerNum,scale)
+	integer.precision = 0
+
+	scratch := integer.CopyOut()
+
+	scratch.integerNum.Mul(scratch.integerNum, scale)
+
+	fraction.integerNum.Sub(fraction.integerNum, scratch.integerNum)
+
+	return integer, fraction
 }
 
 // GetIntAry - Returns a new IntAry instance initialized to the
@@ -890,6 +921,7 @@ func (bigIFd *BigIntFixedDecimal) GetIntAry() (IntAry, error) {
 
 	if bigIFd.integerNum == nil {
 		bigIFd.integerNum = big.NewInt(0)
+		bigIFd.precision = 0
 	}
 
 	ia, err := IntAry{}.NewBigInt(bigIFd.integerNum, int(bigIFd.precision))
@@ -965,6 +997,7 @@ func (bigIFd *BigIntFixedDecimal) GetNumericValue() (*big.Int, uint) {
 
 	if bigIFd.integerNum == nil {
 		bigIFd.integerNum = big.NewInt(0)
+		bigIFd.precision = 0
 	}
 
 	return big.NewInt(0).Set(bigIFd.integerNum), bigIFd.precision
@@ -988,9 +1021,71 @@ func (bigIFd *BigIntFixedDecimal) GetPrecision() uint {
 
 	if bigIFd.integerNum == nil {
 		bigIFd.integerNum = big.NewInt(0)
+		bigIFd.precision = 0
 	}
 
 	return bigIFd.precision
+}
+
+// IsInteger - Returns true if the numeric value of
+// the current BigIntFixedDecimal is an integer value.
+func (bigIFd *BigIntFixedDecimal) IsInteger() bool {
+
+	if bigIFd.integerNum == nil {
+		bigIFd.integerNum = big.NewInt(0)
+		bigIFd.precision = 0
+		return true
+	}
+
+	if bigIFd.precision == 0 {
+		return true
+	}
+
+	return false
+}
+
+// IsEven - returns 'true' if the numeric value
+// of the current BigIntFixedDecimal is even.
+//
+//------------------------------------------------------
+// "In mathematics, parity is the property of an
+// integer's inclusion in one of two categories:
+// even or odd. An integer is even if it is evenly
+// divisible by two and odd if it is not even."
+//
+// "Examples of even numbers include −4, 0, 82 and 178."
+// In particular, zero is an even number."
+//------------------------------------------------------
+// https://en.wikipedia.org/wiki/Parity_(mathematics)
+//
+// Also, see 	https://www.mathsisfun.com/definitions/even-number.html
+//
+func (bigIFd *BigIntFixedDecimal) IsEven() bool {
+
+	if bigIFd.integerNum == nil {
+		bigIFd.integerNum = big.NewInt(0)
+		bigIFd.precision = 0
+		return true
+	}
+
+	if bigIFd.precision > 0 {
+		//BigIntFixedDecimal is NOT an integer
+		return false
+	}
+
+	bigZero := big.NewInt(0)
+
+	if bigIFd.integerNum.Cmp(bigZero) == 0 {
+		return true
+	}
+
+	remainder :=  big.NewInt(0).Rem(bigIFd.integerNum, big.NewInt(2))
+
+	if remainder.Cmp(bigZero) == 0 {
+		return true
+	}
+
+	return false
 }
 
 // IsValid - IsValid test the validity of the internal
@@ -1004,16 +1099,20 @@ func (bigIFd *BigIntFixedDecimal) IsValid() bool {
 
 	if bigIFd.integerNum == nil {
 		bigIFd.integerNum = big.NewInt(0)
+		bigIFd.precision = 0
 		return false
 	}
 
 	return true
 }
 
+// IsZero - returns true only if the current BigIntFixedDecimal
+// numeric value is equal to zero
 func (bigIFd *BigIntFixedDecimal) IsZero() bool {
 
 	if bigIFd.integerNum == nil {
 		bigIFd.integerNum = big.NewInt(0)
+		bigIFd.precision = 0
 	}
 
 	if bigIFd.integerNum.Cmp(big.NewInt(0))==0 {
@@ -1057,7 +1156,8 @@ func (bigIFd *BigIntFixedDecimal) IsZero() bool {
 func (bigIFd *BigIntFixedDecimal) MultiplyByTenToPower(exponent uint) {
 
 	if bigIFd.integerNum == nil {
-		bigIFd.SetNumericValue(big.NewInt(0), bigIFd.precision)
+		bigIFd.integerNum = big.NewInt(0)
+		bigIFd.precision = 0
 	}
 
 	if bigIFd.integerNum.Cmp(big.NewInt(0)) == 0 {
@@ -1432,8 +1532,10 @@ func (bigIFd *BigIntFixedDecimal) SetIntegerValue(integer *big.Int) {
 
 	if integer == nil {
 		bigIFd.integerNum = big.NewInt(0)
+		bigIFd.precision = 0
 	} else {
 		bigIFd.integerNum = big.NewInt(0).Set(integer)
+		bigIFd.precision = 0
 	}
 
 }
@@ -1658,7 +1760,8 @@ func (bigIFd *BigIntFixedDecimal) TrimTrailingFracZeros() {
 func (bigIFd *BigIntFixedDecimal) TruncToDecPlace(precision uint) {
 
 	if bigIFd.integerNum == nil {
-		bigIFd.SetNumericValue(big.NewInt(0), bigIFd.precision)
+		bigIFd.integerNum = big.NewInt(0)
+		bigIFd.precision = 0
 	}
 
 	if bigIFd.precision == precision {

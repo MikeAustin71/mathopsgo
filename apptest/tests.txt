@@ -33,7 +33,7 @@
 === RUN   TestBigIntFixedDecimal_NewNumStr_03
 --- PASS: TestBigIntFixedDecimal_NewNumStr_03 (0.00s)
 === RUN   TestBigIntFixedDecimal_NewNumStr_04
---- PASS: TestBigIntFixedDecimal_NewNumStr_04 (0.00s)
+--- PASS: TestBigIntFixedDecimal_NewNumStr_04 (0.01s)
 === RUN   TestBigIntFixedDecimal_NewNumStr_05
 --- PASS: TestBigIntFixedDecimal_NewNumStr_05 (0.00s)
 === RUN   TestBigIntFixedDecimal_NewNumStr_06
@@ -237,7 +237,7 @@
 === RUN   TestBigIntFixedDecimal_FormatNumStr_06
 --- PASS: TestBigIntFixedDecimal_FormatNumStr_06 (0.00s)
 === RUN   TestBigIntFixedDecimal_FormatNumStr_07
---- PASS: TestBigIntFixedDecimal_FormatNumStr_07 (0.00s)
+--- PASS: TestBigIntFixedDecimal_FormatNumStr_07 (0.01s)
 === RUN   TestBigIntFixedDecimal_FormatNumStr_08
 --- PASS: TestBigIntFixedDecimal_FormatNumStr_08 (0.00s)
 === RUN   TestBigIntFixedDecimal_FormatNumStr_09
@@ -306,6 +306,28 @@
 --- PASS: TestBigIntFixedDecimal_GetNumStr_03 (0.00s)
 === RUN   TestBigIntFixedDecimal_GetNumStr_04
 --- PASS: TestBigIntFixedDecimal_GetNumStr_04 (0.00s)
+=== RUN   TestBigIntFixedDecimal_IsEven_01
+--- PASS: TestBigIntFixedDecimal_IsEven_01 (0.00s)
+=== RUN   TestBigIntFixedDecimal_IsEven_02
+--- PASS: TestBigIntFixedDecimal_IsEven_02 (0.00s)
+=== RUN   TestBigIntFixedDecimal_IsEven_03
+--- PASS: TestBigIntFixedDecimal_IsEven_03 (0.00s)
+=== RUN   TestBigIntFixedDecimal_IsEven_04
+--- PASS: TestBigIntFixedDecimal_IsEven_04 (0.00s)
+=== RUN   TestBigIntFixedDecimal_IsEven_05
+--- PASS: TestBigIntFixedDecimal_IsEven_05 (0.00s)
+=== RUN   TestBigIntFixedDecimal_IsEven_06
+--- PASS: TestBigIntFixedDecimal_IsEven_06 (0.00s)
+=== RUN   TestBigIntFixedDecimal_IsEven_07
+--- PASS: TestBigIntFixedDecimal_IsEven_07 (0.00s)
+=== RUN   TestBigIntFixedDecimal_IsEven_08
+--- PASS: TestBigIntFixedDecimal_IsEven_08 (0.00s)
+=== RUN   TestBigIntFixedDecimal_IsEven_09
+--- PASS: TestBigIntFixedDecimal_IsEven_09 (0.00s)
+=== RUN   TestBigIntFixedDecimal_IsEven_10
+--- PASS: TestBigIntFixedDecimal_IsEven_10 (0.00s)
+=== RUN   TestBigIntFixedDecimal_IsEven_11
+--- PASS: TestBigIntFixedDecimal_IsEven_11 (0.00s)
 === RUN   TestBigIntFixedDecimal_RoundToDecPlace_01
 --- PASS: TestBigIntFixedDecimal_RoundToDecPlace_01 (0.00s)
 === RUN   TestBigIntFixedDecimal_RoundToDecPlace_02
@@ -1009,7 +1031,7 @@
 === RUN   TestBigIntMathDivide_IntAryQuotientMod_03
 --- PASS: TestBigIntMathDivide_IntAryQuotientMod_03 (0.00s)
 === RUN   TestBigIntMathDivide_IntAryQuotientMod_04
---- PASS: TestBigIntMathDivide_IntAryQuotientMod_04 (0.00s)
+--- PASS: TestBigIntMathDivide_IntAryQuotientMod_04 (0.01s)
 === RUN   TestBigIntMathDivide_IntAryQuotientMod_05
 --- PASS: TestBigIntMathDivide_IntAryQuotientMod_05 (0.00s)
 === RUN   TestBigIntMathDivide_IntAryQuotientMod_06
@@ -1299,7 +1321,7 @@
 === RUN   TestBigIntMathMultiply_MultiplyBigIntNumByTwoToPower_01
 --- PASS: TestBigIntMathMultiply_MultiplyBigIntNumByTwoToPower_01 (0.00s)
 === RUN   TestBigIntMathMultiply_MultiplyBigIntNumByTwoToPower_02
---- PASS: TestBigIntMathMultiply_MultiplyBigIntNumByTwoToPower_02 (0.01s)
+--- PASS: TestBigIntMathMultiply_MultiplyBigIntNumByTwoToPower_02 (0.00s)
 === RUN   TestBigIntMathMultiply_MultiplyBigIntNumByTwoToPower_03
 --- PASS: TestBigIntMathMultiply_MultiplyBigIntNumByTwoToPower_03 (0.00s)
 === RUN   TestBigIntMathMultiply_MultiplyBigIntNumByTwoToPower_04
@@ -1361,7 +1383,7 @@
 === RUN   TestBigIntMathMultiply_MultiplyDecimalArray_04
 --- PASS: TestBigIntMathMultiply_MultiplyDecimalArray_04 (0.00s)
 === RUN   TestBigIntMathMultiply_MultiplyDecimalArray_05
---- PASS: TestBigIntMathMultiply_MultiplyDecimalArray_05 (0.00s)
+--- PASS: TestBigIntMathMultiply_MultiplyDecimalArray_05 (0.01s)
 === RUN   TestBigIntMathMultiply_MultiplyDecimalOutputToArray_01
 --- PASS: TestBigIntMathMultiply_MultiplyDecimalOutputToArray_01 (0.00s)
 === RUN   TestBigIntMathMultiply_MultiplyDecimalOutputToArray_02
@@ -3311,7 +3333,7 @@
 === RUN   TestFracIntAry_GetRationalValue_06
 --- PASS: TestFracIntAry_GetRationalValue_06 (0.00s)
 === RUN   TestFracIntAry_GetRationalValue_07
---- PASS: TestFracIntAry_GetRationalValue_07 (0.92s)
+--- PASS: TestFracIntAry_GetRationalValue_07 (0.94s)
 === RUN   TestFracIntAry_NewFracIntAry_01
 --- PASS: TestFracIntAry_NewFracIntAry_01 (0.00s)
 === RUN   TestFracIntAry_NewFracIntAry_02
@@ -4411,7 +4433,7 @@
 === RUN   TestIntAryMathPower_PwrByMultiplication_07
 --- PASS: TestIntAryMathPower_PwrByMultiplication_07 (0.01s)
 === RUN   TestIntAryMathPower_PwrByMultiplication_08
---- PASS: TestIntAryMathPower_PwrByMultiplication_08 (0.01s)
+--- PASS: TestIntAryMathPower_PwrByMultiplication_08 (0.00s)
 === RUN   TestIntAryMathPower_PwrByMultiplication_09
 --- PASS: TestIntAryMathPower_PwrByMultiplication_09 (0.00s)
 === RUN   TestIntAryMathPower_PwrByMultiplication_10
@@ -4655,7 +4677,7 @@
 === RUN   TestNthRootOp_GetNthRootIntAry_26
 --- PASS: TestNthRootOp_GetNthRootIntAry_26 (0.00s)
 === RUN   TestNthRootOp_GetNthRootIntAry_27
---- PASS: TestNthRootOp_GetNthRootIntAry_27 (3.24s)
+--- PASS: TestNthRootOp_GetNthRootIntAry_27 (3.12s)
 === RUN   TestNthRootOp_GetSquareRootFloat32_01
 --- PASS: TestNthRootOp_GetSquareRootFloat32_01 (0.00s)
 === RUN   TestNthRootOp_GetSquareRootFloat64_01
@@ -6847,4 +6869,4 @@
 === RUN   TestStrMathOp_SubtractN1N2_19
 --- PASS: TestStrMathOp_SubtractN1N2_19 (0.00s)
 PASS
-ok  	MikeAustin71/mathopsgo/mathops	10.664s
+ok  	MikeAustin71/mathopsgo/mathops	9.202s
