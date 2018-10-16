@@ -432,7 +432,7 @@ func (bigIFd *BigIntFixedDecimal) Cmp(fd2 BigIntFixedDecimal) int {
 //  0 = BigIntFixedDecimal == 0
 // -1 = BigINtFixedDecimal < 0
 //
-func (bigIFd *BigIntFixedDecimal) CmpZero(fd BigIntFixedDecimal) int {
+func (bigIFd *BigIntFixedDecimal) CmpZero() int {
 
 	if bigIFd.integerNum == nil {
 		bigIFd.integerNum = big.NewInt(0)
