@@ -158,7 +158,7 @@ func (rootCalcFacs *FixedDecNthRootCalcFactors) Initialize(fixDecNthRoot *FixedD
 
 	limit := len(fixDecNthRoot.betas)
 
-	rootCalcFacs.Betas = make([]NthRootBeta, limit, 0)
+	rootCalcFacs.Betas = make([]NthRootBeta, limit)
 
 	for i:=0; i < limit; i++ {
 		rootCalcFacs.Betas[i].CopyIn(fixDecNthRoot.betas[i])
@@ -343,17 +343,14 @@ func (fdNthRoot *FixedDecimalNthRoot) CalculateRoot() (result BigIntFixedDecimal
 		maxPrecision.Add(maxPrecision,fdNthRoot.one)
 
 		for maxPrecision.Cmp(fdNthRoot.zero) == 1 {
-
-			if residualFracPrecision.Cmp(fdNthRoot.zero) == 0 {
-				nextBundle.Set(fdNthRoot.zero)
-			} else {
-				nextBundle,
-					residualFracNum,
-					residualFracPrecision,
-					errx = fdNthRoot.GetNextFractionalBundleFromRadicand(
-					residualFracNum,
-					residualFracPrecision)
-			}
+			// fmt.Println("      residualFracNum: ", residualFracNum.Text(10))
+			// fmt.Println("residualFracPrecision: ", residualFracPrecision.Text(10))
+			nextBundle,
+				residualFracNum,
+				residualFracPrecision,
+				errx = fdNthRoot.GetNextFractionalBundleFromRadicand(
+				residualFracNum,
+				residualFracPrecision)
 
 			rPrime, yPrime, errx = fdNthRoot.ComputeBeta(r, nextBundle, y)
 			y.Mul(y, fdNthRoot.ten)
@@ -708,6 +705,21 @@ func (fdNthRoot *FixedDecimalNthRoot) FormatCalculationConstants(
 	// Initialize integer Radicand total number of integer digits
 	fdNthRoot.intRadicandTotalDigits = big.NewInt(0).Set(totDigits)
 
+	// Set bigZero
+	fdNthRoot.zero = big.NewInt(0)
+
+	// Set bigOne
+	fdNthRoot.one = big.NewInt(1)
+
+	// Set bigTwo
+	fdNthRoot.two = big.NewInt(2)
+
+	// Set bigTen
+	fdNthRoot.ten = big.NewInt(10)
+
+	// Set bigEleven
+	fdNthRoot.eleven = big.NewInt(11)
+
 	// Initialize fractional portion of radicand
 	// with "formatted fmtFracRadicand. Also initialize
 	// fmtFracRadicandPrecision
@@ -743,20 +755,6 @@ func (fdNthRoot *FixedDecimalNthRoot) FormatCalculationConstants(
 			fdNthRoot.NthRoot,
 			big.NewInt(1)), nil)
 
-		// Set bigZero
-	fdNthRoot.zero = big.NewInt(0)
-
-	// Set bigOne
-	fdNthRoot.one = big.NewInt(1)
-
-	// Set bigTwo
-	fdNthRoot.two = big.NewInt(2)
-
-	// Set bigTen
-	fdNthRoot.ten = big.NewInt(10)
-
-	// Set bigEleven
-	fdNthRoot.eleven = big.NewInt(11)
 
 	// Setting number system base = 10
 	fdNthRoot.bBase = big.NewInt(10)
@@ -859,6 +857,7 @@ func (fdNthRoot *FixedDecimalNthRoot) FormatFractionalDigitsFromRadicand(
 	}
 
 	cmpFracRadicandZero := fracRadicand.Cmp(fdNthRoot.zero)
+
 
 	if cmpFracRadicandZero == -1 {
 

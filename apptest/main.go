@@ -8,18 +8,26 @@ import (
 	"time"
 )
 
-func main() {
 /*
 	numStr := "7"
 	nthRootStr := "4"
 	maxPrecision := uint64(31)
 	expectedResult := "1.6265765616977857432112323454938"
+
+	numStr := "4.2"
+	nthRootStr := "3"
+	maxPrecision := uint64(31)
+	expectedResult := "1.6134286460245437640588422364822"
+
 */
 
-	numStr := "358624.123456"
-	nthRootStr := "25"
-	maxPrecision := uint64(31)
-	expectedResult := "1.6679598023974077628660613720356"
+
+func main() {
+
+	numStr := "358123984.123456"
+	nthRootStr := "51"
+	maxPrecision := uint64(200)
+	expectedResult := "1.4713843932735533440021047882862"
 
 	radicand, err := mathops.BigIntFixedDecimal{}.NewNumStr(numStr)
 
@@ -38,6 +46,102 @@ func main() {
 	}
 
 	TestGetNthRoot(radicand, nthRoot, maxPrecision, expectedResult)
+
+}
+
+
+/*
+func main () {
+
+	radicand := big.NewInt(42)
+	radicandPrecision := big.NewInt(2)
+	intRadicand := big.NewInt(4)
+	fracInteger := big.NewInt(2)
+	fracIntgerPrecision := big.NewInt(1)
+	nthRoot := big.NewInt(3)
+	maxPrecision := uint64(9)
+
+	TestFixDecNthRootFmtFracDigits(
+		radicand,
+		radicandPrecision,
+		intRadicand,
+		fracInteger,
+		fracIntgerPrecision,
+		nthRoot,
+		maxPrecision)
+
+}
+*/
+
+func TestFixDecNthRootFmtFracDigits(
+	radicand,
+	radicandPrecision,
+	intRadicand,
+	fracInteger,
+	fracIntPrecision,
+	nthRoot *big.Int,
+	maxPrecision uint64) {
+
+	nthRootCalc := mathops.FixedDecimalNthRoot{}
+
+	/*
+	func (fdNthRoot *FixedDecimalNthRoot) FormatCalculationConstants(
+	radicand,
+	radicandPrecision,
+	intRadicand,
+	fracRadicand,
+	fracRadicandPrecision,
+	nthRoot *big.Int,
+	maxPrecision uint64) error
+	 */
+
+
+	err := nthRootCalc.FormatCalculationConstants(
+		radicand,
+		radicandPrecision,
+		intRadicand,
+		fracInteger,
+		fracIntPrecision,
+		nthRoot,
+		maxPrecision)
+
+	timeStart := time.Now()
+
+	formattedFracInteger, fracTotalDigits, err :=
+		nthRootCalc.FormatFractionalDigitsFromRadicand(
+			fracInteger,
+			fracIntPrecision)
+
+	if err != nil {
+		fmt.Printf("Error returned from FixedDecimalNthRoot{}.FormatFractionalDigitsFromRadicand() " +
+			"%v", err.Error())
+		return
+	}
+
+	timeEnd := time.Now()
+
+	fmt.Println()
+	fmt.Println()
+	fmt.Println("FixedDecimalNthRoot{}.FormatFractionalDigitsFromRadicand() ")
+	fmt.Println("============================================================")
+	fmt.Println("                  nthRoot: ", nthRoot.Text(10))
+	fmt.Println("             frac integer: ", fracInteger.Text(10))
+	fmt.Println("   frac integer precision: ", fracIntPrecision)
+	fmt.Println("------------------------------------------------------------")
+	fmt.Println("   formatted frac integer: ", formattedFracInteger.Text(10))
+	fmt.Println("        frac Total Digits: ", fracTotalDigits.Text(10))
+	fmt.Println("------------------------------------------------------------")
+	timeDuration := timeEnd.Sub(timeStart)
+	calcFacs := nthRootCalc.GetInternalCalcFactors()
+
+	duration := examples.CodeDurationToStr(timeDuration)
+	fmt.Println("            Time Duration: ", duration)
+	fmt.Println("------------------------------------------------------------")
+	fmt.Println("                fracMask1: ", calcFacs.FracMask1.Text(10))
+	fmt.Println("                fracMask2: ", calcFacs.FracMask2.Text(10))
+	fmt.Println("============================================================")
+	fmt.Println()
+
 
 }
 
@@ -190,74 +294,6 @@ func TestFixDecNthRootGetNextFracBundle(
 		fmt.Println("---------------------------------------------------------")
 		fmt.Println()
 	}
-
-}
-
-func TestFixDecNthRootFmtFracDigits(
-	fracInteger,
-	fracIntPrecision,
-	nthRoot *big.Int) {
-
-	nthRootCalc := mathops.FixedDecimalNthRoot{}
-
-	/*
-	func (fdNthRoot *FixedDecimalNthRoot) FormatCalculationConstants(
-	radicand,
-	radicandPrecision,
-	intRadicand,
-	fracRadicand,
-	fracRadicandPrecision,
-	nthRoot *big.Int,
-	maxPrecision uint64) error
-	 */
-
-
-	err := nthRootCalc.FormatCalculationConstants(
-		fracInteger,
-		fracIntPrecision,
-		big.NewInt(0),
-		fracInteger,
-		fracIntPrecision,
-		nthRoot,
-		uint64(9))
-
-	timeStart := time.Now()
-
-	formattedFracInteger, fracTotalDigits, err :=
-		nthRootCalc.FormatFractionalDigitsFromRadicand(
-			fracInteger,
-			fracIntPrecision)
-
-	if err != nil {
-		fmt.Printf("Error returned from FixedDecimalNthRoot{}.FormatFractionalDigitsFromRadicand() " +
-			"%v", err.Error())
-		return
-	}
-
-	timeEnd := time.Now()
-
-	fmt.Println()
-	fmt.Println()
-	fmt.Println("FixedDecimalNthRoot{}.FormatFractionalDigitsFromRadicand() ")
-	fmt.Println("============================================================")
-	fmt.Println("                  nthRoot: ", nthRoot.Text(10))
-	fmt.Println("             frac integer: ", fracInteger.Text(10))
-	fmt.Println("   frac integer precision: ", fracIntPrecision)
-	fmt.Println("------------------------------------------------------------")
-	fmt.Println("   formatted frac integer: ", formattedFracInteger.Text(10))
-	fmt.Println("        frac Total Digits: ", fracTotalDigits.Text(10))
-	fmt.Println("------------------------------------------------------------")
-	timeDuration := timeEnd.Sub(timeStart)
-	calcFacs := nthRootCalc.GetInternalCalcFactors()
-
-	duration := examples.CodeDurationToStr(timeDuration)
-	fmt.Println("            Time Duration: ", duration)
-	fmt.Println("------------------------------------------------------------")
-	fmt.Println("                fracMask1: ", calcFacs.FracMask1.Text(10))
-	fmt.Println("                fracMask2: ", calcFacs.FracMask2.Text(10))
-	fmt.Println("============================================================")
-	fmt.Println()
-
 
 }
 
