@@ -9,11 +9,17 @@ import (
 )
 
 func main() {
-
+/*
 	numStr := "7"
 	nthRootStr := "4"
-	maxPrecision := uint64(5)
-	expectedResult := "1.62657"
+	maxPrecision := uint64(31)
+	expectedResult := "1.6265765616977857432112323454938"
+*/
+
+	numStr := "358624.123456"
+	nthRootStr := "25"
+	maxPrecision := uint64(31)
+	expectedResult := "1.6679598023974077628660613720356"
 
 	radicand, err := mathops.BigIntFixedDecimal{}.NewNumStr(numStr)
 

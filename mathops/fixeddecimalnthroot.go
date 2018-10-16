@@ -386,6 +386,188 @@ func (fdNthRoot *FixedDecimalNthRoot) CalculateRoot() (result BigIntFixedDecimal
 		return result, err
 }
 
+func (fdNthRoot *FixedDecimalNthRoot) ComputeBeta(
+	r,
+	alpha,
+	y *big.Int) (
+	rPrime,
+	yPrime *big.Int,
+	err error) {
+
+	ePrefix := "FixedDecimalNthRoot.ComputeBeta() "
+
+	rPrime = big.NewInt(0)
+	yPrime = big.NewInt(0)
+	err = nil
+
+
+	fdNthRoot.term2b = big.NewInt(0).Exp(y, fdNthRoot.NthRoot, nil)
+	fdNthRoot.term2b.Mul(fdNthRoot.term2b, fdNthRoot.bPwrN)
+
+	fdNthRoot.termBy = big.NewInt(0).Mul(fdNthRoot.bBase, y)
+
+	fdNthRoot.term1 = big.NewInt(0).Mul(fdNthRoot.bPwrN, r)
+	fdNthRoot.term1.Add(fdNthRoot.term1, alpha)
+
+	correctGuessIdx := -1
+	var errx error
+	errx = nil
+
+	lastResult := fdNthRoot.GuessBeta(&fdNthRoot.betas[5])
+
+	if lastResult == 0 {
+
+		correctGuessIdx = 5
+
+	} else if lastResult == 1 {
+
+		correctGuessIdx, errx = fdNthRoot.Guess5Positive()
+
+	} else {
+
+		//  lastResult must be  -1
+		correctGuessIdx, errx = fdNthRoot.Guess5Negative()
+
+	}
+
+	if errx != nil {
+		err = fmt.Errorf(ePrefix + "%v", errx.Error())
+		rPrime.Set(fdNthRoot.zero)
+		yPrime.Set(fdNthRoot.zero)
+		return rPrime, yPrime, err
+	}
+
+	rPrime.Set(fdNthRoot.betas[correctGuessIdx].RPrime)
+	yPrime.Set(fdNthRoot.betas[correctGuessIdx].YPrime)
+	err = nil
+
+	return rPrime, yPrime, err
+}
+
+// Guess 5 was positive. Next guess is 7
+func (fdNthRoot *FixedDecimalNthRoot) Guess5Positive() (int, error) {
+
+	result := fdNthRoot.GuessBeta(&fdNthRoot.betas[7])
+
+	if result == 0 {
+
+		return 7, nil
+
+	} else if result == 1 {
+
+		// 7 is positive. Check 9
+		if fdNthRoot.GuessBeta(&fdNthRoot.betas[9]) > -1 {
+			return 9, nil
+		}
+
+		// Nine is negative. Could be 8
+
+		if fdNthRoot.GuessBeta(&fdNthRoot.betas[8]) == -1 {
+			// 8 is negative, 7 is positive.
+			return 7, nil
+		}
+
+		// 8 is positive - return 8
+		return 8, nil
+
+	}
+	// result must be 7 is negative check 6
+
+	if fdNthRoot.GuessBeta(&fdNthRoot.betas[6]) > -1 {
+		// 7 is negative and 6 is positive.
+		return 6, nil
+	}
+
+	// Six is negative and 5 is positive. So it must be 5
+	return 5, nil
+
+}
+
+
+// Guess 5 was negative - next guess is 2
+func (fdNthRoot *FixedDecimalNthRoot) Guess5Negative() (int, error) {
+
+	result := fdNthRoot.GuessBeta(&fdNthRoot.betas[2])
+
+	if result == 0 {
+		// Nailed it
+		return 2, nil
+
+	} else if result == 1 {
+		// 5 was negative 2 was positive.
+		// Answer could be 3 or 4
+		// Guess 4
+
+		result = fdNthRoot.GuessBeta(&fdNthRoot.betas[4])
+
+		if result == -1 {
+			// 4 was negative and 2 was positive
+			// check 3
+
+			result = fdNthRoot.GuessBeta(&fdNthRoot.betas[3])
+
+			if result == -1 {
+				// 3 was negative and 2 was positive.
+				// return 2
+				return 2, nil
+			}
+
+			// 4 was negative and 3 was positive
+			// return 3
+			return 3, nil
+
+		}
+
+		// 5 was negative and 4 was positive
+		return 4, nil
+
+	}
+
+	// Guess 2 was negative
+	return fdNthRoot.Guess2Negative()
+
+}
+
+// Guess 2 was negative - next guess is 1
+func (fdNthRoot *FixedDecimalNthRoot) Guess2Negative() (int, error) {
+	ePrefix := "FixedDecimalNthRoot.Guess2Negative() "
+	result := fdNthRoot.GuessBeta(&fdNthRoot.betas[1])
+
+	if result == 0 {
+		return 1, nil
+	} else if result == 1 {
+
+		// 1 was positive. 2 was negative
+		// return 1
+		return 1, nil
+	}
+
+	// one must be negative therefore zero must be positive
+
+	if fdNthRoot.GuessBeta(&fdNthRoot.betas[0]) == -1 {
+		return -1,
+		fmt.Errorf(ePrefix +
+			"Error. 1 is negative and zero is negative")
+	}
+
+	return 0, nil
+}
+
+
+func (fdNthRoot *FixedDecimalNthRoot)GuessBeta(
+	beta *NthRootBeta) int {
+
+	term2a := big.NewInt(0).Add(fdNthRoot.termBy, beta.Beta)
+	term2a.Exp(term2a, fdNthRoot.NthRoot,nil)
+	term2:= big.NewInt(0).Sub(term2a, fdNthRoot.term2b)
+	beta.RPrime.Sub(fdNthRoot.term1, term2)
+	beta.YPrime.Set(beta.Beta)
+	beta.Result = beta.RPrime.Cmp(fdNthRoot.zero)
+	return beta.Result
+}
+
+
+
 // ComputeBeta - Compute and return the rPrime and yPrime.
 //
 // yPrime is the next digit of the root which is also referred
@@ -395,7 +577,7 @@ func (fdNthRoot *FixedDecimalNthRoot) CalculateRoot() (result BigIntFixedDecimal
 //
 // fdNthRoot.OriginalNthRoot and fdNthRoot.bPwrN have already been set.
 //
-
+/*
 func (fdNthRoot *FixedDecimalNthRoot) ComputeBeta(
 				r,
 				alpha,
@@ -443,7 +625,8 @@ func (fdNthRoot *FixedDecimalNthRoot) ComputeBeta(
 	return rPrime, yPrime, err
 }
 
-func (fdNthRoot *FixedDecimalNthRoot)GuessBeta(
+
+func (fdNthRoot *FixedDecimalNthRoot) GuessBeta(
 	beta *NthRootBeta)  {
 
 	term2a := big.NewInt(0).Add(fdNthRoot.termBy, beta.Beta)
@@ -454,6 +637,7 @@ func (fdNthRoot *FixedDecimalNthRoot)GuessBeta(
 	beta.Result = beta.RPrime.Cmp(fdNthRoot.zero)
 	return
 }
+*/
 
 
 // FormatCalculationConstants - Generates calculation constants to be used in
