@@ -1316,7 +1316,7 @@ func TestDecimal_NthRoot_01(t *testing.T) {
 	d2, err := d1.NthRoot(decNthRoot, maxPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned from d1.NthRoot(nthRoot, maxPrecision). Error= %v ", err)
+		t.Errorf("Error returned from d1.OriginalNthRoot(nthRoot, maxPrecision). Error= %v ", err)
 	}
 
 	if expected != d2.GetNumStr() {
@@ -1358,7 +1358,7 @@ func TestDecimal_NthRoot_02(t *testing.T) {
 	d2, err := d1.NthRoot(decNthRoot, maxPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned from d1.NthRoot(nthRoot, maxPrecision). Error= %v ", err)
+		t.Errorf("Error returned from d1.OriginalNthRoot(nthRoot, maxPrecision). Error= %v ", err)
 	}
 
 	if expected != d2.GetNumStr() {
@@ -1400,7 +1400,7 @@ func TestDecimal_NthRoot_03(t *testing.T) {
 	d2, err := d1.NthRoot(decNthRoot, maxPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned from d1.NthRoot(nthRoot, maxPrecision). Error= %v ", err)
+		t.Errorf("Error returned from d1.OriginalNthRoot(nthRoot, maxPrecision). Error= %v ", err)
 	}
 
 	if expected != d2.GetNumStr() {
@@ -1442,7 +1442,7 @@ func TestDecimal_NthRoot_04(t *testing.T) {
 	d2, err := d1.NthRoot(decNthRoot, maxPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned from d1.NthRoot(nthRoot, maxPrecision). Error= %v ", err)
+		t.Errorf("Error returned from d1.OriginalNthRoot(nthRoot, maxPrecision). Error= %v ", err)
 	}
 
 	if expected != d2.GetNumStr() {
@@ -1482,7 +1482,7 @@ func TestDecimal_NthRoot_05(t *testing.T) {
 	_, err = d1.NthRoot(decNthRoot, maxPrecision)
 
 	if err == nil {
-		t.Error("Expected Error from d1.NthRoot(nthRoot, maxPrecision) for negative number with even nthRoot. No Error triggered")
+		t.Error("Expected Error from d1.OriginalNthRoot(nthRoot, maxPrecision) for negative number with even nthRoot. No Error triggered")
 	}
 
 }

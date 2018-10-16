@@ -132,7 +132,7 @@ func (bPair BigIntPair) New() BigIntPair {
 // *big.Int integers and their associated precision specifications.
 //
 // Before using BigIntPair in a math operation, it may be necessary
-// to specifically set 'BigIntPair.MaxPrecision'
+// to specifically set 'BigIntPair.maxPrecision'
 //
 // The BigIntNum instances created by this method will contain default
 // numeric separators (decimal separator, thousands separator and
@@ -155,7 +155,7 @@ func (bPair BigIntPair) NewBase(
 // consisting of two 'BigIntNum' types.
 //
 // Before using BigIntPair in a math operation, it may be necessary
-// to specifically set 'BigIntPair.MaxPrecision'
+// to specifically set 'BigIntPair.maxPrecision'
 //
 func (bPair BigIntPair) NewBigIntNum(b1, b2 BigIntNum) BigIntPair {
 

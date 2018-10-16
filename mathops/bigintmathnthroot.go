@@ -74,7 +74,7 @@ func (nthrt *BigIntMathNthRoot) Empty() {
 	nthrt.Beta = big.NewInt(0)
 }
 
-// NthRoot  - Calculates the Nth Root of a real number ('radicand')
+// OriginalNthRoot  - Calculates the Nth Root of a real number ('radicand')
 // passed to the method as Type BigIntNum.  The calling function must supply
 // input parameters for 'radicand', 'nthRoot' and 'maxPrecision'.
 //
@@ -117,7 +117,7 @@ func (nthrt BigIntMathNthRoot) GetNthRoot(
 	radicand, nthRoot BigIntNum,
 	maxPrecision uint) (BigIntNum, error) {
 
-	ePrefix := "BigIntMathNthRoot.NthRoot() "
+	ePrefix := "BigIntMathNthRoot.OriginalNthRoot() "
 
 	if radicand.GetSign() == -1 {
 

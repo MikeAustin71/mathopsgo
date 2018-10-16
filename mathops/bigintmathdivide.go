@@ -3705,15 +3705,15 @@ func (bIDivide BigIntMathDivide) NumStrDtoModuloToNumStrDto(
 
 // PairQuotientMod -  Receives a BigIntPair type as an input parameter. 'BigIntPair.Big1'
 // is treated as the Dividend. 'BigIntPair.Big2' is considered the Divisor.
-// 'BigIntPair.MaxPrecision' is used to control the precision of the resulting
+// 'BigIntPair.maxPrecision' is used to control the precision of the resulting
 // fractional quotient. Be advised that this method is capable of calculating
 // quotients with very long strings of fractional digits. Therefore, the user
-// is advised to set a relevant 'BigIntPair.MaxPrecision' value.
+// is advised to set a relevant 'BigIntPair.maxPrecision' value.
 //
 // 	type BigIntPair struct {
 //				Big1							BigIntNum  // The Dividend
 //				Big2							BigIntNum	 // The Divisor
-//				MaxPrecision			uint			 // Controls Precision
+//				maxPrecision			uint			 // Controls Precision
 //	}
 //
 // The method performs a division operation on BigIntNum input
@@ -3814,15 +3814,15 @@ func (bIDivide BigIntMathDivide) PairQuotientMod(
 // (BigIntPair.Big1) and 'divisor' (BigIntPair.Big2). The modulo result is returned
 // as a type BigIntNum.
 //
-// 'BigIntPair.MaxPrecision' is used to control the precision of the resulting
+// 'BigIntPair.maxPrecision' is used to control the precision of the resulting
 // fractional modulo returned by this method. Be advised that this method is capable
 // of calculating modulo values with very long strings of fractional digits. Therefore,
-// the user is advised to set a relevant 'BigIntPair.MaxPrecision' value.
+// the user is advised to set a relevant 'BigIntPair.maxPrecision' value.
 //
 // 	type BigIntPair struct {
 //				Big1							BigIntNum  // The Dividend
 //				Big2							BigIntNum	 // The Divisor
-//				MaxPrecision			uint			 // Controls Precision
+//				maxPrecision			uint			 // Controls Precision
 //	}
 //
 // The modulo operation finds the remainder after division of one number
@@ -3980,15 +3980,15 @@ func (bIDivide BigIntMathDivide) PairIntQuotient(bPair BigIntPair) (intQuotient 
 // 'BigIntPair.Big1' is treated as the Dividend. 'BigIntPair.Big2' is considered
 // the divisor.
 //
-// 'BigIntPair.MaxPrecision' is used to control the maximum precision of the
+// 'BigIntPair.maxPrecision' is used to control the maximum precision of the
 // resulting fractional quotient. Be advised that this method is capable of
 // calculating quotients with very long strings of fractional digits. Therefore,
-// the user is advised to set a relevant 'BigIntPair.MaxPrecision' value.
+// the user is advised to set a relevant 'BigIntPair.maxPrecision' value.
 //
 // 	type BigIntPair struct {
 //				Big1							BigIntNum  // The Dividend
 //				Big2							BigIntNum	 // The Divisor
-//				MaxPrecision			uint			 // Controls Precision
+//				maxPrecision			uint			 // Controls Precision
 //	}
 //
 // This method performs a division operation on BigIntNum parameters 'dividend'
@@ -3999,14 +3999,14 @@ func (bIDivide BigIntMathDivide) PairIntQuotient(bPair BigIntPair) (intQuotient 
 // The resulting quotient is returned as a BigIntNum type representing the result
 // of the division operation expressed as integer and fractional digits. The
 // maximum number of fractional digits output to the result is controlled by
-// BigIntPair.MaxPrecision. Remember that the BigIntNum type specifies 'precision'.
+// BigIntPair.maxPrecision. Remember that the BigIntNum type specifies 'precision'.
 // Precision is defined as the number of fractional digits to the right of the
 // decimal place.
 //
 // Examples:
 // =========
 //
-// Note: For all examples BigIntPair.MaxPrecision is specified as '15'.
+// Note: For all examples BigIntPair.maxPrecision is specified as '15'.
 // ----------------------------------------------------------------------------
 //																				   Quotient
 //  Dividend		divided by	Divisor		=		BigIntNum Integer 	Precision	 Result
@@ -4070,15 +4070,15 @@ func (bIDivide BigIntMathDivide) PairFracQuotient(
 // 'BigIntPair.Big1' is treated as the Dividend. 'BigIntPair.Big2' is considered
 // the divisor.
 //
-// 'BigIntPair.MaxPrecision' is used to control the maximum precision of the
+// 'BigIntPair.maxPrecision' is used to control the maximum precision of the
 // resulting fractional quotient. Be advised that this method is capable of
 // calculating quotients with very long strings of fractional digits. Therefore,
-// the user is advised to set a relevant 'BigIntPair.MaxPrecision' value.
+// the user is advised to set a relevant 'BigIntPair.maxPrecision' value.
 //
 // 	type BigIntPair struct {
 //				Big1							BigIntNum  // The Dividend
 //				Big2							BigIntNum	 // The Divisor
-//				MaxPrecision			uint			 // Controls Precision
+//				maxPrecision			uint			 // Controls Precision
 //	}
 //
 // This method performs a division operation on BigIntNum parameters 'dividend'
@@ -4089,14 +4089,14 @@ func (bIDivide BigIntMathDivide) PairFracQuotient(
 // The resulting quotient is returned as a BigIntNum type representing the result
 // of the division operation expressed as integer and fractional digits. The
 // maximum number of fractional digits output to the result is controlled by
-// BigIntPair.MaxPrecision. Remember that the BigIntNum type specifies 'precision'.
+// BigIntPair.maxPrecision. Remember that the BigIntNum type specifies 'precision'.
 // Precision is defined as the number of fractional digits to the right of the
 // decimal place.
 //
 // Examples:
 // =========
 //
-// Note: For all examples BigIntPair.MaxPrecision is specified as '15'.
+// Note: For all examples BigIntPair.maxPrecision is specified as '15'.
 // ----------------------------------------------------------------------------
 //																				   Quotient
 //  Dividend		divided by	Divisor		=		BigIntNum Integer 	Precision	 Result
@@ -4230,15 +4230,15 @@ func (bIDivide BigIntMathDivide) pairIntQuotientNoNumSeps(
 // (BigIntPair.Big1) and 'divisor' (BigIntPair.Big2). The modulo result is returned
 // as a type BigIntNum.
 //
-// 'BigIntPair.MaxPrecision' is used to control the precision of the resulting
+// 'BigIntPair.maxPrecision' is used to control the precision of the resulting
 // fractional modulo returned by this method. Be advised that this method is capable
 // of calculating modulo values with very long strings of fractional digits. Therefore,
-// the user is advised to set a relevant 'BigIntPair.MaxPrecision' value.
+// the user is advised to set a relevant 'BigIntPair.maxPrecision' value.
 //
 // 	type BigIntPair struct {
 //				Big1							BigIntNum  // The Dividend
 //				Big2							BigIntNum	 // The Divisor
-//				MaxPrecision			uint			 // Controls Precision
+//				maxPrecision			uint			 // Controls Precision
 //	}
 //
 // The modulo operation finds the remainder after division of one number
@@ -4311,15 +4311,15 @@ func (bIDivide BigIntMathDivide) pairModNoNumSeps(bPair BigIntPair) (modulo BigI
 
 // pairQuotientModNoNumSeps -  Receives a BigIntPair type as an input parameter. 'BigIntPair.Big1'
 // is treated as the Dividend. 'BigIntPair.Big2' is considered the Divisor.
-// 'BigIntPair.MaxPrecision' is used to control the precision of the resulting
+// 'BigIntPair.maxPrecision' is used to control the precision of the resulting
 // fractional quotient. Be advised that this method is capable of calculating
 // quotients with very long strings of fractional digits. Therefore, the user
-// is advised to set a relevant 'BigIntPair.MaxPrecision' value.
+// is advised to set a relevant 'BigIntPair.maxPrecision' value.
 //
 // 	type BigIntPair struct {
 //				Big1							BigIntNum  // The Dividend
 //				Big2							BigIntNum	 // The Divisor
-//				MaxPrecision			uint			 // Controls Precision
+//				maxPrecision			uint			 // Controls Precision
 //	}
 //
 // The method performs a division operation on BigIntNum input

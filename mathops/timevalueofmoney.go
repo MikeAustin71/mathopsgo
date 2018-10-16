@@ -36,12 +36,12 @@ type TimeValOfMoney struct {
 //      interest rate percentage must be expressed as a decimal fraction. For example,
 //      3% would be passed to this method as 0.03 or percentage / 100
 //
-//  N = Number of compounding periods the investment will be held
+//  NthRoot = Number of compounding periods the investment will be held
 //
 // Future Value Formula:
 // =====================
 //
-// FV = PV x (1 + i)^N
+// FV = PV x (1 + i)^NthRoot
 //
 // Input Parameters:
 // =================
@@ -55,7 +55,7 @@ type TimeValOfMoney struct {
 //                          value.
 //
 //
-// numOfPeriods BigIntNum - Number of periods (N) investment will be held with compounding
+// numOfPeriods BigIntNum - Number of periods (NthRoot) investment will be held with compounding
 //                          applied for each period. Must be a positive value.
 //
 // futureValueMaxPrecision uint	- The maximum precision required in the resulting
@@ -130,9 +130,9 @@ func (tvm TimeValOfMoney) LumpSumFVBigIntNum(
 //      rate percentage must be submitted as a decimal fraction. For example, 3% must be
 //      passed to this method as 0.03 or percentage/100.
 //
-//  N = Number of compounding periods
+//  NthRoot = Number of compounding periods
 //
-// 					PV = FV / (1 + DR)^N
+// 					PV = FV / (1 + DR)^NthRoot
 //
 //
 func (tvm TimeValOfMoney) LumpSumPVBigIntNum(
@@ -177,9 +177,9 @@ func (tvm TimeValOfMoney) LumpSumPVBigIntNum(
 //      interest rate percentage must be submitted as a decimal fraction. For example,
 //      3% must be passed to this method as 0.03 or percentage/100.
 //
-//  N = Number of compounding periods the investment will be held
+//  NthRoot = Number of compounding periods the investment will be held
 //
-// FV = PV x ( 1 + ( i x N) )
+// FV = PV x ( 1 + ( i x NthRoot) )
 //
 // Input Parameters:
 // =================
@@ -193,7 +193,7 @@ func (tvm TimeValOfMoney) LumpSumPVBigIntNum(
 //                                percentage/ 100. The interest rate can be expressed
 //                                as either a positive or negative value.
 //
-// numOfPeriods				BigIntNum - Number of compounding periods (N). Must be
+// numOfPeriods				BigIntNum - Number of compounding periods (NthRoot). Must be
 // 																expressed as a positive value.
 //
 // futureValueMaxPrecision uint - The maximum precision allowed in the future

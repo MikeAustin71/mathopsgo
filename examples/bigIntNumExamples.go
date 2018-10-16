@@ -279,7 +279,7 @@ func ExampleBigIntNumNthRoot_01(
 	result, err := mathops.BigIntMathNthRoot{}.GetNthRoot(radicand, nthRoot, maxPrecision)
 
 	if err != nil {
-		fmt.Printf("Error returned by mathNthRootOp.NthRoot(radicand, nthRoot, maxPrecision). "+
+		fmt.Printf("Error returned by mathNthRootOp.OriginalNthRoot(radicand, nthRoot, maxPrecision). "+
 			"Error='%v' \n", err.Error())
 		return
 	}

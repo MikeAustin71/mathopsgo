@@ -315,7 +315,7 @@ func (nthrt *NthRootOp) GetNthRootBigInt(radicand *big.Int, precision, nthRoot, 
 	return nthrt.GetNthRootIntAry(&ai, &iaNthRoot, maxPrecision)
 }
 
-// NthRoot  - Calculates the Nth Root of a real number ('radicand')
+// OriginalNthRoot  - Calculates the Nth Root of a real number ('radicand')
 // passed to the method as a pointer to type intAry.  In addition, the
 // caller must supply input parameters for 'nthRoot' and 'maxPrecision'.
 //
@@ -639,7 +639,7 @@ func (nthrt NthRootOp) NewNthRoot(radicand, nthRoot *IntAry, maxPrecision int) (
 // method as a pointer to type intAry.  In addition, the caller must supply input
 // parameters for 'nthRoot' and 'maxPrecision'.
 //
-// The difference between this method, 'SetNthRootIntAry' and 'NthRoot' is in
+// The difference between this method, 'SetNthRootIntAry' and 'OriginalNthRoot' is in
 // the return value.  This method, 'SetNthRootIntAry' does not return the result. Instead,
 // the calculation result is stored in the NthRootOp intAry Object, NthRootOp.ResultAry.
 // This method is primarily for use by other low level routines seeking to improve performance

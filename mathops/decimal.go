@@ -337,7 +337,7 @@ func (dec *Decimal) CubeRoot(maxPrecision uint) (Decimal, error) {
 
 	if err != nil {
 		return Decimal{}.NewZero(0),
-			fmt.Errorf(ePrefix+"Error returned by BigIntMathNthRoot{}.NthRoot(...). "+
+			fmt.Errorf(ePrefix+"Error returned by BigIntMathNthRoot{}.OriginalNthRoot(...). "+
 				"Error='%v'\n", err.Error())
 	}
 
@@ -2400,7 +2400,7 @@ func (dec Decimal) NewZero(precision uint) Decimal {
 	return d2
 }
 
-// NthRoot - Calculates the nth root of the current Decimal value. The numeric value of
+// OriginalNthRoot - Calculates the nth root of the current Decimal value. The numeric value of
 // the current Decimal instance constitutes the radicand.
 //
 // Input Parameters:
@@ -2423,7 +2423,7 @@ func (dec Decimal) NewZero(precision uint) Decimal {
 //
 func (dec *Decimal) NthRoot(nthRoot Decimal, maxPrecision uint) (Decimal, error) {
 
-	ePrefix := "Decimal.NthRoot() "
+	ePrefix := "Decimal.OriginalNthRoot() "
 
 	err := dec.IsValid(ePrefix)
 
@@ -2476,7 +2476,7 @@ func (dec *Decimal) NthRoot(nthRoot Decimal, maxPrecision uint) (Decimal, error)
 	if err != nil {
 		return Decimal{}.NewZero(0),
 			fmt.Errorf(ePrefix+
-				"Error returned by BigIntMathNthRoot{}.NthRoot(dec, nthRoot, maxPrecision). "+
+				"Error returned by BigIntMathNthRoot{}.OriginalNthRoot(dec, nthRoot, maxPrecision). "+
 				"dec='%v' nthRoot='%v' maxPrecision='%v' Error='%v'\n",
 				dec.GetNumStr(), nthRoot.GetNumStr(), maxPrecision, err.Error())
 	}
@@ -3514,7 +3514,7 @@ func (dec *Decimal) SquareRoot(maxPrecision uint) (Decimal, error) {
 
 	if err != nil {
 		return Decimal{}.NewZero(0),
-			fmt.Errorf(ePrefix+"Error returned by BigIntMathNthRoot{}.NthRoot(...). "+
+			fmt.Errorf(ePrefix+"Error returned by BigIntMathNthRoot{}.OriginalNthRoot(...). "+
 				"Error='%v'\n", err.Error())
 	}
 

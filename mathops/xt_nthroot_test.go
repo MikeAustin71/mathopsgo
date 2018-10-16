@@ -597,7 +597,7 @@ func TestNthRootOp_GetNthRootIntAry_21(t *testing.T) {
 	_, err := nthRt.GetNthRootIntAry(&origRadicand, &nthRoot, maxPrecision)
 
 	if err == nil {
-		t.Error("Expected an Error. Negative Radicand with even NthRootInt. " +
+		t.Error("Expected an Error. Negative OriginalRadicand with even NthRootInt. " +
 			"Instead, NO ERROR WAS RETURNED.")
 	}
 

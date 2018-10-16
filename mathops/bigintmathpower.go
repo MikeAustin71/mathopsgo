@@ -543,7 +543,7 @@ func (bIPwr BigIntMathPower) raiseToPositiveFractionalPower(
 	if err != nil {
 		return BigIntNum{}.NewZero(0),
 			fmt.Errorf(ePrefix+
-				"Error returned by dBigIntMathNthRoot{}.NthRoot(...) "+
+				"Error returned by dBigIntMathNthRoot{}.OriginalNthRoot(...) "+
 				"Error='%v'", err.Error())
 	}
 
