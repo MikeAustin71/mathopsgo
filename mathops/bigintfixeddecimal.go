@@ -1027,6 +1027,53 @@ func (bigIFd *BigIntFixedDecimal) GetPrecision() uint {
 	return bigIFd.precision
 }
 
+// Inverse - Converts the current BigIntFixedDecimal
+// to the inverse of its numeric value.
+//
+// Example:
+// Current Value = '2'         Inverse= '1/2'
+//
+// Note: When called this method will destroy and
+// overwrite the previous numeric value with the
+// inverse value.
+//
+// Input Parameter
+// ===============
+//
+// maxPrecision uint	- Defines the maximum precision for the
+//                      inverse value computed by this method.
+//                      As used here, 'maxPrecision' specifies
+//                      the maximum number of numeric digits to
+// 											the right of the decimal place.
+//
+func (bigIFd *BigIntFixedDecimal) Inverse(maxPrecision uint) {
+
+	if bigIFd.integerNum == nil {
+		bigIFd.integerNum = big.NewInt(0)
+		bigIFd.precision = 0
+		return
+	}
+
+	if bigIFd.integerNum.Cmp(big.NewInt(0)) == 0 {
+		return
+	}
+
+	bigOne := big.NewInt(1)
+	bigOnePrecision := uint(0)
+
+	inverseBigInt, inversePrecision, _ :=
+		BigIntMathDivide{}.BigIntFracQuotient(
+			bigOne,
+			bigOnePrecision,
+			bigIFd.integerNum,
+			bigIFd.precision,
+			maxPrecision)
+
+	bigIFd.SetNumericValue(inverseBigInt, inversePrecision)
+
+	return
+}
+
 // IsInteger - Returns true if the numeric value of
 // the current BigIntFixedDecimal is an integer value.
 func (bigIFd *BigIntFixedDecimal) IsInteger() bool {

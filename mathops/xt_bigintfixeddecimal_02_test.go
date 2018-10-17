@@ -896,6 +896,150 @@ func TestBigIntFixedDecimal_GetNumStr_04(t *testing.T) {
 
 }
 
+func TestBigIntFixedDecimal_Inverse_01(t *testing.T) {
+
+	numStr := "4"
+	expectedValue := "0.25"
+	maxPrecision := uint(5)
+
+	fD, err := BigIntFixedDecimal{}.NewNumStr(numStr)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntFixedDecimal{}.NewNumStr(numStr) " +
+			"numStr='%v' Error='%v' ", numStr, err.Error())
+	}
+
+	fD.Inverse(maxPrecision)
+
+	currentValue := fD.GetNumStr()
+
+	if expectedValue != currentValue {
+		t.Errorf("Error: Expected result='%v'. Instead, result='%v'",
+			expectedValue, currentValue)
+	}
+
+}
+
+func TestBigIntFixedDecimal_Inverse_02(t *testing.T) {
+
+	numStr := "85.12345"
+	expectedValue := "0.01174764415680990373392995702124"
+	maxPrecision := uint(32)
+
+	fD, err := BigIntFixedDecimal{}.NewNumStr(numStr)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntFixedDecimal{}.NewNumStr(numStr) " +
+			"numStr='%v' Error='%v' ", numStr, err.Error())
+	}
+
+	fD.Inverse(maxPrecision)
+
+	currentValue := fD.GetNumStr()
+
+	if expectedValue != currentValue {
+		t.Errorf("Error: Expected result='%v'. Instead, result='%v'",
+			expectedValue, currentValue)
+	}
+
+}
+
+func TestBigIntFixedDecimal_Inverse_03(t *testing.T) {
+
+	numStr := "-4"
+	expectedValue := "-0.25"
+	maxPrecision := uint(32)
+
+	fD, err := BigIntFixedDecimal{}.NewNumStr(numStr)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntFixedDecimal{}.NewNumStr(numStr) " +
+			"numStr='%v' Error='%v' ", numStr, err.Error())
+	}
+
+	fD.Inverse(maxPrecision)
+
+	currentValue := fD.GetNumStr()
+
+	if expectedValue != currentValue {
+		t.Errorf("Error: Expected result='%v'. Instead, result='%v'",
+			expectedValue, currentValue)
+	}
+
+}
+
+func TestBigIntFixedDecimal_Inverse_04(t *testing.T) {
+
+	numStr := "97842.123456"
+	expectedValue := "0.000010220546781670208316702050788328"
+	maxPrecision := uint(36)
+
+	fD, err := BigIntFixedDecimal{}.NewNumStr(numStr)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntFixedDecimal{}.NewNumStr(numStr) " +
+			"numStr='%v' Error='%v' ", numStr, err.Error())
+	}
+
+	fD.Inverse(maxPrecision)
+
+	currentValue := fD.GetNumStr()
+
+	if expectedValue != currentValue {
+		t.Errorf("Error: Expected result='%v'. Instead, result='%v'",
+			expectedValue, currentValue)
+	}
+
+}
+
+func TestBigIntFixedDecimal_Inverse_05(t *testing.T) {
+
+	numStr := "-5.12345678"
+	expectedValue := "-0.19518072327722456165620274833274"
+	maxPrecision := uint(32)
+
+	fD, err := BigIntFixedDecimal{}.NewNumStr(numStr)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntFixedDecimal{}.NewNumStr(numStr) " +
+			"numStr='%v' Error='%v' ", numStr, err.Error())
+	}
+
+	fD.Inverse(maxPrecision)
+
+	currentValue := fD.GetNumStr()
+
+	if expectedValue != currentValue {
+		t.Errorf("Error: Expected result='%v'. Instead, result='%v'",
+			expectedValue, currentValue)
+	}
+
+}
+
+func TestBigIntFixedDecimal_Inverse_06(t *testing.T) {
+
+	numStr := "0"
+	expectedValue := "0"
+	maxPrecision := uint(32)
+
+	fD, err := BigIntFixedDecimal{}.NewNumStr(numStr)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntFixedDecimal{}.NewNumStr(numStr) " +
+			"numStr='%v' Error='%v' ", numStr, err.Error())
+	}
+
+	fD.Inverse(maxPrecision)
+
+	currentValue := fD.GetNumStr()
+
+	if expectedValue != currentValue {
+		t.Errorf("Error: Expected result='%v'. Instead, result='%v'",
+			expectedValue, currentValue)
+	}
+
+}
+
 func TestBigIntFixedDecimal_IsEven_01(t *testing.T) {
 
 	numStr := "4"
