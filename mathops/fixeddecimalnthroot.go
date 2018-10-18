@@ -197,6 +197,21 @@ type FixedDecimalNthRoot struct {
 	betas                 		[] NthRootBeta // Array of beta guesses
 }
 
+func (fdNthRoot FixedDecimalNthRoot) BigIntFixedRoot(
+	radicand *big.Int,
+	radicandPrecision uint,
+	nthRoot *big.Int,
+	nthRootPrecision,
+	maxPrecision uint) (root *big.Int, rootPrecision uint, err error) {
+
+	root = big.NewInt(0)
+	rootPrecision = 0
+	err = nil
+
+	return root, rootPrecision, err
+}
+
+/*
 func (fdNthRoot *FixedDecimalNthRoot) FixedDecNthRoot(
 	radicand,
 	nthRoot BigIntFixedDecimal,
@@ -240,6 +255,7 @@ func (fdNthRoot *FixedDecimalNthRoot) FixedDecNthRoot(
 	err = nil
 	return root, err
 }
+*/
 
 /*
 ***********************************************************************************
@@ -251,9 +267,267 @@ func (fdNthRoot *FixedDecimalNthRoot) FixedDecNthRoot(
 ***********************************************************************************
 */
 
+func (fdNthRoot *FixedDecimalNthRoot) CalculationController(
+	radicand,
+	nthRoot BigIntFixedDecimal,
+	maxPrecision uint64) (result BigIntFixedDecimal, err error) {
+
+
+	result = BigIntFixedDecimal{}.NewZero(0)
+	err = nil
+
+	ePrefix := "FixedDecimalNthRoot.CalculationController() "
+
+	radCmpZero := radicand.CmpZero()
+
+	if radCmpZero == 0 {
+		// radicand is zero
+		// result == 0
+		return result, err
+	}
+
+	// fixDecOne = +1
+	fixDecOne := BigIntFixedDecimal{}.NewInt(1, 0)
+
+	nthRootCmpZero := nthRoot.CmpZero()
+
+	if nthRootCmpZero == 0 {
+		// nthRoot == 0
+		// result = 1
+		result = fixDecOne.CopyOut()
+		return result, err
+	}
+
+	if nthRoot.Cmp(fixDecOne)==0 {
+		// if nthRoot == 1; result = radicand
+		result = radicand.CopyOut()
+		return result, err
+	}
+
+	fixDecOne.ChangeSign() // now -1
+
+	if nthRoot.Cmp(fixDecOne) == 0 {
+		// nthRoot is -1 ; result = inverse of radicand
+		result = radicand.CopyOut()
+		result.Inverse(uint(maxPrecision))
+		return result, err
+	}
+
+	//       nthRoot Status
+	//  nthRoot is less than -1 or nthRoot is greater than +1
+
+	if radCmpZero == -1 {
+		// radicand is less than zero
+
+		isEvenNum := nthRoot.IsEven()
+
+		if isEvenNum {
+			// Fatal error
+			err = fmt.Errorf(ePrefix+
+					"INVALID ENTRY - Cannot calculate nthRoot of a negative radicand when nthRoot is even. "+
+					"radicand= %v  nthRoot= %v\n", radicand.GetNumStr(), nthRoot.GetNumStr())
+
+			return result, err
+		}
+	}
+
+	if nthRootCmpZero == 1 {
+		// nthRoot is greater than +1
+
+
+	}
+
+
+	return result, err
+}
+
+// CalculatePositiveNthRoot - Calculates roots for nthRoot values
+// greater than +1.
+func (fdNthRoot *FixedDecimalNthRoot) CalculatePositiveNthRoot(
+	radicand,
+	nthRoot BigIntFixedDecimal,
+	maxPrecision uint64) (result BigIntFixedDecimal, err error) {
+
+	result = BigIntFixedDecimal{}.NewZero(0)
+	err = nil
+
+
+	if nthRoot.GetPrecision() > 0 {
+
+		return fdNthRoot.CalculatePositiveFractionalNthRoot(
+			radicand,
+			nthRoot,
+			maxPrecision)
+
+	}
+
+	return fdNthRoot.CalculatePositiveIntegerNthRoot(
+		radicand,
+		nthRoot,
+		maxPrecision)
+}
+
+// CalculatePositiveFractionalNthRoot - Calculates roots for positive decimal
+// value or fractional nthRoots.
+//
+func (fdNthRoot *FixedDecimalNthRoot) CalculatePositiveFractionalNthRoot(
+	radicand,
+	nthRoot BigIntFixedDecimal,
+	maxPrecision uint64) (result BigIntFixedDecimal, err error) {
+
+	result = BigIntFixedDecimal{}.NewZero(0)
+	err = nil
+ /*
+	scaleFactor := big.NewInt(0).Exp(
+		big.NewInt(10),
+		big.NewInt(0).SetUint64(uint64(nthRoot.GetPrecision())),
+		nil)
+
+	ratFraction := big.NewRat(1,1).SetFrac(nthRoot.GetInteger(), scaleFactor)
+
+	numExponent :=  ratFraction.Num()
+
+ */
+
+	return result, err
+}
+
+// CalculatePositiveIntegerNthRoot - Calculates roots for nthRoots which
+// are positive integer values.
+func (fdNthRoot *FixedDecimalNthRoot) CalculatePositiveIntegerNthRoot(
+	radicand,
+	nthRoot BigIntFixedDecimal,
+	maxPrecision uint64) (result BigIntFixedDecimal, err error) {
+
+	ePrefix := "CalculatePositiveIntegerNthRoot() "
+
+	result = BigIntFixedDecimal{}.NewZero(0)
+	err = nil
+
+	var errx error
+
+	errx = fdNthRoot.ProcessInputVariables(
+		radicand,
+		nthRoot,
+		maxPrecision)
+
+	if errx	!= nil {
+		err = fmt.Errorf(ePrefix + "%v", errx.Error())
+		return result, err
+	}
+
+	result, errx = fdNthRoot.CalculateRoot()
+
+	if errx != nil {
+		err = fmt.Errorf(ePrefix + "%v", errx.Error())
+		result = BigIntFixedDecimal{}.NewZero(0)
+		return result, err
+	}
+
+	err = nil
+
+	return result, err
+}
+
+
+// CalculatePositiveNthRoot - Calculates roots for nthRoot values
+// that are less than -1.
+func (fdNthRoot *FixedDecimalNthRoot) CalculateNegativeNthRoot(
+	radicand,
+	nthRoot BigIntFixedDecimal,
+	maxPrecision uint64) (result BigIntFixedDecimal, err error) {
+
+	result = BigIntFixedDecimal{}.NewZero(0)
+	err = nil
+
+
+	if nthRoot.GetPrecision() > 0 {
+
+	}
+
+
+	return result, err
+}
+
+// CalculateNegativeFractionalNthRoot - Calculates roots for negative decimal
+// value or fractional nthRoots.
+//
+func (fdNthRoot *FixedDecimalNthRoot) CalculateNegativeFractionalNthRoot(
+	radicand,
+	nthRoot BigIntFixedDecimal,
+	maxPrecision uint64) (result BigIntFixedDecimal, err error) {
+
+	result = BigIntFixedDecimal{}.NewZero(0)
+	err = nil
+
+
+
+	return result, err
+}
+
+// CalculateNegativeIntegerNthRoot - Calculates roots for nthRoots which
+// are negatvie integer values.
+func (fdNthRoot *FixedDecimalNthRoot) CalculateNegativeIntegerNthRoot(
+	radicand,
+	nthRoot BigIntFixedDecimal,
+	maxPrecision uint64) (result BigIntFixedDecimal, err error) {
+
+	result = BigIntFixedDecimal{}.NewZero(0)
+	err = nil
+
+
+
+	return result, err
+}
+
+
+
+
+// ProcessInputVariables - Converts input parameters to required
+// internal formats.
+func (fdNthRoot *FixedDecimalNthRoot) ProcessInputVariables(
+	radicand,
+	nthRoot BigIntFixedDecimal,
+	maxPrecision uint64)(error) {
+
+	ePrefix := "ProcessInputVariables() "
+
+	bigIntRadicand := radicand.GetInteger()
+
+	bigIntRadicandPrecision := big.NewInt(int64(radicand.GetPrecision()))
+
+	fixDecIntRadicand, fixDecFracRadicand := radicand.GetIntegerFractionalParts()
+
+	intRadicand := fixDecIntRadicand.GetInteger()
+
+	fracRadicand := fixDecFracRadicand.GetInteger()
+
+	fracRadicandPrecision := big.NewInt(int64(fixDecFracRadicand.GetPrecision()))
+
+	bigIntNthRoot := nthRoot.GetInteger()
+
+	err := fdNthRoot.FormatCalculationConstants(
+		bigIntRadicand,
+		bigIntRadicandPrecision,
+		intRadicand,
+		fracRadicand,
+		fracRadicandPrecision,
+		bigIntNthRoot,
+		maxPrecision)
+
+	if err != nil {
+		return fmt.Errorf(ePrefix + "%v", err)
+	}
+
+	return nil
+}
+
+
 // CalculationController - Central coordinating function for the Nth Root
 // Calculation
 //
+
+/*
 func (fdNthRoot *FixedDecimalNthRoot) CalculationController(
 	radicand,
 	radicandPrecision,
@@ -295,6 +569,8 @@ func (fdNthRoot *FixedDecimalNthRoot) CalculationController(
 
 	return result, err
 }
+
+*/
 
 // CalculateRoot - Calculate the nthRoot of a radicand
 // *** The following Method MUST BE CALLED FIRST ***

@@ -348,7 +348,7 @@ func (bLog BigIntMathLogarithms) EPwrXFromTaylorSeries(
 	outputMaxPrecision := uint(1100)
 
 	ePwrBigInt, ePwrBigIntPrecision :=
-		BigIntMathPower{}.BigIntPwr(
+		BigIntMathPower{}.BigIntPwrIteration(
 			e.GetIntegerValue(),
 			e.GetPrecisionUint(),
 			aValue,
@@ -428,7 +428,7 @@ func (bLog BigIntMathLogarithms) EPwrXFromTaylorSeriesBigInt(
 	outputMaxPrecision := uint(1500)
 
 	ePwrBigInt, ePwrBigIntPrecision :=
-		BigIntMathPower{}.BigIntPwr(
+		BigIntMathPower{}.BigIntPwrIteration(
 			e.GetInteger(),
 			e.GetPrecision(),
 			a,

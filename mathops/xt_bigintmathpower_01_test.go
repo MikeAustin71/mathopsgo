@@ -14,7 +14,7 @@ func TestBigIntMathPower_BigIntPwr_01(t *testing.T) {
 	outputMaxPrecision := uint(5)
 	expectedResult := "-877.79045"
 
-	baseToPwr, baseToPwrPrecision := BigIntMathPower{}.BigIntPwr(
+	baseToPwr, baseToPwrPrecision := BigIntMathPower{}.BigIntPwrIteration(
 		base,
 		basePrecision,
 		exponent,
@@ -46,7 +46,7 @@ func TestBigIntMathPower_BigIntPwr_02(t *testing.T) {
 	outputMaxPrecision := uint(5)
 	expectedResult := "877.79045"
 
-	baseToPwr, baseToPwrPrecision := BigIntMathPower{}.BigIntPwr(
+	baseToPwr, baseToPwrPrecision := BigIntMathPower{}.BigIntPwrIteration(
 		base,
 		basePrecision,
 		exponent,
@@ -79,7 +79,7 @@ func TestBigIntMathPower_BigIntPwr_03(t *testing.T) {
 	expectedResult := "1953125"
 	expectedPrecision := uint(0)
 
-	baseToPwr, baseToPwrPrecision := BigIntMathPower{}.BigIntPwr(
+	baseToPwr, baseToPwrPrecision := BigIntMathPower{}.BigIntPwrIteration(
 		base,
 		basePrecision,
 		exponent,
@@ -112,7 +112,7 @@ func TestBigIntMathPower_BigIntPwr_04(t *testing.T) {
 	expectedResult := "0.0000000066624627597199420074400375313628"
 	expectedPrecision := uint(40)
 
-	baseToPwr, baseToPwrPrecision := BigIntMathPower{}.BigIntPwr(
+	baseToPwr, baseToPwrPrecision := BigIntMathPower{}.BigIntPwrIteration(
 		base,
 		basePrecision,
 		exponent,
@@ -145,7 +145,7 @@ func TestBigIntMathPower_BigIntPwr_05(t *testing.T) {
 	expectedResult := "-0.0000000066624627597199420074400375313628"
 	expectedPrecision := uint(40)
 
-	baseToPwr, baseToPwrPrecision := BigIntMathPower{}.BigIntPwr(
+	baseToPwr, baseToPwrPrecision := BigIntMathPower{}.BigIntPwrIteration(
 		base,
 		basePrecision,
 		exponent,
@@ -178,7 +178,7 @@ func TestBigIntMathPower_BigIntPwr_06(t *testing.T) {
 	expectedResult := "1000000000"
 	expectedPrecision := uint(0)
 
-	baseToPwr, baseToPwrPrecision := BigIntMathPower{}.BigIntPwr(
+	baseToPwr, baseToPwrPrecision := BigIntMathPower{}.BigIntPwrIteration(
 		base,
 		basePrecision,
 		exponent,
@@ -211,7 +211,7 @@ func TestBigIntMathPower_BigIntPwr_07(t *testing.T) {
 	expectedResult := "-1000000000"
 	expectedPrecision := uint(0)
 
-	baseToPwr, baseToPwrPrecision := BigIntMathPower{}.BigIntPwr(
+	baseToPwr, baseToPwrPrecision := BigIntMathPower{}.BigIntPwrIteration(
 		base,
 		basePrecision,
 		exponent,
@@ -244,7 +244,7 @@ func TestBigIntMathPower_BigIntPwr_08(t *testing.T) {
 	expectedResult := "427929800.129788411"
 	expectedPrecision := uint(9)
 
-	baseToPwr, baseToPwrPrecision := BigIntMathPower{}.BigIntPwr(
+	baseToPwr, baseToPwrPrecision := BigIntMathPower{}.BigIntPwrIteration(
 		base,
 		basePrecision,
 		exponent,
@@ -277,7 +277,7 @@ func TestBigIntMathPower_BigIntPwr_09(t *testing.T) {
 	expectedResult := "-427929800.129788411"
 	expectedPrecision := uint(9)
 
-	baseToPwr, baseToPwrPrecision := BigIntMathPower{}.BigIntPwr(
+	baseToPwr, baseToPwrPrecision := BigIntMathPower{}.BigIntPwrIteration(
 		base,
 		basePrecision,
 		exponent,
@@ -313,7 +313,7 @@ func TestBigIntMathPower_BigIntPwr_10(t *testing.T) {
 	expectedResult := "8103.0839275753840077099966894328"
 	expectedPrecision := outputMaxPrecision
 
-	baseToPwr, baseToPwrPrecision := BigIntMathPower{}.BigIntPwr(
+	baseToPwr, baseToPwrPrecision := BigIntMathPower{}.BigIntPwrIteration(
 		base,
 		basePrecision,
 		exponent,

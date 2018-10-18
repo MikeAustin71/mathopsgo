@@ -24,20 +24,10 @@ import (
 
 func main() {
 
-	numStr := "358123984.123456"
 	nthRootStr := "51"
-	maxPrecision := uint64(200)
-	expectedResult := "1.4713843932735533440021047882862"
 
-	radicand, err := mathops.BigIntFixedDecimal{}.NewNumStr(numStr)
 
-	if err != nil {
-		fmt.Printf("Error returned by BigIntFixedDecimal{}.NewNumStr(numStr). " +
-			"numStr='%v' Error='%v' ", numStr, err.Error())
-		return
-	}
-
-	nthRoot, err := mathops.BigIntFixedDecimal{}.NewNumStr(nthRootStr)
+	_, err := mathops.BigIntFixedDecimal{}.NewNumStr(nthRootStr)
 
 	if err != nil {
 		fmt.Printf("Error returned by BigIntFixedDecimal{}.NewNumStr(nthRootStr). " +
@@ -45,7 +35,6 @@ func main() {
 		return
 	}
 
-	TestGetNthRoot(radicand, nthRoot, maxPrecision, expectedResult)
 
 }
 
@@ -145,7 +134,7 @@ func TestFixDecNthRootFmtFracDigits(
 
 }
 
-
+/*
 func TestGetNthRoot(radicand, nthRoot mathops.BigIntFixedDecimal, maxPrecision uint64, expectedResult string) {
 
 	nthRootCalc := mathops.FixedDecimalNthRoot{}
@@ -206,6 +195,7 @@ func TestGetNthRoot(radicand, nthRoot mathops.BigIntFixedDecimal, maxPrecision u
 
 
 }
+*/
 
 func TestFixDecNthRootGetNextFracBundle(
 									fracNum,
@@ -682,7 +672,7 @@ func TestBigIntPwr(
 	outputMaxPrecision uint,
 	expectedResult string) {
 
-	baseToPwr, baseToPwrPrecision := mathops.BigIntMathPower{}.BigIntPwr(
+	baseToPwr, baseToPwrPrecision := mathops.BigIntMathPower{}.BigIntPwrIteration(
 																			base,
 																			basePrecision,
 																			exponent,
