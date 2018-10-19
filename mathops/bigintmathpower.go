@@ -728,24 +728,40 @@ func(bIPwr BigIntMathPower) BigIntToPositiveIntegerPower(
 		return result, resultPrecision, err
 	}
 
-
-
 	if exponentPrecision > 0 {
 		err = fmt.Errorf(ePrefix + "Error: Input parameter 'exponent' is NOT an integer! " +
 			"exponentPrecision='%v' ", exponentPrecision)
+	}
+
+	if exponent.Cmp(big.NewInt(1)) == 0 {
+		result.Set(base)
+		resultPrecision = basePrecision
+		err = nil
+		return result, resultPrecision, err
 	}
 
 	result.Exp(base, exponent, nil)
 	biResultPrecision := big.NewInt(0).Mul(
 		big.NewInt(0).SetUint64(uint64(basePrecision)), exponent)
 
-	biMaxPrecision := big.NewInt(0).SetUint64(uint64(maxPrecision))
+	biMaxPrecision := big.NewInt(0).SetUint64(uint64(maxPrecision+1))
 
-	if biResultPrecision.Cmp(biMaxPrecision) == 1 {
+	if biResultPrecision.Cmp(biMaxPrecision) > -1 {
+		bigTen := big.NewInt(10)
+		roundFive := big.NewInt(5)
+
+		if result.Cmp(bigZero) == -1 {
+			roundFive.Neg(roundFive)
+		}
+
 		biResultPrecision.Sub(biResultPrecision, biMaxPrecision)
-		scale:= big.NewInt(0).Exp(big.NewInt(10), biResultPrecision, nil)
+		scale:= big.NewInt(0).Exp(bigTen, biResultPrecision, nil)
 		result.Quo(result, scale)
+		result.Add(result, roundFive)
+		result.Quo(result, bigTen)
 		resultPrecision = maxPrecision
+	} else {
+		resultPrecision = uint(biResultPrecision.Uint64())
 	}
 
 	err = nil

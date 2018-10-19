@@ -24,43 +24,76 @@ import (
 
 func main() {
 
-	nthRootStr := "51"
+	base := big.NewInt(-525)
+	basePrecision := uint(2)
+	exponent := big.NewInt(7)
+	exponentPrecision := uint(0)
+	maxPrecision := uint(14)
+	//                                  1
+	//                         1234567890123456
+	expectedResult := "-109929.72052001953125"
 
+	TestBigIntPositiveIntPower(
+		base,
+		basePrecision,
+		exponent,
+		exponentPrecision,
+		maxPrecision,
+		expectedResult)
+}
 
-	_, err := mathops.BigIntFixedDecimal{}.NewNumStr(nthRootStr)
+func TestBigIntPositiveIntPower(
+	base *big.Int,
+	basePrecision uint,
+	exponent *big.Int,
+	exponentPrecision uint,
+	maxPrecision uint,
+	expectedResult string) {
+
+	timeStart := time.Now()
+	result,
+	resultPrecision,
+	err := mathops.BigIntMathPower{}.BigIntToPositiveIntegerPower(
+					base,
+					basePrecision,
+					exponent,
+					exponentPrecision,
+					maxPrecision)
+
+	timeEnd := time.Now()
 
 	if err != nil {
-		fmt.Printf("Error returned by BigIntFixedDecimal{}.NewNumStr(nthRootStr). " +
-			"nthRootStr='%v' Error='%v' ", nthRootStr, err.Error())
-		return
+	fmt.Printf("Error returned by BigIntMathPower{}.BigIntToPositiveIntegerPower() " +
+	"Error='%v' ", err.Error())
+	return
 	}
 
+	binResult := mathops.BigIntNum{}.NewBigInt(result, resultPrecision)
+	timeDuration := timeEnd.Sub(timeStart)
+
+	duration := examples.CodeDurationToStr(timeDuration)
+
+	fmt.Println()
+	fmt.Println()
+	fmt.Println("BigIntMathPower{}.BigIntToPositiveIntegerPower() ")
+	fmt.Println("============================================================")
+	fmt.Println("                  base: ", base.Text(10))
+	fmt.Println("         basePrecision: ", basePrecision)
+	fmt.Println("              exponent: ", exponent.Text(10))
+	fmt.Println("     exponentPrecision: ", basePrecision)
+	fmt.Println("     Maximum Precision: ", maxPrecision)
+	fmt.Println("------------------------------------------------------------")
+	fmt.Println("                result: ", result.Text(10))
+	fmt.Println("       resultPrecision: ", resultPrecision)
+	fmt.Println("         result NumStr: ", binResult.GetNumStr())
+	fmt.Println("        expectedResult: ", expectedResult)
+	fmt.Println("------------------------------------------------------------")
+	fmt.Println("Execution Time: ", duration)
+	fmt.Println("------------------------------------------------------------")
+	fmt.Println()
 
 }
 
-
-/*
-func main () {
-
-	radicand := big.NewInt(42)
-	radicandPrecision := big.NewInt(2)
-	intRadicand := big.NewInt(4)
-	fracInteger := big.NewInt(2)
-	fracIntgerPrecision := big.NewInt(1)
-	nthRoot := big.NewInt(3)
-	maxPrecision := uint64(9)
-
-	TestFixDecNthRootFmtFracDigits(
-		radicand,
-		radicandPrecision,
-		intRadicand,
-		fracInteger,
-		fracIntgerPrecision,
-		nthRoot,
-		maxPrecision)
-
-}
-*/
 
 func TestFixDecNthRootFmtFracDigits(
 	radicand,
