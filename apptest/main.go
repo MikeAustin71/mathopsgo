@@ -24,22 +24,75 @@ import (
 
 func main() {
 
-	base := big.NewInt(-525)
+	base := big.NewInt(525)
 	basePrecision := uint(2)
-	exponent := big.NewInt(7)
+	exponent := big.NewInt(-7)
 	exponentPrecision := uint(0)
-	maxPrecision := uint(14)
-	//                                  1
-	//                         1234567890123456
-	expectedResult := "-109929.72052001953125"
+	maxPrecision := uint(37)
+	//                            1         2         3
+	//                   1234567890123456789012345678901234567
+	expectedResult := "0.0000090967210256655561054952045247619"
 
-	TestBigIntPositiveIntPower(
+	TestBigIntNegativeIntPower(
 		base,
 		basePrecision,
 		exponent,
 		exponentPrecision,
 		maxPrecision,
 		expectedResult)
+}
+
+func TestBigIntNegativeIntPower(
+	base *big.Int,
+	basePrecision uint,
+	exponent *big.Int,
+	exponentPrecision uint,
+	maxPrecision uint,
+	expectedResult string) {
+
+
+	timeStart := time.Now()
+	result,
+	resultPrecision,
+	err := mathops.BigIntMathPower{}.BigIntToNegativeIntegerPower(
+		base,
+		basePrecision,
+		exponent,
+		exponentPrecision,
+		maxPrecision)
+
+	timeEnd := time.Now()
+
+	if err != nil {
+		fmt.Printf("%v", err.Error())
+		return
+	}
+
+	binResult := mathops.BigIntNum{}.NewBigInt(result, resultPrecision)
+	timeDuration := timeEnd.Sub(timeStart)
+
+	duration := examples.CodeDurationToStr(timeDuration)
+
+	fmt.Println()
+	fmt.Println()
+	fmt.Println("BigIntMathPower{}.BigIntToNegativeIntegerPower() ")
+	fmt.Println("============================================================")
+	fmt.Println("                  base: ", base.Text(10))
+	fmt.Println("         basePrecision: ", basePrecision)
+	fmt.Println("              exponent: ", exponent.Text(10))
+	fmt.Println("     exponentPrecision: ", basePrecision)
+	fmt.Println("     Maximum Precision: ", maxPrecision)
+	fmt.Println("------------------------------------------------------------")
+	fmt.Println("                result: ", result.Text(10))
+	fmt.Println("       resultPrecision: ", resultPrecision)
+	fmt.Println("         result NumStr: ", binResult.GetNumStr())
+	fmt.Println("        expectedResult: ", expectedResult)
+	fmt.Println("------------------------------------------------------------")
+	fmt.Println("Execution Time: ", duration)
+	fmt.Println("------------------------------------------------------------")
+	fmt.Println()
+
+
 }
 
 func TestBigIntPositiveIntPower(
@@ -63,8 +116,7 @@ func TestBigIntPositiveIntPower(
 	timeEnd := time.Now()
 
 	if err != nil {
-	fmt.Printf("Error returned by BigIntMathPower{}.BigIntToPositiveIntegerPower() " +
-	"Error='%v' ", err.Error())
+	fmt.Printf("%v ", err.Error())
 	return
 	}
 

@@ -550,7 +550,7 @@ func(bIPwr BigIntMathPower) BigIntToNegativeIntegerPower(
 	result = big.NewInt(0)
 	resultPrecision = 0
 	err = nil
-
+	internalPrecision := uint64(maxPrecision + 2001)
 	bigZero := big.NewInt(0)
 
 	if base.Cmp(bigZero) == 0 {
@@ -580,7 +580,27 @@ func(bIPwr BigIntMathPower) BigIntToNegativeIntegerPower(
 		return result, resultPrecision, err
 	}
 
+	var errx error
 
+	if exponent.Cmp(big.NewInt(-1)) == 0 {
+		// if exponent == -1, result is equal to inverse of base
+		result, resultPrecision, errx =
+			BigIntMathDivide{}.BigIntFracQuotient(big.NewInt(1),
+				0,
+				base,
+				basePrecision,
+				maxPrecision)
+
+		if errx != nil {
+			err = fmt.Errorf(ePrefix + "%v", errx.Error())
+
+			return result, resultPrecision, err
+		}
+
+		err = nil
+
+		return result, resultPrecision, err
+	}
 
 	tempExponent := big.NewInt(0).Set(exponent)
 
@@ -592,17 +612,26 @@ func(bIPwr BigIntMathPower) BigIntToNegativeIntegerPower(
 	biTempResultPrecision := big.NewInt(0).Mul(
 		big.NewInt(0).SetUint64(uint64(basePrecision)), tempExponent)
 
-	biMaxPrecision := big.NewInt(0).SetUint64(uint64(maxPrecision))
+	biMaxPrecision := big.NewInt(0).SetUint64(internalPrecision)
 
-	if biTempResultPrecision.Cmp(biMaxPrecision) == 1 {
+	if biTempResultPrecision.Cmp(biMaxPrecision) > -1 {
+		bigTen := big.NewInt(10)
+		roundFive := big.NewInt(5)
+
+		if tempResult.Cmp(bigZero) == -1 {
+			roundFive.Neg(roundFive)
+		}
+
 		biTempResultPrecision.Sub(biTempResultPrecision, biMaxPrecision)
-		scale:= big.NewInt(0).Exp(big.NewInt(10), biTempResultPrecision, nil)
+		scale:= big.NewInt(0).Exp(bigTen, biTempResultPrecision, nil)
 		tempResult.Quo(tempResult, scale)
+		tempResult.Add(tempResult, roundFive)
+		tempResult.Quo(tempResult, bigTen)
 		biTempResultPrecision.Set(biMaxPrecision)
 	}
 
 	tempResultPrecision := uint(biTempResultPrecision.Uint64())
-	var errx error
+
 
 	result, resultPrecision, errx =
 		BigIntMathDivide{}.BigIntFracQuotient(big.NewInt(1),
@@ -616,7 +645,6 @@ func(bIPwr BigIntMathPower) BigIntToNegativeIntegerPower(
 
 		return result, resultPrecision, err
 	}
-
 
 	err = nil
 
@@ -731,6 +759,7 @@ func(bIPwr BigIntMathPower) BigIntToPositiveIntegerPower(
 	if exponentPrecision > 0 {
 		err = fmt.Errorf(ePrefix + "Error: Input parameter 'exponent' is NOT an integer! " +
 			"exponentPrecision='%v' ", exponentPrecision)
+		return result, resultPrecision, err
 	}
 
 	if exponent.Cmp(big.NewInt(1)) == 0 {
