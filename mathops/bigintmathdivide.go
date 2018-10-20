@@ -148,6 +148,14 @@ func (bIDivide BigIntMathDivide) BigIntFracQuotient(
 		divisor = big.NewInt(0)
 	}
 
+	if dividendPrecision == nil {
+		divisorPrecision = big.NewInt(0)
+	}
+
+	if divisorPrecision == nil {
+		divisorPrecision = big.NewInt(0)
+	}
+
 	bigZero := big.NewInt(0)
 
 	if divisor.Cmp(bigZero) == 0 {
@@ -186,17 +194,6 @@ func (bIDivide BigIntMathDivide) BigIntFracQuotient(
 	numratrDivdndShift := big.NewInt(0).Set(dividendPrecision)
 	scale := big.NewInt(0)
 
-	/*
-	if numratrDivdndShift > 0 {
-		denomnatrDivsrShift -= numratrDivdndShift
-		if denomnatrDivsrShift < 0 {
-			scale = big.NewInt(0).Exp(bigTen, big.NewInt(denomnatrDivsrShift*-1), nil)
-			denomnatrDivsr.Mul(denomnatrDivsr, scale)
-		}
-		numratrDivdndShift = 0
-	}
-*/
-
   if numratrDivdndShift.Cmp(bigZero) == 1 {
   	denomnatrDivsrShift.Sub(denomnatrDivsrShift, numratrDivdndShift)
   	if denomnatrDivsrShift.Cmp(bigZero) == -1 {
@@ -206,18 +203,6 @@ func (bIDivide BigIntMathDivide) BigIntFracQuotient(
 
   	numratrDivdndShift = big.NewInt(0)
 	}
-
-  /*
-	if denomnatrDivsrShift > 0 {
-		numratrDivdndShift -= denomnatrDivsrShift
-		if numratrDivdndShift < 0 {
-
-			scale = big.NewInt(0).Exp(bigTen, big.NewInt(numratrDivdndShift*-1), nil)
-			numratrDivdnd.Mul(numratrDivdnd, scale)
-
-		}
-	}
-	*/
 
 	if denomnatrDivsrShift.Cmp(bigZero) == 1 {
 		numratrDivdndShift.Sub(numratrDivdndShift, denomnatrDivsrShift)
@@ -591,31 +576,45 @@ func (bIDivide BigIntMathDivide) BigIntNumFracQuotient(
 
 	ePrefix := "BigIntMathDivide.BigIntNumFracQuotient() "
 
-	if divisor.IsZero() {
-		fracQuotient = BigIntNum{}.New()
-		err = errors.New(ePrefix + "Error: Attempted divide by zero!")
-		return fracQuotient, err
-	}
+	fracQuotient = BigIntNum{}.NewZero(0)
+	err = nil
 
-	bPair := BigIntPair{}.NewBigIntNum(dividend, divisor)
-
-	bPair.MaxPrecision = maxPrecision
-
-	var errx error
-
-	fracQuotient, errx =
-		BigIntMathDivide{}.PairFracQuotient(bPair)
+	binDividend, errx := dividend.GetBigInt()
 
 	if errx != nil {
-		fracQuotient = BigIntNum{}.New()
-		err = fmt.Errorf(ePrefix+
-			"Error returned by BigIntMathDivide{}.PairFracQuotient(bPair). "+
-			"dividend='%v' divisor='%v' maxPrecision='%v' Error='%v'",
-			bPair.Big1.GetNumStr(), bPair.Big2.GetNumStr(), bPair.MaxPrecision, errx.Error())
-
+		err = fmt.Errorf(ePrefix + "%v", errx.Error())
 		return fracQuotient, err
 	}
 
+	binDividendPrecision := dividend.GetPrecisionBigInt()
+
+	binDivisor, errx := divisor.GetBigInt()
+
+	if errx != nil {
+		err = fmt.Errorf(ePrefix + "%v", errx.Error())
+		return fracQuotient, err
+	}
+
+	binDivisorPrecision := divisor.GetPrecisionBigInt()
+
+	biMaxPrecision := big.NewInt(0).SetUint64(uint64(maxPrecision))
+
+	fracQuo, fracQuoPrecision, errx := BigIntMathDivide{}.BigIntFracQuotient(
+		binDividend,
+		binDividendPrecision,
+		binDivisor,
+		binDivisorPrecision,
+		biMaxPrecision)
+
+	if errx != nil {
+		err = fmt.Errorf(ePrefix + "%v", errx.Error())
+		return fracQuotient, err
+	}
+
+	fracQuotient.SetBigInt(fracQuo, uint(fracQuoPrecision.Uint64()))
+	fracQuotient.SetNumericSeparatorsDto(dividend.GetNumericSeparatorsDto())
+
+	err = nil
 	return fracQuotient, nil
 }
 
