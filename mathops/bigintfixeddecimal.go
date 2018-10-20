@@ -1296,11 +1296,15 @@ func (bigIFd *BigIntFixedDecimal) MultiplyByTwoToPower(exponent uint) {
 		return
 	}
 
-	bigIFd.integerNum, bigIFd.precision =
+	precision := big.NewInt(0)
+
+	bigIFd.integerNum, precision, _ =
 		BigIntMathMultiply{}.BigIntMultiplyByTwoToPower(
 			bigIFd.integerNum,
-			bigIFd.precision,
+			big.NewInt(0).SetUint64(uint64(bigIFd.precision)),
 			exponent)
+
+	bigIFd.precision = uint(precision.Uint64())
 
 }
 
