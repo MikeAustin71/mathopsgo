@@ -50,93 +50,134 @@ type BigIntMathSubtract struct {
 // Input Parameters
 // ================
 //
-//	minuend *big.Int					- The number from which the subtrahend will be subtracted
+//	minuend 						*big.Int		- The number from which the subtrahend will be subtracted
 //
-//	minPrecision uint,				- The 'minuend' precision or numeric digits after
-//															the decimal point.
+//	minPrecision 				*big.Int		- The 'minuend' precision or numeric digits after
+//																		the decimal point. 'minPrecision' must be greater
+//                                    than or equal to zero.
 //
-//	subtrahend *big.Int,			- The number to be subtracted from the 'minuend'.
+//	subtrahend 					*big.Int		- The number to be subtracted from the 'minuend'.
 //
-//	subPrecision uint  				- The 'subtrahend' precision or numeric digits after
-//															the decimal point.
+//	subPrecision 				*big.Int 		- The 'subtrahend' precision or numeric digits after
+//																		the decimal point. 'subPrecision' must be greater
+//                                    than or equal to zero.
 //
 // Return Values
 // =============
 //
-// difference 		*big.Int		- The difference or result of the subtraction
-// 															operation	returned as a *big.Int type.
+// difference 					*big.Int		- The difference or result of the subtraction
+// 																		operation	returned as a *big.Int type.
 //
-// differencePrecision uint   - The precision specification for the returned
-//                          		subtraction 'result'. Precision specifies the
-//                          		number of fractional digits to the right of the
-//                          		decimal place.
+// differencePrecision	*big.Int   	- The precision specification for the returned
+//                          					subtraction 'result'. Precision specifies the
+//                          					number of fractional digits to the right of the
+//                          					decimal place. 'differencePrecision' will always
+//                                    be greater than or equal to zero.
 //
 // Taken together, 'difference' and 'differencePrecision' can define a fixed
 // length floating point number.
 //
+// Note: This function will delete all trailing fractional zeros from the result or
+//       difference.
+//
 func (bSubtract BigIntMathSubtract) BigIntSubtract(
-	minuend *big.Int,
-	minPrecision uint,
-	subtrahend *big.Int,
-	subPrecision uint) (difference *big.Int, differencePrecision uint) {
+	minuend,
+	minPrecision,
+	subtrahend,
+	subPrecision *big.Int) (difference *big.Int, differencePrecision *big.Int, err error) {
+
+	ePrefix := "BigIntMathSubtract.BigIntSubtract() "
+
+	difference = big.NewInt(0)
+	differencePrecision = big.NewInt(0)
+	err = nil
 
 	if minuend == nil {
 		minuend = big.NewInt(0)
+	}
+
+	if minPrecision == nil {
+		minPrecision = big.NewInt(0)
 	}
 
 	if subtrahend == nil {
 		subtrahend = big.NewInt(0)
 	}
 
+	if subPrecision == nil {
+		subPrecision = big.NewInt(0)
+	}
+
 	bigZero := big.NewInt(0)
+
+	if minPrecision.Cmp(bigZero) == -1 {
+		err = fmt.Errorf(ePrefix +
+			"Error: Input parameter 'minPrecision' is LESS THAN ZERO! " +
+			"minPrecision='%v' ", minPrecision.Text(10))
+
+		return difference, differencePrecision, err
+	}
+
+	if subPrecision.Cmp(bigZero) == -1 {
+		err = fmt.Errorf(ePrefix +
+			"Error: Input parameter 'subPrecision' is LESS THAN ZERO! " +
+			"subPrecision='%v' ", subPrecision.Text(10))
+
+		return difference, differencePrecision, err
+	}
+
 	base10 := big.NewInt(10)
 	deltaPrecision := big.NewInt(0)
 	scale := big.NewInt(0)
 
-	if minPrecision == subPrecision {
+	if minPrecision.Cmp(subPrecision) == 0 {
 		// Precisions are equal.
 
 		difference = big.NewInt(0).Sub(minuend, subtrahend)
 		differencePrecision = minPrecision
 
-	} else if minPrecision > subPrecision {
-
-		deltaPrecision = big.NewInt(int64(minPrecision - subPrecision))
+	} else if minPrecision.Cmp(subPrecision) == 1 {
+    //  minPrecision > subPrecision
+		deltaPrecision = big.NewInt(0).Sub(minPrecision,subPrecision)
 		scale = big.NewInt(0).Exp(base10, deltaPrecision, nil)
 		newSubInt := big.NewInt(0).Mul(subtrahend, scale)
 
 		difference = big.NewInt(0).Sub(minuend, newSubInt)
-		differencePrecision = minPrecision
+		differencePrecision.Set(minPrecision)
 
 	} else {
 		// subPrecision must be GREATER THAN minPrecision
-		deltaPrecision = big.NewInt(int64(subPrecision - minPrecision))
+		deltaPrecision = big.NewInt(0).Sub(subPrecision, minPrecision)
 		scale = big.NewInt(0).Exp(base10, deltaPrecision, nil)
 		newMinuendInt := big.NewInt(0).Mul(minuend, scale)
 
 		difference = big.NewInt(0).Sub(newMinuendInt, subtrahend)
-		differencePrecision = subPrecision
+		differencePrecision.Set(subPrecision)
 	}
 
 	if difference.Cmp(bigZero) == 0 {
-		differencePrecision = 0
+		differencePrecision = big.NewInt(0)
 	}
 
 	// Delete trailing fractional zeros
-	if differencePrecision > 0 {
+	if differencePrecision.Cmp(bigZero) == 1  {
+		// differencePrecision > 0
 		scrap := big.NewInt(0)
 		biBase10 := big.NewInt(10)
 		biBaseZero := big.NewInt(0)
 		newDifference, mod10 := big.NewInt(0).QuoRem(difference, biBase10, scrap)
+		bigOne := big.NewInt(1)
 
-		for mod10.Cmp(biBaseZero) == 0 && differencePrecision > 0 {
+		for mod10.Cmp(biBaseZero) == 0 && differencePrecision.Cmp(bigZero) == 1 {
 			difference.Set(newDifference)
-			differencePrecision--
+			differencePrecision.Sub(differencePrecision, bigOne)
 			newDifference, mod10 = big.NewInt(0).QuoRem(difference, biBase10, scrap)
 		}
 	}
 
-	return difference, differencePrecision
+	err = nil
+
+	return difference, differencePrecision, err
 }
 
 // FixedDecimalSubtract - Performs the subtraction operation on two
@@ -216,14 +257,16 @@ func (bSubtract BigIntMathSubtract) FixedDecimalSubtract(
 	minuend.IsValid()
 	subtrahend.IsValid()
 
-	rBigInt, rBigIntPrecision :=
+	// The error is ignored because minuend precision and
+	// subtrahend precision will never be less than zero
+	rBigInt, rBigIntPrecision, _ :=
 		BigIntMathSubtract{}.BigIntSubtract(
 			minuend.GetInteger(),
-			minuend.GetPrecision(),
+			minuend.GetPrecisionBigInt(),
 			subtrahend.GetInteger(),
-			subtrahend.GetPrecision())
+			subtrahend.GetPrecisionBigInt())
 
-	difference.SetNumericValue(rBigInt, rBigIntPrecision)
+	difference.SetNumericValue(rBigInt, uint(rBigIntPrecision.Uint64()))
 
 	return difference
 }
@@ -265,14 +308,18 @@ func (bSubtract BigIntMathSubtract) SubtractBigInts(
 	subtrahend *big.Int,
 	subPrecision uint) BigIntNum {
 
-	result, resultPrecision :=
+	// Returned error is ignored because minuend and subtrahend precisions
+	// will never be less than zero.
+	result, resultPrecision, _ :=
 		BigIntMathSubtract{}.BigIntSubtract(
 			minuend,
-			minPrecision,
+			big.NewInt(0).SetUint64(uint64(minPrecision)),
 			subtrahend,
-			subPrecision)
+			big.NewInt(0).SetUint64(uint64(subPrecision)))
 
-	return BigIntNum{}.NewBigInt(result, resultPrecision)
+	biNum, _ := BigIntNum{}.NewBigIntPrecision(result, resultPrecision)
+		
+	return biNum
 }
 
 // SubtractBigIntNums - Receives two 'BigIntNum' instances and proceeds to subtract
