@@ -1453,17 +1453,20 @@ func (bAdd BigIntMathAdd) AddPair(bPair BigIntPair) BigIntNum {
 // Input Parameters
 // ================
 //
-//	b1 			*big.Int	- The the first number which will be added to 'b2' to
-//                    	generate a total.
+//	b1 					*big.Int	- The the first number which will be added to 'b2' to
+//                    			generate a total.
 //
-//	b1Precision	uint	- The 'b1' precision or the number of fractional digits
-//											after the decimal place.
+//	b1Precision	*big.Int	- Specifies the precision for input parameter 'b1'.
+// 													Precision defines the number of fractional digits
+//													after the decimal place. 'b1Precision' must be equal
+//                          to or greater than zero.
 //
-//	b2 			*big.Int	- The second number which is added to 'b1' in order to
-//                 			generate a total.
+//	b2 					*big.Int	- The second number which is added to 'b1' in order to
+//                 					generate a total.
 //
-//	b2Precision	uint  - The 'b2' precision or the number of fractional digits
-//											after the decimal place.
+//	b2Precision	*big.Int  - The 'b2' precision or the number of fractional digits
+//													after the decimal place. 'b2Precision' must be equal
+//                          to or greater than zero.
 //
 // Return Values
 // =============
@@ -1473,14 +1476,16 @@ func (bAdd BigIntMathAdd) AddPair(bPair BigIntPair) BigIntNum {
 // totalPrecision *big.Int   	- The 'total' precision or the number of fractional
 // 															digits after the decimal place.
 //
-// Taken together, 'total' and 'totalPrecision' can define a fixed
-// length floating point number.
+// err						error				- If input parameters 'b1Precision' or 'b2Precision'
+// 															are less than zero, an error will be returned.
+//
+// Taken together, 'total' and 'totalPrecision' can define a fixed length floating point number.
 //
 func (bAdd BigIntMathAdd) BigIntAdd(
 	b1,
-	precision1,
+	b1Precision,
 	b2,
-	precision2  *big.Int) (total *big.Int, totalPrecision *big.Int, err error) {
+	b2Precision *big.Int) (total *big.Int, totalPrecision *big.Int, err error) {
 
 	ePrefix := "BigIntMathAdd.BigIntAdd() "
 
@@ -1498,20 +1503,20 @@ func (bAdd BigIntMathAdd) BigIntAdd(
 
 	bigZero := big.NewInt(0)
 
-	if precision1.Cmp(bigZero) == -1 {
+	if b1Precision.Cmp(bigZero) == -1 {
 
 		err = fmt.Errorf(ePrefix +
-			"Error: Input parameter 'precision1' is LESS THAN ZERO! " +
-			"precision1='%v' ", precision1.Text(10))
+			"Error: Input parameter 'b1Precision' is LESS THAN ZERO! " +
+			"b1Precision='%v' ", b1Precision.Text(10))
 
 		return total, totalPrecision, err
 	}
 
 
-	if precision2.Cmp(bigZero) == -1 {
+	if b2Precision.Cmp(bigZero) == -1 {
 		err = fmt.Errorf(ePrefix +
-			"Error: Input parameter 'precision2' is LESS THAN ZERO! " +
-			"precision2='%v' ", precision2.Text(10))
+			"Error: Input parameter 'b2Precision' is LESS THAN ZERO! " +
+			"b2Precision='%v' ", b2Precision.Text(10))
 
 		return total, totalPrecision, err
 	}
@@ -1527,23 +1532,23 @@ func (bAdd BigIntMathAdd) BigIntAdd(
 	delta := big.NewInt(0)
 	scale := big.NewInt(0)
 
-	if precision1.Cmp(precision2) == 0 {
+	if b1Precision.Cmp(b2Precision) == 0 {
 		total = big.NewInt(0).Add(b1, b2)
-		totalPrecision = precision1
+		totalPrecision = b1Precision
 
-	} else if precision1.Cmp(precision2) == 1  {
-		// precision1 > precision2
-		delta = big.NewInt(0).Sub(precision1,  precision2)
+	} else if b1Precision.Cmp(b2Precision) == 1  {
+		// b1Precision > b2Precision
+		delta = big.NewInt(0).Sub(b1Precision, b2Precision)
 		scale = big.NewInt(0).Exp(bigTen, delta, nil)
 
 		b2ToScale := big.NewInt(0).Mul(b2, scale)
 
 		total = big.NewInt(0).Add(b1, b2ToScale)
-		totalPrecision= big.NewInt(0).Set(precision1)
+		totalPrecision= big.NewInt(0).Set(b1Precision)
 
 	} else {
-		// precision2 must be GREATER than precision1
-		delta = big.NewInt(0).Sub(precision2, precision1)
+		// b2Precision must be GREATER than b1Precision
+		delta = big.NewInt(0).Sub(b2Precision, b1Precision)
 
 		scale = big.NewInt(0).Exp(bigTen, delta, nil)
 
@@ -1551,7 +1556,7 @@ func (bAdd BigIntMathAdd) BigIntAdd(
 
 		total = big.NewInt(0).Add(b1ToScale, b2)
 		
-		totalPrecision = big.NewInt(0).Set(precision2)
+		totalPrecision = big.NewInt(0).Set(b2Precision)
 
 	}
 
