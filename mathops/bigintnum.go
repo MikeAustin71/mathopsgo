@@ -1913,7 +1913,7 @@ func (bNum *BigIntNum) GetPrecision() int {
 //
 func (bNum *BigIntNum) GetPrecisionBigInt() *big.Int {
 
-	return big.NewInt(int64(bNum.precision))
+	return big.NewInt(0).SetUint64(uint64(bNum.precision))
 
 }
 
@@ -2560,6 +2560,67 @@ func (bNum BigIntNum) NewBigInt(bigI *big.Int, precision uint) BigIntNum {
 	b.Empty()
 	b.SetBigInt(bigI, precision)
 	return b
+}
+
+// NewBigInt - Creates a new BigIntNum instance using a *big.Int type and its
+// associated precision.
+//
+// The 'precision' parameter specifies the number of digits to the right
+// of the decimal place. The Numeric value is equal to bigI x 10^(precision x -1).
+// This effectively locates the decimal place by counting from the extreme right
+// of the integer number, 'precision' places to the left. See the example below.
+//
+// Input Parameters
+// bigI 			*big.Int	- 	'bigI' is a type *big.Int and represents the integer
+//													value of the number; that is, the numeric value with
+//													out decimal digits.
+//
+// precision  *big.Int	- This integer value (always a positive value) identifies
+// 												the location of the decimal place in the integer value 'bigI'.
+// 												The decimal place location is calculated by starting with the
+// 												right most digit in the integer number and counting	left,
+// 												'precision' places. If precision is greater than the maximum
+// 												value of an unsigned integer (+4,294,967,295,	which equals
+// 												2^32 − 1), an error will be triggered. Also, if the 'precision'
+// 												value is less than zero, an error will be triggered.
+//
+// 									Example:
+//
+//											Integer Value		precision			Numeric Value
+//											  123456					 3					  123.456
+//
+// The new BigIntNum instance returned by this method will contain USA default numeric
+// separators (decimal separator, thousands separator and currency symbol).
+//
+func (bNum BigIntNum) NewBigIntPrecision(bigInt, precision *big.Int) (BigIntNum, error) {
+
+	ePrefix := "BigIntNum.NewBigIntPrecision() "
+
+	if bigInt == nil {
+		bigInt = big.NewInt(0)
+	}
+
+	if precision.Cmp(big.NewInt(0)) == -1 {
+		return BigIntNum{}.NewZero(0),
+			fmt.Errorf(ePrefix +
+				"Error: Input parameter 'precision' IS LESS THAN ZERO! " +
+				"precision='%v' ", precision.Text(10))
+	}
+
+	maxUint32 := big.NewInt(0).SetUint64(uint64(math.MaxUint32))
+
+	if precision.Cmp(maxUint32) == 1 {
+		return BigIntNum{}.NewZero(0),
+		fmt.Errorf(ePrefix +
+			"Error: Input parameter 'precision' exceeds maximum limit of '4,294,967,295'! " +
+			"precision='%v' ", precision.Text(10))
+	}
+
+	b := BigIntNum{}
+	b.Empty()
+	b.SetBigInt(bigInt, uint(precision.Uint64()))
+
+	return b, nil
 }
 
 // NewBigIntExponent - New bigInt Exponent returns a new

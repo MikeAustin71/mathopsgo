@@ -3,6 +3,7 @@ package mathops
 import (
 	"errors"
 	"fmt"
+	"math"
 	"math/big"
 )
 
@@ -58,36 +59,37 @@ type BigIntMathMultiply struct {
 // Input Parameters
 // ================
 //
-//	multiplier *big.Int					- The number to be multiplied by 'multiplicand'
-//	multiplierPrecision uint,		- The 'multiplier' precision or numeric digits after
-//																	the decimal point.
-//	multiplicand *big.Int,			- The number to be multiplied by the 'multiplier'.
-//	multiplicandPrecision uint  - The 'multiplicand' precision or numeric digits after
-//																	the decimal point.
+//	multiplier 						*big.Int	- The number to be multiplied by 'multiplicand'
+//	multiplierPrecision 	*big.Int	- The 'multiplier' precision or numeric digits after
+//																				the decimal point.
+//	multiplicand 					*big.Int	- The number to be multiplied by the 'multiplier'.
+//	multiplicandPrecision *big.Int	- The 'multiplicand' precision or numeric digits after
+//																		the decimal point.
 //
 // Return Values
 // =============
 //
-// product				*big.Int			- The product of the multiplier multiplied by
-//                                the multiplicand.
+// product								*big.Int	- The product of the multiplier multiplied by
+//                                		the multiplicand.
 //
-// productPrecision		uint			- The precision specification for the returned
-//                                product. Here, the term precision is defined as
-//                                the number of fractional digits to the
-//                                right of the decimal place in the returned
-//                                'product'.
+// productPrecision				*big.Int	- The precision specification for the returned
+//                                		product. Here, the term precision is defined
+// 																		as the number of fractional digits to the
+//                                		right of the decimal place in the returned
+//                                		'product'. 'productPrecision' is always equal
+//																		to or greater than zero.
 //
 // Note: This method removes trailing fractional zeros from the result.
 //			 Example: 3.1200 is returned as 3.12
 //
 func (bMultiply BigIntMathMultiply) BigIntMultiply(
-	multiplier *big.Int,
-	multiplierPrecision uint,
-	multiplicand *big.Int,
-	multiplicandPrecision uint) (product *big.Int, productPrecision uint) {
+	multiplier,
+	multiplierPrecision,
+	multiplicand,
+	multiplicandPrecision *big.Int) (product *big.Int, productPrecision *big.Int) {
 
 	product = big.NewInt(0)
-	productPrecision = 0
+	productPrecision = big.NewInt(0)
 
 	if multiplier == nil {
 		multiplier = big.NewInt(0)
@@ -97,24 +99,29 @@ func (bMultiply BigIntMathMultiply) BigIntMultiply(
 		multiplicand = big.NewInt(0)
 	}
 
-	productPrecision = multiplierPrecision + multiplicandPrecision
+	productPrecision.Add(multiplierPrecision, multiplicandPrecision)
 
 	product = big.NewInt(0).Mul(multiplier, multiplicand)
 
-	if product.Cmp(big.NewInt(0)) == 0 {
-		productPrecision = 0
+	bigZero := big.NewInt(0)
+
+	if product.Cmp(bigZero) == 0 {
+		productPrecision = big.NewInt(0)
 	}
 
+
 	// Delete trailing fractional zeros
-	if productPrecision > 0 {
+	// If productPrecision > 0
+	if productPrecision.Cmp(bigZero) == 1 {
+		bigOne := big.NewInt(1)
 		scrap := big.NewInt(0)
 		biBase10 := big.NewInt(10)
 		biBaseZero := big.NewInt(0)
 		newProduct, mod10 := big.NewInt(0).QuoRem(product, biBase10, scrap)
 
-		for mod10.Cmp(biBaseZero) == 0 && productPrecision > 0 {
+		for mod10.Cmp(biBaseZero) == 0 && productPrecision.Cmp(bigZero) == 1 {
 			product.Set(newProduct)
-			productPrecision--
+			productPrecision.Sub(productPrecision, bigOne )
 			newProduct, mod10 = big.NewInt(0).QuoRem(product, biBase10, scrap)
 		}
 	}
@@ -324,11 +331,32 @@ func (bMultiply BigIntMathMultiply) FixedDecimalMultiply(
 	result, resultPrecision :=
 		BigIntMathMultiply{}.BigIntMultiply(
 			multiplier.GetInteger(),
-			multiplier.GetPrecision(),
+			multiplier.GetPrecisionBigInt(),
 			multiplicand.GetInteger(),
-			multiplicand.GetPrecision())
+			multiplicand.GetPrecisionBigInt())
 
-	product.SetNumericValue(result, resultPrecision)
+
+	biMaxUint := big.NewInt(int64(math.MaxUint32))
+
+
+	if resultPrecision.Cmp(biMaxUint) > 1 {
+		delta := big.NewInt(0).Sub(resultPrecision, biMaxUint)
+		delta.Sub(delta, big.NewInt(1))
+		bigTen := big.NewInt(10)
+		scale := big.NewInt(0).Exp(bigTen, delta, nil)
+		result.Quo(result, scale)
+		bigFive := big.NewInt(5)
+
+		if result.Cmp(big.NewInt(0))  == -1 {
+			bigFive.Neg(bigFive)
+		}
+
+		result.Add(result, bigFive)
+		result.Quo(result, bigTen)
+		resultPrecision.Set(biMaxUint)
+	}
+
+	product.SetNumericValue(result, uint(resultPrecision.Uint64()))
 	return product
 }
 

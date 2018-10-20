@@ -25,10 +25,10 @@ import (
 func main() {
 
 	base := big.NewInt(525)
-	basePrecision := uint(2)
+	basePrecision := big.NewInt(2)
 	exponent := big.NewInt(-7)
-	exponentPrecision := uint(0)
-	maxPrecision := uint(37)
+	exponentPrecision := big.NewInt(0)
+	maxPrecision := big.NewInt(37)
 	//                            1         2         3
 	//                   1234567890123456789012345678901234567
 	expectedResult := "0.0000090967210256655561054952045247619"
@@ -43,11 +43,11 @@ func main() {
 }
 
 func TestBigIntNegativeIntPower(
-	base *big.Int,
-	basePrecision uint,
-	exponent *big.Int,
-	exponentPrecision uint,
-	maxPrecision uint,
+	base,
+	basePrecision,
+	exponent,
+	exponentPrecision,
+	maxPrecision *big.Int,
 	expectedResult string) {
 
 
@@ -68,7 +68,7 @@ func TestBigIntNegativeIntPower(
 		return
 	}
 
-	binResult := mathops.BigIntNum{}.NewBigInt(result, resultPrecision)
+	binResult := mathops.BigIntNum{}.NewBigInt(result, uint(resultPrecision.Uint64()))
 	timeDuration := timeEnd.Sub(timeStart)
 
 	duration := examples.CodeDurationToStr(timeDuration)
@@ -96,11 +96,11 @@ func TestBigIntNegativeIntPower(
 }
 
 func TestBigIntPositiveIntPower(
-	base *big.Int,
-	basePrecision uint,
-	exponent *big.Int,
-	exponentPrecision uint,
-	maxPrecision uint,
+	base,
+	basePrecision,
+	exponent,
+	exponentPrecision,
+	maxPrecision *big.Int,
 	expectedResult string) {
 
 	timeStart := time.Now()
@@ -120,7 +120,7 @@ func TestBigIntPositiveIntPower(
 	return
 	}
 
-	binResult := mathops.BigIntNum{}.NewBigInt(result, resultPrecision)
+	binResult := mathops.BigIntNum{}.NewBigInt(result, uint(resultPrecision.Uint64()))
 	timeDuration := timeEnd.Sub(timeStart)
 
 	duration := examples.CodeDurationToStr(timeDuration)
@@ -130,10 +130,10 @@ func TestBigIntPositiveIntPower(
 	fmt.Println("BigIntMathPower{}.BigIntToPositiveIntegerPower() ")
 	fmt.Println("============================================================")
 	fmt.Println("                  base: ", base.Text(10))
-	fmt.Println("         basePrecision: ", basePrecision)
+	fmt.Println("         basePrecision: ", basePrecision.Text(10))
 	fmt.Println("              exponent: ", exponent.Text(10))
-	fmt.Println("     exponentPrecision: ", basePrecision)
-	fmt.Println("     Maximum Precision: ", maxPrecision)
+	fmt.Println("     exponentPrecision: ", exponentPrecision.Text(10))
+	fmt.Println("     Maximum Precision: ", maxPrecision.Text(10))
 	fmt.Println("------------------------------------------------------------")
 	fmt.Println("                result: ", result.Text(10))
 	fmt.Println("       resultPrecision: ", resultPrecision)
@@ -150,11 +150,9 @@ func TestBigIntPositiveIntPower(
 func TestFixDecNthRootFmtFracDigits(
 	radicand,
 	radicandPrecision,
-	intRadicand,
-	fracInteger,
-	fracIntPrecision,
-	nthRoot *big.Int,
-	maxPrecision uint64) {
+	nthRoot,
+	nthRootPrecision,
+	maxPrecision *big.Int) {
 
 	nthRootCalc := mathops.FixedDecimalNthRoot{}
 
@@ -169,22 +167,17 @@ func TestFixDecNthRootFmtFracDigits(
 	maxPrecision uint64) error
 	 */
 
+	timeStart := time.Now()
 
 	err := nthRootCalc.FormatCalculationConstants(
 		radicand,
 		radicandPrecision,
-		intRadicand,
-		fracInteger,
-		fracIntPrecision,
 		nthRoot,
+		nthRootPrecision,
 		maxPrecision)
 
-	timeStart := time.Now()
+	timeEnd := time.Now()
 
-	formattedFracInteger, fracTotalDigits, err :=
-		nthRootCalc.FormatFractionalDigitsFromRadicand(
-			fracInteger,
-			fracIntPrecision)
 
 	if err != nil {
 		fmt.Printf("Error returned from FixedDecimalNthRoot{}.FormatFractionalDigitsFromRadicand() " +
@@ -192,21 +185,25 @@ func TestFixDecNthRootFmtFracDigits(
 		return
 	}
 
-	timeEnd := time.Now()
+	intRadicand, fracRadicand := big.NewInt(0).QuoRem(radicand, radicandPrecision, nil)
+
+	calcFacs := nthRootCalc.GetInternalCalcFactors()
 
 	fmt.Println()
 	fmt.Println()
 	fmt.Println("FixedDecimalNthRoot{}.FormatFractionalDigitsFromRadicand() ")
 	fmt.Println("============================================================")
 	fmt.Println("                  nthRoot: ", nthRoot.Text(10))
-	fmt.Println("             frac integer: ", fracInteger.Text(10))
-	fmt.Println("   frac integer precision: ", fracIntPrecision)
+	fmt.Println("                 radicand: ", radicand.Text(10))
+	fmt.Println("       radicand precision: ", radicandPrecision.Text(10))
+	fmt.Println("         radicand integer: ", intRadicand.Text(10))
+	fmt.Println("            radicand frac: ", fracRadicand.Text(10))
+	fmt.Println("  radicand frac precision: ", radicandPrecision.Text(10))
 	fmt.Println("------------------------------------------------------------")
-	fmt.Println("   formatted frac integer: ", formattedFracInteger.Text(10))
-	fmt.Println("        frac Total Digits: ", fracTotalDigits.Text(10))
+	fmt.Println("   formatted frac integer: ", calcFacs.FmtFracRadicand.Text(10))
+	fmt.Println(" formatted frac precision: ", calcFacs.FmtFracRadicandPrecision.Text(10))
 	fmt.Println("------------------------------------------------------------")
 	timeDuration := timeEnd.Sub(timeStart)
-	calcFacs := nthRootCalc.GetInternalCalcFactors()
 
 	duration := examples.CodeDurationToStr(timeDuration)
 	fmt.Println("            Time Duration: ", duration)
@@ -215,7 +212,6 @@ func TestFixDecNthRootFmtFracDigits(
 	fmt.Println("                fracMask2: ", calcFacs.FracMask2.Text(10))
 	fmt.Println("============================================================")
 	fmt.Println()
-
 
 }
 
@@ -293,23 +289,18 @@ func TestFixDecNthRootGetNextFracBundle(
 	func (fdNthRoot *FixedDecimalNthRoot) FormatCalculationConstants(
 	radicand,
 	radicandPrecision,
-	intRadicand,
-	fracRadicand,
-	fracRadicandPrecision,
-	nthRoot *big.Int,
-	maxPrecision uint64) error
-	 */
+	nthRoot,
+	nthRootPrecision,
+	maxPrecision *big.Int) error {
 
-	radicand := big.NewInt(0).Set(fracNum)
+ */
 
 	err := nthRootCalc.FormatCalculationConstants(
-		radicand,
-		big.NewInt(0),
-		big.NewInt(0),
 		fracNum,
 		fracPrecision,
 		nthRoot,
-		uint64(5))
+		big.NewInt(0),
+		big.NewInt(9))
 
 
 
@@ -388,22 +379,19 @@ func TestFixDecNthRootNextIntBundle(
 	func (fdNthRoot *FixedDecimalNthRoot) FormatCalculationConstants(
 	radicand,
 	radicandPrecision,
-	intRadicand,
-	fracRadicand,
-	fracRadicandPrecision,
-	nthRoot *big.Int,
-	maxPrecision uint64) error
+	nthRoot,
+	nthRootPrecision,
+	maxPrecision *big.Int) error {
+
 	 */
 
 
 	err = nthRootCalc.FormatCalculationConstants(
 		integerNum,
 		big.NewInt(0),
-		integerNum,
-		big.NewInt(0),
-		big.NewInt(0),
 		nthRoot,
-		uint64(5))
+		big.NewInt(0),
+		big.NewInt(9))
 
 	if err != nil {
 		fmt.Printf("Error '%v' ", err.Error())
@@ -666,11 +654,11 @@ Time Duration:  33-Milliseconds 980-Microseconds 600-Nanoseconds
 
 
 func TestBigIntDivide(
-	dividend *big.Int,
-	dividendPrecision uint,
-	divisor *big.Int,
+	dividend,
+	dividendPrecision,
+	divisor,
 	divisorPrecision,
-	maxPrecision uint,
+	maxPrecision *big.Int,
 	expectedResult string) {
 
 	quotient, quotientPrecision, err :=
@@ -688,7 +676,7 @@ func TestBigIntDivide(
 		return
 	}
 
-	biNumResult := mathops.BigIntNum{}.NewBigInt(quotient,quotientPrecision)
+	biNumResult := mathops.BigIntNum{}.NewBigInt(quotient, uint(quotientPrecision.Uint64()))
 	timeStart := time.Now()
 	biNumExpectedResult, err := mathops.BigIntNum{}.NewNumStr(expectedResult)
 	timeEnd := time.Now()
@@ -703,11 +691,11 @@ func TestBigIntDivide(
 	fmt.Println("** Test BigIntMathDivide{}.BigIntFracQuotient() **")
 	fmt.Println("--------------------------------------------------")
 	fmt.Println("                 dividend: ", dividend.Text(10))
-	fmt.Println("        dividendPrecision: ", dividendPrecision)
+	fmt.Println("        dividendPrecision: ", dividendPrecision.Text(10))
 	fmt.Println("                  divisor: ", divisor.Text(10))
-	fmt.Println("         divisorPrecision: ", divisorPrecision)
+	fmt.Println("         divisorPrecision: ", divisorPrecision.Text(10))
 	fmt.Println("                 quotient: ", quotient.Text(10))
-	fmt.Println("             maxPrecision: ", maxPrecision)
+	fmt.Println("             maxPrecision: ", maxPrecision.Text(10))
 	fmt.Println("        quotientPrecision: ", quotientPrecision)
 	fmt.Println("          quotient Result: ", biNumResult.GetNumStr())
 	fmt.Println("quotient Result Precision: ", biNumResult.GetPrecisionUint())
@@ -727,10 +715,10 @@ func TestBigIntDivide(
 	duration := examples.CodeDurationToStr(timeDuration)
 	fmt.Println("Time Duration: ", duration)
 	fmt.Println("====================================================")
-	biNumDividend := mathops.BigIntNum{}.NewBigInt(dividend, dividendPrecision)
-	biNumDivisor := mathops.BigIntNum{}.NewBigInt(divisor, divisorPrecision)
+	biNumDividend := mathops.BigIntNum{}.NewBigInt(dividend, uint(dividendPrecision.Uint64()))
+	biNumDivisor := mathops.BigIntNum{}.NewBigInt(divisor, uint(divisorPrecision.Uint64()))
 	timeStart = time.Now()
-	biNumQuotient, err :=mathops.BigIntMathDivide{}.BigIntNumFracQuotient(biNumDividend, biNumDivisor, maxPrecision)
+	biNumQuotient, err :=mathops.BigIntMathDivide{}.BigIntNumFracQuotient(biNumDividend, biNumDivisor, uint(maxPrecision.Uint64()))
 	if err != nil {
 		fmt.Printf("Error returned by BigIntMathDivide{}.BigIntNumFracQuotient() " +
 			"Error='%v' ", err.Error())

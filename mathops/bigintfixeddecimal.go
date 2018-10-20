@@ -3,6 +3,7 @@ package mathops
 import (
 	"errors"
 	"fmt"
+	"math"
 	"math/big"
 )
 
@@ -87,6 +88,20 @@ func (fDecRO *FixedDecimalReadOnly) GetPrecision() uint {
 	return fDecRO.fixedDecimal.GetPrecision()
 
 }
+
+// GetPrecision - returns a unsigned integer specifying
+// the number of digits to the right of the decimal place.
+//
+func (fDecRO *FixedDecimalReadOnly) GetPrecisionBigInt() *big.Int {
+
+	fDecRO.fixedDecimal.IsValid()
+
+	return fDecRO.fixedDecimal.GetPrecisionBigInt()
+
+}
+
+
+
 
 // IsValid - Performs diagnostic and remedial actions on
 // the underlying BigIntFixedDecimal instance. Returns
@@ -1027,6 +1042,23 @@ func (bigIFd *BigIntFixedDecimal) GetPrecision() uint {
 	return bigIFd.precision
 }
 
+// GetPrecisionBigInt - Returns the 'precision' value for the current
+// BigIntFixedDecimal instance. 'precision' specifies the number
+// of digits to the right of the decimal place in the
+// BigIntFixedDecimal.integerNum. For this method, precision is
+// returned as a *big.Int type.
+func (bigIFd *BigIntFixedDecimal) GetPrecisionBigInt() *big.Int {
+
+	if bigIFd.integerNum == nil {
+		bigIFd.integerNum = big.NewInt(0)
+		bigIFd.precision = 0
+	}
+
+	return big.NewInt(0).SetUint64(uint64(bigIFd.precision))
+}
+
+
+
 // Inverse - Converts the current BigIntFixedDecimal
 // to the inverse of its numeric value.
 //
@@ -1059,17 +1091,17 @@ func (bigIFd *BigIntFixedDecimal) Inverse(maxPrecision uint) {
 	}
 
 	bigOne := big.NewInt(1)
-	bigOnePrecision := uint(0)
+
 
 	inverseBigInt, inversePrecision, _ :=
 		BigIntMathDivide{}.BigIntFracQuotient(
 			bigOne,
-			bigOnePrecision,
+			big.NewInt(0),
 			bigIFd.integerNum,
-			bigIFd.precision,
-			maxPrecision)
+			big.NewInt(0).SetUint64(uint64(bigIFd.precision)),
+			big.NewInt(0).SetUint64(uint64(maxPrecision)))
 
-	bigIFd.SetNumericValue(inverseBigInt, inversePrecision)
+	bigIFd.SetNumericValue(inverseBigInt, uint(inversePrecision.Uint64()))
 
 	return
 }
@@ -1290,6 +1322,48 @@ func (bigIFd BigIntFixedDecimal) New(integer *big.Int, precision uint) BigIntFix
 	num.SetNumericValue(integer, precision)
 
 	return num
+}
+
+// NewBigIntPrecision - Creates and returns a new BigIntFixedDecimal type based on input parameters,
+// 'integer' and 'precision'.
+//
+// Input Parameters
+// ================
+//
+// bigInt			*big.Int	- Specifies the sequence of numerical digits in the numeric value.
+//
+// precision	*big.Int	- Specifies the number of digits to the right of the decimal point
+// 												in input parameter, 'integer'. If 'precision' is greater than the
+//                        maximum value of an unsigned integer (+4,294,967,295, which equals
+// 												2^32 − 1), an error will be triggered. Also, if 'precision' is less
+//                        than zero, an error will be triggered.
+//
+func (bigIFd BigIntFixedDecimal) NewBigIntPrecision(
+					bigInt, precision *big.Int) (BigIntFixedDecimal, error) {
+
+	ePrefix := "BigIntFixedDecimal.NewBigIntPrecision() "
+
+	if precision.Cmp(big.NewInt(0)) == -1 {
+		return BigIntFixedDecimal{}.NewZero(0),
+			fmt.Errorf(ePrefix +
+				"Error: Input parameter 'precision' LESS THAN ZERO! " +
+				"precision='%v' ", precision.Text(10))
+	}
+
+	maxUint32 := big.NewInt(0).SetUint64(uint64(math.MaxUint32))
+
+	if precision.Cmp(maxUint32) == 1 {
+		return BigIntFixedDecimal{}.NewZero(0),
+			fmt.Errorf(ePrefix +
+				"Error: Input parameter 'precision' exceeds maximum limit of '4,294,967,295'! " +
+				"precision='%v' ", precision.Text(10))
+	}
+
+	num := BigIntFixedDecimal{}
+
+	num.SetNumericValue(bigInt, uint(precision.Uint64()))
+
+	return num, nil
 }
 
 // NewInt - Creates and returns a new BigIntFixedDecimal type based on input parameters,

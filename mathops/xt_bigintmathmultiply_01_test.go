@@ -37,9 +37,9 @@ func TestBigIntMathMultiply_BigIntMultiply_01(t *testing.T) {
 	}
 
 	bIMultiplier := big.NewInt(0).Set(multiplierBiNum.bigInt)
-	multiplierPrecision := multiplierBiNum.GetPrecisionUint()
+	multiplierPrecision := multiplierBiNum.GetPrecisionBigInt()
 	biMultiplicand := big.NewInt(0).Set(multiplicandBiNum.bigInt)
-	multiplicandPrecision := multiplicandBiNum.GetPrecisionUint()
+	multiplicandPrecision := multiplicandBiNum.GetPrecisionBigInt()
 
 	result, resultPrecision := BigIntMathMultiply{}.BigIntMultiply(
 		bIMultiplier,
@@ -52,9 +52,9 @@ func TestBigIntMathMultiply_BigIntMultiply_01(t *testing.T) {
 			expectedBigINum.GetIntegerValue().Text(10), result.Text(10))
 	}
 
-	if expectedBigINum.GetPrecisionUint() != resultPrecision {
+	if expectedBigINum.GetPrecisionBigInt().Cmp(resultPrecision) != 0 {
 		t.Errorf("Expected result precision='%v'. Instead, result precision='%v'",
-			expectedBigINum.GetPrecisionUint(), resultPrecision)
+			expectedBigINum.GetPrecisionUint(), resultPrecision.Text(10))
 	}
 }
 
@@ -118,9 +118,9 @@ func TestBigIntMathMultiply_BigIntMultiply_02(t *testing.T) {
 	}
 
 	bIMultiplier := big.NewInt(0).Set(multiplierBiNum.bigInt)
-	multiplierPrecision := multiplierBiNum.GetPrecisionUint()
+	multiplierPrecision := multiplierBiNum.GetPrecisionBigInt()
 	biMultiplicand := big.NewInt(0).Set(multiplicandBiNum.bigInt)
-	multiplicandPrecision := multiplicandBiNum.GetPrecisionUint()
+	multiplicandPrecision := multiplicandBiNum.GetPrecisionBigInt()
 
 	result, resultPrecision := BigIntMathMultiply{}.BigIntMultiply(
 		bIMultiplier,
@@ -133,9 +133,9 @@ func TestBigIntMathMultiply_BigIntMultiply_02(t *testing.T) {
 			expectedBigINum.GetIntegerValue().Text(10), result.Text(10))
 	}
 
-	if expectedBigINum.GetPrecisionUint() != resultPrecision {
+	if expectedBigINum.GetPrecisionBigInt().Cmp(resultPrecision) != 0 {
 		t.Errorf("Expected result precision='%v'. Instead, result precision='%v'",
-			expectedBigINum.GetPrecisionUint(), resultPrecision)
+			expectedBigINum.GetPrecisionUint(), resultPrecision.Text(10))
 	}
 }
 
@@ -199,9 +199,9 @@ func TestBigIntMathMultiply_BigIntMultiply_03(t *testing.T) {
 	}
 
 	bIMultiplier := big.NewInt(0).Set(multiplierBiNum.bigInt)
-	multiplierPrecision := multiplierBiNum.GetPrecisionUint()
+	multiplierPrecision := multiplierBiNum.GetPrecisionBigInt()
 	biMultiplicand := big.NewInt(0).Set(multiplicandBiNum.bigInt)
-	multiplicandPrecision := multiplicandBiNum.GetPrecisionUint()
+	multiplicandPrecision := multiplicandBiNum.GetPrecisionBigInt()
 
 	result, resultPrecision := BigIntMathMultiply{}.BigIntMultiply(
 		bIMultiplier,
@@ -214,9 +214,9 @@ func TestBigIntMathMultiply_BigIntMultiply_03(t *testing.T) {
 			expectedBigINum.GetIntegerValue().Text(10), result.Text(10))
 	}
 
-	if expectedBigINum.GetPrecisionUint() != resultPrecision {
+	if expectedBigINum.GetPrecisionBigInt().Cmp(resultPrecision) != 0 {
 		t.Errorf("Expected result precision='%v'. Instead, result precision='%v'",
-			expectedBigINum.GetPrecisionUint(), resultPrecision)
+			expectedBigINum.GetPrecisionUint(), resultPrecision.Text(10))
 	}
 }
 
@@ -280,9 +280,9 @@ func TestBigIntMathMultiply_BigIntMultiply_04(t *testing.T) {
 	}
 
 	bIMultiplier := big.NewInt(0).Set(multiplierBiNum.bigInt)
-	multiplierPrecision := multiplierBiNum.GetPrecisionUint()
+	multiplierPrecision := multiplierBiNum.GetPrecisionBigInt()
 	biMultiplicand := big.NewInt(0).Set(multiplicandBiNum.bigInt)
-	multiplicandPrecision := multiplicandBiNum.GetPrecisionUint()
+	multiplicandPrecision := multiplicandBiNum.GetPrecisionBigInt()
 
 	result, resultPrecision := BigIntMathMultiply{}.BigIntMultiply(
 		bIMultiplier,
@@ -295,9 +295,9 @@ func TestBigIntMathMultiply_BigIntMultiply_04(t *testing.T) {
 			expectedBigINum.GetIntegerValue().Text(10), result.Text(10))
 	}
 
-	if expectedBigINum.GetPrecisionUint() != resultPrecision {
+	if expectedBigINum.GetPrecisionBigInt().Cmp(resultPrecision) != 0 {
 		t.Errorf("Expected result precision='%v'. Instead, result precision='%v'",
-			expectedBigINum.GetPrecisionUint(), resultPrecision)
+			expectedBigINum.GetPrecisionUint(), resultPrecision.Text(10))
 	}
 }
 
@@ -361,9 +361,9 @@ func TestBigIntMathMultiply_BigIntMultiply_05(t *testing.T) {
 	}
 
 	bIMultiplier := big.NewInt(0).Set(multiplierBiNum.bigInt)
-	multiplierPrecision := multiplierBiNum.GetPrecisionUint()
+	multiplierPrecision := multiplierBiNum.GetPrecisionBigInt()
 	biMultiplicand := big.NewInt(0).Set(multiplicandBiNum.bigInt)
-	multiplicandPrecision := multiplicandBiNum.GetPrecisionUint()
+	multiplicandPrecision := multiplicandBiNum.GetPrecisionBigInt()
 
 	result, resultPrecision := BigIntMathMultiply{}.BigIntMultiply(
 		bIMultiplier,
@@ -376,9 +376,9 @@ func TestBigIntMathMultiply_BigIntMultiply_05(t *testing.T) {
 			expectedBigINum.GetIntegerValue().Text(10), result.Text(10))
 	}
 
-	if expectedBigINum.GetPrecisionUint() != resultPrecision {
+	if expectedBigINum.GetPrecisionBigInt().Cmp(resultPrecision) !=0 {
 		t.Errorf("Expected result precision='%v'. Instead, result precision='%v'",
-			expectedBigINum.GetPrecisionUint(), resultPrecision)
+			expectedBigINum.GetPrecisionUint(), resultPrecision.Text(10))
 	}
 }
 
@@ -442,9 +442,9 @@ func TestBigIntMathMultiply_BigIntMultiply_06(t *testing.T) {
 	}
 
 	bIMultiplier := big.NewInt(0).Set(multiplierBiNum.bigInt)
-	multiplierPrecision := multiplierBiNum.GetPrecisionUint()
+	multiplierPrecision := multiplierBiNum.GetPrecisionBigInt()
 	biMultiplicand := big.NewInt(0).Set(multiplicandBiNum.bigInt)
-	multiplicandPrecision := multiplicandBiNum.GetPrecisionUint()
+	multiplicandPrecision := multiplicandBiNum.GetPrecisionBigInt()
 
 	result, resultPrecision := BigIntMathMultiply{}.BigIntMultiply(
 		bIMultiplier,
@@ -457,9 +457,9 @@ func TestBigIntMathMultiply_BigIntMultiply_06(t *testing.T) {
 			expectedBigINum.GetIntegerValue().Text(10), result.Text(10))
 	}
 
-	if expectedBigINum.GetPrecisionUint() != resultPrecision {
+	if expectedBigINum.GetPrecisionBigInt().Cmp(resultPrecision) != 0 {
 		t.Errorf("Expected result precision='%v'. Instead, result precision='%v'",
-			expectedBigINum.GetPrecisionUint(), resultPrecision)
+			expectedBigINum.GetPrecisionUint(), resultPrecision.Text(10))
 	}
 }
 

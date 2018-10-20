@@ -128,16 +128,16 @@ func (bIDivide BigIntMathDivide) BigIntDividedByTwoToPower(
 // 														be set equal to 'nil'.
 //
 func (bIDivide BigIntMathDivide) BigIntFracQuotient(
-	dividend *big.Int,
-	dividendPrecision uint,
-	divisor *big.Int,
-	divisorPrecision uint,
-	maxPrecision uint) (quotient *big.Int, quotientPrecision uint, err error) {
+	dividend,
+	dividendPrecision,
+	divisor,
+	divisorPrecision,
+	maxPrecision *big.Int) (quotient *big.Int, quotientPrecision *big.Int, err error) {
 
 	ePrefix := "BigIntMathDivide.BigIntFracQuotient() "
 
 	quotient = big.NewInt(0)
-	quotientPrecision = 0
+	quotientPrecision = big.NewInt(0)
 	err = nil
 
 	if dividend == nil {
@@ -182,20 +182,32 @@ func (bIDivide BigIntMathDivide) BigIntFracQuotient(
 		numratrDivdnd.Mul(numratrDivdnd, big.NewInt(numratrDivdndSign))
 	}
 
-	denomnatrDivsrShift := int64(divisorPrecision)
-	numratrDivdndShift := int64(dividendPrecision)
+	denomnatrDivsrShift := big.NewInt(0).Set(divisorPrecision)
+	numratrDivdndShift := big.NewInt(0).Set(dividendPrecision)
 	scale := big.NewInt(0)
 
+	/*
 	if numratrDivdndShift > 0 {
 		denomnatrDivsrShift -= numratrDivdndShift
 		if denomnatrDivsrShift < 0 {
 			scale = big.NewInt(0).Exp(bigTen, big.NewInt(denomnatrDivsrShift*-1), nil)
 			denomnatrDivsr.Mul(denomnatrDivsr, scale)
 		}
-
 		numratrDivdndShift = 0
 	}
+*/
 
+  if numratrDivdndShift.Cmp(bigZero) == 1 {
+  	denomnatrDivsrShift.Sub(denomnatrDivsrShift, numratrDivdndShift)
+  	if denomnatrDivsrShift.Cmp(bigZero) == -1 {
+  		scale = big.NewInt(0).Exp(bigTen, big.NewInt(0).Mul(denomnatrDivsrShift, big.NewInt(-1)), nil)
+			denomnatrDivsr.Mul(denomnatrDivsr, scale)
+		}
+
+  	numratrDivdndShift = big.NewInt(0)
+	}
+
+  /*
 	if denomnatrDivsrShift > 0 {
 		numratrDivdndShift -= denomnatrDivsrShift
 		if numratrDivdndShift < 0 {
@@ -203,6 +215,16 @@ func (bIDivide BigIntMathDivide) BigIntFracQuotient(
 			scale = big.NewInt(0).Exp(bigTen, big.NewInt(numratrDivdndShift*-1), nil)
 			numratrDivdnd.Mul(numratrDivdnd, scale)
 
+		}
+	}
+	*/
+
+	if denomnatrDivsrShift.Cmp(bigZero) == 1 {
+		numratrDivdndShift.Sub(numratrDivdndShift, denomnatrDivsrShift)
+
+		if numratrDivdndShift.Cmp(bigZero) == -1 {
+			scale = big.NewInt(0).Exp(bigTen, big.NewInt(0).Mul(numratrDivdndShift, big.NewInt(-1)), nil)
+			numratrDivdnd.Mul(numratrDivdnd, scale)
 		}
 	}
 
@@ -213,38 +235,44 @@ func (bIDivide BigIntMathDivide) BigIntFracQuotient(
 	quotient = big.NewInt(0).Set(intQuotient)
 
 	// Calculate fractional digits out to maxPrecision + 1
+	bigOne := big.NewInt(1)
+	iMaxPrecision := big.NewInt(0).Set(maxPrecision)
+	iMaxPrecision.Add(iMaxPrecision, bigOne)
+	iCnt := big.NewInt(0)
+	lastNonZeroDigitIdx := big.NewInt(-1)
 
-	i64MaxPrecision := int64(maxPrecision)
-	i64MaxPrecision++
-	lastNonZeroDigitIdx := int64(-1)
-	for i := int64(0); i < i64MaxPrecision; i++ {
+	for iCnt.Cmp(iMaxPrecision) == -1 {
 
 		numratrDivdnd = big.NewInt(0).Mul(intRemndr, bigTen)
 		intQuotient, intRemndr = big.NewInt(0).QuoRem(numratrDivdnd, denomnatrDivsr, big.NewInt(0))
 
 		if intQuotient.Cmp(bigZero) == 1 {
-			lastNonZeroDigitIdx = i
+			lastNonZeroDigitIdx.Set(iCnt)
 		}
 
 		quotient.Mul(quotient, bigTen)
 		quotient.Add(quotient, intQuotient)
 
+		iCnt.Add(iCnt, bigOne)
 	}
 
-	if lastNonZeroDigitIdx == -1 {
+	if lastNonZeroDigitIdx.Cmp(big.NewInt(-1)) == 0 {
 
-		scale = big.NewInt(0).Exp(bigTen, big.NewInt(i64MaxPrecision), nil)
+		scale = big.NewInt(0).Exp(bigTen, iMaxPrecision, nil)
 		quotient.Quo(quotient, scale)
-		quotientPrecision = 0
+		quotientPrecision = big.NewInt(0)
 
-	} else if lastNonZeroDigitIdx < (i64MaxPrecision - 1) {
-
+	} else if lastNonZeroDigitIdx.Cmp(big.NewInt(0).Sub(iMaxPrecision, bigOne)) == -1 {
+    // else if lastNonZeroDigitIdx < (i64MaxPrecision - 1)
+    factor := big.NewInt(0).Sub(iMaxPrecision, lastNonZeroDigitIdx)
+    factor.Sub(factor, bigOne)
 		scale =
-			big.NewInt(0).Exp(bigTen, big.NewInt(i64MaxPrecision-lastNonZeroDigitIdx-1), nil)
+			big.NewInt(0).Exp(bigTen, factor, nil)
 
 		quotient.Quo(quotient, scale)
 
-		quotientPrecision = uint(lastNonZeroDigitIdx + 1)
+		// uint(lastNonZeroDigitIdx + 1)
+		quotientPrecision = big.NewInt(0).Add(lastNonZeroDigitIdx, bigOne)
 
 	} else {
 
@@ -253,8 +281,10 @@ func (bIDivide BigIntMathDivide) BigIntFracQuotient(
 
 		quotient.Quo(quotient, bigTen)
 		//fmt.Println("after quotient: ", quotient.Text(10))
-		i64MaxPrecision--
-		quotientPrecision = uint(i64MaxPrecision)
+		iMaxPrecision.Sub(iMaxPrecision, bigOne)
+
+		// = uint(i64MaxPrecision)
+		quotientPrecision.Set(iMaxPrecision)
 
 	}
 
@@ -1807,10 +1837,10 @@ func (bIDivide BigIntMathDivide) FixedDecimalFracQuotient(
 	result, resultPrecision, errX :=
 		BigIntMathDivide{}.BigIntFracQuotient(
 			dividend.GetInteger(),
-			dividend.GetPrecision(),
+			dividend.GetPrecisionBigInt(),
 			divisor.GetInteger(),
-			divisor.GetPrecision(),
-			maxPrecision)
+			divisor.GetPrecisionBigInt(),
+			big.NewInt(0).SetUint64(uint64(maxPrecision)))
 
 	if errX != nil {
 		ePrefix := "BigIntMathDivide.FixedDecimalFracQuotient() "
@@ -1820,7 +1850,7 @@ func (bIDivide BigIntMathDivide) FixedDecimalFracQuotient(
 		return quotient, err
 	}
 
-	quotient.SetNumericValue(result, resultPrecision)
+	quotient.SetNumericValue(result, uint(resultPrecision.Uint64()))
 	err = nil
 
 	return quotient, nil
