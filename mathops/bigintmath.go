@@ -95,15 +95,24 @@ func (bIntMath BigIntMath) GetMagnitude(initialValue *big.Int) (magnitude *big.I
 
 	// Note: logTwo is a global constant
 
+	var errx error
+
 	// ************************************
 	// target MUST BE <= 2^(bit length)
 	// ************************************
-	magnitude, tenToPowerPrecision =
+	magnitude, tenToPowerPrecision, errx =
 		BigIntMathMultiply{}.BigIntMultiply(
 			big.NewInt(int64(bitLen)),
 			big.NewInt(0),
 			logTwo.GetInteger(),
 			logTwo.GetPrecisionBigInt())
+
+	if errx != nil {
+		err = fmt.Errorf(ePrefix +
+			"%v", errx.Error())
+		magnitude = big.NewInt(0)
+		return magnitude, err
+	}
 
 	if tenToPowerPrecision.Cmp(bigZero) == 1 {
 		scale :=

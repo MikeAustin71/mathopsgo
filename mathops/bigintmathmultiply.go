@@ -86,10 +86,13 @@ func (bMultiply BigIntMathMultiply) BigIntMultiply(
 	multiplier,
 	multiplierPrecision,
 	multiplicand,
-	multiplicandPrecision *big.Int) (product *big.Int, productPrecision *big.Int) {
+	multiplicandPrecision *big.Int) (product *big.Int, productPrecision *big.Int, err error) {
+
+	ePrefix := "BigIntMathMultiply.BigIntMultiply() "
 
 	product = big.NewInt(0)
 	productPrecision = big.NewInt(0)
+	err = nil
 
 	if multiplier == nil {
 		multiplier = big.NewInt(0)
@@ -99,11 +102,37 @@ func (bMultiply BigIntMathMultiply) BigIntMultiply(
 		multiplicand = big.NewInt(0)
 	}
 
+	if multiplierPrecision == nil {
+		multiplierPrecision = big.NewInt(0)
+	}
+
+	if multiplicandPrecision == nil {
+		multiplicandPrecision = big.NewInt(0)
+	}
+
+	bigZero := big.NewInt(0)
+
+	if multiplierPrecision.Cmp(bigZero) == -1 {
+		err = fmt.Errorf(ePrefix +
+			"Error: Input parameter multiplierPrecision is LESS THAN ZERO! " +
+			"multiplierPrecision='%v' ", multiplierPrecision.Text(10))
+
+		return product, productPrecision, err
+	}
+
+	if multiplicandPrecision.Cmp(bigZero) == -1 {
+
+		err = fmt.Errorf(ePrefix +
+			"Error: Input parameter multiplicandPrecision is LESS THAN ZERO! " +
+			"multiplicandPrecision='%v' ", multiplicandPrecision.Text(10))
+
+		return product, productPrecision, err
+	}
+
 	productPrecision.Add(multiplierPrecision, multiplicandPrecision)
 
 	product = big.NewInt(0).Mul(multiplier, multiplicand)
 
-	bigZero := big.NewInt(0)
 
 	if product.Cmp(bigZero) == 0 {
 		productPrecision = big.NewInt(0)
@@ -126,7 +155,9 @@ func (bMultiply BigIntMathMultiply) BigIntMultiply(
 		}
 	}
 
-	return product, productPrecision
+	err = nil
+
+	return product, productPrecision, err
 }
 
 // BigIntMultiplyByTenToPower - Multiplies a *big.Int number by ten
@@ -328,16 +359,14 @@ func (bMultiply BigIntMathMultiply) FixedDecimalMultiply(
 	multiplier.IsValid()
 	multiplicand.IsValid()
 
-	result, resultPrecision :=
+	result, resultPrecision, _ :=
 		BigIntMathMultiply{}.BigIntMultiply(
 			multiplier.GetInteger(),
 			multiplier.GetPrecisionBigInt(),
 			multiplicand.GetInteger(),
 			multiplicand.GetPrecisionBigInt())
 
-
 	biMaxUint := big.NewInt(int64(math.MaxUint32))
-
 
 	if resultPrecision.Cmp(biMaxUint) > 1 {
 		delta := big.NewInt(0).Sub(resultPrecision, biMaxUint)

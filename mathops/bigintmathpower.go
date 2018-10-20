@@ -468,12 +468,21 @@ func(bIPwr BigIntMathPower) BigIntToPositiveFractionalPower(
 			big.NewInt(0),
 			biInternalMaxPrecision)
 
-	result, resultPrecision =
+	result, resultPrecision, errx =
 		BigIntMathMultiply{}.BigIntMultiply(
 			integerResult,
 			integerPrecision,
 			nthRootOfBaseToNum,
 			nthRootOfBaseToNumPrecision)
+
+	if errx != nil {
+		result = big.NewInt(0)
+		resultPrecision = big.NewInt(0)
+		err = fmt.Errorf(ePrefix +
+			"%v", errx.Error())
+
+		return result, resultPrecision, err
+	}
 
 	bigFive = big.NewInt(5)
 
