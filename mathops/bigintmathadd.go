@@ -25,46 +25,20 @@ func (bAdd BigIntMathAdd) AddBigInts(
 	b2 *big.Int,
 	precision2 uint) BigIntNum {
 
-	result, resultPrecision := BigIntMathAdd{}.BigIntAdd(b1, precision1, b2, precision2)
+	// No error is possible because both precision parameters
+	// are by definition, greater than or equal to zero.
 
-	return BigIntNum{}.NewBigInt(result, resultPrecision)
+	result, resultPrecision, _ :=
+		BigIntMathAdd{}.BigIntAdd(
+			b1,
+			big.NewInt(0).SetUint64(uint64(precision1)),
+			b2,
+			big.NewInt(0).SetUint64(uint64(precision2)))
 
-	/*
-		bigIntResult := big.NewInt(0)
 
-		if precision1 == precision2 {
-			bigIntResult = big.NewInt(0).Add(b1, b2	)
-			return BigIntNum{}.NewBigInt(bigIntResult, precision1)
-		}
+	biNum, _ := BigIntNum{}.NewBigIntPrecision(result, resultPrecision)
 
-		bigTen := big.NewInt(10)
-
-		if precision1 > precision2 {
-
-			delta := int64(precision1 - precision2)
-
-			scale := big.NewInt(0).Exp(bigTen, big.NewInt(delta), nil)
-
-			b2ToScale := big.NewInt(0).Mul(b2, scale)
-
-			bigIntResult = big.NewInt(0).Add(b1, b2ToScale)
-
-			return BigIntNum{}.NewBigInt(bigIntResult, precision1)
-
-		}
-
-		// precision2 must be GREATER than precision1
-
-		delta := int64(precision2 - precision1)
-
-		scale := big.NewInt(0).Exp(bigTen, big.NewInt(delta), nil)
-
-		b1ToScale := big.NewInt(0).Mul(b1, scale)
-
-		bigIntResult = big.NewInt(0).Add(b1ToScale, b2)
-
-		return BigIntNum{}.NewBigInt(bigIntResult, precision2)
-	*/
+	return biNum
 
 }
 
@@ -1494,22 +1468,25 @@ func (bAdd BigIntMathAdd) AddPair(bPair BigIntPair) BigIntNum {
 // Return Values
 // =============
 //
-// total 			*big.Int		- The sum or total of 'b1' and 'b2' input values.
+// total 					*big.Int		- The sum or total of 'b1' and 'b2' input values.
 //
-// totalPrecision uint   	- The 'total' precision or the number of fractional
-// 													digits after the decimal place.
+// totalPrecision *big.Int   	- The 'total' precision or the number of fractional
+// 															digits after the decimal place.
 //
 // Taken together, 'total' and 'totalPrecision' can define a fixed
 // length floating point number.
 //
 func (bAdd BigIntMathAdd) BigIntAdd(
-	b1 *big.Int,
-	precision1 uint,
-	b2 *big.Int,
-	precision2 uint) (total *big.Int, totalPrecision uint) {
+	b1,
+	precision1,
+	b2,
+	precision2  *big.Int) (total *big.Int, totalPrecision *big.Int, err error) {
+
+	ePrefix := "BigIntMathAdd.BigIntAdd() "
 
 	total = big.NewInt(0)
-	totalPrecision = 0
+	totalPrecision = big.NewInt(0)
+	err = nil
 
 	if b1 == nil {
 		b1 = big.NewInt(0)
@@ -1521,64 +1498,83 @@ func (bAdd BigIntMathAdd) BigIntAdd(
 
 	bigZero := big.NewInt(0)
 
+	if precision1.Cmp(bigZero) == -1 {
+
+		err = fmt.Errorf(ePrefix +
+			"Error: Input parameter 'precision1' is LESS THAN ZERO! " +
+			"precision1='%v' ", precision1.Text(10))
+
+		return total, totalPrecision, err
+	}
+
+
+	if precision2.Cmp(bigZero) == -1 {
+		err = fmt.Errorf(ePrefix +
+			"Error: Input parameter 'precision2' is LESS THAN ZERO! " +
+			"precision2='%v' ", precision2.Text(10))
+
+		return total, totalPrecision, err
+	}
+
 	if b1.Cmp(bigZero) == 0 &&
 		b2.Cmp(bigZero) == 0 {
 		total = big.NewInt(0)
-		totalPrecision = 0
-		return total, totalPrecision
+		totalPrecision = big.NewInt(0)
+		return total, totalPrecision, nil
 	}
 
 	bigTen := big.NewInt(10)
-	delta := int64(0)
+	delta := big.NewInt(0)
 	scale := big.NewInt(0)
 
-	if precision1 == precision2 {
+	if precision1.Cmp(precision2) == 0 {
 		total = big.NewInt(0).Add(b1, b2)
 		totalPrecision = precision1
 
-	} else if precision1 > precision2 {
-
-		delta = int64(precision1 - precision2)
-		scale = big.NewInt(0).Exp(bigTen, big.NewInt(delta), nil)
+	} else if precision1.Cmp(precision2) == 1  {
+		// precision1 > precision2
+		delta = big.NewInt(0).Sub(precision1,  precision2)
+		scale = big.NewInt(0).Exp(bigTen, delta, nil)
 
 		b2ToScale := big.NewInt(0).Mul(b2, scale)
 
 		total = big.NewInt(0).Add(b1, b2ToScale)
-		totalPrecision = precision1
+		totalPrecision= big.NewInt(0).Set(precision1)
 
 	} else {
 		// precision2 must be GREATER than precision1
-		delta = int64(precision2 - precision1)
+		delta = big.NewInt(0).Sub(precision2, precision1)
 
-		scale = big.NewInt(0).Exp(bigTen, big.NewInt(delta), nil)
+		scale = big.NewInt(0).Exp(bigTen, delta, nil)
 
 		b1ToScale := big.NewInt(0).Mul(b1, scale)
 
 		total = big.NewInt(0).Add(b1ToScale, b2)
 		
-		totalPrecision = precision2
+		totalPrecision = big.NewInt(0).Set(precision2)
 
 	}
 
 	if total.Cmp(bigZero) == 0 {
-		totalPrecision = 0
+		totalPrecision = big.NewInt(0)
 	}
 
 	// Delete trailing fractional zeros
-	if totalPrecision > 0 {
+	if totalPrecision.Cmp(bigZero) == 1 {
+		//totalPrecision > 0
 		scrap := big.NewInt(0)
 		biBase10 := big.NewInt(10)
 		biBaseZero := big.NewInt(0)
 		newTotal, mod10 := big.NewInt(0).QuoRem(total, biBase10, scrap)
-
-		for mod10.Cmp(biBaseZero) == 0 && totalPrecision > 0 {
+		bigOne := big.NewInt(1)
+		for mod10.Cmp(biBaseZero) == 0 && totalPrecision.Cmp(bigZero) == 1  {
 			total.Set(newTotal)
-			totalPrecision--
+			totalPrecision.Sub(totalPrecision, bigOne)
 			newTotal, mod10 = big.NewInt(0).QuoRem(total, biBase10, scrap)
 		}
 	}
 
-	return total, totalPrecision
+	return total, totalPrecision, nil
 }
 
 // FixedDecimalAdd - Performs an addition operation using two BigIntFixedDecimal
@@ -1660,14 +1656,17 @@ func (bAdd BigIntMathAdd) FixedDecimalAdd(
 
 	b2.IsValid()
 
-	bIResult, bIPrecision :=
+	// No error is possible because by definition, both precision
+	// values must be equal to or greater than zero.
+
+	bIResult, bIPrecision, _ :=
 		BigIntMathAdd{}.BigIntAdd(
 			b1.GetInteger(),
-			b1.GetPrecision(),
+			b1.GetPrecisionBigInt(),
 			b2.GetInteger(),
-			b2.GetPrecision())
+			b2.GetPrecisionBigInt())
 
-	total.SetNumericValue(bIResult, bIPrecision)
+	total.SetNumericValue(bIResult, uint(bIPrecision.Uint64()))
 
 	return total
 }
