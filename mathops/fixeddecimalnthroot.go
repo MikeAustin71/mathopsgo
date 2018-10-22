@@ -1,6 +1,7 @@
 package mathops
 
 import (
+	"errors"
 	"fmt"
 	"math"
 	"math/big"
@@ -334,10 +335,89 @@ func (fdNthRoot *FixedDecimalNthRoot) CalculatePositiveIntegerNthRoot(
 													resultPrecision *big.Int ,
 													err error) {
 
-	ePrefix := "CalculatePositiveIntegerNthRoot() "
+	ePrefix := "FixedDecimalNthRoot.CalculatePositiveIntegerNthRoot() "
 	result = big.NewInt(0)
 	resultPrecision = big.NewInt(0)
 	err = nil
+
+	bigZero := big.NewInt(0)
+
+	radicandPrecisionZeroCmp := radicandPrecision.Cmp(bigZero)
+
+	if radicandPrecisionZeroCmp == -1 {
+		err = fmt.Errorf(ePrefix +
+			"Error: 'radicandPrecision' is Less Than Zero! " +
+			"radicandPrecision='%v'", radicandPrecision.Text(10))
+		return result, resultPrecision, err
+	}
+
+	nthRtPrecisionCmpZero := nthRootPrecision.Cmp(bigZero)
+
+	if nthRtPrecisionCmpZero == -1 {
+		err = fmt.Errorf(ePrefix + "Error 'nthRootPrecision' is Less Than Zero! " +
+			"nthRootPrecision='%v'", nthRootPrecision.Text(10))
+		return result, resultPrecision, err
+	}
+
+	if nthRtPrecisionCmpZero == 1 {
+		err = fmt.Errorf(ePrefix + "Error 'nthRootPrecision' is Greater Than Zero! " +
+			"nthRootPrecision='%v'", nthRootPrecision.Text(10))
+		return result, resultPrecision, err
+	}
+
+	radicandZeroCmp := radicand.Cmp(bigZero)
+
+	if radicandZeroCmp == 0 {
+		return result, resultPrecision, err
+	}
+
+	if radicand.Cmp(big.NewInt(1)) == 0 {
+		result = big.NewInt(1)
+		return result, resultPrecision, err
+	}
+
+	if radicandZeroCmp == -1 {
+		// Cannot calculate root of a negative radicand when
+		// nthRoot is even.
+		remainder := big.NewInt(0).Rem(nthRoot, big.NewInt(2))
+
+		if remainder.Cmp(bigZero) == 0 {
+
+			err = errors.New(ePrefix +
+				"INVALID ENTRY - Cannot calculate nthRoot of a negative radicand when nthRoot is even.")
+			return result, resultPrecision, err
+
+		}
+	}
+
+	// nthRoot precision must be zero. This is an integer nthRoot
+
+	if nthRoot.Cmp(big.NewInt(1)) == 0 {
+		// nthRoot is 1, so result = radicand
+		result = big.NewInt(0).Set(radicand)
+		resultPrecision = big.NewInt(0).Set(radicandPrecision)
+		return result, resultPrecision, err
+	}
+
+	if maxPrecision.Cmp(bigZero) == -1 {
+		err = fmt.Errorf(ePrefix + "Error 'maxPrecision' is Less Than Zero! " +
+			"maxPrecision='%v'", maxPrecision.Text(10))
+		return result, resultPrecision, err
+	}
+
+	nthRtCmpZero := nthRoot.Cmp(bigZero)
+
+	if nthRtCmpZero == 0 {
+		err = errors.New(ePrefix +
+			"Error: 'nthRoot' is Zero!")
+		return result, resultPrecision, err
+	}
+
+	if nthRtCmpZero == -1 {
+		err = fmt.Errorf(ePrefix + "Error 'nthRoot' is negative! " +
+			"nthRoot='%v'", maxPrecision.Text(10))
+		return result, resultPrecision, err
+	}
 
 	errx := fdNthRoot.FormatCalculationConstants(
 		radicand,
@@ -350,7 +430,6 @@ func (fdNthRoot *FixedDecimalNthRoot) CalculatePositiveIntegerNthRoot(
 		err = fmt.Errorf(ePrefix + "%v", errx.Error())
 		return result, resultPrecision, err
 	}
-
 
 	result, resultPrecision, errx = fdNthRoot.CalculateRoot()
 
@@ -372,26 +451,403 @@ func (fdNthRoot *FixedDecimalNthRoot) CalculatePositiveIntegerNthRoot(
 //
 func (fdNthRoot *FixedDecimalNthRoot) CalculatePositiveFractionalNthRoot(
 	radicand,
-	nthRoot BigIntFixedDecimal,
-	maxPrecision uint64) (result BigIntFixedDecimal, err error) {
+	radicandPrecision,
+	nthRoot,
+	nthRootPrecision,
+	maxPrecision *big.Int) (
+														result *big.Int,
+														resultPrecision *big.Int,
+														err error) {
 
-	result = BigIntFixedDecimal{}.NewZero(0)
+	result = big.NewInt(0)
+	resultPrecision = big.NewInt(0)
 	err = nil
-	/*
-	 scaleFactor := big.NewInt(0).Exp(
-		 big.NewInt(10),
-		 big.NewInt(0).SetUint64(uint64(nthRoot.GetPrecision())),
-		 nil)
 
-	 ratFraction := big.NewRat(1,1).SetFrac(nthRoot.GetInteger(), scaleFactor)
+	ePrefix := "FixedDecimalNthRoot.CalculatePositiveFractionalNthRoot() "
+	result = big.NewInt(0)
+	resultPrecision = big.NewInt(0)
+	err = nil
 
-	 numExponent :=  ratFraction.Num()
+	bigZero := big.NewInt(0)
 
-	*/
+	radicandPrecisionZeroCmp := radicandPrecision.Cmp(bigZero)
 
-	return result, err
+	if radicandPrecisionZeroCmp == -1 {
+		err = fmt.Errorf(ePrefix +
+			"Error: 'radicandPrecision' is Less Than Zero! " +
+			"radicandPrecision='%v'", radicandPrecision.Text(10))
+		return result, resultPrecision, err
+	}
+
+	nthRtPrecisionCmpZero := nthRootPrecision.Cmp(bigZero)
+
+	if nthRtPrecisionCmpZero == -1 {
+		err = fmt.Errorf(ePrefix + "Error 'nthRootPrecision' is NEGATIVE! " +
+			"nthRootPrecision='%v'", nthRootPrecision.Text(10))
+		return result, resultPrecision, err
+	}
+
+	if nthRtPrecisionCmpZero == 0 {
+		err = fmt.Errorf(ePrefix + "Error 'nthRootPrecision' is Zero. nthRoot is an integer! " +
+			"nthRootPrecision='%v'", nthRootPrecision.Text(10))
+		return result, resultPrecision, err
+	}
+
+	// nthRootPrecision Must Be > 0
+
+	radicandZeroCmp := radicand.Cmp(bigZero)
+
+	if radicandZeroCmp == 0 {
+		// if radicand == 0 then result == 0
+		return result, resultPrecision, err
+	}
+
+	if radicand.Cmp(big.NewInt(1)) == 0 {
+		result = big.NewInt(1)
+		return result, resultPrecision, err
+	}
+
+
+	if maxPrecision.Cmp(bigZero) == -1 {
+		err = fmt.Errorf(ePrefix + "Error 'maxPrecision' is Less Than Zero! " +
+			"maxPrecision='%v'", maxPrecision.Text(10))
+		return result, resultPrecision, err
+	}
+
+	nthRtCmpZero := nthRoot.Cmp(bigZero)
+
+	if nthRtCmpZero == 0 {
+		err = errors.New(ePrefix +
+			"Error: 'nthRoot' is Zero!")
+		return result, resultPrecision, err
+	}
+
+	if nthRtCmpZero == -1 {
+		err = fmt.Errorf(ePrefix + "Error 'nthRoot' is negative! " +
+			"nthRoot='%v'", maxPrecision.Text(10))
+		return result, resultPrecision, err
+	}
+
+	// nthRoot is positive and fractional
+	// 5 ^ 2/3
+
+
+	internalPrecision := big.NewInt(0).Add(maxPrecision, big.NewInt(1000))
+
+	rat := big.NewRat(1, 1).SetFrac(nthRoot, nthRootPrecision)
+
+	tempFactor, tempFactorPrecision, errx :=
+		BigIntMathPower{}.BigIntPwr(
+			radicand,
+			radicandPrecision,
+			rat.Num(),
+			big.NewInt(0),
+			internalPrecision)
+
+	if errx != nil {
+		err = fmt.Errorf(ePrefix + "%v", errx.Error())
+
+		return result, resultPrecision, errx
+	}
+
+	result, resultPrecision, errx =
+		FixedDecimalNthRoot{}.CalculatePositiveIntegerNthRoot(
+			tempFactor,
+			tempFactorPrecision,
+			rat.Denom(),
+			big.NewInt(0),
+			maxPrecision)
+
+	if errx != nil {
+		err = fmt.Errorf(ePrefix + "%v", errx.Error())
+		result = big.NewInt(0)
+		resultPrecision = big.NewInt(0)
+		return result, resultPrecision, errx
+	}
+
+	err = nil
+
+	return result, resultPrecision, err
 }
 
+
+// CalculateNegativeFractionalNthRoot - Calculates roots for negative decimal
+// value or fractional nthRoots.
+//
+func (fdNthRoot *FixedDecimalNthRoot) CalculateNegativeFractionalNthRoot(
+	radicand,
+	radicandPrecision,
+	nthRoot,
+	nthRootPrecision,
+	maxPrecision *big.Int) (result *big.Int,
+													resultPrecision *big.Int,
+													err error) {
+
+	ePrefix := "FixedDecimalNthRoot.CalculateNegativeFractionalNthRoot() "
+	result = big.NewInt(0)
+	resultPrecision = big.NewInt(0)
+	err = nil
+
+	bigZero := big.NewInt(0)
+
+	radicandPrecisionZeroCmp := radicandPrecision.Cmp(bigZero)
+
+	if radicandPrecisionZeroCmp == -1 {
+		err = fmt.Errorf(ePrefix +
+			"Error: 'radicandPrecision' is Less Than Zero! " +
+			"radicandPrecision='%v'", radicandPrecision.Text(10))
+		return result, resultPrecision, err
+	}
+
+	nthRtPrecisionCmpZero := nthRootPrecision.Cmp(bigZero)
+
+	if nthRtPrecisionCmpZero == -1 {
+		err = fmt.Errorf(ePrefix + "Error 'nthRootPrecision' is Less Than Zero! " +
+			"nthRootPrecision='%v'", nthRootPrecision.Text(10))
+		return result, resultPrecision, err
+	}
+
+	if maxPrecision.Cmp(bigZero) == -1 {
+		err = fmt.Errorf(ePrefix + "Error 'maxPrecision' is Less Than Zero! " +
+			"maxPrecision='%v'", maxPrecision.Text(10))
+		return result, resultPrecision, err
+	}
+
+	if nthRtPrecisionCmpZero == 0 {
+		err = fmt.Errorf(ePrefix + "Error 'nthRootPrecision' is Zero. nthRoot is an integer value!" +
+			"nthRootPrecision='%v'", nthRootPrecision.Text(10))
+		return result, resultPrecision, err
+	}
+
+	radicandZeroCmp := radicand.Cmp(bigZero)
+
+	if radicandZeroCmp == 0 {
+		// If radicand is zero, result = zero
+		return result, resultPrecision, err
+	}
+
+	if radicand.Cmp(big.NewInt(1)) == 0 {
+		result = big.NewInt(1)
+		return result, resultPrecision, err
+	}
+
+	nthRtCmpZero := nthRoot.Cmp(bigZero)
+
+	if nthRtCmpZero == 0 {
+		err = errors.New(ePrefix +
+			"Error: 'nthRoot' is Zero!")
+		return result, resultPrecision, err
+	}
+
+	if nthRtCmpZero == 1 {
+		err = fmt.Errorf(ePrefix + "Error 'nthRoot' is positive! " +
+			"nthRoot='%v'", maxPrecision.Text(10))
+		return result, resultPrecision, err
+	}
+
+	// nthRoot precision must be positive. This is a fractional nthRoot
+	// with a negative value.
+
+	// Example: 5^-0.666 = 1/ 5^0.666
+
+	// Convert nthRoot to positive value
+	tempNthRoot := big.NewInt(0).Neg(nthRoot)
+
+	tempNthRootPrecision := big.NewInt(0).Set(nthRootPrecision)
+
+	internalPrecision := big.NewInt(0).Add(maxPrecision, big.NewInt(500))
+
+	// calculate positive nthRoot Solution
+	tempRoot, tempRootPrecision, errx :=
+		FixedDecimalNthRoot{}.CalculatePositiveFractionalNthRoot(
+			radicand,
+			radicandPrecision,
+			tempNthRoot,
+			tempNthRootPrecision,
+			internalPrecision)
+
+	if errx != nil {
+		err = fmt.Errorf(ePrefix + "%v", errx.Error())
+		return result, resultPrecision, err
+	}
+
+
+	result, resultPrecision, errx =
+		BigIntMathDivide{}.BigIntFracQuotient(
+			big.NewInt(1),
+			big.NewInt(0),
+			tempRoot,
+			tempRootPrecision,
+			maxPrecision)
+
+	if errx != nil {
+		err = fmt.Errorf(ePrefix + "%v", errx.Error())
+		result = big.NewInt(0)
+		resultPrecision = big.NewInt(0)
+		return result, resultPrecision, err
+	}
+
+	err = nil
+
+	return result, resultPrecision, err
+}
+
+// CalculateNegativeIntegerNthRoot - Calculates roots for nthRoots which
+// are negative integer values.
+func (fdNthRoot *FixedDecimalNthRoot) CalculateNegativeIntegerNthRoot(
+	radicand,
+	radicandPrecision,
+	nthRoot,
+	nthRootPrecision,
+	maxPrecision *big.Int) (result *big.Int,
+													resultPrecision *big.Int ,
+													err error)  {
+
+  ePrefix := "FixedDecimalNthRoot.CalculateNegativeIntegerNthRoot() "
+	result = big.NewInt(0)
+	resultPrecision = big.NewInt(0)
+	err = nil
+
+	bigZero := big.NewInt(0)
+
+	radicandPrecisionZeroCmp := radicandPrecision.Cmp(bigZero)
+
+	if radicandPrecisionZeroCmp == -1 {
+		err = fmt.Errorf(ePrefix +
+			"Error: 'radicandPrecision' is Less Than Zero! " +
+			"radicandPrecision='%v'", radicandPrecision.Text(10))
+		return result, resultPrecision, err
+	}
+
+	nthRtPrecisionCmpZero := nthRootPrecision.Cmp(bigZero)
+
+	if nthRtPrecisionCmpZero == -1 {
+		err = fmt.Errorf(ePrefix + "Error 'nthRootPrecision' is Less Than Zero! " +
+			"nthRootPrecision='%v'", nthRootPrecision.Text(10))
+		return result, resultPrecision, err
+	}
+
+	if maxPrecision.Cmp(bigZero) == -1 {
+		err = fmt.Errorf(ePrefix + "Error 'maxPrecision' is Less Than Zero! " +
+			"maxPrecision='%v'", maxPrecision.Text(10))
+		return result, resultPrecision, err
+	}
+
+	if nthRtPrecisionCmpZero == 1 {
+		err = fmt.Errorf(ePrefix + "Error 'nthRootPrecision' is Greater Than Zero! " +
+			"nthRootPrecision='%v'", nthRootPrecision.Text(10))
+		return result, resultPrecision, err
+	}
+
+	radicandZeroCmp := radicand.Cmp(bigZero)
+
+	if radicandZeroCmp == 0 {
+		return result, resultPrecision, err
+	}
+
+	if radicand.Cmp(big.NewInt(1)) == 0 {
+		result = big.NewInt(1)
+		return result, resultPrecision, err
+	}
+
+	if radicandZeroCmp == -1 {
+		// Cannot calculate root of a negative radicand when
+		// nthRoot is even.
+		remainder := big.NewInt(0).Rem(nthRoot, big.NewInt(2))
+
+		if remainder.Cmp(bigZero) == 0 {
+
+			err = errors.New(ePrefix +
+				"INVALID ENTRY - Cannot calculate nthRoot of a negative radicand when nthRoot is even.")
+			return result, resultPrecision, err
+		}
+	}
+
+
+	bigOne := big.NewInt(1)
+	bigOnePrecision := big.NewInt(0)
+	var errx error
+
+	if nthRoot.Cmp(big.NewInt(-1)) == 0 {
+		// nthRoot is 1, so result = 1/radicand
+
+		result, resultPrecision, errx =
+			BigIntMathDivide{}.BigIntFracQuotient(
+				bigOne,
+				bigOnePrecision,
+				radicand,
+				radicandPrecision,
+				maxPrecision)
+
+		if errx != nil {
+			err = fmt.Errorf(ePrefix + "%v", errx.Error())
+			result = big.NewInt(0)
+			resultPrecision = big.NewInt(0)
+			return result, resultPrecision, err
+		}
+
+		err = nil
+
+		return result, resultPrecision, err
+	}
+
+	nthRtCmpZero := nthRoot.Cmp(bigZero)
+
+	if nthRtCmpZero == 0 {
+		err = errors.New(ePrefix +
+			"Error: 'nthRoot' is Zero!")
+		return result, resultPrecision, err
+	}
+
+	if nthRtCmpZero == 1 {
+		err = fmt.Errorf(ePrefix + "Error 'nthRoot' is positive! " +
+			"nthRoot='%v'", maxPrecision.Text(10))
+		return result, resultPrecision, err
+	}
+
+	// nthRoot precision must be zero. This is an integer nthRoot
+	// with a negative value.
+
+	// Convert nthRoot to positive value
+	tempNthRoot := big.NewInt(0).Neg(nthRoot)
+
+	tempNthRootPrecision := big.NewInt(0).Set(nthRootPrecision)
+
+	internalPrecision := big.NewInt(0).Add(maxPrecision, big.NewInt(500))
+
+	// calculate positive nthRoot Solution
+	tempRoot, tempRootPrecision, errx :=
+		FixedDecimalNthRoot{}.CalculatePositiveIntegerNthRoot(
+			radicand,
+			radicandPrecision,
+			tempNthRoot,
+			tempNthRootPrecision,
+			internalPrecision)
+
+	if errx != nil {
+		err = fmt.Errorf(ePrefix + "%v", errx.Error())
+		return result, resultPrecision, err
+	}
+
+	result, resultPrecision, errx =
+		BigIntMathDivide{}.BigIntFracQuotient(
+			bigOne,
+			bigOnePrecision,
+			tempRoot,
+			tempRootPrecision,
+			maxPrecision)
+
+	if errx != nil {
+		err = fmt.Errorf(ePrefix + "%v", errx.Error())
+		result = big.NewInt(0)
+		resultPrecision = big.NewInt(0)
+		return result, resultPrecision, err
+	}
+
+	err = nil
+
+	return result, resultPrecision, err
+}
 
 
 /*
@@ -480,37 +936,6 @@ func (fdNthRoot *FixedDecimalNthRoot) CalculationController(
 
 
 
-
-// CalculateNegativeFractionalNthRoot - Calculates roots for negative decimal
-// value or fractional nthRoots.
-//
-func (fdNthRoot *FixedDecimalNthRoot) CalculateNegativeFractionalNthRoot(
-	radicand,
-	nthRoot BigIntFixedDecimal,
-	maxPrecision uint64) (result BigIntFixedDecimal, err error) {
-
-	result = BigIntFixedDecimal{}.NewZero(0)
-	err = nil
-
-
-
-	return result, err
-}
-
-// CalculateNegativeIntegerNthRoot - Calculates roots for nthRoots which
-// are negatvie integer values.
-func (fdNthRoot *FixedDecimalNthRoot) CalculateNegativeIntegerNthRoot(
-	radicand,
-	nthRoot BigIntFixedDecimal,
-	maxPrecision uint64) (result BigIntFixedDecimal, err error) {
-
-	result = BigIntFixedDecimal{}.NewZero(0)
-	err = nil
-
-
-
-	return result, err
-}
 
 
 // CalculationController - Central coordinating function for the Nth Root
@@ -831,79 +1256,6 @@ func (fdNthRoot *FixedDecimalNthRoot)GuessBeta(
 	beta.Result = beta.RPrime.Cmp(fdNthRoot.zero)
 	return beta.Result
 }
-
-
-
-// ComputeBeta - Compute and return the rPrime and yPrime.
-//
-// yPrime is the next digit of the root which is also referred
-// to as 'beta'.
-//
-// rPrime is next remainder.
-//
-// fdNthRoot.OriginalNthRoot and fdNthRoot.bPwrN have already been set.
-//
-/*
-func (fdNthRoot *FixedDecimalNthRoot) ComputeBeta(
-				r,
-				alpha,
-				y *big.Int) (
-											rPrime,
-											yPrime *big.Int,
-											err error) {
-
-	rPrime = big.NewInt(0)
-	yPrime = big.NewInt(0)
-	err = nil
-
-
-	fdNthRoot.term2b = big.NewInt(0).Exp(y, fdNthRoot.NthRoot, nil)
-	fdNthRoot.term2b.Mul(fdNthRoot.term2b, fdNthRoot.bPwrN)
-
-	fdNthRoot.termBy = big.NewInt(0).Mul(fdNthRoot.bBase, y)
-
-	fdNthRoot.term1 = big.NewInt(0).Mul(fdNthRoot.bPwrN, r)
-	fdNthRoot.term1.Add(fdNthRoot.term1, alpha)
-
-	i:= 0
-
-	for i=0; i < 10; i++ {
-
-		fdNthRoot.betas[i].NextGuessIdx = i+1
-
-		if i > 0 {
-			fdNthRoot.betas[i].LastGuessIdx = i-1
-		}
-
-		fdNthRoot.GuessBeta(&fdNthRoot.betas[i])
-
-		if fdNthRoot.betas[i].Result == -1 {
-			break
-		}
-	}
-
-	i--
-
-	rPrime.Set(fdNthRoot.betas[i].RPrime)
-	yPrime.Set(fdNthRoot.betas[i].YPrime)
-	err = nil
-
-	return rPrime, yPrime, err
-}
-
-
-func (fdNthRoot *FixedDecimalNthRoot) GuessBeta(
-	beta *NthRootBeta)  {
-
-	term2a := big.NewInt(0).Add(fdNthRoot.termBy, beta.Beta)
-	term2a.Exp(term2a, fdNthRoot.NthRoot,nil)
-	term2:= big.NewInt(0).Sub(term2a, fdNthRoot.term2b)
-	beta.RPrime.Sub(fdNthRoot.term1, term2)
-	beta.YPrime.Set(beta.Beta)
-	beta.Result = beta.RPrime.Cmp(fdNthRoot.zero)
-	return
-}
-*/
 
 
 // FormatCalculationConstants - Generates calculation constants to be used in
