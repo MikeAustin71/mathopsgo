@@ -901,29 +901,22 @@ func (bigIFd *BigIntFixedDecimal) GetIntegerFractionalParts() (integer BigIntFix
 		bigIFd.precision = 0
 	}
 
-	integer = bigIFd.CopyOut()
+	integer = BigIntFixedDecimal{}.NewZero(0)
+	fraction = BigIntFixedDecimal{}.NewZero(0)
 
-	fraction = bigIFd.CopyOut()
-
-	if integer.integerNum.Cmp(big.NewInt(0)) == 0 {
-		integer.precision = 0
+	if bigIFd.integerNum.Cmp(big.NewInt(0)) == 0 {
 		return integer, fraction
 	}
 
-	scale :=
-		big.NewInt(0).Exp(
-			big.NewInt(10),
-			big.NewInt(int64(bigIFd.precision)),
-			nil)
+	scale := big.NewInt(0).Exp(big.NewInt(10), big.NewInt(0).SetUint64(uint64(bigIFd.precision)) , nil)
 
-	integer.integerNum.Quo(integer.integerNum,scale)
-	integer.precision = 0
+	scratch := big.NewInt(0)
 
-	scratch := integer.CopyOut()
+	intRadicand, fracRadicand := big.NewInt(0).QuoRem(bigIFd.integerNum, scale, scratch)
 
-	scratch.integerNum.Mul(scratch.integerNum, scale)
+	integer = BigIntFixedDecimal{}.New(intRadicand, 0)
 
-	fraction.integerNum.Sub(fraction.integerNum, scratch.integerNum)
+	fraction = BigIntFixedDecimal{}.New(fracRadicand, bigIFd.precision)
 
 	return integer, fraction
 }

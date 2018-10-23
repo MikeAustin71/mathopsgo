@@ -24,22 +24,78 @@ import (
 
 func main() {
 
-	base := big.NewInt(525)
-	basePrecision := big.NewInt(2)
-	exponent := big.NewInt(-7)
-	exponentPrecision := big.NewInt(0)
-	maxPrecision := big.NewInt(37)
+	radicand := big.NewInt(375)
+	radicandPrecision := big.NewInt(0)
+	nthRoot := big.NewInt(3)
+	nthRootPrecision := big.NewInt(0)
+	maxPrecision := big.NewInt(31)
+
 	//                            1         2         3
 	//                   1234567890123456789012345678901234567
-	expectedResult := "0.0000090967210256655561054952045247619"
+	expectedResult := "7.2112478515370419116081915539005"
 
-	TestBigIntNegativeIntPower(
-		base,
-		basePrecision,
-		exponent,
-		exponentPrecision,
+	TestBigIntPositiveIntNthRoot(
+		radicand,
+		radicandPrecision,
+		nthRoot,
+		nthRootPrecision,
 		maxPrecision,
 		expectedResult)
+}
+
+func TestBigIntPositiveIntNthRoot(
+	radicand,
+	radicandPrecision,
+	nthRoot,
+	nthRootPrecision,
+	maxPrecision *big.Int,
+	expectedValue string) {
+
+	fdNr :=  mathops.FixedDecimalNthRoot{}
+	timeStart := time.Now()
+	result, resultPrecision, err :=
+		fdNr.CalculatePositiveIntegerNthRoot(
+			radicand,
+			radicandPrecision,
+			nthRoot,
+			nthRootPrecision,
+			maxPrecision)
+	timeEnd := time.Now()
+	if err != nil {
+		fmt.Printf("Error returned by fdNr.CalculatePositiveIntegerNthRoot(...) " +
+			"Error='%v' ", err.Error())
+	}
+
+	resultBiNum, err := mathops.BigIntNum{}.NewBigIntPrecision(result, resultPrecision)
+
+	if err != nil {
+		fmt.Printf("Error returned by .BigIntNum{}.NewBigIntPrecision(...) " +
+			"Error='%v' ", err.Error())
+	}
+
+	timeDuration := timeEnd.Sub(timeStart)
+	duration := examples.CodeDurationToStr(timeDuration)
+
+	fmt.Println()
+	fmt.Println()
+	fmt.Println("FixedDecimalNthRoot{}.CalculatePositiveIntegerNthRoot() ")
+	fmt.Println("============================================================")
+	fmt.Println("              radicand: ", radicand.Text(10))
+	fmt.Println("     radicandPrecision: ", radicandPrecision.Text(10))
+	fmt.Println("               nthRoot: ", nthRoot.Text(10))
+	fmt.Println("      nthRootPrecision: ", nthRootPrecision)
+	fmt.Println("     Maximum Precision: ", maxPrecision)
+	fmt.Println("------------------------------------------------------------")
+	fmt.Println("                result: ", result.Text(10) )
+	fmt.Println("       resultPrecision: ", resultPrecision.Text(10))
+	fmt.Println("         result NumStr: ", resultBiNum.GetNumStr())
+	fmt.Println("       expected result: ", expectedValue)
+	fmt.Println("------------------------------------------------------------")
+	fmt.Println("Execution Time: ", duration)
+	fmt.Println("------------------------------------------------------------")
+	fmt.Println()
+
+
 }
 
 func TestBigIntNegativeIntPower(
@@ -69,8 +125,8 @@ func TestBigIntNegativeIntPower(
 	}
 
 	binResult := mathops.BigIntNum{}.NewBigInt(result, uint(resultPrecision.Uint64()))
-	timeDuration := timeEnd.Sub(timeStart)
 
+	timeDuration := timeEnd.Sub(timeStart)
 	duration := examples.CodeDurationToStr(timeDuration)
 
 	fmt.Println()

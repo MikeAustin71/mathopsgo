@@ -214,8 +214,8 @@ func (bIDivide BigIntMathDivide) BigIntFracQuotient(
 	}
 
 	// Do integer division
-
-	intQuotient, intRemndr := big.NewInt(0).QuoRem(numratrDivdnd, denomnatrDivsr, big.NewInt(0))
+	scratch := big.NewInt(0)
+	intQuotient, intRemndr := big.NewInt(0).QuoRem(numratrDivdnd, denomnatrDivsr, scratch)
 
 	quotient = big.NewInt(0).Set(intQuotient)
 
@@ -229,7 +229,7 @@ func (bIDivide BigIntMathDivide) BigIntFracQuotient(
 	for iCnt.Cmp(iMaxPrecision) == -1 {
 
 		numratrDivdnd = big.NewInt(0).Mul(intRemndr, bigTen)
-		intQuotient, intRemndr = big.NewInt(0).QuoRem(numratrDivdnd, denomnatrDivsr, big.NewInt(0))
+		intQuotient, intRemndr = big.NewInt(0).QuoRem(numratrDivdnd, denomnatrDivsr, scratch)
 
 		if intQuotient.Cmp(bigZero) == 1 {
 			lastNonZeroDigitIdx.Set(iCnt)
@@ -4413,10 +4413,12 @@ func (bIDivide BigIntMathDivide) pairQuotientModNoNumSeps(
 
 	bPair.MakePrecisionsEqual()
 
+	scratch := big.NewInt(0)
+
 	quotientBigI, moduloBigI := big.NewInt(0).QuoRem(
 		bPair.Big1.bigInt,
 		bPair.Big2.bigInt,
-		big.NewInt(0))
+		scratch)
 
 	quotient = BigIntNum{}.NewBigInt(quotientBigI, 0)
 

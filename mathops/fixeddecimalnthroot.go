@@ -470,6 +470,8 @@ func (fdNthRoot *FixedDecimalNthRoot) CalculatePositiveFractionalNthRoot(
 
 	bigZero := big.NewInt(0)
 
+	internalPrecision := big.NewInt(0).Add(maxPrecision, big.NewInt(500))
+
 	radicandPrecisionZeroCmp := radicandPrecision.Cmp(bigZero)
 
 	if radicandPrecisionZeroCmp == -1 {
@@ -532,8 +534,6 @@ func (fdNthRoot *FixedDecimalNthRoot) CalculatePositiveFractionalNthRoot(
 	// 5 ^ 2/3
 
 
-	internalPrecision := big.NewInt(0).Add(maxPrecision, big.NewInt(1000))
-
 	rat := big.NewRat(1, 1).SetFrac(nthRoot, nthRootPrecision)
 
 	tempFactor, tempFactorPrecision, errx :=
@@ -589,6 +589,8 @@ func (fdNthRoot *FixedDecimalNthRoot) CalculateNegativeFractionalNthRoot(
 	err = nil
 
 	bigZero := big.NewInt(0)
+
+	internalPrecision := big.NewInt(0).Add(maxPrecision, big.NewInt(500))
 
 	radicandPrecisionZeroCmp := radicandPrecision.Cmp(bigZero)
 
@@ -655,8 +657,6 @@ func (fdNthRoot *FixedDecimalNthRoot) CalculateNegativeFractionalNthRoot(
 
 	tempNthRootPrecision := big.NewInt(0).Set(nthRootPrecision)
 
-	internalPrecision := big.NewInt(0).Add(maxPrecision, big.NewInt(500))
-
 	// calculate positive nthRoot Solution
 	tempRoot, tempRootPrecision, errx :=
 		fdNthRoot.CalculatePositiveFractionalNthRoot(
@@ -709,6 +709,8 @@ func (fdNthRoot *FixedDecimalNthRoot) CalculateNegativeIntegerNthRoot(
 	err = nil
 
 	bigZero := big.NewInt(0)
+
+	internalPrecision := big.NewInt(0).Add(maxPrecision, big.NewInt(500))
 
 	radicandPrecisionZeroCmp := radicandPrecision.Cmp(bigZero)
 
@@ -812,8 +814,6 @@ func (fdNthRoot *FixedDecimalNthRoot) CalculateNegativeIntegerNthRoot(
 	tempNthRoot := big.NewInt(0).Neg(nthRoot)
 
 	tempNthRootPrecision := big.NewInt(0).Set(nthRootPrecision)
-
-	internalPrecision := big.NewInt(0).Add(maxPrecision, big.NewInt(500))
 
 	// calculate positive nthRoot Solution
 	tempRoot, tempRootPrecision, errx :=
@@ -1284,7 +1284,8 @@ func (fdNthRoot *FixedDecimalNthRoot) FormatCalculationConstants(
 
 	scale := big.NewInt(0).Exp(big.NewInt(10), radicandPrecision, nil)
 
-	intRadicand, fracRadicand := big.NewInt(0).QuoRem(radicand, scale, nil)
+	scratch := big.NewInt(0)
+	intRadicand, fracRadicand := big.NewInt(0).QuoRem(radicand, scale, scratch)
 
 	fracRadicandPrecision := big.NewInt(0).Set(radicandPrecision)
 

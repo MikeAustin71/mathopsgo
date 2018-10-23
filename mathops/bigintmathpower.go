@@ -406,7 +406,9 @@ func(bIPwr BigIntMathPower) BigIntToPositiveFractionalPower(
 		exponentPrecision,
 		nil)
 
-	integerExponent, fractionalExponent := big.NewInt(0).QuoRem(exponent, scale, nil)
+	scratch := big.NewInt(0)
+
+	integerExponent, fractionalExponent := big.NewInt(0).QuoRem(exponent, scale, scratch)
 
 	integerResult, integerPrecision, errx :=
 		BigIntMathPower{}.BigIntToPositiveIntegerPower(
