@@ -551,7 +551,7 @@ func (fdNthRoot *FixedDecimalNthRoot) CalculatePositiveFractionalNthRoot(
 	}
 
 	result, resultPrecision, errx =
-		FixedDecimalNthRoot{}.CalculatePositiveIntegerNthRoot(
+		fdNthRoot.CalculatePositiveIntegerNthRoot(
 			tempFactor,
 			tempFactorPrecision,
 			rat.Denom(),
@@ -659,7 +659,7 @@ func (fdNthRoot *FixedDecimalNthRoot) CalculateNegativeFractionalNthRoot(
 
 	// calculate positive nthRoot Solution
 	tempRoot, tempRootPrecision, errx :=
-		FixedDecimalNthRoot{}.CalculatePositiveFractionalNthRoot(
+		fdNthRoot.CalculatePositiveFractionalNthRoot(
 			radicand,
 			radicandPrecision,
 			tempNthRoot,
@@ -817,7 +817,7 @@ func (fdNthRoot *FixedDecimalNthRoot) CalculateNegativeIntegerNthRoot(
 
 	// calculate positive nthRoot Solution
 	tempRoot, tempRootPrecision, errx :=
-		FixedDecimalNthRoot{}.CalculatePositiveIntegerNthRoot(
+		fdNthRoot.CalculatePositiveIntegerNthRoot(
 			radicand,
 			radicandPrecision,
 			tempNthRoot,

@@ -1,1004 +1,1118 @@
 package mathops
 
 import (
+	"math/big"
 	"testing"
 )
 
-func TestBigIntMathPower_MinimumRequiredPrecision_01(t *testing.T) {
 
-	base := BigIntNum{}.NewInt(312,2)
-	exponent := BigIntNum{}.NewInt(4, 0)
-	expectedResult := uint(8)
+func TestBigIntMathPower_BigIntToPositiveIntegerPower_01(t *testing.T) {
 
+	base := big.NewInt(-525)
+	basePrecision := big.NewInt(2)
+	exponent := big.NewInt(7)
+	exponentPrecision := big.NewInt(0)
+	maxPrecision := big.NewInt(14)
 
-	result, err := BigIntMathPower{}.MinimumRequiredPrecision(base, exponent)
+	//                                  1
+	//                         1234567890123456
+	expectedResult := "-109929.72052001953125"
+
+	result,
+	resultPrecision,
+	err := BigIntMathPower{}.BigIntToPositiveIntegerPower(
+		base,
+		basePrecision,
+		exponent,
+		exponentPrecision,
+		maxPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntMathPower{}." +
-			"MinimumRequiredPrecision(base, exponent)" +
+		t.Errorf("Error returned by BigIntMathPower{}.BigIntToPositiveIntegerPower(...) " +
 			"Error='%v' ", err.Error())
 	}
 
-	if expectedResult != result {
-		t.Errorf("Error: Expected result='%v'. Instead, result='%v'",
-			expectedResult, result)
+	binResult, err := BigIntNum{}.NewBigIntPrecision(result, resultPrecision)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewBigIntPrecision(...) " +
+			"Error='%v' ", err.Error())
+	}
+
+	actualNumStr := binResult.GetNumStr()
+
+	if expectedResult != actualNumStr {
+		t.Errorf("Expected result='%v'.  Instead, result='%v'. ",
+			expectedResult, actualNumStr)
 	}
 
 }
 
-func TestBigIntMathPower_MinimumRequiredPrecision_02(t *testing.T) {
+func TestBigIntMathPower_BigIntToPositiveIntegerPower_02(t *testing.T) {
 
-	base := BigIntNum{}.NewInt(312345,5)
-	exponent := BigIntNum{}.NewInt(18, 0)
-	expectedResult := uint(90)
+	base := big.NewInt(-525)
+	basePrecision := big.NewInt(2)
+	exponent := big.NewInt(8)
+	exponentPrecision := big.NewInt(0)
+	maxPrecision := big.NewInt(16)
 
+	//                                 1
+	//                        1234567890123456
+	expectedResult := "577131.0327301025390625"
 
-	result, err := BigIntMathPower{}.MinimumRequiredPrecision(base, exponent)
+	result,
+	resultPrecision,
+	err := BigIntMathPower{}.BigIntToPositiveIntegerPower(
+		base,
+		basePrecision,
+		exponent,
+		exponentPrecision,
+		maxPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntMathPower{}." +
-			"MinimumRequiredPrecision(base, exponent)" +
+		t.Errorf("Error returned by BigIntMathPower{}.BigIntToPositiveIntegerPower() " +
 			"Error='%v' ", err.Error())
 	}
 
-	if expectedResult != result {
-		t.Errorf("Error: Expected result='%v'. Instead, result='%v'",
-			expectedResult, result)
+	binResult, err := BigIntNum{}.NewBigIntPrecision(result, resultPrecision)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewBigIntPrecision(...) " +
+			"Error='%v' ", err.Error())
+	}
+
+	actualNumStr := binResult.GetNumStr()
+
+	if expectedResult != actualNumStr {
+		t.Errorf("Expected result='%v'.  Instead, result='%v'. ",
+			expectedResult, actualNumStr)
 	}
 
 }
 
-func TestBigIntMathPower_MinimumRequiredPrecision_03(t *testing.T) {
+func TestBigIntMathPower_BigIntToPositiveIntegerPower_03(t *testing.T) {
 
-	base := BigIntNum{}.NewInt(-312345,5)
-	exponent := BigIntNum{}.NewInt(18, 0)
-	expectedResult := uint(90)
+	base := big.NewInt(1123456)
+	basePrecision := big.NewInt(6)
+	exponent := big.NewInt(51)
+	exponentPrecision := big.NewInt(0)
+	maxPrecision := big.NewInt(28)
 
+	//                              1         2
+	//                     1234567890123456789012345678
+	expectedResult := "378.7559536547494902948952952204"
 
-	result, err := BigIntMathPower{}.MinimumRequiredPrecision(base, exponent)
+	result,
+	resultPrecision,
+	err := BigIntMathPower{}.BigIntToPositiveIntegerPower(
+		base,
+		basePrecision,
+		exponent,
+		exponentPrecision,
+		maxPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntMathPower{}." +
-			"MinimumRequiredPrecision(base, exponent)" +
+		t.Errorf("Error returned by BigIntMathPower{}.BigIntToPositiveIntegerPower() " +
 			"Error='%v' ", err.Error())
 	}
 
-	if expectedResult != result {
-		t.Errorf("Error: Expected result='%v'. Instead, result='%v'",
-			expectedResult, result)
+	binResult, err := BigIntNum{}.NewBigIntPrecision(result, resultPrecision)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewBigIntPrecision(...) " +
+			"Error='%v' ", err.Error())
+	}
+
+	actualNumStr := binResult.GetNumStr()
+
+	if expectedResult != actualNumStr {
+		t.Errorf("Expected result='%v'.  Instead, result='%v'. ",
+			expectedResult, actualNumStr)
 	}
 
 }
 
-func TestBigIntMathPower_MinimumRequiredPrecision_04(t *testing.T) {
+func TestBigIntMathPower_BigIntToPositiveIntegerPower_04(t *testing.T) {
 
-	base := BigIntNum{}.NewInt(312345,5)
-	exponent := BigIntNum{}.NewInt(-18, 0)
-	expectedResult := uint(90)
+	base := big.NewInt(-1123456)
+	basePrecision := big.NewInt(6)
+	exponent := big.NewInt(51)
+	exponentPrecision := big.NewInt(0)
+	maxPrecision := big.NewInt(28)
 
+	//                               1         2
+	//                      1234567890123456789012345678
+	expectedResult := "-378.7559536547494902948952952204"
 
-	result, err := BigIntMathPower{}.MinimumRequiredPrecision(base, exponent)
+	result,
+	resultPrecision,
+	err := BigIntMathPower{}.BigIntToPositiveIntegerPower(
+		base,
+		basePrecision,
+		exponent,
+		exponentPrecision,
+		maxPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntMathPower{}." +
-			"MinimumRequiredPrecision(base, exponent)" +
+		t.Errorf("Error returned by BigIntMathPower{}.BigIntToPositiveIntegerPower() " +
 			"Error='%v' ", err.Error())
 	}
 
-	if expectedResult != result {
-		t.Errorf("Error: Expected result='%v'. Instead, result='%v'",
-			expectedResult, result)
+	binResult, err := BigIntNum{}.NewBigIntPrecision(result, resultPrecision)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewBigIntPrecision(...) " +
+			"Error='%v' ", err.Error())
+	}
+
+	actualNumStr := binResult.GetNumStr()
+
+	if expectedResult != actualNumStr {
+		t.Errorf("Expected result='%v'.  Instead, result='%v'. ",
+			expectedResult, actualNumStr)
 	}
 
 }
 
-func TestBigIntMathPower_MinimumRequiredPrecision_05(t *testing.T) {
+func TestBigIntMathPower_BigIntToPositiveIntegerPower_05(t *testing.T) {
 
-	base := BigIntNum{}.NewInt(312345,5)
-	exponent := BigIntNum{}.NewUint64(12345678901234567890, 0)
+	base := big.NewInt(2)
+	basePrecision := big.NewInt(0)
+	exponent := big.NewInt(100)
+	exponentPrecision := big.NewInt(0)
+	maxPrecision := big.NewInt(0)
 
-	result, err := BigIntMathPower{}.MinimumRequiredPrecision(base, exponent)
+	//                               1         2
+	//                      1234567890123456789012345678
+	// xx
+	expectedResult := "1267650600228229401496703205376"
+
+	result,
+	resultPrecision,
+	err := BigIntMathPower{}.BigIntToPositiveIntegerPower(
+		base,
+		basePrecision,
+		exponent,
+		exponentPrecision,
+		maxPrecision)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntMathPower{}.BigIntToPositiveIntegerPower() " +
+			"Error='%v' ", err.Error())
+	}
+
+	binResult, err := BigIntNum{}.NewBigIntPrecision(result, resultPrecision)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewBigIntPrecision(...) " +
+			"Error='%v' ", err.Error())
+	}
+
+	actualNumStr := binResult.GetNumStr()
+
+	if expectedResult != actualNumStr {
+		t.Errorf("Expected result='%v'.  Instead, result='%v'. ",
+			expectedResult, actualNumStr)
+	}
+
+}
+
+func TestBigIntMathPower_BigIntToPositiveIntegerPower_06(t *testing.T) {
+
+	base := big.NewInt(2345)
+	basePrecision := big.NewInt(4)
+	exponent := big.NewInt(25)
+	exponentPrecision := big.NewInt(0)
+	maxPrecision := big.NewInt(47)
+
+	//                            1         2         3         4
+	//                   12345678901234567890123456789012345678901234567
+	expectedResult := "0.00000000000000017929623758795375247136216776668"
+
+	result,
+	resultPrecision,
+	err := BigIntMathPower{}.BigIntToPositiveIntegerPower(
+		base,
+		basePrecision,
+		exponent,
+		exponentPrecision,
+		maxPrecision)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntMathPower{}.BigIntToPositiveIntegerPower() " +
+			"Error='%v' ", err.Error())
+	}
+
+	binResult, err := BigIntNum{}.NewBigIntPrecision(result, resultPrecision)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewBigIntPrecision(...) " +
+			"Error='%v' ", err.Error())
+	}
+
+	actualNumStr := binResult.GetNumStr()
+
+	if expectedResult != actualNumStr {
+		t.Errorf("Expected result='%v'.  Instead, result='%v'. ",
+			expectedResult, actualNumStr)
+	}
+
+}
+
+func TestBigIntMathPower_BigIntToPositiveIntegerPower_07(t *testing.T) {
+
+	base := big.NewInt(-2345)
+	basePrecision := big.NewInt(4)
+	exponent := big.NewInt(25)
+	exponentPrecision := big.NewInt(0)
+	maxPrecision := big.NewInt(47)
+
+	//                             1         2         3         4
+	//                    12345678901234567890123456789012345678901234567
+	expectedResult := "-0.00000000000000017929623758795375247136216776668"
+
+	result,
+	resultPrecision,
+	err := BigIntMathPower{}.BigIntToPositiveIntegerPower(
+		base,
+		basePrecision,
+		exponent,
+		exponentPrecision,
+		maxPrecision)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntMathPower{}.BigIntToPositiveIntegerPower() " +
+			"Error='%v' ", err.Error())
+	}
+
+	binResult, err := BigIntNum{}.NewBigIntPrecision(result, resultPrecision)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewBigIntPrecision(...) " +
+			"Error='%v' ", err.Error())
+	}
+
+	actualNumStr := binResult.GetNumStr()
+
+	if expectedResult != actualNumStr {
+		t.Errorf("Expected result='%v'.  Instead, result='%v'. ",
+			expectedResult, actualNumStr)
+	}
+
+}
+
+func TestBigIntMathPower_BigIntToPositiveIntegerPower_08(t *testing.T) {
+
+	base := big.NewInt(0)
+	basePrecision := big.NewInt(4)
+	exponent := big.NewInt(5)
+	exponentPrecision := big.NewInt(0)
+	maxPrecision := big.NewInt(0)
+
+	//                             1         2         3         4
+	//                    12345678901234567890123456789012345678901234567
+	expectedResult := "0"
+
+	result,
+	resultPrecision,
+	err := BigIntMathPower{}.BigIntToPositiveIntegerPower(
+		base,
+		basePrecision,
+		exponent,
+		exponentPrecision,
+		maxPrecision)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntMathPower{}.BigIntToPositiveIntegerPower() " +
+			"Error='%v' ", err.Error())
+	}
+
+	binResult, err := BigIntNum{}.NewBigIntPrecision(result, resultPrecision)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewBigIntPrecision(...) " +
+			"Error='%v' ", err.Error())
+	}
+
+	actualNumStr := binResult.GetNumStr()
+
+	if expectedResult != actualNumStr {
+		t.Errorf("Expected result='%v'.  Instead, result='%v'. ",
+			expectedResult, actualNumStr)
+	}
+
+}
+
+func TestBigIntMathPower_BigIntToPositiveIntegerPower_09(t *testing.T) {
+
+	base := big.NewInt(5)
+	basePrecision := big.NewInt(0)
+	exponent := big.NewInt(0)
+	exponentPrecision := big.NewInt(0)
+	maxPrecision := big.NewInt(0)
+
+	//                             1         2         3         4
+	//                    12345678901234567890123456789012345678901234567
+	expectedResult := "1"
+
+	result,
+	resultPrecision,
+	err := BigIntMathPower{}.BigIntToPositiveIntegerPower(
+		base,
+		basePrecision,
+		exponent,
+		exponentPrecision,
+		maxPrecision)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntMathPower{}.BigIntToPositiveIntegerPower() " +
+			"Error='%v' ", err.Error())
+	}
+
+	binResult,err := BigIntNum{}.NewBigIntPrecision(result, resultPrecision)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewBigIntPrecision(...) " +
+			"Error='%v' ", err.Error())
+	}
+
+	actualNumStr := binResult.GetNumStr()
+
+	if expectedResult != actualNumStr {
+		t.Errorf("Expected result='%v'.  Instead, result='%v'. ",
+			expectedResult, actualNumStr)
+	}
+
+}
+
+func TestBigIntMathPower_BigIntToPositiveIntegerPower_10(t *testing.T) {
+
+	base := big.NewInt(-5)
+	basePrecision := big.NewInt(0)
+	exponent := big.NewInt(0)
+	exponentPrecision := big.NewInt(0)
+	maxPrecision := big.NewInt(0)
+
+	//                             1         2         3         4
+	//                    12345678901234567890123456789012345678901234567
+	expectedResult := "1"
+
+	result,
+	resultPrecision,
+	err := BigIntMathPower{}.BigIntToPositiveIntegerPower(
+		base,
+		basePrecision,
+		exponent,
+		exponentPrecision,
+		maxPrecision)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntMathPower{}.BigIntToPositiveIntegerPower() " +
+			"Error='%v' ", err.Error())
+	}
+
+	binResult, err := BigIntNum{}.NewBigIntPrecision(result, resultPrecision)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewBigIntPrecision(...) " +
+			"Error='%v' ", err.Error())
+	}
+
+	actualNumStr := binResult.GetNumStr()
+
+	if expectedResult != actualNumStr {
+		t.Errorf("Expected result='%v'.  Instead, result='%v'. ",
+			expectedResult, actualNumStr)
+	}
+
+}
+
+func TestBigIntMathPower_BigIntToPositiveIntegerPower_11(t *testing.T) {
+
+	base := big.NewInt(91)
+	basePrecision := big.NewInt(0)
+	exponent := big.NewInt(1)
+	exponentPrecision := big.NewInt(0)
+	maxPrecision := big.NewInt(0)
+
+	//                             1         2         3         4
+	//                    12345678901234567890123456789012345678901234567
+	expectedResult := "91"
+
+	result,
+	resultPrecision,
+	err := BigIntMathPower{}.BigIntToPositiveIntegerPower(
+		base,
+		basePrecision,
+		exponent,
+		exponentPrecision,
+		maxPrecision)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntMathPower{}.BigIntToPositiveIntegerPower() " +
+			"Error='%v' ", err.Error())
+	}
+
+	binResult, err := BigIntNum{}.NewBigIntPrecision(result, resultPrecision)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewBigIntPrecision(...) " +
+			"Error='%v' ", err.Error())
+	}
+
+	actualNumStr := binResult.GetNumStr()
+
+	if expectedResult != actualNumStr {
+		t.Errorf("Expected result='%v'.  Instead, result='%v'. ",
+			expectedResult, actualNumStr)
+	}
+
+}
+
+func TestBigIntMathPower_BigIntToPositiveIntegerPower_12(t *testing.T) {
+
+	base := big.NewInt(-91)
+	basePrecision := big.NewInt(0)
+	exponent := big.NewInt(1)
+	exponentPrecision := big.NewInt(0)
+	maxPrecision := big.NewInt(0)
+
+	//                             1         2         3         4
+	//                    12345678901234567890123456789012345678901234567
+	expectedResult := "-91"
+
+	result,
+	resultPrecision,
+	err := BigIntMathPower{}.BigIntToPositiveIntegerPower(
+		base,
+		basePrecision,
+		exponent,
+		exponentPrecision,
+		maxPrecision)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntMathPower{}.BigIntToPositiveIntegerPower() " +
+			"Error='%v' ", err.Error())
+	}
+
+	binResult, err := BigIntNum{}.NewBigIntPrecision(result, resultPrecision)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewBigIntPrecision(...) " +
+			"Error='%v' ", err.Error())
+	}
+
+	actualNumStr := binResult.GetNumStr()
+
+	if expectedResult != actualNumStr {
+		t.Errorf("Expected result='%v'.  Instead, result='%v'. ",
+			expectedResult, actualNumStr)
+	}
+
+}
+
+func TestBigIntMathPower_BigIntToPositiveIntegerPower_13(t *testing.T) {
+
+	base := big.NewInt(5)
+	basePrecision := big.NewInt(0)
+	exponent := big.NewInt(22)
+	exponentPrecision := big.NewInt(1)
+	maxPrecision := big.NewInt(5)
+
+	//                             1         2         3         4
+	//                    12345678901234567890123456789012345678901234567
+
+	_,
+	_,
+	err := BigIntMathPower{}.BigIntToPositiveIntegerPower(
+		base,
+		basePrecision,
+		exponent,
+		exponentPrecision,
+		maxPrecision)
 
 	if err == nil {
-		t.Error("Error: Expected error be returned. NO ERROR RETURNED!")
-	}
-
-	if result != uint(4294967295) {
-		t.Errorf("Error: Expected result='4294967295'. Instead, result='%v'",
-			result)
+		t.Error("Error: Expected error to be returned due to fractional exponent " +
+			"NO ERROR RETURNED!")
 	}
 
 }
 
-func TestBigIntMathPower_Pwr_01(t *testing.T) {
-	// Time:
-	// 0-Milliseconds 0-Microseconds 0-Nanoseconds
-	baseStr := "2"
-	exponentStr := "4"
-	expectedNumStr := "16"
-	maxPrecision := uint(17)
-
-	bINumBase, err := BigIntNum{}.NewNumStr(baseStr)
-
-	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(baseStr). "+
-			"baseStr='%v' Error='%v' \n", baseStr, err.Error())
-	}
-
-	bINumExponent, err := BigIntNum{}.NewNumStr(exponentStr)
-
-	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(exponentStr). "+
-			"exponentStr='%v' Error='%v' \n", exponentStr, err.Error())
-	}
-
-	result, err := BigIntMathPower{}.Pwr(bINumBase, bINumExponent, maxPrecision)
-
-	if err != nil {
-		t.Errorf("Error returned by BigIntMathPower{}.Pwr(bINumBase, bINumExponent, maxPrecision). "+
-			"bINumBase='%v' bINumExponent='%v' maxPrecision='%v' Error='%v' \n",
-			bINumBase.GetNumStr(), bINumExponent.GetNumStr(), maxPrecision, err.Error())
-	}
-
-	if expectedNumStr != result.GetNumStr() {
-		t.Errorf("Error: Expected Result='%v'. Instead, Result='%v'",
-			expectedNumStr, result.GetNumStr())
-	}
-
-}
-
-func TestBigIntMathPower_Pwr_02(t *testing.T) {
-
-	// Time
-	// 0-Milliseconds 0-Microseconds 0-Nanoseconds
-	baseStr := "2"
-	exponentStr := "-4"
-	expectedNumStr := "0.0625"
-	maxPrecision := uint(17)
-
-	bINumBase, err := BigIntNum{}.NewNumStr(baseStr)
-
-	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(baseStr). "+
-			"baseStr='%v' Error='%v' \n", baseStr, err.Error())
-	}
-
-	bINumExponent, err := BigIntNum{}.NewNumStr(exponentStr)
-
-	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(exponentStr). "+
-			"exponentStr='%v' Error='%v' \n", exponentStr, err.Error())
-	}
-
-	result, err := BigIntMathPower{}.Pwr(bINumBase, bINumExponent, maxPrecision)
-
-	if err != nil {
-		t.Errorf("Error returned by BigIntMathPower{}.Pwr(bINumBase, bINumExponent, maxPrecision). "+
-			"bINumBase='%v' bINumExponent='%v' maxPrecision='%v' Error='%v' \n",
-			bINumBase.GetNumStr(), bINumExponent.GetNumStr(), maxPrecision, err.Error())
-	}
-
-	if expectedNumStr != result.GetNumStr() {
-		t.Errorf("Error: Expected Result='%v'. Instead, Result='%v'",
-			expectedNumStr, result.GetNumStr())
-	}
-
-}
-
-func TestBigIntMathPower_Pwr_03(t *testing.T) {
-
-	// Time:
-	// 0-Milliseconds 0-Microseconds 0-Nanoseconds
-
-	baseStr := "37.241"
-	exponentStr := "8"
-	expectedNumStr := "3699735472699.4101912057680101525"
-	maxPrecision := uint(19)
-
-	bINumBase, err := BigIntNum{}.NewNumStr(baseStr)
-
-	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(baseStr). "+
-			"baseStr='%v' Error='%v' \n", baseStr, err.Error())
-	}
-
-	bINumExponent, err := BigIntNum{}.NewNumStr(exponentStr)
-
-	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(exponentStr). "+
-			"exponentStr='%v' Error='%v' \n", exponentStr, err.Error())
-	}
-
-	result, err := BigIntMathPower{}.Pwr(bINumBase, bINumExponent, maxPrecision)
-
-	if err != nil {
-		t.Errorf("Error returned by BigIntMathPower{}.Pwr(bINumBase, bINumExponent, maxPrecision). "+
-			"bINumBase='%v' bINumExponent='%v' maxPrecision='%v' Error='%v' \n",
-			bINumBase.GetNumStr(), bINumExponent.GetNumStr(), maxPrecision, err.Error())
-	}
-
-	if expectedNumStr != result.GetNumStr() {
-		t.Errorf("Error: Expected Result='%v'. Instead, Result='%v'",
-			expectedNumStr, result.GetNumStr())
-	}
-
-}
-
-func TestBigIntMathPower_Pwr_04(t *testing.T) {
-
-	// Time:
-	// 0-Milliseconds 999-Microseconds 600-Nanoseconds
-
-	baseStr := "37"
-	exponentStr := "3.25"
-	expectedNumStr := "124926.79641959048051506133768818"
-	maxPrecision := uint(26)
-
-	bINumBase, err := BigIntNum{}.NewNumStr(baseStr)
-
-	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(baseStr). "+
-			"baseStr='%v' Error='%v' \n", baseStr, err.Error())
-	}
-
-	bINumExponent, err := BigIntNum{}.NewNumStr(exponentStr)
-
-	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(exponentStr). "+
-			"exponentStr='%v' Error='%v' \n", exponentStr, err.Error())
-	}
-
-	result, err := BigIntMathPower{}.Pwr(bINumBase, bINumExponent, maxPrecision)
-
-	if err != nil {
-		t.Errorf("Error returned by BigIntMathPower{}.Pwr(bINumBase, bINumExponent, maxPrecision). "+
-			"bINumBase='%v' bINumExponent='%v' maxPrecision='%v' Error='%v' \n",
-			bINumBase.GetNumStr(), bINumExponent.GetNumStr(), maxPrecision, err.Error())
-	}
-
-	if expectedNumStr != result.GetNumStr() {
-		t.Errorf("Error: Expected Result='%v'. Instead, Result='%v'",
-			expectedNumStr, result.GetNumStr())
-	}
-
-}
-
-func TestBigIntMathPower_Pwr_05(t *testing.T) {
-
-	// Time:
-	// 1-Milliseconds 999-Microseconds 400-Nanoseconds
-
-	baseStr := "37"
-	exponentStr := "-3.25"
-	expectedNumStr := "0.0000080046877744411952288377104402677"
-	maxPrecision := uint(37)
-
-	bINumBase, err := BigIntNum{}.NewNumStr(baseStr)
-
-	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(baseStr). "+
-			"baseStr='%v' Error='%v' \n", baseStr, err.Error())
-	}
-
-	bINumExponent, err := BigIntNum{}.NewNumStr(exponentStr)
-
-	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(exponentStr). "+
-			"exponentStr='%v' Error='%v' \n", exponentStr, err.Error())
-	}
-
-	result, err := BigIntMathPower{}.Pwr(bINumBase, bINumExponent, maxPrecision)
-
-	if err != nil {
-		t.Errorf("Error returned by BigIntMathPower{}.Pwr(bINumBase, bINumExponent, maxPrecision). "+
-			"bINumBase='%v' bINumExponent='%v' maxPrecision='%v' Error='%v' \n",
-			bINumBase.GetNumStr(), bINumExponent.GetNumStr(), maxPrecision, err.Error())
-	}
-
-	if expectedNumStr != result.GetNumStr() {
-		t.Errorf("Error: Expected Result='%v'. Instead, Result='%v'",
-			expectedNumStr, result.GetNumStr())
-	}
-
-}
-
-func TestBigIntMathPower_Pwr_06(t *testing.T) {
-
-	// Time:
-	// 0-Milliseconds 0-Microseconds 0-Nanoseconds
-
-	baseStr := "-37"
-	exponentStr := "-3"
-	expectedNumStr := "-0.000019742167295125658894833474818866"
-	maxPrecision := uint(36)
-
-	bINumBase, err := BigIntNum{}.NewNumStr(baseStr)
-
-	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(baseStr). "+
-			"baseStr='%v' Error='%v' \n", baseStr, err.Error())
-	}
-
-	bINumExponent, err := BigIntNum{}.NewNumStr(exponentStr)
-
-	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(exponentStr). "+
-			"exponentStr='%v' Error='%v' \n", exponentStr, err.Error())
-	}
-
-	result, err := BigIntMathPower{}.Pwr(bINumBase, bINumExponent, maxPrecision)
-
-	if err != nil {
-		t.Errorf("Error returned by BigIntMathPower{}.Pwr(bINumBase, bINumExponent, maxPrecision). "+
-			"bINumBase='%v' bINumExponent='%v' maxPrecision='%v' Error='%v' \n",
-			bINumBase.GetNumStr(), bINumExponent.GetNumStr(), maxPrecision, err.Error())
-	}
-
-	if expectedNumStr != result.GetNumStr() {
-		t.Errorf("Error: Expected Result='%v'. Instead, Result='%v'",
-			expectedNumStr, result.GetNumStr())
-	}
-
-}
-
-func TestBigIntMathPower_Pwr_07(t *testing.T) {
-
-	// Time:
-	// 0-Milliseconds 999-Microseconds 300-Nanoseconds
-
-	baseStr := "32"
-	exponentStr := "-3.6"
-	expectedNumStr := "0.000003814697265625"
-	maxPrecision := uint(18)
-
-	bINumBase, err := BigIntNum{}.NewNumStr(baseStr)
-
-	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(baseStr). "+
-			"baseStr='%v' Error='%v' \n", baseStr, err.Error())
-	}
-
-	bINumExponent, err := BigIntNum{}.NewNumStr(exponentStr)
-
-	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(exponentStr). "+
-			"exponentStr='%v' Error='%v' \n", exponentStr, err.Error())
-	}
-
-	result, err := BigIntMathPower{}.Pwr(bINumBase, bINumExponent, maxPrecision)
-
-	if err != nil {
-		t.Errorf("Error returned by BigIntMathPower{}.Pwr(bINumBase, bINumExponent, maxPrecision). "+
-			"bINumBase='%v' bINumExponent='%v' maxPrecision='%v' Error='%v' \n",
-			bINumBase.GetNumStr(), bINumExponent.GetNumStr(), maxPrecision, err.Error())
-	}
-
-	if expectedNumStr != result.GetNumStr() {
-		t.Errorf("Error: Expected Result='%v'. Instead, Result='%v'",
-			expectedNumStr, result.GetNumStr())
-	}
-
-}
-
-func TestBigIntMathPower_Pwr_08(t *testing.T) {
-
-	// Time:
-	// 0-Milliseconds 999-Microseconds 300-Nanoseconds
-
-	baseStr := "-32"
-	exponentStr := "-3.6"
-	expectedNumStr := "0.000003814697265625"
-	maxPrecision := uint(18)
-
-	bINumBase, err := BigIntNum{}.NewNumStr(baseStr)
-
-	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(baseStr). "+
-			"baseStr='%v' Error='%v' \n", baseStr, err.Error())
-	}
-
-	bINumExponent, err := BigIntNum{}.NewNumStr(exponentStr)
-
-	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(exponentStr). "+
-			"exponentStr='%v' Error='%v' \n", exponentStr, err.Error())
-	}
-
-	result, err := BigIntMathPower{}.Pwr(bINumBase, bINumExponent, maxPrecision)
-
-	if err != nil {
-		t.Errorf("Error returned by BigIntMathPower{}.Pwr(bINumBase, bINumExponent, maxPrecision). "+
-			"bINumBase='%v' bINumExponent='%v' maxPrecision='%v' Error='%v' \n",
-			bINumBase.GetNumStr(), bINumExponent.GetNumStr(), maxPrecision, err.Error())
-	}
-
-	if expectedNumStr != result.GetNumStr() {
-		t.Errorf("Error: Expected Result='%v'. Instead, Result='%v'",
-			expectedNumStr, result.GetNumStr())
-	}
-
-}
-
-func TestBigIntMathPower_Pwr_09(t *testing.T) {
-
-	// Time:
-	// 0-Milliseconds 0-Microseconds 0-Nanoseconds
-
-	baseStr := "5"
-	exponentStr := "-3"
-	expectedNumStr := "0.008"
-	maxPrecision := uint(3)
-
-	bINumBase, err := BigIntNum{}.NewNumStr(baseStr)
-
-	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(baseStr). "+
-			"baseStr='%v' Error='%v' \n", baseStr, err.Error())
-	}
-
-	bINumExponent, err := BigIntNum{}.NewNumStr(exponentStr)
-
-	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(exponentStr). "+
-			"exponentStr='%v' Error='%v' \n", exponentStr, err.Error())
-	}
-
-	result, err := BigIntMathPower{}.Pwr(bINumBase, bINumExponent, maxPrecision)
-
-	if err != nil {
-		t.Errorf("Error returned by BigIntMathPower{}.Pwr(bINumBase, bINumExponent, maxPrecision). "+
-			"bINumBase='%v' bINumExponent='%v' maxPrecision='%v' Error='%v' \n",
-			bINumBase.GetNumStr(), bINumExponent.GetNumStr(), maxPrecision, err.Error())
-	}
-
-	if expectedNumStr != result.GetNumStr() {
-		t.Errorf("Error: Expected Result='%v'. Instead, Result='%v'",
-			expectedNumStr, result.GetNumStr())
-	}
-
-}
-
-func TestBigIntMathPower_Pwr_10(t *testing.T) {
-
-	// Time:
-	// 0-Milliseconds 0-Microseconds 0-Nanoseconds
-
-	baseStr := "-5"
-	exponentStr := "4"
-	expectedNumStr := "625"
-	maxPrecision := uint(0)
-
-	bINumBase, err := BigIntNum{}.NewNumStr(baseStr)
-
-	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(baseStr). "+
-			"baseStr='%v' Error='%v' \n", baseStr, err.Error())
-	}
-
-	bINumExponent, err := BigIntNum{}.NewNumStr(exponentStr)
-
-	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(exponentStr). "+
-			"exponentStr='%v' Error='%v' \n", exponentStr, err.Error())
-	}
-
-	result, err := BigIntMathPower{}.Pwr(bINumBase, bINumExponent, maxPrecision)
-
-	if err != nil {
-		t.Errorf("Error returned by BigIntMathPower{}.Pwr(bINumBase, bINumExponent, maxPrecision). "+
-			"bINumBase='%v' bINumExponent='%v' maxPrecision='%v' Error='%v' \n",
-			bINumBase.GetNumStr(), bINumExponent.GetNumStr(), maxPrecision, err.Error())
-	}
-
-	if expectedNumStr != result.GetNumStr() {
-		t.Errorf("Error: Expected Result='%v'. Instead, Result='%v'",
-			expectedNumStr, result.GetNumStr())
-	}
-
-}
-
-func TestBigIntMathPower_Pwr_11(t *testing.T) {
-
-	// Time:
-	// 0-Milliseconds 0-Microseconds 0-Nanoseconds
-
-	baseStr := "-5"
-	exponentStr := "5"
-	expectedNumStr := "-3125"
-	maxPrecision := uint(0)
-
-	bINumBase, err := BigIntNum{}.NewNumStr(baseStr)
-
-	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(baseStr). "+
-			"baseStr='%v' Error='%v' \n", baseStr, err.Error())
-	}
-
-	bINumExponent, err := BigIntNum{}.NewNumStr(exponentStr)
-
-	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(exponentStr). "+
-			"exponentStr='%v' Error='%v' \n", exponentStr, err.Error())
-	}
-
-	result, err := BigIntMathPower{}.Pwr(bINumBase, bINumExponent, maxPrecision)
-
-	if err != nil {
-		t.Errorf("Error returned by BigIntMathPower{}.Pwr(bINumBase, bINumExponent, maxPrecision). "+
-			"bINumBase='%v' bINumExponent='%v' maxPrecision='%v' Error='%v' \n",
-			bINumBase.GetNumStr(), bINumExponent.GetNumStr(), maxPrecision, err.Error())
-	}
-
-	if expectedNumStr != result.GetNumStr() {
-		t.Errorf("Error: Expected Result='%v'. Instead, Result='%v'",
-			expectedNumStr, result.GetNumStr())
-	}
-
-}
-
-func TestBigIntMathPower_Pwr_12(t *testing.T) {
-
-	// Time:
-	// 0-Milliseconds 999-Microseconds 300-Nanoseconds
-
-	baseStr := "4"
-	exponentStr := "0.25"
-	expectedNumStr := "1.4142135623730950488016887242097"
-	maxPrecision := uint(31)
-
-	bINumBase, err := BigIntNum{}.NewNumStr(baseStr)
-
-	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(baseStr). "+
-			"baseStr='%v' Error='%v' \n", baseStr, err.Error())
-	}
-
-	bINumExponent, err := BigIntNum{}.NewNumStr(exponentStr)
-
-	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(exponentStr). "+
-			"exponentStr='%v' Error='%v' \n", exponentStr, err.Error())
-	}
-
-	result, err := BigIntMathPower{}.Pwr(bINumBase, bINumExponent, maxPrecision)
-
-	if err != nil {
-		t.Errorf("Error returned by BigIntMathPower{}.Pwr(bINumBase, bINumExponent, maxPrecision). "+
-			"bINumBase='%v' bINumExponent='%v' maxPrecision='%v' Error='%v' \n",
-			bINumBase.GetNumStr(), bINumExponent.GetNumStr(), maxPrecision, err.Error())
-	}
-
-	if expectedNumStr != result.GetNumStr() {
-		t.Errorf("Error: Expected Result='%v'. Instead, Result='%v'",
-			expectedNumStr, result.GetNumStr())
-	}
-
-}
-
-func TestBigIntMathPower_Pwr_13(t *testing.T) {
-
-	// Time:
-	// 0-Milliseconds 0-Microseconds 0-Nanoseconds
-
-	baseStr := "45"
-	exponentStr := "120"
-	expectedNumStr := "2429414689006507011047680668198610544614376056243160093821961151708217872022541081600097552192834563575596196518385368260399467853246465311637303360756939677768395657864175518625415861606597900390625"
-	maxPrecision := uint(200)
-
-	bINumBase, err := BigIntNum{}.NewNumStr(baseStr)
-
-	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(baseStr). "+
-			"baseStr='%v' Error='%v' \n", baseStr, err.Error())
-	}
-
-	bINumExponent, err := BigIntNum{}.NewNumStr(exponentStr)
-
-	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(exponentStr). "+
-			"exponentStr='%v' Error='%v' \n", exponentStr, err.Error())
-	}
-
-	result, err := BigIntMathPower{}.Pwr(bINumBase, bINumExponent, maxPrecision)
-
-	if err != nil {
-		t.Errorf("Error returned by BigIntMathPower{}.Pwr(bINumBase, bINumExponent, maxPrecision). "+
-			"bINumBase='%v' bINumExponent='%v' maxPrecision='%v' Error='%v' \n",
-			bINumBase.GetNumStr(), bINumExponent.GetNumStr(), maxPrecision, err.Error())
-	}
-
-	if expectedNumStr != result.GetNumStr() {
-		t.Errorf("Error: Expected Result='%v'. Instead, Result='%v'",
-			expectedNumStr, result.GetNumStr())
-	}
-
-}
-
-func TestBigIntMathPower_Pwr_14(t *testing.T) {
-
-	// Time:
-	// 1-Milliseconds 0-Microseconds 400-Nanoseconds
-
-	baseStr := "19"
-	exponentStr := "2.3"
-	//                     12345648901234567890123456789
-	expectedNumStr := "873.23931881701910176203214553167"
-	maxPrecision := uint(29)
-
-	bINumBase, err := BigIntNum{}.NewNumStr(baseStr)
-
-	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(baseStr). "+
-			"baseStr='%v' Error='%v' \n", baseStr, err.Error())
-	}
-
-	bINumExponent, err := BigIntNum{}.NewNumStr(exponentStr)
-
-	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(exponentStr). "+
-			"exponentStr='%v' Error='%v' \n", exponentStr, err.Error())
-	}
-
-	result, err := BigIntMathPower{}.Pwr(bINumBase, bINumExponent, maxPrecision)
-
-	if err != nil {
-		t.Errorf("Error returned by BigIntMathPower{}.Pwr(bINumBase, bINumExponent, maxPrecision). "+
-			"bINumBase='%v' bINumExponent='%v' maxPrecision='%v' Error='%v' \n",
-			bINumBase.GetNumStr(), bINumExponent.GetNumStr(), maxPrecision, err.Error())
-	}
-
-	if expectedNumStr != result.GetNumStr() {
-		t.Errorf("Error: Expected Result='%v'. Instead, Result='%v'",
-			expectedNumStr, result.GetNumStr())
-	}
-
-}
-
-func TestBigIntMathPower_Pwr_15(t *testing.T) {
-
-	// Time:
-	// 1-Milliseconds 998-Microseconds 900-Nanoseconds
-
-	baseStr := "19"
-	exponentStr := "-2.3"
-	//                   12345648901234567890123456789012
-	expectedNumStr := "0.00114516144480839927662319331457"
-	maxPrecision := uint(32)
-
-	bINumBase, err := BigIntNum{}.NewNumStr(baseStr)
-
-	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(baseStr). "+
-			"baseStr='%v' Error='%v' \n", baseStr, err.Error())
-	}
-
-	bINumExponent, err := BigIntNum{}.NewNumStr(exponentStr)
-
-	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(exponentStr). "+
-			"exponentStr='%v' Error='%v' \n", exponentStr, err.Error())
-	}
-
-	result, err := BigIntMathPower{}.Pwr(bINumBase, bINumExponent, maxPrecision)
-
-	if err != nil {
-		t.Errorf("Error returned by BigIntMathPower{}.Pwr(bINumBase, bINumExponent, maxPrecision). "+
-			"bINumBase='%v' bINumExponent='%v' maxPrecision='%v' Error='%v' \n",
-			bINumBase.GetNumStr(), bINumExponent.GetNumStr(), maxPrecision, err.Error())
-	}
-
-	if expectedNumStr != result.GetNumStr() {
-		t.Errorf("Error: Expected Result='%v'. Instead, Result='%v'",
-			expectedNumStr, result.GetNumStr())
-	}
-
-}
-
-func TestBigIntMathPower_Pwr_16(t *testing.T) {
-
-	// Time:
-	// 0-Milliseconds 0-Microseconds 0-Nanoseconds
-
-	baseStr := "45"
-	exponentStr := "-2"
-	//                      12345678901234567890123456789012345
-	expectedNumStr := "0.00049382716049382716049382716049383"
-	maxPrecision := uint(35)
-
-	bINumBase, err := BigIntNum{}.NewNumStr(baseStr)
-
-	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(baseStr). "+
-			"baseStr='%v' Error='%v' \n", baseStr, err.Error())
-	}
-
-	bINumExponent, err := BigIntNum{}.NewNumStr(exponentStr)
-
-	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(exponentStr). "+
-			"exponentStr='%v' Error='%v' \n", exponentStr, err.Error())
-	}
-
-	result, err := BigIntMathPower{}.Pwr(bINumBase, bINumExponent, maxPrecision)
-
-	if err != nil {
-		t.Errorf("Error returned by BigIntMathPower{}.Pwr(bINumBase, bINumExponent, maxPrecision). "+
-			"bINumBase='%v' bINumExponent='%v' maxPrecision='%v' Error='%v' \n",
-			bINumBase.GetNumStr(), bINumExponent.GetNumStr(), maxPrecision, err.Error())
-	}
-
-	if expectedNumStr != result.GetNumStr() {
-		t.Errorf("Error: Expected Result='%v'. Instead, Result='%v'",
-			expectedNumStr, result.GetNumStr())
-	}
-
-}
-
-func TestBigIntMathPower_Pwr_17(t *testing.T) {
-
-	baseStr := "0"
-	exponentStr := "5"
-	expectedNumStr := "0"
-	maxPrecision := uint(35)
-
-	bINumBase, err := BigIntNum{}.NewNumStr(baseStr)
-
-	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(baseStr). "+
-			"baseStr='%v' Error='%v' \n", baseStr, err.Error())
-	}
-
-	bINumExponent, err := BigIntNum{}.NewNumStr(exponentStr)
-
-	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(exponentStr). "+
-			"exponentStr='%v' Error='%v' \n", exponentStr, err.Error())
-	}
-
-	result, err := BigIntMathPower{}.Pwr(bINumBase, bINumExponent, maxPrecision)
-
-	if err != nil {
-		t.Errorf("Error returned by BigIntMathPower{}.Pwr(bINumBase, bINumExponent, maxPrecision)"+
-			"Error='%v' \n", err.Error())
-	}
-
-	actualNumStr := result.GetNumStr()
-
-	if expectedNumStr != actualNumStr {
-		t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v'. ",
-			expectedNumStr, actualNumStr)
-	}
-
-}
-
-func TestBigIntMathPower_Pwr_18(t *testing.T) {
-
-	// Time:
-	//  0-Milliseconds 0-Microseconds 0-Nanoseconds
-
-	baseStr := "45.1"
-	exponentStr := "0"
-	//                      12345678901234567890123456789012345
-	expectedNumStr := "1"
-	maxPrecision := uint(5)
-
-	bINumBase, err := BigIntNum{}.NewNumStr(baseStr)
-
-	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(baseStr). "+
-			"baseStr='%v' Error='%v' \n", baseStr, err.Error())
-	}
-
-	bINumExponent, err := BigIntNum{}.NewNumStr(exponentStr)
-
-	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(exponentStr). "+
-			"exponentStr='%v' Error='%v' \n", exponentStr, err.Error())
-	}
-
-	result, err := BigIntMathPower{}.Pwr(bINumBase, bINumExponent, maxPrecision)
-
-	if err != nil {
-		t.Errorf("Error returned by BigIntMathPower{}.Pwr(bINumBase, bINumExponent, maxPrecision). "+
-			"bINumBase='%v' bINumExponent='%v' maxPrecision='%v' Error='%v' \n",
-			bINumBase.GetNumStr(), bINumExponent.GetNumStr(), maxPrecision, err.Error())
-	}
-
-	if expectedNumStr != result.GetNumStr() {
-		t.Errorf("Error: Expected Result='%v'. Instead, Result='%v'",
-			expectedNumStr, result.GetNumStr())
-	}
-
-}
-
-func TestBigIntMathPower_Pwr_19(t *testing.T) {
-
-	// Time:
-	// 0-Milliseconds 0-Microseconds 0-Nanoseconds
-
-	baseStr := "45.1"
-	exponentStr := "1"
-	//                      12345678901234567890123456789012345
-	expectedNumStr := "45.1"
-	maxPrecision := uint(5)
-
-	bINumBase, err := BigIntNum{}.NewNumStr(baseStr)
-
-	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(baseStr). "+
-			"baseStr='%v' Error='%v' \n", baseStr, err.Error())
-	}
-
-	bINumExponent, err := BigIntNum{}.NewNumStr(exponentStr)
-
-	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(exponentStr). "+
-			"exponentStr='%v' Error='%v' \n", exponentStr, err.Error())
-	}
-
-	result, err := BigIntMathPower{}.Pwr(bINumBase, bINumExponent, maxPrecision)
-
-	if err != nil {
-		t.Errorf("Error returned by BigIntMathPower{}.Pwr(bINumBase, bINumExponent, maxPrecision). "+
-			"bINumBase='%v' bINumExponent='%v' maxPrecision='%v' Error='%v' \n",
-			bINumBase.GetNumStr(), bINumExponent.GetNumStr(), maxPrecision, err.Error())
-	}
-
-	if expectedNumStr != result.GetNumStr() {
-		t.Errorf("Error: Expected Result='%v'. Instead, Result='%v'",
-			expectedNumStr, result.GetNumStr())
-	}
-
-}
-
-func TestBigIntMathPower_Pwr_20(t *testing.T) {
-
-	// Time:
-	// 0-Milliseconds 0-Microseconds 0-Nanoseconds
-
-	baseStr := "-45.1"
-	exponentStr := "1"
-	//                      12345678901234567890123456789012345
-	expectedNumStr := "-45.1"
-	maxPrecision := uint(5)
-
-	bINumBase, err := BigIntNum{}.NewNumStr(baseStr)
-
-	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(baseStr). "+
-			"baseStr='%v' Error='%v' \n", baseStr, err.Error())
-	}
-
-	bINumExponent, err := BigIntNum{}.NewNumStr(exponentStr)
-
-	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(exponentStr). "+
-			"exponentStr='%v' Error='%v' \n", exponentStr, err.Error())
-	}
-
-	result, err := BigIntMathPower{}.Pwr(bINumBase, bINumExponent, maxPrecision)
-
-	if err != nil {
-		t.Errorf("Error returned by BigIntMathPower{}.Pwr(bINumBase, bINumExponent, maxPrecision). "+
-			"bINumBase='%v' bINumExponent='%v' maxPrecision='%v' Error='%v' \n",
-			bINumBase.GetNumStr(), bINumExponent.GetNumStr(), maxPrecision, err.Error())
-	}
-
-	if expectedNumStr != result.GetNumStr() {
-		t.Errorf("Error: Expected Result='%v'. Instead, Result='%v'",
-			expectedNumStr, result.GetNumStr())
-	}
-
-}
-
-func TestBigIntMathPower_Pwr_21(t *testing.T) {
-
-	// Time:
-	// 1-Milliseconds 998-Microseconds 800-Nanoseconds
-
-	baseStr := "-45.6"
-	exponentStr := "-3.2"
-	//                      12345678901234567890123456789012345
-	//                    0.00000491261243811417457984700270545
-	// 4.91261243811417457984700270545e-6
-
-	expectedNumStr := "0.00000491261243811417457984700270545"
-	maxPrecision := uint(35)
-
-	bINumBase, err := BigIntNum{}.NewNumStr(baseStr)
-
-	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(baseStr). "+
-			"baseStr='%v' Error='%v' \n", baseStr, err.Error())
-	}
-
-	bINumExponent, err := BigIntNum{}.NewNumStr(exponentStr)
-
-	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(exponentStr). "+
-			"exponentStr='%v' Error='%v' \n", exponentStr, err.Error())
-	}
-
-	result, err := BigIntMathPower{}.Pwr(bINumBase, bINumExponent, maxPrecision)
-
-	if err != nil {
-		t.Errorf("Error returned by BigIntMathPower{}.Pwr(bINumBase, bINumExponent, maxPrecision). "+
-			"bINumBase='%v' bINumExponent='%v' maxPrecision='%v' Error='%v' \n",
-			bINumBase.GetNumStr(), bINumExponent.GetNumStr(), maxPrecision, err.Error())
-	}
-
-	if expectedNumStr != result.GetNumStr() {
-		t.Errorf("Error: Expected Result='%v'. Instead, Result='%v'",
-			expectedNumStr, result.GetNumStr())
-	}
-
-}
-
-func TestBigIntMathPower_Pwr_22(t *testing.T) {
-
-	baseStr := "-45.632"
-	exponentStr := "-1.01579"
-	maxPrecision := uint(15)
-
-	bINumBase, err := BigIntNum{}.NewNumStr(baseStr)
-
-	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(baseStr). "+
-			"baseStr='%v' Error='%v' \n", baseStr, err.Error())
-	}
-
-	bINumExponent, err := BigIntNum{}.NewNumStr(exponentStr)
-
-	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(exponentStr). "+
-			"exponentStr='%v' Error='%v' \n", exponentStr, err.Error())
-	}
-
-	_, err = BigIntMathPower{}.Pwr(bINumBase, bINumExponent, maxPrecision)
+func TestBigIntMathPower_BigIntToPositiveIntegerPower_14(t *testing.T) {
+
+	base := big.NewInt(5)
+	basePrecision := big.NewInt(0)
+	exponent := big.NewInt(-2)
+	exponentPrecision := big.NewInt(0)
+	maxPrecision := big.NewInt(5)
+
+	//                             1         2         3         4
+	//                    12345678901234567890123456789012345678901234567
+
+	_,
+	_,
+	err := BigIntMathPower{}.BigIntToPositiveIntegerPower(
+		base,
+		basePrecision,
+		exponent,
+		exponentPrecision,
+		maxPrecision)
 
 	if err == nil {
-		t.Error("Expected Error to be returned by BigIntMathPower{}.Pwr(bINumBase, bINumExponent, maxPrecision). " +
-			"NO ERROR WAS RETURNED! \n")
+		t.Error("Error: Expected error to be returned due to negative exponent " +
+			"NO ERROR RETURNED!")
 	}
 
 }
 
-func TestBigIntMathPower_Pwr_23(t *testing.T) {
-	// Time:
-	// 1-Milliseconds 998-Microseconds 800-Nanoseconds
+func TestBigIntMathPower_BigIntToNegativeIntegerPower_01(t *testing.T) {
 
-	baseStr := "2.125"
-	exponentStr := "-5"
-	//                   12345678901234567890123456789012
-	expectedNumStr := "0.02307838042845159759046157465153"
+	base := big.NewInt(525)
+	basePrecision := big.NewInt(2)
+	exponent := big.NewInt(-7)
+	exponentPrecision := big.NewInt(0)
+	maxPrecision := big.NewInt(37)
 
-	maxPrecision := uint(32)
+	//                            1         2         3
+	//                   1234567890123456789012345678901234567
+	expectedResult := "0.0000090967210256655561054952045247619"
 
-	bINumBase, err := BigIntNum{}.NewNumStr(baseStr)
-
-	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(baseStr). "+
-			"baseStr='%v' Error='%v' \n", baseStr, err.Error())
-	}
-
-	bINumExponent, err := BigIntNum{}.NewNumStr(exponentStr)
-
-	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewNumStr(exponentStr). "+
-			"exponentStr='%v' Error='%v' \n", exponentStr, err.Error())
-	}
-
-	result, err := BigIntMathPower{}.Pwr(bINumBase, bINumExponent, maxPrecision)
+	result,
+	resultPrecision,
+	err := BigIntMathPower{}.BigIntToNegativeIntegerPower(
+		base,
+		basePrecision,
+		exponent,
+		exponentPrecision,
+		maxPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntMathPower{}.Pwr(bINumBase, bINumExponent, maxPrecision). "+
-			"bINumBase='%v' bINumExponent='%v' maxPrecision='%v' Error='%v' \n",
-			bINumBase.GetNumStr(), bINumExponent.GetNumStr(), maxPrecision, err.Error())
+		t.Errorf("Error returned by BigIntMathPower{}.BigIntToPositiveIntegerPower() " +
+			"Error='%v' ", err.Error())
 	}
 
-	if expectedNumStr != result.GetNumStr() {
-		t.Errorf("Error: Expected Result='%v'. Instead, Result='%v'",
-			expectedNumStr, result.GetNumStr())
+	binResult, err := BigIntNum{}.NewBigIntPrecision(result, resultPrecision)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewBigIntPrecision(...) " +
+			"Error='%v' ", err.Error())
+	}
+
+	actualNumStr := binResult.GetNumStr()
+
+	if expectedResult != actualNumStr {
+		t.Errorf("Expected result='%v'.  Instead, result='%v'. ",
+			expectedResult, actualNumStr)
+	}
+
+}
+
+func TestBigIntMathPower_BigIntToNegativeIntegerPower_02(t *testing.T) {
+
+	base := big.NewInt(18)
+	basePrecision := big.NewInt(0)
+	exponent := big.NewInt(-2)
+	exponentPrecision := big.NewInt(0)
+	maxPrecision := big.NewInt(32)
+
+	//                            1         2         3
+	//                   1234567890123456789012345678901234567
+	expectedResult := "0.00308641975308641975308641975309"
+
+	result,
+	resultPrecision,
+	err := BigIntMathPower{}.BigIntToNegativeIntegerPower(
+		base,
+		basePrecision,
+		exponent,
+		exponentPrecision,
+		maxPrecision)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntMathPower{}.BigIntToPositiveIntegerPower() " +
+			"Error='%v' ", err.Error())
+	}
+
+	binResult, err := BigIntNum{}.NewBigIntPrecision(result, resultPrecision)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewBigIntPrecision(...) " +
+			"Error='%v' ", err.Error())
+	}
+
+	actualNumStr := binResult.GetNumStr()
+
+	if expectedResult != actualNumStr {
+		t.Errorf("Expected result='%v'.  Instead, result='%v'. ",
+			expectedResult, actualNumStr)
+	}
+
+}
+
+func TestBigIntMathPower_BigIntToNegativeIntegerPower_03(t *testing.T) {
+
+	base := big.NewInt(-18)
+	basePrecision := big.NewInt(0)
+	exponent := big.NewInt(-2)
+	exponentPrecision := big.NewInt(0)
+	maxPrecision := big.NewInt(32)
+
+	//                            1         2         3
+	//                   1234567890123456789012345678901234567
+	expectedResult := "0.00308641975308641975308641975309"
+
+	result,
+	resultPrecision,
+	err := BigIntMathPower{}.BigIntToNegativeIntegerPower(
+		base,
+		basePrecision,
+		exponent,
+		exponentPrecision,
+		maxPrecision)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntMathPower{}.BigIntToPositiveIntegerPower() " +
+			"Error='%v' ", err.Error())
+	}
+
+	binResult, err := BigIntNum{}.NewBigIntPrecision(result, resultPrecision)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewBigIntPrecision(...) " +
+			"Error='%v' ", err.Error())
+	}
+
+	actualNumStr := binResult.GetNumStr()
+
+	if expectedResult != actualNumStr {
+		t.Errorf("Expected result='%v'.  Instead, result='%v'. ",
+			expectedResult, actualNumStr)
+	}
+
+}
+
+func TestBigIntMathPower_BigIntToNegativeIntegerPower_04(t *testing.T) {
+
+	base := big.NewInt(1231234)
+	basePrecision := big.NewInt(4)
+	exponent := big.NewInt(-5)
+	exponentPrecision := big.NewInt(0)
+	maxPrecision := big.NewInt(42)
+
+	//                            1         2         3         4
+	//                   123456789012345678901234567890123456789012
+	expectedResult := "0.000000000035342478361550254485244873919253"
+
+	result,
+	resultPrecision,
+	err := BigIntMathPower{}.BigIntToNegativeIntegerPower(
+		base,
+		basePrecision,
+		exponent,
+		exponentPrecision,
+		maxPrecision)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntMathPower{}.BigIntToPositiveIntegerPower() " +
+			"Error='%v' ", err.Error())
+	}
+
+	binResult, err := BigIntNum{}.NewBigIntPrecision(result, resultPrecision)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewBigIntPrecision(...) " +
+			"Error='%v' ", err.Error())
+	}
+
+	actualNumStr := binResult.GetNumStr()
+
+	if expectedResult != actualNumStr {
+		t.Errorf("Expected result='%v'.  Instead, result='%v'. ",
+			expectedResult, actualNumStr)
+	}
+
+}
+
+func TestBigIntMathPower_BigIntToNegativeIntegerPower_05(t *testing.T) {
+
+	base := big.NewInt(-1231234)
+	basePrecision := big.NewInt(4)
+	exponent := big.NewInt(-5)
+	exponentPrecision := big.NewInt(0)
+	maxPrecision := big.NewInt(42)
+
+	//                             1         2         3         4
+	//                    123456789012345678901234567890123456789012
+	expectedResult := "-0.000000000035342478361550254485244873919253"
+
+	result,
+	resultPrecision,
+	err := BigIntMathPower{}.BigIntToNegativeIntegerPower(
+		base,
+		basePrecision,
+		exponent,
+		exponentPrecision,
+		maxPrecision)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntMathPower{}.BigIntToPositiveIntegerPower() " +
+			"Error='%v' ", err.Error())
+	}
+
+	binResult, err := BigIntNum{}.NewBigIntPrecision(result, resultPrecision)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewBigIntPrecision(...) " +
+			"Error='%v' ", err.Error())
+	}
+
+	actualNumStr := binResult.GetNumStr()
+
+	if expectedResult != actualNumStr {
+		t.Errorf("Expected result='%v'.  Instead, result='%v'. ",
+			expectedResult, actualNumStr)
+	}
+
+}
+
+func TestBigIntMathPower_BigIntToNegativeIntegerPower_06(t *testing.T) {
+
+	base := big.NewInt(10052)
+	basePrecision := big.NewInt(4)
+	exponent := big.NewInt(-91)
+	exponentPrecision := big.NewInt(0)
+	maxPrecision := big.NewInt(32)
+
+	//                            1         2         3         4
+	//                   123456789012345678901234567890123456789012
+	expectedResult := "0.62376977529181936206917481802668"
+
+	result,
+	resultPrecision,
+	err := BigIntMathPower{}.BigIntToNegativeIntegerPower(
+		base,
+		basePrecision,
+		exponent,
+		exponentPrecision,
+		maxPrecision)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntMathPower{}.BigIntToPositiveIntegerPower() " +
+			"Error='%v' ", err.Error())
+	}
+
+	binResult, err := BigIntNum{}.NewBigIntPrecision(result, resultPrecision)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewBigIntPrecision(...) " +
+			"Error='%v' ", err.Error())
+	}
+
+	actualNumStr := binResult.GetNumStr()
+
+	if expectedResult != actualNumStr {
+		t.Errorf("Expected result='%v'.  Instead, result='%v'. ",
+			expectedResult, actualNumStr)
+	}
+
+}
+
+func TestBigIntMathPower_BigIntToNegativeIntegerPower_07(t *testing.T) {
+
+	base := big.NewInt(5)
+	basePrecision := big.NewInt(4)
+	exponent := big.NewInt(-5)
+	exponentPrecision := big.NewInt(0)
+	maxPrecision := big.NewInt(0)
+
+	//                            1         2         3         4
+	//                   123456789012345678901234567890123456789012
+	expectedResult := "32000000000000000"
+
+	result,
+	resultPrecision,
+	err := BigIntMathPower{}.BigIntToNegativeIntegerPower(
+		base,
+		basePrecision,
+		exponent,
+		exponentPrecision,
+		maxPrecision)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntMathPower{}.BigIntToPositiveIntegerPower() " +
+			"Error='%v' ", err.Error())
+	}
+
+	binResult, err := BigIntNum{}.NewBigIntPrecision(result, resultPrecision)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewBigIntPrecision(...) " +
+			"Error='%v' ", err.Error())
+	}
+
+	actualNumStr := binResult.GetNumStr()
+
+	if expectedResult != actualNumStr {
+		t.Errorf("Expected result='%v'.  Instead, result='%v'. ",
+			expectedResult, actualNumStr)
+	}
+
+}
+
+func TestBigIntMathPower_BigIntToNegativeIntegerPower_08(t *testing.T) {
+
+	base := big.NewInt(-5)
+	basePrecision := big.NewInt(4)
+	exponent := big.NewInt(-5)
+	exponentPrecision := big.NewInt(0)
+	maxPrecision := big.NewInt(0)
+
+	//                            1         2         3         4
+	//                   123456789012345678901234567890123456789012
+	expectedResult := "-32000000000000000"
+
+	result,
+	resultPrecision,
+	err := BigIntMathPower{}.BigIntToNegativeIntegerPower(
+		base,
+		basePrecision,
+		exponent,
+		exponentPrecision,
+		maxPrecision)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntMathPower{}.BigIntToPositiveIntegerPower() " +
+			"Error='%v' ", err.Error())
+	}
+
+	binResult, err := BigIntNum{}.NewBigIntPrecision(result, resultPrecision)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewBigIntPrecision(...) " +
+			"Error='%v' ", err.Error())
+	}
+
+	actualNumStr := binResult.GetNumStr()
+
+	if expectedResult != actualNumStr {
+		t.Errorf("Expected result='%v'.  Instead, result='%v'. ",
+			expectedResult, actualNumStr)
+	}
+
+}
+
+func TestBigIntMathPower_BigIntToNegativeIntegerPower_09(t *testing.T) {
+
+	base := big.NewInt(0)
+	basePrecision := big.NewInt(3)
+	exponent := big.NewInt(-5)
+	exponentPrecision := big.NewInt(0)
+	maxPrecision := big.NewInt(12)
+
+	//                            1         2         3         4
+	//                   123456789012345678901234567890123456789012
+	expectedResult := "0"
+
+	result,
+	resultPrecision,
+	err := BigIntMathPower{}.BigIntToNegativeIntegerPower(
+		base,
+		basePrecision,
+		exponent,
+		exponentPrecision,
+		maxPrecision)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntMathPower{}.BigIntToPositiveIntegerPower() " +
+			"Error='%v' ", err.Error())
+	}
+
+	binResult, err := BigIntNum{}.NewBigIntPrecision(result, resultPrecision)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewBigIntPrecision(...) " +
+			"Error='%v' ", err.Error())
+	}
+
+	actualNumStr := binResult.GetNumStr()
+
+	if expectedResult != actualNumStr {
+		t.Errorf("Expected result='%v'.  Instead, result='%v'. ",
+			expectedResult, actualNumStr)
+	}
+
+}
+
+func TestBigIntMathPower_BigIntToNegativeIntegerPower_10(t *testing.T) {
+
+	base := big.NewInt(92)
+	basePrecision := big.NewInt(0)
+	exponent := big.NewInt(0)
+	exponentPrecision := big.NewInt(0)
+	maxPrecision := big.NewInt(12)
+
+	//                            1         2         3         4
+	//                   123456789012345678901234567890123456789012
+	expectedResult := "1"
+
+	result,
+	resultPrecision,
+	err := BigIntMathPower{}.BigIntToNegativeIntegerPower(
+		base,
+		basePrecision,
+		exponent,
+		exponentPrecision,
+		maxPrecision)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntMathPower{}.BigIntToPositiveIntegerPower() " +
+			"Error='%v' ", err.Error())
+	}
+
+	binResult, err := BigIntNum{}.NewBigIntPrecision(result, resultPrecision)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewBigIntPrecision(...) " +
+			"Error='%v' ", err.Error())
+	}
+
+	actualNumStr := binResult.GetNumStr()
+
+	if expectedResult != actualNumStr {
+		t.Errorf("Expected result='%v'.  Instead, result='%v'. ",
+			expectedResult, actualNumStr)
+	}
+
+}
+
+func TestBigIntMathPower_BigIntToNegativeIntegerPower_11(t *testing.T) {
+
+	base := big.NewInt(92)
+	basePrecision := big.NewInt(0)
+	exponent := big.NewInt(-1)
+	exponentPrecision := big.NewInt(0)
+	maxPrecision := big.NewInt(32)
+
+	//                            1         2         3         4
+	//                   123456789012345678901234567890123456789012
+	expectedResult := "0.01086956521739130434782608695652"
+
+	result,
+	resultPrecision,
+	err := BigIntMathPower{}.BigIntToNegativeIntegerPower(
+		base,
+		basePrecision,
+		exponent,
+		exponentPrecision,
+		maxPrecision)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntMathPower{}.BigIntToPositiveIntegerPower() " +
+			"Error='%v' ", err.Error())
+	}
+
+	binResult, err := BigIntNum{}.NewBigIntPrecision(result, resultPrecision)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewBigIntPrecision(...) " +
+			"Error='%v' ", err.Error())
+	}
+
+	actualNumStr := binResult.GetNumStr()
+
+	if expectedResult != actualNumStr {
+		t.Errorf("Expected result='%v'.  Instead, result='%v'. ",
+			expectedResult, actualNumStr)
+	}
+
+}
+
+func TestBigIntMathPower_BigIntToNegativeIntegerPower_12(t *testing.T) {
+
+	base := big.NewInt(-92)
+	basePrecision := big.NewInt(0)
+	exponent := big.NewInt(-1)
+	exponentPrecision := big.NewInt(0)
+	maxPrecision := big.NewInt(32)
+
+	//                             1         2         3         4
+	//                    123456789012345678901234567890123456789012
+	expectedResult := "-0.01086956521739130434782608695652"
+
+	result,
+	resultPrecision,
+	err := BigIntMathPower{}.BigIntToNegativeIntegerPower(
+		base,
+		basePrecision,
+		exponent,
+		exponentPrecision,
+		maxPrecision)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntMathPower{}.BigIntToPositiveIntegerPower() " +
+			"Error='%v' ", err.Error())
+	}
+
+	binResult, err := BigIntNum{}.NewBigIntPrecision(result, resultPrecision)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewBigIntPrecision(...) " +
+			"Error='%v' ", err.Error())
+	}
+
+	actualNumStr := binResult.GetNumStr()
+
+	if expectedResult != actualNumStr {
+		t.Errorf("Expected result='%v'.  Instead, result='%v'. ",
+			expectedResult, actualNumStr)
+	}
+
+}
+
+func TestBigIntMathPower_BigIntToNegativeIntegerPower_13(t *testing.T) {
+
+	base := big.NewInt(5)
+	basePrecision := big.NewInt(0)
+	exponent := big.NewInt(-12)
+	exponentPrecision := big.NewInt(1)
+	maxPrecision := big.NewInt(32)
+
+	_,
+	_,
+	err := BigIntMathPower{}.BigIntToNegativeIntegerPower(
+		base,
+		basePrecision,
+		exponent,
+		exponentPrecision,
+		maxPrecision)
+
+	if err == nil {
+		t.Error("Error: Expected error to be returned due to fractional exponent " +
+			"NO ERROR RETURNED!")
+	}
+
+}
+
+func TestBigIntMathPower_BigIntToNegativeIntegerPower_14(t *testing.T) {
+
+	base := big.NewInt(5)
+	basePrecision := big.NewInt(0)
+	exponent := big.NewInt(2)
+	exponentPrecision := big.NewInt(0)
+	maxPrecision := big.NewInt(32)
+
+	_,
+	_,
+	err := BigIntMathPower{}.BigIntToNegativeIntegerPower(
+		base,
+		basePrecision,
+		exponent,
+		exponentPrecision,
+		maxPrecision)
+
+	if err == nil {
+		t.Error("Error: Expected error to be returned due to positive exponent " +
+			"NO ERROR RETURNED!")
 	}
 
 }
