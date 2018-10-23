@@ -23,16 +23,15 @@ import (
 
 
 func main() {
-
-	radicand := big.NewInt(375)
+	radicand := big.NewInt(37)
 	radicandPrecision := big.NewInt(0)
-	nthRoot := big.NewInt(3)
+	nthRoot := big.NewInt(0)
 	nthRootPrecision := big.NewInt(0)
 	maxPrecision := big.NewInt(31)
 
-	//                            1         2         3
-	//                   1234567890123456789012345678901234567
-	expectedResult := "7.2112478515370419116081915539005"
+	//                             1         2         3
+	//                    1234567890123456789012345678901234567
+	expectedResult := "-9.4449895520307989885751143526805"
 
 	TestBigIntPositiveIntNthRoot(
 		radicand,
@@ -64,6 +63,7 @@ func TestBigIntPositiveIntNthRoot(
 	if err != nil {
 		fmt.Printf("Error returned by fdNr.CalculatePositiveIntegerNthRoot(...) " +
 			"Error='%v' ", err.Error())
+		return
 	}
 
 	resultBiNum, err := mathops.BigIntNum{}.NewBigIntPrecision(result, resultPrecision)
