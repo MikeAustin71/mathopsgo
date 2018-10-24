@@ -748,7 +748,28 @@ func (fdNthRoot *FixedDecimalNthRoot) CalculateNegativeIntegerNthRoot(
 
 	bigZero := big.NewInt(0)
 
-	internalPrecision := big.NewInt(0).Add(maxPrecision, big.NewInt(500))
+	internalPrecision := big.NewInt(0).Add(maxPrecision, big.NewInt(10))
+
+	maxPrecisionCmp25 := maxPrecision.Cmp(big.NewInt(25))
+
+	maxPrecisionCmp200 := maxPrecision.Cmp(big.NewInt(200))
+
+	maxPrecisionCmpTwoThou := maxPrecision.Cmp(big.NewInt(2000))
+
+	maxPrecisionCmpTenThou := maxPrecision.Cmp(big.NewInt(10000))
+
+	if maxPrecisionCmp25 == 1  && maxPrecisionCmp200 == -1 {
+		internalPrecision = big.NewInt(0).Add(maxPrecision, big.NewInt(0).Quo(maxPrecision, big.NewInt(2)))
+
+	} else if maxPrecisionCmp200 == 1 && maxPrecisionCmpTwoThou ==-1 {
+		internalPrecision = big.NewInt(0).Add(maxPrecision, big.NewInt(0).Quo(maxPrecision, big.NewInt(4)))
+
+	}else if maxPrecisionCmpTwoThou == 1 && maxPrecisionCmpTenThou == -1 {
+		internalPrecision = big.NewInt(0).Add(maxPrecision, big.NewInt(0).Quo(maxPrecision, big.NewInt(8)))
+
+	}else if maxPrecisionCmpTenThou == 1 {
+		internalPrecision = big.NewInt(0).Add(maxPrecision, big.NewInt(0).Quo(maxPrecision, big.NewInt(20)))
+	}
 
 	radicandPrecisionZeroCmp := radicandPrecision.Cmp(bigZero)
 
@@ -782,10 +803,13 @@ func (fdNthRoot *FixedDecimalNthRoot) CalculateNegativeIntegerNthRoot(
 	radicandZeroCmp := radicand.Cmp(bigZero)
 
 	if radicandZeroCmp == 0 {
+		err = errors.New(ePrefix +
+			"Error: INVALID INPUT - 'radicand' is Zero!")
 		return result, resultPrecision, err
 	}
 
-	if radicand.Cmp(big.NewInt(1)) == 0 {
+	if radicand.Cmp(big.NewInt(1)) == 0 &&
+		radicandPrecisionZeroCmp == 0{
 		result = big.NewInt(1)
 		return result, resultPrecision, err
 	}
@@ -835,7 +859,7 @@ func (fdNthRoot *FixedDecimalNthRoot) CalculateNegativeIntegerNthRoot(
 
 	if nthRtCmpZero == 0 {
 		err = errors.New(ePrefix +
-			"Error: 'nthRoot' is Zero!")
+			"Error: INVALID INPUT - 'nthRoot' is Zero!")
 		return result, resultPrecision, err
 	}
 
@@ -866,6 +890,12 @@ func (fdNthRoot *FixedDecimalNthRoot) CalculateNegativeIntegerNthRoot(
 		err = fmt.Errorf(ePrefix + "%v", errx.Error())
 		return result, resultPrecision, err
 	}
+
+	fdNthRoot.OriginalRadicand = big.NewInt(0).Set(radicand)
+	fdNthRoot.OriginalRadicandPrecision = big.NewInt(0).Set(radicandPrecision)
+	fdNthRoot.OriginalNthRoot = big.NewInt(0).Set(nthRoot)
+	fdNthRoot.OriginalNthRootPrecision = big.NewInt(0).Set(nthRootPrecision)
+
 
 	result, resultPrecision, errx =
 		BigIntMathDivide{}.BigIntFracQuotient(

@@ -23,23 +23,79 @@ import (
 
 
 func main() {
-	radicand := big.NewInt(37)
+	radicand := big.NewInt(98236517453674121)
 	radicandPrecision := big.NewInt(0)
-	nthRoot := big.NewInt(0)
+	nthRoot := big.NewInt(-7)
 	nthRootPrecision := big.NewInt(0)
-	maxPrecision := big.NewInt(31)
+	maxPrecision := big.NewInt(200)
 
-	//                             1         2         3
-	//                    1234567890123456789012345678901234567
-	expectedResult := "-9.4449895520307989885751143526805"
+	//                            1         2         3
+	//                   1234567890123456789012345678901234567
+	expectedResult := "0.00373708034104775950566699277341"
 
-	TestBigIntPositiveIntNthRoot(
+	TestBigIntNegativeIntNthRoot(
 		radicand,
 		radicandPrecision,
 		nthRoot,
 		nthRootPrecision,
 		maxPrecision,
 		expectedResult)
+}
+
+func TestBigIntNegativeIntNthRoot(
+	radicand,
+	radicandPrecision,
+	nthRoot,
+	nthRootPrecision,
+	maxPrecision *big.Int,
+	expectedValue string) {
+
+	fdNr :=  mathops.FixedDecimalNthRoot{}
+	timeStart := time.Now()
+	result, resultPrecision, err :=
+		fdNr.CalculateNegativeIntegerNthRoot(
+			radicand,
+			radicandPrecision,
+			nthRoot,
+			nthRootPrecision,
+			maxPrecision)
+	timeEnd := time.Now()
+	if err != nil {
+		fmt.Printf("Error returned by fdNr.CalculateNegativeIntegerNthRoot(...) " +
+			"Error='%v' ", err.Error())
+		return
+	}
+
+	resultBiNum, err := mathops.BigIntNum{}.NewBigIntPrecision(result, resultPrecision)
+
+	if err != nil {
+		fmt.Printf("Error returned by .BigIntNum{}.NewBigIntPrecision(...) " +
+			"Error='%v' ", err.Error())
+	}
+
+	timeDuration := timeEnd.Sub(timeStart)
+	duration := examples.CodeDurationToStr(timeDuration)
+
+	fmt.Println()
+	fmt.Println()
+	fmt.Println("FixedDecimalNthRoot{}.CalculateNegativeIntegerNthRoot() ")
+	fmt.Println("============================================================")
+	fmt.Println("              radicand: ", radicand.Text(10))
+	fmt.Println("     radicandPrecision: ", radicandPrecision.Text(10))
+	fmt.Println("               nthRoot: ", nthRoot.Text(10))
+	fmt.Println("      nthRootPrecision: ", nthRootPrecision)
+	fmt.Println("     Maximum Precision: ", maxPrecision)
+	fmt.Println("------------------------------------------------------------")
+	fmt.Println("                result: ", result.Text(10) )
+	fmt.Println("       resultPrecision: ", resultPrecision.Text(10))
+	fmt.Println("         result NumStr: ", resultBiNum.GetNumStr())
+	fmt.Println("       expected result: ", expectedValue)
+	fmt.Println("------------------------------------------------------------")
+	fmt.Println("Execution Time: ", duration)
+	fmt.Println("------------------------------------------------------------")
+	fmt.Println()
+
+
 }
 
 func TestBigIntPositiveIntNthRoot(
