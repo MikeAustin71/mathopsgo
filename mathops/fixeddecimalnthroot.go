@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"math"
 	"math/big"
+	"time"
 )
 
 type NthRootBeta struct {
@@ -484,6 +485,62 @@ func (fdNthRoot *FixedDecimalNthRoot) CalculatePositiveIntegerNthRoot(
 }
 
 
+func (fdNthRoot *FixedDecimalNthRoot) CodeDurationToStr(tDuration time.Duration) string {
+
+	tMinutes := int64(0)
+	tSeconds := int64(0)
+	tMilliseconds := int64(0)
+	tMicroseconds := int64(0)
+	tNanoseconds := int64(0)
+
+	i64TDur := int64(tDuration)
+	outStr := ""
+	totNanoSecs := int64(0)
+
+	if i64TDur >= int64(time.Minute) {
+
+		tMinutes = i64TDur / int64(time.Minute)
+		outStr += fmt.Sprintf("%v-Minutes ", tMinutes)
+		i64TDur -= tMinutes * int64(time.Minute)
+		totNanoSecs = tMinutes * int64(time.Minute)
+	}
+
+	if i64TDur >= int64(time.Second) {
+		tSeconds = i64TDur / int64(time.Second)
+		outStr += fmt.Sprintf("%v-Seconds ", tSeconds)
+		i64TDur -= tSeconds * int64(time.Second)
+		totNanoSecs += tSeconds * int64(time.Second)
+	}
+
+	if i64TDur >= int64(time.Millisecond) {
+		tMilliseconds = i64TDur / int64(time.Millisecond)
+		i64TDur -= tMilliseconds * int64(time.Millisecond)
+		totNanoSecs += tMilliseconds * int64(time.Millisecond)
+	}
+
+	if i64TDur >= int64(time.Microsecond) {
+		tMicroseconds = i64TDur / int64(time.Microsecond)
+		i64TDur -= tMicroseconds * int64(time.Microsecond)
+		totNanoSecs += tMicroseconds * int64(time.Microsecond)
+	}
+
+	tNanoseconds = i64TDur
+	totNanoSecs += tNanoseconds
+
+	if totNanoSecs != int64(tDuration) {
+		return fmt.Sprintf("Error: Total Calculated Duration= '%v'. Total Actual Duration= '%v'",
+			totNanoSecs, int64(tDuration))
+	}
+
+	outStr += fmt.Sprintf("%v-Milliseconds ", tMilliseconds)
+
+	outStr += fmt.Sprintf("%v-Microseconds ", tMicroseconds)
+
+	outStr += fmt.Sprintf("%v-Nanoseconds ", tNanoseconds)
+
+	return outStr
+}
+
 // CalculatePositiveFractionalNthRoot - Calculates roots for positive decimal
 // value or fractional nthRoots.
 //
@@ -508,8 +565,6 @@ func (fdNthRoot *FixedDecimalNthRoot) CalculatePositiveFractionalNthRoot(
 
 	bigZero := big.NewInt(0)
 
-	internalPrecision := big.NewInt(0).Add(maxPrecision, big.NewInt(500))
-
 	radicandPrecisionZeroCmp := radicandPrecision.Cmp(bigZero)
 
 	if radicandPrecisionZeroCmp == -1 {
@@ -533,6 +588,12 @@ func (fdNthRoot *FixedDecimalNthRoot) CalculatePositiveFractionalNthRoot(
 		return result, resultPrecision, err
 	}
 
+	if maxPrecision.Cmp(bigZero) == -1 {
+		err = fmt.Errorf(ePrefix + "Error 'maxPrecision' is Less Than Zero! " +
+			"maxPrecision='%v'", maxPrecision.Text(10))
+		return result, resultPrecision, err
+	}
+
 	// nthRootPrecision Must Be > 0
 
 	radicandZeroCmp := radicand.Cmp(bigZero)
@@ -542,15 +603,9 @@ func (fdNthRoot *FixedDecimalNthRoot) CalculatePositiveFractionalNthRoot(
 		return result, resultPrecision, err
 	}
 
-	if radicand.Cmp(big.NewInt(1)) == 0 {
+	if radicand.Cmp(big.NewInt(1)) == 0 ||
+			radicand.Cmp(big.NewInt(-1)) == 0 {
 		result = big.NewInt(1)
-		return result, resultPrecision, err
-	}
-
-
-	if maxPrecision.Cmp(bigZero) == -1 {
-		err = fmt.Errorf(ePrefix + "Error 'maxPrecision' is Less Than Zero! " +
-			"maxPrecision='%v'", maxPrecision.Text(10))
 		return result, resultPrecision, err
 	}
 
@@ -571,20 +626,43 @@ func (fdNthRoot *FixedDecimalNthRoot) CalculatePositiveFractionalNthRoot(
 	// nthRoot is positive and fractional
 	// 5 ^ 2/3
 
+	internalPrecision := big.NewInt(0).Add(maxPrecision, big.NewInt(10))
 
-	rat := big.NewRat(1, 1).SetFrac(nthRoot, nthRootPrecision)
+	maxPrecisionCmp25 := maxPrecision.Cmp(big.NewInt(25))
+
+	maxPrecisionCmp200 := maxPrecision.Cmp(big.NewInt(200))
+
+	maxPrecisionCmpTwoThou := maxPrecision.Cmp(big.NewInt(2000))
+
+	maxPrecisionCmpTenThou := maxPrecision.Cmp(big.NewInt(10000))
+
+	if maxPrecisionCmp25 == 1  && maxPrecisionCmp200 == -1 {
+		internalPrecision = big.NewInt(0).Add(maxPrecision, big.NewInt(0).Quo(maxPrecision, big.NewInt(2)))
+
+	} else if maxPrecisionCmp200 == 1 && maxPrecisionCmpTwoThou ==-1 {
+		internalPrecision = big.NewInt(0).Add(maxPrecision, big.NewInt(0).Quo(maxPrecision, big.NewInt(4)))
+
+	}else if maxPrecisionCmpTwoThou == 1 && maxPrecisionCmpTenThou == -1 {
+		internalPrecision = big.NewInt(0).Add(maxPrecision, big.NewInt(0).Quo(maxPrecision, big.NewInt(8)))
+
+	}else if maxPrecisionCmpTenThou == 1 {
+		internalPrecision = big.NewInt(0).Add(maxPrecision, big.NewInt(0).Quo(maxPrecision, big.NewInt(20)))
+	}
+
+	scale := big.NewInt(0).Exp(big.NewInt(10), nthRootPrecision, nil)
+
+	rat := big.NewRat(1, 1).SetFrac(nthRoot, scale)
 
 	tempFactor, tempFactorPrecision, errx :=
-		BigIntMathPower{}.BigIntPwr(
+		BigIntMathPower{}.BigIntToPositiveIntegerPower(
 			radicand,
 			radicandPrecision,
-			rat.Num(),
+			rat.Denom(),
 			big.NewInt(0),
 			internalPrecision)
 
 	if errx != nil {
 		err = fmt.Errorf(ePrefix + "%v", errx.Error())
-
 		return result, resultPrecision, errx
 	}
 
@@ -592,7 +670,7 @@ func (fdNthRoot *FixedDecimalNthRoot) CalculatePositiveFractionalNthRoot(
 		fdNthRoot.CalculatePositiveIntegerNthRoot(
 			tempFactor,
 			tempFactorPrecision,
-			rat.Denom(),
+			rat.Num(),
 			big.NewInt(0),
 			maxPrecision)
 
@@ -602,6 +680,11 @@ func (fdNthRoot *FixedDecimalNthRoot) CalculatePositiveFractionalNthRoot(
 		resultPrecision = big.NewInt(0)
 		return result, resultPrecision, errx
 	}
+
+	fdNthRoot.OriginalRadicand = big.NewInt(0).Set(radicand)
+	fdNthRoot.OriginalRadicandPrecision = big.NewInt(0).Set(radicandPrecision)
+	fdNthRoot.OriginalNthRoot = big.NewInt(0).Set(nthRoot)
+	fdNthRoot.OriginalNthRootPrecision = big.NewInt(0).Set(nthRootPrecision)
 
 	err = nil
 
@@ -748,29 +831,6 @@ func (fdNthRoot *FixedDecimalNthRoot) CalculateNegativeIntegerNthRoot(
 
 	bigZero := big.NewInt(0)
 
-	internalPrecision := big.NewInt(0).Add(maxPrecision, big.NewInt(10))
-
-	maxPrecisionCmp25 := maxPrecision.Cmp(big.NewInt(25))
-
-	maxPrecisionCmp200 := maxPrecision.Cmp(big.NewInt(200))
-
-	maxPrecisionCmpTwoThou := maxPrecision.Cmp(big.NewInt(2000))
-
-	maxPrecisionCmpTenThou := maxPrecision.Cmp(big.NewInt(10000))
-
-	if maxPrecisionCmp25 == 1  && maxPrecisionCmp200 == -1 {
-		internalPrecision = big.NewInt(0).Add(maxPrecision, big.NewInt(0).Quo(maxPrecision, big.NewInt(2)))
-
-	} else if maxPrecisionCmp200 == 1 && maxPrecisionCmpTwoThou ==-1 {
-		internalPrecision = big.NewInt(0).Add(maxPrecision, big.NewInt(0).Quo(maxPrecision, big.NewInt(4)))
-
-	}else if maxPrecisionCmpTwoThou == 1 && maxPrecisionCmpTenThou == -1 {
-		internalPrecision = big.NewInt(0).Add(maxPrecision, big.NewInt(0).Quo(maxPrecision, big.NewInt(8)))
-
-	}else if maxPrecisionCmpTenThou == 1 {
-		internalPrecision = big.NewInt(0).Add(maxPrecision, big.NewInt(0).Quo(maxPrecision, big.NewInt(20)))
-	}
-
 	radicandPrecisionZeroCmp := radicandPrecision.Cmp(bigZero)
 
 	if radicandPrecisionZeroCmp == -1 {
@@ -872,6 +932,29 @@ func (fdNthRoot *FixedDecimalNthRoot) CalculateNegativeIntegerNthRoot(
 	// nthRoot precision must be zero. This is an integer nthRoot
 	// with a negative value.
 
+	internalPrecision := big.NewInt(0).Add(maxPrecision, big.NewInt(10))
+
+	maxPrecisionCmp25 := maxPrecision.Cmp(big.NewInt(25))
+
+	maxPrecisionCmp200 := maxPrecision.Cmp(big.NewInt(200))
+
+	maxPrecisionCmpTwoThou := maxPrecision.Cmp(big.NewInt(2000))
+
+	maxPrecisionCmpTenThou := maxPrecision.Cmp(big.NewInt(10000))
+
+	if maxPrecisionCmp25 == 1  && maxPrecisionCmp200 == -1 {
+		internalPrecision = big.NewInt(0).Add(maxPrecision, big.NewInt(0).Quo(maxPrecision, big.NewInt(2)))
+
+	} else if maxPrecisionCmp200 == 1 && maxPrecisionCmpTwoThou ==-1 {
+		internalPrecision = big.NewInt(0).Add(maxPrecision, big.NewInt(0).Quo(maxPrecision, big.NewInt(4)))
+
+	}else if maxPrecisionCmpTwoThou == 1 && maxPrecisionCmpTenThou == -1 {
+		internalPrecision = big.NewInt(0).Add(maxPrecision, big.NewInt(0).Quo(maxPrecision, big.NewInt(8)))
+
+	}else if maxPrecisionCmpTenThou == 1 {
+		internalPrecision = big.NewInt(0).Add(maxPrecision, big.NewInt(0).Quo(maxPrecision, big.NewInt(20)))
+	}
+
 	// Convert nthRoot to positive value
 	tempNthRoot := big.NewInt(0).Neg(nthRoot)
 
@@ -891,11 +974,6 @@ func (fdNthRoot *FixedDecimalNthRoot) CalculateNegativeIntegerNthRoot(
 		return result, resultPrecision, err
 	}
 
-	fdNthRoot.OriginalRadicand = big.NewInt(0).Set(radicand)
-	fdNthRoot.OriginalRadicandPrecision = big.NewInt(0).Set(radicandPrecision)
-	fdNthRoot.OriginalNthRoot = big.NewInt(0).Set(nthRoot)
-	fdNthRoot.OriginalNthRootPrecision = big.NewInt(0).Set(nthRootPrecision)
-
 
 	result, resultPrecision, errx =
 		BigIntMathDivide{}.BigIntFracQuotient(
@@ -911,6 +989,12 @@ func (fdNthRoot *FixedDecimalNthRoot) CalculateNegativeIntegerNthRoot(
 		resultPrecision = big.NewInt(0)
 		return result, resultPrecision, err
 	}
+
+
+	fdNthRoot.OriginalRadicand = big.NewInt(0).Set(radicand)
+	fdNthRoot.OriginalRadicandPrecision = big.NewInt(0).Set(radicandPrecision)
+	fdNthRoot.OriginalNthRoot = big.NewInt(0).Set(nthRoot)
+	fdNthRoot.OriginalNthRootPrecision = big.NewInt(0).Set(nthRootPrecision)
 
 	err = nil
 
