@@ -732,7 +732,9 @@ func (fdNthRoot *FixedDecimalNthRoot) CalculateNegativeFractionalNthRoot(
 		return result, resultPrecision, err
 	}
 
-	if radicand.Cmp(big.NewInt(1)) == 0 {
+	if radicand.Cmp(big.NewInt(1)) == 0 ||
+		radicand.Cmp(big.NewInt(-1)) == 0 &&
+			radicandPrecisionZeroCmp == 0 {
 		result = big.NewInt(1)
 		return result, resultPrecision, err
 	}
