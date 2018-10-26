@@ -50,7 +50,7 @@ func TestBigIntMathPower_BigIntToPositiveIntegerPower_01(t *testing.T) {
 
 func TestBigIntMathPower_BigIntToPositiveIntegerPower_02(t *testing.T) {
 
-	base := big.NewInt(-525)
+	base := big.NewInt(525)
 	basePrecision := big.NewInt(2)
 	exponent := big.NewInt(8)
 	exponentPrecision := big.NewInt(0)

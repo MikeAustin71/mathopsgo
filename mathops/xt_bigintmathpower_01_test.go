@@ -335,3 +335,129 @@ func TestBigIntMathPower_BigIntPwr_10(t *testing.T) {
 	}
 
 }
+
+func TestBigIntMathPower_BigIntToPositiveFractionalPower_01(t *testing.T) {
+
+	base := big.NewInt(82)
+	basePrecision := big.NewInt(2)
+	exponent := big.NewInt(25)
+	exponentPrecision := big.NewInt(1)
+	maxPrecision := big.NewInt(32)
+
+	//                            1         2         3
+	//                   1234567890123456789012345678901234567
+	expectedResult := "0.60888409668835989397082286114801"
+
+	result,
+	resultPrecision,
+	err := BigIntMathPower{}.BigIntToPositiveFractionalPower(
+		base,
+		basePrecision,
+		exponent,
+		exponentPrecision,
+		maxPrecision)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntMathPower{}.BigIntToPositiveIntegerPower(...) " +
+			"Error='%v' ", err.Error())
+	}
+
+	binResult, err := BigIntNum{}.NewBigIntPrecision(result, resultPrecision)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewBigIntPrecision(...) " +
+			"Error='%v' ", err.Error())
+	}
+
+	actualNumStr := binResult.GetNumStr()
+
+	if expectedResult != actualNumStr {
+		t.Errorf("Expected result='%v'.  Instead, result='%v'. ",
+			expectedResult, actualNumStr)
+	}
+
+}
+
+func TestBigIntMathPower_BigIntToPositiveFractionalPower_02(t *testing.T) {
+
+	base := big.NewInt(987654)
+	basePrecision := big.NewInt(5)
+	exponent := big.NewInt(25)
+	exponentPrecision := big.NewInt(2)
+	maxPrecision := big.NewInt(31)
+
+	//                            1         2         3
+	//                   1234567890123456789012345678901234567
+	expectedResult := "1.7727651549444647752885992938899"
+
+	result,
+	resultPrecision,
+	err := BigIntMathPower{}.BigIntToPositiveFractionalPower(
+		base,
+		basePrecision,
+		exponent,
+		exponentPrecision,
+		maxPrecision)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntMathPower{}.BigIntToPositiveIntegerPower(...) " +
+			"Error='%v' ", err.Error())
+	}
+
+	binResult, err := BigIntNum{}.NewBigIntPrecision(result, resultPrecision)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewBigIntPrecision(...) " +
+			"Error='%v' ", err.Error())
+	}
+
+	actualNumStr := binResult.GetNumStr()
+
+	if expectedResult != actualNumStr {
+		t.Errorf("Expected result='%v'.  Instead, result='%v'. ",
+			expectedResult, actualNumStr)
+	}
+
+}
+
+func TestBigIntMathPower_BigIntToPositiveFractionalPower_03(t *testing.T) {
+
+	base := big.NewInt(987654)
+	basePrecision := big.NewInt(2)
+	exponent := big.NewInt(333)
+	exponentPrecision := big.NewInt(2)
+	maxPrecision := big.NewInt(18)
+
+	//                                         1         2         3
+	//                                1234567890123456789012345678901234567
+	expectedResult := "20046293000573.168546517448618919"
+
+	result,
+	resultPrecision,
+	err := BigIntMathPower{}.BigIntToPositiveFractionalPower(
+		base,
+		basePrecision,
+		exponent,
+		exponentPrecision,
+		maxPrecision)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntMathPower{}.BigIntToPositiveIntegerPower(...) " +
+			"Error='%v' ", err.Error())
+	}
+
+	binResult, err := BigIntNum{}.NewBigIntPrecision(result, resultPrecision)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntNum{}.NewBigIntPrecision(...) " +
+			"Error='%v' ", err.Error())
+	}
+
+	actualNumStr := binResult.GetNumStr()
+
+	if expectedResult != actualNumStr {
+		t.Errorf("Expected result='%v'.  Instead, result='%v'. ",
+			expectedResult, actualNumStr)
+	}
+
+}
