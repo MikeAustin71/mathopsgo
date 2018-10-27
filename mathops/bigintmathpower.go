@@ -629,7 +629,8 @@ func(bIPwr BigIntMathPower) BigIntToNegativeIntegerPower(
 	resultPrecision = big.NewInt(0)
 	err = nil
 
-	internalPrecision := bIPwr.computeMaxInternalPrecision(maxPrecision)
+	//internalPrecision := bIPwr.computeMaxInternalPrecision(maxPrecision)
+	internalPrecision := big.NewInt(0).Add(maxPrecision, big.NewInt(50))
 
 	bigZero := big.NewInt(0)
 
@@ -692,7 +693,6 @@ func(bIPwr BigIntMathPower) BigIntToNegativeIntegerPower(
 
 	tempResultPrecision := big.NewInt(0).Mul(
 		basePrecision, tempExponent)
-
 
 	if tempResultPrecision.Cmp(internalPrecision) == 1  {
 		bigTen := big.NewInt(10)
@@ -1538,14 +1538,14 @@ func (bIPwr BigIntMathPower) computeMaxInternalPrecision(maxPrecision *big.Int) 
 
 	if maxPrecisionCmp25 < 1 {
 
-		internalPrecision.Add(maxPrecision, big.NewInt(10))
+		internalPrecision.Add(maxPrecision, big.NewInt(50))
 
-	} else if  maxPrecisionCmp25 == 1 &&   maxPrecisionCmp50 == -1 {
+	} else if  maxPrecisionCmp25 >= 0 &&   maxPrecisionCmp50 == -1 {
 
-		internalPrecision.Add(maxPrecision, big.NewInt(15))
+		internalPrecision.Add(maxPrecision, big.NewInt(65))
 
 	} else if maxPrecisionCmp50 >= 0  && maxPrecisionCmp200 == -1 {
-		internalPrecision.Add(maxPrecision, big.NewInt(0).Quo(maxPrecision, big.NewInt(2)))
+		internalPrecision.Add(maxPrecision, big.NewInt(75))
 
 	} else if maxPrecisionCmp200 >= 0 && maxPrecisionCmpTwoThou ==-1 {
 		internalPrecision.Add(maxPrecision, big.NewInt(0).Quo(maxPrecision, big.NewInt(4)))

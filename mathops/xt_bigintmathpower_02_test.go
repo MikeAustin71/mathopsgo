@@ -587,7 +587,7 @@ func TestBigIntMathPower_BigIntToNegativeIntegerPower_01(t *testing.T) {
 		maxPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntMathPower{}.BigIntToPositiveIntegerPower() " +
+		t.Errorf("Error returned by BigIntMathPower{}.BigIntToNegativeIntegerPower() " +
 			"Error='%v' ", err.Error())
 	}
 
@@ -629,7 +629,7 @@ func TestBigIntMathPower_BigIntToNegativeIntegerPower_02(t *testing.T) {
 		maxPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntMathPower{}.BigIntToPositiveIntegerPower() " +
+		t.Errorf("Error returned by BigIntMathPower{}.BigIntToNegativeIntegerPower() " +
 			"Error='%v' ", err.Error())
 	}
 
@@ -671,7 +671,7 @@ func TestBigIntMathPower_BigIntToNegativeIntegerPower_03(t *testing.T) {
 		maxPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntMathPower{}.BigIntToPositiveIntegerPower() " +
+		t.Errorf("Error returned by BigIntMathPower{}.BigIntToNegativeIntegerPower() " +
 			"Error='%v' ", err.Error())
 	}
 
@@ -713,7 +713,7 @@ func TestBigIntMathPower_BigIntToNegativeIntegerPower_04(t *testing.T) {
 		maxPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntMathPower{}.BigIntToPositiveIntegerPower() " +
+		t.Errorf("Error returned by BigIntMathPower{}.BigIntToNegativeIntegerPower() " +
 			"Error='%v' ", err.Error())
 	}
 
@@ -755,7 +755,7 @@ func TestBigIntMathPower_BigIntToNegativeIntegerPower_05(t *testing.T) {
 		maxPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntMathPower{}.BigIntToPositiveIntegerPower() " +
+		t.Errorf("Error returned by BigIntMathPower{}.BigIntToNegativeIntegerPower() " +
 			"Error='%v' ", err.Error())
 	}
 
@@ -797,7 +797,7 @@ func TestBigIntMathPower_BigIntToNegativeIntegerPower_06(t *testing.T) {
 		maxPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntMathPower{}.BigIntToPositiveIntegerPower() " +
+		t.Errorf("Error returned by BigIntMathPower{}.BigIntToNegativeIntegerPower() " +
 			"Error='%v' ", err.Error())
 	}
 
@@ -839,7 +839,7 @@ func TestBigIntMathPower_BigIntToNegativeIntegerPower_07(t *testing.T) {
 		maxPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntMathPower{}.BigIntToPositiveIntegerPower() " +
+		t.Errorf("Error returned by BigIntMathPower{}.BigIntToNegativeIntegerPower() " +
 			"Error='%v' ", err.Error())
 	}
 
@@ -881,7 +881,7 @@ func TestBigIntMathPower_BigIntToNegativeIntegerPower_08(t *testing.T) {
 		maxPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntMathPower{}.BigIntToPositiveIntegerPower() " +
+		t.Errorf("Error returned by BigIntMathPower{}.BigIntToNegativeIntegerPower() " +
 			"Error='%v' ", err.Error())
 	}
 
@@ -923,7 +923,7 @@ func TestBigIntMathPower_BigIntToNegativeIntegerPower_09(t *testing.T) {
 		maxPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntMathPower{}.BigIntToPositiveIntegerPower() " +
+		t.Errorf("Error returned by BigIntMathPower{}.BigIntToNegativeIntegerPower() " +
 			"Error='%v' ", err.Error())
 	}
 
@@ -965,7 +965,7 @@ func TestBigIntMathPower_BigIntToNegativeIntegerPower_10(t *testing.T) {
 		maxPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntMathPower{}.BigIntToPositiveIntegerPower() " +
+		t.Errorf("Error returned by BigIntMathPower{}.BigIntToNegativeIntegerPower() " +
 			"Error='%v' ", err.Error())
 	}
 
@@ -1007,7 +1007,7 @@ func TestBigIntMathPower_BigIntToNegativeIntegerPower_11(t *testing.T) {
 		maxPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntMathPower{}.BigIntToPositiveIntegerPower() " +
+		t.Errorf("Error returned by BigIntMathPower{}.BigIntToNegativeIntegerPower() " +
 			"Error='%v' ", err.Error())
 	}
 
@@ -1049,7 +1049,7 @@ func TestBigIntMathPower_BigIntToNegativeIntegerPower_12(t *testing.T) {
 		maxPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntMathPower{}.BigIntToPositiveIntegerPower() " +
+		t.Errorf("Error returned by BigIntMathPower{}.BigIntToNegativeIntegerPower() " +
 			"Error='%v' ", err.Error())
 	}
 
