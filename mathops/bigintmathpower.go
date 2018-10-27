@@ -367,21 +367,52 @@ func(bIPwr BigIntMathPower) BigIntToPositiveFractionalPower(
 	resultPrecision = big.NewInt(0)
 	err = nil
 
-	ePrefix := "BigIntMathPower.raiseBigIntToPositiveFractionalPower() "
+	ePrefix := "BigIntMathPower.BigIntToPositiveFractionalPower() "
 
 	bigZero := big.NewInt(0)
 
 	internalMaxPrecision := bIPwr.computeMaxInternalPrecision(maxPrecision)
-
 
 	if base.Cmp(bigZero) == 0 {
 		// base is zero result is zero
 		return result, resultPrecision, err
 	}
 
-	if exponentPrecision.Cmp(bigZero) == 0  {
+	basePrecisionCmpZero := basePrecision.Cmp(bigZero)
+
+	bigOne := big.NewInt(1)
+
+	if base.Cmp(bigOne) == 0 &&
+
+		basePrecisionCmpZero == 0 {
+
+		result.Set(bigOne)
+
+		return result, resultPrecision, err
+	}
+
+	if basePrecisionCmpZero == -1 {
+		err = fmt.Errorf(ePrefix +
+			"Error: 'basePrecision' is negative! " +
+			"basePrecision='%v' ", basePrecision)
+
+		return result, resultPrecision, err
+
+	}
+
+	exponentPrecisionCmpZero := exponentPrecision.Cmp(bigZero)
+
+	if exponentPrecisionCmpZero == 0  {
 		err = fmt.Errorf(ePrefix +
 			"Error: 'exponentPrecision' is zero. This is an integer exponent. " +
+			"exponentPrecision='%v' ", exponentPrecision)
+
+		return result, resultPrecision, err
+	}
+
+	if exponentPrecisionCmpZero == -1  {
+		err = fmt.Errorf(ePrefix +
+			"Error: 'exponentPrecision' is a negative value! " +
 			"exponentPrecision='%v' ", exponentPrecision)
 
 		return result, resultPrecision, err
@@ -396,7 +427,6 @@ func(bIPwr BigIntMathPower) BigIntToPositiveFractionalPower(
 			"exponent='%v' ", exponent.Text(10))
 
 		return result, resultPrecision, err
-
 	}
 
 	if cmpExponentZero == 0 {
@@ -406,6 +436,7 @@ func(bIPwr BigIntMathPower) BigIntToPositiveFractionalPower(
 	}
 
 
+
 	bigTen := big.NewInt(10)
 	// Get exponent integer value
 	scale := big.NewInt(0).Exp(
@@ -413,37 +444,42 @@ func(bIPwr BigIntMathPower) BigIntToPositiveFractionalPower(
 		exponentPrecision,
 		nil)
 
+	var errx error
+
 	scratch := big.NewInt(0)
 
 	integerExponent, fractionalExponent := big.NewInt(0).QuoRem(exponent, scale, scratch)
 
+	integerResult := big.NewInt(1)
+	integerPrecision := big.NewInt(0)
 
-	integerResult, integerPrecision, errx :=
-		BigIntMathPower{}.BigIntToPositiveIntegerPower(
-			base,
-			basePrecision,
-			integerExponent,
-			big.NewInt(0),
-			internalMaxPrecision)
+	if integerExponent.Cmp(bigZero) != 0 {
 
-	if errx != nil {
-		err = fmt.Errorf(ePrefix + "%v", errx.Error())
-		return result, resultPrecision, err
+		integerResult, integerPrecision, errx =
+			BigIntMathPower{}.BigIntToPositiveIntegerPower(
+				base,
+				basePrecision,
+				integerExponent,
+				big.NewInt(0),
+				internalMaxPrecision)
+
+		if errx != nil {
+			err = fmt.Errorf(ePrefix + "%v", errx.Error())
+			return result, resultPrecision, err
+		}
+
 	}
-
 
 	ratFrac := big.NewRat(1, 1).SetFrac(fractionalExponent, scale)
 
 	ratFracExponentNumerator := ratFrac.Num()
 
 	baseToFracExponentNumerator := big.NewInt(0).Exp(base, ratFracExponentNumerator, nil)
+  baseToFracExponentNumeratorPrecision := big.NewInt(0).Mul(basePrecision, ratFracExponentNumerator)
 
-	baseToFracExponentNumeratorPrecision := big.NewInt(0).Mul(basePrecision, ratFracExponentNumerator)
-
-	bigOne := big.NewInt(1)
 	delta := big.NewInt(0)
 	bigFive := big.NewInt(5)
-	// internalMaxPrecision.Add(internalMaxPrecision, bigTen)
+	internalMaxPrecision.Add(internalMaxPrecision, big.NewInt(10))
 
 	if baseToFracExponentNumeratorPrecision.Cmp(internalMaxPrecision) == 1 {
 		delta = baseToFracExponentNumeratorPrecision.Sub(baseToFracExponentNumeratorPrecision, internalMaxPrecision)
@@ -458,24 +494,20 @@ func(bIPwr BigIntMathPower) BigIntToPositiveFractionalPower(
 		baseToFracExponentNumeratorPrecision.Set(internalMaxPrecision)
 	}
 
-	fracExponentDenominator := ratFrac.Denom()
-	fracExponentDenominatorPrecision := big.NewInt(0)
-
 	fdr := FixedDecimalNthRoot{}
 
 	fracExponentRoot, fracExponentRootPrecision, errx :=
 		fdr.CalculatePositiveIntegerNthRoot(
 			baseToFracExponentNumerator,
 			baseToFracExponentNumeratorPrecision,
-			fracExponentDenominator,
-			fracExponentDenominatorPrecision,
+			ratFrac.Denom(),
+			big.NewInt(0),
 			internalMaxPrecision)
 
 	if errx != nil {
 		err = fmt.Errorf(ePrefix + "%v", errx.Error())
 		return result, resultPrecision, err
 	}
-
 
 	result, resultPrecision, errx =
 		BigIntMathMultiply{}.BigIntMultiply(
@@ -510,6 +542,7 @@ func(bIPwr BigIntMathPower) BigIntToPositiveFractionalPower(
 
 	return result, resultPrecision, err
 }
+
 
 // BigIntToNegativeIntegerPower - Raises 'base' to the power of
 // a negative integer exponent, 'exponent'.
@@ -1489,7 +1522,9 @@ func (bIPwr BigIntMathPower) bigIntNumRaiseToPositiveIntegerPower(
 // maximum precision for a specific BigIntMathPower calculation.
 func (bIPwr BigIntMathPower) computeMaxInternalPrecision(maxPrecision *big.Int) *big.Int {
 
-	internalPrecision := big.NewInt(0)
+	internalPrecision := big.NewInt(10)
+
+	maxPrecisionCmp25 := maxPrecision.Cmp(big.NewInt(50))
 
 	maxPrecisionCmp50 := maxPrecision.Cmp(big.NewInt(50))
 
@@ -1501,26 +1536,28 @@ func (bIPwr BigIntMathPower) computeMaxInternalPrecision(maxPrecision *big.Int) 
 
 	maxPrecisionCmpTenThou := maxPrecision.Cmp(big.NewInt(10000))
 
-	if maxPrecisionCmp50 == -1 {
+	if maxPrecisionCmp25 < 1 {
 
-		internalPrecision.Add(maxPrecision, big.NewInt(20))
+		internalPrecision.Add(maxPrecision, big.NewInt(10))
 
-	} else if maxPrecisionCmp50 == 1  && maxPrecisionCmp200 == -1 {
+	} else if  maxPrecisionCmp25 == 1 &&   maxPrecisionCmp50 == -1 {
+
+		internalPrecision.Add(maxPrecision, big.NewInt(15))
+
+	} else if maxPrecisionCmp50 >= 0  && maxPrecisionCmp200 == -1 {
 		internalPrecision.Add(maxPrecision, big.NewInt(0).Quo(maxPrecision, big.NewInt(2)))
 
-	} else if maxPrecisionCmp200 == 1 && maxPrecisionCmpTwoThou ==-1 {
+	} else if maxPrecisionCmp200 >= 0 && maxPrecisionCmpTwoThou ==-1 {
 		internalPrecision.Add(maxPrecision, big.NewInt(0).Quo(maxPrecision, big.NewInt(4)))
 
-	}else if maxPrecisionCmpTwoThou == 1 && maxPrecisionCmpFiveThou == -1 {
+	}else if maxPrecisionCmpTwoThou >= 0 && maxPrecisionCmpFiveThou == -1 {
 		internalPrecision.Add(maxPrecision, big.NewInt(0).Quo(maxPrecision, big.NewInt(8)))
 
-	}else if maxPrecisionCmpFiveThou == 1 && maxPrecisionCmpTenThou == -1 {
-		internalPrecision.Add(maxPrecision, big.NewInt(0).Quo(maxPrecision, big.NewInt(20)))
-
-	} else if maxPrecisionCmpTenThou ==1  {
-
+	}else if maxPrecisionCmpFiveThou >= 0 && maxPrecisionCmpTenThou == -1 {
 		internalPrecision.Add(maxPrecision, big.NewInt(0).Quo(maxPrecision, big.NewInt(100)))
 
+	} else if maxPrecisionCmpTenThou >= 0  {
+		internalPrecision.Add(maxPrecision, big.NewInt(100))
 	}
 
 	return internalPrecision

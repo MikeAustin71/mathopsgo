@@ -24,15 +24,17 @@ import (
 
 func main() {
 
-	base := big.NewInt(987654)
-	basePrecision := big.NewInt(2)
-	exponent := big.NewInt(333)
-	exponentPrecision := big.NewInt(2)
-	maxPrecision := big.NewInt(18)
 
-	//                                         1         2         3
-	//                                1234567890123456789012345678901234567
-	expectedResult := "20046293000573.168546517448618919"
+	base := big.NewInt(-1)
+	basePrecision := big.NewInt(0)
+	exponent := big.NewInt(333)
+	exponentPrecision := big.NewInt(3)
+	maxPrecision := big.NewInt(31)
+
+	//                            1         2         3
+	//                   1234567890123456789012345678901234567
+	expectedResult := "1"
+
 
 	TestBigIntToPositiveFractionalPower(
 		base,
@@ -66,7 +68,6 @@ func TestBigIntToPositiveFractionalPower(
 
 	if err != nil {
 		fmt.Printf("%v ", err.Error())
-		return
 	}
 
 	binResult := mathops.BigIntNum{}.NewBigInt(result, uint(resultPrecision.Uint64()))
@@ -102,7 +103,6 @@ func TestBigIntToPositiveFractionalPower(
 	if err != nil {
 		fmt.Printf("Error returned by BigIntMathPower{}.Pwr(...) " +
 			"Error='%v' ", err.Error())
-		return
 	}
 
 	timeDuration = timeEnd.Sub(timeStart)

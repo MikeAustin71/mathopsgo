@@ -397,12 +397,6 @@ func (fdNthRoot *FixedDecimalNthRoot) CalculatePositiveIntegerNthRoot(
 		return result, resultPrecision, err
 	}
 
-	if radicand.Cmp(big.NewInt(-1)) == 0  &&
-		radicandPrecisionZeroCmp == 0{
-		result = big.NewInt(-1)
-		return result, resultPrecision, err
-	}
-
 	if radicandZeroCmp == -1 {
 		// Cannot calculate root of a negative radicand when
 		// nthRoot is even.
@@ -415,6 +409,12 @@ func (fdNthRoot *FixedDecimalNthRoot) CalculatePositiveIntegerNthRoot(
 			return result, resultPrecision, err
 
 		}
+	}
+
+	if radicand.Cmp(big.NewInt(-1)) == 0  &&
+		radicandPrecisionZeroCmp == 0{
+		result = big.NewInt(-1)
+		return result, resultPrecision, err
 	}
 
 	// nthRoot precision must be zero. This is an integer nthRoot
