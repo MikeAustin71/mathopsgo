@@ -24,16 +24,15 @@ import (
 
 func main() {
 
-
-	base := big.NewInt(-1)
-	basePrecision := big.NewInt(0)
+	base := big.NewInt(987654)
+	basePrecision := big.NewInt(2)
 	exponent := big.NewInt(333)
-	exponentPrecision := big.NewInt(3)
-	maxPrecision := big.NewInt(31)
+	exponentPrecision := big.NewInt(2)
+	maxPrecision := big.NewInt(18)
 
-	//                            1         2         3
-	//                   1234567890123456789012345678901234567
-	expectedResult := "1"
+	//                                         1         2         3
+	//                                1234567890123456789012345678901234567
+	expectedResult := "20046293000573.168546517448618919"
 
 
 	TestBigIntToPositiveFractionalPower(
@@ -43,6 +42,81 @@ func main() {
 		exponentPrecision,
 		maxPrecision,
 		expectedResult)
+}
+
+func TestBigIntToNegativeFractionalPower(
+	base,
+	basePrecision,
+	exponent,
+	exponentPrecision,
+	maxPrecision *big.Int,
+	expectedResult string) {
+
+
+	timeStart := time.Now()
+	result,
+	resultPrecision,
+	err := mathops.BigIntMathPower{}.BigIntToNegativeFractionalPower(
+		base,
+		basePrecision,
+		exponent,
+		exponentPrecision,
+		maxPrecision)
+
+	timeEnd := time.Now()
+
+	if err != nil {
+		fmt.Printf("%v ", err.Error())
+	}
+
+	binResult := mathops.BigIntNum{}.NewBigInt(result, uint(resultPrecision.Uint64()))
+	timeDuration := timeEnd.Sub(timeStart)
+
+	duration := examples.CodeDurationToStr(timeDuration)
+
+	fmt.Println()
+	fmt.Println()
+	fmt.Println("BigIntMathPower{}.BigIntToNegativeFractionalPower() ")
+	fmt.Println("============================================================")
+	fmt.Println("                  base: ", base.Text(10))
+	fmt.Println("         basePrecision: ", basePrecision.Text(10))
+	fmt.Println("              exponent: ", exponent.Text(10))
+	fmt.Println("     exponentPrecision: ", exponentPrecision.Text(10))
+	fmt.Println("     Maximum Precision: ", maxPrecision.Text(10))
+	fmt.Println("------------------------------------------------------------")
+	fmt.Println("                result: ", result.Text(10))
+	fmt.Println("       resultPrecision: ", resultPrecision)
+	fmt.Println("         result NumStr: ", binResult.GetNumStr())
+	fmt.Println("        expectedResult: ", expectedResult)
+	fmt.Println("------------------------------------------------------------")
+	fmt.Println("Execution Time: ", duration)
+	fmt.Println("------------------------------------------------------------")
+	fmt.Println()
+
+	binBase, _ := mathops.BigIntNum{}.NewBigIntPrecision(base, basePrecision)
+	binExponent, _ := mathops.BigIntNum{}.NewBigIntPrecision(exponent, exponentPrecision)
+
+	timeStart = time.Now()
+	binPwr, err := mathops.BigIntMathPower{}.Pwr(binBase, binExponent, uint(maxPrecision.Uint64()))
+	timeEnd = time.Now()
+	if err != nil {
+		fmt.Printf("Error returned by BigIntMathPower{}.Pwr(...) " +
+			"Error='%v' ", err.Error())
+	}
+
+	timeDuration = timeEnd.Sub(timeStart)
+
+	duration = examples.CodeDurationToStr(timeDuration)
+	fmt.Println("------------------------------------------------------------")
+	fmt.Println( "               BigIntMathPower{}.Pwr() ")
+	fmt.Println("------------------------------------------------------------")
+	fmt.Println("     BigIntNum  result: ", binPwr.GetNumStr())
+	fmt.Println("   BigIntNum precision: ", binPwr.GetPrecision())
+	fmt.Println("        expectedResult: ", expectedResult)
+	fmt.Println("------------------------------------------------------------")
+	fmt.Println("Execution Time: ", duration)
+	fmt.Println("------------------------------------------------------------")
+	fmt.Println()
 }
 
 func TestBigIntToPositiveFractionalPower(
@@ -432,7 +506,6 @@ func TestBigIntNegativeIntPower(
 
 	if err != nil {
 		fmt.Printf("%v", err.Error())
-		return
 	}
 
 	binResult := mathops.BigIntNum{}.NewBigInt(result, uint(resultPrecision.Uint64()))
@@ -459,6 +532,30 @@ func TestBigIntNegativeIntPower(
 	fmt.Println("------------------------------------------------------------")
 	fmt.Println()
 
+	binBase, _ := mathops.BigIntNum{}.NewBigIntPrecision(base, basePrecision)
+	binExponent, _ := mathops.BigIntNum{}.NewBigIntPrecision(exponent, exponentPrecision)
+
+	timeStart = time.Now()
+	binPwr, err := mathops.BigIntMathPower{}.Pwr(binBase, binExponent, uint(maxPrecision.Uint64()))
+	timeEnd = time.Now()
+	if err != nil {
+		fmt.Printf("Error returned by BigIntMathPower{}.Pwr(...) " +
+			"Error='%v' ", err.Error())
+	}
+
+	timeDuration = timeEnd.Sub(timeStart)
+
+	duration = examples.CodeDurationToStr(timeDuration)
+	fmt.Println("------------------------------------------------------------")
+	fmt.Println( "               BigIntMathPower{}.Pwr() ")
+	fmt.Println("------------------------------------------------------------")
+	fmt.Println("     BigIntNum  result: ", binPwr.GetNumStr())
+	fmt.Println("   BigIntNum precision: ", binPwr.GetPrecision())
+	fmt.Println("        expectedResult: ", expectedResult)
+	fmt.Println("------------------------------------------------------------")
+	fmt.Println("Execution Time: ", duration)
+	fmt.Println("------------------------------------------------------------")
+	fmt.Println()
 
 }
 
@@ -505,6 +602,31 @@ func TestBigIntPositiveIntPower(
 	fmt.Println("                result: ", result.Text(10))
 	fmt.Println("       resultPrecision: ", resultPrecision)
 	fmt.Println("         result NumStr: ", binResult.GetNumStr())
+	fmt.Println("        expectedResult: ", expectedResult)
+	fmt.Println("------------------------------------------------------------")
+	fmt.Println("Execution Time: ", duration)
+	fmt.Println("------------------------------------------------------------")
+	fmt.Println()
+
+	binBase, _ := mathops.BigIntNum{}.NewBigIntPrecision(base, basePrecision)
+	binExponent, _ := mathops.BigIntNum{}.NewBigIntPrecision(exponent, exponentPrecision)
+
+	timeStart = time.Now()
+	binPwr, err := mathops.BigIntMathPower{}.Pwr(binBase, binExponent, uint(maxPrecision.Uint64()))
+	timeEnd = time.Now()
+	if err != nil {
+		fmt.Printf("Error returned by BigIntMathPower{}.Pwr(...) " +
+			"Error='%v' ", err.Error())
+	}
+
+	timeDuration = timeEnd.Sub(timeStart)
+
+	duration = examples.CodeDurationToStr(timeDuration)
+	fmt.Println("------------------------------------------------------------")
+	fmt.Println( "               BigIntMathPower{}.Pwr() ")
+	fmt.Println("------------------------------------------------------------")
+	fmt.Println("     BigIntNum  result: ", binPwr.GetNumStr())
+	fmt.Println("   BigIntNum precision: ", binPwr.GetPrecision())
 	fmt.Println("        expectedResult: ", expectedResult)
 	fmt.Println("------------------------------------------------------------")
 	fmt.Println("Execution Time: ", duration)

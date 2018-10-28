@@ -210,8 +210,9 @@ func(bIPwr BigIntMathPower) BigIntToNegativeFractionalPower(
 
 	ePrefix := "BigIntMathPower.BigIntToNegativeFractionalPower() "
 	bigZero := big.NewInt(0)
+	bigOne := big.NewInt(1)
 
-	internalMaxPrecision := bIPwr.computeMaxInternalPrecision(maxPrecision)
+
 
 	if base.Cmp(bigZero) == 0 {
 		// base is zero result is zero
@@ -244,8 +245,18 @@ func(bIPwr BigIntMathPower) BigIntToNegativeFractionalPower(
 		return result, resultPrecision, err
 	}
 
+	if maxPrecision.Cmp(bigZero) == -1 {
+		err = fmt.Errorf(ePrefix +
+			"Error: 'maxPrecision' is a negative value! " +
+			"maxPrecision='%v' ", maxPrecision.Text(10))
+
+		return result, resultPrecision, err
+	}
+
 	positiveExponent := big.NewInt(0).Set(exponent)
 	positiveExponent.Neg(positiveExponent)
+
+	internalMaxPrecision := big.NewInt(0).Add(maxPrecision, big.NewInt(2	))
 
 	positiveResult, positivePrecision, errx :=
 		BigIntMathPower{}.BigIntToPositiveFractionalPower(
@@ -259,8 +270,6 @@ func(bIPwr BigIntMathPower) BigIntToNegativeFractionalPower(
 		err= fmt.Errorf(ePrefix + "%v", errx.Error())
 		return result, resultPrecision, err
 	}
-
-	bigOne := big.NewInt(1)
 
 	result, resultPrecision, errx = BigIntMathDivide{}.BigIntFracQuotient(
 		bigOne,
@@ -371,7 +380,9 @@ func(bIPwr BigIntMathPower) BigIntToPositiveFractionalPower(
 
 	bigZero := big.NewInt(0)
 
-	internalMaxPrecision := bIPwr.computeMaxInternalPrecision(maxPrecision)
+	bigOne := big.NewInt(1)
+
+	internalMaxPrecision := big.NewInt(0).Mul(maxPrecision, big.NewInt(2))
 
 	if base.Cmp(bigZero) == 0 {
 		// base is zero result is zero
@@ -379,8 +390,6 @@ func(bIPwr BigIntMathPower) BigIntToPositiveFractionalPower(
 	}
 
 	basePrecisionCmpZero := basePrecision.Cmp(bigZero)
-
-	bigOne := big.NewInt(1)
 
 	if base.Cmp(bigOne) == 0 &&
 
@@ -435,8 +444,6 @@ func(bIPwr BigIntMathPower) BigIntToPositiveFractionalPower(
 		return result, resultPrecision, err
 	}
 
-
-
 	bigTen := big.NewInt(10)
 	// Get exponent integer value
 	scale := big.NewInt(0).Exp(
@@ -479,6 +486,11 @@ func(bIPwr BigIntMathPower) BigIntToPositiveFractionalPower(
 
 	delta := big.NewInt(0)
 	bigFive := big.NewInt(5)
+
+	ratFracExponentDenominator := ratFrac.Denom()
+
+
+	/*
 	internalMaxPrecision.Add(internalMaxPrecision, big.NewInt(10))
 
 	if baseToFracExponentNumeratorPrecision.Cmp(internalMaxPrecision) == 1 {
@@ -493,6 +505,7 @@ func(bIPwr BigIntMathPower) BigIntToPositiveFractionalPower(
 		baseToFracExponentNumerator.Quo(baseToFracExponentNumerator, bigTen)
 		baseToFracExponentNumeratorPrecision.Set(internalMaxPrecision)
 	}
+	*/
 
 	fdr := FixedDecimalNthRoot{}
 
@@ -500,7 +513,7 @@ func(bIPwr BigIntMathPower) BigIntToPositiveFractionalPower(
 		fdr.CalculatePositiveIntegerNthRoot(
 			baseToFracExponentNumerator,
 			baseToFracExponentNumeratorPrecision,
-			ratFrac.Denom(),
+			ratFracExponentDenominator,
 			big.NewInt(0),
 			internalMaxPrecision)
 
@@ -629,8 +642,10 @@ func(bIPwr BigIntMathPower) BigIntToNegativeIntegerPower(
 	resultPrecision = big.NewInt(0)
 	err = nil
 
+	bigOne := big.NewInt(1)
+
 	//internalPrecision := bIPwr.computeMaxInternalPrecision(maxPrecision)
-	internalPrecision := big.NewInt(0).Add(maxPrecision, big.NewInt(50))
+	//internalPrecision := big.NewInt(0).Add(maxPrecision, big.NewInt(20))
 
 	bigZero := big.NewInt(0)
 
@@ -650,9 +665,17 @@ func(bIPwr BigIntMathPower) BigIntToNegativeIntegerPower(
 
 	if exponentPrecision.Cmp(bigZero) == 1 {
 		err = fmt.Errorf(ePrefix + "Error: Input parameter 'exponent' is NOT an integer! " +
-			"exponentPrecision='%v' ", exponentPrecision)
+			"exponentPrecision='%v' ", exponentPrecision.Text(10))
 
 		return result, resultPrecision, err
+	}
+
+	if maxPrecision.Cmp(bigZero) == -1 {
+		err = fmt.Errorf(ePrefix + "Error: Input parameter 'maxPrecision' is a negative value! " +
+			"exponentPrecision='%v' ", maxPrecision.Text(10))
+
+		return result, resultPrecision, err
+
 	}
 
 	if cmpExponentZero == 0 {
@@ -663,7 +686,6 @@ func(bIPwr BigIntMathPower) BigIntToNegativeIntegerPower(
 
 	var errx error
 
-	bigOne := big.NewInt(1)
 	if exponent.Cmp(big.NewInt(-1)) == 0 {
 		// if exponent == -1, result is equal to inverse of base
 		result, resultPrecision, errx =
@@ -694,6 +716,7 @@ func(bIPwr BigIntMathPower) BigIntToNegativeIntegerPower(
 	tempResultPrecision := big.NewInt(0).Mul(
 		basePrecision, tempExponent)
 
+/*
 	if tempResultPrecision.Cmp(internalPrecision) == 1  {
 		bigTen := big.NewInt(10)
 		delta := big.NewInt(0).Sub(tempResultPrecision, internalPrecision)
@@ -709,6 +732,7 @@ func(bIPwr BigIntMathPower) BigIntToNegativeIntegerPower(
 		tempResult.Quo(tempResult, bigTen)
 		tempResultPrecision.Set(internalPrecision)
 	}
+*/
 
 	result, resultPrecision, errx =
 		BigIntMathDivide{}.BigIntFracQuotient(
@@ -1708,6 +1732,7 @@ func (bIPwr BigIntMathPower) bigIntNumRaiseToPositiveIntegerPower(
 // computeInternalPrecision - Returns computed internal precision for variables used
 // in intermediate calculations. Returned 'internalPrecision' is based on requested
 // maximum precision for a specific BigIntMathPower calculation.
+/*
 func (bIPwr BigIntMathPower) computeMaxInternalPrecision(maxPrecision *big.Int) *big.Int {
 
 	internalPrecision := big.NewInt(10)
@@ -1751,3 +1776,4 @@ func (bIPwr BigIntMathPower) computeMaxInternalPrecision(maxPrecision *big.Int) 
 	return internalPrecision
 
 }
+*/
