@@ -1033,6 +1033,190 @@ func (bIPwr BigIntMathPower) BigIntPwrIteration(
 	return baseToPwr, baseToPwrPrecision
 }
 
+// BigIntPwrIteration2 - Raises input parameter 'base' to the power of input parameter
+// 'exponent'. This version of the function uses *big.Int type for all input parameters
+//
+// This method of raising a base to an exponent uses iterative multiplication and manages
+// the internal precision of each iterative multiplication. If, during the process of
+// multiplying the base time itself, the internal precision exceeds the 'internalMaxPrecision'
+// limit, that intermediate number is rounded down to 'internalMaxPrecision'.
+//
+// If the precision of the final result exceeds the limit imposed by input parameter,
+// 'outputMaxPrecision', that final result will be rounded to 'outputMaxPrecision'
+// digits to the right of the decimal place.
+//
+// Input Parameter
+// ===============
+//
+// base							*big.Int	-	The base which will be raised to the power of 'exponent'.
+//
+//                        							baseToPwr = base^exponent
+//
+// basePrecision		*big.Int	- The number of digits to the right of the decimal place
+//                        			in the numeric sequence represented by 'base'.
+//
+// exponent					*big.Int	- This function will raise 'base' to the power of 'exponent'.
+//
+//                        							baseToPwr = base^exponent
+//
+//                              'exponent' is an integer value with zero precision.
+//
+//
+// internalMaxPrecision *big.Int	- This value is imposed as a limit on the precision of
+//                              		internal calculations necessary to compute the result
+//                              		of this power operation. If during the calculation an
+//                              		interim or intermediate result is generated which exceeds
+//                              		this limit, that intermediate result will be rounded to
+//             											'internalMaxPrecision'. The term precision defines the
+//                              		number of digits to the right of the decimal place.
+//
+//                              		If 'internalMaxPrecision' is less than 'outputMaxPrecision',
+//                              		'internalMaxPrecision' will be automatically set to a value
+//                              		of 'outputMaxPrecision' + 100.
+//
+// outputMaxPrecision		*big.Int	- This value is imposed as a limit on the precision of
+//                              		the final calculated result of the power operation.
+// 																	If the number of digits to the right of the decimal
+//                              		point in the final calculated result exceeds this limit,
+// 																	that final result will be rounded to 'outputMaxPrecision'
+//                              		digits to the right of the decimal place. The term precision
+// 																	defines the number of digits to the right of the decimal
+// 																	place. If 'outputMaxPrecision' is less than zero, an
+//                                  error will be returned.
+//
+// Return Values
+// =============
+//
+// baseToPwr						*big.Int	-	This function returns the result of 'base' raised
+//                               		to the power of 'exponent'. This result, 'baseToPwr'
+//                                  is returned as a type *big.Int.
+//
+//                                  				baseToPwr = base^exponent
+//
+// baseToPwrPrecision		*big.Int	- Specifies the number of digits to the the right of the
+//                                  decimal place in the numeric sequence represented
+// 																	by the calculation result, 'baseToPwr'.
+//
+// err									error			- If the function fails to complete successfully, this value
+//                                  is configured with an appropriate error message and returned
+//                                  to the caller. If the function completes successfully, this
+//                                  value is set to 'nil'.
+//
+func (bIPwr BigIntMathPower) BigIntPwrIteration2(
+	base,
+	basePrecision,
+	exponent,
+	internalMaxPrecision,
+	outputMaxPrecision  *big.Int) (baseToPwr *big.Int, baseToPwrPrecision *big.Int, err error) {
+
+	ePrefix := "BigIntMathPower.BigIntPwrIteration2() "
+	baseToPwr = big.NewInt(0)
+	baseToPwrPrecision = big.NewInt(0)
+	err = nil
+
+	bigZero := big.NewInt(0)
+	bigOne := big.NewInt(1)
+
+	if basePrecision.Cmp(bigZero) == -1 {
+		err = fmt.Errorf(ePrefix + "Error: Input Parameter 'basePrecision' is a negative value! " +
+			"basePrecision='%v' ", basePrecision.Text(10))
+		return baseToPwr, baseToPwrPrecision, err
+	}
+
+	if outputMaxPrecision.Cmp(bigZero) == -1 {
+		err = fmt.Errorf(ePrefix + "Error: Input Parameter 'outputMaxPrecision' is a negative value! " +
+			"outputMaxPrecision='%v' ", outputMaxPrecision.Text(10))
+		return baseToPwr, baseToPwrPrecision, err
+	}
+
+	if base.Cmp(bigZero) == 0 {
+		return baseToPwr, baseToPwrPrecision, err
+	}
+
+	if base.Cmp(bigOne) == 0  &&
+			baseToPwrPrecision.Cmp(bigZero) == 0 {
+		baseToPwr = big.NewInt(0).Set(bigOne)
+		baseToPwrPrecision.Set(basePrecision)
+		return baseToPwr, baseToPwrPrecision, err
+	}
+
+	if base.Cmp(big.NewInt(-1)) == 0  &&
+			baseToPwrPrecision.Cmp(bigZero) == 0 {
+		baseToPwr = big.NewInt(-1)
+		baseToPwrPrecision.Set(basePrecision)
+		return baseToPwr, baseToPwrPrecision, err
+	}
+
+	if internalMaxPrecision.Cmp(outputMaxPrecision) != 1 {
+		internalMaxPrecision = big.NewInt(0).Add(outputMaxPrecision, big.NewInt(100))
+	}
+
+	cycles := big.NewInt(0).Add(exponent, bigOne)
+	bigIPlusFive := big.NewInt(5)
+	bigIMinusFive := big.NewInt(-5)
+	bigITen := big.NewInt(10)
+	roundFactor := big.NewInt(0)
+	cmpResult := 0
+
+	for i := big.NewInt(0) ; i.Cmp(cycles)==-1; i.Add(i, bigOne) {
+
+		if i.Cmp(bigZero) == 0 {
+			baseToPwr = big.NewInt(1)
+			baseToPwrPrecision = big.NewInt(0)
+		} else if i.Cmp(bigOne) == 0 {
+			baseToPwr = big.NewInt(0).Set(base)
+			baseToPwrPrecision = big.NewInt(0).Set(basePrecision)
+		} else {
+			baseToPwr = big.NewInt(0).Mul(baseToPwr, base)
+			baseToPwrPrecision.Add(baseToPwrPrecision, basePrecision)
+		}
+
+		if baseToPwrPrecision.Cmp(internalMaxPrecision) == 1 {
+			// beforeRounding := BigIntNum{}.NewBigInt(baseToPwr, baseToPwrPrecision)
+			delta := big.NewInt(0).Sub(baseToPwrPrecision, internalMaxPrecision)
+			delta.Sub(delta, bigOne)
+			scale := big.NewInt(0).Exp(bigITen, delta, nil)
+
+			cmpResult = baseToPwr.Cmp(bigZero)
+			if cmpResult == 1 {
+				// baseToPwr is GREATER Than zero
+				roundFactor = big.NewInt(0).Mul(bigIPlusFive, scale)
+			} else if cmpResult == -1 {
+				// baseToPwr is LESS Than zero
+				roundFactor = big.NewInt(0).Mul(bigIMinusFive, scale)
+			}	else {
+				baseToPwrPrecision = big.NewInt(0)
+				continue
+			}
+
+			baseToPwr = big.NewInt(0).Add(baseToPwr, roundFactor)
+			scale = big.NewInt(0).Mul(scale, bigITen)
+			baseToPwr = big.NewInt(0).Quo(baseToPwr, scale)
+			baseToPwrPrecision = internalMaxPrecision
+
+		}
+
+	}
+
+	if baseToPwrPrecision.Cmp(outputMaxPrecision) == 1 {
+		delta := big.NewInt(0).Sub(baseToPwrPrecision, outputMaxPrecision)
+		delta.Sub(delta, bigOne)
+
+		scale := big.NewInt(0).Exp(bigITen, delta, nil)
+		roundFactor = big.NewInt(0).Mul(bigIPlusFive, scale)
+		if baseToPwr.Cmp(bigZero) == -1 {
+			roundFactor = big.NewInt(0).Mul(roundFactor, big.NewInt(-1))
+		}
+		baseToPwr = big.NewInt(0).Add(baseToPwr, roundFactor)
+		scale = big.NewInt(0).Mul(scale, bigITen)
+		baseToPwr = big.NewInt(0).Quo(baseToPwr, scale)
+		baseToPwrPrecision = outputMaxPrecision
+
+	}
+
+	return baseToPwr, baseToPwrPrecision, err
+}
+
 
 // FixedDecimalPwrIteration - Raises input parameter 'base' to the power of input parameter 'exponent'.
 // This method of raising a base to an exponent uses iterative multiplication and manages
