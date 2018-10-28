@@ -489,24 +489,6 @@ func(bIPwr BigIntMathPower) BigIntToPositiveFractionalPower(
 
 	ratFracExponentDenominator := ratFrac.Denom()
 
-
-	/*
-	internalMaxPrecision.Add(internalMaxPrecision, big.NewInt(10))
-
-	if baseToFracExponentNumeratorPrecision.Cmp(internalMaxPrecision) == 1 {
-		delta = baseToFracExponentNumeratorPrecision.Sub(baseToFracExponentNumeratorPrecision, internalMaxPrecision)
-		delta.Sub(delta, bigOne)
-		scale = big.NewInt(0).Exp(bigTen, delta, nil)
-		baseToFracExponentNumerator.Quo(baseToFracExponentNumerator,scale)
-		if baseToFracExponentNumerator.Cmp(bigZero) == -1 {
-			bigFive.Neg(bigFive)
-		}
-		baseToFracExponentNumerator.Add(baseToFracExponentNumerator, bigFive)
-		baseToFracExponentNumerator.Quo(baseToFracExponentNumerator, bigTen)
-		baseToFracExponentNumeratorPrecision.Set(internalMaxPrecision)
-	}
-	*/
-
 	fdr := FixedDecimalNthRoot{}
 
 	fracExponentRoot, fracExponentRootPrecision, errx :=
@@ -644,9 +626,6 @@ func(bIPwr BigIntMathPower) BigIntToNegativeIntegerPower(
 
 	bigOne := big.NewInt(1)
 
-	//internalPrecision := bIPwr.computeMaxInternalPrecision(maxPrecision)
-	//internalPrecision := big.NewInt(0).Add(maxPrecision, big.NewInt(20))
-
 	bigZero := big.NewInt(0)
 
 	if base.Cmp(bigZero) == 0 {
@@ -715,24 +694,6 @@ func(bIPwr BigIntMathPower) BigIntToNegativeIntegerPower(
 
 	tempResultPrecision := big.NewInt(0).Mul(
 		basePrecision, tempExponent)
-
-/*
-	if tempResultPrecision.Cmp(internalPrecision) == 1  {
-		bigTen := big.NewInt(10)
-		delta := big.NewInt(0).Sub(tempResultPrecision, internalPrecision)
-		delta.Sub(delta, bigOne)
-		scale:= big.NewInt(0).Exp(bigTen, delta, nil)
-		tempResult.Quo(tempResult, scale)
-
-		roundFive := big.NewInt(5)
-		if tempResult.Cmp(bigZero) == -1 {
-			roundFive.Neg(roundFive)
-		}
-		tempResult.Add(tempResult, roundFive)
-		tempResult.Quo(tempResult, bigTen)
-		tempResultPrecision.Set(internalPrecision)
-	}
-*/
 
 	result, resultPrecision, errx =
 		BigIntMathDivide{}.BigIntFracQuotient(
