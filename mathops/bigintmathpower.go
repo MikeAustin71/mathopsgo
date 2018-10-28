@@ -1033,7 +1033,7 @@ func (bIPwr BigIntMathPower) BigIntPwrIteration(
 	return baseToPwr, baseToPwrPrecision
 }
 
-// BigIntPwrIteration2 - Raises input parameter 'base' to the power of input parameter
+// BigIntegerPwrIteration - Raises input parameter 'base' to the power of input parameter
 // 'exponent'. This version of the function uses *big.Int type for all input parameters
 //
 // This method of raising a base to an exponent uses iterative multiplication and manages
@@ -1102,14 +1102,14 @@ func (bIPwr BigIntMathPower) BigIntPwrIteration(
 //                                  to the caller. If the function completes successfully, this
 //                                  value is set to 'nil'.
 //
-func (bIPwr BigIntMathPower) BigIntPwrIteration2(
+func (bIPwr BigIntMathPower) BigIntegerPwrIteration(
 	base,
 	basePrecision,
 	exponent,
 	internalMaxPrecision,
 	outputMaxPrecision  *big.Int) (baseToPwr *big.Int, baseToPwrPrecision *big.Int, err error) {
 
-	ePrefix := "BigIntMathPower.BigIntPwrIteration2() "
+	ePrefix := "BigIntMathPower.BigIntegerPwrIteration() "
 	baseToPwr = big.NewInt(0)
 	baseToPwrPrecision = big.NewInt(0)
 	err = nil
