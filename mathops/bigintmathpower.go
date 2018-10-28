@@ -1287,10 +1287,14 @@ func (bIPwr BigIntMathPower) FixedDecimalPwrIteration(
 
 	baseToPwr = BigIntFixedDecimal{}.NewZero(0)
 
-	bigIPwr, bigIPwrPrecision := BigIntMathPower{}.BigIntPwrIteration(
-		base.GetInteger(), base.GetPrecision(), exponent, internalMaxPrecision, outputMaxPrecision)
+	bigIPwr, bigIPwrPrecision, _ := BigIntMathPower{}.BigIntegerPwrIteration(
+		base.GetInteger(),
+		base.GetPrecisionBigInt(),
+		big.NewInt(0).SetUint64(uint64(exponent)),
+		big.NewInt(0).SetUint64(uint64(internalMaxPrecision)),
+		big.NewInt(0).SetUint64(uint64(outputMaxPrecision)))
 
-	baseToPwr.SetNumericValue(bigIPwr, bigIPwrPrecision)
+	baseToPwr, _ = BigIntFixedDecimal{}.NewBigIntPrecision(bigIPwr, bigIPwrPrecision)
 
 	return baseToPwr
 }
