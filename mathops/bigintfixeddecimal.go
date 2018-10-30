@@ -100,7 +100,22 @@ func (fDecRO *FixedDecimalReadOnly) GetPrecisionBigInt() *big.Int {
 
 }
 
+func (fDecRO *FixedDecimalReadOnly) GetBigIntPrecision() (integer, precision *big.Int) {
 
+	integer = fDecRO.GetInteger()
+
+	if integer == nil {
+		integer = big.NewInt(0)
+	}
+
+	precision = fDecRO.GetPrecisionBigInt()
+
+	if precision == nil {
+		precision = big.NewInt(0)
+	}
+
+	return integer, precision
+}
 
 
 // IsValid - Performs diagnostic and remedial actions on

@@ -532,7 +532,7 @@ func(bIPwr BigIntMathPower) BigIntToPositiveFractionalPower(
 		}
 		result.Add(result, bigFive)
 		result.Quo(result, bigTen)
-		resultPrecision = maxPrecision
+		resultPrecision = big.NewInt(0).Set(maxPrecision)
 	}
 
 	return result, resultPrecision, err
@@ -1177,7 +1177,7 @@ func (bIPwr BigIntMathPower) BigIntegerPwrIteration(
 			baseToPwr = big.NewInt(0).Add(baseToPwr, roundFactor)
 			scale = big.NewInt(0).Mul(scale, bigITen)
 			baseToPwr = big.NewInt(0).Quo(baseToPwr, scale)
-			baseToPwrPrecision = internalMaxPrecision
+			baseToPwrPrecision = big.NewInt(0).Set(internalMaxPrecision)
 
 		}
 
@@ -1195,7 +1195,7 @@ func (bIPwr BigIntMathPower) BigIntegerPwrIteration(
 		baseToPwr = big.NewInt(0).Add(baseToPwr, roundFactor)
 		scale = big.NewInt(0).Mul(scale, bigITen)
 		baseToPwr = big.NewInt(0).Quo(baseToPwr, scale)
-		baseToPwrPrecision = outputMaxPrecision
+		baseToPwrPrecision = big.NewInt(0).Set(outputMaxPrecision)
 
 	}
 

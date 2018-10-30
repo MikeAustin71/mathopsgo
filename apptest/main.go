@@ -8,41 +8,282 @@ import (
 	"time"
 )
 
-/*
-	numStr := "7"
-	nthRootStr := "4"
-	maxPrecision := uint64(31)
-	expectedResult := "1.6265765616977857432112323454938"
-
-	numStr := "4.2"
-	nthRootStr := "3"
-	maxPrecision := uint64(31)
-	expectedResult := "1.6134286460245437640588422364822"
-
-*/
-
-
 func main() {
+	// integer residual value 1.430511474609375
 
-	base := big.NewInt(987654)
-	basePrecision := big.NewInt(2)
-	exponent := big.NewInt(333)
-	exponentPrecision := big.NewInt(2)
+	base := big.NewInt(4)
+	xNum := big.NewInt(1500000)
+	xNumPrecision := big.NewInt(0)
+	internalMaxPrecision := big.NewInt(218)
 	maxPrecision := big.NewInt(18)
+	expectedValue := "10.258265535022667"
 
-	//                                         1         2         3
-	//                                1234567890123456789012345678901234567
-	expectedResult := "20046293000573.168546517448618919"
-
-
-	TestBigIntToPositiveFractionalPower(
+	TestBigIntLogBaseOfX(
 		base,
-		basePrecision,
-		exponent,
-		exponentPrecision,
+		xNum,
+		xNumPrecision,
+		internalMaxPrecision,
 		maxPrecision,
-		expectedResult)
+		expectedValue)
 }
+
+
+func TestBigIntLogBaseOfX(
+	base,
+	xNum,
+	xNumPrecision,
+	maxInternalPrecision,
+	maxPrecision *big.Int,
+	expectedValue string) {
+
+	ePrefix := "TestBigIntLogBaseOfX() "
+
+	timeStart := time.Now()
+	logResult, logResultPrecision, err :=
+		mathops.BigIntMathLogarithms{}.BigIntLogBaseOfX(
+			base,
+			xNum,
+			xNumPrecision,
+			maxInternalPrecision,
+			maxPrecision)
+
+	timeEnd := time.Now()
+
+	if err != nil {
+		fmt.Printf(ePrefix + "%v ", err.Error())
+	}
+
+	timeDuration := timeEnd.Sub(timeStart)
+
+	duration := examples.CodeDurationToStr(timeDuration)
+
+	if err == nil {
+		binLogResult, _ := mathops.BigIntNum{}.NewBigIntPrecision(logResult, logResultPrecision)
+
+		fmt.Println()
+		fmt.Println("================================================")
+		fmt.Println("    BigIntMathLogarithms{}.BigIntLogBaseOfX() ")
+		fmt.Println("================================================")
+		fmt.Println("           base: ", base.Text(10))
+		fmt.Println("           xNum: ", xNum.Text(10))
+		fmt.Println("  xNumPrecision: ", xNumPrecision.Text(10))
+		fmt.Println("      logResult: ", logResult.Text(10))
+		fmt.Println("   logPrecision: ", logResultPrecision.Text(10))
+		fmt.Println("      logNumStr: ", binLogResult.GetNumStr())
+		fmt.Println("Expected Result: ", expectedValue)
+		fmt.Println(" Execution Time: ", duration)
+		fmt.Println("================================================")
+		fmt.Println()
+	}
+
+	biBase := mathops.BigIntNum{}.NewBigInt(base, 0)
+	biXNum, _ := mathops.BigIntNum{}.NewBigIntPrecision(xNum, xNumPrecision)
+
+	uiMaxPrecision := uint(maxPrecision.Uint64())
+
+	timeStart = time.Now()
+
+	biNumResult, err := mathops.BigIntMathLogarithms{}.LogBaseOfX(
+		biBase,
+		biXNum,
+		uiMaxPrecision)
+	timeEnd = time.Now()
+
+	if err != nil {
+		fmt.Printf(ePrefix + "%v ", err.Error())
+		return
+	}
+
+	timeDuration = timeEnd.Sub(timeStart)
+
+	duration = examples.CodeDurationToStr(timeDuration)
+
+	fmt.Println()
+	fmt.Println("------------------------------------------------")
+	fmt.Println("      BigIntMathLogarithms.LogBaseOfX() ")
+	fmt.Println("------------------------------------------------")
+	fmt.Println("BigIntNum Log Result: ", biNumResult.GetNumStr())
+	fmt.Println("     Expected Result: ", expectedValue)
+	fmt.Println("      Execution Time: ", duration)
+	fmt.Println("------------------------------------------------")
+	fmt.Println()
+}
+
+func TestGetBigIntDecimalDigits(
+	base,
+	residualXNum,
+	residualXNumPrecision,
+	maxPrecision *big.Int,
+	expectedValue string) {
+
+	ePrefix := "TestGetBigIntDigits() "
+
+	timeStart := time.Now()
+
+	digit, newResidualXNum, newResidualXNumPrecision, err :=
+	 	mathops.BigIntMathLogarithms{}.BigIntGetNextDecimalDigit(
+	 		base,
+	 		residualXNum,
+	 		residualXNumPrecision,
+	 		maxPrecision)
+
+
+	timeEnd := time.Now()
+
+	if err != nil {
+		fmt.Printf(ePrefix + "%v", err.Error())
+	}
+
+	timeDuration := timeEnd.Sub(timeStart)
+
+	duration := examples.CodeDurationToStr(timeDuration)
+
+	if err == nil {
+		numStrXNumVerify, _ :=
+			mathops.BigIntNum{}.NewBigIntPrecision(newResidualXNum, newResidualXNumPrecision)
+
+		fmt.Println()
+		fmt.Println("==================================================")
+		fmt.Println("BigIntMathLogarithms{}.BigIntGetNextDecimalDigit()")
+		fmt.Println("==================================================")
+		fmt.Println("                    base: ", base.Text(10))
+		fmt.Println("            residualXNum: ", residualXNum.Text(10))
+		fmt.Println("   residualXNumPrecision: ", residualXNumPrecision.Text(10))
+		fmt.Println("            maxPrecision: ", maxPrecision.Text(10))
+		fmt.Println("=================== Results ======================")
+		fmt.Println("                  digit: ", digit.Text(10))
+		fmt.Println("         newResidualXNum: ", newResidualXNum.Text(10))
+		fmt.Println("newResidualXNumPrecision: ", newResidualXNumPrecision.Text(10))
+		fmt.Println("  newResidualXNum NumStr: ", numStrXNumVerify.GetNumStr())
+		fmt.Println("           expectedValue: ", expectedValue)
+		fmt.Println("          Execution Time: ", duration)
+		fmt.Println("===================================================")
+		fmt.Println()
+
+	}
+
+	binBase := mathops.BigIntNum{}.NewBigInt(base, 0)
+
+	binXNum, _ := mathops.BigIntNum{}.NewBigIntPrecision(residualXNum, residualXNumPrecision)
+
+	uintMaxPrecision := uint(maxPrecision.Uint64())
+
+	timeStart = time.Now()
+	binDigits, binNewResidualXNum, err :=
+		mathops.BigIntMathLogarithms{}.GetNextDecimalDigit(binBase, binXNum, uintMaxPrecision)
+	timeEnd = time.Now()
+
+	if err != nil {
+		fmt.Printf(ePrefix + "%v", err.Error())
+		return
+	}
+
+	timeDuration = timeEnd.Sub(timeStart)
+
+	duration = examples.CodeDurationToStr(timeDuration)
+
+	fmt.Println()
+	fmt.Println("--------------------------------------------------")
+	fmt.Println("BigIntMathLogarithms{}.BigIntGetNextDecimalDigit()")
+	fmt.Println("--------------------------------------------------")
+	fmt.Println("                    base: ", binBase.GetNumStr())
+	fmt.Println("                    xNum: ", binXNum.GetNumStr())
+	fmt.Println("            maxPrecision: ", uintMaxPrecision)
+	fmt.Println("------------------ Results -----------------------")
+	fmt.Println("                  digit: ", binDigits.GetNumStr())
+	fmt.Println("         newResidualXNum: ", binNewResidualXNum.GetNumStr())
+	fmt.Println("           expectedValue: ", expectedValue)
+	fmt.Println("          Execution Time: ", duration)
+	fmt.Println("------------------------------------------------")
+
+}
+
+func TestGetBigIntDigits(
+	base,
+	xNum,
+	xNumPrecision,
+	maxPrecision *big.Int,
+	expectedValue string) {
+
+	ePrefix := "TestGetBigIntDigits() "
+
+	timeStart := time.Now()
+	digits, newResidualXNum, newResidualXNumPrecision, err :=
+		mathops.BigIntMathLogarithms{}.BigIntGetIntDigits(
+			base,
+			xNum,
+			xNumPrecision,
+			maxPrecision)
+
+	timeEnd := time.Now()
+
+	if err != nil {
+		fmt.Printf(ePrefix + "%v", err.Error())
+	}
+
+	timeDuration := timeEnd.Sub(timeStart)
+
+	duration := examples.CodeDurationToStr(timeDuration)
+
+	if err == nil {
+		numStrXNumVerify, _ :=
+			mathops.BigIntNum{}.NewBigIntPrecision(newResidualXNum, newResidualXNumPrecision)
+
+		fmt.Println()
+		fmt.Println("===============================================")
+		fmt.Println("  BigIntMathLogarithms{}.BigIntGetIntDigits()")
+		fmt.Println("===============================================")
+		fmt.Println("                    base: ", base.Text(10))
+		fmt.Println("                    xNum: ", xNum.Text(10))
+		fmt.Println("           xNumPrecision: ", xNumPrecision.Text(10))
+		fmt.Println("            maxPrecision: ", maxPrecision.Text(10))
+		fmt.Println("================= Results =====================")
+		fmt.Println("                  digits: ", digits.Text(10))
+		fmt.Println("         newResidualXNum: ", newResidualXNum.Text(10))
+		fmt.Println("newResidualXNumPrecision: ", newResidualXNumPrecision.Text(10))
+		fmt.Println("  newResidualXNum NumStr: ", numStrXNumVerify.GetNumStr())
+		fmt.Println("           expectedValue: ", expectedValue)
+		fmt.Println("          Execution Time: ", duration)
+		fmt.Println("================================================")
+		fmt.Println()
+
+	}
+
+	binBase := mathops.BigIntNum{}.NewBigInt(base, 0)
+
+	binXNum, _ := mathops.BigIntNum{}.NewBigIntPrecision(xNum, xNumPrecision)
+
+	uintMaxPrecision := uint(maxPrecision.Uint64())
+
+	timeStart = time.Now()
+	binDigits, binNewResidualXNum, err := mathops.BigIntMathLogarithms{}.GetIntDigits(binBase, binXNum, uintMaxPrecision)
+	timeEnd = time.Now()
+
+	if err != nil {
+		fmt.Printf(ePrefix + "%v", err.Error())
+		return
+	}
+
+	timeDuration = timeEnd.Sub(timeStart)
+
+	duration = examples.CodeDurationToStr(timeDuration)
+
+	fmt.Println()
+	fmt.Println("-----------------------------------------------")
+	fmt.Println("  BigIntMathLogarithms{}.GetIntDigits()")
+	fmt.Println("-----------------------------------------------")
+	fmt.Println("                    base: ", binBase.GetNumStr())
+	fmt.Println("                    xNum: ", binXNum.GetNumStr())
+	fmt.Println("            maxPrecision: ", uintMaxPrecision)
+	fmt.Println("----------------- Results ---------------------")
+	fmt.Println("                  digits: ", binDigits.GetNumStr())
+	fmt.Println("         newResidualXNum: ", binNewResidualXNum.GetNumStr())
+	fmt.Println("           expectedValue: ", expectedValue)
+	fmt.Println("          Execution Time: ", duration)
+	fmt.Println("------------------------------------------------")
+
+}
+
 
 func TestBigIntToNegativeFractionalPower(
 	base,
@@ -1047,13 +1288,13 @@ expectedValue:="1500000.000000000000000000000000000"
 }
 */
 
-func TestEPwrXFromTaylorSeriesBigInt(
+func TestEPwrXFromTaylorSeriesFixedDecimal(
 		exponentX mathops.BigIntFixedDecimal,
 			a, nCycles uint, expectedResult string) {
 
 	timeStart := time.Now()
 
-	result, err := mathops.BigIntMathLogarithms{}.EPwrXFromTaylorSeriesBigInt(
+	result, err := mathops.BigIntMathLogarithms{}.EPwrXFromTaylorSeriesFixedDecimal(
 		exponentX,
 		a,
 		nCycles)
@@ -1061,7 +1302,7 @@ func TestEPwrXFromTaylorSeriesBigInt(
 	timeEnd := time.Now()
 
 	if err != nil {
-			fmt.Printf("Error returned by BigIntMathLogarithms{}.EPwrXFromTaylorSeriesBigInt() " +
+			fmt.Printf("Error returned by BigIntMathLogarithms{}.EPwrXFromTaylorSeriesFixedDecimal() " +
 				"Error='%v' ", err.Error())
 	}
 

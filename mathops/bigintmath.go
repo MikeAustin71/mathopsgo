@@ -132,3 +132,71 @@ func (bIntMath BigIntMath) GetMagnitude(initialValue *big.Int) (magnitude *big.I
 
 	return magnitude, err
 }
+
+
+// RoundToMaxPrecision - Applies maximum precision to a *big.Int number
+// and associated numeric precision, 'bigIntNum' and 'bigIntNumPrecision'.
+//
+// Precision as used here defines the number of digits to the right of the
+// decimal place. If 'bigIntNumPrecision' exceeds 'maxPrecision', the
+// 'bigIntNum' and 'bigIntNumPrecision' pair are rounded to 'maxPrecision'
+// and returned as 'result' and 'resultPrecision'.
+//
+// Examples:
+// =========
+//
+//  bigIntNum	bigIntNumPrecision	maxPrecision	result		resultPrecision
+//	5255						3                  	2					526					2
+//  52671						4										6					52671				4
+//
+func (bIntMath BigIntMath) RoundToMaxPrecision(
+	bigIntNum,
+	bigIntNumPrecision,
+	maxPrecision *big.Int) (result, resultPrecision *big.Int, err error) {
+
+	ePrefix := "BigIntMath.RoundToMaxPrecision() "
+	result = big.NewInt(0)
+	resultPrecision = big.NewInt(0)
+	err = nil
+
+
+	if bigIntNum == nil {
+		bigIntNum = big.NewInt(0)
+		bigIntNumPrecision = big.NewInt(0)
+	}
+
+	bigZero := big.NewInt(0)
+
+	if bigIntNum.Cmp(bigZero) == 0 {
+		return result, resultPrecision, err
+	}
+
+	if bigIntNumPrecision.Cmp(bigZero) == -1 {
+		err = fmt.Errorf(ePrefix +
+			"Error: Input parameter 'bigIntNumPrecision' is LESS THAN ZERO! " +
+			"bigIntNumPrecision='%v' ", bigIntNumPrecision.Text(10))
+		return result, resultPrecision, err
+	}
+
+	result = big.NewInt(0).Set(bigIntNum)
+	resultPrecision = big.NewInt(0).Set(bigIntNumPrecision)
+
+	if resultPrecision.Cmp(maxPrecision) == 1 {
+		delta := big.NewInt(0).Sub(resultPrecision, maxPrecision)
+		delta.Sub(delta, big.NewInt(1))
+		bigTen := big.NewInt(10)
+		scale := big.NewInt(0).Exp(bigTen, delta, nil)
+		result.Quo(result, scale)
+		bigFive := big.NewInt(5)
+		if result.Cmp(bigZero) == -1 {
+			bigFive.Neg(bigFive)
+		}
+		result.Add(result, bigFive)
+		result.Quo(result, bigTen)
+		resultPrecision = big.NewInt(0).Set(maxPrecision)
+	}
+
+	err = nil
+
+	return result, resultPrecision, err
+}
