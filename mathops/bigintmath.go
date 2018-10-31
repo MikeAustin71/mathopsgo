@@ -200,3 +200,149 @@ func (bIntMath BigIntMath) RoundToMaxPrecision(
 
 	return result, resultPrecision, err
 }
+
+func (bIntMath BigIntMath) ArithmeticGeometricMean(
+	aNum,
+	aNumPrecision,
+	gNum,
+	gNumPrecision *big.Int) (agMean,
+														agMeanPrecision,
+														gValue,
+														gValuePrecision *big.Int,
+														cycles uint64,
+														err error) {
+
+	ePrefix := "BigIntMath.ArithmeticGeometricMean() "
+	agMean = big.NewInt(0)
+	agMeanPrecision = big.NewInt(0)
+	gValue= big.NewInt(0)
+	gValuePrecision = big.NewInt(0)
+	cycles = 0
+	err =  nil
+
+	cycleLimit := uint64(200)
+	maxPrecision := big.NewInt(200)
+
+
+	if aNum == nil {
+			err = errors.New(ePrefix +
+				"Error: Input parameter 'aNum' is nil and INVALID!")
+			return agMean, agMeanPrecision, gValue, gValuePrecision, cycles, err
+		}
+
+		if aNumPrecision == nil {
+			err = errors.New(ePrefix +
+				"Error: Input parameter 'aNumPrecision' is nil and INVALID!")
+			return agMean, agMeanPrecision, gValue, gValuePrecision, cycles, err
+		}
+
+		if gNum == nil {
+			err = errors.New(ePrefix +
+				"Error: Input parameter 'gNum' is nil and INVALID!")
+			return agMean, agMeanPrecision, gValue, gValuePrecision, cycles, err
+		}
+
+		if gNumPrecision == nil {
+			err = errors.New(ePrefix +
+				"Error: Input parameter 'gNumPrecision' is nil and INVALID!")
+			return agMean, agMeanPrecision, gValue, gValuePrecision, cycles, err
+		}
+
+		bigZero := big.NewInt(0)
+
+		if aNumPrecision.Cmp(bigZero) == -1 {
+			err = fmt.Errorf(ePrefix +
+				"Error: Input parameter 'aNumPrecision' is less than zero and INVALID! " +
+				"aNumPrecision='%v' ", aNumPrecision.Text(10))
+			return agMean, agMeanPrecision, gValue, gValuePrecision, cycles, err
+		}
+
+		if gNumPrecision.Cmp(bigZero) == -1 {
+			err = fmt.Errorf(ePrefix +
+				"Error: Input parameter 'gNumPrecision' is less than zero and INVALID! " +
+				"gNumPrecision='%v' ", gNumPrecision.Text(10))
+			return agMean, agMeanPrecision, gValue, gValuePrecision, cycles, err
+		}
+
+		var errX error
+		a := big.NewInt(0).Set(aNum)
+		aPrecision := big.NewInt(0).Set(aNumPrecision)
+		g := big.NewInt(0).Set(gNum)
+		gPrecision := big.NewInt(0).Set(gNumPrecision)
+		aCom := big.NewInt(0)
+		aComPrecision := big.NewInt(0)
+		gCom := big.NewInt(0)
+		gComPrecision := big.NewInt(0)
+		factor := big.NewInt(2)
+		factorPrecision := big.NewInt(0)
+		aTest := big.NewInt(0)
+		aTestPrecision := big.NewInt(0)
+		gTest := big.NewInt(0)
+		gTestPrecision := big.NewInt(0)
+
+
+		fdNRoot := FixedDecimalNthRoot{}
+
+
+		for i:= uint64(0); i < cycleLimit; i++ {
+
+			aCom, aComPrecision, errX = BigIntMathAdd{}.BigIntAdd(a, aPrecision, g, gPrecision)
+
+			if errX != nil {
+				err = fmt.Errorf(ePrefix + "%v",errX.Error())
+				return agMean, agMeanPrecision, gValue, gValuePrecision, cycles, err
+			}
+
+			gCom, gComPrecision, errX = BigIntMathMultiply{}.BigIntMultiply(a, aPrecision, g, gPrecision)
+
+			if errX != nil {
+				err = fmt.Errorf(ePrefix + "%v",errX.Error())
+				return agMean, agMeanPrecision, gValue, gValuePrecision, cycles, err
+			}
+
+			a, aPrecision, errX = BigIntMathDivide{}.BigIntFracQuotient(aCom, aComPrecision, factor, factorPrecision, maxPrecision)
+
+			if errX != nil {
+				err = fmt.Errorf(ePrefix + "%v",errX.Error())
+				return agMean, agMeanPrecision, gValue, gValuePrecision, cycles, err
+			}
+
+
+			g, gPrecision, errX =
+					fdNRoot.CalculatePositiveIntegerNthRoot(
+						gCom,
+						gComPrecision,
+						factor,
+						factorPrecision,
+						maxPrecision)
+
+			if errX != nil {
+				err = fmt.Errorf(ePrefix + "%v",errX.Error())
+				return agMean, agMeanPrecision, gValue, gValuePrecision, cycles, err
+			}
+
+
+			aTest, aTestPrecision, errX = BigIntMath{}.RoundToMaxPrecision(a, aPrecision, big.NewInt(50))
+			gTest, gTestPrecision, errX = BigIntMath{}.RoundToMaxPrecision(g, gPrecision, big.NewInt(50))
+
+			if aTest.Cmp(gTest) == 0 &&
+				aTestPrecision.Cmp(gTestPrecision) == 0 {
+				agMean.Set(a)
+				agMeanPrecision.Set(aPrecision)
+				gValue.Set(g)
+				gValuePrecision.Set(gPrecision)
+				cycles = i
+				err = nil
+				return agMean, agMeanPrecision, gValue, gValuePrecision, cycles, err
+			}
+
+		}
+
+	agMean.Set(a)
+	agMeanPrecision.Set(aPrecision)
+	gValue.Set(g)
+	gValuePrecision.Set(gPrecision)
+	cycles = cycleLimit
+	err = nil
+	return agMean, agMeanPrecision, gValue, gValuePrecision, cycles, err
+}

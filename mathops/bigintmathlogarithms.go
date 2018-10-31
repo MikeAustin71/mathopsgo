@@ -816,7 +816,13 @@ func (bLog BigIntMathLogarithms) EPwrXFromTaylorSeriesBigInt(
 		return xNum, xNumPrecision, err
 	}
 
-	eToPwr, eToPwrPrecision, errX := BigIntMathPower{}.BigIntegerPwrIteration(e, ePrecision, a, internalMaxPrecision, maxPrecision)
+	eToPwr, eToPwrPrecision, errX :=
+		BigIntMathPower{}.BigIntegerPwrIteration(
+			e,
+			ePrecision,
+			a,
+			internalMaxPrecision,
+			maxPrecision)
 
 	if errX != nil {
 		err = fmt.Errorf(ePrefix + "%v", errX.Error())
