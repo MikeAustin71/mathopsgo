@@ -938,3 +938,169 @@ func (bLog BigIntMathLogarithms) EPwrXFromTaylorSeriesBigInt(
 	return xNum, xNumPrecision, err
 }
 
+// https://en.wikipedia.org/wiki/Natural_logarithm
+func (bLog BigIntMathLogarithms) NatLogOfXArithmeticGeometricMean(
+	xNum,
+	xNumPrecision,
+	m,
+	maxInternalPrecision,
+	maxPrecision *big.Int, ) (lnOfX, lnOfXPrecision *big.Int, err error) {
+
+	ePrefix := "BigIntMathLogarithms.NatLogOfX()"
+
+	lnOfX = big.NewInt(0)
+	lnOfXPrecision = big.NewInt(0)
+	err = nil
+
+	bigZero := big.NewInt(0)
+
+	if xNumPrecision == nil {
+		err = errors.New(ePrefix +
+			"Error: Input parameter 'xNumPrecision' is nil and INVALID!")
+		return lnOfX, lnOfXPrecision, err
+	}
+
+	if xNum == nil {
+		err = errors.New(ePrefix +
+			"Error: Input parameter 'xNum' is nil and INVALID!")
+		return lnOfX, lnOfXPrecision, err
+	}
+
+	if m == nil {
+		err = errors.New(ePrefix +
+			"Error: Input parameter 'm' is nil and INVALID!")
+		return lnOfX, lnOfXPrecision, err
+	}
+
+	if maxInternalPrecision == nil {
+		err = errors.New(ePrefix +
+			"Error: Input parameter 'maxInternalPrecision' is nil and INVALID!")
+		return lnOfX, lnOfXPrecision, err
+	}
+
+	if maxPrecision == nil {
+		err = errors.New(ePrefix +
+			"Error: Input parameter 'maxPrecision' is nil and INVALID!")
+		return lnOfX, lnOfXPrecision, err
+	}
+
+	if m.Cmp(bigZero) == -1 {
+		err = fmt.Errorf(ePrefix +
+			"Error: Input parameter 'm' is negative and INVALID! " +
+			"m='%v' ", m.Text(10))
+		return lnOfX, lnOfXPrecision, err
+	}
+
+	if xNumPrecision.Cmp(bigZero) == -1 {
+		err = fmt.Errorf(ePrefix +
+			"Error: Input parameter 'xNumPrecision' is negative and INVALID! " +
+			"xNumPrecision='%v' ", xNumPrecision.Text(10))
+		return lnOfX, lnOfXPrecision, err
+	}
+
+	if maxInternalPrecision.Cmp(bigZero) == -1 {
+		err = fmt.Errorf(ePrefix +
+			"Error: Input parameter 'maxInternalPrecision' is negative and INVALID! " +
+			"maxInternalPrecision='%v' ", maxInternalPrecision.Text(10))
+		return lnOfX, lnOfXPrecision, err
+	}
+
+	if maxPrecision.Cmp(bigZero) == -1 {
+		err = fmt.Errorf(ePrefix +
+			"Error: Input parameter 'maxPrecision' is negative and INVALID! " +
+			"maxPrecision='%v' ", maxPrecision.Text(10))
+		return lnOfX, lnOfXPrecision, err
+	}
+
+	if maxInternalPrecision.Cmp(maxPrecision) < 1  {
+		maxInternalPrecision = big.NewInt(0).Add(maxPrecision, big.NewInt(50))
+	}
+
+	fourSFactor, fourSFactorPrecision, errX :=
+		BigIntMathMultiply{}.BigIntMultiply(xNum,xNumPrecision, big.NewInt(2), big.NewInt(0))
+
+	if errX == nil {
+		err = fmt.Errorf(ePrefix + "%v", errX.Error())
+		return lnOfX, lnOfXPrecision, err
+	}
+
+	s := fourSFactor.Exp(fourSFactor, m, nil)
+	sPrecision := big.NewInt(0).Mul(fourSFactorPrecision, m)
+
+  sDiv4, sDiv4Precision, errX :=
+		BigIntMathDivide{}.BigIntFracQuotient(big.NewInt(4), big.NewInt(0), s, sPrecision, maxInternalPrecision)
+
+	if errX == nil {
+		err = fmt.Errorf(ePrefix + "%v", errX.Error())
+		return lnOfX, lnOfXPrecision, err
+	}
+
+	agMean, agMeanPrecision, _, _, _, errX :=
+		BigIntMath{}.ArithmeticGeometricMean(
+			big.NewInt(1),
+			big.NewInt(0),
+			sDiv4,
+			sDiv4Precision,
+			maxInternalPrecision,
+			maxPrecision)
+
+	if errX == nil {
+		err = fmt.Errorf(ePrefix + "%v", errX.Error())
+		return lnOfX, lnOfXPrecision, err
+	}
+
+	denomFactorM, denomFactorMPrecision, errX :=
+		BigIntMathMultiply{}.BigIntMultiply(
+			big.NewInt(2),
+			big.NewInt(0),
+			agMean,
+			agMeanPrecision)
+
+	if errX == nil {
+		err = fmt.Errorf(ePrefix + "%v", errX.Error())
+		return lnOfX, lnOfXPrecision, err
+	}
+
+	factor1, factor1Precision, errX :=
+	   	BigIntMathDivide{}.BigIntFracQuotient(
+	   		piNumber1000.GetInteger(),
+	   		piNumber1000.GetPrecisionBigInt(),
+	   		denomFactorM,
+	   		denomFactorMPrecision,
+	   		maxInternalPrecision)
+
+	if errX == nil {
+		err = fmt.Errorf(ePrefix + "%v", errX.Error())
+		return lnOfX, lnOfXPrecision, err
+	}
+
+	factor2, factor2Precision, errX :=
+		BigIntMathMultiply{}.BigIntMultiply(
+			m,
+			big.NewInt(0),
+			natLogTwo99.GetInteger(),
+			natLogTwo99.GetPrecisionBigInt())
+
+	if errX == nil {
+		err = fmt.Errorf(ePrefix + "%v", errX.Error())
+		return lnOfX, lnOfXPrecision, err
+	}
+
+	lnOfX, lnOfXPrecision, errX =
+		BigIntMathSubtract{}.BigIntSubtract(
+			factor1,
+			factor1Precision,
+			factor2,
+			factor2Precision)
+
+	if errX == nil {
+		lnOfX = big.NewInt(0)
+		lnOfXPrecision = big.NewInt(0)
+		err = fmt.Errorf(ePrefix + "%v", errX.Error())
+		return lnOfX, lnOfXPrecision, err
+	}
+
+	err = nil
+
+	return lnOfX, lnOfXPrecision, err
+}

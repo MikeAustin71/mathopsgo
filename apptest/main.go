@@ -11,16 +11,21 @@ import (
 func main() {
 	// integer residual value 1.430511474609375
 
-	aNum := big.NewInt(24)
+	aNum := big.NewInt(6)
 	aNumPrecision := big.NewInt(0)
-	gNum := big.NewInt(6)
+	gNum := big.NewInt(24)
 	gNumPrecision := big.NewInt(0)
-
+	maxInternalPrecision := big.NewInt(50)
+	targetPrecision := big.NewInt(46)
+	expectedValue := "13.4581714817256154207668131569743992430538388544"
 	TestArithmeticGeometricMean(
 		aNum,
 		aNumPrecision,
 		gNum,
-		gNumPrecision)
+		gNumPrecision,
+		maxInternalPrecision,
+		targetPrecision,
+		expectedValue)
 
 }
 
@@ -29,7 +34,10 @@ func TestArithmeticGeometricMean(
 	aNum,
 	aNumPrecision,
 	gNum,
-	gNumPrecision *big.Int) {
+	gNumPrecision,
+	maxInternalPrecision,
+	targetPrecision *big.Int,
+	expectedValue string) {
 
 	timeStart := time.Now()
 	timeEnd := time.Now()
@@ -38,7 +46,13 @@ func TestArithmeticGeometricMean(
 	timeStart = time.Now()
 
 	agMean, agMeanPrecision, gValue, gValuePrecision, cycles, err :=
-		mathops.BigIntMath{}.ArithmeticGeometricMean(aNum, aNumPrecision, gNum, gNumPrecision)
+		mathops.BigIntMath{}.ArithmeticGeometricMean(
+			aNum,
+			aNumPrecision,
+			gNum,
+			gNumPrecision,
+			maxInternalPrecision,
+			targetPrecision)
 
 	timeEnd = time.Now()
 
@@ -83,24 +97,33 @@ func TestArithmeticGeometricMean(
 	fmt.Println("======================================================================")
 	fmt.Println("               BigIntMath{}.ArithmeticGeometricMean() ")
 	fmt.Println("======================================================================")
-	fmt.Println("           aNum: ", aNum.Text(10))
-	fmt.Println("  aNumPrecision: ", aNumPrecision.Text(10))
-	fmt.Println("      a Num Str: ", binANum.GetNumStr())
-	fmt.Println("           gNum: ", gNum.Text(10))
-	fmt.Println("  gNumPrecision: ", gNumPrecision.Text(10))
-	fmt.Println("      g Num Str: ", binGNum.GetNumStr())
+	fmt.Println("                aNum: ", aNum.Text(10))
+	fmt.Println("       aNumPrecision: ", aNumPrecision.Text(10))
+	fmt.Println("           a Num Str: ", binANum.GetNumStr())
+	fmt.Println("                gNum: ", gNum.Text(10))
+	fmt.Println("       gNumPrecision: ", gNumPrecision.Text(10))
+	fmt.Println("           g Num Str: ", binGNum.GetNumStr())
+	fmt.Println("maxInternalPrecision: ", maxInternalPrecision.Text(10))
+	fmt.Println("     targetPrecision: ", targetPrecision.Text(10))
 	fmt.Println("======================================================================")
-	fmt.Println("         agMean: ", agMean.Text(10))
-	fmt.Println("agMeanPrecision: ", agMeanPrecision.Text(10))
-	fmt.Println("  agMean NumStr: ", binAGMean.GetNumStr())
+	fmt.Println("              agMean: ", agMean.Text(10))
+	fmt.Println("     agMeanPrecision: ", agMeanPrecision.Text(10))
+	fmt.Println("       agMean NumStr: ", binAGMean.GetNumStr())
+	fmt.Println("      expected value: ", expectedValue)
+	status := "FAILURE - Actual DOES NOT MATCH Expected Value!!"
+	if binAGMean.GetNumStr() == expectedValue{
+		status = "SUCCESS - Actual Matches Expected Value!"
+	}
+
+	fmt.Println("              Status: ", status)
 	fmt.Println("----------------------------------------------------------------------")
-	fmt.Println("         gValue: ", gValue.Text(10))
-	fmt.Println("gValuePrecision: ", gValuePrecision.Text(10))
-	fmt.Println("  gValue NumStr: ", binGValue.GetNumStr())
+	fmt.Println("              gValue: ", gValue.Text(10))
+	fmt.Println("     gValuePrecision: ", gValuePrecision.Text(10))
+	fmt.Println("       gValue NumStr: ", binGValue.GetNumStr())
 	fmt.Println("----------------------------------------------------------------------")
-	fmt.Println("         Cycles: ", cycles)
+	fmt.Println("              Cycles: ", cycles)
 	fmt.Println("----------------------------------------------------------------------")
-	fmt.Println(" Execution Time: ", duration)
+	fmt.Println("      Execution Time: ", duration)
 	fmt.Println("======================================================================")
 	fmt.Println()
 

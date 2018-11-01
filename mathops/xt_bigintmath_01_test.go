@@ -5,6 +5,56 @@ import (
 	"testing"
 )
 
+func TestBigIntMath_ArithmeticGeometricMean_01(t *testing.T) {
+	aNum := big.NewInt(24)
+	aNumPrecision := big.NewInt(0)
+	gNum := big.NewInt(6)
+	gNumPrecision := big.NewInt(0)
+	maxInternalPrecision := big.NewInt(150)
+	targetPrecision := big.NewInt(46)
+	expectedValue := "13.4581714817256154207668131569743992430538388544"
+
+	agMean, agMeanPrecision, gValue, gValuePrecision, _, err :=
+		BigIntMath{}.ArithmeticGeometricMean(
+			aNum,
+			aNumPrecision,
+			gNum,
+			gNumPrecision,
+			maxInternalPrecision,
+			targetPrecision)
+
+
+	if err!=nil {
+		t.Errorf("Error: %v", err.Error())
+		return
+	}
+
+	binAGMean, err :=BigIntNum{}.NewBigIntPrecision(agMean, agMeanPrecision)
+
+	if err!=nil {
+		t.Errorf("%v", err.Error())
+		return
+	}
+
+	binGValue, err := BigIntNum{}.NewBigIntPrecision(gValue, gValuePrecision)
+
+	if err!=nil {
+		t.Errorf( "%v", err.Error())
+		return
+	}
+
+	if expectedValue != binAGMean.GetNumStr() {
+		t.Errorf("Error: Expected agMean='%v'.  Instead, agMean='%v'. ",
+			expectedValue, binAGMean.GetNumStr())
+	}
+
+	if expectedValue != binGValue.GetNumStr() {
+		t.Errorf("Error: Expected gMean='%v'.  Instead, gMean='%v'. ",
+			expectedValue, binGValue.GetNumStr())
+	}
+
+}
+
 func TestBigIntMath_GetMagnitude_01(t *testing.T) {
 
 	target := big.NewInt(98327123)
@@ -437,6 +487,160 @@ func TestBigIntMath_GetMagnitude_17(t *testing.T) {
 	if expectedMagnitude.Cmp(magnitude) != 0 {
 		t.Errorf("Error: Expected Magnitude='%v'. Instead, Magnitude='%v'.",
 			expectedMagnitude.Text(10), magnitude.Text(10))
+	}
+
+}
+
+func TestBigIntMath_BigIntPrecisionCmp_01(t *testing.T) {
+	num1 := big.NewInt(5)
+	num1Precision := big.NewInt(0)
+	num2 := big.NewInt(2)
+	num2Precision := big.NewInt(0)
+	expectedResult := 1
+
+	cmpResult :=
+		BigIntMath{}.BigIntPrecisionCmp(
+			num1,
+			num1Precision,
+			num2,
+			num2Precision)
+
+	if expectedResult != cmpResult {
+		t.Errorf("Error: Expected compare result='%v'. " +
+			"Instead, compare result='%v' ",
+			expectedResult, cmpResult)
+	}
+
+}
+
+func TestBigIntMath_BigIntPrecisionCmp_02(t *testing.T) {
+	num1 := big.NewInt(52)
+	num1Precision := big.NewInt(1)
+	num2 := big.NewInt(5105)
+	num2Precision := big.NewInt(3)
+	expectedResult := 1
+
+	cmpResult :=
+		BigIntMath{}.BigIntPrecisionCmp(
+			num1,
+			num1Precision,
+			num2,
+			num2Precision)
+
+	if expectedResult != cmpResult {
+		t.Errorf("Error: Expected compare result='%v'. " +
+			"Instead, compare result='%v' ",
+			expectedResult, cmpResult)
+	}
+
+}
+
+func TestBigIntMath_BigIntPrecisionCmp_03(t *testing.T) {
+	num1 := big.NewInt(-52)
+	num1Precision := big.NewInt(1)
+	num2 := big.NewInt(5105)
+	num2Precision := big.NewInt(3)
+	expectedResult := -1
+
+	cmpResult :=
+		BigIntMath{}.BigIntPrecisionCmp(
+			num1,
+			num1Precision,
+			num2,
+			num2Precision)
+
+	if expectedResult != cmpResult {
+		t.Errorf("Error: Expected compare result='%v'. " +
+			"Instead, compare result='%v' ",
+			expectedResult, cmpResult)
+	}
+
+}
+
+func TestBigIntMath_BigIntPrecisionCmp_04(t *testing.T) {
+	num1 := big.NewInt(52346789)
+	num1Precision := big.NewInt(1)
+	num2 := big.NewInt(8234001)
+	num2Precision := big.NewInt(3)
+	expectedResult := 1
+
+	cmpResult :=
+		BigIntMath{}.BigIntPrecisionCmp(
+			num1,
+			num1Precision,
+			num2,
+			num2Precision)
+
+	if expectedResult != cmpResult {
+		t.Errorf("Error: Expected compare result='%v'. " +
+			"Instead, compare result='%v' ",
+			expectedResult, cmpResult)
+	}
+
+}
+
+func TestBigIntMath_BigIntPrecisionCmp_05(t *testing.T) {
+	num1 := big.NewInt(52346789)
+	num1Precision := big.NewInt(1)
+	num2 := big.NewInt(52346789)
+	num2Precision := big.NewInt(1)
+	expectedResult := 0
+
+	cmpResult :=
+		BigIntMath{}.BigIntPrecisionCmp(
+			num1,
+			num1Precision,
+			num2,
+			num2Precision)
+
+	if expectedResult != cmpResult {
+		t.Errorf("Error: Expected compare result='%v'. " +
+			"Instead, compare result='%v' ",
+			expectedResult, cmpResult)
+	}
+
+}
+
+func TestBigIntMath_BigIntPrecisionCmp_06(t *testing.T) {
+	num1 := big.NewInt(-51)
+	num1Precision := big.NewInt(1)
+	num2 := big.NewInt(-52)
+	num2Precision := big.NewInt(1)
+	expectedResult := 1
+
+	cmpResult :=
+		BigIntMath{}.BigIntPrecisionCmp(
+			num1,
+			num1Precision,
+			num2,
+			num2Precision)
+
+	if expectedResult != cmpResult {
+		t.Errorf("Error: Expected compare result='%v'. " +
+			"Instead, compare result='%v' ",
+			expectedResult, cmpResult)
+	}
+
+}
+
+func TestBigIntMath_BigIntPrecisionCmp_07(t *testing.T) {
+	num1 := big.NewInt(-51)
+	num1Precision := big.NewInt(1)
+	num2 := big.NewInt(-51)
+	num2Precision := big.NewInt(1)
+	expectedResult := 0
+
+	cmpResult :=
+		BigIntMath{}.BigIntPrecisionCmp(
+			num1,
+			num1Precision,
+			num2,
+			num2Precision)
+
+	if expectedResult != cmpResult {
+		t.Errorf("Error: Expected compare result='%v'. " +
+			"Instead, compare result='%v' ",
+			expectedResult, cmpResult)
 	}
 
 }
