@@ -9,26 +9,159 @@ import (
 )
 
 func main() {
-	// integer residual value 1.430511474609375
+	ePrefix := "main() "
+	m:= big.NewInt(18)
+	xNum := big.NewInt(2)
+	xNumPrecision := big.NewInt(0)
+	twoToM := big.NewInt(0).Exp(big.NewInt(2), m, nil)
 
-	aNum := big.NewInt(6)
-	aNumPrecision := big.NewInt(0)
-	gNum := big.NewInt(24)
-	gNumPrecision := big.NewInt(0)
-	maxInternalPrecision := big.NewInt(50)
-	targetPrecision := big.NewInt(46)
-	expectedValue := "13.4581714817256154207668131569743992430538388544"
+	s, sPrecision, err :=
+		mathops.BigIntMathMultiply{}.BigIntMultiply(
+			twoToM,
+			big.NewInt(0),
+			xNum,
+			xNumPrecision)
+
+	if err !=nil {
+		fmt.Printf(ePrefix + "%v", err.Error())
+		return
+	}
+
+	s4DivPrecisionMaxInternalPrecision := big.NewInt(6000)
+
+	fourDivS, fourDivSPrecision, err :=
+		mathops.BigIntMathDivide{}.BigIntFracQuotient(
+			big.NewInt(4),
+			big.NewInt(0),
+			s,
+			sPrecision,
+			s4DivPrecisionMaxInternalPrecision)
+
+	agMeanMaxInternalPrecision := big.NewInt(6000)
+	agMeanMaxOutputPrecision := big.NewInt(800)
+
+	fmt.Println("m: ", m.Text(10))
+	fmt.Println()
 	TestArithmeticGeometricMean(
-		aNum,
-		aNumPrecision,
-		gNum,
-		gNumPrecision,
-		maxInternalPrecision,
-		targetPrecision,
+		fourDivS,
+		fourDivSPrecision,
+		big.NewInt(1),
+		big.NewInt(0),
+		agMeanMaxInternalPrecision,
+		agMeanMaxOutputPrecision,
+		"Unknown")
+}
+
+
+
+/*
+
+
+func main() {
+	xNum := big.NewInt(2)
+	xNumPrecision := big.NewInt(0)
+	m := big.NewInt(18)
+	s4DivPrecisionMaxInternalPrecision := big.NewInt(8000)
+	agMeanMaxInternalPrecision := big.NewInt(6000)
+	agMeanMaxOutputPrecision := big.NewInt(800)
+	maxPiDividePrecision := big.NewInt(15000)
+	maxFinalOutputPrecision := big.NewInt(99)
+	expectedValue := "0.693147180559945309417232121458176568075500134360255254120680009493393621969694715605863326996418688"
+
+	TestNatLogOfXArithmeticGeometricMean(
+		xNum,
+		xNumPrecision,
+		m,
+		s4DivPrecisionMaxInternalPrecision,
+		agMeanMaxInternalPrecision,
+		agMeanMaxOutputPrecision,
+		maxPiDividePrecision,
+		maxFinalOutputPrecision,
 		expectedValue)
 
 }
 
+
+func main() {
+	ePrefix := "main() "
+
+	num1 := big.NewInt(762939453125)
+	num1Precision := big.NewInt(17)
+
+	num2 := big.NewInt(1)
+	num2Precision := big.NewInt(0)
+
+	product, productPrecision, err :=
+		mathops.BigIntMathMultiply{}.BigIntMultiply(num1, num1Precision, num2, num2Precision)
+
+	if err !=nil {
+		fmt.Printf(ePrefix + "%v", err.Error())
+		return
+	}
+
+	binProduct, err := mathops.BigIntNum{}.NewBigIntPrecision(product, productPrecision)
+
+	if err !=nil {
+		fmt.Printf(ePrefix + "binProduct - %v", err.Error())
+		return
+	}
+
+	fmt.Println("Product: ", binProduct.GetNumStr())
+	maxInternalPrecision := big.NewInt(6000)
+
+
+	fdNRoot := mathops.FixedDecimalNthRoot{}
+	g, gPrecision, err :=
+		fdNRoot.CalculatePositiveIntegerNthRoot(
+			product,
+			productPrecision,
+			big.NewInt(2),
+			big.NewInt(0),
+			maxInternalPrecision)
+
+	if err !=nil {
+		fmt.Printf(ePrefix + "nthRoot - %v", err.Error())
+		return
+	}
+
+	binG, err := mathops.BigIntNum{}.NewBigIntPrecision(g, gPrecision)
+
+	if err !=nil {
+		fmt.Printf(ePrefix + "binG - %v", err.Error())
+		return
+	}
+
+	fmt.Println("binG: ", binG.GetNumStr())
+
+}
+
+
+
+func main() {
+	xNum := big.NewInt(2)
+	xNumPrecision := big.NewInt(0)
+	m := big.NewInt(193)
+	s4DivPrecisionMaxInternalPrecision := big.NewInt(8000)
+	agMeanMaxInternalPrecision := big.NewInt(6000)
+	agMeanMaxOutputPrecision := big.NewInt(800)
+	maxPiDividePrecision := big.NewInt(15000)
+	maxFinalOutputPrecision := big.NewInt(99)
+	expectedValue := "0.693147180559945309417232121458176568075500134360255254120680009493393621969694715605863326996418688"
+
+	TestNatLogOfXArithmeticGeometricMean(
+		xNum,
+		xNumPrecision,
+		m,
+		s4DivPrecisionMaxInternalPrecision,
+		agMeanMaxInternalPrecision,
+		agMeanMaxOutputPrecision,
+		maxPiDividePrecision,
+		maxFinalOutputPrecision,
+		expectedValue)
+
+}
+
+*/
 
 func TestArithmeticGeometricMean(
 	aNum,
@@ -126,6 +259,142 @@ func TestArithmeticGeometricMean(
 	fmt.Println("      Execution Time: ", duration)
 	fmt.Println("======================================================================")
 	fmt.Println()
+
+}
+
+
+func TestNatLogOfXArithmeticGeometricMean(
+	xNum,
+	xNumPrecision,
+	m,
+	s4DivPrecisionMaxInternalPrecision,
+	agMeanMaxInternalPrecision,
+	agMeanMaxOutputPrecision,
+	piDivideMaxPrecision,
+	maxFinalResultPrecision *big.Int,
+	expectedValue string) {
+
+	/*
+
+		xNum := big.NewInt(2)
+		xNumPrecision := big.NewInt(0)
+		m := big.NewInt(144)
+		s4DivPrecisionMaxInternalPrecision := big.NewInt(6000)
+		agMeanMaxInternalPrecision := big.NewInt(2000)
+		agMeanMaxOutputPrecision := big.NewInt(800)
+		maxPiDividePrecision := big.NewInt(2000)
+		maxFinalOutputPrecision := big.NewInt(99)
+		expectedValue := "0.693147180559945309417232121458176568075500134360255254120680009493393621969694715605863326996418687"
+
+
+		xNum := big.NewInt(2)
+		xNumPrecision := big.NewInt(0)
+		m := big.NewInt(1029)
+		s4DivPrecisionMaxInternalPrecision := big.NewInt(6000)
+		agMeanMaxInternalPrecision := big.NewInt(2000)
+		agMeanMaxOutputPrecision := big.NewInt(800)
+		maxPiDividePrecision := big.NewInt(2000)
+		maxFinalOutputPrecision := big.NewInt(99)
+		expectedValue := "0.693147180559945309417232121458176568075500134360255254120680009493393621969694715605863326996418687"
+
+		xNum=14
+		expectedValue := "2.6390573296152586145225848649014"
+		 xNum=256
+		expectedValue := "5.5451774444795624753378569716654"
+
+
+		xNum := big.NewInt(2)
+		xNumPrecision := big.NewInt(0)
+		m := big.NewInt(512)
+		agMeanMaxInternalPrecision := big.NewInt(8000)
+		agMeanMaxOutputPrecision := big.NewInt(500)
+		maxPiDividePrecision := big.NewInt(150)
+		maxFinalOutputPrecision := big.NewInt(99)
+		expectedValue := "0.693147180559945309417232121458176568075500134360255254120680009493393621969694715605863326996418687"
+
+
+
+		xNum := big.NewInt(14)
+		xNumPrecision := big.NewInt(0)
+		m := big.NewInt(256)
+		maxInternalPrecision := big.NewInt(1000)
+		maxPrecision := big.NewInt(31)
+		expectedValue := "2.6390573296152586145225848649014"
+
+	 */
+
+
+
+	timeStart := time.Now()
+	timeEnd := time.Now()
+	ePrefix := "TestNatLogOfXArithmeticGeometricMean() "
+
+	timeStart = time.Now()
+
+	lnOfX, lnOfXPrecision, err :=
+		mathops.BigIntMathLogarithms{}.NatLogOfXArithmeticGeometricMean(
+			xNum,
+			xNumPrecision,
+			m,
+			s4DivPrecisionMaxInternalPrecision,
+			agMeanMaxInternalPrecision,
+			agMeanMaxOutputPrecision,
+			piDivideMaxPrecision,
+			maxFinalResultPrecision)
+
+		timeEnd = time.Now()
+
+	if err != nil {
+		fmt.Printf(ePrefix + "%v", err.Error())
+		return
+	}
+
+	bINumXNum, err :=
+		mathops.BigIntNum{}.NewBigIntPrecision(xNum, xNumPrecision)
+
+	if err != nil {
+		fmt.Printf(ePrefix + "bINumXNum Error= %v", err.Error())
+		return
+	}
+
+	bINumlnOfX, err :=
+		mathops.BigIntNum{}.NewBigIntPrecision(lnOfX, lnOfXPrecision)
+
+	if err != nil {
+		fmt.Printf(ePrefix + "bINumlnOfX Error= %v", err.Error())
+		return
+	}
+
+	timeDuration := timeEnd.Sub(timeStart)
+
+	duration := examples.CodeDurationToStr(timeDuration)
+
+	fmt.Println()
+	fmt.Println("======================================================================")
+	fmt.Println("        BigIntMathLogarithms{}.NatLogOfXArithmeticGeometricMean() ")
+	fmt.Println("======================================================================")
+	fmt.Println("                      xNum: ", xNum.Text(10))
+	fmt.Println("             xNumPrecision: ", xNumPrecision.Text(10))
+	fmt.Println("               xNum NumStr: ", bINumXNum.GetNumStr())
+	fmt.Println("                         m: ", m.Text(10))
+	fmt.Println("agMeanMaxInternalPrecision: ", agMeanMaxInternalPrecision.Text(10))
+	fmt.Println("  agMeanMaxOutputPrecision: ", agMeanMaxOutputPrecision.Text(10))
+	fmt.Println("      piDivideMaxPrecision: ", piDivideMaxPrecision.Text(10))
+	fmt.Println("   maxFinalResultPrecision: ", maxFinalResultPrecision.Text(10))
+	fmt.Println("========================== Result ====================================")
+	fmt.Println("                     ln(x): ", lnOfX.Text(10))
+	fmt.Println("           ln(x) Precision: ", lnOfXPrecision.Text(10))
+	fmt.Println("              ln(x) NumStr: ", bINumlnOfX.GetNumStr())
+	fmt.Println("      ln(x) Expected Value: ", expectedValue)
+
+	status := "FAILURE!!! Expected Value DOES NOT MATCH Actual Value"
+	if expectedValue == bINumlnOfX.GetNumStr() {
+		status = "SUCCESS**** Expected Value MATCHES Actual Value"
+	}
+
+	fmt.Println("                    Status: ", status)
+	fmt.Println("======================================================================")
+	fmt.Println("      Execution Time: ", duration)
 
 }
 

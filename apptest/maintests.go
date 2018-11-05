@@ -324,8 +324,11 @@ func TestBigIntPositiveIntNthRoot(
 	maxPrecision *big.Int,
 	expectedValue string) {
 
-	fdNr :=  mathops.FixedDecimalNthRoot{}
 	timeStart := time.Now()
+	timeEnd := time.Now()
+
+	fdNr :=  mathops.FixedDecimalNthRoot{}
+	timeStart = time.Now()
 	result, resultPrecision, err :=
 		fdNr.CalculatePositiveIntegerNthRoot(
 			radicand,
@@ -333,7 +336,7 @@ func TestBigIntPositiveIntNthRoot(
 			nthRoot,
 			nthRootPrecision,
 			maxPrecision)
-	timeEnd := time.Now()
+	timeEnd = time.Now()
 	if err != nil {
 		fmt.Printf("Error returned by fdNr.CalculatePositiveIntegerNthRoot(...) " +
 			"Error='%v' ", err.Error())
