@@ -16,6 +16,7 @@ type BigIntMath struct {
 // two numbers. See:
 // 		https://en.wikipedia.org/wiki/Arithmetic–geometric_mean
 //
+// Dev Note: maxInternalPrecision may need to be 60 to 75 times targetPrecision.
 func (bIntMath BigIntMath) ArithmeticGeometricMean(
 	aNum,
 	aNumPrecision,

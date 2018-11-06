@@ -4,6 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"math/big"
+	"time"
 )
 
 /*
@@ -127,7 +128,6 @@ func (bLog BigIntMathLogarithms) LogBaseOfX(
 	maxPrecision--
 
 	result.RoundToDecPlace(maxPrecision)
-
 
 	return result, nil
 }
@@ -260,6 +260,7 @@ func (bLog BigIntMathLogarithms) GetNextDecimalDigit(
 // xNum:  1500000
 func (bLog BigIntMathLogarithms) BigIntLogBaseOfX(
 	base,
+	basePrecision,
 	xNum,
 	xNumPrecision,
 	maxInternalPrecision,
@@ -284,6 +285,19 @@ func (bLog BigIntMathLogarithms) BigIntLogBaseOfX(
 			"base='%v' ", base.Text(10))
 
 		return logResult, logResultPrecision, err
+	}
+
+	if basePrecision == nil {
+		basePrecision = big.NewInt(0)
+	}
+
+	if basePrecision.Cmp(bigZero) == -1 {
+		err = fmt.Errorf(ePrefix +
+			"Error: Input Parameter 'basePrecision' is negative and INVALID! " +
+			"basePrecision='%v' ", basePrecision.Text(10))
+
+		return logResult, logResultPrecision, err
+
 	}
 
 	if xNum == nil {
@@ -330,8 +344,33 @@ func (bLog BigIntMathLogarithms) BigIntLogBaseOfX(
 		maxInternalPrecision = maxInternalPrecision.Add(maxPrecision, big.NewInt(200))
 	}
 
+	bigOne := big.NewInt(1)
+
+	inverseBase, inverseBasePrecision, errX :=
+		BigIntMathDivide{}.BigIntFracQuotient(
+			bigOne,
+			bigZero,
+			base,
+			basePrecision,
+			maxInternalPrecision)
+
+	if errX != nil {
+
+		err = fmt.Errorf(ePrefix +
+			"%v", errX.Error())
+
+		return logResult, logResultPrecision, err
+	}
+
 	digits, residualXNum, residualXNumPrecision, errX :=
-		bLog.BigIntGetIntDigits(base, xNum, xNumPrecision, maxInternalPrecision)
+		bLog.BigIntGetIntDigits(
+			base,
+			basePrecision,
+			inverseBase,
+			inverseBasePrecision,
+			xNum,
+			xNumPrecision,
+			maxInternalPrecision)
 
 	if errX != nil {
 		err = fmt.Errorf(ePrefix +
@@ -339,6 +378,7 @@ func (bLog BigIntMathLogarithms) BigIntLogBaseOfX(
 
 		return logResult, logResultPrecision, err
 	}
+
 
 	if residualXNum.Cmp(bigZero) == 0 {
 		logResult.Set(digits)
@@ -352,14 +392,16 @@ func (bLog BigIntMathLogarithms) BigIntLogBaseOfX(
 	digits = big.NewInt(0)
 
 	bigTen := big.NewInt(10)
-	bigOne := big.NewInt(1)
 
 	residualXNum.Exp(residualXNum, bigTen, nil)
 	residualXNumPrecision.Mul(residualXNumPrecision, bigTen)
 
 
 	residualXNum, residualXNumPrecision, errX =
-		BigIntMath{}.RoundToMaxPrecision(residualXNum, residualXNumPrecision, maxInternalPrecision)
+		BigIntMath{}.RoundToMaxPrecision(
+			residualXNum,
+			residualXNumPrecision,
+			maxInternalPrecision)
 
 	if errX != nil {
 		err = fmt.Errorf(ePrefix +
@@ -368,12 +410,20 @@ func (bLog BigIntMathLogarithms) BigIntLogBaseOfX(
 		return logResult, logResultPrecision, err
 	}
 
-	newMaxPrecision := big.NewInt(0).Add(maxPrecision,bigOne)
+	newMaxPrecision := maxPrecision.Uint64()
+	newMaxPrecision++
 
-	for i := big.NewInt(0); i.Cmp(newMaxPrecision) == -1 ; i.Add(i, bigOne) {
+	for i := uint64(0); i < newMaxPrecision ; i++ {
 
 		digits, residualXNum, residualXNumPrecision, errX =
-			bLog.BigIntGetNextDecimalDigit(base, residualXNum, residualXNumPrecision, maxInternalPrecision)
+			bLog.BigIntGetNextDecimalDigit(
+				base,
+				basePrecision,
+				inverseBase,
+				inverseBasePrecision,
+				residualXNum,
+				residualXNumPrecision,
+				maxInternalPrecision)
 
 		if errX != nil {
 			err = fmt.Errorf(ePrefix + "%v", errX.Error())
@@ -390,7 +440,10 @@ func (bLog BigIntMathLogarithms) BigIntLogBaseOfX(
 		if residualXNum.Cmp(bigZero) == 0 {
 
 			logResult = big.NewInt(0).Set(result)
-			logResultPrecision = big.NewInt(0).Add(i, bigOne	)
+			logResultPrecision =
+						big.NewInt(0).Add(
+							big.NewInt(0).SetUint64(i), bigOne	)
+
 			err = nil
 			return logResult, logResultPrecision, err
 		}
@@ -415,6 +468,9 @@ func (bLog BigIntMathLogarithms) BigIntLogBaseOfX(
 
 func (bLog BigIntMathLogarithms) BigIntGetIntDigits(
 	base,
+	basePrecision,
+	inverseBase,
+	inverseBasePrecision,
 	XNum,
 	XNumPrecision,
 	maxPrecision *big.Int) (digits,
@@ -427,21 +483,25 @@ func (bLog BigIntMathLogarithms) BigIntGetIntDigits(
 	newResidualXNum = big.NewInt(0).Set(XNum)
 	newResidualXNumPrecision = big.NewInt(0).Set(XNumPrecision)
 	err = nil
-	bigTen:= big.NewInt(10)
-	scale := big.NewInt(0).Exp(bigTen, XNumPrecision, nil)
-	tBase := big.NewInt(0).Mul(base, scale)
 	bigZero := big.NewInt(0)
 	bigOne := big.NewInt(1)
 
-	for newResidualXNum.Cmp(tBase) > -1 {
+	cmpNums :=
+		BigIntMath{}.BigIntPrecisionCmp(
+			newResidualXNum,
+			newResidualXNumPrecision,
+			base,
+			basePrecision)
+
+
+	for cmpNums > - 1{
 
 		newResidualXNum, newResidualXNumPrecision, errX =
-			BigIntMathDivide{}.BigIntFracQuotient(
+			BigIntMathMultiply{}.BigIntMultiply(
 				newResidualXNum,
 				newResidualXNumPrecision,
-				base,
-				big.NewInt(0),
-				maxPrecision )
+				inverseBase,
+				inverseBasePrecision)
 
 		if errX != nil {
 			digits.Set(bigZero)
@@ -449,14 +509,36 @@ func (bLog BigIntMathLogarithms) BigIntGetIntDigits(
 			newResidualXNumPrecision.Set(bigZero)
 
 			err = fmt.Errorf(ePrefix +
-				"%v", errX.Error())
+				"'base' Division Error: %v", errX.Error())
 
 			return digits, newResidualXNum, newResidualXNumPrecision, err
 		}
 
 		digits.Add(digits, bigOne)
-		scale = big.NewInt(0).Exp(bigTen,newResidualXNumPrecision, nil )
-		tBase = big.NewInt(0).Mul(base, scale)
+
+		newResidualXNum, newResidualXNumPrecision, errX =
+			BigIntMath{}.RoundToMaxPrecision(
+				newResidualXNum,
+				newResidualXNumPrecision,
+				maxPrecision)
+
+		if errX != nil {
+			digits.Set(bigZero)
+			newResidualXNum.Set(bigZero)
+			newResidualXNumPrecision.Set(bigZero)
+
+			err = fmt.Errorf(ePrefix +
+				"'base' Division Error: %v", errX.Error())
+
+			return digits, newResidualXNum, newResidualXNumPrecision, err
+		}
+
+		cmpNums =
+			BigIntMath{}.BigIntPrecisionCmp(
+				newResidualXNum,
+				newResidualXNumPrecision,
+				base,
+				basePrecision)
 	}
 
 	err = nil
@@ -466,6 +548,9 @@ func (bLog BigIntMathLogarithms) BigIntGetIntDigits(
 
 func (bLog BigIntMathLogarithms) BigIntGetNextDecimalDigit(
 	base,
+	basePrecision,
+	inverseBase,
+	inverseBasePrecision,
 	residualXNum,
 	residualXNumPrecision,
 	maxPrecision *big.Int) (digit, newResidualXNum, newResidualXNumPrecision *big.Int, err error) {
@@ -476,28 +561,29 @@ func (bLog BigIntMathLogarithms) BigIntGetNextDecimalDigit(
 	newResidualXNum = big.NewInt(0).Set(residualXNum)
 	newResidualXNumPrecision = big.NewInt(0).Set(residualXNumPrecision)
 	err = nil
-	var errX error
-	bigTen := big.NewInt(10)
-	scale := big.NewInt(0).Exp(bigTen, residualXNumPrecision, nil)
-	tBase := big.NewInt(0).Mul(base, scale)
-
-	if newResidualXNum.Cmp(tBase) == -1 {
-		newResidualXNum.Exp(newResidualXNum, bigTen, nil)
-		newResidualXNumPrecision.Mul(newResidualXNumPrecision, bigTen)
-		return digit, newResidualXNum, newResidualXNumPrecision, err
-	}
+	tBase := big.NewInt(0).Set(base)
+	tBasePrecision := big.NewInt(0).Set(basePrecision)
 
 	bigZero := big.NewInt(0)
-	bigOne := big.NewInt(1)
+	var errX error
+	bigTen := big.NewInt(10)
 
-	for newResidualXNum.Cmp(tBase) > - 1 {
+	cmpNums :=
+		BigIntMath{}.BigIntPrecisionCmp(
+			newResidualXNum,
+			newResidualXNumPrecision,
+			tBase,
+			tBasePrecision)
+
+	if cmpNums == -1 {
+
+		newResidualXNum.Exp(newResidualXNum, bigTen, nil)
+		newResidualXNumPrecision.Mul(newResidualXNumPrecision, bigTen)
 
 		newResidualXNum, newResidualXNumPrecision, errX =
-			BigIntMathDivide{}.BigIntFracQuotient(
+			BigIntMath{}.RoundToMaxPrecision(
 				newResidualXNum,
 				newResidualXNumPrecision,
-				base,
-				bigZero,
 				maxPrecision)
 
 		if errX != nil {
@@ -509,17 +595,67 @@ func (bLog BigIntMathLogarithms) BigIntGetNextDecimalDigit(
 			return digit, newResidualXNum, newResidualXNumPrecision, err
 		}
 
-		digit.Add(digit, bigOne)
-		scale = big.NewInt(0).Exp(bigTen, newResidualXNumPrecision, nil)
-		tBase = big.NewInt(0).Mul(base, scale)
+		return digit, newResidualXNum, newResidualXNumPrecision, err
 	}
 
-	scale = big.NewInt(0).Exp(bigTen, newResidualXNumPrecision, nil)
-	tBase = big.NewInt(0).Mul(base, scale)
+	bigOne := big.NewInt(1)
 
-	if newResidualXNum.Cmp(bigZero) != 0 && newResidualXNum.Cmp(tBase) == -1 {
+	for cmpNums > - 1 {
+
+		newResidualXNum, newResidualXNumPrecision, errX =
+			BigIntMathMultiply{}.BigIntMultiply(
+				newResidualXNum,
+				newResidualXNumPrecision,
+				inverseBase,
+				inverseBasePrecision)
+
+		if errX != nil {
+			digit.Set(bigZero)
+			newResidualXNum.Set(bigZero)
+			newResidualXNumPrecision.Set(bigZero)
+			err = fmt.Errorf(ePrefix +
+				"%v", errX.Error())
+			return digit, newResidualXNum, newResidualXNumPrecision, err
+		}
+
+		digit.Add(digit, bigOne)
+
+		cmpNums =
+			BigIntMath{}.BigIntPrecisionCmp(
+				newResidualXNum,
+				newResidualXNumPrecision,
+				base,
+				basePrecision)
+
+		newResidualXNum, newResidualXNumPrecision, errX =
+			BigIntMath{}.RoundToMaxPrecision(
+				newResidualXNum,
+				newResidualXNumPrecision,
+				maxPrecision)
+
+		if errX != nil {
+			digit.Set(bigZero)
+			newResidualXNum.Set(bigZero)
+			newResidualXNumPrecision.Set(bigZero)
+			err = fmt.Errorf(ePrefix +
+				"%v", errX.Error())
+			return digit, newResidualXNum, newResidualXNumPrecision, err
+		}
+
+	}
+
+	cmpNums =
+		BigIntMath{}.BigIntPrecisionCmp(
+			newResidualXNum,
+			newResidualXNumPrecision,
+			base,
+			basePrecision)
+
+	if newResidualXNum.Cmp(bigZero) != 0 && cmpNums == -1 {
+
 		newResidualXNum.Exp(newResidualXNum, bigTen, nil)
 		newResidualXNumPrecision.Mul(newResidualXNumPrecision, bigTen)
+
 	}
 
 	newResidualXNum, newResidualXNumPrecision, errX =
@@ -536,7 +672,6 @@ func (bLog BigIntMathLogarithms) BigIntGetNextDecimalDigit(
 			"%v", errX.Error())
 		return digit, newResidualXNum, newResidualXNumPrecision, err
 	}
-
 
 	/*
 	fmt.Println()
@@ -1033,6 +1168,7 @@ func (bLog BigIntMathLogarithms) NatLogOfXArithmeticGeometricMean(
 		return lnOfX, lnOfXPrecision, err
 	}
 
+	/*
 	biNumSDiv4, errX := BigIntNum{}.NewBigIntPrecision(fourDivS, fourDivSPrecision)
 
 	if errX != nil {
@@ -1043,6 +1179,7 @@ func (bLog BigIntMathLogarithms) NatLogOfXArithmeticGeometricMean(
 	fmt.Println("---------------------------------")
 	fmt.Println("SDiv4: ", biNumSDiv4.GetNumStr())
 	fmt.Println("---------------------------------")
+ */
 
 	// Uses maxInternal Precision
 	agMean, agMeanPrecision, _, _, _, errX :=
@@ -1058,7 +1195,7 @@ func (bLog BigIntMathLogarithms) NatLogOfXArithmeticGeometricMean(
 		err = fmt.Errorf(ePrefix + "%v", errX.Error())
 		return lnOfX, lnOfXPrecision, err
 	}
-
+	/*
 	biNumAgMean, errX := BigIntNum{}.NewBigIntPrecision(agMean, agMeanPrecision)
 
 	if errX != nil {
@@ -1070,7 +1207,7 @@ func (bLog BigIntMathLogarithms) NatLogOfXArithmeticGeometricMean(
 	fmt.Println("AgMean: ", biNumAgMean.GetNumStr())
 	fmt.Println("---------------------------------")
 
-
+	*/
 	denomFactorM, denomFactorMPrecision, errX :=
 		BigIntMathMultiply{}.BigIntMultiply(
 			big.NewInt(2),
@@ -1137,4 +1274,60 @@ func (bLog BigIntMathLogarithms) NatLogOfXArithmeticGeometricMean(
 	err = nil
 
 	return lnOfX, lnOfXPrecision, err
+}
+
+func (bLog BigIntMathLogarithms) codeDurationToStr(tDuration time.Duration) string {
+
+	tMinutes := int64(0)
+	tSeconds := int64(0)
+	tMilliseconds := int64(0)
+	tMicroseconds := int64(0)
+	tNanoseconds := int64(0)
+
+	i64TDur := int64(tDuration)
+	outStr := ""
+	totNanoSecs := int64(0)
+
+	if i64TDur >= int64(time.Minute) {
+
+		tMinutes = i64TDur / int64(time.Minute)
+		outStr += fmt.Sprintf("%v-Minutes ", tMinutes)
+		i64TDur -= tMinutes * int64(time.Minute)
+		totNanoSecs = tMinutes * int64(time.Minute)
+	}
+
+	if i64TDur >= int64(time.Second) {
+		tSeconds = i64TDur / int64(time.Second)
+		outStr += fmt.Sprintf("%v-Seconds ", tSeconds)
+		i64TDur -= tSeconds * int64(time.Second)
+		totNanoSecs += tSeconds * int64(time.Second)
+	}
+
+	if i64TDur >= int64(time.Millisecond) {
+		tMilliseconds = i64TDur / int64(time.Millisecond)
+		i64TDur -= tMilliseconds * int64(time.Millisecond)
+		totNanoSecs += tMilliseconds * int64(time.Millisecond)
+	}
+
+	if i64TDur >= int64(time.Microsecond) {
+		tMicroseconds = i64TDur / int64(time.Microsecond)
+		i64TDur -= tMicroseconds * int64(time.Microsecond)
+		totNanoSecs += tMicroseconds * int64(time.Microsecond)
+	}
+
+	tNanoseconds = i64TDur
+	totNanoSecs += tNanoseconds
+
+	if totNanoSecs != int64(tDuration) {
+		return fmt.Sprintf("Error: Total Calculated Duration= '%v'. Total Actual Duration= '%v'",
+			totNanoSecs, int64(tDuration))
+	}
+
+	outStr += fmt.Sprintf("%v-Milliseconds ", tMilliseconds)
+
+	outStr += fmt.Sprintf("%v-Microseconds ", tMicroseconds)
+
+	outStr += fmt.Sprintf("%v-Nanoseconds ", tNanoseconds)
+
+	return outStr
 }
