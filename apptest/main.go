@@ -10,34 +10,38 @@ import (
 
 func main () {
 
-	fde := mathops.GetEulersNum1k()
+	fde := mathops.GetEulersNum20k()
 
-	xNum := big.NewInt(2)
-	xNumPrecision := big.NewInt(0)
-	maxPrecision := big.NewInt(99)
+	base := big.NewInt(10)
+	basePrecision := big.NewInt(0)
+	xNum := fde.GetInteger()
+	xNumPrecision := fde.GetPrecisionBigInt()
+	maxPrecision := big.NewInt(1000)
 	factor := big.NewInt(4)
 	cycles := big.NewInt(0).Mul(maxPrecision, factor)
 	maxInternalPrecision := big.NewInt(0).Mul(cycles, factor)
 
 	expectedValue := "0.693147180559945309417232121458176568075500134360255254120680009493393621969694715605863326996418688"
 
-	m := big.NewInt(18)
-	s4DivPrecisionMaxInternalPrecision := big.NewInt(6000)
-	agMeanMaxInternalPrecision := big.NewInt(2000)
-	agMeanMaxOutputPrecision := big.NewInt(300)
-	piDivideMaxPrecision := big.NewInt(2000)
-	maxFinalResultPrecision := big.NewInt(99)
 
 
 	TestBinaryLogBaseOfX(
-		fde.GetInteger(),
-		fde.GetPrecisionBigInt(),
+		base,
+		basePrecision,
 		xNum,
 		xNumPrecision,
 		maxInternalPrecision,
 		maxPrecision,
 		cycles,
 		expectedValue)
+
+	/*
+		m := big.NewInt(18)
+	s4DivPrecisionMaxInternalPrecision := big.NewInt(6000)
+	agMeanMaxInternalPrecision := big.NewInt(2000)
+	agMeanMaxOutputPrecision := big.NewInt(300)
+	piDivideMaxPrecision := big.NewInt(2000)
+	maxFinalResultPrecision := big.NewInt(99)
 
 	TestNatLogOfXArithmeticGeometricMean(
 		xNum,
@@ -49,6 +53,7 @@ func main () {
 		piDivideMaxPrecision,
 		maxFinalResultPrecision,
 		expectedValue)
+	 */
 
 }
 
