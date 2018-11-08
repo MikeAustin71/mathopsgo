@@ -31,7 +31,7 @@ type BigIntMathLogarithms struct {
   YExponent 	BigIntNum
 }
 
-// LogBaseOfX - Computes the log[base](xNum). 'base' and 'xNum' are passed as
+// BigIntNumLogBaseOfX - Computes the log[base](xNum). 'base' and 'xNum' are passed as
 // BigIntNum types.
 //
 // 'maxPrecision' is an uint specifying the precision or integerNum of digits to the
@@ -70,187 +70,43 @@ type BigIntMathLogarithms struct {
 // base:  4
 // xNum:  1500000
 //
-func (bLog BigIntMathLogarithms) LogBaseOfX(
-	base, xNum BigIntNum, maxPrecision uint) (BigIntNum, error) {
+func (bLog BigIntMathLogarithms) BigIntNumLogBaseOfX(
+	base, xNum BigIntNum, maxPrecision uint) (result BigIntNum, err error) {
 
-	ePrefix := "BigIntMathLogarithms.LogBaseOfX() "
-	maxInternalPrecision := xNum.GetPrecisionUint() + uint(200)
-	bigZero := BigIntNum{}.NewZero(0)
+	ePrefix := "BigIntMathLogarithms.BigIntNumLogBaseOfX() "
 
-	digits, residualXNum, err := bLog.GetIntDigits(base, xNum, maxInternalPrecision)
+	biMaxPrecision := big.NewInt(0).SetUint64(uint64(maxPrecision))
+	factor := big.NewInt(4)
+	cycles := big.NewInt(0).Mul(biMaxPrecision, factor)
+	maxInternalPrecision := big.NewInt(0).Mul(cycles, factor)
 
-	if err != nil {
-		return bigZero,
-		fmt.Errorf(ePrefix + "- Error='%v'", err.Error() )
+
+	biResult, biResultPrecision, errX :=
+		BigIntMathLogarithms{}.LogBaseOfXByDivide(
+		base.GetIntegerValue(),
+		base.GetPrecisionBigInt(),
+		xNum.GetIntegerValue(),
+		xNum.GetPrecisionBigInt(),
+		maxInternalPrecision,
+		biMaxPrecision,
+		cycles)
+
+	if errX != nil {
+		err = fmt.Errorf(ePrefix +
+			"%v", errX.Error())
 	}
 
-	if residualXNum.IsZero() {
-		return digits, nil
+	result, errX =
+		BigIntNum{}.NewBigIntPrecision(
+			biResult,
+			biResultPrecision)
+
+	if errX != nil {
+		err = fmt.Errorf(ePrefix +
+			"%v", errX.Error())
 	}
-
-	result := digits.CopyOut()
-
-	digits.SetBigInt(big.NewInt(0), 0)
-
-	bigTen := BigIntNum{}.NewInt(10, 0)
-
-	residualXNum, err = BigIntMathPower{}.Pwr(residualXNum, bigTen, maxInternalPrecision)
-
-	if err != nil {
-		return bigZero,
-			fmt.Errorf(ePrefix +
-				"Error returned by BigIntMathPower{}.Pwr(residualXNum, bigTen, maxInternalPrecision). " +
-				"residualXNum='%v', maxPrecision='%v' Error='%v'",
-				residualXNum.GetNumStr(), maxPrecision, err.Error())
-	}
-
-	maxPrecision++
-
-	for x := uint(0); x < maxPrecision; x++ {
-
-		digits, residualXNum, err = bLog.GetNextDecimalDigit(base, residualXNum, maxInternalPrecision)
-
-		if err != nil {
-			return bigZero,
-				fmt.Errorf(ePrefix + "- Error='%v'", err.Error() )
-		}
-
-		result.MultiplyByTenToPowerAdd(1, digits)
-
-		if residualXNum.IsZero() {
-			result.SetPrecision(x+1)
-			return result, nil
-		}
-	}
-
-	result.ShiftPrecisionLeft(maxPrecision)
-
-	maxPrecision--
-
-	result.RoundToDecPlace(maxPrecision)
 
 	return result, nil
-}
-
-
-// GetIntDigits - This function is designed to return all the logarithm
-// digits associated with the integer portion of XNum.
-func (bLog BigIntMathLogarithms) GetIntDigits(
-		base, xNum BigIntNum,
-		maxPrecision uint) (digits, newResidualXNum BigIntNum, err error) {
-
-	ePrefix := "BigIntMathLogarithms.GetIntDigits() "
-	var errX error
-	digits = BigIntNum{}.NewZero(0)
-	newResidualXNum = xNum.CopyOut()
-	err = nil
-
-	for newResidualXNum.Cmp(base) > -1 {
-
-		newResidualXNum, errX =
-			BigIntMathDivide{}.BigIntNumFracQuotient(newResidualXNum, base, maxPrecision)
-
-		if errX != nil {
-			err =
-				fmt.Errorf(ePrefix +
-					"Error returned by BigIntMathDivide{}.BigIntNumFracQuotient(newResidualXNum, " +
-					"base, maxPrecision ) newResidualXNum='%v', base='%v' maxPrecision='%v' Error='%v' ",
-					newResidualXNum.GetNumStr(), base.GetNumStr(), maxPrecision, errX.Error())
-
-				return digits, newResidualXNum, err
-		}
-
-		digits.Increment()
-
-	}
-
-	return digits, newResidualXNum, nil
-}
-
-// GetNextDecimalDigit - Private function designed to return the next
-// logarithm digit to the right of the decimal place in XNum.
-func (bLog BigIntMathLogarithms) GetNextDecimalDigit(
-	base, residualXNum BigIntNum,
-	maxPrecision uint) (digit, newResidualXNum BigIntNum, err error) {
-
-	ePrefix := "BigIntMathLogarithms.GetNextDecimalDigit() "
-	digit = BigIntNum{}.NewZero(0)
-
-	newResidualXNum = residualXNum.CopyOut()
-	err = nil
-	var errX error
-	bigTen := BigIntNum{}.NewInt(10, 0)
-
-	if newResidualXNum.Cmp(base) == -1 {
-
-		newResidualXNum, errX = BigIntMathPower{}.Pwr(newResidualXNum, bigTen, maxPrecision)
-
-		if errX != nil {
-			err =
-				fmt.Errorf(ePrefix +
-					"Error returned by BigIntMathPower{}.Pwr(newResidualXNum, bigTen, maxPrecision) #1. " +
-					"newResidualXNum='%v', maxPrecision='%v' Error='%v'",
-					newResidualXNum.GetNumStr(), maxPrecision, errX.Error())
-			return digit, newResidualXNum, err
-		}
-
-		return digit, newResidualXNum, err
-	}
-
-	for newResidualXNum.Cmp(base) > -1 {
-
-		//fmt.Println("Before newResidualXNum= ", newResidualXNum.GetNumStr())
-
-		newResidualXNum, errX =
-			BigIntMathDivide{}.BigIntNumFracQuotient(newResidualXNum, base, maxPrecision)
-
-		if errX != nil {
-
-			err =
-				fmt.Errorf(ePrefix +
-					"Error returne by BigIntMathDivide{}.BigIntNumFracQuotient(newResidualXNum, " +
-					"base, maxPrecision ) newResidualXNum='%v', base='%v' maxPrecision='%v' Error='%v' ",
-					newResidualXNum.GetNumStr(), base.GetNumStr(), maxPrecision, errX.Error())
-
-			return digit, newResidualXNum, err
-		}
-
-		//fmt.Println("After newResidualXNum= ", newResidualXNum.GetNumStr())
-
-		digit.Increment()
-
-	}
-
-	//fmt.Println("   Last residualXNum: ", newResidualXNum.GetNumStr())
-
-
-	if !newResidualXNum.IsZero() && newResidualXNum.Cmp(base) == -1	{
-
-		newResidualXNum, errX = BigIntMathPower{}.Pwr(newResidualXNum, bigTen, maxPrecision)
-
-		if errX != nil {
-			err =
-				fmt.Errorf(ePrefix +
-					"Error returned by BigIntMathPower{}.Pwr(residualXNum, bigTen, maxPrecision) #2. " +
-					"residualXNum='%v', maxPrecision='%v' Error='%v'",
-					residualXNum.GetNumStr(), maxPrecision, errX.Error())
-			return digit, newResidualXNum, err
-		}
-
-	}
-
-	/*
-	fmt.Println()
-	fmt.Println("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx")
-	fmt.Println("          digit: ", digit.GetNumStr())
-	fmt.Println("         newResidualXNum: ", newResidualXNum.GetNumStr())
-	fmt.Println("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx")
-	fmt.Println()
-	*/
-
-	err = nil
-
-	return digit, newResidualXNum, err
 }
 
 //
@@ -263,7 +119,6 @@ func (bLog BigIntMathLogarithms) BigIntLogBaseOfX(
 	basePrecision,
 	xNum,
 	xNumPrecision,
-	maxInternalPrecision,
 	maxPrecision *big.Int) (logResult,
 													logResultPrecision *big.Int,
 													err error) {
@@ -336,356 +191,190 @@ func (bLog BigIntMathLogarithms) BigIntLogBaseOfX(
 		return logResult, logResultPrecision, err
 	}
 
-	if maxInternalPrecision == nil {
-		maxInternalPrecision = big.NewInt(0)
-	}
 
-	if maxPrecision.Cmp(maxInternalPrecision) > -1 {
-		maxInternalPrecision = maxInternalPrecision.Add(maxPrecision, big.NewInt(200))
-	}
-
-	bigOne := big.NewInt(1)
-
-	inverseBase, inverseBasePrecision, errX :=
-		BigIntMathDivide{}.BigIntFracQuotient(
-			bigOne,
-			bigZero,
-			base,
-			basePrecision,
-			maxInternalPrecision)
-
-	if errX != nil {
-
-		err = fmt.Errorf(ePrefix +
-			"%v", errX.Error())
-
-		return logResult, logResultPrecision, err
-	}
-
-	digits, residualXNum, residualXNumPrecision, errX :=
-		bLog.BigIntGetIntDigits(
-			base,
-			basePrecision,
-			inverseBase,
-			inverseBasePrecision,
-			xNum,
-			xNumPrecision,
-			maxInternalPrecision)
-
-	if errX != nil {
-		err = fmt.Errorf(ePrefix +
-			"%v", errX.Error())
-
-		return logResult, logResultPrecision, err
-	}
-
-
-	if residualXNum.Cmp(bigZero) == 0 {
-		logResult.Set(digits)
-		logResultPrecision.Set(bigZero)
-		err = nil
-		return logResult, logResultPrecision, err
-	}
-
-	result := big.NewInt(0).Set(digits)
-
-	digits = big.NewInt(0)
-
-	bigTen := big.NewInt(10)
-
-	residualXNum.Exp(residualXNum, bigTen, nil)
-	residualXNumPrecision.Mul(residualXNumPrecision, bigTen)
-
-
-	residualXNum, residualXNumPrecision, errX =
-		BigIntMath{}.RoundToMaxPrecision(
-			residualXNum,
-			residualXNumPrecision,
-			maxInternalPrecision)
-
-	if errX != nil {
-		err = fmt.Errorf(ePrefix +
-			"%v", errX.Error())
-
-		return logResult, logResultPrecision, err
-	}
-
-	newMaxPrecision := maxPrecision.Uint64()
-	newMaxPrecision++
-
-	for i := uint64(0); i < newMaxPrecision ; i++ {
-
-		digits, residualXNum, residualXNumPrecision, errX =
-			bLog.BigIntGetNextDecimalDigit(
-				base,
-				basePrecision,
-				inverseBase,
-				inverseBasePrecision,
-				residualXNum,
-				residualXNumPrecision,
-				maxInternalPrecision)
-
-		if errX != nil {
-			err = fmt.Errorf(ePrefix + "%v", errX.Error())
-			logResult.Set(bigZero)
-			logResultPrecision.Set(bigZero)
-			return logResult, logResultPrecision, err
-		}
-
-		// result is an integer value
-		result.Mul(result, bigTen)
-
-		result.Add(result, digits)
-
-		if residualXNum.Cmp(bigZero) == 0 {
-
-			logResult = big.NewInt(0).Set(result)
-			logResultPrecision =
-						big.NewInt(0).Add(
-							big.NewInt(0).SetUint64(i), bigOne	)
-
-			err = nil
-			return logResult, logResultPrecision, err
-		}
-
-	}
-
-	bigFive := big.NewInt(5)
-
-	if result.Cmp(bigZero) == -1 {
-		bigFive.Neg(bigFive)
-	}
-
-	result.Add(result, bigFive)
-
-	logResult = big.NewInt(0).Quo(result, bigTen)
-	logResultPrecision = big.NewInt(0).Set(maxPrecision)
+	bigFour := big.NewInt(4)
+	cycles := big.NewInt(0).Mul(maxPrecision, bigFour)
+	maxInternalPrecision := big.NewInt(0).Mul(cycles, bigFour )
+	logResult.Set(maxInternalPrecision)
 
 	err = nil
 
 	return logResult, logResultPrecision, err
 }
 
-func (bLog BigIntMathLogarithms) BigIntGetIntDigits(
+func (bLog BigIntMathLogarithms) LogBaseOfXByDivide(
 	base,
 	basePrecision,
-	inverseBase,
-	inverseBasePrecision,
-	XNum,
-	XNumPrecision,
-	maxPrecision *big.Int) (digits,
-													newResidualXNum,
-													newResidualXNumPrecision *big.Int, err error) {
+	xNum,
+	xNumPrecision,
+	maxInternalPrecision,
+	maxPrecision ,
+	cycles *big.Int) (logResult,
+													logResultPrecision *big.Int,
+													err error) {
 
-	ePrefix := "BigIntMathLogarithms.BigIntGetIntDigits() "
-	var errX error
-	digits = big.NewInt(0)
-	newResidualXNum = big.NewInt(0).Set(XNum)
-	newResidualXNumPrecision = big.NewInt(0).Set(XNumPrecision)
+	ePrefix := "BigIntMathLogarithms.LogBaseOfXByDivide() "
+	logResult = big.NewInt(0)
+	logResultPrecision = big.NewInt(0)
 	err = nil
-	bigZero := big.NewInt(0)
+	tXNum := big.NewInt(0).Set(xNum)
+	tXNumPrecision := big.NewInt(0).Set(xNumPrecision)
 	bigOne := big.NewInt(1)
+
+	iBase, iBasePrecision, errX :=
+		BigIntMathDivide{}.BigIntFracQuotient(
+			bigOne,
+			big.NewInt(0),
+			base,
+			basePrecision,
+			maxInternalPrecision)
+
+	if errX != nil {
+		err = fmt.Errorf(ePrefix + "%v", errX)
+		return logResult, logResultPrecision, err
+	}
+
+	ri := big.NewInt(0)
+	riPrecision := big.NewInt(0)
 
 	cmpNums :=
 		BigIntMath{}.BigIntPrecisionCmp(
-			newResidualXNum,
-			newResidualXNumPrecision,
+			tXNum,
+			tXNumPrecision,
 			base,
 			basePrecision)
 
+	for cmpNums == 1 {
 
-	for cmpNums > - 1{
-
-		newResidualXNum, newResidualXNumPrecision, errX =
+		tXNum, tXNumPrecision, errX =
 			BigIntMathMultiply{}.BigIntMultiply(
-				newResidualXNum,
-				newResidualXNumPrecision,
-				inverseBase,
-				inverseBasePrecision)
+				tXNum,
+				tXNumPrecision,
+				iBase,
+				iBasePrecision)
 
 		if errX != nil {
-			digits.Set(bigZero)
-			newResidualXNum.Set(bigZero)
-			newResidualXNumPrecision.Set(bigZero)
-
-			err = fmt.Errorf(ePrefix +
-				"'base' Division Error: %v", errX.Error())
-
-			return digits, newResidualXNum, newResidualXNumPrecision, err
+			err = fmt.Errorf(ePrefix + "%v", errX)
+			return logResult, logResultPrecision, err
 		}
 
-		digits.Add(digits, bigOne)
-
-		newResidualXNum, newResidualXNumPrecision, errX =
+		tXNum, tXNumPrecision, errX =
 			BigIntMath{}.RoundToMaxPrecision(
-				newResidualXNum,
-				newResidualXNumPrecision,
-				maxPrecision)
+				tXNum,
+				tXNumPrecision,
+				maxInternalPrecision)
 
 		if errX != nil {
-			digits.Set(bigZero)
-			newResidualXNum.Set(bigZero)
-			newResidualXNumPrecision.Set(bigZero)
-
 			err = fmt.Errorf(ePrefix +
-				"'base' Division Error: %v", errX.Error())
-
-			return digits, newResidualXNum, newResidualXNumPrecision, err
+				"%v", errX.Error())
+			return logResult, logResultPrecision, err
 		}
+
+		ri.Add(ri, bigOne	)
 
 		cmpNums =
 			BigIntMath{}.BigIntPrecisionCmp(
-				newResidualXNum,
-				newResidualXNumPrecision,
+				tXNum,
+				tXNumPrecision,
 				base,
 				basePrecision)
 	}
 
-	err = nil
+	p := big.NewInt(1)
+	pPrecision := big.NewInt(0)
+	oneHalf := big.NewInt(5)
+	oneHalfPrecision := big.NewInt(1)
+	uint64Cycles := cycles.Uint64()
 
-	return digits, newResidualXNum, newResidualXNumPrecision, err
-}
+	for i := uint64(0); i < uint64Cycles; i++ {
 
-func (bLog BigIntMathLogarithms) BigIntGetNextDecimalDigit(
-	base,
-	basePrecision,
-	inverseBase,
-	inverseBasePrecision,
-	residualXNum,
-	residualXNumPrecision,
-	maxPrecision *big.Int) (digit, newResidualXNum, newResidualXNumPrecision *big.Int, err error) {
-
-	ePrefix := "BigIntMathLogarithms.BigIntGetNextDecimalDigit() "
-	digit =big.NewInt(0)
-
-	newResidualXNum = big.NewInt(0).Set(residualXNum)
-	newResidualXNumPrecision = big.NewInt(0).Set(residualXNumPrecision)
-	err = nil
-	tBase := big.NewInt(0).Set(base)
-	tBasePrecision := big.NewInt(0).Set(basePrecision)
-
-	bigZero := big.NewInt(0)
-	var errX error
-	bigTen := big.NewInt(10)
-
-	cmpNums :=
-		BigIntMath{}.BigIntPrecisionCmp(
-			newResidualXNum,
-			newResidualXNumPrecision,
-			tBase,
-			tBasePrecision)
-
-	if cmpNums == -1 {
-
-		newResidualXNum.Exp(newResidualXNum, bigTen, nil)
-		newResidualXNumPrecision.Mul(newResidualXNumPrecision, bigTen)
-
-		newResidualXNum, newResidualXNumPrecision, errX =
-			BigIntMath{}.RoundToMaxPrecision(
-				newResidualXNum,
-				newResidualXNumPrecision,
-				maxPrecision)
-
-		if errX != nil {
-			digit.Set(bigZero)
-			newResidualXNum.Set(bigZero)
-			newResidualXNumPrecision.Set(bigZero)
-			err = fmt.Errorf(ePrefix +
-				"%v", errX.Error())
-			return digit, newResidualXNum, newResidualXNumPrecision, err
-		}
-
-		return digit, newResidualXNum, newResidualXNumPrecision, err
-	}
-
-	bigOne := big.NewInt(1)
-
-	for cmpNums > - 1 {
-
-		newResidualXNum, newResidualXNumPrecision, errX =
+		tXNum, tXNumPrecision, errX =
 			BigIntMathMultiply{}.BigIntMultiply(
-				newResidualXNum,
-				newResidualXNumPrecision,
-				inverseBase,
-				inverseBasePrecision)
+				tXNum,
+				tXNumPrecision,
+				tXNum,
+				tXNumPrecision)
 
 		if errX != nil {
-			digit.Set(bigZero)
-			newResidualXNum.Set(bigZero)
-			newResidualXNumPrecision.Set(bigZero)
-			err = fmt.Errorf(ePrefix +
-				"%v", errX.Error())
-			return digit, newResidualXNum, newResidualXNumPrecision, err
+			err = fmt.Errorf(ePrefix + "%v", errX)
+			return logResult, logResultPrecision, err
 		}
 
-		digit.Add(digit, bigOne)
+		p, pPrecision, errX =
+			BigIntMathMultiply{}.BigIntMultiply(
+				p,
+				pPrecision,
+				oneHalf,
+				oneHalfPrecision)
+
+		if errX != nil {
+			err = fmt.Errorf(ePrefix + "%v", errX)
+			return logResult, logResultPrecision, err
+		}
 
 		cmpNums =
 			BigIntMath{}.BigIntPrecisionCmp(
-				newResidualXNum,
-				newResidualXNumPrecision,
+				tXNum,
+				tXNumPrecision,
 				base,
 				basePrecision)
 
-		newResidualXNum, newResidualXNumPrecision, errX =
+		if cmpNums==1 {
+
+			ri, riPrecision, errX =
+				BigIntMathAdd{}.BigIntAdd(
+					ri,
+					riPrecision,
+					p,
+					pPrecision)
+
+			tXNum, tXNumPrecision, errX =
+				BigIntMathMultiply{}.BigIntMultiply(
+					tXNum,
+					tXNumPrecision,
+					iBase,
+					iBasePrecision)
+
+			if errX != nil {
+				err = fmt.Errorf(ePrefix + "%v", errX)
+				return logResult, logResultPrecision, err
+			}
+
+		}
+
+		tXNum, tXNumPrecision, errX =
 			BigIntMath{}.RoundToMaxPrecision(
-				newResidualXNum,
-				newResidualXNumPrecision,
-				maxPrecision)
+				tXNum,
+				tXNumPrecision,
+				maxInternalPrecision)
 
 		if errX != nil {
-			digit.Set(bigZero)
-			newResidualXNum.Set(bigZero)
-			newResidualXNumPrecision.Set(bigZero)
 			err = fmt.Errorf(ePrefix +
 				"%v", errX.Error())
-			return digit, newResidualXNum, newResidualXNumPrecision, err
+			return logResult, logResultPrecision, err
 		}
 
 	}
 
-	cmpNums =
-		BigIntMath{}.BigIntPrecisionCmp(
-			newResidualXNum,
-			newResidualXNumPrecision,
-			base,
-			basePrecision)
-
-	if newResidualXNum.Cmp(bigZero) != 0 && cmpNums == -1 {
-
-		newResidualXNum.Exp(newResidualXNum, bigTen, nil)
-		newResidualXNumPrecision.Mul(newResidualXNumPrecision, bigTen)
-
-	}
-
-	newResidualXNum, newResidualXNumPrecision, errX =
+	logResult, logResultPrecision, errX =
 		BigIntMath{}.RoundToMaxPrecision(
-			newResidualXNum,
-			newResidualXNumPrecision,
+			ri,
+			riPrecision,
 			maxPrecision)
 
 	if errX != nil {
-		digit.Set(bigZero)
-		newResidualXNum.Set(bigZero)
-		newResidualXNumPrecision.Set(bigZero)
+		logResult.Set(big.NewInt(0))
+		logResultPrecision.Set(big.NewInt(0))
 		err = fmt.Errorf(ePrefix +
 			"%v", errX.Error())
-		return digit, newResidualXNum, newResidualXNumPrecision, err
+		return logResult, logResultPrecision, err
 	}
-
-	/*
-	fmt.Println()
-	fmt.Println("---------------------------------------------------------------")
-	fmt.Println("          digit: ", digit.Text(10))
-	binNewResidualXNum, _ := BigIntNum{}.NewBigIntPrecision(newResidualXNum, newResidualXNumPrecision)
-	fmt.Println("         newResidualXNum: ", binNewResidualXNum.GetNumStr())
-	fmt.Println("---------------------------------------------------------------")
-	*/
 
 	err = nil
 
-	return digit, newResidualXNum, newResidualXNumPrecision, err
+	return logResult, logResultPrecision, err
 }
+
 
 // EPwrXFromMaclaurinSeries = Computes value of e^exponent where e is the mathematical
 // constant, "Euler's integerNum".
@@ -762,11 +451,11 @@ func (bLog BigIntMathLogarithms) EPwrXFromTaylorSeries(
 
 	ePrefix := "BigIntMathLogarithms.EPwrXFromTaylorSeries() "
 
-	e := eulersNumber1050.GetBigIntNum()
+	e := eulersNumber1k.GetBigIntNum()
 
 	if e.IsZero() {
 		return BigIntNum{}.NewZero(0),
-		errors.New(ePrefix + "eulersNumber1050 is ZERO!")
+		errors.New(ePrefix + "eulersNumber1k is ZERO!")
 	}
 
 	aValue, err := a.GetUInt()
@@ -850,7 +539,7 @@ func (bLog BigIntMathLogarithms) EPwrXFromTaylorSeriesFixedDecimal(
 
 	ePrefix := "BigIntMathLogarithms.EPwrXFromTaylorSeries() "
 
-	e := eulersNumber1050.GetFixedDecimal()
+	e := eulersNumber1k.GetFixedDecimal()
 
 	if e.IsZero() {
 		return BigIntFixedDecimal{}.NewZero(0),
@@ -942,7 +631,7 @@ func (bLog BigIntMathLogarithms) EPwrXFromTaylorSeriesBigInt(
 
 	ePrefix := "BigIntMathLogarithms.EPwrXFromTaylorSeries() "
 
-	e, ePrecision := eulersNumber1050.GetBigIntPrecision()
+	e, ePrecision := eulersNumber1k.GetBigIntPrecision()
 
 	bigZero := big.NewInt(0)
 

@@ -420,7 +420,7 @@ func (bIntMath BigIntMath) GetMagnitude(initialValue *big.Int) (magnitude *big.I
 	tenToPowerPrecision := big.NewInt(0)
 	bigZero := big.NewInt(0)
 
-	// Note: logTwo is a global constant
+	// Note: log10of2To20k is a global constant
 
 	var errx error
 
@@ -431,8 +431,8 @@ func (bIntMath BigIntMath) GetMagnitude(initialValue *big.Int) (magnitude *big.I
 		BigIntMathMultiply{}.BigIntMultiply(
 			big.NewInt(int64(bitLen)),
 			big.NewInt(0),
-			logTwo.GetInteger(),
-			logTwo.GetPrecisionBigInt())
+			log10of2To20k.GetInteger(),
+			log10of2To20k.GetPrecisionBigInt())
 
 	if errx != nil {
 		err = fmt.Errorf(ePrefix +

@@ -828,53 +828,6 @@ func TestFixDecNthRootNextIntBundle(
 
 }
 
-func LogTest001(base, xNum mathops.BigIntNum, maxPrecision uint, expectedLogValue string) {
-	// Logarithm test code
-
-
-	logValue, err := mathops.BigIntMathLogarithms{}.LogBaseOfX(base, xNum, maxPrecision)
-
-	if err != nil {
-		fmt.Printf("Error: error returned from BigIntMathLogarithms{}.GetIntDigits(" +
-			"base, xNum, maxPrecision) "+
-			"base='%v' xNum='%v' Error='%v'",
-			base.GetNumStr(), xNum.GetNumStr(), err.Error())
-
-		return
-	}
-
-	/*
-
-	checkValue, err := mathops.BigIntMathPower{}.Pwr(base, logValue, 50)
-
-	if err != nil {
-		fmt.Printf("Error returned by BigIntMathPower{}.Pwr(base, logValue, 50). ")
-		return
-	}
-	errorVariance := mathops.BigIntMathSubtract{}.SubtractBigIntNums(xNum, checkValue)
-
-	errSciNot, err := errorVariance.GetSciNotationStr(20)
-
-	if err != nil {
-		fmt.Printf("Error returned by errorVariance.GetSciNotationStr(20). ")
-		return
-	}
-	*/
-
-
-	fmt.Println("GetNextDecimalDigit() ")
-	fmt.Println("          log Value: ", logValue.GetNumStr())
-	fmt.Println(" Expected log Value: ", expectedLogValue)
-	//fmt.Println("					Check Value: ", checkValue.GetNumStr())
-	//fmt.Println("     Error Variance: ", errorVariance.GetNumStr())
-	//fmt.Println(" Error Sci-Notation: ", errSciNot)
-	fmt.Println("               base: ", base.GetNumStr())
-	fmt.Println("               xNum: ", xNum.GetNumStr())
-	fmt.Println("       maxPrecision: ", maxPrecision)
-
-
-}
-
 
 /*
 func main() {

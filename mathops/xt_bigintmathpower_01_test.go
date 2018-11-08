@@ -302,7 +302,7 @@ func TestBigIntMathPower_BigIntPwrIteration_09(t *testing.T) {
 
 func TestBigIntMathPower_BigIntPwrIteration_10(t *testing.T) {
 
-	eNum := eulersNumber1050
+	eNum := eulersNumber1k
 
 	base := eNum.GetInteger()
 
@@ -718,7 +718,7 @@ func TestBigIntMathPower_BigIntegerPwrIteration_09(t *testing.T) {
 
 func TestBigIntMathPower_BigIntegerPwrIteration_10(t *testing.T) {
 
-	eNum := eulersNumber1050
+	eNum := eulersNumber1k
 
 	base := eNum.GetInteger()
 

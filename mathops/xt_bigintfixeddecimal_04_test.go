@@ -765,7 +765,7 @@ func TestBigIntFixedDecimal_SetNumStr_16(t *testing.T) {
 func TestBigIntFixedDecimal_SetNumStr_17(t *testing.T) {
 
 	origNumStr := "98123456789"
-	expectedPrecision := uint(1050)
+	expectedPrecision := uint(1024)
 
 	fixedDec, err := BigIntFixedDecimal{}.NewNumStr(origNumStr)
 
@@ -773,15 +773,19 @@ func TestBigIntFixedDecimal_SetNumStr_17(t *testing.T) {
 		t.Errorf("Error returned by %v", err.Error() )
 	}
 
-	fixedDec.SetNumStr(EulersNum1050Str)
+	err = fixedDec.SetNumStr(EulersNum50kStr)
 
 	if err!= nil {
 		t.Errorf("Error returned by %v", err.Error() )
 	}
 
-	if EulersNum1050Str != fixedDec.GetNumStr() {
+	fixedDec.RoundToDecPlace(expectedPrecision)
+
+	fdEuler1k := GetEulersNum1k()
+
+	if fdEuler1k.GetNumStr() != fixedDec.GetNumStr() {
 		t.Errorf("Error: Expected result='%v'. Instead, result='%v'",
-			EulersNum1050Str, fixedDec.GetNumStr())
+			fdEuler1k.GetNumStr(), fixedDec.GetNumStr())
 	}
 
 	if expectedPrecision != fixedDec.GetPrecision() {

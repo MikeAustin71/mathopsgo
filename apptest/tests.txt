@@ -59,7 +59,7 @@
 === RUN   TestBigIntFixedDecimal_NewNumStr_16
 --- PASS: TestBigIntFixedDecimal_NewNumStr_16 (0.00s)
 === RUN   TestBigIntFixedDecimal_NewNumStr_17
---- PASS: TestBigIntFixedDecimal_NewNumStr_17 (0.00s)
+--- PASS: TestBigIntFixedDecimal_NewNumStr_17 (0.11s)
 === RUN   TestBigIntFixedDecimal_NewNumStr_18
 --- PASS: TestBigIntFixedDecimal_NewNumStr_18 (0.00s)
 === RUN   TestBigIntFixedDecimal_Ceiling_01
@@ -415,7 +415,7 @@
 === RUN   TestBigIntFixedDecimal_SetNumStr_16
 --- PASS: TestBigIntFixedDecimal_SetNumStr_16 (0.00s)
 === RUN   TestBigIntFixedDecimal_SetNumStr_17
---- PASS: TestBigIntFixedDecimal_SetNumStr_17 (0.00s)
+--- PASS: TestBigIntFixedDecimal_SetNumStr_17 (0.09s)
 === RUN   TestBigIntFixedDecimal_SetNumStr_18
 --- PASS: TestBigIntFixedDecimal_SetNumStr_18 (0.00s)
 === RUN   TestBigIntFixedDecimal_TrimTrailingFracZeros_01
@@ -487,7 +487,7 @@
 === RUN   TestBigIntPair_Decimal_02
 --- PASS: TestBigIntPair_Decimal_02 (0.00s)
 === RUN   TestBigIntMath_ArithmeticGeometricMean_01
---- PASS: TestBigIntMath_ArithmeticGeometricMean_01 (0.01s)
+--- PASS: TestBigIntMath_ArithmeticGeometricMean_01 (0.00s)
 === RUN   TestBigIntMath_GetMagnitude_01
 --- PASS: TestBigIntMath_GetMagnitude_01 (0.00s)
 === RUN   TestBigIntMath_GetMagnitude_02
@@ -795,7 +795,7 @@
 === RUN   TestBigIntMathDivide_BigIntDividedByTwoToPower_06
 --- PASS: TestBigIntMathDivide_BigIntDividedByTwoToPower_06 (0.00s)
 === RUN   TestBigIntMathDivide_BigIntFracQuotient_01
---- PASS: TestBigIntMathDivide_BigIntFracQuotient_01 (0.01s)
+--- PASS: TestBigIntMathDivide_BigIntFracQuotient_01 (0.00s)
 === RUN   TestBigIntMathDivide_BigIntFracQuotient_02
 --- PASS: TestBigIntMathDivide_BigIntFracQuotient_02 (0.00s)
 === RUN   TestBigIntMathDivide_BigIntFracQuotient_03
@@ -1659,7 +1659,7 @@
 === RUN   TestBigIntMathNthRoot_GetNthRootBigNum_16
 --- PASS: TestBigIntMathNthRoot_GetNthRootBigNum_16 (0.00s)
 === RUN   TestBigIntMathNthRoot_GetNthRootBigNum_17
---- PASS: TestBigIntMathNthRoot_GetNthRootBigNum_17 (0.00s)
+--- PASS: TestBigIntMathNthRoot_GetNthRootBigNum_17 (0.01s)
 === RUN   TestBigIntMathNthRoot_GetNthRootBigNum_18
 --- PASS: TestBigIntMathNthRoot_GetNthRootBigNum_18 (0.00s)
 === RUN   TestBigIntMathNthRoot_GetNthRootBigNum_19
@@ -1679,7 +1679,7 @@
 === RUN   TestBigIntMathNthRoot_GetNthRootBigNum_26
 --- PASS: TestBigIntMathNthRoot_GetNthRootBigNum_26 (0.00s)
 === RUN   TestBigIntMathNthRoot_GetNthRootBigNum_27
---- PASS: TestBigIntMathNthRoot_GetNthRootBigNum_27 (0.12s)
+--- PASS: TestBigIntMathNthRoot_GetNthRootBigNum_27 (0.10s)
 === RUN   TestBigIntMathPower_BigIntPwrIteration_01
 --- PASS: TestBigIntMathPower_BigIntPwrIteration_01 (0.00s)
 === RUN   TestBigIntMathPower_BigIntPwrIteration_02
@@ -1885,7 +1885,7 @@
 === RUN   TestBigIntMathPower_Pwr_20
 --- PASS: TestBigIntMathPower_Pwr_20 (0.00s)
 === RUN   TestBigIntMathPower_Pwr_21
---- PASS: TestBigIntMathPower_Pwr_21 (0.00s)
+--- PASS: TestBigIntMathPower_Pwr_21 (0.01s)
 === RUN   TestBigIntMathPower_Pwr_22
 --- PASS: TestBigIntMathPower_Pwr_22 (0.03s)
 === RUN   TestBigIntMathPower_Pwr_23
@@ -2785,7 +2785,7 @@
 === RUN   TestBigIntNum_NewNumStr_16
 --- PASS: TestBigIntNum_NewNumStr_16 (0.00s)
 === RUN   TestBigIntNum_NewNumStr_17
---- PASS: TestBigIntNum_NewNumStr_17 (0.00s)
+--- PASS: TestBigIntNum_NewNumStr_17 (0.07s)
 === RUN   TestBigIntNum_NewNumStr_18
 --- PASS: TestBigIntNum_NewNumStr_18 (0.00s)
 === RUN   TestBigIntNum_NewNumStrWithNumSeps_01
@@ -2957,7 +2957,7 @@
 === RUN   TestBigIntNum_SetNumStr_16
 --- PASS: TestBigIntNum_SetNumStr_16 (0.00s)
 === RUN   TestBigIntNum_SetNumStr_17
---- PASS: TestBigIntNum_SetNumStr_17 (0.00s)
+--- PASS: TestBigIntNum_SetNumStr_17 (0.19s)
 === RUN   TestBigIntNum_SetNumStr_18
 --- PASS: TestBigIntNum_SetNumStr_18 (0.00s)
 === RUN   TestBigIntNum_ShiftPrecisionLeft_01
@@ -3383,11 +3383,11 @@
 === RUN   TestDecimal_NumStrPrecisionToDecimal_09
 --- PASS: TestDecimal_NumStrPrecisionToDecimal_09 (0.00s)
 === RUN   TestDecimal_Pow_01
---- PASS: TestDecimal_Pow_01 (0.00s)
+--- PASS: TestDecimal_Pow_01 (0.01s)
 === RUN   TestDecimal_Pow_02
 --- PASS: TestDecimal_Pow_02 (0.01s)
 === RUN   TestDecimal_Pow_03
---- PASS: TestDecimal_Pow_03 (0.01s)
+--- PASS: TestDecimal_Pow_03 (0.02s)
 === RUN   TestDecimal_Pow_04
 --- PASS: TestDecimal_Pow_04 (0.00s)
 === RUN   TestDecimal_Pow_05
@@ -3643,13 +3643,13 @@
 === RUN   TestFixedDecimalNthRoot_CalculateNegativeFractionalNthRoot_02
 --- PASS: TestFixedDecimalNthRoot_CalculateNegativeFractionalNthRoot_02 (0.00s)
 === RUN   TestFixedDecimalNthRoot_CalculateNegativeFractionalNthRoot_03
---- PASS: TestFixedDecimalNthRoot_CalculateNegativeFractionalNthRoot_03 (0.86s)
+--- PASS: TestFixedDecimalNthRoot_CalculateNegativeFractionalNthRoot_03 (0.82s)
 === RUN   TestFixedDecimalNthRoot_CalculateNegativeFractionalNthRoot_04
---- PASS: TestFixedDecimalNthRoot_CalculateNegativeFractionalNthRoot_04 (0.89s)
+--- PASS: TestFixedDecimalNthRoot_CalculateNegativeFractionalNthRoot_04 (0.84s)
 === RUN   TestFixedDecimalNthRoot_CalculateNegativeFractionalNthRoot_05
 --- PASS: TestFixedDecimalNthRoot_CalculateNegativeFractionalNthRoot_05 (0.00s)
 === RUN   TestFixedDecimalNthRoot_CalculateNegativeFractionalNthRoot_06
---- PASS: TestFixedDecimalNthRoot_CalculateNegativeFractionalNthRoot_06 (0.00s)
+--- PASS: TestFixedDecimalNthRoot_CalculateNegativeFractionalNthRoot_06 (0.01s)
 === RUN   TestFixedDecimalNthRoot_CalculateNegativeFractionalNthRoot_07
 --- PASS: TestFixedDecimalNthRoot_CalculateNegativeFractionalNthRoot_07 (0.01s)
 === RUN   TestFixedDecimalNthRoot_CalculateNegativeFractionalNthRoot_08
@@ -5003,7 +5003,7 @@
 === RUN   TestNthRootOp_GetNthRootIntAry_26
 --- PASS: TestNthRootOp_GetNthRootIntAry_26 (0.00s)
 === RUN   TestNthRootOp_GetNthRootIntAry_27
---- PASS: TestNthRootOp_GetNthRootIntAry_27 (2.95s)
+--- PASS: TestNthRootOp_GetNthRootIntAry_27 (3.04s)
 === RUN   TestNthRootOp_GetSquareRootFloat32_01
 --- PASS: TestNthRootOp_GetSquareRootFloat32_01 (0.00s)
 === RUN   TestNthRootOp_GetSquareRootFloat64_01
@@ -7195,4 +7195,4 @@
 === RUN   TestStrMathOp_SubtractN1N2_19
 --- PASS: TestStrMathOp_SubtractN1N2_19 (0.00s)
 PASS
-ok  	MikeAustin71/mathopsgo/mathops	11.427s
+ok  	MikeAustin71/mathopsgo/mathops	12.009s

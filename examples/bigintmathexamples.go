@@ -532,10 +532,10 @@ func ExampleSubtraction_02() {
 	fmt.Println("Original Minuend: ", iaMinuend.GetNumStr())
 	fmt.Println("        bigISub0: ", bigISub0.GetNumStr())
 	fmt.Println("         Result0: ", result.GetNumStr())
-	iaMinuend.SubtractFromThis(&iaSub0)
+	_ = iaMinuend.SubtractFromThis(&iaSub0)
 	fmt.Println("      ia Result0: ", iaMinuend.GetNumStr())
 
-	iaMinuend.SubtractFromThis(&iaSub1)
+	_ = iaMinuend.SubtractFromThis(&iaSub1)
 	bPair = mathops.BigIntPair{}.NewBigIntNum(result, bigISub1)
 	result = mathops.BigIntMathSubtract{}.SubtractPair(bPair)
 
@@ -543,7 +543,7 @@ func ExampleSubtraction_02() {
 	fmt.Println("         Result1: ", result.GetNumStr())
 	fmt.Println("      ia Result1: ", iaMinuend.GetNumStr())
 
-	iaMinuend.SubtractFromThis(&iaSub2)
+	_ = iaMinuend.SubtractFromThis(&iaSub2)
 	bPair = mathops.BigIntPair{}.NewBigIntNum(result, bigISub2)
 	result = mathops.BigIntMathSubtract{}.SubtractPair(bPair)
 
@@ -551,7 +551,7 @@ func ExampleSubtraction_02() {
 	fmt.Println("        Result2: ", result.GetNumStr())
 	fmt.Println("     ia Result2: ", iaMinuend.GetNumStr())
 
-	iaMinuend.SubtractFromThis(&iaSub3)
+	_ = iaMinuend.SubtractFromThis(&iaSub3)
 	bPair = mathops.BigIntPair{}.NewBigIntNum(result, bigISub3)
 	result = mathops.BigIntMathSubtract{}.SubtractPair(bPair)
 
@@ -559,7 +559,7 @@ func ExampleSubtraction_02() {
 	fmt.Println("        Result3: ", result.GetNumStr())
 	fmt.Println("     ia Result3: ", iaMinuend.GetNumStr())
 
-	iaMinuend.SubtractFromThis(&iaSub4)
+	_ = iaMinuend.SubtractFromThis(&iaSub4)
 	bPair = mathops.BigIntPair{}.NewBigIntNum(result, bigISub4)
 	result = mathops.BigIntMathSubtract{}.SubtractPair(bPair)
 
@@ -567,7 +567,7 @@ func ExampleSubtraction_02() {
 	fmt.Println("        Result4: ", result.GetNumStr())
 	fmt.Println("     ia Result4: ", iaMinuend.GetNumStr())
 
-	iaMinuend.SubtractFromThis(&iaSub5)
+	_ = iaMinuend.SubtractFromThis(&iaSub5)
 	bPair = mathops.BigIntPair{}.NewBigIntNum(result, bigISub5)
 	result = mathops.BigIntMathSubtract{}.SubtractPair(bPair)
 
