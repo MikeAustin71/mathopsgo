@@ -86,7 +86,7 @@ func (bAdd BigIntMathAdd) AddBigIntNumArray(bNums []BigIntNum) BigIntNum {
 		finalResult = bAdd.addPairNoNumSeps(bPair)
 	}
 
-	finalResult.SetNumericSeparatorsDto(numSeps)
+	_ = finalResult.SetNumericSeparatorsDto(numSeps)
 
 	return finalResult
 }
@@ -135,7 +135,7 @@ func (bAdd BigIntMathAdd) AddBigIntNumOutputToArray(
 
 		result := bAdd.addPairNoNumSeps(bPair)
 
-		result.SetNumericSeparatorsDto(numSeps)
+		_ = result.SetNumericSeparatorsDto(numSeps)
 
 		resultArray[i] = result.CopyOut()
 
@@ -171,7 +171,7 @@ func (bAdd BigIntMathAdd) AddBigIntNumSeries(bNums ...BigIntNum) BigIntNum {
 		finalResult = bAdd.addPairNoNumSeps(bPair)
 	}
 
-	finalResult.SetNumericSeparatorsDto(numSeps)
+	_ = finalResult.SetNumericSeparatorsDto(numSeps)
 
 	return finalResult
 }
@@ -1412,7 +1412,7 @@ func (bAdd BigIntMathAdd) AddPair(bPair BigIntPair) BigIntNum {
 
 	finalResult := bAdd.addPairNoNumSeps(bPair)
 
-	finalResult.SetNumericSeparatorsDto(numSeps)
+	_ = finalResult.SetNumericSeparatorsDto(numSeps)
 
 	return finalResult
 }
@@ -1534,7 +1534,7 @@ func (bAdd BigIntMathAdd) BigIntAdd(
 
 	if b1Precision.Cmp(b2Precision) == 0 {
 		total = big.NewInt(0).Add(b1, b2)
-		totalPrecision = b1Precision
+		totalPrecision = big.NewInt(0).Set(b1Precision)
 
 	} else if b1Precision.Cmp(b2Precision) == 1  {
 		// b1Precision > b2Precision

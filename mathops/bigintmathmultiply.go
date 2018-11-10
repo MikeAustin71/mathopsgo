@@ -141,6 +141,7 @@ func (bMultiply BigIntMathMultiply) BigIntMultiply(
 
 	// Delete trailing fractional zeros
 	// If productPrecision > 0
+
 	if productPrecision.Cmp(bigZero) == 1 {
 		bigOne := big.NewInt(1)
 		scrap := big.NewInt(0)
@@ -154,6 +155,7 @@ func (bMultiply BigIntMathMultiply) BigIntMultiply(
 			newProduct, mod10 = big.NewInt(0).QuoRem(product, biBase10, scrap)
 		}
 	}
+
 
 	err = nil
 
@@ -750,7 +752,7 @@ func (bMultiply BigIntMathMultiply) MultiplyBigIntNumArray(
 		finalResult = bMultiply.multiplyPairNoNumSeps(bPair)
 	}
 
-	finalResult.SetNumericSeparatorsDto(numSeps)
+	_ = finalResult.SetNumericSeparatorsDto(numSeps)
 
 	return finalResult
 }
@@ -809,7 +811,7 @@ func (bMultiply BigIntMathMultiply) MultiplyBigIntNumOutputToArray(
 		bPair := BigIntPair{}.NewBigIntNum(bINumInterimResult, multiplicands[i])
 
 		resultArray[i] = bMultiply.multiplyPairNoNumSeps(bPair)
-		resultArray[i].SetNumericSeparatorsDto(numSeps)
+		_=resultArray[i].SetNumericSeparatorsDto(numSeps)
 	}
 
 	return resultArray
@@ -859,7 +861,7 @@ func (bMultiply BigIntMathMultiply) MultiplyBigIntNumSeries(
 		finalResult = bMultiply.multiplyPairNoNumSeps(bPair)
 	}
 
-	finalResult.SetNumericSeparatorsDto(numSeps)
+	_ = finalResult.SetNumericSeparatorsDto(numSeps)
 
 	return finalResult
 }
@@ -880,7 +882,7 @@ func (bMultiply BigIntMathMultiply) MultiplyBigIntNumByTwo(base BigIntNum) BigIn
 
 	bINumResult := BigIntNum{}.NewBigInt(result, base.GetPrecisionUint())
 
-	bINumResult.SetNumericSeparatorsDto(base.GetNumericSeparatorsDto())
+	_ = bINumResult.SetNumericSeparatorsDto(base.GetNumericSeparatorsDto())
 
 	return bINumResult
 }
@@ -901,7 +903,7 @@ func (bMultiply BigIntMathMultiply) MultiplyBigIntNumByTwoToPower(base BigIntNum
 
 	bINumResult := BigIntNum{}.NewBigInt(result, base.GetPrecisionUint())
 
-	bINumResult.SetNumericSeparatorsDto(base.GetNumericSeparatorsDto())
+	_ = bINumResult.SetNumericSeparatorsDto(base.GetNumericSeparatorsDto())
 
 	return bINumResult
 }
@@ -2287,7 +2289,7 @@ func (bMultiply BigIntMathMultiply) MultiplyPair(bPair BigIntPair) BigIntNum {
 
 	finalResult := bMultiply.multiplyPairNoNumSeps(bPair)
 
-	finalResult.SetNumericSeparatorsDto(numSeps)
+	_ = finalResult.SetNumericSeparatorsDto(numSeps)
 
 	return finalResult
 }

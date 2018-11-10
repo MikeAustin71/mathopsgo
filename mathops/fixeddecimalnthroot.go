@@ -1096,8 +1096,8 @@ func (fdNthRoot *FixedDecimalNthRoot) CalculateRoot() (result *big.Int, resultPr
 	// Round to maxPrecision decimal places.
 	y.Add(y, big.NewInt(5))
 	y.Quo(y, fdNthRoot.ten)
-	fdNthRoot.Root.Set(y)
-	fdNthRoot.RootPrecision.Set(fdNthRoot.maxPrecision)
+	fdNthRoot.Root = big.NewInt(0).Set(y)
+	fdNthRoot.RootPrecision = big.NewInt(0).Set(fdNthRoot.maxPrecision)
 
 	uintMax := big.NewInt(0).SetUint64(math.MaxUint32)
 
@@ -1110,8 +1110,9 @@ func (fdNthRoot *FixedDecimalNthRoot) CalculateRoot() (result *big.Int, resultPr
 			return result, resultPrecision, err
 	}
 
-	result.Set(fdNthRoot.Root)
-	resultPrecision.Set(fdNthRoot.maxPrecision)
+	result, resultPrecision, errx =
+		BigIntMath{}.RoundToMaxPrecision(fdNthRoot.Root, fdNthRoot.RootPrecision, fdNthRoot.maxPrecision)
+
 
 	bigZero := big.NewInt(0)
 
