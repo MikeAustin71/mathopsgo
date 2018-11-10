@@ -262,7 +262,8 @@ func (bLog BigIntMathLogarithms) LogBaseOfXByDivide(
 			BigIntMath{}.RoundToMaxPrecision(
 				tXNum,
 				tXNumPrecision,
-				maxInternalPrecision)
+				maxInternalPrecision,
+				true)
 
 		if errX != nil {
 			err = fmt.Errorf(ePrefix +
@@ -346,7 +347,8 @@ func (bLog BigIntMathLogarithms) LogBaseOfXByDivide(
 			BigIntMath{}.RoundToMaxPrecision(
 				tXNum,
 				tXNumPrecision,
-				maxInternalPrecision)
+				maxInternalPrecision,
+				true)
 
 		if errX != nil {
 			err = fmt.Errorf(ePrefix +
@@ -360,7 +362,8 @@ func (bLog BigIntMathLogarithms) LogBaseOfXByDivide(
 		BigIntMath{}.RoundToMaxPrecision(
 			ri,
 			riPrecision,
-			maxPrecision)
+			maxPrecision,
+			true)
 
 	if errX != nil {
 		logResult.Set(big.NewInt(0))
@@ -749,7 +752,7 @@ func (bLog BigIntMathLogarithms) EPwrXFromTaylorSeriesBigInt(
 
 	}
 
-	xNum, xNumPrecision, errX = BigIntMath{}.RoundToMaxPrecision(xNum, xNumPrecision, maxPrecision)
+	xNum, xNumPrecision, errX = BigIntMath{}.RoundToMaxPrecision(xNum, xNumPrecision, maxPrecision, true)
 
 	if errX != nil {
 		xNum = big.NewInt(0)
@@ -848,7 +851,8 @@ func (bLog BigIntMathLogarithms) NatLogOfXArithmeticGeometricMean(
 		BigIntMath{}.RoundToMaxPrecision(
 			s,
 			sPrecision,
-			big.NewInt(0).Add(s4DivPrecisionMaxInternalPrecision, big.NewInt(20)))
+			big.NewInt(0).Add(s4DivPrecisionMaxInternalPrecision, big.NewInt(20)),
+			true)
 
 	/*
 	s, sPrecision, errX :=
@@ -988,7 +992,12 @@ func (bLog BigIntMathLogarithms) NatLogOfXArithmeticGeometricMean(
 	}
 
 	if lnOfXPrecision.Cmp(maxFinalResultPrecision) == 1 {
-		lnOfX, lnOfXPrecision, errX = BigIntMath{}.RoundToMaxPrecision(lnOfX, lnOfXPrecision, maxFinalResultPrecision)
+		lnOfX, lnOfXPrecision, errX =
+			BigIntMath{}.RoundToMaxPrecision(
+				lnOfX,
+				lnOfXPrecision,
+				maxFinalResultPrecision,
+				true)
 
 		if errX != nil {
 			lnOfX = big.NewInt(0)

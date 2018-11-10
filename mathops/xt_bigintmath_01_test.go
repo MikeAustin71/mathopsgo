@@ -653,7 +653,7 @@ func TestBigIntMath_RoundToMaxPrecision_01(t *testing.T) {
 	expectedResult := "0.0000076293945313"
 
 	result, resultPrecision, err :=
-		BigIntMath{}.RoundToMaxPrecision(num1, num1Precision, maxPrecision)
+		BigIntMath{}.RoundToMaxPrecision(num1, num1Precision, maxPrecision, false)
 
 	if err != nil {
 		t.Errorf("Error returned from Round to Max Precision: %v", err.Error())
@@ -688,7 +688,7 @@ func TestBigIntMath_RoundToMaxPrecision_02(t *testing.T) {
 	expectedResult := "0.00276213586400995126719079829"
 
 	result, resultPrecision, err :=
-		BigIntMath{}.RoundToMaxPrecision(num1, num1Precision, maxPrecision)
+		BigIntMath{}.RoundToMaxPrecision(num1, num1Precision, maxPrecision, false)
 
 	if err != nil {
 		t.Errorf("Error returned from Round to Max Precision: %v", err.Error())
@@ -724,7 +724,7 @@ func TestBigIntMath_RoundToMaxPrecision_03(t *testing.T) {
 	expectedResult := "0.002762135864009951267190798289"
 
 	result, resultPrecision, err :=
-		BigIntMath{}.RoundToMaxPrecision(num1, num1Precision, maxPrecision)
+		BigIntMath{}.RoundToMaxPrecision(num1, num1Precision, maxPrecision, false)
 
 	if err != nil {
 		t.Errorf("Error returned from Round to Max Precision: %v", err.Error())
@@ -760,7 +760,7 @@ func TestBigIntMath_RoundToMaxPrecision_04(t *testing.T) {
 	expectedResult := "-0.002762135864009951267190798289"
 
 	result, resultPrecision, err :=
-		BigIntMath{}.RoundToMaxPrecision(num1, num1Precision, maxPrecision)
+		BigIntMath{}.RoundToMaxPrecision(num1, num1Precision, maxPrecision, false)
 
 	if err != nil {
 		t.Errorf("Error returned from Round to Max Precision: %v", err.Error())
@@ -795,7 +795,7 @@ func TestBigIntMath_RoundToMaxPrecision_05(t *testing.T) {
 	expectedResult := "-0.00276213586400995126719079829"
 
 	result, resultPrecision, err :=
-		BigIntMath{}.RoundToMaxPrecision(num1, num1Precision, maxPrecision)
+		BigIntMath{}.RoundToMaxPrecision(num1, num1Precision, maxPrecision, false)
 
 	if err != nil {
 		t.Errorf("Error returned from Round to Max Precision: %v", err.Error())
@@ -814,6 +814,66 @@ func TestBigIntMath_RoundToMaxPrecision_05(t *testing.T) {
 	}
 
 }
+
+func TestBigIntMath_RoundToMaxPrecision_06(t *testing.T) {
+
+	num1 := big.NewInt(1230000)
+
+	num1Precision := big.NewInt(5)
+	// "12.30000" -> "
+	maxPrecision := big.NewInt(3)
+	expectedResult := "12.3"
+
+	result, resultPrecision, err :=
+		BigIntMath{}.RoundToMaxPrecision(num1, num1Precision, maxPrecision, true)
+
+	if err != nil {
+		t.Errorf("Error returned from Round to Max Precision: %v", err.Error())
+	}
+
+	binResult, err := BigIntNum{}.NewBigIntPrecision(result, resultPrecision)
+
+	if err != nil {
+		t.Errorf("Error returned from BigIntNum{}.NewBigIntPrecision: %v",
+			err.Error())
+	}
+
+	if expectedResult != binResult.GetNumStr() {
+		t.Errorf("Error: Expected result ='%v'. Instead, result='%v'. ",
+			expectedResult, binResult.GetNumStr())
+	}
+
+}
+
+func TestBigIntMath_RoundToMaxPrecision_07(t *testing.T) {
+
+	num1 := big.NewInt(-1230000)
+
+	num1Precision := big.NewInt(5)
+	// "-12.30000" -> "
+	maxPrecision := big.NewInt(3)
+	expectedResult := "-12.3"
+
+	result, resultPrecision, err :=
+		BigIntMath{}.RoundToMaxPrecision(num1, num1Precision, maxPrecision, true)
+
+	if err != nil {
+		t.Errorf("Error returned from Round to Max Precision: %v", err.Error())
+	}
+
+	binResult, err := BigIntNum{}.NewBigIntPrecision(result, resultPrecision)
+
+	if err != nil {
+		t.Errorf("Error returned from BigIntNum{}.NewBigIntPrecision: %v",
+			err.Error())
+	}
+
+	if expectedResult != binResult.GetNumStr() {
+		t.Errorf("Error: Expected result ='%v'. Instead, result='%v'. ",
+			expectedResult, binResult.GetNumStr())
+	}
+}
+
 
 func TestBigIntMath_TruncateToMaxPrecision_01(t *testing.T) {
 	num1 := big.NewInt(762939453125)

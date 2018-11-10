@@ -243,7 +243,7 @@ func (bIntMath BigIntMath) ArithmeticGeometricMean(
 		*/
 
 		gCom, gComPrecision, errX =
-			BigIntMath{}.RoundToMaxPrecision(gCom, gComPrecision, maxInternalPrecision)
+			BigIntMath{}.RoundToMaxPrecision(gCom, gComPrecision, maxInternalPrecision, true)
 
 		if errX != nil {
 			err = fmt.Errorf(ePrefix + "%v",errX.Error())
@@ -254,7 +254,7 @@ func (bIntMath BigIntMath) ArithmeticGeometricMean(
 		aPrecision.Add(aComPrecision, oneHalfFactorPrecision)
 
 		a, aPrecision, errX =
-			BigIntMath{}.RoundToMaxPrecision(a, aPrecision, maxInternalPrecision)
+			BigIntMath{}.RoundToMaxPrecision(a, aPrecision, maxInternalPrecision, true)
 
 		if errX != nil {
 			err = fmt.Errorf(ePrefix + "%v",errX.Error())
@@ -631,6 +631,23 @@ func (bIntMath BigIntMath) GetMagnitude(initialValue *big.Int) (magnitude *big.I
 // value will be rounded to 'maxPrecision' decimal digits to the right of
 // the decimal place.
 //
+// Input Parameters:
+// =================
+// bigIntNum 					*big.Int	- The integer number of the numeric value to
+//                          			be rounded.
+//
+// bigIntNumPrecision	*big.Int	- The precision specification associated with
+//                                'bigIntNum'. The precision specification defines
+//                                the number of digits to the right of the decimal
+//                                place in 'bigIntNum'.
+//
+// trimTrailingFracZeros bool		- If trailing fractional zeros are present in the
+//                                rounded result, this boolean value will determine
+//                                whether the trailing zeros will be returned in
+//                                final result. 'true' specifies that all trailing
+//                                fractional zeros will be deleted.
+//                                Example: '1.23000'  converted to '1.23'
+//
 // Examples:
 // =========
 //
@@ -641,7 +658,8 @@ func (bIntMath BigIntMath) GetMagnitude(initialValue *big.Int) (magnitude *big.I
 func (bIntMath BigIntMath) RoundToMaxPrecision(
 	bigIntNum,
 	bigIntNumPrecision,
-	maxPrecision *big.Int) (result, resultPrecision *big.Int, err error) {
+	maxPrecision *big.Int,
+	trimTrailingFracZeros bool) (result, resultPrecision *big.Int, err error) {
 
 	ePrefix := "BigIntMath.RoundToMaxPrecision() "
 	result = big.NewInt(0)
@@ -705,6 +723,28 @@ func (bIntMath BigIntMath) RoundToMaxPrecision(
 	}
 
 	err = nil
+
+	if trimTrailingFracZeros == false {
+		return result, resultPrecision, err
+	}
+
+	if result.Cmp(bigZero) == 0 {
+		resultPrecision = big.NewInt(0)
+		return result, resultPrecision, err
+	}
+
+	if resultPrecision.Cmp(bigZero) == 1 {
+		bigOne := big.NewInt(1)
+		scrap := big.NewInt(0)
+		biBase10 := big.NewInt(10)
+		newProduct, mod10 := big.NewInt(0).QuoRem(result, biBase10, scrap)
+
+		for mod10.Cmp(bigZero) == 0 && resultPrecision.Cmp(bigZero) == 1 {
+			result.Set(newProduct)
+			resultPrecision.Sub(resultPrecision, bigOne )
+			newProduct, mod10 = big.NewInt(0).QuoRem(result, biBase10, scrap)
+		}
+	}
 
 	return result, resultPrecision, err
 }
@@ -850,7 +890,7 @@ func (bIntMath BigIntMath) TruncateTrailingFractionalZeros(
 		bigOne := big.NewInt(1)
 		scrap := big.NewInt(0)
 		biBase10 := big.NewInt(10)
-		newProduct, mod10 := big.NewInt(0).QuoRem(num, biBase10, scrap)
+		newProduct, mod10 := big.NewInt(0).QuoRem(result, biBase10, scrap)
 
 		for mod10.Cmp(bigZero) == 0 && resultPrecision.Cmp(bigZero) == 1 {
 			result.Set(newProduct)

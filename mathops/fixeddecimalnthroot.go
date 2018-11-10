@@ -1111,25 +1111,11 @@ func (fdNthRoot *FixedDecimalNthRoot) CalculateRoot() (result *big.Int, resultPr
 	}
 
 	result, resultPrecision, errx =
-		BigIntMath{}.RoundToMaxPrecision(fdNthRoot.Root, fdNthRoot.RootPrecision, fdNthRoot.maxPrecision)
-
-
-	bigZero := big.NewInt(0)
-
-	// Delete trailing fractional zeros
-	// If productPrecision > 0
-	if resultPrecision.Cmp(bigZero) == 1 {
-		bigOne := big.NewInt(1)
-		scrap := big.NewInt(0)
-		biBase10 := big.NewInt(10)
-		newResult, mod10 := big.NewInt(0).QuoRem(result, biBase10, scrap)
-
-		for mod10.Cmp(bigZero) == 0 && resultPrecision.Cmp(bigZero) == 1 {
-			result.Set(newResult)
-			resultPrecision.Sub(resultPrecision, bigOne )
-			newResult, mod10 = big.NewInt(0).QuoRem(result, biBase10, scrap)
-		}
-	}
+		BigIntMath{}.RoundToMaxPrecision(
+			fdNthRoot.Root,
+			fdNthRoot.RootPrecision,
+			fdNthRoot.maxPrecision,
+			true)
 
 	err = nil
 
