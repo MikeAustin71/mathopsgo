@@ -134,7 +134,7 @@ func (bSubtract BigIntMathSubtract) BigIntSubtract(
 		// Precisions are equal.
 
 		difference = big.NewInt(0).Sub(minuend, subtrahend)
-		differencePrecision = minPrecision
+		differencePrecision = big.NewInt(0).Set(minPrecision)
 
 	} else if minPrecision.Cmp(subPrecision) == 1 {
     //  minPrecision > subPrecision
@@ -370,7 +370,7 @@ func (bSubtract BigIntMathSubtract) SubtractBigIntNumArray(
 	lenSubtrahends := len(subtrahends)
 
 	if lenSubtrahends == 0 {
-		finalResult.SetNumericSeparatorsDto(numSeps)
+		_ = finalResult.SetNumericSeparatorsDto(numSeps)
 		return finalResult
 	}
 
@@ -382,7 +382,7 @@ func (bSubtract BigIntMathSubtract) SubtractBigIntNumArray(
 
 	}
 
-	finalResult.SetNumericSeparatorsDto(numSeps)
+	_ = finalResult.SetNumericSeparatorsDto(numSeps)
 
 	return finalResult
 }
@@ -430,7 +430,7 @@ func (bSubtract BigIntMathSubtract) SubtractBigIntNumOutputToArray(
 		bPair := BigIntPair{}.NewBigIntNum(minuend, subtrahends[i])
 
 		resultsArray[i] = bSubtract.subtractPairNoNumSeps(bPair)
-		resultsArray[i].SetNumericSeparatorsDto(numSeps)
+		_ = resultsArray[i].SetNumericSeparatorsDto(numSeps)
 	}
 
 	return resultsArray
@@ -472,7 +472,7 @@ func (bSubtract BigIntMathSubtract) SubtractBigIntNumSeries(
 		finalResult = bSubtract.subtractPairNoNumSeps(bPair)
 	}
 
-	finalResult.SetNumericSeparatorsDto(numSeps)
+	_ = finalResult.SetNumericSeparatorsDto(numSeps)
 
 	return finalResult
 }
@@ -555,7 +555,7 @@ func (bSubtract BigIntMathSubtract) SubtractDecimalArray(
 	lenSubtrahends := len(subtrahends)
 
 	if lenSubtrahends == 0 {
-		finalResult.SetNumericSeparatorsDto(numSeps)
+		_ = finalResult.SetNumericSeparatorsDto(numSeps)
 		return finalResult,
 			errors.New(ePrefix + "Error: subtrahends array is Empty!")
 	}
@@ -724,7 +724,7 @@ func (bSubtract BigIntMathSubtract) SubtractDecimalSeries(
 	}
 
 	if len(subtrahends) == 0 {
-		finalResult.SetNumericSeparatorsDto(numSeps)
+		_ = finalResult.SetNumericSeparatorsDto(numSeps)
 		return finalResult,
 			errors.New(ePrefix + "Error: subtrahends series is Empty!")
 	}
@@ -839,7 +839,7 @@ func (bSubtract BigIntMathSubtract) SubtractIntAryArray(
 	lenSubtrahends := len(subtrahends)
 
 	if lenSubtrahends == 0 {
-		finalResult.SetNumericSeparatorsDto(numSeps)
+		_ = finalResult.SetNumericSeparatorsDto(numSeps)
 		return finalResult,
 			errors.New(ePrefix + "Error: subtrahends array is Empty!")
 	}
@@ -1001,7 +1001,7 @@ func (bSubtract BigIntMathSubtract) SubtractIntArySeries(
 	numSeps := minuend.GetNumericSeparatorsDto()
 
 	if len(subtrahends) == 0 {
-		finalResult.SetNumericSeparatorsDto(numSeps)
+		_ = finalResult.SetNumericSeparatorsDto(numSeps)
 		return finalResult,
 			errors.New(ePrefix + "Error: subtrahends series is Empty!")
 	}
@@ -1117,7 +1117,7 @@ func (bSubtract BigIntMathSubtract) SubtractINumMgrArray(
 	lenSubtrahends := len(subtrahends)
 
 	if lenSubtrahends == 0 {
-		finalResult.SetNumericSeparatorsDto(numSeps)
+		_ = finalResult.SetNumericSeparatorsDto(numSeps)
 		return finalResult,
 			errors.New(ePrefix + "Error: subtrahends array is Empty!")
 	}
@@ -1263,7 +1263,7 @@ func (bSubtract BigIntMathSubtract) SubtractINumMgrSeries(
 	numSeps := minuend.GetNumericSeparatorsDto()
 
 	if len(subtrahends) == 0 {
-		finalResult.SetNumericSeparatorsDto(numSeps)
+		_ = finalResult.SetNumericSeparatorsDto(numSeps)
 		return finalResult,
 			errors.New(ePrefix + "Error: subtrahends series is Empty!")
 	}
@@ -1708,7 +1708,7 @@ func (bSubtract BigIntMathSubtract) SubtractNumStrDtoArray(
 	lenSubtrahends := len(subtrahends)
 
 	if lenSubtrahends == 0 {
-		finalResult.SetNumericSeparatorsDto(numSeps)
+		_ = finalResult.SetNumericSeparatorsDto(numSeps)
 		return finalResult,
 			errors.New(ePrefix + "Error: subtrahends array is Empty!")
 	}
@@ -1880,7 +1880,7 @@ func (bSubtract BigIntMathSubtract) SubtractNumStrDtoSeries(
 
 	if len(subtrahends) == 0 {
 
-		finalResult.SetNumericSeparatorsDto(numSeps)
+		_ = finalResult.SetNumericSeparatorsDto(numSeps)
 
 		return finalResult,
 			errors.New(ePrefix + "Error: subtrahends series is Empty!")
@@ -1927,7 +1927,7 @@ func (bSubtract BigIntMathSubtract) SubtractPair(bPair BigIntPair) BigIntNum {
 
 	finalResult := bSubtract.subtractPairNoNumSeps(bPair)
 
-	finalResult.SetNumericSeparatorsDto(numSeps)
+	_ = finalResult.SetNumericSeparatorsDto(numSeps)
 
 	return finalResult
 }
