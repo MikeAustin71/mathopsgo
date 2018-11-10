@@ -8,17 +8,92 @@ import (
 	"time"
 )
 
+func main() {
+	xNumStr := "2"
+	xNum, err := mathops.BigIntNum{}.NewNumStr(xNumStr)
+	//                           1         2         3
+	//                  1234567890123456789012345678901
+	expectedValue := "0." +
+		"6931471805599453094172321214581765680755001343602552541206800094933936219696947156058633269964186875" +
+		"4200148102057068573368552023575813055703267075163507596193072757082837143519030703862389167347112335" +
+		"011536449795523912047517268157493206515552473413952588295045300709532636664265410423915781495204374"
+
+	maxPrecision := uint(300)
+
+	if err != nil {
+		fmt.Printf("Error returned by BigIntNum{}.NewNumStr(xNumStr). " +
+			"Error= '%v' ", err.Error())
+		return
+	}
+
+	TestBigIntNumNatLogOfX(
+		xNum,
+		maxPrecision,
+		expectedValue)
+}
+
+func TestBigIntNumNatLogOfX(
+	xNum mathops.BigIntNum,
+	maxPrecision uint,
+	expectedValue string) {
+
+	timeStart := time.Now()
+	timeEnd := time.Now()
+	ePrefix := "TestBigIntNumNatLogOfX() "
+
+	timeStart = time.Now()
+	lnOfX, err :=
+		mathops.BigIntMathLogarithms{}.BigIntNumNatLogOfX(xNum, maxPrecision)
+	timeEnd = time.Now()
+
+	if err != nil {
+		fmt.Printf(ePrefix + "%v", err.Error())
+		return
+	}
+
+	timeDuration := timeEnd.Sub(timeStart)
+
+	duration := examples.CodeDurationToStr(timeDuration)
+	status := "SUCCESS!!! Expected Value Matches Actual Value"
+
+	if expectedValue != lnOfX.GetNumStr() {
+		status = "FAILURE*** Expected Value DOES NOT MATCH Actual Value"
+	}
+
+	fmt.Println()
+	fmt.Println("======================================================================")
+	fmt.Println("               BigIntMath{}.BigIntNumNatLogOfX() ")
+	fmt.Println("======================================================================")
+	fmt.Println("                xNum: ", xNum.GetNumStr())
+	fmt.Println("       xNumPrecision: ", xNum.GetPrecision())
+	fmt.Println("        maxPrecision: ", maxPrecision)
+	fmt.Println("======================================================================")
+	fmt.Println("  ln(xNum) Precision: ", lnOfX.GetPrecision())
+	fmt.Println("            ln(xNum): ", lnOfX.GetNumStr())
+	fmt.Println("      expected value: ", expectedValue)
+	fmt.Println("======================================================================")
+	fmt.Println("              Status: ", status)
+	fmt.Println("      Execution Time: ", duration)
+	fmt.Println("======================================================================")
+	fmt.Println()
+}
+
+/*
+
 
 func main() {
-	xNum := big.NewInt(99123456789)
-	xNumPrecision := big.NewInt(9)
-	m := big.NewInt(56)
+	xNum := big.NewInt(2)
+	xNumPrecision := big.NewInt(0)
+	m := big.NewInt(540)
 	s4DivPrecisionMaxInternalPrecision := big.NewInt(6000)
 	agMeanMaxInternalPrecision := big.NewInt(2000)
-	agMeanMaxOutputPrecision := big.NewInt(200)
+	agMeanMaxOutputPrecision := big.NewInt(400)
 	maxPiDividePrecision := big.NewInt(3000)
-	maxFinalOutputPrecision := big.NewInt(31)
-	expectedValue := "4.5963661115009113152618465511833"
+	maxFinalOutputPrecision := big.NewInt(300)
+	expectedValue := "0." +
+		"6931471805599453094172321214581765680755001343602552541206800094933936219696947156058633269964186875" +
+		"4200148102057068573368552023575813055703267075163507596193072757082837143519030703862389167347112335" +
+		"011536449795523912047517268157493206515552473413952588295045300709532636664265410423915781495204374"
 
 	TestNatLogOfXArithmeticGeometricMean(
 		xNum,
@@ -32,10 +107,6 @@ func main() {
 		expectedValue)
 
 }
-
-
-/*
-
 
 func main() {
 	ePrefix := "main() "
@@ -479,7 +550,7 @@ func TestNatLogOfXArithmeticGeometricMean(
 	timeStart = time.Now()
 
 	lnOfX, lnOfXPrecision, err :=
-		mathops.BigIntMathLogarithms{}.NatLogOfXArithmeticGeometricMean(
+		mathops.BigIntMathLogarithms{}.SaskiKanadaNatLogOfX(
 			xNum,
 			xNumPrecision,
 			m,
@@ -518,7 +589,7 @@ func TestNatLogOfXArithmeticGeometricMean(
 
 	fmt.Println()
 	fmt.Println("======================================================================")
-	fmt.Println("        BigIntMathLogarithms{}.NatLogOfXArithmeticGeometricMean() ")
+	fmt.Println("        BigIntMathLogarithms{}.SaskiKanadaNatLogOfX() ")
 	fmt.Println("======================================================================")
 	fmt.Println("                              xNum: ", xNum.Text(10))
 	fmt.Println("                     xNumPrecision: ", xNumPrecision.Text(10))

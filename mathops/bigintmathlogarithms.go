@@ -765,8 +765,97 @@ func (bLog BigIntMathLogarithms) EPwrXFromTaylorSeriesBigInt(
 	return xNum, xNumPrecision, err
 }
 
+func (bLog BigIntMathLogarithms) BigIntNumNatLogOfX(
+	xNum BigIntNum,
+	maxPrecision uint) (lnOfX BigIntNum, err error) {
+
+	ePrefix := "BigIntMathLogarithms.BigIntNumNatLogOfX() "
+	lnOfX = BigIntNum{}.NewZero(0)
+	err = nil
+
+	errX := xNum.IsValid(ePrefix)
+
+	if errX != nil {
+		err = fmt.Errorf("%v", errX.Error())
+		return lnOfX, err
+	}
+
+	if xNum.IsZero() {
+		err = errors.New(ePrefix + "Input Parameter 'xNum' is ZERO!")
+		return lnOfX, err
+	}
+
+	biXNum := xNum.GetIntegerValue()
+	biXNumPrecision := xNum.GetPrecisionBigInt()
+	maxFinalPrecision := big.NewInt(0).SetUint64(uint64(maxPrecision))
+
+	/*
+		Assume maxPrecision = 50
+	  m = 90
+		agMeanMaxOutputPrecision 		= 190
+		agMeanMaxInternalPrecision 	= 950
+	  s4DivPrecisionMaxInternalPrecision = 2950
+		piDivideMaxPrecision = 6950
+
+	 */
+
+	m, _, errX :=
+		BigIntMath{}.RoundToMaxPrecision(
+			big.NewInt(0).Mul(maxFinalPrecision, big.NewInt(18)),
+			big.NewInt(1),
+			big.NewInt(0),
+			true)
+
+	if errX != nil {
+		err = fmt.Errorf(ePrefix + "%v", err.Error())
+		return lnOfX, err
+	}
+
+	agMeanMaxOutputPrecision :=
+		big.NewInt(0).Add(maxFinalPrecision, big.NewInt(100))
+
+	agMeanMaxInternalPrecision :=
+		big.NewInt(0).Mul(agMeanMaxOutputPrecision, big.NewInt(5))
+
+	s4DivPrecisionMaxInternalPrecision :=
+		big.NewInt(0).Add(agMeanMaxInternalPrecision, big.NewInt(2000))
+
+	piDivideMaxPrecision :=
+		big.NewInt(0).Add(s4DivPrecisionMaxInternalPrecision, big.NewInt(4000))
+
+	biResult, biResultPrecision, errX :=
+		BigIntMathLogarithms{}.SaskiKanadaNatLogOfX(
+			biXNum,
+			biXNumPrecision,
+			m,
+			s4DivPrecisionMaxInternalPrecision,
+			agMeanMaxInternalPrecision,
+			agMeanMaxOutputPrecision,
+			piDivideMaxPrecision,
+			maxFinalPrecision)
+
+
+	if errX != nil {
+		err = fmt.Errorf(ePrefix + "%v", errX.Error())
+		return lnOfX, err
+	}
+
+	lnOfX, errX = BigIntNum{}.NewBigIntPrecision(biResult, biResultPrecision)
+
+	if errX != nil {
+		lnOfX = BigIntNum{}.NewZero(0)
+		err = fmt.Errorf(ePrefix + "%v", errX.Error())
+		return lnOfX, err
+	}
+
+	err = nil
+
+	return lnOfX, err
+}
+
 // https://en.wikipedia.org/wiki/Natural_logarithm
-func (bLog BigIntMathLogarithms) NatLogOfXArithmeticGeometricMean(
+//
+func (bLog BigIntMathLogarithms) SaskiKanadaNatLogOfX(
 	xNum,
 	xNumPrecision,
 	m,
@@ -776,7 +865,7 @@ func (bLog BigIntMathLogarithms) NatLogOfXArithmeticGeometricMean(
 	piDivideMaxPrecision,
 	maxFinalResultPrecision *big.Int) (lnOfX, lnOfXPrecision *big.Int, err error) {
 
-	ePrefix := "BigIntMathLogarithms.NatLogOfXArithmeticGeometricMean() "
+	ePrefix := "BigIntMathLogarithms.SaskiKanadaNatLogOfX() "
 
 	lnOfX = big.NewInt(0)
 	lnOfXPrecision = big.NewInt(0)
@@ -854,16 +943,6 @@ func (bLog BigIntMathLogarithms) NatLogOfXArithmeticGeometricMean(
 			big.NewInt(0).Add(s4DivPrecisionMaxInternalPrecision, big.NewInt(20)),
 			true)
 
-	/*
-	s, sPrecision, errX :=
-		BigIntMathMultiply{}.BigIntMultiply(xNum,xNumPrecision, sFactor2Tom, big.NewInt(0))
-
-	if errX != nil {
-		err = fmt.Errorf(ePrefix + "%v", errX.Error())
-		return lnOfX, lnOfXPrecision, err
-	}
-	*/
-
 	fourDivS, fourDivSPrecision, errX :=
 		BigIntMathDivide{}.BigIntFracQuotient(big.NewInt(4), big.NewInt(0), s, sPrecision, s4DivPrecisionMaxInternalPrecision)
 
@@ -888,63 +967,8 @@ func (bLog BigIntMathLogarithms) NatLogOfXArithmeticGeometricMean(
 		return lnOfX, lnOfXPrecision, err
 	}
 
- /*
-	biNumS, errX :=  BigIntNum{}.NewBigIntPrecision(s, sPrecision)
-
-	if errX != nil {
-		err = fmt.Errorf(ePrefix + "%v", errX.Error())
-		return lnOfX, lnOfXPrecision, err
-	}
-
-	biNumSDiv4, errX := BigIntNum{}.NewBigIntPrecision(fourDivS, fourDivSPrecision)
-
-	if errX != nil {
-		err = fmt.Errorf(ePrefix + "%v", errX.Error())
-		return lnOfX, lnOfXPrecision, err
-	}
-
-	fmt.Println("---------------------------------")
-	fmt.Println("          s: ", biNumS.GetNumStr())
-	fmt.Println("      SDiv4: ", biNumSDiv4.GetNumStr())
-
-	biNumAgMean, errX := BigIntNum{}.NewBigIntPrecision(agMean, agMeanPrecision)
-
-	if errX != nil {
-		err = fmt.Errorf(ePrefix + "%v", errX.Error())
-		return lnOfX, lnOfXPrecision, err
-	}
-
-	fmt.Println("     agMean: ", biNumAgMean.GetNumStr())
-
-	*/
-
 	denomFactorM := big.NewInt(0).Mul(big.NewInt(2), agMean)
 	denomFactorMPrecision := big.NewInt(0).Set(agMeanPrecision)
-
-	/*
-	denomFactorM, denomFactorMPrecision, errX :=
-		BigIntMathMultiply{}.BigIntMultiply(
-			big.NewInt(2),
-			big.NewInt(0),
-			agMean,
-			agMeanPrecision)
-
-	if errX != nil {
-		err = fmt.Errorf(ePrefix + "%v", errX.Error())
-		return lnOfX, lnOfXPrecision, err
-	}
-	*/
-
-	/*
-	biNumDenom, errX := BigIntNum{}.NewBigIntPrecision(denomFactorM, denomFactorMPrecision)
-
-	if errX != nil {
-		err = fmt.Errorf(ePrefix + "%v", errX.Error())
-		return lnOfX, lnOfXPrecision, err
-	}
-	fmt.Println("Denominator: ", biNumDenom.GetNumStr())
-	fmt.Println("---------------------------------")
-	*/
 
 	// Uses MaxInternal Precision
 	factor1, factor1Precision, errX :=
@@ -962,20 +986,6 @@ func (bLog BigIntMathLogarithms) NatLogOfXArithmeticGeometricMean(
 
 	factor2 := big.NewInt(0).Mul(m, natLogTwo20k.GetInteger())
 	factor2Precision := big.NewInt(0).Set(natLogTwo20k.GetPrecisionBigInt())
-
-	/*
-	factor2, factor2Precision, errX :=
-		BigIntMathMultiply{}.BigIntMultiply(
-			m,
-			big.NewInt(0),
-			natLogTwo20k.GetInteger(),
-			natLogTwo20k.GetPrecisionBigInt())
-
-	if errX != nil {
-		err = fmt.Errorf(ePrefix + "%v", errX.Error())
-		return lnOfX, lnOfXPrecision, err
-	}
-	*/
 
 	lnOfX, lnOfXPrecision, errX =
 		BigIntMathSubtract{}.BigIntSubtract(
