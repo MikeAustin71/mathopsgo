@@ -223,6 +223,13 @@ func (bLog BigIntMathLogarithms) BigIntLogBaseOfX(
 	return logResult, logResultPrecision, err
 }
 
+// LogBaseOfXByDivide - Generates logs for specified
+// bases and X-numbers. Calculation methodology derrived
+// from following:
+//
+// Calculate Any Logarithm manually -
+// https://www.youtube.com/watch?v=TUAFzuMVem0
+//
 func (bLog BigIntMathLogarithms) LogBaseOfXByDivide(
 	base,
 	basePrecision,
@@ -231,13 +238,89 @@ func (bLog BigIntMathLogarithms) LogBaseOfXByDivide(
 	maxInternalPrecision,
 	maxPrecision ,
 	cycles *big.Int) (logResult,
-logResultPrecision *big.Int,
-	err error) {
+										logResultPrecision *big.Int,
+										err error) {
 
 	ePrefix := "BigIntMathLogarithms.LogBaseOfXByDivide() "
 	logResult = big.NewInt(0)
 	logResultPrecision = big.NewInt(0)
 	err = nil
+	bigZero := big.NewInt(0)
+
+	if base == nil {
+		err = errors.New(ePrefix +
+			"Error: Input parameter 'base' is nil!")
+		return logResult, logResultPrecision, err
+	}
+
+	if basePrecision == nil {
+		err = errors.New(ePrefix +
+			"Error: Input parameter 'basePrecision' is nil!")
+		return logResult, logResultPrecision, err
+	}
+
+	if xNum == nil {
+		err = errors.New(ePrefix +
+			"Error: Input parameter 'xNum' is nil!")
+		return logResult, logResultPrecision, err
+	}
+
+	if xNumPrecision == nil {
+		err = errors.New(ePrefix +
+			"Error: Input parameter 'xNumPrecision' is nil!")
+		return logResult, logResultPrecision, err
+	}
+
+	if maxInternalPrecision == nil {
+		err = errors.New(ePrefix +
+			"Error: Input parameter 'maxInternalPrecision' is nil!")
+		return logResult, logResultPrecision, err
+	}
+
+	if maxPrecision == nil {
+		err = errors.New(ePrefix +
+			"Error: Input parameter 'maxPrecision' is nil!")
+		return logResult, logResultPrecision, err
+	}
+
+	if cycles == nil {
+		err = errors.New(ePrefix +
+			"Error: Input parameter 'cycles' is nil!")
+		return logResult, logResultPrecision, err
+	}
+
+	if basePrecision.Cmp(bigZero) == -1 {
+		err = fmt.Errorf(ePrefix +
+			"Error: Input parameter 'basePrecision' is LESS THAN ZERO! " +
+			"basePrecision='%v' ", basePrecision.Text(10))
+		return logResult, logResultPrecision, err
+	}
+
+	if xNumPrecision.Cmp(bigZero) == -1 {
+		err = fmt.Errorf(ePrefix +
+			"Error: Input parameter 'xNumPrecision' is LESS THAN ZERO! " +
+			"xNumPrecision='%v' ", xNumPrecision.Text(10))
+		return logResult, logResultPrecision, err
+	}
+
+	if maxInternalPrecision.Cmp(bigZero) == -1 {
+		err = fmt.Errorf(ePrefix +
+			"Error: Input parameter 'maxInternalPrecision' is LESS THAN ZERO! " +
+			"maxInternalPrecision='%v' ", maxInternalPrecision.Text(10))
+		return logResult, logResultPrecision, err
+	}
+
+	if maxPrecision.Cmp(bigZero) == -1 {
+		err = fmt.Errorf(ePrefix +
+			"Error: Input parameter 'maxPrecision' is LESS THAN ZERO! " +
+			"maxPrecision='%v' ", maxPrecision.Text(10))
+		return logResult, logResultPrecision, err
+	}
+
+	if cycles.Cmp(big.NewInt(5)) == -1 {
+		cycles.Mul(maxPrecision, big.NewInt(5))
+	}
+
 	tXNum := big.NewInt(0).Set(xNum)
 	tXNumPrecision := big.NewInt(0).Set(xNumPrecision)
 	bigOne := big.NewInt(1)
@@ -326,20 +409,6 @@ logResultPrecision *big.Int,
 			return logResult, logResultPrecision, err
 		}
 
-		/*
-		tXNum, tXNumPrecision, errX =
-			BigIntMathMultiply{}.BigIntMultiply(
-				tXNum,
-				tXNumPrecision,
-				tXNum,
-				tXNumPrecision)
-
-		if errX != nil {
-			err = fmt.Errorf(ePrefix + "%v", errX)
-			return logResult, logResultPrecision, err
-		}
-		*/
-
 		p.Mul(p, oneHalf)
 		pPrecision.Add(pPrecision, oneHalfPrecision)
 
@@ -355,20 +424,6 @@ logResultPrecision *big.Int,
 				"%v", errX.Error())
 			return logResult, logResultPrecision, err
 		}
-
-		/*
-		p, pPrecision, errX =
-			BigIntMathMultiply{}.BigIntMultiply(
-				p,
-				pPrecision,
-				oneHalf,
-				oneHalfPrecision)
-
-		if errX != nil {
-			err = fmt.Errorf(ePrefix + "%v", errX)
-			return logResult, logResultPrecision, err
-		}
-		*/
 
 		cmpNums =
 			BigIntMath{}.BigIntPrecisionCmp(
@@ -388,19 +443,6 @@ logResultPrecision *big.Int,
 
 			tXNum.Mul(tXNum, iBase)
 			tXNumPrecision.Add(tXNumPrecision, iBasePrecision)
-			/*
-			tXNum, tXNumPrecision, errX =
-				BigIntMathMultiply{}.BigIntMultiply(
-					tXNum,
-					tXNumPrecision,
-					iBase,
-					iBasePrecision)
-
-			if errX != nil {
-				err = fmt.Errorf(ePrefix + "%v", errX)
-				return logResult, logResultPrecision, err
-			}
-			*/
 
 			tXNum, tXNumPrecision, errX =
 				BigIntMath{}.RoundToMaxPrecision(
@@ -414,24 +456,7 @@ logResultPrecision *big.Int,
 					"%v", errX.Error())
 				return logResult, logResultPrecision, err
 			}
-
-
 		}
-
-		/*
-		tXNum, tXNumPrecision, errX =
-			BigIntMath{}.RoundToMaxPrecision(
-				tXNum,
-				tXNumPrecision,
-				maxInternalPrecision,
-				true)
-
-		if errX != nil {
-			err = fmt.Errorf(ePrefix +
-				"%v", errX.Error())
-			return logResult, logResultPrecision, err
-		}
-		*/
 	}
 
 	logResult, logResultPrecision, errX =
@@ -442,8 +467,8 @@ logResultPrecision *big.Int,
 			true)
 
 	if errX != nil {
-		logResult.Set(big.NewInt(0))
-		logResultPrecision.Set(big.NewInt(0))
+		logResult.Set(bigZero)
+		logResultPrecision.Set(bigZero)
 		err = fmt.Errorf(ePrefix +
 			"%v", errX.Error())
 		return logResult, logResultPrecision, err
