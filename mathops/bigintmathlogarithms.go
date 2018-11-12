@@ -65,7 +65,7 @@ type BigIntMathLogarithms struct {
 //										will be set to 'nil'.
 //
 //          log Value:  10.25826553502266513433782776044
-//
+//                      10.2582655350227
 // Expected log Value:  10.258265535022667
 // base:  4
 // xNum:  1500000
@@ -77,7 +77,12 @@ func (bLog BigIntMathLogarithms) BigIntNumLogBaseOfX(
 
 	biMaxPrecision := big.NewInt(0).SetUint64(uint64(maxPrecision))
 	factor := big.NewInt(4)
-	cycles := big.NewInt(0).Mul(biMaxPrecision, factor)
+
+	cycles := big.NewInt(40)
+	if biMaxPrecision.Cmp(big.NewInt(10)) == 1 {
+		cycles = big.NewInt(0).Mul(biMaxPrecision, factor)
+	}
+
 	maxInternalPrecision := big.NewInt(0).Mul(cycles, factor)
 
 
@@ -110,8 +115,8 @@ func (bLog BigIntMathLogarithms) BigIntNumLogBaseOfX(
 }
 
 //
-//          log Value:  10.258265535016932
-// Expected log Value:  10.258265535022667
+//          log Value:  10.2582655350226651343378277604421
+// Expected log Value:  10.2582655350227
 // base:  4
 // xNum:  1500000
 func (bLog BigIntMathLogarithms) BigIntLogBaseOfX(
@@ -191,13 +196,14 @@ func (bLog BigIntMathLogarithms) BigIntLogBaseOfX(
 		return logResult, logResultPrecision, err
 	}
 
+	factor := big.NewInt(4)
 	cycles := big.NewInt(40)
 
 	if maxPrecision.Cmp(big.NewInt(10)) == 1 {
-		cycles = big.NewInt(0).Mul(maxPrecision, big.NewInt(4))
+		cycles = big.NewInt(0).Mul(maxPrecision, factor)
 	}
 
-	maxInternalPrecision := big.NewInt(0).Mul(cycles, big.NewInt(3) )
+	maxInternalPrecision := big.NewInt(0).Mul(cycles, factor )
 
 	var errX error
 

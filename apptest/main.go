@@ -9,13 +9,13 @@ import (
 )
 
 func main() {
-	base := big.NewInt(10)
+	base := big.NewInt(4)
 	basePrecision := big.NewInt(0)
-	xNum := big.NewInt(500)
+	xNum := big.NewInt(1500000)
 	xNumPrecision := big.NewInt(0)
-	maxInternalPrecision := big.NewInt(120)
-	maxPrecision := big.NewInt(5)
-	cycles := big.NewInt(40)
+	maxInternalPrecision := big.NewInt(372)
+	maxPrecision := big.NewInt(31)
+	cycles := big.NewInt(124)
 	//"2.6989700043360188047862611052755"
 	expectedValue:= "2.69897"
 
