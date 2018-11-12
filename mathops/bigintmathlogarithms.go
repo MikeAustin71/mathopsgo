@@ -191,17 +191,271 @@ func (bLog BigIntMathLogarithms) BigIntLogBaseOfX(
 		return logResult, logResultPrecision, err
 	}
 
+	cycles := big.NewInt(40)
 
-	bigFour := big.NewInt(4)
-	cycles := big.NewInt(0).Mul(maxPrecision, bigFour)
-	maxInternalPrecision := big.NewInt(0).Mul(cycles, bigFour )
-	logResult.Set(maxInternalPrecision)
+	if maxPrecision.Cmp(big.NewInt(10)) == 1 {
+		cycles = big.NewInt(0).Mul(maxPrecision, big.NewInt(4))
+	}
+
+	maxInternalPrecision := big.NewInt(0).Mul(cycles, big.NewInt(3) )
+
+	var errX error
+
+	logResult, logResultPrecision, errX =
+		bLog.LogBaseOfXByDivide(
+			base,
+			basePrecision,
+			xNum,
+			xNumPrecision,
+			maxInternalPrecision,
+			maxPrecision,
+			cycles)
+
+	if errX != nil {
+		logResult.Set(bigZero)
+		logResultPrecision.Set(bigZero)
+		err = fmt.Errorf(ePrefix + "%v", errX.Error())
+		return logResult, logResultPrecision, err
+	}
 
 	err = nil
 
 	return logResult, logResultPrecision, err
 }
 
+func (bLog BigIntMathLogarithms) LogBaseOfXByDivide(
+	base,
+	basePrecision,
+	xNum,
+	xNumPrecision,
+	maxInternalPrecision,
+	maxPrecision ,
+	cycles *big.Int) (logResult,
+logResultPrecision *big.Int,
+	err error) {
+
+	ePrefix := "BigIntMathLogarithms.LogBaseOfXByDivide() "
+	logResult = big.NewInt(0)
+	logResultPrecision = big.NewInt(0)
+	err = nil
+	tXNum := big.NewInt(0).Set(xNum)
+	tXNumPrecision := big.NewInt(0).Set(xNumPrecision)
+	bigOne := big.NewInt(1)
+
+	iBase, iBasePrecision, errX :=
+		BigIntMathDivide{}.BigIntFracQuotient(
+			bigOne,
+			big.NewInt(0),
+			base,
+			basePrecision,
+			maxInternalPrecision)
+
+	if errX != nil {
+		err = fmt.Errorf(ePrefix + "%v", errX)
+		return logResult, logResultPrecision, err
+	}
+
+	ri := big.NewInt(0)
+	riPrecision := big.NewInt(0)
+
+	cmpNums :=
+		BigIntMath{}.BigIntPrecisionCmp(
+			tXNum,
+			tXNumPrecision,
+			base,
+			basePrecision)
+
+	for cmpNums == 1 {
+
+		tXNum, tXNumPrecision, errX =
+			BigIntMathMultiply{}.BigIntMultiply(
+				tXNum,
+				tXNumPrecision,
+				iBase,
+				iBasePrecision)
+
+		if errX != nil {
+			err = fmt.Errorf(ePrefix + "%v", errX)
+			return logResult, logResultPrecision, err
+		}
+
+		tXNum, tXNumPrecision, errX =
+			BigIntMath{}.RoundToMaxPrecision(
+				tXNum,
+				tXNumPrecision,
+				maxInternalPrecision,
+				true)
+
+		if errX != nil {
+			err = fmt.Errorf(ePrefix +
+				"%v", errX.Error())
+			return logResult, logResultPrecision, err
+		}
+
+		ri.Add(ri, bigOne	)
+
+		cmpNums =
+			BigIntMath{}.BigIntPrecisionCmp(
+				tXNum,
+				tXNumPrecision,
+				base,
+				basePrecision)
+	}
+
+	p := big.NewInt(1)
+	pPrecision := big.NewInt(0)
+	oneHalf := big.NewInt(5)
+	oneHalfPrecision := big.NewInt(1)
+	uint64Cycles := cycles.Uint64()
+
+	for i := uint64(0); i < uint64Cycles; i++ {
+
+		tXNum.Mul(tXNum, tXNum)
+		tXNumPrecision.Add(tXNumPrecision, tXNumPrecision)
+
+		tXNum, tXNumPrecision, errX =
+			BigIntMath{}.RoundToMaxPrecision(
+				tXNum,
+				tXNumPrecision,
+				maxInternalPrecision,
+				true)
+
+		if errX != nil {
+			err = fmt.Errorf(ePrefix +
+				"%v", errX.Error())
+			return logResult, logResultPrecision, err
+		}
+
+		/*
+		tXNum, tXNumPrecision, errX =
+			BigIntMathMultiply{}.BigIntMultiply(
+				tXNum,
+				tXNumPrecision,
+				tXNum,
+				tXNumPrecision)
+
+		if errX != nil {
+			err = fmt.Errorf(ePrefix + "%v", errX)
+			return logResult, logResultPrecision, err
+		}
+		*/
+
+		p.Mul(p, oneHalf)
+		pPrecision.Add(pPrecision, oneHalfPrecision)
+
+		p, pPrecision, errX =
+			BigIntMath{}.RoundToMaxPrecision(
+				p,
+				pPrecision,
+				maxInternalPrecision,
+				true)
+
+		if errX != nil {
+			err = fmt.Errorf(ePrefix +
+				"%v", errX.Error())
+			return logResult, logResultPrecision, err
+		}
+
+		/*
+		p, pPrecision, errX =
+			BigIntMathMultiply{}.BigIntMultiply(
+				p,
+				pPrecision,
+				oneHalf,
+				oneHalfPrecision)
+
+		if errX != nil {
+			err = fmt.Errorf(ePrefix + "%v", errX)
+			return logResult, logResultPrecision, err
+		}
+		*/
+
+		cmpNums =
+			BigIntMath{}.BigIntPrecisionCmp(
+				tXNum,
+				tXNumPrecision,
+				base,
+				basePrecision)
+
+		if cmpNums==1 {
+
+			ri, riPrecision, errX =
+				BigIntMathAdd{}.BigIntAdd(
+					ri,
+					riPrecision,
+					p,
+					pPrecision)
+
+			tXNum.Mul(tXNum, iBase)
+			tXNumPrecision.Add(tXNumPrecision, iBasePrecision)
+			/*
+			tXNum, tXNumPrecision, errX =
+				BigIntMathMultiply{}.BigIntMultiply(
+					tXNum,
+					tXNumPrecision,
+					iBase,
+					iBasePrecision)
+
+			if errX != nil {
+				err = fmt.Errorf(ePrefix + "%v", errX)
+				return logResult, logResultPrecision, err
+			}
+			*/
+
+			tXNum, tXNumPrecision, errX =
+				BigIntMath{}.RoundToMaxPrecision(
+					tXNum,
+					tXNumPrecision,
+					maxInternalPrecision,
+					true)
+
+			if errX != nil {
+				err = fmt.Errorf(ePrefix +
+					"%v", errX.Error())
+				return logResult, logResultPrecision, err
+			}
+
+
+		}
+
+		/*
+		tXNum, tXNumPrecision, errX =
+			BigIntMath{}.RoundToMaxPrecision(
+				tXNum,
+				tXNumPrecision,
+				maxInternalPrecision,
+				true)
+
+		if errX != nil {
+			err = fmt.Errorf(ePrefix +
+				"%v", errX.Error())
+			return logResult, logResultPrecision, err
+		}
+		*/
+	}
+
+	logResult, logResultPrecision, errX =
+		BigIntMath{}.RoundToMaxPrecision(
+			ri,
+			riPrecision,
+			maxPrecision,
+			true)
+
+	if errX != nil {
+		logResult.Set(big.NewInt(0))
+		logResultPrecision.Set(big.NewInt(0))
+		err = fmt.Errorf(ePrefix +
+			"%v", errX.Error())
+		return logResult, logResultPrecision, err
+	}
+
+	err = nil
+
+	return logResult, logResultPrecision, err
+}
+
+
+/*
 func (bLog BigIntMathLogarithms) LogBaseOfXByDivide(
 	base,
 	basePrecision,
@@ -377,7 +631,7 @@ func (bLog BigIntMathLogarithms) LogBaseOfXByDivide(
 
 	return logResult, logResultPrecision, err
 }
-
+*/
 
 // EPwrXFromMaclaurinSeries = Computes value of e^exponent where e is the mathematical
 // constant, "Euler's integerNum".

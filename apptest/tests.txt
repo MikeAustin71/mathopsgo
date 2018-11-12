@@ -59,7 +59,7 @@
 === RUN   TestBigIntFixedDecimal_NewNumStr_16
 --- PASS: TestBigIntFixedDecimal_NewNumStr_16 (0.00s)
 === RUN   TestBigIntFixedDecimal_NewNumStr_17
---- PASS: TestBigIntFixedDecimal_NewNumStr_17 (0.11s)
+--- PASS: TestBigIntFixedDecimal_NewNumStr_17 (0.10s)
 === RUN   TestBigIntFixedDecimal_NewNumStr_18
 --- PASS: TestBigIntFixedDecimal_NewNumStr_18 (0.00s)
 === RUN   TestBigIntFixedDecimal_Ceiling_01
@@ -1775,7 +1775,7 @@
 === RUN   TestBigIntMathPower_BigIntToNegativeFractionalPower_05
 --- PASS: TestBigIntMathPower_BigIntToNegativeFractionalPower_05 (0.00s)
 === RUN   TestBigIntMathPower_BigIntToNegativeFractionalPower_06
---- PASS: TestBigIntMathPower_BigIntToNegativeFractionalPower_06 (0.05s)
+--- PASS: TestBigIntMathPower_BigIntToNegativeFractionalPower_06 (0.04s)
 === RUN   TestBigIntMathPower_BigIntToNegativeFractionalPower_07
 --- PASS: TestBigIntMathPower_BigIntToNegativeFractionalPower_07 (0.01s)
 === RUN   TestBigIntMathPower_BigIntToNegativeFractionalPower_08
@@ -1803,7 +1803,7 @@
 === RUN   TestBigIntMathPower_BigIntToPositiveFractionalPower_03
 --- PASS: TestBigIntMathPower_BigIntToPositiveFractionalPower_03 (0.00s)
 === RUN   TestBigIntMathPower_BigIntToPositiveFractionalPower_04
---- PASS: TestBigIntMathPower_BigIntToPositiveFractionalPower_04 (0.11s)
+--- PASS: TestBigIntMathPower_BigIntToPositiveFractionalPower_04 (0.10s)
 === RUN   TestBigIntMathPower_BigIntToPositiveFractionalPower_05
 --- PASS: TestBigIntMathPower_BigIntToPositiveFractionalPower_05 (0.00s)
 === RUN   TestBigIntMathPower_BigIntToPositiveFractionalPower_06
@@ -2971,7 +2971,7 @@
 === RUN   TestBigIntNum_SetNumStr_16
 --- PASS: TestBigIntNum_SetNumStr_16 (0.00s)
 === RUN   TestBigIntNum_SetNumStr_17
---- PASS: TestBigIntNum_SetNumStr_17 (0.19s)
+--- PASS: TestBigIntNum_SetNumStr_17 (0.18s)
 === RUN   TestBigIntNum_SetNumStr_18
 --- PASS: TestBigIntNum_SetNumStr_18 (0.00s)
 === RUN   TestBigIntNum_ShiftPrecisionLeft_01
@@ -3399,7 +3399,7 @@
 === RUN   TestDecimal_Pow_01
 --- PASS: TestDecimal_Pow_01 (0.01s)
 === RUN   TestDecimal_Pow_02
---- PASS: TestDecimal_Pow_02 (0.02s)
+--- PASS: TestDecimal_Pow_02 (0.01s)
 === RUN   TestDecimal_Pow_03
 --- PASS: TestDecimal_Pow_03 (0.02s)
 === RUN   TestDecimal_Pow_04
@@ -3547,7 +3547,7 @@
 === RUN   TestFracIntAry_GetRationalValue_06
 --- PASS: TestFracIntAry_GetRationalValue_06 (0.00s)
 === RUN   TestFracIntAry_GetRationalValue_07
---- PASS: TestFracIntAry_GetRationalValue_07 (1.09s)
+--- PASS: TestFracIntAry_GetRationalValue_07 (0.91s)
 === RUN   TestFracIntAry_NewFracIntAry_01
 --- PASS: TestFracIntAry_NewFracIntAry_01 (0.00s)
 === RUN   TestFracIntAry_NewFracIntAry_02
@@ -3657,9 +3657,9 @@
 === RUN   TestFixedDecimalNthRoot_CalculateNegativeFractionalNthRoot_02
 --- PASS: TestFixedDecimalNthRoot_CalculateNegativeFractionalNthRoot_02 (0.00s)
 === RUN   TestFixedDecimalNthRoot_CalculateNegativeFractionalNthRoot_03
---- PASS: TestFixedDecimalNthRoot_CalculateNegativeFractionalNthRoot_03 (0.82s)
+--- PASS: TestFixedDecimalNthRoot_CalculateNegativeFractionalNthRoot_03 (0.85s)
 === RUN   TestFixedDecimalNthRoot_CalculateNegativeFractionalNthRoot_04
---- PASS: TestFixedDecimalNthRoot_CalculateNegativeFractionalNthRoot_04 (0.85s)
+--- PASS: TestFixedDecimalNthRoot_CalculateNegativeFractionalNthRoot_04 (0.86s)
 === RUN   TestFixedDecimalNthRoot_CalculateNegativeFractionalNthRoot_05
 --- PASS: TestFixedDecimalNthRoot_CalculateNegativeFractionalNthRoot_05 (0.00s)
 === RUN   TestFixedDecimalNthRoot_CalculateNegativeFractionalNthRoot_06
@@ -4019,13 +4019,13 @@
 === RUN   TestIntAry_DivideThisBy_12
 --- PASS: TestIntAry_DivideThisBy_12 (0.00s)
 === RUN   TestIntAry_DivideThisBy_13
---- PASS: TestIntAry_DivideThisBy_13 (0.86s)
+--- PASS: TestIntAry_DivideThisBy_13 (0.85s)
 === RUN   TestIntAry_DivideThisBy_14
 --- PASS: TestIntAry_DivideThisBy_14 (0.00s)
 === RUN   TestIntAry_DivideThisBy_15
 --- PASS: TestIntAry_DivideThisBy_15 (0.00s)
 === RUN   TestIntAry_DivideThisBy_16
---- PASS: TestIntAry_DivideThisBy_16 (0.07s)
+--- PASS: TestIntAry_DivideThisBy_16 (0.06s)
 === RUN   TestIntAry_GetAbsoluteValue_01
 --- PASS: TestIntAry_GetAbsoluteValue_01 (0.00s)
 === RUN   TestIntAry_GetBigIntNum_01
@@ -4767,7 +4767,7 @@
 === RUN   TestIntAryMathPower_PwrByMultiplication_04
 --- PASS: TestIntAryMathPower_PwrByMultiplication_04 (0.00s)
 === RUN   TestIntAryMathPower_PwrByMultiplication_05
---- PASS: TestIntAryMathPower_PwrByMultiplication_05 (0.01s)
+--- PASS: TestIntAryMathPower_PwrByMultiplication_05 (0.00s)
 === RUN   TestIntAryMathPower_PwrByMultiplication_06
 --- PASS: TestIntAryMathPower_PwrByMultiplication_06 (0.00s)
 === RUN   TestIntAryMathPower_PwrByMultiplication_07
@@ -5017,7 +5017,7 @@
 === RUN   TestNthRootOp_GetNthRootIntAry_26
 --- PASS: TestNthRootOp_GetNthRootIntAry_26 (0.00s)
 === RUN   TestNthRootOp_GetNthRootIntAry_27
---- PASS: TestNthRootOp_GetNthRootIntAry_27 (3.05s)
+--- PASS: TestNthRootOp_GetNthRootIntAry_27 (2.98s)
 === RUN   TestNthRootOp_GetSquareRootFloat32_01
 --- PASS: TestNthRootOp_GetSquareRootFloat32_01 (0.00s)
 === RUN   TestNthRootOp_GetSquareRootFloat64_01
@@ -7209,4 +7209,4 @@
 === RUN   TestStrMathOp_SubtractN1N2_19
 --- PASS: TestStrMathOp_SubtractN1N2_19 (0.00s)
 PASS
-ok  	MikeAustin71/mathopsgo/mathops	11.974s
+ok  	MikeAustin71/mathopsgo/mathops	13.152s
