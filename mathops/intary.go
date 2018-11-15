@@ -586,7 +586,11 @@ type IntAryStatsDto struct {
 // Dependencies: NthRootOp - nthroot.go
 //
 type IntAry struct {
-	intAry                 []uint8
+	intAry                 []uint8 // Storage is right to left.
+	                               // Least significant digit is
+	                               // stored in intAry[0]. Most
+	                               // significant digit is stored
+	                               // at intAry[intAryLen - 1]
 	intAryLen              int
 	integerLen             int
 	significantIntegerLen  int
