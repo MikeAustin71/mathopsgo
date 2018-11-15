@@ -65,8 +65,8 @@ type BigIntMathLogarithms struct {
 //										will be set to 'nil'.
 //
 //          log Value:  10.25826553502266513433782776044
-//                      10.2582655350227
-// Expected log Value:  10.258265535022667
+// Expected log Value:  10.2582655350227
+//
 // base:  4
 // xNum:  1500000
 //

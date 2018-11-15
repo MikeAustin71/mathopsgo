@@ -1063,14 +1063,14 @@ func (ia *IntAry) Ceiling() (IntAry, error) {
 func (ia *IntAry) ChangeSign() {
 
 	if ia.IsZero() {
-		ia.SetSign(1)
+		_ = ia.SetSign(1)
 		return
 	}
 
 	if ia.signVal < 1 {
-		ia.SetSign(1)
+		_ = ia.SetSign(1)
 	} else {
-		ia.SetSign(-1)
+		_ = ia.SetSign(-1)
 	}
 
 }
@@ -2703,10 +2703,10 @@ func (ia *IntAry) GetSciNotationNumber(mantissaLen uint) (SciNotationNum, error)
 		iaMagnitude := IntAry{}.NewInt(magnitudeInt, 0)
 
 		if ia.precision > 50000 {
-			iaNew.SetPrecision(50000, true)
+			_ = iaNew.SetPrecision(50000, true)
 		}
 
-		sciNotationNum.SetIntAryElements(iaNew, iaMagnitude)
+		_ = sciNotationNum.SetIntAryElements(iaNew, iaMagnitude)
 
 	} else {
 		// Must be number with zero integers and fractional digits.
@@ -3140,7 +3140,7 @@ func (ia *IntAry) Inverse(maxPrecision int) (IntAry, error) {
 	}
 
 	if iaInverse.GetPrecision() > maxPrecision {
-		iaInverse.RoundToPrecision(maxPrecision)
+		_ =iaInverse.RoundToPrecision(maxPrecision)
 	}
 
 	return iaInverse, nil
@@ -3284,7 +3284,7 @@ func (ia IntAry) NewWithNumSeps(numSeps NumericSeparatorDto) IntAry {
 
 	ia2 := IntAry{}.New()
 
-	ia2.SetNumericSeparatorsDto(numSeps)
+	_ = ia2.SetNumericSeparatorsDto(numSeps)
 
 	return ia2
 }
@@ -3378,7 +3378,7 @@ func (ia IntAry) NewFive(precision int) IntAry {
 
 	ia1 := IntAry{}
 
-	ia1.SetIntAryToFive(precision)
+	_ = ia1.SetIntAryToFive(precision)
 
 	return ia1
 }
@@ -3534,7 +3534,7 @@ func (ia IntAry) NewInt(intNum int, precision uint) IntAry {
 
 	iAry := IntAry{}.New()
 	iAry.SetIntAryWithInt(intNum, precision)
-	iAry.SetNumericSeparatorsDto(ia.GetNumericSeparatorsDto())
+	_ = iAry.SetNumericSeparatorsDto(ia.GetNumericSeparatorsDto())
 
 	return iAry
 }
@@ -3582,7 +3582,7 @@ func (ia IntAry) NewIntExponent(intNum int, exponent int) IntAry {
 
 	iAry := IntAry{}.New()
 	iAry.SetIntAryWithInt(intNum, uint(exponent))
-	iAry.SetNumericSeparatorsDto(ia.GetNumericSeparatorsDto())
+	_ = iAry.SetNumericSeparatorsDto(ia.GetNumericSeparatorsDto())
 
 	return iAry
 }
@@ -3620,7 +3620,7 @@ func (ia IntAry) NewInt32(int32Num int32, precision uint) IntAry {
 
 	iAry := IntAry{}.New()
 	iAry.SetIntAryWithInt32(int32Num, precision)
-	iAry.SetNumericSeparatorsDto(ia.GetNumericSeparatorsDto())
+	_ = iAry.SetNumericSeparatorsDto(ia.GetNumericSeparatorsDto())
 
 	return iAry
 
@@ -3669,7 +3669,7 @@ func (ia IntAry) NewInt32Exponent(int32Num int32, exponent int) IntAry {
 
 	iAry := IntAry{}.New()
 	iAry.SetIntAryWithInt32(int32Num, uint(exponent))
-	iAry.SetNumericSeparatorsDto(ia.GetNumericSeparatorsDto())
+	_ = iAry.SetNumericSeparatorsDto(ia.GetNumericSeparatorsDto())
 
 	return iAry
 }
@@ -3708,7 +3708,7 @@ func (ia IntAry) NewInt64(int64Num int64, precision uint) IntAry {
 	iAry := IntAry{}.New()
 	precision = ia.validateUintToMaxPrecision(precision)
 	iAry.SetIntAryWithInt64(int64Num, precision)
-	iAry.SetNumericSeparatorsDto(ia.GetNumericSeparatorsDto())
+	_ = iAry.SetNumericSeparatorsDto(ia.GetNumericSeparatorsDto())
 
 	return iAry
 }
@@ -3756,7 +3756,7 @@ func (ia IntAry) NewInt64Exponent(int64Num int64, exponent int) IntAry {
 
 	iAry := IntAry{}.New()
 	iAry.SetIntAryWithInt64(int64Num, uint(exponent))
-	iAry.SetNumericSeparatorsDto(ia.GetNumericSeparatorsDto())
+	_ = iAry.SetNumericSeparatorsDto(ia.GetNumericSeparatorsDto())
 
 	return iAry
 }
@@ -3927,7 +3927,7 @@ func (ia IntAry) NewOne(precision int) IntAry {
 
 	ia1 := IntAry{}
 
-	ia1.SetIntAryToOne(precision)
+	_ = ia1.SetIntAryToOne(precision)
 
 	return ia1
 }
@@ -3951,7 +3951,7 @@ func (ia IntAry) NewTen(precision int) IntAry {
 
 	ia1 := IntAry{}
 
-	ia1.SetIntAryToTen(precision)
+	_ = ia1.SetIntAryToTen(precision)
 
 	return ia1
 }
@@ -3966,7 +3966,7 @@ func (ia IntAry) NewThree(precision int) IntAry {
 
 	ia1 := IntAry{}
 
-	ia1.SetIntAryToThree(precision)
+	_ = ia1.SetIntAryToThree(precision)
 
 	return ia1
 }
@@ -3981,7 +3981,7 @@ func (ia IntAry) NewTwo(precision int) IntAry {
 
 	ia1 := IntAry{}
 
-	ia1.SetIntAryToTwo(precision)
+	_ = ia1.SetIntAryToTwo(precision)
 
 	return ia1
 }
@@ -4020,7 +4020,7 @@ func (ia IntAry) NewUint(uintNum uint, precision uint) IntAry {
 	iAry := IntAry{}.New()
 	precision = ia.validateUintToMaxPrecision(precision)
 	iAry.SetIntAryWithUint64(uint64(uintNum), precision)
-	iAry.SetNumericSeparatorsDto(ia.GetNumericSeparatorsDto())
+	_ = iAry.SetNumericSeparatorsDto(ia.GetNumericSeparatorsDto())
 
 	return iAry
 }
@@ -4070,7 +4070,7 @@ func (ia IntAry) NewUintExponent(uintNum uint, exponent int) IntAry {
 
 	iAry := IntAry{}.New()
 	iAry.SetIntAryWithUint64(uint64(uintNum), uint(exponent))
-	iAry.SetNumericSeparatorsDto(ia.GetNumericSeparatorsDto())
+	_ = iAry.SetNumericSeparatorsDto(ia.GetNumericSeparatorsDto())
 
 	return iAry
 }
@@ -4109,7 +4109,7 @@ func (ia IntAry) NewUint32(uint32Num uint32, precision uint) IntAry {
 	iAry := IntAry{}.New()
 	precision = ia.validateUintToMaxPrecision(precision)
 	iAry.SetIntAryWithUint64(uint64(uint32Num), precision)
-	iAry.SetNumericSeparatorsDto(ia.GetNumericSeparatorsDto())
+	_ = iAry.SetNumericSeparatorsDto(ia.GetNumericSeparatorsDto())
 
 	return iAry
 }
@@ -4159,7 +4159,7 @@ func (ia IntAry) NewUint32Exponent(uint32Num uint32, exponent int) IntAry {
 
 	iAry := IntAry{}.New()
 	iAry.SetIntAryWithUint64(uint64(uint32Num), uint(exponent))
-	iAry.SetNumericSeparatorsDto(ia.GetNumericSeparatorsDto())
+	_ = iAry.SetNumericSeparatorsDto(ia.GetNumericSeparatorsDto())
 
 	return iAry
 }
@@ -4198,7 +4198,7 @@ func (ia IntAry) NewUint64(uint64Num uint64, precision uint) IntAry {
 	iAry := IntAry{}.New()
 	precision = ia.validateUintToMaxPrecision(precision)
 	iAry.SetIntAryWithUint64(uint64Num, precision)
-	iAry.SetNumericSeparatorsDto(ia.GetNumericSeparatorsDto())
+	_ = iAry.SetNumericSeparatorsDto(ia.GetNumericSeparatorsDto())
 
 	return iAry
 }
@@ -4248,7 +4248,7 @@ func (ia IntAry) NewUint64Exponent(uint64Num uint64, exponent int) IntAry {
 
 	iAry := IntAry{}.New()
 	iAry.SetIntAryWithUint64(uint64Num, uint(exponent))
-	iAry.SetNumericSeparatorsDto(ia.GetNumericSeparatorsDto())
+	_ = iAry.SetNumericSeparatorsDto(ia.GetNumericSeparatorsDto())
 
 	return iAry
 }
@@ -4278,7 +4278,7 @@ func (ia IntAry) NewZero(precision uint) IntAry {
 
 	ia2.SetIntAryToZero(precision)
 
-	ia2.SetNumericSeparatorsDto(ia.GetNumericSeparatorsDto())
+	_ = ia2.SetNumericSeparatorsDto(ia.GetNumericSeparatorsDto())
 
 	return ia2
 }
@@ -4498,7 +4498,7 @@ func (ia *IntAry) pwrByTwos(power *big.Int, maxResultPrecision, internalPrecisio
 			// no change in value. x^1 == x
 			return nil
 		} else if tPower.Cmp(zero) == 0 {
-			ia.SetIntAryToOne(0)
+			_ = ia.SetIntAryToOne(0)
 			return nil
 		}
 
@@ -4506,7 +4506,7 @@ func (ia *IntAry) pwrByTwos(power *big.Int, maxResultPrecision, internalPrecisio
 
 	tBase := ia.CopyOut()
 
-	ia.SetIntAryToOne(0)
+	_ = ia.SetIntAryToOne(0)
 
 	for tPower.Cmp(zero) == 1 {
 		//temp, _:= intAry{}.NewNumStr("0")
@@ -4523,7 +4523,7 @@ func (ia *IntAry) pwrByTwos(power *big.Int, maxResultPrecision, internalPrecisio
 
 			if tPower.Cmp(one) == 0 {
 				if maxResultPrecision > -1 && maxResultPrecision < ia.GetPrecision() {
-					ia.SetPrecision(maxResultPrecision, true)
+					_ = ia.SetPrecision(maxResultPrecision, true)
 				}
 
 				return nil
@@ -4544,7 +4544,7 @@ func (ia *IntAry) pwrByTwos(power *big.Int, maxResultPrecision, internalPrecisio
 	}
 
 	if maxResultPrecision > -1 && maxResultPrecision < ia.GetPrecision() {
-		ia.SetPrecision(maxResultPrecision, true)
+		_ = ia.SetPrecision(maxResultPrecision, true)
 	}
 
 	return nil
@@ -4679,7 +4679,7 @@ func (ia *IntAry) RoundToPrecision(roundToPrecision int) error {
 // value of this intAry object to its
 // absolute value.
 func (ia *IntAry) SetAbsoluteValueThis() {
-	ia.SetSign(1)
+	_ = ia.SetSign(1)
 }
 
 // SetCurrencySymbol is used to set the value of the currency
@@ -5475,7 +5475,7 @@ func (ia *IntAry) SetIntAryWithFloat32(floatNum float32, precision int) error {
 
 	if precision > -1 {
 
-		ia.SetPrecision(precision, true)
+		_ = ia.SetPrecision(precision, true)
 
 		if err != nil {
 			return fmt.Errorf("SetIntAryWithFloat32() - Error returned from ia.SetPrecision(precision, true). precision='%v' Error= '%v'", precision, err)
@@ -5674,7 +5674,7 @@ func (ia *IntAry) SetIntAryWithNumStrMaxPrecision(str string, maxPrecision int) 
 	}
 
 	if ia.precision > maxPrecision {
-		ia.RoundToPrecision(maxPrecision)
+		_ = ia.RoundToPrecision(maxPrecision)
 	}
 
 	return nil
@@ -6055,7 +6055,7 @@ func (ia *IntAry) SetPrecision(precision int, roundResult bool) error {
 	// Must ia.precision > precision
 
 	if roundResult {
-		ia.RoundToPrecision(precision)
+		_ = ia.RoundToPrecision(precision)
 		return nil
 	}
 
