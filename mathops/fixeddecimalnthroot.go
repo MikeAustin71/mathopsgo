@@ -241,14 +241,18 @@ func (fdNthRoot FixedDecimalNthRoot) BigIntFixedDecNthRoot(
 func (fdNthRoot FixedDecimalNthRoot) BabylonianSqrRoot(
 	radicand,
 	radicandPrecision,
+	initialGuess,
+	initialGuessPrecision,
 	maxPrecision *big.Int,
 	calcCycles uint64) (	sqrRoot,
-																sqrRootPrecision *big.Int,
-																err error) {
+												sqrRootPrecision *big.Int,
+												cycleCnt uint64,
+												err error) {
 
 	ePrefix := "FixedDecimalNthRoot.BabylonianSqrRoot() "
   sqrRoot = big.NewInt(0)
   sqrRootPrecision = big.NewInt(0)
+	cycleCnt = uint64(0)
   err = nil
 	var errX error
   bigZero := big.NewInt(0)
@@ -261,8 +265,11 @@ func (fdNthRoot FixedDecimalNthRoot) BabylonianSqrRoot(
   	tRadicand.Quo(tRadicand, scale)
 	}
 
-  xLast, _, _ := fdNthRoot.FastIntegerSqRoot(tRadicand)
-	xLastPrecision := big.NewInt(0)
+  xLast := big.NewInt(0).Set(initialGuess)
+	xLastPrecision := big.NewInt(0).Set(initialGuessPrecision)
+
+	prevCycle := big.NewInt(0)
+  prevCyclePrecision := big.NewInt(0)
 
   maxCalcPrecision := big.NewInt(0).Add(maxPrecision, big.NewInt(50))
 
@@ -274,8 +281,9 @@ func (fdNthRoot FixedDecimalNthRoot) BabylonianSqrRoot(
 	factor2Precision := big.NewInt(0)
 	factor3 := big.NewInt(0)
 	factor3Precision := big.NewInt(0)
+	cmpPrev := 0
 
-  for i:= uint64(0); i < calcCycles; i++ {
+  for cycleCnt = uint64(0); cycleCnt < calcCycles; cycleCnt++ {
 
   	factor2.Set(xLast)
   	factor2Precision.Set(xLastPrecision)
@@ -291,7 +299,7 @@ func (fdNthRoot FixedDecimalNthRoot) BabylonianSqrRoot(
   	if errX != nil {
   		err = fmt.Errorf(ePrefix +
   			"%v ", errX.Error())
-  		return sqrRoot, sqrRootPrecision, err
+  		return sqrRoot, sqrRootPrecision, cycleCnt, err
 		}
 
   	factor1, factor1Precision, errX =
@@ -300,7 +308,7 @@ func (fdNthRoot FixedDecimalNthRoot) BabylonianSqrRoot(
 		if errX != nil {
 			err = fmt.Errorf(ePrefix +
 				"%v ", errX.Error())
-			return sqrRoot, sqrRootPrecision, err
+			return sqrRoot, sqrRootPrecision, cycleCnt, err
 		}
 
 		xLast.Mul(oneHalf, factor1)
@@ -308,6 +316,14 @@ func (fdNthRoot FixedDecimalNthRoot) BabylonianSqrRoot(
 		xLast, xLastPrecision, errX =
 			BigIntMath{}.RoundToMaxPrecision(xLast, xLastPrecision, maxCalcPrecision, true)
 
+		cmpPrev = BigIntMath{}.BigIntPrecisionCmp(xLast, xLastPrecision, prevCycle, prevCyclePrecision)
+
+		if cmpPrev == 0 {
+			break
+		}
+
+		prevCycle.Set(xLast)
+		prevCyclePrecision.Set(xLastPrecision)
 	}
 
 	sqrRoot, sqrRootPrecision, errX =
@@ -318,19 +334,158 @@ func (fdNthRoot FixedDecimalNthRoot) BabylonianSqrRoot(
 		sqrRootPrecision.Set(bigZero)
 		err = fmt.Errorf(ePrefix +
 			"%v ", errX.Error())
+		return sqrRoot, sqrRootPrecision, cycleCnt, err
+	}
+
+  err = nil
+  return sqrRoot, sqrRootPrecision, cycleCnt, err
+}
+
+func (fdNthRoot FixedDecimalNthRoot) IntegerSqrRoot(
+	radicand,
+	radicandPrecision,
+	maxPrecision *big.Int) (sqrRoot,
+													sqrRootPrecision *big.Int,
+													err error) {
+
+	ePrefix := "FixedDecimalNthRoot.IntegerSqrRoot() "
+	sqrRoot = big.NewInt(0)
+	sqrRootPrecision = big.NewInt(0)
+	err = nil
+
+	if radicand == nil {
+		err = errors.New(ePrefix +
+			"Error: Input parameter 'radicand' is 'nil'!")
+
 		return sqrRoot, sqrRootPrecision, err
 	}
 
+	bigZero := big.NewInt(0)
 
-  err = nil
-  return sqrRoot, sqrRootPrecision, err
+	if radicand.Cmp(bigZero)== 0 {
+		return sqrRoot, sqrRootPrecision, err
+	}
+
+	if radicandPrecision == nil {
+		err = errors.New(ePrefix +
+			"Error: Input parameter 'radicandPrecision' is 'nil'!")
+		return sqrRoot, sqrRootPrecision, err
+	}
+
+	if radicandPrecision.Cmp(bigZero) == -1 {
+		err = fmt.Errorf(ePrefix +
+			"Error: Input parameter 'radicandPrecision' is LESS THAN ZERO! " +
+			"radicandPrecision='%v'", radicandPrecision.Text(10))
+		return sqrRoot, sqrRootPrecision, err
+	}
+
+	if maxPrecision == nil {
+		 err = errors.New(ePrefix +
+			"Error: Input parameter 'maxPrecision' is 'nil'!")
+		return sqrRoot, sqrRootPrecision, err
+	}
+
+	if maxPrecision.Cmp(bigZero) == -1 {
+		err = fmt.Errorf(ePrefix +
+			"Error: Input parameter 'maxPrecision' is LESS THAN ZERO! " +
+			"maxPrecision='%v'", maxPrecision.Text(10))
+		return sqrRoot, sqrRootPrecision, err
+	}
+
+	bigOne := big.NewInt(1)
+
+	if radicand.Cmp(bigOne) == 0 &&
+		radicandPrecision.Cmp(bigZero) == 0 {
+		sqrRoot = big.NewInt(1)
+		return sqrRoot, sqrRootPrecision, err
+
+	}
+
+	/*
+	delta := big.NewInt(0).Mul(maxPrecision, big.NewInt(2))
+	delta.Add(delta, radicandPrecision)
+
+	if bigZero.Cmp(big.NewInt(0).And(delta, bigOne)) == 0 {
+		// maxPrecision is even
+		delta.Add(delta, bigOne)
+	}
+
+	tMaxPrecision := big.NewInt(0).Add(delta, bigOne)
+	tMaxPrecision.Rsh(tMaxPrecision, 1)
+	*/
+
+
+	delta := big.NewInt(3)
+	tMaxPrecision := big.NewInt(3)
+
+
+	fmt.Println("delta: ", delta.Text(10))
+
+	tRadicand := big.NewInt(0).Set(radicand)
+
+	if delta.Cmp(bigZero) == 1 {
+		tRadicand.Mul(tRadicand,
+			big.NewInt(0).Exp(big.NewInt(10), delta, nil))
+	}
+
+
+	var temp *big.Int
+
+	radBitLen := uint(tRadicand.BitLen() + 1)
+
+	op := big.NewInt(0).Set(tRadicand)
+	res := big.NewInt(0)
+	one := big.NewInt(1)
+	one.Lsh(one, radBitLen)
+
+	for one.Cmp(op) == 1 {
+		one.Rsh(one, 2)
+	}
+
+
+	temp = big.NewInt(0)
+
+	for one.Cmp(bigZero) > 0 {
+
+		temp = big.NewInt(0).Add(res, one)
+
+		if op.Cmp(temp) >= 0 {
+			op.Sub(op, temp)
+			res = big.NewInt(0).Add(res, big.NewInt(0).Lsh(one, 1))
+		}
+
+		res.Rsh(res, 1)
+		one.Rsh(one, 2)
+	}
+
+	//var errX error
+
+
+	fmt.Println("output precision: ", tMaxPrecision.Text(10))
+	fmt.Println("       remainder: ", op.Text(10))
+	sqrRoot.Set(res)
+	sqrRootPrecision.Set(tMaxPrecision)
+	/*
+	sqrRoot, sqrRootPrecision, errX =
+		BigIntMath{}.RoundToMaxPrecision(res, tMaxPrecision, maxPrecision, false)
+
+	if errX != nil {
+		sqrRoot.Set(bigZero)
+		sqrRootPrecision.Set(bigZero)
+		err = fmt.Errorf(ePrefix + "%v", errX.Error()	)
+		return sqrRoot, sqrRootPrecision, err
+	}
+	*/
+
+	err = nil
+	return sqrRoot, sqrRootPrecision, err
 }
 
-// FastIntegerSqRoot - Only works for integers.
-// https://community.oracle.com/thread/1705443
-//
-func (fdNthRoot FixedDecimalNthRoot) FastIntegerSqRoot(
-	integerRadicand *big.Int) (sqrRoot, remainder *big.Int, err error) {
+func (fdNthRoot FixedDecimalNthRoot) TestIntegerSqRoot(
+	integerRadicand *big.Int) (	sqrRoot,
+															remainder *big.Int,
+															err error) {
+
 	sqrRoot = big.NewInt(0)
 	remainder = big.NewInt(0)
 	err = nil
@@ -338,12 +493,108 @@ func (fdNthRoot FixedDecimalNthRoot) FastIntegerSqRoot(
 
 	var temp *big.Int
 
-	radBigLen := uint(integerRadicand.BitLen() + 1)
+	radBitLen := uint(integerRadicand.BitLen() + 1)
 
 	op := big.NewInt(0).Set(integerRadicand)
 	res := big.NewInt(0)
 	one := big.NewInt(1)
-	one.Lsh(one, radBigLen)
+	one.Lsh(one, radBitLen)
+
+	for one.Cmp(op) == 1 {
+		one.Rsh(one, 2)
+	}
+
+	bigZero := big.NewInt(0)
+	temp = big.NewInt(0)
+
+	for one.Cmp(bigZero) > 0 {
+
+		temp = big.NewInt(0).Add(res, one)
+
+		if op.Cmp(temp) >= 0 {
+			op.Sub(op, temp)
+			res = big.NewInt(0).Add(res, big.NewInt(0).Lsh(one, 1))
+		}
+
+		res.Rsh(res, 1)
+		one.Rsh(one, 2)
+	}
+
+	sqrRoot.Set(res)
+	remainder.Set(op)
+	err = nil
+
+	return sqrRoot, remainder, err
+}
+
+func (fdNthRoot FixedDecimalNthRoot) MikesIntegerSqRoot(
+	integerRadicand *big.Int) (	sqrRoot,
+															remainder *big.Int,
+															err error) {
+
+	sqrRoot = big.NewInt(0)
+	remainder = big.NewInt(0)
+	err = nil
+
+
+	var temp *big.Int
+
+	radBitLen := uint(integerRadicand.BitLen())
+
+	op := big.NewInt(0).Set(integerRadicand)
+	res := big.NewInt(0)
+	one := big.NewInt(1)
+	one.Lsh(one, radBitLen)
+
+	for one.Cmp(op) == 1 {
+		one.Rsh(one, 2)
+	}
+
+	bigZero := big.NewInt(0)
+	temp = big.NewInt(0)
+
+	for one.Cmp(bigZero) > 0 {
+
+		temp = big.NewInt(0).Add(res, one)
+
+		if op.Cmp(temp) >= 0 {
+			op.Sub(op, temp)
+			res = big.NewInt(0).Add(res, big.NewInt(0).Lsh(one, 1))
+		}
+
+		res.Rsh(res, 1)
+		one.Rsh(one, 2)
+	}
+
+	sqrRoot.Set(res)
+	remainder.Set(op)
+	err = nil
+
+	return sqrRoot, remainder, err
+}
+
+
+// FastIntegerSqRoot - Only works for integers.
+// https://community.oracle.com/thread/1705443
+//
+func (fdNthRoot FixedDecimalNthRoot) FastIntegerSqRoot(
+	integerRadicand *big.Int) (	sqrRoot,
+															remainder *big.Int,
+															err error) {
+
+	sqrRoot = big.NewInt(0)
+	remainder = big.NewInt(0)
+	err = nil
+
+
+	var temp *big.Int
+
+	radBitLen := uint(integerRadicand.BitLen() + 1)
+
+	op := big.NewInt(0).Set(integerRadicand)
+	res := big.NewInt(0)
+	one := big.NewInt(1)
+	one.Lsh(one, radBitLen)
 
 	for one.Cmp(op) == 1 {
 		one.Rsh(one, 2)

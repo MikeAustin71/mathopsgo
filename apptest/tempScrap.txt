@@ -1,8 +1,135 @@
-m=168 yields success for 99-digits
-168/99 = 1.6969696969696969696969696969697
-1.6969696969696969696969696969697 x 31
-    = 52.606060606060606060606060606061 yielded 53
-Actual was 54
+===================================================
+9294.12345
+Precision = 5
+maxPrecision = 30
+required delta = 73
+actual Sqr Root Precision = 39
 
-1.8 = factor
-31 x 1.8 = 55.8 = 56
+also
+required delta = 67
+actual Sqr Root Precision = 36
+
+also
+required delta = 61
+actual Sqr Root Precision = 33
+
+also
+required delta = 55
+actual Sqr Root Precision = 30
+
+also
+required delta = 49
+actual Sqr Root Precision = 27
+
+also
+required delta = 43
+> 19
+actual Sqr Root Precision = 24
+
+also
+required delta = 31
+> 13
+actual Sqr Root Precision = 18
+
+also
+required delta = 25
+> 10
+actual Sqr Root Precision = 15
+
+also
+required delta = 19
+> 7
+actual Sqr Root Precision = 12
+
+also
+required delta = 17
+> 6
+actual Sqr Root Precision = 11
+
+also
+required delta = 13
+> 4
+actual Sqr Root Precision = 9
+
+also
+required delta = 11
+> 3
+actual Sqr Root Precision = 8
+
+FAILED ######
+required delta = 7
+actual Sqr Root Precision = 6
+
+===================================================
+9294.1234
+Precision = 3
+maxPrecision = 30
+
+also
+required delta = 30
+actual Sqr Root Precision = 17
+
+also
+required delta = 24
+actual Sqr Root Precision = 14
+
+also
+required delta = 18
+actual Sqr Root Precision = 11
+
+also
+required delta = 12
+actual Sqr Root Precision = 8
+
+also
+required delta = 6
+actual Sqr Root Precision = 5
+
+FAILED #####
+required delta = 3
+actual Sqr Root Precision = 0
+
+===================================================
+994.1234
+Precision = 4
+maxPrecision = 31
+
+required delta = 30
+actual Sqr Root Precision = 17
+
+===================================================
+57.935
+Precision = 3
+maxPrecision = 31
+required delta = 67
+actual Sqr Root Precision = 35
+32 x 2 = 64 + 3 = 67
+31 + 3
+
+also
+required delta = 73
+actual Sqr Root Precision = 38
+
+
+===================================================
+57.93
+Precision = 2
+maxPrecision = 30
+required delta = 62
+actual Sqr Root Precision = 32
+
+also
+required delta = 68
+actual Sqr Root Precision = 35
+
+
+===================================================
+57.9
+Precision = 1
+maxPrecision = 31
+required delta = 69
+actual Sqr Root Precision = 35
+
+also
+required delta = 63
+actual Sqr Root Precision = 32

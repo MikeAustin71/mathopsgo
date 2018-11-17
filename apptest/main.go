@@ -9,20 +9,270 @@ import (
 )
 
 func main() {
-	numStr := "123456"
 
-	ia, err := mathops.IntAry{}.NewNumStr(numStr)
+	binRadicand, err :=
+		mathops.BigIntNum{}.NewNumStr("9294.123")
 
-	if err != nil {
-		fmt.Printf("%v", err.Error())
+	if err!=nil {
+		fmt.Printf("main Error: %v", err.Error())
 		return
 	}
 
-	ary, xlen := ia.GetIntAryElements()
+	radicand := binRadicand.GetIntegerValue()
+	radicandPrecision := binRadicand.GetPrecisionBigInt()
+	maxPrecision := big.NewInt(29)
 
-	for i:= 0; i < xlen; i++ {
-		fmt.Println(ary[i])
+	//                            1         2         3
+	//                   12345678901234567890123456789012
+	expectedValue := "96.406031968959286691918168135607"
+
+	TestIntegerSqrRoot(
+		radicand,
+		radicandPrecision,
+		maxPrecision,
+		expectedValue)
+
+}
+
+func TestMikesIntegerSquareRoot() {
+
+	return
+}
+
+func TestIntegerSqrRoot(
+	radicand,
+	radicandPrecision,
+	maxPrecision *big.Int,
+	expectedValue string) {
+
+	ePrefix := "TestIntegerSqrRoot() "
+
+	timeStart := time.Now()
+	timeEnd := time.Now()
+
+	timeStart = time.Now()
+	sqrRoot, sqrRootPrecision, err :=
+	 mathops.FixedDecimalNthRoot{}.IntegerSqrRoot(
+	 	radicand,
+	 	radicandPrecision,
+	 	maxPrecision)
+
+	timeEnd = time.Now()
+
+	if err != nil {
+		fmt.Printf(ePrefix +
+				"%v", err.Error())
+		return
 	}
+
+
+	binRadicand, err :=
+		mathops.BigIntNum{}.NewBigIntPrecision(radicand, radicandPrecision)
+
+	if err != nil {
+		fmt.Printf(ePrefix +
+			"%v", err.Error())
+		return
+	}
+
+	binSqrRoot, err :=
+		mathops.BigIntNum{}.NewBigIntPrecision(
+			sqrRoot,
+			sqrRootPrecision)
+
+
+	if err != nil {
+		fmt.Printf(ePrefix +
+			"%v", err.Error())
+		return
+	}
+
+	duration := examples.CodeDurationToStr(timeEnd.Sub(timeStart))
+	status := "SUCCESS!!! - Actual MATCHES Expected Square Root !!!"
+
+	if expectedValue != binSqrRoot.GetNumStr() {
+		status = "FAILURE*** - Actual DOES NOT MATCH Expected Square Root ***"
+	}
+
+	fmt.Println()
+	fmt.Println("==============================================================")
+	fmt.Println("     FixedDecimalNthRoot{}.IntegerSqRoot()         ")
+	fmt.Println("==============================================================")
+	fmt.Println("             radicand: ", binRadicand.GetNumStr())
+	fmt.Println("         maxPrecision: ", maxPrecision.Text(10))
+	fmt.Println("   Sqr Root Precision: ", binSqrRoot.GetPrecision())
+	fmt.Println("      Sqr Root Result: ", binSqrRoot.GetNumStr())
+	fmt.Println("      Expected Result: ", expectedValue)
+	fmt.Println("status: ", status)
+	fmt.Println("==============================================================")
+	fmt.Println("Execution Time: ", duration)
+	fmt.Println("==============================================================")
+
+
+}
+
+func TestFastIntSqRoot(
+	radicand,
+	radicandPrecision,
+	maxPrecision *big.Int,
+	expectedValue string) {
+
+	ePrefix := "TestFastIntSqRoot() "
+
+	timeStart := time.Now()
+	timeEnd := time.Now()
+
+	timeStart = time.Now()
+
+	if radicand == nil {
+		fmt.Println(ePrefix +
+			"Error: Input parameter 'radicand' is 'nil'!")
+		return
+	}
+
+	bigZero := big.NewInt(0)
+
+	if radicand.Cmp(bigZero)== 0 {
+		fmt.Println(ePrefix +
+			"Error: Input parameter 'radicand' is ZERO!")
+		return
+	}
+
+	if radicandPrecision == nil {
+		fmt.Println(ePrefix +
+			"Error: Input parameter 'radicandPrecision' is 'nil'!")
+		return
+	}
+
+	if radicandPrecision.Cmp(bigZero) == -1 {
+		fmt.Printf(ePrefix +
+			"Error: Input parameter 'radicandPrecision' is LESS THAN ZERO! " +
+			"radicandPrecision='%v'", radicandPrecision.Text(10))
+		return
+	}
+
+	if maxPrecision == nil {
+		fmt.Println(ePrefix +
+			"Error: Input parameter 'maxPrecision' is 'nil'!")
+		return
+	}
+
+	if maxPrecision.Cmp(bigZero) == -1 {
+		fmt.Printf(ePrefix +
+			"Error: Input parameter 'maxPrecision' is LESS THAN ZERO! " +
+			"maxPrecision='%v'", maxPrecision.Text(10))
+		return
+	}
+
+	fdNthRt := mathops.FixedDecimalNthRoot{}
+
+	bigOne := big.NewInt(1)
+
+	if radicand.Cmp(bigOne) == 0 &&
+		radicandPrecision.Cmp(bigZero) == 0 {
+
+		fmt.Println(ePrefix +
+			"Error: Input parameter 'radicand' is equal to one!")
+		return
+
+	}
+
+	tMaxPrecision:= big.NewInt(0).Set(maxPrecision)
+
+	if tMaxPrecision.Cmp(radicandPrecision) == -1 {
+		tMaxPrecision.Set(radicandPrecision)
+	}
+
+	if big.NewInt(0).And(tMaxPrecision, bigOne).Cmp(bigZero) == 1 {
+		// tMaxPrecision is odd
+		tMaxPrecision.Add(tMaxPrecision, bigOne)
+	}
+
+	delta := big.NewInt(0).Sub(tMaxPrecision, radicandPrecision)
+	delta.Mul(delta,big.NewInt(2))
+	tRadicand := big.NewInt(0).Set(radicand)
+
+	if delta.Cmp(bigZero) == 1 {
+		tRadicand.Mul(tRadicand,
+			big.NewInt(0).Exp(big.NewInt(10), delta, nil))
+	}
+
+	sqrRoot, remainder, err :=
+		fdNthRt.FastIntegerSqRoot(tRadicand)
+
+	timeEnd = time.Now()
+
+	if err != nil {
+		fmt.Printf(ePrefix +
+			"%v", err.Error())
+		return
+	}
+
+	binRadicand, err :=
+		mathops.BigIntNum{}.NewBigIntPrecision(radicand, radicandPrecision)
+
+	if err != nil {
+		fmt.Printf(ePrefix +
+			"%v", err.Error())
+		return
+	}
+
+	duration := examples.CodeDurationToStr(timeEnd.Sub(timeStart))
+
+	fmt.Println()
+	fmt.Println("=====================================================")
+	fmt.Println("   FixedDecimalNthRoot{}.FastIntegerSqRoot()         ")
+	fmt.Println("=====================================================")
+	fmt.Println("             radicand: ", binRadicand.GetNumStr())
+	fmt.Println("            tradicand: ", tRadicand.Text(10))
+	fmt.Println("      Sqr Root Result: ", sqrRoot.Text(10))
+	fmt.Println("   Sqr Root Remainder: ", remainder.Text(10))
+	fmt.Println("      Expected Result: ", expectedValue)
+	fmt.Println("=====================================================")
+	fmt.Println("Execution Time: ", duration)
+	fmt.Println("=====================================================")
+
+	timeStart = time.Now()
+
+	vSqrRoot, vSqrRootPrecision, err :=
+		fdNthRt.CalculatePositiveIntegerNthRoot(
+		radicand,
+		radicandPrecision,
+		big.NewInt(2),
+		big.NewInt(0),
+		maxPrecision)
+
+	timeEnd = time.Now()
+
+	if err != nil {
+		fmt.Printf(ePrefix +
+			"%v", err.Error())
+		return
+	}
+
+	binVSqrRoot, err :=
+		mathops.BigIntNum{}.NewBigIntPrecision(vSqrRoot, vSqrRootPrecision)
+
+
+	if err != nil {
+		fmt.Printf(ePrefix +
+			"%v", err.Error())
+		return
+	}
+
+	duration = examples.CodeDurationToStr(timeEnd.Sub(timeStart))
+
+	fmt.Println()
+	fmt.Println("---------------------------------------------------------")
+	fmt.Println(" FixedDecimalNthRoot{}.CalculatePositiveIntegerNthRoot() ")
+	fmt.Println("            Used as Square Root Calculator")
+	fmt.Println("---------------------------------------------------------")
+	fmt.Println("             radicand: ", binRadicand.GetNumStr())
+	fmt.Println("      Sqr Root Result: ", binVSqrRoot.GetNumStr())
+	fmt.Println("      Expected Result: ", expectedValue)
+	fmt.Println("---------------------------------------------------------")
+	fmt.Println("Execution Time: ", duration)
+	fmt.Println("---------------------------------------------------------")
 
 }
 
@@ -116,6 +366,8 @@ func TestLogBaseOfXByDivide(
 func TestBabylonianSqrRoot(
 	radicand,
 	radicandPrecision,
+	initialGuess,
+	initialGuessPrecision,
 	finalMaxPrecision1 *big.Int,
 	calcCycles1 uint64,
 	maxPrecision2 *big.Int,
@@ -126,10 +378,12 @@ func TestBabylonianSqrRoot(
 	ePrefix := "TestBabylonianSqrRoot() "
 
 	timeStart1 = time.Now()
-	sqrRoot, sqrRootPrecision, err :=
+	sqrRoot, sqrRootPrecision, cycleCnt, err :=
 		mathops.FixedDecimalNthRoot{}.BabylonianSqrRoot(
 			radicand,
 			radicandPrecision,
+			initialGuess,
+			initialGuessPrecision,
 			finalMaxPrecision1,
 			calcCycles1)
 
@@ -139,6 +393,30 @@ func TestBabylonianSqrRoot(
 		fmt.Printf(ePrefix+": %v", err.Error())
 		return
 	}
+
+	timeDuration := timeEnd1.Sub(timeStart1)
+	duration := examples.CodeDurationToStr(timeDuration)
+
+	timeStart1 = time.Now()
+	intRadicand := big.NewInt(0).Set(radicand)
+
+	if radicandPrecision.Cmp(big.NewInt(0)) == 1 {
+		scale := big.NewInt(0).Exp(big.NewInt(10), radicandPrecision, nil)
+		intRadicand.Quo(intRadicand,scale)
+	}
+
+	intSqrRoot, remainder, err :=
+		mathops.FixedDecimalNthRoot{}.FastIntegerSqRoot(intRadicand)
+
+	timeEnd1 = time.Now()
+
+	if err != nil {
+		fmt.Printf(ePrefix+": %v", err.Error())
+		return
+	}
+
+	timeDuration = timeEnd1.Sub(timeStart1)
+	fastSqrRootDuration := examples.CodeDurationToStr(timeDuration)
 
 	binRadicand, err :=
 		mathops.BigIntNum{}.NewBigIntPrecision(
@@ -150,6 +428,17 @@ func TestBabylonianSqrRoot(
 		return
 	}
 
+	binInitialGuess, err :=
+		mathops.BigIntNum{}.NewBigIntPrecision(
+			initialGuess,
+			initialGuessPrecision)
+
+	if err != nil {
+		fmt.Printf(ePrefix+"%v", err.Error())
+		return
+	}
+
+
 	binSqrRoot, err :=
 		mathops.BigIntNum{}.NewBigIntPrecision(
 			sqrRoot,
@@ -160,14 +449,13 @@ func TestBabylonianSqrRoot(
 		return
 	}
 
-	timeDuration := timeEnd1.Sub(timeStart1)
-
-	duration := examples.CodeDurationToStr(timeDuration)
 	status := "SUCCESS!!! Expected Value Matches Actual Value"
 
 	if expectedValue != binSqrRoot.GetNumStr() {
 		status = "FAILURE*** Expected Value DOES NOT MATCH Actual Value"
 	}
+
+
 
 	fmt.Println("=======================================================")
 	fmt.Println(" FixedDecimalNthRoot{}.BabylonianSqrRoot()")
@@ -175,13 +463,19 @@ func TestBabylonianSqrRoot(
 	fmt.Println("      radicand: ", binRadicand.GetNumStr())
 	fmt.Println("    calcCycles: ", calcCycles1)
 	fmt.Println("  maxPrecision: ", finalMaxPrecision1.Text(10))
+	fmt.Println("   Cycle Count: ", cycleCnt)
+	fmt.Println(" Initial Guess: ", binInitialGuess.GetNumStr())
+	fmt.Println("=======================================================")
+	fmt.Println("   Int SqrRoot: ", intSqrRoot.Text(10))
+	fmt.Println("     Remainder: ", remainder.Text(10))
 	fmt.Println("=======================================================")
 	fmt.Println("       sqrRoot: ", binSqrRoot.GetNumStr())
 	fmt.Println("expected value: ", expectedValue)
 	fmt.Println("=======================================================")
 	fmt.Println("     ", status)
 	fmt.Println("=======================================================")
-	fmt.Println("Execution Time: ", duration)
+	fmt.Println("  Execution Time: ", duration)
+	fmt.Println("Int SqrRoot Time: ", fastSqrRootDuration)
 	fmt.Println("=======================================================")
 	fmt.Println()
 
