@@ -481,6 +481,8 @@ func (fdNthRoot FixedDecimalNthRoot) IntegerSqrRoot(
 	return sqrRoot, sqrRootPrecision, err
 }
 
+
+
 func (fdNthRoot FixedDecimalNthRoot) TestIntegerSqRoot(
 	integerRadicand *big.Int) (	sqrRoot,
 															remainder *big.Int,
@@ -528,34 +530,82 @@ func (fdNthRoot FixedDecimalNthRoot) TestIntegerSqRoot(
 }
 
 func (fdNthRoot FixedDecimalNthRoot) MikesIntegerSqRoot(
-	integerRadicand *big.Int) (	sqrRoot,
-															remainder *big.Int,
-															err error) {
+	radicand,
+	radicandPrecision,
+	maxPrecision *big.Int) (		sqrRoot,
+																	sqrRootPrecision,
+																	remainder,
+																	oneVal *big.Int,
+																	err error) {
 
 	sqrRoot = big.NewInt(0)
+	sqrRootPrecision = big.NewInt(0)
 	remainder = big.NewInt(0)
+	oneVal = big.NewInt(0)
 	err = nil
-
 
 	var temp *big.Int
 
-	radBitLen := uint(integerRadicand.BitLen())
+	tempRadicand := big.NewInt(0).Set(radicand)
+	tempMaxPrecision := big.NewInt(0).Set(maxPrecision)
+	bigZero := big.NewInt(0)
+	bigOne := big.NewInt(1)
+	deltaFactor := big.NewInt(6)
+	newPrecision := big.NewInt(0)
+	newPrecisionFactor := big.NewInt(3)
+	cmpr := radicandPrecision.Cmp(bigZero)
+	delta := big.NewInt(0)
 
-	op := big.NewInt(0).Set(integerRadicand)
+	if cmpr == 1 {
+		isEven := big.NewInt(0).And(bigOne, radicandPrecision)
+		if  isEven.Cmp(bigOne) == 0 {
+			delta.Add(delta, bigOne)
+		}
+	}
+
+	for tempMaxPrecision.Cmp(bigZero) == 1 {
+		tempMaxPrecision.Rsh(tempMaxPrecision, 1)
+		delta.Add(delta, deltaFactor)
+		newPrecision.Add(newPrecision, newPrecisionFactor)
+	}
+
+	if delta.Cmp(bigZero) == 1 {
+		scale := big.NewInt(0).Exp(big.NewInt(10), delta, nil)
+		tempRadicand.Mul(tempRadicand, scale)
+	}
+
+	radBitLen := uint(tempRadicand.BitLen())
+
+	//fmt.Println("    bit length: ", radBitLen)
+
+	if radBitLen & 1 == 1{
+		radBitLen++
+	}
+
+	//fmt.Println("adj bit length: ", radBitLen)
+	op := big.NewInt(0).Set(tempRadicand)
 	res := big.NewInt(0)
 	one := big.NewInt(1)
 	one.Lsh(one, radBitLen)
+	cycle := 0
 
 	for one.Cmp(op) == 1 {
 		one.Rsh(one, 2)
 	}
 
-	bigZero := big.NewInt(0)
+	//fmt.Println("Initial OneVal: ", one.Text(10))
+
 	temp = big.NewInt(0)
 
 	for one.Cmp(bigZero) > 0 {
+		cycle++
+		//fmt.Println("    cycle: ", cycle)
+		//fmt.Println(" start op: ", op.Text(10))
+		//fmt.Println("start res: ", res.Text(10))
+		//fmt.Println("start one: ", one.Text(10))
 
 		temp = big.NewInt(0).Add(res, one)
+		//fmt.Println("     temp: ", temp.Text(10))
 
 		if op.Cmp(temp) >= 0 {
 			op.Sub(op, temp)
@@ -564,15 +614,96 @@ func (fdNthRoot FixedDecimalNthRoot) MikesIntegerSqRoot(
 
 		res.Rsh(res, 1)
 		one.Rsh(one, 2)
+
+		//fmt.Println("   end op: ", op.Text(10))
+		//fmt.Println("  end res: ", res.Text(10))
+		//fmt.Println("  end one: ", one.Text(10))
+		//fmt.Println()
+	}
+
+	sqrRoot.Set(res)
+	sqrRootPrecision.Set(newPrecision)
+	remainder.Set(op)
+	oneVal.Set(one)
+	err = nil
+
+	return sqrRoot, sqrRootPrecision, remainder, oneVal, err
+}
+
+
+/*
+func (fdNthRoot FixedDecimalNthRoot) MikesIntegerSqRoot(
+	integerRadicand *big.Int) (	sqrRoot,
+															remainder,
+															oneVal *big.Int,
+															err error) {
+
+	sqrRoot = big.NewInt(0)
+	remainder = big.NewInt(0)
+	oneVal = big.NewInt(0)
+	err = nil
+
+	var temp *big.Int
+
+	radBitLen := uint(integerRadicand.BitLen())
+
+	//fmt.Println("    bit length: ", radBitLen)
+
+	if radBitLen & 1 == 1{
+		radBitLen++
+	}
+
+
+	//fmt.Println("adj bit length: ", radBitLen)
+
+	op := big.NewInt(0).Set(integerRadicand)
+	res := big.NewInt(0)
+	one := big.NewInt(1)
+	one.Lsh(one, radBitLen)
+	cycle := 0
+
+	for one.Cmp(op) == 1 {
+		one.Rsh(one, 2)
+	}
+
+	//fmt.Println("Initial OneVal: ", one.Text(10))
+
+	bigZero := big.NewInt(0)
+	temp = big.NewInt(0)
+
+	for one.Cmp(bigZero) > 0 {
+		cycle++
+		//fmt.Println("    cycle: ", cycle)
+		//fmt.Println(" start op: ", op.Text(10))
+		//fmt.Println("start res: ", res.Text(10))
+		//fmt.Println("start one: ", one.Text(10))
+
+		temp = big.NewInt(0).Add(res, one)
+		//fmt.Println("     temp: ", temp.Text(10))
+
+		if op.Cmp(temp) >= 0 {
+			op.Sub(op, temp)
+			res = big.NewInt(0).Add(res, big.NewInt(0).Lsh(one, 1))
+		}
+
+		res.Rsh(res, 1)
+		one.Rsh(one, 2)
+
+
+		//fmt.Println("   end op: ", op.Text(10))
+		//fmt.Println("  end res: ", res.Text(10))
+		//fmt.Println("  end one: ", one.Text(10))
+		//fmt.Println()
 	}
 
 	sqrRoot.Set(res)
 	remainder.Set(op)
+	oneVal.Set(one)
 	err = nil
 
-	return sqrRoot, remainder, err
+	return sqrRoot, remainder, oneVal, err
 }
-
+*/
 
 // FastIntegerSqRoot - Only works for integers.
 // https://community.oracle.com/thread/1705443

@@ -10,8 +10,10 @@ import (
 
 func main() {
 
+	maxPrecision := big.NewInt(50)
+
 	binRadicand, err :=
-		mathops.BigIntNum{}.NewNumStr("9294.123")
+		mathops.BigIntNum{}.NewNumStr("9412")
 
 	if err!=nil {
 		fmt.Printf("main Error: %v", err.Error())
@@ -20,21 +22,63 @@ func main() {
 
 	radicand := binRadicand.GetIntegerValue()
 	radicandPrecision := binRadicand.GetPrecisionBigInt()
-	maxPrecision := big.NewInt(29)
 
-	//                            1         2         3
-	//                   12345678901234567890123456789012
-	expectedValue := "96.406031968959286691918168135607"
-
-	TestIntegerSqrRoot(
+	TestMikesIntegerSquareRoot(
 		radicand,
 		radicandPrecision,
-		maxPrecision,
-		expectedValue)
+		maxPrecision)
 
 }
 
-func TestMikesIntegerSquareRoot() {
+func TestMikesIntegerSquareRoot(
+	radicand,
+	radicandPrecision,
+	maxPrecision *big.Int) {
+
+	ePrefix := "TestMikesIntegerSquareRoot() "
+	timeStart := time.Now()
+	timeEnd := time.Now()
+
+	timeStart = time.Now()
+	sqrRoot, sqrRootPrecision, remainder, oneVal, err :=
+		mathops.FixedDecimalNthRoot{}.MikesIntegerSqRoot(
+			radicand,
+			radicandPrecision,
+			maxPrecision)
+
+	timeEnd = time.Now()
+
+	if err != nil {
+		fmt.Printf(ePrefix + "%v", err.Error())
+		return
+	}
+
+	binSqrRoot, err :=
+		mathops.BigIntNum{}.NewBigIntPrecision(sqrRoot, sqrRootPrecision)
+
+	if err != nil {
+		fmt.Printf(ePrefix + "%v", err.Error())
+		return
+	}
+
+	duration := examples.CodeDurationToStr(timeEnd.Sub(timeStart))
+
+	fmt.Println()
+	fmt.Println("==============================================================")
+	fmt.Println("     FixedDecimalNthRoot{}.MikesIntegerSqRoot()         ")
+	fmt.Println("==============================================================")
+	fmt.Println("         maxPrecision: ", maxPrecision.Text(10))
+	fmt.Println("             radicand: ", radicand.Text(10))
+	fmt.Println("    radicandPrecision: ", radicandPrecision.Text(10))
+	fmt.Println("      Sqr Root Result: ", sqrRoot.Text(10))
+	fmt.Println("   Sqr Root Precision: ", sqrRootPrecision.Text(10))
+	fmt.Println("       SqrRoot NumStr: ", binSqrRoot.GetNumStr())
+	fmt.Println("            remainder: ", remainder.Text(10))
+	fmt.Println("               oneVal: ", oneVal.Text(10))
+	fmt.Println("==============================================================")
+	fmt.Println("Execution Time: ", duration)
+	fmt.Println("==============================================================")
+
 
 	return
 }
