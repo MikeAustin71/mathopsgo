@@ -10,23 +10,10 @@ import (
 
 func main() {
 
-	maxPrecision := big.NewInt(50)
+	radicand := big.NewInt(94)
 
-	binRadicand, err :=
-		mathops.BigIntNum{}.NewNumStr("9412")
-
-	if err!=nil {
-		fmt.Printf("main Error: %v", err.Error())
-		return
-	}
-
-	radicand := binRadicand.GetIntegerValue()
-	radicandPrecision := binRadicand.GetPrecisionBigInt()
-
-	TestMikesIntegerSquareRoot(
-		radicand,
-		radicandPrecision,
-		maxPrecision)
+	TestTestMikesIntegerSqRoot(
+		radicand)
 
 }
 
@@ -40,7 +27,7 @@ func TestMikesIntegerSquareRoot(
 	timeEnd := time.Now()
 
 	timeStart = time.Now()
-	sqrRoot, sqrRootPrecision, remainder, oneVal, err :=
+	sqrRoot, sqrRootPrecision, err :=
 		mathops.FixedDecimalNthRoot{}.MikesIntegerSqRoot(
 			radicand,
 			radicandPrecision,
@@ -73,12 +60,46 @@ func TestMikesIntegerSquareRoot(
 	fmt.Println("      Sqr Root Result: ", sqrRoot.Text(10))
 	fmt.Println("   Sqr Root Precision: ", sqrRootPrecision.Text(10))
 	fmt.Println("       SqrRoot NumStr: ", binSqrRoot.GetNumStr())
-	fmt.Println("            remainder: ", remainder.Text(10))
-	fmt.Println("               oneVal: ", oneVal.Text(10))
 	fmt.Println("==============================================================")
 	fmt.Println("Execution Time: ", duration)
 	fmt.Println("==============================================================")
 
+
+	return
+}
+
+func TestTestMikesIntegerSqRoot(
+	radicand *big.Int) {
+
+	ePrefix := "TestMikesIntegerSqRoot() "
+	timeStart := time.Now()
+	timeEnd := time.Now()
+	timeStart = time.Now()
+	sqrRoot, remainder, oneVal, err :=
+		mathops.FixedDecimalNthRoot{}.TestMikesIntegerSqRoot(
+			radicand)
+
+	timeEnd = time.Now()
+
+	if err != nil {
+		fmt.Printf(ePrefix + "%v", err.Error())
+		return
+	}
+
+
+	duration := examples.CodeDurationToStr(timeEnd.Sub(timeStart))
+
+	fmt.Println()
+	fmt.Println("==============================================================")
+	fmt.Println("     FixedDecimalNthRoot{}.TestMikesIntegerSqRoot()         ")
+	fmt.Println("==============================================================")
+	fmt.Println("             radicand: ", radicand.Text(10))
+	fmt.Println("      Sqr Root Result: ", sqrRoot.Text(10))
+	fmt.Println("            Remainder: ", remainder.Text(10))
+	fmt.Println("               oneVal: ", oneVal)
+	fmt.Println("==============================================================")
+	fmt.Println("Execution Time: ", duration)
+	fmt.Println("==============================================================")
 
 	return
 }

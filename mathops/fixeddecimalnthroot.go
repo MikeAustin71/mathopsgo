@@ -481,7 +481,7 @@ func (fdNthRoot FixedDecimalNthRoot) IntegerSqrRoot(
 	return sqrRoot, sqrRootPrecision, err
 }
 
-
+/*
 
 func (fdNthRoot FixedDecimalNthRoot) TestIntegerSqRoot(
 	integerRadicand *big.Int) (	sqrRoot,
@@ -528,51 +528,46 @@ func (fdNthRoot FixedDecimalNthRoot) TestIntegerSqRoot(
 
 	return sqrRoot, remainder, err
 }
+*/
 
 func (fdNthRoot FixedDecimalNthRoot) MikesIntegerSqRoot(
 	radicand,
 	radicandPrecision,
-	maxPrecision *big.Int) (		sqrRoot,
-																	sqrRootPrecision,
-																	remainder,
-																	oneVal *big.Int,
-																	err error) {
+	maxPrecision *big.Int) (	sqrRoot,
+														sqrRootPrecision *big.Int,
+														err error) {
 
 	sqrRoot = big.NewInt(0)
 	sqrRootPrecision = big.NewInt(0)
-	remainder = big.NewInt(0)
-	oneVal = big.NewInt(0)
 	err = nil
 
 	var temp *big.Int
 
-	tempRadicand := big.NewInt(0).Set(radicand)
-	tempMaxPrecision := big.NewInt(0).Set(maxPrecision)
 	bigZero := big.NewInt(0)
 	bigOne := big.NewInt(1)
-	deltaFactor := big.NewInt(6)
+	bigThree := big.NewInt(3)
+	bigTen := big.NewInt(10)
+	bigTenTo6th := big.NewInt(1000000)
+	tempRadicand := big.NewInt(0).Set(radicand)
+	tempMaxPrecision := big.NewInt(0).Set(maxPrecision)
+
 	newPrecision := big.NewInt(0)
-	newPrecisionFactor := big.NewInt(3)
+
 	cmpr := radicandPrecision.Cmp(bigZero)
-	delta := big.NewInt(0)
 
 	if cmpr == 1 {
 		isEven := big.NewInt(0).And(bigOne, radicandPrecision)
 		if  isEven.Cmp(bigOne) == 0 {
-			delta.Add(delta, bigOne)
+			tempRadicand.Mul(tempRadicand, bigTen)
 		}
 	}
 
 	for tempMaxPrecision.Cmp(bigZero) == 1 {
-		tempMaxPrecision.Rsh(tempMaxPrecision, 1)
-		delta.Add(delta, deltaFactor)
-		newPrecision.Add(newPrecision, newPrecisionFactor)
+		tempMaxPrecision.Sub(tempMaxPrecision, bigThree)
+		tempRadicand.Mul(tempRadicand, bigTenTo6th)
+		newPrecision.Add(newPrecision, bigThree)
 	}
 
-	if delta.Cmp(bigZero) == 1 {
-		scale := big.NewInt(0).Exp(big.NewInt(10), delta, nil)
-		tempRadicand.Mul(tempRadicand, scale)
-	}
 
 	radBitLen := uint(tempRadicand.BitLen())
 
@@ -623,16 +618,13 @@ func (fdNthRoot FixedDecimalNthRoot) MikesIntegerSqRoot(
 
 	sqrRoot.Set(res)
 	sqrRootPrecision.Set(newPrecision)
-	remainder.Set(op)
-	oneVal.Set(one)
 	err = nil
 
-	return sqrRoot, sqrRootPrecision, remainder, oneVal, err
+	return sqrRoot, sqrRootPrecision, err
 }
 
 
-/*
-func (fdNthRoot FixedDecimalNthRoot) MikesIntegerSqRoot(
+func (fdNthRoot FixedDecimalNthRoot) TestMikesIntegerSqRoot(
 	integerRadicand *big.Int) (	sqrRoot,
 															remainder,
 															oneVal *big.Int,
@@ -703,7 +695,6 @@ func (fdNthRoot FixedDecimalNthRoot) MikesIntegerSqRoot(
 
 	return sqrRoot, remainder, oneVal, err
 }
-*/
 
 // FastIntegerSqRoot - Only works for integers.
 // https://community.oracle.com/thread/1705443
