@@ -20,7 +20,6 @@ import (
 // to manage, store and transport number strings.
 //
 // The NumStrDto Type implements the INumMgr interface.
-//
 type NumStrDto struct {
 	signVal int // An integer value indicating the numeric sign of this number string.
 	// 		Valid values are +1 or -1
@@ -121,16 +120,17 @@ func (nDto *NumStrDto) AddNumStrs(n1Dto NumStrDto, n2Dto NumStrDto) (NumStrDto, 
 //
 // Return Values:
 // -1 = n1Dto is less than n2Dto
-//  0 = n1Dto is equal to n2Dto
-//  1 = n1Dto is greater than n2Dto
+//
+//	0 = n1Dto is equal to n2Dto
+//	1 = n1Dto is greater than n2Dto
 //
 // Examples:
-// 	n1        			n2           	Result
-// 	-9691.23				91.245				 	-1
-//  9691.23					91.245					 1
-//  -5							82							-1
-//   5							 5							 0
 //
+//		n1        			n2           	Result
+//		-9691.23				91.245				 	-1
+//	 9691.23					91.245					 1
+//	 -5							82							-1
+//	  5							 5							 0
 func (nDto *NumStrDto) CompareSignedValues(n1Dto, n2Dto *NumStrDto) int {
 
 	cmpAbs := nDto.CompareAbsoluteValues(n1Dto, n2Dto)
@@ -205,16 +205,17 @@ func (nDto *NumStrDto) CompareSignedValues(n1Dto, n2Dto *NumStrDto) int {
 // numeric values are compared.
 // Return Values:
 // -1 = n1Dto is less than n2Dto
-//  0 = n1Dto is equal to n2Dto
-//  1 = n1Dto is greater than n2Dto
+//
+//	0 = n1Dto is equal to n2Dto
+//	1 = n1Dto is greater than n2Dto
 //
 // Examples:
-// 	n1        			n2           	Result
-// 	-9691.23				91.245				 	 1
-//  9691.23					91.245					 1
-//  -5							82							-1
-//   5							 5							 0
 //
+//		n1        			n2           	Result
+//		-9691.23				91.245				 	 1
+//	 9691.23					91.245					 1
+//	 -5							82							-1
+//	  5							 5							 0
 func (nDto *NumStrDto) CompareAbsoluteValues(n1Dto, n2Dto *NumStrDto) int {
 
 	n1DtoAbsFracRunes := n1Dto.GetAbsFracRunes()
@@ -344,7 +345,6 @@ func (nDto *NumStrDto) CopyIn(nInDto NumStrDto) {
 //
 // 'minimumPrecision' specifies the minimum precision of the final result.
 // If 'minimumPrecision' is less than zero, it is automatically set to zero.
-//
 func (nDto *NumStrDto) Divide(n2Dto NumStrDto, minimumPrecision, maximumPrecision int) error {
 
 	ePrefix := "NumStrDto.Divide() "
@@ -450,7 +450,6 @@ func (nDto *NumStrDto) Empty() {
 // FindIntArraySignificantDigitLimits - Receives an array of integers and converts them
 // to a number string consisting of significant digits. Leading and trailing zeros are
 // eliminated. See Method: FindNumStrSignificantDigitLimits()
-//
 func (nDto *NumStrDto) FindIntArraySignificantDigitLimits(intArray []int, precision uint, signVal int) (NumStrDto, error) {
 
 	lenIntArray := len(intArray)
@@ -775,14 +774,14 @@ func (nDto *NumStrDto) FormatForMathOps(n1Dto, n2Dto NumStrDto) (n1DtoOut NumStr
 // ================
 //
 // negValMode NegativeValueFmtMode -	Specifies the display mode for negative values:
-//																		LEADMINUSNEGVALFMTMODE 		-	Negative values formatted with
-//																														 		a leading minus sign.
-//																																Example: -$123,456.78
 //
-//																		PARENTHESESNEGVALFMTMODE	-	Negative values formatted with
-//																																surrounding parentheses.
-//																																Example: ($123,456.78)
+//	LEADMINUSNEGVALFMTMODE 		-	Negative values formatted with
+//													 		a leading minus sign.
+//															Example: -$123,456.78
 //
+//	PARENTHESESNEGVALFMTMODE	-	Negative values formatted with
+//															surrounding parentheses.
+//															Example: ($123,456.78)
 func (nDto *NumStrDto) FormatCurrencyStr(negValMode NegativeValueFmtMode) (string, error) {
 
 	ePrefix := "NumStrDto.FormatCurrencyStr() "
@@ -911,14 +910,14 @@ func (nDto *NumStrDto) FormatCurrencyStr(negValMode NegativeValueFmtMode) (strin
 // ================
 //
 // negValMode NegativeValueFmtMode -	Specifies the display mode for negative values:
-//																		LEADMINUSNEGVALFMTMODE 		-	Negative values formatted with
-//																														 		a leading minus sign.
-//																																Example: -123456.78
 //
-//																		PARENTHESESNEGVALFMTMODE	-	Negative values formatted with
-//																																surrounding parentheses.
-//																																Example: (123456.78)
+//	LEADMINUSNEGVALFMTMODE 		-	Negative values formatted with
+//													 		a leading minus sign.
+//															Example: -123456.78
 //
+//	PARENTHESESNEGVALFMTMODE	-	Negative values formatted with
+//															surrounding parentheses.
+//															Example: (123456.78)
 func (nDto *NumStrDto) FormatNumStr(negValMode NegativeValueFmtMode) (string, error) {
 
 	ePrefix := "NumStrDto.FormatNumStr() "
@@ -1014,14 +1013,14 @@ func (nDto *NumStrDto) FormatNumStr(negValMode NegativeValueFmtMode) (string, er
 // ================
 //
 // negValMode NegativeValueFmtMode -	Specifies the display mode for negative values:
-//																		LEADMINUSNEGVALFMTMODE 		-	Negative values formatted with
-//																														 		a leading minus sign.
-//																																Example: -123,456.78
 //
-//																		PARENTHESESNEGVALFMTMODE	-	Negative values formatted with
-//																																surrounding parentheses.
-//																																Example: (123,456.78)
+//	LEADMINUSNEGVALFMTMODE 		-	Negative values formatted with
+//													 		a leading minus sign.
+//															Example: -123,456.78
 //
+//	PARENTHESESNEGVALFMTMODE	-	Negative values formatted with
+//															surrounding parentheses.
+//															Example: (123,456.78)
 func (nDto *NumStrDto) FormatThousandsStr(negValMode NegativeValueFmtMode) (string, error) {
 
 	ePrefix := "NumStrDto.FormatThousandsStr() "
@@ -1240,7 +1239,6 @@ func (nDto *NumStrDto) GetAbsFracRunesLength() int {
 // If the current NumStrDto consists of zero integers and fractional
 // digits (Example: '0.123456'), this method will return a rune array
 // consisting one array element with a '0' value.
-//
 func (nDto *NumStrDto) GetAbsIntRunes() []rune {
 
 	lenAllNum := len(nDto.absAllNumRunes)
@@ -1273,14 +1271,12 @@ func (nDto *NumStrDto) GetAbsIntRunes() []rune {
 // ------       ------
 // 123.45				12345
 // -123.45			12345
-//
 func (nDto *NumStrDto) GetAbsNumStr() string {
 	return string(nDto.absAllNumRunes)
 }
 
 // GetAbsIntRunesLength - Returns the length of the
 // integer portion of the number string.
-//
 func (nDto *NumStrDto) GetAbsIntRunesLength() int {
 
 	lenAllNums := len(nDto.absAllNumRunes)
@@ -1329,7 +1325,6 @@ func (nDto *NumStrDto) GetBigInt() (*big.Int, error) {
 //
 // Before returning the BigIntNum result, this method
 // performs a validity test on the current NumStrDto instance.
-//
 func (nDto *NumStrDto) GetBigIntNum() (BigIntNum, error) {
 	ePrefix := "NumStrDto.GetBigIntNum() "
 
@@ -1373,7 +1368,6 @@ func (nDto *NumStrDto) GetBigIntNum() (BigIntNum, error) {
 // located in: MikeAustin71/mathopsgo/mathops/mathopsconstants.go
 //
 // Example: $123.45
-//
 func (nDto *NumStrDto) GetCurrencySymbol() rune {
 
 	if nDto.currencySymbol == 0 {
@@ -1397,7 +1391,6 @@ func (nDto *NumStrDto) GetCurrencySymbol() rune {
 //
 // Note: If the current NumStrDto is invalid, this method
 // returns an empty string.
-//
 func (nDto *NumStrDto) GetCurrencyParen() string {
 
 	outStr, err := nDto.FormatCurrencyStr(PARENTHESESNEGVALFMTMODE)
@@ -1424,7 +1417,6 @@ func (nDto *NumStrDto) GetCurrencyParen() string {
 //
 // Note: If the current NumStrDto is invalid, this method
 // returns an empty string.
-//
 func (nDto *NumStrDto) GetCurrencyStr() string {
 
 	outStr, err := nDto.FormatCurrencyStr(LEADMINUSNEGVALFMTMODE)
@@ -1442,7 +1434,6 @@ func (nDto *NumStrDto) GetCurrencyStr() string {
 // In the USA, the decimal separator is the period character ('.').
 //
 // Example:		123.456
-//
 func (nDto *NumStrDto) GetDecimalSeparator() rune {
 
 	if nDto.decimalSeparator == 0 {
@@ -1464,7 +1455,6 @@ func (nDto *NumStrDto) GetDecimalSeparator() rune {
 //
 // Before returning the Decimal result, this method
 // performs a validity test on the current NumStrDto instance.
-//
 func (nDto *NumStrDto) GetDecimal() (Decimal, error) {
 
 	ePrefix := "NumStrDto.GetIntAryElements() "
@@ -1491,7 +1481,6 @@ func (nDto *NumStrDto) GetDecimal() (Decimal, error) {
 
 // GetIntAryElements - Converts the current NumStrDto instance
 // to a Type IntAry and returns it to the calling function.
-//
 func (nDto *NumStrDto) GetIntAry() (IntAry, error) {
 	ePrefix := "NumStrDto.GetIntAryElements() "
 
@@ -1518,7 +1507,6 @@ func (nDto *NumStrDto) GetIntAry() (IntAry, error) {
 // GetNumericSeparatorsDto - Returns a structure containing the
 // character or rune values for decimal point separator, thousands
 // separator and currency symbol.
-//
 func (nDto *NumStrDto) GetNumericSeparatorsDto() NumericSeparatorDto {
 
 	numSeps := NumericSeparatorDto{}
@@ -1543,9 +1531,9 @@ func (nDto *NumStrDto) GetNumericSeparatorsDto() NumericSeparatorDto {
 //
 // Examples:
 // numeric value						result
-// 	 123456.78							123456.78
-//	-123456.78             (123456.78)
 //
+//	 123456.78							123456.78
+//	-123456.78             (123456.78)
 func (nDto *NumStrDto) GetNumParen() string {
 
 	outStr, err := nDto.FormatNumStr(PARENTHESESNEGVALFMTMODE)
@@ -1568,9 +1556,9 @@ func (nDto *NumStrDto) GetNumParen() string {
 // an empty string.
 //
 // Examples:
-//			 123456.78
-//			-123456.78
 //
+//	 123456.78
+//	-123456.78
 func (nDto *NumStrDto) GetNumStr() string {
 
 	outStr, err := nDto.FormatNumStr(LEADMINUSNEGVALFMTMODE)
@@ -1595,7 +1583,6 @@ func (nDto *NumStrDto) GetNumStr() string {
 //
 // This method is necessary in order to fulfill the requirements
 // of the INumMgr interface.
-//
 func (nDto *NumStrDto) GetNumStrDto() (NumStrDto, error) {
 
 	ePrefix := "NumStrDto.GetNumStrDto() "
@@ -1622,13 +1609,13 @@ func (nDto *NumStrDto) GetNumStrDto() (NumStrDto, error) {
 // always be >= zero (greater than or equal to zero '0').
 //
 // Example:
-// 						1.234    	GetPrecision() = 3
-// 								5			GetPrecision() = 0
-// 					0.12345  		GetPrecision() = 5
 //
-//		Number String				precision				Fractional Number
-//			123456								3								123.456
+//					1.234    	GetPrecision() = 3
+//							5			GetPrecision() = 0
+//				0.12345  		GetPrecision() = 5
 //
+//	Number String				precision				Fractional Number
+//		123456								3								123.456
 func (nDto *NumStrDto) GetPrecision() int {
 	return int(nDto.precision)
 }
@@ -1645,13 +1632,13 @@ func (nDto *NumStrDto) GetPrecision() int {
 // left 'precision' digits.
 //
 // Example:
-// 						1.234    	GetPrecision() = 3
-// 								5			GetPrecision() = 0
-// 					0.12345  		GetPrecision() = 5
 //
-//		Number String				precision				Fractional Number
-//			123456								3								123.456
+//					1.234    	GetPrecision() = 3
+//							5			GetPrecision() = 0
+//				0.12345  		GetPrecision() = 5
 //
+//	Number String				precision				Fractional Number
+//		123456								3								123.456
 func (nDto *NumStrDto) GetPrecisionUint() uint {
 	return nDto.precision
 }
@@ -1667,11 +1654,13 @@ func (nDto *NumStrDto) GetPrecisionUint() uint {
 //
 // sign value  						int 			- sign value of the number string
 // big Rational Number		*big.Rat	- Number string expressed as a
-//																		rational number
-// err										error			- In case of failure, an 'error' type
-//																		is returned. In case of success this
-//																		value is 'nil'
 //
+//	rational number
+//
+// err										error			- In case of failure, an 'error' type
+//
+//	is returned. In case of success this
+//	value is 'nil'
 func (nDto *NumStrDto) GetRationalNumber() (int, *big.Rat, error) {
 
 	ePrefix := "NumStrDto.GetRationalNumber() "
@@ -1762,20 +1751,20 @@ func (nDto *NumStrDto) GetScaleFactor() (*big.Int, error) {
 // ===============
 //
 // mantissaLen uint	- Specifies the length of the mantissa in the returned
-//										scientific notation string. If the value of 'mantissaLen'
-//										is less than two ('2'), this method will automatically set
-//										the 'mantissaLen' to a default value of two ('2').
 //
-// 										Example Scientific Notation:
-// 										----------------------------
+//											scientific notation string. If the value of 'mantissaLen'
+//											is less than two ('2'), this method will automatically set
+//											the 'mantissaLen' to a default value of two ('2').
 //
-//  										scientific notation string: '2.652e+8'
+//											Example Scientific Notation:
+//											----------------------------
 //
-//  										significand = '2.652'
-//  										significand integer digit = '2'
-//											mantissa		= significand factional digits = '.652'
-//  										exponent    = '8'  (10^8)
+//	 										scientific notation string: '2.652e+8'
 //
+//	 										significand = '2.652'
+//	 										significand integer digit = '2'
+//												mantissa		= significand factional digits = '.652'
+//	 										exponent    = '8'  (10^8)
 func (nDto *NumStrDto) GetSciNotationNumber(mantissaLen uint) (SciNotationNum, error) {
 
 	ePrefix := "NumStrDto.GetSciNotationNumber() "
@@ -1808,20 +1797,20 @@ func (nDto *NumStrDto) GetSciNotationNumber(mantissaLen uint) (SciNotationNum, e
 // ===============
 //
 // mantissaLen uint	- Specifies the length of the mantissa in the returned
-//										scientific notation string. If the value of 'mantissaLen'
-//										is less than two ('2'), this method will automatically set
-//										the 'mantissaLen' to a default value of two ('2').
 //
-// 										Example Scientific Notation:
-// 										----------------------------
+//											scientific notation string. If the value of 'mantissaLen'
+//											is less than two ('2'), this method will automatically set
+//											the 'mantissaLen' to a default value of two ('2').
 //
-//  										scientific notation string: '2.652e+8'
+//											Example Scientific Notation:
+//											----------------------------
 //
-//  										significand = '2.652'
-//  										significand integer digit = '2'
-//											mantissa		= significand factional digits = '.652'
-//  										exponent    = '8'  (10^8)
+//	 										scientific notation string: '2.652e+8'
 //
+//	 										significand = '2.652'
+//	 										significand integer digit = '2'
+//												mantissa		= significand factional digits = '.652'
+//	 										exponent    = '8'  (10^8)
 func (nDto *NumStrDto) GetSciNotationStr(mantissaLen uint) (string, error) {
 
 	ePrefix := "NumStrDto.GetSciNotationStr() "
@@ -1858,7 +1847,6 @@ func (nDto *NumStrDto) GetSign() int {
 }
 
 // GetThisPointer - Returns a pointer to the current NumStrDto instance.
-//
 func (nDto *NumStrDto) GetThisPointer() *NumStrDto {
 
 	return nDto
@@ -1877,7 +1865,6 @@ func (nDto *NumStrDto) GetThisPointer() *NumStrDto {
 //
 // Note: If the current NumStrDto is invalid, this method
 // returns an empty string.
-//
 func (nDto *NumStrDto) GetThouParen() string {
 
 	outStr, err := nDto.FormatThousandsStr(PARENTHESESNEGVALFMTMODE)
@@ -1902,7 +1889,6 @@ func (nDto *NumStrDto) GetThouParen() string {
 //
 // Note: If the current NumStrDto is invalid, this method
 // returns an empty string.
-//
 func (nDto *NumStrDto) GetThouStr() string {
 
 	outStr, err := nDto.FormatThousandsStr(LEADMINUSNEGVALFMTMODE)
@@ -1921,7 +1907,6 @@ func (nDto *NumStrDto) GetThouStr() string {
 // In the USA, the thousands separator is a comma character.
 //
 // Example: 1,000,000,000
-//
 func (nDto *NumStrDto) GetThousandsSeparator() rune {
 
 	if nDto.thousandsSeparator == 0 {
@@ -1938,9 +1923,9 @@ func (nDto *NumStrDto) GetThousandsSeparator() rune {
 // decimal point.
 // Examples:
 // numFracDigits		Results NumStrOut
+//
 //	0									"0"
 //	2									"0.00"
-//
 func (nDto *NumStrDto) GetZeroNumStrDto(numFracDigits uint) NumStrDto {
 
 	// Set defaults for thousands separators,
@@ -2083,7 +2068,6 @@ func (nDto *NumStrDto) IsValid(errName string) error {
 
 // IsZero - Returns true if the value of the current NumStrDto
 // instance is zero.
-//
 func (nDto *NumStrDto) IsZero() bool {
 
 	lenRunes := len(nDto.absAllNumRunes)
@@ -2254,7 +2238,8 @@ func (nDto *NumStrDto) MultiplyNumStrs(n1Dto NumStrDto, n2Dto NumStrDto) (NumStr
 
 // NewBigFloat - Creates a new NumStrDto instance from a Big Float value
 // (*big.Float) and a precision specification.
-func (nDto NumStrDto) NewBigFloat(bigFloat *big.Float, precision int) (NumStrDto, error) {
+func (nDto NumStrDto) NewBigFloat(
+	bigFloat *big.Float, precision int) (NumStrDto, error) {
 
 	ePrefix := "NumStrDto.NewBigFloat() "
 
@@ -2301,7 +2286,6 @@ func (nDto NumStrDto) NewBigInt(signedBigInt *big.Int, precision uint) (NumStrDt
 
 // NewBigIntNum - Receives a BigIntNum and converts it to a NumStrDto
 // instance which is returned to the calling function.
-//
 func (nDto NumStrDto) NewBigIntNum(bINum BigIntNum) (NumStrDto, error) {
 	ePrefix := "NumStrDto.NewBigIntNum() "
 	n2, err := NumStrDto{}.ParseBigIntNum(bINum)
@@ -2369,7 +2353,6 @@ func (nDto NumStrDto) NewFloat64(f64 float64, precision int) (NumStrDto, error) 
 //
 // Example: NumStrDto{}.NewInt(123456, 3) yields a new NumStrDto
 // instance with a numeric value of 123.456.
-//
 func (nDto NumStrDto) NewInt(intNum int, precision uint) NumStrDto {
 
 	n2 := NumStrDto{}.NewInt64(int64(intNum), precision)
@@ -2381,7 +2364,7 @@ func (nDto NumStrDto) NewInt(intNum int, precision uint) NumStrDto {
 // value is set using an integer multiplied by 10 raised to the
 // power of the 'exponent' parameter.
 //
-// 				numeric value = integer X 10^exponent
+//	numeric value = integer X 10^exponent
 //
 // Input parameter 'intNum' is of type int.
 //
@@ -2393,19 +2376,19 @@ func (nDto NumStrDto) NewInt(intNum int, precision uint) NumStrDto {
 // syntax thereby allowing Decimal type creation and initialization in
 // one step.
 //
-//	nDto := NumStrDto{}.NewIntExponent(123456, -3)
-//  -- nDto is now equal to "123.456", precision = 3
+//		nDto := NumStrDto{}.NewIntExponent(123456, -3)
+//	 -- nDto is now equal to "123.456", precision = 3
 //
-//	nDto := NumStrDto{}.NewIntExponent(123456, 3)
-//  -- decNum is now equal to "123456.000", precision = 3
+//		nDto := NumStrDto{}.NewIntExponent(123456, 3)
+//	 -- decNum is now equal to "123456.000", precision = 3
 //
 // Examples:
 // ---------
-//   intNum			 exponent			  	NumStrDto Result
-//	 123456		 		  -3							123.456
-//	 123456		 		   3							123456.000
-//   123456          0              123456
 //
+//	  intNum			 exponent			  	NumStrDto Result
+//		 123456		 		  -3							123.456
+//		 123456		 		   3							123456.000
+//	  123456          0              123456
 func (nDto NumStrDto) NewIntExponent(intNum int, exponent int) NumStrDto {
 
 	return NumStrDto{}.NewInt64Exponent(int64(intNum), exponent)
@@ -2423,7 +2406,6 @@ func (nDto NumStrDto) NewIntExponent(intNum int, exponent int) NumStrDto {
 //
 // Example: NumStrDto{}.NewInt32(123456, 3) yields a new NumStrDto
 // instance with a numeric value of 123.456.
-//
 func (nDto NumStrDto) NewInt32(int32Num int32, precision uint) NumStrDto {
 
 	n2 := NumStrDto{}.NewInt64(int64(int32Num), precision)
@@ -2435,20 +2417,19 @@ func (nDto NumStrDto) NewInt32(int32Num int32, precision uint) NumStrDto {
 // value is set using an int32 value multiplied by 10 raised to the
 // power of the 'exponent' parameter.
 //
-// 				numeric value = int32 X 10^exponent
+//	numeric value = int32 X 10^exponent
 //
 // For example, if exponent is -3, precision is set equal to 'int32Num'
 // divided by 10^+3. Example:
 //
-//   int32Num			exponent			NumStrDto Result
-//	 123456		 		  -3							123.456
+//	  int32Num			exponent			NumStrDto Result
+//		 123456		 		  -3							123.456
 //
 // If exponent is +3, int32Num is multiplied by 10 raised to the
 // power of exponent and precision is set equal to exponent.
 //
-//   int32Num			exponent			NumStrDto Result
-//	 123456		 		   +3							123456.000
-//
+//	  int32Num			exponent			NumStrDto Result
+//		 123456		 		   +3							123456.000
 func (nDto NumStrDto) NewInt32Exponent(int32Num int32, exponent int) NumStrDto {
 
 	return NumStrDto{}.NewInt64Exponent(int64(int32Num), exponent)
@@ -2466,7 +2447,6 @@ func (nDto NumStrDto) NewInt32Exponent(int32Num int32, exponent int) NumStrDto {
 //
 // Example: NumStrDto{}.NewInt64(123456, 3) yields a NumStrDto instance
 // with a numeric value of 123.456.
-//
 func (nDto NumStrDto) NewInt64(i64 int64, precision uint) NumStrDto {
 	ePrefix := "NumStrDto.NewInt64() "
 
@@ -2476,7 +2456,7 @@ func (nDto NumStrDto) NewInt64(i64 int64, precision uint) NumStrDto {
 
 	// This should never produce an error.
 	if err != nil {
-		sErr := fmt.Sprintf(ePrefix +
+		sErr := fmt.Sprintf(ePrefix+
 			"Fatal Error returned by NumStrDto{}.NewPtr().ParseNumStr(numStr). "+
 			"numStr='%v' Error='%v'",
 			numStr, err.Error())
@@ -2493,8 +2473,7 @@ func (nDto NumStrDto) NewInt64(i64 int64, precision uint) NumStrDto {
 // value is set using an int64 value multiplied by 10 raised to the
 // power of the 'exponent' parameter.
 //
-// 				numeric value = int64 X 10^exponent
-//
+//	numeric value = int64 X 10^exponent
 //
 // Input parameter 'int64Num' is of type int64.
 //
@@ -2506,19 +2485,19 @@ func (nDto NumStrDto) NewInt64(i64 int64, precision uint) NumStrDto {
 // syntax thereby allowing NumStrDto type creation and initialization in
 // one step.
 //
-//	nDto := NumStrDto{}.NewInt64Exponent(123456, -3)
-//  -- nDto is now equal to "123.456", precision = 3
+//		nDto := NumStrDto{}.NewInt64Exponent(123456, -3)
+//	 -- nDto is now equal to "123.456", precision = 3
 //
-//	nDto := NumStrDto{}.NewInt64Exponent(123456, 3)
-//  -- decNum is now equal to "123456.000", precision = 3
+//		nDto := NumStrDto{}.NewInt64Exponent(123456, 3)
+//	 -- decNum is now equal to "123456.000", precision = 3
 //
 // Examples:
 // ---------
-//   int64Num		 exponent			  	Decimal Result
-//	 123456		 		  -3							123.456
-//	 123456		 		   3							123456.000
-//   123456          0              123456
 //
+//	  int64Num		 exponent			  	Decimal Result
+//		 123456		 		  -3							123.456
+//		 123456		 		   3							123456.000
+//	  123456          0              123456
 func (nDto NumStrDto) NewInt64Exponent(int64Num int64, exponent int) NumStrDto {
 
 	numStr := strconv.FormatInt(int64Num, 10)
@@ -2557,18 +2536,18 @@ func (nDto NumStrDto) NewInt64Exponent(int64Num int64, exponent int) NumStrDto {
 // syntax thereby allowing NumStrDto type creation and initialization in
 // one step.
 //
-// 				uintNum := uint(123456)
-// 				precision := uint(3)
-// 				nDto := NumStrDto{}.NewUint(uintNum, precision)
-//        nDto is now equal to 123.456
+//					uintNum := uint(123456)
+//					precision := uint(3)
+//					nDto := NumStrDto{}.NewUint(uintNum, precision)
+//	       nDto is now equal to 123.456
 //
 // Examples:
 // ---------
-//   uintNum			precision			NumStrDto Result
-//	 123456		 		   4							12.3456
-//   123456          0              123456
-//   123456          1              12345.6
 //
+//	  uintNum			precision			NumStrDto Result
+//		 123456		 		   4							12.3456
+//	  123456          0              123456
+//	  123456          1              12345.6
 func (nDto NumStrDto) NewUint(uintNum uint, precision uint) NumStrDto {
 
 	n2 := NumStrDto{}.NewUint64(uint64(uintNum), precision)
@@ -2580,8 +2559,7 @@ func (nDto NumStrDto) NewUint(uintNum uint, precision uint) NumStrDto {
 // value is set using an uint value multiplied by 10 raised to the
 // power of the 'exponent' parameter.
 //
-// 				numeric value = int64 X 10^exponent
-//
+//	numeric value = int64 X 10^exponent
 //
 // Usage:
 // ------
@@ -2589,19 +2567,19 @@ func (nDto NumStrDto) NewUint(uintNum uint, precision uint) NumStrDto {
 // syntax thereby allowing NumStrDto type creation and initialization in
 // one step.
 //
-//	nDto := NumStrDto{}.NewUintExponent(123456, -3)
-//  -- nDto is now equal to "123.456", precision = 3
+//		nDto := NumStrDto{}.NewUintExponent(123456, -3)
+//	 -- nDto is now equal to "123.456", precision = 3
 //
-//	nDto := NumStrDto{}.NewUintExponent(123456, 3)
-//  -- nDto is now equal to "123456.000", precision = 3
+//		nDto := NumStrDto{}.NewUintExponent(123456, 3)
+//	 -- nDto is now equal to "123456.000", precision = 3
 //
 // Examples:
 // ---------
-//   uintNum			exponent			NumStrDto Result
-//	 123456		 		  -3							123.456
-//	 123456		 		   3							123456.000
-//   123456          0              123456
 //
+//	  uintNum			exponent			NumStrDto Result
+//		 123456		 		  -3							123.456
+//		 123456		 		   3							123456.000
+//	  123456          0              123456
 func (nDto NumStrDto) NewUintExponent(uintNum uint, exponent int) NumStrDto {
 
 	return nDto.NewUint64Exponent(uint64(uintNum), exponent)
@@ -2620,18 +2598,18 @@ func (nDto NumStrDto) NewUintExponent(uintNum uint, exponent int) NumStrDto {
 // syntax thereby allowing NumStrDto type creation and initialization in
 // one step.
 //
-// 				uint32Num := uint32(123456)
-// 				precision := uint(3)
-// 				nDto := NumStrDto{}.NewUint32(uint32Num, precision)
-//        nDto is now equal to 123.456
+//					uint32Num := uint32(123456)
+//					precision := uint(3)
+//					nDto := NumStrDto{}.NewUint32(uint32Num, precision)
+//	       nDto is now equal to 123.456
 //
 // Examples:
 // ---------
-//   uint32Num		precision			NumStrDto Result
-//	 123456		 		   4							12.3456
-//   123456          0              123456
-//   123456          1              12345.6
 //
+//	  uint32Num		precision			NumStrDto Result
+//		 123456		 		   4							12.3456
+//	  123456          0              123456
+//	  123456          1              12345.6
 func (nDto NumStrDto) NewUint32(uint32Num uint32, precision uint) NumStrDto {
 
 	n2 := NumStrDto{}.NewUint64(uint64(uint32Num), precision)
@@ -2643,7 +2621,7 @@ func (nDto NumStrDto) NewUint32(uint32Num uint32, precision uint) NumStrDto {
 // value is set using an uint32 value multiplied by 10 raised to the
 // power of the 'exponent' parameter.
 //
-// 				numeric value = int64 X 10^exponent
+//	numeric value = int64 X 10^exponent
 //
 // Input parameter 'uint32Num' is of type uint32.
 //
@@ -2655,19 +2633,19 @@ func (nDto NumStrDto) NewUint32(uint32Num uint32, precision uint) NumStrDto {
 // syntax thereby allowing NumStrDto type creation and initialization in
 // one step.
 //
-//	nDto := NumStrDto{}.NewUint32Exponent(123456, -3)
-//  -- nDto is now equal to "123.456", precision = 3
+//		nDto := NumStrDto{}.NewUint32Exponent(123456, -3)
+//	 -- nDto is now equal to "123.456", precision = 3
 //
-//	nDto := NumStrDto{}.NewUint32Exponent(123456, 3)
-//  -- nDto is now equal to "123456.000", precision = 3
+//		nDto := NumStrDto{}.NewUint32Exponent(123456, 3)
+//	 -- nDto is now equal to "123456.000", precision = 3
 //
 // Examples:
 // ---------
-//   uint32Num		exponent			NumStrDto Result
-//	 123456		 		  -3							123.456
-//	 123456		 		   3							123456.000
-//   123456          0              123456
 //
+//	  uint32Num		exponent			NumStrDto Result
+//		 123456		 		  -3							123.456
+//		 123456		 		   3							123456.000
+//	  123456          0              123456
 func (nDto NumStrDto) NewUint32Exponent(uint32Num uint32, exponent int) NumStrDto {
 
 	return nDto.NewUint64Exponent(uint64(uint32Num), exponent)
@@ -2685,18 +2663,18 @@ func (nDto NumStrDto) NewUint32Exponent(uint32Num uint32, exponent int) NumStrDt
 // syntax thereby allowing NumStrDto type creation and initialization in
 // one step.
 //
-// 				uint64Num := uint64(123456)
-// 				precision := uint(3)
-// 				nDto := NumStrDto{}.NewUint64(uint64Num, precision)
-//        nDto is now equal to 123.456
+//					uint64Num := uint64(123456)
+//					precision := uint(3)
+//					nDto := NumStrDto{}.NewUint64(uint64Num, precision)
+//	       nDto is now equal to 123.456
 //
 // Examples:
 // ---------
-//   uint64Num		precision			NumStrDto Result
-//	 123456		 		   4							12.3456
-//   123456          0              123456
-//   123456          1              12345.6
 //
+//	  uint64Num		precision			NumStrDto Result
+//		 123456		 		   4							12.3456
+//	  123456          0              123456
+//	  123456          1              12345.6
 func (nDto NumStrDto) NewUint64(uint64Num uint64, precision uint) NumStrDto {
 
 	ePrefix := "NumStrDto.NewUint64() "
@@ -2723,7 +2701,7 @@ func (nDto NumStrDto) NewUint64(uint64Num uint64, precision uint) NumStrDto {
 // value is set using an uint64 value multiplied by 10 raised to the
 // power of the 'exponent' parameter.
 //
-// 				numeric value = int64 X 10^exponent
+//	numeric value = int64 X 10^exponent
 //
 // Input parameter 'uint64Num' is of type uint64.
 //
@@ -2735,19 +2713,19 @@ func (nDto NumStrDto) NewUint64(uint64Num uint64, precision uint) NumStrDto {
 // syntax thereby allowing NumStrDto type creation and initialization in
 // one step.
 //
-//	nDto := NumStrDto{}.NewUint64Exponent(123456, -3)
-//  -- nDto is now equal to "123.456", precision = 3
+//		nDto := NumStrDto{}.NewUint64Exponent(123456, -3)
+//	 -- nDto is now equal to "123.456", precision = 3
 //
-//	nDto := NumStrDto{}.NewUint64Exponent(123456, 3)
-//  -- nDto is now equal to "123456.000", precision = 3
+//		nDto := NumStrDto{}.NewUint64Exponent(123456, 3)
+//	 -- nDto is now equal to "123456.000", precision = 3
 //
 // Examples:
 // ---------
-//   uint64Num		exponent			NumStrDto Result
-//	 123456		 		  -3							123.456
-//	 123456		 		   3							123456.000
-//   123456          0              123456
 //
+//	  uint64Num		exponent			NumStrDto Result
+//		 123456		 		  -3							123.456
+//		 123456		 		   3							123456.000
+//	  123456          0              123456
 func (nDto NumStrDto) NewUint64Exponent(uint64Num uint64, exponent int) NumStrDto {
 
 	ePrefix := "NumStrDto.NewUint64Exponent() "
@@ -2800,7 +2778,6 @@ func (nDto NumStrDto) NewUint64Exponent(uint64Num uint64, exponent int) NumStrDt
 // specification.
 //
 // For information on Big Rational Numbers (*big.Rat), see https://golang.org/pkg/math/big/
-//
 func (nDto NumStrDto) NewRational(bigRat *big.Rat, precision int) (NumStrDto, error) {
 
 	ePrefix := "NumStrDto.NewRational() "
@@ -2824,17 +2801,17 @@ func (nDto NumStrDto) NewRational(bigRat *big.Rat, precision int) (NumStrDto, er
 // This method assumes that the input parameter 'numStr' is a string
 // of numeric digits which may be delimited by default USA numeric
 // separators. Default USA numeric separators are defined as:
-//  	decimal separator = '.'
-//    thousands separator = ','
-// 		currency symbol = '$'
+//
+//	 	decimal separator = '.'
+//	   thousands separator = ','
+//			currency symbol = '$'
 //
 // If the subject 'numStr' employs other national or cultural numeric
 // separators, see method NumStrDto.NewNumStrWithNumSeps(), below.
 //
 // Usage Example:
 //
-// 		n, err := NumStrDto{}.NewNumStr("123.456")
-//
+//	n, err := NumStrDto{}.NewNumStr("123.456")
 func (nDto NumStrDto) NewNumStr(numStr string) (NumStrDto, error) {
 
 	ePrefix := "NumStrDto.NewNumStr() "
@@ -2860,7 +2837,6 @@ func (nDto NumStrDto) NewNumStr(numStr string) (NumStrDto, error) {
 //
 // In addition, the numeric separators contained in input parameter 'numSeps'
 // will be copied to the returned NumStrDto instance.
-//
 func (nDto NumStrDto) NewNumStrWithNumSeps(
 	numStr string,
 	numSeps NumericSeparatorDto) (NumStrDto, error) {
@@ -2952,7 +2928,6 @@ func (nDto NumStrDto) NewZero(precision uint) NumStrDto {
 
 // ParseBigIntNum - Receives a BigIntNum instance and coverts it to a NumStrDto
 // instance which is returned to the calling function.
-//
 func (nDto NumStrDto) ParseBigIntNum(biNum BigIntNum) (NumStrDto, error) {
 
 	ePrefix := "NumStrDto.ParseBigIntNum() "
@@ -3138,7 +3113,6 @@ func (nDto NumStrDto) ParseSignedBigInt(signedBigInt *big.Int, precision uint) (
 // The numeric separators (decimal separator, thousands separator and
 // currency symbol) taken from the current NumStrDto instance will be
 // copied to the NumStrDto instance returned by this method.
-//
 func (nDto *NumStrDto) ParseNumStr(str string) (NumStrDto, error) {
 
 	ePrefix := "NumStrDto.ParseNumStr() "
@@ -3283,25 +3257,25 @@ func (nDto *NumStrDto) ParseNumStr(str string) (NumStrDto, error) {
 // signedNumStr					 string -		A valid Signed Number String
 //
 // shiftPrecision 	 			 uint -		The number of positions which the decimal point
-//																	will be shifted. If 'shiftPrecision is Equal to
-//																	zero, no action will be taken, no error will be
-//																	issued and the original signedNumStr will be
-//																	returned.
+//
+//	will be shifted. If 'shiftPrecision is Equal to
+//	zero, no action will be taken, no error will be
+//	issued and the original signedNumStr will be
+//	returned.
 //
 // scaleMode	PrecisionScaleMode -	A constant with one of two Scale Mode values.
 //
-//																	SCALEPRECISIONLEFT - 	Shifts the decimal point
-//																												from its current position
-// 																												to the left.
+//	SCALEPRECISIONLEFT - 	Shifts the decimal point
+//												from its current position
+//												to the left.
 //
-//																	SCALEPRECISIONRIGHT - Shifts the decimal point
-//																												from its current position
-// 																												to the right.
-//
+//	SCALEPRECISIONRIGHT - Shifts the decimal point
+//												from its current position
+//												to the right.
 //
 // Note: 	See Methods NumStrDto.ShiftPrecisionRight() and NumStrDto.ShiftPrecisionLeft()
-//				for additional information.
 //
+//	for additional information.
 func (nDto *NumStrDto) ScaleNumStr(signedNumStr string,
 	shiftPrecision uint,
 	scaleMode PrecisionScaleMode) (NumStrDto, error) {
@@ -3362,7 +3336,6 @@ func (nDto *NumStrDto) ScaleNumStr(signedNumStr string,
 // located in: MikeAustin71/mathopsgo/mathops/mathopsconstants.go
 //
 // Example: $123.45
-//
 func (nDto *NumStrDto) SetCurrencySymbol(currencySymbol rune) {
 
 	if currencySymbol == 0 {
@@ -3382,7 +3355,6 @@ func (nDto *NumStrDto) SetCurrencySymbol(currencySymbol rune) {
 // will default to the USA standard period character ('.').
 //
 // Example: 123.456
-//
 func (nDto *NumStrDto) SetDecimalSeparator(decimalSeparator rune) {
 
 	if decimalSeparator == 0 {
@@ -3401,7 +3373,6 @@ func (nDto *NumStrDto) SetDecimalSeparator(decimalSeparator rune) {
 //
 // Example:
 // 1,000,000
-//
 func (nDto *NumStrDto) SetThousandsSeparator(thousandsSeparator rune) {
 
 	if thousandsSeparator == 0 {
@@ -3423,10 +3394,11 @@ func (nDto *NumStrDto) SetThousandsSeparator(thousandsSeparator rune) {
 //
 // Input Parameters
 // ================
+//
 //	signedNumStr		string		- A valid number string. The leading digit may optionally
-// 															be a '+' or '-' indicating numeric sign value. If '+'
-// 															or '-'	characters are not present in the first character
-// 															position, the number is assumed to represent a positive
+//															be a '+' or '-' indicating numeric sign value. If '+'
+//															or '-'	characters are not present in the first character
+//															position, the number is assumed to represent a positive
 //															numeric value ('+').
 //
 //	shiftPrecision		uint		- The number of digits by which the current decimal point
@@ -3435,6 +3407,7 @@ func (nDto *NumStrDto) SetThousandsSeparator(thousandsSeparator rune) {
 //
 // Returns
 // =======
+//
 //	NumStrDto				- If successful, the method returns the result of the Shift Left precision
 //										operation in the form of a 'NumStrDto' instance
 //
@@ -3444,21 +3417,21 @@ func (nDto *NumStrDto) SetThousandsSeparator(thousandsSeparator rune) {
 // Examples
 // ========
 //
-//                    Shift-Left
-//  signedNumStr			precision				Result
-//	 "123456.789"				  3						"123.456789"
-//	 "123456.789"				  2						"1234.56789"
-//	 "123456.789"	   		  6					  "0.123456789"
-//	 "123456789"					6						"123.456789"
-//	 "123"								5						"0.00123"
-//   "0"									3						"0.000"
-// 	 "0.000"							2						"0.00000"
-//  "123456.789"					0						"123456.789"		- zero 'shiftPrecision' has no effect on
-// 																											original number string
+//	                   Shift-Left
+//	 signedNumStr			precision				Result
+//		 "123456.789"				  3						"123.456789"
+//		 "123456.789"				  2						"1234.56789"
+//		 "123456.789"	   		  6					  "0.123456789"
+//		 "123456789"					6						"123.456789"
+//		 "123"								5						"0.00123"
+//	  "0"									3						"0.000"
+//		 "0.000"							2						"0.00000"
+//	 "123456.789"					0						"123456.789"		- zero 'shiftPrecision' has no effect on
+//																												original number string
+//
 // "-123456.789"          0          "-123.456789"
 // "-123456.789"          3          "-123.456789"
 // "-123456789"						6					 "-123.456789"
-//
 func (nDto *NumStrDto) ShiftPrecisionLeft(
 	signedNumStr string,
 	shiftLeftPrecision uint) (NumStrDto, error) {
@@ -3558,17 +3531,18 @@ func (nDto *NumStrDto) ShiftPrecisionLeft(
 //
 // Examples:
 // signedNumStr			precision			Result
-//  "123456.789"				3						"123456789"
-//  "123456.789"				2						"12345678.9"
-//  "123456.789"        6					  "123456789000"
-//  "123456789"	 			  6						"123456789000000"
-//  "123"               5	          "12300000"
-//  "0"								  3						"0"
-//  "123456.789"				0						"123456.789"		- zero has no effect on original number string
+//
+//	"123456.789"				3						"123456789"
+//	"123456.789"				2						"12345678.9"
+//	"123456.789"        6					  "123456789000"
+//	"123456789"	 			  6						"123456789000000"
+//	"123"               5	          "12300000"
+//	"0"								  3						"0"
+//	"123456.789"				0						"123456.789"		- zero has no effect on original number string
+//
 // "-123456.789"        0          "-123456.789"
 // "-123456.789"        3          "-123456789"
 // "-123456789"			    6					 "-123456789000000"
-//
 func (nDto *NumStrDto) ShiftPrecisionRight(signedNumStr string, precision uint) (NumStrDto, error) {
 
 	ePrefix := "NumStrDto.ShiftPrecisionRight() "
@@ -3673,7 +3647,6 @@ func (nDto *NumStrDto) ShiftPrecisionRight(signedNumStr string, precision uint) 
 // Decimal Separator period ('.') 		= 123.456
 // Thousands Separator comma (',') 		= 1,000,000,000
 // Currency Symbol dollar sign ('$')	= $123
-//
 func (nDto *NumStrDto) SetNumericSeparators(
 	decimalSeparator,
 	thousandsSeparator,
@@ -3697,15 +3670,15 @@ func (nDto *NumStrDto) SetNumericSeparators(
 }
 
 // SetNumericSeparatorsDto - Sets the values of numeric separators:
-// 		decimal point separator
-//		thousands separator
-//		currency symbol
+//
+//	decimal point separator
+//	thousands separator
+//	currency symbol
 //
 // based on values transmitted through input parameter 'customSeparators'.
 //
 // If any of the values contained in input parameter 'customSeparators' is set
 // to zero or nil, an error will be returned.
-//
 func (nDto *NumStrDto) SetNumericSeparatorsDto(customSeparators NumericSeparatorDto) error {
 
 	ePrefix := "NumStrDto.SetNumericSeparatorsDto() "
@@ -3744,7 +3717,6 @@ func (nDto *NumStrDto) SetNumericSeparatorsDto(customSeparators NumericSeparator
 //
 // Effectively, this method ensures that numeric separators
 // are set to valid values.
-//
 func (nDto *NumStrDto) SetNumericSeparatorsToDefaultIfEmpty() {
 
 	if nDto.GetDecimalSeparator() == 0 {
@@ -3762,18 +3734,19 @@ func (nDto *NumStrDto) SetNumericSeparatorsToDefaultIfEmpty() {
 }
 
 // SetNumericSeparatorsToUSADefault - Sets Numeric separators:
-// 			Decimal Point Separator
-// 			Thousands Separator
-//			Currency Symbol
+//
+//	Decimal Point Separator
+//	Thousands Separator
+//	Currency Symbol
 //
 // to United States of America (USA) defaults.
 //
 // Call specific methods to set numeric separators for other countries or
 // cultures:
-// 		nDto.SetDecimalSeparator()
-// 		nDto.SetThousandsSeparator()
-// 		nDto.SetCurrencySymbol()
 //
+//	nDto.SetDecimalSeparator()
+//	nDto.SetThousandsSeparator()
+//	nDto.SetCurrencySymbol()
 func (nDto *NumStrDto) SetNumericSeparatorsToUSADefault() {
 	nDto.SetDecimalSeparator('.')
 	nDto.SetThousandsSeparator(',')
@@ -3814,36 +3787,38 @@ func (nDto *NumStrDto) SetNumStr(numStr string) error {
 // is used to apply rounding in those cases where 'precision' dictates a reduction in the number of
 // digits to the right of the decimal place. See 'Examples' below.
 //
-//
 // Input Parameters
 // ================
 //
-//	signedNumStr 	string	- A valid number string
+//		signedNumStr 	string	- A valid number string
 //
-//	precision 		uint		- The 'precision' values designates the number of places to the right of the
-//													decimal point which will be realized upon completion of this operation.
+//		precision 		uint		- The 'precision' values designates the number of places to the right of the
+//														decimal point which will be realized upon completion of this operation.
 //
-//	roundResult 	bool		- If the 'precision' value is less than the current number of places to the
-//													right of the decimal point, this method will truncate the existing fractional
-//													digits. If 'roundResult' is set to true, this truncation operation will
-//													include rounding the last digit.
+//		roundResult 	bool		- If the 'precision' value is less than the current number of places to the
+//														right of the decimal point, this method will truncate the existing fractional
+//														digits. If 'roundResult' is set to true, this truncation operation will
+//														include rounding the last digit.
 //
 //
-//  Examples
-//  ========
+//	 Examples
+//	 ========
 //
-// 		------------ Input Parameters ------------        	---- Result -------
+//			------------ Input Parameters ------------        	---- Result -------
+//
 // Test
-//  No		signedNumStr			precision			roundResult
-// 	1	 		"123456789"				  7							false						 "123456789.0000000"
-// 	2 		"123456789"				  7							true						 "123456789.0000000"
-//  3  	 "-123456789"				  7							false						"-123456789.0000000"
-//  4  	 "-123456789"				  7							true						"-123456789.0000000"
-// 	5  	 "123456.789"					2							true						 "123456.79"
-//  6  	 "123456.789"					2							false						 "123456.78"
-// 	7  	 "123456.789"      		5             false						 "123456.78900"
-//  8  	 "123.456789"         1             false            "123.4"
-//  9  	 "123.456789"         1             true             "123.5"
+//
+//	 No		signedNumStr			precision			roundResult
+//		1	 		"123456789"				  7							false						 "123456789.0000000"
+//		2 		"123456789"				  7							true						 "123456789.0000000"
+//	 3  	 "-123456789"				  7							false						"-123456789.0000000"
+//	 4  	 "-123456789"				  7							true						"-123456789.0000000"
+//		5  	 "123456.789"					2							true						 "123456.79"
+//	 6  	 "123456.789"					2							false						 "123456.78"
+//		7  	 "123456.789"      		5             false						 "123456.78900"
+//	 8  	 "123.456789"         1             false            "123.4"
+//	 9  	 "123.456789"         1             true             "123.5"
+//
 // 10   "-123.456789"         1             false           "-123.4"
 // 11 	"-123.456789"         1             true            "-123.5"
 // 12  	 "123456.789"					0							true	           "123457"
@@ -3854,7 +3829,6 @@ func (nDto *NumStrDto) SetNumStr(numStr string) error {
 // 17 	 "123457"             1							true						 "123457.0"
 // 18 	"-123457"							1							false						"-123457.0"
 // 19 	"-123457"							1							true						"-123457.0"
-//
 func (nDto *NumStrDto) SetPrecision(
 	signedNumStr string,
 	precision uint,
@@ -4037,7 +4011,6 @@ func (nDto *NumStrDto) SetSignValue(newSignVal int) error {
 //													right of the decimal point, this method will truncate the existing fractional
 //													digits. If 'roundResult' is set to true, this truncation operation will
 //													include rounding the last digit.
-//
 func (nDto *NumStrDto) SetThisPrecision(
 	precision uint,
 	roundResult bool) error {
