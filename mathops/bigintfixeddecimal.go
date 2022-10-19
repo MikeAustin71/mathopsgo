@@ -7,8 +7,6 @@ import (
 	"math/big"
 )
 
-
-
 // FixedDecimalReadOnly - encapsulates a Read Only
 // BigIntFixedDecimal objects. This type is designed
 // to be used with constant numeric values that should
@@ -17,16 +15,12 @@ import (
 // A series of related functions provides the means to
 // read the numeric value encapsulated by the FixedDecimalReadOnly
 // type.
-//
 type FixedDecimalReadOnly struct {
-
 	fixedDecimal BigIntFixedDecimal
-
 }
 
 // GetBigIntNum - returns the numeric value of the underlying BigIntFixedDecimal
 // as a type BigIntNum.
-//
 func (fDecRO *FixedDecimalReadOnly) GetBigIntNum() BigIntNum {
 
 	fDecRO.fixedDecimal.IsValid()
@@ -36,8 +30,7 @@ func (fDecRO *FixedDecimalReadOnly) GetBigIntNum() BigIntNum {
 
 // GetIntAry - Returns the numeric value of the underlying BigIntFixedDecimal
 // as a type IntAry.
-//
-func (fDecRO *FixedDecimalReadOnly) GetIntAry() (IntAry,error) {
+func (fDecRO *FixedDecimalReadOnly) GetIntAry() (IntAry, error) {
 
 	fDecRO.fixedDecimal.IsValid()
 
@@ -69,7 +62,6 @@ func (fDecRO *FixedDecimalReadOnly) GetInteger() *big.Int {
 // the period ('.') is the decimal separator character
 // always used in the returned number string to separate
 // integer and fractional digits.
-//
 func (fDecRO *FixedDecimalReadOnly) GetNumStr() string {
 
 	fDecRO.fixedDecimal.IsValid()
@@ -80,7 +72,6 @@ func (fDecRO *FixedDecimalReadOnly) GetNumStr() string {
 
 // GetPrecision - returns a unsigned integer specifying
 // the number of digits to the right of the decimal place.
-//
 func (fDecRO *FixedDecimalReadOnly) GetPrecision() uint {
 
 	fDecRO.fixedDecimal.IsValid()
@@ -91,7 +82,6 @@ func (fDecRO *FixedDecimalReadOnly) GetPrecision() uint {
 
 // GetPrecision - returns a unsigned integer specifying
 // the number of digits to the right of the decimal place.
-//
 func (fDecRO *FixedDecimalReadOnly) GetPrecisionBigInt() *big.Int {
 
 	fDecRO.fixedDecimal.IsValid()
@@ -117,11 +107,9 @@ func (fDecRO *FixedDecimalReadOnly) GetBigIntPrecision() (integer, precision *bi
 	return integer, precision
 }
 
-
 // IsValid - Performs diagnostic and remedial actions on
 // the underlying BigIntFixedDecimal instance. Returns
 // 'false' if the instance is uninitialized.
-//
 func (fDecRO *FixedDecimalReadOnly) IsValid() bool {
 
 	return fDecRO.fixedDecimal.IsValid()
@@ -149,7 +137,6 @@ func (fDecRO *FixedDecimalReadOnly) IsZero() bool {
 //
 // The only decimal separator recognized by this method is the
 // period ('.').
-//
 func (fDecRO FixedDecimalReadOnly) NewNumStr(numStr string) (FixedDecimalReadOnly, error) {
 	ePrefix := "FixedDecimalReadOnly.NewNumStr() "
 
@@ -161,7 +148,7 @@ func (fDecRO FixedDecimalReadOnly) NewNumStr(numStr string) (FixedDecimalReadOnl
 
 	if err != nil {
 		return FixedDecimalReadOnly{}.NewZero(0),
-			fmt.Errorf(ePrefix )
+			fmt.Errorf(ePrefix)
 	}
 
 	return fo2, nil
@@ -170,7 +157,6 @@ func (fDecRO FixedDecimalReadOnly) NewNumStr(numStr string) (FixedDecimalReadOnl
 // NewFixedDecimal - Receives a BigIntFixedDecimal instance
 // as an input parameter and returns a new FixedDecimalReadOnly
 // object.
-//
 func (fDecRO FixedDecimalReadOnly) NewFixedDecimal(
 	fixedDecimal BigIntFixedDecimal) FixedDecimalReadOnly {
 
@@ -185,7 +171,6 @@ func (fDecRO FixedDecimalReadOnly) NewFixedDecimal(
 // NewInt - Creates and returns a new FixedDecimalReadOnly instance initialized
 // to by the input parameters 'intValue' and 'precision'. 'precision' specifies
 // the number of digits to the right of the decimal place in 'intValue.
-//
 func (fDecRO FixedDecimalReadOnly) NewInt(
 	intValue int,
 	precision uint) FixedDecimalReadOnly {
@@ -201,7 +186,6 @@ func (fDecRO FixedDecimalReadOnly) NewInt(
 // NewInt32 - Creates and returns a new FixedDecimalReadOnly instance initialized
 // to by the input parameters 'int32Value' and 'precision'. 'precision' specifies
 // the number of digits to the right of the decimal place in 'intValue.
-//
 func (fDecRO FixedDecimalReadOnly) NewInt32(
 	int32Value int32,
 	precision uint) FixedDecimalReadOnly {
@@ -217,7 +201,6 @@ func (fDecRO FixedDecimalReadOnly) NewInt32(
 // NewInt64 - Creates and returns a new FixedDecimalReadOnly instance initialized
 // to by the input parameters 'int64Value' and 'precision'. 'precision' specifies
 // the number of digits to the right of the decimal place in 'intValue.
-//
 func (fDecRO FixedDecimalReadOnly) NewInt64(
 	int64Value int64,
 	precision uint) FixedDecimalReadOnly {
@@ -233,7 +216,6 @@ func (fDecRO FixedDecimalReadOnly) NewInt64(
 // NewUInt - Creates and returns a new FixedDecimalReadOnly instance initialized
 // to by the input parameters 'uintValue' and 'precision'. 'precision' specifies
 // the number of digits to the right of the decimal place in 'intValue.
-//
 func (fDecRO FixedDecimalReadOnly) NewUInt(
 	uintValue,
 	precision uint) FixedDecimalReadOnly {
@@ -249,7 +231,6 @@ func (fDecRO FixedDecimalReadOnly) NewUInt(
 // NewUInt32 - Creates and returns a new FixedDecimalReadOnly instance initialized
 // to by the input parameters 'uintValue' and 'precision'. 'precision' specifies
 // the number of digits to the right of the decimal place in 'intValue.
-//
 func (fDecRO FixedDecimalReadOnly) NewUInt32(
 	uint32Value uint32,
 	precision uint) FixedDecimalReadOnly {
@@ -265,7 +246,6 @@ func (fDecRO FixedDecimalReadOnly) NewUInt32(
 // NewUInt64 - Creates and returns a new FixedDecimalReadOnly instance initialized
 // to by the input parameters 'uintValue' and 'precision'. 'precision' specifies
 // the number of digits to the right of the decimal place in 'intValue.
-//
 func (fDecRO FixedDecimalReadOnly) NewUInt64(
 	uint64Value uint64,
 	precision uint) FixedDecimalReadOnly {
@@ -280,7 +260,6 @@ func (fDecRO FixedDecimalReadOnly) NewUInt64(
 // NewZero - Creates and returns a new FixedDecimalReadOnly instance initialized
 // to zero. The input parameter 'precision' specifies the number of zero digits
 // to the right of the decimal place.
-//
 func (fDecRO FixedDecimalReadOnly) NewZero(precision uint) FixedDecimalReadOnly {
 
 	f2 := FixedDecimalReadOnly{}
@@ -291,13 +270,11 @@ func (fDecRO FixedDecimalReadOnly) NewZero(precision uint) FixedDecimalReadOnly 
 
 }
 
-
 // BigIntFixedDecimal - A light data transfer structure used to represent
 // a numeric value with a fixed number of decimal digits. Used primarily
 // for intensive and complex calculations.
-//
 type BigIntFixedDecimal struct {
-	integerNum *big.Int // All of the numeric digits, both integer and fractional,
+	integerNum *big.Int // All the numeric digits, both integer and fractional,
 	// necessary to define a fixed length floating point number.
 	// The number of digits to the right of the decimal place
 	// is specified by the data field, BigIntFixedDecimal.precision.
@@ -312,7 +289,6 @@ type BigIntFixedDecimal struct {
 	// 			BigIntFixedDecimal.precision	= 3
 }
 
-
 // Ceiling - Returns the ceiling integer value for the current
 // BigIntFixedDecimal instance.
 //
@@ -321,23 +297,23 @@ type BigIntFixedDecimal struct {
 // current BigIntFixedDecimal.
 //
 // Reference Wikipedia:
-// 				https://en.wikipedia.org/wiki/Floor_and_ceiling_functions
+//
+//	https://en.wikipedia.org/wiki/Floor_and_ceiling_functions
 //
 // Examples
 // ========
 //
-// 						Initial 		 Ceiling
-//  					 Value				Value
-// 						-------      -------
-//  						5.95					6
-//  						5.05					6
-//  						5							5
-// 						 -5.05			 	 -5
-//  						2.4				  	3
-//  						2.9					 	3
-// 						 -2.7				 	 -2
-// 						 -2					 	 -2
-//
+//							Initial 		 Ceiling
+//	 					 Value				Value
+//							-------      -------
+//	 						5.95					6
+//	 						5.05					6
+//	 						5							5
+//							 -5.05			 	 -5
+//	 						2.4				  	3
+//	 						2.9					 	3
+//							 -2.7				 	 -2
+//							 -2					 	 -2
 func (bigIFd *BigIntFixedDecimal) Ceiling() BigIntFixedDecimal {
 
 	if bigIFd.integerNum == nil {
@@ -386,8 +362,7 @@ func (bigIFd *BigIntFixedDecimal) ChangeSign() {
 		return
 	}
 
-
-	if bigIFd.integerNum.Cmp(big.NewInt(0))==0 {
+	if bigIFd.integerNum.Cmp(big.NewInt(0)) == 0 {
 		return
 	}
 
@@ -408,17 +383,17 @@ func (bigIFd *BigIntFixedDecimal) ChangeSign() {
 //
 // Examples
 // ========
-//					BigIntFixedDecimal         'fd2'        Return
-//								Value                Value        Value
-//					------------------         ------       -------
-//                 5                     2             1
-//                 5.2                   5.1           1
-//                 5.2                   5.2           0
-//            837123.4              837123.5          -1
-//                 0                     0.1          -1
-//                35.123456             40.5          -1
-//                35.123456              2.5           1
 //
+//						BigIntFixedDecimal         'fd2'        Return
+//									Value                Value        Value
+//						------------------         ------       -------
+//	                5                     2             1
+//	                5.2                   5.1           1
+//	                5.2                   5.2           0
+//	           837123.4              837123.5          -1
+//	                0                     0.1          -1
+//	               35.123456             40.5          -1
+//	               35.123456              2.5           1
 func (bigIFd *BigIntFixedDecimal) Cmp(fd2 BigIntFixedDecimal) int {
 
 	if bigIFd.integerNum == nil {
@@ -432,14 +407,13 @@ func (bigIFd *BigIntFixedDecimal) Cmp(fd2 BigIntFixedDecimal) int {
 		return bigIFd.integerNum.Cmp(fd2.integerNum)
 	}
 
-
 	bigTen := big.NewInt(10)
 
 	if fd2.precision > bigIFd.precision {
 		delta := int64(fd2.precision - bigIFd.precision)
 		fdValue := big.NewInt(0).Set(bigIFd.integerNum)
 		scale := big.NewInt(0).Exp(bigTen, big.NewInt(delta), nil)
-		fdValue.Mul(fdValue,scale)
+		fdValue.Mul(fdValue, scale)
 
 		return fdValue.Cmp(fd2.integerNum)
 
@@ -449,19 +423,19 @@ func (bigIFd *BigIntFixedDecimal) Cmp(fd2 BigIntFixedDecimal) int {
 	delta := int64(bigIFd.precision - fd2.precision)
 	fd2Value := big.NewInt(0).Set(fd2.integerNum)
 	scale := big.NewInt(0).Exp(bigTen, big.NewInt(delta), nil)
-	fd2Value.Mul(fd2Value,scale)
+	fd2Value.Mul(fd2Value, scale)
 
 	return bigIFd.integerNum.Cmp(fd2Value)
 }
-
 
 // CmpZero Compares the current BigIntFixedDecimal to Zero and
 // returns an integer flag as follows:
 //
 // +1 = BigIntFixedDecimal > 0
-//  0 = BigIntFixedDecimal == 0
-// -1 = BigINtFixedDecimal < 0
 //
+//	0 = BigIntFixedDecimal == 0
+//
+// -1 = BigINtFixedDecimal < 0
 func (bigIFd *BigIntFixedDecimal) CmpZero() int {
 
 	if bigIFd.integerNum == nil {
@@ -474,7 +448,6 @@ func (bigIFd *BigIntFixedDecimal) CmpZero() int {
 
 // CopyIn - Receives a BigIntFixedDecimal type and copies the
 // value to the current BigIntFixedDecimal instance.
-//
 func (bigIFd *BigIntFixedDecimal) CopyIn(fd BigIntFixedDecimal) {
 
 	if bigIFd.integerNum == nil {
@@ -497,7 +470,6 @@ func (bigIFd *BigIntFixedDecimal) CopyIn(fd BigIntFixedDecimal) {
 
 // CopyIn - Receives a pointer to a BigIntFixedDecimal type and
 // copies the value to the current BigIntFixedDecimal instance.
-//
 func (bigIFd *BigIntFixedDecimal) CopyInPtr(fd *BigIntFixedDecimal) {
 
 	if bigIFd.integerNum == nil {
@@ -520,7 +492,6 @@ func (bigIFd *BigIntFixedDecimal) CopyInPtr(fd *BigIntFixedDecimal) {
 
 // CopyOut - Returns a new BigIntFixedDecimal instance which is
 // a deep copy of the current BigIntFixedDecimal instance.
-//
 func (bigIFd *BigIntFixedDecimal) CopyOut() BigIntFixedDecimal {
 
 	if bigIFd.integerNum == nil {
@@ -533,20 +504,19 @@ func (bigIFd *BigIntFixedDecimal) CopyOut() BigIntFixedDecimal {
 // DivideByTenToPower - Divides the numeric value of the current
 // BigIntFixedDecimal by 10 to the power of 'exponent'.
 //
-//       result = BigIntFixedDecimal / 10^exponent
-//
+//	result = BigIntFixedDecimal / 10^exponent
 //
 // Input Parameter
 // ===============
 //
 // exponent	uint	- The value of the current BigIntFixedDecimal
-//									instance will be divided by ten raised to
-// 									the power of 'exponent'.
+//
+//	instance will be divided by ten raised to
+//	the power of 'exponent'.
 //
 // This method will destroy and overwrite the previous value of
 // the current BigIntFixedDecimal instance with the results of
 // this calculation.
-//
 func (bigIFd *BigIntFixedDecimal) DivideByTenToPower(exponent uint) {
 
 	if bigIFd.integerNum == nil {
@@ -581,32 +551,33 @@ func (bigIFd *BigIntFixedDecimal) DivideByTenToPower(exponent uint) {
 // Example:
 // ========
 //
-//            quotient =  BigIntFixedDecimal / 2^(exponent)
+//	quotient =  BigIntFixedDecimal / 2^(exponent)
 //
 // In this example BigIntFixedDecimal= 33,123.456, so 33,123.456/ 2^8:
 //
-//		(1) The fractional quotient of 33,123.456/256 (or 2^8) is 129.3885.
+//			(1) The fractional quotient of 33,123.456/256 (or 2^8) is 129.3885.
 //
-//    (2) This method will use a right shift technique on the integer value
-//        33123456 / 2^(8) to generate an integer quotient of 129388.
+//	   (2) This method will use a right shift technique on the integer value
+//	       33123456 / 2^(8) to generate an integer quotient of 129388.
 //
 // Consider the example BigIntFixedDecimal = 33123456 (no decimal fraction):
 //
-//    Dividing 33123456 / 2^8 = fractional quotient = 129388.5
-//    Be careful when using this method.
+//	Dividing 33123456 / 2^8 = fractional quotient = 129388.5
+//	Be careful when using this method.
 //
 // **************************************************************************
 // (1) 	Be sure to consider the outcomes when sending a decimal fraction to
-// 			this method.
+//
+//	this method.
 //
 // (2)	Results returned by this method will always have precision = 0
 //
 // **************************************************************************
 //
 // Note:	This method will destroy and overwrite the previous value
-// 				of the current BigIntFixedDecimal instance with the results
-// 				of this calculation.
 //
+//	of the current BigIntFixedDecimal instance with the results
+//	of this calculation.
 func (bigIFd *BigIntFixedDecimal) DivideByTwoToPower(exponent uint) {
 
 	if bigIFd.integerNum == nil {
@@ -623,10 +594,8 @@ func (bigIFd *BigIntFixedDecimal) DivideByTwoToPower(exponent uint) {
 	bigIFd.precision = 0
 }
 
-
 // Empty - Reinitialize the current BigIntFixedDecimal instance
 // to a zero value with zero precision.
-//
 func (bigIFd *BigIntFixedDecimal) Empty() {
 
 	bigIFd.integerNum = big.NewInt(0)
@@ -648,16 +617,15 @@ func (bigIFd *BigIntFixedDecimal) Empty() {
 // Examples
 // ========
 //
-//				 BigIntFixedDecimal           Floor
-//							Value                   Value
-//				 ------------------         ----------
-//              0													0
-//              4                         4
-//							3.2												3
-//							2.9	                      2
-//						 -2.7											 -3
-//						 -2                        -2
-//
+//					 BigIntFixedDecimal           Floor
+//								Value                   Value
+//					 ------------------         ----------
+//	             0													0
+//	             4                         4
+//								3.2												3
+//								2.9	                      2
+//							 -2.7											 -3
+//							 -2                        -2
 func (bigIFd *BigIntFixedDecimal) Floor() BigIntFixedDecimal {
 
 	if bigIFd.integerNum == nil {
@@ -707,19 +675,20 @@ func (bigIFd *BigIntFixedDecimal) Floor() BigIntFixedDecimal {
 // Valid NegativeValueFormatMode's are defined as follows:
 //
 // LEADMINUSNEGVALFMTMODE 		-	Negative values formatted with
-//													 		a leading minus sign.
-//															Example: -123456.78
 //
+//	 		a leading minus sign.
+//			Example: -123456.78
 //
 // PARENTHESESNEGVALFMTMODE	-	Negative values formatted with
-//														surrounding parentheses.
-//														Example: (123456.78)
+//
+//	surrounding parentheses.
+//	Example: (123456.78)
 //
 // ABSOLUTEPURENUMSTRFMTMODE - Formats a pure integerNum string with
-//														 absolute (positive) integer value
-//														 and no decimal point separator.
-//														Example: (12345678)
 //
+//	 absolute (positive) integer value
+//	 and no decimal point separator.
+//	Example: (12345678)
 func (bigIFd *BigIntFixedDecimal) FormatNumStr(negValMode NegativeValueFmtMode) string {
 
 	if bigIFd.integerNum == nil {
@@ -860,7 +829,6 @@ func (bigIFd *BigIntFixedDecimal) FormatNumStr(negValMode NegativeValueFmtMode) 
 
 // GetBigIntNum - Returns a new BigIntNum object initialized
 // to the value of the current BigIntFixedDecimal instance.
-//
 func (bigIFd *BigIntFixedDecimal) GetBigIntNum() BigIntNum {
 
 	if bigIFd.integerNum == nil {
@@ -882,10 +850,12 @@ func (bigIFd *BigIntFixedDecimal) GetBigIntNum() BigIntNum {
 // ========
 //
 // BigIntFixedDecimal      Returned
-//  Numeric Value        Integer Value
-// ------------------    -------------
-//		582.12345            58212345
 //
+//	Numeric Value        Integer Value
+//
+// ------------------    -------------
+//
+//	582.12345            58212345
 func (bigIFd *BigIntFixedDecimal) GetInteger() *big.Int {
 
 	if bigIFd.integerNum == nil {
@@ -903,12 +873,14 @@ func (bigIFd *BigIntFixedDecimal) GetInteger() *big.Int {
 // =========
 //
 // BigIntFixedDecimal              Returned       Integer    		 Returned					 Fraction
-//   Numeric Value              Integer Value    Precision		Fractional Value	   Precision
+//
+//	Numeric Value              Integer Value    Precision		Fractional Value	   Precision
+//
 // ------------------           -------------   ----------		----------------     ---------
 //
-//  859649.123456789								859649					0						0.123456789            9
-// -859649.123456789							 -859649				 	0					 -0.123456789            9
+//	859649.123456789								859649					0						0.123456789            9
 //
+// -859649.123456789							 -859649				 	0					 -0.123456789            9
 func (bigIFd *BigIntFixedDecimal) GetIntegerFractionalParts() (integer BigIntFixedDecimal, fraction BigIntFixedDecimal) {
 
 	if bigIFd.integerNum == nil {
@@ -923,7 +895,7 @@ func (bigIFd *BigIntFixedDecimal) GetIntegerFractionalParts() (integer BigIntFix
 		return integer, fraction
 	}
 
-	scale := big.NewInt(0).Exp(big.NewInt(10), big.NewInt(0).SetUint64(uint64(bigIFd.precision)) , nil)
+	scale := big.NewInt(0).Exp(big.NewInt(10), big.NewInt(0).SetUint64(uint64(bigIFd.precision)), nil)
 
 	scratch := big.NewInt(0)
 
@@ -951,12 +923,11 @@ func (bigIFd *BigIntFixedDecimal) GetIntAry() (IntAry, error) {
 
 	if err != nil {
 		return IntAry{}.NewZero(0),
-		 fmt.Errorf(ePrefix + "Error returned: %v", err.Error())
+			fmt.Errorf(ePrefix+"Error returned: %v", err.Error())
 	}
 
 	return ia, nil
 }
-
 
 // GetMagnitude - Returns the magnitude of the current BigIntFixedDecimal
 // as a type *big.Int integer value.
@@ -964,54 +935,54 @@ func (bigIFd *BigIntFixedDecimal) GetIntAry() (IntAry, error) {
 // Magnitude as used here is defined as the power of 10 which generates a
 // value less than or equal to the current BigIntFixedDecimal value
 //
-// 							10^magnitude  <= BigIntFixedDecimal
+//	10^magnitude  <= BigIntFixedDecimal
 //
 // Examples
 // ========
-//         BigIntFixedDecimal
-//			   			Value									magnitude
-//              ------        				---------
 //
-//			  		 963,256										5
-//									 2										0
-//									32										1
-// 			 8,456,123,921					  				9
-//                   2.2									0
-//       8,456,123,912.123                9
-//            -643,212.123								5
-//                 324.123456             2
+//	        BigIntFixedDecimal
+//				   			Value									magnitude
+//	             ------        				---------
 //
+//				  		 963,256										5
+//										 2										0
+//										32										1
+//				 8,456,123,921					  				9
+//	                  2.2									0
+//	      8,456,123,912.123                9
+//	           -643,212.123								5
+//	                324.123456             2
 func (bigIFd *BigIntFixedDecimal) GetMagnitude() (*big.Int, error) {
 
-			bigZero := big.NewInt(0)
+	bigZero := big.NewInt(0)
 
-			if bigIFd.integerNum == nil {
-				bigIFd.integerNum = big.NewInt(0)
-				bigIFd.precision = 0
-				return bigZero, nil
-			}
+	if bigIFd.integerNum == nil {
+		bigIFd.integerNum = big.NewInt(0)
+		bigIFd.precision = 0
+		return bigZero, nil
+	}
 
-			target := big.NewInt(0).Set(bigIFd.integerNum)
-			bigTen := big.NewInt(10)
+	target := big.NewInt(0).Set(bigIFd.integerNum)
+	bigTen := big.NewInt(10)
 
-			if bigIFd.precision > 0 {
-				target.Quo(
-					target,
-					big.NewInt(0).Exp(bigTen,big.NewInt(int64(bigIFd.precision)),
-						nil))
-			}
+	if bigIFd.precision > 0 {
+		target.Quo(
+			target,
+			big.NewInt(0).Exp(bigTen, big.NewInt(int64(bigIFd.precision)),
+				nil))
+	}
 
-			magnitude, err := BigIntMath{}.GetMagnitude(target)
+	magnitude, err := BigIntMath{}.GetMagnitude(target)
 
-			if err != nil {
-				ePrefix := "BigIntFixedDecimal.GetMagnitude() "
-				return bigZero,
-					fmt.Errorf(ePrefix +
-						"Error returned " +
-						"Error='%v' ",err.Error())
-			}
+	if err != nil {
+		ePrefix := "BigIntFixedDecimal.GetMagnitude() "
+		return bigZero,
+			fmt.Errorf(ePrefix+
+				"Error returned "+
+				"Error='%v' ", err.Error())
+	}
 
-			return magnitude, nil
+	return magnitude, nil
 }
 
 // GetNumericValue - Returns the 'integerNum' and 'precision' values for the
@@ -1029,7 +1000,6 @@ func (bigIFd *BigIntFixedDecimal) GetNumericValue() (*big.Int, uint) {
 // GetNumStr - Converts the current BigIntFixedDecimal value to
 // string of numbers which includes the decimal place and decimal
 // digits if they exist.
-//
 func (bigIFd *BigIntFixedDecimal) GetNumStr() string {
 
 	return bigIFd.FormatNumStr(LEADMINUSNEGVALFMTMODE)
@@ -1065,8 +1035,6 @@ func (bigIFd *BigIntFixedDecimal) GetPrecisionBigInt() *big.Int {
 	return big.NewInt(0).SetUint64(uint64(bigIFd.precision))
 }
 
-
-
 // Inverse - Converts the current BigIntFixedDecimal
 // to the inverse of its numeric value.
 //
@@ -1081,11 +1049,11 @@ func (bigIFd *BigIntFixedDecimal) GetPrecisionBigInt() *big.Int {
 // ===============
 //
 // maxPrecision uint	- Defines the maximum precision for the
-//                      inverse value computed by this method.
-//                      As used here, 'maxPrecision' specifies
-//                      the maximum number of numeric digits to
-// 											the right of the decimal place.
 //
+//	                     inverse value computed by this method.
+//	                     As used here, 'maxPrecision' specifies
+//	                     the maximum number of numeric digits to
+//												the right of the decimal place.
 func (bigIFd *BigIntFixedDecimal) Inverse(maxPrecision uint) {
 
 	if bigIFd.integerNum == nil {
@@ -1099,7 +1067,6 @@ func (bigIFd *BigIntFixedDecimal) Inverse(maxPrecision uint) {
 	}
 
 	bigOne := big.NewInt(1)
-
 
 	inverseBigInt, inversePrecision, _ :=
 		BigIntMathDivide{}.BigIntFracQuotient(
@@ -1134,7 +1101,7 @@ func (bigIFd *BigIntFixedDecimal) IsInteger() bool {
 // IsEven - returns 'true' if the numeric value
 // of the current BigIntFixedDecimal is even.
 //
-//------------------------------------------------------
+// ------------------------------------------------------
 // "In mathematics, parity is the property of an
 // integer's inclusion in one of two categories:
 // even or odd. An integer is even if it is evenly
@@ -1142,11 +1109,10 @@ func (bigIFd *BigIntFixedDecimal) IsInteger() bool {
 //
 // "Examples of even numbers include −4, 0, 82 and 178."
 // In particular, zero is an even number."
-//------------------------------------------------------
+// ------------------------------------------------------
 // https://en.wikipedia.org/wiki/Parity_(mathematics)
 //
 // Also, see 	https://www.mathsisfun.com/definitions/even-number.html
-//
 func (bigIFd *BigIntFixedDecimal) IsEven() bool {
 
 	if bigIFd.integerNum == nil {
@@ -1166,7 +1132,7 @@ func (bigIFd *BigIntFixedDecimal) IsEven() bool {
 		return true
 	}
 
-	remainder :=  big.NewInt(0).Rem(bigIFd.integerNum, big.NewInt(2))
+	remainder := big.NewInt(0).Rem(bigIFd.integerNum, big.NewInt(2))
 
 	if remainder.Cmp(bigZero) == 0 {
 		return true
@@ -1181,7 +1147,6 @@ func (bigIFd *BigIntFixedDecimal) IsEven() bool {
 // is set to zero and the function returns 'false'.
 //
 // Otherwise, the function returns 'true'.
-//
 func (bigIFd *BigIntFixedDecimal) IsValid() bool {
 
 	if bigIFd.integerNum == nil {
@@ -1202,7 +1167,7 @@ func (bigIFd *BigIntFixedDecimal) IsZero() bool {
 		bigIFd.precision = 0
 	}
 
-	if bigIFd.integerNum.Cmp(big.NewInt(0))==0 {
+	if bigIFd.integerNum.Cmp(big.NewInt(0)) == 0 {
 		return true
 	}
 
@@ -1212,34 +1177,35 @@ func (bigIFd *BigIntFixedDecimal) IsZero() bool {
 // MultiplyByTenToPower - Multiplies the numeric value of the current
 // BigIntFixedDecimal by 10 to the power of 'exponent'.
 //
-//       result = BigIntFixedDecimal x 10^exponent
+//	result = BigIntFixedDecimal x 10^exponent
 //
 // Examples:
 // =========
-// 	BigIntFixedDecimal
-//			Value									Exponent							   Result
-//  ------------------        --------              -----------------
-//   105.6752										 0										      105.6752
-//   105.6752                    1									       1056.752
-//   105.6752                    2                        10567.52
-//   105.6752                    3                       105675.2
-//   105.6752                    8                  10567520000
+//
+//		BigIntFixedDecimal
+//				Value									Exponent							   Result
+//	 ------------------        --------              -----------------
+//	  105.6752										 0										      105.6752
+//	  105.6752                    1									       1056.752
+//	  105.6752                    2                        10567.52
+//	  105.6752                    3                       105675.2
+//	  105.6752                    8                  10567520000
 //
 // Input Parameter
 // ===============
 //
 // exponent	uint	- The value of the current BigIntFixedDecimal
-//									instance will be multiplied by ten raised to
-// 									the power of 'exponent'.
 //
+//	instance will be multiplied by ten raised to
+//	the power of 'exponent'.
 //
 // Note:	(1)	This method will delete trailing fractional zeros from
-// 			 			the returned product.
 //
-// 				(2)	This method will destroy and overwrite the previous value
-// 						of the current BigIntFixedDecimal instance with the results
-// 						of this calculation.
+//	 			the returned product.
 //
+//		(2)	This method will destroy and overwrite the previous value
+//				of the current BigIntFixedDecimal instance with the results
+//				of this calculation.
 func (bigIFd *BigIntFixedDecimal) MultiplyByTenToPower(exponent uint) {
 
 	if bigIFd.integerNum == nil {
@@ -1270,7 +1236,7 @@ func (bigIFd *BigIntFixedDecimal) MultiplyByTenToPower(exponent uint) {
 // MultiplyByTwoToPower - Multiplies the numeric value of the current
 // BigIntFixedDecimal by 2 to the power of 'exponent'.
 //
-//        product = BigIntFixedDecimal x 2^exponent
+//	product = BigIntFixedDecimal x 2^exponent
 //
 // When the calculation is completed, the value of 'product' will
 // replace the old value of the current BigIntFixedDecimal instance.
@@ -1280,22 +1246,26 @@ func (bigIFd *BigIntFixedDecimal) MultiplyByTenToPower(exponent uint) {
 //
 //	 BigIntFixedDecimal 			 	exponent		  product
 //	interNum		Precision
-// -------------------------------------------------------------
-//	12345						5								15				4045.2096
-//								(0.12345 x 2^15 = 4045.2096)
+//
 // -------------------------------------------------------------
 //
-//    571						1								 8			 14617.6
-//                (57.1 x 2^8 = 14617.6)
+//	12345						5								15				4045.2096
+//								(0.12345 x 2^15 = 4045.2096)
+//
+// -------------------------------------------------------------
+//
+//	571						1								 8			 14617.6
+//	            (57.1 x 2^8 = 14617.6)
+//
 // -------------------------------------------------------------
 //
 // Note:	(1)	This method will delete trailing fractional zeros from
-// 			 			the returned product.
 //
-// 				(2)	This method will destroy and overwrite the previous value
-// 						of the current BigIntFixedDecimal instance with the results
-// 						of this calculation.
+//	 			the returned product.
 //
+//		(2)	This method will destroy and overwrite the previous value
+//				of the current BigIntFixedDecimal instance with the results
+//				of this calculation.
 func (bigIFd *BigIntFixedDecimal) MultiplyByTwoToPower(exponent uint) {
 
 	if bigIFd.integerNum == nil {
@@ -1325,8 +1295,8 @@ func (bigIFd *BigIntFixedDecimal) MultiplyByTwoToPower(exponent uint) {
 // integer	*big.Int	- Specifies the sequence of numerical digits in the numeric value.
 //
 // precision		uint	- Specifies the number of digits to the right of the decimal point
-// 											in input parameter, 'integer'.
 //
+//	in input parameter, 'integer'.
 func (bigIFd BigIntFixedDecimal) New(integer *big.Int, precision uint) BigIntFixedDecimal {
 
 	num := BigIntFixedDecimal{}
@@ -1345,20 +1315,20 @@ func (bigIFd BigIntFixedDecimal) New(integer *big.Int, precision uint) BigIntFix
 // bigInt			*big.Int	- Specifies the sequence of numerical digits in the numeric value.
 //
 // precision	*big.Int	- Specifies the number of digits to the right of the decimal point
-// 												in input parameter, 'integer'. If 'precision' is greater than the
-//                        maximum value of an unsigned integer (+4,294,967,295, which equals
-// 												2^32 − 1), an error will be triggered. Also, if 'precision' is less
-//                        than zero, an error will be triggered.
 //
+//													in input parameter, 'integer'. If 'precision' is greater than the
+//	                       maximum value of an unsigned integer (+4,294,967,295, which equals
+//													2^32 − 1), an error will be triggered. Also, if 'precision' is less
+//	                       than zero, an error will be triggered.
 func (bigIFd BigIntFixedDecimal) NewBigIntPrecision(
-					bigInt, precision *big.Int) (BigIntFixedDecimal, error) {
+	bigInt, precision *big.Int) (BigIntFixedDecimal, error) {
 
 	ePrefix := "BigIntFixedDecimal.NewBigIntPrecision() "
 
 	if precision.Cmp(big.NewInt(0)) == -1 {
 		return BigIntFixedDecimal{}.NewZero(0),
-			fmt.Errorf(ePrefix +
-				"Error: Input parameter 'precision' LESS THAN ZERO! " +
+			fmt.Errorf(ePrefix+
+				"Error: Input parameter 'precision' LESS THAN ZERO! "+
 				"precision='%v' ", precision.Text(10))
 	}
 
@@ -1366,8 +1336,8 @@ func (bigIFd BigIntFixedDecimal) NewBigIntPrecision(
 
 	if precision.Cmp(maxUint32) == 1 {
 		return BigIntFixedDecimal{}.NewZero(0),
-			fmt.Errorf(ePrefix +
-				"Error: Input parameter 'precision' exceeds maximum limit of '4,294,967,295'! " +
+			fmt.Errorf(ePrefix+
+				"Error: Input parameter 'precision' exceeds maximum limit of '4,294,967,295'! "+
 				"precision='%v' ", precision.Text(10))
 	}
 
@@ -1387,8 +1357,8 @@ func (bigIFd BigIntFixedDecimal) NewBigIntPrecision(
 // integer	int				- Specifies the sequence of numerical digits in the numeric value.
 //
 // precision		uint	- Specifies the number of digits to the right of the decimal point
-// 											in input parameter, 'integer'.
 //
+//	in input parameter, 'integer'.
 func (bigIFd BigIntFixedDecimal) NewInt(integer int, precision uint) BigIntFixedDecimal {
 
 	num := BigIntFixedDecimal{}
@@ -1407,8 +1377,8 @@ func (bigIFd BigIntFixedDecimal) NewInt(integer int, precision uint) BigIntFixed
 // integer		 int32	- Specifies the sequence of numerical digits in the numeric value.
 //
 // precision		uint	- Specifies the number of digits to the right of the decimal point
-// 											in input parameter, 'integer'.
 //
+//	in input parameter, 'integer'.
 func (bigIFd BigIntFixedDecimal) NewInt32(integer int32, precision uint) BigIntFixedDecimal {
 
 	num := BigIntFixedDecimal{}
@@ -1427,8 +1397,8 @@ func (bigIFd BigIntFixedDecimal) NewInt32(integer int32, precision uint) BigIntF
 // integer		 int32	- Specifies the sequence of numerical digits in the numeric value.
 //
 // precision		uint	- Specifies the number of digits to the right of the decimal point
-// 											in input parameter, 'integer'.
 //
+//	in input parameter, 'integer'.
 func (bigIFd BigIntFixedDecimal) NewInt64(integer int64, precision uint) BigIntFixedDecimal {
 
 	num := BigIntFixedDecimal{}
@@ -1437,7 +1407,6 @@ func (bigIFd BigIntFixedDecimal) NewInt64(integer int64, precision uint) BigIntF
 
 	return num
 }
-
 
 // NewNumStr - Receives a number string as input and returns
 // a new BigIntFixedDecimal instance.
@@ -1455,7 +1424,6 @@ func (bigIFd BigIntFixedDecimal) NewInt64(integer int64, precision uint) BigIntF
 //
 // The only decimal separator recognized by this method is the
 // period ('.').
-//
 func (bigIFd BigIntFixedDecimal) NewNumStr(numStr string) (BigIntFixedDecimal, error) {
 
 	ePrefix := "BigIntFixedDecimal.NewNumStr() "
@@ -1466,13 +1434,12 @@ func (bigIFd BigIntFixedDecimal) NewNumStr(numStr string) (BigIntFixedDecimal, e
 
 	if err != nil {
 		return BigIntFixedDecimal{},
-			fmt.Errorf(ePrefix + "Error returned by fixedDecimal.SetNumStr(numStr). " +
+			fmt.Errorf(ePrefix+"Error returned by fixedDecimal.SetNumStr(numStr). "+
 				"Error='%v' ", err.Error())
 	}
 
 	return fixedDecimal, nil
 }
-
 
 // NewUInt - Creates and returns a new BigIntFixedDecimal type based on input parameters,
 // 'integer' and 'precision'.
@@ -1483,8 +1450,8 @@ func (bigIFd BigIntFixedDecimal) NewNumStr(numStr string) (BigIntFixedDecimal, e
 // integer		  uint	- Specifies the sequence of numerical digits in the numeric value.
 //
 // precision		uint	- Specifies the number of digits to the right of the decimal point
-// 											in input parameter, 'integer'.
 //
+//	in input parameter, 'integer'.
 func (bigIFd BigIntFixedDecimal) NewUInt(integer uint, precision uint) BigIntFixedDecimal {
 
 	num := BigIntFixedDecimal{}
@@ -1503,8 +1470,8 @@ func (bigIFd BigIntFixedDecimal) NewUInt(integer uint, precision uint) BigIntFix
 // integer		  uint32	- Specifies the sequence of numerical digits in the numeric value.
 //
 // precision		uint	  - Specifies the number of digits to the right of the decimal point
-// 											in input parameter, 'integer'.
 //
+//	in input parameter, 'integer'.
 func (bigIFd BigIntFixedDecimal) NewUInt32(integer uint32, precision uint) BigIntFixedDecimal {
 
 	num := BigIntFixedDecimal{}
@@ -1523,8 +1490,8 @@ func (bigIFd BigIntFixedDecimal) NewUInt32(integer uint32, precision uint) BigIn
 // integer		  uint32	- Specifies the sequence of numerical digits in the numeric value.
 //
 // precision		uint	  - Specifies the number of digits to the right of the decimal point
-// 											in input parameter, 'integer'.
 //
+//	in input parameter, 'integer'.
 func (bigIFd BigIntFixedDecimal) NewUInt64(integer uint64, precision uint) BigIntFixedDecimal {
 
 	num := BigIntFixedDecimal{}
@@ -1542,8 +1509,6 @@ func (bigIFd BigIntFixedDecimal) NewUInt64(integer uint64, precision uint) BigIn
 // ================
 //
 // precision		uint	- Specifies the number of digits to the right of the decimal point.
-//
-//
 func (bigIFd BigIntFixedDecimal) NewZero(precision uint) BigIntFixedDecimal {
 
 	num := BigIntFixedDecimal{}
@@ -1560,7 +1525,8 @@ func (bigIFd BigIntFixedDecimal) NewZero(precision uint) BigIntFixedDecimal {
 // place.
 //
 // Example:
-// 	integer= 123456; precision = 3; Numeric Value= 123.456
+//
+//	integer= 123456; precision = 3; Numeric Value= 123.456
 //
 // If the value of BigIntFixedDecimal.bigInt is zero ('0'), that zero value will
 // remain unaltered. However, the BigIntNum.precision value will be set equal to
@@ -1580,20 +1546,20 @@ func (bigIFd BigIntFixedDecimal) NewZero(precision uint) BigIntFixedDecimal {
 //
 // Examples:
 //
-// 	 Original       				'precision'				Resulting
-//    Value								input parameter			  Value
-//  --------------				---------------     -------------
-//	654.123456									9							 654.123456000
-//	654.123456									4							 654.1235
+//		 Original       				'precision'				Resulting
+//	   Value								input parameter			  Value
+//	 --------------				---------------     -------------
+//		654.123456									9							 654.123456000
+//		654.123456									4							 654.1235
+//
 // -654.123456									9							-654.123456000
 // -654.123456									4							-654.1235
-//		0													3								 0.000
-//    0.000000									0								 0
 //
+//			0													3								 0.000
+//	   0.000000									0								 0
 //
 // Note: This method does NOT trim or delete trailing fractional zero
 // digits.
-//
 func (bigIFd *BigIntFixedDecimal) RoundToDecPlace(precision uint) {
 
 	if bigIFd.integerNum == nil {
@@ -1660,7 +1626,6 @@ func (bigIFd *BigIntFixedDecimal) RoundToDecPlace(precision uint) {
 
 // SetNumericValue - Sets the BigIntFixedDecimal.integerNum or integer value
 // for the current BigIntFixedDecimal instance.
-//
 func (bigIFd *BigIntFixedDecimal) SetIntegerValue(integer *big.Int) {
 
 	if integer == nil {
@@ -1685,7 +1650,6 @@ func (bigIFd *BigIntFixedDecimal) SetIntegerValue(integer *big.Int) {
 //
 // The only decimal separator recognized by this method is the
 // period ('.').
-//
 func (bigIFd *BigIntFixedDecimal) SetNumStr(numStr string) error {
 
 	ePrefix := "BigIntFixedDecimal.SetNumStr() "
@@ -1721,19 +1685,19 @@ func (bigIFd *BigIntFixedDecimal) SetNumStr(numStr string) error {
 			continue
 		}
 
-		if baseRunes[i] == '-' && isStartNumericDigits==false {
+		if baseRunes[i] == '-' && isStartNumericDigits == false {
 			hasMinusSign = true
 			continue
 		}
 
-		if baseRunes[i] == '(' && isStartNumericDigits==false {
+		if baseRunes[i] == '(' && isStartNumericDigits == false {
 			hasLeftParen = true
 			continue
 		}
 
-		if baseRunes[i] == ')' 	&&
-				isStartNumericDigits == true &&
-					hasLeftParen == true {
+		if baseRunes[i] == ')' &&
+			isStartNumericDigits == true &&
+			hasLeftParen == true {
 
 			hasRightParen = true
 			isEndNumericDigits = true
@@ -1750,14 +1714,14 @@ func (bigIFd *BigIntFixedDecimal) SetNumStr(numStr string) error {
 
 			isStartNumericDigits = true
 
-			newAbsBigInt.Mul(newAbsBigInt,baseTen)
+			newAbsBigInt.Mul(newAbsBigInt, baseTen)
 
 			newAbsBigInt.Add(newAbsBigInt, big.NewInt(int64(baseRunes[i]-48)))
 
 			numOfNumericDigits++
 
 			if startFractionalDigits == true {
-				newPrecision ++
+				newPrecision++
 			}
 
 			continue
@@ -1765,13 +1729,13 @@ func (bigIFd *BigIntFixedDecimal) SetNumStr(numStr string) error {
 
 	}
 
-	if numOfNumericDigits==0 {
-		return fmt.Errorf(ePrefix +
-			"Error: No numeric digits were found in input parameter 'numStr'. " +
+	if numOfNumericDigits == 0 {
+		return fmt.Errorf(ePrefix+
+			"Error: No numeric digits were found in input parameter 'numStr'. "+
 			"numStr='%v'", numStr)
 	}
 
-	if hasMinusSign == true || (hasLeftParen==true && hasRightParen==true) {
+	if hasMinusSign == true || (hasLeftParen == true && hasRightParen == true) {
 
 		newAbsBigInt.Neg(newAbsBigInt)
 
@@ -1787,7 +1751,6 @@ func (bigIFd *BigIntFixedDecimal) SetNumStr(numStr string) error {
 // BigIntFixedDecimal instance. Taken together, 'integerNum' and 'precision' describe
 // a numeric value with a fixed number of fractional digits to the right of the
 // decimal place.
-//
 func (bigIFd *BigIntFixedDecimal) SetNumericValue(integer *big.Int, precision uint) {
 
 	if integer == nil {
@@ -1803,7 +1766,6 @@ func (bigIFd *BigIntFixedDecimal) SetNumericValue(integer *big.Int, precision ui
 // SetPrecision - Sets the 'precision' value for the current BigIntFixedDecimal
 // instance. 'precision' specifies the number of fractional digits to the right
 // of the decimal place.
-//
 func (bigIFd *BigIntFixedDecimal) SetPrecisionValue(precision uint) {
 
 	if bigIFd.integerNum == nil {
@@ -1819,12 +1781,12 @@ func (bigIFd *BigIntFixedDecimal) SetPrecisionValue(precision uint) {
 // BigIntFixedDecimal numerical value.
 //
 // Examples:
-//					Initial Value			Trimmed Value
-//						456.123000 			 456.123
-//							0.000					 0
-//							7.0						 7
-//					 -456.123000			-456.123
 //
+//	Initial Value			Trimmed Value
+//		456.123000 			 456.123
+//			0.000					 0
+//			7.0						 7
+//	 -456.123000			-456.123
 func (bigIFd *BigIntFixedDecimal) TrimTrailingFracZeros() {
 
 	if bigIFd.integerNum == nil {
@@ -1880,16 +1842,17 @@ func (bigIFd *BigIntFixedDecimal) TrimTrailingFracZeros() {
 //
 // Examples:
 //
-// 	 Original       			'newPrecision'				Resulting
-//    Value								input parameter			  Value
-//  --------------				---------------     -------------
-//	654.123456									9							 654.123456000
-//	654.123456									4							 654.1234 (no rounding)
+//		 Original       			'newPrecision'				Resulting
+//	   Value								input parameter			  Value
+//	 --------------				---------------     -------------
+//		654.123456									9							 654.123456000
+//		654.123456									4							 654.1234 (no rounding)
+//
 // -654.123456									9							-654.123456000
 // -654.123456									4							-654.1234 (no rounding)
-//		0													3								 0.000
-//    0.000000									0								 0
 //
+//			0													3								 0.000
+//	   0.000000									0								 0
 func (bigIFd *BigIntFixedDecimal) TruncToDecPlace(precision uint) {
 
 	if bigIFd.integerNum == nil {

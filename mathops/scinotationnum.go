@@ -6,17 +6,17 @@ import (
 	"strings"
 )
 
-// Example Scientific Notation
-// ===========================
+// SciNotationNum
 //
-//  2.652e+8
+// # Example Scientific Notation
 //
-//  significand 		= '2.652'
-//  significand integer digits = '2'
-//	mantissa				= significand factional digits = '.652'
-//  exponent    		= '8'  (10^8)
-//	mantissaLength	= length of fractional digits displayed in scientific notation.
+//	 2.652e+8
 //
+//	 significand 		= '2.652'
+//	 significand integer digits = '2'
+//		mantissa				= significand factional digits = '.652'
+//	 exponent    		= '8'  (10^8)
+//		mantissaLength	= length of fractional digits displayed in scientific notation.
 type SciNotationNum struct {
 	significand BigIntNum // The significand consists of the leading integer and
 	//	fractional digits of the scientific notation.
@@ -43,7 +43,6 @@ type SciNotationNum struct {
 // significand ('2.652'). However, the user has the option to
 // customize this decimal separator character through method
 // SciNotationNum.SetDecimalSeparatorChar().
-//
 func (sciNotan *SciNotationNum) GetDecimalSeparator() rune {
 
 	if sciNotan.decimalSeparator == 0 {
@@ -58,14 +57,13 @@ func (sciNotan *SciNotationNum) GetDecimalSeparator() rune {
 // Example Scientific Notation
 // ===========================
 //
-//  2.652e+8
+//	 2.652e+8
 //
-//  significand 		= '2.652'
-//  significand integer digits = '2'
-//	mantissa				= significand factional digits = '.652'
-//  exponent    		= '8'  (10^8)
-//	mantissaLength	= length of fractional digits displayed in scientific notation.
-//
+//	 significand 		= '2.652'
+//	 significand integer digits = '2'
+//		mantissa				= significand factional digits = '.652'
+//	 exponent    		= '8'  (10^8)
+//		mantissaLength	= length of fractional digits displayed in scientific notation.
 func (sciNotan *SciNotationNum) GetExponent() BigIntNum {
 
 	return sciNotan.exponent.CopyOut()
@@ -81,7 +79,6 @@ func (sciNotan *SciNotationNum) GetExponent() BigIntNum {
 //
 // This method returns the current exponent character which
 // will be used in formatting scientific notation strings.
-//
 func (sciNotan *SciNotationNum) GetExponentChar() string {
 
 	if sciNotan.exponentChar == 0 {
@@ -98,7 +95,6 @@ func (sciNotan *SciNotationNum) GetExponentChar() string {
 // Default Example
 // ---------------
 // 2.652e+8
-//
 func (sciNotan *SciNotationNum) GetExponentUsesLeadingPlus() bool {
 
 	return sciNotan.exponentUsesLeadingPlus
@@ -107,7 +103,6 @@ func (sciNotan *SciNotationNum) GetExponentUsesLeadingPlus() bool {
 // GetNumStr - Returns a scientific notation string representing
 // the underlying numeric value. The number of decimals in the
 // mantissa will default to the current value of sciNotan.mantissaLength.
-//
 func (sciNotan *SciNotationNum) GetNumStr() string {
 
 	sciNotan.SetMantissaLengthIfEmpty()
@@ -126,7 +121,6 @@ func (sciNotan *SciNotationNum) GetNumStr() string {
 // Default Example
 // ---------------
 // 2.652e+8
-//
 func (sciNotan *SciNotationNum) GetSciNotationStr(mantissaLen uint) (string, error) {
 
 	outStr := ""
@@ -171,14 +165,13 @@ func (sciNotan *SciNotationNum) GetSciNotationStr(mantissaLen uint) (string, err
 // Example Scientific Notation
 // ===========================
 //
-//  2.652e+8
+//	 2.652e+8
 //
-//  significand 		= '2.652'
-//  significand integer digits = '2'
-//	mantissa				= significand factional digits = '.652'
-//  exponent    		= '8'  (10^8)
-//	mantissaLength	= length of fractional digits displayed in scientific notation.
-//
+//	 significand 		= '2.652'
+//	 significand integer digits = '2'
+//		mantissa				= significand factional digits = '.652'
+//	 exponent    		= '8'  (10^8)
+//		mantissaLength	= length of fractional digits displayed in scientific notation.
 func (sciNotan *SciNotationNum) GetSignificand() BigIntNum {
 
 	return sciNotan.significand.CopyOut()
@@ -187,7 +180,6 @@ func (sciNotan *SciNotationNum) GetSignificand() BigIntNum {
 // New() - Creates and returns an empty SciNotationNum
 // structure. It is a good idea to call this method
 // in order to initialize default settings.
-//
 func (sciNotan SciNotationNum) New() SciNotationNum {
 
 	s2 := SciNotationNum{}
@@ -207,7 +199,6 @@ func (sciNotan SciNotationNum) New() SciNotationNum {
 //
 // Input parameter 'sciNotationStr' should be properly formatted as a valid scientific
 // notation string. Invalid input strings will trigger an error.
-//
 func (sciNotan SciNotationNum) NewNumStr(sciNotationStr string) (SciNotationNum, error) {
 
 	s2 := SciNotationNum{}.New()
@@ -235,7 +226,6 @@ func (sciNotan SciNotationNum) NewNumStr(sciNotationStr string) (SciNotationNum,
 // The decimal separator character may be customized to support characters
 // used by other cultures or nations. See method SciNotationNum.SetDecimalSeparatorChar()
 // below.
-//
 func (sciNotan *SciNotationNum) SetDecimalSeparatorIfEmpty() {
 
 	if sciNotan.decimalSeparator == 0 {
@@ -252,7 +242,6 @@ func (sciNotan *SciNotationNum) SetDecimalSeparatorIfEmpty() {
 // character is presented as a period ('.') separating integer and fractional
 // digits in the significand ('2.652'). However, the user has the option to
 // customize this decimal separator character by calling this method.
-//
 func (sciNotan *SciNotationNum) SetDecimalSeparatorChar(decimalChar rune) {
 
 	sciNotan.decimalSeparator = decimalChar
@@ -261,7 +250,6 @@ func (sciNotan *SciNotationNum) SetDecimalSeparatorChar(decimalChar rune) {
 
 // SetExponentCharIfEmpty - If the exponent rune is empty,
 // this method will set the exponentChar value to 'e'.
-//
 func (sciNotan *SciNotationNum) SetExponentCharIfEmpty() {
 
 	if sciNotan.exponentChar == 0 {
@@ -301,13 +289,12 @@ func (sciNotan *SciNotationNum) SetExponentUsesLeadingPlus(useLeadingPlus bool) 
 // Example Scientific Notation
 // ===========================
 //
-//  2.652e+8
+//	 2.652e+8
 //
-//  significand = '2.652'
-//  significand integer digit = '2'
-//	mantissa		= significand factional digits = '.652'
-//  exponent    = '8'  (10^8)
-//
+//	 significand = '2.652'
+//	 significand integer digit = '2'
+//		mantissa		= significand factional digits = '.652'
+//	 exponent    = '8'  (10^8)
 func (sciNotan *SciNotationNum) SetMantissaLength(mantissaLen uint) {
 
 	if mantissaLen == 0 {
@@ -328,7 +315,6 @@ func (sciNotan *SciNotationNum) SetMantissaLength(mantissaLen uint) {
 // notation as a string.
 //
 // In the example scientific notation '2.652e+8', the mantissa is '.652'
-//
 func (sciNotan *SciNotationNum) SetMantissaLengthIfEmpty() {
 
 	if sciNotan.mantissaLength == 0 {
@@ -350,13 +336,14 @@ func (sciNotan *SciNotationNum) SetMantissaLengthIfEmpty() {
 // ================
 //
 // significand 	BigIntNum 	- In the example scientific notation '2.652e+8',
-// 														the significand is represented by '2.652'.
+//
+//	the significand is represented by '2.652'.
 //
 // exponent  		BigIntNum		- In the example '2.652e+8' the exponent component
-//														is represented by the integer value, '8'. Note:
-//														If exponent is NOT an integer value and contains
-//														fractional digits, an error will be triggered.
 //
+//	is represented by the integer value, '8'. Note:
+//	If exponent is NOT an integer value and contains
+//	fractional digits, an error will be triggered.
 func (sciNotan *SciNotationNum) SetBigIntNumElements(
 	significand, exponent BigIntNum) error {
 
@@ -384,13 +371,14 @@ func (sciNotan *SciNotationNum) SetBigIntNumElements(
 // ================
 //
 // significand 	IntAry 			- In the example scientific notation '2.652e+8',
-// 														the significand is represented by '2.652'.
+//
+//	the significand is represented by '2.652'.
 //
 // exponent  		IntAry			- In the example '2.652e+8' the exponent component
-//														is represented by the integer value, '8'. Note:
-//														If exponent is NOT an integer value and contains
-//														fractional digits, an error will be triggered.
 //
+//	is represented by the integer value, '8'. Note:
+//	If exponent is NOT an integer value and contains
+//	fractional digits, an error will be triggered.
 func (sciNotan *SciNotationNum) SetIntAryElements(
 	significand, exponent IntAry) error {
 
@@ -432,10 +420,11 @@ func (sciNotan *SciNotationNum) SetIntAryElements(
 //
 // Examples of properly formatted scientific notation strings are provided
 // below:
-//  						2.652e+8
-//  						2.652E+8
-//  						2.652e8
-//  						2.652E8
+//
+//	2.652e+8
+//	2.652E+8
+//	2.652e8
+//	2.652E8
 //
 // The use of the decimal point may be customize by first setting the desired
 // decimal separator using method, SciNotationNum.SetDecimalSeparatorChar().
@@ -443,8 +432,7 @@ func (sciNotan *SciNotationNum) SetIntAryElements(
 // Also, note that exponent digits must be integer numbers. Used of fractional
 // digits in the exponent will trigger an error. Example:
 //
-//               2.652E9.24 = ERROR fractional digits in exponent!
-//
+//	2.652E9.24 = ERROR fractional digits in exponent!
 func (sciNotan *SciNotationNum) SetNumStr(sciNotationStr string) error {
 
 	ePrefix := "BigIntNum.SetNumStr() "
