@@ -13,7 +13,7 @@ func TestBigIntMathSubtract_SubtractNumStr_01(t *testing.T) {
 	expectedNumStr := "99.999"
 	expectedBigINumSign := 1
 
-	expectedNumSeps := NumericSeparatorDto{}.New()
+	expectedNumSeps := new(NumericSeparatorDto).New()
 
 	expectedBigINum, err := BigIntNum{}.NewNumStrWithNumSeps(expectedNumStr, expectedNumSeps)
 
@@ -72,7 +72,7 @@ func TestBigIntMathSubtract_SubtractNumStr_02(t *testing.T) {
 	expectedNumStr := "903643.4612"
 	expectedBigINumSign := 1
 
-	expectedNumSeps := NumericSeparatorDto{}.New()
+	expectedNumSeps := new(NumericSeparatorDto).New()
 
 	expectedBigINum, err := BigIntNum{}.NewNumStrWithNumSeps(expectedNumStr, expectedNumSeps)
 
@@ -324,7 +324,7 @@ func TestBigIntMathSubtract_SubtractNumStrArray_01(t *testing.T) {
 	expectedNumStr := "6805998.231036"
 	expectedBigINumSign := 1
 
-	expectedNumSeps := NumericSeparatorDto{}.New()
+	expectedNumSeps := new(NumericSeparatorDto).New()
 
 	expectedBigINum, err := BigIntNum{}.NewNumStrWithNumSeps(expectedNumStr, expectedNumSeps)
 
@@ -696,7 +696,7 @@ func TestBigIntMathSubtract_SubtractNumStrOutputToArray_01(t *testing.T) {
 		"105.6",
 	}
 
-	expectedNumSeps := NumericSeparatorDto{}.New()
+	expectedNumSeps := new(NumericSeparatorDto).New()
 
 	lenSubtrahends := len(subtrahendStrs)
 	subtrahendAry := make([]string, lenSubtrahends)
@@ -1036,7 +1036,7 @@ func TestBigIntMathSubtract_SubtractNumStrSeries_01(t *testing.T) {
 	expectedNumStr := "6805998.231036"
 	expectedBigINumSign := 1
 
-	expectedNumSeps := NumericSeparatorDto{}.New()
+	expectedNumSeps := new(NumericSeparatorDto).New()
 
 	expectedBigINum, err := BigIntNum{}.NewNumStrWithNumSeps(expectedNumStr, expectedNumSeps)
 
@@ -1105,7 +1105,7 @@ func TestBigIntMathSubtract_SubtractNumStrSeries_02(t *testing.T) {
 	expectedNumStr := "153035620.80650965"
 	expectedBigINumSign := 1
 
-	expectedNumSeps := NumericSeparatorDto{}.New()
+	expectedNumSeps := new(NumericSeparatorDto).New()
 
 	expectedBigINum, err := BigIntNum{}.NewNumStrWithNumSeps(expectedNumStr, expectedNumSeps)
 
@@ -1175,7 +1175,7 @@ func TestBigIntMathSubtract_SubtractNumStrSeries_03(t *testing.T) {
 	expectedNumStr := "2757547756.287792379"
 	expectedBigINumSign := 1
 
-	expectedNumSeps := NumericSeparatorDto{}.New()
+	expectedNumSeps := new(NumericSeparatorDto).New()
 
 	expectedBigINum, err := BigIntNum{}.NewNumStrWithNumSeps(expectedNumStr, expectedNumSeps)
 
