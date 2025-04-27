@@ -1,8 +1,8 @@
 package examples
 
 import (
-	"../mathops"
 	"fmt"
+	"github.com/mikeaustin71/mathops"
 )
 
 func TestNumberDelimiter() {

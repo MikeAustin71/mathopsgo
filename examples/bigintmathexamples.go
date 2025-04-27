@@ -1,13 +1,13 @@
 package examples
 
 import (
-	"../mathops"
 	"fmt"
+	"github.com/mikeaustin71/mathops"
 	"math/big"
 	"time"
 )
 
-//ExampleNumStrDtoBigIntParse_02
+// ExampleNumStrDtoBigIntParse_02
 func ExampleNumStrDtoBigIntParse_02() {
 	num1Str := "-123456789"
 	precision := uint(15)
@@ -55,7 +55,7 @@ func ExampleNumStrDtoBigIntNumParse_01() {
 
 }
 
-//ExampleRoundPrecision_01
+// ExampleRoundPrecision_01
 func ExampleRoundPrecision_01() {
 	num1Str := "654.123456"
 	expectedNumStr := "654.123"
@@ -97,7 +97,7 @@ func ExampleRoundPrecision_01() {
 
 }
 
-//ExampleSetPrecision_01
+// ExampleSetPrecision_01
 func ExampleSetPrecision_01() {
 
 	num1Str := "654.123456"
@@ -140,7 +140,7 @@ func ExampleSetPrecision_01() {
 
 }
 
-//ExampleBigIntCurrencyStr_01
+// ExampleBigIntCurrencyStr_01
 func ExampleBigIntCurrencyStr_01(num1Str, expectedNumStr string, mode mathops.NegativeValueFmtMode) {
 
 	bINum, err := mathops.BigIntNum{}.NewNumStr(num1Str)
@@ -164,7 +164,7 @@ func ExampleBigIntCurrencyStr_01(num1Str, expectedNumStr string, mode mathops.Ne
 
 }
 
-//ExampleBigIntThouStr_01
+// ExampleBigIntThouStr_01
 func ExampleBigIntThouStr_01(num1Str, expectedNumStr string, mode mathops.NegativeValueFmtMode) {
 
 	bINum, err := mathops.BigIntNum{}.NewNumStr(num1Str)
@@ -206,7 +206,7 @@ func ExampleBigIntNumString_03(
 
 }
 
-//ExampleBigIntNumString_02
+// ExampleBigIntNumString_02
 func ExampleBigIntNumString_02(num1Str, expectedNumStr string, mode mathops.NegativeValueFmtMode) {
 
 	bINum, err := mathops.BigIntNum{}.NewNumStr(num1Str)
@@ -229,7 +229,7 @@ func ExampleBigIntNumString_02(num1Str, expectedNumStr string, mode mathops.Nega
 	return
 }
 
-//ExampleBigIntNumString_01
+// ExampleBigIntNumString_01
 func ExampleBigIntNumString_01(num1Str string) {
 
 	bINum := mathops.BigIntNum{}
@@ -755,7 +755,9 @@ func ExampleBigIntAddNumStr_01() {
 	expectedResultStr := "1000123"
 	expectedPrecision := uint(6)
 
-	numSeps := mathops.NumericSeparatorDto{}.New()
+	dto := mathops.NumericSeparatorDto{}
+
+	numSeps := dto.New()
 
 	result, err := mathops.BigIntMathAdd{}.AddNumStr(n1Str, n2Str, numSeps)
 
@@ -779,7 +781,8 @@ func ExampleBigIntAddNumStr_02() {
 	expectedResultStr := "001123"
 	expectedPrecision := uint(6)
 
-	numSeps := mathops.NumericSeparatorDto{}.New()
+	dto := &mathops.NumericSeparatorDto{}
+	numSeps := dto.New()
 
 	result, err := mathops.BigIntMathAdd{}.AddNumStr(n1Str, n2Str, numSeps)
 

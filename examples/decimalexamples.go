@@ -1,8 +1,8 @@
 package examples
 
 import (
-	"../mathops"
 	"fmt"
+	"github.com/mikeaustin71/mathops"
 )
 
 func ExampleDecPowInt_01(baseStr string, exponent int, maxPrecision uint, expectedStr string) {
