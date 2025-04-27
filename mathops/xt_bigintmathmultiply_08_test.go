@@ -2,7 +2,6 @@ package mathops
 
 import "testing"
 
-
 func TestBigIntMathMultiply_MultiplyNumStrDtoOutputToArray_01(t *testing.T) {
 
 	var err error
@@ -1254,7 +1253,7 @@ func TestBigIntMathMultiply_MultiplyBigIntNumByTenToPower_01(t *testing.T) {
 
 	expectedStr := "35000"
 
-	expectedNumSeps := NumericSeparatorDto{}.New()
+	expectedNumSeps := new(NumericSeparatorDto).New()
 
 	baseBINum, err := BigIntNum{}.NewNumStrWithNumSeps(baseStr, expectedNumSeps)
 
@@ -1362,7 +1361,7 @@ func TestBigIntMathMultiply_MultiplyBigIntNumByTenToPower_03(t *testing.T) {
 	// 278014.8821534985257230713989927365
 	maxPrecision := uint(26)
 
-	expectedNumSeps := NumericSeparatorDto{}.New()
+	expectedNumSeps := new(NumericSeparatorDto).New()
 	frenchDecSeparator := ','
 	frenchThousandsSeparator := ' '
 	frenchCurrencySymbol := '€'
