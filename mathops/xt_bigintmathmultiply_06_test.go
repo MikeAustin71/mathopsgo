@@ -2,7 +2,6 @@ package mathops
 
 import "testing"
 
-
 func TestBigIntMathMultiply_MultiplyIntArySeries_01(t *testing.T) {
 
 	var err error
@@ -554,7 +553,7 @@ func TestBigIntMathMultiply_MultiplyNumStrs_01(t *testing.T) {
 
 	expectedBigINumSign := 1
 
-	expectedNumSeps := NumericSeparatorDto{}.New()
+	expectedNumSeps := new(NumericSeparatorDto).New()
 
 	expectedBigINum, err := BigIntNum{}.NewNumStrWithNumSeps(expectedNumStr, expectedNumSeps)
 
@@ -676,7 +675,7 @@ func TestBigIntMathMultiply_MultiplyNumStrs_03(t *testing.T) {
 	// product = -30987680500513189125.14259702468435
 	expectedNumStr := "-30987680500513189125.14259702468435"
 
-	expectedNumSeps := NumericSeparatorDto{}.New()
+	expectedNumSeps := new(NumericSeparatorDto).New()
 
 	expectedBigINumSign := -1
 
@@ -738,7 +737,7 @@ func TestBigIntMathMultiply_MultiplyNumStrs_04(t *testing.T) {
 	// product = 22197234145.3632
 	expectedNumStr := "22197234145.3632"
 
-	expectedNumSeps := NumericSeparatorDto{}.New()
+	expectedNumSeps := new(NumericSeparatorDto).New()
 
 	expectedBigINumSign := 1
 
@@ -1009,7 +1008,7 @@ func TestBigIntMathMultiply_MultiplyNumStrArray_01(t *testing.T) {
 
 	expectedBigINumSign := 1
 
-	expectedNumSeps := NumericSeparatorDto{}.New()
+	expectedNumSeps := new(NumericSeparatorDto).New()
 
 	lenArray := len(multiplicandStrs)
 
@@ -1111,7 +1110,7 @@ func TestBigIntMathMultiply_MultiplyNumStrArray_02(t *testing.T) {
 
 	expectedBigINumSign := 1
 
-	expectedNumSeps := NumericSeparatorDto{}.New()
+	expectedNumSeps := new(NumericSeparatorDto).New()
 
 	lenArray := len(multiplicandStrs)
 
@@ -1213,7 +1212,7 @@ func TestBigIntMathMultiply_MultiplyNumStrArray_03(t *testing.T) {
 
 	expectedBigINumSign := 1
 
-	expectedNumSeps := NumericSeparatorDto{}.New()
+	expectedNumSeps := new(NumericSeparatorDto).New()
 
 	lenArray := len(multiplicandStrs)
 
@@ -1312,7 +1311,7 @@ func TestBigIntMathMultiply_MultiplyNumStrArray_04(t *testing.T) {
 	// product = -20408.5138429311978576052224
 	expectedNumStr := "-20408.5138429311978576052224"
 
-	expectedNumSeps := NumericSeparatorDto{}.New()
+	expectedNumSeps := new(NumericSeparatorDto).New()
 
 	expectedBigINumSign := -1
 
@@ -1639,7 +1638,7 @@ func TestBigIntMathMultiply_MultiplyNumStrOutputToArray_01(t *testing.T) {
 		"12",
 	}
 
-	expectedNumSeps := NumericSeparatorDto{}.New()
+	expectedNumSeps := new(NumericSeparatorDto).New()
 
 	result, err :=
 		BigIntMathMultiply{}.MultiplyNumStrOutputToArray(multiplierStr, multiplicandStrs, expectedNumSeps)
@@ -1688,7 +1687,7 @@ func TestBigIntMathMultiply_MultiplyNumStrOutputToArray_02(t *testing.T) {
 		"-39.168",
 	}
 
-	expectedNumSeps := NumericSeparatorDto{}.New()
+	expectedNumSeps := new(NumericSeparatorDto).New()
 
 	result, err :=
 		BigIntMathMultiply{}.MultiplyNumStrOutputToArray(multiplierStr, multiplicandStrs, expectedNumSeps)
@@ -1738,7 +1737,7 @@ func TestBigIntMathMultiply_MultiplyNumStrOutputToArray_03(t *testing.T) {
 		"152.7552",
 	}
 
-	expectedNumSeps := NumericSeparatorDto{}.New()
+	expectedNumSeps := new(NumericSeparatorDto).New()
 
 	result, err :=
 		BigIntMathMultiply{}.MultiplyNumStrOutputToArray(multiplierStr, multiplicandStrs, expectedNumSeps)
