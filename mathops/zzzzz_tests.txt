@@ -1,0 +1,1 @@
+FAIL	github.com/mikeaustin71/mathops [build failed]

@@ -22,7 +22,8 @@ func TestBigIntMathAdd_AddNumStr_01(t *testing.T) {
 			"big.NewInt(0).SetString(expectedResultStr, 10)")
 	}
 
-	expectedNumSeps := NumericSeparatorDto{}.New()
+	dto := &NumericSeparatorDto{}
+	expectedNumSeps := dto.New()
 
 	result, err := BigIntMathAdd{}.AddNumStr(n1Str, n2Str, expectedNumSeps)
 
@@ -79,7 +80,8 @@ func TestBigIntMathAdd_AddNumStr_02(t *testing.T) {
 			"big.NewInt(0).SetString(expectedResultStr, 10)")
 	}
 
-	expectedNumSeps := NumericSeparatorDto{}.New()
+	dto := &NumericSeparatorDto{}
+	expectedNumSeps := dto.New()
 
 	result, err := BigIntMathAdd{}.AddNumStr(n1Str, n2Str, expectedNumSeps)
 
@@ -137,7 +139,8 @@ func TestBigIntMathAdd_AddNumStr_03(t *testing.T) {
 			"big.NewInt(0).SetString(expectedResultStr, 10)")
 	}
 
-	expectedNumSeps := NumericSeparatorDto{}.New()
+	dto := &NumericSeparatorDto{}
+	expectedNumSeps := dto.New()
 
 	result, err := BigIntMathAdd{}.AddNumStr(n1Str, n2Str, expectedNumSeps)
 
@@ -363,7 +366,8 @@ func TestBigIntMathAdd_AddNumStrOutputToArray_01(t *testing.T) {
 
 	lenArray := len(numStrsArray)
 
-	expectedNumSeps := NumericSeparatorDto{}.New()
+	dto := &NumericSeparatorDto{}
+	expectedNumSeps := dto.New()
 
 	resultArray, err := BigIntMathAdd{}.AddNumStrOutputToArray(addendStr, numStrsArray, expectedNumSeps)
 
@@ -519,7 +523,8 @@ func TestBigIntMathAdd_AddNumStrArray_01(t *testing.T) {
 
 	expectedResultNumStr := expectedBNum.GetNumStr()
 
-	expectedNumSeps := NumericSeparatorDto{}.New()
+	dto := &NumericSeparatorDto{}
+	expectedNumSeps := dto.New()
 
 	total, err := BigIntMathAdd{}.AddNumStrArray(numStrAry, expectedNumSeps)
 
