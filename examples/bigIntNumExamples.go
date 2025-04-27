@@ -204,7 +204,7 @@ func ExampleBundleCount_03(target, nthRoot *big.Int) (bundleCnt *big.Int, err er
 		err = fmt.Errorf(ePrefix+
 			"Error returned by BigIntMath{}.GetMagnitudeDigits(target). "+
 			"target='%v' Error='%v' ",
-			target.Text(10), err.Error())
+			target.Text(10), errx.Error())
 		return bundleCnt, err
 	}
 
@@ -237,7 +237,7 @@ func ExampleBundleCount_02(target, nthRoot *big.Int) (newTarget *big.Int, err er
 		err = fmt.Errorf(ePrefix+
 			"Error returned by BigIntMath{}.GetMagnitudeDigits(target). "+
 			"target='%v' Error='%v' ",
-			target.Text(10), err.Error())
+			target.Text(10), errx.Error())
 		return newTarget, err
 	}
 
