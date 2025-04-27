@@ -12,7 +12,7 @@ func TestDecimal_Pow_01(t *testing.T) {
 	expectedNumStr := "24.683528241199594112131040124684"
 	maxPrecision := uint(30)
 
-	expectedNumSeps := NumericSeparatorDto{}.New()
+	expectedNumSeps := new(NumericSeparatorDto).New()
 
 	decBase, err := Decimal{}.NewNumStr(baseStr)
 
@@ -60,7 +60,7 @@ func TestDecimal_Pow_02(t *testing.T) {
 	expectedNumStr := "646.70558582734148834284281249154"
 	maxPrecision := uint(29)
 
-	expectedNumSeps := NumericSeparatorDto{}.New()
+	expectedNumSeps := new(NumericSeparatorDto).New()
 
 	decBase, err := Decimal{}.NewNumStr(baseStr)
 
@@ -108,7 +108,7 @@ func TestDecimal_Pow_03(t *testing.T) {
 	expectedNumStr := "0.00154629868972089198924071380209"
 	maxPrecision := uint(32)
 
-	expectedNumSeps := NumericSeparatorDto{}.New()
+	expectedNumSeps := new(NumericSeparatorDto).New()
 
 	decBase, err := Decimal{}.NewNumStr(baseStr)
 
@@ -156,7 +156,7 @@ func TestDecimal_Pow_04(t *testing.T) {
 	expectedNumStr := "68719476736"
 	maxPrecision := uint(1)
 
-	expectedNumSeps := NumericSeparatorDto{}.New()
+	expectedNumSeps := new(NumericSeparatorDto).New()
 
 	decBase, err := Decimal{}.NewNumStr(baseStr)
 
@@ -204,7 +204,7 @@ func TestDecimal_Pow_05(t *testing.T) {
 	expectedNumStr := "1"
 	maxPrecision := uint(1)
 
-	expectedNumSeps := NumericSeparatorDto{}.New()
+	expectedNumSeps := new(NumericSeparatorDto).New()
 
 	decBase, err := Decimal{}.NewNumStr(baseStr)
 
@@ -252,7 +252,7 @@ func TestDecimal_Pow_06(t *testing.T) {
 	expectedNumStr := "0"
 	maxPrecision := uint(1)
 
-	expectedNumSeps := NumericSeparatorDto{}.New()
+	expectedNumSeps := new(NumericSeparatorDto).New()
 
 	decBase, err := Decimal{}.NewNumStr(baseStr)
 
@@ -383,7 +383,12 @@ func TestDecimal_SetPrecisionRound_01(t *testing.T) {
 		t.Errorf("Expected NumStr= '%v'. Instead, got %v.", str1, d1.GetNumStr())
 	}
 
-	d1.SetPrecisionRound(precision)
+	err = d1.SetPrecisionRound(precision)
+
+	if err != nil {
+		t.Errorf("Received error from d1.SetPrecisionRound(). "+
+			"precision='%v' Error='%v' ", precision, err.Error())
+	}
 
 	if expected != d1.GetNumStr() {
 		t.Errorf("Expected 2nd NumStr= '%v'. Instead, got %v.", expected, d1.GetNumStr())
@@ -406,7 +411,12 @@ func TestDecimal_SetPrecisionRound_02(t *testing.T) {
 		t.Errorf("Expected NumStr= '%v'. Instead, got %v.", str1, d1.GetNumStr())
 	}
 
-	d1.SetPrecisionRound(4)
+	err = d1.SetPrecisionRound(4)
+
+	if err != nil {
+		t.Errorf("Received error from d1.SetPrecisionRound(). "+
+			"precision='%v' Error='%v' ", 4, err.Error())
+	}
 
 	expected := "-2.0106"
 
@@ -430,7 +440,12 @@ func TestDecimal_SetPrecisionTrunc_01(t *testing.T) {
 		t.Errorf("Expected NumStr= '%v'. Instead, got %v.", str1, d1.GetNumStr())
 	}
 
-	d1.SetPrecisionTrunc(4)
+	err = d1.SetPrecisionTrunc(4)
+
+	if err != nil {
+		t.Errorf("Received error from d1.SetPrecisionTrunc(). "+
+			"precision='%v' Error='%v' ", 4, err.Error())
+	}
 
 	expected := "2.0105"
 
@@ -454,7 +469,12 @@ func TestDecimal_SetPrecisionTrunc_02(t *testing.T) {
 		t.Errorf("Expected NumStr= '%v'. Instead, got %v.", str1, d1.GetNumStr())
 	}
 
-	d1.SetPrecisionTrunc(4)
+	err = d1.SetPrecisionTrunc(4)
+
+	if err != nil {
+		t.Errorf("Received error from d1.SetPrecisionTrunc(). "+
+			"precision='%v' Error='%v' ", 4, err.Error())
+	}
 
 	expected := "-2.0105"
 
@@ -471,7 +491,12 @@ func TestDecimal_SetNumStr_01(t *testing.T) {
 	eSignVal := 1
 	d1 := Decimal{}.New()
 
-	d1.SetNumStr(nStr1)
+	err := d1.SetNumStr(nStr1)
+
+	if err != nil {
+		t.Errorf("Received error from d1.SetNumStr(). "+
+			"precision='%v' Error='%v' ", ePrecision, err.Error())
+	}
 
 	if nStr1 != d1.GetNumStr() {
 		t.Errorf("Expected NumStr = '%v'. Instead got NumStr= '%v'", nStr1, d1.GetNumStr())
@@ -499,7 +524,12 @@ func TestDecimal_SetNumStr_02(t *testing.T) {
 	eSignVal := -1
 	d1 := Decimal{}.New()
 
-	d1.SetNumStr(nStr1)
+	err := d1.SetNumStr(nStr1)
+
+	if err != nil {
+		t.Errorf("Received error from d1.SetNumStr(). "+
+			"precision='%v' Error='%v' ", ePrecision, err.Error())
+	}
 
 	if nStr1 != d1.GetNumStr() {
 		t.Errorf("Expected NumStr = '%v'. Instead got NumStr= '%v'", nStr1, d1.GetNumStr())
@@ -527,7 +557,12 @@ func TestDecimal_SetNumStr_03(t *testing.T) {
 	eSignVal := 1
 	d1 := Decimal{}.New()
 
-	d1.SetNumStr(nStr1)
+	err := d1.SetNumStr(nStr1)
+
+	if err != nil {
+		t.Errorf("Received error from d1.SetNumStr(). "+
+			"precision='%v' Error='%v' ", ePrecision, err.Error())
+	}
 
 	if nStr1 != d1.GetNumStr() {
 		t.Errorf("Expected NumStr = '%v'. Instead got NumStr= '%v'", nStr1, d1.GetNumStr())
@@ -556,7 +591,12 @@ func TestDecimal_SetNumStr_04(t *testing.T) {
 	eSignVal := 1
 	d1 := Decimal{}.New()
 
-	d1.SetNumStr(nStr1)
+	err := d1.SetNumStr(nStr1)
+
+	if err != nil {
+		t.Errorf("Received error from d1.SetNumStr(). "+
+			"precision='%v' Error='%v' ", ePrecision, err.Error())
+	}
 
 	if eNumStr1 != d1.GetNumStr() {
 		t.Errorf("Expected NumStr = '%v'. Instead got NumStr= '%v'", eNumStr1, d1.GetNumStr())
@@ -585,7 +625,12 @@ func TestDecimal_SetNumStr_05(t *testing.T) {
 	eSignVal := 1
 	d1 := Decimal{}.New()
 
-	d1.SetNumStr(nStr1)
+	err := d1.SetNumStr(nStr1)
+
+	if err != nil {
+		t.Errorf("Received error from d1.SetNumStr(). "+
+			"precision='%v' Error='%v' ", ePrecision, err.Error())
+	}
 
 	if eNumStr1 != d1.GetNumStr() {
 		t.Errorf("Expected NumStr = '%v'. Instead got NumStr= '%v'", eNumStr1, d1.GetNumStr())
@@ -773,7 +818,12 @@ func TestDecimal_SetFloat_01(t *testing.T) {
 		t.Errorf("Received error from d1.SetFloat32(fVal). fVal= '%v' Error= %v ", fVal, err)
 	}
 
-	d1.SetPrecisionRound(ePrecision)
+	err = d1.SetPrecisionRound(ePrecision)
+
+	if err != nil {
+		t.Errorf("Error returned by d1.SetPrecisionRound(ePrecision).\n"+
+			"ePrecision='%v' Error='%v' ", ePrecision, err.Error())
+	}
 
 	if eNumStr1 != d1.GetNumStr() {
 		t.Errorf("Expected NumStr = '%v'. Instead got NumStr= '%v'", eNumStr1, d1.GetNumStr())
@@ -808,7 +858,12 @@ func TestDecimal_SetFloat_02(t *testing.T) {
 		t.Errorf("Received error from d1.SetFloat32(fVal). fVal= '%v' Error= %v ", fVal, err)
 	}
 
-	d1.SetPrecisionRound(ePrecision)
+	err = d1.SetPrecisionRound(ePrecision)
+
+	if err != nil {
+		t.Errorf("Error returned by d1.SetPrecisionRound(ePrecision).\n"+
+			"ePrecision='%v' Error='%v' ", ePrecision, err.Error())
+	}
 
 	if eNumStr1 != d1.GetNumStr() {
 		t.Errorf("Expected NumStr = '%v'. Instead got NumStr= '%v'", eNumStr1, d1.GetNumStr())
@@ -831,7 +886,7 @@ func TestDecimal_SetFloat_02(t *testing.T) {
 
 func TestDecimal_SetFloat64_01(t *testing.T) {
 
-	fVal := float64(92.256)
+	var fVal = 92.256
 	eNumStr1 := "92.256"
 	ePrecision := uint(3)
 	eSignVal := 1
@@ -843,7 +898,12 @@ func TestDecimal_SetFloat64_01(t *testing.T) {
 		t.Errorf("Received error from d1.SetFloat64(fVal). fVal= '%v' Error= %v ", fVal, err)
 	}
 
-	d1.SetPrecisionRound(ePrecision)
+	err = d1.SetPrecisionRound(ePrecision)
+
+	if err != nil {
+		t.Errorf("Error returned by d1.SetPrecisionRound(ePrecision).\n"+
+			"ePrecision='%v' Error='%v' ", ePrecision, err.Error())
+	}
 
 	if eNumStr1 != d1.GetNumStr() {
 		t.Errorf("Expected NumStr = '%v'. Instead got NumStr= '%v'", eNumStr1, d1.GetNumStr())
@@ -866,7 +926,7 @@ func TestDecimal_SetFloat64_01(t *testing.T) {
 
 func TestDecimal_SetFloat64_02(t *testing.T) {
 
-	fVal := float64(-92.25)
+	fVal := -92.25
 	eNumStr1 := "-92.25"
 	ePrecision := uint(2)
 	eSignVal := -1
@@ -878,7 +938,12 @@ func TestDecimal_SetFloat64_02(t *testing.T) {
 		t.Errorf("Received error from d1.SetFloat64(fVal). fVal= '%v' Error= %v ", fVal, err)
 	}
 
-	d1.SetPrecisionRound(ePrecision)
+	err = d1.SetPrecisionRound(ePrecision)
+
+	if err != nil {
+		t.Errorf("Error returned by d1.SetPrecisionRound(ePrecision).\n"+
+			"ePrecision='%v' Error='%v' ", ePrecision, err.Error())
+	}
 
 	if eNumStr1 != d1.GetNumStr() {
 		t.Errorf("Expected NumStr = '%v'. Instead got NumStr= '%v'", eNumStr1, d1.GetNumStr())
@@ -916,7 +981,12 @@ func TestDecimal_SetFloatBig_01(t *testing.T) {
 		t.Errorf("d1.SetFloatBig(fVal) returned an error. fVal= '%v' Error= %v", eNumStr1, err)
 	}
 
-	d1.SetPrecisionRound(ePrecision)
+	err = d1.SetPrecisionRound(ePrecision)
+
+	if err != nil {
+		t.Errorf("d1.SetPrecisionRound(ePrecision).\n"+
+			"ePrecision='%v' Error='%v' ", ePrecision, err.Error())
+	}
 
 	if eNumStr1 != d1.GetNumStr() {
 		t.Errorf("Expected NumStr = '%v'. Instead got NumStr= '%v'", eNumStr1, d1.GetNumStr())
@@ -955,7 +1025,12 @@ func TestDecimal_SetFloatBig_02(t *testing.T) {
 		t.Errorf("d1.SetFloatBig(fVal) returned an error. fVal= '%v' Error= %v", eNumStr1, err)
 	}
 
-	d1.SetPrecisionRound(2)
+	err = d1.SetPrecisionRound(2)
+
+	if err != nil {
+		t.Errorf("d1.SetPrecisionRound(2).\n"+
+			"ePrecision='%v' Error='%v' ", ePrecision, err.Error())
+	}
 
 	if eNumStr1 != d1.GetNumStr() {
 		t.Errorf("Expected NumStr = '%v'. Instead got NumStr= '%v'", eNumStr1, d1.GetNumStr())

@@ -560,7 +560,7 @@ func TestIntAry_AddFloat32ToThis_01(t *testing.T) {
 	ia1, _ := IntAry{}.NewNumStr("1.00")
 
 	num := float32(50.00)
-	precision := int(2)
+	precision := 2
 	outPrecision := 2
 
 	err := ia1.AddFloat32ToThis(num, precision)
@@ -587,7 +587,7 @@ func TestIntAry_AddFloat32ToThis_02(t *testing.T) {
 	ia1, _ := IntAry{}.NewNumStr("1.25")
 
 	num := float32(50.50)
-	precision := int(2)
+	precision := 2
 	outPrecision := 2
 
 	err := ia1.AddFloat32ToThis(num, precision)
@@ -614,7 +614,7 @@ func TestIntAry_AddFloat32ToThis_03(t *testing.T) {
 	ia1, _ := IntAry{}.NewNumStr("-1.25")
 
 	num := float32(50.50)
-	precision := int(2)
+	precision := 2
 	outPrecision := 2
 
 	err := ia1.AddFloat32ToThis(num, precision)
@@ -641,7 +641,7 @@ func TestIntAry_AddFloat32ToThis_04(t *testing.T) {
 	ia1, _ := IntAry{}.NewNumStr("-5.25787")
 
 	num := float32(-60.324)
-	precision := int(3)
+	precision := 3
 	outPrecision := 5
 
 	err := ia1.AddFloat32ToThis(num, precision)
@@ -668,7 +668,7 @@ func TestIntAry_AddFloat32ToThis_05(t *testing.T) {
 	ia1, _ := IntAry{}.NewNumStr("5.25787")
 
 	num := float32(-34.324)
-	precision := int(3)
+	precision := 3
 	outPrecision := 5
 
 	err := ia1.AddFloat32ToThis(num, precision)
@@ -695,7 +695,7 @@ func TestIntAry_AddFloat32ToThis_06(t *testing.T) {
 	ia1, _ := IntAry{}.NewNumStr("1245.25787")
 
 	num := float32(350.324)
-	precision := int(3)
+	precision := 3
 	outPrecision := 5
 
 	err := ia1.AddFloat32ToThis(num, precision)
@@ -722,7 +722,7 @@ func TestIntAry_AddFloat32ToThis_07(t *testing.T) {
 	ia1, _ := IntAry{}.NewNumStr("1245.25")
 
 	num := float32(84350.320000000)
-	precision := int(-1)
+	precision := -1
 	outPrecision := 2
 
 	err := ia1.AddFloat32ToThis(num, precision)
@@ -749,7 +749,7 @@ func TestIntAry_AddFloat32ToThis_08(t *testing.T) {
 	ia1, _ := IntAry{}.NewNumStr("1245.25")
 
 	num := float32(84350.325)
-	precision := int(2)
+	precision := 2
 	outPrecision := 2
 
 	err := ia1.AddFloat32ToThis(num, precision)
@@ -776,7 +776,7 @@ func TestIntAry_AddFloat32ToThis_09(t *testing.T) {
 	ia1, _ := IntAry{}.NewNumStr("0")
 
 	num := float32(0.000)
-	precision := int(0)
+	precision := 0
 	outPrecision := 0
 
 	err := ia1.AddFloat32ToThis(num, precision)
@@ -803,7 +803,7 @@ func TestIntAry_AddFloat32ToThis_10(t *testing.T) {
 	ia1, _ := IntAry{}.NewNumStr("0.00")
 
 	num := float32(0.000)
-	precision := int(2)
+	precision := 2
 	outPrecision := 2
 
 	err := ia1.AddFloat32ToThis(num, precision)
@@ -830,7 +830,7 @@ func TestIntAry_AddFloat32ToThis_11(t *testing.T) {
 	ia1, _ := IntAry{}.NewNumStr("1.25")
 
 	num := float32(50.545)
-	precision := int(2)
+	precision := 2
 	outPrecision := 2
 
 	err := ia1.AddFloat32ToThis(num, precision)
@@ -855,8 +855,8 @@ func TestIntAry_AddFloat32ToThis_11(t *testing.T) {
 func TestIntAry_AddFloat64ToThis_01(t *testing.T) {
 	ia1, _ := IntAry{}.NewNumStr("1.00")
 
-	num := float64(50.00)
-	precision := int(2)
+	num := 50.00
+	precision := 2
 	outPrecision := 2
 
 	err := ia1.AddFloat64ToThis(num, precision)
@@ -882,8 +882,8 @@ func TestIntAry_AddFloat64ToThis_02(t *testing.T) {
 
 	ia1, _ := IntAry{}.NewNumStr("1.25")
 
-	num := float64(50.50)
-	precision := int(2)
+	num := 50.50
+	precision := 2
 	outPrecision := 2
 
 	err := ia1.AddFloat64ToThis(num, precision)
@@ -909,8 +909,8 @@ func TestIntAry_AddFloat64ToThis_03(t *testing.T) {
 
 	ia1, _ := IntAry{}.NewNumStr("-1.25")
 
-	num := float64(50.50)
-	precision := int(2)
+	num := 50.50
+	precision := 2
 	outPrecision := 2
 
 	err := ia1.AddFloat64ToThis(num, precision)
@@ -936,8 +936,8 @@ func TestIntAry_AddFloat64ToThis_04(t *testing.T) {
 
 	ia1, _ := IntAry{}.NewNumStr("-5.25787")
 
-	num := float64(-60.324)
-	precision := int(3)
+	num := -60.324
+	precision := 3
 	outPrecision := 5
 
 	err := ia1.AddFloat64ToThis(num, precision)
@@ -963,8 +963,8 @@ func TestIntAry_AddFloat64ToThis_05(t *testing.T) {
 
 	ia1, _ := IntAry{}.NewNumStr("5.25787")
 
-	num := float64(-34.324)
-	precision := int(3)
+	num := -34.324
+	precision := 3
 	outPrecision := 5
 
 	err := ia1.AddFloat64ToThis(num, precision)
@@ -990,8 +990,8 @@ func TestIntAry_AddFloat64ToThis_06(t *testing.T) {
 
 	ia1, _ := IntAry{}.NewNumStr("1245.25787")
 
-	num := float64(350.324)
-	precision := int(3)
+	num := 350.324
+	precision := 3
 	outPrecision := 5
 
 	err := ia1.AddFloat64ToThis(num, precision)
@@ -1017,8 +1017,8 @@ func TestIntAry_AddFloat64ToThis_07(t *testing.T) {
 
 	ia1, _ := IntAry{}.NewNumStr("1245.25")
 
-	num := float64(84350.320000000)
-	precision := int(-1)
+	num := 84350.320000000
+	precision := -1
 	outPrecision := 2
 
 	err := ia1.AddFloat64ToThis(num, precision)
@@ -1044,8 +1044,8 @@ func TestIntAry_AddFloat64ToThis_08(t *testing.T) {
 
 	ia1, _ := IntAry{}.NewNumStr("1245.25")
 
-	num := float64(84350.325)
-	precision := int(2)
+	num := 84350.325
+	precision := 2
 	outPrecision := 2
 
 	err := ia1.AddFloat64ToThis(num, precision)
@@ -1071,8 +1071,8 @@ func TestIntAry_AddFloat64ToThis_09(t *testing.T) {
 
 	ia1, _ := IntAry{}.NewNumStr("0")
 
-	num := float64(0.000)
-	precision := int(0)
+	num := 0.000
+	precision := 0
 	outPrecision := 0
 
 	err := ia1.AddFloat64ToThis(num, precision)
@@ -1098,8 +1098,8 @@ func TestIntAry_AddFloat64ToThis_10(t *testing.T) {
 
 	ia1, _ := IntAry{}.NewNumStr("0.00")
 
-	num := float64(0.000)
-	precision := int(2)
+	num := 0.000
+	precision := 2
 	outPrecision := 2
 
 	err := ia1.AddFloat64ToThis(num, precision)
@@ -1125,7 +1125,7 @@ func TestIntAry_AddFloatBigToThis_01(t *testing.T) {
 	ia1, _ := IntAry{}.NewNumStr("1.00")
 
 	num := big.NewFloat(50.00)
-	precision := int(2)
+	precision := 2
 	outPrecision := 2
 
 	err := ia1.AddFloatBigToThis(num, precision)
@@ -1152,7 +1152,7 @@ func TestIntAry_AddFloatBigToThis_02(t *testing.T) {
 	ia1, _ := IntAry{}.NewNumStr("1.25")
 
 	num := big.NewFloat(50.50)
-	precision := int(2)
+	precision := 2
 	outPrecision := 2
 
 	err := ia1.AddFloatBigToThis(num, precision)
@@ -1179,7 +1179,7 @@ func TestIntAry_AddFloatBigToThis_03(t *testing.T) {
 	ia1, _ := IntAry{}.NewNumStr("-1.25")
 
 	num := big.NewFloat(50.50)
-	precision := int(2)
+	precision := 2
 	outPrecision := 2
 
 	err := ia1.AddFloatBigToThis(num, precision)
@@ -1206,7 +1206,7 @@ func TestIntAry_AddFloatBigToThis_04(t *testing.T) {
 	ia1, _ := IntAry{}.NewNumStr("-5.25787")
 
 	num := big.NewFloat(-60.324)
-	precision := int(3)
+	precision := 3
 	outPrecision := 5
 
 	err := ia1.AddFloatBigToThis(num, precision)
@@ -1233,7 +1233,7 @@ func TestIntAry_AddFloatBigToThis_05(t *testing.T) {
 	ia1, _ := IntAry{}.NewNumStr("5.25787")
 
 	num := big.NewFloat(-34.324)
-	precision := int(3)
+	precision := 3
 	outPrecision := 5
 
 	err := ia1.AddFloatBigToThis(num, precision)
@@ -1260,7 +1260,7 @@ func TestIntAry_AddFloatBigToThis_06(t *testing.T) {
 	ia1, _ := IntAry{}.NewNumStr("1245.25787")
 
 	num := big.NewFloat(350.324)
-	precision := int(3)
+	precision := 3
 	outPrecision := 5
 
 	err := ia1.AddFloatBigToThis(num, precision)
@@ -1288,7 +1288,7 @@ func TestIntAry_AddFloatBigToThis_07(t *testing.T) {
 	ia1, _ := IntAry{}.NewNumStr("1245.25")
 
 	num := big.NewFloat(84350.320000000)
-	precision := int(-1)
+	precision := -1
 	outPrecision := 2
 
 	err := ia1.AddFloatBigToThis(num, precision)
@@ -1315,7 +1315,7 @@ func TestIntAry_AddFloatBigToThis_08(t *testing.T) {
 	ia1, _ := IntAry{}.NewNumStr("1245.25")
 
 	num := big.NewFloat(84350.325)
-	precision := int(2)
+	precision := 2
 	outPrecision := 2
 
 	err := ia1.AddFloatBigToThis(num, precision)
@@ -1342,7 +1342,7 @@ func TestIntAry_AddFloatBigToThis_09(t *testing.T) {
 	ia1, _ := IntAry{}.NewNumStr("0")
 
 	num := big.NewFloat(0.000)
-	precision := int(0)
+	precision := 0
 	outPrecision := 0
 
 	err := ia1.AddFloatBigToThis(num, precision)
@@ -1369,7 +1369,7 @@ func TestIntAry_AddFloatBigToThis_10(t *testing.T) {
 	ia1, _ := IntAry{}.NewNumStr("0.00")
 
 	num := big.NewFloat(0.000)
-	precision := int(2)
+	precision := 2
 	outPrecision := 2
 
 	err := ia1.AddFloatBigToThis(num, precision)
@@ -1397,7 +1397,14 @@ func TestIntAry_Ceiling_01(t *testing.T) {
 	precision := 3
 
 	ia := IntAry{}.New()
-	ia.SetIntAryWithNumStr(nStr1)
+
+	err := ia.SetIntAryWithNumStr(nStr1)
+
+	if err != nil {
+		t.Errorf("Received Error from ia.SetIntAryWithNumStr(nStr1)\n"+
+			"nStr1= '%v'\n Error= %v",
+			nStr1, err.Error())
+	}
 
 	iAry2, err := ia.Ceiling()
 
@@ -1422,7 +1429,14 @@ func TestIntAry_Ceiling_02(t *testing.T) {
 	precision := 1
 
 	ia := IntAry{}.New()
-	ia.SetIntAryWithNumStr(nStr1)
+
+	err := ia.SetIntAryWithNumStr(nStr1)
+
+	if err != nil {
+		t.Errorf("Received Error from ia.SetIntAryWithNumStr(nStr1)\n"+
+			"nStr1= '%v'\n Error= %v",
+			nStr1, err.Error())
+	}
 
 	iAry2, err := ia.Ceiling()
 
@@ -1447,7 +1461,14 @@ func TestIntAry_Ceiling_03(t *testing.T) {
 	precision := 1
 
 	ia := IntAry{}.New()
-	ia.SetIntAryWithNumStr(nStr1)
+
+	err := ia.SetIntAryWithNumStr(nStr1)
+
+	if err != nil {
+		t.Errorf("Received Error from ia.SetIntAryWithNumStr(nStr1)\n"+
+			"nStr1= '%v'\n Error= %v",
+			nStr1, err.Error())
+	}
 
 	iAry2, err := ia.Ceiling()
 
@@ -1471,7 +1492,14 @@ func TestIntAry_Ceiling_04(t *testing.T) {
 	precision := 1
 
 	ia := IntAry{}.New()
-	ia.SetIntAryWithNumStr(nStr1)
+
+	err := ia.SetIntAryWithNumStr(nStr1)
+
+	if err != nil {
+		t.Errorf("Received Error from ia.SetIntAryWithNumStr(nStr1)\n"+
+			"nStr1= '%v'\n Error= %v",
+			nStr1, err.Error())
+	}
 
 	iAry2, err := ia.Ceiling()
 
@@ -1496,7 +1524,14 @@ func TestIntAry_Ceiling_05(t *testing.T) {
 	precision := 1
 
 	ia := IntAry{}.New()
-	ia.SetIntAryWithNumStr(nStr1)
+
+	err := ia.SetIntAryWithNumStr(nStr1)
+
+	if err != nil {
+		t.Errorf("Received Error from ia.SetIntAryWithNumStr(nStr1)\n"+
+			"nStr1= '%v'\n Error= %v",
+			nStr1, err.Error())
+	}
 
 	iAry2, err := ia.Ceiling()
 
@@ -1521,7 +1556,14 @@ func TestIntAry_Ceiling_06(t *testing.T) {
 	precision := 1
 
 	ia := IntAry{}.New()
-	ia.SetIntAryWithNumStr(nStr1)
+
+	err := ia.SetIntAryWithNumStr(nStr1)
+
+	if err != nil {
+		t.Errorf("Received Error from ia.SetIntAryWithNumStr(nStr1)\n"+
+			"nStr1= '%v'\n Error= %v",
+			nStr1, err.Error())
+	}
 
 	iAry2, err := ia.Ceiling()
 
@@ -1546,7 +1588,14 @@ func TestIntAry_Ceiling_07(t *testing.T) {
 	precision := 0
 
 	ia := IntAry{}.New()
-	ia.SetIntAryWithNumStr(nStr1)
+
+	err := ia.SetIntAryWithNumStr(nStr1)
+
+	if err != nil {
+		t.Errorf("Received Error from ia.SetIntAryWithNumStr(nStr1)\n"+
+			"nStr1= '%v'\n Error= %v",
+			nStr1, err.Error())
+	}
 
 	iAry2, err := ia.Ceiling()
 
@@ -1571,7 +1620,14 @@ func TestIntAry_Ceiling_08(t *testing.T) {
 	precision := 2
 
 	ia := IntAry{}.New()
-	ia.SetIntAryWithNumStr(nStr1)
+
+	err := ia.SetIntAryWithNumStr(nStr1)
+
+	if err != nil {
+		t.Errorf("Received Error from ia.SetIntAryWithNumStr(nStr1)\n"+
+			"nStr1= '%v'\n Error= %v",
+			nStr1, err.Error())
+	}
 
 	iAry2, err := ia.Ceiling()
 
@@ -1596,7 +1652,14 @@ func TestIntAry_Ceiling_09(t *testing.T) {
 	precision := 2
 
 	ia := IntAry{}.New()
-	ia.SetIntAryWithNumStr(nStr1)
+
+	err := ia.SetIntAryWithNumStr(nStr1)
+
+	if err != nil {
+		t.Errorf("Received Error from ia.SetIntAryWithNumStr(nStr1)\n"+
+			"nStr1= '%v'\n Error= %v",
+			nStr1, err.Error())
+	}
 
 	iAry2, err := ia.Ceiling()
 
@@ -1621,7 +1684,14 @@ func TestIntAry_Ceiling_10(t *testing.T) {
 	precision := 2
 
 	ia := IntAry{}.New()
-	ia.SetIntAryWithNumStr(nStr1)
+
+	err := ia.SetIntAryWithNumStr(nStr1)
+
+	if err != nil {
+		t.Errorf("Received Error from ia.SetIntAryWithNumStr(nStr1)\n"+
+			"nStr1= '%v'\n Error= %v",
+			nStr1, err.Error())
+	}
 
 	iAry2, err := ia.Ceiling()
 
@@ -1646,7 +1716,14 @@ func TestIntAry_Ceiling_11(t *testing.T) {
 	precision := 0
 
 	ia := IntAry{}.New()
-	ia.SetIntAryWithNumStr(nStr1)
+
+	err := ia.SetIntAryWithNumStr(nStr1)
+
+	if err != nil {
+		t.Errorf("Received Error from ia.SetIntAryWithNumStr(nStr1)\n"+
+			"nStr1= '%v'\n Error= %v",
+			nStr1, err.Error())
+	}
 
 	iAry2, err := ia.Ceiling()
 
@@ -1769,7 +1846,14 @@ func TestIntAry_Equals_01(t *testing.T) {
 	nStr1 := "000549721.32178000"
 
 	ia := IntAry{}.New()
-	ia.SetIntAryWithNumStr(nStr1)
+
+	err := ia.SetIntAryWithNumStr(nStr1)
+
+	if err != nil {
+		t.Errorf("Received Error from ia.SetIntAryWithNumStr(nStr1)\n"+
+			"nStr1= '%v'\n Error= %v",
+			nStr1, err.Error())
+	}
 
 	ia2 := IntAry{}.New()
 	ia2.CopyIn(&ia, false)
@@ -1784,7 +1868,14 @@ func TestIntAry_Equals_02(t *testing.T) {
 	nStr1 := "-000549721.32178000"
 
 	ia := IntAry{}.New()
-	ia.SetIntAryWithNumStr(nStr1)
+	err := ia.SetIntAryWithNumStr(nStr1)
+
+	if err != nil {
+		t.Errorf("Received Error from ia.SetIntAryWithNumStr(nStr1)\n"+
+			"nStr1= '%v'\n Error= %v",
+			nStr1, err.Error())
+	}
+
 	ia.CopyToBackUp()
 
 	ia2 := IntAry{}.New()
@@ -1804,13 +1895,26 @@ func TestIntAry_Equals_03(t *testing.T) {
 	nStr1 := "-000549721.32178000"
 
 	ia := IntAry{}.New()
-	ia.SetIntAryWithNumStr(nStr1)
+	err := ia.SetIntAryWithNumStr(nStr1)
+	if err != nil {
+		t.Errorf("Received Error from ia.SetIntAryWithNumStr(nStr1)\n"+
+			"nStr1= '%v'\n Error= %v",
+			nStr1, err.Error())
+	}
+
 	ia.CopyToBackUp()
 
 	ia2 := IntAry{}.New()
+
 	ia2.CopyIn(&ia, true)
 
-	ia2.SetSign(1)
+	err = ia2.SetSign(1)
+
+	if err != nil {
+		t.Errorf("Received Error from ia.SetSign(1)\n"+
+			"nStr1= '%v'\n Error= %v",
+			nStr1, err.Error())
+	}
 
 	if ia.Equals(&ia2) {
 		t.Error("Error: ia EQUALS ia2!")
@@ -1822,7 +1926,14 @@ func TestIntAry_Equals_04(t *testing.T) {
 	nStr1 := "-000549721.32178000"
 
 	ia := IntAry{}.New()
-	ia.SetIntAryWithNumStr(nStr1)
+	err := ia.SetIntAryWithNumStr(nStr1)
+
+	if err != nil {
+		t.Errorf("Received Error from ia.SetIntAryWithNumStr(nStr1)\n"+
+			"nStr1= '%v'\n Error= %v",
+			nStr1, err.Error())
+	}
+
 	ia.CopyToBackUp()
 
 	ia2 := IntAry{}.New()
@@ -1846,7 +1957,14 @@ func TestIntAry_Floor_01(t *testing.T) {
 	precision := 3
 
 	ia := IntAry{}.New()
-	ia.SetIntAryWithNumStr(nStr1)
+
+	err := ia.SetIntAryWithNumStr(nStr1)
+
+	if err != nil {
+		t.Errorf("Received Error from ia.SetIntAryWithNumStr(nStr1)\n"+
+			"nStr1= '%v'\n Error= %v",
+			nStr1, err.Error())
+	}
 
 	iAry2, err := ia.Floor()
 
@@ -1871,7 +1989,14 @@ func TestIntAry_Floor_02(t *testing.T) {
 	precision := 3
 
 	ia := IntAry{}.New()
-	ia.SetIntAryWithNumStr(nStr1)
+
+	err := ia.SetIntAryWithNumStr(nStr1)
+
+	if err != nil {
+		t.Errorf("Received Error from ia.SetIntAryWithNumStr(nStr1)\n"+
+			"nStr1= '%v'\n Error= %v",
+			nStr1, err.Error())
+	}
 
 	iAry2, err := ia.Floor()
 
@@ -1896,7 +2021,14 @@ func TestIntAry_Floor_03(t *testing.T) {
 	precision := 3
 
 	ia := IntAry{}.New()
-	ia.SetIntAryWithNumStr(nStr1)
+
+	err := ia.SetIntAryWithNumStr(nStr1)
+
+	if err != nil {
+		t.Errorf("Received Error from ia.SetIntAryWithNumStr(nStr1)\n"+
+			"nStr1= '%v'\n Error= %v",
+			nStr1, err.Error())
+	}
 
 	iAry2, err := ia.Floor()
 
@@ -1921,7 +2053,14 @@ func TestIntAry_Floor_04(t *testing.T) {
 	precision := 1
 
 	ia := IntAry{}.New()
-	ia.SetIntAryWithNumStr(nStr1)
+
+	err := ia.SetIntAryWithNumStr(nStr1)
+
+	if err != nil {
+		t.Errorf("Received Error from ia.SetIntAryWithNumStr(nStr1)\n"+
+			"nStr1= '%v'\n Error= %v",
+			nStr1, err.Error())
+	}
 
 	iAry2, err := ia.Floor()
 
@@ -1946,7 +2085,14 @@ func TestIntAry_Floor_05(t *testing.T) {
 	precision := 1
 
 	ia := IntAry{}.New()
-	ia.SetIntAryWithNumStr(nStr1)
+
+	err := ia.SetIntAryWithNumStr(nStr1)
+
+	if err != nil {
+		t.Errorf("Received Error from ia.SetIntAryWithNumStr(nStr1)\n"+
+			"nStr1= '%v'\n Error= %v",
+			nStr1, err.Error())
+	}
 
 	iAry2, err := ia.Floor()
 
@@ -1971,7 +2117,14 @@ func TestIntAry_Floor_06(t *testing.T) {
 	precision := 0
 
 	ia := IntAry{}.New()
-	ia.SetIntAryWithNumStr(nStr1)
+
+	err := ia.SetIntAryWithNumStr(nStr1)
+
+	if err != nil {
+		t.Errorf("Received Error from ia.SetIntAryWithNumStr(nStr1)\n"+
+			"nStr1= '%v'\n Error= %v",
+			nStr1, err.Error())
+	}
 
 	iAry2, err := ia.Floor()
 
@@ -1996,7 +2149,14 @@ func TestIntAry_Floor_07(t *testing.T) {
 	precision := 1
 
 	ia := IntAry{}.New()
-	ia.SetIntAryWithNumStr(nStr1)
+
+	err := ia.SetIntAryWithNumStr(nStr1)
+
+	if err != nil {
+		t.Errorf("Received Error from ia.SetIntAryWithNumStr(nStr1)\n"+
+			"nStr1= '%v'\n Error= %v",
+			nStr1, err.Error())
+	}
 
 	iAry2, err := ia.Floor()
 
@@ -2021,7 +2181,14 @@ func TestIntAry_Floor_08(t *testing.T) {
 	precision := 2
 
 	ia := IntAry{}.New()
-	ia.SetIntAryWithNumStr(nStr1)
+
+	err := ia.SetIntAryWithNumStr(nStr1)
+
+	if err != nil {
+		t.Errorf("Received Error from ia.SetIntAryWithNumStr(nStr1)\n"+
+			"nStr1= '%v'\n Error= %v",
+			nStr1, err.Error())
+	}
 
 	iAry2, err := ia.Floor()
 
@@ -2046,7 +2213,14 @@ func TestIntAry_Floor_09(t *testing.T) {
 	precision := 2
 
 	ia := IntAry{}.New()
-	ia.SetIntAryWithNumStr(nStr1)
+
+	err := ia.SetIntAryWithNumStr(nStr1)
+
+	if err != nil {
+		t.Errorf("Received Error from ia.SetIntAryWithNumStr(nStr1)\n"+
+			"nStr1= '%v'\n Error= %v",
+			nStr1, err.Error())
+	}
 
 	iAry2, err := ia.Floor()
 
@@ -2071,7 +2245,14 @@ func TestIntAry_Floor_10(t *testing.T) {
 	precision := 1
 
 	ia := IntAry{}.New()
-	ia.SetIntAryWithNumStr(nStr1)
+
+	err := ia.SetIntAryWithNumStr(nStr1)
+
+	if err != nil {
+		t.Errorf("Received Error from ia.SetIntAryWithNumStr(nStr1)\n"+
+			"nStr1= '%v'\n Error= %v",
+			nStr1, err.Error())
+	}
 
 	iAry2, err := ia.Floor()
 
@@ -2096,7 +2277,14 @@ func TestIntAry_Floor_11(t *testing.T) {
 	precision := 0
 
 	ia := IntAry{}.New()
-	ia.SetIntAryWithNumStr(nStr1)
+
+	err := ia.SetIntAryWithNumStr(nStr1)
+
+	if err != nil {
+		t.Errorf("Received Error from ia.SetIntAryWithNumStr(nStr1)\n"+
+			"nStr1= '%v'\n Error= %v",
+			nStr1, err.Error())
+	}
 
 	iAry2, err := ia.Floor()
 
@@ -2121,7 +2309,14 @@ func TestIntAry_Floor_12(t *testing.T) {
 	precision := 0
 
 	ia := IntAry{}.New()
-	ia.SetIntAryWithNumStr(nStr1)
+
+	err := ia.SetIntAryWithNumStr(nStr1)
+
+	if err != nil {
+		t.Errorf("Received Error from ia.SetIntAryWithNumStr(nStr1)\n"+
+			"nStr1= '%v'\n Error= %v",
+			nStr1, err.Error())
+	}
 
 	iAry2, err := ia.Floor()
 

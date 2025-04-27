@@ -298,7 +298,7 @@ func TestIntAryMathAdd_RunTotal_01(t *testing.T) {
 
 func TestIntAryMathAdd_RunTotal_02(t *testing.T) {
 
-	expectedNumSeps := NumericSeparatorDto{}.New()
+	expectedNumSeps := new(NumericSeparatorDto).New()
 	totalStr := "0"
 	total, err := IntAry{}.NewNumStrWithNumSeps(totalStr, expectedNumSeps)
 
@@ -520,7 +520,7 @@ func TestIntAryMathAdd_AddManyArray_02(t *testing.T) {
 
 	var err error
 
-	expectedNumSeps := NumericSeparatorDto{}.New()
+	expectedNumSeps := new(NumericSeparatorDto).New()
 
 	totalStr := "0"
 

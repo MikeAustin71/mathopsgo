@@ -9,7 +9,6 @@ func TestBigIntNum_GetActualNumberOfDigits_01(t *testing.T) {
 
 	nStr := "123.456"
 	expectedDigits := 6
-	shouldBeZeroVal := false
 
 	bINum, err := BigIntNum{}.NewNumStr(nStr)
 
@@ -26,9 +25,9 @@ func TestBigIntNum_GetActualNumberOfDigits_01(t *testing.T) {
 			"Error='%v'", err.Error())
 	}
 
-	if shouldBeZeroVal != isZeroVal {
+	if false != isZeroVal {
 		t.Errorf("Error: Expected zero Val flag='%v'. Instead zero Val flag='%v'. ",
-			shouldBeZeroVal, isZeroVal)
+			false, isZeroVal)
 	}
 
 	intNumOfDigits := int(numOfDigits.Int64())
@@ -44,7 +43,6 @@ func TestBigIntNum_GetActualNumberOfDigits_02(t *testing.T) {
 
 	nStr := "0.000"
 	expectedDigits := 1
-	shouldBeZeroVal := true
 
 	bINum, err := BigIntNum{}.NewNumStr(nStr)
 
@@ -61,9 +59,9 @@ func TestBigIntNum_GetActualNumberOfDigits_02(t *testing.T) {
 			"Error='%v'", err.Error())
 	}
 
-	if shouldBeZeroVal != isZeroVal {
+	if true != isZeroVal {
 		t.Errorf("Error: Expected zero Val flag='%v'. Instead zero Val flag='%v'. ",
-			shouldBeZeroVal, isZeroVal)
+			true, isZeroVal)
 	}
 
 	intNumOfDigits := int(numOfDigits.Int64())
@@ -354,6 +352,10 @@ func TestBigIntNum_GetIntAry_01(t *testing.T) {
 	}
 
 	intAry, err := bINum.GetIntAry()
+
+	if err != nil {
+		t.Errorf("Error returned by bINum.GetIntAry(). Error='%v'", err.Error())
+	}
 
 	if expectedStr != intAry.GetNumStr() {
 		t.Errorf("Error: Expected intAry.GetNumStr()='%v'. "+
@@ -780,7 +782,7 @@ func TestBigIntNum_Increment_01(t *testing.T) {
 
 	numStr := "8"
 	expectedNumStr := "9"
-	expectedNumSeps := NumericSeparatorDto{}.New()
+	expectedNumSeps := new(NumericSeparatorDto).New()
 
 	bINum, err := BigIntNum{}.NewNumStrWithNumSeps(numStr, expectedNumSeps)
 
@@ -804,7 +806,7 @@ func TestBigIntNum_Increment_02(t *testing.T) {
 
 	numStr := "8.2"
 	expectedNumStr := "9.2"
-	expectedNumSeps := NumericSeparatorDto{}.New()
+	expectedNumSeps := new(NumericSeparatorDto).New()
 
 	bINum, err := BigIntNum{}.NewNumStrWithNumSeps(numStr, expectedNumSeps)
 
@@ -828,7 +830,7 @@ func TestBigIntNum_Increment_03(t *testing.T) {
 
 	numStr := "-8.2"
 	expectedNumStr := "-7.2"
-	expectedNumSeps := NumericSeparatorDto{}.New()
+	expectedNumSeps := new(NumericSeparatorDto).New()
 
 	bINum, err := BigIntNum{}.NewNumStrWithNumSeps(numStr, expectedNumSeps)
 
@@ -1047,7 +1049,6 @@ func TestBigIntNum_Inverse_10(t *testing.T) {
 func TestBigIntNum_IsEvenNumber_01(t *testing.T) {
 
 	testNumStr := "4"
-	expectedIsEven := true
 	bINum, err := BigIntNum{}.NewNumStr(testNumStr)
 
 	if err != nil {
@@ -1063,9 +1064,9 @@ func TestBigIntNum_IsEvenNumber_01(t *testing.T) {
 
 	}
 
-	if expectedIsEven != isEven {
+	if true != isEven {
 		t.Errorf("Expected TestNumber to be IsEven='%v'. Instead TestNumber IsEven='%v'",
-			expectedIsEven, isEven)
+			true, isEven)
 	}
 
 }
@@ -1073,7 +1074,6 @@ func TestBigIntNum_IsEvenNumber_01(t *testing.T) {
 func TestBigIntNum_IsEvenNumber_02(t *testing.T) {
 
 	testNumStr := "5"
-	expectedIsEven := false
 	bINum, err := BigIntNum{}.NewNumStr(testNumStr)
 
 	if err != nil {
@@ -1089,9 +1089,9 @@ func TestBigIntNum_IsEvenNumber_02(t *testing.T) {
 
 	}
 
-	if expectedIsEven != isEven {
+	if false != isEven {
 		t.Errorf("Expected TestNumber to be IsEven='%v'. Instead TestNumber IsEven='%v'",
-			expectedIsEven, isEven)
+			false, isEven)
 	}
 
 }
@@ -1099,7 +1099,6 @@ func TestBigIntNum_IsEvenNumber_02(t *testing.T) {
 func TestBigIntNum_IsEvenNumber_03(t *testing.T) {
 
 	testNumStr := "4.4"
-	expectedIsEven := false
 	bINum, err := BigIntNum{}.NewNumStr(testNumStr)
 
 	if err != nil {
@@ -1115,9 +1114,9 @@ func TestBigIntNum_IsEvenNumber_03(t *testing.T) {
 
 	}
 
-	if expectedIsEven != isEven {
+	if false != isEven {
 		t.Errorf("Expected TestNumber to be IsEven='%v'. Instead TestNumber IsEven='%v'",
-			expectedIsEven, isEven)
+			false, isEven)
 	}
 
 }
@@ -1125,7 +1124,6 @@ func TestBigIntNum_IsEvenNumber_03(t *testing.T) {
 func TestBigIntNum_IsEvenNumber_04(t *testing.T) {
 
 	testNumStr := "9793442794"
-	expectedIsEven := true
 	bINum, err := BigIntNum{}.NewNumStr(testNumStr)
 
 	if err != nil {
@@ -1141,9 +1139,9 @@ func TestBigIntNum_IsEvenNumber_04(t *testing.T) {
 
 	}
 
-	if expectedIsEven != isEven {
+	if true != isEven {
 		t.Errorf("Expected TestNumber to be IsEven='%v'. Instead TestNumber IsEven='%v'",
-			expectedIsEven, isEven)
+			true, isEven)
 	}
 
 }
@@ -1151,7 +1149,6 @@ func TestBigIntNum_IsEvenNumber_04(t *testing.T) {
 func TestBigIntNum_IsEvenNumber_05(t *testing.T) {
 
 	testNumStr := "9793442795"
-	expectedIsEven := false
 	bINum, err := BigIntNum{}.NewNumStr(testNumStr)
 
 	if err != nil {
@@ -1167,9 +1164,9 @@ func TestBigIntNum_IsEvenNumber_05(t *testing.T) {
 
 	}
 
-	if expectedIsEven != isEven {
+	if false != isEven {
 		t.Errorf("Expected TestNumber to be IsEven='%v'. Instead TestNumber IsEven='%v'",
-			expectedIsEven, isEven)
+			false, isEven)
 	}
 
 }
@@ -1177,7 +1174,6 @@ func TestBigIntNum_IsEvenNumber_05(t *testing.T) {
 func TestBigIntNum_IsEvenNumber_06(t *testing.T) {
 
 	testNumStr := "-9793442794"
-	expectedIsEven := true
 	bINum, err := BigIntNum{}.NewNumStr(testNumStr)
 
 	if err != nil {
@@ -1193,9 +1189,9 @@ func TestBigIntNum_IsEvenNumber_06(t *testing.T) {
 
 	}
 
-	if expectedIsEven != isEven {
+	if true != isEven {
 		t.Errorf("Expected TestNumber to be IsEven='%v'. Instead TestNumber IsEven='%v'",
-			expectedIsEven, isEven)
+			true, isEven)
 	}
 
 }
@@ -1203,7 +1199,6 @@ func TestBigIntNum_IsEvenNumber_06(t *testing.T) {
 func TestBigIntNum_IsEvenNumber_07(t *testing.T) {
 
 	testNumStr := "757849035736836546"
-	expectedIsEven := true
 	bINum, err := BigIntNum{}.NewNumStr(testNumStr)
 
 	if err != nil {
@@ -1219,9 +1214,9 @@ func TestBigIntNum_IsEvenNumber_07(t *testing.T) {
 
 	}
 
-	if expectedIsEven != isEven {
+	if true != isEven {
 		t.Errorf("Expected TestNumber to be IsEven='%v'. Instead TestNumber IsEven='%v'",
-			expectedIsEven, isEven)
+			true, isEven)
 	}
 
 }
@@ -1229,7 +1224,6 @@ func TestBigIntNum_IsEvenNumber_07(t *testing.T) {
 func TestBigIntNum_IsEvenNumber_08(t *testing.T) {
 
 	testNumStr := "-757849035736836546"
-	expectedIsEven := true
 	bINum, err := BigIntNum{}.NewNumStr(testNumStr)
 
 	if err != nil {
@@ -1245,9 +1239,9 @@ func TestBigIntNum_IsEvenNumber_08(t *testing.T) {
 
 	}
 
-	if expectedIsEven != isEven {
+	if true != isEven {
 		t.Errorf("Expected TestNumber to be IsEven='%v'. Instead TestNumber IsEven='%v'",
-			expectedIsEven, isEven)
+			true, isEven)
 	}
 
 }
@@ -1255,7 +1249,6 @@ func TestBigIntNum_IsEvenNumber_08(t *testing.T) {
 func TestBigIntNum_IsEvenNumber_09(t *testing.T) {
 
 	testNumStr := "757849035736836547"
-	expectedIsEven := false
 	bINum, err := BigIntNum{}.NewNumStr(testNumStr)
 
 	if err != nil {
@@ -1271,9 +1264,9 @@ func TestBigIntNum_IsEvenNumber_09(t *testing.T) {
 
 	}
 
-	if expectedIsEven != isEven {
+	if false != isEven {
 		t.Errorf("Expected TestNumber to be IsEven='%v'. Instead TestNumber IsEven='%v'",
-			expectedIsEven, isEven)
+			false, isEven)
 	}
 
 }
@@ -1281,7 +1274,6 @@ func TestBigIntNum_IsEvenNumber_09(t *testing.T) {
 func TestBigIntNum_IsEvenNumber_10(t *testing.T) {
 
 	testNumStr := "-757849035736836547"
-	expectedIsEven := false
 	bINum, err := BigIntNum{}.NewNumStr(testNumStr)
 
 	if err != nil {
@@ -1297,9 +1289,9 @@ func TestBigIntNum_IsEvenNumber_10(t *testing.T) {
 
 	}
 
-	if expectedIsEven != isEven {
+	if false != isEven {
 		t.Errorf("Expected TestNumber to be IsEven='%v'. Instead TestNumber IsEven='%v'",
-			expectedIsEven, isEven)
+			false, isEven)
 	}
 
 }
@@ -1307,8 +1299,6 @@ func TestBigIntNum_IsEvenNumber_10(t *testing.T) {
 func TestBigIntNum_IsZero_01(t *testing.T) {
 
 	testNumStr := "0.000"
-	expectedIsZero := true
-
 	bINum, err := BigIntNum{}.NewNumStr(testNumStr)
 
 	if err != nil {
@@ -1318,17 +1308,15 @@ func TestBigIntNum_IsZero_01(t *testing.T) {
 
 	isZero := bINum.IsZero()
 
-	if expectedIsZero != isZero {
+	if true != isZero {
 		t.Errorf("Expected TestNumber to be IsZero='%v'. Instead TestNumber IsZero='%v'",
-			expectedIsZero, isZero)
+			true, isZero)
 	}
 }
 
 func TestBigIntNum_IsZero_02(t *testing.T) {
 
 	testNumStr := "0"
-	expectedIsZero := true
-
 	bINum, err := BigIntNum{}.NewNumStr(testNumStr)
 
 	if err != nil {
@@ -1338,17 +1326,15 @@ func TestBigIntNum_IsZero_02(t *testing.T) {
 
 	isZero := bINum.IsZero()
 
-	if expectedIsZero != isZero {
+	if true != isZero {
 		t.Errorf("Expected TestNumber to be IsZero='%v'. Instead TestNumber IsZero='%v'",
-			expectedIsZero, isZero)
+			true, isZero)
 	}
 }
 
 func TestBigIntNum_IsZero_03(t *testing.T) {
 
 	testNumStr := "0.0000000000001"
-	expectedIsZero := false
-
 	bINum, err := BigIntNum{}.NewNumStr(testNumStr)
 
 	if err != nil {
@@ -1358,17 +1344,15 @@ func TestBigIntNum_IsZero_03(t *testing.T) {
 
 	isZero := bINum.IsZero()
 
-	if expectedIsZero != isZero {
+	if false != isZero {
 		t.Errorf("Expected TestNumber to be IsZero='%v'. Instead TestNumber IsZero='%v'",
-			expectedIsZero, isZero)
+			false, isZero)
 	}
 }
 
 func TestBigIntNum_IsZero_04(t *testing.T) {
 
 	testNumStr := "100000000000000000000"
-	expectedIsZero := false
-
 	bINum, err := BigIntNum{}.NewNumStr(testNumStr)
 
 	if err != nil {
@@ -1378,17 +1362,15 @@ func TestBigIntNum_IsZero_04(t *testing.T) {
 
 	isZero := bINum.IsZero()
 
-	if expectedIsZero != isZero {
+	if false != isZero {
 		t.Errorf("Expected TestNumber to be IsZero='%v'. Instead TestNumber IsZero='%v'",
-			expectedIsZero, isZero)
+			false, isZero)
 	}
 }
 
 func TestBigIntNum_IsZero_05(t *testing.T) {
 
 	testNumStr := "0.000000000000000000000000001"
-	expectedIsZero := false
-
 	bINum, err := BigIntNum{}.NewNumStr(testNumStr)
 
 	if err != nil {
@@ -1398,9 +1380,9 @@ func TestBigIntNum_IsZero_05(t *testing.T) {
 
 	isZero := bINum.IsZero()
 
-	if expectedIsZero != isZero {
+	if false != isZero {
 		t.Errorf("Expected TestNumber to be IsZero='%v'. Instead TestNumber IsZero='%v'",
-			expectedIsZero, isZero)
+			false, isZero)
 	}
 }
 

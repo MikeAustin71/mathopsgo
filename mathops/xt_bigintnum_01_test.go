@@ -1438,7 +1438,7 @@ func TestBigIntNum_Decrement_01(t *testing.T) {
 
 	numStr := "8"
 	expectedNumStr := "7"
-	expectedNumSeps := NumericSeparatorDto{}.New()
+	expectedNumSeps := new(NumericSeparatorDto).New()
 
 	bINum, err := BigIntNum{}.NewNumStrWithNumSeps(numStr, expectedNumSeps)
 
@@ -1462,7 +1462,7 @@ func TestBigIntNum_Decrement_02(t *testing.T) {
 
 	numStr := "8.2"
 	expectedNumStr := "7.2"
-	expectedNumSeps := NumericSeparatorDto{}.New()
+	expectedNumSeps := new(NumericSeparatorDto).New()
 
 	bINum, err := BigIntNum{}.NewNumStrWithNumSeps(numStr, expectedNumSeps)
 
@@ -1486,7 +1486,7 @@ func TestBigIntNum_Decrement_03(t *testing.T) {
 
 	numStr := "-8.2"
 	expectedNumStr := "-9.2"
-	expectedNumSeps := NumericSeparatorDto{}.New()
+	expectedNumSeps := new(NumericSeparatorDto).New()
 
 	bINum, err := BigIntNum{}.NewNumStrWithNumSeps(numStr, expectedNumSeps)
 
