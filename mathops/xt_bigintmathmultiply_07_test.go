@@ -2,7 +2,6 @@ package mathops
 
 import "testing"
 
-
 func TestBigIntMathMultiply_MultiplyNumStrSeries_01(t *testing.T) {
 
 	var err error
@@ -25,7 +24,7 @@ func TestBigIntMathMultiply_MultiplyNumStrSeries_01(t *testing.T) {
 
 	expectedBigINumSign := 1
 
-	expectedNumSeps := NumericSeparatorDto{}.New()
+	expectedNumSeps := new(NumericSeparatorDto).New()
 
 	lenArray := len(multiplicandStrs)
 
@@ -128,7 +127,7 @@ func TestBigIntMathMultiply_MultiplyNumStrSeries_02(t *testing.T) {
 
 	expectedBigINumSign := 1
 
-	expectedNumSeps := NumericSeparatorDto{}.New()
+	expectedNumSeps := new(NumericSeparatorDto).New()
 
 	lenArray := len(multiplicandStrs)
 
