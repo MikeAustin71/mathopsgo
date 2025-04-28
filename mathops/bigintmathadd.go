@@ -1,7 +1,6 @@
 package mathops
 
 import (
-	"errors"
 	"fmt"
 	"math/big"
 )
@@ -46,7 +45,7 @@ func (bAdd BigIntMathAdd) AddBigInts(
 // The BigIntNum 'result' returned by this addition operation will contain
 // numeric separators (decimal separator, thousands separator and currency symbol)
 // which were copied from input parameter 'b1'.
-func (bAdd BigIntMathAdd) AddBigIntNums(b1, b2 BigIntNum) BigIntNum {
+func (bAdd BigIntMathAdd) AddBigIntNums(b1, b2 BigIntNum) (BigIntNum, error) {
 
 	bPair := BigIntPair{}.NewBigIntNum(b1, b2)
 
@@ -107,7 +106,7 @@ func (bAdd BigIntMathAdd) AddBigIntNumArray(bNums []BigIntNum) BigIntNum {
 //			3			+					bNums[4] = 6			=				  outputarray[4] =  9
 //			3			+					bNums[5] = 9			=				  outputarray[5] = 12
 //
-// Each element of the the []BigIntNum 'result' array returned by this addition
+// Each element of the []BigIntNum 'result' array returned by this addition
 // operation will contain numeric separators (decimal separator, thousands
 // separator and currency symbol) which were copied from input parameter
 // 'addend'.
@@ -193,7 +192,16 @@ func (bAdd BigIntMathAdd) AddDecimal(dec1, dec2 Decimal) (BigIntNum, error) {
 				"Error='%v' ", err.Error())
 	}
 
-	finalResult := bAdd.AddPair(bPair)
+	finalResult, err := bAdd.AddPair(bPair)
+
+	if err != nil {
+		return finalResult,
+			fmt.Errorf("%v\n"+
+				"Error returned by bAdd.AddPair(bPair).\n"+
+				"Error= %v\n",
+				ePrefix,
+				err.Error())
+	}
 
 	return finalResult, nil
 }
@@ -302,7 +310,9 @@ func (bAdd BigIntMathAdd) AddDecimalOutputToArray(
 
 	if lenDecs == 0 {
 		return []Decimal{},
-			errors.New(ePrefix + "Error: decs array is Empty!")
+			fmt.Errorf("%v\n"+
+				"Error: Input parameter 'decs' array is Empty!\n",
+				ePrefix)
 	}
 
 	numSeps := addend.GetNumericSeparatorsDto()
@@ -316,8 +326,13 @@ func (bAdd BigIntMathAdd) AddDecimalOutputToArray(
 
 		if err != nil {
 			return []Decimal{},
-				fmt.Errorf(ePrefix+"Error returned by BigIntPair{}.NewDecimal(addend, decs[i]). "+
-					" i='%v' dec[i].GetNumStr()='%v' Error='%v' ", i, decs[i].GetNumStr(), err.Error())
+				fmt.Errorf("%v\n"+
+					"Error returned by BigIntPair{}.NewDecimal(addend, decs[i]) .\n"+
+					" i='%v' dec[i].GetNumStr()='%v' Error='%v'\n",
+					ePrefix,
+					i,
+					decs[i].GetNumStr(),
+					err.Error())
 		}
 
 		result := bAdd.addPairNoNumSeps(bPair)
@@ -326,19 +341,25 @@ func (bAdd BigIntMathAdd) AddDecimalOutputToArray(
 
 		if err != nil {
 			return []Decimal{},
-				fmt.Errorf(ePrefix+
-					"Error returned by result.SetNumericSeparatorsDto(numSeps). "+
-					" index='%v' Error='%v' ", i, err.Error())
+				fmt.Errorf("%v\n"+
+					"Error returned by result.SetNumericSeparatorsDto(numSeps).\n"+
+					" index='%v' Error='%v'\n",
+					ePrefix,
+					i,
+					err.Error())
 		}
 
 		resultsArray[i], err = result.GetDecimal()
 
 		if err != nil {
 			return []Decimal{},
-				fmt.Errorf(ePrefix+
-					"Error returned by result.Result.GetDecimal(). "+
-					" i='%v' decs[i].GetNumStr()='%v' Error='%v' ",
-					i, decs[i].GetNumStr(), err.Error())
+				fmt.Errorf("%v\n"+
+					"Error returned by result.Result.GetDecimal().\n"+
+					" i='%v'\ndecs[i].GetNumStr()='%v'\nError='%v'\n",
+					ePrefix,
+					i,
+					decs[i].GetNumStr(),
+					err.Error())
 		}
 
 	}
@@ -361,7 +382,9 @@ func (bAdd BigIntMathAdd) AddDecimalSeries(decs ...Decimal) (BigIntNum, error) {
 
 	if len(decs) == 0 {
 		return finalResult,
-			errors.New(ePrefix + "Error: decs series is Empty!")
+			fmt.Errorf("%v\n"+
+				"Error: Input parametere 'decs' series is Empty!\n",
+				ePrefix)
 	}
 
 	numSeps := NumericSeparatorDto{}
@@ -375,10 +398,13 @@ func (bAdd BigIntMathAdd) AddDecimalSeries(decs ...Decimal) (BigIntNum, error) {
 
 			if err != nil {
 				return BigIntNum{}.New(),
-					fmt.Errorf(ePrefix+
-						"Error returned by BigIntNum{}.NewDecimal(dec). "+
-						" i='%v' dec.GetNumStr()='%v' Error='%v' ",
-						i, dec.GetNumStr(), err.Error())
+					fmt.Errorf("%v\n"+
+						"Error returned by BigIntNum{}.NewDecimal(dec).\n"+
+						"i='%v'\ndec.GetNumStr()='%v'\nError='%v'\n",
+						ePrefix,
+						i,
+						dec.GetNumStr(),
+						err.Error())
 			}
 
 			numSeps = dec.GetNumericSeparatorsDto()
@@ -390,9 +416,13 @@ func (bAdd BigIntMathAdd) AddDecimalSeries(decs ...Decimal) (BigIntNum, error) {
 
 		if err != nil {
 			return BigIntNum{}.New(),
-				fmt.Errorf(ePrefix+
-					"Error returned by dec.GetBigIntNum(). "+
-					" i='%v' dec='%v' Error='%v' ", i, dec.GetNumStr(), err.Error())
+				fmt.Errorf("%v\n"+
+					"Error returned by dec.GetBigIntNum().\n"+
+					"i='%v'\ndec='%v'\nError='%v'\n",
+					ePrefix,
+					i,
+					dec.GetNumStr(),
+					err.Error())
 		}
 
 		bPair := BigIntPair{}.NewBigIntNum(finalResult, bigINumNextAddend)
@@ -404,9 +434,11 @@ func (bAdd BigIntMathAdd) AddDecimalSeries(decs ...Decimal) (BigIntNum, error) {
 
 	if err != nil {
 		return BigIntNum{}.New(),
-			fmt.Errorf(ePrefix+
-				"Error returned by finalResult.SetNumericSeparatorsDto(numSeps). "+
-				"Error='%v' \n", err.Error())
+			fmt.Errorf("%v\n"+
+				"Error returned by finalResult.SetNumericSeparatorsDto(numSeps).\n"+
+				"Error='%v'\n",
+				ePrefix,
+				err.Error())
 
 	}
 
@@ -429,16 +461,29 @@ func (bAdd BigIntMathAdd) AddIntAry(ia1, ia2 IntAry) (BigIntNum, error) {
 
 	if err != nil {
 		return BigIntNum{},
-			fmt.Errorf(ePrefix+"Error returned by BigIntPair{}.NewIntAry(ia1, ia2). "+
-				"Error='%v' ", err.Error())
+			fmt.Errorf("%v\n"+
+				"Error returned by BigIntPair{}.NewIntAry(ia1, ia2).\n"+
+				"Error='%v' ",
+				ePrefix,
+				err.Error())
 	}
 
-	finalResult := bAdd.AddPair(bPair)
+	finalResult, err := bAdd.AddPair(bPair)
+
+	if err != nil {
+		return finalResult,
+			fmt.Errorf("%v\n"+
+				"Error returned by bAdd.AddPair(bPair).\n"+
+				"Error= %v\n",
+				ePrefix,
+				err.Error())
+	}
 
 	return finalResult, nil
 }
 
-// AddIntAryArray - Receives an array of IntAry objects and totals their numeric values.
+// AddIntAryArray
+// Receives an array of IntAry objects and totals their numeric values.
 // The total numeric value is returned in a BigIntNum instance.
 //
 // The BigIntNum 'result' returned by this addition operation will contain numeric
@@ -446,7 +491,7 @@ func (bAdd BigIntMathAdd) AddIntAry(ia1, ia2 IntAry) (BigIntNum, error) {
 // were copied from the first element of the input array, iarys[0].
 func (bAdd BigIntMathAdd) AddIntAryArray(iarys []IntAry) (BigIntNum, error) {
 
-	ePrefix := "BigIntMathAdd.AddIntAryArray() "
+	ePrefix := "BigIntMathAdd.AddIntAryArray()"
 
 	finalResult := BigIntNum{}.New()
 
@@ -454,7 +499,8 @@ func (bAdd BigIntMathAdd) AddIntAryArray(iarys []IntAry) (BigIntNum, error) {
 
 	if lenIaArray == 0 {
 		return finalResult,
-			errors.New(ePrefix + "Error: iarys array is Empty!")
+			fmt.Errorf("%v\n" +
+				"Error: Input parameter 'iarys' array is Empty!\n")
 	}
 
 	numSeps := iarys[0].GetNumericSeparatorsDto()
@@ -470,8 +516,13 @@ func (bAdd BigIntMathAdd) AddIntAryArray(iarys []IntAry) (BigIntNum, error) {
 
 			if err != nil {
 				return BigIntNum{}.New(),
-					fmt.Errorf(ePrefix+"Error returned by BigIntNum{}.NewIntAry(iarys[i]). "+
-						" i='%v' NumStr='%v' Error='%v' ", i, iarys[i].GetNumStr(), err.Error())
+					fmt.Errorf("%v\n"+
+						"Error returned by BigIntNum{}.NewIntAry(iarys[i]).\n"+
+						"For indes 'i'='%v'\nNumStr='%v'\nError='%v'\n",
+						ePrefix,
+						i,
+						iarys[i].GetNumStr(),
+						err.Error())
 			}
 
 			continue
@@ -482,8 +533,12 @@ func (bAdd BigIntMathAdd) AddIntAryArray(iarys []IntAry) (BigIntNum, error) {
 
 		if err != nil {
 			return BigIntNum{}.New(),
-				fmt.Errorf(ePrefix+"Error returned by BigIntNum{}.NewIntAry(iarys[%v]). "+
-					"Error='%v'. ", i, err.Error())
+				fmt.Errorf("%v\n"+
+					"Error returned by BigIntNum{}.NewIntAry(iarys[%v]).\n"+
+					"Error='%v'\n",
+					ePrefix,
+					i,
+					err.Error())
 		}
 
 		bPair := BigIntPair{}.NewBigIntNum(finalResult, bINumNextAddend)
@@ -495,9 +550,11 @@ func (bAdd BigIntMathAdd) AddIntAryArray(iarys []IntAry) (BigIntNum, error) {
 
 	if err != nil {
 		return BigIntNum{}.New(),
-			fmt.Errorf(ePrefix+
-				"Error returned by finalResult.SetNumericSeparatorsDto(numSeps). "+
-				"Error='%v' \n", err.Error())
+			fmt.Errorf("%v\n"+
+				"Error returned by finalResult.SetNumericSeparatorsDto(numSeps).\n"+
+				"Error='%v'\n",
+				ePrefix,
+				err.Error())
 	}
 
 	return finalResult, nil
@@ -536,15 +593,20 @@ func (bAdd BigIntMathAdd) AddIntAryOutputToArray(
 
 	if err != nil {
 		return []IntAry{},
-			fmt.Errorf(ePrefix+"Error returned by BigIntNum{}.NewIntAry(addend). "+
-				"Error='%v' ", err.Error())
+			fmt.Errorf("%v\n"+
+				"Error returned by BigIntNum{}.NewIntAry(addend).\n"+
+				"Error='%v'\n",
+				ePrefix,
+				err.Error())
 	}
 
 	lenIaArray := len(iarys)
 
 	if lenIaArray == 0 {
 		return []IntAry{},
-			errors.New(ePrefix + "Error: iarys array is Empty!")
+			fmt.Errorf("%v\n"+
+				"Error: Input parameter 'iarys' array is Empty!\n",
+				ePrefix)
 	}
 
 	numSeps := addend.GetNumericSeparatorsDto()
@@ -558,8 +620,12 @@ func (bAdd BigIntMathAdd) AddIntAryOutputToArray(
 
 		if err != nil {
 			return []IntAry{},
-				fmt.Errorf(ePrefix+"Error returned by BigIntNum{}.NewIntAry(iarys[%v]). "+
-					"Error='%v' ", i, err.Error())
+				fmt.Errorf("%v\n"+
+					"Error returned by BigIntNum{}.NewIntAry(iarys[%v]).\n"+
+					"Error='%v'\n",
+					ePrefix,
+					i,
+					err.Error())
 		}
 
 		bPair := BigIntPair{}.NewBigIntNum(bINumAddend, bINumNextAddend)
@@ -570,19 +636,25 @@ func (bAdd BigIntMathAdd) AddIntAryOutputToArray(
 
 		if err != nil {
 			return []IntAry{},
-				fmt.Errorf(ePrefix+
-					"Error returned by result.SetNumericSeparatorsDto(numSeps). "+
-					"index='%v' Error='%v' ", i, err.Error())
+				fmt.Errorf("%v\n"+
+					"Error returned by result.SetNumericSeparatorsDto(numSeps).\n"+
+					"index='%v'\nError= '%v'\n",
+					ePrefix,
+					i,
+					err.Error())
 		}
 
 		resultsArray[i], err = result.GetIntAry()
 
 		if err != nil {
 			return []IntAry{},
-				fmt.Errorf(ePrefix+
-					"Error returned by result.GetIntAry(). "+
-					"index='%v', result='%v', Error='%v' ",
-					i, result.GetNumStr(), err.Error())
+				fmt.Errorf("%v\n"+
+					"Error returned by result.GetIntAry().\n"+
+					"index='%v'\nresult='%v'\nError='%v'\n",
+					ePrefix,
+					i,
+					result.GetNumStr(),
+					err.Error())
 		}
 	}
 
@@ -603,10 +675,13 @@ func (bAdd BigIntMathAdd) AddIntArySeries(iarys ...IntAry) (BigIntNum, error) {
 
 	if len(iarys) == 0 {
 		return finalResult,
-			errors.New(ePrefix + "Error: 'iarys' series is Empty!")
+			fmt.Errorf("%v\n"+
+				"Error: Input Parameter 'iarys' series is Empty!\n",
+				ePrefix)
 	}
 
 	var err error
+
 	numSeps := NumericSeparatorDto{}
 
 	for i, ia := range iarys {
@@ -620,8 +695,13 @@ func (bAdd BigIntMathAdd) AddIntArySeries(iarys ...IntAry) (BigIntNum, error) {
 
 			if err != nil {
 				return BigIntNum{}.New(),
-					fmt.Errorf(ePrefix+"Error returned by BigIntNum{}.NewIntAry(ia). "+
-						" i='%v' NumStr='%v' Error='%v' ", i, ia.GetNumStr(), err.Error())
+					fmt.Errorf("%v\n"+
+						"Error returned by BigIntNum{}.NewIntAry(ia).\n"+
+						"i='%v'\nNumStr='%v'\nError= %v\n",
+						ePrefix,
+						i,
+						ia.GetNumStr(),
+						err.Error())
 			}
 
 			continue
@@ -631,9 +711,12 @@ func (bAdd BigIntMathAdd) AddIntArySeries(iarys ...IntAry) (BigIntNum, error) {
 
 		if err != nil {
 			return BigIntNum{}.New(),
-				fmt.Errorf(ePrefix+
-					"Error returned by BigIntNum{}.NewIntAry(ia). "+
-					"index='%v' Error='%v' ", i, err.Error())
+				fmt.Errorf("%v\n"+
+					"Error returned by BigIntNum{}.NewIntAry(ia).\n"+
+					"index='%v'\nError= %v\n",
+					ePrefix,
+					i,
+					err.Error())
 		}
 
 		bPair := BigIntPair{}.NewBigIntNum(finalResult, bINumNextAddend)
@@ -645,9 +728,11 @@ func (bAdd BigIntMathAdd) AddIntArySeries(iarys ...IntAry) (BigIntNum, error) {
 
 	if err != nil {
 		return BigIntNum{}.New(),
-			fmt.Errorf(ePrefix+
-				"Error returned by finalResult.SetNumericSeparatorsDto(numSeps). "+
-				"Error='%v' \n", err.Error())
+			fmt.Errorf("%v\n"+
+				"Error returned by finalResult.SetNumericSeparatorsDto(numSeps).\n"+
+				"Error= %v\n",
+				ePrefix,
+				err.Error())
 	}
 
 	return finalResult, nil
@@ -673,13 +758,25 @@ func (bAdd BigIntMathAdd) AddINumMgr(num1, num2 INumMgr) (BigIntNum, error) {
 
 	if err != nil {
 		return BigIntNum{},
-			fmt.Errorf(ePrefix+
-				"Error returned by BigIntPair{}.NewINumMgr(num1, num2). "+
-				"num1.GetNumStr()='%v', num2.GetNumStr()='%v' Error='%v' ",
-				num1.GetNumStr(), num2.GetNumStr(), err.Error())
+			fmt.Errorf("%v\n"+
+				"Error returned by BigIntPair{}.NewINumMgr(num1, num2).\n"+
+				"num1.GetNumStr()='%v'\nnum2.GetNumStr()='%v'\nError= %v\n",
+				ePrefix,
+				num1.GetNumStr(),
+				num2.GetNumStr(),
+				err.Error())
 	}
 
-	finalResult := bAdd.AddPair(bPair)
+	finalResult, err := bAdd.AddPair(bPair)
+
+	if err != nil {
+		return finalResult,
+			fmt.Errorf("%v\n"+
+				"Error returned by bAdd.AddPair(bPair).\n"+
+				"Error='%v'\n",
+				ePrefix,
+				err.Error())
+	}
 
 	return finalResult, nil
 }
@@ -707,7 +804,9 @@ func (bAdd BigIntMathAdd) AddINumMgrArray(nums []INumMgr) (BigIntNum, error) {
 
 	if lenDecs == 0 {
 		return finalResult,
-			errors.New(ePrefix + "Error: 'nums' array is Empty!")
+			fmt.Errorf("%v\n"+
+				"Error: Input parameter 'nums' array is Empty!\n",
+				ePrefix)
 	}
 
 	numSeps := nums[0].GetNumericSeparatorsDto()
@@ -720,10 +819,13 @@ func (bAdd BigIntMathAdd) AddINumMgrArray(nums []INumMgr) (BigIntNum, error) {
 
 			if err != nil {
 				return BigIntNum{}.New(),
-					fmt.Errorf(ePrefix+
-						"Error returned by BigIntNum{}.NewINumMgr(nums[i]). "+
-						" i='%v' nums[i].GetNumStr()='%v' Error='%v' ",
-						i, nums[i].GetNumStr(), err.Error())
+					fmt.Errorf("%v\n"+
+						"Error returned by BigIntNum{}.NewINumMgr(nums[i]).\n"+
+						"i= '%v'\nnums[i].GetNumStr()= '%v'\nError= %v\n",
+						ePrefix,
+						i,
+						nums[i].GetNumStr(),
+						err.Error())
 			}
 
 			continue
@@ -733,9 +835,13 @@ func (bAdd BigIntMathAdd) AddINumMgrArray(nums []INumMgr) (BigIntNum, error) {
 
 		if err != nil {
 			return BigIntNum{}.New(),
-				fmt.Errorf(ePrefix+
-					"Error returned by BigIntPair{}.NewINumMgr(&finalResult.Result, &nums[i]). "+
-					" i='%v' nums[i].GetNumStr()='%v' Error='%v' ", i, nums[i].GetNumStr(), err.Error())
+				fmt.Errorf("%v\n"+
+					"Error returned by BigIntPair{}.NewINumMgr(&finalResult.Result, &nums[i]).\n"+
+					"i='%v'\nnums[i].GetNumStr()='%v'\nError= %v\n",
+					ePrefix,
+					i,
+					nums[i].GetNumStr(),
+					err.Error())
 		}
 
 		finalResult = bAdd.addPairNoNumSeps(bPair)
@@ -745,9 +851,11 @@ func (bAdd BigIntMathAdd) AddINumMgrArray(nums []INumMgr) (BigIntNum, error) {
 
 	if err != nil {
 		return BigIntNum{}.New(),
-			fmt.Errorf(ePrefix+
-				"Error returned by finalResult.SetNumericSeparatorsDto(numSeps). "+
-				"Error='%v' ", err.Error())
+			fmt.Errorf("%v\n"+
+				"Error returned by finalResult.SetNumericSeparatorsDto(numSeps).\n"+
+				"Error= %v\n",
+				ePrefix,
+				err.Error())
 	}
 
 	return finalResult, nil
@@ -756,14 +864,14 @@ func (bAdd BigIntMathAdd) AddINumMgrArray(nums []INumMgr) (BigIntNum, error) {
 // AddINumMgrOutputToArray - The first input parameter to this method
 // is an object that implements the  INumMgr interface and is labeled,
 // 'addend'.  The second element is an array of objects which implement
-// the INumMgr interface. This array is labeled labeled, 'numMgrs'. The
-// 'addend' is added to each element of the 'numMgrs' array with the result
+// the INumMgr interface. This array is labeled, 'numMgrs'. The 'addend'
+// is added to each element of the 'numMgrs' array with the result
 // output to another INumMgr array which is returned to the calling function.
 //
 // Example
 // =======
 //
-//											    numMgrs										 Output
+//											    numMgrs										Output
 //	 Addend   				    	Array											Array
 //
 //			3			+					numMgrs[0] = 2			=				  outputarray[0] =  5
@@ -786,7 +894,9 @@ func (bAdd BigIntMathAdd) AddINumMgrOutputToArray(
 
 	if lenDecs == 0 {
 		return []INumMgr{},
-			errors.New(ePrefix + "Error: 'numMgrs' array is Empty!")
+			fmt.Errorf("%v\n"+
+				"Error: Input parameter 'numMgrs' array is Empty!\n",
+				ePrefix)
 	}
 
 	numSeps := addend.GetNumericSeparatorsDto()
@@ -800,9 +910,13 @@ func (bAdd BigIntMathAdd) AddINumMgrOutputToArray(
 
 		if err != nil {
 			return []INumMgr{},
-				fmt.Errorf(ePrefix+
-					"Error returned by BigIntPair{}.NewINumMgr(addend, numMgrs[i]). "+
-					" i='%v' numMgrs[i].GetNumStr()='%v' Error='%v' ", i, numMgrs[i].GetNumStr(), err.Error())
+				fmt.Errorf("%v\n"+
+					"Error returned by BigIntPair{}.NewINumMgr(addend, numMgrs[i]).\n"+
+					"i='%v'\nnumMgrs[i].GetNumStr()='%v'\nError= %v\n",
+					ePrefix,
+					i,
+					numMgrs[i].GetNumStr(),
+					err.Error())
 		}
 
 		bIntNum := bAdd.addPairNoNumSeps(bPair)
@@ -811,9 +925,11 @@ func (bAdd BigIntMathAdd) AddINumMgrOutputToArray(
 
 		if err != nil {
 			return []INumMgr{},
-				fmt.Errorf(ePrefix+
-					"Error returned by bIntNum.SetNumericSeparatorsDto(numSeps). "+
-					"Error='%v' ", err.Error())
+				fmt.Errorf("%v\n"+
+					"Error returned by bIntNum.SetNumericSeparatorsDto(numSeps).\n"+
+					"Error= %v\n",
+					ePrefix,
+					err.Error())
 		}
 
 		resultsArray[i] = &bIntNum
@@ -836,13 +952,15 @@ func (bAdd BigIntMathAdd) AddINumMgrOutputToArray(
 // 'nums'.
 func (bAdd BigIntMathAdd) AddINumMgrSeries(nums ...INumMgr) (BigIntNum, error) {
 
-	ePrefix := "BigIntMathAdd.AddINumMgrSeries() "
+	ePrefix := "BigIntMathAdd.AddINumMgrSeries()"
 
 	finalResult := BigIntNum{}.New()
 
 	if len(nums) == 0 {
 		return finalResult,
-			errors.New(ePrefix + "Error: 'nums' series is Empty!")
+			fmt.Errorf("%v\n"+
+				"Error: Input parameter 'nums' series is Empty!\n",
+				ePrefix)
 	}
 
 	var err error
@@ -860,10 +978,13 @@ func (bAdd BigIntMathAdd) AddINumMgrSeries(nums ...INumMgr) (BigIntNum, error) {
 
 			if err != nil {
 				return BigIntNum{}.New(),
-					fmt.Errorf(ePrefix+
-						"Error returned by BigIntNum{}.NewINumMgr(num). "+
-						" i='%v' num.GetNumStr()='%v' Error='%v' ",
-						i, num.GetNumStr(), err.Error())
+					fmt.Errorf("%v\n"+
+						"Error returned by BigIntNum{}.NewINumMgr(num).\n"+
+						"i='%v'\nnum.GetNumStr()='%v'\nError='%v'\n",
+						ePrefix,
+						i,
+						num.GetNumStr(),
+						err.Error())
 			}
 
 			continue
@@ -873,10 +994,13 @@ func (bAdd BigIntMathAdd) AddINumMgrSeries(nums ...INumMgr) (BigIntNum, error) {
 
 		if err != nil {
 			return BigIntNum{}.New(),
-				fmt.Errorf(ePrefix+
-					"Error returned by BigIntPair{}.NewINumMgr(&finalResult.Result, &num). "+
-					" i='%v' num.GetNumStr()='%v' Error='%v' ",
-					i, num.GetNumStr(), err.Error())
+				fmt.Errorf("%v\n"+
+					"Error returned by BigIntPair{}.NewINumMgr(&finalResult.Result, &num).\n"+
+					"i='%v'\nnum.GetNumStr()='%v'\nError= %v\n",
+					ePrefix,
+					i,
+					num.GetNumStr(),
+					err.Error())
 		}
 
 		finalResult = bAdd.addPairNoNumSeps(bPair)
@@ -886,9 +1010,11 @@ func (bAdd BigIntMathAdd) AddINumMgrSeries(nums ...INumMgr) (BigIntNum, error) {
 
 	if err != nil {
 		return BigIntNum{}.New(),
-			fmt.Errorf(ePrefix+
-				"Error returned by finalResult.SetNumericSeparatorsDto(numSeps). "+
-				"Error='%v' ", err.Error())
+			fmt.Errorf("%v\n"+
+				"Error returned by finalResult.SetNumericSeparatorsDto(numSeps).\n"+
+				"Error= %v\n",
+				ePrefix,
+				err.Error())
 	}
 
 	return finalResult, nil
@@ -914,7 +1040,8 @@ func (bAdd BigIntMathAdd) AddINumMgrSeries(nums ...INumMgr) (BigIntNum, error) {
 // The returned BigIntNum result of this addition operation will contain
 // numeric separators (decimal separator, thousands separator and currency
 // symbol) specified by input parameter, 'numSeps'.
-func (bAdd BigIntMathAdd) AddNumStr(n1NumStr, n2NumStr string, numSeps NumericSeparatorDto) (BigIntNum, error) {
+func (bAdd BigIntMathAdd) AddNumStr(
+	n1NumStr string, n2NumStr string, numSeps NumericSeparatorDto) (BigIntNum, error) {
 
 	ePrefix := "BigIntMathAdd.AddNumStr() "
 
@@ -924,11 +1051,25 @@ func (bAdd BigIntMathAdd) AddNumStr(n1NumStr, n2NumStr string, numSeps NumericSe
 
 	if err != nil {
 		return BigIntNum{},
-			fmt.Errorf(ePrefix+"Error returned by BigIntPair{}.NewNumStr(n1NumStr, n2NumStr). "+
-				"Error='%v' ", err.Error())
+			fmt.Errorf("%v\n"+
+				"Error returned by BigIntPair{}.NewNumStr(n1NumStr, n2NumStr).\n"+
+				"Error= %v\n",
+				ePrefix,
+				err.Error())
 	}
 
-	return bAdd.AddPair(bPair), nil
+	finalResult, err := bAdd.AddPair(bPair)
+
+	if err != nil {
+		return finalResult,
+			fmt.Errorf("%v\n"+
+				"Error returned by bAdd.AddPair(bPair).\n"+
+				"Error= %v\n",
+				ePrefix,
+				err.Error())
+	}
+
+	return finalResult, nil
 }
 
 // AddNumStrArray - Adds a series of number strings and returns the combined total
@@ -964,7 +1105,9 @@ func (bAdd BigIntMathAdd) AddNumStrArray(
 
 	if lenNumStrs == 0 {
 		return finalResult,
-			errors.New(ePrefix + "Error: 'numStrs' array is Empty!")
+			fmt.Errorf("%v\n"+
+				"Error: Input parameter 'numStrs' array is Empty!\n",
+				ePrefix)
 	}
 
 	for i := 0; i < lenNumStrs; i++ {
@@ -975,9 +1118,13 @@ func (bAdd BigIntMathAdd) AddNumStrArray(
 
 			if err != nil {
 				return BigIntNum{}.New(),
-					fmt.Errorf(ePrefix+
-						"Error returned by NewNumStrWithNumSeps(numStrs[i], numSeps). "+
-						" i='%v' NumStr='%v' Error='%v' ", i, numStrs[i], err.Error())
+					fmt.Errorf("%v\n"+
+						"Error returned by NewNumStrWithNumSeps(numStrs[i], numSeps).\n"+
+						"i='%v'\nNumStr='%v'\nError= %v\n",
+						ePrefix,
+						i,
+						numStrs[i],
+						err.Error())
 			}
 
 			continue
@@ -987,12 +1134,28 @@ func (bAdd BigIntMathAdd) AddNumStrArray(
 
 		if err != nil {
 			return BigIntNum{}.New(),
-				fmt.Errorf(ePrefix+
-					"Error returned by BigIntNum{}.NewNumStrWithNumSeps(numStrs[i], numSeps). "+
-					" i='%v' NumStr='%v' Error='%v' ", i, numStrs[i], err.Error())
+				fmt.Errorf("%v\n"+
+					"Error returned by BigIntNum{}.NewNumStrWithNumSeps(numStrs[i], numSeps).\n"+
+					"i='%v'\nNumStr='%v'\nError='%v'\n",
+					ePrefix,
+					i,
+					numStrs[i],
+					err.Error())
 		}
 
-		finalResult = bAdd.AddBigIntNums(finalResult, b2Num)
+		finalResult, err = bAdd.AddBigIntNums(finalResult, b2Num)
+
+		if err != nil {
+			return finalResult,
+				fmt.Errorf("%v\n"+
+					"Error returned by bAdd.AddBigIntNums(finalResult, b2Num).\n"+
+					"i='%v'\nNumStr='%v'\nError= %v\n",
+					ePrefix,
+					i,
+					numStrs[i],
+					err.Error())
+
+		}
 	}
 
 	return finalResult, nil
@@ -1043,16 +1206,21 @@ func (bAdd BigIntMathAdd) AddNumStrOutputToArray(
 
 	if lenNumStrs == 0 {
 		return []string{},
-			errors.New(ePrefix + "Error: 'numStrs' array is Empty!")
+			fmt.Errorf("%v\n"+
+				"Error: Input parameter 'numStrs' array is Empty!\n",
+				ePrefix)
 	}
 
 	bINumAddend, err := BigIntNum{}.NewNumStrWithNumSeps(addend, numSeps)
 
 	if err != nil {
 		return []string{},
-			fmt.Errorf(ePrefix+
-				"Error returned by BigIntNum{}.NewNumStrWithNumSeps(addend, numSeps). "+
-				" addend='%v' Error='%v' ", addend, err.Error())
+			fmt.Errorf("%v\n"+
+				"Error returned by BigIntNum{}.NewNumStrWithNumSeps(addend, numSeps).\n"+
+				"addend='%v'\nError= %v\n",
+				ePrefix,
+				addend,
+				err.Error())
 	}
 
 	resultsArray := make([]string, lenNumStrs)
@@ -1063,12 +1231,27 @@ func (bAdd BigIntMathAdd) AddNumStrOutputToArray(
 
 		if err != nil {
 			return []string{},
-				fmt.Errorf(ePrefix+
-					"Error returned by BigIntNum{}.NewNumStrWithNumSeps(numStrs[i], numSeps). "+
-					" i='%v' NumStr='%v' Error='%v' ", i, numStrs[i], err.Error())
+				fmt.Errorf("%v\n"+
+					"Error returned by BigIntNum{}.NewNumStrWithNumSeps(numStrs[i], numSeps).\n"+
+					"i='%v'\nNumStr='%v'\nError= '%v\n",
+					ePrefix,
+					i,
+					numStrs[i],
+					err.Error())
 		}
 
-		result := bAdd.AddPair(BigIntPair{}.NewBigIntNum(bINumAddend, b2Num))
+		result, err := bAdd.AddPair(BigIntPair{}.NewBigIntNum(bINumAddend, b2Num))
+
+		if err != nil {
+			return []string{},
+				fmt.Errorf("%v\n"+
+					"Error returned by bAdd.AddPair(bINumAddend, b2Num).\n"+
+					"i='%v'\nNumStr='%v'\nError= %v\n",
+					ePrefix,
+					i,
+					numStrs[i],
+					err.Error())
+		}
 
 		resultsArray[i] = result.GetNumStr()
 
@@ -1107,7 +1290,9 @@ func (bAdd BigIntMathAdd) AddNumStrSeries(
 
 	if len(numStrs) == 0 {
 		return finalResult,
-			errors.New(ePrefix + "Error: 'numStrs' series is Empty!")
+			fmt.Errorf("%v\n"+
+				"Error: Input parameter 'numStrs' series is Empty!\n",
+				ePrefix)
 	}
 
 	var err error
@@ -1120,9 +1305,12 @@ func (bAdd BigIntMathAdd) AddNumStrSeries(
 
 			if err != nil {
 				return BigIntNum{}.New(),
-					fmt.Errorf(ePrefix+
-						"Error returned by BigIntNum{}.NewNumStrWithNumSeps(numStr, numSeps). "+
-						" i='%v' NumStr='%v' Error='%v' ", i, numStr, err.Error())
+					fmt.Errorf("%v\n"+
+						"Error returned by BigIntNum{}.NewNumStrWithNumSeps(numStr, numSeps).\n"+
+						"i='%v'\nNumStr='%v'\nError= %v\n",
+						ePrefix,
+						i,
+						numStr, err.Error())
 			}
 
 			continue
@@ -1132,12 +1320,27 @@ func (bAdd BigIntMathAdd) AddNumStrSeries(
 
 		if err != nil {
 			return BigIntNum{}.New(),
-				fmt.Errorf(ePrefix+"Error returned by BigIntNum{}.NewNumStrWithNumSeps(numStr, numSeps). "+
-					" i='%v' NumStr='%v' Error='%v' ", i, numStr, err.Error())
+				fmt.Errorf("%v\n"+
+					"Error returned by BigIntNum{}.NewNumStrWithNumSeps(numStr, numSeps).\n"+
+					"i='%v'\nNumStr='%v'\nError= %v\n",
+					ePrefix,
+					i,
+					numStr,
+					err.Error())
 		}
 
-		finalResult = bAdd.AddBigIntNums(finalResult, b2Num)
+		finalResult, err = bAdd.AddBigIntNums(finalResult, b2Num)
 
+		if err != nil {
+			return BigIntNum{}.New(),
+				fmt.Errorf("%v\n"+
+					"Error returned by bAdd.AddBigIntNums(finalResult, b2Num).\n"+
+					"i='%v'\nNumStr='%v'\nError= %v\n",
+					ePrefix,
+					i,
+					numStr,
+					err.Error())
+		}
 	}
 
 	finalResult.SetNumericSeparatorsToDefaultIfEmpty()
@@ -1161,11 +1364,23 @@ func (bAdd BigIntMathAdd) AddNumStrDto(n1Dto, n2Dto NumStrDto) (BigIntNum, error
 
 	if err != nil {
 		return BigIntNum{}.New(),
-			fmt.Errorf(ePrefix+"Error returned by BigIntPair{}.NewNumStrDto(n1Dto, n2Dto). "+
-				"Error='%v' ", err.Error())
+			fmt.Errorf("%v\n"+
+				"Error returned by BigIntPair{}.NewNumStrDto(n1Dto, n2Dto).\n"+
+				"Error= %v\n",
+				ePrefix,
+				err.Error())
 	}
 
-	finalResult := bAdd.AddPair(bPair)
+	finalResult, err := bAdd.AddPair(bPair)
+
+	if err != nil {
+		return BigIntNum{},
+			fmt.Errorf("%v\n"+
+				"Error returned by bAdd.AddPair(bPair).\n"+
+				"Error= %v\n",
+				ePrefix,
+				err.Error())
+	}
 
 	return finalResult, nil
 }
@@ -1186,7 +1401,9 @@ func (bAdd BigIntMathAdd) AddNumStrDtoArray(nDtos []NumStrDto) (BigIntNum, error
 
 	if lenDecs == 0 {
 		return finalResult,
-			errors.New(ePrefix + "Error: 'nDtos' array is Empty!")
+			fmt.Errorf("%v\n"+
+				"Error: Input parameter 'nDtos' array is Empty!\n",
+				ePrefix)
 	}
 
 	numSeps := NumericSeparatorDto{}
@@ -1200,8 +1417,13 @@ func (bAdd BigIntMathAdd) AddNumStrDtoArray(nDtos []NumStrDto) (BigIntNum, error
 
 			if err != nil {
 				return BigIntNum{}.New(),
-					fmt.Errorf(ePrefix+"Error returned by BigIntNum{}.NewNumStrDto(nDtos[i]). "+
-						" i='%v' nDtos[i].GetNumStr()='%v' Error='%v' ", i, nDtos[i].GetNumStr(), err.Error())
+					fmt.Errorf("%v\n"+
+						"Error returned by BigIntNum{}.NewNumStrDto(nDtos[i]).\n"+
+						"i='%v'\nnDtos[i].GetNumStr()='%v'\nError= %v\n",
+						ePrefix,
+						i,
+						nDtos[i].GetNumStr(),
+						err.Error())
 			}
 
 			numSeps = nDtos[0].GetNumericSeparatorsDto()
@@ -1213,8 +1435,13 @@ func (bAdd BigIntMathAdd) AddNumStrDtoArray(nDtos []NumStrDto) (BigIntNum, error
 
 		if err != nil {
 			return BigIntNum{}.New(),
-				fmt.Errorf(ePrefix+"Error returned by BigIntPair{}.NewINumMgr(&finalResult.Result, &nDtos[i]). "+
-					" i='%v' dec[i].GetNumStr()='%v' Error='%v' ", i, nDtos[i].GetNumStr(), err.Error())
+				fmt.Errorf("%v\n"+
+					"Error returned by BigIntPair{}.NewINumMgr(&finalResult.Result, &nDtos[i]).\n"+
+					"i='%v'\ndec[i].GetNumStr()='%v'\nError= %v\n",
+					ePrefix,
+					i,
+					nDtos[i].GetNumStr(),
+					err.Error())
 		}
 
 		finalResult = bAdd.addPairNoNumSeps(bPair)
@@ -1224,8 +1451,11 @@ func (bAdd BigIntMathAdd) AddNumStrDtoArray(nDtos []NumStrDto) (BigIntNum, error
 
 	if err != nil {
 		return BigIntNum{}.New(),
-			fmt.Errorf(ePrefix+"Error returned by finalResult.SetNumericSeparatorsDto(numSeps). "+
-				"Error='%v' \n", err.Error())
+			fmt.Errorf("%v\n"+
+				"Error returned by finalResult.SetNumericSeparatorsDto(numSeps).\n"+
+				"Error= %v\n",
+				ePrefix,
+				err.Error())
 	}
 
 	return finalResult, nil
@@ -1240,15 +1470,15 @@ func (bAdd BigIntMathAdd) AddNumStrDtoArray(nDtos []NumStrDto) (BigIntNum, error
 // Example
 // =======
 //
-//											    nDtos										 Output
-//	 Addend   				    	Array											Array
+//	                        nDtos                      Output
+//	  Addend                Array                      Array
 //
-//			3			+					nDtos[0] = 2			=				  outputarray[0] =  5
-//			3			+					nDtos[1] = 3			=				  outputarray[1] =  6
-//			3			+					nDtos[2] = 4			=				  outputarray[2] =  7
-//			3			+					nDtos[3] = 5			=				  outputarray[3] =  8
-//			3			+					nDtos[4] = 6			=				  outputarray[4] =  9
-//			3			+					nDtos[5] = 9			=				  outputarray[5] = 12
+//				3			+					nDtos[0] = 2			=				  outputarray[0] =  5
+//				3			+					nDtos[1] = 3			=				  outputarray[1] =  6
+//				3			+					nDtos[2] = 4			=				  outputarray[2] =  7
+//				3			+					nDtos[3] = 5			=				  outputarray[3] =  8
+//				3			+					nDtos[4] = 6			=				  outputarray[4] =  9
+//				3			+					nDtos[5] = 9			=				  outputarray[5] = 12
 //
 // Each element in the returned array of []NumStrDto resulting of this addition
 // operation will contain numeric separators (decimal separator, thousands separator
@@ -1263,7 +1493,9 @@ func (bAdd BigIntMathAdd) AddNumStrDtoOutputToArray(
 
 	if lenDecs == 0 {
 		return []NumStrDto{},
-			errors.New(ePrefix + "Error: 'nDtos' array is Empty!")
+			fmt.Errorf("%v\n"+
+				"Error: Input parameter 'nDtos' array is Empty!\n",
+				ePrefix)
 	}
 
 	numSeps := addend.GetNumericSeparatorsDto()
@@ -1284,8 +1516,13 @@ func (bAdd BigIntMathAdd) AddNumStrDtoOutputToArray(
 
 		if err != nil {
 			return []NumStrDto{},
-				fmt.Errorf(ePrefix+"Error returned by BigIntPair{}.NewNumStrDto(addend, nDtos[i]). "+
-					" i='%v' dec[i].GetNumStr()='%v' Error='%v' ", i, nDtos[i].GetNumStr(), err.Error())
+				fmt.Errorf("%v\n"+
+					"Error returned by BigIntPair{}.NewNumStrDto(addend, nDtos[i]).\n"+
+					"i='%v'\ndec[i].GetNumStr()='%v'\nError= %v\n",
+					ePrefix,
+					i,
+					nDtos[i].GetNumStr(),
+					err.Error())
 		}
 
 		result := bAdd.addPairNoNumSeps(bPair)
@@ -1294,19 +1531,24 @@ func (bAdd BigIntMathAdd) AddNumStrDtoOutputToArray(
 
 		if err != nil {
 			return []NumStrDto{},
-				fmt.Errorf(ePrefix+
-					"Error returned by result.SetNumericSeparatorsDto(numSeps). "+
-					"Error='%v' \n", err.Error())
+				fmt.Errorf("%v\n"+
+					"Error returned by result.SetNumericSeparatorsDto(numSeps).\n"+
+					"Error= %v\n",
+					ePrefix,
+					err.Error())
 		}
 
 		resultsArray[i], err = result.GetNumStrDto()
 
 		if err != nil {
 			return []NumStrDto{},
-				fmt.Errorf(ePrefix+
-					"Error returned by result.Result.GetNumStrDto(). "+
-					" i='%v' nDtos[i].GetNumStr()='%v' Error='%v' ",
-					i, nDtos[i].GetNumStr(), err.Error())
+				fmt.Errorf("%v\n"+
+					"Error returned by result.Result.GetNumStrDto().\n"+
+					"i='%v'\nnDtos[i].GetNumStr()='%v'\nError= %v\n",
+					ePrefix,
+					i,
+					nDtos[i].GetNumStr(),
+					err.Error())
 		}
 
 	}
@@ -1328,7 +1570,9 @@ func (bAdd BigIntMathAdd) AddNumStrDtoSeries(nDtos ...NumStrDto) (BigIntNum, err
 
 	if len(nDtos) == 0 {
 		return finalResult,
-			errors.New(ePrefix + "Error: 'nDtos' series is Empty!")
+			fmt.Errorf("%v\n"+
+				"Error: Input parameter 'nDtos' series is Empty!\n",
+				ePrefix)
 	}
 
 	var err error
@@ -1343,8 +1587,13 @@ func (bAdd BigIntMathAdd) AddNumStrDtoSeries(nDtos ...NumStrDto) (BigIntNum, err
 
 			if err != nil {
 				return BigIntNum{}.New(),
-					fmt.Errorf(ePrefix+"Error returned by BigIntNum{}.NewNumStrDto(nDto). "+
-						" i='%v' NumStr='%v' Error='%v' ", i, nDto.GetNumStr(), err.Error())
+					fmt.Errorf("%v\n"+
+						"Error returned by BigIntNum{}.NewNumStrDto(nDto).\n"+
+						"i='%v'\nNumStr='%v'\nError= %v\n",
+						ePrefix,
+						i,
+						nDto.GetNumStr(),
+						err.Error())
 			}
 
 			numSeps = nDto.GetNumericSeparatorsDto()
@@ -1357,9 +1606,12 @@ func (bAdd BigIntMathAdd) AddNumStrDtoSeries(nDtos ...NumStrDto) (BigIntNum, err
 
 		if err != nil {
 			return BigIntNum{}.New(),
-				fmt.Errorf(ePrefix+
-					"Error returned by BigIntNum{}.NewNumStrDto(nDto). "+
-					" i='%v' Error='%v' ", i, err.Error())
+				fmt.Errorf("%v\n"+
+					"Error returned by BigIntNum{}.NewNumStrDto(nDto).\n"+
+					"\ni='%v'\nError='%v'\n",
+					ePrefix,
+					i,
+					err.Error())
 		}
 
 		bPair := BigIntPair{}.NewBigIntNum(finalResult, bINumNextAddend)
@@ -1371,9 +1623,11 @@ func (bAdd BigIntMathAdd) AddNumStrDtoSeries(nDtos ...NumStrDto) (BigIntNum, err
 
 	if err != nil {
 		return BigIntNum{}.New(),
-			fmt.Errorf(ePrefix+
-				"Error returned by finalResult.SetNumericSeparatorsDto(numSeps). "+
-				"Error='%v' ", err.Error())
+			fmt.Errorf("%v\n"+
+				"Error returned by finalResult.SetNumericSeparatorsDto(numSeps).\n"+
+				"Error= %v\n",
+				ePrefix,
+				err.Error())
 	}
 
 	return finalResult, nil
@@ -1387,15 +1641,15 @@ func (bAdd BigIntMathAdd) AddNumStrDtoSeries(nDtos ...NumStrDto) (BigIntNum, err
 // The BigIntNum 'result' returned by this addition operation will contain
 // numeric separators (decimal separator, thousands separator and currency
 // symbol) copied from b1.BigIntNum.
-func (bAdd BigIntMathAdd) AddPair(bPair BigIntPair) BigIntNum {
+func (bAdd BigIntMathAdd) AddPair(bPair BigIntPair) (BigIntNum, error) {
 
 	numSeps := bPair.Big1.GetNumericSeparatorsDto()
 
 	finalResult := bAdd.addPairNoNumSeps(bPair)
 
-	_ = finalResult.SetNumericSeparatorsDto(numSeps)
+	err := finalResult.SetNumericSeparatorsDto(numSeps)
 
-	return finalResult
+	return finalResult, err
 }
 
 // BigIntAdd - Adds two fixed length floating point numbers and generates
@@ -1437,7 +1691,7 @@ func (bAdd BigIntMathAdd) AddPair(bPair BigIntPair) BigIntNum {
 // Input Parameters
 // ================
 //
-//		b1 					*big.Int	- The the first number which will be added to 'b2' to
+//		b1 					*big.Int	- The first number which will be added to 'b2' to
 //	                   			generate a total.
 //
 //		b1Precision	*big.Int	- Specifies the precision for input parameter 'b1'.
@@ -1585,7 +1839,7 @@ func (bAdd BigIntMathAdd) BigIntAdd(
 //
 // type BigIntFixedDecimal struct {
 //
-//	integerNum *big.Int  -	All of the numeric digits, both integer and fractional,
+//	integerNum *big.Int  -	All the numeric digits, both integer and fractional,
 //													necessary to define a fixed length floating point number.
 //													The number of digits to the right of the decimal place
 //													is specified by the data field,
@@ -1625,7 +1879,7 @@ func (bAdd BigIntMathAdd) BigIntAdd(
 // Input Parameters
 // ================
 //
-//		b1 BigIntFixedDecimal	- The the first number which will be added to 'b2' to
+//		b1 BigIntFixedDecimal	- The first number which will be added to 'b2' to
 //	                   			generate a total.
 //
 //		b2 BigIntFixedDecimal	- The second number which is added to 'b1' in order to
