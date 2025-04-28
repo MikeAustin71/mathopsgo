@@ -18,7 +18,6 @@ type BigIntMathAdd struct {
 // The BigIntNum 'result' returned by this addition operation will contain
 // USA default numeric separators (decimal separator, thousands separator and
 // currency symbol).
-//
 func (bAdd BigIntMathAdd) AddBigInts(
 	b1 *big.Int,
 	precision1 uint,
@@ -35,7 +34,6 @@ func (bAdd BigIntMathAdd) AddBigInts(
 			b2,
 			big.NewInt(0).SetUint64(uint64(precision2)))
 
-
 	biNum, _ := BigIntNum{}.NewBigIntPrecision(result, resultPrecision)
 
 	return biNum
@@ -48,7 +46,6 @@ func (bAdd BigIntMathAdd) AddBigInts(
 // The BigIntNum 'result' returned by this addition operation will contain
 // numeric separators (decimal separator, thousands separator and currency symbol)
 // which were copied from input parameter 'b1'.
-//
 func (bAdd BigIntMathAdd) AddBigIntNums(b1, b2 BigIntNum) BigIntNum {
 
 	bPair := BigIntPair{}.NewBigIntNum(b1, b2)
@@ -62,7 +59,6 @@ func (bAdd BigIntMathAdd) AddBigIntNums(b1, b2 BigIntNum) BigIntNum {
 // The BigIntNum 'result' returned by this addition operation will contain
 // numeric separators (decimal separator, thousands separator and currency symbol)
 // which were copied from the first element of the bNums array (bNums[0]).
-//
 func (bAdd BigIntMathAdd) AddBigIntNumArray(bNums []BigIntNum) BigIntNum {
 
 	finalResult := BigIntNum{}.NewZero(0)
@@ -100,21 +96,21 @@ func (bAdd BigIntMathAdd) AddBigIntNumArray(bNums []BigIntNum) BigIntNum {
 //
 // Example
 // =======
-// 										Multiplicands												Output
-//  Addend   				    	Array														Array
 //
-//		3			+					bNums[0] = 2			=				  outputarray[0] =  5
-//		3			+					bNums[1] = 3			=				  outputarray[1] =  6
-//		3			+					bNums[2] = 4			=				  outputarray[2] =  7
-//		3			+					bNums[3] = 5			=				  outputarray[3] =  8
-//		3			+					bNums[4] = 6			=				  outputarray[4] =  9
-//		3			+					bNums[5] = 9			=				  outputarray[5] = 12
+//											Multiplicands												Output
+//	 Addend   				    	Array														Array
+//
+//			3			+					bNums[0] = 2			=				  outputarray[0] =  5
+//			3			+					bNums[1] = 3			=				  outputarray[1] =  6
+//			3			+					bNums[2] = 4			=				  outputarray[2] =  7
+//			3			+					bNums[3] = 5			=				  outputarray[3] =  8
+//			3			+					bNums[4] = 6			=				  outputarray[4] =  9
+//			3			+					bNums[5] = 9			=				  outputarray[5] = 12
 //
 // Each element of the the []BigIntNum 'result' array returned by this addition
 // operation will contain numeric separators (decimal separator, thousands
 // separator and currency symbol) which were copied from input parameter
 // 'addend'.
-//
 func (bAdd BigIntMathAdd) AddBigIntNumOutputToArray(
 	addend BigIntNum,
 	bNums []BigIntNum) []BigIntNum {
@@ -147,11 +143,9 @@ func (bAdd BigIntMathAdd) AddBigIntNumOutputToArray(
 // AddBigIntNumSeries - Adds a series of BigIntNum types and returns the total in a
 // BigIntNum instance.
 //
-//
 // The BigIntNum 'result' returned by this addition operation will contain
 // numeric separators (decimal separator, thousands separator and currency symbol)
 // which were copied from the first element in input series 'bNums'.
-//
 func (bAdd BigIntMathAdd) AddBigIntNumSeries(bNums ...BigIntNum) BigIntNum {
 
 	finalResult := BigIntNum{}.New()
@@ -207,11 +201,9 @@ func (bAdd BigIntMathAdd) AddDecimal(dec1, dec2 Decimal) (BigIntNum, error) {
 // AddDecimalArray - Adds an array of 'Decimal' types and returns the combined total
 // as an instance of Type, 'BigIntNum'.
 //
-//
 // The BigIntNum 'result' returned by this addition operation will contain
 // numeric separators (decimal separator, thousands separator and currency symbol)
 // which were copied from the first element of the input (decs[0]).
-//
 func (bAdd BigIntMathAdd) AddDecimalArray(decs []Decimal) (BigIntNum, error) {
 
 	ePrefix := "BigIntMathAdd.AddDecimalArray() "
@@ -223,7 +215,9 @@ func (bAdd BigIntMathAdd) AddDecimalArray(decs []Decimal) (BigIntNum, error) {
 
 	if lenDecs == 0 {
 		return finalResult,
-			errors.New(ePrefix + "Error: decs array is Empty!")
+			fmt.Errorf("%v\n"+
+				"Error: Input parameter 'decs' array is Empty!\n",
+				ePrefix)
 	}
 
 	numSeps := decs[0].GetNumericSeparatorsDto()
@@ -237,10 +231,13 @@ func (bAdd BigIntMathAdd) AddDecimalArray(decs []Decimal) (BigIntNum, error) {
 
 			if err != nil {
 				return BigIntNum{}.New(),
-					fmt.Errorf(ePrefix+
-						"Error returned by BigIntNum{}.NewDecimal(decs[i]). "+
+					fmt.Errorf("%v\n"+
+						"Error returned by BigIntNum{}.NewDecimal(decs[i]) .\n"+
 						" i='%v' decs[i].GetNumStr()='%v' Error='%v' ",
-						i, decs[i].GetNumStr(), err.Error())
+						ePrefix,
+						i,
+						decs[i].GetNumStr(),
+						err.Error())
 			}
 
 			continue
@@ -280,22 +277,21 @@ func (bAdd BigIntMathAdd) AddDecimalArray(decs []Decimal) (BigIntNum, error) {
 //
 // Example
 // =======
-// 										    decs										 Output
-//  Addend   				    	Array											Array
 //
-//		3			+					decs[0] = 2			=				  outputarray[0] =  5
-//		3			+					decs[1] = 3			=				  outputarray[1] =  6
-//		3			+					decs[2] = 4			=				  outputarray[2] =  7
-//		3			+					decs[3] = 5			=				  outputarray[3] =  8
-//		3			+					decs[4] = 6			=				  outputarray[4] =  9
-//		3			+					decs[5] = 9			=				  outputarray[5] = 12
+//											    decs										 Output
+//	 Addend   				    	Array											Array
 //
+//			3			+					decs[0] = 2			=				  outputarray[0] =  5
+//			3			+					decs[1] = 3			=				  outputarray[1] =  6
+//			3			+					decs[2] = 4			=				  outputarray[2] =  7
+//			3			+					decs[3] = 5			=				  outputarray[3] =  8
+//			3			+					decs[4] = 6			=				  outputarray[4] =  9
+//			3			+					decs[5] = 9			=				  outputarray[5] = 12
 //
 // Each element in the []Decimal array 'result' returned by this addition
 // operation will contain numeric separators (decimal separator, thousands
 // separator and currency symbol) which were copied from input parameter
 // 'addend'.
-//
 func (bAdd BigIntMathAdd) AddDecimalOutputToArray(
 	addend Decimal,
 	decs []Decimal) ([]Decimal, error) {
@@ -356,7 +352,6 @@ func (bAdd BigIntMathAdd) AddDecimalOutputToArray(
 // The BigIntNum 'result' returned by this addition operation will contain numeric
 // separators (decimal separator, thousands separator and currency symbol) which
 // were copied from input series element 'decs[0]'.
-//
 func (bAdd BigIntMathAdd) AddDecimalSeries(decs ...Decimal) (BigIntNum, error) {
 
 	ePrefix := "BigIntMathAdd.AddDecimalSeries() "
@@ -425,7 +420,6 @@ func (bAdd BigIntMathAdd) AddDecimalSeries(decs ...Decimal) (BigIntNum, error) {
 // The BigIntNum 'result' returned by this addition operation will contain numeric
 // separators (decimal separator, thousands separator and currency symbol) which
 // were copied from input parameter 'ia1'.
-//
 func (bAdd BigIntMathAdd) AddIntAry(ia1, ia2 IntAry) (BigIntNum, error) {
 
 	ePrefix := "BigIntMathAdd.AddNumStrDto() "
@@ -450,7 +444,6 @@ func (bAdd BigIntMathAdd) AddIntAry(ia1, ia2 IntAry) (BigIntNum, error) {
 // The BigIntNum 'result' returned by this addition operation will contain numeric
 // separators (decimal separator, thousands separator and currency symbol) which
 // were copied from the first element of the input array, iarys[0].
-//
 func (bAdd BigIntMathAdd) AddIntAryArray(iarys []IntAry) (BigIntNum, error) {
 
 	ePrefix := "BigIntMathAdd.AddIntAryArray() "
@@ -518,20 +511,20 @@ func (bAdd BigIntMathAdd) AddIntAryArray(iarys []IntAry) (BigIntNum, error) {
 //
 // Example
 // =======
-// 										    decs										 Output
-//  Addend   				    	Array											Array
 //
-//		3			+					iarys[0] = 2			=				  outputarray[0] =  5
-//		3			+					iarys[1] = 3			=				  outputarray[1] =  6
-//		3			+					iarys[2] = 4			=				  outputarray[2] =  7
-//		3			+					iarys[3] = 5			=				  outputarray[3] =  8
-//		3			+					iarys[4] = 6			=				  outputarray[4] =  9
-//		3			+					iarys[5] = 9			=				  outputarray[5] = 12
+//											    decs										 Output
+//	 Addend   				    	Array											Array
+//
+//			3			+					iarys[0] = 2			=				  outputarray[0] =  5
+//			3			+					iarys[1] = 3			=				  outputarray[1] =  6
+//			3			+					iarys[2] = 4			=				  outputarray[2] =  7
+//			3			+					iarys[3] = 5			=				  outputarray[3] =  8
+//			3			+					iarys[4] = 6			=				  outputarray[4] =  9
+//			3			+					iarys[5] = 9			=				  outputarray[5] = 12
 //
 // Each element of the []IntAry returned by this addition operation will contain
 // numeric separators (decimal separator, thousands separator and currency symbol)
 // which were copied from input parameter 'addend'.
-//
 func (bAdd BigIntMathAdd) AddIntAryOutputToArray(
 	addend IntAry,
 	iarys []IntAry) ([]IntAry, error) {
@@ -602,7 +595,6 @@ func (bAdd BigIntMathAdd) AddIntAryOutputToArray(
 // The BigIntNum result of this addition operation will contain numeric separators
 // (decimal separator, thousands separator and currency symbol) which were copied
 // from the first element input series 'iarys'.
-//
 func (bAdd BigIntMathAdd) AddIntArySeries(iarys ...IntAry) (BigIntNum, error) {
 
 	ePrefix := "BigIntMathAdd.AddIntArySeries() "
@@ -672,7 +664,6 @@ func (bAdd BigIntMathAdd) AddIntArySeries(iarys ...IntAry) (BigIntNum, error) {
 // The returned BigIntNum result of this addition operation will contain
 // numeric separators (decimal separator, thousands separator and currency
 // symbol) which were copied from the input parameter 'num1'.
-//
 func (bAdd BigIntMathAdd) AddINumMgr(num1, num2 INumMgr) (BigIntNum, error) {
 
 	ePrefix := "BigIntMathAdd.AddINumMgr() "
@@ -705,7 +696,6 @@ func (bAdd BigIntMathAdd) AddINumMgr(num1, num2 INumMgr) (BigIntNum, error) {
 // numeric separators (decimal separator, thousands separator and currency
 // symbol) which were copied from the first element of the input parameter
 // array, nums (nums[0]).
-//
 func (bAdd BigIntMathAdd) AddINumMgrArray(nums []INumMgr) (BigIntNum, error) {
 
 	ePrefix := "BigIntMathAdd.AddINumMgrArray() "
@@ -772,20 +762,20 @@ func (bAdd BigIntMathAdd) AddINumMgrArray(nums []INumMgr) (BigIntNum, error) {
 //
 // Example
 // =======
-// 										    numMgrs										 Output
-//  Addend   				    	Array											Array
 //
-//		3			+					numMgrs[0] = 2			=				  outputarray[0] =  5
-//		3			+					numMgrs[1] = 3			=				  outputarray[1] =  6
-//		3			+					numMgrs[2] = 4			=				  outputarray[2] =  7
-//		3			+					numMgrs[3] = 5			=				  outputarray[3] =  8
-//		3			+					numMgrs[4] = 6			=				  outputarray[4] =  9
-//		3			+					numMgrs[5] = 9			=				  outputarray[5] = 12
+//											    numMgrs										 Output
+//	 Addend   				    	Array											Array
+//
+//			3			+					numMgrs[0] = 2			=				  outputarray[0] =  5
+//			3			+					numMgrs[1] = 3			=				  outputarray[1] =  6
+//			3			+					numMgrs[2] = 4			=				  outputarray[2] =  7
+//			3			+					numMgrs[3] = 5			=				  outputarray[3] =  8
+//			3			+					numMgrs[4] = 6			=				  outputarray[4] =  9
+//			3			+					numMgrs[5] = 9			=				  outputarray[5] = 12
 //
 // Each element of the returned []INumMgr array will contain numeric separators
 // (decimal separator, thousands separator and currency symbol) which were
 // copied from the input parameter 'addend'.
-//
 func (bAdd BigIntMathAdd) AddINumMgrOutputToArray(
 	addend INumMgr,
 	numMgrs []INumMgr) ([]INumMgr, error) {
@@ -844,7 +834,6 @@ func (bAdd BigIntMathAdd) AddINumMgrOutputToArray(
 // numeric separators (decimal separator, thousands separator and currency
 // symbol) which were copied from the first element of the input parameter
 // 'nums'.
-//
 func (bAdd BigIntMathAdd) AddINumMgrSeries(nums ...INumMgr) (BigIntNum, error) {
 
 	ePrefix := "BigIntMathAdd.AddINumMgrSeries() "
@@ -925,7 +914,6 @@ func (bAdd BigIntMathAdd) AddINumMgrSeries(nums ...INumMgr) (BigIntNum, error) {
 // The returned BigIntNum result of this addition operation will contain
 // numeric separators (decimal separator, thousands separator and currency
 // symbol) specified by input parameter, 'numSeps'.
-//
 func (bAdd BigIntMathAdd) AddNumStr(n1NumStr, n2NumStr string, numSeps NumericSeparatorDto) (BigIntNum, error) {
 
 	ePrefix := "BigIntMathAdd.AddNumStr() "
@@ -962,7 +950,6 @@ func (bAdd BigIntMathAdd) AddNumStr(n1NumStr, n2NumStr string, numSeps NumericSe
 // The returned BigIntNum result of this addition operation will contain
 // numeric separators (decimal separator, thousands separator and currency
 // symbol) as specified by input parameter 'numSeps'.
-//
 func (bAdd BigIntMathAdd) AddNumStrArray(
 	numStrs []string, numSeps NumericSeparatorDto) (BigIntNum, error) {
 
@@ -1033,17 +1020,16 @@ func (bAdd BigIntMathAdd) AddNumStrArray(
 //
 // Example
 // =======
-// 										    numStrs										 Output
-//  Addend   				    	Array											Array
 //
-//		3			+					numStrs[0] = 2			=				  outputarray[0] =  5
-//		3			+					numStrs[1] = 3			=				  outputarray[1] =  6
-//		3			+					numStrs[2] = 4			=				  outputarray[2] =  7
-//		3			+					numStrs[3] = 5			=				  outputarray[3] =  8
-//		3			+					numStrs[4] = 6			=				  outputarray[4] =  9
-//		3			+					numStrs[5] = 9			=				  outputarray[5] = 12
+//											    numStrs										 Output
+//	 Addend   				    	Array											Array
 //
-//
+//			3			+					numStrs[0] = 2			=				  outputarray[0] =  5
+//			3			+					numStrs[1] = 3			=				  outputarray[1] =  6
+//			3			+					numStrs[2] = 4			=				  outputarray[2] =  7
+//			3			+					numStrs[3] = 5			=				  outputarray[3] =  8
+//			3			+					numStrs[4] = 6			=				  outputarray[4] =  9
+//			3			+					numStrs[5] = 9			=				  outputarray[5] = 12
 func (bAdd BigIntMathAdd) AddNumStrOutputToArray(
 	addend string,
 	numStrs []string,
@@ -1110,7 +1096,6 @@ func (bAdd BigIntMathAdd) AddNumStrOutputToArray(
 // The returned BigIntNum result of this addition operation will contain
 // numeric separators (decimal separator, thousands separator and currency
 // symbol) specified by input parameter 'numSeps'.
-//
 func (bAdd BigIntMathAdd) AddNumStrSeries(
 	numSeps NumericSeparatorDto, numStrs ...string) (BigIntNum, error) {
 
@@ -1167,7 +1152,6 @@ func (bAdd BigIntMathAdd) AddNumStrSeries(
 // The returned BigIntNum result of this addition operation will contain
 // the numeric separators (decimal separator, thousands separator and currency
 // symbol) copied from input parameter 'n1Dto'.
-//
 func (bAdd BigIntMathAdd) AddNumStrDto(n1Dto, n2Dto NumStrDto) (BigIntNum, error) {
 
 	ePrefix := "BigIntMathAdd.AddNumStrDto() "
@@ -1192,7 +1176,6 @@ func (bAdd BigIntMathAdd) AddNumStrDto(n1Dto, n2Dto NumStrDto) (BigIntNum, error
 // The returned BigIntNum result of this addition operation will contain
 // numeric separators (decimal separator, thousands separator and currency
 // symbol) copied from the first element of the input array, nDtos[0].
-//
 func (bAdd BigIntMathAdd) AddNumStrDtoArray(nDtos []NumStrDto) (BigIntNum, error) {
 
 	ePrefix := "BigIntMathAdd.AddDecimalArray() "
@@ -1256,20 +1239,20 @@ func (bAdd BigIntMathAdd) AddNumStrDtoArray(nDtos []NumStrDto) (BigIntNum, error
 //
 // Example
 // =======
-// 										    nDtos										 Output
-//  Addend   				    	Array											Array
 //
-//		3			+					nDtos[0] = 2			=				  outputarray[0] =  5
-//		3			+					nDtos[1] = 3			=				  outputarray[1] =  6
-//		3			+					nDtos[2] = 4			=				  outputarray[2] =  7
-//		3			+					nDtos[3] = 5			=				  outputarray[3] =  8
-//		3			+					nDtos[4] = 6			=				  outputarray[4] =  9
-//		3			+					nDtos[5] = 9			=				  outputarray[5] = 12
+//											    nDtos										 Output
+//	 Addend   				    	Array											Array
+//
+//			3			+					nDtos[0] = 2			=				  outputarray[0] =  5
+//			3			+					nDtos[1] = 3			=				  outputarray[1] =  6
+//			3			+					nDtos[2] = 4			=				  outputarray[2] =  7
+//			3			+					nDtos[3] = 5			=				  outputarray[3] =  8
+//			3			+					nDtos[4] = 6			=				  outputarray[4] =  9
+//			3			+					nDtos[5] = 9			=				  outputarray[5] = 12
 //
 // Each element in the returned array of []NumStrDto resulting of this addition
 // operation will contain numeric separators (decimal separator, thousands separator
 // and currency symbol) copied from input parameter 'addend'.
-//
 func (bAdd BigIntMathAdd) AddNumStrDtoOutputToArray(
 	addend NumStrDto,
 	nDtos []NumStrDto) ([]NumStrDto, error) {
@@ -1337,7 +1320,6 @@ func (bAdd BigIntMathAdd) AddNumStrDtoOutputToArray(
 // The returned BigIntNum resulting of this addition operation will contain numeric
 // separators (decimal separator, thousands separator and currency symbol) copied
 // from the first element of the input series 'nDtos'.
-//
 func (bAdd BigIntMathAdd) AddNumStrDtoSeries(nDtos ...NumStrDto) (BigIntNum, error) {
 
 	ePrefix := "BigIntMathAdd.AddNumStrDtoSeries() "
@@ -1405,7 +1387,6 @@ func (bAdd BigIntMathAdd) AddNumStrDtoSeries(nDtos ...NumStrDto) (BigIntNum, err
 // The BigIntNum 'result' returned by this addition operation will contain
 // numeric separators (decimal separator, thousands separator and currency
 // symbol) copied from b1.BigIntNum.
-//
 func (bAdd BigIntMathAdd) AddPair(bPair BigIntPair) BigIntNum {
 
 	numSeps := bPair.Big1.GetNumericSeparatorsDto()
@@ -1427,25 +1408,28 @@ func (bAdd BigIntMathAdd) AddPair(bPair BigIntPair) BigIntNum {
 // =========
 //
 // In the addition operation:
-// 						b1 + b2 = total or sum
+//
+//	b1 + b2 = total or sum
 //
 // This method provides for the addition of fixed length
 // floating point values by means of integer and precision
 // specification pairs.
 //
 // As an example, consider the following addition operation
-// 						752.314 + 21.67894 = 773.99294 = total
-//              b1    +     b2   =   total
+//
+//							752.314 + 21.67894 = 773.99294 = total
+//	             b1    +     b2   =   total
 //
 // In this case 'b1', 'b2' and 'total' would be configured as integer
 // precision pairs:
-//									b1 							= 752314
-//                  b1Precision			= 3
-//                  b2 							= 2167894
-//                  b2Precision 		= 5
 //
-//                  total						= 77399294
-//                  totalPrecision 	= 5
+//										b1 							= 752314
+//	                 b1Precision			= 3
+//	                 b2 							= 2167894
+//	                 b2Precision 		= 5
+//
+//	                 total						= 77399294
+//	                 totalPrecision 	= 5
 //
 // In this way, the method uses integer, precision pairs to define fixed
 // length floating point numbers.
@@ -1453,20 +1437,20 @@ func (bAdd BigIntMathAdd) AddPair(bPair BigIntPair) BigIntNum {
 // Input Parameters
 // ================
 //
-//	b1 					*big.Int	- The the first number which will be added to 'b2' to
-//                    			generate a total.
+//		b1 					*big.Int	- The the first number which will be added to 'b2' to
+//	                   			generate a total.
 //
-//	b1Precision	*big.Int	- Specifies the precision for input parameter 'b1'.
-// 													Precision defines the number of fractional digits
-//													after the decimal place. 'b1Precision' must be equal
-//                          to or greater than zero.
+//		b1Precision	*big.Int	- Specifies the precision for input parameter 'b1'.
+//														Precision defines the number of fractional digits
+//														after the decimal place. 'b1Precision' must be equal
+//	                         to or greater than zero.
 //
-//	b2 					*big.Int	- The second number which is added to 'b1' in order to
-//                 					generate a total.
+//		b2 					*big.Int	- The second number which is added to 'b1' in order to
+//	                					generate a total.
 //
-//	b2Precision	*big.Int  - The 'b2' precision or the number of fractional digits
-//													after the decimal place. 'b2Precision' must be equal
-//                          to or greater than zero.
+//		b2Precision	*big.Int  - The 'b2' precision or the number of fractional digits
+//														after the decimal place. 'b2Precision' must be equal
+//	                         to or greater than zero.
 //
 // Return Values
 // =============
@@ -1474,13 +1458,14 @@ func (bAdd BigIntMathAdd) AddPair(bPair BigIntPair) BigIntNum {
 // total 					*big.Int		- The sum or total of 'b1' and 'b2' input values.
 //
 // totalPrecision *big.Int   	- The 'total' precision or the number of fractional
-// 															digits after the decimal place.
+//
+//	digits after the decimal place.
 //
 // err						error				- If input parameters 'b1Precision' or 'b2Precision'
-// 															are less than zero, an error will be returned.
+//
+//	are less than zero, an error will be returned.
 //
 // Taken together, 'total' and 'totalPrecision' can define a fixed length floating point number.
-//
 func (bAdd BigIntMathAdd) BigIntAdd(
 	b1,
 	b1Precision,
@@ -1505,17 +1490,16 @@ func (bAdd BigIntMathAdd) BigIntAdd(
 
 	if b1Precision.Cmp(bigZero) == -1 {
 
-		err = fmt.Errorf(ePrefix +
-			"Error: Input parameter 'b1Precision' is LESS THAN ZERO! " +
+		err = fmt.Errorf(ePrefix+
+			"Error: Input parameter 'b1Precision' is LESS THAN ZERO! "+
 			"b1Precision='%v' ", b1Precision.Text(10))
 
 		return total, totalPrecision, err
 	}
 
-
 	if b2Precision.Cmp(bigZero) == -1 {
-		err = fmt.Errorf(ePrefix +
-			"Error: Input parameter 'b2Precision' is LESS THAN ZERO! " +
+		err = fmt.Errorf(ePrefix+
+			"Error: Input parameter 'b2Precision' is LESS THAN ZERO! "+
 			"b2Precision='%v' ", b2Precision.Text(10))
 
 		return total, totalPrecision, err
@@ -1536,7 +1520,7 @@ func (bAdd BigIntMathAdd) BigIntAdd(
 		total = big.NewInt(0).Add(b1, b2)
 		totalPrecision = big.NewInt(0).Set(b1Precision)
 
-	} else if b1Precision.Cmp(b2Precision) == 1  {
+	} else if b1Precision.Cmp(b2Precision) == 1 {
 		// b1Precision > b2Precision
 		delta = big.NewInt(0).Sub(b1Precision, b2Precision)
 		scale = big.NewInt(0).Exp(bigTen, delta, nil)
@@ -1544,7 +1528,7 @@ func (bAdd BigIntMathAdd) BigIntAdd(
 		b2ToScale := big.NewInt(0).Mul(b2, scale)
 
 		total = big.NewInt(0).Add(b1, b2ToScale)
-		totalPrecision= big.NewInt(0).Set(b1Precision)
+		totalPrecision = big.NewInt(0).Set(b1Precision)
 
 	} else {
 		// b2Precision must be GREATER than b1Precision
@@ -1555,7 +1539,7 @@ func (bAdd BigIntMathAdd) BigIntAdd(
 		b1ToScale := big.NewInt(0).Mul(b1, scale)
 
 		total = big.NewInt(0).Add(b1ToScale, b2)
-		
+
 		totalPrecision = big.NewInt(0).Set(b2Precision)
 
 	}
@@ -1572,7 +1556,7 @@ func (bAdd BigIntMathAdd) BigIntAdd(
 		biBaseZero := big.NewInt(0)
 		newTotal, mod10 := big.NewInt(0).QuoRem(total, biBase10, scrap)
 		bigOne := big.NewInt(1)
-		for mod10.Cmp(biBaseZero) == 0 && totalPrecision.Cmp(bigZero) == 1  {
+		for mod10.Cmp(biBaseZero) == 0 && totalPrecision.Cmp(bigZero) == 1 {
 			total.Set(newTotal)
 			totalPrecision.Sub(totalPrecision, bigOne)
 			newTotal, mod10 = big.NewInt(0).QuoRem(total, biBase10, scrap)
@@ -1591,7 +1575,7 @@ func (bAdd BigIntMathAdd) BigIntAdd(
 //
 // In the addition operation:
 //
-// 						b1 + b2 = total or sum
+//	b1 + b2 = total or sum
 //
 // For this method 'b1', 'b2' and 'total' are all configured as BigIntFixedDecimal
 // types.
@@ -1602,37 +1586,38 @@ func (bAdd BigIntMathAdd) BigIntAdd(
 // type BigIntFixedDecimal struct {
 //
 //	integerNum *big.Int  -	All of the numeric digits, both integer and fractional,
-// 													necessary to define a fixed length floating point number.
-// 													The number of digits to the right of the decimal place
-// 													is specified by the data field,
-// 													BigIntFixedDecimal.precision.
+//													necessary to define a fixed length floating point number.
+//													The number of digits to the right of the decimal place
+//													is specified by the data field,
+//													BigIntFixedDecimal.precision.
 //
 //	precision  uint				- Specifies the number of digits to the right of the decimal
-// 													place in the series of numeric digits represented by data
-// 													field BigIntFixedDecimal.integerNum.
+//													place in the series of numeric digits represented by data
+//													field BigIntFixedDecimal.integerNum.
 //
 // }
 //
+//	To represent the floating point number 52.459	a BigIntDecimal Structure
+//	would be configured as follows:
 //
-// 	To represent the floating point number 52.459	a BigIntDecimal Structure
-// 	would be configured as follows:
-//
-// 			BigIntFixedDecimal.integerNum	= 52459
-// 			BigIntFixedDecimal.precision	= 3
+//			BigIntFixedDecimal.integerNum	= 52459
+//			BigIntFixedDecimal.precision	= 3
 //
 // As an example consider the following addition operation:
-// 						752.314 + 21.67894 = 773.99294 = total
-//              b1    +     b2   =   total
+//
+//							752.314 + 21.67894 = 773.99294 = total
+//	             b1    +     b2   =   total
 //
 // In this case 'b1', 'b2' and 'total' would be configured as BigIntDecimal
 // types:
-//									b1.integerNum			= 752314
-//                  b1.precision			= 3
-//                  b2.integerNum			= 2167894
-//                  b2.precision 			= 5
 //
-//                  total.integerNum	= 77399294
-//                  total.precision 	= 5
+//										b1.integerNum			= 752314
+//	                 b1.precision			= 3
+//	                 b2.integerNum			= 2167894
+//	                 b2.precision 			= 5
+//
+//	                 total.integerNum	= 77399294
+//	                 total.precision 	= 5
 //
 // In this way, the method uses BigIntFixedDecimal types to define fixed
 // length floating point numbers.
@@ -1640,22 +1625,21 @@ func (bAdd BigIntMathAdd) BigIntAdd(
 // Input Parameters
 // ================
 //
-//	b1 BigIntFixedDecimal	- The the first number which will be added to 'b2' to
-//                    			generate a total.
+//		b1 BigIntFixedDecimal	- The the first number which will be added to 'b2' to
+//	                   			generate a total.
 //
-//	b2 BigIntFixedDecimal	- The second number which is added to 'b1' in order to
-//                 					generate a total.
+//		b2 BigIntFixedDecimal	- The second number which is added to 'b1' in order to
+//	                					generate a total.
 //
 // Return Values
 // =============
 //
 // total BigIntFixedDecimal	- The sum or total of 'b1' and 'b2' input values.
-//
 func (bAdd BigIntMathAdd) FixedDecimalAdd(
 	b1,
 	b2 BigIntFixedDecimal) (total BigIntFixedDecimal) {
 
-	total = BigIntFixedDecimal{}.NewZero(0)
+	total = new(BigIntFixedDecimal).NewZero(0)
 
 	b1.IsValid()
 
@@ -1684,7 +1668,6 @@ func (bAdd BigIntMathAdd) FixedDecimalAdd(
 // The BigIntNum 'result' returned by this subtraction operation will contain
 // default numeric separators (decimal separator, thousands separator and
 // currency symbol).
-//
 func (bAdd BigIntMathAdd) addPairNoNumSeps(bPair BigIntPair) BigIntNum {
 
 	bPair.MakePrecisionsEqual()
