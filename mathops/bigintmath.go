@@ -1,7 +1,6 @@
 package mathops
 
 import (
-	"errors"
 	"fmt"
 	"math/big"
 )
@@ -11,10 +10,10 @@ type BigIntMath struct {
 	Output *big.Int
 }
 
-
 // ArithmeticGeometricMean - Computes the Arithmetic-Geometric Mean of
 // two numbers. See:
-// 		https://en.wikipedia.org/wiki/Arithmetic–geometric_mean
+//
+//	https://en.wikipedia.org/wiki/Arithmetic–geometric_mean
 //
 // Dev Note: maxInternalPrecision may need to be 60 to 75 times targetPrecision.
 func (bIntMath BigIntMath) ArithmeticGeometricMean(
@@ -24,83 +23,117 @@ func (bIntMath BigIntMath) ArithmeticGeometricMean(
 	gNumPrecision,
 	maxInternalPrecision,
 	targetPrecision *big.Int) (agMean,
-														agMeanPrecision,
-														gValue,
-														gValuePrecision *big.Int,
-														cycles uint64,
-														err error) {
+	agMeanPrecision,
+	gValue,
+	gValuePrecision *big.Int,
+	cycles uint64,
+	err error) {
 
 	ePrefix := "BigIntMath.ArithmeticGeometricMean() "
 	agMean = big.NewInt(0)
 	agMeanPrecision = big.NewInt(0)
-	gValue= big.NewInt(0)
+	gValue = big.NewInt(0)
 	gValuePrecision = big.NewInt(0)
 	cycles = 0
-	err =  nil
+	err = nil
 
 	if aNum == nil {
-			err = errors.New(ePrefix +
-				"Error: Input parameter 'aNum' is nil and INVALID!")
-			return agMean, agMeanPrecision, gValue, gValuePrecision, cycles, err
+
+		err = fmt.Errorf("%v\n"+
+			"Error: Input parameter 'aNum' is nil and INVALID!\n",
+			ePrefix)
+
+		return agMean, agMeanPrecision, gValue, gValuePrecision, cycles, err
 	}
 
 	if aNumPrecision == nil {
-		err = errors.New(ePrefix +
-			"Error: Input parameter 'aNumPrecision' is nil and INVALID!")
+
+		err = fmt.Errorf("%v\n"+
+			"Error: Input parameter 'aNumPrecision' is nil and INVALID!\n",
+			ePrefix)
+
 		return agMean, agMeanPrecision, gValue, gValuePrecision, cycles, err
 	}
 
 	if gNum == nil {
-		err = errors.New(ePrefix +
-			"Error: Input parameter 'gNum' is nil and INVALID!")
+
+		err = fmt.Errorf("%v\n"+
+			"Error: Input parameter 'gNum' is nil and INVALID!\n",
+			ePrefix)
+
 		return agMean, agMeanPrecision, gValue, gValuePrecision, cycles, err
 	}
 
 	if gNumPrecision == nil {
-		err = errors.New(ePrefix +
-			"Error: Input parameter 'gNumPrecision' is nil and INVALID!")
+
+		err = fmt.Errorf("%v\n"+
+			"Error: Input parameter 'gNumPrecision' is nil and INVALID!\n",
+			ePrefix)
+
 		return agMean, agMeanPrecision, gValue, gValuePrecision, cycles, err
 	}
 
 	if maxInternalPrecision == nil {
-		err = errors.New(ePrefix +
-			"Error: Input parameter 'maxInternalPrecision' is nil and INVALID!")
+
+		err = fmt.Errorf("%v\n"+
+			"Error: Input parameter 'maxInternalPrecision' is nil and INVALID!\n",
+			ePrefix)
+
 		return agMean, agMeanPrecision, gValue, gValuePrecision, cycles, err
 	}
 
 	if targetPrecision == nil {
-		err = errors.New(ePrefix +
-			"Error: Input parameter 'targetPrecision' is nil and INVALID!")
+
+		err = fmt.Errorf("%v\n"+
+			"Error: Input parameter 'targetPrecision' is nil and INVALID!\n",
+			ePrefix)
+
 		return agMean, agMeanPrecision, gValue, gValuePrecision, cycles, err
 	}
 
 	bigZero := big.NewInt(0)
 
 	if aNumPrecision.Cmp(bigZero) == -1 {
-		err = fmt.Errorf(ePrefix +
-			"Error: Input parameter 'aNumPrecision' is less than zero and INVALID! " +
-			"aNumPrecision='%v' ", aNumPrecision.Text(10))
+
+		err = fmt.Errorf("%v\n"+
+			"Error: Input parameter 'aNumPrecision' is less than zero and INVALID!\n"+
+			"aNumPrecision='%v'\n",
+			ePrefix,
+			aNumPrecision.Text(10))
+
 		return agMean, agMeanPrecision, gValue, gValuePrecision, cycles, err
 	}
 
 	if gNumPrecision.Cmp(bigZero) == -1 {
-		err = fmt.Errorf(ePrefix +
-			"Error: Input parameter 'gNumPrecision' is less than zero and INVALID! " +
-			"gNumPrecision='%v' ", gNumPrecision.Text(10))
+
+		err = fmt.Errorf("%v\n"+
+			"Error: Input parameter 'gNumPrecision' is less than zero and INVALID!\n"+
+			"gNumPrecision='%v'\n",
+			ePrefix,
+			gNumPrecision.Text(10))
+
 		return agMean, agMeanPrecision, gValue, gValuePrecision, cycles, err
 	}
 
 	if maxInternalPrecision.Cmp(bigZero) == -1 {
-		err = fmt.Errorf(ePrefix +
-			"Error: Input parameter 'maxInternalPrecision' is less than zero and INVALID! " +
-			"maxInternalPrecision='%v' ", maxInternalPrecision.Text(10))
+
+		err = fmt.Errorf("%v\n"+
+			"Error: Input parameter 'maxInternalPrecision' is less than zero and INVALID!\n"+
+			"maxInternalPrecision='%v'\n",
+			ePrefix,
+			maxInternalPrecision.Text(10))
+
 		return agMean, agMeanPrecision, gValue, gValuePrecision, cycles, err
 	}
 
 	if targetPrecision.Cmp(bigZero) == -1 {
-		err = fmt.Errorf(ePrefix +
-			"Error: Input parameter 'targetPrecision' is less than zero and INVALID! " +
-			"targetPrecision='%v' ", targetPrecision.Text(10))
+
+		err = fmt.Errorf("%v\n"+
+			"Error: Input parameter 'targetPrecision' is less than zero and INVALID!\n"+
+			"targetPrecision='%v'\n",
+			ePrefix,
+			targetPrecision.Text(10))
+
 		return agMean, agMeanPrecision, gValue, gValuePrecision, cycles, err
 	}
 
@@ -160,7 +193,7 @@ func (bIntMath BigIntMath) ArithmeticGeometricMean(
 	gTest := big.NewInt(0)
 	gTestPrecision := big.NewInt(0)
 
-	oneHalfFactor, oneHalfFactorPrecision, errX	:=
+	oneHalfFactor, oneHalfFactorPrecision, errX :=
 		BigIntMathDivide{}.BigIntFracQuotient(
 			big.NewInt(1),
 			bigZero,
@@ -169,46 +202,52 @@ func (bIntMath BigIntMath) ArithmeticGeometricMean(
 			maxInternalPrecision)
 
 	if errX != nil {
-		err = fmt.Errorf(ePrefix + "%v",errX.Error())
+
+		err = fmt.Errorf("%v\n"+
+			"Error returned by BigIntMathDivide{}.BigIntFracQuotient()\n"+
+			"Error: %v\n",
+			ePrefix,
+			errX.Error())
+
 		return agMean, agMeanPrecision, gValue, gValuePrecision, cycles, err
 	}
 
 	fdNRoot := FixedDecimalNthRoot{}
 	cycleNum := uint64(0)
 	/*
-	 aCycleValue := BigIntNum{}.NewZero(0)
-	 gCycleValue := BigIntNum{}.NewZero(0)
-	 tempACyclePreAddPrecision := big.NewInt(0)
-	 tempACyclePrecision := big.NewInt(0)
-	 tempGCyclePrecision := big.NewInt(0)
-	 tempGComPrecision:= big.NewInt(0)
-	 gComPreRoundValue := BigIntNum{}.NewZero(0)
-	 gComValue := BigIntNum{}.NewZero(0)
+	   aCycleValue := BigIntNum{}.NewZero(0)
+	   gCycleValue := BigIntNum{}.NewZero(0)
+	   tempACyclePreAddPrecision := big.NewInt(0)
+	   tempACyclePrecision := big.NewInt(0)
+	   tempGCyclePrecision := big.NewInt(0)
+	   tempGComPrecision:= big.NewInt(0)
+	   gComPreRoundValue := BigIntNum{}.NewZero(0)
+	   gComValue := BigIntNum{}.NewZero(0)
 
-	 aCycleResult := BigIntNum{}.NewZero(0)
-	 gCycleResult := BigIntNum{}.NewZero(0)
+	   aCycleResult := BigIntNum{}.NewZero(0)
+	   gCycleResult := BigIntNum{}.NewZero(0)
 	*/
 
-	for i:= uint64(0); i < cycleLimit; i++ {
+	for i := uint64(0); i < cycleLimit; i++ {
 
 		cycleNum = i + 1
 
 		// Debug capture
 		/*
-		aCycleValue, errX = BigIntNum{}.NewBigIntPrecision(a, aPrecision)
+			aCycleValue, errX = BigIntNum{}.NewBigIntPrecision(a, aPrecision)
 
-		if errX != nil {
-			err = fmt.Errorf(ePrefix + "aCycleValue- %v",errX.Error())
-			return agMean, agMeanPrecision, gValue, gValuePrecision, cycles, err
-		}
+			if errX != nil {
+				err = fmt.Errorf("%v\n" + "aCycleValue- %v\n", ePrefix, errX.Error())
+				return agMean, agMeanPrecision, gValue, gValuePrecision, cycles, err
+			}
 
-		gCycleValue, errX = BigIntNum{}.NewBigIntPrecision(g, gPrecision)
+			gCycleValue, errX = BigIntNum{}.NewBigIntPrecision(g, gPrecision)
 
-		if errX != nil {
-			err = fmt.Errorf(ePrefix + "gCycleValue- %v",errX.Error())
-			return agMean, agMeanPrecision, gValue, gValuePrecision, cycles, err
-		}
-		tempACyclePreAddPrecision = big.NewInt(0).Set(aPrecision)
+			if errX != nil {
+				err = fmt.Errorf("%v\n" +  "gCycleValue- %v", ePrefix, errX.Error())
+				return agMean, agMeanPrecision, gValue, gValuePrecision, cycles, err
+			}
+			tempACyclePreAddPrecision = big.NewInt(0).Set(aPrecision)
 
 		*/
 
@@ -220,7 +259,13 @@ func (bIntMath BigIntMath) ArithmeticGeometricMean(
 				gPrecision)
 
 		if errX != nil {
-			err = fmt.Errorf(ePrefix + "%v",errX.Error())
+
+			err = fmt.Errorf("%v\n"+
+				"Error returned from BigIntMathAdd{}.BigIntAdd()\n"+
+				"Error: %v\n",
+				ePrefix,
+				errX.Error())
+
 			return agMean, agMeanPrecision, gValue, gValuePrecision, cycles, err
 		}
 
@@ -231,22 +276,28 @@ func (bIntMath BigIntMath) ArithmeticGeometricMean(
 		// tempGComPrecision = big.NewInt(0).Set(gComPrecision)
 
 		/*
-		if cycleNum == 7 {
-			gComPreRoundValue, errX = BigIntNum{}.NewBigIntPrecision(gCom, gComPrecision)
+			if cycleNum == 7 {
+				gComPreRoundValue, errX = BigIntNum{}.NewBigIntPrecision(gCom, gComPrecision)
 
-			if errX != nil {
-				err = fmt.Errorf(ePrefix + "gComPreRoundValue- %v",errX.Error())
-				return agMean, agMeanPrecision, gValue, gValuePrecision, cycles, err
+				if errX != nil {
+					err = fmt.Errorf("%v\n" + "gComPreRoundValue- %v\n", ePrefix, errX.Error())
+					return agMean, agMeanPrecision, gValue, gValuePrecision, cycles, err
+				}
+
 			}
-
-		}
 		*/
 
 		gCom, gComPrecision, errX =
 			BigIntMath{}.RoundToMaxPrecision(gCom, gComPrecision, maxInternalPrecision, true)
 
 		if errX != nil {
-			err = fmt.Errorf(ePrefix + "%v",errX.Error())
+
+			err = fmt.Errorf("%\n"+
+				"Error returned by BigIntMath{}.RoundToMaxPrecision()\n"+
+				"Error: %v\n",
+				ePrefix,
+				errX.Error())
+
 			return agMean, agMeanPrecision, gValue, gValuePrecision, cycles, err
 		}
 
@@ -257,88 +308,117 @@ func (bIntMath BigIntMath) ArithmeticGeometricMean(
 			BigIntMath{}.RoundToMaxPrecision(a, aPrecision, maxInternalPrecision, true)
 
 		if errX != nil {
-			err = fmt.Errorf(ePrefix + "%v",errX.Error())
+
+			err = fmt.Errorf("%\n"+
+				"Error returned by BigIntMath{}.RoundToMaxPrecision()\n"+
+				"Error: %v\n",
+				ePrefix,
+				errX.Error())
+
 			return agMean, agMeanPrecision, gValue, gValuePrecision, cycles, err
 		}
 
 		/*
 
-		a, aPrecision, errX = BigIntMathDivide{}.BigIntFracQuotient(aCom, aComPrecision, factor, factorPrecision, maxInternalPrecision)
+			a, aPrecision, errX = BigIntMathDivide{}.BigIntFracQuotient(aCom, aComPrecision, factor, factorPrecision, maxInternalPrecision)
 
-		if errX != nil {
-			err = fmt.Errorf(ePrefix + "%v",errX.Error())
+			if errX != nil {
+
+				err = fmt.Errorf(fmt.Errorf("%v\n" +
+				"Error returned by BigIntMathDivide{}.BigIntFracQuotient()" +
+				"Error: %v\n",
+				ePrefix,
+				errX.Error())
+
 			return agMean, agMeanPrecision, gValue, gValuePrecision, cycles, err
-		}
+			}
 
 
 
-		gComValue, errX = BigIntNum{}.NewBigIntPrecision(gCom, gComPrecision)
+			gComValue, errX = BigIntNum{}.NewBigIntPrecision(gCom, gComPrecision)
 
-		if errX != nil {
-			err = fmt.Errorf(ePrefix + "gComValue- %v",errX.Error())
-			return agMean, agMeanPrecision, gValue, gValuePrecision, cycles, err
-		}
+			if errX != nil {
+
+				err = fmt.Errorf("%v\n" +
+				"Error returned by BigIntNum{}.NewBigIntPrecision(gCom, gComPrecision)" +
+				"Error: %v",
+				ePrefix,
+				errX.Error())
+
+				return agMean, agMeanPrecision, gValue, gValuePrecision, cycles, err
+			}
 		*/
 
 		g, gPrecision, errX =
-				fdNRoot.CalculatePositiveIntegerNthRoot(
-					gCom,
-					gComPrecision,
-					factor,
-					factorPrecision,
-					maxInternalPrecision)
+			fdNRoot.CalculatePositiveIntegerNthRoot(
+				gCom,
+				gComPrecision,
+				factor,
+				factorPrecision,
+				maxInternalPrecision)
 
 		if errX != nil {
-			err = fmt.Errorf(ePrefix + "%v",errX.Error())
+
+			err = fmt.Errorf("%v\n"+
+				"Error returned by BigIntMath{}.CalculatePositiveIntegerNthRoot()\n"+
+				"Error: %v\n",
+				ePrefix,
+				errX.Error())
+
 			return agMean, agMeanPrecision, gValue, gValuePrecision, cycles, err
 		}
 
 		/*
-			aCycleResult, errX =
-				BigIntNum{}.NewBigIntPrecision(a, aPrecision)
+				aCycleResult, errX =
+					BigIntNum{}.NewBigIntPrecision(a, aPrecision)
 
-			gCycleResult, errX =
-				BigIntNum{}.NewBigIntPrecision(g, gPrecision)
+				gCycleResult, errX =
+					BigIntNum{}.NewBigIntPrecision(g, gPrecision)
 
-			if errX != nil {
-				err = fmt.Errorf(ePrefix +
-					"gCycleResult- %v", errX.Error())
-				return agMean, agMeanPrecision, gValue, gValuePrecision, cycles, err
-			}
+				if errX != nil {
+
+					err = fmt.Errorf("%v\n" +
+						"Error returned by BigIntNum{}.NewBigIntPrecision()\n" +
+						"Error: %v",
+						ePrefix,
+						errX.Error())
+
+			return agMean, agMeanPrecision, gValue, gValuePrecision, cycles, err
+				}
 
 
-			if cycleNum == 7 {
+				if cycleNum == 7 {
 
-				fmt.Println()
-				fmt.Println("=================================================")
-				fmt.Println("             aCycleValue: ", aCycleValue.GetNumStr())
-				fmt.Println("    aCycleValuePrecision: ", aCycleValue.GetPrecision())
-				fmt.Println("             gCycleValue: ", gCycleValue.GetNumStr())
-				fmt.Println("    gCycleValuePrecision: ", gCycleValue.GetPrecision())
-				fmt.Println("-------------------------------------------------")
-				fmt.Println("  tACyclePreAddPrecision: ", tempACyclePreAddPrecision.Text(10))
-				fmt.Println("     tempACyclePrecision: ", tempACyclePrecision.Text(10))
-				fmt.Println("     tempGCyclePrecision: ", tempGCyclePrecision.Text(10))
-				fmt.Println("       tempGComPrecision: ", tempGComPrecision.Text(10))
-				fmt.Println("       gComPreRoundValue: ", gComPreRoundValue.GetNumStr())
-				fmt.Println("gComPreRoundValPrecision: ", gComPreRoundValue.GetPrecision())
-				fmt.Println("-------------------------------------------------")
-				fmt.Println("               gComValue: ", gComValue.GetNumStr())
-				fmt.Println("      gComValuePrecision: ", gComValue.GetPrecision())
-				fmt.Println("-------------------------------------------------")
-				fmt.Println("            aCycleResult: ", aCycleResult.GetNumStr())
-				fmt.Println("  aCycleResult Precision: ", aCycleResult.GetPrecision())
-				fmt.Println("-------------------------------------------------")
-				fmt.Println("            gCycleResult: ", gCycleResult.GetNumStr())
-				fmt.Println("  gCycleResult Precision: ", gCycleResult.GetPrecision())
-				fmt.Println("=================================================")
-				fmt.Println()
-				return agMean, agMeanPrecision, gValue, gValuePrecision, cycles, err
+					fmt.Println()
+					fmt.Println("=================================================")
+					fmt.Println("             aCycleValue: ", aCycleValue.GetNumStr())
+					fmt.Println("    aCycleValuePrecision: ", aCycleValue.GetPrecision())
+					fmt.Println("             gCycleValue: ", gCycleValue.GetNumStr())
+					fmt.Println("    gCycleValuePrecision: ", gCycleValue.GetPrecision())
+					fmt.Println("-------------------------------------------------")
+					fmt.Println("  tACyclePreAddPrecision: ", tempACyclePreAddPrecision.Text(10))
+					fmt.Println("     tempACyclePrecision: ", tempACyclePrecision.Text(10))
+					fmt.Println("     tempGCyclePrecision: ", tempGCyclePrecision.Text(10))
+					fmt.Println("       tempGComPrecision: ", tempGComPrecision.Text(10))
+					fmt.Println("       gComPreRoundValue: ", gComPreRoundValue.GetNumStr())
+					fmt.Println("gComPreRoundValPrecision: ", gComPreRoundValue.GetPrecision())
+					fmt.Println("-------------------------------------------------")
+					fmt.Println("               gComValue: ", gComValue.GetNumStr())
+					fmt.Println("      gComValuePrecision: ", gComValue.GetPrecision())
+					fmt.Println("-------------------------------------------------")
+					fmt.Println("            aCycleResult: ", aCycleResult.GetNumStr())
+					fmt.Println("  aCycleResult Precision: ", aCycleResult.GetPrecision())
+					fmt.Println("-------------------------------------------------")
+					fmt.Println("            gCycleResult: ", gCycleResult.GetNumStr())
+					fmt.Println("  gCycleResult Precision: ", gCycleResult.GetPrecision())
+					fmt.Println("=================================================")
+					fmt.Println()
+					return agMean, agMeanPrecision, gValue, gValuePrecision, cycles, err
 
-			}
-			*/
+				}
+		*/
 
-			/*
+		/*
 			aCycleValue.RoundToDecPlace(32)
 			gCycleValue.RoundToDecPlace(32)
 			aCycleResult.RoundToDecPlace(32)
@@ -357,13 +437,19 @@ func (bIntMath BigIntMath) ArithmeticGeometricMean(
 			fmt.Println("=================================================")
 			fmt.Println()
 
-			*/
+		*/
 
 		aTest, aTestPrecision, errX =
-		 	BigIntMath{}.TruncateToMaxPrecision(a, aPrecision, targetPrecision)
+			BigIntMath{}.TruncateToMaxPrecision(a, aPrecision, targetPrecision)
 
 		if errX != nil {
-			err = fmt.Errorf(ePrefix + "%v",errX.Error())
+
+			err = fmt.Errorf("%v\n"+
+				"Error returned by BigIntMath{}.TruncateToMaxPrecision(a, aPrecision, targetPrecision)\n"+
+				"Error= %v\n",
+				ePrefix,
+				errX.Error())
+
 			return agMean, agMeanPrecision, gValue, gValuePrecision, cycles, err
 		}
 
@@ -371,7 +457,13 @@ func (bIntMath BigIntMath) ArithmeticGeometricMean(
 			BigIntMath{}.TruncateToMaxPrecision(g, gPrecision, targetPrecision)
 
 		if errX != nil {
-			err = fmt.Errorf(ePrefix + "%v",errX.Error())
+
+			err = fmt.Errorf("%v\n"+
+				"Error returned by BigIntMath{}.TruncateToMaxPrecision()\n"+
+				"Error: %v\n",
+				ePrefix,
+				errX.Error())
+
 			return agMean, agMeanPrecision, gValue, gValuePrecision, cycles, err
 		}
 
@@ -385,14 +477,19 @@ func (bIntMath BigIntMath) ArithmeticGeometricMean(
 					origG,
 					origGPrecision)
 
-			if agCmp==1 {
+			if agCmp == 1 {
 
-				err = fmt.Errorf(ePrefix +
-					"Computation Failure: Result is greater than largest test value! " +
-					"Result='%v' ResultPrecision='%v' gNum='%v' gNumPrecision='%v'",
-					gTest.Text(10), gTestPrecision.Text(10),
-					origG.Text(10), origGPrecision.Text(10))
+				err = fmt.Errorf("%v\n"+
+					"Computation Failure: Result is greater than largest test value!\n"+
+					"Result='%v' ResultPrecision='%v' gNum='%v' gNumPrecision='%v'\n",
+					ePrefix,
+					gTest.Text(10),
+					gTestPrecision.Text(10),
+					origG.Text(10),
+					origGPrecision.Text(10))
+
 				cycles = cycleNum
+
 				return agMean, agMeanPrecision, gValue, gValuePrecision, cycles, err
 			}
 
@@ -404,12 +501,18 @@ func (bIntMath BigIntMath) ArithmeticGeometricMean(
 					origAPrecision)
 
 			if agCmp == -1 {
-				err = fmt.Errorf(ePrefix +
-					"Computation Failure: Result is less than smallest test value! " +
-					"Result='%v' ResultPrecision='%v' aNum='%v' aNumPrecision='%v'",
-					gTest.Text(10), gTestPrecision.Text(10),
-					origA.Text(10), origAPrecision.Text(10))
+
+				err = fmt.Errorf("%v\n"+
+					"Computation Failure: Result is less than smallest test value!\n"+
+					"Result='%v'\nResultPrecision='%v'\naNum='%v'\naNumPrecision='%v'\n",
+					ePrefix,
+					gTest.Text(10),
+					gTestPrecision.Text(10),
+					origA.Text(10),
+					origAPrecision.Text(10))
+
 				cycles = cycleNum
+
 				return agMean, agMeanPrecision, gValue, gValuePrecision, cycles, err
 
 			}
@@ -425,8 +528,9 @@ func (bIntMath BigIntMath) ArithmeticGeometricMean(
 
 	}
 
-	err = errors.New(ePrefix +
-		"Error: No Arithmetic Geometric Mean Computed. ")
+	err = fmt.Errorf("%v\n"+
+		"Error: No Arithmetic Geometric Mean Computed.\n",
+		ePrefix)
 
 	agMean.Set(a)
 	agMeanPrecision.Set(aPrecision)
@@ -444,8 +548,7 @@ func (bIntMath BigIntMath) ArithmeticGeometricMean(
 // num 1 <  num2 == -1
 // num 1 == num2 == 0
 // num 1 >  num2 == 1
-//
-func (bIntMath BigIntMath)BigIntPrecisionCmp(
+func (bIntMath BigIntMath) BigIntPrecisionCmp(
 	num1,
 	num1Precision,
 	num2,
@@ -483,7 +586,7 @@ func (bIntMath BigIntMath)BigIntPrecisionCmp(
 	if num1Precision.Cmp(num2Precision) == 1 {
 		delta := big.NewInt(0).Sub(num1Precision, num2Precision)
 		scale := big.NewInt(0).Exp(bigTen, delta, nil)
-		tNum2.Mul(tNum2,scale)
+		tNum2.Mul(tNum2, scale)
 		return tNum1.Cmp(tNum2)
 
 	}
@@ -500,50 +603,54 @@ func (bIntMath BigIntMath)BigIntPrecisionCmp(
 // parameter ('initialValue'. Magnitude is defined here as the power of 10 which generates a value
 // less than or equal to the 'target' *big.Int number.
 //
-// 													10^magnitude  <= initialValue
+//	10^magnitude  <= initialValue
 //
 // The value of magnitude is returned as a *big.Int number to the calling function.
-//
 //
 // Examples:
 // =========
 //
-//			   			target				magnitude
-//              ------        ---------
+//				   			target				magnitude
+//	             ------        ---------
 //
-//			  		 963,256						5
-//									 2						0
-//									32						1
-// 			 8,456,123,921					  9
-//
+//				  		 963,256						5
+//										 2						0
+//										32						1
+//				 8,456,123,921					  9
 //
 // Input Parameters
 // ================
 //
 // initialValue	*big.Int 	- An integer of type *big.Int. This method will analyze this
-//                         	integer and return it's magnitude.
+//
+//	integer and return its magnitude.
 //
 // Return Values
 // =============
 //
 // magnitude 		*big.Int	- 10 raised to the power of magnitude will yield a value which
-//                          is less than or equal to the input parameter 'initialValue'.
+//
+//	is less than or equal to the input parameter 'initialValue'.
 //
 // err					error			- If during the completion of this calculation an error is encountered,
-//           								return value 'magnitude' will be set to zero and this error object
-//                          will be populated with an appropriate error message. If the method
-//                          completes successfully, this return value, 'err' will be set to
-//                          'nil'.
 //
+//									return value 'magnitude' will be set to zero and this error object
+//	               will be populated with an appropriate error message. If the method
+//	               completes successfully, this return value, 'err' will be set to
+//	               'nil'.
 func (bIntMath BigIntMath) GetMagnitude(initialValue *big.Int) (magnitude *big.Int, err error) {
 
-	ePrefix := "BigIntMath) GetMagnitude() "
+	ePrefix := "BigIntMath.GetMagnitude()"
 
 	magnitude = big.NewInt(0)
 	err = nil
 
 	if initialValue == nil {
-		err = errors.New(ePrefix + "Error: 'initialValue' is NOT Initialized! initialValue=nil")
+
+		err = fmt.Errorf("%v\n"+
+			"Error: 'initialValue' is NOT Initialized! initialValue=nil\n",
+			ePrefix)
+
 		return magnitude, err
 	}
 
@@ -570,8 +677,12 @@ func (bIntMath BigIntMath) GetMagnitude(initialValue *big.Int) (magnitude *big.I
 	bitLen := target.BitLen()
 
 	if bitLen <= 0 {
-		err = fmt.Errorf(ePrefix+"Error: target.BitLen() = %v - Negative value!",
+
+		err = fmt.Errorf("%v\n"+
+			"Error: target.BitLen() = %v - Negative value!\n",
+			ePrefix,
 			bitLen)
+
 		return magnitude, err
 	}
 
@@ -593,9 +704,15 @@ func (bIntMath BigIntMath) GetMagnitude(initialValue *big.Int) (magnitude *big.I
 			log10of2To20k.GetPrecisionBigInt())
 
 	if errx != nil {
-		err = fmt.Errorf(ePrefix +
-			"%v", errx.Error())
+
+		err = fmt.Errorf("%v\n"+
+			"Error returned by BigIntMathMultiply{}.BigIntMultiply()\n"+
+			"Error= %v\n",
+			ePrefix,
+			errx.Error())
+
 		magnitude = big.NewInt(0)
+
 		return magnitude, err
 	}
 
@@ -618,7 +735,6 @@ func (bIntMath BigIntMath) GetMagnitude(initialValue *big.Int) (magnitude *big.I
 	return magnitude, err
 }
 
-
 // RoundToMaxPrecision - Applies maximum precision to a *big.Int number
 // and associated numeric precision, 'bigIntNum' and 'bigIntNumPrecision'.
 //
@@ -634,27 +750,29 @@ func (bIntMath BigIntMath) GetMagnitude(initialValue *big.Int) (magnitude *big.I
 // Input Parameters:
 // =================
 // bigIntNum 					*big.Int	- The integer number of the numeric value to
-//                          			be rounded.
+//
+//	be rounded.
 //
 // bigIntNumPrecision	*big.Int	- The precision specification associated with
-//                                'bigIntNum'. The precision specification defines
-//                                the number of digits to the right of the decimal
-//                                place in 'bigIntNum'.
+//
+//	'bigIntNum'. The precision specification defines
+//	the number of digits to the right of the decimal
+//	place in 'bigIntNum'.
 //
 // trimTrailingFracZeros bool		- If trailing fractional zeros are present in the
-//                                rounded result, this boolean value will determine
-//                                whether the trailing zeros will be returned in
-//                                final result. 'true' specifies that all trailing
-//                                fractional zeros will be deleted.
-//                                Example: '1.23000'  converted to '1.23'
+//
+//	rounded result, this boolean value will determine
+//	whether the trailing zeros will be returned in
+//	final result. 'true' specifies that all trailing
+//	fractional zeros will be deleted.
+//	Example: '1.23000'  converted to '1.23'
 //
 // Examples:
 // =========
 //
-//  bigIntNum	bigIntNumPrecision	maxPrecision	result		resultPrecision
-//	5255						3                  	2					526					2
-//  52671						4										6					52671				4
-//
+//	 bigIntNum	bigIntNumPrecision	maxPrecision	result		resultPrecision
+//		5255						3                  	2					526					2
+//	 52671						4										6					52671				4
 func (bIntMath BigIntMath) RoundToMaxPrecision(
 	bigIntNum,
 	bigIntNumPrecision,
@@ -667,20 +785,29 @@ func (bIntMath BigIntMath) RoundToMaxPrecision(
 	err = nil
 
 	if bigIntNum == nil {
-		err = errors.New(ePrefix +
-			"Error: Input parameter 'bigIntNum' is nil. INVALID!")
+
+		err = fmt.Errorf("%v\n" +
+			"Error: Input parameter 'bigIntNum' is nil. INVALID!\n" +
+			ePrefix)
+
 		return result, resultPrecision, err
 	}
 
 	if bigIntNumPrecision == nil {
-		err = errors.New(ePrefix +
-			"Error: Input parameter 'bigIntNumPrecision' is nil. INVALID!")
+
+		err = fmt.Errorf("%v\n"+
+			"Error: Input parameter 'bigIntNumPrecision' is nil. INVALID!\n",
+			ePrefix)
+
 		return result, resultPrecision, err
 	}
 
 	if maxPrecision == nil {
-		err = errors.New(ePrefix +
-			"Error: Input parameter 'maxPrecision' is nil. INVALID!")
+
+		err = fmt.Errorf("%v\n"+
+			"Error: Input parameter 'maxPrecision' is nil. INVALID!\n",
+			ePrefix)
+
 		return result, resultPrecision, err
 	}
 
@@ -691,16 +818,24 @@ func (bIntMath BigIntMath) RoundToMaxPrecision(
 	}
 
 	if bigIntNumPrecision.Cmp(bigZero) == -1 {
-		err = fmt.Errorf(ePrefix +
-			"Error: Input parameter 'bigIntNumPrecision' is LESS THAN ZERO! " +
-			"bigIntNumPrecision='%v' ", bigIntNumPrecision.Text(10))
+
+		err = fmt.Errorf("%v\n"+
+			"Error: Input parameter 'bigIntNumPrecision' is LESS THAN ZERO!\n"+
+			"bigIntNumPrecision='%v'\n",
+			ePrefix,
+			bigIntNumPrecision.Text(10))
+
 		return result, resultPrecision, err
 	}
 
 	if maxPrecision.Cmp(bigZero) == -1 {
-		err = fmt.Errorf(ePrefix +
-			"Error: Input parameter 'maxPrecision' is LESS THAN ZERO! " +
-			"maxPrecision='%v' ", maxPrecision.Text(10))
+
+		err = fmt.Errorf("%v\n"+
+			"Error: Input parameter 'maxPrecision' is LESS THAN ZERO!\n"+
+			"maxPrecision='%v'\n",
+			ePrefix,
+			maxPrecision.Text(10))
+
 		return result, resultPrecision, err
 	}
 
@@ -741,7 +876,7 @@ func (bIntMath BigIntMath) RoundToMaxPrecision(
 
 		for mod10.Cmp(bigZero) == 0 && resultPrecision.Cmp(bigZero) == 1 {
 			result.Set(newProduct)
-			resultPrecision.Sub(resultPrecision, bigOne )
+			resultPrecision.Sub(resultPrecision, bigOne)
 			newProduct, mod10 = big.NewInt(0).QuoRem(result, biBase10, scrap)
 		}
 	}
@@ -764,10 +899,9 @@ func (bIntMath BigIntMath) RoundToMaxPrecision(
 // Examples:
 // =========
 //
-//  bigIntNum	bigIntNumPrecision	maxPrecision	result		resultPrecision
-//	5255						3                  	2					525					2
-//  52671						4										6					52671				4
-//
+//	 bigIntNum	bigIntNumPrecision	maxPrecision	result		resultPrecision
+//		5255						3                  	2					525					2
+//	 52671						4										6					52671				4
 func (bIntMath BigIntMath) TruncateToMaxPrecision(
 	bigIntNum,
 	bigIntNumPrecision,
@@ -779,20 +913,29 @@ func (bIntMath BigIntMath) TruncateToMaxPrecision(
 	err = nil
 
 	if bigIntNum == nil {
-		err = errors.New(ePrefix +
-			"Error: Input parameter 'bigIntNum' is nil. INVALID!")
+
+		err = fmt.Errorf("%v\n"+
+			"Error: Input parameter 'bigIntNum' is nil. INVALID!\n",
+			ePrefix)
+
 		return result, resultPrecision, err
 	}
 
 	if bigIntNumPrecision == nil {
-		err = errors.New(ePrefix +
-			"Error: Input parameter 'bigIntNumPrecision' is nil. INVALID!")
+
+		err = fmt.Errorf("%v\n"+
+			"Error: Input parameter 'bigIntNumPrecision' is nil. INVALID!\n",
+			ePrefix)
+
 		return result, resultPrecision, err
 	}
 
 	if maxPrecision == nil {
-		err = errors.New(ePrefix +
-			"Error: Input parameter 'maxPrecision' is nil. INVALID!")
+
+		err = fmt.Errorf("%v\n"+
+			"Error: Input parameter 'maxPrecision' is nil. INVALID!\n",
+			ePrefix)
+
 		return result, resultPrecision, err
 	}
 
@@ -803,16 +946,23 @@ func (bIntMath BigIntMath) TruncateToMaxPrecision(
 	}
 
 	if bigIntNumPrecision.Cmp(bigZero) == -1 {
-		err = fmt.Errorf(ePrefix +
-			"Error: Input parameter 'bigIntNumPrecision' is LESS THAN ZERO! " +
-			"bigIntNumPrecision='%v' ", bigIntNumPrecision.Text(10))
+		err = fmt.Errorf(ePrefix+
+			"Error: Input parameter 'bigIntNumPrecision' is LESS THAN ZERO!\n"+
+			"bigIntNumPrecision='%v'\n",
+			ePrefix,
+			bigIntNumPrecision.Text(10))
+
 		return result, resultPrecision, err
 	}
 
 	if maxPrecision.Cmp(bigZero) == -1 {
-		err = fmt.Errorf(ePrefix +
-			"Error: Input parameter 'maxPrecision' is LESS THAN ZERO! " +
-			"maxPrecision='%v' ", maxPrecision.Text(10))
+
+		err = fmt.Errorf("%v\n"+
+			"Error: Input parameter 'maxPrecision' is LESS THAN ZERO!\n"+
+			"maxPrecision='%v'\n",
+			ePrefix,
+			maxPrecision.Text(10))
+
 		return result, resultPrecision, err
 	}
 
@@ -839,15 +989,16 @@ func (bIntMath BigIntMath) TruncateToMaxPrecision(
 //
 // Example
 // =======
-//						   num	 	  numeric                 result    result
+//
+//	num	 	  numeric                 result    result
+//
 // num			  Precision 	 value        result   Precision   value
 // 12345600         5		  123.45600			123456	    3       123.456
-//
 func (bIntMath BigIntMath) TruncateTrailingFractionalZeros(
 	num,
 	numPrecision *big.Int) (result,
-													resultPrecision *big.Int,
-													err error){
+	resultPrecision *big.Int,
+	err error) {
 
 	ePrefix := "BigIntMath.TruncateTrailingFractionalZeros() "
 
@@ -856,21 +1007,32 @@ func (bIntMath BigIntMath) TruncateTrailingFractionalZeros(
 	err = nil
 
 	if num == nil {
-		err = errors.New(ePrefix + "Error: Input parameter 'num' is nil!")
+
+		err = fmt.Errorf("%v\n"+
+			"Error: Input parameter 'num' is nil!\n",
+			ePrefix)
+
 		return result, resultPrecision, err
 	}
 
 	if numPrecision == nil {
-		err = errors.New(ePrefix + "Error: Input parameter 'numPrecision' is nil!")
+
+		err = fmt.Errorf("%v\n"+
+			"Error: Input parameter 'numPrecision' is nil!\n",
+			ePrefix)
+
 		return result, resultPrecision, err
 	}
 
 	bigZero := big.NewInt(0)
 
 	if numPrecision.Cmp(bigZero) == -1 {
-		err = fmt.Errorf(ePrefix +
-			"Error: Input parameter 'numPrecision' is LESS THAN ZERO! " +
-			"numPrecision='%v' ", numPrecision.Text(10))
+
+		err = fmt.Errorf("%v\n"+
+			"Error: Input parameter 'numPrecision' is LESS THAN ZERO!\n"+
+			"numPrecision='%v'\n",
+			ePrefix,
+			numPrecision.Text(10))
 
 		return result, resultPrecision, err
 	}
@@ -885,7 +1047,6 @@ func (bIntMath BigIntMath) TruncateTrailingFractionalZeros(
 		return result, resultPrecision, err
 	}
 
-
 	if resultPrecision.Cmp(bigZero) == 1 {
 		bigOne := big.NewInt(1)
 		scrap := big.NewInt(0)
@@ -894,13 +1055,12 @@ func (bIntMath BigIntMath) TruncateTrailingFractionalZeros(
 
 		for mod10.Cmp(bigZero) == 0 && resultPrecision.Cmp(bigZero) == 1 {
 			result.Set(newProduct)
-			resultPrecision.Sub(resultPrecision, bigOne )
+			resultPrecision.Sub(resultPrecision, bigOne)
 			newProduct, mod10 = big.NewInt(0).QuoRem(result, biBase10, scrap)
 		}
 	}
 
-  err = nil
+	err = nil
 
 	return result, resultPrecision, err
 }
-
