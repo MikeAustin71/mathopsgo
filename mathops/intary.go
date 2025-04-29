@@ -45,237 +45,6 @@ import (
 
 */
 
-// FracIntAry - A fraction represented by a numerator and a denominator.
-// Both numerator and denominator are of type intAry
-type FracIntAry struct {
-	Numerator   IntAry
-	Denominator IntAry
-}
-
-// NewBigInts - Creates a new FracIntAry type from two *big.Int types passed
-// as input parameters.
-//
-func (fIa FracIntAry) NewBigInts(numerator, denominator *big.Int) (FracIntAry, error) {
-	ePrefix := "FracIntAry.NewBigInts() "
-
-	iaNumerator, err := IntAry{}.NewBigInt(numerator, 0)
-
-	if err != nil {
-		return FracIntAry{},
-			fmt.Errorf(ePrefix+"- Error returned by IntAry{}.NewBigInt(numerator, 0) "+
-				"Error='%v' ", err)
-	}
-
-	iaDenominator, err := IntAry{}.NewBigInt(denominator, 0)
-
-	if err != nil {
-		return FracIntAry{},
-			fmt.Errorf(ePrefix+"- Error returned by IntAry{}.NewBigInt(denominator, 0) "+
-				"Error='%v' ", err)
-	}
-
-	newFracIntAry := FracIntAry{}.NewIntArys(&iaNumerator, &iaDenominator)
-
-	return newFracIntAry, nil
-}
-
-// NewNumStrs - Creates a new FracIntAry type by passing input parameters numerator and
-// denominator as number strings.
-//
-func (fIa FracIntAry) NewNumStrs(numerator, denominator string) (FracIntAry, error) {
-
-	var err error
-
-	ePrefix := "FracIntAry.NewNumStrs() "
-	fIa2 := FracIntAry{}
-
-	fIa2.Numerator, err = IntAry{}.NewNumStr(numerator)
-
-	if err != nil {
-		return FracIntAry{}, fmt.Errorf(ePrefix+
-			"- Error returned from intAry{}.NewNumStr(numerator). Error= %v", err)
-	}
-
-	fIa2.Denominator, err = IntAry{}.NewNumStr(denominator)
-
-	if err != nil {
-		return FracIntAry{},
-			fmt.Errorf(ePrefix+
-				"- Error returned from intAry{}.NewNumStr(denominator). Error= %v", err)
-	}
-
-	return fIa2, nil
-}
-
-// NewIntArys - Creates a type FracIntAry by passing numerator and denominator
-// input parameters of type *intAry
-func (fIa FracIntAry) NewIntArys(numerator, denominator *IntAry) FracIntAry {
-
-	fIa2 := FracIntAry{}
-
-	fIa2.Numerator = numerator.CopyOut()
-	fIa2.Denominator = denominator.CopyOut()
-
-	return fIa2
-}
-
-// NewFracIntAry - Creates a FracIntAry instance from a single IntAry object.
-// The IntAry input parameter is converted into an equivalent fraction.
-//
-func (fIa FracIntAry) NewFracIntAry(ia *IntAry) FracIntAry {
-
-	fIa2 := FracIntAry{}
-
-	if ia.GetPrecision() == 0 {
-
-		fIa2.Numerator = ia.CopyOut()
-		fIa2.Denominator = IntAry{}.NewOne(0)
-
-		return fIa2
-	}
-
-	precision := ia.GetPrecision()
-	fIa2.Numerator = ia.CopyOut()
-
-	if precision > 0 {
-		fIa2.Numerator.ShiftPrecisionRight(uint(precision))
-	}
-
-	fIa2.Denominator = IntAry{}.NewOne(0)
-	IntAryMathMultiply{}.MultiplyByTenToPower(&fIa2.Denominator, uint(precision))
-
-	return fIa2
-}
-
-// CopyOut - Creates and returns a copy of the current
-// FracIntAry.
-//
-func (fIa *FracIntAry) CopyOut() FracIntAry {
-
-	newFrac := FracIntAry{}
-
-	newFrac.Numerator = fIa.Numerator.CopyOut()
-	newFrac.Denominator = fIa.Denominator.CopyOut()
-
-	return newFrac
-}
-
-// CopyIn - Receives a pointer to an incoming FracIntAry and copies
-// the values into the current FracIntAry.
-//
-func (fIa *FracIntAry) CopyIn(fIa2 *FracIntAry) {
-
-	fIa.Numerator = fIa2.Numerator.CopyOut()
-
-	fIa.Denominator = fIa2.Denominator.CopyOut()
-
-}
-
-// GetRationalValue - Converts the fraction and returns the value as a
-// big rational number (*big.Rat).
-//
-// Input parameter maxPrecision determines the maximum number of decimal
-// places to the right of the decimal point contained in the result.
-//
-// If the value of maxPrecision is -1, maximum precision will default to
-// 4096 decimal places. maxPrecision values less than -1 will trigger an
-// error.
-func (fIa *FracIntAry) GetRationalValue(maxPrecision int) (*big.Rat, error) {
-
-	if maxPrecision < -1 {
-		return big.NewRat(1, 1), fmt.Errorf("GetRationalValue() - maxPrecision is less than -1 and therefore INVALID. maxPrecision= %v", maxPrecision)
-	}
-
-	if maxPrecision == -1 {
-		maxPrecision = 4096
-	}
-
-	if fIa.Numerator.GetPrecision() == 0 && fIa.Denominator.GetPrecision() == 0 {
-		fRat, ok := big.NewRat(1, 1).SetString(fIa.Numerator.GetNumStr() + "/" + fIa.Denominator.GetNumStr())
-
-		if !ok {
-			return big.NewRat(1, 1), errors.New("GetRationalValue() - big.NewFloat(0).SetString(fracIa.GetNumStr()) Failed!")
-		}
-
-		return fRat, nil
-
-	}
-
-	newFloat, err := fIa.Numerator.DivideThisBy(&fIa.Denominator, 0, maxPrecision)
-
-	if err != nil {
-		return big.NewRat(1, 1), fmt.Errorf("GetRationalValue() - Error returned from fIa.Numerator.DivideThisBy(&fIa.Denominator, 42). Error= %v", err)
-	}
-
-	fRat, ok := big.NewRat(1, 1).SetString(newFloat.GetNumStr())
-
-	if !ok {
-		return big.NewRat(1, 1), errors.New("GetRationalValue() - big.NewFloat(0).SetString(fracIa.GetNumStr()) Failed!")
-	}
-
-	return fRat, nil
-
-}
-
-// GetLowestCommonDenom - Returns a FracIntAry which represents the lowest common
-// denominator for the current FracIntAry.
-//
-// Note: if 'maxPrecision' is less than 0, it is automatically converted to '4,096'
-// decimal places.
-//
-func (fIa *FracIntAry) GetLowestCommonDenom(maxPrecision int) (FracIntAry, error) {
-
-	if maxPrecision < 0 {
-		maxPrecision = 4096
-	}
-
-	ePrefix := "FracIntAry.GetLowestCommonDenom() "
-
-	ratFrac, err := fIa.GetRationalValue(maxPrecision)
-
-	if err != nil {
-		return FracIntAry{},
-			fmt.Errorf(ePrefix +
-				"Error returned by fIa.GetRationalValue(4096) ")
-	}
-
-	newFAry, err := fIa.NewBigInts(ratFrac.Num(), ratFrac.Denom())
-
-	if err != nil {
-		return FracIntAry{},
-			fmt.Errorf(ePrefix +
-				"Error returned by fIa.NewBigInts(ratFrac.Num(), ratFrac.Denom()) ")
-	}
-
-	return newFAry, nil
-}
-
-// ReduceToLowestCommonDenom - Converts the value of the current FracIntAry
-// to its lowest common denominator.
-//
-// Note: if 'maxPrecision' is less than 0, it is automatically converted to '4,096'
-// decimal places.
-//
-func (fIa *FracIntAry) ReduceToLowestCommonDenom(maxPrecision int) error {
-
-	if maxPrecision < 0 {
-		maxPrecision = 4096
-	}
-
-	fIaLCD, err := fIa.GetLowestCommonDenom(maxPrecision)
-
-	if err != nil {
-		ePrefix := "FracIntAry.ReduceToLowestCommonDenom() "
-		return fmt.Errorf(ePrefix+
-			"Error returned by fIa.GetLowestCommonDenom(maxPrecision). "+
-			"Error='%v' ", err.Error())
-	}
-
-	fIa.CopyIn(&fIaLCD)
-
-	return nil
-}
-
 type BackUpIntAry struct {
 	intAry                 []uint8
 	intAryLen              int
@@ -584,13 +353,12 @@ type IntAryStatsDto struct {
 // based numeric math operations.
 //
 // Dependencies: NthRootOp - nthroot.go
-//
 type IntAry struct {
-	intAry                 []uint8 // Storage is right to left.
-	                               // Least significant digit is
-	                               // stored in intAry[0]. Most
-	                               // significant digit is stored
-	                               // at intAry[intAryLen - 1]
+	intAry []uint8 // Storage is right to left.
+	// Least significant digit is
+	// stored in intAry[0]. Most
+	// significant digit is stored
+	// at intAry[intAryLen - 1]
 	intAryLen              int
 	integerLen             int
 	significantIntegerLen  int
@@ -613,8 +381,8 @@ type IntAry struct {
 // Parameters:
 //
 // ia2 *intAry - Incoming intAry object whose value will be subtracted
-// 								from this current intAry value.
 //
+//	from this current intAry value.
 func (ia *IntAry) AddToThis(ia2 *IntAry) error {
 
 	IntAryMathAdd{}.RunTotal(ia, ia2)
@@ -626,25 +394,24 @@ func (ia *IntAry) AddToThis(ia2 *IntAry) error {
 // AddIntToThis - Adds an integer number to the value of the
 // current IntAry object.
 //
-//
 // Input Parameters:
 //
-//	num int 				-	The integer number to be added to the current IntAry object.
+//		num int 				-	The integer number to be added to the current IntAry object.
 //
-//  precision uint 	- The precision which should be applied to the int64 input
-//										parameter to designate the number of digits to the right
-//										of the decimal point. Example:  num = 123456, precision = 3
-//										Result = 123.456 will be added to the current value of the
-//                    the current IntAry object. Note: If the value of input parameter
-//										'precision' is negative, an error will be returned
+//	 precision uint 	- The precision which should be applied to the int64 input
+//											parameter to designate the number of digits to the right
+//											of the decimal point. Example:  num = 123456, precision = 3
+//											Result = 123.456 will be added to the current value of the
+//	                   the current IntAry object. Note: If the value of input parameter
+//											'precision' is negative, an error will be returned
 //
 // Example:
-//  intDigits     precision     	    result
-//  946254  			   3							   946.254
-//  946254				   0							   946254
-//  -946254  			   3					      -946.254
-//  -946254				   0						    -946254
 //
+//	intDigits     precision     	    result
+//	946254  			   3							   946.254
+//	946254				   0							   946254
+//	-946254  			   3					      -946.254
+//	-946254				   0						    -946254
 func (ia *IntAry) AddIntToThis(num int, precision uint) {
 
 	ia2 := IntAry{}.NewInt(num, precision)
@@ -659,24 +426,24 @@ func (ia *IntAry) AddIntToThis(num int, precision uint) {
 //
 // Input Parameters:
 //
-//	int64Num int64 -	The integer number to be added to the current IntAry object.
+//		int64Num int64 -	The integer number to be added to the current IntAry object.
 //
-//  precision uint - 	The precision which should be applied to the int64 input
-//										parameter to designate the number of digits to the right
-//										of the decimal point. Example:  num = 123456, precision = 3
-//										Result = 123.456 will be added to the current value of the
-//                    the current IntAry object. If precision is greater than
-//                    2147483647, it will be reduced to this maximum value.
+//	 precision uint - 	The precision which should be applied to the int64 input
+//											parameter to designate the number of digits to the right
+//											of the decimal point. Example:  num = 123456, precision = 3
+//											Result = 123.456 will be added to the current value of the
+//	                   the current IntAry object. If precision is greater than
+//	                   2147483647, it will be reduced to this maximum value.
 //
 // Example:
-//                                    Result Added
-//                                    to Current
-//  int64Num     precision     	    	 IntAry
-//  946254  			   3							   946.254
-//  946254				   0							   946254
-//  -946254  			   3					      -946.254
-//  -946254				   0						    -946254
 //
+//	                                  Result Added
+//	                                  to Current
+//	int64Num     precision     	    	 IntAry
+//	946254  			   3							   946.254
+//	946254				   0							   946254
+//	-946254  			   3					      -946.254
+//	-946254				   0						    -946254
 func (ia *IntAry) AddInt64ToThis(int64Num int64, precision uint) {
 
 	precision = ia.validateUintToMaxPrecision(precision)
@@ -694,19 +461,22 @@ func (ia *IntAry) AddInt64ToThis(int64Num int64, precision uint) {
 // Input Parameters:
 //
 // num *big.Int 	- The numeric value to be added to the
-//									value of the current IntAry object. Note
-//									that 'num' may be positive or negative.
+//
+//	value of the current IntAry object. Note
+//	that 'num' may be positive or negative.
 //
 // precision uint	- 'precision' indicates the number of digits
-// 									to be formatted to the right of the decimal
-// 									place.
+//
+//	to be formatted to the right of the decimal
+//	place.
 //
 // Example:
-//  intDigits     precision     	    result
-//  946254  			   3							   946.254
-//  946254				   0							   946254
-//  -946254  			   3					      -946.254
-//  -946254				   0						    -946254
+//
+//	intDigits     precision     	    result
+//	946254  			   3							   946.254
+//	946254				   0							   946254
+//	-946254  			   3					      -946.254
+//	-946254				   0						    -946254
 //
 // Usage:
 // num := big.NewInt(123456)
@@ -715,7 +485,6 @@ func (ia *IntAry) AddInt64ToThis(int64Num int64, precision uint) {
 //
 // The result will equal the current value of the IntAry
 // object plus, '123.456'
-//
 func (ia *IntAry) AddBigIntToThis(num *big.Int, precision int) error {
 
 	ia2, err := IntAry{}.NewBigInt(num, precision)
@@ -731,7 +500,6 @@ func (ia *IntAry) AddBigIntToThis(num *big.Int, precision int) error {
 
 // AddBigIntNumToThis - Adds the value of the current IntAry
 // to the BigIntNum input parameter.
-//
 func (ia *IntAry) AddBigIntNumToThis(bINum BigIntNum) error {
 
 	ia2, err := IntAry{}.NewBigIntNum(bINum)
@@ -753,17 +521,19 @@ func (ia *IntAry) AddBigIntNumToThis(bINum BigIntNum) error {
 // Input Parameters:
 //
 // num float32 		- The number which will be added to the current
-//									IntAry object.
+//
+//	IntAry object.
 //
 // precision int	-	Input parameter 'precision' is used
-//									to set the input precision of 'num'.
 //
-// 									Input parameter 'precision' must be set
-// 									to a number greater than or equal to zero.
-// 									It may also be set to a value of -1
-// 									which causes the number to be formatted to
-// 									the smallest number of digits to right of
-// 									the decimal point.
+//	to set the input precision of 'num'.
+//
+//	Input parameter 'precision' must be set
+//	to a number greater than or equal to zero.
+//	It may also be set to a value of -1
+//	which causes the number to be formatted to
+//	the smallest number of digits to right of
+//	the decimal point.
 //
 // Usage:
 // num := float32(123.456000)
@@ -777,7 +547,6 @@ func (ia *IntAry) AddBigIntNumToThis(bINum BigIntNum) error {
 //
 // Note: if precision is a positive value, and less than the current number
 // of digits to the right of the decimal place, rounding may occur.
-//
 func (ia *IntAry) AddFloat32ToThis(num float32, precision int) error {
 
 	if precision < -1 {
@@ -805,20 +574,20 @@ func (ia *IntAry) AddFloat32ToThis(num float32, precision int) error {
 //								accepted.
 //
 // precision int -	'precision' is applied to the input parameter
-//									'num' (float64) to determine the number of
-//									digits to the right of the decimal point which
-//									will be applied to the resulting value.
 //
-//									Input parameter 'precision' must be set to a
-// 									number greater than or equal to zero.  It may
-// 									also be set to a value of -1 which causes the
-// 									number to be formatted to the smallest number
-// 									of digits to right of the decimal point.
+//	'num' (float64) to determine the number of
+//	digits to the right of the decimal point which
+//	will be applied to the resulting value.
 //
-//									Note: if precision is a positive number and less
-// 									than the current number of digits to the right
-// 									of the decimal place, rounding may occur.
+//	Input parameter 'precision' must be set to a
+//	number greater than or equal to zero.  It may
+//	also be set to a value of -1 which causes the
+//	number to be formatted to the smallest number
+//	of digits to right of the decimal point.
 //
+//	Note: if precision is a positive number and less
+//	than the current number of digits to the right
+//	of the decimal place, rounding may occur.
 func (ia *IntAry) AddFloat64ToThis(num float64, precision int) error {
 
 	if precision < -1 {
@@ -842,24 +611,24 @@ func (ia *IntAry) AddFloat64ToThis(num float64, precision int) error {
 // Input Parameters:
 //
 //	num *big.Float	- This *big.Float value will be added to the value
-// 										of the current IntAry object. Positive and negative
-// 										values are accepted.
+//										of the current IntAry object. Positive and negative
+//										values are accepted.
 //
 // precision int -	'precision' is applied to the input parameter
-//									'num' (*big.Float) to determine the number of
-//									digits to the right of the decimal point which
-//									will be applied to the resulting value.
 //
-//									Input parameter 'precision' must be set to a
-// 									number greater than or equal to zero.  It may
-// 									also be set to a value of -1 which causes the
-// 									number to be formatted to the smallest number
-// 									of digits to right of the decimal point.
+//	'num' (*big.Float) to determine the number of
+//	digits to the right of the decimal point which
+//	will be applied to the resulting value.
 //
-//									Note: if precision is a positive number and less
-// 									than the current number of digits to the right
-// 									of the decimal place, rounding may occur.
+//	Input parameter 'precision' must be set to a
+//	number greater than or equal to zero.  It may
+//	also be set to a value of -1 which causes the
+//	number to be formatted to the smallest number
+//	of digits to right of the decimal point.
 //
+//	Note: if precision is a positive number and less
+//	than the current number of digits to the right
+//	of the decimal place, rounding may occur.
 func (ia *IntAry) AddFloatBigToThis(num *big.Float, precision int) error {
 
 	if precision < -1 {
@@ -881,10 +650,10 @@ func (ia *IntAry) AddFloatBigToThis(num *big.Float, precision int) error {
 // intAry value.
 //
 // convertToNumStr - boolean value determines whether the current intAry
-//                   object will convert the intAry value to a number string.
-//                   Set this parameter to 'false' if this method is called
-//                   multiple times in order to improve performance.
 //
+//	object will convert the intAry value to a number string.
+//	Set this parameter to 'false' if this method is called
+//	multiple times in order to improve performance.
 func (ia *IntAry) AddMultipleToThis(iaMany ...*IntAry) error {
 
 	for _, iAry := range iaMany {
@@ -949,18 +718,17 @@ func (ia *IntAry) AppendToIntAry(num uint8) {
 // Examples
 // ========
 //
-// 						Initial 		 Ceiling
-//  					 Value				Value
-// 						-------      -------
-//  						5.95					6
-//  						5.05					6
-//  						5							5
-// 						 -5.05			 	 -5
-//  						2.4				  	3
-//  						2.9					 	3
-// 						 -2.7				 	 -2
-// 						 -2					 	 -2
-//
+//							Initial 		 Ceiling
+//	 					 Value				Value
+//							-------      -------
+//	 						5.95					6
+//	 						5.05					6
+//	 						5							5
+//							 -5.05			 	 -5
+//	 						2.4				  	3
+//	 						2.9					 	3
+//							 -2.7				 	 -2
+//							 -2					 	 -2
 func (ia *IntAry) Ceiling() (IntAry, error) {
 
 	err := ia.IsValid("Ceiling() - ")
@@ -1063,7 +831,6 @@ func (ia *IntAry) Ceiling() (IntAry, error) {
 //
 // Conversely if the current IntAry is a negative (-) numeric value,
 // this method will change the sign to positive (+).
-//
 func (ia *IntAry) ChangeSign() {
 
 	if ia.IsZero() {
@@ -1085,7 +852,6 @@ func (ia *IntAry) ChangeSign() {
 // 0  = Current IntAry value is equal to the passed IntAry value.
 // 1  = Current IntAry value is greater than the passed IntAry value.
 // -1 = Current IntAry value is less than the passed IntAry value.
-//
 func (ia *IntAry) CompareSignedValues(iAry2 *IntAry) int {
 
 	iCompare := ia.CompareAbsoluteValues(iAry2)
@@ -1121,7 +887,6 @@ func (ia *IntAry) CompareSignedValues(iAry2 *IntAry) int {
 // 0  = Current IntAry value is equal to the passed IntAry value.
 // 1  = Current IntAry value is greater than the passed IntAry value.
 // -1 = Current IntAry value is less than the passed IntAry value.
-//
 func (ia *IntAry) CompareAbsoluteValues(iAry2 *IntAry) int {
 
 	ia.SetIntAryLength()
@@ -1328,7 +1093,6 @@ func (ia *IntAry) CopyIn(iAry2 *IntAry, copyBackUp bool) {
 // CopyOut - Makes a deep copy of the current IntAry
 // instance with backup and returns it as a new IntAry
 // object.
-//
 func (ia *IntAry) CopyOut() IntAry {
 	ia.SetInternalFlags()
 	iAry2 := IntAry{}.New()
@@ -1361,7 +1125,6 @@ func (ia *IntAry) CopyOut() IntAry {
 // CopyOut - Makes a deep copy of the current IntAry
 // instance with NO backup. The method then returns
 // the deep copy as a new IntAry object.
-//
 func (ia *IntAry) CopyOutNoBackup() IntAry {
 	ia.SetInternalFlags()
 	iAry2 := IntAry{}.New()
@@ -1396,8 +1159,6 @@ func (ia *IntAry) CopyOutNoBackup() IntAry {
 // parameter 'digitsToCopy' to copy a specified
 // number of digits to the new copy. No backup
 // of the original IntAry is returned in this copy.
-//
-//
 func (ia *IntAry) CopyOutDigits(digitsToCopy int) IntAry {
 
 	ia.SetInternalFlags()
@@ -1429,7 +1190,6 @@ func (ia *IntAry) CopyOutDigits(digitsToCopy int) IntAry {
 // CopyOutPtr - Similar to CopyOut. In this case, however,
 // the method returns a pointer to a deep copy of the current
 // IntAry instance.
-//
 func (ia *IntAry) CopyOutPtr() *IntAry {
 
 	ia2 := ia.CopyOut()
@@ -1468,7 +1228,6 @@ func (ia *IntAry) CopyToBackUp() {
 
 // DecrementIntegerOne - Decrements the numeric value of the current
 // intAry by subtracting '1'.
-//
 func (ia *IntAry) DecrementIntegerOne() error {
 
 	ia.SetInternalFlags()
@@ -1580,7 +1339,6 @@ func (ia *IntAry) DivideByTwo() {
 // set to 4,096.
 //
 // If 'maxPrecision' is less than -1, an error will be returned.
-//
 func (ia *IntAry) DivideByInt64(divisor int64, maxPrecision int) error {
 
 	err := IntAryMathDivide{}.DivideByInt64(ia, divisor, maxPrecision)
@@ -1598,8 +1356,7 @@ func (ia *IntAry) DivideByInt64(divisor int64, maxPrecision int) error {
 // DivideByTenToPower - Divide the numerical value of the current IntAry
 // instance  by 10 raised to the power of the input parameter, 'exponent'.
 //
-// 								ia = ia / (10^exponent)
-//
+//	ia = ia / (10^exponent)
 func (ia *IntAry) DivideByTenToPower(exponent uint) {
 
 	IntAryMathDivide{}.DivideByTenToPower(ia, exponent)
@@ -1621,7 +1378,6 @@ func (ia *IntAry) DivideByTenToPower(exponent uint) {
 //
 // 'minPrecision' specifies the minimum precision of the final result.
 // If 'minPrecision' is less than zero, it is automatically set to zero.
-//
 func (ia *IntAry) DivideThisBy(iAry2 *IntAry, minPrecision, maxPrecision int) (IntAry, error) {
 
 	quotient, err := IntAryMathDivide{}.Divide(ia, iAry2, minPrecision, maxPrecision)
@@ -1714,17 +1470,18 @@ func (ia *IntAry) Equals(iAry2 *IntAry) bool {
 //
 // Examples
 // ========
-// 						Initial 			Floor
-//  					 Value				Value
-// 						-------      -------
-//  						5.95					5
-//  						5.05					5
-//  						5							5
-// 						 -5.05			 	 -6
-//  						2.4				  	2
-//  						2.9					 	2
-// 						 -2.7				 	 -3
-// 						 -2					 	 -2
+//
+//							Initial 			Floor
+//	 					 Value				Value
+//							-------      -------
+//	 						5.95					5
+//	 						5.05					5
+//	 						5							5
+//							 -5.05			 	 -6
+//	 						2.4				  	2
+//	 						2.9					 	2
+//							 -2.7				 	 -3
+//							 -2					 	 -2
 func (ia *IntAry) Floor() (IntAry, error) {
 
 	err := ia.IsValid("Floor() - ")
@@ -1841,7 +1598,6 @@ func (ia *IntAry) GetAbsoluteValue() IntAry {
 
 // GetBigInt - Returns the current value of this intAry object expressed
 // as a signed integer number of type *big.Int.
-//
 func (ia *IntAry) GetBigInt() (*big.Int, error) {
 
 	ePrefix := "IntAry.GetBigInt() "
@@ -1878,7 +1634,6 @@ func (ia *IntAry) GetBigInt() (*big.Int, error) {
 // The returned BigIntNum will contain numeric separators (decimal
 // separator, thousands separator and currency symbol) copied from
 // the current IntAry instance.
-//
 func (ia *IntAry) GetBigIntNum() (BigIntNum, error) {
 	ePrefix := "IntAry.GetBigIntNum() "
 
@@ -1932,7 +1687,6 @@ func (ia *IntAry) GetCurrencySymbol() rune {
 
 // GetDecimal - Converts the current IntAry instance to
 // a Type, 'Decimal' and returns it to the calling function.
-//
 func (ia *IntAry) GetDecimal() (Decimal, error) {
 
 	ePrefix := "IntAry.GetDecimal() "
@@ -2070,7 +1824,6 @@ func (ia *IntAry) GetIntegerDigits() (IntAry, error) {
 // Anything out this range will generate an error.
 //
 // Reference: https://golang.org/ref/spec#Numeric_types
-//
 func (ia *IntAry) GetInt() (int, error) {
 
 	ePrefix := "IntAry.GetInt() "
@@ -2120,7 +1873,6 @@ func (ia *IntAry) GetInt() (int, error) {
 // Anything outside this range will generate an error.
 //
 // Reference: https://golang.org/ref/spec#Numeric_types
-//
 func (ia *IntAry) GetInt64() (int64, error) {
 
 	ePrefix := "IntAry.GetInt64() "
@@ -2160,14 +1912,16 @@ func (ia *IntAry) GetInt64() (int64, error) {
 //
 // Input Parameter:
 // index int - 	The element returned is based on the
-// 							integer index passed to the method. If
-//							the index is outside the range of
-//							the internal array, an error is returned.
+//
+//	integer index passed to the method. If
+//	the index is outside the range of
+//	the internal array, an error is returned.
 //
 // Return Value:	If the 'index' passed to the method is valid,
-//								the method will return an integer of type
-//								uint8 representing the value of the internal
-//								integer array at the specified index.
+//
+//	the method will return an integer of type
+//	uint8 representing the value of the internal
+//	integer array at the specified index.
 func (ia *IntAry) GetIntAryElement(index int) (uint8, error) {
 
 	if index < 0 || index > (ia.intAryLen-1) {
@@ -2189,14 +1943,16 @@ func (ia *IntAry) GetIntAryElement(index int) (uint8, error) {
 //
 // Input Parameter:
 // index int - 	The element returned is based on the
-// 							integer index passed to the method. If
-//							the index is outside the range of
-//							the internal array, an error is returned.
+//
+//	integer index passed to the method. If
+//	the index is outside the range of
+//	the internal array, an error is returned.
 //
 // Return Value:	If the 'index' passed to the method is valid,
-//								the method will return an integer of type
-//								'int' representing the value of the internal
-//								integer array at the specified index.
+//
+//	the method will return an integer of type
+//	'int' representing the value of the internal
+//	integer array at the specified index.
 func (ia *IntAry) GetIntAryInt(index int) (int, error) {
 
 	if index < 0 || index > (ia.intAryLen-1) {
@@ -2215,15 +1971,16 @@ func (ia *IntAry) GetIntAryInt(index int) (int, error) {
 //
 // Input Parameter:
 // index int - 	The element returned is based on the
-// 							integer index passed to the method. If
-//							the index is outside the range of
-//							the internal array, an error is returned.
+//
+//	integer index passed to the method. If
+//	the index is outside the range of
+//	the internal array, an error is returned.
 //
 // Return Value:	If the 'index' passed to the method is valid,
-//								the method will return an integer of type
-//								'rune' representing the value of the internal
-//								integer array at the specified index.
 //
+//	the method will return an integer of type
+//	'rune' representing the value of the internal
+//	integer array at the specified index.
 func (ia *IntAry) GetIntAryRune(index int) (rune, error) {
 
 	if index < 0 || index > (ia.intAryLen-1) {
@@ -2248,7 +2005,6 @@ func (ia *IntAry) GetIntAryRune(index int) (rune, error) {
 //
 // Before returning the new IntAry instance, this method
 // performs a validity test on the current IntAry instance.
-//
 func (ia *IntAry) GetIntAry() (IntAry, error) {
 	ePrefix := "IntAry.GetIntAry() "
 
@@ -2274,10 +2030,13 @@ func (ia *IntAry) GetIntAry() (IntAry, error) {
 // []uint8 = an array of unsigned 8-bit integers
 //
 // int = The length of the []uint8 array returned
-// 			 above.
+//
+//	above.
 //
 // ************************************************
-//			BE CAREFUL!!!!!!!
+//
+//	BE CAREFUL!!!!!!!
+//
 // ************************************************
 // Be careful!! - This returns a slice and therefore
 // a reference (i.e. pointer) to the internal array
@@ -2343,47 +2102,59 @@ func (ia *IntAry) GetIntAryLength() int {
 // IntAryLen  - Type int: Length of the internal integer array
 //
 // IntegerLen - Type int: Number of integer digits in the current
-//							IntAry value.
+//
+//	IntAry value.
 //
 // SignificantIntegerLen - 	Type int: The number of non-zero integer
-//													digits in the current IntAry value
+//
+//	digits in the current IntAry value
 //
 // SignificantFractionLen - Type int: The number of non-zero digits
-//													to the right of the decimal point in
-//													the current IntAry value
+//
+//	to the right of the decimal point in
+//	the current IntAry value
 //
 // precision							- Type int: The number of digits to the right
-//													of the decimal point in the current
-//													IntAry value
+//
+//	of the decimal point in the current
+//	IntAry value
 //
 // SignVal                - Type int: Either +1 or -1 indicating the sign
-//													of the current IntAry value
+//
+//	of the current IntAry value
 //
 // FirstDigitIdx          - Type int: The IntAry index of the first
-//													non-zero digit in the current
-//													internal integer array
+//
+//	non-zero digit in the current
+//	internal integer array
 //
 // LastDigitIdx          -  Type int: The IntAry index of the last non-zero
-//													digit in the internal integer array
+//
+//	digit in the internal integer array
 //
 // IsZero           -	A boolean value indicating whether the
-//													current IntAry value is zero
+//
+//	current IntAry value is zero
 //
 // IsIntegerZeroValue    - 	A boolean value indicating whether integer
-//													value to the left of the decimal point is
-//													zero
+//
+//	value to the left of the decimal point is
+//	zero
 //
 // DecimalSeparator      -  Type rune: The character used to separate
-//													integer and fractional elements of the current
-//													IntAry value when presented in string format
+//
+//	integer and fractional elements of the current
+//	IntAry value when presented in string format
 //
 // ThousandsSeparator    -	Type rune: The character used to separate
-//													thousands when the current IntAry value is
-//													presented in string format
+//
+//	thousands when the current IntAry value is
+//	presented in string format
 //
 // CurrencySymbol        -  Type rune: The character used to designate
-//													currency when the current IntAry value is
-//													presented as a currency string.
+//
+//	currency when the current IntAry value is
+//	presented as a currency string.
 func (ia *IntAry) GetIntAryStats() IntAryStatsDto {
 	iStats := IntAryStatsDto{}
 	ia.SetInternalFlags()
@@ -2416,11 +2187,10 @@ func (ia *IntAry) GetIntAryStats() IntAryStatsDto {
 // the integer portion of the current IntAry numeric
 // value.
 //
-// 			10^magnitude  <= IntAry value
+//	10^magnitude  <= IntAry value
 //
 // Note: If the current IntAry value is negative,
 // an error will be generated.
-//
 func (ia *IntAry) GetMagnitude() (int, error) {
 
 	ia.SetInternalFlags()
@@ -2436,7 +2206,6 @@ func (ia *IntAry) GetMagnitude() (int, error) {
 // GetMagnitudeDigits - Returns the number of digits
 // in the integer portion of the current IntAry numeric
 // value.
-//
 func (ia *IntAry) GetMagnitudeDigits() int {
 	ia.SetInternalFlags()
 	return ia.intAryLen - ia.precision - ia.firstDigitIdx
@@ -2446,7 +2215,6 @@ func (ia *IntAry) GetMagnitudeDigits() int {
 // GetNumericSeparatorsDto - Returns a structure containing the
 // character or rune values for decimal point separator, thousands
 // separator and currency symbol.
-//
 func (ia *IntAry) GetNumericSeparatorsDto() NumericSeparatorDto {
 
 	numSeps := NumericSeparatorDto{}
@@ -2503,7 +2271,6 @@ func (ia *IntAry) GetNumStr() string {
 //
 // Before returning the new NumStrDto instance, this method
 // performs a validity check on the current IntAry instance.
-//
 func (ia *IntAry) GetNumStrDto() (NumStrDto, error) {
 
 	ePrefix := "IntAry.GetNumStrDto() "
@@ -2533,7 +2300,8 @@ func (ia *IntAry) GetNumStrDto() (NumStrDto, error) {
 // Input Parameters:
 // 'nthRoot' - uint value which specifies the root to calculate
 // 'maxPrecision' - uint value which specifies the number of digits
-//									to the right of the decimal place in the result.
+//
+//	to the right of the decimal place in the result.
 func (ia *IntAry) GetNthRootOfThis(nthRoot, maxPrecision int) (IntAry, error) {
 
 	iaNthRoot := IntAry{}.NewInt(nthRoot, 0)
@@ -2556,14 +2324,13 @@ func (ia *IntAry) GetNthRootOfThis(nthRoot, maxPrecision int) (IntAry, error) {
 // always be >= zero (greater than or equal to zero '0').
 //
 // Example:
-// 						1.234    	GetPrecision() = 3
-// 								5			GetPrecision() = 0
-// 					0.12345  		GetPrecision() = 5
 //
-//		Number String				precision				Fractional Number
-//			123456								3								123.456
+//					1.234    	GetPrecision() = 3
+//							5			GetPrecision() = 0
+//				0.12345  		GetPrecision() = 5
 //
-//
+//	Number String				precision				Fractional Number
+//		123456								3								123.456
 func (ia *IntAry) GetPrecision() int {
 	return ia.precision
 }
@@ -2581,14 +2348,13 @@ func (ia *IntAry) GetPrecision() int {
 // always be >= zero (greater than or equal to zero '0').
 //
 // Example:
-// 						1.234    	GetPrecision() = 3
-// 								5			GetPrecision() = 0
-// 					0.12345  		GetPrecision() = 5
 //
-//		Number String				precision				Fractional Number
-//			123456								3								123.456
+//					1.234    	GetPrecision() = 3
+//							5			GetPrecision() = 0
+//				0.12345  		GetPrecision() = 5
 //
-//
+//	Number String				precision				Fractional Number
+//		123456								3								123.456
 func (ia *IntAry) GetPrecisionUint() uint {
 	return uint(ia.precision)
 }
@@ -2647,24 +2413,23 @@ func (ia *IntAry) GetScaleFactor() (*big.Int, error) {
 // ===============
 //
 // mantissaLen uint	- Specifies the length of the mantissa in the returned
-//										scientific notation string. If the value of 'mantissaLen'
-//										is less than two ('2'), this method will automatically set
-//										the 'mantissaLen' to a default value of two ('2').
 //
-// 										Example Scientific Notation:
-// 										----------------------------
+//											scientific notation string. If the value of 'mantissaLen'
+//											is less than two ('2'), this method will automatically set
+//											the 'mantissaLen' to a default value of two ('2').
 //
-//  										scientific notation string: '2.652e+8'
+//											Example Scientific Notation:
+//											----------------------------
 //
-//  										significand = '2.652'
-//  										significand integer digit = '2'
-//											mantissa		= significand factional digits = '.652'
-//  										exponent    = '8'  (10^8)
+//	 										scientific notation string: '2.652e+8'
 //
+//	 										significand = '2.652'
+//	 										significand integer digit = '2'
+//												mantissa		= significand factional digits = '.652'
+//	 										exponent    = '8'  (10^8)
 //
 // Note the maximum number of digits which will be retained in the significand is
 // 50,000.
-//
 func (ia *IntAry) GetSciNotationNumber(mantissaLen uint) (SciNotationNum, error) {
 
 	ePrefix := "IntAry.GetSciNotationNumber() "
@@ -2766,18 +2531,18 @@ func (ia *IntAry) GetSciNotationNumber(mantissaLen uint) (SciNotationNum, error)
 // ===============
 //
 // mantissaLen uint	- Specifies the length of the mantissa in the returned
-//										scientific notation string.
 //
-// 										Example Scientific Notation:
-// 										----------------------------
+//											scientific notation string.
 //
-//  										scientific notation string: '2.652e+8'
+//											Example Scientific Notation:
+//											----------------------------
 //
-//  										significand = '2.652'
-//  										significand integer digit = '2'
-//											mantissa		= significand factional digits = '.652'
-//  										exponent    = '8'  (10^8)
+//	 										scientific notation string: '2.652e+8'
 //
+//	 										significand = '2.652'
+//	 										significand integer digit = '2'
+//												mantissa		= significand factional digits = '.652'
+//	 										exponent    = '8'  (10^8)
 func (ia *IntAry) GetSciNotationStr(mantissaLen uint) (string, error) {
 
 	ePrefix := "IntAry.GetSciNotationStr() "
@@ -2817,7 +2582,8 @@ func (ia *IntAry) GetSign() int {
 //
 // Input Parameters:
 // 'maxPrecision' - uint value which specifies the number of digits
-//									to the right of the decimal place in the result.
+//
+//	to the right of the decimal place in the result.
 func (ia *IntAry) GetSquareRootOfThis(maxPrecision int) (IntAry, error) {
 	nthRt := NthRootOp{}
 
@@ -2825,7 +2591,6 @@ func (ia *IntAry) GetSquareRootOfThis(maxPrecision int) (IntAry, error) {
 }
 
 // GetThisPointer - Returns a pointer to the current IntAry instance
-//
 func (ia *IntAry) GetThisPointer() *IntAry {
 
 	return ia
@@ -3019,8 +2784,8 @@ func (ia *IntAry) IsValid(errName string) error {
 // is evenly divisible by two (2) with no remainder.
 //
 // Even Number Definition:
-// 	https://www.mathsisfun.com/definitions/even-number.html
 //
+//	https://www.mathsisfun.com/definitions/even-number.html
 func (ia *IntAry) IsEvenNumber() bool {
 
 	if ia.precision > 0 {
@@ -3055,7 +2820,6 @@ func (ia *IntAry) IsEvenNumber() bool {
 // -1.0000			true
 // -1.0001			false
 // -2.0				false
-//
 func (ia *IntAry) IsMinusOne() bool {
 
 	iaMinusOne := IntAry{}.NewOne(ia.precision)
@@ -3081,7 +2845,6 @@ func (ia *IntAry) IsMinusOne() bool {
 // 1.0000			true
 // 1.0001			false
 // 2.0				false
-//
 func (ia *IntAry) IsOne() bool {
 
 	iaOne := IntAry{}.NewOne(ia.precision)
@@ -3098,8 +2861,8 @@ func (ia *IntAry) IsOne() bool {
 // value, this method returns 'true'
 //
 // Even Number Definition:
-// 		https://www.mathsisfun.com/definitions/even-number.html
 //
+//	https://www.mathsisfun.com/definitions/even-number.html
 func (ia *IntAry) IsZero() bool {
 
 	err := ia.IsValid("")
@@ -3116,13 +2879,14 @@ func (ia *IntAry) IsZero() bool {
 // value.
 //
 // Input Parameter:
-//	maxPrecision int -	determines the number of digits to the
-//  										right of the decimal point in the result.
 //
-//											Note: if 'maxPrecision' is set equal to negative
-//														one (-1), the maximum number of decimals is
-//														set to 4096 digits to the right of the decimal
-//														place
+//		maxPrecision int -	determines the number of digits to the
+//	 										right of the decimal point in the result.
+//
+//												Note: if 'maxPrecision' is set equal to negative
+//															one (-1), the maximum number of decimals is
+//															set to 4096 digits to the right of the decimal
+//															place
 func (ia *IntAry) Inverse(maxPrecision int) (IntAry, error) {
 
 	if maxPrecision < 0 {
@@ -3144,7 +2908,7 @@ func (ia *IntAry) Inverse(maxPrecision int) (IntAry, error) {
 	}
 
 	if iaInverse.GetPrecision() > maxPrecision {
-		_ =iaInverse.RoundToPrecision(maxPrecision)
+		_ = iaInverse.RoundToPrecision(maxPrecision)
 	}
 
 	return iaInverse, nil
@@ -3153,7 +2917,6 @@ func (ia *IntAry) Inverse(maxPrecision int) (IntAry, error) {
 // MultiplyByTwoToPower Multiply the existing value
 // of the IntAry by 2 to the power of the passed in
 // parameter.
-//
 func (ia *IntAry) MultiplyByTwoToPower(power uint) {
 
 	IntAryMathMultiply{}.MultiplyByTwoToPower(ia, power)
@@ -3175,29 +2938,31 @@ func (ia *IntAry) MultiplyByTenToPower(power uint) {
 // ==========
 //
 // 'ia2' - 				Pointer to an intAry object. In this multiplication operation, 'ia2'
-// 								is the multiplier.
+//
+//	is the multiplier.
 //
 // 'minimumResultPrecision' int -
-//								'minimumResultPrecision' will determine the minimum number of digits computed
-//								to the right of the decimal place in the final result.
-//								If 'minimumResultPrecision' is set to a value of -1, all significant digits (digits
-//								greater than zero) will be returned to the right of the decimal place. Remember
-//								that the maximum number of decimal digits returned will be controlled by parameter
-//								'maxResultPrecision'
+//
+//	'minimumResultPrecision' will determine the minimum number of digits computed
+//	to the right of the decimal place in the final result.
+//	If 'minimumResultPrecision' is set to a value of -1, all significant digits (digits
+//	greater than zero) will be returned to the right of the decimal place. Remember
+//	that the maximum number of decimal digits returned will be controlled by parameter
+//	'maxResultPrecision'
 //
 // 'maxResultPrecision' 		int -
-//								'maxResultPrecision' will determine the maximum
-// 								number of digits to the right of the decimal
-//								place in the result.
 //
-//								Valid values are -1 and values >= zero ('0')
-//        				Values less than -1 will trigger an error.
+//									'maxResultPrecision' will determine the maximum
+//									number of digits to the right of the decimal
+//									place in the result.
 //
-//								A value of -1 signals that no limit will be placed on
-//								the number of decimals places to right of the decimal
-//								point in the result. Be advised that a very, very large number
-//								of decimal digits may be accommodated by the IntAry Type.
+//									Valid values are -1 and values >= zero ('0')
+//	       				Values less than -1 will trigger an error.
 //
+//									A value of -1 signals that no limit will be placed on
+//									the number of decimals places to right of the decimal
+//									point in the result. Be advised that a very, very large number
+//									of decimal digits may be accommodated by the IntAry Type.
 func (ia *IntAry) MultiplyThisBy(ia2 *IntAry, minimumPrecision, maxPrecision int) error {
 
 	return IntAryMathMultiply{}.Multiply(ia, ia2, ia, minimumPrecision, maxPrecision)
@@ -3211,36 +2976,39 @@ func (ia *IntAry) MultiplyThisBy(ia2 *IntAry, minimumPrecision, maxPrecision int
 // ==========
 //
 // 'ia1' - 				Pointer to an intAry object. In this multiplication operation, 'ia1'
-// 								is the multiplicand.
+//
+//	is the multiplicand.
 //
 // 'ia2' - 				Pointer to an intAry object. In this multiplication operation, 'ia2'
-// 								is the multiplier.
 //
-//  'iaResult' -	Pointer to an intAry object which will be populated with the result
-//								of the multiplication operation. The multiplication operation is achieved
-//								by multiplying 'ia1' by 'ia2'.
+//									is the multiplier.
+//
+//	 'iaResult' -	Pointer to an intAry object which will be populated with the result
+//									of the multiplication operation. The multiplication operation is achieved
+//									by multiplying 'ia1' by 'ia2'.
 //
 // 'minimumResultPrecision' int -
-//								'minimumResultPrecision' will determine the minimum number of digits computed
-//								to the right of the decimal place in the final result.
-//								If 'minimumResultPrecision' is set to a value of -1, all significant digits (digits
-//								greater than zero) will be returned to the right of the decimal place. Remember
-//								that the maximum number of decimal digits returned will be controlled by parameter
-//								'maxResultPrecision'
+//
+//	'minimumResultPrecision' will determine the minimum number of digits computed
+//	to the right of the decimal place in the final result.
+//	If 'minimumResultPrecision' is set to a value of -1, all significant digits (digits
+//	greater than zero) will be returned to the right of the decimal place. Remember
+//	that the maximum number of decimal digits returned will be controlled by parameter
+//	'maxResultPrecision'
 //
 // 'maxResultPrecision' 		int -
-//								'maxResultPrecision' will determine the maximum
-// 								number of digits to the right of the decimal
-//								place in the result.
 //
-//								Valid values are -1 and values >= zero ('0')
-//        				Values less than -1 will trigger an error.
+//									'maxResultPrecision' will determine the maximum
+//									number of digits to the right of the decimal
+//									place in the result.
 //
-//								A value of -1 signals that no limit will be placed on
-//								the number of decimals places to right of the decimal
-//								point in the result. Be advised that a very, very large number
-//								of decimal digits may be accommodated by the IntAry Type.
+//									Valid values are -1 and values >= zero ('0')
+//	       				Values less than -1 will trigger an error.
 //
+//									A value of -1 signals that no limit will be placed on
+//									the number of decimals places to right of the decimal
+//									point in the result. Be advised that a very, very large number
+//									of decimal digits may be accommodated by the IntAry Type.
 func (ia *IntAry) Multiply(ia1, ia2, iaResult *IntAry, minimumResultPrecision, maxResultPrecision int) error {
 
 	return IntAryMathMultiply{}.Multiply(ia1, ia2, iaResult, minimumResultPrecision, maxResultPrecision)
@@ -3252,7 +3020,6 @@ func (ia *IntAry) Multiply(ia1, ia2, iaResult *IntAry, minimumResultPrecision, m
 // (decimal separator, thousands separator and currency symbol).
 //
 // Usage: ia := intAry{}.New()
-//
 func (ia IntAry) New() IntAry {
 	iAry := IntAry{}
 	iAry.intAry = []uint8{}
@@ -3281,7 +3048,6 @@ func (ia IntAry) New() IntAry {
 // by input parameter, 'numSeps'.
 //
 // Usage: ia := intAry{}.New()
-//
 func (ia IntAry) NewWithNumSeps(numSeps NumericSeparatorDto) IntAry {
 
 	numSeps.SetDefaultsIfEmpty()
@@ -3304,17 +3070,17 @@ func (ia IntAry) NewWithNumSeps(numSeps NumericSeparatorDto) IntAry {
 // trigger an error.
 //
 // Example:
-//  intDigits     precision     	    result
-//  946254  			   3							   946.254
-//  946254				   0							   946254
-//  -946254  			   3					      -946.254
-//  -946254				   0						    -946254
+//
+//	intDigits     precision     	    result
+//	946254  			   3							   946.254
+//	946254				   0							   946254
+//	-946254  			   3					      -946.254
+//	-946254				   0						    -946254
 //
 // Usage:
 // num := big.NewInt(123456)
 // precision := uint(3)
 // ia, err := intAry{}.NewBigInt(num, precision)
-//
 func (ia IntAry) NewBigInt(num *big.Int, precision int) (IntAry, error) {
 	ePrefix := "IntAry.NewBigInt() "
 
@@ -3346,7 +3112,6 @@ func (ia IntAry) NewBigInt(num *big.Int, precision int) (IntAry, error) {
 // Usage:
 // bINum, _ := BigIntNum{}.NewNumStr("1234.5678")
 // ia, err := intAry{}.NewBigIntNim(bINum)
-//
 func (ia IntAry) NewBigIntNum(bINum BigIntNum) (IntAry, error) {
 
 	ePrefix := "IntAry.NewBigIntNum() "
@@ -3377,7 +3142,6 @@ func (ia IntAry) NewBigIntNum(bINum BigIntNum) (IntAry, error) {
 //
 // Note: 'precision' values less than zero will be
 // converted to zero.
-//
 func (ia IntAry) NewFive(precision int) IntAry {
 
 	ia1 := IntAry{}
@@ -3408,7 +3172,6 @@ func (ia IntAry) NewFive(precision int) IntAry {
 //
 // Note: if precision is a positive value, and less than the current number
 // of digits to the right of the decimal place, rounding may occur.
-//
 func (ia IntAry) NewFloat32(num float32, precision int) (IntAry, error) {
 
 	iAry := IntAry{}.New()
@@ -3437,16 +3200,16 @@ func (ia IntAry) NewFloat32(num float32, precision int) (IntAry, error) {
 // point.
 //
 // Input parameter 'precision' must be set to a
-// 									number greater than or equal to zero.  It may
-// 									also be set to a value of -1 which causes the
-// 									number to be formatted to the smallest number
-// 									of digits to right of the decimal point.
+//
+//	number greater than or equal to zero.  It may
+//	also be set to a value of -1 which causes the
+//	number to be formatted to the smallest number
+//	of digits to right of the decimal point.
 //
 // Usage:
 // num := float64(123.456000)
 // precision := 3 - signals that only the decimals 456 will included as input
 // ia, err := intAry{}.NewFloat64(num, precision)
-//
 func (ia IntAry) NewFloat64(num float64, precision int) (IntAry, error) {
 
 	iAry := IntAry{}.New()
@@ -3471,18 +3234,20 @@ func (ia IntAry) NewFloat64(num float64, precision int) (IntAry, error) {
 // Input Parameters:
 //
 // num *big.Float -	This floating value will be used to
-//									to set the value of a new IntAry object
+//
+//	to set the value of a new IntAry object
 //
 // precision int -	'precision' is applied to the input parameter
-//									'num' (*big.Float) to determine the number of
-//									digits to the right of the decimal point which
-//									will be applied to the resulting value.
 //
-//									Input parameter 'precision' must be set to a
-// 									number greater than or equal to zero.  It may
-// 									also be set to a value of -1 which causes the
-// 									number to be formatted to the smallest number
-// 									of digits to right of the decimal point.
+//	'num' (*big.Float) to determine the number of
+//	digits to the right of the decimal point which
+//	will be applied to the resulting value.
+//
+//	Input parameter 'precision' must be set to a
+//	number greater than or equal to zero.  It may
+//	also be set to a value of -1 which causes the
+//	number to be formatted to the smallest number
+//	of digits to right of the decimal point.
 //
 // Usage:
 // num, err := big.NewFloatBig(123.4560, 3)
@@ -3522,18 +3287,18 @@ func (ia IntAry) NewFloatBig(num *big.Float, precision int) (IntAry, error) {
 // syntax thereby allowing Decimal type creation and initialization in
 // one step.
 //
-// 				intNum := int(123456)
-// 				precision := uint(3)
-// 				dec := Decimal{}.NewInt(intNum, precision)
-//        dec is now equal to 123.456
+//					intNum := int(123456)
+//					precision := uint(3)
+//					dec := Decimal{}.NewInt(intNum, precision)
+//	       dec is now equal to 123.456
 //
 // Examples:
 // ---------
-//   intNum				precision			Decimal Result
-//	 123456		 		   4							12.3456
-//   123456          0              123456
-//   123456          1              12345.6
 //
+//	  intNum				precision			Decimal Result
+//		 123456		 		   4							12.3456
+//	  123456          0              123456
+//	  123456          1              12345.6
 func (ia IntAry) NewInt(intNum int, precision uint) IntAry {
 
 	iAry := IntAry{}.New()
@@ -3547,7 +3312,7 @@ func (ia IntAry) NewInt(intNum int, precision uint) IntAry {
 // value is set using an int value multiplied by 10 raised to the
 // power of the 'exponent' parameter.
 //
-// 				numeric value = int X 10^exponent
+//	numeric value = int X 10^exponent
 //
 // Input parameter 'intNum' is of type int.
 //
@@ -3559,19 +3324,19 @@ func (ia IntAry) NewInt(intNum int, precision uint) IntAry {
 // syntax thereby allowing IntAry type creation and initialization in
 // one step.
 //
-//	iAry := IntAry{}.NewIntExponent(123456, -3)
-//  -- iAry is now equal to "123.456", precision = 3
+//		iAry := IntAry{}.NewIntExponent(123456, -3)
+//	 -- iAry is now equal to "123.456", precision = 3
 //
-//	iAry := IntAry{}.NewIntExponent(123456, 3)
-//  -- iAry is now equal to "123456.000", precision = 3
+//		iAry := IntAry{}.NewIntExponent(123456, 3)
+//	 -- iAry is now equal to "123456.000", precision = 3
 //
 // Examples:
 // ---------
-//   intNum		 exponent			  	IntAry Result
-//	 123456		 		  -3							123.456
-//	 123456		 		   3							123456.000
-//   123456          0              123456
 //
+//	  intNum		 exponent			  	IntAry Result
+//		 123456		 		  -3							123.456
+//		 123456		 		   3							123456.000
+//	  123456          0              123456
 func (ia IntAry) NewIntExponent(intNum int, exponent int) IntAry {
 
 	if exponent > 0 {
@@ -3608,18 +3373,18 @@ func (ia IntAry) NewIntExponent(intNum int, exponent int) IntAry {
 // IntAry{} syntax thereby allowing IntAry type creation and
 // initialization in one step.
 //
-// 				int32Num := int64(123456)
-// 				precision := uint(3)
-// 				iAry := IntAry{}.NewInt32(int32Num, precision)
-//        iAry is now equal to 123.456
+//					int32Num := int64(123456)
+//					precision := uint(3)
+//					iAry := IntAry{}.NewInt32(int32Num, precision)
+//	       iAry is now equal to 123.456
 //
 // Examples:
 // ---------
-//   int32Num			precision			 IntAry Result
-//	 123456		 		   4							12.3456
-//   123456          0              123456
-//   123456          1              12345.6
 //
+//	  int32Num			precision			 IntAry Result
+//		 123456		 		   4							12.3456
+//	  123456          0              123456
+//	  123456          1              12345.6
 func (ia IntAry) NewInt32(int32Num int32, precision uint) IntAry {
 
 	iAry := IntAry{}.New()
@@ -3634,7 +3399,7 @@ func (ia IntAry) NewInt32(int32Num int32, precision uint) IntAry {
 // value is set using an int32 value multiplied by 10 raised to the
 // power of the 'exponent' parameter.
 //
-// 				numeric value = int32 X 10^exponent
+//	numeric value = int32 X 10^exponent
 //
 // Input parameter 'int32Num' is of type int32.
 //
@@ -3646,19 +3411,19 @@ func (ia IntAry) NewInt32(int32Num int32, precision uint) IntAry {
 // syntax thereby allowing IntAry type creation and initialization in
 // one step.
 //
-//	iAry := IntAry{}.NewInt32Exponent(123456, -3)
-//  -- iAry is now equal to "123.456", precision = 3
+//		iAry := IntAry{}.NewInt32Exponent(123456, -3)
+//	 -- iAry is now equal to "123.456", precision = 3
 //
-//	iAry := IntAry{}.NewInt32Exponent(123456, 3)
-//  -- iAry is now equal to "123456.000", precision = 3
+//		iAry := IntAry{}.NewInt32Exponent(123456, 3)
+//	 -- iAry is now equal to "123456.000", precision = 3
 //
 // Examples:
 // ---------
-//   int32Num		 exponent			  	IntAry Result
-//	 123456		 		  -3							123.456
-//	 123456		 		   3							123456.000
-//   123456          0              123456
 //
+//	  int32Num		 exponent			  	IntAry Result
+//		 123456		 		  -3							123.456
+//		 123456		 		   3							123456.000
+//	  123456          0              123456
 func (ia IntAry) NewInt32Exponent(int32Num int32, exponent int) IntAry {
 
 	if exponent > 0 {
@@ -3695,18 +3460,18 @@ func (ia IntAry) NewInt32Exponent(int32Num int32, exponent int) IntAry {
 // IntAry{} syntax thereby allowing IntAry type creation and
 // initialization in one step.
 //
-// 				int64Num := int64(123456)
-// 				precision := uint(3)
-// 				iAry := IntAry{}.NewInt64(int64Num, precision)
-//        iAry is now equal to 123.456
+//					int64Num := int64(123456)
+//					precision := uint(3)
+//					iAry := IntAry{}.NewInt64(int64Num, precision)
+//	       iAry is now equal to 123.456
 //
 // Examples:
 // ---------
-//   int64Num			precision			 IntAry Result
-//	 123456		 		   4							12.3456
-//   123456          0              123456
-//   123456          1              12345.6
 //
+//	  int64Num			precision			 IntAry Result
+//		 123456		 		   4							12.3456
+//	  123456          0              123456
+//	  123456          1              12345.6
 func (ia IntAry) NewInt64(int64Num int64, precision uint) IntAry {
 
 	iAry := IntAry{}.New()
@@ -3721,7 +3486,7 @@ func (ia IntAry) NewInt64(int64Num int64, precision uint) IntAry {
 // value is set using an int64 value multiplied by 10 raised to the
 // power of the 'exponent' parameter.
 //
-// 				numeric value = int64 X 10^exponent
+//	numeric value = int64 X 10^exponent
 //
 // Input parameter 'int64Num' is of type int64.
 //
@@ -3733,19 +3498,19 @@ func (ia IntAry) NewInt64(int64Num int64, precision uint) IntAry {
 // syntax thereby allowing IntAry type creation and initialization in
 // one step.
 //
-//	iAry := IntAry{}.NewInt64Exponent(123456, -3)
-//  -- iAry is now equal to "123.456", precision = 3
+//		iAry := IntAry{}.NewInt64Exponent(123456, -3)
+//	 -- iAry is now equal to "123.456", precision = 3
 //
-//	iAry := IntAry{}.NewInt64Exponent(123456, 3)
-//  -- iAry is now equal to "123456.000", precision = 3
+//		iAry := IntAry{}.NewInt64Exponent(123456, 3)
+//	 -- iAry is now equal to "123456.000", precision = 3
 //
 // Examples:
 // ---------
-//   int64Num		 exponent			  	IntAry Result
-//	 123456		 		  -3							123.456
-//	 123456		 		   3							123456.000
-//   123456          0              123456
 //
+//	  int64Num		 exponent			  	IntAry Result
+//		 123456		 		  -3							123.456
+//		 123456		 		   3							123456.000
+//	  123456          0              123456
 func (ia IntAry) NewInt64Exponent(int64Num int64, exponent int) IntAry {
 
 	if exponent > 0 {
@@ -3777,7 +3542,6 @@ func (ia IntAry) NewInt64Exponent(int64Num int64, exponent int) IntAry {
 // and -1 generates a negative number. If input parameters 'inStr' or 'fracStr' contain
 // a leading minus or plus sign character, it will be ignored. The sign of the resulting
 // numeric value is controlled strictly by input parameter, 'signVal'.
-//
 func (ia IntAry) NewIntFracStr(intStr, fracStr string, signVal int) (IntAry, error) {
 
 	ia2 := IntAry{}.NewZero(0)
@@ -3804,15 +3568,15 @@ func (ia IntAry) NewIntFracStr(intStr, fracStr string, signVal int) (IntAry, err
 // This method assumes that the input parameter 'numStr' is a string
 // of numeric digits which may be delimited by default USA numeric
 // separators. Default USA numeric separators are defined as:
-//  	decimal separator = '.'
-//    thousands separator = ','
-// 		currency symbol = '$'
+//
+//	 	decimal separator = '.'
+//	   thousands separator = ','
+//			currency symbol = '$'
 //
 // If the subject 'numStr' employs other national or cultural numeric
 // separators, see method IntAry.NewNumStrWithNumSeps(), below.
 //
 // Usage: ia := intAry{}.NewNumStr("123.456")
-//
 func (ia IntAry) NewNumStr(numStr string) (IntAry, error) {
 
 	iAry := IntAry{}.New()
@@ -3836,7 +3600,6 @@ func (ia IntAry) NewNumStr(numStr string) (IntAry, error) {
 //
 // In addition, the numeric separators contained in input parameter 'numSeps'
 // will be copied to the returned IntAry instance.
-//
 func (ia IntAry) NewNumStrWithNumSeps(
 	numStr string,
 	numSeps NumericSeparatorDto) (IntAry, error) {
@@ -3877,7 +3640,6 @@ func (ia IntAry) NewNumStrWithNumSeps(
 // will be rounded to 'maxPrecision' decimal places.
 //
 // Usage: ia := intAry{}.NewNumStr("123.456", 3)
-//
 func (ia IntAry) NewNumStrMaxPrecision(num string, maxPrecision int) (IntAry, error) {
 
 	iAry := IntAry{}.New()
@@ -3926,7 +3688,6 @@ func (ia IntAry) NewNumStrDto(numDto NumStrDto) (IntAry, error) {
 // NewOne - Creates a new IntAry with a value of '1'.
 // Note: 'precision' values less than zero will be
 // converted to zero.
-//
 func (ia IntAry) NewOne(precision int) IntAry {
 
 	ia1 := IntAry{}
@@ -3937,7 +3698,6 @@ func (ia IntAry) NewOne(precision int) IntAry {
 }
 
 // NewPtr - Returns a pointer to a new IntAry instance.
-//
 func (ia IntAry) NewPtr() *IntAry {
 
 	ia2 := IntAry{}.New()
@@ -3950,7 +3710,6 @@ func (ia IntAry) NewPtr() *IntAry {
 //
 // Note: 'precision' values less than zero will be
 // converted to zero.
-//
 func (ia IntAry) NewTen(precision int) IntAry {
 
 	ia1 := IntAry{}
@@ -3965,7 +3724,6 @@ func (ia IntAry) NewTen(precision int) IntAry {
 //
 // Note: 'precision' values less than zero will be
 // converted to zero.
-//
 func (ia IntAry) NewThree(precision int) IntAry {
 
 	ia1 := IntAry{}
@@ -3980,7 +3738,6 @@ func (ia IntAry) NewThree(precision int) IntAry {
 //
 // Note: 'precision' values less than zero will be
 // converted to zero.
-//
 func (ia IntAry) NewTwo(precision int) IntAry {
 
 	ia1 := IntAry{}
@@ -4007,18 +3764,18 @@ func (ia IntAry) NewTwo(precision int) IntAry {
 // IntAry{} syntax thereby allowing IntAry type creation and
 // initialization in one step.
 //
-// 				uintNum := uint(123456)
-// 				precision := uint(3)
-// 				iAry := IntAry{}.NewUint(uintNum, precision)
-//        iAry is now equal to 123.456
+//					uintNum := uint(123456)
+//					precision := uint(3)
+//					iAry := IntAry{}.NewUint(uintNum, precision)
+//	       iAry is now equal to 123.456
 //
 // Examples:
 // ---------
-//  uintNum			precision			 IntAry Result
-//	 123456		 		   4							12.3456
-//   123456          0              123456
-//   123456          1              12345.6
 //
+//	 uintNum			precision			 IntAry Result
+//		 123456		 		   4							12.3456
+//	  123456          0              123456
+//	  123456          1              12345.6
 func (ia IntAry) NewUint(uintNum uint, precision uint) IntAry {
 
 	iAry := IntAry{}.New()
@@ -4033,7 +3790,7 @@ func (ia IntAry) NewUint(uintNum uint, precision uint) IntAry {
 // value is set using an uint value multiplied by 10 raised to the
 // power of the 'exponent' parameter.
 //
-// 				numeric value = uint X 10^exponent
+//	numeric value = uint X 10^exponent
 //
 // Input parameter 'uintNum' is of type uint.
 //
@@ -4045,19 +3802,19 @@ func (ia IntAry) NewUint(uintNum uint, precision uint) IntAry {
 // syntax thereby allowing IntAry type creation and initialization in
 // one step.
 //
-//	iAry := IntAry{}.NewUintExponent(123456, -3)
-//  -- iAry is now equal to "123.456", precision = 3
+//		iAry := IntAry{}.NewUintExponent(123456, -3)
+//	 -- iAry is now equal to "123.456", precision = 3
 //
-//	iAry := IntAry{}.NewUintExponent(123456, 3)
-//  -- iAry is now equal to "123456.000", precision = 3
+//		iAry := IntAry{}.NewUintExponent(123456, 3)
+//	 -- iAry is now equal to "123456.000", precision = 3
 //
 // Examples:
 // ---------
-//  uintNum		    exponent		  	IntAry Result
-//	 123456		 		  -3							123.456
-//	 123456		 		   3							123456.000
-//   123456          0              123456
 //
+//	 uintNum		    exponent		  	IntAry Result
+//		 123456		 		  -3							123.456
+//		 123456		 		   3							123456.000
+//	  123456          0              123456
 func (ia IntAry) NewUintExponent(uintNum uint, exponent int) IntAry {
 
 	uintTen := uint(10)
@@ -4096,18 +3853,18 @@ func (ia IntAry) NewUintExponent(uintNum uint, exponent int) IntAry {
 // IntAry{} syntax thereby allowing IntAry type creation and
 // initialization in one step.
 //
-// 				uint32Num := uint32(123456)
-// 				precision := uint(3)
-// 				iAry := IntAry{}.NewUint32(uint32Num, precision)
-//        iAry is now equal to 123.456
+//					uint32Num := uint32(123456)
+//					precision := uint(3)
+//					iAry := IntAry{}.NewUint32(uint32Num, precision)
+//	       iAry is now equal to 123.456
 //
 // Examples:
 // ---------
-//  uint32Num			precision			 IntAry Result
-//	 123456		 		   4							12.3456
-//   123456          0              123456
-//   123456          1              12345.6
 //
+//	 uint32Num			precision			 IntAry Result
+//		 123456		 		   4							12.3456
+//	  123456          0              123456
+//	  123456          1              12345.6
 func (ia IntAry) NewUint32(uint32Num uint32, precision uint) IntAry {
 
 	iAry := IntAry{}.New()
@@ -4122,7 +3879,7 @@ func (ia IntAry) NewUint32(uint32Num uint32, precision uint) IntAry {
 // value is set using an uint32 value multiplied by 10 raised to the
 // power of the 'exponent' parameter.
 //
-// 				numeric value = uint32 X 10^exponent
+//	numeric value = uint32 X 10^exponent
 //
 // Input parameter 'uint32Num' is of type uint32.
 //
@@ -4134,19 +3891,19 @@ func (ia IntAry) NewUint32(uint32Num uint32, precision uint) IntAry {
 // syntax thereby allowing IntAry type creation and initialization in
 // one step.
 //
-//	iAry := IntAry{}.NewUint32Exponent(123456, -3)
-//  -- iAry is now equal to "123.456", precision = 3
+//		iAry := IntAry{}.NewUint32Exponent(123456, -3)
+//	 -- iAry is now equal to "123.456", precision = 3
 //
-//	iAry := IntAry{}.NewUint32Exponent(123456, 3)
-//  -- iAry is now equal to "123456.000", precision = 3
+//		iAry := IntAry{}.NewUint32Exponent(123456, 3)
+//	 -- iAry is now equal to "123456.000", precision = 3
 //
 // Examples:
 // ---------
-//  uint32Num		  exponent		  	IntAry Result
-//	 123456		 		  -3							123.456
-//	 123456		 		   3							123456.000
-//   123456          0              123456
 //
+//	 uint32Num		  exponent		  	IntAry Result
+//		 123456		 		  -3							123.456
+//		 123456		 		   3							123456.000
+//	  123456          0              123456
 func (ia IntAry) NewUint32Exponent(uint32Num uint32, exponent int) IntAry {
 
 	uint32Ten := uint32(10)
@@ -4185,18 +3942,18 @@ func (ia IntAry) NewUint32Exponent(uint32Num uint32, exponent int) IntAry {
 // IntAry{} syntax thereby allowing IntAry type creation and
 // initialization in one step.
 //
-// 				uint64Num := uint64(123456)
-// 				precision := uint(3)
-// 				iAry := IntAry{}.NewUint64(uint64Num, precision)
-//        iAry is now equal to 123.456
+//					uint64Num := uint64(123456)
+//					precision := uint(3)
+//					iAry := IntAry{}.NewUint64(uint64Num, precision)
+//	       iAry is now equal to 123.456
 //
 // Examples:
 // ---------
-//  uint64Num			precision			 IntAry Result
-//	 123456		 		   4							12.3456
-//   123456          0              123456
-//   123456          1              12345.6
 //
+//	 uint64Num			precision			 IntAry Result
+//		 123456		 		   4							12.3456
+//	  123456          0              123456
+//	  123456          1              12345.6
 func (ia IntAry) NewUint64(uint64Num uint64, precision uint) IntAry {
 
 	iAry := IntAry{}.New()
@@ -4211,7 +3968,7 @@ func (ia IntAry) NewUint64(uint64Num uint64, precision uint) IntAry {
 // value is set using an uint64 value multiplied by 10 raised to the
 // power of the 'exponent' parameter.
 //
-// 				numeric value = uint64 X 10^exponent
+//	numeric value = uint64 X 10^exponent
 //
 // Input parameter 'uint64Num' is of type uint64.
 //
@@ -4223,19 +3980,19 @@ func (ia IntAry) NewUint64(uint64Num uint64, precision uint) IntAry {
 // syntax thereby allowing IntAry type creation and initialization in
 // one step.
 //
-//	iAry := IntAry{}.NewUint64Exponent(123456, -3)
-//  -- iAry is now equal to "123.456", precision = 3
+//		iAry := IntAry{}.NewUint64Exponent(123456, -3)
+//	 -- iAry is now equal to "123.456", precision = 3
 //
-//	iAry := IntAry{}.NewUint64Exponent(123456, 3)
-//  -- iAry is now equal to "123456.000", precision = 3
+//		iAry := IntAry{}.NewUint64Exponent(123456, 3)
+//	 -- iAry is now equal to "123456.000", precision = 3
 //
 // Examples:
 // ---------
-//  uint64Num		  exponent		  	IntAry Result
-//	 123456		 		  -3							123.456
-//	 123456		 		   3							123456.000
-//   123456          0              123456
 //
+//	 uint64Num		  exponent		  	IntAry Result
+//		 123456		 		  -3							123.456
+//		 123456		 		   3							123456.000
+//	  123456          0              123456
 func (ia IntAry) NewUint64Exponent(uint64Num uint64, exponent int) IntAry {
 
 	uint64Ten := uint64(10)
@@ -4270,12 +4027,11 @@ func (ia IntAry) NewUint64Exponent(uint64Num uint64, exponent int) IntAry {
 // IntAry{} syntax thereby allowing IntAry type creation and
 // initialization in one step.
 //
-//	iAry := IntAry{}.NewZero(0)
-//  -- iAry is now equal to "0", precision = 0
+//		iAry := IntAry{}.NewZero(0)
+//	 -- iAry is now equal to "0", precision = 0
 //
-//	iAry := IntAry{}.NewZero(3)
-//  -- iAry is now equal to "0.000", precision = 3
-//
+//		iAry := IntAry{}.NewZero(3)
+//	 -- iAry is now equal to "0.000", precision = 3
 func (ia IntAry) NewZero(precision uint) IntAry {
 
 	ia2 := IntAry{}
@@ -4295,7 +4051,6 @@ func (ia IntAry) NewZero(precision uint) IntAry {
 // equal to 'true', trailing zeros to the
 // right of the decimal place will also be
 // eliminated.
-//
 func (ia *IntAry) OptimizeIntArrayLen(optimizeFracDigits bool) {
 
 	ia.SetInternalFlags()
@@ -4328,34 +4083,35 @@ func (ia *IntAry) OptimizeIntArrayLen(optimizeFracDigits bool) {
 // Input Parameters:
 // =================
 // 'power' int -
-// 				The input parameter 'power' may be either
-// 				a positive or negative integer.
+//
+//	The input parameter 'power' may be either
+//	a positive or negative integer.
 //
 // 'maxResultPrecision' int -
-//				'maxResultPrecision' will determine the maximum
-// 				number of digits to the right of the decimal
-//				place in the result.
 //
-//				Valid values are -1 and values >= zero ('0')
-//        Values less than -1 will trigger an error.
+//					'maxResultPrecision' will determine the maximum
+//					number of digits to the right of the decimal
+//					place in the result.
 //
-//				A value of -1 signals that no limit will be placed on
-//				the number of decimals places to right of the decimal
-//				point in the result.
+//					Valid values are -1 and values >= zero ('0')
+//	       Values less than -1 will trigger an error.
 //
-//	'internalPrecision' int -
-// 				'internalPrecision' will control the number of digits of
-//				accuracy to the right of the decimal point maintained by
-//				internal multiplication operations used in raising the intAry
-//				value to the designated power.
+//					A value of -1 signals that no limit will be placed on
+//					the number of decimals places to right of the decimal
+//					point in the result.
 //
-//				Valid values are -1 and values >= zero ('0')
-//        Values less than -1 will trigger an error.
+//		'internalPrecision' int -
+//					'internalPrecision' will control the number of digits of
+//					accuracy to the right of the decimal point maintained by
+//					internal multiplication operations used in raising the intAry
+//					value to the designated power.
 //
-//				A value of -1 signals that no limit will be placed on
-//				the number of decimals places to right of the decimal
-//				point during internal multiplication operations.
+//					Valid values are -1 and values >= zero ('0')
+//	       Values less than -1 will trigger an error.
 //
+//					A value of -1 signals that no limit will be placed on
+//					the number of decimals places to right of the decimal
+//					point during internal multiplication operations.
 func (ia *IntAry) Pow(power, maxResultPrecision, internalPrecision int) error {
 
 	ePrefix := "IntAry.PowInt() "
@@ -4391,34 +4147,35 @@ func (ia *IntAry) PowThisSquared() error {
 // Input Parameters:
 // =================
 // 'power' int -
-// 				The input parameter 'power' may be either
-// 				a positive or negative integer.
+//
+//	The input parameter 'power' may be either
+//	a positive or negative integer.
 //
 // 'maxResultPrecision' int -
-//				'maxResultPrecision' will determine the maximum
-// 				number of digits to the right of the decimal
-//				place in the result.
 //
-//				Valid values are -1 and values >= zero ('0')
-//        Values less than -1 will trigger an error.
+//					'maxResultPrecision' will determine the maximum
+//					number of digits to the right of the decimal
+//					place in the result.
 //
-//				A value of -1 signals that no limit will be placed on
-//				the number of decimals places to right of the decimal
-//				point in the result.
+//					Valid values are -1 and values >= zero ('0')
+//	       Values less than -1 will trigger an error.
 //
-//	'internalPrecision' int -
-// 				'internalPrecision' will control the number of digits of
-//				accuracy to the right of the decimal point maintained by
-//				internal multiplication operations used in raising the intAry
-//				value to the designated power.
+//					A value of -1 signals that no limit will be placed on
+//					the number of decimals places to right of the decimal
+//					point in the result.
 //
-//				Valid values are -1 and values >= zero ('0')
-//        Values less than -1 will trigger an error.
+//		'internalPrecision' int -
+//					'internalPrecision' will control the number of digits of
+//					accuracy to the right of the decimal point maintained by
+//					internal multiplication operations used in raising the intAry
+//					value to the designated power.
 //
-//				A value of -1 signals that no limit will be placed on
-//				the number of decimals places to right of the decimal
-//				point during internal multiplication operations.
+//					Valid values are -1 and values >= zero ('0')
+//	       Values less than -1 will trigger an error.
 //
+//					A value of -1 signals that no limit will be placed on
+//					the number of decimals places to right of the decimal
+//					point during internal multiplication operations.
 func (ia *IntAry) PowByTwos(power *big.Int, maxResultPrecision, internalPrecision int) error {
 
 	return ia.pwrByTwos(power, maxResultPrecision, internalPrecision)
@@ -4436,34 +4193,35 @@ func (ia *IntAry) PowByTwos(power *big.Int, maxResultPrecision, internalPrecisio
 // Input Parameters:
 // =================
 // 'power' int -
-// 				The input parameter 'power' may be either
-// 				a positive or negative integer.
+//
+//	The input parameter 'power' may be either
+//	a positive or negative integer.
 //
 // 'maxResultPrecision' int -
-//				'maxResultPrecision' will determine the maximum
-// 				number of digits to the right of the decimal
-//				place in the result.
 //
-//				Valid values are -1 and values >= zero ('0')
-//        Values less than -1 will trigger an error.
+//					'maxResultPrecision' will determine the maximum
+//					number of digits to the right of the decimal
+//					place in the result.
 //
-//				A value of -1 signals that no limit will be placed on
-//				the number of decimals places to right of the decimal
-//				point in the result.
+//					Valid values are -1 and values >= zero ('0')
+//	       Values less than -1 will trigger an error.
 //
-//	'internalPrecision' int -
-// 				'internalPrecision' will control the number of digits of
-//				accuracy to the right of the decimal point maintained by
-//				internal multiplication operations used in raising the intAry
-//				value to the designated power.
+//					A value of -1 signals that no limit will be placed on
+//					the number of decimals places to right of the decimal
+//					point in the result.
 //
-//				Valid values are -1 and values >= zero ('0')
-//        Values less than -1 will trigger an error.
+//		'internalPrecision' int -
+//					'internalPrecision' will control the number of digits of
+//					accuracy to the right of the decimal point maintained by
+//					internal multiplication operations used in raising the intAry
+//					value to the designated power.
 //
-//				A value of -1 signals that no limit will be placed on
-//				the number of decimals places to right of the decimal
-//				point during internal multiplication operations.
+//					Valid values are -1 and values >= zero ('0')
+//	       Values less than -1 will trigger an error.
 //
+//					A value of -1 signals that no limit will be placed on
+//					the number of decimals places to right of the decimal
+//					point during internal multiplication operations.
 func (ia *IntAry) pwrByTwos(power *big.Int, maxResultPrecision, internalPrecision int) error {
 
 	if maxResultPrecision < -1 {
@@ -4593,7 +4351,6 @@ func (ia *IntAry) ResetFromBackUp() {
 
 // RoundToPrecision - Rounds the value of the current IntAry instance
 // to a precision specified by the 'roundToPrecision' parameter.
-//
 func (ia *IntAry) RoundToPrecision(roundToPrecision int) error {
 
 	if roundToPrecision < 0 {
@@ -4702,7 +4459,6 @@ func (ia *IntAry) SetAbsoluteValueThis() {
 // the method GetCurrencySymbol().
 //
 // Note the default thousands separator character is the comma (',').
-//
 func (ia *IntAry) SetCurrencySymbol(currencySymbol rune) {
 	ia.currencySymbol = currencySymbol
 }
@@ -4927,12 +4683,12 @@ func (ia *IntAry) SetIntAryToZero(precision uint) {
 // The numeric sign (plus or minus) of the resulting intAry value
 // is determined by the sign of input parameter,'intDigits'.
 // Example:
-//  intDigits     precision     	    result
-//  946254  			   3							   946.254
-//  946254				   0							   946254
-//  -946254  			   3					      -946.254
-//  -946254				   0						    -946254
 //
+//	intDigits     precision     	    result
+//	946254  			   3							   946.254
+//	946254				   0							   946254
+//	-946254  			   3					      -946.254
+//	-946254				   0						    -946254
 func (ia *IntAry) SetIntAryWithInt(intDigits int, precision uint) {
 	quotient := 0
 	mod := 0
@@ -5000,12 +4756,12 @@ func (ia *IntAry) SetIntAryWithInt(intDigits int, precision uint) {
 // is determined by the sign of input parameter 'int32Num'.
 
 // Example:
-//  int32Num     precision     	       result
-//  946254  			   3							   946.254
-//  946254				   0							   946254
-//  -946254  			   3					      -946.254
-//  -946254				   0						    -946254
 //
+//	int32Num     precision     	       result
+//	946254  			   3							   946.254
+//	946254				   0							   946254
+//	-946254  			   3					      -946.254
+//	-946254				   0						    -946254
 func (ia *IntAry) SetIntAryWithInt32(int32Num int32, precision uint) {
 
 	precision = ia.validateUintToMaxPrecision(precision)
@@ -5076,12 +4832,12 @@ func (ia *IntAry) SetIntAryWithInt32(int32Num int32, precision uint) {
 // is determined by the sign of input parameter 'int64Num'.
 //
 // Example:
-//  int64Num     precision     	    result
-//  946254  			   3							   946.254
-//  946254				   0							   946254
-//  -946254  			   3					      -946.254
-//  -946254				   0						    -946254
 //
+//	int64Num     precision     	    result
+//	946254  			   3							   946.254
+//	946254				   0							   946254
+//	-946254  			   3					      -946.254
+//	-946254				   0						    -946254
 func (ia *IntAry) SetIntAryWithInt64(int64Num int64, precision uint) {
 
 	precision = ia.validateUintToMaxPrecision(precision)
@@ -5149,7 +4905,6 @@ func (ia *IntAry) SetIntAryWithInt64(int64Num int64, precision uint) {
 // and -1 generates a negative number. If input parameters 'inStr' or 'fracStr' contain
 // a leading minus or plus sign character, it will be ignored. The sign of the resulting
 // numeric value is controlled strictly by input parameter, 'signVal'.
-//
 func (ia *IntAry) SetIntAryWithIntFracStr(intStr, fracStr string, signVal int) error {
 
 	ePrefix := "IntAry.SetIntFracStrings() "
@@ -5232,13 +4987,12 @@ func (ia *IntAry) SetIntAryWithIntFracStr(intStr, fracStr string, signVal int) e
 // either plus or minus.
 //
 // Example:
-//  intDigits  precision  signVal		result
-//  946254  			3					1				946.254
-//  946254				0					1				946254
-//  946254  			3					-1			-946.254
-//  946254				0					-1			-946254
 //
-//
+//	intDigits  precision  signVal		result
+//	946254  			3					1				946.254
+//	946254				0					1				946254
+//	946254  			3					-1			-946.254
+//	946254				0					-1			-946254
 func (ia *IntAry) SetIntAryWithUint64(intDigits uint64, precision uint) {
 
 	precision = ia.validateUintToMaxPrecision(precision)
@@ -5297,12 +5051,12 @@ func (ia *IntAry) SetIntAryWithUint64(intDigits uint64, precision uint) {
 // Negative 'precision' values will trigger an error.
 //
 // Example:
-//  intDigits     precision     	    result
-//  946254  			   3							   946.254
-//  946254				   0							   946254
-//  -946254  			   3					      -946.254
-//  -946254				   0						    -946254
 //
+//	intDigits     precision     	    result
+//	946254  			   3							   946.254
+//	946254				   0							   946254
+//	-946254  			   3					      -946.254
+//	-946254				   0						    -946254
 func (ia *IntAry) SetIntAryWithBigInt(intDigits *big.Int, precision int) error {
 
 	if precision < 0 {
@@ -5382,7 +5136,6 @@ func (ia *IntAry) SetIntAryWithBigInt(intDigits *big.Int, precision int) error {
 // The value of Numeric Separators contained in BigINum will NOT be copied
 // into the current IntAry instance. IntAry will retain its
 // current numeric separator values.
-//
 func (ia *IntAry) SetIntAryWithBigIntNum(bigINum BigIntNum) error {
 
 	ePrefix := "IntAry.SetIntAryWithBigIntNum() "
@@ -5418,7 +5171,6 @@ func (ia *IntAry) SetIntAryWithBigIntNum(bigINum BigIntNum) error {
 // The value of Numeric Separators contained in 'dec' will NOT be
 // copied into the current IntAry instance. IntAry will retain its
 // current numeric separator values.
-//
 func (ia *IntAry) SetIntAryWithDecimal(dec Decimal) error {
 
 	ePrefix := "IntAry.SetIntAryWithDecimal() "
@@ -5462,7 +5214,6 @@ func (ia *IntAry) SetIntAryWithDecimal(dec Decimal) error {
 //
 // Note: if precision is a positive value, and less than the current number
 // of digits to the right of the decimal place, rounding may occur.
-//
 func (ia *IntAry) SetIntAryWithFloat32(floatNum float32, precision int) error {
 
 	if precision < -1 {
@@ -5533,20 +5284,21 @@ func (ia *IntAry) SetIntAryWithFloat64(floatNum float64, precision int) error {
 // Input Parameters:
 //
 // floatNum *big.Float - 	The floating point value to which the current IntAry object
-// 											 	will be set.
+//
+//	will be set.
 //
 // precision int 			 - 	The number of digits to the right of the decimal point
-//												which will be used to set the value of the current IntAry
-//												object
 //
-// 												Input parameter 'precision' must be set to a number greater
-// 												than or equal to zero.  It may also be set to a value of -1
-// 												which causes the number to be formatted to the smallest number
-// 												of digits to right of the decimal point.
+//	which will be used to set the value of the current IntAry
+//	object
 //
-// 												Note: if precision is a positive value, and less than the current
-// 												number of digits to the right of the decimal place, rounding may occur.
+//	Input parameter 'precision' must be set to a number greater
+//	than or equal to zero.  It may also be set to a value of -1
+//	which causes the number to be formatted to the smallest number
+//	of digits to right of the decimal point.
 //
+//	Note: if precision is a positive value, and less than the current
+//	number of digits to the right of the decimal place, rounding may occur.
 func (ia *IntAry) SetIntAryWithFloatBig(floatNum *big.Float, precision int) error {
 
 	if precision < -1 {
@@ -5665,7 +5417,6 @@ func (ia *IntAry) SetIntAryWithIntAryObj(iAry2 *IntAry, copyBackup bool) error {
 //
 // The term 'precision' defines the number of numeric digits to the right of the
 // decimal point or decimal separator.
-//
 func (ia *IntAry) SetIntAryWithNumStrMaxPrecision(str string, maxPrecision int) error {
 	ePrefix := "IntAry.SetIntAryWithNumStrMaxPrecision() "
 
@@ -5797,7 +5548,6 @@ func (ia *IntAry) SetIntAryWithNumStr(str string) error {
 // Note that the Numeric Separator values are NOT copied into the
 // current IntAry instance. The current IntAry numeric separators
 // remain unchanged.
-//
 func (ia *IntAry) SetIntAryWithNumStrDto(nDto NumStrDto) error {
 
 	ePrefix := "IntAry.SetIntAryWithNumStrDto() "
@@ -5821,7 +5571,6 @@ func (ia *IntAry) SetIntAryWithNumStrDto(nDto NumStrDto) error {
 
 // SetIntAryLength - Calculates the current IntAry string length
 // and sets internal variable 'ia.intAryLen'.
-//
 func (ia *IntAry) SetIntAryLength() {
 	ia.intAryLen = len(ia.intAry)
 }
@@ -5871,8 +5620,9 @@ func (ia *IntAry) SetInternalFlags() {
 // several other countries use the dollar sign ($) as a currency symbol.
 //
 // For a list of major world currency symbols see:
-// 	MikeAustin71\mathopsgo\mathops\mathopsconstants.go
-//  http://www.xe.com/symbols.php
+//
+//		MikeAustin71\mathopsgo\mathops\mathopsconstants.go
+//	 http://www.xe.com/symbols.php
 //
 // Note: If zero values are submitted as input for separator values, those values will default
 // to USA standards.
@@ -5882,7 +5632,6 @@ func (ia *IntAry) SetInternalFlags() {
 // Decimal Separator period ('.') 		= 123.456
 // Thousands Separator comma (',') 		= 1,000,000,000
 // Currency Symbol dollar sign ('$')	= $123
-//
 func (ia *IntAry) SetNumericSeparators(
 	decimalSeparator,
 	thousandsSeparator,
@@ -5919,7 +5668,6 @@ func (ia *IntAry) SetNumericSeparators(
 //
 // Effectively, this method ensures that numeric separators
 // are set to valid values.
-//
 func (ia *IntAry) SetNumericSeparatorsToDefaultIfEmpty() {
 
 	if ia.decimalSeparator == 0 {
@@ -5937,18 +5685,19 @@ func (ia *IntAry) SetNumericSeparatorsToDefaultIfEmpty() {
 }
 
 // SetNumericSeparatorsToUSADefault - Sets Numeric separators:
-// 			Decimal Point Separator
-// 			Thousands Separator
-//			Currency Symbol
+//
+//	Decimal Point Separator
+//	Thousands Separator
+//	Currency Symbol
 //
 // to United States of America (USA) defaults.
 //
 // Call specific methods to set numeric separators for other countries or
 // cultures:
-// 		ia.SetDecimalSeparator()
-// 		ia.SetThousandsSeparator()
-// 		ia.SetCurrencySymbol()
 //
+//	ia.SetDecimalSeparator()
+//	ia.SetThousandsSeparator()
+//	ia.SetCurrencySymbol()
 func (ia *IntAry) SetNumericSeparatorsToUSADefault() {
 	ia.SetDecimalSeparator('.')
 	ia.SetThousandsSeparator(',')
@@ -5956,15 +5705,15 @@ func (ia *IntAry) SetNumericSeparatorsToUSADefault() {
 }
 
 // SetNumericSeparatorsDto - Sets the values of numeric separators:
-// 		decimal point separator
-//		thousands separator
-//		currency symbol
+//
+//	decimal point separator
+//	thousands separator
+//	currency symbol
 //
 // based on values transmitted through input parameter 'customSeparators'.
 //
 // If any of the values contained in input parameter 'customSeparators' are set
 // to zero, an error will be returned.
-//
 func (ia *IntAry) SetNumericSeparatorsDto(customSeparators NumericSeparatorDto) error {
 
 	ePrefix := "IntAry.SetNumericSeparatorsDto() "
@@ -6012,16 +5761,17 @@ func (ia *IntAry) SetNumericSeparatorsDto(customSeparators NumericSeparatorDto) 
 // trailing zeros will be added
 // Examples:
 //
-// 	 Original       			'newPrecision'				Resulting
-//    Value								input parameter			  Value
-//  --------------				---------------     -------------
-//	654.123456									9							 654.123456000
-//	654.123456									4							 654.1235
+//		 Original       			'newPrecision'				Resulting
+//	   Value								input parameter			  Value
+//	 --------------				---------------     -------------
+//		654.123456									9							 654.123456000
+//		654.123456									4							 654.1235
+//
 // -654.123456									9							-654.123456000
 // -654.123456									4							-654.1235
-//		0													3								 0.000
-//    0.000000									0								 0
 //
+//			0													3								 0.000
+//	   0.000000									0								 0
 func (ia *IntAry) SetPrecision(precision int, roundResult bool) error {
 
 	if precision < 0 {
@@ -6189,8 +5939,9 @@ func (ia *IntAry) SetSignificantDigitIdxs() {
 // several other countries use the dollar sign ($) as a currency symbol.
 //
 // For a list of major world currency symbols see:
-// 	MikeAustin71\mathopsgo\mathops\mathopsconstants.go
-//  http://www.xe.com/symbols.php
+//
+//		MikeAustin71\mathopsgo\mathops\mathopsconstants.go
+//	 http://www.xe.com/symbols.php
 //
 // Note: If zero values are submitted as input for separator values, those values will default
 // to USA standards.
@@ -6200,7 +5951,6 @@ func (ia *IntAry) SetSignificantDigitIdxs() {
 // Decimal Separator period ('.') 		= 123.456
 // Thousands Separator comma (',') 		= 1,000,000,000
 // Currency Symbol dollar sign ('$')	= $123
-//
 func (ia *IntAry) SetSeparators(decimalSeparator, thousandsSeparator, currencySymbol rune) {
 
 	if decimalSeparator == 0 {
@@ -6238,22 +5988,23 @@ func (ia *IntAry) SetSeparators(decimalSeparator, thousandsSeparator, currencySy
 //
 // Examples
 // ========
-//										Requested
-//                      Shift
-//  signedNumStr			precision				Result
-//	 "123456.789"				  3						"123.456789"
-//	 "123456.789"				  2						"1234.56789"
-//	 "123456.789"	   		  6					  "0.123456789"
-//	 "123456789"					6						"123.456789"
-//	 "123"								5						"0.00123"
-//   "0"									3						"0.000"
-// 	 "0.000"							2						"0.00000"
-//  "123456.789"					0						"123456.789"		- zero 'shiftPrecision' has no effect on
-// 																											original number string
+//
+//											Requested
+//	                     Shift
+//	 signedNumStr			precision				Result
+//		 "123456.789"				  3						"123.456789"
+//		 "123456.789"				  2						"1234.56789"
+//		 "123456.789"	   		  6					  "0.123456789"
+//		 "123456789"					6						"123.456789"
+//		 "123"								5						"0.00123"
+//	  "0"									3						"0.000"
+//		 "0.000"							2						"0.00000"
+//	 "123456.789"					0						"123456.789"		- zero 'shiftPrecision' has no effect on
+//																												original number string
+//
 // "-123456.789"          0          "-123.456789"
 // "-123456.789"          3          "-123.456789"
 // "-123456789"						6					 "-123.456789"
-//
 func (ia *IntAry) ShiftPrecisionLeft(shiftPrecision uint) {
 
 	IntAryMathDivide{}.DivideByTenToPower(ia, shiftPrecision)
@@ -6275,21 +6026,24 @@ func (ia *IntAry) ShiftPrecisionLeft(shiftPrecision uint) {
 //
 // Examples:
 // =========
-//                    Input
-//                  Parameter
+//
+//	  Input
+//	Parameter
+//
 // IntAry Value		shiftPrecision		Result
 // ------------   --------------    ------
-//  "123456.789"				3						"123456789"
-//  "123456.789"				2						"12345678.9"
-//  "123456.789"        6					  "123456789000"
-//  "123456789"	 			  6						"123456789000000"
-//  "123"               5	          "12300000"
-//  "0"								  3						"0"
-//  "123456.789"				0						"123456.789"		- zero has no effect on original number string
+//
+//	"123456.789"				3						"123456789"
+//	"123456.789"				2						"12345678.9"
+//	"123456.789"        6					  "123456789000"
+//	"123456789"	 			  6						"123456789000000"
+//	"123"               5	          "12300000"
+//	"0"								  3						"0"
+//	"123456.789"				0						"123456.789"		- zero has no effect on original number string
+//
 // "-123456.789"        0          "-123456.789"
 // "-123456.789"        3          "-123456789"
 // "-123456789"			    6					 "-123456789000000"
-//
 func (ia *IntAry) ShiftPrecisionRight(shiftPrecision uint) {
 
 	IntAryMathMultiply{}.MultiplyByTenToPower(ia, shiftPrecision)
@@ -6322,8 +6076,8 @@ func (ia *IntAry) SetThousandsSeparator(thousandsSeparator rune) {
 // =================
 //
 // ia2 *intAry - Incoming intAry object whose value will be subtracted
-// 								from this current intAry value.
 //
+//	from this current intAry value.
 func (ia *IntAry) SubtractFromThis(ia2 *IntAry) error {
 
 	IntAryMathSubtract{}.SubtractTotal(ia, ia2)
@@ -6334,7 +6088,6 @@ func (ia *IntAry) SubtractFromThis(ia2 *IntAry) error {
 
 // String - Returns the numeric value of the current IntAry as
 // a string.
-//
 func (ia *IntAry) String() string {
 	return ia.GetNumStr()
 }
@@ -6343,11 +6096,12 @@ func (ia *IntAry) String() string {
 // current intAry value. There are two input parameters:
 //
 // convertToNumStr bool - If true the result will be converted to a number string after
-//  											the final subtraction operation.
+//
+//	the final subtraction operation.
 //
 // iaMany ...*intAry - An unlimited series of pointers to intAry objects which will be
-// 										 subtracted from the current intAry Value.
 //
+//	subtracted from the current intAry Value.
 func (ia *IntAry) SubtractMultipleFromThis(iaMany ...*IntAry) error {
 
 	for _, iAry := range iaMany {
@@ -6363,10 +6117,9 @@ func (ia *IntAry) SubtractMultipleFromThis(iaMany ...*IntAry) error {
 // the IntAry type as an unsigned integer (uint). Currently the
 // maximum allowable precision is computed as:
 //
-//   21474836472147483647 - 2 = 21474836472147483645
+//	21474836472147483647 - 2 = 21474836472147483645
 //
 // Effectively this is the maximum value of an int32 minus 2.
-//
 func (ia *IntAry) getMaximumPrecision() uint {
 
 	return uint(math.MaxInt32) - uint(2)
@@ -6376,7 +6129,6 @@ func (ia *IntAry) getMaximumPrecision() uint {
 // a precision value does not exceed the maximum precision capacity of
 // the IntAry Type. The maximum allowable precision value is computed
 // as an unsigned int.
-//
 func (ia *IntAry) validateUintToMaxPrecision(origPrecision uint) uint {
 
 	maxTypePrecision := ia.getMaximumPrecision()
