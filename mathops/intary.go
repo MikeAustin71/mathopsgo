@@ -167,15 +167,19 @@ func (ia *IntAry) AddIntToThis(num int, precision uint) error {
 //	946254				   0							   946254
 //	-946254  			   3					      -946.254
 //	-946254				   0						    -946254
-func (ia *IntAry) AddInt64ToThis(int64Num int64, precision uint) {
+func (ia *IntAry) AddInt64ToThis(int64Num int64, precision uint) error {
 
-	precision = ia.validateUintToMaxPrecision(precision)
+	ia2, err := new(IntAry).NewInt64(int64Num, precision)
 
-	ia2 := new(IntAry).NewInt64(int64Num, precision)
+	if err != nil {
+		return fmt.Errorf("IntAry.AddInt64ToThis()\n"+
+			"Error= %v",
+			err.Error())
+	}
 
 	IntAryMathAdd{}.RunTotal(ia, &ia2)
 
-	return
+	return nil
 }
 
 // AddBigIntToThis - Adds the value of the *big.Int input
@@ -2663,7 +2667,12 @@ func (ia *IntAry) IsEvenNumber() bool {
 // -2.0				false
 func (ia *IntAry) IsMinusOne() bool {
 
-	iaMinusOne := new(IntAry).NewOne(ia.precision)
+	iaMinusOne, err := new(IntAry).NewOne(ia.precision)
+
+	if err != nil {
+		return false
+	}
+
 	iaMinusOne.ChangeSign()
 
 	if ia.Equals(&iaMinusOne) {
@@ -2688,7 +2697,11 @@ func (ia *IntAry) IsMinusOne() bool {
 // 2.0				false
 func (ia *IntAry) IsOne() bool {
 
-	iaOne := new(IntAry).NewOne(ia.precision)
+	iaOne, err := new(IntAry).NewOne(ia.precision)
+
+	if err != nil {
+		return false
+	}
 
 	if ia.Equals(&iaOne) {
 		return true
@@ -2926,16 +2939,33 @@ func (ia *IntAry) New() IntAry {
 // separator, thousands separator and currency symbol) as specified
 // by input parameter, 'numSeps'.
 //
-// Usage: ia := intAry{}.New()
-func (ia *IntAry) NewWithNumSeps(numSeps NumericSeparatorDto) IntAry {
+//	Usage: ia := intAry{}.New()
+//
+//	Note: If input parameter 'numSeps' is empty, it will be set to
+//				default USA separators.
+func (ia *IntAry) NewWithNumSeps(numSeps NumericSeparatorDto) (IntAry, error) {
+
+	ePrefix := "IntAry.NewWithNumSeps()"
 
 	numSeps.SetDefaultsIfEmpty()
 
-	ia2 := new(IntAry).New()
+	iAry := new(IntAry).New()
 
-	_ = ia2.SetNumericSeparatorsDto(numSeps)
+	err := iAry.SetNumericSeparatorsDto(numSeps)
 
-	return ia2
+	if err != nil {
+
+		return iAry,
+			fmt.Errorf("%v\n"+
+				"Error returned by iAry.SetNumericSeparatorsDto(numSeps)\n"+
+				"Error= %v\n",
+				ePrefix,
+				err.Error())
+	}
+
+	err = iAry.IsValid(ePrefix + " Calling iAry.IsValid()")
+
+	return iAry, err
 }
 
 // NewBigInt - Creates a new intAry object initialized
@@ -2979,11 +3009,20 @@ func (ia *IntAry) NewBigInt(num *big.Int, precision int) (IntAry, error) {
 	err := iAry.SetIntAryWithBigInt(num, precision)
 
 	if err != nil {
-		return IntAry{}, err
+
+		return IntAry{},
+			fmt.Errorf("%v\n"+
+				"Error returned by iAry.SetIntAryWithBigInt(num, precision)\n"+
+				"precision='%v'\n"+
+				"Error= %v\n",
+				ePrefix,
+				precision,
+				err.Error())
 	}
 
-	return iAry, nil
+	err = iAry.IsValid(ePrefix + " Calling iAry.IsValid()")
 
+	return iAry, err
 }
 
 // NewBigIntNum - Creates a new intAry object initialized
@@ -3027,7 +3066,9 @@ func (ia *IntAry) NewBigIntNum(bINum BigIntNum) (IntAry, error) {
 				err.Error())
 	}
 
-	return iAry, nil
+	err = iAry.IsValid(ePrefix + " Calling iAry.IsValid()")
+
+	return iAry, err
 }
 
 // NewFive - Creates a new IntAry instance with a
@@ -3037,21 +3078,26 @@ func (ia *IntAry) NewBigIntNum(bINum BigIntNum) (IntAry, error) {
 // converted to zero.
 func (ia *IntAry) NewFive(precision int) (IntAry, error) {
 
-	ia1 := IntAry{}
+	ePrefix := "IntAry.NewFive()"
 
-	err := ia1.SetIntAryToFive(precision)
+	iAry := IntAry{}
+
+	err := iAry.SetIntAryToFive(precision)
 
 	if err != nil {
 
 		return IntAry{},
-			fmt.Errorf("IntAry.NewFive\n"+
+			fmt.Errorf("%v\n"+
 				"Error returned by ia1.SetIntAryToFive(precision)\n"+
 				"precision='%v'\n",
+				ePrefix,
 				precision)
 
 	}
 
-	return ia1, nil
+	err = iAry.IsValid(ePrefix + " Calling iAry.IsValid()")
+
+	return iAry, err
 }
 
 // NewFloat32 - Creates a new intAry object initialized
@@ -3106,7 +3152,9 @@ func (ia *IntAry) NewFloat32(num float32, precision int) (IntAry, error) {
 				precision)
 	}
 
-	return iAry, nil
+	err = iAry.IsValid(ePrefix + " Calling iAry.IsValid()")
+
+	return iAry, err
 }
 
 // NewFloat64
@@ -3163,7 +3211,9 @@ func (ia *IntAry) NewFloat64(num float64, precision int) (IntAry, error) {
 
 	}
 
-	return iAry, nil
+	err = iAry.IsValid(ePrefix + " Calling iAry.IsValid()")
+
+	return iAry, err
 }
 
 // NewFloatBig - Creates a new intAry object initialized
@@ -3238,7 +3288,9 @@ func (ia *IntAry) NewFloatBig(num *big.Float, precision int) (IntAry, error) {
 
 	}
 
-	return iAry, nil
+	err = iAry.IsValid(ePrefix + " Calling iAry.IsValid()")
+
+	return iAry, err
 }
 
 // NewInt - Creates a new intAry object initialized to the value
@@ -3271,6 +3323,8 @@ func (ia *IntAry) NewFloatBig(num *big.Float, precision int) (IntAry, error) {
 //	123456			1						12345.6
 func (ia *IntAry) NewInt(intNum int, precision uint) (IntAry, error) {
 
+	ePrefix := "IntAry.NewInt()"
+
 	iAry := new(IntAry).New()
 
 	iAry.SetIntAryWithInt(intNum, precision)
@@ -3279,13 +3333,16 @@ func (ia *IntAry) NewInt(intNum int, precision uint) (IntAry, error) {
 
 	if err != nil {
 		return iAry,
-			fmt.Errorf("IntAry.NewInt()\n"+
+			fmt.Errorf("%v\n"+
 				"Error returned by iAry.SetNumericSeparatorsDto()\n"+
 				"Error= %v\n",
+				ePrefix,
 				err.Error())
 	}
 
-	return iAry, nil
+	err = iAry.IsValid(ePrefix + " Calling iAry.IsValid()")
+
+	return iAry, err
 }
 
 // NewIntExponent - Returns a new IntAry instance. The numeric
@@ -3319,6 +3376,8 @@ func (ia *IntAry) NewInt(intNum int, precision uint) (IntAry, error) {
 //	123456			 0				123456
 func (ia *IntAry) NewIntExponent(intNum int, exponent int) (IntAry, error) {
 
+	ePrefix := "IntAry.NewIntExponent()"
+
 	if exponent > 0 {
 		for i := 0; i < exponent; i++ {
 			intNum *= 10
@@ -3337,13 +3396,16 @@ func (ia *IntAry) NewIntExponent(intNum int, exponent int) (IntAry, error) {
 
 	if err != nil {
 		return iAry,
-			fmt.Errorf("IntAry.NewIntExponent()\n"+
+			fmt.Errorf("%v\n"+
 				"Error returned by iAry.SetNumericSeparatorsDto()\n"+
 				"Error= %v\n",
+				ePrefix,
 				err.Error())
 	}
 
-	return iAry, nil
+	err = iAry.IsValid(ePrefix + " Calling iAry.IsValid()")
+
+	return iAry, err
 }
 
 // NewInt32 - Creates a new intAry object initialized
@@ -3377,21 +3439,28 @@ func (ia *IntAry) NewIntExponent(intNum int, exponent int) (IntAry, error) {
 //		123456				1					12345.6
 func (ia *IntAry) NewInt32(int32Num int32, precision uint) (IntAry, error) {
 
+	ePrefix := "IntAry.NewInt32()"
+
 	iAry := new(IntAry).New()
+
 	iAry.SetIntAryWithInt32(int32Num, precision)
+
 	err := iAry.SetNumericSeparatorsDto(ia.GetNumericSeparatorsDto())
 
 	if err != nil {
 
 		return iAry,
-			fmt.Errorf("IntAry.NewInt32()\n"+
+			fmt.Errorf("%v\n"+
 				"Error returned by iAry.SetNumericSeparatorsDto()\n"+
 				"Error= %v\n",
+				ePrefix,
 				err.Error())
 
 	}
 
-	return iAry, nil
+	err = iAry.IsValid(ePrefix + " Calling iAry.IsValid()")
+
+	return iAry, err
 }
 
 // NewInt32Exponent - Returns a new IntAry instance. The numeric
@@ -3419,11 +3488,13 @@ func (ia *IntAry) NewInt32(int32Num int32, precision uint) (IntAry, error) {
 // Examples:
 // ---------
 //
-//	  int32Num		 exponent			  	IntAry Result
-//		 123456		 		  -3							123.456
-//		 123456		 		   3							123456.000
-//	  123456          0              123456
-func (ia *IntAry) NewInt32Exponent(int32Num int32, exponent int) IntAry {
+//	int32Num		exponent		IntAry Result
+//		123456			-3					123.456
+//		123456			 3					123456.000
+//		123456			 0					123456
+func (ia *IntAry) NewInt32Exponent(int32Num int32, exponent int) (IntAry, error) {
+
+	ePrefix := "IntAry.NewInt32()"
 
 	if exponent > 0 {
 		for i := 0; i < exponent; i++ {
@@ -3436,10 +3507,24 @@ func (ia *IntAry) NewInt32Exponent(int32Num int32, exponent int) IntAry {
 	}
 
 	iAry := new(IntAry).New()
-	iAry.SetIntAryWithInt32(int32Num, uint(exponent))
-	_ = iAry.SetNumericSeparatorsDto(ia.GetNumericSeparatorsDto())
 
-	return iAry
+	iAry.SetIntAryWithInt32(int32Num, uint(exponent))
+
+	err := iAry.SetNumericSeparatorsDto(ia.GetNumericSeparatorsDto())
+
+	if err != nil {
+
+		return iAry,
+			fmt.Errorf("%v\n"+
+				"Error returned by iAry.SetNumericSeparatorsDto(ia.GetNumericSeparatorsDto())\n"+
+				"Error= %v\n",
+				ePrefix,
+				err.Error())
+	}
+
+	err = iAry.IsValid(ePrefix + " Calling iAry.IsValid()")
+
+	return iAry, err
 }
 
 // NewInt64 - Creates a new intAry object initialized
@@ -3471,14 +3556,29 @@ func (ia *IntAry) NewInt32Exponent(int32Num int32, exponent int) IntAry {
 //		 123456		 		   4							12.3456
 //	  123456          0              123456
 //	  123456          1              12345.6
-func (ia *IntAry) NewInt64(int64Num int64, precision uint) IntAry {
+func (ia *IntAry) NewInt64(int64Num int64, precision uint) (IntAry, error) {
+
+	ePrefix := "IntAry.NewInt64()"
 
 	iAry := new(IntAry).New()
-	precision = ia.validateUintToMaxPrecision(precision)
-	iAry.SetIntAryWithInt64(int64Num, precision)
-	_ = iAry.SetNumericSeparatorsDto(ia.GetNumericSeparatorsDto())
 
-	return iAry
+	iAry.SetIntAryWithInt64(int64Num, precision)
+
+	err := iAry.SetNumericSeparatorsDto(ia.GetNumericSeparatorsDto())
+
+	if err != nil {
+
+		return iAry,
+			fmt.Errorf("%v\n"+
+				"Error returned by iAry.SetNumericSeparatorsDto()\n"+
+				"Error= %v\n",
+				ePrefix,
+				err.Error())
+	}
+
+	err = iAry.IsValid(ePrefix + " Calling iAry.IsValid()")
+
+	return iAry, err
 }
 
 // NewInt64Exponent - Returns a new IntAry instance. The numeric
@@ -3510,23 +3610,43 @@ func (ia *IntAry) NewInt64(int64Num int64, precision uint) IntAry {
 //		 123456		 		  -3							123.456
 //		 123456		 		   3							123456.000
 //	  123456          0              123456
-func (ia *IntAry) NewInt64Exponent(int64Num int64, exponent int) IntAry {
+func (ia *IntAry) NewInt64Exponent(int64Num int64, exponent int) (IntAry, error) {
+
+	ePrefix := "IntAry.NewInt64()"
 
 	if exponent > 0 {
 		for i := 0; i < exponent; i++ {
+
 			int64Num *= 10
+
 		}
 	}
 
 	if exponent < 0 {
+
 		exponent = exponent * -1
+
 	}
 
 	iAry := new(IntAry).New()
-	iAry.SetIntAryWithInt64(int64Num, uint(exponent))
-	_ = iAry.SetNumericSeparatorsDto(ia.GetNumericSeparatorsDto())
 
-	return iAry
+	iAry.SetIntAryWithInt64(int64Num, uint(exponent))
+
+	err := iAry.SetNumericSeparatorsDto(ia.GetNumericSeparatorsDto())
+
+	if err != nil {
+
+		return new(IntAry).NewZero(0),
+			fmt.Errorf("%v\n"+
+				"Error returned by iAry.SetNumericSeparatorsDto(ia.GetNumericSeparatorsDto())\n"+
+				"Error='%v' ",
+				ePrefix,
+				err.Error())
+	}
+
+	err = iAry.IsValid(ePrefix + " Calling iAry.IsValid()")
+
+	return iAry, err
 }
 
 // NewIntFracStr - Creates a new IntAry instance based on a numeric value represented
@@ -3543,21 +3663,27 @@ func (ia *IntAry) NewInt64Exponent(int64Num int64, exponent int) IntAry {
 // numeric value is controlled strictly by input parameter, 'signVal'.
 func (ia *IntAry) NewIntFracStr(intStr, fracStr string, signVal int) (IntAry, error) {
 
-	ia2 := new(IntAry).NewZero(0)
+	ePrefix := "IntAry.NewIntFracStr() "
 
-	ia2.SetNumericSeparatorsToDefaultIfEmpty()
+	iAry := new(IntAry).NewZero(0)
 
-	err := ia2.SetIntAryWithIntFracStr(intStr, fracStr, signVal)
+	iAry.SetNumericSeparatorsToDefaultIfEmpty()
+
+	err := iAry.SetIntAryWithIntFracStr(intStr, fracStr, signVal)
 
 	if err != nil {
-		ePrefix := "IntAry.NewIntFracStr() "
 
 		return new(IntAry).NewZero(0),
-			fmt.Errorf(ePrefix+"Error returned by ia2.SetIntAryWithIntFracStr(intStr, fracStr, signVal) "+
-				"Error='%v' ", err.Error())
+			fmt.Errorf("%v\n"+
+				"Error returned by iAry.SetIntAryWithIntFracStr(intStr, fracStr, signVal)\n"+
+				"Error='%v' ",
+				ePrefix,
+				err.Error())
 	}
 
-	return ia2, nil
+	err = iAry.IsValid(ePrefix + " Calling iAry.IsValid()")
+
+	return iAry, err
 }
 
 // NewNumStr - Creates a new intAry object initialized
@@ -3578,18 +3704,25 @@ func (ia *IntAry) NewIntFracStr(intStr, fracStr string, signVal int) (IntAry, er
 // Usage: ia := intAry{}.NewNumStr("123.456")
 func (ia *IntAry) NewNumStr(numStr string) (IntAry, error) {
 
+	ePrefix := "IntAry.NewNumStr()"
+
 	iAry := new(IntAry).New()
+
 	err := iAry.SetIntAryWithNumStr(numStr)
 
 	if err != nil {
 		return IntAry{},
 			fmt.Errorf("IntAry.NewNumStr() Error returned by  "+
-				"iAry.SetIntAryWithNumStr(numStr). numStr='%v', Error='%v' ",
-				numStr, err.Error())
+				"iAry.SetIntAryWithNumStr(numStr).\n"+
+				"numStr='%v'\nError= %v\n",
+				ePrefix,
+				numStr,
+				err.Error())
 	}
 
-	return iAry, nil
+	err = iAry.IsValid(ePrefix + " Calling iAry.IsValid()")
 
+	return iAry, err
 }
 
 // NewNumStrWithNumSeps - Receives a number string as input and returns a
@@ -3627,7 +3760,9 @@ func (ia *IntAry) NewNumStrWithNumSeps(
 				"numStr='%v', Error='%v' ", numStr, err.Error())
 	}
 
-	return iAry, nil
+	err = iAry.IsValid(ePrefix + " Calling iAry.IsValid()")
+
+	return iAry, err
 }
 
 // NewNumStrMaxPrecision - Creates a new intAry object initialized
@@ -3641,17 +3776,25 @@ func (ia *IntAry) NewNumStrWithNumSeps(
 // Usage: ia := intAry{}.NewNumStr("123.456", 3)
 func (ia *IntAry) NewNumStrMaxPrecision(num string, maxPrecision int) (IntAry, error) {
 
+	ePrefix := "IntAry.NewNumStrMaxPrecision()"
+
 	iAry := new(IntAry).New()
+
 	err := iAry.SetIntAryWithNumStrMaxPrecision(num, maxPrecision)
 
 	if err != nil {
 		return IntAry{},
-			fmt.Errorf("IntAry.NewNumStr() Error returned by  "+
-				"iAry.SetIntAryWithNumStrMaxPrecision(num). num='%v', Error='%v' ",
-				num, err.Error())
+			fmt.Errorf("%v\n"+
+				"IntAry.NewNumStr() Error returned by  "+
+				"iAry.SetIntAryWithNumStrMaxPrecision(num).\nnum='%v'\nError= %v\n",
+				ePrefix,
+				num,
+				err.Error())
 	}
 
-	return iAry, nil
+	err = iAry.IsValid(ePrefix + " Calling iAry.IsValid()")
+
+	return iAry, err
 }
 
 // NewNumStrDto - Creates, initializes and returns an IntAry
@@ -3675,25 +3818,44 @@ func (ia *IntAry) NewNumStrDto(numDto NumStrDto) (IntAry, error) {
 
 	if err != nil {
 		return IntAry{},
-			fmt.Errorf("IntAry.NewNumStr() Error returned by  "+
-				"iAry.SetIntAryWithNumStr(numDto.NumStrOut). "+
-				"numDto.NumStrOut='%v', Error='%v' ",
+			fmt.Errorf("%v\n"+
+				"Error returned by "+
+				"iAry.SetIntAryWithNumStr(numDto.NumStrOut).\n"+
+				"numDto.NumStrOut='%v',\nError= '%v\n",
 				numDto.GetNumStr(), err.Error())
 	}
 
-	return iAry, nil
+	err = iAry.IsValid(ePrefix + " Calling iAry.IsValid()")
+
+	return iAry, err
 }
 
 // NewOne - Creates a new IntAry with a value of '1'.
 // Note: 'precision' values less than zero will be
 // converted to zero.
-func (ia *IntAry) NewOne(precision int) IntAry {
+func (ia *IntAry) NewOne(precision int) (IntAry, error) {
 
-	ia1 := IntAry{}
+	ePrefix := "IntAry.NewOne()"
 
-	_ = ia1.SetIntAryToOne(precision)
+	iAry := IntAry{}
 
-	return ia1
+	err := iAry.SetIntAryToOne(precision)
+
+	if err != nil {
+
+		return iAry,
+			fmt.Errorf("%v\n"+
+				"Error returned by iAry.SetIntAryToOne(precision)\n"+
+				"precision='%v'\n"+
+				"Error= %v\n",
+				ePrefix,
+				precision,
+				err.Error())
+	}
+
+	err = iAry.IsValid(ePrefix + " Calling iAry.IsValid()")
+
+	return iAry, err
 }
 
 // NewPtr - Returns a pointer to a new IntAry instance.
@@ -3709,13 +3871,29 @@ func (ia *IntAry) NewPtr() *IntAry {
 //
 // Note: 'precision' values less than zero will be
 // converted to zero.
-func (ia *IntAry) NewTen(precision int) IntAry {
+func (ia *IntAry) NewTen(precision int) (IntAry, error) {
 
-	ia1 := IntAry{}
+	ePrefix := "IntAry.NewTen()"
 
-	_ = ia1.SetIntAryToTen(precision)
+	iAry := IntAry{}
 
-	return ia1
+	err := iAry.SetIntAryToTen(precision)
+
+	if err != nil {
+
+		return iAry,
+			fmt.Errorf("%v\n"+
+				"Error returned by iAry.SetIntAryToTen(precision)\n"+
+				"precision='%v'\n"+
+				"Error= %v\n",
+				ePrefix,
+				precision,
+				err.Error())
+	}
+
+	err = iAry.IsValid(ePrefix + " Calling iAry.IsValid()")
+
+	return iAry, err
 }
 
 // NewThree - Creates a new IntAry instance with a
@@ -3723,13 +3901,29 @@ func (ia *IntAry) NewTen(precision int) IntAry {
 //
 // Note: 'precision' values less than zero will be
 // converted to zero.
-func (ia *IntAry) NewThree(precision int) IntAry {
+func (ia *IntAry) NewThree(precision int) (IntAry, error) {
 
-	ia1 := IntAry{}
+	ePrefix := "IntAry.NewThree()"
 
-	_ = ia1.SetIntAryToThree(precision)
+	iAry := IntAry{}
 
-	return ia1
+	err := iAry.SetIntAryToThree(precision)
+
+	if err != nil {
+
+		return iAry,
+			fmt.Errorf("%v\n"+
+				"Error returned by iAry.SetIntAryToThree(precision)\n"+
+				"precision='%v'\n"+
+				"Error= %v\n",
+				ePrefix,
+				precision,
+				err.Error())
+	}
+
+	err = iAry.IsValid(ePrefix + " Calling iAry.IsValid()")
+
+	return iAry, err
 }
 
 // NewTwo - Creates a new IntAry instance with a
@@ -3737,13 +3931,29 @@ func (ia *IntAry) NewThree(precision int) IntAry {
 //
 // Note: 'precision' values less than zero will be
 // converted to zero.
-func (ia *IntAry) NewTwo(precision int) IntAry {
+func (ia *IntAry) NewTwo(precision int) (IntAry, error) {
 
-	ia1 := IntAry{}
+	ePrefix := "IntAry.NewTwo()"
 
-	_ = ia1.SetIntAryToTwo(precision)
+	iAry := IntAry{}
 
-	return ia1
+	err := iAry.SetIntAryToTwo(precision)
+
+	if err != nil {
+
+		return iAry,
+			fmt.Errorf("%v\n"+
+				"Error returned by iAry.SetIntAryToTwo(precision)\n"+
+				"precision='%v'\n"+
+				"Error= %v\n",
+				ePrefix,
+				precision,
+				err.Error())
+	}
+
+	err = iAry.IsValid(ePrefix + " Calling iAry.IsValid()")
+
+	return iAry, err
 }
 
 // NewUint - Creates a new intAry object initialized to the
@@ -3775,14 +3985,29 @@ func (ia *IntAry) NewTwo(precision int) IntAry {
 //		 123456		 		   4							12.3456
 //	  123456          0              123456
 //	  123456          1              12345.6
-func (ia *IntAry) NewUint(uintNum uint, precision uint) IntAry {
+func (ia *IntAry) NewUint(uintNum uint, precision uint) (IntAry, error) {
+
+	ePrefix := "IntAry.NewUint() "
 
 	iAry := new(IntAry).New()
-	precision = ia.validateUintToMaxPrecision(precision)
-	iAry.SetIntAryWithUint64(uint64(uintNum), precision)
-	_ = iAry.SetNumericSeparatorsDto(ia.GetNumericSeparatorsDto())
 
-	return iAry
+	iAry.SetIntAryWithUint64(uint64(uintNum), precision)
+
+	err := iAry.SetNumericSeparatorsDto(ia.GetNumericSeparatorsDto())
+
+	if err != nil {
+
+		return iAry,
+			fmt.Errorf("%v\n"+
+				"Error returned by iAry.SetNumericSeparatorsDto(ia.GetNumericSeparatorsDto())\n"+
+				"Error='%v' ",
+				ePrefix,
+				err.Error())
+	}
+
+	err = iAry.IsValid(ePrefix + " Calling iAry")
+
+	return iAry, err
 }
 
 // NewUintExponent - Returns a new IntAry instance. The numeric
@@ -3814,7 +4039,9 @@ func (ia *IntAry) NewUint(uintNum uint, precision uint) IntAry {
 //		 123456		 		  -3							123.456
 //		 123456		 		   3							123456.000
 //	  123456          0              123456
-func (ia *IntAry) NewUintExponent(uintNum uint, exponent int) IntAry {
+func (ia *IntAry) NewUintExponent(uintNum uint, exponent int) (IntAry, error) {
+
+	ePrefix := "IntAry.NewUintExponent()"
 
 	uintTen := uint(10)
 
@@ -3829,10 +4056,23 @@ func (ia *IntAry) NewUintExponent(uintNum uint, exponent int) IntAry {
 	}
 
 	iAry := new(IntAry).New()
-	iAry.SetIntAryWithUint64(uint64(uintNum), uint(exponent))
-	_ = iAry.SetNumericSeparatorsDto(ia.GetNumericSeparatorsDto())
 
-	return iAry
+	iAry.SetIntAryWithUint64(uint64(uintNum), uint(exponent))
+
+	err := iAry.SetNumericSeparatorsDto(ia.GetNumericSeparatorsDto())
+
+	if err != nil {
+
+		return iAry,
+			fmt.Errorf("IntAry.NewUint32()\n"+
+				"Error returned by iAry.SetNumericSeparatorsDto(ia.GetNumericSeparatorsDto())\n"+
+				"Error='%v'",
+				err.Error())
+	}
+
+	err = iAry.IsValid(ePrefix + " Calling iAry.IsValid()")
+
+	return iAry, err
 }
 
 // NewUint32 - Creates a new intAry object initialized to the
@@ -3864,14 +4104,28 @@ func (ia *IntAry) NewUintExponent(uintNum uint, exponent int) IntAry {
 //		 123456		 		   4							12.3456
 //	  123456          0              123456
 //	  123456          1              12345.6
-func (ia *IntAry) NewUint32(uint32Num uint32, precision uint) IntAry {
+func (ia *IntAry) NewUint32(uint32Num uint32, precision uint) (IntAry, error) {
+
+	ePrefix := "IntAry.NewUint32()"
 
 	iAry := new(IntAry).New()
-	precision = ia.validateUintToMaxPrecision(precision)
-	iAry.SetIntAryWithUint64(uint64(uint32Num), precision)
-	_ = iAry.SetNumericSeparatorsDto(ia.GetNumericSeparatorsDto())
 
-	return iAry
+	iAry.SetIntAryWithUint64(uint64(uint32Num), precision)
+
+	err := iAry.SetNumericSeparatorsDto(ia.GetNumericSeparatorsDto())
+
+	if err != nil {
+
+		return iAry,
+			fmt.Errorf("IntAry.NewUint32()\n"+
+				"Error returned by iAry.SetNumericSeparatorsDto(ia.GetNumericSeparatorsDto())\n"+
+				"Error='%v'",
+				err.Error())
+	}
+
+	err = iAry.IsValid(ePrefix + " Calling iAry.IsValid()")
+
+	return iAry, err
 }
 
 // NewUint32Exponent - Returns a new IntAry instance. The numeric
