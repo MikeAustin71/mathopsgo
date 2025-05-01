@@ -169,7 +169,7 @@ func (bPair *BigIntPair) NewBigIntNum(b1, b2 BigIntNum) BigIntPair {
 // 'dec1'. BigIntPair.Big2 will contain numeric separators copied from 'dec2'.
 func (bPair *BigIntPair) NewDecimal(dec1, dec2 Decimal) (BigIntPair, error) {
 
-	ePrefix := "BigIntPair.NewDecimal() "
+	ePrefix := "BigIntPair.NewDecimal()"
 
 	err := dec1.IsValid(ePrefix)
 
@@ -187,16 +187,22 @@ func (bPair *BigIntPair) NewDecimal(dec1, dec2 Decimal) (BigIntPair, error) {
 
 	if err != nil {
 		return BigIntPair{},
-			fmt.Errorf(ePrefix+
-				"Error returned by dec1.GetBigIntNum(). Error='%v'. ", err.Error())
+			fmt.Errorf("%v\n"+
+				"Error returned by dec1.GetBigIntNum().\n"+
+				"Error= %v\n",
+				ePrefix,
+				err.Error())
 	}
 
 	b2Num, err := dec2.GetBigIntNum()
 
 	if err != nil {
 		return BigIntPair{},
-			fmt.Errorf(ePrefix+
-				"Error returned by dec2.GetBigIntNum(). Error='%v'. ", err.Error())
+			fmt.Errorf("%v\n"+
+				"Error returned by dec2.GetBigIntNum().\n"+
+				"Error= %v\n",
+				ePrefix,
+				err.Error())
 	}
 
 	bd2 := BigIntPair{}
@@ -219,15 +225,18 @@ func (bPair *BigIntPair) NewDecimal(dec1, dec2 Decimal) (BigIntPair, error) {
 // 'ia1'. BigIntPair.Big2 will contain numeric separators copied from 'ia2'.
 func (bPair *BigIntPair) NewIntAry(ia1, ia2 IntAry) (BigIntPair, error) {
 
-	ePrefix := "BigIntPair.NewIntAry() "
+	ePrefix := "BigIntPair.NewIntAry()"
 
 	// Method NewIntAry will test the validity of ia1
 	b1Num, err := ia1.GetBigIntNum()
 
 	if err != nil {
 		return BigIntPair{},
-			fmt.Errorf(ePrefix+"Error returned by ia1.GetBigIntNum(). "+
-				"Error='%v' ", err.Error())
+			fmt.Errorf("%v\n"+
+				"Error returned by ia1.GetBigIntNum().\n"+
+				"Error= %v\n",
+				ePrefix,
+				err.Error())
 	}
 
 	// Method NewIntAry will test the validity of ia2
@@ -235,8 +244,11 @@ func (bPair *BigIntPair) NewIntAry(ia1, ia2 IntAry) (BigIntPair, error) {
 
 	if err != nil {
 		return BigIntPair{},
-			fmt.Errorf(ePrefix+"Error returned by ia2.GetBigIntNum(). "+
-				"Error='%v' ", err.Error())
+			fmt.Errorf("%v\n"+
+				"Error returned by ia2.GetBigIntNum().\n"+
+				"Error= %v\n",
+				ePrefix,
+				err.Error())
 	}
 
 	bd2 := BigIntPair{}
@@ -256,15 +268,15 @@ func (bPair *BigIntPair) NewIntAry(ia1, ia2 IntAry) (BigIntPair, error) {
 // 'num1'. BigIntPair.Big2 will contain numeric separators copied from 'num2'.
 func (bPair *BigIntPair) NewINumMgr(num1, num2 INumMgr) (BigIntPair, error) {
 
-	ePrefix := "BigIntPair.NewINumMgr() "
+	ePrefix := "BigIntPair.NewINumMgr()"
 
-	err := num1.IsValid(ePrefix + "'num1' INVALID! ")
+	err := num1.IsValid(ePrefix + " 'num1' INVALID! ")
 
 	if err != nil {
 		return BigIntPair{}, err
 	}
 
-	err = num2.IsValid(ePrefix + "'num2' INVALID! ")
+	err = num2.IsValid(ePrefix + " 'num2' INVALID! ")
 
 	if err != nil {
 		return BigIntPair{}, err
@@ -274,16 +286,22 @@ func (bPair *BigIntPair) NewINumMgr(num1, num2 INumMgr) (BigIntPair, error) {
 
 	if err != nil {
 		return BigIntPair{},
-			fmt.Errorf(ePrefix+"Error returned by num1.GetBigIntNum(). "+
-				"Error='%v'. ", err.Error())
+			fmt.Errorf("%v\n"+
+				"Error returned by num1.GetBigIntNum().\n"+
+				"Error= %v\n",
+				ePrefix,
+				err.Error())
 	}
 
 	b2Num, err := num2.GetBigIntNum()
 
 	if err != nil {
 		return BigIntPair{},
-			fmt.Errorf(ePrefix+"Error returned by num2.GetBigIntNum(). "+
-				"Error='%v'. ", err.Error())
+			fmt.Errorf("%v\n"+
+				"Error returned by num2.GetBigIntNum().\n"+
+				"Error= %v\n",
+				ePrefix,
+				err.Error())
 	}
 
 	bPair2 := new(BigIntPair).NewBigIntNum(b1Num, b2Num)
@@ -297,21 +315,32 @@ func (bPair *BigIntPair) NewINumMgr(num1, num2 INumMgr) (BigIntPair, error) {
 // The returned BigIntNum's BigIntPair.Big1 and BigIntPair.Big2 will contain default
 // numeric separators (decimal separator, thousands separator and currency symbol).
 func (bPair *BigIntPair) NewNumStr(n1NumStr, n2NumStr string) (BigIntPair, error) {
+
 	ePrefix := "BigIntPair.NewNumStrDto() "
+
 	b1Num, err := BigIntNum{}.NewNumStr(n1NumStr)
 
 	if err != nil {
 		return BigIntPair{},
-			fmt.Errorf(ePrefix+"Error returned by BigIntNum{}.NewNumStr(n1NumStr). "+
-				"numStr='%v' Error='%v' ", n1NumStr, err.Error())
+			fmt.Errorf("%v\n"+
+				"Error returned by BigIntNum{}.NewNumStr(n1NumStr).\n"+
+				"numStr='%v'\nError= %v\n",
+				ePrefix,
+				n1NumStr,
+				err.Error())
 	}
 
 	b2Num, err := BigIntNum{}.NewNumStr(n2NumStr)
 
 	if err != nil {
+
 		return BigIntPair{},
-			fmt.Errorf(ePrefix+"Error returned by BigIntNum{}.NewNumStr(n2NumStr). "+
-				"numStr='%v' Error='%v' ", n2NumStr, err.Error())
+			fmt.Errorf("%v\n"+
+				"Error returned by BigIntNum{}.NewNumStr(n2NumStr).\n"+
+				"numStr='%v'\nError= %v\n",
+				ePrefix,
+				n2NumStr,
+				err.Error())
 	}
 
 	b2Pair := BigIntPair{}
@@ -330,27 +359,34 @@ func (bPair *BigIntPair) NewNumStr(n1NumStr, n2NumStr string) (BigIntPair, error
 func (bPair *BigIntPair) NewNumStrWithNumSeps(
 	n1NumStr, n2NumStr string, numSeps NumericSeparatorDto) (BigIntPair, error) {
 
-	ePrefix := "BigIntPair.NewNumStrDto() "
+	ePrefix := "BigIntPair.NewNumStrDto()"
 
 	numSeps.SetDefaultsIfEmpty()
 
 	b1Num, err := BigIntNum{}.NewNumStrWithNumSeps(n1NumStr, numSeps)
 
 	if err != nil {
+
 		return BigIntPair{},
-			fmt.Errorf(ePrefix+
+			fmt.Errorf("%v\n"+
 				"Error returned by BigIntNum{}.NewNumStrWithNumSeps("+
-				"n1NumStr, numSeps). "+
-				"n1NumStr='%v' Error='%v' ", n1NumStr, err.Error())
+				"n1NumStr, numSeps).\n"+
+				"n1NumStr='%v'\nError= %v\n",
+				ePrefix,
+				n1NumStr,
+				err.Error())
 	}
 
 	b2Num, err := BigIntNum{}.NewNumStrWithNumSeps(n2NumStr, numSeps)
 
 	if err != nil {
 		return BigIntPair{},
-			fmt.Errorf(ePrefix+
-				"Error returned by BigIntNum{}.NewNumStrWithNumSeps(n2NumStr, numSeps). "+
-				"n2NumStr='%v' Error='%v' ", n2NumStr, err.Error())
+			fmt.Errorf("%v\n"+
+				"Error returned by BigIntNum{}.NewNumStrWithNumSeps(n2NumStr, numSeps).\n"+
+				"n2NumStr='%v'\nError= %v\n",
+				ePrefix,
+				n2NumStr,
+				err.Error())
 	}
 
 	b2Pair := BigIntPair{}
@@ -376,9 +412,14 @@ func (bPair *BigIntPair) NewNumStrDto(n1Dto, n2Dto NumStrDto) (BigIntPair, error
 	b1Num, err := n1Dto.GetBigIntNum()
 
 	if err != nil {
+
 		return BigIntPair{},
-			fmt.Errorf(ePrefix+"Error returned by n1Dto.GetBigIntNum(). "+
-				"numStr='%v' Error='%v' ", n1Dto.GetNumStr(), err.Error())
+			fmt.Errorf("%v\n"+
+				"Error returned by n1Dto.GetBigIntNum().\n"+
+				"numStr='%v'\nError= %v\n",
+				ePrefix,
+				n1Dto.GetNumStr(),
+				err.Error())
 	}
 
 	// This method will test the validity of n2Dto
@@ -386,8 +427,12 @@ func (bPair *BigIntPair) NewNumStrDto(n1Dto, n2Dto NumStrDto) (BigIntPair, error
 
 	if err != nil {
 		return BigIntPair{},
-			fmt.Errorf(ePrefix+"Error returned by n2Dto.GetBigIntNum(). "+
-				"numStr='%v' Error='%v' ", n2Dto.GetNumStr(), err.Error())
+			fmt.Errorf("%v\n"+
+				"Error returned by n2Dto.GetBigIntNum().\n"+
+				"numStr='%v'\nError= %v\n",
+				ePrefix,
+				n2Dto.GetNumStr(),
+				err.Error())
 	}
 
 	b2Pair := BigIntPair{}
