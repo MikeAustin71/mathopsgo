@@ -4274,7 +4274,7 @@ func (bIDivide BigIntMathDivide) PairQuotientMod(
 
 	var err2 error
 
-	quotient, modulo, err2 = new(bigIntDivideElectron).pairQuotientModNoNumSeps(bPair)
+	quotient, modulo, err2 = new(bigIntMathDivideNanobot).pairQuotientModNoNumSeps(bPair)
 
 	if err2 != nil {
 
@@ -4397,7 +4397,7 @@ func (bIDivide BigIntMathDivide) PairMod(
 
 	var err2 error
 
-	modulo, err2 = new(bigIntDivideElectron).
+	modulo, err2 = new(bigIntMathDivideNanobot).
 		pairModNoNumSeps(bPair)
 
 	if err2 != nil {
@@ -4480,7 +4480,7 @@ func (bIDivide BigIntMathDivide) PairIntQuotient(bPair BigIntPair) (intQuotient 
 
 	var err2 error
 
-	intQuotient, err2 = new(bigIntDivideElectron).
+	intQuotient, err2 = new(bigIntMathDivideNanobot).
 		pairIntQuotientNoNumSeps(bPair)
 
 	if err2 != nil {
@@ -4579,7 +4579,7 @@ func (bIDivide BigIntMathDivide) PairFracQuotient(
 
 	var err2 error
 
-	fracQuotient, err2 = new(bigIntDivideElectron).
+	fracQuotient, err2 = new(bigIntMathDivideNanobot).
 		pairFracQuotientNoNumSeps(bPair)
 
 	if err2 != nil {

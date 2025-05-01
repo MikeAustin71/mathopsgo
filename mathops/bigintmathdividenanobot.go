@@ -6,7 +6,7 @@ import (
 	"sync"
 )
 
-type bigIntDivideElectron struct {
+type bigIntMathDivideNanobot struct {
 	lock *sync.Mutex
 }
 
@@ -64,18 +64,18 @@ type bigIntDivideElectron struct {
 // The returned BigIntNum division result 'fracQuotient' will contain default
 // numeric separators (decimal separator, thousands separator and currency
 // symbol).
-func (bIDivideElec *bigIntDivideElectron) pairFracQuotientNoNumSeps(
+func (bIMathDivideNano *bigIntMathDivideNanobot) pairFracQuotientNoNumSeps(
 	bPair BigIntPair) (fracQuotient BigIntNum, err error) {
 
-	if bIDivideElec.lock == nil {
-		bIDivideElec.lock = new(sync.Mutex)
+	if bIMathDivideNano.lock == nil {
+		bIMathDivideNano.lock = new(sync.Mutex)
 	}
 
-	bIDivideElec.lock.Lock()
+	bIMathDivideNano.lock.Lock()
 
-	defer bIDivideElec.lock.Unlock()
+	defer bIMathDivideNano.lock.Unlock()
 
-	ePrefix := "bigIntDivideElectron.pairFracQuotientNoNumSeps() "
+	ePrefix := "bigIntMathDivideNanobot.pairFracQuotientNoNumSeps() "
 
 	fracQuotient = BigIntNum{}.New()
 
@@ -144,41 +144,41 @@ func (bIDivideElec *bigIntDivideElectron) pairFracQuotientNoNumSeps(
 // Examples:
 // =========
 //
-//																					Return Value
-//	 Divisor	divided by	Dividend		=		Integer Quotient
-//			5 				/ 				 2 				= 				 2
-//	    5.25			/ 				 2  			= 				 2
-//	    2 				/ 				 4				= 				 0
-//		 -5					/ 				 2 				= 				-2
-//	   -5.25			/    			 2  			= 				-2
-//	   -2 				/ 				 4				= 				 0
-//			5 				/ 				-2 				=					-2
-//	    5.25			/ 				-2 				= 				-2
-//	    2 				/ 				-4				= 				 0
-//		 -5					/ 				-2 				= 				 2
-//	   -5.25			/    			-2 				= 				 2
-//	   -2 				/ 				-4				= 				 0
-//	    12.555		/ 			  -2.5			=			    -5
-//	   -12.555		/ 			  -2.5			=			     5
-//	    12.555		/ 			  -2				=			    -6
+//																						Return Value
+//		 Divisor	divided by	Dividend		=		Integer Quotient
+//	      5         /          2        =          2
+//		    5.25			/ 				 2  			= 				 2
+//		    2 				/ 				 4				= 				 0
+//			 -5					/ 				 2 				= 				-2
+//		   -5.25			/    			 2  			= 				-2
+//		   -2 				/ 				 4				= 				 0
+//				5 				/ 				-2 				=					-2
+//		    5.25			/ 				-2 				= 				-2
+//		    2 				/ 				-4				= 				 0
+//			 -5					/ 				-2 				= 				 2
+//		   -5.25			/    			-2 				= 				 2
+//		   -2 				/ 				-4				= 				 0
+//		    12.555		/ 			  -2.5			=			    -5
+//		   -12.555		/ 			  -2.5			=			     5
+//		    12.555		/ 			  -2				=			    -6
 //
 // The returned BigIntNum division result 'intQuotient' will contain default
 // numeric separators (decimal separator, thousands separator and currency
 // symbol).
-func (bIDivideElec *bigIntDivideElectron) pairIntQuotientNoNumSeps(
+func (bIMathDivideNano *bigIntMathDivideNanobot) pairIntQuotientNoNumSeps(
 	bPair BigIntPair) (intQuotient BigIntNum, err error) {
 
-	if bIDivideElec.lock == nil {
-		bIDivideElec.lock = new(sync.Mutex)
+	if bIMathDivideNano.lock == nil {
+		bIMathDivideNano.lock = new(sync.Mutex)
 	}
 
-	bIDivideElec.lock.Lock()
+	bIMathDivideNano.lock.Lock()
 
-	defer bIDivideElec.lock.Unlock()
+	defer bIMathDivideNano.lock.Unlock()
 
 	intQuotient = BigIntNum{}.New()
 
-	ePrefix := "bigIntDivideElectron.pairIntQuotientNoNumSeps()"
+	ePrefix := "bigIntMathDivideNanobot.pairIntQuotientNoNumSeps()"
 
 	if bPair.Big2.IsZero() {
 
@@ -260,22 +260,22 @@ func (bIDivideElec *bigIntDivideElectron) pairIntQuotientNoNumSeps(
 // The returned BigIntNum division results (quotient and modulo) will
 // contain default numeric separators (decimal separator, thousands
 // separator and currency symbol).
-func (bIDivideElec *bigIntDivideElectron) pairModNoNumSeps(
+func (bIMathDivideNano *bigIntMathDivideNanobot) pairModNoNumSeps(
 	bPair BigIntPair) (modulo BigIntNum, err error) {
 
-	if bIDivideElec.lock == nil {
-		bIDivideElec.lock = new(sync.Mutex)
+	if bIMathDivideNano.lock == nil {
+		bIMathDivideNano.lock = new(sync.Mutex)
 	}
 
-	bIDivideElec.lock.Lock()
+	bIMathDivideNano.lock.Lock()
 
-	defer bIDivideElec.lock.Unlock()
+	defer bIMathDivideNano.lock.Unlock()
 
 	modulo = BigIntNum{}.New()
 
 	err = nil
 
-	ePrefix := "bigIntDivideElectron.pairModNoNumSeps()"
+	ePrefix := "bigIntMathDivideNanobot.pairModNoNumSeps()"
 
 	if bPair.Big2.bigInt.Cmp(big.NewInt(0)) == 0 {
 
@@ -361,20 +361,20 @@ func (bIDivideElec *bigIntDivideElectron) pairModNoNumSeps(
 // The returned BigIntNum division results (quotient and modulo) will
 // contain default numeric separators (decimal separator, thousands
 // separator and currency symbol).
-func (bIDivideElec *bigIntDivideElectron) pairQuotientModNoNumSeps(
+func (bIMathDivideNano *bigIntMathDivideNanobot) pairQuotientModNoNumSeps(
 	bPair BigIntPair) (quotient, modulo BigIntNum, err error) {
 
-	if bIDivideElec.lock == nil {
-		bIDivideElec.lock = new(sync.Mutex)
+	if bIMathDivideNano.lock == nil {
+		bIMathDivideNano.lock = new(sync.Mutex)
 	}
 
-	bIDivideElec.lock.Lock()
+	bIMathDivideNano.lock.Lock()
 
-	defer bIDivideElec.lock.Unlock()
+	defer bIMathDivideNano.lock.Unlock()
 
 	quotient = BigIntNum{}.New()
 	modulo = BigIntNum{}.New()
-	ePrefix := "bigIntDivideElectron.pairQuotientModNoNumSeps()"
+	ePrefix := "bigIntMathDivideNanobot.pairQuotientModNoNumSeps()"
 
 	if bPair.Big2.bigInt.Cmp(big.NewInt(0)) == 0 {
 
