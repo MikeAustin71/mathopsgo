@@ -11,6 +11,14 @@ type intAryElectron struct {
 
 func (iAryElectron *intAryElectron) newIntAry() IntAry {
 
+	if iAryElectron.lock == nil {
+		iAryElectron.lock = new(sync.Mutex)
+	}
+
+	iAryElectron.lock.Lock()
+
+	defer iAryElectron.lock.Unlock()
+
 	iAry := IntAry{}
 	iAry.intAry = []uint8{}
 	iAry.intAryLen = 0
