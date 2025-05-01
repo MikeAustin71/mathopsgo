@@ -2,7 +2,6 @@ package mathops
 
 import (
 	"bytes"
-	"errors"
 	"fmt"
 	"math"
 	"math/big"
@@ -460,7 +459,9 @@ func (ia *IntAry) Ceiling() (IntAry, error) {
 
 	ePrefix := "IntAry.Ceiling()"
 
-	err := ia.IsValid("Ceiling() - ")
+	err := new(intAryElectron).isValidIntAry(
+		ia,
+		ePrefix+" Called on 'ia'")
 
 	if err != nil {
 		return IntAry{}, err
@@ -1083,7 +1084,9 @@ func (ia *IntAry) DivideByInt64(divisor int64, maxPrecision int) error {
 
 	ePrefix := "IntAry.DivideByInt64()"
 
-	err := ia.IsValid(ePrefix + " Calling ia.IsValid()")
+	err := new(intAryElectron).isValidIntAry(
+		ia,
+		ePrefix+" Called on 'ia'")
 
 	if err != nil {
 		return err
@@ -1139,7 +1142,9 @@ func (ia *IntAry) DivideThisBy(iAry2 *IntAry, minPrecision, maxPrecision int) (I
 				err.Error())
 	}
 
-	err = quotient.IsValid(ePrefix + " Calling quotient.IsValid()")
+	err = new(intAryElectron).isValidIntAry(
+		&quotient,
+		ePrefix+" Called on 'quotient'")
 
 	return quotient, err
 }
@@ -1238,13 +1243,17 @@ func (ia *IntAry) Equals(iAry2 *IntAry) bool {
 //							 -2					 	 -2
 func (ia *IntAry) Floor() (IntAry, error) {
 
-	err := ia.IsValid("Floor() - ")
+	ePrefix := "IntAry.Floor()"
+
+	err := new(intAryElectron).isValidIntAry(
+		ia,
+		ePrefix+" Called on 'ia'")
 
 	if err != nil {
 		return IntAry{}, err
 	}
 
-	iAry2 := new(IntAry).New()
+	iAry2 := new(intAryElectron).newIntAry()
 
 	if ia.isZeroValue {
 		iAry2.SetIntAryToZero(uint(ia.precision))
@@ -1260,6 +1269,7 @@ func (ia *IntAry) Floor() (IntAry, error) {
 		// There are NO non-zero digits to the
 		// right of the decimal place
 		iAry2 = ia.CopyOut()
+
 		return iAry2, nil
 	}
 
@@ -1356,15 +1366,16 @@ func (ia *IntAry) GetBigInt() (*big.Int, error) {
 
 	ePrefix := "IntAry.GetBigInt() "
 
-	err := ia.IsValid("")
+	err := new(intAryElectron).isValidIntAry(
+		ia,
+		ePrefix+" Called on 'ia'")
 
 	if err != nil {
-		return big.NewInt(0),
-			fmt.Errorf(ePrefix+"Error returned by ia.IsValid(). Error='%v'",
-				err.Error())
+		return big.NewInt(0), err
 	}
 
 	result := big.NewInt(0).SetInt64(0)
+
 	big10 := big.NewInt(0).SetInt64(10)
 
 	for i := 0; i < ia.intAryLen; i++ {
@@ -1391,12 +1402,12 @@ func (ia *IntAry) GetBigInt() (*big.Int, error) {
 func (ia *IntAry) GetBigIntNum() (BigIntNum, error) {
 	ePrefix := "IntAry.GetBigIntNum() "
 
-	err := ia.IsValid(ePrefix)
+	err := new(intAryElectron).isValidIntAry(
+		ia,
+		ePrefix+" Called on 'ia'")
 
 	if err != nil {
-		return BigIntNum{},
-			fmt.Errorf(ePrefix+"Error returned by ia.IsValid(). "+
-				"Error='%v' ", err.Error())
+		return BigIntNum{}, err
 	}
 
 	numSeps := ia.GetNumericSeparatorsDto()
@@ -1430,6 +1441,10 @@ func (ia *IntAry) GetBigIntNum() (BigIntNum, error) {
 //
 // To set the value of currency symbol, see
 // the method SetCurrencySymbol().
+//
+// Note: if the current IntAry currency value
+// was not previously set, it will be automatically
+// set to the USA dollar sign ('$').
 func (ia *IntAry) GetCurrencySymbol() rune {
 
 	if ia.currencySymbol == 0 {
@@ -1445,7 +1460,9 @@ func (ia *IntAry) GetDecimal() (Decimal, error) {
 
 	ePrefix := "IntAry.GetDecimal() "
 
-	err := ia.IsValid(ePrefix)
+	err := new(intAryElectron).isValidIntAry(
+		ia,
+		ePrefix+" Called on 'ia'")
 
 	if err != nil {
 		return Decimal{}, err
@@ -1498,7 +1515,9 @@ func (ia *IntAry) GetDecimalSeparator() rune {
 // a leading integer digit of zero. Example '0.5678'
 func (ia *IntAry) GetFractionalDigits() (IntAry, error) {
 
-	err := ia.IsValid("GetFractionalDigits() - ")
+	err := new(intAryElectron).isValidIntAry(
+		ia,
+		"IntAry.GetFractionalDigits() Called on 'ia'")
 
 	if err != nil {
 		return IntAry{}, err
@@ -1534,7 +1553,9 @@ func (ia *IntAry) GetFractionalDigits() (IntAry, error) {
 // intAry object.
 func (ia *IntAry) GetIntegerDigits() (IntAry, error) {
 
-	err := ia.IsValid("GetFractionalDigits() - ")
+	err := new(intAryElectron).isValidIntAry(
+		ia,
+		"GetFractionalDigits() Called on 'ia'")
 
 	if err != nil {
 		return IntAry{}, err
@@ -1565,7 +1586,6 @@ func (ia *IntAry) GetIntegerDigits() (IntAry, error) {
 	}
 
 	return iAry2, nil
-
 }
 
 // GetInt - returns the value of the current
@@ -1582,35 +1602,54 @@ func (ia *IntAry) GetInt() (int, error) {
 
 	ePrefix := "IntAry.GetInt() "
 
-	err := ia.IsValid("")
+	err := new(intAryElectron).isValidIntAry(
+		ia,
+		ePrefix+" Called on 'ia'")
 
 	if err != nil {
-		return 0,
-			fmt.Errorf(ePrefix+"Error returned by ia.IsValid(). "+
-				"Error='%v' ", err.Error())
+		return 0, err
 	}
 
 	maxInt := big.NewInt(0).SetInt64(int64(math.MaxInt32))
 
 	minInt := big.NewInt(0).SetInt64(int64(math.MinInt32))
 
-	result, _ := ia.GetBigInt()
+	result, err := ia.GetBigInt()
+
+	if err != nil {
+		return 0,
+			fmt.Errorf("%v\n"+
+				"Error returned by GetBigInt()\n"+
+				"Error= %v\n",
+				ePrefix,
+				err.Error())
+	}
 
 	compare := result.Cmp(maxInt)
 
 	if compare == 1 {
 		return 0,
-			errors.New(ePrefix + "Error: the value of this intAry object " +
-				"exceeds the maximum allowable value for the int type")
+			fmt.Errorf("%v\n"+
+				"Error: the value of the current intAry object\n"+
+				"exceeds the maximum allowable value for the int type.\n"+
+				"The Maximum allowable int value is:\n"+
+				"  %v",
+				ePrefix,
+				maxInt.String())
 	}
 
 	compare = result.Cmp(minInt)
 
 	if compare == -1 {
+
 		return 0,
-			errors.New(ePrefix +
-				"Error: the value of this intAry object is less " +
-				"than the minimum allowable value for the int type")
+			fmt.Errorf("%v\n"+
+				"Error: the value of the intAry object is less\n"+
+				"than the minimum allowable value for the int type.\n"+
+				"The Minimum allowable int value is:\n"+
+				"  %v\n",
+				ePrefix,
+				minInt.String())
 
 	}
 
@@ -1629,32 +1668,54 @@ func (ia *IntAry) GetInt() (int, error) {
 // Reference: https://golang.org/ref/spec#Numeric_types
 func (ia *IntAry) GetInt64() (int64, error) {
 
-	ePrefix := "IntAry.GetInt64() "
+	ePrefix := "IntAry.GetInt64()"
 
-	err := ia.IsValid("")
+	err := new(intAryElectron).isValidIntAry(
+		ia,
+		ePrefix+" Called on 'ia'")
 
 	if err != nil {
-		return int64(0),
-			fmt.Errorf(ePrefix+"Error returned by ia.IsValid() "+
-				"Error='%v' ", err.Error())
+		return int64(0), err
 	}
 
 	maxI64 := big.NewInt(0).SetInt64(math.MaxInt64)
 
 	minI64 := big.NewInt(0).SetInt64(math.MinInt64)
 
-	result, _ := ia.GetBigInt()
+	result, err := ia.GetBigInt()
+
+	if err != nil {
+		return int64(0),
+			fmt.Errorf("%v\n"+
+				"Error returned by ia.GetBigInt()\n"+
+				"Error= %v\n",
+				ePrefix,
+				err.Error())
+	}
 
 	compare := result.Cmp(maxI64)
 
 	if compare == 1 {
-		return int64(0), errors.New("error: the value of this intAry object exceeds the maximum allowable value for the int64 type")
+		return int64(0),
+			fmt.Errorf("%v\n"+
+				"Error: The value of the current intAry object exceeds the\n"+
+				"maximum allowable value for the int64 type.\n"+
+				"The Maximum allowable int64 value is:\n"+
+				"  %v\n",
+				ePrefix,
+				maxI64.String())
 	}
 
 	compare = result.Cmp(minI64)
 
 	if compare == -1 {
-		return int64(0), errors.New("error: the value of this intAry object is less than the minimum allowable value for the int64 type")
+		return int64(0), fmt.Errorf("%v\n"+
+			"Error: the value of the current intAry object is less than the\n"+
+			"minimum allowable value for the int64 type.\n"+
+			"The Minimum allowable int value is:\n"+
+			"  %v\n",
+			ePrefix,
+			minI64.String())
 	}
 
 	return result.Int64(), nil
@@ -1768,10 +1829,12 @@ func (ia *IntAry) GetIntAryRune(index int) (rune, error) {
 func (ia *IntAry) GetIntAry() (IntAry, error) {
 	ePrefix := "IntAry.GetIntAry() "
 
-	err := ia.IsValid(ePrefix + "IntAry INVALID! ")
+	err := new(intAryElectron).isValidIntAry(
+		ia,
+		ePrefix+" Called on 'ia'")
 
 	if err != nil {
-		return new(IntAry).New(), err
+		return new(intAryElectron).newIntAry(), err
 	}
 
 	return ia.CopyOut(), nil
@@ -2033,9 +2096,11 @@ func (ia *IntAry) GetNumStr() string {
 // performs a validity check on the current IntAry instance.
 func (ia *IntAry) GetNumStrDto() (NumStrDto, error) {
 
-	ePrefix := "IntAry.GetNumStrDto() "
+	ePrefix := "IntAry.GetNumStrDto()"
 
-	err := ia.IsValid(ePrefix + " IntAry INVALID! ")
+	err := new(intAryElectron).isValidIntAry(
+		ia,
+		ePrefix+" Called on 'ia'")
 
 	if err != nil {
 		return NumStrDto{}.New(), err
@@ -2047,8 +2112,11 @@ func (ia *IntAry) GetNumStrDto() (NumStrDto, error) {
 
 	if err != nil {
 		return NumStrDto{},
-			fmt.Errorf(ePrefix+"Error returned by NewNumStr(ia.GetNumStr()) "+
-				"Error='%v'", err.Error())
+			fmt.Errorf("%v\n"+
+				"Error returned by NewNumStr(ia.GetNumStr())\n"+
+				"Error= %v\n",
+				ePrefix,
+				err.Error())
 	}
 
 	return nDto, nil
@@ -2155,7 +2223,9 @@ func (ia *IntAry) GetScaleFactor() (*big.Int, error) {
 
 	ePrefix := "IntAry.GetScaleFactor()"
 
-	err := ia.IsValid(ePrefix + " - ")
+	err := new(intAryElectron).isValidIntAry(
+		ia,
+		ePrefix+" Called on 'ia'")
 
 	if err != nil {
 		return big.NewInt(0),
@@ -2208,7 +2278,9 @@ func (ia *IntAry) GetSciNotationNumber(mantissaLen uint) (SciNotationNum, error)
 
 	ePrefix := "IntAry.GetSciNotationNumber()"
 
-	err := ia.IsValid(ePrefix + " - Current IntAry object is INVALID! ")
+	err := new(intAryElectron).isValidIntAry(
+		ia,
+		ePrefix+" Called on 'ia'")
 
 	if err != nil {
 		return SciNotationNum{}.New(), err
@@ -2240,7 +2312,16 @@ func (ia *IntAry) GetSciNotationNumber(mantissaLen uint) (SciNotationNum, error)
 
 	if !ia.isIntegerZeroValue {
 
-		magnitudeInt, _ := ia.GetMagnitude()
+		magnitudeInt, err := ia.GetMagnitude()
+
+		if err != nil {
+			return sciNotationNum,
+				fmt.Errorf("%v\n"+
+					"Error returned by ia.GetMagnitude().\n"+
+					"Error= %v\n",
+					ePrefix,
+					err.Error())
+		}
 
 		iaNew := ia.CopyOut()
 
@@ -2260,7 +2341,19 @@ func (ia *IntAry) GetSciNotationNumber(mantissaLen uint) (SciNotationNum, error)
 		}
 
 		if ia.precision > 50000 {
-			_ = iaNew.SetPrecision(50000, true)
+
+			err = iaNew.SetPrecision(50000, true)
+
+			if err != nil {
+				return SciNotationNum{}.New(),
+					fmt.Errorf("%v\n"+
+						"Note: Original ia 'precision' exceeded 50,000.\n"+
+						"Error returned by ia.SetPrecision(50000, true).\n"+
+						"Error= %v\n",
+						ePrefix,
+						err.Error())
+			}
+
 		}
 
 		err = sciNotationNum.SetIntAryElements(iaNew, iaMagnitude)
@@ -2468,7 +2561,9 @@ func (ia *IntAry) HasFractionalDigits() (bool, error) {
 
 	ePrefix := "IntAry.HasFractionalDigits()"
 
-	err := ia.IsValid(ePrefix)
+	err := new(intAryElectron).isValidIntAry(
+		ia,
+		ePrefix+" Called on 'ia'")
 
 	if err != nil {
 		return false, err
@@ -2507,7 +2602,9 @@ func (ia *IntAry) IncrementIntegerOne() error {
 
 	ePrefix := "IntAry.IncrementIntegerOne()"
 
-	err := ia.IsValid(ePrefix)
+	err := new(intAryElectron).isValidIntAry(
+		ia,
+		ePrefix+" Called on 'ia'")
 
 	if err != nil {
 		return err
@@ -2605,36 +2702,13 @@ func (ia *IntAry) IncrementIntegerOne() error {
 // an error if the intAry object is found to be invalid.
 func (ia *IntAry) IsValid(errName string) error {
 
-	if errName == "" {
+	if len(errName) == 0 {
 		errName = "IntAry.IsValid()"
 	}
 
-	ia.SetInternalFlags()
-
-	if ia.signVal != -1 && ia.signVal != 1 {
-		return fmt.Errorf("%v\nError: sign Value is INVALID!\nsign Value= '%v'\n",
-			errName,
-			ia.signVal)
-	}
-
-	if ia.precision < 0 {
-		return fmt.Errorf("%v\nError: precision Value is INVALID!\nsign Value= '%v'\n",
-			errName, ia.precision)
-	}
-
-	if ia.precision >= ia.intAryLen {
-		return fmt.Errorf("%v\nError: precision is greater than or equal to IntArray length "+
-			"- ia.precision= %v  ia.intAryLen= %v \n", errName, ia.precision, ia.intAryLen)
-
-	}
-
-	if ia.integerLen == 0 {
-		return fmt.Errorf("%v\nError: integer length is zero.\n"+
-			"Missing leading integer zero!\n",
-			errName)
-	}
-
-	return nil
+	return new(intAryElectron).isValidIntAry(
+		ia,
+		errName)
 }
 
 // IsEvenNumber - Returns true if the current IntAry numeric value
@@ -2731,7 +2805,9 @@ func (ia *IntAry) IsOne() bool {
 //	https://www.mathsisfun.com/definitions/even-number.html
 func (ia *IntAry) IsZero() bool {
 
-	err := ia.IsValid("")
+	err := new(intAryElectron).isValidIntAry(
+		ia,
+		"IntAry.IsZero()")
 
 	if err != nil {
 		return true
@@ -2975,7 +3051,9 @@ func (ia *IntAry) NewWithNumSeps(numSeps NumericSeparatorDto) (IntAry, error) {
 				err.Error())
 	}
 
-	err = iAry.IsValid(ePrefix + " Calling iAry.IsValid()")
+	err = new(intAryElectron).isValidIntAry(
+		&iAry,
+		ePrefix)
 
 	return iAry, err
 }
@@ -3032,7 +3110,9 @@ func (ia *IntAry) NewBigInt(num *big.Int, precision int) (IntAry, error) {
 				err.Error())
 	}
 
-	err = iAry.IsValid(ePrefix + " Calling iAry.IsValid()")
+	err = new(intAryElectron).isValidIntAry(
+		&iAry,
+		ePrefix)
 
 	return iAry, err
 }
@@ -3078,7 +3158,9 @@ func (ia *IntAry) NewBigIntNum(bINum BigIntNum) (IntAry, error) {
 				err.Error())
 	}
 
-	err = iAry.IsValid(ePrefix + " Calling iAry.IsValid()")
+	err = new(intAryElectron).isValidIntAry(
+		&iAry,
+		ePrefix)
 
 	return iAry, err
 }
@@ -3107,7 +3189,9 @@ func (ia *IntAry) NewFive(precision int) (IntAry, error) {
 
 	}
 
-	err = iAry.IsValid(ePrefix + " Calling iAry.IsValid()")
+	err = new(intAryElectron).isValidIntAry(
+		&iAry,
+		ePrefix)
 
 	return iAry, err
 }
@@ -3164,7 +3248,9 @@ func (ia *IntAry) NewFloat32(num float32, precision int) (IntAry, error) {
 				precision)
 	}
 
-	err = iAry.IsValid(ePrefix + " Calling iAry.IsValid()")
+	err = new(intAryElectron).isValidIntAry(
+		&iAry,
+		ePrefix)
 
 	return iAry, err
 }
@@ -3223,7 +3309,9 @@ func (ia *IntAry) NewFloat64(num float64, precision int) (IntAry, error) {
 
 	}
 
-	err = iAry.IsValid(ePrefix + " Calling iAry.IsValid()")
+	err = new(intAryElectron).isValidIntAry(
+		&iAry,
+		ePrefix)
 
 	return iAry, err
 }
@@ -3300,7 +3388,9 @@ func (ia *IntAry) NewFloatBig(num *big.Float, precision int) (IntAry, error) {
 
 	}
 
-	err = iAry.IsValid(ePrefix + " Calling iAry.IsValid()")
+	err = new(intAryElectron).isValidIntAry(
+		&iAry,
+		ePrefix)
 
 	return iAry, err
 }
@@ -3352,7 +3442,9 @@ func (ia *IntAry) NewInt(intNum int, precision uint) (IntAry, error) {
 				err.Error())
 	}
 
-	err = iAry.IsValid(ePrefix + " Calling iAry.IsValid()")
+	err = new(intAryElectron).isValidIntAry(
+		&iAry,
+		ePrefix)
 
 	return iAry, err
 }
@@ -3415,7 +3507,9 @@ func (ia *IntAry) NewIntExponent(intNum int, exponent int) (IntAry, error) {
 				err.Error())
 	}
 
-	err = iAry.IsValid(ePrefix + " Calling iAry.IsValid()")
+	err = new(intAryElectron).isValidIntAry(
+		&iAry,
+		ePrefix)
 
 	return iAry, err
 }
@@ -3470,7 +3564,9 @@ func (ia *IntAry) NewInt32(int32Num int32, precision uint) (IntAry, error) {
 
 	}
 
-	err = iAry.IsValid(ePrefix + " Calling iAry.IsValid()")
+	err = new(intAryElectron).isValidIntAry(
+		&iAry,
+		ePrefix)
 
 	return iAry, err
 }
@@ -3534,7 +3630,9 @@ func (ia *IntAry) NewInt32Exponent(int32Num int32, exponent int) (IntAry, error)
 				err.Error())
 	}
 
-	err = iAry.IsValid(ePrefix + " Calling iAry.IsValid()")
+	err = new(intAryElectron).isValidIntAry(
+		&iAry,
+		ePrefix)
 
 	return iAry, err
 }
@@ -3588,7 +3686,9 @@ func (ia *IntAry) NewInt64(int64Num int64, precision uint) (IntAry, error) {
 				err.Error())
 	}
 
-	err = iAry.IsValid(ePrefix + " Calling iAry.IsValid()")
+	err = new(intAryElectron).isValidIntAry(
+		&iAry,
+		ePrefix)
 
 	return iAry, err
 }
@@ -3656,7 +3756,9 @@ func (ia *IntAry) NewInt64Exponent(int64Num int64, exponent int) (IntAry, error)
 				err.Error())
 	}
 
-	err = iAry.IsValid(ePrefix + " Calling iAry.IsValid()")
+	err = new(intAryElectron).isValidIntAry(
+		&iAry,
+		ePrefix)
 
 	return iAry, err
 }
@@ -3703,7 +3805,9 @@ func (ia *IntAry) NewIntFracStr(intStr, fracStr string, signVal int) (IntAry, er
 				err.Error())
 	}
 
-	err = iAry.IsValid(ePrefix + " Calling iAry.IsValid()")
+	err = new(intAryElectron).isValidIntAry(
+		&iAry,
+		ePrefix)
 
 	return iAry, err
 }
@@ -3742,7 +3846,9 @@ func (ia *IntAry) NewNumStr(numStr string) (IntAry, error) {
 				err.Error())
 	}
 
-	err = iAry.IsValid(ePrefix + " Calling iAry.IsValid()")
+	err = new(intAryElectron).isValidIntAry(
+		&iAry,
+		ePrefix)
 
 	return iAry, err
 }
@@ -3782,7 +3888,9 @@ func (ia *IntAry) NewNumStrWithNumSeps(
 				"numStr='%v', Error='%v' ", numStr, err.Error())
 	}
 
-	err = iAry.IsValid(ePrefix + " Calling iAry.IsValid()")
+	err = new(intAryElectron).isValidIntAry(
+		&iAry,
+		ePrefix)
 
 	return iAry, err
 }
@@ -3814,7 +3922,9 @@ func (ia *IntAry) NewNumStrMaxPrecision(num string, maxPrecision int) (IntAry, e
 				err.Error())
 	}
 
-	err = iAry.IsValid(ePrefix + " Calling iAry.IsValid()")
+	err = new(intAryElectron).isValidIntAry(
+		&iAry,
+		ePrefix)
 
 	return iAry, err
 }
@@ -3829,9 +3939,9 @@ func (ia *IntAry) NewNumStrDto(numDto NumStrDto) (IntAry, error) {
 
 	if err != nil {
 		return IntAry{},
-			fmt.Errorf(ePrefix+
-				"Error returned by IsValid(ePrefix). "+
-				"Error='%v' ", err.Error())
+			fmt.Errorf("%v\n"+
+				"Error returned by numDto.IsValid(ePrefix).\n"+
+				"Error= %v\n", err.Error())
 	}
 
 	iAry := new(IntAry).New()
@@ -3847,7 +3957,9 @@ func (ia *IntAry) NewNumStrDto(numDto NumStrDto) (IntAry, error) {
 				numDto.GetNumStr(), err.Error())
 	}
 
-	err = iAry.IsValid(ePrefix + " Calling iAry.IsValid()")
+	err = new(intAryElectron).isValidIntAry(
+		&iAry,
+		ePrefix)
 
 	return iAry, err
 }
@@ -3875,7 +3987,9 @@ func (ia *IntAry) NewOne(precision int) (IntAry, error) {
 				err.Error())
 	}
 
-	err = iAry.IsValid(ePrefix + " Calling iAry.IsValid()")
+	err = new(intAryElectron).isValidIntAry(
+		&iAry,
+		ePrefix)
 
 	return iAry, err
 }
@@ -3913,7 +4027,9 @@ func (ia *IntAry) NewTen(precision int) (IntAry, error) {
 				err.Error())
 	}
 
-	err = iAry.IsValid(ePrefix + " Calling iAry.IsValid()")
+	err = new(intAryElectron).isValidIntAry(
+		&iAry,
+		ePrefix)
 
 	return iAry, err
 }
@@ -3943,7 +4059,9 @@ func (ia *IntAry) NewThree(precision int) (IntAry, error) {
 				err.Error())
 	}
 
-	err = iAry.IsValid(ePrefix + " Calling iAry.IsValid()")
+	err = new(intAryElectron).isValidIntAry(
+		&iAry,
+		ePrefix)
 
 	return iAry, err
 }
@@ -3973,7 +4091,9 @@ func (ia *IntAry) NewTwo(precision int) (IntAry, error) {
 				err.Error())
 	}
 
-	err = iAry.IsValid(ePrefix + " Calling iAry.IsValid()")
+	err = new(intAryElectron).isValidIntAry(
+		&iAry,
+		ePrefix)
 
 	return iAry, err
 }
@@ -4027,7 +4147,9 @@ func (ia *IntAry) NewUint(uintNum uint, precision uint) (IntAry, error) {
 				err.Error())
 	}
 
-	err = iAry.IsValid(ePrefix + " Calling iAry")
+	err = new(intAryElectron).isValidIntAry(
+		&iAry,
+		ePrefix)
 
 	return iAry, err
 }
@@ -4093,7 +4215,9 @@ func (ia *IntAry) NewUintExponent(uintNum uint, exponent int) (IntAry, error) {
 				err.Error())
 	}
 
-	err = iAry.IsValid(ePrefix + " Calling iAry.IsValid()")
+	err = new(intAryElectron).isValidIntAry(
+		&iAry,
+		ePrefix)
 
 	return iAry, err
 }
@@ -4146,7 +4270,9 @@ func (ia *IntAry) NewUint32(uint32Num uint32, precision uint) (IntAry, error) {
 				err.Error())
 	}
 
-	err = iAry.IsValid(ePrefix + " Calling iAry.IsValid()")
+	err = new(intAryElectron).isValidIntAry(
+		&iAry,
+		ePrefix)
 
 	return iAry, err
 }
@@ -4212,7 +4338,9 @@ func (ia *IntAry) NewUint32Exponent(uint32Num uint32, exponent int) (IntAry, err
 				err.Error())
 	}
 
-	err = iAry.IsValid(ePrefix + " Calling iAry.IsValid()")
+	err = new(intAryElectron).isValidIntAry(
+		&iAry,
+		ePrefix)
 
 	return iAry, err
 }
@@ -4266,7 +4394,9 @@ func (ia *IntAry) NewUint64(uint64Num uint64, precision uint) (IntAry, error) {
 				err.Error())
 	}
 
-	err = iAry.IsValid(ePrefix + " Calling iAry.IsValid()")
+	err = new(intAryElectron).isValidIntAry(
+		&iAry,
+		ePrefix)
 
 	return iAry, err
 }
@@ -4332,7 +4462,9 @@ func (ia *IntAry) NewUint64Exponent(uint64Num uint64, exponent int) (IntAry, err
 				err.Error())
 	}
 
-	err = iAry.IsValid(ePrefix + " Calling iAry.IsValid()")
+	err = new(intAryElectron).isValidIntAry(
+		&iAry,
+		ePrefix)
 
 	return iAry, err
 }
@@ -4375,7 +4507,9 @@ func (ia *IntAry) NewZero(precision uint) (IntAry, error) {
 				err.Error())
 	}
 
-	err = iAry.IsValid(ePrefix + " Calling iAry.IsValid()")
+	err = new(intAryElectron).isValidIntAry(
+		&iAry,
+		ePrefix)
 
 	return iAry, err
 }
@@ -4794,17 +4928,26 @@ func (ia *IntAry) ResetFromBackUp() {
 
 // RoundToPrecision - Rounds the value of the current IntAry instance
 // to a precision specified by the 'roundToPrecision' parameter.
+// TODO - Find a better way to round to zero precision
 func (ia *IntAry) RoundToPrecision(roundToPrecision int) error {
 
+	ePrefix := "intAry.RoundToPrecision()"
+
 	if roundToPrecision < 0 {
-		return fmt.Errorf("RoundToPrecision() - Error: roundToPrecision is less than ZERO! roundToPrecision= '%v'", roundToPrecision)
+		return fmt.Errorf("%v\n"+
+			"Error: Input parameter 'roundToPrecision' is less than ZERO!\n"+
+			"roundToPrecision= %v\n",
+			ePrefix,
+			roundToPrecision)
 	}
 
 	if ia.precision == 0 {
 		return nil
 	}
 
-	err := ia.IsValid("RoundToPrecision() - ")
+	err := new(intAryElectron).isValidIntAry(
+		ia,
+		ePrefix)
 
 	if err != nil {
 		return err
@@ -5969,7 +6112,9 @@ func (ia *IntAry) SetIntAryWithIntAryObj(iAry2 *IntAry, copyBackup bool) error {
 
 	ePrefix := "IntAry.SetIntAryWithIntAryObj()"
 
-	err := iAry2.IsValid(ePrefix)
+	err := new(intAryElectron).isValidIntAry(
+		iAry2,
+		ePrefix)
 
 	if err != nil {
 
@@ -6127,6 +6272,16 @@ func (ia *IntAry) SetIntAryWithNumStr(str string) error {
 
 	}
 
+	// Validate intAry object
+
+	err = new(intAryElectron).isValidIntAry(
+		ia,
+		ePrefix+" Called on 'ia'")
+
+	if err != nil {
+		return err
+	}
+
 	ia.SetSignificantDigitIdxs()
 
 	if ia.intAryLen == 0 || ia.isZeroValue {
@@ -6134,20 +6289,11 @@ func (ia *IntAry) SetIntAryWithNumStr(str string) error {
 		return nil
 	}
 
-	// Validate intAry object
-	err = ia.IsValid(ePrefix + "- ")
+	err = new(intAryElectron).isValidIntAry(
+		ia,
+		ePrefix)
 
-	if err != nil {
-
-		return fmt.Errorf("%v\n"+
-			"Error returned by ia.IsValid()\n"+
-			"Error= %v\n",
-			ePrefix,
-			err.Error())
-
-	}
-
-	return nil
+	return err
 }
 
 // SetIntAryWithNumStrDto - Sets the numeric value of the current
@@ -6408,7 +6554,9 @@ func (ia *IntAry) SetPrecision(precision int, roundResult bool) error {
 
 	}
 
-	err := ia.IsValid(ePrefix)
+	err := new(intAryElectron).isValidIntAry(
+		ia,
+		ePrefix+"Called on 'ia'")
 
 	if err != nil {
 		return err
