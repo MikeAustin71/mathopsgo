@@ -180,7 +180,7 @@ func (bAdd BigIntMathAdd) AddBigIntNumSeries(bNums ...BigIntNum) BigIntNum {
 
 func (bAdd BigIntMathAdd) AddDecimal(dec1, dec2 Decimal) (BigIntNum, error) {
 
-	ePrefix := "BigIntMathAdd.AddNumStrDto() "
+	ePrefix := "BigIntMathAdd.AddNumStrDto()"
 
 	// This method tests the validity of dec1 and dec2
 	bPair, err := new(BigIntPair).NewDecimal(dec1, dec2)
@@ -242,8 +242,8 @@ func (bAdd BigIntMathAdd) AddDecimalArray(decs []Decimal) (BigIntNum, error) {
 			if err != nil {
 				return BigIntNum{}.New(),
 					fmt.Errorf("%v\n"+
-						"Error returned by BigIntNum{}.NewDecimal(decs[i]) .\n"+
-						" i='%v' decs[i].GetNumStr()='%v' Error='%v' ",
+						"Error returned by BigIntNum{}.NewDecimal(decs[i]).\n"+
+						" i='%v'\ndecs[i].GetNumStr()='%v'\nError= %v\n",
 						ePrefix,
 						i,
 						decs[i].GetNumStr(),
@@ -258,8 +258,9 @@ func (bAdd BigIntMathAdd) AddDecimalArray(decs []Decimal) (BigIntNum, error) {
 
 		if err != nil {
 			return BigIntNum{}.New(),
-				fmt.Errorf(ePrefix+"Error returned by BigIntNum{}.NewDecimal(decs[i]) "+
-					"Error='%v' ", err.Error())
+				fmt.Errorf("%v\n"+
+					"Error returned by BigIntNum{}.NewDecimal(decs[i])\n"+
+					"Error= %v\n", err.Error())
 		}
 
 		bPair := new(BigIntPair).NewBigIntNum(finalResult, bigINumNextAddend)
@@ -273,7 +274,7 @@ func (bAdd BigIntMathAdd) AddDecimalArray(decs []Decimal) (BigIntNum, error) {
 		return BigIntNum{}.New(),
 			fmt.Errorf("%v\n"+
 				"Error returned by finalResult.SetNumericSeparatorsDto(numSeps).\n"+
-				"Error='%v' \n",
+				"Error= %v\n",
 				ePrefix,
 				err.Error())
 	}
@@ -308,7 +309,7 @@ func (bAdd BigIntMathAdd) AddDecimalOutputToArray(
 	addend Decimal,
 	decs []Decimal) ([]Decimal, error) {
 
-	ePrefix := "BigIntMathAdd.AddDecimalOutputToArray() "
+	ePrefix := "BigIntMathAdd.AddDecimalOutputToArray()"
 
 	lenDecs := len(decs)
 
@@ -379,7 +380,7 @@ func (bAdd BigIntMathAdd) AddDecimalOutputToArray(
 // were copied from input series element 'decs[0]'.
 func (bAdd BigIntMathAdd) AddDecimalSeries(decs ...Decimal) (BigIntNum, error) {
 
-	ePrefix := "BigIntMathAdd.AddDecimalSeries() "
+	ePrefix := "BigIntMathAdd.AddDecimalSeries()"
 
 	finalResult := BigIntNum{}.New()
 	var err error
@@ -503,8 +504,9 @@ func (bAdd BigIntMathAdd) AddIntAryArray(iarys []IntAry) (BigIntNum, error) {
 
 	if lenIaArray == 0 {
 		return finalResult,
-			fmt.Errorf("%v\n" +
-				"Error: Input parameter 'iarys' array is Empty!\n")
+			fmt.Errorf("%v\n"+
+				"Error: Input parameter 'iarys' array is Empty!\n",
+				ePrefix)
 	}
 
 	numSeps := iarys[0].GetNumericSeparatorsDto()
@@ -892,7 +894,7 @@ func (bAdd BigIntMathAdd) AddINumMgrOutputToArray(
 	addend INumMgr,
 	numMgrs []INumMgr) ([]INumMgr, error) {
 
-	ePrefix := "BigIntMathAdd.AddINumMgrOutputToArray() "
+	ePrefix := "BigIntMathAdd.AddINumMgrOutputToArray()"
 
 	lenDecs := len(numMgrs)
 
@@ -1098,7 +1100,7 @@ func (bAdd BigIntMathAdd) AddNumStr(
 func (bAdd BigIntMathAdd) AddNumStrArray(
 	numStrs []string, numSeps NumericSeparatorDto) (BigIntNum, error) {
 
-	ePrefix := "BigIntMathAdd.AddNumStrArray() "
+	ePrefix := "BigIntMathAdd.AddNumStrArray()"
 
 	numSeps.SetDefaultsIfEmpty()
 
@@ -1202,7 +1204,7 @@ func (bAdd BigIntMathAdd) AddNumStrOutputToArray(
 	numStrs []string,
 	numSeps NumericSeparatorDto) ([]string, error) {
 
-	ePrefix := "BigIntMathAdd.AddNumStrOutputToArray() "
+	ePrefix := "BigIntMathAdd.AddNumStrOutputToArray()"
 
 	numSeps.SetDefaultsIfEmpty()
 
@@ -1491,7 +1493,7 @@ func (bAdd BigIntMathAdd) AddNumStrDtoOutputToArray(
 	addend NumStrDto,
 	nDtos []NumStrDto) ([]NumStrDto, error) {
 
-	ePrefix := "BigIntMathAdd.AddNumStrDtoOutputToArray() "
+	ePrefix := "BigIntMathAdd.AddNumStrDtoOutputToArray()"
 
 	lenDecs := len(nDtos)
 
@@ -1684,7 +1686,7 @@ func (bAdd BigIntMathAdd) AddPair(bPair BigIntPair) (BigIntNum, error) {
 //										b1 							= 752314
 //	                 b1Precision			= 3
 //	                 b2 							= 2167894
-//	                 b2Precision 		= 5
+//	                 b2Precision			= 5
 //
 //	                 total						= 77399294
 //	                 totalPrecision 	= 5
@@ -1730,7 +1732,7 @@ func (bAdd BigIntMathAdd) BigIntAdd(
 	b2,
 	b2Precision *big.Int) (total *big.Int, totalPrecision *big.Int, err error) {
 
-	ePrefix := "BigIntMathAdd.BigIntAdd() "
+	ePrefix := "BigIntMathAdd.BigIntAdd()"
 
 	total = big.NewInt(0)
 	totalPrecision = big.NewInt(0)
@@ -1748,17 +1750,21 @@ func (bAdd BigIntMathAdd) BigIntAdd(
 
 	if b1Precision.Cmp(bigZero) == -1 {
 
-		err = fmt.Errorf(ePrefix+
-			"Error: Input parameter 'b1Precision' is LESS THAN ZERO! "+
-			"b1Precision='%v' ", b1Precision.Text(10))
+		err = fmt.Errorf("%v\n"+
+			"Error: Input parameter 'b1Precision' is LESS THAN ZERO!\n"+
+			"b1Precision='%v'\n",
+			ePrefix,
+			b1Precision.Text(10))
 
 		return total, totalPrecision, err
 	}
 
 	if b2Precision.Cmp(bigZero) == -1 {
-		err = fmt.Errorf(ePrefix+
-			"Error: Input parameter 'b2Precision' is LESS THAN ZERO! "+
-			"b2Precision='%v' ", b2Precision.Text(10))
+		err = fmt.Errorf("%v\n"+
+			"Error: Input parameter 'b2Precision' is LESS THAN ZERO!\n"+
+			"b2Precision='%v'\n",
+			ePrefix,
+			b2Precision.Text(10))
 
 		return total, totalPrecision, err
 	}
@@ -1895,7 +1901,9 @@ func (bAdd BigIntMathAdd) BigIntAdd(
 // total BigIntFixedDecimal	- The sum or total of 'b1' and 'b2' input values.
 func (bAdd BigIntMathAdd) FixedDecimalAdd(
 	b1,
-	b2 BigIntFixedDecimal) (total BigIntFixedDecimal) {
+	b2 BigIntFixedDecimal) (total BigIntFixedDecimal, err error) {
+
+	ePrefix := "BigIntMathAdd.FixedDecimalAdd()"
 
 	total = new(BigIntFixedDecimal).NewZero(0)
 
@@ -1906,16 +1914,25 @@ func (bAdd BigIntMathAdd) FixedDecimalAdd(
 	// No error is possible because by definition, both precision
 	// values must be equal to or greater than zero.
 
-	bIResult, bIPrecision, _ :=
+	bIResult, bIPrecision, err :=
 		BigIntMathAdd{}.BigIntAdd(
 			b1.GetInteger(),
 			b1.GetPrecisionBigInt(),
 			b2.GetInteger(),
 			b2.GetPrecisionBigInt())
 
+	if err != nil {
+		return BigIntFixedDecimal{},
+			fmt.Errorf("%v\n"+
+				"Error returned by BigIntMathAdd.BigIntAdd()\n"+
+				"Error= %v\n",
+				ePrefix,
+				err.Error())
+	}
+
 	total.SetNumericValue(bIResult, uint(bIPrecision.Uint64()))
 
-	return total
+	return total, err
 }
 
 // addPairNoNumSeps - Receives a BigIntPair and proceeds to add b1.BigIntNum to

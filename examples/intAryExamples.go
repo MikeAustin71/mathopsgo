@@ -10,7 +10,7 @@ func ExampleIntAryPwrByTwos_01(
 	baseStr, exponentStr, expectedResult string,
 	minResultPrecision, maxResultPrecision int) {
 
-	iaBase, err := mathops.IntAry{}.NewNumStr(baseStr)
+	iaBase, err := new(mathops.IntAry).NewNumStr(baseStr)
 
 	if err != nil {
 		fmt.Printf("Error returned by IntAry{}.NewNumStr(numStr). "+
@@ -18,7 +18,7 @@ func ExampleIntAryPwrByTwos_01(
 		return
 	}
 
-	iaExponent, err := mathops.IntAry{}.NewNumStr(exponentStr)
+	iaExponent, err := new(mathops.IntAry).NewNumStr(exponentStr)
 
 	if err != nil {
 		fmt.Printf("Error returned by IntAry{}.NewNumStr(exponentStr). "+
@@ -67,7 +67,7 @@ func ExampleIntAryPwrByTwos_01(
 
 func ExampleIntAryGetMagnitude_01(numStr string, expectedMagnitude int) {
 
-	iaNum, err := mathops.IntAry{}.NewNumStr(numStr)
+	iaNum, err := new(mathops.IntAry).NewNumStr(numStr)
 
 	if err != nil {
 		fmt.Printf("Error returned by IntAry{}.NewNumStr(numStr). "+
@@ -115,7 +115,7 @@ func ExampleIntAryMultiplyPower_01(baseStr, exponentStr, expectedResultStr strin
 	var t1 time.Time
 	var t0 time.Time
 
-	iaBase, err := mathops.IntAry{}.NewNumStr(baseStr)
+	iaBase, err := new(mathops.IntAry).NewNumStr(baseStr)
 
 	if err != nil {
 		fmt.Printf("Error returned by IntAry{}.NewNumStr(baseStr). "+
@@ -124,7 +124,7 @@ func ExampleIntAryMultiplyPower_01(baseStr, exponentStr, expectedResultStr strin
 
 	}
 
-	iaExponent, err := mathops.IntAry{}.NewNumStr(exponentStr)
+	iaExponent, err := new(mathops.IntAry).NewNumStr(exponentStr)
 
 	if err != nil {
 		fmt.Printf("Error returned by IntAry{}.NewNumStr(exponentStr). "+
@@ -168,7 +168,7 @@ func ExampleIntAryMultiplyPower_01(baseStr, exponentStr, expectedResultStr strin
 
 func ExampleIntAryDivide_01(dividendStr, divisorStr, eQuotient string, minPrecision, maxPrecision int) {
 
-	dividend, err := mathops.IntAry{}.NewNumStr(dividendStr)
+	dividend, err := new(mathops.IntAry).NewNumStr(dividendStr)
 
 	if err != nil {
 		fmt.Printf("Error returned by IntAry{}.NewNumStr(dividendStr). "+
@@ -177,7 +177,7 @@ func ExampleIntAryDivide_01(dividendStr, divisorStr, eQuotient string, minPrecis
 
 	}
 
-	divisor, err := mathops.IntAry{}.NewNumStr(divisorStr)
+	divisor, err := new(mathops.IntAry).NewNumStr(divisorStr)
 
 	if err != nil {
 		fmt.Printf("Error returned by IntAry{}.NewNumStr(divisorStr). "+

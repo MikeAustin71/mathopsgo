@@ -1356,6 +1356,8 @@ func (bigIFd *BigIntFixedDecimal) NewZero(precision uint) BigIntFixedDecimal {
 // digits.
 func (bigIFd *BigIntFixedDecimal) RoundToDecPlace(precision uint) error {
 
+	ePrefix := "BigIntFixedDecimal.RoundToDecPlace()"
+
 	if bigIFd.integerNum == nil {
 		bigIFd.SetNumericValue(big.NewInt(0), precision)
 		return nil
@@ -1373,10 +1375,11 @@ func (bigIFd *BigIntFixedDecimal) RoundToDecPlace(precision uint) error {
 		err := bigIFd.CopyIn(new(BigIntFixedDecimal).NewZero(precision))
 
 		if err != nil {
-			return fmt.Errorf("BigIntFixedDecimal.RoundToDecPlace(precision uint)\n"+
+			return fmt.Errorf("%v\n"+
 				"Note: bigIFd.integerNum == 0\n"+
 				"Error returned by bigIFd.CopyIn(new(BigIntFixedDecimal).NewZero(precision))\n"+
 				"Error= %v\n",
+				ePrefix,
 				err.Error())
 		}
 
@@ -1416,7 +1419,15 @@ func (bigIFd *BigIntFixedDecimal) RoundToDecPlace(precision uint) error {
 			big.NewInt(-1))
 	}
 
-	result := BigIntMathAdd{}.FixedDecimalAdd(bigIFd.CopyOut(), bigNumRound5)
+	result, err := BigIntMathAdd{}.FixedDecimalAdd(bigIFd.CopyOut(), bigNumRound5)
+
+	if err != nil {
+		return fmt.Errorf("%v\n"+
+			"Error returned by BigIntMathAdd{}.FixedDecimalAdd()\n"+
+			"Error= %v\n",
+			ePrefix,
+			err.Error())
+	}
 
 	// 10^deltaPrecision
 	scale.Exp(big.NewInt(10),

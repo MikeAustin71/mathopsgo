@@ -479,7 +479,7 @@ func TestBigIntMathAdd_AddPair_01(t *testing.T) {
 		maxPrecision = b2Precision
 	}
 
-	bPair := BigIntPair{}.NewBigIntNum(b1Num, b2Num)
+	bPair := new(BigIntPair).NewBigIntNum(b1Num, b2Num)
 
 	bPair.MakePrecisionsEqual()
 
@@ -495,7 +495,12 @@ func TestBigIntMathAdd_AddPair_01(t *testing.T) {
 			maxPrecision, bPair.Big2.GetPrecisionUint())
 	}
 
-	result := BigIntMathAdd{}.AddPair(bPair)
+	result, err := BigIntMathAdd{}.AddPair(bPair)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntMathAdd().AddPair(bPair).\n"+
+			"Error='%v'", err.Error())
+	}
 
 	if !expectedBigINum.Equal(result) {
 		t.Errorf("Error: Expected Addition Result='%v'. "+
@@ -559,7 +564,7 @@ func TestBigIntMathAdd_AddPair_02(t *testing.T) {
 		maxPrecision = b2Precision
 	}
 
-	bPair := BigIntPair{}.NewBigIntNum(b1Num, b2Num)
+	bPair := new(BigIntPair).NewBigIntNum(b1Num, b2Num)
 
 	bPair.MakePrecisionsEqual()
 
@@ -575,7 +580,12 @@ func TestBigIntMathAdd_AddPair_02(t *testing.T) {
 			maxPrecision, bPair.Big2.GetPrecisionUint())
 	}
 
-	result := BigIntMathAdd{}.AddPair(bPair)
+	result, err := BigIntMathAdd{}.AddPair(bPair)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntMathAdd().AddPair(bPair).\n"+
+			"Error='%v'", err.Error())
+	}
 
 	if !expectedBigINum.Equal(result) {
 		t.Errorf("Error: Expected Addition Result='%v'. "+
@@ -639,7 +649,7 @@ func TestBigIntMathAdd_AddPair_03(t *testing.T) {
 		maxPrecision = b2Precision
 	}
 
-	bPair := BigIntPair{}.NewBigIntNum(b1Num, b2Num)
+	bPair := new(BigIntPair).NewBigIntNum(b1Num, b2Num)
 
 	bPair.MakePrecisionsEqual()
 
@@ -655,7 +665,12 @@ func TestBigIntMathAdd_AddPair_03(t *testing.T) {
 			maxPrecision, bPair.Big2.GetPrecisionUint())
 	}
 
-	result := BigIntMathAdd{}.AddPair(bPair)
+	result, err := BigIntMathAdd{}.AddPair(bPair)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntMathAdd().AddPair(bPair).\n"+
+			"Error='%v'", err.Error())
+	}
 
 	if !expectedBigINum.Equal(result) {
 		t.Errorf("Error: Expected Addition Result='%v'. "+
@@ -719,7 +734,7 @@ func TestBigIntMathAdd_AddPair_04(t *testing.T) {
 		maxPrecision = b2Precision
 	}
 
-	bPair := BigIntPair{}.NewBigIntNum(b1Num, b2Num)
+	bPair := new(BigIntPair).NewBigIntNum(b1Num, b2Num)
 
 	bPair.MakePrecisionsEqual()
 
@@ -735,7 +750,12 @@ func TestBigIntMathAdd_AddPair_04(t *testing.T) {
 			maxPrecision, bPair.Big2.GetPrecisionUint())
 	}
 
-	result := BigIntMathAdd{}.AddPair(bPair)
+	result, err := BigIntMathAdd{}.AddPair(bPair)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntMathAdd().AddPair(bPair).\n"+
+			"Error='%v'", err.Error())
+	}
 
 	if !expectedBigINum.Equal(result) {
 		t.Errorf("Error: Expected Addition Result='%v'. "+
@@ -799,7 +819,7 @@ func TestBigIntMathAdd_AddPair_05(t *testing.T) {
 		maxPrecision = b2Precision
 	}
 
-	bPair := BigIntPair{}.NewBigIntNum(b1Num, b2Num)
+	bPair := new(BigIntPair).NewBigIntNum(b1Num, b2Num)
 
 	bPair.MakePrecisionsEqual()
 
@@ -815,7 +835,12 @@ func TestBigIntMathAdd_AddPair_05(t *testing.T) {
 			maxPrecision, bPair.Big2.GetPrecisionUint())
 	}
 
-	result := BigIntMathAdd{}.AddPair(bPair)
+	result, err := BigIntMathAdd{}.AddPair(bPair)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntMathAdd().AddPair(bPair).\n"+
+			"Error='%v'", err.Error())
+	}
 
 	if !expectedBigINum.Equal(result) {
 		t.Errorf("Error: Expected Addition Result='%v'. "+
@@ -879,7 +904,7 @@ func TestBigIntMathAdd_AddPair_06(t *testing.T) {
 		maxPrecision = b2Precision
 	}
 
-	bPair := BigIntPair{}.NewBigIntNum(b1Num, b2Num)
+	bPair := new(BigIntPair).NewBigIntNum(b1Num, b2Num)
 
 	bPair.MakePrecisionsEqual()
 
@@ -895,7 +920,7 @@ func TestBigIntMathAdd_AddPair_06(t *testing.T) {
 			maxPrecision, bPair.Big2.GetPrecisionUint())
 	}
 
-	result := BigIntMathAdd{}.AddPair(bPair)
+	result, err := BigIntMathAdd{}.AddPair(bPair)
 
 	if !expectedBigINum.Equal(result) {
 		t.Errorf("Error: Expected Addition Result='%v'. "+
@@ -959,7 +984,7 @@ func TestBigIntMathAdd_AddPair_07(t *testing.T) {
 		maxPrecision = b2Precision
 	}
 
-	bPair := BigIntPair{}.NewBigIntNum(b1Num, b2Num)
+	bPair := new(BigIntPair).NewBigIntNum(b1Num, b2Num)
 
 	bPair.MakePrecisionsEqual()
 
@@ -975,7 +1000,12 @@ func TestBigIntMathAdd_AddPair_07(t *testing.T) {
 			maxPrecision, bPair.Big2.GetPrecisionUint())
 	}
 
-	result := BigIntMathAdd{}.AddPair(bPair)
+	result, err := new(BigIntMathAdd).AddPair(bPair)
+
+	if err != nil {
+		t.Errorf("Error returned by new(bigIntMathAdd).AddPair(bPair)\n"+
+			"Error='%v'\n", err.Error())
+	}
 
 	if !expectedBigINum.Equal(result) {
 		t.Errorf("Error: Expected Addition Result='%v'. "+
@@ -1039,7 +1069,7 @@ func TestBigIntMathAdd_AddPair_08(t *testing.T) {
 		maxPrecision = b2Precision
 	}
 
-	bPair := BigIntPair{}.NewBigIntNum(b1Num, b2Num)
+	bPair := new(BigIntPair).NewBigIntNum(b1Num, b2Num)
 
 	bPair.MakePrecisionsEqual()
 
@@ -1055,7 +1085,12 @@ func TestBigIntMathAdd_AddPair_08(t *testing.T) {
 			maxPrecision, bPair.Big2.GetPrecisionUint())
 	}
 
-	result := BigIntMathAdd{}.AddPair(bPair)
+	result, err := new(BigIntMathAdd).AddPair(bPair)
+
+	if err != nil {
+		t.Errorf("Error returned by new(bigIntMathAdd).AddPair(bPair)\n"+
+			"Error='%v'\n", err.Error())
+	}
 
 	if !expectedBigINum.Equal(result) {
 		t.Errorf("Error: Expected Addition Result='%v'. "+
@@ -1119,7 +1154,7 @@ func TestBigIntMathAdd_AddPair_09(t *testing.T) {
 		maxPrecision = b2Precision
 	}
 
-	bPair := BigIntPair{}.NewBigIntNum(b1Num, b2Num)
+	bPair := new(BigIntPair).NewBigIntNum(b1Num, b2Num)
 
 	bPair.MakePrecisionsEqual()
 
@@ -1135,7 +1170,12 @@ func TestBigIntMathAdd_AddPair_09(t *testing.T) {
 			maxPrecision, bPair.Big2.GetPrecisionUint())
 	}
 
-	result := BigIntMathAdd{}.AddPair(bPair)
+	result, err := BigIntMathAdd{}.AddPair(bPair)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntMathAdd()\n"+
+			"Error='%v'\n", err.Error())
+	}
 
 	if !expectedBigINum.Equal(result) {
 		t.Errorf("Error: Expected Addition Result='%v'. "+
@@ -1199,7 +1239,7 @@ func TestBigIntMathAdd_AddPair_10(t *testing.T) {
 		maxPrecision = b2Precision
 	}
 
-	bPair := BigIntPair{}.NewBigIntNum(b1Num, b2Num)
+	bPair := new(BigIntPair).NewBigIntNum(b1Num, b2Num)
 
 	bPair.MakePrecisionsEqual()
 
@@ -1215,7 +1255,12 @@ func TestBigIntMathAdd_AddPair_10(t *testing.T) {
 			maxPrecision, bPair.Big2.GetPrecisionUint())
 	}
 
-	result := BigIntMathAdd{}.AddPair(bPair)
+	result, err := BigIntMathAdd{}.AddPair(bPair)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntMathAdd()\n"+
+			"Error='%v'\n", err.Error())
+	}
 
 	if !expectedBigINum.Equal(result) {
 		t.Errorf("Error: Expected Addition Result='%v'. "+
@@ -1280,9 +1325,14 @@ func TestBigIntMathAdd_AddPair_11(t *testing.T) {
 			b2Precision, b2Num.GetPrecisionUint())
 	}
 
-	bPair := BigIntPair{}.NewBigIntNum(b1Num, b2Num)
+	bPair := new(BigIntPair).NewBigIntNum(b1Num, b2Num)
 
-	result := BigIntMathAdd{}.AddPair(bPair)
+	result, err := BigIntMathAdd{}.AddPair(bPair)
+
+	if err != nil {
+		t.Errorf("Error returned by NewBigIntMathAdd()\n"+
+			"Error='%v'\n", err.Error())
+	}
 
 	actualResultStr := result.GetNumStr()
 
@@ -1330,7 +1380,7 @@ func TestBigIntMathAdd_BigIntAdd_01(t *testing.T) {
 	result, resultPrecision, err := BigIntMathAdd{}.BigIntAdd(b1Big, b1Precision, b2Big, b2Precision)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntMathAdd{}.BigIntAdd(...). " +
+		t.Errorf("Error returned by BigIntMathAdd{}.BigIntAdd(...). "+
 			"Error='%v' ", err.Error())
 	}
 
@@ -1375,7 +1425,7 @@ func TestBigIntMathAdd_BigIntAdd_02(t *testing.T) {
 	result, resultPrecision, err := BigIntMathAdd{}.BigIntAdd(b1Big, b1Precision, b2Big, b2Precision)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntMathAdd{}.BigIntAdd(...). " +
+		t.Errorf("Error returned by BigIntMathAdd{}.BigIntAdd(...). "+
 			"Error='%v' ", err.Error())
 	}
 
@@ -1418,7 +1468,7 @@ func TestBigIntMathAdd_BigIntAdd_03(t *testing.T) {
 	result, resultPrecision, err := BigIntMathAdd{}.BigIntAdd(b1Big, b1Precision, b2Big, b2Precision)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntMathAdd{}.BigIntAdd(...). " +
+		t.Errorf("Error returned by BigIntMathAdd{}.BigIntAdd(...). "+
 			"Error='%v' ", err.Error())
 	}
 
@@ -1462,7 +1512,7 @@ func TestBigIntMathAdd_BigIntAdd_04(t *testing.T) {
 	result, resultPrecision, err := BigIntMathAdd{}.BigIntAdd(b1Big, b1Precision, b2Big, b2Precision)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntMathAdd{}.BigIntAdd(...). " +
+		t.Errorf("Error returned by BigIntMathAdd{}.BigIntAdd(...). "+
 			"Error='%v' ", err.Error())
 	}
 
@@ -1503,7 +1553,7 @@ func TestBigIntMathAdd_BigIntAdd_05(t *testing.T) {
 	result, resultPrecision, err := BigIntMathAdd{}.BigIntAdd(b1Big, b1Precision, b2Big, b2Precision)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntMathAdd{}.BigIntAdd(...). " +
+		t.Errorf("Error returned by BigIntMathAdd{}.BigIntAdd(...). "+
 			"Error='%v' ", err.Error())
 	}
 
@@ -1544,7 +1594,7 @@ func TestBigIntMathAdd_BigIntAdd_06(t *testing.T) {
 	result, resultPrecision, err := BigIntMathAdd{}.BigIntAdd(b1Big, b1Precision, b2Big, b2Precision)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntMathAdd{}.BigIntAdd(...). " +
+		t.Errorf("Error returned by BigIntMathAdd{}.BigIntAdd(...). "+
 			"Error='%v' ", err.Error())
 	}
 
@@ -1569,7 +1619,6 @@ func TestBigIntMathAdd_BigIntAdd_07(t *testing.T) {
 		t.Error("Error returned by big.NewInt(0).SetString(b1Str, 10)")
 	}
 
-
 	b2Str := "100"
 	b2Precision := big.NewInt(2)
 	b2Big, oK := big.NewInt(0).SetString(b2Str, 10)
@@ -1577,7 +1626,6 @@ func TestBigIntMathAdd_BigIntAdd_07(t *testing.T) {
 	if !oK {
 		t.Error("Error returned by big.NewInt(0).SetString(b2Str, 10)")
 	}
-
 
 	expectedResultStr := "52"
 	expectedPrecision := big.NewInt(0)
@@ -1587,7 +1635,7 @@ func TestBigIntMathAdd_BigIntAdd_07(t *testing.T) {
 	result, resultPrecision, err := BigIntMathAdd{}.BigIntAdd(b1Big, b1Precision, b2Big, b2Precision)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntMathAdd{}.BigIntAdd(...). " +
+		t.Errorf("Error returned by BigIntMathAdd{}.BigIntAdd(...). "+
 			"Error='%v' ", err.Error())
 	}
 
@@ -1628,10 +1676,15 @@ func TestBigIntMathAdd_FixedDecimalAdd_01(t *testing.T) {
 
 	biExpectedResult, oK := big.NewInt(0).SetString(expectedResultStr, 10)
 
-	b1Fd := BigIntFixedDecimal{}.New(b1Big, b1Precision)
-	b2Fd := BigIntFixedDecimal{}.New(b2Big, b2Precision)
+	b1Fd := new(BigIntFixedDecimal).New(b1Big, b1Precision)
+	b2Fd := new(BigIntFixedDecimal).New(b2Big, b2Precision)
 
-	result := BigIntMathAdd{}.FixedDecimalAdd(b1Fd,b2Fd)
+	result, err := BigIntMathAdd{}.FixedDecimalAdd(b1Fd, b2Fd)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntMathAdd{}.FixedDecimalAdd(...).\n"+
+			"Error= %v\n", err.Error())
+	}
 
 	if biExpectedResult.Cmp(result.GetInteger()) != 0 {
 		t.Errorf("Error: Expected Result='%v'.  Instead, Result='%v'. ",
@@ -1671,10 +1724,15 @@ func TestBigIntMathAdd_FixedDecimalAdd_02(t *testing.T) {
 
 	biExpectedResult, oK := big.NewInt(0).SetString(expectedResultStr, 10)
 
-	b1Fd := BigIntFixedDecimal{}.New(b1Big, b1Precision)
-	b2Fd := BigIntFixedDecimal{}.New(b2Big, b2Precision)
+	b1Fd := new(BigIntFixedDecimal).New(b1Big, b1Precision)
+	b2Fd := new(BigIntFixedDecimal).New(b2Big, b2Precision)
 
-	result := BigIntMathAdd{}.FixedDecimalAdd(b1Fd,b2Fd)
+	result, err := BigIntMathAdd{}.FixedDecimalAdd(b1Fd, b2Fd)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntMathAdd{}.FixedDecimalAdd(...).\n"+
+			"Error= %v\n", err.Error())
+	}
 
 	if biExpectedResult.Cmp(result.GetInteger()) != 0 {
 		t.Errorf("Error: Expected Result='%v'.  Instead, Result='%v'. ",
@@ -1712,10 +1770,15 @@ func TestBigIntMathAdd_FixedDecimalAdd_03(t *testing.T) {
 	expectedPrecision := uint(6)
 	biExpectedResult, oK := big.NewInt(0).SetString(expectedResultStr, 10)
 
-	b1Fd := BigIntFixedDecimal{}.New(b1Big, b1Precision)
-	b2Fd := BigIntFixedDecimal{}.New(b2Big, b2Precision)
+	b1Fd := new(BigIntFixedDecimal).New(b1Big, b1Precision)
+	b2Fd := new(BigIntFixedDecimal).New(b2Big, b2Precision)
 
-	result := BigIntMathAdd{}.FixedDecimalAdd(b1Fd,b2Fd)
+	result, err := BigIntMathAdd{}.FixedDecimalAdd(b1Fd, b2Fd)
+
+	if err != nil {
+		t.Errorf("Error returned by BigIntMathAdd{}.FixedDecimalAdd(...).\n"+
+			"Error= %v\n", err.Error())
+	}
 
 	if biExpectedResult.Cmp(result.GetInteger()) != 0 {
 		t.Errorf("Error: Expected Result='%v'.  Instead, Result='%v'. ",
@@ -1754,11 +1817,15 @@ func TestBigIntMathAdd_FixedDecimalAdd_04(t *testing.T) {
 
 	biExpectedResult, oK := big.NewInt(0).SetString(expectedResultStr, 10)
 
+	b1Fd := new(BigIntFixedDecimal).New(b1Big, b1Precision)
+	b2Fd := new(BigIntFixedDecimal).New(b2Big, b2Precision)
 
-	b1Fd := BigIntFixedDecimal{}.New(b1Big, b1Precision)
-	b2Fd := BigIntFixedDecimal{}.New(b2Big, b2Precision)
+	result, err := BigIntMathAdd{}.FixedDecimalAdd(b1Fd, b2Fd)
 
-	result := BigIntMathAdd{}.FixedDecimalAdd(b1Fd,b2Fd)
+	if err != nil {
+		t.Errorf("Error returned by BigIntMathAdd{}.FixedDecimalAdd(...).\n"+
+			"Error= %v\n", err.Error())
+	}
 
 	if biExpectedResult.Cmp(result.GetInteger()) != 0 {
 		t.Errorf("Error: Expected Result='%v'.  Instead, Result='%v'. ",
@@ -1770,5 +1837,3 @@ func TestBigIntMathAdd_FixedDecimalAdd_04(t *testing.T) {
 			expectedPrecision, result.GetPrecision())
 	}
 }
-
-
