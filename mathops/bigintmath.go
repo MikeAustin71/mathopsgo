@@ -779,7 +779,7 @@ func (bIntMath BigIntMath) RoundToMaxPrecision(
 	maxPrecision *big.Int,
 	trimTrailingFracZeros bool) (result, resultPrecision *big.Int, err error) {
 
-	ePrefix := "BigIntMath.RoundToMaxPrecision() "
+	ePrefix := "BigIntMath.RoundToMaxPrecision()"
 	result = big.NewInt(0)
 	resultPrecision = big.NewInt(0)
 	err = nil
