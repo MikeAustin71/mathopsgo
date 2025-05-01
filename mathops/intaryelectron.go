@@ -39,14 +39,6 @@ func (iAryElectron *intAryElectron) isValidIntAry(
 	iAry *IntAry,
 	errName string) error {
 
-	ePrefix := "intAryElectron.isValidIntAry()"
-
-	if len(errName) == 0 {
-
-		errName = "intAryElectron.IsValid()"
-
-	}
-
 	if iAryElectron.lock == nil {
 		iAryElectron.lock = new(sync.Mutex)
 	}
@@ -54,6 +46,8 @@ func (iAryElectron *intAryElectron) isValidIntAry(
 	iAryElectron.lock.Lock()
 
 	defer iAryElectron.lock.Unlock()
+
+	ePrefix := "intAryElectron.isValidIntAry()"
 
 	if iAry == nil {
 
@@ -64,6 +58,12 @@ func (iAryElectron *intAryElectron) isValidIntAry(
 			"IntAry object FAILED Validation Test!\n",
 			errName,
 			ePrefix)
+	}
+
+	if len(errName) == 0 {
+
+		errName = "intAryElectron.IsValid()"
+
 	}
 
 	iAry.SetInternalFlags()
