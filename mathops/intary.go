@@ -1635,7 +1635,7 @@ func (ia *IntAry) GetInt() (int, error) {
 				"The Maximum allowable int value is:\n"+
 				"  %v",
 				ePrefix,
-				maxInt.String())
+				maxInt.Text(10))
 	}
 
 	compare = result.Cmp(minInt)
@@ -1649,7 +1649,7 @@ func (ia *IntAry) GetInt() (int, error) {
 				"The Minimum allowable int value is:\n"+
 				"  %v\n",
 				ePrefix,
-				minInt.String())
+				minInt.Text(10))
 
 	}
 
@@ -1703,7 +1703,7 @@ func (ia *IntAry) GetInt64() (int64, error) {
 				"The Maximum allowable int64 value is:\n"+
 				"  %v\n",
 				ePrefix,
-				maxI64.String())
+				maxI64.Text(10))
 	}
 
 	compare = result.Cmp(minI64)
@@ -1715,7 +1715,7 @@ func (ia *IntAry) GetInt64() (int64, error) {
 			"The Minimum allowable int value is:\n"+
 			"  %v\n",
 			ePrefix,
-			minI64.String())
+			minI64.Text(10))
 	}
 
 	return result.Int64(), nil
