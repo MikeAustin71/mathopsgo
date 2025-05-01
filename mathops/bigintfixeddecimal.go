@@ -693,10 +693,10 @@ func (bigIFd *BigIntFixedDecimal) GetIntAry() (IntAry, error) {
 		bigIFd.precision = 0
 	}
 
-	ia, err := IntAry{}.NewBigInt(bigIFd.integerNum, int(bigIFd.precision))
+	ia, err := new(IntAry).NewBigInt(bigIFd.integerNum, int(bigIFd.precision))
 
 	if err != nil {
-		return IntAry{}.NewZero(0),
+		return new(IntAry).New(),
 			fmt.Errorf(ePrefix+"Error returned: %v", err.Error())
 	}
 
@@ -716,16 +716,16 @@ func (bigIFd *BigIntFixedDecimal) GetIntAry() (IntAry, error) {
 //
 //	        BigIntFixedDecimal
 //				   			Value									magnitude
-//	             ------        				---------
+//					------------------					---------
 //
 //				  		 963,256										5
 //										 2										0
 //										32										1
 //				 8,456,123,921					  				9
-//	                  2.2									0
-//	      8,456,123,912.123                9
-//	           -643,212.123								5
-//	                324.123456             2
+//	                  2.2										0
+//	      8,456,123,912.123									9
+//	           -643,212.123									5
+//	                324.123456							2
 func (bigIFd *BigIntFixedDecimal) GetMagnitude() (*big.Int, error) {
 
 	bigZero := big.NewInt(0)
@@ -1650,17 +1650,17 @@ func (bigIFd *BigIntFixedDecimal) TrimTrailingFracZeros() {
 //
 // Examples:
 //
-//		 Original       			'newPrecision'				Resulting
-//	   Value								input parameter			  Value
+//		Original						'newPrecision'				Resulting
+//		Value								input parameter					Value
 //	 --------------				---------------     -------------
-//		654.123456									9							 654.123456000
-//		654.123456									4							 654.1234 (no rounding)
+//		654.123456								9								654.123456000
+//		654.123456								4								654.1234 (no rounding)
 //
-// -654.123456									9							-654.123456000
-// -654.123456									4							-654.1234 (no rounding)
+//	 -654.123456								9							 -654.123456000
+//	 -654.123456								4							 -654.1234 (no rounding)
 //
-//			0													3								 0.000
-//	   0.000000									0								 0
+//			0												3									0.000
+//			0.000000								0									0
 func (bigIFd *BigIntFixedDecimal) TruncToDecPlace(precision uint) {
 
 	if bigIFd.integerNum == nil {
