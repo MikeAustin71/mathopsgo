@@ -467,7 +467,7 @@ func (ia *IntAry) Ceiling() (IntAry, error) {
 		return IntAry{}, err
 	}
 
-	iAry2 := new(IntAry).New()
+	iAry2 := new(intAryElectron).newIntAry()
 
 	intLen := ia.intAryLen - ia.precision
 
@@ -832,7 +832,7 @@ func (ia *IntAry) CopyOut() IntAry {
 
 	ia.SetInternalFlags()
 
-	iAry2 := new(IntAry).New()
+	iAry2 := new(intAryElectron).newIntAry()
 
 	iAry2.intAry = make([]uint8, ia.intAryLen)
 
@@ -866,7 +866,7 @@ func (ia *IntAry) CopyOutNoBackup() IntAry {
 
 	ia.SetInternalFlags()
 
-	iAry2 := new(IntAry).New()
+	iAry2 := new(intAryElectron).newIntAry()
 
 	iAry2.intAry = make([]uint8, ia.intAryLen)
 
@@ -902,7 +902,7 @@ func (ia *IntAry) CopyOutDigits(digitsToCopy int) IntAry {
 
 	ia.SetInternalFlags()
 
-	iAry2 := new(IntAry).New()
+	iAry2 := new(intAryElectron).newIntAry()
 
 	iAry2.intAry = make([]uint8, digitsToCopy)
 
@@ -1134,7 +1134,7 @@ func (ia *IntAry) DivideThisBy(iAry2 *IntAry, minPrecision, maxPrecision int) (I
 	quotient, err := IntAryMathDivide{}.Divide(ia, iAry2, minPrecision, maxPrecision)
 
 	if err != nil {
-		return new(IntAry).New(),
+		return new(intAryElectron).newIntAry(),
 			fmt.Errorf("%v\n"+
 				"Error returned by IntAryMathDivide().Divide()\n"+
 				"Error='%v'\n",
@@ -1523,7 +1523,7 @@ func (ia *IntAry) GetFractionalDigits() (IntAry, error) {
 		return IntAry{}, err
 	}
 
-	iAry2 := new(IntAry).New()
+	iAry2 := new(intAryElectron).newIntAry()
 
 	iAry2.SetIntAryToZero(0)
 
@@ -1561,7 +1561,7 @@ func (ia *IntAry) GetIntegerDigits() (IntAry, error) {
 		return IntAry{}, err
 	}
 
-	iAry2 := new(IntAry).New()
+	iAry2 := new(intAryElectron).newIntAry()
 
 	if ia.isZeroValue {
 		iAry2.SetIntAryToZero(0)
@@ -2835,7 +2835,7 @@ func (ia *IntAry) Inverse(maxPrecision int) (IntAry, error) {
 
 	if maxPrecision < 0 {
 
-		return new(IntAry).New(),
+		return new(intAryElectron).newIntAry(),
 			fmt.Errorf("%v\n"+
 				"ERROR: Input parameter 'maxPrecision' is INVALID.\n"+
 				"'maxPrecision' cannot be less than zero.\n",
@@ -2848,7 +2848,7 @@ func (ia *IntAry) Inverse(maxPrecision int) (IntAry, error) {
 	iaOne, err := new(IntAry).NewInt(1, 0)
 
 	if err != nil {
-		return new(IntAry).New(),
+		return new(intAryElectron).newIntAry(),
 			fmt.Errorf("%v\n"+
 				"Error returned from new(IntAry).NewInt(1, 0).\n"+
 				"Error= %v",
@@ -2859,7 +2859,7 @@ func (ia *IntAry) Inverse(maxPrecision int) (IntAry, error) {
 	iaInverse, err := iaOne.DivideThisBy(ia, 0, internalPrecision)
 
 	if err != nil {
-		return new(IntAry).New(),
+		return new(intAryElectron).newIntAry(),
 			fmt.Errorf("%v\n"+
 				"Error returned from iaOne.DivideThisBy(ia, maxPrecision).\n"+
 				"Error= %v",
@@ -2873,7 +2873,7 @@ func (ia *IntAry) Inverse(maxPrecision int) (IntAry, error) {
 
 		if err != nil {
 
-			return new(IntAry).New(),
+			return new(intAryElectron).newIntAry(),
 				fmt.Errorf("%v\n"+
 					"Error returned from iaInverse.RoundToPrecision(maxPrecision).\n"+
 					"maxPrecision='%v'\n"+
@@ -3037,7 +3037,7 @@ func (ia *IntAry) NewWithNumSeps(numSeps NumericSeparatorDto) (IntAry, error) {
 
 	numSeps.SetDefaultsIfEmpty()
 
-	iAry := new(IntAry).New()
+	iAry := new(intAryElectron).newIntAry()
 
 	err := iAry.SetNumericSeparatorsDto(numSeps)
 
@@ -3094,7 +3094,7 @@ func (ia *IntAry) NewBigInt(num *big.Int, precision int) (IntAry, error) {
 				precision)
 	}
 
-	iAry := new(IntAry).New()
+	iAry := new(intAryElectron).newIntAry()
 
 	err := iAry.SetIntAryWithBigInt(num, precision)
 
@@ -3132,7 +3132,7 @@ func (ia *IntAry) NewBigIntNum(bINum BigIntNum) (IntAry, error) {
 
 	ePrefix := "IntAry.NewBigIntNum()"
 
-	iAry := new(IntAry).New()
+	iAry := new(intAryElectron).newIntAry()
 
 	if bINum.precision > uint(math.MaxInt32) {
 		return iAry,
@@ -3221,7 +3221,7 @@ func (ia *IntAry) NewFloat32(num float32, precision int) (IntAry, error) {
 
 	ePrefix := "IntAry.NewFloat32()"
 
-	iAry := new(IntAry).New()
+	iAry := new(intAryElectron).newIntAry()
 
 	if precision < -1 {
 
@@ -3278,7 +3278,7 @@ func (ia *IntAry) NewFloat64(num float64, precision int) (IntAry, error) {
 
 	ePrefix := "IntAry.NewFloat64()"
 
-	iAry := new(IntAry).New()
+	iAry := new(intAryElectron).newIntAry()
 
 	if precision < -1 {
 
@@ -3349,7 +3349,7 @@ func (ia *IntAry) NewFloatBig(num *big.Float, precision int) (IntAry, error) {
 
 	ePrefix := "IntAry.NewFloatBig()"
 
-	iAry := new(IntAry).New()
+	iAry := new(intAryElectron).newIntAry()
 
 	if num == nil {
 
@@ -3427,7 +3427,7 @@ func (ia *IntAry) NewInt(intNum int, precision uint) (IntAry, error) {
 
 	ePrefix := "IntAry.NewInt()"
 
-	iAry := new(IntAry).New()
+	iAry := new(intAryElectron).newIntAry()
 
 	iAry.SetIntAryWithInt(intNum, precision)
 
@@ -3492,7 +3492,7 @@ func (ia *IntAry) NewIntExponent(intNum int, exponent int) (IntAry, error) {
 		exponent = exponent * -1
 	}
 
-	iAry := new(IntAry).New()
+	iAry := new(intAryElectron).newIntAry()
 
 	iAry.SetIntAryWithInt(intNum, uint(exponent))
 
@@ -3547,7 +3547,7 @@ func (ia *IntAry) NewInt32(int32Num int32, precision uint) (IntAry, error) {
 
 	ePrefix := "IntAry.NewInt32()"
 
-	iAry := new(IntAry).New()
+	iAry := new(intAryElectron).newIntAry()
 
 	iAry.SetIntAryWithInt32(int32Num, precision)
 
@@ -3614,7 +3614,7 @@ func (ia *IntAry) NewInt32Exponent(int32Num int32, exponent int) (IntAry, error)
 		exponent = exponent * -1
 	}
 
-	iAry := new(IntAry).New()
+	iAry := new(intAryElectron).newIntAry()
 
 	iAry.SetIntAryWithInt32(int32Num, uint(exponent))
 
@@ -3670,7 +3670,7 @@ func (ia *IntAry) NewInt64(int64Num int64, precision uint) (IntAry, error) {
 
 	ePrefix := "IntAry.NewInt64()"
 
-	iAry := new(IntAry).New()
+	iAry := new(intAryElectron).newIntAry()
 
 	iAry.SetIntAryWithInt64(int64Num, precision)
 
@@ -3740,7 +3740,7 @@ func (ia *IntAry) NewInt64Exponent(int64Num int64, exponent int) (IntAry, error)
 
 	}
 
-	iAry := new(IntAry).New()
+	iAry := new(intAryElectron).newIntAry()
 
 	iAry.SetIntAryWithInt64(int64Num, uint(exponent))
 
@@ -3748,7 +3748,7 @@ func (ia *IntAry) NewInt64Exponent(int64Num int64, exponent int) (IntAry, error)
 
 	if err != nil {
 
-		return new(IntAry).New(),
+		return new(intAryElectron).newIntAry(),
 			fmt.Errorf("%v\n"+
 				"Error returned by iAry.SetNumericSeparatorsDto(ia.GetNumericSeparatorsDto())\n"+
 				"Error='%v' ",
@@ -3783,7 +3783,7 @@ func (ia *IntAry) NewIntFracStr(intStr, fracStr string, signVal int) (IntAry, er
 
 	if err != nil {
 
-		return new(IntAry).New(),
+		return new(intAryElectron).newIntAry(),
 			fmt.Errorf("%v\n"+
 				"Error returned by iAry.NewZero(0)\n"+
 				"Error= %v\n",
@@ -3797,7 +3797,7 @@ func (ia *IntAry) NewIntFracStr(intStr, fracStr string, signVal int) (IntAry, er
 
 	if err != nil {
 
-		return new(IntAry).New(),
+		return new(intAryElectron).newIntAry(),
 			fmt.Errorf("%v\n"+
 				"Error returned by iAry.SetIntAryWithIntFracStr(intStr, fracStr, signVal)\n"+
 				"Error='%v' ",
@@ -3832,7 +3832,7 @@ func (ia *IntAry) NewNumStr(numStr string) (IntAry, error) {
 
 	ePrefix := "IntAry.NewNumStr()"
 
-	iAry := new(IntAry).New()
+	iAry := new(intAryElectron).newIntAry()
 
 	err := iAry.SetIntAryWithNumStr(numStr)
 
@@ -3866,7 +3866,7 @@ func (ia *IntAry) NewNumStrWithNumSeps(
 
 	ePrefix := "IntAry.NewNumStrWithNumSeps() "
 
-	iAry := new(IntAry).New()
+	iAry := new(intAryElectron).newIntAry()
 
 	numSeps.SetDefaultsIfEmpty()
 
@@ -3908,7 +3908,7 @@ func (ia *IntAry) NewNumStrMaxPrecision(num string, maxPrecision int) (IntAry, e
 
 	ePrefix := "IntAry.NewNumStrMaxPrecision()"
 
-	iAry := new(IntAry).New()
+	iAry := new(intAryElectron).newIntAry()
 
 	err := iAry.SetIntAryWithNumStrMaxPrecision(num, maxPrecision)
 
@@ -3944,7 +3944,7 @@ func (ia *IntAry) NewNumStrDto(numDto NumStrDto) (IntAry, error) {
 				"Error= %v\n", err.Error())
 	}
 
-	iAry := new(IntAry).New()
+	iAry := new(intAryElectron).newIntAry()
 
 	err = iAry.SetIntAryWithNumStr(numDto.GetNumStr())
 
@@ -3997,7 +3997,7 @@ func (ia *IntAry) NewOne(precision int) (IntAry, error) {
 // NewPtr - Returns a pointer to a new IntAry instance.
 func (ia *IntAry) NewPtr() *IntAry {
 
-	ia2 := new(IntAry).New()
+	ia2 := new(intAryElectron).newIntAry()
 
 	return &ia2
 }
@@ -4131,7 +4131,7 @@ func (ia *IntAry) NewUint(uintNum uint, precision uint) (IntAry, error) {
 
 	ePrefix := "IntAry.NewUint() "
 
-	iAry := new(IntAry).New()
+	iAry := new(intAryElectron).newIntAry()
 
 	iAry.SetIntAryWithUint64(uint64(uintNum), precision)
 
@@ -4199,7 +4199,7 @@ func (ia *IntAry) NewUintExponent(uintNum uint, exponent int) (IntAry, error) {
 		exponent = exponent * -1
 	}
 
-	iAry := new(IntAry).New()
+	iAry := new(intAryElectron).newIntAry()
 
 	iAry.SetIntAryWithUint64(uint64(uintNum), uint(exponent))
 
@@ -4255,7 +4255,7 @@ func (ia *IntAry) NewUint32(uint32Num uint32, precision uint) (IntAry, error) {
 
 	ePrefix := "IntAry.NewUint32()"
 
-	iAry := new(IntAry).New()
+	iAry := new(intAryElectron).newIntAry()
 
 	iAry.SetIntAryWithUint64(uint64(uint32Num), precision)
 
@@ -4322,7 +4322,7 @@ func (ia *IntAry) NewUint32Exponent(uint32Num uint32, exponent int) (IntAry, err
 		exponent = exponent * -1
 	}
 
-	iAry := new(IntAry).New()
+	iAry := new(intAryElectron).newIntAry()
 
 	iAry.SetIntAryWithUint64(uint64(uint32Num), uint(exponent))
 
@@ -4378,7 +4378,7 @@ func (ia *IntAry) NewUint64(uint64Num uint64, precision uint) (IntAry, error) {
 
 	ePrefix := "IntAry.NewUint64()"
 
-	iAry := new(IntAry).New()
+	iAry := new(intAryElectron).newIntAry()
 
 	iAry.SetIntAryWithUint64(uint64Num, precision)
 
@@ -4446,7 +4446,7 @@ func (ia *IntAry) NewUint64Exponent(uint64Num uint64, exponent int) (IntAry, err
 		exponent = exponent * -1
 	}
 
-	iAry := new(IntAry).New()
+	iAry := new(intAryElectron).newIntAry()
 
 	iAry.SetIntAryWithUint64(uint64Num, uint(exponent))
 
