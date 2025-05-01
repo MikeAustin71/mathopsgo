@@ -90,7 +90,9 @@ func (iBa *BackUpIntAry) CopyIn(iBa2 *BackUpIntAry) {
 }
 
 func (iBa *BackUpIntAry) CopyOut() BackUpIntAry {
+
 	iBa.SetInternalFlags()
+
 	iAry2 := new(BackUpIntAry).New()
 
 	iAry2.intAry = make([]uint8, iBa.intAryLen)
@@ -117,7 +119,9 @@ func (iBa *BackUpIntAry) CopyOut() BackUpIntAry {
 }
 
 func (iBa *BackUpIntAry) Equals(iBa2 *BackUpIntAry) bool {
+
 	iBa.SetInternalFlags()
+
 	iBa2.SetInternalFlags()
 
 	if iBa.intAryLen != iBa2.intAryLen {
