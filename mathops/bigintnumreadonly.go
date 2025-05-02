@@ -25,9 +25,25 @@ func (birO *BigIntNumReadOnly) GetPrecisionUint() uint {
 
 // GetBigIntNum - Returns a deep copy of the underlying
 // BigIntNum.
-func (birO *BigIntNumReadOnly) GetBigIntNum() BigIntNum {
+func (birO *BigIntNumReadOnly) GetBigIntNum() (BigIntNum, error) {
 
-	return birO.bigIntNum.CopyOut()
+	ePrefix := "BigIntNumReadOnly.GetBigIntNum()"
+
+	bIntNum, err := birO.bigIntNum.CopyOut()
+
+	if err != nil {
+
+		return BigIntNum{},
+			fmt.Errorf("%v\n"+
+				"Error returned by: \n"+
+				" bIntNum, err := birO.bigIntNum.CopyOut()\n"+
+				"Error= %v\n",
+				ePrefix,
+				err.Error())
+
+	}
+
+	return bIntNum, nil
 }
 
 // GetFixedDecimal - Returns a deep copy of the underlying BigIntNum
