@@ -14,7 +14,7 @@ type bigIntNumAtom struct {
 // whether the current BigIntNum object is valid.
 func (bIntNumAtom *bigIntNumAtom) isBigIntNumValid(
 	bNum *BigIntNum,
-	callingMethodName string) error {
+	callingMethodChain string) error {
 
 	if bIntNumAtom.lock == nil {
 		bIntNumAtom.lock = new(sync.Mutex)
@@ -24,12 +24,12 @@ func (bIntNumAtom *bigIntNumAtom) isBigIntNumValid(
 
 	defer bIntNumAtom.lock.Unlock()
 
-	ePrefix := "bigIntNumAtom.IsValid()"
+	ePrefix := "Active Method: bigIntNumAtom.isBigIntNumValid()"
 
 	var err error
 
-	if len(callingMethodName) > 0 {
-		ePrefix = "Active Method: " + ePrefix + "\nCalling Method Chain:\n " + callingMethodName
+	if len(callingMethodChain) > 0 {
+		ePrefix = ePrefix + "\nCalling Method Chain:\n " + callingMethodChain
 	}
 
 	if bNum == nil {
@@ -119,6 +119,78 @@ func (bIntNumAtom *bigIntNumAtom) isBigIntNumValid(
 			ePrefix)
 
 	}
+
+	return nil
+}
+
+// setNumericSeparatorsDto - Sets the values of numeric separators:
+//
+//	decimal place separator
+//	thousands separator
+//	currency symbol
+//
+// based on values transmitted through input parameter 'customSeparators'.
+//
+// If any of the values contained in input parameter 'customSeparators' is set
+// to zero, an error will be returned.
+//
+// NOTE:
+// This is a low-level operation. It is assumed that 'bNum'
+// has already been validated.
+func (bIntNumAtom *bigIntNumAtom) setNumericSeparatorsDto(
+	bNum *BigIntNum,
+	customSeparators NumericSeparatorDto,
+	callingMethodChain string) error {
+
+	if bIntNumAtom.lock == nil {
+		bIntNumAtom.lock = new(sync.Mutex)
+	}
+
+	bIntNumAtom.lock.Lock()
+
+	defer bIntNumAtom.lock.Unlock()
+
+	ePrefix := "Active Method: BigIntNum.SetNumericSeparatorsDto() "
+
+	if len(callingMethodChain) > 0 {
+		ePrefix = ePrefix + "\nCalling Method Chain:\n " + callingMethodChain
+	}
+
+	if bNum == nil {
+
+		return fmt.Errorf("%v\n"+
+			"FATAL ERROR: Input parameter 'bNum' is a nil pointer.\n",
+			ePrefix)
+	}
+
+	if customSeparators.DecimalSeparator == 0 {
+
+		return fmt.Errorf("%v\n"+
+			"Error: Input parameter 'customSeparators.DecimalSeparator' is set to '0' - Invalid rune!\n",
+			ePrefix)
+	}
+
+	if customSeparators.ThousandsSeparator == 0 {
+
+		return fmt.Errorf("%v\n"+
+			"Error: Input parameter 'customSeparators.ThousandsSeparator' is set to '0' - Invalid rune!\n",
+			ePrefix)
+
+	}
+
+	if customSeparators.CurrencySymbol == 0 {
+
+		return fmt.Errorf("%v\n"+
+			"Error: Input parameter 'customSeparators.CurrencySymbol' is set to '0' - Invalid rune!\n",
+			ePrefix)
+
+	}
+
+	bNum.decimalSeparator = customSeparators.DecimalSeparator
+
+	bNum.thousandsSeparator = customSeparators.ThousandsSeparator
+
+	bNum.currencySymbol = customSeparators.CurrencySymbol
 
 	return nil
 }
