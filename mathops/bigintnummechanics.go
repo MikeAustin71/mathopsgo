@@ -131,7 +131,8 @@ func (bIngNumMech *bigIntNumMechanics) newBigInt(
 //		 123456		 		  -3							123.456
 //		 123456		 		   3							123456.000
 //		 123456          0              123456
-func (bIngNumMech *bigIntNumMechanics) newInt64Exponent(int64Num int64, exponent int) (BigIntNum, error) {
+func (bIngNumMech *bigIntNumMechanics) newInt64Exponent(
+	int64Num int64, exponent int) (BigIntNum, error) {
 
 	ePrefix := "BigIntNum.NewInt64()"
 
