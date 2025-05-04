@@ -11,6 +11,227 @@ type bigIntNumMolecule struct {
 	lock *sync.Mutex
 }
 
+// formatCurrencyStr - Formats the current BigIntNum numeric value as a currency string.
+//
+// If the Currency Symbol was not previously set for this BigIntNum, the currency symbol
+// is defaulted to the USA standard dollar sign, ('$'). To use other currency symbols, see
+// method BigIntNum.SetCurrencySymbol(). For a list of Major Currency Unicode Symbols, see
+// constants located in: MikeAustin71/mathopsgo/mathops/mathopsconstants.go
+//
+// If the Decimal Separator was not previously set for this BigIntNum, the Decimal Separator
+// is defaulted to the USA standard period ('.'). To use another character for Decimal
+// Separator, see method BigIntNum.SetDecimalSeparator().
+//
+// If the Thousands Separator was not previously set for this BigIntNum, the Thousands
+// Separator is defaulted to the USA standard comma (','). To use another character for
+// Thousands Separator, see method BigIntNum.SetThousandsSeparator().
+//
+// Input Parameters
+// ================
+//
+// negValMode NegativeValueFmtMode -	Specifies the display mode for negative values:
+//
+//	LEADMINUSNEGVALFMTMODE 		-	Negative values formatted with
+//													 		a leading minus sign.
+//															Example: -$123,456.78
+//
+//	PARENTHESESNEGVALFMTMODE	-	Negative values formatted with
+//															surrounding parentheses.
+//															Example: ($123,456.78)
+//
+//
+//	ABSOLUTEPURENUMSTRFMTMODE - Formats a pure number string with
+//															absolute (positive) integer value
+//															and no decimal place separator.
+//															Example: ($12,345,678)
+func (bIntMolecule *bigIntNumMolecule) formatCurrencyStr(
+	bNum *BigIntNum,
+	negValMode NegativeValueFmtMode,
+	errPrefDto *ePref.ErrPrefixDto) (string, error) {
+
+	if bIntMolecule.lock == nil {
+		bIntMolecule.lock = new(sync.Mutex)
+	}
+
+	bIntMolecule.lock.Lock()
+
+	defer bIntMolecule.lock.Unlock()
+
+	var ePrefix *ePref.ErrPrefixDto
+
+	var err error
+
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
+		errPrefDto,
+		"bigIntNumMolecule.formatCurrencyStr()",
+		"")
+
+	if err != nil {
+		return "", err
+	}
+
+	if bNum == nil {
+
+		return "",
+			fmt.Errorf("%v\n"+
+				"FATAL ERROR: Input parameter 'bNum' is a nil pointer.\n",
+				ePrefix.String())
+	}
+
+	if bNum.decimalSeparator == 0 {
+		bNum.decimalSeparator = '.'
+	}
+
+	if bNum.thousandsSeparator == 0 {
+		bNum.thousandsSeparator = ','
+	}
+
+	if bNum.currencySymbol == 0 {
+		bNum.currencySymbol = '$'
+	}
+
+	outRunes := make([]rune, 0, 300)
+
+	scratchNum := big.NewInt(0).Set(bNum.absBigInt)
+	baseZero := big.NewInt(0)
+
+	if scratchNum.Cmp(baseZero) == 0 {
+		bNum.sign = 1
+
+		outRunes = append(outRunes, bNum.currencySymbol)
+
+		outRunes = append(outRunes, '0')
+
+		if bNum.precision > 0 {
+
+			if negValMode != ABSOLUTEPURENUMSTRFMTMODE {
+				outRunes = append(outRunes, bNum.decimalSeparator)
+			}
+
+			cnt := int(bNum.precision)
+
+			if negValMode == ABSOLUTEPURENUMSTRFMTMODE {
+				cnt--
+			}
+
+			for h := 0; h < cnt; h++ {
+				outRunes = append(outRunes, '0')
+			}
+
+		}
+
+		return string(outRunes), nil
+	}
+
+	startIdx := 0
+	modulo := big.NewInt(0)
+	baseTen := big.NewInt(10)
+	digitCnt := 0
+	thouCnt := -1
+
+	if bNum.precision == 0 {
+		thouCnt = 0
+	}
+
+	for scratchNum.Cmp(baseZero) == 1 {
+
+		if startIdx == 0 &&
+			bNum.sign == -1 &&
+			negValMode == PARENTHESESNEGVALFMTMODE {
+
+			outRunes = append(outRunes, ')')
+		}
+
+		modX := big.NewInt(0)
+		scratchNum, modulo = big.NewInt(0).QuoRem(scratchNum, baseTen, modX)
+		outRunes = append(outRunes, rune(modulo.Int64()+int64(48)))
+		digitCnt++
+		startIdx++
+
+		if thouCnt > -1 {
+			thouCnt++
+		}
+
+		if scratchNum.Cmp(baseZero) == 1 &&
+			thouCnt == 3 {
+
+			outRunes = append(outRunes, bNum.thousandsSeparator)
+			startIdx++
+			thouCnt = 0
+		}
+
+		if bNum.precision > 0 &&
+			int(bNum.precision) == startIdx &&
+			negValMode != ABSOLUTEPURENUMSTRFMTMODE {
+
+			outRunes = append(outRunes, bNum.decimalSeparator)
+			startIdx++
+			thouCnt = 0
+		}
+
+	}
+
+	if int(bNum.precision) >= digitCnt {
+
+		delta := int(bNum.precision) - digitCnt + 1
+
+		if negValMode == ABSOLUTEPURENUMSTRFMTMODE {
+			delta--
+		}
+
+		for k := 0; k < delta; k++ {
+			outRunes = append(outRunes, '0')
+			startIdx++
+
+			if bNum.precision > 0 &&
+				int(bNum.precision) == startIdx &&
+				negValMode != ABSOLUTEPURENUMSTRFMTMODE {
+
+				outRunes = append(outRunes, bNum.decimalSeparator)
+				startIdx++
+
+			}
+		}
+	}
+
+	startIdx--
+
+	// append Currency Symbol
+	outRunes = append(outRunes, bNum.currencySymbol)
+	startIdx++
+
+	// adjust for negative sign value
+	if bNum.sign == -1 {
+
+		if negValMode == LEADMINUSNEGVALFMTMODE {
+			outRunes = append(outRunes, '-')
+			startIdx++
+
+		} else if negValMode == PARENTHESESNEGVALFMTMODE {
+
+			outRunes = append(outRunes, '(')
+			startIdx += 2
+		}
+
+		// Must be negValMode == ABSOLUTEPURENUMSTRFMTMODE
+
+	}
+
+	sortLimit := startIdx / 2
+	tRune := rune(0)
+	yCnt := 0
+
+	for i := startIdx; i > sortLimit; i-- {
+		tRune = outRunes[yCnt]
+		outRunes[yCnt] = outRunes[i]
+		outRunes[i] = tRune
+		yCnt++
+	}
+
+	return string(outRunes), nil
+}
+
 // formatBigIntNumStr - Formats the numeric value of the current BigIntNum
 // instance as number string consisting of integer digits to the left
 // of the decimal place and fractional digits to the right of the decimal
