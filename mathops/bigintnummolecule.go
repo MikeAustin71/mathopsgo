@@ -98,6 +98,55 @@ func (bIntMolecule *bigIntNumMolecule) getActualNumberOfDigits(
 	return numberOfDigits, isZeroValue, err
 }
 
+// isBIntNumZero - Returns a boolean signaling whether a
+// BigIntNum value is zero.
+//
+// NOTE:
+// This method will first test the passed instance of BigIntNum
+// to determine if that instance is valid, or not.
+func (bIntMolecule *bigIntNumMolecule) isBIntNumZero(
+	bNum *BigIntNum,
+	callingMethodChain string) (bool, error) {
+
+	if bIntMolecule.lock == nil {
+		bIntMolecule.lock = new(sync.Mutex)
+	}
+
+	bIntMolecule.lock.Lock()
+
+	defer bIntMolecule.lock.Unlock()
+
+	ePrefix := "Active Method: bigIntNumMolecule.newOne()"
+
+	var err error
+
+	if len(callingMethodChain) > 0 {
+		ePrefix = ePrefix + "\nCalling Method Chain:\n " + callingMethodChain
+	}
+
+	if bNum == nil {
+
+		return false,
+			fmt.Errorf("%v\n"+
+				"FATAL ERROR: Input parameter 'bNum' is a nil pointer.\n",
+				ePrefix)
+	}
+
+	err = new(bigIntNumAtom).isBigIntNumValid(
+		bNum,
+		"BigIntNum.IsZero() Vallidity Test on 'bNum'")
+
+	if err != nil {
+		return false, err
+	}
+
+	if bNum.bigInt.Cmp(big.NewInt(0)) == 0 {
+		return true, nil
+	}
+
+	return false, nil
+}
+
 // newOne - Returns a BigIntNum Type with a value equal to '1' (one).
 // The number of zeros created after the decimal placeholder
 // (fractional digits) is determined by the input parameter 'precision'.
@@ -151,8 +200,6 @@ func (bIntMolecule *bigIntNumMolecule) newOne(
 
 	if precision == 0 {
 
-		//err = b.SetBigInt(big.NewInt(1), 0)
-
 		err = bNumNanobot.setBigInt(
 			&b,
 			big.NewInt(1),
@@ -184,6 +231,94 @@ func (bIntMolecule *bigIntNumMolecule) newOne(
 	}
 
 	return b, nil
+}
+
+// setBigIntExponent - Sets the numeric value using an integer
+// multiplied by 10 raised to the power of the 'exponent'
+// parameter.
+//
+//	numeric value = integer X 10^exponent
+//
+// Input parameter 'bigI' is of type *big.Int.
+//
+// Input parameter 'exponent' is of type int.
+//
+// If exponent is less than +1, precision is set equal to exponent and
+// bigI is unchanged. Example:
+//
+//	   bigI				exponent			BigIntNum Result
+//		 123456		 		  -3							123.456
+//
+// If exponent is greater than 0, bigI is multiplied by 10 raised to the
+// power of exponent and precision is set equal to exponent.
+//
+//	   bigI				exponent			BigIntNum Result
+//		 123456		 		   3							123456.000
+func (bIntMolecule *bigIntNumMolecule) setBigIntExponent(
+	bNum *BigIntNum,
+	bigI *big.Int,
+	exponent int,
+	callingMethodChain string) error {
+
+	if bIntMolecule.lock == nil {
+		bIntMolecule.lock = new(sync.Mutex)
+	}
+
+	bIntMolecule.lock.Lock()
+
+	defer bIntMolecule.lock.Unlock()
+
+	ePrefix := "bigIntNumMolecule.setBigIntExponent()"
+
+	var err error
+
+	if len(callingMethodChain) > 0 {
+		ePrefix = ePrefix + "\nCalling Method Chain:\n " + callingMethodChain
+	}
+
+	if bNum == nil {
+
+		return fmt.Errorf("%v\n"+
+			"FATAL ERROR: Input parameter 'bNum' is a nil pointer.\n",
+			ePrefix)
+	}
+
+	if bigI == nil {
+
+		return fmt.Errorf("%v\n"+
+			"Error: Input parameter 'bigI' is a nil pointer!\n",
+			ePrefix)
+
+	}
+
+	if exponent < 1 {
+
+		precision := uint(exponent * -1)
+
+		err = new(bigIntNumNanobot).setBigInt(
+			bNum,
+			bigI,
+			precision,
+			ePrefix)
+
+		return err
+	}
+
+	// exponent must be greater than zero.
+	// scale left exponent places and set precision to zero
+
+	big10 := big.NewInt(10)
+	scale := big.NewInt(int64(exponent))
+	scaleValue := big.NewInt(0).Exp(big10, scale, nil)
+	newBigI := big.NewInt(0).Mul(bigI, scaleValue)
+
+	err = new(bigIntNumNanobot).setBigInt(
+		bNum,
+		newBigI,
+		uint(exponent),
+		ePrefix)
+
+	return err
 }
 
 // setExpectedNumberOfDigits - Sets the number of expected digits associated with the
@@ -309,7 +444,10 @@ func (bIntMolecule *bigIntNumMolecule) setNumStr(
 	baseRunes := []rune(numStr)
 	lBaseRunes := len(baseRunes)
 
-	numSeps := bNum.GetNumericSeparatorsDto()
+	numSeps := NumericSeparatorDto{}
+	numSeps.DecimalSeparator = bNum.decimalSeparator
+	numSeps.ThousandsSeparator = bNum.thousandsSeparator
+	numSeps.CurrencySymbol = bNum.currencySymbol
 
 	newSign := 1
 
@@ -391,9 +529,11 @@ func (bIntMolecule *bigIntNumMolecule) setNumStr(
 	}
 
 	if numOfNumericDigits == 0 {
-		return fmt.Errorf(ePrefix+
-			"Error: No numeric digits were found in input parameter 'numStr'. "+
-			"numStr='%v'", numStr)
+		return fmt.Errorf("%v\n"+
+			"Error: No numeric digits were found in input parameter 'numStr'.\n"+
+			"numStr='%v'\n",
+			ePrefix,
+			numStr)
 	}
 
 	if hasMinusSign == true ||

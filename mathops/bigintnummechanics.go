@@ -102,6 +102,77 @@ func (bIngNumMech *bigIntNumMechanics) newBigInt(
 	return *b, nil
 }
 
+// NewInt64Exponent -This method returns a new BigIntNum instance in which
+// the numeric value is set using an integer multiplied by 10 raised to
+// the power of the 'exponent' parameter.
+//
+//	numeric value = integer X 10^exponent
+//
+// Input parameter 'int64Num' is of type int64.
+//
+// Input parameter 'exponent' is of type int.
+//
+// Usage:
+// ------
+// This method is designed to be used in conjunction with the BigIntNum{}
+// syntax thereby allowing BigIntNum type creation and initialization in
+// one step.
+//
+//		biNum := BigIntNum{}.NewInt64Exponent(123456, -3)
+//	 -- biNum is now equal to "123.456", precision = 3
+//
+//		biNum := BigIntNum{}.NewInt64Exponent(123456, 3)
+//	 -- biNum is now equal to "123456.000", precision = 3
+//
+// Examples:
+// ---------
+//
+//	 int64Num		 exponent			  BigIntNum Result
+//		 123456		 		  -3							123.456
+//		 123456		 		   3							123456.000
+//		 123456          0              123456
+func (bIngNumMech *bigIntNumMechanics) newInt64Exponent(int64Num int64, exponent int) (BigIntNum, error) {
+
+	ePrefix := "BigIntNum.NewInt64()"
+
+	bigI := big.NewInt(int64Num)
+
+	b := BigIntNum{}
+
+	new(bigIntNumElectron).empty(&b)
+
+	err := new(bigIntNumNanobot).setBigInt(
+		&b,
+		big.NewInt(0),
+		0,
+		ePrefix)
+
+	if err != nil {
+
+		return BigIntNum{}, err
+
+	}
+
+	//err = b.SetBigIntExponent(bigI, exponent)
+
+	err = new(bigIntNumMolecule).
+		setBigIntExponent(&b, bigI, exponent, ePrefix)
+
+	if err != nil {
+
+		return BigIntNum{},
+			fmt.Errorf("%v\n"+
+				"Error returned by:\n"+
+				" err = new(bigIntNumMolecule).\n"+
+				"   setBigIntExponent(&b, bigI, exponent, ePrefix)\n"+
+				"Error= %v\n",
+				ePrefix,
+				err.Error())
+	}
+
+	return b, nil
+}
+
 // newZero - Returns a BigIntNum instance with a value equal to zero.
 // The number of zeros created after the decimal placeholder
 // (fractional digits) is determined by the input parameter 'precision'.
@@ -110,10 +181,10 @@ func (bIngNumMech *bigIntNumMechanics) newBigInt(
 //
 // 'precision'
 //
-//		  value 					Result
-//				0								0
-//	     2								0.00
-//	     3								0.000
+//	  value 					Result
+//			0								0
+//			2								0.00
+//			3								0.000
 func (bIngNumMech *bigIntNumMechanics) newZero(
 	precision uint,
 	callingMethodChain string) (BigIntNum, error) {

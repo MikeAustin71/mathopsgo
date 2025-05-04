@@ -10,7 +10,7 @@ type bigIntNumNanobot struct {
 	lock *sync.Mutex
 }
 
-// SetBigInt - Sets the value of the current BigIntNum instance using
+// setBigInt - Sets the value of the current BigIntNum instance using
 // the input parameters *big.Int integer and precision.
 //
 // The 'precision' parameter specifies the number of digits to the right
@@ -52,7 +52,9 @@ func (bIntNumNano *bigIntNumNanobot) setBigInt(
 	ePrefix := "bigIntNumNanobot.setBigInt"
 
 	if len(callingMethodChain) > 0 {
+
 		ePrefix = ePrefix + "\nCalling Method Chain:\n " + callingMethodChain
+
 	}
 
 	if bNum == nil {
@@ -70,9 +72,13 @@ func (bIntNumNano *bigIntNumNanobot) setBigInt(
 
 	}
 
-	numSeps := bNum.GetNumericSeparatorsDto()
+	//numSeps := bNum.GetNumericSeparatorsDto()
+	numSeps := NumericSeparatorDto{}
+	numSeps.DecimalSeparator = bNum.decimalSeparator
+	numSeps.ThousandsSeparator = bNum.thousandsSeparator
+	numSeps.CurrencySymbol = bNum.currencySymbol
 
-	bNum.Empty()
+	new(bigIntNumElectron).empty(bNum)
 
 	bNum.bigInt = big.NewInt(0).Set(bigI)
 
@@ -101,13 +107,17 @@ func (bIntNumNano *bigIntNumNanobot) setBigInt(
 
 	}
 
-	err := bNum.SetNumericSeparatorsDto(numSeps)
+	err := new(bigIntNumAtom).setNumericSeparatorsDto(
+		bNum,
+		numSeps,
+		ePrefix)
 
 	if err != nil {
 
 		return fmt.Errorf("%v\n"+
 			"Error returned from:\n"+
-			"bNum.SetNumericSeparatorsDto(numSeps)\n"+
+			"err := new(bigIntNumAtom).setNumericSeparatorsDto(\n"+
+			"     bNum, numSeps, ePrefix)\n"+
 			"Error= %v\n",
 			ePrefix,
 			err.Error())
