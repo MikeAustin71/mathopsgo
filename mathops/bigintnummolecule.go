@@ -2,12 +2,418 @@ package mathops
 
 import (
 	"fmt"
+	ePref "github.com/MikeAustin71/errpref"
 	"math/big"
 	"sync"
 )
 
 type bigIntNumMolecule struct {
 	lock *sync.Mutex
+}
+
+// formatBigIntNumStr - Formats the numeric value of the current BigIntNum
+// instance as number string consisting of integer digits to the left
+// of the decimal place and fractional digits to the right of the decimal
+// point, if such fractional digits exist. The resulting number string
+// will NOT contain a currency symbol or thousands separators.
+//
+// If the Decimal Separator was not previously set for this BigIntNum,
+// the Decimal Separator is defaulted to the USA standard period ('.').
+// To use another character for Decimal Separator, see method
+// BigIntNum.SetDecimalSeparator().
+//
+// Output Examples: 123456.789 or -123456.789
+//
+//	NOTE:
+//
+// ================
+//
+// This method does NOT test the validity of 'bNum' BigIntNum
+// instance. The calling method must do this!
+//
+// Input Parameters
+// ================
+//
+// negValMode NegativeValueFmtMode -	Specifies the display mode for negative values:
+//
+//	LEADMINUSNEGVALFMTMODE 		-	Negative values formatted with
+//													 		a leading minus sign.
+//															Example: -123456.78
+//
+//	PARENTHESESNEGVALFMTMODE	-	Negative values formatted with
+//															surrounding parentheses.
+//															Example: (123456.78)
+//
+//	ABSOLUTEPURENUMSTRFMTMODE - Formats a pure number string with
+//															absolute (positive) integer value
+//															and no decimal place separator.
+//															Example: (12345678)
+func (bIntMolecule *bigIntNumMolecule) formatBigIntNumStr(
+	bNum *BigIntNum,
+	negValMode NegativeValueFmtMode,
+	errPrefDto *ePref.ErrPrefixDto) (string, error) {
+
+	bIntMolecule.lock.Lock()
+
+	defer bIntMolecule.lock.Unlock()
+
+	var ePrefix *ePref.ErrPrefixDto
+
+	var err error
+
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
+		errPrefDto,
+		"bigIntNumMolecule.formatBigIntNumStr",
+		"")
+
+	if err != nil {
+		return "", err
+	}
+
+	if bNum == nil {
+
+		err = fmt.Errorf("%v\n"+
+			"FATAL ERROR: Input parameter 'bNum' is a nil pointer.\n",
+			ePrefix.String())
+
+		return "", err
+	}
+
+	if bNum.decimalSeparator == 0 {
+		bNum.decimalSeparator = '.'
+	}
+
+	outRunes := make([]rune, 0, 300)
+
+	scratchNum := big.NewInt(0).Set(bNum.absBigInt)
+	baseZero := big.NewInt(0)
+
+	if scratchNum.Cmp(baseZero) == 0 {
+		bNum.sign = 1
+
+		outRunes = append(outRunes, '0')
+
+		if bNum.precision > 0 {
+
+			if negValMode != ABSOLUTEPURENUMSTRFMTMODE {
+				outRunes = append(outRunes, bNum.decimalSeparator)
+			}
+
+			cnt := int(bNum.precision)
+
+			if negValMode == ABSOLUTEPURENUMSTRFMTMODE {
+				cnt--
+			}
+
+			for h := 0; h < cnt; h++ {
+				outRunes = append(outRunes, '0')
+			}
+
+		}
+
+		return string(outRunes), nil
+	}
+
+	startIdx := 0
+	modulo := big.NewInt(0)
+	baseTen := big.NewInt(10)
+	digitCnt := 0
+
+	for scratchNum.Cmp(baseZero) == 1 {
+
+		if startIdx == 0 &&
+			bNum.sign == -1 &&
+			negValMode == PARENTHESESNEGVALFMTMODE {
+
+			outRunes = append(outRunes, ')')
+		}
+
+		modX := big.NewInt(0)
+		scratchNum, modulo = big.NewInt(0).QuoRem(scratchNum, baseTen, modX)
+		outRunes = append(outRunes, rune(modulo.Int64()+int64(48)))
+		digitCnt++
+		startIdx++
+
+		if bNum.precision > 0 &&
+			int(bNum.precision) == startIdx &&
+			negValMode != ABSOLUTEPURENUMSTRFMTMODE {
+
+			outRunes = append(outRunes, bNum.decimalSeparator)
+			startIdx++
+		}
+
+	}
+
+	if int(bNum.precision) >= digitCnt {
+
+		delta := int(bNum.precision) - digitCnt + 1
+
+		if negValMode == ABSOLUTEPURENUMSTRFMTMODE {
+			delta--
+		}
+
+		for k := 0; k < delta; k++ {
+			outRunes = append(outRunes, '0')
+			startIdx++
+
+			if bNum.precision > 0 &&
+				int(bNum.precision) == startIdx &&
+				negValMode != ABSOLUTEPURENUMSTRFMTMODE {
+
+				outRunes = append(outRunes, bNum.decimalSeparator)
+				startIdx++
+			}
+		}
+	}
+
+	startIdx--
+
+	// adjust for negative sign value
+	if bNum.sign == -1 {
+
+		if negValMode == LEADMINUSNEGVALFMTMODE {
+			outRunes = append(outRunes, '-')
+			startIdx++
+
+		} else if negValMode == PARENTHESESNEGVALFMTMODE {
+			outRunes = append(outRunes, '(')
+			startIdx += 2
+		}
+
+		/*
+				MUST BE negValMode == ABSOLUTEPURENUMSTRFMTMODE
+			  Do NOT Display Sign Character
+
+		*/
+	}
+
+	sortLimit := startIdx / 2
+	tRune := rune(0)
+	yCnt := 0
+
+	for i := startIdx; i > sortLimit; i-- {
+		tRune = outRunes[yCnt]
+		outRunes[yCnt] = outRunes[i]
+		outRunes[i] = tRune
+		yCnt++
+	}
+
+	return string(outRunes), nil
+}
+
+// formatThousandsStr - Returns the number string delimited with the
+// BigIntNum ThousandsSeparator character plus the Decimal Separator
+// character if applicable. See methods BigIntNum.SetThousandsSeparator()
+// and BigIntNum.SetDecimalSeparator().
+//
+// If the Decimal Separator was not previously set for this BigIntNum,
+// the Decimal Separator is defaulted to the USA standard period ('.').
+// To use another character for Decimal Separator, see method
+// BigIntNum.SetDecimalSeparator().
+//
+// If the Thousands Separator was not previously set for this BigIntNum,
+// the Thousands Separator is defaulted to the USA standard comma (',').
+// To use another character for Thousands Separator, see method
+// BigIntNum.SetThousandsSeparator().
+//
+// Example:
+// numStr = 1000000.234 converted to 1,000,000.234
+//
+//	NOTE:
+//
+// ================
+//
+// This method does NOT test the validity of 'bNum' BigIntNum
+// instance. The calling method must do this!
+//
+// Input Parameters
+// ================
+//
+// negValMode NegativeValueFmtMode -	Specifies the display mode for negative values:
+//
+//	LEADMINUSNEGVALFMTMODE 		-	Negative values formatted with
+//													 		a leading minus sign.
+//															Example: -123,456.78
+//
+//	PARENTHESESNEGVALFMTMODE	-	Negative values formatted with
+//															surrounding parentheses.
+//															Example: (123,456.78)
+//
+//
+//	ABSOLUTEPURENUMSTRFMTMODE - Formats a pure number string with
+//															absolute (positive) integer value
+//															and no decimal place separator.
+//															Example: (12,345,678)
+func (bIntMolecule *bigIntNumMolecule) formatThousandsStr(
+	bNum *BigIntNum,
+	negValMode NegativeValueFmtMode,
+	errPrefDto *ePref.ErrPrefixDto) (string, error) {
+
+	var err error
+
+	var ePrefix *ePref.ErrPrefixDto
+
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
+		errPrefDto,
+		"bigIntNumMolecule.formatThousandsStr",
+		"")
+
+	if err != nil {
+		return "", err
+	}
+
+	err = new(bigIntNumAtom).isBigIntNumValid(
+		bNum,
+		ePrefix)
+
+	if err != nil {
+
+		return "", err
+	}
+
+	if bNum.decimalSeparator == 0 {
+		bNum.decimalSeparator = '.'
+	}
+
+	if bNum.thousandsSeparator == 0 {
+		bNum.thousandsSeparator = ','
+	}
+
+	outRunes := make([]rune, 0, 300)
+
+	scratchNum := big.NewInt(0).Set(bNum.absBigInt)
+	baseZero := big.NewInt(0)
+
+	if scratchNum.Cmp(baseZero) == 0 {
+		bNum.sign = 1
+
+		outRunes = append(outRunes, '0')
+
+		if bNum.precision > 0 {
+
+			if negValMode != ABSOLUTEPURENUMSTRFMTMODE {
+				outRunes = append(outRunes, bNum.decimalSeparator)
+			}
+
+			cnt := int(bNum.precision)
+
+			if negValMode == ABSOLUTEPURENUMSTRFMTMODE {
+				cnt--
+			}
+
+			for h := 0; h < cnt; h++ {
+				outRunes = append(outRunes, '0')
+			}
+
+		}
+
+		return string(outRunes), nil
+	}
+
+	startIdx := 0
+	modulo := big.NewInt(0)
+	baseTen := big.NewInt(10)
+	digitCnt := 0
+	thouCnt := -1
+
+	if bNum.precision == 0 {
+		thouCnt = 0
+	}
+
+	for scratchNum.Cmp(baseZero) == 1 {
+
+		if startIdx == 0 &&
+			bNum.sign == -1 &&
+			negValMode == PARENTHESESNEGVALFMTMODE {
+
+			outRunes = append(outRunes, ')')
+		}
+
+		modX := big.NewInt(0)
+		scratchNum, modulo = big.NewInt(0).QuoRem(scratchNum, baseTen, modX)
+		outRunes = append(outRunes, rune(modulo.Int64()+int64(48)))
+		digitCnt++
+		startIdx++
+
+		if thouCnt > -1 {
+			thouCnt++
+		}
+
+		if scratchNum.Cmp(baseZero) == 1 &&
+			thouCnt == 3 {
+
+			outRunes = append(outRunes, bNum.thousandsSeparator)
+			startIdx++
+			thouCnt = 0
+		}
+
+		if bNum.precision > 0 &&
+			int(bNum.precision) == startIdx &&
+			negValMode != ABSOLUTEPURENUMSTRFMTMODE {
+
+			outRunes = append(outRunes, bNum.decimalSeparator)
+			startIdx++
+			thouCnt = 0
+		}
+
+	}
+
+	if int(bNum.precision) >= digitCnt {
+
+		delta := int(bNum.precision) - digitCnt + 1
+
+		if negValMode == ABSOLUTEPURENUMSTRFMTMODE {
+			delta--
+		}
+
+		for k := 0; k < delta; k++ {
+			outRunes = append(outRunes, '0')
+			startIdx++
+
+			if bNum.precision > 0 &&
+				int(bNum.precision) == startIdx &&
+				negValMode != ABSOLUTEPURENUMSTRFMTMODE {
+
+				outRunes = append(outRunes, bNum.decimalSeparator)
+				startIdx++
+			}
+		}
+	}
+
+	startIdx--
+
+	// adjust for negative sign value
+	if bNum.sign == -1 {
+
+		if negValMode == LEADMINUSNEGVALFMTMODE {
+			outRunes = append(outRunes, '-')
+			startIdx++
+
+		} else if negValMode == PARENTHESESNEGVALFMTMODE {
+
+			outRunes = append(outRunes, '(')
+			startIdx += 2
+		}
+
+		// Must Be negValMode == ABSOLUTEPURENUMSTRFMTMODE
+
+	}
+
+	sortLimit := startIdx / 2
+	tRune := rune(0)
+	yCnt := 0
+
+	for i := startIdx; i > sortLimit; i-- {
+		tRune = outRunes[yCnt]
+		outRunes[yCnt] = outRunes[i]
+		outRunes[i] = tRune
+		yCnt++
+	}
+
+	return string(outRunes), nil
+
 }
 
 // getActualNumberOfDigits - Returns the number of numeric digits
@@ -34,18 +440,12 @@ type bigIntNumMolecule struct {
 //	         5                              1
 func (bIntMolecule *bigIntNumMolecule) getActualNumberOfDigits(
 	bNum *BigIntNum,
-	callingMethodChain string) (
+	errPrefDto *ePref.ErrPrefixDto) (
 	numberOfDigits *big.Int, isZeroValue bool, err error) {
 
 	bIntMolecule.lock.Lock()
 
 	defer bIntMolecule.lock.Unlock()
-
-	ePrefix := "Active Method: bigIntNumMolecule.getActualNumberOfDigits()"
-
-	if len(callingMethodChain) > 0 {
-		ePrefix = ePrefix + "\nCalling Method Chain:\n " + callingMethodChain
-	}
 
 	numberOfDigits = big.NewInt(0)
 
@@ -53,11 +453,23 @@ func (bIntMolecule *bigIntNumMolecule) getActualNumberOfDigits(
 
 	err = nil
 
+	var ePrefix *ePref.ErrPrefixDto
+
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
+		errPrefDto,
+		"bigIntNumMolecule.getActualNumberOfDigits",
+		"")
+
+	if err != nil {
+		return numberOfDigits, isZeroValue, err
+	}
+
 	if bNum == nil {
 
 		err = fmt.Errorf("%v\n"+
 			"FATAL ERROR: Input parameter 'bNum' is a nil pointer.\n",
-			ePrefix)
+			ePrefix.String())
 
 		return numberOfDigits, isZeroValue, err
 	}
@@ -80,7 +492,7 @@ func (bIntMolecule *bigIntNumMolecule) getActualNumberOfDigits(
 			"Error returned by:\n"+
 			"numOfDigits, errx := BigIntMath{}.GetMagnitude(bNum.absBigInt)\n"+
 			"bNum.absBigInt='%v' Error='%v' ",
-			ePrefix,
+			ePrefix.String(),
 			bNum.absBigInt.Text(10),
 			errx.Error())
 
@@ -106,7 +518,7 @@ func (bIntMolecule *bigIntNumMolecule) getActualNumberOfDigits(
 // to determine if that instance is valid, or not.
 func (bIntMolecule *bigIntNumMolecule) isBIntNumZero(
 	bNum *BigIntNum,
-	callingMethodChain string) (bool, error) {
+	errPrefDto *ePref.ErrPrefixDto) (bool, error) {
 
 	if bIntMolecule.lock == nil {
 		bIntMolecule.lock = new(sync.Mutex)
@@ -116,12 +528,18 @@ func (bIntMolecule *bigIntNumMolecule) isBIntNumZero(
 
 	defer bIntMolecule.lock.Unlock()
 
-	ePrefix := "Active Method: bigIntNumMolecule.newOne()"
+	var ePrefix *ePref.ErrPrefixDto
 
 	var err error
 
-	if len(callingMethodChain) > 0 {
-		ePrefix = ePrefix + "\nCalling Method Chain:\n " + callingMethodChain
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
+		errPrefDto,
+		"bigIntNumMolecule.isBIntNumZero",
+		"")
+
+	if err != nil {
+		return false, err
 	}
 
 	if bNum == nil {
@@ -134,7 +552,7 @@ func (bIntMolecule *bigIntNumMolecule) isBIntNumZero(
 
 	err = new(bigIntNumAtom).isBigIntNumValid(
 		bNum,
-		"BigIntNum.IsZero() Vallidity Test on 'bNum'")
+		ePrefix.XCpy("Vallidity Test on 'bNum'"))
 
 	if err != nil {
 		return false, err
@@ -168,7 +586,7 @@ func (bIntMolecule *bigIntNumMolecule) isBIntNumZero(
 // separators (decimal separator, thousands separator and currency symbol).
 func (bIntMolecule *bigIntNumMolecule) newOne(
 	precision uint,
-	callingMethodChain string) (BigIntNum, error) {
+	errPrefDto *ePref.ErrPrefixDto) (BigIntNum, error) {
 
 	if bIntMolecule.lock == nil {
 		bIntMolecule.lock = new(sync.Mutex)
@@ -178,12 +596,18 @@ func (bIntMolecule *bigIntNumMolecule) newOne(
 
 	defer bIntMolecule.lock.Unlock()
 
-	ePrefix := "Active Method: bigIntNumMolecule.newOne()"
+	var ePrefix *ePref.ErrPrefixDto
 
 	var err error
 
-	if len(callingMethodChain) > 0 {
-		ePrefix = ePrefix + "\nCalling Method Chain:\n " + callingMethodChain
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
+		errPrefDto,
+		"bigIntNumMolecule.newOne",
+		"")
+
+	if err != nil {
+		return BigIntNum{}, err
 	}
 
 	b, err := new(bigIntNumMechanics).newZero(
@@ -258,7 +682,7 @@ func (bIntMolecule *bigIntNumMolecule) setBigIntExponent(
 	bNum *BigIntNum,
 	bigI *big.Int,
 	exponent int,
-	callingMethodChain string) error {
+	errPrefDto *ePref.ErrPrefixDto) error {
 
 	if bIntMolecule.lock == nil {
 		bIntMolecule.lock = new(sync.Mutex)
@@ -268,26 +692,32 @@ func (bIntMolecule *bigIntNumMolecule) setBigIntExponent(
 
 	defer bIntMolecule.lock.Unlock()
 
-	ePrefix := "bigIntNumMolecule.setBigIntExponent()"
+	var ePrefix *ePref.ErrPrefixDto
 
 	var err error
 
-	if len(callingMethodChain) > 0 {
-		ePrefix = ePrefix + "\nCalling Method Chain:\n " + callingMethodChain
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
+		errPrefDto,
+		"bigIntNumMolecule.setBigIntExponent",
+		"")
+
+	if err != nil {
+		return err
 	}
 
 	if bNum == nil {
 
 		return fmt.Errorf("%v\n"+
 			"FATAL ERROR: Input parameter 'bNum' is a nil pointer.\n",
-			ePrefix)
+			ePrefix.String())
 	}
 
 	if bigI == nil {
 
 		return fmt.Errorf("%v\n"+
 			"Error: Input parameter 'bigI' is a nil pointer!\n",
-			ePrefix)
+			ePrefix.String())
 
 	}
 
@@ -329,7 +759,7 @@ func (bIntMolecule *bigIntNumMolecule) setBigIntExponent(
 func (bIntMolecule *bigIntNumMolecule) setExpectedNumberOfDigits(
 	bNum *BigIntNum,
 	numOfDigits *big.Int,
-	callingMethodChain string) error {
+	errPrefDto *ePref.ErrPrefixDto) error {
 
 	if bIntMolecule.lock == nil {
 		bIntMolecule.lock = new(sync.Mutex)
@@ -339,26 +769,32 @@ func (bIntMolecule *bigIntNumMolecule) setExpectedNumberOfDigits(
 
 	defer bIntMolecule.lock.Unlock()
 
-	ePrefix := "Active Method: bigIntNumMolecule.setExpectedNumberOfDigits()"
-
-	if len(callingMethodChain) > 0 {
-		ePrefix = ePrefix + "\nCalling Method Chain:\n " + callingMethodChain
-	}
+	var ePrefix *ePref.ErrPrefixDto
 
 	var err error
+
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
+		errPrefDto,
+		"bigIntNumMolecule.setExpectedNumberOfDigits",
+		"")
+
+	if err != nil {
+		return err
+	}
 
 	if bNum == nil {
 
 		return fmt.Errorf("%v\n"+
 			"FATAL ERROR: Input parameter 'bNum' is a nil pointer.\n",
-			ePrefix)
+			ePrefix.String())
 	}
 
 	if numOfDigits == nil {
 
 		return fmt.Errorf("%v\n"+
 			"Error: Input parameter 'numOfDigits' is a nil pointer!\n",
-			ePrefix)
+			ePrefix.String())
 
 	}
 
@@ -373,7 +809,6 @@ func (bIntMolecule *bigIntNumMolecule) setExpectedNumberOfDigits(
 		if err != nil {
 			return err
 		}
-
 	}
 
 	bNum.numberOfExpectedDigits = big.NewInt(0).Set(numOfDigits)
@@ -396,7 +831,7 @@ func (bIntMolecule *bigIntNumMolecule) setExpectedNumberOfDigits(
 func (bIntMolecule *bigIntNumMolecule) setNumStr(
 	bNum *BigIntNum,
 	numStr string,
-	callingMethodChain string) error {
+	errPrefDto *ePref.ErrPrefixDto) error {
 
 	if bIntMolecule.lock == nil {
 		bIntMolecule.lock = new(sync.Mutex)
@@ -406,19 +841,25 @@ func (bIntMolecule *bigIntNumMolecule) setNumStr(
 
 	defer bIntMolecule.lock.Unlock()
 
-	ePrefix := "Active Method: bigIntNumMolecule.setNumStr()"
-
-	if len(callingMethodChain) > 0 {
-		ePrefix = ePrefix + "\nCalling Method Chain:\n " + callingMethodChain
-	}
+	var ePrefix *ePref.ErrPrefixDto
 
 	var err error
+
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
+		errPrefDto,
+		"bigIntNumMolecule.setNumStr()",
+		"")
+
+	if err != nil {
+		return err
+	}
 
 	if bNum == nil {
 
 		return fmt.Errorf("%v\n"+
 			"FATAL ERROR: Input parameter 'bNum' is a nil pointer.\n",
-			ePrefix)
+			ePrefix.String())
 	}
 
 	if bNum.bigInt == nil {
@@ -438,7 +879,7 @@ func (bIntMolecule *bigIntNumMolecule) setNumStr(
 	if len(numStr) == 0 {
 		return fmt.Errorf("%v\n"+
 			"Error: Input parameter 'numStr' is an EMPTY string!\n",
-			ePrefix)
+			ePrefix.String())
 	}
 
 	baseRunes := []rune(numStr)
@@ -523,16 +964,14 @@ func (bIntMolecule *bigIntNumMolecule) setNumStr(
 			if isFractionalValue {
 				newPrecision++
 			}
-
 		}
-
 	}
 
 	if numOfNumericDigits == 0 {
 		return fmt.Errorf("%v\n"+
 			"Error: No numeric digits were found in input parameter 'numStr'.\n"+
 			"numStr='%v'\n",
-			ePrefix,
+			ePrefix.String(),
 			numStr)
 	}
 

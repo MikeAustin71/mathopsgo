@@ -2,6 +2,7 @@ package mathops
 
 import (
 	"fmt"
+	ePref "github.com/MikeAustin71/errpref"
 	"math/big"
 	"sync"
 )
@@ -14,7 +15,7 @@ type bigIntNumAtom struct {
 // whether the current BigIntNum object is valid.
 func (bIntNumAtom *bigIntNumAtom) isBigIntNumValid(
 	bNum *BigIntNum,
-	callingMethodChain string) error {
+	errPrefDto *ePref.ErrPrefixDto) error {
 
 	if bIntNumAtom.lock == nil {
 		bIntNumAtom.lock = new(sync.Mutex)
@@ -24,19 +25,27 @@ func (bIntNumAtom *bigIntNumAtom) isBigIntNumValid(
 
 	defer bIntNumAtom.lock.Unlock()
 
-	ePrefix := "Active Method: bigIntNumAtom.isBigIntNumValid()"
+	var ePrefix *ePref.ErrPrefixDto
 
 	var err error
 
-	if len(callingMethodChain) > 0 {
-		ePrefix = ePrefix + "\nCalling Method Chain:\n " + callingMethodChain
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
+		errPrefDto,
+		"bigIntNumAtom.isBigIntNumValid",
+		"")
+
+	if err != nil {
+		return err
 	}
 
 	if bNum == nil {
 
-		return fmt.Errorf("%v\n"+
+		err = fmt.Errorf("%v\n"+
 			"FATAL ERROR: Input parameter 'bNum' is a nil pointer.\n",
-			ePrefix)
+			ePrefix.String())
+
+		return err
 	}
 
 	if bNum.bigInt == nil {
@@ -48,82 +57,44 @@ func (bIntNumAtom *bigIntNumAtom) isBigIntNumValid(
 			"'bNum.bigInt' is 'nil'!\n"+
 			"FATAL ERROR!\n"+
 			"bNum.bigInt was reset to zero.\n",
-			ePrefix)
-
+			ePrefix.String())
 	}
 
 	if bNum.sign != -1 && bNum.sign != 1 {
 
-		err = bNum.Reset()
-
-		if err != nil {
-			return fmt.Errorf("%v\n"+
-				"This BigIntNum Instance is Invalid!\n"+
-				"'bNum.sign' is NOT equal to +1 or -1 !\n"+
-				"FATAL ERROR!\n"+
-				"Attmpted reset of bNum to default values FAILED!.\n",
-				ePrefix)
-
-		}
-
 		return fmt.Errorf("%v\n"+
 			"This BigIntNum Instance is Invalid!\n"+
 			"'bNum.sign' is NOT equal to +1 or -1 !\n"+
-			"FATAL ERROR!\n"+
-			"bNum was successfully reset to default values (Zero).\n",
-			ePrefix)
+			"FATAL ERROR!\n",
+			ePrefix.String())
+
 	}
 
 	if bNum.absBigInt == nil {
-
-		err = bNum.Reset()
-
-		if err != nil {
-
-			return fmt.Errorf("%v\n"+
-				"This BigIntNum Instance is Invalid!\n"+
-				"'bNum.absBigInt' is 'nil'!\n"+
-				"FATAL ERROR!\n"+
-				"Attmpted reset of bNum to default values FAILED!.\n",
-				ePrefix)
-
-		}
 
 		return fmt.Errorf("%v\n"+
 			"This BigIntNum Instance is Invalid!\n"+
 			"'bNum.absBigInt' is 'nil'!\n"+
 			"FATAL ERROR!\n"+
 			"bNum was successfully reset to default values (Zero).\n",
-			ePrefix)
+			ePrefix.String())
 	}
 
 	if bNum.scaleFactor == nil {
-
-		err = bNum.Reset()
-
-		if err != nil {
-			return fmt.Errorf("%v\n"+
-				"This BigIntNum Instance is Invalid!\n"+
-				"'bNum.scaleFactor' is 'nil'!\n"+
-				"FATAL ERROR!\n"+
-				"Attmpted reset of bNum to default values FAILED!.\n",
-				ePrefix)
-
-		}
 
 		return fmt.Errorf("%v\n"+
 			"This BigIntNum Instance is Invalid!\n"+
 			"'bNum.scaleFactor' is 'nil'!\n"+
 			"FATAL ERROR!\n"+
 			"bNum was successfully reset to default values (Zero).\n",
-			ePrefix)
+			ePrefix.String())
 
 	}
 
 	return nil
 }
 
-// SetNumericSeparators - Used to assign values for the Decimal and Thousands separators as well
+// setNumericSeparators - Used to assign values for the Decimal and Thousands separators as well
 // as the Currency Symbol to be used in displaying the current number string.
 //
 // Different nations and cultures use different symbols to delimit numerical values. In the
@@ -150,7 +121,7 @@ func (bIntNumAtom *bigIntNumAtom) setNumericSeparators(
 	decimalSeparator rune,
 	thousandsSeparator rune,
 	currencySymbol rune,
-	callingMethodChain string) error {
+	errPrefDto *ePref.ErrPrefixDto) error {
 
 	if bIntNumAtom.lock == nil {
 		bIntNumAtom.lock = new(sync.Mutex)
@@ -160,31 +131,39 @@ func (bIntNumAtom *bigIntNumAtom) setNumericSeparators(
 
 	defer bIntNumAtom.lock.Unlock()
 
-	ePrefix := "Active Method: bigIntNumAtom.isBigIntNumValid()"
+	var err error
 
-	if len(callingMethodChain) > 0 {
-		ePrefix = ePrefix + "\nCalling Method Chain:\n " + callingMethodChain
+	var ePrefix *ePref.ErrPrefixDto
+
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
+		errPrefDto,
+		"bigIntNumAtom.setNumericSeparators",
+		"")
+
+	if err != nil {
+		return err
 	}
 
 	if bNum == nil {
 
 		return fmt.Errorf("%v\n"+
 			"FATAL ERROR: Input parameter 'bNum' is a nil pointer.\n",
-			ePrefix)
+			ePrefix.String())
 	}
 
 	if decimalSeparator == 0 {
 
 		return fmt.Errorf("%v\n"+
 			"Error: Input parameter 'decimalSeparator' is set to '0' - Invalid rune!\n",
-			ePrefix)
+			ePrefix.String())
 	}
 
 	if thousandsSeparator == 0 {
 
 		return fmt.Errorf("%v\n"+
 			"Error: Input parameter 'thousandsSeparator' is set to '0' - Invalid rune!\n",
-			ePrefix)
+			ePrefix.String())
 
 	}
 
@@ -192,7 +171,7 @@ func (bIntNumAtom *bigIntNumAtom) setNumericSeparators(
 
 		return fmt.Errorf("%v\n"+
 			"Error: Input parameter 'customSeparators.CurrencySymbol' is set to '0' - Invalid rune!\n",
-			ePrefix)
+			ePrefix.String())
 
 	}
 
@@ -222,7 +201,7 @@ func (bIntNumAtom *bigIntNumAtom) setNumericSeparators(
 func (bIntNumAtom *bigIntNumAtom) setNumericSeparatorsDto(
 	bNum *BigIntNum,
 	customSeparators NumericSeparatorDto,
-	callingMethodChain string) error {
+	errPrefDto *ePref.ErrPrefixDto) error {
 
 	if bIntNumAtom.lock == nil {
 		bIntNumAtom.lock = new(sync.Mutex)
@@ -232,31 +211,39 @@ func (bIntNumAtom *bigIntNumAtom) setNumericSeparatorsDto(
 
 	defer bIntNumAtom.lock.Unlock()
 
-	ePrefix := "Active Method: bigIntNumAtom.setNumericSeparatorsDto() "
+	var err error
 
-	if len(callingMethodChain) > 0 {
-		ePrefix = ePrefix + "\nCalling Method Chain:\n " + callingMethodChain
+	var ePrefix *ePref.ErrPrefixDto
+
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
+		errPrefDto,
+		"bigIntNumAtom.setNumericSeparatorsDto",
+		"")
+
+	if err != nil {
+		return err
 	}
 
 	if bNum == nil {
 
 		return fmt.Errorf("%v\n"+
 			"FATAL ERROR: Input parameter 'bNum' is a nil pointer.\n",
-			ePrefix)
+			ePrefix.String())
 	}
 
 	if customSeparators.DecimalSeparator == 0 {
 
 		return fmt.Errorf("%v\n"+
 			"Error: Input parameter 'customSeparators.DecimalSeparator' is set to '0' - Invalid rune!\n",
-			ePrefix)
+			ePrefix.String())
 	}
 
 	if customSeparators.ThousandsSeparator == 0 {
 
 		return fmt.Errorf("%v\n"+
 			"Error: Input parameter 'customSeparators.ThousandsSeparator' is set to '0' - Invalid rune!\n",
-			ePrefix)
+			ePrefix.String())
 
 	}
 
@@ -264,7 +251,7 @@ func (bIntNumAtom *bigIntNumAtom) setNumericSeparatorsDto(
 
 		return fmt.Errorf("%v\n"+
 			"Error: Input parameter 'customSeparators.CurrencySymbol' is set to '0' - Invalid rune!\n",
-			ePrefix)
+			ePrefix.String())
 
 	}
 
@@ -291,7 +278,7 @@ func (bIntNumAtom *bigIntNumAtom) setNumericSeparatorsDto(
 // are set to valid values.
 func (bIntNumAtom *bigIntNumAtom) setNumericSeparatorsToDefaultIfEmpty(
 	bNum *BigIntNum,
-	callingMethodChain string) error {
+	errPrefDto *ePref.ErrPrefixDto) error {
 
 	if bIntNumAtom.lock == nil {
 		bIntNumAtom.lock = new(sync.Mutex)
@@ -301,10 +288,18 @@ func (bIntNumAtom *bigIntNumAtom) setNumericSeparatorsToDefaultIfEmpty(
 
 	defer bIntNumAtom.lock.Unlock()
 
-	ePrefix := "Active Method: bigIntNumAtom.setNumericSeparatorsToDefaultIfEmpty()"
+	var err error
 
-	if len(callingMethodChain) > 0 {
-		ePrefix = ePrefix + "\nCalling Method Chain:\n " + callingMethodChain
+	var ePrefix *ePref.ErrPrefixDto
+
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
+		errPrefDto,
+		"bigIntNumAtom.setNumericSeparatorsToDefaultIfEmpty",
+		"")
+
+	if err != nil {
+		return err
 	}
 
 	if bNum == nil {
@@ -345,7 +340,7 @@ func (bIntNumAtom *bigIntNumAtom) setNumericSeparatorsToDefaultIfEmpty(
 //	bNum.SetCurrencySymbol()
 func (bIntNumAtom *bigIntNumAtom) setNumericSeparatorsToUSADefault(
 	bNum *BigIntNum,
-	callingMethodChain string) error {
+	errPrefDto *ePref.ErrPrefixDto) error {
 
 	if bIntNumAtom.lock == nil {
 		bIntNumAtom.lock = new(sync.Mutex)
@@ -355,10 +350,18 @@ func (bIntNumAtom *bigIntNumAtom) setNumericSeparatorsToUSADefault(
 
 	defer bIntNumAtom.lock.Unlock()
 
-	ePrefix := "Active Method: bigIntNumAtom.setNumericSeparatorsToUSADefault()"
+	var err error
 
-	if len(callingMethodChain) > 0 {
-		ePrefix = ePrefix + "\nCalling Method Chain:\n " + callingMethodChain
+	var ePrefix *ePref.ErrPrefixDto
+
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
+		errPrefDto,
+		"bigIntNumAtom.setNumericSeparatorsToUSADefault",
+		"")
+
+	if err != nil {
+		return err
 	}
 
 	if bNum == nil {

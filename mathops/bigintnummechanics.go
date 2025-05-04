@@ -2,6 +2,7 @@ package mathops
 
 import (
 	"fmt"
+	ePref "github.com/MikeAustin71/errpref"
 	"math/big"
 	"sync"
 )
@@ -58,7 +59,7 @@ func (bIngNumMech *bigIntNumMechanics) new() BigIntNum {
 func (bIngNumMech *bigIntNumMechanics) newBigInt(
 	bigI *big.Int,
 	precision uint,
-	callingMethodChain string) (BigIntNum, error) {
+	errPrefDto *ePref.ErrPrefixDto) (BigIntNum, error) {
 
 	if bIngNumMech.lock == nil {
 		bIngNumMech.lock = new(sync.Mutex)
@@ -68,10 +69,18 @@ func (bIngNumMech *bigIntNumMechanics) newBigInt(
 
 	defer bIngNumMech.lock.Unlock()
 
-	ePrefix := "bigIntNumMechanics.newBigInt()"
+	var ePrefix *ePref.ErrPrefixDto
 
-	if len(callingMethodChain) > 0 {
-		ePrefix = ePrefix + "\nCalling Method Chain:\n " + callingMethodChain
+	var err error
+
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
+		errPrefDto,
+		"bigIntNumMechanics.newBigInt()",
+		"")
+
+	if err != nil {
+		return BigIntNum{}, err
 	}
 
 	if bigI == nil {
@@ -79,7 +88,7 @@ func (bIngNumMech *bigIntNumMechanics) newBigInt(
 		return BigIntNum{},
 			fmt.Errorf("%v\n"+
 				"Error: Input parameter 'bigI' is a nil pointer!\n",
-				ePrefix)
+				ePrefix.String())
 
 	}
 
@@ -87,7 +96,7 @@ func (bIngNumMech *bigIntNumMechanics) newBigInt(
 
 	new(bigIntNumElectron).empty(b)
 
-	err := new(bigIntNumNanobot).setBigInt(
+	err = new(bigIntNumNanobot).setBigInt(
 		b,
 		bigI,
 		precision,
@@ -132,9 +141,31 @@ func (bIngNumMech *bigIntNumMechanics) newBigInt(
 //		 123456		 		   3							123456.000
 //		 123456          0              123456
 func (bIngNumMech *bigIntNumMechanics) newInt64Exponent(
-	int64Num int64, exponent int) (BigIntNum, error) {
+	int64Num int64,
+	exponent int,
+	errPrefDto *ePref.ErrPrefixDto) (BigIntNum, error) {
 
-	ePrefix := "BigIntNum.NewInt64()"
+	if bIngNumMech.lock == nil {
+		bIngNumMech.lock = new(sync.Mutex)
+	}
+
+	bIngNumMech.lock.Lock()
+
+	defer bIngNumMech.lock.Unlock()
+
+	var ePrefix *ePref.ErrPrefixDto
+
+	var err error
+
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
+		errPrefDto,
+		"bigIntNumMechanics.newInt64Exponent()",
+		"")
+
+	if err != nil {
+		return BigIntNum{}, err
+	}
 
 	bigI := big.NewInt(int64Num)
 
@@ -142,7 +173,7 @@ func (bIngNumMech *bigIntNumMechanics) newInt64Exponent(
 
 	new(bigIntNumElectron).empty(&b)
 
-	err := new(bigIntNumNanobot).setBigInt(
+	err = new(bigIntNumNanobot).setBigInt(
 		&b,
 		big.NewInt(0),
 		0,
@@ -167,7 +198,7 @@ func (bIngNumMech *bigIntNumMechanics) newInt64Exponent(
 				" err = new(bigIntNumMolecule).\n"+
 				"   setBigIntExponent(&b, bigI, exponent, ePrefix)\n"+
 				"Error= %v\n",
-				ePrefix,
+				ePrefix.String(),
 				err.Error())
 	}
 
@@ -188,7 +219,7 @@ func (bIngNumMech *bigIntNumMechanics) newInt64Exponent(
 //			3								0.000
 func (bIngNumMech *bigIntNumMechanics) newZero(
 	precision uint,
-	callingMethodChain string) (BigIntNum, error) {
+	errPrefDto *ePref.ErrPrefixDto) (BigIntNum, error) {
 
 	if bIngNumMech.lock == nil {
 		bIngNumMech.lock = new(sync.Mutex)
@@ -198,17 +229,25 @@ func (bIngNumMech *bigIntNumMechanics) newZero(
 
 	defer bIngNumMech.lock.Unlock()
 
-	ePrefix := "bigIntNumMechanics.newZero()"
+	var ePrefix *ePref.ErrPrefixDto
 
-	if len(callingMethodChain) > 0 {
-		ePrefix = ePrefix + "\nCalling Method Chain:\n " + callingMethodChain
+	var err error
+
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
+		errPrefDto,
+		"bigIntNumMechanics.newZero()",
+		"")
+
+	if err != nil {
+		return BigIntNum{}, err
 	}
 
 	b := BigIntNum{}
 
 	new(bigIntNumElectron).empty(&b)
 
-	err := new(bigIntNumNanobot).setBigInt(
+	err = new(bigIntNumNanobot).setBigInt(
 		&b,
 		big.NewInt(0),
 		precision,

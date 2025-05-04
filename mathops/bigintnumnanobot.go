@@ -2,6 +2,7 @@ package mathops
 
 import (
 	"fmt"
+	ePref "github.com/MikeAustin71/errpref"
 	"math/big"
 	"sync"
 )
@@ -39,7 +40,7 @@ func (bIntNumNano *bigIntNumNanobot) setBigInt(
 	bNum *BigIntNum,
 	bigI *big.Int,
 	precision uint,
-	callingMethodChain string) error {
+	errPrefDto *ePref.ErrPrefixDto) error {
 
 	if bIntNumNano.lock == nil {
 		bIntNumNano.lock = new(sync.Mutex)
@@ -49,30 +50,35 @@ func (bIntNumNano *bigIntNumNanobot) setBigInt(
 
 	defer bIntNumNano.lock.Unlock()
 
-	ePrefix := "bigIntNumNanobot.setBigInt"
+	var err error
 
-	if len(callingMethodChain) > 0 {
+	var ePrefix *ePref.ErrPrefixDto
 
-		ePrefix = ePrefix + "\nCalling Method Chain:\n " + callingMethodChain
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
+		errPrefDto,
+		"bigIntNumNanobot.setBigInt",
+		"")
 
+	if err != nil {
+		return err
 	}
 
 	if bNum == nil {
 
 		return fmt.Errorf("%v\n"+
 			"FATAL ERROR: Input parameter 'bNum' is a nil pointer.\n",
-			ePrefix)
+			ePrefix.String())
 	}
 
 	if bigI == nil {
 
 		return fmt.Errorf("%v\n"+
 			"Error: Input parameter 'bigI' is a nil pointer!\n",
-			ePrefix)
+			ePrefix.String())
 
 	}
 
-	//numSeps := bNum.GetNumericSeparatorsDto()
 	numSeps := NumericSeparatorDto{}
 	numSeps.DecimalSeparator = bNum.decimalSeparator
 	numSeps.ThousandsSeparator = bNum.thousandsSeparator
@@ -107,7 +113,7 @@ func (bIntNumNano *bigIntNumNanobot) setBigInt(
 
 	}
 
-	err := new(bigIntNumAtom).setNumericSeparatorsDto(
+	err = new(bigIntNumAtom).setNumericSeparatorsDto(
 		bNum,
 		numSeps,
 		ePrefix)
@@ -119,7 +125,7 @@ func (bIntNumNano *bigIntNumNanobot) setBigInt(
 			"err := new(bigIntNumAtom).setNumericSeparatorsDto(\n"+
 			"     bNum, numSeps, ePrefix)\n"+
 			"Error= %v\n",
-			ePrefix,
+			ePrefix.String(),
 			err.Error())
 	}
 

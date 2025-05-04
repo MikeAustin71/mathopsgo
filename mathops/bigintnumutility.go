@@ -2,6 +2,7 @@ package mathops
 
 import (
 	"fmt"
+	ePref "github.com/MikeAustin71/errpref"
 	"math/big"
 	"sync"
 )
@@ -15,7 +16,7 @@ type bigIntNumUtility struct {
 func (bIngNumUtil *bigIntNumUtility) bigIntNumCopyIn(
 	bNumDestination *BigIntNum,
 	bNumSource *BigIntNum,
-	callingMethodChain string) error {
+	errPrefDto *ePref.ErrPrefixDto) error {
 
 	if bIngNumUtil.lock == nil {
 		bIngNumUtil.lock = new(sync.Mutex)
@@ -25,15 +26,23 @@ func (bIngNumUtil *bigIntNumUtility) bigIntNumCopyIn(
 
 	defer bIngNumUtil.lock.Unlock()
 
-	ePrefix := "bigIntNumUtility.bigIntNumCopyIn() "
+	var ePrefix *ePref.ErrPrefixDto
 
-	if len(callingMethodChain) > 0 {
-		ePrefix = ePrefix + "\nCalling Method Chain:\n " + callingMethodChain
+	var err error
+
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
+		errPrefDto,
+		"bigIntNumElectron.resetBigIntNum()",
+		"")
+
+	if err != nil {
+		return err
 	}
 
-	err := new(bigIntNumAtom).isBigIntNumValid(
+	err = new(bigIntNumAtom).isBigIntNumValid(
 		bNumSource,
-		"bigIntNumUtility.bigIntNumCopyIn() - bNumSource")
+		ePrefix.XCpy(" - bNumSource"))
 
 	if err != nil {
 
@@ -69,7 +78,7 @@ func (bIngNumUtil *bigIntNumUtility) bigIntNumCopyIn(
 // and returns it as a new BigIntNum instance.
 func (bIngNumUtil *bigIntNumUtility) bigIntNumCopyOut(
 	bNum *BigIntNum,
-	callingMethodChain string) (BigIntNum, error) {
+	errPrefDto *ePref.ErrPrefixDto) (BigIntNum, error) {
 
 	if bIngNumUtil.lock == nil {
 		bIngNumUtil.lock = new(sync.Mutex)
@@ -79,15 +88,23 @@ func (bIngNumUtil *bigIntNumUtility) bigIntNumCopyOut(
 
 	defer bIngNumUtil.lock.Unlock()
 
-	ePrefix := "bigIntNumUtility.bigIntNumCopyOut() "
+	var ePrefix *ePref.ErrPrefixDto
 
-	if len(callingMethodChain) > 0 {
-		ePrefix = ePrefix + "\nCalling Method Chain:\n " + callingMethodChain
+	var err error
+
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
+		errPrefDto,
+		"bigIntNumElectron.resetBigIntNum()",
+		"")
+
+	if err != nil {
+		return BigIntNum{}, err
 	}
 
-	err := new(bigIntNumAtom).isBigIntNumValid(
+	err = new(bigIntNumAtom).isBigIntNumValid(
 		bNum,
-		"bigIntNumUtility.bigIntNumCopyOut() - bNum")
+		ePrefix.XCpy(" - bNum"))
 
 	if err != nil {
 
@@ -95,7 +112,7 @@ func (bIngNumUtil *bigIntNumUtility) bigIntNumCopyOut(
 			fmt.Errorf("%v\n"+
 				"Error: The source BigIntNum for the CopyOut operation is invalid.\n"+
 				"Error: %v",
-				ePrefix,
+				ePrefix.String(),
 				err)
 	}
 
