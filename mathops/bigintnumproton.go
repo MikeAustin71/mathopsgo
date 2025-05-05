@@ -1665,3 +1665,112 @@ func (bIntNumProton *bigIntNumProton) bigIntNumGetNumSepSymbol(
 
 	return '0', err
 }
+
+// decimalGetDecimal -
+// Converts the input parameter 'bNum' (type BigIntNum) value returns that value
+// as a Type Decimal instance. The resulting number value includes the decimal
+// place and decimal digits if they exist.
+//
+// The returned Decimal instance contains numeric separators (decimal separator,
+// thousands separator and currency symbol) copied from the current BigIntNum
+// instance, 'bNum'.
+//
+//	NOTE:
+//
+// This method does NOT test the validity of 'bNum', an
+// instance of type BigIntNum. The calling method must do this!
+func (bIntNumProton *bigIntNumProton) decimalGetDecimal(
+	bNum *BigIntNum,
+	errPrefDto *ePref.ErrPrefixDto) (Decimal, error) {
+
+	if bIntNumProton.lock == nil {
+		bIntNumProton.lock = new(sync.Mutex)
+	}
+
+	bIntNumProton.lock.Lock()
+
+	defer bIntNumProton.lock.Unlock()
+
+	var ePrefix *ePref.ErrPrefixDto
+
+	var err error
+
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
+		errPrefDto,
+		"bigIntNumProton.decimalGetDecimal",
+		"")
+
+	if err != nil {
+		return Decimal{}, err
+	}
+
+	if bNum == nil {
+
+		err = fmt.Errorf("%v\n"+
+			"FATAL ERROR: Input parameter 'bNum' is a nil pointer.\n",
+			ePrefix.String())
+
+		return Decimal{}, err
+	}
+
+	dec, err := new(Decimal).NewBigInt(big.NewInt(0).
+		Set(bNum.bigInt), bNum.precision)
+
+	if err != nil {
+
+		return Decimal{},
+			fmt.Errorf("%v\n"+
+				"Error returned by: \n"+
+				" dec, err := new(Decimal).NewBigInt(\n"+
+				"  big.NewInt(0).Set(bNum.bigInt), bNum.precision)\n"+
+				"Error= %v\n",
+				ePrefix.String(),
+				err.Error())
+	}
+
+	numSeps, err := new(bigIntNumAtom).getNumericSeparatorsDto(
+		bNum,
+		ePrefix)
+
+	if err != nil {
+
+		return Decimal{},
+			fmt.Errorf("%v\n"+
+				"Error returned by: \n"+
+				" numSeps, err := new(bigIntNumAtom).\n"+
+				"  getNumericSeparatorsDto(bNum, ePrefix)\n"+
+				"Error= %v\n",
+				ePrefix,
+				err.Error())
+	}
+
+	err = dec.SetNumericSeparatorsDto(numSeps)
+
+	if err != nil {
+
+		return Decimal{},
+			fmt.Errorf("%v\n"+
+				"Error returned by: \n"+
+				" dec, err := new(Decimal).NewBigInt(\n"+
+				"  big.NewInt(0).Set(bNum.bigInt), bNum.precision)\n"+
+				"Error= %v\n",
+				ePrefix.String(),
+				err.Error())
+	}
+
+	err = dec.IsValid(ePrefix.String() + "dec INVALID! ")
+
+	if err != nil {
+
+		return Decimal{},
+			fmt.Errorf("%v\n"+
+				"Validation Error returned by: \n"+
+				" err = dec.IsValid(ePrefix + \"dec INVALID! \")\n"+
+				"Validaton Error= %v\n",
+				ePrefix,
+				err.Error())
+	}
+
+	return dec, nil
+}
