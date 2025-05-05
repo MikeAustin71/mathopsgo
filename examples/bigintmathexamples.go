@@ -142,9 +142,10 @@ func ExampleSetPrecision_01() {
 }
 
 // ExampleBigIntCurrencyStr_01
+// Example Method
 func ExampleBigIntCurrencyStr_01(num1Str, expectedNumStr string, mode mathops.NegativeValueFmtMode) {
 
-	bINum, err := mathops.BigIntNum{}.NewNumStr(num1Str)
+	bINum, err := new(mathops.BigIntNum).NewNumStr(num1Str)
 
 	if err != nil {
 		fmt.Printf("Error returned by mathops.BigIntNum{}.NewNumStr(num1Str). "+
@@ -154,7 +155,15 @@ func ExampleBigIntCurrencyStr_01(num1Str, expectedNumStr string, mode mathops.Ne
 		return
 	}
 
-	outStr := bINum.FormatCurrencyStr(mode)
+	outStr, err := bINum.FormatCurrencyStr(mode)
+
+	if err != nil {
+		fmt.Printf("Error returned by bINum.FormatCurrencyStr(mode).\n"+
+			"Error= %v\n",
+			err.Error())
+
+		return
+	}
 
 	fmt.Println("       Original NumStr: ", "'", num1Str, "'")
 	fmt.Println("       Expected NumStr: ", "'", expectedNumStr, "'")

@@ -11,19 +11,19 @@ import (
 // used to perform math operations using the *big.Int Type.
 //
 // If you are unfamiliar with the *big.Int type, reference:
-// 						https://golang.org/pkg/math/big/
 //
+//	https://golang.org/pkg/math/big/
 type BigIntMathMultiply struct {
 	Input  BigIntPair
 	Result BigIntNum
 }
 
-// MultiplyBigInts - Receives two *big.Int numbers and their associated precision
+// BigIntMultiply - Receives two *big.Int numbers and their associated precision
 // specifications. This method then proceeds to perform a multiplication operation
 // by multiplying the 'multiplier' by the 'multiplicand' to generate the 'product'.
 // 'multiplier', 'multiplicand' and 'product' are configured as pairs of *big.Int
 // integer numbers and precision specifications. Taken together, an integer number
-// and precision specification are used to defined a fixed length floating point
+// and precision specification are used to define a fixed length floating point
 // number.
 //
 // Examples
@@ -37,24 +37,24 @@ type BigIntMathMultiply struct {
 // For example, in the problem 5 x 3 equals 15, the 5 is the 'multiplier',
 // 3 is the 'multiplicand' and 15 is the 'product' or result.
 //
-//							multiplier x multiplicand = product or result
+//	multiplier x multiplicand = product or result
 //
 // Consider the following multiplication example.
 //
-//							752.314 x 21.67894 = product
+//	752.314 x 21.67894 = product
 //
 // 'multiplier' and 'multiplicand' would be configured as follows:
-//									multiplier 						= 752314
-//                  multiplierPrecision		= 3
-//                  multiplicand 					= 2167894
-//                  multiplicandPrecision = 5
+//
+//										multiplier 						= 752314
+//	                 multiplierPrecision		= 3
+//	                 multiplicand 					= 2167894
+//	                 multiplicandPrecision = 5
 //
 // The 'product' value (16309.37006716) of 'multiplier' and 'multiplicand' would be calculated
 // and configured as follows:
 //
-// 									product						= 1630937006716
-//                  productPrecision	= 8
-//
+//										product						= 1630937006716
+//	                 productPrecision	= 8
 //
 // Input Parameters
 // ================
@@ -70,25 +70,27 @@ type BigIntMathMultiply struct {
 // =============
 //
 // product								*big.Int	- The product of the multiplier multiplied by
-//                                		the multiplicand.
+//
+//	the multiplicand.
 //
 // productPrecision				*big.Int	- The precision specification for the returned
-//                                		product. Here, the term precision is defined
-// 																		as the number of fractional digits to the
-//                                		right of the decimal place in the returned
-//                                		'product'. 'productPrecision' is always equal
-//																		to or greater than zero.
+//
+//	                               		product. Here, the term precision is defined
+//																			as the number of fractional digits to the
+//	                               		right of the decimal place in the returned
+//	                               		'product'. 'productPrecision' is always equal
+//																			to or greater than zero.
 //
 // Note: This method removes trailing fractional zeros from the result.
-//			 Example: 3.1200 is returned as 3.12
 //
-func (bMultiply BigIntMathMultiply) BigIntMultiply(
+//	Example: 3.1200 is returned as 3.12
+func (bMultiply *BigIntMathMultiply) BigIntMultiply(
 	multiplier,
 	multiplierPrecision,
 	multiplicand,
 	multiplicandPrecision *big.Int) (product *big.Int, productPrecision *big.Int, err error) {
 
-	ePrefix := "BigIntMathMultiply.BigIntMultiply() "
+	ePrefix := "BigIntMathMultiply.BigIntMultiply()"
 
 	product = big.NewInt(0)
 	productPrecision = big.NewInt(0)
@@ -113,8 +115,8 @@ func (bMultiply BigIntMathMultiply) BigIntMultiply(
 	bigZero := big.NewInt(0)
 
 	if multiplierPrecision.Cmp(bigZero) == -1 {
-		err = fmt.Errorf(ePrefix +
-			"Error: Input parameter multiplierPrecision is LESS THAN ZERO! " +
+		err = fmt.Errorf(ePrefix+
+			"Error: Input parameter multiplierPrecision is LESS THAN ZERO! "+
 			"multiplierPrecision='%v' ", multiplierPrecision.Text(10))
 
 		return product, productPrecision, err
@@ -122,8 +124,8 @@ func (bMultiply BigIntMathMultiply) BigIntMultiply(
 
 	if multiplicandPrecision.Cmp(bigZero) == -1 {
 
-		err = fmt.Errorf(ePrefix +
-			"Error: Input parameter multiplicandPrecision is LESS THAN ZERO! " +
+		err = fmt.Errorf(ePrefix+
+			"Error: Input parameter multiplicandPrecision is LESS THAN ZERO! "+
 			"multiplicandPrecision='%v' ", multiplicandPrecision.Text(10))
 
 		return product, productPrecision, err
@@ -133,11 +135,9 @@ func (bMultiply BigIntMathMultiply) BigIntMultiply(
 
 	product = big.NewInt(0).Mul(multiplier, multiplicand)
 
-
 	if product.Cmp(bigZero) == 0 {
 		productPrecision = big.NewInt(0)
 	}
-
 
 	// Delete trailing fractional zeros
 	// If productPrecision > 0
@@ -151,11 +151,10 @@ func (bMultiply BigIntMathMultiply) BigIntMultiply(
 
 		for mod10.Cmp(biBaseZero) == 0 && productPrecision.Cmp(bigZero) == 1 {
 			product.Set(newProduct)
-			productPrecision.Sub(productPrecision, bigOne )
+			productPrecision.Sub(productPrecision, bigOne)
 			newProduct, mod10 = big.NewInt(0).QuoRem(product, biBase10, scrap)
 		}
 	}
-
 
 	err = nil
 
@@ -166,7 +165,7 @@ func (bMultiply BigIntMathMultiply) BigIntMultiply(
 // to the power of 'exponent'. 'exponent' is an input parameter of
 // type *big.Int.
 //
-// 				product = multiplier x 10^exponent
+//	product = multiplier x 10^exponent
 //
 // The result is returned as a *big.Int type ('product') with a precision
 // specification ('productPrecision').
@@ -175,35 +174,41 @@ func (bMultiply BigIntMathMultiply) BigIntMultiply(
 // ================
 //
 // multiplier						*big.Int - 'multiplier' will be multiplied by 10 to power of
-//                       						'exponent' to generate the result or 'product'.
+//
+//	'exponent' to generate the result or 'product'.
 //
 // multiplierPrecision	*big.Int	- The precision specification for 'multiplier'.
-// 																	Precision specifies the number of digits to the
-//                                  right of the decimal place in 'multiplier'. This
-//                                  value must be greater than or equal to zero.
+//
+//																		Precision specifies the number of digits to the
+//	                                 right of the decimal place in 'multiplier'. This
+//	                                 value must be greater than or equal to zero.
 //
 // exponent							*big.Int	- Ten will be raised to the power of exponent and
-//                                  multiplied by 'multiplier' to generate the result
-//                                  or product. 'exponent' can be a negative value.
+//
+//	multiplied by 'multiplier' to generate the result
+//	or product. 'exponent' can be a negative value.
 //
 // Return Values
 // =============
 //
 // product							*big.Int	- The result generated by multiplying 'multiplier' by
-//                                  ten to the power of 'exponent'.
+//
+//	ten to the power of 'exponent'.
 //
 // productPrecision			*big.Int	- The precision specification for 'product'. Precision
-//                                  specifies the number of digits to the right of the
-//                                  decimal place in 'product'. This value will always
-//                                  be greater than or equal to zero.
+//
+//	specifies the number of digits to the right of the
+//	decimal place in 'product'. This value will always
+//	be greater than or equal to zero.
 //
 // err									error			- If 'multiplierPrecision' or 'exponent' are less than
-//                                  zero, an error will be returned.
+//
+//	zero, an error will be returned.
 //
 // Note: 	This method will remove trailing fractional zeros from the
-// 				final result (product).
 //
-func (bMultiply BigIntMathMultiply) BigIntMultiplyByTenToPower(
+//	final result (product).
+func (bMultiply *BigIntMathMultiply) BigIntMultiplyByTenToPower(
 	multiplier,
 	multiplierPrecision,
 	exponent *big.Int) (product *big.Int, productPrecision *big.Int, err error) {
@@ -214,7 +219,7 @@ func (bMultiply BigIntMathMultiply) BigIntMultiplyByTenToPower(
 	productPrecision = big.NewInt(0)
 	err = nil
 
-	if multiplier==nil {
+	if multiplier == nil {
 		multiplier = big.NewInt(0)
 	}
 
@@ -229,8 +234,8 @@ func (bMultiply BigIntMathMultiply) BigIntMultiplyByTenToPower(
 	bigZero := big.NewInt(0)
 
 	if multiplierPrecision.Cmp(bigZero) == -1 {
-		err = fmt.Errorf(ePrefix +
-			"Error: Input Parameter 'multiplierPrecision' is LESS THAN ZERO! " +
+		err = fmt.Errorf(ePrefix+
+			"Error: Input Parameter 'multiplierPrecision' is LESS THAN ZERO! "+
 			"multiplierPrecision='%v' ", multiplierPrecision.Text(10))
 
 		return product, productPrecision, err
@@ -256,7 +261,7 @@ func (bMultiply BigIntMathMultiply) BigIntMultiplyByTenToPower(
 				exponent)
 
 		if errx != nil {
-			err = fmt.Errorf(ePrefix + "%v", errx.Error())
+			err = fmt.Errorf(ePrefix+"%v", errx.Error())
 			return product, productPrecision, err
 		}
 
@@ -265,10 +270,10 @@ func (bMultiply BigIntMathMultiply) BigIntMultiplyByTenToPower(
 				multiplier,
 				multiplierPrecision,
 				quoFrac,
-				quoFracPrecision,)
+				quoFracPrecision)
 
 		if errx != nil {
-			err = fmt.Errorf(ePrefix + "%v", errx.Error())
+			err = fmt.Errorf(ePrefix+"%v", errx.Error())
 			product = big.NewInt(0)
 			productPrecision = big.NewInt(0)
 			return product, productPrecision, err
@@ -307,11 +312,11 @@ func (bMultiply BigIntMathMultiply) BigIntMultiplyByTenToPower(
 		product.Set(multiplier)
 		productPrecision = big.NewInt(0)
 
-	} else if exponent.Cmp(multiplierPrecision) == 1  {
+	} else if exponent.Cmp(multiplierPrecision) == 1 {
 		// exponent > multiplierPrecision
 		delta = big.NewInt(0).Sub(exponent, multiplierPrecision)
-		scale = big.NewInt(0).Exp(bigTen,delta, nil)
-		product = big.NewInt(0).Mul(multiplier,scale)
+		scale = big.NewInt(0).Exp(bigTen, delta, nil)
+		product = big.NewInt(0).Mul(multiplier, scale)
 		productPrecision = big.NewInt(0)
 
 	} else {
@@ -337,118 +342,87 @@ func (bMultiply BigIntMathMultiply) BigIntMultiplyByTenToPower(
 	return product, productPrecision, err
 }
 
-// MultiplyBigIntByTwoToPower - Multiplies a *big.Int number by powers
+// BigIntMultiplyByTwoToPower - Multiplies a *big.Int number by powers
 // of two and returns the result as a *big.Int value and associated
 // precision specification.
 //
-//
-// 						product = multiplier X 2^exponent
-//            productPrecision = multiplierPrecision
+//							product = multiplier X 2^exponent
+//	           productPrecision = multiplierPrecision
 //
 // Examples:
 // =========
+//
 //	multiplier			multiplierPrecision 	exponent		product
 //
 //	12345										5								15				4045.2096
 //								(0.12345 x 2^15 = 4045.2096)
+//
 // -------------------------------------------------------------
 //
-//    571										1									8			 14617.6
-//                (57.1 x 2^8 = 14617.6)
+//	571										1									8			 14617.6
+//	            (57.1 x 2^8 = 14617.6)
+//
 // -------------------------------------------------------------
 //
 // Input Parameters
 // ================
 //
-//
 // multiplier						*big.Int - 'multiplier' will be multiplied by two to power of
-//                       						'exponent' to generate the result or 'product'.
+//
+//	'exponent' to generate the result or 'product'.
 //
 // multiplierPrecision	*big.Int	- The precision specification for 'multiplier'.
-// 																	Precision specifies the number of digits to the
-//                                  right of the decimal place in 'multiplier'. This
-//                                  value must be greater than or equal to zero.
+//
+//																		Precision specifies the number of digits to the
+//	                                 right of the decimal place in 'multiplier'. This
+//	                                 value must be greater than or equal to zero.
 //
 // exponent							uint			- Two will be raised to the power of exponent and
-//                                  multiplied by 'multiplier' to generate the result
-//                                  or product.
 //
+//	multiplied by 'multiplier' to generate the result
+//	or product.
 //
 // Return Values
 // =============
 //
 // product 							*big.Int	- The multiplication result. product will be set equal
-//                                  to multiplier times two to the power of exponent.
+//
+//	to multiplier times two to the power of exponent.
 //
 // productPrecision			*big.Int  - The precision specification for 'product'. Precision
-// 																	specifies the number of digits to the right of the
-// 																	decimal place in 'product'. This value will always be
-// 																	greater than or equal to zero.
 //
+//	specifies the number of digits to the right of the
+//	decimal place in 'product'. This value will always be
+//	greater than or equal to zero.
 //
 // err									error			- If 'multiplierPrecision' is less than zero, an error
-// 																	will be returned.
+//
+//	will be returned.
 //
 // Note: This method will delete trailing fractional zeros from
-// 			 the returned result (product).
 //
-func (bMultiply BigIntMathMultiply) BigIntMultiplyByTwoToPower(
+//	the returned result (product).
+func (bMultiply *BigIntMathMultiply) BigIntMultiplyByTwoToPower(
 	multiplier,
 	multiplierPrecision *big.Int,
 	exponent uint) (product *big.Int, productPrecision *big.Int, err error) {
+
+	ePrefix := "BigIntMathMultiply.BigIntMultiplyByTwoToPower()"
 
 	product = big.NewInt(0)
 	productPrecision = big.NewInt(0)
 	err = nil
 
-	if multiplier == nil {
-		multiplier = big.NewInt(0)
-	}
-
-	if multiplierPrecision == nil {
-		multiplierPrecision = big.NewInt(0)
-	}
-
-	bigZero := big.NewInt(0)
-
-	if multiplierPrecision.Cmp(bigZero) == -1 {
-		ePrefix := "BigIntMathMultiply.BigIntMultiplyByTwoToPower() "
-		err = fmt.Errorf(ePrefix +
-			"Error: Input Parameter 'multiplierPrecision' is LESS THAN ZERO! " +
-			"multiplierPrecision='%v' ", multiplierPrecision.Text(10))
-		return product, productPrecision, err
-	}
-
-
-	if multiplier.Cmp(big.NewInt(0)) == 0 {
-		product = big.NewInt(0)
-		productPrecision = big.NewInt(0)
-		err = nil
-		return product, productPrecision, err
-	}
-
-	product = big.NewInt(0).Lsh(multiplier, exponent)
-	productPrecision.Set(multiplierPrecision)
-
-	// Delete trailing fractional zeros
-	if productPrecision.Cmp(bigZero) == 1 {
-		// productPrecision > 0
-		scrap := big.NewInt(0)
-		biBase10 := big.NewInt(10)
-		bigOne := big.NewInt(1)
-		biBaseZero := big.NewInt(0)
-		newProduct, mod10 := big.NewInt(0).QuoRem(product, biBase10, scrap)
-
-		for mod10.Cmp(biBaseZero) == 0 &&  productPrecision.Cmp(bigZero) == 1 {
-			product.Set(newProduct)
-			productPrecision.Sub(productPrecision,bigOne)
-			newProduct, mod10 = big.NewInt(0).QuoRem(product, biBase10, scrap)
-		}
-	}
+	product,
+		productPrecision,
+		err = new(bigIntMathMultiplyMechanics).
+		bigIntMultiplyByTwoToPower(multiplier,
+			multiplierPrecision,
+			exponent,
+			ePrefix)
 
 	return product, productPrecision, err
 }
-
 
 // FixedDecimalMultiply - This method receives two BigIntFixedDecimal
 // types and then proceeds to perform a multiplication operation by
@@ -466,43 +440,45 @@ func (bMultiply BigIntMathMultiply) BigIntMultiplyByTwoToPower(
 // For example, in the problem 5 x 3 equals 15, the 5 is the 'multiplier',
 // 3 is the 'multiplicand' and 15 is the 'product' or result.
 //
-//							multiplier x multiplicand = product or result
+//	multiplier x multiplicand = product or result
 //
 // 'multiplier', 'multiplicand' and 'product' are BigIntFixed Decimal types
 // which may be used to defined fixed length floating point numbers.
 //
 // The BigIntFixedDecimal structure is defined as
-// type BigIntFixedDecimal struct {
-//	integerNum *big.Int  -	All of the numeric digits, both integer and fractional,
-// 													necessary to define a fixed length floating point number.
-// 													The number of digits to the right of the decimal place
-// 													is specified by the data field,
-// 													BigIntFixedDecimal.precision.
 //
-//	precision  uint				- Specifies the number of digits to the right of the decimal
-// 													place in the series of numeric digits represented by data
-// 													field BigIntFixedDecimal.integerNum.
+//	type BigIntFixedDecimal struct {
+//		integerNum *big.Int  -	All of the numeric digits, both integer and fractional,
+//														necessary to define a fixed length floating point number.
+//														The number of digits to the right of the decimal place
+//														is specified by the data field,
+//														BigIntFixedDecimal.precision.
+//
+//		precision  uint				- Specifies the number of digits to the right of the decimal
+//														place in the series of numeric digits represented by data
+//														field BigIntFixedDecimal.integerNum.
 //
 // }
 //
+//		To represent the floating point number 52.459
+//		a BigIntDecimal Structure would be configured as follows:
+//				BigIntFixedDecimal.integerNum	= 52459
+//				BigIntFixedDecimal.precision	= 3
 //
-// 	To represent the floating point number 52.459
-// 	a BigIntDecimal Structure would be configured as follows:
-// 			BigIntFixedDecimal.integerNum	= 52459
-// 			BigIntFixedDecimal.precision	= 3
-//
-//  Consider the following multiplication example:
-// 						product =	752.314 x 21.67894 = 16309.37006716
+//	 Consider the following multiplication example:
+//							product =	752.314 x 21.67894 = 16309.37006716
 //
 // 'multiplier' and 'multiplicand' would be configured as follows:
-//									multiplier.integerNum		= 752314
-//                  multiplier.precision		= 3
-//                  multiplicand.integerNum	= 2167894
-//                  multiplicand.precision	= 5
+//
+//										multiplier.integerNum		= 752314
+//	                 multiplier.precision		= 3
+//	                 multiplicand.integerNum	= 2167894
+//	                 multiplicand.precision	= 5
 //
 // The 'product' would be calculated as follows:
-//									product.integerNum	= 1630937006716
-//                  product.precision  	= 8
+//
+//										product.integerNum	= 1630937006716
+//	                 product.precision  	= 8
 //
 // Input Parameters
 // ================
@@ -515,13 +491,13 @@ func (bMultiply BigIntMathMultiply) BigIntMultiplyByTwoToPower(
 // =============
 //
 // product			BigIntFixedDecimal	- The product of the 'multiplier' multiplied by
-//                                		the 'multiplicand'.
 //
-func (bMultiply BigIntMathMultiply) FixedDecimalMultiply(
+//	the 'multiplicand'.
+func (bMultiply *BigIntMathMultiply) FixedDecimalMultiply(
 	multiplier BigIntFixedDecimal,
 	multiplicand BigIntFixedDecimal) (product BigIntFixedDecimal) {
 
-	product = BigIntFixedDecimal{}.NewZero(0)
+	product = new(BigIntFixedDecimal).NewZero(0)
 
 	multiplier.IsValid()
 	multiplicand.IsValid()
@@ -543,7 +519,7 @@ func (bMultiply BigIntMathMultiply) FixedDecimalMultiply(
 		result.Quo(result, scale)
 		bigFive := big.NewInt(5)
 
-		if result.Cmp(big.NewInt(0))  == -1 {
+		if result.Cmp(big.NewInt(0)) == -1 {
 			bigFive.Neg(bigFive)
 		}
 
@@ -562,65 +538,78 @@ func (bMultiply BigIntMathMultiply) FixedDecimalMultiply(
 // Examples:
 // ========
 //
-// 						product = multiplier X 2^exponent
+//	product = multiplier X 2^exponent
 //
 // ------------------------------------------------------------
+//
 //	multiplier			multiplierPrecision 	exponent		product
+//
 // ------------------------------------------------------------
 //
 //	12345										5								15				4045.2096
 //								(0.12345 x 2^15 = 4045.2096)
+//
 // -------------------------------------------------------------
 //
-//  571											1									8			 14617.6
-//                (57.1 x 2^8 = 14617.6)
+//	571											1									8			 14617.6
+//	              (57.1 x 2^8 = 14617.6)
 //
 // Note: This method will delete trailing fractional zeros from
-// 			 the returned product.
+//
+//	the returned product.
 //
 // The returned BigIntNum multiplication 'result' will contain default numeric
 // separators (decimal separator, thousands separator and currency symbol)
-//
-func (bMultiply BigIntMathMultiply) MultiplyBigIntByTwoToPower(
+func (bMultiply *BigIntMathMultiply) MultiplyBigIntByTwoToPower(
 	multiplier *big.Int,
-	multiplierPrecision,
-	exponent uint) BigIntNum {
+	multiplierPrecision uint,
+	exponent uint) (BigIntNum, error) {
+
+	ePrefix := "BigIntMathMultiply.MultiplyBigIntByTwoToPower()"
 
 	// error is disregarded because 'multiplierPrecision' will
 	// always be greater than or equal to zero.
-  product, productPrecision, _ :=
-  	BigIntMathMultiply{}.BigIntMultiplyByTwoToPower(
-  			multiplier,
-  			big.NewInt(0).SetUint64(uint64(multiplierPrecision)),
-  			exponent)
+	product, productPrecision, err :=
+		new(bigIntMathMultiplyMechanics).bigIntMultiplyByTwoToPower(
+			multiplier,
+			big.NewInt(0).SetUint64(uint64(multiplierPrecision)),
+			exponent,
+			ePrefix)
 
-  // error is disregarded because productPrecision will never be
-  // greater than multiplierPrecision.
-  biNum, _ :=BigIntNum{}.NewBigIntPrecision(product, productPrecision)
+	if err != nil {
+		return BigIntNum{}, err
+	}
 
-  return biNum
+	// error should never trigger because productPrecision will
+	// never be greater than multiplierPrecision.
+	biNum, err := BigIntNum{}.NewBigIntPrecision(product, productPrecision)
+
+	return biNum, err
 }
 
 // New - Creates a BigIntMathMultiply instance with data
 // variables initialized to zero.
-//
-func (bMultiply BigIntMathMultiply) New() BigIntMathMultiply {
+func (bMultiply *BigIntMathMultiply) New() BigIntMathMultiply {
 
-	b2Math := BigIntMathMultiply{}
+	b2Math, _ := new(bigIntMathMultiplyElectron).
+		newBigIntMathMultiply()
 
-	b2Math.Input = BigIntPair{}.New()
+	/*
+		 b2Math := BigIntMathMultiply{}
 
-	baseZero := big.NewInt(0)
+		b2Math.Input = new(BigIntPair).New()
 
-	b2Math.Result = BigIntNum{}.NewBigInt(baseZero, 0)
+		baseZero := big.NewInt(0)
+
+		b2Math.Result = BigIntNum{}.NewBigInt(baseZero, 0)
+	*/
 
 	return b2Math
 }
 
-// NewNewBigIntPair - Creates a new BigIntMathMultiply based on input parameter
+// NewBigIntPairResult - Creates a new BigIntMathMultiply based on input parameter
 // type, 'BigIntPair'
-//
-func (bMultiply BigIntMathMultiply) NewBigIntPairResult(bPair BigIntPair) BigIntMathMultiply {
+func (bMultiply *BigIntMathMultiply) NewBigIntPairResult(bPair BigIntPair) BigIntMathMultiply {
 
 	b2Math := BigIntMathMultiply{}
 
@@ -641,7 +630,7 @@ func (bMultiply BigIntMathMultiply) NewBigIntPairResult(bPair BigIntPair) BigInt
 // For example, in the problem 5 x 3 equals 15, the 5 is the 'multiplier',
 // 3 is the 'multiplicand' and 15 is the 'product' or result.
 //
-//							multiplier x multiplicand = product or result
+//	multiplier x multiplicand = product or result
 //
 // Input Parameters
 // ================
@@ -661,8 +650,7 @@ func (bMultiply BigIntMathMultiply) NewBigIntPairResult(bPair BigIntPair) BigInt
 //
 // The returned BigIntNum multiplication 'result' will contain default numeric
 // separators (decimal separator, thousands separator and currency symbol)
-//
-func (bMultiply BigIntMathMultiply) MultiplyBigInts(
+func (bMultiply *BigIntMathMultiply) MultiplyBigInts(
 	multiplier *big.Int,
 	multiplierPrecision uint,
 	multiplicand *big.Int,
@@ -689,7 +677,7 @@ func (bMultiply BigIntMathMultiply) MultiplyBigInts(
 // For example, in the problem 5 x 3 equals 15, the 5 is the 'multiplier',
 // 3 is the 'multiplicand' and 15 is the 'product' or result.
 //
-//							multiplier x multiplicand = product or result
+//	multiplier x multiplicand = product or result
 //
 // This method performs the multiplication operation and afterwards returns the
 // result or 'product' as a BigIntNum type.
@@ -697,12 +685,11 @@ func (bMultiply BigIntMathMultiply) MultiplyBigInts(
 // The returned BigIntNum multiplication 'result' will contain numeric separators
 // (decimal separator, thousands separator and currency symbol) copied from
 // input parameter, 'multiplier'.
-//
-func (bMultiply BigIntMathMultiply) MultiplyBigIntNums(
+func (bMultiply *BigIntMathMultiply) MultiplyBigIntNums(
 	multiplier BigIntNum,
 	multiplicand BigIntNum) BigIntNum {
 
-	bPair := BigIntPair{}.NewBigIntNum(multiplier, multiplicand)
+	bPair := new(BigIntPair).NewBigIntNum(multiplier, multiplicand)
 
 	finalResult := bMultiply.MultiplyPair(bPair)
 
@@ -723,7 +710,7 @@ func (bMultiply BigIntMathMultiply) MultiplyBigIntNums(
 // For example, in the problem 5 x 3 equals 15, the 5 is the 'multiplier',
 // 3 is the 'multiplicand' and 15 is the 'product' or result.
 //
-//							multiplier x multiplicand = product or result
+//	multiplier x multiplicand = product or result
 //
 // This method performs the multiplication operation described above and afterwards returns the
 // result or 'product' as a BigIntNum type.
@@ -731,8 +718,7 @@ func (bMultiply BigIntMathMultiply) MultiplyBigIntNums(
 // The returned BigIntNum multiplication 'result' will contain numeric separators
 // (decimal separator, thousands separator and currency symbol) copied from
 // input parameter, 'multiplier'.
-//
-func (bMultiply BigIntMathMultiply) MultiplyBigIntNumArray(
+func (bMultiply *BigIntMathMultiply) MultiplyBigIntNumArray(
 	multiplier BigIntNum,
 	multiplicands []BigIntNum) BigIntNum {
 
@@ -773,15 +759,17 @@ func (bMultiply BigIntMathMultiply) MultiplyBigIntNumArray(
 //
 // Example
 // =======
-// 										Multiplicands												Output
+//
+//	Multiplicands												Output
+//
 // Multiplier				    	Array														Array
 //
-//		3			x				multiplicands[0] = 2			=				  outputarray[0] =  6
-//		3			x				multiplicands[1] = 3			=				  outputarray[1] =  9
-//		3			x				multiplicands[2] = 4			=				  outputarray[2] = 12
-//		3			x				multiplicands[3] = 5			=				  outputarray[3] = 15
-//		3			x				multiplicands[4] = 6			=				  outputarray[4] = 18
-//		3			x				multiplicands[5] = 7			=				  outputarray[5] = 21
+//	3			x				multiplicands[0] = 2			=				  outputarray[0] =  6
+//	3			x				multiplicands[1] = 3			=				  outputarray[1] =  9
+//	3			x				multiplicands[2] = 4			=				  outputarray[2] = 12
+//	3			x				multiplicands[3] = 5			=				  outputarray[3] = 15
+//	3			x				multiplicands[4] = 6			=				  outputarray[4] = 18
+//	3			x				multiplicands[5] = 7			=				  outputarray[5] = 21
 //
 // This method performs the multiplication operation described above and afterwards returns the
 // result or 'product' in an Array of 'BigIntNums' ([] BigIntNums).
@@ -789,8 +777,7 @@ func (bMultiply BigIntMathMultiply) MultiplyBigIntNumArray(
 // Each element of the returned BigIntNum array 'result' will contain
 // numeric separators (decimal separator, thousands separator and
 // currency symbol) copied from input parameter, 'multiplier'.
-//
-func (bMultiply BigIntMathMultiply) MultiplyBigIntNumOutputToArray(
+func (bMultiply *BigIntMathMultiply) MultiplyBigIntNumOutputToArray(
 	multiplier BigIntNum,
 	multiplicands []BigIntNum) []BigIntNum {
 
@@ -811,14 +798,16 @@ func (bMultiply BigIntMathMultiply) MultiplyBigIntNumOutputToArray(
 		bPair := BigIntPair{}.NewBigIntNum(bINumInterimResult, multiplicands[i])
 
 		resultArray[i] = bMultiply.multiplyPairNoNumSeps(bPair)
-		_=resultArray[i].SetNumericSeparatorsDto(numSeps)
+		_ = resultArray[i].SetNumericSeparatorsDto(numSeps)
 	}
 
 	return resultArray
 }
 
 // MultiplyBigIntNumSeries - Receives one input parameter of Type BigIntNum which is classified
-//  as the 'multiplier'. The second input parameter is a series of BigIntNum Types labeled,
+//
+//	as the 'multiplier'. The second input parameter is a series of BigIntNum Types labeled,
+//
 // 'multiplicands'. The first element of the 'multiplicands' series is multiplied by the 'multiplier'
 // to produce a 'product'. That 'product' replaces the 'multiplier' and is multiplied by the next
 // element in the multiplicands series. This process is continued through the last element in the
@@ -831,7 +820,7 @@ func (bMultiply BigIntMathMultiply) MultiplyBigIntNumOutputToArray(
 // For example, in the problem 5 x 3 equals 15, the 5 is the 'multiplier',
 // 3 is the 'multiplicand' and 15 is the 'product' or result.
 //
-//							multiplier x multiplicand = product or result
+//	multiplier x multiplicand = product or result
 //
 // This method performs the multiplication operation described above and afterwards returns the
 // result or 'product' as a BigIntNum type.
@@ -839,8 +828,7 @@ func (bMultiply BigIntMathMultiply) MultiplyBigIntNumOutputToArray(
 // The returned BigIntNum multiplication 'result' will contain numeric separators (decimal
 // separator, thousands separator and currency symbol) copied from input parameter,
 // 'multiplier'.
-//
-func (bMultiply BigIntMathMultiply) MultiplyBigIntNumSeries(
+func (bMultiply *BigIntMathMultiply) MultiplyBigIntNumSeries(
 	multiplier BigIntNum,
 	multiplicands ...BigIntNum) BigIntNum {
 
@@ -869,56 +857,104 @@ func (bMultiply BigIntMathMultiply) MultiplyBigIntNumSeries(
 // MultiplyBigIntNumByTwo - Receives a BigIntNum input parameter 'base' and then
 // proceeds to multiply this value times two (2).
 //
-// 								product = base X 2
+//	product = base X 2
 //
 // The product of this multiplication operation is returned as a BigIntNum.
 // This returned BigIntNum 'product' will contain numeric separators (decimal
 // separator, thousands separator and currency symbol) copied from input
 // parameter,'base'.
-//
-func (bMultiply BigIntMathMultiply) MultiplyBigIntNumByTwo(base BigIntNum) BigIntNum {
+func (bMultiply *BigIntMathMultiply) MultiplyBigIntNumByTwo(base BigIntNum) (BigIntNum, error) {
+
+	ePrefix := "BigIntMathMultiply.MultiplyBigIntNumByTwo()"
 
 	result := big.NewInt(0).Lsh(base.bigInt, 1)
 
-	bINumResult := BigIntNum{}.NewBigInt(result, base.GetPrecisionUint())
+	bINumResult, err := new(BigIntNum).NewBigInt(result, base.GetPrecisionUint())
 
-	_ = bINumResult.SetNumericSeparatorsDto(base.GetNumericSeparatorsDto())
+	if err != nil {
 
-	return bINumResult
+		return BigIntNum{},
+			fmt.Errorf("%v\n"+
+				"Error returned by: \n"+
+				" bINumResult, err := new(BigIntNum).NewBigInt(result, base.GetPrecisionUint())\n"+
+				"Error= %v\n",
+				ePrefix,
+				err.Error())
+
+	}
+
+	err = bINumResult.SetNumericSeparatorsDto(base.GetNumericSeparatorsDto())
+
+	if err != nil {
+
+		return BigIntNum{},
+			fmt.Errorf("%v\n"+
+				"Error returned by: \n"+
+				" bINumResult, err := new(BigIntNum).NewBigInt(result, base.GetPrecisionUint())\n"+
+				"Error= %v\n",
+				ePrefix,
+				err.Error())
+
+	}
+	return bINumResult, nil
 }
 
-// MultiplyBigIntNumByTwo - Receives a BigIntNum input parameter 'base' and then
+// MultiplyBigIntNumByTwoToPower - Receives a BigIntNum input parameter 'base' and then
 // proceeds to multiply this value times two to the power of 'exponent'.
 //
-// 								product = base X 2^exponent
+//	product = base X 2^exponent
 //
 // The product of this multiplication operation is returned as a BigIntNum.
 // This returned BigIntNum 'product' will contain numeric separators (decimal
 // separator, thousands separator and currency symbol) copied from input
 // parameter,'base'.
-//
-func (bMultiply BigIntMathMultiply) MultiplyBigIntNumByTwoToPower(base BigIntNum, exponent uint) BigIntNum {
+func (bMultiply *BigIntMathMultiply) MultiplyBigIntNumByTwoToPower(base BigIntNum, exponent uint) (BigIntNum, error) {
+
+	ePrefix := "BigIntMathMultiply.MultiplyBigIntNumByTwoToPower()"
 
 	result := big.NewInt(0).Lsh(base.bigInt, exponent)
 
-	bINumResult := BigIntNum{}.NewBigInt(result, base.GetPrecisionUint())
+	bINumResult, err := new(BigIntNum).NewBigInt(result, base.GetPrecisionUint())
 
-	_ = bINumResult.SetNumericSeparatorsDto(base.GetNumericSeparatorsDto())
+	if err != nil {
 
-	return bINumResult
+		return BigIntNum{},
+			fmt.Errorf("%v\n"+
+				"Error returned by: \n"+
+				" bINumResult, err := new(BigIntNum).NewBigInt(result, base.GetPrecisionUint())\n"+
+				"Error= %v\n",
+				ePrefix,
+				err.Error())
+
+	}
+
+	err = bINumResult.SetNumericSeparatorsDto(base.GetNumericSeparatorsDto())
+
+	if err != nil {
+
+		return BigIntNum{},
+			fmt.Errorf("%v\n"+
+				"Error returned by: \n"+
+				" err = bINumResult.SetNumericSeparatorsDto(base.GetNumericSeparatorsDto())\n"+
+				"Error= %v\n",
+				ePrefix,
+				err.Error())
+
+	}
+
+	return bINumResult, nil
 }
 
 // MultiplyBigIntNumByThree - Receives a BigIntNum input parameter 'base' and then
 // proceeds to multiply this value times three (3).
 //
-// 								product = base X 3
+//	product = base X 3
 //
 // The product of this multiplication operation is returned as a BigIntNum.
 // This returned BigIntNum 'product' will contain numeric separators (decimal
 // separator, thousands separator and currency symbol) copied from input
 // parameter,'base'.
-//
-func (bMultiply BigIntMathMultiply) MultiplyBigIntNumByThree(base BigIntNum) BigIntNum {
+func (bMultiply *BigIntMathMultiply) MultiplyBigIntNumByThree(base BigIntNum) BigIntNum {
 
 	bPair := BigIntPair{}.NewBigIntNum(base, BigIntNum{}.NewThree(0))
 
@@ -928,14 +964,13 @@ func (bMultiply BigIntMathMultiply) MultiplyBigIntNumByThree(base BigIntNum) Big
 // MultiplyBigIntNumByFive - Receives a BigIntNum input parameter 'base' and then
 // proceeds to multiply this value times five (5).
 //
-// 								product = base X 5
+//	product = base X 5
 //
 // The product of this multiplication operation is returned as a BigIntNum.
 // This returned BigIntNum 'product' will contain numeric separators (decimal
 // separator, thousands separator and currency symbol) copied from input
 // parameter,'base'.
-//
-func (bMultiply BigIntMathMultiply) MultiplyBigIntNumByFive(base BigIntNum) BigIntNum {
+func (bMultiply *BigIntMathMultiply) MultiplyBigIntNumByFive(base BigIntNum) BigIntNum {
 
 	bPair := BigIntPair{}.NewBigIntNum(base, BigIntNum{}.NewFive(0))
 
@@ -945,14 +980,13 @@ func (bMultiply BigIntMathMultiply) MultiplyBigIntNumByFive(base BigIntNum) BigI
 // MultiplyBigIntNumByTen - Receives a BigIntNum input parameter 'base' and then
 // proceeds to multiply this value times ten (10).
 //
-// 								product = base X 10
+//	product = base X 10
 //
 // The product of this multiplication operation is returned as a BigIntNum.
 // This returned BigIntNum 'product' will contain numeric separators (decimal
 // separator, thousands separator and currency symbol) copied from input
 // parameter,'base'.
-//
-func (bMultiply BigIntMathMultiply) MultiplyBigIntNumByTen(base BigIntNum) BigIntNum {
+func (bMultiply *BigIntMathMultiply) MultiplyBigIntNumByTen(base BigIntNum) BigIntNum {
 
 	bPair := BigIntPair{}.NewBigIntNum(base, BigIntNum{}.NewTen(0))
 
@@ -963,7 +997,7 @@ func (bMultiply BigIntMathMultiply) MultiplyBigIntNumByTen(base BigIntNum) BigIn
 // and 'tenExponent'. This method then proceeds to multiply 'base' time 10 to the
 // exponent, 'tenExponent'.
 //
-//		result = base X 10^tenExponent
+//	result = base X 10^tenExponent
 //
 // The exponent can be a negative value and/or a fractional value.
 //
@@ -984,8 +1018,7 @@ func (bMultiply BigIntMathMultiply) MultiplyBigIntNumByTen(base BigIntNum) BigIn
 //
 // If the precision of the return value precision exceeds input parameter 'maxPrecision',
 // the return value will be rounded to 'maxPrecision' decimal places.
-//
-func (bMultiply BigIntMathMultiply) MultiplyBigIntNumByTenToPower(
+func (bMultiply *BigIntMathMultiply) MultiplyBigIntNumByTenToPower(
 	base, tenExponent BigIntNum,
 	maxPrecision uint) (BigIntNum, error) {
 
@@ -1016,7 +1049,7 @@ func (bMultiply BigIntMathMultiply) MultiplyBigIntNumByTenToPower(
 // and a uint64 input parameter, 'tenExponent'. This method then proceeds to multiply
 // 'base' time 10 to the exponent, 'tenExponent'.
 //
-//										result = base X 10^tenExponent
+//	result = base X 10^tenExponent
 //
 // Input parameter 'maxPrecision' is used to control the maximum precision for the
 // result returned by this method. Precision is defined as the the number of fractional
@@ -1035,8 +1068,7 @@ func (bMultiply BigIntMathMultiply) MultiplyBigIntNumByTenToPower(
 //
 // If the precision of the return value precision exceeds input parameter 'maxPrecision',
 // the return value will be rounded to 'maxPrecision' decimal places.
-//
-func (bMultiply BigIntMathMultiply) MultiplyBigIntNumByTenToIntPower(
+func (bMultiply *BigIntMathMultiply) MultiplyBigIntNumByTenToIntPower(
 	base BigIntNum,
 	tenExponent uint64,
 	maxPrecision uint) BigIntNum {
@@ -1068,7 +1100,7 @@ func (bMultiply BigIntMathMultiply) MultiplyBigIntNumByTenToIntPower(
 // For example, in the problem 5 x 3 equals 15, the 5 is the 'multiplier',
 // 3 is the 'multiplicand' and 15 is the 'product' or result.
 //
-//							multiplier x multiplicand = product or result
+//	multiplier x multiplicand = product or result
 //
 // This method performs the multiplication operation and afterwards returns the
 // result or 'product' as a BigIntNum type.
@@ -1076,8 +1108,7 @@ func (bMultiply BigIntMathMultiply) MultiplyBigIntNumByTenToIntPower(
 // The returned BigIntNum multiplication 'result' will contain numeric separators (decimal
 // separator, thousands separator and currency symbol) copied from input parameter,
 // 'multiplier'.
-//
-func (bMultiply BigIntMathMultiply) MultiplyDecimal(
+func (bMultiply *BigIntMathMultiply) MultiplyDecimal(
 	multiplier,
 	multiplicand Decimal) (BigIntNum, error) {
 
@@ -1112,7 +1143,7 @@ func (bMultiply BigIntMathMultiply) MultiplyDecimal(
 // For example, in the problem 5 x 3 equals 15, the 5 is the 'multiplier',
 // 3 is the 'multiplicand' and 15 is the 'product' or result.
 //
-//							multiplier x multiplicand = product or result
+//	multiplier x multiplicand = product or result
 //
 // This method performs the multiplication operation described above and afterwards returns the
 // result or 'product' as a BigIntNum type.
@@ -1120,8 +1151,7 @@ func (bMultiply BigIntMathMultiply) MultiplyDecimal(
 // The returned BigIntNum multiplication 'result' will contain numeric separators (decimal
 // separator, thousands separator and currency symbol) copied from input parameter,
 // 'multiplier'.
-//
-func (bMultiply BigIntMathMultiply) MultiplyDecimalArray(
+func (bMultiply *BigIntMathMultiply) MultiplyDecimalArray(
 	multiplier Decimal,
 	multiplicands []Decimal) (BigIntNum, error) {
 
@@ -1193,24 +1223,24 @@ func (bMultiply BigIntMathMultiply) MultiplyDecimalArray(
 //
 // Example
 // =======
-// 										Multiplicands												Output
+//
+//	Multiplicands												Output
+//
 // Multiplier				    	Array														Array
 //
-//		3			x				multiplicands[0] = 2			=				  outputarray[0] =  6
-//		3			x				multiplicands[1] = 3			=				  outputarray[1] =  9
-//		3			x				multiplicands[2] = 4			=				  outputarray[2] = 12
-//		3			x				multiplicands[3] = 5			=				  outputarray[3] = 15
-//		3			x				multiplicands[4] = 6			=				  outputarray[4] = 18
-//		3			x				multiplicands[5] = 7			=				  outputarray[5] = 21
-//
+//	3			x				multiplicands[0] = 2			=				  outputarray[0] =  6
+//	3			x				multiplicands[1] = 3			=				  outputarray[1] =  9
+//	3			x				multiplicands[2] = 4			=				  outputarray[2] = 12
+//	3			x				multiplicands[3] = 5			=				  outputarray[3] = 15
+//	3			x				multiplicands[4] = 6			=				  outputarray[4] = 18
+//	3			x				multiplicands[5] = 7			=				  outputarray[5] = 21
 //
 // This method performs the multiplication operation described above and afterwards returns the
 // result or 'product' in an Array of 'Decimals' ([] Decimals).
 //
 // The returned Decimal Array ([]Decimal) will contain numeric separators (decimal separator,
 // thousands separator and currency symbol) copied from input parameter, 'multiplier'.
-//
-func (bMultiply BigIntMathMultiply) MultiplyDecimalOutputToArray(
+func (bMultiply *BigIntMathMultiply) MultiplyDecimalOutputToArray(
 	multiplier Decimal,
 	multiplicands []Decimal) ([]Decimal, error) {
 
@@ -1266,7 +1296,9 @@ func (bMultiply BigIntMathMultiply) MultiplyDecimalOutputToArray(
 }
 
 // MultiplyDecimalSeries - Receives one input parameter of Type Decimal which is classified
-//  as the 'multiplier'. The second input parameter is a comma delimited series of Decimal
+//
+//	as the 'multiplier'. The second input parameter is a comma delimited series of Decimal
+//
 // Types labeled, 'multiplicands'. The first element of the 'multiplicands' series is multiplied
 // by the 'multiplier' to produce a 'product'. That 'product' replaces the 'multiplier' and is
 // multiplied by the next element in the multiplicands series. This process is continued through
@@ -1280,7 +1312,7 @@ func (bMultiply BigIntMathMultiply) MultiplyDecimalOutputToArray(
 // For example, in the problem 5 x 3 equals 15, the 5 is the 'multiplier',
 // 3 is the 'multiplicand' and 15 is the 'product' or result.
 //
-//							multiplier x multiplicand = product or result
+//	multiplier x multiplicand = product or result
 //
 // This method performs the multiplication operation described above and afterwards returns the
 // result or 'product' as a BigIntNum type.
@@ -1288,8 +1320,7 @@ func (bMultiply BigIntMathMultiply) MultiplyDecimalOutputToArray(
 // The returned BigIntNum multiplication 'result' will contain numeric separators (decimal
 // separator, thousands separator and currency symbol) copied from input parameter,
 // 'multiplier'.
-//
-func (bMultiply BigIntMathMultiply) MultiplyDecimalSeries(
+func (bMultiply *BigIntMathMultiply) MultiplyDecimalSeries(
 	multiplier Decimal,
 	multiplicands ...Decimal) (BigIntNum, error) {
 
@@ -1355,7 +1386,7 @@ func (bMultiply BigIntMathMultiply) MultiplyDecimalSeries(
 // For example, in the problem 5 x 3 equals 15, the 5 is the 'multiplier',
 // 3 is the 'multiplicand' and 15 is the 'product' or result.
 //
-//							multiplier x multiplicand = product or result
+//	multiplier x multiplicand = product or result
 //
 // This method performs the multiplication operation and afterwards returns the
 // result or 'product' as a BigIntNum type.
@@ -1365,8 +1396,7 @@ func (bMultiply BigIntMathMultiply) MultiplyDecimalSeries(
 // The returned BigIntNum multiplication 'result' will contain numeric separators (decimal
 // separator, thousands separator and currency symbol) copied from input parameter,
 // 'multiplier'.
-//
-func (bMultiply BigIntMathMultiply) MultiplyIntAry(
+func (bMultiply *BigIntMathMultiply) MultiplyIntAry(
 	multiplier,
 	multiplicand IntAry) (BigIntNum, error) {
 
@@ -1402,7 +1432,7 @@ func (bMultiply BigIntMathMultiply) MultiplyIntAry(
 // For example, in the problem 5 x 3 equals 15, the 5 is the 'multiplier',
 // 3 is the 'multiplicand' and 15 is the 'product' or result.
 //
-//							multiplier x multiplicand = product or result
+//	multiplier x multiplicand = product or result
 //
 // This method performs the multiplication operation described above and afterwards returns the
 // result or 'product' as a BigIntNum type.
@@ -1410,8 +1440,7 @@ func (bMultiply BigIntMathMultiply) MultiplyIntAry(
 // The returned BigIntNum multiplication 'result' will contain numeric separators (decimal
 // separator, thousands separator and currency symbol) copied from input parameter,
 // 'multiplier'.
-//
-func (bMultiply BigIntMathMultiply) MultiplyIntAryArray(
+func (bMultiply *BigIntMathMultiply) MultiplyIntAryArray(
 	multiplier IntAry,
 	multiplicands []IntAry) (BigIntNum, error) {
 
@@ -1484,16 +1513,17 @@ func (bMultiply BigIntMathMultiply) MultiplyIntAryArray(
 //
 // Example
 // =======
-// 										Multiplicands												Output
+//
+//	Multiplicands												Output
+//
 // Multiplier				    	Array														Array
 //
-//		3			x				multiplicands[0] = 2			=				  outputarray[0] =  6
-//		3			x				multiplicands[1] = 3			=				  outputarray[1] =  9
-//		3			x				multiplicands[2] = 4			=				  outputarray[2] = 12
-//		3			x				multiplicands[3] = 5			=				  outputarray[3] = 15
-//		3			x				multiplicands[4] = 6			=				  outputarray[4] = 18
-//		3			x				multiplicands[5] = 7			=				  outputarray[5] = 21
-//
+//	3			x				multiplicands[0] = 2			=				  outputarray[0] =  6
+//	3			x				multiplicands[1] = 3			=				  outputarray[1] =  9
+//	3			x				multiplicands[2] = 4			=				  outputarray[2] = 12
+//	3			x				multiplicands[3] = 5			=				  outputarray[3] = 15
+//	3			x				multiplicands[4] = 6			=				  outputarray[4] = 18
+//	3			x				multiplicands[5] = 7			=				  outputarray[5] = 21
 //
 // This method performs the multiplication operation described above and afterwards returns the
 // result or 'product' in an Array of 'IntArys' ([]IntAry).
@@ -1501,8 +1531,7 @@ func (bMultiply BigIntMathMultiply) MultiplyIntAryArray(
 // Each element in the returned []IntAry will contain numeric separators (decimal
 // separator, thousands separator and currency symbol) copied from input parameter,
 // 'multiplier'.
-//
-func (bMultiply BigIntMathMultiply) MultiplyIntAryOutputToArray(
+func (bMultiply *BigIntMathMultiply) MultiplyIntAryOutputToArray(
 	multiplier IntAry,
 	multiplicands []IntAry) ([]IntAry, error) {
 
@@ -1559,7 +1588,9 @@ func (bMultiply BigIntMathMultiply) MultiplyIntAryOutputToArray(
 }
 
 // MultiplyIntArySeries - Receives one input parameter of Type IntAry which is classified
-//  as the 'multiplier'. The second input parameter is a comma separated series of IntAry Types
+//
+//	as the 'multiplier'. The second input parameter is a comma separated series of IntAry Types
+//
 // labeled, 'multiplicands'. The first element of the 'multiplicands' series is multiplied by
 // the 'multiplier' to produce a 'product'. That 'product' replaces the 'multiplier' and is
 // multiplied by the next element in the multiplicands series. This process is continued through
@@ -1573,7 +1604,7 @@ func (bMultiply BigIntMathMultiply) MultiplyIntAryOutputToArray(
 // For example, in the problem 5 x 3 equals 15, the 5 is the 'multiplier',
 // 3 is the 'multiplicand' and 15 is the 'product' or result.
 //
-//							multiplier x multiplicand = product or result
+//	multiplier x multiplicand = product or result
 //
 // This method performs the multiplication operation described above and afterwards returns the
 // result or 'product' as a BigIntNum type.
@@ -1581,8 +1612,7 @@ func (bMultiply BigIntMathMultiply) MultiplyIntAryOutputToArray(
 // The returned BigIntNum multiplication 'result' will contain numeric separators (decimal
 // separator, thousands separator and currency symbol) copied from input parameter,
 // 'multiplier'.
-//
-func (bMultiply BigIntMathMultiply) MultiplyIntArySeries(
+func (bMultiply *BigIntMathMultiply) MultiplyIntArySeries(
 	multiplier IntAry,
 	multiplicands ...IntAry) (BigIntNum, error) {
 
@@ -1639,7 +1669,7 @@ func (bMultiply BigIntMathMultiply) MultiplyIntArySeries(
 // MultiplyNumStr - Receives two number strings and multiplies their numeric
 // values.
 //
-// 							n1NumStr x n2NumStr = product
+//	n1NumStr x n2NumStr = product
 //
 // The result or 'product' is returned as a 'BigIntNum'
 // type.
@@ -1665,7 +1695,7 @@ func (bMultiply BigIntMathMultiply) MultiplyIntArySeries(
 // For example, in the problem 5 x 3 equals 15, the 5 is the 'multiplier',
 // 3 is the 'multiplicand' and 15 is the 'product' or result.
 //
-//							multiplier x multiplicand = product or result
+//	multiplier x multiplicand = product or result
 //
 // This method performs the multiplication operation and afterwards returns the
 // result or 'product' as a BigIntNum type.
@@ -1673,8 +1703,7 @@ func (bMultiply BigIntMathMultiply) MultiplyIntArySeries(
 // The returned BigIntNum multiplication 'result' will contain numeric separators
 // (decimal separator, thousands separator and currency symbol) specified by input
 // parameter, 'numSeps'.
-//
-func (bMultiply BigIntMathMultiply) MultiplyNumStr(
+func (bMultiply *BigIntMathMultiply) MultiplyNumStr(
 	n1NumStr,
 	n2NumStr string,
 	numSeps NumericSeparatorDto) (BigIntNum, error) {
@@ -1724,15 +1753,14 @@ func (bMultiply BigIntMathMultiply) MultiplyNumStr(
 // For example, in the problem 5 x 3 equals 15, the 5 is the 'multiplier',
 // 3 is the 'multiplicand' and 15 is the 'product' or result.
 //
-//							multiplier x multiplicand = product or result
+//	multiplier x multiplicand = product or result
 //
 // This method performs the multiplication operation described above and afterwards returns the
 // cumulative result or 'product' as a BigIntNum type.
 //
 // The returned BigIntNum multiplication 'result' will contain numeric separators (decimal
 // separator, thousands separator and currency symbol) specified by input parameter, 'numSeps'.
-//
-func (bMultiply BigIntMathMultiply) MultiplyNumStrArray(
+func (bMultiply *BigIntMathMultiply) MultiplyNumStrArray(
 	multiplier string,
 	multiplicands []string,
 	numSeps NumericSeparatorDto) (BigIntNum, error) {
@@ -1817,21 +1845,21 @@ func (bMultiply BigIntMathMultiply) MultiplyNumStrArray(
 //
 // Example
 // =======
-// 										Multiplicands												Output
+//
+//	Multiplicands												Output
+//
 // Multiplier				    	Array														Array
 //
-//		3			x				multiplicands[0] = 2			=				  outputarray[0] =  6
-//		3			x				multiplicands[1] = 3			=				  outputarray[1] =  9
-//		3			x				multiplicands[2] = 4			=				  outputarray[2] = 12
-//		3			x				multiplicands[3] = 5			=				  outputarray[3] = 15
-//		3			x				multiplicands[4] = 6			=				  outputarray[4] = 18
-//		3			x				multiplicands[5] = 7			=				  outputarray[5] = 21
-//
+//	3			x				multiplicands[0] = 2			=				  outputarray[0] =  6
+//	3			x				multiplicands[1] = 3			=				  outputarray[1] =  9
+//	3			x				multiplicands[2] = 4			=				  outputarray[2] = 12
+//	3			x				multiplicands[3] = 5			=				  outputarray[3] = 15
+//	3			x				multiplicands[4] = 6			=				  outputarray[4] = 18
+//	3			x				multiplicands[5] = 7			=				  outputarray[5] = 21
 //
 // This method performs the multiplication operation described above and afterwards returns the
 // result or 'product' in an Array of 'NumStrs' ([] NumStrs).
-//
-func (bMultiply BigIntMathMultiply) MultiplyNumStrOutputToArray(
+func (bMultiply *BigIntMathMultiply) MultiplyNumStrOutputToArray(
 	multiplier string,
 	multiplicands []string,
 	numSeps NumericSeparatorDto) ([]string, error) {
@@ -1883,7 +1911,9 @@ func (bMultiply BigIntMathMultiply) MultiplyNumStrOutputToArray(
 }
 
 // MultiplyNumStrSeries - Receives one input parameter of Type string which is classified
-//  as the 'multiplier'. The second input parameter is a comma delimited series of strings labeled,
+//
+//	as the 'multiplier'. The second input parameter is a comma delimited series of strings labeled,
+//
 // 'multiplicands'. The first element of the 'multiplicands' series is multiplied by the 'multiplier'
 // to produce a 'product'. That 'product' replaces the 'multiplier' and is multiplied by the next
 // element in the multiplicands series. This process is continued through the last element in the
@@ -1909,15 +1939,14 @@ func (bMultiply BigIntMathMultiply) MultiplyNumStrOutputToArray(
 // For example, in the problem 5 x 3 equals 15, the 5 is the 'multiplier',
 // 3 is the 'multiplicand' and 15 is the 'product' or result.
 //
-//							multiplier x multiplicand = product or result
+//	multiplier x multiplicand = product or result
 //
 // This method performs the multiplication operation described above and afterwards returns the
 // result or 'product' as a BigIntNum type.
 //
 // The returned BigIntNum multiplication 'result' will contain numeric separators (decimal
 // separator, thousands separator and currency symbol) specified by input parameter, 'numSeps'.
-//
-func (bMultiply BigIntMathMultiply) MultiplyNumStrSeries(
+func (bMultiply *BigIntMathMultiply) MultiplyNumStrSeries(
 	numSeps NumericSeparatorDto,
 	multiplier string,
 	multiplicands ...string) (BigIntNum, error) {
@@ -1982,7 +2011,7 @@ func (bMultiply BigIntMathMultiply) MultiplyNumStrSeries(
 // For example, in the problem 5 x 3 equals 15, the 5 is the 'multiplier',
 // 3 is the 'multiplicand' and 15 is the 'product' or result.
 //
-//							multiplier x multiplicand = product or result
+//	multiplier x multiplicand = product or result
 //
 // This method performs the multiplication operation and afterwards returns the
 // result or 'product' as a BigIntNum type.
@@ -1990,8 +2019,7 @@ func (bMultiply BigIntMathMultiply) MultiplyNumStrSeries(
 // The returned BigIntNum multiplication 'result' will contain numeric separators (decimal
 // separator, thousands separator and currency symbol) copied from input parameter,
 // 'multiplier'.
-//
-func (bMultiply BigIntMathMultiply) MultiplyNumStrDto(
+func (bMultiply *BigIntMathMultiply) MultiplyNumStrDto(
 	multiplier,
 	multiplicand NumStrDto) (BigIntNum, error) {
 
@@ -2026,7 +2054,7 @@ func (bMultiply BigIntMathMultiply) MultiplyNumStrDto(
 // For example, in the problem 5 x 3 equals 15, the 5 is the 'multiplier',
 // 3 is the 'multiplicand' and 15 is the 'product' or result.
 //
-//							multiplier x multiplicand = product or result
+//	multiplier x multiplicand = product or result
 //
 // This method performs the multiplication operation described above and afterwards returns the
 // result or 'product' as a BigIntNum type.
@@ -2034,8 +2062,7 @@ func (bMultiply BigIntMathMultiply) MultiplyNumStrDto(
 // The returned BigIntNum multiplication 'result' will contain numeric separators (decimal
 // separator, thousands separator and currency symbol) copied from input parameter,
 // 'multiplier'.
-//
-func (bMultiply BigIntMathMultiply) MultiplyNumStrDtoArray(
+func (bMultiply *BigIntMathMultiply) MultiplyNumStrDtoArray(
 	multiplier NumStrDto,
 	multiplicands []NumStrDto) (BigIntNum, error) {
 
@@ -2107,26 +2134,25 @@ func (bMultiply BigIntMathMultiply) MultiplyNumStrDtoArray(
 //
 // Example
 // =======
-// 										Multiplicands												Output
+//
+//	Multiplicands												Output
+//
 // Multiplier				    	Array														Array
 //
-//		3			x				multiplicands[0] = 2			=				  outputarray[0] =  6
-//		3			x				multiplicands[1] = 3			=				  outputarray[1] =  9
-//		3			x				multiplicands[2] = 4			=				  outputarray[2] = 12
-//		3			x				multiplicands[3] = 5			=				  outputarray[3] = 15
-//		3			x				multiplicands[4] = 6			=				  outputarray[4] = 18
-//		3			x				multiplicands[5] = 7			=				  outputarray[5] = 21
-//
+//	3			x				multiplicands[0] = 2			=				  outputarray[0] =  6
+//	3			x				multiplicands[1] = 3			=				  outputarray[1] =  9
+//	3			x				multiplicands[2] = 4			=				  outputarray[2] = 12
+//	3			x				multiplicands[3] = 5			=				  outputarray[3] = 15
+//	3			x				multiplicands[4] = 6			=				  outputarray[4] = 18
+//	3			x				multiplicands[5] = 7			=				  outputarray[5] = 21
 //
 // This method performs the multiplication operation described above and afterwards returns the
 // result or 'product' in an Array of 'NumStrDtos' ([] NumStrDtos).
 //
-//
 // Each element in the returned []NumStrDto array will contain numeric separators (decimal
 // separator, thousands separator and currency symbol) copied from input parameter,
 // 'multiplier'.
-//
-func (bMultiply BigIntMathMultiply) MultiplyNumStrDtoOutputToArray(
+func (bMultiply *BigIntMathMultiply) MultiplyNumStrDtoOutputToArray(
 	multiplier NumStrDto,
 	multiplicands []NumStrDto) ([]NumStrDto, error) {
 
@@ -2194,7 +2220,9 @@ func (bMultiply BigIntMathMultiply) MultiplyNumStrDtoOutputToArray(
 }
 
 // MultiplyNumStrDtoSeries - Receives one input parameter of Type NumStrDto which is classified
-//  as the 'multiplier'. The second input parameter is a comma delimited series of NumStrDto
+//
+//	as the 'multiplier'. The second input parameter is a comma delimited series of NumStrDto
+//
 // Types labeled, 'multiplicands'. The first element of the 'multiplicands' series is multiplied
 // by the 'multiplier' to produce a 'product'. That 'product' replaces the 'multiplier' and is
 // multiplied by the next element in the multiplicands series. This process is continued through
@@ -2208,7 +2236,7 @@ func (bMultiply BigIntMathMultiply) MultiplyNumStrDtoOutputToArray(
 // For example, in the problem 5 x 3 equals 15, the 5 is the 'multiplier',
 // 3 is the 'multiplicand' and 15 is the 'product' or result.
 //
-//							multiplier x multiplicand = product or result
+//	multiplier x multiplicand = product or result
 //
 // This method performs the multiplication operation described above and afterwards returns the
 // result or 'product' as a BigIntNum type.
@@ -2216,8 +2244,7 @@ func (bMultiply BigIntMathMultiply) MultiplyNumStrDtoOutputToArray(
 // The returned BigIntNum multiplication 'result' will contain numeric separators (decimal
 // separator, thousands separator and currency symbol) copied from input parameter,
 // 'multiplier'.
-//
-func (bMultiply BigIntMathMultiply) MultiplyNumStrDtoSeries(
+func (bMultiply *BigIntMathMultiply) MultiplyNumStrDtoSeries(
 	multiplier NumStrDto,
 	multiplicands ...NumStrDto) (BigIntNum, error) {
 
@@ -2254,7 +2281,7 @@ func (bMultiply BigIntMathMultiply) MultiplyNumStrDtoSeries(
 					multiplicand.GetNumStr(), err.Error())
 		}
 
-		bPair := BigIntPair{}.NewBigIntNum(finalResult, multiplicandBINum)
+		bPair := new(BigIntPair).NewBigIntNum(finalResult, multiplicandBINum)
 
 		finalResult = bMultiply.multiplyPairNoNumSeps(bPair)
 	}
@@ -2282,8 +2309,7 @@ func (bMultiply BigIntMathMultiply) MultiplyNumStrDtoSeries(
 // The returned BigIntNum multiplication 'Result' will contain numeric
 // separators (decimal separator, thousands separator and currency symbol)
 // copied from bPair.Big1.
-//
-func (bMultiply BigIntMathMultiply) MultiplyPair(bPair BigIntPair) BigIntNum {
+func (bMultiply *BigIntMathMultiply) MultiplyPair(bPair BigIntPair) BigIntNum {
 
 	numSeps := bPair.Big1.GetNumericSeparatorsDto()
 
@@ -2304,8 +2330,7 @@ func (bMultiply BigIntMathMultiply) MultiplyPair(bPair BigIntPair) BigIntNum {
 //
 // The returned BigIntNum multiplication 'Result' will contain default numeric
 // separators (decimal separator, thousands separator and currency symbol).
-//
-func (bMultiply BigIntMathMultiply) multiplyPairNoNumSeps(bPair BigIntPair) BigIntNum {
+func (bMultiply *BigIntMathMultiply) multiplyPairNoNumSeps(bPair BigIntPair) BigIntNum {
 
 	b3 := big.NewInt(0).Mul(bPair.GetBig1BigInt(), bPair.GetBig2BigInt())
 

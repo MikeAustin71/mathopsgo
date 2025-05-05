@@ -1193,15 +1193,40 @@ func (bIDivide BigIntMathDivide) BigIntNumDivideByTenFracQuo(
 // separators (decimal separator, thousands separator and currency symbol)
 // copied from input parameter, 'dividend'.
 func (bIDivide BigIntMathDivide) BigIntNumDivideByTenToPowerFracQuo(
-	dividend,
+	dividend BigIntNum,
 	exponent BigIntNum,
 	maxPrecision uint) (fracQuotient BigIntNum, err error) {
 
 	ePrefix := "BigIntMathDivide.BigIntNumDivideByTenToPowerFracQuo() "
-	fracQuotient = BigIntNum{}.NewZero(0)
+
+	fracQuotient, err = new(BigIntNum).NewZero(0)
+
+	if err != nil {
+
+		return fracQuotient,
+			fmt.Errorf("%v\n"+
+				"Error returned by: \n"+
+				" fracQuotient, err = new(BigIntNum).NewZero(0)\n"+
+				"Error= %v\n",
+				ePrefix,
+				err.Error())
+	}
+
+	bIntNum2, err := new(BigIntNum).NewTen(0)
+
+	if err != nil {
+
+		return fracQuotient,
+			fmt.Errorf("%v\n"+
+				"Error returned by: \n"+
+				" bIntNum2, err = new(BigIntNum).NewTen(0)\n"+
+				"Error= %v\n",
+				ePrefix,
+				err.Error())
+	}
 
 	scaleValue, err :=
-		BigIntMathPower{}.Pwr(BigIntNum{}.NewTen(0), exponent, maxPrecision+10)
+		BigIntMathPower{}.Pwr(bIntNum2, exponent, maxPrecision+10)
 
 	if err != nil {
 		return fracQuotient,
@@ -4584,13 +4609,17 @@ func (bIDivide BigIntMathDivide) PairFracQuotient(
 
 	if err2 != nil {
 
-		fracQuotient = BigIntNum{}.NewZero(0)
+		fracQuotient, err2 = new(BigIntNum).NewZero(0)
 
-		err = fmt.Errorf("%v\n"+
-			"Error returned by bIDivide.pairFracQuotientNoNumSeps(bPair).\n"+
-			"Error= %v\n",
-			ePrefix,
-			err2.Error())
+		if err2 != nil {
+
+			err = fmt.Errorf("%v\n"+
+				"Error returned by bIDivide.pairFracQuotientNoNumSeps(bPair).\n"+
+				"Error= %v\n",
+				ePrefix,
+				err2.Error())
+
+		}
 
 		return fracQuotient, err
 	}
@@ -4599,7 +4628,116 @@ func (bIDivide BigIntMathDivide) PairFracQuotient(
 
 	if err2 != nil {
 
-		fracQuotient = BigIntNum{}.NewZero(0)
+		fracQuotient = BigIntNum{}
+
+		err = fmt.Errorf("%v\n"+
+			"Error returned by fracQuotient.SetNumericSeparatorsDto(numSeps).\n"+
+			"Error= %v\n",
+			ePrefix,
+			err2.Error())
+
+		return fracQuotient, err
+	}
+
+	err = nil
+
+	return fracQuotient, err
+}
+
+// PairFracQuotientNoNumSeps - Receives a BigIntPair type as an input parameter.
+// 'BigIntPair.Big1' is treated as the Dividend. 'BigIntPair.Big2' is considered
+// the divisor.
+//
+// NOTE: This method is identical to PairFracQuotient except that it
+// receives an input parameter specifying an instance of 'NumStrDto'.
+// These include number separators for decimal, thousands and currency
+// symbols.
+//
+// 'BigIntPair.maxPrecision' is used to control the maximum precision of the
+// resulting fractional quotient. Be advised that this method is capable of
+// calculating quotients with very long strings of fractional digits. Therefore,
+// the user is advised to set a relevant 'BigIntPair.maxPrecision' value.
+//
+//	type BigIntPair struct {
+//				Big1							BigIntNum  // The Dividend
+//				Big2							BigIntNum	 // The Divisor
+//				maxPrecision			uint			 // Controls Precision
+//	}
+//
+// This method performs a division operation on BigIntNum parameters 'dividend'
+// (BigIntPair.Big1) and 'divisor' (BigIntPair.Big2).
+//
+//	Dividend (BigIntPair.Big1) divided Divisor (BigIntPair.Big2) = quotient
+//
+// The resulting quotient is returned as a BigIntNum type representing the result
+// of the division operation expressed as integer and fractional digits. The
+// maximum number of fractional digits output to the result is controlled by
+// BigIntPair.maxPrecision. Remember that the BigIntNum type specifies 'precision'.
+// Precision is defined as the number of fractional digits to the right of the
+// decimal place.
+//
+// Examples:
+// =========
+//
+// Note: For all examples BigIntPair.maxPrecision is specified as '15'.
+// ----------------------------------------------------------------------------
+//
+//																					   Quotient
+//	 Dividend		divided by	Divisor		=		BigIntNum Integer 	Precision	 Result
+//	 -------- 	  ----------	--------				-----------------	  ---------	 ------
+//		 10.5  				/ 				2 				= 			525  							  2  			 5.25
+//		 10    				/ 				2 				= 			5	  							  0  			 5
+//	  11.5  				/         2.5				=  			46								  1				 4.6
+//	   2.5					/				 12.555			=				199123855037834	   15				 0.199123855037834
+//		-12.555 			/ 				2.5 			= 		 -5022							  3				-5.022
+//	 -12.555				/    			2  			  = 		 -62775							  4				-6.2775
+//	 - 2.5					/ 			 12.555		  = 		 -199123855037834	   15				-0.199123855037834
+//		 12.555				/ 			- 2.5			  =			 -5022								3				-5.022
+//	  12.555				/ 			- 2 				= 		 -62775								4				-6.2775
+//	   2.5					/ 			-12.555		  = 		 -199123855037834	   15				-0.199123855037834
+//		-12.555 			/ 			- 2.5 			= 			5022								3				 5.022
+//	 -12.555				/    		- 2 				= 		  62775								4				 6.2775
+//	 - 2.5	 				/ 			-12.555		  = 		  199123855037834	   15				 0.199123855037834
+//	 -10						/				- 2					=				5														 5
+//
+// The returned BigIntNum division result 'fracQuotient' will contain numeric
+// separators (decimal separator, thousands separator and currency symbol) copied
+// from the input parameter Dividend, 'BigIntPair.Big1'.
+func (bIDivide BigIntMathDivide) PairFracQuotientNoNumSeps(
+	bPair BigIntPair,
+	numSeps NumericSeparatorDto) (fracQuotient BigIntNum, err error) {
+
+	ePrefix := "BigIntMathDivide.pairFracQuotientNoNumSeps() "
+
+	//numSeps := bPair.Big1.GetNumericSeparatorsDto()
+
+	var err2 error
+
+	fracQuotient, err2 = new(bigIntMathDivideNanobot).
+		pairFracQuotientNoNumSeps(bPair)
+
+	if err2 != nil {
+
+		fracQuotient, err2 = new(BigIntNum).NewZero(0)
+
+		if err2 != nil {
+
+			err = fmt.Errorf("%v\n"+
+				"Error returned by bIDivide.pairFracQuotientNoNumSeps(bPair).\n"+
+				"Error= %v\n",
+				ePrefix,
+				err2.Error())
+
+		}
+
+		return fracQuotient, err
+	}
+
+	err2 = fracQuotient.SetNumericSeparatorsDto(numSeps)
+
+	if err2 != nil {
+
+		fracQuotient = BigIntNum{}
 
 		err = fmt.Errorf("%v\n"+
 			"Error returned by fracQuotient.SetNumericSeparatorsDto(numSeps).\n"+

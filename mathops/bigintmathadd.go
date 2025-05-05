@@ -58,13 +58,30 @@ func (bAdd BigIntMathAdd) AddBigIntNums(b1, b2 BigIntNum) (BigIntNum, error) {
 // The BigIntNum 'result' returned by this addition operation will contain
 // numeric separators (decimal separator, thousands separator and currency symbol)
 // which were copied from the first element of the bNums array (bNums[0]).
-func (bAdd BigIntMathAdd) AddBigIntNumArray(bNums []BigIntNum) BigIntNum {
+func (bAdd BigIntMathAdd) AddBigIntNumArray(bNums []BigIntNum) (BigIntNum, error) {
 
-	finalResult := BigIntNum{}.NewZero(0)
+	ePrefix := "BigIntMathAdd.AddBigIntNumArray()"
+
+	finalResult, err := new(BigIntNum).NewZero(0)
+
+	if err != nil {
+
+		return BigIntNum{},
+			fmt.Errorf("%v\n"+
+				"Error returned by: \n"+
+				" finalResult, err := new(BigIntNum).NewZero(0)\n"+
+				"Error= %v\n",
+				ePrefix,
+				err.Error())
+
+	}
+
 	lenBNums := len(bNums)
 
 	if lenBNums == 0 {
-		return finalResult
+
+		return finalResult, nil
+
 	}
 
 	numSeps := bNums[0].GetNumericSeparatorsDto()
@@ -72,7 +89,9 @@ func (bAdd BigIntMathAdd) AddBigIntNumArray(bNums []BigIntNum) BigIntNum {
 	for i := 0; i < lenBNums; i++ {
 
 		if i == 0 {
+
 			finalResult = bNums[i].CopyOut()
+
 			continue
 		}
 
@@ -81,9 +100,21 @@ func (bAdd BigIntMathAdd) AddBigIntNumArray(bNums []BigIntNum) BigIntNum {
 		finalResult = bAdd.addPairNoNumSeps(bPair)
 	}
 
-	_ = finalResult.SetNumericSeparatorsDto(numSeps)
+	err = finalResult.SetNumericSeparatorsDto(numSeps)
 
-	return finalResult
+	if err != nil {
+
+		return BigIntNum{},
+			fmt.Errorf("%v\n"+
+				"Error returned by: \n"+
+				" err = finalResult.SetNumericSeparatorsDto(numSeps)\n"+
+				"Error= %v\n",
+				ePrefix,
+				err.Error())
+
+	}
+
+	return finalResult, nil
 }
 
 // AddBigIntNumOutputToArray - The first input parameter to this method
