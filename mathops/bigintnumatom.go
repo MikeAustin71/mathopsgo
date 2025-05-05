@@ -94,6 +94,107 @@ func (bIntNumAtom *bigIntNumAtom) isBigIntNumValid(
 	return nil
 }
 
+// getBigIntNumStr - Converts a BigIntNum value to string of
+// numbers which includes the decimal place and decimal digits
+// if they exist.
+func (bIntNumAtom *bigIntNumAtom) getBigIntNumStr(
+	bNum *BigIntNum,
+	errPrefDto *ePref.ErrPrefixDto) (string, error) {
+
+	if bIntNumAtom.lock == nil {
+		bIntNumAtom.lock = new(sync.Mutex)
+	}
+
+	bIntNumAtom.lock.Lock()
+
+	defer bIntNumAtom.lock.Unlock()
+
+	var ePrefix *ePref.ErrPrefixDto
+
+	var err error
+
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
+		errPrefDto,
+		"bigIntNumAtom.getBigIntNumStr()",
+		"")
+
+	if err != nil {
+		return "", err
+	}
+
+	if bNum == nil {
+
+		return "",
+			fmt.Errorf("%v\n"+
+				"FATAL ERROR: Input parameter 'bNum' is a nil pointer.\n",
+				ePrefix.String())
+	}
+
+	numStr, err := new(bigIntNumMolecule).formatBigIntNumStr(
+		bNum,
+		LEADMINUSNEGVALFMTMODE,
+		ePrefix)
+
+	if err != nil {
+
+		return "", err
+	}
+
+	return numStr, nil
+}
+
+// GetNumericSeparatorsDto - Returns a structure containing the
+// character or rune values for decimal place separator, thousands
+// separator and currency symbol.
+//
+//	NOTE:
+//
+// ================
+// This method does NOT test the validity of 'bNumDestination'
+// BigIntNum instance. The calling method must do this!
+func (bIntNumAtom *bigIntNumAtom) getNumericSeparatorsDto(
+	bNum *BigIntNum,
+	errPrefDto *ePref.ErrPrefixDto) (NumericSeparatorDto, error) {
+
+	if bIntNumAtom.lock == nil {
+		bIntNumAtom.lock = new(sync.Mutex)
+	}
+
+	bIntNumAtom.lock.Lock()
+
+	defer bIntNumAtom.lock.Unlock()
+
+	var ePrefix *ePref.ErrPrefixDto
+
+	var err error
+
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
+		errPrefDto,
+		"bigIntNumAtom.getBigIntNumStr()",
+		"")
+
+	if err != nil {
+		return NumericSeparatorDto{}, err
+	}
+
+	if bNum == nil {
+
+		return NumericSeparatorDto{},
+			fmt.Errorf("%v\n"+
+				"FATAL ERROR: Input parameter 'bNum' is a nil pointer.\n",
+				ePrefix.String())
+	}
+
+	numSeps := NumericSeparatorDto{}
+	numSeps.DecimalSeparator = bNum.decimalSeparator
+	numSeps.ThousandsSeparator = bNum.thousandsSeparator
+	numSeps.CurrencySymbol = bNum.currencySymbol
+
+	return numSeps, nil
+}
+
 // setNumericSeparators - Used to assign values for the Decimal and Thousands separators as well
 // as the Currency Symbol to be used in displaying the current number string.
 //
