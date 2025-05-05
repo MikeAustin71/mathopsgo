@@ -151,6 +151,202 @@ func (bINumElectron *bigIntNumElectron) bigIntNumCeiling(
 	return bInt5, nil
 }
 
+// bigIntNumEqual - Compares two BigIntNum instances and
+// returns 'true' if the two instances are equal in all
+// respects.
+//
+// Be careful, two BigIntNum instances could have equal
+// values with different precisions. In that case this
+// method would return 'false'. To test for equivalent
+// values, see method BigIntNum.EqualValue(), below.
+//
+// If they are not Equal, the method returns 'false'.
+//
+//	NOTE:
+//
+// This method does NOT test the validity of 'bNum'
+// BigIntNum instance. The calling method must do this!
+func (bINumElectron *bigIntNumElectron) bigIntNumEqual(
+	bNum *BigIntNum,
+	b2 *BigIntNum,
+	errPrefDto *ePref.ErrPrefixDto) (bool, error) {
+
+	if bINumElectron.lock == nil {
+		bINumElectron.lock = new(sync.Mutex)
+	}
+
+	bINumElectron.lock.Lock()
+
+	defer bINumElectron.lock.Unlock()
+
+	var ePrefix *ePref.ErrPrefixDto
+
+	var err error
+
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
+		errPrefDto,
+		"bigIntNumElectron.resetBigIntNum()",
+		"")
+
+	if err != nil {
+		return false, err
+	}
+
+	if bNum == nil {
+
+		err = fmt.Errorf("%v\n"+
+			"FATAL ERROR: Input parameter 'bNum' is a nil pointer.\n",
+			ePrefix.String())
+
+		return false, err
+	}
+
+	if b2 == nil {
+
+		err = fmt.Errorf("%v\n"+
+			"FATAL ERROR: Input parameter 'b2' is a nil pointer.\n",
+			ePrefix.String())
+
+		return false, err
+	}
+
+	err = new(bigIntNumAtom).isBigIntNumValid(
+		b2,
+		ePrefix.XCpy("Validating input parameter 'b2'"))
+
+	if err != nil {
+		return false, err
+	}
+
+	if bNum.bigInt.Cmp(b2.bigInt) != 0 {
+		return false, nil
+	}
+
+	if bNum.absBigInt.Cmp(b2.absBigInt) != 0 {
+		return false, nil
+	}
+
+	if bNum.scaleFactor.Cmp(b2.scaleFactor) != 0 {
+		return false, nil
+	}
+
+	if bNum.sign != b2.sign {
+		return false, nil
+	}
+
+	if bNum.precision != b2.precision {
+		return false, nil
+	}
+
+	return true, nil
+}
+
+// EqualValue - Compares the values of the current BigIntNum instance
+// and the input parameter BigIntNum, 'b2'. If the two numeric values
+// are equal, this method returns 'true'.
+func (bINumElectron *bigIntNumElectron) bigIntNumEqualValue(
+	bNum *BigIntNum,
+	b2 *BigIntNum,
+	errPrefDto *ePref.ErrPrefixDto) (bool, error) {
+
+	if bINumElectron.lock == nil {
+		bINumElectron.lock = new(sync.Mutex)
+	}
+
+	bINumElectron.lock.Lock()
+
+	defer bINumElectron.lock.Unlock()
+
+	var ePrefix *ePref.ErrPrefixDto
+
+	var err error
+
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
+		errPrefDto,
+		"bigIntNumElectron.resetBigIntNum()",
+		"")
+
+	if err != nil {
+		return false, err
+	}
+
+	if bNum == nil {
+
+		err = fmt.Errorf("%v\n"+
+			"FATAL ERROR: Input parameter 'bNum' is a nil pointer.\n",
+			ePrefix.String())
+
+		return false, err
+	}
+
+	if b2 == nil {
+
+		err = fmt.Errorf("%v\n"+
+			"FATAL ERROR: Input parameter 'b2' is a nil pointer.\n",
+			ePrefix.String())
+
+		return false, err
+	}
+
+	err = new(bigIntNumAtom).isBigIntNumValid(
+		b2,
+		ePrefix.XCpy("Validating input parameter 'b2'"))
+
+	if err != nil {
+		return false, err
+	}
+
+	bNum3, err := new(bigIntNumUtility).bigIntNumCopyOut(
+		bNum,
+		ePrefix)
+
+	if err != nil {
+		return false, err
+	}
+
+	difference, err := BigIntMathSubtract{}.SubtractBigIntNums(
+		bNum3,
+		*b2)
+
+	if err != nil {
+
+		return false,
+			fmt.Errorf("%v\n"+
+				"Error returned by: \n"+
+				" difference, err := BigIntMathSubtract{}.SubtractBigIntNums(\n"+
+				"   bNum3, *b2\n"+
+				"Error= %v\n",
+				ePrefix.String(),
+				err.Error())
+	}
+
+	err = new(bigIntNumAtom).isBigIntNumValid(
+		&difference,
+		ePrefix)
+
+	if err != nil {
+
+		return false,
+			fmt.Errorf("%v\n"+
+				"Validation Error on current Decimal instance 'difference'.\n"+
+				"'difference' is a calculated variable which failed the valiadtion test.\n"+
+				"Error returned by: \n"+
+				" err := new(bigIntNumAtom).isBigIntNumValid(&difference,ePrefix)\n"+
+				"Validation Error= %v\n",
+				ePrefix,
+				err.Error())
+
+	}
+
+	if difference.bigInt.Cmp(big.NewInt(0)) == 0 {
+		return true, nil
+	}
+
+	return false, nil
+}
+
 // Empty - Resets the BigIntNum data fields to their
 // uninitialized or zero state.
 func (bINumElectron *bigIntNumElectron) empty(
@@ -216,6 +412,15 @@ func (bINumElectron *bigIntNumElectron) resetBigIntNum(
 		"")
 
 	if err != nil {
+		return err
+	}
+
+	if bNum == nil {
+
+		err = fmt.Errorf("%v\n"+
+			"FATAL ERROR: Input parameter 'bNum' is a nil pointer.\n",
+			ePrefix.String())
+
 		return err
 	}
 
