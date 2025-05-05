@@ -1364,7 +1364,7 @@ func InitializeEulersNumber() {
 
 	ePrefix := "mathopsconstants.go eulersNumber Initialization Failed! "
 
-	xEuler, err := BigIntFixedDecimal{}.NewNumStr(EulersNum50kStr)
+	xEuler, err := new(BigIntFixedDecimal).NewNumStr(EulersNum50kStr)
 
 	if err != nil {
 		erx :=
@@ -1374,31 +1374,33 @@ func InitializeEulersNumber() {
 		panic(erx)
 	}
 
-	eulersNumber50k = FixedDecimalReadOnly{}.NewFixedDecimal(xEuler)
+	eulersNumber50k, _ = new(FixedDecimalReadOnly).NewFixedDecimal(xEuler)
+
 	if !eulersNumber50k.IsValid() {
 		erx := ePrefix + "eulersNumber50k object INVALID!"
 		panic(erx)
 	}
 
-	xEuler.RoundToDecPlace(20000)
+	_ = xEuler.RoundToDecPlace(20000)
 
-	eulersNumber20k = FixedDecimalReadOnly{}.NewFixedDecimal(xEuler)
+	eulersNumber20k, _ = new(FixedDecimalReadOnly).NewFixedDecimal(xEuler)
+
 	if !eulersNumber20k.IsValid() {
 		erx := ePrefix + "eulersNumber20k object INVALID!"
 		panic(erx)
 	}
 
-	xEuler.RoundToDecPlace(10000)
+	_ = xEuler.RoundToDecPlace(10000)
 
-	eulersNumber10k = FixedDecimalReadOnly{}.NewFixedDecimal(xEuler)
+	eulersNumber10k, _ = new(FixedDecimalReadOnly).NewFixedDecimal(xEuler)
 	if !eulersNumber10k.IsValid() {
 		erx := ePrefix + "eulersNumber10k object INVALID!"
 		panic(erx)
 	}
 
-	xEuler.RoundToDecPlace(1024)
+	_ = xEuler.RoundToDecPlace(1024)
 
-	eulersNumber1k = FixedDecimalReadOnly{}.NewFixedDecimal(xEuler)
+	eulersNumber1k, _ = new(FixedDecimalReadOnly).NewFixedDecimal(xEuler)
 	if !eulersNumber1k.IsValid() {
 		erx := ePrefix + "eulersNumber1k object INVALID!"
 		panic(erx)
@@ -1413,7 +1415,7 @@ func InitializePi() {
 
 	ePrefix := "mathopsconstants.go pi Initialization Failed! "
 
-	xPiNum, err := BigIntFixedDecimal{}.NewNumStr(Pi20kStr)
+	xPiNum, err := new(BigIntFixedDecimal).NewNumStr(Pi20kStr)
 
 	if err != nil {
 		erx :=
@@ -1423,25 +1425,25 @@ func InitializePi() {
 		panic(erx)
 	}
 
-	piNumber20k = FixedDecimalReadOnly{}.NewFixedDecimal(xPiNum)
+	piNumber20k, _ = new(FixedDecimalReadOnly).NewFixedDecimal(xPiNum)
 
 	if !piNumber20k.IsValid() {
 		erx := ePrefix + "piNumber20k INVALID!"
 		panic(erx)
 	}
 
-	xPiNum.RoundToDecPlace(1000)
+	_ = xPiNum.RoundToDecPlace(1000)
 
-	piNumber1k = FixedDecimalReadOnly{}.NewFixedDecimal(xPiNum)
+	piNumber1k, _ = new(FixedDecimalReadOnly).NewFixedDecimal(xPiNum)
 
 	if !piNumber1k.IsValid() {
 		erx := ePrefix + "piNumber1k INVALID!"
 		panic(erx)
 	}
 
-	xPiNum.RoundToDecPlace(100)
+	_ = xPiNum.RoundToDecPlace(100)
 
-	piNumber100 = FixedDecimalReadOnly{}.NewFixedDecimal(xPiNum)
+	piNumber100, _ = new(FixedDecimalReadOnly).NewFixedDecimal(xPiNum)
 
 	if !piNumber100.IsValid() {
 		erx := ePrefix + "piNumber100 INVALID!"
@@ -1457,7 +1459,7 @@ func InitializeNatLogTwo() {
 
 	ePrefix := "mathopsconstants.go Natural Log of 2 Initialization Failed! "
 
-	xNatLog2, err := BigIntFixedDecimal{}.NewNumStr(NatLog2_20kStr)
+	xNatLog2, err := new(BigIntFixedDecimal).NewNumStr(NatLog2_20kStr)
 
 	if err != nil {
 		erx :=
@@ -1467,15 +1469,15 @@ func InitializeNatLogTwo() {
 		panic(erx)
 	}
 
-	natLogTwo20k = FixedDecimalReadOnly{}.NewFixedDecimal(xNatLog2)
+	natLogTwo20k, _ = new(FixedDecimalReadOnly).NewFixedDecimal(xNatLog2)
 	if !natLogTwo20k.IsValid() {
 		erx := ePrefix + "natLogTwo20k INVALID!"
 		panic(erx)
 	}
 
-	xNatLog2.RoundToDecPlace(1024)
+	_ = xNatLog2.RoundToDecPlace(1024)
 
-	natLogTwo1k = FixedDecimalReadOnly{}.NewFixedDecimal(xNatLog2)
+	natLogTwo1k, _ = new(FixedDecimalReadOnly).NewFixedDecimal(xNatLog2)
 	if !natLogTwo1k.IsValid() {
 		erx := ePrefix + "natLogTwo1k INVALID!"
 		panic(erx)
@@ -1486,7 +1488,7 @@ func InitializeNatLogTwo() {
 func InitializeLog10of2() {
 	ePrefix := "mathopsconstants.go Log Base 10 of 2 Initialization Failed! "
 
-	xLog2, err := BigIntFixedDecimal{}.NewNumStr(Log10of2to20kStr)
+	xLog2, err := new(BigIntFixedDecimal).NewNumStr(Log10of2to20kStr)
 
 	if err != nil {
 		erx :=
@@ -1496,25 +1498,25 @@ func InitializeLog10of2() {
 		panic(erx)
 	}
 
-	log10of2To20k = FixedDecimalReadOnly{}.NewFixedDecimal(xLog2)
+	log10of2To20k, _ = new(FixedDecimalReadOnly).NewFixedDecimal(xLog2)
 
 	if !log10of2To20k.IsValid() {
 		erx := ePrefix + "log10of2To20k INVALID!"
 		panic(erx)
 	}
 
-	xLog2.RoundToDecPlace(1024)
+	_ = xLog2.RoundToDecPlace(1024)
 
-	log10of2To1k = FixedDecimalReadOnly{}.NewFixedDecimal(xLog2)
+	log10of2To1k, _ = new(FixedDecimalReadOnly).NewFixedDecimal(xLog2)
 
 	if !log10of2To1k.IsValid() {
 		erx := ePrefix + "log10of2To1k INVALID!"
 		panic(erx)
 	}
 
-	xLog2.RoundToDecPlace(100)
+	_ = xLog2.RoundToDecPlace(100)
 
-	log10of2To100 = FixedDecimalReadOnly{}.NewFixedDecimal(xLog2)
+	log10of2To100, _ = new(FixedDecimalReadOnly).NewFixedDecimal(xLog2)
 
 	if !log10of2To100.IsValid() {
 		erx := ePrefix + "log10of2To100 INVALID!"
@@ -1526,7 +1528,7 @@ func InitializeLog10of2() {
 func InitializeLog2of10() {
 	ePrefix := "mathopsconstants.go Log Base 2 of 10 Initialization Failed! "
 
-	xLog2, err := BigIntFixedDecimal{}.NewNumStr(logBase2Of10_1kStr)
+	xLog2, err := new(BigIntFixedDecimal).NewNumStr(logBase2Of10_1kStr)
 
 	if err != nil {
 		erx :=
@@ -1536,16 +1538,16 @@ func InitializeLog2of10() {
 		panic(erx)
 	}
 
-	log2Of10To1k = FixedDecimalReadOnly{}.NewFixedDecimal(xLog2)
+	log2Of10To1k, _ = new(FixedDecimalReadOnly).NewFixedDecimal(xLog2)
 
 	if !log2Of10To1k.IsValid() {
 		erx := ePrefix + "log2Of10To1k INVALID!"
 		panic(erx)
 	}
 
-	xLog2.RoundToDecPlace(100)
+	_ = xLog2.RoundToDecPlace(100)
 
-	log2Of10To100 = FixedDecimalReadOnly{}.NewFixedDecimal(xLog2)
+	log2Of10To100, _ = new(FixedDecimalReadOnly).NewFixedDecimal(xLog2)
 
 	if !log2Of10To100.IsValid() {
 		erx := ePrefix + "log2Of10To100 INVALID!"
@@ -1557,7 +1559,7 @@ func InitializeLog2of10() {
 func InitializeLog2ofe() {
 	ePrefix := "mathopsconstants.go Log Base 2 of Euler's Number Initialization Failed! "
 
-	xLog2, err := BigIntFixedDecimal{}.NewNumStr(logBase2ofe_5kStr)
+	xLog2, err := new(BigIntFixedDecimal).NewNumStr(logBase2ofe_5kStr)
 
 	if err != nil {
 		erx :=
@@ -1567,7 +1569,7 @@ func InitializeLog2ofe() {
 		panic(erx)
 	}
 
-	log2ofeTo5k = FixedDecimalReadOnly{}.NewFixedDecimal(xLog2)
+	log2ofeTo5k, _ = new(FixedDecimalReadOnly).NewFixedDecimal(xLog2)
 
 	if !log2ofeTo5k.IsValid() {
 		erx := ePrefix + "log2ofeTo5k INVALID!"
@@ -1580,7 +1582,7 @@ func InitializeLog10ofe() {
 
 	ePrefix := "mathopsconstants.go Log Base 2 of Euler's Number Initialization Failed! "
 
-	xLog2, err := BigIntFixedDecimal{}.NewNumStr(logBase10Toe_300Str)
+	xLog2, err := new(BigIntFixedDecimal).NewNumStr(logBase10Toe_300Str)
 
 	if err != nil {
 		erx :=
@@ -1590,7 +1592,7 @@ func InitializeLog10ofe() {
 		panic(erx)
 	}
 
-	log10ofeTo300 = FixedDecimalReadOnly{}.NewFixedDecimal(xLog2)
+	log10ofeTo300, _ = new(FixedDecimalReadOnly).NewFixedDecimal(xLog2)
 
 	if !log10ofeTo300.IsValid() {
 		erx := ePrefix + "log10ofeTo300 INVALID!"
