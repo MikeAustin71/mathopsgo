@@ -1707,11 +1707,13 @@ func (bIntNumProton *bigIntNumProton) decimalGetDecimal(
 
 	if bNum == nil {
 
-		err = fmt.Errorf("%v\n"+
-			"FATAL ERROR: Input parameter 'bNum' is a nil pointer.\n",
-			ePrefix.String())
-
-		return Decimal{}, err
+		return Decimal{},
+			&ErrorReturnBasic{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "",
+				ErrContext: "",
+				ErrMessage: "FATAL ERROR: Input parameter 'bNum' is a nil pointer.\n",
+			}
 	}
 
 	dec, err := new(Decimal).NewBigInt(big.NewInt(0).
@@ -1720,13 +1722,14 @@ func (bIntNumProton *bigIntNumProton) decimalGetDecimal(
 	if err != nil {
 
 		return Decimal{},
-			fmt.Errorf("%v\n"+
-				"Error returned by: \n"+
-				" dec, err := new(Decimal).NewBigInt(\n"+
-				"  big.NewInt(0).Set(bNum.bigInt), bNum.precision)\n"+
-				"Error= %v\n",
-				ePrefix.String(),
-				err.Error())
+			&ErrorReturnBasic{
+				ErrPrefix: ePrefix.String(),
+				ReturnFunc: " dec, err := new(Decimal).NewBigInt(\n" +
+					"  big.NewInt(0).Set(bNum.bigInt), bNum.precision)\n",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+
 	}
 
 	numSeps, err := new(bigIntNumAtom).getNumericSeparatorsDto(
@@ -1736,13 +1739,14 @@ func (bIntNumProton *bigIntNumProton) decimalGetDecimal(
 	if err != nil {
 
 		return Decimal{},
-			fmt.Errorf("%v\n"+
-				"Error returned by: \n"+
-				" numSeps, err := new(bigIntNumAtom).\n"+
-				"  getNumericSeparatorsDto(bNum, ePrefix)\n"+
-				"Error= %v\n",
-				ePrefix,
-				err.Error())
+			&ErrorReturnBasic{
+				ErrPrefix: ePrefix.String(),
+				ReturnFunc: " numSeps, err := new(bigIntNumAtom).\n" +
+					"  getNumericSeparatorsDto(bNum, ePrefix)\n",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+
 	}
 
 	err = dec.SetNumericSeparatorsDto(numSeps)
@@ -1750,13 +1754,14 @@ func (bIntNumProton *bigIntNumProton) decimalGetDecimal(
 	if err != nil {
 
 		return Decimal{},
-			fmt.Errorf("%v\n"+
-				"Error returned by: \n"+
-				" dec, err := new(Decimal).NewBigInt(\n"+
-				"  big.NewInt(0).Set(bNum.bigInt), bNum.precision)\n"+
-				"Error= %v\n",
-				ePrefix.String(),
-				err.Error())
+			&ErrorReturnBasic{
+				ErrPrefix: ePrefix.String(),
+				ReturnFunc: "dec, err := new(Decimal).NewBigInt(\n" +
+					"  big.NewInt(0).Set(bNum.bigInt), bNum.precision)\n",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+
 	}
 
 	err = dec.IsValid(ePrefix.String() + "dec INVALID! ")
@@ -1764,12 +1769,13 @@ func (bIntNumProton *bigIntNumProton) decimalGetDecimal(
 	if err != nil {
 
 		return Decimal{},
-			fmt.Errorf("%v\n"+
-				"Validation Error returned by: \n"+
-				" err = dec.IsValid(ePrefix + \"dec INVALID! \")\n"+
-				"Validaton Error= %v\n",
-				ePrefix,
-				err.Error())
+			&ErrorReturnBasic{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "err = dec.IsValid(ePrefix + \\\"dec INVALID! \\\")",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+
 	}
 
 	return dec, nil
