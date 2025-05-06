@@ -361,7 +361,7 @@ func (bIDivide BigIntMathDivide) BigIntNumQuotientMod(
 		if err != nil {
 
 			return quotient, modulo,
-				&ErrorReturnBasic{
+				&ReturnBasicError{
 					ErrPrefix:  ePrefix,
 					ReturnFunc: "quotient, err = new(BigIntNum).NewBigInt(big.NewInt(0), 0)",
 					ErrMessage: err.Error(),
@@ -373,7 +373,7 @@ func (bIDivide BigIntMathDivide) BigIntNumQuotientMod(
 		if err != nil {
 
 			return quotient, modulo,
-				&ErrorReturnBasic{
+				&ReturnBasicError{
 					ErrPrefix:  ePrefix,
 					ReturnFunc: "modulo, err = new(BigIntNum).NewBigInt(big.NewInt(0), 0)",
 					ErrMessage: err.Error(),
@@ -637,7 +637,7 @@ func (bIDivide BigIntMathDivide) BigIntNumFracQuotient(
 
 	if err != nil {
 		return fracQuotient,
-			&ErrorReturnBasic{
+			&ReturnBasicError{
 				ErrPrefix:  ePrefix,
 				ReturnFunc: "fracQuotient, err = new(BigIntNum).NewZero(0)",
 				ErrContext: "",
@@ -653,7 +653,7 @@ func (bIDivide BigIntMathDivide) BigIntNumFracQuotient(
 	if err != nil {
 
 		return fracQuotient,
-			&ErrorReturnBasic{
+			&ReturnBasicError{
 				ErrPrefix:  ePrefix,
 				ReturnFunc: "binDividend, err := dividend.GetBigInt()",
 				ErrContext: "",
@@ -665,7 +665,7 @@ func (bIDivide BigIntMathDivide) BigIntNumFracQuotient(
 
 	if err != nil {
 		return fracQuotient,
-			&ErrorReturnBasic{
+			&ReturnBasicError{
 				ErrPrefix:  ePrefix,
 				ReturnFunc: "binDividendPrecision, err := dividend.GetPrecisionBigInt()",
 				ErrContext: "",
@@ -679,7 +679,7 @@ func (bIDivide BigIntMathDivide) BigIntNumFracQuotient(
 	if err != nil {
 
 		return fracQuotient,
-			&ErrorReturnBasic{
+			&ReturnBasicError{
 				ErrPrefix:  ePrefix,
 				ReturnFunc: "binDivisor, err := divisor.GetBigInt()",
 				ErrMessage: err.Error(),
@@ -690,7 +690,7 @@ func (bIDivide BigIntMathDivide) BigIntNumFracQuotient(
 
 	if err != nil {
 		return fracQuotient,
-			&ErrorReturnBasic{
+			&ReturnBasicError{
 				ErrPrefix:  ePrefix,
 				ReturnFunc: "binDivisorPrecision, err := divisor.GetPrecisionBigInt()",
 				ErrMessage: err.Error(),
@@ -710,7 +710,7 @@ func (bIDivide BigIntMathDivide) BigIntNumFracQuotient(
 	if err != nil {
 
 		return fracQuotient,
-			&ErrorReturnBasic{
+			&ReturnBasicError{
 				ErrPrefix: ePrefix,
 				ReturnFunc: "  fracQuo, fracQuoPrecision, err := BigIntMathDivide{}.BigIntFracQuotient(\n" +
 					"    binDividend,binDividendPrecision,binDivisor,binDivisorPrecision,biMaxPrecision)",
@@ -722,7 +722,7 @@ func (bIDivide BigIntMathDivide) BigIntNumFracQuotient(
 	if err != nil {
 
 		return fracQuotient,
-			&ErrorReturnBasic{
+			&ReturnBasicError{
 				ErrPrefix:  ePrefix,
 				ReturnFunc: "  err = fracQuotient.SetBigInt(fracQuo, uint(fracQuoPrecision.Uint64()))",
 				ErrMessage: err.Error(),
@@ -734,7 +734,7 @@ func (bIDivide BigIntMathDivide) BigIntNumFracQuotient(
 	if err != nil {
 
 		return fracQuotient,
-			&ErrorReturnBasic{
+			&ReturnBasicError{
 				ErrPrefix:  ePrefix,
 				ReturnFunc: "  numSepsDto, err := dividend.GetNumericSeparatorsDto()",
 				ErrMessage: err.Error(),
@@ -746,7 +746,7 @@ func (bIDivide BigIntMathDivide) BigIntNumFracQuotient(
 	if err != nil {
 
 		return fracQuotient,
-			&ErrorReturnBasic{
+			&ReturnBasicError{
 				ErrPrefix:  ePrefix,
 				ReturnFunc: "  err = fracQuotient.SetNumericSeparatorsDto(numSepsDto)",
 				ErrMessage: err.Error(),

@@ -2817,7 +2817,7 @@ func (ia *IntAry) IsZero() bool {
 
 }
 
-// Inverse - Returns the inverse of the current intAry's
+// Inverse - Returns the inverseBigIntNum of the current intAry's
 // value.
 //
 // Input Parameter:

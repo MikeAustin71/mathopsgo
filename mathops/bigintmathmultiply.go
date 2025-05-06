@@ -687,13 +687,37 @@ func (bMultiply *BigIntMathMultiply) MultiplyBigInts(
 // input parameter, 'multiplier'.
 func (bMultiply *BigIntMathMultiply) MultiplyBigIntNums(
 	multiplier BigIntNum,
-	multiplicand BigIntNum) BigIntNum {
+	multiplicand BigIntNum) (BigIntNum, error) {
 
-	bPair := new(BigIntPair).NewBigIntNum(multiplier, multiplicand)
+	ePrefix := "BigIntMathMultiply.MultiplyBigIntNums()"
 
-	finalResult := bMultiply.MultiplyPair(bPair)
+	bPair, err := new(BigIntPair).NewBigIntNum(multiplier, multiplicand)
 
-	return finalResult
+	if err != nil {
+
+		return BigIntNum{},
+			&ReturnBasicError{
+				ErrPrefix:  ePrefix,
+				ReturnFunc: "bPair, err := new(BigIntPair).NewBigIntNum(multiplier, multiplicand)",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
+
+	finalResult, err := bMultiply.MultiplyPair(bPair)
+
+	if err != nil {
+
+		return BigIntNum{},
+			&ReturnBasicError{
+				ErrPrefix:  ePrefix,
+				ReturnFunc: "finalResult, err := bMultiply.MultiplyPair(bPair)",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
+
+	return finalResult, nil
 }
 
 // MultiplyBigIntNumArray - Receives one BigIntNum which is classified as the 'multiplier'.
@@ -2309,9 +2333,21 @@ func (bMultiply *BigIntMathMultiply) MultiplyNumStrDtoSeries(
 // The returned BigIntNum multiplication 'Result' will contain numeric
 // separators (decimal separator, thousands separator and currency symbol)
 // copied from bPair.Big1.
-func (bMultiply *BigIntMathMultiply) MultiplyPair(bPair BigIntPair) BigIntNum {
+func (bMultiply *BigIntMathMultiply) MultiplyPair(bPair BigIntPair) (BigIntNum, error) {
 
-	numSeps := bPair.Big1.GetNumericSeparatorsDto()
+	ePrefix := "BigIntMathMultiply.MultiplyPair()"
+
+	numSeps, err := bPair.Big1.GetNumericSeparatorsDto()
+
+	if err != nil {
+		return BigIntNum{},
+			&ReturnBasicError{
+				ErrPrefix:  ePrefix,
+				ReturnFunc: "numSeps, err := bPair.Big1.GetNumericSeparatorsDto()",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
 
 	finalResult := bMultiply.multiplyPairNoNumSeps(bPair)
 
@@ -2330,15 +2366,66 @@ func (bMultiply *BigIntMathMultiply) MultiplyPair(bPair BigIntPair) BigIntNum {
 //
 // The returned BigIntNum multiplication 'Result' will contain default numeric
 // separators (decimal separator, thousands separator and currency symbol).
-func (bMultiply *BigIntMathMultiply) multiplyPairNoNumSeps(bPair BigIntPair) BigIntNum {
+func (bMultiply *BigIntMathMultiply) multiplyPairNoNumSeps(bPair BigIntPair) (BigIntNum, error) {
+
+	ePrefix := "BigIntMathMultiply.multiplyPairNoNumSeps()"
 
 	b3 := big.NewInt(0).Mul(bPair.GetBig1BigInt(), bPair.GetBig2BigInt())
 
-	bResult := BigIntNum{}.NewBigInt(
+	big1Precision, err := bPair.Big1.GetPrecisionUint()
+
+	if err != nil {
+		return BigIntNum{},
+			&ReturnBasicError{
+				ErrPrefix:  ePrefix,
+				ReturnFunc: "big1Precision, err := bPair.Big1.GetPrecisionUint()",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+
+	}
+
+	big2Precision, err := bPair.Big2.GetPrecisionUint()
+
+	if err != nil {
+		return BigIntNum{},
+			&ReturnBasicError{
+				ErrPrefix:  ePrefix,
+				ReturnFunc: "big2Precision, err := bPair.Big2.GetPrecisionUint()",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+
+	}
+
+	bResult, err := new(BigIntNum).NewBigInt(
 		b3,
-		bPair.Big1.GetPrecisionUint()+bPair.Big2.GetPrecisionUint())
+		big1Precision+big2Precision)
 
-	bResult.TrimTrailingFracZeros()
+	if err != nil {
 
-	return bResult
+		return BigIntNum{},
+			&ReturnBasicError{
+				ErrPrefix: ePrefix,
+				ReturnFunc: "bResult, err := new(BigIntNum).NewBigInt(\n" +
+					"    b3, big1Precision+big2Precision)",
+				ErrMessage: err.Error(),
+			}
+
+	}
+
+	err = bResult.TrimTrailingFracZeros()
+
+	if err != nil {
+
+		return BigIntNum{},
+			&ReturnBasicError{
+				ErrPrefix:  ePrefix,
+				ReturnFunc: "err = bResult.TrimTrailingFracZeros()",
+				ErrMessage: err.Error(),
+			}
+
+	}
+
+	return bResult, nil
 }

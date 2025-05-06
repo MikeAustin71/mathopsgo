@@ -810,21 +810,21 @@ func (bigIFd *BigIntFixedDecimal) GetPrecisionBigInt() *big.Int {
 }
 
 // Inverse - Converts the current BigIntFixedDecimal
-// to the inverse of its numeric value.
+// to the inverseBigIntNum of its numeric value.
 //
 // Example:
 // Current Value = '2'         Inverse= '1/2'
 //
 // Note: When called this method will destroy and
 // overwrite the previous numeric value with the
-// inverse value.
+// inverseBigIntNum value.
 //
 // Input Parameter
 // ===============
 //
 // maxPrecision uint	- Defines the maximum precision for the
 //
-//	                     inverse value computed by this method.
+//	                     inverseBigIntNum value computed by this method.
 //	                     As used here, 'maxPrecision' specifies
 //	                     the maximum number of numeric digits to
 //												the right of the decimal place.

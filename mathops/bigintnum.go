@@ -2239,8 +2239,8 @@ func (bNum *BigIntNum) GetUInt64() (uint64, error) {
 
 // Inverse
 //
-// Returns the inverse of the current BigIntNum value.
-// The inverse of the value is equal to one ('1') divided by the
+// Returns the inverseBigIntNum of the current BigIntNum value.
+// The inverseBigIntNum of the value is equal to one ('1') divided by the
 // numeric value of the current BigIntNum.
 //
 // The BigIntNum return value for this operation will contain numeric
@@ -2269,7 +2269,7 @@ func (bNum *BigIntNum) Inverse(maxPrecision uint) (BigIntNum, error) {
 		return BigIntNum{}, err
 	}
 
-	return new(bigIntNumNeutron).inverse(
+	return new(bigIntNumNeutron).inverseBigIntNum(
 		bNum,
 		maxPrecision,
 		ePrefix)
@@ -2350,95 +2350,62 @@ func (bNum *BigIntNum) IsEvenNumber() (bool, error) {
 	return false, nil
 }
 
-// Increment - Adds a value of +1 (plus one) to the numeric
-// value of the current BigIntNum instance.
+// Increment
+//
+// Adds a value of +1 (plus one) to the numeric value of the
+// current BigIntNum instance.
 //
 // The numeric separators (decimal separator, thousands separator
 // and currency symbol) from the original BigIntNum will remain
 // unchanged.
 func (bNum *BigIntNum) Increment() error {
 
-	ePrefix := "BigIntNum.Increment()"
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-	err := new(bigIntNumAtom).isBigIntNumValid(
-		bNum,
-		ePrefix+" Testing 'bNum'")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"BigIntNum.Increment",
+		"")
 
 	if err != nil {
 		return err
 	}
 
-	biNumOne, err := new(bigIntNumMolecule).newOne(
-		bNum.precision,
-		ePrefix)
-
-	if err != nil {
-
-		return fmt.Errorf("%v\n"+
-			"Error returned by: \n"+
-			" biNumOne, err := new(bigIntNumMolecule).newOne(\n"+
-			"    bNum.precision, ePrefix)\n"+
-			"Error= %v\n",
-			ePrefix,
-			err.Error())
-	}
-
-	bNum2, err := new(bigIntNumUtility).bigIntNumCopyOut(
+	err = new(bigIntNumAtom).isBigIntNumValid(
 		bNum,
-		ePrefix)
+		ePrefix.XCpy("Validating 'bNum'"))
 
 	if err != nil {
-
-		return fmt.Errorf("%v\n"+
-			"Error returned by: \n"+
-			" bNum2, err := new(bigIntNumUtility).\n"+
-			"     bNum, ePrefix)\n"+
-			"Error= %v\n",
-			ePrefix,
-			err.Error())
+		return err
 	}
 
-	bPair := new(BigIntPair).NewBigIntNum(bNum2, biNumOne)
-
-	result, err := new(BigIntMathAdd).AddPair(bPair)
-
-	if err != nil {
-
-		return fmt.Errorf("%v\n"+
-			"Error returned by: \n"+
-			" result, err := new(BigIntMathAdd).AddPair(bPair)\n"+
-			"Error= %v\n",
-			ePrefix,
-			err.Error())
-	}
-
-	err = new(bigIntNumUtility).bigIntNumCopyIn(
-		bNum,
-		&result,
-		ePrefix)
-
-	if err != nil {
-
-		return fmt.Errorf("%v\n"+
-			"Error returned by: \n"+
-			" err = new(bigIntNumUtility).\n"+
-			"  .bigIntNumCopyIn(bNum, &result, ePrefix)\n"+
-			"Error= %v\n",
-			ePrefix,
-			err.Error())
-	}
-
-	return nil
+	return new(bigIntNumNeutron).incrementBigIntNum(
+		bNum, ePrefix)
 }
 
 // IsValid - returns a boolean value signaling whether the
 // current BigIntNum object is valid.
 func (bNum *BigIntNum) IsValid(callingMethodName string) error {
 
-	ePrefix := "BigIntNum.IsValid()"
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
 	if len(callingMethodName) > 0 {
-		ePrefix = ePrefix + "\n" + callingMethodName
+		callingMethodName = "BigIntNum.IsValid" + "\n" + callingMethodName
+	} else {
+		callingMethodName = "BigIntNum.IsValid"
+	}
+
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		callingMethodName,
+		"")
+
+	if err != nil {
+		return err
 	}
 
 	return new(bigIntNumAtom).isBigIntNumValid(
@@ -2450,14 +2417,35 @@ func (bNum *BigIntNum) IsValid(callingMethodName string) error {
 // BigIntNum value is zero.
 func (bNum *BigIntNum) IsZero() (bool, error) {
 
-	ePrefix := "BigIntNum.IsZero()"
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
+
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"BigIntNum.Ceiling",
+		"")
+
+	if err != nil {
+		return false, err
+	}
+
+	err = new(bigIntNumAtom).isBigIntNumValid(
+		bNum,
+		ePrefix.XCpy("Validating 'bNum'"))
+
+	if err != nil {
+		return false, err
+	}
 
 	return new(bigIntNumMolecule).isBIntNumZero(
 		bNum,
 		ePrefix)
 }
 
-// Mod - performs a modulo operation where the current BigIntNum numeric value is the
+// Mod
+//
+// Performs a modulo operation where the current BigIntNum numeric value is the
 // dividend and the divisor is the input parameter, 'divisor'.  The modulo operation finds
 // the remainder after division of one number by another (sometimes called modulus).
 // (Wikipedia: https://en.wikipedia.org/wiki/Modulo_operation)
@@ -2481,54 +2469,36 @@ func (bNum *BigIntNum) Mod(
 	divisor BigIntNum,
 	maxPrecision uint) (modulo BigIntNum, err error) {
 
-	ePrefix := "BigIntNum.Mod()"
+	var ePrefix *ePref.ErrPrefixDto
+
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"BigIntNum.Ceiling",
+		"")
+
+	if err != nil {
+		return modulo, err
+	}
 
 	err = new(bigIntNumAtom).isBigIntNumValid(
 		bNum,
-		ePrefix+" Testing 'bNum'")
+		ePrefix.XCpy("Validating 'bNum'"))
 
 	if err != nil {
-		return BigIntNum{}, err
+		return modulo, err
 	}
 
-	err = new(bigIntNumAtom).isBigIntNumValid(
+	return new(bigIntNumNeutron).modBigIntNum(
+		bNum,
 		&divisor,
-		ePrefix+" Testing Input Parameter 'divisor'")
-
-	if err != nil {
-
-		return BigIntNum{},
-			fmt.Errorf("%v\n"+
-				"Validation Error on Input Parameter BigIntNum instance 'divisor'.\n"+
-				"Input Parameter 'divisor' failed the validation test and is INVALID!\n"+
-				"Error returned by: \n"+
-				" err := new(bigIntNumAtom).isBigIntNumValid(&divisor,ePrefix+\n"+
-				"   \" Testing Input Parameter 'divisor'\")\n"+
-				"Error= %v\n",
-				ePrefix,
-				err.Error())
-
-	}
-
-	biNum2, err := new(bigIntNumUtility).bigIntNumCopyOut(
-		bNum, ePrefix)
-
-	if err != nil {
-
-		return BigIntNum{},
-			fmt.Errorf("%v\n"+
-				"Error returned by: \n"+
-				" biNum2, err := new(bigIntNumUtility).\n"+
-				"   .bigIntNumCopyOut(bNum, ePrefix)\n"+
-				"Error= %v\n",
-				ePrefix,
-				err.Error())
-	}
-
-	return BigIntMathDivide{}.BigIntNumModulo(biNum2, divisor, maxPrecision)
+		maxPrecision,
+		ePrefix)
 }
 
-// Multiply - Multiplies the numerical value of the current BigIntNum instance
+// Multiply
+//
+// Multiplies the numerical value of the current BigIntNum instance
 // ('multiplier') times input parameter 'multiplicand'. The 'product' of this
 // multiplication operation is returned as a BigIntNum.
 //
@@ -2540,55 +2510,30 @@ func (bNum *BigIntNum) Mod(
 // copied from the current BigIntNum instance.
 func (bNum *BigIntNum) Multiply(multiplicand BigIntNum) (product BigIntNum, err error) {
 
-	ePrefix := "BigIntNum.Multiply()"
+	var ePrefix *ePref.ErrPrefixDto
 
-	product = new(bigIntNumMechanics).new()
-
-	err = new(bigIntNumAtom).isBigIntNumValid(
-		bNum,
-		ePrefix+" Testing 'bNum'")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"BigIntNum.Ceiling",
+		"")
 
 	if err != nil {
 		return product, err
 	}
 
 	err = new(bigIntNumAtom).isBigIntNumValid(
-		&multiplicand,
-		ePrefix+" Testing Input Parameter 'multiplicand'")
-
-	if err != nil {
-
-		return product,
-			fmt.Errorf("%v\n"+
-				"Validation Error on Input Parameter BigIntNum instance 'multiplicand'.\n"+
-				"Input Parameter 'multiplicand' failed the validation test and is INVALID!\n"+
-				"Error returned by: \n"+
-				" err := new(bigIntNumAtom).isBigIntNumValid(&multiplicand, ePrefix)\n"+
-				"Error= %v\n",
-				ePrefix,
-				err.Error())
-
-	}
-
-	bNum2, err := new(bigIntNumUtility).bigIntNumCopyOut(
 		bNum,
-		ePrefix)
+		ePrefix.XCpy("Validating 'bNum'"))
 
 	if err != nil {
-
-		return product,
-			fmt.Errorf("%v\n"+
-				"Error returned by: \n"+
-				" bNum2, err := new(bigIntNumUtility).\n"+
-				"   bigIntNumCopyOut( bNum, ePrefix)\n"+
-				"Error= %v\n",
-				ePrefix,
-				err.Error())
+		return product, err
 	}
 
-	product = new(BigIntMathMultiply).MultiplyBigIntNums(bNum2, multiplicand)
-
-	return product, err
+	return new(bigIntNumNeutron).multiplyBigIntNum(
+		bNum,
+		&multiplicand,
+		ePrefix)
 }
 
 // MultiplyByFive - Multiplies the numerical value of the current BigIntNum
