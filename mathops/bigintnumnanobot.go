@@ -69,10 +69,6 @@ func (bIntNumNano *bigIntNumNanobot) setBigInt(
 			ErrPrefix:  ePrefix.String(),
 			ErrMessage: "FATAL ERROR: Input parameter 'bNum' is a nil pointer.",
 		}
-
-		//return fmt.Errorf("%v\n"+
-		//	"FATAL ERROR: Input parameter 'bNum' is a nil pointer.\n",
-		//	ePrefix.String())
 	}
 
 	if bigI == nil {
