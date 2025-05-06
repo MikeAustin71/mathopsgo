@@ -1,6 +1,7 @@
 package mathops
 
 import (
+	"fmt"
 	ePref "github.com/MikeAustin71/errpref"
 	"math/big"
 	"sync"
@@ -192,4 +193,109 @@ func (bNumNeutron *bigIntNumNeutron) isEvenNumber(
 	}
 
 	return false, nil
+}
+
+// incrementBigIntNum
+//
+// Adds a value of +1 (plus one) to the numeric value of the
+// BigIntNum instance passed as input parameter 'bNum'
+//
+// The numeric separators (decimal separator, thousands separator
+// and currency symbol) from the original BigIntNum will remain
+// unchanged.
+func (bNumNeutron *bigIntNumNeutron) incrementBigIntNum(
+	bNum *BigIntNum,
+	errPrefDto *ePref.ErrPrefixDto) error {
+
+	if bNumNeutron.lock == nil {
+		bNumNeutron.lock = new(sync.Mutex)
+	}
+
+	bNumNeutron.lock.Lock()
+
+	defer bNumNeutron.lock.Unlock()
+
+	var ePrefix *ePref.ErrPrefixDto
+
+	var err error
+
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
+		errPrefDto,
+		"bigIntNumNeutron.Inverse",
+		"")
+
+	if err != nil {
+		return err
+	}
+
+	if bNum == nil {
+
+		return &ReturnBasicError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "",
+			ErrContext: "",
+			ErrMessage: "FATAL ERROR: Input parameter 'bNum' is a nil pointer.",
+		}
+	}
+
+	biNumOne, err := new(bigIntNumMolecule).newOne(
+		bNum.precision,
+		ePrefix)
+
+	if err != nil {
+
+		return err
+	}
+
+	bNum2, err := new(bigIntNumUtility).bigIntNumCopyOut(
+		bNum,
+		ePrefix)
+
+	if err != nil {
+
+		return err
+	}
+
+	bPair, err := new(BigIntPair).NewBigIntNum(bNum2, biNumOne)
+
+	if err != nil {
+
+		return &ReturnBasicError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "bPair, err := new(BigIntPair).NewBigIntNum(bNum2, biNumOne)",
+			ErrMessage: err.Error(),
+		}
+
+	}
+
+	result, err := new(BigIntMathAdd).AddPair(bPair)
+
+	if err != nil {
+
+		return fmt.Errorf("%v\n"+
+			"Error returned by: \n"+
+			" result, err := new(BigIntMathAdd).AddPair(bPair)\n"+
+			"Error= %v\n",
+			ePrefix,
+			err.Error())
+	}
+
+	err = new(bigIntNumUtility).bigIntNumCopyIn(
+		bNum,
+		&result,
+		ePrefix)
+
+	if err != nil {
+
+		return fmt.Errorf("%v\n"+
+			"Error returned by: \n"+
+			" err = new(bigIntNumUtility).\n"+
+			"  .bigIntNumCopyIn(bNum, &result, ePrefix)\n"+
+			"Error= %v\n",
+			ePrefix,
+			err.Error())
+	}
+
+	return nil
 }
