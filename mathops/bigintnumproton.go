@@ -3,6 +3,7 @@ package mathops
 import (
 	"fmt"
 	ePref "github.com/MikeAustin71/errpref"
+	"math"
 	"math/big"
 	"sync"
 )
@@ -56,7 +57,7 @@ func (bIntNumProton *bigIntNumProton) cmpBigInt(
 	if bNum == nil {
 
 		err = fmt.Errorf("%v\n"+
-			"FATAL ERROR: Input parameter 'bNum' is a nil pointer.\n",
+			"FATAL ERROR: Input parameter 'bNum' is a nil pointer.",
 			ePrefix.String())
 
 		return 0, err
@@ -64,11 +65,14 @@ func (bIntNumProton *bigIntNumProton) cmpBigInt(
 
 	if bigIntNum == nil {
 
-		err = fmt.Errorf("%v\n"+
-			"FATAL ERROR: Input parameter 'bigIntNum' is a nil pointer.\n",
-			ePrefix.String())
+		return 0,
+			&ErrorReturnBasic{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "",
+				ErrContext: "",
+				ErrMessage: "FATAL ERROR: Input parameter 'bNum' is a nil pointer.",
+			}
 
-		return 0, err
 	}
 
 	err = new(bigIntNumAtom).isBigIntNumValid(
@@ -135,20 +139,26 @@ func (bIntNumProton *bigIntNumProton) bigIntNumCmp(
 
 	if bNum == nil {
 
-		err = fmt.Errorf("%v\n"+
-			"FATAL ERROR: Input parameter 'bNum' is a nil pointer.\n",
-			ePrefix.String())
+		return 0,
+			&ErrorReturnBasic{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "",
+				ErrContext: "",
+				ErrMessage: "FATAL ERROR: Input parameter 'bNum' is a nil pointer.",
+			}
 
-		return 0, err
 	}
 
 	if bigIntNum2 == nil {
 
-		err = fmt.Errorf("%v\n"+
-			"FATAL ERROR: Input parameter 'bigIntNum2' is a nil pointer.\n",
-			ePrefix.String())
+		return 0,
+			&ErrorReturnBasic{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "",
+				ErrContext: "",
+				ErrMessage: "FATAL ERROR: Input parameter 'bigIntNum2' is a nil pointer.",
+			}
 
-		return 0, err
 	}
 
 	err = new(bigIntNumAtom).isBigIntNumValid(
@@ -196,13 +206,22 @@ func (bIntNumProton *bigIntNumProton) bigIntNumCmp(
 	if err != nil {
 
 		return 0,
-			fmt.Errorf("%v\n"+
-				"Error returned by: \n"+
-				" difference, err := BigIntMathSubtract{}.\n"+
-				"   SubtractBigIntNums(bNum2, *bigIntNum2)\n"+
-				"Error= %v\n",
-				ePrefix.String(),
-				err.Error())
+			&ErrorReturnBasic{
+				ErrPrefix: ePrefix.String(),
+				ReturnFunc: " difference, err := BigIntMathSubtract{}.\n" +
+					"    SubtractBigIntNums(bNum2, *bigIntNum2)",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
+
+	err = new(bigIntNumAtom).isBigIntNumValid(
+		&difference,
+		ePrefix.XCpy(" Validating calculation result 'difference'"))
+
+	if err != nil {
+
+		return 0, err
 	}
 
 	var differenceIsZero bool
@@ -220,7 +239,7 @@ func (bIntNumProton *bigIntNumProton) bigIntNumCmp(
 		return 0, nil
 	}
 
-	return difference.GetSign(), nil
+	return difference.sign, nil
 }
 
 // bigIntNumDecrement - Subtracts a value of +1 (plus one) from the numeric
@@ -263,11 +282,13 @@ func (bIntNumProton *bigIntNumProton) bigIntNumDecrement(
 
 	if bNum == nil {
 
-		err = fmt.Errorf("%v\n"+
-			"FATAL ERROR: Input parameter 'bNum' is a nil pointer.\n",
-			ePrefix.String())
+		return &ErrorReturnBasic{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "",
+			ErrContext: "",
+			ErrMessage: "FATAL ERROR: Input parameter 'bNum' is a nil pointer.",
+		}
 
-		return err
 	}
 
 	bNum2, err := new(bigIntNumUtility).bigIntNumCopyOut(
@@ -361,20 +382,26 @@ func (bIntNumProton *bigIntNumProton) bigIntNumDivide(
 
 	if bNum == nil {
 
-		err = fmt.Errorf("%v\n"+
-			"FATAL ERROR: Input parameter 'bNum' is a nil pointer.\n",
-			ePrefix.String())
+		return BigIntNum{},
+			&ErrorReturnBasic{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "",
+				ErrContext: "",
+				ErrMessage: "FATAL ERROR: Input parameter 'bNum' is a nil pointer.",
+			}
 
-		return BigIntNum{}, err
 	}
 
 	if divisor == nil {
 
-		err = fmt.Errorf("%v\n"+
-			"FATAL ERROR: Input parameter 'divisor' is a nil pointer.\n",
-			ePrefix.String())
+		return BigIntNum{},
+			&ErrorReturnBasic{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "",
+				ErrContext: "",
+				ErrMessage: "FATAL ERROR: Input parameter 'divisor' is a nil pointer.",
+			}
 
-		return BigIntNum{}, err
 	}
 
 	err = new(bigIntNumAtom).isBigIntNumValid(
@@ -459,11 +486,14 @@ func (bIntNumProton *bigIntNumProton) bigIntNumDivideByFive(
 
 	if bNum == nil {
 
-		err = fmt.Errorf("%v\n"+
-			"FATAL ERROR: Input parameter 'bNum' is a nil pointer.\n",
-			ePrefix.String())
+		return BigIntNum{},
+			&ErrorReturnBasic{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "",
+				ErrContext: "",
+				ErrMessage: "FATAL ERROR: Input parameter 'bNum' is a nil pointer.",
+			}
 
-		return BigIntNum{}, err
 	}
 
 	numberStr, err := new(bigIntNumAtom).getBigIntNumStr(
@@ -554,11 +584,14 @@ func (bIntNumProton *bigIntNumProton) bigIntNumDivideByTen(
 
 	if bNum == nil {
 
-		err = fmt.Errorf("%v\n"+
-			"FATAL ERROR: Input parameter 'bNum' is a nil pointer.\n",
-			ePrefix.String())
+		return BigIntNum{},
+			&ErrorReturnBasic{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "",
+				ErrContext: "",
+				ErrMessage: "FATAL ERROR: Input parameter 'bNum' is a nil pointer.",
+			}
 
-		return BigIntNum{}, err
 	}
 
 	bNum2, err := new(bigIntNumUtility).bigIntNumCopyOut(
@@ -636,11 +669,13 @@ func (bIntNumProton *bigIntNumProton) bigIntNumDivideByTenToPower(
 
 	if bNum == nil {
 
-		err = fmt.Errorf("%v\n"+
-			"FATAL ERROR: Input parameter 'bNum' is a nil pointer.\n",
-			ePrefix.String())
+		return &ErrorReturnBasic{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "",
+			ErrContext: "",
+			ErrMessage: "FATAL ERROR: Input parameter 'bNum' is a nil pointer.",
+		}
 
-		return err
 	}
 
 	newPrecision := bNum.precision + exponent
@@ -712,11 +747,14 @@ func (bIntNumProton *bigIntNumProton) bigIntNumDivideByThree(
 
 	if bNum == nil {
 
-		err = fmt.Errorf("%v\n"+
-			"FATAL ERROR: Input parameter 'bNum' is a nil pointer.\n",
-			ePrefix.String())
+		return BigIntNum{},
+			&ErrorReturnBasic{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "",
+				ErrContext: "",
+				ErrMessage: "FATAL ERROR: Input parameter 'bNum' is a nil pointer.",
+			}
 
-		return BigIntNum{}, err
 	}
 
 	bNum2, err := new(bigIntNumUtility).bigIntNumCopyOut(
@@ -799,11 +837,13 @@ func (bIntNumProton *bigIntNumProton) bigIntNumDivideByTwo(
 
 	if bNum == nil {
 
-		err = fmt.Errorf("%v\n"+
-			"FATAL ERROR: Input parameter 'bNum' is a nil pointer.\n",
-			ePrefix.String())
-
-		return fracQuotient, err
+		return fracQuotient,
+			&ErrorReturnBasic{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "",
+				ErrContext: "",
+				ErrMessage: "FATAL ERROR: Input parameter 'bNum' is a nil pointer.",
+			}
 	}
 
 	bNum2, err := new(bigIntNumUtility).bigIntNumCopyOut(
@@ -883,11 +923,14 @@ func (bIntNumProton *bigIntNumProton) bigIntNumDivideByTwoQuoMod(
 
 	if bNum == nil {
 
-		err = fmt.Errorf("%v\n"+
-			"FATAL ERROR: Input parameter 'bNum' is a nil pointer.\n",
-			ePrefix.String())
+		return intQuotient, modulo,
+			&ErrorReturnBasic{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "",
+				ErrContext: "",
+				ErrMessage: "FATAL ERROR: Input parameter 'bNum' is a nil pointer.",
+			}
 
-		return intQuotient, modulo, err
 	}
 
 	bNum2, err := new(bigIntNumUtility).bigIntNumCopyOut(
@@ -961,11 +1004,13 @@ func (bIntNumProton *bigIntNumProton) bigIntNumExtendPrecision(
 
 	if bNum == nil {
 
-		err = fmt.Errorf("%v\n"+
-			"FATAL ERROR: Input parameter 'bNum' is a nil pointer.\n",
-			ePrefix.String())
+		return &ErrorReturnBasic{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "",
+			ErrContext: "",
+			ErrMessage: "FATAL ERROR: Input parameter 'bNum' is a nil pointer.",
+		}
 
-		return err
 	}
 
 	bigAtom := new(bigIntNumAtom)
@@ -1108,11 +1153,14 @@ func (bIntNumProton *bigIntNumProton) bigIntNumFloor(
 
 	if bNum == nil {
 
-		err = fmt.Errorf("%v\n"+
-			"FATAL ERROR: Input parameter 'bNum' is a nil pointer.\n",
-			ePrefix.String())
+		return BigIntNum{},
+			&ErrorReturnBasic{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "",
+				ErrContext: "",
+				ErrMessage: "FATAL ERROR: Input parameter 'bNum' is a nil pointer.",
+			}
 
-		return BigIntNum{}, err
 	}
 
 	var bigIntMech = new(bigIntNumMechanics)
@@ -1218,18 +1266,21 @@ func (bIntNumProton *bigIntNumProton) bigIntNumGetAbsoluteNumStr(
 
 	if bNum == nil {
 
-		err = fmt.Errorf("%v\n"+
-			"FATAL ERROR: Input parameter 'bNum' is a nil pointer.\n",
-			ePrefix.String())
+		return "",
+			&ErrorReturnBasic{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "",
+				ErrContext: "",
+				ErrMessage: "FATAL ERROR: Input parameter 'bNum' is a nil pointer.",
+			}
 
-		return "", err
 	}
 
 	var bigINumMolecule = new(bigIntNumMolecule)
 
 	var bigINumUtility = new(bigIntNumUtility)
 
-	if bNum.GetSign() == 1 {
+	if bNum.sign == 1 {
 
 		numStr, err := bigINumMolecule.formatBigIntNumStr(
 			bNum,
@@ -1313,11 +1364,14 @@ func (bIntNumProton *bigIntNumProton) bigIntNumGetAbsoluteBigIntNumValue(
 
 	if bNum == nil {
 
-		err = fmt.Errorf("%v\n"+
-			"FATAL ERROR: Input parameter 'bNum' is a nil pointer.\n",
-			ePrefix.String())
+		return BigIntNum{},
+			&ErrorReturnBasic{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "",
+				ErrContext: "",
+				ErrMessage: "FATAL ERROR: Input parameter 'bNum' is a nil pointer.",
+			}
 
-		return BigIntNum{}, err
 	}
 
 	bNum2, err := new(bigIntNumMechanics).newBigInt(
@@ -1372,11 +1426,14 @@ func (bIntNumProton *bigIntNumProton) bigIntNumGetAbsoluteBigIntValue(
 
 	if bNum == nil {
 
-		err = fmt.Errorf("%v\n"+
-			"FATAL ERROR: Input parameter 'bNum' is a nil pointer.\n",
-			ePrefix.String())
+		return result,
+			&ErrorReturnBasic{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "",
+				ErrContext: "",
+				ErrMessage: "FATAL ERROR: Input parameter 'bNum' is a nil pointer.",
+			}
 
-		return result, err
 	}
 
 	result = big.NewInt(0).Set(bNum.absBigInt)
@@ -1419,11 +1476,14 @@ func (bIntNumProton *bigIntNumProton) bigIntNumGetBigFloat(
 
 	if bNum == nil {
 
-		err = fmt.Errorf("%v\n"+
-			"FATAL ERROR: Input parameter 'bNum' is a nil pointer.\n",
-			ePrefix.String())
+		return big.NewFloat(0),
+			&ErrorReturnBasic{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "",
+				ErrContext: "",
+				ErrMessage: "FATAL ERROR: Input parameter 'bNum' is a nil pointer.",
+			}
 
-		return big.NewFloat(0), err
 	}
 
 	numerator := big.NewInt(0).Set(bNum.bigInt)
@@ -1470,11 +1530,14 @@ func (bIntNumProton *bigIntNumProton) bigIntNumGetBigInt(
 
 	if bNum == nil {
 
-		err = fmt.Errorf("%v\n"+
-			"FATAL ERROR: Input parameter 'bNum' is a nil pointer.\n",
-			ePrefix.String())
+		return big.NewInt(0),
+			&ErrorReturnBasic{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "",
+				ErrContext: "",
+				ErrMessage: "FATAL ERROR: Input parameter 'bNum' is a nil pointer.",
+			}
 
-		return big.NewInt(0), err
 	}
 
 	return big.NewInt(0).Set(bNum.bigInt), nil
@@ -1516,11 +1579,14 @@ func (bIntNumProton *bigIntNumProton) bigIntNumGetBigIntFixedDecimal(
 
 	if bNum == nil {
 
-		err = fmt.Errorf("%v\n"+
-			"FATAL ERROR: Input parameter 'bNum' is a nil pointer.\n",
-			ePrefix.String())
+		return BigIntFixedDecimal{},
+			&ErrorReturnBasic{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "",
+				ErrContext: "",
+				ErrMessage: "FATAL ERROR: Input parameter 'bNum' is a nil pointer.",
+			}
 
-		return BigIntFixedDecimal{}, err
 	}
 
 	fixedDec := new(BigIntFixedDecimal).New(bNum.bigInt, bNum.precision)
@@ -1563,11 +1629,14 @@ func (bIntNumProton *bigIntNumProton) bigIntNumGetBigRat(
 
 	if bNum == nil {
 
-		err = fmt.Errorf("%v\n"+
-			"FATAL ERROR: Input parameter 'bNum' is a nil pointer.\n",
-			ePrefix.String())
+		return big.NewRat(1, 1),
+			&ErrorReturnBasic{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "",
+				ErrContext: "",
+				ErrMessage: "FATAL ERROR: Input parameter 'bNum' is a nil pointer.",
+			}
 
-		return big.NewRat(1, 1), err
 	}
 
 	numerator := big.NewInt(0).Set(bNum.bigInt)
@@ -1636,11 +1705,14 @@ func (bIntNumProton *bigIntNumProton) bigIntNumGetNumSepSymbol(
 
 	if bNum == nil {
 
-		err = fmt.Errorf("%v\n"+
-			"FATAL ERROR: Input parameter 'bNum' is a nil pointer.\n",
-			ePrefix.String())
+		return '0',
+			&ErrorReturnBasic{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "",
+				ErrContext: "",
+				ErrMessage: "FATAL ERROR: Input parameter 'bNum' is a nil pointer.",
+			}
 
-		return '0', err
 	}
 
 	switch nSepSymbol {
@@ -1664,6 +1736,1297 @@ func (bIntNumProton *bigIntNumProton) bigIntNumGetNumSepSymbol(
 		ePrefix.String())
 
 	return '0', err
+}
+
+// bigIntNumGetFractionalPart
+//
+// Returns the fractional digits of the BigIntNum passed
+// as input parameter 'bNum'. The fractional digit are
+// returned in the form of a new BigIntNum instance
+// containing those correctly formatted fractional digits.
+//
+// Examples
+// ========
+//
+//				 Current
+//				BigIntNum				 		Return
+//	 			  Value						  Value
+//				----------				---------
+//
+//	 			123.456						 0.456
+//				 -123.456					-0.456
+//				  123								 0
+//				 -123								 0
+//
+//	NOTE:
+//
+// This method does NOT test the validity of 'bNum', an
+// instance of type BigIntNum. The calling method must
+// do this!
+func (bIntNumProton *bigIntNumProton) bigIntNumGetFractionalPart(
+	bNum *BigIntNum,
+	errPrefDto *ePref.ErrPrefixDto) (BigIntNum, error) {
+
+	if bIntNumProton.lock == nil {
+		bIntNumProton.lock = new(sync.Mutex)
+	}
+
+	bIntNumProton.lock.Lock()
+
+	defer bIntNumProton.lock.Unlock()
+
+	var ePrefix *ePref.ErrPrefixDto
+
+	var err error
+
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
+		errPrefDto,
+		"bigIntNumProton.bigIntNumGetFractionalPart",
+		"")
+
+	if err != nil {
+		return BigIntNum{}, err
+	}
+
+	if bNum == nil {
+
+		return BigIntNum{},
+			&ErrorReturnBasic{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "",
+				ErrContext: "",
+				ErrMessage: "FATAL ERROR: Input parameter 'bNum' is a nil pointer.",
+			}
+	}
+
+	if bNum.bigInt.Cmp(big.NewInt(0)) == 0 {
+		// bNum value is ZERO!
+
+		bNum2, err := new(bigIntNumMechanics).newZero(
+			0,
+			ePrefix)
+
+		if err != nil {
+
+			return BigIntNum{},
+				&ErrorReturnBasic{
+					ErrPrefix: ePrefix.String(),
+					ReturnFunc: " bNum2, err := new(bigIntNumMechanics).\n" +
+						"   newZero(0, ePrefix)",
+					ErrContext: "",
+					ErrMessage: err.Error(),
+				}
+		}
+
+		return bNum2, nil
+	}
+
+	scaleVal := big.NewInt(0).Exp(big.NewInt(10),
+		big.NewInt(int64(bNum.precision)), nil)
+
+	modulo := big.NewInt(0).Rem(bNum.bigInt, scaleVal)
+
+	bNum3, err := new(bigIntNumMechanics).newBigInt(
+		modulo, bNum.precision, ePrefix)
+
+	if err != nil {
+
+		return BigIntNum{},
+			fmt.Errorf("%v\n"+
+				"Error returned by: \n"+
+				" bNum3, err := new(bigIntNumMechanics).\n"+
+				"  newBigInt(modulo, bNum.precision, ePrefix)\n"+
+				"Error= %v\n",
+				ePrefix,
+				err.Error())
+	}
+
+	return bNum3, nil
+}
+
+// bigIntNumGetInt - Returns a type 'int' containing the 32-bit integer
+// value of the current BigIntNum instance.
+//
+// If the current BigIntNum value is greater than the maximum
+// 'int' value, the maximum 32-bit integer value is returned
+// in addition to an 'error'.
+//
+// If the current BigIntNum value is less than the minimum 'int'
+// value, the minimum 32-bit integer value is returned along with
+// an 'error'.
+//
+//	NOTE:
+//
+// This method does NOT test the validity of 'bNum', an
+// instance of type BigIntNum. The calling method must
+// do this!
+func (bIntNumProton *bigIntNumProton) bigIntNumGetInt(
+	bNum *BigIntNum,
+	errPrefDto *ePref.ErrPrefixDto) (int, error) {
+
+	if bIntNumProton.lock == nil {
+		bIntNumProton.lock = new(sync.Mutex)
+	}
+
+	bIntNumProton.lock.Lock()
+
+	defer bIntNumProton.lock.Unlock()
+
+	var ePrefix *ePref.ErrPrefixDto
+
+	var err error
+
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
+		errPrefDto,
+		"bigIntNumProton.bigIntNumGetInt",
+		"")
+
+	if err != nil {
+		return 0, err
+	}
+
+	if bNum == nil {
+
+		return 0,
+			&ErrorReturnBasic{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "",
+				ErrContext: "",
+				ErrMessage: "FATAL ERROR: Input parameter 'bNum' is a nil pointer.",
+			}
+	}
+
+	var numStr string
+
+	numStr, err = new(bigIntNumAtom).getBigIntNumStr(
+		bNum,
+		ePrefix)
+
+	if err != nil {
+		return 0, err
+	}
+
+	bIMaxInt := big.NewInt(int64(math.MaxInt32))
+
+	bIMinInt := big.NewInt(int64(math.MinInt32))
+
+	if bNum.bigInt.Cmp(bIMaxInt) == 1 {
+
+		return math.MaxInt32,
+			&ErrorReturnBasic{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "",
+				ErrContext: "Error: BigIntNum Value is GREATER than Int32 Maximum!\n" +
+					fmt.Sprintf("Int32 Maximum Value= '%v'\nBigIntNum Value='%v'",
+						math.MaxInt32, numStr),
+			}
+	}
+
+	if bNum.bigInt.Cmp(bIMinInt) == -1 {
+
+		return math.MinInt32,
+			&ErrorReturnBasic{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "",
+				ErrContext: "Error: BigIntNum Value is LESS than Int32 Minmum!\n" +
+					fmt.Sprintf("Int32 Minimum Value+ '%v'\nBigIntNum Value='%v'",
+						math.MinInt32, numStr),
+			}
+	}
+
+	return int(bNum.bigInt.Int64()), nil
+}
+
+// bigIntNumGetIntAry - Converts the current BigIntNum value to an
+// IntAry instance. The resulting number value includes the decimal
+// place and fractional digits if they exist.
+//
+// Note that the BigIntNum settings for 'decimalSeparator', 'thousandsSeparator'
+// and 'currencySymbol' are transferred to the new IntAry instance returned to the
+// calling function.
+//
+// The returned IntAry type contains numeric separators (decimal separator,
+// thousands separator and currency symbol) copied from the current BigIntNum
+// instance.
+//
+// This method performs a validity test on the current BigIntNum instance.
+//
+//	NOTE:
+//
+// This method does NOT test the validity of 'bNum', an
+// instance of type BigIntNum. The calling method must
+// do this!
+func (bIntNumProton *bigIntNumProton) bigIntNumGetIntAry(
+	bNum *BigIntNum,
+	errPrefDto *ePref.ErrPrefixDto) (IntAry, error) {
+
+	if bIntNumProton.lock == nil {
+		bIntNumProton.lock = new(sync.Mutex)
+	}
+
+	bIntNumProton.lock.Lock()
+
+	defer bIntNumProton.lock.Unlock()
+
+	var ePrefix *ePref.ErrPrefixDto
+
+	var err error
+
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
+		errPrefDto,
+		"bigIntNumProton.bigIntNumGetIntAry",
+		"")
+
+	if err != nil {
+		return IntAry{}, err
+	}
+
+	if bNum == nil {
+
+		return IntAry{},
+			&ErrorReturnBasic{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "",
+				ErrContext: "",
+				ErrMessage: "FATAL ERROR: Input parameter 'bNum' is a nil pointer.",
+			}
+	}
+
+	ia, err := new(IntAry).NewBigInt(big.NewInt(0).Set(bNum.bigInt), int(bNum.precision))
+
+	if err != nil {
+
+		return IntAry{},
+			&ErrorReturnBasic{
+				ErrPrefix: ePrefix.String(),
+				ReturnFunc: "ia, err := new(IntAry).NewBigInt(big.NewInt(0).\n" +
+					"Set(bNum.bigInt), int(bNum.precision))",
+				ErrContext: fmt.Sprintf("bNum.bigInt='%v'\nbNum.precision='%v'",
+					bNum.bigInt.Text(10), bNum.precision),
+				ErrMessage: err.Error(),
+			}
+
+	}
+
+	numSepsDto, err := new(bigIntNumAtom).getNumericSeparatorsDto(
+		bNum,
+		ePrefix)
+
+	if err != nil {
+		return IntAry{}, err
+	}
+
+	err = ia.SetNumericSeparatorsDto(numSepsDto)
+
+	if err != nil {
+
+		return IntAry{},
+			&ErrorReturnBasic{
+				ErrPrefix: ePrefix.String(),
+				ReturnFunc: "numSepsDto, err := new(bigIntNumAtom).getNumericSeparatorsDto(\n" +
+					"  getNumericSeparatorsDto(bNum, ePrefix)",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
+
+	err = ia.IsValid(ePrefix.String() + " Testing Validity of ia (IntAry).\n")
+
+	if err != nil {
+		return IntAry{}, err
+	}
+
+	return ia, nil
+}
+
+// GetIntegerValue
+// Returns the internal *big.Int number for the current
+// BigIntNum instance.
+//
+//	NOTE:
+//
+// This method does NOT test the validity of 'bNum', an
+// instance of type BigIntNum. The calling method must
+// do this!
+func (bIntNumProton *bigIntNumProton) bigIntNumGetIntegerValue(
+	bNum *BigIntNum,
+	errPrefDto *ePref.ErrPrefixDto) (*big.Int, error) {
+
+	if bIntNumProton.lock == nil {
+		bIntNumProton.lock = new(sync.Mutex)
+	}
+
+	bIntNumProton.lock.Lock()
+
+	defer bIntNumProton.lock.Unlock()
+
+	var ePrefix *ePref.ErrPrefixDto
+
+	var err error
+
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
+		errPrefDto,
+		"bigIntNumProton.bigIntNumGetIntegerValue",
+		"")
+
+	if err != nil {
+		return big.NewInt(0), err
+	}
+
+	if bNum == nil {
+
+		return big.NewInt(0),
+			&ErrorReturnBasic{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "",
+				ErrContext: "",
+				ErrMessage: "FATAL ERROR: Input parameter 'bNum' is a nil pointer.",
+			}
+	}
+
+	return big.NewInt(0).Set(bNum.bigInt), nil
+}
+
+// bigIntNumGetInverse
+//
+// Returns the value of one (1) divided by the input parameter
+// 'bNum' (type BigIntNum). The result is returned as new
+// BigIntNum Type.
+//
+//	NOTE:
+//
+// This method does NOT test the validity of 'bNum', an
+// instance of type BigIntNum. The calling method must
+// do this!
+func (bIntNumProton *bigIntNumProton) bigIntNumGetInverse(
+	bNum *BigIntNum,
+	maxPrecision uint,
+	errPrefDto *ePref.ErrPrefixDto) (BigIntNum, error) {
+
+	if bIntNumProton.lock == nil {
+		bIntNumProton.lock = new(sync.Mutex)
+	}
+
+	bIntNumProton.lock.Lock()
+
+	defer bIntNumProton.lock.Unlock()
+
+	var ePrefix *ePref.ErrPrefixDto
+
+	var err error
+
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
+		errPrefDto,
+		"bigIntNumProton.bigIntNumGetFractionalPart",
+		"")
+
+	if err != nil {
+		return BigIntNum{}, err
+	}
+
+	if bNum == nil {
+
+		return BigIntNum{},
+			&ErrorReturnBasic{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "",
+				ErrContext: "",
+				ErrMessage: "FATAL ERROR: Input parameter 'bNum' is a nil pointer.",
+			}
+	}
+
+	bINumOne, err := new(bigIntNumMechanics).
+		newBigInt(big.NewInt(1), 0, ePrefix)
+
+	if err != nil {
+
+		return BigIntNum{}, err
+	}
+
+	bNum2, err := new(bigIntNumUtility).bigIntNumCopyOut(
+		bNum,
+		ePrefix)
+
+	if err != nil {
+
+		return BigIntNum{}, err
+
+	}
+
+	result, err := BigIntMathDivide{}.BigIntNumFracQuotient(bINumOne, bNum2, maxPrecision)
+
+	if err != nil {
+
+		return BigIntNum{},
+			&ErrorReturnBasic{
+				ErrPrefix: ePrefix.String(),
+				ReturnFunc: "result, err := BigIntMathDivide{}.BigIntNumFracQuotient(\n" +
+					"bINumOne, bNum2, maxPrecision)",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
+
+	return result, nil
+}
+
+// bigIntNumGetNumStrDto
+//
+// Converts the current BigIntNum value to a NumStrDto instance.
+// The resulting number string includes the decimal place and
+// decimal digits if they exist.
+//
+// The returned NumStrDto type contains numeric separators (decimal
+// separator, thousands separator, and currency symbol) copied from
+// the current BigIntNum instance.
+//
+//	NOTE:
+//
+// This method does NOT test the validity of 'bNum', an
+// instance of type BigIntNum. The calling method must
+// do this!
+func (bIntNumProton *bigIntNumProton) bigIntNumGetNumStrDto(
+	bNum *BigIntNum,
+	errPrefDto *ePref.ErrPrefixDto) (NumStrDto, error) {
+
+	if bIntNumProton.lock == nil {
+		bIntNumProton.lock = new(sync.Mutex)
+	}
+
+	bIntNumProton.lock.Lock()
+
+	defer bIntNumProton.lock.Unlock()
+
+	var ePrefix *ePref.ErrPrefixDto
+
+	var err error
+
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
+		errPrefDto,
+		"bigIntNumProton.bigIntNumDivide",
+		"")
+
+	if err != nil {
+		return NumStrDto{}, err
+	}
+
+	if bNum == nil {
+
+		return NumStrDto{},
+			&ErrorReturnBasic{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "",
+				ErrContext: "",
+				ErrMessage: "FATAL ERROR: Input parameter 'bNum' is a nil pointer.",
+			}
+
+	}
+
+	nDto, err := NumStrDto{}.NewBigInt(big.NewInt(0).Set(bNum.bigInt), bNum.precision)
+
+	if err != nil {
+		return NumStrDto{},
+			&ErrorReturnBasic{
+				ErrPrefix: ePrefix.String(),
+				ReturnFunc: "nDto, err := NumStrDto{}.NewBigInt(big.NewInt(0)\n" +
+					".Set(bNum.bigInt), uint(bNum.precision))",
+				ErrContext: fmt.Sprintf("bNum.bigInt='%v'\nbNum.precision='%v'",
+					bNum.bigInt.Text(10), bNum.precision),
+				ErrMessage: err.Error(),
+			}
+	}
+
+	numSepDto, err := new(bigIntNumAtom).getNumericSeparatorsDto(
+		bNum,
+		ePrefix)
+
+	if err != nil {
+		return NumStrDto{}, err
+	}
+
+	err = nDto.SetNumericSeparatorsDto(numSepDto)
+
+	if err != nil {
+		return NumStrDto{},
+			&ErrorReturnBasic{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "err = nDto.SetNumericSeparatorsDto(numSepDto)",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
+
+	err = nDto.IsValid(ePrefix.String() + "'nDto' FAILED Validatoin Test! ")
+
+	if err != nil {
+		return NumStrDto{}.New(), err
+	}
+
+	return nDto, nil
+}
+
+// bigIntNumGetPrecision
+//
+// Returns the precision associated with the instance of
+// BigIntNum passed as input parameter 'bNum'. The returned
+// precision value is formatted as an integer of type 'int'.
+//
+// precision is defined as the number of numeric digits to
+// the right of the decimal place. To compute the location
+// of the decimal place in a string of numeric digits, go
+// to the right most digit in the number string and count
+// left 'precision' digits.
+//
+// Example:
+//
+//					1.234    	GetPrecision() = 3
+//							5			GetPrecision() = 0
+//				0.12345  		GetPrecision() = 5
+//
+//	Number String				precision				Fractional Number
+//		123456								3								123.456
+//
+//	NOTE:
+//
+// This method does NOT test the validity of 'bNum', an
+// instance of type BigIntNum. The calling method must
+// do this!
+func (bIntNumProton *bigIntNumProton) bigIntNumGetPrecision(
+	bNum *BigIntNum,
+	errPrefDto *ePref.ErrPrefixDto) (int, error) {
+
+	if bIntNumProton.lock == nil {
+		bIntNumProton.lock = new(sync.Mutex)
+	}
+
+	bIntNumProton.lock.Lock()
+
+	defer bIntNumProton.lock.Unlock()
+
+	var ePrefix *ePref.ErrPrefixDto
+
+	var err error
+
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
+		errPrefDto,
+		"bigIntNumProton.bigIntNumGetPrecision",
+		"")
+
+	if err != nil {
+		return 0, err
+	}
+
+	if bNum == nil {
+
+		return 0,
+			&ErrorReturnBasic{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "",
+				ErrContext: "",
+				ErrMessage: "FATAL ERROR: Input parameter 'bNum' is a nil pointer.",
+			}
+	}
+
+	return int(bNum.precision), nil
+}
+
+// bigIntNumGetPrecisionBigInt
+//
+// Returns the 'precision' of the BigIntNum instance passed
+// as input parameter 'bNum'. The precision value is returned
+// formatted as a *big.Int Type.
+//
+// 'precision' is defined as the number of numeric digits to
+// the right of the decimal place. To compute the location
+// of the decimal place in a string of numeric digits, go
+// to the right most digit in the number string and count
+// left 'precision' digits.
+//
+// Example:
+//
+//		1.234    	GetPrecisionBigInt() = 3
+//				5			GetPrecisionBigInt() = 0
+//	0.12345  		GetPrecisionBigInt() = 5
+//
+//	NOTE:
+//
+// This method does NOT test the validity of 'bNum', an
+// instance of type BigIntNum. The calling method must
+// do this!
+func (bIntNumProton *bigIntNumProton) bigIntNumGetPrecisionBigInt(
+	bNum *BigIntNum,
+	errPrefDto *ePref.ErrPrefixDto) (*big.Int, error) {
+
+	if bIntNumProton.lock == nil {
+		bIntNumProton.lock = new(sync.Mutex)
+	}
+
+	bIntNumProton.lock.Lock()
+
+	defer bIntNumProton.lock.Unlock()
+
+	var ePrefix *ePref.ErrPrefixDto
+
+	var err error
+
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
+		errPrefDto,
+		"bigIntNumProton.bigIntNumGetPrecisionBigInt",
+		"")
+
+	if err != nil {
+		return big.NewInt(0), err
+	}
+
+	if bNum == nil {
+
+		return big.NewInt(0),
+			&ErrorReturnBasic{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "",
+				ErrContext: "",
+				ErrMessage: "FATAL ERROR: Input parameter 'bNum' is a nil pointer.",
+			}
+	}
+
+	return big.NewInt(0).SetUint64(uint64(bNum.precision)), nil
+
+}
+
+// bigIntNumGetPrecisionUint
+//
+// Returns precision of the BigIntNum instance passed as
+// input parameter 'bNum'. The precision value is returned
+// formatted as an unsigned integer (uint).
+//
+// precision is defined as the number of numeric digits to
+// the right of the decimal place. To compute the location
+// of the decimal place in a string of numeric digits, go
+// to the right most digit in the number string and count
+// left 'precision' digits.
+//
+// Example:
+//
+//					1.234    	GetPrecisionUint() = 3
+//							5			GetPrecisionUint() = 0
+//				0.12345  		GetPrecisionUint() = 5
+//
+//	Number String				precision				Fractional Number
+//		123456								3								123.456
+//
+//	NOTE:
+//
+// This method does NOT test the validity of 'bNum', an
+// instance of type BigIntNum. The calling method must
+// do this!
+func (bIntNumProton *bigIntNumProton) bigIntNumGetPrecisionUint(
+	bNum *BigIntNum,
+	errPrefDto *ePref.ErrPrefixDto) (uint, error) {
+
+	if bIntNumProton.lock == nil {
+		bIntNumProton.lock = new(sync.Mutex)
+	}
+
+	bIntNumProton.lock.Lock()
+
+	defer bIntNumProton.lock.Unlock()
+
+	var ePrefix *ePref.ErrPrefixDto
+
+	var err error
+
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
+		errPrefDto,
+		"bigIntNumProton.bigIntNumGetPrecisionUint",
+		"")
+
+	if err != nil {
+		return 0, err
+	}
+
+	if bNum == nil {
+
+		return 0,
+			&ErrorReturnBasic{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "",
+				ErrContext: "",
+				ErrMessage: "FATAL ERROR: Input parameter 'bNum' is a nil pointer.",
+			}
+	}
+
+	return bNum.precision, nil
+}
+
+// bigIntNumGetScaleFactor
+//
+// Returns the scale value of the BigIntNum instance passed
+// as input parameter 'bNum'.  Scale value is a function of
+// 'precision', or the number of digits to the right of the
+// decimal place. Therefore, scale factor is defined by 10
+// raised to the power of BigIntNum precision.
+//
+// Example:
+// precision = 0 		Scale Factor = 10^0   	Scale Factor =    1
+// precision = 1		Scale Factor = 10^1			Scale Factor =   10
+// precision = 2		Scale Factor = 10^2			Scale Factor =  100
+// precision = 3    Scale Factor = 10^3			Scale Factor = 1000
+//
+//	NOTE:
+//
+// This method does NOT test the validity of 'bNum', an
+// instance of type BigIntNum. The calling method must
+// do this!
+func (bIntNumProton *bigIntNumProton) bigIntNumGetScaleFactor(
+	bNum *BigIntNum,
+	errPrefDto *ePref.ErrPrefixDto) (*big.Int, error) {
+
+	if bIntNumProton.lock == nil {
+		bIntNumProton.lock = new(sync.Mutex)
+	}
+
+	bIntNumProton.lock.Lock()
+
+	defer bIntNumProton.lock.Unlock()
+
+	var ePrefix *ePref.ErrPrefixDto
+
+	var err error
+
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
+		errPrefDto,
+		"bigIntNumProton.bigIntNumGetScaleFactor",
+		"")
+
+	if err != nil {
+		return big.NewInt(0), err
+	}
+
+	if bNum == nil {
+
+		return big.NewInt(0),
+			&ErrorReturnBasic{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "",
+				ErrContext: "",
+				ErrMessage: "FATAL ERROR: Input parameter 'bNum' is a nil pointer.",
+			}
+	}
+
+	return big.NewInt(0).Set(bNum.scaleFactor), nil
+}
+
+// GetSign - Returns the numeric sign associated
+// with the current numeric value encapsulated by
+// this BigIntNum.
+//
+//	NOTE:
+//
+// This method does NOT test the validity of 'bNum', an
+// instance of type BigIntNum. The calling method must
+// do this!
+func (bIntNumProton *bigIntNumProton) bigIntNumGetSign(
+	bNum *BigIntNum,
+	errPrefDto *ePref.ErrPrefixDto) (int, error) {
+
+	if bIntNumProton.lock == nil {
+		bIntNumProton.lock = new(sync.Mutex)
+	}
+
+	bIntNumProton.lock.Lock()
+
+	defer bIntNumProton.lock.Unlock()
+
+	var ePrefix *ePref.ErrPrefixDto
+
+	var err error
+
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
+		errPrefDto,
+		"bigIntNumProton.bigIntNumGetSign",
+		"")
+
+	if err != nil {
+		return 0, err
+	}
+
+	if bNum == nil {
+
+		return 0,
+			&ErrorReturnBasic{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "",
+				ErrContext: "",
+				ErrMessage: "FATAL ERROR: Input parameter 'bNum' is a nil pointer.",
+			}
+	}
+
+	return bNum.sign, nil
+}
+
+// bigIntNumGetSignedBigInt
+// Returns the integer value of the BigIntNum instance
+// passed as input parameter 'bNum'. This value is
+// formatted and returned as a signed *big.Int Type.
+//
+//	NOTE:
+//
+// This method does NOT test the validity of 'bNum', an
+// instance of type BigIntNum. The calling method must
+// do this!
+func (bIntNumProton *bigIntNumProton) bigIntNumGetSignedBigInt(
+	bNum *BigIntNum,
+	errPrefDto *ePref.ErrPrefixDto) (*big.Int, error) {
+
+	if bIntNumProton.lock == nil {
+		bIntNumProton.lock = new(sync.Mutex)
+	}
+
+	bIntNumProton.lock.Lock()
+
+	defer bIntNumProton.lock.Unlock()
+
+	var ePrefix *ePref.ErrPrefixDto
+
+	var err error
+
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
+		errPrefDto,
+		"bigIntNumProton.bigIntNumGetSignedBigInt",
+		"")
+
+	if err != nil {
+		return big.NewInt(0), err
+	}
+
+	if bNum == nil {
+
+		return big.NewInt(0),
+			&ErrorReturnBasic{
+				ErrPrefix:  ePrefix.String(),
+				ErrMessage: "FATAL ERROR: Input parameter 'bNum' is a nil pointer.",
+			}
+	}
+
+	return bNum.bigInt, nil
+}
+
+// bigIntNumGetSciNotationNumber
+//
+// Converts the numeric value of the BigIntNum instance passed
+// as input parameter 'bNum'. This converted value is formatted
+// as scientific notation and returned as an instance of type
+// SciNotationNum (Scientific Notation).
+//
+// Input Parameter
+// ===============
+//
+// mantissaLen uint	- Specifies the length of the mantissa in the returned
+//
+//											scientific notation string. If the value of 'mantissaLen'
+//											is less than two ('2'), this method will automatically set
+//											the 'mantissaLen' to a default value of two ('2').
+//
+//											Example Scientific Notation:
+//											----------------------------
+//
+//	 										scientific notation string: '2.652e+8'
+//
+//	 										significand = '2.652'
+//	 										significand integer digit = '2'
+//												mantissa		= significand factional digits = '.652'
+//	 										exponent    = '8'  (10^8)
+//
+//	NOTE:
+//
+// This method does NOT test the validity of 'bNum', an
+// instance of type BigIntNum. The calling method must
+// do this!
+func (bIntNumProton *bigIntNumProton) bigIntNumGetSciNotationNumber(
+	bNum *BigIntNum,
+	mantissaLen uint,
+	errPrefDto *ePref.ErrPrefixDto) (SciNotationNum, error) {
+
+	if bIntNumProton.lock == nil {
+		bIntNumProton.lock = new(sync.Mutex)
+	}
+
+	bIntNumProton.lock.Lock()
+
+	defer bIntNumProton.lock.Unlock()
+
+	var ePrefix *ePref.ErrPrefixDto
+
+	var err error
+
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
+		errPrefDto,
+		"bigIntNumProton.bigIntNumGetSciNotationNumber",
+		"")
+
+	if err != nil {
+		return SciNotationNum{}, err
+	}
+
+	if bNum == nil {
+
+		return SciNotationNum{},
+			&ErrorReturnBasic{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "",
+				ErrContext: "",
+				ErrMessage: "FATAL ERROR: Input parameter 'bNum' is a nil pointer.",
+			}
+	}
+
+	sciNotationNum := SciNotationNum{}.New()
+
+	if mantissaLen < 2 {
+		mantissaLen = 2
+	}
+
+	var bNumIsZero bool
+
+	bNumIsZero, err = new(bigIntNumMolecule).
+		isBIntNumZero(bNum, ePrefix)
+
+	if err != nil {
+
+		return SciNotationNum{}, err
+	}
+
+	if bNumIsZero {
+
+		bNum2, err := new(bigIntNumUtility).bigIntNumCopyOut(
+			bNum,
+			ePrefix)
+
+		if err != nil {
+
+			return SciNotationNum{}, err
+
+		}
+
+		bNumZero, err := new(bigIntNumMechanics).newZero(0, ePrefix)
+
+		if err != nil {
+
+			return SciNotationNum{}, err
+		}
+
+		err = sciNotationNum.SetBigIntNumElements(bNum2, bNumZero)
+
+		if err != nil {
+
+			return SciNotationNum{},
+				&ErrorReturnBasic{
+					ErrPrefix:  ePrefix.String(),
+					ReturnFunc: "sciNotationNum.SetBigIntNumElements(bNum2, bNumZero)",
+					ErrMessage: err.Error(),
+				}
+		}
+
+		return sciNotationNum, nil
+	}
+
+	bigIntMaxUint32 := big.NewInt(0).SetUint64(math.MaxUint32)
+
+	bINumIntPart, err := new(bigIntNumAtom).getIntegerPart(
+		bNum,
+		ePrefix)
+
+	if err != nil {
+
+		return SciNotationNum{}, err
+	}
+
+	bNumIsZero, err = new(bigIntNumMolecule).
+		isBIntNumZero(&bINumIntPart, ePrefix)
+
+	if err != nil {
+
+		return SciNotationNum{}, err
+
+	}
+
+	if !bNumIsZero {
+
+		magnitudeBigInt, err := BigIntMath{}.GetMagnitude(bINumIntPart.bigInt)
+
+		if err != nil {
+
+			return SciNotationNum{},
+				&ErrorReturnBasic{
+					ErrPrefix: ePrefix.String(),
+					ReturnFunc: "  magnitudeBigInt, err := BigIntMath{}.GetMagnitude(\n" +
+						"    bINumIntPart.bigInt)",
+					ErrMessage: err.Error(),
+				}
+		}
+
+		if magnitudeBigInt.Cmp(bigIntMaxUint32) == 1 {
+
+			return SciNotationNum{},
+				&ErrorReturnBasic{
+					ErrPrefix:  ePrefix.String(),
+					ErrContext: "if magnitudeBigInt.Cmp(bigIntMaxUint32) == 1",
+					ErrMessage: "Integer Magnitude greater than Max Uint32!",
+				}
+		}
+
+		uintMagnitude := uint(magnitudeBigInt.Uint64())
+
+		newBINum, err := new(bigIntNumMechanics).newBigInt(
+			bNum.bigInt,
+			bNum.precision+uintMagnitude,
+			ePrefix)
+
+		if err != nil {
+
+			return SciNotationNum{}, err
+		}
+
+		biNumExponent, err := new(bigIntNumMechanics).
+			newBigInt(magnitudeBigInt, 0, ePrefix)
+
+		if err != nil {
+
+			return SciNotationNum{}, err
+		}
+
+		err = sciNotationNum.SetBigIntNumElements(
+			newBINum, biNumExponent)
+
+	} else {
+
+		// Must be bINumFracPart > 0
+		magnitudeBigInt, err := BigIntMath{}.GetMagnitude(bNum.bigInt)
+
+		if err != nil {
+			return SciNotationNum{},
+				&ErrorReturnBasic{
+					ErrPrefix: ePrefix.String(),
+					ReturnFunc: "  magnitudeBigInt, err := BigIntMath{}.\n" +
+						"    GetMagnitude(bNum.bigInt)",
+					ErrMessage: err.Error(),
+				}
+		}
+
+		if magnitudeBigInt.Cmp(bigIntMaxUint32) == 1 {
+
+			return SciNotationNum{},
+				&ErrorReturnBasic{
+					ErrPrefix:  ePrefix.String(),
+					ErrContext: "if magnitudeBigInt.Cmp(bigIntMaxUint32) == 1",
+					ErrMessage: "Fractional Magnitude greater than Max Uint32!",
+				}
+		}
+
+		uintMagnitude := uint(magnitudeBigInt.Uint64())
+
+		bINumFracPart, err := new(bigIntNumMechanics).
+			newBigInt(bNum.bigInt, uintMagnitude, ePrefix)
+
+		if err != nil {
+
+			return SciNotationNum{}, err
+		}
+
+		precisionFrac := int64(uintMagnitude) - int64(bNum.precision)
+
+		bINumScale, err := new(bigIntNumMechanics).
+			newInt64Exponent(precisionFrac, 0, ePrefix)
+
+		if err != nil {
+
+			return SciNotationNum{}, err
+		}
+
+		err = sciNotationNum.SetBigIntNumElements(bINumFracPart, bINumScale)
+
+		if err != nil {
+
+			return SciNotationNum{},
+				&ErrorReturnBasic{
+					ErrPrefix: ePrefix.String(),
+					ReturnFunc: "  err = sciNotationNum.SetBigIntNumElements(\n" +
+						"    bINumFracPart, bINumScale)",
+					ErrMessage: err.Error(),
+				}
+		}
+
+	}
+
+	sciNotationNum.SetMantissaLength(mantissaLen)
+
+	return sciNotationNum, nil
+}
+
+// bigIntNumGetUInt
+//
+// Returns a type 'uint' containing the 32-bit unsigned
+// integer value of the BigIntNum instance passed as input
+// parameter 'bNum'.
+//
+// If the current BigIntNum value is greater than the maximum
+// 'uint' value, the maximum 32-bit unsigned integer value is returned
+// in addition to an 'error'.
+//
+// If the current BigIntNum value is less than the minimum 'uint'
+// value, the minimum 32-bit integer value of zero is returned along
+// with an 'error'.
+//
+//	NOTE:
+//
+// This method does NOT test the validity of 'bNum', an
+// instance of type BigIntNum. The calling method must
+// do this!
+func (bIntNumProton *bigIntNumProton) bigIntNumGetUInt(
+	bNum *BigIntNum,
+	errPrefDto *ePref.ErrPrefixDto) (uint, error) {
+
+	if bIntNumProton.lock == nil {
+		bIntNumProton.lock = new(sync.Mutex)
+	}
+
+	bIntNumProton.lock.Lock()
+
+	defer bIntNumProton.lock.Unlock()
+
+	var ePrefix *ePref.ErrPrefixDto
+
+	var err error
+
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
+		errPrefDto,
+		"bigIntNumProton.bigIntNumGetUInt",
+		"")
+
+	if err != nil {
+		return 0, err
+	}
+
+	if bNum == nil {
+
+		return 0,
+			&ErrorReturnBasic{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "",
+				ErrContext: "",
+				ErrMessage: "FATAL ERROR: Input parameter 'bNum' is a nil pointer.",
+			}
+	}
+
+	bIMaxUint := big.NewInt(int64(math.MaxUint32))
+
+	if bNum.bigInt.Cmp(big.NewInt(0)) == -1 {
+
+		return uint(0),
+			&ErrorReturnBasic{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "",
+				ErrContext: "if bNum.bigInt.Cmp(big.NewInt(0)) == -1",
+				ErrMessage: "BigIntNum is LESS THAN minimum 'uint' value of zero.",
+			}
+	}
+
+	if bNum.bigInt.Cmp(bIMaxUint) == 1 {
+
+		return math.MaxUint32,
+			&ErrorReturnBasic{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "",
+				ErrContext: "if bNum.bigInt.Cmp(bIMaxUint) == 1",
+				ErrMessage: "BigIntNum is GREATER THAN maximum 'uint' value.",
+			}
+	}
+
+	return uint(bNum.bigInt.Uint64()), nil
+}
+
+// bigIntNumGetUInt64
+//
+// Returns the integer value of BigIntNum.bigInt as a  64-bit
+// unsigned integer.
+//
+// BigIntNum is passed as input parameter 'bNum'.
+//
+// If the value of BigIntNum.bigInt exceeds that of the maximum
+// unsigned 64-bit integer value, an error is returned.
+//
+//	NOTE:
+//
+// This method does NOT test the validity of 'bNum', an
+// instance of type BigIntNum. The calling method must
+// do this!
+func (bIntNumProton *bigIntNumProton) bigIntNumGetUInt64(
+	bNum *BigIntNum,
+	errPrefDto *ePref.ErrPrefixDto) (uint64, error) {
+
+	if bIntNumProton.lock == nil {
+		bIntNumProton.lock = new(sync.Mutex)
+	}
+
+	bIntNumProton.lock.Lock()
+
+	defer bIntNumProton.lock.Unlock()
+
+	var ePrefix *ePref.ErrPrefixDto
+
+	var err error
+
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
+		errPrefDto,
+		"bigIntNumProton.bigIntNumGetSciNotationNumber",
+		"")
+
+	if err != nil {
+		return 0, err
+	}
+
+	if bNum == nil {
+
+		return 0,
+			&ErrorReturnBasic{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "",
+				ErrContext: "",
+				ErrMessage: "FATAL ERROR: Input parameter 'bNum' is a nil pointer.",
+			}
+	}
+
+	bIntMaxUint64 :=
+		big.NewInt(0).SetUint64(uint64(math.MaxUint64))
+
+	if bNum.bigInt.Cmp(bIntMaxUint64) == 1 {
+		return uint64(0),
+			&ErrorReturnBasic{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "",
+				ErrContext: "if bNum.bigInt.Cmp(bIntMaxUint64) == 1",
+				ErrMessage: fmt.Sprintf("The value of this BigIntNum instance exceeds\n"+
+					"the maximum value of the unsigned 64-bit integer.\n"+
+					"BigIntNum='%v'\nMaxUint64='%v'",
+					bNum.bigInt.Text(10), math.MaxUint64),
+			}
+	}
+
+	return bNum.bigInt.Uint64(), nil
 }
 
 // decimalGetDecimal -
@@ -1712,7 +3075,7 @@ func (bIntNumProton *bigIntNumProton) decimalGetDecimal(
 				ErrPrefix:  ePrefix.String(),
 				ReturnFunc: "",
 				ErrContext: "",
-				ErrMessage: "FATAL ERROR: Input parameter 'bNum' is a nil pointer.\n",
+				ErrMessage: "FATAL ERROR: Input parameter 'bNum' is a nil pointer.",
 			}
 	}
 
@@ -1725,7 +3088,7 @@ func (bIntNumProton *bigIntNumProton) decimalGetDecimal(
 			&ErrorReturnBasic{
 				ErrPrefix: ePrefix.String(),
 				ReturnFunc: " dec, err := new(Decimal).NewBigInt(\n" +
-					"  big.NewInt(0).Set(bNum.bigInt), bNum.precision)\n",
+					"  big.NewInt(0).Set(bNum.bigInt), bNum.precision)",
 				ErrContext: "",
 				ErrMessage: err.Error(),
 			}
@@ -1742,7 +3105,7 @@ func (bIntNumProton *bigIntNumProton) decimalGetDecimal(
 			&ErrorReturnBasic{
 				ErrPrefix: ePrefix.String(),
 				ReturnFunc: " numSeps, err := new(bigIntNumAtom).\n" +
-					"  getNumericSeparatorsDto(bNum, ePrefix)\n",
+					"  getNumericSeparatorsDto(bNum, ePrefix)",
 				ErrContext: "",
 				ErrMessage: err.Error(),
 			}
@@ -1757,7 +3120,7 @@ func (bIntNumProton *bigIntNumProton) decimalGetDecimal(
 			&ErrorReturnBasic{
 				ErrPrefix: ePrefix.String(),
 				ReturnFunc: "dec, err := new(Decimal).NewBigInt(\n" +
-					"  big.NewInt(0).Set(bNum.bigInt), bNum.precision)\n",
+					"  big.NewInt(0).Set(bNum.bigInt), bNum.precision)",
 				ErrContext: "",
 				ErrMessage: err.Error(),
 			}
@@ -1771,7 +3134,7 @@ func (bIntNumProton *bigIntNumProton) decimalGetDecimal(
 		return Decimal{},
 			&ErrorReturnBasic{
 				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "err = dec.IsValid(ePrefix + \\\"dec INVALID! \\\")",
+				ReturnFunc: "err = dec.IsValid(ePrefix + \"dec INVALID!\")",
 				ErrContext: "",
 				ErrMessage: err.Error(),
 			}
