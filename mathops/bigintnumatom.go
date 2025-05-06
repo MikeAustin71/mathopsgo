@@ -94,9 +94,95 @@ func (bIntNumAtom *bigIntNumAtom) isBigIntNumValid(
 	return nil
 }
 
+// getIntegerPart
+//
+// Returns a BigIntNum equal to the integer value of
+// the input parameter 'bNum' (type BigIntNum).
+//
+// Examples:
+//
+//					 Current
+//					BigIntNum				 		Return
+//		 			  Value		  		    Value
+//					----------				---------
+//
+//	         123.456						 123
+//					 -123.456						-123
+//					  123								 123
+//					 -123								-123
+//
+//		NOTE:
+//
+// This method does NOT test the validity of 'bNum', an
+// instance of type BigIntNum. The calling method must
+// do this!
+func (bIntNumAtom *bigIntNumAtom) getIntegerPart(
+	bNum *BigIntNum,
+	errPrefDto *ePref.ErrPrefixDto) (BigIntNum, error) {
+
+	if bIntNumAtom.lock == nil {
+		bIntNumAtom.lock = new(sync.Mutex)
+	}
+
+	bIntNumAtom.lock.Lock()
+
+	defer bIntNumAtom.lock.Unlock()
+
+	var ePrefix *ePref.ErrPrefixDto
+
+	var err error
+
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
+		errPrefDto,
+		"bigIntNumAtom.getIntegerPart",
+		"")
+
+	if err != nil {
+		return BigIntNum{}, err
+	}
+
+	if bNum == nil {
+
+		return BigIntNum{},
+			&ErrorReturnBasic{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "",
+				ErrContext: "",
+				ErrMessage: "FATAL ERROR: Input parameter 'bNum' is a nil pointer.",
+			}
+	}
+
+	if bNum.bigInt.Cmp(big.NewInt(0)) == 0 {
+
+		return new(bigIntNumMechanics).newBigInt(
+			big.NewInt(0), 0, ePrefix)
+	}
+
+	scaleVal := big.NewInt(0).Exp(big.NewInt(10),
+		big.NewInt(int64(bNum.precision)), nil)
+
+	quotient := big.NewInt(0).Quo(bNum.bigInt, scaleVal)
+
+	bNum2, err := new(bigIntNumMechanics).
+		newBigInt(quotient, 0, ePrefix)
+
+	if err != nil {
+
+		return BigIntNum{}, err
+	}
+
+	return bNum2, nil
+}
+
 // getBigIntNumStr - Converts a BigIntNum value to string of
 // numbers which includes the decimal place and decimal digits
 // if they exist.
+//
+//	NOTE:
+//
+// This method does NOT test the validity of 'bNum', an
+// instance of type BigIntNum. The calling method must do this!
 func (bIntNumAtom *bigIntNumAtom) getBigIntNumStr(
 	bNum *BigIntNum,
 	errPrefDto *ePref.ErrPrefixDto) (string, error) {
@@ -193,6 +279,92 @@ func (bIntNumAtom *bigIntNumAtom) getNumericSeparatorsDto(
 	numSeps.CurrencySymbol = bNum.currencySymbol
 
 	return numSeps, nil
+}
+
+// getSciNotationStr
+//
+// Returns a string expressing the current BigIntNum numerical
+// value as scientific notation.
+//
+// Input Parameter
+// ===============
+//
+// mantissaLen uint	- Specifies the length of the mantissa in the returned
+//
+//											scientific notation string. If the value of 'mantissaLen'
+//											is less than two ('2'), this method will automatically set
+//											the 'mantissaLen' to a default value of two ('2').
+//
+//											Example Scientific Notation:
+//											----------------------------
+//
+//	 										scientific notation string: '2.652e+8'
+//
+//	 										significand = '2.652'
+//	 										significand integer digit = '2'
+//												mantissa		= significand factional digits = '.652'
+//	 										exponent    = '8'  (10^8)
+func (bIntNumAtom *bigIntNumAtom) getSciNotationStr(
+	bNum *BigIntNum,
+	mantissaLen uint,
+	errPrefDto *ePref.ErrPrefixDto) (string, error) {
+
+	if bIntNumAtom.lock == nil {
+		bIntNumAtom.lock = new(sync.Mutex)
+	}
+
+	bIntNumAtom.lock.Lock()
+
+	defer bIntNumAtom.lock.Unlock()
+
+	var err error
+
+	var ePrefix *ePref.ErrPrefixDto
+
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
+		errPrefDto,
+		"bigIntNumAtom.getSciNotationStr",
+		"")
+
+	if err != nil {
+		return "", err
+	}
+
+	if bNum == nil {
+
+		return "",
+			&ErrorReturnBasic{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "",
+				ErrContext: "",
+				ErrMessage: "FATAL ERROR: Input parameter 'bNum' is a nil pointer.",
+			}
+	}
+
+	//sciNotation, err := bNum.GetSciNotationNumber(mantissaLen)
+
+	sciNotation, err := new(bigIntNumProton).
+		bigIntNumGetSciNotationNumber(bNum, mantissaLen, ePrefix)
+
+	if err != nil {
+		return "", err
+	}
+
+	result, err := sciNotation.GetSciNotationStr(mantissaLen)
+
+	if err != nil {
+		return "",
+			&ErrorReturnBasic{
+				ErrPrefix: ePrefix.String(),
+				ReturnFunc: "  result, err := sciNotation.\n" +
+					"    GetSciNotationStr(mantissaLen)",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
+
+	return result, nil
 }
 
 // setNumericSeparators - Used to assign values for the Decimal and Thousands separators as well
@@ -468,7 +640,7 @@ func (bIntNumAtom *bigIntNumAtom) setNumericSeparatorsToUSADefault(
 	if bNum == nil {
 
 		return fmt.Errorf("%v\n"+
-			"FATAL ERROR: Input parameter 'bNum' is a nil pointer.\n",
+			"FATAL ERROR: Input parameter 'bNum' is a nil pointer.",
 			ePrefix)
 	}
 
