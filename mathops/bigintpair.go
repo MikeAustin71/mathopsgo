@@ -22,23 +22,36 @@ type BigIntPair struct {
 
 // CopyIn - Copies the values provided by incoming BigIntPair
 // parameter into the current BigIntPair instance.
-func (bPair *BigIntPair) CopyIn(bd2 BigIntPair) {
+func (bPair *BigIntPair) CopyIn(bd2 BigIntPair) error {
 
-	bPair.Big1 = bd2.Big1.CopyOut()
-	bPair.Big2 = bd2.Big2.CopyOut()
+	var err error
+
+	bPair.Big1, err = bd2.Big1.CopyOut()
+
+	if err != nil {
+		return err
+	}
+
+	bPair.Big2, err = bd2.Big2.CopyOut()
+
+	if err != nil {
+		return err
+	}
+
 	bPair.Big1Compare = bd2.Big1Compare
 	bPair.Big1AbsCompare = bd2.Big1AbsCompare
 	bPair.Precision1Compare = bd2.Precision1Compare
 
+	return err
 }
 
 // CopyOut - Makes a deep copy of the current BigIntPair
 // instance and returns it as a new BigIntPair object.
-func (bPair *BigIntPair) CopyOut() BigIntPair {
+func (bPair *BigIntPair) CopyOut() (BigIntPair, error) {
 
-	bd2 := new(BigIntPair).NewBigIntNum(bPair.Big1, bPair.Big2)
+	bd2, err := new(BigIntPair).NewBigIntNum(bPair.Big1, bPair.Big2)
 
-	return bd2
+	return bd2, err
 }
 
 // Empty - Sets all data fields for the current BigIntPair instance
@@ -83,46 +96,75 @@ func (bPair *BigIntPair) GetBig2BigInt() *big.Int {
 // equivalent in precision to the other BigIntNum. When completed, this
 // method insures that both component BigIntNum's are both formatted to
 // the largest precision.
-func (bPair *BigIntPair) MakePrecisionsEqual() {
+func (bPair *BigIntPair) MakePrecisionsEqual() error {
 
 	if bPair.Big1.precision == bPair.Big2.precision {
 		// Nothing to do. Precisions are equal.
-		return
+		return nil
 	}
 
 	base10 := big.NewInt(10)
 
 	if bPair.Big1.precision > bPair.Big2.precision {
-		deltaPrecision := big.NewInt(int64(bPair.Big1.precision - bPair.Big2.precision))
-		deltaPrecisionScale := big.NewInt(0).Exp(base10, deltaPrecision, nil)
-		newB2Int := big.NewInt(0).Mul(bPair.Big2.bigInt, deltaPrecisionScale)
-		newB2Num := BigIntNum{}.NewBigInt(newB2Int, bPair.Big1.precision)
-		newBPair := new(BigIntPair).NewBigIntNum(bPair.Big1, newB2Num)
-		bPair.CopyIn(newBPair)
-		return
 
+		deltaPrecision := big.NewInt(int64(bPair.Big1.precision - bPair.Big2.precision))
+
+		deltaPrecisionScale := big.NewInt(0).Exp(base10, deltaPrecision, nil)
+
+		newB2Int := big.NewInt(0).Mul(bPair.Big2.bigInt, deltaPrecisionScale)
+
+		newB2Num, err := new(BigIntNum).NewBigInt(newB2Int, bPair.Big1.precision)
+
+		if err != nil {
+			return err
+		}
+
+		newBPair, err := new(BigIntPair).NewBigIntNum(bPair.Big1, newB2Num)
+
+		if err != nil {
+			return err
+		}
+
+		err = bPair.CopyIn(newBPair)
+
+		return err
 	}
 
 	// Must be bPair.Big2.precision > bPair.Big1.precision
 	deltaPrecision := big.NewInt(int64(bPair.Big2.precision - bPair.Big1.precision))
+
 	deltaPrecisionScale := big.NewInt(0).Exp(base10, deltaPrecision, nil)
+
 	newB1Int := big.NewInt(0).Mul(bPair.Big1.bigInt, deltaPrecisionScale)
-	newB1Num := BigIntNum{}.NewBigInt(newB1Int, bPair.Big2.precision)
-	newBPair := new(BigIntPair).NewBigIntNum(newB1Num, bPair.Big2)
 
-	bPair.CopyIn(newBPair)
+	newB1Num, err := new(BigIntNum).NewBigInt(newB1Int, bPair.Big2.precision)
 
-	return
+	if err != nil {
+		return err
+	}
+
+	newBPair, err := new(BigIntPair).NewBigIntNum(newB1Num, bPair.Big2)
+
+	if err != nil {
+		return err
+	}
+
+	err = bPair.CopyIn(newBPair)
+
+	return err
 }
 
 // New - Creates an Empty BigIntPair instance. Both
 // 'Big1' and 'Big2' are set to zero.  Both precision
 // values are also set to zero.
-func (bPair *BigIntPair) New() BigIntPair {
+func (bPair *BigIntPair) New() (BigIntPair, error) {
 	base1Zero := big.NewInt(0)
+
 	base2Zero := big.NewInt(0)
-	b2Pair := new(BigIntPair).NewBase(base1Zero, 0, base2Zero, 0)
-	return b2Pair
+
+	b2Pair, err := new(BigIntPair).NewBase(base1Zero, 0, base2Zero, 0)
+
+	return b2Pair, err
 }
 
 // NewBase - Creates a BigIntPair instance using two sets of
@@ -138,13 +180,21 @@ func (bPair *BigIntPair) NewBase(
 	b1 *big.Int,
 	b1Precision uint,
 	b2 *big.Int,
-	b2Precision uint) BigIntPair {
+	b2Precision uint) (BigIntPair, error) {
 
-	b1BigIntNum := BigIntNum{}.NewBigInt(b1, b1Precision)
-	b2BigIntNum := BigIntNum{}.NewBigInt(b2, b2Precision)
+	b1BigIntNum, err := new(BigIntNum).NewBigInt(b1, b1Precision)
+
+	if err != nil {
+		return BigIntPair{}, err
+	}
+
+	b2BigIntNum, err := new(BigIntNum).NewBigInt(b2, b2Precision)
+
+	if err != nil {
+		return BigIntPair{}, err
+	}
 
 	return new(BigIntPair).NewBigIntNum(b1BigIntNum, b2BigIntNum)
-
 }
 
 // NewBigIntNum - Creates a new BigIntPair instance from input parameters
@@ -152,13 +202,13 @@ func (bPair *BigIntPair) NewBase(
 //
 // Before using BigIntPair in a math operation, it may be necessary
 // to specifically set 'BigIntPair.maxPrecision'
-func (bPair *BigIntPair) NewBigIntNum(b1, b2 BigIntNum) BigIntPair {
+func (bPair *BigIntPair) NewBigIntNum(b1, b2 BigIntNum) (BigIntPair, error) {
 
 	bd2 := BigIntPair{}
 
-	bd2.SetBigIntPair(b1, b2)
+	err := bd2.SetBigIntPair(b1, b2)
 
-	return bd2
+	return bd2, err
 }
 
 // NewDecimal - Creates a new BigIntPair instance from two
@@ -207,9 +257,9 @@ func (bPair *BigIntPair) NewDecimal(dec1, dec2 Decimal) (BigIntPair, error) {
 
 	bd2 := BigIntPair{}
 
-	bd2.SetBigIntPair(b1Num, b2Num)
+	err = bd2.SetBigIntPair(b1Num, b2Num)
 
-	return bd2, nil
+	return bd2, err
 }
 
 // NewIntAry - Creates a new BigIntPair instance from two
@@ -253,9 +303,9 @@ func (bPair *BigIntPair) NewIntAry(ia1, ia2 IntAry) (BigIntPair, error) {
 
 	bd2 := BigIntPair{}
 
-	bd2.SetBigIntPair(b1Num, b2Num)
+	err = bd2.SetBigIntPair(b1Num, b2Num)
 
-	return bd2, nil
+	return bd2, err
 }
 
 // NewINumMgr - Creates a new BigIntPair instance from two objects implementing the
@@ -304,9 +354,9 @@ func (bPair *BigIntPair) NewINumMgr(num1, num2 INumMgr) (BigIntPair, error) {
 				err.Error())
 	}
 
-	bPair2 := new(BigIntPair).NewBigIntNum(b1Num, b2Num)
+	bPair2, err := new(BigIntPair).NewBigIntNum(b1Num, b2Num)
 
-	return bPair2, nil
+	return bPair2, err
 }
 
 // NewNumStr - Creates a new BigIntPair instance from two integerNum strings
@@ -318,7 +368,7 @@ func (bPair *BigIntPair) NewNumStr(n1NumStr, n2NumStr string) (BigIntPair, error
 
 	ePrefix := "BigIntPair.NewNumStrDto() "
 
-	b1Num, err := BigIntNum{}.NewNumStr(n1NumStr)
+	b1Num, err := new(BigIntNum).NewNumStr(n1NumStr)
 
 	if err != nil {
 		return BigIntPair{},
@@ -330,7 +380,7 @@ func (bPair *BigIntPair) NewNumStr(n1NumStr, n2NumStr string) (BigIntPair, error
 				err.Error())
 	}
 
-	b2Num, err := BigIntNum{}.NewNumStr(n2NumStr)
+	b2Num, err := new(BigIntNum).NewNumStr(n2NumStr)
 
 	if err != nil {
 
@@ -345,9 +395,9 @@ func (bPair *BigIntPair) NewNumStr(n1NumStr, n2NumStr string) (BigIntPair, error
 
 	b2Pair := BigIntPair{}
 
-	b2Pair.SetBigIntPair(b1Num, b2Num)
+	err = b2Pair.SetBigIntPair(b1Num, b2Num)
 
-	return b2Pair, nil
+	return b2Pair, err
 
 }
 
@@ -363,7 +413,7 @@ func (bPair *BigIntPair) NewNumStrWithNumSeps(
 
 	numSeps.SetDefaultsIfEmpty()
 
-	b1Num, err := BigIntNum{}.NewNumStrWithNumSeps(n1NumStr, numSeps)
+	b1Num, err := new(BigIntNum).NewNumStrWithNumSeps(n1NumStr, numSeps)
 
 	if err != nil {
 
@@ -377,7 +427,7 @@ func (bPair *BigIntPair) NewNumStrWithNumSeps(
 				err.Error())
 	}
 
-	b2Num, err := BigIntNum{}.NewNumStrWithNumSeps(n2NumStr, numSeps)
+	b2Num, err := new(BigIntNum).NewNumStrWithNumSeps(n2NumStr, numSeps)
 
 	if err != nil {
 		return BigIntPair{},
@@ -391,9 +441,9 @@ func (bPair *BigIntPair) NewNumStrWithNumSeps(
 
 	b2Pair := BigIntPair{}
 
-	b2Pair.SetBigIntPair(b1Num, b2Num)
+	err = b2Pair.SetBigIntPair(b1Num, b2Num)
 
-	return b2Pair, nil
+	return b2Pair, err
 }
 
 // NewNumStrDto - Creates a new BigIntPair instance from two NumStrDto
@@ -437,9 +487,9 @@ func (bPair *BigIntPair) NewNumStrDto(n1Dto, n2Dto NumStrDto) (BigIntPair, error
 
 	b2Pair := BigIntPair{}
 
-	b2Pair.SetBigIntPair(b1Num, b2Num)
+	err = b2Pair.SetBigIntPair(b1Num, b2Num)
 
-	return b2Pair, nil
+	return b2Pair, err
 }
 
 // SetBigIntPair -Sets the values of the current
@@ -449,22 +499,39 @@ func (bPair *BigIntPair) NewNumStrDto(n1Dto, n2Dto NumStrDto) (BigIntPair, error
 // This method will set BigIntNum BigIntPair.Big1 with numeric separators (decimal
 // separator, thousands separator and currency symbol) copied from BigIntNum input
 // parameter, 'b1'. BigIntPair.Big2 will contain numeric separators copied from 'b2'.
-func (bPair *BigIntPair) SetBigIntPair(b1, b2 BigIntNum) {
+func (bPair *BigIntPair) SetBigIntPair(b1, b2 BigIntNum) error {
 
 	bPair.Empty()
 
-	bPair.Big1.CopyIn(b1)
-	bPair.Big2.CopyIn(b2)
+	err := bPair.Big1.CopyIn(&b1)
+
+	if err != nil {
+		return err
+	}
+
+	err = bPair.Big2.CopyIn(&b2)
+
+	if err != nil {
+		return err
+	}
 
 	bPair.Big1Compare = bPair.Big1.bigInt.Cmp(bPair.Big2.bigInt)
+
 	bPair.Big1AbsCompare = bPair.Big1.absBigInt.Cmp(bPair.Big2.absBigInt)
 
 	if bPair.Big1.precision == bPair.Big2.precision {
+
 		bPair.Precision1Compare = 0
+
 	} else if bPair.Big1.precision > bPair.Big2.precision {
+
 		bPair.Precision1Compare = 1
+
 	} else {
 		// Must be bPair.Big1.precision < bPair.Big2.precision
+
 		bPair.Precision1Compare = -1
 	}
+
+	return nil
 }
