@@ -11,45 +11,45 @@ type bigIntNumUtility struct {
 	lock *sync.Mutex
 }
 
-// getBigIntNumOfDigits - Returns the number of digits in the numeric value of the
-// current BigIntNum instance. The count only includes numeric digits and as such
-// EXCLUDES number signs ('-' or '+' ), thousands separators (',') and decimal
-// separators.
+// getBigIntNumOfDigits
 //
-//	NOTE:
-//
-// =========
-// BigIntNum input parameter 'bNum' is ASSUMED TO BE VALID!
+// Returns the number of digits in the numeric value of the
+// current BigIntNum instance. The count only includes numeric
+// digits and as such, EXCLUDES number signs ('-' or '+' ),
+// thousands separators (',') and decimal separators.
 //
 // Examples:
 // =========
 //
 //	Result=
 //
-// Numeric String                       Number of
+// Numeric String          Number of
 //
-//	Value								          Numeric Digits
+//	Value                Numeric Digits
 //
-// =============                      ==============
+// =============           ==============
 //
-//	      123.45														5
-//	1,234,567                               7
+//	        123.45								5
+//	  1,234,567                  7
+//	 -1,234,567.8				 			  8
+//	          0									1
+//		         0.00               1
+//		       012.34               4
+//		         0.1234						  4
+//		         0.123400						6
+//		         0.0123400					6
+//		 1,234,567.800						 10
+//		         5                  1
 //
-// -1,234,567.8															8
+//	 The returned integer number will always be a positive number.
+//	 Also, GetActualNumberOfDigits() will be faster for larger
+//	 numbers.
 //
-//						0																1
-//	         0.00                            1
-//	       012.34                            4
-//	         0.1234													4
-//	         0.123400												6
-//	         0.0123400												6
-//	 1,234,567.800													 10
-//	         5                               1
+//		NOTE:
 //
-// Note: The returned integer number will always be a positive number.
-//
-//	      Also, GetActualNumberOfDigits() will be faster for larger
-//				 numbers.
+// This method does NOT test the validity of 'bNum', an
+// instance of type BigIntNum. The calling method must
+// do this!
 func (bIngNumUtil *bigIntNumUtility) getBigIntNumOfDigits(
 	bNum *BigIntNum,
 	errPrefDto *ePref.ErrPrefixDto) (int, error) {
