@@ -1,9 +1,11 @@
 package mathops
 
-// ErrorReturnBasic
+import "fmt"
+
+// ReturnBasicError
 // Custom error message used to specify the
 // function returning the error message
-type ErrorReturnBasic struct {
+type ReturnBasicError struct {
 	ErrPrefix  string
 	ReturnFunc string
 	ErrContext string
@@ -17,7 +19,7 @@ type ErrorReturnBasic struct {
 //	if err != nil {
 //
 //		return Decimal{},
-//			&ErrorReturnBasic{
+//			&ReturnBasicError{
 //				ErrPrefix:  ePrefix.String(),
 //				ReturnFunc: "dec, err := new(Decimal).NewBigInt(\n" +
 //				"  big.NewInt(0).Set(bNum.bigInt), bNum.precision)\n",
@@ -29,7 +31,7 @@ type ErrorReturnBasic struct {
 //	NOTE:
 //
 //	Element 'ErrContext' is optional
-func (e *ErrorReturnBasic) Error() string {
+func (e *ReturnBasicError) Error() string {
 
 	var errStr string
 	foundCnt := 0
@@ -56,7 +58,14 @@ func (e *ErrorReturnBasic) Error() string {
 
 	if foundCnt == 0 {
 		errStr = "No Error parameters provided!\n"
+	} else {
+
+		errStr += "\n"
 	}
 
 	return errStr
+}
+
+func (e *ReturnBasicError) Unwrap() error {
+	return fmt.Errorf("%w", e.Error())
 }

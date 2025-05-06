@@ -145,7 +145,7 @@ func (bIntNumAtom *bigIntNumAtom) getIntegerPart(
 	if bNum == nil {
 
 		return BigIntNum{},
-			&ErrorReturnBasic{
+			&ReturnBasicError{
 				ErrPrefix:  ePrefix.String(),
 				ReturnFunc: "",
 				ErrContext: "",
@@ -334,7 +334,7 @@ func (bIntNumAtom *bigIntNumAtom) getSciNotationStr(
 	if bNum == nil {
 
 		return "",
-			&ErrorReturnBasic{
+			&ReturnBasicError{
 				ErrPrefix:  ePrefix.String(),
 				ReturnFunc: "",
 				ErrContext: "",
@@ -355,7 +355,7 @@ func (bIntNumAtom *bigIntNumAtom) getSciNotationStr(
 
 	if err != nil {
 		return "",
-			&ErrorReturnBasic{
+			&ReturnBasicError{
 				ErrPrefix: ePrefix.String(),
 				ReturnFunc: "  result, err := sciNotation.\n" +
 					"    GetSciNotationStr(mantissaLen)",

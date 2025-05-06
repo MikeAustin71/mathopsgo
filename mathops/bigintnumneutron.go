@@ -49,7 +49,7 @@ func (bNumNeutron *bigIntNumNeutron) inverse(
 	if bNum == nil {
 
 		return BigIntNum{},
-			&ErrorReturnBasic{
+			&ReturnBasicError{
 				ErrPrefix:  ePrefix.String(),
 				ReturnFunc: "",
 				ErrContext: "",
@@ -90,7 +90,7 @@ func (bNumNeutron *bigIntNumNeutron) inverse(
 	if err != nil {
 
 		return BigIntNum{},
-			&ErrorReturnBasic{
+			&ReturnBasicError{
 				ErrPrefix: ePrefix.String(),
 				ReturnFunc: "  inverse, err := BigIntMathDivide{}.\n" +
 					"    BigIntNumFracQuotient(bIOne, bITwo, maxPrecision)",
@@ -148,7 +148,7 @@ func (bNumNeutron *bigIntNumNeutron) isEvenNumber(
 	if bNum == nil {
 
 		return false,
-			&ErrorReturnBasic{
+			&ReturnBasicError{
 				ErrPrefix:  ePrefix.String(),
 				ReturnFunc: "",
 				ErrContext: "",
@@ -179,7 +179,7 @@ func (bNumNeutron *bigIntNumNeutron) isEvenNumber(
 
 	if err != nil {
 		return false,
-			&ErrorReturnBasic{
+			&ReturnBasicError{
 				ErrPrefix: ePrefix.String(),
 				ReturnFunc: "  _, mod, err := BigIntMathDivide{}.\n" +
 					"BigIntNumDivideByTwoQuoMod(bNum2, 50)",
