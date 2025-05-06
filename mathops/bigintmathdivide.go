@@ -342,13 +342,44 @@ func (bIDivide BigIntMathDivide) BigIntFracQuotient(
 func (bIDivide BigIntMathDivide) BigIntNumQuotientMod(
 	dividend,
 	divisor BigIntNum,
-	maxPrecision uint) (quotient, modulo BigIntNum, err error) {
+	maxPrecision uint) (quotient BigIntNum, modulo BigIntNum, err error) {
 
-	ePrefix := "BigIntMathDivide.BigIntNumQuotientMod() "
+	ePrefix := "BigIntMathDivide.BigIntNumQuotientMod()"
 
-	if divisor.IsZero() {
-		quotient = BigIntNum{}.NewBigInt(big.NewInt(0), 0)
-		modulo = BigIntNum{}.NewBigInt(big.NewInt(0), 0)
+	divisorIsZero, err := divisor.IsZero()
+
+	if err != nil {
+
+		return quotient, modulo, err
+
+	}
+
+	if divisorIsZero {
+
+		quotient, err = new(BigIntNum).NewBigInt(big.NewInt(0), 0)
+
+		if err != nil {
+
+			return quotient, modulo,
+				&ErrorReturnBasic{
+					ErrPrefix:  ePrefix,
+					ReturnFunc: "quotient, err = new(BigIntNum).NewBigInt(big.NewInt(0), 0)",
+					ErrMessage: err.Error(),
+				}
+		}
+
+		modulo, err = new(BigIntNum).NewBigInt(big.NewInt(0), 0)
+
+		if err != nil {
+
+			return quotient, modulo,
+				&ErrorReturnBasic{
+					ErrPrefix:  ePrefix,
+					ReturnFunc: "modulo, err = new(BigIntNum).NewBigInt(big.NewInt(0), 0)",
+					ErrMessage: err.Error(),
+				}
+		}
+
 		return quotient, modulo, err
 	}
 
@@ -362,18 +393,9 @@ func (bIDivide BigIntMathDivide) BigIntNumQuotientMod(
 
 	if err2 != nil {
 
-		quotient = BigIntNum{}.NewBigInt(big.NewInt(0), 0)
+		quotient, _ = new(BigIntNum).NewBigInt(big.NewInt(0), 0)
 
-		modulo = BigIntNum{}.NewBigInt(big.NewInt(0), 0)
-
-		err = fmt.Errorf("%v\n"+
-			"Error returned by BigIntMathDivide{}.PairQuotientMod(bPair)\n"+
-			"dividend='%v'\ndivisor='%v'\nmaxPrecision='%v'\nError= %v\n",
-			ePrefix,
-			bPair.Big1.GetNumStr(),
-			bPair.Big2.GetNumStr(),
-			bPair.MaxPrecision,
-			err2.Error())
+		modulo, _ = new(BigIntNum).NewBigInt(big.NewInt(0), 0)
 
 		return quotient, modulo, err
 	}
@@ -609,9 +631,21 @@ func (bIDivide BigIntMathDivide) BigIntNumFracQuotient(
 	divisor BigIntNum,
 	maxPrecision uint) (fracQuotient BigIntNum, err error) {
 
-	ePrefix := "BigIntMathDivide.BigIntNumFracQuotient() "
+	ePrefix := "BigIntMathDivide.BigIntNumFracQuotient()"
 
-	fracQuotient = BigIntNum{}.NewZero(0)
+	fracQuotient, err = new(BigIntNum).NewZero(0)
+
+	if err != nil {
+		return fracQuotient,
+			&ErrorReturnBasic{
+				ErrPrefix:  ePrefix,
+				ReturnFunc: "fracQuotient, err = new(BigIntNum).NewZero(0)",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+
+	}
+
 	err = nil
 
 	binDividend, err := dividend.GetBigInt()
@@ -619,26 +653,50 @@ func (bIDivide BigIntMathDivide) BigIntNumFracQuotient(
 	if err != nil {
 
 		return fracQuotient,
-			fmt.Errorf("%v\n"+
-				"Error returned by dividend.GetBigInt()\n"+
-				"Error= %v\n",
-				ePrefix,
-				err.Error())
+			&ErrorReturnBasic{
+				ErrPrefix:  ePrefix,
+				ReturnFunc: "binDividend, err := dividend.GetBigInt()",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
 	}
 
-	binDividendPrecision := dividend.GetPrecisionBigInt()
+	binDividendPrecision, err := dividend.GetPrecisionBigInt()
+
+	if err != nil {
+		return fracQuotient,
+			&ErrorReturnBasic{
+				ErrPrefix:  ePrefix,
+				ReturnFunc: "binDividendPrecision, err := dividend.GetPrecisionBigInt()",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+
+	}
 
 	binDivisor, err := divisor.GetBigInt()
 
 	if err != nil {
 
 		return fracQuotient,
-			fmt.Errorf("%v\n"+
-				"Error returned by divisor.GetBigInt()\n"+
-				"Error= %v\n", err.Error())
+			&ErrorReturnBasic{
+				ErrPrefix:  ePrefix,
+				ReturnFunc: "binDivisor, err := divisor.GetBigInt()",
+				ErrMessage: err.Error(),
+			}
 	}
 
-	binDivisorPrecision := divisor.GetPrecisionBigInt()
+	binDivisorPrecision, err := divisor.GetPrecisionBigInt()
+
+	if err != nil {
+		return fracQuotient,
+			&ErrorReturnBasic{
+				ErrPrefix:  ePrefix,
+				ReturnFunc: "binDivisorPrecision, err := divisor.GetPrecisionBigInt()",
+				ErrMessage: err.Error(),
+			}
+
+	}
 
 	biMaxPrecision := big.NewInt(0).SetUint64(uint64(maxPrecision))
 
@@ -652,26 +710,47 @@ func (bIDivide BigIntMathDivide) BigIntNumFracQuotient(
 	if err != nil {
 
 		return fracQuotient,
-			fmt.Errorf("%v\n"+
-				"Error returned by BigIntMathDivide{}.BigIntFracQuotient(...)\n"+
-				"Error= %v\n",
-				ePrefix,
-				err.Error())
+			&ErrorReturnBasic{
+				ErrPrefix: ePrefix,
+				ReturnFunc: "  fracQuo, fracQuoPrecision, err := BigIntMathDivide{}.BigIntFracQuotient(\n" +
+					"    binDividend,binDividendPrecision,binDivisor,binDivisorPrecision,biMaxPrecision)",
+				ErrMessage: err.Error(),
+			}
 	}
 
-	fracQuotient.SetBigInt(fracQuo, uint(fracQuoPrecision.Uint64()))
+	err = fracQuotient.SetBigInt(fracQuo, uint(fracQuoPrecision.Uint64()))
+	if err != nil {
 
-	err = fracQuotient.SetNumericSeparatorsDto(dividend.GetNumericSeparatorsDto())
+		return fracQuotient,
+			&ErrorReturnBasic{
+				ErrPrefix:  ePrefix,
+				ReturnFunc: "  err = fracQuotient.SetBigInt(fracQuo, uint(fracQuoPrecision.Uint64()))",
+				ErrMessage: err.Error(),
+			}
+	}
+
+	numSepsDto, err := dividend.GetNumericSeparatorsDto()
 
 	if err != nil {
 
 		return fracQuotient,
-			fmt.Errorf("%v\n"+
-				"Error returned by fracQuotient.SetNumericSeparatorsDto("+
-				"dividend.GetNumericSeparatorsDto())\n"+
-				"Error= %v\n",
-				ePrefix,
-				err.Error())
+			&ErrorReturnBasic{
+				ErrPrefix:  ePrefix,
+				ReturnFunc: "  numSepsDto, err := dividend.GetNumericSeparatorsDto()",
+				ErrMessage: err.Error(),
+			}
+	}
+
+	err = fracQuotient.SetNumericSeparatorsDto(numSepsDto)
+
+	if err != nil {
+
+		return fracQuotient,
+			&ErrorReturnBasic{
+				ErrPrefix:  ePrefix,
+				ReturnFunc: "  err = fracQuotient.SetNumericSeparatorsDto(numSepsDto)",
+				ErrMessage: err.Error(),
+			}
 	}
 
 	return fracQuotient, nil
@@ -836,7 +915,11 @@ func (bIDivide BigIntMathDivide) BigIntNumDivideByTwoQuoMod(
 	dividend BigIntNum,
 	maxPrecision uint) (quotient, modulo BigIntNum, err error) {
 
-	bINumTwo := BigIntNum{}.NewTwo(0)
+	bINumTwo, err := new(BigIntNum).NewTwo(0)
+
+	if err != nil {
+		return dividend, bINumTwo, err
+	}
 
 	return bIDivide.BigIntNumQuotientMod(dividend, bINumTwo, maxPrecision)
 }
