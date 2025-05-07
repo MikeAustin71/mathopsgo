@@ -11,6 +11,62 @@ type bigIntNumNanobot struct {
 	lock *sync.Mutex
 }
 
+// NewWithNumSeps
+//
+// Returns a new BigIntNum instance initialized to zero.
+//
+// Input parameter 'numSeps' will be used to seed the new
+// BigIntNum instance with numeric separators (decimal
+// separator, thousands separator and currency symbol).
+//
+// If input parameter 'numSeps' is determined to be empty,
+// the new returned instance of BigIntNum, will be
+// automatically configured with USA default numeric
+// separators (decimal separator, thousands separator
+// and currency symbol).
+func (bIntNumNano *bigIntNumNanobot) newWithNumSeps(
+	numSeps NumericSeparatorDto,
+	errPrefDto *ePref.ErrPrefixDto) (BigIntNum, error) {
+
+	if bIntNumNano.lock == nil {
+		bIntNumNano.lock = new(sync.Mutex)
+	}
+
+	bIntNumNano.lock.Lock()
+
+	defer bIntNumNano.lock.Unlock()
+
+	var ePrefix *ePref.ErrPrefixDto
+
+	var err error
+
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
+		errPrefDto,
+		"bigIntNumMechanics.newWithNumSeps()",
+		"")
+
+	if err != nil {
+		return BigIntNum{}, err
+	}
+
+	numSeps.SetDefaultsIfEmpty()
+
+	b := new(bigIntNumMechanics).new()
+
+	new(bigIntNumElectron).empty(&b)
+
+	err = new(bigIntNumAtom).setNumericSeparatorsDto(
+		&b, numSeps, ePrefix)
+
+	if err != nil {
+
+		return BigIntNum{}, err
+	}
+
+	return b, nil
+}
+
 // setBigInt - Sets the value of the current BigIntNum instance using
 // the input parameters *big.Int integer and precision.
 //
@@ -80,8 +136,11 @@ func (bIntNumNano *bigIntNumNanobot) setBigInt(
 	}
 
 	numSeps := NumericSeparatorDto{}
+
 	numSeps.DecimalSeparator = bNum.decimalSeparator
+
 	numSeps.ThousandsSeparator = bNum.thousandsSeparator
+
 	numSeps.CurrencySymbol = bNum.currencySymbol
 
 	new(bigIntNumElectron).empty(bNum)

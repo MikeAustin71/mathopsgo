@@ -893,33 +893,58 @@ func (bMultiply *BigIntMathMultiply) MultiplyBigIntNumByTwo(base BigIntNum) (Big
 
   result := big.NewInt(0).Lsh(base.bigInt, 1)
 
-  bINumResult, err := new(BigIntNum).NewBigInt(result, base.GetPrecisionUint())
+  basePrecision, err := base.GetPrecisionUint()
 
   if err != nil {
 
     return BigIntNum{},
-      fmt.Errorf("%v\n"+
-        "Error returned by: \n"+
-        " bINumResult, err := new(BigIntNum).NewBigInt(result, base.GetPrecisionUint())\n"+
-        "Error= %v\n",
-        ePrefix,
-        err.Error())
-
+      &FuncReturnError{
+        ErrPrefix:  ePrefix,
+        ReturnFunc: "basePrecision, err := base.GetPrecisionUint()",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
   }
 
-  err = bINumResult.SetNumericSeparatorsDto(base.GetNumericSeparatorsDto())
+  bINumResult, err := new(BigIntNum).NewBigInt(result, basePrecision)
 
   if err != nil {
 
     return BigIntNum{},
-      fmt.Errorf("%v\n"+
-        "Error returned by: \n"+
-        " bINumResult, err := new(BigIntNum).NewBigInt(result, base.GetPrecisionUint())\n"+
-        "Error= %v\n",
-        ePrefix,
-        err.Error())
-
+      &FuncReturnError{
+        ErrPrefix:  ePrefix,
+        ReturnFunc: "bINumResult, err := new(BigIntNum).NewBigInt(result, basePrecision)",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
   }
+
+  baseNumSeps, err := base.GetNumericSeparatorsDto()
+
+  if err != nil {
+
+    return BigIntNum{},
+      &FuncReturnError{
+        ErrPrefix:  ePrefix,
+        ReturnFunc: "baseNumSeps, err := base.GetNumericSeparatorsDto()",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+  }
+
+  err = bINumResult.SetNumericSeparatorsDto(baseNumSeps)
+
+  if err != nil {
+
+    return BigIntNum{},
+      &FuncReturnError{
+        ErrPrefix:  ePrefix,
+        ReturnFunc: "err = bINumResult.SetNumericSeparatorsDto(baseNumSeps)",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+  }
+
   return bINumResult, nil
 }
 

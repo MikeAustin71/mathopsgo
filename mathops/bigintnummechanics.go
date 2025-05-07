@@ -16,7 +16,7 @@ type bigIntNumMechanics struct {
 // The BigIntNum instance returned by this method will contain USA
 // default numeric separators (decimal separator, thousands separator
 // and currency symbol).
-func (bIngNumMech *bigIntNumMechanics) new() BigIntNum {
+func (bIntNumMech *bigIntNumMechanics) new() BigIntNum {
 
 	b := new(BigIntNum)
 
@@ -56,18 +56,18 @@ func (bIngNumMech *bigIntNumMechanics) new() BigIntNum {
 //
 // The new BigIntNum instance returned by this method will contain USA default numeric
 // separators (decimal separator, thousands separator and currency symbol).
-func (bIngNumMech *bigIntNumMechanics) newBigInt(
+func (bIntNumMech *bigIntNumMechanics) newBigInt(
 	bigI *big.Int,
 	precision uint,
 	errPrefDto *ePref.ErrPrefixDto) (BigIntNum, error) {
 
-	if bIngNumMech.lock == nil {
-		bIngNumMech.lock = new(sync.Mutex)
+	if bIntNumMech.lock == nil {
+		bIntNumMech.lock = new(sync.Mutex)
 	}
 
-	bIngNumMech.lock.Lock()
+	bIntNumMech.lock.Lock()
 
-	defer bIngNumMech.lock.Unlock()
+	defer bIntNumMech.lock.Unlock()
 
 	var ePrefix *ePref.ErrPrefixDto
 
@@ -140,18 +140,18 @@ func (bIngNumMech *bigIntNumMechanics) newBigInt(
 //		 123456		 		  -3							123.456
 //		 123456		 		   3							123456.000
 //		 123456          0              123456
-func (bIngNumMech *bigIntNumMechanics) newInt64Exponent(
+func (bIntNumMech *bigIntNumMechanics) newInt64Exponent(
 	int64Num int64,
 	exponent int,
 	errPrefDto *ePref.ErrPrefixDto) (BigIntNum, error) {
 
-	if bIngNumMech.lock == nil {
-		bIngNumMech.lock = new(sync.Mutex)
+	if bIntNumMech.lock == nil {
+		bIntNumMech.lock = new(sync.Mutex)
 	}
 
-	bIngNumMech.lock.Lock()
+	bIntNumMech.lock.Lock()
 
-	defer bIngNumMech.lock.Unlock()
+	defer bIntNumMech.lock.Unlock()
 
 	var ePrefix *ePref.ErrPrefixDto
 
@@ -217,17 +217,17 @@ func (bIngNumMech *bigIntNumMechanics) newInt64Exponent(
 //			0								0
 //			2								0.00
 //			3								0.000
-func (bIngNumMech *bigIntNumMechanics) newZero(
+func (bIntNumMech *bigIntNumMechanics) newZero(
 	precision uint,
 	errPrefDto *ePref.ErrPrefixDto) (BigIntNum, error) {
 
-	if bIngNumMech.lock == nil {
-		bIngNumMech.lock = new(sync.Mutex)
+	if bIntNumMech.lock == nil {
+		bIntNumMech.lock = new(sync.Mutex)
 	}
 
-	bIngNumMech.lock.Lock()
+	bIntNumMech.lock.Lock()
 
-	defer bIngNumMech.lock.Unlock()
+	defer bIntNumMech.lock.Unlock()
 
 	var ePrefix *ePref.ErrPrefixDto
 
@@ -267,7 +267,7 @@ func (bIngNumMech *bigIntNumMechanics) newZero(
 // The BigIntNum instance returned by this method will contain USA
 // default numeric separators (decimal separator, thousands separator
 // and currency symbol).
-func (bIngNumMech *bigIntNumMechanics) newBigIntNum() BigIntNum {
+func (bIntNumMech *bigIntNumMechanics) newBigIntNum() BigIntNum {
 
 	b := new(BigIntNum)
 
