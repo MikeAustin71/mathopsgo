@@ -484,12 +484,12 @@ func (bPair *BigIntPair) NewNumStrDto(n1Dto, n2Dto NumStrDto) (BigIntPair, error
 	if err != nil {
 
 		return BigIntPair{},
-			fmt.Errorf("%v\n"+
-				"Error returned by n1Dto.GetBigIntNum().\n"+
-				"numStr='%v'\nError= %v\n",
-				ePrefix,
-				n1Dto.GetNumStr(),
-				err.Error())
+			&FuncReturnError{
+				ErrPrefix:  ePrefix,
+				ReturnFunc: "b1Num, err := n1Dto.GetBigIntNum()",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
 	}
 
 	// This method will test the validity of n2Dto
@@ -497,19 +497,29 @@ func (bPair *BigIntPair) NewNumStrDto(n1Dto, n2Dto NumStrDto) (BigIntPair, error
 
 	if err != nil {
 		return BigIntPair{},
-			fmt.Errorf("%v\n"+
-				"Error returned by n2Dto.GetBigIntNum().\n"+
-				"numStr='%v'\nError= %v\n",
-				ePrefix,
-				n2Dto.GetNumStr(),
-				err.Error())
+			&FuncReturnError{
+				ErrPrefix:  ePrefix,
+				ReturnFunc: "b2Num, err := n2Dto.GetBigIntNum()",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
 	}
 
 	b2Pair := BigIntPair{}
 
 	err = b2Pair.SetBigIntPair(b1Num, b2Num)
 
-	return b2Pair, err
+	if err != nil {
+		return BigIntPair{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix,
+				ReturnFunc: "err = b2Pair.SetBigIntPair(b1Num, b2Num)",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
+
+	return b2Pair, nil
 }
 
 // SetBigIntPair -Sets the values of the current
