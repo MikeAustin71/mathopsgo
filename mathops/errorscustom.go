@@ -2,10 +2,10 @@ package mathops
 
 import "fmt"
 
-// ReturnBasicError
+// FuncReturnError
 // Custom error message used to specify the
 // function returning the error message
-type ReturnBasicError struct {
+type FuncReturnError struct {
 	ErrPrefix  string
 	ReturnFunc string
 	ErrContext string
@@ -16,10 +16,12 @@ type ReturnBasicError struct {
 // The following format is used to intialize
 // this type of error:
 //
+// EXAMPLE:
+//
 //	if err != nil {
 //
 //		return Decimal{},
-//			&ReturnBasicError{
+//			&FuncReturnError{
 //				ErrPrefix:  ePrefix.String(),
 //				ReturnFunc: "dec, err := new(Decimal).NewBigInt(\n" +
 //				"  big.NewInt(0).Set(bNum.bigInt), bNum.precision)\n",
@@ -31,7 +33,7 @@ type ReturnBasicError struct {
 //	NOTE:
 //
 //	Element 'ErrContext' is optional
-func (e *ReturnBasicError) Error() string {
+func (e *FuncReturnError) Error() string {
 
 	var errStr string
 	foundCnt := 0
@@ -66,6 +68,71 @@ func (e *ReturnBasicError) Error() string {
 	return errStr
 }
 
-func (e *ReturnBasicError) Unwrap() error {
+func (e *FuncReturnError) GetError() error {
 	return fmt.Errorf("%w", e.Error())
+}
+
+func (e *FuncReturnError) Unwrap() error {
+	return fmt.Errorf("%w", e.Error())
+}
+
+// InputPtrNilError
+// Custom error message used to format error message
+// in the case of a nil input parmeter pointer
+//
+// Example Usage:
+//
+//	&InputPtrNilError{
+//		ErrPrefix:  ePrefix.String(),
+//		ErrContext: "",
+//		ParameterName: "'bNum'",
+//	}
+type InputPtrNilError struct {
+	ErrPrefix     string
+	ErrContext    string
+	ParameterName string
+}
+
+func (i *InputPtrNilError) Error() string {
+
+	var errStr string
+	foundCnt := 0
+
+	if i.ErrPrefix != "" {
+		errStr = i.ErrPrefix + "\n"
+		foundCnt++
+	}
+
+	if i.ErrContext != "" {
+		errStr += i.ErrContext + "\n"
+		foundCnt++
+	}
+
+	var isParameterName = false
+
+	if len(i.ParameterName) > 0 {
+		isParameterName = true
+	}
+
+	if foundCnt == 0 {
+		errStr = "No Error parameters provided!\n"
+	} else {
+
+		var parmName string
+
+		if isParameterName {
+			parmName = i.ParameterName
+		} else {
+			parmName = "unknown parameter"
+		}
+
+		errStr += fmt.Sprintf("FATAL ERROR: Input parameter '%v' is a nil pointer.\n",
+			parmName)
+	}
+
+	return errStr
+}
+
+func (i *InputPtrNilError) Unwrap() error {
+	return fmt.Errorf("%w", i.Error())
 }
