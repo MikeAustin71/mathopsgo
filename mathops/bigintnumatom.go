@@ -41,9 +41,10 @@ func (bIntNumAtom *bigIntNumAtom) isBigIntNumValid(
 
 	if bNum == nil {
 
-		err = fmt.Errorf("%v\n"+
-			"FATAL ERROR: Input parameter 'bNum' is a nil pointer.\n",
-			ePrefix.String())
+		err = &InputPtrNilError{
+			ErrPrefix:     ePrefix.String(),
+			ParameterName: "'bNum'",
+		}
 
 		return err
 	}
@@ -145,11 +146,9 @@ func (bIntNumAtom *bigIntNumAtom) getIntegerPart(
 	if bNum == nil {
 
 		return BigIntNum{},
-			&ReturnBasicError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "",
-				ErrContext: "",
-				ErrMessage: "FATAL ERROR: Input parameter 'bNum' is a nil pointer.",
+			&InputPtrNilError{
+				ErrPrefix:     ePrefix.String(),
+				ParameterName: "'bNum'",
 			}
 	}
 
@@ -212,9 +211,10 @@ func (bIntNumAtom *bigIntNumAtom) getBigIntNumStr(
 	if bNum == nil {
 
 		return "",
-			fmt.Errorf("%v\n"+
-				"FATAL ERROR: Input parameter 'bNum' is a nil pointer.\n",
-				ePrefix.String())
+			&InputPtrNilError{
+				ErrPrefix:     ePrefix.String(),
+				ParameterName: "'bNum'",
+			}
 	}
 
 	numStr, err := new(bigIntNumMolecule).formatBigIntNumStr(
@@ -268,9 +268,10 @@ func (bIntNumAtom *bigIntNumAtom) getNumericSeparatorsDto(
 	if bNum == nil {
 
 		return NumericSeparatorDto{},
-			fmt.Errorf("%v\n"+
-				"FATAL ERROR: Input parameter 'bNum' is a nil pointer.\n",
-				ePrefix.String())
+			&InputPtrNilError{
+				ErrPrefix:     ePrefix.String(),
+				ParameterName: "'bNum'",
+			}
 	}
 
 	numSeps := NumericSeparatorDto{}
@@ -334,11 +335,9 @@ func (bIntNumAtom *bigIntNumAtom) getSciNotationStr(
 	if bNum == nil {
 
 		return "",
-			&ReturnBasicError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "",
-				ErrContext: "",
-				ErrMessage: "FATAL ERROR: Input parameter 'bNum' is a nil pointer.",
+			&InputPtrNilError{
+				ErrPrefix:     ePrefix.String(),
+				ParameterName: "'bNum'",
 			}
 	}
 
@@ -355,7 +354,7 @@ func (bIntNumAtom *bigIntNumAtom) getSciNotationStr(
 
 	if err != nil {
 		return "",
-			&ReturnBasicError{
+			&FuncReturnError{
 				ErrPrefix: ePrefix.String(),
 				ReturnFunc: "  result, err := sciNotation.\n" +
 					"    GetSciNotationStr(mantissaLen)",
@@ -420,9 +419,10 @@ func (bIntNumAtom *bigIntNumAtom) setNumericSeparators(
 
 	if bNum == nil {
 
-		return fmt.Errorf("%v\n"+
-			"FATAL ERROR: Input parameter 'bNum' is a nil pointer.\n",
-			ePrefix.String())
+		return &InputPtrNilError{
+			ErrPrefix:     ePrefix.String(),
+			ParameterName: "'bNum'",
+		}
 	}
 
 	if decimalSeparator == 0 {
@@ -500,9 +500,11 @@ func (bIntNumAtom *bigIntNumAtom) setNumericSeparatorsDto(
 
 	if bNum == nil {
 
-		return fmt.Errorf("%v\n"+
-			"FATAL ERROR: Input parameter 'bNum' is a nil pointer.\n",
-			ePrefix.String())
+		return &InputPtrNilError{
+			ErrPrefix:     ePrefix.String(),
+			ErrContext:    "",
+			ParameterName: "'bNum'",
+		}
 	}
 
 	if customSeparators.DecimalSeparator == 0 {
@@ -577,9 +579,11 @@ func (bIntNumAtom *bigIntNumAtom) setNumericSeparatorsToDefaultIfEmpty(
 
 	if bNum == nil {
 
-		return fmt.Errorf("%v\n"+
-			"FATAL ERROR: Input parameter 'bNum' is a nil pointer.\n",
-			ePrefix)
+		return &InputPtrNilError{
+			ErrPrefix:     ePrefix.String(),
+			ErrContext:    "",
+			ParameterName: "'bNum'",
+		}
 	}
 
 	if bNum.decimalSeparator == 0 {
@@ -639,9 +643,10 @@ func (bIntNumAtom *bigIntNumAtom) setNumericSeparatorsToUSADefault(
 
 	if bNum == nil {
 
-		return fmt.Errorf("%v\n"+
-			"FATAL ERROR: Input parameter 'bNum' is a nil pointer.",
-			ePrefix)
+		return &InputPtrNilError{
+			ErrPrefix:     ePrefix.String(),
+			ParameterName: "'bNum'",
+		}
 	}
 
 	bNum.decimalSeparator = '.'
