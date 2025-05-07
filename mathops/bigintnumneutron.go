@@ -56,12 +56,11 @@ func (bNumNeutron *bigIntNumNeutron) inverseBigIntNum(
 	if bNum == nil {
 
 		return BigIntNum{},
-			&ReturnBasicError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "",
-				ErrContext: "",
-				ErrMessage: "FATAL ERROR: Input parameter 'bNum' is a nil pointer.",
+			&InputPtrNilError{
+				ErrPrefix:     ePrefix.String(),
+				ParameterName: "'bNum'",
 			}
+
 	}
 
 	if bNum.bigInt.Cmp(big.NewInt(0)) == 0 {
@@ -97,7 +96,7 @@ func (bNumNeutron *bigIntNumNeutron) inverseBigIntNum(
 	if err != nil {
 
 		return BigIntNum{},
-			&ReturnBasicError{
+			&FuncReturnError{
 				ErrPrefix: ePrefix.String(),
 				ReturnFunc: "inverseBigIntNum, err := BigIntMathDivide{}.\n" +
 					"    BigIntNumFracQuotient(bIOne, bITwo, maxPrecision)",
@@ -161,11 +160,9 @@ func (bNumNeutron *bigIntNumNeutron) isEvenBigIntNumber(
 	if bNum == nil {
 
 		return false,
-			&ReturnBasicError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "",
-				ErrContext: "",
-				ErrMessage: "FATAL ERROR: Input parameter 'bNum' is a nil pointer.",
+			&InputPtrNilError{
+				ErrPrefix:     ePrefix.String(),
+				ParameterName: "'bNum'",
 			}
 	}
 
@@ -192,7 +189,7 @@ func (bNumNeutron *bigIntNumNeutron) isEvenBigIntNumber(
 
 	if err != nil {
 		return false,
-			&ReturnBasicError{
+			&FuncReturnError{
 				ErrPrefix: ePrefix.String(),
 				ReturnFunc: "  _, mod, err := BigIntMathDivide{}.\n" +
 					"BigIntNumDivideByTwoQuoMod(bNum2, 50)",
@@ -249,12 +246,11 @@ func (bNumNeutron *bigIntNumNeutron) incrementBigIntNum(
 
 	if bNum == nil {
 
-		return &ReturnBasicError{
-			ErrPrefix:  ePrefix.String(),
-			ReturnFunc: "",
-			ErrContext: "",
-			ErrMessage: "FATAL ERROR: Input parameter 'bNum' is a nil pointer.",
+		return &InputPtrNilError{
+			ErrPrefix:     ePrefix.String(),
+			ParameterName: "'bNum'",
 		}
+
 	}
 
 	biNumOne, err := new(bigIntNumMolecule).newOne(
@@ -279,7 +275,7 @@ func (bNumNeutron *bigIntNumNeutron) incrementBigIntNum(
 
 	if err != nil {
 
-		return &ReturnBasicError{
+		return &FuncReturnError{
 			ErrPrefix:  ePrefix.String(),
 			ReturnFunc: "bPair, err := new(BigIntPair).NewBigIntNum(bNum2, biNumOne)",
 			ErrMessage: err.Error(),
@@ -378,18 +374,17 @@ func (bNumNeutron *bigIntNumNeutron) modBigIntNum(
 	if bNum == nil {
 
 		return modulo,
-			&ReturnBasicError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "",
-				ErrContext: "",
-				ErrMessage: "FATAL ERROR: Input parameter 'bNum' is a nil pointer.",
+			&InputPtrNilError{
+				ErrPrefix:     ePrefix.String(),
+				ParameterName: "'bNum'",
 			}
+
 	}
 
 	if divisor == nil {
 
 		return modulo,
-			&ReturnBasicError{
+			&FuncReturnError{
 				ErrPrefix:  ePrefix.String(),
 				ReturnFunc: "",
 				ErrContext: "",
@@ -418,7 +413,7 @@ func (bNumNeutron *bigIntNumNeutron) modBigIntNum(
 	if err != nil {
 
 		return modulo,
-			&ReturnBasicError{
+			&FuncReturnError{
 				ErrPrefix: ePrefix.String(),
 				ReturnFunc: "modulo, err = BigIntMathDivide{}.BigIntNumModulo(\n" +
 					"    biNum2, *divisor, maxPrecision)",
@@ -481,18 +476,17 @@ func (bNumNeutron *bigIntNumNeutron) multiplyBigIntNum(
 	if bNum == nil {
 
 		return product,
-			&ReturnBasicError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "",
-				ErrContext: "",
-				ErrMessage: "FATAL ERROR: Input parameter 'bNum' is a nil pointer.",
+			&InputPtrNilError{
+				ErrPrefix:     ePrefix.String(),
+				ParameterName: "'bNum'",
 			}
+
 	}
 
 	if multiplicand == nil {
 
 		return product,
-			&ReturnBasicError{
+			&FuncReturnError{
 				ErrPrefix:  ePrefix.String(),
 				ReturnFunc: "",
 				ErrContext: "",
@@ -522,7 +516,7 @@ func (bNumNeutron *bigIntNumNeutron) multiplyBigIntNum(
 	if err != nil {
 
 		return BigIntNum{},
-			&ReturnBasicError{
+			&FuncReturnError{
 				ErrPrefix: ePrefix.String(),
 				ReturnFunc: "product, err = new(BigIntMathMultiply).MultiplyBigIntNums(\n" +
 					"    bNum2, *multiplicand)",

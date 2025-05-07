@@ -56,17 +56,18 @@ func (bIntNumProton *bigIntNumProton) cmpBigInt(
 
 	if bNum == nil {
 
-		err = fmt.Errorf("%v\n"+
-			"FATAL ERROR: Input parameter 'bNum' is a nil pointer.",
-			ePrefix.String())
+		return 0, &InputPtrNilError{
+			ErrPrefix:     ePrefix.String(),
+			ErrContext:    "",
+			ParameterName: "'bNum'",
+		}
 
-		return 0, err
 	}
 
 	if bigIntNum == nil {
 
 		return 0,
-			&ReturnBasicError{
+			&FuncReturnError{
 				ErrPrefix:  ePrefix.String(),
 				ReturnFunc: "",
 				ErrContext: "",
@@ -140,19 +141,17 @@ func (bIntNumProton *bigIntNumProton) bigIntNumCmp(
 	if bNum == nil {
 
 		return 0,
-			&ReturnBasicError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "",
-				ErrContext: "",
-				ErrMessage: "FATAL ERROR: Input parameter 'bNum' is a nil pointer.",
+			&InputPtrNilError{
+				ErrPrefix:     ePrefix.String(),
+				ErrContext:    "",
+				ParameterName: "'bNum'",
 			}
-
 	}
 
 	if bigIntNum2 == nil {
 
 		return 0,
-			&ReturnBasicError{
+			&FuncReturnError{
 				ErrPrefix:  ePrefix.String(),
 				ReturnFunc: "",
 				ErrContext: "",
@@ -206,7 +205,7 @@ func (bIntNumProton *bigIntNumProton) bigIntNumCmp(
 	if err != nil {
 
 		return 0,
-			&ReturnBasicError{
+			&FuncReturnError{
 				ErrPrefix: ePrefix.String(),
 				ReturnFunc: " difference, err := BigIntMathSubtract{}.\n" +
 					"    SubtractBigIntNums(bNum2, *bigIntNum2)",
@@ -282,11 +281,10 @@ func (bIntNumProton *bigIntNumProton) bigIntNumDecrement(
 
 	if bNum == nil {
 
-		return &ReturnBasicError{
-			ErrPrefix:  ePrefix.String(),
-			ReturnFunc: "",
-			ErrContext: "",
-			ErrMessage: "FATAL ERROR: Input parameter 'bNum' is a nil pointer.",
+		return &InputPtrNilError{
+			ErrPrefix:     ePrefix.String(),
+			ErrContext:    "",
+			ParameterName: "'bNum'",
 		}
 
 	}
@@ -307,7 +305,11 @@ func (bIntNumProton *bigIntNumProton) bigIntNumDecrement(
 		return err
 	}
 
-	bPair := new(BigIntPair).NewBigIntNum(bNum2, biNumOne)
+	bPair, err := new(BigIntPair).NewBigIntNum(bNum2, biNumOne)
+
+	if err != nil {
+		return fmt.Errorf("%v\n%w", ePrefix, err)
+	}
 
 	result := BigIntMathSubtract{}.SubtractPair(bPair)
 
@@ -316,18 +318,7 @@ func (bIntNumProton *bigIntNumProton) bigIntNumDecrement(
 		&result,
 		ePrefix)
 
-	if err != nil {
-
-		return fmt.Errorf("%v\n"+
-			"Error returned by: \n"+
-			" err = new(bigIntNumUtility).bigIntNumCopyIn(\n"+
-			"   bNum, &result, ePrefix)\n"+
-			"Error= %v\n",
-			ePrefix,
-			err.Error())
-	}
-
-	return nil
+	return err
 }
 
 // bigIntNumDivide - Performs a division operation. The current BigIntNum instance is the
@@ -383,11 +374,9 @@ func (bIntNumProton *bigIntNumProton) bigIntNumDivide(
 	if bNum == nil {
 
 		return BigIntNum{},
-			&ReturnBasicError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "",
-				ErrContext: "",
-				ErrMessage: "FATAL ERROR: Input parameter 'bNum' is a nil pointer.",
+			&InputPtrNilError{
+				ErrPrefix:     ePrefix.String(),
+				ParameterName: "'bNum'",
 			}
 
 	}
@@ -395,11 +384,10 @@ func (bIntNumProton *bigIntNumProton) bigIntNumDivide(
 	if divisor == nil {
 
 		return BigIntNum{},
-			&ReturnBasicError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "",
-				ErrContext: "",
-				ErrMessage: "FATAL ERROR: Input parameter 'divisor' is a nil pointer.",
+			&InputPtrNilError{
+				ErrPrefix:     ePrefix.String(),
+				ErrContext:    "",
+				ParameterName: "'divisor'",
 			}
 
 	}
@@ -416,10 +404,12 @@ func (bIntNumProton *bigIntNumProton) bigIntNumDivide(
 	if divisor.bigInt.Cmp(big.NewInt(0)) == 0 {
 
 		return BigIntNum{},
-			fmt.Errorf("%v\n"+
-				"Error: Attempted Divide by ZERO!\n"+
-				"The value of input parameter 'divisor' is ZERO.",
-				ePrefix.String())
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ErrContext: "if divisor.bigInt.Cmp(big.NewInt(0)) == 0",
+				ErrMessage: "Error: Attempted Divide by ZERO!\n" +
+					"The value of input parameter 'divisor' is ZERO.",
+			}
 	}
 
 	bNum2, err := new(bigIntNumUtility).bigIntNumCopyOut(
@@ -487,11 +477,10 @@ func (bIntNumProton *bigIntNumProton) bigIntNumDivideByFive(
 	if bNum == nil {
 
 		return BigIntNum{},
-			&ReturnBasicError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "",
-				ErrContext: "",
-				ErrMessage: "FATAL ERROR: Input parameter 'bNum' is a nil pointer.",
+			&InputPtrNilError{
+				ErrPrefix:     ePrefix.String(),
+				ErrContext:    "",
+				ParameterName: "'bNum'",
 			}
 
 	}
@@ -585,11 +574,10 @@ func (bIntNumProton *bigIntNumProton) bigIntNumDivideByTen(
 	if bNum == nil {
 
 		return BigIntNum{},
-			&ReturnBasicError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "",
-				ErrContext: "",
-				ErrMessage: "FATAL ERROR: Input parameter 'bNum' is a nil pointer.",
+			&InputPtrNilError{
+				ErrPrefix:     ePrefix.String(),
+				ErrContext:    "",
+				ParameterName: "'bNum'",
 			}
 
 	}
@@ -669,11 +657,10 @@ func (bIntNumProton *bigIntNumProton) bigIntNumDivideByTenToPower(
 
 	if bNum == nil {
 
-		return &ReturnBasicError{
-			ErrPrefix:  ePrefix.String(),
-			ReturnFunc: "",
-			ErrContext: "",
-			ErrMessage: "FATAL ERROR: Input parameter 'bNum' is a nil pointer.",
+		return &InputPtrNilError{
+			ErrPrefix:     ePrefix.String(),
+			ErrContext:    "",
+			ParameterName: "'bNum'",
 		}
 
 	}
@@ -748,11 +735,10 @@ func (bIntNumProton *bigIntNumProton) bigIntNumDivideByThree(
 	if bNum == nil {
 
 		return BigIntNum{},
-			&ReturnBasicError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "",
-				ErrContext: "",
-				ErrMessage: "FATAL ERROR: Input parameter 'bNum' is a nil pointer.",
+			&InputPtrNilError{
+				ErrPrefix:     ePrefix.String(),
+				ErrContext:    "",
+				ParameterName: "'bNum'",
 			}
 
 	}
@@ -838,11 +824,10 @@ func (bIntNumProton *bigIntNumProton) bigIntNumDivideByTwo(
 	if bNum == nil {
 
 		return fracQuotient,
-			&ReturnBasicError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "",
-				ErrContext: "",
-				ErrMessage: "FATAL ERROR: Input parameter 'bNum' is a nil pointer.",
+			&InputPtrNilError{
+				ErrPrefix:     ePrefix.String(),
+				ErrContext:    "",
+				ParameterName: "'bNum'",
 			}
 	}
 
@@ -924,11 +909,10 @@ func (bIntNumProton *bigIntNumProton) bigIntNumDivideByTwoQuoMod(
 	if bNum == nil {
 
 		return intQuotient, modulo,
-			&ReturnBasicError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "",
-				ErrContext: "",
-				ErrMessage: "FATAL ERROR: Input parameter 'bNum' is a nil pointer.",
+			&InputPtrNilError{
+				ErrPrefix:     ePrefix.String(),
+				ErrContext:    "",
+				ParameterName: "'bNum'",
 			}
 
 	}
@@ -1004,11 +988,10 @@ func (bIntNumProton *bigIntNumProton) bigIntNumExtendPrecision(
 
 	if bNum == nil {
 
-		return &ReturnBasicError{
-			ErrPrefix:  ePrefix.String(),
-			ReturnFunc: "",
-			ErrContext: "",
-			ErrMessage: "FATAL ERROR: Input parameter 'bNum' is a nil pointer.",
+		return &InputPtrNilError{
+			ErrPrefix:     ePrefix.String(),
+			ErrContext:    "",
+			ParameterName: "'bNum'",
 		}
 
 	}
@@ -1154,11 +1137,10 @@ func (bIntNumProton *bigIntNumProton) bigIntNumFloor(
 	if bNum == nil {
 
 		return BigIntNum{},
-			&ReturnBasicError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "",
-				ErrContext: "",
-				ErrMessage: "FATAL ERROR: Input parameter 'bNum' is a nil pointer.",
+			&InputPtrNilError{
+				ErrPrefix:     ePrefix.String(),
+				ErrContext:    "",
+				ParameterName: "'bNum'",
 			}
 
 	}
@@ -1267,11 +1249,10 @@ func (bIntNumProton *bigIntNumProton) bigIntNumGetAbsoluteNumStr(
 	if bNum == nil {
 
 		return "",
-			&ReturnBasicError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "",
-				ErrContext: "",
-				ErrMessage: "FATAL ERROR: Input parameter 'bNum' is a nil pointer.",
+			&InputPtrNilError{
+				ErrPrefix:     ePrefix.String(),
+				ErrContext:    "",
+				ParameterName: "'bNum'",
 			}
 
 	}
@@ -1365,11 +1346,10 @@ func (bIntNumProton *bigIntNumProton) bigIntNumGetAbsoluteBigIntNumValue(
 	if bNum == nil {
 
 		return BigIntNum{},
-			&ReturnBasicError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "",
-				ErrContext: "",
-				ErrMessage: "FATAL ERROR: Input parameter 'bNum' is a nil pointer.",
+			&InputPtrNilError{
+				ErrPrefix:     ePrefix.String(),
+				ErrContext:    "",
+				ParameterName: "'bNum'",
 			}
 
 	}
@@ -1427,11 +1407,10 @@ func (bIntNumProton *bigIntNumProton) bigIntNumGetAbsoluteBigIntValue(
 	if bNum == nil {
 
 		return result,
-			&ReturnBasicError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "",
-				ErrContext: "",
-				ErrMessage: "FATAL ERROR: Input parameter 'bNum' is a nil pointer.",
+			&InputPtrNilError{
+				ErrPrefix:     ePrefix.String(),
+				ErrContext:    "",
+				ParameterName: "'bNum'",
 			}
 
 	}
@@ -1477,11 +1456,10 @@ func (bIntNumProton *bigIntNumProton) bigIntNumGetBigFloat(
 	if bNum == nil {
 
 		return big.NewFloat(0),
-			&ReturnBasicError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "",
-				ErrContext: "",
-				ErrMessage: "FATAL ERROR: Input parameter 'bNum' is a nil pointer.",
+			&InputPtrNilError{
+				ErrPrefix:     ePrefix.String(),
+				ErrContext:    "",
+				ParameterName: "'bNum'",
 			}
 
 	}
@@ -1531,11 +1509,10 @@ func (bIntNumProton *bigIntNumProton) bigIntNumGetBigInt(
 	if bNum == nil {
 
 		return big.NewInt(0),
-			&ReturnBasicError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "",
-				ErrContext: "",
-				ErrMessage: "FATAL ERROR: Input parameter 'bNum' is a nil pointer.",
+			&InputPtrNilError{
+				ErrPrefix:     ePrefix.String(),
+				ErrContext:    "",
+				ParameterName: "'bNum'",
 			}
 
 	}
@@ -1580,11 +1557,10 @@ func (bIntNumProton *bigIntNumProton) bigIntNumGetBigIntFixedDecimal(
 	if bNum == nil {
 
 		return BigIntFixedDecimal{},
-			&ReturnBasicError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "",
-				ErrContext: "",
-				ErrMessage: "FATAL ERROR: Input parameter 'bNum' is a nil pointer.",
+			&InputPtrNilError{
+				ErrPrefix:     ePrefix.String(),
+				ErrContext:    "",
+				ParameterName: "'bNum'",
 			}
 
 	}
@@ -1630,11 +1606,10 @@ func (bIntNumProton *bigIntNumProton) bigIntNumGetBigRat(
 	if bNum == nil {
 
 		return big.NewRat(1, 1),
-			&ReturnBasicError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "",
-				ErrContext: "",
-				ErrMessage: "FATAL ERROR: Input parameter 'bNum' is a nil pointer.",
+			&InputPtrNilError{
+				ErrPrefix:     ePrefix.String(),
+				ErrContext:    "",
+				ParameterName: "'bNum'",
 			}
 
 	}
@@ -1706,11 +1681,10 @@ func (bIntNumProton *bigIntNumProton) bigIntNumGetNumSepSymbol(
 	if bNum == nil {
 
 		return '0',
-			&ReturnBasicError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "",
-				ErrContext: "",
-				ErrMessage: "FATAL ERROR: Input parameter 'bNum' is a nil pointer.",
+			&InputPtrNilError{
+				ErrPrefix:     ePrefix.String(),
+				ErrContext:    "",
+				ParameterName: "'bNum'",
 			}
 
 	}
@@ -1792,11 +1766,10 @@ func (bIntNumProton *bigIntNumProton) bigIntNumGetFractionalPart(
 	if bNum == nil {
 
 		return BigIntNum{},
-			&ReturnBasicError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "",
-				ErrContext: "",
-				ErrMessage: "FATAL ERROR: Input parameter 'bNum' is a nil pointer.",
+			&InputPtrNilError{
+				ErrPrefix:     ePrefix.String(),
+				ErrContext:    "",
+				ParameterName: "'bNum'",
 			}
 	}
 
@@ -1810,7 +1783,7 @@ func (bIntNumProton *bigIntNumProton) bigIntNumGetFractionalPart(
 		if err != nil {
 
 			return BigIntNum{},
-				&ReturnBasicError{
+				&FuncReturnError{
 					ErrPrefix: ePrefix.String(),
 					ReturnFunc: " bNum2, err := new(bigIntNumMechanics).\n" +
 						"   newZero(0, ePrefix)",
@@ -1890,11 +1863,10 @@ func (bIntNumProton *bigIntNumProton) bigIntNumGetInt(
 	if bNum == nil {
 
 		return 0,
-			&ReturnBasicError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "",
-				ErrContext: "",
-				ErrMessage: "FATAL ERROR: Input parameter 'bNum' is a nil pointer.",
+			&InputPtrNilError{
+				ErrPrefix:     ePrefix.String(),
+				ErrContext:    "",
+				ParameterName: "'bNum'",
 			}
 	}
 
@@ -1915,7 +1887,7 @@ func (bIntNumProton *bigIntNumProton) bigIntNumGetInt(
 	if bNum.bigInt.Cmp(bIMaxInt) == 1 {
 
 		return math.MaxInt32,
-			&ReturnBasicError{
+			&FuncReturnError{
 				ErrPrefix:  ePrefix.String(),
 				ReturnFunc: "",
 				ErrContext: "Error: BigIntNum Value is GREATER than Int32 Maximum!\n" +
@@ -1927,7 +1899,7 @@ func (bIntNumProton *bigIntNumProton) bigIntNumGetInt(
 	if bNum.bigInt.Cmp(bIMinInt) == -1 {
 
 		return math.MinInt32,
-			&ReturnBasicError{
+			&FuncReturnError{
 				ErrPrefix:  ePrefix.String(),
 				ReturnFunc: "",
 				ErrContext: "Error: BigIntNum Value is LESS than Int32 Minmum!\n" +
@@ -1987,11 +1959,10 @@ func (bIntNumProton *bigIntNumProton) bigIntNumGetIntAry(
 	if bNum == nil {
 
 		return IntAry{},
-			&ReturnBasicError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "",
-				ErrContext: "",
-				ErrMessage: "FATAL ERROR: Input parameter 'bNum' is a nil pointer.",
+			&InputPtrNilError{
+				ErrPrefix:     ePrefix.String(),
+				ErrContext:    "",
+				ParameterName: "'bNum'",
 			}
 	}
 
@@ -2000,7 +1971,7 @@ func (bIntNumProton *bigIntNumProton) bigIntNumGetIntAry(
 	if err != nil {
 
 		return IntAry{},
-			&ReturnBasicError{
+			&FuncReturnError{
 				ErrPrefix: ePrefix.String(),
 				ReturnFunc: "ia, err := new(IntAry).NewBigInt(big.NewInt(0).\n" +
 					"Set(bNum.bigInt), int(bNum.precision))",
@@ -2024,7 +1995,7 @@ func (bIntNumProton *bigIntNumProton) bigIntNumGetIntAry(
 	if err != nil {
 
 		return IntAry{},
-			&ReturnBasicError{
+			&FuncReturnError{
 				ErrPrefix: ePrefix.String(),
 				ReturnFunc: "numSepsDto, err := new(bigIntNumAtom).getNumericSeparatorsDto(\n" +
 					"  getNumericSeparatorsDto(bNum, ePrefix)",
@@ -2080,11 +2051,9 @@ func (bIntNumProton *bigIntNumProton) bigIntNumGetIntegerValue(
 	if bNum == nil {
 
 		return big.NewInt(0),
-			&ReturnBasicError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "",
-				ErrContext: "",
-				ErrMessage: "FATAL ERROR: Input parameter 'bNum' is a nil pointer.",
+			&InputPtrNilError{
+				ErrPrefix:     ePrefix.String(),
+				ParameterName: "'bNum'",
 			}
 	}
 
@@ -2132,11 +2101,9 @@ func (bIntNumProton *bigIntNumProton) bigIntNumGetInverse(
 	if bNum == nil {
 
 		return BigIntNum{},
-			&ReturnBasicError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "",
-				ErrContext: "",
-				ErrMessage: "FATAL ERROR: Input parameter 'bNum' is a nil pointer.",
+			&InputPtrNilError{
+				ErrPrefix:     ePrefix.String(),
+				ParameterName: "'bNum'",
 			}
 	}
 
@@ -2163,7 +2130,7 @@ func (bIntNumProton *bigIntNumProton) bigIntNumGetInverse(
 	if err != nil {
 
 		return BigIntNum{},
-			&ReturnBasicError{
+			&FuncReturnError{
 				ErrPrefix: ePrefix.String(),
 				ReturnFunc: "result, err := BigIntMathDivide{}.BigIntNumFracQuotient(\n" +
 					"bINumOne, bNum2, maxPrecision)",
@@ -2219,11 +2186,9 @@ func (bIntNumProton *bigIntNumProton) bigIntNumGetNumStrDto(
 	if bNum == nil {
 
 		return NumStrDto{},
-			&ReturnBasicError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "",
-				ErrContext: "",
-				ErrMessage: "FATAL ERROR: Input parameter 'bNum' is a nil pointer.",
+			&InputPtrNilError{
+				ErrPrefix:     ePrefix.String(),
+				ParameterName: "'bNum'",
 			}
 
 	}
@@ -2232,7 +2197,7 @@ func (bIntNumProton *bigIntNumProton) bigIntNumGetNumStrDto(
 
 	if err != nil {
 		return NumStrDto{},
-			&ReturnBasicError{
+			&FuncReturnError{
 				ErrPrefix: ePrefix.String(),
 				ReturnFunc: "nDto, err := NumStrDto{}.NewBigInt(big.NewInt(0)\n" +
 					".Set(bNum.bigInt), uint(bNum.precision))",
@@ -2254,7 +2219,7 @@ func (bIntNumProton *bigIntNumProton) bigIntNumGetNumStrDto(
 
 	if err != nil {
 		return NumStrDto{},
-			&ReturnBasicError{
+			&FuncReturnError{
 				ErrPrefix:  ePrefix.String(),
 				ReturnFunc: "err = nDto.SetNumericSeparatorsDto(numSepDto)",
 				ErrContext: "",
@@ -2326,11 +2291,9 @@ func (bIntNumProton *bigIntNumProton) bigIntNumGetPrecision(
 	if bNum == nil {
 
 		return 0,
-			&ReturnBasicError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "",
-				ErrContext: "",
-				ErrMessage: "FATAL ERROR: Input parameter 'bNum' is a nil pointer.",
+			&InputPtrNilError{
+				ErrPrefix:     ePrefix.String(),
+				ParameterName: "'bNum'",
 			}
 	}
 
@@ -2389,11 +2352,9 @@ func (bIntNumProton *bigIntNumProton) bigIntNumGetPrecisionBigInt(
 	if bNum == nil {
 
 		return big.NewInt(0),
-			&ReturnBasicError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "",
-				ErrContext: "",
-				ErrMessage: "FATAL ERROR: Input parameter 'bNum' is a nil pointer.",
+			&InputPtrNilError{
+				ErrPrefix:     ePrefix.String(),
+				ParameterName: "'bNum'",
 			}
 	}
 
@@ -2456,11 +2417,9 @@ func (bIntNumProton *bigIntNumProton) bigIntNumGetPrecisionUint(
 	if bNum == nil {
 
 		return 0,
-			&ReturnBasicError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "",
-				ErrContext: "",
-				ErrMessage: "FATAL ERROR: Input parameter 'bNum' is a nil pointer.",
+			&InputPtrNilError{
+				ErrPrefix:     ePrefix.String(),
+				ParameterName: "'bNum'",
 			}
 	}
 
@@ -2515,11 +2474,9 @@ func (bIntNumProton *bigIntNumProton) bigIntNumGetScaleFactor(
 	if bNum == nil {
 
 		return big.NewInt(0),
-			&ReturnBasicError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "",
-				ErrContext: "",
-				ErrMessage: "FATAL ERROR: Input parameter 'bNum' is a nil pointer.",
+			&InputPtrNilError{
+				ErrPrefix:     ePrefix.String(),
+				ParameterName: "'bNum'",
 			}
 	}
 
@@ -2564,11 +2521,9 @@ func (bIntNumProton *bigIntNumProton) bigIntNumGetSign(
 	if bNum == nil {
 
 		return 0,
-			&ReturnBasicError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "",
-				ErrContext: "",
-				ErrMessage: "FATAL ERROR: Input parameter 'bNum' is a nil pointer.",
+			&InputPtrNilError{
+				ErrPrefix:     ePrefix.String(),
+				ParameterName: "'bNum'",
 			}
 	}
 
@@ -2614,9 +2569,9 @@ func (bIntNumProton *bigIntNumProton) bigIntNumGetSignedBigInt(
 	if bNum == nil {
 
 		return big.NewInt(0),
-			&ReturnBasicError{
-				ErrPrefix:  ePrefix.String(),
-				ErrMessage: "FATAL ERROR: Input parameter 'bNum' is a nil pointer.",
+			&InputPtrNilError{
+				ErrPrefix:     ePrefix.String(),
+				ParameterName: "'bNum'",
 			}
 	}
 
@@ -2684,11 +2639,9 @@ func (bIntNumProton *bigIntNumProton) bigIntNumGetSciNotationNumber(
 	if bNum == nil {
 
 		return SciNotationNum{},
-			&ReturnBasicError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "",
-				ErrContext: "",
-				ErrMessage: "FATAL ERROR: Input parameter 'bNum' is a nil pointer.",
+			&InputPtrNilError{
+				ErrPrefix:     ePrefix.String(),
+				ParameterName: "'bNum'",
 			}
 	}
 
@@ -2732,7 +2685,7 @@ func (bIntNumProton *bigIntNumProton) bigIntNumGetSciNotationNumber(
 		if err != nil {
 
 			return SciNotationNum{},
-				&ReturnBasicError{
+				&FuncReturnError{
 					ErrPrefix:  ePrefix.String(),
 					ReturnFunc: "sciNotationNum.SetBigIntNumElements(bNum2, bNumZero)",
 					ErrMessage: err.Error(),
@@ -2769,7 +2722,7 @@ func (bIntNumProton *bigIntNumProton) bigIntNumGetSciNotationNumber(
 		if err != nil {
 
 			return SciNotationNum{},
-				&ReturnBasicError{
+				&FuncReturnError{
 					ErrPrefix: ePrefix.String(),
 					ReturnFunc: "  magnitudeBigInt, err := BigIntMath{}.GetMagnitude(\n" +
 						"    bINumIntPart.bigInt)",
@@ -2780,7 +2733,7 @@ func (bIntNumProton *bigIntNumProton) bigIntNumGetSciNotationNumber(
 		if magnitudeBigInt.Cmp(bigIntMaxUint32) == 1 {
 
 			return SciNotationNum{},
-				&ReturnBasicError{
+				&FuncReturnError{
 					ErrPrefix:  ePrefix.String(),
 					ErrContext: "if magnitudeBigInt.Cmp(bigIntMaxUint32) == 1",
 					ErrMessage: "Integer Magnitude greater than Max Uint32!",
@@ -2817,7 +2770,7 @@ func (bIntNumProton *bigIntNumProton) bigIntNumGetSciNotationNumber(
 
 		if err != nil {
 			return SciNotationNum{},
-				&ReturnBasicError{
+				&FuncReturnError{
 					ErrPrefix: ePrefix.String(),
 					ReturnFunc: "  magnitudeBigInt, err := BigIntMath{}.\n" +
 						"    GetMagnitude(bNum.bigInt)",
@@ -2828,7 +2781,7 @@ func (bIntNumProton *bigIntNumProton) bigIntNumGetSciNotationNumber(
 		if magnitudeBigInt.Cmp(bigIntMaxUint32) == 1 {
 
 			return SciNotationNum{},
-				&ReturnBasicError{
+				&FuncReturnError{
 					ErrPrefix:  ePrefix.String(),
 					ErrContext: "if magnitudeBigInt.Cmp(bigIntMaxUint32) == 1",
 					ErrMessage: "Fractional Magnitude greater than Max Uint32!",
@@ -2860,7 +2813,7 @@ func (bIntNumProton *bigIntNumProton) bigIntNumGetSciNotationNumber(
 		if err != nil {
 
 			return SciNotationNum{},
-				&ReturnBasicError{
+				&FuncReturnError{
 					ErrPrefix: ePrefix.String(),
 					ReturnFunc: "  err = sciNotationNum.SetBigIntNumElements(\n" +
 						"    bINumFracPart, bINumScale)",
@@ -2923,11 +2876,9 @@ func (bIntNumProton *bigIntNumProton) bigIntNumGetUInt(
 	if bNum == nil {
 
 		return 0,
-			&ReturnBasicError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "",
-				ErrContext: "",
-				ErrMessage: "FATAL ERROR: Input parameter 'bNum' is a nil pointer.",
+			&InputPtrNilError{
+				ErrPrefix:     ePrefix.String(),
+				ParameterName: "'bNum'",
 			}
 	}
 
@@ -2936,7 +2887,7 @@ func (bIntNumProton *bigIntNumProton) bigIntNumGetUInt(
 	if bNum.bigInt.Cmp(big.NewInt(0)) == -1 {
 
 		return uint(0),
-			&ReturnBasicError{
+			&FuncReturnError{
 				ErrPrefix:  ePrefix.String(),
 				ReturnFunc: "",
 				ErrContext: "if bNum.bigInt.Cmp(big.NewInt(0)) == -1",
@@ -2947,7 +2898,7 @@ func (bIntNumProton *bigIntNumProton) bigIntNumGetUInt(
 	if bNum.bigInt.Cmp(bIMaxUint) == 1 {
 
 		return math.MaxUint32,
-			&ReturnBasicError{
+			&FuncReturnError{
 				ErrPrefix:  ePrefix.String(),
 				ReturnFunc: "",
 				ErrContext: "if bNum.bigInt.Cmp(bIMaxUint) == 1",
@@ -3002,11 +2953,9 @@ func (bIntNumProton *bigIntNumProton) bigIntNumGetUInt64(
 	if bNum == nil {
 
 		return 0,
-			&ReturnBasicError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "",
-				ErrContext: "",
-				ErrMessage: "FATAL ERROR: Input parameter 'bNum' is a nil pointer.",
+			&InputPtrNilError{
+				ErrPrefix:     ePrefix.String(),
+				ParameterName: "'bNum'",
 			}
 	}
 
@@ -3015,7 +2964,7 @@ func (bIntNumProton *bigIntNumProton) bigIntNumGetUInt64(
 
 	if bNum.bigInt.Cmp(bIntMaxUint64) == 1 {
 		return uint64(0),
-			&ReturnBasicError{
+			&FuncReturnError{
 				ErrPrefix:  ePrefix.String(),
 				ReturnFunc: "",
 				ErrContext: "if bNum.bigInt.Cmp(bIntMaxUint64) == 1",
@@ -3071,11 +3020,9 @@ func (bIntNumProton *bigIntNumProton) decimalGetDecimal(
 	if bNum == nil {
 
 		return Decimal{},
-			&ReturnBasicError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "",
-				ErrContext: "",
-				ErrMessage: "FATAL ERROR: Input parameter 'bNum' is a nil pointer.",
+			&InputPtrNilError{
+				ErrPrefix:     ePrefix.String(),
+				ParameterName: "'bNum'",
 			}
 	}
 
@@ -3085,7 +3032,7 @@ func (bIntNumProton *bigIntNumProton) decimalGetDecimal(
 	if err != nil {
 
 		return Decimal{},
-			&ReturnBasicError{
+			&FuncReturnError{
 				ErrPrefix: ePrefix.String(),
 				ReturnFunc: " dec, err := new(Decimal).NewBigInt(\n" +
 					"  big.NewInt(0).Set(bNum.bigInt), bNum.precision)",
@@ -3102,7 +3049,7 @@ func (bIntNumProton *bigIntNumProton) decimalGetDecimal(
 	if err != nil {
 
 		return Decimal{},
-			&ReturnBasicError{
+			&FuncReturnError{
 				ErrPrefix: ePrefix.String(),
 				ReturnFunc: " numSeps, err := new(bigIntNumAtom).\n" +
 					"  getNumericSeparatorsDto(bNum, ePrefix)",
@@ -3117,7 +3064,7 @@ func (bIntNumProton *bigIntNumProton) decimalGetDecimal(
 	if err != nil {
 
 		return Decimal{},
-			&ReturnBasicError{
+			&FuncReturnError{
 				ErrPrefix: ePrefix.String(),
 				ReturnFunc: "dec, err := new(Decimal).NewBigInt(\n" +
 					"  big.NewInt(0).Set(bNum.bigInt), bNum.precision)",
@@ -3132,7 +3079,7 @@ func (bIntNumProton *bigIntNumProton) decimalGetDecimal(
 	if err != nil {
 
 		return Decimal{},
-			&ReturnBasicError{
+			&FuncReturnError{
 				ErrPrefix:  ePrefix.String(),
 				ReturnFunc: "err = dec.IsValid(ePrefix + \"dec INVALID!\")",
 				ErrContext: "",
