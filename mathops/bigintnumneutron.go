@@ -302,13 +302,7 @@ func (bNumNeutron *bigIntNumNeutron) incrementBigIntNum(
 
 	if err != nil {
 
-		return fmt.Errorf("%v\n"+
-			"Error returned by: \n"+
-			" err = new(bigIntNumUtility).\n"+
-			"  .bigIntNumCopyIn(bNum, &result, ePrefix)\n"+
-			"Error= %v\n",
-			ePrefix,
-			err.Error())
+		return err
 	}
 
 	return nil
@@ -384,11 +378,9 @@ func (bNumNeutron *bigIntNumNeutron) modBigIntNum(
 	if divisor == nil {
 
 		return modulo,
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "",
-				ErrContext: "",
-				ErrMessage: "FATAL ERROR: Input parameter 'divisor' is a nil pointer.",
+			&InputPtrNilError{
+				ErrPrefix:     ePrefix.String(),
+				ParameterName: "'divisor'",
 			}
 	}
 
@@ -464,7 +456,7 @@ func (bNumNeutron *bigIntNumNeutron) multiplyBigIntNum(
 	ePrefix,
 		err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
 		errPrefDto,
-		"bigIntNumNeutron.modBigIntNum",
+		"bigIntNumNeutron.multiplyBigIntNum",
 		"")
 
 	if err != nil {
@@ -486,11 +478,9 @@ func (bNumNeutron *bigIntNumNeutron) multiplyBigIntNum(
 	if multiplicand == nil {
 
 		return product,
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "",
-				ErrContext: "",
-				ErrMessage: "FATAL ERROR: Input parameter 'multiplicand' is a nil pointer.",
+			&InputPtrNilError{
+				ErrPrefix:     ePrefix.String(),
+				ParameterName: "'multiplicand'",
 			}
 	}
 
@@ -526,4 +516,265 @@ func (bNumNeutron *bigIntNumNeutron) multiplyBigIntNum(
 	}
 
 	return product, err
+}
+
+// multiplyByFiveBigIntNum
+//
+// Multiplies the numerical value of the current BigIntNum instance
+// times five (5). The product is returned as a BigIntNum.
+//
+//	product = bNum X 5
+//
+// The BigIntNum instance returned by this method will contain numeric
+// separators (decimal separator, thousands separator and currency
+// symbol) copied from the original BigIntNum instance.
+//
+//	NOTE:
+//
+// This method does NOT test the validity of 'bNum', an
+// instance of type BigIntNum. The calling method must
+// do this!
+func (bNumNeutron *bigIntNumNeutron) multiplyByFiveBigIntNum(
+	bNum *BigIntNum,
+	errPrefDto *ePref.ErrPrefixDto) (BigIntNum, error) {
+
+	if bNumNeutron.lock == nil {
+		bNumNeutron.lock = new(sync.Mutex)
+	}
+
+	bNumNeutron.lock.Lock()
+
+	defer bNumNeutron.lock.Unlock()
+
+	var ePrefix *ePref.ErrPrefixDto
+
+	var err error
+
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
+		errPrefDto,
+		"bigIntNumNeutron.multiplyByFiveBigIntNum",
+		"")
+
+	if err != nil {
+		return BigIntNum{}, err
+	}
+
+	if bNum == nil {
+
+		return BigIntNum{},
+			&InputPtrNilError{
+				ErrPrefix:     ePrefix.String(),
+				ParameterName: "'bNum'",
+			}
+
+	}
+
+	bNum2, err := new(bigIntNumUtility).bigIntNumCopyOut(
+		bNum,
+		ePrefix)
+
+	if err != nil {
+
+		return BigIntNum{}, err
+	}
+
+	mulResult, err := new(BigIntMathMultiply).MultiplyBigIntNumByFive(bNum2)
+
+	if err != nil {
+
+		return BigIntNum{}, &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "mulResult, err := new(BigIntMathMultiply).MultiplyBigIntNumByFive(bNum2)",
+			ErrContext: "",
+			ErrMessage: err.Error(),
+		}
+	}
+
+	return mulResult, nil
+}
+
+// multiplyByTenBigIntNum
+//
+// Multiplies the numerical value of the BigIntNum instance
+// passed as input parameter 'bNum' by ten (10). The product
+// is returned as a BigIntNum.
+//
+//	product = bNum X 10
+//
+// The BigIntNum instance returned by this method will contain numeric
+// separators (decimal separator, thousands separator and currency
+// symbol) copied from the original BigIntNum instance.
+//
+//	NOTE:
+//
+// This method does NOT test the validity of 'bNum', an
+// instance of type BigIntNum. The calling method must
+// do this!
+func (bNumNeutron *bigIntNumNeutron) multiplyByTenBigIntNum(
+	bNum *BigIntNum,
+	errPrefDto *ePref.ErrPrefixDto) (BigIntNum, error) {
+
+	if bNumNeutron.lock == nil {
+		bNumNeutron.lock = new(sync.Mutex)
+	}
+
+	bNumNeutron.lock.Lock()
+
+	defer bNumNeutron.lock.Unlock()
+
+	var ePrefix *ePref.ErrPrefixDto
+
+	var err error
+
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
+		errPrefDto,
+		"bigIntNumNeutron.multiplyByTenBigIntNum",
+		"")
+
+	if err != nil {
+		return BigIntNum{}, err
+	}
+
+	if bNum == nil {
+
+		return BigIntNum{},
+			&InputPtrNilError{
+				ErrPrefix:     ePrefix.String(),
+				ParameterName: "'bNum'",
+			}
+	}
+
+	bNum2, err := new(bigIntNumUtility).bigIntNumCopyOut(
+		bNum,
+		ePrefix)
+
+	if err != nil {
+
+		return BigIntNum{}, err
+	}
+
+	mulResult, err := new(BigIntMathMultiply).MultiplyBigIntNumByTen(bNum2)
+
+	if err != nil {
+
+		return BigIntNum{}, &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "mulResult, err := new(BigIntMathMultiply).MultiplyBigIntNumByFive(bNum2)",
+			ErrContext: "",
+			ErrMessage: err.Error(),
+		}
+	}
+
+	return mulResult, nil
+}
+
+// multiplyByTenToPowerBigIntNum
+//
+// Multiplies the numerical value of the current BigIntNum/ instance times
+// ten to the power of 'exponent' (10^exponent). The product is returned
+// as the new value for the current BigIntNum. The original value of the
+// BigIntNum instance will be overwritten and destroyed.
+//
+//	bNum = bNum X 10^exponent
+//
+// The BigIntNum instance generated by this method will contain numeric
+// separators (decimal separator, thousands separator and currency symbol)
+// copied from the original BigIntNum instance.
+//
+//	NOTE:
+//
+// This method does NOT test the validity of 'bNum', an
+// instance of type BigIntNum. The calling method must
+// do this!
+func (bNumNeutron *bigIntNumNeutron) multiplyByTenToPowerBigIntNum(
+	bNum *BigIntNum,
+	exponent uint,
+	errPrefDto *ePref.ErrPrefixDto) error {
+
+	if bNumNeutron.lock == nil {
+		bNumNeutron.lock = new(sync.Mutex)
+	}
+
+	bNumNeutron.lock.Lock()
+
+	defer bNumNeutron.lock.Unlock()
+
+	var ePrefix *ePref.ErrPrefixDto
+
+	var err error
+
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
+		errPrefDto,
+		"bigIntNumNeutron.multiplyByTenToPowerBigIntNum",
+		"")
+
+	if err != nil {
+		return err
+	}
+
+	if bNum == nil {
+
+		return &InputPtrNilError{
+			ErrPrefix:     ePrefix.String(),
+			ParameterName: "'bNum'",
+		}
+	}
+
+	if bNum.precision >= exponent {
+
+		netPrecision := bNum.precision - exponent
+
+		bInt3, err := new(bigIntNumMechanics).newBigInt(
+			bNum.bigInt, netPrecision, ePrefix)
+
+		if err != nil {
+
+			return err
+		}
+
+		err = new(bigIntNumUtility).bigIntNumCopyIn(
+			bNum,
+			&bInt3,
+			ePrefix)
+
+		if err != nil {
+
+			return err
+		}
+
+	} else {
+		// exponent > bNum.precision
+
+		netPrecision := int64(exponent - bNum.precision)
+
+		scaleVal :=
+			big.NewInt(0).Exp(big.NewInt(10), big.NewInt(netPrecision), nil)
+
+		newVal := big.NewInt(0).Mul(bNum.bigInt, scaleVal)
+
+		bInt4, err := new(bigIntNumMechanics).newBigInt(
+			newVal, 0, ePrefix)
+
+		if err != nil {
+
+			return err
+
+		}
+
+		err = new(bigIntNumUtility).bigIntNumCopyIn(
+			bNum,
+			&bInt4,
+			ePrefix)
+
+		if err != nil {
+
+			return err
+		}
+
+	}
+
+	return nil
 }

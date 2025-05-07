@@ -67,28 +67,48 @@ func (bPair *BigIntPair) Empty() {
 
 // GetBig1BigInt Returns the *big.Int value of data field
 // bPair.Big1
-func (bPair *BigIntPair) GetBig1BigInt() *big.Int {
+func (bPair *BigIntPair) GetBig1BigInt() (*big.Int, error) {
+
+	ePrefix := "BigIntPair.GetBig1BigInt"
 
 	b1, err := bPair.Big1.GetBigInt()
 
 	if err != nil {
-		return big.NewInt(0)
+
+		return big.NewInt(0),
+			&FuncReturnError{
+				ErrPrefix:  ePrefix,
+				ReturnFunc: "b1, err := bPair.Big1.GetBigInt()",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+
 	}
 
-	return b1
+	return b1, nil
 }
 
 // GetBig2BigInt Returns the *big.Int value of data field
 // bPair.Big1
-func (bPair *BigIntPair) GetBig2BigInt() *big.Int {
+func (bPair *BigIntPair) GetBig2BigInt() (*big.Int, error) {
+
+	ePrefix := "BigIntPair.GetBig2BigInt"
 
 	b2, err := bPair.Big2.GetBigInt()
 
 	if err != nil {
-		return big.NewInt(0)
+
+		return big.NewInt(0),
+			&FuncReturnError{
+				ErrPrefix:  ePrefix,
+				ReturnFunc: "b2, err := bPair.Big2.GetBigInt()",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+
 	}
 
-	return b2
+	return b2, nil
 }
 
 // MakePrecisionsEqual - Analyzes the two component BigIntNum's, b1 and b2,

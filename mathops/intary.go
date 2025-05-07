@@ -2038,19 +2038,19 @@ func (ia *IntAry) GetMagnitudeDigits() int {
 // GetNumericSeparatorsDto - Returns a structure containing the
 // character or rune values for decimal point separator, thousands
 // separator and currency symbol.
-func (ia *IntAry) GetNumericSeparatorsDto() NumericSeparatorDto {
+func (ia *IntAry) GetNumericSeparatorsDto() (NumericSeparatorDto, error) {
 
 	numSeps := NumericSeparatorDto{}
 	numSeps.DecimalSeparator = ia.GetDecimalSeparator()
 	numSeps.ThousandsSeparator = ia.GetThousandsSeparator()
 	numSeps.CurrencySymbol = ia.GetCurrencySymbol()
 
-	return numSeps
+	return numSeps, nil
 }
 
 // GetNumStr - returns the current value
 // of this intAry object as a number string.
-func (ia *IntAry) GetNumStr() string {
+func (ia *IntAry) GetNumStr() (string, error) {
 
 	if ia.decimalSeparator == 0 {
 		ia.decimalSeparator = '.'
@@ -2080,7 +2080,7 @@ func (ia *IntAry) GetNumStr() string {
 
 	}
 
-	return buffer.String()
+	return buffer.String(), nil
 	// ia.ConvertIntAryToNumStr()
 	// return ia.numStrDto
 }
@@ -2192,8 +2192,8 @@ func (ia *IntAry) GetPrecision() int {
 //
 //	Number String				precision				Fractional Number
 //		123456								3								123.456
-func (ia *IntAry) GetPrecisionUint() uint {
-	return uint(ia.precision)
+func (ia *IntAry) GetPrecisionUint() (uint, error) {
+	return uint(ia.precision), nil
 }
 
 // GetRuneArray - Returns all the elements of the current
@@ -2503,7 +2503,7 @@ func (ia *IntAry) GetSciNotationStr(mantissaLen uint) (string, error) {
 //
 // The sign value returned by this method should
 // always be one of two values: +1 or -1 .
-func (ia *IntAry) GetSign() int {
+func (ia *IntAry) GetSign() (int, error) {
 	return ia.signVal
 }
 
@@ -2803,17 +2803,17 @@ func (ia *IntAry) IsOne() bool {
 // Even Number Definition:
 //
 //	https://www.mathsisfun.com/definitions/even-number.html
-func (ia *IntAry) IsZero() bool {
+func (ia *IntAry) IsZero() (bool, error) {
 
 	err := new(intAryElectron).isValidIntAry(
 		ia,
 		"IntAry.IsZero()")
 
 	if err != nil {
-		return true
+		return false, err
 	}
 
-	return ia.isZeroValue
+	return ia.isZeroValue, nil
 
 }
 
@@ -6426,7 +6426,7 @@ func (ia *IntAry) SetNumericSeparators(
 //
 // Effectively, this method ensures that numeric separators
 // are set to valid values.
-func (ia *IntAry) SetNumericSeparatorsToDefaultIfEmpty() {
+func (ia *IntAry) SetNumericSeparatorsToDefaultIfEmpty() error {
 
 	if ia.decimalSeparator == 0 {
 		ia.decimalSeparator = '.'
@@ -6440,6 +6440,7 @@ func (ia *IntAry) SetNumericSeparatorsToDefaultIfEmpty() {
 		ia.currencySymbol = '$'
 	}
 
+	return nil
 }
 
 // SetNumericSeparatorsToUSADefault - Sets Numeric separators:

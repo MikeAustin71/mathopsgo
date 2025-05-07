@@ -696,7 +696,7 @@ func (bMultiply *BigIntMathMultiply) MultiplyBigIntNums(
 	if err != nil {
 
 		return BigIntNum{},
-			&ReturnBasicError{
+			&FuncReturnError{
 				ErrPrefix:  ePrefix,
 				ReturnFunc: "bPair, err := new(BigIntPair).NewBigIntNum(multiplier, multiplicand)",
 				ErrContext: "",
@@ -709,7 +709,7 @@ func (bMultiply *BigIntMathMultiply) MultiplyBigIntNums(
 	if err != nil {
 
 		return BigIntNum{},
-			&ReturnBasicError{
+			&FuncReturnError{
 				ErrPrefix:  ePrefix,
 				ReturnFunc: "finalResult, err := bMultiply.MultiplyPair(bPair)",
 				ErrContext: "",
@@ -994,11 +994,51 @@ func (bMultiply *BigIntMathMultiply) MultiplyBigIntNumByThree(base BigIntNum) Bi
 // This returned BigIntNum 'product' will contain numeric separators (decimal
 // separator, thousands separator and currency symbol) copied from input
 // parameter,'base'.
-func (bMultiply *BigIntMathMultiply) MultiplyBigIntNumByFive(base BigIntNum) BigIntNum {
+func (bMultiply *BigIntMathMultiply) MultiplyBigIntNumByFive(base BigIntNum) (BigIntNum, error) {
 
-	bPair := BigIntPair{}.NewBigIntNum(base, BigIntNum{}.NewFive(0))
+	ePrefix := "BigIntMathMultiply.MultiplyBigIntNumByFive()"
 
-	return bMultiply.MultiplyPair(bPair)
+	newFiveBigInt, err := new(BigIntNum).NewFive(0)
+
+	if err != nil {
+
+		return BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix,
+				ReturnFunc: "newFiveBigInt, err := new(BigIntNum).NewFive(0)",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
+
+	bPair, err := new(BigIntPair).NewBigIntNum(base, newFiveBigInt)
+
+	if err != nil {
+
+		return BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix,
+				ReturnFunc: "bPair, err := new(BigIntPair).NewBigIntNum(base, newFiveBigInt)",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
+
+	mulResult, err := bMultiply.MultiplyPair(bPair)
+
+	if err != nil {
+
+		return BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix,
+				ReturnFunc: "mulResult, err := bMultiply.MultiplyPair(bPair)",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+
+	}
+
+	return mulResult, nil
 }
 
 // MultiplyBigIntNumByTen - Receives a BigIntNum input parameter 'base' and then
@@ -1010,11 +1050,46 @@ func (bMultiply *BigIntMathMultiply) MultiplyBigIntNumByFive(base BigIntNum) Big
 // This returned BigIntNum 'product' will contain numeric separators (decimal
 // separator, thousands separator and currency symbol) copied from input
 // parameter,'base'.
-func (bMultiply *BigIntMathMultiply) MultiplyBigIntNumByTen(base BigIntNum) BigIntNum {
+func (bMultiply *BigIntMathMultiply) MultiplyBigIntNumByTen(base BigIntNum) (BigIntNum, error) {
 
-	bPair := BigIntPair{}.NewBigIntNum(base, BigIntNum{}.NewTen(0))
+	ePrefix := "BigIntMathMultiply.MultiplyBigIntNumByTen()"
 
-	return bMultiply.MultiplyPair(bPair)
+	tenBigInt, err := new(BigIntNum).NewTen(0)
+
+	if err != nil {
+		return BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix,
+				ReturnFunc: "tenBigInt, err := new(BigIntNum).NewTen(0)",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
+
+	bPair, err := new(BigIntPair).NewBigIntNum(base, tenBigInt)
+
+	if err != nil {
+		return BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix: ePrefix,
+				ReturnFunc: "bPair, err := new(BigIntPair).NewBigIntNum(\n" +
+					"    base, tenBigInt)",
+				ErrMessage: err.Error(),
+			}
+	}
+
+	mulResult, err := bMultiply.MultiplyPair(bPair)
+
+	if err != nil {
+		return BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix,
+				ReturnFunc: "mulResult, err := bMultiply.MultiplyPair(bPair)",
+				ErrMessage: err.Error(),
+			}
+	}
+
+	return mulResult, nil
 }
 
 // MultiplyBigIntNumByTenToPower - Receives two BigIntNum input parameters, 'base'
@@ -2341,7 +2416,7 @@ func (bMultiply *BigIntMathMultiply) MultiplyPair(bPair BigIntPair) (BigIntNum, 
 
 	if err != nil {
 		return BigIntNum{},
-			&ReturnBasicError{
+			&FuncReturnError{
 				ErrPrefix:  ePrefix,
 				ReturnFunc: "numSeps, err := bPair.Big1.GetNumericSeparatorsDto()",
 				ErrContext: "",
@@ -2376,7 +2451,7 @@ func (bMultiply *BigIntMathMultiply) multiplyPairNoNumSeps(bPair BigIntPair) (Bi
 
 	if err != nil {
 		return BigIntNum{},
-			&ReturnBasicError{
+			&FuncReturnError{
 				ErrPrefix:  ePrefix,
 				ReturnFunc: "big1Precision, err := bPair.Big1.GetPrecisionUint()",
 				ErrContext: "",
@@ -2389,7 +2464,7 @@ func (bMultiply *BigIntMathMultiply) multiplyPairNoNumSeps(bPair BigIntPair) (Bi
 
 	if err != nil {
 		return BigIntNum{},
-			&ReturnBasicError{
+			&FuncReturnError{
 				ErrPrefix:  ePrefix,
 				ReturnFunc: "big2Precision, err := bPair.Big2.GetPrecisionUint()",
 				ErrContext: "",
@@ -2405,7 +2480,7 @@ func (bMultiply *BigIntMathMultiply) multiplyPairNoNumSeps(bPair BigIntPair) (Bi
 	if err != nil {
 
 		return BigIntNum{},
-			&ReturnBasicError{
+			&FuncReturnError{
 				ErrPrefix: ePrefix,
 				ReturnFunc: "bResult, err := new(BigIntNum).NewBigInt(\n" +
 					"    b3, big1Precision+big2Precision)",
@@ -2419,7 +2494,7 @@ func (bMultiply *BigIntMathMultiply) multiplyPairNoNumSeps(bPair BigIntPair) (Bi
 	if err != nil {
 
 		return BigIntNum{},
-			&ReturnBasicError{
+			&FuncReturnError{
 				ErrPrefix:  ePrefix,
 				ReturnFunc: "err = bResult.TrimTrailingFracZeros()",
 				ErrMessage: err.Error(),
