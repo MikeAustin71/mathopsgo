@@ -31,6 +31,8 @@ type Decimal struct {
 	bigINum BigIntNum
 }
 
+var _ INumMgr = (*Decimal)(nil)
+
 // Add - Adds the value of the current Decimal to that of
 // the incoming Decimal and returns in the result in a
 // Decimal Type.
@@ -1418,9 +1420,22 @@ func (dec *Decimal) GetPrecision() int {
 //
 //	Number String				precision				Fractional Number
 //		123456								3								123.456
-func (dec *Decimal) GetPrecisionUint() uint {
+func (dec *Decimal) GetPrecisionUint() (uint, error) {
 
-	return uint(dec.bigINum.GetPrecision())
+	ePrefix := "Decimal.GetPrecisionUint()"
+
+	precisionUint, err := dec.bigINum.GetPrecisionUint()
+
+	if err != nil {
+		return 0, &FuncReturnError{
+			ErrPrefix:  ePrefix,
+			ReturnFunc: "precisionUint, err := dec.bigINum.GetPrecisionUint()",
+			ErrContext: "",
+			ErrMessage: err.Error(),
+		}
+	}
+
+	return precisionUint, nil
 }
 
 // GetRational - returns a big Rational number type which
@@ -1452,9 +1467,19 @@ func (dec *Decimal) GetRational() (*big.Rat, error) {
 
 	rDividend := big.NewRat(1, 1).SetInt(decSignedAllDigitsBigInt)
 
-	decScaleFactor := dec.bigINum.GetScaleFactor()
+	decScaleFactor, err := dec.bigINum.GetScaleFactor()
+
+	if err != nil {
+		return 0, &FuncReturnError{
+			ErrPrefix:  ePrefix,
+			ReturnFunc: "decScaleFactor, err := dec.bigINum.GetScaleFactor()",
+			ErrContext: "",
+			ErrMessage: err.Error(),
+		}
+	}
 
 	rDivisor := big.NewRat(1, 1).SetInt(decScaleFactor)
+
 	rQuotient := big.NewRat(1, 1).Quo(rDividend, rDivisor)
 
 	return rQuotient, nil
@@ -1463,9 +1488,22 @@ func (dec *Decimal) GetRational() (*big.Rat, error) {
 // GetSign - Returns the sign of the current
 // Decimal Value. Return values are one of two
 // integers: +1 or -1.
-func (dec *Decimal) GetSign() int {
+func (dec *Decimal) GetSign() (int, error) {
 
-	return dec.bigINum.GetSign()
+	ePrefix := "Decimal.GetSign()"
+
+	sign, err := dec.bigINum.GetSign()
+
+	if err != nil {
+		return 0, &FuncReturnError{
+			ErrPrefix:  ePrefix,
+			ReturnFunc: "sign, err := dec.bigINum.GetSign()",
+			ErrContext: "",
+			ErrMessage: err.Error(),
+		}
+	}
+
+	return sign, nil
 }
 
 // GetRelevantPrecision - Returns an unsigned integer representing
