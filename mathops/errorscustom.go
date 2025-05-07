@@ -16,7 +16,7 @@ type FuncReturnError struct {
 // The following format is used to intialize
 // this type of error:
 //
-// EXAMPLE:
+// EXAMPLE #1:
 //
 //	if err != nil {
 //
@@ -28,6 +28,18 @@ type FuncReturnError struct {
 //				ErrContext: "",
 //				ErrMessage:   err.Error(),
 //			}
+//	}
+//
+//
+//	EXAMPLE #2:
+//
+//	return Decimal{},
+//	&FuncReturnError{
+//		ErrPrefix: ePrefix.String(),
+//		ReturnFunc: "dec, err := new(Decimal).NewBigInt(\n" +
+//		"    big.NewInt(0).Set(bNum.bigInt), bNum.precision)",
+//		ErrContext: "",
+//		ErrMessage: err.Error(),
 //	}
 //
 //	NOTE:
