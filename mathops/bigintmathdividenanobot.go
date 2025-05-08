@@ -75,20 +75,34 @@ func (bIMathDivideNano *bigIntMathDivideNanobot) pairFracQuotientNoNumSeps(
 
 	defer bIMathDivideNano.lock.Unlock()
 
-	ePrefix := "bigIntMathDivideNanobot.pairFracQuotientNoNumSeps() "
+	ePrefix := "bigIntMathDivideNanobot.pairFracQuotientNoNumSeps()"
 
-	fracQuotient = BigIntNum{}.New()
+	fracQuotient = new(BigIntNum).New()
 
 	if bPair.Big2.bigInt.Cmp(big.NewInt(0)) == 0 {
 
-		err = fmt.Errorf("%v\n"+
-			"Attempted Divide by ZERO!\n"+
-			"'bPair.Big2' has a ZERO value.\n", ePrefix)
-
-		return fracQuotient, err
+		return BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix,
+				ReturnFunc: "",
+				ErrContext: "if bPair.Big2.bigInt.Cmp(big.NewInt(0)) == 0 {",
+				ErrMessage: "Attempted Divide by ZERO!\n" +
+					"'bPair.Big2' has a ZERO value.",
+			}
 	}
 
-	bPair.MakePrecisionsEqual()
+	err = bPair.MakePrecisionsEqual()
+
+	if err != nil {
+
+		return BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix,
+				ReturnFunc: "err = bPair.MakePrecisionsEqual()",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
 
 	rDividend := big.NewRat(1, 1).SetInt(bPair.Big1.bigInt)
 
@@ -98,31 +112,47 @@ func (bIMathDivideNano *bigIntMathDivideNanobot) pairFracQuotientNoNumSeps(
 
 	numStr := rQuotient.FloatString(int(bPair.MaxPrecision))
 
-	fracQuotient, errx :=
-		BigIntNum{}.NewNumStr(numStr)
+	fracQuotient, err =
+		new(BigIntNum).NewNumStr(numStr)
 
-	if errx != nil {
+	if err != nil {
 
-		fracQuotient = BigIntNum{}.New()
-
-		err = fmt.Errorf("%v\n"+
-			"Error returned by BigIntNum{}.NewNumStr(numStr).\n"+
-			"numStr='%v'\nmaxPrecision='%v'\nError= %v\n",
-			ePrefix,
-			numStr,
-			bPair.MaxPrecision,
-			errx.Error())
-
-		return fracQuotient, err
+		return BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix,
+				ReturnFunc: "fracQuotient, err = new(BigIntNum).NewNumStr(numStr)",
+				ErrContext: fmt.Sprintf("numStr= '%v'", numStr),
+				ErrMessage: err.Error(),
+			}
 	}
 
-	fracQuotient.TrimTrailingFracZeros()
+	err = fracQuotient.TrimTrailingFracZeros()
 
-	fracQuotient.SetNumericSeparatorsToDefaultIfEmpty()
+	if err != nil {
 
-	err = nil
+		return BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix,
+				ReturnFunc: "err = fracQuotient.TrimTrailingFracZeros()",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
 
-	return fracQuotient, err
+	err = fracQuotient.SetNumericSeparatorsToDefaultIfEmpty()
+
+	if err != nil {
+
+		return BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix,
+				ReturnFunc: "err = fracQuotient.TrimTrailingFracZeros()",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
+
+	return fracQuotient, nil
 }
 
 // pairIntQuotientNoNumSeps - Performs integer division on two BigIntNum types passed as

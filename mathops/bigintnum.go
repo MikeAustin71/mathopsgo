@@ -2868,221 +2868,186 @@ func (bNum *BigIntNum) NewBigInt(
 }
 
 // NewBigIntPrecision
+//
 // Creates a new BigIntNum instance using a *big.Int type and its
-// associated precision.
+// associated precision (also of type *big.Int).
 //
 // The 'precision' parameter specifies the number of digits to the right
 // of the decimal place. The Numeric value is equal to bigI x 10^(precision x -1).
 // This effectively locates the decimal place by counting from the extreme right
 // of the integer number, 'precision' places to the left. See the example below.
 //
-// Input Parameters
-// bigI 			*big.Int	- 	'bigI' is a type *big.Int and represents the integer
-//
-//	value of the number; that is, the numeric value with
-//	out decimal digits.
-//
-// precision  *big.Int	- This integer value (always a positive value) identifies
-//
-//				the location of the decimal place in the integer value 'bigI'.
-//				The decimal place location is calculated by starting with the
-//				right most digit in the integer number and counting	left,
-//				'precision' places. If precision is greater than the maximum
-//				value of an unsigned integer (+4,294,967,295,	which equals
-//				2^32 − 1), an error will be triggered. Also, if the 'precision'
-//				value is less than zero, an error will be triggered.
-//
-//	Example:
+//	Precision Example:
+//	==================
 //
 //			Integer Value		precision			Numeric Value
 //			  123456					 3					  123.456
 //
-// The new BigIntNum instance returned by this method will contain USA default numeric
-// separators (decimal separator, thousands separator and currency symbol).
+// Input Parameters
+// ================
+//
+// bigI 			*big.Int
+//
+//	'bigI' is a type *big.Int and represents the integer
+//	value of the number; that is, the numeric value without decimal digits.
+//
+// precision  *big.Int
+//
+//	This integer value (always a positive value) identifies
+//	the location of the decimal place in the integer value 'bigI'.
+//	The decimal place location is calculated by starting with the
+//	right most digit in the integer number and counting	left,
+//	'precision' places. If precision is greater than the maximum
+//	value of an unsigned integer (+4,294,967,295,	which equals
+//	2^32 − 1), an error will be triggered. Also, if the 'precision'
+//	value is less than zero, an error will be triggered.
+//
+// Return Parameters
+// =================
+//
+//	BigIntNum - a type BigIntNum numeric value
+//
+//	error			- If not 'nil', this prameter will
+//							transmit any processing errors
+//							encountered.
+//
+//
+//		The new BigIntNum instance returned by this method will contain USA default
+//		numeric separators (decimal separator, thousands separator and currency
+//		symbol). To reconfigure the numeric separators reference method:
+//							BigIntNum.SetNumericSeparators()
 func (bNum *BigIntNum) NewBigIntPrecision(
 	bigInt *big.Int, precision *big.Int) (BigIntNum, error) {
 
-	ePrefix := "BigIntNum.NewBigIntPrecision()"
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-	if bigInt == nil {
-
-		return BigIntNum{},
-			fmt.Errorf("%v\n"+
-				"Error: Input parameter 'bigInt' is a nil pointer!\n",
-				ePrefix)
-
-	}
-
-	if precision == nil {
-
-		return BigIntNum{},
-			fmt.Errorf("%v\n"+
-				"Error: Input parameter 'precision' is a nil pointer!\n",
-				ePrefix)
-
-	}
-
-	if precision.Cmp(big.NewInt(0)) == -1 {
-
-		return BigIntNum{},
-			fmt.Errorf("%v\n"+
-				"Error: Input parameter 'precision' IS LESS THAN ZERO!\n"+
-				"precision='%v'\n",
-				ePrefix,
-				precision.Text(10))
-	}
-
-	maxUint32 := big.NewInt(0).SetUint64(uint64(math.MaxUint32))
-
-	if precision.Cmp(maxUint32) == 1 {
-
-		return BigIntNum{},
-			fmt.Errorf("%v\n"+
-				"Error: Input parameter 'precision' exceeds maximum limit of '%v' !\n"+
-				"precision='%v' ",
-				ePrefix,
-				maxUint32,
-				precision.Text(10))
-	}
-
-	b := new(BigIntNum)
-
-	b.Empty()
-
-	err := new(bigIntNumNanobot).setBigInt(
-		b,
-		bigInt,
-		uint(precision.Uint64()),
-		ePrefix)
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"BigIntNum.NewBigIntPrecision",
+		"")
 
 	if err != nil {
-
 		return BigIntNum{}, err
 	}
 
-	return *b, nil
+	return new(bigIntNumNeutron).newBigIntNumWithPrecision(
+		bigInt, precision, ePrefix)
 }
 
-// NewBigIntExponent - New bigInt Exponent returns a new
-// BigIntNum instance in which the numeric value is
-// set using an integer multiplied by 10 raised to
-// the power of the 'exponent' parameter.
+// NewBigIntExponent
+//
+// New bigInt Exponent returns a new BigIntNum instance
+// in which the numeric value is set using an integer
+// multiplied by 10 raised to the power of the 'exponent'
+// parameter.
 //
 //	numeric value = integer X 10^exponent
 //
-// If exponent is less than +1, precision is set equal to exponent and
-// bigI is unchanged.
+//						OR
 //
-// If exponent is greater than 0, bigI is multiplied by 10 raised to the power
-// of 'exponent' and precision is set equal to zero.
+//	BigIntNum (return value) = bigI X 10^exponent
+//
+// If exponent is less than +1, precision is set equal to
+// exponent and bigI is unchanged.
+//
+// If exponent is greater than 0, bigI is multiplied by 10
+// raised to the power of 'exponent', and precision is set
+// equal to zero.
 //
 // Examples:
 //
 //	biNum :=
-//			BigIntNum{}.NewBigIntExponent(big.NewInt(int64(123456)), -3) = "123.456"  precision = 3
+//			new(BigIntNum).
+//				NewBigIntExponent(big.NewInt(int64(123456)), -3) =
+//								"123.456"  precision = 3
 //
 //	biNum :=
 //			BigIntNum{}.NewBigIntExponent(big.NewInt(int64(123456)), 3) = "123456.000" precision = 3
 func (bNum *BigIntNum) NewBigIntExponent(
 	bigI *big.Int, exponent int) (BigIntNum, error) {
 
-	ePrefix := "BigIntNum.NewBigIntExponent()"
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-	if bigI == nil {
-
-		return BigIntNum{},
-			fmt.Errorf("%v\n"+
-				"Error: Input parameter 'bigFloat' is a nil pointer!\n",
-				ePrefix)
-	}
-
-	b := new(BigIntNum)
-
-	b.Empty()
-
-	err := b.SetBigIntExponent(bigI, exponent)
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"BigIntNum.NewBigIntPrecision",
+		"")
 
 	if err != nil {
-
-		return BigIntNum{},
-			fmt.Errorf("%v\n"+
-				"Error returned by:\n"+
-				" err := b.SetBigIntExponent(bigI, exponent)\n"+
-				"Error= %v\n",
-				ePrefix,
-				err.Error())
+		return BigIntNum{}, err
 	}
 
-	return *b, nil
+	return new(bigIntNumNeutron).newBigIntExponent(
+		bigI, exponent, ePrefix)
 }
 
-// NewBigFloat - Returns a new BigIntNum instance using a *big.Float floating point
-// input parameter.  The precision of the number is specified by the input
-// parameter, 'decimalPlaces'.
+// NewBigFloat
+//
+// Returns a new BigIntNum instance using a *big.Float floating
+// point input parameter.  The precision of the resulting BigIint
+// numeric value is specified by the input parameter,
+// 'maxPrecision'.
 //
 // Input Parameters
 // ================
 //
-// bigFloat *big.Float	- This *big.Float value will be converted into an instance of
+// bigFloat *big.Float
 //
-//	BigIntNum.
+//	This *big.Float value will be converted into an instance
+//	of BigIntNum.
 //
-// maxPrecision uint  - The maximum precision for the resulting BigIntNum after
+// maxPrecision uint
 //
-//	conversion of input parameter 'f64'. Resulting precision
+//	The maximum precision for the resulting BigIntNum after
+//	conversion of input parameter 'bigFloat'. Resulting precision
 //	will never be greater than 'maxPrecision'; however, actual
 //	precision may be less than 'maxPrecision'.
 func (bNum *BigIntNum) NewBigFloat(
 	bigFloat *big.Float,
 	maxPrecision uint) (BigIntNum, error) {
 
-	ePrefix := "BigIntNumNewFloat64()"
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-	if bigFloat == nil {
-
-		return BigIntNum{},
-			fmt.Errorf("%v\n"+
-				"Error: Input parameter 'bigFloat' is a nil pointer!\n",
-				ePrefix)
-	}
-
-	b, err := new(BigIntNum).NewZero(0)
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"BigIntNum.NewBigFloat",
+		"")
 
 	if err != nil {
-
-		return BigIntNum{},
-			fmt.Errorf("%v\n"+
-				"Error returned by:\n"+
-				" b, err := new(BigIntNum).NewZero(0)\n"+
-				"Error= %v\n",
-				ePrefix,
-				err.Error())
+		return BigIntNum{}, err
 	}
 
-	err = b.SetBigFloat(bigFloat, maxPrecision)
+	err = new(bigIntNumAtom).isBigIntNumValid(
+		bNum,
+		ePrefix.XCpy("Validating 'bNum'"))
 
 	if err != nil {
-
-		return BigIntNum{},
-			fmt.Errorf("%v\n"+
-				"Error returned by:\n"+
-				" err = b.SetBigFloat(bigFloat, maxPrecision)\n"+
-				"bigFloat= %v\n"+
-				"maxPrecision \n"+
-				"Error= %v\n",
-				bigFloat.Text('f', 15),
-				maxPrecision,
-				ePrefix,
-				err.Error())
+		return BigIntNum{}, err
 	}
 
-	return b, nil
+	return new(bigIntNumNeutron).newBigFloat(
+		bNum,
+		bigFloat,
+		maxPrecision,
+		ePrefix)
 }
 
-// NewDecimal - Receives a 'Decimal' type as input and returns a BigIntNum.
+// NewDecimal
+//
+// Receives an input parameter 'decNum' of type Decimal and returns a BigIntNum
+// instance configured with the numeric value passed by parameter 'decNum'.
+//
+// Input parameter 'decNum' will be subjected to validation testing. If 'decNum'
+// fails these validation tests, an error will be returned.
 func (bNum *BigIntNum) NewDecimal(decNum Decimal) (BigIntNum, error) {
 
-	ePrefix := "BigIntNum.NewIntAry()"
+	ePrefix := "BigIntNum.NewDecimal()"
 
 	err := decNum.IsValid(ePrefix)
 
@@ -3113,12 +3078,12 @@ func (bNum *BigIntNum) NewDecimal(decNum Decimal) (BigIntNum, error) {
 
 	precision := uint(decNum.GetPrecision())
 
-	b := new(BigIntNum)
+	b := new(bigIntNumMechanics).new()
 
-	new(bigIntNumElectron).empty(b)
+	new(bigIntNumElectron).empty(&b)
 
 	err = new(bigIntNumNanobot).setBigInt(
-		b,
+		&b,
 		bInt,
 		precision,
 		ePrefix)
@@ -3128,7 +3093,7 @@ func (bNum *BigIntNum) NewDecimal(decNum Decimal) (BigIntNum, error) {
 		return BigIntNum{}, err
 	}
 
-	return *b, nil
+	return b, nil
 }
 
 // NewBigIntFixedDecimal - Creates and returns a new BigIntNum instance based
@@ -4587,21 +4552,35 @@ func (bNum *BigIntNum) NewUint64(
 	return bInt2, nil
 }
 
-// NewZero - Returns a BigIntNum instance with a value equal to zero.
-// The number of zeros created after the decimal place holder
-// (fractional digits) is determined by the input parameter 'precision'.
-// To create an integer with a value equal to '0', set 'precision' equal
-// to zero (0).
+// NewZero
 //
-// 'precision'
+// Returns a BigIntNum instance with a value equal to zero.
+// The number of zeros created after the decimal placeholder
+// (fractional digits) is determined by the input parameter
+// 'precision'.
 //
+// To create an integer with a value equal to '0', set
+// 'precision' equal to zero (0).
+//
+//	precision
 //	  value 					Result
 //			0								0
-//	   2								0.00
+//			2								0.00
 //			3								0.000
 func (bNum *BigIntNum) NewZero(precision uint) (BigIntNum, error) {
 
-	ePrefix := "BigIntNum.NewZero()"
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
+
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"BigIntNum.NewZero",
+		"")
+
+	if err != nil {
+		return BigIntNum{}, err
+	}
 
 	return new(bigIntNumMechanics).newZero(
 		precision,
@@ -4943,7 +4922,7 @@ func (bNum *BigIntNum) SetBigInt(bigI *big.Int, precision uint) error {
 func (bNum *BigIntNum) SetBigIntExponent(
 	bigI *big.Int, exponent int) error {
 
-	ePrefix := "BigIntNum.SetBigIntExponent()"
+	ePrefix := "BigIntNum.NewBigIntExponent()"
 
 	if bigI == nil {
 
@@ -4956,151 +4935,115 @@ func (bNum *BigIntNum) SetBigIntExponent(
 		setBigIntExponent(bNum, bigI, exponent, ePrefix)
 }
 
-// SetBigFloat - Sets the value of a BigIntNum using a *big.Float floating point
-// input parameter.  The precision of the number is specified by the input
-// parameter, 'decimalPlaces'.
+// SetBigFloat
+//
+// Sets the value of the current BigIntNum using a *big.Float
+// floating point input parameter.  The precision of the number
+// is specified by the input parameter, 'maxPrecision'.
 //
 // Input Parameters
 // ================
 //
-// bigFloat *big.Float	- This float32 value will be converted into an instance of
+// bigFloat *big.Float
 //
-//	BigIntNum.
+//	This *big.Float value will be converted saved as the
+//	current instance of BigIntNum
 //
-// maxPrecision uint  - The maximum precision for the resulting BigIntNum after
+// maxPrecision uint
 //
-//	conversion of input parameter 'ratNum'. Precision will
-//	never be greater than 'maxPrecision'; however, actual
-//	precision may be less than 'maxPrecision'.
+//		The maximum precision for the resulting BigIntNum value
+//		after conversion of input parameter 'bigFloat'. Final
+//		precision will never be greater than 'maxPrecision';
+//	 	however, actual precision may be less than
+//	 	'maxPrecision'.
 //
-// As part of the conversion of a BigFloat to a rational number the Accuracy flag is
-// is returned describing the rounding error associated with the conversion. The
+// Background
+// ==========
+//
+// As part of converting a BigFloat to a BigIntNum number,
+// the Accuracy flag is analyzed to determine if rounding errors
+// occurred in connection with this conversion. The internal
 // Accuracy Flag is set as:
 //
-//			Below Accuracy == -1
-//	   Exact Accuracy == 0
-//	   Above Accuracy == +1
+//			Below Accuracy == -1	(Returns an error)
+//	   Exact Accuracy == 0		(No Error Returned)
+//	   Above Accuracy == +1		(Returns an error)
 //
-// If Accuracy == 0, no error is issued by this method. However, if Accuracy == -1
-// or Accuracy == +1 an error will be returned. All conversions must be exact.
-//
-// Existing numeric separators (decimal separator, thousands separator
-// and currency symbol) remain unchanged and are not altered by this method.
-func (bNum *BigIntNum) SetBigFloat(bigFloat *big.Float, maxPrecision uint) error {
-
-	ePrefix := "NumStrDto.NewBigFloat()"
-
-	rat, accuracyFlag := bigFloat.Rat(nil)
-
-	if accuracyFlag == -1 {
-
-		return fmt.Errorf("%v\n"+
-			"Error: Conversion of input parameter 'bigFloat' resulted in Accuracy Flag == -1\n"+
-			"or 'Below Accuracy'\n"+
-			"Conversion is NOT Exact!\n",
-			ePrefix)
-	}
-
-	if accuracyFlag == 1 {
-
-		return fmt.Errorf("%v\n"+
-			"Error: Conversion of input parameter 'bigFloat' resulted in Accuracy Flag == +1\n"+
-			"or 'Above Accuracy' Conversion is NOT Exact!\n",
-			ePrefix)
-	}
-
-	err := bNum.SetBigRat(rat, maxPrecision)
-
-	if err != nil {
-
-		return fmt.Errorf("%v\n"+
-			"Error returned by:\n"+
-			"  err := bNum.SetBigRat(rat, maxPrecision).\n"+
-			"Error='%v' \n",
-			err.Error())
-	}
-
-	return nil
-}
-
-// SetBigRat - Sets the current BigIntNum value to that of input parameter
-// 'ratNum', a rational number or *big.Rat type.
-//
-// maxPrecision uint  - The maximum precision for the resulting BigIntNum after
-//
-//	conversion of input parameter 'ratNum'. Precision will
-//	never be greater than 'maxPrecision'; however, actual
-//	precision may be less than 'maxPrecision'.
+// If Accuracy == 0, no error is issued by this method. However, if
+// Accuracy == -1 or Accuracy == +1, an error will be returned. All
+// conversions must be exact.
 //
 // Existing numeric separators (decimal separator, thousands separator
-// and currency symbol) remain unchanged and are not altered by this method.
-func (bNum *BigIntNum) SetBigRat(ratNum *big.Rat, maxPrecision uint) error {
+// and currency symbol) contained in the original BigIntNum ('bNum')
+// will remain unchanged and will not be altered by this method.
+func (bNum *BigIntNum) SetBigFloat(
+	bigFloat *big.Float, maxPrecision uint) error {
 
-	ePrefix := "BigIntNum.SetBigRat() "
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-	err := new(bigIntNumAtom).isBigIntNumValid(
-		bNum,
-		ePrefix+" Testing 'bNum'")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"BigIntNum.Ceiling",
+		"")
 
 	if err != nil {
 		return err
 	}
 
-	numSeps := bNum.GetNumericSeparatorsDto()
-
-	numerator := big.NewInt(0).Set(ratNum.Num())
-
-	denominator := big.NewInt(0).Set(ratNum.Denom())
-
-	biPair := new(BigIntPair).NewBase(numerator, 0, denominator, 0)
-
-	biPair.MaxPrecision = maxPrecision
-
-	biNum, err := BigIntMathDivide{}.PairFracQuotientNoNumSeps(biPair, numSeps)
-
-	if err != nil {
-
-		return fmt.Errorf("%v\n"+
-			"Error returned by: \n"+
-			" biNum, err := BigIntMathDivide{}.\n"+
-			"   PairFracQuotientNoNumSeps(biPair, numSeps)\n"+
-			"Error= %v\n",
-			ePrefix,
-			err.Error())
-	}
-
-	if biNum.GetPrecisionUint() > maxPrecision {
-
-		err = biNum.SetPrecision(maxPrecision)
-
-		if err != nil {
-
-			return fmt.Errorf("%v\n"+
-				"Error returned by: \n"+
-				" err = biNum.SetPrecision(maxPrecision)\n"+
-				"Error= %v\n",
-				ePrefix,
-				err.Error())
-		}
-	}
-
-	err = new(bigIntNumUtility).bigIntNumCopyIn(
+	return new(bigIntNumNanobot).setBigFloat(
 		bNum,
-		&biNum,
+		bigFloat,
+		maxPrecision,
 		ePrefix)
+}
+
+// SetBigRat
+//
+// Sets the value of the current BigIntNum instance to that of
+//
+//	input parameter 'ratNum', a rational number of type *big.Rat.
+//
+//	Input Parmeters
+//	===============
+//
+// ratNum 			*big.Rat
+//
+//	The value of ratNum will be used to configure the current
+//	BigIntNum instance and reset its value.
+//
+// maxPrecision uint
+//
+//	The maximum precision for the resulting BigIntNum value
+//	after it is reset to the value of input parameter 'ratNum'.
+//	Precision will never be greater than 'maxPrecision'; however,
+//	actual precision may be less than 'maxPrecision'.
+//
+//	Existing numeric separators (decimal separator, thousands separator
+//	and currency symbol) in the current BigIntNum instance will remain
+//	unchanged and will not be altered by this method.
+func (bNum *BigIntNum) SetBigRat(
+	ratNum *big.Rat, maxPrecision uint) error {
+
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
+
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"BigIntNum.Ceiling",
+		"")
 
 	if err != nil {
-
-		return fmt.Errorf("%v\n"+
-			"Error returned by: \n"+
-			" err = new(bigIntNumUtility).bigIntNumCopyIn(\n"+
-			"   bNum, &biNum, ePrefix)\n"+
-			"Error= %v\n",
-			ePrefix,
-			err.Error())
+		return err
 	}
 
-	return nil
+	return new(bigIntNumMolecule).setBigRat(
+		bNum,
+		ratNum,
+		maxPrecision,
+		ePrefix)
 }
 
 // SetCurrencySymbol - assigns the input parameter rune as the
@@ -5529,7 +5472,18 @@ func (bNum *BigIntNum) SetNumericSeparators(
 	thousandsSeparator rune,
 	currencySymbol rune) error {
 
-	ePrefix := "BigIntNum.SetNumericSeparators()"
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
+
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"BigIntNum.SetNumericSeparators",
+		"")
+
+	if err != nil {
+		return err
+	}
 
 	return new(bigIntNumAtom).setNumericSeparators(
 		bNum,

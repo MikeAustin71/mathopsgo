@@ -294,11 +294,11 @@ func (bIntMolecule *bigIntNumMolecule) formatBigIntNumStr(
 
 	if bNum == nil {
 
-		err = fmt.Errorf("%v\n"+
-			"FATAL ERROR: Input parameter 'bNum' is a nil pointer.\n",
-			ePrefix.String())
-
-		return "", err
+		return "",
+			&InputPtrNilError{
+				ErrPrefix:     ePrefix.String(),
+				ParameterName: "'bNum'",
+			}
 	}
 
 	if bNum.decimalSeparator == 0 {
@@ -972,9 +972,157 @@ func (bIntMolecule *bigIntNumMolecule) setBigIntExponent(
 	return err
 }
 
-// setExpectedNumberOfDigits - Sets the number of expected digits associated with the
-// Absolute Value of this 'BigIntNum.absBigInt'. The value is stored in the data
-// field, 'BigIntNum.numberOfExpectedDigits'.
+// SetBigRat
+//
+// Sets the value of BigIntNum instance, passed as input parameter
+// 'bNum', to that of input parameter 'ratNum', a rational number
+// of type *big.Rat.
+//
+//	Input Parmeters
+//	===============
+//
+// ratNum 			*big.Rat
+//
+//	The value of ratNum will be used to configure the current
+//	BigIntNum instance and reset its value.
+//
+// maxPrecision uint
+//
+//	The maximum precision for the resulting BigIntNum value
+//	after it is reset to the value of input parameter 'ratNum'.
+//	Precision will never be greater than 'maxPrecision'; however,
+//	actual precision may be less than 'maxPrecision'.
+//
+//	Existing numeric separators (decimal separator, thousands separator
+//	and currency symbol) in the current BigIntNum instance will remain
+//	unchanged and will not be altered by this method.
+//
+//	NOTE:
+//
+// This method does NOT test the validity of 'bNum', an
+// instance of type BigIntNum. The calling method must
+// do this!
+func (bIntMolecule *bigIntNumMolecule) setBigRat(
+	bNum *BigIntNum,
+	ratNum *big.Rat,
+	maxPrecision uint,
+	errPrefDto *ePref.ErrPrefixDto) error {
+
+	bIntMolecule.lock.Lock()
+
+	defer bIntMolecule.lock.Unlock()
+
+	var ePrefix *ePref.ErrPrefixDto
+
+	var err error
+
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
+		errPrefDto,
+		"bigIntNumMolecule.setBigRat",
+		"")
+
+	if err != nil {
+		return err
+	}
+
+	if bNum == nil {
+
+		return &InputPtrNilError{
+			ErrPrefix:     ePrefix.String(),
+			ParameterName: "'bNum'",
+		}
+	}
+
+	if ratNum == nil {
+
+		return &InputPtrNilError{
+			ErrPrefix:     ePrefix.String(),
+			ParameterName: "'bNum'",
+		}
+	}
+
+	numSeps, err := new(bigIntNumAtom).getNumericSeparatorsDto(
+		bNum,
+		ePrefix)
+
+	if err != nil {
+		return err
+	}
+
+	numerator := big.NewInt(0).Set(ratNum.Num())
+
+	denominator := big.NewInt(0).Set(ratNum.Denom())
+
+	biPair, err := new(BigIntPair).
+		NewBase(numerator, 0, denominator, 0)
+
+	if err != nil {
+
+		return &FuncReturnError{
+			ErrPrefix: ePrefix.String(),
+			ReturnFunc: "biPair, err := new(BigIntPair).\n" +
+				"NewBase(numerator, 0, denominator, 0)",
+			ErrContext: "",
+			ErrMessage: err.Error(),
+		}
+	}
+
+	biPair.MaxPrecision = maxPrecision
+
+	biNum, err := BigIntMathDivide{}.PairFracQuotientNoNumSeps(biPair, numSeps)
+
+	if err != nil {
+
+		return &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "biNum, err := BigIntMathDivide{}.PairFracQuotientNoNumSeps(biPair, numSeps)",
+			ErrContext: "",
+			ErrMessage: err.Error(),
+		}
+	}
+
+	biNumPrecision, err := biNum.GetPrecisionUint()
+
+	if err != nil {
+
+		return &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "biNumPrecision, err := biNum.GetPrecisionUint()",
+			ErrContext: "",
+			ErrMessage: err.Error(),
+		}
+	}
+
+	if biNumPrecision > maxPrecision {
+
+		err = biNum.SetPrecision(maxPrecision)
+
+		if err != nil {
+
+			return &FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "err = biNum.SetPrecision(maxPrecision)",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+		}
+	}
+
+	err = new(bigIntNumUtility).bigIntNumCopyIn(
+		bNum,
+		&biNum,
+		ePrefix.XCpy("bNum <- biNum"))
+
+	return err
+}
+
+// setExpectedNumberOfDigits
+//
+// Sets the number of expected digits associated with the Absolute
+// Value of input parameter 'bNum.absBigInt'. The number of expected
+// digits value is stored in the data field,
+// 'bNum.numberOfExpectedDigits'.
 //
 // Useful in tracking leading zeros.
 func (bIntMolecule *bigIntNumMolecule) setExpectedNumberOfDigits(

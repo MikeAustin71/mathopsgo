@@ -67,6 +67,124 @@ func (bIntNumNano *bigIntNumNanobot) newWithNumSeps(
 	return b, nil
 }
 
+// setBigFloat
+//
+// Sets the value of a BigIntNum (input parameter 'bNum' using a
+// *big.Float floating point input parameter.  The maximum
+// precision of the generated output number is specified by the
+// input parameter, 'maxPrecision'.
+//
+// Input Parameters
+// ================
+//
+//	bigFloat *big.Float
+//
+//		This *big.Float value will be converted into an instance of
+//		BigIntNum.
+//
+//	maxPrecision uint
+//
+//		The maximum precision for the resulting BigIntNum after
+//		conversion of input parameter 'bigFloat'. Final precision
+//		will never be greater than 'maxPrecision'; however, actual
+//		precision may be less than 'maxPrecision'.
+//
+// Background
+// ==========
+//
+// As part of converting a BigFloat to a BigIntNum number,
+// the Accuracy flag is analyzed to determine if rounding errors
+// associated with the conversion. The internal Accuracy Flag is
+// set as:
+//
+//			Below Accuracy == -1	(Returns an error)
+//	   Exact Accuracy == 0		(No Error Returned)
+//	   Above Accuracy == +1		(Returns an error)
+//
+// If Accuracy == 0, no error is issued by this method. However, if
+// Accuracy == -1 or Accuracy == +1, an error will be returned. All
+// conversions must be exact.
+//
+// Existing numeric separators (decimal separator, thousands separator
+// and currency symbol) contained in the original BigIntNum ('bNum')
+// will remain unchanged and will not be altered by this method.
+func (bIntNumNano *bigIntNumNanobot) setBigFloat(
+	bNum *BigIntNum,
+	bigFloat *big.Float,
+	maxPrecision uint,
+	errPrefDto *ePref.ErrPrefixDto) error {
+
+	if bIntNumNano.lock == nil {
+		bIntNumNano.lock = new(sync.Mutex)
+	}
+
+	bIntNumNano.lock.Lock()
+
+	defer bIntNumNano.lock.Unlock()
+
+	var err error
+
+	var ePrefix *ePref.ErrPrefixDto
+
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
+		errPrefDto,
+		"bigIntNumNanobot.setBigInt",
+		"")
+
+	if err != nil {
+		return err
+	}
+
+	if bNum == nil {
+		return &InputPtrNilError{
+			ErrPrefix:     ePrefix.String(),
+			ParameterName: "'bNum'",
+		}
+	}
+
+	if bigFloat == nil {
+		return &InputPtrNilError{
+			ErrPrefix:     ePrefix.String(),
+			ParameterName: "'bigFloat'",
+		}
+	}
+
+	rat, accuracyFlag := bigFloat.Rat(nil)
+
+	if accuracyFlag == -1 {
+
+		return &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "",
+			ErrContext: "rat, accuracyFlag := bigFloat.Rat(nil)",
+			ErrMessage: "Error: Conversion of input parameter 'bigFloat' resulted in Accuracy Flag == -1\n" +
+				"or 'Below Accuracy'. Conversion is NOT Exact!",
+		}
+	}
+
+	if accuracyFlag == 1 {
+
+		return &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "",
+			ErrContext: "rat, accuracyFlag := bigFloat.Rat(nil)",
+			ErrMessage: "Error: Conversion of input parameter 'bigFloat' resulted in Accuracy Flag == +1\n" +
+				"or 'Above Accuracy'. Conversion is NOT Exact!",
+		}
+	}
+
+	err = bNum.SetBigRat(rat, maxPrecision)
+
+	err = new(bigIntNumMolecule).setBigRat(
+		bNum,
+		rat,
+		maxPrecision,
+		ePrefix)
+
+	return err
+}
+
 // setBigInt - Sets the value of the current BigIntNum instance using
 // the input parameters *big.Int integer and precision.
 //

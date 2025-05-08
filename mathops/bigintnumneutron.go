@@ -3,6 +3,7 @@ package mathops
 import (
 	"fmt"
 	ePref "github.com/MikeAustin71/errpref"
+	"math"
 	"math/big"
 	"sync"
 )
@@ -1069,4 +1070,467 @@ func (bNumNeutron *bigIntNumNeutron) multiplyByTwoBigIntNum(
 	}
 
 	return result, nil
+}
+
+// newBigIntNumWithPrecision
+//
+// Creates a new BigIntNum instance using a *big.Int type and its
+// associated precision (also of type *big.Int).
+//
+// The 'precision' parameter specifies the number of digits to the right
+// of the decimal place. The Numeric value is equal to bigI x 10^(precision x -1).
+// This effectively locates the decimal place by counting from the extreme right
+// of the integer number, 'precision' places to the left. See the example below.
+//
+//	Precision Example:
+//	==================
+//
+//			Integer Value		precision			Numeric Value
+//			  123456					 3					  123.456
+//
+// Input Parameters
+// ================
+//
+// bigI 			*big.Int
+//
+//	'bigI' is a type *big.Int and represents the integer
+//	value of the number; that is, the numeric value without decimal digits.
+//
+// precision  *big.Int
+//
+//	This integer value (always a positive value) identifies
+//	the location of the decimal place in the integer value 'bigI'.
+//	The decimal place location is calculated by starting with the
+//	right most digit in the integer number and counting	left,
+//	'precision' places. If precision is greater than the maximum
+//	value of an unsigned integer (+4,294,967,295,	which equals
+//	2^32 − 1), an error will be triggered. Also, if the 'precision'
+//	value is less than zero, an error will be triggered.
+//
+// Return Parameters
+// =================
+//
+//	BigIntNum - a type BigIntNum numeric value
+//
+//	error			- If not 'nil', this prameter will
+//							transmit any processing errors
+//							encountered.
+//
+//
+//		The new BigIntNum instance returned by this method will contain USA default
+//		numeric separators (decimal separator, thousands separator and currency
+//		symbol). To reconfigure the numeric separators reference method:
+//							BigIntNum.SetNumericSeparators()
+func (bNumNeutron *bigIntNumNeutron) newBigIntNumWithPrecision(
+	bigInt *big.Int,
+	precision *big.Int,
+	errPrefDto *ePref.ErrPrefixDto) (BigIntNum, error) {
+
+	if bNumNeutron.lock == nil {
+		bNumNeutron.lock = new(sync.Mutex)
+	}
+
+	bNumNeutron.lock.Lock()
+
+	defer bNumNeutron.lock.Unlock()
+
+	var ePrefix *ePref.ErrPrefixDto
+
+	var err error
+
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
+		errPrefDto,
+		"bigIntNumNeutron.newBigIntNumWithPrecision",
+		"")
+
+	if err != nil {
+		return BigIntNum{}, err
+	}
+
+	if bigInt == nil {
+
+		return BigIntNum{},
+			&InputPtrNilError{
+				ErrPrefix:     ePrefix.String(),
+				ParameterName: "'bigInt'",
+			}
+	}
+
+	if precision == nil {
+
+		return BigIntNum{},
+			&InputPtrNilError{
+				ErrPrefix:     ePrefix.String(),
+				ParameterName: "'precision'",
+			}
+
+	}
+
+	if precision.Cmp(big.NewInt(0)) == -1 {
+
+		return BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "",
+				ErrContext: fmt.Sprintf("precistion= '%v'", precision.Text(10)),
+				ErrMessage: "Error: Input parameter 'precision' IS LESS THAN ZERO!",
+			}
+	}
+
+	maxUint32 := big.NewInt(0).SetUint64(uint64(math.MaxUint32))
+
+	if precision.Cmp(maxUint32) == 1 {
+
+		return BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "",
+				ErrContext: fmt.Sprintf("precistion= '%v' math.MaxUint32= '%v'", precision.Text(10), math.MaxUint32),
+				ErrMessage: fmt.Sprintf("Error: Input parameter 'precision' exceeds maximum limit of '%v' !", math.MaxUint32),
+			}
+	}
+
+	b, err := new(bigIntNumMechanics).newZero(0, ePrefix)
+
+	if err != nil {
+		return BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "b, err := new(bigIntNumMechanics).newZero(0, ePrefix)",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
+
+	new(bigIntNumElectron).empty(&b)
+
+	err = new(bigIntNumNanobot).setBigInt(
+		&b,
+		bigInt,
+		uint(precision.Uint64()),
+		ePrefix)
+
+	if err != nil {
+
+		return BigIntNum{}, err
+	}
+
+	return b, nil
+}
+
+// newBigIntExponent
+//
+// New bigInt Exponent returns a new BigIntNum instance
+// in which the numeric value is set using an integer
+// multiplied by 10 raised to the power of the 'exponent'
+// parameter.
+//
+//	numeric value = integer X 10^exponent
+//
+//						OR
+//
+//	BigIntNum (return value) = bigI X 10^exponent
+//
+// If exponent is less than +1, precision is set equal to
+// exponent and bigI is unchanged.
+//
+// If exponent is greater than 0, bigI is multiplied by 10
+// raised to the power of 'exponent', and precision is set
+// equal to zero.
+//
+// Examples:
+//
+//	biNum :=
+//			new(BigIntNum).
+//				NewBigIntExponent(big.NewInt(int64(123456)), -3) =
+//								"123.456"  precision = 3
+//
+//	biNum :=
+//			BigIntNum{}.NewBigIntExponent(big.NewInt(int64(123456)), 3) = "123456.000" precision = 3
+func (bNumNeutron *bigIntNumNeutron) newBigIntExponent(
+	bigI *big.Int,
+	exponent int,
+	errPrefDto *ePref.ErrPrefixDto) (BigIntNum, error) {
+
+	if bNumNeutron.lock == nil {
+		bNumNeutron.lock = new(sync.Mutex)
+	}
+
+	bNumNeutron.lock.Lock()
+
+	defer bNumNeutron.lock.Unlock()
+
+	var ePrefix *ePref.ErrPrefixDto
+
+	var err error
+
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
+		errPrefDto,
+		"bigIntNumNeutron.newBigIntExponent",
+		"")
+
+	if err != nil {
+		return BigIntNum{}, err
+	}
+
+	if bigI == nil {
+
+		return BigIntNum{},
+			&InputPtrNilError{
+				ErrPrefix:     ePrefix.String(),
+				ParameterName: "'bigI' (type *big.Int)",
+			}
+	}
+
+	b, err := new(bigIntNumMechanics).newZero(
+		0,
+		ePrefix)
+
+	if err != nil {
+
+		return BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "b, err := new(bigIntNumMechanics).newZero(0, ePrefix)",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
+
+	new(bigIntNumElectron).empty(&b)
+
+	err = new(bigIntNumMolecule).
+		setBigIntExponent(&b, bigI, exponent, ePrefix)
+
+	if err != nil {
+
+		return BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix: ePrefix.String(),
+				ReturnFunc: "err = new(bigIntNumMolecule).\n" +
+					"    setBigIntExponent(&b, bigI, exponent, ePrefix)",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
+
+	return b, nil
+}
+
+// newBigFloat
+//
+// Returns a new BigIntNum instance using a *big.Float floating
+// point input parameter.  The precision of the resulting BigIint
+// numeric value is specified by the input parameter,
+// 'maxPrecision'.
+//
+// Input Parameters
+// ================
+//
+// bigFloat *big.Float
+//
+//	This *big.Float value will be converted into an instance
+//	of BigIntNum.
+//
+// maxPrecision uint
+//
+//	The maximum precision for the resulting BigIntNum after
+//	conversion of input parameter 'bigFloat'. Resulting precision
+//	will never be greater than 'maxPrecision'; however, actual
+//	precision may be less than 'maxPrecision'.
+func (bNumNeutron *bigIntNumNeutron) newBigFloat(
+	bNum *BigIntNum,
+	bigFloat *big.Float,
+	maxPrecision uint,
+	errPrefDto *ePref.ErrPrefixDto) (BigIntNum, error) {
+
+	if bNumNeutron.lock == nil {
+		bNumNeutron.lock = new(sync.Mutex)
+	}
+
+	bNumNeutron.lock.Lock()
+
+	defer bNumNeutron.lock.Unlock()
+
+	var ePrefix *ePref.ErrPrefixDto
+
+	var err error
+
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
+		errPrefDto,
+		"bigIntNumNeutron.newBigFloat",
+		"")
+
+	if err != nil {
+		return BigIntNum{}, err
+	}
+
+	if bNum == nil {
+
+		return BigIntNum{},
+			&InputPtrNilError{
+				ErrPrefix:     ePrefix.String(),
+				ParameterName: "'bNum'",
+			}
+	}
+
+	if bigFloat == nil {
+
+		return BigIntNum{},
+			&InputPtrNilError{
+				ErrPrefix:     ePrefix.String(),
+				ParameterName: "'bigFloat'",
+			}
+	}
+
+	b, err := new(bigIntNumMechanics).newZero(
+		0,
+		ePrefix)
+
+	if err != nil {
+
+		return BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "b, err := new(bigIntNumMechanics).newZero(0, ePrefix)",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
+
+	err = new(bigIntNumNanobot).setBigFloat(
+		&b,
+		bigFloat,
+		maxPrecision,
+		ePrefix.XCpy("bigFloat -> 'b' BigIntNum"))
+
+	if err != nil {
+
+		return BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix: ePrefix.String(),
+				ReturnFunc: "err = new(bigIntNumNanobot).setBigFloat(b, bigFloat, maxPrecision,\n" +
+					"    ePrefix.XCpy(\"bigFloat -> 'b' BigIntNum\"))",
+				ErrContext: fmt.Sprintf("bigFloat= '%v' maxPrecision= '%v' ", bigFloat.String(), maxPrecision),
+				ErrMessage: err.Error(),
+			}
+	}
+
+	return b, nil
+}
+
+// newDecimal
+//
+// Receives an input parameter 'decNum' of type Decimal and
+// returns a BigIntNum instance configured with the numeric
+// value passed by parameter 'decNum'.
+//
+// Input parameter 'decNum' will be subjected to validation
+// testing. If 'decNum' fails these validation tests, an
+// error will be returned.
+func (bNumNeutron *bigIntNumNeutron) newDecimal(
+	bNum *BigIntNum,
+	decNum Decimal,
+	errPrefDto *ePref.ErrPrefixDto) (BigIntNum, error) {
+
+	if bNumNeutron.lock == nil {
+		bNumNeutron.lock = new(sync.Mutex)
+	}
+
+	bNumNeutron.lock.Lock()
+
+	defer bNumNeutron.lock.Unlock()
+
+	var ePrefix *ePref.ErrPrefixDto
+
+	var err error
+
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
+		errPrefDto,
+		"bigIntNumNeutron.newBigFloat",
+		"")
+
+	if err != nil {
+		return BigIntNum{}, err
+	}
+
+	if bNum == nil {
+
+		return BigIntNum{},
+			&InputPtrNilError{
+				ErrPrefix:     ePrefix.String(),
+				ParameterName: "'bNum'",
+			}
+	}
+
+	validStr := ePrefix.XCpy("Validating 'decNum'").String()
+
+	err = decNum.IsValid(validStr)
+
+	if err != nil {
+
+		return BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "err = decNum.IsValid(validStr)",
+				ErrContext: "Validation on input parameter 'decNum'",
+				ErrMessage: err.Error(),
+			}
+	}
+
+	decNumStr, err := decNum.GetNumStr()
+
+	if err != nil {
+
+		return BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "decNumStr, err := decNum.GetNumStr()",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
+
+	bInt, err := decNum.GetSignedBigInt()
+
+	if err != nil {
+
+		return BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "bInt, err := decNum.GetSignedBigInt()",
+				ErrContext: fmt.Sprintf("decNumStr = '%v' ", decNumStr),
+				ErrMessage: err.Error(),
+			}
+	}
+
+	precision := uint(decNum.GetPrecision())
+
+	b := new(bigIntNumMechanics).new()
+
+	new(bigIntNumElectron).empty(&b)
+
+	err = new(bigIntNumNanobot).setBigInt(
+		&b,
+		bInt,
+		precision,
+		ePrefix)
+
+	if err != nil {
+
+		return BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "err = new(bigIntNumNanobot).setBigInt(&b,bInt,precision,ePrefix)",
+				ErrContext: fmt.Sprintf("bInt = '%v' precision= '%v'",
+					bInt.Text(10), precision),
+				ErrMessage: err.Error(),
+			}
+	}
+
+	return b, nil
 }
