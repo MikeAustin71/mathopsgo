@@ -23,7 +23,17 @@ type BigIntFixedDecimal struct {
 	// a BigIntDecimal Structure would be configured as follows:
 	// 			BigIntFixedDecimal.integerNum	= 52459
 	// 			BigIntFixedDecimal.precision	= 3
+
+	// Numeric Separators
+	decimalSeparator rune // Character used to separate integer and fractional digits ('.')
+
+	thousandsSeparator rune // Character used to separate thousands (1,000,000,000
+
+	currencySymbol rune // Currency Symbol
+
 }
+
+var _ INumMgr = (*BigIntFixedDecimal)(nil)
 
 // Ceiling - Returns the ceiling integer value for the current
 // BigIntFixedDecimal instance.
@@ -668,6 +678,32 @@ func (bigIFd *BigIntFixedDecimal) FormatNumStr(negValMode NegativeValueFmtMode) 
 	return string(outRunes)
 }
 
+// GetBigInt
+//
+// Converts the current instance of BigIntFixedDecimal to
+// a numeric value and returns that value as a type
+// '*big.Int'.
+func (bigIFd *BigIntFixedDecimal) GetBigInt() (*big.Int, error) {
+
+	ePrefix := "BigIntFixedDecimal.GetBigInt"
+
+	err := bigIFd.IsValid(ePrefix + " Testing 'bigIFd'")
+
+	if err != nil {
+
+		return big.NewInt(0),
+			&FuncReturnError{
+				ErrPrefix:  ePrefix,
+				ReturnFunc: "err := bigIFd.IsValid(ePrefix + \" Testing 'bigIFd'\")",
+				ErrContext: "Testing validity of current BigIntFixedDecimal instance 'bigIFd'.\n" +
+					"'bigIFd' FAILED validation testing. 'bigIFd' is INVALID!",
+				ErrMessage: err.Error(),
+			}
+	}
+
+	return bigIFd.integerNum, nil
+}
+
 // GetBigIntNum - Returns a new BigIntNum object initialized
 // to the value of the current BigIntFixedDecimal instance.
 func (bigIFd *BigIntFixedDecimal) GetBigIntNum() (BigIntNum, error) {
@@ -701,6 +737,56 @@ func (bigIFd *BigIntFixedDecimal) GetBigIntNum() (BigIntNum, error) {
 	}
 
 	return bigINum, nil
+}
+
+// GetDecimal
+//
+// Converts the current instance of BigIntFixedDecimal to a numeric
+// value and returns that value as a type 'Decimal'.
+func (bigIFd *BigIntFixedDecimal) GetDecimal() (Decimal, error) {
+
+	ePrefix := "BigIntFixedDecimal.GetDecimal"
+
+	err := bigIFd.IsValid(ePrefix + " Testing 'bigIFd'")
+
+	if err != nil {
+
+		return Decimal{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix,
+				ReturnFunc: "err := bigIFd.IsValid(ePrefix + \" Testing 'bigIFd'\")",
+				ErrContext: "Testing validity of current BigIntFixedDecimal instance 'bigIFd'.",
+				ErrMessage: err.Error(),
+			}
+	}
+
+	bigINum, err := new(BigIntNum).NewBigInt(bigIFd.integerNum, bigIFd.precision)
+
+	if err != nil {
+
+		return Decimal{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix,
+				ReturnFunc: "bigINum, err := new(BigIntNum).NewBigInt(bigIFd.integerNum, bigIFd.precision)",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
+
+	decNum, err := bigINum.GetDecimal()
+
+	if err != nil {
+
+		return Decimal{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix,
+				ReturnFunc: "decNum, err := bigINum.GetDecimal()",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
+
+	return decNum, nil
 }
 
 // GetInteger - Returns the 'integerNum' for the current
@@ -874,13 +960,81 @@ func (bigIFd *BigIntFixedDecimal) GetNumericValue() (*big.Int, uint) {
 	return big.NewInt(0).Set(bigIFd.integerNum), bigIFd.precision
 }
 
+// GetNumericSeparatorsDto
+//
+// Returns a structure containing the character or rune values
+// for decimal place separator, thousands separator and
+// currency symbol.
+func (bigIFd *BigIntFixedDecimal) GetNumericSeparatorsDto() (NumericSeparatorDto, error) {
+
+	numSeps := NumericSeparatorDto{}
+
+	numSeps.DecimalSeparator = bigIFd.decimalSeparator
+
+	numSeps.ThousandsSeparator = bigIFd.thousandsSeparator
+
+	numSeps.CurrencySymbol = bigIFd.currencySymbol
+
+	return numSeps, nil
+
+}
+
 // GetNumStr - Converts the current BigIntFixedDecimal value to
 // string of numbers which includes the decimal place and decimal
 // digits if they exist.
-func (bigIFd *BigIntFixedDecimal) GetNumStr() string {
+func (bigIFd *BigIntFixedDecimal) GetNumStr() (string, error) {
 
-	return bigIFd.FormatNumStr(LEADMINUSNEGVALFMTMODE)
+	return bigIFd.FormatNumStr(LEADMINUSNEGVALFMTMODE), nil
+}
 
+// GetNumStrDto
+//
+// Converts the current BigIntFixedDecimal value to a NumStrDto instance.
+// The resulting number string includes the decimal place and
+// decimal digits if they exist.
+//
+// The returned NumStrDto type contains numeric separators (decimal
+// separator, thousands separator, and currency symbol) copied from
+// the current BigIntNum instance.
+//
+// This method performs a validity test on the current BigIntNum instance.
+func (bigIFd *BigIntFixedDecimal) GetNumStrDto() (NumStrDto, error) {
+
+	ePrefix := "BigIntFixedDecimal.GetNumStrDto()"
+
+	err := bigIFd.IsValid(ePrefix + "Testing current instance of BigIntFixedDecimal (bigIFd).")
+
+	if err != nil {
+		return NumStrDto{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix,
+				ReturnFunc: "err = nDto.SetNumericSeparatorsDto(numSepDto)",
+				ErrContext: "The 'bigIFd' FAILED the Validation Test.",
+				ErrMessage: "The current instance of BigIntFixedDecimal ('bigIFd') is INVALID!",
+			}
+	}
+
+	nDto, err := new(NumStrDto).NewBigInt(big.NewInt(0).Set(bigIFd.integerNum), bigIFd.precision)
+
+	if err != nil {
+		return NumStrDto{},
+			&FuncReturnError{
+				ErrPrefix: ePrefix,
+				ReturnFunc: "nDto, err := new(NumStrDto).NewBigInt(big.NewInt(0).\n" +
+					"Set(bigIFd.integerNum), bigIFd.precision)",
+				ErrContext: fmt.Sprintf("bigIFd.integerNum='%v'\nbigIFd.precision='%v'",
+					bigIFd.integerNum.Text(10), bigIFd.precision),
+				ErrMessage: err.Error(),
+			}
+	}
+
+	nDto.decimalSeparator = bigIFd.decimalSeparator
+
+	nDto.thousandsSeparator = bigIFd.thousandsSeparator
+
+	nDto.currencySymbol = bigIFd.currencySymbol
+
+	return nDto, nil
 }
 
 // GetPrecision - Returns the 'precision' value for the current
@@ -888,6 +1042,18 @@ func (bigIFd *BigIntFixedDecimal) GetNumStr() string {
 // of digits to the right of the decimal place in the
 // BigIntFixedDecimal.integerNum.
 func (bigIFd *BigIntFixedDecimal) GetPrecision() (uint, error) {
+
+	return bigIFd.precision, nil
+}
+
+// GetPrecisionUint - Returns the 'precision' value for the current
+// BigIntFixedDecimal instance. 'precision' specifies the number
+// of digits to the right of the decimal place in the
+// BigIntFixedDecimal.integerNum.
+//
+// This method is required in order to implement the INumMgr
+// interface.
+func (bigIFd *BigIntFixedDecimal) GetPrecisionUint() (uint, error) {
 
 	return bigIFd.precision, nil
 }
@@ -905,6 +1071,20 @@ func (bigIFd *BigIntFixedDecimal) GetPrecisionBigInt() *big.Int {
 	}
 
 	return big.NewInt(0).SetUint64(uint64(bigIFd.precision))
+}
+
+// GetSign - Returns the numeric sign associated
+// with the current numeric value encapsulated by
+// the current BigIntFixedDecimal instance.
+//
+// GetSign() returns:
+//
+//	-1 if x < 0;
+//	 0 if x == 0;
+//	+1 if x > 0.
+func (bigIFd *BigIntFixedDecimal) GetSign() (int, error) {
+
+	return bigIFd.integerNum.Sign(), nil
 }
 
 // Inverse - Converts the current BigIntFixedDecimal
@@ -1049,18 +1229,27 @@ func (bigIFd *BigIntFixedDecimal) IsValid(callingMethodName string) error {
 
 // IsZero - returns true only if the current BigIntFixedDecimal
 // numeric value is equal to zero
-func (bigIFd *BigIntFixedDecimal) IsZero() bool {
+func (bigIFd *BigIntFixedDecimal) IsZero() (bool, error) {
 
-	if bigIFd.integerNum == nil {
-		bigIFd.integerNum = big.NewInt(0)
-		bigIFd.precision = 0
+	ePrefix := "BigIntFixedDecimal.IsZero()"
+
+	err := bigIFd.IsValid(ePrefix + " Testing 'bigIFd' current instance of 'BigIntFixedDecimal'")
+
+	if err != nil {
+		return true,
+			&FuncReturnError{
+				ErrPrefix:  ePrefix,
+				ReturnFunc: "err := bigIFd.IsValid(ePrefix + \" Testing 'bigIFd' current instance of 'BigIntFixedDecimal'\")",
+				ErrContext: "Testing validity of 'bigIFd', an instance of 'BigIntFixedDecimal'",
+				ErrMessage: "'bigIFd' FAILED Validation Testing and is therefore INVALID",
+			}
 	}
 
 	if bigIFd.integerNum.Cmp(big.NewInt(0)) == 0 {
-		return true
+		return true, nil
 	}
 
-	return false
+	return false, nil
 }
 
 // MultiplyByTenToPower - Multiplies the numeric value of the current
@@ -1097,9 +1286,17 @@ func (bigIFd *BigIntFixedDecimal) IsZero() bool {
 //				of this calculation.
 func (bigIFd *BigIntFixedDecimal) MultiplyByTenToPower(exponent uint) error {
 
-	if bigIFd.integerNum == nil {
-		bigIFd.integerNum = big.NewInt(0)
-		bigIFd.precision = 0
+	ePrefix := "BigIntFixedDecimal.MultiplyByTenToPower()"
+
+	err := bigIFd.IsValid(ePrefix + " Testing 'bigIFd' current instance of 'BigIntFixedDecimal'")
+
+	if err != nil {
+		return &FuncReturnError{
+			ErrPrefix:  ePrefix,
+			ReturnFunc: "ePrefix + \" Testing 'bigIFd' current instance of 'BigIntFixedDecimal'",
+			ErrContext: "Testing validity of 'bigIFd', an instance of 'BigIntFixedDecimal'",
+			ErrMessage: "'bigIFd' FAILED Validation Testing and is therefore INVALID",
+		}
 	}
 
 	if bigIFd.integerNum.Cmp(big.NewInt(0)) == 0 {
@@ -1118,14 +1315,15 @@ func (bigIFd *BigIntFixedDecimal) MultiplyByTenToPower(exponent uint) error {
 
 	result.TrimTrailingFracZeros()
 
-	err := bigIFd.CopyIn(result)
+	err = bigIFd.CopyIn(result)
 
 	if err != nil {
-		return fmt.Errorf("BigIntFixedDecimal.MultiplyByTenToPower"+
-			"Error returned by  bigIFd.CopyIn(result)\n"+
-			"result= %v\n Error= %v\n",
-			result,
-			err.Error())
+		return &FuncReturnError{
+			ErrPrefix:  ePrefix,
+			ReturnFunc: "err := bigIFd.CopyIn(result)",
+			ErrContext: "Testing validity of 'bigIFd', an instance of 'BigIntFixedDecimal'",
+			ErrMessage: "'bigIFd' FAILED Validation Testing and is therefore INVALID",
+		}
 	}
 
 	return nil
@@ -1588,6 +1786,96 @@ func (bigIFd *BigIntFixedDecimal) SetIntegerValue(integer *big.Int) {
 		bigIFd.precision = 0
 	}
 
+}
+
+// SetNumericSeparatorsDto
+//
+// Sets the values of numeric separators:
+//
+//	decimal place separator
+//	thousands separator
+//	currency symbol
+//
+// These numeric separators are configured based on values
+// transmitted through input parameter 'customSeparators'.
+//
+// If any of the values contained in input parameter 'customSeparators'
+// is set to zero, an error will be returned.
+func (bigIFd *BigIntFixedDecimal) SetNumericSeparatorsDto(
+	customSeparators NumericSeparatorDto) error {
+
+	ePrefix := "BigIntFixedDecimal.SetNumericSeparatorsDto()"
+
+	if customSeparators.DecimalSeparator == 0 {
+
+		return &FuncReturnError{
+			ErrPrefix:  ePrefix,
+			ReturnFunc: "",
+			ErrContext: " if customSeparators.DecimalSeparator == 0 {",
+			ErrMessage: "Error: Input parameter 'customSeparators.DecimalSeparator' is set to '0' - Invalid rune!",
+		}
+	}
+
+	if customSeparators.ThousandsSeparator == 0 {
+
+		return &FuncReturnError{
+			ErrPrefix:  ePrefix,
+			ReturnFunc: "",
+			ErrContext: " if customSeparators.ThousandsSeparator == 0 {",
+			ErrMessage: "Error: Input parameter 'customSeparators.ThousandsSeparator' is set to '0' - Invalid rune!",
+		}
+	}
+
+	if customSeparators.CurrencySymbol == 0 {
+
+		return &FuncReturnError{
+			ErrPrefix:  ePrefix,
+			ReturnFunc: "",
+			ErrContext: " if customSeparators.CurrencySymbol == 0 {",
+			ErrMessage: "Error: Input parameter 'customSeparators.CurrencySymbol' is set to '0' - Invalid rune!",
+		}
+
+	}
+
+	bigIFd.decimalSeparator = customSeparators.DecimalSeparator
+
+	bigIFd.thousandsSeparator = customSeparators.ThousandsSeparator
+
+	bigIFd.currencySymbol = customSeparators.CurrencySymbol
+
+	return nil
+
+}
+
+// SetNumericSeparatorsToDefaultIfEmpty
+//
+// If numeric separators were previously set to zero or nil,
+// this method will set those numeric separators to the USA
+// defaults. This means that the Decimal separator is set
+// to ('.'), the Thousands separator is set to (',') and the
+// currency symbol is set to '$'.
+//
+// If the numeric separators were previously set to a value
+// other than zero or nil, that value is not altered by this
+// method.
+//
+// Effectively, this method ensures that all numeric separators
+// are set to valid values.
+func (bigIFd *BigIntFixedDecimal) SetNumericSeparatorsToDefaultIfEmpty() error {
+
+	if bigIFd.decimalSeparator == 0 {
+		bigIFd.decimalSeparator = '.'
+	}
+
+	if bigIFd.thousandsSeparator == 0 {
+		bigIFd.thousandsSeparator = ','
+	}
+
+	if bigIFd.currencySymbol == 0 {
+		bigIFd.currencySymbol = '$'
+	}
+
+	return nil
 }
 
 // SetNumStr - Initializes the current BigIntFixedDecimal
