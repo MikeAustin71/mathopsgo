@@ -14,6 +14,6 @@ type INumMgr interface {
 	GetSign() (int, error)
 	IsValid(errName string) error
 	IsZero() (bool, error)
-	SetNumericSeparatorsToDefaultIfEmpty() error
 	SetNumericSeparatorsDto(customSeparators NumericSeparatorDto) error
+	SetNumericSeparatorsToDefaultIfEmpty() error
 }

@@ -2193,7 +2193,7 @@ func (bIntNumProton *bigIntNumProton) bigIntNumGetNumStrDto(
 
 	}
 
-	nDto, err := NumStrDto{}.NewBigInt(big.NewInt(0).Set(bNum.bigInt), bNum.precision)
+	nDto, err := new(NumStrDto).NewBigInt(big.NewInt(0).Set(bNum.bigInt), bNum.precision)
 
 	if err != nil {
 		return NumStrDto{},
@@ -2227,10 +2227,10 @@ func (bIntNumProton *bigIntNumProton) bigIntNumGetNumStrDto(
 			}
 	}
 
-	err = nDto.IsValid(ePrefix.String() + "'nDto' FAILED Validatoin Test! ")
+	err = nDto.IsValid(ePrefix.String() + "'nDto' FAILED Validation Test! ")
 
 	if err != nil {
-		return NumStrDto{}.New(), err
+		return new(NumStrDto).New(), err
 	}
 
 	return nDto, nil

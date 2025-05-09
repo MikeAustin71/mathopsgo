@@ -1451,7 +1451,7 @@ func (bNumNeutron *bigIntNumNeutron) newDecimal(
 	ePrefix,
 		err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
 		errPrefDto,
-		"bigIntNumNeutron.newBigFloat",
+		"bigIntNumNeutron.newDecimal",
 		"")
 
 	if err != nil {
@@ -1533,4 +1533,98 @@ func (bNumNeutron *bigIntNumNeutron) newDecimal(
 	}
 
 	return b, nil
+}
+
+// newBigIntFixedDecimal
+//
+// Creates and returns a new BigIntNum instance based
+// on input parameter 'fd' of type BigIntFixedDecimal.
+//
+// The 'fd' numeric value will be converted to type
+// a BigIntNum which is then returned by this method.
+//
+// If input parameter 'fd' proves invalid, an error
+// will be returned.
+func (bNumNeutron *bigIntNumNeutron) newBigIntFixedDecimal(
+	fd BigIntFixedDecimal,
+	errPrefDto *ePref.ErrPrefixDto) (BigIntNum, error) {
+
+	if bNumNeutron.lock == nil {
+		bNumNeutron.lock = new(sync.Mutex)
+	}
+
+	bNumNeutron.lock.Lock()
+
+	defer bNumNeutron.lock.Unlock()
+
+	var ePrefix *ePref.ErrPrefixDto
+
+	var err error
+
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
+		errPrefDto,
+		"bigIntNumNeutron.newBigIntFixedDecimal",
+		"")
+
+	if err != nil {
+		return BigIntNum{}, err
+	}
+
+	err = fd.IsValid(" Testing input parameter 'fd'")
+
+	if err != nil {
+
+		return BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "err = fd.IsValid(\" Testing input parameter 'fd'\")",
+				ErrContext: "'fd' is input parameter of type BigIntFixedDecimal",
+				ErrMessage: "Error: Input Parameter 'fd' is INVALID!.\n" +
+					"'fd' Vallidity Test FAILED!",
+			}
+	}
+
+	fdIntVal, err := fd.GetInteger()
+
+	if err != nil {
+
+		return BigIntNum{},
+				&FuncReturnError{
+					ErrPrefix:  ePrefix.String(),
+					ReturnFunc: "fdIntVal, err := fd.GetInteger()",
+					ErrContext: "'fd' is input parameter of type BigIntFixedDecimal",
+					ErrMessage: err.Error(),
+				}
+	}
+
+	fdPrecision, err := fd.GetPrecision()
+
+	if err != nil {
+
+		return BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "fdPrecision, err := fd.GetPrecision()",
+				ErrContext: "'fd' is input parameter of type BigIntFixedDecimal",
+				ErrMessage: err.Error(),
+			}
+	}
+
+	bid, err := new(bigIntNumMechanics).newBigInt(
+		fdIntVal, fdPrecision, ePrefix)
+
+	if err != nil {
+
+		return BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix: ePrefix.String(),
+				ReturnFunc: "bid, err := new(bigIntNumMechanics).newBigInt(\n" +
+					"    fdIntVal, fdPrecision, ePrefix)",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
+
+	return bid, nil
 }
