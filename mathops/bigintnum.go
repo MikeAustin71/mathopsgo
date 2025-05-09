@@ -3120,38 +3120,63 @@ func (bNum *BigIntNum) NewBigIntFixedDecimal(
 // Input parameter 'signVal' must be set to one of two values: +1 or -1. This value is
 // used to signal the sign of the resulting numeric value. +1 generates a positive number
 // and -1 generates a negative number.
+//
+// BE ADVISED
+// ==========
+//
+// This method will set numeric separators to USA defaults.
+//
+//	decimal separator = '.'
+//	thousands separator = ','
+//	currency separator = '$'
 func (bNum *BigIntNum) NewFromIntFracStrings(
 	intStr string, fracStr string, signVal int) (BigIntNum, error) {
 
-	ePrefix := "BigIntNum.NewFromIntFracStrings()"
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-	b2, err := new(BigIntNum).NewZero(0)
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"BigIntNum.NewFromIntFracStrings",
+		"")
+
+	if err != nil {
+		return BigIntNum{}, err
+	}
+
+	b2, err := new(bigIntNumMechanics).newZero(
+		0,
+		ePrefix)
+
+	if err != nil {
+		return BigIntNum{}, err
+	}
+
+	err = new(bigIntNumAtom).setNumericSeparatorsToDefaultIfEmpty(
+		&b2,
+		ePrefix)
+
+	if err != nil {
+		return BigIntNum{}, err
+	}
+
+	err = new(bigIntNumNeutron).
+		setIntFracStrings(&b2, intStr, fracStr, signVal, ePrefix)
 
 	if err != nil {
 
 		return BigIntNum{},
-			fmt.Errorf("%v\n"+
-				"Error returned by:\n"+
-				" b2, err := new(BigIntNum).NewZero(0)\n"+
-				"Error= %v\n",
-				ePrefix,
-				err.Error())
+			&FuncReturnError{
+				ErrPrefix: ePrefix.String(),
+				ReturnFunc: "err = new(bigIntNumNeutron).setIntFracStrings(\n" +
+					"    &b2, intStr, fracStr, signVal, ePrefix)",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
 	}
 
-	err = b2.SetIntFracStrings(intStr, fracStr, signVal)
-
-	if err != nil {
-
-		return BigIntNum{},
-			fmt.Errorf("%v\n"+
-				"Error returned by:\n"+
-				" err := b2.SetIntFracStrings(intStr, fracStr, signVal)\n"+
-				"Error='%v' \n",
-				ePrefix,
-				err.Error())
-	}
-
-	return b2, err
+	return b2, nil
 }
 
 // NewFloat32 - Returns a new BigIntNum instance using a float32 floating point
@@ -5084,9 +5109,11 @@ func (bNum *BigIntNum) SetBigRat(
 		ePrefix)
 }
 
-// SetCurrencySymbol - assigns the input parameter rune as the
-// currency symbol to be used by the BigIntNum when generating
-// number strings for display.
+// SetCurrencySymbol
+//
+// Assigns the input parameter rune as the currency symbol to
+// be used by the BigIntNum type when generating number
+// strings for display.
 //
 // In the USA, the currency symbol is the dollar sign ('$').
 //
@@ -5128,8 +5155,10 @@ func (bNum *BigIntNum) SetDecimalSeparator(decimalSeparator rune) {
 	bNum.decimalSeparator = decimalSeparator
 }
 
-// SetIntFracStrings - Sets the value of the current BigIntNum instance based on
-// a numeric value represented by separate integer and fractional components.
+// SetIntFracStrings
+//
+// Sets the value of the current BigIntNum instance based on a numeric value
+// represented by separate integer and fractional components.
 //
 // Input parameters 'intStr' and 'fracStr' are strings representing the integer and
 // fractional components. They are combined by this method to create a numeric value
@@ -5151,91 +5180,14 @@ func (bNum *BigIntNum) SetIntFracStrings(intStr, fracStr string, signVal int) er
 	ePrefix,
 		err = ePref.ErrPrefixDto{}.NewIEmpty(
 		nil,
-		"BigIntNum.SetIntFracStrings",
+		"BigIntNum.Ceiling",
 		"")
 
 	if err != nil {
 		return err
 	}
 
-	err = new(bigIntNumAtom).isBigIntNumValid(
-		bNum,
-		ePrefix.XCpy("Validating 'bNum'"))
-
-	if err != nil {
-		return err
-	}
-
-	ePrefix := "BigIntNum.SetIntFracStrings() "
-
-	cleanIntRuneAry := make([]rune, 0, 100)
-
-	zeroChar := uint8('0')
-	nineChar := uint8('9')
-
-	lStr := len(intStr)
-
-	if lStr == 0 {
-
-		return fmt.Errorf("%v\n"+
-			"Error: Input Parameter 'intStr' is zero Length!",
-			ePrefix)
-
-	}
-
-	isFirstRune := true
-
-	// Create pure number string from 'intStr'
-	for i := 0; i < lStr; i++ {
-
-		if intStr[i] >= zeroChar &&
-			intStr[i] <= nineChar {
-
-			if isFirstRune && signVal == -1 {
-				cleanIntRuneAry = append(cleanIntRuneAry, '-')
-			}
-
-			isFirstRune = false
-
-			cleanIntRuneAry = append(cleanIntRuneAry, rune(intStr[i]))
-		}
-	}
-
-	if len(cleanIntRuneAry) == 0 {
-		cleanIntRuneAry = append(cleanIntRuneAry, '0')
-	}
-
-	lStr = len(fracStr)
-
-	if lStr > 0 {
-
-		isFirstRune = true
-
-		for j := 0; j < lStr; j++ {
-
-			if fracStr[j] >= zeroChar &&
-				fracStr[j] <= nineChar {
-
-				if isFirstRune {
-					cleanIntRuneAry = append(cleanIntRuneAry, bNum.GetDecimalSeparator())
-					isFirstRune = false
-				}
-
-				cleanIntRuneAry = append(cleanIntRuneAry, rune(fracStr[j]))
-			}
-
-		}
-	}
-
-	err := bNum.SetNumStr(string(cleanIntRuneAry))
-
-	if err != nil {
-		return fmt.Errorf(ePrefix+
-			"Error returned by bNum.SetNumStr(string(cleanIntRuneAry)). "+
-			"cleanIntRuneAry='%v' Error='%v' ", string(cleanIntRuneAry), err.Error())
-	}
-
-	return new(bigIntNumNanobot).setIntFracStrings(
+	return new(bigIntNumNeutron).setIntFracStrings(
 		bNum, intStr, fracStr, signVal, ePrefix)
 }
 
@@ -5380,44 +5332,40 @@ func (bNum *BigIntNum) SetExpectedToActualNumberOfDigits() error {
 //
 // Example 1:
 //
-//	dec, err := Decimal{}.NewNumStr(nStr)
-//	bINum := BigIntNum{}
+//	dec, err := new(Decimal).NewNumStr(nStr)
+//	bINum := new(BigIntNum)
 //	err := bINum.SetINumMgr(&dec)
 //
 // Example 2:
-// dec, err := Decimal{}.NewNumStr(nStr)
+// dec, err := new(Decimal).NewNumStr(nStr)
 // bINum := BigIntNum{}
 // err := bINum.SetINumMgr(dec.GetThisPointer())
 //
 // Example 3:
-// dec := Decimal{}.NewPtr()
+// dec := new(Decimal).NewPtr()
 // err := dec.SetNumStr(nStr)
 // bINum := BigIntNum{}
 // err := bINum.SetINumMgr(dec)
+//
+// Example 4:
+// fd := new(BigIntFixedDecimal).NewZero()
 func (bNum *BigIntNum) SetINumMgr(numMgr INumMgr) error {
 
-	ePrefix := "BigIntNum.SetINumMgr() "
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-	err := numMgr.IsValid(ePrefix + "numMgr INVALID! ")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"BigIntNum.SetINumMgr",
+		"")
 
 	if err != nil {
 		return err
 	}
 
-	bigInt, err := numMgr.GetBigInt()
-
-	if err != nil {
-		return fmt.Errorf(ePrefix+"Error returned by numMgr.GetBigInt(). "+
-			"Error='%v'", err.Error())
-	}
-
-	err = new(bigIntNumNanobot).setBigInt(
-		bNum,
-		bigInt,
-		numMgr.GetPrecisionUint(),
-		ePrefix)
-
-	return err
+	return new(bigIntNumMolecule).setINumMgr(
+		bNum, numMgr, ePrefix)
 }
 
 // SetPrecision - Sets a new 'precision' value for the current
@@ -5919,12 +5867,14 @@ func (bNum *BigIntNum) ShiftPrecisionRight(shiftRightPlaces uint) error {
 	return err
 }
 
-// SetThousandsSeparator - Sets the value of the character which will be
-// used to separate thousands in the display of the NumStrDto number
-// string. In the USA the typical thousands separator is the comma.
+// SetThousandsSeparator
 //
-// If if a zero value is submitted, the Thousands Separator will default
-// to the comma character.
+// Sets the value of the character which will be used to separate
+// thousands in the display of the NumStrDto number string. In the
+// USA the typical thousands separator is the comma (',').
+//
+// If a zero value is submitted, the Thousands Separator will
+// default to the comma character (USA Default).
 //
 // Example:
 // 1,000,000
@@ -5936,6 +5886,7 @@ func (bNum *BigIntNum) SetThousandsSeparator(thousandsSeparator rune) {
 
 	bNum.thousandsSeparator = thousandsSeparator
 
+	return
 }
 
 // TrimTrailingFracZeros - This method will delete non-significant

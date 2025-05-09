@@ -1590,12 +1590,12 @@ func (bNumNeutron *bigIntNumNeutron) newBigIntFixedDecimal(
 	if err != nil {
 
 		return BigIntNum{},
-				&FuncReturnError{
-					ErrPrefix:  ePrefix.String(),
-					ReturnFunc: "fdIntVal, err := fd.GetInteger()",
-					ErrContext: "'fd' is input parameter of type BigIntFixedDecimal",
-					ErrMessage: err.Error(),
-				}
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "fdIntVal, err := fd.GetInteger()",
+				ErrContext: "'fd' is input parameter of type BigIntFixedDecimal",
+				ErrMessage: err.Error(),
+			}
 	}
 
 	fdPrecision, err := fd.GetPrecision()
@@ -1627,4 +1627,158 @@ func (bNumNeutron *bigIntNumNeutron) newBigIntFixedDecimal(
 	}
 
 	return bid, nil
+}
+
+// setIntFracStrings
+//
+// Sets the value of the current BigIntNum instance based on a numeric value
+// represented by separate integer and fractional components.
+//
+// Input parameters 'intStr' and 'fracStr' are strings representing the integer and
+// fractional components. They are combined by this method to create a numeric value
+// which is assigned to the current BigIntNum instance.
+//
+// Input parameter 'signVal' must be set to one of two values: +1 or -1. This value is
+// used to signal the sign of the resulting numeric value. +1 generates a positive number
+// and -1 generates a negative number. If input parameters 'inStr' or 'fracStr' contain
+// a leading minus or plus sign character, it will be ignored. The sign of the resulting
+// numeric value is controlled strictly by input parameter, 'signVal'.
+//
+// Existing numeric separators (decimal separator, thousands separator
+// and currency symbol) remain unchanged and are not altered by this method.
+func (bNumNeutron *bigIntNumNeutron) setIntFracStrings(
+	bNum *BigIntNum,
+	intStr string,
+	fracStr string,
+	signVal int,
+	errPrefDto *ePref.ErrPrefixDto) error {
+
+	if bNumNeutron.lock == nil {
+		bNumNeutron.lock = new(sync.Mutex)
+	}
+
+	bNumNeutron.lock.Lock()
+
+	defer bNumNeutron.lock.Unlock()
+
+	var err error
+
+	var ePrefix *ePref.ErrPrefixDto
+
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
+		errPrefDto,
+		"bigIntNumAtom.setIntFracStrings",
+		"")
+
+	if err != nil {
+		return err
+	}
+
+	if bNum == nil {
+
+		return &InputPtrNilError{
+			ErrPrefix:     ePrefix.String(),
+			ParameterName: "'bNum'",
+		}
+	}
+
+	cleanIntRuneAry := make([]rune, 0, 100)
+
+	zeroChar := uint8('0')
+	nineChar := uint8('9')
+
+	lStr := len(intStr)
+
+	if lStr == 0 {
+
+		return &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "lStr := len(intStr)",
+			ErrContext: "if lStr == 0 {",
+			ErrMessage: "Error: Input Parameter 'intStr' is zero Length!",
+		}
+	}
+
+	isFirstRune := true
+
+	// Create pure number string from 'intStr'
+	for i := 0; i < lStr; i++ {
+
+		if intStr[i] >= zeroChar &&
+			intStr[i] <= nineChar {
+
+			if isFirstRune && signVal == -1 {
+				cleanIntRuneAry = append(cleanIntRuneAry, '-')
+			}
+
+			isFirstRune = false
+
+			cleanIntRuneAry = append(cleanIntRuneAry, rune(intStr[i]))
+		}
+	}
+
+	if len(cleanIntRuneAry) == 0 {
+		cleanIntRuneAry = append(cleanIntRuneAry, '0')
+	}
+
+	lStr = len(fracStr)
+
+	if lStr > 0 {
+
+		isFirstRune = true
+
+		for j := 0; j < lStr; j++ {
+
+			if fracStr[j] >= zeroChar &&
+				fracStr[j] <= nineChar {
+
+				if isFirstRune {
+
+					var nSepSymbol NumSepSymbolCode
+
+					nSepSymbol = DECIMALSYMBOL
+
+					decSeparator, err := new(bigIntNumProton).bigIntNumGetNumSepSymbol(
+						bNum, nSepSymbol, ePrefix)
+
+					if err != nil {
+
+						return &FuncReturnError{
+							ErrPrefix: ePrefix.String(),
+							ReturnFunc: "decSeparator, err := new(bigIntNumProton).\n" +
+								"    bigIntNumGetNumSepSymbol(bNum, nSepSymbol, ePrefix)",
+							ErrContext: "",
+							ErrMessage: err.Error(),
+						}
+					}
+
+					cleanIntRuneAry = append(cleanIntRuneAry, decSeparator)
+
+					isFirstRune = false
+				}
+
+				cleanIntRuneAry = append(cleanIntRuneAry, rune(fracStr[j]))
+			}
+
+		}
+	}
+
+	err = new(bigIntNumMolecule).setNumStr(
+		bNum,
+		string(cleanIntRuneAry),
+		ePrefix)
+
+	if err != nil {
+
+		return &FuncReturnError{
+			ErrPrefix: ePrefix.String(),
+			ReturnFunc: "err = new(bigIntNumMolecule).setNumStr(bNum, \n" +
+				"    string(cleanIntRuneAry), ePrefix)",
+			ErrContext: "",
+			ErrMessage: err.Error(),
+		}
+	}
+
+	return nil
 }

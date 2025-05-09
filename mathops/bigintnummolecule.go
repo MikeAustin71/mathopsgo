@@ -79,6 +79,15 @@ func (bIntMolecule *bigIntNumMolecule) formatCurrencyStr(
 				ePrefix.String())
 	}
 
+	err = new(bigIntNumAtom).isBigIntNumValid(
+		bNum,
+		ePrefix.XCpy("Testing 'bNum'"))
+
+	if err != nil {
+
+		return "", err
+	}
+
 	if bNum.decimalSeparator == 0 {
 		bNum.decimalSeparator = '.'
 	}
@@ -485,9 +494,18 @@ func (bIntMolecule *bigIntNumMolecule) formatThousandsStr(
 		return "", err
 	}
 
+	if bNum == nil {
+
+		return "",
+			&InputPtrNilError{
+				ErrPrefix:     ePrefix.String(),
+				ParameterName: "'bNum'",
+			}
+	}
+
 	err = new(bigIntNumAtom).isBigIntNumValid(
 		bNum,
-		ePrefix)
+		ePrefix.XCpy("Testing 'bNum'"))
 
 	if err != nil {
 
@@ -688,11 +706,11 @@ func (bIntMolecule *bigIntNumMolecule) getActualNumberOfDigits(
 
 	if bNum == nil {
 
-		err = fmt.Errorf("%v\n"+
-			"FATAL ERROR: Input parameter 'bNum' is a nil pointer.\n",
-			ePrefix.String())
-
-		return numberOfDigits, isZeroValue, err
+		return numberOfDigits, isZeroValue,
+			&InputPtrNilError{
+				ErrPrefix:     ePrefix.String(),
+				ParameterName: "'bNum'",
+			}
 	}
 
 	err = new(bigIntNumAtom).isBigIntNumValid(
@@ -765,10 +783,10 @@ func (bIntMolecule *bigIntNumMolecule) isBIntNumZero(
 
 	if bNum == nil {
 
-		return false,
-			fmt.Errorf("%v\n"+
-				"FATAL ERROR: Input parameter 'bNum' is a nil pointer.\n",
-				ePrefix)
+		return false, &InputPtrNilError{
+			ErrPrefix:     ePrefix.String(),
+			ParameterName: "'bNum'",
+		}
 	}
 
 	err = new(bigIntNumAtom).isBigIntNumValid(
@@ -929,9 +947,10 @@ func (bIntMolecule *bigIntNumMolecule) setBigIntExponent(
 
 	if bNum == nil {
 
-		return fmt.Errorf("%v\n"+
-			"FATAL ERROR: Input parameter 'bNum' is a nil pointer.\n",
-			ePrefix.String())
+		return &InputPtrNilError{
+			ErrPrefix:     ePrefix.String(),
+			ParameterName: "'bNum'",
+		}
 	}
 
 	if bigI == nil {
@@ -1154,9 +1173,10 @@ func (bIntMolecule *bigIntNumMolecule) setExpectedNumberOfDigits(
 
 	if bNum == nil {
 
-		return fmt.Errorf("%v\n"+
-			"FATAL ERROR: Input parameter 'bNum' is a nil pointer.\n",
-			ePrefix.String())
+		return &InputPtrNilError{
+			ErrPrefix:     ePrefix.String(),
+			ParameterName: "'bNum'",
+		}
 	}
 
 	if numOfDigits == nil {
@@ -1226,9 +1246,10 @@ func (bIntMolecule *bigIntNumMolecule) setNumStr(
 
 	if bNum == nil {
 
-		return fmt.Errorf("%v\n"+
-			"FATAL ERROR: Input parameter 'bNum' is a nil pointer.\n",
-			ePrefix.String())
+		return &InputPtrNilError{
+			ErrPrefix:     ePrefix.String(),
+			ParameterName: "'bNum'",
+		}
 	}
 
 	if bNum.bigInt == nil {
@@ -1368,6 +1389,168 @@ func (bIntMolecule *bigIntNumMolecule) setNumStr(
 		bNum,
 		numSeps,
 		ePrefix)
+
+	return nil
+}
+
+// setINumMgr
+//
+// Receives an input parameter implementing the INumMgr interface and
+// proceeds to set the current BigIntNum instance to its equivalent
+// numeric value.
+//
+// Currently, the following 'mathops' Types implement the INumMgr
+// interface:
+//
+//		Decimal,
+//		IntAry,
+//		NumStrDto,
+//		BigIntNum
+//	 BigIntFixedDecimal
+//
+// 'numMgr' must be a pointer to a type. This method will not accept
+// 'numMgr' as a value. The pointer to the type is needed in or order to
+// call methods on 'numMgr'.
+//
+// This method will test the validity of input parameter, 'numMgr'.
+//
+// Example 1:
+//
+//	dec, err := new(Decimal).NewNumStr(nStr)
+//	bINum := new(BigIntNum)
+//	err := bINum.SetINumMgr(&dec)
+//
+// Example 2:
+// dec, err := new(Decimal).NewNumStr(nStr)
+// bINum := BigIntNum{}
+// err := bINum.SetINumMgr(dec.GetThisPointer())
+//
+// Example 3:
+// dec := new(Decimal).NewPtr()
+// err := dec.SetNumStr(nStr)
+// bINum := BigIntNum{}
+// err := bINum.SetINumMgr(dec)
+//
+// Example 4:
+// fd := new(BigIntFixedDecimal).NewZero()
+// err := fd.SetNumStr(numStr string)
+// bINum := BigIntNum{}
+// err := bINum.SetINumMgr(fd)
+func (bIntMolecule *bigIntNumMolecule) setINumMgr(
+	bNum *BigIntNum,
+	numMgr INumMgr,
+	errPrefDto *ePref.ErrPrefixDto) error {
+
+	if bIntMolecule.lock == nil {
+		bIntMolecule.lock = new(sync.Mutex)
+	}
+
+	bIntMolecule.lock.Lock()
+
+	defer bIntMolecule.lock.Unlock()
+
+	var ePrefix *ePref.ErrPrefixDto
+
+	var err error
+
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
+		errPrefDto,
+		"bigIntNumMolecule.setNumStr()",
+		"")
+
+	if err != nil {
+		return err
+	}
+
+	if bNum == nil {
+
+		return &InputPtrNilError{
+			ErrPrefix:     ePrefix.String(),
+			ParameterName: "'bNum'",
+		}
+	}
+
+	err = numMgr.IsValid(ePrefix.XCpy("Testing 'numMgr'").String())
+
+	if err != nil {
+
+		return &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "bigInt, err := numMgr.GetBigInt()",
+			ErrContext: "",
+			ErrMessage: err.Error(),
+		}
+	}
+
+	bigInt, err := numMgr.GetBigInt()
+
+	if err != nil {
+
+		return &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "bigInt, err := numMgr.GetBigInt()",
+			ErrContext: "",
+			ErrMessage: err.Error(),
+		}
+	}
+
+	precisionUint, err := numMgr.GetPrecisionUint()
+
+	if err != nil {
+
+		return &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "precisionUint, err := numMgr.GetPrecisionUint()",
+			ErrContext: "",
+			ErrMessage: err.Error(),
+		}
+	}
+
+	err = new(bigIntNumNanobot).setBigInt(
+		bNum,
+		bigInt,
+		precisionUint,
+		ePrefix)
+
+	if err != nil {
+
+		return &FuncReturnError{
+			ErrPrefix: ePrefix.String(),
+			ReturnFunc: "err = new(bigIntNumNanobot).setBigInt(\n" +
+				"    bNum, bigInt, precisionUint, ePrefix)",
+			ErrContext: "",
+			ErrMessage: err.Error(),
+		}
+	}
+
+	numSepsDto, err := numMgr.GetNumericSeparatorsDto()
+
+	if err != nil {
+
+		return &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "numSepsDto, err := numMgr.GetNumericSeparatorsDto()",
+			ErrContext: "",
+			ErrMessage: err.Error(),
+		}
+	}
+
+	err = new(bigIntNumAtom).setNumericSeparatorsDto(
+		bNum,
+		numSepsDto,
+		ePrefix)
+
+	if err != nil {
+
+		return &FuncReturnError{
+			ErrPrefix: ePrefix.String(),
+			ReturnFunc: "err = new(bigIntNumAtom).setNumericSeparatorsDto(\n" +
+				"bNum, numSepsDto, ePrefix)",
+			ErrContext: "",
+			ErrMessage: err.Error(),
+		}
+	}
 
 	return nil
 }
