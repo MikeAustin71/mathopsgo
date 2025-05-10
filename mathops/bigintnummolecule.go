@@ -1087,12 +1087,35 @@ func (bIntMolecule *bigIntNumMolecule) setBigRat(
 		}
 	}
 
-	numSeps, err := new(bigIntNumAtom).getNumericSeparatorsDto(
+	bIntNumAtom := new(bigIntNumAtom)
+
+	numSeps, err := bIntNumAtom.getNumericSeparatorsDto(
 		bNum,
 		ePrefix)
 
 	if err != nil {
-		return err
+
+		return &FuncReturnError{
+			ErrPrefix: ePrefix.String(),
+			ReturnFunc: "numSeps, err := new(bigIntNumAtom).getNumericSeparatorsDto(\n" +
+				"    bNum, ePrefix)",
+			ErrContext: "",
+			ErrMessage: err.Error(),
+		}
+	}
+
+	err = bIntNumAtom.setNumericSeparatorsToDefaultIfEmpty(
+		bNum, ePrefix)
+
+	if err != nil {
+
+		return &FuncReturnError{
+			ErrPrefix: ePrefix.String(),
+			ReturnFunc: "err = bIntNumAtom.setNumericSeparatorsToDefaultIfEmpty(\n" +
+				"    bNum, ePrefix)",
+			ErrContext: "",
+			ErrMessage: err.Error(),
+		}
 	}
 
 	numerator := big.NewInt(0).Set(ratNum.Num())

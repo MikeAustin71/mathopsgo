@@ -3201,7 +3201,7 @@ func (bNum *BigIntNum) NewFloat32(
   ePrefix,
     err = ePref.ErrPrefixDto{}.NewIEmpty(
     nil,
-    "BigIntNum.SetFloat32",
+    "BigIntNum.NewFloat32",
     "")
 
   if err != nil {
@@ -3258,29 +3258,49 @@ func (bNum *BigIntNum) NewFloat32(
 //	'maxPrecision'.
 func (bNum *BigIntNum) NewFloat64(f64 float64, maxPrecision uint) (BigIntNum, error) {
 
-  ePrefix := "BigIntNumNewFloat64() "
+  var ePrefix *ePref.ErrPrefixDto
+  var err error
 
-  b := BigIntNum{}
+  ePrefix,
+    err = ePref.ErrPrefixDto{}.NewIEmpty(
+    nil,
+    "BigIntNum.NewFloat64",
+    "")
 
-  b.Empty()
+  if err != nil {
+    return BigIntNum{}, err
+  }
 
-  err := b.SetFloat64(f64, maxPrecision)
+  bINum, err := new(bigIntNumMechanics).newZero(
+    0,
+    ePrefix)
+
+  if err != nil {
+    return BigIntNum{}, err
+  }
+
+  ratNum := big.NewRat(1, 1).
+    SetFloat64(f64)
+
+  err = new(bigIntNumMolecule).setBigRat(
+    &bINum,
+    ratNum,
+    maxPrecision,
+    ePrefix)
 
   if err != nil {
 
     return BigIntNum{},
-      fmt.Errorf("%v\n"+
-        "Error returned by b.SetFloat64(f64, maxPrecision).\n"+
-        "f64= '%v'\n"+
-        "maxPrecision='%v'\n"+
-        "Error= %v\n",
-        ePrefix,
-        strconv.FormatFloat(f64, 'f', -1, 64),
-        maxPrecision,
-        err.Error())
+      &FuncReturnError{
+        ErrPrefix: ePrefix.String(),
+        ReturnFunc: "err = new(bigIntNumMolecule).setBigRat(" +
+          "    &bINum, ratNum, maxPrecision, ePrefix)",
+        ErrContext: fmt.Sprintf("ratNum= '%v' maxPrecision= '%v'", ratNum.String(), maxPrecision),
+        ErrMessage: err.Error(),
+      }
   }
 
-  return b, nil
+  return bINum, nil
 }
 
 // NewInt
