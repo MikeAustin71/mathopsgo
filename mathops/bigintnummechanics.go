@@ -1,14 +1,14 @@
 package mathops
 
 import (
-	"fmt"
-	ePref "github.com/MikeAustin71/errpref"
-	"math/big"
-	"sync"
+  "fmt"
+  ePref "github.com/MikeAustin71/errpref"
+  "math/big"
+  "sync"
 )
 
 type bigIntNumMechanics struct {
-	lock *sync.Mutex
+  lock *sync.Mutex
 }
 
 // new - returns a new BigIntNum instance initialized to zero.
@@ -18,11 +18,11 @@ type bigIntNumMechanics struct {
 // and currency symbol).
 func (bIntNumMech *bigIntNumMechanics) new() BigIntNum {
 
-	b := new(BigIntNum)
+  b := new(BigIntNum)
 
-	new(bigIntNumElectron).empty(b)
+  new(bigIntNumElectron).empty(b)
 
-	return *b
+  return *b
 }
 
 // newBigInt - Creates a new BigIntNum instance using a *big.Int type and its
@@ -57,58 +57,58 @@ func (bIntNumMech *bigIntNumMechanics) new() BigIntNum {
 // The new BigIntNum instance returned by this method will contain USA default numeric
 // separators (decimal separator, thousands separator and currency symbol).
 func (bIntNumMech *bigIntNumMechanics) newBigInt(
-	bigI *big.Int,
-	precision uint,
-	errPrefDto *ePref.ErrPrefixDto) (BigIntNum, error) {
+  bigI *big.Int,
+  precision uint,
+  errPrefDto *ePref.ErrPrefixDto) (BigIntNum, error) {
 
-	if bIntNumMech.lock == nil {
-		bIntNumMech.lock = new(sync.Mutex)
-	}
+  if bIntNumMech.lock == nil {
+    bIntNumMech.lock = new(sync.Mutex)
+  }
 
-	bIntNumMech.lock.Lock()
+  bIntNumMech.lock.Lock()
 
-	defer bIntNumMech.lock.Unlock()
+  defer bIntNumMech.lock.Unlock()
 
-	var ePrefix *ePref.ErrPrefixDto
+  var ePrefix *ePref.ErrPrefixDto
 
-	var err error
+  var err error
 
-	ePrefix,
-		err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
-		errPrefDto,
-		"bigIntNumMechanics.newBigInt()",
-		"")
+  ePrefix,
+    err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
+    errPrefDto,
+    "bigIntNumMechanics.newBigInt()",
+    "")
 
-	if err != nil {
-		return BigIntNum{}, err
-	}
+  if err != nil {
+    return BigIntNum{}, err
+  }
 
-	if bigI == nil {
+  if bigI == nil {
 
-		return BigIntNum{},
-			fmt.Errorf("%v\n"+
-				"Error: Input parameter 'bigI' is a nil pointer!\n",
-				ePrefix.String())
+    return BigIntNum{},
+      &InputPtrNilError{
+        ErrPrefix:     ePrefix.String(),
+        ParameterName: "'bigI'",
+      }
+  }
 
-	}
+  b := new(BigIntNum)
 
-	b := new(BigIntNum)
+  new(bigIntNumElectron).empty(b)
 
-	new(bigIntNumElectron).empty(b)
+  err = new(bigIntNumNanobot).setBigInt(
+    b,
+    bigI,
+    precision,
+    ePrefix)
 
-	err = new(bigIntNumNanobot).setBigInt(
-		b,
-		bigI,
-		precision,
-		ePrefix)
+  if err != nil {
 
-	if err != nil {
+    return BigIntNum{}, err
 
-		return BigIntNum{}, err
+  }
 
-	}
-
-	return *b, nil
+  return *b, nil
 }
 
 // NewInt64Exponent -This method returns a new BigIntNum instance in which
@@ -141,68 +141,66 @@ func (bIntNumMech *bigIntNumMechanics) newBigInt(
 //		 123456		 		   3							123456.000
 //		 123456          0              123456
 func (bIntNumMech *bigIntNumMechanics) newInt64Exponent(
-	int64Num int64,
-	exponent int,
-	errPrefDto *ePref.ErrPrefixDto) (BigIntNum, error) {
+  int64Num int64,
+  exponent int,
+  errPrefDto *ePref.ErrPrefixDto) (BigIntNum, error) {
 
-	if bIntNumMech.lock == nil {
-		bIntNumMech.lock = new(sync.Mutex)
-	}
+  if bIntNumMech.lock == nil {
+    bIntNumMech.lock = new(sync.Mutex)
+  }
 
-	bIntNumMech.lock.Lock()
+  bIntNumMech.lock.Lock()
 
-	defer bIntNumMech.lock.Unlock()
+  defer bIntNumMech.lock.Unlock()
 
-	var ePrefix *ePref.ErrPrefixDto
+  var ePrefix *ePref.ErrPrefixDto
 
-	var err error
+  var err error
 
-	ePrefix,
-		err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
-		errPrefDto,
-		"bigIntNumMechanics.newInt64Exponent()",
-		"")
+  ePrefix,
+    err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
+    errPrefDto,
+    "bigIntNumMechanics.newInt64Exponent()",
+    "")
 
-	if err != nil {
-		return BigIntNum{}, err
-	}
+  if err != nil {
+    return BigIntNum{}, err
+  }
 
-	bigI := big.NewInt(int64Num)
+  bigI := big.NewInt(int64Num)
 
-	b := BigIntNum{}
+  b := BigIntNum{}
 
-	new(bigIntNumElectron).empty(&b)
+  new(bigIntNumElectron).empty(&b)
 
-	err = new(bigIntNumNanobot).setBigInt(
-		&b,
-		big.NewInt(0),
-		0,
-		ePrefix)
+  err = new(bigIntNumNanobot).setBigInt(
+    &b,
+    big.NewInt(0),
+    0,
+    ePrefix)
 
-	if err != nil {
+  if err != nil {
 
-		return BigIntNum{}, err
+    return BigIntNum{}, err
 
-	}
+  }
 
-	//err = b.SetBigIntExponent(bigI, exponent)
+  err = new(bigIntNumMolecule).
+    setBigIntExponent(&b, bigI, exponent, ePrefix)
 
-	err = new(bigIntNumMolecule).
-		setBigIntExponent(&b, bigI, exponent, ePrefix)
+  if err != nil {
 
-	if err != nil {
+    return BigIntNum{},
+      fmt.Errorf("%v\n"+
+        "Error returned by:\n"+
+        " err = new(bigIntNumMolecule).\n"+
+        "   setBigIntExponent(&b, bigI, exponent, ePrefix)\n"+
+        "Error= %v\n",
+        ePrefix.String(),
+        err.Error())
+  }
 
-		return BigIntNum{},
-			fmt.Errorf("%v\n"+
-				"Error returned by:\n"+
-				" err = new(bigIntNumMolecule).\n"+
-				"   setBigIntExponent(&b, bigI, exponent, ePrefix)\n"+
-				"Error= %v\n",
-				ePrefix.String(),
-				err.Error())
-	}
-
-	return b, nil
+  return b, nil
 }
 
 // newZero - Returns a BigIntNum instance with a value equal to zero.
@@ -218,48 +216,48 @@ func (bIntNumMech *bigIntNumMechanics) newInt64Exponent(
 //			2								0.00
 //			3								0.000
 func (bIntNumMech *bigIntNumMechanics) newZero(
-	precision uint,
-	errPrefDto *ePref.ErrPrefixDto) (BigIntNum, error) {
+  precision uint,
+  errPrefDto *ePref.ErrPrefixDto) (BigIntNum, error) {
 
-	if bIntNumMech.lock == nil {
-		bIntNumMech.lock = new(sync.Mutex)
-	}
+  if bIntNumMech.lock == nil {
+    bIntNumMech.lock = new(sync.Mutex)
+  }
 
-	bIntNumMech.lock.Lock()
+  bIntNumMech.lock.Lock()
 
-	defer bIntNumMech.lock.Unlock()
+  defer bIntNumMech.lock.Unlock()
 
-	var ePrefix *ePref.ErrPrefixDto
+  var ePrefix *ePref.ErrPrefixDto
 
-	var err error
+  var err error
 
-	ePrefix,
-		err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
-		errPrefDto,
-		"bigIntNumMechanics.newZero()",
-		"")
+  ePrefix,
+    err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
+    errPrefDto,
+    "bigIntNumMechanics.newZero()",
+    "")
 
-	if err != nil {
-		return BigIntNum{}, err
-	}
+  if err != nil {
+    return BigIntNum{}, err
+  }
 
-	b := BigIntNum{}
+  b := BigIntNum{}
 
-	new(bigIntNumElectron).empty(&b)
+  new(bigIntNumElectron).empty(&b)
 
-	err = new(bigIntNumNanobot).setBigInt(
-		&b,
-		big.NewInt(0),
-		precision,
-		ePrefix)
+  err = new(bigIntNumNanobot).setBigInt(
+    &b,
+    big.NewInt(0),
+    precision,
+    ePrefix)
 
-	if err != nil {
+  if err != nil {
 
-		return BigIntNum{}, err
+    return BigIntNum{}, err
 
-	}
+  }
 
-	return b, nil
+  return b, nil
 }
 
 // newBigIntNum - returns a new BigIntNum instance initialized to zero.
@@ -269,9 +267,9 @@ func (bIntNumMech *bigIntNumMechanics) newZero(
 // and currency symbol).
 func (bIntNumMech *bigIntNumMechanics) newBigIntNum() BigIntNum {
 
-	b := new(BigIntNum)
+  b := new(BigIntNum)
 
-	new(bigIntNumElectron).empty(b)
+  new(bigIntNumElectron).empty(b)
 
-	return *b
+  return *b
 }

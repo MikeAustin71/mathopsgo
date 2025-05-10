@@ -4925,7 +4925,9 @@ func (bNum *BigIntNum) RoundToDecPlace(precision uint) error {
 	return err
 }
 
-// SetBigInt - Sets the value of the current BigIntNum instance using
+// SetBigInt
+//
+// Sets the value of the current BigIntNum instance using
 // the input parameters *big.Int integer and precision.
 //
 // The 'precision' parameter specifies the number of digits to the right
@@ -4933,14 +4935,19 @@ func (bNum *BigIntNum) RoundToDecPlace(precision uint) error {
 // This effectively locates the decimal place by counting from the extreme right
 // of the integer number, 'precision' places to the left. See the example below.
 //
-// Input Parameters
-// bigI *big.Int	- 'bigI' is a type *big.Int and represents the integer
+//	Input Parameters
+//	================
 //
-//	value of the number; that is, the numeric value with
-//	out decimal digits.
+//	bigI			*big.Int
 //
-// precision uint	- This unsigned integer (always a positive value) identifies
+//	'bigI' is a type *big.Int and represents the integer
+//	value of the number; that is, the numeric value without
+//	decimal digits.
 //
+//
+//	precision		uint
+//
+//	This unsigned integer (always a positive value) identifies
 //	the location of the decimal place in the integer value 'bigI'.
 //	The decimal place location is calculated by starting with the
 //	right most digit in the integer number and counting	left,
@@ -4952,12 +4959,93 @@ func (bNum *BigIntNum) RoundToDecPlace(precision uint) error {
 // and currency symbol) remain unchanged and are not altered by this method.
 func (bNum *BigIntNum) SetBigInt(bigI *big.Int, precision uint) error {
 
-	ePrefix := "BigIntNum.SetBigInt()"
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
+
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"BigIntNum.SetBigInt",
+		"")
+
+	if err != nil {
+		return err
+	}
 
 	return new(bigIntNumNanobot).setBigInt(
 		bNum,
 		bigI,
 		precision,
+		ePrefix)
+}
+
+// SetBigIntNumSeps
+//
+// Sets the value of the current BigIntNum instance using
+// the input parameters *big.Int integer and precision.
+//
+// The 'precision' parameter specifies the number of digits to the right
+// of the decimal place. The Numeric value is equal to bigI x 10^(precision x -1).
+// This effectively locates the decimal place by counting from the extreme right
+// of the integer number, 'precision' places to the left. See the example below.
+//
+//	Input Parameters
+//	================
+//
+//	bigI			*big.Int
+//
+//	'bigI' is a type *big.Int and represents the integer
+//	value of the number; that is, the numeric value without
+//	decimal digits.
+//
+//
+//	precision		uint
+//
+//	This unsigned integer (always a positive value) identifies
+//	the location of the decimal place in the integer value 'bigI'.
+//	The decimal place location is calculated by starting with the
+//	right most digit in the integer number and counting	left,
+//	'precision' places. Example:
+//			Integer Value		precision			Numeric Value
+//			  123456					 3					  123.456
+//
+//
+//	numSeps				NumericSeparatorDto
+//
+//	Input parameter 'bNum' (type BigIntNum) will be reconfigured
+//	with numeric separators provided by input prameter 'numSeps',
+//	an instance of NumericSeparatorDto. Type NumericSeparatorDto
+//	contains the decimal separator, thousands separator and currency
+//	symbol.
+//
+//		type NumericSeparatorDto struct {
+//			DecimalSeparator   rune // Character used to separate integer and fractional digits ('.')
+//			ThousandsSeparator rune // Character used to separate thousands (1,000,000,000)
+//			CurrencySymbol     rune // Currency Symbol
+//		}
+func (bNum *BigIntNum) SetBigIntNumSeps(
+	bigI *big.Int,
+	precision uint,
+	numSeps NumericSeparatorDto) error {
+
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
+
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"BigIntNum.SetBigIntNumSeps",
+		"")
+
+	if err != nil {
+		return err
+	}
+
+	return new(bigIntNumMolecule).setBigIntNumSeps(
+		bNum,
+		bigI,
+		precision,
+		numSeps,
 		ePrefix)
 }
 
@@ -5095,7 +5183,66 @@ func (bNum *BigIntNum) SetBigRat(
 	ePrefix,
 		err = ePref.ErrPrefixDto{}.NewIEmpty(
 		nil,
-		"BigIntNum.Ceiling",
+		"BigIntNum.SetBigRat",
+		"")
+
+	if err != nil {
+		return err
+	}
+
+	return new(bigIntNumMolecule).setBigRat(
+		bNum,
+		ratNum,
+		maxPrecision,
+		ePrefix)
+}
+
+// SetBigRatNumSeps
+//
+// Sets the value of the current BigIntNum instance to that of
+//
+//	input parameter 'ratNum', a rational number of type *big.Rat.
+//
+//	Input Parmeters
+//	===============
+//
+//	ratNum				*big.Rat
+//
+//		The value of ratNum will be used to configure the current
+//		BigIntNum instance and reset its value.
+//
+//	maxPrecision	uint
+//
+//		The maximum precision for the resulting BigIntNum value
+//		after it is reset to the value of input parameter 'ratNum'.
+//		Precision will never be greater than 'maxPrecision'; however,
+//		actual precision may be less than 'maxPrecision'.
+//
+//	numSeps				NumericSeparatorDto
+//
+//		The current BigIntNum instance will be reconfigured with
+//		numeric separators provided by 'numSeps' an instance of
+//		NumericSeparatorDto. Type NumericSeparatorDto contains
+//		the decimal separator, thousands separator and currency
+//		symbol.
+//
+//		type NumericSeparatorDto struct {
+//			DecimalSeparator   rune // Character used to separate integer and fractional digits ('.')
+//			ThousandsSeparator rune // Character used to separate thousands (1,000,000,000
+//			CurrencySymbol     rune // Currency Symbol
+//		}
+func (bNum *BigIntNum) SetBigRatNumSeps(
+	ratNum *big.Rat,
+	maxPrecision uint,
+	numSeps NumericSeparatorDto) error {
+
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
+
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"BigIntNum.SetBigRat",
 		"")
 
 	if err != nil {

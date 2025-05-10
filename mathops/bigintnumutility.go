@@ -148,11 +148,10 @@ func (bIngNumUtil *bigIntNumUtility) bigIntNumChangeSign(
 
 	if bNum == nil {
 
-		err = fmt.Errorf("%v\n"+
-			"FATAL ERROR: Input parameter 'bNum' is a nil pointer.\n",
-			ePrefix.String())
-
-		return err
+		return &InputPtrNilError{
+			ErrPrefix:     ePrefix.String(),
+			ParameterName: "'bNum'",
+		}
 	}
 
 	var isZero bool
@@ -226,20 +225,18 @@ func (bIngNumUtil *bigIntNumUtility) bigIntNumCopyIn(
 
 	if bNumDestination == nil {
 
-		err = fmt.Errorf("%v\n"+
-			"FATAL ERROR: Input parameter 'bNumDestination' is a nil pointer.\n",
-			ePrefix.String())
-
-		return err
+		return &InputPtrNilError{
+			ErrPrefix:     ePrefix.String(),
+			ParameterName: "'bNumDestination'",
+		}
 	}
 
 	if bNumSource == nil {
 
-		err = fmt.Errorf("%v\n"+
-			"FATAL ERROR: Input parameter 'bNumSource' is a nil pointer.\n",
-			ePrefix.String())
-
-		return err
+		return &InputPtrNilError{
+			ErrPrefix:     ePrefix.String(),
+			ParameterName: "'bNumSource'",
+		}
 	}
 
 	err = new(bigIntNumAtom).isBigIntNumValid(
@@ -312,11 +309,11 @@ func (bIngNumUtil *bigIntNumUtility) bigIntNumCopyOut(
 
 	if bNum == nil {
 
-		err = fmt.Errorf("%v\n"+
-			"FATAL ERROR: Input parameter 'bNum' is a nil pointer.\n",
-			ePrefix.String())
-
-		return BigIntNum{}, err
+		return BigIntNum{},
+			&InputPtrNilError{
+				ErrPrefix:     ePrefix.String(),
+				ParameterName: "'bNum'",
+			}
 	}
 
 	err = new(bigIntNumAtom).isBigIntNumValid(

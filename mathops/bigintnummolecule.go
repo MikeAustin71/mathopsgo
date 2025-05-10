@@ -74,9 +74,11 @@ func (bIntMolecule *bigIntNumMolecule) formatCurrencyStr(
 	if bNum == nil {
 
 		return "",
-			fmt.Errorf("%v\n"+
-				"FATAL ERROR: Input parameter 'bNum' is a nil pointer.\n",
-				ePrefix.String())
+			&InputPtrNilError{
+				ErrPrefix:     ePrefix.String(),
+				ErrContext:    "",
+				ParameterName: "'bNum'",
+			}
 	}
 
 	err = new(bigIntNumAtom).isBigIntNumValid(
@@ -991,7 +993,7 @@ func (bIntMolecule *bigIntNumMolecule) setBigIntExponent(
 	return err
 }
 
-// SetBigRat
+// setBigRat
 //
 // Sets the value of BigIntNum instance, passed as input parameter
 // 'bNum', to that of input parameter 'ratNum', a rational number
@@ -1000,12 +1002,19 @@ func (bIntMolecule *bigIntNumMolecule) setBigIntExponent(
 //	Input Parmeters
 //	===============
 //
-// ratNum 			*big.Rat
+//	bNum *BigIntNum
+//
+//	This instance of BigIntNum will be reconfigured using input
+//	parameters 'ratNum', 'maxPrecision' and 'numSeps'
+//
+//
+//	ratNum 				*big.Rat
 //
 //	The value of ratNum will be used to configure the current
 //	BigIntNum instance and reset its value.
 //
-// maxPrecision uint
+//
+//	maxPrecision 	uint
 //
 //	The maximum precision for the resulting BigIntNum value
 //	after it is reset to the value of input parameter 'ratNum'.
@@ -1016,7 +1025,24 @@ func (bIntMolecule *bigIntNumMolecule) setBigIntExponent(
 //	and currency symbol) in the current BigIntNum instance will remain
 //	unchanged and will not be altered by this method.
 //
-//	NOTE:
+//
+//	numSeps				NumericSeparatorDto
+//
+//	The current BigIntNum instance will be reconfigured with
+//	numeric separators provided by 'numSeps' an instance of
+//	NumericSeparatorDto. Type NumericSeparatorDto contains
+//	the decimal separator, thousands separator and currency
+//	symbol.
+//
+//	type NumericSeparatorDto struct {
+//		DecimalSeparator   rune // Character used to separate integer and fractional digits ('.')
+//		ThousandsSeparator rune // Character used to separate thousands (1,000,000,000
+//		CurrencySymbol     rune // Currency Symbol
+//	}
+//
+//
+//	IMPORTANT NOTE
+//	==============
 //
 // This method does NOT test the validity of 'bNum', an
 // instance of type BigIntNum. The calling method must
@@ -1134,6 +1160,357 @@ func (bIntMolecule *bigIntNumMolecule) setBigRat(
 		ePrefix.XCpy("bNum <- biNum"))
 
 	return err
+}
+
+// setBigIntNumSeps
+//
+// Reconfigures a BigIntNum instance new values extracted from a
+// *big.Int type and its associated precision.
+//
+// The 'precision' parameter specifies the number of digits to the right
+// of the decimal place. The Numeric value is equal to bigI x 10^(precision x -1).
+// This effectively locates the decimal place by counting from the extreme right
+// of the integer number, 'precision' places to the left. See the example below.
+//
+//	Input Parmeters
+//	===============
+//
+//	bNum				*BigIntNum
+//
+//	The instance of BigIntNum will be reconfigured with new
+//	values based on the input parameters 'bigI', 'precision',
+//
+//
+//	bigI *big.Int
+//
+//	'bigI' is a type *big.Int and represents the integer
+//	value of the number; that is, the numeric value without decimal
+//	digits.
+//
+//
+//	precision		int
+//
+//	This unsigned integer (always a positive value) identifies
+//	the location of the decimal place in the integer value 'bigI'.
+//	The decimal place location is calculated by starting with the
+//	right most digit in the integer number and counting	left,
+//	'precision' places.
+//
+//	Example:
+//
+//			Integer Value		precision			Numeric Value
+//			  123456					 3					  123.456
+//
+//
+//	numSeps				NumericSeparatorDto
+//
+//	Input parameter 'bNum' (type BigIntNum) will be reconfigured
+//	with numeric separators provided by input prameter 'numSeps',
+//	an instance of NumericSeparatorDto. Type NumericSeparatorDto
+//	contains the decimal separator, thousands separator and currency
+//	symbol.
+//
+//		type NumericSeparatorDto struct {
+//			DecimalSeparator   rune // Character used to separate integer and fractional digits ('.')
+//			ThousandsSeparator rune // Character used to separate thousands (1,000,000,000)
+//			CurrencySymbol     rune // Currency Symbol
+//		}
+//
+//	IMPORTANT NOTE
+//	==============
+//
+// This method does NOT test the validity of 'bNum', an
+// instance of type BigIntNum. The calling method must
+// do this!
+func (bIntMolecule *bigIntNumMolecule) setBigIntNumSeps(
+	bNum *BigIntNum,
+	bigI *big.Int,
+	precision uint,
+	numSeps NumericSeparatorDto,
+	errPrefDto *ePref.ErrPrefixDto) error {
+
+	if bIntMolecule.lock == nil {
+		bIntMolecule.lock = new(sync.Mutex)
+	}
+
+	bIntMolecule.lock.Lock()
+
+	defer bIntMolecule.lock.Unlock()
+
+	var ePrefix *ePref.ErrPrefixDto
+
+	var err error
+
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
+		errPrefDto,
+		"bigIntNumMolecule.setBigIntNumSeps()",
+		"")
+
+	if err != nil {
+		return err
+	}
+
+	if bNum == nil {
+
+		return &InputPtrNilError{
+			ErrPrefix:     ePrefix.String(),
+			ErrContext:    "",
+			ParameterName: "'bNum'",
+		}
+	}
+
+	if bigI == nil {
+
+		return &InputPtrNilError{
+			ErrPrefix:     ePrefix.String(),
+			ParameterName: "'bigI'",
+		}
+	}
+
+	biNum := new(BigIntNum)
+
+	err = new(bigIntNumNanobot).setBigInt(
+		biNum,
+		bigI,
+		precision,
+		ePrefix)
+
+	if err != nil {
+
+		return &FuncReturnError{
+			ErrPrefix: ePrefix.String(),
+			ReturnFunc: "err = new(bigIntNumNanobot).setBigInt(\n" +
+				"    biNum, bigI, precision, ePrefix)",
+			ErrContext: "",
+			ErrMessage: err.Error(),
+		}
+	}
+
+	numSeps.SetDefaultsIfEmpty()
+
+	err = new(bigIntNumAtom).setNumericSeparatorsDto(
+		biNum,
+		numSeps,
+		ePrefix)
+
+	if err != nil {
+
+		return &FuncReturnError{
+			ErrPrefix: ePrefix.String(),
+			ReturnFunc: "err = new(bigIntNumAtom).setNumericSeparatorsDto(\n" +
+				"    biNum, numSeps, ePrefix)",
+			ErrContext: "",
+			ErrMessage: err.Error(),
+		}
+	}
+
+	err = new(bigIntNumUtility).bigIntNumCopyIn(
+		bNum,
+		biNum,
+		ePrefix.XCpy("bNum <- biNum"))
+
+	if err != nil {
+
+		return &FuncReturnError{
+			ErrPrefix: ePrefix.String(),
+			ReturnFunc: "err = new(bigIntNumUtility).bigIntNumCopyIn(\n" +
+				"    bNum, biNum, ePrefix.XCpy(\"bNum <- biNum\")))",
+			ErrContext: "",
+			ErrMessage: err.Error(),
+		}
+	}
+
+	return nil
+}
+
+// setBigRatNumSeps
+//
+// Sets the value of BigIntNum instance, passed as input parameter
+// 'bNum', to that of input parameter 'ratNum', a rational number
+// of type *big.Rat.
+//
+//	Input Parmeters
+//	===============
+//
+//	bNum				*BigIntNum
+//
+//	The instance of BigIntNum will be reconfigured with new
+//	values based on the following input parameters.
+//
+//
+//	ratNum 			*big.Rat
+//
+//	The value of ratNum will be used to configure the current
+//	BigIntNum instance and reset its value.
+//
+//
+//	maxPrecision uint
+//
+//	The maximum precision for the resulting BigIntNum value
+//	after it is reset to the value of input parameter 'ratNum'.
+//	Precision will never be greater than 'maxPrecision'; however,
+//	actual precision may be less than 'maxPrecision'.
+//
+//
+//	numSeps				NumericSeparatorDto
+//
+//	The current BigIntNum instance will be reconfigured with
+//	numeric separators provided by 'numSeps' an instance of
+//	NumericSeparatorDto. Type NumericSeparatorDto contains
+//	the decimal separator, thousands separator and currency
+//	symbol.
+//
+//		type NumericSeparatorDto struct {
+//			DecimalSeparator   rune // Character used to separate integer
+//															//   and fractional digits ('.')
+//			ThousandsSeparator rune // Character used to separate thousands
+//															//   (1,000,000,000)
+//			CurrencySymbol     rune // Currency Symbol
+//		}
+//
+//	IMPORTANT NOTE
+//	==============
+//
+// This method does NOT test the validity of 'bNum', an
+// instance of type BigIntNum. The calling method must
+// do this!
+func (bIntMolecule *bigIntNumMolecule) setBigRatNumSeps(
+	bNum *BigIntNum,
+	bigRatNum *big.Rat,
+	maxPrecision uint,
+	numSeps NumericSeparatorDto,
+	errPrefDto *ePref.ErrPrefixDto) error {
+
+	bIntMolecule.lock.Lock()
+
+	defer bIntMolecule.lock.Unlock()
+
+	var ePrefix *ePref.ErrPrefixDto
+
+	var err error
+
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
+		errPrefDto,
+		"bigIntNumMolecule.setBigRatNumSeps",
+		"")
+
+	if err != nil {
+		return err
+	}
+
+	if bNum == nil {
+
+		return &InputPtrNilError{
+			ErrPrefix:     ePrefix.String(),
+			ParameterName: "'bNum'",
+		}
+	}
+
+	if bigRatNum == nil {
+
+		return &InputPtrNilError{
+			ErrPrefix:     ePrefix.String(),
+			ParameterName: "'bNum'",
+		}
+	}
+
+	numerator := big.NewInt(0).Set(bigRatNum.Num())
+
+	denominator := big.NewInt(0).Set(bigRatNum.Denom())
+
+	biPair, err := new(BigIntPair).
+		NewBase(numerator, 0, denominator, 0)
+
+	if err != nil {
+
+		return &FuncReturnError{
+			ErrPrefix: ePrefix.String(),
+			ReturnFunc: "biPair, err := new(BigIntPair).\n" +
+				"NewBase(numerator, 0, denominator, 0)",
+			ErrContext: "",
+			ErrMessage: err.Error(),
+		}
+	}
+
+	biPair.MaxPrecision = maxPrecision
+
+	biNum, err := BigIntMathDivide{}.PairFracQuotientNoNumSeps(biPair, numSeps)
+
+	if err != nil {
+
+		return &FuncReturnError{
+			ErrPrefix: ePrefix.String(),
+			ReturnFunc: "biNum, err := BigIntMathDivide{}.PairFracQuotientNoNumSeps(\n" +
+				"    biPair, numSeps)",
+			ErrContext: "",
+			ErrMessage: err.Error(),
+		}
+	}
+
+	biNumPrecision, err := biNum.GetPrecisionUint()
+
+	if err != nil {
+
+		return &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "biNumPrecision, err := biNum.GetPrecisionUint()",
+			ErrContext: "",
+			ErrMessage: err.Error(),
+		}
+	}
+
+	if biNumPrecision > maxPrecision {
+
+		err = biNum.SetPrecision(maxPrecision)
+
+		if err != nil {
+
+			return &FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "err = biNum.SetPrecision(maxPrecision)",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+		}
+	}
+
+	numSeps.SetDefaultsIfEmpty()
+
+	err = new(bigIntNumAtom).setNumericSeparatorsDto(
+		&biNum,
+		numSeps,
+		ePrefix)
+
+	if err != nil {
+
+		return &FuncReturnError{
+			ErrPrefix: ePrefix.String(),
+			ReturnFunc: "err = new(bigIntNumAtom).setNumericSeparatorsDto(\n" +
+				"    &biNum, numSeps, ePrefix)",
+			ErrContext: "",
+			ErrMessage: err.Error(),
+		}
+	}
+
+	err = new(bigIntNumUtility).bigIntNumCopyIn(
+		bNum,
+		&biNum,
+		ePrefix.XCpy("bNum <- biNum"))
+
+	if err != nil {
+
+		return &FuncReturnError{
+			ErrPrefix: ePrefix.String(),
+			ReturnFunc: "err = new(bigIntNumUtility).bigIntNumCopyIn(\n" +
+				"    bNum, &biNum, ePrefix.XCpy(\"bNum <- biNum\")))",
+			ErrContext: "",
+			ErrMessage: err.Error(),
+		}
+	}
+
+	return nil
 }
 
 // setExpectedNumberOfDigits
