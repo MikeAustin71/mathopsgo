@@ -52,19 +52,38 @@ func (bIntNumNano *bigIntNumNanobot) newWithNumSeps(
 
 	numSeps.SetDefaultsIfEmpty()
 
-	b := new(bigIntNumMechanics).new()
-
-	new(bigIntNumElectron).empty(&b)
-
-	err = new(bigIntNumAtom).setNumericSeparatorsDto(
-		&b, numSeps, ePrefix)
+	bINum, err := new(bigIntNumMechanics).newZero(
+		0,
+		ePrefix)
 
 	if err != nil {
 
-		return BigIntNum{}, err
+		return BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "bINum, err := new(bigIntNumMechanics).newZero(" +
+					"    0, ePrefix)",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
 	}
 
-	return b, nil
+	err = new(bigIntNumAtom).setNumericSeparatorsDto(
+		&bINum, numSeps, ePrefix)
+
+	if err != nil {
+
+		return BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "err = new(bigIntNumAtom).setNumericSeparatorsDto(" +
+					"    &bINum, numSeps, ePrefix)",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
+
+	return bINum, nil
 }
 
 // setBigFloat
@@ -251,6 +270,20 @@ func (bIntNumNano *bigIntNumNanobot) setBigInt(
 			"Error: Input parameter 'bigI' is a nil pointer!\n",
 			ePrefix.String())
 
+	}
+
+	err = new(bigIntNumAtom).setNumericSeparatorsToDefaultIfEmpty(
+		bNum, ePrefix)
+
+	if err != nil {
+
+		return &FuncReturnError{
+				ErrPrefix: ePrefix.String(),
+				ReturnFunc: "err = new(bigIntNumAtom).setNumericSeparatorsToDefaultIfEmpty(\n" +
+					"    bNum, ePrefix)",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
 	}
 
 	numSeps := NumericSeparatorDto{}

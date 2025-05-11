@@ -957,10 +957,10 @@ func (bIntMolecule *bigIntNumMolecule) setBigIntExponent(
 
 	if bigI == nil {
 
-		return fmt.Errorf("%v\n"+
-			"Error: Input parameter 'bigI' is a nil pointer!\n",
-			ePrefix.String())
-
+		return &InputPtrNilError{
+				ErrPrefix:     ePrefix.String(),
+				ParameterName: "'bigI'",
+			}
 	}
 
 	if exponent < 1 {
@@ -973,7 +973,17 @@ func (bIntMolecule *bigIntNumMolecule) setBigIntExponent(
 			precision,
 			ePrefix)
 
-		return err
+		if err != nil {
+			return &FuncReturnError{
+					ErrPrefix:  ePrefix.String(),
+					ReturnFunc: "err = new(bigIntNumNanobot).setBigInt(\n" +
+						"    bNum, bigI, precision, ePrefix)",
+					ErrContext: "",
+					ErrMessage: err.Error(),
+				}
+		}
+
+		return nil
 	}
 
 	// exponent must be greater than zero.
@@ -990,7 +1000,17 @@ func (bIntMolecule *bigIntNumMolecule) setBigIntExponent(
 		uint(exponent),
 		ePrefix)
 
-	return err
+	if err != nil {
+		return &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "err = new(bigIntNumNanobot).setBigInt(\n" +
+				"    bNum, newBigI, uint(exponent), ePrefix)",
+			ErrContext: "",
+			ErrMessage: err.Error(),
+		}
+	}
+
+	return nil
 }
 
 // setBigRat
@@ -1089,6 +1109,20 @@ func (bIntMolecule *bigIntNumMolecule) setBigRat(
 
 	bIntNumAtom := new(bigIntNumAtom)
 
+	err = bIntNumAtom.setNumericSeparatorsToDefaultIfEmpty(
+		bNum, ePrefix)
+
+	if err != nil {
+
+		return &FuncReturnError{
+			ErrPrefix: ePrefix.String(),
+			ReturnFunc: "err = bIntNumAtom.setNumericSeparatorsToDefaultIfEmpty(\n" +
+				"    bNum, ePrefix)",
+			ErrContext: "",
+			ErrMessage: err.Error(),
+		}
+	}
+
 	numSeps, err := bIntNumAtom.getNumericSeparatorsDto(
 		bNum,
 		ePrefix)
@@ -1098,20 +1132,6 @@ func (bIntMolecule *bigIntNumMolecule) setBigRat(
 		return &FuncReturnError{
 			ErrPrefix: ePrefix.String(),
 			ReturnFunc: "numSeps, err := new(bigIntNumAtom).getNumericSeparatorsDto(\n" +
-				"    bNum, ePrefix)",
-			ErrContext: "",
-			ErrMessage: err.Error(),
-		}
-	}
-
-	err = bIntNumAtom.setNumericSeparatorsToDefaultIfEmpty(
-		bNum, ePrefix)
-
-	if err != nil {
-
-		return &FuncReturnError{
-			ErrPrefix: ePrefix.String(),
-			ReturnFunc: "err = bIntNumAtom.setNumericSeparatorsToDefaultIfEmpty(\n" +
 				"    bNum, ePrefix)",
 			ErrContext: "",
 			ErrMessage: err.Error(),

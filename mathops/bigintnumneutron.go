@@ -1164,7 +1164,6 @@ func (bNumNeutron *bigIntNumNeutron) newBigIntNumWithPrecision(
 				ErrPrefix:     ePrefix.String(),
 				ParameterName: "'precision'",
 			}
-
 	}
 
 	if precision.Cmp(big.NewInt(0)) == -1 {
@@ -1191,22 +1190,35 @@ func (bNumNeutron *bigIntNumNeutron) newBigIntNumWithPrecision(
 			}
 	}
 
-	b, err := new(bigIntNumMechanics).newZero(0, ePrefix)
+	bIntNum, err := new(bigIntNumMechanics).newZero(0, ePrefix)
 
 	if err != nil {
 		return BigIntNum{},
 			&FuncReturnError{
 				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "b, err := new(bigIntNumMechanics).newZero(0, ePrefix)",
+				ReturnFunc: "bIntNum, err := new(bigIntNumMechanics).newZero(0, ePrefix)",
 				ErrContext: "",
 				ErrMessage: err.Error(),
 			}
 	}
 
-	new(bigIntNumElectron).empty(&b)
+	err = new(bigIntNumAtom).setNumericSeparatorsToDefaultIfEmpty(
+		&bIntNum, ePrefix)
+
+	if err != nil {
+
+		return BigIntNum{},
+		&FuncReturnError{
+			ErrPrefix: ePrefix.String(),
+			ReturnFunc: "err = new(bigIntNumAtom).setNumericSeparatorsToDefaultIfEmpty(\n" +
+				"    bNum, ePrefix)",
+			ErrContext: "",
+			ErrMessage: err.Error(),
+		}
+	}
 
 	err = new(bigIntNumNanobot).setBigInt(
-		&b,
+		&bIntNum,
 		bigInt,
 		uint(precision.Uint64()),
 		ePrefix)
@@ -1216,7 +1228,7 @@ func (bNumNeutron *bigIntNumNeutron) newBigIntNumWithPrecision(
 		return BigIntNum{}, err
 	}
 
-	return b, nil
+	return bIntNum, nil
 }
 
 // newBigIntExponent
@@ -1284,7 +1296,7 @@ func (bNumNeutron *bigIntNumNeutron) newBigIntExponent(
 			}
 	}
 
-	b, err := new(bigIntNumMechanics).newZero(
+	bINum, err := new(bigIntNumMechanics).newZero(
 		0,
 		ePrefix)
 
@@ -1299,10 +1311,23 @@ func (bNumNeutron *bigIntNumNeutron) newBigIntExponent(
 			}
 	}
 
-	new(bigIntNumElectron).empty(&b)
+	err = new(bigIntNumAtom).setNumericSeparatorsToDefaultIfEmpty(
+		&bINum, ePrefix)
+
+	if err != nil {
+
+		return BigIntNum{},
+		 &FuncReturnError{
+			ErrPrefix: ePrefix.String(),
+			ReturnFunc: "err = new(bigIntNumAtom).setNumericSeparatorsToDefaultIfEmpty(\n" +
+				"    bINum, ePrefix)",
+			ErrContext: "",
+			ErrMessage: err.Error(),
+		}
+	}
 
 	err = new(bigIntNumMolecule).
-		setBigIntExponent(&b, bigI, exponent, ePrefix)
+		setBigIntExponent(&bINum, bigI, exponent, ePrefix)
 
 	if err != nil {
 
@@ -1310,13 +1335,13 @@ func (bNumNeutron *bigIntNumNeutron) newBigIntExponent(
 			&FuncReturnError{
 				ErrPrefix: ePrefix.String(),
 				ReturnFunc: "err = new(bigIntNumMolecule).\n" +
-					"    setBigIntExponent(&b, bigI, exponent, ePrefix)",
+					"    setBigIntExponent(&bINum, bigI, exponent, ePrefix)",
 				ErrContext: "",
 				ErrMessage: err.Error(),
 			}
 	}
 
-	return b, nil
+	return bINum, nil
 }
 
 // newBigFloat

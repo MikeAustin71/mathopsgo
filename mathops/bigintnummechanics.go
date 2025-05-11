@@ -92,23 +92,42 @@ func (bIntNumMech *bigIntNumMechanics) newBigInt(
 			}
 	}
 
-	b := new(BigIntNum)
+	bIntNum := new(BigIntNum)
 
-	new(bigIntNumElectron).empty(b)
+	new(bigIntNumElectron).empty(bIntNum)
+
+	err = new(bigIntNumAtom).setNumericSeparatorsToDefaultIfEmpty(
+		bIntNum, ePrefix)
+
+	if err != nil {
+
+		return BigIntNum{}, &FuncReturnError{
+			ErrPrefix: ePrefix.String(),
+			ReturnFunc: "err = new(bigIntNumAtom).setNumericSeparatorsToDefaultIfEmpty(\n" +
+				"    bNum, ePrefix)",
+			ErrContext: "",
+			ErrMessage: err.Error(),
+		}
+	}
 
 	err = new(bigIntNumNanobot).setBigInt(
-		b,
+		bIntNum,
 		bigI,
 		precision,
 		ePrefix)
 
 	if err != nil {
 
-		return BigIntNum{}, err
-
+		return BigIntNum{}, &FuncReturnError{
+			ErrPrefix: ePrefix.String(),
+			ReturnFunc: "err = new(bigIntNumNanobot).setBigInt(\n" +
+				"    bIntNum, bigI, precision, ePrefix)",
+			ErrContext: "",
+			ErrMessage: err.Error(),
+		}
 	}
 
-	return *b, nil
+	return *bIntNum, nil
 }
 
 // NewInt64Exponent -This method returns a new BigIntNum instance in which
@@ -253,8 +272,46 @@ func (bIntNumMech *bigIntNumMechanics) newZero(
 
 	if err != nil {
 
-		return BigIntNum{}, err
+		return BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix: ePrefix.String(),
+				ReturnFunc: "err = new(bigIntNumNanobot).setBigInt(\n" +
+					"    &b, big.NewInt(0), precision, ePrefix)",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
 
+	err = new(bigIntNumAtom).setNumericSeparatorsToDefaultIfEmpty(
+		&b,
+		ePrefix)
+
+	if err != nil {
+
+		return BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix: ePrefix.String(),
+				ReturnFunc: "err = new(bigIntNumNanobot).setBigInt(\n" +
+					"    &b, big.NewInt(0), precision, ePrefix)",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
+
+	err = new(bigIntNumAtom).setNumericSeparatorsToDefaultIfEmpty(
+		&b,
+		ePrefix)
+
+	if err != nil {
+
+		return BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix: ePrefix.String(),
+				ReturnFunc: "new(bigIntNumAtom).setNumericSeparatorsToDefaultIfEmpty(\n" +
+					"    &b, ePrefix)",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
 	}
 
 	return b, nil
