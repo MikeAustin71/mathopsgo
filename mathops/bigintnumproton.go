@@ -23,8 +23,8 @@ type bigIntNumProton struct {
 // bNum < bigIntNum					Return -1
 //
 //	NOTE:
+//	=====
 //
-// ================
 // This method does NOT test the validity of 'bNum'
 // BigIntNum instance. The calling method must do this!
 func (bIntNumProton *bigIntNumProton) cmpBigInt(

@@ -958,9 +958,9 @@ func (bIntMolecule *bigIntNumMolecule) setBigIntExponent(
 	if bigI == nil {
 
 		return &InputPtrNilError{
-				ErrPrefix:     ePrefix.String(),
-				ParameterName: "'bigI'",
-			}
+			ErrPrefix:     ePrefix.String(),
+			ParameterName: "'bigI'",
+		}
 	}
 
 	if exponent < 1 {
@@ -975,12 +975,12 @@ func (bIntMolecule *bigIntNumMolecule) setBigIntExponent(
 
 		if err != nil {
 			return &FuncReturnError{
-					ErrPrefix:  ePrefix.String(),
-					ReturnFunc: "err = new(bigIntNumNanobot).setBigInt(\n" +
-						"    bNum, bigI, precision, ePrefix)",
-					ErrContext: "",
-					ErrMessage: err.Error(),
-				}
+				ErrPrefix: ePrefix.String(),
+				ReturnFunc: "err = new(bigIntNumNanobot).setBigInt(\n" +
+					"    bNum, bigI, precision, ePrefix)",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
 		}
 
 		return nil
@@ -1002,7 +1002,7 @@ func (bIntMolecule *bigIntNumMolecule) setBigIntExponent(
 
 	if err != nil {
 		return &FuncReturnError{
-			ErrPrefix:  ePrefix.String(),
+			ErrPrefix: ePrefix.String(),
 			ReturnFunc: "err = new(bigIntNumNanobot).setBigInt(\n" +
 				"    bNum, newBigI, uint(exponent), ePrefix)",
 			ErrContext: "",
@@ -1699,6 +1699,8 @@ func (bIntMolecule *bigIntNumMolecule) setNumStr(
 	numSeps.DecimalSeparator = bNum.decimalSeparator
 	numSeps.ThousandsSeparator = bNum.thousandsSeparator
 	numSeps.CurrencySymbol = bNum.currencySymbol
+
+	numSeps.SetDefaultsIfEmpty()
 
 	newSign := 1
 

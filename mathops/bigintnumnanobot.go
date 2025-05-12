@@ -1,14 +1,14 @@
 package mathops
 
 import (
-	"fmt"
-	ePref "github.com/MikeAustin71/errpref"
-	"math/big"
-	"sync"
+  "fmt"
+  ePref "github.com/MikeAustin71/errpref"
+  "math/big"
+  "sync"
 )
 
 type bigIntNumNanobot struct {
-	lock *sync.Mutex
+  lock *sync.Mutex
 }
 
 // NewWithNumSeps
@@ -25,65 +25,65 @@ type bigIntNumNanobot struct {
 // separators (decimal separator, thousands separator
 // and currency symbol).
 func (bIntNumNano *bigIntNumNanobot) newWithNumSeps(
-	numSeps NumericSeparatorDto,
-	errPrefDto *ePref.ErrPrefixDto) (BigIntNum, error) {
+  numSeps NumericSeparatorDto,
+  errPrefDto *ePref.ErrPrefixDto) (BigIntNum, error) {
 
-	if bIntNumNano.lock == nil {
-		bIntNumNano.lock = new(sync.Mutex)
-	}
+  if bIntNumNano.lock == nil {
+    bIntNumNano.lock = new(sync.Mutex)
+  }
 
-	bIntNumNano.lock.Lock()
+  bIntNumNano.lock.Lock()
 
-	defer bIntNumNano.lock.Unlock()
+  defer bIntNumNano.lock.Unlock()
 
-	var ePrefix *ePref.ErrPrefixDto
+  var ePrefix *ePref.ErrPrefixDto
 
-	var err error
+  var err error
 
-	ePrefix,
-		err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
-		errPrefDto,
-		"bigIntNumMechanics.newWithNumSeps()",
-		"")
+  ePrefix,
+    err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
+    errPrefDto,
+    "bigIntNumMechanics.newWithNumSeps()",
+    "")
 
-	if err != nil {
-		return BigIntNum{}, err
-	}
+  if err != nil {
+    return BigIntNum{}, err
+  }
 
-	numSeps.SetDefaultsIfEmpty()
+  numSeps.SetDefaultsIfEmpty()
 
-	bINum, err := new(bigIntNumMechanics).newZero(
-		0,
-		ePrefix)
+  bINum, err := new(bigIntNumMechanics).newZero(
+    0,
+    ePrefix)
 
-	if err != nil {
+  if err != nil {
 
-		return BigIntNum{},
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "bINum, err := new(bigIntNumMechanics).newZero(" +
-					"    0, ePrefix)",
-				ErrContext: "",
-				ErrMessage: err.Error(),
-			}
-	}
+    return BigIntNum{},
+      &FuncReturnError{
+        ErrPrefix: ePrefix.String(),
+        ReturnFunc: "bINum, err := new(bigIntNumMechanics).newZero(" +
+          "    0, ePrefix)",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+  }
 
-	err = new(bigIntNumAtom).setNumericSeparatorsDto(
-		&bINum, numSeps, ePrefix)
+  err = new(bigIntNumAtom).setNumericSeparatorsDto(
+    &bINum, numSeps, ePrefix)
 
-	if err != nil {
+  if err != nil {
 
-		return BigIntNum{},
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "err = new(bigIntNumAtom).setNumericSeparatorsDto(" +
-					"    &bINum, numSeps, ePrefix)",
-				ErrContext: "",
-				ErrMessage: err.Error(),
-			}
-	}
+    return BigIntNum{},
+      &FuncReturnError{
+        ErrPrefix: ePrefix.String(),
+        ReturnFunc: "err = new(bigIntNumAtom).setNumericSeparatorsDto(" +
+          "    &bINum, numSeps, ePrefix)",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+  }
 
-	return bINum, nil
+  return bINum, nil
 }
 
 // setBigFloat
@@ -128,84 +128,87 @@ func (bIntNumNano *bigIntNumNanobot) newWithNumSeps(
 // and currency symbol) contained in the original BigIntNum ('bNum')
 // will remain unchanged and will not be altered by this method.
 func (bIntNumNano *bigIntNumNanobot) setBigFloat(
-	bNum *BigIntNum,
-	bigFloat *big.Float,
-	maxPrecision uint,
-	errPrefDto *ePref.ErrPrefixDto) error {
+  bNum *BigIntNum,
+  bigFloat *big.Float,
+  maxPrecision uint,
+  errPrefDto *ePref.ErrPrefixDto) error {
 
-	if bIntNumNano.lock == nil {
-		bIntNumNano.lock = new(sync.Mutex)
-	}
+  if bIntNumNano.lock == nil {
+    bIntNumNano.lock = new(sync.Mutex)
+  }
 
-	bIntNumNano.lock.Lock()
+  bIntNumNano.lock.Lock()
 
-	defer bIntNumNano.lock.Unlock()
+  defer bIntNumNano.lock.Unlock()
 
-	var err error
+  var err error
 
-	var ePrefix *ePref.ErrPrefixDto
+  var ePrefix *ePref.ErrPrefixDto
 
-	ePrefix,
-		err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
-		errPrefDto,
-		"bigIntNumNanobot.setBigInt",
-		"")
+  ePrefix,
+    err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
+    errPrefDto,
+    "bigIntNumNanobot.setBigInt",
+    "")
 
-	if err != nil {
-		return err
-	}
+  if err != nil {
+    return err
+  }
 
-	if bNum == nil {
-		return &InputPtrNilError{
-			ErrPrefix:     ePrefix.String(),
-			ParameterName: "'bNum'",
-		}
-	}
+  if bNum == nil {
+    return &InputPtrNilError{
+      ErrPrefix:     ePrefix.String(),
+      ParameterName: "'bNum'",
+    }
+  }
 
-	if bigFloat == nil {
-		return &InputPtrNilError{
-			ErrPrefix:     ePrefix.String(),
-			ParameterName: "'bigFloat'",
-		}
-	}
+  if bigFloat == nil {
+    return &InputPtrNilError{
+      ErrPrefix:     ePrefix.String(),
+      ParameterName: "'bigFloat'",
+    }
+  }
 
-	rat, accuracyFlag := bigFloat.Rat(nil)
+  rat, accuracyFlag := bigFloat.Rat(nil)
 
-	if accuracyFlag == -1 {
+  if accuracyFlag == -1 {
 
-		return &FuncReturnError{
-			ErrPrefix:  ePrefix.String(),
-			ReturnFunc: "",
-			ErrContext: "rat, accuracyFlag := bigFloat.Rat(nil)",
-			ErrMessage: "Error: Conversion of input parameter 'bigFloat' resulted in Accuracy Flag == -1\n" +
-				"or 'Below Accuracy'. Conversion is NOT Exact!",
-		}
-	}
+    return &FuncReturnError{
+      ErrPrefix:  ePrefix.String(),
+      ReturnFunc: "",
+      ErrContext: "rat, accuracyFlag := bigFloat.Rat(nil)",
+      ErrMessage: "Error: Conversion of input parameter 'bigFloat' resulted in Accuracy Flag == -1\n" +
+        "or 'Below Accuracy'. Conversion is NOT Exact!",
+    }
+  }
 
-	if accuracyFlag == 1 {
+  if accuracyFlag == 1 {
 
-		return &FuncReturnError{
-			ErrPrefix:  ePrefix.String(),
-			ReturnFunc: "",
-			ErrContext: "rat, accuracyFlag := bigFloat.Rat(nil)",
-			ErrMessage: "Error: Conversion of input parameter 'bigFloat' resulted in Accuracy Flag == +1\n" +
-				"or 'Above Accuracy'. Conversion is NOT Exact!",
-		}
-	}
+    return &FuncReturnError{
+      ErrPrefix:  ePrefix.String(),
+      ReturnFunc: "",
+      ErrContext: "rat, accuracyFlag := bigFloat.Rat(nil)",
+      ErrMessage: "Error: Conversion of input parameter 'bigFloat' resulted in Accuracy Flag == +1\n" +
+        "or 'Above Accuracy'. Conversion is NOT Exact!",
+    }
+  }
 
-	err = bNum.SetBigRat(rat, maxPrecision)
+  err = bNum.SetBigRat(rat, maxPrecision)
 
-	err = new(bigIntNumMolecule).setBigRat(
-		bNum,
-		rat,
-		maxPrecision,
-		ePrefix)
+  err = new(bigIntNumMolecule).setBigRat(
+    bNum,
+    rat,
+    maxPrecision,
+    ePrefix)
 
-	return err
+  return err
 }
 
-// setBigInt - Sets the value of the current BigIntNum instance using
-// the input parameters *big.Int integer and precision.
+// setBigInt
+//
+// Sets the value of the BigIntNum instance passed as input
+// parameter 'bNum'. The new value for 'bNum' is extracted from
+// input parameters bigI (*big.Int) and precision.
 //
 // The 'precision' parameter specifies the number of digits to the right
 // of the decimal place. The Numeric value is equal to bigI x 10^(precision x -1).
@@ -224,120 +227,125 @@ func (bIntNumNano *bigIntNumNanobot) setBigFloat(
 //	The decimal place location is calculated by starting with the
 //	right most digit in the integer number and counting	left,
 //	'precision' places. Example:
+//
 //			Integer Value		precision			Numeric Value
 //			  123456					 3					  123.456
 //
-// Existing numeric separators (decimal separator, thousands separator
-// and currency symbol) remain unchanged and are not altered by this method.
+// Existing numeric separators (decimal separator, thousands separator and
+// currency symbol), contained in 'bNum', remain unchanged and are not
+// altered by this method.
 func (bIntNumNano *bigIntNumNanobot) setBigInt(
-	bNum *BigIntNum,
-	bigI *big.Int,
-	precision uint,
-	errPrefDto *ePref.ErrPrefixDto) error {
+  bNum *BigIntNum,
+  bigI *big.Int,
+  precision uint,
+  errPrefDto *ePref.ErrPrefixDto) error {
 
-	if bIntNumNano.lock == nil {
-		bIntNumNano.lock = new(sync.Mutex)
-	}
+  if bIntNumNano.lock == nil {
+    bIntNumNano.lock = new(sync.Mutex)
+  }
 
-	bIntNumNano.lock.Lock()
+  bIntNumNano.lock.Lock()
 
-	defer bIntNumNano.lock.Unlock()
+  defer bIntNumNano.lock.Unlock()
 
-	var err error
+  var err error
 
-	var ePrefix *ePref.ErrPrefixDto
+  var ePrefix *ePref.ErrPrefixDto
 
-	ePrefix,
-		err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
-		errPrefDto,
-		"bigIntNumNanobot.setBigInt",
-		"")
+  ePrefix,
+    err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
+    errPrefDto,
+    "bigIntNumNanobot.setBigInt",
+    "")
 
-	if err != nil {
-		return err
-	}
+  if err != nil {
+    return err
+  }
 
-	if bNum == nil {
-		return &InputPtrNilError{
-			ErrPrefix:     ePrefix.String(),
-			ParameterName: "'bNum'",
-		}
-	}
+  if bNum == nil {
+    return &InputPtrNilError{
+      ErrPrefix:     ePrefix.String(),
+      ParameterName: "'bNum'",
+    }
+  }
 
-	if bigI == nil {
+  if bigI == nil {
 
-		return fmt.Errorf("%v\n"+
-			"Error: Input parameter 'bigI' is a nil pointer!\n",
-			ePrefix.String())
+    return fmt.Errorf("%v\n"+
+      "Error: Input parameter 'bigI' is a nil pointer!\n",
+      ePrefix.String())
 
-	}
+  }
 
-	err = new(bigIntNumAtom).setNumericSeparatorsToDefaultIfEmpty(
-		bNum, ePrefix)
+  err = new(bigIntNumAtom).setNumericSeparatorsToDefaultIfEmpty(
+    bNum, ePrefix)
 
-	if err != nil {
+  if err != nil {
 
-		return &FuncReturnError{
-				ErrPrefix: ePrefix.String(),
-				ReturnFunc: "err = new(bigIntNumAtom).setNumericSeparatorsToDefaultIfEmpty(\n" +
-					"    bNum, ePrefix)",
-				ErrContext: "",
-				ErrMessage: err.Error(),
-			}
-	}
+    return &FuncReturnError{
+      ErrPrefix: ePrefix.String(),
+      ReturnFunc: "err = new(bigIntNumAtom).setNumericSeparatorsToDefaultIfEmpty(\n" +
+        "    bNum, ePrefix)",
+      ErrContext: "",
+      ErrMessage: err.Error(),
+    }
+  }
 
-	numSeps := NumericSeparatorDto{}
+  numSeps := NumericSeparatorDto{}
 
-	numSeps.DecimalSeparator = bNum.decimalSeparator
+  numSeps.DecimalSeparator = bNum.decimalSeparator
 
-	numSeps.ThousandsSeparator = bNum.thousandsSeparator
+  numSeps.ThousandsSeparator = bNum.thousandsSeparator
 
-	numSeps.CurrencySymbol = bNum.currencySymbol
+  numSeps.CurrencySymbol = bNum.currencySymbol
 
-	new(bigIntNumElectron).empty(bNum)
+  new(bigIntNumElectron).empty(bNum)
 
-	bNum.bigInt = big.NewInt(0).Set(bigI)
+  bNum.bigInt = big.NewInt(0).Set(bigI)
 
-	bNum.precision = precision
+  bNum.precision = precision
 
-	base10 := big.NewInt(0).SetInt64(int64(10))
+  base10 := big.NewInt(0).SetInt64(int64(10))
 
-	bigPrecision := big.NewInt(0).SetInt64(int64(bNum.precision))
+  bigPrecision := big.NewInt(0).SetInt64(int64(bNum.precision))
 
-	bNum.scaleFactor = big.NewInt(0).Exp(base10, bigPrecision, nil)
+  bNum.scaleFactor = big.NewInt(0).Exp(base10, bigPrecision, nil)
 
-	bNum.numberOfExpectedDigits = big.NewInt(0)
+  bNum.numberOfExpectedDigits = big.NewInt(0)
 
-	result := bNum.bigInt.Cmp(big.NewInt(0))
+  result := bNum.bigInt.Cmp(big.NewInt(0))
 
-	if result == -1 {
+  if result == -1 {
 
-		bNum.sign = -1
-		minusOne := big.NewInt(0).SetInt64(-1)
-		bNum.absBigInt = big.NewInt(0).Mul(bNum.bigInt, minusOne)
+    bNum.sign = -1
 
-	} else {
+    minusOne := big.NewInt(0).SetInt64(-1)
 
-		bNum.sign = 1
-		bNum.absBigInt = big.NewInt(0).Set(bNum.bigInt)
+    bNum.absBigInt = big.NewInt(0).Mul(bNum.bigInt, minusOne)
 
-	}
+  } else {
 
-	err = new(bigIntNumAtom).setNumericSeparatorsDto(
-		bNum,
-		numSeps,
-		ePrefix)
+    bNum.sign = 1
 
-	if err != nil {
+    bNum.absBigInt = big.NewInt(0).Set(bNum.bigInt)
 
-		return fmt.Errorf("%v\n"+
-			"Error returned from:\n"+
-			"err := new(bigIntNumAtom).setNumericSeparatorsDto(\n"+
-			"     bNum, numSeps, ePrefix)\n"+
-			"Error= %v\n",
-			ePrefix.String(),
-			err.Error())
-	}
+  }
 
-	return err
+  err = new(bigIntNumAtom).setNumericSeparatorsDto(
+    bNum,
+    numSeps,
+    ePrefix)
+
+  if err != nil {
+
+    return &FuncReturnError{
+      ErrPrefix: ePrefix.String(),
+      ReturnFunc: "err = new(bigIntNumAtom).setNumericSeparatorsDto(\n" +
+        "    bNum, numSeps, ePrefix)",
+      ErrContext: "",
+      ErrMessage: err.Error(),
+    }
+  }
+
+  return err
 }
