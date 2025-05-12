@@ -1208,13 +1208,13 @@ func (bNumNeutron *bigIntNumNeutron) newBigIntNumWithPrecision(
 	if err != nil {
 
 		return BigIntNum{},
-		&FuncReturnError{
-			ErrPrefix: ePrefix.String(),
-			ReturnFunc: "err = new(bigIntNumAtom).setNumericSeparatorsToDefaultIfEmpty(\n" +
-				"    bNum, ePrefix)",
-			ErrContext: "",
-			ErrMessage: err.Error(),
-		}
+			&FuncReturnError{
+				ErrPrefix: ePrefix.String(),
+				ReturnFunc: "err = new(bigIntNumAtom).setNumericSeparatorsToDefaultIfEmpty(\n" +
+					"    bNum, ePrefix)",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
 	}
 
 	err = new(bigIntNumNanobot).setBigInt(
@@ -1229,6 +1229,177 @@ func (bNumNeutron *bigIntNumNeutron) newBigIntNumWithPrecision(
 	}
 
 	return bIntNum, nil
+}
+
+// newBigIntNumWithPrecision
+//
+// Creates a new BigIntNum instance using a *big.Int type and its
+// associated precision (also of type *big.Int).
+//
+// The 'precision' parameter specifies the number of digits to the right
+// of the decimal place. The Numeric value is equal to bigI x 10^(precision x -1).
+// This effectively locates the decimal place by counting from the extreme right
+// of the integer number, 'precision' places to the left. See the example below.
+//
+//	Precision Example:
+//	==================
+//
+//			Integer Value		precision			Numeric Value
+//			  123456					 3					  123.456
+//
+// Numeric Seprators
+// =================
+//
+// The returned BigIntNum instance will be configured with the
+// Numeric Separators provided by input parameter 'numSeps'.
+// Numeric Separatpors consist of decimal separators, thousands
+// separators and a currency symbol.
+//
+// Input Parameters
+// ================
+//
+//	bigI 				*big.Int
+//
+//	'bigI' is a type *big.Int and represents the integer
+//	value of the number; that is, the numeric value without decimal digits.
+//
+//
+//	precision		*big.Int
+//
+//	This integer value (always a positive value) identifies
+//	the location of the decimal place in the integer value 'bigI'.
+//	The decimal place location is calculated by starting with the
+//	right most digit in the integer number and counting	left,
+//	'precision' places. If precision is greater than the maximum
+//	value of an unsigned integer (+4,294,967,295,	which equals
+//	2^32 − 1), an error will be triggered. Also, if the 'precision'
+//	value is less than zero, an error will be triggered.
+//
+//
+//	numSeps			NumericSeparatorDto
+//
+//	The returned instance of BigIntNum will be configured with the
+//	Numeric Separators contained in this input parameter, 'numSeps'.
+//	Numeric Separatpors consist of decimal separators, thousands
+//	separators and a currency symbol.
+//
+// Return Parameters
+// =================
+//
+//	BigIntNum - a type BigIntNum numeric value
+//
+//	error			- If not 'nil', this prameter will
+//							transmit any processing errors
+//							encountered.
+//
+//
+//		The new BigIntNum instance returned by this method will contain USA default
+//		numeric separators (decimal separator, thousands separator and currency
+//		symbol). To reconfigure the numeric separators reference method:
+//							BigIntNum.SetNumericSeparators()
+func (bNumNeutron *bigIntNumNeutron) newBigIntNumWithNumSeps(
+	bigInt *big.Int,
+	precision *big.Int,
+	numSeps NumericSeparatorDto,
+	errPrefDto *ePref.ErrPrefixDto) (BigIntNum, error) {
+
+	if bNumNeutron.lock == nil {
+		bNumNeutron.lock = new(sync.Mutex)
+	}
+
+	bNumNeutron.lock.Lock()
+
+	defer bNumNeutron.lock.Unlock()
+
+	var ePrefix *ePref.ErrPrefixDto
+
+	var err error
+
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
+		errPrefDto,
+		"bigIntNumNeutron.newBigIntNumWithNumSeps",
+		"")
+
+	if err != nil {
+		return BigIntNum{}, err
+	}
+
+	if bigInt == nil {
+
+		return BigIntNum{},
+			&InputPtrNilError{
+				ErrPrefix:     ePrefix.String(),
+				ParameterName: "'bigInt'",
+			}
+	}
+
+	if precision == nil {
+
+		return BigIntNum{},
+			&InputPtrNilError{
+				ErrPrefix:     ePrefix.String(),
+				ParameterName: "'precision'",
+			}
+	}
+
+	numSeps.SetDefaultsIfEmpty()
+
+	if precision.Cmp(big.NewInt(0)) == -1 {
+
+		return BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "",
+				ErrContext: fmt.Sprintf("precistion= '%v'", precision.Text(10)),
+				ErrMessage: "Error: Input parameter 'precision' IS LESS THAN ZERO!",
+			}
+	}
+
+	maxUint32 := big.NewInt(0).SetUint64(uint64(math.MaxUint32))
+
+	if precision.Cmp(maxUint32) == 1 {
+
+		return BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "",
+				ErrContext: fmt.Sprintf("precistion= '%v' math.MaxUint32= '%v'", precision.Text(10), math.MaxUint32),
+				ErrMessage: fmt.Sprintf("Error: Input parameter 'precision' exceeds maximum limit of '%v' !", math.MaxUint32),
+			}
+	}
+
+	bIntNum, err := new(bigIntNumMechanics).newZero(
+		0,
+		ePrefix.XCpy("Setting bIntNum=0"))
+
+	if err != nil {
+		return BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "bIntNum, err := new(bigIntNumMechanics).newZero(0, ePrefix)",
+				ErrContext: "precision.Cmp(maxUint32) == 1 {",
+				ErrMessage: err.Error(),
+			}
+	}
+
+	err = new(bigIntNumNanobot).setBigInt(
+		&bIntNum,
+		bigInt,
+		uint(precision.Uint64()),
+		ePrefix.XCpy(fmt.Sprintf("Setting bIntNum bigInt= '%v'  precision= '%v'",
+			bigInt.Text(10), precision)))
+
+	if err != nil {
+		return BigIntNum{}, err
+	}
+
+	err = new(bigIntNumAtom).setNumericSeparatorsDto(
+		&bIntNum,
+		numSeps,
+		ePrefix.XCpy("Setting numSeps for bIntNum"))
+
+	return bIntNum, err
 }
 
 // newBigIntExponent
@@ -1317,13 +1488,13 @@ func (bNumNeutron *bigIntNumNeutron) newBigIntExponent(
 	if err != nil {
 
 		return BigIntNum{},
-		 &FuncReturnError{
-			ErrPrefix: ePrefix.String(),
-			ReturnFunc: "err = new(bigIntNumAtom).setNumericSeparatorsToDefaultIfEmpty(\n" +
-				"    bINum, ePrefix)",
-			ErrContext: "",
-			ErrMessage: err.Error(),
-		}
+			&FuncReturnError{
+				ErrPrefix: ePrefix.String(),
+				ReturnFunc: "err = new(bigIntNumAtom).setNumericSeparatorsToDefaultIfEmpty(\n" +
+					"    bINum, ePrefix)",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
 	}
 
 	err = new(bigIntNumMolecule).

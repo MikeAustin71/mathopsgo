@@ -94,21 +94,8 @@ func (bIntNumMech *bigIntNumMechanics) newBigInt(
 
 	bIntNum := new(BigIntNum)
 
+	// Sets Numeric Separators to default USA
 	new(bigIntNumElectron).empty(bIntNum)
-
-	err = new(bigIntNumAtom).setNumericSeparatorsToDefaultIfEmpty(
-		bIntNum, ePrefix)
-
-	if err != nil {
-
-		return BigIntNum{}, &FuncReturnError{
-			ErrPrefix: ePrefix.String(),
-			ReturnFunc: "err = new(bigIntNumAtom).setNumericSeparatorsToDefaultIfEmpty(\n" +
-				"    bNum, ePrefix)",
-			ErrContext: "",
-			ErrMessage: err.Error(),
-		}
-	}
 
 	err = new(bigIntNumNanobot).setBigInt(
 		bIntNum,
@@ -234,6 +221,12 @@ func (bIntNumMech *bigIntNumMechanics) newInt64Exponent(
 //			0								0
 //			2								0.00
 //			3								0.000
+//
+//	NOTE:
+//	=====
+//
+//	This method configures the returned BigIntNum with default
+//	USA Numeric Seprators.
 func (bIntNumMech *bigIntNumMechanics) newZero(
 	precision uint,
 	errPrefDto *ePref.ErrPrefixDto) (BigIntNum, error) {
@@ -260,15 +253,16 @@ func (bIntNumMech *bigIntNumMechanics) newZero(
 		return BigIntNum{}, err
 	}
 
-	b := BigIntNum{}
+	bIntNum2 := BigIntNum{}
 
-	new(bigIntNumElectron).empty(&b)
+	// Sets Numeric Separators to USA Defaults
+	new(bigIntNumElectron).empty(&bIntNum2)
 
 	err = new(bigIntNumNanobot).setBigInt(
-		&b,
+		&bIntNum2,
 		big.NewInt(0),
 		precision,
-		ePrefix)
+		ePrefix.XCpy(fmt.Sprintf("Setting bIntNum2=0 precision=%v", precision)))
 
 	if err != nil {
 
@@ -276,31 +270,15 @@ func (bIntNumMech *bigIntNumMechanics) newZero(
 			&FuncReturnError{
 				ErrPrefix: ePrefix.String(),
 				ReturnFunc: "err = new(bigIntNumNanobot).setBigInt(\n" +
-					"    &b, big.NewInt(0), precision, ePrefix)",
+					"    &bIntNum2, big.NewInt(0), precision, ePrefix)",
 				ErrContext: "",
 				ErrMessage: err.Error(),
 			}
 	}
 
 	err = new(bigIntNumAtom).setNumericSeparatorsToDefaultIfEmpty(
-		&b,
-		ePrefix)
-
-	if err != nil {
-
-		return BigIntNum{},
-			&FuncReturnError{
-				ErrPrefix: ePrefix.String(),
-				ReturnFunc: "err = new(bigIntNumNanobot).setBigInt(\n" +
-					"    &b, big.NewInt(0), precision, ePrefix)",
-				ErrContext: "",
-				ErrMessage: err.Error(),
-			}
-	}
-
-	err = new(bigIntNumAtom).setNumericSeparatorsToDefaultIfEmpty(
-		&b,
-		ePrefix)
+		&bIntNum2,
+		ePrefix.XCpy("Setting bIntNum2 default NumSeps"))
 
 	if err != nil {
 
@@ -308,13 +286,13 @@ func (bIntNumMech *bigIntNumMechanics) newZero(
 			&FuncReturnError{
 				ErrPrefix: ePrefix.String(),
 				ReturnFunc: "new(bigIntNumAtom).setNumericSeparatorsToDefaultIfEmpty(\n" +
-					"    &b, ePrefix)",
+					"    &bIntNum2, ePrefix)",
 				ErrContext: "",
 				ErrMessage: err.Error(),
 			}
 	}
 
-	return b, nil
+	return bIntNum2, nil
 }
 
 // newBigIntNum - returns a new BigIntNum instance initialized to zero.
