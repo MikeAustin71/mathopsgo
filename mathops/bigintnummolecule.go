@@ -1,14 +1,14 @@
 package mathops
 
 import (
-  "fmt"
-  ePref "github.com/MikeAustin71/errpref"
-  "math/big"
-  "sync"
+	"fmt"
+	ePref "github.com/MikeAustin71/errpref"
+	"math/big"
+	"sync"
 )
 
 type bigIntNumMolecule struct {
-  lock *sync.Mutex
+	lock *sync.Mutex
 }
 
 // formatCurrencyStr - Formats the current BigIntNum numeric value as a currency string.
@@ -45,202 +45,202 @@ type bigIntNumMolecule struct {
 //															and no decimal place separator.
 //															Example: ($12,345,678)
 func (bIntMolecule *bigIntNumMolecule) formatCurrencyStr(
-  bNum *BigIntNum,
-  negValMode NegativeValueFmtMode,
-  errPrefDto *ePref.ErrPrefixDto) (string, error) {
+	bNum *BigIntNum,
+	negValMode NegativeValueFmtMode,
+	errPrefDto *ePref.ErrPrefixDto) (string, error) {
 
-  if bIntMolecule.lock == nil {
-    bIntMolecule.lock = new(sync.Mutex)
-  }
+	if bIntMolecule.lock == nil {
+		bIntMolecule.lock = new(sync.Mutex)
+	}
 
-  bIntMolecule.lock.Lock()
+	bIntMolecule.lock.Lock()
 
-  defer bIntMolecule.lock.Unlock()
+	defer bIntMolecule.lock.Unlock()
 
-  var ePrefix *ePref.ErrPrefixDto
+	var ePrefix *ePref.ErrPrefixDto
 
-  var err error
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
-    errPrefDto,
-    "bigIntNumMolecule.formatCurrencyStr()",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
+		errPrefDto,
+		"bigIntNumMolecule.formatCurrencyStr()",
+		"")
 
-  if err != nil {
-    return "", err
-  }
+	if err != nil {
+		return "", err
+	}
 
-  if bNum == nil {
+	if bNum == nil {
 
-    return "",
-      &InputPtrNilError{
-        ErrPrefix:     ePrefix.String(),
-        ErrContext:    "",
-        ParameterName: "'bNum'",
-      }
-  }
+		return "",
+			&InputPtrNilError{
+				ErrPrefix:     ePrefix.String(),
+				ErrContext:    "",
+				ParameterName: "'bNum'",
+			}
+	}
 
-  err = new(bigIntNumAtom).isBigIntNumValid(
-    bNum,
-    ePrefix.XCpy("Testing 'bNum'"))
+	err = new(bigIntNumAtom).isBigIntNumValid(
+		bNum,
+		ePrefix.XCpy("Testing 'bNum'"))
 
-  if err != nil {
+	if err != nil {
 
-    return "", err
-  }
+		return "", err
+	}
 
-  if bNum.decimalSeparator == 0 {
-    bNum.decimalSeparator = '.'
-  }
+	if bNum.decimalSeparator == 0 {
+		bNum.decimalSeparator = '.'
+	}
 
-  if bNum.thousandsSeparator == 0 {
-    bNum.thousandsSeparator = ','
-  }
+	if bNum.thousandsSeparator == 0 {
+		bNum.thousandsSeparator = ','
+	}
 
-  if bNum.currencySymbol == 0 {
-    bNum.currencySymbol = '$'
-  }
+	if bNum.currencySymbol == 0 {
+		bNum.currencySymbol = '$'
+	}
 
-  outRunes := make([]rune, 0, 300)
+	outRunes := make([]rune, 0, 300)
 
-  scratchNum := big.NewInt(0).Set(bNum.absBigInt)
-  baseZero := big.NewInt(0)
+	scratchNum := big.NewInt(0).Set(bNum.absBigInt)
+	baseZero := big.NewInt(0)
 
-  if scratchNum.Cmp(baseZero) == 0 {
-    bNum.sign = 1
+	if scratchNum.Cmp(baseZero) == 0 {
+		bNum.sign = 1
 
-    outRunes = append(outRunes, bNum.currencySymbol)
+		outRunes = append(outRunes, bNum.currencySymbol)
 
-    outRunes = append(outRunes, '0')
+		outRunes = append(outRunes, '0')
 
-    if bNum.precision > 0 {
+		if bNum.precision > 0 {
 
-      if negValMode != ABSOLUTEPURENUMSTRFMTMODE {
-        outRunes = append(outRunes, bNum.decimalSeparator)
-      }
+			if negValMode != ABSOLUTEPURENUMSTRFMTMODE {
+				outRunes = append(outRunes, bNum.decimalSeparator)
+			}
 
-      cnt := int(bNum.precision)
+			cnt := int(bNum.precision)
 
-      if negValMode == ABSOLUTEPURENUMSTRFMTMODE {
-        cnt--
-      }
+			if negValMode == ABSOLUTEPURENUMSTRFMTMODE {
+				cnt--
+			}
 
-      for h := 0; h < cnt; h++ {
-        outRunes = append(outRunes, '0')
-      }
+			for h := 0; h < cnt; h++ {
+				outRunes = append(outRunes, '0')
+			}
 
-    }
+		}
 
-    return string(outRunes), nil
-  }
+		return string(outRunes), nil
+	}
 
-  startIdx := 0
-  modulo := big.NewInt(0)
-  baseTen := big.NewInt(10)
-  digitCnt := 0
-  thouCnt := -1
+	startIdx := 0
+	modulo := big.NewInt(0)
+	baseTen := big.NewInt(10)
+	digitCnt := 0
+	thouCnt := -1
 
-  if bNum.precision == 0 {
-    thouCnt = 0
-  }
+	if bNum.precision == 0 {
+		thouCnt = 0
+	}
 
-  for scratchNum.Cmp(baseZero) == 1 {
+	for scratchNum.Cmp(baseZero) == 1 {
 
-    if startIdx == 0 &&
-      bNum.sign == -1 &&
-      negValMode == PARENTHESESNEGVALFMTMODE {
+		if startIdx == 0 &&
+			bNum.sign == -1 &&
+			negValMode == PARENTHESESNEGVALFMTMODE {
 
-      outRunes = append(outRunes, ')')
-    }
+			outRunes = append(outRunes, ')')
+		}
 
-    modX := big.NewInt(0)
-    scratchNum, modulo = big.NewInt(0).QuoRem(scratchNum, baseTen, modX)
-    outRunes = append(outRunes, rune(modulo.Int64()+int64(48)))
-    digitCnt++
-    startIdx++
+		modX := big.NewInt(0)
+		scratchNum, modulo = big.NewInt(0).QuoRem(scratchNum, baseTen, modX)
+		outRunes = append(outRunes, rune(modulo.Int64()+int64(48)))
+		digitCnt++
+		startIdx++
 
-    if thouCnt > -1 {
-      thouCnt++
-    }
+		if thouCnt > -1 {
+			thouCnt++
+		}
 
-    if scratchNum.Cmp(baseZero) == 1 &&
-      thouCnt == 3 {
+		if scratchNum.Cmp(baseZero) == 1 &&
+			thouCnt == 3 {
 
-      outRunes = append(outRunes, bNum.thousandsSeparator)
-      startIdx++
-      thouCnt = 0
-    }
+			outRunes = append(outRunes, bNum.thousandsSeparator)
+			startIdx++
+			thouCnt = 0
+		}
 
-    if bNum.precision > 0 &&
-      int(bNum.precision) == startIdx &&
-      negValMode != ABSOLUTEPURENUMSTRFMTMODE {
+		if bNum.precision > 0 &&
+			int(bNum.precision) == startIdx &&
+			negValMode != ABSOLUTEPURENUMSTRFMTMODE {
 
-      outRunes = append(outRunes, bNum.decimalSeparator)
-      startIdx++
-      thouCnt = 0
-    }
+			outRunes = append(outRunes, bNum.decimalSeparator)
+			startIdx++
+			thouCnt = 0
+		}
 
-  }
+	}
 
-  if int(bNum.precision) >= digitCnt {
+	if int(bNum.precision) >= digitCnt {
 
-    delta := int(bNum.precision) - digitCnt + 1
+		delta := int(bNum.precision) - digitCnt + 1
 
-    if negValMode == ABSOLUTEPURENUMSTRFMTMODE {
-      delta--
-    }
+		if negValMode == ABSOLUTEPURENUMSTRFMTMODE {
+			delta--
+		}
 
-    for k := 0; k < delta; k++ {
-      outRunes = append(outRunes, '0')
-      startIdx++
+		for k := 0; k < delta; k++ {
+			outRunes = append(outRunes, '0')
+			startIdx++
 
-      if bNum.precision > 0 &&
-        int(bNum.precision) == startIdx &&
-        negValMode != ABSOLUTEPURENUMSTRFMTMODE {
+			if bNum.precision > 0 &&
+				int(bNum.precision) == startIdx &&
+				negValMode != ABSOLUTEPURENUMSTRFMTMODE {
 
-        outRunes = append(outRunes, bNum.decimalSeparator)
-        startIdx++
+				outRunes = append(outRunes, bNum.decimalSeparator)
+				startIdx++
 
-      }
-    }
-  }
+			}
+		}
+	}
 
-  startIdx--
+	startIdx--
 
-  // append Currency Symbol
-  outRunes = append(outRunes, bNum.currencySymbol)
-  startIdx++
+	// append Currency Symbol
+	outRunes = append(outRunes, bNum.currencySymbol)
+	startIdx++
 
-  // adjust for negative sign value
-  if bNum.sign == -1 {
+	// adjust for negative sign value
+	if bNum.sign == -1 {
 
-    if negValMode == LEADMINUSNEGVALFMTMODE {
-      outRunes = append(outRunes, '-')
-      startIdx++
+		if negValMode == LEADMINUSNEGVALFMTMODE {
+			outRunes = append(outRunes, '-')
+			startIdx++
 
-    } else if negValMode == PARENTHESESNEGVALFMTMODE {
+		} else if negValMode == PARENTHESESNEGVALFMTMODE {
 
-      outRunes = append(outRunes, '(')
-      startIdx += 2
-    }
+			outRunes = append(outRunes, '(')
+			startIdx += 2
+		}
 
-    // Must be negValMode == ABSOLUTEPURENUMSTRFMTMODE
+		// Must be negValMode == ABSOLUTEPURENUMSTRFMTMODE
 
-  }
+	}
 
-  sortLimit := startIdx / 2
-  tRune := rune(0)
-  yCnt := 0
+	sortLimit := startIdx / 2
+	tRune := rune(0)
+	yCnt := 0
 
-  for i := startIdx; i > sortLimit; i-- {
-    tRune = outRunes[yCnt]
-    outRunes[yCnt] = outRunes[i]
-    outRunes[i] = tRune
-    yCnt++
-  }
+	for i := startIdx; i > sortLimit; i-- {
+		tRune = outRunes[yCnt]
+		outRunes[yCnt] = outRunes[i]
+		outRunes[i] = tRune
+		yCnt++
+	}
 
-  return string(outRunes), nil
+	return string(outRunes), nil
 }
 
 // formatBigIntNumStr - Formats the numeric value of the current BigIntNum
@@ -281,157 +281,157 @@ func (bIntMolecule *bigIntNumMolecule) formatCurrencyStr(
 //															and no decimal place separator.
 //															Example: (12345678)
 func (bIntMolecule *bigIntNumMolecule) formatBigIntNumStr(
-  bNum *BigIntNum,
-  negValMode NegativeValueFmtMode,
-  errPrefDto *ePref.ErrPrefixDto) (string, error) {
+	bNum *BigIntNum,
+	negValMode NegativeValueFmtMode,
+	errPrefDto *ePref.ErrPrefixDto) (string, error) {
 
-  bIntMolecule.lock.Lock()
+	bIntMolecule.lock.Lock()
 
-  defer bIntMolecule.lock.Unlock()
+	defer bIntMolecule.lock.Unlock()
 
-  var ePrefix *ePref.ErrPrefixDto
+	var ePrefix *ePref.ErrPrefixDto
 
-  var err error
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
-    errPrefDto,
-    "bigIntNumMolecule.formatBigIntNumStr",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
+		errPrefDto,
+		"bigIntNumMolecule.formatBigIntNumStr",
+		"")
 
-  if err != nil {
-    return "", err
-  }
+	if err != nil {
+		return "", err
+	}
 
-  if bNum == nil {
+	if bNum == nil {
 
-    return "",
-      &InputPtrNilError{
-        ErrPrefix:     ePrefix.String(),
-        ParameterName: "'bNum'",
-      }
-  }
+		return "",
+			&InputPtrNilError{
+				ErrPrefix:     ePrefix.String(),
+				ParameterName: "'bNum'",
+			}
+	}
 
-  if bNum.decimalSeparator == 0 {
-    bNum.decimalSeparator = '.'
-  }
+	if bNum.decimalSeparator == 0 {
+		bNum.decimalSeparator = '.'
+	}
 
-  outRunes := make([]rune, 0, 300)
+	outRunes := make([]rune, 0, 300)
 
-  scratchNum := big.NewInt(0).Set(bNum.absBigInt)
-  baseZero := big.NewInt(0)
+	scratchNum := big.NewInt(0).Set(bNum.absBigInt)
+	baseZero := big.NewInt(0)
 
-  if scratchNum.Cmp(baseZero) == 0 {
-    bNum.sign = 1
+	if scratchNum.Cmp(baseZero) == 0 {
+		bNum.sign = 1
 
-    outRunes = append(outRunes, '0')
+		outRunes = append(outRunes, '0')
 
-    if bNum.precision > 0 {
+		if bNum.precision > 0 {
 
-      if negValMode != ABSOLUTEPURENUMSTRFMTMODE {
-        outRunes = append(outRunes, bNum.decimalSeparator)
-      }
+			if negValMode != ABSOLUTEPURENUMSTRFMTMODE {
+				outRunes = append(outRunes, bNum.decimalSeparator)
+			}
 
-      cnt := int(bNum.precision)
+			cnt := int(bNum.precision)
 
-      if negValMode == ABSOLUTEPURENUMSTRFMTMODE {
-        cnt--
-      }
+			if negValMode == ABSOLUTEPURENUMSTRFMTMODE {
+				cnt--
+			}
 
-      for h := 0; h < cnt; h++ {
-        outRunes = append(outRunes, '0')
-      }
+			for h := 0; h < cnt; h++ {
+				outRunes = append(outRunes, '0')
+			}
 
-    }
+		}
 
-    return string(outRunes), nil
-  }
+		return string(outRunes), nil
+	}
 
-  startIdx := 0
-  modulo := big.NewInt(0)
-  baseTen := big.NewInt(10)
-  digitCnt := 0
+	startIdx := 0
+	modulo := big.NewInt(0)
+	baseTen := big.NewInt(10)
+	digitCnt := 0
 
-  for scratchNum.Cmp(baseZero) == 1 {
+	for scratchNum.Cmp(baseZero) == 1 {
 
-    if startIdx == 0 &&
-      bNum.sign == -1 &&
-      negValMode == PARENTHESESNEGVALFMTMODE {
+		if startIdx == 0 &&
+			bNum.sign == -1 &&
+			negValMode == PARENTHESESNEGVALFMTMODE {
 
-      outRunes = append(outRunes, ')')
-    }
+			outRunes = append(outRunes, ')')
+		}
 
-    modX := big.NewInt(0)
-    scratchNum, modulo = big.NewInt(0).QuoRem(scratchNum, baseTen, modX)
-    outRunes = append(outRunes, rune(modulo.Int64()+int64(48)))
-    digitCnt++
-    startIdx++
+		modX := big.NewInt(0)
+		scratchNum, modulo = big.NewInt(0).QuoRem(scratchNum, baseTen, modX)
+		outRunes = append(outRunes, rune(modulo.Int64()+int64(48)))
+		digitCnt++
+		startIdx++
 
-    if bNum.precision > 0 &&
-      int(bNum.precision) == startIdx &&
-      negValMode != ABSOLUTEPURENUMSTRFMTMODE {
+		if bNum.precision > 0 &&
+			int(bNum.precision) == startIdx &&
+			negValMode != ABSOLUTEPURENUMSTRFMTMODE {
 
-      outRunes = append(outRunes, bNum.decimalSeparator)
-      startIdx++
-    }
+			outRunes = append(outRunes, bNum.decimalSeparator)
+			startIdx++
+		}
 
-  }
+	}
 
-  if int(bNum.precision) >= digitCnt {
+	if int(bNum.precision) >= digitCnt {
 
-    delta := int(bNum.precision) - digitCnt + 1
+		delta := int(bNum.precision) - digitCnt + 1
 
-    if negValMode == ABSOLUTEPURENUMSTRFMTMODE {
-      delta--
-    }
+		if negValMode == ABSOLUTEPURENUMSTRFMTMODE {
+			delta--
+		}
 
-    for k := 0; k < delta; k++ {
-      outRunes = append(outRunes, '0')
-      startIdx++
+		for k := 0; k < delta; k++ {
+			outRunes = append(outRunes, '0')
+			startIdx++
 
-      if bNum.precision > 0 &&
-        int(bNum.precision) == startIdx &&
-        negValMode != ABSOLUTEPURENUMSTRFMTMODE {
+			if bNum.precision > 0 &&
+				int(bNum.precision) == startIdx &&
+				negValMode != ABSOLUTEPURENUMSTRFMTMODE {
 
-        outRunes = append(outRunes, bNum.decimalSeparator)
-        startIdx++
-      }
-    }
-  }
+				outRunes = append(outRunes, bNum.decimalSeparator)
+				startIdx++
+			}
+		}
+	}
 
-  startIdx--
+	startIdx--
 
-  // adjust for negative sign value
-  if bNum.sign == -1 {
+	// adjust for negative sign value
+	if bNum.sign == -1 {
 
-    if negValMode == LEADMINUSNEGVALFMTMODE {
-      outRunes = append(outRunes, '-')
-      startIdx++
+		if negValMode == LEADMINUSNEGVALFMTMODE {
+			outRunes = append(outRunes, '-')
+			startIdx++
 
-    } else if negValMode == PARENTHESESNEGVALFMTMODE {
-      outRunes = append(outRunes, '(')
-      startIdx += 2
-    }
+		} else if negValMode == PARENTHESESNEGVALFMTMODE {
+			outRunes = append(outRunes, '(')
+			startIdx += 2
+		}
 
-    /*
-    		MUST BE negValMode == ABSOLUTEPURENUMSTRFMTMODE
-    	  Do NOT Display Sign Character
+		/*
+				MUST BE negValMode == ABSOLUTEPURENUMSTRFMTMODE
+			  Do NOT Display Sign Character
 
-    */
-  }
+		*/
+	}
 
-  sortLimit := startIdx / 2
-  tRune := rune(0)
-  yCnt := 0
+	sortLimit := startIdx / 2
+	tRune := rune(0)
+	yCnt := 0
 
-  for i := startIdx; i > sortLimit; i-- {
-    tRune = outRunes[yCnt]
-    outRunes[yCnt] = outRunes[i]
-    outRunes[i] = tRune
-    yCnt++
-  }
+	for i := startIdx; i > sortLimit; i-- {
+		tRune = outRunes[yCnt]
+		outRunes[yCnt] = outRunes[i]
+		outRunes[i] = tRune
+		yCnt++
+	}
 
-  return string(outRunes), nil
+	return string(outRunes), nil
 }
 
 // formatThousandsStr - Returns the number string delimited with the
@@ -478,182 +478,182 @@ func (bIntMolecule *bigIntNumMolecule) formatBigIntNumStr(
 //															and no decimal place separator.
 //															Example: (12,345,678)
 func (bIntMolecule *bigIntNumMolecule) formatThousandsStr(
-  bNum *BigIntNum,
-  negValMode NegativeValueFmtMode,
-  errPrefDto *ePref.ErrPrefixDto) (string, error) {
+	bNum *BigIntNum,
+	negValMode NegativeValueFmtMode,
+	errPrefDto *ePref.ErrPrefixDto) (string, error) {
 
-  var err error
+	var err error
 
-  var ePrefix *ePref.ErrPrefixDto
+	var ePrefix *ePref.ErrPrefixDto
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
-    errPrefDto,
-    "bigIntNumMolecule.formatThousandsStr",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
+		errPrefDto,
+		"bigIntNumMolecule.formatThousandsStr",
+		"")
 
-  if err != nil {
-    return "", err
-  }
+	if err != nil {
+		return "", err
+	}
 
-  if bNum == nil {
+	if bNum == nil {
 
-    return "",
-      &InputPtrNilError{
-        ErrPrefix:     ePrefix.String(),
-        ParameterName: "'bNum'",
-      }
-  }
+		return "",
+			&InputPtrNilError{
+				ErrPrefix:     ePrefix.String(),
+				ParameterName: "'bNum'",
+			}
+	}
 
-  err = new(bigIntNumAtom).isBigIntNumValid(
-    bNum,
-    ePrefix.XCpy("Testing 'bNum'"))
+	err = new(bigIntNumAtom).isBigIntNumValid(
+		bNum,
+		ePrefix.XCpy("Testing 'bNum'"))
 
-  if err != nil {
+	if err != nil {
 
-    return "", err
-  }
+		return "", err
+	}
 
-  if bNum.decimalSeparator == 0 {
-    bNum.decimalSeparator = '.'
-  }
+	if bNum.decimalSeparator == 0 {
+		bNum.decimalSeparator = '.'
+	}
 
-  if bNum.thousandsSeparator == 0 {
-    bNum.thousandsSeparator = ','
-  }
+	if bNum.thousandsSeparator == 0 {
+		bNum.thousandsSeparator = ','
+	}
 
-  outRunes := make([]rune, 0, 300)
+	outRunes := make([]rune, 0, 300)
 
-  scratchNum := big.NewInt(0).Set(bNum.absBigInt)
-  baseZero := big.NewInt(0)
+	scratchNum := big.NewInt(0).Set(bNum.absBigInt)
+	baseZero := big.NewInt(0)
 
-  if scratchNum.Cmp(baseZero) == 0 {
-    bNum.sign = 1
+	if scratchNum.Cmp(baseZero) == 0 {
+		bNum.sign = 1
 
-    outRunes = append(outRunes, '0')
+		outRunes = append(outRunes, '0')
 
-    if bNum.precision > 0 {
+		if bNum.precision > 0 {
 
-      if negValMode != ABSOLUTEPURENUMSTRFMTMODE {
-        outRunes = append(outRunes, bNum.decimalSeparator)
-      }
+			if negValMode != ABSOLUTEPURENUMSTRFMTMODE {
+				outRunes = append(outRunes, bNum.decimalSeparator)
+			}
 
-      cnt := int(bNum.precision)
+			cnt := int(bNum.precision)
 
-      if negValMode == ABSOLUTEPURENUMSTRFMTMODE {
-        cnt--
-      }
+			if negValMode == ABSOLUTEPURENUMSTRFMTMODE {
+				cnt--
+			}
 
-      for h := 0; h < cnt; h++ {
-        outRunes = append(outRunes, '0')
-      }
+			for h := 0; h < cnt; h++ {
+				outRunes = append(outRunes, '0')
+			}
 
-    }
+		}
 
-    return string(outRunes), nil
-  }
+		return string(outRunes), nil
+	}
 
-  startIdx := 0
-  modulo := big.NewInt(0)
-  baseTen := big.NewInt(10)
-  digitCnt := 0
-  thouCnt := -1
+	startIdx := 0
+	modulo := big.NewInt(0)
+	baseTen := big.NewInt(10)
+	digitCnt := 0
+	thouCnt := -1
 
-  if bNum.precision == 0 {
-    thouCnt = 0
-  }
+	if bNum.precision == 0 {
+		thouCnt = 0
+	}
 
-  for scratchNum.Cmp(baseZero) == 1 {
+	for scratchNum.Cmp(baseZero) == 1 {
 
-    if startIdx == 0 &&
-      bNum.sign == -1 &&
-      negValMode == PARENTHESESNEGVALFMTMODE {
+		if startIdx == 0 &&
+			bNum.sign == -1 &&
+			negValMode == PARENTHESESNEGVALFMTMODE {
 
-      outRunes = append(outRunes, ')')
-    }
+			outRunes = append(outRunes, ')')
+		}
 
-    modX := big.NewInt(0)
-    scratchNum, modulo = big.NewInt(0).QuoRem(scratchNum, baseTen, modX)
-    outRunes = append(outRunes, rune(modulo.Int64()+int64(48)))
-    digitCnt++
-    startIdx++
+		modX := big.NewInt(0)
+		scratchNum, modulo = big.NewInt(0).QuoRem(scratchNum, baseTen, modX)
+		outRunes = append(outRunes, rune(modulo.Int64()+int64(48)))
+		digitCnt++
+		startIdx++
 
-    if thouCnt > -1 {
-      thouCnt++
-    }
+		if thouCnt > -1 {
+			thouCnt++
+		}
 
-    if scratchNum.Cmp(baseZero) == 1 &&
-      thouCnt == 3 {
+		if scratchNum.Cmp(baseZero) == 1 &&
+			thouCnt == 3 {
 
-      outRunes = append(outRunes, bNum.thousandsSeparator)
-      startIdx++
-      thouCnt = 0
-    }
+			outRunes = append(outRunes, bNum.thousandsSeparator)
+			startIdx++
+			thouCnt = 0
+		}
 
-    if bNum.precision > 0 &&
-      int(bNum.precision) == startIdx &&
-      negValMode != ABSOLUTEPURENUMSTRFMTMODE {
+		if bNum.precision > 0 &&
+			int(bNum.precision) == startIdx &&
+			negValMode != ABSOLUTEPURENUMSTRFMTMODE {
 
-      outRunes = append(outRunes, bNum.decimalSeparator)
-      startIdx++
-      thouCnt = 0
-    }
+			outRunes = append(outRunes, bNum.decimalSeparator)
+			startIdx++
+			thouCnt = 0
+		}
 
-  }
+	}
 
-  if int(bNum.precision) >= digitCnt {
+	if int(bNum.precision) >= digitCnt {
 
-    delta := int(bNum.precision) - digitCnt + 1
+		delta := int(bNum.precision) - digitCnt + 1
 
-    if negValMode == ABSOLUTEPURENUMSTRFMTMODE {
-      delta--
-    }
+		if negValMode == ABSOLUTEPURENUMSTRFMTMODE {
+			delta--
+		}
 
-    for k := 0; k < delta; k++ {
-      outRunes = append(outRunes, '0')
-      startIdx++
+		for k := 0; k < delta; k++ {
+			outRunes = append(outRunes, '0')
+			startIdx++
 
-      if bNum.precision > 0 &&
-        int(bNum.precision) == startIdx &&
-        negValMode != ABSOLUTEPURENUMSTRFMTMODE {
+			if bNum.precision > 0 &&
+				int(bNum.precision) == startIdx &&
+				negValMode != ABSOLUTEPURENUMSTRFMTMODE {
 
-        outRunes = append(outRunes, bNum.decimalSeparator)
-        startIdx++
-      }
-    }
-  }
+				outRunes = append(outRunes, bNum.decimalSeparator)
+				startIdx++
+			}
+		}
+	}
 
-  startIdx--
+	startIdx--
 
-  // adjust for negative sign value
-  if bNum.sign == -1 {
+	// adjust for negative sign value
+	if bNum.sign == -1 {
 
-    if negValMode == LEADMINUSNEGVALFMTMODE {
-      outRunes = append(outRunes, '-')
-      startIdx++
+		if negValMode == LEADMINUSNEGVALFMTMODE {
+			outRunes = append(outRunes, '-')
+			startIdx++
 
-    } else if negValMode == PARENTHESESNEGVALFMTMODE {
+		} else if negValMode == PARENTHESESNEGVALFMTMODE {
 
-      outRunes = append(outRunes, '(')
-      startIdx += 2
-    }
+			outRunes = append(outRunes, '(')
+			startIdx += 2
+		}
 
-    // Must Be negValMode == ABSOLUTEPURENUMSTRFMTMODE
+		// Must Be negValMode == ABSOLUTEPURENUMSTRFMTMODE
 
-  }
+	}
 
-  sortLimit := startIdx / 2
-  tRune := rune(0)
-  yCnt := 0
+	sortLimit := startIdx / 2
+	tRune := rune(0)
+	yCnt := 0
 
-  for i := startIdx; i > sortLimit; i-- {
-    tRune = outRunes[yCnt]
-    outRunes[yCnt] = outRunes[i]
-    outRunes[i] = tRune
-    yCnt++
-  }
+	for i := startIdx; i > sortLimit; i-- {
+		tRune = outRunes[yCnt]
+		outRunes[yCnt] = outRunes[i]
+		outRunes[i] = tRune
+		yCnt++
+	}
 
-  return string(outRunes), nil
+	return string(outRunes), nil
 
 }
 
@@ -680,75 +680,75 @@ func (bIntMolecule *bigIntNumMolecule) formatThousandsStr(
 //	 1,234,567.800												  8
 //	         5                              1
 func (bIntMolecule *bigIntNumMolecule) getActualNumberOfDigits(
-  bNum *BigIntNum,
-  errPrefDto *ePref.ErrPrefixDto) (
-  numberOfDigits *big.Int, isZeroValue bool, err error) {
+	bNum *BigIntNum,
+	errPrefDto *ePref.ErrPrefixDto) (
+	numberOfDigits *big.Int, isZeroValue bool, err error) {
 
-  bIntMolecule.lock.Lock()
+	bIntMolecule.lock.Lock()
 
-  defer bIntMolecule.lock.Unlock()
+	defer bIntMolecule.lock.Unlock()
 
-  numberOfDigits = big.NewInt(0)
+	numberOfDigits = big.NewInt(0)
 
-  isZeroValue = false
+	isZeroValue = false
 
-  err = nil
+	err = nil
 
-  var ePrefix *ePref.ErrPrefixDto
+	var ePrefix *ePref.ErrPrefixDto
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
-    errPrefDto,
-    "bigIntNumMolecule.getActualNumberOfDigits",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
+		errPrefDto,
+		"bigIntNumMolecule.getActualNumberOfDigits",
+		"")
 
-  if err != nil {
-    return numberOfDigits, isZeroValue, err
-  }
+	if err != nil {
+		return numberOfDigits, isZeroValue, err
+	}
 
-  if bNum == nil {
+	if bNum == nil {
 
-    return numberOfDigits, isZeroValue,
-      &InputPtrNilError{
-        ErrPrefix:     ePrefix.String(),
-        ParameterName: "'bNum'",
-      }
-  }
+		return numberOfDigits, isZeroValue,
+			&InputPtrNilError{
+				ErrPrefix:     ePrefix.String(),
+				ParameterName: "'bNum'",
+			}
+	}
 
-  err = new(bigIntNumAtom).isBigIntNumValid(
-    bNum,
-    ePrefix)
+	err = new(bigIntNumAtom).isBigIntNumValid(
+		bNum,
+		ePrefix)
 
-  if err != nil {
+	if err != nil {
 
-    return numberOfDigits, isZeroValue, err
+		return numberOfDigits, isZeroValue, err
 
-  }
+	}
 
-  numOfDigits, errx := BigIntMath{}.GetMagnitude(bNum.absBigInt)
+	numOfDigits, errx := BigIntMath{}.GetMagnitude(bNum.absBigInt)
 
-  if errx != nil {
+	if errx != nil {
 
-    err = fmt.Errorf("%v\n"+
-      "Error returned by:\n"+
-      "numOfDigits, errx := BigIntMath{}.GetMagnitude(bNum.absBigInt)\n"+
-      "bNum.absBigInt='%v' Error='%v' ",
-      ePrefix.String(),
-      bNum.absBigInt.Text(10),
-      errx.Error())
+		err = fmt.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"numOfDigits, errx := BigIntMath{}.GetMagnitude(bNum.absBigInt)\n"+
+			"bNum.absBigInt='%v' Error='%v' ",
+			ePrefix.String(),
+			bNum.absBigInt.Text(10),
+			errx.Error())
 
-    return numberOfDigits, isZeroValue, err
-  }
+		return numberOfDigits, isZeroValue, err
+	}
 
-  numberOfDigits = big.NewInt(0).Add(numOfDigits, big.NewInt(1))
+	numberOfDigits = big.NewInt(0).Add(numOfDigits, big.NewInt(1))
 
-  if bNum.absBigInt.Cmp(big.NewInt(0)) == 0 {
+	if bNum.absBigInt.Cmp(big.NewInt(0)) == 0 {
 
-    isZeroValue = true
+		isZeroValue = true
 
-  }
+	}
 
-  return numberOfDigits, isZeroValue, err
+	return numberOfDigits, isZeroValue, err
 }
 
 // isBIntNumZero - Returns a boolean signaling whether a
@@ -758,52 +758,52 @@ func (bIntMolecule *bigIntNumMolecule) getActualNumberOfDigits(
 // This method will first test the passed instance of BigIntNum
 // to determine if that instance is valid, or not.
 func (bIntMolecule *bigIntNumMolecule) isBIntNumZero(
-  bNum *BigIntNum,
-  errPrefDto *ePref.ErrPrefixDto) (bool, error) {
+	bNum *BigIntNum,
+	errPrefDto *ePref.ErrPrefixDto) (bool, error) {
 
-  if bIntMolecule.lock == nil {
-    bIntMolecule.lock = new(sync.Mutex)
-  }
+	if bIntMolecule.lock == nil {
+		bIntMolecule.lock = new(sync.Mutex)
+	}
 
-  bIntMolecule.lock.Lock()
+	bIntMolecule.lock.Lock()
 
-  defer bIntMolecule.lock.Unlock()
+	defer bIntMolecule.lock.Unlock()
 
-  var ePrefix *ePref.ErrPrefixDto
+	var ePrefix *ePref.ErrPrefixDto
 
-  var err error
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
-    errPrefDto,
-    "bigIntNumMolecule.isBIntNumZero",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
+		errPrefDto,
+		"bigIntNumMolecule.isBIntNumZero",
+		"")
 
-  if err != nil {
-    return false, err
-  }
+	if err != nil {
+		return false, err
+	}
 
-  if bNum == nil {
+	if bNum == nil {
 
-    return false, &InputPtrNilError{
-      ErrPrefix:     ePrefix.String(),
-      ParameterName: "'bNum'",
-    }
-  }
+		return false, &InputPtrNilError{
+			ErrPrefix:     ePrefix.String(),
+			ParameterName: "'bNum'",
+		}
+	}
 
-  err = new(bigIntNumAtom).isBigIntNumValid(
-    bNum,
-    ePrefix.XCpy("Vallidity Test on 'bNum'"))
+	err = new(bigIntNumAtom).isBigIntNumValid(
+		bNum,
+		ePrefix.XCpy("Vallidity Test on 'bNum'"))
 
-  if err != nil {
-    return false, err
-  }
+	if err != nil {
+		return false, err
+	}
 
-  if bNum.bigInt.Cmp(big.NewInt(0)) == 0 {
-    return true, nil
-  }
+	if bNum.bigInt.Cmp(big.NewInt(0)) == 0 {
+		return true, nil
+	}
 
-  return false, nil
+	return false, nil
 }
 
 // newOne - Returns a BigIntNum Type with a value equal to '1' (one).
@@ -830,77 +830,77 @@ func (bIntMolecule *bigIntNumMolecule) isBIntNumZero(
 // USA default numeric separators (decimal separator, thousands
 // separator and currency symbol).
 func (bIntMolecule *bigIntNumMolecule) newOne(
-  precision uint,
-  errPrefDto *ePref.ErrPrefixDto) (BigIntNum, error) {
+	precision uint,
+	errPrefDto *ePref.ErrPrefixDto) (BigIntNum, error) {
 
-  if bIntMolecule.lock == nil {
-    bIntMolecule.lock = new(sync.Mutex)
-  }
+	if bIntMolecule.lock == nil {
+		bIntMolecule.lock = new(sync.Mutex)
+	}
 
-  bIntMolecule.lock.Lock()
+	bIntMolecule.lock.Lock()
 
-  defer bIntMolecule.lock.Unlock()
+	defer bIntMolecule.lock.Unlock()
 
-  var ePrefix *ePref.ErrPrefixDto
+	var ePrefix *ePref.ErrPrefixDto
 
-  var err error
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
-    errPrefDto,
-    "bigIntNumMolecule.newOne",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
+		errPrefDto,
+		"bigIntNumMolecule.newOne",
+		"")
 
-  if err != nil {
-    return BigIntNum{}, err
-  }
+	if err != nil {
+		return BigIntNum{}, err
+	}
 
-  // Sets Numeric Separators to USA Defautls
-  bIntNum2, err := new(bigIntNumMechanics).newZero(
-    precision,
-    ePrefix.XCpy(fmt.Sprintf("Setting bIntNum2=0 precision=%v", precision)))
+	// Sets Numeric Separators to USA Defautls
+	bIntNum2, err := new(bigIntNumMechanics).newZero(
+		precision,
+		ePrefix.XCpy(fmt.Sprintf("Setting bIntNum2=0 precision=%v", precision)))
 
-  if err != nil {
+	if err != nil {
 
-    return BigIntNum{}, err
+		return BigIntNum{}, err
 
-  }
+	}
 
-  bNumNanobot := new(bigIntNumNanobot)
+	bNumNanobot := new(bigIntNumNanobot)
 
-  if precision == 0 {
+	if precision == 0 {
 
-    err = bNumNanobot.setBigInt(
-      &bIntNum2,
-      big.NewInt(1),
-      0,
-      ePrefix)
+		err = bNumNanobot.setBigInt(
+			&bIntNum2,
+			big.NewInt(1),
+			0,
+			ePrefix)
 
-    if err != nil {
+		if err != nil {
 
-      return BigIntNum{}, err
+			return BigIntNum{}, err
 
-    }
+		}
 
-    return bIntNum2, nil
-  }
+		return bIntNum2, nil
+	}
 
-  scaleVal := big.NewInt(0).Exp(big.NewInt(10), big.NewInt(int64(precision)), nil)
+	scaleVal := big.NewInt(0).Exp(big.NewInt(10), big.NewInt(int64(precision)), nil)
 
-  newVal := big.NewInt(0).Mul(big.NewInt(1), scaleVal)
+	newVal := big.NewInt(0).Mul(big.NewInt(1), scaleVal)
 
-  err = bNumNanobot.setBigInt(
-    &bIntNum2,
-    newVal,
-    precision,
-    ePrefix)
+	err = bNumNanobot.setBigInt(
+		&bIntNum2,
+		newVal,
+		precision,
+		ePrefix)
 
-  if err != nil {
+	if err != nil {
 
-    return BigIntNum{}, err
-  }
+		return BigIntNum{}, err
+	}
 
-  return bIntNum2, nil
+	return bIntNum2, nil
 }
 
 // setBigIntExponent - Sets the numeric value using an integer
@@ -939,110 +939,110 @@ func (bIntMolecule *bigIntNumMolecule) newOne(
 //	The pre-existing Numeric Separators configured for
 //	'bNum' will remain unchanged.
 func (bIntMolecule *bigIntNumMolecule) setBigIntExponent(
-  bNum *BigIntNum,
-  bigI *big.Int,
-  exponent int,
-  errPrefDto *ePref.ErrPrefixDto) error {
+	bNum *BigIntNum,
+	bigI *big.Int,
+	exponent int,
+	errPrefDto *ePref.ErrPrefixDto) error {
 
-  if bIntMolecule.lock == nil {
-    bIntMolecule.lock = new(sync.Mutex)
-  }
+	if bIntMolecule.lock == nil {
+		bIntMolecule.lock = new(sync.Mutex)
+	}
 
-  bIntMolecule.lock.Lock()
+	bIntMolecule.lock.Lock()
 
-  defer bIntMolecule.lock.Unlock()
+	defer bIntMolecule.lock.Unlock()
 
-  var ePrefix *ePref.ErrPrefixDto
+	var ePrefix *ePref.ErrPrefixDto
 
-  var err error
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
-    errPrefDto,
-    "bigIntNumMolecule.setBigIntExponent",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
+		errPrefDto,
+		"bigIntNumMolecule.setBigIntExponent",
+		"")
 
-  if err != nil {
-    return err
-  }
+	if err != nil {
+		return err
+	}
 
-  if bNum == nil {
+	if bNum == nil {
 
-    return &InputPtrNilError{
-      ErrPrefix:     ePrefix.String(),
-      ParameterName: "'bNum'",
-    }
-  }
+		return &InputPtrNilError{
+			ErrPrefix:     ePrefix.String(),
+			ParameterName: "'bNum'",
+		}
+	}
 
-  if bigI == nil {
+	if bigI == nil {
 
-    return &InputPtrNilError{
-      ErrPrefix:     ePrefix.String(),
-      ParameterName: "'bigI'",
-    }
-  }
+		return &InputPtrNilError{
+			ErrPrefix:     ePrefix.String(),
+			ParameterName: "'bigI'",
+		}
+	}
 
-  err = new(bigIntNumAtom).setNumericSeparatorsToDefaultIfEmpty(
-    bNum,
-    ePrefix.XCpy("Setting 'bNum' NumSeps"))
+	err = new(bigIntNumAtom).setNumericSeparatorsToDefaultIfEmpty(
+		bNum,
+		ePrefix.XCpy("Setting 'bNum' NumSeps"))
 
-  if err != nil {
-    return err
-  }
+	if err != nil {
+		return err
+	}
 
-  if exponent < 1 {
+	if exponent < 1 {
 
-    precision := uint(exponent * -1)
+		precision := uint(exponent * -1)
 
-    err = new(bigIntNumNanobot).setBigInt(
-      bNum,
-      bigI,
-      precision,
-      ePrefix.XCpy(fmt.Sprintf("Setting bNum; bigI=%v precision=%v",
-        bigI.Text(10), precision)))
+		err = new(bigIntNumNanobot).setBigInt(
+			bNum,
+			bigI,
+			precision,
+			ePrefix.XCpy(fmt.Sprintf("Setting bNum; bigI=%v precision=%v",
+				bigI.Text(10), precision)))
 
-    if err != nil {
-      return &FuncReturnError{
-        ErrPrefix: ePrefix.String(),
-        ReturnFunc: "err = new(bigIntNumNanobot).setBigInt(\n" +
-          "    bNum, bigI, precision, ePrefix)",
-        ErrContext: "if exponent < 1 {",
-        ErrMessage: err.Error(),
-      }
-    }
+		if err != nil {
+			return &FuncReturnError{
+				ErrPrefix: ePrefix.String(),
+				ReturnFunc: "err = new(bigIntNumNanobot).setBigInt(\n" +
+					"    bNum, bigI, precision, ePrefix)",
+				ErrContext: "if exponent < 1 {",
+				ErrMessage: err.Error(),
+			}
+		}
 
-    return nil
-  }
+		return nil
+	}
 
-  // exponent must be greater than zero.
-  // scale left exponent places and set precision to zero
+	// exponent must be greater than zero.
+	// scale left exponent places and set precision to zero
 
-  big10 := big.NewInt(10)
+	big10 := big.NewInt(10)
 
-  scale := big.NewInt(int64(exponent))
+	scale := big.NewInt(int64(exponent))
 
-  scaleValue := big.NewInt(0).Exp(big10, scale, nil)
+	scaleValue := big.NewInt(0).Exp(big10, scale, nil)
 
-  newBigI := big.NewInt(0).Mul(bigI, scaleValue)
+	newBigI := big.NewInt(0).Mul(bigI, scaleValue)
 
-  err = new(bigIntNumNanobot).setBigInt(
-    bNum,
-    newBigI,
-    uint(exponent),
-    ePrefix.XCpy(fmt.Sprintf("Setting bNum; newBigI=%v precision=%v",
-      newBigI.Text(10), exponent)))
+	err = new(bigIntNumNanobot).setBigInt(
+		bNum,
+		newBigI,
+		uint(exponent),
+		ePrefix.XCpy(fmt.Sprintf("Setting bNum; newBigI=%v precision=%v",
+			newBigI.Text(10), exponent)))
 
-  if err != nil {
-    return &FuncReturnError{
-      ErrPrefix: ePrefix.String(),
-      ReturnFunc: "err = new(bigIntNumNanobot).setBigInt(\n" +
-        "    bNum, newBigI, uint(exponent), ePrefix)",
-      ErrContext: "exponent > 0",
-      ErrMessage: err.Error(),
-    }
-  }
+	if err != nil {
+		return &FuncReturnError{
+			ErrPrefix: ePrefix.String(),
+			ReturnFunc: "err = new(bigIntNumNanobot).setBigInt(\n" +
+				"    bNum, newBigI, uint(exponent), ePrefix)",
+			ErrContext: "exponent > 0",
+			ErrMessage: err.Error(),
+		}
+	}
 
-  return nil
+	return nil
 }
 
 // setBigRat
@@ -1106,141 +1106,141 @@ func (bIntMolecule *bigIntNumMolecule) setBigIntExponent(
 //	The pre-existing Numeric Separators configured for
 //	'bNum' will remain unchanged.
 func (bIntMolecule *bigIntNumMolecule) setBigRat(
-  bNum *BigIntNum,
-  ratNum *big.Rat,
-  maxPrecision uint,
-  errPrefDto *ePref.ErrPrefixDto) error {
+	bNum *BigIntNum,
+	ratNum *big.Rat,
+	maxPrecision uint,
+	errPrefDto *ePref.ErrPrefixDto) error {
 
-  bIntMolecule.lock.Lock()
+	bIntMolecule.lock.Lock()
 
-  defer bIntMolecule.lock.Unlock()
+	defer bIntMolecule.lock.Unlock()
 
-  var ePrefix *ePref.ErrPrefixDto
+	var ePrefix *ePref.ErrPrefixDto
 
-  var err error
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
-    errPrefDto,
-    "bigIntNumMolecule.setBigRat",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
+		errPrefDto,
+		"bigIntNumMolecule.setBigRat",
+		"")
 
-  if err != nil {
-    return err
-  }
+	if err != nil {
+		return err
+	}
 
-  if bNum == nil {
+	if bNum == nil {
 
-    return &InputPtrNilError{
-      ErrPrefix:     ePrefix.String(),
-      ParameterName: "'bNum'",
-    }
-  }
+		return &InputPtrNilError{
+			ErrPrefix:     ePrefix.String(),
+			ParameterName: "'bNum'",
+		}
+	}
 
-  if ratNum == nil {
+	if ratNum == nil {
 
-    return &InputPtrNilError{
-      ErrPrefix:     ePrefix.String(),
-      ParameterName: "'bNum'",
-    }
-  }
+		return &InputPtrNilError{
+			ErrPrefix:     ePrefix.String(),
+			ParameterName: "'bNum'",
+		}
+	}
 
-  bIntNumAtom := new(bigIntNumAtom)
+	bIntNumAtom := new(bigIntNumAtom)
 
-  err = bIntNumAtom.setNumericSeparatorsToDefaultIfEmpty(
-    bNum, ePrefix.XCpy("Setting 'bNum' NumSeps"))
+	err = bIntNumAtom.setNumericSeparatorsToDefaultIfEmpty(
+		bNum, ePrefix.XCpy("Setting 'bNum' NumSeps"))
 
-  if err != nil {
+	if err != nil {
 
-    return &FuncReturnError{
-      ErrPrefix: ePrefix.String(),
-      ReturnFunc: "err = bIntNumAtom.setNumericSeparatorsToDefaultIfEmpty(\n" +
-        "    bNum, ePrefix)",
-      ErrContext: "",
-      ErrMessage: err.Error(),
-    }
-  }
+		return &FuncReturnError{
+			ErrPrefix: ePrefix.String(),
+			ReturnFunc: "err = bIntNumAtom.setNumericSeparatorsToDefaultIfEmpty(\n" +
+				"    bNum, ePrefix)",
+			ErrContext: "",
+			ErrMessage: err.Error(),
+		}
+	}
 
-  numSeps, err := bIntNumAtom.getNumericSeparatorsDto(
-    bNum,
-    ePrefix)
+	numSeps, err := bIntNumAtom.getNumericSeparatorsDto(
+		bNum,
+		ePrefix)
 
-  if err != nil {
+	if err != nil {
 
-    return &FuncReturnError{
-      ErrPrefix: ePrefix.String(),
-      ReturnFunc: "numSeps, err := new(bigIntNumAtom).getNumericSeparatorsDto(\n" +
-        "    bNum, ePrefix)",
-      ErrContext: "",
-      ErrMessage: err.Error(),
-    }
-  }
+		return &FuncReturnError{
+			ErrPrefix: ePrefix.String(),
+			ReturnFunc: "numSeps, err := new(bigIntNumAtom).getNumericSeparatorsDto(\n" +
+				"    bNum, ePrefix)",
+			ErrContext: "",
+			ErrMessage: err.Error(),
+		}
+	}
 
-  numerator := big.NewInt(0).Set(ratNum.Num())
+	numerator := big.NewInt(0).Set(ratNum.Num())
 
-  denominator := big.NewInt(0).Set(ratNum.Denom())
+	denominator := big.NewInt(0).Set(ratNum.Denom())
 
-  biPair, err := new(BigIntPair).
-    NewBase(numerator, 0, denominator, 0)
+	biPair, err := new(BigIntPair).
+		NewBase(numerator, 0, denominator, 0)
 
-  if err != nil {
+	if err != nil {
 
-    return &FuncReturnError{
-      ErrPrefix: ePrefix.String(),
-      ReturnFunc: "biPair, err := new(BigIntPair).\n" +
-        "NewBase(numerator, 0, denominator, 0)",
-      ErrContext: "",
-      ErrMessage: err.Error(),
-    }
-  }
+		return &FuncReturnError{
+			ErrPrefix: ePrefix.String(),
+			ReturnFunc: "biPair, err := new(BigIntPair).\n" +
+				"NewBase(numerator, 0, denominator, 0)",
+			ErrContext: "",
+			ErrMessage: err.Error(),
+		}
+	}
 
-  biPair.MaxPrecision = maxPrecision
+	biPair.MaxPrecision = maxPrecision
 
-  biNum, err := BigIntMathDivide{}.PairFracQuotientNoNumSeps(biPair, numSeps)
+	biNum, err := BigIntMathDivide{}.PairFracQuotientNoNumSeps(biPair, numSeps)
 
-  if err != nil {
+	if err != nil {
 
-    return &FuncReturnError{
-      ErrPrefix:  ePrefix.String(),
-      ReturnFunc: "biNum, err := BigIntMathDivide{}.PairFracQuotientNoNumSeps(biPair, numSeps)",
-      ErrContext: "",
-      ErrMessage: err.Error(),
-    }
-  }
+		return &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "biNum, err := BigIntMathDivide{}.PairFracQuotientNoNumSeps(biPair, numSeps)",
+			ErrContext: "",
+			ErrMessage: err.Error(),
+		}
+	}
 
-  biNumPrecision, err := biNum.GetPrecisionUint()
+	biNumPrecision, err := biNum.GetPrecisionUint()
 
-  if err != nil {
+	if err != nil {
 
-    return &FuncReturnError{
-      ErrPrefix:  ePrefix.String(),
-      ReturnFunc: "biNumPrecision, err := biNum.GetPrecisionUint()",
-      ErrContext: "",
-      ErrMessage: err.Error(),
-    }
-  }
+		return &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "biNumPrecision, err := biNum.GetPrecisionUint()",
+			ErrContext: "",
+			ErrMessage: err.Error(),
+		}
+	}
 
-  if biNumPrecision > maxPrecision {
+	if biNumPrecision > maxPrecision {
 
-    err = biNum.SetPrecision(maxPrecision)
+		err = biNum.SetPrecision(maxPrecision)
 
-    if err != nil {
+		if err != nil {
 
-      return &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "err = biNum.SetPrecision(maxPrecision)",
-        ErrContext: "if biNumPrecision > maxPrecision {",
-        ErrMessage: err.Error(),
-      }
-    }
-  }
+			return &FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "err = biNum.SetPrecision(maxPrecision)",
+				ErrContext: "if biNumPrecision > maxPrecision {",
+				ErrMessage: err.Error(),
+			}
+		}
+	}
 
-  err = new(bigIntNumUtility).bigIntNumCopyIn(
-    bNum,
-    &biNum,
-    ePrefix.XCpy("bNum <- biNum"))
+	err = new(bigIntNumUtility).bigIntNumCopyIn(
+		bNum,
+		&biNum,
+		ePrefix.XCpy("bNum <- biNum"))
 
-  return err
+	return err
 }
 
 // setBigIntNumSeps
@@ -1304,105 +1304,105 @@ func (bIntMolecule *bigIntNumMolecule) setBigRat(
 // instance of type BigIntNum. The calling method must
 // do this!
 func (bIntMolecule *bigIntNumMolecule) setBigIntNumSeps(
-  bNum *BigIntNum,
-  bigI *big.Int,
-  precision uint,
-  numSeps NumericSeparatorDto,
-  errPrefDto *ePref.ErrPrefixDto) error {
+	bNum *BigIntNum,
+	bigI *big.Int,
+	precision uint,
+	numSeps NumericSeparatorDto,
+	errPrefDto *ePref.ErrPrefixDto) error {
 
-  if bIntMolecule.lock == nil {
-    bIntMolecule.lock = new(sync.Mutex)
-  }
+	if bIntMolecule.lock == nil {
+		bIntMolecule.lock = new(sync.Mutex)
+	}
 
-  bIntMolecule.lock.Lock()
+	bIntMolecule.lock.Lock()
 
-  defer bIntMolecule.lock.Unlock()
+	defer bIntMolecule.lock.Unlock()
 
-  var ePrefix *ePref.ErrPrefixDto
+	var ePrefix *ePref.ErrPrefixDto
 
-  var err error
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
-    errPrefDto,
-    "bigIntNumMolecule.setBigIntNumSeps()",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
+		errPrefDto,
+		"bigIntNumMolecule.setBigIntNumSeps()",
+		"")
 
-  if err != nil {
-    return err
-  }
+	if err != nil {
+		return err
+	}
 
-  if bNum == nil {
+	if bNum == nil {
 
-    return &InputPtrNilError{
-      ErrPrefix:     ePrefix.String(),
-      ErrContext:    "",
-      ParameterName: "'bNum'",
-    }
-  }
+		return &InputPtrNilError{
+			ErrPrefix:     ePrefix.String(),
+			ErrContext:    "",
+			ParameterName: "'bNum'",
+		}
+	}
 
-  if bigI == nil {
+	if bigI == nil {
 
-    return &InputPtrNilError{
-      ErrPrefix:     ePrefix.String(),
-      ParameterName: "'bigI'",
-    }
-  }
+		return &InputPtrNilError{
+			ErrPrefix:     ePrefix.String(),
+			ParameterName: "'bigI'",
+		}
+	}
 
-  biNum := new(BigIntNum)
+	biNum := new(BigIntNum)
 
-  err = new(bigIntNumNanobot).setBigInt(
-    biNum,
-    bigI,
-    precision,
-    ePrefix)
+	err = new(bigIntNumNanobot).setBigInt(
+		biNum,
+		bigI,
+		precision,
+		ePrefix)
 
-  if err != nil {
+	if err != nil {
 
-    return &FuncReturnError{
-      ErrPrefix: ePrefix.String(),
-      ReturnFunc: "err = new(bigIntNumNanobot).setBigInt(\n" +
-        "    biNum, bigI, precision, ePrefix)",
-      ErrContext: "",
-      ErrMessage: err.Error(),
-    }
-  }
+		return &FuncReturnError{
+			ErrPrefix: ePrefix.String(),
+			ReturnFunc: "err = new(bigIntNumNanobot).setBigInt(\n" +
+				"    biNum, bigI, precision, ePrefix)",
+			ErrContext: "",
+			ErrMessage: err.Error(),
+		}
+	}
 
-  numSeps.SetDefaultsIfEmpty()
+	numSeps.SetDefaultsIfEmpty()
 
-  err = new(bigIntNumAtom).setNumericSeparatorsDto(
-    biNum,
-    numSeps,
-    ePrefix)
+	err = new(bigIntNumAtom).setNumericSeparatorsDto(
+		biNum,
+		numSeps,
+		ePrefix)
 
-  if err != nil {
+	if err != nil {
 
-    return &FuncReturnError{
-      ErrPrefix: ePrefix.String(),
-      ReturnFunc: "err = new(bigIntNumAtom).setNumericSeparatorsDto(\n" +
-        "    biNum, numSeps, ePrefix)",
-      ErrContext: "",
-      ErrMessage: err.Error(),
-    }
-  }
+		return &FuncReturnError{
+			ErrPrefix: ePrefix.String(),
+			ReturnFunc: "err = new(bigIntNumAtom).setNumericSeparatorsDto(\n" +
+				"    biNum, numSeps, ePrefix)",
+			ErrContext: "",
+			ErrMessage: err.Error(),
+		}
+	}
 
-  err = new(bigIntNumUtility).bigIntNumCopyIn(
-    bNum,
-    biNum,
-    ePrefix.XCpy("bNum <- biNum"))
+	err = new(bigIntNumUtility).bigIntNumCopyIn(
+		bNum,
+		biNum,
+		ePrefix.XCpy("bNum <- biNum"))
 
-  if err != nil {
+	if err != nil {
 
-    return &FuncReturnError{
-      ErrPrefix: ePrefix.String(),
-      ReturnFunc: "err = new(bigIntNumUtility).bigIntNumCopyIn(\n" +
-        "    bNum, biNum, ePrefix.XCpy(\"bNum <- biNum\")))",
-      ErrContext: "",
-      ErrMessage: err.Error(),
-    }
-  }
+		return &FuncReturnError{
+			ErrPrefix: ePrefix.String(),
+			ReturnFunc: "err = new(bigIntNumUtility).bigIntNumCopyIn(\n" +
+				"    bNum, biNum, ePrefix.XCpy(\"bNum <- biNum\")))",
+			ErrContext: "",
+			ErrMessage: err.Error(),
+		}
+	}
 
-  return nil
+	return nil
 }
 
 // setBigRatNumSeps
@@ -1457,141 +1457,141 @@ func (bIntMolecule *bigIntNumMolecule) setBigIntNumSeps(
 // instance of type BigIntNum. The calling method must
 // do this!
 func (bIntMolecule *bigIntNumMolecule) setBigRatNumSeps(
-  bNum *BigIntNum,
-  bigRatNum *big.Rat,
-  maxPrecision uint,
-  numSeps NumericSeparatorDto,
-  errPrefDto *ePref.ErrPrefixDto) error {
+	bNum *BigIntNum,
+	bigRatNum *big.Rat,
+	maxPrecision uint,
+	numSeps NumericSeparatorDto,
+	errPrefDto *ePref.ErrPrefixDto) error {
 
-  bIntMolecule.lock.Lock()
+	bIntMolecule.lock.Lock()
 
-  defer bIntMolecule.lock.Unlock()
+	defer bIntMolecule.lock.Unlock()
 
-  var ePrefix *ePref.ErrPrefixDto
+	var ePrefix *ePref.ErrPrefixDto
 
-  var err error
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
-    errPrefDto,
-    "bigIntNumMolecule.setBigRatNumSeps",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
+		errPrefDto,
+		"bigIntNumMolecule.setBigRatNumSeps",
+		"")
 
-  if err != nil {
-    return err
-  }
+	if err != nil {
+		return err
+	}
 
-  if bNum == nil {
+	if bNum == nil {
 
-    return &InputPtrNilError{
-      ErrPrefix:     ePrefix.String(),
-      ParameterName: "'bNum'",
-    }
-  }
+		return &InputPtrNilError{
+			ErrPrefix:     ePrefix.String(),
+			ParameterName: "'bNum'",
+		}
+	}
 
-  if bigRatNum == nil {
+	if bigRatNum == nil {
 
-    return &InputPtrNilError{
-      ErrPrefix:     ePrefix.String(),
-      ParameterName: "'bNum'",
-    }
-  }
+		return &InputPtrNilError{
+			ErrPrefix:     ePrefix.String(),
+			ParameterName: "'bNum'",
+		}
+	}
 
-  numerator := big.NewInt(0).Set(bigRatNum.Num())
+	numerator := big.NewInt(0).Set(bigRatNum.Num())
 
-  denominator := big.NewInt(0).Set(bigRatNum.Denom())
+	denominator := big.NewInt(0).Set(bigRatNum.Denom())
 
-  biPair, err := new(BigIntPair).
-    NewBase(numerator, 0, denominator, 0)
+	biPair, err := new(BigIntPair).
+		NewBase(numerator, 0, denominator, 0)
 
-  if err != nil {
+	if err != nil {
 
-    return &FuncReturnError{
-      ErrPrefix: ePrefix.String(),
-      ReturnFunc: "biPair, err := new(BigIntPair).\n" +
-        "NewBase(numerator, 0, denominator, 0)",
-      ErrContext: "",
-      ErrMessage: err.Error(),
-    }
-  }
+		return &FuncReturnError{
+			ErrPrefix: ePrefix.String(),
+			ReturnFunc: "biPair, err := new(BigIntPair).\n" +
+				"NewBase(numerator, 0, denominator, 0)",
+			ErrContext: "",
+			ErrMessage: err.Error(),
+		}
+	}
 
-  biPair.MaxPrecision = maxPrecision
+	biPair.MaxPrecision = maxPrecision
 
-  biNum, err := BigIntMathDivide{}.PairFracQuotientNoNumSeps(biPair, numSeps)
+	biNum, err := BigIntMathDivide{}.PairFracQuotientNoNumSeps(biPair, numSeps)
 
-  if err != nil {
+	if err != nil {
 
-    return &FuncReturnError{
-      ErrPrefix: ePrefix.String(),
-      ReturnFunc: "biNum, err := BigIntMathDivide{}.PairFracQuotientNoNumSeps(\n" +
-        "    biPair, numSeps)",
-      ErrContext: "",
-      ErrMessage: err.Error(),
-    }
-  }
+		return &FuncReturnError{
+			ErrPrefix: ePrefix.String(),
+			ReturnFunc: "biNum, err := BigIntMathDivide{}.PairFracQuotientNoNumSeps(\n" +
+				"    biPair, numSeps)",
+			ErrContext: "",
+			ErrMessage: err.Error(),
+		}
+	}
 
-  biNumPrecision, err := biNum.GetPrecisionUint()
+	biNumPrecision, err := biNum.GetPrecisionUint()
 
-  if err != nil {
+	if err != nil {
 
-    return &FuncReturnError{
-      ErrPrefix:  ePrefix.String(),
-      ReturnFunc: "biNumPrecision, err := biNum.GetPrecisionUint()",
-      ErrContext: "",
-      ErrMessage: err.Error(),
-    }
-  }
+		return &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "biNumPrecision, err := biNum.GetPrecisionUint()",
+			ErrContext: "",
+			ErrMessage: err.Error(),
+		}
+	}
 
-  if biNumPrecision > maxPrecision {
+	if biNumPrecision > maxPrecision {
 
-    err = biNum.SetPrecision(maxPrecision)
+		err = biNum.SetPrecision(maxPrecision)
 
-    if err != nil {
+		if err != nil {
 
-      return &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "err = biNum.SetPrecision(maxPrecision)",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-    }
-  }
+			return &FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "err = biNum.SetPrecision(maxPrecision)",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+		}
+	}
 
-  numSeps.SetDefaultsIfEmpty()
+	numSeps.SetDefaultsIfEmpty()
 
-  err = new(bigIntNumAtom).setNumericSeparatorsDto(
-    &biNum,
-    numSeps,
-    ePrefix)
+	err = new(bigIntNumAtom).setNumericSeparatorsDto(
+		&biNum,
+		numSeps,
+		ePrefix)
 
-  if err != nil {
+	if err != nil {
 
-    return &FuncReturnError{
-      ErrPrefix: ePrefix.String(),
-      ReturnFunc: "err = new(bigIntNumAtom).setNumericSeparatorsDto(\n" +
-        "    &biNum, numSeps, ePrefix)",
-      ErrContext: "",
-      ErrMessage: err.Error(),
-    }
-  }
+		return &FuncReturnError{
+			ErrPrefix: ePrefix.String(),
+			ReturnFunc: "err = new(bigIntNumAtom).setNumericSeparatorsDto(\n" +
+				"    &biNum, numSeps, ePrefix)",
+			ErrContext: "",
+			ErrMessage: err.Error(),
+		}
+	}
 
-  err = new(bigIntNumUtility).bigIntNumCopyIn(
-    bNum,
-    &biNum,
-    ePrefix.XCpy("bNum <- biNum"))
+	err = new(bigIntNumUtility).bigIntNumCopyIn(
+		bNum,
+		&biNum,
+		ePrefix.XCpy("bNum <- biNum"))
 
-  if err != nil {
+	if err != nil {
 
-    return &FuncReturnError{
-      ErrPrefix: ePrefix.String(),
-      ReturnFunc: "err = new(bigIntNumUtility).bigIntNumCopyIn(\n" +
-        "    bNum, &biNum, ePrefix.XCpy(\"bNum <- biNum\")))",
-      ErrContext: "",
-      ErrMessage: err.Error(),
-    }
-  }
+		return &FuncReturnError{
+			ErrPrefix: ePrefix.String(),
+			ReturnFunc: "err = new(bigIntNumUtility).bigIntNumCopyIn(\n" +
+				"    bNum, &biNum, ePrefix.XCpy(\"bNum <- biNum\")))",
+			ErrContext: "",
+			ErrMessage: err.Error(),
+		}
+	}
 
-  return nil
+	return nil
 }
 
 // setExpectedNumberOfDigits
@@ -1603,64 +1603,64 @@ func (bIntMolecule *bigIntNumMolecule) setBigRatNumSeps(
 //
 // Useful in tracking leading zeros.
 func (bIntMolecule *bigIntNumMolecule) setExpectedNumberOfDigits(
-  bNum *BigIntNum,
-  numOfDigits *big.Int,
-  errPrefDto *ePref.ErrPrefixDto) error {
+	bNum *BigIntNum,
+	numOfDigits *big.Int,
+	errPrefDto *ePref.ErrPrefixDto) error {
 
-  if bIntMolecule.lock == nil {
-    bIntMolecule.lock = new(sync.Mutex)
-  }
+	if bIntMolecule.lock == nil {
+		bIntMolecule.lock = new(sync.Mutex)
+	}
 
-  bIntMolecule.lock.Lock()
+	bIntMolecule.lock.Lock()
 
-  defer bIntMolecule.lock.Unlock()
+	defer bIntMolecule.lock.Unlock()
 
-  var ePrefix *ePref.ErrPrefixDto
+	var ePrefix *ePref.ErrPrefixDto
 
-  var err error
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
-    errPrefDto,
-    "bigIntNumMolecule.setExpectedNumberOfDigits",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
+		errPrefDto,
+		"bigIntNumMolecule.setExpectedNumberOfDigits",
+		"")
 
-  if err != nil {
-    return err
-  }
+	if err != nil {
+		return err
+	}
 
-  if bNum == nil {
+	if bNum == nil {
 
-    return &InputPtrNilError{
-      ErrPrefix:     ePrefix.String(),
-      ParameterName: "'bNum'",
-    }
-  }
+		return &InputPtrNilError{
+			ErrPrefix:     ePrefix.String(),
+			ParameterName: "'bNum'",
+		}
+	}
 
-  if numOfDigits == nil {
+	if numOfDigits == nil {
 
-    return fmt.Errorf("%v\n"+
-      "Error: Input parameter 'numOfDigits' is a nil pointer!\n",
-      ePrefix.String())
+		return fmt.Errorf("%v\n"+
+			"Error: Input parameter 'numOfDigits' is a nil pointer!\n",
+			ePrefix.String())
 
-  }
+	}
 
-  if bNum.bigInt == nil {
+	if bNum.bigInt == nil {
 
-    err = new(bigIntNumNanobot).setBigInt(
-      bNum,
-      big.NewInt(0),
-      bNum.precision,
-      ePrefix)
+		err = new(bigIntNumNanobot).setBigInt(
+			bNum,
+			big.NewInt(0),
+			bNum.precision,
+			ePrefix)
 
-    if err != nil {
-      return err
-    }
-  }
+		if err != nil {
+			return err
+		}
+	}
 
-  bNum.numberOfExpectedDigits = big.NewInt(0).Set(numOfDigits)
+	bNum.numberOfExpectedDigits = big.NewInt(0).Set(numOfDigits)
 
-  return nil
+	return nil
 }
 
 // setNumStr - Initializes the BigIntNum instance
@@ -1676,181 +1676,181 @@ func (bIntMolecule *bigIntNumMolecule) setExpectedNumberOfDigits(
 // Existing numeric separators (decimal separator, thousands separator
 // and currency symbol) remain unchanged and are not altered by this method.
 func (bIntMolecule *bigIntNumMolecule) setNumStr(
-  bNum *BigIntNum,
-  numStr string,
-  errPrefDto *ePref.ErrPrefixDto) error {
+	bNum *BigIntNum,
+	numStr string,
+	errPrefDto *ePref.ErrPrefixDto) error {
 
-  if bIntMolecule.lock == nil {
-    bIntMolecule.lock = new(sync.Mutex)
-  }
+	if bIntMolecule.lock == nil {
+		bIntMolecule.lock = new(sync.Mutex)
+	}
 
-  bIntMolecule.lock.Lock()
+	bIntMolecule.lock.Lock()
 
-  defer bIntMolecule.lock.Unlock()
+	defer bIntMolecule.lock.Unlock()
 
-  var ePrefix *ePref.ErrPrefixDto
+	var ePrefix *ePref.ErrPrefixDto
 
-  var err error
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
-    errPrefDto,
-    "bigIntNumMolecule.setNumStr()",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
+		errPrefDto,
+		"bigIntNumMolecule.setNumStr()",
+		"")
 
-  if err != nil {
-    return err
-  }
+	if err != nil {
+		return err
+	}
 
-  if bNum == nil {
+	if bNum == nil {
 
-    return &InputPtrNilError{
-      ErrPrefix:     ePrefix.String(),
-      ParameterName: "'bNum'",
-    }
-  }
+		return &InputPtrNilError{
+			ErrPrefix:     ePrefix.String(),
+			ParameterName: "'bNum'",
+		}
+	}
 
-  if bNum.bigInt == nil {
+	if bNum.bigInt == nil {
 
-    err = new(bigIntNumNanobot).setBigInt(
-      bNum,
-      big.NewInt(0),
-      0,
-      ePrefix)
+		err = new(bigIntNumNanobot).setBigInt(
+			bNum,
+			big.NewInt(0),
+			0,
+			ePrefix)
 
-    if err != nil {
-      return err
-    }
+		if err != nil {
+			return err
+		}
 
-  }
+	}
 
-  if len(numStr) == 0 {
-    return fmt.Errorf("%v\n"+
-      "Error: Input parameter 'numStr' is an EMPTY string!\n",
-      ePrefix.String())
-  }
+	if len(numStr) == 0 {
+		return fmt.Errorf("%v\n"+
+			"Error: Input parameter 'numStr' is an EMPTY string!\n",
+			ePrefix.String())
+	}
 
-  baseRunes := []rune(numStr)
-  lBaseRunes := len(baseRunes)
+	baseRunes := []rune(numStr)
+	lBaseRunes := len(baseRunes)
 
-  numSeps := NumericSeparatorDto{}
-  numSeps.DecimalSeparator = bNum.decimalSeparator
-  numSeps.ThousandsSeparator = bNum.thousandsSeparator
-  numSeps.CurrencySymbol = bNum.currencySymbol
+	numSeps := NumericSeparatorDto{}
+	numSeps.DecimalSeparator = bNum.decimalSeparator
+	numSeps.ThousandsSeparator = bNum.thousandsSeparator
+	numSeps.CurrencySymbol = bNum.currencySymbol
 
-  numSeps.SetDefaultsIfEmpty()
+	numSeps.SetDefaultsIfEmpty()
 
-  newSign := 1
+	newSign := 1
 
-  newPrecision := uint(0)
+	newPrecision := uint(0)
 
-  newAbsBigInt := big.NewInt(0)
+	newAbsBigInt := big.NewInt(0)
 
-  baseTen := big.NewInt(10)
+	baseTen := big.NewInt(10)
 
-  isStartNumericDigits := false
+	isStartNumericDigits := false
 
-  isEndNumericDigits := false
+	isEndNumericDigits := false
 
-  isFractionalValue := false
+	isFractionalValue := false
 
-  hasMinusSign := false
+	hasMinusSign := false
 
-  hasLeftParen := false
+	hasLeftParen := false
 
-  hasRightParen := false
+	hasRightParen := false
 
-  numOfNumericDigits := 0
+	numOfNumericDigits := 0
 
-  for i := 0; i < lBaseRunes; i++ {
+	for i := 0; i < lBaseRunes; i++ {
 
-    if isEndNumericDigits {
-      continue
-    }
+		if isEndNumericDigits {
+			continue
+		}
 
-    if baseRunes[i] == ',' && bNum.decimalSeparator != ',' {
-      continue
-    }
+		if baseRunes[i] == ',' && bNum.decimalSeparator != ',' {
+			continue
+		}
 
-    if baseRunes[i] == '-' {
-      hasMinusSign = true
-      continue
-    }
+		if baseRunes[i] == '-' {
+			hasMinusSign = true
+			continue
+		}
 
-    if baseRunes[i] == '(' {
+		if baseRunes[i] == '(' {
 
-      if isStartNumericDigits == false {
-        hasLeftParen = true
-      }
-      continue
-    }
+			if isStartNumericDigits == false {
+				hasLeftParen = true
+			}
+			continue
+		}
 
-    if baseRunes[i] == ')' {
+		if baseRunes[i] == ')' {
 
-      if isStartNumericDigits == true &&
-        hasLeftParen == true {
-        hasRightParen = true
-        isEndNumericDigits = true
-      }
+			if isStartNumericDigits == true &&
+				hasLeftParen == true {
+				hasRightParen = true
+				isEndNumericDigits = true
+			}
 
-      continue
-    }
+			continue
+		}
 
-    if baseRunes[i] == bNum.decimalSeparator {
-      isFractionalValue = true
-      continue
-    }
+		if baseRunes[i] == bNum.decimalSeparator {
+			isFractionalValue = true
+			continue
+		}
 
-    if baseRunes[i] >= '0' && baseRunes[i] <= '9' {
+		if baseRunes[i] >= '0' && baseRunes[i] <= '9' {
 
-      newAbsBigInt = big.NewInt(0).Mul(newAbsBigInt, baseTen)
+			newAbsBigInt = big.NewInt(0).Mul(newAbsBigInt, baseTen)
 
-      newAbsBigInt = big.NewInt(0).Add(newAbsBigInt,
-        big.NewInt(int64(baseRunes[i]-48)))
+			newAbsBigInt = big.NewInt(0).Add(newAbsBigInt,
+				big.NewInt(int64(baseRunes[i]-48)))
 
-      isStartNumericDigits = true
-      numOfNumericDigits++
+			isStartNumericDigits = true
+			numOfNumericDigits++
 
-      if isFractionalValue {
-        newPrecision++
-      }
-    }
-  }
+			if isFractionalValue {
+				newPrecision++
+			}
+		}
+	}
 
-  if numOfNumericDigits == 0 {
-    return fmt.Errorf("%v\n"+
-      "Error: No numeric digits were found in input parameter 'numStr'.\n"+
-      "numStr='%v'\n",
-      ePrefix.String(),
-      numStr)
-  }
+	if numOfNumericDigits == 0 {
+		return fmt.Errorf("%v\n"+
+			"Error: No numeric digits were found in input parameter 'numStr'.\n"+
+			"numStr='%v'\n",
+			ePrefix.String(),
+			numStr)
+	}
 
-  if hasMinusSign == true ||
-    (hasLeftParen == true && hasRightParen == true) {
-    newSign = -1
-  }
+	if hasMinusSign == true ||
+		(hasLeftParen == true && hasRightParen == true) {
+		newSign = -1
+	}
 
-  bNum.Empty()
-  bNum.sign = newSign
-  bNum.precision = newPrecision
-  bNum.absBigInt = big.NewInt(0).Set(newAbsBigInt)
+	bNum.Empty()
+	bNum.sign = newSign
+	bNum.precision = newPrecision
+	bNum.absBigInt = big.NewInt(0).Set(newAbsBigInt)
 
-  if bNum.sign == 1 {
-    bNum.bigInt = big.NewInt(0).Set(newAbsBigInt)
-  } else {
-    bNum.bigInt = big.NewInt(0).Neg(newAbsBigInt)
-  }
+	if bNum.sign == 1 {
+		bNum.bigInt = big.NewInt(0).Set(newAbsBigInt)
+	} else {
+		bNum.bigInt = big.NewInt(0).Neg(newAbsBigInt)
+	}
 
-  bNum.scaleFactor = big.NewInt(0).Exp(baseTen,
-    big.NewInt(int64(newPrecision)),
-    nil)
+	bNum.scaleFactor = big.NewInt(0).Exp(baseTen,
+		big.NewInt(int64(newPrecision)),
+		nil)
 
-  err = new(bigIntNumAtom).setNumericSeparatorsDto(
-    bNum,
-    numSeps,
-    ePrefix)
+	err = new(bigIntNumAtom).setNumericSeparatorsDto(
+		bNum,
+		numSeps,
+		ePrefix)
 
-  return nil
+	return nil
 }
 
 // setINumMgr
@@ -1897,120 +1897,120 @@ func (bIntMolecule *bigIntNumMolecule) setNumStr(
 // bINum := BigIntNum{}
 // err := bINum.SetINumMgr(fd)
 func (bIntMolecule *bigIntNumMolecule) setINumMgr(
-  bNum *BigIntNum,
-  numMgr INumMgr,
-  errPrefDto *ePref.ErrPrefixDto) error {
+	bNum *BigIntNum,
+	numMgr INumMgr,
+	errPrefDto *ePref.ErrPrefixDto) error {
 
-  if bIntMolecule.lock == nil {
-    bIntMolecule.lock = new(sync.Mutex)
-  }
+	if bIntMolecule.lock == nil {
+		bIntMolecule.lock = new(sync.Mutex)
+	}
 
-  bIntMolecule.lock.Lock()
+	bIntMolecule.lock.Lock()
 
-  defer bIntMolecule.lock.Unlock()
+	defer bIntMolecule.lock.Unlock()
 
-  var ePrefix *ePref.ErrPrefixDto
+	var ePrefix *ePref.ErrPrefixDto
 
-  var err error
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
-    errPrefDto,
-    "bigIntNumMolecule.setNumStr()",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
+		errPrefDto,
+		"bigIntNumMolecule.setNumStr()",
+		"")
 
-  if err != nil {
-    return err
-  }
+	if err != nil {
+		return err
+	}
 
-  if bNum == nil {
+	if bNum == nil {
 
-    return &InputPtrNilError{
-      ErrPrefix:     ePrefix.String(),
-      ParameterName: "'bNum'",
-    }
-  }
+		return &InputPtrNilError{
+			ErrPrefix:     ePrefix.String(),
+			ParameterName: "'bNum'",
+		}
+	}
 
-  err = numMgr.IsValid(ePrefix.XCpy("Testing 'numMgr'").String())
+	err = numMgr.IsValid(ePrefix.XCpy("Testing 'numMgr'").String())
 
-  if err != nil {
+	if err != nil {
 
-    return &FuncReturnError{
-      ErrPrefix:  ePrefix.String(),
-      ReturnFunc: "bigInt, err := numMgr.GetBigInt()",
-      ErrContext: "",
-      ErrMessage: err.Error(),
-    }
-  }
+		return &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "bigInt, err := numMgr.GetBigInt()",
+			ErrContext: "",
+			ErrMessage: err.Error(),
+		}
+	}
 
-  bigInt, err := numMgr.GetBigInt()
+	bigInt, err := numMgr.GetBigInt()
 
-  if err != nil {
+	if err != nil {
 
-    return &FuncReturnError{
-      ErrPrefix:  ePrefix.String(),
-      ReturnFunc: "bigInt, err := numMgr.GetBigInt()",
-      ErrContext: "",
-      ErrMessage: err.Error(),
-    }
-  }
+		return &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "bigInt, err := numMgr.GetBigInt()",
+			ErrContext: "",
+			ErrMessage: err.Error(),
+		}
+	}
 
-  precisionUint, err := numMgr.GetPrecisionUint()
+	precisionUint, err := numMgr.GetPrecisionUint()
 
-  if err != nil {
+	if err != nil {
 
-    return &FuncReturnError{
-      ErrPrefix:  ePrefix.String(),
-      ReturnFunc: "precisionUint, err := numMgr.GetPrecisionUint()",
-      ErrContext: "",
-      ErrMessage: err.Error(),
-    }
-  }
+		return &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "precisionUint, err := numMgr.GetPrecisionUint()",
+			ErrContext: "",
+			ErrMessage: err.Error(),
+		}
+	}
 
-  err = new(bigIntNumNanobot).setBigInt(
-    bNum,
-    bigInt,
-    precisionUint,
-    ePrefix)
+	err = new(bigIntNumNanobot).setBigInt(
+		bNum,
+		bigInt,
+		precisionUint,
+		ePrefix)
 
-  if err != nil {
+	if err != nil {
 
-    return &FuncReturnError{
-      ErrPrefix: ePrefix.String(),
-      ReturnFunc: "err = new(bigIntNumNanobot).setBigInt(\n" +
-        "    bNum, bigInt, precisionUint, ePrefix)",
-      ErrContext: "",
-      ErrMessage: err.Error(),
-    }
-  }
+		return &FuncReturnError{
+			ErrPrefix: ePrefix.String(),
+			ReturnFunc: "err = new(bigIntNumNanobot).setBigInt(\n" +
+				"    bNum, bigInt, precisionUint, ePrefix)",
+			ErrContext: "",
+			ErrMessage: err.Error(),
+		}
+	}
 
-  numSepsDto, err := numMgr.GetNumericSeparatorsDto()
+	numSepsDto, err := numMgr.GetNumericSeparatorsDto()
 
-  if err != nil {
+	if err != nil {
 
-    return &FuncReturnError{
-      ErrPrefix:  ePrefix.String(),
-      ReturnFunc: "numSepsDto, err := numMgr.GetNumericSeparatorsDto()",
-      ErrContext: "",
-      ErrMessage: err.Error(),
-    }
-  }
+		return &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "numSepsDto, err := numMgr.GetNumericSeparatorsDto()",
+			ErrContext: "",
+			ErrMessage: err.Error(),
+		}
+	}
 
-  err = new(bigIntNumAtom).setNumericSeparatorsDto(
-    bNum,
-    numSepsDto,
-    ePrefix)
+	err = new(bigIntNumAtom).setNumericSeparatorsDto(
+		bNum,
+		numSepsDto,
+		ePrefix)
 
-  if err != nil {
+	if err != nil {
 
-    return &FuncReturnError{
-      ErrPrefix: ePrefix.String(),
-      ReturnFunc: "err = new(bigIntNumAtom).setNumericSeparatorsDto(\n" +
-        "bNum, numSepsDto, ePrefix)",
-      ErrContext: "",
-      ErrMessage: err.Error(),
-    }
-  }
+		return &FuncReturnError{
+			ErrPrefix: ePrefix.String(),
+			ReturnFunc: "err = new(bigIntNumAtom).setNumericSeparatorsDto(\n" +
+				"bNum, numSepsDto, ePrefix)",
+			ErrContext: "",
+			ErrMessage: err.Error(),
+		}
+	}
 
-  return nil
+	return nil
 }

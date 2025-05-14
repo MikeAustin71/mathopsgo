@@ -1,14 +1,14 @@
 package mathops
 
 import (
-	"fmt"
-	ePref "github.com/MikeAustin71/errpref"
-	"math/big"
-	"sync"
+  "fmt"
+  ePref "github.com/MikeAustin71/errpref"
+  "math/big"
+  "sync"
 )
 
 type bigIntNumElectron struct {
-	lock *sync.Mutex
+  lock *sync.Mutex
 }
 
 // bigIntNumCeiling - Returns the ceiling integer value of the current BigIntNum
@@ -41,114 +41,114 @@ type bigIntNumElectron struct {
 // This method does NOT test the validity of 'bNumDestination'
 // BigIntNum instance. The calling method must do this!
 func (bINumElectron *bigIntNumElectron) bigIntNumCeiling(
-	bNum *BigIntNum,
-	errPrefDto *ePref.ErrPrefixDto) (BigIntNum, error) {
+  bNum *BigIntNum,
+  errPrefDto *ePref.ErrPrefixDto) (BigIntNum, error) {
 
-	if bINumElectron.lock == nil {
-		bINumElectron.lock = new(sync.Mutex)
-	}
+  if bINumElectron.lock == nil {
+    bINumElectron.lock = new(sync.Mutex)
+  }
 
-	bINumElectron.lock.Lock()
+  bINumElectron.lock.Lock()
 
-	defer bINumElectron.lock.Unlock()
+  defer bINumElectron.lock.Unlock()
 
-	var ePrefix *ePref.ErrPrefixDto
+  var ePrefix *ePref.ErrPrefixDto
 
-	var err error
+  var err error
 
-	ePrefix,
-		err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
-		errPrefDto,
-		"bigIntNumElectron.bigIntNumCeiling()",
-		"")
+  ePrefix,
+    err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
+    errPrefDto,
+    "bigIntNumElectron.bigIntNumCeiling()",
+    "")
 
-	if err != nil {
-		return BigIntNum{}, err
-	}
+  if err != nil {
+    return BigIntNum{}, err
+  }
 
-	if bNum == nil {
+  if bNum == nil {
 
-		err = fmt.Errorf("%v\n"+
-			"FATAL ERROR: Input parameter 'bNum' is a nil pointer.\n",
-			ePrefix.String())
+    err = fmt.Errorf("%v\n"+
+      "FATAL ERROR: Input parameter 'bNum' is a nil pointer.\n",
+      ePrefix.String())
 
-		return BigIntNum{}, err
-	}
+    return BigIntNum{}, err
+  }
 
-	isbNumZero, err := new(bigIntNumMolecule).isBIntNumZero(
-		bNum,
-		ePrefix)
+  isbNumZero, err := new(bigIntNumMolecule).isBIntNumZero(
+    bNum,
+    ePrefix)
 
-	if err != nil {
+  if err != nil {
 
-		return BigIntNum{}, err
-	}
+    return BigIntNum{}, err
+  }
 
-	if isbNumZero {
+  if isbNumZero {
 
-		bInt2, err := new(BigIntNum).NewBigInt(big.NewInt(0), 0)
+    bInt2, err := new(BigIntNum).NewBigInt(big.NewInt(0), 0)
 
-		if err != nil {
+    if err != nil {
 
-			return BigIntNum{}, err
-		}
+      return BigIntNum{}, err
+    }
 
-		return bInt2, nil
-	}
+    return bInt2, nil
+  }
 
-	// bNum is NOT Zero
-	if bNum.precision == 0 {
+  // bNum is NOT Zero
+  if bNum.precision == 0 {
 
-		bInt3, err := new(bigIntNumUtility).bigIntNumCopyOut(
-			bNum,
-			ePrefix)
+    bInt3, err := new(bigIntNumUtility).bigIntNumCopyOut(
+      bNum,
+      ePrefix)
 
-		if err != nil {
+    if err != nil {
 
-			return BigIntNum{}, err
-		}
+      return BigIntNum{}, err
+    }
 
-		return bInt3, nil
-	}
+    return bInt3, nil
+  }
 
-	scaleVal := big.NewInt(0).Exp(big.NewInt(10),
-		big.NewInt(int64(bNum.precision)), nil)
+  scaleVal := big.NewInt(0).Exp(big.NewInt(10),
+    big.NewInt(int64(bNum.precision)), nil)
 
-	absQuotient := big.NewInt(0).Quo(bNum.absBigInt, scaleVal)
+  absQuotient := big.NewInt(0).Quo(bNum.absBigInt, scaleVal)
 
-	// absQuotient IS NOT EQUAL TO bNum.absBigInt
+  // absQuotient IS NOT EQUAL TO bNum.absBigInt
 
-	bigINumMech := new(bigIntNumMechanics)
+  bigINumMech := new(bigIntNumMechanics)
 
-	if bNum.sign > 0 {
-		// bNum is positive
+  if bNum.sign > 0 {
+    // bNum is positive
 
-		absQuotient = big.NewInt(0).Add(absQuotient, big.NewInt(1))
+    absQuotient = big.NewInt(0).Add(absQuotient, big.NewInt(1))
 
-		bInt4, err := bigINumMech.newBigInt(
-			absQuotient, 0, ePrefix)
+    bInt4, err := bigINumMech.newBigInt(
+      absQuotient, 0, ePrefix)
 
-		if err != nil {
+    if err != nil {
 
-			return BigIntNum{}, err
+      return BigIntNum{}, err
 
-		}
+    }
 
-		return bInt4, nil
-	}
+    return bInt4, nil
+  }
 
-	// bNum is negative
-	bInt5, err := bigINumMech.
-		newBigInt(big.NewInt(0).Neg(absQuotient),
-			0, ePrefix)
+  // bNum is negative
+  bInt5, err := bigINumMech.
+    newBigInt(big.NewInt(0).Neg(absQuotient),
+      0, ePrefix)
 
-	if err != nil {
+  if err != nil {
 
-		return BigIntNum{}, err
+    return BigIntNum{}, err
 
-	}
+  }
 
-	return bInt5, nil
+  return bInt5, nil
 }
 
 // bigIntNumEqual - Compares two BigIntNum instances and
@@ -167,220 +167,220 @@ func (bINumElectron *bigIntNumElectron) bigIntNumCeiling(
 // This method does NOT test the validity of 'bNum'
 // BigIntNum instance. The calling method must do this!
 func (bINumElectron *bigIntNumElectron) bigIntNumEqual(
-	bNum *BigIntNum,
-	b2 *BigIntNum,
-	errPrefDto *ePref.ErrPrefixDto) (bool, error) {
+  bNum *BigIntNum,
+  b2 *BigIntNum,
+  errPrefDto *ePref.ErrPrefixDto) (bool, error) {
 
-	if bINumElectron.lock == nil {
-		bINumElectron.lock = new(sync.Mutex)
-	}
+  if bINumElectron.lock == nil {
+    bINumElectron.lock = new(sync.Mutex)
+  }
 
-	bINumElectron.lock.Lock()
+  bINumElectron.lock.Lock()
 
-	defer bINumElectron.lock.Unlock()
+  defer bINumElectron.lock.Unlock()
 
-	var ePrefix *ePref.ErrPrefixDto
+  var ePrefix *ePref.ErrPrefixDto
 
-	var err error
+  var err error
 
-	ePrefix,
-		err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
-		errPrefDto,
-		"bigIntNumElectron.resetBigIntNum()",
-		"")
+  ePrefix,
+    err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
+    errPrefDto,
+    "bigIntNumElectron.resetBigIntNum()",
+    "")
 
-	if err != nil {
-		return false, err
-	}
+  if err != nil {
+    return false, err
+  }
 
-	if bNum == nil {
+  if bNum == nil {
 
-		err = fmt.Errorf("%v\n"+
-			"FATAL ERROR: Input parameter 'bNum' is a nil pointer.\n",
-			ePrefix.String())
+    err = fmt.Errorf("%v\n"+
+      "FATAL ERROR: Input parameter 'bNum' is a nil pointer.\n",
+      ePrefix.String())
 
-		return false, err
-	}
+    return false, err
+  }
 
-	if b2 == nil {
+  if b2 == nil {
 
-		err = fmt.Errorf("%v\n"+
-			"FATAL ERROR: Input parameter 'b2' is a nil pointer.\n",
-			ePrefix.String())
+    err = fmt.Errorf("%v\n"+
+      "FATAL ERROR: Input parameter 'b2' is a nil pointer.\n",
+      ePrefix.String())
 
-		return false, err
-	}
+    return false, err
+  }
 
-	err = new(bigIntNumAtom).isBigIntNumValid(
-		b2,
-		ePrefix.XCpy("Validating input parameter 'b2'"))
+  err = new(bigIntNumAtom).isBigIntNumValid(
+    b2,
+    ePrefix.XCpy("Validating input parameter 'b2'"))
 
-	if err != nil {
-		return false, err
-	}
+  if err != nil {
+    return false, err
+  }
 
-	if bNum.bigInt.Cmp(b2.bigInt) != 0 {
-		return false, nil
-	}
+  if bNum.bigInt.Cmp(b2.bigInt) != 0 {
+    return false, nil
+  }
 
-	if bNum.absBigInt.Cmp(b2.absBigInt) != 0 {
-		return false, nil
-	}
+  if bNum.absBigInt.Cmp(b2.absBigInt) != 0 {
+    return false, nil
+  }
 
-	if bNum.scaleFactor.Cmp(b2.scaleFactor) != 0 {
-		return false, nil
-	}
+  if bNum.scaleFactor.Cmp(b2.scaleFactor) != 0 {
+    return false, nil
+  }
 
-	if bNum.sign != b2.sign {
-		return false, nil
-	}
+  if bNum.sign != b2.sign {
+    return false, nil
+  }
 
-	if bNum.precision != b2.precision {
-		return false, nil
-	}
+  if bNum.precision != b2.precision {
+    return false, nil
+  }
 
-	return true, nil
+  return true, nil
 }
 
 // EqualValue - Compares the values of the current BigIntNum instance
 // and the input parameter BigIntNum, 'b2'. If the two numeric values
 // are equal, this method returns 'true'.
 func (bINumElectron *bigIntNumElectron) bigIntNumEqualValue(
-	bNum *BigIntNum,
-	b2 *BigIntNum,
-	errPrefDto *ePref.ErrPrefixDto) (bool, error) {
+  bNum *BigIntNum,
+  b2 *BigIntNum,
+  errPrefDto *ePref.ErrPrefixDto) (bool, error) {
 
-	if bINumElectron.lock == nil {
-		bINumElectron.lock = new(sync.Mutex)
-	}
+  if bINumElectron.lock == nil {
+    bINumElectron.lock = new(sync.Mutex)
+  }
 
-	bINumElectron.lock.Lock()
+  bINumElectron.lock.Lock()
 
-	defer bINumElectron.lock.Unlock()
+  defer bINumElectron.lock.Unlock()
 
-	var ePrefix *ePref.ErrPrefixDto
+  var ePrefix *ePref.ErrPrefixDto
 
-	var err error
+  var err error
 
-	ePrefix,
-		err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
-		errPrefDto,
-		"bigIntNumElectron.resetBigIntNum()",
-		"")
+  ePrefix,
+    err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
+    errPrefDto,
+    "bigIntNumElectron.resetBigIntNum()",
+    "")
 
-	if err != nil {
-		return false, err
-	}
+  if err != nil {
+    return false, err
+  }
 
-	if bNum == nil {
+  if bNum == nil {
 
-		err = fmt.Errorf("%v\n"+
-			"FATAL ERROR: Input parameter 'bNum' is a nil pointer.\n",
-			ePrefix.String())
+    err = fmt.Errorf("%v\n"+
+      "FATAL ERROR: Input parameter 'bNum' is a nil pointer.\n",
+      ePrefix.String())
 
-		return false, err
-	}
+    return false, err
+  }
 
-	if b2 == nil {
+  if b2 == nil {
 
-		err = fmt.Errorf("%v\n"+
-			"FATAL ERROR: Input parameter 'b2' is a nil pointer.\n",
-			ePrefix.String())
+    err = fmt.Errorf("%v\n"+
+      "FATAL ERROR: Input parameter 'b2' is a nil pointer.\n",
+      ePrefix.String())
 
-		return false, err
-	}
+    return false, err
+  }
 
-	err = new(bigIntNumAtom).isBigIntNumValid(
-		b2,
-		ePrefix.XCpy("Validating input parameter 'b2'"))
+  err = new(bigIntNumAtom).isBigIntNumValid(
+    b2,
+    ePrefix.XCpy("Validating input parameter 'b2'"))
 
-	if err != nil {
-		return false, err
-	}
+  if err != nil {
+    return false, err
+  }
 
-	bNum3, err := new(bigIntNumUtility).bigIntNumCopyOut(
-		bNum,
-		ePrefix)
+  bNum3, err := new(bigIntNumUtility).bigIntNumCopyOut(
+    bNum,
+    ePrefix)
 
-	if err != nil {
-		return false, err
-	}
+  if err != nil {
+    return false, err
+  }
 
-	difference, err := BigIntMathSubtract{}.SubtractBigIntNums(
-		bNum3,
-		*b2)
+  difference, err := BigIntMathSubtract{}.SubtractBigIntNums(
+    bNum3,
+    *b2)
 
-	if err != nil {
+  if err != nil {
 
-		return false,
-			fmt.Errorf("%v\n"+
-				"Error returned by: \n"+
-				" difference, err := BigIntMathSubtract{}.SubtractBigIntNums(\n"+
-				"   bNum3, *b2\n"+
-				"Error= %v\n",
-				ePrefix.String(),
-				err.Error())
-	}
+    return false,
+      fmt.Errorf("%v\n"+
+        "Error returned by: \n"+
+        " difference, err := BigIntMathSubtract{}.SubtractBigIntNums(\n"+
+        "   bNum3, *b2\n"+
+        "Error= %v\n",
+        ePrefix.String(),
+        err.Error())
+  }
 
-	err = new(bigIntNumAtom).isBigIntNumValid(
-		&difference,
-		ePrefix)
+  err = new(bigIntNumAtom).isBigIntNumValid(
+    &difference,
+    ePrefix)
 
-	if err != nil {
+  if err != nil {
 
-		return false,
-			fmt.Errorf("%v\n"+
-				"Validation Error on current Decimal instance 'difference'.\n"+
-				"'difference' is a calculated variable which failed the valiadtion test.\n"+
-				"Error returned by: \n"+
-				" err := new(bigIntNumAtom).isBigIntNumValid(&difference,ePrefix)\n"+
-				"Validation Error= %v\n",
-				ePrefix,
-				err.Error())
+    return false,
+      fmt.Errorf("%v\n"+
+        "Validation Error on current Decimal instance 'difference'.\n"+
+        "'difference' is a calculated variable which failed the valiadtion test.\n"+
+        "Error returned by: \n"+
+        " err := new(bigIntNumAtom).isBigIntNumValid(&difference,ePrefix)\n"+
+        "Validation Error= %v\n",
+        ePrefix,
+        err.Error())
 
-	}
+  }
 
-	if difference.bigInt.Cmp(big.NewInt(0)) == 0 {
-		return true, nil
-	}
+  if difference.bigInt.Cmp(big.NewInt(0)) == 0 {
+    return true, nil
+  }
 
-	return false, nil
+  return false, nil
 }
 
 // Empty - Resets the BigIntNum data fields to their
 // uninitialized or zero state.
 func (bINumElectron *bigIntNumElectron) empty(
-	bNum *BigIntNum) {
+  bNum *BigIntNum) {
 
-	if bINumElectron.lock == nil {
-		bINumElectron.lock = new(sync.Mutex)
-	}
+  if bINumElectron.lock == nil {
+    bINumElectron.lock = new(sync.Mutex)
+  }
 
-	bINumElectron.lock.Lock()
+  bINumElectron.lock.Lock()
 
-	defer bINumElectron.lock.Unlock()
+  defer bINumElectron.lock.Unlock()
 
-	if bNum == nil {
-		return
-	}
+  if bNum == nil {
+    return
+  }
 
-	bNum.bigInt = big.NewInt(0)
+  bNum.bigInt = big.NewInt(0)
 
-	bNum.absBigInt = big.NewInt(0)
+  bNum.absBigInt = big.NewInt(0)
 
-	bNum.scaleFactor = big.NewInt(1)
+  bNum.scaleFactor = big.NewInt(1)
 
-	bNum.numberOfExpectedDigits = big.NewInt(0)
+  bNum.numberOfExpectedDigits = big.NewInt(0)
 
-	bNum.sign = 1
+  bNum.sign = 1
 
-	bNum.precision = 0
+  bNum.precision = 0
 
-	bNum.decimalSeparator = '.'
+  bNum.decimalSeparator = '.'
 
-	bNum.thousandsSeparator = ','
+  bNum.thousandsSeparator = ','
 
-	bNum.currencySymbol = '$'
+  bNum.currencySymbol = '$'
 
 }
 
@@ -389,95 +389,102 @@ func (bINumElectron *bigIntNumElectron) empty(
 // BigIntNum.bigInt and BigIntNum.precision. This
 // method is usually called after method bNum.IsValid()
 // returns false.
+//
+//	NOTE
+//	====
+//
+//	The newly configured instance of BigIntNum will contain default
+//	USA numeric separators (decimal separator, thousands seprator,
+//	and currency symbol).
 func (bINumElectron *bigIntNumElectron) resetBigIntNum(
-	bNum *BigIntNum,
-	errPrefDto *ePref.ErrPrefixDto) error {
+  bNum *BigIntNum,
+  errPrefDto *ePref.ErrPrefixDto) error {
 
-	if bINumElectron.lock == nil {
-		bINumElectron.lock = new(sync.Mutex)
-	}
+  if bINumElectron.lock == nil {
+    bINumElectron.lock = new(sync.Mutex)
+  }
 
-	bINumElectron.lock.Lock()
+  bINumElectron.lock.Lock()
 
-	defer bINumElectron.lock.Unlock()
+  defer bINumElectron.lock.Unlock()
 
-	var ePrefix *ePref.ErrPrefixDto
+  var ePrefix *ePref.ErrPrefixDto
 
-	var err error
+  var err error
 
-	ePrefix,
-		err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
-		errPrefDto,
-		"bigIntNumElectron.resetBigIntNum()",
-		"")
+  ePrefix,
+    err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
+    errPrefDto,
+    "bigIntNumElectron.resetBigIntNum()",
+    "")
 
-	if err != nil {
-		return err
-	}
+  if err != nil {
+    return err
+  }
 
-	if bNum == nil {
+  if bNum == nil {
 
-		err = fmt.Errorf("%v\n"+
-			"FATAL ERROR: Input parameter 'bNum' is a nil pointer.\n",
-			ePrefix.String())
+    err = fmt.Errorf("%v\n"+
+      "FATAL ERROR: Input parameter 'bNum' is a nil pointer.\n",
+      ePrefix.String())
 
-		return err
-	}
+    return err
+  }
 
-	bINumNanobot := new(bigIntNumNanobot)
+  bINumNanobot := new(bigIntNumNanobot)
 
-	if bNum.bigInt == nil {
+  if bNum.bigInt == nil {
 
-		err = bINumNanobot.setBigInt(
-			bNum,
-			big.NewInt(0),
-			uint(0),
-			ePrefix)
+    err = bINumNanobot.setBigInt(
+      bNum,
+      big.NewInt(0),
+      uint(0),
+      ePrefix)
 
-		if err != nil {
+    if err != nil {
 
-			return err
+      return err
 
-		}
+    }
 
-		return nil
-	}
+    return nil
+  }
 
-	if bNum.sign != 1 && bNum.sign != -1 {
+  if bNum.sign != 1 && bNum.sign != -1 {
 
-		newNum := big.NewInt(0).Set(bNum.bigInt)
+    newNum := big.NewInt(0).Set(bNum.bigInt)
 
-		err = bINumNanobot.setBigInt(
-			bNum,
-			newNum,
-			bNum.precision,
-			ePrefix)
+    err = bINumNanobot.setBigInt(
+      bNum,
+      newNum,
+      bNum.precision,
+      ePrefix)
 
-		if err != nil {
+    if err != nil {
 
-			return err
+      return err
 
-		}
+    }
 
-		return nil
-	}
+    return nil
+  }
 
-	if bNum.absBigInt == nil || bNum.scaleFactor == nil {
+  if bNum.absBigInt == nil || bNum.scaleFactor == nil {
 
-		newNum := big.NewInt(0).Set(bNum.bigInt)
+    newNum := big.NewInt(0).Set(bNum.bigInt)
 
-		err = bINumNanobot.setBigInt(
-			bNum,
-			newNum,
-			bNum.precision,
-			ePrefix)
+    err = bINumNanobot.setBigInt(
+      bNum,
+      newNum,
+      bNum.precision,
+      ePrefix)
 
-		if err != nil {
+    if err != nil {
 
-			return err
+      return err
 
-		}
-	}
+    }
+  }
 
-	return nil
+  return nil
 }

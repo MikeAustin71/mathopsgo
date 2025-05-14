@@ -295,15 +295,18 @@ func (bIntNumMech *bigIntNumMechanics) newZero(
 	return bIntNum2, nil
 }
 
-// newBigIntNum - returns a new BigIntNum instance initialized to zero.
+// newBigIntNum
 //
-// The BigIntNum instance returned by this method will contain USA
-// default numeric separators (decimal separator, thousands separator
-// and currency symbol).
+// Returns a new BigIntNum instance initialized to zero.
+//
+// The BigIntNum instance returned by this method will contain
+// USA default numeric separators (decimal separator, thousands
+// separator and currency symbol).
 func (bIntNumMech *bigIntNumMechanics) newBigIntNum() BigIntNum {
 
 	b := new(BigIntNum)
 
+	// Numeric separators are set to default USA separators
 	new(bigIntNumElectron).empty(b)
 
 	return *b
