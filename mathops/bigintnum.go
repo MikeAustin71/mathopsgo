@@ -4,31 +4,30 @@ import (
 	"fmt"
 	ePref "github.com/MikeAustin71/errpref"
 	"math/big"
-	"sync"
 )
 
-// BigIntNum - wraps a *big.Int integer and its associated
-// precision and sign Value. While the numeric value is
-// stored as an integer of type *big.Int, the BigIntNum
-// type is capable of storing decimal fractions.
+// BigIntNum
 //
-//	All methods associated with this type all assume that
-//	the *big.Int value stored by the BigIntNum Type is configured
+// Wraps a *big.Int integer with its associated precision and sign
+// Values. While the numeric value is stored as an integer of type
+// *big.Int, the BigIntNum type is capable of storing decimal
+// fractions.
 //
+// All methods associated with this type all assume that
+// the *big.Int value stored by the BigIntNum Type is configured
 // in base 10.
 //
-// INumMgr
-// ========
+//	INumMgr
+//	========
 //
-// The BigIntNum Type implements the INumMgr interface.
+//	The BigIntNum Type implements the INumMgr interface.
 //
-// Source Code Repository:
-// =======================
+//	Source Code Repository
+//	=======================
+//
 // https://github.com/MikeAustin71/mathopsgo.git
 //
-// Local File:
-// ===========
-// MikeAustin71\mathopsgo\mathops\bigintnum.go
+//	Local File: bigintnum.go
 type BigIntNum struct {
 	bigInt                 *big.Int
 	absBigInt              *big.Int
@@ -42,29 +41,34 @@ type BigIntNum struct {
 	currencySymbol     rune // Currency Symbol
 }
 
-// Ceiling - Returns the ceiling integer value of the current BigIntNum
+// Ceiling
+//
+// Returns the ceiling integer value of the current BigIntNum
 // instance.
 //
-// Ceiling is defined as: The least, or lowest value integer, which is greater
-// than or equal to the numeric value of the current BigIntNum.
-// Reference Wikipedia:
+// Ceiling is defined as: The least, or lowest value integer,
+// which is greater than or equal to the numeric value of the
+// current BigIntNum.
 //
-//	https://en.wikipedia.org/wiki/Floor_and_ceiling_functions
+//	 Reference Wikipedia
+//	 ===================
 //
-// Examples
-// ========
+//	 https://en.wikipedia.org/wiki/Floor_and_ceiling_functions
 //
-//							Initial 		 Ceiling
-//	 					 Value				Value
-//							-------      -------
-//	 						5.95					6
-//	 						5.05					6
-//	 						5							5
-//						 -5.05			 	 -5
-//	 						2.4				  	3
-//	 						2.9					 	3
-//						 -2.7				 	 -2
-//						 -2						 -2
+//		 Examples
+//		 ========
+//
+//		     Initial          Ceiling
+//		      Value            Value
+//		     -------          -------
+//		        5.95             6
+//		        5.05             6
+//		        5                5
+//		       -5.05            -5
+//		        2.4              3
+//		        2.9              3
+//		       -2.7             -2
+//		       -2               -2
 func (bNum *BigIntNum) Ceiling() (BigIntNum, error) {
 
 	var ePrefix *ePref.ErrPrefixDto
@@ -92,19 +96,23 @@ func (bNum *BigIntNum) Ceiling() (BigIntNum, error) {
 		bNum, ePrefix)
 }
 
-// ChangeSign - Changes the sign of the current BigIntNum value.
+// ChangeSign
+//
+// Changes the sign of the current BigIntNum value.
 //
 // If the value of BigIntNum is zero, the sign will remain unchanged
 // and this method will return with no action taken.
 //
-// If the sign of the current BigIntNum value is positive (+), the sign
-// will be changed to negative (-). Likewise, if the current sign is
-// negative (-), the sign will be changed to positive (+).
+// If the sign of the current BigIntNum value is positive (+), the
+// sign will be changed to negative (-). Likewise, if the current
+// sign is negative (-), the sign will be changed to positive (+).
 //
-// NOTE:
-// This method will first test the current instance of BigIntNum
-// to determine if that instance is valid, or not. If the current
-// BigIntNum fails the validity test, an error will be returned.
+//	NOTE
+//	====
+//
+//	This method will first test the current instance of BigIntNum
+//	to determine if that instance is valid, or not. If the current
+//	BigIntNum fails the validity test, an error will be returned.
 func (bNum *BigIntNum) ChangeSign() error {
 
 	var ePrefix *ePref.ErrPrefixDto
@@ -418,9 +426,9 @@ func (bNum *BigIntNum) DivideByFive(
 //	bNum / 10 = fracQuotient
 //
 // Input parameter 'maxPrecision' is used to control the maximum precision of the resulting
-// fractional quotient. Precision is defined as the the number of fractional digits to the
-// right of the decimal place. Be advised that these calculations can support very large
-// precision values.
+// fractional quotient. Precision is defined as the number of fractional digits to the right
+// of the decimal place. Be advised that these calculations can support very large precision
+// values.
 //
 // This returned BigIntNum 'fracQuotient' will contain numeric separators (decimal separator,
 // thousands separator and currency symbol) copied from the current BigIntNum instance (bNum).
@@ -593,12 +601,12 @@ func (bNum *BigIntNum) DivideByTwo(
 //
 //	bNum / 2 = integer quotient and floating point modulo
 //
-// If 'modulo' equals zero ('0'), it signals the the current BigIntNum numerical value is
-// 'even'; that is, it is evenly divisible by two.
+// If 'modulo' equals zero ('0'), it signals the current BigIntNum numerical value is 'even';
+// that is, it is evenly divisible by two.
 //
 // Input parameter 'maxPrecision' is used to control the maximum precision of the resulting
-// floating point 'modulo'. Precision is defined as the the number of fractional digits to
-// the right of the decimal place. Be advised that these calculations can support very large
+// floating point 'modulo'. Precision is defined as the number of fractional digits to the
+// right of the decimal place. Be advised that these calculations can support very large
 // precision values.
 //
 // Both returned BigIntNum 'intQuotient' and 'modulo' BigIntNum types will contain numeric
@@ -2433,7 +2441,7 @@ func (bNum *BigIntNum) IsZero() (bool, error) {
 	ePrefix,
 		err = ePref.ErrPrefixDto{}.NewIEmpty(
 		nil,
-		"BigIntNum.Ceiling",
+		"BigIntNum.IsZero",
 		"")
 
 	if err != nil {
@@ -2455,26 +2463,28 @@ func (bNum *BigIntNum) IsZero() (bool, error) {
 
 // Mod
 //
-// Performs a modulo operation where the current BigIntNum numeric value is the
-// dividend and the divisor is the input parameter, 'divisor'.  The modulo operation finds
-// the remainder after division of one number by another (sometimes called modulus).
+// Performs a modulo operation where the current BigIntNum numeric
+// value is the dividend and the divisor is the input parameter,
+// 'divisor'.  The modulo operation finds the remainder after
+// division of one number by another (sometimes called modulus).
 // (Wikipedia: https://en.wikipedia.org/wiki/Modulo_operation)
 //
-//		 									dividend = bNum
-//	  									dividend % divisor = modulo
+//	dividend = bNum
+//	dividend % divisor = modulo
 //
-// The result of this modulo operation is returned as a BigIntNum, 'modulo'. 'modulo' may
-// consist of an integer or a floating point value consisting of integer and fractional
-// digits.
+// The result of this modulo operation is returned as a BigIntNum,
+// 'modulo'. 'modulo' may consist of an integer or a floating
+// point value consisting of integer and fractional digits.
 //
-// Input parameter 'maxPrecision' is used to control the maximum precision of the resulting
-// floating point 'modulo'. Precision is defined as the the number of fractional digits to
-// the right of the decimal place. Be advised that these calculations can support very large
-// precision values.
+// Input parameter 'maxPrecision' is used to control the maximum
+// precision of the resulting floating point 'modulo'. Precision
+// is defined as the number of fractional digits to the right of
+// the decimal place. Be advised that these calculations can
+// support very large precision values.
 //
-// The returned BigIntNum instance, 'modulo', will contain numeric separators (decimal
-// separator, thousands separator and currency symbol) copied from the current BigIntNum
-// instance (bNum).
+// The returned BigIntNum instance, 'modulo', will contain numeric
+// separators (decimal separator, thousands separator and currency
+// symbol) copied from the current BigIntNum instance (bNum).
 func (bNum *BigIntNum) Mod(
 	divisor BigIntNum,
 	maxPrecision uint) (modulo BigIntNum, err error) {
@@ -2484,7 +2494,7 @@ func (bNum *BigIntNum) Mod(
 	ePrefix,
 		err = ePref.ErrPrefixDto{}.NewIEmpty(
 		nil,
-		"BigIntNum.Ceiling",
+		"BigIntNum.Mod",
 		"")
 
 	if err != nil {
@@ -2525,7 +2535,7 @@ func (bNum *BigIntNum) Multiply(multiplicand BigIntNum) (product BigIntNum, err 
 	ePrefix,
 		err = ePref.ErrPrefixDto{}.NewIEmpty(
 		nil,
-		"BigIntNum.Ceiling",
+		"BigIntNum.Multiply",
 		"")
 
 	if err != nil {
@@ -2687,7 +2697,7 @@ func (bNum *BigIntNum) MultiplyByTenToPowerAdd(
 	ePrefix,
 		err = ePref.ErrPrefixDto{}.NewIEmpty(
 		nil,
-		"BigIntNum.Ceiling",
+		"BigIntNum.MultiplyByTenToPowerAdd",
 		"")
 
 	if err != nil {
@@ -2915,8 +2925,8 @@ func (bNum *BigIntNum) NewBigInt(
 // Numeric Separatpors consist of decimal separators, thousands
 // separators and a currency symbol.
 //
-// Input Parameters
-// ================
+//	Input Parameters
+//	================
 //
 //	bigI 				*big.Int
 //
@@ -2943,8 +2953,8 @@ func (bNum *BigIntNum) NewBigInt(
 //	Numeric Separatpors consist of decimal separators, thousands
 //	separators and a currency symbol.
 //
-// Return Parameters
-// =================
+//	Return Parameters
+//	=================
 //
 //	BigIntNum - a type BigIntNum numeric value
 //
@@ -3049,8 +3059,8 @@ func (bNum *BigIntNum) NewBigIntExponent(
 // numeric value is specified by the input parameter,
 // 'maxPrecision'.
 //
-// Input Parameters
-// ================
+//	Input Parameters
+//	================
 //
 // bigFloat *big.Float
 //
@@ -3212,7 +3222,8 @@ func (bNum *BigIntNum) NewFromIntFracStrings(
 	}
 
 	err = new(bigIntNumNeutron).
-		setIntFracStrings(&b2, intStr, fracStr, signVal, ePrefix)
+		setIntFracStrings(&b2, intStr, fracStr, signVal,
+			ePrefix.XCpy("Setting b2"))
 
 	return b2, err
 }
@@ -3221,8 +3232,8 @@ func (bNum *BigIntNum) NewFromIntFracStrings(
 // input parameter.  The precision of the number is specified by the input
 // parameter, 'decimalPlaces'.
 //
-// Input Parameters
-// ================
+//	Input Parameters
+//	================
 //
 //	f32							float32
 //
@@ -3295,27 +3306,27 @@ func (bNum *BigIntNum) NewFloat32(
 // input parameter.  The precision of the number is specified by the input
 // parameter, 'decimalPlaces'.
 //
-// Input Parameters
-// ================
+//	 Input Parameters
+//	 ================
 //
-//	f64						float64
+//		f64						float64
 //
-//	This float64 value will be converted into an instance of
-//	BigIntNum.
+//		This float64 value will be converted into an instance of
+//		BigIntNum.
 //
-//	maxPrecision	uint
+//		maxPrecision	uint
 //
-//	The maximum precision for the result BigIntNum after conversion
-//	of input parameter f64. Precision will never be greater than
-//	'maxPrecision'; however, actual precision may be less than
-//	'maxPrecision'.
+//		The maximum precision for the result BigIntNum after conversion
+//		of input parameter f64. Precision will never be greater than
+//		'maxPrecision'; however, actual precision may be less than
+//		'maxPrecision'.
 //
-//	NOTE
-//	====
+//		NOTE
+//		====
 //
-//	The returned new instance of BigIntNum will contain default
-//	USA numeric separators (decimal separator, thousands seprator,
-//	and currency symbol)
+//		The returned new instance of BigIntNum will contain default
+//		USA numeric separators (decimal separator, thousands seprator,
+//		and currency symbol)
 func (bNum *BigIntNum) NewFloat64(f64 float64, maxPrecision uint) (BigIntNum, error) {
 
 	var ePrefix *ePref.ErrPrefixDto
@@ -4115,6 +4126,12 @@ func (bNum *BigIntNum) NewINumMgr(numMgr INumMgr) (BigIntNum, error) {
 // Receives a number string as input and returns a new BigIntNum
 // instance encapsulating the number string's value.
 //
+// A number string is a string of numeric digits. If the number
+// string is prefixed with a minus sign ('-') or surrounded in
+// parentheses '()', it is assumed to be a negative value. Otherwise,
+// the numeric value is assumed to be positive. Currency symbols
+// are ignored.
+//
 // This method assumes that the input parameter 'numStr' is a
 // string of numeric digits which may be delimited by default
 // USA numeric separators. Default USA numeric separators are
@@ -4170,6 +4187,7 @@ func (bNum *BigIntNum) NewNumStr(numStr string) (BigIntNum, error) {
 	err = new(bigIntNumMolecule).setNumStr(
 		&bigINum,
 		numStr,
+		bigINum.decimalSeparator,
 		ePrefix)
 
 	if err != nil {
@@ -4197,9 +4215,17 @@ func (bNum *BigIntNum) NewNumStr(numStr string) (BigIntNum, error) {
 // In addition, the numeric separators contained in input parameter
 // 'numSeps' will be copied to the new, returned BigIntNum
 // instance.
+//
+//	Positive or Negative Value
+//	==========================
+//
+// A number string is a string of numeric digits. If the number
+// string is prefixed with a minus sign ('-') or surrounded in
+// parentheses, it is assumed to be a negative value. Otherwise,
+// the numeric value is assumed to be positive.
 func (bNum *BigIntNum) NewNumStrWithNumSeps(
 	numStr string,
-	numSeps NumericSeparatorDto) (BigIntNum, error) {
+	numStrNumSeps NumericSeparatorDto) (BigIntNum, error) {
 
 	var ePrefix *ePref.ErrPrefixDto
 	var err error
@@ -4214,7 +4240,7 @@ func (bNum *BigIntNum) NewNumStrWithNumSeps(
 		return BigIntNum{}, err
 	}
 
-	numSeps.SetDefaultsIfEmpty()
+	numStrNumSeps.SetDefaultsIfEmpty()
 
 	bINum2, err := new(bigIntNumMechanics).newZero(
 		0,
@@ -4234,7 +4260,7 @@ func (bNum *BigIntNum) NewNumStrWithNumSeps(
 
 	err = new(bigIntNumAtom).setNumericSeparatorsDto(
 		&bINum2,
-		numSeps,
+		numStrNumSeps,
 		ePrefix)
 
 	if err != nil {
@@ -4252,6 +4278,7 @@ func (bNum *BigIntNum) NewNumStrWithNumSeps(
 	err = new(bigIntNumMolecule).setNumStr(
 		&bINum2,
 		numStr,
+		numStrNumSeps.DecimalSeparator,
 		ePrefix)
 
 	if err != nil {
@@ -4275,6 +4302,12 @@ func (bNum *BigIntNum) NewNumStrWithNumSeps(
 // instance. If the resulting precision exceeds input parameter
 // 'maxPrecision', the returned BigIntNum result will be rounded
 // to 'maxPrecision' decimal places.
+//
+// A number string is a string of numeric digits. If the number
+// string is prefixed with a minus sign ('-') or surrounded in
+// parentheses, it is assumed to be a negative value. Otherwise,
+// the numeric value is assumed to be positive. Currency symbols
+// are ignored.
 //
 //	NOTE
 //	====
@@ -4318,6 +4351,7 @@ func (bNum *BigIntNum) NewNumStrMaxPrecision(
 	err = new(bigIntNumMolecule).setNumStr(
 		&bINum2,
 		numStr,
+		bINum2.decimalSeparator,
 		ePrefix)
 
 	if err != nil {
@@ -4380,104 +4414,26 @@ func (bNum *BigIntNum) NewNumStrDto(nDto NumStrDto) (BigIntNum, error) {
 		return BigIntNum{}, err
 	}
 
-	err = nDto.IsValid(ePrefix.XCpy("'nDto' INVALID! ").String())
-
-	if err != nil {
-
-		return BigIntNum{}, &FuncReturnError{
-			ErrPrefix:  ePrefix.String(),
-			ReturnFunc: "err = nDto.IsValid(ePrefix.XCpy(\"'nDto' INVALID! \").String())",
-			ErrContext: "Testing validity of input parameter 'nDto'.",
-			ErrMessage: err.Error(),
-		}
-	}
-
-	bigI, err := nDto.GetBigInt()
-
-	if err != nil {
-
-		return BigIntNum{}, &FuncReturnError{
-			ErrPrefix:  ePrefix.String(),
-			ReturnFunc: "bigI, err := nDto.GetBigInt()",
-			ErrContext: "",
-			ErrMessage: err.Error(),
-		}
-	}
-
-	nDtoNumSepsDto, err := nDto.GetNumericSeparatorsDto()
-
-	if err != nil {
-
-		return BigIntNum{}, &FuncReturnError{
-			ErrPrefix:  ePrefix.String(),
-			ReturnFunc: "nDtoNumSeps, err := nDto.GetNumericSeparatorsDto()",
-			ErrContext: "",
-			ErrMessage: err.Error(),
-		}
-	}
-
-	// Make certain Numeric Separators are set t valid
-	// values.
-	nDtoNumSepsDto.SetDefaultsIfEmpty()
-
 	bINum2, err := new(bigIntNumMechanics).newZero(
 		0,
-		ePrefix)
+		ePrefix.XCpy("Setting bINum2"))
 
 	if err != nil {
-
-		return BigIntNum{},
-			&FuncReturnError{
-				ErrPrefix: ePrefix.String(),
-				ReturnFunc: "bINum2, err := new(bigIntNumMechanics).newZero(\n" +
-					"    0, ePrefix)",
-				ErrContext: "",
-				ErrMessage: err.Error(),
-			}
+		return BigIntNum{}, err
 	}
 
-	err = new(bigIntNumNanobot).setBigInt(
+	err = new(bigIntNumMolecule).setNumStrDto(
 		&bINum2,
-		bigI,
-		uint(nDto.GetPrecision()),
-		ePrefix)
+		nDto,
+		ePrefix.XCpy("Setting 'bINum2' = nDto"))
 
-	if err != nil {
-
-		return BigIntNum{},
-			&FuncReturnError{
-				ErrPrefix: ePrefix.String(),
-				ReturnFunc: "err = new(bigIntNumNanobot).setBigInt(\n" +
-					"    &bINum2, bigI, uint(nDto.GetPrecision()), ePrefix)",
-				ErrContext: "",
-				ErrMessage: err.Error(),
-			}
-	}
-
-	err = new(bigIntNumAtom).setNumericSeparatorsDto(
-		&bINum2,
-		nDtoNumSepsDto,
-		ePrefix)
-
-	if err != nil {
-
-		return BigIntNum{},
-			&FuncReturnError{
-				ErrPrefix: ePrefix.String(),
-				ReturnFunc: "err = new(bigIntNumAtom).setNumericSeparatorsDto(\n" +
-					"    &bINum2, nDtoNumSepsDto, ePrefix)",
-				ErrContext: "",
-				ErrMessage: err.Error(),
-			}
-	}
-
-	return bINum2, nil
+	return bINum2, err
 }
 
 // NewOne
 //
 // Returns a BigIntNum Type with a value equal to '1' (one).
-// The number of zeros created after the decimal place holder
+// The number of zeros created after the decimal placeholder
 // (fractional digits) is determined by the input parameter 'precision'.
 // To create an integer with a value equal to '1', set 'precision' equal
 // to zero (0).
@@ -4855,7 +4811,7 @@ func (bNum *BigIntNum) NewTen(precision uint) (BigIntNum, error) {
 		&bIntNum2,
 		newVal,
 		precision,
-		ePrefix.XCpy(fmt.Sprintf("Setting bIntNum2=% precision=%v",
+		ePrefix.XCpy(fmt.Sprintf("Setting bIntNum2= '%v' precision= '%v'",
 			newVal.Text(10), precision)))
 
 	return bIntNum2, err
@@ -5638,24 +5594,24 @@ func (bNum *BigIntNum) SetBigIntExponent(
 // floating point input parameter.  The precision of the number
 // is specified by the input parameter, 'maxPrecision'.
 //
-// Input Parameters
-// ================
+//	 Input Parameters
+//	 ================
 //
-//	bigFloat *big.Float
+//		bigFloat *big.Float
 //
-//	This *big.Float value will be converted saved as the
-//	current instance of BigIntNum
+//		This *big.Float value will be converted saved as the
+//		current instance of BigIntNum
 //
-//	maxPrecision uint
+//		maxPrecision uint
 //
-//	The maximum precision for the resulting BigIntNum value
-//	after conversion of input parameter 'bigFloat'. Final
-//	precision will never be greater than 'maxPrecision';
-//	however, actual precision may be less than
-//	'maxPrecision'.
+//		The maximum precision for the resulting BigIntNum value
+//		after conversion of input parameter 'bigFloat'. Final
+//		precision will never be greater than 'maxPrecision';
+//		however, actual precision may be less than
+//		'maxPrecision'.
 //
-// Background
-// ==========
+//	 Background
+//	 ==========
 //
 // As part of converting a BigFloat to a BigIntNum number,
 // the Accuracy flag is analyzed to determine if rounding errors
@@ -5682,7 +5638,7 @@ func (bNum *BigIntNum) SetBigFloat(
 	ePrefix,
 		err = ePref.ErrPrefixDto{}.NewIEmpty(
 		nil,
-		"BigIntNum.Ceiling",
+		"BigIntNum.SetBigFloat",
 		"")
 
 	if err != nil {
@@ -5923,7 +5879,8 @@ func (bNum *BigIntNum) SetDecimalSeparator(
 // numeric value is controlled strictly by input parameter, 'signVal'.
 //
 // Existing numeric separators (decimal separator, thousands separator
-// and currency symbol) remain unchanged and are not altered by this method.
+// and currency symbol), contained in the current instance of BigIntNum,
+// will remain unchanged and are not altered by this method.
 func (bNum *BigIntNum) SetIntFracStrings(intStr, fracStr string, signVal int) error {
 
 	var ePrefix *ePref.ErrPrefixDto
@@ -5932,7 +5889,7 @@ func (bNum *BigIntNum) SetIntFracStrings(intStr, fracStr string, signVal int) er
 	ePrefix,
 		err = ePref.ErrPrefixDto{}.NewIEmpty(
 		nil,
-		"BigIntNum.Ceiling",
+		"BigIntNum.SetIntFracStrings",
 		"")
 
 	if err != nil {
@@ -5953,24 +5910,24 @@ func (bNum *BigIntNum) SetIntFracStrings(intStr, fracStr string, signVal int) er
 // input parameter.  The precision of the number is specified by
 // the input parameter, 'decimalPlaces'.
 //
-// Input Parameters
-// ================
+//	 Input Parameters
+//	 ================
 //
-//	f32            float32
+//		f32            float32
 //
-//	This float32 value will be converted into an instance of
-//	BigIntNum.
+//		This float32 value will be converted into an instance of
+//		BigIntNum.
 //
 //
-//	maxPrecision    uint
+//		maxPrecision    uint
 //
-//	The maximum precision for the resulting BigIntNum after
-//	conversion of input parameter 'ratNum'. Precision will
-//	never be greater than 'maxPrecision'; however, actual
-//	precision may be less than 'maxPrecision'.
+//		The maximum precision for the resulting BigIntNum after
+//		conversion of input parameter 'ratNum'. Precision will
+//		never be greater than 'maxPrecision'; however, actual
+//		precision may be less than 'maxPrecision'.
 //
-//	NOTE
-//	====
+//		NOTE
+//		====
 //
 // Existing numeric separators (decimal separator, thousands separator
 // and currency symbol) configured for the current instance of BigintNum remain unchanged and are not altered by this method.
@@ -6005,20 +5962,20 @@ func (bNum *BigIntNum) SetFloat32(f32 float32, maxPrecision uint) error {
 // input parameter.  The precision of the number is specified
 // by the input parameter 'decimalPlaces'.
 //
-// Input Parameters
-// ================
+//	 Input Parameters
+//	 ================
 //
-//	f64              float64
+//		f64              float64
 //
-//	This float64 value will be converted into an instance of
-//	BigIntNum.
+//		This float64 value will be converted into an instance of
+//		BigIntNum.
 //
-//	maxPrecision     uint
+//		maxPrecision     uint
 //
-//	The maximum precision for the resulting BigIntNum after
-//	conversion of input parameter 'f64'. Resulting precision
-//	will never be greater than 'maxPrecision'; however, actual
-//	precision may be less than 'maxPrecision'.
+//		The maximum precision for the resulting BigIntNum after
+//		conversion of input parameter 'f64'. Resulting precision
+//		will never be greater than 'maxPrecision'; however, actual
+//		precision may be less than 'maxPrecision'.
 func (bNum *BigIntNum) SetFloat64(f64 float64, maxPrecision uint) error {
 
 	var ePrefix *ePref.ErrPrefixDto
@@ -6271,7 +6228,9 @@ func (bNum *BigIntNum) SetPrecision(newPrecision uint) error {
 				deltaPrecision)))
 }
 
-// SetNumericSeparators - Used to assign values for the Decimal and Thousands separators as well
+// SetNumericSeparators
+//
+// Used to assign values for the Decimal and Thousands separators as well
 // as the Currency Symbol to be used in displaying the current number string.
 //
 // Different nations and cultures use different symbols to delimit numerical values. In the
@@ -6288,11 +6247,12 @@ func (bNum *BigIntNum) SetPrecision(newPrecision uint) error {
 // Note: If zero values are submitted as input for separator values, those values will default
 // to USA standards.
 //
-// USA Examples:
+// USA Examples
+// ============
 //
-// Decimal Separator period ('.') 		= 123.456
-// Thousands Separator comma (',') 		= 1,000,000,000
-// Currency Symbol dollar sign ('$')	= $123
+// Decimal Separator period ('.')     = 123.456
+// Thousands Separator comma (',')    = 1,000,000,000
+// Currency Symbol dollar sign ('$')  = $123
 func (bNum *BigIntNum) SetNumericSeparators(
 	decimalSeparator rune,
 	thousandsSeparator rune,
@@ -6333,7 +6293,16 @@ func (bNum *BigIntNum) SetNumericSeparators(
 //
 // If any of the values contained in input parameter 'customSeparators'
 // is set to zero, an error will be returned.
-func (bNum *BigIntNum) SetNumericSeparatorsDto(customSeparators NumericSeparatorDto) error {
+//
+// NumericSeparatorDto
+//
+//	type NumericSeparatorDto struct {
+//	 DecimalSeparator   rune // Character used to separate integer and fractional digits ('.')
+//	 ThousandsSeparator rune // Character used to separate thousands (1,000,000,000
+//	 CurrencySymbol     rune // Currency Symbol
+//	}
+func (bNum *BigIntNum) SetNumericSeparatorsDto(
+	customSeparators NumericSeparatorDto) error {
 
 	var ePrefix *ePref.ErrPrefixDto
 	var err error
@@ -6385,23 +6354,26 @@ func (bNum *BigIntNum) SetNumericSeparatorsToDefaultIfEmpty() error {
 
 	return new(bigIntNumAtom).setNumericSeparatorsToDefaultIfEmpty(
 		bNum,
-		ePrefix)
+		ePrefix.XCpy("Setting 'bNum' default NumSeps"))
 }
 
-// SetNumericSeparatorsToUSADefault - Sets Numeric separators:
+// SetNumericSeparatorsToUSADefault
 //
-//	Decimal Point Separator
-//	Thousands Separator
-//	Currency Symbol
+// Sets the following Numeric separators to the United States of
+// America (USA) defaults.:
 //
-// to the United States of America (USA) defaults.
+//	Decimal Point Separator = '.' (period)
+//	Thousands Separator     = ',' (comma)
+//	Currency Symbol         = '$' (dollar sign)
 //
-// Call specific methods to set numeric separators for other countries or
-// cultures:
+// Call specific methods to set numeric separators for other countries
+// or cultures:
 //
-//	bNum.SetDecimalSeparator()
-//	bNum.SetThousandsSeparator()
-//	bNum.SetCurrencySymbol()
+//	new(BigIntNum).SetNumericSeparators
+//	new(BigIntNum).SetNumericSeparators
+//	new(BigIntNum).SetDecimalSeparator()
+//	new(BigIntNum).SetThousandsSeparator()
+//	new(BigIntNum).SetCurrencySymbol()
 func (bNum *BigIntNum) SetNumericSeparatorsToUSADefault() error {
 
 	var ePrefix *ePref.ErrPrefixDto
@@ -6419,22 +6391,34 @@ func (bNum *BigIntNum) SetNumericSeparatorsToUSADefault() error {
 
 	return new(bigIntNumAtom).setNumericSeparatorsToUSADefault(
 		bNum,
-		ePrefix)
+		ePrefix.XCpy("Setting 'bNum' to USA NumSeps"))
 }
 
-// SetNumStr - Initializes the current BigIntNum instance
-// for the numeric value of the number string input parameter.
-// A number string is a string of numeric digits which may
-// or may not be prefixed with a minus sign ('-'). The numeric
-// string of digits may also contain a decimal separator such
-// as a period ('.'). The decimal separator may be set by the
-// user. See Method BigIntNum.SetDecimalSeparator(). The decimal
-// separator is used to separate integer and fractional numeric
-// digits within the number string.
+// SetNumStr
 //
-// Existing numeric separators (decimal separator, thousands separator
-// and currency symbol) remain unchanged and are not altered by this method.
-func (bNum *BigIntNum) SetNumStr(numStr string) error {
+// Initializes the current BigIntNum instance for the numeric value
+// of the number string input parameter.
+//
+// A number string is a string of numeric digits. If the number
+// string is prefixed with a minus sign ('-') or surrounded in
+// parentheses, it is assumed to be a negative value. Otherwise,
+// the numeric value is assumed to be positive. Currency symbols
+// are ignored.
+//
+// The numeric string of digits may also contain a decimal
+// separator defined by input parameter 'decimalSeparator'.
+// The decimal separator is used to separate integer and
+// fractional numeric digits within the number string.
+//
+// Existing numeric separators (decimal separator, thousands
+// separator and currency symbol), configured for the current
+// instance of BigIntNum, will remain unchanged and are not
+// altered by this method.
+//
+// Upon completion this method will configure the current
+// instance of BigIntNum with the numeric value represented
+// by input parameter 'numStr'.
+func (bNum *BigIntNum) SetNumStr(numStr string, numStrDecimalSeparator rune) error {
 
 	var ePrefix *ePref.ErrPrefixDto
 	var err error
@@ -6452,143 +6436,179 @@ func (bNum *BigIntNum) SetNumStr(numStr string) error {
 	return new(bigIntNumMolecule).setNumStr(
 		bNum,
 		numStr,
+		numStrDecimalSeparator,
 		ePrefix)
 
 }
 
-// SetSignValue - Sets the sign value of the current BigIntNum
-// to positive (+1) or negative (-1).
+// SetNumStrDto
 //
-// If a value other than +1 or -1 is transmitted as an input
-// parameter, an error will be returned.
-func (bNum *BigIntNum) SetSignValue(signVal int) error {
+// This method configures the current instance of BigIntNum with
+// the numeric value and numeric separators passed by input
+// parameter, 'numStrDto'.
+func (bNum *BigIntNum) SetNumStrDto(numStrDto NumStrDto) error {
 
-	ePrefix := "BigIntNum.SetSignValue()"
-
+	var ePrefix *ePref.ErrPrefixDto
 	var err error
 
-	if bNum.bigInt == nil {
-
-		err = new(bigIntNumNanobot).setBigInt(
-			bNum,
-			big.NewInt(0),
-			bNum.precision,
-			ePrefix)
-
-		if err != nil {
-			return err
-		}
-
-	}
-
-	if signVal == 1 || signVal == -1 {
-
-		if bNum.GetSign() == signVal {
-
-			return nil
-		}
-
-		bNum.ChangeSign()
-
-		return nil
-	}
-
-	return fmt.Errorf("%v\n"+
-		"Error: Input parameter 'signVal' "+
-		"must be +1 or -1.\n"+
-		"signVal='%v'\n",
-		ePrefix,
-		signVal)
-
-}
-
-// ShiftPrecisionLeft - Shifts precision of the current BigIntNum
-// numeric value to the left by 'shiftLeftPlaces' decimal places. This
-// is a 'relative' shift-left operation. The shift left operation is
-// therefore performed with the current decimal place position as the
-// starting point.
-//
-// This operation is equivalent to:	result = Decimal value / 10^shiftLeftPlaces
-// or signed number divided by 10 raised to the power of shiftLeftPlaces.
-//
-// This method performs a relative shift left of the decimal place position.
-// Be careful, this is NOT Shift Number Left operation. This is Shift Precision
-// Left which means that the decimal place will be shifted left.
-//
-// See Examples below.
-//
-// Input Parameters
-// ================
-//
-//	shiftLeftPlaces int	- The number of positions the decimal place will be
-//												shifted left from its current position.
-//
-// Examples:
-// =========
-//
-//	shift-left
-//
-// signed Number		  places				Result
-//
-//	"123456.789"				3						"123.456789"
-//	"123456.789"				2						"1234.56789"
-//	"123456.789"        6					  "0.123456789"
-//	"123456789"	 			  6						"123.456789"
-//	"123"               5	          "0.00123"
-//	"0"								  3						"0"
-//	"123456.789"				0						"123456.789"		- zero has no effect on original number string
-//
-// "-123456.789"        0          "-123456.789"
-// "-123456.789"        3          "-123.456789"
-// "-123456789"			    6					 "-123.456789"
-//
-// Existing numeric separators (decimal separator, thousands separator
-// and currency symbol) remain unchanged and are not altered by this method.
-func (bNum *BigIntNum) ShiftPrecisionLeft(shiftLeftPlaces uint) error {
-
-	ePrefix := "BigIntNum.ShiftPrecisionLeft()"
-
-	var err error
-
-	err = new(bigIntNumAtom).isBigIntNumValid(
-		bNum,
-		ePrefix+" Testing 'bNum'")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"BigIntNum.NewNumStrDto()",
+		"")
 
 	if err != nil {
 		return err
 	}
 
-	isbNumZero := false
-
-	if bNum.bigInt.Cmp(big.NewInt(0)) == 0 {
-		isbNumZero = true
-	}
-
-	if shiftLeftPlaces == 0 || isbNumZero {
-
-		return nil
-	}
-
-	newPrecision := bNum.precision + shiftLeftPlaces
-
-	err = new(bigIntNumNanobot).setBigInt(
+	return new(bigIntNumMolecule).setNumStrDto(
 		bNum,
-		bNum.bigInt,
-		newPrecision,
-		ePrefix)
-
-	return err
+		numStrDto,
+		ePrefix.XCpy("Setting 'bNum' == NumStrDto"))
 }
 
-// ShiftPrecisionRight - Shifts precision of the current BigIntNum
-// numeric value to the right by 'shiftRightPlaces' decimal places. This
-// is a 'relative' shift-right operation. The shift right operation is
-// therefore performed with the current decimal place position as the
-// starting point.
+// SetSignValue - Sets the sign value of the current BigIntNum
+// to positive (+1) or negative (-1).
 //
-// This is equivalent to: result = Decimal value X 10^shiftRightPrecision or
-// Decimal numeric value multiplied by 10 raised to the power of
-// shiftRightPrecision.
+// If a value other than +1 or -1 is transmitted by input
+// parameter 'signVal', an error will be returned.
+func (bNum *BigIntNum) SetSignValue(signVal int) error {
+
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
+
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"BigIntNum.SetSignValue()",
+		"")
+
+	if err != nil {
+		return err
+	}
+
+	err = new(bigIntNumAtom).isBigIntNumValid(
+		bNum,
+		ePrefix.XCpy("Validating 'bNum'"))
+
+	if err != nil {
+		return err
+	}
+
+	if signVal == 1 || signVal == -1 {
+
+		if bNum.sign == signVal {
+
+			return nil
+		}
+
+		return new(bigIntNumUtility).bigIntNumChangeSign(
+			bNum,
+			ePrefix)
+	}
+
+	return &FuncReturnError{
+		ErrPrefix:  ePrefix.String(),
+		ReturnFunc: "",
+		ErrContext: "Error: Input parameter 'signVal' must be +1 or -1.\n" +
+			"signVal='%v'\nInput parameter 'signVal' is INVALID!",
+		ErrMessage: "",
+	}
+}
+
+// ShiftPrecisionLeft
+//
+// Shifts precision of the current BigIntNum numeric value to the
+// left by 'shiftLeftPlaces' decimal places. This is a 'relative'
+// shift-left operation. The shift left operation is therefore
+// performed with the current decimal place position as the starting
+// point.
+//
+// This operation is equivalent to:
+//
+//	result = Decimal value / 10^shiftLeftPlaces
+//	                 or
+//	signed number divided by 10 raised to the
+//	power of shiftLeftPlaces.
+//
+// This method performs a relative shift left of the decimal place
+// position. Be careful, this is NOT Shift Number Left operation.
+// Instead, this is a Shift Precision Left operation which means
+// that the decimal place will be shifted left.
+//
+// See Examples below.
+//
+//	 Input Parameters
+//	 ================
+//
+//			shiftLeftPlaces int	- The number of positions the decimal place will be
+//														shifted left from its current position.
+//
+//	 Examples
+//	 ========
+//
+//			shift-left
+//
+//		   signed Number   places      Result
+//
+//		    "123456.789"      3      "123.456789"
+//		    "123456.789"      2      "1234.56789"
+//		    "123456.789"      6      "0.123456789"
+//		    "123456789"       6      "123.456789"
+//		    "123"             5      "0.00123"
+//		    "0"               3      "0"
+//		    "123456.789"      0      "123456.789" - zero has no effect on original number string
+//
+//		   "-123456.789"      0     "-123456.789"
+//		   "-123456.789"      3     "-123.456789"
+//		   "-123456789"       6     "-123.456789"
+//
+// Existing numeric separators (decimal separator, thousands separator
+// and currency symbol) remain unchanged and are not altered by this method.
+func (bNum *BigIntNum) ShiftPrecisionLeft(shiftLeftPlaces uint) error {
+
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
+
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"BigIntNum.ShiftPrecisionLeft()",
+		"")
+
+	if err != nil {
+		return err
+	}
+
+	err = new(bigIntNumAtom).isBigIntNumValid(
+		bNum,
+		ePrefix.XCpy("Validating 'bNum'"))
+
+	if err != nil {
+		return err
+	}
+
+	return new(bigIntNumBoson).shiftPrecisionLeft(
+		bNum,
+		shiftLeftPlaces,
+		ePrefix.XCpy(fmt.Sprintf("Shift 'bNum' Left. shiftLeftPlaces= '%v'",
+			shiftLeftPlaces)))
+}
+
+// ShiftPrecisionRight
+//
+// Shifts precision of the current BigIntNum numeric value to
+// the right by 'shiftRightPlaces' decimal places. This is a
+// 'relative' shift-right operation. The shift right operation
+// is therefore performed with the current decimal place
+// position as the starting point.
+//
+// This is equivalent to:
+//
+//	result = Decimal value X 10^shiftRightPrecision
+//	                      or
+//	Decimal numeric value multiplied by 10 raised to
+//	the power of shiftRightPrecision.
 //
 // This method performs a relative shift right of the decimal place position.
 // Be careful, this is NOT a Shift Number Right operation. This is Shift Precision
@@ -6596,93 +6616,65 @@ func (bNum *BigIntNum) ShiftPrecisionLeft(shiftLeftPlaces uint) error {
 //
 // See Examples below.
 //
-// Input Parameters
-// ================
+//	 Input Parameters
+//	 ================
 //
-//	shiftRightPlaces int	- The number of positions the decimal place will be
-//													shifted right from its current position.
+//		shiftRightPlaces int	- The number of positions the decimal place will be
+//														shifted right from its current position.
 //
-// Examples:
-// =========
+//	 Examples
+//	 ========
 //
-//	shift-right
+//		shift-right
 //
-// signed Number		  places				Result
+//	  signed Number     places    Result
 //
-//	"123456.789"				3						"123456789"
-//	"123456.789"				2						"12345678.9"
-//	"123456.789"        6					  "123456789000"
-//	"123456789"	 			  6						"123456789000000"
-//	"123"               5	          "12300000"
-//	"0"								  3						"0"
-//	"123456.789"				0						"123456.789"		- zero has no effect on original number string
+//	  "123456.789"        3       "123456789"
+//	  "123456.789"        2       "12345678.9"
+//	  "123456.7896"       7       "1234567896000"
+//	  "123456789"         6       "123456789000000"
+//	  "123"               5       "12300000"
+//	  "0"                 3       "0"
+//	  "123456.789"        0       "123456.789" - zero has no effect on original number string
 //
-// "-123456.789"        0          "-123456.789"
-// "-123456.789"        3          "-123456789"
-// "-123456789"			    6					 "-123456789000000"
+//	 "-123456.789         0      "-123456.789"
+//	 "-123456.789         3      "-123456789"
+//	 "-123456789"         6      "-123456789000000"
+//
+//	 Numeric Separators
+//	 ==================
 //
 // Existing numeric separators (decimal separator, thousands separator
-// and currency symbol) remain unchanged and are not altered by this method.
+// and currency symbol) for the current instance of BigIntNum will
+// remain unchanged and are not altered by this method.
 func (bNum *BigIntNum) ShiftPrecisionRight(shiftRightPlaces uint) error {
 
-	ePrefix := "BigIntNum.ShiftPrecisionRight()"
-
+	var ePrefix *ePref.ErrPrefixDto
 	var err error
 
-	err = new(bigIntNumAtom).isBigIntNumValid(
-		bNum,
-		ePrefix+" Testing 'bNum'")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"BigIntNum.ShiftPrecisionRight()",
+		"")
 
 	if err != nil {
 		return err
 	}
 
-	isbNumZero := false
+	err = new(bigIntNumAtom).isBigIntNumValid(
+		bNum,
+		ePrefix.XCpy("Validating 'bNum'"))
 
-	if bNum.bigInt.Cmp(big.NewInt(0)) == 0 {
-		isbNumZero = true
-	}
-
-	if shiftRightPlaces == 0 || isbNumZero {
-
-		return nil
-
-	}
-
-	bigINanobot := new(bigIntNumNanobot)
-
-	if shiftRightPlaces <= bNum.precision {
-
-		newPrecision := bNum.precision - shiftRightPlaces
-
-		err = bigINanobot.setBigInt(
-			bNum,
-			bNum.bigInt,
-			newPrecision,
-			ePrefix)
-
+	if err != nil {
 		return err
 	}
 
-	// shiftRightPlaces > bNum.precision
-
-	newPrecision := shiftRightPlaces - bNum.precision
-
-	bigITen := big.NewInt(10)
-
-	exponent := big.NewInt(int64(newPrecision))
-
-	scaleFactor := big.NewInt(0).Exp(bigITen, exponent, nil)
-
-	newValue := big.NewInt(0).Mul(bNum.bigInt, scaleFactor)
-
-	err = bigINanobot.setBigInt(
+	return new(bigIntNumBoson).shiftPrecisionRight(
 		bNum,
-		newValue,
-		0,
-		ePrefix)
-
-	return err
+		shiftRightPlaces,
+		ePrefix.XCpy(fmt.Sprintf("Shift 'bNum' right. shiftRightPlaces= '%v'",
+			shiftRightPlaces)))
 }
 
 // SetThousandsSeparator
@@ -6718,193 +6710,126 @@ func (bNum *BigIntNum) SetThousandsSeparator(
 		ePrefix.XCpy("Setting 'bNum' Thousands Separator"))
 }
 
-// TrimTrailingFracZeros - This method will delete non-significant
-// trailing zeros from the fractional digits of the current BigIntNum
-// numerical value.
+// TrimTrailingFracZeros
 //
-// Examples:
+// This method will delete non-significant trailing zeros from
+// the fractional digits of the current BigIntNum numerical
+// value.
 //
-//	Initial Value			Trimmed Value
-//		456.123000 			 456.123
-//			0.000					 0
-//			7.0						 7
-//	 -456.123000			-456.123
+//	Examples
+//	========
+//
+//	  Initial Value   Trimmed Value
+//
+//	  456.123000         456.123
+//	    0.000              0
+//	    7.0                7
+//	 -456.123000        -456.123
 func (bNum *BigIntNum) TrimTrailingFracZeros() error {
 
-	ePrefix := "BigIntNum.TrimTrailingFracZeros()"
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-	err := new(bigIntNumAtom).isBigIntNumValid(
-		bNum,
-		ePrefix)
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"BigIntNum.TrimTrailingFracZeros()",
+		"")
 
 	if err != nil {
 		return err
 	}
 
-	if bNum.precision == 0 {
-		return nil
+	err = new(bigIntNumAtom).isBigIntNumValid(
+		bNum,
+		ePrefix.XCpy("Validating 'bNum'"))
+
+	if err != nil {
+		return err
 	}
 
-	biBaseZero := big.NewInt(0)
-
-	if bNum.bigInt.Cmp(biBaseZero) == 0 {
-
-		bNum.precision = 0
-
-		bNum.scaleFactor = big.NewInt(1)
-
-		return nil
-	}
-
-	// bNum.precision must be greater than zero
-	biBase10 := big.NewInt(10)
-	scrap := big.NewInt(0)
-	newBigIntNum, mod10 := big.NewInt(0).QuoRem(bNum.bigInt, biBase10, scrap)
-	doReset := false
-
-	for mod10.Cmp(biBaseZero) == 0 && bNum.precision > 0 {
-
-		bNum.bigInt.Set(newBigIntNum)
-
-		bNum.precision--
-
-		newBigIntNum, mod10 = big.NewInt(0).QuoRem(bNum.bigInt, biBase10, scrap)
-
-		doReset = true
-	}
-
-	if doReset {
-
-		if bNum.sign < 0 {
-
-			bNum.absBigInt = big.NewInt(0).Neg(bNum.bigInt)
-
-		} else {
-
-			bNum.absBigInt = big.NewInt(0).Set(bNum.bigInt)
-
-		}
-
-		bigPrecision := big.NewInt(0).SetInt64(int64(bNum.precision))
-
-		bNum.scaleFactor = big.NewInt(0).Exp(biBase10, bigPrecision, nil)
-
-	}
-
-	return nil
+	return new(bigIntNumBoson).trimTrailingFracZeros(
+		bNum,
+		ePrefix.XCpy("Trimming 'bNum' Trailing Frac Zeros"))
 }
 
-// TruncToDecPlace - Truncates the current BigIntNum to the number
-// of decimal places specified by input parameter 'precision'.
-// No rounding occurs, the trailing digits are simply truncated or
-// deleted in order to achieve the specified number of decimal places.
+// TruncToDecPlace
 //
-// 'precision' equals the number of digits to the right of the decimal
-// place.
+// Truncates the current BigIntNum to the number of decimal places
+// specified by input parameter 'precision'. No rounding occurs.
+// The trailing digits are simply truncated or deleted in order
+// to achieve the specified number of decimal places.
 //
-// If the value of BigIntNum.bigInt is zero ('0'), that zero value will
-// remain unaltered. However, BigIntNum.precision will be set equal to
-// input parameter, 'precision'.
+// 'precision' equals the number of digits to the right of the
+// decimal place.
 //
-// If the number of decimal places specified for truncation ('precision") is
-// equal to the current BigIntNum.precision, no action is taken and the
-// original BigIntNum numeric value remains unchanged.
+// If the value of BigIntNum.bigInt is zero ('0'), that zero value
+// will remain unaltered. However, BigIntNum.precision will be set
+// equal to input parameter, 'precision'.
 //
-// If the number of decimal places specified for truncation ('precision') is
-// greater than the current BigIntNum.precision, trailing zeros are added to
-// the current BigIntNum.bigInt value and BigIntNum.precision is set equal
-// to input parameter, 'precision'.
+// If the number of decimal places specified for truncation
+// ('precision') is equal to the current BigIntNum.precision, no
+// action is taken and the original BigIntNum numeric value
+// remains unchanged.
+//
+// If the number of decimal places specified for truncation
+// ('precision') is greater than the current BigIntNum.precision,
+// trailing zeros are added to the current BigIntNum.bigInt value
+// and BigIntNum.precision is set equal to input parameter,
+// 'precision'.
 //
 // If 'precision' is less than the current BigIntNum.precision
 // value, the current BigIntNum numeric value is truncated to
 // the specified 'precision' value and NO rounding occurs.
 //
-// Examples:
+//	Examples
+//	========
 //
-//		 Original       			'newPrecision'				Resulting
-//	   Value								input parameter			  Value
-//	 --------------				---------------     -------------
-//		654.123456									9							 654.123456000
-//		654.123456									4							 654.1234 (no rounding)
+//	   Original           'newPrecision'        Resulting
+//	    Value             input parameter         Value
 //
-// -654.123456									9							-654.123456000
-// -654.123456									4							-654.1234 (no rounding)
+//	  654.123456                9              654.123456000
+//	  654.123456                4              654.1234 (no rounding)
 //
-//			0													3								 0.000
-//	   0.000000									0								 0
+//	 -654.123456                9             -654.123456000
+//	 -654.123456                4             -654.1234 (no rounding)
 //
-// Existing numeric separators (decimal separator, thousands separator
-// and currency symbol) remain unchanged and are not altered by this method.
+//	    0                       3                0.000
+//	    0.000000                0                0
+//
+//	Numeric Separators
+//	==================
+//
+// Existing numeric separators (decimal separator, thousands
+// separator and currency symbol) in the current instance of
+// BigIntNum will remain unchanged and are not altered by this
+// method.
 func (bNum *BigIntNum) TruncToDecPlace(precision uint) error {
 
-	ePrefix := "BigIntNum.TruncToDecPlace()"
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-	err := new(bigIntNumAtom).isBigIntNumValid(
-		bNum,
-		ePrefix)
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"BigIntNum.TruncToDecPlace",
+		"")
 
 	if err != nil {
 		return err
 	}
 
-	if bNum.bigInt == nil {
-
-		err = new(bigIntNumNanobot).setBigInt(
-			bNum,
-			big.NewInt(0),
-			precision,
-			ePrefix)
-
-		if err != nil {
-			return err
-		}
-
-	}
-
-	if bNum.precision == precision {
-
-		// Nothing to do. Specified 'precision' is already implemented.
-
-		return nil
-	}
-
-	// bigInt == zero, set precision an return
-	if bNum.bigInt.Cmp(big.NewInt(0)) == 0 {
-
-		bNum.precision = precision
-
-		return nil
-	}
-
-	// If existing precision is less than new specified precision,
-	// add trailing zeros, set new precision parameter and return.
-	if bNum.precision < precision {
-
-		bNum.ExtendPrecision(precision - bNum.precision)
-
-		return nil
-	}
-
-	// Must be bNum.precision > precision
-	base10 := big.NewInt(10)
-
-	deltaPrecision := big.NewInt(int64(bNum.precision - precision))
-
-	newBigInt := big.NewInt(0).Set(bNum.absBigInt)
-
-	newScaleVal := big.NewInt(0).Exp(base10, deltaPrecision, nil)
-
-	newBigInt = big.NewInt(0).Quo(newBigInt, newScaleVal)
-
-	if bNum.sign < 1 {
-		newBigInt = big.NewInt(0).Neg(newBigInt)
-	}
-
-	err = new(bigIntNumNanobot).setBigInt(
+	err = new(bigIntNumAtom).isBigIntNumValid(
 		bNum,
-		newBigInt,
-		precision,
-		ePrefix)
+		ePrefix.XCpy("Validating 'bNum'"))
 
-	return err
+	if err != nil {
+		return err
+	}
+
+	return new(bigIntNumBoson).truncToDecPlace(
+		bNum,
+		precision,
+		ePrefix.XCpy(fmt.Sprintf("Trunc 'bNum' Dec Places. precision= '%v'",
+			precision)))
 }
