@@ -2,13 +2,16 @@ package mathops
 
 import (
 	"fmt"
+	ePref "github.com/MikeAustin71/errpref"
 	"math"
 	"math/big"
 )
 
-// BigIntFixedDecimal - A light data transfer structure used to represent
-// a numeric value with a fixed number of decimal digits. Used primarily
-// for intensive and complex calculations.
+// BigIntFixedDecimal
+//
+// A light data transfer structure used to represent a numeric value
+// with a fixed number of decimal digits. Used primarily for
+// intensive or complex calculations.
 type BigIntFixedDecimal struct {
 	integerNum *big.Int // All the numeric digits, both integer and fractional,
 	// necessary to define a fixed length floating point number.
@@ -35,32 +38,35 @@ type BigIntFixedDecimal struct {
 
 var _ INumMgr = (*BigIntFixedDecimal)(nil)
 
-// Ceiling - Returns the ceiling integer value for the current
+// Ceiling
+//
+// Returns the ceiling integer value for the current
 // BigIntFixedDecimal instance.
 //
-// Ceiling is defined as: The least, or lowest value integer,
-// which is greater than or equal to the numeric value of the
-// current BigIntFixedDecimal.
+// Ceiling is defined as: The least, or lowest value integer, which
+// is greater than or equal to the numeric value of the current
+// BigIntFixedDecimal.
 //
-// Reference Wikipedia:
+//	Reference Wikipedia
+//	===================
 //
-//	https://en.wikipedia.org/wiki/Floor_and_ceiling_functions
+//	  https://en.wikipedia.org/wiki/Floor_and_ceiling_functions
 //
-// Examples
-// ========
+//	Examples
+//	========
 //
-//							Initial 		 Ceiling
-//	 					 Value				Value
-//							-------      -------
-//	 						5.95					6
-//	 						5.05					6
-//	 						5							5
-//							 -5.05			 	 -5
-//	 						2.4				  	3
-//	 						2.9					 	3
-//							 -2.7				 	 -2
-//							 -2					 	 -2
-func (bigIFd *BigIntFixedDecimal) Ceiling() BigIntFixedDecimal {
+//	  Initial    Ceiling
+//	  Value       Value
+//	  -------    -------
+//	   5.95         6
+//	   5.05         6
+//	   5            5
+//	  -5.05        -5
+//	   2.4          3
+//	   2.9          3
+//	  -2.7         -2
+//	  -2           -2
+func (bigIFd *BigIntFixedDecimal) Ceiling() (BigIntFixedDecimal, error) {
 
 	if bigIFd.integerNum == nil {
 		bigIFd.integerNum = big.NewInt(0)
@@ -1206,50 +1212,61 @@ func (bigIFd *BigIntFixedDecimal) IsEven() bool {
 // will be returned.
 func (bigIFd *BigIntFixedDecimal) IsValid(callingMethodName string) error {
 
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
+
 	if len(callingMethodName) > 0 {
 		callingMethodName = "BigIntFixedDecimal.IsValid" + "\n" + callingMethodName
 	} else {
 		callingMethodName = "BigIntFixedDecimal.IsValid"
 	}
 
-	if bigIFd.integerNum == nil {
-
-		return &FuncReturnError{
-			ErrPrefix:  callingMethodName,
-			ReturnFunc: "",
-			ErrContext: "",
-			ErrMessage: "Error: This instance of BigIntFixedDecimal FAILED Validation Testing.\n" +
-				"BigIntFixedDecimal.integerNum is a 'nil' pointer.\n" +
-				"This instance of BigIntFixedDecimal is INVALID!",
-		}
-	}
-
-	return nil
-}
-
-// IsZero - returns true only if the current BigIntFixedDecimal
-// numeric value is equal to zero
-func (bigIFd *BigIntFixedDecimal) IsZero() (bool, error) {
-
-	ePrefix := "BigIntFixedDecimal.IsZero()"
-
-	err := bigIFd.IsValid(ePrefix + " Testing 'bigIFd' current instance of 'BigIntFixedDecimal'")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		callingMethodName,
+		"")
 
 	if err != nil {
-		return true,
-			&FuncReturnError{
-				ErrPrefix:  ePrefix,
-				ReturnFunc: "err := bigIFd.IsValid(ePrefix + \" Testing 'bigIFd' current instance of 'BigIntFixedDecimal'\")",
-				ErrContext: "Testing validity of 'bigIFd', an instance of 'BigIntFixedDecimal'",
-				ErrMessage: "'bigIFd' FAILED Validation Testing and is therefore INVALID",
-			}
+		return err
 	}
 
-	if bigIFd.integerNum.Cmp(big.NewInt(0)) == 0 {
-		return true, nil
+	return new(bigIntFixedDecAtom).isBigIntFxDecValid(
+		bigIFd,
+		ePrefix)
+}
+
+// IsZero
+//
+// Returns true only if the current BigIntFixedDecimal numeric
+// value is equal to zero. If the current BigIntFixedDecimal
+// is invalid, an error will be returned.
+func (bigIFd *BigIntFixedDecimal) IsZero() (bool, error) {
+
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
+
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"BigIntFixedDecimal.IsZero",
+		"")
+
+	if err != nil {
+		return false, err
 	}
 
-	return false, nil
+	err = new(bigIntFixedDecAtom).isBigIntFxDecValid(
+		bigIFd,
+		ePrefix.XCpy("Testing Validity of 'bigIFd'"))
+
+	if err != nil {
+		return false, err
+	}
+
+	return new(bigIntFixedDecMolecule).isBigIntFxDecZero(
+		bigIFd,
+		ePrefix.XCpy("Is 'bigIFd' Zero"))
 }
 
 // MultiplyByTenToPower - Multiplies the numeric value of the current

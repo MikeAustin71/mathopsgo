@@ -754,9 +754,12 @@ func (bIntMolecule *bigIntNumMolecule) getActualNumberOfDigits(
 // isBIntNumZero - Returns a boolean signaling whether a
 // BigIntNum value is zero.
 //
-// NOTE:
-// This method will first test the passed instance of BigIntNum
-// to determine if that instance is valid, or not.
+//	IMPORTANT NOTE
+//	==============
+//
+// This method does NOT test the validity of 'bNum', an
+// instance of type BigIntNum. The calling method must
+// do this!
 func (bIntMolecule *bigIntNumMolecule) isBIntNumZero(
 	bNum *BigIntNum,
 	errPrefDto *ePref.ErrPrefixDto) (bool, error) {
@@ -791,12 +794,12 @@ func (bIntMolecule *bigIntNumMolecule) isBIntNumZero(
 		}
 	}
 
-	err = new(bigIntNumAtom).isBigIntNumValid(
-		bNum,
-		ePrefix.XCpy("Vallidity Test on 'bNum'"))
+	if bNum.bigInt == nil {
 
-	if err != nil {
-		return false, err
+		return false, &InputPtrNilError{
+			ErrPrefix:     ePrefix.String(),
+			ParameterName: "'bNum.bigInt'",
+		}
 	}
 
 	if bNum.bigInt.Cmp(big.NewInt(0)) == 0 {

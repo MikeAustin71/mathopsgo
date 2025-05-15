@@ -347,8 +347,15 @@ func (bINumElectron *bigIntNumElectron) bigIntNumEqualValue(
 	return false, nil
 }
 
-// Empty - Resets the BigIntNum data fields to their
+// Empty
+//
+// Resets the BigIntNum data fields to their
 // uninitialized or zero state.
+//
+//	Numeric Separators
+//	==================
+//
+//	The Numeric Separators are automatically set to USA defaults.
 func (bINumElectron *bigIntNumElectron) empty(
 	bNum *BigIntNum) {
 

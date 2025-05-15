@@ -51,45 +51,88 @@ func (bIntNumAtom *bigIntNumAtom) isBigIntNumValid(
 
 	if bNum.bigInt == nil {
 
-		bNum.bigInt = big.NewInt(0)
-
-		return fmt.Errorf("%v\n"+
-			"This BigIntNum Instance is Invalid!\n"+
-			"'bNum.bigInt' is 'nil'!\n"+
-			"FATAL ERROR!\n"+
-			"bNum.bigInt was reset to zero.\n",
-			ePrefix.String())
+		return &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "",
+			ErrContext: "",
+			ErrMessage: "This BigIntNum Instance is Invalid!\n" +
+				"'bNum.bigInt' is 'nil'!\n" +
+				"FATAL ERROR!\n" +
+				"bNum.bigInt was reset to zero.",
+		}
 	}
 
 	if bNum.sign != -1 && bNum.sign != 1 {
 
-		return fmt.Errorf("%v\n"+
-			"This BigIntNum Instance is Invalid!\n"+
-			"'bNum.sign' is NOT equal to +1 or -1 !\n"+
-			"FATAL ERROR!\n",
-			ePrefix.String())
-
+		return &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "",
+			ErrContext: "",
+			ErrMessage: "This BigIntNum Instance is Invalid!\n" +
+				"'bNum.sign' is NOT equal to +1 or -1 !\n" +
+				"FATAL ERROR!",
+		}
 	}
 
 	if bNum.absBigInt == nil {
 
-		return fmt.Errorf("%v\n"+
-			"This BigIntNum Instance is Invalid!\n"+
-			"'bNum.absBigInt' is 'nil'!\n"+
-			"FATAL ERROR!\n"+
-			"bNum was successfully reset to default values (Zero).\n",
-			ePrefix.String())
+		return &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "",
+			ErrContext: "",
+			ErrMessage: "This BigIntNum Instance is Invalid!\n" +
+				"'bNum.absBigInt' is 'nil'!\n" +
+				"FATAL ERROR!",
+		}
 	}
 
 	if bNum.scaleFactor == nil {
 
-		return fmt.Errorf("%v\n"+
-			"This BigIntNum Instance is Invalid!\n"+
-			"'bNum.scaleFactor' is 'nil'!\n"+
-			"FATAL ERROR!\n"+
-			"bNum was successfully reset to default values (Zero).\n",
-			ePrefix.String())
+		return &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "",
+			ErrContext: "",
+			ErrMessage: "This BigIntNum Instance is Invalid!\n" +
+				"'bNum.scaleFactor' is 'nil'!\n" +
+				"FATAL ERROR!",
+		}
 
+	}
+
+	if bNum.decimalSeparator == 0 {
+
+		return &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "",
+			ErrContext: "",
+			ErrMessage: "This BigIntNum Instance is Invalid!\n" +
+				"'bNum.decimalSeparator' is empty with a Zero value.\n" +
+				"FATAL ERROR!",
+		}
+	}
+
+	if bNum.thousandsSeparator == 0 {
+
+		return &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "",
+			ErrContext: "",
+			ErrMessage: "This BigIntNum Instance is Invalid!\n" +
+				"'bNum.thousandsSeparator' is empty with a Zero value.\n" +
+				"FATAL ERROR!",
+		}
+	}
+
+	if bNum.currencySymbol == 0 {
+
+		return &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "",
+			ErrContext: "",
+			ErrMessage: "This BigIntNum Instance is Invalid!\n" +
+				"'bNum.currencySymbol' is empty with a Zero value.\n" +
+				"FATAL ERROR!",
+		}
 	}
 
 	return nil
