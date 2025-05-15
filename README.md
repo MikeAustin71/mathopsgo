@@ -1,4 +1,6 @@
 # mathopsgo
+![TheOriginalAmarilloMike](assets/sittingduck003.png)
+
 A Math Operations (MathOps) Library written in the
 Go Programming Language.
 
@@ -10,7 +12,7 @@ is located here:
 ## Library Installation
 
 ### Installing 'mathops' Library Locally
-Use this command to down load and install the 'mathops' library
+Use this command to download and install the 'mathops' library
 locally. 
 
     go get github.com/MikeAustin71/mathopsgo/mathops
