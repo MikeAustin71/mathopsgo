@@ -41,6 +41,8 @@ type BigIntNum struct {
 	currencySymbol     rune // Currency Symbol
 }
 
+var _ INumMgr = (*BigIntFixedDecimal)(nil)
+
 // Ceiling
 //
 // Returns the ceiling integer value of the current BigIntNum
