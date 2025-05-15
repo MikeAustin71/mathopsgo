@@ -311,35 +311,39 @@ func (bNumNeutron *bigIntNumNeutron) incrementBigIntNum(
 
 // modBigIntNum
 //
-// Performs a modulo operation where the current BigIntNum numeric value is the
-// dividend and the divisor is the input parameter, 'divisor'.  The modulo operation finds
-// the remainder after division of one number by another (sometimes called modulus).
+// Performs a modulo operation where the BigIntNum input parameter,
+// 'bNum', numeric value is the dividend and the divisor is the
+// input parameter, 'divisor'.  The modulo operation finds the
+// remainder after division of one number by another (sometimes
+// called modulus).
 // (Wikipedia: https://en.wikipedia.org/wiki/Modulo_operation)
 //
 //		 									dividend = bNum
 //	  									dividend % divisor = modulo
 //
-// The result of this modulo operation is returned as a BigIntNum, 'modulo'. 'modulo' may
-// consist of an integer or a floating point value consisting of integer and fractional
-// digits.
+// The result of this modulo operation is returned as a BigIntNum,
+// 'modulo'. 'modulo' may consist of an integer or a floating
+// point value consisting of integer and fractional digits.
 //
-// Input parameter 'maxPrecision' is used to control the maximum precision of the resulting
-// floating point 'modulo'. Precision is defined as the number of fractional digits to
-// the right of the decimal place. Be advised that these calculations can support very large
-// precision values.
+// Input parameter 'maxPrecision' is used to control the maximum
+// precision of the resulting floating point 'modulo'. Precision
+// is defined as the number of fractional digits to the right of
+// the decimal place. Be advised that these calculations can
+// support very large precision values.
 //
-// The returned BigIntNum instance, 'modulo', will contain numeric separators (decimal
-// separator, thousands separator and currency symbol) copied from the current BigIntNum
-// instance (bNum).
+// The returned BigIntNum instance, 'modulo', will contain numeric
+// separators (decimal separator, thousands separator and currency
+// symbol) copied from the current BigIntNum instance (bNum).
 //
-//	NOTE:
+//	NOTE
+//	====
 //
-// This method does NOT test the validity of 'bNum', an
-// instance of type BigIntNum. The calling method must
-// do this!
+//	This method does NOT test the validity of 'bNum', an
+//	instance of type BigIntNum. The calling method must
+//	do this!
 //
-// However, this method will vallidate input parameter
-// 'divisor'.
+//	However, this method will vallidate input parameter
+//	'divisor'.
 func (bNumNeutron *bigIntNumNeutron) modBigIntNum(
 	bNum *BigIntNum,
 	divisor *BigIntNum,
@@ -1963,6 +1967,7 @@ func (bNumNeutron *bigIntNumNeutron) setIntFracStrings(
 	err = new(bigIntNumMolecule).setNumStr(
 		bNum,
 		string(cleanIntRuneAry),
+		bNum.decimalSeparator,
 		ePrefix)
 
 	if err != nil {

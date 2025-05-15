@@ -1678,6 +1678,7 @@ func (bIntMolecule *bigIntNumMolecule) setExpectedNumberOfDigits(
 func (bIntMolecule *bigIntNumMolecule) setNumStr(
 	bNum *BigIntNum,
 	numStr string,
+	numStrDecimalSeparator rune,
 	errPrefDto *ePref.ErrPrefixDto) error {
 
 	if bIntMolecule.lock == nil {
@@ -1712,16 +1713,25 @@ func (bIntMolecule *bigIntNumMolecule) setNumStr(
 
 	if bNum.bigInt == nil {
 
-		err = new(bigIntNumNanobot).setBigInt(
-			bNum,
-			big.NewInt(0),
-			0,
-			ePrefix)
-
-		if err != nil {
-			return err
+		return &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "",
+			ErrContext: "",
+			ErrMessage: "Error: Input parameter 'bNum' is INVALID!\n" +
+				"'bNum.bigInt' is a nil pointer!\n",
 		}
 
+	}
+
+	if numStrDecimalSeparator == 0 {
+
+		return &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "",
+			ErrContext: "",
+			ErrMessage: "Error: Input parameter 'numStrDecimalSeparator' is INVALID!\n" +
+				"'numStrDecimalSeparator', of type 'rune', is equal to zero.",
+		}
 	}
 
 	if len(numStr) == 0 {
@@ -1796,7 +1806,7 @@ func (bIntMolecule *bigIntNumMolecule) setNumStr(
 			continue
 		}
 
-		if baseRunes[i] == bNum.decimalSeparator {
+		if baseRunes[i] == numStrDecimalSeparator {
 			isFractionalValue = true
 			continue
 		}
@@ -1830,7 +1840,7 @@ func (bIntMolecule *bigIntNumMolecule) setNumStr(
 		newSign = -1
 	}
 
-	bNum.Empty()
+	new(bigIntNumElectron).empty(bNum)
 	bNum.sign = newSign
 	bNum.precision = newPrecision
 	bNum.absBigInt = big.NewInt(0).Set(newAbsBigInt)
@@ -1851,6 +1861,117 @@ func (bIntMolecule *bigIntNumMolecule) setNumStr(
 		ePrefix)
 
 	return nil
+}
+
+// setNumStrDto
+//
+// Configures BigIntNum input paramter, 'bNum', with the numeric
+// value and numeric separators passed by input parameter,
+// 'numStrDto'.
+func (bIntMolecule *bigIntNumMolecule) setNumStrDto(
+	bNum *BigIntNum,
+	numStrDto NumStrDto,
+	errPrefDto *ePref.ErrPrefixDto) error {
+
+	if bIntMolecule.lock == nil {
+		bIntMolecule.lock = new(sync.Mutex)
+	}
+
+	bIntMolecule.lock.Lock()
+
+	defer bIntMolecule.lock.Unlock()
+
+	var ePrefix *ePref.ErrPrefixDto
+
+	var err error
+
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
+		errPrefDto,
+		"bigIntNumMolecule.setNumStr()",
+		"")
+
+	if err != nil {
+		return err
+	}
+
+	if bNum == nil {
+
+		return &InputPtrNilError{
+			ErrPrefix:     ePrefix.String(),
+			ParameterName: "'bNum'",
+		}
+	}
+
+	err = numStrDto.IsValid(ePrefix.XCpy(
+		"'numStrDto' INVALID! ").String())
+
+	if err != nil {
+
+		return &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "err = numStrDto.IsValid(ePrefix.XCpy(\"'numStrDto' INVALID! \").String())",
+			ErrContext: "Testing validity of input parameter 'numStrDto'.\n" +
+				"numStrDto is INVALID!",
+			ErrMessage: err.Error(),
+		}
+	}
+
+	bigI, err := numStrDto.GetBigInt()
+
+	if err != nil {
+
+		return &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "bigI, err := numStrDto.GetBigInt()",
+			ErrContext: "",
+			ErrMessage: err.Error(),
+		}
+	}
+
+	precision := numStrDto.GetPrecision()
+
+	nDtoNumSepsDto, err := numStrDto.GetNumericSeparatorsDto()
+
+	if err != nil {
+
+		return &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "nDtoNumSeps, err := numStrDto.GetNumericSeparatorsDto()",
+			ErrContext: "",
+			ErrMessage: err.Error(),
+		}
+	}
+
+	// Make certain Numeric Separators are set to valid
+	// values.
+	nDtoNumSepsDto.SetDefaultsIfEmpty()
+
+	bINum2, err := new(bigIntNumMechanics).newZero(
+		0,
+		ePrefix.XCpy("Setting bINum2"))
+
+	if err != nil {
+		return err
+	}
+
+	err = new(bigIntNumNanobot).setBigInt(
+		&bINum2,
+		bigI,
+		uint(precision),
+		ePrefix.XCpy(fmt.Sprintf("Setting bINum2; bigI= '%v'  precision= '%v'",
+			bigI.Text(10), precision)))
+
+	if err != nil {
+		return err
+	}
+
+	err = new(bigIntNumAtom).setNumericSeparatorsDto(
+		&bINum2,
+		nDtoNumSepsDto,
+		ePrefix.XCpy("Setting biNum2 <- nDtoNumSepsDto"))
+
+	return err
 }
 
 // setINumMgr
