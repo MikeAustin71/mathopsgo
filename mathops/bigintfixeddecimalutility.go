@@ -42,7 +42,7 @@ type bigIntFixedDecUtility struct {
 //	NOTE
 //	====
 //
-//	This method does NOT test the validity of 'bNum', an
+//	This method does NOT test the validity of 'bigIFxDec', an
 //	instance of type BigIntNum. The calling method must
 //	do this!
 func (bigIFdUtil *bigIntFixedDecUtility) ceiling(
@@ -143,4 +143,184 @@ func (bigIFdUtil *bigIntFixedDecUtility) ceiling(
 		ePrefix.XCpy("Setting 'bigIFd2' to 'ceiling'"))
 
 	return bigIFd2, err
+}
+
+// copyIn
+//
+// Receives two BigIntFixedDecimal types via input parameters
+// 'bigIFxDecDest' and 'bigIFxDecSrc'. This method will copy all
+// values from the source BigIntFixedDecimal ('bigIFxDecSrc') to
+// the destination BigIntFixedDecimal ('bigIFxDecDest')the values
+// to the current BigIntFixedDecimal instance.
+//
+// If either 'bigIFxDecSrc' or 'bigIFxDecDest' fail the standard
+// validation test, an error will be returned.
+func (bigIFdUtil *bigIntFixedDecUtility) copyIn(
+	bigIFxDecDest *BigIntFixedDecimal,
+	bigIFxDecSrc *BigIntFixedDecimal,
+	errPrefDto *ePref.ErrPrefixDto) error {
+
+	if bigIFdUtil.lock == nil {
+		bigIFdUtil.lock = new(sync.Mutex)
+	}
+
+	bigIFdUtil.lock.Lock()
+
+	defer bigIFdUtil.lock.Unlock()
+
+	var ePrefix *ePref.ErrPrefixDto
+
+	var err error
+
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
+		errPrefDto,
+		"bigIntFixedDecUtility.copyIn",
+		"")
+
+	if err != nil {
+		return err
+	}
+
+	if bigIFxDecDest == nil {
+
+		err = &InputPtrNilError{
+			ErrPrefix:     ePrefix.String(),
+			ParameterName: "'bigIFxDecDest'",
+		}
+
+		return err
+	}
+
+	if bigIFxDecSrc == nil {
+
+		err = &InputPtrNilError{
+			ErrPrefix:     ePrefix.String(),
+			ParameterName: "'bigIFxDecDest'",
+		}
+
+		return err
+	}
+
+	err = new(bigIntFixedDecAtom).isBigIntFxDecValid(
+		bigIFxDecSrc,
+		ePrefix.XCpy("Testing Validity of 'bigIFxDecSrc'"))
+
+	if err != nil {
+		return err
+	}
+
+	numSepsDto := NumericSeparatorDto{
+		DecimalSeparator:   bigIFxDecSrc.decimalSeparator,
+		ThousandsSeparator: bigIFxDecSrc.thousandsSeparator,
+		CurrencySymbol:     bigIFxDecSrc.currencySymbol,
+	}
+
+	intVal, err := bigIFxDecSrc.GetInteger()
+
+	if err != nil {
+
+		return &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "intVal, err := fd.GetInteger()",
+			ErrContext: "",
+			ErrMessage: err.Error(),
+		}
+	}
+
+	err = new(bigIntFixedDecAtom).setNumericValue(
+		bigIFxDecDest,
+		big.NewInt(0),
+		0,
+		numSepsDto,
+		ePrefix.XCpy("Setting 'bigIFxDecDest' to zero"))
+
+	if err != nil {
+		return err
+	}
+
+	bigIFxDecDest.integerNum = big.NewInt(0).Set(intVal)
+
+	bigIFxDecDest.precision, err = bigIFxDecSrc.GetPrecision()
+
+	if err != nil {
+
+		return &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "bigIFxDecDest.precision, err = fd.GetPrecision()",
+			ErrContext: "",
+			ErrMessage: err.Error(),
+		}
+	}
+
+	return nil
+}
+
+// copyOut
+//
+// Returns a new BigIntFixedDecimal instance which is
+// a deep copy of the current BigIntFixedDecimal instance.
+//
+// If the current instance of BigIntFixedDecimal is determined
+// to be invalid, an error will be returned.
+func (bigIFdUtil *bigIntFixedDecUtility) copyOut(
+	bigIFxDecSrc *BigIntFixedDecimal,
+	errPrefDto *ePref.ErrPrefixDto) (BigIntFixedDecimal, error) {
+
+	if bigIFdUtil.lock == nil {
+		bigIFdUtil.lock = new(sync.Mutex)
+	}
+
+	bigIFdUtil.lock.Lock()
+
+	defer bigIFdUtil.lock.Unlock()
+
+	var ePrefix *ePref.ErrPrefixDto
+
+	var err error
+
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
+		errPrefDto,
+		"bigIntFixedDecUtility.copyIn",
+		"")
+
+	if err != nil {
+		return BigIntFixedDecimal{}, err
+	}
+
+	if bigIFxDecSrc == nil {
+
+		err = &InputPtrNilError{
+			ErrPrefix:     ePrefix.String(),
+			ParameterName: "'bigIFxDecSrc'",
+		}
+
+		return BigIntFixedDecimal{}, err
+	}
+
+	err = new(bigIntFixedDecAtom).isBigIntFxDecValid(
+		bigIFxDecSrc,
+		ePrefix.XCpy("Testing Validity of 'bigIFxDecSrc'"))
+
+	if err != nil {
+		return BigIntFixedDecimal{}, err
+	}
+
+	numSepsDto := NumericSeparatorDto{
+		DecimalSeparator:   bigIFxDecSrc.decimalSeparator,
+		ThousandsSeparator: bigIFxDecSrc.thousandsSeparator,
+		CurrencySymbol:     bigIFxDecSrc.currencySymbol,
+	}
+
+	bigIFxDecDest := BigIntFixedDecimal{}
+
+	err = new(bigIntFixedDecAtom).setNumericValue(
+		&bigIFxDecDest,
+		bigIFxDecSrc.integerNum,
+		bigIFxDecSrc.precision,
+		numSepsDto,
+		ePrefix.XCpy("Setting 'bigIFxDecDest' = 'bigIFxDecSrc'"))
+
+	return bigIFxDecDest, err
 }

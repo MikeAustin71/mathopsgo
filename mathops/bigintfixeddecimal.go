@@ -152,6 +152,7 @@ func (bigIFd *BigIntFixedDecimal) ChangeSign() error {
 //				  BigIntFixedDecimal     'fd2'      Return
 //				        Value            Value      Value
 //				  ------------------   ---------   -------
+//
 //				         5                 2          1
 //				         5.2               5.1        1
 //				         5.2               5.2        0
@@ -188,132 +189,124 @@ func (bigIFd *BigIntFixedDecimal) Cmp(
 		bigIFd, fd2, ePrefix.XCpy("Comparing 'bigIFd' & 'fd2'"))
 }
 
-// CmpZero Compares the current BigIntFixedDecimal to Zero and
-// returns an integer flag as follows:
+// CmpZero
 //
-// +1 = BigIntFixedDecimal > 0
+// Compares the current BigIntFixedDecimal numeric value to Zero
+// and returns an integer flag as follows:
 //
-//	0 = BigIntFixedDecimal == 0
+//	+1 = BigIntFixedDecimal > 0
 //
-// -1 = BigINtFixedDecimal < 0
-func (bigIFd *BigIntFixedDecimal) CmpZero() int {
+//	 0 = BigIntFixedDecimal == 0
+//
+//	-1 = BigINtFixedDecimal < 0
+func (bigIFd *BigIntFixedDecimal) CmpZero() (int, error) {
 
-	if bigIFd.integerNum == nil {
-		bigIFd.integerNum = big.NewInt(0)
-		bigIFd.precision = 0
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
+
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"BigIntFixedDecimal.Ceiling",
+		"")
+
+	if err != nil {
+		return -1, err
 	}
 
-	return bigIFd.integerNum.Cmp(big.NewInt(0))
+	err = new(bigIntFixedDecAtom).isBigIntFxDecValid(
+		bigIFd,
+		ePrefix.XCpy("Testing Validity of 'bigIFd'"))
+
+	if err != nil {
+		return -1, err
+	}
+
+	return new(bigIntFixedDecElectron).cmpZero(
+		bigIFd,
+		ePrefix.XCpy("Comparing 'bigIFd' to Zero"))
 }
 
-// CopyIn - Receives a BigIntFixedDecimal type and copies the
-// value to the current BigIntFixedDecimal instance.
-func (bigIFd *BigIntFixedDecimal) CopyIn(fd BigIntFixedDecimal) error {
+// CopyIn
+//
+// Receives a BigIntFixedDecimal type ('bigIFdSrc') and copies
+// all internal values into the current BigIntFixedDecimal
+// instance.
+//
+// If 'bigIFdSrc' is determined to be invalid, an error will be
+// returned.
+func (bigIFd *BigIntFixedDecimal) CopyIn(bigIFdSrc BigIntFixedDecimal) error {
 
-	ePrefix := "BigIntFixedDecimal.CopyIn"
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-	if bigIFd.integerNum == nil {
-		bigIFd.integerNum = big.NewInt(0)
-		bigIFd.precision = 0
-	}
-
-	err := fd.IsValid(" Testing input parameter 'fd'")
-
-	if err != nil {
-
-		return &FuncReturnError{
-			ErrPrefix:  ePrefix,
-			ReturnFunc: "err := fd.IsValid(\" Testing input parameter 'fd'\")",
-			ErrContext: "Input parameter 'fd' is INVALID!",
-			ErrMessage: err.Error(),
-		}
-	}
-
-	intVal, err := fd.GetInteger()
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"BigIntFixedDecimal.CopyIn",
+		"")
 
 	if err != nil {
-
-		return &FuncReturnError{
-			ErrPrefix:  ePrefix,
-			ReturnFunc: "intVal, err := fd.GetInteger()",
-			ErrContext: "",
-			ErrMessage: err.Error(),
-		}
+		return err
 	}
 
-	bigIFd.integerNum = big.NewInt(0).Set(intVal)
-
-	bigIFd.precision, err = fd.GetPrecision()
-
-	if err != nil {
-
-		return &FuncReturnError{
-			ErrPrefix:  ePrefix,
-			ReturnFunc: "bigIFd.precision, err = fd.GetPrecision()",
-			ErrContext: "",
-			ErrMessage: err.Error(),
-		}
-	}
-
-	return nil
+	return new(bigIntFixedDecUtility).copyIn(
+		bigIFd,
+		&bigIFdSrc,
+		ePrefix.XCpy("Copying 'bigIFdSrc' -> 'bigIFd'"))
 }
 
-// CopyInPtr - Receives a pointer to a BigIntFixedDecimal type and
-// copies the value to the current BigIntFixedDecimal instance.
-func (bigIFd *BigIntFixedDecimal) CopyInPtr(fd *BigIntFixedDecimal) error {
+// CopyInPtr
+//
+// Receives a pointer to a BigIntFixedDecimal type ('bigIFdSrc')
+// and proceeds to copy all internal values into the current
+// BigIntFixedDecimal instance.
+func (bigIFd *BigIntFixedDecimal) CopyInPtr(bigIFdSrc *BigIntFixedDecimal) error {
 
-	ePrefix := "BigIntFixedDecimal.CopyInPtr"
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-	err := fd.IsValid(ePrefix + " Testing input parameter 'fd'")
-
-	if err != nil {
-
-		return &FuncReturnError{
-			ErrPrefix:  ePrefix,
-			ReturnFunc: "err := fd.IsValid(ePrefix + \" Testing input parameter 'fd'\")",
-			ErrContext: "",
-			ErrMessage: err.Error(),
-		}
-	}
-
-	intVal, err := fd.GetInteger()
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"BigIntFixedDecimal.CopyInPtr",
+		"")
 
 	if err != nil {
-
-		return &FuncReturnError{
-			ErrPrefix:  ePrefix,
-			ReturnFunc: "intVal, err := fd.GetInteger()",
-			ErrContext: "",
-			ErrMessage: err.Error(),
-		}
+		return err
 	}
 
-	bigIFd.integerNum = big.NewInt(0).Set(intVal)
-
-	bigIFd.precision, err = fd.GetPrecision()
-
-	if err != nil {
-
-		return &FuncReturnError{
-			ErrPrefix:  ePrefix,
-			ReturnFunc: "bigIFd.precision, err = fd.GetPrecision()",
-			ErrContext: "",
-			ErrMessage: err.Error(),
-		}
-	}
-
-	return nil
+	return new(bigIntFixedDecUtility).copyIn(
+		bigIFd,
+		bigIFdSrc,
+		ePrefix.XCpy("Copying 'bigIFdSrc' -> 'bigIFd'"))
 }
 
-// CopyOut - Returns a new BigIntFixedDecimal instance which is
+// CopyOut
+//
+// Returns a new BigIntFixedDecimal instance which is
 // a deep copy of the current BigIntFixedDecimal instance.
-func (bigIFd *BigIntFixedDecimal) CopyOut() BigIntFixedDecimal {
+//
+// If the current instance of BigIntFixedDecimal is determined
+// to be invalid, an error will be returned.
+func (bigIFd *BigIntFixedDecimal) CopyOut() (BigIntFixedDecimal, error) {
 
-	if bigIFd.integerNum == nil {
-		bigIFd.SetNumericValue(big.NewInt(0), bigIFd.precision)
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
+
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"BigIntFixedDecimal.CopyInPtr",
+		"")
+
+	if err != nil {
+		return BigIntFixedDecimal{}, err
 	}
 
-	return new(BigIntFixedDecimal).New(bigIFd.integerNum, bigIFd.precision)
+	return new(bigIntFixedDecUtility).copyOut(
+		bigIFd,
+		ePrefix.XCpy("Copying 'bigIFd' -> Out"))
 }
 
 // DivideByTenToPower - Divides the numeric value of the current
@@ -1615,13 +1608,15 @@ func (bigIFd *BigIntFixedDecimal) NewInt64(integer int64, precision uint) BigInt
 //			decimal separator = '.'
 //			thousands separator = ','
 //	   currency separator = '$'
-func (bigIFd *BigIntFixedDecimal) NewNumStr(numStr string) (BigIntFixedDecimal, error) {
+func (bigIFd *BigIntFixedDecimal) NewNumStr(
+	numStr string,
+	decimalSeparator rune) (BigIntFixedDecimal, error) {
 
 	ePrefix := "BigIntFixedDecimal.NewNumStr() "
 
 	fixedDecimal := new(BigIntFixedDecimal)
 
-	err := fixedDecimal.SetNumStr(numStr)
+	err := fixedDecimal.SetNumStr(numStr, decimalSeparator)
 
 	if err != nil {
 		return BigIntFixedDecimal{},

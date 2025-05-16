@@ -1,13 +1,13 @@
 package mathops
 
 import (
-	ePref "github.com/MikeAustin71/errpref"
-	"math/big"
-	"sync"
+  ePref "github.com/MikeAustin71/errpref"
+  "math/big"
+  "sync"
 )
 
 type bigIntFixedDecElectron struct {
-	lock *sync.Mutex
+  lock *sync.Mutex
 }
 
 // changeSign
@@ -21,58 +21,58 @@ type bigIntFixedDecElectron struct {
 //	NOTE
 //	====
 //
-//	This method does NOT test the validity of 'bNum', an
+//	This method does NOT test the validity of 'bigIFxDec', an
 //	instance of type BigIntNum. The calling method must
 //	do this!
 func (bigIFdElectron *bigIntFixedDecElectron) changeSign(
-	bigIFxDec *BigIntFixedDecimal,
-	errPrefDto *ePref.ErrPrefixDto) error {
+  bigIFxDec *BigIntFixedDecimal,
+  errPrefDto *ePref.ErrPrefixDto) error {
 
-	if bigIFdElectron.lock == nil {
-		bigIFdElectron.lock = new(sync.Mutex)
-	}
+  if bigIFdElectron.lock == nil {
+    bigIFdElectron.lock = new(sync.Mutex)
+  }
 
-	bigIFdElectron.lock.Lock()
+  bigIFdElectron.lock.Lock()
 
-	defer bigIFdElectron.lock.Unlock()
+  defer bigIFdElectron.lock.Unlock()
 
-	var ePrefix *ePref.ErrPrefixDto
+  var ePrefix *ePref.ErrPrefixDto
 
-	var err error
+  var err error
 
-	ePrefix,
-		err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
-		errPrefDto,
-		"bigIntFixedDecElectron.changeSign",
-		"")
+  ePrefix,
+    err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
+    errPrefDto,
+    "bigIntFixedDecElectron.changeSign",
+    "")
 
-	if err != nil {
-		return err
-	}
+  if err != nil {
+    return err
+  }
 
-	if bigIFxDec == nil {
+  if bigIFxDec == nil {
 
-		return &InputPtrNilError{
-			ErrPrefix:     ePrefix.String(),
-			ParameterName: "'bigIFxDec'",
-		}
-	}
+    return &InputPtrNilError{
+      ErrPrefix:     ePrefix.String(),
+      ParameterName: "'bigIFxDec'",
+    }
+  }
 
-	if bigIFxDec.integerNum == nil {
+  if bigIFxDec.integerNum == nil {
 
-		return &InputPtrNilError{
-			ErrPrefix:     ePrefix.String(),
-			ParameterName: "'bigIFxDec.integerNum'",
-		}
-	}
+    return &InputPtrNilError{
+      ErrPrefix:     ePrefix.String(),
+      ParameterName: "'bigIFxDec.integerNum'",
+    }
+  }
 
-	if bigIFxDec.integerNum.Cmp(big.NewInt(0)) == 0 {
-		return nil
-	}
+  if bigIFxDec.integerNum.Cmp(big.NewInt(0)) == 0 {
+    return nil
+  }
 
-	bigIFxDec.integerNum.Neg(bigIFxDec.integerNum)
+  bigIFxDec.integerNum.Neg(bigIFxDec.integerNum)
 
-	return nil
+  return nil
 }
 
 // cmp
@@ -107,91 +107,146 @@ func (bigIFdElectron *bigIntFixedDecElectron) changeSign(
 //		NOTE
 //		====
 //
-//		This method does NOT test the validity of 'bNum', an
+//		This method does NOT test the validity of 'bigIFxDec', an
 //		instance of type BigIntNum. The calling method must
 //		do this!
 //
 //	 However, this method WILL test the validity of input
 //	 parameter 'fd2' (BigIntFixedDecimal)
 func (bigIFdElectron *bigIntFixedDecElectron) cmp(
-	bigIFxDec *BigIntFixedDecimal,
-	fd2 BigIntFixedDecimal,
-	errPrefDto *ePref.ErrPrefixDto) (int, error) {
+  bigIFxDec *BigIntFixedDecimal,
+  fd2 BigIntFixedDecimal,
+  errPrefDto *ePref.ErrPrefixDto) (int, error) {
 
-	if bigIFdElectron.lock == nil {
-		bigIFdElectron.lock = new(sync.Mutex)
-	}
+  if bigIFdElectron.lock == nil {
+    bigIFdElectron.lock = new(sync.Mutex)
+  }
 
-	bigIFdElectron.lock.Lock()
+  bigIFdElectron.lock.Lock()
 
-	defer bigIFdElectron.lock.Unlock()
+  defer bigIFdElectron.lock.Unlock()
 
-	var ePrefix *ePref.ErrPrefixDto
+  var ePrefix *ePref.ErrPrefixDto
 
-	var err error
+  var err error
 
-	ePrefix,
-		err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
-		errPrefDto,
-		"bigIntFixedDecElectron.changeSign",
-		"")
+  ePrefix,
+    err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
+    errPrefDto,
+    "bigIntFixedDecElectron.cmp",
+    "")
 
-	if err != nil {
-		return -1, err
-	}
+  if err != nil {
+    return -1, err
+  }
 
-	if bigIFxDec == nil {
+  if bigIFxDec == nil {
 
-		return -1, &InputPtrNilError{
-			ErrPrefix:     ePrefix.String(),
-			ParameterName: "'bigIFxDec'",
-		}
-	}
+    return -1, &InputPtrNilError{
+      ErrPrefix:     ePrefix.String(),
+      ParameterName: "'bigIFxDec'",
+    }
+  }
 
-	if bigIFxDec.integerNum == nil {
+  if bigIFxDec.integerNum == nil {
 
-		return -1, &InputPtrNilError{
-			ErrPrefix:     ePrefix.String(),
-			ParameterName: "'bigIFxDec.integerNum'",
-		}
-	}
+    return -1, &InputPtrNilError{
+      ErrPrefix:     ePrefix.String(),
+      ParameterName: "'bigIFxDec.integerNum'",
+    }
+  }
 
-	err = fd2.IsValid(ePrefix.XCpy(
-		"Testing 'fd2'").String())
+  err = fd2.IsValid(ePrefix.XCpy(
+    "Testing 'fd2'").String())
 
-	if err != nil {
+  if err != nil {
 
-		return 0, err
-	}
+    return 0, err
+  }
 
-	if bigIFxDec.precision == fd2.precision {
-		return bigIFxDec.integerNum.Cmp(fd2.integerNum), nil
-	}
+  if bigIFxDec.precision == fd2.precision {
+    return bigIFxDec.integerNum.Cmp(fd2.integerNum), nil
+  }
 
-	bigTen := big.NewInt(10)
+  bigTen := big.NewInt(10)
 
-	if fd2.precision > bigIFxDec.precision {
+  if fd2.precision > bigIFxDec.precision {
 
-		delta := int64(fd2.precision - bigIFxDec.precision)
+    delta := int64(fd2.precision - bigIFxDec.precision)
 
-		fdValue := big.NewInt(0).Set(bigIFxDec.integerNum)
+    fdValue := big.NewInt(0).Set(bigIFxDec.integerNum)
 
-		scale := big.NewInt(0).Exp(bigTen, big.NewInt(delta), nil)
+    scale := big.NewInt(0).Exp(bigTen, big.NewInt(delta), nil)
 
-		fdValue.Mul(fdValue, scale)
+    fdValue.Mul(fdValue, scale)
 
-		return fdValue.Cmp(fd2.integerNum), nil
+    return fdValue.Cmp(fd2.integerNum), nil
 
-	}
+  }
 
-	// MUST BE bigIFd.precision > fd2.precision
-	delta := int64(bigIFxDec.precision - fd2.precision)
+  // MUST BE bigIFd.precision > fd2.precision
+  delta := int64(bigIFxDec.precision - fd2.precision)
 
-	fd2Value := big.NewInt(0).Set(fd2.integerNum)
+  fd2Value := big.NewInt(0).Set(fd2.integerNum)
 
-	scale := big.NewInt(0).Exp(bigTen, big.NewInt(delta), nil)
+  scale := big.NewInt(0).Exp(bigTen, big.NewInt(delta), nil)
 
-	fd2Value.Mul(fd2Value, scale)
+  fd2Value.Mul(fd2Value, scale)
 
-	return bigIFxDec.integerNum.Cmp(fd2Value), nil
+  return bigIFxDec.integerNum.Cmp(fd2Value), nil
+}
+
+// cmpZero
+//
+// Compares the current BigIntFixedDecimal numeric value to Zero
+// and returns an integer flag as follows:
+//
+//    +1 = BigIntFixedDecimal > 0
+//
+//     0 = BigIntFixedDecimal == 0
+//
+//    -1 = BigINtFixedDecimal < 0
+func (bigIFdElectron *bigIntFixedDecElectron) cmpZero(
+  bigIFxDec *BigIntFixedDecimal,
+  errPrefDto *ePref.ErrPrefixDto) (int, error) {
+
+  if bigIFdElectron.lock == nil {
+    bigIFdElectron.lock = new(sync.Mutex)
+  }
+
+  bigIFdElectron.lock.Lock()
+
+  defer bigIFdElectron.lock.Unlock()
+
+  var ePrefix *ePref.ErrPrefixDto
+
+  var err error
+
+  ePrefix,
+    err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
+    errPrefDto,
+    "bigIntFixedDecElectron.cmpZero",
+    "")
+
+  if err != nil {
+    return -1, err
+  }
+
+  if bigIFxDec == nil {
+
+    return -1, &InputPtrNilError{
+      ErrPrefix:     ePrefix.String(),
+      ParameterName: "'bigIFxDec'",
+    }
+  }
+
+  if bigIFxDec.integerNum == nil {
+
+    return -1, &InputPtrNilError{
+      ErrPrefix:     ePrefix.String(),
+      ParameterName: "'bigIFxDec.integerNum'",
+    }
+  }
+
+  return bigIFxDec.integerNum.Cmp(big.NewInt(0)), nil
 }
