@@ -201,11 +201,11 @@ func (bigIFdElectron *bigIntFixedDecElectron) cmp(
 // Compares the current BigIntFixedDecimal numeric value to Zero
 // and returns an integer flag as follows:
 //
-//    +1 = BigIntFixedDecimal > 0
+//	+1 = BigIntFixedDecimal > 0
 //
-//     0 = BigIntFixedDecimal == 0
+//	 0 = BigIntFixedDecimal == 0
 //
-//    -1 = BigINtFixedDecimal < 0
+//	-1 = BigINtFixedDecimal < 0
 func (bigIFdElectron *bigIntFixedDecElectron) cmpZero(
   bigIFxDec *BigIntFixedDecimal,
   errPrefDto *ePref.ErrPrefixDto) (int, error) {
