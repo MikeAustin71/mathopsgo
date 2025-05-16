@@ -326,23 +326,54 @@ func (bIntNumBoson *bigIntNumBoson) roundToDecimalPlace(
 	return nil
 }
 
-// setCurrencySymbol
+// setNumSepSymbol
 //
-// Configures the input parameter rune as the currency symbol for
-// an instance of BigIntNum. It is used when generating number
-// strings for display. The BigIntNum type is passed as input
-// parameter 'bNum'.
+// Sets the number separator symbol on an instance of
+// BigIntFixedDecimal passed as input parameter 'bigIFxDec'.
 //
-// FYI, in the USA, the currency symbol is the dollar sign ('$').
+//		Input Parameters
+//		================
 //
-// Note: If a zero value is submitted as input, an error will be
-// returned.
+//	 bNum                *BigIntNum
 //
-// For a list of Major Currency Unicode Symbols, see constants
-// located in: MikeAustin71/mathopsgo/mathops/mathopsconstants.go
-func (bIntNumBoson *bigIntNumBoson) setCurrencySymbol(
+//		The instance of BigIntNum which will be configured with
+//		the numeric separator character passed as input parameter
+//		'numSepSymbol'.
+//
+//		numSepSymbolType    NumSepSymbolCode
+//
+//		An integer value enumeration used to desigate the specific
+//		numeric separator in 'bNum' which will set to the value
+//		of input parameter 'numSepSymbol'.
+//
+//		  const (
+//		    // DECIMALSYMBOL
+//		    // Symbol for the separator character used to
+//		    // separate integer and fractional segments of
+//		    // a floating point number or curreny value.
+//		    DECIMALSYMBOL NumSepSymbolCode = iota
+//
+//		    // THOUSANDSYMBOL
+//		    // Symbol for the separator character used to
+//		    // separate thousands in a numeric presentation
+//		    // where the numeric value is greater than 999
+//		    THOUSANDSYMBOL
+//
+//		    // CURRENCYSYMBOL
+//		    // Symbol for the character used to designate a
+//		    // numeric value as currency.
+//		    CURRENCYSYMBOL
+//		  )
+//
+//
+//		numSepSymbol        rune
+//
+//		The specific numer separator character which will be
+//		transferred to 'bigIFxDec'.
+func (bIntNumBoson *bigIntNumBoson) setNumSepSymbol(
 	bNum *BigIntNum,
-	currencySymbol rune,
+	numSepSymbolType NumSepSymbolCode,
+	numSepSymbol rune,
 	errPrefDto *ePref.ErrPrefixDto) error {
 
 	if bIntNumBoson.lock == nil {
@@ -360,7 +391,7 @@ func (bIntNumBoson *bigIntNumBoson) setCurrencySymbol(
 	ePrefix,
 		err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
 		errPrefDto,
-		"bigIntNumBoson.setCurrencySymbol",
+		"bigIntNumBoson.setNumSepSymbol",
 		"")
 
 	if err != nil {
@@ -376,151 +407,37 @@ func (bIntNumBoson *bigIntNumBoson) setCurrencySymbol(
 		}
 	}
 
-	if currencySymbol == 0 {
+	if numSepSymbol == 0 {
 
 		return &FuncReturnError{
 			ErrPrefix:  ePrefix.String(),
 			ReturnFunc: "",
-			ErrContext: "",
-			ErrMessage: "Error: Input parameter 'currencySymbol' is INVALID!\n" +
-				"'currencySymbol', of type 'rune', is equal to zero.",
+			ErrContext: fmt.Sprintf("numSepSymbolType is eqaul to %v separator.",
+				numSepSymbolType.String()),
+			ErrMessage: "Error: Input parameter 'numSepSymbol' is INVALID!\n" +
+				"'numSepSymbol' is empty and has a zero value!",
 		}
 	}
 
-	bNum.currencySymbol = currencySymbol
+	switch numSepSymbolType {
 
-	return nil
-}
-
-// setDecimalSeparator
-//
-// Configures the input parameter rune as the Decimal Separator for
-// an instance of BigIntNum. The BigIntNum instance is passed as
-// input parameter, 'bNum'.
-//
-// The Decimal Separator is used to separate the integer and
-// fractional elements of a number string.
-//
-// In the USA, the Decimal Separator is a period character ('.').
-//
-//	Example: 123.45
-//
-// Note: If a zero value is submitted for input parameter
-// 'decimalSeparator', an error will be returned.
-func (bIntNumBoson *bigIntNumBoson) setDecimalSeparator(
-	bNum *BigIntNum,
-	decimalSeparator rune,
-	errPrefDto *ePref.ErrPrefixDto) error {
-
-	if bIntNumBoson.lock == nil {
-		bIntNumBoson.lock = new(sync.Mutex)
-	}
-
-	bIntNumBoson.lock.Lock()
-
-	defer bIntNumBoson.lock.Unlock()
-
-	var ePrefix *ePref.ErrPrefixDto
-
-	var err error
-
-	ePrefix,
-		err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
-		errPrefDto,
-		"bigIntNumBoson.setDecimalSeparator",
-		"")
-
-	if err != nil {
-		return err
-	}
-
-	if bNum == nil {
-
-		return &InputPtrNilError{
-			ErrPrefix:     ePrefix.String(),
-			ErrContext:    "",
-			ParameterName: "'bNum'",
-		}
-	}
-
-	if decimalSeparator == 0 {
-
+	case DECIMALSYMBOL:
+		bNum.decimalSeparator = numSepSymbol
+	case THOUSANDSYMBOL:
+		bNum.thousandsSeparator = numSepSymbol
+	case CURRENCYSYMBOL:
+		bNum.currencySymbol = numSepSymbol
+	default:
 		return &FuncReturnError{
 			ErrPrefix:  ePrefix.String(),
 			ReturnFunc: "",
-			ErrContext: "",
-			ErrMessage: "Error: Input parameter 'decimalSeparator' is INVALID!\n" +
-				"'decimalSeparator', of type 'rune', is equal to zero.",
+			ErrContext: fmt.Sprintf(
+				"Input parameter 'numSepSymbolType' has an unknown value designator.\n"+
+					"Value of 'numSepSymbolType' = %v ", numSepSymbolType),
+			ErrMessage: "Error: Input parameter 'numSepSymbolType' is INVALID!",
 		}
+
 	}
-
-	bNum.decimalSeparator = decimalSeparator
-
-	return nil
-}
-
-// setDecimalSymbol
-//
-// Configures the input parameter rune as the Thousands Separator
-// for an instance of BigIntNum. The BigIntNum instance is passed
-// as input parameter, 'bNum'.
-//
-// The Decimal Separator is used to separate the integer and
-// fractional elements of a number string.
-//
-// In the USA, the Thousands Separator is the comma character (',').
-// Example: 1,000,000
-//
-// Note: If a zero value is submitted for input parameter
-// 'thousandsSeparator', an error will be returned.
-func (bIntNumBoson *bigIntNumBoson) setThousandsSeparator(
-	bNum *BigIntNum,
-	thousandsSeparator rune,
-	errPrefDto *ePref.ErrPrefixDto) error {
-
-	if bIntNumBoson.lock == nil {
-		bIntNumBoson.lock = new(sync.Mutex)
-	}
-
-	bIntNumBoson.lock.Lock()
-
-	defer bIntNumBoson.lock.Unlock()
-
-	var ePrefix *ePref.ErrPrefixDto
-
-	var err error
-
-	ePrefix,
-		err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
-		errPrefDto,
-		"bigIntNumBoson.setThousandsSeparator",
-		"")
-
-	if err != nil {
-		return err
-	}
-
-	if bNum == nil {
-
-		return &InputPtrNilError{
-			ErrPrefix:     ePrefix.String(),
-			ErrContext:    "",
-			ParameterName: "'bNum'",
-		}
-	}
-
-	if thousandsSeparator == 0 {
-
-		return &FuncReturnError{
-			ErrPrefix:  ePrefix.String(),
-			ReturnFunc: "",
-			ErrContext: "",
-			ErrMessage: "Error: Input parameter 'thousandsSeparator' is INVALID!\n" +
-				"'thousandsSeparator', of type 'rune', is equal to zero.",
-		}
-	}
-
-	bNum.thousandsSeparator = thousandsSeparator
 
 	return nil
 }

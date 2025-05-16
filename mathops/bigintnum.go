@@ -5823,8 +5823,13 @@ func (bNum *BigIntNum) SetCurrencySymbol(currencySymbol rune) error {
 		return err
 	}
 
-	return new(bigIntNumBoson).setCurrencySymbol(
+	var nSepSymbolCode NumSepSymbolCode
+
+	nSepSymbolCode = CURRENCYSYMBOL
+
+	return new(bigIntNumBoson).setNumSepSymbol(
 		bNum,
+		nSepSymbolCode,
 		currencySymbol,
 		ePrefix.XCpy("Setting 'bNum' currency symbol"))
 }
@@ -5859,10 +5864,15 @@ func (bNum *BigIntNum) SetDecimalSeparator(
 		return err
 	}
 
-	return new(bigIntNumBoson).setDecimalSeparator(
+	var nSepSymbolCode NumSepSymbolCode
+
+	nSepSymbolCode = DECIMALSYMBOL
+
+	return new(bigIntNumBoson).setNumSepSymbol(
 		bNum,
+		nSepSymbolCode,
 		decimalSeparator,
-		ePrefix.XCpy("Setting 'bNum' currency symbol"))
+		ePrefix.XCpy("Setting 'bNum' Decimal Separator"))
 }
 
 // SetIntFracStrings
@@ -6706,8 +6716,13 @@ func (bNum *BigIntNum) SetThousandsSeparator(
 		return err
 	}
 
-	return new(bigIntNumBoson).setThousandsSeparator(
+	var nSepSymbolCode NumSepSymbolCode
+
+	nSepSymbolCode = THOUSANDSYMBOL
+
+	return new(bigIntNumBoson).setNumSepSymbol(
 		bNum,
+		nSepSymbolCode,
 		thousandsSeparator,
 		ePrefix.XCpy("Setting 'bNum' Thousands Separator"))
 }

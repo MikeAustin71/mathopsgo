@@ -1,6 +1,9 @@
 package mathops
 
-import "fmt"
+import (
+	"fmt"
+	ePref "github.com/MikeAustin71/errpref"
+)
 
 // NumericSeparatorDto
 // Numeric Separator Data Transfer Object
@@ -29,6 +32,70 @@ func (numSep *NumericSeparatorDto) Equal(numSep2 NumericSeparatorDto) bool {
 	}
 
 	return true
+}
+
+// IsValid
+//
+// This method will test the current instance of
+// NumericSeparatorDto to determine if all member variables are
+// valid. If any member elements are determined to be invalid,
+// an error will be returned.
+//
+// If all member elements of the current NumericSeparatorDto
+// instance are determined to be valid, the method will return
+// a 'nil' value.
+func (numSep *NumericSeparatorDto) IsValid(callingMethodName string) error {
+
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
+
+	if len(callingMethodName) > 0 {
+		callingMethodName = "NumericSeparatorDto.IsValid" + "\n" + callingMethodName
+	} else {
+		callingMethodName = "NumericSeparatorDto.IsValid"
+	}
+
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		callingMethodName,
+		"")
+
+	if err != nil {
+		return err
+	}
+
+	if numSep.DecimalSeparator == 0 {
+
+		return &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "",
+			ErrContext: "numSep.DecimalSeparator == 0 {",
+			ErrMessage: "Error: NumericSeparatorDto member element 'numSep.DecimalSeparator' is INVALID!",
+		}
+	}
+
+	if numSep.ThousandsSeparator == 0 {
+
+		return &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "",
+			ErrContext: "numSep.ThousandsSeparator == 0 {",
+			ErrMessage: "Error: NumericSeparatorDto member element 'numSep.ThousandsSeparator' is INVALID!",
+		}
+	}
+
+	if numSep.CurrencySymbol == 0 {
+
+		return &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "",
+			ErrContext: "numSep.CurrencySymbol == 0 {",
+			ErrMessage: "Error: CurrencySymbol member element 'numSep.ThousandsSeparator' is INVALID!",
+		}
+	}
+
+	return nil
 }
 
 // New - Returns a new instance of NumericSeparatorDto. The

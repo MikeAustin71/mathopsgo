@@ -2,6 +2,6 @@ package mathops
 
 import "sync"
 
-type bigIntNumMechanics struct {
+type bigIntFixedDecMechanics struct {
   lock *sync.Mutex
 }

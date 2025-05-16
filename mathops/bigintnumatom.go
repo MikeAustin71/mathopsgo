@@ -470,24 +470,32 @@ func (bIntNumAtom *bigIntNumAtom) setNumericSeparators(
 
 	if decimalSeparator == 0 {
 
-		return fmt.Errorf("%v\n"+
-			"Error: Input parameter 'decimalSeparator' is set to '0' - Invalid rune!\n",
-			ePrefix.String())
+		return &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "",
+			ErrContext: "",
+			ErrMessage: "Error: Input parameter 'decimalSeparator' is set to '0' - Invalid rune!",
+		}
 	}
 
 	if thousandsSeparator == 0 {
 
-		return fmt.Errorf("%v\n"+
-			"Error: Input parameter 'thousandsSeparator' is set to '0' - Invalid rune!\n",
-			ePrefix.String())
-
+		return &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "",
+			ErrContext: "",
+			ErrMessage: "Error: Input parameter 'thousandsSeparator' is set to '0' - Invalid rune!",
+		}
 	}
 
 	if currencySymbol == 0 {
 
-		return fmt.Errorf("%v\n"+
-			"Error: Input parameter 'customSeparators.CurrencySymbol' is set to '0' - Invalid rune!\n",
-			ePrefix.String())
+		return &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "",
+			ErrContext: "",
+			ErrMessage: "Error: Input parameter 'currencySymbol' is set to '0' - Invalid rune!",
+		}
 
 	}
 

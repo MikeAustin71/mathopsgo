@@ -1666,8 +1666,11 @@ func (bIntMolecule *bigIntNumMolecule) setExpectedNumberOfDigits(
 	return nil
 }
 
-// setNumStr - Initializes the BigIntNum instance
-// for the numeric value of the number string input parameter.
+// setNumStr
+//
+// Initializes the BigIntNum input parameter 'bNum' with the
+// numeric value of the number string input parameter, 'numStr'.
+//
 // A number string is a string of numeric digits which may
 // or may not be prefixed with a minus sign ('-'). The numeric
 // string of digits may also contain a decimal separator such
@@ -1716,12 +1719,12 @@ func (bIntMolecule *bigIntNumMolecule) setNumStr(
 
 	if bNum.bigInt == nil {
 
-		return &FuncReturnError{
-			ErrPrefix:  ePrefix.String(),
-			ReturnFunc: "",
-			ErrContext: "",
-			ErrMessage: "Error: Input parameter 'bNum' is INVALID!\n" +
-				"'bNum.bigInt' is a nil pointer!\n",
+		*bNum, err = new(bigIntNumMechanics).newZero(
+			bNum.precision,
+			ePrefix.XCpy(fmt.Sprintf("Settng 'bNum'. bNum.precision= '%v'", bNum.precision)))
+
+		if err != nil {
+			return err
 		}
 
 	}
@@ -1738,9 +1741,13 @@ func (bIntMolecule *bigIntNumMolecule) setNumStr(
 	}
 
 	if len(numStr) == 0 {
-		return fmt.Errorf("%v\n"+
-			"Error: Input parameter 'numStr' is an EMPTY string!\n",
-			ePrefix.String())
+
+		return &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "",
+			ErrContext: "len(numStr) == 0",
+			ErrMessage: "Error: Input parameter 'numStr' is an EMPTY string!",
+		}
 	}
 
 	baseRunes := []rune(numStr)
@@ -1781,7 +1788,7 @@ func (bIntMolecule *bigIntNumMolecule) setNumStr(
 			continue
 		}
 
-		if baseRunes[i] == ',' && bNum.decimalSeparator != ',' {
+		if baseRunes[i] == ',' && numStrDecimalSeparator != ',' {
 			continue
 		}
 
