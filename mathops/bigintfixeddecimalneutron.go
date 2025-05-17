@@ -1,14 +1,14 @@
 package mathops
 
 import (
-  "fmt"
-  ePref "github.com/MikeAustin71/errpref"
-  "math/big"
-  "sync"
+	"fmt"
+	ePref "github.com/MikeAustin71/errpref"
+	"math/big"
+	"sync"
 )
 
 type bigIntFixedDecNeutron struct {
-  lock *sync.Mutex
+	lock *sync.Mutex
 }
 
 // DivideByTenToPower
@@ -46,86 +46,189 @@ type bigIntFixedDecNeutron struct {
 // instance of type BigIntNum. The calling method must
 // do this!
 func (bigIFdNeutron *bigIntFixedDecNeutron) divideByTenToPower(
-  bigIFxDec *BigIntFixedDecimal,
-  exponent uint,
-  errPrefDto *ePref.ErrPrefixDto) error {
+	bigIFxDec *BigIntFixedDecimal,
+	exponent uint,
+	errPrefDto *ePref.ErrPrefixDto) error {
 
-  if bigIFdNeutron.lock == nil {
-    bigIFdNeutron.lock = new(sync.Mutex)
-  }
+	if bigIFdNeutron.lock == nil {
+		bigIFdNeutron.lock = new(sync.Mutex)
+	}
 
-  bigIFdNeutron.lock.Lock()
+	bigIFdNeutron.lock.Lock()
 
-  defer bigIFdNeutron.lock.Unlock()
+	defer bigIFdNeutron.lock.Unlock()
 
-  var ePrefix *ePref.ErrPrefixDto
+	var ePrefix *ePref.ErrPrefixDto
 
-  var err error
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
-    errPrefDto,
-    "bigIntFixedDecNeutron.divideByTenToPower",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
+		errPrefDto,
+		"bigIntFixedDecNeutron.divideByTenToPower",
+		"")
 
-  if err != nil {
-    return err
-  }
+	if err != nil {
+		return err
+	}
 
-  if bigIFxDec == nil {
+	if bigIFxDec == nil {
 
-    return &InputPtrNilError{
-      ErrPrefix:     ePrefix.String(),
-      ParameterName: "'bigIFxDec'",
-    }
-  }
+		return &InputPtrNilError{
+			ErrPrefix:     ePrefix.String(),
+			ParameterName: "'bigIFxDec'",
+		}
+	}
 
-  if bigIFxDec.integerNum == nil {
+	if bigIFxDec.integerNum == nil {
 
-    return &InputPtrNilError{
-      ErrPrefix:     ePrefix.String(),
-      ParameterName: "'bigIFxDec.integerNum'",
-    }
-  }
+		return &InputPtrNilError{
+			ErrPrefix:     ePrefix.String(),
+			ParameterName: "'bigIFxDec.integerNum'",
+		}
+	}
 
-  if bigIFxDec.integerNum.Cmp(big.NewInt(0)) == 0 {
-    return nil
-  }
+	if bigIFxDec.integerNum.Cmp(big.NewInt(0)) == 0 {
+		return nil
+	}
 
-  scale :=
-    big.NewInt(0).Exp(
-      big.NewInt(10),
-      big.NewInt(int64(exponent)), nil)
+	scale :=
+		big.NewInt(0).Exp(
+			big.NewInt(10),
+			big.NewInt(int64(exponent)), nil)
 
-  factor := new(BigIntFixedDecimal).New(scale, 0)
+	factor := new(BigIntFixedDecimal).New(scale, 0)
 
-  bigIFxDec2, err := new(bigIntFixedDecUtility).copyOut(
-    bigIFxDec,
-    ePrefix.XCpy("Copying 'bigIFxDec' -> bigIFxDec2"))
+	bigIFxDec2, err := new(bigIntFixedDecUtility).copyOut(
+		bigIFxDec,
+		ePrefix.XCpy("Copying 'bigIFxDec' -> bigIFxDec2"))
 
-  if err != nil {
-    return err
-  }
+	if err != nil {
+		return err
+	}
 
-  newPrecision := bigIFxDec2.precision + exponent
+	newPrecision := bigIFxDec2.precision + exponent
 
-  result, err :=
-    BigIntMathDivide{}.FixedDecimalFracQuotient(
-      bigIFxDec2, factor, newPrecision)
+	result, err :=
+		new(BigIntMathDivide).FixedDecimalFracQuotient(
+			bigIFxDec2, factor, newPrecision)
 
-  if err != nil {
+	if err != nil {
 
-    return &FuncReturnError{
-      ErrPrefix: ePrefix.String(),
-      ReturnFunc: "result, err := BigIntMathDivide{}.FixedDecimalFracQuotient(\n" +
-        "bigIFxDec2, factor, newPrecision)",
-      ErrContext: fmt.Sprintf("factor= '%v' newPrecision= '%v'", factor, newPrecision),
-      ErrMessage: err.Error(),
-    }
-  }
+		return &FuncReturnError{
+			ErrPrefix: ePrefix.String(),
+			ReturnFunc: "result, err := BigIntMathDivide{}.FixedDecimalFracQuotient(\n" +
+				"bigIFxDec2, factor, newPrecision)",
+			ErrContext: fmt.Sprintf("factor= '%v' newPrecision= '%v'", factor, newPrecision),
+			ErrMessage: err.Error(),
+		}
+	}
 
-  return new(bigIntFixedDecUtility).copyIn(
-    bigIFxDec,
-    &result,
-    ePrefix.XCpy("Copying 'result' -> 'bigIFxDec'"))
+	return new(bigIntFixedDecUtility).copyIn(
+		bigIFxDec,
+		&result,
+		ePrefix.XCpy("Copying 'result' -> 'bigIFxDec'"))
+}
+
+// divideByTwoToPower
+//
+// Receives a BitIntFixedDecimal object via input parameter
+// 'bigIFxDec'. This method then proceeds to perform integer
+// division on 'bigIFxDec' by two using a 'right-shift' technique.
+// Remainders from this division operation are discarded, only the
+// integer quotient is returned. When the calculation is completed,
+// the value of the integer quotient will replace the old value of
+// the BigIntFixedDecimal instance, 'bigIFxDec'.
+//
+//	 Example
+//	 =======
+//
+//		   exponent =  8
+//		   quotient =  BigIntFixedDecimal / 2^(exponent)
+//
+//	 In this example BigIntFixedDecimal= 33,123.456, so 33,123.456/ 2^8
+//
+//	 (1) The fractional quotient of 33,123.456/256 (or 2^8) is 129.3885.
+//
+//	 (2) This method will use a right shift technique on the integer value
+//	     33123456 / 2^(8) to generate an integer quotient of 129388.
+//
+//	     Consider the example BigIntFixedDecimal = 33123456 (no decimal fraction):
+//
+//	     Dividing 33123456 / 2^8 = fractional quotient = 129388.5
+//
+//	 Be careful when using this method.
+//
+// **************************************************************************
+//
+//		(1) Be sure to consider the outcomes when sending a decimal
+//	     fraction to this method.
+//
+//		(2) Results returned by this method will always have
+//	     precision = 0, meaning no decimal digits, only an integer
+//	     value result.
+//
+// **************************************************************************
+//
+//		NOTE
+//		====
+//
+//	 This method does NOT test the validity of 'bigIFxDec', an
+//	 instance of type BigIntNum. The calling method must
+//	 do this!
+func (bigIFdNeutron *bigIntFixedDecNeutron) divideByTwoToPower(
+	bigIFxDec *BigIntFixedDecimal,
+	exponent uint,
+	errPrefDto *ePref.ErrPrefixDto) error {
+
+	if bigIFdNeutron.lock == nil {
+		bigIFdNeutron.lock = new(sync.Mutex)
+	}
+
+	bigIFdNeutron.lock.Lock()
+
+	defer bigIFdNeutron.lock.Unlock()
+
+	var ePrefix *ePref.ErrPrefixDto
+
+	var err error
+
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
+		errPrefDto,
+		"bigIntFixedDecNeutron.divideByTenToPower",
+		"")
+
+	if err != nil {
+		return err
+	}
+
+	if bigIFxDec == nil {
+
+		return &InputPtrNilError{
+			ErrPrefix:     ePrefix.String(),
+			ParameterName: "'bigIFxDec'",
+		}
+	}
+
+	if bigIFxDec.integerNum == nil {
+
+		return &InputPtrNilError{
+			ErrPrefix:     ePrefix.String(),
+			ParameterName: "'bigIFxDec.integerNum'",
+		}
+	}
+
+	if bigIFxDec.integerNum.Cmp(big.NewInt(0)) == 0 {
+		return nil
+	}
+
+	bigIFxDec.integerNum, err =
+		BigIntMathDivide{}.BigIntDividedByTwoToPower(
+			bigIFxDec.integerNum,
+			exponent)
+
+	bigIFxDec.precision = 0
+
+	return nil
 }

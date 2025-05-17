@@ -17,7 +17,7 @@ type BigIntMathPower struct {
 // or fractional values.
 //
 // This method uses the exponent method ('Exp') provided by the go "math/big" package.
-func (bIPwr BigIntMathPower) BigIntPwr(
+func (bIPwr *BigIntMathPower) BigIntPwr(
 	base,
 	basePrecision,
 	exponent,
@@ -199,7 +199,7 @@ func (bIPwr BigIntMathPower) BigIntPwr(
 //	error message will be formatted and returned. If the
 //	calculation completes successfully, this return value
 //	will be set to 'nil'.
-func (bIPwr BigIntMathPower) BigIntToNegativeFractionalPower(
+func (bIPwr *BigIntMathPower) BigIntToNegativeFractionalPower(
 	base,
 	basePrecision,
 	exponent,
@@ -371,7 +371,7 @@ func (bIPwr BigIntMathPower) BigIntToNegativeFractionalPower(
 //	error message will be formatted and returned. If the
 //	calculation completes successfully, this return value
 //	will be set to 'nil'.
-func (bIPwr BigIntMathPower) BigIntToPositiveFractionalPower(
+func (bIPwr *BigIntMathPower) BigIntToPositiveFractionalPower(
 	base,
 	basePrecision,
 	exponent,
@@ -624,7 +624,7 @@ func (bIPwr BigIntMathPower) BigIntToPositiveFractionalPower(
 //	error message will be formatted and returned. If the
 //	calculation completes successfully, this return value
 //	will be set to 'nil'.
-func (bIPwr BigIntMathPower) BigIntToNegativeIntegerPower(
+func (bIPwr *BigIntMathPower) BigIntToNegativeIntegerPower(
 	base,
 	basePrecision,
 	exponent,
@@ -804,7 +804,7 @@ func (bIPwr BigIntMathPower) BigIntToNegativeIntegerPower(
 //	error message will be formatted and returned. If the
 //	calculation completes successfully, this return value
 //	will be set to 'nil'.
-func (bIPwr BigIntMathPower) BigIntToPositiveIntegerPower(
+func (bIPwr *BigIntMathPower) BigIntToPositiveIntegerPower(
 	base,
 	basePrecision,
 	exponent,
@@ -948,7 +948,7 @@ func (bIPwr BigIntMathPower) BigIntToPositiveIntegerPower(
 //
 //	                                 decimal place in the numeric sequence represented
 //																		by the calculation result, 'baseToPwr'.
-func (bIPwr BigIntMathPower) BigIntPwrIteration(
+func (bIPwr *BigIntMathPower) BigIntPwrIteration(
 	base *big.Int,
 	basePrecision,
 	exponent,
@@ -1112,7 +1112,7 @@ func (bIPwr BigIntMathPower) BigIntPwrIteration(
 //	is configured with an appropriate error message and returned
 //	to the caller. If the function completes successfully, this
 //	value is set to 'nil'.
-func (bIPwr BigIntMathPower) BigIntegerPwrIteration(
+func (bIPwr *BigIntMathPower) BigIntegerPwrIteration(
 	base,
 	basePrecision,
 	exponent,
@@ -1289,7 +1289,7 @@ func (bIPwr BigIntMathPower) BigIntegerPwrIteration(
 //																		to the right of the decimal place.
 //
 //	                                 				baseToPwr = base^exponent
-func (bIPwr BigIntMathPower) FixedDecimalPwrIteration(
+func (bIPwr *BigIntMathPower) FixedDecimalPwrIteration(
 	base BigIntFixedDecimal,
 	exponent,
 	internalMaxPrecision,
@@ -1327,7 +1327,7 @@ func (bIPwr BigIntMathPower) FixedDecimalPwrIteration(
 // If the minimum required precision exceeds the maximum value for type
 // 'uint' (+4,294,967,295, which equals 2^32 − 1), an error message is returned
 // in addition to the maximum uint value (+4,294,967,295).
-func (bIPwr BigIntMathPower) MinimumRequiredPrecision(
+func (bIPwr *BigIntMathPower) MinimumRequiredPrecision(
 	base, exponent BigIntNum) (uint, error) {
 
 	basePrecision := BigIntNum{}.NewUint(base.GetPrecisionUint(), 0)
@@ -1368,7 +1368,7 @@ func (bIPwr BigIntMathPower) MinimumRequiredPrecision(
 // The return value, a type BigIntNum, represents the result of the base^exponent operation described above.
 // This returned BigIntNum 'result' will contain numeric separators (decimal separator, thousands separator
 // and currency symbol) copied from input parameter,'base'.
-func (bIPwr BigIntMathPower) Pwr(base, exponent BigIntNum, maxPrecision uint) (BigIntNum, error) {
+func (bIPwr *BigIntMathPower) Pwr(base, exponent BigIntNum, maxPrecision uint) (BigIntNum, error) {
 
 	ePrefix := "BigIntMathPower.Pwr() "
 
@@ -1465,7 +1465,7 @@ func (bIPwr BigIntMathPower) Pwr(base, exponent BigIntNum, maxPrecision uint) (B
 // If 'exponent' is both a negative number and a fractional number, this method proceeds to
 // raise input parameter 'base' to the power of 'exponent' and return the result as a BigIntNum
 // type.
-func (bIPwr BigIntMathPower) bigIntNumRaiseToNegativeFractionalPower(
+func (bIPwr *BigIntMathPower) bigIntNumRaiseToNegativeFractionalPower(
 	base,
 	exponent BigIntNum,
 	maxPrecision uint) (BigIntNum, error) {
@@ -1519,7 +1519,7 @@ func (bIPwr BigIntMathPower) bigIntNumRaiseToNegativeFractionalPower(
 // If 'exponent' is both a positive number and a fractional number, this method proceeds to
 // raise input parameter 'base' to the power of 'exponent' and return the result as a BigIntNum
 // type.
-func (bIPwr BigIntMathPower) bigIntNumRaiseToPositiveFractionalPower(
+func (bIPwr *BigIntMathPower) bigIntNumRaiseToPositiveFractionalPower(
 	base,
 	exponent BigIntNum,
 	maxPrecision uint) (BigIntNum, error) {
@@ -1615,7 +1615,7 @@ func (bIPwr BigIntMathPower) bigIntNumRaiseToPositiveFractionalPower(
 // If 'exponent' is both a negative number and an integer number, this method proceeds to
 // raise input parameter 'base' to the power of 'exponent' and return the result as a BigIntNum
 // type.
-func (bIPwr BigIntMathPower) bigIntNumRaiseToNegativeIntegerPower(
+func (bIPwr *BigIntMathPower) bigIntNumRaiseToNegativeIntegerPower(
 	base,
 	exponent BigIntNum,
 	maxPrecision uint) (BigIntNum, error) {
@@ -1678,7 +1678,7 @@ func (bIPwr BigIntMathPower) bigIntNumRaiseToNegativeIntegerPower(
 //	 -4.2				3					 -74.088
 //		-2.9				4					  70.7281
 //	 -2          3.8
-func (bIPwr BigIntMathPower) bigIntNumRaiseToPositiveIntegerPower(
+func (bIPwr *BigIntMathPower) bigIntNumRaiseToPositiveIntegerPower(
 	base,
 	exponent BigIntNum) (BigIntNum, error) {
 
@@ -1713,7 +1713,7 @@ func (bIPwr BigIntMathPower) bigIntNumRaiseToPositiveIntegerPower(
 // in intermediate calculations. Returned 'internalPrecision' is based on requested
 // maximum precision for a specific BigIntMathPower calculation.
 /*
-func (bIPwr BigIntMathPower) computeMaxInternalPrecision(maxPrecision *big.Int) *big.Int {
+func (bIPwr *BigIntMathPower) computeMaxInternalPrecision(maxPrecision *big.Int) *big.Int {
 
 	internalPrecision := big.NewInt(10)
 

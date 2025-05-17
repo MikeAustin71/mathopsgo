@@ -252,7 +252,7 @@ func (bIntMath BigIntMath) ArithmeticGeometricMean(
 		*/
 
 		aCom, aComPrecision, errX =
-			BigIntMathAdd{}.BigIntAdd(
+			new(BigIntMathAdd).BigIntAdd(
 				a,
 				aPrecision,
 				g,
@@ -697,7 +697,7 @@ func (bIntMath BigIntMath) GetMagnitude(initialValue *big.Int) (magnitude *big.I
 	// target MUST BE <= 2^(bit length)
 	// ************************************
 	magnitude, tenToPowerPrecision, errx =
-		BigIntMathMultiply{}.BigIntMultiply(
+		new(BigIntMathMultiply).BigIntMultiply(
 			big.NewInt(int64(bitLen)),
 			big.NewInt(0),
 			log10of2To20k.GetInteger(),

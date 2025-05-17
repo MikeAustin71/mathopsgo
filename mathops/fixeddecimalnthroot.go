@@ -9,29 +9,27 @@ import (
 )
 
 type NthRootBeta struct {
-
-	LastGuessIdx 		int
-	LastGuessResult	int // -1 = r' less than zero; 0 = r' equals zero; 1 = r' greater than zero
-	NextGuessIdx 		int
-	Idx 						int
+	LastGuessIdx    int
+	LastGuessResult int // -1 = r' less than zero; 0 = r' equals zero; 1 = r' greater than zero
+	NextGuessIdx    int
+	Idx             int
 	Result          int // -1 = r' less than zero; 0 = r' equals zero; 1 = r' greater than zero
-	Beta 						*big.Int
-	RPrime					*big.Int
-	YPrime					*big.Int
-
+	Beta            *big.Int
+	RPrime          *big.Int
+	YPrime          *big.Int
 }
 
 func (nRootBeta *NthRootBeta) CopyIn(beta2 NthRootBeta) {
 
-	nRootBeta.LastGuessIdx 		= beta2.LastGuessIdx
+	nRootBeta.LastGuessIdx = beta2.LastGuessIdx
 	nRootBeta.LastGuessResult = beta2.LastGuessResult
-	nRootBeta.NextGuessIdx 		= beta2.NextGuessIdx
-	nRootBeta.Idx 						= beta2.Idx
-	nRootBeta.Result          = beta2.Result
-	nRootBeta.Beta 						= big.NewInt(0).Set(beta2.Beta)
-	nRootBeta.RPrime					= big.NewInt(0).Set(beta2.RPrime)
-	nRootBeta.YPrime					= big.NewInt(0).Set(beta2.YPrime)
-	
+	nRootBeta.NextGuessIdx = beta2.NextGuessIdx
+	nRootBeta.Idx = beta2.Idx
+	nRootBeta.Result = beta2.Result
+	nRootBeta.Beta = big.NewInt(0).Set(beta2.Beta)
+	nRootBeta.RPrime = big.NewInt(0).Set(beta2.RPrime)
+	nRootBeta.YPrime = big.NewInt(0).Set(beta2.YPrime)
+
 }
 
 func (nRootBeta NthRootBeta) New(idx, betaNum int) NthRootBeta {
@@ -40,9 +38,9 @@ func (nRootBeta NthRootBeta) New(idx, betaNum int) NthRootBeta {
 	beta.LastGuessIdx = -1
 	beta.LastGuessResult = -99
 	beta.NextGuessIdx = -1
-	beta.Idx 		= idx
+	beta.Idx = idx
 	beta.Result = -99
-	beta.Beta 	= big.NewInt(int64(betaNum))
+	beta.Beta = big.NewInt(int64(betaNum))
 	beta.RPrime = big.NewInt(0)
 	beta.YPrime = big.NewInt(0)
 
@@ -51,78 +49,76 @@ func (nRootBeta NthRootBeta) New(idx, betaNum int) NthRootBeta {
 
 // FixedDecNthRootCalcFactors - Internal calculation values
 // used by FixedDecimalNthRoot for nthRoot calculations.
-//
 type FixedDecNthRootCalcFactors struct {
-	OriginalRadicand					*big.Int  // Original Radicand Value
-	OriginalRadicandPrecision	*big.Int	// Original Radicand Precision value
-	OriginalNthRoot  					*big.Int  // Original NthRoot Value
-	OriginalNthRootPrecision	*big.Int	// Original NthRoot Precision value
-	NthRoot          					*big.Int	// NthRoot as *big.Int type
-	NthRootPrecision					*big.Int  // NthRoot Precision as *big.Int type
-	Radicand				 					*big.Int	// The Radicand for which the nthRoot will
-															 				//   be calculated
-  RadicandPrecision 				*big.Int	// Precision specification for Radicand
-	Root          						*big.Int	// Calculated nthRoot of radicand
-	RootPrecision 						*big.Int	// Precision specification of calculated
-																	 		//  nthRoot of radicand.
-	MaxPrecision             	*big.Int 	// Maximum Precision for nthRoot result 'Root'
-	MaxInternalPrecision			*big.Int	// Maximum Internal Precision used for internal
-	                                    // calculations
-	IntRadicand              	*big.Int 	// Integer digits of the radicand
-	IntRadicandTotalDigits   	*big.Int 	// Total number of digits in IntRadicand
-	FmtFracRadicand          	*big.Int 	// Formatted Fractional digits of the radicand
-	FmtFracRadicandPrecision 	*big.Int 	// Precision specification for FmtFracRadicand
-	FracMask1                	*big.Int 	// 11x10^nthRoot
-	FracMask2                	*big.Int 	// 10^(nthRoot+1)
-	BBase                    	*big.Int 	// bBase = base number system (always 10)
-	BPwrN                    	*big.Int 	// bBase^n
-	Term1											*big.Int  // Used to calculate r' and y'
-	TermBy										*big.Int	// Used to calculate r' and y'
-	Term2b										*big.Int	// Used to calculate r' and y'
-	Zero                     	*big.Int 	// zero
-	One                      	*big.Int 	// one
-	Two                      	*big.Int 	// two
-	Ten                      	*big.Int 	// ten
-	Eleven                   	*big.Int 	// eleven
-	Betas                    	[] NthRootBeta  // beta guess array
+	OriginalRadicand          *big.Int // Original Radicand Value
+	OriginalRadicandPrecision *big.Int // Original Radicand Precision value
+	OriginalNthRoot           *big.Int // Original NthRoot Value
+	OriginalNthRootPrecision  *big.Int // Original NthRoot Precision value
+	NthRoot                   *big.Int // NthRoot as *big.Int type
+	NthRootPrecision          *big.Int // NthRoot Precision as *big.Int type
+	Radicand                  *big.Int // The Radicand for which the nthRoot will
+	//   be calculated
+	RadicandPrecision *big.Int // Precision specification for Radicand
+	Root              *big.Int // Calculated nthRoot of radicand
+	RootPrecision     *big.Int // Precision specification of calculated
+	//  nthRoot of radicand.
+	MaxPrecision         *big.Int // Maximum Precision for nthRoot result 'Root'
+	MaxInternalPrecision *big.Int // Maximum Internal Precision used for internal
+	// calculations
+	IntRadicand              *big.Int      // Integer digits of the radicand
+	IntRadicandTotalDigits   *big.Int      // Total number of digits in IntRadicand
+	FmtFracRadicand          *big.Int      // Formatted Fractional digits of the radicand
+	FmtFracRadicandPrecision *big.Int      // Precision specification for FmtFracRadicand
+	FracMask1                *big.Int      // 11x10^nthRoot
+	FracMask2                *big.Int      // 10^(nthRoot+1)
+	BBase                    *big.Int      // bBase = base number system (always 10)
+	BPwrN                    *big.Int      // bBase^n
+	Term1                    *big.Int      // Used to calculate r' and y'
+	TermBy                   *big.Int      // Used to calculate r' and y'
+	Term2b                   *big.Int      // Used to calculate r' and y'
+	Zero                     *big.Int      // zero
+	One                      *big.Int      // one
+	Two                      *big.Int      // two
+	Ten                      *big.Int      // ten
+	Eleven                   *big.Int      // eleven
+	Betas                    []NthRootBeta // beta guess array
 }
 
 // New - Creates a new FixedDecNthRootCalcFactors with all data variables set
 // to their initial (zero) values.
-//
 func (rootCalcFacs FixedDecNthRootCalcFactors) New() FixedDecNthRootCalcFactors {
 
 	calcFacs := FixedDecNthRootCalcFactors{}
-	calcFacs.OriginalRadicand						= big.NewInt(0)
-	calcFacs.OriginalRadicandPrecision	= big.NewInt(0)
-	calcFacs.OriginalNthRoot  					= big.NewInt(0)
-	calcFacs.OriginalNthRootPrecision		= big.NewInt(0)
-	calcFacs.NthRoot 										= big.NewInt(0)
-	calcFacs.NthRootPrecision						= big.NewInt(0)
-	calcFacs.Radicand 									= big.NewInt(0)
-	calcFacs.RadicandPrecision 					= big.NewInt(0)
-	calcFacs.Root												= big.NewInt(0)
-	calcFacs.RootPrecision							= big.NewInt(0)
-	calcFacs.MaxPrecision   						= big.NewInt(0)
-	calcFacs.MaxInternalPrecision 			= big.NewInt(0)
-	calcFacs.IntRadicand								= big.NewInt(0)
-	calcFacs.IntRadicandTotalDigits			= big.NewInt(0)
-	calcFacs.FmtFracRadicand 						= big.NewInt(0)
-	calcFacs.FmtFracRadicandPrecision 	= big.NewInt(0)
-	calcFacs.FracMask1      						= big.NewInt(0)
-	calcFacs.FracMask2     							= big.NewInt(0)
-	calcFacs.BBase          						= big.NewInt(0)
-	calcFacs.BPwrN          						= big.NewInt(0)
-	calcFacs.Term1											= big.NewInt(0)
-	calcFacs.TermBy											= big.NewInt(0)
-	calcFacs.Term2b											= big.NewInt(0)
-	calcFacs.Zero           						= big.NewInt(0)
-	calcFacs.One            						= big.NewInt(0)
-	calcFacs.Two            						= big.NewInt(0)
-	calcFacs.Ten            						= big.NewInt(0)
-	calcFacs.Eleven         						= big.NewInt(0)
-	calcFacs.Betas          						= make([]NthRootBeta, 10)
-	for i:=0; i < 10; i++ {
+	calcFacs.OriginalRadicand = big.NewInt(0)
+	calcFacs.OriginalRadicandPrecision = big.NewInt(0)
+	calcFacs.OriginalNthRoot = big.NewInt(0)
+	calcFacs.OriginalNthRootPrecision = big.NewInt(0)
+	calcFacs.NthRoot = big.NewInt(0)
+	calcFacs.NthRootPrecision = big.NewInt(0)
+	calcFacs.Radicand = big.NewInt(0)
+	calcFacs.RadicandPrecision = big.NewInt(0)
+	calcFacs.Root = big.NewInt(0)
+	calcFacs.RootPrecision = big.NewInt(0)
+	calcFacs.MaxPrecision = big.NewInt(0)
+	calcFacs.MaxInternalPrecision = big.NewInt(0)
+	calcFacs.IntRadicand = big.NewInt(0)
+	calcFacs.IntRadicandTotalDigits = big.NewInt(0)
+	calcFacs.FmtFracRadicand = big.NewInt(0)
+	calcFacs.FmtFracRadicandPrecision = big.NewInt(0)
+	calcFacs.FracMask1 = big.NewInt(0)
+	calcFacs.FracMask2 = big.NewInt(0)
+	calcFacs.BBase = big.NewInt(0)
+	calcFacs.BPwrN = big.NewInt(0)
+	calcFacs.Term1 = big.NewInt(0)
+	calcFacs.TermBy = big.NewInt(0)
+	calcFacs.Term2b = big.NewInt(0)
+	calcFacs.Zero = big.NewInt(0)
+	calcFacs.One = big.NewInt(0)
+	calcFacs.Two = big.NewInt(0)
+	calcFacs.Ten = big.NewInt(0)
+	calcFacs.Eleven = big.NewInt(0)
+	calcFacs.Betas = make([]NthRootBeta, 10)
+	for i := 0; i < 10; i++ {
 		calcFacs.Betas[i] = NthRootBeta{}.New(i, i)
 	}
 
@@ -144,81 +140,81 @@ func (rootCalcFacs FixedDecNthRootCalcFactors) NewCalcFacs(
 // Initialize - Intializes the values of the current FixedDecNthRootCalcFactors instance
 // to the values supplied by input paramter, 'fixDecNthRoot'.
 func (rootCalcFacs *FixedDecNthRootCalcFactors) Initialize(fixDecNthRoot *FixedDecimalNthRoot) {
-	
+
 	fixDecNthRoot.validateCalcFactors()
-	rootCalcFacs.OriginalRadicand						= big.NewInt(0).Set(fixDecNthRoot.OriginalRadicand)
-	rootCalcFacs.OriginalRadicandPrecision	= big.NewInt(0).Set(fixDecNthRoot.OriginalRadicandPrecision)
-	rootCalcFacs.OriginalNthRoot  					= big.NewInt(0).Set(fixDecNthRoot.OriginalNthRoot)
-	rootCalcFacs.OriginalNthRootPrecision		= big.NewInt(0).Set(fixDecNthRoot.OriginalNthRootPrecision)
-	rootCalcFacs.NthRoot 										= big.NewInt(0).Set(fixDecNthRoot.NthRoot)
-	rootCalcFacs.NthRootPrecision						= big.NewInt(0).Set(fixDecNthRoot.NthRootPrecision)
-	rootCalcFacs.Radicand 									= big.NewInt(0).Set(fixDecNthRoot.Radicand)
-	rootCalcFacs.RadicandPrecision					= big.NewInt(0).Set(fixDecNthRoot.Radicand)
-	rootCalcFacs.Root												= big.NewInt(0).Set(fixDecNthRoot.Root)
-	rootCalcFacs.RootPrecision							= big.NewInt(0).Set(fixDecNthRoot.RootPrecision)
-	rootCalcFacs.MaxPrecision   						= big.NewInt(0).Set(fixDecNthRoot.maxPrecision)
-	rootCalcFacs.MaxInternalPrecision 			= big.NewInt(0).Set(fixDecNthRoot.maxInternalPrecision)
-	rootCalcFacs.IntRadicand   							= big.NewInt(0).Set(fixDecNthRoot.intRadicand)
-	rootCalcFacs.IntRadicandTotalDigits 		= big.NewInt(0).Set(fixDecNthRoot.intRadicandTotalDigits)
-	rootCalcFacs.FmtFracRadicand 						= big.NewInt(0).Set(fixDecNthRoot.fmtFracRadicand)
-	rootCalcFacs.FmtFracRadicandPrecision 	= big.NewInt(0).Set(fixDecNthRoot.fmtFracRadicandPrecision)
-	rootCalcFacs.FracMask1      						= big.NewInt(0).Set(fixDecNthRoot.fracMask1)
-	rootCalcFacs.FracMask2     							= big.NewInt(0).Set(fixDecNthRoot.fracMask2)
-	rootCalcFacs.BBase          						= big.NewInt(0).Set(fixDecNthRoot.bBase)
-	rootCalcFacs.BPwrN          						= big.NewInt(0).Set(fixDecNthRoot.bPwrN)
-	rootCalcFacs.Term1											= big.NewInt(0).Set(fixDecNthRoot.term1)
-	rootCalcFacs.TermBy											= big.NewInt(0).Set(fixDecNthRoot.termBy)
-	rootCalcFacs.Term2b											= big.NewInt(0).Set(fixDecNthRoot.term2b)
-	rootCalcFacs.Zero           						= big.NewInt(0).Set(fixDecNthRoot.zero)
-	rootCalcFacs.One            						= big.NewInt(0).Set(fixDecNthRoot.one)
-	rootCalcFacs.Two            						= big.NewInt(0).Set(fixDecNthRoot.two)
-	rootCalcFacs.Ten            						= big.NewInt(0).Set(fixDecNthRoot.ten)
-	rootCalcFacs.Eleven         						= big.NewInt(0).Set(fixDecNthRoot.eleven)
+	rootCalcFacs.OriginalRadicand = big.NewInt(0).Set(fixDecNthRoot.OriginalRadicand)
+	rootCalcFacs.OriginalRadicandPrecision = big.NewInt(0).Set(fixDecNthRoot.OriginalRadicandPrecision)
+	rootCalcFacs.OriginalNthRoot = big.NewInt(0).Set(fixDecNthRoot.OriginalNthRoot)
+	rootCalcFacs.OriginalNthRootPrecision = big.NewInt(0).Set(fixDecNthRoot.OriginalNthRootPrecision)
+	rootCalcFacs.NthRoot = big.NewInt(0).Set(fixDecNthRoot.NthRoot)
+	rootCalcFacs.NthRootPrecision = big.NewInt(0).Set(fixDecNthRoot.NthRootPrecision)
+	rootCalcFacs.Radicand = big.NewInt(0).Set(fixDecNthRoot.Radicand)
+	rootCalcFacs.RadicandPrecision = big.NewInt(0).Set(fixDecNthRoot.Radicand)
+	rootCalcFacs.Root = big.NewInt(0).Set(fixDecNthRoot.Root)
+	rootCalcFacs.RootPrecision = big.NewInt(0).Set(fixDecNthRoot.RootPrecision)
+	rootCalcFacs.MaxPrecision = big.NewInt(0).Set(fixDecNthRoot.maxPrecision)
+	rootCalcFacs.MaxInternalPrecision = big.NewInt(0).Set(fixDecNthRoot.maxInternalPrecision)
+	rootCalcFacs.IntRadicand = big.NewInt(0).Set(fixDecNthRoot.intRadicand)
+	rootCalcFacs.IntRadicandTotalDigits = big.NewInt(0).Set(fixDecNthRoot.intRadicandTotalDigits)
+	rootCalcFacs.FmtFracRadicand = big.NewInt(0).Set(fixDecNthRoot.fmtFracRadicand)
+	rootCalcFacs.FmtFracRadicandPrecision = big.NewInt(0).Set(fixDecNthRoot.fmtFracRadicandPrecision)
+	rootCalcFacs.FracMask1 = big.NewInt(0).Set(fixDecNthRoot.fracMask1)
+	rootCalcFacs.FracMask2 = big.NewInt(0).Set(fixDecNthRoot.fracMask2)
+	rootCalcFacs.BBase = big.NewInt(0).Set(fixDecNthRoot.bBase)
+	rootCalcFacs.BPwrN = big.NewInt(0).Set(fixDecNthRoot.bPwrN)
+	rootCalcFacs.Term1 = big.NewInt(0).Set(fixDecNthRoot.term1)
+	rootCalcFacs.TermBy = big.NewInt(0).Set(fixDecNthRoot.termBy)
+	rootCalcFacs.Term2b = big.NewInt(0).Set(fixDecNthRoot.term2b)
+	rootCalcFacs.Zero = big.NewInt(0).Set(fixDecNthRoot.zero)
+	rootCalcFacs.One = big.NewInt(0).Set(fixDecNthRoot.one)
+	rootCalcFacs.Two = big.NewInt(0).Set(fixDecNthRoot.two)
+	rootCalcFacs.Ten = big.NewInt(0).Set(fixDecNthRoot.ten)
+	rootCalcFacs.Eleven = big.NewInt(0).Set(fixDecNthRoot.eleven)
 
 	limit := len(fixDecNthRoot.betas)
 
 	rootCalcFacs.Betas = make([]NthRootBeta, limit)
 
-	for i:=0; i < limit; i++ {
+	for i := 0; i < limit; i++ {
 		rootCalcFacs.Betas[i].CopyIn(fixDecNthRoot.betas[i])
 	}
 
 }
 
 type FixedDecimalNthRoot struct {
-	OriginalRadicand					*big.Int  // Original Radicand Value
-	OriginalRadicandPrecision	*big.Int	// Original Radicand Precision value
-	OriginalNthRoot  					*big.Int  // Original NthRoot Value
-	OriginalNthRootPrecision	*big.Int	// Original NthRoot Precision value
-	NthRoot          					*big.Int	// NthRoot as *big.Int type
-	NthRootPrecision 					*big.Int	// NthRootPrecision as *big.Int type
-	Radicand				 					*big.Int	// The Radicand for which the nthRoot will
-	                           					//   be calculated
-  RadicandPrecision     		*big.Int	// Precision specification for Radicand
-	Root                  		*big.Int	// Calculated nthRoot of radicand
-	RootPrecision         		*big.Int	// Precision specification for Root
-	maxPrecision          		*big.Int	// The maximum precision specification for
-	                               			//  the final root calculation result.
-	maxInternalPrecision			*big.Int	// Maximum Internal precision used by internal
-	                                    //  calculations
-	intRadicand              	*big.Int 	// Integer digits of the original radicand
-	intRadicandTotalDigits   	*big.Int 	// Total number of digits in intRadicand
-	fmtFracRadicand          	*big.Int 	// Formatted Fractional digits of the original radicand
-	fmtFracRadicandPrecision 	*big.Int 	// Precision specification for Formatted Fractional
-	                               			//  digits of the original radicand
-	fracMask1             		*big.Int	// 11x10^nthRoot
-	fracMask2             		*big.Int	// 10^(nthRoot+1)
-	bBase                 		*big.Int	// bBase = base number system (always 10)
-	bPwrN                 		*big.Int	// bBase^n
-	term1											*big.Int  // Used to calculate r' and y'
-	termBy                    *big.Int  // Used to calculate r' and y'
-	term2b										*big.Int  // Used to calculate r' and y'
-	zero                  		*big.Int	// zero
-	one                   		*big.Int	// one
-	two                   		*big.Int	// two
-	ten                   		*big.Int	// ten
-	eleven                		*big.Int	// eleven
-	betas                 		[] NthRootBeta // Array of beta guesses
+	OriginalRadicand          *big.Int // Original Radicand Value
+	OriginalRadicandPrecision *big.Int // Original Radicand Precision value
+	OriginalNthRoot           *big.Int // Original NthRoot Value
+	OriginalNthRootPrecision  *big.Int // Original NthRoot Precision value
+	NthRoot                   *big.Int // NthRoot as *big.Int type
+	NthRootPrecision          *big.Int // NthRootPrecision as *big.Int type
+	Radicand                  *big.Int // The Radicand for which the nthRoot will
+	//   be calculated
+	RadicandPrecision *big.Int // Precision specification for Radicand
+	Root              *big.Int // Calculated nthRoot of radicand
+	RootPrecision     *big.Int // Precision specification for Root
+	maxPrecision      *big.Int // The maximum precision specification for
+	//  the final root calculation result.
+	maxInternalPrecision *big.Int // Maximum Internal precision used by internal
+	//  calculations
+	intRadicand              *big.Int // Integer digits of the original radicand
+	intRadicandTotalDigits   *big.Int // Total number of digits in intRadicand
+	fmtFracRadicand          *big.Int // Formatted Fractional digits of the original radicand
+	fmtFracRadicandPrecision *big.Int // Precision specification for Formatted Fractional
+	//  digits of the original radicand
+	fracMask1 *big.Int      // 11x10^nthRoot
+	fracMask2 *big.Int      // 10^(nthRoot+1)
+	bBase     *big.Int      // bBase = base number system (always 10)
+	bPwrN     *big.Int      // bBase^n
+	term1     *big.Int      // Used to calculate r' and y'
+	termBy    *big.Int      // Used to calculate r' and y'
+	term2b    *big.Int      // Used to calculate r' and y'
+	zero      *big.Int      // zero
+	one       *big.Int      // one
+	two       *big.Int      // two
+	ten       *big.Int      // ten
+	eleven    *big.Int      // eleven
+	betas     []NthRootBeta // Array of beta guesses
 }
 
 func (fdNthRoot FixedDecimalNthRoot) BigIntFixedDecNthRoot(
@@ -230,10 +226,8 @@ func (fdNthRoot FixedDecimalNthRoot) BigIntFixedDecNthRoot(
 	rootPrecision = 0
 	err = nil
 
-
 	return root, rootPrecision, err
 }
-
 
 // BabylonianSqrRoot -
 // FixedDecimalNthRoot{}.CalculatePositiveIntegerNthRoot() is
@@ -244,38 +238,38 @@ func (fdNthRoot FixedDecimalNthRoot) BabylonianSqrRoot(
 	initialGuess,
 	initialGuessPrecision,
 	maxPrecision *big.Int,
-	calcCycles uint64) (	sqrRoot,
-												sqrRootPrecision *big.Int,
-												cycleCnt uint64,
-												err error) {
+	calcCycles uint64) (sqrRoot,
+	sqrRootPrecision *big.Int,
+	cycleCnt uint64,
+	err error) {
 
 	ePrefix := "FixedDecimalNthRoot.BabylonianSqrRoot() "
-  sqrRoot = big.NewInt(0)
-  sqrRootPrecision = big.NewInt(0)
+	sqrRoot = big.NewInt(0)
+	sqrRootPrecision = big.NewInt(0)
 	cycleCnt = uint64(0)
-  err = nil
+	err = nil
 	var errX error
-  bigZero := big.NewInt(0)
-  bigTen := big.NewInt(10)
-  scale := big.NewInt(0)
-  tRadicand := big.NewInt(0).Set(radicand)
+	bigZero := big.NewInt(0)
+	bigTen := big.NewInt(10)
+	scale := big.NewInt(0)
+	tRadicand := big.NewInt(0).Set(radicand)
 
-  if radicandPrecision.Cmp(bigZero) == 1 {
-  	scale.Exp(bigTen, radicandPrecision, nil)
-  	tRadicand.Quo(tRadicand, scale)
+	if radicandPrecision.Cmp(bigZero) == 1 {
+		scale.Exp(bigTen, radicandPrecision, nil)
+		tRadicand.Quo(tRadicand, scale)
 	}
 
-  xLast := big.NewInt(0).Set(initialGuess)
+	xLast := big.NewInt(0).Set(initialGuess)
 	xLastPrecision := big.NewInt(0).Set(initialGuessPrecision)
 
 	prevCycle := big.NewInt(0)
-  prevCyclePrecision := big.NewInt(0)
+	prevCyclePrecision := big.NewInt(0)
 
-  maxCalcPrecision := big.NewInt(0).Add(maxPrecision, big.NewInt(50))
+	maxCalcPrecision := big.NewInt(0).Add(maxPrecision, big.NewInt(50))
 
 	oneHalf := big.NewInt(5)
 	oneHalfPrecision := big.NewInt(1)
-	factor1:= big.NewInt(0)
+	factor1 := big.NewInt(0)
 	factor1Precision := big.NewInt(0)
 	factor2 := big.NewInt(0)
 	factor2Precision := big.NewInt(0)
@@ -283,30 +277,30 @@ func (fdNthRoot FixedDecimalNthRoot) BabylonianSqrRoot(
 	factor3Precision := big.NewInt(0)
 	cmpPrev := 0
 
-  for cycleCnt = uint64(0); cycleCnt < calcCycles; cycleCnt++ {
+	for cycleCnt = uint64(0); cycleCnt < calcCycles; cycleCnt++ {
 
-  	factor2.Set(xLast)
-  	factor2Precision.Set(xLastPrecision)
+		factor2.Set(xLast)
+		factor2Precision.Set(xLastPrecision)
 
-  	factor3, factor3Precision, errX =
-  		BigIntMathDivide{}.BigIntFracQuotient(
-  			radicand,
-  			radicandPrecision,
-  			xLast,
-  			xLastPrecision,
-  			maxCalcPrecision)
+		factor3, factor3Precision, errX =
+			BigIntMathDivide{}.BigIntFracQuotient(
+				radicand,
+				radicandPrecision,
+				xLast,
+				xLastPrecision,
+				maxCalcPrecision)
 
-  	if errX != nil {
-  		err = fmt.Errorf(ePrefix +
-  			"%v ", errX.Error())
-  		return sqrRoot, sqrRootPrecision, cycleCnt, err
+		if errX != nil {
+			err = fmt.Errorf(ePrefix+
+				"%v ", errX.Error())
+			return sqrRoot, sqrRootPrecision, cycleCnt, err
 		}
 
-  	factor1, factor1Precision, errX =
+		factor1, factor1Precision, errX =
 			BigIntMathAdd{}.BigIntAdd(factor2, factor2Precision, factor3, factor3Precision)
 
 		if errX != nil {
-			err = fmt.Errorf(ePrefix +
+			err = fmt.Errorf(ePrefix+
 				"%v ", errX.Error())
 			return sqrRoot, sqrRootPrecision, cycleCnt, err
 		}
@@ -327,26 +321,26 @@ func (fdNthRoot FixedDecimalNthRoot) BabylonianSqrRoot(
 	}
 
 	sqrRoot, sqrRootPrecision, errX =
-  	BigIntMath{}.RoundToMaxPrecision(xLast, xLastPrecision, maxPrecision, true)
+		BigIntMath{}.RoundToMaxPrecision(xLast, xLastPrecision, maxPrecision, true)
 
 	if errX != nil {
 		sqrRoot.Set(bigZero)
 		sqrRootPrecision.Set(bigZero)
-		err = fmt.Errorf(ePrefix +
+		err = fmt.Errorf(ePrefix+
 			"%v ", errX.Error())
 		return sqrRoot, sqrRootPrecision, cycleCnt, err
 	}
 
-  err = nil
-  return sqrRoot, sqrRootPrecision, cycleCnt, err
+	err = nil
+	return sqrRoot, sqrRootPrecision, cycleCnt, err
 }
 
 func (fdNthRoot FixedDecimalNthRoot) IntegerSqrRoot(
 	radicand,
 	radicandPrecision,
 	maxPrecision *big.Int) (sqrRoot,
-													sqrRootPrecision *big.Int,
-													err error) {
+	sqrRootPrecision *big.Int,
+	err error) {
 
 	ePrefix := "FixedDecimalNthRoot.IntegerSqrRoot() "
 	sqrRoot = big.NewInt(0)
@@ -362,7 +356,7 @@ func (fdNthRoot FixedDecimalNthRoot) IntegerSqrRoot(
 
 	bigZero := big.NewInt(0)
 
-	if radicand.Cmp(bigZero)== 0 {
+	if radicand.Cmp(bigZero) == 0 {
 		return sqrRoot, sqrRootPrecision, err
 	}
 
@@ -373,21 +367,21 @@ func (fdNthRoot FixedDecimalNthRoot) IntegerSqrRoot(
 	}
 
 	if radicandPrecision.Cmp(bigZero) == -1 {
-		err = fmt.Errorf(ePrefix +
-			"Error: Input parameter 'radicandPrecision' is LESS THAN ZERO! " +
+		err = fmt.Errorf(ePrefix+
+			"Error: Input parameter 'radicandPrecision' is LESS THAN ZERO! "+
 			"radicandPrecision='%v'", radicandPrecision.Text(10))
 		return sqrRoot, sqrRootPrecision, err
 	}
 
 	if maxPrecision == nil {
-		 err = errors.New(ePrefix +
+		err = errors.New(ePrefix +
 			"Error: Input parameter 'maxPrecision' is 'nil'!")
 		return sqrRoot, sqrRootPrecision, err
 	}
 
 	if maxPrecision.Cmp(bigZero) == -1 {
-		err = fmt.Errorf(ePrefix +
-			"Error: Input parameter 'maxPrecision' is LESS THAN ZERO! " +
+		err = fmt.Errorf(ePrefix+
+			"Error: Input parameter 'maxPrecision' is LESS THAN ZERO! "+
 			"maxPrecision='%v'", maxPrecision.Text(10))
 		return sqrRoot, sqrRootPrecision, err
 	}
@@ -402,22 +396,20 @@ func (fdNthRoot FixedDecimalNthRoot) IntegerSqrRoot(
 	}
 
 	/*
-	delta := big.NewInt(0).Mul(maxPrecision, big.NewInt(2))
-	delta.Add(delta, radicandPrecision)
+		delta := big.NewInt(0).Mul(maxPrecision, big.NewInt(2))
+		delta.Add(delta, radicandPrecision)
 
-	if bigZero.Cmp(big.NewInt(0).And(delta, bigOne)) == 0 {
-		// maxPrecision is even
-		delta.Add(delta, bigOne)
-	}
+		if bigZero.Cmp(big.NewInt(0).And(delta, bigOne)) == 0 {
+			// maxPrecision is even
+			delta.Add(delta, bigOne)
+		}
 
-	tMaxPrecision := big.NewInt(0).Add(delta, bigOne)
-	tMaxPrecision.Rsh(tMaxPrecision, 1)
+		tMaxPrecision := big.NewInt(0).Add(delta, bigOne)
+		tMaxPrecision.Rsh(tMaxPrecision, 1)
 	*/
-
 
 	delta := big.NewInt(3)
 	tMaxPrecision := big.NewInt(3)
-
 
 	fmt.Println("delta: ", delta.Text(10))
 
@@ -427,7 +419,6 @@ func (fdNthRoot FixedDecimalNthRoot) IntegerSqrRoot(
 		tRadicand.Mul(tRadicand,
 			big.NewInt(0).Exp(big.NewInt(10), delta, nil))
 	}
-
 
 	var temp *big.Int
 
@@ -441,7 +432,6 @@ func (fdNthRoot FixedDecimalNthRoot) IntegerSqrRoot(
 	for one.Cmp(op) == 1 {
 		one.Rsh(one, 2)
 	}
-
 
 	temp = big.NewInt(0)
 
@@ -460,21 +450,20 @@ func (fdNthRoot FixedDecimalNthRoot) IntegerSqrRoot(
 
 	//var errX error
 
-
 	fmt.Println("output precision: ", tMaxPrecision.Text(10))
 	fmt.Println("       remainder: ", op.Text(10))
 	sqrRoot.Set(res)
 	sqrRootPrecision.Set(tMaxPrecision)
 	/*
-	sqrRoot, sqrRootPrecision, errX =
-		BigIntMath{}.RoundToMaxPrecision(res, tMaxPrecision, maxPrecision, false)
+		sqrRoot, sqrRootPrecision, errX =
+			BigIntMath{}.RoundToMaxPrecision(res, tMaxPrecision, maxPrecision, false)
 
-	if errX != nil {
-		sqrRoot.Set(bigZero)
-		sqrRootPrecision.Set(bigZero)
-		err = fmt.Errorf(ePrefix + "%v", errX.Error()	)
-		return sqrRoot, sqrRootPrecision, err
-	}
+		if errX != nil {
+			sqrRoot.Set(bigZero)
+			sqrRootPrecision.Set(bigZero)
+			err = fmt.Errorf(ePrefix + "%v", errX.Error()	)
+			return sqrRoot, sqrRootPrecision, err
+		}
 	*/
 
 	err = nil
@@ -533,9 +522,9 @@ func (fdNthRoot FixedDecimalNthRoot) TestIntegerSqRoot(
 func (fdNthRoot FixedDecimalNthRoot) MikesIntegerSqRoot(
 	radicand,
 	radicandPrecision,
-	maxPrecision *big.Int) (	sqrRoot,
-														sqrRootPrecision *big.Int,
-														err error) {
+	maxPrecision *big.Int) (sqrRoot,
+	sqrRootPrecision *big.Int,
+	err error) {
 
 	sqrRoot = big.NewInt(0)
 	sqrRootPrecision = big.NewInt(0)
@@ -557,7 +546,7 @@ func (fdNthRoot FixedDecimalNthRoot) MikesIntegerSqRoot(
 
 	if cmpr == 1 {
 		isEven := big.NewInt(0).And(bigOne, radicandPrecision)
-		if  isEven.Cmp(bigOne) == 0 {
+		if isEven.Cmp(bigOne) == 0 {
 			tempRadicand.Mul(tempRadicand, bigTen)
 		}
 	}
@@ -568,12 +557,11 @@ func (fdNthRoot FixedDecimalNthRoot) MikesIntegerSqRoot(
 		newPrecision.Add(newPrecision, bigThree)
 	}
 
-
 	radBitLen := uint(tempRadicand.BitLen())
 
 	//fmt.Println("    bit length: ", radBitLen)
 
-	if radBitLen & 1 == 1{
+	if radBitLen&1 == 1 {
 		radBitLen++
 	}
 
@@ -623,12 +611,11 @@ func (fdNthRoot FixedDecimalNthRoot) MikesIntegerSqRoot(
 	return sqrRoot, sqrRootPrecision, err
 }
 
-
 func (fdNthRoot FixedDecimalNthRoot) TestMikesIntegerSqRoot(
-	integerRadicand *big.Int) (	sqrRoot,
-															remainder,
-															oneVal *big.Int,
-															err error) {
+	integerRadicand *big.Int) (sqrRoot,
+	remainder,
+	oneVal *big.Int,
+	err error) {
 
 	sqrRoot = big.NewInt(0)
 	remainder = big.NewInt(0)
@@ -641,10 +628,9 @@ func (fdNthRoot FixedDecimalNthRoot) TestMikesIntegerSqRoot(
 
 	//fmt.Println("    bit length: ", radBitLen)
 
-	if radBitLen & 1 == 1{
+	if radBitLen&1 == 1 {
 		radBitLen++
 	}
-
 
 	//fmt.Println("adj bit length: ", radBitLen)
 
@@ -681,7 +667,6 @@ func (fdNthRoot FixedDecimalNthRoot) TestMikesIntegerSqRoot(
 		res.Rsh(res, 1)
 		one.Rsh(one, 2)
 
-
 		//fmt.Println("   end op: ", op.Text(10))
 		//fmt.Println("  end res: ", res.Text(10))
 		//fmt.Println("  end one: ", one.Text(10))
@@ -698,16 +683,14 @@ func (fdNthRoot FixedDecimalNthRoot) TestMikesIntegerSqRoot(
 
 // FastIntegerSqRoot - Only works for integers.
 // https://community.oracle.com/thread/1705443
-//
 func (fdNthRoot FixedDecimalNthRoot) FastIntegerSqRoot(
-	integerRadicand *big.Int) (	sqrRoot,
-															remainder *big.Int,
-															err error) {
+	integerRadicand *big.Int) (sqrRoot,
+	remainder *big.Int,
+	err error) {
 
 	sqrRoot = big.NewInt(0)
 	remainder = big.NewInt(0)
 	err = nil
-
 
 	var temp *big.Int
 
@@ -745,7 +728,6 @@ func (fdNthRoot FixedDecimalNthRoot) FastIntegerSqRoot(
 	return sqrRoot, remainder, err
 }
 
-
 /*
 ***********************************************************************************
 ***********************************************************************************
@@ -762,9 +744,9 @@ func (fdNthRoot FixedDecimalNthRoot) GetNthRoot(
 	nthRoot *big.Int,
 	nthRootPrecision *big.Int,
 	maxPrecision *big.Int) (
-													result *big.Int,
-													resultPrecision *big.Int,
-													err error) {
+	result *big.Int,
+	resultPrecision *big.Int,
+	err error) {
 
 	ePrefix := "FixedDecimalNthRoot.GetNthRoot() "
 
@@ -783,7 +765,7 @@ func (fdNthRoot FixedDecimalNthRoot) GetNthRoot(
 	}
 
 	if radicandPrecision.Cmp(bigZero) == -1 {
-		err = fmt.Errorf(ePrefix + "Error 'radicandPrecision' is Less Than Zero! " +
+		err = fmt.Errorf(ePrefix+"Error 'radicandPrecision' is Less Than Zero! "+
 			"radicandPrecision='%v'", radicandPrecision.Text(10))
 		return result, resultPrecision, err
 	}
@@ -791,13 +773,13 @@ func (fdNthRoot FixedDecimalNthRoot) GetNthRoot(
 	nthRtPrecisionCmpZero := nthRootPrecision.Cmp(bigZero)
 
 	if nthRtPrecisionCmpZero == -1 {
-		err = fmt.Errorf(ePrefix + "Error 'nthRootPrecision' is Less Than Zero! " +
+		err = fmt.Errorf(ePrefix+"Error 'nthRootPrecision' is Less Than Zero! "+
 			"nthRootPrecision='%v'", radicandPrecision.Text(10))
 		return result, resultPrecision, err
 	}
 
 	if maxPrecision.Cmp(bigZero) == -1 {
-		err = fmt.Errorf(ePrefix + "Error 'maxPrecision' is Less Than Zero! " +
+		err = fmt.Errorf(ePrefix+"Error 'maxPrecision' is Less Than Zero! "+
 			"maxPrecision='%v'", maxPrecision.Text(10))
 		return result, resultPrecision, err
 	}
@@ -817,12 +799,12 @@ func (fdNthRoot FixedDecimalNthRoot) GetNthRoot(
 	var errx error
 
 	if nthRtCmpZero == 1 &&
-			nthRtPrecisionCmpZero == 0 {
-			// nthRoot is > 0 and nthRootPrecision is 0
-			// nthRoot is a positive integer value
+		nthRtPrecisionCmpZero == 0 {
+		// nthRoot is > 0 and nthRootPrecision is 0
+		// nthRoot is a positive integer value
 
-			result, resultPrecision, errx =
-				fdNthRoot.CalculatePositiveIntegerNthRoot(
+		result, resultPrecision, errx =
+			fdNthRoot.CalculatePositiveIntegerNthRoot(
 				radicand,
 				radicandPrecision,
 				nthRoot,
@@ -832,17 +814,14 @@ func (fdNthRoot FixedDecimalNthRoot) GetNthRoot(
 	}
 
 	if errx != nil {
-		err = fmt.Errorf(ePrefix +
+		err = fmt.Errorf(ePrefix+
 			"%v", errx.Error())
 
 		return result, resultPrecision, err
 	}
 
-
 	return result, resultPrecision, err
 }
-
-
 
 /*
 ***********************************************************************************
@@ -854,7 +833,6 @@ func (fdNthRoot FixedDecimalNthRoot) GetNthRoot(
 ***********************************************************************************
 */
 
-
 // CalculatePositiveIntegerNthRoot - Calculates roots for nthRoots which
 // are positive integer values.
 func (fdNthRoot *FixedDecimalNthRoot) CalculatePositiveIntegerNthRoot(
@@ -863,8 +841,8 @@ func (fdNthRoot *FixedDecimalNthRoot) CalculatePositiveIntegerNthRoot(
 	nthRoot,
 	nthRootPrecision,
 	maxPrecision *big.Int) (result *big.Int,
-													resultPrecision *big.Int ,
-													err error) {
+	resultPrecision *big.Int,
+	err error) {
 
 	ePrefix := "FixedDecimalNthRoot.CalculatePositiveIntegerNthRoot() "
 	result = big.NewInt(0)
@@ -876,8 +854,8 @@ func (fdNthRoot *FixedDecimalNthRoot) CalculatePositiveIntegerNthRoot(
 	radicandPrecisionZeroCmp := radicandPrecision.Cmp(bigZero)
 
 	if radicandPrecisionZeroCmp == -1 {
-		err = fmt.Errorf(ePrefix +
-			"Error: 'radicandPrecision' is Less Than Zero! " +
+		err = fmt.Errorf(ePrefix+
+			"Error: 'radicandPrecision' is Less Than Zero! "+
 			"radicandPrecision='%v'", radicandPrecision.Text(10))
 		return result, resultPrecision, err
 	}
@@ -885,13 +863,13 @@ func (fdNthRoot *FixedDecimalNthRoot) CalculatePositiveIntegerNthRoot(
 	nthRtPrecisionCmpZero := nthRootPrecision.Cmp(bigZero)
 
 	if nthRtPrecisionCmpZero == -1 {
-		err = fmt.Errorf(ePrefix + "Error 'nthRootPrecision' is Less Than Zero! " +
+		err = fmt.Errorf(ePrefix+"Error 'nthRootPrecision' is Less Than Zero! "+
 			"nthRootPrecision='%v'", nthRootPrecision.Text(10))
 		return result, resultPrecision, err
 	}
 
 	if nthRtPrecisionCmpZero == 1 {
-		err = fmt.Errorf(ePrefix + "Error 'nthRootPrecision' is Greater Than Zero! " +
+		err = fmt.Errorf(ePrefix+"Error 'nthRootPrecision' is Greater Than Zero! "+
 			"nthRootPrecision='%v'", nthRootPrecision.Text(10))
 		return result, resultPrecision, err
 	}
@@ -902,8 +880,8 @@ func (fdNthRoot *FixedDecimalNthRoot) CalculatePositiveIntegerNthRoot(
 		return result, resultPrecision, err
 	}
 
-	if radicand.Cmp(big.NewInt(1)) == 0  &&
-		radicandPrecisionZeroCmp == 0{
+	if radicand.Cmp(big.NewInt(1)) == 0 &&
+		radicandPrecisionZeroCmp == 0 {
 		result = big.NewInt(1)
 		return result, resultPrecision, err
 	}
@@ -922,8 +900,8 @@ func (fdNthRoot *FixedDecimalNthRoot) CalculatePositiveIntegerNthRoot(
 		}
 	}
 
-	if radicand.Cmp(big.NewInt(-1)) == 0  &&
-		radicandPrecisionZeroCmp == 0{
+	if radicand.Cmp(big.NewInt(-1)) == 0 &&
+		radicandPrecisionZeroCmp == 0 {
 		result = big.NewInt(-1)
 		return result, resultPrecision, err
 	}
@@ -938,7 +916,7 @@ func (fdNthRoot *FixedDecimalNthRoot) CalculatePositiveIntegerNthRoot(
 	}
 
 	if maxPrecision.Cmp(bigZero) == -1 {
-		err = fmt.Errorf(ePrefix + "Error 'maxPrecision' is Less Than Zero! " +
+		err = fmt.Errorf(ePrefix+"Error 'maxPrecision' is Less Than Zero! "+
 			"maxPrecision='%v'", maxPrecision.Text(10))
 		return result, resultPrecision, err
 	}
@@ -952,7 +930,7 @@ func (fdNthRoot *FixedDecimalNthRoot) CalculatePositiveIntegerNthRoot(
 	}
 
 	if nthRtCmpZero == -1 {
-		err = fmt.Errorf(ePrefix + "Error 'nthRoot' is negative! " +
+		err = fmt.Errorf(ePrefix+"Error 'nthRoot' is negative! "+
 			"nthRoot='%v'", maxPrecision.Text(10))
 		return result, resultPrecision, err
 	}
@@ -979,14 +957,14 @@ func (fdNthRoot *FixedDecimalNthRoot) CalculatePositiveIntegerNthRoot(
 		maxPrecision)
 
 	if errx != nil {
-		err = fmt.Errorf(ePrefix + "%v", errx.Error())
+		err = fmt.Errorf(ePrefix+"%v", errx.Error())
 		return result, resultPrecision, err
 	}
 
 	result, resultPrecision, errx = fdNthRoot.CalculateRoot()
 
 	if errx != nil {
-		err = fmt.Errorf(ePrefix + "%v", errx.Error())
+		err = fmt.Errorf(ePrefix+"%v", errx.Error())
 		result = big.NewInt(0)
 		resultPrecision = big.NewInt(0)
 		return result, resultPrecision, err
@@ -1000,7 +978,6 @@ func (fdNthRoot *FixedDecimalNthRoot) CalculatePositiveIntegerNthRoot(
 
 	return result, resultPrecision, err
 }
-
 
 func (fdNthRoot *FixedDecimalNthRoot) CodeDurationToStr(tDuration time.Duration) string {
 
@@ -1060,16 +1037,15 @@ func (fdNthRoot *FixedDecimalNthRoot) CodeDurationToStr(tDuration time.Duration)
 
 // CalculatePositiveFractionalNthRoot - Calculates roots for positive decimal
 // value or fractional nthRoots.
-//
 func (fdNthRoot *FixedDecimalNthRoot) CalculatePositiveFractionalNthRoot(
 	radicand,
 	radicandPrecision,
 	nthRoot,
 	nthRootPrecision,
 	maxPrecision *big.Int) (
-														result *big.Int,
-														resultPrecision *big.Int,
-														err error) {
+	result *big.Int,
+	resultPrecision *big.Int,
+	err error) {
 
 	result = big.NewInt(0)
 	resultPrecision = big.NewInt(0)
@@ -1085,8 +1061,8 @@ func (fdNthRoot *FixedDecimalNthRoot) CalculatePositiveFractionalNthRoot(
 	radicandPrecisionZeroCmp := radicandPrecision.Cmp(bigZero)
 
 	if radicandPrecisionZeroCmp == -1 {
-		err = fmt.Errorf(ePrefix +
-			"Error: 'radicandPrecision' is Less Than Zero! " +
+		err = fmt.Errorf(ePrefix+
+			"Error: 'radicandPrecision' is Less Than Zero! "+
 			"radicandPrecision='%v'", radicandPrecision.Text(10))
 		return result, resultPrecision, err
 	}
@@ -1094,19 +1070,19 @@ func (fdNthRoot *FixedDecimalNthRoot) CalculatePositiveFractionalNthRoot(
 	nthRtPrecisionCmpZero := nthRootPrecision.Cmp(bigZero)
 
 	if nthRtPrecisionCmpZero == -1 {
-		err = fmt.Errorf(ePrefix + "Error 'nthRootPrecision' is NEGATIVE! " +
+		err = fmt.Errorf(ePrefix+"Error 'nthRootPrecision' is NEGATIVE! "+
 			"nthRootPrecision='%v'", nthRootPrecision.Text(10))
 		return result, resultPrecision, err
 	}
 
 	if nthRtPrecisionCmpZero == 0 {
-		err = fmt.Errorf(ePrefix + "Error 'nthRootPrecision' is Zero. nthRoot is an integer! " +
+		err = fmt.Errorf(ePrefix+"Error 'nthRootPrecision' is Zero. nthRoot is an integer! "+
 			"nthRootPrecision='%v'", nthRootPrecision.Text(10))
 		return result, resultPrecision, err
 	}
 
 	if maxPrecision.Cmp(bigZero) == -1 {
-		err = fmt.Errorf(ePrefix + "Error 'maxPrecision' is Less Than Zero! " +
+		err = fmt.Errorf(ePrefix+"Error 'maxPrecision' is Less Than Zero! "+
 			"maxPrecision='%v'", maxPrecision.Text(10))
 		return result, resultPrecision, err
 	}
@@ -1121,7 +1097,7 @@ func (fdNthRoot *FixedDecimalNthRoot) CalculatePositiveFractionalNthRoot(
 	}
 
 	if radicand.Cmp(big.NewInt(1)) == 0 ||
-			radicand.Cmp(big.NewInt(-1)) == 0 {
+		radicand.Cmp(big.NewInt(-1)) == 0 {
 		result = big.NewInt(1)
 		return result, resultPrecision, err
 	}
@@ -1135,7 +1111,7 @@ func (fdNthRoot *FixedDecimalNthRoot) CalculatePositiveFractionalNthRoot(
 	}
 
 	if nthRtCmpZero == -1 {
-		err = fmt.Errorf(ePrefix + "Error 'nthRoot' is negative! " +
+		err = fmt.Errorf(ePrefix+"Error 'nthRoot' is negative! "+
 			"nthRoot='%v'", maxPrecision.Text(10))
 		return result, resultPrecision, err
 	}
@@ -1158,7 +1134,7 @@ func (fdNthRoot *FixedDecimalNthRoot) CalculatePositiveFractionalNthRoot(
 			fdNthRoot.maxInternalPrecision)
 
 	if errx != nil {
-		err = fmt.Errorf(ePrefix + "%v", errx.Error())
+		err = fmt.Errorf(ePrefix+"%v", errx.Error())
 		return result, resultPrecision, errx
 	}
 
@@ -1171,7 +1147,7 @@ func (fdNthRoot *FixedDecimalNthRoot) CalculatePositiveFractionalNthRoot(
 			maxPrecision)
 
 	if errx != nil {
-		err = fmt.Errorf(ePrefix + "%v", errx.Error())
+		err = fmt.Errorf(ePrefix+"%v", errx.Error())
 		result = big.NewInt(0)
 		resultPrecision = big.NewInt(0)
 		return result, resultPrecision, errx
@@ -1187,18 +1163,16 @@ func (fdNthRoot *FixedDecimalNthRoot) CalculatePositiveFractionalNthRoot(
 	return result, resultPrecision, err
 }
 
-
 // CalculateNegativeFractionalNthRoot - Calculates roots for negative decimal
 // value or fractional nthRoots.
-//
 func (fdNthRoot *FixedDecimalNthRoot) CalculateNegativeFractionalNthRoot(
 	radicand,
 	radicandPrecision,
 	nthRoot,
 	nthRootPrecision,
 	maxPrecision *big.Int) (result *big.Int,
-													resultPrecision *big.Int,
-													err error) {
+	resultPrecision *big.Int,
+	err error) {
 
 	ePrefix := "FixedDecimalNthRoot.CalculateNegativeFractionalNthRoot() "
 	result = big.NewInt(0)
@@ -1210,8 +1184,8 @@ func (fdNthRoot *FixedDecimalNthRoot) CalculateNegativeFractionalNthRoot(
 	radicandPrecisionZeroCmp := radicandPrecision.Cmp(bigZero)
 
 	if radicandPrecisionZeroCmp == -1 {
-		err = fmt.Errorf(ePrefix +
-			"Error: 'radicandPrecision' is Less Than Zero! " +
+		err = fmt.Errorf(ePrefix+
+			"Error: 'radicandPrecision' is Less Than Zero! "+
 			"radicandPrecision='%v'", radicandPrecision.Text(10))
 		return result, resultPrecision, err
 	}
@@ -1219,19 +1193,19 @@ func (fdNthRoot *FixedDecimalNthRoot) CalculateNegativeFractionalNthRoot(
 	nthRtPrecisionCmpZero := nthRootPrecision.Cmp(bigZero)
 
 	if nthRtPrecisionCmpZero == -1 {
-		err = fmt.Errorf(ePrefix + "Error 'nthRootPrecision' is Less Than Zero! " +
+		err = fmt.Errorf(ePrefix+"Error 'nthRootPrecision' is Less Than Zero! "+
 			"nthRootPrecision='%v'", nthRootPrecision.Text(10))
 		return result, resultPrecision, err
 	}
 
 	if maxPrecision.Cmp(bigZero) == -1 {
-		err = fmt.Errorf(ePrefix + "Error 'maxPrecision' is Less Than Zero! " +
+		err = fmt.Errorf(ePrefix+"Error 'maxPrecision' is Less Than Zero! "+
 			"maxPrecision='%v'", maxPrecision.Text(10))
 		return result, resultPrecision, err
 	}
 
 	if nthRtPrecisionCmpZero == 0 {
-		err = fmt.Errorf(ePrefix + "Error 'nthRootPrecision' is Zero. nthRoot is an integer value!" +
+		err = fmt.Errorf(ePrefix+"Error 'nthRootPrecision' is Zero. nthRoot is an integer value!"+
 			"nthRootPrecision='%v'", nthRootPrecision.Text(10))
 		return result, resultPrecision, err
 	}
@@ -1259,7 +1233,7 @@ func (fdNthRoot *FixedDecimalNthRoot) CalculateNegativeFractionalNthRoot(
 	}
 
 	if nthRtCmpZero == 1 {
-		err = fmt.Errorf(ePrefix + "Error 'nthRoot' is positive! " +
+		err = fmt.Errorf(ePrefix+"Error 'nthRoot' is positive! "+
 			"nthRoot='%v'", maxPrecision.Text(10))
 		return result, resultPrecision, err
 	}
@@ -1286,10 +1260,9 @@ func (fdNthRoot *FixedDecimalNthRoot) CalculateNegativeFractionalNthRoot(
 			fdNthRoot.maxInternalPrecision)
 
 	if errx != nil {
-		err = fmt.Errorf(ePrefix + "%v", errx.Error())
+		err = fmt.Errorf(ePrefix+"%v", errx.Error())
 		return result, resultPrecision, err
 	}
-
 
 	result, resultPrecision, errx =
 		BigIntMathDivide{}.BigIntFracQuotient(
@@ -1300,12 +1273,11 @@ func (fdNthRoot *FixedDecimalNthRoot) CalculateNegativeFractionalNthRoot(
 			maxPrecision)
 
 	if errx != nil {
-		err = fmt.Errorf(ePrefix + "%v", errx.Error())
+		err = fmt.Errorf(ePrefix+"%v", errx.Error())
 		result = big.NewInt(0)
 		resultPrecision = big.NewInt(0)
 		return result, resultPrecision, err
 	}
-
 
 	fdNthRoot.OriginalRadicand = big.NewInt(0).Set(radicand)
 	fdNthRoot.OriginalRadicandPrecision = big.NewInt(0).Set(radicandPrecision)
@@ -1325,10 +1297,10 @@ func (fdNthRoot *FixedDecimalNthRoot) CalculateNegativeIntegerNthRoot(
 	nthRoot,
 	nthRootPrecision,
 	maxPrecision *big.Int) (result *big.Int,
-													resultPrecision *big.Int ,
-													err error)  {
+	resultPrecision *big.Int,
+	err error) {
 
-  ePrefix := "FixedDecimalNthRoot.CalculateNegativeIntegerNthRoot() "
+	ePrefix := "FixedDecimalNthRoot.CalculateNegativeIntegerNthRoot() "
 	result = big.NewInt(0)
 	resultPrecision = big.NewInt(0)
 	err = nil
@@ -1338,8 +1310,8 @@ func (fdNthRoot *FixedDecimalNthRoot) CalculateNegativeIntegerNthRoot(
 	radicandPrecisionZeroCmp := radicandPrecision.Cmp(bigZero)
 
 	if radicandPrecisionZeroCmp == -1 {
-		err = fmt.Errorf(ePrefix +
-			"Error: 'radicandPrecision' is Less Than Zero! " +
+		err = fmt.Errorf(ePrefix+
+			"Error: 'radicandPrecision' is Less Than Zero! "+
 			"radicandPrecision='%v'", radicandPrecision.Text(10))
 		return result, resultPrecision, err
 	}
@@ -1347,19 +1319,19 @@ func (fdNthRoot *FixedDecimalNthRoot) CalculateNegativeIntegerNthRoot(
 	nthRtPrecisionCmpZero := nthRootPrecision.Cmp(bigZero)
 
 	if nthRtPrecisionCmpZero == -1 {
-		err = fmt.Errorf(ePrefix + "Error 'nthRootPrecision' is Less Than Zero! " +
+		err = fmt.Errorf(ePrefix+"Error 'nthRootPrecision' is Less Than Zero! "+
 			"nthRootPrecision='%v'", nthRootPrecision.Text(10))
 		return result, resultPrecision, err
 	}
 
 	if maxPrecision.Cmp(bigZero) == -1 {
-		err = fmt.Errorf(ePrefix + "Error 'maxPrecision' is Less Than Zero! " +
+		err = fmt.Errorf(ePrefix+"Error 'maxPrecision' is Less Than Zero! "+
 			"maxPrecision='%v'", maxPrecision.Text(10))
 		return result, resultPrecision, err
 	}
 
 	if nthRtPrecisionCmpZero == 1 {
-		err = fmt.Errorf(ePrefix + "Error 'nthRootPrecision' is Greater Than Zero! " +
+		err = fmt.Errorf(ePrefix+"Error 'nthRootPrecision' is Greater Than Zero! "+
 			"nthRootPrecision='%v'", nthRootPrecision.Text(10))
 		return result, resultPrecision, err
 	}
@@ -1373,7 +1345,7 @@ func (fdNthRoot *FixedDecimalNthRoot) CalculateNegativeIntegerNthRoot(
 	}
 
 	if radicand.Cmp(big.NewInt(1)) == 0 &&
-		radicandPrecisionZeroCmp == 0{
+		radicandPrecisionZeroCmp == 0 {
 		result = big.NewInt(1)
 		return result, resultPrecision, err
 	}
@@ -1391,7 +1363,6 @@ func (fdNthRoot *FixedDecimalNthRoot) CalculateNegativeIntegerNthRoot(
 		}
 	}
 
-
 	bigOne := big.NewInt(1)
 	bigOnePrecision := big.NewInt(0)
 	var errx error
@@ -1408,7 +1379,7 @@ func (fdNthRoot *FixedDecimalNthRoot) CalculateNegativeIntegerNthRoot(
 				maxPrecision)
 
 		if errx != nil {
-			err = fmt.Errorf(ePrefix + "%v", errx.Error())
+			err = fmt.Errorf(ePrefix+"%v", errx.Error())
 			result = big.NewInt(0)
 			resultPrecision = big.NewInt(0)
 			return result, resultPrecision, err
@@ -1428,14 +1399,13 @@ func (fdNthRoot *FixedDecimalNthRoot) CalculateNegativeIntegerNthRoot(
 	}
 
 	if nthRtCmpZero == 1 {
-		err = fmt.Errorf(ePrefix + "Error 'nthRoot' is positive! " +
+		err = fmt.Errorf(ePrefix+"Error 'nthRoot' is positive! "+
 			"nthRoot='%v'", maxPrecision.Text(10))
 		return result, resultPrecision, err
 	}
 
 	// nthRoot precision must be zero. This is an integer nthRoot
 	// with a negative value.
-
 
 	// Convert nthRoot to positive value
 	tempNthRoot := big.NewInt(0).Neg(nthRoot)
@@ -1454,10 +1424,9 @@ func (fdNthRoot *FixedDecimalNthRoot) CalculateNegativeIntegerNthRoot(
 			fdNthRoot.maxInternalPrecision)
 
 	if errx != nil {
-		err = fmt.Errorf(ePrefix + "%v", errx.Error())
+		err = fmt.Errorf(ePrefix+"%v", errx.Error())
 		return result, resultPrecision, err
 	}
-
 
 	result, resultPrecision, errx =
 		BigIntMathDivide{}.BigIntFracQuotient(
@@ -1468,12 +1437,11 @@ func (fdNthRoot *FixedDecimalNthRoot) CalculateNegativeIntegerNthRoot(
 			maxPrecision)
 
 	if errx != nil {
-		err = fmt.Errorf(ePrefix + "%v", errx.Error())
+		err = fmt.Errorf(ePrefix+"%v", errx.Error())
 		result = big.NewInt(0)
 		resultPrecision = big.NewInt(0)
 		return result, resultPrecision, err
 	}
-
 
 	fdNthRoot.OriginalRadicand = big.NewInt(0).Set(radicand)
 	fdNthRoot.OriginalRadicandPrecision = big.NewInt(0).Set(radicandPrecision)
@@ -1489,7 +1457,6 @@ func (fdNthRoot *FixedDecimalNthRoot) CalculateNegativeIntegerNthRoot(
 // the maximum requested precision for the present calculation. The maximum internal precision is
 // used by intermediate calculations before applying the requested maximum precision to the final
 // result.
-//
 func (fdNthRoot *FixedDecimalNthRoot) ComputeMaxInternalPrecision(maxPrecision *big.Int) *big.Int {
 
 	internalPrecision := big.NewInt(0)
@@ -1508,19 +1475,19 @@ func (fdNthRoot *FixedDecimalNthRoot) ComputeMaxInternalPrecision(maxPrecision *
 
 		internalPrecision.Add(maxPrecision, big.NewInt(10))
 
-	} else if maxPrecisionCmp25 == 1  && maxPrecisionCmp200 == -1 {
+	} else if maxPrecisionCmp25 == 1 && maxPrecisionCmp200 == -1 {
 		internalPrecision.Add(maxPrecision, big.NewInt(0).Quo(maxPrecision, big.NewInt(2)))
 
-	} else if maxPrecisionCmp200 == 1 && maxPrecisionCmpTwoThou ==-1 {
+	} else if maxPrecisionCmp200 == 1 && maxPrecisionCmpTwoThou == -1 {
 		internalPrecision.Add(maxPrecision, big.NewInt(0).Quo(maxPrecision, big.NewInt(4)))
 
-	}else if maxPrecisionCmpTwoThou == 1 && maxPrecisionCmpFiveThou == -1 {
+	} else if maxPrecisionCmpTwoThou == 1 && maxPrecisionCmpFiveThou == -1 {
 		internalPrecision.Add(maxPrecision, big.NewInt(0).Quo(maxPrecision, big.NewInt(8)))
 
-	}else if maxPrecisionCmpFiveThou == 1 && maxPrecisionCmpTenThou == -1 {
+	} else if maxPrecisionCmpFiveThou == 1 && maxPrecisionCmpTenThou == -1 {
 		internalPrecision.Add(maxPrecision, big.NewInt(0).Quo(maxPrecision, big.NewInt(20)))
 
-	} else if maxPrecisionCmpTenThou ==1  {
+	} else if maxPrecisionCmpTenThou == 1 {
 
 		internalPrecision.Add(maxPrecision, big.NewInt(0).Quo(maxPrecision, big.NewInt(100)))
 
@@ -1542,11 +1509,10 @@ func (fdNthRoot *FixedDecimalNthRoot) ComputeMaxInternalPrecision(maxPrecision *
 // CalculateRoot - Calculate the nthRoot of a radicand
 // *** The following Method MUST BE CALLED FIRST ***
 // fdNthRoot.FormatCalculationConstants()
-//
 func (fdNthRoot *FixedDecimalNthRoot) CalculateRoot() (result *big.Int, resultPrecision *big.Int, err error) {
 
 	ePrefix := "FixedDecimalNthRoot.CalculateRoot() "
-	result =  big.NewInt(0)
+	result = big.NewInt(0)
 	resultPrecision = big.NewInt(0)
 	err = nil
 
@@ -1559,7 +1525,6 @@ func (fdNthRoot *FixedDecimalNthRoot) CalculateRoot() (result *big.Int, resultPr
 	residualIntegerTotalDigits := big.NewInt(0).Set(fdNthRoot.intRadicandTotalDigits)
 	var errx error
 
-
 	for residualInteger.Cmp(fdNthRoot.zero) == 1 {
 
 		nextBundle,
@@ -1570,7 +1535,7 @@ func (fdNthRoot *FixedDecimalNthRoot) CalculateRoot() (result *big.Int, resultPr
 			residualIntegerTotalDigits)
 
 		if errx != nil {
-			err = fmt.Errorf(ePrefix + "%v", errx.Error())
+			err = fmt.Errorf(ePrefix+"%v", errx.Error())
 			return result, resultPrecision, err
 		}
 
@@ -1580,11 +1545,10 @@ func (fdNthRoot *FixedDecimalNthRoot) CalculateRoot() (result *big.Int, resultPr
 		r.Set(rPrime)
 	}
 
-
 	residualFracNum := big.NewInt(0).Set(fdNthRoot.fmtFracRadicand)
 	residualFracPrecision := big.NewInt(0).Set(fdNthRoot.fmtFracRadicandPrecision)
 	maxPrecision := big.NewInt(0).Set(fdNthRoot.maxPrecision)
-	maxPrecision.Add(maxPrecision,fdNthRoot.one)
+	maxPrecision.Add(maxPrecision, fdNthRoot.one)
 
 	for maxPrecision.Cmp(fdNthRoot.zero) == 1 {
 		// fmt.Println("      residualFracNum: ", residualFracNum.Text(10))
@@ -1613,12 +1577,12 @@ func (fdNthRoot *FixedDecimalNthRoot) CalculateRoot() (result *big.Int, resultPr
 	uintMax := big.NewInt(0).SetUint64(math.MaxUint32)
 
 	if fdNthRoot.maxPrecision.Cmp(uintMax) == 1 {
-			err = fmt.Errorf(ePrefix +
-				"Error: Requested result maximum precision exceeds maximum for uint type." +
-				"Requested maxPrecision='%v'. Mixmum uint type capacity='%v'",
-				fdNthRoot.maxPrecision.Text(10), uintMax.Text(10))
+		err = fmt.Errorf(ePrefix+
+			"Error: Requested result maximum precision exceeds maximum for uint type."+
+			"Requested maxPrecision='%v'. Mixmum uint type capacity='%v'",
+			fdNthRoot.maxPrecision.Text(10), uintMax.Text(10))
 
-			return result, resultPrecision, err
+		return result, resultPrecision, err
 	}
 
 	result, resultPrecision, errx =
@@ -1633,7 +1597,6 @@ func (fdNthRoot *FixedDecimalNthRoot) CalculateRoot() (result *big.Int, resultPr
 	return result, resultPrecision, err
 }
 
-
 func (fdNthRoot *FixedDecimalNthRoot) ComputeBeta(
 	r,
 	alpha,
@@ -1647,7 +1610,6 @@ func (fdNthRoot *FixedDecimalNthRoot) ComputeBeta(
 	rPrime = big.NewInt(0)
 	yPrime = big.NewInt(0)
 	err = nil
-
 
 	fdNthRoot.term2b = big.NewInt(0).Exp(y, fdNthRoot.NthRoot, nil)
 	fdNthRoot.term2b.Mul(fdNthRoot.term2b, fdNthRoot.bPwrN)
@@ -1679,7 +1641,7 @@ func (fdNthRoot *FixedDecimalNthRoot) ComputeBeta(
 	}
 
 	if errx != nil {
-		err = fmt.Errorf(ePrefix + "%v", errx.Error())
+		err = fmt.Errorf(ePrefix+"%v", errx.Error())
 		rPrime.Set(fdNthRoot.zero)
 		yPrime.Set(fdNthRoot.zero)
 		return rPrime, yPrime, err
@@ -1730,7 +1692,6 @@ func (fdNthRoot *FixedDecimalNthRoot) Guess5Positive() (int, error) {
 	return 5, nil
 
 }
-
 
 // Guess 5 was negative - next guess is 2
 func (fdNthRoot *FixedDecimalNthRoot) Guess5Negative() (int, error) {
@@ -1794,26 +1755,24 @@ func (fdNthRoot *FixedDecimalNthRoot) Guess2Negative() (int, error) {
 
 	if fdNthRoot.GuessBeta(&fdNthRoot.betas[0]) == -1 {
 		return -1,
-		fmt.Errorf(ePrefix +
-			"Error. 1 is negative and zero is negative")
+			fmt.Errorf(ePrefix +
+				"Error. 1 is negative and zero is negative")
 	}
 
 	return 0, nil
 }
 
-
-func (fdNthRoot *FixedDecimalNthRoot)GuessBeta(
+func (fdNthRoot *FixedDecimalNthRoot) GuessBeta(
 	beta *NthRootBeta) int {
 
 	term2a := big.NewInt(0).Add(fdNthRoot.termBy, beta.Beta)
-	term2a.Exp(term2a, fdNthRoot.NthRoot,nil)
-	term2:= big.NewInt(0).Sub(term2a, fdNthRoot.term2b)
+	term2a.Exp(term2a, fdNthRoot.NthRoot, nil)
+	term2 := big.NewInt(0).Sub(term2a, fdNthRoot.term2b)
 	beta.RPrime.Sub(fdNthRoot.term1, term2)
 	beta.YPrime.Set(beta.Beta)
 	beta.Result = beta.RPrime.Cmp(fdNthRoot.zero)
 	return beta.Result
 }
-
 
 // FormatCalculationConstants - Generates calculation constants to be used in
 // computing the nthRoot of the target radicand.
@@ -1822,14 +1781,16 @@ func (fdNthRoot *FixedDecimalNthRoot)GuessBeta(
 // ================
 //
 // radicand					  *big.Int			- The radicand used for processing. These methods will
-//																		compute the nthRoot of radicand.
+//
+//	compute the nthRoot of radicand.
 //
 // maxPrecision					uint64			- The maximum precision for the result of this nthRoot
-//                                    calculation
+//
+//	calculation
 //
 // nthRoot							*big.Int		- The nthRoot must be defined as positive value greater than
-// 																		or equal to '2'.
 //
+//	or equal to '2'.
 func (fdNthRoot *FixedDecimalNthRoot) FormatCalculationConstants(
 	radicand,
 	radicandPrecision,
@@ -1861,7 +1822,7 @@ func (fdNthRoot *FixedDecimalNthRoot) FormatCalculationConstants(
 	// Initialize radicand precision
 	fdNthRoot.RadicandPrecision = big.NewInt(0).Set(radicandPrecision)
 
-		// Initialize Root calculation result
+	// Initialize Root calculation result
 	fdNthRoot.Root = big.NewInt(0)
 
 	// Initialize Root calculation result precision
@@ -1879,7 +1840,7 @@ func (fdNthRoot *FixedDecimalNthRoot) FormatCalculationConstants(
 	totDigits, err := BigIntMath{}.GetMagnitude(intRadicand)
 
 	if err != nil {
-		return fmt.Errorf(ePrefix +
+		return fmt.Errorf(ePrefix+
 			"%v", err.Error())
 	}
 
@@ -1908,13 +1869,13 @@ func (fdNthRoot *FixedDecimalNthRoot) FormatCalculationConstants(
 	// fmtFracRadicandPrecision
 
 	fdNthRoot.fmtFracRadicand,
-	fdNthRoot.fmtFracRadicandPrecision,
-	err = fdNthRoot.FormatFractionalDigitsFromRadicand(
+		fdNthRoot.fmtFracRadicandPrecision,
+		err = fdNthRoot.FormatFractionalDigitsFromRadicand(
 		fracRadicand,
 		fracRadicandPrecision)
 
 	if err != nil {
-		return fmt.Errorf(ePrefix +
+		return fmt.Errorf(ePrefix+
 			"%v", err.Error())
 	}
 
@@ -1938,17 +1899,15 @@ func (fdNthRoot *FixedDecimalNthRoot) FormatCalculationConstants(
 			fdNthRoot.NthRoot,
 			big.NewInt(1)), nil)
 
-
 	// Setting number system base = 10
 	fdNthRoot.bBase = big.NewInt(10)
 
 	// bBase^n
 	fdNthRoot.bPwrN = big.NewInt(0).Exp(fdNthRoot.ten, fdNthRoot.NthRoot, nil)
 
-
-	// fdNthRoot.betas Set up by call to 
+	// fdNthRoot.betas Set up by call to
 	// fdNthRoot.initializeCalcFactors() above
-	   
+
 	return nil
 }
 
@@ -1969,58 +1928,64 @@ func (fdNthRoot *FixedDecimalNthRoot) FormatCalculationConstants(
 // and a fracPrecision of '9'.
 //
 // Example:
-// 	decimal fraction:  0.0123456
 //
-// 	Input Values
-//  ------------
-// 	fmtFracRadicand = 123456
-//  fmtFracRadicandPrecision = 7
-//  nthRoot = 3
+//		decimal fraction:  0.0123456
 //
-//  Return Values
-//  -------------
-//  formattedFracInteger = 11012345600 - Notice the leading integer '1' placeholder
-//                                       in the return value. Aso notice that the
-//                                       fractional digits have trailing zeros added
-//                                       such that the fractional digits are evenly
-//                                       divisible by the nthRoot.
+//		Input Values
+//	 ------------
+//		fmtFracRadicand = 123456
+//	 fmtFracRadicandPrecision = 7
+//	 nthRoot = 3
+//
+//	 Return Values
+//	 -------------
+//	 formattedFracInteger = 11012345600 - Notice the leading integer '1' placeholder
+//	                                      in the return value. Aso notice that the
+//	                                      fractional digits have trailing zeros added
+//	                                      such that the fractional digits are evenly
+//	                                      divisible by the nthRoot.
 //
 // fracPrecision = 9									 	 Only the number of fractional digits in the
-//                                       'formattedFracInteger' are counted. The
-//                                       leading '11' integers are NOT counted.
+//
+//	'formattedFracInteger' are counted. The
+//	leading '11' integers are NOT counted.
 //
 // Input Parameters
 // ================
 // fmtFracRadicand					 	*big.Int	- The fractional numeric digits of the radicand expressed
-//                            				as a type *big.Int integer value. fmtFracRadicand must be
-//                                		greater than or equal to zero
+//
+//					as a type *big.Int integer value. fmtFracRadicand must be
+//	    		greater than or equal to zero
 //
 // fmtFracRadicandPrecision 	*big.Int	- The precision specification for input parameter 'fmtFracRadicand'.
-//																		Taken together, 'fmtFracRadicand' and 'fmtFracRadicandPrecision'
-// 																		defined	a fixed length decimal value.
-//                                		Example: fmtFracRadicand = 123456; fmtFracRadicandPrecision=7 defines
-//                                         	 a value of 0.0123456.
 //
-//                                  	Note: If fmtFracRadicandPrecision is less than zero, an error
-//                                  	will be returned.
+//																			Taken together, 'fmtFracRadicand' and 'fmtFracRadicandPrecision'
+//																			defined	a fixed length decimal value.
+//	                               		Example: fmtFracRadicand = 123456; fmtFracRadicandPrecision=7 defines
+//	                                        	 a value of 0.0123456.
+//
+//	                                 	Note: If fmtFracRadicandPrecision is less than zero, an error
+//	                                 	will be returned.
 //
 // Return Values
 // =============
 //
 // formattedFracInteger 	*big.Int	- If this function completes successfully, this return value
-//                                  	will be populated with the formatted fractional integer
-// 																		value. In the example above, this would be '11012345600'.
+//
+//	                                 	will be populated with the formatted fractional integer
+//																			value. In the example above, this would be '11012345600'.
 //
 // fracPrecision        	*big.Int  - The precision associated with the returned
-// 																		'formattedFracInteger'.
+//
+//	'formattedFracInteger'.
 //
 // err										error			- If the function completes successfully, this return value
-// 																		will be set to 'nil'. If an error occurs, the returned
-// 																		error instance will include an appropriate error message.
+//
+//	will be set to 'nil'. If an error occurs, the returned
+//	error instance will include an appropriate error message.
 //
 // ** IMPORTANT **
 // This function must be called prior to calling GetNextFractionalBundleFromRadicand()
-//
 func (fdNthRoot *FixedDecimalNthRoot) FormatFractionalDigitsFromRadicand(
 	fracRadicand,
 	fracRadicandPrecision *big.Int) (formattedFracInteger, fracPrecision *big.Int, err error) {
@@ -2031,7 +1996,7 @@ func (fdNthRoot *FixedDecimalNthRoot) FormatFractionalDigitsFromRadicand(
 	fracPrecision = big.NewInt(0)
 	err = nil
 
-	if fracRadicandPrecision.Cmp(fdNthRoot.zero) == - 1{
+	if fracRadicandPrecision.Cmp(fdNthRoot.zero) == -1 {
 		err = fmt.Errorf(ePrefix+
 			"Error: Input parameter 'fmtFracRadicandPrecision' is less than ZERO!. "+
 			"fmtFracRadicandPrecision='%v' ", fracRadicandPrecision.Text(10))
@@ -2040,7 +2005,6 @@ func (fdNthRoot *FixedDecimalNthRoot) FormatFractionalDigitsFromRadicand(
 	}
 
 	cmpFracRadicandZero := fracRadicand.Cmp(fdNthRoot.zero)
-
 
 	if cmpFracRadicandZero == -1 {
 
@@ -2079,7 +2043,7 @@ func (fdNthRoot *FixedDecimalNthRoot) FormatFractionalDigitsFromRadicand(
 // GetInternalCalcFactors - Returns the internal root calculation factors computed
 // for this root calculation thus far.
 func (fdNthRoot *FixedDecimalNthRoot) GetInternalCalcFactors() FixedDecNthRootCalcFactors {
-	
+
 	fdNthRoot.validateCalcFactors()
 
 	return FixedDecNthRootCalcFactors{}.NewCalcFacs(fdNthRoot)
@@ -2096,44 +2060,47 @@ func (fdNthRoot *FixedDecimalNthRoot) GetInternalCalcFactors() FixedDecNthRootCa
 // a placeholder value of '1' as the only digit to the left of the decimal
 //
 // Example:
-//    For actual fractional digits '123456'
-//		InputValues =
-//								formattedFracDigits = 1.000123456
-//						    fracPrecision = 9
-//								nthRoot = 3
 //
-//    Return Values:
-//								nextBundle = 123
-//                residualFracNum = 1.456
-//                residualFracPrecision = 3
+//	   For actual fractional digits '123456'
+//			InputValues =
+//									formattedFracDigits = 1.000123456
+//							    fracPrecision = 9
+//									nthRoot = 3
+//
+//	   Return Values:
+//									nextBundle = 123
+//	               residualFracNum = 1.456
+//	               residualFracPrecision = 3
 //
 // Input Parameters
 // ================
 //
 // fmtFracNum					*big.Int	- The OriginalRadicand fractional digits formatted with a
-//                                  leading integer, '11'. Example: radicand fractional
-//                                  digits, '123456' with a precision of '9', must be
-//                                  formatted as '11.000123456'. If 'fmtFracNum'
-//                                  is less than '11', an error will be returned.
-//                                  A value of '11' signals that all fractional digits
-//                                  have been processed and the next bundle will be
-//                                  set to zero.
+//
+//	leading integer, '11'. Example: radicand fractional
+//	digits, '123456' with a precision of '9', must be
+//	formatted as '11.000123456'. If 'fmtFracNum'
+//	is less than '11', an error will be returned.
+//	A value of '11' signals that all fractional digits
+//	have been processed and the next bundle will be
+//	set to zero.
 //
 // fracPrecision				*big.Int	- The number of digits to the right of the decimal
-//                                  place in fmtFracNum. If fracPrecision is
-//                                  NOT evenly divisible by nthRoot, an error will
-//                                  be returned.
+//
+//	place in fmtFracNum. If fracPrecision is
+//	NOT evenly divisible by nthRoot, an error will
+//	be returned.
 //
 // Return Values
 // =============
 //
 // nextBundle						*big.Int	- The next bundle of digits to be processed for the
-//                                  nthRoot calculation.
+//
+//	nthRoot calculation.
 //
 // residualFracNum			*big.Int	- The remaining fractional digits to be processed
 //
 // residualFracPrecision *big.Int	- The precision specification for 'residualFracNum.
-//
 func (fdNthRoot FixedDecimalNthRoot) GetNextFractionalBundleFromRadicand(
 	fmtFracNum,
 	fmtFracPrecision *big.Int) (
@@ -2207,24 +2174,27 @@ func (fdNthRoot FixedDecimalNthRoot) GetNextFractionalBundleFromRadicand(
 // ================
 //
 // integerNum 		*big.Int	- The integer digits which will parsed into a bundle for
-//                          	purposes of the nthRoot calculation. 'integerNum' must
-//                            be greater than or equal to zero.
+//
+//		purposes of the nthRoot calculation. 'integerNum' must
+//	  be greater than or equal to zero.
 //
 // intTotalDigits	*big.Int	- The number of numeric digits comprising input parameter
-//														'integerNum'. 'intTotalDigits' must be greater than or
-//                            equal to zero.
+//
+//															'integerNum'. 'intTotalDigits' must be greater than or
+//	                           equal to zero.
 //
 // Return Values
 // =============
 //
 // nextBundle							*big.Int	- The next bundle of digits to be processed for
-// 																		the	nthRoot calculation.
+//
+//	the	nthRoot calculation.
 //
 // residualInteger				*big.Int	- The remaining integer digits to be processed.
 //
 // residualIntTotalDigits *big.Int	- The number of numeric digits comprising return
-// 																		value 'residualInteger'.
 //
+//	value 'residualInteger'.
 func (fdNthRoot *FixedDecimalNthRoot) GetNextIntegerBundleFromRadicand(
 	integerNum,
 	intTotalDigits *big.Int) (
@@ -2301,33 +2271,33 @@ func (fdNthRoot FixedDecimalNthRoot) New() FixedDecimalNthRoot {
 
 func (fdNthRoot *FixedDecimalNthRoot) initializeCalcFactors() {
 
-	fdNthRoot.NthRoot       						= big.NewInt(0)
-	fdNthRoot.NthRootPrecision					= big.NewInt(0)
-	fdNthRoot.Radicand									= big.NewInt(0)
-	fdNthRoot.RadicandPrecision 				= big.NewInt(0)
-	fdNthRoot.Root          						= big.NewInt(0)
-	fdNthRoot.RootPrecision 						= big.NewInt(0)
-	fdNthRoot.maxPrecision  						= big.NewInt(0)
-	fdNthRoot.maxInternalPrecision			= big.NewInt(0)
-	fdNthRoot.intRadicand 							= big.NewInt(0)
-	fdNthRoot.intRadicandTotalDigits		= big.NewInt(0)
-	fdNthRoot.fmtFracRadicand 					= big.NewInt(0)
-	fdNthRoot.fmtFracRadicandPrecision 	= big.NewInt(0)
-	fdNthRoot.fracMask1     						= big.NewInt(0)
-	fdNthRoot.fracMask2     						= big.NewInt(0)
-	fdNthRoot.bBase         						= big.NewInt(0)
-	fdNthRoot.bPwrN         						= big.NewInt(0)
-	fdNthRoot.term1											= big.NewInt(0)
-	fdNthRoot.termBy										= big.NewInt(0)
-	fdNthRoot.term2b										= big.NewInt(0)
-	fdNthRoot.zero          						= big.NewInt(0)
-	fdNthRoot.one           						= big.NewInt(0)
-	fdNthRoot.two           						= big.NewInt(0)
-	fdNthRoot.ten           						= big.NewInt(0)
-	fdNthRoot.eleven        						= big.NewInt(0)
-	fdNthRoot.betas         						= make([] NthRootBeta, 10)
+	fdNthRoot.NthRoot = big.NewInt(0)
+	fdNthRoot.NthRootPrecision = big.NewInt(0)
+	fdNthRoot.Radicand = big.NewInt(0)
+	fdNthRoot.RadicandPrecision = big.NewInt(0)
+	fdNthRoot.Root = big.NewInt(0)
+	fdNthRoot.RootPrecision = big.NewInt(0)
+	fdNthRoot.maxPrecision = big.NewInt(0)
+	fdNthRoot.maxInternalPrecision = big.NewInt(0)
+	fdNthRoot.intRadicand = big.NewInt(0)
+	fdNthRoot.intRadicandTotalDigits = big.NewInt(0)
+	fdNthRoot.fmtFracRadicand = big.NewInt(0)
+	fdNthRoot.fmtFracRadicandPrecision = big.NewInt(0)
+	fdNthRoot.fracMask1 = big.NewInt(0)
+	fdNthRoot.fracMask2 = big.NewInt(0)
+	fdNthRoot.bBase = big.NewInt(0)
+	fdNthRoot.bPwrN = big.NewInt(0)
+	fdNthRoot.term1 = big.NewInt(0)
+	fdNthRoot.termBy = big.NewInt(0)
+	fdNthRoot.term2b = big.NewInt(0)
+	fdNthRoot.zero = big.NewInt(0)
+	fdNthRoot.one = big.NewInt(0)
+	fdNthRoot.two = big.NewInt(0)
+	fdNthRoot.ten = big.NewInt(0)
+	fdNthRoot.eleven = big.NewInt(0)
+	fdNthRoot.betas = make([]NthRootBeta, 10)
 
-	for i:=0; i < 10; i++ {
+	for i := 0; i < 10; i++ {
 		fdNthRoot.betas[i] = NthRootBeta{}.New(i, i)
 	}
 
@@ -2430,31 +2400,31 @@ func (fdNthRoot *FixedDecimalNthRoot) validateCalcFactors() {
 	if fdNthRoot.zero == nil {
 		fdNthRoot.zero = big.NewInt(0)
 	}
-	
+
 	if fdNthRoot.one == nil {
 		fdNthRoot.one = big.NewInt(0)
 	}
-	
+
 	if fdNthRoot.two == nil {
 		fdNthRoot.two = big.NewInt(0)
 	}
-	
+
 	if fdNthRoot.ten == nil {
 		fdNthRoot.ten = big.NewInt(0)
 	}
-	
+
 	if fdNthRoot.eleven == nil {
 		fdNthRoot.eleven = big.NewInt(0)
 	}
-	
-	if len(fdNthRoot.betas) != 10 {
-		
-		fdNthRoot.betas = make([] NthRootBeta, 10)
 
-		for i:=0; i < 10; i++ {
+	if len(fdNthRoot.betas) != 10 {
+
+		fdNthRoot.betas = make([]NthRootBeta, 10)
+
+		for i := 0; i < 10; i++ {
 			fdNthRoot.betas[i] = NthRootBeta{}.New(i, i)
 		}
-		
+
 	}
-	
+
 }

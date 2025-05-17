@@ -18,7 +18,6 @@ import (
 // https://github.com/MikeAustin71/mathopsgo.git
 //
 // See: https://en.wikipedia.org/wiki/Shifting_nth_root_algorithm
-//
 type BigIntMathNthRoot struct {
 	NthRoot               BigIntNum
 	OriginalRadicand      BigIntNum
@@ -82,24 +81,27 @@ func (nthrt *BigIntMathNthRoot) Empty() {
 // ================
 //
 // radicand	- The radicand value from which the nth Root will be taken.
-//            nthRootResult^nthRoot = radicand
+//
+//	nthRootResult^nthRoot = radicand
 //
 // nthRoot  - Specifies the root which will be calculated for parameter,
-// 						'radicand'. Example, square root, cube root, 4th root,
-// 						9th root etc. 'nthRoot' is a BigIntNum Type which may be
-// 						a positive or negative number. In addition, the nthRoot may
-// 						be either an integer number or a fractional number.
-// 					  The nthRoot must be with a numeric value greater than one ('1')
-//            or less than minus one (-1). nthRoots with a value of zero will
-// 						always return an nthRoot result of zero. Nth Root values of +1 or
-//						-1 will generate an error.
 //
-//						If the radicand is negative and the nthRoot value is an even number
-//						(evenly divisible by 2 with no remainder), an error will be returned
-//						since the result of such a calculation is an imaginary number.
+//							'radicand'. Example, square root, cube root, 4th root,
+//							9th root etc. 'nthRoot' is a BigIntNum Type which may be
+//							a positive or negative number. In addition, the nthRoot may
+//							be either an integer number or a fractional number.
+//						  The nthRoot must be with a numeric value greater than one ('1')
+//	           or less than minus one (-1). nthRoots with a value of zero will
+//							always return an nthRoot result of zero. Nth Root values of +1 or
+//							-1 will generate an error.
+//
+//							If the radicand is negative and the nthRoot value is an even number
+//							(evenly divisible by 2 with no remainder), an error will be returned
+//							since the result of such a calculation is an imaginary number.
 //
 // maxPrecision	- Specifies the maximum number of decimals to the right of the
-// 								decimal point to which the Nth root result will be calculated.
+//
+//								decimal point to which the Nth root result will be calculated.
 //
 //	Returns
 //	=======
@@ -112,7 +114,6 @@ func (nthrt *BigIntMathNthRoot) Empty() {
 //	error			- If the calculation completes successfully, the 'error' type
 //							returned will be set equal to 'nil'. If an error is encountered
 //							the returned 'error' type will contain an error message.
-//
 func (nthrt BigIntMathNthRoot) GetNthRoot(
 	radicand, nthRoot BigIntNum,
 	maxPrecision uint) (BigIntNum, error) {
@@ -228,7 +229,6 @@ func (nthrt *BigIntMathNthRoot) calcPositiveNthRoot(radicand, nthRoot BigIntNum,
 
 // calcNegativeNthRoot - calculates the nth root result of a radicand where the
 // nth root is a negative value.
-//
 func (nthrt *BigIntMathNthRoot) calcNegativeNthRoot(radicand, nthRoot BigIntNum,
 	maxPrecision uint) (BigIntNum, error) {
 
@@ -331,7 +331,6 @@ func (nthrt *BigIntMathNthRoot) calcPositiveIntegerNthRoot(radicand, nthRoot Big
 
 // calcPositiveFractionalNthRoot - Calculates the nth root result for positive fractional
 // nthRoot values.
-//
 func (nthrt *BigIntMathNthRoot) calcPositiveFractionalNthRoot(radicand, nthRoot BigIntNum,
 	maxPrecision uint) (BigIntNum, error) {
 
@@ -430,9 +429,7 @@ func (nthrt *BigIntMathNthRoot) calcPositiveFractionalNthRoot(radicand, nthRoot 
 //
 // nthRoot 	- BigIntNum 	n√ The index or root. This must be a positive integer value.
 //
-//maxPrecision	- uint		The maximum precision specified for the result.
-//
-//
+// maxPrecision	- uint		The maximum precision specified for the result.
 func (nthrt *BigIntMathNthRoot) calcNthRootGateway(
 	radicand, nthRoot BigIntNum,
 	maxPrecision uint) (BigIntNum, error) {
@@ -468,7 +465,6 @@ func (nthrt *BigIntMathNthRoot) calcNthRootGateway(
 // initialize - Initializes the data fields of the BigIntMathNthRoot structure and validates the
 // original number passed to the Nth Root Calculation. This method assumes that radicand and
 // nthRoot have already been validated.
-//
 func (nthrt *BigIntMathNthRoot) initialize(
 	radicand, nthRoot BigIntNum,
 	maxPrecision uint) (setupRadicand BigIntNum, err error) {
@@ -583,9 +579,9 @@ func (nthrt *BigIntMathNthRoot) setupBundles(
 		intBundleRadicand = setupRadicand.CopyOut()
 
 		/*
-		 fmt.Println("setupRadicand: ", setupRadicand.GetNumStr())
-		 fmt.Println("intBundleRadicand:", intBundleRadicand.GetNumStr())
-		 fmt.Println("fracBundleRadicand:", fracBundleRadicand.GetNumStr())
+		   fmt.Println("setupRadicand: ", setupRadicand.GetNumStr())
+		   fmt.Println("intBundleRadicand:", intBundleRadicand.GetNumStr())
+		   fmt.Println("fracBundleRadicand:", fracBundleRadicand.GetNumStr())
 		*/
 
 		return setupRadicand, intBundleRadicand, fracBundleRadicand, precisionAdjustment, err
@@ -647,7 +643,6 @@ func (nthrt *BigIntMathNthRoot) setupBundles(
 // The final bundle length is equal to the actual number of bundles associated
 // with the radicand plus bundles added on for additional precision in the
 // final nthRoot result.
-//
 func (nthrt *BigIntMathNthRoot) calcBundleLength(
 	radicand,
 	nthRoot BigIntNum,
@@ -736,8 +731,8 @@ func (nthrt *BigIntMathNthRoot) calcBundleLength(
 // result output by the Nth Root calculation.  Actual result precision is
 // equal to the Bundle Add On Precision + the quotient of radicand precision
 // divided by nthRoot.
-//			bundleAddOnPrecision + Quotient(radicandPrecision/nthRoot)
 //
+//	bundleAddOnPrecision + Quotient(radicandPrecision/nthRoot)
 func (nthrt *BigIntMathNthRoot) calcPrecision(
 	radicandPrecision,
 	fracBundleLength,
@@ -776,7 +771,6 @@ func (nthrt *BigIntMathNthRoot) calcPrecision(
 }
 
 // doRootExtraction - Manages the root extraction process
-//
 func (nthrt *BigIntMathNthRoot) doRootExtraction() error {
 
 	ePrefix := "BigIntMathNthRoot.doRootExtraction() "
@@ -813,7 +807,6 @@ func (nthrt *BigIntMathNthRoot) doRootExtraction() error {
 
 // findNextRoot - Called by doRootExtraction() to find the next
 // root value.
-//
 func (nthrt *BigIntMathNthRoot) findNextRoot() error {
 
 	ePrefix := "BigIntMathNthRoot.findNextRoot() "

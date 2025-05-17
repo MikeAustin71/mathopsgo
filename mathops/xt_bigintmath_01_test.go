@@ -23,23 +23,22 @@ func TestBigIntMath_ArithmeticGeometricMean_01(t *testing.T) {
 			maxInternalPrecision,
 			targetPrecision)
 
-
-	if err!=nil {
+	if err != nil {
 		t.Errorf("Error: %v", err.Error())
 		return
 	}
 
-	binAGMean, err :=BigIntNum{}.NewBigIntPrecision(agMean, agMeanPrecision)
+	binAGMean, err := BigIntNum{}.NewBigIntPrecision(agMean, agMeanPrecision)
 
-	if err!=nil {
+	if err != nil {
 		t.Errorf("%v", err.Error())
 		return
 	}
 
 	binGValue, err := BigIntNum{}.NewBigIntPrecision(gValue, gValuePrecision)
 
-	if err!=nil {
-		t.Errorf( "%v", err.Error())
+	if err != nil {
+		t.Errorf("%v", err.Error())
 		return
 	}
 
@@ -175,12 +174,11 @@ func TestBigIntMath_GetMagnitude_06(t *testing.T) {
 
 func TestBigIntMath_GetMagnitude_07(t *testing.T) {
 
-
 	numStr := "8565264792812345678901234567890"
 	fixDec, err := BigIntFixedDecimal{}.NewNumStr(numStr)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntFixedDecimal{}.NewNumStr(numStr). " +
+		t.Errorf("Error returned by BigIntFixedDecimal{}.NewNumStr(numStr). "+
 			"numStr='%v' Error='%v'", numStr, err.Error())
 	}
 
@@ -208,7 +206,7 @@ func TestBigIntMath_GetMagnitude_08(t *testing.T) {
 	fixDec, err := BigIntFixedDecimal{}.NewNumStr(numStr)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntFixedDecimal{}.NewNumStr(numStr). " +
+		t.Errorf("Error returned by BigIntFixedDecimal{}.NewNumStr(numStr). "+
 			"numStr='%v' Error='%v'", numStr, err.Error())
 	}
 
@@ -238,7 +236,7 @@ func TestBigIntMath_GetMagnitude_09(t *testing.T) {
 	fixDec, err := BigIntFixedDecimal{}.NewNumStr(numStr)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntFixedDecimal{}.NewNumStr(numStr). " +
+		t.Errorf("Error returned by BigIntFixedDecimal{}.NewNumStr(numStr). "+
 			"numStr='%v' Error='%v'", numStr, err.Error())
 	}
 
@@ -267,7 +265,7 @@ func TestBigIntMath_GetMagnitude_10(t *testing.T) {
 	fixDec, err := BigIntFixedDecimal{}.NewNumStr(numStr)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntFixedDecimal{}.NewNumStr(numStr). " +
+		t.Errorf("Error returned by BigIntFixedDecimal{}.NewNumStr(numStr). "+
 			"numStr='%v' Error='%v'", numStr, err.Error())
 	}
 
@@ -296,7 +294,7 @@ func TestBigIntMath_GetMagnitude_11(t *testing.T) {
 	fixDec, err := BigIntFixedDecimal{}.NewNumStr(numStr)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntFixedDecimal{}.NewNumStr(numStr). " +
+		t.Errorf("Error returned by BigIntFixedDecimal{}.NewNumStr(numStr). "+
 			"numStr='%v' Error='%v'", numStr, err.Error())
 	}
 
@@ -325,7 +323,7 @@ func TestBigIntMath_GetMagnitude_12(t *testing.T) {
 	fixDec, err := BigIntFixedDecimal{}.NewNumStr(numStr)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntFixedDecimal{}.NewNumStr(numStr). " +
+		t.Errorf("Error returned by BigIntFixedDecimal{}.NewNumStr(numStr). "+
 			"numStr='%v' Error='%v'", numStr, err.Error())
 	}
 
@@ -354,7 +352,7 @@ func TestBigIntMath_GetMagnitude_13(t *testing.T) {
 	fixDec, err := BigIntFixedDecimal{}.NewNumStr(numStr)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntFixedDecimal{}.NewNumStr(numStr). " +
+		t.Errorf("Error returned by BigIntFixedDecimal{}.NewNumStr(numStr). "+
 			"numStr='%v' Error='%v'", numStr, err.Error())
 	}
 
@@ -383,7 +381,7 @@ func TestBigIntMath_GetMagnitude_14(t *testing.T) {
 	fixDec, err := BigIntFixedDecimal{}.NewNumStr(numStr)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntFixedDecimal{}.NewNumStr(numStr). " +
+		t.Errorf("Error returned by BigIntFixedDecimal{}.NewNumStr(numStr). "+
 			"numStr='%v' Error='%v'", numStr, err.Error())
 	}
 
@@ -412,7 +410,7 @@ func TestBigIntMath_GetMagnitude_15(t *testing.T) {
 	fixDec, err := BigIntFixedDecimal{}.NewNumStr(numStr)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntFixedDecimal{}.NewNumStr(numStr). " +
+		t.Errorf("Error returned by BigIntFixedDecimal{}.NewNumStr(numStr). "+
 			"numStr='%v' Error='%v'", numStr, err.Error())
 	}
 
@@ -441,7 +439,7 @@ func TestBigIntMath_GetMagnitude_16(t *testing.T) {
 	fixDec, err := BigIntFixedDecimal{}.NewNumStr(numStr)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntFixedDecimal{}.NewNumStr(numStr). " +
+		t.Errorf("Error returned by BigIntFixedDecimal{}.NewNumStr(numStr). "+
 			"numStr='%v' Error='%v'", numStr, err.Error())
 	}
 
@@ -470,7 +468,7 @@ func TestBigIntMath_GetMagnitude_17(t *testing.T) {
 	fixDec, err := BigIntFixedDecimal{}.NewNumStr(numStr)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntFixedDecimal{}.NewNumStr(numStr). " +
+		t.Errorf("Error returned by BigIntFixedDecimal{}.NewNumStr(numStr). "+
 			"numStr='%v' Error='%v'", numStr, err.Error())
 	}
 
@@ -506,7 +504,7 @@ func TestBigIntMath_BigIntPrecisionCmp_01(t *testing.T) {
 			num2Precision)
 
 	if expectedResult != cmpResult {
-		t.Errorf("Error: Expected compare result='%v'. " +
+		t.Errorf("Error: Expected compare result='%v'. "+
 			"Instead, compare result='%v' ",
 			expectedResult, cmpResult)
 	}
@@ -528,7 +526,7 @@ func TestBigIntMath_BigIntPrecisionCmp_02(t *testing.T) {
 			num2Precision)
 
 	if expectedResult != cmpResult {
-		t.Errorf("Error: Expected compare result='%v'. " +
+		t.Errorf("Error: Expected compare result='%v'. "+
 			"Instead, compare result='%v' ",
 			expectedResult, cmpResult)
 	}
@@ -550,7 +548,7 @@ func TestBigIntMath_BigIntPrecisionCmp_03(t *testing.T) {
 			num2Precision)
 
 	if expectedResult != cmpResult {
-		t.Errorf("Error: Expected compare result='%v'. " +
+		t.Errorf("Error: Expected compare result='%v'. "+
 			"Instead, compare result='%v' ",
 			expectedResult, cmpResult)
 	}
@@ -572,7 +570,7 @@ func TestBigIntMath_BigIntPrecisionCmp_04(t *testing.T) {
 			num2Precision)
 
 	if expectedResult != cmpResult {
-		t.Errorf("Error: Expected compare result='%v'. " +
+		t.Errorf("Error: Expected compare result='%v'. "+
 			"Instead, compare result='%v' ",
 			expectedResult, cmpResult)
 	}
@@ -594,7 +592,7 @@ func TestBigIntMath_BigIntPrecisionCmp_05(t *testing.T) {
 			num2Precision)
 
 	if expectedResult != cmpResult {
-		t.Errorf("Error: Expected compare result='%v'. " +
+		t.Errorf("Error: Expected compare result='%v'. "+
 			"Instead, compare result='%v' ",
 			expectedResult, cmpResult)
 	}
@@ -616,7 +614,7 @@ func TestBigIntMath_BigIntPrecisionCmp_06(t *testing.T) {
 			num2Precision)
 
 	if expectedResult != cmpResult {
-		t.Errorf("Error: Expected compare result='%v'. " +
+		t.Errorf("Error: Expected compare result='%v'. "+
 			"Instead, compare result='%v' ",
 			expectedResult, cmpResult)
 	}
@@ -638,13 +636,12 @@ func TestBigIntMath_BigIntPrecisionCmp_07(t *testing.T) {
 			num2Precision)
 
 	if expectedResult != cmpResult {
-		t.Errorf("Error: Expected compare result='%v'. " +
+		t.Errorf("Error: Expected compare result='%v'. "+
 			"Instead, compare result='%v' ",
 			expectedResult, cmpResult)
 	}
 
 }
-
 
 func TestBigIntMath_RoundToMaxPrecision_01(t *testing.T) {
 	num1 := big.NewInt(762939453125)
@@ -873,7 +870,6 @@ func TestBigIntMath_RoundToMaxPrecision_07(t *testing.T) {
 			expectedResult, binResult.GetNumStr())
 	}
 }
-
 
 func TestBigIntMath_TruncateToMaxPrecision_01(t *testing.T) {
 	num1 := big.NewInt(762939453125)

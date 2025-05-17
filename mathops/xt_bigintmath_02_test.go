@@ -17,11 +17,11 @@ func TestBigIntMath_TruncateTrailingFractionalZeros_01(t *testing.T) {
 		BigIntMath{}.TruncateTrailingFractionalZeros(num, numPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntMath{}.TruncateTrailingFractionalZeros() " +
+		t.Errorf("Error returned by BigIntMath{}.TruncateTrailingFractionalZeros() "+
 			"Error: %v", err.Error())
 	}
 
-	if expectedNum.Cmp(actualNum)!=0 {
+	if expectedNum.Cmp(actualNum) != 0 {
 		t.Errorf("Expected actualNum='%v'. Instead, actualNum='%v'",
 			expectedNum.Text(10), actualNum.Text(10))
 	}
@@ -45,11 +45,11 @@ func TestBigIntMath_TruncateTrailingFractionalZeros_02(t *testing.T) {
 		BigIntMath{}.TruncateTrailingFractionalZeros(num, numPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntMath{}.TruncateTrailingFractionalZeros() " +
+		t.Errorf("Error returned by BigIntMath{}.TruncateTrailingFractionalZeros() "+
 			"Error: %v", err.Error())
 	}
 
-	if expectedNum.Cmp(actualNum)!=0 {
+	if expectedNum.Cmp(actualNum) != 0 {
 		t.Errorf("Expected actualNum='%v'. Instead, actualNum='%v'",
 			expectedNum.Text(10), actualNum.Text(10))
 	}
@@ -73,11 +73,11 @@ func TestBigIntMath_TruncateTrailingFractionalZeros_03(t *testing.T) {
 		BigIntMath{}.TruncateTrailingFractionalZeros(num, numPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntMath{}.TruncateTrailingFractionalZeros() " +
+		t.Errorf("Error returned by BigIntMath{}.TruncateTrailingFractionalZeros() "+
 			"Error: %v", err.Error())
 	}
 
-	if expectedNum.Cmp(actualNum)!=0 {
+	if expectedNum.Cmp(actualNum) != 0 {
 		t.Errorf("Expected actualNum='%v'. Instead, actualNum='%v'",
 			expectedNum.Text(10), actualNum.Text(10))
 	}
@@ -101,11 +101,11 @@ func TestBigIntMath_TruncateTrailingFractionalZeros_04(t *testing.T) {
 		BigIntMath{}.TruncateTrailingFractionalZeros(num, numPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntMath{}.TruncateTrailingFractionalZeros() " +
+		t.Errorf("Error returned by BigIntMath{}.TruncateTrailingFractionalZeros() "+
 			"Error: %v", err.Error())
 	}
 
-	if expectedNum.Cmp(actualNum)!=0 {
+	if expectedNum.Cmp(actualNum) != 0 {
 		t.Errorf("Expected actualNum='%v'. Instead, actualNum='%v'",
 			expectedNum.Text(10), actualNum.Text(10))
 	}
@@ -129,11 +129,11 @@ func TestBigIntMath_TruncateTrailingFractionalZeros_05(t *testing.T) {
 		BigIntMath{}.TruncateTrailingFractionalZeros(num, numPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntMath{}.TruncateTrailingFractionalZeros() " +
+		t.Errorf("Error returned by BigIntMath{}.TruncateTrailingFractionalZeros() "+
 			"Error: %v", err.Error())
 	}
 
-	if expectedNum.Cmp(actualNum)!=0 {
+	if expectedNum.Cmp(actualNum) != 0 {
 		t.Errorf("Expected actualNum='%v'. Instead, actualNum='%v'",
 			expectedNum.Text(10), actualNum.Text(10))
 	}
