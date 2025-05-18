@@ -1,9 +1,9 @@
 package mathops
 
 import (
-	"fmt"
-	ePref "github.com/MikeAustin71/errpref"
-	"math/big"
+  "fmt"
+  ePref "github.com/MikeAustin71/errpref"
+  "math/big"
 )
 
 // BigIntMathDivide - This type contains methods used to perform the
@@ -11,15 +11,15 @@ import (
 //
 // Reference the 'big' math package: https://golang.org/pkg/math/big/
 type BigIntMathDivide struct {
-	Input BigIntPair
-	// BigIntPair.Big1 = Dividend
-	// BigIntPair.Big2 = Divisor
+  Input BigIntPair
+  // BigIntPair.Big1 = Dividend
+  // BigIntPair.Big2 = Divisor
 
-	Result BigIntNum // BigIntPair.Big1 = Quotient
-	// BigIntPair.Big2 = Modulo
+  Result BigIntNum // BigIntPair.Big1 = Quotient
+  // BigIntPair.Big2 = Modulo
 
-	ResultFracQuo BigIntNum // Quotient expressed with fractional digits
-	// to the right of the decimal place.
+  ResultFracQuo BigIntNum // Quotient expressed with fractional digits
+  // to the right of the decimal place.
 }
 
 // BigIntDividedByTwoToPower
@@ -40,36 +40,36 @@ type BigIntMathDivide struct {
 //	(2) This method will use a right shift technique 33,333 / 2^(8) to generate
 //	    a quotient of 130.
 func (bIDivide *BigIntMathDivide) BigIntDividedByTwoToPower(
-	dividend *big.Int,
-	exponent uint) (integerQuotient *big.Int, err error) {
+  dividend *big.Int,
+  exponent uint) (integerQuotient *big.Int, err error) {
 
-	var ePrefix *ePref.ErrPrefixDto
+  var ePrefix *ePref.ErrPrefixDto
 
-	ePrefix,
-		err = ePref.ErrPrefixDto{}.NewIEmpty(
-		nil,
-		"BigIntMathDivide.BigIntDividedByTwoToPower",
-		"")
+  ePrefix,
+    err = ePref.ErrPrefixDto{}.NewIEmpty(
+    nil,
+    "BigIntMathDivide.BigIntDividedByTwoToPower",
+    "")
 
-	if err != nil {
-		return big.NewInt(0), err
-	}
+  if err != nil {
+    return big.NewInt(0), err
+  }
 
-	if dividend == nil {
+  if dividend == nil {
 
-		err = &InputPtrNilError{
-			ErrPrefix:     ePrefix.String(),
-			ParameterName: "'dividend'",
-		}
+    err = &InputPtrNilError{
+      ErrPrefix:     ePrefix.String(),
+      ParameterName: "'dividend'",
+    }
 
-		return big.NewInt(0), err
-	}
+    return big.NewInt(0), err
+  }
 
-	integerQuotient = big.NewInt(0)
+  integerQuotient = big.NewInt(0)
 
-	integerQuotient.Rsh(dividend, exponent)
+  integerQuotient.Rsh(dividend, exponent)
 
-	return integerQuotient, err
+  return integerQuotient, err
 }
 
 // BigIntFracQuotient
@@ -180,190 +180,190 @@ func (bIDivide *BigIntMathDivide) BigIntDividedByTwoToPower(
 //	 be populated with the correct result and 'err' will
 //	 be set equal to 'nil'.
 func (bIDivide *BigIntMathDivide) BigIntFracQuotient(
-	dividend *big.Int,
-	dividendPrecision *big.Int,
-	divisor *big.Int,
-	divisorPrecision *big.Int,
-	maxPrecision *big.Int) (quotient *big.Int, quotientPrecision *big.Int, err error) {
+  dividend *big.Int,
+  dividendPrecision *big.Int,
+  divisor *big.Int,
+  divisorPrecision *big.Int,
+  maxPrecision *big.Int) (quotient *big.Int, quotientPrecision *big.Int, err error) {
 
-	var ePrefix *ePref.ErrPrefixDto
+  var ePrefix *ePref.ErrPrefixDto
 
-	quotient = big.NewInt(0)
+  quotient = big.NewInt(0)
 
-	quotientPrecision = big.NewInt(0)
+  quotientPrecision = big.NewInt(0)
 
-	ePrefix,
-		err = ePref.ErrPrefixDto{}.NewIEmpty(
-		nil,
-		"BigIntMathDivide.BigIntFracQuotient",
-		"")
+  ePrefix,
+    err = ePref.ErrPrefixDto{}.NewIEmpty(
+    nil,
+    "BigIntMathDivide.BigIntFracQuotient",
+    "")
 
-	if err != nil {
-		return quotient, quotientPrecision, err
-	}
+  if err != nil {
+    return quotient, quotientPrecision, err
+  }
 
-	quotient = big.NewInt(0)
-	quotientPrecision = big.NewInt(0)
-	err = nil
+  quotient = big.NewInt(0)
+  quotientPrecision = big.NewInt(0)
+  err = nil
 
-	if dividend == nil {
+  if dividend == nil {
 
-		return quotient, quotientPrecision, &InputPtrNilError{
-			ErrPrefix:     ePrefix.String(),
-			ParameterName: "'dividend'",
-		}
-	}
+    return quotient, quotientPrecision, &InputPtrNilError{
+      ErrPrefix:     ePrefix.String(),
+      ParameterName: "'dividend'",
+    }
+  }
 
-	if divisor == nil {
+  if divisor == nil {
 
-		return quotient, quotientPrecision, &InputPtrNilError{
-			ErrPrefix:     ePrefix.String(),
-			ParameterName: "'divisor'",
-		}
-	}
+    return quotient, quotientPrecision, &InputPtrNilError{
+      ErrPrefix:     ePrefix.String(),
+      ParameterName: "'divisor'",
+    }
+  }
 
-	if dividendPrecision == nil {
+  if dividendPrecision == nil {
 
-		return quotient, quotientPrecision, &InputPtrNilError{
-			ErrPrefix:     ePrefix.String(),
-			ParameterName: "'dividendPrecision'",
-		}
-	}
+    return quotient, quotientPrecision, &InputPtrNilError{
+      ErrPrefix:     ePrefix.String(),
+      ParameterName: "'dividendPrecision'",
+    }
+  }
 
-	if divisorPrecision == nil {
+  if divisorPrecision == nil {
 
-		return quotient, quotientPrecision, &InputPtrNilError{
-			ErrPrefix:     ePrefix.String(),
-			ParameterName: "'divisorPrecision'",
-		}
-	}
+    return quotient, quotientPrecision, &InputPtrNilError{
+      ErrPrefix:     ePrefix.String(),
+      ParameterName: "'divisorPrecision'",
+    }
+  }
 
-	bigZero := big.NewInt(0)
+  bigZero := big.NewInt(0)
 
-	if divisor.Cmp(bigZero) == 0 {
+  if divisor.Cmp(bigZero) == 0 {
 
-		err = fmt.Errorf("%v\n"+
-			"Error - Divide by ZERO! Input parameter 'divisor' is ZERO!\n",
-			ePrefix.String())
+    err = fmt.Errorf("%v\n"+
+      "Error - Divide by ZERO! Input parameter 'divisor' is ZERO!\n",
+      ePrefix.String())
 
-		return quotient, quotientPrecision, err
-	}
+    return quotient, quotientPrecision, err
+  }
 
-	if dividend.Cmp(bigZero) == 0 {
-		err = nil
-		return quotient, quotientPrecision, err
-	}
+  if dividend.Cmp(bigZero) == 0 {
+    err = nil
+    return quotient, quotientPrecision, err
+  }
 
-	// Prepare divisor
-	// Setting to absolute value of divisor
-	denomnatrDivsr := big.NewInt(0).Set(divisor)
-	denomnatrDivsrSign := int64(1)
+  // Prepare divisor
+  // Setting to absolute value of divisor
+  denomnatrDivsr := big.NewInt(0).Set(divisor)
+  denomnatrDivsrSign := int64(1)
 
-	if divisor.Cmp(bigZero) == -1 {
-		denomnatrDivsrSign = -1
-		denomnatrDivsr.Mul(denomnatrDivsr, big.NewInt(denomnatrDivsrSign))
-	}
+  if divisor.Cmp(bigZero) == -1 {
+    denomnatrDivsrSign = -1
+    denomnatrDivsr.Mul(denomnatrDivsr, big.NewInt(denomnatrDivsrSign))
+  }
 
-	// Prepare dividend
-	// Setting to absolute value of dividend
-	bigTen := big.NewInt(10)
+  // Prepare dividend
+  // Setting to absolute value of dividend
+  bigTen := big.NewInt(10)
 
-	numratrDivdnd := big.NewInt(0).Set(dividend)
-	numratrDivdndSign := int64(1)
+  numratrDivdnd := big.NewInt(0).Set(dividend)
+  numratrDivdndSign := int64(1)
 
-	if dividend.Cmp(bigZero) == -1 {
-		numratrDivdndSign = -1
-		numratrDivdnd.Mul(numratrDivdnd, big.NewInt(numratrDivdndSign))
-	}
+  if dividend.Cmp(bigZero) == -1 {
+    numratrDivdndSign = -1
+    numratrDivdnd.Mul(numratrDivdnd, big.NewInt(numratrDivdndSign))
+  }
 
-	denomnatrDivsrShift := big.NewInt(0).Set(divisorPrecision)
-	numratrDivdndShift := big.NewInt(0).Set(dividendPrecision)
-	scale := big.NewInt(0)
+  denomnatrDivsrShift := big.NewInt(0).Set(divisorPrecision)
+  numratrDivdndShift := big.NewInt(0).Set(dividendPrecision)
+  scale := big.NewInt(0)
 
-	if numratrDivdndShift.Cmp(bigZero) == 1 {
-		denomnatrDivsrShift.Sub(denomnatrDivsrShift, numratrDivdndShift)
-		if denomnatrDivsrShift.Cmp(bigZero) == -1 {
-			scale = big.NewInt(0).Exp(bigTen, big.NewInt(0).Mul(denomnatrDivsrShift, big.NewInt(-1)), nil)
-			denomnatrDivsr.Mul(denomnatrDivsr, scale)
-		}
+  if numratrDivdndShift.Cmp(bigZero) == 1 {
+    denomnatrDivsrShift.Sub(denomnatrDivsrShift, numratrDivdndShift)
+    if denomnatrDivsrShift.Cmp(bigZero) == -1 {
+      scale = big.NewInt(0).Exp(bigTen, big.NewInt(0).Mul(denomnatrDivsrShift, big.NewInt(-1)), nil)
+      denomnatrDivsr.Mul(denomnatrDivsr, scale)
+    }
 
-		numratrDivdndShift = big.NewInt(0)
-	}
+    numratrDivdndShift = big.NewInt(0)
+  }
 
-	if denomnatrDivsrShift.Cmp(bigZero) == 1 {
-		numratrDivdndShift.Sub(numratrDivdndShift, denomnatrDivsrShift)
+  if denomnatrDivsrShift.Cmp(bigZero) == 1 {
+    numratrDivdndShift.Sub(numratrDivdndShift, denomnatrDivsrShift)
 
-		if numratrDivdndShift.Cmp(bigZero) == -1 {
-			scale = big.NewInt(0).Exp(bigTen, big.NewInt(0).Mul(numratrDivdndShift, big.NewInt(-1)), nil)
-			numratrDivdnd.Mul(numratrDivdnd, scale)
-		}
-	}
+    if numratrDivdndShift.Cmp(bigZero) == -1 {
+      scale = big.NewInt(0).Exp(bigTen, big.NewInt(0).Mul(numratrDivdndShift, big.NewInt(-1)), nil)
+      numratrDivdnd.Mul(numratrDivdnd, scale)
+    }
+  }
 
-	// Do integer division
-	scratch := big.NewInt(0)
-	intQuotient, intRemndr := big.NewInt(0).QuoRem(numratrDivdnd, denomnatrDivsr, scratch)
+  // Do integer division
+  scratch := big.NewInt(0)
+  intQuotient, intRemndr := big.NewInt(0).QuoRem(numratrDivdnd, denomnatrDivsr, scratch)
 
-	quotient = big.NewInt(0).Set(intQuotient)
+  quotient = big.NewInt(0).Set(intQuotient)
 
-	// Calculate fractional digits out to maxPrecision + 1
-	bigOne := big.NewInt(1)
-	iMaxPrecision := big.NewInt(0).Set(maxPrecision)
-	iMaxPrecision.Add(iMaxPrecision, bigOne)
-	iCnt := big.NewInt(0)
-	lastNonZeroDigitIdx := big.NewInt(-1)
+  // Calculate fractional digits out to maxPrecision + 1
+  bigOne := big.NewInt(1)
+  iMaxPrecision := big.NewInt(0).Set(maxPrecision)
+  iMaxPrecision.Add(iMaxPrecision, bigOne)
+  iCnt := big.NewInt(0)
+  lastNonZeroDigitIdx := big.NewInt(-1)
 
-	for iCnt.Cmp(iMaxPrecision) == -1 {
+  for iCnt.Cmp(iMaxPrecision) == -1 {
 
-		numratrDivdnd = big.NewInt(0).Mul(intRemndr, bigTen)
-		intQuotient, intRemndr = big.NewInt(0).QuoRem(numratrDivdnd, denomnatrDivsr, scratch)
+    numratrDivdnd = big.NewInt(0).Mul(intRemndr, bigTen)
+    intQuotient, intRemndr = big.NewInt(0).QuoRem(numratrDivdnd, denomnatrDivsr, scratch)
 
-		if intQuotient.Cmp(bigZero) == 1 {
-			lastNonZeroDigitIdx.Set(iCnt)
-		}
+    if intQuotient.Cmp(bigZero) == 1 {
+      lastNonZeroDigitIdx.Set(iCnt)
+    }
 
-		quotient.Mul(quotient, bigTen)
-		quotient.Add(quotient, intQuotient)
+    quotient.Mul(quotient, bigTen)
+    quotient.Add(quotient, intQuotient)
 
-		iCnt.Add(iCnt, bigOne)
-	}
+    iCnt.Add(iCnt, bigOne)
+  }
 
-	if lastNonZeroDigitIdx.Cmp(big.NewInt(-1)) == 0 {
+  if lastNonZeroDigitIdx.Cmp(big.NewInt(-1)) == 0 {
 
-		scale = big.NewInt(0).Exp(bigTen, iMaxPrecision, nil)
-		quotient.Quo(quotient, scale)
-		quotientPrecision = big.NewInt(0)
+    scale = big.NewInt(0).Exp(bigTen, iMaxPrecision, nil)
+    quotient.Quo(quotient, scale)
+    quotientPrecision = big.NewInt(0)
 
-	} else if lastNonZeroDigitIdx.Cmp(big.NewInt(0).Sub(iMaxPrecision, bigOne)) == -1 {
-		// else if lastNonZeroDigitIdx < (i64MaxPrecision - 1)
-		factor := big.NewInt(0).Sub(iMaxPrecision, lastNonZeroDigitIdx)
-		factor.Sub(factor, bigOne)
-		scale =
-			big.NewInt(0).Exp(bigTen, factor, nil)
+  } else if lastNonZeroDigitIdx.Cmp(big.NewInt(0).Sub(iMaxPrecision, bigOne)) == -1 {
+    // else if lastNonZeroDigitIdx < (i64MaxPrecision - 1)
+    factor := big.NewInt(0).Sub(iMaxPrecision, lastNonZeroDigitIdx)
+    factor.Sub(factor, bigOne)
+    scale =
+      big.NewInt(0).Exp(bigTen, factor, nil)
 
-		quotient.Quo(quotient, scale)
+    quotient.Quo(quotient, scale)
 
-		// uint(lastNonZeroDigitIdx + 1)
-		quotientPrecision = big.NewInt(0).Add(lastNonZeroDigitIdx, bigOne)
+    // uint(lastNonZeroDigitIdx + 1)
+    quotientPrecision = big.NewInt(0).Add(lastNonZeroDigitIdx, bigOne)
 
-	} else {
+  } else {
 
-		//fmt.Println("before quotient: %v", quotient.Text(10))
-		quotient.Add(quotient, big.NewInt(5))
+    //fmt.Println("before quotient: %v", quotient.Text(10))
+    quotient.Add(quotient, big.NewInt(5))
 
-		quotient.Quo(quotient, bigTen)
-		//fmt.Println("after quotient: %v", quotient.Text(10))
-		iMaxPrecision.Sub(iMaxPrecision, bigOne)
+    quotient.Quo(quotient, bigTen)
+    //fmt.Println("after quotient: %v", quotient.Text(10))
+    iMaxPrecision.Sub(iMaxPrecision, bigOne)
 
-		// = uint(i64MaxPrecision)
-		quotientPrecision.Set(iMaxPrecision)
+    // = uint(i64MaxPrecision)
+    quotientPrecision.Set(iMaxPrecision)
 
-	}
+  }
 
-	if numratrDivdndSign != denomnatrDivsrSign {
-		quotient.Mul(quotient, big.NewInt(-1))
-	}
+  if numratrDivdndSign != denomnatrDivsrSign {
+    quotient.Mul(quotient, big.NewInt(-1))
+  }
 
-	return quotient, quotientPrecision, err
+  return quotient, quotientPrecision, err
 }
 
 // BigIntNumQuotientMod
@@ -431,127 +431,127 @@ func (bIDivide *BigIntMathDivide) BigIntFracQuotient(
 //		The returned values ('quotient' and 'modulo') will be
 //		configured with 'numSeps'.
 func (bIDivide *BigIntMathDivide) BigIntNumQuotientMod(
-	dividend BigIntNum,
-	divisor BigIntNum,
-	numSeps NumericSeparatorDto,
-	maxPrecision uint) (quotient BigIntNum, modulo BigIntNum, err error) {
+  dividend BigIntNum,
+  divisor BigIntNum,
+  numSeps NumericSeparatorDto,
+  maxPrecision uint) (quotient BigIntNum, modulo BigIntNum, err error) {
 
-	quotient = new(BigIntNum).New()
-	modulo = new(BigIntNum).New()
+  quotient = new(BigIntNum).New()
+  modulo = new(BigIntNum).New()
 
-	var ePrefix *ePref.ErrPrefixDto
+  var ePrefix *ePref.ErrPrefixDto
 
-	ePrefix,
-		err = ePref.ErrPrefixDto{}.NewIEmpty(
-		nil,
-		"BigIntMathDivide.BigIntNumQuotientMod",
-		"")
+  ePrefix,
+    err = ePref.ErrPrefixDto{}.NewIEmpty(
+    nil,
+    "BigIntMathDivide.BigIntNumQuotientMod",
+    "")
 
-	if err != nil {
-		return quotient, modulo, err
-	}
+  if err != nil {
+    return quotient, modulo, err
+  }
 
-	err = dividend.IsValid(ePrefix.XCpy(
-		"Testing dividend").String())
+  err = dividend.IsValid(ePrefix.XCpy(
+    "Testing dividend").String())
 
-	if err != nil {
-		return quotient, modulo, err
-	}
+  if err != nil {
+    return quotient, modulo, err
+  }
 
-	err = divisor.IsValid(ePrefix.XCpy(
-		"Testing divisor").String())
+  err = divisor.IsValid(ePrefix.XCpy(
+    "Testing divisor").String())
 
-	if err != nil {
-		return quotient, modulo, err
-	}
+  if err != nil {
+    return quotient, modulo, err
+  }
 
-	numSeps.SetDefaultsIfEmpty()
+  numSeps.SetDefaultsIfEmpty()
 
-	err = numSeps.IsValid(ePrefix.XCpy("Testing numSeps").String())
+  err = numSeps.IsValid(ePrefix.XCpy("Testing numSeps").String())
 
-	if err != nil {
+  if err != nil {
 
-		return quotient, modulo,
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "err = numSeps.IsValid(ePrefix.XCpy(\"Testing numSeps\").String())",
-				ErrContext: "numSeps is INVALID!",
-				ErrMessage: err.Error(),
-			}
-	}
+    return quotient, modulo,
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "err = numSeps.IsValid(ePrefix.XCpy(\"Testing numSeps\").String())",
+        ErrContext: "numSeps is INVALID!",
+        ErrMessage: err.Error(),
+      }
+  }
 
-	divisorIsZero, err := divisor.IsZero()
+  divisorIsZero, err := divisor.IsZero()
 
-	if err != nil {
+  if err != nil {
 
-		return quotient, modulo,
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "divisorIsZero, err := divisor.IsZero()",
-				ErrContext: "",
-				ErrMessage: err.Error(),
-			}
-	}
+    return quotient, modulo,
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "divisorIsZero, err := divisor.IsZero()",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+  }
 
-	if divisorIsZero {
+  if divisorIsZero {
 
-		quotient, err = new(BigIntNum).NewBigInt(big.NewInt(0), 0)
+    quotient, err = new(BigIntNum).NewBigInt(big.NewInt(0), 0)
 
-		if err != nil {
+    if err != nil {
 
-			return quotient, modulo,
-				&FuncReturnError{
-					ErrPrefix:  ePrefix.String(),
-					ReturnFunc: "quotient, err = new(BigIntNum).NewBigInt(big.NewInt(0), 0)",
-					ErrMessage: err.Error(),
-				}
-		}
+      return quotient, modulo,
+        &FuncReturnError{
+          ErrPrefix:  ePrefix.String(),
+          ReturnFunc: "quotient, err = new(BigIntNum).NewBigInt(big.NewInt(0), 0)",
+          ErrMessage: err.Error(),
+        }
+    }
 
-		modulo, err = new(BigIntNum).NewBigInt(big.NewInt(0), 0)
+    modulo, err = new(BigIntNum).NewBigInt(big.NewInt(0), 0)
 
-		if err != nil {
+    if err != nil {
 
-			return quotient, modulo,
-				&FuncReturnError{
-					ErrPrefix:  ePrefix.String(),
-					ReturnFunc: "modulo, err = new(BigIntNum).NewBigInt(big.NewInt(0), 0)",
-					ErrMessage: err.Error(),
-				}
-		}
+      return quotient, modulo,
+        &FuncReturnError{
+          ErrPrefix:  ePrefix.String(),
+          ReturnFunc: "modulo, err = new(BigIntNum).NewBigInt(big.NewInt(0), 0)",
+          ErrMessage: err.Error(),
+        }
+    }
 
-		return quotient, modulo, err
-	}
+    return quotient, modulo, err
+  }
 
-	bPair, err := new(BigIntPair).NewBigIntNum(dividend, divisor)
+  bPair, err := new(BigIntPair).NewBigIntNum(dividend, divisor)
 
-	if err != nil {
+  if err != nil {
 
-		return quotient, modulo,
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "bPair, err := new(BigIntPair).NewBigIntNum(dividend, divisor)",
-				ErrMessage: err.Error(),
-			}
-	}
+    return quotient, modulo,
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "bPair, err := new(BigIntPair).NewBigIntNum(dividend, divisor)",
+        ErrMessage: err.Error(),
+      }
+  }
 
-	bPair.MaxPrecision = maxPrecision
+  bPair.MaxPrecision = maxPrecision
 
-	var bigIntMathDivide2 = new(BigIntMathDivide)
+  var bigIntMathDivide2 = new(BigIntMathDivide)
 
-	quotient, modulo, err = bigIntMathDivide2.PairQuotientMod(bPair, numSeps)
+  quotient, modulo, err = bigIntMathDivide2.PairQuotientMod(bPair, numSeps)
 
-	if err != nil {
+  if err != nil {
 
-		return quotient, modulo,
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "quotient, modulo, err = bigIntMathDivide2.PairQuotientMod(bPair,numSeps)",
-				ErrContext: "",
-				ErrMessage: err.Error(),
-			}
-	}
+    return quotient, modulo,
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "quotient, modulo, err = bigIntMathDivide2.PairQuotientMod(bPair,numSeps)",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+  }
 
-	return quotient, modulo, nil
+  return quotient, modulo, nil
 }
 
 // BigIntNumIntQuotient
@@ -609,120 +609,120 @@ func (bIDivide *BigIntMathDivide) BigIntNumQuotientMod(
 //		The returned value ('intQuotient'') will be configured with
 //	 	'numSeps'.
 func (bIDivide *BigIntMathDivide) BigIntNumIntQuotient(
-	dividend BigIntNum,
-	divisor BigIntNum,
-	numSeps NumericSeparatorDto) (intQuotient BigIntNum, err error) {
+  dividend BigIntNum,
+  divisor BigIntNum,
+  numSeps NumericSeparatorDto) (intQuotient BigIntNum, err error) {
 
-	intQuotient = new(BigIntNum).New()
+  intQuotient = new(BigIntNum).New()
 
-	var ePrefix *ePref.ErrPrefixDto
+  var ePrefix *ePref.ErrPrefixDto
 
-	ePrefix,
-		err = ePref.ErrPrefixDto{}.NewIEmpty(
-		nil,
-		"BigIntMathDivide.BigIntNumIntQuotient",
-		"")
+  ePrefix,
+    err = ePref.ErrPrefixDto{}.NewIEmpty(
+    nil,
+    "BigIntMathDivide.BigIntNumIntQuotient",
+    "")
 
-	if err != nil {
-		return intQuotient, err
-	}
+  if err != nil {
+    return intQuotient, err
+  }
 
-	err = dividend.IsValid(ePrefix.XCpy(
-		"Testing input parameter 'dividend'").String())
+  err = dividend.IsValid(ePrefix.XCpy(
+    "Testing input parameter 'dividend'").String())
 
-	if err != nil {
+  if err != nil {
 
-		return intQuotient,
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "err = dividend.IsValid(ePrefix + \"Testing input parameter 'dividend'\")",
-				ErrContext: "Input parameter 'dividend' is invalid.",
-				ErrMessage: err.Error(),
-			}
-	}
+    return intQuotient,
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "err = dividend.IsValid(ePrefix + \"Testing input parameter 'dividend'\")",
+        ErrContext: "Input parameter 'dividend' is invalid.",
+        ErrMessage: err.Error(),
+      }
+  }
 
-	err = divisor.IsValid(ePrefix.XCpy(
-		"Testing input parameter 'divisor'").String())
+  err = divisor.IsValid(ePrefix.XCpy(
+    "Testing input parameter 'divisor'").String())
 
-	if err != nil {
+  if err != nil {
 
-		return intQuotient,
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "err = divisor.IsValid(ePrefix + \"Testing input parameter 'divisor'\")",
-				ErrContext: "Input parameter 'divisor' is invalid.",
-				ErrMessage: err.Error(),
-			}
-	}
+    return intQuotient,
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "err = divisor.IsValid(ePrefix + \"Testing input parameter 'divisor'\")",
+        ErrContext: "Input parameter 'divisor' is invalid.",
+        ErrMessage: err.Error(),
+      }
+  }
 
-	numSeps.SetDefaultsIfEmpty()
+  numSeps.SetDefaultsIfEmpty()
 
-	err = numSeps.IsValid(ePrefix.XCpy("Testing numSeps").String())
+  err = numSeps.IsValid(ePrefix.XCpy("Testing numSeps").String())
 
-	if err != nil {
+  if err != nil {
 
-		return intQuotient,
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "err = numSeps.IsValid(ePrefix.XCpy(\"Testing numSeps\").String())",
-				ErrContext: "numSeps is INVALID!",
-				ErrMessage: err.Error(),
-			}
-	}
+    return intQuotient,
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "err = numSeps.IsValid(ePrefix.XCpy(\"Testing numSeps\").String())",
+        ErrContext: "numSeps is INVALID!",
+        ErrMessage: err.Error(),
+      }
+  }
 
-	divisorIsZero, err := divisor.IsZero()
+  divisorIsZero, err := divisor.IsZero()
 
-	if err != nil {
+  if err != nil {
 
-		return intQuotient,
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "intQuotient, err = new(BigIntNum).NewBigInt(big.NewInt(0), 0)",
-				ErrContext: "",
-				ErrMessage: err.Error(),
-			}
-	}
+    return intQuotient,
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "intQuotient, err = new(BigIntNum).NewBigInt(big.NewInt(0), 0)",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+  }
 
-	if divisorIsZero {
+  if divisorIsZero {
 
-		return intQuotient,
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "",
-				ErrContext: "if divisorIsZero {",
-				ErrMessage: "Input parameter 'divisor' has a ZERO value.",
-			}
-	}
+    return intQuotient,
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "",
+        ErrContext: "if divisorIsZero {",
+        ErrMessage: "Input parameter 'divisor' has a ZERO value.",
+      }
+  }
 
-	bPair, err := new(BigIntPair).NewBigIntNum(dividend, divisor)
+  bPair, err := new(BigIntPair).NewBigIntNum(dividend, divisor)
 
-	if err != nil {
+  if err != nil {
 
-		return intQuotient,
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "bPair, err := new(BigIntPair).NewBigIntNum(dividend, divisor)",
-				ErrContext: "",
-				ErrMessage: err.Error(),
-			}
-	}
+    return intQuotient,
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "bPair, err := new(BigIntPair).NewBigIntNum(dividend, divisor)",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+  }
 
-	intQuotient, err = new(BigIntMathDivide).PairIntQuotient(bPair, numSeps)
+  intQuotient, err = new(BigIntMathDivide).PairIntQuotient(bPair, numSeps)
 
-	if err != nil {
+  if err != nil {
 
-		intQuotient = new(BigIntNum).New()
+    intQuotient = new(BigIntNum).New()
 
-		return intQuotient,
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "intQuotient, err = BigIntMathDivide{}.PairIntQuotient(bPair, numSeps)",
-				ErrContext: "",
-				ErrMessage: err.Error(),
-			}
-	}
+    return intQuotient,
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "intQuotient, err = BigIntMathDivide{}.PairIntQuotient(bPair, numSeps)",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+  }
 
-	return intQuotient, nil
+  return intQuotient, nil
 }
 
 // BigIntNumModulo
@@ -795,124 +795,124 @@ func (bIDivide *BigIntMathDivide) BigIntNumIntQuotient(
 //
 //	The returned value 'modulo' will be configured with 'numSeps'.
 func (bIDivide *BigIntMathDivide) BigIntNumModulo(
-	dividend BigIntNum,
-	divisor BigIntNum,
-	numSeps NumericSeparatorDto,
-	maxPrecision uint) (modulo BigIntNum, err error) {
+  dividend BigIntNum,
+  divisor BigIntNum,
+  numSeps NumericSeparatorDto,
+  maxPrecision uint) (modulo BigIntNum, err error) {
 
-	modulo = new(BigIntNum).New()
+  modulo = new(BigIntNum).New()
 
-	var ePrefix *ePref.ErrPrefixDto
+  var ePrefix *ePref.ErrPrefixDto
 
-	ePrefix,
-		err = ePref.ErrPrefixDto{}.NewIEmpty(
-		nil,
-		"BigIntMathDivide.BigIntDividedByTwoToPower",
-		"")
+  ePrefix,
+    err = ePref.ErrPrefixDto{}.NewIEmpty(
+    nil,
+    "BigIntMathDivide.BigIntDividedByTwoToPower",
+    "")
 
-	if err != nil {
-		return modulo, err
-	}
+  if err != nil {
+    return modulo, err
+  }
 
-	err = dividend.IsValid(ePrefix.XCpy(
-		"Testing dividend").String())
+  err = dividend.IsValid(ePrefix.XCpy(
+    "Testing dividend").String())
 
-	if err != nil {
-		return modulo, err
-	}
+  if err != nil {
+    return modulo, err
+  }
 
-	err = divisor.IsValid(ePrefix.XCpy(
-		"Testing divisor").String())
+  err = divisor.IsValid(ePrefix.XCpy(
+    "Testing divisor").String())
 
-	if err != nil {
-		return modulo, err
-	}
+  if err != nil {
+    return modulo, err
+  }
 
-	numSeps.SetDefaultsIfEmpty()
+  numSeps.SetDefaultsIfEmpty()
 
-	err = numSeps.IsValid(ePrefix.XCpy("Testing numSeps").String())
+  err = numSeps.IsValid(ePrefix.XCpy("Testing numSeps").String())
 
-	if err != nil {
+  if err != nil {
 
-		return modulo,
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "err = numSeps.IsValid(ePrefix.XCpy(\"Testing numSeps\").String())",
-				ErrContext: "numSeps is INVALID!",
-				ErrMessage: err.Error(),
-			}
-	}
+    return modulo,
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "err = numSeps.IsValid(ePrefix.XCpy(\"Testing numSeps\").String())",
+        ErrContext: "numSeps is INVALID!",
+        ErrMessage: err.Error(),
+      }
+  }
 
-	dividendNumStr, err := dividend.GetNumStr()
+  dividendNumStr, err := dividend.GetNumStr()
 
-	if err != nil {
-		return modulo, &FuncReturnError{
-			ErrPrefix:  ePrefix.String(),
-			ReturnFunc: "dividendNumStr, err := dividend.GetNumStr()",
-			ErrContext: "",
-			ErrMessage: err.Error(),
-		}
-	}
+  if err != nil {
+    return modulo, &FuncReturnError{
+      ErrPrefix:  ePrefix.String(),
+      ReturnFunc: "dividendNumStr, err := dividend.GetNumStr()",
+      ErrContext: "",
+      ErrMessage: err.Error(),
+    }
+  }
 
-	divisorNumStr, err := divisor.GetNumStr()
+  divisorNumStr, err := divisor.GetNumStr()
 
-	if err != nil {
-		return modulo, &FuncReturnError{
-			ErrPrefix:  ePrefix.String(),
-			ReturnFunc: "divisorNumStr, err := divisor.GetNumStr()",
-			ErrContext: "",
-			ErrMessage: err.Error(),
-		}
-	}
+  if err != nil {
+    return modulo, &FuncReturnError{
+      ErrPrefix:  ePrefix.String(),
+      ReturnFunc: "divisorNumStr, err := divisor.GetNumStr()",
+      ErrContext: "",
+      ErrMessage: err.Error(),
+    }
+  }
 
-	isZero, err := divisor.IsZero()
+  isZero, err := divisor.IsZero()
 
-	if err != nil {
-		return modulo, &FuncReturnError{
-			ErrPrefix:  ePrefix.String(),
-			ReturnFunc: "isZero, err := divisor.IsZero()",
-			ErrContext: "",
-			ErrMessage: err.Error(),
-		}
-	}
+  if err != nil {
+    return modulo, &FuncReturnError{
+      ErrPrefix:  ePrefix.String(),
+      ReturnFunc: "isZero, err := divisor.IsZero()",
+      ErrContext: "",
+      ErrMessage: err.Error(),
+    }
+  }
 
-	if isZero {
+  if isZero {
 
-		return modulo, &FuncReturnError{
-			ErrPrefix:  ePrefix.String(),
-			ReturnFunc: "",
-			ErrContext: "divisor==0",
-			ErrMessage: "Error: Attempted to mod by zero!\n" +
-				"Input parameter 'divisor' has a ZERO value.",
-		}
-	}
+    return modulo, &FuncReturnError{
+      ErrPrefix:  ePrefix.String(),
+      ReturnFunc: "",
+      ErrContext: "divisor==0",
+      ErrMessage: "Error: Attempted to mod by zero!\n" +
+        "Input parameter 'divisor' has a ZERO value.",
+    }
+  }
 
-	bPair, err := new(BigIntPair).NewBigIntNum(dividend, divisor)
+  bPair, err := new(BigIntPair).NewBigIntNum(dividend, divisor)
 
-	if err != nil {
-		return modulo, &FuncReturnError{
-			ErrPrefix:  ePrefix.String(),
-			ReturnFunc: "bPair, err := new(BigIntPair).NewBigIntNum(dividend, divisor)",
-			ErrContext: "",
-			ErrMessage: err.Error(),
-		}
-	}
+  if err != nil {
+    return modulo, &FuncReturnError{
+      ErrPrefix:  ePrefix.String(),
+      ReturnFunc: "bPair, err := new(BigIntPair).NewBigIntNum(dividend, divisor)",
+      ErrContext: "",
+      ErrMessage: err.Error(),
+    }
+  }
 
-	bPair.MaxPrecision = maxPrecision
+  bPair.MaxPrecision = maxPrecision
 
-	modulo, err = new(BigIntMathDivide).PairMod(bPair, numSeps)
+  modulo, err = new(BigIntMathDivide).PairMod(bPair, numSeps)
 
-	if err != nil {
-		return modulo, &FuncReturnError{
-			ErrPrefix:  ePrefix.String(),
-			ReturnFunc: "modulo, err = new(BigIntMathDivide).PairMod(bPair, numSeps)",
-			ErrContext: fmt.Sprintf("dividend='%v'\ndivisor='%v'\nmaxPrecision='%v'",
-				dividendNumStr, divisorNumStr, maxPrecision),
-			ErrMessage: err.Error(),
-		}
-	}
+  if err != nil {
+    return modulo, &FuncReturnError{
+      ErrPrefix:  ePrefix.String(),
+      ReturnFunc: "modulo, err = new(BigIntMathDivide).PairMod(bPair, numSeps)",
+      ErrContext: fmt.Sprintf("dividend='%v'\ndivisor='%v'\nmaxPrecision='%v'",
+        dividendNumStr, divisorNumStr, maxPrecision),
+      ErrMessage: err.Error(),
+    }
+  }
 
-	return modulo, nil
+  return modulo, nil
 }
 
 // BigIntNumFracQuotient
@@ -973,159 +973,159 @@ func (bIDivide *BigIntMathDivide) BigIntNumModulo(
 //	The returned value 'fracQuotient' will be configured with
 //	'numSeps'.
 func (bIDivide *BigIntMathDivide) BigIntNumFracQuotient(
-	dividend BigIntNum,
-	divisor BigIntNum,
-	numSeps NumericSeparatorDto,
-	maxPrecision uint) (fracQuotient BigIntNum, err error) {
+  dividend BigIntNum,
+  divisor BigIntNum,
+  numSeps NumericSeparatorDto,
+  maxPrecision uint) (fracQuotient BigIntNum, err error) {
 
-	var ePrefix *ePref.ErrPrefixDto
+  var ePrefix *ePref.ErrPrefixDto
 
-	ePrefix,
-		err = ePref.ErrPrefixDto{}.NewIEmpty(
-		nil,
-		"BigIntMathDivide.BigIntDividedByTwoToPower",
-		"")
+  ePrefix,
+    err = ePref.ErrPrefixDto{}.NewIEmpty(
+    nil,
+    "BigIntMathDivide.BigIntDividedByTwoToPower",
+    "")
 
-	if err != nil {
-		return fracQuotient, err
-	}
+  if err != nil {
+    return fracQuotient, err
+  }
 
-	fracQuotient, err = new(BigIntNum).NewZero(0)
+  fracQuotient, err = new(BigIntNum).NewZero(0)
 
-	if err != nil {
-		return fracQuotient,
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "fracQuotient, err = new(BigIntNum).NewZero(0)",
-				ErrContext: "",
-				ErrMessage: err.Error(),
-			}
-	}
+  if err != nil {
+    return fracQuotient,
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "fracQuotient, err = new(BigIntNum).NewZero(0)",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+  }
 
-	err = dividend.IsValid(ePrefix.XCpy(
-		"Testing dividend").String())
+  err = dividend.IsValid(ePrefix.XCpy(
+    "Testing dividend").String())
 
-	if err != nil {
-		return fracQuotient, err
-	}
+  if err != nil {
+    return fracQuotient, err
+  }
 
-	err = divisor.IsValid(ePrefix.XCpy(
-		"Testing divisor").String())
+  err = divisor.IsValid(ePrefix.XCpy(
+    "Testing divisor").String())
 
-	if err != nil {
-		return fracQuotient, err
-	}
+  if err != nil {
+    return fracQuotient, err
+  }
 
-	numSeps.SetDefaultsIfEmpty()
+  numSeps.SetDefaultsIfEmpty()
 
-	err = numSeps.IsValid(ePrefix.XCpy("Testing numSeps").String())
+  err = numSeps.IsValid(ePrefix.XCpy("Testing numSeps").String())
 
-	if err != nil {
+  if err != nil {
 
-		return fracQuotient,
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "err = numSeps.IsValid(ePrefix.XCpy(\"Testing numSeps\").String())",
-				ErrContext: "numSeps is INVALID!",
-				ErrMessage: err.Error(),
-			}
-	}
+    return fracQuotient,
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "err = numSeps.IsValid(ePrefix.XCpy(\"Testing numSeps\").String())",
+        ErrContext: "numSeps is INVALID!",
+        ErrMessage: err.Error(),
+      }
+  }
 
-	binDividend, err := dividend.GetBigInt()
+  binDividend, err := dividend.GetBigInt()
 
-	if err != nil {
+  if err != nil {
 
-		return fracQuotient,
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "binDividend, err := dividend.GetBigInt()",
-				ErrContext: "",
-				ErrMessage: err.Error(),
-			}
-	}
+    return fracQuotient,
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "binDividend, err := dividend.GetBigInt()",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+  }
 
-	binDividendPrecision, err := dividend.GetPrecisionBigInt()
+  binDividendPrecision, err := dividend.GetPrecisionBigInt()
 
-	if err != nil {
-		return fracQuotient,
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "binDividendPrecision, err := dividend.GetPrecisionBigInt()",
-				ErrContext: "",
-				ErrMessage: err.Error(),
-			}
+  if err != nil {
+    return fracQuotient,
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "binDividendPrecision, err := dividend.GetPrecisionBigInt()",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
 
-	}
+  }
 
-	binDivisor, err := divisor.GetBigInt()
+  binDivisor, err := divisor.GetBigInt()
 
-	if err != nil {
+  if err != nil {
 
-		return fracQuotient,
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "binDivisor, err := divisor.GetBigInt()",
-				ErrMessage: err.Error(),
-			}
-	}
+    return fracQuotient,
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "binDivisor, err := divisor.GetBigInt()",
+        ErrMessage: err.Error(),
+      }
+  }
 
-	binDivisorPrecision, err := divisor.GetPrecisionBigInt()
+  binDivisorPrecision, err := divisor.GetPrecisionBigInt()
 
-	if err != nil {
-		return fracQuotient,
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "binDivisorPrecision, err := divisor.GetPrecisionBigInt()",
-				ErrMessage: err.Error(),
-			}
+  if err != nil {
+    return fracQuotient,
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "binDivisorPrecision, err := divisor.GetPrecisionBigInt()",
+        ErrMessage: err.Error(),
+      }
 
-	}
+  }
 
-	biMaxPrecision := big.NewInt(0).SetUint64(uint64(maxPrecision))
+  biMaxPrecision := big.NewInt(0).SetUint64(uint64(maxPrecision))
 
-	fracQuo, fracQuoPrecision, err := new(BigIntMathDivide).BigIntFracQuotient(
-		binDividend,
-		binDividendPrecision,
-		binDivisor,
-		binDivisorPrecision,
-		biMaxPrecision)
+  fracQuo, fracQuoPrecision, err := new(BigIntMathDivide).BigIntFracQuotient(
+    binDividend,
+    binDividendPrecision,
+    binDivisor,
+    binDivisorPrecision,
+    biMaxPrecision)
 
-	if err != nil {
+  if err != nil {
 
-		return fracQuotient,
-			&FuncReturnError{
-				ErrPrefix: ePrefix.String(),
-				ReturnFunc: "fracQuo, fracQuoPrecision, err := BigIntMathDivide{}.BigIntFracQuotient(\n" +
-					"    binDividend,binDividendPrecision,binDivisor,binDivisorPrecision,biMaxPrecision)",
-				ErrMessage: err.Error(),
-			}
-	}
+    return fracQuotient,
+      &FuncReturnError{
+        ErrPrefix: ePrefix.String(),
+        ReturnFunc: "fracQuo, fracQuoPrecision, err := BigIntMathDivide{}.BigIntFracQuotient(\n" +
+          "    binDividend,binDividendPrecision,binDivisor,binDivisorPrecision,biMaxPrecision)",
+        ErrMessage: err.Error(),
+      }
+  }
 
-	err = fracQuotient.SetBigInt(fracQuo, uint(fracQuoPrecision.Uint64()))
+  err = fracQuotient.SetBigInt(fracQuo, uint(fracQuoPrecision.Uint64()))
 
-	if err != nil {
+  if err != nil {
 
-		return fracQuotient,
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "  err = fracQuotient.SetBigInt(fracQuo, uint(fracQuoPrecision.Uint64()))",
-				ErrMessage: err.Error(),
-			}
-	}
+    return fracQuotient,
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "  err = fracQuotient.SetBigInt(fracQuo, uint(fracQuoPrecision.Uint64()))",
+        ErrMessage: err.Error(),
+      }
+  }
 
-	err = fracQuotient.SetNumericSeparatorsDto(numSeps)
+  err = fracQuotient.SetNumericSeparatorsDto(numSeps)
 
-	if err != nil {
+  if err != nil {
 
-		return fracQuotient,
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "err = fracQuotient.SetNumericSeparatorsDto(numSepsDto)",
-				ErrMessage: err.Error(),
-			}
-	}
+    return fracQuotient,
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "err = fracQuotient.SetNumericSeparatorsDto(numSepsDto)",
+        ErrMessage: err.Error(),
+      }
+  }
 
-	return fracQuotient, err
+  return fracQuotient, err
 }
 
 // BigIntNumFracQuotientArray
@@ -1189,161 +1189,161 @@ func (bIDivide *BigIntMathDivide) BigIntNumFracQuotient(
 //	The returned value 'fracQuoArray' will be configured with
 //	'numSeps'.
 func (bIDivide *BigIntMathDivide) BigIntNumFracQuotientArray(
-	dividends []BigIntNum,
-	divisor BigIntNum,
-	numSeps NumericSeparatorDto,
-	maxPrecision uint) (fracQuoArray []BigIntNum, err error) {
+  dividends []BigIntNum,
+  divisor BigIntNum,
+  numSeps NumericSeparatorDto,
+  maxPrecision uint) (fracQuoArray []BigIntNum, err error) {
 
-	var ePrefix *ePref.ErrPrefixDto
+  var ePrefix *ePref.ErrPrefixDto
 
-	ePrefix,
-		err = ePref.ErrPrefixDto{}.NewIEmpty(
-		nil,
-		"BigIntMathDivide.BigIntNumFracQuotientArray",
-		"")
+  ePrefix,
+    err = ePref.ErrPrefixDto{}.NewIEmpty(
+    nil,
+    "BigIntMathDivide.BigIntNumFracQuotientArray",
+    "")
 
-	if err != nil {
-		return fracQuoArray, err
-	}
+  if err != nil {
+    return fracQuoArray, err
+  }
 
-	err = divisor.IsValid(ePrefix.XCpy(
-		"Testing divisor").String())
+  err = divisor.IsValid(ePrefix.XCpy(
+    "Testing divisor").String())
 
-	if err != nil {
-		return fracQuoArray, err
-	}
+  if err != nil {
+    return fracQuoArray, err
+  }
 
-	numSeps.SetDefaultsIfEmpty()
+  numSeps.SetDefaultsIfEmpty()
 
-	err = numSeps.IsValid(ePrefix.XCpy("Testing numSeps").String())
+  err = numSeps.IsValid(ePrefix.XCpy("Testing numSeps").String())
 
-	if err != nil {
+  if err != nil {
 
-		return fracQuoArray,
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "err = numSeps.IsValid(ePrefix.XCpy(\"Testing numSeps\").String())",
-				ErrContext: "numSeps is INVALID!",
-				ErrMessage: err.Error(),
-			}
-	}
+    return fracQuoArray,
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "err = numSeps.IsValid(ePrefix.XCpy(\"Testing numSeps\").String())",
+        ErrContext: "numSeps is INVALID!",
+        ErrMessage: err.Error(),
+      }
+  }
 
-	isZero, err := divisor.IsZero()
+  isZero, err := divisor.IsZero()
 
-	if err != nil {
+  if err != nil {
 
-		return fracQuoArray,
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "isZero, err := divisor.IsZero()",
-				ErrContext: "",
-				ErrMessage: err.Error(),
-			}
-	}
+    return fracQuoArray,
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "isZero, err := divisor.IsZero()",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+  }
 
-	if isZero {
+  if isZero {
 
-		return fracQuoArray,
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "",
-				ErrContext: "divisor==0",
-				ErrMessage: "Error: Attempted divide by zero!\n" +
-					"Input parameter 'divisor' has a ZERO value.",
-			}
-	}
+    return fracQuoArray,
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "",
+        ErrContext: "divisor==0",
+        ErrMessage: "Error: Attempted divide by zero!\n" +
+          "Input parameter 'divisor' has a ZERO value.",
+      }
+  }
 
-	divisorNumStr, err := divisor.GetNumStr()
+  divisorNumStr, err := divisor.GetNumStr()
 
-	if err != nil {
+  if err != nil {
 
-		return fracQuoArray,
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "divisorNumStr, err := divisor.GetNumStr()",
-				ErrContext: "",
-				ErrMessage: err.Error(),
-			}
-	}
+    return fracQuoArray,
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "divisorNumStr, err := divisor.GetNumStr()",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+  }
 
-	lenAry := len(dividends)
+  lenAry := len(dividends)
 
-	if lenAry == 0 {
+  if lenAry == 0 {
 
-		return fracQuoArray,
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "",
-				ErrContext: "len(dividends)==0",
-				ErrMessage: "Error: Input Parameter 'dividends' is an EMPTY Array!",
-			}
-	}
+    return fracQuoArray,
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "",
+        ErrContext: "len(dividends)==0",
+        ErrMessage: "Error: Input Parameter 'dividends' is an EMPTY Array!",
+      }
+  }
 
-	fracQuoArray = make([]BigIntNum, lenAry, lenAry+20)
+  fracQuoArray = make([]BigIntNum, lenAry, lenAry+20)
 
-	var dividendsNumStr string
+  var dividendsNumStr string
 
-	for i := 0; i < lenAry; i++ {
+  for i := 0; i < lenAry; i++ {
 
-		err = dividends[i].IsValid(ePrefix.XCpy(
-			fmt.Sprintf("Testing dividends[%d]", i)).String())
+    err = dividends[i].IsValid(ePrefix.XCpy(
+      fmt.Sprintf("Testing dividends[%d]", i)).String())
 
-		if err != nil {
+    if err != nil {
 
-			return fracQuoArray,
-				&FuncReturnError{
-					ErrPrefix:  ePrefix.String(),
-					ReturnFunc: fmt.Sprintf("err = dividends[%d].IsValid(ePrefix)", i),
-					ErrContext: fmt.Sprintf("dividends[%d] is INVALID!", i),
-					ErrMessage: err.Error(),
-				}
-		}
+      return fracQuoArray,
+        &FuncReturnError{
+          ErrPrefix:  ePrefix.String(),
+          ReturnFunc: fmt.Sprintf("err = dividends[%d].IsValid(ePrefix)", i),
+          ErrContext: fmt.Sprintf("dividends[%d] is INVALID!", i),
+          ErrMessage: err.Error(),
+        }
+    }
 
-		dividendsNumStr, err = dividends[i].GetNumStr()
+    dividendsNumStr, err = dividends[i].GetNumStr()
 
-		if err != nil {
+    if err != nil {
 
-			return fracQuoArray,
-				&FuncReturnError{
-					ErrPrefix:  ePrefix.String(),
-					ReturnFunc: fmt.Sprintf("dividendsNumStr, err = dividends[%d].GetNumStr()", i),
-					ErrContext: "",
-					ErrMessage: err.Error(),
-				}
-		}
+      return fracQuoArray,
+        &FuncReturnError{
+          ErrPrefix:  ePrefix.String(),
+          ReturnFunc: fmt.Sprintf("dividendsNumStr, err = dividends[%d].GetNumStr()", i),
+          ErrContext: "",
+          ErrMessage: err.Error(),
+        }
+    }
 
-		bPair, err := new(BigIntPair).NewBigIntNum(dividends[i], divisor)
+    bPair, err := new(BigIntPair).NewBigIntNum(dividends[i], divisor)
 
-		if err != nil {
+    if err != nil {
 
-			return fracQuoArray,
-				&FuncReturnError{
-					ErrPrefix:  ePrefix.String(),
-					ReturnFunc: fmt.Sprintf("bPair, err := new(BigIntPair).NewBigIntNum(dividends[%d], divisor)", i),
-					ErrContext: "",
-					ErrMessage: err.Error(),
-				}
-		}
+      return fracQuoArray,
+        &FuncReturnError{
+          ErrPrefix:  ePrefix.String(),
+          ReturnFunc: fmt.Sprintf("bPair, err := new(BigIntPair).NewBigIntNum(dividends[%d], divisor)", i),
+          ErrContext: "",
+          ErrMessage: err.Error(),
+        }
+    }
 
-		bPair.MaxPrecision = maxPrecision
+    bPair.MaxPrecision = maxPrecision
 
-		fracQuoArray[i], err =
-			new(BigIntMathDivide).PairFracQuotient(bPair, numSeps)
+    fracQuoArray[i], err =
+      new(BigIntMathDivide).PairFracQuotient(bPair, numSeps)
 
-		if err != nil {
+    if err != nil {
 
-			return fracQuoArray,
-				&FuncReturnError{
-					ErrPrefix:  ePrefix.String(),
-					ReturnFunc: fmt.Sprintf("fracQuoArray[%d], err = new(BigIntMathDivide).PairFracQuotient(bPair, numSeps)", i),
-					ErrContext: fmt.Sprintf("dividend='%v'\ndivisor='%v'\nmaxPrecision='%v'\nIndex='%v'",
-						dividendsNumStr, divisorNumStr, bPair.MaxPrecision, i),
-					ErrMessage: err.Error(),
-				}
-		}
-	}
+      return fracQuoArray,
+        &FuncReturnError{
+          ErrPrefix:  ePrefix.String(),
+          ReturnFunc: fmt.Sprintf("fracQuoArray[%d], err = new(BigIntMathDivide).PairFracQuotient(bPair, numSeps)", i),
+          ErrContext: fmt.Sprintf("dividend='%v'\ndivisor='%v'\nmaxPrecision='%v'\nIndex='%v'",
+            dividendsNumStr, divisorNumStr, bPair.MaxPrecision, i),
+          ErrMessage: err.Error(),
+        }
+    }
+  }
 
-	return fracQuoArray, nil
+  return fracQuoArray, nil
 }
 
 // BigIntNumDivideByTwoQuoMod
@@ -1405,73 +1405,73 @@ func (bIDivide *BigIntMathDivide) BigIntNumFracQuotientArray(
 //	The returned values ('quotient' and 'modulo') will be
 //	configured with 'numSeps'.
 func (bIDivide *BigIntMathDivide) BigIntNumDivideByTwoQuoMod(
-	dividend BigIntNum,
-	numSeps NumericSeparatorDto,
-	maxPrecision uint) (quotient BigIntNum, modulo BigIntNum, err error) {
+  dividend BigIntNum,
+  numSeps NumericSeparatorDto,
+  maxPrecision uint) (quotient BigIntNum, modulo BigIntNum, err error) {
 
-	var ePrefix *ePref.ErrPrefixDto
+  var ePrefix *ePref.ErrPrefixDto
 
-	ePrefix,
-		err = ePref.ErrPrefixDto{}.NewIEmpty(
-		nil,
-		"BigIntMathDivide.BigIntNumDivideByTwoQuoMod",
-		"")
+  ePrefix,
+    err = ePref.ErrPrefixDto{}.NewIEmpty(
+    nil,
+    "BigIntMathDivide.BigIntNumDivideByTwoQuoMod",
+    "")
 
-	if err != nil {
-		return quotient, modulo, err
-	}
+  if err != nil {
+    return quotient, modulo, err
+  }
 
-	err = dividend.IsValid(ePrefix.XCpy(
-		"Testing dividend").String())
+  err = dividend.IsValid(ePrefix.XCpy(
+    "Testing dividend").String())
 
-	if err != nil {
-		return quotient, modulo, err
-	}
+  if err != nil {
+    return quotient, modulo, err
+  }
 
-	numSeps.SetDefaultsIfEmpty()
+  numSeps.SetDefaultsIfEmpty()
 
-	err = numSeps.IsValid(ePrefix.XCpy("Testing numSeps").String())
+  err = numSeps.IsValid(ePrefix.XCpy("Testing numSeps").String())
 
-	if err != nil {
+  if err != nil {
 
-		return quotient, modulo,
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "err = numSeps.IsValid(ePrefix.XCpy(\"Testing numSeps\").String())",
-				ErrContext: "numSeps is INVALID!",
-				ErrMessage: err.Error(),
-			}
-	}
+    return quotient, modulo,
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "err = numSeps.IsValid(ePrefix.XCpy(\"Testing numSeps\").String())",
+        ErrContext: "numSeps is INVALID!",
+        ErrMessage: err.Error(),
+      }
+  }
 
-	bINumTwo, err := new(BigIntNum).NewTwo(0)
+  bINumTwo, err := new(BigIntNum).NewTwo(0)
 
-	if err != nil {
+  if err != nil {
 
-		return quotient, modulo,
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "bINumTwo, err := new(BigIntNum).NewTwo(0)",
-				ErrContext: "",
-				ErrMessage: err.Error(),
-			}
-	}
+    return quotient, modulo,
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "bINumTwo, err := new(BigIntNum).NewTwo(0)",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+  }
 
-	quotient, modulo, err = new(BigIntMathDivide).
-		BigIntNumQuotientMod(dividend, bINumTwo, numSeps, maxPrecision)
+  quotient, modulo, err = new(BigIntMathDivide).
+    BigIntNumQuotientMod(dividend, bINumTwo, numSeps, maxPrecision)
 
-	if err != nil {
+  if err != nil {
 
-		return quotient, modulo,
-			&FuncReturnError{
-				ErrPrefix: ePrefix.String(),
-				ReturnFunc: "quotient, modulo, err = new(BigIntMathDivide).BigIntNumQuotientMod(\n" +
-					"    dividend, bINumTwo, numSeps, maxPrecision)",
-				ErrContext: "",
-				ErrMessage: err.Error(),
-			}
-	}
+    return quotient, modulo,
+      &FuncReturnError{
+        ErrPrefix: ePrefix.String(),
+        ReturnFunc: "quotient, modulo, err = new(BigIntMathDivide).BigIntNumQuotientMod(\n" +
+          "    dividend, bINumTwo, numSeps, maxPrecision)",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+  }
 
-	return quotient, modulo, nil
+  return quotient, modulo, nil
 }
 
 // BigIntNumDivideByThreeQuoMod
@@ -1534,71 +1534,71 @@ func (bIDivide *BigIntMathDivide) BigIntNumDivideByTwoQuoMod(
 //	The returned values ('quotient' and 'modulo') will be
 //	configured with 'numSeps'.
 func (bIDivide *BigIntMathDivide) BigIntNumDivideByThreeQuoMod(
-	dividend BigIntNum,
-	numSeps NumericSeparatorDto,
-	maxPrecision uint) (quotient BigIntNum, modulo BigIntNum, err error) {
+  dividend BigIntNum,
+  numSeps NumericSeparatorDto,
+  maxPrecision uint) (quotient BigIntNum, modulo BigIntNum, err error) {
 
-	var ePrefix *ePref.ErrPrefixDto
+  var ePrefix *ePref.ErrPrefixDto
 
-	ePrefix,
-		err = ePref.ErrPrefixDto{}.NewIEmpty(
-		nil,
-		"BigIntMathDivide.BigIntNumDivideByThreeQuoMod",
-		"")
+  ePrefix,
+    err = ePref.ErrPrefixDto{}.NewIEmpty(
+    nil,
+    "BigIntMathDivide.BigIntNumDivideByThreeQuoMod",
+    "")
 
-	if err != nil {
-		return quotient, modulo, err
-	}
+  if err != nil {
+    return quotient, modulo, err
+  }
 
-	err = dividend.IsValid(ePrefix.XCpy(
-		"Testing dividend").String())
+  err = dividend.IsValid(ePrefix.XCpy(
+    "Testing dividend").String())
 
-	if err != nil {
-		return quotient, modulo, err
-	}
+  if err != nil {
+    return quotient, modulo, err
+  }
 
-	numSeps.SetDefaultsIfEmpty()
+  numSeps.SetDefaultsIfEmpty()
 
-	err = numSeps.IsValid(ePrefix.XCpy("Testing numSeps").String())
+  err = numSeps.IsValid(ePrefix.XCpy("Testing numSeps").String())
 
-	if err != nil {
+  if err != nil {
 
-		return quotient, modulo,
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "err = numSeps.IsValid(ePrefix.XCpy(\"Testing numSeps\").String())",
-				ErrContext: "numSeps is INVALID!",
-				ErrMessage: err.Error(),
-			}
-	}
+    return quotient, modulo,
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "err = numSeps.IsValid(ePrefix.XCpy(\"Testing numSeps\").String())",
+        ErrContext: "numSeps is INVALID!",
+        ErrMessage: err.Error(),
+      }
+  }
 
-	bINumThree, err := new(BigIntNum).NewThree(0)
+  bINumThree, err := new(BigIntNum).NewThree(0)
 
-	if err != nil {
-		return quotient, modulo,
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "bINumThree, err := new(BigIntNum).NewThree(0)",
-				ErrContext: "",
-				ErrMessage: err.Error(),
-			}
-	}
+  if err != nil {
+    return quotient, modulo,
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "bINumThree, err := new(BigIntNum).NewThree(0)",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+  }
 
-	quotient, modulo, err = new(BigIntMathDivide).
-		BigIntNumQuotientMod(dividend, bINumThree, numSeps, maxPrecision)
+  quotient, modulo, err = new(BigIntMathDivide).
+    BigIntNumQuotientMod(dividend, bINumThree, numSeps, maxPrecision)
 
-	if err != nil {
-		return quotient, modulo,
-			&FuncReturnError{
-				ErrPrefix: ePrefix.String(),
-				ReturnFunc: "quotient, modulo, err = new(BigIntMathDivide).\n" +
-					"    BigIntNumQuotientMod(dividend, bINumThree, numSeps, maxPrecision)",
-				ErrContext: "",
-				ErrMessage: err.Error(),
-			}
-	}
+  if err != nil {
+    return quotient, modulo,
+      &FuncReturnError{
+        ErrPrefix: ePrefix.String(),
+        ReturnFunc: "quotient, modulo, err = new(BigIntMathDivide).\n" +
+          "    BigIntNumQuotientMod(dividend, bINumThree, numSeps, maxPrecision)",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+  }
 
-	return quotient, modulo, nil
+  return quotient, modulo, nil
 }
 
 // BigIntNumDivideByFiveQuoMod
@@ -1658,71 +1658,71 @@ func (bIDivide *BigIntMathDivide) BigIntNumDivideByThreeQuoMod(
 //	The returned values ('quotient' and 'modulo') will be
 //	configured with 'numSeps'.
 func (bIDivide *BigIntMathDivide) BigIntNumDivideByFiveQuoMod(
-	dividend BigIntNum,
-	numSeps NumericSeparatorDto,
-	maxPrecision uint) (quotient BigIntNum, modulo BigIntNum, err error) {
+  dividend BigIntNum,
+  numSeps NumericSeparatorDto,
+  maxPrecision uint) (quotient BigIntNum, modulo BigIntNum, err error) {
 
-	var ePrefix *ePref.ErrPrefixDto
+  var ePrefix *ePref.ErrPrefixDto
 
-	ePrefix,
-		err = ePref.ErrPrefixDto{}.NewIEmpty(
-		nil,
-		"BigIntMathDivide.BigIntNumDivideByFiveQuoMod",
-		"")
+  ePrefix,
+    err = ePref.ErrPrefixDto{}.NewIEmpty(
+    nil,
+    "BigIntMathDivide.BigIntNumDivideByFiveQuoMod",
+    "")
 
-	if err != nil {
-		return quotient, modulo, err
-	}
+  if err != nil {
+    return quotient, modulo, err
+  }
 
-	err = dividend.IsValid(ePrefix.XCpy(
-		"Testing dividend").String())
+  err = dividend.IsValid(ePrefix.XCpy(
+    "Testing dividend").String())
 
-	if err != nil {
-		return quotient, modulo, err
-	}
+  if err != nil {
+    return quotient, modulo, err
+  }
 
-	numSeps.SetDefaultsIfEmpty()
+  numSeps.SetDefaultsIfEmpty()
 
-	err = numSeps.IsValid(ePrefix.XCpy("Testing numSeps").String())
+  err = numSeps.IsValid(ePrefix.XCpy("Testing numSeps").String())
 
-	if err != nil {
+  if err != nil {
 
-		return quotient, modulo,
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "err = numSeps.IsValid(ePrefix.XCpy(\"Testing numSeps\").String())",
-				ErrContext: "numSeps is INVALID!",
-				ErrMessage: err.Error(),
-			}
-	}
+    return quotient, modulo,
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "err = numSeps.IsValid(ePrefix.XCpy(\"Testing numSeps\").String())",
+        ErrContext: "numSeps is INVALID!",
+        ErrMessage: err.Error(),
+      }
+  }
 
-	bINumFive, err := new(BigIntNum).NewFive(0)
+  bINumFive, err := new(BigIntNum).NewFive(0)
 
-	if err != nil {
-		return quotient, modulo,
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "bINumFive, err := new(BigIntNum).NewFive(0)",
-				ErrContext: "",
-				ErrMessage: err.Error(),
-			}
-	}
+  if err != nil {
+    return quotient, modulo,
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "bINumFive, err := new(BigIntNum).NewFive(0)",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+  }
 
-	quotient, modulo, err = bIDivide.BigIntNumQuotientMod(
-		dividend, bINumFive, numSeps, maxPrecision)
+  quotient, modulo, err = bIDivide.BigIntNumQuotientMod(
+    dividend, bINumFive, numSeps, maxPrecision)
 
-	if err != nil {
-		return quotient, modulo,
-			&FuncReturnError{
-				ErrPrefix: ePrefix.String(),
-				ReturnFunc: "quotient, modulo, err = bIDivide.BigIntNumQuotientMod(\n" +
-					"    dividend, bINumFive, numSeps, maxPrecision)",
-				ErrContext: "",
-				ErrMessage: err.Error(),
-			}
-	}
+  if err != nil {
+    return quotient, modulo,
+      &FuncReturnError{
+        ErrPrefix: ePrefix.String(),
+        ReturnFunc: "quotient, modulo, err = bIDivide.BigIntNumQuotientMod(\n" +
+          "    dividend, bINumFive, numSeps, maxPrecision)",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+  }
 
-	return quotient, modulo, nil
+  return quotient, modulo, nil
 }
 
 // BigIntNumDivideByTenQuoMod
@@ -1784,72 +1784,72 @@ func (bIDivide *BigIntMathDivide) BigIntNumDivideByFiveQuoMod(
 //	The returned values ('quotient' and 'modulo') will be
 //	configured with 'numSeps'.
 func (bIDivide *BigIntMathDivide) BigIntNumDivideByTenQuoMod(
-	dividend BigIntNum,
-	numSeps NumericSeparatorDto,
-	maxPrecision uint) (quotient BigIntNum, modulo BigIntNum, err error) {
+  dividend BigIntNum,
+  numSeps NumericSeparatorDto,
+  maxPrecision uint) (quotient BigIntNum, modulo BigIntNum, err error) {
 
-	var ePrefix *ePref.ErrPrefixDto
+  var ePrefix *ePref.ErrPrefixDto
 
-	ePrefix,
-		err = ePref.ErrPrefixDto{}.NewIEmpty(
-		nil,
-		"BigIntMathDivide.BigIntNumDivideByTenQuoMod",
-		"")
+  ePrefix,
+    err = ePref.ErrPrefixDto{}.NewIEmpty(
+    nil,
+    "BigIntMathDivide.BigIntNumDivideByTenQuoMod",
+    "")
 
-	if err != nil {
-		return quotient, modulo, err
-	}
+  if err != nil {
+    return quotient, modulo, err
+  }
 
-	err = dividend.IsValid(ePrefix.XCpy(
-		"Testing dividend").String())
+  err = dividend.IsValid(ePrefix.XCpy(
+    "Testing dividend").String())
 
-	if err != nil {
-		return quotient, modulo, err
-	}
+  if err != nil {
+    return quotient, modulo, err
+  }
 
-	numSeps.SetDefaultsIfEmpty()
+  numSeps.SetDefaultsIfEmpty()
 
-	err = numSeps.IsValid(ePrefix.XCpy("Testing numSeps").String())
+  err = numSeps.IsValid(ePrefix.XCpy("Testing numSeps").String())
 
-	if err != nil {
+  if err != nil {
 
-		return quotient, modulo,
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "err = numSeps.IsValid(ePrefix.XCpy(\"Testing numSeps\").String())",
-				ErrContext: "numSeps is INVALID!",
-				ErrMessage: err.Error(),
-			}
-	}
+    return quotient, modulo,
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "err = numSeps.IsValid(ePrefix.XCpy(\"Testing numSeps\").String())",
+        ErrContext: "numSeps is INVALID!",
+        ErrMessage: err.Error(),
+      }
+  }
 
-	bINumTen, err := new(BigIntNum).NewTen(0)
+  bINumTen, err := new(BigIntNum).NewTen(0)
 
-	if err != nil {
-		return quotient, modulo,
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "bINumTen, err := new(BigIntNum).NewTen(0)",
-				ErrContext: "",
-				ErrMessage: err.Error(),
-			}
-	}
+  if err != nil {
+    return quotient, modulo,
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "bINumTen, err := new(BigIntNum).NewTen(0)",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+  }
 
-	quotient, modulo, err = bIDivide.
-		BigIntNumQuotientMod(dividend, bINumTen, numSeps, maxPrecision)
+  quotient, modulo, err = bIDivide.
+    BigIntNumQuotientMod(dividend, bINumTen, numSeps, maxPrecision)
 
-	if err != nil {
+  if err != nil {
 
-		return quotient, modulo,
-			&FuncReturnError{
-				ErrPrefix: ePrefix.String(),
-				ReturnFunc: "quotient, modulo, err = bIDivide.BigIntNumQuotientMod(\n" +
-					"    dividend, bINumTen, numSeps, maxPrecision)",
-				ErrContext: "",
-				ErrMessage: err.Error(),
-			}
-	}
+    return quotient, modulo,
+      &FuncReturnError{
+        ErrPrefix: ePrefix.String(),
+        ReturnFunc: "quotient, modulo, err = bIDivide.BigIntNumQuotientMod(\n" +
+          "    dividend, bINumTen, numSeps, maxPrecision)",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+  }
 
-	return quotient, modulo, nil
+  return quotient, modulo, nil
 }
 
 // BigIntNumDivideByTenToPowerQuoMod
@@ -1903,110 +1903,110 @@ func (bIDivide *BigIntMathDivide) BigIntNumDivideByTenQuoMod(
 //	The returned values ('quotient' and 'modulo') will be
 //	configured with 'numSeps'.
 func (bIDivide *BigIntMathDivide) BigIntNumDivideByTenToPowerQuoMod(
-	dividend BigIntNum,
-	exponent BigIntNum,
-	numSeps NumericSeparatorDto,
-	maxPrecision uint) (quotient BigIntNum, modulo BigIntNum, err error) {
+  dividend BigIntNum,
+  exponent BigIntNum,
+  numSeps NumericSeparatorDto,
+  maxPrecision uint) (quotient BigIntNum, modulo BigIntNum, err error) {
 
-	var ePrefix *ePref.ErrPrefixDto
+  var ePrefix *ePref.ErrPrefixDto
 
-	ePrefix,
-		err = ePref.ErrPrefixDto{}.NewIEmpty(
-		nil,
-		"BigIntMathDivide.BigIntNumDivideByTenToPowerQuoMod",
-		"")
+  ePrefix,
+    err = ePref.ErrPrefixDto{}.NewIEmpty(
+    nil,
+    "BigIntMathDivide.BigIntNumDivideByTenToPowerQuoMod",
+    "")
 
-	if err != nil {
-		return quotient, modulo, err
-	}
+  if err != nil {
+    return quotient, modulo, err
+  }
 
-	err = dividend.IsValid(ePrefix.XCpy("Testing dividend").String())
+  err = dividend.IsValid(ePrefix.XCpy("Testing dividend").String())
 
-	if err != nil {
+  if err != nil {
 
-		return quotient, modulo,
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "err = dividend.IsValid(ePrefix.XCpy(\"Testing dividend\").String())",
-				ErrContext: "Input parameter 'dividend' (BigIntNum) is INVALID!",
-				ErrMessage: err.Error(),
-			}
-	}
+    return quotient, modulo,
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "err = dividend.IsValid(ePrefix.XCpy(\"Testing dividend\").String())",
+        ErrContext: "Input parameter 'dividend' (BigIntNum) is INVALID!",
+        ErrMessage: err.Error(),
+      }
+  }
 
-	err = exponent.IsValid(ePrefix.XCpy("Testing exponent").String())
+  err = exponent.IsValid(ePrefix.XCpy("Testing exponent").String())
 
-	if err != nil {
+  if err != nil {
 
-		return quotient, modulo,
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "err = exponent.IsValid(ePrefix.XCpy(\"Testing exponent\").String())",
-				ErrContext: "Input parameter 'exponent' (BigIntNum) is INVALID!",
-				ErrMessage: err.Error(),
-			}
-	}
+    return quotient, modulo,
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "err = exponent.IsValid(ePrefix.XCpy(\"Testing exponent\").String())",
+        ErrContext: "Input parameter 'exponent' (BigIntNum) is INVALID!",
+        ErrMessage: err.Error(),
+      }
+  }
 
-	numSeps.SetDefaultsIfEmpty()
+  numSeps.SetDefaultsIfEmpty()
 
-	err = numSeps.IsValid(ePrefix.XCpy("Testing numSeps").String())
+  err = numSeps.IsValid(ePrefix.XCpy("Testing numSeps").String())
 
-	if err != nil {
+  if err != nil {
 
-		return quotient, modulo,
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "err = numSeps.IsValid(ePrefix.XCpy(\"Testing numSeps\").String())",
-				ErrContext: "numSeps is INVALID!",
-				ErrMessage: err.Error(),
-			}
-	}
+    return quotient, modulo,
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "err = numSeps.IsValid(ePrefix.XCpy(\"Testing numSeps\").String())",
+        ErrContext: "numSeps is INVALID!",
+        ErrMessage: err.Error(),
+      }
+  }
 
-	bigITen, err := new(BigIntNum).NewTen(0)
+  bigITen, err := new(BigIntNum).NewTen(0)
 
-	if err != nil {
+  if err != nil {
 
-		return quotient, modulo,
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "bigITen, err := new(BigIntNum).NewTen(0)",
-				ErrContext: "",
-				ErrMessage: err.Error(),
-			}
-	}
+    return quotient, modulo,
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "bigITen, err := new(BigIntNum).NewTen(0)",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+  }
 
-	newMaxPrecision := maxPrecision + 10
+  newMaxPrecision := maxPrecision + 10
 
-	scaleValue, err :=
-		new(BigIntMathPower).Pwr(bigITen, exponent, newMaxPrecision)
+  scaleValue, err :=
+    new(BigIntMathPower).Pwr(bigITen, exponent, newMaxPrecision)
 
-	if err != nil {
+  if err != nil {
 
-		return quotient, modulo,
-			&FuncReturnError{
-				ErrPrefix: ePrefix.String(),
-				ReturnFunc: "scaleValue, err := new(BigIntMathPower).Pwr(\n" +
-					"    bigITen, exponent, newMaxPrecision)",
-				ErrContext: "",
-				ErrMessage: err.Error(),
-			}
-	}
+    return quotient, modulo,
+      &FuncReturnError{
+        ErrPrefix: ePrefix.String(),
+        ReturnFunc: "scaleValue, err := new(BigIntMathPower).Pwr(\n" +
+          "    bigITen, exponent, newMaxPrecision)",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+  }
 
-	quotient, modulo, err = new(BigIntMathDivide).
-		BigIntNumQuotientMod(dividend, scaleValue, numSeps, maxPrecision)
+  quotient, modulo, err = new(BigIntMathDivide).
+    BigIntNumQuotientMod(dividend, scaleValue, numSeps, maxPrecision)
 
-	if err != nil {
+  if err != nil {
 
-		return quotient, modulo,
-			&FuncReturnError{
-				ErrPrefix: ePrefix.String(),
-				ReturnFunc: "quotient, modulo, err = new(BigIntMathDivide).\n" +
-					"    BigIntNumQuotientMod(dividend, scaleValue, maxPrecision)",
-				ErrContext: "",
-				ErrMessage: err.Error(),
-			}
-	}
+    return quotient, modulo,
+      &FuncReturnError{
+        ErrPrefix: ePrefix.String(),
+        ReturnFunc: "quotient, modulo, err = new(BigIntMathDivide).\n" +
+          "    BigIntNumQuotientMod(dividend, scaleValue, maxPrecision)",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+  }
 
-	return quotient, modulo, nil
+  return quotient, modulo, nil
 }
 
 // BigIntNumDivideByTwoFracQuo
@@ -2050,72 +2050,72 @@ func (bIDivide *BigIntMathDivide) BigIntNumDivideByTenToPowerQuoMod(
 //	The returned value 'fracQuotient' will be configured with
 //	'numSeps'.
 func (bIDivide *BigIntMathDivide) BigIntNumDivideByTwoFracQuo(
-	dividend BigIntNum,
-	numSeps NumericSeparatorDto,
-	maxPrecision uint) (fracQuotient BigIntNum, err error) {
+  dividend BigIntNum,
+  numSeps NumericSeparatorDto,
+  maxPrecision uint) (fracQuotient BigIntNum, err error) {
 
-	var ePrefix *ePref.ErrPrefixDto
+  var ePrefix *ePref.ErrPrefixDto
 
-	ePrefix,
-		err = ePref.ErrPrefixDto{}.NewIEmpty(
-		nil,
-		"BigIntMathDivide.BigIntNumDivideByTwoFracQuo",
-		"")
+  ePrefix,
+    err = ePref.ErrPrefixDto{}.NewIEmpty(
+    nil,
+    "BigIntMathDivide.BigIntNumDivideByTwoFracQuo",
+    "")
 
-	if err != nil {
-		return fracQuotient, err
-	}
+  if err != nil {
+    return fracQuotient, err
+  }
 
-	err = dividend.IsValid(ePrefix.XCpy(
-		"Testing dividend").String())
+  err = dividend.IsValid(ePrefix.XCpy(
+    "Testing dividend").String())
 
-	if err != nil {
-		return fracQuotient, err
-	}
+  if err != nil {
+    return fracQuotient, err
+  }
 
-	numSeps.SetDefaultsIfEmpty()
+  numSeps.SetDefaultsIfEmpty()
 
-	err = numSeps.IsValid(ePrefix.XCpy("Testing numSeps").String())
+  err = numSeps.IsValid(ePrefix.XCpy("Testing numSeps").String())
 
-	if err != nil {
+  if err != nil {
 
-		return fracQuotient,
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "err = numSeps.IsValid(ePrefix.XCpy(\"Testing numSeps\").String())",
-				ErrContext: "numSeps is INVALID!",
-				ErrMessage: err.Error(),
-			}
-	}
+    return fracQuotient,
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "err = numSeps.IsValid(ePrefix.XCpy(\"Testing numSeps\").String())",
+        ErrContext: "numSeps is INVALID!",
+        ErrMessage: err.Error(),
+      }
+  }
 
-	bINumTwo, err := new(BigIntNum).NewTwo(0)
+  bINumTwo, err := new(BigIntNum).NewTwo(0)
 
-	if err != nil {
-		return fracQuotient,
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "bINumTwo, err := new(BigIntNum).NewTwo(0)",
-				ErrContext: "",
-				ErrMessage: err.Error(),
-			}
-	}
+  if err != nil {
+    return fracQuotient,
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "bINumTwo, err := new(BigIntNum).NewTwo(0)",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+  }
 
-	fracQuotient, err = new(BigIntMathDivide).
-		BigIntNumFracQuotient(dividend, bINumTwo, numSeps, maxPrecision)
+  fracQuotient, err = new(BigIntMathDivide).
+    BigIntNumFracQuotient(dividend, bINumTwo, numSeps, maxPrecision)
 
-	if err != nil {
+  if err != nil {
 
-		return fracQuotient,
-			&FuncReturnError{
-				ErrPrefix: ePrefix.String(),
-				ReturnFunc: "fracQuotient, err = new(BigIntMathDivide).\n" +
-					"    BigIntNumFracQuotient(dividend, bINumTwo, maxPrecision)",
-				ErrContext: "",
-				ErrMessage: err.Error(),
-			}
-	}
+    return fracQuotient,
+      &FuncReturnError{
+        ErrPrefix: ePrefix.String(),
+        ReturnFunc: "fracQuotient, err = new(BigIntMathDivide).\n" +
+          "    BigIntNumFracQuotient(dividend, bINumTwo, maxPrecision)",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+  }
 
-	return fracQuotient, nil
+  return fracQuotient, nil
 }
 
 // BigIntNumDivideByThreeFracQuo
@@ -2162,73 +2162,73 @@ func (bIDivide *BigIntMathDivide) BigIntNumDivideByTwoFracQuo(
 //	The returned value 'fracQuotient' will be configured with
 //	'numSeps'.
 func (bIDivide *BigIntMathDivide) BigIntNumDivideByThreeFracQuo(
-	dividend BigIntNum,
-	numSeps NumericSeparatorDto,
-	maxPrecision uint) (fracQuotient BigIntNum, err error) {
+  dividend BigIntNum,
+  numSeps NumericSeparatorDto,
+  maxPrecision uint) (fracQuotient BigIntNum, err error) {
 
-	var ePrefix *ePref.ErrPrefixDto
+  var ePrefix *ePref.ErrPrefixDto
 
-	ePrefix,
-		err = ePref.ErrPrefixDto{}.NewIEmpty(
-		nil,
-		"BigIntMathDivide.BigIntNumDivideByThreeFracQuo",
-		"")
+  ePrefix,
+    err = ePref.ErrPrefixDto{}.NewIEmpty(
+    nil,
+    "BigIntMathDivide.BigIntNumDivideByThreeFracQuo",
+    "")
 
-	if err != nil {
-		return fracQuotient, err
-	}
+  if err != nil {
+    return fracQuotient, err
+  }
 
-	err = dividend.IsValid(ePrefix.XCpy(
-		"Testing dividend").String())
+  err = dividend.IsValid(ePrefix.XCpy(
+    "Testing dividend").String())
 
-	if err != nil {
-		return fracQuotient, err
-	}
+  if err != nil {
+    return fracQuotient, err
+  }
 
-	numSeps.SetDefaultsIfEmpty()
+  numSeps.SetDefaultsIfEmpty()
 
-	err = numSeps.IsValid(ePrefix.XCpy("Testing numSeps").String())
+  err = numSeps.IsValid(ePrefix.XCpy("Testing numSeps").String())
 
-	if err != nil {
+  if err != nil {
 
-		return fracQuotient,
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "err = numSeps.IsValid(ePrefix.XCpy(\"Testing numSeps\").String())",
-				ErrContext: "numSeps is INVALID!",
-				ErrMessage: err.Error(),
-			}
-	}
+    return fracQuotient,
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "err = numSeps.IsValid(ePrefix.XCpy(\"Testing numSeps\").String())",
+        ErrContext: "numSeps is INVALID!",
+        ErrMessage: err.Error(),
+      }
+  }
 
-	bINumThree, err := new(BigIntNum).NewThree(0)
+  bINumThree, err := new(BigIntNum).NewThree(0)
 
-	if err != nil {
+  if err != nil {
 
-		return fracQuotient,
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "bINumThree, err := new(BigIntNum).NewThree(0)",
-				ErrContext: "",
-				ErrMessage: err.Error(),
-			}
-	}
+    return fracQuotient,
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "bINumThree, err := new(BigIntNum).NewThree(0)",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+  }
 
-	fracQuotient, err = new(BigIntMathDivide).
-		BigIntNumFracQuotient(dividend, bINumThree, numSeps, maxPrecision)
+  fracQuotient, err = new(BigIntMathDivide).
+    BigIntNumFracQuotient(dividend, bINumThree, numSeps, maxPrecision)
 
-	if err != nil {
+  if err != nil {
 
-		return fracQuotient,
-			&FuncReturnError{
-				ErrPrefix: ePrefix.String(),
-				ReturnFunc: "fracQuotient, err = new(BigIntMathDivide).\n" +
-					"    BigIntNumFracQuotient(dividend, bINumThree, maxPrecision)",
-				ErrContext: "",
-				ErrMessage: err.Error(),
-			}
-	}
+    return fracQuotient,
+      &FuncReturnError{
+        ErrPrefix: ePrefix.String(),
+        ReturnFunc: "fracQuotient, err = new(BigIntMathDivide).\n" +
+          "    BigIntNumFracQuotient(dividend, bINumThree, maxPrecision)",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+  }
 
-	return fracQuotient, nil
+  return fracQuotient, nil
 }
 
 // BigIntNumDivideByFiveFracQuo
@@ -2273,72 +2273,72 @@ func (bIDivide *BigIntMathDivide) BigIntNumDivideByThreeFracQuo(
 //	The returned value 'fracQuotient' will be configured with
 //	'numSeps'.
 func (bIDivide *BigIntMathDivide) BigIntNumDivideByFiveFracQuo(
-	dividend BigIntNum,
-	numSeps NumericSeparatorDto,
-	maxPrecision uint) (fracQuotient BigIntNum, err error) {
+  dividend BigIntNum,
+  numSeps NumericSeparatorDto,
+  maxPrecision uint) (fracQuotient BigIntNum, err error) {
 
-	var ePrefix *ePref.ErrPrefixDto
+  var ePrefix *ePref.ErrPrefixDto
 
-	ePrefix,
-		err = ePref.ErrPrefixDto{}.NewIEmpty(
-		nil,
-		"BigIntMathDivide.BigIntNumDivideByFiveFracQuo",
-		"")
+  ePrefix,
+    err = ePref.ErrPrefixDto{}.NewIEmpty(
+    nil,
+    "BigIntMathDivide.BigIntNumDivideByFiveFracQuo",
+    "")
 
-	if err != nil {
-		return fracQuotient, err
-	}
+  if err != nil {
+    return fracQuotient, err
+  }
 
-	err = dividend.IsValid(ePrefix.XCpy(
-		"Testing dividend").String())
+  err = dividend.IsValid(ePrefix.XCpy(
+    "Testing dividend").String())
 
-	if err != nil {
-		return fracQuotient, err
-	}
+  if err != nil {
+    return fracQuotient, err
+  }
 
-	numSeps.SetDefaultsIfEmpty()
+  numSeps.SetDefaultsIfEmpty()
 
-	err = numSeps.IsValid(ePrefix.XCpy("Testing numSeps").String())
+  err = numSeps.IsValid(ePrefix.XCpy("Testing numSeps").String())
 
-	if err != nil {
+  if err != nil {
 
-		return fracQuotient,
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "err = numSeps.IsValid(ePrefix.XCpy(\"Testing numSeps\").String())",
-				ErrContext: "numSeps is INVALID!",
-				ErrMessage: err.Error(),
-			}
-	}
+    return fracQuotient,
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "err = numSeps.IsValid(ePrefix.XCpy(\"Testing numSeps\").String())",
+        ErrContext: "numSeps is INVALID!",
+        ErrMessage: err.Error(),
+      }
+  }
 
-	bINumFive, err := new(BigIntNum).NewFive(0)
+  bINumFive, err := new(BigIntNum).NewFive(0)
 
-	if err != nil {
-		return fracQuotient,
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "bINumFive, err := new(BigIntNum).NewFive(0)",
-				ErrContext: "",
-				ErrMessage: err.Error(),
-			}
-	}
+  if err != nil {
+    return fracQuotient,
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "bINumFive, err := new(BigIntNum).NewFive(0)",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+  }
 
-	fracQuotient, err = new(BigIntMathDivide).
-		BigIntNumFracQuotient(dividend, bINumFive, numSeps, maxPrecision)
+  fracQuotient, err = new(BigIntMathDivide).
+    BigIntNumFracQuotient(dividend, bINumFive, numSeps, maxPrecision)
 
-	if err != nil {
+  if err != nil {
 
-		return fracQuotient,
-			&FuncReturnError{
-				ErrPrefix: ePrefix.String(),
-				ReturnFunc: "fracQuotient, err = new(BigIntMathDivide).(\n" +
-					"    BigIntNumFracQuotient(dividend, bINumFive, maxPrecision)",
-				ErrContext: "",
-				ErrMessage: err.Error(),
-			}
-	}
+    return fracQuotient,
+      &FuncReturnError{
+        ErrPrefix: ePrefix.String(),
+        ReturnFunc: "fracQuotient, err = new(BigIntMathDivide).(\n" +
+          "    BigIntNumFracQuotient(dividend, bINumFive, maxPrecision)",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+  }
 
-	return fracQuotient, nil
+  return fracQuotient, nil
 }
 
 // BigIntNumDivideByTenFracQuo
@@ -2385,72 +2385,72 @@ func (bIDivide *BigIntMathDivide) BigIntNumDivideByFiveFracQuo(
 //	The returned value 'fracQuotient' will be configured with
 //	'numSeps'.
 func (bIDivide *BigIntMathDivide) BigIntNumDivideByTenFracQuo(
-	dividend BigIntNum,
-	numSeps NumericSeparatorDto,
-	maxPrecision uint) (fracQuotient BigIntNum, err error) {
+  dividend BigIntNum,
+  numSeps NumericSeparatorDto,
+  maxPrecision uint) (fracQuotient BigIntNum, err error) {
 
-	var ePrefix *ePref.ErrPrefixDto
+  var ePrefix *ePref.ErrPrefixDto
 
-	ePrefix,
-		err = ePref.ErrPrefixDto{}.NewIEmpty(
-		nil,
-		"BigIntMathDivide.BigIntNumDivideByTenFracQuo",
-		"")
+  ePrefix,
+    err = ePref.ErrPrefixDto{}.NewIEmpty(
+    nil,
+    "BigIntMathDivide.BigIntNumDivideByTenFracQuo",
+    "")
 
-	if err != nil {
-		return fracQuotient, err
-	}
+  if err != nil {
+    return fracQuotient, err
+  }
 
-	err = dividend.IsValid(ePrefix.XCpy(
-		"Testing dividend").String())
+  err = dividend.IsValid(ePrefix.XCpy(
+    "Testing dividend").String())
 
-	if err != nil {
-		return fracQuotient, err
-	}
+  if err != nil {
+    return fracQuotient, err
+  }
 
-	numSeps.SetDefaultsIfEmpty()
+  numSeps.SetDefaultsIfEmpty()
 
-	err = numSeps.IsValid(ePrefix.XCpy("Testing numSeps").String())
+  err = numSeps.IsValid(ePrefix.XCpy("Testing numSeps").String())
 
-	if err != nil {
+  if err != nil {
 
-		return fracQuotient,
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "err = numSeps.IsValid(ePrefix.XCpy(\"Testing numSeps\").String())",
-				ErrContext: "numSeps is INVALID!",
-				ErrMessage: err.Error(),
-			}
-	}
+    return fracQuotient,
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "err = numSeps.IsValid(ePrefix.XCpy(\"Testing numSeps\").String())",
+        ErrContext: "numSeps is INVALID!",
+        ErrMessage: err.Error(),
+      }
+  }
 
-	bINumTen, err := new(BigIntNum).NewTen(0)
+  bINumTen, err := new(BigIntNum).NewTen(0)
 
-	if err != nil {
-		return fracQuotient,
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "bINumTen, err := new(BigIntNum).NewTen(0)",
-				ErrContext: "",
-				ErrMessage: err.Error(),
-			}
-	}
+  if err != nil {
+    return fracQuotient,
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "bINumTen, err := new(BigIntNum).NewTen(0)",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+  }
 
-	fracQuotient, err = new(BigIntMathDivide).
-		BigIntNumFracQuotient(dividend, bINumTen, numSeps, maxPrecision)
+  fracQuotient, err = new(BigIntMathDivide).
+    BigIntNumFracQuotient(dividend, bINumTen, numSeps, maxPrecision)
 
-	if err != nil {
+  if err != nil {
 
-		return fracQuotient,
-			&FuncReturnError{
-				ErrPrefix: ePrefix.String(),
-				ReturnFunc: "fracQuotient, err = new(BigIntMathDivide).(\n" +
-					"    BigIntNumFracQuotient(dividend, bINumTen, maxPrecision)",
-				ErrContext: "",
-				ErrMessage: err.Error(),
-			}
-	}
+    return fracQuotient,
+      &FuncReturnError{
+        ErrPrefix: ePrefix.String(),
+        ReturnFunc: "fracQuotient, err = new(BigIntMathDivide).(\n" +
+          "    BigIntNumFracQuotient(dividend, bINumTen, maxPrecision)",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+  }
 
-	return fracQuotient, nil
+  return fracQuotient, nil
 }
 
 // BigIntNumDivideByTenToPowerFracQuo
@@ -2487,110 +2487,110 @@ func (bIDivide *BigIntMathDivide) BigIntNumDivideByTenFracQuo(
 //	The returned value 'fracQuotient' will be configured with
 //	'numSeps'.
 func (bIDivide *BigIntMathDivide) BigIntNumDivideByTenToPowerFracQuo(
-	dividend BigIntNum,
-	exponent BigIntNum,
-	numSeps NumericSeparatorDto,
-	maxPrecision uint) (fracQuotient BigIntNum, err error) {
+  dividend BigIntNum,
+  exponent BigIntNum,
+  numSeps NumericSeparatorDto,
+  maxPrecision uint) (fracQuotient BigIntNum, err error) {
 
-	var ePrefix *ePref.ErrPrefixDto
+  var ePrefix *ePref.ErrPrefixDto
 
-	ePrefix,
-		err = ePref.ErrPrefixDto{}.NewIEmpty(
-		nil,
-		"BigIntMathDivide.BigIntNumDivideByTenToPowerFracQuo",
-		"")
+  ePrefix,
+    err = ePref.ErrPrefixDto{}.NewIEmpty(
+    nil,
+    "BigIntMathDivide.BigIntNumDivideByTenToPowerFracQuo",
+    "")
 
-	if err != nil {
-		return fracQuotient, err
-	}
+  if err != nil {
+    return fracQuotient, err
+  }
 
-	err = dividend.IsValid(ePrefix.XCpy(
-		"Testing dividend").String())
+  err = dividend.IsValid(ePrefix.XCpy(
+    "Testing dividend").String())
 
-	if err != nil {
-		return fracQuotient, err
-	}
+  if err != nil {
+    return fracQuotient, err
+  }
 
-	err = exponent.IsValid(ePrefix.XCpy(
-		"Testing exponent").String())
+  err = exponent.IsValid(ePrefix.XCpy(
+    "Testing exponent").String())
 
-	if err != nil {
-		return fracQuotient, err
-	}
+  if err != nil {
+    return fracQuotient, err
+  }
 
-	numSeps.SetDefaultsIfEmpty()
+  numSeps.SetDefaultsIfEmpty()
 
-	err = numSeps.IsValid(ePrefix.XCpy("Testing numSeps").String())
+  err = numSeps.IsValid(ePrefix.XCpy("Testing numSeps").String())
 
-	if err != nil {
+  if err != nil {
 
-		return fracQuotient,
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "err = numSeps.IsValid(ePrefix.XCpy(\"Testing numSeps\").String())",
-				ErrContext: "numSeps is INVALID!",
-				ErrMessage: err.Error(),
-			}
-	}
+    return fracQuotient,
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "err = numSeps.IsValid(ePrefix.XCpy(\"Testing numSeps\").String())",
+        ErrContext: "numSeps is INVALID!",
+        ErrMessage: err.Error(),
+      }
+  }
 
-	fracQuotient, err = new(BigIntNum).NewZero(0)
+  fracQuotient, err = new(BigIntNum).NewZero(0)
 
-	if err != nil {
+  if err != nil {
 
-		return fracQuotient,
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "fracQuotient, err = new(BigIntNum).NewZero(0)",
-				ErrContext: "",
-				ErrMessage: err.Error(),
-			}
-	}
+    return fracQuotient,
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "fracQuotient, err = new(BigIntNum).NewZero(0)",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+  }
 
-	bIntNum2, err := new(BigIntNum).NewTen(0)
+  bIntNum2, err := new(BigIntNum).NewTen(0)
 
-	if err != nil {
+  if err != nil {
 
-		return fracQuotient,
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "bIntNum2, err := new(BigIntNum).NewTen(0)",
-				ErrContext: "",
-				ErrMessage: err.Error(),
-			}
-	}
+    return fracQuotient,
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "bIntNum2, err := new(BigIntNum).NewTen(0)",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+  }
 
-	newMaxPrecision := maxPrecision + 10
+  newMaxPrecision := maxPrecision + 10
 
-	scaleValue, err :=
-		new(BigIntMathPower).Pwr(bIntNum2, exponent, newMaxPrecision)
+  scaleValue, err :=
+    new(BigIntMathPower).Pwr(bIntNum2, exponent, newMaxPrecision)
 
-	if err != nil {
+  if err != nil {
 
-		return fracQuotient,
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "scaleValue, err := new(BigIntMathPower).Pwr(bIntNum2, exponent, newMaxPrecision)",
-				ErrContext: fmt.Sprintf("newMaxPrecision= '%v'", newMaxPrecision),
-				ErrMessage: err.Error(),
-			}
-	}
+    return fracQuotient,
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "scaleValue, err := new(BigIntMathPower).Pwr(bIntNum2, exponent, newMaxPrecision)",
+        ErrContext: fmt.Sprintf("newMaxPrecision= '%v'", newMaxPrecision),
+        ErrMessage: err.Error(),
+      }
+  }
 
-	fracQuotient, err = new(BigIntMathDivide).
-		BigIntNumFracQuotient(dividend, scaleValue, numSeps, maxPrecision)
+  fracQuotient, err = new(BigIntMathDivide).
+    BigIntNumFracQuotient(dividend, scaleValue, numSeps, maxPrecision)
 
-	if err != nil {
+  if err != nil {
 
-		return fracQuotient,
-			&FuncReturnError{
-				ErrPrefix: ePrefix.String(),
-				ReturnFunc: "fracQuotient, err = new(BigIntMathDivide).(\n" +
-					"    BigIntNumFracQuotient(dividend, scaleValue, maxPrecision)",
-				ErrContext: "",
-				ErrMessage: err.Error(),
-			}
-	}
+    return fracQuotient,
+      &FuncReturnError{
+        ErrPrefix: ePrefix.String(),
+        ReturnFunc: "fracQuotient, err = new(BigIntMathDivide).(\n" +
+          "    BigIntNumFracQuotient(dividend, scaleValue, maxPrecision)",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+  }
 
-	return fracQuotient, nil
+  return fracQuotient, nil
 }
 
 // BigIntNumDivideByTenToPowerIntQuo
@@ -2620,99 +2620,99 @@ func (bIDivide *BigIntMathDivide) BigIntNumDivideByTenToPowerFracQuo(
 //	The returned value,'intQuotient', will be configured with
 //	'numSeps'.
 func (bIDivide *BigIntMathDivide) BigIntNumDivideByTenToPowerIntQuo(
-	dividend BigIntNum,
-	exponent BigIntNum,
-	numSeps NumericSeparatorDto,
-	maxPrecision uint) (intQuotient BigIntNum, err error) {
+  dividend BigIntNum,
+  exponent BigIntNum,
+  numSeps NumericSeparatorDto,
+  maxPrecision uint) (intQuotient BigIntNum, err error) {
 
-	var ePrefix *ePref.ErrPrefixDto
+  var ePrefix *ePref.ErrPrefixDto
 
-	ePrefix,
-		err = ePref.ErrPrefixDto{}.NewIEmpty(
-		nil,
-		"BigIntMathDivide.BigIntNumDivideByTenToPowerIntQuo",
-		"")
+  ePrefix,
+    err = ePref.ErrPrefixDto{}.NewIEmpty(
+    nil,
+    "BigIntMathDivide.BigIntNumDivideByTenToPowerIntQuo",
+    "")
 
-	if err != nil {
-		return intQuotient, err
-	}
+  if err != nil {
+    return intQuotient, err
+  }
 
-	err = dividend.IsValid(ePrefix.XCpy(
-		"Testing dividend").String())
+  err = dividend.IsValid(ePrefix.XCpy(
+    "Testing dividend").String())
 
-	if err != nil {
-		return intQuotient, err
-	}
+  if err != nil {
+    return intQuotient, err
+  }
 
-	err = exponent.IsValid(ePrefix.XCpy(
-		"Testing exponent").String())
+  err = exponent.IsValid(ePrefix.XCpy(
+    "Testing exponent").String())
 
-	if err != nil {
-		return intQuotient, err
-	}
+  if err != nil {
+    return intQuotient, err
+  }
 
-	numSeps.SetDefaultsIfEmpty()
+  numSeps.SetDefaultsIfEmpty()
 
-	err = numSeps.IsValid(ePrefix.XCpy("Testing numSeps").String())
+  err = numSeps.IsValid(ePrefix.XCpy("Testing numSeps").String())
 
-	if err != nil {
+  if err != nil {
 
-		return intQuotient,
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "err = numSeps.IsValid(ePrefix.XCpy(\"Testing numSeps\").String())",
-				ErrContext: "numSeps is INVALID!",
-				ErrMessage: err.Error(),
-			}
-	}
+    return intQuotient,
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "err = numSeps.IsValid(ePrefix.XCpy(\"Testing numSeps\").String())",
+        ErrContext: "numSeps is INVALID!",
+        ErrMessage: err.Error(),
+      }
+  }
 
-	bINum10, err := new(BigIntNum).NewTen(0)
+  bINum10, err := new(BigIntNum).NewTen(0)
 
-	if err != nil {
+  if err != nil {
 
-		return intQuotient,
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "bINum10, err := new(BigIntNum).NewTen(0)",
-				ErrContext: "",
-				ErrMessage: err.Error(),
-			}
-	}
+    return intQuotient,
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "bINum10, err := new(BigIntNum).NewTen(0)",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+  }
 
-	newScalePrecision := maxPrecision + 10
+  newScalePrecision := maxPrecision + 10
 
-	scaleValue, err := new(BigIntMathPower).
-		Pwr(bINum10, exponent, newScalePrecision)
+  scaleValue, err := new(BigIntMathPower).
+    Pwr(bINum10, exponent, newScalePrecision)
 
-	if err != nil {
+  if err != nil {
 
-		return intQuotient,
-			&FuncReturnError{
-				ErrPrefix: ePrefix.String(),
-				ReturnFunc: "scaleValue, err := new(BigIntMathPower).\n" +
-					"    Pwr(bINum10, exponent, newScalePrecision)",
-				ErrContext: fmt.Sprintf("exponent= '%v' newScalePrecision= '%v'",
-					exponent, newScalePrecision),
-				ErrMessage: err.Error(),
-			}
-	}
+    return intQuotient,
+      &FuncReturnError{
+        ErrPrefix: ePrefix.String(),
+        ReturnFunc: "scaleValue, err := new(BigIntMathPower).\n" +
+          "    Pwr(bINum10, exponent, newScalePrecision)",
+        ErrContext: fmt.Sprintf("exponent= '%v' newScalePrecision= '%v'",
+          exponent, newScalePrecision),
+        ErrMessage: err.Error(),
+      }
+  }
 
-	intQuotient, err = new(BigIntMathDivide).
-		BigIntNumIntQuotient(dividend, scaleValue, numSeps)
+  intQuotient, err = new(BigIntMathDivide).
+    BigIntNumIntQuotient(dividend, scaleValue, numSeps)
 
-	if err != nil {
+  if err != nil {
 
-		return intQuotient,
-			&FuncReturnError{
-				ErrPrefix: ePrefix.String(),
-				ReturnFunc: "intQuotient, err = new(BigIntMathDivide).\n" +
-					"    BigIntNumIntQuotient(dividend, scaleValue)",
-				ErrContext: "",
-				ErrMessage: err.Error(),
-			}
-	}
+    return intQuotient,
+      &FuncReturnError{
+        ErrPrefix: ePrefix.String(),
+        ReturnFunc: "intQuotient, err = new(BigIntMathDivide).\n" +
+          "    BigIntNumIntQuotient(dividend, scaleValue)",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+  }
 
-	return intQuotient, nil
+  return intQuotient, nil
 }
 
 // BigIntNumDivideByTenToPowerMod
@@ -2774,99 +2774,99 @@ func (bIDivide *BigIntMathDivide) BigIntNumDivideByTenToPowerIntQuo(
 //
 //		The returned value, 'modulo', will be configured with 'numSeps'.
 func (bIDivide *BigIntMathDivide) BigIntNumDivideByTenToPowerMod(
-	dividend BigIntNum,
-	exponent BigIntNum,
-	numSeps NumericSeparatorDto,
-	maxPrecision uint) (modulo BigIntNum, err error) {
+  dividend BigIntNum,
+  exponent BigIntNum,
+  numSeps NumericSeparatorDto,
+  maxPrecision uint) (modulo BigIntNum, err error) {
 
-	var ePrefix *ePref.ErrPrefixDto
+  var ePrefix *ePref.ErrPrefixDto
 
-	ePrefix,
-		err = ePref.ErrPrefixDto{}.NewIEmpty(
-		nil,
-		"BigIntMathDivide.BigIntNumDivideByTenToPowerMod",
-		"")
+  ePrefix,
+    err = ePref.ErrPrefixDto{}.NewIEmpty(
+    nil,
+    "BigIntMathDivide.BigIntNumDivideByTenToPowerMod",
+    "")
 
-	if err != nil {
-		return modulo, err
-	}
+  if err != nil {
+    return modulo, err
+  }
 
-	err = dividend.IsValid(ePrefix.XCpy(
-		"Testing dividend").String())
+  err = dividend.IsValid(ePrefix.XCpy(
+    "Testing dividend").String())
 
-	if err != nil {
-		return modulo, err
-	}
+  if err != nil {
+    return modulo, err
+  }
 
-	err = exponent.IsValid(ePrefix.XCpy(
-		"Testing exponent").String())
+  err = exponent.IsValid(ePrefix.XCpy(
+    "Testing exponent").String())
 
-	if err != nil {
-		return modulo, err
-	}
+  if err != nil {
+    return modulo, err
+  }
 
-	numSeps.SetDefaultsIfEmpty()
+  numSeps.SetDefaultsIfEmpty()
 
-	err = numSeps.IsValid(ePrefix.XCpy("Testing numSeps").String())
+  err = numSeps.IsValid(ePrefix.XCpy("Testing numSeps").String())
 
-	if err != nil {
+  if err != nil {
 
-		return modulo,
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "err = numSeps.IsValid(ePrefix.XCpy(\"Testing numSeps\").String())",
-				ErrContext: "numSeps is INVALID!",
-				ErrMessage: err.Error(),
-			}
-	}
+    return modulo,
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "err = numSeps.IsValid(ePrefix.XCpy(\"Testing numSeps\").String())",
+        ErrContext: "numSeps is INVALID!",
+        ErrMessage: err.Error(),
+      }
+  }
 
-	bINum10, err := new(BigIntNum).NewTen(0)
+  bINum10, err := new(BigIntNum).NewTen(0)
 
-	if err != nil {
+  if err != nil {
 
-		return modulo,
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "bINum10, err := new(BigIntNum).NewTen(0)",
-				ErrContext: "",
-				ErrMessage: err.Error(),
-			}
-	}
+    return modulo,
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "bINum10, err := new(BigIntNum).NewTen(0)",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+  }
 
-	newScalePrecision := maxPrecision + 10
+  newScalePrecision := maxPrecision + 10
 
-	scaleValue, err := new(BigIntMathPower).
-		Pwr(bINum10, exponent, newScalePrecision)
+  scaleValue, err := new(BigIntMathPower).
+    Pwr(bINum10, exponent, newScalePrecision)
 
-	if err != nil {
+  if err != nil {
 
-		return modulo,
-			&FuncReturnError{
-				ErrPrefix: ePrefix.String(),
-				ReturnFunc: "scaleValue, err := new(BigIntMathPower).\n" +
-					"    Pwr(bINum10, exponent, newScalePrecision)",
-				ErrContext: fmt.Sprintf("exponent= '%v' newScalePrecision= '%v'",
-					exponent, newScalePrecision),
-				ErrMessage: err.Error(),
-			}
-	}
+    return modulo,
+      &FuncReturnError{
+        ErrPrefix: ePrefix.String(),
+        ReturnFunc: "scaleValue, err := new(BigIntMathPower).\n" +
+          "    Pwr(bINum10, exponent, newScalePrecision)",
+        ErrContext: fmt.Sprintf("exponent= '%v' newScalePrecision= '%v'",
+          exponent, newScalePrecision),
+        ErrMessage: err.Error(),
+      }
+  }
 
-	modulo, err = new(BigIntMathDivide).
-		BigIntNumModulo(dividend, scaleValue, numSeps, maxPrecision)
+  modulo, err = new(BigIntMathDivide).
+    BigIntNumModulo(dividend, scaleValue, numSeps, maxPrecision)
 
-	if err != nil {
+  if err != nil {
 
-		return modulo,
-			&FuncReturnError{
-				ErrPrefix: ePrefix.String(),
-				ReturnFunc: "modulo, err = new(BigIntMathDivide).\n" +
-					"    BigIntNumModulo(dividend, scaleValue, maxPrecision)",
-				ErrContext: "",
-				ErrMessage: err.Error(),
-			}
-	}
+    return modulo,
+      &FuncReturnError{
+        ErrPrefix: ePrefix.String(),
+        ReturnFunc: "modulo, err = new(BigIntMathDivide).\n" +
+          "    BigIntNumModulo(dividend, scaleValue, maxPrecision)",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+  }
 
-	return modulo, nil
+  return modulo, nil
 }
 
 // DecimalQuotientMod
@@ -2937,656 +2937,726 @@ func (bIDivide *BigIntMathDivide) BigIntNumDivideByTenToPowerMod(
 //		 The returned values ('quotient' and 'modulo') will be
 //		 configured with 'numSeps'.
 func (bIDivide *BigIntMathDivide) DecimalQuotientMod(
-	dividend Decimal,
-	divisor Decimal,
-	numSeps NumericSeparatorDto,
-	maxPrecision uint) (quotient BigIntNum, modulo BigIntNum, err error) {
+  dividend Decimal,
+  divisor Decimal,
+  numSeps NumericSeparatorDto,
+  maxPrecision uint) (quotient BigIntNum, modulo BigIntNum, err error) {
 
-	var ePrefix *ePref.ErrPrefixDto
+  var ePrefix *ePref.ErrPrefixDto
 
-	ePrefix,
-		err = ePref.ErrPrefixDto{}.NewIEmpty(
-		nil,
-		"BigIntMathDivide.DecimalQuotientMod",
-		"")
+  ePrefix,
+    err = ePref.ErrPrefixDto{}.NewIEmpty(
+    nil,
+    "BigIntMathDivide.DecimalQuotientMod",
+    "")
 
-	if err != nil {
-		return quotient, modulo, err
-	}
+  if err != nil {
+    return quotient, modulo, err
+  }
 
-	err = dividend.IsValid(ePrefix.XCpy(
-		"Testing dividend").String())
+  err = dividend.IsValid(ePrefix.XCpy(
+    "Testing dividend").String())
 
-	if err != nil {
-		return quotient, modulo, err
-	}
+  if err != nil {
+    return quotient, modulo, err
+  }
 
-	err = divisor.IsValid(ePrefix.XCpy(
-		"Testing divisor").String())
+  err = divisor.IsValid(ePrefix.XCpy(
+    "Testing divisor").String())
 
-	if err != nil {
-		return quotient, modulo, err
-	}
+  if err != nil {
+    return quotient, modulo, err
+  }
 
-	dividendNumStr, err := dividend.GetNumStr()
+  dividendNumStr, err := dividend.GetNumStr()
 
-	if err != nil {
+  if err != nil {
 
-		return quotient, modulo,
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "dividendNumStr, err := dividend.GetNumStr()",
-				ErrContext: "",
-				ErrMessage: err.Error(),
-			}
-	}
+    return quotient, modulo,
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "dividendNumStr, err := dividend.GetNumStr()",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+  }
 
-	divisorNumStr, err := divisor.GetNumStr()
+  divisorNumStr, err := divisor.GetNumStr()
 
-	if err != nil {
+  if err != nil {
 
-		return quotient, modulo,
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "divisorNumStr, err := divisor.GetNumStr()",
-				ErrContext: "",
-				ErrMessage: err.Error(),
-			}
-	}
+    return quotient, modulo,
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "divisorNumStr, err := divisor.GetNumStr()",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+  }
 
-	numSeps.SetDefaultsIfEmpty()
+  numSeps.SetDefaultsIfEmpty()
 
-	err = numSeps.IsValid(ePrefix.XCpy("Testing numSeps").String())
+  err = numSeps.IsValid(ePrefix.XCpy("Testing numSeps").String())
 
-	if err != nil {
+  if err != nil {
 
-		return quotient, modulo,
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "err = numSeps.IsValid(ePrefix.XCpy(\"Testing numSeps\").String())",
-				ErrContext: "numSeps is INVALID!",
-				ErrMessage: err.Error(),
-			}
-	}
+    return quotient, modulo,
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "err = numSeps.IsValid(ePrefix.XCpy(\"Testing numSeps\").String())",
+        ErrContext: "numSeps is INVALID!",
+        ErrMessage: err.Error(),
+      }
+  }
 
-	bPair, err := new(BigIntPair).NewDecimal(dividend, divisor)
+  bPair, err := new(BigIntPair).NewDecimal(dividend, divisor)
 
-	if err != nil {
+  if err != nil {
 
-		return quotient, modulo,
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "bPair, err := new(BigIntPair).NewDecimal(dividend, divisor)",
-				ErrContext: fmt.Sprintf("dividend = '%v'; divisor = '%v'",
-					dividendNumStr, divisorNumStr),
-				ErrMessage: err.Error(),
-			}
-	}
+    return quotient, modulo,
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "bPair, err := new(BigIntPair).NewDecimal(dividend, divisor)",
+        ErrContext: fmt.Sprintf("dividend = '%v'; divisor = '%v'",
+          dividendNumStr, divisorNumStr),
+        ErrMessage: err.Error(),
+      }
+  }
 
-	bigpairBig2Iszero, err := bPair.Big2.IsZero()
+  bigpairBig2Iszero, err := bPair.Big2.IsZero()
 
-	if err != nil {
+  if err != nil {
 
-		return quotient, modulo,
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "bigpairBig2Iszero, err := bPair.Big2.IsZero()",
-				ErrContext: "",
-				ErrMessage: err.Error(),
-			}
-	}
+    return quotient, modulo,
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "bigpairBig2Iszero, err := bPair.Big2.IsZero()",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+  }
 
-	if bigpairBig2Iszero {
+  if bigpairBig2Iszero {
 
-		return quotient, modulo,
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "",
-				ErrContext: "bPair.Big2 == 0",
-				ErrMessage: "Error: Attempted divide by ZERO!\n" +
-					"'bPair.Big2' has a ZERO value.",
-			}
-	}
+    return quotient, modulo,
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "",
+        ErrContext: "bPair.Big2 == 0",
+        ErrMessage: "Error: Attempted divide by ZERO!\n" +
+          "'bPair.Big2' has a ZERO value.",
+      }
+  }
 
-	bPair.MaxPrecision = maxPrecision
+  bPair.MaxPrecision = maxPrecision
 
-	quotient, modulo, err =
-		new(BigIntMathDivide).PairQuotientMod(bPair, numSeps)
+  quotient, modulo, err =
+    new(BigIntMathDivide).PairQuotientMod(bPair, numSeps)
 
-	if err != nil {
+  if err != nil {
 
-		return quotient, modulo,
-			&FuncReturnError{
-				ErrPrefix: ePrefix.String(),
-				ReturnFunc: "quotient, modulo, err = new(BigIntMathDivide).\n" +
-					"    PairQuotientMod(bPair)",
-				ErrContext: fmt.Sprintf("dividend = '%v'; divisor = '%v'; maxPrecision='%v'",
-					dividendNumStr, divisorNumStr, maxPrecision),
-				ErrMessage: err.Error(),
-			}
-	}
+    return quotient, modulo,
+      &FuncReturnError{
+        ErrPrefix: ePrefix.String(),
+        ReturnFunc: "quotient, modulo, err = new(BigIntMathDivide).\n" +
+          "    PairQuotientMod(bPair)",
+        ErrContext: fmt.Sprintf("dividend = '%v'; divisor = '%v'; maxPrecision='%v'",
+          dividendNumStr, divisorNumStr, maxPrecision),
+        ErrMessage: err.Error(),
+      }
+  }
 
-	return quotient, modulo, nil
+  return quotient, modulo, nil
 }
 
-// DecimalFracQuotient - Performs a division operation on Decimal Type input
-// parameters 'dividend' and 'divisor'.
+// DecimalFracQuotient
 //
-// The resulting quotient is returned as a BigIntNum type representing the
-// result of the division operation expressed as integer and fractional digits.
-// Remember that the BigIntNum type specifies 'precision'. Precision is defined
-// as the number of fractional digits to the right of the decimal place.
+// Performs a division operation on Decimal Type input parameters
+// 'dividend' and 'divisor'.
 //
-// The input parameter 'maxPrecision' is used to control the precision of the
-// resulting fractional quotient. Be advised that this method is capable of
-// calculating quotients with very long strings of fractional digits. Therefore,
-// the user is advised to set a relevant value for 'maxPrecision'.
+// The resulting quotient is returned as a BigIntNum type
+// representing the result of the division operation expressed as
+// integer and fractional digits.
 //
-// Examples:
-// =========
+// Remember that the BigIntNum type specifies 'precision'.
+// Precision is defined as the number of fractional digits to the
+// right of the decimal place.
 //
-// Note: For all examples maximum precision is specified as '15'.
-// ----------------------------------------------------------------------------
+// The input parameter 'maxPrecision' is used to control the
+// precision of the resulting fractional quotient. Be advised that
+// this method is capable of calculating quotients with very long
+// strings of fractional digits. Therefore, the user is advised to
+// set a relevant value for 'maxPrecision'.
 //
-//																					     Quotient
-//	 Dividend		divided by	Divisor		=		  BigIntNum Integer 	Precision	 Result
-//	 -------- 	  ----------	--------				-----------------	  ---------	 ------
-//		 10.5  				/ 				2 				= 			525  							  2  			 5.25
-//		 10    				/ 				2 				= 			5	  							  0  			 5
-//	  11.5  				/         2.5				=  			46								  1				 4.6
-//	   2.5					/				 12.555			=				199123855037834	   15				 0.199123855037834
-//		-12.555 			/ 				2.5 			= 		 -5022							  3				-5.022
-//	 -12.555     	/    			2  			  = 		 -62775							  4				-6.2775
-//	 - 2.5 				/ 			 12.555		  = 		 -199123855037834	   15				-0.199123855037834
-//		 12.555				/ 			- 2.5			  =			 -5022								3				-5.022
-//	  12.555 			/ 			- 2 				= 		 -62775								4				-6.2775
-//	   2.5 				/ 			-12.555		  = 		 -199123855037834	   15				-0.199123855037834
-//		-12.555 			/ 			- 2.5 			= 			5022								3				 5.022
-//	 -12.555     	/    		- 2 				= 		  62775								4				 6.2775
-//	 - 2.5	 				/ 			-12.555		  = 		  199123855037834	   15				 0.199123855037834
-//	 -10						/				- 2					=				5														 5
+//			Examples
+//			=========
 //
-// The returned BigIntNum division result ('fracQuotient') will contain numeric separators
-// (decimal separator, thousands separator and currency symbol) copied from input parameter,
-// 'dividend'.
+//			Note: For all examples maximum precision is specified as '15'.
+//
+//					                                            Quotient
+//		 Dividend  divided by  Divisor  =  BigIntNum Integer  Precision  Result
+//
+//	     10.5        /         2      =   525                  2        5.25
+//	     10          /         2      =     5                  0        5
+//	     11.5        /         2.5    =    46                  1        4.6
+//	     2.5         /        12.555  =    199123855037834    15        0.199123855037834
+//	   -12.555       /         2.5    =   -5022                3       -5.022
+//	   -12.555       /         2      =   -62775               4       -6.2775
+//	   - 2.5         /        12.555  =   -199123855037834    15       -0.199123855037834
+//	    12.555       /       - 2.5    =   -5022                3       -5.022
+//	    12.555       /       - 2      =   -62775               4       -6.2775
+//	     2.5         /       -12.555  =   -199123855037834    15       -0.199123855037834
+//	   -12.555       /       - 2.5    =    5022                3        5.022
+//	   -12.555       /       - 2      =    62775               4        6.2775
+//	   - 2.5         /       -12.555  =    199123855037834    15        0.199123855037834
+//	   -10           /       - 2      =    5                   5        5.00000
+//
+//		 Numeric Separators
+//		 ==================
+//
+//		 Input parameter, 'numSeps' consits of a NumericSeparatorDto
+//		 instance. A NumericSeparatorDto contains symbols or characters
+//		 for the decimal separator, thousands separator and currency
+//		 symbol.
+//
+//		 If any of the 'numSeps' Numeric Separator Components are set
+//		 to zero, those components will be automatically reset to USA
+//		 default values.
+//
+//		 The returned values ('quotient' and 'modulo') will be
+//		 configured with 'numSeps'.
 func (bIDivide *BigIntMathDivide) DecimalFracQuotient(
-	dividend Decimal,
-	divisor Decimal,
-	maxPrecision uint) (fracQuotient BigIntNum, err error) {
+  dividend Decimal,
+  divisor Decimal,
+  numSeps NumericSeparatorDto,
+  maxPrecision uint) (fracQuotient BigIntNum, err error) {
 
-	var ePrefix *ePref.ErrPrefixDto
+  var ePrefix *ePref.ErrPrefixDto
 
-	ePrefix,
-		err = ePref.ErrPrefixDto{}.NewIEmpty(
-		nil,
-		"BigIntMathDivide.DecimalFracQuotient",
-		"")
+  ePrefix,
+    err = ePref.ErrPrefixDto{}.NewIEmpty(
+    nil,
+    "BigIntMathDivide.DecimalFracQuotient",
+    "")
 
-	if err != nil {
-		return fracQuotient, err
-	}
+  if err != nil {
+    return fracQuotient, err
+  }
 
-	err = dividend.IsValid(ePrefix.XCpy(
-		"Testing dividend").String())
+  err = dividend.IsValid(ePrefix.XCpy(
+    "Testing dividend").String())
 
-	if err != nil {
-		return fracQuotient, err
-	}
+  if err != nil {
+    return fracQuotient, err
+  }
 
-	err = divisor.IsValid(ePrefix.XCpy(
-		"Testing divisor").String())
+  err = divisor.IsValid(ePrefix.XCpy(
+    "Testing divisor").String())
 
-	if err != nil {
-		return fracQuotient, err
-	}
+  if err != nil {
+    return fracQuotient, err
+  }
 
-	dividendNumStr, err := dividend.GetNumStr()
+  dividendNumStr, err := dividend.GetNumStr()
 
-	if err != nil {
+  if err != nil {
 
-		return fracQuotient,
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "dividendNumStr, err := dividend.GetNumStr()",
-				ErrContext: "",
-				ErrMessage: err.Error(),
-			}
-	}
+    return fracQuotient,
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "dividendNumStr, err := dividend.GetNumStr()",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+  }
 
-	divisorNumStr, err := divisor.GetNumStr()
+  divisorNumStr, err := divisor.GetNumStr()
 
-	if err != nil {
+  if err != nil {
 
-		return fracQuotient,
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "divisorNumStr, err := divisor.GetNumStr()",
-				ErrContext: "",
-				ErrMessage: err.Error(),
-			}
-	}
+    return fracQuotient,
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "divisorNumStr, err := divisor.GetNumStr()",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+  }
 
-	divisorIsZero, err := divisor.IsZero()
+  numSeps.SetDefaultsIfEmpty()
 
-	if err != nil {
+  err = numSeps.IsValid(ePrefix.XCpy("Testing numSeps").String())
 
-		return fracQuotient,
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "divisorIsZero, err := divisor.IsZero()",
-				ErrContext: "",
-				ErrMessage: err.Error(),
-			}
-	}
+  if err != nil {
 
-	if divisorIsZero {
+    return fracQuotient,
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "err = numSeps.IsValid(ePrefix.XCpy(\"Testing numSeps\").String())",
+        ErrContext: "numSeps is INVALID!",
+        ErrMessage: err.Error(),
+      }
+  }
 
-		return fracQuotient,
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "",
-				ErrContext: "divisor == 0",
-				ErrMessage: "Error: Attempted divide by ZERO!\n" +
-					"Input parameter 'divisor' has a zero value.",
-			}
-	}
+  divisorIsZero, err := divisor.IsZero()
 
-	bPair, err := new(BigIntPair).NewDecimal(dividend, divisor)
+  if err != nil {
 
-	if err != nil {
+    return fracQuotient,
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "divisorIsZero, err := divisor.IsZero()",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+  }
 
-		return fracQuotient,
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "bPair, err := new(BigIntPair).NewDecimal(dividend, divisor)",
-				ErrContext: fmt.Sprintf("dividend = '%v'; divisor = '%v'",
-					dividendNumStr, divisorNumStr),
-				ErrMessage: err.Error(),
-			}
-	}
+  if divisorIsZero {
 
-	bPair.MaxPrecision = maxPrecision
+    return fracQuotient,
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "",
+        ErrContext: "divisor == 0",
+        ErrMessage: "Error: Attempted divide by ZERO!\n" +
+          "Input parameter 'divisor' has a zero value.",
+      }
+  }
 
-	fracQuotient, err =
-		new(BigIntMathDivide).PairFracQuotient(bPair)
+  bPair, err := new(BigIntPair).NewDecimal(dividend, divisor)
 
-	if err != nil {
+  if err != nil {
 
-		return fracQuotient,
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "fracQuotient, err = new(BigIntMathDivide).PairFracQuotient(bPair)",
-				ErrContext: fmt.Sprintf("dividend = '%v'; divisor = '%v'; maxPrecision= '%v'",
-					dividendNumStr, divisorNumStr, maxPrecision),
-				ErrMessage: err.Error(),
-			}
-	}
+    return fracQuotient,
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "bPair, err := new(BigIntPair).NewDecimal(dividend, divisor)",
+        ErrContext: fmt.Sprintf("dividend = '%v'; divisor = '%v'",
+          dividendNumStr, divisorNumStr),
+        ErrMessage: err.Error(),
+      }
+  }
 
-	return fracQuotient, nil
+  bPair.MaxPrecision = maxPrecision
+
+  fracQuotient, err =
+    new(BigIntMathDivide).PairFracQuotient(bPair, numSeps)
+
+  if err != nil {
+
+    return fracQuotient,
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "fracQuotient, err = new(BigIntMathDivide).PairFracQuotient(bPair)",
+        ErrContext: fmt.Sprintf("dividend = '%v'; divisor = '%v'; maxPrecision= '%v'",
+          dividendNumStr, divisorNumStr, maxPrecision),
+        ErrMessage: err.Error(),
+      }
+  }
+
+  return fracQuotient, nil
 }
 
-// DecimalFracQuotientArray - Performs a division operation on Decimal input
-// parameters 'dividends' and 'divisor'. 'dividends' is an array of Decimal
-// Types. The division operation is performed on each element of the 'dividends'
-// array using a single 'divisor'.
+// DecimalFracQuotientArray
 //
-// The resulting quotients are returned as an array of Decimal Types. The values
-// represent result of each division operation expressed as integer and fractional
-// digits.
+// Performs a division operation on Decimal input parameters
+// 'dividends' and 'divisor'. 'dividends' is an array of Decimal
+// Types. The division operation is performed on each element of
+// the 'dividends' array using a single 'divisor'.
 //
-// The input parameter 'maxPrecision' is used to control the precision of the
-// resulting fractional quotient. Precision is defined as the number of numeric
-// digits to the right of the decimal point. Be advised that this method is
-// capable of calculating quotients with very long strings of fractional digits.
-// Therefore the user is advised to set a relevant value for 'maxPrecision'.
+// The resulting quotients are returned as an array of Decimal
+// Types. The values represent result of each division operation
+// expressed as integer and fractional digits.
 //
-// Examples:
-// =========
-// Note: For all examples maximum precision is specified as '15'.
-// ----------------------------------------------------------------------------
+// The input parameter 'maxPrecision' is used to control the
+// precision of the resulting fractional quotient. Precision is
+// defined as the number of numeric digits to the right of the
+// decimal point. Be advised that this method is capable of
+// calculating quotients with very long strings of fractional
+// digits. Therefore the user is advised to set a relevant value
+// for 'maxPrecision'.
 //
-//	   	                                       Returned
-//	 	Dividend		divided by	Divisor		=	       Array						=  	 Result
-//	 	-------- 	  ----------	--------				-----------------	   		---------
-//		 	 10.5  				 / 				2.5 			= 		 fracQuoArray[0]		=   	 4.2
-//		 	 10    				 / 				2.5 			= 		 fracQuoArray[1]		=	 	   4
-//		   11.5  				 /        2.5				=  		 fracQuoArray[2]		=		   4.6
-//		    2.5					 /				2.5			  =			 fracQuoArray[3]    =      1
-//			-12.555 			 / 				2.5 			= 		 fracQuoArray[4]    =  -   5.022
-//		  - 2.5 				 / 			  2.5		    = 		 fracQuoArray[5]    =  -   1
-//		   12.555 			 / 			  2.5 			= 		 fracQuoArray[6]    =      5.022
-//		 -122.783 			 / 			  2.5 			= 		 fracQuoArray[7]    =  -  49.1132
-//		-6847.231   	   /    	  2.5 			= 		 fracQuoArray[8]    =  -2738.8924
-//		  - 2.5	 				 / 			  2.5		    = 		 fracQuoArray[9]    =  -   1
-//		  -10						 /			  2.5				=			 fracQuoArray[10]   =  -   4
-//		  -10.5					 /			  2.5				=			 fracQuoArray[11]   =  -   4.2
+//		 Examples
+//		 ========
 //
-// Each element in the returned division results array ('fracQuoArray') will contain
-// numeric separators (decimal separator, thousands separator and currency symbol)
-// copied from the first element of the input parameter 'dividends' array.
+//		 Note: For all examples maximum precision is specified as '15'.
+//
+//			   	                                                   Returned
+//		 Dividend  divided by  Divisor  =   Array             =   Result
+//
+//	      10.5        /       2.5    =   fracQuoArray[0]   =       4.2
+//	      10          /       2.5    =   fracQuoArray[1]   =       4
+//	      11.5        /       2.5    =   fracQuoArray[2]   =       4.6
+//	       2.5        /       2.5    =   fracQuoArray[3]   =       1
+//	     -12.555      /       2.5    =   fracQuoArray[4]   =      -5.022
+//	      -2.5        /       2.5    =   fracQuoArray[5]   =      -1
+//	      12.555      /       2.5    =   fracQuoArray[6]   =       5.022
+//	    -122.783      /       2.5    =   fracQuoArray[7]   =     -49.1132
+//	   -6847.231      /       2.5    =   fracQuoArray[8]   =   -2738.8924
+//	      -2.5        /       2.5    =   fracQuoArray[9]   =      -1
+//	     -10          /       2.5    =   fracQuoArray[10]  =      -4
+//	     -10.5        /       2.5    =   fracQuoArray[11]  =      -4.2
+//
+//
+//		 Numeric Separators
+//		 ==================
+//
+//		 Input parameter, 'numSeps' consits of a NumericSeparatorDto
+//		 instance. A NumericSeparatorDto contains symbols or characters
+//		 for the decimal separator, thousands separator and currency
+//		 symbol.
+//
+//		 If any of the 'numSeps' Numeric Separator Components are set
+//		 to zero, those components will be automatically reset to USA
+//		 default values.
+//
+//		 The returned values ('quotient' and 'modulo') will be
+//		 configured with 'numSeps'.
 func (bIDivide *BigIntMathDivide) DecimalFracQuotientArray(
-	dividends []Decimal,
-	divisor Decimal,
-	maxPrecision uint) (fracQuoArray []Decimal, err error) {
+  dividends []Decimal,
+  divisor Decimal,
+  numSeps NumericSeparatorDto,
+  maxPrecision uint) (fracQuoArray []Decimal, err error) {
 
-	var ePrefix *ePref.ErrPrefixDto
+  var ePrefix *ePref.ErrPrefixDto
 
-	ePrefix,
-		err = ePref.ErrPrefixDto{}.NewIEmpty(
-		nil,
-		"BigIntMathDivide.DecimalFracQuotientArray",
-		"")
+  ePrefix,
+    err = ePref.ErrPrefixDto{}.NewIEmpty(
+    nil,
+    "BigIntMathDivide.DecimalFracQuotientArray",
+    "")
 
-	if err != nil {
-		return fracQuoArray, err
-	}
+  if err != nil {
+    return fracQuoArray, err
+  }
 
-	err = divisor.IsValid(ePrefix.XCpy(
-		"Testing divisor").String())
+  err = divisor.IsValid(ePrefix.XCpy(
+    "Testing divisor").String())
 
-	if err != nil {
-		return fracQuoArray, err
-	}
+  if err != nil {
+    return fracQuoArray, err
+  }
 
-	divisorIsZero, err := divisor.IsZero()
+  divisorIsZero, err := divisor.IsZero()
 
-	if err != nil {
+  if err != nil {
 
-		return fracQuoArray,
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "divisorIsZero, err := divisor.IsZero()",
-				ErrContext: "",
-				ErrMessage: err.Error(),
-			}
-	}
+    return fracQuoArray,
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "divisorIsZero, err := divisor.IsZero()",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+  }
 
-	if divisorIsZero {
+  if divisorIsZero {
 
-		return fracQuoArray,
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "",
-				ErrContext: "divisor == 0",
-				ErrMessage: "Error: Attempted divide by ZERO!\n" +
-					"Input parameter 'divisor' has a zero value.",
-			}
-	}
+    return fracQuoArray,
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "",
+        ErrContext: "divisor == 0",
+        ErrMessage: "Error: Attempted divide by ZERO!\n" +
+          "Input parameter 'divisor' has a zero value.",
+      }
+  }
 
-	lenAry := len(dividends)
+  lenAry := len(dividends)
 
-	if lenAry == 0 {
+  if lenAry == 0 {
 
-		return fracQuoArray,
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "",
-				ErrContext: "len(dividends) == 0",
-				ErrMessage: "Error: Input Parameter 'dividends' is an EMPTY Array!",
-			}
-	}
+    return fracQuoArray,
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "",
+        ErrContext: "len(dividends) == 0",
+        ErrMessage: "Error: Input Parameter 'dividends' is an EMPTY Array!",
+      }
+  }
 
-	numSeps, err := dividends[0].GetNumericSeparatorsDto()
+  numSeps.SetDefaultsIfEmpty()
 
-	if err != nil {
+  err = numSeps.IsValid(ePrefix.XCpy("Testing numSeps").String())
 
-		return fracQuoArray,
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "numSeps, err := dividends[0].GetNumericSeparatorsDto()",
-				ErrContext: "",
-				ErrMessage: err.Error(),
-			}
-	}
+  if err != nil {
 
-	fracQuoArray = make([]Decimal, lenAry, lenAry+20)
+    return fracQuoArray,
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "err = numSeps.IsValid(ePrefix.XCpy(\"Testing numSeps\").String())",
+        ErrContext: "numSeps is INVALID!",
+        ErrMessage: err.Error(),
+      }
+  }
 
-	var dividendsNumStr string
+  fracQuoArray = make([]Decimal, lenAry, lenAry+20)
 
-	for i := 0; i < lenAry; i++ {
+  var dividendsNumStr string
 
-		dividendsNumStr, err = dividends[i].GetNumStr()
+  for i := 0; i < lenAry; i++ {
 
-		if err != nil {
+    dividendsNumStr, err = dividends[i].GetNumStr()
 
-			return []Decimal{},
-				&FuncReturnError{
-					ErrPrefix:  ePrefix.String(),
-					ReturnFunc: fmt.Sprintf("dividendsNumStr, err = dividends[%v].GetNumStr()", i),
-					ErrContext: "",
-					ErrMessage: err.Error(),
-				}
-		}
+    if err != nil {
 
-		if i > 0 {
+      return []Decimal{},
+        &FuncReturnError{
+          ErrPrefix:  ePrefix.String(),
+          ReturnFunc: fmt.Sprintf("dividendsNumStr, err = dividends[%v].GetNumStr()", i),
+          ErrContext: "",
+          ErrMessage: err.Error(),
+        }
+    }
 
-			err = dividends[i].SetNumericSeparatorsDto(numSeps)
+    bPair, err := new(BigIntPair).NewDecimal(dividends[i], divisor)
 
-			if err != nil {
+    if err != nil {
 
-				return []Decimal{},
-					&FuncReturnError{
-						ErrPrefix:  ePrefix.String(),
-						ReturnFunc: fmt.Sprintf("err = dividends[%d].SetNumericSeparatorsDto(numSeps)", i),
-						ErrContext: "",
-						ErrMessage: err.Error(),
-					}
-			}
+      return []Decimal{},
+        &FuncReturnError{
+          ErrPrefix:  ePrefix.String(),
+          ReturnFunc: fmt.Sprintf("bPair, err := new(BigIntPair).NewDecimal(dividends[%d], divisor)", i),
+          ErrContext: fmt.Sprintf("dividend = '%v'; divisor = '%v'",
+            dividendsNumStr, dividendsNumStr),
+          ErrMessage: err.Error(),
+        }
+    }
 
-			bPair, err := new(BigIntPair).NewDecimal(dividends[i], divisor)
+    bPair.MaxPrecision = maxPrecision
 
-			if err != nil {
+    bINum, err := new(BigIntMathDivide).PairFracQuotient(bPair, numSeps)
 
-				return []Decimal{},
-					&FuncReturnError{
-						ErrPrefix:  ePrefix.String(),
-						ReturnFunc: fmt.Sprintf("bPair, err := new(BigIntPair).NewDecimal(dividends[%d], divisor)", i),
-						ErrContext: fmt.Sprintf("dividend = '%v'; divisor = '%v'",
-							dividendsNumStr, dividendsNumStr),
-						ErrMessage: err.Error(),
-					}
-			}
+    if err != nil {
 
-			bPair.MaxPrecision = maxPrecision
+      return []Decimal{},
+        &FuncReturnError{
+          ErrPrefix:  ePrefix.String(),
+          ReturnFunc: "bINum, err := new(BigIntMathDivide).PairFracQuotient(bPair)",
+          ErrContext: fmt.Sprintf("dividend = '%v'; divisor = '%v'; maxPrecision='%v'",
+            dividendsNumStr, dividendsNumStr, maxPrecision),
+          ErrMessage: err.Error(),
+        }
+    }
 
-			bINum, err := new(BigIntMathDivide).PairFracQuotient(bPair)
+    fracQuoArray[i], err = bINum.GetDecimal()
 
-			if err != nil {
+    if err != nil {
 
-				return []Decimal{},
-					&FuncReturnError{
-						ErrPrefix:  ePrefix.String(),
-						ReturnFunc: "bINum, err := new(BigIntMathDivide).PairFracQuotient(bPair)",
-						ErrContext: fmt.Sprintf("dividend = '%v'; divisor = '%v'; maxPrecision='%v'",
-							dividendsNumStr, dividendsNumStr, maxPrecision),
-						ErrMessage: err.Error(),
-					}
-			}
+      return []Decimal{},
+        &FuncReturnError{
+          ErrPrefix:  ePrefix.String(),
+          ReturnFunc: fmt.Sprintf("fracQuoArray[%d], err = bINum.GetDecimal()", i),
+          ErrContext: "",
+          ErrMessage: err.Error(),
+        }
+    }
 
-			fracQuoArray[i], err = bINum.GetDecimal()
+  }
 
-			if err != nil {
-
-				return []Decimal{},
-					&FuncReturnError{
-						ErrPrefix:  ePrefix.String(),
-						ReturnFunc: fmt.Sprintf("fracQuoArray[%d], err = bINum.GetDecimal()", i),
-						ErrContext: "",
-						ErrMessage: err.Error(),
-					}
-			}
-
-		} // if i > 0
-	}
-
-	return fracQuoArray, err
+  return fracQuoArray, err
 }
 
-// DecimalModulo - Performs a modulo operation on Decimal type
-// input parameters, 'dividend' and 'divisor'. The result of this division
-// operation is returned as a type BigIntNum.
+// DecimalModulo
 //
-// The modulo operation finds the remainder after division of one number
-// by another (sometimes called modulus).
+// Performs a modulo operation on Decimal type input parameters,
+// 'dividend' and 'divisor'. The result of this division operation
+// is returned as a type BigIntNum.
+//
+// The modulo operation finds the remainder after division of one
+// number by another (sometimes called modulus).
 //
 //	Wikipedia https://en.wikipedia.org/wiki/Modulo_operation
 //
 // This method returns one Decimal value: 'modulo'.
 //
-// The calculation of 'modulo' is based on T-Division (Truncate Division). See
-// "Division and Modulus for Computer Scientists", DAAN LEIJEN, University of
-// Utrecht Dept. of Computer Science, PO.Box 80.089, 3508 TB Utrecht The Netherlands:
+// The calculation of 'modulo' is based on T-Division (Truncate
+// Division). See "Division and Modulus for Computer Scientists",
+// DAAN LEIJEN, University of Utrecht Dept. of Computer Science,
+// PO.Box 80.089, 3508 TB Utrecht The Netherlands:
 // https://www.microsoft.com/en-us/research/wp-content/uploads/2016/02/divmodnote-letter.pdf
-// Also available at ../notes/divmodnote-letter.pdf.
+//
+// This information is also available at mathopsgo/notes/divmodnote-letter.pdf.
 //
 // So, for q=quotient; D=Dividend d=Divisor r=Remainder or 'modulo' :
 //
-//	  						q = D div d = f(D/d)
-//								r = D mod d = D − d ·q
+//	q = D div d = f(D/d)
+//
+//	r = D mod d = D − d ·q
 //
 // The modulo operation finds the remainder after division of one
 // number by another. (r = D mod d = D − d ·q)
 //
-// Input parameter 'maxPrecision' is used to control the maximum precision of the
-// resulting 'modulo'. Precision is defined as the number of fractional digits
-// to the right of the decimal point. Be advised that these calculations can support
-// very large precision values.
+// Input parameter 'maxPrecision' is used to control the maximum
+// precision of the resulting 'modulo' value. Precision is defined
+// as the number of fractional digits to the right of the decimal
+// point. Be advised that these calculations can support very large
+// precision values.
 //
-// Examples:
-// =========
+//		Examples
+//		=========
 //
-// Dividend			  mod by			Divisor			=			Modulo/Remainder
-// --------				------			-------						----------------
+//	 Dividend  mod by  Divisor    =  Modulo/Remainder
 //
-//	  12.555					%						 2.5			=			 0.055
-//	  12.555  	 			% 				 	 2  			= 		 0.555
-//	   2.5 					% 				 	12.555		= 	   2.5
-//		-12.555 				% 				   2.5 			= 		-0.055
-//	 -12.555     		%    			 	 2  			= 		-0.555
-//	 - 2.5 					% 				 	12.555		= 		-2.5
-//		 12.555					% 				 - 2.5			=			 0.055
-//	  12.555 				% 				 - 2 				= 		 0.555
-//	   2.5 				  % 				 -12.555		= 		 2.5
-//		-12.555 				% 				 - 2.5 			= 		-0.055
-//	 -12.555     		%    			 - 2 				= 		-0.555
-//	 - 2.5	 					% 				 -12.555		= 		-2.5
+//	  12.555     %       2.5      =      0.055
+//	  12.555     %       2        =      0.555
+//	   2.5       %      12.555    =      2.5
+//	             %                =
+//	 -12.555     %       2.5      =     -0.055
+//	 -12.555     %       2        =     -0.555
+//	  -2.5       %      12.555    =     -2.5
+//	             %                =
+//	  12.555     %      -2.5      =      0.055
+//	  12.555     %      -2        =      0.555
+//	   2.5       %     -12.555    =      2.5
+//	             %                =
+//	 -12.555     %      -2.5      =     -0.055
+//	 -12.555     %      -2        =     -0.555
+//	  -2.5       %     -12.555    =     -2.5
 //
-// The returned BigIntNum division result ('modulo') will contain numeric
-// separators (decimal separator, thousands separator and currency symbol)
-// copied from input parameter, 'dividend'.
+//		 Numeric Separators
+//		 ==================
+//
+//		 Input parameter, 'numSeps' consits of a NumericSeparatorDto
+//		 instance. A NumericSeparatorDto contains symbols or characters
+//		 for the decimal separator, thousands separator and currency
+//		 symbol.
+//
+//		 If any of the 'numSeps' Numeric Separator Components are set
+//		 to zero, those components will be automatically reset to USA
+//		 default values.
+//
+//		 The returned value ('modulo') will be
+//		 configured with 'numSeps'.
 func (bIDivide *BigIntMathDivide) DecimalModulo(
-	dividend Decimal,
-	divisor Decimal,
-	maxPrecision uint) (modulo BigIntNum, err error) {
+  dividend Decimal,
+  divisor Decimal,
+  numSeps NumericSeparatorDto,
+  maxPrecision uint) (modulo BigIntNum, err error) {
 
-	var ePrefix *ePref.ErrPrefixDto
+  var ePrefix *ePref.ErrPrefixDto
 
-	ePrefix,
-		err = ePref.ErrPrefixDto{}.NewIEmpty(
-		nil,
-		"BigIntMathDivide.DecimalModulo",
-		"")
+  ePrefix,
+    err = ePref.ErrPrefixDto{}.NewIEmpty(
+    nil,
+    "BigIntMathDivide.DecimalModulo",
+    "")
 
-	if err != nil {
-		return modulo, err
-	}
+  if err != nil {
+    return modulo, err
+  }
 
-	err = dividend.IsValid(ePrefix.XCpy(
-		"Testing dividend").String())
+  err = dividend.IsValid(ePrefix.XCpy(
+    "Testing dividend").String())
 
-	if err != nil {
-		return modulo, err
-	}
+  if err != nil {
+    return modulo, err
+  }
 
-	err = divisor.IsValid(ePrefix.XCpy(
-		"Testing divisor").String())
+  err = divisor.IsValid(ePrefix.XCpy(
+    "Testing divisor").String())
 
-	if err != nil {
-		return modulo, err
-	}
+  if err != nil {
+    return modulo, err
+  }
 
-	dividendNumStr, err := dividend.GetNumStr()
+  dividendNumStr, err := dividend.GetNumStr()
 
-	if err != nil {
+  if err != nil {
 
-		return modulo,
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "dividendNumStr, err := dividend.GetNumStr()",
-				ErrContext: "",
-				ErrMessage: err.Error(),
-			}
-	}
+    return modulo,
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "dividendNumStr, err := dividend.GetNumStr()",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+  }
 
-	divisorNumStr, err := divisor.GetNumStr()
+  divisorNumStr, err := divisor.GetNumStr()
 
-	if err != nil {
+  if err != nil {
 
-		return modulo,
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "divisorNumStr, err := divisor.GetNumStr()",
-				ErrContext: "",
-				ErrMessage: err.Error(),
-			}
-	}
+    return modulo,
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "divisorNumStr, err := divisor.GetNumStr()",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+  }
 
-	bPair, err := new(BigIntPair).NewDecimal(dividend, divisor)
+  numSeps.SetDefaultsIfEmpty()
 
-	if err != nil {
+  err = numSeps.IsValid(ePrefix.XCpy("Testing numSeps").String())
 
-		return modulo,
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "bPair, err := new(BigIntPair).NewDecimal(dividend, divisor)",
-				ErrContext: fmt.Sprintf("dividend = '%v'; divisor = '%v'",
-					dividendNumStr, divisorNumStr),
-				ErrMessage: err.Error(),
-			}
-	}
+  if err != nil {
 
-	bigpairBig2Iszero, err := bPair.Big2.IsZero()
+    return modulo,
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "err = numSeps.IsValid(ePrefix.XCpy(\"Testing numSeps\").String())",
+        ErrContext: "numSeps is INVALID!",
+        ErrMessage: err.Error(),
+      }
+  }
 
-	if err != nil {
+  bPair, err := new(BigIntPair).NewDecimal(dividend, divisor)
 
-		return modulo,
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "bigpairBig2Iszero, err := bPair.Big2.IsZero()",
-				ErrContext: "",
-				ErrMessage: err.Error(),
-			}
-	}
+  if err != nil {
 
-	if bigpairBig2Iszero {
+    return modulo,
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "bPair, err := new(BigIntPair).NewDecimal(dividend, divisor)",
+        ErrContext: fmt.Sprintf("dividend = '%v'; divisor = '%v'",
+          dividendNumStr, divisorNumStr),
+        ErrMessage: err.Error(),
+      }
+  }
 
-		return modulo,
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "",
-				ErrContext: "bPair.Big2 == 0",
-				ErrMessage: "Error: Attempted to mod by zero!\n" +
-					"'bPair.Big2' has a ZERO value.",
-			}
-	}
+  bigpairBig2Iszero, err := bPair.Big2.IsZero()
 
-	bPair.MaxPrecision = maxPrecision
+  if err != nil {
 
-	modulo, err = new(BigIntMathDivide).PairMod(bPair)
+    return modulo,
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "bigpairBig2Iszero, err := bPair.Big2.IsZero()",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+  }
 
-	if err != nil {
+  if bigpairBig2Iszero {
 
-		return modulo,
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "modulo, err = new(BigIntMathDivide).PairMod(bPair)",
-				ErrContext: fmt.Sprintf("dividend = '%v'; divisor = '%v'; maxPrecision='%v'",
-					dividendNumStr, divisorNumStr, maxPrecision),
-				ErrMessage: err.Error(),
-			}
-	}
+    return modulo,
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "",
+        ErrContext: "bPair.Big2 == 0",
+        ErrMessage: "Error: Attempted to mod by zero!\n" +
+          "'bPair.Big2' has a ZERO value.",
+      }
+  }
 
-	return modulo, nil
+  bPair.MaxPrecision = maxPrecision
+
+  modulo, err = new(BigIntMathDivide).PairMod(bPair, numSeps)
+
+  if err != nil {
+
+    return modulo,
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "modulo, err = new(BigIntMathDivide).PairMod(bPair)",
+        ErrContext: fmt.Sprintf("dividend = '%v'; divisor = '%v'; maxPrecision='%v'",
+          dividendNumStr, divisorNumStr, maxPrecision),
+        ErrMessage: err.Error(),
+      }
+  }
+
+  return modulo, nil
 }
 
 // DecimalModuloToDecimal - Performs a modulo operation on Decimal input
@@ -3645,131 +3715,131 @@ func (bIDivide *BigIntMathDivide) DecimalModulo(
 // above, is that this method returns the resulting modulo value as a type
 // 'Decimal'.
 func (bIDivide *BigIntMathDivide) DecimalModuloToDecimal(
-	dividend Decimal,
-	divisor Decimal,
-	maxPrecision uint) (modulo Decimal, err error) {
+  dividend Decimal,
+  divisor Decimal,
+  maxPrecision uint) (modulo Decimal, err error) {
 
-	var ePrefix *ePref.ErrPrefixDto
+  var ePrefix *ePref.ErrPrefixDto
 
-	ePrefix,
-		err = ePref.ErrPrefixDto{}.NewIEmpty(
-		nil,
-		"BigIntMathDivide.DecimalModuloToDecimal",
-		"")
+  ePrefix,
+    err = ePref.ErrPrefixDto{}.NewIEmpty(
+    nil,
+    "BigIntMathDivide.DecimalModuloToDecimal",
+    "")
 
-	if err != nil {
-		return modulo, err
-	}
+  if err != nil {
+    return modulo, err
+  }
 
-	err = dividend.IsValid(ePrefix.XCpy(
-		"Testing dividend").String())
+  err = dividend.IsValid(ePrefix.XCpy(
+    "Testing dividend").String())
 
-	if err != nil {
-		return modulo, err
-	}
+  if err != nil {
+    return modulo, err
+  }
 
-	err = divisor.IsValid(ePrefix.XCpy(
-		"Testing divisor").String())
+  err = divisor.IsValid(ePrefix.XCpy(
+    "Testing divisor").String())
 
-	if err != nil {
-		return modulo, err
-	}
+  if err != nil {
+    return modulo, err
+  }
 
-	dividendNumStr, err := dividend.GetNumStr()
+  dividendNumStr, err := dividend.GetNumStr()
 
-	if err != nil {
+  if err != nil {
 
-		return modulo,
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "dividendNumStr, err := dividend.GetNumStr()",
-				ErrContext: "",
-				ErrMessage: err.Error(),
-			}
-	}
+    return modulo,
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "dividendNumStr, err := dividend.GetNumStr()",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+  }
 
-	divisorNumStr, err := divisor.GetNumStr()
+  divisorNumStr, err := divisor.GetNumStr()
 
-	if err != nil {
+  if err != nil {
 
-		return modulo,
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "divisorNumStr, err := divisor.GetNumStr()",
-				ErrContext: "",
-				ErrMessage: err.Error(),
-			}
-	}
+    return modulo,
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "divisorNumStr, err := divisor.GetNumStr()",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+  }
 
-	bPair, err := new(BigIntPair).NewDecimal(dividend, divisor)
+  bPair, err := new(BigIntPair).NewDecimal(dividend, divisor)
 
-	if err != nil {
+  if err != nil {
 
-		return modulo,
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "bPair, err := new(BigIntPair).NewDecimal(dividend, divisor)",
-				ErrContext: fmt.Sprintf("dividend = '%v'; divisor = '%v'",
-					dividendNumStr, divisorNumStr),
-				ErrMessage: err.Error(),
-			}
-	}
+    return modulo,
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "bPair, err := new(BigIntPair).NewDecimal(dividend, divisor)",
+        ErrContext: fmt.Sprintf("dividend = '%v'; divisor = '%v'",
+          dividendNumStr, divisorNumStr),
+        ErrMessage: err.Error(),
+      }
+  }
 
-	bigpairBig2Iszero, err := bPair.Big2.IsZero()
+  bigpairBig2Iszero, err := bPair.Big2.IsZero()
 
-	if err != nil {
+  if err != nil {
 
-		return modulo,
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "bigpairBig2Iszero, err := bPair.Big2.IsZero()",
-				ErrContext: "",
-				ErrMessage: err.Error(),
-			}
-	}
+    return modulo,
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "bigpairBig2Iszero, err := bPair.Big2.IsZero()",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+  }
 
-	if bigpairBig2Iszero {
+  if bigpairBig2Iszero {
 
-		return modulo,
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "",
-				ErrContext: "bPair.Big2 == 0",
-				ErrMessage: "Error: Attempted to mod by zero!\n" +
-					"'bPair.Big2' has a ZERO value.",
-			}
-	}
+    return modulo,
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "",
+        ErrContext: "bPair.Big2 == 0",
+        ErrMessage: "Error: Attempted to mod by zero!\n" +
+          "'bPair.Big2' has a ZERO value.",
+      }
+  }
 
-	bPair.MaxPrecision = maxPrecision
+  bPair.MaxPrecision = maxPrecision
 
-	bINumModulo, err := new(BigIntMathDivide).PairMod(bPair)
+  bINumModulo, err := new(BigIntMathDivide).PairMod(bPair)
 
-	if err != nil {
+  if err != nil {
 
-		return modulo,
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "bINumModulo, err := new(BigIntMathDivide).PairMod(bPair)",
-				ErrContext: fmt.Sprintf("dividend = '%v'; divisor = '%v'; maxPrecision='%v'",
-					dividendNumStr, divisorNumStr, maxPrecision),
-				ErrMessage: err.Error(),
-			}
-	}
+    return modulo,
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "bINumModulo, err := new(BigIntMathDivide).PairMod(bPair)",
+        ErrContext: fmt.Sprintf("dividend = '%v'; divisor = '%v'; maxPrecision='%v'",
+          dividendNumStr, divisorNumStr, maxPrecision),
+        ErrMessage: err.Error(),
+      }
+  }
 
-	modulo, err = bINumModulo.GetDecimal()
+  modulo, err = bINumModulo.GetDecimal()
 
-	if err != nil {
+  if err != nil {
 
-		return modulo,
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "modulo, err = bINumModulo.GetDecimal()",
-				ErrContext: "",
-				ErrMessage: err.Error(),
-			}
-	}
+    return modulo,
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "modulo, err = bINumModulo.GetDecimal()",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+  }
 
-	return modulo, nil
+  return modulo, nil
 }
 
 // FixedDecimalFracQuotient - Performs a division operation on objects
@@ -3858,107 +3928,107 @@ func (bIDivide *BigIntMathDivide) DecimalModuloToDecimal(
 //																	the correct result and 'err' will be set equal
 //	                               to 'nil'.
 func (bIDivide *BigIntMathDivide) FixedDecimalFracQuotient(
-	dividend BigIntFixedDecimal,
-	divisor BigIntFixedDecimal,
-	maxPrecision uint) (quotient BigIntFixedDecimal, err error) {
+  dividend BigIntFixedDecimal,
+  divisor BigIntFixedDecimal,
+  maxPrecision uint) (quotient BigIntFixedDecimal, err error) {
 
-	var ePrefix *ePref.ErrPrefixDto
+  var ePrefix *ePref.ErrPrefixDto
 
-	ePrefix,
-		err = ePref.ErrPrefixDto{}.NewIEmpty(
-		nil,
-		"BigIntMathDivide.FixedDecimalFracQuotient",
-		"")
+  ePrefix,
+    err = ePref.ErrPrefixDto{}.NewIEmpty(
+    nil,
+    "BigIntMathDivide.FixedDecimalFracQuotient",
+    "")
 
-	if err != nil {
-		return quotient, err
-	}
+  if err != nil {
+    return quotient, err
+  }
 
-	err = dividend.IsValid(ePrefix.XCpy(
-		"Testing dividend").String())
+  err = dividend.IsValid(ePrefix.XCpy(
+    "Testing dividend").String())
 
-	if err != nil {
-		return quotient, err
-	}
+  if err != nil {
+    return quotient, err
+  }
 
-	err = divisor.IsValid(ePrefix.XCpy(
-		"Testing divisor").String())
+  err = divisor.IsValid(ePrefix.XCpy(
+    "Testing divisor").String())
 
-	if err != nil {
-		return quotient, err
-	}
+  if err != nil {
+    return quotient, err
+  }
 
-	dividendInt, err := dividend.GetInteger()
+  dividendInt, err := dividend.GetInteger()
 
-	if err != nil {
+  if err != nil {
 
-		return quotient,
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "dividendInt, err := dividend.GetInteger()",
-				ErrContext: "dividend is type BigIntFixedDecimal",
-				ErrMessage: err.Error(),
-			}
-	}
+    return quotient,
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "dividendInt, err := dividend.GetInteger()",
+        ErrContext: "dividend is type BigIntFixedDecimal",
+        ErrMessage: err.Error(),
+      }
+  }
 
-	dividendPrecision := dividend.GetPrecisionBigInt()
+  dividendPrecision := dividend.GetPrecisionBigInt()
 
-	divisorInt, err := divisor.GetInteger()
+  divisorInt, err := divisor.GetInteger()
 
-	if err != nil {
+  if err != nil {
 
-		return quotient,
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "divisorInt, err := divisor.GetInteger()",
-				ErrContext: "divisor is type BigIntFixedDecimal",
-				ErrMessage: err.Error(),
-			}
-	}
+    return quotient,
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "divisorInt, err := divisor.GetInteger()",
+        ErrContext: "divisor is type BigIntFixedDecimal",
+        ErrMessage: err.Error(),
+      }
+  }
 
-	divisorPrecision := divisor.GetPrecisionBigInt()
+  divisorPrecision := divisor.GetPrecisionBigInt()
 
-	bigIntMaxPrecision := big.NewInt(0).SetUint64(uint64(maxPrecision))
+  bigIntMaxPrecision := big.NewInt(0).SetUint64(uint64(maxPrecision))
 
-	result, resultPrecision, err :=
-		new(BigIntMathDivide).BigIntFracQuotient(
-			dividendInt,
-			dividendPrecision,
-			divisorInt,
-			divisorPrecision,
-			bigIntMaxPrecision)
+  result, resultPrecision, err :=
+    new(BigIntMathDivide).BigIntFracQuotient(
+      dividendInt,
+      dividendPrecision,
+      divisorInt,
+      divisorPrecision,
+      bigIntMaxPrecision)
 
-	if err != nil {
+  if err != nil {
 
-		return quotient,
-			&FuncReturnError{
-				ErrPrefix: ePrefix.String(),
-				ReturnFunc: "result, resultPrecision, err := new(BigIntMathDivide).BigIntFracQuotient(\n" +
-					"    dividendInt, dividendPrecision, divisorInt, divisorPrecision,bigIntMaxPrecision)",
-				ErrContext: fmt.Sprintf("dividendInt= '%v'; dividendPrecision= '%v';\n"+
-					"divisorInt= '%v'\ndivisorPrecision= '%v'; bigIntMaxPrecision= '%v'",
-					dividendInt.Text(10), dividendPrecision.Text(10),
-					divisorInt.Text(10), divisorPrecision.Text(10), bigIntMaxPrecision.Text(10)),
-				ErrMessage: err.Error(),
-			}
-	}
+    return quotient,
+      &FuncReturnError{
+        ErrPrefix: ePrefix.String(),
+        ReturnFunc: "result, resultPrecision, err := new(BigIntMathDivide).BigIntFracQuotient(\n" +
+          "    dividendInt, dividendPrecision, divisorInt, divisorPrecision,bigIntMaxPrecision)",
+        ErrContext: fmt.Sprintf("dividendInt= '%v'; dividendPrecision= '%v';\n"+
+          "divisorInt= '%v'\ndivisorPrecision= '%v'; bigIntMaxPrecision= '%v'",
+          dividendInt.Text(10), dividendPrecision.Text(10),
+          divisorInt.Text(10), divisorPrecision.Text(10), bigIntMaxPrecision.Text(10)),
+        ErrMessage: err.Error(),
+      }
+  }
 
-	err = quotient.SetNumericValue(result, uint(resultPrecision.Uint64()))
+  err = quotient.SetNumericValue(result, uint(resultPrecision.Uint64()))
 
-	if err != nil {
+  if err != nil {
 
-		return quotient,
-			&FuncReturnError{
-				ErrPrefix: ePrefix.String(),
-				ReturnFunc: "err = quotient.SetNumericValue(\n" +
-					"result, uint(resultPrecision.Uint64())",
-				ErrContext: fmt.Sprintf("result= '%v'; resultPrecision= '%v'",
-					result.Text(10), resultPrecision.Uint64()),
-				ErrMessage: err.Error(),
-			}
-	}
+    return quotient,
+      &FuncReturnError{
+        ErrPrefix: ePrefix.String(),
+        ReturnFunc: "err = quotient.SetNumericValue(\n" +
+          "result, uint(resultPrecision.Uint64())",
+        ErrContext: fmt.Sprintf("result= '%v'; resultPrecision= '%v'",
+          result.Text(10), resultPrecision.Uint64()),
+        ErrMessage: err.Error(),
+      }
+  }
 
-	return quotient, nil
+  return quotient, nil
 }
 
 // IntAryQuotientMod - Performs a division operation on IntAry type input
@@ -4007,120 +4077,120 @@ func (bIDivide *BigIntMathDivide) FixedDecimalFracQuotient(
 // numeric separators (decimal separator, thousands separator and currency symbol)
 // copied from input parameter, 'dividend'.
 func (bIDivide *BigIntMathDivide) IntAryQuotientMod(
-	dividend IntAry,
-	divisor IntAry,
-	maxPrecision uint) (quotient BigIntNum, modulo BigIntNum, err error) {
+  dividend IntAry,
+  divisor IntAry,
+  maxPrecision uint) (quotient BigIntNum, modulo BigIntNum, err error) {
 
-	var ePrefix *ePref.ErrPrefixDto
+  var ePrefix *ePref.ErrPrefixDto
 
-	ePrefix,
-		err = ePref.ErrPrefixDto{}.NewIEmpty(
-		nil,
-		"BigIntMathDivide.IntAryQuotientMod",
-		"")
+  ePrefix,
+    err = ePref.ErrPrefixDto{}.NewIEmpty(
+    nil,
+    "BigIntMathDivide.IntAryQuotientMod",
+    "")
 
-	if err != nil {
-		return quotient, modulo, err
-	}
+  if err != nil {
+    return quotient, modulo, err
+  }
 
-	err = dividend.IsValid(ePrefix.XCpy(
-		"Testing dividend").String())
+  err = dividend.IsValid(ePrefix.XCpy(
+    "Testing dividend").String())
 
-	if err != nil {
-		return quotient, modulo, err
-	}
+  if err != nil {
+    return quotient, modulo, err
+  }
 
-	err = divisor.IsValid(ePrefix.XCpy(
-		"Testing divisor").String())
+  err = divisor.IsValid(ePrefix.XCpy(
+    "Testing divisor").String())
 
-	if err != nil {
-		return quotient, modulo, err
-	}
+  if err != nil {
+    return quotient, modulo, err
+  }
 
-	dividendNumStr, err := dividend.GetNumStr()
+  dividendNumStr, err := dividend.GetNumStr()
 
-	if err != nil {
+  if err != nil {
 
-		return quotient, modulo,
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "dividendNumStr, err := dividend.GetNumStr()",
-				ErrContext: "",
-				ErrMessage: err.Error(),
-			}
-	}
+    return quotient, modulo,
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "dividendNumStr, err := dividend.GetNumStr()",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+  }
 
-	divisorNumStr, err := divisor.GetNumStr()
+  divisorNumStr, err := divisor.GetNumStr()
 
-	if err != nil {
+  if err != nil {
 
-		return quotient, modulo,
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "divisorNumStr, err := divisor.GetNumStr()",
-				ErrContext: "",
-				ErrMessage: err.Error(),
-			}
-	}
+    return quotient, modulo,
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "divisorNumStr, err := divisor.GetNumStr()",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+  }
 
-	bPair, err := new(BigIntPair).NewIntAry(dividend, divisor)
+  bPair, err := new(BigIntPair).NewIntAry(dividend, divisor)
 
-	if err != nil {
+  if err != nil {
 
-		return quotient, modulo,
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "bPair, err := new(BigIntPair).NewIntAry(dividend, divisor)",
-				ErrContext: fmt.Sprintf("dividend= '%v'; divisor= '%v'",
-					dividendNumStr, divisorNumStr),
-				ErrMessage: err.Error(),
-			}
-	}
+    return quotient, modulo,
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "bPair, err := new(BigIntPair).NewIntAry(dividend, divisor)",
+        ErrContext: fmt.Sprintf("dividend= '%v'; divisor= '%v'",
+          dividendNumStr, divisorNumStr),
+        ErrMessage: err.Error(),
+      }
+  }
 
-	bigpairBig2Iszero, err := bPair.Big2.IsZero()
+  bigpairBig2Iszero, err := bPair.Big2.IsZero()
 
-	if err != nil {
+  if err != nil {
 
-		return quotient, modulo,
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "bigpairBig2Iszero, err := bPair.Big2.IsZero()",
-				ErrContext: "",
-				ErrMessage: err.Error(),
-			}
-	}
+    return quotient, modulo,
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "bigpairBig2Iszero, err := bPair.Big2.IsZero()",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+  }
 
-	if bigpairBig2Iszero {
+  if bigpairBig2Iszero {
 
-		return quotient, modulo,
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "",
-				ErrContext: "bPair.Big2 == 0",
-				ErrMessage: "Error: Attempted divide by ZERO!\n" +
-					"'bPair.Big2' has a ZERO value.",
-			}
-	}
+    return quotient, modulo,
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "",
+        ErrContext: "bPair.Big2 == 0",
+        ErrMessage: "Error: Attempted divide by ZERO!\n" +
+          "'bPair.Big2' has a ZERO value.",
+      }
+  }
 
-	bPair.MaxPrecision = maxPrecision
+  bPair.MaxPrecision = maxPrecision
 
-	quotient, modulo, err =
-		new(BigIntMathDivide).PairQuotientMod(bPair)
+  quotient, modulo, err =
+    new(BigIntMathDivide).PairQuotientMod(bPair)
 
-	if err != nil {
+  if err != nil {
 
-		return quotient, modulo,
-			&FuncReturnError{
-				ErrPrefix: ePrefix.String(),
-				ReturnFunc: "quotient, modulo, err = \n" +
-					"    new(BigIntMathDivide).PairQuotientMod(bPair)",
-				ErrContext: fmt.Sprintf("dividend= '%v'; divisor= '%v'; maxPrecision= '%v'",
-					dividendNumStr, divisorNumStr, maxPrecision),
-				ErrMessage: err.Error(),
-			}
-	}
+    return quotient, modulo,
+      &FuncReturnError{
+        ErrPrefix: ePrefix.String(),
+        ReturnFunc: "quotient, modulo, err = \n" +
+          "    new(BigIntMathDivide).PairQuotientMod(bPair)",
+        ErrContext: fmt.Sprintf("dividend= '%v'; divisor= '%v'; maxPrecision= '%v'",
+          dividendNumStr, divisorNumStr, maxPrecision),
+        ErrMessage: err.Error(),
+      }
+  }
 
-	return quotient, modulo, nil
+  return quotient, modulo, nil
 }
 
 // IntAryFracQuotient - Performs a division operation on IntAry Type input
@@ -4164,133 +4234,133 @@ func (bIDivide *BigIntMathDivide) IntAryQuotientMod(
 // (decimal separator, thousands separator and currency symbol) copied from input parameter,
 // 'dividend'.
 func (bIDivide *BigIntMathDivide) IntAryFracQuotient(
-	dividend IntAry,
-	divisor IntAry,
-	maxPrecision uint) (fracQuotient BigIntNum, err error) {
+  dividend IntAry,
+  divisor IntAry,
+  maxPrecision uint) (fracQuotient BigIntNum, err error) {
 
-	var ePrefix *ePref.ErrPrefixDto
+  var ePrefix *ePref.ErrPrefixDto
 
-	ePrefix,
-		err = ePref.ErrPrefixDto{}.NewIEmpty(
-		nil,
-		"BigIntMathDivide.IntAryFracQuotient",
-		"")
+  ePrefix,
+    err = ePref.ErrPrefixDto{}.NewIEmpty(
+    nil,
+    "BigIntMathDivide.IntAryFracQuotient",
+    "")
 
-	if err != nil {
-		return fracQuotient, err
-	}
+  if err != nil {
+    return fracQuotient, err
+  }
 
-	err = dividend.IsValid(ePrefix.XCpy(
-		"Testing dividend").String())
+  err = dividend.IsValid(ePrefix.XCpy(
+    "Testing dividend").String())
 
-	if err != nil {
-		return fracQuotient, err
-	}
+  if err != nil {
+    return fracQuotient, err
+  }
 
-	err = divisor.IsValid(ePrefix.XCpy(
-		"Testing divisor").String())
+  err = divisor.IsValid(ePrefix.XCpy(
+    "Testing divisor").String())
 
-	if err != nil {
-		return fracQuotient, err
-	}
+  if err != nil {
+    return fracQuotient, err
+  }
 
-	dividendNumStr, err := dividend.GetNumStr()
+  dividendNumStr, err := dividend.GetNumStr()
 
-	if err != nil {
+  if err != nil {
 
-		return fracQuotient,
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "dividendNumStr, err := dividend.GetNumStr()",
-				ErrContext: "",
-				ErrMessage: err.Error(),
-			}
-	}
+    return fracQuotient,
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "dividendNumStr, err := dividend.GetNumStr()",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+  }
 
-	divisorNumStr, err := divisor.GetNumStr()
+  divisorNumStr, err := divisor.GetNumStr()
 
-	if err != nil {
+  if err != nil {
 
-		return fracQuotient,
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "divisorNumStr, err := divisor.GetNumStr()",
-				ErrContext: "",
-				ErrMessage: err.Error(),
-			}
-	}
+    return fracQuotient,
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "divisorNumStr, err := divisor.GetNumStr()",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+  }
 
-	divisorIszero, err := divisor.IsZero()
+  divisorIszero, err := divisor.IsZero()
 
-	if err != nil {
+  if err != nil {
 
-		return fracQuotient,
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "divisorIszero, err := divisor.IsZero()",
-				ErrContext: "",
-				ErrMessage: err.Error(),
-			}
-	}
+    return fracQuotient,
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "divisorIszero, err := divisor.IsZero()",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+  }
 
-	if divisorIszero {
+  if divisorIszero {
 
-		return fracQuotient,
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "",
-				ErrContext: "divisor == 0",
-				ErrMessage: "Error: Attempted divide by ZERO!\n" +
-					"Input parameter 'divisor' has a ZERO value.",
-			}
-	}
+    return fracQuotient,
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "",
+        ErrContext: "divisor == 0",
+        ErrMessage: "Error: Attempted divide by ZERO!\n" +
+          "Input parameter 'divisor' has a ZERO value.",
+      }
+  }
 
-	bPair, err := new(BigIntPair).NewIntAry(dividend, divisor)
+  bPair, err := new(BigIntPair).NewIntAry(dividend, divisor)
 
-	if err != nil {
+  if err != nil {
 
-		return fracQuotient,
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "bPair, err := new(BigIntPair).NewIntAry(dividend, divisor)",
-				ErrContext: fmt.Sprintf("dividend='%v'; divisor='%v'",
-					dividendNumStr, divisorNumStr),
-				ErrMessage: err.Error(),
-			}
-	}
+    return fracQuotient,
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "bPair, err := new(BigIntPair).NewIntAry(dividend, divisor)",
+        ErrContext: fmt.Sprintf("dividend='%v'; divisor='%v'",
+          dividendNumStr, divisorNumStr),
+        ErrMessage: err.Error(),
+      }
+  }
 
-	bPair.MaxPrecision = maxPrecision
+  bPair.MaxPrecision = maxPrecision
 
-	fracQuotient, err =
-		new(BigIntMathDivide).PairFracQuotient(bPair)
+  fracQuotient, err =
+    new(BigIntMathDivide).PairFracQuotient(bPair)
 
-	if err != nil {
+  if err != nil {
 
-		return fracQuotient,
-			&FuncReturnError{
-				ErrPrefix: ePrefix.String(),
-				ReturnFunc: "fracQuotient, err = new(BigIntMathDivide).\n" +
-					"    PairFracQuotient(bPair)",
-				ErrContext: fmt.Sprintf("dividend='%v'; divisor='%v'; maxPrecision='%v'",
-					dividendNumStr, divisorNumStr, maxPrecision),
-				ErrMessage: err.Error(),
-			}
-	}
+    return fracQuotient,
+      &FuncReturnError{
+        ErrPrefix: ePrefix.String(),
+        ReturnFunc: "fracQuotient, err = new(BigIntMathDivide).\n" +
+          "    PairFracQuotient(bPair)",
+        ErrContext: fmt.Sprintf("dividend='%v'; divisor='%v'; maxPrecision='%v'",
+          dividendNumStr, divisorNumStr, maxPrecision),
+        ErrMessage: err.Error(),
+      }
+  }
 
-	err = fracQuotient.TrimTrailingFracZeros()
+  err = fracQuotient.TrimTrailingFracZeros()
 
-	if err != nil {
+  if err != nil {
 
-		return fracQuotient,
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "err = fracQuotient.TrimTrailingFracZeros()",
-				ErrContext: "",
-				ErrMessage: err.Error(),
-			}
-	}
+    return fracQuotient,
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "err = fracQuotient.TrimTrailingFracZeros()",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+  }
 
-	return fracQuotient, nil
+  return fracQuotient, nil
 }
 
 // IntAryFracQuotientArray - Performs a division operation on IntAry input
@@ -4333,174 +4403,174 @@ func (bIDivide *BigIntMathDivide) IntAryFracQuotient(
 // (decimal separator, thousands separator and currency symbol) copied from the first
 // element of the input parameter 'dividends' array.
 func (bIDivide *BigIntMathDivide) IntAryFracQuotientArray(
-	dividends []IntAry,
-	divisor IntAry,
-	maxPrecision uint) (fracQuoArray []IntAry, err error) {
+  dividends []IntAry,
+  divisor IntAry,
+  maxPrecision uint) (fracQuoArray []IntAry, err error) {
 
-	var ePrefix *ePref.ErrPrefixDto
+  var ePrefix *ePref.ErrPrefixDto
 
-	ePrefix,
-		err = ePref.ErrPrefixDto{}.NewIEmpty(
-		nil,
-		"BigIntMathDivide.IntAryFracQuotientArray",
-		"")
+  ePrefix,
+    err = ePref.ErrPrefixDto{}.NewIEmpty(
+    nil,
+    "BigIntMathDivide.IntAryFracQuotientArray",
+    "")
 
-	if err != nil {
-		return fracQuoArray, err
-	}
+  if err != nil {
+    return fracQuoArray, err
+  }
 
-	err = divisor.IsValid(ePrefix.XCpy(
-		"Testing divisor").String())
+  err = divisor.IsValid(ePrefix.XCpy(
+    "Testing divisor").String())
 
-	if err != nil {
-		return fracQuoArray, err
-	}
+  if err != nil {
+    return fracQuoArray, err
+  }
 
-	divisorNumStr, err := divisor.GetNumStr()
+  divisorNumStr, err := divisor.GetNumStr()
 
-	if err != nil {
+  if err != nil {
 
-		return fracQuoArray,
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "divisorNumStr, err := divisor.GetNumStr()",
-				ErrContext: "",
-				ErrMessage: err.Error(),
-			}
-	}
+    return fracQuoArray,
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "divisorNumStr, err := divisor.GetNumStr()",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+  }
 
-	divisorIszero, err := divisor.IsZero()
+  divisorIszero, err := divisor.IsZero()
 
-	if err != nil {
+  if err != nil {
 
-		return fracQuoArray,
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "divisorIszero, err := divisor.IsZero()",
-				ErrContext: "",
-				ErrMessage: err.Error(),
-			}
-	}
+    return fracQuoArray,
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "divisorIszero, err := divisor.IsZero()",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+  }
 
-	if divisorIszero {
+  if divisorIszero {
 
-		return fracQuoArray,
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "",
-				ErrContext: "divisor == 0",
-				ErrMessage: "Error: Attempted divide by ZERO!\n" +
-					"Input parameter 'divisor' has a ZERO value.",
-			}
-	}
+    return fracQuoArray,
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "",
+        ErrContext: "divisor == 0",
+        ErrMessage: "Error: Attempted divide by ZERO!\n" +
+          "Input parameter 'divisor' has a ZERO value.",
+      }
+  }
 
-	lenAry := len(dividends)
+  lenAry := len(dividends)
 
-	if lenAry == 0 {
+  if lenAry == 0 {
 
-		return fracQuoArray,
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "",
-				ErrContext: "len(dividends) == 0",
-				ErrMessage: "Error: Input Parameter 'dividends' is an EMPTY Array!",
-			}
-	}
+    return fracQuoArray,
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "",
+        ErrContext: "len(dividends) == 0",
+        ErrMessage: "Error: Input Parameter 'dividends' is an EMPTY Array!",
+      }
+  }
 
-	numSeps, err := dividends[0].GetNumericSeparatorsDto()
+  numSeps, err := dividends[0].GetNumericSeparatorsDto()
 
-	if err != nil {
+  if err != nil {
 
-		return fracQuoArray,
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "numSeps, err := dividends[0].GetNumericSeparatorsDto()",
-				ErrContext: "",
-				ErrMessage: err.Error(),
-			}
-	}
+    return fracQuoArray,
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "numSeps, err := dividends[0].GetNumericSeparatorsDto()",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+  }
 
-	var dividendsNumStr string
+  var dividendsNumStr string
 
-	fracQuoArray = make([]IntAry, lenAry, lenAry+20)
+  fracQuoArray = make([]IntAry, lenAry, lenAry+20)
 
-	for i := 0; i < lenAry; i++ {
+  for i := 0; i < lenAry; i++ {
 
-		dividendsNumStr, err = dividends[i].GetNumStr()
+    dividendsNumStr, err = dividends[i].GetNumStr()
 
-		if err != nil {
+    if err != nil {
 
-			return []IntAry{},
-				&FuncReturnError{
-					ErrPrefix:  ePrefix.String(),
-					ReturnFunc: fmt.Sprintf("dividendsNumStr, err = dividends[%d].GetNumStr()", i),
-					ErrContext: "",
-					ErrMessage: err.Error(),
-				}
-		}
+      return []IntAry{},
+        &FuncReturnError{
+          ErrPrefix:  ePrefix.String(),
+          ReturnFunc: fmt.Sprintf("dividendsNumStr, err = dividends[%d].GetNumStr()", i),
+          ErrContext: "",
+          ErrMessage: err.Error(),
+        }
+    }
 
-		if i > 0 {
+    if i > 0 {
 
-			err = dividends[i].SetNumericSeparatorsDto(numSeps)
+      err = dividends[i].SetNumericSeparatorsDto(numSeps)
 
-			if err != nil {
+      if err != nil {
 
-				return []IntAry{},
-					&FuncReturnError{
-						ErrPrefix:  ePrefix.String(),
-						ReturnFunc: fmt.Sprintf("err = dividends[%d].SetNumericSeparatorsDto(numSeps)", i),
-						ErrContext: fmt.Sprintf("dividends[%d]= '%v'",
-							i, dividendsNumStr),
-						ErrMessage: err.Error(),
-					}
-			}
-		} // if i > 0
+        return []IntAry{},
+          &FuncReturnError{
+            ErrPrefix:  ePrefix.String(),
+            ReturnFunc: fmt.Sprintf("err = dividends[%d].SetNumericSeparatorsDto(numSeps)", i),
+            ErrContext: fmt.Sprintf("dividends[%d]= '%v'",
+              i, dividendsNumStr),
+            ErrMessage: err.Error(),
+          }
+      }
+    } // if i > 0
 
-		bPair, err := new(BigIntPair).NewIntAry(dividends[i], divisor)
+    bPair, err := new(BigIntPair).NewIntAry(dividends[i], divisor)
 
-		if err != nil {
+    if err != nil {
 
-			return []IntAry{},
-				&FuncReturnError{
-					ErrPrefix:  ePrefix.String(),
-					ReturnFunc: fmt.Sprintf("bPair, err := new(BigIntPair).NewIntAry(dividends[%d], divisor)", i),
-					ErrContext: fmt.Sprintf("dividends[%d]= '%v'; divisor= '%v'",
-						i, dividendsNumStr, divisorNumStr),
-					ErrMessage: err.Error(),
-				}
-		}
+      return []IntAry{},
+        &FuncReturnError{
+          ErrPrefix:  ePrefix.String(),
+          ReturnFunc: fmt.Sprintf("bPair, err := new(BigIntPair).NewIntAry(dividends[%d], divisor)", i),
+          ErrContext: fmt.Sprintf("dividends[%d]= '%v'; divisor= '%v'",
+            i, dividendsNumStr, divisorNumStr),
+          ErrMessage: err.Error(),
+        }
+    }
 
-		bPair.MaxPrecision = maxPrecision
+    bPair.MaxPrecision = maxPrecision
 
-		bINum, err := new(BigIntMathDivide).PairFracQuotient(bPair)
+    bINum, err := new(BigIntMathDivide).PairFracQuotient(bPair)
 
-		if err != nil {
+    if err != nil {
 
-			return []IntAry{},
-				&FuncReturnError{
-					ErrPrefix:  ePrefix.String(),
-					ReturnFunc: "bINum, err := new(BigIntMathDivide).PairFracQuotient(bPair)",
-					ErrContext: "",
-					ErrMessage: err.Error(),
-				}
-		}
+      return []IntAry{},
+        &FuncReturnError{
+          ErrPrefix:  ePrefix.String(),
+          ReturnFunc: "bINum, err := new(BigIntMathDivide).PairFracQuotient(bPair)",
+          ErrContext: "",
+          ErrMessage: err.Error(),
+        }
+    }
 
-		fracQuoArray[i], err = bINum.GetIntAry()
+    fracQuoArray[i], err = bINum.GetIntAry()
 
-		if err != nil {
+    if err != nil {
 
-			return []IntAry{},
-				&FuncReturnError{
-					ErrPrefix: ePrefix.String(),
-					ReturnFunc: fmt.Sprintf("fracQuoArray[%d], err = bINum.GetIntAry()",
-						i),
-					ErrContext: "",
-					ErrMessage: err.Error(),
-				}
-		}
-	}
+      return []IntAry{},
+        &FuncReturnError{
+          ErrPrefix: ePrefix.String(),
+          ReturnFunc: fmt.Sprintf("fracQuoArray[%d], err = bINum.GetIntAry()",
+            i),
+          ErrContext: "",
+          ErrMessage: err.Error(),
+        }
+    }
+  }
 
-	return fracQuoArray, err
+  return fracQuoArray, err
 }
 
 // IntAryModulo - Performs a modulo operation on IntAry input
@@ -4555,119 +4625,119 @@ func (bIDivide *BigIntMathDivide) IntAryFracQuotientArray(
 // (decimal separator, thousands separator and currency symbol) copied from input
 // parameter, 'dividend'.
 func (bIDivide *BigIntMathDivide) IntAryModulo(
-	dividend IntAry,
-	divisor IntAry,
-	maxPrecision uint) (modulo BigIntNum, err error) {
+  dividend IntAry,
+  divisor IntAry,
+  maxPrecision uint) (modulo BigIntNum, err error) {
 
-	var ePrefix *ePref.ErrPrefixDto
+  var ePrefix *ePref.ErrPrefixDto
 
-	ePrefix,
-		err = ePref.ErrPrefixDto{}.NewIEmpty(
-		nil,
-		"BigIntMathDivide.IntAryModulo",
-		"")
+  ePrefix,
+    err = ePref.ErrPrefixDto{}.NewIEmpty(
+    nil,
+    "BigIntMathDivide.IntAryModulo",
+    "")
 
-	if err != nil {
-		return modulo, err
-	}
+  if err != nil {
+    return modulo, err
+  }
 
-	err = dividend.IsValid(ePrefix.XCpy(
-		"Testing dividend").String())
+  err = dividend.IsValid(ePrefix.XCpy(
+    "Testing dividend").String())
 
-	if err != nil {
-		return modulo, err
-	}
+  if err != nil {
+    return modulo, err
+  }
 
-	err = divisor.IsValid(ePrefix.XCpy(
-		"Testing divisor").String())
+  err = divisor.IsValid(ePrefix.XCpy(
+    "Testing divisor").String())
 
-	if err != nil {
-		return modulo, err
-	}
+  if err != nil {
+    return modulo, err
+  }
 
-	dividendNumStr, err := dividend.GetNumStr()
+  dividendNumStr, err := dividend.GetNumStr()
 
-	if err != nil {
+  if err != nil {
 
-		return modulo,
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "dividendNumStr, err := dividend.GetNumStr()",
-				ErrContext: "",
-				ErrMessage: err.Error(),
-			}
-	}
+    return modulo,
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "dividendNumStr, err := dividend.GetNumStr()",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+  }
 
-	divisorNumStr, err := divisor.GetNumStr()
+  divisorNumStr, err := divisor.GetNumStr()
 
-	if err != nil {
+  if err != nil {
 
-		return modulo,
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "divisorNumStr, err := divisor.GetNumStr()",
-				ErrContext: "",
-				ErrMessage: err.Error(),
-			}
-	}
+    return modulo,
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "divisorNumStr, err := divisor.GetNumStr()",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+  }
 
-	bPair, err := new(BigIntPair).NewIntAry(dividend, divisor)
+  bPair, err := new(BigIntPair).NewIntAry(dividend, divisor)
 
-	if err != nil {
+  if err != nil {
 
-		return modulo,
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "bPair, err := new(BigIntPair).NewIntAry(dividend, divisor)",
-				ErrContext: fmt.Sprintf("dividend= '%v'; divisor= '%v'",
-					dividendNumStr, divisorNumStr),
-				ErrMessage: err.Error(),
-			}
-	}
+    return modulo,
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "bPair, err := new(BigIntPair).NewIntAry(dividend, divisor)",
+        ErrContext: fmt.Sprintf("dividend= '%v'; divisor= '%v'",
+          dividendNumStr, divisorNumStr),
+        ErrMessage: err.Error(),
+      }
+  }
 
-	bigpairBig2Iszero, err := bPair.Big2.IsZero()
+  bigpairBig2Iszero, err := bPair.Big2.IsZero()
 
-	if err != nil {
+  if err != nil {
 
-		return modulo,
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "bigpairBig2Iszero, err := bPair.Big2.IsZero()",
-				ErrContext: "",
-				ErrMessage: err.Error(),
-			}
-	}
+    return modulo,
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "bigpairBig2Iszero, err := bPair.Big2.IsZero()",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+  }
 
-	if bigpairBig2Iszero {
+  if bigpairBig2Iszero {
 
-		return modulo,
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "",
-				ErrContext: "bPair.Big2 == 0",
-				ErrMessage: "Error: Attempted divide by ZERO!\n" +
-					"'bPair.Big2' has a ZERO value.",
-			}
-	}
+    return modulo,
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "",
+        ErrContext: "bPair.Big2 == 0",
+        ErrMessage: "Error: Attempted divide by ZERO!\n" +
+          "'bPair.Big2' has a ZERO value.",
+      }
+  }
 
-	bPair.MaxPrecision = maxPrecision
+  bPair.MaxPrecision = maxPrecision
 
-	modulo, err = new(BigIntMathDivide).PairMod(bPair)
+  modulo, err = new(BigIntMathDivide).PairMod(bPair)
 
-	if err != nil {
+  if err != nil {
 
-		return modulo,
-			&FuncReturnError{
-				ErrPrefix: ePrefix.String(),
-				ReturnFunc: "modulo, err = new(BigIntMathDivide).\n" +
-					"    PairMod(bPair)",
-				ErrContext: fmt.Sprintf("dividend= '%v'; divisor= '%v'; maxPrecision= '%v'",
-					dividendNumStr, divisorNumStr, maxPrecision),
-				ErrMessage: err.Error(),
-			}
-	}
+    return modulo,
+      &FuncReturnError{
+        ErrPrefix: ePrefix.String(),
+        ReturnFunc: "modulo, err = new(BigIntMathDivide).\n" +
+          "    PairMod(bPair)",
+        ErrContext: fmt.Sprintf("dividend= '%v'; divisor= '%v'; maxPrecision= '%v'",
+          dividendNumStr, divisorNumStr, maxPrecision),
+        ErrMessage: err.Error(),
+      }
+  }
 
-	return modulo, nil
+  return modulo, nil
 }
 
 // IntAryModuloToIntAry - Performs a modulo operation on IntAry input
@@ -4725,132 +4795,132 @@ func (bIDivide *BigIntMathDivide) IntAryModulo(
 // The difference between this method and BigIntMathDivide.IntAryModulo() above,
 // is that the division result, 'modulo', is returned as Type IntAry.
 func (bIDivide *BigIntMathDivide) IntAryModuloToIntAry(
-	dividend IntAry,
-	divisor IntAry,
-	maxPrecision uint) (modulo IntAry, err error) {
+  dividend IntAry,
+  divisor IntAry,
+  maxPrecision uint) (modulo IntAry, err error) {
 
-	var ePrefix *ePref.ErrPrefixDto
+  var ePrefix *ePref.ErrPrefixDto
 
-	ePrefix,
-		err = ePref.ErrPrefixDto{}.NewIEmpty(
-		nil,
-		"BigIntMathDivide.IntAryModuloToIntAry",
-		"")
+  ePrefix,
+    err = ePref.ErrPrefixDto{}.NewIEmpty(
+    nil,
+    "BigIntMathDivide.IntAryModuloToIntAry",
+    "")
 
-	if err != nil {
-		return modulo, err
-	}
+  if err != nil {
+    return modulo, err
+  }
 
-	err = dividend.IsValid(ePrefix.XCpy(
-		"Testing dividend").String())
+  err = dividend.IsValid(ePrefix.XCpy(
+    "Testing dividend").String())
 
-	if err != nil {
-		return modulo, err
-	}
+  if err != nil {
+    return modulo, err
+  }
 
-	err = divisor.IsValid(ePrefix.XCpy(
-		"Testing divisor").String())
+  err = divisor.IsValid(ePrefix.XCpy(
+    "Testing divisor").String())
 
-	if err != nil {
-		return modulo, err
-	}
+  if err != nil {
+    return modulo, err
+  }
 
-	dividendNumStr, err := dividend.GetNumStr()
+  dividendNumStr, err := dividend.GetNumStr()
 
-	if err != nil {
+  if err != nil {
 
-		return modulo,
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "dividendNumStr, err := dividend.GetNumStr()",
-				ErrContext: "",
-				ErrMessage: err.Error(),
-			}
-	}
+    return modulo,
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "dividendNumStr, err := dividend.GetNumStr()",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+  }
 
-	divisorNumStr, err := divisor.GetNumStr()
+  divisorNumStr, err := divisor.GetNumStr()
 
-	if err != nil {
+  if err != nil {
 
-		return modulo,
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "divisorNumStr, err := divisor.GetNumStr()",
-				ErrContext: "",
-				ErrMessage: err.Error(),
-			}
-	}
+    return modulo,
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "divisorNumStr, err := divisor.GetNumStr()",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+  }
 
-	bPair, err := new(BigIntPair).NewIntAry(dividend, divisor)
+  bPair, err := new(BigIntPair).NewIntAry(dividend, divisor)
 
-	if err != nil {
+  if err != nil {
 
-		return modulo,
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "bPair, err := new(BigIntPair).NewIntAry(dividend, divisor)",
-				ErrContext: fmt.Sprintf("dividend= '%v'; divisor= '%v'",
-					dividendNumStr, divisorNumStr),
-				ErrMessage: err.Error(),
-			}
-	}
+    return modulo,
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "bPair, err := new(BigIntPair).NewIntAry(dividend, divisor)",
+        ErrContext: fmt.Sprintf("dividend= '%v'; divisor= '%v'",
+          dividendNumStr, divisorNumStr),
+        ErrMessage: err.Error(),
+      }
+  }
 
-	bigpairBig2Iszero, err := bPair.Big2.IsZero()
+  bigpairBig2Iszero, err := bPair.Big2.IsZero()
 
-	if err != nil {
+  if err != nil {
 
-		return modulo,
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "bigpairBig2Iszero, err := bPair.Big2.IsZero()",
-				ErrContext: "",
-				ErrMessage: err.Error(),
-			}
-	}
+    return modulo,
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "bigpairBig2Iszero, err := bPair.Big2.IsZero()",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+  }
 
-	if bigpairBig2Iszero {
+  if bigpairBig2Iszero {
 
-		return modulo,
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "",
-				ErrContext: "bPair.Big2 == 0",
-				ErrMessage: "Error: Attempted divide by ZERO!\n" +
-					"'bPair.Big2' has a ZERO value.",
-			}
-	}
+    return modulo,
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "",
+        ErrContext: "bPair.Big2 == 0",
+        ErrMessage: "Error: Attempted divide by ZERO!\n" +
+          "'bPair.Big2' has a ZERO value.",
+      }
+  }
 
-	bPair.MaxPrecision = maxPrecision
+  bPair.MaxPrecision = maxPrecision
 
-	bINumModulo, err := new(BigIntMathDivide).PairMod(bPair)
+  bINumModulo, err := new(BigIntMathDivide).PairMod(bPair)
 
-	if err != nil {
+  if err != nil {
 
-		return modulo,
-			&FuncReturnError{
-				ErrPrefix: ePrefix.String(),
-				ReturnFunc: "bINumModulo, err := new(BigIntMathDivide).\n" +
-					"    PairMod(bPair)",
-				ErrContext: fmt.Sprintf("dividend= '%v'; divisor= '%v'; maxPrecision= '%v'",
-					dividendNumStr, divisorNumStr, maxPrecision),
-				ErrMessage: err.Error(),
-			}
-	}
+    return modulo,
+      &FuncReturnError{
+        ErrPrefix: ePrefix.String(),
+        ReturnFunc: "bINumModulo, err := new(BigIntMathDivide).\n" +
+          "    PairMod(bPair)",
+        ErrContext: fmt.Sprintf("dividend= '%v'; divisor= '%v'; maxPrecision= '%v'",
+          dividendNumStr, divisorNumStr, maxPrecision),
+        ErrMessage: err.Error(),
+      }
+  }
 
-	modulo, err = bINumModulo.GetIntAry()
+  modulo, err = bINumModulo.GetIntAry()
 
-	if err != nil {
+  if err != nil {
 
-		return modulo,
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "modulo, err = bINumModulo.GetIntAry()",
-				ErrContext: "",
-				ErrMessage: err.Error(),
-			}
-	}
+    return modulo,
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "modulo, err = bINumModulo.GetIntAry()",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+  }
 
-	return modulo, nil
+  return modulo, nil
 }
 
 // INumMgrQuotientMod - Performs a division operation on types implementing the INumMgr
@@ -4901,120 +4971,120 @@ func (bIDivide *BigIntMathDivide) IntAryModuloToIntAry(
 // separators (decimal separator, thousands separator and currency symbol) copied from
 // input parameter, 'dividend'.
 func (bIDivide *BigIntMathDivide) INumMgrQuotientMod(
-	dividend INumMgr,
-	divisor INumMgr,
-	maxPrecision uint) (quotient BigIntNum, modulo BigIntNum, err error) {
+  dividend INumMgr,
+  divisor INumMgr,
+  maxPrecision uint) (quotient BigIntNum, modulo BigIntNum, err error) {
 
-	var ePrefix *ePref.ErrPrefixDto
+  var ePrefix *ePref.ErrPrefixDto
 
-	ePrefix,
-		err = ePref.ErrPrefixDto{}.NewIEmpty(
-		nil,
-		"BigIntMathDivide.INumMgrQuotientMod",
-		"")
+  ePrefix,
+    err = ePref.ErrPrefixDto{}.NewIEmpty(
+    nil,
+    "BigIntMathDivide.INumMgrQuotientMod",
+    "")
 
-	if err != nil {
-		return quotient, modulo, err
-	}
+  if err != nil {
+    return quotient, modulo, err
+  }
 
-	err = dividend.IsValid(ePrefix.XCpy(
-		"Testing dividend").String())
+  err = dividend.IsValid(ePrefix.XCpy(
+    "Testing dividend").String())
 
-	if err != nil {
-		return quotient, modulo, err
-	}
+  if err != nil {
+    return quotient, modulo, err
+  }
 
-	err = divisor.IsValid(ePrefix.XCpy(
-		"Testing divisor").String())
+  err = divisor.IsValid(ePrefix.XCpy(
+    "Testing divisor").String())
 
-	if err != nil {
-		return quotient, modulo, err
-	}
+  if err != nil {
+    return quotient, modulo, err
+  }
 
-	dividendNumStr, err := dividend.GetNumStr()
+  dividendNumStr, err := dividend.GetNumStr()
 
-	if err != nil {
+  if err != nil {
 
-		return quotient, modulo,
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "dividendNumStr, err := dividend.GetNumStr()",
-				ErrContext: "",
-				ErrMessage: err.Error(),
-			}
-	}
+    return quotient, modulo,
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "dividendNumStr, err := dividend.GetNumStr()",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+  }
 
-	divisorNumStr, err := divisor.GetNumStr()
+  divisorNumStr, err := divisor.GetNumStr()
 
-	if err != nil {
+  if err != nil {
 
-		return quotient, modulo,
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "divisorNumStr, err := divisor.GetNumStr()",
-				ErrContext: "",
-				ErrMessage: err.Error(),
-			}
-	}
+    return quotient, modulo,
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "divisorNumStr, err := divisor.GetNumStr()",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+  }
 
-	bPair, err := new(BigIntPair).NewINumMgr(dividend, divisor)
+  bPair, err := new(BigIntPair).NewINumMgr(dividend, divisor)
 
-	if err != nil {
+  if err != nil {
 
-		return quotient, modulo,
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "bPair, err := new(BigIntPair).NewINumMgr(dividend, divisor)",
-				ErrContext: fmt.Sprintf("dividend= '%v'; divisor= '%v'",
-					dividendNumStr, divisorNumStr),
-				ErrMessage: err.Error(),
-			}
-	}
+    return quotient, modulo,
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "bPair, err := new(BigIntPair).NewINumMgr(dividend, divisor)",
+        ErrContext: fmt.Sprintf("dividend= '%v'; divisor= '%v'",
+          dividendNumStr, divisorNumStr),
+        ErrMessage: err.Error(),
+      }
+  }
 
-	bigpairBig2Iszero, err := bPair.Big2.IsZero()
+  bigpairBig2Iszero, err := bPair.Big2.IsZero()
 
-	if err != nil {
+  if err != nil {
 
-		return quotient, modulo,
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "bigpairBig2Iszero, err := bPair.Big2.IsZero()",
-				ErrContext: "",
-				ErrMessage: err.Error(),
-			}
-	}
+    return quotient, modulo,
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "bigpairBig2Iszero, err := bPair.Big2.IsZero()",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+  }
 
-	if bigpairBig2Iszero {
+  if bigpairBig2Iszero {
 
-		return quotient, modulo,
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "",
-				ErrContext: "bPair.Big2 == 0",
-				ErrMessage: "Error: Attempted divide by ZERO!\n" +
-					"Input parameter bPair.Big2 has a ZERO value.",
-			}
-	}
+    return quotient, modulo,
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "",
+        ErrContext: "bPair.Big2 == 0",
+        ErrMessage: "Error: Attempted divide by ZERO!\n" +
+          "Input parameter bPair.Big2 has a ZERO value.",
+      }
+  }
 
-	bPair.MaxPrecision = maxPrecision
+  bPair.MaxPrecision = maxPrecision
 
-	quotient, modulo, err =
-		new(BigIntMathDivide).PairQuotientMod(bPair)
+  quotient, modulo, err =
+    new(BigIntMathDivide).PairQuotientMod(bPair)
 
-	if err != nil {
+  if err != nil {
 
-		return quotient, modulo,
-			&FuncReturnError{
-				ErrPrefix: ePrefix.String(),
-				ReturnFunc: "quotient, modulo, err = \n" +
-					"    new(BigIntMathDivide).PairQuotientMod(bPair)",
-				ErrContext: fmt.Sprintf("dividend= '%v'; divisor= '%v'; maxPrecision= '%v'",
-					dividendNumStr, divisorNumStr, maxPrecision),
-				ErrMessage: err.Error(),
-			}
-	}
+    return quotient, modulo,
+      &FuncReturnError{
+        ErrPrefix: ePrefix.String(),
+        ReturnFunc: "quotient, modulo, err = \n" +
+          "    new(BigIntMathDivide).PairQuotientMod(bPair)",
+        ErrContext: fmt.Sprintf("dividend= '%v'; divisor= '%v'; maxPrecision= '%v'",
+          dividendNumStr, divisorNumStr, maxPrecision),
+        ErrMessage: err.Error(),
+      }
+  }
 
-	return quotient, modulo, nil
+  return quotient, modulo, nil
 }
 
 // INumMgrFracQuotient - Performs a division operation on input
@@ -5059,121 +5129,121 @@ func (bIDivide *BigIntMathDivide) INumMgrQuotientMod(
 // (decimal separator, thousands separator and currency symbol) copied from input parameter,
 // 'dividend'.
 func (bIDivide *BigIntMathDivide) INumMgrFracQuotient(
-	dividend INumMgr,
-	divisor INumMgr,
-	maxPrecision uint) (fracQuotient BigIntNum, err error) {
+  dividend INumMgr,
+  divisor INumMgr,
+  maxPrecision uint) (fracQuotient BigIntNum, err error) {
 
-	var ePrefix *ePref.ErrPrefixDto
+  var ePrefix *ePref.ErrPrefixDto
 
-	ePrefix,
-		err = ePref.ErrPrefixDto{}.NewIEmpty(
-		nil,
-		"BigIntMathDivide.INumMgrFracQuotient",
-		"")
+  ePrefix,
+    err = ePref.ErrPrefixDto{}.NewIEmpty(
+    nil,
+    "BigIntMathDivide.INumMgrFracQuotient",
+    "")
 
-	if err != nil {
-		return fracQuotient, err
-	}
+  if err != nil {
+    return fracQuotient, err
+  }
 
-	err = dividend.IsValid(ePrefix.XCpy(
-		"Testing dividend").String())
+  err = dividend.IsValid(ePrefix.XCpy(
+    "Testing dividend").String())
 
-	if err != nil {
-		return fracQuotient, err
-	}
+  if err != nil {
+    return fracQuotient, err
+  }
 
-	err = divisor.IsValid(ePrefix.XCpy(
-		"Testing divisor").String())
+  err = divisor.IsValid(ePrefix.XCpy(
+    "Testing divisor").String())
 
-	if err != nil {
-		return fracQuotient, err
-	}
+  if err != nil {
+    return fracQuotient, err
+  }
 
-	dividendNumStr, err := dividend.GetNumStr()
+  dividendNumStr, err := dividend.GetNumStr()
 
-	if err != nil {
+  if err != nil {
 
-		return fracQuotient,
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "dividendNumStr, err := dividend.GetNumStr()",
-				ErrContext: "",
-				ErrMessage: err.Error(),
-			}
-	}
+    return fracQuotient,
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "dividendNumStr, err := dividend.GetNumStr()",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+  }
 
-	divisorNumStr, err := divisor.GetNumStr()
+  divisorNumStr, err := divisor.GetNumStr()
 
-	if err != nil {
+  if err != nil {
 
-		return fracQuotient,
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "divisorNumStr, err := divisor.GetNumStr()",
-				ErrContext: "",
-				ErrMessage: err.Error(),
-			}
-	}
+    return fracQuotient,
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "divisorNumStr, err := divisor.GetNumStr()",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+  }
 
-	divisorIszero, err := divisor.IsZero()
+  divisorIszero, err := divisor.IsZero()
 
-	if err != nil {
+  if err != nil {
 
-		return fracQuotient,
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "divisorIszero, err := divisor.IsZero()",
-				ErrContext: "",
-				ErrMessage: err.Error(),
-			}
-	}
+    return fracQuotient,
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "divisorIszero, err := divisor.IsZero()",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+  }
 
-	if divisorIszero {
+  if divisorIszero {
 
-		return fracQuotient,
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "",
-				ErrContext: "divisor == 0",
-				ErrMessage: "Error: Attempted divide by ZERO!\n" +
-					"Input parameter divisor has a ZERO value.",
-			}
-	}
+    return fracQuotient,
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "",
+        ErrContext: "divisor == 0",
+        ErrMessage: "Error: Attempted divide by ZERO!\n" +
+          "Input parameter divisor has a ZERO value.",
+      }
+  }
 
-	// Validity tests are performed on 'dividend' and 'divisor'
-	bPair, err := new(BigIntPair).NewINumMgr(dividend, divisor)
+  // Validity tests are performed on 'dividend' and 'divisor'
+  bPair, err := new(BigIntPair).NewINumMgr(dividend, divisor)
 
-	if err != nil {
+  if err != nil {
 
-		return fracQuotient,
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "bPair, err := new(BigIntPair).NewINumMgr(dividend, divisor)",
-				ErrContext: fmt.Sprintf("dividend= '%v'; divisor= '%v'",
-					dividendNumStr, divisorNumStr),
-				ErrMessage: err.Error(),
-			}
-	}
+    return fracQuotient,
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "bPair, err := new(BigIntPair).NewINumMgr(dividend, divisor)",
+        ErrContext: fmt.Sprintf("dividend= '%v'; divisor= '%v'",
+          dividendNumStr, divisorNumStr),
+        ErrMessage: err.Error(),
+      }
+  }
 
-	bPair.MaxPrecision = maxPrecision
+  bPair.MaxPrecision = maxPrecision
 
-	fracQuotient, err =
-		new(BigIntMathDivide).PairFracQuotient(bPair)
+  fracQuotient, err =
+    new(BigIntMathDivide).PairFracQuotient(bPair)
 
-	if err != nil {
+  if err != nil {
 
-		return fracQuotient,
-			&FuncReturnError{
-				ErrPrefix: ePrefix.String(),
-				ReturnFunc: "fracQuotient, err = new(BigIntMathDivide).\n" +
-					"    PairFracQuotient(bPair)",
-				ErrContext: fmt.Sprintf("dividend= '%v'; divisor= '%v'; maxPrecision= '%v'",
-					dividendNumStr, divisorNumStr, maxPrecision),
-				ErrMessage: err.Error(),
-			}
-	}
+    return fracQuotient,
+      &FuncReturnError{
+        ErrPrefix: ePrefix.String(),
+        ReturnFunc: "fracQuotient, err = new(BigIntMathDivide).\n" +
+          "    PairFracQuotient(bPair)",
+        ErrContext: fmt.Sprintf("dividend= '%v'; divisor= '%v'; maxPrecision= '%v'",
+          dividendNumStr, divisorNumStr, maxPrecision),
+        ErrMessage: err.Error(),
+      }
+  }
 
-	return fracQuotient, nil
+  return fracQuotient, nil
 }
 
 // INumMgrFracQuotientArray - Performs a division operation on input parameters
@@ -5216,161 +5286,161 @@ func (bIDivide *BigIntMathDivide) INumMgrFracQuotient(
 // separators (decimal separator, thousands separator and currency symbol) copied
 // from the first element of input parameter, 'dividends' array.
 func (bIDivide *BigIntMathDivide) INumMgrFracQuotientArray(
-	dividends []INumMgr,
-	divisor INumMgr,
-	maxPrecision uint) (fracQuoArray []INumMgr, err error) {
+  dividends []INumMgr,
+  divisor INumMgr,
+  maxPrecision uint) (fracQuoArray []INumMgr, err error) {
 
-	var ePrefix *ePref.ErrPrefixDto
+  var ePrefix *ePref.ErrPrefixDto
 
-	ePrefix,
-		err = ePref.ErrPrefixDto{}.NewIEmpty(
-		nil,
-		"BigIntMathDivide.INumMgrFracQuotientArray",
-		"")
+  ePrefix,
+    err = ePref.ErrPrefixDto{}.NewIEmpty(
+    nil,
+    "BigIntMathDivide.INumMgrFracQuotientArray",
+    "")
 
-	if err != nil {
-		return fracQuoArray, err
-	}
+  if err != nil {
+    return fracQuoArray, err
+  }
 
-	err = divisor.IsValid(ePrefix.XCpy(
-		"Testing divisor").String())
+  err = divisor.IsValid(ePrefix.XCpy(
+    "Testing divisor").String())
 
-	if err != nil {
-		return fracQuoArray, err
-	}
+  if err != nil {
+    return fracQuoArray, err
+  }
 
-	divisorNumStr, err := divisor.GetNumStr()
+  divisorNumStr, err := divisor.GetNumStr()
 
-	if err != nil {
+  if err != nil {
 
-		return fracQuoArray,
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "divisorNumStr, err := divisor.GetNumStr()",
-				ErrContext: "",
-				ErrMessage: err.Error(),
-			}
-	}
+    return fracQuoArray,
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "divisorNumStr, err := divisor.GetNumStr()",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+  }
 
-	divisorIszero, err := divisor.IsZero()
+  divisorIszero, err := divisor.IsZero()
 
-	if err != nil {
+  if err != nil {
 
-		return fracQuoArray,
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "divisorIszero, err := divisor.IsZero()",
-				ErrContext: "",
-				ErrMessage: err.Error(),
-			}
-	}
+    return fracQuoArray,
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "divisorIszero, err := divisor.IsZero()",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+  }
 
-	if divisorIszero {
+  if divisorIszero {
 
-		return fracQuoArray,
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "",
-				ErrContext: "divisor == 0",
-				ErrMessage: "Error: Attempted divide by ZERO!\n" +
-					"Input parameter 'divisor' has a ZERO value.",
-			}
-	}
+    return fracQuoArray,
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "",
+        ErrContext: "divisor == 0",
+        ErrMessage: "Error: Attempted divide by ZERO!\n" +
+          "Input parameter 'divisor' has a ZERO value.",
+      }
+  }
 
-	lenAry := len(dividends)
+  lenAry := len(dividends)
 
-	if lenAry == 0 {
+  if lenAry == 0 {
 
-		return fracQuoArray,
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "",
-				ErrContext: "len(dividends) == 0",
-				ErrMessage: "Error: Input Parameter 'dividends' is an EMPTY Array!",
-			}
-	}
+    return fracQuoArray,
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "",
+        ErrContext: "len(dividends) == 0",
+        ErrMessage: "Error: Input Parameter 'dividends' is an EMPTY Array!",
+      }
+  }
 
-	numSeps, err := dividends[0].GetNumericSeparatorsDto()
+  numSeps, err := dividends[0].GetNumericSeparatorsDto()
 
-	if err != nil {
+  if err != nil {
 
-		return fracQuoArray,
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "numSeps, err := dividends[0].GetNumericSeparatorsDto()",
-				ErrContext: "",
-				ErrMessage: err.Error(),
-			}
-	}
+    return fracQuoArray,
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "numSeps, err := dividends[0].GetNumericSeparatorsDto()",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+  }
 
-	fracQuoArray = make([]INumMgr, lenAry, lenAry+20)
+  fracQuoArray = make([]INumMgr, lenAry, lenAry+20)
 
-	var dividendsNumStr string
+  var dividendsNumStr string
 
-	for i := 0; i < lenAry; i++ {
+  for i := 0; i < lenAry; i++ {
 
-		dividendsNumStr, err = dividends[i].GetNumStr()
+    dividendsNumStr, err = dividends[i].GetNumStr()
 
-		if err != nil {
+    if err != nil {
 
-			return []INumMgr{},
-				&FuncReturnError{
-					ErrPrefix:  ePrefix.String(),
-					ReturnFunc: fmt.Sprintf("dividendsNumStr, err = dividends[%d].GetNumStr()", i),
-					ErrContext: "",
-					ErrMessage: err.Error(),
-				}
-		}
+      return []INumMgr{},
+        &FuncReturnError{
+          ErrPrefix:  ePrefix.String(),
+          ReturnFunc: fmt.Sprintf("dividendsNumStr, err = dividends[%d].GetNumStr()", i),
+          ErrContext: "",
+          ErrMessage: err.Error(),
+        }
+    }
 
-		if i > 0 {
+    if i > 0 {
 
-			err = dividends[i].SetNumericSeparatorsDto(numSeps)
+      err = dividends[i].SetNumericSeparatorsDto(numSeps)
 
-			if err != nil {
+      if err != nil {
 
-				return []INumMgr{},
-					&FuncReturnError{
-						ErrPrefix:  ePrefix.String(),
-						ReturnFunc: fmt.Sprintf("err = dividends[%d].SetNumericSeparatorsDto(numSeps)", i),
-						ErrContext: "",
-						ErrMessage: err.Error(),
-					}
-			}
-		} // if i > 0
+        return []INumMgr{},
+          &FuncReturnError{
+            ErrPrefix:  ePrefix.String(),
+            ReturnFunc: fmt.Sprintf("err = dividends[%d].SetNumericSeparatorsDto(numSeps)", i),
+            ErrContext: "",
+            ErrMessage: err.Error(),
+          }
+      }
+    } // if i > 0
 
-		bPair, err := new(BigIntPair).NewINumMgr(dividends[i], divisor)
+    bPair, err := new(BigIntPair).NewINumMgr(dividends[i], divisor)
 
-		if err != nil {
+    if err != nil {
 
-			return []INumMgr{},
-				&FuncReturnError{
-					ErrPrefix:  ePrefix.String(),
-					ReturnFunc: fmt.Sprintf("bPair, err := new(BigIntPair).NewINumMgr(dividends[%d], divisor)", i),
-					ErrContext: fmt.Sprintf("dividends[%d]= '%v'; divisor= '%v';",
-						i, dividendsNumStr, divisorNumStr),
-					ErrMessage: err.Error(),
-				}
-		}
+      return []INumMgr{},
+        &FuncReturnError{
+          ErrPrefix:  ePrefix.String(),
+          ReturnFunc: fmt.Sprintf("bPair, err := new(BigIntPair).NewINumMgr(dividends[%d], divisor)", i),
+          ErrContext: fmt.Sprintf("dividends[%d]= '%v'; divisor= '%v';",
+            i, dividendsNumStr, divisorNumStr),
+          ErrMessage: err.Error(),
+        }
+    }
 
-		bPair.MaxPrecision = maxPrecision
+    bPair.MaxPrecision = maxPrecision
 
-		bINum, err := new(BigIntMathDivide).PairFracQuotient(bPair)
+    bINum, err := new(BigIntMathDivide).PairFracQuotient(bPair)
 
-		if err != nil {
+    if err != nil {
 
-			return []INumMgr{},
-				&FuncReturnError{
-					ErrPrefix:  ePrefix.String(),
-					ReturnFunc: "bINum, err := new(BigIntMathDivide).PairFracQuotient(bPair)",
-					ErrContext: "",
-					ErrMessage: err.Error(),
-				}
-		}
+      return []INumMgr{},
+        &FuncReturnError{
+          ErrPrefix:  ePrefix.String(),
+          ReturnFunc: "bINum, err := new(BigIntMathDivide).PairFracQuotient(bPair)",
+          ErrContext: "",
+          ErrMessage: err.Error(),
+        }
+    }
 
-		fracQuoArray[i] = &bINum
-	}
+    fracQuoArray[i] = &bINum
+  }
 
-	return fracQuoArray, err
+  return fracQuoArray, err
 }
 
 // INumMgrModulo - Performs a modulo operation on input parameters
@@ -5426,119 +5496,119 @@ func (bIDivide *BigIntMathDivide) INumMgrFracQuotientArray(
 // separators (decimal separator, thousands separator and currency symbol)
 // copied from input parameter, 'dividend'.
 func (bIDivide *BigIntMathDivide) INumMgrModulo(
-	dividend INumMgr,
-	divisor INumMgr,
-	maxPrecision uint) (modulo BigIntNum, err error) {
+  dividend INumMgr,
+  divisor INumMgr,
+  maxPrecision uint) (modulo BigIntNum, err error) {
 
-	var ePrefix *ePref.ErrPrefixDto
+  var ePrefix *ePref.ErrPrefixDto
 
-	ePrefix,
-		err = ePref.ErrPrefixDto{}.NewIEmpty(
-		nil,
-		"BigIntMathDivide.INumMgrModulo",
-		"")
+  ePrefix,
+    err = ePref.ErrPrefixDto{}.NewIEmpty(
+    nil,
+    "BigIntMathDivide.INumMgrModulo",
+    "")
 
-	if err != nil {
-		return modulo, err
-	}
+  if err != nil {
+    return modulo, err
+  }
 
-	err = dividend.IsValid(ePrefix.XCpy(
-		"Testing dividend").String())
+  err = dividend.IsValid(ePrefix.XCpy(
+    "Testing dividend").String())
 
-	if err != nil {
-		return modulo, err
-	}
+  if err != nil {
+    return modulo, err
+  }
 
-	err = divisor.IsValid(ePrefix.XCpy(
-		"Testing divisor").String())
+  err = divisor.IsValid(ePrefix.XCpy(
+    "Testing divisor").String())
 
-	if err != nil {
-		return modulo, err
-	}
+  if err != nil {
+    return modulo, err
+  }
 
-	dividendNumStr, err := dividend.GetNumStr()
+  dividendNumStr, err := dividend.GetNumStr()
 
-	if err != nil {
+  if err != nil {
 
-		return modulo,
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "dividendNumStr, err := dividend.GetNumStr()",
-				ErrContext: "",
-				ErrMessage: err.Error(),
-			}
-	}
+    return modulo,
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "dividendNumStr, err := dividend.GetNumStr()",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+  }
 
-	divisorNumStr, err := divisor.GetNumStr()
+  divisorNumStr, err := divisor.GetNumStr()
 
-	if err != nil {
+  if err != nil {
 
-		return modulo,
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "divisorNumStr, err := divisor.GetNumStr()",
-				ErrContext: "",
-				ErrMessage: err.Error(),
-			}
-	}
+    return modulo,
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "divisorNumStr, err := divisor.GetNumStr()",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+  }
 
-	bPair, err := new(BigIntPair).NewINumMgr(dividend, divisor)
+  bPair, err := new(BigIntPair).NewINumMgr(dividend, divisor)
 
-	if err != nil {
+  if err != nil {
 
-		return modulo,
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "bPair, err := new(BigIntPair).NewINumMgr(dividend, divisor)",
-				ErrContext: fmt.Sprintf("dividend= '%v'; divisor= '%v'",
-					dividendNumStr, divisorNumStr),
-				ErrMessage: err.Error(),
-			}
-	}
+    return modulo,
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "bPair, err := new(BigIntPair).NewINumMgr(dividend, divisor)",
+        ErrContext: fmt.Sprintf("dividend= '%v'; divisor= '%v'",
+          dividendNumStr, divisorNumStr),
+        ErrMessage: err.Error(),
+      }
+  }
 
-	bigpairBig2Iszero, err := bPair.Big2.IsZero()
+  bigpairBig2Iszero, err := bPair.Big2.IsZero()
 
-	if err != nil {
+  if err != nil {
 
-		return modulo,
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "bigpairBig2Iszero, err := bPair.Big2.IsZero()",
-				ErrContext: "",
-				ErrMessage: err.Error(),
-			}
-	}
+    return modulo,
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "bigpairBig2Iszero, err := bPair.Big2.IsZero()",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+  }
 
-	if bigpairBig2Iszero {
+  if bigpairBig2Iszero {
 
-		return modulo,
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "",
-				ErrContext: "bPair.Big2 == 0",
-				ErrMessage: "Error: Attempted divide by ZERO!\n" +
-					"'bPair.Big2' has a ZERO value.",
-			}
-	}
+    return modulo,
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "",
+        ErrContext: "bPair.Big2 == 0",
+        ErrMessage: "Error: Attempted divide by ZERO!\n" +
+          "'bPair.Big2' has a ZERO value.",
+      }
+  }
 
-	bPair.MaxPrecision = maxPrecision
+  bPair.MaxPrecision = maxPrecision
 
-	modulo, err = new(BigIntMathDivide).PairMod(bPair)
+  modulo, err = new(BigIntMathDivide).PairMod(bPair)
 
-	if err != nil {
+  if err != nil {
 
-		return modulo,
-			&FuncReturnError{
-				ErrPrefix: ePrefix.String(),
-				ReturnFunc: "modulo, err = new(BigIntMathDivide).\n" +
-					"    PairMod(bPair)",
-				ErrContext: fmt.Sprintf("dividend= '%v'; divisor= '%v'; maxPrecision= '%v'",
-					dividendNumStr, divisorNumStr, maxPrecision),
-				ErrMessage: err.Error(),
-			}
-	}
+    return modulo,
+      &FuncReturnError{
+        ErrPrefix: ePrefix.String(),
+        ReturnFunc: "modulo, err = new(BigIntMathDivide).\n" +
+          "    PairMod(bPair)",
+        ErrContext: fmt.Sprintf("dividend= '%v'; divisor= '%v'; maxPrecision= '%v'",
+          dividendNumStr, divisorNumStr, maxPrecision),
+        ErrMessage: err.Error(),
+      }
+  }
 
-	return modulo, nil
+  return modulo, nil
 }
 
 // NumStrQuotientMod - Performs a division operation on input parameters 'dividend' and 'divisor'
@@ -5596,143 +5666,143 @@ func (bIDivide *BigIntMathDivide) INumMgrModulo(
 // numeric separators (decimal separator, thousands separator and currency
 // symbol) designated by the input parameter, 'numSeps'.
 func (bIDivide *BigIntMathDivide) NumStrQuotientMod(
-	dividend string,
-	divisor string,
-	numSeps NumericSeparatorDto,
-	maxPrecision uint) (quotient BigIntNum, modulo BigIntNum, err error) {
+  dividend string,
+  divisor string,
+  numSeps NumericSeparatorDto,
+  maxPrecision uint) (quotient BigIntNum, modulo BigIntNum, err error) {
 
-	var ePrefix *ePref.ErrPrefixDto
+  var ePrefix *ePref.ErrPrefixDto
 
-	ePrefix,
-		err = ePref.ErrPrefixDto{}.NewIEmpty(
-		nil,
-		"BigIntMathDivide.NumStrQuotientMod",
-		"")
+  ePrefix,
+    err = ePref.ErrPrefixDto{}.NewIEmpty(
+    nil,
+    "BigIntMathDivide.NumStrQuotientMod",
+    "")
 
-	if err != nil {
-		return quotient, modulo, err
-	}
+  if err != nil {
+    return quotient, modulo, err
+  }
 
-	if len(dividend) == 0 {
+  if len(dividend) == 0 {
 
-		return quotient, modulo,
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "",
-				ErrContext: "len(dividend) == 0",
-				ErrMessage: "Error: Input parameter 'dividend' is an empty string!",
-			}
-	}
+    return quotient, modulo,
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "",
+        ErrContext: "len(dividend) == 0",
+        ErrMessage: "Error: Input parameter 'dividend' is an empty string!",
+      }
+  }
 
-	if len(divisor) == 0 {
+  if len(divisor) == 0 {
 
-		return quotient, modulo,
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "",
-				ErrContext: "len(divisor) == 0",
-				ErrMessage: "Error: Input parameter 'divisor' is an empty string!",
-			}
-	}
+    return quotient, modulo,
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "",
+        ErrContext: "len(divisor) == 0",
+        ErrMessage: "Error: Input parameter 'divisor' is an empty string!",
+      }
+  }
 
-	numSeps.SetDefaultsIfEmpty()
+  numSeps.SetDefaultsIfEmpty()
 
-	err = numSeps.IsValid(ePrefix.XCpy("Testing numSeps").String())
+  err = numSeps.IsValid(ePrefix.XCpy("Testing numSeps").String())
 
-	if err != nil {
+  if err != nil {
 
-		return quotient, modulo,
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "err = numSeps.IsValid(ePrefix.XCpy(\"Testing numSeps\").String())",
-				ErrContext: "",
-				ErrMessage: err.Error(),
-			}
-	}
+    return quotient, modulo,
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "err = numSeps.IsValid(ePrefix.XCpy(\"Testing numSeps\").String())",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+  }
 
-	bigIDividend, err := new(BigIntNum).NewNumStrWithNumSeps(dividend, numSeps)
+  bigIDividend, err := new(BigIntNum).NewNumStrWithNumSeps(dividend, numSeps)
 
-	if err != nil {
+  if err != nil {
 
-		return quotient, modulo,
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "bigIDividend, err := new(BigIntNum).NewNumStrWithNumSeps(dividend, numSeps)",
-				ErrContext: fmt.Sprintf("dividend= '%v'", dividend),
-				ErrMessage: err.Error(),
-			}
-	}
+    return quotient, modulo,
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "bigIDividend, err := new(BigIntNum).NewNumStrWithNumSeps(dividend, numSeps)",
+        ErrContext: fmt.Sprintf("dividend= '%v'", dividend),
+        ErrMessage: err.Error(),
+      }
+  }
 
-	bigIDivisor, err := new(BigIntNum).NewNumStrWithNumSeps(divisor, numSeps)
+  bigIDivisor, err := new(BigIntNum).NewNumStrWithNumSeps(divisor, numSeps)
 
-	if err != nil {
+  if err != nil {
 
-		return quotient, modulo,
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "bigIDivisor, err := new(BigIntNum).NewNumStrWithNumSeps(divisor, numSeps)",
-				ErrContext: fmt.Sprintf("divisor= '%v'", divisor),
-				ErrMessage: err.Error(),
-			}
-	}
+    return quotient, modulo,
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "bigIDivisor, err := new(BigIntNum).NewNumStrWithNumSeps(divisor, numSeps)",
+        ErrContext: fmt.Sprintf("divisor= '%v'", divisor),
+        ErrMessage: err.Error(),
+      }
+  }
 
-	bigIDivisorIszero, err := bigIDivisor.IsZero()
+  bigIDivisorIszero, err := bigIDivisor.IsZero()
 
-	if err != nil {
+  if err != nil {
 
-		return quotient, modulo,
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "bigIDivisorIszero, err := bigIDivisor.IsZero()",
-				ErrContext: "",
-				ErrMessage: err.Error(),
-			}
-	}
+    return quotient, modulo,
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "bigIDivisorIszero, err := bigIDivisor.IsZero()",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+  }
 
-	if bigIDivisorIszero {
+  if bigIDivisorIszero {
 
-		return quotient, modulo,
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "",
-				ErrContext: "bigIDivisor == 0",
-				ErrMessage: "Error: Attempted divide by ZERO!\n" +
-					"'bigIDivisor' has a ZERO value.",
-			}
-	}
+    return quotient, modulo,
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "",
+        ErrContext: "bigIDivisor == 0",
+        ErrMessage: "Error: Attempted divide by ZERO!\n" +
+          "'bigIDivisor' has a ZERO value.",
+      }
+  }
 
-	bPair, err := new(BigIntPair).NewBigIntNum(bigIDividend, bigIDivisor)
+  bPair, err := new(BigIntPair).NewBigIntNum(bigIDividend, bigIDivisor)
 
-	if err != nil {
+  if err != nil {
 
-		return quotient, modulo,
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "bPair, err := new(BigIntPair).NewBigIntNum(bigIDividend, bigIDivisor)",
-				ErrContext: "",
-				ErrMessage: err.Error(),
-			}
-	}
+    return quotient, modulo,
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "bPair, err := new(BigIntPair).NewBigIntNum(bigIDividend, bigIDivisor)",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+  }
 
-	bPair.MaxPrecision = maxPrecision
+  bPair.MaxPrecision = maxPrecision
 
-	quotient, modulo, err =
-		new(BigIntMathDivide).PairQuotientMod(bPair)
+  quotient, modulo, err =
+    new(BigIntMathDivide).PairQuotientMod(bPair)
 
-	if err != nil {
+  if err != nil {
 
-		return quotient, modulo,
-			&FuncReturnError{
-				ErrPrefix: ePrefix.String(),
-				ReturnFunc: "quotient, modulo, err =\n" +
-					"    new(BigIntMathDivide).PairQuotientMod(bPair)",
-				ErrContext: fmt.Sprintf("dividend= '%v'; divisor= '%v'; maxPrecision= '%v'",
-					dividend, divisor, maxPrecision),
-				ErrMessage: err.Error(),
-			}
-	}
+    return quotient, modulo,
+      &FuncReturnError{
+        ErrPrefix: ePrefix.String(),
+        ReturnFunc: "quotient, modulo, err =\n" +
+          "    new(BigIntMathDivide).PairQuotientMod(bPair)",
+        ErrContext: fmt.Sprintf("dividend= '%v'; divisor= '%v'; maxPrecision= '%v'",
+          dividend, divisor, maxPrecision),
+        ErrMessage: err.Error(),
+      }
+  }
 
-	return quotient, modulo, nil
+  return quotient, modulo, nil
 }
 
 // NumStrFracQuotient - Performs a division operation on input parameters
@@ -5797,122 +5867,122 @@ func (bIDivide *BigIntMathDivide) NumStrQuotientMod(
 //	zero, those components will be automatically reset to USA default
 //	values.
 func (bIDivide *BigIntMathDivide) NumStrFracQuotient(
-	dividend string,
-	divisor string,
-	numSeps NumericSeparatorDto,
-	maxPrecision uint) (fracQuotient BigIntNum, err error) {
+  dividend string,
+  divisor string,
+  numSeps NumericSeparatorDto,
+  maxPrecision uint) (fracQuotient BigIntNum, err error) {
 
-	var ePrefix *ePref.ErrPrefixDto
+  var ePrefix *ePref.ErrPrefixDto
 
-	ePrefix,
-		err = ePref.ErrPrefixDto{}.NewIEmpty(
-		nil,
-		"BigIntMathDivide.NumStrFracQuotient",
-		"")
+  ePrefix,
+    err = ePref.ErrPrefixDto{}.NewIEmpty(
+    nil,
+    "BigIntMathDivide.NumStrFracQuotient",
+    "")
 
-	if err != nil {
-		return fracQuotient, err
-	}
+  if err != nil {
+    return fracQuotient, err
+  }
 
-	if len(divisor) == 0 {
+  if len(divisor) == 0 {
 
-		return fracQuotient,
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "",
-				ErrContext: "len(divisor) == 0",
-				ErrMessage: "Error: Input Parameter 'divisor' is an EMPTY string!",
-			}
-	}
+    return fracQuotient,
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "",
+        ErrContext: "len(divisor) == 0",
+        ErrMessage: "Error: Input Parameter 'divisor' is an EMPTY string!",
+      }
+  }
 
-	if len(dividend) == 0 {
+  if len(dividend) == 0 {
 
-		return fracQuotient,
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "",
-				ErrContext: "len(dividend) == 0",
-				ErrMessage: "Error: Input Parameter 'dividend' is an EMPTY string!",
-			}
-	}
+    return fracQuotient,
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "",
+        ErrContext: "len(dividend) == 0",
+        ErrMessage: "Error: Input Parameter 'dividend' is an EMPTY string!",
+      }
+  }
 
-	numSeps.SetDefaultsIfEmpty()
+  numSeps.SetDefaultsIfEmpty()
 
-	err = numSeps.IsValid(ePrefix.XCpy("Testing numSeps").String())
+  err = numSeps.IsValid(ePrefix.XCpy("Testing numSeps").String())
 
-	if err != nil {
+  if err != nil {
 
-		return fracQuotient,
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "err = numSeps.IsValid(ePrefix.XCpy(\"Testing numSeps\").String())",
-				ErrContext: "numSeps is INVALID!",
-				ErrMessage: err.Error(),
-			}
-	}
+    return fracQuotient,
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "err = numSeps.IsValid(ePrefix.XCpy(\"Testing numSeps\").String())",
+        ErrContext: "numSeps is INVALID!",
+        ErrMessage: err.Error(),
+      }
+  }
 
-	bigIDividend, err := new(BigIntNum).NewNumStrWithNumSeps(dividend, numSeps)
+  bigIDividend, err := new(BigIntNum).NewNumStrWithNumSeps(dividend, numSeps)
 
-	if err != nil {
+  if err != nil {
 
-		return fracQuotient,
-			&FuncReturnError{
-				ErrPrefix: ePrefix.String(),
-				ReturnFunc: "bigIDividend, err := new(BigIntNum).\n" +
-					"    NewNumStrWithNumSeps(dividend, numSeps)",
-				ErrContext: fmt.Sprintf("dividend= '%v'", dividend),
-				ErrMessage: err.Error(),
-			}
-	}
+    return fracQuotient,
+      &FuncReturnError{
+        ErrPrefix: ePrefix.String(),
+        ReturnFunc: "bigIDividend, err := new(BigIntNum).\n" +
+          "    NewNumStrWithNumSeps(dividend, numSeps)",
+        ErrContext: fmt.Sprintf("dividend= '%v'", dividend),
+        ErrMessage: err.Error(),
+      }
+  }
 
-	bigIDivisor, err := new(BigIntNum).NewNumStrWithNumSeps(divisor, numSeps)
+  bigIDivisor, err := new(BigIntNum).NewNumStrWithNumSeps(divisor, numSeps)
 
-	if err != nil {
+  if err != nil {
 
-		return fracQuotient,
-			&FuncReturnError{
-				ErrPrefix: ePrefix.String(),
-				ReturnFunc: "bigIDivisor, err := new(BigIntNum).\n" +
-					"    NewNumStrWithNumSeps(divisor, numSeps)",
-				ErrContext: fmt.Sprintf("divisor= '%v'", divisor),
-				ErrMessage: err.Error(),
-			}
-	}
+    return fracQuotient,
+      &FuncReturnError{
+        ErrPrefix: ePrefix.String(),
+        ReturnFunc: "bigIDivisor, err := new(BigIntNum).\n" +
+          "    NewNumStrWithNumSeps(divisor, numSeps)",
+        ErrContext: fmt.Sprintf("divisor= '%v'", divisor),
+        ErrMessage: err.Error(),
+      }
+  }
 
-	bPair, err := new(BigIntPair).NewBigIntNum(bigIDividend, bigIDivisor)
+  bPair, err := new(BigIntPair).NewBigIntNum(bigIDividend, bigIDivisor)
 
-	if err != nil {
+  if err != nil {
 
-		return fracQuotient,
-			&FuncReturnError{
-				ErrPrefix: ePrefix.String(),
-				ReturnFunc: "bPair, err := new(BigIntPair)." +
-					"    NewBigIntNum(bigIDividend, bigIDivisor)",
-				ErrContext: fmt.Sprintf("bigIDividend= '%v' bigIDivisor= '%v'",
-					dividend, divisor),
-				ErrMessage: err.Error(),
-			}
-	}
+    return fracQuotient,
+      &FuncReturnError{
+        ErrPrefix: ePrefix.String(),
+        ReturnFunc: "bPair, err := new(BigIntPair)." +
+          "    NewBigIntNum(bigIDividend, bigIDivisor)",
+        ErrContext: fmt.Sprintf("bigIDividend= '%v' bigIDivisor= '%v'",
+          dividend, divisor),
+        ErrMessage: err.Error(),
+      }
+  }
 
-	bPair.MaxPrecision = maxPrecision
+  bPair.MaxPrecision = maxPrecision
 
-	fracQuotient, err =
-		new(BigIntMathDivide).PairFracQuotient(bPair)
+  fracQuotient, err =
+    new(BigIntMathDivide).PairFracQuotient(bPair)
 
-	if err != nil {
+  if err != nil {
 
-		return fracQuotient,
-			&FuncReturnError{
-				ErrPrefix: ePrefix.String(),
-				ReturnFunc: "fracQuotient, err = new(BigIntMathDivide).\n" +
-					"    PairFracQuotient(bPair)",
-				ErrContext: fmt.Sprintf("dividend= '%v'; divisor= '%v'; maxPrecision= '%v'",
-					dividend, divisor, maxPrecision),
-				ErrMessage: err.Error(),
-			}
-	}
+    return fracQuotient,
+      &FuncReturnError{
+        ErrPrefix: ePrefix.String(),
+        ReturnFunc: "fracQuotient, err = new(BigIntMathDivide).\n" +
+          "    PairFracQuotient(bPair)",
+        ErrContext: fmt.Sprintf("dividend= '%v'; divisor= '%v'; maxPrecision= '%v'",
+          dividend, divisor, maxPrecision),
+        ErrMessage: err.Error(),
+      }
+  }
 
-	return fracQuotient, err
+  return fracQuotient, err
 }
 
 // NumStrFracQuotientArray - Performs a division operation on input parameters
@@ -5975,144 +6045,144 @@ func (bIDivide *BigIntMathDivide) NumStrFracQuotient(
 //	taken from dividends[0], the first element of the 'dividends'
 //	string array.
 func (bIDivide *BigIntMathDivide) NumStrFracQuotientArray(
-	dividends []string,
-	divisor string,
-	numSeps NumericSeparatorDto,
-	maxPrecision uint) (fracQuoArray []BigIntNum, err error) {
+  dividends []string,
+  divisor string,
+  numSeps NumericSeparatorDto,
+  maxPrecision uint) (fracQuoArray []BigIntNum, err error) {
 
-	var ePrefix *ePref.ErrPrefixDto
+  var ePrefix *ePref.ErrPrefixDto
 
-	ePrefix,
-		err = ePref.ErrPrefixDto{}.NewIEmpty(
-		nil,
-		"BigIntMathDivide.NumStrFracQuotientArray",
-		"")
+  ePrefix,
+    err = ePref.ErrPrefixDto{}.NewIEmpty(
+    nil,
+    "BigIntMathDivide.NumStrFracQuotientArray",
+    "")
 
-	if err != nil {
-		return fracQuoArray, err
-	}
+  if err != nil {
+    return fracQuoArray, err
+  }
 
-	numSeps.SetDefaultsIfEmpty()
+  numSeps.SetDefaultsIfEmpty()
 
-	err = numSeps.IsValid(ePrefix.XCpy("Testing numSeps").String())
+  err = numSeps.IsValid(ePrefix.XCpy("Testing numSeps").String())
 
-	if err != nil {
+  if err != nil {
 
-		return fracQuoArray,
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "err = numSeps.IsValid(ePrefix.XCpy(\"Testing numSeps\").String())",
-				ErrContext: "",
-				ErrMessage: err.Error(),
-			}
-	}
+    return fracQuoArray,
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "err = numSeps.IsValid(ePrefix.XCpy(\"Testing numSeps\").String())",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+  }
 
-	lenAry := len(dividends)
+  lenAry := len(dividends)
 
-	if lenAry == 0 {
+  if lenAry == 0 {
 
-		return fracQuoArray,
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "",
-				ErrContext: "len(dividends) == 0",
-				ErrMessage: "Error: Input Parameter 'dividends' is an EMPTY Array!",
-			}
-	}
+    return fracQuoArray,
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "",
+        ErrContext: "len(dividends) == 0",
+        ErrMessage: "Error: Input Parameter 'dividends' is an EMPTY Array!",
+      }
+  }
 
-	if len(divisor) == 0 {
+  if len(divisor) == 0 {
 
-		return fracQuoArray,
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "",
-				ErrContext: "len(divisor) == 0",
-				ErrMessage: "Error: Input Parameter 'divisor' is an EMPTY string!",
-			}
-	}
+    return fracQuoArray,
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "",
+        ErrContext: "len(divisor) == 0",
+        ErrMessage: "Error: Input Parameter 'divisor' is an EMPTY string!",
+      }
+  }
 
-	fracQuoArray = make([]BigIntNum, lenAry, lenAry+20)
+  fracQuoArray = make([]BigIntNum, lenAry, lenAry+20)
 
-	bigINumDivisor, err := new(BigIntNum).
-		NewNumStrWithNumSeps(divisor, numSeps)
+  bigINumDivisor, err := new(BigIntNum).
+    NewNumStrWithNumSeps(divisor, numSeps)
 
-	if err != nil {
+  if err != nil {
 
-		return []BigIntNum{},
-			&FuncReturnError{
-				ErrPrefix: ePrefix.String(),
-				ReturnFunc: "bigINumDivisor, err := new(BigIntNum)." +
-					"    NewNumStrWithNumSeps(divisor, numSeps)",
-				ErrContext: fmt.Sprintf("divisor= '%v' index= '%v'",
-					divisor, i),
-				ErrMessage: err.Error(),
-			}
-	}
+    return []BigIntNum{},
+      &FuncReturnError{
+        ErrPrefix: ePrefix.String(),
+        ReturnFunc: "bigINumDivisor, err := new(BigIntNum)." +
+          "    NewNumStrWithNumSeps(divisor, numSeps)",
+        ErrContext: fmt.Sprintf("divisor= '%v' index= '%v'",
+          divisor, i),
+        ErrMessage: err.Error(),
+      }
+  }
 
-	for i := 0; i < lenAry; i++ {
+  for i := 0; i < lenAry; i++ {
 
-		if len(dividends[i]) == 0 {
+    if len(dividends[i]) == 0 {
 
-			return fracQuoArray,
-				&FuncReturnError{
-					ErrPrefix:  ePrefix.String(),
-					ReturnFunc: "",
-					ErrContext: fmt.Sprintf("len(dividends[%d]) == 0", i),
-					ErrMessage: fmt.Sprintf("Error: Array element 'dividends[%d]' is an EMPTY string!", i),
-				}
-		}
+      return fracQuoArray,
+        &FuncReturnError{
+          ErrPrefix:  ePrefix.String(),
+          ReturnFunc: "",
+          ErrContext: fmt.Sprintf("len(dividends[%d]) == 0", i),
+          ErrMessage: fmt.Sprintf("Error: Array element 'dividends[%d]' is an EMPTY string!", i),
+        }
+    }
 
-		bigINumDividend, err := new(BigIntNum).
-			NewNumStrWithNumSeps(dividends[i], numSeps)
+    bigINumDividend, err := new(BigIntNum).
+      NewNumStrWithNumSeps(dividends[i], numSeps)
 
-		if err != nil {
+    if err != nil {
 
-			return fracQuoArray,
-				&FuncReturnError{
-					ErrPrefix: ePrefix.String(),
-					ReturnFunc: "bigINumDividend, err := new(BigIntNum).\n" +
-						"    NewNumStrWithNumSeps(dividends[i], numSeps)",
-					ErrContext: fmt.Sprintf("dividends[%d]= '%v'",
-						i, dividends[i]),
-					ErrMessage: err.Error(),
-				}
-		}
+      return fracQuoArray,
+        &FuncReturnError{
+          ErrPrefix: ePrefix.String(),
+          ReturnFunc: "bigINumDividend, err := new(BigIntNum).\n" +
+            "    NewNumStrWithNumSeps(dividends[i], numSeps)",
+          ErrContext: fmt.Sprintf("dividends[%d]= '%v'",
+            i, dividends[i]),
+          ErrMessage: err.Error(),
+        }
+    }
 
-		bPair, err := new(BigIntPair).NewBigIntNum(bigINumDividend, bigINumDivisor)
+    bPair, err := new(BigIntPair).NewBigIntNum(bigINumDividend, bigINumDivisor)
 
-		if err != nil {
+    if err != nil {
 
-			return fracQuoArray,
-				&FuncReturnError{
-					ErrPrefix: ePrefix.String(),
-					ReturnFunc: "bPair, err := new(BigIntPair).NewBigIntNum(\n" +
-						"    bigINumDividend, bigINumDivisor)",
-					ErrContext: fmt.Sprintf("dividends[%d]= '%v'; divisor= '%v'",
-						i, dividends[i], divisor),
-					ErrMessage: err.Error(),
-				}
-		}
+      return fracQuoArray,
+        &FuncReturnError{
+          ErrPrefix: ePrefix.String(),
+          ReturnFunc: "bPair, err := new(BigIntPair).NewBigIntNum(\n" +
+            "    bigINumDividend, bigINumDivisor)",
+          ErrContext: fmt.Sprintf("dividends[%d]= '%v'; divisor= '%v'",
+            i, dividends[i], divisor),
+          ErrMessage: err.Error(),
+        }
+    }
 
-		bPair.MaxPrecision = maxPrecision
+    bPair.MaxPrecision = maxPrecision
 
-		fracQuoArray[i], err =
-			new(BigIntMathDivide).PairFracQuotient(bPair)
+    fracQuoArray[i], err =
+      new(BigIntMathDivide).PairFracQuotient(bPair)
 
-		if err != nil {
+    if err != nil {
 
-			return fracQuoArray,
-				&FuncReturnError{
-					ErrPrefix: ePrefix.String(),
-					ReturnFunc: fmt.Sprintf("fracQuoArray[%d], err =\n"+
-						"    new(BigIntMathDivide).PairFracQuotient(bPair)", i),
-					ErrContext: fmt.Sprintf("dividends[%d]= '%v'; divisor= '%v'; maxPrecision= '%v'",
-						i, dividends[i], divisor, maxPrecision),
-					ErrMessage: err.Error(),
-				}
-		}
-	}
+      return fracQuoArray,
+        &FuncReturnError{
+          ErrPrefix: ePrefix.String(),
+          ReturnFunc: fmt.Sprintf("fracQuoArray[%d], err =\n"+
+            "    new(BigIntMathDivide).PairFracQuotient(bPair)", i),
+          ErrContext: fmt.Sprintf("dividends[%d]= '%v'; divisor= '%v'; maxPrecision= '%v'",
+            i, dividends[i], divisor, maxPrecision),
+          ErrMessage: err.Error(),
+        }
+    }
+  }
 
-	return fracQuoArray, err
+  return fracQuoArray, err
 }
 
 // NumStrModulo - Performs a modulo operation on input parameters 'dividend'
@@ -6186,149 +6256,149 @@ func (bIDivide *BigIntMathDivide) NumStrFracQuotientArray(
 //	zero, those components will be automatically reset to USA default
 //	values.
 func (bIDivide *BigIntMathDivide) NumStrModulo(
-	dividend string,
-	divisor string,
-	numSeps NumericSeparatorDto,
-	maxPrecision uint) (modulo BigIntNum, err error) {
+  dividend string,
+  divisor string,
+  numSeps NumericSeparatorDto,
+  maxPrecision uint) (modulo BigIntNum, err error) {
 
-	var ePrefix *ePref.ErrPrefixDto
+  var ePrefix *ePref.ErrPrefixDto
 
-	ePrefix,
-		err = ePref.ErrPrefixDto{}.NewIEmpty(
-		nil,
-		"BigIntMathDivide.NumStrModulo",
-		"")
+  ePrefix,
+    err = ePref.ErrPrefixDto{}.NewIEmpty(
+    nil,
+    "BigIntMathDivide.NumStrModulo",
+    "")
 
-	if err != nil {
-		return modulo, err
-	}
+  if err != nil {
+    return modulo, err
+  }
 
-	if len(divisor) == 0 {
+  if len(divisor) == 0 {
 
-		return modulo,
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "",
-				ErrContext: "len(divisor) == 0",
-				ErrMessage: "Error: Input Parameter 'divisor' is an EMPTY string!",
-			}
-	}
+    return modulo,
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "",
+        ErrContext: "len(divisor) == 0",
+        ErrMessage: "Error: Input Parameter 'divisor' is an EMPTY string!",
+      }
+  }
 
-	if len(dividend) == 0 {
+  if len(dividend) == 0 {
 
-		return modulo,
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "",
-				ErrContext: "len(dividend) == 0",
-				ErrMessage: "Error: Input Parameter 'dividend' is an EMPTY string!",
-			}
-	}
+    return modulo,
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "",
+        ErrContext: "len(dividend) == 0",
+        ErrMessage: "Error: Input Parameter 'dividend' is an EMPTY string!",
+      }
+  }
 
-	numSeps.SetDefaultsIfEmpty()
+  numSeps.SetDefaultsIfEmpty()
 
-	err = numSeps.IsValid(ePrefix.XCpy("Testing numSeps").String())
+  err = numSeps.IsValid(ePrefix.XCpy("Testing numSeps").String())
 
-	if err != nil {
+  if err != nil {
 
-		return modulo,
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "err = numSeps.IsValid(ePrefix.XCpy(\"Testing numSeps\").String())",
-				ErrContext: "numSeps is INVALID!",
-				ErrMessage: err.Error(),
-			}
-	}
+    return modulo,
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "err = numSeps.IsValid(ePrefix.XCpy(\"Testing numSeps\").String())",
+        ErrContext: "numSeps is INVALID!",
+        ErrMessage: err.Error(),
+      }
+  }
 
-	bigIDividend, err := new(BigIntNum).
-		NewNumStrWithNumSeps(dividend, numSeps)
+  bigIDividend, err := new(BigIntNum).
+    NewNumStrWithNumSeps(dividend, numSeps)
 
-	if err != nil {
+  if err != nil {
 
-		return modulo,
-			&FuncReturnError{
-				ErrPrefix: ePrefix.String(),
-				ReturnFunc: "bigIDividend, err := new(BigIntNum).\n" +
-					"    NewNumStrWithNumSeps(dividend, numSeps)",
-				ErrContext: fmt.Sprintf("dividend= '%v'", dividend),
-				ErrMessage: err.Error(),
-			}
-	}
+    return modulo,
+      &FuncReturnError{
+        ErrPrefix: ePrefix.String(),
+        ReturnFunc: "bigIDividend, err := new(BigIntNum).\n" +
+          "    NewNumStrWithNumSeps(dividend, numSeps)",
+        ErrContext: fmt.Sprintf("dividend= '%v'", dividend),
+        ErrMessage: err.Error(),
+      }
+  }
 
-	bigIDivisor, err := new(BigIntNum).
-		NewNumStrWithNumSeps(divisor, numSeps)
+  bigIDivisor, err := new(BigIntNum).
+    NewNumStrWithNumSeps(divisor, numSeps)
 
-	if err != nil {
+  if err != nil {
 
-		return modulo,
-			&FuncReturnError{
-				ErrPrefix: ePrefix.String(),
-				ReturnFunc: "bigIDivisor, err := new(BigIntNum).\n" +
-					"    NewNumStrWithNumSeps(divisor, numSeps)",
-				ErrContext: fmt.Sprintf("divisor= '%v'", divisor),
-				ErrMessage: err.Error(),
-			}
-	}
+    return modulo,
+      &FuncReturnError{
+        ErrPrefix: ePrefix.String(),
+        ReturnFunc: "bigIDivisor, err := new(BigIntNum).\n" +
+          "    NewNumStrWithNumSeps(divisor, numSeps)",
+        ErrContext: fmt.Sprintf("divisor= '%v'", divisor),
+        ErrMessage: err.Error(),
+      }
+  }
 
-	bigIDivisorIsZero, err := bigIDivisor.IsZero()
+  bigIDivisorIsZero, err := bigIDivisor.IsZero()
 
-	if err != nil {
+  if err != nil {
 
-		return modulo,
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "bigIDivisorIsZero, err = bigIDivisor.IsZero()",
-				ErrContext: fmt.Sprintf("divisor= '%v'", divisor),
-				ErrMessage: err.Error(),
-			}
-	}
+    return modulo,
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "bigIDivisorIsZero, err = bigIDivisor.IsZero()",
+        ErrContext: fmt.Sprintf("divisor= '%v'", divisor),
+        ErrMessage: err.Error(),
+      }
+  }
 
-	if bigIDivisorIsZero {
+  if bigIDivisorIsZero {
 
-		return modulo,
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "",
-				ErrContext: "bigIDivisor == 0",
-				ErrMessage: "Error: Attempted Divide By ZERO!\n" +
-					"'bidIDivisor' has a ZERO value.",
-			}
-	}
+    return modulo,
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "",
+        ErrContext: "bigIDivisor == 0",
+        ErrMessage: "Error: Attempted Divide By ZERO!\n" +
+          "'bidIDivisor' has a ZERO value.",
+      }
+  }
 
-	bPair, err := new(BigIntPair).
-		NewBigIntNum(bigIDividend, bigIDivisor)
+  bPair, err := new(BigIntPair).
+    NewBigIntNum(bigIDividend, bigIDivisor)
 
-	if err != nil {
+  if err != nil {
 
-		return modulo,
-			&FuncReturnError{
-				ErrPrefix: ePrefix.String(),
-				ReturnFunc: "bPair, err := new(BigIntPair)." +
-					"    NewBigIntNum(bigIDividend, bigIDivisor)",
-				ErrContext: fmt.Sprintf("dividend= '%v' divisor= '%v'",
-					dividend, divisor),
-				ErrMessage: err.Error(),
-			}
-	}
+    return modulo,
+      &FuncReturnError{
+        ErrPrefix: ePrefix.String(),
+        ReturnFunc: "bPair, err := new(BigIntPair)." +
+          "    NewBigIntNum(bigIDividend, bigIDivisor)",
+        ErrContext: fmt.Sprintf("dividend= '%v' divisor= '%v'",
+          dividend, divisor),
+        ErrMessage: err.Error(),
+      }
+  }
 
-	bPair.MaxPrecision = maxPrecision
+  bPair.MaxPrecision = maxPrecision
 
-	modulo, err = new(BigIntMathDivide).PairMod(bPair)
+  modulo, err = new(BigIntMathDivide).PairMod(bPair)
 
-	if err != nil {
+  if err != nil {
 
-		return modulo,
-			&FuncReturnError{
-				ErrPrefix: ePrefix.String(),
-				ReturnFunc: "modulo, err = new(BigIntMathDivide).\n" +
-					"    PairMod(bPair)",
-				ErrContext: fmt.Sprintf("dividend= '%v'; divisor= '%v'; maxPrecision= '%v'",
-					dividend, divisor, maxPrecision),
-				ErrMessage: err.Error(),
-			}
-	}
+    return modulo,
+      &FuncReturnError{
+        ErrPrefix: ePrefix.String(),
+        ReturnFunc: "modulo, err = new(BigIntMathDivide).\n" +
+          "    PairMod(bPair)",
+        ErrContext: fmt.Sprintf("dividend= '%v'; divisor= '%v'; maxPrecision= '%v'",
+          dividend, divisor, maxPrecision),
+        ErrMessage: err.Error(),
+      }
+  }
 
-	return modulo, err
+  return modulo, err
 }
 
 // NumStrDtoQuotientMod - Performs a division operation on NumStrDto type input
@@ -6389,176 +6459,176 @@ func (bIDivide *BigIntMathDivide) NumStrModulo(
 //	 The returned values ('quotient' and 'modulo') will be
 //	 configured with 'numSeps'.
 func (bIDivide *BigIntMathDivide) NumStrDtoQuotientMod(
-	dividend NumStrDto,
-	divisor NumStrDto,
-	numSeps NumericSeparatorDto,
-	maxPrecision uint) (quotient BigIntNum, modulo BigIntNum, err error) {
+  dividend NumStrDto,
+  divisor NumStrDto,
+  numSeps NumericSeparatorDto,
+  maxPrecision uint) (quotient BigIntNum, modulo BigIntNum, err error) {
 
-	var ePrefix *ePref.ErrPrefixDto
+  var ePrefix *ePref.ErrPrefixDto
 
-	ePrefix,
-		err = ePref.ErrPrefixDto{}.NewIEmpty(
-		nil,
-		"BigIntMathDivide.NumStrDtoQuotientMod",
-		"")
+  ePrefix,
+    err = ePref.ErrPrefixDto{}.NewIEmpty(
+    nil,
+    "BigIntMathDivide.NumStrDtoQuotientMod",
+    "")
 
-	if err != nil {
-		return quotient, modulo, err
-	}
+  if err != nil {
+    return quotient, modulo, err
+  }
 
-	err = dividend.IsValid(ePrefix.XCpy("Testing dividend").String())
+  err = dividend.IsValid(ePrefix.XCpy("Testing dividend").String())
 
-	if err != nil {
+  if err != nil {
 
-		return quotient, modulo,
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "err = dividend.IsValid(ePrefix.XCpy(\"Testing dividend\").String())",
-				ErrContext: "Input parameter 'dividend' (NumStrDto) is INVALID!",
-				ErrMessage: err.Error(),
-			}
-	}
+    return quotient, modulo,
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "err = dividend.IsValid(ePrefix.XCpy(\"Testing dividend\").String())",
+        ErrContext: "Input parameter 'dividend' (NumStrDto) is INVALID!",
+        ErrMessage: err.Error(),
+      }
+  }
 
-	err = divisor.IsValid(ePrefix.XCpy("Testing divisor").String())
+  err = divisor.IsValid(ePrefix.XCpy("Testing divisor").String())
 
-	if err != nil {
+  if err != nil {
 
-		return quotient, modulo,
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "err = divisor.IsValid(ePrefix.XCpy(\"Testing divisor\").String())",
-				ErrContext: "Input parameter 'divisor' (NumStrDto) is INVALID!",
-				ErrMessage: err.Error(),
-			}
-	}
+    return quotient, modulo,
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "err = divisor.IsValid(ePrefix.XCpy(\"Testing divisor\").String())",
+        ErrContext: "Input parameter 'divisor' (NumStrDto) is INVALID!",
+        ErrMessage: err.Error(),
+      }
+  }
 
-	numSeps.SetDefaultsIfEmpty()
+  numSeps.SetDefaultsIfEmpty()
 
-	err = numSeps.IsValid(ePrefix.XCpy("Testing numSeps").String())
+  err = numSeps.IsValid(ePrefix.XCpy("Testing numSeps").String())
 
-	if err != nil {
+  if err != nil {
 
-		return quotient, modulo,
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "err = numSeps.IsValid(ePrefix.XCpy(\"Testing numSeps\").String())",
-				ErrContext: "numSeps is INVALID!",
-				ErrMessage: err.Error(),
-			}
-	}
+    return quotient, modulo,
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "err = numSeps.IsValid(ePrefix.XCpy(\"Testing numSeps\").String())",
+        ErrContext: "numSeps is INVALID!",
+        ErrMessage: err.Error(),
+      }
+  }
 
-	divisorNumStr, err := divisor.GetNumStr()
+  divisorNumStr, err := divisor.GetNumStr()
 
-	if err != nil {
+  if err != nil {
 
-		return quotient, modulo,
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "divisorNumStr, err := divisor.GetNumStr()",
-				ErrContext: "",
-				ErrMessage: err.Error(),
-			}
-	}
+    return quotient, modulo,
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "divisorNumStr, err := divisor.GetNumStr()",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+  }
 
-	dividendNumStr, err := dividend.GetNumStr()
+  dividendNumStr, err := dividend.GetNumStr()
 
-	if err != nil {
+  if err != nil {
 
-		return quotient, modulo,
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "dividendNumStr, err := dividend.GetNumStr()",
-				ErrContext: "",
-				ErrMessage: err.Error(),
-			}
-	}
+    return quotient, modulo,
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "dividendNumStr, err := dividend.GetNumStr()",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+  }
 
-	// This method will test the validity of dividend and divisor
-	bPair, err := new(BigIntPair).NewNumStrDto(dividend, divisor)
+  // This method will test the validity of dividend and divisor
+  bPair, err := new(BigIntPair).NewNumStrDto(dividend, divisor)
 
-	if err != nil {
+  if err != nil {
 
-		return quotient, modulo,
-			&FuncReturnError{
-				ErrPrefix: ePrefix.String(),
-				ReturnFunc: "bPair, err := new(BigIntPair)." +
-					"    NewNumStrDto(dividend, divisor)",
-				ErrContext: fmt.Sprintf("dividend= '%v' divisor= '%v'",
-					dividendNumStr, divisorNumStr),
-				ErrMessage: err.Error(),
-			}
-	}
+    return quotient, modulo,
+      &FuncReturnError{
+        ErrPrefix: ePrefix.String(),
+        ReturnFunc: "bPair, err := new(BigIntPair)." +
+          "    NewNumStrDto(dividend, divisor)",
+        ErrContext: fmt.Sprintf("dividend= '%v' divisor= '%v'",
+          dividendNumStr, divisorNumStr),
+        ErrMessage: err.Error(),
+      }
+  }
 
-	bPairBig2IsZero, err := bPair.Big2.IsZero()
+  bPairBig2IsZero, err := bPair.Big2.IsZero()
 
-	if err != nil {
+  if err != nil {
 
-		return quotient, modulo,
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "bPairBig2IsZero, err := bPair.Big2.IsZero()",
-				ErrContext: "",
-				ErrMessage: err.Error(),
-			}
-	}
+    return quotient, modulo,
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "bPairBig2IsZero, err := bPair.Big2.IsZero()",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+  }
 
-	if bPairBig2IsZero {
+  if bPairBig2IsZero {
 
-		return quotient, modulo,
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "",
-				ErrContext: "bPair.Big2 == 0",
-				ErrMessage: "Error: Attempted divide by ZERO!\n" +
-					"'bPair.Big2' has a ZERO value.",
-			}
-	}
+    return quotient, modulo,
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "",
+        ErrContext: "bPair.Big2 == 0",
+        ErrMessage: "Error: Attempted divide by ZERO!\n" +
+          "'bPair.Big2' has a ZERO value.",
+      }
+  }
 
-	bPair.MaxPrecision = maxPrecision
+  bPair.MaxPrecision = maxPrecision
 
-	quotient, modulo, err =
-		new(BigIntMathDivide).PairQuotientMod(bPair)
+  quotient, modulo, err =
+    new(BigIntMathDivide).PairQuotientMod(bPair)
 
-	if err != nil {
+  if err != nil {
 
-		return quotient, modulo,
-			&FuncReturnError{
-				ErrPrefix: ePrefix.String(),
-				ReturnFunc: "quotient, modulo, err = new(BigIntMathDivide).\n" +
-					"    PairQuotientMod(bPair)",
-				ErrContext: fmt.Sprintf("dividend= '%v'; divisor= '%v'; maxPrecision= '%v'",
-					dividendNumStr, divisorNumStr, maxPrecision),
-				ErrMessage: err.Error(),
-			}
-	}
+    return quotient, modulo,
+      &FuncReturnError{
+        ErrPrefix: ePrefix.String(),
+        ReturnFunc: "quotient, modulo, err = new(BigIntMathDivide).\n" +
+          "    PairQuotientMod(bPair)",
+        ErrContext: fmt.Sprintf("dividend= '%v'; divisor= '%v'; maxPrecision= '%v'",
+          dividendNumStr, divisorNumStr, maxPrecision),
+        ErrMessage: err.Error(),
+      }
+  }
 
-	err = quotient.SetNumericSeparatorsDto(numSeps)
+  err = quotient.SetNumericSeparatorsDto(numSeps)
 
-	if err != nil {
+  if err != nil {
 
-		return quotient, modulo,
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "err = quotient.SetNumericSeparatorsDto(numSeps)",
-				ErrContext: "",
-				ErrMessage: err.Error(),
-			}
-	}
+    return quotient, modulo,
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "err = quotient.SetNumericSeparatorsDto(numSeps)",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+  }
 
-	err = modulo.SetNumericSeparatorsDto(numSeps)
+  err = modulo.SetNumericSeparatorsDto(numSeps)
 
-	if err != nil {
+  if err != nil {
 
-		return quotient, modulo,
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "err = modulo.SetNumericSeparatorsDto(numSeps)",
-				ErrContext: "",
-				ErrMessage: err.Error(),
-			}
-	}
+    return quotient, modulo,
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "err = modulo.SetNumericSeparatorsDto(numSeps)",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+  }
 
-	return quotient, modulo, nil
+  return quotient, modulo, nil
 }
 
 // NumStrDtoFracQuotient - Performs a division operation on NumStrDto Type input
@@ -6602,87 +6672,87 @@ func (bIDivide *BigIntMathDivide) NumStrDtoQuotientMod(
 // (decimal separator, thousands separator and currency symbol) copied from input parameter,
 // 'dividend'.
 func (bIDivide *BigIntMathDivide) NumStrDtoFracQuotient(
-	dividend NumStrDto,
-	divisor NumStrDto,
-	numSeps NumericSeparatorDto,
-	maxPrecision uint) (fracQuotient BigIntNum, err error) {
+  dividend NumStrDto,
+  divisor NumStrDto,
+  numSeps NumericSeparatorDto,
+  maxPrecision uint) (fracQuotient BigIntNum, err error) {
 
-	var ePrefix *ePref.ErrPrefixDto
+  var ePrefix *ePref.ErrPrefixDto
 
-	ePrefix,
-		err = ePref.ErrPrefixDto{}.NewIEmpty(
-		nil,
-		"BigIntMathDivide.NumStrFracQuotientArray",
-		"")
+  ePrefix,
+    err = ePref.ErrPrefixDto{}.NewIEmpty(
+    nil,
+    "BigIntMathDivide.NumStrFracQuotientArray",
+    "")
 
-	if err != nil {
-		return fracQuotient, err
-	}
+  if err != nil {
+    return fracQuotient, err
+  }
 
-	numSeps.SetDefaultsIfEmpty()
+  numSeps.SetDefaultsIfEmpty()
 
-	err = numSeps.IsValid(ePrefix.XCpy("Testing numSeps").String())
+  err = numSeps.IsValid(ePrefix.XCpy("Testing numSeps").String())
 
-	if err != nil {
+  if err != nil {
 
-		return fracQuotient,
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "err = numSeps.IsValid(ePrefix.XCpy(\"Testing numSeps\").String())",
-				ErrContext: "",
-				ErrMessage: err.Error(),
-			}
-	}
+    return fracQuotient,
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "err = numSeps.IsValid(ePrefix.XCpy(\"Testing numSeps\").String())",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+  }
 
-	if divisor.IsZero() {
-		fracQuotient = BigIntNum{}.New()
-		err = fmt.Errorf("%v\n"+
-			"Error: Attempted divide by zero!\n"+
-			"Input parameter 'divisor' has a ZERO value.\n", ePrefix)
-		return fracQuotient, err
-	}
+  if divisor.IsZero() {
+    fracQuotient = BigIntNum{}.New()
+    err = fmt.Errorf("%v\n"+
+      "Error: Attempted divide by zero!\n"+
+      "Input parameter 'divisor' has a ZERO value.\n", ePrefix)
+    return fracQuotient, err
+  }
 
-	bPair, errx := new(BigIntPair).NewNumStrDto(dividend, divisor)
+  bPair, errx := new(BigIntPair).NewNumStrDto(dividend, divisor)
 
-	if errx != nil {
+  if errx != nil {
 
-		fracQuotient = BigIntNum{}.New()
+    fracQuotient = BigIntNum{}.New()
 
-		err = fmt.Errorf("%v\n"+
-			"Error returned by new(BigIntPair).NewNumStrDto(dividend, divisor).\n"+
-			"dividend='%v'\ndivisor='%v'\nError= %v\n",
-			ePrefix,
-			dividend.GetNumStr(),
-			divisor.GetNumStr(),
-			errx.Error())
+    err = fmt.Errorf("%v\n"+
+      "Error returned by new(BigIntPair).NewNumStrDto(dividend, divisor).\n"+
+      "dividend='%v'\ndivisor='%v'\nError= %v\n",
+      ePrefix,
+      dividend.GetNumStr(),
+      divisor.GetNumStr(),
+      errx.Error())
 
-		return fracQuotient, err
-	}
+    return fracQuotient, err
+  }
 
-	bPair.MaxPrecision = maxPrecision
+  bPair.MaxPrecision = maxPrecision
 
-	fracQuotient, errx =
-		BigIntMathDivide{}.PairFracQuotient(bPair)
+  fracQuotient, errx =
+    BigIntMathDivide{}.PairFracQuotient(bPair)
 
-	if errx != nil {
+  if errx != nil {
 
-		fracQuotient = BigIntNum{}.New()
+    fracQuotient = BigIntNum{}.New()
 
-		err = fmt.Errorf("%v\n"+
-			"Error returned by BigIntMathDivide{}.PairFracQuotient(bPair).\n"+
-			"dividend='%v'\ndivisor='%v'\nmaxPrecision='%v'\nError= %v\n",
-			ePrefix,
-			bPair.Big1.GetNumStr(),
-			bPair.Big2.GetNumStr(),
-			bPair.MaxPrecision,
-			errx.Error())
+    err = fmt.Errorf("%v\n"+
+      "Error returned by BigIntMathDivide{}.PairFracQuotient(bPair).\n"+
+      "dividend='%v'\ndivisor='%v'\nmaxPrecision='%v'\nError= %v\n",
+      ePrefix,
+      bPair.Big1.GetNumStr(),
+      bPair.Big2.GetNumStr(),
+      bPair.MaxPrecision,
+      errx.Error())
 
-		return fracQuotient, err
-	}
+    return fracQuotient, err
+  }
 
-	fracQuotient.TrimTrailingFracZeros()
+  fracQuotient.TrimTrailingFracZeros()
 
-	return fracQuotient, nil
+  return fracQuotient, nil
 }
 
 // NumStrDtoFracQuotientArray - Performs a division operation on NumStrDto input
@@ -6725,114 +6795,114 @@ func (bIDivide *BigIntMathDivide) NumStrDtoFracQuotient(
 // (decimal separator, thousands separator and currency symbol) copied from the first
 // element of the input parameter 'dividends' array.
 func (bIDivide *BigIntMathDivide) NumStrDtoFracQuotientArray(
-	dividends []NumStrDto,
-	divisor NumStrDto,
-	maxPrecision uint) (fracQuoArray []NumStrDto, err error) {
+  dividends []NumStrDto,
+  divisor NumStrDto,
+  maxPrecision uint) (fracQuoArray []NumStrDto, err error) {
 
-	ePrefix := "BigIntMathDivide.NumStrDtoFracQuotientArray() "
+  ePrefix := "BigIntMathDivide.NumStrDtoFracQuotientArray() "
 
-	if divisor.IsZero() {
+  if divisor.IsZero() {
 
-		err = fmt.Errorf("%v\n"+
-			"Error: Attempted divide by zero!\n"+
-			"Input parameter 'divisor' has a ZERO value.\n", ePrefix)
+    err = fmt.Errorf("%v\n"+
+      "Error: Attempted divide by zero!\n"+
+      "Input parameter 'divisor' has a ZERO value.\n", ePrefix)
 
-		return []NumStrDto{}, err
-	}
+    return []NumStrDto{}, err
+  }
 
-	lenAry := len(dividends)
+  lenAry := len(dividends)
 
-	if lenAry == 0 {
+  if lenAry == 0 {
 
-		err = fmt.Errorf("%v\n"+
-			"Error: Input Parameter 'dividends' is an EMPTY Array!\n",
-			ePrefix)
+    err = fmt.Errorf("%v\n"+
+      "Error: Input Parameter 'dividends' is an EMPTY Array!\n",
+      ePrefix)
 
-		return []NumStrDto{}, err
-	}
+    return []NumStrDto{}, err
+  }
 
-	numSeps := dividends[0].GetNumericSeparatorsDto()
+  numSeps := dividends[0].GetNumericSeparatorsDto()
 
-	fracQuoArray = make([]NumStrDto, lenAry, lenAry+20)
+  fracQuoArray = make([]NumStrDto, lenAry, lenAry+20)
 
-	for i := 0; i < lenAry; i++ {
+  for i := 0; i < lenAry; i++ {
 
-		if i > 0 {
+    if i > 0 {
 
-			errx := dividends[i].SetNumericSeparatorsDto(numSeps)
+      errx := dividends[i].SetNumericSeparatorsDto(numSeps)
 
-			if errx != nil {
+      if errx != nil {
 
-				fracQuoArray = []NumStrDto{}
+        fracQuoArray = []NumStrDto{}
 
-				err = fmt.Errorf("%v\n"+
-					"Error returned by dividends[%v].SetNumericSeparatorsDto(numSeps).\n"+
-					"Error= %v\n",
-					ePrefix,
-					i,
-					errx.Error())
+        err = fmt.Errorf("%v\n"+
+          "Error returned by dividends[%v].SetNumericSeparatorsDto(numSeps).\n"+
+          "Error= %v\n",
+          ePrefix,
+          i,
+          errx.Error())
 
-				return fracQuoArray, err
-			}
+        return fracQuoArray, err
+      }
 
-		}
+    }
 
-		bPair, errx := new(BigIntPair).NewNumStrDto(dividends[i], divisor)
+    bPair, errx := new(BigIntPair).NewNumStrDto(dividends[i], divisor)
 
-		if errx != nil {
+    if errx != nil {
 
-			fracQuoArray = []NumStrDto{}
+      fracQuoArray = []NumStrDto{}
 
-			err = fmt.Errorf("%v\n"+
-				"Error returned by new(BigIntPair).NewNumStrDto(dividends[i], divisor).\n"+
-				"dividends[%v]='%v'\ndivisor='%v'\nError= %v\n",
-				ePrefix,
-				i,
-				dividends[i].GetNumStr(),
-				divisor.GetNumStr(),
-				errx.Error())
+      err = fmt.Errorf("%v\n"+
+        "Error returned by new(BigIntPair).NewNumStrDto(dividends[i], divisor).\n"+
+        "dividends[%v]='%v'\ndivisor='%v'\nError= %v\n",
+        ePrefix,
+        i,
+        dividends[i].GetNumStr(),
+        divisor.GetNumStr(),
+        errx.Error())
 
-			return fracQuoArray, err
-		}
+      return fracQuoArray, err
+    }
 
-		bPair.MaxPrecision = maxPrecision
+    bPair.MaxPrecision = maxPrecision
 
-		bINum, errx := BigIntMathDivide{}.PairFracQuotient(bPair)
+    bINum, errx := BigIntMathDivide{}.PairFracQuotient(bPair)
 
-		if errx != nil {
+    if errx != nil {
 
-			fracQuoArray = []NumStrDto{}
+      fracQuoArray = []NumStrDto{}
 
-			err = fmt.Errorf("%v\n"+
-				"Error returned by BigIntMathDivide{}.PairFracQuotient(bPair).\n"+
-				"dividend='%v'\ndivisor='%v'\nmaxPrecision='%v'\nError= %v\n",
-				ePrefix,
-				bPair.Big1.GetNumStr(),
-				bPair.Big2.GetNumStr(),
-				bPair.MaxPrecision,
-				errx.Error())
+      err = fmt.Errorf("%v\n"+
+        "Error returned by BigIntMathDivide{}.PairFracQuotient(bPair).\n"+
+        "dividend='%v'\ndivisor='%v'\nmaxPrecision='%v'\nError= %v\n",
+        ePrefix,
+        bPair.Big1.GetNumStr(),
+        bPair.Big2.GetNumStr(),
+        bPair.MaxPrecision,
+        errx.Error())
 
-			return fracQuoArray, err
-		}
+      return fracQuoArray, err
+    }
 
-		fracQuoArray[i], errx = bINum.GetNumStrDto()
+    fracQuoArray[i], errx = bINum.GetNumStrDto()
 
-		if errx != nil {
+    if errx != nil {
 
-			fracQuoArray = []NumStrDto{}
+      fracQuoArray = []NumStrDto{}
 
-			err = fmt.Errorf("%v\n"+
-				"Error returned by bINum.GetNumStrDtoElements().\n"+
-				"Error= %v\n",
-				ePrefix,
-				errx.Error())
+      err = fmt.Errorf("%v\n"+
+        "Error returned by bINum.GetNumStrDtoElements().\n"+
+        "Error= %v\n",
+        ePrefix,
+        errx.Error())
 
-			return fracQuoArray, err
-		}
+      return fracQuoArray, err
+    }
 
-	}
+  }
 
-	return fracQuoArray, nil
+  return fracQuoArray, nil
 }
 
 // NumStrDtoModulo - Performs a modulo operation on NumStrDto type
@@ -6888,63 +6958,63 @@ func (bIDivide *BigIntMathDivide) NumStrDtoFracQuotientArray(
 // (decimal separator, thousands separator and currency symbol) copied from input
 // parameter, 'dividend'.
 func (bIDivide *BigIntMathDivide) NumStrDtoModulo(
-	dividend,
-	divisor NumStrDto,
-	maxPrecision uint) (modulo BigIntNum, err error) {
+  dividend,
+  divisor NumStrDto,
+  maxPrecision uint) (modulo BigIntNum, err error) {
 
-	ePrefix := "BigIntMathDivide.NumStrDtoModulo() "
+  ePrefix := "BigIntMathDivide.NumStrDtoModulo() "
 
-	modulo = BigIntNum{}.New()
+  modulo = BigIntNum{}.New()
 
-	// This method will test the validity of dividend and divisor.
-	bPair, errx := new(BigIntPair).NewNumStrDto(dividend, divisor)
+  // This method will test the validity of dividend and divisor.
+  bPair, errx := new(BigIntPair).NewNumStrDto(dividend, divisor)
 
-	if errx != nil {
+  if errx != nil {
 
-		err = fmt.Errorf("%v\n"+
-			"Error returned by new(BigIntPair).NewNumStrDto(dividend, divisor).\n"+
-			"dividend='%v'\ndivisor='%v'\nmaxPrecision='%v'\nError= %v\n",
-			ePrefix,
-			dividend.GetNumStr(),
-			divisor.GetNumStr(),
-			maxPrecision,
-			errx.Error())
+    err = fmt.Errorf("%v\n"+
+      "Error returned by new(BigIntPair).NewNumStrDto(dividend, divisor).\n"+
+      "dividend='%v'\ndivisor='%v'\nmaxPrecision='%v'\nError= %v\n",
+      ePrefix,
+      dividend.GetNumStr(),
+      divisor.GetNumStr(),
+      maxPrecision,
+      errx.Error())
 
-		return modulo, err
-	}
+    return modulo, err
+  }
 
-	if bPair.Big2.IsZero() {
+  if bPair.Big2.IsZero() {
 
-		err = fmt.Errorf("%v\n"+
-			"Error: Attempted to mod by zero!\n"+
-			"'bPair.Big2' has a ZERO value.\n", ePrefix)
+    err = fmt.Errorf("%v\n"+
+      "Error: Attempted to mod by zero!\n"+
+      "'bPair.Big2' has a ZERO value.\n", ePrefix)
 
-		return modulo, err
-	}
+    return modulo, err
+  }
 
-	bPair.MaxPrecision = maxPrecision
+  bPair.MaxPrecision = maxPrecision
 
-	modulo, errx = BigIntMathDivide{}.PairMod(bPair)
+  modulo, errx = BigIntMathDivide{}.PairMod(bPair)
 
-	if errx != nil {
+  if errx != nil {
 
-		modulo = BigIntNum{}.New()
+    modulo = BigIntNum{}.New()
 
-		err = fmt.Errorf("%v\n"+
-			"Error returned by BigIntMathDivide{}.PairMod(bPair).\n"+
-			"dividend='%v'\ndivisor='%v'\nmaxPrecision='%v'\nError= %v\n",
-			ePrefix,
-			bPair.Big1.GetNumStr(),
-			bPair.Big2.GetNumStr(),
-			bPair.MaxPrecision,
-			errx.Error())
+    err = fmt.Errorf("%v\n"+
+      "Error returned by BigIntMathDivide{}.PairMod(bPair).\n"+
+      "dividend='%v'\ndivisor='%v'\nmaxPrecision='%v'\nError= %v\n",
+      ePrefix,
+      bPair.Big1.GetNumStr(),
+      bPair.Big2.GetNumStr(),
+      bPair.MaxPrecision,
+      errx.Error())
 
-		return modulo, err
-	}
+    return modulo, err
+  }
 
-	err = nil
+  err = nil
 
-	return modulo, err
+  return modulo, err
 }
 
 // NumStrDtoModuloToNumStrDto - Performs a modulo operation on NumStrDto type
@@ -7003,56 +7073,56 @@ func (bIDivide *BigIntMathDivide) NumStrDtoModulo(
 // This method is different from method BigIntMathDivide.NumStrDtoModulo()
 // above, in that this method returns 'modulo' as Type NumStrDto.
 func (bIDivide *BigIntMathDivide) NumStrDtoModuloToNumStrDto(
-	dividend,
-	divisor NumStrDto,
-	maxPrecision uint) (modulo NumStrDto, err error) {
+  dividend,
+  divisor NumStrDto,
+  maxPrecision uint) (modulo NumStrDto, err error) {
 
-	ePrefix := "BigIntMathDivide.NumStrDtoModuloToNumStrDto() "
+  ePrefix := "BigIntMathDivide.NumStrDtoModuloToNumStrDto() "
 
-	modulo = NumStrDto{}.New()
+  modulo = NumStrDto{}.New()
 
-	if divisor.IsZero() {
+  if divisor.IsZero() {
 
-		err = fmt.Errorf("%v\n"+
-			"Error: Attempted to mod by zero!\n"+
-			"Input parameter 'divisor' has a zero value.\n", ePrefix)
+    err = fmt.Errorf("%v\n"+
+      "Error: Attempted to mod by zero!\n"+
+      "Input parameter 'divisor' has a zero value.\n", ePrefix)
 
-		return modulo, err
-	}
+    return modulo, err
+  }
 
-	bINumModulo, errx :=
-		BigIntMathDivide{}.NumStrDtoModulo(dividend, divisor, maxPrecision)
+  bINumModulo, errx :=
+    BigIntMathDivide{}.NumStrDtoModulo(dividend, divisor, maxPrecision)
 
-	if errx != nil {
+  if errx != nil {
 
-		err = fmt.Errorf("%v\n"+
-			"Error returned by BigIntMathDivide{}.NumStrDtoModulo(dividend, divisor,"+
-			" maxPrecision).\n"+
-			"Error= %v\n",
-			ePrefix,
-			errx.Error())
+    err = fmt.Errorf("%v\n"+
+      "Error returned by BigIntMathDivide{}.NumStrDtoModulo(dividend, divisor,"+
+      " maxPrecision).\n"+
+      "Error= %v\n",
+      ePrefix,
+      errx.Error())
 
-		return modulo, err
-	}
+    return modulo, err
+  }
 
-	modulo, errx = bINumModulo.GetNumStrDto()
+  modulo, errx = bINumModulo.GetNumStrDto()
 
-	if errx != nil {
+  if errx != nil {
 
-		modulo = NumStrDto{}.New()
+    modulo = NumStrDto{}.New()
 
-		err = fmt.Errorf("%v\n"+
-			"Error returned by bINumModulo.GetNumStrDto().\n"+
-			"Error= %v\n",
-			ePrefix,
-			errx.Error())
+    err = fmt.Errorf("%v\n"+
+      "Error returned by bINumModulo.GetNumStrDto().\n"+
+      "Error= %v\n",
+      ePrefix,
+      errx.Error())
 
-		return modulo, err
-	}
+    return modulo, err
+  }
 
-	err = nil
+  err = nil
 
-	return modulo, err
+  return modulo, err
 }
 
 // PairQuotientMod
@@ -7137,64 +7207,64 @@ func (bIDivide *BigIntMathDivide) NumStrDtoModuloToNumStrDto(
 //		 The returned values ('quotient' and 'modulo') will be
 //		 configured with 'numSeps'.
 func (bIDivide *BigIntMathDivide) PairQuotientMod(
-	bPair BigIntPair,
-	numSeps NumericSeparatorDto) (quotient BigIntNum, modulo BigIntNum, err error) {
+  bPair BigIntPair,
+  numSeps NumericSeparatorDto) (quotient BigIntNum, modulo BigIntNum, err error) {
 
-	var ePrefix *ePref.ErrPrefixDto
+  var ePrefix *ePref.ErrPrefixDto
 
-	ePrefix,
-		err = ePref.ErrPrefixDto{}.NewIEmpty(
-		nil,
-		"BigIntMathDivide.PairQuotientMod",
-		"")
+  ePrefix,
+    err = ePref.ErrPrefixDto{}.NewIEmpty(
+    nil,
+    "BigIntMathDivide.PairQuotientMod",
+    "")
 
-	if err != nil {
-		return quotient, modulo, err
-	}
+  if err != nil {
+    return quotient, modulo, err
+  }
 
-	quotient, modulo, err = new(bigIntMathDivideNanobot).
-		pairQuotientModNoNumSeps(bPair)
+  quotient, modulo, err = new(bigIntMathDivideNanobot).
+    pairQuotientModNoNumSeps(bPair)
 
-	if err != nil {
+  if err != nil {
 
-		return quotient, modulo,
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "quotient, modulo, err = new(bigIntMathDivideNanobot).pairQuotientModNoNumSeps(bPair)",
-				ErrContext: "",
-				ErrMessage: err.Error(),
-			}
+    return quotient, modulo,
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "quotient, modulo, err = new(bigIntMathDivideNanobot).pairQuotientModNoNumSeps(bPair)",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
 
-	}
+  }
 
-	err = quotient.SetNumericSeparatorsDto(numSeps)
+  err = quotient.SetNumericSeparatorsDto(numSeps)
 
-	if err != nil {
+  if err != nil {
 
-		return quotient, modulo,
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "err = quotient.SetNumericSeparatorsDto(numSeps)",
-				ErrContext: "",
-				ErrMessage: err.Error(),
-			}
+    return quotient, modulo,
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "err = quotient.SetNumericSeparatorsDto(numSeps)",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
 
-	}
+  }
 
-	err = modulo.SetNumericSeparatorsDto(numSeps)
+  err = modulo.SetNumericSeparatorsDto(numSeps)
 
-	if err != nil {
+  if err != nil {
 
-		return quotient, modulo,
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "err = modulo.SetNumericSeparatorsDto(numSeps)",
-				ErrContext: "",
-				ErrMessage: err.Error(),
-			}
-	}
+    return quotient, modulo,
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "err = modulo.SetNumericSeparatorsDto(numSeps)",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+  }
 
-	return quotient, modulo, nil
+  return quotient, modulo, nil
 }
 
 // PairMod
@@ -7275,65 +7345,65 @@ func (bIDivide *BigIntMathDivide) PairQuotientMod(
 //		 The returned values ('quotient' and 'modulo') will be
 //		 configured with 'numSeps'.
 func (bIDivide *BigIntMathDivide) PairMod(
-	bPair BigIntPair,
-	numSeps NumericSeparatorDto) (modulo BigIntNum, err error) {
+  bPair BigIntPair,
+  numSeps NumericSeparatorDto) (modulo BigIntNum, err error) {
 
-	var ePrefix *ePref.ErrPrefixDto
+  var ePrefix *ePref.ErrPrefixDto
 
-	ePrefix,
-		err = ePref.ErrPrefixDto{}.NewIEmpty(
-		nil,
-		"BigIntMathDivide.PairMod",
-		"")
+  ePrefix,
+    err = ePref.ErrPrefixDto{}.NewIEmpty(
+    nil,
+    "BigIntMathDivide.PairMod",
+    "")
 
-	if err != nil {
-		return modulo, err
-	}
+  if err != nil {
+    return modulo, err
+  }
 
-	numSeps.SetDefaultsIfEmpty()
+  numSeps.SetDefaultsIfEmpty()
 
-	err = numSeps.IsValid(ePrefix.XCpy("Testing numSeps").String())
+  err = numSeps.IsValid(ePrefix.XCpy("Testing numSeps").String())
 
-	if err != nil {
+  if err != nil {
 
-		return modulo,
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "err = numSeps.IsValid(ePrefix.XCpy(\"Testing numSeps\").String())",
-				ErrContext: "numSeps is INVALID!",
-				ErrMessage: err.Error(),
-			}
-	}
+    return modulo,
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "err = numSeps.IsValid(ePrefix.XCpy(\"Testing numSeps\").String())",
+        ErrContext: "numSeps is INVALID!",
+        ErrMessage: err.Error(),
+      }
+  }
 
-	modulo, err = new(bigIntMathDivideNanobot).
-		pairModNoNumSeps(bPair)
+  modulo, err = new(bigIntMathDivideNanobot).
+    pairModNoNumSeps(bPair)
 
-	if err != nil {
+  if err != nil {
 
-		return modulo,
-			&FuncReturnError{
-				ErrPrefix: ePrefix.String(),
-				ReturnFunc: "modulo, err = new(bigIntMathDivideNanobot).\n" +
-					"pairModNoNumSeps(bPair)",
-				ErrContext: "",
-				ErrMessage: err.Error(),
-			}
-	}
+    return modulo,
+      &FuncReturnError{
+        ErrPrefix: ePrefix.String(),
+        ReturnFunc: "modulo, err = new(bigIntMathDivideNanobot).\n" +
+          "pairModNoNumSeps(bPair)",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+  }
 
-	err = modulo.SetNumericSeparatorsDto(numSeps)
+  err = modulo.SetNumericSeparatorsDto(numSeps)
 
-	if err != nil {
+  if err != nil {
 
-		return modulo,
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "err = modulo.SetNumericSeparatorsDto(numSeps)",
-				ErrContext: "",
-				ErrMessage: err.Error(),
-			}
-	}
+    return modulo,
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "err = modulo.SetNumericSeparatorsDto(numSeps)",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+  }
 
-	return modulo, nil
+  return modulo, nil
 }
 
 // PairIntQuotient
@@ -7398,65 +7468,65 @@ func (bIDivide *BigIntMathDivide) PairMod(
 //	 The returned value 'intQuotient' will be configured with
 //	 'numSeps'.
 func (bIDivide *BigIntMathDivide) PairIntQuotient(
-	bPair BigIntPair,
-	numSeps NumericSeparatorDto) (intQuotient BigIntNum, err error) {
+  bPair BigIntPair,
+  numSeps NumericSeparatorDto) (intQuotient BigIntNum, err error) {
 
-	var ePrefix *ePref.ErrPrefixDto
+  var ePrefix *ePref.ErrPrefixDto
 
-	ePrefix,
-		err = ePref.ErrPrefixDto{}.NewIEmpty(
-		nil,
-		"BigIntMathDivide.PairIntQuotient",
-		"")
+  ePrefix,
+    err = ePref.ErrPrefixDto{}.NewIEmpty(
+    nil,
+    "BigIntMathDivide.PairIntQuotient",
+    "")
 
-	if err != nil {
-		return intQuotient, err
-	}
+  if err != nil {
+    return intQuotient, err
+  }
 
-	numSeps.SetDefaultsIfEmpty()
+  numSeps.SetDefaultsIfEmpty()
 
-	err = numSeps.IsValid(ePrefix.XCpy("Testing numSeps").String())
+  err = numSeps.IsValid(ePrefix.XCpy("Testing numSeps").String())
 
-	if err != nil {
+  if err != nil {
 
-		return intQuotient,
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "err = numSeps.IsValid(ePrefix.XCpy(\"Testing numSeps\").String())",
-				ErrContext: "numSeps is INVALID!",
-				ErrMessage: err.Error(),
-			}
-	}
+    return intQuotient,
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "err = numSeps.IsValid(ePrefix.XCpy(\"Testing numSeps\").String())",
+        ErrContext: "numSeps is INVALID!",
+        ErrMessage: err.Error(),
+      }
+  }
 
-	intQuotient, err = new(bigIntMathDivideNanobot).
-		pairIntQuotientNoNumSeps(bPair)
+  intQuotient, err = new(bigIntMathDivideNanobot).
+    pairIntQuotientNoNumSeps(bPair)
 
-	if err != nil {
+  if err != nil {
 
-		return intQuotient,
-			&FuncReturnError{
-				ErrPrefix: ePrefix.String(),
-				ReturnFunc: "intQuotient, err = new(bigIntMathDivideNanobot).\n" +
-					"pairIntQuotientNoNumSeps(bPair)",
-				ErrContext: "",
-				ErrMessage: err.Error(),
-			}
-	}
+    return intQuotient,
+      &FuncReturnError{
+        ErrPrefix: ePrefix.String(),
+        ReturnFunc: "intQuotient, err = new(bigIntMathDivideNanobot).\n" +
+          "pairIntQuotientNoNumSeps(bPair)",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+  }
 
-	err = intQuotient.SetNumericSeparatorsDto(numSeps)
+  err = intQuotient.SetNumericSeparatorsDto(numSeps)
 
-	if err != nil {
+  if err != nil {
 
-		return intQuotient,
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "err = intQuotient.SetNumericSeparatorsDto(numSeps)",
-				ErrContext: "",
-				ErrMessage: err.Error(),
-			}
-	}
+    return intQuotient,
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "err = intQuotient.SetNumericSeparatorsDto(numSeps)",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+  }
 
-	return intQuotient, nil
+  return intQuotient, nil
 }
 
 // PairFracQuotient
@@ -7528,63 +7598,63 @@ func (bIDivide *BigIntMathDivide) PairIntQuotient(
 //	 The returned values ('quotient' and 'modulo') will be
 //	 configured with 'numSeps'.
 func (bIDivide *BigIntMathDivide) PairFracQuotient(
-	bPair BigIntPair,
-	numSeps NumericSeparatorDto) (fracQuotient BigIntNum, err error) {
+  bPair BigIntPair,
+  numSeps NumericSeparatorDto) (fracQuotient BigIntNum, err error) {
 
-	var ePrefix *ePref.ErrPrefixDto
+  var ePrefix *ePref.ErrPrefixDto
 
-	ePrefix,
-		err = ePref.ErrPrefixDto{}.NewIEmpty(
-		nil,
-		"BigIntMathDivide.PairFracQuotient",
-		"")
+  ePrefix,
+    err = ePref.ErrPrefixDto{}.NewIEmpty(
+    nil,
+    "BigIntMathDivide.PairFracQuotient",
+    "")
 
-	if err != nil {
-		return fracQuotient, err
-	}
+  if err != nil {
+    return fracQuotient, err
+  }
 
-	numSeps.SetDefaultsIfEmpty()
+  numSeps.SetDefaultsIfEmpty()
 
-	err = numSeps.IsValid(ePrefix.XCpy("Testing numSeps").String())
+  err = numSeps.IsValid(ePrefix.XCpy("Testing numSeps").String())
 
-	if err != nil {
+  if err != nil {
 
-		return fracQuotient,
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "err = numSeps.IsValid(ePrefix.XCpy(\"Testing numSeps\").String())",
-				ErrContext: "numSeps is INVALID!",
-				ErrMessage: err.Error(),
-			}
-	}
+    return fracQuotient,
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "err = numSeps.IsValid(ePrefix.XCpy(\"Testing numSeps\").String())",
+        ErrContext: "numSeps is INVALID!",
+        ErrMessage: err.Error(),
+      }
+  }
 
-	fracQuotient, err = new(bigIntMathDivideNanobot).
-		pairFracQuotientNoNumSeps(bPair)
+  fracQuotient, err = new(bigIntMathDivideNanobot).
+    pairFracQuotientNoNumSeps(bPair)
 
-	if err != nil {
+  if err != nil {
 
-		return fracQuotient,
-			&FuncReturnError{
-				ErrPrefix: ePrefix.String(),
-				ReturnFunc: "fracQuotient, err = new(bigIntMathDivideNanobot).\n" +
-					"pairFracQuotientNoNumSeps(bPair)",
-				ErrContext: "",
-				ErrMessage: err.Error(),
-			}
-	}
+    return fracQuotient,
+      &FuncReturnError{
+        ErrPrefix: ePrefix.String(),
+        ReturnFunc: "fracQuotient, err = new(bigIntMathDivideNanobot).\n" +
+          "pairFracQuotientNoNumSeps(bPair)",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+  }
 
-	err = fracQuotient.SetNumericSeparatorsDto(numSeps)
+  err = fracQuotient.SetNumericSeparatorsDto(numSeps)
 
-	if err != nil {
+  if err != nil {
 
-		return fracQuotient,
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "err = fracQuotient.SetNumericSeparatorsDto(numSeps)",
-				ErrContext: "",
-				ErrMessage: err.Error(),
-			}
-	}
+    return fracQuotient,
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "err = fracQuotient.SetNumericSeparatorsDto(numSeps)",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+  }
 
-	return fracQuotient, nil
+  return fracQuotient, nil
 }

@@ -1,68 +1,68 @@
 package mathops
 
 import (
-  "fmt"
-  ePref "github.com/MikeAustin71/errpref"
-  "math/big"
+	"fmt"
+	ePref "github.com/MikeAustin71/errpref"
+	"math/big"
 )
 
 // BigIntPair - contains a pair of 'BitIntNum' types. This structure
 // is used to set up calculations involving *big.Int types.
 type BigIntPair struct {
-  Big1 BigIntNum
+	Big1 BigIntNum
 
-  Big1Compare       int // 	1 = Big1 > Big2; 0 = Big1 == Big2; -1 = Big1 < Big2
-  Big1AbsCompare    int // 	1 = Big1 > Big2; 0 = Big1 == Big2; -1 = Big1 < Big2
-  Precision1Compare int // 	1 = Big1Precision > Big2Precision;
-  //  0 = Big1Precision == Big2Precision;
-  // -1 = Big1Precision < Big2Precision
-  Big2         BigIntNum
-  MaxPrecision uint // Used to control output from complex
-  //  calculations
+	Big1Compare       int // 	1 = Big1 > Big2; 0 = Big1 == Big2; -1 = Big1 < Big2
+	Big1AbsCompare    int // 	1 = Big1 > Big2; 0 = Big1 == Big2; -1 = Big1 < Big2
+	Precision1Compare int // 	1 = Big1Precision > Big2Precision;
+	//  0 = Big1Precision == Big2Precision;
+	// -1 = Big1Precision < Big2Precision
+	Big2         BigIntNum
+	MaxPrecision uint // Used to control output from complex
+	//  calculations
 }
 
 // CopyIn - Copies the values provided by incoming BigIntPair
 // parameter into the current BigIntPair instance.
 func (bPair *BigIntPair) CopyIn(bd2 BigIntPair) error {
 
-  var err error
+	var err error
 
-  bPair.Big1, err = bd2.Big1.CopyOut()
+	bPair.Big1, err = bd2.Big1.CopyOut()
 
-  if err != nil {
-    return err
-  }
+	if err != nil {
+		return err
+	}
 
-  bPair.Big2, err = bd2.Big2.CopyOut()
+	bPair.Big2, err = bd2.Big2.CopyOut()
 
-  if err != nil {
-    return err
-  }
+	if err != nil {
+		return err
+	}
 
-  bPair.Big1Compare = bd2.Big1Compare
-  bPair.Big1AbsCompare = bd2.Big1AbsCompare
-  bPair.Precision1Compare = bd2.Precision1Compare
+	bPair.Big1Compare = bd2.Big1Compare
+	bPair.Big1AbsCompare = bd2.Big1AbsCompare
+	bPair.Precision1Compare = bd2.Precision1Compare
 
-  return err
+	return err
 }
 
 // CopyOut - Makes a deep copy of the current BigIntPair
 // instance and returns it as a new BigIntPair object.
 func (bPair *BigIntPair) CopyOut() (BigIntPair, error) {
 
-  bd2, err := new(BigIntPair).NewBigIntNum(bPair.Big1, bPair.Big2)
+	bd2, err := new(BigIntPair).NewBigIntNum(bPair.Big1, bPair.Big2)
 
-  return bd2, err
+	return bd2, err
 }
 
 // Empty - Sets all data fields for the current BigIntPair instance
 // to their uninitialized or zero states.
 func (bPair *BigIntPair) Empty() {
-  bPair.Big1.Empty()
-  bPair.Big2.Empty()
-  bPair.Big1Compare = 0
-  bPair.Big1AbsCompare = 0
-  bPair.Precision1Compare = 0
+	bPair.Big1.Empty()
+	bPair.Big2.Empty()
+	bPair.Big1Compare = 0
+	bPair.Big1AbsCompare = 0
+	bPair.Precision1Compare = 0
 
 }
 
@@ -70,46 +70,46 @@ func (bPair *BigIntPair) Empty() {
 // bPair.Big1
 func (bPair *BigIntPair) GetBig1BigInt() (*big.Int, error) {
 
-  ePrefix := "BigIntPair.GetBig1BigInt"
+	ePrefix := "BigIntPair.GetBig1BigInt"
 
-  b1, err := bPair.Big1.GetBigInt()
+	b1, err := bPair.Big1.GetBigInt()
 
-  if err != nil {
+	if err != nil {
 
-    return big.NewInt(0),
-      &FuncReturnError{
-        ErrPrefix:  ePrefix,
-        ReturnFunc: "b1, err := bPair.Big1.GetBigInt()",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
+		return big.NewInt(0),
+			&FuncReturnError{
+				ErrPrefix:  ePrefix,
+				ReturnFunc: "b1, err := bPair.Big1.GetBigInt()",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
 
-  }
+	}
 
-  return b1, nil
+	return b1, nil
 }
 
 // GetBig2BigInt Returns the *big.Int value of data field
 // bPair.Big1
 func (bPair *BigIntPair) GetBig2BigInt() (*big.Int, error) {
 
-  ePrefix := "BigIntPair.GetBig2BigInt"
+	ePrefix := "BigIntPair.GetBig2BigInt"
 
-  b2, err := bPair.Big2.GetBigInt()
+	b2, err := bPair.Big2.GetBigInt()
 
-  if err != nil {
+	if err != nil {
 
-    return big.NewInt(0),
-      &FuncReturnError{
-        ErrPrefix:  ePrefix,
-        ReturnFunc: "b2, err := bPair.Big2.GetBigInt()",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
+		return big.NewInt(0),
+			&FuncReturnError{
+				ErrPrefix:  ePrefix,
+				ReturnFunc: "b2, err := bPair.Big2.GetBigInt()",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
 
-  }
+	}
 
-  return b2, nil
+	return b2, nil
 }
 
 // IsValid - returns an error value signaling whether the current
@@ -122,50 +122,50 @@ func (bPair *BigIntPair) GetBig2BigInt() (*big.Int, error) {
 // 'nil' is returned.
 func (bPair *BigIntPair) IsValid(callingMethodName string) error {
 
-  var ePrefix *ePref.ErrPrefixDto
-  var err error
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-  if len(callingMethodName) > 0 {
-    callingMethodName = "BigIntPair.IsValid" + "\n" + callingMethodName
-  } else {
-    callingMethodName = "BigIntPair.IsValid"
-  }
+	if len(callingMethodName) > 0 {
+		callingMethodName = "BigIntPair.IsValid" + "\n" + callingMethodName
+	} else {
+		callingMethodName = "BigIntPair.IsValid"
+	}
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewIEmpty(
-    nil,
-    callingMethodName,
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		callingMethodName,
+		"")
 
-  if err != nil {
-    return err
-  }
+	if err != nil {
+		return err
+	}
 
-  err = bPair.Big1.IsValid(ePrefix.XCpy("Testing  bPair.Big1").String())
+	err = bPair.Big1.IsValid(ePrefix.XCpy("Testing  bPair.Big1").String())
 
-  if err != nil {
+	if err != nil {
 
-    return &FuncReturnError{
-      ErrPrefix:  ePrefix.String(),
-      ReturnFunc: "",
-      ErrContext: "Error: bPair.Big1 is INVALID!",
-      ErrMessage: err.Error(),
-    }
-  }
+		return &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "",
+			ErrContext: "Error: bPair.Big1 is INVALID!",
+			ErrMessage: err.Error(),
+		}
+	}
 
-  err = bPair.Big2.IsValid(ePrefix.XCpy("Testing  bPair.Big2").String())
+	err = bPair.Big2.IsValid(ePrefix.XCpy("Testing  bPair.Big2").String())
 
-  if err != nil {
+	if err != nil {
 
-    return &FuncReturnError{
-      ErrPrefix:  ePrefix.String(),
-      ReturnFunc: "",
-      ErrContext: "Error: bPair.Big2 is INVALID!",
-      ErrMessage: err.Error(),
-    }
-  }
+		return &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "",
+			ErrContext: "Error: bPair.Big2 is INVALID!",
+			ErrMessage: err.Error(),
+		}
+	}
 
-  return nil
+	return nil
 }
 
 // MakePrecisionsEqual - Analyzes the two component BigIntNum's, b1 and b2,
@@ -175,73 +175,73 @@ func (bPair *BigIntPair) IsValid(callingMethodName string) error {
 // the largest precision.
 func (bPair *BigIntPair) MakePrecisionsEqual() error {
 
-  if bPair.Big1.precision == bPair.Big2.precision {
-    // Nothing to do. Precisions are equal.
-    return nil
-  }
+	if bPair.Big1.precision == bPair.Big2.precision {
+		// Nothing to do. Precisions are equal.
+		return nil
+	}
 
-  base10 := big.NewInt(10)
+	base10 := big.NewInt(10)
 
-  if bPair.Big1.precision > bPair.Big2.precision {
+	if bPair.Big1.precision > bPair.Big2.precision {
 
-    deltaPrecision := big.NewInt(int64(bPair.Big1.precision - bPair.Big2.precision))
+		deltaPrecision := big.NewInt(int64(bPair.Big1.precision - bPair.Big2.precision))
 
-    deltaPrecisionScale := big.NewInt(0).Exp(base10, deltaPrecision, nil)
+		deltaPrecisionScale := big.NewInt(0).Exp(base10, deltaPrecision, nil)
 
-    newB2Int := big.NewInt(0).Mul(bPair.Big2.bigInt, deltaPrecisionScale)
+		newB2Int := big.NewInt(0).Mul(bPair.Big2.bigInt, deltaPrecisionScale)
 
-    newB2Num, err := new(BigIntNum).NewBigInt(newB2Int, bPair.Big1.precision)
+		newB2Num, err := new(BigIntNum).NewBigInt(newB2Int, bPair.Big1.precision)
 
-    if err != nil {
-      return err
-    }
+		if err != nil {
+			return err
+		}
 
-    newBPair, err := new(BigIntPair).NewBigIntNum(bPair.Big1, newB2Num)
+		newBPair, err := new(BigIntPair).NewBigIntNum(bPair.Big1, newB2Num)
 
-    if err != nil {
-      return err
-    }
+		if err != nil {
+			return err
+		}
 
-    err = bPair.CopyIn(newBPair)
+		err = bPair.CopyIn(newBPair)
 
-    return err
-  }
+		return err
+	}
 
-  // Must be bPair.Big2.precision > bPair.Big1.precision
-  deltaPrecision := big.NewInt(int64(bPair.Big2.precision - bPair.Big1.precision))
+	// Must be bPair.Big2.precision > bPair.Big1.precision
+	deltaPrecision := big.NewInt(int64(bPair.Big2.precision - bPair.Big1.precision))
 
-  deltaPrecisionScale := big.NewInt(0).Exp(base10, deltaPrecision, nil)
+	deltaPrecisionScale := big.NewInt(0).Exp(base10, deltaPrecision, nil)
 
-  newB1Int := big.NewInt(0).Mul(bPair.Big1.bigInt, deltaPrecisionScale)
+	newB1Int := big.NewInt(0).Mul(bPair.Big1.bigInt, deltaPrecisionScale)
 
-  newB1Num, err := new(BigIntNum).NewBigInt(newB1Int, bPair.Big2.precision)
+	newB1Num, err := new(BigIntNum).NewBigInt(newB1Int, bPair.Big2.precision)
 
-  if err != nil {
-    return err
-  }
+	if err != nil {
+		return err
+	}
 
-  newBPair, err := new(BigIntPair).NewBigIntNum(newB1Num, bPair.Big2)
+	newBPair, err := new(BigIntPair).NewBigIntNum(newB1Num, bPair.Big2)
 
-  if err != nil {
-    return err
-  }
+	if err != nil {
+		return err
+	}
 
-  err = bPair.CopyIn(newBPair)
+	err = bPair.CopyIn(newBPair)
 
-  return err
+	return err
 }
 
 // New - Creates an Empty BigIntPair instance. Both
 // 'Big1' and 'Big2' are set to zero.  Both precision
 // values are also set to zero.
 func (bPair *BigIntPair) New() (BigIntPair, error) {
-  base1Zero := big.NewInt(0)
+	base1Zero := big.NewInt(0)
 
-  base2Zero := big.NewInt(0)
+	base2Zero := big.NewInt(0)
 
-  b2Pair, err := new(BigIntPair).NewBase(base1Zero, 0, base2Zero, 0)
+	b2Pair, err := new(BigIntPair).NewBase(base1Zero, 0, base2Zero, 0)
 
-  return b2Pair, err
+	return b2Pair, err
 }
 
 // NewBase - Creates a BigIntPair instance using two sets of
@@ -254,53 +254,53 @@ func (bPair *BigIntPair) New() (BigIntPair, error) {
 // numeric separators (decimal separator, thousands separator and
 // currency symbol)
 func (bPair *BigIntPair) NewBase(
-  b1 *big.Int,
-  b1Precision uint,
-  b2 *big.Int,
-  b2Precision uint) (BigIntPair, error) {
+	b1 *big.Int,
+	b1Precision uint,
+	b2 *big.Int,
+	b2Precision uint) (BigIntPair, error) {
 
-  ePrefix := "BigIntPair.NewBase"
+	ePrefix := "BigIntPair.NewBase"
 
-  b1BigIntNum, err := new(BigIntNum).NewBigInt(b1, b1Precision)
+	b1BigIntNum, err := new(BigIntNum).NewBigInt(b1, b1Precision)
 
-  if err != nil {
+	if err != nil {
 
-    return BigIntPair{},
-      &FuncReturnError{
-        ErrPrefix:  ePrefix,
-        ReturnFunc: "b1BigIntNum, err := new(BigIntNum).NewBigInt(b1, b1Precision)",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-  }
+		return BigIntPair{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix,
+				ReturnFunc: "b1BigIntNum, err := new(BigIntNum).NewBigInt(b1, b1Precision)",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  b2BigIntNum, err := new(BigIntNum).NewBigInt(b2, b2Precision)
+	b2BigIntNum, err := new(BigIntNum).NewBigInt(b2, b2Precision)
 
-  if err != nil {
+	if err != nil {
 
-    return BigIntPair{},
-      &FuncReturnError{
-        ErrPrefix:  ePrefix,
-        ReturnFunc: "b2BigIntNum, err := new(BigIntNum).NewBigInt(b2, b2Precision)",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-  }
+		return BigIntPair{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix,
+				ReturnFunc: "b2BigIntNum, err := new(BigIntNum).NewBigInt(b2, b2Precision)",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  result, err := new(BigIntPair).NewBigIntNum(b1BigIntNum, b2BigIntNum)
+	result, err := new(BigIntPair).NewBigIntNum(b1BigIntNum, b2BigIntNum)
 
-  if err != nil {
+	if err != nil {
 
-    return BigIntPair{},
-      &FuncReturnError{
-        ErrPrefix:  ePrefix,
-        ReturnFunc: "result, err :=  new(BigIntPair).NewBigIntNum(b1BigIntNum, b2BigIntNum)",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-  }
+		return BigIntPair{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix,
+				ReturnFunc: "result, err :=  new(BigIntPair).NewBigIntNum(b1BigIntNum, b2BigIntNum)",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  return result, nil
+	return result, nil
 }
 
 // NewBigIntNum - Creates a new BigIntPair instance from input parameters
@@ -310,11 +310,11 @@ func (bPair *BigIntPair) NewBase(
 // to specifically set 'BigIntPair.maxPrecision'
 func (bPair *BigIntPair) NewBigIntNum(b1, b2 BigIntNum) (BigIntPair, error) {
 
-  bd2 := BigIntPair{}
+	bd2 := BigIntPair{}
 
-  err := bd2.SetBigIntPair(b1, b2)
+	err := bd2.SetBigIntPair(b1, b2)
 
-  return bd2, err
+	return bd2, err
 }
 
 // NewDecimal - Creates a new BigIntPair instance from two
@@ -325,47 +325,47 @@ func (bPair *BigIntPair) NewBigIntNum(b1, b2 BigIntNum) (BigIntPair, error) {
 // 'dec1'. BigIntPair.Big2 will contain numeric separators copied from 'dec2'.
 func (bPair *BigIntPair) NewDecimal(dec1, dec2 Decimal) (BigIntPair, error) {
 
-  ePrefix := "BigIntPair.NewDecimal()"
+	ePrefix := "BigIntPair.NewDecimal()"
 
-  err := dec1.IsValid(ePrefix)
+	err := dec1.IsValid(ePrefix)
 
-  if err != nil {
-    return BigIntPair{}, err
-  }
+	if err != nil {
+		return BigIntPair{}, err
+	}
 
-  err = dec2.IsValid(ePrefix)
+	err = dec2.IsValid(ePrefix)
 
-  if err != nil {
-    return BigIntPair{}, err
-  }
+	if err != nil {
+		return BigIntPair{}, err
+	}
 
-  b1Num, err := dec1.GetBigIntNum()
+	b1Num, err := dec1.GetBigIntNum()
 
-  if err != nil {
-    return BigIntPair{},
-      fmt.Errorf("%v\n"+
-        "Error returned by dec1.GetBigIntNum().\n"+
-        "Error= %v\n",
-        ePrefix,
-        err.Error())
-  }
+	if err != nil {
+		return BigIntPair{},
+			fmt.Errorf("%v\n"+
+				"Error returned by dec1.GetBigIntNum().\n"+
+				"Error= %v\n",
+				ePrefix,
+				err.Error())
+	}
 
-  b2Num, err := dec2.GetBigIntNum()
+	b2Num, err := dec2.GetBigIntNum()
 
-  if err != nil {
-    return BigIntPair{},
-      fmt.Errorf("%v\n"+
-        "Error returned by dec2.GetBigIntNum().\n"+
-        "Error= %v\n",
-        ePrefix,
-        err.Error())
-  }
+	if err != nil {
+		return BigIntPair{},
+			fmt.Errorf("%v\n"+
+				"Error returned by dec2.GetBigIntNum().\n"+
+				"Error= %v\n",
+				ePrefix,
+				err.Error())
+	}
 
-  bd2 := BigIntPair{}
+	bd2 := BigIntPair{}
 
-  err = bd2.SetBigIntPair(b1Num, b2Num)
+	err = bd2.SetBigIntPair(b1Num, b2Num)
 
-  return bd2, err
+	return bd2, err
 }
 
 // NewIntAry - Creates a new BigIntPair instance from two
@@ -381,37 +381,37 @@ func (bPair *BigIntPair) NewDecimal(dec1, dec2 Decimal) (BigIntPair, error) {
 // 'ia1'. BigIntPair.Big2 will contain numeric separators copied from 'ia2'.
 func (bPair *BigIntPair) NewIntAry(ia1, ia2 IntAry) (BigIntPair, error) {
 
-  ePrefix := "BigIntPair.NewIntAry()"
+	ePrefix := "BigIntPair.NewIntAry()"
 
-  // Method NewIntAry will test the validity of ia1
-  b1Num, err := ia1.GetBigIntNum()
+	// Method NewIntAry will test the validity of ia1
+	b1Num, err := ia1.GetBigIntNum()
 
-  if err != nil {
-    return BigIntPair{},
-      fmt.Errorf("%v\n"+
-        "Error returned by ia1.GetBigIntNum().\n"+
-        "Error= %v\n",
-        ePrefix,
-        err.Error())
-  }
+	if err != nil {
+		return BigIntPair{},
+			fmt.Errorf("%v\n"+
+				"Error returned by ia1.GetBigIntNum().\n"+
+				"Error= %v\n",
+				ePrefix,
+				err.Error())
+	}
 
-  // Method NewIntAry will test the validity of ia2
-  b2Num, err := ia2.GetBigIntNum()
+	// Method NewIntAry will test the validity of ia2
+	b2Num, err := ia2.GetBigIntNum()
 
-  if err != nil {
-    return BigIntPair{},
-      fmt.Errorf("%v\n"+
-        "Error returned by ia2.GetBigIntNum().\n"+
-        "Error= %v\n",
-        ePrefix,
-        err.Error())
-  }
+	if err != nil {
+		return BigIntPair{},
+			fmt.Errorf("%v\n"+
+				"Error returned by ia2.GetBigIntNum().\n"+
+				"Error= %v\n",
+				ePrefix,
+				err.Error())
+	}
 
-  bd2 := BigIntPair{}
+	bd2 := BigIntPair{}
 
-  err = bd2.SetBigIntPair(b1Num, b2Num)
+	err = bd2.SetBigIntPair(b1Num, b2Num)
 
-  return bd2, err
+	return bd2, err
 }
 
 // NewINumMgr - Creates a new BigIntPair instance from two objects implementing the
@@ -424,45 +424,45 @@ func (bPair *BigIntPair) NewIntAry(ia1, ia2 IntAry) (BigIntPair, error) {
 // 'num1'. BigIntPair.Big2 will contain numeric separators copied from 'num2'.
 func (bPair *BigIntPair) NewINumMgr(num1, num2 INumMgr) (BigIntPair, error) {
 
-  ePrefix := "BigIntPair.NewINumMgr()"
+	ePrefix := "BigIntPair.NewINumMgr()"
 
-  err := num1.IsValid(ePrefix + " 'num1' INVALID! ")
+	err := num1.IsValid(ePrefix + " 'num1' INVALID! ")
 
-  if err != nil {
-    return BigIntPair{}, err
-  }
+	if err != nil {
+		return BigIntPair{}, err
+	}
 
-  err = num2.IsValid(ePrefix + " 'num2' INVALID! ")
+	err = num2.IsValid(ePrefix + " 'num2' INVALID! ")
 
-  if err != nil {
-    return BigIntPair{}, err
-  }
+	if err != nil {
+		return BigIntPair{}, err
+	}
 
-  b1Num, err := num1.GetBigIntNum()
+	b1Num, err := num1.GetBigIntNum()
 
-  if err != nil {
-    return BigIntPair{},
-      fmt.Errorf("%v\n"+
-        "Error returned by num1.GetBigIntNum().\n"+
-        "Error= %v\n",
-        ePrefix,
-        err.Error())
-  }
+	if err != nil {
+		return BigIntPair{},
+			fmt.Errorf("%v\n"+
+				"Error returned by num1.GetBigIntNum().\n"+
+				"Error= %v\n",
+				ePrefix,
+				err.Error())
+	}
 
-  b2Num, err := num2.GetBigIntNum()
+	b2Num, err := num2.GetBigIntNum()
 
-  if err != nil {
-    return BigIntPair{},
-      fmt.Errorf("%v\n"+
-        "Error returned by num2.GetBigIntNum().\n"+
-        "Error= %v\n",
-        ePrefix,
-        err.Error())
-  }
+	if err != nil {
+		return BigIntPair{},
+			fmt.Errorf("%v\n"+
+				"Error returned by num2.GetBigIntNum().\n"+
+				"Error= %v\n",
+				ePrefix,
+				err.Error())
+	}
 
-  bPair2, err := new(BigIntPair).NewBigIntNum(b1Num, b2Num)
+	bPair2, err := new(BigIntPair).NewBigIntNum(b1Num, b2Num)
 
-  return bPair2, err
+	return bPair2, err
 }
 
 // NewNumStr - Creates a new BigIntPair instance from two integerNum strings
@@ -472,38 +472,38 @@ func (bPair *BigIntPair) NewINumMgr(num1, num2 INumMgr) (BigIntPair, error) {
 // numeric separators (decimal separator, thousands separator and currency symbol).
 func (bPair *BigIntPair) NewNumStr(n1NumStr, n2NumStr string) (BigIntPair, error) {
 
-  ePrefix := "BigIntPair.NewNumStrDto() "
+	ePrefix := "BigIntPair.NewNumStrDto() "
 
-  b1Num, err := new(BigIntNum).NewNumStr(n1NumStr)
+	b1Num, err := new(BigIntNum).NewNumStr(n1NumStr)
 
-  if err != nil {
-    return BigIntPair{},
-      fmt.Errorf("%v\n"+
-        "Error returned by BigIntNum{}.NewNumStr(n1NumStr).\n"+
-        "numStr='%v'\nError= %v\n",
-        ePrefix,
-        n1NumStr,
-        err.Error())
-  }
+	if err != nil {
+		return BigIntPair{},
+			fmt.Errorf("%v\n"+
+				"Error returned by BigIntNum{}.NewNumStr(n1NumStr).\n"+
+				"numStr='%v'\nError= %v\n",
+				ePrefix,
+				n1NumStr,
+				err.Error())
+	}
 
-  b2Num, err := new(BigIntNum).NewNumStr(n2NumStr)
+	b2Num, err := new(BigIntNum).NewNumStr(n2NumStr)
 
-  if err != nil {
+	if err != nil {
 
-    return BigIntPair{},
-      fmt.Errorf("%v\n"+
-        "Error returned by BigIntNum{}.NewNumStr(n2NumStr).\n"+
-        "numStr='%v'\nError= %v\n",
-        ePrefix,
-        n2NumStr,
-        err.Error())
-  }
+		return BigIntPair{},
+			fmt.Errorf("%v\n"+
+				"Error returned by BigIntNum{}.NewNumStr(n2NumStr).\n"+
+				"numStr='%v'\nError= %v\n",
+				ePrefix,
+				n2NumStr,
+				err.Error())
+	}
 
-  b2Pair := BigIntPair{}
+	b2Pair := BigIntPair{}
 
-  err = b2Pair.SetBigIntPair(b1Num, b2Num)
+	err = b2Pair.SetBigIntPair(b1Num, b2Num)
 
-  return b2Pair, err
+	return b2Pair, err
 
 }
 
@@ -513,43 +513,43 @@ func (bPair *BigIntPair) NewNumStr(n1NumStr, n2NumStr string) (BigIntPair, error
 // The returned BigIntNum's BigIntPair.Big1 and BigIntPair.Big2 will contain default
 // numeric separators (decimal separator, thousands separator and currency symbol).
 func (bPair *BigIntPair) NewNumStrWithNumSeps(
-  n1NumStr, n2NumStr string, numSeps NumericSeparatorDto) (BigIntPair, error) {
+	n1NumStr, n2NumStr string, numSeps NumericSeparatorDto) (BigIntPair, error) {
 
-  ePrefix := "BigIntPair.NewNumStrDto()"
+	ePrefix := "BigIntPair.NewNumStrDto()"
 
-  numSeps.SetDefaultsIfEmpty()
+	numSeps.SetDefaultsIfEmpty()
 
-  b1Num, err := new(BigIntNum).NewNumStrWithNumSeps(n1NumStr, numSeps)
+	b1Num, err := new(BigIntNum).NewNumStrWithNumSeps(n1NumStr, numSeps)
 
-  if err != nil {
+	if err != nil {
 
-    return BigIntPair{},
-      fmt.Errorf("%v\n"+
-        "Error returned by BigIntNum{}.NewNumStrWithNumSeps("+
-        "n1NumStr, numSeps).\n"+
-        "n1NumStr='%v'\nError= %v\n",
-        ePrefix,
-        n1NumStr,
-        err.Error())
-  }
+		return BigIntPair{},
+			fmt.Errorf("%v\n"+
+				"Error returned by BigIntNum{}.NewNumStrWithNumSeps("+
+				"n1NumStr, numSeps).\n"+
+				"n1NumStr='%v'\nError= %v\n",
+				ePrefix,
+				n1NumStr,
+				err.Error())
+	}
 
-  b2Num, err := new(BigIntNum).NewNumStrWithNumSeps(n2NumStr, numSeps)
+	b2Num, err := new(BigIntNum).NewNumStrWithNumSeps(n2NumStr, numSeps)
 
-  if err != nil {
-    return BigIntPair{},
-      fmt.Errorf("%v\n"+
-        "Error returned by BigIntNum{}.NewNumStrWithNumSeps(n2NumStr, numSeps).\n"+
-        "n2NumStr='%v'\nError= %v\n",
-        ePrefix,
-        n2NumStr,
-        err.Error())
-  }
+	if err != nil {
+		return BigIntPair{},
+			fmt.Errorf("%v\n"+
+				"Error returned by BigIntNum{}.NewNumStrWithNumSeps(n2NumStr, numSeps).\n"+
+				"n2NumStr='%v'\nError= %v\n",
+				ePrefix,
+				n2NumStr,
+				err.Error())
+	}
 
-  b2Pair := BigIntPair{}
+	b2Pair := BigIntPair{}
 
-  err = b2Pair.SetBigIntPair(b1Num, b2Num)
+	err = b2Pair.SetBigIntPair(b1Num, b2Num)
 
-  return b2Pair, err
+	return b2Pair, err
 }
 
 // NewNumStrDto - Creates a new BigIntPair instance from two NumStrDto
@@ -562,50 +562,50 @@ func (bPair *BigIntPair) NewNumStrWithNumSeps(
 // 'n1Dto'. BigIntPair.Big2 will contain numeric separators copied from 'n2Dto'.
 func (bPair *BigIntPair) NewNumStrDto(n1Dto, n2Dto NumStrDto) (BigIntPair, error) {
 
-  ePrefix := "BigIntPair.NewNumStrDto() "
+	ePrefix := "BigIntPair.NewNumStrDto() "
 
-  // This method will test the validity of n1Dto
-  b1Num, err := n1Dto.GetBigIntNum()
+	// This method will test the validity of n1Dto
+	b1Num, err := n1Dto.GetBigIntNum()
 
-  if err != nil {
+	if err != nil {
 
-    return BigIntPair{},
-      &FuncReturnError{
-        ErrPrefix:  ePrefix,
-        ReturnFunc: "b1Num, err := n1Dto.GetBigIntNum()",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-  }
+		return BigIntPair{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix,
+				ReturnFunc: "b1Num, err := n1Dto.GetBigIntNum()",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  // This method will test the validity of n2Dto
-  b2Num, err := n2Dto.GetBigIntNum()
+	// This method will test the validity of n2Dto
+	b2Num, err := n2Dto.GetBigIntNum()
 
-  if err != nil {
-    return BigIntPair{},
-      &FuncReturnError{
-        ErrPrefix:  ePrefix,
-        ReturnFunc: "b2Num, err := n2Dto.GetBigIntNum()",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-  }
+	if err != nil {
+		return BigIntPair{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix,
+				ReturnFunc: "b2Num, err := n2Dto.GetBigIntNum()",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  b2Pair := BigIntPair{}
+	b2Pair := BigIntPair{}
 
-  err = b2Pair.SetBigIntPair(b1Num, b2Num)
+	err = b2Pair.SetBigIntPair(b1Num, b2Num)
 
-  if err != nil {
-    return BigIntPair{},
-      &FuncReturnError{
-        ErrPrefix:  ePrefix,
-        ReturnFunc: "err = b2Pair.SetBigIntPair(b1Num, b2Num)",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-  }
+	if err != nil {
+		return BigIntPair{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix,
+				ReturnFunc: "err = b2Pair.SetBigIntPair(b1Num, b2Num)",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  return b2Pair, nil
+	return b2Pair, nil
 }
 
 // SetBigIntPair -Sets the values of the current
@@ -617,37 +617,37 @@ func (bPair *BigIntPair) NewNumStrDto(n1Dto, n2Dto NumStrDto) (BigIntPair, error
 // parameter, 'b1'. BigIntPair.Big2 will contain numeric separators copied from 'b2'.
 func (bPair *BigIntPair) SetBigIntPair(b1, b2 BigIntNum) error {
 
-  bPair.Empty()
+	bPair.Empty()
 
-  err := bPair.Big1.CopyIn(&b1)
+	err := bPair.Big1.CopyIn(&b1)
 
-  if err != nil {
-    return err
-  }
+	if err != nil {
+		return err
+	}
 
-  err = bPair.Big2.CopyIn(&b2)
+	err = bPair.Big2.CopyIn(&b2)
 
-  if err != nil {
-    return err
-  }
+	if err != nil {
+		return err
+	}
 
-  bPair.Big1Compare = bPair.Big1.bigInt.Cmp(bPair.Big2.bigInt)
+	bPair.Big1Compare = bPair.Big1.bigInt.Cmp(bPair.Big2.bigInt)
 
-  bPair.Big1AbsCompare = bPair.Big1.absBigInt.Cmp(bPair.Big2.absBigInt)
+	bPair.Big1AbsCompare = bPair.Big1.absBigInt.Cmp(bPair.Big2.absBigInt)
 
-  if bPair.Big1.precision == bPair.Big2.precision {
+	if bPair.Big1.precision == bPair.Big2.precision {
 
-    bPair.Precision1Compare = 0
+		bPair.Precision1Compare = 0
 
-  } else if bPair.Big1.precision > bPair.Big2.precision {
+	} else if bPair.Big1.precision > bPair.Big2.precision {
 
-    bPair.Precision1Compare = 1
+		bPair.Precision1Compare = 1
 
-  } else {
-    // Must be bPair.Big1.precision < bPair.Big2.precision
+	} else {
+		// Must be bPair.Big1.precision < bPair.Big2.precision
 
-    bPair.Precision1Compare = -1
-  }
+		bPair.Precision1Compare = -1
+	}
 
-  return nil
+	return nil
 }
