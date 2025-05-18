@@ -1199,13 +1199,13 @@ func (bIntMolecule *bigIntNumMolecule) setBigRat(
 
 	biPair.MaxPrecision = maxPrecision
 
-	biNum, err := BigIntMathDivide{}.PairFracQuotientNoNumSeps(biPair, numSeps)
+	biNum, err := new(BigIntMathDivide).PairFracQuotient(biPair, numSeps)
 
 	if err != nil {
 
 		return &FuncReturnError{
 			ErrPrefix:  ePrefix.String(),
-			ReturnFunc: "biNum, err := BigIntMathDivide{}.PairFracQuotientNoNumSeps(biPair, numSeps)",
+			ReturnFunc: "biNum, err := new(BigIntMathDivide).PairFracQuotient(biPair, numSeps)",
 			ErrContext: "",
 			ErrMessage: err.Error(),
 		}
@@ -1520,7 +1520,7 @@ func (bIntMolecule *bigIntNumMolecule) setBigRatNumSeps(
 
 	biPair.MaxPrecision = maxPrecision
 
-	biNum, err := BigIntMathDivide{}.PairFracQuotientNoNumSeps(biPair, numSeps)
+	biNum, err := new(BigIntMathDivide).PairFracQuotient(biPair, numSeps)
 
 	if err != nil {
 

@@ -2405,8 +2405,14 @@ func (bNum *BigIntNum) Increment() error {
 		bNum, ePrefix)
 }
 
-// IsValid - returns a boolean value signaling whether the
-// current BigIntNum object is valid.
+// IsValid - returns an error value signaling whether the current
+// BigIntNum object is valid.
+//
+// If the current BigIntNum instance is invalid, an error is
+// returned.
+//
+// If the current BigIntNum instance is valid, an error value of
+// 'nil' is returned.
 func (bNum *BigIntNum) IsValid(callingMethodName string) error {
 
 	var ePrefix *ePref.ErrPrefixDto
