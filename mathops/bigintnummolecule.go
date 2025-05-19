@@ -1675,16 +1675,33 @@ func (bIntMolecule *bigIntNumMolecule) setExpectedNumberOfDigits(
 // or may not be prefixed with a minus sign ('-'). The numeric
 // string of digits may also contain a decimal separator such
 // as a period ('.'). The decimal separator may be set by the
-// user. See Method BigIntNum.SetDecimalSeparator(). The decimal
-// separator is used to separate integer and fractional numeric
-// digits within the number string.
+// user. See Method BigIntNum.SetDecimalSeparator().
 //
-// Existing numeric separators (decimal separator, thousands separator
-// and currency symbol) remain unchanged and are not altered by this method.
+// This method recieves two input parameters of type
+// NumericSeparatorDto: 'numStrNumSepsDto' and
+// 'outputNumSepsDto'. A NumericSeparatorDto is a structre
+// containing the numeric separator symbols for Thousands
+// separator, Decimal separator and Currency Symbol. The
+// NumericSeparatorDto components are used to parse
+// number strings and display numeric values formatted as
+// number strings.
+//
+// Input parameter 'numStrNumSepsDto' contains the numeric
+// separators used to parse the number strings. Currently,
+// only the Decimal separtor is used to distinguish integer
+// and fractional parts of a number string.
+//
+// Input parameter 'outputNumSepsDto' will be used to configure
+// the BigIntNum parameter 'bNum'.
+//
+// If either the 'numStrNumSepsDto' or 'outputNumSepsDto'
+// parameters are determined to be invalid, they will
+// automatically be configured with USA defaults.
 func (bIntMolecule *bigIntNumMolecule) setNumStr(
 	bNum *BigIntNum,
 	numStr string,
-	numStrDecimalSeparator rune,
+	numStrNumSepsDto NumericSeparatorDto,
+	outputNumSepsDto NumericSeparatorDto,
 	errPrefDto *ePref.ErrPrefixDto) error {
 
 	if bIntMolecule.lock == nil {
@@ -1729,16 +1746,20 @@ func (bIntMolecule *bigIntNumMolecule) setNumStr(
 
 	}
 
-	if numStrDecimalSeparator == 0 {
+	outputNumSepsDto.SetDefaultsIfEmpty()
+
+	if numStrNumSepsDto.DecimalSeparator == 0 {
 
 		return &FuncReturnError{
 			ErrPrefix:  ePrefix.String(),
 			ReturnFunc: "",
 			ErrContext: "",
-			ErrMessage: "Error: Input parameter 'numStrDecimalSeparator' is INVALID!\n" +
-				"'numStrDecimalSeparator', of type 'rune', is equal to zero.",
+			ErrMessage: "Error: Input parameter 'numStrNumSepsDto.DecimalSeparator' is INVALID!\n" +
+				"'numStrNumSepsDto.DecimalSeparator', of type 'rune', is equal to zero.",
 		}
 	}
+
+	numStrNumSepsDto.SetDefaultsIfEmpty()
 
 	if len(numStr) == 0 {
 
@@ -1752,13 +1773,6 @@ func (bIntMolecule *bigIntNumMolecule) setNumStr(
 
 	baseRunes := []rune(numStr)
 	lBaseRunes := len(baseRunes)
-
-	numSeps := NumericSeparatorDto{}
-	numSeps.DecimalSeparator = bNum.decimalSeparator
-	numSeps.ThousandsSeparator = bNum.thousandsSeparator
-	numSeps.CurrencySymbol = bNum.currencySymbol
-
-	numSeps.SetDefaultsIfEmpty()
 
 	newSign := 1
 
@@ -1788,7 +1802,7 @@ func (bIntMolecule *bigIntNumMolecule) setNumStr(
 			continue
 		}
 
-		if baseRunes[i] == ',' && numStrDecimalSeparator != ',' {
+		if baseRunes[i] == ',' && numStrNumSepsDto.DecimalSeparator != ',' {
 			continue
 		}
 
@@ -1816,7 +1830,7 @@ func (bIntMolecule *bigIntNumMolecule) setNumStr(
 			continue
 		}
 
-		if baseRunes[i] == numStrDecimalSeparator {
+		if baseRunes[i] == numStrNumSepsDto.DecimalSeparator {
 			isFractionalValue = true
 			continue
 		}
@@ -1867,7 +1881,7 @@ func (bIntMolecule *bigIntNumMolecule) setNumStr(
 
 	err = new(bigIntNumAtom).setNumericSeparatorsDto(
 		bNum,
-		numSeps,
+		outputNumSepsDto,
 		ePrefix)
 
 	return nil

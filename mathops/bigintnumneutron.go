@@ -1964,10 +1964,16 @@ func (bNumNeutron *bigIntNumNeutron) setIntFracStrings(
 		}
 	}
 
+	bNumNumSeps := NumericSeparatorDto{
+		DecimalSeparator:   bNum.decimalSeparator,
+		ThousandsSeparator: bNum.thousandsSeparator,
+		CurrencySymbol:     bNum.currencySymbol,
+	}
+
 	err = new(bigIntNumMolecule).setNumStr(
 		bNum,
 		string(cleanIntRuneAry),
-		bNum.decimalSeparator,
+		bNumNumSeps,
 		ePrefix)
 
 	if err != nil {

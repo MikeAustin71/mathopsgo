@@ -308,11 +308,39 @@ func (bPair *BigIntPair) NewBase(
 //
 // Before using BigIntPair in a math operation, it may be necessary
 // to specifically set 'BigIntPair.maxPrecision'
-func (bPair *BigIntPair) NewBigIntNum(b1, b2 BigIntNum) (BigIntPair, error) {
+func (bPair *BigIntPair) NewBigIntNum(
+	b1 BigIntNum,
+	b2 BigIntNum) (BigIntPair, error) {
+
+	var ePrefix *ePref.ErrPrefixDto
+
+	var err error
+
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"BigIntPair.NewBigIntNum",
+		"")
+
+	if err != nil {
+		return BigIntPair{}, err
+	}
+
+	err = b1.IsValid(ePrefix.XCpy("Testing b1").String())
+
+	if err != nil {
+		return BigIntPair{}, err
+	}
+
+	err = b2.IsValid(ePrefix.XCpy("Testing b2").String())
+
+	if err != nil {
+		return BigIntPair{}, err
+	}
 
 	bd2 := BigIntPair{}
 
-	err := bd2.SetBigIntPair(b1, b2)
+	err = bd2.SetBigIntPair(b1, b2)
 
 	return bd2, err
 }
@@ -323,17 +351,31 @@ func (bPair *BigIntPair) NewBigIntNum(b1, b2 BigIntNum) (BigIntPair, error) {
 // The returned BigIntNum BigIntPair.Big1 will contain numeric separators (decimal
 // separator, thousands separator and currency symbol) copied from input parameter,
 // 'dec1'. BigIntPair.Big2 will contain numeric separators copied from 'dec2'.
-func (bPair *BigIntPair) NewDecimal(dec1, dec2 Decimal) (BigIntPair, error) {
+func (bPair *BigIntPair) NewDecimal(
+	dec1 Decimal,
+	dec2 Decimal) (BigIntPair, error) {
 
-	ePrefix := "BigIntPair.NewDecimal()"
+	var ePrefix *ePref.ErrPrefixDto
 
-	err := dec1.IsValid(ePrefix)
+	var err error
+
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"BigIntPair.NewDecimal",
+		"")
 
 	if err != nil {
 		return BigIntPair{}, err
 	}
 
-	err = dec2.IsValid(ePrefix)
+	err = dec1.IsValid(ePrefix.XCpy("Testing dec1").String())
+
+	if err != nil {
+		return BigIntPair{}, err
+	}
+
+	err = dec2.IsValid(ePrefix.XCpy("Testing dec2").String())
 
 	if err != nil {
 		return BigIntPair{}, err

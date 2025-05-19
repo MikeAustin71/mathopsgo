@@ -3,6 +3,7 @@ package mathops
 import (
 	"errors"
 	"fmt"
+	ePref "github.com/MikeAustin71/errpref"
 	"strings"
 )
 
@@ -180,7 +181,7 @@ func (sciNotan *SciNotationNum) GetSignificand() BigIntNum {
 // New() - Creates and returns an empty SciNotationNum
 // structure. It is a good idea to call this method
 // in order to initialize default settings.
-func (sciNotan SciNotationNum) New() SciNotationNum {
+func (sciNotan *SciNotationNum) New() SciNotationNum {
 
 	s2 := SciNotationNum{}
 
@@ -199,7 +200,7 @@ func (sciNotan SciNotationNum) New() SciNotationNum {
 //
 // Input parameter 'sciNotationStr' should be properly formatted as a valid scientific
 // notation string. Invalid input strings will trigger an error.
-func (sciNotan SciNotationNum) NewNumStr(sciNotationStr string) (SciNotationNum, error) {
+func (sciNotan *SciNotationNum) NewNumStr(sciNotationStr string) (SciNotationNum, error) {
 
 	s2 := SciNotationNum{}.New()
 
@@ -435,14 +436,31 @@ func (sciNotan *SciNotationNum) SetIntAryElements(
 //	2.652E9.24 = ERROR fractional digits in exponent!
 func (sciNotan *SciNotationNum) SetNumStr(sciNotationStr string) error {
 
-	ePrefix := "BigIntNum.SetNumStr() "
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
+
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"SciNotationNum.SetNumStr",
+		"")
+
+	if err != nil {
+		return err
+	}
 
 	if len(sciNotationStr) == 0 {
-		return errors.New(ePrefix +
-			"Error: Input parameter 'sciNotationStr' is an EMPTY string!")
+
+		return &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "",
+			ErrContext: "len(sciNotationStr) == 0",
+			ErrMessage: "Error: Input parameter 'sciNotationStr' is an EMPTY string!",
+		}
 	}
 
 	sciNotan.SetDecimalSeparatorIfEmpty()
+
 	sciNotan.SetExponentCharIfEmpty()
 
 	i := strings.Index(sciNotationStr, "e")
@@ -452,60 +470,143 @@ func (sciNotan *SciNotationNum) SetNumStr(sciNotationStr string) error {
 	}
 
 	if i == -1 {
-		return errors.New(ePrefix +
-			"Error: Input parameter 'sciNotationStr' does NOT contain an " +
-			"Exponent Character ('e' or 'E') ")
+
+		return &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "",
+			ErrContext: "if i == -1 {",
+			ErrMessage: "Error: Input parameter 'sciNotationStr' does NOT contain an\n" +
+				"Exponent Character ('e' or 'E')",
+		}
 	}
 
 	significandStr := sciNotationStr[:i]
 
-	if significandStr == "" {
-		return errors.New(ePrefix +
-			"Error: Input parameter 'sciNotationStr' does NOT contain any " +
-			"digits in the significand! ")
+	if len(significandStr) == 0 {
 
+		return &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "",
+			ErrContext: "if len(significandStr) == 0 {",
+			ErrMessage: "Error: Input parameter 'sciNotationStr' does NOT contain any\n" +
+				"digits in the significand!",
+		}
 	}
 
 	exponentStr := sciNotationStr[i+1:]
 
-	if exponentStr == "" {
-		return errors.New(ePrefix +
-			"Error: Input parameter 'sciNotationStr' does NOT contain any " +
-			"digits in the exponent! ")
+	if len(exponentStr) == 0 {
+
+		return &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "",
+			ErrContext: "if len(exponentStr) == 0  {",
+			ErrMessage: "Error: Input parameter 'sciNotationStr' does NOT contain any\n" +
+				"digits in the exponent!",
+		}
 
 	}
 
 	sciNotan.SetDecimalSeparatorIfEmpty()
 
-	bINumSignificand := BigIntNum{}.New()
-	bINumSignificand.SetDecimalSeparator(sciNotan.decimalSeparator)
+	bINumSignificand := new(BigIntNum).New()
 
-	err := bINumSignificand.SetNumStr(significandStr)
+	err = bINumSignificand.SetDecimalSeparator(sciNotan.decimalSeparator)
+
+	sciNotanNumSeps := NumericSeparatorDto{
+		ThousandsSeparator: ',',
+		DecimalSeparator:   sciNotan.decimalSeparator,
+		CurrencySymbol:     '$',
+	}
+
+	err = bINumSignificand.SetNumStr(significandStr, sciNotanNumSeps)
 
 	if err != nil {
-		return fmt.Errorf(ePrefix+
-			"Error returned by bINumSignificand.SetNumStr(significandStr). "+
-			"significand='%v' Error='%v'\n", significandStr, err.Error())
+
+		return &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "err = bINumSignificand.SetNumStr(significandStr, sciNotanNumSeps)",
+			ErrContext: "",
+			ErrMessage: err.Error(),
+		}
 	}
 
-	bINumExponent, err := BigIntNum{}.NewNumStr(exponentStr)
+	bINumExponent, err := new(BigIntNum).NewNumStrWithNumSeps(
+		exponentStr,
+		sciNotanNumSeps,
+		sciNotanNumSeps)
 
 	if err != nil {
-		return fmt.Errorf(ePrefix+
-			"Error returned by BigIntNum{}.NewNumStr(exponentStr). "+
-			"exponentStr='%v' Error='%v'\n", exponentStr, err.Error())
+
+		return &FuncReturnError{
+			ErrPrefix: ePrefix.String(),
+			ReturnFunc: "bINumExponent, err := new(BigIntNum).NewNumStrWithNumSeps(\n" +
+				"exponentStr, sciNotanNumSeps, sciNotanNumSeps)",
+			ErrContext: "",
+			ErrMessage: err.Error(),
+		}
 	}
 
-	if bINumExponent.GetPrecisionUint() > 0 {
-		return errors.New(ePrefix +
-			"Error: The exponent component of the input parameter 'sciNotationStr' " +
-			"contains fractional digits!")
+	bINumExponentPrecision, err := bINumExponent.GetPrecisionUint()
 
+	if err != nil {
+
+		return &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "bINumExponentPrecision, err := bINumExponent.GetPrecisionUint()",
+			ErrContext: "",
+			ErrMessage: err.Error(),
+		}
 	}
 
-	sciNotan.significand.CopyIn(bINumSignificand)
-	sciNotan.SetMantissaLength(bINumSignificand.GetPrecisionUint())
-	sciNotan.exponent.CopyIn(bINumExponent)
+	if bINumExponentPrecision > 0 {
+
+		return &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "",
+			ErrContext: " bINumExponent.GetPrecisionUint()  > 0 ",
+			ErrMessage: "Error: The exponent component of the input parameter 'sciNotationStr'\n" +
+				"contains fractional digits!",
+		}
+	}
+
+	err = sciNotan.significand.CopyIn(&bINumSignificand)
+
+	if err != nil {
+
+		return &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "err = sciNotan.significand.CopyIn(&bINumSignificand)",
+			ErrContext: "",
+			ErrMessage: err.Error(),
+		}
+	}
+
+	bINumSignificandPrecision, err := bINumSignificand.GetPrecisionUint()
+
+	if err != nil {
+
+		return &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "bINumSignificandPrecision, err :=  bINumSignificand.GetPrecisionUint()",
+			ErrContext: "",
+			ErrMessage: err.Error(),
+		}
+	}
+
+	sciNotan.SetMantissaLength(bINumSignificandPrecision)
+
+	err = sciNotan.exponent.CopyIn(&bINumExponent)
+
+	if err != nil {
+
+		return &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "bINumSignificandPrecision, err :=  bINumSignificand.GetPrecisionUint()",
+			ErrContext: "",
+			ErrMessage: err.Error(),
+		}
+	}
 
 	return nil
 }
