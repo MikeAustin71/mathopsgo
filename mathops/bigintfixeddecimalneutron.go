@@ -88,6 +88,14 @@ func (bigIFdNeutron *bigIntFixedDecNeutron) divideByTenToPower(
 		}
 	}
 
+	numSeps := NumericSeparatorDto{
+		DecimalSeparator:   bigIFxDec.decimalSeparator,
+		ThousandsSeparator: bigIFxDec.thousandsSeparator,
+		CurrencySymbol:     bigIFxDec.currencySymbol,
+	}
+
+	numSeps.SetDefaultsIfEmpty()
+
 	if bigIFxDec.integerNum.Cmp(big.NewInt(0)) == 0 {
 		return nil
 	}
@@ -111,7 +119,7 @@ func (bigIFdNeutron *bigIntFixedDecNeutron) divideByTenToPower(
 
 	result, err :=
 		new(BigIntMathDivide).FixedDecimalFracQuotient(
-			bigIFxDec2, factor, newPrecision)
+			bigIFxDec2, factor, numSeps, newPrecision)
 
 	if err != nil {
 
@@ -224,7 +232,7 @@ func (bigIFdNeutron *bigIntFixedDecNeutron) divideByTwoToPower(
 	}
 
 	bigIFxDec.integerNum, err =
-		BigIntMathDivide{}.BigIntDividedByTwoToPower(
+		new(BigIntMathDivide).BigIntDividedByTwoToPower(
 			bigIFxDec.integerNum,
 			exponent)
 

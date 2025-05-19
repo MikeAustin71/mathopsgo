@@ -7632,44 +7632,44 @@ func (bIDivide *BigIntMathDivide) NumStrDtoModuloToNumStrDto(
 // is defined as the number of fractional digits to the right of the
 // decimal place.
 //
-//	Examples
-//	=========
+//		Examples
+//		=========
 //
-//	Note: For all examples BigIntPair.maxPrecision is specified as '15'.
+//		Note: For all examples BigIntPair.maxPrecision is specified as '15'.
 //
-//	                                        Quotient
-//	Dividend  divided by  Divisor   =   BigIntNum Integer    Precision    Result
+//		                                        Quotient
+//		Dividend  divided by  Divisor   =   BigIntNum Integer    Precision    Result
 //
-//	  10.5         /         2      =                 525         2      5.25
-//	  10           /         2      =                   5         0      5
-//	  11.5         /         2.5    =                  46         1      4.6
-//	  2.5          /        12.555  =     199123855037834        15      0.199123855037834
-//	-12.555        /         2.5    =               -5022         3     -5.022
-//	-12.555        /         2      =              -62775         4     -6.2775
-//	 -2.5          /        12.555  =    -199123855037834        15     -0.199123855037834
-//	 12.555        /       - 2.5    =               -5022         3     -5.022
-//	 12.555        /       - 2      =              -62775         4     -6.2775
-//	  2.5          /       -12.555  =    -199123855037834        15     -0.199123855037834
-//	-12.555        /       - 2.5    =                5022         3      5.022
-//	-12.555        /       - 2      =               62775         4      6.2775
-//	 -2.5          /       -12.555  =     199123855037834        15      0.199123855037834
-//	-10            /       - 2      =                   5         5      5.00000
+//		  10.5         /         2      =                 525         2      5.25
+//		  10           /         2      =                   5         0      5
+//		  11.5         /         2.5    =                  46         1      4.6
+//		  2.5          /        12.555  =     199123855037834        15      0.199123855037834
+//		-12.555        /         2.5    =               -5022         3     -5.022
+//		-12.555        /         2      =              -62775         4     -6.2775
+//		 -2.5          /        12.555  =    -199123855037834        15     -0.199123855037834
+//		 12.555        /       - 2.5    =               -5022         3     -5.022
+//		 12.555        /       - 2      =              -62775         4     -6.2775
+//		  2.5          /       -12.555  =    -199123855037834        15     -0.199123855037834
+//		-12.555        /       - 2.5    =                5022         3      5.022
+//		-12.555        /       - 2      =               62775         4      6.2775
+//		 -2.5          /       -12.555  =     199123855037834        15      0.199123855037834
+//		-10            /       - 2      =                   5         5      5.00000
 //
-//	Numeric Separators
-//	==================
+//		Numeric Separators
+//		==================
 //
-//	Input parameter, 'numSeps' consits of a NumericSeparatorDto
-//	instance. A NumericSeparatorDto contains symbols or characters
-//	for the decimal separator, thousands separator and currency
-//	symbol. These separators are used when presenting numeric
-//	values in number strings.
+//		Input parameter, 'numSeps' consits of a NumericSeparatorDto
+//		instance. A NumericSeparatorDto contains symbols or characters
+//		for the decimal separator, thousands separator and currency
+//		symbol. These separators are used when presenting numeric
+//		values in number strings.
 //
-//	If any of the 'numSeps' Numeric Separator Components are set
-//	to zero, those components will be automatically reset to USA
-//	default values.
+//		If any of the 'numSeps' Numeric Separator Components are set
+//		to zero, those components will be automatically reset to USA
+//		default values.
 //
-//	The returned value ('fracQuotient') will be configured with
-//  'numSeps'.
+//		The returned value ('fracQuotient') will be configured with
+//	 'numSeps'.
 func (bIDivide *BigIntMathDivide) PairFracQuotient(
   bPair BigIntPair,
   numSeps NumericSeparatorDto) (fracQuotient BigIntNum, err error) {
