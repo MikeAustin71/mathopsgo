@@ -1,14 +1,14 @@
 package mathops
 
 import (
-  "fmt"
-  ePref "github.com/MikeAustin71/errpref"
-  "math/big"
-  "sync"
+	"fmt"
+	ePref "github.com/MikeAustin71/errpref"
+	"math/big"
+	"sync"
 )
 
 type bigIntMathMultiplyNanobot struct {
-  lock *sync.Mutex
+	lock *sync.Mutex
 }
 
 // multiplyByTwoToPowerBigInt
@@ -101,102 +101,102 @@ type bigIntMathMultiplyNanobot struct {
 //	 This method will delete trailing fractional zeros from the
 //	 returned result (product).
 func (bigIMathMultiplyNanobot *bigIntMathMultiplyNanobot) multiplyByTwoToPowerBigInt(
-  multiplier *big.Int,
-  multiplierPrecision *big.Int,
-  exponent uint,
-  errPrefDto *ePref.ErrPrefixDto) (product *big.Int, productPrecision *big.Int, err error) {
+	multiplier *big.Int,
+	multiplierPrecision *big.Int,
+	exponent uint,
+	errPrefDto *ePref.ErrPrefixDto) (product *big.Int, productPrecision *big.Int, err error) {
 
-  if bigIMathMultiplyNanobot.lock == nil {
-    bigIMathMultiplyNanobot.lock = new(sync.Mutex)
-  }
+	if bigIMathMultiplyNanobot.lock == nil {
+		bigIMathMultiplyNanobot.lock = new(sync.Mutex)
+	}
 
-  bigIMathMultiplyNanobot.lock.Lock()
+	bigIMathMultiplyNanobot.lock.Lock()
 
-  defer bigIMathMultiplyNanobot.lock.Unlock()
+	defer bigIMathMultiplyNanobot.lock.Unlock()
 
-  var ePrefix *ePref.ErrPrefixDto
+	var ePrefix *ePref.ErrPrefixDto
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
-    errPrefDto,
-    "bigIntMathMultiplyNanobot.multiplyByTwoToPowerBigInt",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
+		errPrefDto,
+		"bigIntMathMultiplyNanobot.multiplyByTwoToPowerBigInt",
+		"")
 
-  if err != nil {
-    return big.NewInt(0), big.NewInt(0), err
-  }
+	if err != nil {
+		return big.NewInt(0), big.NewInt(0), err
+	}
 
-  product = big.NewInt(0)
+	product = big.NewInt(0)
 
-  productPrecision = big.NewInt(0)
+	productPrecision = big.NewInt(0)
 
-  err = nil
+	err = nil
 
-  if multiplier == nil {
+	if multiplier == nil {
 
-    return product, productPrecision,
-      &InputPtrNilError{
-        ErrPrefix:     ePrefix.String(),
-        ParameterName: "'multiplier'",
-      }
-  }
+		return product, productPrecision,
+			&InputPtrNilError{
+				ErrPrefix:     ePrefix.String(),
+				ParameterName: "'multiplier'",
+			}
+	}
 
-  if multiplierPrecision == nil {
+	if multiplierPrecision == nil {
 
-    return product, productPrecision,
-      &InputPtrNilError{
-        ErrPrefix:     ePrefix.String(),
-        ParameterName: "'multiplierPrecision'",
-      }
-  }
+		return product, productPrecision,
+			&InputPtrNilError{
+				ErrPrefix:     ePrefix.String(),
+				ParameterName: "'multiplierPrecision'",
+			}
+	}
 
-  bigZero := big.NewInt(0)
+	bigZero := big.NewInt(0)
 
-  if multiplierPrecision.Cmp(bigZero) == -1 {
+	if multiplierPrecision.Cmp(bigZero) == -1 {
 
-    return product, productPrecision,
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "",
-        ErrContext: fmt.Sprintf("multiplierPrecision='%v'", multiplierPrecision.Text(10)),
-        ErrMessage: "Error: Input Parameter 'multiplierPrecision' is LESS THAN ZERO!",
-      }
-  }
+		return product, productPrecision,
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "",
+				ErrContext: fmt.Sprintf("multiplierPrecision='%v'", multiplierPrecision.Text(10)),
+				ErrMessage: "Error: Input Parameter 'multiplierPrecision' is LESS THAN ZERO!",
+			}
+	}
 
-  if multiplier.Cmp(big.NewInt(0)) == 0 {
-    product = big.NewInt(0)
-    productPrecision = big.NewInt(0)
-    err = nil
-    return product, productPrecision, err
-  }
+	if multiplier.Cmp(big.NewInt(0)) == 0 {
+		product = big.NewInt(0)
+		productPrecision = big.NewInt(0)
+		err = nil
+		return product, productPrecision, err
+	}
 
-  product = big.NewInt(0).Lsh(multiplier, exponent)
+	product = big.NewInt(0).Lsh(multiplier, exponent)
 
-  productPrecision.Set(multiplierPrecision)
+	productPrecision.Set(multiplierPrecision)
 
-  // Delete trailing fractional zeros
-  if productPrecision.Cmp(bigZero) == 1 {
-    // productPrecision > 0
+	// Delete trailing fractional zeros
+	if productPrecision.Cmp(bigZero) == 1 {
+		// productPrecision > 0
 
-    scrap := big.NewInt(0)
+		scrap := big.NewInt(0)
 
-    biBase10 := big.NewInt(10)
+		biBase10 := big.NewInt(10)
 
-    bigOne := big.NewInt(1)
+		bigOne := big.NewInt(1)
 
-    biBaseZero := big.NewInt(0)
+		biBaseZero := big.NewInt(0)
 
-    newProduct, mod10 := big.NewInt(0).QuoRem(product, biBase10, scrap)
+		newProduct, mod10 := big.NewInt(0).QuoRem(product, biBase10, scrap)
 
-    for mod10.Cmp(biBaseZero) == 0 && productPrecision.Cmp(bigZero) == 1 {
+		for mod10.Cmp(biBaseZero) == 0 && productPrecision.Cmp(bigZero) == 1 {
 
-      product.Set(newProduct)
+			product.Set(newProduct)
 
-      productPrecision.Sub(productPrecision, bigOne)
+			productPrecision.Sub(productPrecision, bigOne)
 
-      newProduct, mod10 = big.NewInt(0).QuoRem(product, biBase10, scrap)
-    }
-  }
+			newProduct, mod10 = big.NewInt(0).QuoRem(product, biBase10, scrap)
+		}
+	}
 
-  return product, productPrecision, err
+	return product, productPrecision, err
 }
