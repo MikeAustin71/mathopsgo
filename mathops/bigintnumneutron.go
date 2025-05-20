@@ -167,6 +167,12 @@ func (bNumNeutron *bigIntNumNeutron) isEvenBigIntNumber(
 			}
 	}
 
+	bNumNumSeps := NumericSeparatorDto{
+		DecimalSeparator:   bNum.decimalSeparator,
+		ThousandsSeparator: bNum.thousandsSeparator,
+		CurrencySymbol:     bNum.currencySymbol,
+	}
+
 	if bNum.precision > 0 {
 		return false, nil
 	}
@@ -185,15 +191,15 @@ func (bNumNeutron *bigIntNumNeutron) isEvenBigIntNumber(
 		return false, err
 	}
 
-	_, mod, err := BigIntMathDivide{}.
-		BigIntNumDivideByTwoQuoMod(bNum2, 50)
+	_, mod, err := new(BigIntMathDivide).
+		BigIntNumDivideByTwoQuoMod(bNum2, bNumNumSeps, 50)
 
 	if err != nil {
 		return false,
 			&FuncReturnError{
 				ErrPrefix: ePrefix.String(),
 				ReturnFunc: "  _, mod, err := BigIntMathDivide{}.\n" +
-					"BigIntNumDivideByTwoQuoMod(bNum2, 50)",
+					"BigIntNumDivideByTwoQuoMod(bNum2, bNumNumSeps, 50)",
 				ErrMessage: err.Error(),
 			}
 	}
@@ -1973,6 +1979,7 @@ func (bNumNeutron *bigIntNumNeutron) setIntFracStrings(
 	err = new(bigIntNumMolecule).setNumStr(
 		bNum,
 		string(cleanIntRuneAry),
+		bNumNumSeps,
 		bNumNumSeps,
 		ePrefix)
 

@@ -3,6 +3,7 @@ package mathops
 import (
 	"errors"
 	"fmt"
+	ePref "github.com/MikeAustin71/errpref"
 	"math"
 	"math/big"
 	"time"
@@ -238,12 +239,22 @@ func (fdNthRoot FixedDecimalNthRoot) BabylonianSqrRoot(
 	initialGuess,
 	initialGuessPrecision,
 	maxPrecision *big.Int,
-	calcCycles uint64) (sqrRoot,
+	calcCycles uint64) (sqrRoot *big.Int,
 	sqrRootPrecision *big.Int,
 	cycleCnt uint64,
 	err error) {
 
-	ePrefix := "FixedDecimalNthRoot.BabylonianSqrRoot() "
+	var ePrefix *ePref.ErrPrefixDto
+
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"FixedDecimalNthRoot.BabylonianSqrRoot()",
+		"")
+
+	if err != nil {
+		return big.NewInt(0), big.NewInt(0), 0, err
+	}
 	sqrRoot = big.NewInt(0)
 	sqrRootPrecision = big.NewInt(0)
 	cycleCnt = uint64(0)
@@ -283,7 +294,7 @@ func (fdNthRoot FixedDecimalNthRoot) BabylonianSqrRoot(
 		factor2Precision.Set(xLastPrecision)
 
 		factor3, factor3Precision, errX =
-			BigIntMathDivide{}.BigIntFracQuotient(
+			new(BigIntMathDivide).BigIntFracQuotient(
 				radicand,
 				radicandPrecision,
 				xLast,
@@ -291,8 +302,8 @@ func (fdNthRoot FixedDecimalNthRoot) BabylonianSqrRoot(
 				maxCalcPrecision)
 
 		if errX != nil {
-			err = fmt.Errorf(ePrefix+
-				"%v ", errX.Error())
+			err = fmt.Errorf("%v"+
+				"Error: %v ", ePrefix.String(), errX.Error())
 			return sqrRoot, sqrRootPrecision, cycleCnt, err
 		}
 
@@ -308,9 +319,19 @@ func (fdNthRoot FixedDecimalNthRoot) BabylonianSqrRoot(
 		xLast.Mul(oneHalf, factor1)
 		xLastPrecision.Add(oneHalfPrecision, factor1Precision)
 		xLast, xLastPrecision, errX =
-			BigIntMath{}.RoundToMaxPrecision(xLast, xLastPrecision, maxCalcPrecision, true)
+			new(BigIntMath).RoundToMaxPrecision(xLast, xLastPrecision, maxCalcPrecision, true)
 
-		cmpPrev = BigIntMath{}.BigIntPrecisionCmp(xLast, xLastPrecision, prevCycle, prevCyclePrecision)
+		cmpPrev, err = new(BigIntMath).BigIntPrecisionCmp(xLast, xLastPrecision, prevCycle, prevCyclePrecision)
+
+		if err != nil {
+			return big.NewInt(0), big.NewInt(0), 0,
+				&FuncReturnError{
+					ErrPrefix: ePrefix.String(),
+					ReturnFunc: "  _, mod, err := BigIntMathDivide{}.\n" +
+						"BigIntNumDivideByTwoQuoMod(bNum2, bNumNumSeps, 50)",
+					ErrMessage: err.Error(),
+				}
+		}
 
 		if cmpPrev == 0 {
 			break

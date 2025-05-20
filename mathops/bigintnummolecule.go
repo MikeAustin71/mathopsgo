@@ -725,7 +725,7 @@ func (bIntMolecule *bigIntNumMolecule) getActualNumberOfDigits(
 
 	}
 
-	numOfDigits, errx := BigIntMath{}.GetMagnitude(bNum.absBigInt)
+	numOfDigits, errx := new(BigIntMath).GetMagnitude(bNum.absBigInt)
 
 	if errx != nil {
 
