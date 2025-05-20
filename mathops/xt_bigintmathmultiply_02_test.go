@@ -13,11 +13,11 @@ func TestBigIntMathMultiply_MultiplyBigIntByTwoToPower_01(t *testing.T) {
 	exponent := uint(5)
 	expectedResult := "746.272"
 
-	result, err := new(BigIntMathMultiply).MultiplyBigIntByTwoToPower(
+	result, err := new(BigIntMathMultiply).MultiplyBigInt2ToPowerBigIntNum(
 		multiplicandBInt, multiplicandPrecision, exponent)
 
 	if err != nil {
-		t.Errorf("Error returned by new(BigIntMathMultiply).MultiplyBigIntByTwoToPower()\n"+""+
+		t.Errorf("Error returned by new(BigIntMathMultiply).MultiplyBigInt2ToPowerBigIntNum()\n"+""+
 			"Error= %v", err.Error())
 		return
 	}
@@ -46,7 +46,7 @@ func TestBigIntMathMultiply_MultiplyBigIntByTwoToPower_02(t *testing.T) {
 	exponent := uint(10)
 	expectedResult := "8192"
 
-	result := BigIntMathMultiply{}.MultiplyBigIntByTwoToPower(
+	result := BigIntMathMultiply{}.MultiplyBigInt2ToPowerBigIntNum(
 		multiplicandBInt, multiplicandPrecision, exponent)
 
 	if expectedResult != result.GetNumStr() {
@@ -64,7 +64,7 @@ func TestBigIntMathMultiply_MultiplyBigIntByTwoToPower_03(t *testing.T) {
 	exponent := uint(1)
 	expectedResult := "19.742468"
 
-	result := BigIntMathMultiply{}.MultiplyBigIntByTwoToPower(
+	result := BigIntMathMultiply{}.MultiplyBigInt2ToPowerBigIntNum(
 		multiplicandBInt, multiplicandPrecision, exponent)
 
 	if expectedResult != result.GetNumStr() {
@@ -82,7 +82,7 @@ func TestBigIntMathMultiply_MultiplyBigIntByTwoToPower_04(t *testing.T) {
 	exponent := uint(3)
 	expectedResult := "-78.969872"
 
-	result := BigIntMathMultiply{}.MultiplyBigIntByTwoToPower(
+	result := BigIntMathMultiply{}.MultiplyBigInt2ToPowerBigIntNum(
 		multiplicandBInt, multiplicandPrecision, exponent)
 
 	if expectedResult != result.GetNumStr() {
@@ -100,7 +100,7 @@ func TestBigIntMathMultiply_MultiplyBigIntByTwoToPower_05(t *testing.T) {
 	exponent := uint(0)
 	expectedResult := "8"
 
-	result := BigIntMathMultiply{}.MultiplyBigIntByTwoToPower(
+	result := BigIntMathMultiply{}.MultiplyBigInt2ToPowerBigIntNum(
 		multiplicandBInt, multiplicandPrecision, exponent)
 
 	if expectedResult != result.GetNumStr() {
@@ -118,7 +118,7 @@ func TestBigIntMathMultiply_MultiplyBigIntByTwoToPower_06(t *testing.T) {
 	exponent := uint(4)
 	expectedResult := "0"
 
-	result := BigIntMathMultiply{}.MultiplyBigIntByTwoToPower(
+	result := BigIntMathMultiply{}.MultiplyBigInt2ToPowerBigIntNum(
 		multiplicandBInt, multiplicandPrecision, exponent)
 
 	if expectedResult != result.GetNumStr() {

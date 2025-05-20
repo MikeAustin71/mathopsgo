@@ -198,5 +198,5 @@ func (bigIMathMultiplyNanobot *bigIntMathMultiplyNanobot) multiplyByTwoToPowerBi
 		}
 	}
 
-	return product, productPrecision, err
+	return product, productPrecision, nil
 }

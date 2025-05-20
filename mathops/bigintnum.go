@@ -4312,10 +4312,14 @@ func (bNum *BigIntNum) NewNumStr(numStr string) (BigIntNum, error) {
 			}
 	}
 
+	numSeps := NumericSeparatorDto{}
+	numSeps.SetDefaultsIfEmpty()
+
 	err = new(bigIntNumMolecule).setNumStr(
 		&bigINum,
 		numStr,
-		bigINum.decimalSeparator,
+		numSeps,
+		numSeps,
 		ePrefix)
 
 	if err != nil {
@@ -4462,10 +4466,15 @@ func (bNum *BigIntNum) NewNumStrMaxPrecision(
 			}
 	}
 
+	numSeps := NumericSeparatorDto{}
+
+	numSeps.SetDefaultsIfEmpty()
+
 	err = new(bigIntNumMolecule).setNumStr(
 		&bINum2,
 		numStr,
-		bINum2.decimalSeparator,
+		numSeps,
+		numSeps,
 		ePrefix)
 
 	if err != nil {

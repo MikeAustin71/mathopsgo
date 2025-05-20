@@ -228,10 +228,11 @@ func (bIMathMultiplyElec *bigIntMathMultiplyElectron) multiplyBigInt(
 	return product, productPrecision, nil
 }
 
-// newBigIntMathMultiply
+// newBigIntMathMultiplyZero
 //
-// Creates a BigIntMathMultiply instance with data variables initialized to zero.
-func (bIMathMultiplyElec *bigIntMathMultiplyElectron) newBigIntMathMultiply(
+// Creates a BigIntMathMultiply instance with data variables
+// initialized to zero.
+func (bIMathMultiplyElec *bigIntMathMultiplyElectron) newBigIntMathMultiplyZero(
 	errPrefDto *ePref.ErrPrefixDto) (BigIntMathMultiply, error) {
 
 	if bIMathMultiplyElec.lock == nil {
@@ -249,7 +250,7 @@ func (bIMathMultiplyElec *bigIntMathMultiplyElectron) newBigIntMathMultiply(
 	ePrefix,
 		err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
 		errPrefDto,
-		"bigIntMathMultiplyElectron.newBigIntMathMultiply",
+		"bigIntMathMultiplyElectron.newBigIntMathMultiplyZero",
 		"")
 
 	if err != nil {

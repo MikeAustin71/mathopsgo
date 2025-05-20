@@ -128,7 +128,7 @@ func (bMultiply *BigIntMathMultiply) BigIntMultiply(
 	ePrefix,
 		err = ePref.ErrPrefixDto{}.NewIEmpty(
 		nil,
-		"BigIntNum.GetNumericSeparatorsDto",
+		"BigIntMathMultiply.BigIntMultiply",
 		"")
 
 	if err != nil {
@@ -319,7 +319,8 @@ func (bMultiply *BigIntMathMultiply) BigIntMultiplyByTwoToPower(
 	product,
 		productPrecision,
 		err = new(bigIntMathMultiplyNanobot).
-		multiplyByTwoToPowerBigInt(multiplier,
+		multiplyByTwoToPowerBigInt(
+			multiplier,
 			multiplierPrecision,
 			exponent,
 			ePrefix)
@@ -426,7 +427,8 @@ func (bMultiply *BigIntMathMultiply) BigIntMultiplyByTwoToPower(
 //	 formatted as number strings.
 //
 //	 This method will configure the returned BigIntFixedDecimal
-//	 'product' with default USA Numeric Separators.
+//	 'product' with Numeric Separators current configured in the
+//	 'multiplier'.
 func (bMultiply *BigIntMathMultiply) FixedDecimalMultiply(
 	multiplier BigIntFixedDecimal,
 	multiplicand BigIntFixedDecimal) (product BigIntFixedDecimal, err error) {
@@ -443,11 +445,17 @@ func (bMultiply *BigIntMathMultiply) FixedDecimalMultiply(
 		return BigIntFixedDecimal{}, err
 	}
 
+	numSeps := NumericSeparatorDto{
+		DecimalSeparator:   multiplier.decimalSeparator,
+		ThousandsSeparator: multiplier.decimalSeparator,
+		CurrencySymbol:     multiplier.currencySymbol,
+	}
+
 	return new(bigIntMathMultiplyMechanics).multiplyBigIntFixedDecimals(
-		multiplier, multiplicand, ePrefix)
+		multiplier, multiplicand, numSeps, ePrefix)
 }
 
-// MultiplyBigIntByTwoToPower
+// MultiplyBigInt2ToPowerBigIntNum
 //
 // Multiplies a *big.Int number by powers of two and returns
 // the result as a BigIntNum type.
@@ -484,105 +492,180 @@ func (bMultiply *BigIntMathMultiply) FixedDecimalMultiply(
 // The returned BigIntNum multiplication 'result' will contain default
 // USA numeric separators (decimal separator, thousands separator and
 // currency symbol)
-func (bMultiply *BigIntMathMultiply) MultiplyBigIntByTwoToPower(
+func (bMultiply *BigIntMathMultiply) MultiplyBigInt2ToPowerBigIntNum(
 	multiplier *big.Int,
 	multiplierPrecision uint,
 	exponent uint) (BigIntNum, error) {
-
 	var ePrefix *ePref.ErrPrefixDto
+
 	var err error
 
 	ePrefix,
 		err = ePref.ErrPrefixDto{}.NewIEmpty(
 		nil,
-		"BigIntMathMultiply.MultiplyBigIntByTwoToPower",
+		"BigIntMathMultiply.MultiplyBigInt2ToPowerBigIntNum",
 		"")
 
 	if err != nil {
 		return BigIntNum{}, err
 	}
 
+	numSepsDto := NumericSeparatorDto{}
+
+	numSepsDto.SetDefaultsIfEmpty()
+
 	return new(bigIntMathMultiplyMechanics).multiplyByTwoToPowerBigIntNum(
-		multiplier, multiplierPrecision, exponent, ePrefix)
+		multiplier, multiplierPrecision, exponent, numSepsDto, ePrefix)
 }
 
-// New - Creates a BigIntMathMultiply instance with data
-// variables initialized to zero.
-func (bMultiply *BigIntMathMultiply) New() BigIntMathMultiply {
+// New
+//
+// Creates a BigIntMathMultiply instance with data variables
+// initialized to zero.
+func (bMultiply *BigIntMathMultiply) New() (BigIntMathMultiply, error) {
 
-	b2Math, _ := new(bigIntMathMultiplyElectron).
-		newBigIntMathMultiply()
+	var ePrefix *ePref.ErrPrefixDto
 
-	/*
-		 b2Math := BigIntMathMultiply{}
+	var err error
 
-		b2Math.Input = new(BigIntPair).New()
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"BigIntMathMultiply.New",
+		"")
 
-		baseZero := big.NewInt(0)
+	if err != nil {
+		return BigIntMathMultiply{}, err
+	}
 
-		b2Math.Result = BigIntNum{}.NewBigInt(baseZero, 0)
-	*/
+	b2Math, err := new(bigIntMathMultiplyElectron).
+		newBigIntMathMultiplyZero(ePrefix)
 
-	return b2Math
+	return b2Math, err
 }
 
-// NewBigIntPairResult - Creates a new BigIntMathMultiply based on input parameter
-// type, 'BigIntPair'
-func (bMultiply *BigIntMathMultiply) NewBigIntPairResult(bPair BigIntPair) BigIntMathMultiply {
+// NewBigIntPairResult
+//
+// Creates a new BigIntMathMultiply based on input parameter type,
+// 'BigIntPair'.
+func (bMultiply *BigIntMathMultiply) NewBigIntPairResult(
+	bPair BigIntPair) (BigIntMathMultiply, error) {
+
+	var ePrefix *ePref.ErrPrefixDto
+
+	var err error
+
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"BigIntMathMultiply.NewBigIntPairResult",
+		"")
+
+	if err != nil {
+		return BigIntMathMultiply{}, err
+	}
 
 	b2Math := BigIntMathMultiply{}
 
-	b2Math.Input = bPair.CopyOut()
+	bPair2, err := bPair.CopyOut()
 
-	return b2Math
+	if err != nil {
+
+		return BigIntMathMultiply{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "bPair2, err := bPair.CopyOut()",
+				ErrMessage: err.Error(),
+			}
+	}
+
+	b2Math.Input = bPair2
+
+	return b2Math, nil
 }
 
-// MultiplyBigInts - Receives two *big.Int numbers and their associated precision
-// specifications. This method then proceeds to perform a multiplication operation
-// by multiplying the 'multiplier' by the 'multiplicand'
+// MultiplyBigIntsBigIntNum
 //
-// In the multiplication operation, the number to be multiplied is called the
-// "multiplicand", while the number of times the multiplicand is to be multiplied
-// comes from the "multiplier". Usually the multiplier is placed first and the
-// multiplicand is placed second.
+// Receives two *big.Int numbers and their associated precision
+// specifications. This method then proceeds to perform a
+// multiplication operation by multiplying the 'multiplier' times
+// the 'multiplicand'.
 //
-// For example, in the problem 5 x 3 equals 15, the 5 is the 'multiplier',
-// 3 is the 'multiplicand' and 15 is the 'product' or result.
+// In the multiplication operation, the number to be multiplied
+// is called the "multiplicand", while the number of times the
+// multiplicand is to be multiplied comes from the "multiplier".
+// Usually the multiplier is placed first and the multiplicand is
+// placed second.
 //
-//	multiplier x multiplicand = product or result
+// For example, in the problem 5 x 3 equals 15, the 5 is the
+// 'multiplier' and 3 is the 'multiplicand', The result of this
+// calculation, '15', is designated as the 'product'.
 //
-// Input Parameters
-// ================
+//					multiplier x multiplicand = product or result
 //
-//	multiplier *big.Int					- The number to be multiplied by 'multiplicand'
-//	multiplierPrecision uint,		- The 'multiplier' precision or numeric digits after
-//																	the decimal point.
-//	multiplicand *big.Int,			- The number to be multiplied by the 'multiplier'.
-//	multiplicandPrecision uint  - The 'multiplicand' precision or numeric digits after
-//																	the decimal point.
+//	 Input Parameters
+//	 ================
 //
-// Return Values
-// =============
+//	 multiplier               *big.Int
+//	   The number to be multiplied by 'multiplicand'
 //
-// This method performs the multiplication operation and returns the result or
-// 'product' as a BigIntNum type.
+//	 multiplierPrecision      uint
+//	   The 'multiplier' precision or numeric digits after the
+//	   decimal point in 'multiplier'.
 //
-// The returned BigIntNum multiplication 'result' will contain default numeric
-// separators (decimal separator, thousands separator and currency symbol)
-func (bMultiply *BigIntMathMultiply) MultiplyBigInts(
+//	 multiplicand             *big.Int
+//	   The number to be multiplied by the 'multiplier'.
+//
+//	 multiplicandPrecision    uint
+//	   The 'multiplicand' precision or numeric digits after the
+//	   decimal point.
+//
+//	 Return Values
+//	 =============
+//
+//	 BigIntNum
+//	   This method performs the multiplication operation and
+//	   returns the result or 'product' as a BigIntNum type.
+//
+//	 Numeric Separators
+//	 ==================
+//
+//	 Numeric sepatators include the Decimal separator, Thousands
+//	 separator and Currency symbol characters. Numeric separators
+//	 are used to parse number strings and display numeric values
+//	 formatted as number strings.
+//
+//	 This method will configure the returned BigIntFixedDecimal
+//	 'product' with Numeric Separators current configured in the
+//	 'multiplier'.
+func (bMultiply *BigIntMathMultiply) MultiplyBigIntsBigIntNum(
 	multiplier *big.Int,
 	multiplierPrecision uint,
 	multiplicand *big.Int,
-	multiplicandPrecision uint) BigIntNum {
+	multiplicandPrecision uint,
+	numSepsDto NumericSeparatorDto) (BigIntNum, error) {
 
-	product := big.NewInt(0).Mul(multiplier, multiplicand)
+	var ePrefix *ePref.ErrPrefixDto
 
-	biNumProduct := BigIntNum{}.NewBigInt(
-		product, multiplierPrecision+multiplicandPrecision)
+	var err error
 
-	biNumProduct.TrimTrailingFracZeros()
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"BigIntMathMultiply.MultiplyBigIntsBigIntNum",
+		"")
 
-	return biNumProduct
+	if err != nil {
+		return BigIntNum{}, err
+	}
+
+	return new(bigIntMathMultiplyMechanics).multiplyBigIntsBigIntNum(
+		multiplier,
+		multiplierPrecision,
+		multiplicand,
+		multiplicandPrecision,
+		numSepsDto,
+		ePrefix)
 }
 
 // MultiplyBigIntNums - Receives two BigIntNum types as input parameters and then
