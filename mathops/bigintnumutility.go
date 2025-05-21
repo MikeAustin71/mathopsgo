@@ -3,6 +3,7 @@ package mathops
 import (
 	"fmt"
 	ePref "github.com/MikeAustin71/errpref"
+	"math"
 	"math/big"
 	"sync"
 )
@@ -351,4 +352,316 @@ func (bIngNumUtil *bigIntNumUtility) bigIntNumCopyOut(
 		big.NewInt(0).Set(bNum.numberOfExpectedDigits)
 
 	return b2, nil
+}
+
+// setBigIntBigPrecision
+//
+// Creates a new BigIntNum instance using a *big.Int type and its
+// associated *big.Int precision.
+//
+// The 'precision' parameter specifies the number of digits to the
+// right of the decimal place. The Numeric value is equal to:
+//
+//	bigI x 10^(precision x -1)
+//
+// This effectively locates the decimal place by counting from the
+// extreme right of the integer number, 'precision' places to the
+// left. See the example below.
+//
+//	Input Parameters
+//	================
+//
+//	bNum          *BigIntNum
+//	An instance of BigIntNum which will be reconfigured
+//	according to values prvovided by input parameters 'bigI'
+//	and 'precision'.
+//
+//	bigInt        *big.Int
+//
+//	'bigI' is a type *big.Int and represents the integer value of
+//	the number; that is, the numeric value without decimal digits.
+//
+//
+//	precision     *big.In
+//
+//	This integer value (always a positive value) identifies the
+//	location of the decimal place in the integer value 'bigI'. The
+//	decimal place location is calculated by starting with the
+//	right most digit in the integer number and counting	left,
+//	'precision' places.
+//
+//	  Integer Value    precision    Numeric Value
+//
+//		    123456           3            123.456
+//	             123456 x 10^-3  =    123.456
+//
+//	If precision is greater than the maximum value of an unsigned
+//	integer (+4,294,967,295,	which equals 2^32 − 1), an error will
+//	be triggered. Also, if the 'precision' value is less than zero,
+//	an error will be triggered.
+//
+//	Numeric Separators
+//	==================
+//
+//	Numeric Separators specify the symbols or characters (runes)
+//	used for the decimal separator, thousands separator and
+//	currency symbol. These separators are used when displaying
+//	numeric values in number strings.
+//
+//	The original Numeric Separators configured in 'bNum' and will
+//	not be altered by this method. However, if any of the Numeric
+//	Separator values are invalid (set to rune value of zero),
+//	those Numeric Separators will be automatically reset to USA
+//	defaults.
+func (bIngNumUtil *bigIntNumUtility) setBigIntBigPrecision(
+	bNum *BigIntNum,
+	bigInt *big.Int,
+	precision *big.Int,
+	errPrefDto *ePref.ErrPrefixDto) error {
+
+	if bIngNumUtil.lock == nil {
+		bIngNumUtil.lock = new(sync.Mutex)
+	}
+
+	bIngNumUtil.lock.Lock()
+
+	defer bIngNumUtil.lock.Unlock()
+
+	var err error
+
+	var ePrefix *ePref.ErrPrefixDto
+
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
+		errPrefDto,
+		"bigIntNumUtility.setBigIntBigPrecision",
+		"")
+
+	if err != nil {
+		return err
+	}
+
+	if bNum == nil {
+
+		return &InputPtrNilError{
+			ErrPrefix:     ePrefix.String(),
+			ParameterName: "'bNum'",
+		}
+	}
+
+	if bigInt == nil {
+
+		return &InputPtrNilError{
+			ErrPrefix:     ePrefix.String(),
+			ParameterName: "'bigInt'",
+		}
+	}
+
+	if precision == nil {
+
+		return &InputPtrNilError{
+			ErrPrefix:     ePrefix.String(),
+			ParameterName: "'precision'",
+		}
+	}
+
+	if precision.Cmp(big.NewInt(0)) == -1 {
+
+		return &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "",
+			ErrContext: fmt.Sprintf("precision='%v'",
+				precision.Text(10)),
+			ErrMessage: "Error: Input parameter 'precision' IS LESS THAN ZERO!",
+		}
+	}
+
+	maxUint32 := big.NewInt(0).SetUint64(uint64(math.MaxUint32))
+
+	if precision.Cmp(maxUint32) == 1 {
+
+		return &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "",
+			ErrContext: fmt.Sprintf("precision='%v'",
+				precision.Text(10)),
+			ErrMessage: fmt.Sprintf("Error: Input parameter 'precision' exceeds maximum limit of '%v'!",
+				maxUint32.Text(10)),
+		}
+	}
+
+	uintPrecision := uint(precision.Uint64())
+
+	err = new(bigIntNumNanobot).setBigInt(
+		bNum,
+		bigInt,
+		uintPrecision,
+		ePrefix.XCpy(
+			fmt.Sprintf("Setting 'bNum' 'bigI'='%v' precision= '%v'",
+				bigInt.Text(10), uintPrecision)))
+
+	return err
+}
+
+// setBigIntBigPrecisionNumSeps
+//
+// Creates a new BigIntNum instance using a *big.Int type and its
+// associated precision (also of type *big.Int).
+//
+// The 'precision' parameter specifies the number of digits to the right
+// of the decimal place. The Numeric value is equal to bigInt x 10^(precision x -1).
+// This effectively locates the decimal place by counting from the extreme right
+// of the integer number, 'precision' places to the left. See the example below.
+//
+//		 Precision Example:
+//		 ==================
+//
+//		     Integer Value    precision     Numeric Value
+//		 			  123456					 3					  123.456
+//		 	             123456 x 10^-3  =    123.456
+//
+//		 Numeric Seprators
+//		 =================
+//
+//		 The returned BigIntNum instance will be configured with the
+//		 Numeric Separators provided by input parameter 'numSeps'.
+//		 Numeric Separatpors consist of decimal separators, thousands
+//		 separators and a currency symbol.
+//
+//		 Input Parameters
+//		 ================
+//
+//		 bNum                     *BigIntNum
+//		   An instance of BigIntNum which will be reconfigured
+//			  according to values prvovided by input parameters 'bigInt'
+//			  'precision' and 'numSeps'.
+//
+//
+//		 bigInt                   *big.Int
+//		   'bigInt' is a type *big.Int and represents the integer
+//				value of the number; that is, the numeric value without
+//				decimal digits.
+//
+//
+//		 precision                *big.Int
+//		   This integer value (always a positive value) identifies
+//		   the location of the decimal place in the integer value 'bigInt'.
+//		   The decimal place location is calculated by starting with the
+//		   right most digit in the integer number and counting	left,
+//		   'precision' places. If precision is greater than the maximum
+//		   value of an unsigned integer (+4,294,967,295,	which equals
+//		   2^32 − 1), an error will be triggered. Also, if the 'precision'
+//		   value is less than zero, an error will be triggered.
+//
+//		     Integer Value		precision			Numeric Value
+//		       123456					 3					  123.456
+//		                123456 x 10^-3  =    123.456
+//
+//
+//		 numSeps			NumericSeparatorDto
+//		   Numeric Separators specify the symbols or characters (runes)
+//		   used for the decimal separator, thousands separator and
+//		   currency symbol. These separators are used when displaying
+//		   numeric values in number strings.
+//
+//		   BigIntNum instance, 'bNum', will be reconfigured with the
+//		   Numeric Separators provided by 'numSeps'.
+//
+//	    If any of the 'numSep' values are invalid, they will be
+//	    reset to USA default values.
+//
+//		 Return Parameters
+//		 =================
+//
+//		 error
+//		   If no errors are encountered during execution, this method
+//		   return an error value of 'nil'.
+func (bIngNumUtil *bigIntNumUtility) setBigIntBigPrecisionNumSeps(
+	bNum *BigIntNum,
+	bigInt *big.Int,
+	precision *big.Int,
+	numSeps NumericSeparatorDto,
+	errPrefDto *ePref.ErrPrefixDto) error {
+
+	if bIngNumUtil.lock == nil {
+		bIngNumUtil.lock = new(sync.Mutex)
+	}
+
+	bIngNumUtil.lock.Lock()
+
+	defer bIngNumUtil.lock.Unlock()
+
+	var ePrefix *ePref.ErrPrefixDto
+
+	var err error
+
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
+		errPrefDto,
+		"bigIntNumUtility.setBigIntBigPrecisionNumSeps",
+		"")
+
+	if err != nil {
+		return err
+	}
+
+	if bNum == nil {
+
+		return &InputPtrNilError{
+			ErrPrefix:     ePrefix.String(),
+			ParameterName: "'bNum'",
+		}
+	}
+
+	if bigInt == nil {
+
+		return &InputPtrNilError{
+			ErrPrefix:     ePrefix.String(),
+			ParameterName: "'bigInt'",
+		}
+	}
+
+	if precision == nil {
+
+		return &InputPtrNilError{
+			ErrPrefix:     ePrefix.String(),
+			ParameterName: "'precision'",
+		}
+	}
+
+	numSeps.SetDefaultsIfEmpty()
+
+	if precision.Cmp(big.NewInt(0)) == -1 {
+
+		return &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "",
+			ErrContext: fmt.Sprintf("precision= '%v'", precision.Text(10)),
+			ErrMessage: "Error: Input parameter 'precision' IS LESS THAN ZERO!",
+		}
+	}
+
+	maxUint32 := big.NewInt(0).SetUint64(uint64(math.MaxUint32))
+
+	if precision.Cmp(maxUint32) == 1 {
+
+		return &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "",
+			ErrContext: fmt.Sprintf("precision= '%v'",
+				precision.Text(10)),
+			ErrMessage: fmt.Sprintf("Error: Input parameter 'precision' exceeds maximum limit of '%v' !",
+				maxUint32.Text(10)),
+		}
+	}
+
+	err = new(bigIntNumNanobot).setBigIntNumSeps(
+		bNum,
+		bigInt,
+		uint(precision.Uint64()),
+		numSeps,
+		ePrefix.XCpy(fmt.Sprintf("Setting bNum bigInt= '%v'  precision= '%v'",
+			bigInt.Text(10), precision.Text(10))))
+
+	return err
 }

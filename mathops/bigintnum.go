@@ -3,7 +3,6 @@ package mathops
 import (
 	"fmt"
 	ePref "github.com/MikeAustin71/errpref"
-	"math"
 	"math/big"
 )
 
@@ -2862,10 +2861,10 @@ func (bNum *BigIntNum) NewWithNumSeps(
 //	Input Parameters
 //	================
 //
-//	bigI                     *big.Int
-//	  'bigI' is a type *big.Int and represents the integer value
-//	  of the number; that is, the numeric value without decimal
-//	   digits.
+//	bigInt                   *big.Int
+//	  'bigInt' is a type *big.Int and represents the integer
+//	  value of the number; that is, the numeric value without
+//	  decimal digits.
 //
 //	precision                uint
 //	  This unsigned integer (always a positive value) identifies
@@ -2892,7 +2891,7 @@ func (bNum *BigIntNum) NewWithNumSeps(
 //	USA numeric separators (decimal separator, thousands seprator,
 //	and currency symbol)
 func (bNum *BigIntNum) NewBigInt(
-	bigI *big.Int,
+	bigInt *big.Int,
 	precision uint) (BigIntNum, error) {
 
 	var ePrefix *ePref.ErrPrefixDto
@@ -2908,20 +2907,21 @@ func (bNum *BigIntNum) NewBigInt(
 		return BigIntNum{}, err
 	}
 
-	if bigI == nil {
+	bNum2 := BigIntNum{}
 
-		return BigIntNum{},
-			&InputPtrNilError{
-				ErrPrefix:     ePrefix.String(),
-				ParameterName: "'bigI'",
-			}
-	}
+	numSepsDto := NumericSeparatorDto{}
 
-	return new(bigIntNumMechanics).newBigInt(
-		bigI,
+	numSepsDto.SetDefaultsIfEmpty()
+
+	err = new(bigIntNumNanobot).setBigIntNumSeps(
+		&bNum2,
+		bigInt,
 		precision,
-		ePrefix.XCpy(fmt.Sprintf("bigI= '%v'  precision= '%v'",
-			bigI.Text(10), precision)))
+		numSepsDto,
+		ePrefix.XCpy(fmt.Sprintf("bigInt= '%v'  precision= '%v'",
+			bigInt.Text(10), precision)))
+
+	return bNum2, err
 }
 
 // NewBigIntNumSeps
@@ -2945,7 +2945,7 @@ func (bNum *BigIntNum) NewBigInt(
 //	Input Parameters
 //	================
 //
-//	bigI                     *big.Int
+//	bigInt                   *big.Int
 //	  'bigI' is a type *big.Int and represents the integer value
 //	  of the number; that is, the numeric value without decimal
 //	   digits.
@@ -2983,7 +2983,7 @@ func (bNum *BigIntNum) NewBigInt(
 //	  If no errors are encountered during execution, this method
 //	  will return an error value of 'nil'.
 func (bNum *BigIntNum) NewBigIntNumSeps(
-	bigI *big.Int,
+	bigInt *big.Int,
 	precision uint,
 	numSepsDto NumericSeparatorDto) (BigIntNum, error) {
 
@@ -3000,7 +3000,7 @@ func (bNum *BigIntNum) NewBigIntNumSeps(
 		return BigIntNum{}, err
 	}
 
-	if bigI == nil {
+	if bigInt == nil {
 
 		return BigIntNum{},
 			&InputPtrNilError{
@@ -3009,68 +3009,17 @@ func (bNum *BigIntNum) NewBigIntNumSeps(
 			}
 	}
 
-	return new(bigIntNumMechanics).newBigIntNumSeps(
-		bigI,
+	bNum2 := BigIntNum{}
+
+	err = new(bigIntNumNanobot).setBigIntNumSeps(
+		&bNum2,
+		bigInt,
 		precision,
 		numSepsDto,
 		ePrefix.XCpy(fmt.Sprintf("bigI= '%v'  precision= '%v'",
-			bigI.Text(10), precision)))
-}
+			bigInt.Text(10), precision)))
 
-// NewBigIntExponent
-//
-// New bigInt Exponent returns a new BigIntNum instance
-// in which the numeric value is set using an integer
-// multiplied by 10 raised to the power of the 'exponent'
-// parameter.
-//
-//	numeric value = integer X 10^exponent
-//
-//						OR
-//
-//	BigIntNum (return value) = bigI X 10^exponent
-//
-// If exponent is less than +1, precision is set equal to
-// exponent and bigI is unchanged.
-//
-// If exponent is greater than 0, bigI is multiplied by 10
-// raised to the power of 'exponent', and precision is set
-// equal to zero.
-//
-// Examples:
-//
-//	biNum :=
-//			new(BigIntNum).
-//				NewBigIntExponent(big.NewInt(int64(123456)), -3) =
-//								"123.456"  precision = 3
-//
-//	biNum :=
-//			BigIntNum{}.NewBigIntExponent(big.NewInt(int64(123456)), 3) = "123456.000" precision = 3
-//
-//	NOTE
-//	====
-//
-//	The returned new instance of BigIntNum will contain default
-//	USA numeric separators (decimal separator, thousands seprator,
-//	and currency symbol)
-func (bNum *BigIntNum) NewBigIntExponent(
-	bigI *big.Int, exponent int) (BigIntNum, error) {
-
-	var ePrefix *ePref.ErrPrefixDto
-	var err error
-
-	ePrefix,
-		err = ePref.ErrPrefixDto{}.NewIEmpty(
-		nil,
-		"BigIntNum.NewBigIntExponent",
-		"")
-
-	if err != nil {
-		return BigIntNum{}, err
-	}
-
-	return new(bigIntNumNeutron).newBigIntExponent(
-		bigI, exponent, ePrefix)
+	return bNum2, err
 }
 
 // NewBigIntBigPrecision
@@ -3087,36 +3036,44 @@ func (bNum *BigIntNum) NewBigIntExponent(
 // extreme right of the integer number, 'precision' places to the
 // left. See the example below.
 //
-//	 Input Parameters
-//	 ================
+//		 Input Parameters
+//		 ================
 //
-//	 bigI          *big.Int
+//		 bigI          *big.Int
 //
-//	 'bigI' is a type *big.Int and represents the integer value of
-//	 the number; that is, the numeric value without decimal digits.
+//		 'bigI' is a type *big.Int and represents the integer value of
+//		 the number; that is, the numeric value without decimal digits.
 //
 //
-//	 precision     *big.In
+//		 precision     *big.In
 //
-//	 This integer value (always a positive value) identifies the
-//	 location of the decimal place in the integer value 'bigI'. The
-//	 decimal place location is calculated by starting with the
-//	 right most digit in the integer number and counting	left,
-//	 'precision' places. If precision is greater than the maximum
-//	 value of an unsigned integer (+4,294,967,295,	which equals
-//	 2^32 − 1), an error will be triggered. Also, if the 'precision'
-//	 value is less than zero, an error will be triggered.
+//		 This integer value (always a positive value) identifies the
+//		 location of the decimal place in the integer value 'bigI'. The
+//		 decimal place location is calculated by starting with the
+//		 right most digit in the integer number and counting left,
+//		 'precision' places.
 //
-//	 Example
-//	 =======
+//		   Integer Value    precision    Numeric Value
 //
-//	 Integer Value    precision    Numeric Value
+//			    123456					 3					  123.456
+//	                123456 x 10^-3  =    123.456
 //
-//		  123456					 3					  123.456
+//		 If precision is greater than the maximum value of an unsigned
+//		 integer (+4,294,967,295,	which equals 2^32 − 1), an error will
+//		 be triggered. Also, if the 'precision' value is less than zero,
+//		 an error will be triggered.
 //
-// The new BigIntNum instance returned by this method will contain
-// USA default numeric separators (decimal separator, thousands
-// separator and currency symbol).
+//		 Numeric Separators
+//		 ==================
+//
+//		 Numeric Separators specify the symbols or characters (runes)
+//	  used for the decimal separator, thousands separator and
+//	  currency symbol. These separators are used when displaying
+//	  numeric values in number strings.
+//
+//	  The new BigIntNum instance returned by this method will contain
+//	  USA default numeric separators (decimal separator, thousands
+//	  separator and currency symbol).
 func (bNum *BigIntNum) NewBigIntBigPrecision(
 	bigInt *big.Int, precision *big.Int) (BigIntNum, error) {
 
@@ -3129,65 +3086,13 @@ func (bNum *BigIntNum) NewBigIntBigPrecision(
 		"BigIntNum.NewBigIntBigPrecision",
 		"")
 
-	if err != nil {
-		return BigIntNum{}, err
-	}
-
-	if bigInt == nil {
-
-		return BigIntNum{},
-			&InputPtrNilError{
-				ErrPrefix:     ePrefix.String(),
-				ParameterName: "'bigInt'",
-			}
-	}
-
-	if precision == nil {
-
-		return BigIntNum{},
-			&InputPtrNilError{
-				ErrPrefix:     ePrefix.String(),
-				ParameterName: "'bigInt'",
-			}
-	}
-
-	if precision.Cmp(big.NewInt(0)) == -1 {
-
-		return BigIntNum{},
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "",
-				ErrContext: fmt.Sprintf("precision='%v'",
-					precision.Text(10)),
-				ErrMessage: "Error: Input parameter 'precision' IS LESS THAN ZERO!",
-			}
-	}
-
-	maxUint32 := big.NewInt(0).SetUint64(uint64(math.MaxUint32))
-
-	if precision.Cmp(maxUint32) == 1 {
-
-		return BigIntNum{},
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "",
-				ErrContext: fmt.Sprintf("precision='%v'",
-					precision.Text(10)),
-				ErrMessage: "Error: Input parameter 'precision' exceeds maximum limit of '4,294,967,295'!",
-			}
-	}
-
 	bINum2 := BigIntNum{}
 
-	uintPrecision := uint(precision.Uint64())
-
-	err = new(bigIntNumNanobot).setBigInt(
+	err = new(bigIntNumUtility).setBigIntBigPrecision(
 		&bINum2,
 		bigInt,
-		uintPrecision,
-		ePrefix.XCpy(
-			fmt.Sprintf("Setting 'bNum' 'bigI'='%v' precision= '%v'",
-				bigInt.Text(10), uintPrecision)))
+		precision,
+		ePrefix)
 
 	return bINum2, err
 }
@@ -3271,21 +3176,73 @@ func (bNum *BigIntNum) NewBigIntBigPrecisionNumSeps(
 		return BigIntNum{}, err
 	}
 
-	if bigInt == nil {
+	bNum2 := BigIntNum{}
 
-		return BigIntNum{},
-			&InputPtrNilError{
-				ErrPrefix:     ePrefix.String(),
-				ParameterName: "'bigInt'",
-			}
-	}
-
-	return new(bigIntNumNeutron).newBigIntNumBigPrecisionNumSeps(
+	err = new(bigIntNumUtility).setBigIntBigPrecisionNumSeps(
+		&bNum2,
 		bigInt,
 		precision,
 		numSeps,
 		ePrefix.XCpy(fmt.Sprintf("bigInt= '%v'  precision= '%v'",
 			bigInt.Text(10), precision)))
+
+	return bNum2, err
+}
+
+// NewBigIntExponent
+//
+// New bigInt Exponent returns a new BigIntNum instance
+// in which the numeric value is set using an integer
+// multiplied by 10 raised to the power of the 'exponent'
+// parameter.
+//
+//	numeric value = integer X 10^exponent
+//
+//						OR
+//
+//	BigIntNum (return value) = bigI X 10^exponent
+//
+// If exponent is less than +1, precision is set equal to
+// exponent and bigI is unchanged.
+//
+// If exponent is greater than 0, bigI is multiplied by 10
+// raised to the power of 'exponent', and precision is set
+// equal to zero.
+//
+// Examples:
+//
+//	biNum :=
+//			new(BigIntNum).
+//				NewBigIntExponent(big.NewInt(int64(123456)), -3) =
+//								"123.456"  precision = 3
+//
+//	biNum :=
+//			BigIntNum{}.NewBigIntExponent(big.NewInt(int64(123456)), 3) = "123456.000" precision = 3
+//
+//	NOTE
+//	====
+//
+//	The returned new instance of BigIntNum will contain default
+//	USA numeric separators (decimal separator, thousands seprator,
+//	and currency symbol)
+func (bNum *BigIntNum) NewBigIntExponent(
+	bigI *big.Int, exponent int) (BigIntNum, error) {
+
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
+
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"BigIntNum.NewBigIntExponent",
+		"")
+
+	if err != nil {
+		return BigIntNum{}, err
+	}
+
+	return new(bigIntNumNeutron).newBigIntExponent(
+		bigI, exponent, ePrefix)
 }
 
 // NewBigFloat
@@ -3321,14 +3278,6 @@ func (bNum *BigIntNum) NewBigFloat(
 		nil,
 		"BigIntNum.NewBigFloat",
 		"")
-
-	if err != nil {
-		return BigIntNum{}, err
-	}
-
-	err = new(bigIntNumAtom).isBigIntNumValid(
-		bNum,
-		ePrefix.XCpy("Validating 'bNum'"))
 
 	if err != nil {
 		return BigIntNum{}, err
@@ -4701,9 +4650,20 @@ func (bNum *BigIntNum) NewOne(precision uint) (BigIntNum, error) {
 		return BigIntNum{}, err
 	}
 
-	return new(bigIntNumMolecule).newOne(
+	numSepsDto := NumericSeparatorDto{}
+
+	numSepsDto.SetDefaultsIfEmpty()
+
+	bNum2 := BigIntNum{}
+
+	err = new(bigIntNumNanobot).setBigIntNumSeps(
+		&bNum2,
+		big.NewInt(1),
 		precision,
+		numSepsDto,
 		ePrefix)
+
+	return bNum2, err
 }
 
 // NewTwo
@@ -4747,63 +4707,20 @@ func (bNum *BigIntNum) NewTwo(precision uint) (BigIntNum, error) {
 		return BigIntNum{}, err
 	}
 
-	bIntNum2, err := new(bigIntNumMechanics).newZero(
-		0,
+	numSepsDto := NumericSeparatorDto{}
+
+	numSepsDto.SetDefaultsIfEmpty()
+
+	bNum2 := BigIntNum{}
+
+	err = new(bigIntNumNanobot).setBigIntNumSeps(
+		&bNum2,
+		big.NewInt(2),
+		precision,
+		numSepsDto,
 		ePrefix)
 
-	if err != nil {
-
-		return BigIntNum{},
-			&FuncReturnError{
-				ErrPrefix: ePrefix.String(),
-				ReturnFunc: "bIntNum2, err := new(bigIntNumMechanics).\n" +
-					"    .newZero(0, ePrefix)",
-				ErrContext: "",
-				ErrMessage: err.Error(),
-			}
-	}
-
-	bigINanobot := new(bigIntNumNanobot)
-
-	if precision == 0 {
-
-		err = bigINanobot.setBigInt(
-			&bIntNum2,
-			big.NewInt(2),
-			0,
-			ePrefix.XCpy("Setting bIntNum2=2"))
-
-		if err != nil {
-
-			return BigIntNum{},
-				&FuncReturnError{
-					ErrPrefix: ePrefix.String(),
-					ReturnFunc: "err = new(bigIntNumNanobot).setBigInt(\n" +
-						"    &bIntNum2, big.NewInt(2), 0, ePrefix)",
-					ErrContext: "precision == 0",
-					ErrMessage: err.Error(),
-				}
-		}
-
-		return bIntNum2, nil
-	}
-
-	scaleVal := big.NewInt(0).Exp(big.NewInt(10), big.NewInt(int64(precision)), nil)
-
-	newVal := big.NewInt(0).Mul(big.NewInt(2), scaleVal)
-
-	err = bigINanobot.setBigInt(
-		&bIntNum2,
-		newVal,
-		precision,
-		ePrefix.XCpy("newVal->bIntNum2"))
-
-	if err != nil {
-
-		return BigIntNum{}, err
-	}
-
-	return bIntNum2, nil
+	return bNum2, err
 }
 
 // NewThree
@@ -4846,48 +4763,20 @@ func (bNum *BigIntNum) NewThree(precision uint) (BigIntNum, error) {
 		return BigIntNum{}, err
 	}
 
-	// Sets bIntNum2 with default USA Numeric Separators
-	bIntNum2, err := new(bigIntNumMechanics).newZero(
-		0,
+	numSepsDto := NumericSeparatorDto{}
+
+	numSepsDto.SetDefaultsIfEmpty()
+
+	bNum2 := BigIntNum{}
+
+	err = new(bigIntNumNanobot).setBigIntNumSeps(
+		&bNum2,
+		big.NewInt(3),
+		precision,
+		numSepsDto,
 		ePrefix)
 
-	if err != nil {
-
-		return BigIntNum{},
-			&FuncReturnError{
-				ErrPrefix: ePrefix.String(),
-				ReturnFunc: "bIntNum2, err := new(bigIntNumMechanics).\n" +
-					"    .newZero(0, ePrefix)",
-				ErrContext: "",
-				ErrMessage: err.Error(),
-			}
-	}
-
-	bigINumNanobot := new(bigIntNumNanobot)
-
-	if precision == 0 {
-
-		err = bigINumNanobot.setBigInt(
-			&bIntNum2,
-			big.NewInt(3),
-			0,
-			ePrefix.XCpy("Setting bIntNum2=3 precision=0"))
-
-		return bIntNum2, err
-	}
-
-	scaleVal := big.NewInt(0).Exp(big.NewInt(10), big.NewInt(int64(precision)), nil)
-
-	newVal := big.NewInt(0).Mul(big.NewInt(3), scaleVal)
-
-	err = bigINumNanobot.setBigInt(
-		&bIntNum2,
-		newVal,
-		precision,
-		ePrefix.XCpy(fmt.Sprintf("Setting bIntNum2=%v precision=%v",
-			newVal.Text(10), precision)))
-
-	return bIntNum2, err
+	return bNum2, err
 }
 
 // NewFive
@@ -4927,50 +4816,20 @@ func (bNum *BigIntNum) NewFive(precision uint) (BigIntNum, error) {
 		return BigIntNum{}, err
 	}
 
-	// Sets Numeric Separators to USA Defaults
-	bIntNum2, err := new(bigIntNumMechanics).newZero(
-		0,
+	numSepsDto := NumericSeparatorDto{}
+
+	numSepsDto.SetDefaultsIfEmpty()
+
+	bNum2 := BigIntNum{}
+
+	err = new(bigIntNumNanobot).setBigIntNumSeps(
+		&bNum2,
+		big.NewInt(5),
+		precision,
+		numSepsDto,
 		ePrefix)
 
-	if err != nil {
-
-		return BigIntNum{},
-			&FuncReturnError{
-				ErrPrefix: ePrefix.String(),
-				ReturnFunc: "bIntNum2, err := new(bigIntNumMechanics).\n" +
-					"    .newZero(0, ePrefix)",
-				ErrContext: "",
-				ErrMessage: err.Error(),
-			}
-	}
-
-	bigINumNanobot := new(bigIntNumNanobot)
-
-	if precision == 0 {
-
-		// Retains original USA Default
-		// Numeric Separators
-		err = bigINumNanobot.setBigInt(
-			&bIntNum2,
-			big.NewInt(5),
-			0,
-			ePrefix.XCpy("Setting bIntNum2=5, precision=0"))
-
-		return bIntNum2, err
-	}
-
-	scaleVal := big.NewInt(0).Exp(big.NewInt(10), big.NewInt(int64(precision)), nil)
-
-	newVal := big.NewInt(0).Mul(big.NewInt(5), scaleVal)
-
-	err = bigINumNanobot.setBigInt(
-		&bIntNum2,
-		newVal,
-		precision,
-		ePrefix.XCpy(fmt.Sprintf("Setting bIntNum2=%v precision=%v",
-			newVal.Text(10), precision)))
-
-	return bIntNum2, err
+	return bNum2, err
 }
 
 // NewTen
@@ -5010,42 +4869,20 @@ func (bNum *BigIntNum) NewTen(precision uint) (BigIntNum, error) {
 		return BigIntNum{}, err
 	}
 
-	bIntNum2, err := new(bigIntNumMechanics).newZero(
-		0,
-		ePrefix.XCpy("Setting bIntNum2=0 precision=0"))
+	numSepsDto := NumericSeparatorDto{}
 
-	if err != nil {
+	numSepsDto.SetDefaultsIfEmpty()
 
-		return BigIntNum{}, err
-	}
+	bNum2 := BigIntNum{}
 
-	bigINumNanobot := new(bigIntNumNanobot)
-
-	if precision == 0 {
-
-		err = bigINumNanobot.setBigInt(
-			&bIntNum2,
-			big.NewInt(10),
-			0,
-			ePrefix.XCpy("Setting bIntNum2=10 precision=0"))
-
-		return bIntNum2, err
-	}
-
-	scaleVal := big.NewInt(0).Exp(big.NewInt(10), big.NewInt(int64(precision)), nil)
-
-	newVal := big.NewInt(0).Mul(big.NewInt(10), scaleVal)
-
-	err = bIntNum2.SetBigInt(newVal, precision)
-
-	err = bigINumNanobot.setBigInt(
-		&bIntNum2,
-		newVal,
+	err = new(bigIntNumNanobot).setBigIntNumSeps(
+		&bNum2,
+		big.NewInt(10),
 		precision,
-		ePrefix.XCpy(fmt.Sprintf("Setting bIntNum2= '%v' precision= '%v'",
-			newVal.Text(10), precision)))
+		numSepsDto,
+		ePrefix)
 
-	return bIntNum2, err
+	return bNum2, err
 }
 
 // NewUint
@@ -5098,25 +4935,20 @@ func (bNum *BigIntNum) NewUint(uintNum uint, precision uint) (BigIntNum, error) 
 		return BigIntNum{}, err
 	}
 
-	// Sets bIntNum2 Numeric Separators to default USA
-	bIntNum2, err := new(bigIntNumMechanics).newZero(
-		0,
-		ePrefix.XCpy("Setting bIntNum2=0 precision=0"))
+	numSepsDto := NumericSeparatorDto{}
 
-	if err != nil {
-		return BigIntNum{}, err
-	}
+	numSepsDto.SetDefaultsIfEmpty()
 
-	newBigIVal := big.NewInt(0).SetUint64(uint64(uintNum))
+	bNum2 := BigIntNum{}
 
-	err = new(bigIntNumNanobot).setBigInt(
-		&bIntNum2,
-		newBigIVal,
+	err = new(bigIntNumNanobot).setBigIntNumSeps(
+		&bNum2,
+		big.NewInt(0).SetUint64(uint64(uintNum)),
 		precision,
-		ePrefix.XCpy(fmt.Sprintf("Setting bIntNum2=%v precision=%v",
-			newBigIVal.Text(10), precision)))
+		numSepsDto,
+		ePrefix)
 
-	return bIntNum2, err
+	return bNum2, err
 }
 
 // NewUintExponent
@@ -5247,13 +5079,22 @@ func (bNum *BigIntNum) NewUint32(
 		return BigIntNum{}, err
 	}
 
-	bigI := big.NewInt(0).SetUint64(uint64(uint32Num))
+	bigInt := big.NewInt(0).SetUint64(uint64(uint32Num))
 
-	bIntNum2, err := new(bigIntNumMechanics).newBigInt(
-		bigI, precision, ePrefix.XCpy(fmt.Sprintf("Setting bIntNum2; bigI=%v precision=%v",
-			bigI.Text(10), precision)))
+	numSepsDto := NumericSeparatorDto{}
 
-	return bIntNum2, err
+	numSepsDto.SetDefaultsIfEmpty()
+
+	bNum2 := BigIntNum{}
+
+	err = new(bigIntNumNanobot).setBigIntNumSeps(
+		&bNum2,
+		bigInt,
+		precision,
+		numSepsDto,
+		ePrefix)
+
+	return bNum2, err
 }
 
 // NewUint32Exponent
@@ -5386,13 +5227,22 @@ func (bNum *BigIntNum) NewUint64(
 
 	newVal := big.NewInt(0).SetUint64(uint64Num)
 
-	bIntNum2, err := new(bigIntNumMechanics).newBigInt(
+	numSepsDto := NumericSeparatorDto{}
+
+	numSepsDto.SetDefaultsIfEmpty()
+
+	bNum2 := BigIntNum{}
+
+	err = new(bigIntNumNanobot).setBigIntNumSeps(
+		&bNum2,
 		newVal,
 		precision,
+		numSepsDto,
 		ePrefix.XCpy(fmt.Sprintf("Setting 'bIntNum2' newVal= '%v' precision= '%v'",
 			newVal.Text(10), precision)))
 
-	return bIntNum2, err
+	return bNum2, err
+
 }
 
 // NewUint64Exponent
@@ -5507,9 +5357,20 @@ func (bNum *BigIntNum) NewZero(precision uint) (BigIntNum, error) {
 		return BigIntNum{}, err
 	}
 
-	return new(bigIntNumMechanics).newZero(
+	numSepsDto := NumericSeparatorDto{}
+
+	numSepsDto.SetDefaultsIfEmpty()
+
+	bNum2 := BigIntNum{}
+
+	err = new(bigIntNumNanobot).setBigIntNumSeps(
+		&bNum2,
+		big.NewInt(0),
 		precision,
-		ePrefix.XCpy(fmt.Sprintf("precistion= '%v'", precision)))
+		numSepsDto,
+		ePrefix)
+
+	return bNum2, err
 }
 
 // Reset
@@ -5759,6 +5620,184 @@ func (bNum *BigIntNum) SetBigIntNumSeps(
 		ePrefix.XCpy(
 			fmt.Sprintf("Setting 'bNum' 'bigI'='%v' precision= '%v'",
 				bigI.Text(10), precision)))
+}
+
+// SetBigIntBigPrecision
+//
+// Creates a new BigIntNum instance using a *big.Int type and its
+// associated *big.Int precision.
+//
+// The 'precision' parameter specifies the number of digits to the
+// right of the decimal place. The Numeric value is equal to:
+//
+//	bigInt x 10^(precision x -1)
+//
+// This effectively locates the decimal place by counting from the
+// extreme right of the integer number, 'precision' places to the
+// left. See the example below.
+//
+//	Input Parameters
+//	================
+//
+//	bigInt          *big.Int
+//
+//	'bigInt' is a type *big.Int and represents the integer value
+//	 of the number; that is, the numeric value without decimal
+//	 digits.
+//
+//
+//	precision       *big.Int
+//
+//	This integer value (always a positive value) identifies the
+//	location of the decimal place in the integer value 'bigInt'.
+//	The decimal place location is calculated by starting with the
+//	right most digit in the integer number and counting left,
+//	'precision' places.
+//
+//	  Integer Value    precision    Numeric Value
+//
+//		    123456					 3					  123.456
+//	             123456 x 10^-3  =    123.456
+//
+//	If precision is greater than the maximum value of an unsigned
+//	integer (+4,294,967,295,	which equals 2^32 − 1), an error will
+//	be triggered. Also, if the 'precision' value is less than zero,
+//	an error will be triggered.
+//
+//	Numeric Separators
+//	==================
+//
+//	Numeric Separators specify the symbols or characters (runes)
+//	used for the decimal separator, thousands separator and
+//	currency symbol. These separators are used when displaying
+//	numeric values in number strings.
+//
+//	The Numeric Separators previous configured in the current
+//	instance of BigIntNum will remain unchanged and will NOT
+//	be altered by this method. However, if any of the current
+//	Numeric Separators are invalid, thy will be automatically
+//	reset to USA default values.
+func (bNum *BigIntNum) SetBigIntBigPrecision(
+	bigInt *big.Int,
+	precision *big.Int) error {
+
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
+
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"BigIntNum.SetBigInt",
+		"")
+
+	if err != nil {
+		return err
+	}
+
+	numSepsDto := NumericSeparatorDto{
+		DecimalSeparator:   bNum.decimalSeparator,
+		ThousandsSeparator: bNum.thousandsSeparator,
+		CurrencySymbol:     bNum.currencySymbol,
+	}
+
+	numSepsDto.SetDefaultsIfEmpty()
+
+	return new(bigIntNumUtility).setBigIntBigPrecisionNumSeps(
+		bNum,
+		bigInt,
+		precision,
+		numSepsDto,
+		ePrefix.XCpy(
+			fmt.Sprintf("Setting 'bNum' 'bigI'='%v' precision= '%v'",
+				bigInt.Text(10), precision)))
+}
+
+// SetBigIntBigPrecisionNumSeps
+//
+// Reconfigures the current BigIntNum instance using a *big.Int
+// type and its associated precision (also of type *big.Int).
+//
+// The 'precision' parameter specifies the number of digits to
+// the right of the decimal place. The Numeric value is equal to
+// bigI x 10^(precision x -1). This effectively locates the decimal
+// place by counting from the extreme right of the integer number,
+// 'precision' places to the left. See the example below.
+//
+//	Precision Example:
+//	==================
+//
+//			Integer Value		precision			Numeric Value
+//			  123456					 3					  123.456
+//
+//	Numeric Seprators
+//	=================
+//
+//	The returned BigIntNum instance will be configured with the
+//	Numeric Separators provided by input parameter 'numSeps'.
+//	Numeric Separatpors consist of decimal separators, thousands
+//	separators and a currency symbol.
+//
+//	Input Parameters
+//	================
+//
+//	bigI 				             *big.Int
+//	  'bigI' is a type *big.Int and represents the integer
+//	  value of the number; that is, the numeric value without
+//	  decimal digits.
+//
+//
+//	precision		              *big.Int
+//	  This integer value (always a positive value) identifies
+//	  the location of the decimal place in the integer value 'bigI'.
+//	  The decimal place location is calculated by starting with the
+//	  right most digit in the integer number and counting	left,
+//	  'precision' places. If precision is greater than the maximum
+//	  value of an unsigned integer (+4,294,967,295,	which equals
+//	  2^32 − 1), an error will be triggered. Also, if the 'precision'
+//	  value is less than zero, an error will be triggered.
+//
+//
+//	numSeps			             NumericSeparatorDto
+//	  The returned instance of BigIntNum will be configured with the
+//	  Numeric Separators contained in this input parameter, 'numSeps'.
+//	  Numeric Separatpors consist of decimal separators, thousands
+//	  separators and a currency symbol.
+//
+//	Return Parameters
+//	=================
+//
+//	error
+//	  If no errors are encountered during execution, this method
+//	  will return an error value of 'nil'.
+func (bNum *BigIntNum) SetBigIntBigPrecisionNumSeps(
+	bigInt *big.Int,
+	precision *big.Int,
+	numSeps NumericSeparatorDto) (BigIntNum, error) {
+
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
+
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"BigIntNum.SetBigIntBigPrecisionNumSeps",
+		"")
+
+	if err != nil {
+		return BigIntNum{}, err
+	}
+
+	bNum2 := BigIntNum{}
+
+	err = new(bigIntNumUtility).setBigIntBigPrecisionNumSeps(
+		&bNum2,
+		bigInt,
+		precision,
+		numSeps,
+		ePrefix.XCpy(fmt.Sprintf("bigInt= '%v'  precision= '%v'",
+			bigInt.Text(10), precision)))
+
+	return bNum2, err
 }
 
 // SetBigIntExponent

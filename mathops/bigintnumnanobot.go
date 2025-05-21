@@ -406,7 +406,7 @@ func (bIntNumNano *bigIntNumNanobot) setBigInt(
 //	   Numeric Separators provided by 'numSepsDto'.
 func (bIntNumNano *bigIntNumNanobot) setBigIntNumSeps(
   bNum *BigIntNum,
-  bigI *big.Int,
+  bigInt *big.Int,
   precision uint,
   numSepsDto NumericSeparatorDto,
   errPrefDto *ePref.ErrPrefixDto) error {
@@ -426,7 +426,7 @@ func (bIntNumNano *bigIntNumNanobot) setBigIntNumSeps(
   ePrefix,
     err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
     errPrefDto,
-    "bigIntNumNanobot.setBigInt",
+    "bigIntNumNanobot.setBigIntNumSeps",
     "")
 
   if err != nil {
@@ -441,17 +441,17 @@ func (bIntNumNano *bigIntNumNanobot) setBigIntNumSeps(
     }
   }
 
-  if bigI == nil {
+  if bigInt == nil {
 
     return &InputPtrNilError{
       ErrPrefix:     ePrefix.String(),
-      ParameterName: "'bigI'",
+      ParameterName: "'bigInt'",
     }
   }
 
   new(bigIntNumElectron).empty(bNum)
 
-  bNum.bigInt = big.NewInt(0).Set(bigI)
+  bNum.bigInt = big.NewInt(0).Set(bigInt)
 
   bNum.precision = precision
 
@@ -480,6 +480,8 @@ func (bIntNumNano *bigIntNumNanobot) setBigIntNumSeps(
     bNum.absBigInt = big.NewInt(0).Set(bNum.bigInt)
 
   }
+
+  numSepsDto.SetDefaultsIfEmpty()
 
   err = new(bigIntNumAtom).setNumericSeparatorsDto(
     bNum,

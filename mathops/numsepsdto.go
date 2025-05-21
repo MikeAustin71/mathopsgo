@@ -15,6 +15,97 @@ type NumericSeparatorDto struct {
 	CurrencySymbol     rune // Currency Symbol
 }
 
+// CopyIn
+//
+// Receives an external instance of NumericSeparatorDto and
+// copies the member variables into the current instance of
+// NumericSeparatorDto
+//
+//	Input Parameters
+//	================
+//
+//	numSepsDtoSrc            *NumericSeparatorDto
+//	  An external instance of NumericSeparatorDto which
+//	  serves as the source for member element data copied
+//	  from to the current instance of NumericSeparatorDto.
+//	  Upon successful completion of this copy operation,
+//	  the current instance of NumericSeparatorDto will
+//	  constitute an identical copy of 'numSepsDtoSrc'.
+//
+//	setDefaultsIfEmpty       bool
+//	  If this boolean parameter is set to 'true' any
+//	  invalid values copied to the current instance of
+//	  NumericSeparatorDto will be automatically reset
+//	  to valid USA defaults.
+//
+//	  If this setDefaultsIfEmpty is set to 'false', any
+//	  invalid values identified in 'numSepsDtoSrc' will
+//	  trigger an error return.
+func (numSep *NumericSeparatorDto) CopyIn(
+	numSepsDtoSrc *NumericSeparatorDto,
+	setDefaultsIfEmpty bool) error {
+
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
+
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"NumericSeparatorDto.CopyIn",
+		"")
+
+	if err != nil {
+		return err
+	}
+
+	return new(numSepsDtoMechanics).copyNumSepsDto(
+		numSep, // Destination
+		numSepsDtoSrc,
+		setDefaultsIfEmpty,
+		ePrefix.XCpy("Copy 'numSepsDtoSrc' Into 'numSep'"))
+}
+
+// CopyOut
+//
+// Returns a deep copy of the current NumericSeparatorDto instance.
+//
+//	Input Parameters
+//	================
+//
+//	setDefaultsIfEmpty                bool
+//	  If this boolean parameter is set to 'true' any existging
+//	  invalid values in the returned NumericSeparatorDto copy
+//	  will be automatically reset to valid USA defaults.
+//
+//	  If this setDefaultsIfEmpty is set to 'false', any invalid
+//	  values in the returned NumericSeparatorDto copy will
+//	  trigger an error return.
+func (numSep *NumericSeparatorDto) CopyOut(setDefaultsIfEmpty bool) (NumericSeparatorDto, error) {
+
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
+
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"NumericSeparatorDto.CopyOut",
+		"")
+
+	if err != nil {
+		return NumericSeparatorDto{}, err
+	}
+
+	var numSepsDest = new(NumericSeparatorDto)
+
+	err = new(numSepsDtoMechanics).copyNumSepsDto(
+		numSepsDest,
+		numSep,
+		setDefaultsIfEmpty,
+		ePrefix.XCpy("Copy current 'numSep' into 'numSepsDest'"))
+
+	return *numSepsDest, err
+}
+
 // Equal - Compares two NumericSeparatorDto's and returns 'true' if they
 // are equivalent.
 func (numSep *NumericSeparatorDto) Equal(numSep2 NumericSeparatorDto) bool {
@@ -65,37 +156,9 @@ func (numSep *NumericSeparatorDto) IsValid(callingMethodName string) error {
 		return err
 	}
 
-	if numSep.DecimalSeparator == 0 {
-
-		return &FuncReturnError{
-			ErrPrefix:  ePrefix.String(),
-			ReturnFunc: "",
-			ErrContext: "numSep.DecimalSeparator == 0 {",
-			ErrMessage: "Error: NumericSeparatorDto member element 'numSep.DecimalSeparator' is INVALID!",
-		}
-	}
-
-	if numSep.ThousandsSeparator == 0 {
-
-		return &FuncReturnError{
-			ErrPrefix:  ePrefix.String(),
-			ReturnFunc: "",
-			ErrContext: "numSep.ThousandsSeparator == 0 {",
-			ErrMessage: "Error: NumericSeparatorDto member element 'numSep.ThousandsSeparator' is INVALID!",
-		}
-	}
-
-	if numSep.CurrencySymbol == 0 {
-
-		return &FuncReturnError{
-			ErrPrefix:  ePrefix.String(),
-			ReturnFunc: "",
-			ErrContext: "numSep.CurrencySymbol == 0 {",
-			ErrMessage: "Error: CurrencySymbol member element 'numSep.ThousandsSeparator' is INVALID!",
-		}
-	}
-
-	return nil
+	return new(numSepsDtoElectron).isValidNumStrDto(
+		numSep,
+		ePrefix)
 }
 
 // New - Returns a new instance of NumericSeparatorDto. The
@@ -104,7 +167,8 @@ func (numSep *NumericSeparatorDto) New() NumericSeparatorDto {
 
 	n2 := NumericSeparatorDto{}
 
-	n2.SetDefaultsIfEmpty()
+	new(numSepsDtoElectron).setNumSepDtoDefaultsIfEmpty(
+		&n2)
 
 	return n2
 }
@@ -113,17 +177,8 @@ func (numSep *NumericSeparatorDto) New() NumericSeparatorDto {
 // are zero, this method will set those elements to USA default values.
 func (numSep *NumericSeparatorDto) SetDefaultsIfEmpty() {
 
-	if numSep.DecimalSeparator == 0 {
-		numSep.DecimalSeparator = '.'
-	}
-
-	if numSep.ThousandsSeparator == 0 {
-		numSep.ThousandsSeparator = ','
-	}
-
-	if numSep.CurrencySymbol == 0 {
-		numSep.CurrencySymbol = '$'
-	}
+	new(numSepsDtoElectron).setNumSepDtoDefaultsIfEmpty(
+		numSep)
 }
 
 // String - Provides a formatted listing of the contents from the current
