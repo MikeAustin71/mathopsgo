@@ -744,7 +744,7 @@ func (bMultiply *BigIntMathMultiply) MultiplyBigIntNums(
 // 'multiplier', 3 is the 'multiplicand' and 15 is the 'product'
 // or result.
 //
-//	 multiplier x multiplicand = product or result
+//	multiplier x multiplicand = product or result
 //
 // This method performs the multiplication operation described
 // above and afterward returns the result or 'product' as a
