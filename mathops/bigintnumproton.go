@@ -420,9 +420,20 @@ func (bIntNumProton *bigIntNumProton) bigIntNumDivide(
 		return BigIntNum{}, err
 	}
 
-	return BigIntMathDivide{}.BigIntNumFracQuotient(
+	numSepsDto, err := new(bigIntNumAtom).getNumericSeparatorsDto(
+		&bNum2,
+		ePrefix.XCpy("bNum2.NumSeps->numSepsDto"))
+
+	if err != nil {
+		return BigIntNum{}, err
+	}
+
+	numSepsDto.SetDefaultsIfEmpty()
+
+	return new(BigIntMathDivide).BigIntNumFracQuotient(
 		bNum2,
 		*divisor,
+		numSepsDto,
 		maxPrecision)
 }
 
@@ -485,15 +496,6 @@ func (bIntNumProton *bigIntNumProton) bigIntNumDivideByFive(
 
 	}
 
-	numberStr, err := new(bigIntNumAtom).getBigIntNumStr(
-		bNum,
-		ePrefix)
-
-	if err != nil {
-
-		return BigIntNum{}, err
-	}
-
 	bNum2, err := new(bigIntNumUtility).bigIntNumCopyOut(
 		bNum,
 		ePrefix)
@@ -502,25 +504,43 @@ func (bIntNumProton *bigIntNumProton) bigIntNumDivideByFive(
 		return BigIntNum{}, err
 	}
 
-	fracQuotient, err =
-		BigIntMathDivide{}.BigIntNumDivideByFiveFracQuo(bNum2, maxPrecision)
+	numSepsDto, err := new(bigIntNumAtom).getNumericSeparatorsDto(
+		&bNum2,
+		ePrefix.XCpy("bNum2.NumSeps->numSepsDto"))
+
+	if err != nil {
+		return BigIntNum{}, err
+	}
+
+	numSepsDto.SetDefaultsIfEmpty()
+
+	bNum2Str, err := new(bigIntNumAtom).getBigIntNumStr(
+		&bNum2,
+		ePrefix.XCpy("bNum2->bNum2Str"))
 
 	if err != nil {
 
-		fracQuotient = new(bigIntNumMechanics).newBigIntNum()
-
-		return fracQuotient,
-			fmt.Errorf("%v\n"+
-				"Error returned by:\n"+
-				"fracQuotient, err = BigIntMathDivide{}.BigIntNumDivideByFiveFracQuo(bNum2, maxPrecision)\n"+
-				"bNum='%v'\n"+
-				"Error= %v\n",
-				ePrefix.String(),
-				numberStr,
-				err.Error())
+		return BigIntNum{}, err
 	}
 
-	return fracQuotient, err
+	fracQuotient, err =
+		new(BigIntMathDivide).
+			BigIntNumDivideByFiveFracQuo(bNum2, numSepsDto, maxPrecision)
+
+	if err != nil {
+
+		return BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix: ePrefix.String(),
+				ReturnFunc: "fracQuotient, err = new(BigIntMathDivide).\n" +
+					"    BigIntNumDivideByFiveFracQuo(bNum2, numSepsDto, maxPrecision)",
+				ErrContext: fmt.Sprintf("bNum2= '%v; maxPrecision= '%v'",
+					bNum2Str, maxPrecision),
+				ErrMessage: err.Error(),
+			}
+	}
+
+	return fracQuotient, nil
 }
 
 // DivideByTen - Divides the numerical value of the current BigIntNum by ten ('10'). The
@@ -584,32 +604,41 @@ func (bIntNumProton *bigIntNumProton) bigIntNumDivideByTen(
 
 	bNum2, err := new(bigIntNumUtility).bigIntNumCopyOut(
 		bNum,
-		ePrefix)
+		ePrefix.XCpy("bNum Copy Out > bNum2"))
 
 	if err != nil {
 
 		return BigIntNum{}, err
 	}
 
+	numSepsDto, err := new(bigIntNumAtom).getNumericSeparatorsDto(
+		&bNum2,
+		ePrefix.XCpy("bNum2.NumSeps->numSepsDto"))
+
+	if err != nil {
+		return BigIntNum{}, err
+	}
+
+	numSepsDto.SetDefaultsIfEmpty()
+
 	fracQuotient, err =
-		BigIntMathDivide{}.BigIntNumDivideByTenFracQuo(bNum2, maxPrecision)
+		new(BigIntMathDivide).BigIntNumDivideByTenFracQuo(
+			bNum2, numSepsDto, maxPrecision)
 
 	if err != nil {
 
-		fracQuotient = BigIntNum{}
-
-		return fracQuotient,
-			fmt.Errorf("%v\n"+
-				"Error returned by: \n"+
-				" biNumOne, err := new(BigIntNum).NewOne(bNum.precision)\n"+
-				"Error= %v\n",
-				ePrefix.String(),
-				err.Error())
+		return BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix: ePrefix.String(),
+				ReturnFunc: "fracQuotient, err = new(BigIntMathDivide).\n" +
+					"    BigIntNumDivideByTenFracQuo(\n" +
+					"    bNum2, numSepsDto, maxPrecision)",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
 	}
 
-	err = nil
-
-	return fracQuotient, err
+	return fracQuotient, nil
 }
 
 // DivideByTenToPower - Divides the numerical value of the current BigIntNum
@@ -751,21 +780,31 @@ func (bIntNumProton *bigIntNumProton) bigIntNumDivideByThree(
 		return BigIntNum{}, err
 	}
 
+	numSepsDto, err := new(bigIntNumAtom).getNumericSeparatorsDto(
+		&bNum2,
+		ePrefix.XCpy("bNum2.NumSeps->numSepsDto"))
+
+	if err != nil {
+		return BigIntNum{}, err
+	}
+
+	numSepsDto.SetDefaultsIfEmpty()
+
 	fracQuotient, err =
-		BigIntMathDivide{}.BigIntNumDivideByThreeFracQuo(bNum2, maxPrecision)
+		new(BigIntMathDivide).
+			BigIntNumDivideByThreeFracQuo(bNum2, numSepsDto, maxPrecision)
 
 	if err != nil {
 
-		fracQuotient = new(bigIntNumMechanics).new()
-
-		return fracQuotient,
-			fmt.Errorf("%v\n"+
-				"Error returned by:\n"+
-				"BigIntMathDivide{}.BigIntNumDivideByThreeFracQuo(bNum2, maxPrecision) "+
-				"Error= %v\n",
-				ePrefix.String(),
-				err.Error())
-
+		return BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix: ePrefix.String(),
+				ReturnFunc: "fracQuotient, err = new(BigIntMathDivide).\n" +
+					"    BigIntNumDivideByThreeFracQuo(\n" +
+					"    bNum2, numSepsDto, maxPrecision)",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
 	}
 
 	return fracQuotient, err
@@ -839,21 +878,39 @@ func (bIntNumProton *bigIntNumProton) bigIntNumDivideByTwo(
 		return fracQuotient, err
 	}
 
-	fracQuotient, err =
-		BigIntMathDivide{}.BigIntNumDivideByTwoFracQuo(bNum2, maxPrecision)
+	numSepsDto, err := new(bigIntNumAtom).getNumericSeparatorsDto(
+		&bNum2,
+		ePrefix.XCpy("bNum2.NumSeps->numSepsDto"))
+
+	if err != nil {
+		return BigIntNum{}, err
+	}
+
+	numSepsDto.SetDefaultsIfEmpty()
+
+	bNum2Str, err := new(bigIntNumAtom).getBigIntNumStr(
+		&bNum2,
+		ePrefix.XCpy("bNum2->bNum2Str"))
 
 	if err != nil {
 
-		fracQuotient = BigIntNum{}
+		return BigIntNum{}, err
+	}
 
-		return fracQuotient,
-			fmt.Errorf("%v\n"+
-				"Error returned by: \n"+
-				"  fracQuotient, err =\n"+
-				"    BigIntMathDivide{}.BigIntNumDivideByTwoFracQuo(bNum2, maxPrecision)\n "+
-				"Error= %v\n",
-				ePrefix.String(),
-				err.Error())
+	fracQuotient, err =
+		new(BigIntMathDivide).BigIntNumDivideByTwoFracQuo(bNum2, numSepsDto, maxPrecision)
+
+	if err != nil {
+
+		return BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix: ePrefix.String(),
+				ReturnFunc: "fracQuotient, err = new(BigIntMathDivide).\n" +
+					"    BigIntNumDivideByTwoFracQuo(bNum2, numSepsDto, maxPrecision)",
+				ErrContext: fmt.Sprintf("bNum2= '%v; maxPrecision= '%v'",
+					bNum2Str, maxPrecision),
+				ErrMessage: err.Error(),
+			}
 	}
 
 	return fracQuotient, err
@@ -925,27 +982,43 @@ func (bIntNumProton *bigIntNumProton) bigIntNumDivideByTwoQuoMod(
 		return intQuotient, modulo, err
 	}
 
-	intQuotient, modulo, err =
-		BigIntMathDivide{}.BigIntNumDivideByTwoQuoMod(
-			bNum2, maxPrecision)
+	numSepsDto, err := new(bigIntNumAtom).getNumericSeparatorsDto(
+		&bNum2,
+		ePrefix.XCpy("bNum2.NumSeps->numSepsDto"))
+
+	if err != nil {
+		return BigIntNum{}, BigIntNum{}, err
+	}
+
+	numSepsDto.SetDefaultsIfEmpty()
+
+	bNum2Str, err := new(bigIntNumAtom).getBigIntNumStr(
+		&bNum2,
+		ePrefix.XCpy("bNum2->bNum2Str"))
 
 	if err != nil {
 
-		bigMec := new(bigIntNumMechanics)
-		intQuotient = bigMec.new()
-		modulo = bigMec.new()
-
-		return intQuotient,
-			modulo,
-			fmt.Errorf("%v\n"+
-				"Error returned by BigIntMathDivide{}.\n"+
-				" BigIntNumDivideByTwoQuoMod(bNum2, maxPrecision).\n"+
-				"Error= %v\n",
-				ePrefix,
-				err.Error())
+		return BigIntNum{}, BigIntNum{}, err
 	}
 
-	return intQuotient, modulo, err
+	intQuotient, modulo, err =
+		new(BigIntMathDivide).BigIntNumDivideByTwoQuoMod(
+			bNum2, numSepsDto, maxPrecision)
+
+	if err != nil {
+
+		return BigIntNum{}, BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix: ePrefix.String(),
+				ReturnFunc: "fracQuotient, err = new(BigIntMathDivide).\n" +
+					"    BigIntNumDivideByTwoQuoMod(bNum2, numSepsDto, maxPrecision)",
+				ErrContext: fmt.Sprintf("bNum2= '%v; maxPrecision= '%v'",
+					bNum2Str, maxPrecision),
+				ErrMessage: err.Error(),
+			}
+	}
+
+	return intQuotient, modulo, nil
 }
 
 // ExtendPrecision - Extends the current precision.
@@ -2122,18 +2195,29 @@ func (bIntNumProton *bigIntNumProton) bigIntNumGetInverse(
 	if err != nil {
 
 		return BigIntNum{}, err
-
 	}
 
-	result, err := BigIntMathDivide{}.BigIntNumFracQuotient(bINumOne, bNum2, maxPrecision)
+	numSepsDto, err := new(bigIntNumAtom).getNumericSeparatorsDto(
+		&bNum2,
+		ePrefix.XCpy("bNum2.NumSeps->numSepsDto"))
+
+	if err != nil {
+		return BigIntNum{}, err
+	}
+
+	numSepsDto.SetDefaultsIfEmpty()
+
+	result, err := new(BigIntMathDivide).
+		BigIntNumFracQuotient(bINumOne, bNum2, numSepsDto, maxPrecision)
 
 	if err != nil {
 
 		return BigIntNum{},
 			&FuncReturnError{
 				ErrPrefix: ePrefix.String(),
-				ReturnFunc: "result, err := BigIntMathDivide{}.BigIntNumFracQuotient(\n" +
-					"bINumOne, bNum2, maxPrecision)",
+				ReturnFunc: "result, err := new(BigIntMathDivide).\n" +
+					"    BigIntNumFracQuotient(\n" +
+					"    bINumOne, bNum2, numSepsDto, maxPrecision)",
 				ErrContext: "",
 				ErrMessage: err.Error(),
 			}
@@ -2645,7 +2729,7 @@ func (bIntNumProton *bigIntNumProton) bigIntNumGetSciNotationNumber(
 			}
 	}
 
-	sciNotationNum := SciNotationNum{}.New()
+	sciNotationNum := new(SciNotationNum).New()
 
 	if mantissaLen < 2 {
 		mantissaLen = 2
@@ -2717,7 +2801,7 @@ func (bIntNumProton *bigIntNumProton) bigIntNumGetSciNotationNumber(
 
 	if !bNumIsZero {
 
-		magnitudeBigInt, err := BigIntMath{}.GetMagnitude(bINumIntPart.bigInt)
+		magnitudeBigInt, err := new(BigIntMath).GetMagnitude(bINumIntPart.bigInt)
 
 		if err != nil {
 
@@ -2726,6 +2810,8 @@ func (bIntNumProton *bigIntNumProton) bigIntNumGetSciNotationNumber(
 					ErrPrefix: ePrefix.String(),
 					ReturnFunc: "  magnitudeBigInt, err := BigIntMath{}.GetMagnitude(\n" +
 						"    bINumIntPart.bigInt)",
+					ErrContext: fmt.Sprintf("bINumIntPart.bigInt= '%v'",
+						bINumIntPart.bigInt.Text(10)),
 					ErrMessage: err.Error(),
 				}
 		}
@@ -2766,7 +2852,7 @@ func (bIntNumProton *bigIntNumProton) bigIntNumGetSciNotationNumber(
 	} else {
 
 		// Must be bINumFracPart > 0
-		magnitudeBigInt, err := BigIntMath{}.GetMagnitude(bNum.bigInt)
+		magnitudeBigInt, err := new(BigIntMath).GetMagnitude(bNum.bigInt)
 
 		if err != nil {
 			return SciNotationNum{},
@@ -2774,6 +2860,8 @@ func (bIntNumProton *bigIntNumProton) bigIntNumGetSciNotationNumber(
 					ErrPrefix: ePrefix.String(),
 					ReturnFunc: "  magnitudeBigInt, err := BigIntMath{}.\n" +
 						"    GetMagnitude(bNum.bigInt)",
+					ErrContext: fmt.Sprintf("bNum.bigInt= '%v'",
+						bNum.bigInt.Text(10)),
 					ErrMessage: err.Error(),
 				}
 		}

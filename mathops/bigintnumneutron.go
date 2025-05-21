@@ -75,9 +75,20 @@ func (bNumNeutron *bigIntNumNeutron) inverseBigIntNum(
 		return BigIntNum{}, err
 	}
 
+	bNumNumSepsDto, err := new(bigIntNumAtom).getNumericSeparatorsDto(
+		bNum,
+		ePrefix.XCpy("Getting bNum num seps"))
+
+	if err != nil {
+		return BigIntNum{}, err
+	}
+
+	bNumNumSepsDto.SetDefaultsIfEmpty()
+
 	err = new(bigIntNumAtom).
-		setNumericSeparators(&bIOne, bNum.decimalSeparator,
-			bNum.thousandsSeparator, bNum.currencySymbol, ePrefix)
+		setNumericSeparatorsDto(&bIOne,
+			bNumNumSepsDto,
+			ePrefix.XCpy("bNum numSeps->bIOne"))
 
 	if err != nil {
 
@@ -92,7 +103,7 @@ func (bNumNeutron *bigIntNumNeutron) inverseBigIntNum(
 	}
 
 	inverse, err := new(BigIntMathDivide).
-		BigIntNumFracQuotient(bIOne, bITwo, maxPrecision)
+		BigIntNumFracQuotient(bIOne, bITwo, bNumNumSepsDto, maxPrecision)
 
 	if err != nil {
 
@@ -100,7 +111,7 @@ func (bNumNeutron *bigIntNumNeutron) inverseBigIntNum(
 			&FuncReturnError{
 				ErrPrefix: ePrefix.String(),
 				ReturnFunc: "inverseBigIntNum, err := BigIntMathDivide{}.\n" +
-					"    BigIntNumFracQuotient(bIOne, bITwo, maxPrecision)",
+					"    BigIntNumFracQuotient(bIOne, bITwo, bNumNumSepsDto, maxPrecision)",
 				ErrMessage: err.Error(),
 			}
 	}
@@ -411,7 +422,18 @@ func (bNumNeutron *bigIntNumNeutron) modBigIntNum(
 		return modulo, err
 	}
 
-	modulo, err = BigIntMathDivide{}.BigIntNumModulo(biNum2, *divisor, maxPrecision)
+	numSepsDto, err := new(bigIntNumAtom).getNumericSeparatorsDto(
+		&biNum2,
+		ePrefix.XCpy("biNum2.numSepsDto->numSepsDto"))
+
+	if err != nil {
+		return modulo, err
+	}
+
+	numSepsDto.SetDefaultsIfEmpty()
+
+	modulo, err = new(BigIntMathDivide).BigIntNumModulo(
+		biNum2, *divisor, numSepsDto, maxPrecision)
 
 	if err != nil {
 
@@ -419,7 +441,7 @@ func (bNumNeutron *bigIntNumNeutron) modBigIntNum(
 			&FuncReturnError{
 				ErrPrefix: ePrefix.String(),
 				ReturnFunc: "modulo, err = BigIntMathDivide{}.BigIntNumModulo(\n" +
-					"    biNum2, *divisor, maxPrecision)",
+					"    biNum2, *divisor, numSepsDto, maxPrecision)",
 				ErrContext: "",
 				ErrMessage: err.Error(),
 			}
