@@ -3036,44 +3036,44 @@ func (bNum *BigIntNum) NewBigIntNumSeps(
 // extreme right of the integer number, 'precision' places to the
 // left. See the example below.
 //
-//		 Input Parameters
-//		 ================
+//	Input Parameters
+//	================
 //
-//		 bigI          *big.Int
+//	bigI          *big.Int
 //
-//		 'bigI' is a type *big.Int and represents the integer value of
-//		 the number; that is, the numeric value without decimal digits.
+//	'bigI' is a type *big.Int and represents the integer value of
+//	the number; that is, the numeric value without decimal digits.
 //
 //
-//		 precision     *big.In
+//	precision     *big.In
 //
-//		 This integer value (always a positive value) identifies the
-//		 location of the decimal place in the integer value 'bigI'. The
-//		 decimal place location is calculated by starting with the
-//		 right most digit in the integer number and counting left,
-//		 'precision' places.
+//	This integer value (always a positive value) identifies the
+//	location of the decimal place in the integer value 'bigI'. The
+//	decimal place location is calculated by starting with the
+//	right most digit in the integer number and counting left,
+//	'precision' places.
 //
-//		   Integer Value    precision    Numeric Value
+//	  Integer Value    precision    Numeric Value
 //
-//			    123456					 3					  123.456
-//	                123456 x 10^-3  =    123.456
+//		    123456					 3					  123.456
+//	             123456 x 10^-3  =    123.456
 //
-//		 If precision is greater than the maximum value of an unsigned
-//		 integer (+4,294,967,295,	which equals 2^32 − 1), an error will
-//		 be triggered. Also, if the 'precision' value is less than zero,
-//		 an error will be triggered.
+//	If precision is greater than the maximum value of an unsigned
+//	integer (+4,294,967,295,	which equals 2^32 − 1), an error will
+//	be triggered. Also, if the 'precision' value is less than zero,
+//	an error will be triggered.
 //
-//		 Numeric Separators
-//		 ==================
+//	Numeric Separators
+//	==================
 //
-//		 Numeric Separators specify the symbols or characters (runes)
-//	  used for the decimal separator, thousands separator and
-//	  currency symbol. These separators are used when displaying
-//	  numeric values in number strings.
+//	Numeric Separators specify the symbols or characters (runes)
+//	used for the decimal separator, thousands separator and
+//	currency symbol. These separators are used when displaying
+//	numeric values in number strings.
 //
-//	  The new BigIntNum instance returned by this method will contain
-//	  USA default numeric separators (decimal separator, thousands
-//	  separator and currency symbol).
+//	The new BigIntNum instance returned by this method will contain
+//	USA default numeric separators (decimal separator, thousands
+//	separator and currency symbol).
 func (bNum *BigIntNum) NewBigIntBigPrecision(
 	bigInt *big.Int, precision *big.Int) (BigIntNum, error) {
 

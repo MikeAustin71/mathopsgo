@@ -200,3 +200,159 @@ func (bigIMathMultiplyNanobot *bigIntMathMultiplyNanobot) multiplyByTwoToPowerBi
 
 	return product, productPrecision, nil
 }
+
+// multiplyPairWithNumSeps
+//
+// Receives a BigIntPair instance and proceeds to multiply
+// bPair.Big1 by bPair.Big2. Both 'Big1' and 'Big2' are of
+// type 'BigIntNum'.
+//
+//	bPair.Big1 x bPair.Big2 = Result
+//
+// The result of this multiplication operation is returned as a
+// BigIntNum type.
+//
+//		Numeric Separators
+//		==================
+//
+//		Numeric Separators specify the symbols or characters (runes)
+//		used for the decimal separator, thousands separator and
+//		currency symbol. These separators are used when displaying
+//		numeric values in number strings.
+//
+//	 Input parameter 'numSepsDto' is an instance of
+//	 NumericSepartorsDto. 'numSepDto' will be used to configure
+//	 Numeric Separators in the returned BigIntNum instance.
+//
+//	 If any member elements of 'numSepsDto' are invalid, they
+//	 will be automatically reset to USA default values.
+func (bigIMathMultiplyNanobot *bigIntMathMultiplyNanobot) multiplyPairWithNumSeps(
+	bPair BigIntPair,
+	numSepsDto NumericSeparatorDto,
+	errPrefDto *ePref.ErrPrefixDto) (BigIntNum, error) {
+
+	if bigIMathMultiplyNanobot.lock == nil {
+		bigIMathMultiplyNanobot.lock = new(sync.Mutex)
+	}
+
+	bigIMathMultiplyNanobot.lock.Lock()
+
+	defer bigIMathMultiplyNanobot.lock.Unlock()
+
+	var ePrefix *ePref.ErrPrefixDto
+
+	var err error
+
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
+		errPrefDto,
+		"bigIntMathMultiplyNanobot.multiplyPairWithNumSeps",
+		"")
+
+	if err != nil {
+		return BigIntNum{}, err
+	}
+
+	err = bPair.IsValid(ePrefix.XCpy("Testing bPair").String())
+
+	if err != nil {
+
+		return BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "err = bPair.IsValid(ePrefix.XCpy(\"Testing bPair\").String())",
+				ErrContext: "Error: Input parameter 'bPair' is invalid!",
+				ErrMessage: err.Error(),
+			}
+	}
+
+	big1BigInt, err := bPair.GetBig1BigInt()
+
+	if err != nil {
+
+		return BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "big1BigInt, err := bPair.GetBig1BigInt()",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
+
+	big2BigInt, err := bPair.GetBig2BigInt()
+
+	if err != nil {
+
+		return BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "big2BigInt, err := bPair.GetBig2BigInt()",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
+
+	b3 := big.NewInt(0).Mul(big1BigInt, big2BigInt)
+
+	big1Precision, err := bPair.Big1.GetPrecisionUint()
+
+	if err != nil {
+		return BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "big1Precision, err := bPair.Big1.GetPrecisionUint()",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+
+	}
+
+	big2Precision, err := bPair.Big2.GetPrecisionUint()
+
+	if err != nil {
+		return BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "big2Precision, err := bPair.Big2.GetPrecisionUint()",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+
+	}
+
+	bResult, err := new(BigIntNum).NewBigInt(
+		b3,
+		big1Precision+big2Precision)
+
+	if err != nil {
+
+		return BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix: ePrefix.String(),
+				ReturnFunc: "bResult, err := new(BigIntNum).NewBigInt(\n" +
+					"    b3, big1Precision+big2Precision)",
+				ErrMessage: err.Error(),
+			}
+
+	}
+
+	err = bResult.TrimTrailingFracZeros()
+
+	if err != nil {
+
+		return BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "err = bResult.TrimTrailingFracZeros()",
+				ErrMessage: err.Error(),
+			}
+
+	}
+
+	numSepsDto.SetDefaultsIfEmpty()
+
+	err = new(bigIntNumAtom).setNumericSeparatorsDto(
+		&bResult, numSepsDto, ePrefix.XCpy("numSepsDto->bResult"))
+
+	return bResult, err
+}

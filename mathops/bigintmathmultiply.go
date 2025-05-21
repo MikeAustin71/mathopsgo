@@ -722,51 +722,148 @@ func (bMultiply *BigIntMathMultiply) MultiplyBigIntNums(
   return finalResult, nil
 }
 
-// MultiplyBigIntNumArray - Receives one BigIntNum which is classified as the 'multiplier'.
-// The second input parameter is an array of BigIntNum Types labeled, 'multiplicands'. The
-// first element of the 'multiplicands' array is multiplied by the 'multiplier' to produce
-// a 'product'. That 'product' replaces the 'multiplier' and is multiplied by the next element
-// in the multiplicands array. This process is continued through the last element in the array
-// and the combined, final 'product' is returned as a Type 'BigIntNum'.
+// MultiplyBigIntNumArray
 //
-// In the multiplication operation, the number to be multiplied is called the "multiplicand",
-// while the number of times the multiplicand is to be multiplied comes from the "multiplier".
-// Usually the multiplier is placed first and the multiplicand is placed second.
+// Receives one BigIntNum which is classified as the 'multiplier'.
+// The second input parameter is an array of BigIntNum Types
+// labeled, 'multiplicands'. The first element of the
+// 'multiplicands' array is multiplied by the 'multiplier' to
+// produce a 'product'. That 'product' replaces the 'multiplier'
+// and is multiplied by the next element in the multiplicands
+// array. This process is continued through the last element in
+// the array and the combined, final 'product' is returned as a
+// Type 'BigIntNum'.
 //
-// For example, in the problem 5 x 3 equals 15, the 5 is the 'multiplier',
-// 3 is the 'multiplicand' and 15 is the 'product' or result.
+// In the multiplication operation, the number to be multiplied
+// is called the "multiplicand", while the number of times the
+// multiplicand is to be multiplied comes from the "multiplier".
+// Usually the multiplier is placed first and the multiplicand
+// is placed second.
 //
-//	multiplier x multiplicand = product or result
+// For example, in the problem 5 x 3 equals 15, the 5 is the
+// 'multiplier', 3 is the 'multiplicand' and 15 is the 'product'
+// or result.
 //
-// This method performs the multiplication operation described above and afterwards returns the
-// result or 'product' as a BigIntNum type.
+//	 multiplier x multiplicand = product or result
 //
-// The returned BigIntNum multiplication 'result' will contain numeric separators
-// (decimal separator, thousands separator and currency symbol) copied from
-// input parameter, 'multiplier'.
+// This method performs the multiplication operation described
+// above and afterward returns the result or 'product' as a
+// BigIntNum type.
+//
+// The returned BigIntNum multiplication 'result' will contain
+// numeric separators (decimal separator, thousands separator
+// and currency symbol) copied from input parameter,
+// 'multiplier'.
 func (bMultiply *BigIntMathMultiply) MultiplyBigIntNumArray(
   multiplier BigIntNum,
-  multiplicands []BigIntNum) BigIntNum {
+  multiplicands []BigIntNum) (BigIntNum, error) {
 
-  finalResult := multiplier.CopyOut()
+  var ePrefix *ePref.ErrPrefixDto
+
+  var err error
+
+  ePrefix,
+    err = ePref.ErrPrefixDto{}.NewIEmpty(
+    nil,
+    "BigIntMathMultiply.BigIntMultiply",
+    "")
+
+  if err != nil {
+    return BigIntNum{}, err
+  }
+
+  var finalResult BigIntNum
+
+  finalResult, err = multiplier.CopyOut()
+
+  if err != nil {
+
+    return BigIntNum{},
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "finalResult, err := multiplier.CopyOut()",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+  }
+
   lenMultiplicands := len(multiplicands)
 
   if lenMultiplicands == 0 {
-    return BigIntNum{}.New()
+
+    return BigIntNum{},
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "",
+        ErrContext: "len(multiplicands) == 0",
+        ErrMessage: "Error: 'multiplicands' array is empty!",
+      }
   }
 
-  numSeps := multiplier.GetNumericSeparatorsDto()
+  var numSeps NumericSeparatorDto
+
+  numSeps, err = multiplier.GetNumericSeparatorsDto()
+
+  if err != nil {
+
+    return BigIntNum{},
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "numSeps, err = multiplier.GetNumericSeparatorsDto()",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+  }
+
+  var bPair BigIntPair
 
   for i := 0; i < lenMultiplicands; i++ {
 
-    bPair := BigIntPair{}.NewBigIntNum(finalResult, multiplicands[i])
+    bPair, err = new(BigIntPair).NewBigIntNum(finalResult, multiplicands[i])
 
-    finalResult = bMultiply.multiplyPairNoNumSeps(bPair)
+    if err != nil {
+
+      return BigIntNum{},
+        &FuncReturnError{
+          ErrPrefix: ePrefix.String(),
+          ReturnFunc: fmt.Sprintf("bPair, err = new(BigIntPair).NewBigIntNum(\n"+
+            "finalResult, multiplicands[%d])", i),
+          ErrContext: "",
+          ErrMessage: err.Error(),
+        }
+    }
+
+    finalResult, err = new(bigIntMathMultiplyMechanics).
+      multiplyPairNoNumSeps(bPair, ePrefix)
+
+    if err != nil {
+
+      return BigIntNum{},
+        &FuncReturnError{
+          ErrPrefix: ePrefix.String(),
+          ReturnFunc: "finalResult, err = new(bigIntMathMultiplyMechanics).\n" +
+            "multiplyPairNoNumSeps(bPair, ePrefix)",
+          ErrContext: "",
+          ErrMessage: err.Error(),
+        }
+    }
+
   }
 
-  _ = finalResult.SetNumericSeparatorsDto(numSeps)
+  err = finalResult.SetNumericSeparatorsDto(numSeps)
 
-  return finalResult
+  if err != nil {
+
+    return BigIntNum{},
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "err = finalResult.SetNumericSeparatorsDto(numSeps)",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+  }
+
+  return finalResult, nil
 }
 
 // MultiplyBigIntNumOutputToArray - Receives one input parameter of Type BigIntNum which
@@ -805,29 +902,99 @@ func (bMultiply *BigIntMathMultiply) MultiplyBigIntNumArray(
 // currency symbol) copied from input parameter, 'multiplier'.
 func (bMultiply *BigIntMathMultiply) MultiplyBigIntNumOutputToArray(
   multiplier BigIntNum,
-  multiplicands []BigIntNum) []BigIntNum {
+  multiplicands []BigIntNum) ([]BigIntNum, error) {
 
-  bINumInterimResult := multiplier.CopyOut()
+  var ePrefix *ePref.ErrPrefixDto
+
+  var err error
+
+  ePrefix,
+    err = ePref.ErrPrefixDto{}.NewIEmpty(
+    nil,
+    "BigIntMathMultiply.MultiplyBigIntNumOutputToArray",
+    "")
+
+  if err != nil {
+    return []BigIntNum{}, err
+  }
+
+  var bINumInterimResult BigIntNum
+
+  bINumInterimResult, err = multiplier.CopyOut()
 
   lenMultiplicands := len(multiplicands)
 
   if lenMultiplicands == 0 {
-    return []BigIntNum{}
+    return []BigIntNum{}, nil
   }
 
-  numSeps := multiplier.GetNumericSeparatorsDto()
+  var numSeps NumericSeparatorDto
+
+  numSeps, err = multiplier.GetNumericSeparatorsDto()
+
+  if err != nil {
+
+    return []BigIntNum{},
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "numSeps, err = multiplier.GetNumericSeparatorsDto()",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+  }
 
   resultArray := make([]BigIntNum, lenMultiplicands)
 
+  var bPair BigIntPair
+
   for i := 0; i < lenMultiplicands; i++ {
 
-    bPair := BigIntPair{}.NewBigIntNum(bINumInterimResult, multiplicands[i])
+    bPair, err = new(BigIntPair).NewBigIntNum(bINumInterimResult, multiplicands[i])
 
-    resultArray[i] = bMultiply.multiplyPairNoNumSeps(bPair)
-    _ = resultArray[i].SetNumericSeparatorsDto(numSeps)
+    if err != nil {
+
+      return []BigIntNum{},
+        &FuncReturnError{
+          ErrPrefix: ePrefix.String(),
+          ReturnFunc: fmt.Sprintf("bPair, err = new(BigIntPair).NewBigIntNum(\n"+
+            "bINumInterimResult, multiplicands[%d]))", i),
+          ErrContext: "",
+          ErrMessage: err.Error(),
+        }
+    }
+
+    resultArray[i], err = new(bigIntMathMultiplyMechanics).
+      multiplyPairNoNumSeps(bPair, ePrefix)
+
+    if err != nil {
+
+      return []BigIntNum{},
+        &FuncReturnError{
+          ErrPrefix: ePrefix.String(),
+          ReturnFunc: fmt.Sprintf("resultArray[%d], err = new(bigIntMathMultiplyMechanics).\n"+
+            "multiplyPairNoNumSeps(bPair, ePrefix)", i),
+          ErrContext: "",
+          ErrMessage: err.Error(),
+        }
+    }
+
+    err = resultArray[i].SetNumericSeparatorsDto(numSeps)
+
+    if err != nil {
+
+      return []BigIntNum{},
+        &FuncReturnError{
+          ErrPrefix: ePrefix.String(),
+          ReturnFunc: fmt.Sprintf("resultArray[%d], err = new(bigIntMathMultiplyMechanics).\n"+
+            "multiplyPairNoNumSeps(bPair, ePrefix)", i),
+          ErrContext: "",
+          ErrMessage: err.Error(),
+        }
+    }
+
   }
 
-  return resultArray
+  return resultArray, err
 }
 
 // MultiplyBigIntNumSeries - Receives one input parameter of Type BigIntNum which is classified
@@ -836,8 +1003,8 @@ func (bMultiply *BigIntMathMultiply) MultiplyBigIntNumOutputToArray(
 //
 // 'multiplicands'. The first element of the 'multiplicands' series is multiplied by the 'multiplier'
 // to produce a 'product'. That 'product' replaces the 'multiplier' and is multiplied by the next
-// element in the multiplicands series. This process is continued through the last element in the
-// series. Afterwards, the combined final 'product' is returned as a Type 'BigIntNum'.
+// element in the multiplicand series. This process is continued through the last element in the
+// series. Afterward, the combined final 'product' is returned as a Type 'BigIntNum'.
 //
 // In the multiplication operation, the number to be multiplied is called the "multiplicand",
 // while the number of times the multiplicand is to be multiplied comes from the "multiplier".
@@ -856,28 +1023,113 @@ func (bMultiply *BigIntMathMultiply) MultiplyBigIntNumOutputToArray(
 // 'multiplier'.
 func (bMultiply *BigIntMathMultiply) MultiplyBigIntNumSeries(
   multiplier BigIntNum,
-  multiplicands ...BigIntNum) BigIntNum {
+  multiplicands ...BigIntNum) (BigIntNum, error) {
 
-  finalResult := multiplier.CopyOut()
+  var ePrefix *ePref.ErrPrefixDto
+
+  var err error
+
+  ePrefix,
+    err = ePref.ErrPrefixDto{}.NewIEmpty(
+    nil,
+    "BigIntMathMultiply.BigIntMultiply",
+    "")
+
+  if err != nil {
+    return BigIntNum{}, err
+  }
+
+  var finalResult BigIntNum
+
+  finalResult, err = multiplier.CopyOut()
+
+  if err != nil {
+
+    return BigIntNum{},
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "finalResult, err = multiplier.CopyOut()",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+  }
 
   lenMultiplicands := len(multiplicands)
 
   if lenMultiplicands == 0 {
-    return BigIntNum{}.New()
+
+    return BigIntNum{},
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "",
+        ErrContext: "len(multiplicands) == 0",
+        ErrMessage: "Error: 'multiplicands' array is empty!",
+      }
   }
 
-  numSeps := multiplier.GetNumericSeparatorsDto()
+  var numSeps NumericSeparatorDto
+
+  numSeps, err = multiplier.GetNumericSeparatorsDto()
+
+  if err != nil {
+
+    return BigIntNum{},
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "numSeps, err = multiplier.GetNumericSeparatorsDto()",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+  }
+
+  var bPair BigIntPair
 
   for _, multiplicand := range multiplicands {
 
-    bPair := BigIntPair{}.NewBigIntNum(finalResult, multiplicand)
+    bPair, err = new(BigIntPair).NewBigIntNum(finalResult, multiplicand)
 
-    finalResult = bMultiply.multiplyPairNoNumSeps(bPair)
+    if err != nil {
+
+      return BigIntNum{},
+        &FuncReturnError{
+          ErrPrefix: ePrefix.String(),
+          ReturnFunc: "bPair, err = new(BigIntPair).NewBigIntNum(\n" +
+            "    finalResult, multiplicand)",
+          ErrContext: "",
+          ErrMessage: err.Error(),
+        }
+    }
+
+    finalResult, err = new(bigIntMathMultiplyMechanics).
+      multiplyPairNoNumSeps(bPair, ePrefix)
+
+    if err != nil {
+
+      return BigIntNum{},
+        &FuncReturnError{
+          ErrPrefix: ePrefix.String(),
+          ReturnFunc: "finalResult, err = new(bigIntMathMultiplyMechanics).\n" +
+            "multiplyPairNoNumSeps(bPair, ePrefix)",
+          ErrContext: "",
+          ErrMessage: err.Error(),
+        }
+    }
   }
 
-  _ = finalResult.SetNumericSeparatorsDto(numSeps)
+  err = finalResult.SetNumericSeparatorsDto(numSeps)
 
-  return finalResult
+  if err != nil {
+
+    return BigIntNum{},
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "err = finalResult.SetNumericSeparatorsDto(numSeps)",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+  }
+
+  return finalResult, nil
 }
 
 // MultiplyBigIntNumByTwo - Receives a BigIntNum input parameter 'base' and then
@@ -1322,53 +1574,126 @@ func (bMultiply *BigIntMathMultiply) MultiplyDecimalArray(
   multiplier Decimal,
   multiplicands []Decimal) (BigIntNum, error) {
 
-  ePrefix := "BigIntMathMultiply.MultiplyDecimalArray() "
+  var ePrefix *ePref.ErrPrefixDto
+
+  var err error
+
+  ePrefix,
+    err = ePref.ErrPrefixDto{}.NewIEmpty(
+    nil,
+    "BigIntMathMultiply.MultiplyDecimalArray",
+    "")
+
+  if err != nil {
+    return BigIntNum{}, err
+  }
 
   lenMultiplicands := len(multiplicands)
 
   if lenMultiplicands == 0 {
-    return BigIntNum{}.New(),
-      errors.New(ePrefix + "Error: multiplicands array is Empty!")
+
+    return BigIntNum{},
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "",
+        ErrContext: "len(multiplicands) == 0",
+        ErrMessage: "Error: 'multiplicands' array is empty!",
+      }
   }
+
+  var finalResult BigIntNum
 
   // This method tests the validity of 'multiplier'.
-  finalResult, err := BigIntNum{}.NewDecimal(multiplier)
+  finalResult, err = new(BigIntNum).NewDecimal(multiplier)
 
   if err != nil {
+
     return BigIntNum{},
-      fmt.Errorf(ePrefix+
-        "Error returned by BigIntNum{}.NewDecimal(multiplier) "+
-        " multiplier='%v' Error='%v'. ",
-        multiplier.GetNumStr(), err.Error())
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "finalResult, err = new(BigIntNum).NewDecimal(multiplier)",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
   }
 
-  numSeps := multiplier.GetNumericSeparatorsDto()
+  var numSeps NumericSeparatorDto
+
+  numSeps, err = multiplier.GetNumericSeparatorsDto()
+
+  if err != nil {
+
+    return BigIntNum{},
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "numSeps, err = multiplier.GetNumericSeparatorsDto()",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+  }
+
+  var multiplicandBINum BigIntNum
+
+  var bPair BigIntPair
 
   for i := 0; i < lenMultiplicands; i++ {
 
     // This method tests the validity of multiplicands[i]
-    multiplicandBINum, err := BigIntNum{}.NewDecimal(multiplicands[i])
+    multiplicandBINum, err = new(BigIntNum).NewDecimal(multiplicands[i])
 
     if err != nil {
+
       return BigIntNum{},
-        fmt.Errorf(ePrefix+
-          "Error returned by BigIntNum{}.NewDecimal(multiplicands[i]) "+
-          "multiplicands[%v]='%v' Error='%v'. ",
-          i, multiplicands[i].GetNumStr(), err.Error())
+        &FuncReturnError{
+          ErrPrefix: ePrefix.String(),
+          ReturnFunc: fmt.Sprintf("multiplicandBINum.NewDecimal(multiplicands[%d])",
+            i),
+          ErrContext: "",
+          ErrMessage: err.Error(),
+        }
     }
 
-    bPair := BigIntPair{}.NewBigIntNum(finalResult, multiplicandBINum)
+    bPair, err = new(BigIntPair).NewBigIntNum(finalResult, multiplicandBINum)
 
-    finalResult = bMultiply.multiplyPairNoNumSeps(bPair)
+    if err != nil {
+
+      return BigIntNum{},
+        &FuncReturnError{
+          ErrPrefix: ePrefix.String(),
+          ReturnFunc: "bPair, err = new(BigIntPair).NewBigIntNum(\n" +
+            "finalResult, multiplicandBINum)",
+          ErrContext: "",
+          ErrMessage: err.Error(),
+        }
+    }
+
+    finalResult, err = new(bigIntMathMultiplyMechanics).
+      multiplyPairNoNumSeps(bPair, ePrefix)
+
+    if err != nil {
+
+      return BigIntNum{},
+        &FuncReturnError{
+          ErrPrefix: ePrefix.String(),
+          ReturnFunc: "finalResult, err = new(bigIntMathMultiplyMechanics).\n" +
+            "multiplyPairNoNumSeps(bPair, ePrefix)",
+          ErrContext: "",
+          ErrMessage: err.Error(),
+        }
+    }
   }
 
   err = finalResult.SetNumericSeparatorsDto(numSeps)
 
   if err != nil {
+
     return BigIntNum{},
-      fmt.Errorf(ePrefix+
-        "Error returned by finalResult.SetNumericSeparatorsDto(numSeps). "+
-        "Error='%v' ", err.Error())
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "err = finalResult.SetNumericSeparatorsDto(numSeps)",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
   }
 
   return finalResult, nil
@@ -2532,8 +2857,8 @@ func (bMultiply *BigIntMathMultiply) MultiplyPair(bPair BigIntPair) (BigIntNum, 
 //
 //	bPair.Big1 x bPair.Big2 = Result
 //
-// The result of this multiplication operation is returned as a BigIntNum
-// type.
+// The result of this multiplication operation is returned as a
+// BigIntNum type.
 //
 // The returned BigIntNum multiplication 'Result' will contain numeric
 // separators (decimal separator, thousands separator and currency symbol)
