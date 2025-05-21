@@ -772,6 +772,21 @@ func (bMultiply *BigIntMathMultiply) MultiplyBigIntNumArray(
     return BigIntNum{}, err
   }
 
+  err = multiplier.IsValid(
+    ePrefix.XCpy("Validating 'multiplier'").String())
+
+  if err != nil {
+
+    return BigIntNum{},
+      &FuncReturnError{
+        ErrPrefix: ePrefix.String(),
+        ReturnFunc: "err = multiplier.IsValid(\n" +
+          "ePrefix.XCpy(\"Validating 'multiplier'\").String())",
+        ErrContext: "Input parameter 'multiplier' is invalid!",
+        ErrMessage: err.Error(),
+      }
+  }
+
   var finalResult BigIntNum
 
   finalResult, err = multiplier.CopyOut()
@@ -818,6 +833,13 @@ func (bMultiply *BigIntMathMultiply) MultiplyBigIntNumArray(
   var bPair BigIntPair
 
   for i := 0; i < lenMultiplicands; i++ {
+
+    err = multiplicands[i].IsValid(ePrefix.XCpy(
+      fmt.Sprintf("Validating 'multiplicands[%d]'", i)).String())
+
+    if err != nil {
+      return BigIntNum{}, err
+    }
 
     bPair, err = new(BigIntPair).NewBigIntNum(finalResult, multiplicands[i])
 
@@ -1816,51 +1838,150 @@ func (bMultiply *BigIntMathMultiply) MultiplyDecimalSeries(
   multiplier Decimal,
   multiplicands ...Decimal) (BigIntNum, error) {
 
-  ePrefix := "BigIntMathMultiply.MultiplyDecimalSeries() "
+  var ePrefix *ePref.ErrPrefixDto
+
+  var err error
+
+  ePrefix,
+    err = ePref.ErrPrefixDto{}.NewIEmpty(
+    nil,
+    "BigIntMathMultiply.MultiplyDecimalSeries",
+    "")
+
+  if err != nil {
+    return BigIntNum{}, err
+  }
+
+  err = multiplier.IsValid(ePrefix.XCpy("Testing 'multiplier'").String())
+
+  if err != nil {
+    return BigIntNum{}, err
+  }
 
   if len(multiplicands) == 0 {
-    return BigIntNum{}.New(),
-      errors.New(ePrefix + "Error: multiplicands series is Empty!")
+
+    return BigIntNum{},
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "",
+        ErrContext: "len(multiplicands) == 0",
+        ErrMessage: "Error: 'multiplicands' array is empty!",
+      }
   }
 
   // This method will test the validity of 'multiplier'
-  finalResult, err := BigIntNum{}.NewDecimal(multiplier)
+  finalResult, err := new(BigIntNum).NewDecimal(multiplier)
 
   if err != nil {
+
     return BigIntNum{},
-      fmt.Errorf(ePrefix+
-        "Error returned by BigIntNum{}.NewDecimal(multiplier) "+
-        " multiplier='%v' Error='%v'. ",
-        multiplier.GetNumStr(), err.Error())
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "numSeps, err = multiplier.GetNumericSeparatorsDto()",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
   }
 
-  numSeps := multiplier.GetNumericSeparatorsDto()
+  var numSeps NumericSeparatorDto
 
-  for _, multiplicand := range multiplicands {
+  numSeps, err = multiplier.GetNumericSeparatorsDto()
 
-    // This method will test the validity of 'multiplicand'
-    multiplicandBINum, err := BigIntNum{}.NewDecimal(multiplicand)
+  if err != nil {
+
+    return BigIntNum{},
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "numSeps, err = multiplier.GetNumericSeparatorsDto()",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+  }
+
+  var multiplicandBINum BigIntNum
+  var multiplicandNumStr string
+  var bPair BigIntPair
+
+  for idx, multiplicand := range multiplicands {
+
+    err = multiplicand.IsValid(ePrefix.XCpy(
+      fmt.Sprintf("Validating 'multiplicand' idx=%d", idx)).String())
 
     if err != nil {
-      return BigIntNum{},
-        fmt.Errorf(ePrefix+
-          "Error returned by BigIntNum{}.NewDecimal(multiplicand) "+
-          " multiplicand='%v' Error='%v'. ",
-          multiplicand.GetNumStr(), err.Error())
+      return BigIntNum{}, err
     }
 
-    bPair := BigIntPair{}.NewBigIntNum(finalResult, multiplicandBINum)
+    // This method will test the validity of 'multiplicand'
+    multiplicandBINum, err = new(BigIntNum).NewDecimal(multiplicand)
 
-    finalResult = bMultiply.multiplyPairNoNumSeps(bPair)
+    if err != nil {
+
+      return BigIntNum{},
+        &FuncReturnError{
+          ErrPrefix: ePrefix.String(),
+          ReturnFunc: fmt.Sprintf("bPair, err = new(BigIntPair).NewBigIntNum(\n"+
+            "finalResult, multiplicands[%d])", idx),
+          ErrContext: fmt.Sprintf("multiplicand='%v'", multiplicandNumStr),
+          ErrMessage: err.Error(),
+        }
+    }
+
+    multiplicandNumStr, err = multiplicand.GetNumStr()
+
+    if err != nil {
+
+      return BigIntNum{},
+        &FuncReturnError{
+          ErrPrefix:  ePrefix.String(),
+          ReturnFunc: "multiplicandNumStr, err = multiplicand.GetNumStr()",
+          ErrContext: fmt.Sprintf("multiplicand range index=[%d])", idx),
+          ErrMessage: err.Error(),
+        }
+    }
+
+    bPair, err = new(BigIntPair).NewBigIntNum(finalResult, multiplicandBINum)
+
+    if err != nil {
+
+      return BigIntNum{},
+        &FuncReturnError{
+          ErrPrefix: ePrefix.String(),
+          ReturnFunc: "bPair, err = new(BigIntPair).NewBigIntNum(\n" +
+            "finalResult, multiplicandBINum)",
+          ErrContext: fmt.Sprintf("Index= '%d'", idx),
+          ErrMessage: err.Error(),
+        }
+    }
+
+    //finalResult = bMultiply.multiplyPairNoNumSeps(bPair)
+
+    finalResult, err = new(bigIntMathMultiplyMechanics).
+      multiplyPairNoNumSeps(bPair, ePrefix)
+
+    if err != nil {
+
+      return BigIntNum{},
+        &FuncReturnError{
+          ErrPrefix: ePrefix.String(),
+          ReturnFunc: "finalResult, err = new(bigIntMathMultiplyMechanics).\n" +
+            "multiplyPairNoNumSeps(bPair, ePrefix)",
+          ErrContext: "",
+          ErrMessage: err.Error(),
+        }
+    }
   }
 
   err = finalResult.SetNumericSeparatorsDto(numSeps)
 
   if err != nil {
+
     return BigIntNum{},
-      fmt.Errorf(ePrefix+
-        "Error returned by finalResult.SetNumericSeparatorsDto(numSeps) "+
-        "Error='%v'. ", err.Error())
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "err = finalResult.SetNumericSeparatorsDto(numSeps)",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
   }
 
   return finalResult, nil
@@ -1936,56 +2057,188 @@ func (bMultiply *BigIntMathMultiply) MultiplyIntAryArray(
   multiplier IntAry,
   multiplicands []IntAry) (BigIntNum, error) {
 
-  ePrefix := "BigIntMathMultiply.MultiplyIntAryArray() "
+  var ePrefix *ePref.ErrPrefixDto
+
+  var err error
+
+  ePrefix,
+    err = ePref.ErrPrefixDto{}.NewIEmpty(
+    nil,
+    "BigIntMathMultiply.MultiplyIntAryArray",
+    "")
+
+  if err != nil {
+    return BigIntNum{}, err
+  }
 
   lenMultiplicands := len(multiplicands)
 
   if lenMultiplicands == 0 {
-    return BigIntNum{}.New(),
-      errors.New(ePrefix + "Error: multiplicands array is Empty!")
+
+    return BigIntNum{},
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "",
+        ErrContext: "len(multiplicands) == 0",
+        ErrMessage: "Error: 'multiplicands' ([]IntAry) array is empty!",
+      }
+  }
+
+  err = multiplier.IsValid(
+    ePrefix.XCpy("Validating 'multiplier'").String())
+
+  if err != nil {
+
+    return BigIntNum{},
+      &FuncReturnError{
+        ErrPrefix: ePrefix.String(),
+        ReturnFunc: "err = multiplier.IsValid(\n" +
+          "ePrefix.XCpy(\"Validating 'multiplier'\").String())",
+        ErrContext: "Input parameter 'multiplier' is invalid!",
+        ErrMessage: err.Error(),
+      }
+  }
+
+  var multiplierNumStr string
+
+  multiplierNumStr, err = multiplier.GetNumStr()
+
+  if err != nil {
+
+    return BigIntNum{},
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "multiplierNumStr, err = multiplier.GetNumStr()",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
   }
 
   // This method will test the validity of 'multiplier'
-  finalResult, err := BigIntNum{}.NewIntAry(multiplier)
+  var finalResult BigIntNum
+
+  finalResult, err = new(BigIntNum).NewIntAry(multiplier)
 
   if err != nil {
+
     return BigIntNum{},
-      fmt.Errorf(ePrefix+
-        "Error returned by BigIntNum{}.NewIntAry(multiplier) "+
-        " multiplier='%v' Error='%v'. ",
-        multiplier.GetNumStr(), err.Error())
+      &FuncReturnError{
+        ErrPrefix: ePrefix.String(),
+        ReturnFunc: "finalResult, err := new(BigIntNum).\n" +
+          "    NewIntAry(multiplier)",
+        ErrContext: fmt.Sprintf("Multiplier '%s'", multiplierNumStr),
+        ErrMessage: err.Error(),
+      }
   }
 
-  numSeps := multiplier.GetNumericSeparatorsDto()
+  var numSeps NumericSeparatorDto
+
+  numSeps, err = multiplier.GetNumericSeparatorsDto()
+
+  if err != nil {
+
+    return BigIntNum{},
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "finalResult, err := multiplier.CopyOut()",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+  }
+
+  var multiplicandBINum BigIntNum
+  var multiplicandNumStr string
+  var bPair BigIntPair
 
   for i := 0; i < lenMultiplicands; i++ {
 
-    // This method will test the validity of multiplicands[i]
-    multiplicandBINum, err := BigIntNum{}.NewIntAry(multiplicands[i])
+    err = multiplicands[i].IsValid(ePrefix.
+      XCpy(fmt.Sprintf("Validating multiplicands[%d]", i)).String())
 
     if err != nil {
+
       return BigIntNum{},
-        fmt.Errorf(ePrefix+
-          "Error returned by BigIntNum{}.NewIntAry(multiplicands[i]) "+
-          "multiplicands[%v]='%v' Error='%v'. ",
-          i, multiplicands[i].GetNumStr(), err.Error())
+        &FuncReturnError{
+          ErrPrefix: ePrefix.String(),
+          ReturnFunc: fmt.Sprintf("err = multiplicands[%d].IsValid(ePrefix.\n", i) +
+            "XCpy(\"Validating 'multiplicands[i]'\").String())",
+          ErrContext: fmt.Sprintf("'multiplicands[%d]' is invalid!", i),
+          ErrMessage: err.Error(),
+        }
     }
 
-    bPair := BigIntPair{}.NewBigIntNum(finalResult, multiplicandBINum)
+    multiplicandNumStr, err = multiplicands[i].GetNumStr()
 
-    finalResult = bMultiply.multiplyPairNoNumSeps(bPair)
+    if err != nil {
 
+      return BigIntNum{},
+        &FuncReturnError{
+          ErrPrefix:  ePrefix.String(),
+          ReturnFunc: fmt.Sprintf("err = multiplicands[%d].GetNumStr()", i),
+          ErrContext: "",
+          ErrMessage: err.Error(),
+        }
+    }
+
+    // This method will test the validity of multiplicands[i]
+    multiplicandBINum, err = new(BigIntNum).NewIntAry(multiplicands[i])
+
+    if err != nil {
+
+      return BigIntNum{},
+        &FuncReturnError{
+          ErrPrefix: ePrefix.String(),
+          ReturnFunc: "multiplicandBINum, err = new(BigIntNum).\n" +
+            fmt.Sprintf("    NewIntAry(multiplicands[%d])", i),
+          ErrContext: fmt.Sprintf("Multiplier '%s'; multiplicands[%d]= '%v' ",
+            multiplierNumStr, i, multiplicandNumStr),
+          ErrMessage: err.Error(),
+        }
+    }
+
+    bPair, err = new(BigIntPair).NewBigIntNum(finalResult, multiplicandBINum)
+
+    if err != nil {
+
+      return BigIntNum{},
+        &FuncReturnError{
+          ErrPrefix: ePrefix.String(),
+          ReturnFunc: "bPair, err = new(BigIntPair).NewBigIntNum(\n" +
+            "finalResult, multiplicandBINum)",
+          ErrContext: fmt.Sprintf("Multiplier '%s'; multiplicands[%d]= '%v' ",
+            multiplierNumStr, i, multiplicandNumStr),
+          ErrMessage: err.Error(),
+        }
+    }
+
+    finalResult, err = new(bigIntMathMultiplyMechanics).
+      multiplyPairNoNumSeps(bPair, ePrefix)
+
+    if err != nil {
+
+      return BigIntNum{},
+        &FuncReturnError{
+          ErrPrefix: ePrefix.String(),
+          ReturnFunc: "finalResult, err = new(bigIntMathMultiplyMechanics).\n" +
+            "multiplyPairNoNumSeps(bPair, ePrefix)",
+          ErrContext: "",
+          ErrMessage: err.Error(),
+        }
+    }
   }
 
   err = finalResult.SetNumericSeparatorsDto(numSeps)
 
   if err != nil {
-    return BigIntNum{},
-      fmt.Errorf(ePrefix+
-        "Error returned by finalResult.SetNumericSeparatorsDto(numSeps) "+
-        "Error='%v'. ", err.Error())
-  }
 
+    return BigIntNum{},
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "err = finalResult.SetNumericSeparatorsDto(numSeps)",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+  }
   return finalResult, nil
 }
 
@@ -2149,7 +2402,7 @@ func (bMultiply *BigIntMathMultiply) MultiplyIntArySeries(
   err = finalResult.SetNumericSeparatorsDto(numSeps)
 
   if err != nil {
-    return BigIntNum{}.New(),
+    return BigIntNum{},
       fmt.Errorf(ePrefix+
         "Error returned by finalResult.SetNumericSeparatorsDto(numSeps) "+
         "Error='%v'. ", err.Error())

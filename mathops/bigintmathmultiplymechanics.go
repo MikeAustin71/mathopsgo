@@ -1,15 +1,15 @@
 package mathops
 
 import (
-  "fmt"
-  ePref "github.com/MikeAustin71/errpref"
-  "math"
-  "math/big"
-  "sync"
+	"fmt"
+	ePref "github.com/MikeAustin71/errpref"
+	"math"
+	"math/big"
+	"sync"
 )
 
 type bigIntMathMultiplyMechanics struct {
-  lock *sync.Mutex
+	lock *sync.Mutex
 }
 
 // multiplyBigIntsBigIntNum
@@ -73,116 +73,116 @@ type bigIntMathMultiplyMechanics struct {
 //	  execution, the returned error value will be set to
 //	  'nil'.
 func (bigIMathMultiplyMech *bigIntMathMultiplyMechanics) multiplyBigIntsBigIntNum(
-  multiplier *big.Int,
-  multiplierPrecision uint,
-  multiplicand *big.Int,
-  multiplicandPrecision uint,
-  numSepsDto NumericSeparatorDto,
-  errPrefDto *ePref.ErrPrefixDto) (BigIntNum, error) {
+	multiplier *big.Int,
+	multiplierPrecision uint,
+	multiplicand *big.Int,
+	multiplicandPrecision uint,
+	numSepsDto NumericSeparatorDto,
+	errPrefDto *ePref.ErrPrefixDto) (BigIntNum, error) {
 
-  if bigIMathMultiplyMech.lock == nil {
-    bigIMathMultiplyMech.lock = new(sync.Mutex)
-  }
+	if bigIMathMultiplyMech.lock == nil {
+		bigIMathMultiplyMech.lock = new(sync.Mutex)
+	}
 
-  bigIMathMultiplyMech.lock.Lock()
+	bigIMathMultiplyMech.lock.Lock()
 
-  defer bigIMathMultiplyMech.lock.Unlock()
+	defer bigIMathMultiplyMech.lock.Unlock()
 
-  var ePrefix *ePref.ErrPrefixDto
+	var ePrefix *ePref.ErrPrefixDto
 
-  var err error
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
-    errPrefDto,
-    "bigIntMathMultiplyMechanics.multiplyBigIntsBigIntNum",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
+		errPrefDto,
+		"bigIntMathMultiplyMechanics.multiplyBigIntsBigIntNum",
+		"")
 
-  if err != nil {
-    return BigIntNum{}, err
-  }
+	if err != nil {
+		return BigIntNum{}, err
+	}
 
-  if multiplier == nil {
+	if multiplier == nil {
 
-    return BigIntNum{},
-      &InputPtrNilError{
-        ErrPrefix:     ePrefix.String(),
-        ParameterName: "'multiplier'",
-      }
-  }
+		return BigIntNum{},
+			&InputPtrNilError{
+				ErrPrefix:     ePrefix.String(),
+				ParameterName: "'multiplier'",
+			}
+	}
 
-  if multiplicand == nil {
+	if multiplicand == nil {
 
-    return BigIntNum{},
-      &InputPtrNilError{
-        ErrPrefix:     ePrefix.String(),
-        ParameterName: "'multiplicand'",
-      }
-  }
+		return BigIntNum{},
+			&InputPtrNilError{
+				ErrPrefix:     ePrefix.String(),
+				ParameterName: "'multiplicand'",
+			}
+	}
 
-  multiplierPrecisionBigInt :=
-    big.NewInt(0).SetUint64(uint64(multiplierPrecision))
+	multiplierPrecisionBigInt :=
+		big.NewInt(0).SetUint64(uint64(multiplierPrecision))
 
-  multiplicandPrecisionBigInt :=
-    big.NewInt(0).SetUint64(uint64(multiplicandPrecision))
+	multiplicandPrecisionBigInt :=
+		big.NewInt(0).SetUint64(uint64(multiplicandPrecision))
 
-  productBInt, productPrecisionBInt, err :=
-    new(bigIntMathMultiplyElectron).multiplyBigInt(
-      multiplier,
-      multiplierPrecisionBigInt,
-      multiplicand,
-      multiplicandPrecisionBigInt,
-      ePrefix)
+	productBInt, productPrecisionBInt, err :=
+		new(bigIntMathMultiplyElectron).multiplyBigInt(
+			multiplier,
+			multiplierPrecisionBigInt,
+			multiplicand,
+			multiplicandPrecisionBigInt,
+			ePrefix)
 
-  if err != nil {
+	if err != nil {
 
-    return BigIntNum{},
-      &FuncReturnError{
-        ErrPrefix: ePrefix.String(),
-        ReturnFunc: "productBInt, productPrecisionBInt, err :=\n" +
-          "    new(bigIntMathMultiplyElectron).multiplyBigInt(\n" +
-          "    multiplier, multiplierPrecisionBigInt, multiplicand,\n" +
-          "    multiplicandPrecisionBigInt, ePrefix)",
-        ErrContext: fmt.Sprintf("multiplier= '%v'; multiplierPrecisionBigInt= '%v'\n"+
-          "multiplicand= '%v'; multiplicandPrecisionBigInt= '%v'",
-          multiplier.Text(10), multiplierPrecisionBigInt.Text(10),
-          multiplicand.Text(10), multiplicandPrecisionBigInt.Text(10)),
-        ErrMessage: err.Error(),
-      }
-  }
+		return BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix: ePrefix.String(),
+				ReturnFunc: "productBInt, productPrecisionBInt, err :=\n" +
+					"    new(bigIntMathMultiplyElectron).multiplyBigInt(\n" +
+					"    multiplier, multiplierPrecisionBigInt, multiplicand,\n" +
+					"    multiplicandPrecisionBigInt, ePrefix)",
+				ErrContext: fmt.Sprintf("multiplier= '%v'; multiplierPrecisionBigInt= '%v'\n"+
+					"multiplicand= '%v'; multiplicandPrecisionBigInt= '%v'",
+					multiplier.Text(10), multiplierPrecisionBigInt.Text(10),
+					multiplicand.Text(10), multiplicandPrecisionBigInt.Text(10)),
+				ErrMessage: err.Error(),
+			}
+	}
 
-  biNumProduct, err := new(BigIntNum).NewBigIntBigPrecision(
-    productBInt,
-    productPrecisionBInt)
+	biNumProduct, err := new(BigIntNum).NewBigIntBigPrecision(
+		productBInt,
+		productPrecisionBInt)
 
-  if err != nil {
+	if err != nil {
 
-    return BigIntNum{},
-      &FuncReturnError{
-        ErrPrefix: ePrefix.String(),
-        ReturnFunc: "biNumProduct, err := new(BigIntNum).NewBigIntBigPrecision(\n" +
-          "    productBInt, productPrecisionBInt)",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-  }
+		return BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix: ePrefix.String(),
+				ReturnFunc: "biNumProduct, err := new(BigIntNum).NewBigIntBigPrecision(\n" +
+					"    productBInt, productPrecisionBInt)",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  numSepsDto.SetDefaultsIfEmpty()
+	numSepsDto.SetDefaultsIfEmpty()
 
-  err = biNumProduct.SetNumericSeparatorsDto(numSepsDto)
+	err = biNumProduct.SetNumericSeparatorsDto(numSepsDto)
 
-  if err != nil {
+	if err != nil {
 
-    return BigIntNum{},
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "err = biNumProduct.SetNumericSeparatorsDto(numSepsDto)",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-  }
+		return BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "err = biNumProduct.SetNumericSeparatorsDto(numSepsDto)",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  return biNumProduct, nil
+	return biNumProduct, nil
 }
 
 // multiplyByTenToPowerBigInt
@@ -252,194 +252,194 @@ func (bigIMathMultiplyMech *bigIntMathMultiplyMechanics) multiplyBigIntsBigIntNu
 //	This method will remove trailing fractional zeros from the final
 //	result (product).
 func (bigIMathMultiplyMech *bigIntMathMultiplyMechanics) multiplyByTenToPowerBigInt(
-  multiplier *big.Int,
-  multiplierPrecision *big.Int,
-  exponent *big.Int,
-  errPrefDto *ePref.ErrPrefixDto) (
-  product *big.Int, productPrecision *big.Int, err error) {
+	multiplier *big.Int,
+	multiplierPrecision *big.Int,
+	exponent *big.Int,
+	errPrefDto *ePref.ErrPrefixDto) (
+	product *big.Int, productPrecision *big.Int, err error) {
 
-  if bigIMathMultiplyMech.lock == nil {
-    bigIMathMultiplyMech.lock = new(sync.Mutex)
-  }
+	if bigIMathMultiplyMech.lock == nil {
+		bigIMathMultiplyMech.lock = new(sync.Mutex)
+	}
 
-  bigIMathMultiplyMech.lock.Lock()
+	bigIMathMultiplyMech.lock.Lock()
 
-  defer bigIMathMultiplyMech.lock.Unlock()
+	defer bigIMathMultiplyMech.lock.Unlock()
 
-  var ePrefix *ePref.ErrPrefixDto
+	var ePrefix *ePref.ErrPrefixDto
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
-    errPrefDto,
-    "bigIntMathMultiplyMechanics.multiplyByTenToPowerBigInt",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
+		errPrefDto,
+		"bigIntMathMultiplyMechanics.multiplyByTenToPowerBigInt",
+		"")
 
-  if err != nil {
-    return big.NewInt(0), big.NewInt(0), err
-  }
+	if err != nil {
+		return big.NewInt(0), big.NewInt(0), err
+	}
 
-  product = big.NewInt(0)
-  productPrecision = big.NewInt(0)
+	product = big.NewInt(0)
+	productPrecision = big.NewInt(0)
 
-  if multiplier == nil {
+	if multiplier == nil {
 
-    return product, productPrecision,
-      &InputPtrNilError{
-        ErrPrefix:     ePrefix.String(),
-        ParameterName: "'multiplier'",
-      }
-  }
+		return product, productPrecision,
+			&InputPtrNilError{
+				ErrPrefix:     ePrefix.String(),
+				ParameterName: "'multiplier'",
+			}
+	}
 
-  if multiplierPrecision == nil {
+	if multiplierPrecision == nil {
 
-    return product, productPrecision,
-      &InputPtrNilError{
-        ErrPrefix:     ePrefix.String(),
-        ParameterName: "'multiplierPrecision'",
-      }
-  }
+		return product, productPrecision,
+			&InputPtrNilError{
+				ErrPrefix:     ePrefix.String(),
+				ParameterName: "'multiplierPrecision'",
+			}
+	}
 
-  if exponent == nil {
+	if exponent == nil {
 
-    return product, productPrecision,
-      &InputPtrNilError{
-        ErrPrefix:     ePrefix.String(),
-        ParameterName: "'exponent'",
-      }
-  }
+		return product, productPrecision,
+			&InputPtrNilError{
+				ErrPrefix:     ePrefix.String(),
+				ParameterName: "'exponent'",
+			}
+	}
 
-  bigZero := big.NewInt(0)
+	bigZero := big.NewInt(0)
 
-  if multiplierPrecision.Cmp(bigZero) == -1 {
+	if multiplierPrecision.Cmp(bigZero) == -1 {
 
-    return product, productPrecision,
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "",
-        ErrContext: fmt.Sprintf("multiplierPrecision='%v'", multiplierPrecision.Text(10)),
-        ErrMessage: "Error: Input Parameter 'multiplierPrecision' is LESS THAN ZERO!",
-      }
-  }
+		return product, productPrecision,
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "",
+				ErrContext: fmt.Sprintf("multiplierPrecision='%v'", multiplierPrecision.Text(10)),
+				ErrMessage: "Error: Input Parameter 'multiplierPrecision' is LESS THAN ZERO!",
+			}
+	}
 
-  bigTen := big.NewInt(10)
+	bigTen := big.NewInt(10)
 
-  bigOne := big.NewInt(1)
+	bigOne := big.NewInt(1)
 
-  if exponent.Cmp(bigZero) == -1 {
-    // if exponent is less than zero
-    // apply special processing...
+	if exponent.Cmp(bigZero) == -1 {
+		// if exponent is less than zero
+		// apply special processing...
 
-    exponent.Neg(exponent)
+		exponent.Neg(exponent)
 
-    divisor := big.NewInt(0).Exp(bigTen, exponent, nil)
+		divisor := big.NewInt(0).Exp(bigTen, exponent, nil)
 
-    quoFrac, quoFracPrecision, err := new(BigIntMathDivide).
-      BigIntFracQuotient(
-        bigOne,
-        big.NewInt(0),
-        divisor,
-        big.NewInt(0),
-        exponent)
+		quoFrac, quoFracPrecision, err := new(BigIntMathDivide).
+			BigIntFracQuotient(
+				bigOne,
+				big.NewInt(0),
+				divisor,
+				big.NewInt(0),
+				exponent)
 
-    if err != nil {
+		if err != nil {
 
-      return product, productPrecision,
-        &FuncReturnError{
-          ErrPrefix: ePrefix.String(),
-          ReturnFunc: "quoFrac, quoFracPrecision, err := \n" +
-            "    new(BigIntMathDivide). BigIntFracQuotient(\n" +
-            "    bigOne, big.NewInt(0), divisor,  big.NewInt(0), exponent)",
-          ErrContext: fmt.Sprintf("divisor= '%v'; exponent= '%v'",
-            divisor.Text(10), exponent.Text(10)),
-          ErrMessage: err.Error(),
-        }
-    }
+			return product, productPrecision,
+				&FuncReturnError{
+					ErrPrefix: ePrefix.String(),
+					ReturnFunc: "quoFrac, quoFracPrecision, err := \n" +
+						"    new(BigIntMathDivide). BigIntFracQuotient(\n" +
+						"    bigOne, big.NewInt(0), divisor,  big.NewInt(0), exponent)",
+					ErrContext: fmt.Sprintf("divisor= '%v'; exponent= '%v'",
+						divisor.Text(10), exponent.Text(10)),
+					ErrMessage: err.Error(),
+				}
+		}
 
-    product, productPrecision, err =
-      new(bigIntMathMultiplyElectron).multiplyBigInt(
-        multiplier,
-        multiplierPrecision,
-        quoFrac,
-        quoFracPrecision,
-        ePrefix)
+		product, productPrecision, err =
+			new(bigIntMathMultiplyElectron).multiplyBigInt(
+				multiplier,
+				multiplierPrecision,
+				quoFrac,
+				quoFracPrecision,
+				ePrefix)
 
-    if err != nil {
+		if err != nil {
 
-      return product, productPrecision,
-        &FuncReturnError{
-          ErrPrefix: ePrefix.String(),
-          ReturnFunc: "product, productPrecision, err =\n" +
-            "    new(bigIntMathMultiplyElectron).multiplyBigInt(\n" +
-            "    multiplier, multiplierPrecision, quoFrac, quoFracPrecision, ePrefix)",
-          ErrContext: fmt.Sprintf("multiplier= '%v'; multiplierPrecision= '%v'\n"+
-            "quoFrac= '%v'; quoFracPrecision= '%v'",
-            multiplier.Text(10), multiplierPrecision.Text(10),
-            quoFrac.Text(10), quoFracPrecision.Text(10)),
-          ErrMessage: err.Error(),
-        }
-    }
+			return product, productPrecision,
+				&FuncReturnError{
+					ErrPrefix: ePrefix.String(),
+					ReturnFunc: "product, productPrecision, err =\n" +
+						"    new(bigIntMathMultiplyElectron).multiplyBigInt(\n" +
+						"    multiplier, multiplierPrecision, quoFrac, quoFracPrecision, ePrefix)",
+					ErrContext: fmt.Sprintf("multiplier= '%v'; multiplierPrecision= '%v'\n"+
+						"quoFrac= '%v'; quoFracPrecision= '%v'",
+						multiplier.Text(10), multiplierPrecision.Text(10),
+						quoFrac.Text(10), quoFracPrecision.Text(10)),
+					ErrMessage: err.Error(),
+				}
+		}
 
-    // Delete trailing fractional zeros
-    // if productPrecision > 0
-    if productPrecision.Cmp(bigZero) == 1 {
+		// Delete trailing fractional zeros
+		// if productPrecision > 0
+		if productPrecision.Cmp(bigZero) == 1 {
 
-      scrap := big.NewInt(0)
-      newProduct, mod10 := big.NewInt(0).QuoRem(product, bigTen, scrap)
+			scrap := big.NewInt(0)
+			newProduct, mod10 := big.NewInt(0).QuoRem(product, bigTen, scrap)
 
-      for mod10.Cmp(bigZero) == 0 && productPrecision.Cmp(bigZero) == 1 {
-        product.Set(newProduct)
-        productPrecision.Sub(productPrecision, bigOne)
-        newProduct, mod10 = big.NewInt(0).QuoRem(product, bigTen, scrap)
-      }
-    }
+			for mod10.Cmp(bigZero) == 0 && productPrecision.Cmp(bigZero) == 1 {
+				product.Set(newProduct)
+				productPrecision.Sub(productPrecision, bigOne)
+				newProduct, mod10 = big.NewInt(0).QuoRem(product, bigTen, scrap)
+			}
+		}
 
-    // Successful Completion
-    return product, productPrecision, nil
-  }
+		// Successful Completion
+		return product, productPrecision, nil
+	}
 
-  delta := big.NewInt(0)
-  scale := big.NewInt(0)
+	delta := big.NewInt(0)
+	scale := big.NewInt(0)
 
-  if multiplier.Cmp(bigZero) == 0 {
-    product = big.NewInt(0)
-    productPrecision = big.NewInt(0)
+	if multiplier.Cmp(bigZero) == 0 {
+		product = big.NewInt(0)
+		productPrecision = big.NewInt(0)
 
-  } else if exponent.Cmp(bigZero) == 0 {
-    product.Set(multiplier)
-    productPrecision.Set(multiplierPrecision)
+	} else if exponent.Cmp(bigZero) == 0 {
+		product.Set(multiplier)
+		productPrecision.Set(multiplierPrecision)
 
-  } else if exponent.Cmp(multiplierPrecision) == 0 {
-    product.Set(multiplier)
-    productPrecision = big.NewInt(0)
+	} else if exponent.Cmp(multiplierPrecision) == 0 {
+		product.Set(multiplier)
+		productPrecision = big.NewInt(0)
 
-  } else if exponent.Cmp(multiplierPrecision) == 1 {
-    // exponent > multiplierPrecision
-    delta = big.NewInt(0).Sub(exponent, multiplierPrecision)
-    scale = big.NewInt(0).Exp(bigTen, delta, nil)
-    product = big.NewInt(0).Mul(multiplier, scale)
-    productPrecision = big.NewInt(0)
+	} else if exponent.Cmp(multiplierPrecision) == 1 {
+		// exponent > multiplierPrecision
+		delta = big.NewInt(0).Sub(exponent, multiplierPrecision)
+		scale = big.NewInt(0).Exp(bigTen, delta, nil)
+		product = big.NewInt(0).Mul(multiplier, scale)
+		productPrecision = big.NewInt(0)
 
-  } else {
-    // multiplierPrecision must be GREATER THAN exponent
-    product.Set(multiplier)
-    productPrecision.Sub(multiplierPrecision, exponent)
-  }
+	} else {
+		// multiplierPrecision must be GREATER THAN exponent
+		product.Set(multiplier)
+		productPrecision.Sub(multiplierPrecision, exponent)
+	}
 
-  // Delete trailing fractional zeros
-  // if productPrecision > 0
-  if productPrecision.Cmp(bigZero) == 1 {
-    scrap := big.NewInt(0)
-    newProduct, mod10 := big.NewInt(0).QuoRem(product, bigTen, scrap)
+	// Delete trailing fractional zeros
+	// if productPrecision > 0
+	if productPrecision.Cmp(bigZero) == 1 {
+		scrap := big.NewInt(0)
+		newProduct, mod10 := big.NewInt(0).QuoRem(product, bigTen, scrap)
 
-    for mod10.Cmp(bigZero) == 0 && productPrecision.Cmp(bigZero) == 1 {
-      product.Set(newProduct)
-      productPrecision.Sub(productPrecision, bigOne)
-      newProduct, mod10 = big.NewInt(0).QuoRem(product, bigTen, scrap)
-    }
-  }
+		for mod10.Cmp(bigZero) == 0 && productPrecision.Cmp(bigZero) == 1 {
+			product.Set(newProduct)
+			productPrecision.Sub(productPrecision, bigOne)
+			newProduct, mod10 = big.NewInt(0).QuoRem(product, bigTen, scrap)
+		}
+	}
 
-  //Successful completion
-  return product, productPrecision, nil
+	//Successful completion
+	return product, productPrecision, nil
 }
 
 // multiplyByTwoToPowerBigIntNum
@@ -492,77 +492,77 @@ func (bigIMathMultiplyMech *bigIntMathMultiplyMechanics) multiplyByTenToPowerBig
 //	 The returned value ('BigIntNum') will be configured with
 //	 'numSeps' Numeric Separators.
 func (bigIMathMultiplyMech *bigIntMathMultiplyMechanics) multiplyByTwoToPowerBigIntNum(
-  multiplier *big.Int,
-  multiplierPrecision uint,
-  exponent uint,
-  numSeps NumericSeparatorDto,
-  errPrefDto *ePref.ErrPrefixDto) (BigIntNum, error) {
+	multiplier *big.Int,
+	multiplierPrecision uint,
+	exponent uint,
+	numSeps NumericSeparatorDto,
+	errPrefDto *ePref.ErrPrefixDto) (BigIntNum, error) {
 
-  if bigIMathMultiplyMech.lock == nil {
-    bigIMathMultiplyMech.lock = new(sync.Mutex)
-  }
+	if bigIMathMultiplyMech.lock == nil {
+		bigIMathMultiplyMech.lock = new(sync.Mutex)
+	}
 
-  bigIMathMultiplyMech.lock.Lock()
+	bigIMathMultiplyMech.lock.Lock()
 
-  defer bigIMathMultiplyMech.lock.Unlock()
+	defer bigIMathMultiplyMech.lock.Unlock()
 
-  var ePrefix *ePref.ErrPrefixDto
+	var ePrefix *ePref.ErrPrefixDto
 
-  var err error
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
-    errPrefDto,
-    "bigIntMathMultiplyMechanics.multiplyByTwoToPowerBigIntNum",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
+		errPrefDto,
+		"bigIntMathMultiplyMechanics.multiplyByTwoToPowerBigIntNum",
+		"")
 
-  if err != nil {
-    return BigIntNum{}, err
-  }
+	if err != nil {
+		return BigIntNum{}, err
+	}
 
-  product, productPrecision, err :=
-    new(bigIntMathMultiplyNanobot).multiplyByTwoToPowerBigInt(
-      multiplier,
-      big.NewInt(0).SetUint64(uint64(multiplierPrecision)),
-      exponent,
-      ePrefix)
+	product, productPrecision, err :=
+		new(bigIntMathMultiplyNanobot).multiplyByTwoToPowerBigInt(
+			multiplier,
+			big.NewInt(0).SetUint64(uint64(multiplierPrecision)),
+			exponent,
+			ePrefix)
 
-  if err != nil {
-    return BigIntNum{}, err
-  }
+	if err != nil {
+		return BigIntNum{}, err
+	}
 
-  // error should never trigger because productPrecision will
-  // never be greater than multiplierPrecision.
-  biNum, err := new(BigIntNum).NewBigIntBigPrecision(product, productPrecision)
+	// error should never trigger because productPrecision will
+	// never be greater than multiplierPrecision.
+	biNum, err := new(BigIntNum).NewBigIntBigPrecision(product, productPrecision)
 
-  if err != nil {
+	if err != nil {
 
-    return BigIntNum{},
-      &FuncReturnError{
-        ErrPrefix: ePrefix.String(),
-        ReturnFunc: "biNum, err := new(BigIntNum).NewBigIntBigPrecision(\n" +
-          "    product, productPrecision)",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-  }
+		return BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix: ePrefix.String(),
+				ReturnFunc: "biNum, err := new(BigIntNum).NewBigIntBigPrecision(\n" +
+					"    product, productPrecision)",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  numSeps.SetDefaultsIfEmpty()
+	numSeps.SetDefaultsIfEmpty()
 
-  err = biNum.SetNumericSeparatorsDto(numSeps)
+	err = biNum.SetNumericSeparatorsDto(numSeps)
 
-  if err != nil {
+	if err != nil {
 
-    return BigIntNum{},
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "err = biNum.SetNumericSeparatorsDto(numSeps)",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-  }
+		return BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "err = biNum.SetNumericSeparatorsDto(numSeps)",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  return biNum, nil
+	return biNum, nil
 }
 
 // multiplyBigIntFixedDecimals
@@ -662,171 +662,171 @@ func (bigIMathMultiplyMech *bigIntMathMultiplyMechanics) multiplyByTwoToPowerBig
 //	 'product' with Numeric Separators current configured in the
 //	 'multiplier'.
 func (bigIMathMultiplyMech *bigIntMathMultiplyMechanics) multiplyBigIntFixedDecimals(
-  multiplier BigIntFixedDecimal,
-  multiplicand BigIntFixedDecimal,
-  numSeps NumericSeparatorDto,
-  errPrefDto *ePref.ErrPrefixDto) (product BigIntFixedDecimal, err error) {
+	multiplier BigIntFixedDecimal,
+	multiplicand BigIntFixedDecimal,
+	numSeps NumericSeparatorDto,
+	errPrefDto *ePref.ErrPrefixDto) (product BigIntFixedDecimal, err error) {
 
-  if bigIMathMultiplyMech.lock == nil {
-    bigIMathMultiplyMech.lock = new(sync.Mutex)
-  }
+	if bigIMathMultiplyMech.lock == nil {
+		bigIMathMultiplyMech.lock = new(sync.Mutex)
+	}
 
-  bigIMathMultiplyMech.lock.Lock()
+	bigIMathMultiplyMech.lock.Lock()
 
-  defer bigIMathMultiplyMech.lock.Unlock()
+	defer bigIMathMultiplyMech.lock.Unlock()
 
-  var ePrefix *ePref.ErrPrefixDto
+	var ePrefix *ePref.ErrPrefixDto
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
-    errPrefDto,
-    "bigIntMathMultiplyMechanics.multiplyBigIntFixedDecimals",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
+		errPrefDto,
+		"bigIntMathMultiplyMechanics.multiplyBigIntFixedDecimals",
+		"")
 
-  if err != nil {
-    return BigIntFixedDecimal{}, err
-  }
+	if err != nil {
+		return BigIntFixedDecimal{}, err
+	}
 
-  product = new(BigIntFixedDecimal).NewZero(0)
+	product = new(BigIntFixedDecimal).NewZero(0)
 
-  err = multiplier.IsValid(ePrefix.XCpy("Testing multiplier").String())
+	err = multiplier.IsValid(ePrefix.XCpy("Testing multiplier").String())
 
-  if err != nil {
+	if err != nil {
 
-    return BigIntFixedDecimal{},
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "err = multiplier.IsValid(ePrefix.XCpy(\"Testing multiplier\").String())",
-        ErrContext: "Input parameter 'multiplier' is INVALID!",
-        ErrMessage: err.Error(),
-      }
-  }
+		return BigIntFixedDecimal{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "err = multiplier.IsValid(ePrefix.XCpy(\"Testing multiplier\").String())",
+				ErrContext: "Input parameter 'multiplier' is INVALID!",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  err = multiplicand.IsValid(ePrefix.XCpy("Testing multiplicand").String())
+	err = multiplicand.IsValid(ePrefix.XCpy("Testing multiplicand").String())
 
-  if err != nil {
+	if err != nil {
 
-    return BigIntFixedDecimal{},
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "err = multiplicand.IsValid(ePrefix.XCpy(\"Testing multiplicand\").String())",
-        ErrContext: "Input parameter 'multiplicand' is INVALID!",
-        ErrMessage: err.Error(),
-      }
-  }
+		return BigIntFixedDecimal{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "err = multiplicand.IsValid(ePrefix.XCpy(\"Testing multiplicand\").String())",
+				ErrContext: "Input parameter 'multiplicand' is INVALID!",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  multiplierBigInt, err := multiplier.GetInteger()
+	multiplierBigInt, err := multiplier.GetInteger()
 
-  if err != nil {
+	if err != nil {
 
-    return BigIntFixedDecimal{},
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "multiplierBigInt, err := multiplier.GetInteger()",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-  }
+		return BigIntFixedDecimal{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "multiplierBigInt, err := multiplier.GetInteger()",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  multiplierPrecision, err := multiplier.GetPrecision()
+	multiplierPrecision, err := multiplier.GetPrecision()
 
-  if err != nil {
+	if err != nil {
 
-    return BigIntFixedDecimal{},
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "multiplierPrecision, err := multiplier.GetPrecision()",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-  }
+		return BigIntFixedDecimal{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "multiplierPrecision, err := multiplier.GetPrecision()",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  multiplierPrecisionBigInt := big.NewInt(0).
-    SetUint64(uint64(multiplierPrecision))
+	multiplierPrecisionBigInt := big.NewInt(0).
+		SetUint64(uint64(multiplierPrecision))
 
-  multiplicandBigInt, err := multiplicand.GetInteger()
+	multiplicandBigInt, err := multiplicand.GetInteger()
 
-  if err != nil {
+	if err != nil {
 
-    return BigIntFixedDecimal{},
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "multiplicandBigInt, err := multiplicand.GetInteger()",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-  }
+		return BigIntFixedDecimal{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "multiplicandBigInt, err := multiplicand.GetInteger()",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  multiplicandPrecision, err := multiplicand.GetPrecision()
+	multiplicandPrecision, err := multiplicand.GetPrecision()
 
-  if err != nil {
+	if err != nil {
 
-    return BigIntFixedDecimal{},
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "multiplicandPrecision, err := multiplicand.GetPrecision()",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-  }
+		return BigIntFixedDecimal{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "multiplicandPrecision, err := multiplicand.GetPrecision()",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  multiplicandPrecisionBigInt := big.NewInt(0).
-    SetUint64(uint64(multiplicandPrecision))
+	multiplicandPrecisionBigInt := big.NewInt(0).
+		SetUint64(uint64(multiplicandPrecision))
 
-  result, resultPrecision, err :=
-    new(bigIntMathMultiplyElectron).multiplyBigInt(
-      multiplierBigInt,
-      multiplierPrecisionBigInt,
-      multiplicandBigInt,
-      multiplicandPrecisionBigInt,
-      ePrefix)
+	result, resultPrecision, err :=
+		new(bigIntMathMultiplyElectron).multiplyBigInt(
+			multiplierBigInt,
+			multiplierPrecisionBigInt,
+			multiplicandBigInt,
+			multiplicandPrecisionBigInt,
+			ePrefix)
 
-  if err != nil {
+	if err != nil {
 
-    return BigIntFixedDecimal{},
-      &FuncReturnError{
-        ErrPrefix: ePrefix.String(),
-        ReturnFunc: "result, resultPrecision, err :=\n" +
-          "    new(bigIntMathMultiplyElectron).multiplyBigInt(\n" +
-          "    multiplierBigInt, multiplierPrecisionBigInt, multiplicandBigInt,\n" +
-          "    multiplicandPrecisionBigInt, ePrefix)",
-        ErrContext: fmt.Sprintf("multiplierBigInt= '%v'; multiplierPrecisionBigInt= '%v'\n"+
-          "multiplicandBigInt= '%v'; multiplicandPrecisionBigInt= '%v'",
-          multiplierBigInt.Text(10), multiplierPrecisionBigInt.Text(10),
-          multiplicandBigInt.Text(10), multiplicandPrecisionBigInt.Text(10)),
-        ErrMessage: err.Error(),
-      }
-  }
+		return BigIntFixedDecimal{},
+			&FuncReturnError{
+				ErrPrefix: ePrefix.String(),
+				ReturnFunc: "result, resultPrecision, err :=\n" +
+					"    new(bigIntMathMultiplyElectron).multiplyBigInt(\n" +
+					"    multiplierBigInt, multiplierPrecisionBigInt, multiplicandBigInt,\n" +
+					"    multiplicandPrecisionBigInt, ePrefix)",
+				ErrContext: fmt.Sprintf("multiplierBigInt= '%v'; multiplierPrecisionBigInt= '%v'\n"+
+					"multiplicandBigInt= '%v'; multiplicandPrecisionBigInt= '%v'",
+					multiplierBigInt.Text(10), multiplierPrecisionBigInt.Text(10),
+					multiplicandBigInt.Text(10), multiplicandPrecisionBigInt.Text(10)),
+				ErrMessage: err.Error(),
+			}
+	}
 
-  biMaxUint := big.NewInt(int64(math.MaxUint32))
+	biMaxUint := big.NewInt(int64(math.MaxUint32))
 
-  if resultPrecision.Cmp(biMaxUint) > 1 {
-    delta := big.NewInt(0).Sub(resultPrecision, biMaxUint)
-    delta.Sub(delta, big.NewInt(1))
-    bigTen := big.NewInt(10)
-    scale := big.NewInt(0).Exp(bigTen, delta, nil)
-    result.Quo(result, scale)
-    bigFive := big.NewInt(5)
+	if resultPrecision.Cmp(biMaxUint) > 1 {
+		delta := big.NewInt(0).Sub(resultPrecision, biMaxUint)
+		delta.Sub(delta, big.NewInt(1))
+		bigTen := big.NewInt(10)
+		scale := big.NewInt(0).Exp(bigTen, delta, nil)
+		result.Quo(result, scale)
+		bigFive := big.NewInt(5)
 
-    if result.Cmp(big.NewInt(0)) == -1 {
-      bigFive.Neg(bigFive)
-    }
+		if result.Cmp(big.NewInt(0)) == -1 {
+			bigFive.Neg(bigFive)
+		}
 
-    result.Add(result, bigFive)
-    result.Quo(result, bigTen)
-    resultPrecision.Set(biMaxUint)
-  }
+		result.Add(result, bigFive)
+		result.Quo(result, bigTen)
+		resultPrecision.Set(biMaxUint)
+	}
 
-  numSeps.SetDefaultsIfEmpty()
+	numSeps.SetDefaultsIfEmpty()
 
-  err = new(bigIntFixedDecAtom).setNumericValue(
-    &product,
-    result,
-    uint(resultPrecision.Uint64()),
-    numSeps,
-    ePrefix.XCpy("Setting 'product'"))
+	err = new(bigIntFixedDecAtom).setNumericValue(
+		&product,
+		result,
+		uint(resultPrecision.Uint64()),
+		numSeps,
+		ePrefix.XCpy("Setting 'product'"))
 
-  return product, err
+	return product, err
 }
 
 // multiplyPairNoNumSeps
@@ -844,54 +844,54 @@ func (bigIMathMultiplyMech *bigIntMathMultiplyMechanics) multiplyBigIntFixedDeci
 // separators (decimal separator, thousands separator and currency symbol)
 // configured for the BigIntNum, 'bPair.Big1'
 func (bigIMathMultiplyMech *bigIntMathMultiplyMechanics) multiplyPairNoNumSeps(
-  bPair BigIntPair,
-  errPrefDto *ePref.ErrPrefixDto) (BigIntNum, error) {
+	bPair BigIntPair,
+	errPrefDto *ePref.ErrPrefixDto) (BigIntNum, error) {
 
-  if bigIMathMultiplyMech.lock == nil {
-    bigIMathMultiplyMech.lock = new(sync.Mutex)
-  }
+	if bigIMathMultiplyMech.lock == nil {
+		bigIMathMultiplyMech.lock = new(sync.Mutex)
+	}
 
-  bigIMathMultiplyMech.lock.Lock()
+	bigIMathMultiplyMech.lock.Lock()
 
-  defer bigIMathMultiplyMech.lock.Unlock()
+	defer bigIMathMultiplyMech.lock.Unlock()
 
-  var ePrefix *ePref.ErrPrefixDto
+	var ePrefix *ePref.ErrPrefixDto
 
-  var err error
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
-    errPrefDto,
-    "bigIntMathMultiplyMechanics.multiplyPairNoNumSeps",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
+		errPrefDto,
+		"bigIntMathMultiplyMechanics.multiplyPairNoNumSeps",
+		"")
 
-  if err != nil {
-    return BigIntNum{}, err
-  }
+	if err != nil {
+		return BigIntNum{}, err
+	}
 
-  err = bPair.Big1.IsValid(ePrefix.XCpy("Testing  bPair.Big1").String())
+	err = bPair.Big1.IsValid(ePrefix.XCpy("Testing  bPair.Big1").String())
 
-  if err != nil {
+	if err != nil {
 
-    return BigIntNum{},
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "",
-        ErrContext: "Error: bPair.Big1 is INVALID!",
-        ErrMessage: err.Error(),
-      }
-  }
+		return BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "",
+				ErrContext: "Error: bPair.Big1 is INVALID!",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  numSepsDto, err := new(bigIntNumAtom).getNumericSeparatorsDto(
-    &bPair.Big1,
-    ePrefix.XCpy("bPair.Big1->numSepsDto"))
+	numSepsDto, err := new(bigIntNumAtom).getNumericSeparatorsDto(
+		&bPair.Big1,
+		ePrefix.XCpy("bPair.Big1->numSepsDto"))
 
-  if err != nil {
-    return BigIntNum{}, err
-  }
+	if err != nil {
+		return BigIntNum{}, err
+	}
 
-  numSepsDto.SetDefaultsIfEmpty()
+	numSepsDto.SetDefaultsIfEmpty()
 
-  return new(bigIntMathMultiplyNanobot).
-    multiplyPairWithNumSeps(bPair, numSepsDto, ePrefix)
+	return new(bigIntMathMultiplyNanobot).
+		multiplyPairWithNumSeps(bPair, numSepsDto, ePrefix)
 }
