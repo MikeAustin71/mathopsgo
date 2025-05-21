@@ -51,7 +51,7 @@ func (bIntNumMech *bigIntNumMechanics) new() BigIntNum {
 //
 //	Input Parameters
 //	================
-/
+//
 //	bigI                     *big.Int
 //	  'bigI' is a type *big.Int and represents the integer value
 //	  of the number; that is, the numeric value without decimal
@@ -147,59 +147,59 @@ func (bIntNumMech *bigIntNumMechanics) newBigInt(
 // Creates a new BigIntNum instance using a *big.Int type and its
 // associated precision of type uint.
 //
-//	Precision Example
-//	=================
+//		Precision Example
+//		=================
 //
-//	The 'precision' input parameter specifies the number of digits
-//	to the right of the decimal place. The Numeric value is equal
-//	to 'bigI' x 10^(precision x -1). This effectively locates the
-//	decimal place by counting from the extreme right of the integer
-//	number, 'precision' places to the left. See the example below.
+//		The 'precision' input parameter specifies the number of digits
+//		to the right of the decimal place. The Numeric value is equal
+//		to 'bigI' x 10^(precision x -1). This effectively locates the
+//		decimal place by counting from the extreme right of the integer
+//		number, 'precision' places to the left. See the example below.
 //
-//		   Integer Value    precision    Numeric Value
-//		     123456             3           123.456
-//	                 123456 x 10^-3 =  123.456
+//			   Integer Value    precision    Numeric Value
+//			     123456             3           123.456
+//		                 123456 x 10^-3 =  123.456
 //
-//	Input Parameters
-//	================
+//		Input Parameters
+//		================
 //
-//	bigI                     *big.Int
-//	  'bigI' is a type *big.Int and represents the integer value
-//	  of the number; that is, the numeric value without decimal
-//	   digits.
+//		bigI                     *big.Int
+//		  'bigI' is a type *big.Int and represents the integer value
+//		  of the number; that is, the numeric value without decimal
+//		   digits.
 //
-//	precision                uint
-//	  This unsigned integer (always a positive value) identifies
-//	  the location of the decimal place in the integer value
-//	  parameter 'bigI'. The decimal place location is calculated
-//	  by starting with the right most digit in the integer number
-//	  ('bigI') and counting	left, 'precision' places.
+//		precision                uint
+//		  This unsigned integer (always a positive value) identifies
+//		  the location of the decimal place in the integer value
+//		  parameter 'bigI'. The decimal place location is calculated
+//		  by starting with the right most digit in the integer number
+//		  ('bigI') and counting	left, 'precision' places.
 //
-//  numSepsDto               NumericSeparatorDto
-//    Input parameter, 'numSeps' consits of a NumericSeparatorDto
-//    instance. A NumericSeparatorDto contains symbols or characters
-//    for the decimal separator, thousands separator and currency
-//    symbol. These separators are used when parsing number strings
-//    into numeric values or displaying numeric values in number
-//    strings.
+//	 numSepsDto               NumericSeparatorDto
+//	   Input parameter, 'numSeps' consits of a NumericSeparatorDto
+//	   instance. A NumericSeparatorDto contains symbols or characters
+//	   for the decimal separator, thousands separator and currency
+//	   symbol. These separators are used when parsing number strings
+//	   into numeric values or displaying numeric values in number
+//	   strings.
 //
-//    If any of the 'numSeps' Numeric Separator Components are
-//    invalid, those components will be automatically reset to USA
-//    default values.
+//	   If any of the 'numSeps' Numeric Separator Components are
+//	   invalid, those components will be automatically reset to USA
+//	   default values.
 //
-//    The returned value ('BigIntNum') will be configured with
-//    'numSeps' Numeric Separators.
+//	   The returned value ('BigIntNum') will be configured with
+//	   'numSeps' Numeric Separators.
 //
-//	Return Values
-//	=============
+//		Return Values
+//		=============
 //
-//	BigIntNum
-//	  The new instance of BigIntNum will be returned through
-//	  this parameter.
+//		BigIntNum
+//		  The new instance of BigIntNum will be returned through
+//		  this parameter.
 //
-//	error
-//	  If no errors are encountered during execution, this method
-//	  will return an error value of 'nil'.
+//		error
+//		  If no errors are encountered during execution, this method
+//		  will return an error value of 'nil'.
 func (bIntNumMech *bigIntNumMechanics) newBigIntNumSeps(
 	bigI *big.Int,
 	precision uint,
