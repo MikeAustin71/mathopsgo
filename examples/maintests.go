@@ -55,8 +55,8 @@ func TestBigIntToPositiveFractionalPower(
 	fmt.Println("------------------------------------------------------------")
 	fmt.Println()
 
-	binBase, _ := mathops.BigIntNum{}.NewBigIntPrecision(base, basePrecision)
-	binExponent, _ := mathops.BigIntNum{}.NewBigIntPrecision(exponent, exponentPrecision)
+	binBase, _ := mathops.BigIntNum{}.NewBigIntBigPrecision(base, basePrecision)
+	binExponent, _ := mathops.BigIntNum{}.NewBigIntBigPrecision(exponent, exponentPrecision)
 
 	timeStart = time.Now()
 	binPwr, err := mathops.BigIntMathPower{}.Pwr(binBase, binExponent, uint(maxPrecision.Uint64()))
@@ -105,10 +105,10 @@ func TestBigIntNegativeFractionalNthRoot(
 		return
 	}
 
-	resultBiNum, err := mathops.BigIntNum{}.NewBigIntPrecision(result, resultPrecision)
+	resultBiNum, err := mathops.BigIntNum{}.NewBigIntBigPrecision(result, resultPrecision)
 
 	if err != nil {
-		fmt.Printf("Error returned by .BigIntNum{}.NewBigIntPrecision(...) "+
+		fmt.Printf("Error returned by .BigIntNum{}.NewBigIntBigPrecision(...) "+
 			"Error='%v' ", err.Error())
 	}
 
@@ -134,8 +134,8 @@ func TestBigIntNegativeFractionalNthRoot(
 	fmt.Println("------------------------------------------------------------")
 	fmt.Println()
 
-	binRadicand, _ := mathops.BigIntNum{}.NewBigIntPrecision(radicand, radicandPrecision)
-	binNthRoot, _ := mathops.BigIntNum{}.NewBigIntPrecision(nthRoot, nthRootPrecision)
+	binRadicand, _ := mathops.BigIntNum{}.NewBigIntBigPrecision(radicand, radicandPrecision)
+	binNthRoot, _ := mathops.BigIntNum{}.NewBigIntBigPrecision(nthRoot, nthRootPrecision)
 	uintMaxPrecision := uint(maxPrecision.Uint64())
 	timeStart = time.Now()
 	binRoot, err := mathops.BigIntMathNthRoot{}.GetNthRoot(binRadicand, binNthRoot, uintMaxPrecision)
@@ -193,10 +193,10 @@ func TestBigIntPositiveFractionalNthRoot(
 		return
 	}
 
-	resultBiNum, err := mathops.BigIntNum{}.NewBigIntPrecision(result, resultPrecision)
+	resultBiNum, err := mathops.BigIntNum{}.NewBigIntBigPrecision(result, resultPrecision)
 
 	if err != nil {
-		fmt.Printf("Error returned by .BigIntNum{}.NewBigIntPrecision(...) "+
+		fmt.Printf("Error returned by .BigIntNum{}.NewBigIntBigPrecision(...) "+
 			"Error='%v' ", err.Error())
 	}
 
@@ -222,8 +222,8 @@ func TestBigIntPositiveFractionalNthRoot(
 	fmt.Println("------------------------------------------------------------")
 	fmt.Println()
 
-	binRadicand, _ := mathops.BigIntNum{}.NewBigIntPrecision(radicand, radicandPrecision)
-	binNthRoot, _ := mathops.BigIntNum{}.NewBigIntPrecision(nthRoot, nthRootPrecision)
+	binRadicand, _ := mathops.BigIntNum{}.NewBigIntBigPrecision(radicand, radicandPrecision)
+	binNthRoot, _ := mathops.BigIntNum{}.NewBigIntBigPrecision(nthRoot, nthRootPrecision)
 	uintMaxPrecision := uint(maxPrecision.Uint64())
 	timeStart = time.Now()
 	binRoot, err := mathops.BigIntMathNthRoot{}.GetNthRoot(binRadicand, binNthRoot, uintMaxPrecision)
@@ -281,10 +281,10 @@ func TestBigIntNegativeIntNthRoot(
 		return
 	}
 
-	resultBiNum, err := mathops.BigIntNum{}.NewBigIntPrecision(result, resultPrecision)
+	resultBiNum, err := mathops.BigIntNum{}.NewBigIntBigPrecision(result, resultPrecision)
 
 	if err != nil {
-		fmt.Printf("Error returned by .BigIntNum{}.NewBigIntPrecision(...) "+
+		fmt.Printf("Error returned by .BigIntNum{}.NewBigIntBigPrecision(...) "+
 			"Error='%v' ", err.Error())
 	}
 
@@ -339,10 +339,10 @@ func TestBigIntPositiveIntNthRoot(
 		return
 	}
 
-	resultBiNum, err := mathops.BigIntNum{}.NewBigIntPrecision(result, resultPrecision)
+	resultBiNum, err := mathops.BigIntNum{}.NewBigIntBigPrecision(result, resultPrecision)
 
 	if err != nil {
-		fmt.Printf("Error returned by .BigIntNum{}.NewBigIntPrecision(...) "+
+		fmt.Printf("Error returned by .BigIntNum{}.NewBigIntBigPrecision(...) "+
 			"Error='%v' ", err.Error())
 	}
 
@@ -418,8 +418,8 @@ func TestBigIntNegativeIntPower(
 	fmt.Println("------------------------------------------------------------")
 	fmt.Println()
 
-	binBase, _ := mathops.BigIntNum{}.NewBigIntPrecision(base, basePrecision)
-	binExponent, _ := mathops.BigIntNum{}.NewBigIntPrecision(exponent, exponentPrecision)
+	binBase, _ := mathops.BigIntNum{}.NewBigIntBigPrecision(base, basePrecision)
+	binExponent, _ := mathops.BigIntNum{}.NewBigIntBigPrecision(exponent, exponentPrecision)
 
 	timeStart = time.Now()
 	binPwr, err := mathops.BigIntMathPower{}.Pwr(binBase, binExponent, uint(maxPrecision.Uint64()))
@@ -494,8 +494,8 @@ func TestBigIntPositiveIntPower(
 	fmt.Println("------------------------------------------------------------")
 	fmt.Println()
 
-	binBase, _ := mathops.BigIntNum{}.NewBigIntPrecision(base, basePrecision)
-	binExponent, _ := mathops.BigIntNum{}.NewBigIntPrecision(exponent, exponentPrecision)
+	binBase, _ := mathops.BigIntNum{}.NewBigIntBigPrecision(base, basePrecision)
+	binExponent, _ := mathops.BigIntNum{}.NewBigIntBigPrecision(exponent, exponentPrecision)
 
 	timeStart = time.Now()
 	binPwr, err := mathops.BigIntMathPower{}.Pwr(binBase, binExponent, uint(maxPrecision.Uint64()))

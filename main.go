@@ -41,7 +41,7 @@ func TestMikesIntegerSquareRoot(
 	}
 
 	binSqrRoot, err :=
-		mathops.BigIntNum{}.NewBigIntPrecision(sqrRoot, sqrRootPrecision)
+		mathops.BigIntNum{}.NewBigIntBigPrecision(sqrRoot, sqrRootPrecision)
 
 	if err != nil {
 		fmt.Printf(ePrefix+"%v", err.Error())
@@ -129,7 +129,7 @@ func TestIntegerSqrRoot(
 	}
 
 	binRadicand, err :=
-		mathops.BigIntNum{}.NewBigIntPrecision(radicand, radicandPrecision)
+		mathops.BigIntNum{}.NewBigIntBigPrecision(radicand, radicandPrecision)
 
 	if err != nil {
 		fmt.Printf(ePrefix+
@@ -138,7 +138,7 @@ func TestIntegerSqrRoot(
 	}
 
 	binSqrRoot, err :=
-		mathops.BigIntNum{}.NewBigIntPrecision(
+		mathops.BigIntNum{}.NewBigIntBigPrecision(
 			sqrRoot,
 			sqrRootPrecision)
 
@@ -269,7 +269,7 @@ func TestFastIntSqRoot(
 	}
 
 	binRadicand, err :=
-		mathops.BigIntNum{}.NewBigIntPrecision(radicand, radicandPrecision)
+		mathops.BigIntNum{}.NewBigIntBigPrecision(radicand, radicandPrecision)
 
 	if err != nil {
 		fmt.Printf(ePrefix+
@@ -311,7 +311,7 @@ func TestFastIntSqRoot(
 	}
 
 	binVSqrRoot, err :=
-		mathops.BigIntNum{}.NewBigIntPrecision(vSqrRoot, vSqrRootPrecision)
+		mathops.BigIntNum{}.NewBigIntBigPrecision(vSqrRoot, vSqrRootPrecision)
 
 	if err != nil {
 		fmt.Printf(ePrefix+
@@ -367,7 +367,7 @@ func TestLogBaseOfXByDivide(
 		fmt.Printf(ePrefix+"%v", errX)
 	}
 
-	biNumBase, errX := mathops.BigIntNum{}.NewBigIntPrecision(
+	biNumBase, errX := mathops.BigIntNum{}.NewBigIntBigPrecision(
 		base,
 		basePrecision)
 
@@ -375,7 +375,7 @@ func TestLogBaseOfXByDivide(
 		fmt.Printf(ePrefix+"Error: biNumBase - %v", errX)
 	}
 
-	biXNum, errX := mathops.BigIntNum{}.NewBigIntPrecision(
+	biXNum, errX := mathops.BigIntNum{}.NewBigIntBigPrecision(
 		xNum,
 		xNumPrecision)
 
@@ -383,7 +383,7 @@ func TestLogBaseOfXByDivide(
 		fmt.Printf(ePrefix+"Error: biNumBase - %v", errX)
 	}
 
-	biNumLogResult, errX := mathops.BigIntNum{}.NewBigIntPrecision(
+	biNumLogResult, errX := mathops.BigIntNum{}.NewBigIntBigPrecision(
 		logResult,
 		logResultPrecision)
 
@@ -476,7 +476,7 @@ func TestBabylonianSqrRoot(
 	fastSqrRootDuration := examples.CodeDurationToStr(timeDuration)
 
 	binRadicand, err :=
-		mathops.BigIntNum{}.NewBigIntPrecision(
+		mathops.BigIntNum{}.NewBigIntBigPrecision(
 			radicand,
 			radicandPrecision)
 
@@ -486,7 +486,7 @@ func TestBabylonianSqrRoot(
 	}
 
 	binInitialGuess, err :=
-		mathops.BigIntNum{}.NewBigIntPrecision(
+		mathops.BigIntNum{}.NewBigIntBigPrecision(
 			initialGuess,
 			initialGuessPrecision)
 
@@ -496,7 +496,7 @@ func TestBabylonianSqrRoot(
 	}
 
 	binSqrRoot, err :=
-		mathops.BigIntNum{}.NewBigIntPrecision(
+		mathops.BigIntNum{}.NewBigIntBigPrecision(
 			sqrRoot,
 			sqrRootPrecision)
 
@@ -554,7 +554,7 @@ func TestBabylonianSqrRoot(
 	}
 
 	bin2SqrRoot, err :=
-		mathops.BigIntNum{}.NewBigIntPrecision(
+		mathops.BigIntNum{}.NewBigIntBigPrecision(
 			sqrRoot,
 			sqrRootPrecision)
 
@@ -659,7 +659,7 @@ func main() {
 		return
 	}
 
-	biNum_s, err := mathops.BigIntNum{}.NewBigIntPrecision(s, sPrecision)
+	biNum_s, err := mathops.BigIntNum{}.NewBigIntBigPrecision(s, sPrecision)
 
 	if err != nil {
 		fmt.Printf(ePrefix + "biNum_s - %v", err.Error())
@@ -679,7 +679,7 @@ func main() {
 	agMeanMaxInternalPrecision := big.NewInt(2000)
 	agMeanMaxOutputPrecision := big.NewInt(36)
 	biNumFourDivS, err :=
-		mathops.BigIntNum{}.NewBigIntPrecision(fourDivS, fourDivSPrecision)
+		mathops.BigIntNum{}.NewBigIntBigPrecision(fourDivS, fourDivSPrecision)
 
 	if err != nil {
 		fmt.Printf(ePrefix + "biNum_s - %v", err.Error())
@@ -755,7 +755,7 @@ func main() {
 	fmt.Println()
 	fmt.Println("Result Precision: ", resultPrecision.Text(10))
 
-	binResult, err := mathops.BigIntNum{}.NewBigIntPrecision(result, resultPrecision)
+	binResult, err := mathops.BigIntNum{}.NewBigIntBigPrecision(result, resultPrecision)
 	fmt.Println("BigIntNum Result: ")
 	fmt.Println(binResult.GetNumStr())
 
@@ -808,7 +808,7 @@ func main() {
 	}
 
 	gComPreRound, err :=
-		mathops.BigIntNum{}.NewBigIntPrecision(gCom, gComPrecision)
+		mathops.BigIntNum{}.NewBigIntBigPrecision(gCom, gComPrecision)
 
 	if err != nil {
 		fmt.Println(ePrefix +
@@ -824,7 +824,7 @@ func main() {
 		return
 	}
 
-	gComPostRound, err := mathops.BigIntNum{}.NewBigIntPrecision(biGComPostRound, biGComPostRoundPrecision)
+	gComPostRound, err := mathops.BigIntNum{}.NewBigIntBigPrecision(biGComPostRound, biGComPostRoundPrecision)
 
 
 	fmt.Println("aCycle: ", binACycle.GetNumStr())
@@ -870,7 +870,7 @@ func main() {
 		return
 	}
 
-	biNum_s, err := mathops.BigIntNum{}.NewBigIntPrecision(s, sPrecision)
+	biNum_s, err := mathops.BigIntNum{}.NewBigIntBigPrecision(s, sPrecision)
 
 	if err != nil {
 		fmt.Printf(ePrefix + "biNum_s - %v", err.Error())
@@ -890,7 +890,7 @@ func main() {
 	agMeanMaxInternalPrecision := big.NewInt(5000)
 	agMeanMaxOutputPrecision := big.NewInt(32)
 	biNumFourDivS, err :=
-		mathops.BigIntNum{}.NewBigIntPrecision(fourDivS, fourDivSPrecision)
+		mathops.BigIntNum{}.NewBigIntBigPrecision(fourDivS, fourDivSPrecision)
 
 	if err != nil {
 		fmt.Printf(ePrefix + "biNum_s - %v", err.Error())
@@ -989,28 +989,28 @@ func TestArithmeticGeometricMean(
 		return
 	}
 
-	binANum, err := mathops.BigIntNum{}.NewBigIntPrecision(aNum, aNumPrecision)
+	binANum, err := mathops.BigIntNum{}.NewBigIntBigPrecision(aNum, aNumPrecision)
 
 	if err != nil {
 		fmt.Printf(ePrefix+"%v", err.Error())
 		return
 	}
 
-	binGNum, err := mathops.BigIntNum{}.NewBigIntPrecision(gNum, gNumPrecision)
+	binGNum, err := mathops.BigIntNum{}.NewBigIntBigPrecision(gNum, gNumPrecision)
 
 	if err != nil {
 		fmt.Printf(ePrefix+"%v", err.Error())
 		return
 	}
 
-	binAGMean, err := mathops.BigIntNum{}.NewBigIntPrecision(agMean, agMeanPrecision)
+	binAGMean, err := mathops.BigIntNum{}.NewBigIntBigPrecision(agMean, agMeanPrecision)
 
 	if err != nil {
 		fmt.Printf(ePrefix+"%v", err.Error())
 		return
 	}
 
-	binGValue, err := mathops.BigIntNum{}.NewBigIntPrecision(gValue, gValuePrecision)
+	binGValue, err := mathops.BigIntNum{}.NewBigIntBigPrecision(gValue, gValuePrecision)
 
 	if err != nil {
 		fmt.Printf(ePrefix+"%v", err.Error())
@@ -1142,7 +1142,7 @@ func TestNatLogOfXArithmeticGeometricMean(
 	}
 
 	bINumXNum, err :=
-		mathops.BigIntNum{}.NewBigIntPrecision(xNum, xNumPrecision)
+		mathops.BigIntNum{}.NewBigIntBigPrecision(xNum, xNumPrecision)
 
 	if err != nil {
 		fmt.Printf(ePrefix+"bINumXNum Error= %v", err.Error())
@@ -1150,7 +1150,7 @@ func TestNatLogOfXArithmeticGeometricMean(
 	}
 
 	bINumlnOfX, err :=
-		mathops.BigIntNum{}.NewBigIntPrecision(lnOfX, lnOfXPrecision)
+		mathops.BigIntNum{}.NewBigIntBigPrecision(lnOfX, lnOfXPrecision)
 
 	if err != nil {
 		fmt.Printf(ePrefix+"bINumlnOfX Error= %v", err.Error())
@@ -1282,7 +1282,7 @@ func TestBigIntLogBaseOfX(
 	status := "Success!!!!! Expected Matches Actual Value"
 
 	if err == nil {
-		binLogResult, _ := mathops.BigIntNum{}.NewBigIntPrecision(logResult, logResultPrecision)
+		binLogResult, _ := mathops.BigIntNum{}.NewBigIntBigPrecision(logResult, logResultPrecision)
 
 		fmt.Println()
 		fmt.Println("================================================")
@@ -1307,7 +1307,7 @@ func TestBigIntLogBaseOfX(
 	}
 
 	biBase := mathops.BigIntNum{}.NewBigInt(base, 0)
-	biXNum, _ := mathops.BigIntNum{}.NewBigIntPrecision(xNum, xNumPrecision)
+	biXNum, _ := mathops.BigIntNum{}.NewBigIntBigPrecision(xNum, xNumPrecision)
 
 	uiMaxPrecision := uint(maxPrecision.Uint64())
 
@@ -1438,7 +1438,7 @@ func main() {
 		return
 	}
 
-	binProduct, err := mathops.BigIntNum{}.NewBigIntPrecision(product, productPrecision)
+	binProduct, err := mathops.BigIntNum{}.NewBigIntBigPrecision(product, productPrecision)
 
 	if err !=nil {
 		fmt.Printf(ePrefix + "binProduct - %v", err.Error())
@@ -1463,7 +1463,7 @@ func main() {
 		return
 	}
 
-	binG, err := mathops.BigIntNum{}.NewBigIntPrecision(g, gPrecision)
+	binG, err := mathops.BigIntNum{}.NewBigIntBigPrecision(g, gPrecision)
 
 	if err !=nil {
 		fmt.Printf(ePrefix + "binG - %v", err.Error())
@@ -1550,8 +1550,8 @@ func TestBigIntToNegativeFractionalPower(
 	fmt.Println("------------------------------------------------------------")
 	fmt.Println()
 
-	binBase, _ := mathops.BigIntNum{}.NewBigIntPrecision(base, basePrecision)
-	binExponent, _ := mathops.BigIntNum{}.NewBigIntPrecision(exponent, exponentPrecision)
+	binBase, _ := mathops.BigIntNum{}.NewBigIntBigPrecision(base, basePrecision)
+	binExponent, _ := mathops.BigIntNum{}.NewBigIntBigPrecision(exponent, exponentPrecision)
 
 	timeStart = time.Now()
 	binPwr, err := mathops.BigIntMathPower{}.Pwr(binBase, binExponent, uint(maxPrecision.Uint64()))

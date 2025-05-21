@@ -1541,7 +1541,7 @@ func (bigIFd *BigIntFixedDecimal) New(integer *big.Int, precision uint) BigIntFi
 func (bigIFd *BigIntFixedDecimal) NewBigIntPrecision(
 	bigInt, precision *big.Int) (BigIntFixedDecimal, error) {
 
-	ePrefix := "BigIntFixedDecimal.NewBigIntPrecision() "
+	ePrefix := "BigIntFixedDecimal.NewBigIntBigPrecision() "
 
 	if precision.Cmp(big.NewInt(0)) == -1 {
 

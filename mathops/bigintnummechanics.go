@@ -25,37 +25,62 @@ func (bIntNumMech *bigIntNumMechanics) new() BigIntNum {
 	return *b
 }
 
-// newBigInt - Creates a new BigIntNum instance using a *big.Int type and its
+// newBigInt
+//
+// Creates a new BigIntNum instance using a *big.Int type and its
 // associated precision.
 //
-// The 'precision' parameter specifies the number of digits to the right
-// of the decimal place. The Numeric value is equal to bigI x 10^(precision x -1).
-// This effectively locates the decimal place by counting from the extreme right
-// of the integer number, 'precision' places to the left. See the example below.
+// The 'precision' parameter specifies the number of digits to the
+// right  of the decimal place. The Numeric value is equal to
+// bigI x 10^(precision x -1). This effectively locates the decimal
+// place by counting from the extreme right of the integer number,
+// 'precision' places to the left. See the example below.
 //
-// # Input Parameters
+//	Precision Example
+//	=================
 //
-// bigI *big.Int
+//	The 'precision' input parameter specifies the number of digits
+//	to the right of the decimal place. The Numeric value is equal
+//	to 'bigI' x 10^(precision x -1). This effectively locates the
+//	decimal place by counting from the extreme right of the integer
+//	number, 'precision' places to the left. See the example below.
 //
-//	'bigI' is a type *big.Int and represents the integer
-//	value of the number; that is, the numeric value without decimal
-//	digits.
+//		   Integer Value    precision    Numeric Value
+//		     123456             3           123.456
+//	                 123456 x 10^-3 =  123.456
 //
-// precision int
+//	Input Parameters
+//	================
+/
+//	bigI                     *big.Int
+//	  'bigI' is a type *big.Int and represents the integer value
+//	  of the number; that is, the numeric value without decimal
+//	   digits.
 //
-//	This unsigned integer (always a positive value) identifies
-//	the location of the decimal place in the integer value 'bigI'.
-//	The decimal place location is calculated by starting with the
-//	right most digit in the integer number and counting	left,
-//	'precision' places.
+//	precision                uint
+//	  This unsigned integer (always a positive value) identifies
+//	  the location of the decimal place in the integer value
+//	  parameter 'bigI'. The decimal place location is calculated
+//	  by starting with the right most digit in the integer number
+//	  ('bigI') and counting	left, 'precision' places.
 //
-//	Example:
+//	Return Values
+//	=============
 //
-//			Integer Value		precision			Numeric Value
-//			  123456					 3					  123.456
+//	BigIntNum
+//	  The new instance of BigIntNum will be returned through
+//	  this parameter.
 //
-// The new BigIntNum instance returned by this method will contain USA default numeric
-// separators (decimal separator, thousands separator and currency symbol).
+//	error
+//	  If no errors are encountered during execution, this method
+//	  will return an error value of 'nil'.
+//
+//	Numeric Separators
+//	==================
+//
+//	The returned new instance of BigIntNum will contain default
+//	USA numeric separators (decimal separator, thousands seprator,
+//	and currency symbol)
 func (bIntNumMech *bigIntNumMechanics) newBigInt(
 	bigI *big.Int,
 	precision uint,
@@ -109,6 +134,127 @@ func (bIntNumMech *bigIntNumMechanics) newBigInt(
 			ErrPrefix: ePrefix.String(),
 			ReturnFunc: "err = new(bigIntNumNanobot).setBigInt(\n" +
 				"    bIntNum, bigI, precision, ePrefix)",
+			ErrContext: "",
+			ErrMessage: err.Error(),
+		}
+	}
+
+	return *bIntNum, nil
+}
+
+// newBigIntNumSeps
+//
+// Creates a new BigIntNum instance using a *big.Int type and its
+// associated precision of type uint.
+//
+//	Precision Example
+//	=================
+//
+//	The 'precision' input parameter specifies the number of digits
+//	to the right of the decimal place. The Numeric value is equal
+//	to 'bigI' x 10^(precision x -1). This effectively locates the
+//	decimal place by counting from the extreme right of the integer
+//	number, 'precision' places to the left. See the example below.
+//
+//		   Integer Value    precision    Numeric Value
+//		     123456             3           123.456
+//	                 123456 x 10^-3 =  123.456
+//
+//	Input Parameters
+//	================
+//
+//	bigI                     *big.Int
+//	  'bigI' is a type *big.Int and represents the integer value
+//	  of the number; that is, the numeric value without decimal
+//	   digits.
+//
+//	precision                uint
+//	  This unsigned integer (always a positive value) identifies
+//	  the location of the decimal place in the integer value
+//	  parameter 'bigI'. The decimal place location is calculated
+//	  by starting with the right most digit in the integer number
+//	  ('bigI') and counting	left, 'precision' places.
+//
+//  numSepsDto               NumericSeparatorDto
+//    Input parameter, 'numSeps' consits of a NumericSeparatorDto
+//    instance. A NumericSeparatorDto contains symbols or characters
+//    for the decimal separator, thousands separator and currency
+//    symbol. These separators are used when parsing number strings
+//    into numeric values or displaying numeric values in number
+//    strings.
+//
+//    If any of the 'numSeps' Numeric Separator Components are
+//    invalid, those components will be automatically reset to USA
+//    default values.
+//
+//    The returned value ('BigIntNum') will be configured with
+//    'numSeps' Numeric Separators.
+//
+//	Return Values
+//	=============
+//
+//	BigIntNum
+//	  The new instance of BigIntNum will be returned through
+//	  this parameter.
+//
+//	error
+//	  If no errors are encountered during execution, this method
+//	  will return an error value of 'nil'.
+func (bIntNumMech *bigIntNumMechanics) newBigIntNumSeps(
+	bigI *big.Int,
+	precision uint,
+	numSepsDto NumericSeparatorDto,
+	errPrefDto *ePref.ErrPrefixDto) (BigIntNum, error) {
+
+	if bIntNumMech.lock == nil {
+		bIntNumMech.lock = new(sync.Mutex)
+	}
+
+	bIntNumMech.lock.Lock()
+
+	defer bIntNumMech.lock.Unlock()
+
+	var ePrefix *ePref.ErrPrefixDto
+
+	var err error
+
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
+		errPrefDto,
+		"bigIntNumMechanics.newBigInt()",
+		"")
+
+	if err != nil {
+		return BigIntNum{}, err
+	}
+
+	if bigI == nil {
+
+		return BigIntNum{},
+			&InputPtrNilError{
+				ErrPrefix:     ePrefix.String(),
+				ParameterName: "'bigI'",
+			}
+	}
+
+	bIntNum := new(BigIntNum)
+
+	// Sets Numeric Separators to default USA
+	new(bigIntNumElectron).empty(bIntNum)
+
+	err = new(bigIntNumNanobot).setBigIntNumSeps(
+		bIntNum,
+		bigI,
+		precision,
+		numSepsDto,
+		ePrefix)
+
+	if err != nil {
+
+		return BigIntNum{}, &FuncReturnError{
+			ErrPrefix: ePrefix.String(),
+			ReturnFunc: "err = new(bigIntNumNanobot).setBigIntNumSeps(\n" +
+				"    bIntNum, bigI, precision, numSepsDto, ePrefix)",
 			ErrContext: "",
 			ErrMessage: err.Error(),
 		}

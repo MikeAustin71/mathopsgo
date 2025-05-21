@@ -151,7 +151,7 @@ func (bigIMathMultiplyMech *bigIntMathMultiplyMechanics) multiplyBigIntsBigIntNu
 			}
 	}
 
-	biNumProduct, err := new(BigIntNum).NewBigIntPrecision(
+	biNumProduct, err := new(BigIntNum).NewBigIntBigPrecision(
 		productBInt,
 		productPrecisionBInt)
 
@@ -160,7 +160,7 @@ func (bigIMathMultiplyMech *bigIntMathMultiplyMechanics) multiplyBigIntsBigIntNu
 		return BigIntNum{},
 			&FuncReturnError{
 				ErrPrefix: ePrefix.String(),
-				ReturnFunc: "biNumProduct, err := new(BigIntNum).NewBigIntPrecision(\n" +
+				ReturnFunc: "biNumProduct, err := new(BigIntNum).NewBigIntBigPrecision(\n" +
 					"    productBInt, productPrecisionBInt)",
 				ErrContext: "",
 				ErrMessage: err.Error(),
@@ -533,14 +533,14 @@ func (bigIMathMultiplyMech *bigIntMathMultiplyMechanics) multiplyByTwoToPowerBig
 
 	// error should never trigger because productPrecision will
 	// never be greater than multiplierPrecision.
-	biNum, err := new(BigIntNum).NewBigIntPrecision(product, productPrecision)
+	biNum, err := new(BigIntNum).NewBigIntBigPrecision(product, productPrecision)
 
 	if err != nil {
 
 		return BigIntNum{},
 			&FuncReturnError{
 				ErrPrefix: ePrefix.String(),
-				ReturnFunc: "biNum, err := new(BigIntNum).NewBigIntPrecision(\n" +
+				ReturnFunc: "biNum, err := new(BigIntNum).NewBigIntBigPrecision(\n" +
 					"    product, productPrecision)",
 				ErrContext: "",
 				ErrMessage: err.Error(),

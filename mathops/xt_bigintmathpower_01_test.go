@@ -27,12 +27,12 @@ func TestBigIntMathPower_BigIntPwrIteration_01(t *testing.T) {
 
 	if expectedResult != resultStr {
 		t.Errorf("Error: Expected result='%v'. Instead, result='%v'",
-			expectedResult, resultStr )
+			expectedResult, resultStr)
 	}
 
 	if outputMaxPrecision != result.GetPrecisionUint() {
 		t.Errorf("Error: Expected result precision='%v'. Instead, result precision='%v'",
-			outputMaxPrecision, result.GetPrecisionUint() )
+			outputMaxPrecision, result.GetPrecisionUint())
 	}
 
 }
@@ -59,12 +59,12 @@ func TestBigIntMathPower_BigIntPwrIteration_02(t *testing.T) {
 
 	if expectedResult != resultStr {
 		t.Errorf("Error: Expected result='%v'. Instead, result='%v'",
-			expectedResult, resultStr )
+			expectedResult, resultStr)
 	}
 
 	if outputMaxPrecision != result.GetPrecisionUint() {
 		t.Errorf("Error: Expected result precision='%v'. Instead, result precision='%v'",
-			outputMaxPrecision, result.GetPrecisionUint() )
+			outputMaxPrecision, result.GetPrecisionUint())
 	}
 
 }
@@ -92,12 +92,12 @@ func TestBigIntMathPower_BigIntPwrIteration_03(t *testing.T) {
 
 	if expectedResult != resultStr {
 		t.Errorf("Error: Expected result='%v'. Instead, result='%v'",
-			expectedResult, resultStr )
+			expectedResult, resultStr)
 	}
 
 	if expectedPrecision != result.GetPrecisionUint() {
 		t.Errorf("Error: Expected result precision='%v'. Instead, result precision='%v'",
-			expectedPrecision, result.GetPrecisionUint() )
+			expectedPrecision, result.GetPrecisionUint())
 	}
 
 }
@@ -125,12 +125,12 @@ func TestBigIntMathPower_BigIntPwrIteration_04(t *testing.T) {
 
 	if expectedResult != resultStr {
 		t.Errorf("Error: Expected result='%v'. Instead, result='%v'",
-			expectedResult, resultStr )
+			expectedResult, resultStr)
 	}
 
 	if expectedPrecision != result.GetPrecisionUint() {
 		t.Errorf("Error: Expected result precision='%v'. Instead, result precision='%v'",
-			expectedPrecision, result.GetPrecisionUint() )
+			expectedPrecision, result.GetPrecisionUint())
 	}
 
 }
@@ -158,12 +158,12 @@ func TestBigIntMathPower_BigIntPwrIteration_05(t *testing.T) {
 
 	if expectedResult != resultStr {
 		t.Errorf("Error: Expected result='%v'. Instead, result='%v'",
-			expectedResult, resultStr )
+			expectedResult, resultStr)
 	}
 
 	if expectedPrecision != result.GetPrecisionUint() {
 		t.Errorf("Error: Expected result precision='%v'. Instead, result precision='%v'",
-			expectedPrecision, result.GetPrecisionUint() )
+			expectedPrecision, result.GetPrecisionUint())
 	}
 
 }
@@ -191,12 +191,12 @@ func TestBigIntMathPower_BigIntPwrIteration_06(t *testing.T) {
 
 	if expectedResult != resultStr {
 		t.Errorf("Error: Expected result='%v'. Instead, result='%v'",
-			expectedResult, resultStr )
+			expectedResult, resultStr)
 	}
 
 	if expectedPrecision != result.GetPrecisionUint() {
 		t.Errorf("Error: Expected result precision='%v'. Instead, result precision='%v'",
-			expectedPrecision, result.GetPrecisionUint() )
+			expectedPrecision, result.GetPrecisionUint())
 	}
 
 }
@@ -224,12 +224,12 @@ func TestBigIntMathPower_BigIntPwrIteration_07(t *testing.T) {
 
 	if expectedResult != resultStr {
 		t.Errorf("Error: Expected result='%v'. Instead, result='%v'",
-			expectedResult, resultStr )
+			expectedResult, resultStr)
 	}
 
 	if expectedPrecision != result.GetPrecisionUint() {
 		t.Errorf("Error: Expected result precision='%v'. Instead, result precision='%v'",
-			expectedPrecision, result.GetPrecisionUint() )
+			expectedPrecision, result.GetPrecisionUint())
 	}
 
 }
@@ -257,12 +257,12 @@ func TestBigIntMathPower_BigIntPwrIteration_08(t *testing.T) {
 
 	if expectedResult != resultStr {
 		t.Errorf("Error: Expected result='%v'. Instead, result='%v'",
-			expectedResult, resultStr )
+			expectedResult, resultStr)
 	}
 
 	if expectedPrecision != result.GetPrecisionUint() {
 		t.Errorf("Error: Expected result precision='%v'. Instead, result precision='%v'",
-			expectedPrecision, result.GetPrecisionUint() )
+			expectedPrecision, result.GetPrecisionUint())
 	}
 
 }
@@ -290,12 +290,12 @@ func TestBigIntMathPower_BigIntPwrIteration_09(t *testing.T) {
 
 	if expectedResult != resultStr {
 		t.Errorf("Error: Expected result='%v'. Instead, result='%v'",
-			expectedResult, resultStr )
+			expectedResult, resultStr)
 	}
 
 	if expectedPrecision != result.GetPrecisionUint() {
 		t.Errorf("Error: Expected result precision='%v'. Instead, result precision='%v'",
-			expectedPrecision, result.GetPrecisionUint() )
+			expectedPrecision, result.GetPrecisionUint())
 	}
 
 }
@@ -308,7 +308,7 @@ func TestBigIntMathPower_BigIntPwrIteration_10(t *testing.T) {
 
 	basePrecision := eNum.GetPrecision()
 	exponent := uint(9)
-	internalMaxPrecision := uint((9*basePrecision) + 10)
+	internalMaxPrecision := uint((9 * basePrecision) + 10)
 	outputMaxPrecision := uint(28)
 	expectedResult := "8103.0839275753840077099966894328"
 	expectedPrecision := outputMaxPrecision
@@ -326,16 +326,15 @@ func TestBigIntMathPower_BigIntPwrIteration_10(t *testing.T) {
 
 	if expectedResult != resultStr {
 		t.Errorf("Error: Expected result='%v'. Instead, result='%v'",
-			expectedResult, resultStr )
+			expectedResult, resultStr)
 	}
 
 	if expectedPrecision != result.GetPrecisionUint() {
 		t.Errorf("Error: Expected result precision='%v'. Instead, result precision='%v'",
-			expectedPrecision, result.GetPrecisionUint() )
+			expectedPrecision, result.GetPrecisionUint())
 	}
 
 }
-
 
 func TestBigIntMathPower_BigIntegerPwrIteration_01(t *testing.T) {
 
@@ -354,14 +353,14 @@ func TestBigIntMathPower_BigIntegerPwrIteration_01(t *testing.T) {
 		outputMaxPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntMathPower{}.BigIntegerPwrIteration(...) " +
+		t.Errorf("Error returned by BigIntMathPower{}.BigIntegerPwrIteration(...) "+
 			"Error='%v' ", err.Error())
 	}
 
-	result, err := BigIntNum{}.NewBigIntPrecision(baseToPwr, baseToPwrPrecision)
+	result, err := BigIntNum{}.NewBigIntBigPrecision(baseToPwr, baseToPwrPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewBigIntPrecision(...) " +
+		t.Errorf("Error returned by BigIntNum{}.NewBigIntBigPrecision(...) "+
 			"Error='%v' ", err.Error())
 	}
 
@@ -369,12 +368,12 @@ func TestBigIntMathPower_BigIntegerPwrIteration_01(t *testing.T) {
 
 	if expectedResult != resultStr {
 		t.Errorf("Error: Expected result='%v'. Instead, result='%v'",
-			expectedResult, resultStr )
+			expectedResult, resultStr)
 	}
 
 	if outputMaxPrecision.Cmp(result.GetPrecisionBigInt()) != 0 {
 		t.Errorf("Error: Expected result precision='%v'. Instead, result precision='%v'",
-			outputMaxPrecision.Text(10), result.GetPrecisionUint() )
+			outputMaxPrecision.Text(10), result.GetPrecisionUint())
 	}
 }
 
@@ -396,14 +395,14 @@ func TestBigIntMathPower_BigIntegerPwrIteration_02(t *testing.T) {
 		outputMaxPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntMathPower{}.BigIntegerPwrIteration(...) " +
+		t.Errorf("Error returned by BigIntMathPower{}.BigIntegerPwrIteration(...) "+
 			"Error='%v' ", err.Error())
 	}
 
-	result, err := BigIntNum{}.NewBigIntPrecision(baseToPwr, baseToPwrPrecision)
+	result, err := BigIntNum{}.NewBigIntBigPrecision(baseToPwr, baseToPwrPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewBigIntPrecision(...) " +
+		t.Errorf("Error returned by BigIntNum{}.NewBigIntBigPrecision(...) "+
 			"Error='%v' ", err.Error())
 	}
 
@@ -411,12 +410,12 @@ func TestBigIntMathPower_BigIntegerPwrIteration_02(t *testing.T) {
 
 	if expectedResult != resultStr {
 		t.Errorf("Error: Expected result='%v'. Instead, result='%v'",
-			expectedResult, resultStr )
+			expectedResult, resultStr)
 	}
 
 	if expectedPrecision.Cmp(result.GetPrecisionBigInt()) != 0 {
 		t.Errorf("Error: Expected result precision='%v'. Instead, result precision='%v'",
-			expectedPrecision.Text(10), result.GetPrecisionUint() )
+			expectedPrecision.Text(10), result.GetPrecisionUint())
 	}
 }
 
@@ -430,7 +429,6 @@ func TestBigIntMathPower_BigIntegerPwrIteration_03(t *testing.T) {
 	expectedResult := "1953125"
 	expectedPrecision := big.NewInt(0)
 
-
 	baseToPwr, baseToPwrPrecision, err := BigIntMathPower{}.BigIntegerPwrIteration(
 		base,
 		basePrecision,
@@ -439,14 +437,14 @@ func TestBigIntMathPower_BigIntegerPwrIteration_03(t *testing.T) {
 		outputMaxPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntMathPower{}.BigIntegerPwrIteration(...) " +
+		t.Errorf("Error returned by BigIntMathPower{}.BigIntegerPwrIteration(...) "+
 			"Error='%v' ", err.Error())
 	}
 
-	result, err := BigIntNum{}.NewBigIntPrecision(baseToPwr, baseToPwrPrecision)
+	result, err := BigIntNum{}.NewBigIntBigPrecision(baseToPwr, baseToPwrPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewBigIntPrecision(...) " +
+		t.Errorf("Error returned by BigIntNum{}.NewBigIntBigPrecision(...) "+
 			"Error='%v' ", err.Error())
 	}
 
@@ -454,12 +452,12 @@ func TestBigIntMathPower_BigIntegerPwrIteration_03(t *testing.T) {
 
 	if expectedResult != resultStr {
 		t.Errorf("Error: Expected result='%v'. Instead, result='%v'",
-			expectedResult, resultStr )
+			expectedResult, resultStr)
 	}
 
 	if expectedPrecision.Cmp(result.GetPrecisionBigInt()) != 0 {
 		t.Errorf("Error: Expected result precision='%v'. Instead, result precision='%v'",
-			expectedPrecision.Text(10), result.GetPrecisionUint() )
+			expectedPrecision.Text(10), result.GetPrecisionUint())
 	}
 }
 
@@ -473,7 +471,6 @@ func TestBigIntMathPower_BigIntegerPwrIteration_04(t *testing.T) {
 	expectedResult := "0.0000000066624627597199420074400375313628"
 	expectedPrecision := big.NewInt(40)
 
-
 	baseToPwr, baseToPwrPrecision, err := BigIntMathPower{}.BigIntegerPwrIteration(
 		base,
 		basePrecision,
@@ -482,14 +479,14 @@ func TestBigIntMathPower_BigIntegerPwrIteration_04(t *testing.T) {
 		outputMaxPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntMathPower{}.BigIntegerPwrIteration(...) " +
+		t.Errorf("Error returned by BigIntMathPower{}.BigIntegerPwrIteration(...) "+
 			"Error='%v' ", err.Error())
 	}
 
-	result, err := BigIntNum{}.NewBigIntPrecision(baseToPwr, baseToPwrPrecision)
+	result, err := BigIntNum{}.NewBigIntBigPrecision(baseToPwr, baseToPwrPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewBigIntPrecision(...) " +
+		t.Errorf("Error returned by BigIntNum{}.NewBigIntBigPrecision(...) "+
 			"Error='%v' ", err.Error())
 	}
 
@@ -497,12 +494,12 @@ func TestBigIntMathPower_BigIntegerPwrIteration_04(t *testing.T) {
 
 	if expectedResult != resultStr {
 		t.Errorf("Error: Expected result='%v'. Instead, result='%v'",
-			expectedResult, resultStr )
+			expectedResult, resultStr)
 	}
 
 	if expectedPrecision.Cmp(result.GetPrecisionBigInt()) != 0 {
 		t.Errorf("Error: Expected result precision='%v'. Instead, result precision='%v'",
-			expectedPrecision.Text(10), result.GetPrecisionUint() )
+			expectedPrecision.Text(10), result.GetPrecisionUint())
 	}
 }
 
@@ -524,14 +521,14 @@ func TestBigIntMathPower_BigIntegerPwrIteration_05(t *testing.T) {
 		outputMaxPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntMathPower{}.BigIntegerPwrIteration(...) " +
+		t.Errorf("Error returned by BigIntMathPower{}.BigIntegerPwrIteration(...) "+
 			"Error='%v' ", err.Error())
 	}
 
-	result, err := BigIntNum{}.NewBigIntPrecision(baseToPwr, baseToPwrPrecision)
+	result, err := BigIntNum{}.NewBigIntBigPrecision(baseToPwr, baseToPwrPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewBigIntPrecision(...) " +
+		t.Errorf("Error returned by BigIntNum{}.NewBigIntBigPrecision(...) "+
 			"Error='%v' ", err.Error())
 	}
 
@@ -539,12 +536,12 @@ func TestBigIntMathPower_BigIntegerPwrIteration_05(t *testing.T) {
 
 	if expectedResult != resultStr {
 		t.Errorf("Error: Expected result='%v'. Instead, result='%v'",
-			expectedResult, resultStr )
+			expectedResult, resultStr)
 	}
 
 	if expectedPrecision.Cmp(result.GetPrecisionBigInt()) != 0 {
 		t.Errorf("Error: Expected result precision='%v'. Instead, result precision='%v'",
-			expectedPrecision.Text(10), result.GetPrecisionUint() )
+			expectedPrecision.Text(10), result.GetPrecisionUint())
 	}
 }
 
@@ -566,14 +563,14 @@ func TestBigIntMathPower_BigIntegerPwrIteration_06(t *testing.T) {
 		outputMaxPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntMathPower{}.BigIntegerPwrIteration(...) " +
+		t.Errorf("Error returned by BigIntMathPower{}.BigIntegerPwrIteration(...) "+
 			"Error='%v' ", err.Error())
 	}
 
-	result, err := BigIntNum{}.NewBigIntPrecision(baseToPwr, baseToPwrPrecision)
+	result, err := BigIntNum{}.NewBigIntBigPrecision(baseToPwr, baseToPwrPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewBigIntPrecision(...) " +
+		t.Errorf("Error returned by BigIntNum{}.NewBigIntBigPrecision(...) "+
 			"Error='%v' ", err.Error())
 	}
 
@@ -581,12 +578,12 @@ func TestBigIntMathPower_BigIntegerPwrIteration_06(t *testing.T) {
 
 	if expectedResult != resultStr {
 		t.Errorf("Error: Expected result='%v'. Instead, result='%v'",
-			expectedResult, resultStr )
+			expectedResult, resultStr)
 	}
 
 	if expectedPrecision.Cmp(result.GetPrecisionBigInt()) != 0 {
 		t.Errorf("Error: Expected result precision='%v'. Instead, result precision='%v'",
-			expectedPrecision.Text(10), result.GetPrecisionUint() )
+			expectedPrecision.Text(10), result.GetPrecisionUint())
 	}
 }
 
@@ -608,14 +605,14 @@ func TestBigIntMathPower_BigIntegerPwrIteration_07(t *testing.T) {
 		outputMaxPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntMathPower{}.BigIntegerPwrIteration(...) " +
+		t.Errorf("Error returned by BigIntMathPower{}.BigIntegerPwrIteration(...) "+
 			"Error='%v' ", err.Error())
 	}
 
-	result, err := BigIntNum{}.NewBigIntPrecision(baseToPwr, baseToPwrPrecision)
+	result, err := BigIntNum{}.NewBigIntBigPrecision(baseToPwr, baseToPwrPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewBigIntPrecision(...) " +
+		t.Errorf("Error returned by BigIntNum{}.NewBigIntBigPrecision(...) "+
 			"Error='%v' ", err.Error())
 	}
 
@@ -623,12 +620,12 @@ func TestBigIntMathPower_BigIntegerPwrIteration_07(t *testing.T) {
 
 	if expectedResult != resultStr {
 		t.Errorf("Error: Expected result='%v'. Instead, result='%v'",
-			expectedResult, resultStr )
+			expectedResult, resultStr)
 	}
 
 	if expectedPrecision.Cmp(result.GetPrecisionBigInt()) != 0 {
 		t.Errorf("Error: Expected result precision='%v'. Instead, result precision='%v'",
-			expectedPrecision.Text(10), result.GetPrecisionUint() )
+			expectedPrecision.Text(10), result.GetPrecisionUint())
 	}
 }
 
@@ -650,14 +647,14 @@ func TestBigIntMathPower_BigIntegerPwrIteration_08(t *testing.T) {
 		outputMaxPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntMathPower{}.BigIntegerPwrIteration(...) " +
+		t.Errorf("Error returned by BigIntMathPower{}.BigIntegerPwrIteration(...) "+
 			"Error='%v' ", err.Error())
 	}
 
-	result, err := BigIntNum{}.NewBigIntPrecision(baseToPwr, baseToPwrPrecision)
+	result, err := BigIntNum{}.NewBigIntBigPrecision(baseToPwr, baseToPwrPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewBigIntPrecision(...) " +
+		t.Errorf("Error returned by BigIntNum{}.NewBigIntBigPrecision(...) "+
 			"Error='%v' ", err.Error())
 	}
 
@@ -665,12 +662,12 @@ func TestBigIntMathPower_BigIntegerPwrIteration_08(t *testing.T) {
 
 	if expectedResult != resultStr {
 		t.Errorf("Error: Expected result='%v'. Instead, result='%v'",
-			expectedResult, resultStr )
+			expectedResult, resultStr)
 	}
 
 	if expectedPrecision.Cmp(result.GetPrecisionBigInt()) != 0 {
 		t.Errorf("Error: Expected result precision='%v'. Instead, result precision='%v'",
-			expectedPrecision.Text(10), result.GetPrecisionUint() )
+			expectedPrecision.Text(10), result.GetPrecisionUint())
 	}
 }
 
@@ -692,14 +689,14 @@ func TestBigIntMathPower_BigIntegerPwrIteration_09(t *testing.T) {
 		outputMaxPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntMathPower{}.BigIntegerPwrIteration(...) " +
+		t.Errorf("Error returned by BigIntMathPower{}.BigIntegerPwrIteration(...) "+
 			"Error='%v' ", err.Error())
 	}
 
-	result, err := BigIntNum{}.NewBigIntPrecision(baseToPwr, baseToPwrPrecision)
+	result, err := BigIntNum{}.NewBigIntBigPrecision(baseToPwr, baseToPwrPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewBigIntPrecision(...) " +
+		t.Errorf("Error returned by BigIntNum{}.NewBigIntBigPrecision(...) "+
 			"Error='%v' ", err.Error())
 	}
 
@@ -707,12 +704,12 @@ func TestBigIntMathPower_BigIntegerPwrIteration_09(t *testing.T) {
 
 	if expectedResult != resultStr {
 		t.Errorf("Error: Expected result='%v'. Instead, result='%v'",
-			expectedResult, resultStr )
+			expectedResult, resultStr)
 	}
 
 	if expectedPrecision.Cmp(result.GetPrecisionBigInt()) != 0 {
 		t.Errorf("Error: Expected result precision='%v'. Instead, result precision='%v'",
-			expectedPrecision.Text(10), result.GetPrecisionUint() )
+			expectedPrecision.Text(10), result.GetPrecisionUint())
 	}
 }
 
@@ -738,14 +735,14 @@ func TestBigIntMathPower_BigIntegerPwrIteration_10(t *testing.T) {
 		outputMaxPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntMathPower{}.BigIntegerPwrIteration(...) " +
+		t.Errorf("Error returned by BigIntMathPower{}.BigIntegerPwrIteration(...) "+
 			"Error='%v' ", err.Error())
 	}
 
-	result, err := BigIntNum{}.NewBigIntPrecision(baseToPwr, baseToPwrPrecision)
+	result, err := BigIntNum{}.NewBigIntBigPrecision(baseToPwr, baseToPwrPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewBigIntPrecision(...) " +
+		t.Errorf("Error returned by BigIntNum{}.NewBigIntBigPrecision(...) "+
 			"Error='%v' ", err.Error())
 	}
 
@@ -753,12 +750,12 @@ func TestBigIntMathPower_BigIntegerPwrIteration_10(t *testing.T) {
 
 	if expectedResult != resultStr {
 		t.Errorf("Error: Expected result='%v'. Instead, result='%v'",
-			expectedResult, resultStr )
+			expectedResult, resultStr)
 	}
 
 	if expectedPrecision.Cmp(result.GetPrecisionBigInt()) != 0 {
 		t.Errorf("Error: Expected result precision='%v'. Instead, result precision='%v'",
-			expectedPrecision.Text(10), result.GetPrecisionUint() )
+			expectedPrecision.Text(10), result.GetPrecisionUint())
 	}
 
 }

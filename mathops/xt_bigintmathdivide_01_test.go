@@ -10,7 +10,7 @@ func TestBigIntMathDivide_BigIntDividedByTwoToPower_01(t *testing.T) {
 	num := int64(33333)
 	exponent := uint(8)
 	expectedNum := int64(130)
-  expectedValue := big.NewInt(expectedNum)
+	expectedValue := big.NewInt(expectedNum)
 
 	dividend := big.NewInt(num)
 
@@ -26,7 +26,7 @@ func TestBigIntMathDivide_BigIntDividedByTwoToPower_02(t *testing.T) {
 
 	num := int64(4)
 	exponent := uint(9)
-  expectedValue := big.NewInt(int64(0))
+	expectedValue := big.NewInt(int64(0))
 
 	dividend := big.NewInt(num)
 
@@ -141,22 +141,22 @@ func TestBigIntMathDivide_BigIntFracQuotient_01(t *testing.T) {
 	}
 
 	bIntQuotient, bIntQuotientPrecision, err :=
-									BigIntMathDivide{}.BigIntFracQuotient(
-										dividend.GetIntegerValue(),
-										dividend.GetPrecisionBigInt(),
-										divisor.GetIntegerValue(),
-										divisor.GetPrecisionBigInt(),
-										maxPrecision)
+		BigIntMathDivide{}.BigIntFracQuotient(
+			dividend.GetIntegerValue(),
+			dividend.GetPrecisionBigInt(),
+			divisor.GetIntegerValue(),
+			divisor.GetPrecisionBigInt(),
+			maxPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntMathDivide{}.BigIntFracQuotient(...) " +
+		t.Errorf("Error returned by BigIntMathDivide{}.BigIntFracQuotient(...) "+
 			"Error='%v' ", err.Error())
 	}
 
-	actualQuo, err := BigIntNum{}.NewBigIntPrecision(bIntQuotient, bIntQuotientPrecision)
+	actualQuo, err := BigIntNum{}.NewBigIntBigPrecision(bIntQuotient, bIntQuotientPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewBigIntPrecision(...) " +
+		t.Errorf("Error returned by BigIntNum{}.NewBigIntBigPrecision(...) "+
 			"Error='%v' ", err.Error())
 	}
 
@@ -199,7 +199,6 @@ func TestBigIntMathDivide_BigIntFracQuotient_02(t *testing.T) {
 			expectedQuoStr, err.Error())
 	}
 
-
 	bIntQuotient, bIntQuotientPrecision, err :=
 		BigIntMathDivide{}.BigIntFracQuotient(
 			dividend.GetIntegerValue(),
@@ -209,14 +208,14 @@ func TestBigIntMathDivide_BigIntFracQuotient_02(t *testing.T) {
 			maxPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntMathDivide{}.BigIntFracQuotient(...) " +
+		t.Errorf("Error returned by BigIntMathDivide{}.BigIntFracQuotient(...) "+
 			"Error='%v' ", err.Error())
 	}
 
-	actualQuo, err := BigIntNum{}.NewBigIntPrecision(bIntQuotient, bIntQuotientPrecision)
+	actualQuo, err := BigIntNum{}.NewBigIntBigPrecision(bIntQuotient, bIntQuotientPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewBigIntPrecision(...) " +
+		t.Errorf("Error returned by BigIntNum{}.NewBigIntBigPrecision(...) "+
 			"Error='%v' ", err.Error())
 	}
 
@@ -259,7 +258,6 @@ func TestBigIntMathDivide_BigIntFracQuotient_03(t *testing.T) {
 			expectedQuoStr, err.Error())
 	}
 
-
 	bIntQuotient, bIntQuotientPrecision, err :=
 		BigIntMathDivide{}.BigIntFracQuotient(
 			dividend.GetIntegerValue(),
@@ -269,17 +267,16 @@ func TestBigIntMathDivide_BigIntFracQuotient_03(t *testing.T) {
 			maxPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntMathDivide{}.BigIntFracQuotient(...) " +
+		t.Errorf("Error returned by BigIntMathDivide{}.BigIntFracQuotient(...) "+
 			"Error='%v' ", err.Error())
 	}
 
-	actualQuo, err := BigIntNum{}.NewBigIntPrecision(bIntQuotient, bIntQuotientPrecision)
+	actualQuo, err := BigIntNum{}.NewBigIntBigPrecision(bIntQuotient, bIntQuotientPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewBigIntPrecision(...) " +
+		t.Errorf("Error returned by BigIntNum{}.NewBigIntBigPrecision(...) "+
 			"Error='%v' ", err.Error())
 	}
-
 
 	if expectedQuo.GetNumStr() != actualQuo.GetNumStr() {
 		t.Errorf("Error: Expected Quotient='%v'. Instead Quotient='%v'",
@@ -329,14 +326,14 @@ func TestBigIntMathDivide_BigIntFracQuotient_04(t *testing.T) {
 			maxPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntMathDivide{}.BigIntFracQuotient(...) " +
+		t.Errorf("Error returned by BigIntMathDivide{}.BigIntFracQuotient(...) "+
 			"Error='%v' ", err.Error())
 	}
 
-	actualQuo, err := BigIntNum{}.NewBigIntPrecision(bIntQuotient, bIntQuotientPrecision)
+	actualQuo, err := BigIntNum{}.NewBigIntBigPrecision(bIntQuotient, bIntQuotientPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewBigIntPrecision(...) " +
+		t.Errorf("Error returned by BigIntNum{}.NewBigIntBigPrecision(...) "+
 			"Error='%v' ", err.Error())
 	}
 
@@ -388,14 +385,14 @@ func TestBigIntMathDivide_BigIntFracQuotient_05(t *testing.T) {
 			maxPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntMathDivide{}.BigIntFracQuotient(...) " +
+		t.Errorf("Error returned by BigIntMathDivide{}.BigIntFracQuotient(...) "+
 			"Error='%v' ", err.Error())
 	}
 
-	actualQuo, err := BigIntNum{}.NewBigIntPrecision(bIntQuotient, bIntQuotientPrecision)
+	actualQuo, err := BigIntNum{}.NewBigIntBigPrecision(bIntQuotient, bIntQuotientPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewBigIntPrecision(...) " +
+		t.Errorf("Error returned by BigIntNum{}.NewBigIntBigPrecision(...) "+
 			"Error='%v' ", err.Error())
 	}
 
@@ -447,14 +444,14 @@ func TestBigIntMathDivide_BigIntFracQuotient_06(t *testing.T) {
 			maxPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntMathDivide{}.BigIntFracQuotient(...) " +
+		t.Errorf("Error returned by BigIntMathDivide{}.BigIntFracQuotient(...) "+
 			"Error='%v' ", err.Error())
 	}
 
-	actualQuo, err := BigIntNum{}.NewBigIntPrecision(bIntQuotient, bIntQuotientPrecision)
+	actualQuo, err := BigIntNum{}.NewBigIntBigPrecision(bIntQuotient, bIntQuotientPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewBigIntPrecision(...) " +
+		t.Errorf("Error returned by BigIntNum{}.NewBigIntBigPrecision(...) "+
 			"Error='%v' ", err.Error())
 	}
 
@@ -506,14 +503,14 @@ func TestBigIntMathDivide_BigIntFracQuotient_07(t *testing.T) {
 			maxPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntMathDivide{}.BigIntFracQuotient(...) " +
+		t.Errorf("Error returned by BigIntMathDivide{}.BigIntFracQuotient(...) "+
 			"Error='%v' ", err.Error())
 	}
 
-	actualQuo, err := BigIntNum{}.NewBigIntPrecision(bIntQuotient, bIntQuotientPrecision)
+	actualQuo, err := BigIntNum{}.NewBigIntBigPrecision(bIntQuotient, bIntQuotientPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewBigIntPrecision(...) " +
+		t.Errorf("Error returned by BigIntNum{}.NewBigIntBigPrecision(...) "+
 			"Error='%v' ", err.Error())
 	}
 
@@ -565,11 +562,11 @@ func TestBigIntMathDivide_BigIntFracQuotient_08(t *testing.T) {
 			maxPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntMathDivide{}.BigIntFracQuotient(...) " +
+		t.Errorf("Error returned by BigIntMathDivide{}.BigIntFracQuotient(...) "+
 			"Error='%v' ", err.Error())
 	}
 
-	actualQuo, err := BigIntNum{}.NewBigIntPrecision(bIntQuotient, bIntQuotientPrecision)
+	actualQuo, err := BigIntNum{}.NewBigIntBigPrecision(bIntQuotient, bIntQuotientPrecision)
 
 	if expectedQuo.GetNumStr() != actualQuo.GetNumStr() {
 		t.Errorf("Error: Expected Quotient='%v'. Instead Quotient='%v'",
@@ -619,14 +616,14 @@ func TestBigIntMathDivide_BigIntFracQuotient_09(t *testing.T) {
 			maxPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntMathDivide{}.BigIntFracQuotient(...) " +
+		t.Errorf("Error returned by BigIntMathDivide{}.BigIntFracQuotient(...) "+
 			"Error='%v' ", err.Error())
 	}
 
-	actualQuo, err := BigIntNum{}.NewBigIntPrecision(bIntQuotient, bIntQuotientPrecision)
+	actualQuo, err := BigIntNum{}.NewBigIntBigPrecision(bIntQuotient, bIntQuotientPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewBigIntPrecision(...) " +
+		t.Errorf("Error returned by BigIntNum{}.NewBigIntBigPrecision(...) "+
 			"Error='%v' ", err.Error())
 	}
 
@@ -678,14 +675,14 @@ func TestBigIntMathDivide_BigIntFracQuotient_10(t *testing.T) {
 			maxPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntMathDivide{}.BigIntFracQuotient(...) " +
+		t.Errorf("Error returned by BigIntMathDivide{}.BigIntFracQuotient(...) "+
 			"Error='%v' ", err.Error())
 	}
 
-	actualQuo, err := BigIntNum{}.NewBigIntPrecision(bIntQuotient, bIntQuotientPrecision)
+	actualQuo, err := BigIntNum{}.NewBigIntBigPrecision(bIntQuotient, bIntQuotientPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewBigIntPrecision(...) " +
+		t.Errorf("Error returned by BigIntNum{}.NewBigIntBigPrecision(...) "+
 			"Error='%v' ", err.Error())
 	}
 
@@ -737,14 +734,14 @@ func TestBigIntMathDivide_BigIntFracQuotient_11(t *testing.T) {
 			maxPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntMathDivide{}.BigIntFracQuotient(...) " +
+		t.Errorf("Error returned by BigIntMathDivide{}.BigIntFracQuotient(...) "+
 			"Error='%v' ", err.Error())
 	}
 
-	actualQuo, err := BigIntNum{}.NewBigIntPrecision(bIntQuotient, bIntQuotientPrecision)
+	actualQuo, err := BigIntNum{}.NewBigIntBigPrecision(bIntQuotient, bIntQuotientPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewBigIntPrecision(...) " +
+		t.Errorf("Error returned by BigIntNum{}.NewBigIntBigPrecision(...) "+
 			"Error='%v' ", err.Error())
 	}
 
@@ -796,14 +793,14 @@ func TestBigIntMathDivide_BigIntFracQuotient_12(t *testing.T) {
 			maxPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntMathDivide{}.BigIntFracQuotient(...) " +
+		t.Errorf("Error returned by BigIntMathDivide{}.BigIntFracQuotient(...) "+
 			"Error='%v' ", err.Error())
 	}
 
-	actualQuo, err := BigIntNum{}.NewBigIntPrecision(bIntQuotient, bIntQuotientPrecision)
+	actualQuo, err := BigIntNum{}.NewBigIntBigPrecision(bIntQuotient, bIntQuotientPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewBigIntPrecision(...) " +
+		t.Errorf("Error returned by BigIntNum{}.NewBigIntBigPrecision(...) "+
 			"Error='%v' ", err.Error())
 	}
 
@@ -855,14 +852,14 @@ func TestBigIntMathDivide_BigIntFracQuotient_13(t *testing.T) {
 			maxPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntMathDivide{}.BigIntFracQuotient(...) " +
+		t.Errorf("Error returned by BigIntMathDivide{}.BigIntFracQuotient(...) "+
 			"Error='%v' ", err.Error())
 	}
 
-	actualQuo, err := BigIntNum{}.NewBigIntPrecision(bIntQuotient, bIntQuotientPrecision)
+	actualQuo, err := BigIntNum{}.NewBigIntBigPrecision(bIntQuotient, bIntQuotientPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewBigIntPrecision(...) " +
+		t.Errorf("Error returned by BigIntNum{}.NewBigIntBigPrecision(...) "+
 			"Error='%v' ", err.Error())
 	}
 
@@ -914,14 +911,14 @@ func TestBigIntMathDivide_BigIntFracQuotient_14(t *testing.T) {
 			maxPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntMathDivide{}.BigIntFracQuotient(...) " +
+		t.Errorf("Error returned by BigIntMathDivide{}.BigIntFracQuotient(...) "+
 			"Error='%v' ", err.Error())
 	}
 
-	actualQuo, err := BigIntNum{}.NewBigIntPrecision(bIntQuotient, bIntQuotientPrecision)
+	actualQuo, err := BigIntNum{}.NewBigIntBigPrecision(bIntQuotient, bIntQuotientPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewBigIntPrecision(...) " +
+		t.Errorf("Error returned by BigIntNum{}.NewBigIntBigPrecision(...) "+
 			"Error='%v' ", err.Error())
 	}
 
@@ -973,14 +970,14 @@ func TestBigIntMathDivide_BigIntFracQuotient_15(t *testing.T) {
 			maxPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntMathDivide{}.BigIntFracQuotient(...) " +
+		t.Errorf("Error returned by BigIntMathDivide{}.BigIntFracQuotient(...) "+
 			"Error='%v' ", err.Error())
 	}
 
-	actualQuo, err := BigIntNum{}.NewBigIntPrecision(bIntQuotient, bIntQuotientPrecision)
+	actualQuo, err := BigIntNum{}.NewBigIntBigPrecision(bIntQuotient, bIntQuotientPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewBigIntPrecision(...) " +
+		t.Errorf("Error returned by BigIntNum{}.NewBigIntBigPrecision(...) "+
 			"Error='%v' ", err.Error())
 	}
 
@@ -1038,14 +1035,14 @@ func TestBigIntMathDivide_BigIntFracQuotient_16(t *testing.T) {
 			maxPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntMathDivide{}.BigIntFracQuotient(...) " +
+		t.Errorf("Error returned by BigIntMathDivide{}.BigIntFracQuotient(...) "+
 			"Error='%v' ", err.Error())
 	}
 
-	actualQuo, err := BigIntNum{}.NewBigIntPrecision(bIntQuotient, bIntQuotientPrecision)
+	actualQuo, err := BigIntNum{}.NewBigIntBigPrecision(bIntQuotient, bIntQuotientPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewBigIntPrecision(...) " +
+		t.Errorf("Error returned by BigIntNum{}.NewBigIntBigPrecision(...) "+
 			"Error='%v' ", err.Error())
 	}
 
@@ -1103,14 +1100,14 @@ func TestBigIntMathDivide_BigIntFracQuotient_17(t *testing.T) {
 			maxPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntMathDivide{}.BigIntFracQuotient(...) " +
+		t.Errorf("Error returned by BigIntMathDivide{}.BigIntFracQuotient(...) "+
 			"Error='%v' ", err.Error())
 	}
 
-	actualQuo, err := BigIntNum{}.NewBigIntPrecision(bIntQuotient, bIntQuotientPrecision)
+	actualQuo, err := BigIntNum{}.NewBigIntBigPrecision(bIntQuotient, bIntQuotientPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewBigIntPrecision(...) " +
+		t.Errorf("Error returned by BigIntNum{}.NewBigIntBigPrecision(...) "+
 			"Error='%v' ", err.Error())
 	}
 
@@ -1129,7 +1126,6 @@ func TestBigIntMathDivide_BigIntFracQuotient_18(t *testing.T) {
 	divisorStr := "2.5"
 	expectedQuoStr := "4.6"
 	maxPrecision := big.NewInt(15)
-
 
 	dividend, err := BigIntNum{}.NewNumStr(dividendStr)
 
@@ -1164,14 +1160,14 @@ func TestBigIntMathDivide_BigIntFracQuotient_18(t *testing.T) {
 			maxPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntMathDivide{}.BigIntFracQuotient(...) " +
+		t.Errorf("Error returned by BigIntMathDivide{}.BigIntFracQuotient(...) "+
 			"Error='%v' ", err.Error())
 	}
 
-	actualQuo, err := BigIntNum{}.NewBigIntPrecision(bIntQuotient, bIntQuotientPrecision)
+	actualQuo, err := BigIntNum{}.NewBigIntBigPrecision(bIntQuotient, bIntQuotientPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewBigIntPrecision(...) " +
+		t.Errorf("Error returned by BigIntNum{}.NewBigIntBigPrecision(...) "+
 			"Error='%v' ", err.Error())
 	}
 
@@ -1223,14 +1219,14 @@ func TestBigIntMathDivide_BigIntFracQuotient_19(t *testing.T) {
 			maxPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntMathDivide{}.BigIntFracQuotient(...) " +
+		t.Errorf("Error returned by BigIntMathDivide{}.BigIntFracQuotient(...) "+
 			"Error='%v' ", err.Error())
 	}
 
-	actualQuo, err := BigIntNum{}.NewBigIntPrecision(bIntQuotient, bIntQuotientPrecision)
+	actualQuo, err := BigIntNum{}.NewBigIntBigPrecision(bIntQuotient, bIntQuotientPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewBigIntPrecision(...) " +
+		t.Errorf("Error returned by BigIntNum{}.NewBigIntBigPrecision(...) "+
 			"Error='%v' ", err.Error())
 	}
 
@@ -1239,7 +1235,6 @@ func TestBigIntMathDivide_BigIntFracQuotient_19(t *testing.T) {
 			expectedQuo.GetNumStr(), actualQuo.GetNumStr())
 	}
 }
-
 
 func TestBigIntMathDivide_BigIntFracQuotient_20(t *testing.T) {
 	// Dividend		divided by		Divisor			=		Quotient
@@ -1325,10 +1320,10 @@ func TestBigIntMathDivide_BigIntFracQuotient_21(t *testing.T) {
 			"Error='%v' ", err.Error())
 	}
 
-	actualResult, err := BigIntNum{}.NewBigIntPrecision(bIntQuotient, bIntQuotientPrecision)
+	actualResult, err := BigIntNum{}.NewBigIntBigPrecision(bIntQuotient, bIntQuotientPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewBigIntPrecision(...) " +
+		t.Errorf("Error returned by BigIntNum{}.NewBigIntBigPrecision(...) "+
 			"Error='%v' ", err.Error())
 	}
 
@@ -1386,10 +1381,10 @@ func TestBigIntMathDivide_BigIntFracQuotient_22(t *testing.T) {
 			"Error='%v' ", err.Error())
 	}
 
-	actualResult, err := BigIntNum{}.NewBigIntPrecision(bIntQuotient, bIntQuotientPrecision)
+	actualResult, err := BigIntNum{}.NewBigIntBigPrecision(bIntQuotient, bIntQuotientPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewBigIntPrecision(...) " +
+		t.Errorf("Error returned by BigIntNum{}.NewBigIntBigPrecision(...) "+
 			"Error='%v' ", err.Error())
 	}
 
@@ -1398,4 +1393,3 @@ func TestBigIntMathDivide_BigIntFracQuotient_22(t *testing.T) {
 			expectedResult.GetNumStr(), actualResult.GetNumStr())
 	}
 }
-

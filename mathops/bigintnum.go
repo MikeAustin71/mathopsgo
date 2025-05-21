@@ -2841,37 +2841,52 @@ func (bNum *BigIntNum) NewWithNumSeps(
 	return new(bigIntNumNanobot).newWithNumSeps(numSeps, ePrefix)
 }
 
-// NewBigInt - Creates a new BigIntNum instance using a *big.Int type and its
-// associated precision.
+// NewBigInt
 //
-// The 'precision' parameter specifies the number of digits to the right
-// of the decimal place. The Numeric value is equal to bigI x 10^(precision x -1).
-// This effectively locates the decimal place by counting from the extreme right
-// of the integer number, 'precision' places to the left. See the example below.
+// Creates a new BigIntNum instance using a *big.Int type and its
+// associated precision of type uint.
 //
-// # Input Parameters
+//	Precision Example
+//	=================
 //
-// bigI *big.Int
+//	The 'precision' input parameter specifies the number of digits
+//	to the right of the decimal place. The Numeric value is equal
+//	to 'bigI' x 10^(precision x -1). This effectively locates the
+//	decimal place by counting from the extreme right of the integer
+//	number, 'precision' places to the left. See the example below.
 //
-//	'bigI' is a type *big.Int and represents the integer
-//	value of the number; that is, the numeric value without decimal
-//	digits.
+//		   Integer Value    precision    Numeric Value
+//		     123456             3           123.456
+//	                 123456 x 10^-3 =  123.456
 //
-// precision int
+//	Input Parameters
+//	================
 //
-//	This unsigned integer (always a positive value) identifies
-//	the location of the decimal place in the integer value 'bigI'.
-//	The decimal place location is calculated by starting with the
-//	right most digit in the integer number and counting	left,
-//	'precision' places.
+//	bigI                     *big.Int
+//	  'bigI' is a type *big.Int and represents the integer value
+//	  of the number; that is, the numeric value without decimal
+//	   digits.
 //
-//	Example:
+//	precision                uint
+//	  This unsigned integer (always a positive value) identifies
+//	  the location of the decimal place in the integer value
+//	  parameter 'bigI'. The decimal place location is calculated
+//	  by starting with the right most digit in the integer number
+//	  ('bigI') and counting	left, 'precision' places.
 //
-//			Integer Value		precision			Numeric Value
-//			  123456					 3					  123.456
+//	Return Values
+//	=============
 //
-//	NOTE
-//	====
+//	BigIntNum
+//	  The new instance of BigIntNum will be returned through
+//	  this parameter.
+//
+//	error
+//	  If no errors are encountered during execution, this method
+//	  will return an error value of 'nil'.
+//
+//	Numeric Separators
+//	==================
 //
 //	The returned new instance of BigIntNum will contain default
 //	USA numeric separators (decimal separator, thousands seprator,
@@ -2912,68 +2927,65 @@ func (bNum *BigIntNum) NewBigInt(
 // NewBigIntNumSeps
 //
 // Creates a new BigIntNum instance using a *big.Int type and its
-// associated precision (also of type *big.Int).
+// associated precision of type uint.
 //
-// The 'precision' parameter specifies the number of digits to
-// the right of the decimal place. The Numeric value is equal to
-// bigI x 10^(precision x -1). This effectively locates the decimal
-// place by counting from the extreme right of the integer number,
-// 'precision' places to the left. See the example below.
+//	Precision Example
+//	=================
 //
-//	Precision Example:
-//	==================
+//	The 'precision' input parameter specifies the number of digits
+//	to the right of the decimal place. The Numeric value is equal
+//	to 'bigI' x 10^(precision x -1). This effectively locates the
+//	decimal place by counting from the extreme right of the integer
+//	number, 'precision' places to the left. See the example below.
 //
-//			Integer Value		precision			Numeric Value
-//			  123456					 3					  123.456
-//
-// Numeric Seprators
-// =================
-//
-// The returned BigIntNum instance will be configured with the
-// Numeric Separators provided by input parameter 'numSeps'.
-// Numeric Separatpors consist of decimal separators, thousands
-// separators and a currency symbol.
+//		   Integer Value    precision    Numeric Value
+//		     123456             3           123.456
+//	                 123456 x 10^-3 =  123.456
 //
 //	Input Parameters
 //	================
 //
-//	bigI 				*big.Int
+//	bigI                     *big.Int
+//	  'bigI' is a type *big.Int and represents the integer value
+//	  of the number; that is, the numeric value without decimal
+//	   digits.
 //
-//	'bigI' is a type *big.Int and represents the integer
-//	value of the number; that is, the numeric value without decimal digits.
+//	precision                uint
+//	  This unsigned integer (always a positive value) identifies
+//	  the location of the decimal place in the integer value
+//	  parameter 'bigI'. The decimal place location is calculated
+//	  by starting with the right most digit in the integer number
+//	  ('bigI') and counting	left, 'precision' places.
 //
+//	numSepsDto               NumericSeparatorDto
+//	  Input parameter, 'numSeps' consits of a NumericSeparatorDto
+//	  instance. A NumericSeparatorDto contains symbols or characters
+//	  for the decimal separator, thousands separator and currency
+//	  symbol. These separators are used when parsing number strings
+//	  into numeric values or displaying numeric values in number
+//	  strings.
 //
-//	precision		*big.Int
+//	  If any of the 'numSeps' Numeric Separator Components are
+//	  invalid, those components will be automatically reset to USA
+//	  default values.
 //
-//	This integer value (always a positive value) identifies
-//	the location of the decimal place in the integer value 'bigI'.
-//	The decimal place location is calculated by starting with the
-//	right most digit in the integer number and counting	left,
-//	'precision' places. If precision is greater than the maximum
-//	value of an unsigned integer (+4,294,967,295,	which equals
-//	2^32 − 1), an error will be triggered. Also, if the 'precision'
-//	value is less than zero, an error will be triggered.
+//	  The returned value ('BigIntNum') will be configured with
+//	  'numSeps' Numeric Separators.
 //
+//	Return Values
+//	=============
 //
-//	numSeps			NumericSeparatorDto
+//	BigIntNum
+//	  The new instance of BigIntNum will be returned through
+//	  this parameter.
 //
-//	The returned instance of BigIntNum will be configured with the
-//	Numeric Separators contained in this input parameter, 'numSeps'.
-//	Numeric Separatpors consist of decimal separators, thousands
-//	separators and a currency symbol.
-//
-//	Return Parameters
-//	=================
-//
-//	BigIntNum - a type BigIntNum numeric value
-//
-//	error			- If not 'nil', this prameter will
-//							transmit any processing errors
-//							encountered.
+//	error
+//	  If no errors are encountered during execution, this method
+//	  will return an error value of 'nil'.
 func (bNum *BigIntNum) NewBigIntNumSeps(
-	bigInt *big.Int,
-	precision *big.Int,
-	numSeps NumericSeparatorDto) (BigIntNum, error) {
+	bigI *big.Int,
+	precision uint,
+	numSepsDto NumericSeparatorDto) (BigIntNum, error) {
 
 	var ePrefix *ePref.ErrPrefixDto
 	var err error
@@ -2981,28 +2993,28 @@ func (bNum *BigIntNum) NewBigIntNumSeps(
 	ePrefix,
 		err = ePref.ErrPrefixDto{}.NewIEmpty(
 		nil,
-		"BigIntNum.NewBigIntPrecision",
+		"BigIntNum.NewBigIntNumSeps",
 		"")
 
 	if err != nil {
 		return BigIntNum{}, err
 	}
 
-	if bigInt == nil {
+	if bigI == nil {
 
 		return BigIntNum{},
 			&InputPtrNilError{
 				ErrPrefix:     ePrefix.String(),
-				ParameterName: "'bigInt'",
+				ParameterName: "'bigI'",
 			}
 	}
 
-	return new(bigIntNumNeutron).newBigIntNumWithNumSeps(
-		bigInt,
+	return new(bigIntNumMechanics).newBigIntNumSeps(
+		bigI,
 		precision,
-		numSeps,
-		ePrefix.XCpy(fmt.Sprintf("bigInt= '%v'  precision= '%v'",
-			bigInt.Text(10), precision)))
+		numSepsDto,
+		ePrefix.XCpy(fmt.Sprintf("bigI= '%v'  precision= '%v'",
+			bigI.Text(10), precision)))
 }
 
 // NewBigIntExponent
@@ -3061,7 +3073,7 @@ func (bNum *BigIntNum) NewBigIntExponent(
 		bigI, exponent, ePrefix)
 }
 
-// NewBigIntPrecision
+// NewBigIntBigPrecision
 //
 // Creates a new BigIntNum instance using a *big.Int type and its
 // associated *big.Int precision.
@@ -3105,7 +3117,7 @@ func (bNum *BigIntNum) NewBigIntExponent(
 // The new BigIntNum instance returned by this method will contain
 // USA default numeric separators (decimal separator, thousands
 // separator and currency symbol).
-func (bNum *BigIntNum) NewBigIntPrecision(
+func (bNum *BigIntNum) NewBigIntBigPrecision(
 	bigInt *big.Int, precision *big.Int) (BigIntNum, error) {
 
 	var ePrefix *ePref.ErrPrefixDto
@@ -3114,7 +3126,7 @@ func (bNum *BigIntNum) NewBigIntPrecision(
 	ePrefix,
 		err = ePref.ErrPrefixDto{}.NewIEmpty(
 		nil,
-		"BigIntNum.NewBigIntPrecision",
+		"BigIntNum.NewBigIntBigPrecision",
 		"")
 
 	if err != nil {
@@ -3178,6 +3190,102 @@ func (bNum *BigIntNum) NewBigIntPrecision(
 				bigInt.Text(10), uintPrecision)))
 
 	return bINum2, err
+}
+
+// NewBigIntBigPrecisionNumSeps
+//
+// Creates a new BigIntNum instance using a *big.Int type and its
+// associated precision (also of type *big.Int).
+//
+// The 'precision' parameter specifies the number of digits to
+// the right of the decimal place. The Numeric value is equal to
+// bigI x 10^(precision x -1). This effectively locates the decimal
+// place by counting from the extreme right of the integer number,
+// 'precision' places to the left. See the example below.
+//
+//	Precision Example:
+//	==================
+//
+//			Integer Value		precision			Numeric Value
+//			  123456					 3					  123.456
+//
+// Numeric Seprators
+// =================
+//
+// The returned BigIntNum instance will be configured with the
+// Numeric Separators provided by input parameter 'numSeps'.
+// Numeric Separatpors consist of decimal separators, thousands
+// separators and a currency symbol.
+//
+//	Input Parameters
+//	================
+//
+//	bigI 				*big.Int
+//
+//	'bigI' is a type *big.Int and represents the integer
+//	value of the number; that is, the numeric value without decimal digits.
+//
+//
+//	precision		*big.Int
+//
+//	This integer value (always a positive value) identifies
+//	the location of the decimal place in the integer value 'bigI'.
+//	The decimal place location is calculated by starting with the
+//	right most digit in the integer number and counting	left,
+//	'precision' places. If precision is greater than the maximum
+//	value of an unsigned integer (+4,294,967,295,	which equals
+//	2^32 − 1), an error will be triggered. Also, if the 'precision'
+//	value is less than zero, an error will be triggered.
+//
+//
+//	numSeps			NumericSeparatorDto
+//
+//	The returned instance of BigIntNum will be configured with the
+//	Numeric Separators contained in this input parameter, 'numSeps'.
+//	Numeric Separatpors consist of decimal separators, thousands
+//	separators and a currency symbol.
+//
+//	Return Parameters
+//	=================
+//
+//	BigIntNum - a type BigIntNum numeric value
+//
+//	error			- If not 'nil', this prameter will
+//							transmit any processing errors
+//							encountered.
+func (bNum *BigIntNum) NewBigIntBigPrecisionNumSeps(
+	bigInt *big.Int,
+	precision *big.Int,
+	numSeps NumericSeparatorDto) (BigIntNum, error) {
+
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
+
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"BigIntNum.NewBigIntBigPrecision",
+		"")
+
+	if err != nil {
+		return BigIntNum{}, err
+	}
+
+	if bigInt == nil {
+
+		return BigIntNum{},
+			&InputPtrNilError{
+				ErrPrefix:     ePrefix.String(),
+				ParameterName: "'bigInt'",
+			}
+	}
+
+	return new(bigIntNumNeutron).newBigIntNumBigPrecisionNumSeps(
+		bigInt,
+		precision,
+		numSeps,
+		ePrefix.XCpy(fmt.Sprintf("bigInt= '%v'  precision= '%v'",
+			bigInt.Text(10), precision)))
 }
 
 // NewBigFloat

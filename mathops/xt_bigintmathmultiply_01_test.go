@@ -515,7 +515,7 @@ func TestBigIntMathMultiply_MultiplyByTenToPwr_01(t *testing.T) {
 	result, err := BigIntFixedDecimal{}.NewBigIntPrecision(product, productPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntFixedDecimal{}.NewBigIntPrecision(...) "+
+		t.Errorf("Error returned by BigIntFixedDecimal{}.NewBigIntBigPrecision(...) "+
 			"Error='%v' ", err.Error())
 	}
 
@@ -549,7 +549,7 @@ func TestBigIntMathMultiply_MultiplyByTenToPwr_02(t *testing.T) {
 	result, err := BigIntFixedDecimal{}.NewBigIntPrecision(product, productPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntFixedDecimal{}.NewBigIntPrecision(...) "+
+		t.Errorf("Error returned by BigIntFixedDecimal{}.NewBigIntBigPrecision(...) "+
 			"Error='%v' ", err.Error())
 	}
 
@@ -582,7 +582,7 @@ func TestBigIntMathMultiply_MultiplyByTenToPwr_03(t *testing.T) {
 	result, err := BigIntFixedDecimal{}.NewBigIntPrecision(product, productPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntFixedDecimal{}.NewBigIntPrecision(...) "+
+		t.Errorf("Error returned by BigIntFixedDecimal{}.NewBigIntBigPrecision(...) "+
 			"Error='%v' ", err.Error())
 	}
 
@@ -615,7 +615,7 @@ func TestBigIntMathMultiply_MultiplyByTenToPwr_04(t *testing.T) {
 	result, err := BigIntFixedDecimal{}.NewBigIntPrecision(product, productPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntFixedDecimal{}.NewBigIntPrecision(...) "+
+		t.Errorf("Error returned by BigIntFixedDecimal{}.NewBigIntBigPrecision(...) "+
 			"Error='%v' ", err.Error())
 	}
 
@@ -648,7 +648,7 @@ func TestBigIntMathMultiply_MultiplyByTenToPwr_05(t *testing.T) {
 	result, err := BigIntFixedDecimal{}.NewBigIntPrecision(product, productPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntFixedDecimal{}.NewBigIntPrecision(...) "+
+		t.Errorf("Error returned by BigIntFixedDecimal{}.NewBigIntBigPrecision(...) "+
 			"Error='%v' ", err.Error())
 	}
 
@@ -681,7 +681,7 @@ func TestBigIntMathMultiply_MultiplyByTenToPwr_06(t *testing.T) {
 	result, err := BigIntFixedDecimal{}.NewBigIntPrecision(product, productPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntFixedDecimal{}.NewBigIntPrecision(...) "+
+		t.Errorf("Error returned by BigIntFixedDecimal{}.NewBigIntBigPrecision(...) "+
 			"Error='%v' ", err.Error())
 	}
 
@@ -714,7 +714,7 @@ func TestBigIntMathMultiply_MultiplyByTenToPwr_07(t *testing.T) {
 	result, err := BigIntFixedDecimal{}.NewBigIntPrecision(product, productPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntFixedDecimal{}.NewBigIntPrecision(...) "+
+		t.Errorf("Error returned by BigIntFixedDecimal{}.NewBigIntBigPrecision(...) "+
 			"Error='%v' ", err.Error())
 	}
 
@@ -747,7 +747,7 @@ func TestBigIntMathMultiply_MultiplyByTenToPwr_08(t *testing.T) {
 	result, err := BigIntFixedDecimal{}.NewBigIntPrecision(product, productPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntFixedDecimal{}.NewBigIntPrecision(...) "+
+		t.Errorf("Error returned by BigIntFixedDecimal{}.NewBigIntBigPrecision(...) "+
 			"Error='%v' ", err.Error())
 	}
 
@@ -780,7 +780,7 @@ func TestBigIntMathMultiply_MultiplyByTenToPwr_09(t *testing.T) {
 	result, err := BigIntFixedDecimal{}.NewBigIntPrecision(product, productPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntFixedDecimal{}.NewBigIntPrecision(...) "+
+		t.Errorf("Error returned by BigIntFixedDecimal{}.NewBigIntBigPrecision(...) "+
 			"Error='%v' ", err.Error())
 	}
 
@@ -814,7 +814,7 @@ func TestBigIntMathMultiply_MultiplyByTenToPwr_10(t *testing.T) {
 	result, err := BigIntFixedDecimal{}.NewBigIntPrecision(product, productPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntFixedDecimal{}.NewBigIntPrecision(...) "+
+		t.Errorf("Error returned by BigIntFixedDecimal{}.NewBigIntBigPrecision(...) "+
 			"Error='%v' ", err.Error())
 	}
 
@@ -848,7 +848,7 @@ func TestBigIntMathMultiply_MultiplyByTenToPwr_11(t *testing.T) {
 	result, err := BigIntFixedDecimal{}.NewBigIntPrecision(product, productPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntFixedDecimal{}.NewBigIntPrecision(...) "+
+		t.Errorf("Error returned by BigIntFixedDecimal{}.NewBigIntBigPrecision(...) "+
 			"Error='%v' ", err.Error())
 	}
 
@@ -878,10 +878,10 @@ func TestBigIntMathMultiply_BigIntMultiplyByTwoToPower_01(t *testing.T) {
 			"Error='%v' ", err.Error())
 	}
 
-	result, err := BigIntNum{}.NewBigIntPrecision(product, productPrecision)
+	result, err := BigIntNum{}.NewBigIntBigPrecision(product, productPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewBigIntPrecision(...) "+
+		t.Errorf("Error returned by BigIntNum{}.NewBigIntBigPrecision(...) "+
 			"Error='%v' ", err.Error())
 	}
 
@@ -909,10 +909,10 @@ func TestBigIntMathMultiply_BigIntMultiplyByTwoToPower_02(t *testing.T) {
 			"Error='%v' ", err.Error())
 	}
 
-	result, err := BigIntNum{}.NewBigIntPrecision(product, productPrecision)
+	result, err := BigIntNum{}.NewBigIntBigPrecision(product, productPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewBigIntPrecision(...) "+
+		t.Errorf("Error returned by BigIntNum{}.NewBigIntBigPrecision(...) "+
 			"Error='%v' ", err.Error())
 	}
 
@@ -940,10 +940,10 @@ func TestBigIntMathMultiply_BigIntMultiplyByTwoToPower_03(t *testing.T) {
 			"Error='%v' ", err.Error())
 	}
 
-	result, err := BigIntNum{}.NewBigIntPrecision(product, productPrecision)
+	result, err := BigIntNum{}.NewBigIntBigPrecision(product, productPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewBigIntPrecision(...) "+
+		t.Errorf("Error returned by BigIntNum{}.NewBigIntBigPrecision(...) "+
 			"Error='%v' ", err.Error())
 	}
 
@@ -971,10 +971,10 @@ func TestBigIntMathMultiply_BigIntMultiplyByTwoToPower_04(t *testing.T) {
 			"Error='%v' ", err.Error())
 	}
 
-	result, err := BigIntNum{}.NewBigIntPrecision(product, productPrecision)
+	result, err := BigIntNum{}.NewBigIntBigPrecision(product, productPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewBigIntPrecision(...) "+
+		t.Errorf("Error returned by BigIntNum{}.NewBigIntBigPrecision(...) "+
 			"Error='%v' ", err.Error())
 	}
 
@@ -1002,10 +1002,10 @@ func TestBigIntMathMultiply_BigIntMultiplyByTwoToPower_05(t *testing.T) {
 			"Error='%v' ", err.Error())
 	}
 
-	result, err := BigIntNum{}.NewBigIntPrecision(product, productPrecision)
+	result, err := BigIntNum{}.NewBigIntBigPrecision(product, productPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewBigIntPrecision(...) "+
+		t.Errorf("Error returned by BigIntNum{}.NewBigIntBigPrecision(...) "+
 			"Error='%v' ", err.Error())
 	}
 
@@ -1033,10 +1033,10 @@ func TestBigIntMathMultiply_BigIntMultiplyByTwoToPower_06(t *testing.T) {
 			"Error='%v' ", err.Error())
 	}
 
-	result, err := BigIntNum{}.NewBigIntPrecision(product, productPrecision)
+	result, err := BigIntNum{}.NewBigIntBigPrecision(product, productPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntNum{}.NewBigIntPrecision(...) "+
+		t.Errorf("Error returned by BigIntNum{}.NewBigIntBigPrecision(...) "+
 			"Error='%v' ", err.Error())
 	}
 

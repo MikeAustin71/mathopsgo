@@ -106,7 +106,7 @@ func (bLog BigIntMathLogarithms) BigIntNumLogBaseOfX(
 	}
 
 	result, errX =
-		BigIntNum{}.NewBigIntPrecision(
+		BigIntNum{}.NewBigIntBigPrecision(
 			biResult,
 			biResultPrecision)
 
@@ -114,7 +114,7 @@ func (bLog BigIntMathLogarithms) BigIntNumLogBaseOfX(
 
 		err = fmt.Errorf("%v\n"+
 			"Error returned by: \n"+
-			"result, errX = BigIntNum{}.NewBigIntPrecision(...)\n"+
+			"result, errX = BigIntNum{}.NewBigIntBigPrecision(...)\n"+
 			"Error= %v\n",
 			ePrefix,
 			errX.Error())
@@ -1405,7 +1405,7 @@ func (bLog BigIntMathLogarithms) BigIntNumNatLogOfX(
 		return lnOfX, err
 	}
 
-	lnOfX, errX = BigIntNum{}.NewBigIntPrecision(biResult, biResultPrecision)
+	lnOfX, errX = BigIntNum{}.NewBigIntBigPrecision(biResult, biResultPrecision)
 
 	if errX != nil {
 
@@ -1413,7 +1413,7 @@ func (bLog BigIntMathLogarithms) BigIntNumNatLogOfX(
 
 		err = fmt.Errorf("%v\n"+
 			"Error returned by:\n"+
-			" lnOfX, errX = BigIntNum{}.NewBigIntPrecision(biResult, biResultPrecision)\n"+
+			" lnOfX, errX = BigIntNum{}.NewBigIntBigPrecision(biResult, biResultPrecision)\n"+
 			"Error= %v\n",
 			ePrefix,
 			errX.Error())

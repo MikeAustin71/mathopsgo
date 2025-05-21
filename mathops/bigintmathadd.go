@@ -28,28 +28,28 @@ func (bAdd *BigIntMathAdd) AddBigInts(
 	// No error is possible because both precision parameters
 	// are by definition, greater than or equal to zero.
 
-	b1BigInNum, err := new(BigIntNum).NewBigIntPrecision(
+	b1BigInNum, err := new(BigIntNum).NewBigIntBigPrecision(
 		b1, big.NewInt(int64(precision1)))
 
 	if err != nil {
 		return BigIntNum{},
 			&FuncReturnError{
 				ErrPrefix: ePrefix,
-				ReturnFunc: "b1BigInNum, err := new(BigIntNum).NewBigIntPrecision(\n" +
+				ReturnFunc: "b1BigInNum, err := new(BigIntNum).NewBigIntBigPrecision(\n" +
 					"    b1, big.NewInt(int64(precision1)))",
 				ErrContext: "",
 				ErrMessage: err.Error(),
 			}
 	}
 
-	b2BigInNum, err := new(BigIntNum).NewBigIntPrecision(
+	b2BigInNum, err := new(BigIntNum).NewBigIntBigPrecision(
 		b2, big.NewInt(int64(precision2)))
 
 	if err != nil {
 		return BigIntNum{},
 			&FuncReturnError{
 				ErrPrefix: ePrefix,
-				ReturnFunc: "b2BigInNum, err := new(BigIntNum).NewBigIntPrecision(\n" +
+				ReturnFunc: "b2BigInNum, err := new(BigIntNum).NewBigIntBigPrecision(\n" +
 					"    b2, big.NewInt(int64(precision2)))",
 				ErrContext: "",
 				ErrMessage: err.Error(),

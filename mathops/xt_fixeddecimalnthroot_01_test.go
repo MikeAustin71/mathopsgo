@@ -5,7 +5,6 @@ import (
 	"testing"
 )
 
-
 func TestFixedDecimalNthRoot_CalculateNegativeIntegerNthRoot_01(t *testing.T) {
 	radicand := big.NewInt(842567)
 	radicandPrecision := big.NewInt(0)
@@ -17,7 +16,7 @@ func TestFixedDecimalNthRoot_CalculateNegativeIntegerNthRoot_01(t *testing.T) {
 	//                   1234567890123456789012345678901234567
 	expectedResult := "0.01058762420531197554077114264317"
 
-	fdNr :=  FixedDecimalNthRoot{}
+	fdNr := FixedDecimalNthRoot{}
 
 	result, resultPrecision, err :=
 		fdNr.CalculateNegativeIntegerNthRoot(
@@ -28,14 +27,14 @@ func TestFixedDecimalNthRoot_CalculateNegativeIntegerNthRoot_01(t *testing.T) {
 			maxPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by fdNr.CalculateNegativeIntegerNthRoot(...) " +
+		t.Errorf("Error returned by fdNr.CalculateNegativeIntegerNthRoot(...) "+
 			"Error='%v' ", err.Error())
 	}
 
-	resultBiNum, err := BigIntNum{}.NewBigIntPrecision(result, resultPrecision)
+	resultBiNum, err := BigIntNum{}.NewBigIntBigPrecision(result, resultPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by .BigIntNum{}.NewBigIntPrecision(...) " +
+		t.Errorf("Error returned by .BigIntNum{}.NewBigIntBigPrecision(...) "+
 			"Error='%v' ", err.Error())
 	}
 
@@ -59,7 +58,7 @@ func TestFixedDecimalNthRoot_CalculateNegativeIntegerNthRoot_02(t *testing.T) {
 	//                    1234567890123456789012345678901234567
 	expectedResult := "-0.01058762420531197554077114264317"
 
-	fdNr :=  FixedDecimalNthRoot{}
+	fdNr := FixedDecimalNthRoot{}
 
 	result, resultPrecision, err :=
 		fdNr.CalculateNegativeIntegerNthRoot(
@@ -70,14 +69,14 @@ func TestFixedDecimalNthRoot_CalculateNegativeIntegerNthRoot_02(t *testing.T) {
 			maxPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by fdNr.CalculateNegativeIntegerNthRoot(...) " +
+		t.Errorf("Error returned by fdNr.CalculateNegativeIntegerNthRoot(...) "+
 			"Error='%v' ", err.Error())
 	}
 
-	resultBiNum, err := BigIntNum{}.NewBigIntPrecision(result, resultPrecision)
+	resultBiNum, err := BigIntNum{}.NewBigIntBigPrecision(result, resultPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by .BigIntNum{}.NewBigIntPrecision(...) " +
+		t.Errorf("Error returned by .BigIntNum{}.NewBigIntBigPrecision(...) "+
 			"Error='%v' ", err.Error())
 	}
 
@@ -101,7 +100,7 @@ func TestFixedDecimalNthRoot_CalculateNegativeIntegerNthRoot_03(t *testing.T) {
 	//                   1234567890123456789012345678901234567
 	expectedResult := "0.01002878192918682057341883690632"
 
-	fdNr :=  FixedDecimalNthRoot{}
+	fdNr := FixedDecimalNthRoot{}
 
 	result, resultPrecision, err :=
 		fdNr.CalculateNegativeIntegerNthRoot(
@@ -112,14 +111,14 @@ func TestFixedDecimalNthRoot_CalculateNegativeIntegerNthRoot_03(t *testing.T) {
 			maxPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by fdNr.CalculateNegativeIntegerNthRoot(...) " +
+		t.Errorf("Error returned by fdNr.CalculateNegativeIntegerNthRoot(...) "+
 			"Error='%v' ", err.Error())
 	}
 
-	resultBiNum, err := BigIntNum{}.NewBigIntPrecision(result, resultPrecision)
+	resultBiNum, err := BigIntNum{}.NewBigIntBigPrecision(result, resultPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by .BigIntNum{}.NewBigIntPrecision(...) " +
+		t.Errorf("Error returned by .BigIntNum{}.NewBigIntBigPrecision(...) "+
 			"Error='%v' ", err.Error())
 	}
 
@@ -143,7 +142,7 @@ func TestFixedDecimalNthRoot_CalculateNegativeIntegerNthRoot_04(t *testing.T) {
 	//                    1234567890123456789012345678901234567
 	expectedResult := "-0.01002878192918682057341883690632"
 
-	fdNr :=  FixedDecimalNthRoot{}
+	fdNr := FixedDecimalNthRoot{}
 
 	result, resultPrecision, err :=
 		fdNr.CalculateNegativeIntegerNthRoot(
@@ -154,14 +153,14 @@ func TestFixedDecimalNthRoot_CalculateNegativeIntegerNthRoot_04(t *testing.T) {
 			maxPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by fdNr.CalculateNegativeIntegerNthRoot(...) " +
+		t.Errorf("Error returned by fdNr.CalculateNegativeIntegerNthRoot(...) "+
 			"Error='%v' ", err.Error())
 	}
 
-	resultBiNum, err := BigIntNum{}.NewBigIntPrecision(result, resultPrecision)
+	resultBiNum, err := BigIntNum{}.NewBigIntBigPrecision(result, resultPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by .BigIntNum{}.NewBigIntPrecision(...) " +
+		t.Errorf("Error returned by .BigIntNum{}.NewBigIntBigPrecision(...) "+
 			"Error='%v' ", err.Error())
 	}
 
@@ -185,7 +184,7 @@ func TestFixedDecimalNthRoot_CalculateNegativeIntegerNthRoot_05(t *testing.T) {
 	//                   1234567890123456789012345678901234567
 	expectedResult := "0.15746143256077581282726778712212"
 
-	fdNr :=  FixedDecimalNthRoot{}
+	fdNr := FixedDecimalNthRoot{}
 
 	result, resultPrecision, err :=
 		fdNr.CalculateNegativeIntegerNthRoot(
@@ -196,14 +195,14 @@ func TestFixedDecimalNthRoot_CalculateNegativeIntegerNthRoot_05(t *testing.T) {
 			maxPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by fdNr.CalculateNegativeIntegerNthRoot(...) " +
+		t.Errorf("Error returned by fdNr.CalculateNegativeIntegerNthRoot(...) "+
 			"Error='%v' ", err.Error())
 	}
 
-	resultBiNum, err := BigIntNum{}.NewBigIntPrecision(result, resultPrecision)
+	resultBiNum, err := BigIntNum{}.NewBigIntBigPrecision(result, resultPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by .BigIntNum{}.NewBigIntPrecision(...) " +
+		t.Errorf("Error returned by .BigIntNum{}.NewBigIntBigPrecision(...) "+
 			"Error='%v' ", err.Error())
 	}
 
@@ -227,7 +226,7 @@ func TestFixedDecimalNthRoot_CalculateNegativeIntegerNthRoot_06(t *testing.T) {
 	//                    1234567890123456789012345678901234567
 	expectedResult := "-0.15746143256077581282726778712212"
 
-	fdNr :=  FixedDecimalNthRoot{}
+	fdNr := FixedDecimalNthRoot{}
 
 	result, resultPrecision, err :=
 		fdNr.CalculateNegativeIntegerNthRoot(
@@ -238,14 +237,14 @@ func TestFixedDecimalNthRoot_CalculateNegativeIntegerNthRoot_06(t *testing.T) {
 			maxPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by fdNr.CalculateNegativeIntegerNthRoot(...) " +
+		t.Errorf("Error returned by fdNr.CalculateNegativeIntegerNthRoot(...) "+
 			"Error='%v' ", err.Error())
 	}
 
-	resultBiNum, err := BigIntNum{}.NewBigIntPrecision(result, resultPrecision)
+	resultBiNum, err := BigIntNum{}.NewBigIntBigPrecision(result, resultPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by .BigIntNum{}.NewBigIntPrecision(...) " +
+		t.Errorf("Error returned by .BigIntNum{}.NewBigIntBigPrecision(...) "+
 			"Error='%v' ", err.Error())
 	}
 
@@ -269,7 +268,7 @@ func TestFixedDecimalNthRoot_CalculateNegativeIntegerNthRoot_07(t *testing.T) {
 	//                   1234567890123456789012345678901234567
 	expectedResult := "0.1049223981473805598342831898137"
 
-	fdNr :=  FixedDecimalNthRoot{}
+	fdNr := FixedDecimalNthRoot{}
 
 	result, resultPrecision, err :=
 		fdNr.CalculateNegativeIntegerNthRoot(
@@ -280,14 +279,14 @@ func TestFixedDecimalNthRoot_CalculateNegativeIntegerNthRoot_07(t *testing.T) {
 			maxPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by fdNr.CalculateNegativeIntegerNthRoot(...) " +
+		t.Errorf("Error returned by fdNr.CalculateNegativeIntegerNthRoot(...) "+
 			"Error='%v' ", err.Error())
 	}
 
-	resultBiNum, err := BigIntNum{}.NewBigIntPrecision(result, resultPrecision)
+	resultBiNum, err := BigIntNum{}.NewBigIntBigPrecision(result, resultPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by .BigIntNum{}.NewBigIntPrecision(...) " +
+		t.Errorf("Error returned by .BigIntNum{}.NewBigIntBigPrecision(...) "+
 			"Error='%v' ", err.Error())
 	}
 
@@ -311,7 +310,7 @@ func TestFixedDecimalNthRoot_CalculateNegativeIntegerNthRoot_08(t *testing.T) {
 	//                    1234567890123456789012345678901234567
 	expectedResult := "-0.1049223981473805598342831898137"
 
-	fdNr :=  FixedDecimalNthRoot{}
+	fdNr := FixedDecimalNthRoot{}
 
 	result, resultPrecision, err :=
 		fdNr.CalculateNegativeIntegerNthRoot(
@@ -322,14 +321,14 @@ func TestFixedDecimalNthRoot_CalculateNegativeIntegerNthRoot_08(t *testing.T) {
 			maxPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by fdNr.CalculateNegativeIntegerNthRoot(...) " +
+		t.Errorf("Error returned by fdNr.CalculateNegativeIntegerNthRoot(...) "+
 			"Error='%v' ", err.Error())
 	}
 
-	resultBiNum, err := BigIntNum{}.NewBigIntPrecision(result, resultPrecision)
+	resultBiNum, err := BigIntNum{}.NewBigIntBigPrecision(result, resultPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by .BigIntNum{}.NewBigIntPrecision(...) " +
+		t.Errorf("Error returned by .BigIntNum{}.NewBigIntBigPrecision(...) "+
 			"Error='%v' ", err.Error())
 	}
 
@@ -353,7 +352,7 @@ func TestFixedDecimalNthRoot_CalculateNegativeIntegerNthRoot_09(t *testing.T) {
 	//                   1234567890123456789012345678901234567
 	expectedResult := "0.33333333333333333333333333333333"
 
-	fdNr :=  FixedDecimalNthRoot{}
+	fdNr := FixedDecimalNthRoot{}
 
 	result, resultPrecision, err :=
 		fdNr.CalculateNegativeIntegerNthRoot(
@@ -364,14 +363,14 @@ func TestFixedDecimalNthRoot_CalculateNegativeIntegerNthRoot_09(t *testing.T) {
 			maxPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by fdNr.CalculateNegativeIntegerNthRoot(...) " +
+		t.Errorf("Error returned by fdNr.CalculateNegativeIntegerNthRoot(...) "+
 			"Error='%v' ", err.Error())
 	}
 
-	resultBiNum, err := BigIntNum{}.NewBigIntPrecision(result, resultPrecision)
+	resultBiNum, err := BigIntNum{}.NewBigIntBigPrecision(result, resultPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by .BigIntNum{}.NewBigIntPrecision(...) " +
+		t.Errorf("Error returned by .BigIntNum{}.NewBigIntBigPrecision(...) "+
 			"Error='%v' ", err.Error())
 	}
 
@@ -395,7 +394,7 @@ func TestFixedDecimalNthRoot_CalculateNegativeIntegerNthRoot_10(t *testing.T) {
 	//                   1234567890123456789012345678901234567
 	expectedResult := "0.01077022443956376776023853141449"
 
-	fdNr :=  FixedDecimalNthRoot{}
+	fdNr := FixedDecimalNthRoot{}
 
 	result, resultPrecision, err :=
 		fdNr.CalculateNegativeIntegerNthRoot(
@@ -406,14 +405,14 @@ func TestFixedDecimalNthRoot_CalculateNegativeIntegerNthRoot_10(t *testing.T) {
 			maxPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by fdNr.CalculateNegativeIntegerNthRoot(...) " +
+		t.Errorf("Error returned by fdNr.CalculateNegativeIntegerNthRoot(...) "+
 			"Error='%v' ", err.Error())
 	}
 
-	resultBiNum, err := BigIntNum{}.NewBigIntPrecision(result, resultPrecision)
+	resultBiNum, err := BigIntNum{}.NewBigIntBigPrecision(result, resultPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by .BigIntNum{}.NewBigIntPrecision(...) " +
+		t.Errorf("Error returned by .BigIntNum{}.NewBigIntBigPrecision(...) "+
 			"Error='%v' ", err.Error())
 	}
 
@@ -437,7 +436,7 @@ func TestFixedDecimalNthRoot_CalculateNegativeIntegerNthRoot_11(t *testing.T) {
 	//                   1234567890123456789012345678901234567
 	expectedResult := "1"
 
-	fdNr :=  FixedDecimalNthRoot{}
+	fdNr := FixedDecimalNthRoot{}
 
 	result, resultPrecision, err :=
 		fdNr.CalculateNegativeIntegerNthRoot(
@@ -448,14 +447,14 @@ func TestFixedDecimalNthRoot_CalculateNegativeIntegerNthRoot_11(t *testing.T) {
 			maxPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by fdNr.CalculateNegativeIntegerNthRoot(...) " +
+		t.Errorf("Error returned by fdNr.CalculateNegativeIntegerNthRoot(...) "+
 			"Error='%v' ", err.Error())
 	}
 
-	resultBiNum, err := BigIntNum{}.NewBigIntPrecision(result, resultPrecision)
+	resultBiNum, err := BigIntNum{}.NewBigIntBigPrecision(result, resultPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by .BigIntNum{}.NewBigIntPrecision(...) " +
+		t.Errorf("Error returned by .BigIntNum{}.NewBigIntBigPrecision(...) "+
 			"Error='%v' ", err.Error())
 	}
 
@@ -479,7 +478,7 @@ func TestFixedDecimalNthRoot_CalculateNegativeIntegerNthRoot_12(t *testing.T) {
 	//                   1234567890123456789012345678901234567
 	expectedResult := "-1"
 
-	fdNr :=  FixedDecimalNthRoot{}
+	fdNr := FixedDecimalNthRoot{}
 
 	result, resultPrecision, err :=
 		fdNr.CalculateNegativeIntegerNthRoot(
@@ -490,14 +489,14 @@ func TestFixedDecimalNthRoot_CalculateNegativeIntegerNthRoot_12(t *testing.T) {
 			maxPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by fdNr.CalculateNegativeIntegerNthRoot(...) " +
+		t.Errorf("Error returned by fdNr.CalculateNegativeIntegerNthRoot(...) "+
 			"Error='%v' ", err.Error())
 	}
 
-	resultBiNum, err := BigIntNum{}.NewBigIntPrecision(result, resultPrecision)
+	resultBiNum, err := BigIntNum{}.NewBigIntBigPrecision(result, resultPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by .BigIntNum{}.NewBigIntPrecision(...) " +
+		t.Errorf("Error returned by .BigIntNum{}.NewBigIntBigPrecision(...) "+
 			"Error='%v' ", err.Error())
 	}
 
@@ -517,8 +516,7 @@ func TestFixedDecimalNthRoot_CalculateNegativeIntegerNthRoot_13(t *testing.T) {
 	nthRootPrecision := big.NewInt(0)
 	maxPrecision := big.NewInt(2)
 
-
-	fdNr :=  FixedDecimalNthRoot{}
+	fdNr := FixedDecimalNthRoot{}
 
 	_, _, err :=
 		fdNr.CalculateNegativeIntegerNthRoot(
@@ -541,8 +539,7 @@ func TestFixedDecimalNthRoot_CalculateNegativeIntegerNthRoot_14(t *testing.T) {
 	nthRootPrecision := big.NewInt(0)
 	maxPrecision := big.NewInt(2)
 
-
-	fdNr :=  FixedDecimalNthRoot{}
+	fdNr := FixedDecimalNthRoot{}
 
 	_, _, err :=
 		fdNr.CalculateNegativeIntegerNthRoot(
@@ -558,7 +555,6 @@ func TestFixedDecimalNthRoot_CalculateNegativeIntegerNthRoot_14(t *testing.T) {
 
 }
 
-
 func TestFixedDecimalNthRoot_CalculatePositiveIntegerNthRoot_01(t *testing.T) {
 	radicand := big.NewInt(842567)
 	radicandPrecision := big.NewInt(3)
@@ -570,7 +566,7 @@ func TestFixedDecimalNthRoot_CalculatePositiveIntegerNthRoot_01(t *testing.T) {
 	//                   1234567890123456789012345678901234567
 	expectedResult := "9.4449895520307989885751143526805"
 
-	fdNr :=  FixedDecimalNthRoot{}
+	fdNr := FixedDecimalNthRoot{}
 
 	result, resultPrecision, err :=
 		fdNr.CalculatePositiveIntegerNthRoot(
@@ -581,14 +577,14 @@ func TestFixedDecimalNthRoot_CalculatePositiveIntegerNthRoot_01(t *testing.T) {
 			maxPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by fdNr.CalculatePositiveIntegerNthRoot(...) " +
+		t.Errorf("Error returned by fdNr.CalculatePositiveIntegerNthRoot(...) "+
 			"Error='%v' ", err.Error())
 	}
 
-	resultBiNum, err := BigIntNum{}.NewBigIntPrecision(result, resultPrecision)
+	resultBiNum, err := BigIntNum{}.NewBigIntBigPrecision(result, resultPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by .BigIntNum{}.NewBigIntPrecision(...) " +
+		t.Errorf("Error returned by .BigIntNum{}.NewBigIntBigPrecision(...) "+
 			"Error='%v' ", err.Error())
 	}
 
@@ -612,7 +608,7 @@ func TestFixedDecimalNthRoot_CalculatePositiveIntegerNthRoot_02(t *testing.T) {
 	//                    1234567890123456789012345678901234567
 	expectedResult := "-9.4449895520307989885751143526805"
 
-	fdNr :=  FixedDecimalNthRoot{}.New()
+	fdNr := FixedDecimalNthRoot{}.New()
 
 	result, resultPrecision, err :=
 		fdNr.CalculatePositiveIntegerNthRoot(
@@ -623,14 +619,14 @@ func TestFixedDecimalNthRoot_CalculatePositiveIntegerNthRoot_02(t *testing.T) {
 			maxPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by fdNr.CalculatePositiveIntegerNthRoot(...) " +
+		t.Errorf("Error returned by fdNr.CalculatePositiveIntegerNthRoot(...) "+
 			"Error='%v' ", err.Error())
 	}
 
-	resultBiNum, err := BigIntNum{}.NewBigIntPrecision(result, resultPrecision)
+	resultBiNum, err := BigIntNum{}.NewBigIntBigPrecision(result, resultPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by .BigIntNum{}.NewBigIntPrecision(...) " +
+		t.Errorf("Error returned by .BigIntNum{}.NewBigIntBigPrecision(...) "+
 			"Error='%v' ", err.Error())
 	}
 
@@ -642,7 +638,6 @@ func TestFixedDecimalNthRoot_CalculatePositiveIntegerNthRoot_02(t *testing.T) {
 	}
 
 }
-
 
 func TestFixedDecimalNthRoot_CalculatePositiveIntegerNthRoot_03(t *testing.T) {
 	radicand := big.NewInt(357)
@@ -655,7 +650,7 @@ func TestFixedDecimalNthRoot_CalculatePositiveIntegerNthRoot_03(t *testing.T) {
 	//                   1234567890123456789012345678901234567
 	expectedResult := "7.0939709447507098368744825374903"
 
-	fdNr :=  FixedDecimalNthRoot{}
+	fdNr := FixedDecimalNthRoot{}
 
 	result, resultPrecision, err :=
 		fdNr.CalculatePositiveIntegerNthRoot(
@@ -666,14 +661,14 @@ func TestFixedDecimalNthRoot_CalculatePositiveIntegerNthRoot_03(t *testing.T) {
 			maxPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by fdNr.CalculatePositiveIntegerNthRoot(...) " +
+		t.Errorf("Error returned by fdNr.CalculatePositiveIntegerNthRoot(...) "+
 			"Error='%v' ", err.Error())
 	}
 
-	resultBiNum, err := BigIntNum{}.NewBigIntPrecision(result, resultPrecision)
+	resultBiNum, err := BigIntNum{}.NewBigIntBigPrecision(result, resultPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by .BigIntNum{}.NewBigIntPrecision(...) " +
+		t.Errorf("Error returned by .BigIntNum{}.NewBigIntBigPrecision(...) "+
 			"Error='%v' ", err.Error())
 	}
 
@@ -686,7 +681,6 @@ func TestFixedDecimalNthRoot_CalculatePositiveIntegerNthRoot_03(t *testing.T) {
 
 }
 
-
 func TestFixedDecimalNthRoot_CalculatePositiveIntegerNthRoot_04(t *testing.T) {
 	radicand := big.NewInt(-357)
 	radicandPrecision := big.NewInt(0)
@@ -698,7 +692,7 @@ func TestFixedDecimalNthRoot_CalculatePositiveIntegerNthRoot_04(t *testing.T) {
 	//                    1234567890123456789012345678901234567
 	expectedResult := "-7.0939709447507098368744825374903"
 
-	fdNr :=  FixedDecimalNthRoot{}
+	fdNr := FixedDecimalNthRoot{}
 
 	result, resultPrecision, err :=
 		fdNr.CalculatePositiveIntegerNthRoot(
@@ -709,14 +703,14 @@ func TestFixedDecimalNthRoot_CalculatePositiveIntegerNthRoot_04(t *testing.T) {
 			maxPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by fdNr.CalculatePositiveIntegerNthRoot(...) " +
+		t.Errorf("Error returned by fdNr.CalculatePositiveIntegerNthRoot(...) "+
 			"Error='%v' ", err.Error())
 	}
 
-	resultBiNum, err := BigIntNum{}.NewBigIntPrecision(result, resultPrecision)
+	resultBiNum, err := BigIntNum{}.NewBigIntBigPrecision(result, resultPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by .BigIntNum{}.NewBigIntPrecision(...) " +
+		t.Errorf("Error returned by .BigIntNum{}.NewBigIntBigPrecision(...) "+
 			"Error='%v' ", err.Error())
 	}
 
@@ -740,7 +734,7 @@ func TestFixedDecimalNthRoot_CalculatePositiveIntegerNthRoot_05(t *testing.T) {
 	//                    1234567890123456789012345678901234567
 	expectedResult := "4"
 
-	fdNr :=  FixedDecimalNthRoot{}
+	fdNr := FixedDecimalNthRoot{}
 
 	result, resultPrecision, err :=
 		fdNr.CalculatePositiveIntegerNthRoot(
@@ -751,14 +745,14 @@ func TestFixedDecimalNthRoot_CalculatePositiveIntegerNthRoot_05(t *testing.T) {
 			maxPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by fdNr.CalculatePositiveIntegerNthRoot(...) " +
+		t.Errorf("Error returned by fdNr.CalculatePositiveIntegerNthRoot(...) "+
 			"Error='%v' ", err.Error())
 	}
 
-	resultBiNum, err := BigIntNum{}.NewBigIntPrecision(result, resultPrecision)
+	resultBiNum, err := BigIntNum{}.NewBigIntBigPrecision(result, resultPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by .BigIntNum{}.NewBigIntPrecision(...) " +
+		t.Errorf("Error returned by .BigIntNum{}.NewBigIntBigPrecision(...) "+
 			"Error='%v' ", err.Error())
 	}
 
@@ -782,7 +776,7 @@ func TestFixedDecimalNthRoot_CalculatePositiveIntegerNthRoot_06(t *testing.T) {
 	//                    1234567890123456789012345678901234567
 	expectedResult := "3"
 
-	fdNr :=  FixedDecimalNthRoot{}
+	fdNr := FixedDecimalNthRoot{}
 
 	result, resultPrecision, err :=
 		fdNr.CalculatePositiveIntegerNthRoot(
@@ -793,14 +787,14 @@ func TestFixedDecimalNthRoot_CalculatePositiveIntegerNthRoot_06(t *testing.T) {
 			maxPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by fdNr.CalculatePositiveIntegerNthRoot(...) " +
+		t.Errorf("Error returned by fdNr.CalculatePositiveIntegerNthRoot(...) "+
 			"Error='%v' ", err.Error())
 	}
 
-	resultBiNum, err := BigIntNum{}.NewBigIntPrecision(result, resultPrecision)
+	resultBiNum, err := BigIntNum{}.NewBigIntBigPrecision(result, resultPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by .BigIntNum{}.NewBigIntPrecision(...) " +
+		t.Errorf("Error returned by .BigIntNum{}.NewBigIntBigPrecision(...) "+
 			"Error='%v' ", err.Error())
 	}
 
@@ -824,7 +818,7 @@ func TestFixedDecimalNthRoot_CalculatePositiveIntegerNthRoot_07(t *testing.T) {
 	//                   1234567890123456789012345678901234567
 	expectedResult := "2.9730030983116531418548508649862"
 
-	fdNr :=  FixedDecimalNthRoot{}
+	fdNr := FixedDecimalNthRoot{}
 
 	result, resultPrecision, err :=
 		fdNr.CalculatePositiveIntegerNthRoot(
@@ -835,14 +829,14 @@ func TestFixedDecimalNthRoot_CalculatePositiveIntegerNthRoot_07(t *testing.T) {
 			maxPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by fdNr.CalculatePositiveIntegerNthRoot(...) " +
+		t.Errorf("Error returned by fdNr.CalculatePositiveIntegerNthRoot(...) "+
 			"Error='%v' ", err.Error())
 	}
 
-	resultBiNum, err := BigIntNum{}.NewBigIntPrecision(result, resultPrecision)
+	resultBiNum, err := BigIntNum{}.NewBigIntBigPrecision(result, resultPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by .BigIntNum{}.NewBigIntPrecision(...) " +
+		t.Errorf("Error returned by .BigIntNum{}.NewBigIntBigPrecision(...) "+
 			"Error='%v' ", err.Error())
 	}
 
@@ -862,8 +856,7 @@ func TestFixedDecimalNthRoot_CalculatePositiveIntegerNthRoot_08(t *testing.T) {
 	nthRootPrecision := big.NewInt(0)
 	maxPrecision := big.NewInt(31)
 
-
-	fdNr :=  FixedDecimalNthRoot{}
+	fdNr := FixedDecimalNthRoot{}
 
 	_, _, err :=
 		fdNr.CalculatePositiveIntegerNthRoot(
@@ -879,7 +872,6 @@ func TestFixedDecimalNthRoot_CalculatePositiveIntegerNthRoot_08(t *testing.T) {
 
 }
 
-
 func TestFixedDecimalNthRoot_CalculatePositiveIntegerNthRoot_09(t *testing.T) {
 	radicand := big.NewInt(-78123456)
 	radicandPrecision := big.NewInt(6)
@@ -891,7 +883,7 @@ func TestFixedDecimalNthRoot_CalculatePositiveIntegerNthRoot_09(t *testing.T) {
 	//                    1234567890123456789012345678901234567
 	expectedResult := "-2.390871799107522442017212407745"
 
-	fdNr :=  FixedDecimalNthRoot{}
+	fdNr := FixedDecimalNthRoot{}
 
 	result, resultPrecision, err :=
 		fdNr.CalculatePositiveIntegerNthRoot(
@@ -902,14 +894,14 @@ func TestFixedDecimalNthRoot_CalculatePositiveIntegerNthRoot_09(t *testing.T) {
 			maxPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by fdNr.CalculatePositiveIntegerNthRoot(...) " +
+		t.Errorf("Error returned by fdNr.CalculatePositiveIntegerNthRoot(...) "+
 			"Error='%v' ", err.Error())
 	}
 
-	resultBiNum, err := BigIntNum{}.NewBigIntPrecision(result, resultPrecision)
+	resultBiNum, err := BigIntNum{}.NewBigIntBigPrecision(result, resultPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by .BigIntNum{}.NewBigIntPrecision(...) " +
+		t.Errorf("Error returned by .BigIntNum{}.NewBigIntBigPrecision(...) "+
 			"Error='%v' ", err.Error())
 	}
 
@@ -933,7 +925,7 @@ func TestFixedDecimalNthRoot_CalculatePositiveIntegerNthRoot_10(t *testing.T) {
 	//                    1234567890123456789012345678901234567
 	expectedResult := "1"
 
-	fdNr :=  FixedDecimalNthRoot{}
+	fdNr := FixedDecimalNthRoot{}
 
 	result, resultPrecision, err :=
 		fdNr.CalculatePositiveIntegerNthRoot(
@@ -944,14 +936,14 @@ func TestFixedDecimalNthRoot_CalculatePositiveIntegerNthRoot_10(t *testing.T) {
 			maxPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by fdNr.CalculatePositiveIntegerNthRoot(...) " +
+		t.Errorf("Error returned by fdNr.CalculatePositiveIntegerNthRoot(...) "+
 			"Error='%v' ", err.Error())
 	}
 
-	resultBiNum, err := BigIntNum{}.NewBigIntPrecision(result, resultPrecision)
+	resultBiNum, err := BigIntNum{}.NewBigIntBigPrecision(result, resultPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by .BigIntNum{}.NewBigIntPrecision(...) " +
+		t.Errorf("Error returned by .BigIntNum{}.NewBigIntBigPrecision(...) "+
 			"Error='%v' ", err.Error())
 	}
 
@@ -975,7 +967,7 @@ func TestFixedDecimalNthRoot_CalculatePositiveIntegerNthRoot_11(t *testing.T) {
 	//                   1234567890123456789012345678901234567
 	expectedResult := "0.02154434690031883721759293566519"
 
-	fdNr :=  FixedDecimalNthRoot{}
+	fdNr := FixedDecimalNthRoot{}
 
 	result, resultPrecision, err :=
 		fdNr.CalculatePositiveIntegerNthRoot(
@@ -986,14 +978,14 @@ func TestFixedDecimalNthRoot_CalculatePositiveIntegerNthRoot_11(t *testing.T) {
 			maxPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by fdNr.CalculatePositiveIntegerNthRoot(...) " +
+		t.Errorf("Error returned by fdNr.CalculatePositiveIntegerNthRoot(...) "+
 			"Error='%v' ", err.Error())
 	}
 
-	resultBiNum, err := BigIntNum{}.NewBigIntPrecision(result, resultPrecision)
+	resultBiNum, err := BigIntNum{}.NewBigIntBigPrecision(result, resultPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by .BigIntNum{}.NewBigIntPrecision(...) " +
+		t.Errorf("Error returned by .BigIntNum{}.NewBigIntBigPrecision(...) "+
 			"Error='%v' ", err.Error())
 	}
 
@@ -1017,7 +1009,7 @@ func TestFixedDecimalNthRoot_CalculatePositiveIntegerNthRoot_12(t *testing.T) {
 	//                   1234567890123456789012345678901234567
 	expectedResult := "-1"
 
-	fdNr :=  FixedDecimalNthRoot{}
+	fdNr := FixedDecimalNthRoot{}
 
 	result, resultPrecision, err :=
 		fdNr.CalculatePositiveIntegerNthRoot(
@@ -1028,14 +1020,14 @@ func TestFixedDecimalNthRoot_CalculatePositiveIntegerNthRoot_12(t *testing.T) {
 			maxPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by fdNr.CalculatePositiveIntegerNthRoot(...) " +
+		t.Errorf("Error returned by fdNr.CalculatePositiveIntegerNthRoot(...) "+
 			"Error='%v' ", err.Error())
 	}
 
-	resultBiNum, err := BigIntNum{}.NewBigIntPrecision(result, resultPrecision)
+	resultBiNum, err := BigIntNum{}.NewBigIntBigPrecision(result, resultPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by .BigIntNum{}.NewBigIntPrecision(...) " +
+		t.Errorf("Error returned by .BigIntNum{}.NewBigIntBigPrecision(...) "+
 			"Error='%v' ", err.Error())
 	}
 
@@ -1059,7 +1051,7 @@ func TestFixedDecimalNthRoot_CalculatePositiveIntegerNthRoot_13(t *testing.T) {
 	//                    1234567890123456789012345678901234567
 	expectedResult := "-0.02154434690031883721759293566519"
 
-	fdNr :=  FixedDecimalNthRoot{}
+	fdNr := FixedDecimalNthRoot{}
 
 	result, resultPrecision, err :=
 		fdNr.CalculatePositiveIntegerNthRoot(
@@ -1070,14 +1062,14 @@ func TestFixedDecimalNthRoot_CalculatePositiveIntegerNthRoot_13(t *testing.T) {
 			maxPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by fdNr.CalculatePositiveIntegerNthRoot(...) " +
+		t.Errorf("Error returned by fdNr.CalculatePositiveIntegerNthRoot(...) "+
 			"Error='%v' ", err.Error())
 	}
 
-	resultBiNum, err := BigIntNum{}.NewBigIntPrecision(result, resultPrecision)
+	resultBiNum, err := BigIntNum{}.NewBigIntBigPrecision(result, resultPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by .BigIntNum{}.NewBigIntPrecision(...) " +
+		t.Errorf("Error returned by .BigIntNum{}.NewBigIntBigPrecision(...) "+
 			"Error='%v' ", err.Error())
 	}
 
@@ -1101,7 +1093,7 @@ func TestFixedDecimalNthRoot_CalculatePositiveIntegerNthRoot_14(t *testing.T) {
 	//                    1234567890123456789012345678901234567
 	expectedResult := "0"
 
-	fdNr :=  FixedDecimalNthRoot{}
+	fdNr := FixedDecimalNthRoot{}
 
 	result, resultPrecision, err :=
 		fdNr.CalculatePositiveIntegerNthRoot(
@@ -1112,14 +1104,14 @@ func TestFixedDecimalNthRoot_CalculatePositiveIntegerNthRoot_14(t *testing.T) {
 			maxPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by fdNr.CalculatePositiveIntegerNthRoot(...) " +
+		t.Errorf("Error returned by fdNr.CalculatePositiveIntegerNthRoot(...) "+
 			"Error='%v' ", err.Error())
 	}
 
-	resultBiNum, err := BigIntNum{}.NewBigIntPrecision(result, resultPrecision)
+	resultBiNum, err := BigIntNum{}.NewBigIntBigPrecision(result, resultPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by .BigIntNum{}.NewBigIntPrecision(...) " +
+		t.Errorf("Error returned by .BigIntNum{}.NewBigIntBigPrecision(...) "+
 			"Error='%v' ", err.Error())
 	}
 
@@ -1139,7 +1131,7 @@ func TestFixedDecimalNthRoot_CalculatePositiveIntegerNthRoot_15(t *testing.T) {
 	nthRootPrecision := big.NewInt(0)
 	maxPrecision := big.NewInt(32)
 
-	fdNr :=  FixedDecimalNthRoot{}
+	fdNr := FixedDecimalNthRoot{}
 
 	_, _, err :=
 		fdNr.CalculatePositiveIntegerNthRoot(
@@ -1150,7 +1142,7 @@ func TestFixedDecimalNthRoot_CalculatePositiveIntegerNthRoot_15(t *testing.T) {
 			maxPrecision)
 
 	if err == nil {
-		t.Error ("Expected error return from nthRoot==0. NO ERROR RETURNED! ")
+		t.Error("Expected error return from nthRoot==0. NO ERROR RETURNED! ")
 	}
 
 }

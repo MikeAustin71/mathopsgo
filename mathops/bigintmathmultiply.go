@@ -2524,16 +2524,20 @@ func (bMultiply *BigIntMathMultiply) MultiplyPair(bPair BigIntPair) (BigIntNum, 
 	return finalResult, nil
 }
 
-// multiplyPairNoNumSeps - Receives a BigIntPair instance and proceeds to multiply
-// bPair.Big1 by bPair.Big2. Both 'Big1' and 'Big2' are of type 'BigIntNum'.
+// multiplyPairNoNumSeps
 //
-// bPair.Big1 x bPair.Big2 = Result
+// Receives a BigIntPair instance and proceeds to multiply
+// bPair.Big1 by bPair.Big2. Both 'Big1' and 'Big2' are of
+// type 'BigIntNum'.
+//
+//	bPair.Big1 x bPair.Big2 = Result
 //
 // The result of this multiplication operation is returned as a BigIntNum
 // type.
 //
-// The returned BigIntNum multiplication 'Result' will contain default numeric
-// separators (decimal separator, thousands separator and currency symbol).
+// The returned BigIntNum multiplication 'Result' will contain numeric
+// separators (decimal separator, thousands separator and currency symbol)
+// configured for the BigIntNum, 'bPair.Big1'
 func (bMultiply *BigIntMathMultiply) multiplyPairNoNumSeps(bPair BigIntPair) (BigIntNum, error) {
 
 	ePrefix := "BigIntMathMultiply.multiplyPairNoNumSeps()"
@@ -2594,6 +2598,8 @@ func (bMultiply *BigIntMathMultiply) multiplyPairNoNumSeps(bPair BigIntPair) (Bi
 			}
 
 	}
+
+	numSepsDto, err := bPair
 
 	return bResult, nil
 }

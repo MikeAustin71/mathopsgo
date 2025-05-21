@@ -319,7 +319,7 @@ func (bSubtract BigIntMathSubtract) SubtractBigInts(
 			subtrahend,
 			big.NewInt(0).SetUint64(uint64(subPrecision)))
 
-	biNum, _ := BigIntNum{}.NewBigIntPrecision(result, resultPrecision)
+	biNum, _ := BigIntNum{}.NewBigIntBigPrecision(result, resultPrecision)
 
 	return biNum
 }

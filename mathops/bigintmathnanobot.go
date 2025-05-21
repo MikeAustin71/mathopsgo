@@ -276,14 +276,14 @@ func (bIMathNanobot *bigIntMathNanobot) arithmeticGeometricMeanBigInt(
 
 		// Debug capture
 		/*
-			aCycleValue, errX = BigIntNum{}.NewBigIntPrecision(a, aPrecision)
+			aCycleValue, errX = BigIntNum{}.NewBigIntBigPrecision(a, aPrecision)
 
 			if errX != nil {
 				err = fmt.Errorf("%v\n" + "aCycleValue- %v\n", ePrefix, errX.Error())
 				return agMean, agMeanPrecision, gValue, gValuePrecision, cycles, err
 			}
 
-			gCycleValue, errX = BigIntNum{}.NewBigIntPrecision(g, gPrecision)
+			gCycleValue, errX = BigIntNum{}.NewBigIntBigPrecision(g, gPrecision)
 
 			if errX != nil {
 				err = fmt.Errorf("%v\n" +  "gCycleValue- %v", ePrefix, errX.Error())
@@ -320,7 +320,7 @@ func (bIMathNanobot *bigIntMathNanobot) arithmeticGeometricMeanBigInt(
 
 		/*
 			if cycleNum == 7 {
-				gComPreRoundValue, errX = BigIntNum{}.NewBigIntPrecision(gCom, gComPrecision)
+				gComPreRoundValue, errX = BigIntNum{}.NewBigIntBigPrecision(gCom, gComPrecision)
 
 				if errX != nil {
 					err = fmt.Errorf("%v\n" + "gComPreRoundValue- %v\n", ePrefix, errX.Error())
@@ -392,12 +392,12 @@ func (bIMathNanobot *bigIntMathNanobot) arithmeticGeometricMeanBigInt(
 
 
 
-			gComValue, errX = BigIntNum{}.NewBigIntPrecision(gCom, gComPrecision)
+			gComValue, errX = BigIntNum{}.NewBigIntBigPrecision(gCom, gComPrecision)
 
 			if errX != nil {
 
 				err = fmt.Errorf("%v\n" +
-				"Error returned by BigIntNum{}.NewBigIntPrecision(gCom, gComPrecision)" +
+				"Error returned by BigIntNum{}.NewBigIntBigPrecision(gCom, gComPrecision)" +
 				"Error: %v",
 				ePrefix,
 				errX.Error())
@@ -431,15 +431,15 @@ func (bIMathNanobot *bigIntMathNanobot) arithmeticGeometricMeanBigInt(
 
 		/*
 				aCycleResult, errX =
-					BigIntNum{}.NewBigIntPrecision(a, aPrecision)
+					BigIntNum{}.NewBigIntBigPrecision(a, aPrecision)
 
 				gCycleResult, errX =
-					BigIntNum{}.NewBigIntPrecision(g, gPrecision)
+					BigIntNum{}.NewBigIntBigPrecision(g, gPrecision)
 
 				if errX != nil {
 
 					err = fmt.Errorf("%v\n" +
-						"Error returned by BigIntNum{}.NewBigIntPrecision()\n" +
+						"Error returned by BigIntNum{}.NewBigIntBigPrecision()\n" +
 						"Error: %v",
 						ePrefix,
 						errX.Error())
