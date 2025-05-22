@@ -3167,6 +3167,19 @@ func (bMultiply *BigIntMathMultiply) MultiplyNumStrDtoArray(
 			}
 	}
 
+	lenMultiplicands := len(multiplicands)
+
+	if lenMultiplicands == 0 {
+
+		return BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "",
+				ErrContext: "len(multiplicands) == 0",
+				ErrMessage: "Error: 'multiplicands' array is empty!",
+			}
+	}
+
 	var multiplierNumStr string
 
 	multiplierNumStr, err = multiplier.GetNumStr()
@@ -3182,79 +3195,40 @@ func (bMultiply *BigIntMathMultiply) MultiplyNumStrDtoArray(
 			}
 	}
 
-	lenMultiplicands := len(multiplicands)
+	var finalOutputNumSeps, multiplierNumSeps NumericSeparatorDto
 
-	if lenMultiplicands == 0 {
+	multiplierNumSeps, err = multiplier.GetNumericSeparatorsDto()
+
+	if err != nil {
 
 		return BigIntNum{},
 			&FuncReturnError{
 				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "",
-				ErrContext: "len(multiplicands) == 0",
-				ErrMessage: "Error: 'multiplicands' array is empty!",
+				ReturnFunc: "multiplierNumSeps, err = multiplier.GetNumericSeparatorsDto()",
+				ErrContext: "Error: Failed to acquire 'multiplier' numSeps",
+				ErrMessage: err.Error(),
 			}
 	}
 
-	var finalOutputNumSeps, multiplierNumSeps NumericSeparatorDto
+	_, finalOutputNumSeps,
+		err = new(numSepsDtoMechanics).selectValidNumSepInSeries(
+		"outputNumSeps",
+		"multiplier",
+		&multiplierNumSeps,
+		ePrefix,
+		outputNumSeps ...)
 
-	finalOutputNumSeps.SetUSADefaults()
+	if err != nil {
 
-	var foundOutputNumSeps = false
-
-	if len(outputNumSeps) > 0 {
-
-		for _, outputNumSep := range outputNumSeps {
-
-			err = outputNumSep.IsValid(ePrefix.String())
-
-			if err != nil {
-				continue
+		return BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix: ePrefix.String(),
+				ReturnFunc: "foundPrimaryNumSep, finalOutputNumSeps, err = \n" +
+					"    new(numSepsDtoMechanics).selectValidNumSepInSeries(\n" +
+					"    \"outputNumSeps\", \"multiplier\")",
+				ErrContext: "Error: Failed to Select 'finalOutputNumSeps'",
+				ErrMessage: err.Error(),
 			}
-
-			err = finalOutputNumSeps.CopyIn(&outputNumSep, true)
-
-			if err != nil {
-
-				finalOutputNumSeps.SetUSADefaults()
-
-				continue
-
-			}
-
-			foundOutputNumSeps = true
-
-			break
-		}
-
-	}
-
-	if !foundOutputNumSeps {
-
-		multiplierNumSeps, err = multiplier.GetNumericSeparatorsDto()
-
-		if err != nil {
-
-			return BigIntNum{},
-				&FuncReturnError{
-					ErrPrefix:  ePrefix.String(),
-					ReturnFunc: "multiplierNumSeps, err = multiplier.GetNumericSeparatorsDto()",
-					ErrContext: "Error: Failed to acquire 'multiplier' numSeps",
-					ErrMessage: err.Error(),
-				}
-		}
-
-		err = finalOutputNumSeps.CopyIn(&multiplierNumSeps, true)
-
-		if err != nil {
-
-			return BigIntNum{},
-				&FuncReturnError{
-					ErrPrefix:  ePrefix.String(),
-					ReturnFunc: "err = finalOutputNumSeps.CopyIn(&multiplierNumSeps, true)",
-					ErrContext: "Error: Failed to CopyIn 'multiplierNumSeps'",
-					ErrMessage: err.Error(),
-				}
-		}
 	}
 
 	// This method tests the validity of 'multiplier'

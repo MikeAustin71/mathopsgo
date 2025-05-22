@@ -212,15 +212,15 @@ func (nSepsDtoMech *numSepsDtoMechanics) selectValidNumSepInSeries(
 
   if !foundPrimaryNumSep {
 
-    validSelectedNumSep, err = alternateSourceNumSep.GetNumericSeparatorsDto()
+    err = validSelectedNumSep.CopyIn(alternateSourceNumSep, false)
 
     if err != nil {
 
       return false, NumericSeparatorDto{},
         &FuncReturnError{
           ErrPrefix: ePrefix.String(),
-          ReturnFunc: fmt.Sprintf("%vNumSeps, err = %v.GetNumericSeparatorsDto()",
-            alternateSourceName, alternateSourceName),
+          ReturnFunc: fmt.Sprintf("err = %vNumSep.GetNumericSeparatorsDto()",
+            alternateSourceName),
           ErrContext: "Error: Failed to acquire 'multiplier' numSeps",
           ErrMessage: err.Error(),
         }
