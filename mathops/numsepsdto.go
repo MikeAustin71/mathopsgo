@@ -181,6 +181,21 @@ func (numSep *NumericSeparatorDto) SetDefaultsIfEmpty() {
 		numSep)
 }
 
+// SetUSADefaults
+//
+// This method will arbitrarily set all member variables of
+// the current NumericSeparatorDto instance to USA defaults.
+// USA default values are listed as follows:
+//
+//		Decimal Separator   = '.' (period)
+//	 Thousands Separator = ',' (comma)
+//	 Currency Symbol     = '$' (dollar sign)
+func (numSep *NumericSeparatorDto) SetUSADefaults() {
+
+	new(numSepsDtoElectron).setNumSepDtoDefaultsIfEmpty(
+		numSep)
+}
+
 // String - Provides a formatted listing of the contents from the current
 // NumericSeparatorDto instance.
 func (numSep *NumericSeparatorDto) String() string {
