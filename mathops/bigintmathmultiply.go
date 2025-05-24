@@ -1,7 +1,6 @@
 package mathops
 
 import (
-  "errors"
   "fmt"
   ePref "github.com/MikeAustin71/errpref"
   "math/big"
@@ -1727,6 +1726,35 @@ func (bMultiply *BigIntMathMultiply) MultiplyDecimalArray(
     return BigIntNum{}, err
   }
 
+  err = multiplier.IsValid(ePrefix.XCpy("Validating 'multiplier'").String())
+
+  if err != nil {
+
+    return BigIntNum{},
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "err = multiplier.IsValid(ePrefix.\n" +
+          "XCpy(\"Validating 'multiplier'\").String())",
+        ErrContext: "Error: Input parameter 'multiplier' is INVALID!",
+        ErrMessage: err.Error(),
+      }
+  }
+
+  var multiplierNumStr string
+
+  multiplierNumStr, err = multiplier.GetNumStr()
+
+  if err != nil {
+
+    return BigIntNum{},
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "multiplierNumStr, err = multiplier.GetNumStr()",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+  }
+
   lenMultiplicands := len(multiplicands)
 
   if lenMultiplicands == 0 {
@@ -1751,7 +1779,7 @@ func (bMultiply *BigIntMathMultiply) MultiplyDecimalArray(
       &FuncReturnError{
         ErrPrefix:  ePrefix.String(),
         ReturnFunc: "finalResult, err = new(BigIntNum).NewDecimal(multiplier)",
-        ErrContext: "",
+        ErrContext: fmt.Sprintf("multiplier='%v'", multiplierNumStr),
         ErrMessage: err.Error(),
       }
   }
@@ -1766,18 +1794,45 @@ func (bMultiply *BigIntMathMultiply) MultiplyDecimalArray(
       &FuncReturnError{
         ErrPrefix:  ePrefix.String(),
         ReturnFunc: "numSeps, err = multiplier.GetNumericSeparatorsDto()",
-        ErrContext: "",
+        ErrContext: fmt.Sprintf("multiplier='%v'", multiplierNumStr),
         ErrMessage: err.Error(),
       }
   }
 
   var multiplicandBINum BigIntNum
-
+  var multiplicandBINumStr string
   var bPair BigIntPair
 
   for i := 0; i < lenMultiplicands; i++ {
 
-    // This method tests the validity of multiplicands[i]
+    err = multiplicands[i].IsValid(ePrefix.
+      XCpy(fmt.Sprintf("Validating multiplicands[%d]", i)).String())
+
+    if err != nil {
+      return BigIntNum{},
+        &FuncReturnError{
+          ErrPrefix:  ePrefix.String(),
+          ReturnFunc: "err = multiplicands[i].IsValid(ePrefix.\n" +
+            "  XCpy(fmt.Sprintf(\"Validating multiplicands[%d]\", i)).String())",
+          ErrContext: fmt.Sprintf("Error: multiplicands[%d] is INVALID!", i),
+          ErrMessage: err.Error(),
+        }
+    }
+
+    multiplierNumStr, err = finalResult.GetNumStr()
+
+    if err != nil {
+
+      return BigIntNum{},
+        &FuncReturnError{
+          ErrPrefix:  ePrefix.String(),
+          ReturnFunc: "multiplierNumStr, err = finalResult.GetNumStr()",
+          ErrContext: fmt.Sprintf("Initial Result: finalResult = multiplier='%v'", multiplierNumStr),
+          ErrMessage: err.Error(),
+        }
+    }
+
+  // This method tests the validity of multiplicands[i]
     multiplicandBINum, err = new(BigIntNum).NewDecimal(multiplicands[i])
 
     if err != nil {
@@ -1792,6 +1847,19 @@ func (bMultiply *BigIntMathMultiply) MultiplyDecimalArray(
         }
     }
 
+    multiplicandBINumStr, err = multiplicandBINum.GetNumStr()
+
+    if err != nil {
+
+      return BigIntNum{},
+        &FuncReturnError{
+          ErrPrefix:  ePrefix.String(),
+          ReturnFunc: "multiplicandBINumStr, err = multiplicandBINum.GetNumStr()",
+          ErrContext:  fmt.Sprintf("multiplicands index=[%d])", i),
+          ErrMessage: err.Error(),
+        }
+    }
+
     bPair, err = new(BigIntPair).NewBigIntNum(finalResult, multiplicandBINum)
 
     if err != nil {
@@ -1801,41 +1869,33 @@ func (bMultiply *BigIntMathMultiply) MultiplyDecimalArray(
           ErrPrefix: ePrefix.String(),
           ReturnFunc: "bPair, err = new(BigIntPair).NewBigIntNum(\n" +
             "finalResult, multiplicandBINum)",
-          ErrContext: "",
+          ErrContext: fmt.Sprintf("finalResult= '%v'; multiplicandBINum= '%v'; multiplicand index= '%d'",
+            multiplicandBINumStr, multiplicandBINumStr, i),
           ErrMessage: err.Error(),
         }
     }
 
-    finalResult, err = new(bigIntMathMultiplyMechanics).
-      multiplyPairNoNumSeps(bPair, ePrefix)
+    finalResult, err = new(bigIntMathMultiplyNanobot).
+      multiplyPairWithNumSeps(bPair, numSeps,
+        ePrefix.XCpy("bPair & numSeps"))
 
     if err != nil {
 
       return BigIntNum{},
         &FuncReturnError{
           ErrPrefix: ePrefix.String(),
-          ReturnFunc: "finalResult, err = new(bigIntMathMultiplyMechanics).\n" +
-            "multiplyPairNoNumSeps(bPair, ePrefix)",
-          ErrContext: "",
+          ReturnFunc: "finalResult, err = new(bigIntMathMultiplyNanobot).\n" +
+            "multiplyPairWithNumSeps(bPair, numSeps,\n" +
+            "ePrefix.XCpy(\"bPair & numSeps\"))",
+          ErrContext: fmt.Sprintf("bPair.Big1= '%v'; bPair.Big2= '%v'\n" +
+            "multiplicand index= '%d'",
+            multiplierNumStr, multiplicandBINumStr, i),
           ErrMessage: err.Error(),
         }
     }
   }
 
-  err = finalResult.SetNumericSeparatorsDto(numSeps)
-
-  if err != nil {
-
-    return BigIntNum{},
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "err = finalResult.SetNumericSeparatorsDto(numSeps)",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-  }
-
-  return finalResult, nil
+  return finalResult, err
 }
 
 // MultiplyDecimalOutputToArray - Receives one input parameter of Type Decimal which
@@ -1856,7 +1916,6 @@ func (bMultiply *BigIntMathMultiply) MultiplyDecimalArray(
 // =======
 //
 //	Multiplicands												Output
-//
 // Multiplier				    	Array														Array
 //
 //	3			x				multiplicands[0] = 2			=				  outputarray[0] =  6
@@ -2020,27 +2079,39 @@ func (bMultiply *BigIntMathMultiply) MultiplyDecimalOutputToArray(
   return resultArray, nil
 }
 
-// MultiplyDecimalSeries - Receives one input parameter of Type Decimal which is classified
+// MultiplyDecimalSeries
 //
-//	as the 'multiplier'. The second input parameter is a comma delimited series of Decimal
+//  Overview
+//  ========
 //
-// Types labeled, 'multiplicands'. The first element of the 'multiplicands' series is multiplied
-// by the 'multiplier' to produce a 'product'. That 'product' replaces the 'multiplier' and is
-// multiplied by the next element in the multiplicands series. This process is continued through
-// the last element in the series. Afterwards, the combined final 'product' is returned as a Type
-// 'BigIntNum'.
+//  This method receives one input parameter of Type Decimal which
+//  is classified as the 'multiplier'. The second input parameter
+//  is a comma-delimited series of Decimal Types labeled,
+//  'multiplicands'. The first element of the 'multiplicands'
+//  series is multiplied by the 'multiplier' to produce a
+//  'product'. That 'product' replaces the 'multiplier' and is
+//  multiplied by the next element in the 'multiplicands' series.
+//  This process is repeated through the last element in the
+//  series. Afterward, the combined final 'product' is returned as
+//  a Type 'BigIntNum'.
 //
-// In the multiplication operation, the number to be multiplied is called the "multiplicand",
-// while the number of times the multiplicand is to be multiplied comes from the "multiplier".
-// Usually the multiplier is placed first and the multiplicand is placed second.
+//  Multiplication Operation
+//  ========================
 //
-// For example, in the problem 5 x 3 equals 15, the 5 is the 'multiplier',
-// 3 is the 'multiplicand' and 15 is the 'product' or result.
+//  In the multiplication operation, the number to be multiplied is
+//  called the "multiplicand", while the number of times the
+//  multiplicand is to be multiplied comes from the "multiplier".
+//  Usually, the multiplier is placed first and the multiplicand is
+//  placed second.
 //
-//	multiplier x multiplicand = product or result
+//  For example, in the problem 5 x 3 equals 15, the 5 is the
+//  'multiplier', 3 is the 'multiplicand' and 15 is the 'product'
+//  or result.
 //
-// This method performs the multiplication operation described above and afterwards returns the
-// result or 'product' as a BigIntNum type.
+//      multiplier x multiplicand = product or result
+//
+//  This method performs the multiplication operation described above
+//  and afterward returns the result or 'product' as a BigIntNum type.
 //
 // The returned BigIntNum multiplication 'result' will contain numeric separators (decimal
 // separator, thousands separator and currency symbol) copied from input parameter,
@@ -2063,10 +2134,17 @@ func (bMultiply *BigIntMathMultiply) MultiplyDecimalSeries(
     return BigIntNum{}, err
   }
 
-  err = multiplier.IsValid(ePrefix.XCpy("Testing 'multiplier'").String())
+  err = multiplier.IsValid(ePrefix.XCpy("Validating 'multiplier'").String())
 
   if err != nil {
-    return BigIntNum{}, err
+
+    return BigIntNum{},
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: " err = multiplier.IsValid(ePrefix.XCpy(\"Validating 'multiplier'\").String())",
+        ErrContext: "Input parameter 'multiplier' is invalid!",
+        ErrMessage: err.Error(),
+      }
   }
 
   if len(multiplicands) == 0 {
@@ -2076,21 +2154,7 @@ func (bMultiply *BigIntMathMultiply) MultiplyDecimalSeries(
         ErrPrefix:  ePrefix.String(),
         ReturnFunc: "",
         ErrContext: "len(multiplicands) == 0",
-        ErrMessage: "Error: 'multiplicands' array is empty!",
-      }
-  }
-
-  // This method will test the validity of 'multiplier'
-  finalResult, err := new(BigIntNum).NewDecimal(multiplier)
-
-  if err != nil {
-
-    return BigIntNum{},
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "numSeps, err = multiplier.GetNumericSeparatorsDto()",
-        ErrContext: "",
-        ErrMessage: err.Error(),
+        ErrMessage: "Error: Input parameter 'multiplicands' array is empty!",
       }
   }
 
@@ -2109,8 +2173,22 @@ func (bMultiply *BigIntMathMultiply) MultiplyDecimalSeries(
       }
   }
 
+  // This method will test the validity of 'multiplier'
+  finalResult, err := new(BigIntNum).NewDecimal(multiplier)
+
+  if err != nil {
+
+    return BigIntNum{},
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "finalResult, err := new(BigIntNum).NewDecimal(multiplier)",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+  }
+
   var multiplicandBINum BigIntNum
-  var multiplicandNumStr string
+  var multiplicandNumStr, multiplierNumStr string
   var bPair BigIntPair
 
   for idx, multiplicand := range multiplicands {
@@ -2122,17 +2200,15 @@ func (bMultiply *BigIntMathMultiply) MultiplyDecimalSeries(
       return BigIntNum{}, err
     }
 
-    // This method will test the validity of 'multiplicand'
-    multiplicandBINum, err = new(BigIntNum).NewDecimal(multiplicand)
+    multiplierNumStr, err = finalResult.GetNumStr()
 
     if err != nil {
 
       return BigIntNum{},
         &FuncReturnError{
-          ErrPrefix: ePrefix.String(),
-          ReturnFunc: fmt.Sprintf("bPair, err = new(BigIntPair).NewBigIntNum(\n"+
-            "finalResult, multiplicands[%d])", idx),
-          ErrContext: fmt.Sprintf("multiplicand='%v'", multiplicandNumStr),
+          ErrPrefix:  ePrefix.String(),
+          ReturnFunc: "multiplierNumStr, err = finalResult.GetNumStr()",
+          ErrContext: fmt.Sprintf("multiplicand index= '%v'", idx),
           ErrMessage: err.Error(),
         }
     }
@@ -2145,6 +2221,34 @@ func (bMultiply *BigIntMathMultiply) MultiplyDecimalSeries(
         &FuncReturnError{
           ErrPrefix:  ePrefix.String(),
           ReturnFunc: "multiplicandNumStr, err = multiplicand.GetNumStr()",
+          ErrContext: fmt.Sprintf("multiplicand index= '%v'", idx),
+          ErrMessage: err.Error(),
+        }
+    }
+
+    // This method will test the validity of 'multiplicand'
+    multiplicandBINum, err = new(BigIntNum).NewDecimal(multiplicand)
+
+    if err != nil {
+
+      return BigIntNum{},
+        &FuncReturnError{
+          ErrPrefix: ePrefix.String(),
+          ReturnFunc: "multiplicandBINum, err = new(BigIntNum).NewDecimal(multiplicand)",
+          ErrContext: fmt.Sprintf("multiplicand='%v'; multiplicand index= '%d'",
+            multiplicandNumStr, idx),
+          ErrMessage: err.Error(),
+        }
+    }
+
+    multiplicandNumStr, err = multiplicandBINum.GetNumStr()
+
+    if err != nil {
+
+      return BigIntNum{},
+        &FuncReturnError{
+          ErrPrefix:  ePrefix.String(),
+          ReturnFunc: " multiplicandNumStr, err = multiplicandBINum.GetNumStr()",
           ErrContext: fmt.Sprintf("multiplicand range index=[%d])", idx),
           ErrMessage: err.Error(),
         }
@@ -2159,38 +2263,321 @@ func (bMultiply *BigIntMathMultiply) MultiplyDecimalSeries(
           ErrPrefix: ePrefix.String(),
           ReturnFunc: "bPair, err = new(BigIntPair).NewBigIntNum(\n" +
             "finalResult, multiplicandBINum)",
-          ErrContext: fmt.Sprintf("Index= '%d'", idx),
+          ErrContext: fmt.Sprintf("finalResult= '%v'; multiplicandBINum= '%v'; Index= '%d'",
+           multiplierNumStr, multiplicandNumStr, idx),
           ErrMessage: err.Error(),
         }
     }
 
-    //finalResult = bMultiply.multiplyPairNoNumSeps(bPair)
-
-    finalResult, err = new(bigIntMathMultiplyMechanics).
-      multiplyPairNoNumSeps(bPair, ePrefix)
+    finalResult, err = new(bigIntMathMultiplyNanobot).
+      multiplyPairWithNumSeps(bPair, numSeps,
+        ePrefix.XCpy("bPair & numSeps"))
 
     if err != nil {
 
       return BigIntNum{},
         &FuncReturnError{
           ErrPrefix: ePrefix.String(),
-          ReturnFunc: "finalResult, err = new(bigIntMathMultiplyMechanics).\n" +
-            "multiplyPairNoNumSeps(bPair, ePrefix)",
-          ErrContext: "",
+          ReturnFunc: "finalResult, err = new(bigIntMathMultiplyNanobot).\n" +
+            "multiplyPairWithNumSeps(bPair, numSeps,\n" +
+            "ePrefix.XCpy(\"bPair & numSeps\"))",
+          ErrContext: fmt.Sprintf("bPair.Big1= '%v'; bPair.Big2= '%v'; Index= '%v'",
+            multiplierNumStr, multiplicandNumStr, idx),
           ErrMessage: err.Error(),
         }
     }
   }
 
-  err = finalResult.SetNumericSeparatorsDto(numSeps)
+  return finalResult, err
+}
+
+// MultiplyIntAry
+//
+//  Overview
+//  ========
+//
+//  This method receives two IntAry instances and multiplies their
+//  numeric values. The result or 'product' is returned as a
+//  'BigIntNum' type.
+//
+//    multiplier x multiplicand = product or result
+//
+//  Be Advised
+//  ==========
+//
+//  IntAry's can accommodate very, very large numbers.
+//
+//  Multiplication Operation
+//  ========================
+//
+//  In the multiplication operation, the number to be multiplied is
+//  called the "multiplicand", while the number of times the
+//  multiplicand is to be multiplied comes from the "multiplier".
+//  Usually, the multiplier is placed first and the multiplicand is
+//  placed second.
+//
+//  For example, in the problem 5 x 3 equals 15, the 5 is the
+//  'multiplier', 3 is the 'multiplicand' and 15 is the 'product'
+//  or result.
+//
+//    multiplier x multiplicand = product or result
+//
+//  This method performs the multiplication operation described
+//  above and afterward returns the result or 'product' as a
+//  BigIntNum type.
+//
+//	Numeric Separators
+//	==================
+//
+//	Numeric Separators define the Decimal Separator character,
+//	Thousands Separator character, and Currency Symbol character.
+//	These separator characters serve two purposes. First they are
+//	used to format and display numeric values as number strings.
+// 	Second, they are also used to parse number strings and convert
+//  them into numeric values.
+//
+//  Numeric Separator characters are typically encapsulated in a
+//  NumericSeparatorDto type.
+//
+//  The BigIntNum multiplication 'product' returned by this method
+//  will contain numeric separators (Decimal Separator, Thousands
+//  Separator and Currency Symbol) derived from one of two possible
+//  sources.
+//
+//	Users have the option to supply an input parameter,
+//	'outputNumSeps' of type NumericSeparatorDto. If this optional
+//  parameter is provided, it will be used to configure the
+//  returned BigIntNum multiplication 'product' from this method.
+//  Note that the first valid NumericSeparatorDto in the
+//  'outputNumSeps' series will be selected and used. There is no
+//  need to provide more than one valid NumericSeparatorDto object
+//  for input parameter 'outputNumSeps'.
+//
+//	If the optional input parameter 'outputNumSeps' is NOT
+//	provided, the returned BigIntNum instance will be
+//	configured using numeric separators copied from input
+//	parameter, 'multiplier'.
+//
+// The returned BigIntNum multiplication 'result' will contain numeric separators (decimal
+// separator, thousands separator and currency symbol) copied from input parameter,
+// 'multiplier'.
+//
+//  Input Parameters
+//  ================
+//
+//  multiplier               IntAry
+//
+//	This IntAry instance serves as the initial 'multiplier' in the
+//  multiplication operation defined above.
+//
+//  multiplicand             IntAry
+//
+//  This instace of IntAry serves as the 'multiplicand' for the
+//  multiplication operation defined above.
+//
+//  outputNumSeps            ... NumericSeparatorDto
+//
+//  This method is defined as a variadic function in that
+//  'outputNumSeps' is configured as an optional input parameter
+//  meaning that it is NOT required. The user can choose to
+//  provide a value for 'outputNumSeps', or not.
+//
+//  If the user chooses to provide a valid 'NumericSeparatorDto'
+//  object for this parameter, it will be used to configure the
+//  'BigIntNum' product value returned by this method.
+//
+//  Note that only the first valid NumericSeparatorDto in the
+//  'outputNumSeps' series will be selected and used. There is no
+//  need to provide more than one valid NumericSeparatorDto object
+//  for parameter 'outputNumSeps'.
+//
+//  If the user chooses NOT to provide this optional parameter, the
+//  'BigIntNum' value returned by this  method will be configued
+//  using the 'NumericSeparatorDto' copied from the 'multiplier'
+//  input parameter.
+//
+//  Return Values
+//  =============
+//
+//  BigIntNum
+//
+//  The product of the multiplication operation described above is
+//  returned as BigIntNum type.
+//
+//  error
+//
+//  If no errors are encountered during method execution, this
+//  return parameter is set to 'nil'.
+func (bMultiply *BigIntMathMultiply) MultiplyIntAry(
+  multiplier IntAry,
+  multiplicand IntAry,
+  outputNumSeps ... NumericSeparatorDto) (BigIntNum, error) {
+
+  var ePrefix *ePref.ErrPrefixDto
+
+  var err error
+
+  ePrefix,
+    err = ePref.ErrPrefixDto{}.NewIEmpty(
+    nil,
+    "BigIntMathMultiply.MultiplyIntAry",
+    "")
+
+  if err != nil {
+    return BigIntNum{}, err
+  }
+
+  err = multiplier.IsValid(ePrefix.XCpy("Validating 'multiplier'").String())
+
+  if err != nil {
+
+    return BigIntNum{},
+      &FuncReturnError{
+        ErrPrefix: ePrefix.String(),
+        ReturnFunc: "err = multiplier.IsValid(ePrefix.\n" +
+          "XCpy(\"Validating 'multiplier'\").String())",
+        ErrContext: "Error: Input parameter 'multiplier' is invalid!",
+        ErrMessage: err.Error(),
+      }
+  }
+
+  err = multiplicand.IsValid(ePrefix.XCpy(
+    "Validating 'multiplicand'").String())
+
+  if err != nil {
+
+    return BigIntNum{},
+      &FuncReturnError{
+        ErrPrefix: ePrefix.String(),
+        ReturnFunc: "err = multiplicand.IsValid(ePrefix.\n" +
+          "XCpy(\"Validating 'multiplicand'\").String())",
+        ErrContext: "Error: Input parameter 'multiplicand' is invalid!",
+        ErrMessage: err.Error(),
+      }
+  }
+
+  var multiplierNumStr, multiplicandNumStr string
+
+  multiplierNumStr, err = multiplier.GetNumStr()
 
   if err != nil {
 
     return BigIntNum{},
       &FuncReturnError{
         ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "err = finalResult.SetNumericSeparatorsDto(numSeps)",
+        ReturnFunc: "multiplierNumStr, err = multiplier.GetNumStr()",
         ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+  }
+
+  multiplicandNumStr, err = multiplicand.GetNumStr()
+
+  if err != nil {
+
+    return BigIntNum{},
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "multiplicandNumStr, err = multiplicand.GetNumStr()",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+  }
+
+  var finalOutputNumSeps, multiplierNumSeps NumericSeparatorDto
+
+  multiplierNumSeps, err = multiplier.GetNumericSeparatorsDto()
+
+  if err != nil {
+
+    return BigIntNum{},
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "multiplierNumSeps, err = multiplier.GetNumericSeparatorsDto()",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+  }
+
+  if len(outputNumSeps) > 0 {
+
+    _, finalOutputNumSeps,
+      err = new(numSepsDtoMechanics).selectValidNumSepInSeries(
+      "outputNumSeps",
+      "multiplier",
+      &multiplierNumSeps,
+      ePrefix,
+      outputNumSeps...)
+
+    if err != nil {
+
+      return BigIntNum{},
+        &FuncReturnError{
+          ErrPrefix: ePrefix.String(),
+          ReturnFunc: "_, finalOutputNumSeps, err = \n" +
+            "    new(numSepsDtoMechanics).selectValidNumSepInSeries(\n" +
+            "    \"outputNumSeps\", \"multiplier\")",
+          ErrContext: "Error: Failed to Select 'finalOutputNumSeps'",
+          ErrMessage: err.Error(),
+        }
+    }
+  } else {
+
+    // Checks validity of multiplierNumSeps
+
+    err = new(numSepsDtoMechanics).copyNumSepsDto(
+      &finalOutputNumSeps, // Destination
+      &multiplierNumSeps,
+      false, // Set Defaults if Empty
+      ePrefix.XCpy("Copy 'multiplierNumSeps' Into 'finalOutputNumSeps'"))
+
+    if err != nil {
+
+      return BigIntNum{},
+        &FuncReturnError{
+          ErrPrefix:  ePrefix.String(),
+          ReturnFunc: "err = new(numSepsDtoMechanics).copyNumSepsDto(\n" +
+            "    &finalOutputNumSeps, &multiplierNumSeps, false,\n" +
+            "    ePrefix.XCpy(\"Copy 'multiplierNumSeps' Into 'finalOutputNumSeps'\"))",
+          ErrContext: "",
+          ErrMessage: err.Error(),
+        }
+    }
+  }
+
+  // This method will test the validity of 'multiplier' and
+  // 'multiplicand'.
+  bPair, err := new(BigIntPair).NewIntAry(multiplier, multiplicand)
+
+  if err != nil {
+
+    return BigIntNum{},
+      &FuncReturnError{
+        ErrPrefix: ePrefix.String(),
+        ReturnFunc: "bPair, err := new(BigIntPair).\n" +
+          "  NewIntAry(multiplier, multiplicand)",
+        ErrContext: fmt.Sprintf("multiplier= '%v'; multiplicand= '%v'",
+          multiplierNumStr, multiplicandNumStr),
+        ErrMessage: err.Error(),
+      }
+  }
+
+  var finalResult BigIntNum
+
+  finalResult, err = new(bigIntMathMultiplyNanobot).
+    multiplyPairWithNumSeps(bPair, finalOutputNumSeps,
+      ePrefix.XCpy("bPair & finalOutputNumSeps"))
+
+  if err != nil {
+
+    return BigIntNum{},
+      &FuncReturnError{
+        ErrPrefix: ePrefix.String(),
+        ReturnFunc: "finalResult, err = new(bigIntMathMultiplyNanobot).\n" +
+        "  multiplyPairWithNumSeps(bPair, finalOutputNumSeps,\n" +
+         "  ePrefix.XCpy(\"bPair & finalOutputNumSeps\"))",
+        ErrContext: fmt.Sprintf("bPair.Big1= '%v'; bPair.Big2= '%v'",
+          multiplierNumStr, multiplicandNumStr),
         ErrMessage: err.Error(),
       }
   }
@@ -2198,75 +2585,131 @@ func (bMultiply *BigIntMathMultiply) MultiplyDecimalSeries(
   return finalResult, nil
 }
 
-// MultiplyIntAry - Receives two IntAry instances and multiplies their
-// numeric values. The result or 'product' is returned as a 'BigIntNum'
-// type.
+// MultiplyIntAryArray
 //
-// In the multiplication operation, the number to be multiplied is called the
-// "multiplicand", while the number of times the multiplicand is to be multiplied
-// comes from the "multiplier". Usually the multiplier is placed first and the
-// multiplicand is placed second.
+//  Overview
+//  ========
 //
-// For example, in the problem 5 x 3 equals 15, the 5 is the 'multiplier',
-// 3 is the 'multiplicand' and 15 is the 'product' or result.
+//  This method receives one IntAry instance which is classified as
+//  the 'multiplier'. The second input parameter is an array of
+//  IntAry Types labeled, 'multiplicands'. The first element of the
+//  'multiplicands' array is multiplied by the 'multiplier' to
+//  produce a 'product'. That 'product' then replaces the
+//  'multiplier' and is multiplied by the next element in the
+//  'multiplicands' array. This process is continued through the
+//  last element in the array when the combined, final 'product' is
+//  returned as a Type 'BigIntNum'.
 //
-//	multiplier x multiplicand = product or result
+//    Example:
+//      multiplier = 3
+//      multiplicands = [3]IntAry{2,3,4}
 //
-// This method performs the multiplication operation and afterwards returns the
-// result or 'product' as a BigIntNum type.
+//      (1) 3 x 2 = 6
+//      (2) 6 x 3 = 18
+//      (3) 18 x 4 = 72
+//      The returned product is 72
 //
-// Be careful, IntAry's can accommodate very, very large numbers.
+//  Multiplication Operation
+//  ========================
 //
-// The returned BigIntNum multiplication 'result' will contain numeric separators (decimal
-// separator, thousands separator and currency symbol) copied from input parameter,
-// 'multiplier'.
-func (bMultiply *BigIntMathMultiply) MultiplyIntAry(
-  multiplier,
-  multiplicand IntAry) (BigIntNum, error) {
-
-  ePrefix := "BigIntMathMultiply.MultiplyIntAry() "
-
-  // This method will test the validity of 'multiplier' and
-  // 'multiplicand'.
-  bPair, err := new(BigIntPair).NewIntAry(multiplier, multiplicand)
-
-  if err != nil {
-    return BigIntNum{},
-      fmt.Errorf(ePrefix+
-        "Error returned by new(BigIntPair).NewIntAry(multiplier, multiplicand). "+
-        "Error='%v' ", err.Error())
-  }
-
-  finalResult := bMultiply.MultiplyPair(bPair)
-
-  return finalResult, nil
-}
-
-// MultiplyIntAryArray - Receives one IntAry which is classified as the 'multiplier'.
-// The second input parameter is an array of IntAry Types labeled, 'multiplicands'. The
-// first element of the 'multiplicands' array is multiplied by the 'multiplier' to produce
-// a 'product'. That 'product' replaces the 'multiplier' and is multiplied by the next element
-// in the multiplicands array. This process is continued through the last element in the array
-// when the combined, final 'product' is returned as a Type 'BigIntNum'.
+//  In the multiplication operation, the number to be multiplied is
+//  called the "multiplicand", while the number of times the
+//  multiplicand is to be multiplied comes from the "multiplier".
+//  Usually, the multiplier is placed first and the multiplicand is
+//  placed second.
 //
-// In the multiplication operation, the number to be multiplied is called the "multiplicand",
-// while the number of times the multiplicand is to be multiplied comes from the "multiplier".
-// Usually the multiplier is placed first and the multiplicand is placed second.
+//  For example, in the problem 5 x 3 equals 15, the 5 is the
+//  'multiplier', 3 is the 'multiplicand' and 15 is the 'product'
+//  or result.
 //
-// For example, in the problem 5 x 3 equals 15, the 5 is the 'multiplier',
-// 3 is the 'multiplicand' and 15 is the 'product' or result.
+//    multiplier x multiplicand = product or result
 //
-//	multiplier x multiplicand = product or result
+//  This method performs the multiplication operation described
+//  above and afterward returns the result or 'product' as a
+//  BigIntNum type.
 //
-// This method performs the multiplication operation described above and afterwards returns the
-// result or 'product' as a BigIntNum type.
+//	Numeric Separators
+//	==================
 //
-// The returned BigIntNum multiplication 'result' will contain numeric separators (decimal
-// separator, thousands separator and currency symbol) copied from input parameter,
-// 'multiplier'.
+//	Numeric Separators define the Decimal Separator character,
+//	Thousands Separator character, and Currency Symbol character.
+//	These separator characters serve two purposes. First they are
+//	used to format and display numeric values as number strings.
+// 	Second, they are also used to parse number strings and convert
+//  them into numeric values.
+//
+//  Numeric Separator characters are typically encapsulated in a
+//  NumericSeparatorDto type.
+//
+//  The BigIntNum multiplication 'Product' returned by this method
+//  will contain numeric separators (Decimal Separator, Thousands
+//  Separator and Currency Symbol) derived from one of two possible
+//  sources.
+//
+//	Users have the option to supply an input parameter,
+//	'outputNumSeps' of type NumericSeparatorDto. If this optional
+//  parameter is provided, it will be used to configure the
+//  returned BigIntNum multiplication 'product' from this method.
+//  Note that the first valid NumericSeparatorDto in the
+//  'outputNumSeps' series will be selected and used. There is no
+//  need to provide more than one valid NumericSeparatorDto object
+//  for input parameter 'outputNumSeps'.
+//
+//	If the optional input parameter 'outputNumSeps' is NOT
+// 	provided, the returned BigIntNum instance will be
+//	configured using numeric separators copied from input
+//	parameter, 'multiplier'.
+//
+//  Input Parameters
+//  ================
+//
+//  multiplier               IntAry
+//
+//	This IntAry instance serves as the initial 'multiplier' in the
+//  multiplication operation defined above.
+//
+//  multiplicands           []IntAry
+//
+//  This array of IntAry objects serves as 'multiplicands' for the
+//  multiplication operation defined above.
+//
+//  outputNumSeps            ... NumericSeparatorDto
+//
+//  This method is defined as a variadic function in that
+//  'outputNumSeps' is configured as an optional input parameter
+//  meaning that it is NOT required. The user can choose to
+//  provide a value for 'outputNumSeps', or not.
+//
+//  If the user chooses to provide a valid 'NumericSeparatorDto'
+//  object for this parameter, it will be used to configure the
+//  'BigIntNum' product value returned by this method.
+//
+//  Note that only the first valid NumericSeparatorDto in the
+//  'outputNumSeps' series will be selected and used. There is no
+//  need to provide more than one valid NumericSeparatorDto object
+//  for parameter 'outputNumSeps'.
+//
+//  Be advised that if the user chooses NOT to provide this
+//  optional parameter, the 'BigIntNum' value returned by this
+//  method will be configued using the 'NumericSeparatorDto'
+//  copied from the 'multiplier' input parameter.
+//
+//  Return Values
+//  =============
+//
+//  BigIntNum
+//
+//  The product of the multiplication operation described above is
+//  returned as BigIntNum type.
+//
+//  error
+//
+//  If no errors are encountered during method execution, this
+//  return parameter is set to 'nil'.
 func (bMultiply *BigIntMathMultiply) MultiplyIntAryArray(
   multiplier IntAry,
-  multiplicands []IntAry) (BigIntNum, error) {
+  multiplicands []IntAry,
+  outputNumSeps ... NumericSeparatorDto) (BigIntNum, error) {
 
   var ePrefix *ePref.ErrPrefixDto
 
@@ -2337,24 +2780,70 @@ func (bMultiply *BigIntMathMultiply) MultiplyIntAryArray(
         ErrPrefix: ePrefix.String(),
         ReturnFunc: "finalResult, err := new(BigIntNum).\n" +
           "    NewIntAry(multiplier)",
-        ErrContext: fmt.Sprintf("Multiplier '%s'", multiplierNumStr),
+        ErrContext: fmt.Sprintf("Multiplier = finalResult = '%s'", multiplierNumStr),
         ErrMessage: err.Error(),
       }
   }
 
-  var numSeps NumericSeparatorDto
+  var finalOutputNumSeps, multiplierNumSeps NumericSeparatorDto
 
-  numSeps, err = multiplier.GetNumericSeparatorsDto()
+  multiplierNumSeps, err = multiplier.GetNumericSeparatorsDto()
 
   if err != nil {
 
-    return BigIntNum{},
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "finalResult, err := multiplier.CopyOut()",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
+   return BigIntNum{},
+     &FuncReturnError{
+       ErrPrefix:  ePrefix.String(),
+       ReturnFunc: "multiplierNumSeps, err = multiplier.GetNumericSeparatorsDto()",
+       ErrContext: "",
+       ErrMessage: err.Error(),
+     }
+  }
+
+  if len(outputNumSeps) > 0 {
+
+    _, finalOutputNumSeps,
+      err = new(numSepsDtoMechanics).selectValidNumSepInSeries(
+      "outputNumSeps",
+      "multiplier",
+      &multiplierNumSeps,
+      ePrefix,
+      outputNumSeps...)
+
+    if err != nil {
+
+      return BigIntNum{},
+        &FuncReturnError{
+          ErrPrefix: ePrefix.String(),
+          ReturnFunc: "_, finalOutputNumSeps, err = \n" +
+            "    new(numSepsDtoMechanics).selectValidNumSepInSeries(\n" +
+            "    \"outputNumSeps\", \"multiplier\")",
+          ErrContext: "Error: Failed to Select 'finalOutputNumSeps'",
+          ErrMessage: err.Error(),
+        }
+    }
+  } else {
+
+    // Checks validity of multiplierNumSeps
+
+    err = new(numSepsDtoMechanics).copyNumSepsDto(
+      &finalOutputNumSeps, // Destination
+      &multiplierNumSeps,
+      false, // Set Defaults if Empty
+      ePrefix.XCpy("Copy 'multiplierNumSeps' Into 'finalOutputNumSeps'"))
+
+    if err != nil {
+
+      return BigIntNum{},
+        &FuncReturnError{
+          ErrPrefix:  ePrefix.String(),
+          ReturnFunc: "err = new(numSepsDtoMechanics).copyNumSepsDto(\n" +
+            "    &finalOutputNumSeps, &multiplierNumSeps, false,\n" +
+            "    ePrefix.XCpy(\"Copy 'multiplierNumSeps' Into 'finalOutputNumSeps'\"))",
+          ErrContext: "",
+          ErrMessage: err.Error(),
+        }
+    }
   }
 
   var multiplicandBINum BigIntNum
@@ -2391,6 +2880,19 @@ func (bMultiply *BigIntMathMultiply) MultiplyIntAryArray(
         }
     }
 
+    multiplierNumStr, err = finalResult.GetNumStr()
+
+    if err != nil {
+
+      return BigIntNum{},
+        &FuncReturnError{
+          ErrPrefix: ePrefix.String(),
+          ReturnFunc: "multiplierNumStr, err = finalResult.GetNumStr()",
+          ErrContext: "",
+          ErrMessage: err.Error(),
+        }
+    }
+
     // This method will test the validity of multiplicands[i]
     multiplicandBINum, err = new(BigIntNum).NewIntAry(multiplicands[i])
 
@@ -2407,6 +2909,19 @@ func (bMultiply *BigIntMathMultiply) MultiplyIntAryArray(
         }
     }
 
+    multiplicandNumStr, err = multiplicandBINum.GetNumStr()
+
+    if err != nil {
+
+      return BigIntNum{},
+        &FuncReturnError{
+          ErrPrefix:  ePrefix.String(),
+          ReturnFunc: "multiplicandNumStr, err = multiplicandBINum.GetNumStr()",
+          ErrContext: fmt.Sprintf("multiplicands index = '%d'", i),
+          ErrMessage: err.Error(),
+        }
+    }
+
     bPair, err = new(BigIntPair).NewBigIntNum(finalResult, multiplicandBINum)
 
     if err != nil {
@@ -2416,158 +2931,471 @@ func (bMultiply *BigIntMathMultiply) MultiplyIntAryArray(
           ErrPrefix: ePrefix.String(),
           ReturnFunc: "bPair, err = new(BigIntPair).NewBigIntNum(\n" +
             "finalResult, multiplicandBINum)",
-          ErrContext: fmt.Sprintf("Multiplier '%s'; multiplicands[%d]= '%v' ",
+          ErrContext: fmt.Sprintf("finalResult '%s'; multiplicands[%d]= '%v' ",
             multiplierNumStr, i, multiplicandNumStr),
           ErrMessage: err.Error(),
         }
     }
 
-    finalResult, err = new(bigIntMathMultiplyMechanics).
-      multiplyPairNoNumSeps(bPair, ePrefix)
+    finalResult, err = new(bigIntMathMultiplyNanobot).
+      multiplyPairWithNumSeps(bPair, finalOutputNumSeps,
+        ePrefix.XCpy("bPair & finalOutputNumSeps"))
 
     if err != nil {
 
       return BigIntNum{},
         &FuncReturnError{
           ErrPrefix: ePrefix.String(),
-          ReturnFunc: "finalResult, err = new(bigIntMathMultiplyMechanics).\n" +
-            "multiplyPairNoNumSeps(bPair, ePrefix)",
-          ErrContext: "",
+          ReturnFunc: "finalResult, err = new(bigIntMathMultiplyNanobot).\n" +
+            "multiplyPairWithNumSeps(bPair, finalOutputNumSeps,\n " +
+            "ePrefix.XCpy(\"bPair & finalOutputNumSeps\"))",
+          ErrContext: fmt.Sprintf("bPair.Big1= '%v' bPair.Big2= '%v'\nmultiplicands index= '%d'",
+            multiplierNumStr, multiplicandNumStr, i),
           ErrMessage: err.Error(),
         }
     }
+
   }
 
-  err = finalResult.SetNumericSeparatorsDto(numSeps)
+  return finalResult, err
+}
+
+// MultiplyIntAryOutputToArray
+//
+//  Overview
+//  ========
+//
+//  This method receives one input parameter of Type IntAry which
+//  is classified as the 'multiplier'. The second input parameter
+//  is an array of IntAry Types labeled, 'multiplicands'.
+//
+//  Each element of the 'multiplicands' array is multiplied by the
+//  'multiplier'. The result or 'product' is then stored in a
+//  results array which is returned to the calling function.
+//
+//  Example:
+//
+//                 Multiplicands                 Output
+//  Multiplier         Array                      Array
+//
+//      3       x   multiplicands[0] = 2   =   outputarray[0] =  6
+//      3       x   multiplicands[1] = 3   =   outputarray[1] =  9
+//      3       x   multiplicands[2] = 4   =   outputarray[2] = 12
+//      3       x   multiplicands[3] = 5   =   outputarray[3] = 15
+//      3       x   multiplicands[4] = 6   =   outputarray[4] = 18
+//      3       x   multiplicands[5] = 7   =   outputarray[5] = 21
+//
+//
+//  Multiplication Operation
+//  ========================
+//
+//  In the multiplication operation, the number to be multiplied is
+//  called the "multiplicand", while the number of times the
+//  multiplicand is to be multiplied comes from the "multiplier".
+//  Usually, the multiplier is placed first and the multiplicand is
+//  placed second.
+//
+//  For example, in the problem 5 x 3 equals 15, the 5 is the
+//  'multiplier', 3 is the 'multiplicand' and 15 is the 'product'
+//  or result.
+//
+//    multiplier x multiplicand = product or result
+//
+//  This method performs the multiplication operation described
+//  above and afterward returns the result or 'product' as a
+//  BigIntNum type.
+//
+//
+//	Numeric Separators
+//	==================
+//
+//	Numeric Separators define the Decimal Separator character,
+//	Thousands Separator character, and Currency Symbol character.
+//	These separator characters serve two purposes. First they are
+//	used to format and display numeric values as number strings.
+// 	Second, they are also used to parse number strings and convert
+//  them into numeric values.
+//
+//  Numeric Separator characters are typically encapsulated in a
+//  NumericSeparatorDto type.
+//
+//  Each element in the array of IntAry objects returned by this
+//  method will contain Numeric Separators (Decimal Separator,
+//  Thousands Separator and Currency Symbol) copid input parameter
+//  'multiplier'.
+//
+//  Input Parameters
+//  ================
+//
+//  multiplier               IntAry
+//
+//	This IntAry instance serves as the initial 'multiplier' in the
+//  multiplication operation defined above.
+//
+//  multiplicands           []IntAry
+//
+//  This array of IntAry objects serves as 'multiplicands' for the
+//  multiplication operation defined above.
+//
+//  Return Values
+//  =============
+//
+//  []IntAry
+//
+//  An array of IntAry instances containing the product valus from
+//  the multiplication operation described above. Each element in
+//  this returned array will contain Numeric Seprators copied from
+//  input parameter 'multiplier'.
+//
+//  error
+//
+//  If no errors are encountered during method execution, this
+//  return parameter is set to 'nil'.
+//
+func (bMultiply *BigIntMathMultiply) MultiplyIntAryOutputToArray(
+  multiplier IntAry,
+  multiplicands []IntAry,
+  outputNumSeps ... NumericSeparatorDto) ([]IntAry, error) {
+
+  var ePrefix *ePref.ErrPrefixDto
+
+  var err error
+
+  ePrefix,
+    err = ePref.ErrPrefixDto{}.NewIEmpty(
+    nil,
+    "BigIntMathMultiply.MultiplyIntAryOutputToArray",
+    "")
+
+  if err != nil {
+    return []IntAry{}, err
+  }
+
+  err = multiplier.IsValid(
+    ePrefix.XCpy("Validating 'multiplier'").String())
 
   if err != nil {
 
-    return BigIntNum{},
+    return []IntAry{},
+      &FuncReturnError{
+        ErrPrefix: ePrefix.String(),
+        ReturnFunc: "err = multiplier.IsValid(\n" +
+          "ePrefix.XCpy(\"Validating 'multiplier'\").String())",
+        ErrContext: "Input parameter 'multiplier' is invalid!",
+        ErrMessage: err.Error(),
+      }
+  }
+
+  var multiplierNumStr string
+
+  multiplierNumStr, err = multiplier.GetNumStr()
+
+  if err != nil {
+
+    return []IntAry{},
       &FuncReturnError{
         ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "err = finalResult.SetNumericSeparatorsDto(numSeps)",
+        ReturnFunc: "multiplierNumStr, err = multiplier.GetNumStr()",
         ErrContext: "",
         ErrMessage: err.Error(),
       }
   }
-  return finalResult, nil
-}
-
-// MultiplyIntAryOutputToArray - Receives one input parameter of Type IntAry which
-// is classified as the 'multiplier'. The second input parameter is an array of IntAry
-// Types labeled, 'multiplicands'.
-//
-// Each element of the 'multiplicands' array is multiplied by the 'multiplier'. The result or
-// 'product' is then stored in a results array which is returned to the calling function.
-//
-// In the multiplication operation, the number to be multiplied is called the "multiplicand",
-// while the number of times the multiplicand is to be multiplied comes from the "multiplier".
-// Usually the multiplier is placed first and the multiplicand is placed second.
-//
-// For example, in the problem 5 x 3 equals 15, the 5 is the 'multiplier', 3 is the 'multiplicand'
-// and 15 is the 'product' or result.
-//
-// Example
-// =======
-//
-//	Multiplicands												Output
-//
-// Multiplier				    	Array														Array
-//
-//	3			x				multiplicands[0] = 2			=				  outputarray[0] =  6
-//	3			x				multiplicands[1] = 3			=				  outputarray[1] =  9
-//	3			x				multiplicands[2] = 4			=				  outputarray[2] = 12
-//	3			x				multiplicands[3] = 5			=				  outputarray[3] = 15
-//	3			x				multiplicands[4] = 6			=				  outputarray[4] = 18
-//	3			x				multiplicands[5] = 7			=				  outputarray[5] = 21
-//
-// This method performs the multiplication operation described above and afterwards returns the
-// result or 'product' in an Array of 'IntArys' ([]IntAry).
-//
-// Each element in the returned []IntAry will contain numeric separators (decimal
-// separator, thousands separator and currency symbol) copied from input parameter,
-// 'multiplier'.
-func (bMultiply *BigIntMathMultiply) MultiplyIntAryOutputToArray(
-  multiplier IntAry,
-  multiplicands []IntAry) ([]IntAry, error) {
-
-  ePrefix := "BigIntMathMultiply.MultiplyIntAryOutputToArray() "
 
   lenMultiplicands := len(multiplicands)
 
   if lenMultiplicands == 0 {
+
     return []IntAry{},
-      errors.New(ePrefix + "Error: multiplicands array is Empty!")
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "",
+        ErrContext: "len(multiplicands) == 0",
+        ErrMessage: "Error: 'multiplicands' ([]IntAry) array is empty!",
+      }
   }
 
   // This method will test the validity of 'multiplier'
   multiplierBINum, err := multiplier.GetBigIntNum()
 
   if err != nil {
+
     return []IntAry{},
-      fmt.Errorf(ePrefix+
-        "Error returned by multiplier.GetBigIntNum() "+
-        " multiplier='%v' Error='%v'. ",
-        multiplier.GetNumStr(), err.Error())
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: " multiplierBINum, err := multiplier.GetBigIntNum()",
+        ErrContext: fmt.Sprintf("multiplier= '%v'", multiplierNumStr),
+        ErrMessage: err.Error(),
+      }
+  }
+
+  var finalOutputNumSeps, multiplierNumSeps NumericSeparatorDto
+
+  multiplierNumSeps, err = multiplier.GetNumericSeparatorsDto()
+
+  if err != nil {
+
+    return []IntAry{},
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "multiplierNumSeps, err = multiplier.GetNumericSeparatorsDto()",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+  }
+
+  if len(outputNumSeps) > 0 {
+
+    _, finalOutputNumSeps,
+      err = new(numSepsDtoMechanics).selectValidNumSepInSeries(
+      "outputNumSeps",
+      "multiplier",
+      &multiplierNumSeps,
+      ePrefix,
+      outputNumSeps...)
+
+    if err != nil {
+
+      return []IntAry{},
+        &FuncReturnError{
+          ErrPrefix: ePrefix.String(),
+          ReturnFunc: "_, finalOutputNumSeps, err = \n" +
+            "    new(numSepsDtoMechanics).selectValidNumSepInSeries(\n" +
+            "    \"outputNumSeps\", \"multiplier\")",
+          ErrContext: "Error: Failed to Select 'finalOutputNumSeps'",
+          ErrMessage: err.Error(),
+        }
+    }
+  } else {
+
+    // Checks validity of multiplierNumSeps
+
+    err = new(numSepsDtoMechanics).copyNumSepsDto(
+      &finalOutputNumSeps, // Destination
+      &multiplierNumSeps,
+      false, // Set Defaults if Empty
+      ePrefix.XCpy("Copy 'multiplierNumSeps' Into 'finalOutputNumSeps'"))
+
+    if err != nil {
+
+      return []IntAry{},
+        &FuncReturnError{
+          ErrPrefix:  ePrefix.String(),
+          ReturnFunc: "err = new(numSepsDtoMechanics).copyNumSepsDto(\n" +
+            "    &finalOutputNumSeps, &multiplierNumSeps, false,\n" +
+            "    ePrefix.XCpy(\"Copy 'multiplierNumSeps' Into 'finalOutputNumSeps'\"))",
+          ErrContext: "",
+          ErrMessage: err.Error(),
+        }
+    }
   }
 
   resultArray := make([]IntAry, lenMultiplicands)
 
+  var multiplicandBINum, finalResult BigIntNum
+  
+  var multiplicandsNumStr string
+  
   for i := 0; i < lenMultiplicands; i++ {
 
-    // This method will test the validity of multiplicands[i]
-    multiplicandBINum, err := new(BigIntNum).NewIntAry(multiplicands[i])
+    err = multiplicands[i].IsValid(ePrefix.XCpy(fmt.Sprintf("Validating multiplicands[%d]",i)).String())
 
     if err != nil {
+
       return []IntAry{},
-        fmt.Errorf(ePrefix+
-          "Error returned by new(BigIntNum).NewIntAry(multiplicands[i]) "+
-          " multiplierBINum='%v' multiplicands[%v]='%v' Error='%v'. ",
-          multiplierBINum.GetNumStr(), i, multiplicands[i].GetNumStr(), err.Error())
+        &FuncReturnError{
+          ErrPrefix:  ePrefix.String(),
+          ReturnFunc: fmt.Sprintf("err = multiplicands[%d].IsValid(\n" +
+            "ePrefix.XCpy(\"Validating multiplicands[i]\").String())", i),
+          ErrContext: fmt.Sprintf("Error: multiplicands[%d] is Invalid!",i),
+          ErrMessage: err.Error(),
+        }
     }
 
-    bPair := new(BigIntPair).NewBigIntNum(multiplierBINum, multiplicandBINum)
-
-    result := bMultiply.MultiplyPair(bPair)
-
-    resultArray[i], err = result.GetIntAry()
+    multiplicandsNumStr, err = multiplicands[i].GetNumStr()
 
     if err != nil {
+
       return []IntAry{},
-        fmt.Errorf(ePrefix+
-          "Error returned by finalResult.Result.GetIntAryElements() "+
-          "i='%v' Error='%v'. ", i, err.Error())
+        &FuncReturnError{
+          ErrPrefix:  ePrefix.String(),
+          ReturnFunc: fmt.Sprintf("multiplicandsNumStr, err = multiplicands[%d].GetNumStr()", i),
+          ErrContext: "",
+          ErrMessage: err.Error(),
+        }
+    }
+
+
+    // This method will test the validity of multiplicands[i]
+    multiplicandBINum, err = new(BigIntNum).NewIntAry(multiplicands[i])
+
+    if err != nil {
+
+      return []IntAry{},
+        &FuncReturnError{
+          ErrPrefix:  ePrefix.String(),
+          ReturnFunc: fmt.Sprintf("multiplicandBINum, err = new(BigIntNum).\n" +
+            "  NewIntAry(multiplicands[%d])",i),
+          ErrContext: fmt.Sprintf("multiplicands[%d]= '%v'",
+            i, multiplicandsNumStr),
+          ErrMessage: err.Error(),
+        }
+    }
+    
+    multiplicandsNumStr, err = multiplicandBINum.GetNumStr()
+
+    if err != nil {
+
+      return []IntAry{},
+        &FuncReturnError{
+          ErrPrefix:  ePrefix.String(),
+          ReturnFunc: "multiplicandsNumStr, err = multiplicandBINum.GetNumStr()",
+          ErrContext: "",
+          ErrMessage: err.Error(),
+        }
+    }
+
+    bPair, err := new(BigIntPair).NewBigIntNum(multiplierBINum, multiplicandBINum)
+
+    if err != nil {
+
+      return []IntAry{},
+        &FuncReturnError{
+          ErrPrefix:  ePrefix.String(),
+          ReturnFunc: "bPair, err := new(BigIntPair).NewBigIntNum(multiplierBINum, multiplicandBINum)",
+          ErrContext: fmt.Sprintf("multiplier= '%v'; multiplicand= '%v'",
+            multiplierNumStr, multiplicandsNumStr),
+          ErrMessage: err.Error(),
+        }
+    }
+
+    finalResult, err = new(bigIntMathMultiplyNanobot).
+      multiplyPairWithNumSeps( bPair, finalOutputNumSeps,
+        ePrefix.XCpy("bPair & finalOutputNumSeps"))
+
+    if err != nil {
+
+      return []IntAry{},
+        &FuncReturnError{
+          ErrPrefix:  ePrefix.String(),
+          ReturnFunc: "finalResult, err = new(bigIntMathMultiplyNanobot).\n" +
+            "  multiplyPairWithNumSeps( bPair, finalOutputNumSeps,\n" +
+            "  ePrefix.XCpy(\"bPair & finalOutputNumSeps\"))",
+          ErrContext: fmt.Sprintf("bPair.Big1= '%v'; bPari.Big2= '%v'",
+            multiplierNumStr, multiplicandsNumStr),
+          ErrMessage: err.Error(),
+        }
+    }
+
+    resultArray[i], err = finalResult.GetIntAry()
+
+    if err != nil {
+
+      return []IntAry{},
+        &FuncReturnError{
+          ErrPrefix:  ePrefix.String(),
+          ReturnFunc: "resultArray[i], err = finalResult.GetIntAry()",
+          ErrContext: "",
+          ErrMessage: err.Error(),
+        }
     }
   }
 
-  return resultArray, nil
+  return resultArray, err
 }
 
-// MultiplyIntArySeries - Receives one input parameter of Type IntAry which is classified
+// MultiplyIntArySeries
 //
-//	as the 'multiplier'. The second input parameter is a comma separated series of IntAry Types
+//  Overview
+//  ========
 //
-// labeled, 'multiplicands'. The first element of the 'multiplicands' series is multiplied by
-// the 'multiplier' to produce a 'product'. That 'product' replaces the 'multiplier' and is
-// multiplied by the next element in the multiplicands series. This process is continued through
-// the last element in the series. Afterwards, the combined final 'product' is returned as a
-// Type 'BigIntNum'.
+//  This method receives one input parameter of Type IntAry which
+//  is classified as the 'multiplier'. The second input parameter
+//  is a comma-delimited series of IntAry Types passed through the
+//  variadic function parameter labeled, 'multiplicands'. The first
+//  element of the 'multiplicands' series is multiplied by the
+//  'multiplier' to produce a 'product'. That 'product' then
+//  replaces the 'multiplier' and is multiplied by the next element
+//  in the 'multiplicands' series. This process is continued through
+//  the last element in the series. Afterward, the combined final
+//  'product' is returned as a Type 'BigIntNum'.
 //
-// In the multiplication operation, the number to be multiplied is called the "multiplicand",
-// while the number of times the multiplicand is to be multiplied comes from the "multiplier".
-// Usually the multiplier is placed first and the multiplicand is placed second.
+//    Example:
+//      multiplier = 3
+//      multiplicands = 2,3,4
 //
-// For example, in the problem 5 x 3 equals 15, the 5 is the 'multiplier',
-// 3 is the 'multiplicand' and 15 is the 'product' or result.
+//      (1) 3 x 2 = 6
+//      (2) 6 x 3 = 18
+//      (3) 18 x 4 = 72
+//       The returned product is 72
 //
-//	multiplier x multiplicand = product or result
+//  Multiplication Operation
+//  ========================
 //
-// This method performs the multiplication operation described above and afterwards returns the
-// result or 'product' as a BigIntNum type.
+//  In the multiplication operation, the number to be multiplied is
+//  called the "multiplicand", while the number of times the
+//  multiplicand is to be multiplied comes from the "multiplier".
+//  Usually, the multiplier is placed first and the multiplicand is
+//  placed second.
 //
-// The returned BigIntNum multiplication 'result' will contain numeric separators (decimal
-// separator, thousands separator and currency symbol) copied from input parameter,
-// 'multiplier'.
+//  For example, in the problem 5 x 3 equals 15, the 5 is the
+//  'multiplier', 3 is the 'multiplicand' and 15 is the 'product'
+//  or result.
+//
+//      multiplier x multiplicand = product or result
+//
+//  This method performs the multiplication operation described
+//  above and afterward returns the result or 'product' as a
+//  BigIntNum type.
+//
+//	Numeric Separators
+//	==================
+//
+//	Numeric Separators define the Decimal Separator character,
+//	Thousands Separator character, and Currency Symbol character.
+//	These separator characters serve two purposes. First they are
+//	used to format and display numeric values as number strings.
+// 	Second, they are also used to parse number strings and convert
+//  them into numeric values.
+//
+//  Numeric Separator characters are typically encapsulated in a
+//  NumericSeparatorDto type.
+//
+//  The BigIntNum multiplication 'Product' returned by this method
+//  will contain numeric separators (Decimal Separator, Thousands
+//  Separator and Currency Symbol) copied from input parameter,
+//  'multiplier'.
+//
+//  Input Parameters
+//  ================
+//
+//  multiplier               IntAry
+//
+//  This IntAry numeric value serves as the 'multiplier' in the
+//  multiplication operation described above.
+//
+//  multiplicands            ...IntAry
+//
+//  A series of IntAry objects will serve as the multiplicands in
+//  the multiplication operation described above.
+//
+//  This method is defined as a variadic function meaning that this
+//  'multiplicands' may consist of any number of IntAry objects.
+//
+//  Be advised that if this parameter is empty and no IntAry objects
+//  are provided, an error will be returned.
+//
+//  Return Values
+//  =============
+//
+//  BigIntNum
+//
+//  The product of the multiplication operation described above is
+//  returned as BigIntNum type.
+//
+//  error
+//
+//  If no errors are encountered during method execution, this
+//  return parameter is set to 'nil'.
 func (bMultiply *BigIntMathMultiply) MultiplyIntArySeries(
   multiplier IntAry,
   multiplicands ...IntAry) (BigIntNum, error) {
@@ -2631,16 +3459,16 @@ func (bMultiply *BigIntMathMultiply) MultiplyIntArySeries(
       }
   }
 
-  var numSeps NumericSeparatorDto
+  var finalOutputNumSeps NumericSeparatorDto
 
-  numSeps, err = multiplier.GetNumericSeparatorsDto()
+  finalOutputNumSeps, err = multiplier.GetNumericSeparatorsDto()
 
   if err != nil {
 
     return BigIntNum{},
       &FuncReturnError{
         ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "numSeps, err = multiplier.GetNumericSeparatorsDto()",
+        ReturnFunc: "finalOutputNumSeps, err = multiplier.GetNumericSeparatorsDto()",
         ErrContext: "",
         ErrMessage: err.Error(),
       }
@@ -2689,6 +3517,19 @@ func (bMultiply *BigIntMathMultiply) MultiplyIntArySeries(
         }
     }
 
+    multiplierNumStr, err = finalResult.GetNumStr()
+
+    if err != nil {
+
+      return BigIntNum{},
+        &FuncReturnError{
+          ErrPrefix:  ePrefix.String(),
+          ReturnFunc: "multiplierNumStr, err = finalResult.GetNumStr()",
+          ErrContext: fmt.Sprintf("multiplicand index= '%d'", idx),
+          ErrMessage: err.Error(),
+        }
+    }
+
     // This method will test the validity of 'multiplicand'
     multiplicandBINum, err := new(BigIntNum).NewIntAry(multiplicand)
 
@@ -2703,6 +3544,19 @@ func (bMultiply *BigIntMathMultiply) MultiplyIntArySeries(
         }
     }
 
+    multiplicandNumStr, err = multiplicandBINum.GetNumStr()
+
+    if err != nil {
+
+      return BigIntNum{},
+        &FuncReturnError{
+          ErrPrefix:  ePrefix.String(),
+          ReturnFunc: "multiplicandNumStr, err = multiplicandBINum.GetNumStr()",
+          ErrContext: "",
+          ErrMessage: err.Error(),
+        }
+    }
+
     bPair, err = new(BigIntPair).NewBigIntNum(finalResult, multiplicandBINum)
 
     if err != nil {
@@ -2712,127 +3566,75 @@ func (bMultiply *BigIntMathMultiply) MultiplyIntArySeries(
           ErrPrefix: ePrefix.String(),
           ReturnFunc: "bPair, err = new(BigIntPair).NewBigIntNum(\n" +
             "    finalResult, multiplicandBINum)",
-          ErrContext: fmt.Sprintf("multiplicand='%v'", multiplicandNumStr),
+          ErrContext: fmt.Sprintf("finalResult= '%v'; multiplicand= '%v'\nmultiplicand index= '%d'",
+            multiplierNumStr, multiplicandNumStr, idx),
           ErrMessage: err.Error(),
         }
     }
 
-    finalResult, err = new(bigIntMathMultiplyMechanics).
-      multiplyPairNoNumSeps(bPair, ePrefix)
+    finalResult, err = new(bigIntMathMultiplyNanobot).
+      multiplyPairWithNumSeps(bPair, finalOutputNumSeps,
+        ePrefix.XCpy("bPair & finalOutputNumSeps"))
 
     if err != nil {
 
       return BigIntNum{},
         &FuncReturnError{
           ErrPrefix: ePrefix.String(),
-          ReturnFunc: "finalResult, err = new(bigIntMathMultiplyMechanics).\n" +
-            "multiplyPairNoNumSeps(bPair, ePrefix)",
-          ErrContext: "",
+          ReturnFunc: "finalResult, err = new(bigIntMathMultiplyNanobot).\n" +
+            "multiplyPairWithNumSeps(bPair, finalOutputNumSeps, ePrefix)",
+          ErrContext: fmt.Sprintf("bPair.Big1= '%v' bPair.Big2= '%v'\nmultiplicands index= '%d'",
+            multiplierNumStr, multiplicandNumStr, idx),
           ErrMessage: err.Error(),
         }
     }
+
   }
 
-  err = finalResult.SetNumericSeparatorsDto(numSeps)
-
-  if err != nil {
-
-    return BigIntNum{},
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "err = finalResult.SetNumericSeparatorsDto(numSeps)",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-  }
-
-  return finalResult, nil
+  return finalResult, err
 }
 
-// MultiplyNumStr - Receives two number strings and multiplies their numeric
-// values.
-//
-//	n1NumStr x n2NumStr = product
-//
-// The result or 'product' is returned as a 'BigIntNum'
-// type.
-//
-// The 'n1NumStr' and 'n2NumStr' strings passed to this method are number strings
-// which consist of a string of numeric digits representing a numeric value. A leading
-// minus sign (-) may be included to indicate a negative numeric value. This string
-// of numeric digits may also include a delimiting decimal separator to identify
-// fractional digits. The number strings are parsed based on the decimal separator
-// character specified by input parameter 'numSeps'.
-//
-// Input parameter 'numSeps' is a type NumericSeparatorDto and is used to
-// parse the number strings 'n1NumStr' and 'n2NumStr'. 'numSeps' represents the
-// applicable decimal separator, thousands separator and currency symbol. In
-// addition, 'numSeps' is also used in configuring the return value for this
-// multiplication operation.
-//
-// In the multiplication operation, the number to be multiplied is called the
-// "multiplicand", while the number of times the multiplicand is to be multiplied
-// comes from the "multiplier". Usually the multiplier is placed first and the
-// multiplicand is placed second.
-//
-// For example, in the problem 5 x 3 equals 15, the 5 is the 'multiplier',
-// 3 is the 'multiplicand' and 15 is the 'product' or result.
-//
-//	multiplier x multiplicand = product or result
-//
-// This method performs the multiplication operation and afterwards returns the
-// result or 'product' as a BigIntNum type.
-//
-// The returned BigIntNum multiplication 'result' will contain numeric separators
-// (decimal separator, thousands separator and currency symbol) specified by input
-// parameter, 'numSeps'.
-func (bMultiply *BigIntMathMultiply) MultiplyNumStr(
-  n1NumStr,
-  n2NumStr string,
-  numSeps NumericSeparatorDto) (BigIntNum, error) {
-
-  ePrefix := "BigIntMathMultiply.MultiplyNumStr() "
-
-  numSeps.SetDefaultsIfEmpty()
-
-  bPair, err := new(BigIntPair).NewNumStrWithNumSeps(n1NumStr, n2NumStr, numSeps)
-
-  if err != nil {
-    return BigIntNum{},
-      fmt.Errorf(ePrefix+
-        "Error returned by new(BigIntPair).NewNumStrWithNumSeps("+
-        "n1NumStr, n2NumStr, numSeps). Error='%v' ", err.Error())
-  }
-
-  finalResult := bMultiply.MultiplyPair(bPair)
-
-  return finalResult, nil
-}
-
-// MultiplyNumStrArray
+// MultiplyNumStr
 //
 //  Overview
 //  ========
 //
-//  This method receives one number string which is classified as
-//  the 'multiplier'. The second input parameter is an array of
-//  number strings labeled, 'multiplicands'. The first element of
-//  the 'multiplicands' array is multiplied by the 'multiplier' to
-//  produce a 'product'. That 'product' replaces the 'multiplier'
-//  and is multiplied by the next element in the multiplicands
-//  array. This process is continued through the last element in
-//  the array when the combined, final 'product' is returned as a
-//  Type 'BigIntNum'.
+//  This method receives two number strings and multiplies their
+//  numeric values to produce a 'product' which is returned as
+//  type BigIntNum.
+//
+//      multiplier x multiplicand = product
+//
+//  Number Strings
+//  ==============
+//
+//  Number strings are strings of numeric digits. These digits
+//  must be formatted in way that allows conversion to a
+//  corresponding numeric value. This method receives two
+//  number string input parameters labeled, 'multiplier' and
+//  'multiplicand'
 //
 //  Number String Negative Values
 //  =============================
 //
-//  The 'multiplier' string and 'multiplicands' string array
-//  parameters passed to this method are number strings which
-//  consist of a string of numeric digits representing a numeric
-//  value. A leading minus sign (-), or surrounding parentheses
-//  '()', may be included in these number strings to indicate a
-//  negative numeric value.
+//  The 'multiplier' and 'multiplicand' string parameters passed
+//  to this method are number strings which consist of strings of
+//  numeric digits representing a numeric value. A leading minus
+//  sign (-), or surrounding parentheses '()', may be included in
+//  these number strings to indicate a negative numeric value.
+//
+//  Fractional Digits in Number Strings
+//  ===================================
+//
+//  The 'multiplier' and 'multiplicand' strings of numeric
+//  digits may also include a delimiting decimal separator to
+//  identify fractional digits to the right of the decimal
+//  separator. In the USA, the default decimal separator is the
+//  period character ('.').
+// 
+//  These number strings are parsed based on the Numeric
+//  Separators, including the Decimal Separator character, which
+//  are specified by input parameter 'numStrNumSeps'.
 //
 //  Multiplication Operation
 //  ========================
@@ -2856,31 +3658,422 @@ func (bMultiply *BigIntMathMultiply) MultiplyNumStr(
 //  Numeric Separators
 //  ==================
 //
-//  The 'multiplier' and 'multiplicands' strings of numeric digits
-//  may also include a delimiting decimal separator to identify
-//  and seprate fractional digits. The USA default for a decimal
-//  separator is the period ('.').
+//	Numeric Separators define the Decimal Separator character,
+//	Thousands Separator character, and Currency Symbol character.
+//	These separator characters serve two purposes. First they are
+//	used to format and display numeric values as number strings.
+// 	Second, they are also used to parse number strings and convert
+//  them into numeric values.
+//
+//  Numeric Separator characters are typically encapsulated in a
+//  NumericSeparatorDto type.
 //
 //  Input parameter 'numStrNumSeps', of type NumericSeparatorDto,
 //  contains numeric separators specifying the Decimal Separator,
 //  Thousands Separator, and Currency Symbol. These numeric
 //  separators are required to parse the 'multiplier' and
-//  'multiplicands' number strings. If any member elements of
-//  'numStrNumSeps' are found to be invalid, they will be
-//  automatically reset to USA default values.
+//  'multiplicand' number strings. This parsing operation is in
+//  turn used to convert those strings into numeric values for
+//  calculation purposes.
 //
 //  In addition, users may provide another optional input
 //  parameter labeled 'outputNumSeps' of type NumericSeparatorDto.
 //  If this optional input parameter is provided, it will be used
 //  to format the BigIntNum object returned by this method. Note
 //  that the first valid NumericSeparatorDto in the
-//  'outputNumSeps' series will be selected and used.
+//  'outputNumSeps' series will be selected and used. There is no
+//  need to provide more than one valid NumericSeparatorDto object
+//  for parameter 'outputNumSeps'.
 //
 //  If optional input parameter 'outputNumSeps' is NOT provided,
 //  or if the provided 'outputNumSeps' is invalid, the returned
 //  instance of BigIntNum will be configured with Numeric
 //  Separators supplied by mandatory input parameter,
-//  numStrNumSeps'.
+//  'numStrNumSeps'.
+//
+//  Input Parameters
+//  ================
+//
+//  multiplier               string
+//
+//	This number string contains the numeric value which serves as
+//	the initial multiplier in the multiplication operation defined
+// 	above.
+//
+//  multiplicand             string
+//
+//  This string contains the multiplicand numeric value used in
+//  the multiplication operation defined above.
+//
+//  numStrNumSeps            NumericSeparatorDto
+//
+//  This instance of NumericSeparatorDto contains the Decimal
+//  Separator character, Thousands Separator character and 
+//  Currency Symbol character used to parse the number strings
+//  passed through input paramters 'multiplier' and
+//  'multiplicand'.
+//
+//  outputNumSeps            ... NumericSeparatorDto
+//
+//  This method is defined as a variadic function in that
+//  'outputNumSeps' is configured as an optional input parameter
+//  meaning that it is NOT required. The user can choose to
+//  provide a value for 'outputNumSeps', or not.
+//
+//  If the user chooses to provide a valid 'NumericSeparatorDto'
+//  object for this parameter, it will be used to configure the
+//  'BigIntNum' product value returned by this method.
+//
+//  Note that the only first valid NumericSeparatorDto in the
+//  'outputNumSeps' series will be selected and used. There is no
+//  need to provide more than one valid NumericSeparatorDto object
+//  for parameter 'outputNumSeps'.
+//
+//  Be advised that if the user chooses NOT to provide this
+//  optional parameter, the 'BigIntNum' value returned by this
+//  method will be configued using the 'NumericSeparatorDto'
+//  copied from 'numStrNumSeps'
+//
+//  Return Values
+//  =============
+//
+//  BigIntNum
+//
+//  The product of the multiplication operation described above is
+//  returned as BigIntNum type.
+//
+//  error
+//
+//  If no errors are encountered during method execution, this
+//  return parameter is set to 'nil'.
+func (bMultiply *BigIntMathMultiply) MultiplyNumStr(
+  multiplier string,
+  multiplicand string,
+  numStrNumSeps NumericSeparatorDto,
+  outputNumSeps ...NumericSeparatorDto) (BigIntNum, error) {
+
+  var ePrefix *ePref.ErrPrefixDto
+
+  var err error
+
+  ePrefix,
+    err = ePref.ErrPrefixDto{}.NewIEmpty(
+    nil,
+    "BigIntMathMultiply.MultiplyNumStrArray",
+    "")
+
+  if err != nil {
+    return BigIntNum{}, err
+  }
+
+  if len(multiplier) == 0 {
+
+    return BigIntNum{},
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "",
+        ErrContext: "'multiplier' is an empty string.\n" +
+          "    len(multiplier) == 0",
+        ErrMessage: "Error: Input parameter 'multiplier' is INVALID!",
+      }
+
+  }
+
+  if len(multiplicand) == 0 {
+
+    return BigIntNum{},
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "",
+        ErrContext: "'multiplicand' is an empty string.\n" +
+          "    len(multiplicand) == 0",
+        ErrMessage: "Error: Input parameter 'multiplicand' is INVALID!",
+      }
+
+  }
+  
+  err = numStrNumSeps.IsValid(ePrefix.XCpy("Vaidating 'numStrNumSeps'").String())
+
+  if err != nil {
+
+    return BigIntNum{},
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "err = numStrNumSeps.IsValid(ePrefix.XCpy(\"Vaidating 'numStrNumSeps'\").String())",
+        ErrContext: "Error: Input Parameter is Invalid!",
+        ErrMessage: err.Error(),
+      }
+  }
+
+  var finalOutputNumSeps NumericSeparatorDto
+
+  if len(outputNumSeps) > 0 {
+
+    _, finalOutputNumSeps,
+      err = new(numSepsDtoMechanics).selectValidNumSepInSeries(
+      "outputNumSeps",
+      "numStr",
+      &numStrNumSeps,
+      ePrefix,
+      outputNumSeps...)
+
+    if err != nil {
+
+      return BigIntNum{},
+        &FuncReturnError{
+          ErrPrefix: ePrefix.String(),
+          ReturnFunc: "_, finalOutputNumSeps, err = \n" +
+            "    new(numSepsDtoMechanics).selectValidNumSepInSeries(\n" +
+            "    \"outputNumSeps\", \"numStr\")",
+          ErrContext: "Error: Failed to Select 'finalOutputNumSeps'",
+          ErrMessage: err.Error(),
+        }
+    }
+  } else {
+
+    // Checks validity of bPairBig1NumSeps
+
+    err = new(numSepsDtoMechanics).copyNumSepsDto(
+      &finalOutputNumSeps, // Destination
+      &numStrNumSeps,
+      false, // Set Defaults if Empty
+      ePrefix.XCpy("Copy 'numStrNumSeps' Into 'finalOutputNumSeps'"))
+
+    if err != nil {
+
+      return BigIntNum{},
+        &FuncReturnError{
+          ErrPrefix:  ePrefix.String(),
+          ReturnFunc: "err = new(numSepsDtoMechanics).copyNumSepsDto(\n" +
+            "    &finalOutputNumSeps, &numStrNumSeps, false,\n" +
+            "    ePrefix.XCpy(\"Copy 'numStrNumSeps' Into 'finalOutputNumSeps'\"))",
+          ErrContext: "",
+          ErrMessage: err.Error(),
+        }
+    }
+  }
+
+  var multiplierBINum, multiplicandBINum, finalResult BigIntNum
+
+  multiplierBINum, err = new(BigIntNum).NewNumStrWithNumSeps(multiplier, numStrNumSeps, finalOutputNumSeps)
+
+  if err != nil {
+
+    return BigIntNum{},
+      &FuncReturnError{
+        ErrPrefix: ePrefix.String(),
+        ReturnFunc: "multiplierBINum, err := new(BigIntNum).NewNumStrWithNumSeps(\n" +
+          "    multiplier, numStrNumSeps, finalOutputNumSeps)",
+        ErrContext: fmt.Sprintf("multiplier = '%v'\nnumStrNumSeps= '%v'\nfinalOutputNumSeps=  '%v'",
+          multiplier, numStrNumSeps.String(), finalOutputNumSeps.String()),
+        ErrMessage: err.Error(),
+      }
+  }
+
+  multiplicandBINum, err = new(BigIntNum).NewNumStrWithNumSeps(multiplicand, numStrNumSeps, finalOutputNumSeps)
+
+  if err != nil {
+
+    return BigIntNum{},
+      &FuncReturnError{
+        ErrPrefix: ePrefix.String(),
+        ReturnFunc: "multiplicandBINum, err := new(BigIntNum).NewNumStrWithNumSeps(\n" +
+          "    multiplicand, numStrNumSeps, finalOutputNumSeps)",
+        ErrContext: fmt.Sprintf("multiplicand = '%v'\nnumStrNumSeps= '%v'\nfinalOutputNumSeps= '%v'",
+          multiplicand, numStrNumSeps.String(), finalOutputNumSeps.String()),
+        ErrMessage: err.Error(),
+      }
+  }
+
+  bPair, err := new(BigIntPair).NewBigIntNum(multiplierBINum, multiplicandBINum)
+
+  if err != nil {
+
+    return BigIntNum{},
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "bPair, err = new(BigIntPair).NewBigIntNum(multiplierBINum, multiplicandBINum)",
+        ErrContext:  fmt.Sprintf("multiplier= '%s'; multiplicand= '%s' ",
+          multiplier, multiplicand),
+        ErrMessage: err.Error(),
+      }
+  }
+
+  finalResult, err = new(bigIntMathMultiplyNanobot).
+    multiplyPairWithNumSeps(bPair, finalOutputNumSeps,
+      ePrefix.XCpy("bPair & finalOutputNumSeps"))
+
+  if err != nil {
+
+    return BigIntNum{},
+      &FuncReturnError{
+        ErrPrefix: ePrefix.String(),
+        ReturnFunc: "finalResult, err = new(bigIntMathMultiplyNanobot).\n" +
+          "  multiplyPairWithNumSeps(bPair, finalOutputNumSeps,\n" +
+          "  ePrefix.XCpy(\"bPair & finalOutputNumSeps\"))",
+        ErrContext: fmt.Sprintf("bPair.Big1= '%v' bPair.Big2= '%v'",
+          multiplier, multiplicand),
+        ErrMessage: err.Error(),
+      }
+  }
+
+  return finalResult, nil
+}
+
+// MultiplyNumStrArray
+//
+//  Overview
+//  ========
+//
+//  This method receives one number string which is classified as
+//  the 'multiplier'. The second input parameter is an array of
+//  number strings labeled, 'multiplicands'. The first element of
+//  the 'multiplicands' array is multiplied by the 'multiplier' to
+//  produce a 'product'. That 'product' then replaces the
+//  'multiplier' and is multiplied by the next element in the
+//  'multiplicands' array. This process is repeated through the
+//  last element in the array when the combined, final 'product'
+//  is returned as a Type 'BigIntNum'.
+//
+//    Example:
+//      multiplier = 3
+//      multiplicands = [3]string{2,3,4}
+//
+//      (1) 3 x 2 = 6
+//      (2) 6 x 3 = 18
+//      (3) 18 x 4 = 72
+//       The returned product is 72
+//
+//  Number String Negative Values
+//  =============================
+//
+//  The 'multiplier' string and 'multiplicands' string array
+//  parameters passed to this method are number strings which
+//  consist of a string of numeric digits representing a numeric
+//  value. A leading minus sign (-), or surrounding parentheses
+//  '()', may be included in these number strings to indicate a
+//  negative numeric value.
+//
+//  Fractional Digits in Number Strings
+//  ===================================
+//
+//  'multiplier' string and 'multiplicands' strings of numeric
+//  digits may also include a delimiting decimal separator to
+//  identify fractional digits to the right of the decimal
+//  separator. These number strings are parsed based on the Numeric
+//  Separators, including the decimal separator character, which
+//  are specified by input parameter 'numStrNumSeps'.
+//
+//  Multiplication Operation
+//  ========================
+//
+//  In the multiplication operation, the number to be multiplied
+//  is called the "multiplicand", while the number of times the
+//  multiplicand is to be multiplied comes from the "multiplier".
+//  Usually. the multiplier is placed first and the multiplicand
+//  is placed second.
+//
+//  For example, in the problem 5 x 3 equals 15, the 5 is the
+//  'multiplier', 3 is the 'multiplicand' and 15 is the 'product'
+//  or result.
+//
+//      multiplier x multiplicand = product or result
+//
+//  This method performs the multiplication operation described
+//  above and afterward returns the cumulative result or 'product'
+//  as a BigIntNum type.
+//
+//  Numeric Separators
+//  ==================
+//
+//	Numeric Separators define the Decimal Separator character,
+//	Thousands Separator character, and Currency Symbol character.
+//	These separator characters serve two purposes. First they are
+//	used to format and display numeric values as number strings.
+// 	Second, they are also used to parse number strings and convert
+//  them into numeric values.
+//
+//  Numeric Separator characters are typically encapsulated in a
+//  NumericSeparatorDto type.
+//
+//  Input parameter 'numStrNumSeps', of type NumericSeparatorDto,
+//  contains numeric separators specifying the Decimal Separator,
+//  Thousands Separator, and Currency Symbol. These numeric
+//  separators are required to parse the 'multiplier' and
+//  'multiplicands' number strings. This parsing operation is in
+//  turn used to convert those strings into numeric values for
+//  calculation purposes.
+//
+//  In addition, users may provide another optional input
+//  parameter labeled 'outputNumSeps' of type NumericSeparatorDto.
+//  If this optional input parameter is provided, it will be used
+//  to format the BigIntNum object returned by this method. Note
+//  that only the first valid NumericSeparatorDto in the
+//  'outputNumSeps' series will be selected and used. There is no
+//  need to provide more than one valid NumericSeparatorDto object
+//  for parameter 'outputNumSeps'.
+//
+//  If optional input parameter 'outputNumSeps' is NOT provided,
+//  or if the provided 'outputNumSeps' is invalid, the returned
+//  instance of BigIntNum will be configured with Numeric
+//  Separators supplied by mandatory input parameter,
+//  'numStrNumSeps'.
+//
+//  Input Parameters
+//  ================
+//
+//  multiplier               string
+//
+//	This number string contains the numeric value which serves as
+//	the initial multiplier in the multiplication operation defined
+// 	above.
+//
+//  multiplicands            []string
+//
+//  This array of strings contains the multiplicand numeric values
+//  for the multiplication operation defined above.
+//
+//  numStrNumSeps            NumericSeparatorDto
+//
+//  This instance of NumericSeparatorDto contains the Decimal
+//  Separator character, Thousands Separator character and the
+//  Currency Symbol character used to parse the number strings
+//  passed through input paramters 'multiplier' and
+//  'multiplicands'.
+//
+//  outputNumSeps            ... NumericSeparatorDto
+//
+//  This method is defined as a variadic function in that
+//  'outputNumSeps' is configured as an optional input parameter
+//  meaning that it is NOT required. The user can choose to
+//  provide a value for 'outputNumSeps', or not.
+//
+//  If the user chooses to provide a valid 'NumericSeparatorDto'
+//  object for this parameter, it will be used to configure the
+//  'BigIntNum' product value returned by this method.
+//
+//  Note that the first valid NumericSeparatorDto in the
+//  'outputNumSeps' series will be selected and used. There is no
+//  need to provide more than one valid NumericSeparatorDto object
+//  for parameter 'outputNumSeps'.
+//
+//  Be advised that if the user chooses NOT to provide this
+//  optional parameter, the 'BigIntNum' value returned by this
+//  method will be configued using the 'NumericSeparatorDto'
+//  copied from 'numStrNumSeps'
+//
+//  Return Values
+//  =============
+//
+//  BigIntNum
+//
+//  The product of the multiplication operation described above is
+//  returned as BigIntNum type.
+//
+//  error
+//
+//  If no errors are encountered during method execution, this
+//  return parameter is set to 'nil'.
 func (bMultiply *BigIntMathMultiply) MultiplyNumStrArray(
   multiplier string,
   multiplicands []string,
@@ -2908,7 +4101,7 @@ func (bMultiply *BigIntMathMultiply) MultiplyNumStrArray(
         ErrPrefix:  ePrefix.String(),
         ReturnFunc: "",
         ErrContext: "'multiplier' is an empty string.",
-        ErrMessage: "Error: 'multiplier' is INVALID!",
+        ErrMessage: "Error: Input parameter 'multiplier' is INVALID!",
       }
 
   }
@@ -2926,43 +4119,36 @@ func (bMultiply *BigIntMathMultiply) MultiplyNumStrArray(
       }
   }
 
-  numStrNumSeps.SetDefaultsIfEmpty()
-
   var finalOutputNumSeps NumericSeparatorDto
 
   finalOutputNumSeps.SetDefaultsIfEmpty()
 
-  var foundOutputNumSeps = false
-
   if len(outputNumSeps) > 0 {
 
-    for _, outPutNumSep := range outputNumSeps {
+    _, finalOutputNumSeps,
+      err = new(numSepsDtoMechanics).selectValidNumSepInSeries(
+      "outputNumSeps",
+      "numStr",
+      &numStrNumSeps,
+      ePrefix,
+      outputNumSeps...)
 
-      err = outPutNumSep.IsValid(ePrefix.String())
+    if err != nil {
 
-      if err != nil {
-        continue
-      }
-
-      err = finalOutputNumSeps.CopyIn(&outPutNumSep, true)
-
-      if err != nil {
-
-        finalOutputNumSeps.SetUSADefaults()
-
-        continue
-      }
-
-      foundOutputNumSeps = true
-
-      break
+      return BigIntNum{},
+        &FuncReturnError{
+          ErrPrefix: ePrefix.String(),
+          ReturnFunc: "_, finalOutputNumSeps, err = \n" +
+            "    new(numSepsDtoMechanics).selectValidNumSepInSeries(\n" +
+            "    \"outputNumSeps\", \"numStr\")",
+          ErrContext: "Error: Failed to Select 'finalOutputNumSeps'",
+          ErrMessage: err.Error(),
+        }
     }
 
-  }
+  } else {
 
-  if !foundOutputNumSeps {
-
-    err = finalOutputNumSeps.CopyIn(&numStrNumSeps, true)
+    err = finalOutputNumSeps.CopyIn(&numStrNumSeps, false)
 
     if err != nil {
 
@@ -2974,6 +4160,7 @@ func (bMultiply *BigIntMathMultiply) MultiplyNumStrArray(
           ErrMessage: err.Error(),
         }
     }
+
   }
 
   finalResult, err := new(BigIntNum).NewNumStrWithNumSeps(multiplier, numStrNumSeps, finalOutputNumSeps)
@@ -2992,6 +4179,7 @@ func (bMultiply *BigIntMathMultiply) MultiplyNumStrArray(
   }
 
   var multiplicandBINum BigIntNum
+  var multiplierNumStr, multiplicandNumStr string
   var bPair BigIntPair
 
   for i := 0; i < lenMultiplicands; i++ {
@@ -3023,6 +4211,32 @@ func (bMultiply *BigIntMathMultiply) MultiplyNumStrArray(
         }
     }
 
+    multiplicandNumStr, err = multiplicandBINum.GetNumStr()
+
+    if err != nil {
+
+      return BigIntNum{},
+        &FuncReturnError{
+          ErrPrefix:  ePrefix.String(),
+          ReturnFunc: "multiplicandNumStr, err = multiplicandBINum.GetNumStr()",
+          ErrContext: "",
+          ErrMessage: err.Error(),
+        }
+    }
+
+    multiplierNumStr, err = finalResult.GetNumStr()
+
+    if err != nil {
+
+      return BigIntNum{},
+        &FuncReturnError{
+          ErrPrefix:  ePrefix.String(),
+          ReturnFunc: "multiplierNumStr, err = finalResult.GetNumStr()",
+          ErrContext: "",
+          ErrMessage: err.Error(),
+        }
+    }
+
     bPair, err = new(BigIntPair).NewBigIntNum(finalResult, multiplicandBINum)
 
     if err != nil {
@@ -3031,135 +4245,340 @@ func (bMultiply *BigIntMathMultiply) MultiplyNumStrArray(
         &FuncReturnError{
           ErrPrefix:  ePrefix.String(),
           ReturnFunc: "bPair, err = new(BigIntPair).NewBigIntNum(finalResult, multiplicandBINum)",
-          ErrContext: "",
+          ErrContext:  fmt.Sprintf("finalResult '%s'; multiplicands[%d]= '%v' ",
+            multiplierNumStr, i, multiplicandNumStr),
           ErrMessage: err.Error(),
         }
     }
 
-    finalResult, err = new(bigIntMathMultiplyMechanics).
-      multiplyPairNoNumSeps(bPair, ePrefix)
+    finalResult, err = new(bigIntMathMultiplyNanobot).
+      multiplyPairWithNumSeps(bPair, finalOutputNumSeps,
+        ePrefix.XCpy("bPair & finalOutputNumSeps"))
 
     if err != nil {
 
       return BigIntNum{},
         &FuncReturnError{
           ErrPrefix: ePrefix.String(),
-          ReturnFunc: "finalResult, err = new(bigIntMathMultiplyMechanics).\n" +
-            "multiplyPairNoNumSeps(bPair, ePrefix)",
-          ErrContext: "",
+          ReturnFunc: "finalResult, err = new(bigIntMathMultiplyNanobot).\n" +
+            "  multiplyPairWithNumSeps(bPair, finalOutputNumSeps,\n" +
+            "  ePrefix.XCpy(\"bPair & finalOutputNumSeps\"))",
+          ErrContext: fmt.Sprintf("bPair.Big1= '%v' bPair.Big2= '%v'\n" +
+            "multiplicands index= '%d'",
+            multiplierNumStr, multiplicandNumStr, i),
           ErrMessage: err.Error(),
         }
     }
   }
 
-  err = finalResult.SetNumericSeparatorsDto(finalOutputNumSeps)
+  return finalResult, err
+}
+
+// MultiplyNumStrOutputToArray
+//
+//  Overview
+//  ========
+//
+//  This method receives one input parameter of Type string which
+//  is classified as the 'multiplier'. The second input parameter
+//  is an array of strings labeled, 'multiplicands'.
+//
+//  Each element of the 'multiplicands' array is multiplied by the
+//  'multiplier'. The result or 'product' is then stored as a
+//  number string in a results string array which is returned
+//  to the calling function.
+//
+//  Example:
+//
+//                 Multiplicands                 Output
+//  Multiplier         Array                      Array
+//
+//      3       x   multiplicands[0] = 2   =   outputarray[0] =  6
+//      3       x   multiplicands[1] = 3   =   outputarray[1] =  9
+//      3       x   multiplicands[2] = 4   =   outputarray[2] = 12
+//      3       x   multiplicands[3] = 5   =   outputarray[3] = 15
+//      3       x   multiplicands[4] = 6   =   outputarray[4] = 18
+//      3       x   multiplicands[5] = 7   =   outputarray[5] = 21
+//
+//  Number Strings
+//  ==============
+//
+//  Number strings are strings of numeric digits. These digits
+//  must be formatted in way that allows conversion to a
+//  corresponding numeric value. This method receives two
+//  number string input parameters labeled, 'multiplier' and
+//  'multiplicand'
+//
+//  Number String Negative Values
+//  =============================
+//
+//  The 'multiplier' and 'multiplicand' string parameters passed
+//  to this method are number strings which consist of strings of
+//  numeric digits representing a numeric value. A leading minus
+//  sign (-), or surrounding parentheses '()', may be included in
+//  these number strings to indicate a negative numeric value.
+//
+//  Fractional Digits in Number Strings
+//  ===================================
+//
+//  The 'multiplier' and 'multiplicand' strings of numeric
+//  digits may also include a delimiting decimal separator to
+//  identify fractional digits to the right of the decimal
+//  separator. In the USA, the default decimal separator is the
+//  period character ('.').
+//
+//  These number strings are parsed based on the Numeric
+//  Separators, including the Decimal Separator character, which
+//  are specified by input parameter 'numStrNumSeps'.
+//
+//  Multiplication Operation
+//  ========================
+//
+//  In the multiplication operation, the number to be multiplied
+//  is called the "multiplicand", while the number of times the
+//  multiplicand is to be multiplied comes from the "multiplier".
+//  Usually. the multiplier is placed first and the multiplicand
+//  is placed second.
+//
+//  For example, in the problem 5 x 3 equals 15, the 5 is the
+//  'multiplier', 3 is the 'multiplicand' and 15 is the 'product'
+//  or result.
+//
+//      multiplier x multiplicand = product or result
+//
+//  This method performs the multiplication operation described
+//  above and afterward returns the cumulative result or 'product'
+//  as a BigIntNum type.
+//
+//  Numeric Separators
+//  ==================
+//
+//	Numeric Separators define the Decimal Separator character,
+//	Thousands Separator character, and Currency Symbol character.
+//	These separator characters serve two purposes. First they are
+//	used to format and display numeric values as number strings.
+// 	Second, they are also used to parse number strings and convert
+//  them into numeric values.
+//
+//  Numeric Separator characters are typically encapsulated in a
+//  NumericSeparatorDto type.
+//
+//  Input parameter 'numStrNumSeps', of type NumericSeparatorDto,
+//  contains numeric separators specifying the Decimal Separator,
+//  Thousands Separator, and Currency Symbol. These numeric
+//  separators are required to parse the 'multiplier' and
+//  'multiplicand' number strings. This parsing operation is in
+//  turn used to convert those strings into numeric values for
+//  calculation purposes.
+//
+//  Input Parameters
+//  ================
+//
+//  multiplier               string
+//
+//	This number string contains the numeric value which serves as
+//	the initial multiplier in the multiplication operation defined
+// 	above.
+//
+//  multiplicands            []string
+//
+//  This array of strings contains the multiplicand numeric values
+//  for the multiplication operation defined above.
+//
+//  numStrNumSeps            NumericSeparatorDto
+//
+//  This instance of NumericSeparatorDto contains the Decimal
+//  Separator character, Thousands Separator character and the
+//  Currency Symbol character used to parse the number strings
+//  passed through input paramters 'multiplier' and
+//  'multiplicands'.
+//
+//  Return Values
+//  =============
+//
+//  []string
+//
+//  The products of the multiplication operation described above is
+//  returned as an array of number strings.
+//
+//  error
+//
+//  If no errors are encountered during method execution, this
+//  return parameter is set to 'nil'.
+func (bMultiply *BigIntMathMultiply) MultiplyNumStrOutputToArray(
+  multiplier string,
+  multiplicands []string,
+  numStrNumSeps NumericSeparatorDto) ([]string, error) {
+
+  var ePrefix *ePref.ErrPrefixDto
+
+  var err error
+
+  ePrefix,
+    err = ePref.ErrPrefixDto{}.NewIEmpty(
+    nil,
+    "BigIntMathMultiply.MultiplyNumStrOutputToArray",
+    "")
+
+  if err != nil {
+    return []string{}, err
+  }
+
+  numStrNumSeps.SetDefaultsIfEmpty()
+
+  if len(multiplier) == 0 {
+
+    return []string{},
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "",
+        ErrContext: "'multiplier' is an empty string.",
+        ErrMessage: "Error: Input parameter 'multiplier' is INVALID!",
+      }
+
+  }
+
+  lenMultiplicands := len(multiplicands)
+
+  if lenMultiplicands == 0 {
+
+    return []string{},
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "",
+        ErrContext: "'multiplicands' is an empty array.",
+        ErrMessage: "Error: Input parameter 'multiplicands' is INVALID!",
+      }
+  }
+
+  var multiplierBINum BigIntNum
+
+  multiplierBINum, err = new(BigIntNum).NewNumStrWithNumSeps(multiplier, numStrNumSeps, numStrNumSeps)
 
   if err != nil {
 
-    return BigIntNum{},
+    return []string{},
       &FuncReturnError{
         ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "err = finalResult.SetNumericSeparatorsDto(finalOutputNumSeps)",
+        ReturnFunc: "multiplierBINum, err := new(BigIntNum).NewNumStrWithNumSeps(\n" +
+          "    multiplier, numStrNumSeps, numStrNumSeps)",
+        ErrContext: fmt.Sprintf("multiplier= '%v'\nnumStrNumSeps= '%v'",
+          multiplier, numStrNumSeps.String()),
+        ErrMessage: err.Error(),
+      }
+  }
+
+  var multiplierNumStr string
+
+  multiplierNumStr, err = multiplierBINum.GetNumStr()
+
+  if err != nil {
+
+    return []string{},
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "multiplierNumStr, err = multiplierBINum.GetNumStr()",
         ErrContext: "",
         ErrMessage: err.Error(),
       }
   }
 
-  return finalResult, nil
-}
-
-// MultiplyNumStrOutputToArray - Receives one input parameter of Type string which
-// is classified as the 'multiplier'. The second input parameter is an array of strings
-// labeled, 'multiplicands'.
-//
-// Each element of the 'multiplicands' array is multiplied by the 'multiplier'. The result or
-// 'product' is then stored in a results array which is returned to the calling function.
-//
-// The 'multiplier' string and 'multiplicands' string array passed to this method are number
-// strings which consist of a string of numeric digits representing a numeric value. A leading
-// minus sign (-) may be included to indicate a negative numeric value. This string of numeric
-// digits may include a delimiting decimal separator to identify fractional digits. The number
-// strings are parsed based on the decimal separator character specified by input parameter,
-// 'numSeps'.
-//
-// Input parameter 'numSeps' is a type NumericSeparatorDto and is used to parse the number
-// strings contained in input parameters, 'multiplier' and 'multiplicands'. 'numSeps'
-// represents the applicable decimal separator, thousands separator and currency symbol. In
-// addition, 'numSeps' is also used in configuring the results string array returned by this
-// multiplication operation.
-//
-// In the multiplication operation, the number to be multiplied is called the "multiplicand",
-// while the number of times the multiplicand is to be multiplied comes from the "multiplier".
-// Usually the multiplier is placed first and the multiplicand is placed second.
-//
-// For example, in the problem 5 x 3 equals 15, the 5 is the 'multiplier', 3 is the 'multiplicand'
-// and 15 is the 'product' or result.
-//
-// Example
-// =======
-//
-//	Multiplicands												Output
-//
-// Multiplier				    	Array														Array
-//
-//	3			x				multiplicands[0] = 2			=				  outputarray[0] =  6
-//	3			x				multiplicands[1] = 3			=				  outputarray[1] =  9
-//	3			x				multiplicands[2] = 4			=				  outputarray[2] = 12
-//	3			x				multiplicands[3] = 5			=				  outputarray[3] = 15
-//	3			x				multiplicands[4] = 6			=				  outputarray[4] = 18
-//	3			x				multiplicands[5] = 7			=				  outputarray[5] = 21
-//
-// This method performs the multiplication operation described above and afterwards returns the
-// result or 'product' in an Array of 'NumStrs' ([] NumStrs).
-func (bMultiply *BigIntMathMultiply) MultiplyNumStrOutputToArray(
-  multiplier string,
-  multiplicands []string,
-  numSeps NumericSeparatorDto) ([]string, error) {
-
-  ePrefix := "BigIntMathMultiply.MultiplyNumStrOutputToArray() "
-
-  numSeps.SetDefaultsIfEmpty()
-
-  lenMultiplicands := len(multiplicands)
-
-  if lenMultiplicands == 0 {
-    return []string{},
-      errors.New(ePrefix + "Error: multiplicands array is Empty!")
-  }
-
-  multiplierBINum, err := new(BigIntNum).NewNumStrWithNumSeps(multiplier, numSeps)
-
-  if err != nil {
-    return []string{},
-      fmt.Errorf(ePrefix+
-        "Error returned by new(BigIntNum).NewNumStrWithNumSeps(multiplier, numSeps) "+
-        " multiplier='%v' numSeps='%v' Error='%v'. ",
-        multiplier, numSeps.String(), err.Error())
-  }
-
   resultArray := make([]string, lenMultiplicands)
+  var multiplicandNumStr string
+  var bPair BigIntPair
+  var multiplicandBINum, finalResult BigIntNum
 
   for i := 0; i < lenMultiplicands; i++ {
 
-    multiplicandBINum, err := new(BigIntNum).NewNumStrWithNumSeps(multiplicands[i], numSeps)
+    if len(multiplicands[i]) == 0 {
 
-    if err != nil {
       return []string{},
-        fmt.Errorf(ePrefix+
-          "Error returned by new(BigIntNum).NewNumStrWithNumSeps(multiplicands[i], numSeps) "+
-          " multiplicands[%v]='%v' numSeps='%v' Error='%v'. ",
-          i, multiplicands[i], numSeps.String(), err.Error())
+        &FuncReturnError{
+          ErrPrefix:  ePrefix.String(),
+          ReturnFunc: "",
+          ErrContext: "",
+          ErrMessage: fmt.Sprintf("Error: 'multiplicands[%d]' is an empty string!", i)  ,
+        }
+
     }
 
-    bPair := new(BigIntPair).NewBigIntNum(multiplierBINum, multiplicandBINum)
+    multiplicandBINum, err = new(BigIntNum).
+      NewNumStrWithNumSeps(multiplicands[i], numStrNumSeps, numStrNumSeps)
 
-    result := bMultiply.MultiplyPair(bPair)
+    if err != nil {
 
-    resultArray[i] = result.GetNumStr()
+      return []string{},
+        &FuncReturnError{
+          ErrPrefix:  ePrefix.String(),
+          ReturnFunc: fmt.Sprintf("multiplicandBINum, err := new(BigIntNum).NewNumStrWithNumSeps(multiplicands[%d], numStrNumSeps, numStrNumSeps)", i),
+          ErrContext: fmt.Sprintf("multiplicands[%d]= '%v'; numStrNumSeps= '%v'",
+            i, multiplicands[i], numStrNumSeps.String()),
+          ErrMessage: err.Error(),
+        }
+    }
+
+    multiplicandNumStr, err = multiplierBINum.GetNumStr()
+
+    if err != nil {
+
+      return []string{},
+        &FuncReturnError{
+          ErrPrefix:  ePrefix.String(),
+          ReturnFunc: "multiplicandNumStr, err = multiplierBINum.GetNumStr()",
+          ErrContext: "",
+          ErrMessage: err.Error(),
+        }
+    }
+
+    bPair, err = new(BigIntPair).NewBigIntNum(multiplierBINum, multiplicandBINum)
+
+    if err != nil {
+
+      return []string{},
+        &FuncReturnError{
+          ErrPrefix:  ePrefix.String(),
+          ReturnFunc: "bPair, err = new(BigIntPair).NewBigIntNum(multiplierBINum, multiplicandBINum)",
+          ErrContext: fmt.Sprintf("multiplierBINum= '%v; multiplicandBINum= '%v'",
+            multiplierNumStr, multiplicandNumStr),
+          ErrMessage: err.Error(),
+        }
+    }
+
+    finalResult, err = new(bigIntMathMultiplyNanobot).
+      multiplyPairWithNumSeps(bPair, numStrNumSeps,
+        ePrefix.XCpy("bPair & numStrNumSeps"))
+
+    if err != nil {
+
+      return []string{},
+        &FuncReturnError{
+          ErrPrefix: ePrefix.String(),
+          ReturnFunc: "finalResult, err = new(bigIntMathMultiplyNanobot).\n" +
+            "  multiplyPairWithNumSeps(bPair, numStrNumSeps,\n" +
+            "  ePrefix.XCpy(\"bPair & numStrNumSeps\"))",
+          ErrContext: fmt.Sprintf("bPair.Big1= '%v'; bPair.Big2= '%v'\n" +
+            " multiplicand index= '%d'",
+            multiplierNumStr, multiplicandNumStr, i),
+          ErrMessage: err.Error(),
+        }
+    }
+
+    resultArray[i], err = finalResult.GetNumStr()
+
+    if err != nil {
+
+      return []string{},
+        &FuncReturnError{
+          ErrPrefix:  ePrefix.String(),
+          ReturnFunc: "resultArray[i], err = finalResult.GetNumStr()",
+          ErrContext: "",
+          ErrMessage: err.Error(),
+        }
+    }
 
   }
 
-  return resultArray, nil
+  return resultArray, err
 }
 
 // MultiplyNumStrSeries
@@ -3172,15 +4591,22 @@ func (bMultiply *BigIntMathMultiply) MultiplyNumStrOutputToArray(
 //  is a comma-delimited series of strings labeled,
 //  'multiplicands'. The first element of the 'multiplicands'
 //  series is multiplied by the 'multiplier' to produce a
-//  'product'. That 'product' replaces the 'multiplier' and is
+//  'product'. That 'product' then replaces the 'multiplier' and is
 //  multiplied by the next element in the 'multiplicands' series.
-//  This process is continued through the last element in the
+//  This process is repeated through the last element in the
 //  'multiplicands' series.
 //
-//  Upon completion of the multiplication calculation, the combined
-//  final 'product' is returned as a Type 'BigIntNum'. This
-//  returned 'BigIntNum' will be configured with the Numeric
-//  Separators contained in input parameter, 'outputNumSeps'.
+//  Upon completion of the multiplication calculation, the
+//  combined, final 'product' is returned as a Type 'BigIntNum'.
+//
+//    Example:
+//      multiplier = 3
+//      multiplicands = strings "2","3","4"
+//
+//      (1) 3 x 2 = 6
+//      (2) 6 x 3 = 18
+//      (3) 18 x 4 = 72
+//       The returned product is 72
 //
 //  Multiplication Operation
 //  ========================
@@ -3215,30 +4641,85 @@ func (bMultiply *BigIntMathMultiply) MultiplyNumStrOutputToArray(
 //  identify fractional digits to the right of the decimal
 //  separator. These number strings are parsed based on the Numeric
 //  Separators, including the decimal separator character, which
-//  are specified by input parameter 'inputNumSeps'.
+//  are specified by input parameter 'numStrNumSeps'.
 //
 //	Numeric Separators
 //	==================
 //
 //	Numeric Separators define the Decimal Separator character,
-//	Thousands Separator character and Currency Symbol character.
-//	These separator characters are used to parse number strings
-//  and convert those strings into numeric values. In addition,
-//  Numeric Separators are used to format and display numeric
-//  values as number strings. Numeric Separators are typically
-//  encapsulated in the NumericSeparatorDto type.
+//	Thousands Separator character, and Currency Symbol character.
+//	These separator characters serve two purposes. First they are
+//	used to format and display numeric values as number strings.
+// 	Second, they are also used to parse number strings and convert
+//  them into numeric values.
 //
-//  Input parameter 'inputNumSeps' is of type NumericSeparatorDto and is
-//  used to parse the number strings contained in input parameters,
-//  'multiplier' and 'multiplicands'. This parsing operation is in
+//  Numeric Separator characters are typically encapsulated in a
+//  NumericSeparatorDto type.
+//
+//  Input parameter 'numStrNumSeps', of type NumericSeparatorDto,
+//  contains numeric separators specifying the Decimal Separator,
+//  Thousands Separator, and Currency Symbol. These numeric
+//  separators are required to parse the 'multiplier' and
+//  'multiplicands' number strings. This parsing operation is in
 //  turn used to convert those strings into numeric values for
-//  calculation purposes. 
-//  
-//  The returned BigIntNum multiplication 'result' will contain
-//  Numeric Separators (Decimal Separator, Thousands Separator and
-//  Currency Symbol) specified by input parameter, 'inputNumSeps'.
+//  calculation purposes.
+//
+//  Input parameter 'outputNumSeps' of type NumericSeparatorDto,
+//  also contains numeric separators specifying the Decimal
+//  Separator, Thousands Separator, and Currency Symbol.
+//  The returned BigIntNum multiplication 'product' will contain
+//  Numeric Separators specified by input parameter,
+//  'outputNumSeps'.
+//
+//  Input Parameters
+//  ================
+//
+//  numStrNumSeps            NumericSeparatorDto
+//
+//  This instance of NumericSeparatorDto contains the Decimal
+//  Separator character, Thousands Separator character and the
+//  Currency Symbol character used to parse the number strings
+//  passed through input paramters 'multiplier' and
+//  'multiplicands'.
+//
+//  outputNumSeps            NumericSeparatorDto
+//
+//  This instance of NumericSeparatorDto contains the Decimal
+//  Separator character, Thousands Separator character and the
+//  Currency Symbol character used to format the BigIntNum product
+//  returned by this method.
+//
+//  multiplier               string
+//
+//	This number string contains the numeric value which serves as
+//	the initial multiplier in the multiplication operation defined
+// 	above.
+//
+//  multiplicands            ...string
+//
+//  This method is defined as a variadic function in that
+//  'multiplicands' is configured to accept multiple number strings
+//  which will serve as multiplicand values for the multiplication
+//  operation defined above.
+//
+//  Although users have the option to supply zero strings for this
+//  parameter, failure to provide at least one valid number string
+//  will trigger an error.
+//
+//  Return Values
+//  =============
+//
+//  BigIntNum
+//
+//  The product of the multiplication operation described above is
+//  returned as BigIntNum type.
+//
+//  error
+//
+//  If no errors are encountered during method execution, this
+//  return parameter is set to 'nil'.
 func (bMultiply *BigIntMathMultiply) MultiplyNumStrSeries(
-  inputNumSeps NumericSeparatorDto,
+  numStrNumSeps NumericSeparatorDto,
   outputNumSeps NumericSeparatorDto,
   multiplier string,
   multiplicands ...string) (BigIntNum, error) {
@@ -3279,19 +4760,19 @@ func (bMultiply *BigIntMathMultiply) MultiplyNumStrSeries(
       }
   }
 
-  err = inputNumSeps.IsValid(ePrefix.
-    XCpy("Validating inputNumSeps").String())
+  err = numStrNumSeps.IsValid(ePrefix.
+    XCpy("Validating numStrNumSeps").String())
 
   if err != nil {
 
     return BigIntNum{},
       &FuncReturnError{
         ErrPrefix: ePrefix.String(),
-        ReturnFunc: "err = inputNumSeps.IsValid(ePrefix.\n" +
-          "XCpy(\"Validating inputNumSeps\").String())",
-        ErrContext: "Input parameter 'inputNumSeps' is invalid!\n" +
-          fmt.Sprintf("'inputNumSeps'= '%v'",
-            inputNumSeps.String()),
+        ReturnFunc: "err = numStrNumSeps.IsValid(ePrefix.\n" +
+          "XCpy(\"Validating numStrNumSeps\").String())",
+        ErrContext: "Input parameter 'numStrNumSeps' is invalid!\n" +
+          fmt.Sprintf("'numStrNumSeps'= '%v'",
+            numStrNumSeps.String()),
         ErrMessage: err.Error(),
       }
   }
@@ -3315,7 +4796,7 @@ func (bMultiply *BigIntMathMultiply) MultiplyNumStrSeries(
 
   var finalResult BigIntNum
 
-  finalResult, err = new(BigIntNum).NewNumStrWithNumSeps(multiplier, inputNumSeps, outputNumSeps)
+  finalResult, err = new(BigIntNum).NewNumStrWithNumSeps(multiplier, numStrNumSeps, outputNumSeps)
 
   if err != nil {
 
@@ -3325,33 +4806,20 @@ func (bMultiply *BigIntMathMultiply) MultiplyNumStrSeries(
         ReturnFunc: "multiplierBigINum, err = new(BigIntNum).\n" +
           "    NewNumStrWithNumSeps(multiplier, inputNumSeps, outputNumSeps)",
         ErrContext: fmt.Sprintf("'multiplier' number string = '%v'\n"+
-          "inputNumSeps= '%v'\noutputNumSeps= '%v'",
-          multiplier, inputNumSeps.String(), outputNumSeps.String()),
+          "numStrNumSeps= '%v'\noutputNumSeps= '%v'",
+          multiplier, numStrNumSeps.String(), outputNumSeps.String()),
         ErrMessage: err.Error(),
       }
   }
 
   var multiplierNumStr, multiplicandNumStr string
 
-  multiplierNumStr, err = finalResult.GetNumStr()
-
-  if err != nil {
-
-    return BigIntNum{},
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "multiplierNumStr, err = finalResult.GetNumStr()",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-  }
-
   var bPair BigIntPair
 
-  for _, multiplicand := range multiplicands {
+  for idx, multiplicand := range multiplicands {
 
     multiplicandBINum, err := new(BigIntNum).
-      NewNumStrWithNumSeps(multiplicand, inputNumSeps, outputNumSeps)
+      NewNumStrWithNumSeps(multiplicand, numStrNumSeps, outputNumSeps)
 
     if err != nil {
 
@@ -3361,8 +4829,8 @@ func (bMultiply *BigIntMathMultiply) MultiplyNumStrSeries(
           ReturnFunc: "multiplicandBINum, err := new(BigIntNum).\n" +
             "    NewNumStrWithNumSeps(multiplicand,\n" +
             "    inputNumSeps, outputNumSeps)",
-          ErrContext: fmt.Sprintf("multiplicand= '%v'\ninputNumSeps= '%v'\noutputNumSeps= '%v'",
-            multiplicand, inputNumSeps.String(), outputNumSeps.String()),
+          ErrContext: fmt.Sprintf("multiplicand= '%v' multiplicand index= '%d'\nnumStrNumSeps= '%v'\noutputNumSeps= '%v'",
+            multiplicand, idx, numStrNumSeps.String(), outputNumSeps.String()),
           ErrMessage: err.Error(),
         }
     }
@@ -3375,7 +4843,20 @@ func (bMultiply *BigIntMathMultiply) MultiplyNumStrSeries(
         &FuncReturnError{
           ErrPrefix:  ePrefix.String(),
           ReturnFunc: "multiplicandNumStr, err = multiplicandBINum.GetNumStr()",
-          ErrContext: "",
+          ErrContext: fmt.Sprintf("multiplicand index= '%d'", idx),
+          ErrMessage: err.Error(),
+        }
+    }
+
+    multiplierNumStr, err = finalResult.GetNumStr()
+
+    if err != nil {
+
+      return BigIntNum{},
+        &FuncReturnError{
+          ErrPrefix:  ePrefix.String(),
+          ReturnFunc: "multiplierNumStr, err = finalResult.GetNumStr()",
+          ErrContext: fmt.Sprintf("multiplicand index= '%d'", idx),
           ErrMessage: err.Error(),
         }
     }
@@ -3396,55 +4877,35 @@ func (bMultiply *BigIntMathMultiply) MultiplyNumStrSeries(
         }
     }
 
-    finalResult, err = new(bigIntMathMultiplyMechanics).
-      multiplyPairNoNumSeps(bPair, ePrefix)
+    finalResult, err = new(bigIntMathMultiplyNanobot).
+      multiplyPairWithNumSeps(bPair, outputNumSeps,
+        ePrefix.XCpy("bPair & outputNumSeps"))
+
 
     if err != nil {
 
       return BigIntNum{},
         &FuncReturnError{
           ErrPrefix: ePrefix.String(),
-          ReturnFunc: "finalResult, err = new(bigIntMathMultiplyMechanics).\n" +
-            "multiplyPairNoNumSeps(bPair, ePrefix)",
-          ErrContext: fmt.Sprintf("multiplier= '%v'; multiplicand= '%v'",
-            multiplierNumStr, multiplicandNumStr),
+          ReturnFunc: "finalResult, err = new(bigIntMathMultiplyNanobot).\n" +
+            "  multiplyPairWithNumSeps(bPair, outputNumSeps,\n" +
+            "  ePrefix.XCpy(\"bPair & outputNumSeps\"))",
+          ErrContext: fmt.Sprintf("bPair.Big1= '%v' bPair.Big2= '%v'\n" +
+            "multiplicands index= '%d'",
+            multiplierNumStr, multiplicandNumStr, idx),
           ErrMessage: err.Error(),
         }
     }
 
-    multiplierNumStr, err = finalResult.GetNumStr()
-
-    if err != nil {
-
-      return BigIntNum{},
-        &FuncReturnError{
-          ErrPrefix:  ePrefix.String(),
-          ReturnFunc: "multiplierNumStr, err = finalResult.GetNumStr()",
-          ErrContext: "",
-          ErrMessage: err.Error(),
-        }
-    }
-
-  }
-
-  err = finalResult.SetNumericSeparatorsDto(outputNumSeps)
-
-  if err != nil {
-
-    return BigIntNum{},
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "err = finalResult.SetNumericSeparatorsDto(outputNumSeps)",
-        ErrContext: fmt.Sprintf("outputNumSeps= '%v'",
-          outputNumSeps.String()),
-        ErrMessage: err.Error(),
-      }
   }
 
   return finalResult, nil
 }
 
-// MultiplyNumStrDto - Receives two NumStrDto instances and multiplies their
+// MultiplyNumStrDto
+//
+// 
+// Receives two NumStrDto instances and multiplies their
 // numeric values. The result or 'product' is returned as a 'BigIntNum'
 // type.
 //
@@ -3489,15 +4950,25 @@ func (bMultiply *BigIntMathMultiply) MultiplyNumStrDto(
 //
 //	Overview
 //	========
-//	Receives one NumStrDto which is classified as the 'multiplier'.
-//	The second input parameter is an array of NumStrDto Types
-//	labeled, 'multiplicands'. The first element of the
-//	'multiplicands' array is multiplied by the 'multiplier' to
-//	produce a 'product'. That 'product' replaces the 'multiplier'
-//	and is multiplied by the next element in the multiplicands array.
-//	This process is continued through the last element in the array
-//	when the combined, final 'product' is returned as a Type
-//	'BigIntNum'.
+//
+//	Receives one NumStrDto instance which is classified as the
+// 	'multiplier'. The second input parameter is an array of
+//	NumStrDto Types labeled, 'multiplicands'. The first element of
+// 	the 'multiplicands' array is multiplied by the 'multiplier' to
+//	produce a 'product'. That 'product' then replaces the
+// 	'multiplier' and is multiplied by the next element in the
+//	'multiplicands' array. This process is repeated through the
+// 	last element in the array when the combined, final 'product'
+//	is returned as a Type 'BigIntNum'.
+//
+//    Example:
+//      multiplier = 3
+//      multiplicands = [3]NumStrDto{2,3,4}
+//
+//      (1) 3 x 2 = 6
+//      (2) 6 x 3 = 18
+//      (3) 18 x 4 = 72
+//       The returned product is 72
 //
 //	Multiplication Operation
 //	========================
@@ -3509,8 +4980,8 @@ func (bMultiply *BigIntMathMultiply) MultiplyNumStrDto(
 //	placed second.
 //
 //	For example, in the problem 5 x 3 equals 15, the 5 is the
-//	'multiplier', 3 is the 'multiplicand' and 15 is the 'product' or
-//	result.
+//	'multiplier', 3 is the 'multiplicand' and 15 is the 'product'
+//	or result.
 //
 //	  multiplier x multiplicand = product or result
 //
@@ -3539,6 +5010,40 @@ func (bMultiply *BigIntMathMultiply) MultiplyNumStrDto(
 //	provided, the returned BigIntNum instance will be
 //	configured using numeric separators copied from input
 //	parameter, 'multiplier'.
+//
+//  Input Parameters
+//  ================
+//
+//  multiplier               NumStrDto
+//
+//	This NumStrDto instance serves as the initial multiplier in the
+//  multiplication operation defined above.
+//
+//  multiplicands           []NumStrDto
+//
+//  This array of NumStrDto objects serves as multiplicands in the
+//  multiplication operation defined above.
+//
+//  outputNumSeps            ... NumericSeparatorDto
+//
+//  This method is defined as a variadic function in that
+//  'outputNumSeps' is configured as an optional input parameter
+//  meaning that it is NOT required. The user can choose to
+//  provide a value for 'outputNumSeps', or not.
+//
+//  If the user chooses to provide a valid 'NumericSeparatorDto'
+//  object for this parameter, it will be used to configure the
+//  'BigIntNum' product value returned by this method.
+//
+//  Note that the first valid NumericSeparatorDto in the
+//  'outputNumSeps' series will be selected and used. There is no
+//  need to provide more than one valid NumericSeparatorDto object
+//  for parameter 'outputNumSeps'.
+//
+//  Be advised that if the user chooses NOT to provide this
+//  optional parameter, the 'BigIntNum' value returned by this
+//  method will be configued using the 'NumericSeparatorDto'
+//  copied from 'multiplier'
 func (bMultiply *BigIntMathMultiply) MultiplyNumStrDtoArray(
   multiplier NumStrDto,
   multiplicands []NumStrDto,
@@ -3616,25 +5121,50 @@ func (bMultiply *BigIntMathMultiply) MultiplyNumStrDtoArray(
       }
   }
 
-  _, finalOutputNumSeps,
-    err = new(numSepsDtoMechanics).selectValidNumSepInSeries(
-    "outputNumSeps",
-    "multiplier",
-    &multiplierNumSeps,
-    ePrefix,
-    outputNumSeps...)
+  if len(outputNumSeps) > 0 {
 
-  if err != nil {
+    _, finalOutputNumSeps,
+      err = new(numSepsDtoMechanics).selectValidNumSepInSeries(
+      "outputNumSeps",
+      "multiplier",
+      &multiplierNumSeps,
+      ePrefix,
+      outputNumSeps...)
 
-    return BigIntNum{},
-      &FuncReturnError{
-        ErrPrefix: ePrefix.String(),
-        ReturnFunc: "_, finalOutputNumSeps, err = \n" +
-          "    new(numSepsDtoMechanics).selectValidNumSepInSeries(\n" +
-          "    \"outputNumSeps\", \"multiplier\")",
-        ErrContext: "Error: Failed to Select 'finalOutputNumSeps'",
-        ErrMessage: err.Error(),
-      }
+    if err != nil {
+
+      return BigIntNum{},
+        &FuncReturnError{
+          ErrPrefix: ePrefix.String(),
+          ReturnFunc: "_, finalOutputNumSeps, err = \n" +
+            "    new(numSepsDtoMechanics).selectValidNumSepInSeries(\n" +
+            "    \"outputNumSeps\", \"multiplier\")",
+          ErrContext: "Error: Failed to Select 'finalOutputNumSeps'",
+          ErrMessage: err.Error(),
+        }
+    }
+  } else {
+
+    // Checks validity of multiplierNumSeps
+
+    err = new(numSepsDtoMechanics).copyNumSepsDto(
+      &finalOutputNumSeps, // Destination
+      &multiplierNumSeps,
+      false, // Set Defaults if Empty
+      ePrefix.XCpy("Copy 'multiplierNumSeps' Into 'finalOutputNumSeps'"))
+
+    if err != nil {
+
+      return BigIntNum{},
+        &FuncReturnError{
+          ErrPrefix:  ePrefix.String(),
+          ReturnFunc: "err = new(numSepsDtoMechanics).copyNumSepsDto(\n" +
+            "    &finalOutputNumSeps, &multiplierNumSeps, false,\n" +
+            "    ePrefix.XCpy(\"Copy 'multiplierNumSeps' Into 'finalOutputNumSeps'\"))",
+          ErrContext: "",
+          ErrMessage: err.Error(),
+        }
+    }
   }
 
   // This method tests the validity of 'multiplier'
@@ -3686,6 +5216,19 @@ func (bMultiply *BigIntMathMultiply) MultiplyNumStrDtoArray(
         }
     }
 
+    multiplierNumStr, err = finalResult.GetNumStr()
+
+    if err != nil {
+
+      return BigIntNum{},
+        &FuncReturnError{
+          ErrPrefix:  ePrefix.String(),
+          ReturnFunc: "multiplierNumStr, err = finalResult.GetNumStr()",
+          ErrContext: "",
+          ErrMessage: err.Error(),
+        }
+    }
+
     // This method tests the validity of multiplicands[i]
     multiplicandBINum, err = new(BigIntNum).NewNumStrDto(multiplicands[i])
 
@@ -3711,44 +5254,33 @@ func (bMultiply *BigIntMathMultiply) MultiplyNumStrDtoArray(
           ErrPrefix: ePrefix.String(),
           ReturnFunc: "bPair, err = new(BigIntPair).NewBigIntNum(\n" +
             "    finalResult, multiplicandBINum)",
-          ErrContext: fmt.Sprintf("multiplicands[%d]= '%v'",
-            i, multiplicandNumStr),
+          ErrContext: fmt.Sprintf("finalResult= '%v'; multiplicands[%d]= '%v'",
+            multiplierNumStr, i, multiplicandNumStr),
           ErrMessage: err.Error(),
         }
     }
 
-    finalResult, err = new(bigIntMathMultiplyMechanics).
-      multiplyPairNoNumSeps(bPair, ePrefix)
+    finalResult, err = new(bigIntMathMultiplyNanobot).
+      multiplyPairWithNumSeps(bPair, finalOutputNumSeps,
+        ePrefix.XCpy("bPair & finalOutputNumSeps"))
 
     if err != nil {
 
       return BigIntNum{},
         &FuncReturnError{
           ErrPrefix: ePrefix.String(),
-          ReturnFunc: "finalResult, err = new(bigIntMathMultiplyMechanics).\n" +
-            "multiplyPairNoNumSeps(bPair, ePrefix)",
-          ErrContext: "",
+          ReturnFunc: "finalResult, err = new(bigIntMathMultiplyNanobot).\n" +
+            "multiplyPairWithNumSeps(bPair, finalOutputNumSeps,\n " +
+            "ePrefix.XCpy(\"bPair & finalOutputNumSeps\"))",
+          ErrContext: fmt.Sprintf("bPair.Big1= '%v' bPair.Big2= '%v'\nmultiplicands index= '%d'",
+            multiplierNumStr, multiplicandNumStr, i),
           ErrMessage: err.Error(),
         }
     }
+
   }
 
-  err = finalResult.SetNumericSeparatorsDto(finalOutputNumSeps)
-
-  if err != nil {
-
-    return BigIntNum{},
-      &FuncReturnError{
-        ErrPrefix: ePrefix.String(),
-        ReturnFunc: "err = finalResult.SetNumericSeparatorsDto(\n" +
-          "    finalOutputNumSeps)",
-        ErrContext: fmt.Sprintf("finalOutputNumSeps= '%v'",
-          finalOutputNumSeps.String()),
-        ErrMessage: err.Error(),
-      }
-  }
-
-  return finalResult, nil
+  return finalResult, err
 }
 
 // MultiplyNumStrDtoOutputToArray
@@ -3765,6 +5297,19 @@ func (bMultiply *BigIntMathMultiply) MultiplyNumStrDtoArray(
 //	'multiplier'. The result or 'product' is then stored in a
 //	results array which is returned to the calling function.
 //
+//	  Example:
+//	  
+//
+//	  Multiplicands                                     Output
+//	   Multiplier             Array                     Array
+//
+//	      3       x    multiplicands[0] = 2   =   outputarray[0] =  6
+//	      3       x    multiplicands[1] = 3   =   outputarray[1] =  9
+//	      3       x    multiplicands[2] = 4   =   outputarray[2] = 12
+//	      3       x    multiplicands[3] = 5   =   outputarray[3] = 15
+//	      3       x    multiplicands[4] = 6   =   outputarray[4] = 18
+//	      3       x    multiplicands[5] = 7   =   outputarray[5] = 21
+//
 //	Multiplation Operation
 //	======================
 //
@@ -3778,40 +5323,88 @@ func (bMultiply *BigIntMathMultiply) MultiplyNumStrDtoArray(
 //	'multiplier', 3 is the 'multiplicand' and 15 is the 'product'
 //	or result.
 //
-//	Multiplication Example
-//	======================
-//
-//	Multiplicands                                     Output
-//	 Multiplier             Array                     Array
-//
-//	    3         x    multiplicands[0] = 2   =   outputarray[0] =  6
-//	    3         x    multiplicands[1] = 3   =   outputarray[1] =  9
-//	    3         x    multiplicands[2] = 4   =   outputarray[2] = 12
-//	    3         x    multiplicands[3] = 5   =   outputarray[3] = 15
-//	    3         x    multiplicands[4] = 6   =   outputarray[4] = 18
-//	    3         x    multiplicands[5] = 7   =   outputarray[5] = 21
-//
 //	Numeric Separators
 //	==================
 //
-//	Numeric Separators define the Decimal separator character,
-//	Thousands separator character and Currency Symbol characters.
-//	These separator characters are used to format and display
-//	numeric values as number strings.
+//	Numeric Separators define the Decimal Separator character,
+//	Thousands Separator character, and Currency Symbol character.
+//	These separator characters serve two purposes. First they are
+//	used to format and display numeric values as number strings.
+// 	Second, they are also used to parse number strings and convert
+//  them into numeric values.
+//
+//  Numeric Separator characters are typically encapsulated in a
+//  NumericSeparatorDto type.
+//
+//  Each element of the []NumStrDto multiplication 'Product' array
+//  returned by this method will contain numeric separators
+//  (Decimal Separator, Thousands Separator and Currency Symbol)
+//  derived from one of two possible sources.
 //
 //	Users have the option to supply an input parameter,
 //	'outputNumSeps' of type NumericSeparatorDto, which will be
 //	used to configure the returned []NumStrDto multiplication
-//	'result' from this method. If the optional input parameter
-//	'outputNumSeps' is provided, it will be used to format
-//	each element in the []NumStrDto array returned by this
-//	method. Note that the first valid NumericSeparatorDto in
-//	the 'outputNumSeps' series will be selected and used.
+//	'product' array from this method. If the optional input
+// 	parameter 'outputNumSeps' is provided, it will be used to
+//	format each element in the []NumStrDto array returned by
+// 	this method. Note that the only first valid NumericSeparatorDto
+//	in the 'outputNumSeps' series will be selected and used. There
+//	is no need to provide more than one valid NumericSeparatorDto
+//	object for input parameter 'outputNumSeps'.
 //
 //	If the optional input parameter 'outputNumSeps' is NOT
-//	provided, each element in the returned []NumStrDto array
-//	will be configured using numeric separators copied from
-//	input parameter, 'multiplier'.
+// 	provided, the returned BigIntNum instance will be
+//	configured using numeric separators copied from input
+//	parameter, 'multiplier'.
+//
+//  Input Parameters
+//  ================
+//
+//  multiplier               NumStrDto
+//
+//	This NumStrDto instance serves as the initial 'multiplier' in
+//	the multiplication operation defined above.
+//
+//  multiplicands           []NumStrDto
+//
+//  This array of NumStrDto objects serves as 'multiplicands' for
+//  the multiplication operation defined above.
+//
+//  outputNumSeps            ... NumericSeparatorDto
+//
+//  This method is defined as a variadic function in that
+//  'outputNumSeps' is configured as an optional input parameter
+//  meaning that it is NOT required. The user can choose to
+//  provide a value for 'outputNumSeps', or not.
+//
+//  If the user chooses to provide a valid 'NumericSeparatorDto'
+//  object for this parameter, it will be used to configure each
+//  element in the '[]NumStrDto' product value returned by this
+//  method.
+//
+//  Note that only the first valid NumericSeparatorDto in the
+//  'outputNumSeps' series will be selected and used. There is no
+//  need to provide more than one valid NumericSeparatorDto object
+//  for parameter 'outputNumSeps'.
+//
+//  Be advised that if the user chooses NOT to provide this
+//  optional parameter, each element in the '[]NumStrDto' array
+//  returned by this method will be configued using the
+//  'NumericSeparatorDto' copied from the 'multiplier' input
+//  parameter.
+//
+//  Return Values
+//  =============
+//
+//  []NumStrDto
+//
+//  The product of the multiplication operation described above is
+//  returned as an array of type NumStrDto.
+//
+//  error
+//
+//  If no errors are encountered during method execution, this
+//  return parameter is set to 'nil'.
 func (bMultiply *BigIntMathMultiply) MultiplyNumStrDtoOutputToArray(
   multiplier NumStrDto,
   multiplicands []NumStrDto,
@@ -3824,7 +5417,7 @@ func (bMultiply *BigIntMathMultiply) MultiplyNumStrDtoOutputToArray(
   ePrefix,
     err = ePref.ErrPrefixDto{}.NewIEmpty(
     nil,
-    "BigIntMathMultiply.MultiplyNumStrDtoArray",
+    "BigIntMathMultiply.MultiplyNumStrDtoOutputToArray",
     "")
 
   if err != nil {
@@ -3889,25 +5482,51 @@ func (bMultiply *BigIntMathMultiply) MultiplyNumStrDtoOutputToArray(
       }
   }
 
-  _, finalOutputNumSeps,
-    err = new(numSepsDtoMechanics).selectValidNumSepInSeries(
-    "outputNumSeps",
-    "multiplier",
-    &multiplierNumSeps,
-    ePrefix,
-    outputNumSeps...)
+  if len(outputNumSeps) > 0 {
 
-  if err != nil {
+    _, finalOutputNumSeps,
+      err = new(numSepsDtoMechanics).selectValidNumSepInSeries(
+      "outputNumSeps",
+      "multiplier",
+      &multiplierNumSeps,
+      ePrefix,
+      outputNumSeps...)
 
-    return []NumStrDto{},
-      &FuncReturnError{
-        ErrPrefix: ePrefix.String(),
-        ReturnFunc: "foundPrimaryNumSep, finalOutputNumSeps, err = \n" +
-          "    new(numSepsDtoMechanics).selectValidNumSepInSeries(\n" +
-          "    \"outputNumSeps\", \"multiplier\")",
-        ErrContext: "Error: Failed to Select 'finalOutputNumSeps'",
-        ErrMessage: err.Error(),
-      }
+    if err != nil {
+
+      return []NumStrDto{},
+        &FuncReturnError{
+          ErrPrefix: ePrefix.String(),
+          ReturnFunc: "foundPrimaryNumSep, finalOutputNumSeps, err = \n" +
+            "    new(numSepsDtoMechanics).selectValidNumSepInSeries(\n" +
+            "    \"outputNumSeps\", \"multiplier\")",
+          ErrContext: "Error: Failed to Select 'finalOutputNumSeps'",
+          ErrMessage: err.Error(),
+        }
+    }
+  } else {
+
+    // Checks validity of multiplierNumSeps
+
+    err = new(numSepsDtoMechanics).copyNumSepsDto(
+      &finalOutputNumSeps, // Destination
+      &multiplierNumSeps,
+      false, // Set Defaults if Empty
+      ePrefix.XCpy("Copy 'multiplierNumSeps' -> 'finalOutputNumSeps'"))
+
+    if err != nil {
+
+      return []NumStrDto{},
+        &FuncReturnError{
+          ErrPrefix:  ePrefix.String(),
+          ReturnFunc: "err = new(numSepsDtoMechanics).copyNumSepsDto(\n" +
+            "    &finalOutputNumSeps, &multiplierNumSeps, false,\n" +
+            "    ePrefix.XCpy(\"Copy 'multiplierNumSeps' -> 'finalOutputNumSeps'\"))",
+          ErrContext: "",
+          ErrMessage: err.Error(),
+        }
+    }
+
   }
 
   var multiplierBINum, multiplicandBINum BigIntNum
@@ -3922,6 +5541,19 @@ func (bMultiply *BigIntMathMultiply) MultiplyNumStrDtoOutputToArray(
         ErrPrefix:  ePrefix.String(),
         ReturnFunc: "multiplierBINum, err = new(BigIntNum).NewNumStrDto(multiplier)",
         ErrContext: fmt.Sprintf("multiplier= '%v'", multiplierNumStr),
+        ErrMessage: err.Error(),
+      }
+  }
+
+  multiplierNumStr, err = multiplierBINum.GetNumStr()
+
+  if err != nil {
+
+    return []NumStrDto{},
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "multiplierNumStr, err = multiplierBINum.GetNumStr()",
+        ErrContext: "",
         ErrMessage: err.Error(),
       }
   }
@@ -3988,37 +5620,26 @@ func (bMultiply *BigIntMathMultiply) MultiplyNumStrDtoOutputToArray(
           ErrPrefix: ePrefix.String(),
           ReturnFunc: "bPair, err = new(BigIntPair).NewBigIntNum(\n" +
             "    multiplierBINum, multiplicandBINum)",
-          ErrContext: fmt.Sprintf("multiplicands[%d]= '%v'",
-            i, multiplicandNumStr),
+          ErrContext: fmt.Sprintf("multiplier= '%v'; multiplicands[%d]= '%v'",
+           multiplierNumStr, i, multiplicandNumStr),
           ErrMessage: err.Error(),
         }
     }
 
-    finalResult, err = new(bigIntMathMultiplyMechanics).
-      multiplyPairNoNumSeps(bPair, ePrefix)
+    finalResult, err = new(bigIntMathMultiplyNanobot).
+      multiplyPairWithNumSeps(bPair, finalOutputNumSeps,
+        ePrefix.XCpy("bPair & finalOutputNumSeps"))
 
     if err != nil {
 
       return []NumStrDto{},
         &FuncReturnError{
           ErrPrefix: ePrefix.String(),
-          ReturnFunc: "finalResult, err = new(bigIntMathMultiplyMechanics).\n" +
-            "multiplyPairNoNumSeps(bPair, ePrefix)",
-          ErrContext: "",
-          ErrMessage: err.Error(),
-        }
-    }
-
-    err = finalResult.SetNumericSeparatorsDto(finalOutputNumSeps)
-
-    if err != nil {
-
-      return []NumStrDto{},
-        &FuncReturnError{
-          ErrPrefix: ePrefix.String(),
-          ReturnFunc: "err = finalResult.SetNumericSeparatorsDto(\n" +
-            "    finalOutputNumSeps)",
-          ErrContext: "",
+          ReturnFunc: "finalResult, err = new(bigIntMathMultiplyNanobot).\n" +
+            "multiplyPairWithNumSeps(bPair, finalOutputNumSeps,\n " +
+            "ePrefix.XCpy(\"bPair & finalOutputNumSeps\"))",
+          ErrContext: fmt.Sprintf("bPair.Big1= '%v' bPair.Big2= '%v'\nmultiplicands index= '%d'",
+            multiplierNumStr, multiplicandNumStr, i),
           ErrMessage: err.Error(),
         }
     }
@@ -4037,7 +5658,7 @@ func (bMultiply *BigIntMathMultiply) MultiplyNumStrDtoOutputToArray(
     }
   }
 
-  return resultArray, nil
+  return resultArray, err
 }
 
 // MultiplyNumStrDtoSeries
@@ -4047,14 +5668,23 @@ func (bMultiply *BigIntMathMultiply) MultiplyNumStrDtoOutputToArray(
 //
 //  This method receives one input parameter of Type NumStrDto
 //  which is classified as the 'multiplier'. The second input
-//  parameter is a comma-delimited series of objects labeled,
-//  'multiplicands'. The first element of the 'multiplicands'
-//  series is multiplied by the 'multiplier' to produce a
-//  'product'. That 'product' replaces the 'multiplier' and is
-//  multiplied by the next element in the 'multiplicands'
-//  series. This process is continued through the last element
-//  in the series. Afterward, the combined final 'product' is
-//  returned as a Type 'BigIntNum'.
+//  parameter is a comma-delimited series of NumStrDto objects
+//  labeled, 'multiplicands'. The first element of the
+//  'multiplicands' series is multiplied by the 'multiplier' to
+//  produce a 'product'. That 'product' then replaces the
+//  'multiplier' and is multiplied by the next element in the
+//  'multiplicands' series. This process is repeated through the
+//  last element in the series. Afterward, the combined final
+//  'product' is returned as a Type 'BigIntNum'.
+//
+//    Example:
+//      multiplier = 3
+//      multiplicands = [3]IntAry{2,3,4}
+//
+//      (1) 3 x 2 = 6
+//      (2) 6 x 3 = 18
+//      (3) 18 x 4 = 72
+//      The returned product is 72
 //
 //  Multiplication Operation
 //  ========================
@@ -4076,13 +5706,17 @@ func (bMultiply *BigIntMathMultiply) MultiplyNumStrDtoOutputToArray(
 //  Numeric Separators
 //  ==================
 //
-//  Numeric Separators, usually encapsulated in a
-//  NumericSeparatorDto type, specify the Decimal Separator,
-//  Thousands Separator, and Currency Symbol. These Numeric
-//  Separators are used to display numeric values in number
-//  strings.
+//	Numeric Separators define the Decimal Separator character,
+//	Thousands Separator character, and Currency Symbol character.
+//	These separator characters serve two purposes. First they are
+//	used to format and display numeric values as number strings.
+// 	Second, they are also used to parse number strings and convert
+//  them into numeric values.
 //
-//  The BigIntNum multiplication 'result' returned by this method
+//  Numeric Separator characters are typically encapsulated in a
+//  NumericSeparatorDto type.
+//
+//  The BigIntNum multiplication 'product' returned by this method
 //  will contain numeric separators (Decimal Separator, Thousands
 //  Separator and currency symbol) copied from input parameter,
 // 'multiplier'.
@@ -4134,20 +5768,20 @@ func (bMultiply *BigIntMathMultiply) MultiplyNumStrDtoSeries(
       }
   }
 
-  multiplierNumSeps, err := multiplier.GetNumericSeparatorsDto()
+  finalOutputNumSeps, err := multiplier.GetNumericSeparatorsDto()
 
   if err != nil {
 
     return BigIntNum{},
       &FuncReturnError{
         ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "multiplierNumSeps, err := multiplier.GetNumericSeparatorsDto()",
+        ReturnFunc: "finalOutputNumSeps, err := multiplier.GetNumericSeparatorsDto()",
         ErrContext: "",
         ErrMessage: err.Error(),
       }
   }
 
-  err = multiplierNumSeps.IsValid(ePrefix.XCpy("Testing 'multiplier' NumSeps").String())
+  err = finalOutputNumSeps.IsValid(ePrefix.XCpy("Testing 'multiplier' NumSeps").String())
 
   if err != nil {
 
@@ -4171,17 +5805,17 @@ func (bMultiply *BigIntMathMultiply) MultiplyNumStrDtoSeries(
       }
   }
 
-  var multiplierBigINum, finalResult, multiplicandBINum BigIntNum
+  var finalResult, multiplicandBINum BigIntNum
 
   // This method will test the validity of 'multiplier'
-  multiplierBigINum, err = new(BigIntNum).NewNumStrDto(multiplier)
+  finalResult, err = new(BigIntNum).NewNumStrDto(multiplier)
 
   if err != nil {
 
     return BigIntNum{},
       &FuncReturnError{
         ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "multiplierBigINum, err := new(BigIntNum).NewNumStrDto(multiplier)",
+        ReturnFunc: "finalResult, err := new(BigIntNum).NewNumStrDto(multiplier)",
         ErrContext: fmt.Sprintf("multiplier = '%v'", multiplierNumStr),
         ErrMessage: err.Error(),
       }
@@ -4221,6 +5855,19 @@ func (bMultiply *BigIntMathMultiply) MultiplyNumStrDtoSeries(
         }
     }
 
+    multiplierNumStr, err = finalResult.GetNumStr()
+
+    if err != nil {
+
+      return BigIntNum{},
+        &FuncReturnError{
+          ErrPrefix:  ePrefix.String(),
+          ReturnFunc: "multiplierNumStr, err = finalResult.GetNumStr()",
+          ErrContext: "",
+          ErrMessage: err.Error(),
+        }
+    }
+
     // This method will test the validity of multiplicand
     multiplicandBINum, err = new(BigIntNum).NewNumStrDto(multiplicand)
 
@@ -4229,57 +5876,47 @@ func (bMultiply *BigIntMathMultiply) MultiplyNumStrDtoSeries(
       return BigIntNum{},
         &FuncReturnError{
           ErrPrefix:  ePrefix.String(),
-          ReturnFunc: "multiplicandNumStr, err = multiplicand.GetNumStr()",
+          ReturnFunc: "multiplicandBINum, err = new(BigIntNum).NewNumStrDto(multiplicand)",
           ErrContext: fmt.Sprintf("'multiplicand'= '%v'; 'multiplicand' idx=%d",
             multiplicandNumStr, idx),
           ErrMessage: err.Error(),
         }
     }
 
-    bPair, err = new(BigIntPair).NewBigIntNum(multiplierBigINum, multiplicandBINum)
+    bPair, err = new(BigIntPair).NewBigIntNum(finalResult, multiplicandBINum)
 
     if err != nil {
 
       return BigIntNum{},
         &FuncReturnError{
           ErrPrefix:  ePrefix.String(),
-          ReturnFunc: "multiplicandNumStr, err = multiplicand.GetNumStr()",
-          ErrContext: fmt.Sprintf("multiplier= '%v'; 'multiplicand'= '%v'; 'multiplicand' idx=%d",
+          ReturnFunc: "bPair, err = new(BigIntPair).NewBigIntNum(finalResult, multiplicandBINum)",
+          ErrContext: fmt.Sprintf("finalResult= '%v'; 'multiplicand'= '%v'; 'multiplicand' idx=%d",
             multiplierNumStr, multiplicandNumStr, idx),
           ErrMessage: err.Error(),
         }
     }
 
-    finalResult, err = new(bigIntMathMultiplyMechanics).
-      multiplyPairNoNumSeps(bPair, ePrefix)
+    finalResult, err = new(bigIntMathMultiplyNanobot).
+      multiplyPairWithNumSeps(bPair, finalOutputNumSeps,
+        ePrefix.XCpy("bPair & finalOutputNumSeps"))
 
     if err != nil {
 
       return BigIntNum{},
         &FuncReturnError{
           ErrPrefix: ePrefix.String(),
-          ReturnFunc: "finalResult, err = new(bigIntMathMultiplyMechanics).\n" +
-            "multiplyPairNoNumSeps(bPair, ePrefix)",
-          ErrContext: "",
+          ReturnFunc: "finalResult, err = new(bigIntMathMultiplyNanobot).\n" +
+            "multiplyPairWithNumSeps(bPair, finalOutputNumSeps,\n " +
+            "ePrefix.XCpy(\"bPair & finalOutputNumSeps\"))",
+          ErrContext: fmt.Sprintf("bPair.Big1= '%v' bPair.Big2= '%v'\nmultiplicands index= '%d'",
+            multiplierNumStr, multiplicandNumStr, idx),
           ErrMessage: err.Error(),
         }
     }
   }
 
-  err = finalResult.SetNumericSeparatorsDto(multiplierNumSeps)
-
-  if err != nil {
-
-    return BigIntNum{},
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "err = finalResult.SetNumericSeparatorsDto(multiplierNumSeps)",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-  }
-
-  return finalResult, nil
+  return finalResult, err
 }
 
 // MultiplyPair
@@ -4297,10 +5934,8 @@ func (bMultiply *BigIntMathMultiply) MultiplyNumStrDtoSeries(
 //  The result of this multiplication operation (a.k.a. 'product')
 //  is returned as a BigIntNum type.
 //
-//
 //	Numeric Separators
 //	==================
-//
 //
 //	Numeric Separators define the Decimal Separator character,
 //	Thousands Separator character and Currency Symbol character.
@@ -4320,10 +5955,10 @@ func (bMultiply *BigIntMathMultiply) MultiplyNumStrDtoSeries(
 //	'outputNumSeps' of type NumericSeparatorDto. If this optional
 //  parameter is provided, it will be used to configure the
 //  returned BigIntNum multiplication 'product' from this method.
-//   Note that the first valid NumericSeparatorDto in the
-//   'outputNumSeps' series will be selected and used. There is no
-//   need to provide more than one valid NumericSeparatorDto object
-//   for parameter 'outputNumSeps'.
+//  Note that the first valid NumericSeparatorDto in the
+//  'outputNumSeps' series will be selected and used. There is no
+//  need to provide more than one valid NumericSeparatorDto object
+//  for parameter 'outputNumSeps'.
 //
 //	If the optional input parameter 'outputNumSeps' is NOT
 // 	provided, the returned BigIntNum instance will be
@@ -4346,16 +5981,34 @@ func (bMultiply *BigIntMathMultiply) MultiplyNumStrDtoSeries(
 //  This method is defined as a variadic function in that
 //  'outputNumSeps' is configured as an optional input parameter
 //  meaning that it is NOT required. The user can choose to
-//  provide a value for 'outputNumSeps' or not.
+//  provide a value for 'outputNumSeps', or not.
 //
 //  If the user chooses to provide a valid 'NumericSeparatorDto'
 //  object for this parameter, it will be used to configure the
-//  returned 'BigIntNum' producgt value returned by this method.
+//  'BigIntNum' product value returned by this method.
+//
+//  Note that the first valid NumericSeparatorDto in the
+//  'outputNumSeps' series will be selected and used. There is no
+//  need to provide more than one valid NumericSeparatorDto object
+//  for parameter 'outputNumSeps'.
 //
 //  Be advised that if the user chooses NOT to provide this
 //  optional parameter, the 'BigIntNum' value returned by this
 //  method will be configued using the 'NumericSeparatorDto'
 //  copied from 'bPair.Big1'
+//
+//  Return Values
+//  =============
+//
+//  BigIntNum
+//
+//  The product of the multiplication operation described above is
+//  returned as BigIntNum type.
+//
+//  error
+//
+//  If no errors are encountered during method execution, this
+//  return parameter is set to 'nil'.
 func (bMultiply *BigIntMathMultiply) MultiplyPair(
   bPair BigIntPair,
   outputNumSeps ...NumericSeparatorDto) (BigIntNum, error) {
