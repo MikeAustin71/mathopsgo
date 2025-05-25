@@ -362,105 +362,109 @@ func (bMultiply *BigIntMathMultiply) BigIntMultiplyByTwoToPower(
 
 // FixedDecimalMultiply
 //
-// This method receives two BigIntFixedDecimal types and then
-// proceeds to perform a multiplication operation by multiplying
-// the 'multiplier' by the 'multiplicand' to generate the
-// 'product'.
+//  Overview
+//  ========
 //
-// In the multiplication operation, the number to be multiplied is
-// called the "multiplicand", while the number of times the
-// multiplicand is to be multiplied comes from the "multiplier".
-// Usually the multiplier is placed first and the multiplicand is
-// placed second.
+//  This method receives two BigIntFixedDecimal types and then
+//  proceeds to perform a multiplication operation by multiplying
+//  the 'multiplier' by the 'multiplicand' to generate the
+//  'product'.
 //
-//	 Examples
-//	 ========
+//  In the multiplication operation, the number to be multiplied is
+//  called the "multiplicand", while the number of times the
+//  multiplicand is to be multiplied comes from the "multiplier".
+//  Usually the multiplier is placed first and the multiplicand is
+//  placed second.
 //
-//	 For example, in the problem 5 x 3 equals 15, the 5 is the
-//	 'multiplier', 3 is the 'multiplicand' and 15 is the 'product'
-//	 or result.
+//  Examples
+//  ========
 //
-//	   multiplier x multiplicand = product or result
+//  For example, in the problem 5 x 3 equals 15, the 5 is the
+//  'multiplier', 3 is the 'multiplicand' and 15 is the 'product'
+//  or result.
 //
-//	 'multiplier', 'multiplicand' and 'product' are
-//	 BigIntFixedDecimal types which may be used to defined fixed
-//	 length floating point numbers.
+//    multiplier x multiplicand = product or result
 //
-//	 BigIntFixedDecimal
-//	 ==================
+//  'multiplier', 'multiplicand' and 'product' are
+//  BigIntFixedDecimal types which may be used to defined fixed
+//  length floating point numbers.
 //
-//	 The BigIntFixedDecimal structure is defined as
+//  BigIntFixedDecimal
+//  ==================
 //
-//	 type BigIntFixedDecimal struct {
-//	   integerNum *big.Int  -  All the numeric digits, both integer and fractional,
-//	                           necessary to define a fixed length floating point number.
-//	                           The number of digits to the right of the decimal place
-//	                           is specified by the data field,
-//	                           BigIntFixedDecimal.precision.
+//  The BigIntFixedDecimal structure is defined as
 //
-//	   precision  uint      -  Specifies the number of digits to the right of the decimal
-//	                           place in the series of numeric digits represented by data
-//	                           field BigIntFixedDecimal.integerNum.
+//  type BigIntFixedDecimal struct {
+//    integerNum *big.Int  -  All the numeric digits, both integer and fractional,
+//                            necessary to define a fixed length floating point number.
+//                            The number of digits to the right of the decimal place
+//                            is specified by the data field,
+//                            BigIntFixedDecimal.precision.
 //
-//	 }
+//    precision  uint      -  Specifies the number of digits to the right of the decimal
+//                            place in the series of numeric digits represented by data
+//                            field BigIntFixedDecimal.integerNum.
 //
-//	 To represent the floating point number 52.459, a
-//	 BigIntFixedDecimal Structure would be configured as follows:
+//  }
 //
-//	    BigIntFixedDecimal.integerNum = 52459
-//	    BigIntFixedDecimal.precision  = 3
+//  To represent the floating point number 52.459, a
+//  BigIntFixedDecimal Structure would be configured as follows:
 //
-//	 Consider the following multiplication example:
-//	    product = 752.314 x 21.67894 = 16309.37006716
+//     BigIntFixedDecimal.integerNum = 52459
+//     BigIntFixedDecimal.precision  = 3
 //
-//	 'multiplier' and 'multiplicand' would be configured as follows:
+//  Consider the following multiplication example:
+//     product = 752.314 x 21.67894 = 16309.37006716
 //
-//	    multiplier.integerNum   = 752314
-//	    multiplier.precision    = 3
-//	    multiplicand.integerNum = 2167894
-//	    multiplicand.precision  = 5
+//  'multiplier' and 'multiplicand' would be configured as follows:
 //
-//	 The 'product' would be calculated as follows:
+//     multiplier.integerNum   = 752314
+//     multiplier.precision    = 3
+//     multiplicand.integerNum = 2167894
+//     multiplicand.precision  = 5
 //
-//	    product.integerNum  = 1630937006716
-//	    product.precision   = 8
+//  The 'product' would be calculated as follows:
 //
-//	 Input Parameters
-//	 ================
+//     product.integerNum  = 1630937006716
+//     product.precision   = 8
 //
-//	 multiplier      BigIntFixedDecimal
+//  Input Parameters
+//  ================
 //
-//	 The number to be multiplied by 'multiplicand'
+//  multiplier               BigIntFixedDecimal
 //
-//
-//		multiplicand    BigIntFixedDecimal
-//
-//		The number to be multiplied by the 'multiplier'.
+//  The number to be multiplied by 'multiplicand'
 //
 //
-//	 Return Values
-//	 =============
+//  multiplicand             BigIntFixedDecimal
 //
-//	 product         BigIntFixedDecimal
+//  	The number to be multiplied by the 'multiplier'.
 //
-//	 The product of the 'multiplier' multiplied by	the 'multiplicand'.
 //
-//	 err             error
+//  Return Values
+//  =============
 //
-//	 If no errors are encountered during execution, this returned
-//	 error value will be set to 'nil'.
+//  product         BigIntFixedDecimal
 //
-//	 Numeric Separators
-//	 ==================
+//  The product of the 'multiplier' multiplied by	the 'multiplicand'.
 //
-//	 Numeric sepatators include the Decimal separator, Thousands
-//	 separator and Currency symbol characters. Numeric separators
-//	 are used to parse number strings and display numeric values
-//	 formatted as number strings.
 //
-//	 This method will configure the returned BigIntFixedDecimal
-//	 'product' with Numeric Separators current configured in the
-//	 'multiplier'.
+//  err             error
+//
+//  If no errors are encountered during execution, this returned
+//  error value will be set to 'nil'.
+//
+//  Numeric Separators
+//  ==================
+//
+//  Numeric sepatators include the Decimal separator, Thousands
+//  separator and Currency symbol characters. Numeric separators
+//  are used to parse number strings and display numeric values
+//  formatted as number strings.
+//
+//  This method will configure the returned BigIntFixedDecimal
+//  'product' with Numeric Separators current configured in the
+//  'multiplier'.
 func (bMultiply *BigIntMathMultiply) FixedDecimalMultiply(
 	multiplier BigIntFixedDecimal,
 	multiplicand BigIntFixedDecimal) (product BigIntFixedDecimal, err error) {
