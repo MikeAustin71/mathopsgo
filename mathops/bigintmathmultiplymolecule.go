@@ -1,12 +1,12 @@
 package mathops
 
 import (
-  ePref "github.com/MikeAustin71/errpref"
-  "sync"
+	ePref "github.com/MikeAustin71/errpref"
+	"sync"
 )
 
 type bigIntMathMultiplyMolecule struct {
-  lock *sync.Mutex
+	lock *sync.Mutex
 }
 
 // multiplyPair
@@ -116,109 +116,109 @@ type bigIntMathMultiplyMolecule struct {
 //	If no errors are encountered during method execution, this
 //	return parameter is set to 'nil'.
 func (bMathMulMolecule *bigIntMathMultiplyMolecule) multiplyPair(
-  bPair BigIntPair,
-  errPrefDto *ePref.ErrPrefixDto,
-  outputNumSeps ...NumericSeparatorDto) (BigIntNum, error) {
+	bPair BigIntPair,
+	errPrefDto *ePref.ErrPrefixDto,
+	outputNumSeps ...NumericSeparatorDto) (BigIntNum, error) {
 
-  if bMathMulMolecule.lock == nil {
-    bMathMulMolecule.lock = new(sync.Mutex)
-  }
+	if bMathMulMolecule.lock == nil {
+		bMathMulMolecule.lock = new(sync.Mutex)
+	}
 
-  bMathMulMolecule.lock.Lock()
+	bMathMulMolecule.lock.Lock()
 
-  defer bMathMulMolecule.lock.Unlock()
+	defer bMathMulMolecule.lock.Unlock()
 
-  var ePrefix *ePref.ErrPrefixDto
+	var ePrefix *ePref.ErrPrefixDto
 
-  var err error
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
-    errPrefDto,
-    "bigIntMathMultiplyMechanics.multiplyBigIntsBigIntNum",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
+		errPrefDto,
+		"bigIntMathMultiplyMechanics.multiplyBigIntsBigIntNum",
+		"")
 
-  if err != nil {
-    return BigIntNum{}, err
-  }
+	if err != nil {
+		return BigIntNum{}, err
+	}
 
-  err = bPair.IsValid(ePrefix.XCpy("Validating 'bPair'.").String())
+	err = bPair.IsValid(ePrefix.XCpy("Validating 'bPair'.").String())
 
-  if err != nil {
+	if err != nil {
 
-    return BigIntNum{},
-      &FuncReturnError{
-        ErrPrefix: ePrefix.String(),
-        ReturnFunc: "err = bPair.IsValid(ePrefix.XCpy(\n" +
-          "\"Validating 'bPair'.\").String())",
-        ErrContext: "Input parameter 'bPair' is invalid!",
-        ErrMessage: err.Error(),
-      }
-  }
+		return BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix: ePrefix.String(),
+				ReturnFunc: "err = bPair.IsValid(ePrefix.XCpy(\n" +
+					"\"Validating 'bPair'.\").String())",
+				ErrContext: "Input parameter 'bPair' is invalid!",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  var finalOutputNumSeps, bPairBig1NumSeps NumericSeparatorDto
+	var finalOutputNumSeps, bPairBig1NumSeps NumericSeparatorDto
 
-  bPairBig1NumSeps, err = bPair.Big1.GetNumericSeparatorsDto()
+	bPairBig1NumSeps, err = bPair.Big1.GetNumericSeparatorsDto()
 
-  if err != nil {
+	if err != nil {
 
-    return BigIntNum{},
-      &FuncReturnError{
-        ErrPrefix: ePrefix.String(),
-        ReturnFunc: "bPairBig1NumSeps, err := bPair.Big1.\n" +
-          "GetNumericSeparatorsDto()",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-  }
+		return BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix: ePrefix.String(),
+				ReturnFunc: "bPairBig1NumSeps, err := bPair.Big1.\n" +
+					"GetNumericSeparatorsDto()",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  if len(outputNumSeps) > 0 {
+	if len(outputNumSeps) > 0 {
 
-    _, finalOutputNumSeps,
-      err = new(numSepsDtoMechanics).selectValidNumSepInSeries(
-      "outputNumSeps",
-      "bPairBig1",
-      &bPairBig1NumSeps,
-      ePrefix,
-      outputNumSeps...)
+		_, finalOutputNumSeps,
+			err = new(numSepsDtoMechanics).selectValidNumSepInSeries(
+			"outputNumSeps",
+			"bPairBig1",
+			&bPairBig1NumSeps,
+			ePrefix,
+			outputNumSeps...)
 
-    if err != nil {
+		if err != nil {
 
-      return BigIntNum{},
-        &FuncReturnError{
-          ErrPrefix: ePrefix.String(),
-          ReturnFunc: "_, finalOutputNumSeps, err = \n" +
-            "    new(numSepsDtoMechanics).selectValidNumSepInSeries(\n" +
-            "    \"outputNumSeps\", \"multiplier\")",
-          ErrContext: "Error: Failed to Select 'finalOutputNumSeps'",
-          ErrMessage: err.Error(),
-        }
-    }
-  } else {
+			return BigIntNum{},
+				&FuncReturnError{
+					ErrPrefix: ePrefix.String(),
+					ReturnFunc: "_, finalOutputNumSeps, err = \n" +
+						"    new(numSepsDtoMechanics).selectValidNumSepInSeries(\n" +
+						"    \"outputNumSeps\", \"multiplier\")",
+					ErrContext: "Error: Failed to Select 'finalOutputNumSeps'",
+					ErrMessage: err.Error(),
+				}
+		}
+	} else {
 
-    // Checks validity of bPairBig1NumSeps
+		// Checks validity of bPairBig1NumSeps
 
-    err = new(numSepsDtoMechanics).copyNumSepsDto(
-      &finalOutputNumSeps, // Destination
-      &bPairBig1NumSeps,
-      false, // Set Defaults if Empty
-      ePrefix.XCpy("Copy 'bPairBig1NumSeps' Into 'finalOutputNumSeps'"))
+		err = new(numSepsDtoMechanics).copyNumSepsDto(
+			&finalOutputNumSeps, // Destination
+			&bPairBig1NumSeps,
+			false, // Set Defaults if Empty
+			ePrefix.XCpy("Copy 'bPairBig1NumSeps' Into 'finalOutputNumSeps'"))
 
-    if err != nil {
+		if err != nil {
 
-      return BigIntNum{},
-        &FuncReturnError{
-          ErrPrefix: ePrefix.String(),
-          ReturnFunc: "err = new(numSepsDtoMechanics).copyNumSepsDto(\n" +
-            "    &finalOutputNumSeps, &bPairBig1NumSeps, false,\n" +
-            "    ePrefix.XCpy(\"Copy 'bPairBig1NumSeps' Into 'finalOutputNumSeps'\"))",
-          ErrContext: "",
-          ErrMessage: err.Error(),
-        }
-    }
-  }
+			return BigIntNum{},
+				&FuncReturnError{
+					ErrPrefix: ePrefix.String(),
+					ReturnFunc: "err = new(numSepsDtoMechanics).copyNumSepsDto(\n" +
+						"    &finalOutputNumSeps, &bPairBig1NumSeps, false,\n" +
+						"    ePrefix.XCpy(\"Copy 'bPairBig1NumSeps' Into 'finalOutputNumSeps'\"))",
+					ErrContext: "",
+					ErrMessage: err.Error(),
+				}
+		}
+	}
 
-  return new(bigIntMathMultiplyNanobot).
-    multiplyPairWithNumSeps(bPair, finalOutputNumSeps,
-      ePrefix.XCpy("bPair & finalOutputNumSeps"))
+	return new(bigIntMathMultiplyNanobot).
+		multiplyPairWithNumSeps(bPair, finalOutputNumSeps,
+			ePrefix.XCpy("bPair & finalOutputNumSeps"))
 }
