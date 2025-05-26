@@ -464,40 +464,79 @@ func (bigIFd *BigIntFixedDecimal) Empty() {
 
 }
 
-// Floor - Returns the floor integer value for the current
-// BigIntFixedDecimal.
+// Floor
 //
-// In mathematics and computer science, the floor function
-// is the function that takes as input a real number x dnd
-// gives as output the greatest integer less than or equal
-// to x.
+//	Returns the floor integer value for the current
+//	BigIntFixedDecimal as a new instance of BigIntFixedDecimal.
 //
-// Source:
-// https://en.wikipedia.org/wiki/Floor_and_ceiling_functions
+//	In mathematics and computer science, the floor function
+//	is the function that takes as input a real number x dnd
+//	gives as output the greatest integer less than or equal
+//	to x.
 //
-// Examples
-// ========
+//	Source:
+//	https://en.wikipedia.org/wiki/Floor_and_ceiling_functions
 //
-//					 BigIntFixedDecimal           Floor
-//								Value                   Value
-//					 ------------------         ----------
-//	             0													0
-//	             4                         4
-//								3.2												3
-//								2.9	                      2
-//							 -2.7											 -3
-//							 -2                        -2
-func (bigIFd *BigIntFixedDecimal) Floor() BigIntFixedDecimal {
+//	Examples
+//	========
+//
+//	  BigIntFixedDecimal            Floor
+//	        Value                   Value
+//	  ------------------          ----------
+//
+//	          0                        0
+//	          4                        4
+//	          3.2                      3
+//	          2.9                      2
+//	         -2.7                     -3
+//	         -2                       -2
+//
+//	Return Values
+//	=============
+//
+//	BigIntFixedDecimal
+//	  This parameter returns a new instance of BigIntFixedDecimal
+//	  containing the 'floor' value of the current
+//	  BigIntFixedDecimal instance.
+//
+//	error
+//	  If no errors are encountered, this method will return a 'nil'
+//	  value for 'error'.
+func (bigIFd *BigIntFixedDecimal) Floor() (BigIntFixedDecimal, error) {
 
-	if bigIFd.integerNum == nil {
-		bigIFd.integerNum = big.NewInt(0)
-		bigIFd.precision = 0
+	var ePrefix *ePref.ErrPrefixDto
+
+	var err error
+
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"BigIntFixedDecimal.Floor",
+		"")
+
+	if err != nil {
+		return BigIntFixedDecimal{}, err
+	}
+
+	err = new(bigIntFixedDecAtom).isBigIntFxDecValid(
+		bigIFd,
+		ePrefix.XCpy("Validating current BigIntFixedDecimal instance 'bigIFd'."))
+
+	if err != nil {
+
+		return BigIntFixedDecimal{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "err = new(bigIntFixedDecAtom).isBigIntFxDecValid(ePrefix)",
+				ErrContext: "",
+				ErrMessage: "This BigIntFixedDecimal instance is INVALID!",
+			}
 	}
 
 	cmpZeroResult := bigIFd.integerNum.Cmp(big.NewInt(0))
 
 	if cmpZeroResult == 0 {
-		return new(BigIntFixedDecimal).NewZero(0)
+		return new(BigIntFixedDecimal).NewZero(0), nil
 	}
 
 	floor := big.NewInt(0).Set(bigIFd.integerNum)
@@ -515,7 +554,6 @@ func (bigIFd *BigIntFixedDecimal) Floor() BigIntFixedDecimal {
 			// signVal must be -1
 			floor.Add(floor, big.NewInt(-1))
 		}
-
 	}
 
 	// else bigIFd.precision must be zero
@@ -854,18 +892,42 @@ func (bigIFd *BigIntFixedDecimal) GetInteger() (*big.Int, error) {
 //	859649.123456789								859649					0						0.123456789            9
 //
 // -859649.123456789							 -859649				 	0					 -0.123456789            9
-func (bigIFd *BigIntFixedDecimal) GetIntegerFractionalParts() (integer BigIntFixedDecimal, fraction BigIntFixedDecimal) {
+func (bigIFd *BigIntFixedDecimal) GetIntegerFractionalParts() (integer BigIntFixedDecimal,
+	fraction BigIntFixedDecimal,
+	err error) {
 
-	if bigIFd.integerNum == nil {
-		bigIFd.integerNum = big.NewInt(0)
-		bigIFd.precision = 0
+	var ePrefix *ePref.ErrPrefixDto
+
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"BigIntFixedDecimal.GetIntegerFractionalParts",
+		"")
+
+	if err != nil {
+		return BigIntFixedDecimal{}, BigIntFixedDecimal{}, err
+	}
+
+	err = new(bigIntFixedDecAtom).isBigIntFxDecValid(
+		bigIFd,
+		ePrefix.XCpy("Validating current BigIntFixedDecimal instance 'bigIFd'."))
+
+	if err != nil {
+
+		return BigIntFixedDecimal{}, BigIntFixedDecimal{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "err = new(bigIntFixedDecAtom).isBigIntFxDecValid(ePrefix)",
+				ErrContext: "",
+				ErrMessage: "This BigIntFixedDecimal instance is INVALID!",
+			}
 	}
 
 	integer = new(BigIntFixedDecimal).NewZero(0)
 	fraction = new(BigIntFixedDecimal).NewZero(0)
 
 	if bigIFd.integerNum.Cmp(big.NewInt(0)) == 0 {
-		return integer, fraction
+		return integer, fraction, nil
 	}
 
 	scale := big.NewInt(0).Exp(big.NewInt(10), big.NewInt(0).SetUint64(uint64(bigIFd.precision)), nil)
@@ -874,11 +936,33 @@ func (bigIFd *BigIntFixedDecimal) GetIntegerFractionalParts() (integer BigIntFix
 
 	intRadicand, fracRadicand := big.NewInt(0).QuoRem(bigIFd.integerNum, scale, scratch)
 
-	integer = new(BigIntFixedDecimal).New(intRadicand, 0)
+	integer, err = new(BigIntFixedDecimal).New(intRadicand, 0)
 
-	fraction = new(BigIntFixedDecimal).New(fracRadicand, bigIFd.precision)
+	if err != nil {
 
-	return integer, fraction
+		return BigIntFixedDecimal{}, BigIntFixedDecimal{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "integer, err = new(BigIntFixedDecimal).New(intRadicand, 0)",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
+
+	fraction, err = new(BigIntFixedDecimal).New(fracRadicand, bigIFd.precision)
+
+	if err != nil {
+
+		return BigIntFixedDecimal{}, BigIntFixedDecimal{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "fraction, err = new(BigIntFixedDecimal).New(fracRadicand, bigIFd.precision)",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
+
+	return integer, fraction, nil
 }
 
 // GetIntAry - Returns a new IntAry instance initialized to the
@@ -1398,7 +1482,17 @@ func (bigIFd *BigIntFixedDecimal) MultiplyByTenToPower(exponent uint) error {
 			big.NewInt(10),
 			big.NewInt(int64(exponent)), nil)
 
-	factor := new(BigIntFixedDecimal).New(scale, 0)
+	factor, err := new(BigIntFixedDecimal).New(scale, 0)
+
+	if err != nil {
+
+		return &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "factor, err := new(BigIntFixedDecimal).New(scale, 0)",
+			ErrContext: "",
+			ErrMessage: err.Error(),
+		}
+	}
 
 	bigIFd2, err := bigIFd.CopyOut()
 
@@ -1518,41 +1612,181 @@ func (bigIFd *BigIntFixedDecimal) MultiplyByTwoToPower(exponent uint) error {
 	return nil
 }
 
-// New - Creates and returns a new BigIntFixedDecimal type based on input parameters,
-// 'integer' and 'precision'.
+// New
 //
-// BE ADVISED
-// ==========
+//	Creates and returns a new BigIntFixedDecimal type based on
+//	input parameters, 'integer' and 'precision'.
 //
-// This method will set numeric separators to USA defaults.
+//	Numeric Separators
+//	==================
 //
-//	decimal separator = '.'
-//	thousands separator = ','
-//	currency separator = '$'
+//	Numeric Separators define the Decimal Separator character,
+//	Thousands Separator character, and Currency Symbol character.
+//	These separator characters serve two purposes. First they are
+//	used to format and display numeric values as number strings.
+//	Second, they are also used to parse number strings and convert
+//	them into numeric values.
 //
-// Input Parameters
-// ================
+//	Numeric Separator characters are typically encapsulated in a
+//	NumericSeparatorDto type.
 //
-// integer	*big.Int	- Specifies the sequence of numerical digits in the numeric value.
+//	The BigIntFixedDecimal instance returned by this method will
+//	contain numeric separators (Decimal Separator, Thousands
+//	Separator and Currency Symbol) derived from one of two possible
+//	sources.
 //
-// precision		uint	- Specifies the number of digits to the right of the decimal point
+//	Users have the option to supply an input parameter,
+//	'outputNumSeps' of type NumericSeparatorDto. If this optional
+//	parameter is provided, it will be used to configure the
+//	BigIntFixedDecimal instance returned from this method. Note
+//	that the first valid NumericSeparatorDto in the 'outputNumSeps'
+//	series will be selected and used. There is no need to provide
+//	more than one valid NumericSeparatorDto object for input
+//	parameter 'outputNumSeps'.
 //
-//	in input parameter, 'integer'.
-func (bigIFd *BigIntFixedDecimal) New(integer *big.Int, precision uint) BigIntFixedDecimal {
+//	If the optional input parameter 'outputNumSeps' is NOT
+//	provided, the returned BigIntFixedDecimal instance will be
+//	configured with default USA Numeric Separators.
+//
+//	  USA Default Numeric Separators
+//	    Decimal Separator   = '.' (period)
+//	    Thousands Separator = ',' (comma)
+//	    Currency Symbol     = '$' (Dollar Sign)
+//
+//	Input Parameters
+//	================
+//
+//	integer                  *big.Int
+//	  Specifies the sequence of numerical digits in the numeric
+//	  value.
+//
+//	precision                uint
+//	  Specifies the number of digits to the right of the decimal
+//	  point in input parameter, 'integer'.
+//
+//	outputNumSeps            ... NumericSeparatorDto
+//	  This method is defined as a variadic function in that
+//	  'outputNumSeps' is configured as an optional input parameter
+//	  meaning that it is NOT required. The user can choose to
+//	  provide a value for 'outputNumSeps', or not.
+//
+//	  If the user chooses to provide a valid 'NumericSeparatorDto'
+//	  object for this parameter, it will be used to configure the
+//	  'BigIntFixedDecimal' instance returned by this method.
+//
+//	  Note that only the first valid NumericSeparatorDto in the
+//	  'outputNumSeps' series will be selected and used. There is no
+//	  need to provide more than one valid NumericSeparatorDto
+//	  object for parameter 'outputNumSeps'.
+//
+//	  Be advised that if the user chooses NOT to provide this
+//	  optional parameter, the 'BigIntFixedDecimal' value returned
+//	  by this method will be configued using default USA Numeric
+//	  Separators as described above.
+//
+//	Return Values
+//	=============
+//
+//	BigIntFixedDecimal
+//	  This parameter returns a new instance of BigIntFixedDecimal
+//	  configured with 'integer' and 'precision' values passed as
+//	  input parameters.
+//
+//	error
+//	  If no errors are encountered, this method will return a 'nil'
+//	  value for 'error'.
+func (bigIFd *BigIntFixedDecimal) New(
+	integer *big.Int,
+	precision uint,
+	outputNumSeps ...NumericSeparatorDto) (BigIntFixedDecimal, error) {
+
+	var ePrefix *ePref.ErrPrefixDto
+
+	var err error
+
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"BigIntFixedDecimal.New",
+		"")
+
+	if err != nil {
+		return BigIntFixedDecimal{}, err
+	}
+
+	if integer == nil {
+
+		return BigIntFixedDecimal{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "",
+				ErrContext: "integer == nil",
+				ErrMessage: "Input Prameter 'integer' is a 'nil' pointer",
+			}
+	}
 
 	num := new(BigIntFixedDecimal)
 
 	num.integerNum = big.NewInt(0).Set(integer)
-
 	num.precision = precision
 
-	num.decimalSeparator = '.'
+	defaultUsaNumSeps := new(NumericSeparatorDto)
 
-	num.thousandsSeparator = ','
+	defaultUsaNumSeps.SetUSADefaults()
 
-	num.currencySymbol = '$'
+	var finalOutputNumSeps NumericSeparatorDto
 
-	return *num
+	if len(outputNumSeps) > 0 {
+
+		_, finalOutputNumSeps,
+			err = new(numSepsDtoMechanics).selectValidNumSepInSeries(
+			"outputNumSeps",
+			"defaultUsa",
+			defaultUsaNumSeps,
+			ePrefix,
+			outputNumSeps...)
+
+		if err != nil {
+
+			return BigIntFixedDecimal{},
+				&FuncReturnError{
+					ErrPrefix: ePrefix.String(),
+					ReturnFunc: "_, finalOutputNumSeps, err = \n" +
+						"    new(numSepsDtoMechanics).selectValidNumSepInSeries(\n" +
+						"    \"outputNumSeps\", \"defaultUsa\")",
+					ErrContext: "Error: Failed to Select 'finalOutputNumSeps'",
+					ErrMessage: err.Error(),
+				}
+		}
+	} else {
+
+		// Checks validity of multiplierNumSeps
+
+		err = new(numSepsDtoMechanics).copyNumSepsDto(
+			&finalOutputNumSeps, // Destination
+			defaultUsaNumSeps,
+			false, // Set Defaults if Empty
+			ePrefix.XCpy("Copy 'defaultUsaNumSeps' Into 'finalOutputNumSeps'"))
+
+		if err != nil {
+
+			return BigIntFixedDecimal{},
+				&FuncReturnError{
+					ErrPrefix: ePrefix.String(),
+					ReturnFunc: "err = new(numSepsDtoMechanics).copyNumSepsDto(\n" +
+						"    &finalOutputNumSeps, &defaultUsaNumSeps, false,\n" +
+						"    ePrefix.XCpy(\"Copy 'defaultUsaNumSeps' Into 'finalOutputNumSeps'\"))",
+					ErrContext: "",
+					ErrMessage: err.Error(),
+				}
+		}
+	}
+
+	num.decimalSeparator = finalOutputNumSeps.DecimalSeparator
+	num.thousandsSeparator = finalOutputNumSeps.ThousandsSeparator
+	num.currencySymbol = finalOutputNumSeps.CurrencySymbol
+
+	return *num, nil
 }
 
 // NewBigIntPrecision - Creates and returns a new BigIntFixedDecimal type based on input parameters,
