@@ -1399,7 +1399,7 @@ func (dec *Decimal) GetNumStrDto() (NumStrDto, error) {
 //		123456								3								123.456
 func (dec *Decimal) GetPrecision() int {
 
-	return dec.bigINum.GetPrecision()
+	return dec.bigINum.GetPrecisionInt()
 
 }
 

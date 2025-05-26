@@ -715,27 +715,27 @@ func (bigIMathMultiplyMech *bigIntMathMultiplyMechanics) multiplyBigIntFixedDeci
 			}
 	}
 
-	multiplierBigInt, err := multiplier.GetInteger()
+	multiplierBigInt, err := multiplier.GetIntegerValue()
 
 	if err != nil {
 
 		return BigIntFixedDecimal{},
 			&FuncReturnError{
 				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "multiplierBigInt, err := multiplier.GetInteger()",
+				ReturnFunc: "multiplierBigInt, err := multiplier.GetIntegerValue()",
 				ErrContext: "",
 				ErrMessage: err.Error(),
 			}
 	}
 
-	multiplierPrecision, err := multiplier.GetPrecision()
+	multiplierPrecision, err := multiplier.GetPrecisionUint()
 
 	if err != nil {
 
 		return BigIntFixedDecimal{},
 			&FuncReturnError{
 				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "multiplierPrecision, err := multiplier.GetPrecision()",
+				ReturnFunc: "multiplierPrecision, err := multiplier.GetPrecisionUint()",
 				ErrContext: "",
 				ErrMessage: err.Error(),
 			}
@@ -744,27 +744,27 @@ func (bigIMathMultiplyMech *bigIntMathMultiplyMechanics) multiplyBigIntFixedDeci
 	multiplierPrecisionBigInt := big.NewInt(0).
 		SetUint64(uint64(multiplierPrecision))
 
-	multiplicandBigInt, err := multiplicand.GetInteger()
+	multiplicandBigInt, err := multiplicand.GetIntegerValue()
 
 	if err != nil {
 
 		return BigIntFixedDecimal{},
 			&FuncReturnError{
 				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "multiplicandBigInt, err := multiplicand.GetInteger()",
+				ReturnFunc: "multiplicandBigInt, err := multiplicand.GetIntegerValue()",
 				ErrContext: "",
 				ErrMessage: err.Error(),
 			}
 	}
 
-	multiplicandPrecision, err := multiplicand.GetPrecision()
+	multiplicandPrecision, err := multiplicand.GetPrecisionUint()
 
 	if err != nil {
 
 		return BigIntFixedDecimal{},
 			&FuncReturnError{
 				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "multiplicandPrecision, err := multiplicand.GetPrecision()",
+				ReturnFunc: "multiplicandPrecision, err := multiplicand.GetPrecisionInt()",
 				ErrContext: "",
 				ErrMessage: err.Error(),
 			}

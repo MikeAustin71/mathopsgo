@@ -263,9 +263,9 @@ func (bSubtract BigIntMathSubtract) FixedDecimalSubtract(
 	// subtrahend precision will never be less than zero
 	rBigInt, rBigIntPrecision, _ :=
 		BigIntMathSubtract{}.BigIntSubtract(
-			minuend.GetInteger(),
+			minuend.GetIntegerValue(),
 			minuend.GetPrecisionBigInt(),
-			subtrahend.GetInteger(),
+			subtrahend.GetIntegerValue(),
 			subtrahend.GetPrecisionBigInt())
 
 	difference.SetNumericValue(rBigInt, uint(rBigIntPrecision.Uint64()))

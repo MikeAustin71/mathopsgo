@@ -90,14 +90,14 @@ func TestBigIntNum_GetBigIntFixedDecimal(t *testing.T) {
 
 	precisionExpected := bINum1.GetPrecisionUint()
 
-	if bigIntExpected.Cmp(fixedDec.GetInteger()) != 0 {
+	if bigIntExpected.Cmp(fixedDec.GetIntegerValue()) != 0 {
 		t.Errorf("Expected BigInt num='%v'. Instead, BigInt num='%v'.",
-			bigIntExpected.Text(10), fixedDec.GetInteger().Text(10))
+			bigIntExpected.Text(10), fixedDec.GetIntegerValue().Text(10))
 	}
 
-	if precisionExpected != fixedDec.GetPrecision() {
+	if precisionExpected != fixedDec.GetPrecisionUint() {
 		t.Errorf("Expected precision='%v'. Instead, precision='%v'.",
-			precisionExpected, fixedDec.GetPrecision())
+			precisionExpected, fixedDec.GetPrecisionUint())
 
 	}
 

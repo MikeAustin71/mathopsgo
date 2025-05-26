@@ -3951,14 +3951,14 @@ func (bIDivide *BigIntMathDivide) FixedDecimalFracQuotient(
 			}
 	}
 
-	dividendInt, err := dividend.GetInteger()
+	dividendInt, err := dividend.GetIntegerValue()
 
 	if err != nil {
 
 		return quotient,
 			&FuncReturnError{
 				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "dividendInt, err := dividend.GetInteger()",
+				ReturnFunc: "dividendInt, err := dividend.GetIntegerValue()",
 				ErrContext: "dividend is type BigIntFixedDecimal",
 				ErrMessage: err.Error(),
 			}
@@ -3966,14 +3966,14 @@ func (bIDivide *BigIntMathDivide) FixedDecimalFracQuotient(
 
 	dividendPrecision := dividend.GetPrecisionBigInt()
 
-	divisorInt, err := divisor.GetInteger()
+	divisorInt, err := divisor.GetIntegerValue()
 
 	if err != nil {
 
 		return quotient,
 			&FuncReturnError{
 				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "divisorInt, err := divisor.GetInteger()",
+				ReturnFunc: "divisorInt, err := divisor.GetIntegerValue()",
 				ErrContext: "divisor is type BigIntFixedDecimal",
 				ErrMessage: err.Error(),
 			}

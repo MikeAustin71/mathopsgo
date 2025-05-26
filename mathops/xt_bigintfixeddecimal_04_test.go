@@ -4,7 +4,6 @@ import (
 	"testing"
 )
 
-
 func TestBigIntFixedDecimal_RoundToDecPlace_01(t *testing.T) {
 
 	expectedNumStr := "-123.57"
@@ -291,35 +290,33 @@ func TestBigIntFixedDecimal_RoundToDecPlace_15(t *testing.T) {
 	}
 }
 
-
 func TestBigIntFixedDecimal_SetNumStr_01(t *testing.T) {
 
-	origNumStr:= "57.64"
+	origNumStr := "57.64"
 	numStr := "89765.123456789012"
 	expectedNumStr := numStr
 	expectedPrecision := uint(12)
 
 	fixedDec, err := BigIntFixedDecimal{}.NewNumStr(origNumStr)
 
-	if err!= nil {
-		t.Errorf("Error returned by %v", err.Error() )
+	if err != nil {
+		t.Errorf("Error returned by %v", err.Error())
 	}
 
 	err = fixedDec.SetNumStr(numStr)
 
-	if err!= nil {
-		t.Errorf("Error returned by %v", err.Error() )
+	if err != nil {
+		t.Errorf("Error returned by %v", err.Error())
 	}
-
 
 	if expectedNumStr != fixedDec.GetNumStr() {
 		t.Errorf("Error: Expected result='%v'. Instead, result='%v'",
 			expectedNumStr, fixedDec.GetNumStr())
 	}
 
-	if expectedPrecision != fixedDec.GetPrecision() {
+	if expectedPrecision != fixedDec.GetPrecisionUint() {
 		t.Errorf("Error: Expected precision='%v'. Instead, precision='%v'",
-			expectedPrecision, fixedDec.GetPrecision())
+			expectedPrecision, fixedDec.GetPrecisionUint())
 
 	}
 
@@ -334,14 +331,14 @@ func TestBigIntFixedDecimal_SetNumStr_02(t *testing.T) {
 
 	fixedDec, err := BigIntFixedDecimal{}.NewNumStr(origNumStr)
 
-	if err!= nil {
-		t.Errorf("Error returned by %v", err.Error() )
+	if err != nil {
+		t.Errorf("Error returned by %v", err.Error())
 	}
 
 	err = fixedDec.SetNumStr(numStr)
 
-	if err!= nil {
-		t.Errorf("Error returned by %v", err.Error() )
+	if err != nil {
+		t.Errorf("Error returned by %v", err.Error())
 	}
 
 	if expectedNumStr != fixedDec.GetNumStr() {
@@ -349,9 +346,9 @@ func TestBigIntFixedDecimal_SetNumStr_02(t *testing.T) {
 			expectedNumStr, fixedDec.GetNumStr())
 	}
 
-	if expectedPrecision != fixedDec.GetPrecision() {
+	if expectedPrecision != fixedDec.GetPrecisionUint() {
 		t.Errorf("Error: Expected precision='%v'. Instead, precision='%v'",
-			expectedPrecision, fixedDec.GetPrecision())
+			expectedPrecision, fixedDec.GetPrecisionUint())
 	}
 }
 
@@ -363,14 +360,14 @@ func TestBigIntFixedDecimal_SetNumStr_03(t *testing.T) {
 	expectedPrecision := uint(12)
 	fixedDec, err := BigIntFixedDecimal{}.NewNumStr(origNumStr)
 
-	if err!= nil {
-		t.Errorf("Error returned by %v", err.Error() )
+	if err != nil {
+		t.Errorf("Error returned by %v", err.Error())
 	}
 
 	err = fixedDec.SetNumStr(numStr)
 
-	if err!= nil {
-		t.Errorf("Error returned by %v", err.Error() )
+	if err != nil {
+		t.Errorf("Error returned by %v", err.Error())
 	}
 
 	if expectedNumStr != fixedDec.GetNumStr() {
@@ -378,9 +375,9 @@ func TestBigIntFixedDecimal_SetNumStr_03(t *testing.T) {
 			expectedNumStr, fixedDec.GetNumStr())
 	}
 
-	if expectedPrecision != fixedDec.GetPrecision() {
+	if expectedPrecision != fixedDec.GetPrecisionUint() {
 		t.Errorf("Error: Expected precision='%v'. Instead, precision='%v'",
-			expectedPrecision, fixedDec.GetPrecision())
+			expectedPrecision, fixedDec.GetPrecisionUint())
 	}
 
 }
@@ -393,14 +390,14 @@ func TestBigIntFixedDecimal_SetNumStr_04(t *testing.T) {
 	expectedPrecision := uint(12)
 	fixedDec, err := BigIntFixedDecimal{}.NewNumStr(origNumStr)
 
-	if err!= nil {
-		t.Errorf("Error returned by %v", err.Error() )
+	if err != nil {
+		t.Errorf("Error returned by %v", err.Error())
 	}
 
 	err = fixedDec.SetNumStr(numStr)
 
-	if err!= nil {
-		t.Errorf("Error returned by %v", err.Error() )
+	if err != nil {
+		t.Errorf("Error returned by %v", err.Error())
 	}
 
 	if expectedNumStr != fixedDec.GetNumStr() {
@@ -408,9 +405,9 @@ func TestBigIntFixedDecimal_SetNumStr_04(t *testing.T) {
 			expectedNumStr, fixedDec.GetNumStr())
 	}
 
-	if expectedPrecision != fixedDec.GetPrecision() {
+	if expectedPrecision != fixedDec.GetPrecisionUint() {
 		t.Errorf("Error: Expected precision='%v'. Instead, precision='%v'",
-			expectedPrecision, fixedDec.GetPrecision())
+			expectedPrecision, fixedDec.GetPrecisionUint())
 	}
 }
 
@@ -422,14 +419,14 @@ func TestBigIntFixedDecimal_SetNumStr_05(t *testing.T) {
 	expectedPrecision := uint(12)
 	fixedDec, err := BigIntFixedDecimal{}.NewNumStr(origNumStr)
 
-	if err!= nil {
-		t.Errorf("Error returned by %v", err.Error() )
+	if err != nil {
+		t.Errorf("Error returned by %v", err.Error())
 	}
 
 	err = fixedDec.SetNumStr(numStr)
 
-	if err!= nil {
-		t.Errorf("Error returned by %v", err.Error() )
+	if err != nil {
+		t.Errorf("Error returned by %v", err.Error())
 	}
 
 	if expectedNumStr != fixedDec.GetNumStr() {
@@ -437,9 +434,9 @@ func TestBigIntFixedDecimal_SetNumStr_05(t *testing.T) {
 			expectedNumStr, fixedDec.GetNumStr())
 	}
 
-	if expectedPrecision != fixedDec.GetPrecision() {
+	if expectedPrecision != fixedDec.GetPrecisionUint() {
 		t.Errorf("Error: Expected precision='%v'. Instead, precision='%v'",
-			expectedPrecision, fixedDec.GetPrecision())
+			expectedPrecision, fixedDec.GetPrecisionUint())
 	}
 }
 
@@ -450,14 +447,14 @@ func TestBigIntFixedDecimal_SetNumStr_06(t *testing.T) {
 	expectedPrecision := uint(0)
 	fixedDec, err := BigIntFixedDecimal{}.NewNumStr(origNumStr)
 
-	if err!= nil {
-		t.Errorf("Error returned by %v", err.Error() )
+	if err != nil {
+		t.Errorf("Error returned by %v", err.Error())
 	}
 
 	err = fixedDec.SetNumStr(numStr)
 
-	if err!= nil {
-		t.Errorf("Error returned by %v", err.Error() )
+	if err != nil {
+		t.Errorf("Error returned by %v", err.Error())
 	}
 
 	if expectedNumStr != fixedDec.GetNumStr() {
@@ -465,9 +462,9 @@ func TestBigIntFixedDecimal_SetNumStr_06(t *testing.T) {
 			expectedNumStr, fixedDec.GetNumStr())
 	}
 
-	if expectedPrecision != fixedDec.GetPrecision() {
+	if expectedPrecision != fixedDec.GetPrecisionUint() {
 		t.Errorf("Error: Expected precision='%v'. Instead, precision='%v'",
-			expectedPrecision, fixedDec.GetPrecision())
+			expectedPrecision, fixedDec.GetPrecisionUint())
 	}
 
 }
@@ -480,14 +477,14 @@ func TestBigIntFixedDecimal_SetNumStr_07(t *testing.T) {
 	expectedPrecision := uint(0)
 	fixedDec, err := BigIntFixedDecimal{}.NewNumStr(origNumStr)
 
-	if err!= nil {
-		t.Errorf("Error returned by %v", err.Error() )
+	if err != nil {
+		t.Errorf("Error returned by %v", err.Error())
 	}
 
 	err = fixedDec.SetNumStr(numStr)
 
-	if err!= nil {
-		t.Errorf("Error returned by %v", err.Error() )
+	if err != nil {
+		t.Errorf("Error returned by %v", err.Error())
 	}
 
 	if expectedNumStr != fixedDec.GetNumStr() {
@@ -495,9 +492,9 @@ func TestBigIntFixedDecimal_SetNumStr_07(t *testing.T) {
 			expectedNumStr, fixedDec.GetNumStr())
 	}
 
-	if expectedPrecision != fixedDec.GetPrecision() {
+	if expectedPrecision != fixedDec.GetPrecisionUint() {
 		t.Errorf("Error: Expected precision='%v'. Instead, precision='%v'",
-			expectedPrecision, fixedDec.GetPrecision())
+			expectedPrecision, fixedDec.GetPrecisionUint())
 	}
 }
 
@@ -509,14 +506,14 @@ func TestBigIntFixedDecimal_SetNumStr_08(t *testing.T) {
 	expectedPrecision := uint(4)
 	fixedDec, err := BigIntFixedDecimal{}.NewNumStr(origNumStr)
 
-	if err!= nil {
-		t.Errorf("Error returned by %v", err.Error() )
+	if err != nil {
+		t.Errorf("Error returned by %v", err.Error())
 	}
 
 	err = fixedDec.SetNumStr(numStr)
 
-	if err!= nil {
-		t.Errorf("Error returned by %v", err.Error() )
+	if err != nil {
+		t.Errorf("Error returned by %v", err.Error())
 	}
 
 	if expectedNumStr != fixedDec.GetNumStr() {
@@ -524,9 +521,9 @@ func TestBigIntFixedDecimal_SetNumStr_08(t *testing.T) {
 			expectedNumStr, fixedDec.GetNumStr())
 	}
 
-	if expectedPrecision != fixedDec.GetPrecision() {
+	if expectedPrecision != fixedDec.GetPrecisionUint() {
 		t.Errorf("Error: Expected precision='%v'. Instead, precision='%v'",
-			expectedPrecision, fixedDec.GetPrecision())
+			expectedPrecision, fixedDec.GetPrecisionUint())
 	}
 }
 
@@ -538,14 +535,14 @@ func TestBigIntFixedDecimal_SetNumStr_09(t *testing.T) {
 	expectedPrecision := uint(4)
 	fixedDec, err := BigIntFixedDecimal{}.NewNumStr(origNumStr)
 
-	if err!= nil {
-		t.Errorf("Error returned by %v", err.Error() )
+	if err != nil {
+		t.Errorf("Error returned by %v", err.Error())
 	}
 
 	err = fixedDec.SetNumStr(numStr)
 
-	if err!= nil {
-		t.Errorf("Error returned by %v", err.Error() )
+	if err != nil {
+		t.Errorf("Error returned by %v", err.Error())
 	}
 
 	if expectedNumStr != fixedDec.GetNumStr() {
@@ -553,28 +550,28 @@ func TestBigIntFixedDecimal_SetNumStr_09(t *testing.T) {
 			expectedNumStr, fixedDec.GetNumStr())
 	}
 
-	if expectedPrecision != fixedDec.GetPrecision() {
+	if expectedPrecision != fixedDec.GetPrecisionUint() {
 		t.Errorf("Error: Expected precision='%v'. Instead, precision='%v'",
-			expectedPrecision, fixedDec.GetPrecision())
+			expectedPrecision, fixedDec.GetPrecisionUint())
 	}
 }
 
 func TestBigIntFixedDecimal_SetNumStr_10(t *testing.T) {
 
-	origNumStr:="22.414141414"
+	origNumStr := "22.414141414"
 	numStr := "(00052.1234"
 	expectedNumStr := "52.1234"
 	expectedPrecision := uint(4)
 	fixedDec, err := BigIntFixedDecimal{}.NewNumStr(origNumStr)
 
-	if err!= nil {
-		t.Errorf("Error returned by %v", err.Error() )
+	if err != nil {
+		t.Errorf("Error returned by %v", err.Error())
 	}
 
 	err = fixedDec.SetNumStr(numStr)
 
-	if err!= nil {
-		t.Errorf("Error returned by %v", err.Error() )
+	if err != nil {
+		t.Errorf("Error returned by %v", err.Error())
 	}
 
 	if expectedNumStr != fixedDec.GetNumStr() {
@@ -582,27 +579,27 @@ func TestBigIntFixedDecimal_SetNumStr_10(t *testing.T) {
 			expectedNumStr, fixedDec.GetNumStr())
 	}
 
-	if expectedPrecision != fixedDec.GetPrecision() {
+	if expectedPrecision != fixedDec.GetPrecisionUint() {
 		t.Errorf("Error: Expected precision='%v'. Instead, precision='%v'",
-			expectedPrecision, fixedDec.GetPrecision())
+			expectedPrecision, fixedDec.GetPrecisionUint())
 	}
 }
 
 func TestBigIntFixedDecimal_SetNumStr_11(t *testing.T) {
-  origNumStr := "98.123456"
+	origNumStr := "98.123456"
 	numStr := "+00052.1234"
 	expectedNumStr := "52.1234"
 	expectedPrecision := uint(4)
 	fixedDec, err := BigIntFixedDecimal{}.NewNumStr(origNumStr)
 
-	if err!= nil {
-		t.Errorf("Error returned by %v", err.Error() )
+	if err != nil {
+		t.Errorf("Error returned by %v", err.Error())
 	}
 
 	err = fixedDec.SetNumStr(numStr)
 
-	if err!= nil {
-		t.Errorf("Error returned by %v", err.Error() )
+	if err != nil {
+		t.Errorf("Error returned by %v", err.Error())
 	}
 
 	if expectedNumStr != fixedDec.GetNumStr() {
@@ -610,9 +607,9 @@ func TestBigIntFixedDecimal_SetNumStr_11(t *testing.T) {
 			expectedNumStr, fixedDec.GetNumStr())
 	}
 
-	if expectedPrecision != fixedDec.GetPrecision() {
+	if expectedPrecision != fixedDec.GetPrecisionUint() {
 		t.Errorf("Error: Expected precision='%v'. Instead, precision='%v'",
-			expectedPrecision, fixedDec.GetPrecision())
+			expectedPrecision, fixedDec.GetPrecisionUint())
 	}
 
 }
@@ -625,14 +622,14 @@ func TestBigIntFixedDecimal_SetNumStr_12(t *testing.T) {
 	expectedPrecision := uint(16)
 	fixedDec, err := BigIntFixedDecimal{}.NewNumStr(origNumStr)
 
-	if err!= nil {
-		t.Errorf("Error returned by %v", err.Error() )
+	if err != nil {
+		t.Errorf("Error returned by %v", err.Error())
 	}
 
 	err = fixedDec.SetNumStr(numStr)
 
-	if err!= nil {
-		t.Errorf("Error returned by %v", err.Error() )
+	if err != nil {
+		t.Errorf("Error returned by %v", err.Error())
 	}
 
 	if expectedNumStr != fixedDec.GetNumStr() {
@@ -640,28 +637,28 @@ func TestBigIntFixedDecimal_SetNumStr_12(t *testing.T) {
 			expectedNumStr, fixedDec.GetNumStr())
 	}
 
-	if expectedPrecision != fixedDec.GetPrecision() {
+	if expectedPrecision != fixedDec.GetPrecisionUint() {
 		t.Errorf("Error: Expected precision='%v'. Instead, precision='%v'",
-			expectedPrecision, fixedDec.GetPrecision())
+			expectedPrecision, fixedDec.GetPrecisionUint())
 	}
 
 }
 
 func TestBigIntFixedDecimal_SetNumStr_13(t *testing.T) {
-  origNumStr := "52"
+	origNumStr := "52"
 	numStr := "52 . 123 4567 8901 23456"
 	expectedNumStr := "52.1234567890123456"
 	expectedPrecision := uint(16)
 	fixedDec, err := BigIntFixedDecimal{}.NewNumStr(origNumStr)
 
-	if err!= nil {
-		t.Errorf("Error returned by %v", err.Error() )
+	if err != nil {
+		t.Errorf("Error returned by %v", err.Error())
 	}
 
 	err = fixedDec.SetNumStr(numStr)
 
-	if err!= nil {
-		t.Errorf("Error returned by %v", err.Error() )
+	if err != nil {
+		t.Errorf("Error returned by %v", err.Error())
 	}
 
 	if expectedNumStr != fixedDec.GetNumStr() {
@@ -669,9 +666,9 @@ func TestBigIntFixedDecimal_SetNumStr_13(t *testing.T) {
 			expectedNumStr, fixedDec.GetNumStr())
 	}
 
-	if expectedPrecision != fixedDec.GetPrecision() {
+	if expectedPrecision != fixedDec.GetPrecisionUint() {
 		t.Errorf("Error: Expected precision='%v'. Instead, precision='%v'",
-			expectedPrecision, fixedDec.GetPrecision())
+			expectedPrecision, fixedDec.GetPrecisionUint())
 	}
 }
 
@@ -683,14 +680,14 @@ func TestBigIntFixedDecimal_SetNumStr_14(t *testing.T) {
 	expectedPrecision := uint(0)
 	fixedDec, err := BigIntFixedDecimal{}.NewNumStr(origNumStr)
 
-	if err!= nil {
-		t.Errorf("Error returned by %v", err.Error() )
+	if err != nil {
+		t.Errorf("Error returned by %v", err.Error())
 	}
 
 	err = fixedDec.SetNumStr(numStr)
 
-	if err!= nil {
-		t.Errorf("Error returned by %v", err.Error() )
+	if err != nil {
+		t.Errorf("Error returned by %v", err.Error())
 	}
 
 	if expectedNumStr != fixedDec.GetNumStr() {
@@ -698,9 +695,9 @@ func TestBigIntFixedDecimal_SetNumStr_14(t *testing.T) {
 			expectedNumStr, fixedDec.GetNumStr())
 	}
 
-	if expectedPrecision != fixedDec.GetPrecision() {
+	if expectedPrecision != fixedDec.GetPrecisionUint() {
 		t.Errorf("Error: Expected precision='%v'. Instead, precision='%v'",
-			expectedPrecision, fixedDec.GetPrecision())
+			expectedPrecision, fixedDec.GetPrecisionUint())
 	}
 }
 
@@ -712,14 +709,14 @@ func TestBigIntFixedDecimal_SetNumStr_15(t *testing.T) {
 	expectedPrecision := uint(0)
 	fixedDec, err := BigIntFixedDecimal{}.NewNumStr(origNumStr)
 
-	if err!= nil {
-		t.Errorf("Error returned by %v", err.Error() )
+	if err != nil {
+		t.Errorf("Error returned by %v", err.Error())
 	}
 
 	err = fixedDec.SetNumStr(numStr)
 
-	if err!= nil {
-		t.Errorf("Error returned by %v", err.Error() )
+	if err != nil {
+		t.Errorf("Error returned by %v", err.Error())
 	}
 
 	if expectedNumStr != fixedDec.GetNumStr() {
@@ -727,9 +724,9 @@ func TestBigIntFixedDecimal_SetNumStr_15(t *testing.T) {
 			expectedNumStr, fixedDec.GetNumStr())
 	}
 
-	if expectedPrecision != fixedDec.GetPrecision() {
+	if expectedPrecision != fixedDec.GetPrecisionUint() {
 		t.Errorf("Error: Expected precision='%v'. Instead, precision='%v'",
-			expectedPrecision, fixedDec.GetPrecision())
+			expectedPrecision, fixedDec.GetPrecisionUint())
 	}
 }
 
@@ -741,14 +738,14 @@ func TestBigIntFixedDecimal_SetNumStr_16(t *testing.T) {
 	expectedPrecision := uint(0)
 	fixedDec, err := BigIntFixedDecimal{}.NewNumStr(origNumStr)
 
-	if err!= nil {
-		t.Errorf("Error returned by %v", err.Error() )
+	if err != nil {
+		t.Errorf("Error returned by %v", err.Error())
 	}
 
 	err = fixedDec.SetNumStr(numStr)
 
-	if err!= nil {
-		t.Errorf("Error returned by %v", err.Error() )
+	if err != nil {
+		t.Errorf("Error returned by %v", err.Error())
 	}
 
 	if expectedNumStr != fixedDec.GetNumStr() {
@@ -756,9 +753,9 @@ func TestBigIntFixedDecimal_SetNumStr_16(t *testing.T) {
 			expectedNumStr, fixedDec.GetNumStr())
 	}
 
-	if expectedPrecision != fixedDec.GetPrecision() {
+	if expectedPrecision != fixedDec.GetPrecisionUint() {
 		t.Errorf("Error: Expected precision='%v'. Instead, precision='%v'",
-			expectedPrecision, fixedDec.GetPrecision())
+			expectedPrecision, fixedDec.GetPrecisionUint())
 	}
 }
 
@@ -769,14 +766,14 @@ func TestBigIntFixedDecimal_SetNumStr_17(t *testing.T) {
 
 	fixedDec, err := BigIntFixedDecimal{}.NewNumStr(origNumStr)
 
-	if err!= nil {
-		t.Errorf("Error returned by %v", err.Error() )
+	if err != nil {
+		t.Errorf("Error returned by %v", err.Error())
 	}
 
 	err = fixedDec.SetNumStr(EulersNum50kStr)
 
-	if err!= nil {
-		t.Errorf("Error returned by %v", err.Error() )
+	if err != nil {
+		t.Errorf("Error returned by %v", err.Error())
 	}
 
 	fixedDec.RoundToDecPlace(expectedPrecision)
@@ -788,14 +785,13 @@ func TestBigIntFixedDecimal_SetNumStr_17(t *testing.T) {
 			fdEuler1k.GetNumStr(), fixedDec.GetNumStr())
 	}
 
-	if expectedPrecision != fixedDec.GetPrecision() {
+	if expectedPrecision != fixedDec.GetPrecisionUint() {
 		t.Errorf("Error: Expected precision='%v'. Instead, precision='%v'",
-			expectedPrecision, fixedDec.GetPrecision())
+			expectedPrecision, fixedDec.GetPrecisionUint())
 
 	}
 
 }
-
 
 func TestBigIntFixedDecimal_SetNumStr_18(t *testing.T) {
 
@@ -804,14 +800,14 @@ func TestBigIntFixedDecimal_SetNumStr_18(t *testing.T) {
 
 	fixedDec, err := BigIntFixedDecimal{}.NewNumStr(origNumStr)
 
-	if err!= nil {
-		t.Errorf("Error returned by %v", err.Error() )
+	if err != nil {
+		t.Errorf("Error returned by %v", err.Error())
 	}
 
 	err = fixedDec.SetNumStr(numStr)
 
 	if err == nil {
-		t.Error("Expected an Error from INVALID Number String. NO ERROR RETURNED!" )
+		t.Error("Expected an Error from INVALID Number String. NO ERROR RETURNED!")
 	}
 }
 

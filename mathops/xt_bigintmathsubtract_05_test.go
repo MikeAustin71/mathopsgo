@@ -774,7 +774,7 @@ func TestBigIntMathSubtract_BigIntSubtract_01(t *testing.T) {
 		subtrahendPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntMathSubtract{}.BigIntSubtract(...) " +
+		t.Errorf("Error returned by BigIntMathSubtract{}.BigIntSubtract(...) "+
 			"Error='%v' ", err.Error())
 	}
 
@@ -834,7 +834,7 @@ func TestBigIntMathSubtract_BigIntSubtract_02(t *testing.T) {
 		subtrahendPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntMathSubtract{}.BigIntSubtract(...) " +
+		t.Errorf("Error returned by BigIntMathSubtract{}.BigIntSubtract(...) "+
 			"Error='%v' ", err.Error())
 	}
 
@@ -894,7 +894,7 @@ func TestBigIntMathSubtract_BigIntSubtract_03(t *testing.T) {
 		subtrahendPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntMathSubtract{}.BigIntSubtract(...) " +
+		t.Errorf("Error returned by BigIntMathSubtract{}.BigIntSubtract(...) "+
 			"Error='%v' ", err.Error())
 	}
 
@@ -954,7 +954,7 @@ func TestBigIntMathSubtract_BigIntSubtract_04(t *testing.T) {
 		subtrahendPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntMathSubtract{}.BigIntSubtract(...) " +
+		t.Errorf("Error returned by BigIntMathSubtract{}.BigIntSubtract(...) "+
 			"Error='%v' ", err.Error())
 	}
 
@@ -1012,7 +1012,7 @@ func TestBigIntMathSubtract_BigIntSubtract_05(t *testing.T) {
 		subtrahendPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntMathSubtract{}.BigIntSubtract(...) " +
+		t.Errorf("Error returned by BigIntMathSubtract{}.BigIntSubtract(...) "+
 			"Error='%v' ", err.Error())
 	}
 
@@ -1068,7 +1068,7 @@ func TestBigIntMathSubtract_BigIntSubtract_06(t *testing.T) {
 		subtrahendPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntMathSubtract{}.BigIntSubtract(...) " +
+		t.Errorf("Error returned by BigIntMathSubtract{}.BigIntSubtract(...) "+
 			"Error='%v' ", err.Error())
 	}
 
@@ -1124,7 +1124,7 @@ func TestBigIntMathSubtract_BigIntSubtract_07(t *testing.T) {
 		subtrahendPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntMathSubtract{}.BigIntSubtract(...) " +
+		t.Errorf("Error returned by BigIntMathSubtract{}.BigIntSubtract(...) "+
 			"Error='%v' ", err.Error())
 	}
 
@@ -1180,7 +1180,7 @@ func TestBigIntMathSubtract_BigIntSubtract_08(t *testing.T) {
 		subtrahendPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntMathSubtract{}.BigIntSubtract(...) " +
+		t.Errorf("Error returned by BigIntMathSubtract{}.BigIntSubtract(...) "+
 			"Error='%v' ", err.Error())
 	}
 
@@ -1236,7 +1236,7 @@ func TestBigIntMathSubtract_BigIntSubtract_09(t *testing.T) {
 		subtrahendPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntMathSubtract{}.BigIntSubtract(...) " +
+		t.Errorf("Error returned by BigIntMathSubtract{}.BigIntSubtract(...) "+
 			"Error='%v' ", err.Error())
 	}
 
@@ -1292,7 +1292,7 @@ func TestBigIntMathSubtract_BigIntSubtract_10(t *testing.T) {
 		subtrahendPrecision)
 
 	if err != nil {
-		t.Errorf("Error returned by BigIntMathSubtract{}.BigIntSubtract(...) " +
+		t.Errorf("Error returned by BigIntMathSubtract{}.BigIntSubtract(...) "+
 			"Error='%v' ", err.Error())
 	}
 
@@ -1356,14 +1356,14 @@ func TestBigIntMathSubtract_FixedDecimalSubtract_01(t *testing.T) {
 
 	expectedBI := expectedBigINum.GetIntegerValue()
 
-	if expectedBI.Cmp(result.GetInteger()) != 0 {
+	if expectedBI.Cmp(result.GetIntegerValue()) != 0 {
 		t.Errorf("Error: Expected BigIntNum='%s'. Instead, BigIntNum= '%s'. ",
-			expectedBI.Text(10), result.GetInteger().Text(10))
+			expectedBI.Text(10), result.GetIntegerValue().Text(10))
 	}
 
-	if expectedBigINum.GetPrecisionUint() != result.GetPrecision() {
+	if expectedBigINum.GetPrecisionUint() != result.GetPrecisionUint() {
 		t.Errorf("Error: Expected result precision='%v'. Instead, result precision='%v'. ",
-			expectedBigINum.GetPrecisionUint(), result.GetPrecision())
+			expectedBigINum.GetPrecisionUint(), result.GetPrecisionUint())
 	}
 }
 
@@ -1398,7 +1398,6 @@ func TestBigIntMathSubtract_FixedDecimalSubtract_02(t *testing.T) {
 			"expectedBigINumStr='%v'  Error='%v'. ", expectedBigINumStr, err.Error())
 	}
 
-
 	bIMinuend :=
 		BigIntFixedDecimal{}.New(
 			minuendBiNum.GetIntegerValue(),
@@ -1415,14 +1414,14 @@ func TestBigIntMathSubtract_FixedDecimalSubtract_02(t *testing.T) {
 
 	expectedBI := expectedBigINum.GetIntegerValue()
 
-	if expectedBI.Cmp(result.GetInteger()) != 0 {
+	if expectedBI.Cmp(result.GetIntegerValue()) != 0 {
 		t.Errorf("Error: Expected BigIntNum='%s'. Instead, BigIntNum= '%s'. ",
-			expectedBI.Text(10), result.GetInteger().Text(10))
+			expectedBI.Text(10), result.GetIntegerValue().Text(10))
 	}
 
-	if expectedBigINum.GetPrecisionUint() != result.GetPrecision() {
+	if expectedBigINum.GetPrecisionUint() != result.GetPrecisionUint() {
 		t.Errorf("Error: Expected result precision='%v'. Instead, result precision='%v'. ",
-			expectedBigINum.GetPrecisionUint(), result.GetPrecision())
+			expectedBigINum.GetPrecisionUint(), result.GetPrecisionUint())
 	}
 }
 
@@ -1457,7 +1456,6 @@ func TestBigIntMathSubtract_FixedDecimalSubtract_03(t *testing.T) {
 			"expectedBigINumStr='%v'  Error='%v'. ", expectedBigINumStr, err.Error())
 	}
 
-
 	bIMinuend :=
 		BigIntFixedDecimal{}.New(
 			minuendBiNum.GetIntegerValue(),
@@ -1474,14 +1472,14 @@ func TestBigIntMathSubtract_FixedDecimalSubtract_03(t *testing.T) {
 
 	expectedBI := expectedBigINum.GetIntegerValue()
 
-	if expectedBI.Cmp(result.GetInteger()) != 0 {
+	if expectedBI.Cmp(result.GetIntegerValue()) != 0 {
 		t.Errorf("Error: Expected BigIntNum='%s'. Instead, BigIntNum= '%s'. ",
-			expectedBI.Text(10), result.GetInteger().Text(10))
+			expectedBI.Text(10), result.GetIntegerValue().Text(10))
 	}
 
-	if expectedBigINum.GetPrecisionUint() != result.GetPrecision() {
+	if expectedBigINum.GetPrecisionUint() != result.GetPrecisionUint() {
 		t.Errorf("Error: Expected result precision='%v'. Instead, result precision='%v'. ",
-			expectedBigINum.GetPrecisionUint(), result.GetPrecision())
+			expectedBigINum.GetPrecisionUint(), result.GetPrecisionUint())
 	}
 }
 
@@ -1516,7 +1514,6 @@ func TestBigIntMathSubtract_FixedDecimalSubtract_04(t *testing.T) {
 			"expectedBigINumStr='%v'  Error='%v'. ", expectedBigINumStr, err.Error())
 	}
 
-
 	bIMinuend :=
 		BigIntFixedDecimal{}.New(
 			minuendBiNum.GetIntegerValue(),
@@ -1533,14 +1530,14 @@ func TestBigIntMathSubtract_FixedDecimalSubtract_04(t *testing.T) {
 
 	expectedBI := expectedBigINum.GetIntegerValue()
 
-	if expectedBI.Cmp(result.GetInteger()) != 0 {
+	if expectedBI.Cmp(result.GetIntegerValue()) != 0 {
 		t.Errorf("Error: Expected BigIntNum='%s'. Instead, BigIntNum= '%s'. ",
-			expectedBI.Text(10), result.GetInteger().Text(10))
+			expectedBI.Text(10), result.GetIntegerValue().Text(10))
 	}
 
-	if expectedBigINum.GetPrecisionUint() != result.GetPrecision() {
+	if expectedBigINum.GetPrecisionUint() != result.GetPrecisionUint() {
 		t.Errorf("Error: Expected result precision='%v'. Instead, result precision='%v'. ",
-			expectedBigINum.GetPrecisionUint(), result.GetPrecision())
+			expectedBigINum.GetPrecisionUint(), result.GetPrecisionUint())
 	}
 }
 
@@ -1573,7 +1570,6 @@ func TestBigIntMathSubtract_FixedDecimalSubtract_05(t *testing.T) {
 			"expectedBigINumStr='%v'  Error='%v'. ", expectedBigINumStr, err.Error())
 	}
 
-
 	bIMinuend :=
 		BigIntFixedDecimal{}.New(
 			minuendBiNum.GetIntegerValue(),
@@ -1590,14 +1586,14 @@ func TestBigIntMathSubtract_FixedDecimalSubtract_05(t *testing.T) {
 
 	expectedBI := expectedBigINum.GetIntegerValue()
 
-	if expectedBI.Cmp(result.GetInteger()) != 0 {
+	if expectedBI.Cmp(result.GetIntegerValue()) != 0 {
 		t.Errorf("Error: Expected BigIntNum='%s'. Instead, BigIntNum= '%s'. ",
-			expectedBI.Text(10), result.GetInteger().Text(10))
+			expectedBI.Text(10), result.GetIntegerValue().Text(10))
 	}
 
-	if expectedBigINum.GetPrecisionUint() != result.GetPrecision() {
+	if expectedBigINum.GetPrecisionUint() != result.GetPrecisionUint() {
 		t.Errorf("Error: Expected result precision='%v'. Instead, result precision='%v'. ",
-			expectedBigINum.GetPrecisionUint(), result.GetPrecision())
+			expectedBigINum.GetPrecisionUint(), result.GetPrecisionUint())
 	}
 }
 
@@ -1628,7 +1624,6 @@ func TestBigIntMathSubtract_FixedDecimalSubtract_06(t *testing.T) {
 			"expectedBigINumStr='%v'  Error='%v'. ", expectedBigINumStr, err.Error())
 	}
 
-
 	bIMinuend :=
 		BigIntFixedDecimal{}.New(
 			minuendBiNum.GetIntegerValue(),
@@ -1645,14 +1640,14 @@ func TestBigIntMathSubtract_FixedDecimalSubtract_06(t *testing.T) {
 
 	expectedBI := expectedBigINum.GetIntegerValue()
 
-	if expectedBI.Cmp(result.GetInteger()) != 0 {
+	if expectedBI.Cmp(result.GetIntegerValue()) != 0 {
 		t.Errorf("Error: Expected BigIntNum='%s'. Instead, BigIntNum= '%s'. ",
-			expectedBI.Text(10), result.GetInteger().Text(10))
+			expectedBI.Text(10), result.GetIntegerValue().Text(10))
 	}
 
-	if expectedBigINum.GetPrecisionUint() != result.GetPrecision() {
+	if expectedBigINum.GetPrecisionUint() != result.GetPrecisionUint() {
 		t.Errorf("Error: Expected result precision='%v'. Instead, result precision='%v'. ",
-			expectedBigINum.GetPrecisionUint(), result.GetPrecision())
+			expectedBigINum.GetPrecisionUint(), result.GetPrecisionUint())
 	}
 }
 
@@ -1683,7 +1678,6 @@ func TestBigIntMathSubtract_FixedDecimalSubtract_07(t *testing.T) {
 			"expectedBigINumStr='%v'  Error='%v'. ", expectedBigINumStr, err.Error())
 	}
 
-
 	bIMinuend :=
 		BigIntFixedDecimal{}.New(
 			minuendBiNum.GetIntegerValue(),
@@ -1700,14 +1694,14 @@ func TestBigIntMathSubtract_FixedDecimalSubtract_07(t *testing.T) {
 
 	expectedBI := expectedBigINum.GetIntegerValue()
 
-	if expectedBI.Cmp(result.GetInteger()) != 0 {
+	if expectedBI.Cmp(result.GetIntegerValue()) != 0 {
 		t.Errorf("Error: Expected BigIntNum='%s'. Instead, BigIntNum= '%s'. ",
-			expectedBI.Text(10), result.GetInteger().Text(10))
+			expectedBI.Text(10), result.GetIntegerValue().Text(10))
 	}
 
-	if expectedBigINum.GetPrecisionUint() != result.GetPrecision() {
+	if expectedBigINum.GetPrecisionUint() != result.GetPrecisionUint() {
 		t.Errorf("Error: Expected result precision='%v'. Instead, result precision='%v'. ",
-			expectedBigINum.GetPrecisionUint(), result.GetPrecision())
+			expectedBigINum.GetPrecisionUint(), result.GetPrecisionUint())
 	}
 }
 
@@ -1738,7 +1732,6 @@ func TestBigIntMathSubtract_FixedDecimalSubtract_08(t *testing.T) {
 			"expectedBigINumStr='%v'  Error='%v'. ", expectedBigINumStr, err.Error())
 	}
 
-
 	bIMinuend :=
 		BigIntFixedDecimal{}.New(
 			minuendBiNum.GetIntegerValue(),
@@ -1755,13 +1748,13 @@ func TestBigIntMathSubtract_FixedDecimalSubtract_08(t *testing.T) {
 
 	expectedBI := expectedBigINum.GetIntegerValue()
 
-	if expectedBI.Cmp(result.GetInteger()) != 0 {
+	if expectedBI.Cmp(result.GetIntegerValue()) != 0 {
 		t.Errorf("Error: Expected BigIntNum='%s'. Instead, BigIntNum= '%s'. ",
-			expectedBI.Text(10), result.GetInteger().Text(10))
+			expectedBI.Text(10), result.GetIntegerValue().Text(10))
 	}
 
-	if expectedBigINum.GetPrecisionUint() != result.GetPrecision() {
+	if expectedBigINum.GetPrecisionUint() != result.GetPrecisionUint() {
 		t.Errorf("Error: Expected result precision='%v'. Instead, result precision='%v'. ",
-			expectedBigINum.GetPrecisionUint(), result.GetPrecision())
+			expectedBigINum.GetPrecisionUint(), result.GetPrecisionUint())
 	}
 }

@@ -587,11 +587,11 @@ func TestNumStrDto_FormatForMathOps_01(t *testing.T) {
 	}
 
 	if nOut1.GetPrecision() != n1OutDto.GetPrecision() {
-		t.Errorf("Expected n1OutDto.GetPrecision()= '%v'. Instead got '%v'", nOut1.GetPrecision(), n1OutDto.GetPrecision())
+		t.Errorf("Expected n1OutDto.GetPrecisionInt()= '%v'. Instead got '%v'", nOut1.GetPrecision(), n1OutDto.GetPrecision())
 	}
 
 	if nOut2.GetPrecision() != n2OutDto.GetPrecision() {
-		t.Errorf("Expected n2OutDto.GetPrecision()= '%v'. Instead got '%v'", nOut2.GetPrecision(), n2OutDto.GetPrecision())
+		t.Errorf("Expected n2OutDto.GetPrecisionInt()= '%v'. Instead got '%v'", nOut2.GetPrecision(), n2OutDto.GetPrecision())
 	}
 
 }
@@ -641,11 +641,11 @@ func TestNumStrDto_FormatForMathOps_02(t *testing.T) {
 	}
 
 	if nOut1.GetPrecision() != n1OutDto.GetPrecision() {
-		t.Errorf("Expected n1OutDto.GetPrecision()= '%v'. Instead got '%v'", nOut1.GetPrecision(), n1OutDto.GetPrecision())
+		t.Errorf("Expected n1OutDto.GetPrecisionInt()= '%v'. Instead got '%v'", nOut1.GetPrecision(), n1OutDto.GetPrecision())
 	}
 
 	if nOut2.GetPrecision() != n2OutDto.GetPrecision() {
-		t.Errorf("Expected n2OutDto.GetPrecision()= '%v'. Instead got '%v'", nOut2.GetPrecision(), n2OutDto.GetPrecision())
+		t.Errorf("Expected n2OutDto.GetPrecisionInt()= '%v'. Instead got '%v'", nOut2.GetPrecision(), n2OutDto.GetPrecision())
 	}
 
 }
@@ -695,11 +695,11 @@ func TestNumStrDto_FormatForMathOps_03(t *testing.T) {
 	}
 
 	if nOut1.GetPrecision() != n1OutDto.GetPrecision() {
-		t.Errorf("Expected n1OutDto.GetPrecision()= '%v'. Instead got '%v'", nOut1.GetPrecision(), n1OutDto.GetPrecision())
+		t.Errorf("Expected n1OutDto.GetPrecisionInt()= '%v'. Instead got '%v'", nOut1.GetPrecision(), n1OutDto.GetPrecision())
 	}
 
 	if nOut2.GetPrecision() != n2OutDto.GetPrecision() {
-		t.Errorf("Expected n2OutDto.GetPrecision()= '%v'. Instead got '%v'", nOut2.GetPrecision(), n2OutDto.GetPrecision())
+		t.Errorf("Expected n2OutDto.GetPrecisionInt()= '%v'. Instead got '%v'", nOut2.GetPrecision(), n2OutDto.GetPrecision())
 	}
 
 }
@@ -749,11 +749,11 @@ func TestNumStrDto_FormatForMathOps_04(t *testing.T) {
 	}
 
 	if nOut1.GetPrecision() != n1OutDto.GetPrecision() {
-		t.Errorf("Expected n1OutDto.GetPrecision()= '%v'. Instead got '%v'", nOut1.GetPrecision(), n1OutDto.GetPrecision())
+		t.Errorf("Expected n1OutDto.GetPrecisionInt()= '%v'. Instead got '%v'", nOut1.GetPrecision(), n1OutDto.GetPrecision())
 	}
 
 	if nOut2.GetPrecision() != n2OutDto.GetPrecision() {
-		t.Errorf("Expected n2OutDto.GetPrecision()= '%v'. Instead got '%v'", nOut2.GetPrecision(), n2OutDto.GetPrecision())
+		t.Errorf("Expected n2OutDto.GetPrecisionInt()= '%v'. Instead got '%v'", nOut2.GetPrecision(), n2OutDto.GetPrecision())
 	}
 
 }
@@ -802,11 +802,11 @@ func TestNumStrDto_FormatForMathOps_05(t *testing.T) {
 	}
 
 	if nOut1.GetPrecision() != n1OutDto.GetPrecision() {
-		t.Errorf("Expected n1OutDto.GetPrecision()= '%v'. Instead got '%v'", nOut1.GetPrecision(), n1OutDto.GetPrecision())
+		t.Errorf("Expected n1OutDto.GetPrecisionInt()= '%v'. Instead got '%v'", nOut1.GetPrecision(), n1OutDto.GetPrecision())
 	}
 
 	if nOut2.GetPrecision() != n2OutDto.GetPrecision() {
-		t.Errorf("Expected n2OutDto.GetPrecision()= '%v'. Instead got '%v'", nOut2.GetPrecision(), n2OutDto.GetPrecision())
+		t.Errorf("Expected n2OutDto.GetPrecisionInt()= '%v'. Instead got '%v'", nOut2.GetPrecision(), n2OutDto.GetPrecision())
 	}
 
 }
@@ -855,11 +855,11 @@ func TestNumStrDto_FormatForMathOps_06(t *testing.T) {
 	}
 
 	if nOut1.GetPrecision() != n1OutDto.GetPrecision() {
-		t.Errorf("Expected n1OutDto.GetPrecision()= '%v'. Instead got '%v'", nOut1.GetPrecision(), n1OutDto.GetPrecision())
+		t.Errorf("Expected n1OutDto.GetPrecisionInt()= '%v'. Instead got '%v'", nOut1.GetPrecision(), n1OutDto.GetPrecision())
 	}
 
 	if nOut2.GetPrecision() != n2OutDto.GetPrecision() {
-		t.Errorf("Expected n2OutDto.GetPrecision()= '%v'. Instead got '%v'", nOut2.GetPrecision(), n2OutDto.GetPrecision())
+		t.Errorf("Expected n2OutDto.GetPrecisionInt()= '%v'. Instead got '%v'", nOut2.GetPrecision(), n2OutDto.GetPrecision())
 	}
 
 }

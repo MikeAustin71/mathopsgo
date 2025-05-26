@@ -1642,27 +1642,27 @@ func (bNumNeutron *bigIntNumNeutron) newBigIntFixedDecimal(
 			}
 	}
 
-	fdIntVal, err := fd.GetInteger()
+	fdIntVal, err := fd.GetIntegerValue()
 
 	if err != nil {
 
 		return BigIntNum{},
 			&FuncReturnError{
 				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "fdIntVal, err := fd.GetInteger()",
+				ReturnFunc: "fdIntVal, err := fd.GetIntegerValue()",
 				ErrContext: "'fd' is input parameter of type BigIntFixedDecimal",
 				ErrMessage: err.Error(),
 			}
 	}
 
-	fdPrecision, err := fd.GetPrecision()
+	fdPrecision, err := fd.GetPrecisionUint()
 
 	if err != nil {
 
 		return BigIntNum{},
 			&FuncReturnError{
 				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "fdPrecision, err := fd.GetPrecision()",
+				ReturnFunc: "fdPrecision, err := fd.GetPrecisionUint()",
 				ErrContext: "'fd' is input parameter of type BigIntFixedDecimal",
 				ErrMessage: err.Error(),
 			}

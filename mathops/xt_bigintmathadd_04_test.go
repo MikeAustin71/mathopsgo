@@ -1686,14 +1686,14 @@ func TestBigIntMathAdd_FixedDecimalAdd_01(t *testing.T) {
 			"Error= %v\n", err.Error())
 	}
 
-	if biExpectedResult.Cmp(result.GetInteger()) != 0 {
+	if biExpectedResult.Cmp(result.GetIntegerValue()) != 0 {
 		t.Errorf("Error: Expected Result='%v'.  Instead, Result='%v'. ",
-			biExpectedResult.Text(10), result.GetInteger().Text(10))
+			biExpectedResult.Text(10), result.GetIntegerValue().Text(10))
 	}
 
-	if expectedPrecision != result.GetPrecision() {
+	if expectedPrecision != result.GetPrecisionUint() {
 		t.Errorf("Error: Expected Result precision='%v'. Instead, Result precision='%v'. ",
-			expectedPrecision, result.GetPrecision())
+			expectedPrecision, result.GetPrecisionUint())
 	}
 
 }
@@ -1734,14 +1734,14 @@ func TestBigIntMathAdd_FixedDecimalAdd_02(t *testing.T) {
 			"Error= %v\n", err.Error())
 	}
 
-	if biExpectedResult.Cmp(result.GetInteger()) != 0 {
+	if biExpectedResult.Cmp(result.GetIntegerValue()) != 0 {
 		t.Errorf("Error: Expected Result='%v'.  Instead, Result='%v'. ",
-			biExpectedResult.Text(10), result.GetInteger().Text(10))
+			biExpectedResult.Text(10), result.GetIntegerValue().Text(10))
 	}
 
-	if expectedPrecision != result.GetPrecision() {
+	if expectedPrecision != result.GetPrecisionUint() {
 		t.Errorf("Error: Expected Result precision='%v'. Instead, Result precision='%v'. ",
-			expectedPrecision, result.GetPrecision())
+			expectedPrecision, result.GetPrecisionUint())
 	}
 }
 
@@ -1780,14 +1780,14 @@ func TestBigIntMathAdd_FixedDecimalAdd_03(t *testing.T) {
 			"Error= %v\n", err.Error())
 	}
 
-	if biExpectedResult.Cmp(result.GetInteger()) != 0 {
+	if biExpectedResult.Cmp(result.GetIntegerValue()) != 0 {
 		t.Errorf("Error: Expected Result='%v'.  Instead, Result='%v'. ",
-			biExpectedResult.Text(10), result.GetInteger().Text(10))
+			biExpectedResult.Text(10), result.GetIntegerValue().Text(10))
 	}
 
-	if expectedPrecision != result.GetPrecision() {
+	if expectedPrecision != result.GetPrecisionUint() {
 		t.Errorf("Error: Expected Result precision='%v'. Instead, Result precision='%v'. ",
-			expectedPrecision, result.GetPrecision())
+			expectedPrecision, result.GetPrecisionUint())
 	}
 }
 
@@ -1827,13 +1827,13 @@ func TestBigIntMathAdd_FixedDecimalAdd_04(t *testing.T) {
 			"Error= %v\n", err.Error())
 	}
 
-	if biExpectedResult.Cmp(result.GetInteger()) != 0 {
+	if biExpectedResult.Cmp(result.GetIntegerValue()) != 0 {
 		t.Errorf("Error: Expected Result='%v'.  Instead, Result='%v'. ",
-			biExpectedResult.Text(10), result.GetInteger().Text(10))
+			biExpectedResult.Text(10), result.GetIntegerValue().Text(10))
 	}
 
-	if expectedPrecision != result.GetPrecision() {
+	if expectedPrecision != result.GetPrecisionUint() {
 		t.Errorf("Error: Expected Result precision='%v'. Instead, Result precision='%v'. ",
-			expectedPrecision, result.GetPrecision())
+			expectedPrecision, result.GetPrecisionUint())
 	}
 }

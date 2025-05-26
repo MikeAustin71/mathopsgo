@@ -1007,8 +1007,8 @@ func (bLog BigIntMathLogarithms) EPwrXFromTaylorSeriesFixedDecimal(
 
 	ePwrBigInt, ePwrBigIntPrecision :=
 		BigIntMathPower{}.BigIntPwrIteration(
-			e.GetInteger(),
-			e.GetPrecision(),
+			e.GetIntegerValue(),
+			e.GetPrecisionUint(),
 			a,
 			internalMaxPrecision,
 			outputMaxPrecision)

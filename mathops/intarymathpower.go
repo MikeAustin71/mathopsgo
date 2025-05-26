@@ -22,7 +22,7 @@ type IntAryMathPower struct {
 // decimal in order to display a correct result. In the following example
 // with base ='3.12' and exponent = '4', this method will return '8'.
 //
-// 		Example: 3.12^4 = 94.75854336 (8-digits to the right of the decimal)
+//	Example: 3.12^4 = 94.75854336 (8-digits to the right of the decimal)
 //
 // The calculated minimum required precision is returned as a positive
 // value of type 'int'.
@@ -31,7 +31,6 @@ type IntAryMathPower struct {
 // IntAry precision ( +2,147,483,646, which equals 2^31 − 2), an error
 // message is returned in addition to the maximum positive value for IntAry
 // precision (+2,147,483,646).
-//
 func (iaPwr IntAryMathPower) MinimumRequiredPrecision(
 	base, exponent *IntAry) (int, error) {
 
@@ -91,13 +90,12 @@ func (iaPwr IntAryMathPower) MinimumRequiredPrecision(
 // as that of the original 'base instance.'base' numeric separators will
 // therefore remain unchanged.
 //
-//										base = base^exponent
+//	base = base^exponent
 //
 // Input parameter 'maxResultPrecision' will round the result to this
 // number of decimal places after the decimal point if the result is
 // greater than 'maxResultPrecision'.  If the value of 'maxResultPrecision'
 // is less than zero, it will be automatically set to a value of '4096'.
-//
 func (iaPwr IntAryMathPower) Pwr(
 	base, exponent *IntAry,
 	minResultPrecision, maxResultPrecision int) error {
@@ -175,7 +173,7 @@ func (iaPwr IntAryMathPower) Pwr(
 // very large exponents. Effectively, input parameter 'base' is raised
 // to the power of exponent.
 //
-//								result = base^exponent
+//	result = base^exponent
 //
 // The result of this operation is returned as pointer to an IntAry
 // instance. This returned IntAry instance will contain numeric
@@ -192,7 +190,6 @@ func (iaPwr IntAryMathPower) Pwr(
 // the decimal place in order to implement the 'minResultPrecision'
 // specification. If the value of 'minResultPrecision' is less than zero,
 // 'minResultPrecision' will be automatically set to a value of zero.
-//
 func (iaPwr IntAryMathPower) PwrByMultiplication(
 	base, exponent *IntAry,
 	minResultPrecision, maxResultPrecision int) (*IntAry, error) {
@@ -284,52 +281,54 @@ func (iaPwr IntAryMathPower) PwrByMultiplication(
 // =================
 //
 // 'ia' *IntAry -
-//			The base which will be raised to an exponent specified by input
-//			parameter 'power'.
+//
+//	The base which will be raised to an exponent specified by input
+//	parameter 'power'.
 //
 // 'power' *big.Int -
-// 				The input parameter 'power' may be either
-// 				a positive or negative integer.
+//
+//	The input parameter 'power' may be either
+//	a positive or negative integer.
 //
 // 'maxResultPrecision' int -
-//				'maxResultPrecision' will determine the maximum
-// 				number of digits to the right of the decimal
-//				place in the result.
 //
-//				Valid values are -1 and values >= zero ('0')
-//        Values less than -1 will trigger an error.
+//					'maxResultPrecision' will determine the maximum
+//					number of digits to the right of the decimal
+//					place in the result.
 //
-//				A value of -1 signals that no limit will be placed on
-//				the number of decimals places to right of the decimal
-//				point in the result.
+//					Valid values are -1 and values >= zero ('0')
+//	       Values less than -1 will trigger an error.
 //
-//	'internalPrecision' int -
-// 				'internalPrecision' will control the number of digits of
-//				accuracy to the right of the decimal point maintained by
-//				internal multiplication operations used in raising the intAry
-//				value to the designated power.
+//					A value of -1 signals that no limit will be placed on
+//					the number of decimals places to right of the decimal
+//					point in the result.
 //
-//				Valid values are -1 and values >= zero ('0')
-//        Values less than -1 will trigger an error.
+//		'internalPrecision' int -
+//					'internalPrecision' will control the number of digits of
+//					accuracy to the right of the decimal point maintained by
+//					internal multiplication operations used in raising the intAry
+//					value to the designated power.
 //
-//				A value of -1 signals that no limit will be placed on
-//				the number of decimals places to right of the decimal
-//				point during internal multiplication operations.
+//					Valid values are -1 and values >= zero ('0')
+//	       Values less than -1 will trigger an error.
 //
-//  Return Values
-//  =============
+//					A value of -1 signals that no limit will be placed on
+//					the number of decimals places to right of the decimal
+//					point during internal multiplication operations.
 //
-//  ia			The result of this operation is returned through the pointer to
-//					input parameter, 'ia'. As such, the original value of 'ia' will
-//					be overwritten. The The returned value 'ia' will contain the same
-// 					numeric separators (decimal separator, thousands separator and
-// 					currency symbol) as that of the original 'ia' instance. 'ia'
-// 					numeric separators will therefore remain unchanged.
+//	 Return Values
+//	 =============
 //
-//  error		If, during the execution of this method, an error is identified,
-//					method will set the returned error to a non nil value and return
-//					an error message.
+//	 ia			The result of this operation is returned through the pointer to
+//						input parameter, 'ia'. As such, the original value of 'ia' will
+//						be overwritten. The The returned value 'ia' will contain the same
+//						numeric separators (decimal separator, thousands separator and
+//						currency symbol) as that of the original 'ia' instance. 'ia'
+//						numeric separators will therefore remain unchanged.
 //
+//	 error		If, during the execution of this method, an error is identified,
+//						method will set the returned error to a non nil value and return
+//						an error message.
 func (iaPwr *IntAryMathPower) pwrByTwos(
 	ia *IntAry,
 	power *big.Int,
@@ -405,7 +404,7 @@ func (iaPwr *IntAryMathPower) pwrByTwos(
 			//temp = big.NewInt(0).Mul(result, tBase)
 			//result = big.NewInt(0).Set(temp)
 			err := ia.MultiplyThisBy(&tBase, -1, internalPrecision)
-			//fmt.Println("ia precision = ", ia.GetPrecision())
+			//fmt.Println("ia precision = ", ia.GetPrecisionInt())
 
 			if err != nil {
 				return fmt.Errorf(ePrefix+
@@ -474,7 +473,6 @@ func (iaPwr *IntAryMathPower) pwrByTwos(
 //
 // Note: This method does not perform tests for base==0, exponent==0 or exponent==1.
 // It is assumed that these tests were performed before calling this method.
-//
 func (iaPwr *IntAryMathPower) pwrMultiplyPositiveIntegerExponent(
 	base, exponent *IntAry,
 	minResultPrecision, maxResultPrecision int) (*IntAry, error) {
@@ -582,7 +580,6 @@ func (iaPwr *IntAryMathPower) pwrMultiplyPositiveIntegerExponent(
 //
 // Note: This method does not perform tests for base==0 .
 // It is assumed that this test was performed before calling this method.
-//
 func (iaPwr *IntAryMathPower) pwrMultiplyNegativeIntegerExponent(
 	base, exponent *IntAry,
 	minResultPrecision, maxResultPrecision int) (*IntAry, error) {
@@ -703,9 +700,9 @@ func (iaPwr *IntAryMathPower) pwrMultiplyNegativeIntegerExponent(
 // input parameter 'base'.
 //
 // Note: This method does not perform tests for base==0, exponent==0
-//       or exponent==1. Is is assumed that these tests were performed
-//       before calling this method.
 //
+//	or exponent==1. Is is assumed that these tests were performed
+//	before calling this method.
 func (iaPwr *IntAryMathPower) pwrMultiplyPositiveFractionalExponent(
 	base, exponent *IntAry,
 	minResultPrecision, maxResultPrecision int) (*IntAry, error) {
@@ -852,8 +849,8 @@ func (iaPwr *IntAryMathPower) pwrMultiplyPositiveFractionalExponent(
 // input parameter 'base'.
 //
 // Note: This method does not perform a test for base==0. It is assumed
-//       this test was performed before calling this method.
 //
+//	this test was performed before calling this method.
 func (iaPwr *IntAryMathPower) pwrMultiplyNegativeFractionalExponent(
 	base, exponent *IntAry,
 	minResultPrecision, maxResultPrecision int) (*IntAry, error) {
@@ -1008,7 +1005,6 @@ func (iaPwr *IntAryMathPower) pwrMultiplyNegativeFractionalExponent(
 // (decimal separator, thousands separator and currency symbol) as those
 // in the original 'base' instance. As such, the 'base' numeric separators
 // will remain unchanged.
-//
 func (iaPwr *IntAryMathPower) pwrTwoPositiveIntegerExponent(
 	base, exponent *IntAry,
 	minResultPrecision, maxResultPrecision int) error {
@@ -1108,7 +1104,6 @@ func (iaPwr *IntAryMathPower) pwrTwoPositiveIntegerExponent(
 // (decimal separator, thousands separator and currency symbol) as those
 // in the original 'base' instance. As such, the 'base' numeric separators
 // will remain unchanged.
-//
 func (iaPwr *IntAryMathPower) pwrTwoNegativeIntegerExponent(
 	base, exponent *IntAry,
 	minResultPrecision, maxResultPrecision int) error {
@@ -1208,7 +1203,6 @@ func (iaPwr *IntAryMathPower) pwrTwoNegativeIntegerExponent(
 // (decimal separator, thousands separator and currency symbol) as those
 // in the original 'base' instance. As such, the 'base' numeric separators
 // will remain unchanged.
-//
 func (iaPwr *IntAryMathPower) pwrTwoPositiveFractionalExponent(
 	base, exponent *IntAry,
 	minResultPrecision, maxResultPrecision int) error {
@@ -1332,7 +1326,6 @@ func (iaPwr *IntAryMathPower) pwrTwoPositiveFractionalExponent(
 // (decimal separator, thousands separator and currency symbol) as those
 // in the original 'base' instance. As such, the 'base' numeric separators
 // will remain unchanged.
-//
 func (iaPwr *IntAryMathPower) pwrTwoNegativeFractionalExponent(
 	base, exponent *IntAry,
 	minResultPrecision, maxResultPrecision int) error {

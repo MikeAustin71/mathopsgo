@@ -1638,7 +1638,7 @@ func (bIntNumProton *bigIntNumProton) bigIntNumGetBigIntFixedDecimal(
 
 	}
 
-	fixedDec := new(BigIntFixedDecimal).New(bNum.bigInt, bNum.precision)
+	fixedDec, err := new(BigIntFixedDecimal).New(bNum.bigInt, bNum.precision)
 
 	return fixedDec, nil
 }
@@ -2334,9 +2334,9 @@ func (bIntNumProton *bigIntNumProton) bigIntNumGetNumStrDto(
 //
 // Example:
 //
-//					1.234    	GetPrecision() = 3
-//							5			GetPrecision() = 0
-//				0.12345  		GetPrecision() = 5
+//					1.234    	GetPrecisionInt() = 3
+//							5			GetPrecisionInt() = 0
+//				0.12345  		GetPrecisionInt() = 5
 //
 //	Number String				precision				Fractional Number
 //		123456								3								123.456
@@ -2379,6 +2379,23 @@ func (bIntNumProton *bigIntNumProton) bigIntNumGetPrecision(
 				ErrPrefix:     ePrefix.String(),
 				ParameterName: "'bNum'",
 			}
+	}
+
+	bIntMaxInt :=
+		big.NewInt(0).SetUint64(uint64(math.MaxInt))
+
+	bUintPrecision :=
+		big.NewInt(0).SetUint64(uint64(bNum.precision))
+
+	if bUintPrecision.Cmp(bIntMaxInt) == 1 {
+
+		return 0, &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "",
+			ErrContext: fmt.Sprintf("Max 'int' value= '%v'\n'Precision= '%v'",
+				bIntMaxInt.Text(10), bUintPrecision.Text(10)),
+			ErrMessage: "Error: The value of uint 'Precision' exceeds the limit for int values!",
+		}
 	}
 
 	return int(bNum.precision), nil

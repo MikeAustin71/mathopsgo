@@ -376,7 +376,7 @@ func PrintDecimalContents(dec mathops.Decimal) {
 	bScaleVal, _ := dec.GetScaleVal()
 	fmt.Println("         dec.GetScaleVal(): ", bScaleVal.String())
 	precision := dec.GetPrecision()
-	fmt.Println("          dec.GetPrecision: ", precision)
+	fmt.Println("          dec.GetPrecisionInt: ", precision)
 	bf, _ := dec.GetBigFloat()
 	fmt.Println("           dec.GetBigFloat: ", bf.Text('e', 16))
 	str, _ = dec.GetBigFloatString(uint(precision))
@@ -398,7 +398,7 @@ func PrintNumStrDtoContents(originalInputStr string, nStr mathops.NumStrDto) {
 	fmt.Println("    nStr.GetAbsAllNumRunes(): ", nStr.GetAbsAllNumRunes())
 	fmt.Println("       nStr.GetAbsIntRunes(): ", nStr.GetAbsIntRunes())
 	fmt.Println("      nStr.GetAbsFracRunes(): ", nStr.GetAbsFracRunes())
-	fmt.Println("         nStr.GetPrecision(): ", nStr.GetPrecision())
+	fmt.Println("         nStr.GetPrecisionInt(): ", nStr.GetPrecision())
 	fmt.Println("     nStr.HasNumericDigits(): ", nStr.HasNumericDigits())
 	fmt.Println("      nStr.IsFractionalValue: ", nStr.IsFractionalValue())
 	if err != nil {

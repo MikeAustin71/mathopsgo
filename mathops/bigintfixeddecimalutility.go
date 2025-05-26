@@ -216,13 +216,13 @@ func (bigIFdUtil *bigIntFixedDecUtility) copyIn(
 		CurrencySymbol:     bigIFxDecSrc.currencySymbol,
 	}
 
-	intVal, err := bigIFxDecSrc.GetInteger()
+	intVal, err := bigIFxDecSrc.GetIntegerValue()
 
 	if err != nil {
 
 		return &FuncReturnError{
 			ErrPrefix:  ePrefix.String(),
-			ReturnFunc: "intVal, err := fd.GetInteger()",
+			ReturnFunc: "intVal, err := fd.GetIntegerValue()",
 			ErrContext: "",
 			ErrMessage: err.Error(),
 		}
@@ -241,13 +241,14 @@ func (bigIFdUtil *bigIntFixedDecUtility) copyIn(
 
 	bigIFxDecDest.integerNum = big.NewInt(0).Set(intVal)
 
-	bigIFxDecDest.precision, err = bigIFxDecSrc.GetPrecision()
+	bigIFxDecDest.precision, err = bigIFxDecSrc.GetPrecisionUint()
 
 	if err != nil {
 
 		return &FuncReturnError{
-			ErrPrefix:  ePrefix.String(),
-			ReturnFunc: "bigIFxDecDest.precision, err = fd.GetPrecision()",
+			ErrPrefix: ePrefix.String(),
+			ReturnFunc: "bigIFxDecDest.precision, err = \n" +
+				"  bigIFxDecSrc.GetPrecisionUint()",
 			ErrContext: "",
 			ErrMessage: err.Error(),
 		}

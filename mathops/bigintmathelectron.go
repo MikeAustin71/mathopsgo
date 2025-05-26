@@ -148,7 +148,7 @@ func (bIMathElectron *bigIntMathElectron) getMagnitudeBigInt(
 				ReturnFunc: "magnitude, tenToPowerPrecision, err = \n" +
 					"new(BigIntMathMultiply).BigIntMultiply(\n" +
 					"    big.NewInt(int64(bitLen)),  big.NewInt(0),\n" +
-					"    log10of2To20k.GetInteger(), log10of2To20k.GetPrecisionBigInt())",
+					"    log10of2To20k.GetIntegerValue(), log10of2To20k.GetPrecisionBigInt())",
 				ErrContext: "",
 				ErrMessage: err.Error(),
 			}

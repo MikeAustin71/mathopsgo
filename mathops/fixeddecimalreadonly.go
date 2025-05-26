@@ -50,7 +50,7 @@ func (fDecRO *FixedDecimalReadOnly) GetInteger() *big.Int {
 
 	fDecRO.fixedDecimal.IsValid()
 
-	return fDecRO.fixedDecimal.GetInteger()
+	return fDecRO.fixedDecimal.GetIntegerValue()
 
 }
 
@@ -68,13 +68,13 @@ func (fDecRO *FixedDecimalReadOnly) GetNumStr() string {
 
 }
 
-// GetPrecision - returns an unsigned integer specifying
+// GetPrecisionUint - returns an unsigned integer specifying
 // the number of digits to the right of the decimal place.
-func (fDecRO *FixedDecimalReadOnly) GetPrecision() uint {
+func (fDecRO *FixedDecimalReadOnly) GetPrecisionUint() uint {
 
 	fDecRO.fixedDecimal.IsValid()
 
-	return fDecRO.fixedDecimal.GetPrecision()
+	return fDecRO.fixedDecimal.GetPrecisionUint()
 
 }
 

@@ -306,7 +306,7 @@ func TestBigIntMathPower_BigIntPwrIteration_10(t *testing.T) {
 
 	base := eNum.GetInteger()
 
-	basePrecision := eNum.GetPrecision()
+	basePrecision := eNum.GetPrecisionUint()
 	exponent := uint(9)
 	internalMaxPrecision := uint((9 * basePrecision) + 10)
 	outputMaxPrecision := uint(28)

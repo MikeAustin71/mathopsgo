@@ -2779,9 +2779,9 @@ func (bAdd *BigIntMathAdd) FixedDecimalAdd(
 
 	bIResult, bIPrecision, err :=
 		new(BigIntMathAdd).BigIntAdd(
-			b1.GetInteger(),
+			b1.GetIntegerValue(),
 			b1.GetPrecisionBigInt(),
-			b2.GetInteger(),
+			b2.GetIntegerValue(),
 			b2.GetPrecisionBigInt())
 
 	if err != nil {
@@ -2790,8 +2790,8 @@ func (bAdd *BigIntMathAdd) FixedDecimalAdd(
 			&FuncReturnError{
 				ErrPrefix: ePrefix,
 				ReturnFunc: "bIResult, bIPrecision, err :=\n" +
-					"    b1.GetInteger(), b1.GetPrecisionBigInt(),\n" +
-					"    b2.GetInteger(), b2.GetPrecisionBigInt(),\n",
+					"    b1.GetIntegerValue(), b1.GetPrecisionBigInt(),\n" +
+					"    b2.GetIntegerValue(), b2.GetPrecisionBigInt(),\n",
 				ErrContext: "",
 				ErrMessage: err.Error(),
 			}

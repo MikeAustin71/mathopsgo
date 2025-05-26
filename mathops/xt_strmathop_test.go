@@ -1599,7 +1599,7 @@ func TestStrMathOp_Divide_01(t *testing.T) {
 	}
 
 	if maxPrecision != smop.Quotient.GetPrecision() {
-		t.Errorf("Error - Expected smop.Quotient.GetPrecision()= '%v'. Instead, smop.Quotient.GetPrecision()= '%v' .", maxPrecision, smop.Quotient.GetPrecision())
+		t.Errorf("Error - Expected smop.Quotient.GetPrecisionInt()= '%v'. Instead, smop.Quotient.GetPrecisionInt()= '%v' .", maxPrecision, smop.Quotient.GetPrecision())
 	}
 
 	if eSignVal != smop.Quotient.GetSign() {
@@ -1626,7 +1626,7 @@ func TestStrMathOp_Divide_02(t *testing.T) {
 	}
 
 	if maxPrecision != smop.Quotient.GetPrecision() {
-		t.Errorf("Error - Expected smop.Quotient.GetPrecision()= '%v'. Instead, smop.Quotient.GetPrecision()= '%v' .", maxPrecision, smop.Quotient.GetPrecision())
+		t.Errorf("Error - Expected smop.Quotient.GetPrecisionInt()= '%v'. Instead, smop.Quotient.GetPrecisionInt()= '%v' .", maxPrecision, smop.Quotient.GetPrecision())
 	}
 
 	if eSignVal != smop.Quotient.GetSign() {
@@ -1654,7 +1654,7 @@ func TestStrMathOp_Divide_03(t *testing.T) {
 	}
 
 	if ePrecision != smop.Quotient.GetPrecision() {
-		t.Errorf("Error - Expected smop.Quotient.GetPrecision()= '%v'. Instead, smop.Quotient.GetPrecision()= '%v' .", ePrecision, smop.Quotient.GetPrecision())
+		t.Errorf("Error - Expected smop.Quotient.GetPrecisionInt()= '%v'. Instead, smop.Quotient.GetPrecisionInt()= '%v' .", ePrecision, smop.Quotient.GetPrecision())
 	}
 
 	if eSignVal != smop.Quotient.GetSign() {
@@ -1682,7 +1682,7 @@ func TestStrMathOp_Divide_04(t *testing.T) {
 	}
 
 	if ePrecision != smop.Quotient.GetPrecision() {
-		t.Errorf("Error - Expected smop.Quotient.GetPrecision()= '%v'. Instead, smop.Quotient.GetPrecision()= '%v' .", ePrecision, smop.Quotient.GetPrecision())
+		t.Errorf("Error - Expected smop.Quotient.GetPrecisionInt()= '%v'. Instead, smop.Quotient.GetPrecisionInt()= '%v' .", ePrecision, smop.Quotient.GetPrecision())
 	}
 
 	if eSignVal != smop.Quotient.GetSign() {
@@ -1710,7 +1710,7 @@ func TestStrMathOp_Divide_05(t *testing.T) {
 	}
 
 	if ePrecision != smop.Quotient.GetPrecision() {
-		t.Errorf("Error - Expected smop.Quotient.GetPrecision()= '%v'. Instead, smop.Quotient.GetPrecision()= '%v' .", ePrecision, smop.Quotient.GetPrecision())
+		t.Errorf("Error - Expected smop.Quotient.GetPrecisionInt()= '%v'. Instead, smop.Quotient.GetPrecisionInt()= '%v' .", ePrecision, smop.Quotient.GetPrecision())
 	}
 
 	if eSignVal != smop.Quotient.GetSign() {
@@ -1738,7 +1738,7 @@ func TestStrMathOp_Divide_06(t *testing.T) {
 	}
 
 	if ePrecision != smop.Quotient.GetPrecision() {
-		t.Errorf("Error - Expected smop.Quotient.GetPrecision()= '%v'. Instead, smop.Quotient.GetPrecision()= '%v' .", ePrecision, smop.Quotient.GetPrecision())
+		t.Errorf("Error - Expected smop.Quotient.GetPrecisionInt()= '%v'. Instead, smop.Quotient.GetPrecisionInt()= '%v' .", ePrecision, smop.Quotient.GetPrecision())
 	}
 
 	if eSignVal != smop.Quotient.GetSign() {
@@ -2469,7 +2469,7 @@ func TestStrMathOp_SubtractN1N2_01(t *testing.T) {
 	}
 
 	if ePrecision != smop.IFinal.GetPrecision() {
-		t.Errorf("Error - Expected IFinal.GetPrecision()= '%v' .  Instead, IFinal.GetPrecision()= '%v' .", ePrecision, smop.IFinal.GetPrecision())
+		t.Errorf("Error - Expected IFinal.GetPrecisionInt()= '%v' .  Instead, IFinal.GetPrecisionInt()= '%v' .", ePrecision, smop.IFinal.GetPrecision())
 	}
 
 	if eSignVal != smop.IFinal.GetSign() {
@@ -2499,7 +2499,7 @@ func TestStrMathOp_SubtractN1N2_02(t *testing.T) {
 	}
 
 	if ePrecision != smop.IFinal.GetPrecision() {
-		t.Errorf("Error - Expected IFinal.GetPrecision()= '%v' .  Instead, IFinal.GetPrecision()= '%v' .", ePrecision, smop.IFinal.GetPrecision())
+		t.Errorf("Error - Expected IFinal.GetPrecisionInt()= '%v' .  Instead, IFinal.GetPrecisionInt()= '%v' .", ePrecision, smop.IFinal.GetPrecision())
 	}
 
 	if eSignVal != smop.IFinal.GetSign() {
@@ -2529,7 +2529,7 @@ func TestStrMathOp_SubtractN1N2_03(t *testing.T) {
 	}
 
 	if ePrecision != smop.IFinal.GetPrecision() {
-		t.Errorf("Error - Expected IFinal.GetPrecision()= '%v' .  Instead, IFinal.GetPrecision()= '%v' .", ePrecision, smop.IFinal.GetPrecision())
+		t.Errorf("Error - Expected IFinal.GetPrecisionInt()= '%v' .  Instead, IFinal.GetPrecisionInt()= '%v' .", ePrecision, smop.IFinal.GetPrecision())
 	}
 
 	if eSignVal != smop.IFinal.GetSign() {
@@ -2559,7 +2559,7 @@ func TestStrMathOp_SubtractN1N2_04(t *testing.T) {
 	}
 
 	if ePrecision != smop.IFinal.GetPrecision() {
-		t.Errorf("Error - Expected IFinal.GetPrecision()= '%v' .  Instead, IFinal.GetPrecision()= '%v' .", ePrecision, smop.IFinal.GetPrecision())
+		t.Errorf("Error - Expected IFinal.GetPrecisionInt()= '%v' .  Instead, IFinal.GetPrecisionInt()= '%v' .", ePrecision, smop.IFinal.GetPrecision())
 	}
 
 	if eSignVal != smop.IFinal.GetSign() {
@@ -2589,7 +2589,7 @@ func TestStrMathOp_SubtractN1N2_05(t *testing.T) {
 	}
 
 	if ePrecision != smop.IFinal.GetPrecision() {
-		t.Errorf("Error - Expected IFinal.GetPrecision()= '%v' .  Instead, IFinal.GetPrecision()= '%v' .", ePrecision, smop.IFinal.GetPrecision())
+		t.Errorf("Error - Expected IFinal.GetPrecisionInt()= '%v' .  Instead, IFinal.GetPrecisionInt()= '%v' .", ePrecision, smop.IFinal.GetPrecision())
 	}
 
 	if eSignVal != smop.IFinal.GetSign() {
@@ -2619,7 +2619,7 @@ func TestStrMathOp_SubtractN1N2_06(t *testing.T) {
 	}
 
 	if ePrecision != smop.IFinal.GetPrecision() {
-		t.Errorf("Error - Expected IFinal.GetPrecision()= '%v' .  Instead, IFinal.GetPrecision()= '%v' .", ePrecision, smop.IFinal.GetPrecision())
+		t.Errorf("Error - Expected IFinal.GetPrecisionInt()= '%v' .  Instead, IFinal.GetPrecisionInt()= '%v' .", ePrecision, smop.IFinal.GetPrecision())
 	}
 
 	if eSignVal != smop.IFinal.GetSign() {
@@ -2649,7 +2649,7 @@ func TestStrMathOp_SubtractN1N2_07(t *testing.T) {
 	}
 
 	if ePrecision != smop.IFinal.GetPrecision() {
-		t.Errorf("Error - Expected IFinal.GetPrecision()= '%v' .  Instead, IFinal.GetPrecision()= '%v' .", ePrecision, smop.IFinal.GetPrecision())
+		t.Errorf("Error - Expected IFinal.GetPrecisionInt()= '%v' .  Instead, IFinal.GetPrecisionInt()= '%v' .", ePrecision, smop.IFinal.GetPrecision())
 	}
 
 	if eSignVal != smop.IFinal.GetSign() {
@@ -2679,7 +2679,7 @@ func TestStrMathOp_SubtractN1N2_08(t *testing.T) {
 	}
 
 	if ePrecision != smop.IFinal.GetPrecision() {
-		t.Errorf("Error - Expected IFinal.GetPrecision()= '%v' .  Instead, IFinal.GetPrecision()= '%v' .", ePrecision, smop.IFinal.GetPrecision())
+		t.Errorf("Error - Expected IFinal.GetPrecisionInt()= '%v' .  Instead, IFinal.GetPrecisionInt()= '%v' .", ePrecision, smop.IFinal.GetPrecision())
 	}
 
 	if eSignVal != smop.IFinal.GetSign() {
@@ -2709,7 +2709,7 @@ func TestStrMathOp_SubtractN1N2_09(t *testing.T) {
 	}
 
 	if ePrecision != smop.IFinal.GetPrecision() {
-		t.Errorf("Error - Expected IFinal.GetPrecision()= '%v' .  Instead, IFinal.GetPrecision()= '%v' .", ePrecision, smop.IFinal.GetPrecision())
+		t.Errorf("Error - Expected IFinal.GetPrecisionInt()= '%v' .  Instead, IFinal.GetPrecisionInt()= '%v' .", ePrecision, smop.IFinal.GetPrecision())
 	}
 
 	if eSignVal != smop.IFinal.GetSign() {
@@ -2739,7 +2739,7 @@ func TestStrMathOp_SubtractN1N2_10(t *testing.T) {
 	}
 
 	if ePrecision != smop.IFinal.GetPrecision() {
-		t.Errorf("Error - Expected IFinal.GetPrecision()= '%v' .  Instead, IFinal.GetPrecision()= '%v' .", ePrecision, smop.IFinal.GetPrecision())
+		t.Errorf("Error - Expected IFinal.GetPrecisionInt()= '%v' .  Instead, IFinal.GetPrecisionInt()= '%v' .", ePrecision, smop.IFinal.GetPrecision())
 	}
 
 	if eSignVal != smop.IFinal.GetSign() {
@@ -2769,7 +2769,7 @@ func TestStrMathOp_SubtractN1N2_11(t *testing.T) {
 	}
 
 	if ePrecision != smop.IFinal.GetPrecision() {
-		t.Errorf("Error - Expected IFinal.GetPrecision()= '%v' .  Instead, IFinal.GetPrecision()= '%v' .", ePrecision, smop.IFinal.GetPrecision())
+		t.Errorf("Error - Expected IFinal.GetPrecisionInt()= '%v' .  Instead, IFinal.GetPrecisionInt()= '%v' .", ePrecision, smop.IFinal.GetPrecision())
 	}
 
 	if eSignVal != smop.IFinal.GetSign() {
@@ -2799,7 +2799,7 @@ func TestStrMathOp_SubtractN1N2_12(t *testing.T) {
 	}
 
 	if ePrecision != smop.IFinal.GetPrecision() {
-		t.Errorf("Error - Expected IFinal.GetPrecision()= '%v' .  Instead, IFinal.GetPrecision()= '%v' .", ePrecision, smop.IFinal.GetPrecision())
+		t.Errorf("Error - Expected IFinal.GetPrecisionInt()= '%v' .  Instead, IFinal.GetPrecisionInt()= '%v' .", ePrecision, smop.IFinal.GetPrecision())
 	}
 
 	if eSignVal != smop.IFinal.GetSign() {
@@ -2829,7 +2829,7 @@ func TestStrMathOp_SubtractN1N2_13(t *testing.T) {
 	}
 
 	if ePrecision != smop.IFinal.GetPrecision() {
-		t.Errorf("Error - Expected IFinal.GetPrecision()= '%v' .  Instead, IFinal.GetPrecision()= '%v' .", ePrecision, smop.IFinal.GetPrecision())
+		t.Errorf("Error - Expected IFinal.GetPrecisionInt()= '%v' .  Instead, IFinal.GetPrecisionInt()= '%v' .", ePrecision, smop.IFinal.GetPrecision())
 	}
 
 	if eSignVal != smop.IFinal.GetSign() {
@@ -2859,7 +2859,7 @@ func TestStrMathOp_SubtractN1N2_14(t *testing.T) {
 	}
 
 	if ePrecision != smop.IFinal.GetPrecision() {
-		t.Errorf("Error - Expected IFinal.GetPrecision()= '%v' .  Instead, IFinal.GetPrecision()= '%v' .", ePrecision, smop.IFinal.GetPrecision())
+		t.Errorf("Error - Expected IFinal.GetPrecisionInt()= '%v' .  Instead, IFinal.GetPrecisionInt()= '%v' .", ePrecision, smop.IFinal.GetPrecision())
 	}
 
 	if eSignVal != smop.IFinal.GetSign() {
@@ -2889,7 +2889,7 @@ func TestStrMathOp_SubtractN1N2_15(t *testing.T) {
 	}
 
 	if ePrecision != smop.IFinal.GetPrecision() {
-		t.Errorf("Error - Expected IFinal.GetPrecision()= '%v' .  Instead, IFinal.GetPrecision()= '%v' .", ePrecision, smop.IFinal.GetPrecision())
+		t.Errorf("Error - Expected IFinal.GetPrecisionInt()= '%v' .  Instead, IFinal.GetPrecisionInt()= '%v' .", ePrecision, smop.IFinal.GetPrecision())
 	}
 
 	if eSignVal != smop.IFinal.GetSign() {
@@ -2919,7 +2919,7 @@ func TestStrMathOp_SubtractN1N2_16(t *testing.T) {
 	}
 
 	if ePrecision != smop.IFinal.GetPrecision() {
-		t.Errorf("Error - Expected IFinal.GetPrecision()= '%v' .  Instead, IFinal.GetPrecision()= '%v' .", ePrecision, smop.IFinal.GetPrecision())
+		t.Errorf("Error - Expected IFinal.GetPrecisionInt()= '%v' .  Instead, IFinal.GetPrecisionInt()= '%v' .", ePrecision, smop.IFinal.GetPrecision())
 	}
 
 	if eSignVal != smop.IFinal.GetSign() {
@@ -2949,7 +2949,7 @@ func TestStrMathOp_SubtractN1N2_17(t *testing.T) {
 	}
 
 	if ePrecision != smop.IFinal.GetPrecision() {
-		t.Errorf("Error - Expected IFinal.GetPrecision()= '%v' .  Instead, IFinal.GetPrecision()= '%v' .", ePrecision, smop.IFinal.GetPrecision())
+		t.Errorf("Error - Expected IFinal.GetPrecisionInt()= '%v' .  Instead, IFinal.GetPrecisionInt()= '%v' .", ePrecision, smop.IFinal.GetPrecision())
 	}
 
 	if eSignVal != smop.IFinal.GetSign() {
@@ -2979,7 +2979,7 @@ func TestStrMathOp_SubtractN1N2_18(t *testing.T) {
 	}
 
 	if ePrecision != smop.IFinal.GetPrecision() {
-		t.Errorf("Error - Expected IFinal.GetPrecision()= '%v' .  Instead, IFinal.GetPrecision()= '%v' .", ePrecision, smop.IFinal.GetPrecision())
+		t.Errorf("Error - Expected IFinal.GetPrecisionInt()= '%v' .  Instead, IFinal.GetPrecisionInt()= '%v' .", ePrecision, smop.IFinal.GetPrecision())
 	}
 
 	if eSignVal != smop.IFinal.GetSign() {
@@ -3009,7 +3009,7 @@ func TestStrMathOp_SubtractN1N2_19(t *testing.T) {
 	}
 
 	if ePrecision != smop.IFinal.GetPrecision() {
-		t.Errorf("Error - Expected IFinal.GetPrecision()= '%v' .  Instead, IFinal.GetPrecision()= '%v' .", ePrecision, smop.IFinal.GetPrecision())
+		t.Errorf("Error - Expected IFinal.GetPrecisionInt()= '%v' .  Instead, IFinal.GetPrecisionInt()= '%v' .", ePrecision, smop.IFinal.GetPrecision())
 	}
 
 	if eSignVal != smop.IFinal.GetSign() {

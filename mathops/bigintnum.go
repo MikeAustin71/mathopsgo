@@ -1839,7 +1839,7 @@ func (bNum *BigIntNum) GetNumStrDto() (NumStrDto, error) {
 		bNum, ePrefix)
 }
 
-// GetPrecision
+// GetPrecisionInt
 //
 // Returns the precision associated with the current
 // instance of BigIntNum as an integer of type 'int'.
@@ -1852,13 +1852,13 @@ func (bNum *BigIntNum) GetNumStrDto() (NumStrDto, error) {
 //
 // Example:
 //
-//					1.234    	GetPrecision() = 3
-//							5			GetPrecision() = 0
-//				0.12345  		GetPrecision() = 5
+//					1.234    	GetPrecisionInt() = 3
+//							5			GetPrecisionInt() = 0
+//				0.12345  		GetPrecisionInt() = 5
 //
 //	Number String				precision				Fractional Number
 //		123456								3								123.456
-func (bNum *BigIntNum) GetPrecision() (int, error) {
+func (bNum *BigIntNum) GetPrecisionInt() (int, error) {
 
 	var ePrefix *ePref.ErrPrefixDto
 	var err error
@@ -1866,7 +1866,7 @@ func (bNum *BigIntNum) GetPrecision() (int, error) {
 	ePrefix,
 		err = ePref.ErrPrefixDto{}.NewIEmpty(
 		nil,
-		"BigIntNum.GetPrecision",
+		"BigIntNum.GetPrecisionInt",
 		"")
 
 	if err != nil {

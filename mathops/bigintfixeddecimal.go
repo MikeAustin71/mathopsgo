@@ -837,7 +837,7 @@ func (bigIFd *BigIntFixedDecimal) GetDecimal() (Decimal, error) {
 	return decNum, nil
 }
 
-// GetInteger - Returns the 'integerNum' for the current
+// GetIntegerValue - Returns the 'integerNum' for the current
 // BigIntFixedDecimal instance. The returned *big.Int type
 // contains all the numeric digits which comprise the fixed
 // decimal numerical value represented by this BigIntFixedDecimal
@@ -854,9 +854,9 @@ func (bigIFd *BigIntFixedDecimal) GetDecimal() (Decimal, error) {
 // ------------------    -------------
 //
 //	582.12345            58212345
-func (bigIFd *BigIntFixedDecimal) GetInteger() (*big.Int, error) {
+func (bigIFd *BigIntFixedDecimal) GetIntegerValue() (*big.Int, error) {
 
-	ePrefix := "BigIntFixedDecimal.GetInteger()"
+	ePrefix := "BigIntFixedDecimal.GetIntegerValue()"
 
 	if bigIFd.integerNum == nil {
 
@@ -1131,13 +1131,58 @@ func (bigIFd *BigIntFixedDecimal) GetNumStrDto() (NumStrDto, error) {
 	return nDto, nil
 }
 
-// GetPrecision - Returns the 'precision' value for the current
+// GetPrecisionInt - Returns the 'precision' value for the current
 // BigIntFixedDecimal instance. 'precision' specifies the number
 // of digits to the right of the decimal place in the
 // BigIntFixedDecimal.integerNum.
-func (bigIFd *BigIntFixedDecimal) GetPrecision() (uint, error) {
+func (bigIFd *BigIntFixedDecimal) GetPrecisionInt() (int, error) {
 
-	return bigIFd.precision, nil
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
+
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"BigIntFixedDecimal.GetPrecisionInt",
+		"")
+
+	if err != nil {
+		return 0, err
+	}
+
+	err = new(bigIntFixedDecAtom).isBigIntFxDecValid(
+		bigIFd,
+		ePrefix.XCpy("Validating current BigIntFixedDecimal instance 'bigIFd'."))
+
+	if err != nil {
+
+		return 0,
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "err = new(bigIntFixedDecAtom).isBigIntFxDecValid(ePrefix)",
+				ErrContext: "",
+				ErrMessage: "This BigIntFixedDecimal instance is INVALID!",
+			}
+	}
+
+	bIntMaxInt :=
+		big.NewInt(0).SetUint64(uint64(math.MaxInt))
+
+	bUintPrecision :=
+		big.NewInt(0).SetUint64(uint64(bigIFd.precision))
+
+	if bUintPrecision.Cmp(bIntMaxInt) == 1 {
+
+		return 0, &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "",
+			ErrContext: fmt.Sprintf("Max 'int' value= '%v'\n'Precision= '%v'",
+				bIntMaxInt.Text(10), bUintPrecision.Text(10)),
+			ErrMessage: "Error: The value of uint 'Precision' exceeds the limit for int values!",
+		}
+	}
+
+	return int(bigIFd.precision), nil
 }
 
 // GetPrecisionUint - Returns the 'precision' value for the current

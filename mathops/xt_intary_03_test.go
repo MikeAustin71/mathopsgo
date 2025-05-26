@@ -430,7 +430,7 @@ func TestIntAry_CopyIn_01(t *testing.T) {
 	}
 
 	if ia2.GetPrecision() != ia.GetPrecision() {
-		t.Errorf("Error Expcted ia.GetPrecision()= '%v'  .   Instead, ia.GetPrecision()= '%v' .", ia2.GetPrecision(), ia.GetPrecision())
+		t.Errorf("Error Expcted ia.GetPrecisionInt()= '%v'  .   Instead, ia.GetPrecisionInt()= '%v' .", ia2.GetPrecision(), ia.GetPrecision())
 	}
 
 	if ia2.GetIntAryLength() != ia.GetIntAryLength() {
@@ -514,7 +514,7 @@ func TestIntAry_CopyIn_02(t *testing.T) {
 	}
 
 	if ia2.GetPrecision() != ia.GetPrecision() {
-		t.Errorf("Error Expcted ia.GetPrecision()= '%v'  .   Instead, ia.GetPrecision()= '%v' .", ia2.GetPrecision(), ia.GetPrecision())
+		t.Errorf("Error Expcted ia.GetPrecisionInt()= '%v'  .   Instead, ia.GetPrecisionInt()= '%v' .", ia2.GetPrecision(), ia.GetPrecision())
 	}
 
 	iaStats := ia.GetIntAryStats()
@@ -667,7 +667,7 @@ func TestIntAry_DivideByInt64_01(t *testing.T) {
 	}
 
 	if ia.GetPrecision() != int(maxPrecision) {
-		t.Errorf("Expected ia.GetPrecision()= '%v'. Instead, ia.GetPrecision()= '%v'.", maxPrecision, ia.GetPrecision())
+		t.Errorf("Expected ia.GetPrecisionInt()= '%v'. Instead, ia.GetPrecisionInt()= '%v'.", maxPrecision, ia.GetPrecision())
 	}
 
 }
@@ -706,7 +706,7 @@ func TestIntAry_DivideByInt64_03(t *testing.T) {
 	}
 
 	if ia.GetPrecision() != int(maxPrecision) {
-		t.Errorf("Expected ia.GetPrecision()= '%v'. Instead, ia.GetPrecision()= '%v'.", maxPrecision, ia.GetPrecision())
+		t.Errorf("Expected ia.GetPrecisionInt()= '%v'. Instead, ia.GetPrecisionInt()= '%v'.", maxPrecision, ia.GetPrecision())
 	}
 
 }
@@ -732,11 +732,11 @@ func TestIntAry_DivideByInt64_04(t *testing.T) {
 	}
 
 	if ia.GetPrecision() != ePrecision {
-		t.Errorf("Expected ia.GetPrecision()= '%v'. Instead, ia.GetPrecision()= '%v'.", ePrecision, ia.GetPrecision())
+		t.Errorf("Expected ia.GetPrecisionInt()= '%v'. Instead, ia.GetPrecisionInt()= '%v'.", ePrecision, ia.GetPrecision())
 	}
 
 	if eSignVal != ia.GetSign() {
-		t.Errorf("Expected ia.GetSign()= '%v'. Instead, ia.GetPrecision()= '%v'.", eSignVal, ia.GetSign())
+		t.Errorf("Expected ia.GetSign()= '%v'. Instead, ia.GetPrecisionInt()= '%v'.", eSignVal, ia.GetSign())
 	}
 
 }
@@ -762,11 +762,11 @@ func TestIntAry_DivideByInt64_05(t *testing.T) {
 	}
 
 	if ia.GetPrecision() != ePrecision {
-		t.Errorf("Expected ia.GetPrecision()= '%v'. Instead, ia.GetPrecision()= '%v'.", ePrecision, ia.GetPrecision())
+		t.Errorf("Expected ia.GetPrecisionInt()= '%v'. Instead, ia.GetPrecisionInt()= '%v'.", ePrecision, ia.GetPrecision())
 	}
 
 	if eSignVal != ia.GetSign() {
-		t.Errorf("Expected ia.GetSign()= '%v'. Instead, ia.GetPrecision()= '%v'.", eSignVal, ia.GetSign())
+		t.Errorf("Expected ia.GetSign()= '%v'. Instead, ia.GetPrecisionInt()= '%v'.", eSignVal, ia.GetSign())
 	}
 
 }
@@ -792,11 +792,11 @@ func TestIntAry_DivideByInt64_06(t *testing.T) {
 	}
 
 	if ia.GetPrecision() != ePrecision {
-		t.Errorf("Expected ia.GetPrecision()= '%v'. Instead, ia.GetPrecision()= '%v'.", ePrecision, ia.GetPrecision())
+		t.Errorf("Expected ia.GetPrecisionInt()= '%v'. Instead, ia.GetPrecisionInt()= '%v'.", ePrecision, ia.GetPrecision())
 	}
 
 	if eSignVal != ia.GetSign() {
-		t.Errorf("Expected ia.GetSign()= '%v'. Instead, ia.GetPrecision()= '%v'.", eSignVal, ia.GetSign())
+		t.Errorf("Expected ia.GetSign()= '%v'. Instead, ia.GetPrecisionInt()= '%v'.", eSignVal, ia.GetSign())
 	}
 
 }
@@ -1181,7 +1181,7 @@ func TestIntAry_DivideThisBy_01(t *testing.T) {
 	}
 
 	if ePrecision != quotient.GetPrecision() {
-		t.Errorf("Expected quotient.GetPrecision()= '%v' .  Instead, quotient.GetPrecision()= '%v'  .", ePrecision, quotient.GetPrecision())
+		t.Errorf("Expected quotient.GetPrecisionInt()= '%v' .  Instead, quotient.GetPrecisionInt()= '%v'  .", ePrecision, quotient.GetPrecision())
 	}
 
 	if eSignVal != quotient.GetSign() {
@@ -1214,7 +1214,7 @@ func TestIntAry_DivideThisBy_02(t *testing.T) {
 	}
 
 	if ePrecision != quotient.GetPrecision() {
-		t.Errorf("Expected quotient.GetPrecision()= '%v' .  Instead, quotient.GetPrecision()= '%v'  .", ePrecision, quotient.GetPrecision())
+		t.Errorf("Expected quotient.GetPrecisionInt()= '%v' .  Instead, quotient.GetPrecisionInt()= '%v'  .", ePrecision, quotient.GetPrecision())
 	}
 
 	if eSignVal != quotient.GetSign() {
@@ -1247,7 +1247,7 @@ func TestIntAry_DivideThisBy_03(t *testing.T) {
 	}
 
 	if ePrecision != quotient.GetPrecision() {
-		t.Errorf("Expected quotient.GetPrecision()= '%v' .  Instead, quotient.GetPrecision()= '%v'  .", ePrecision, quotient.GetPrecision())
+		t.Errorf("Expected quotient.GetPrecisionInt()= '%v' .  Instead, quotient.GetPrecisionInt()= '%v'  .", ePrecision, quotient.GetPrecision())
 	}
 
 	if eSignVal != quotient.GetSign() {
@@ -1280,7 +1280,7 @@ func TestIntAry_DivideThisBy_04(t *testing.T) {
 	}
 
 	if ePrecision != quotient.GetPrecision() {
-		t.Errorf("Expected quotient.GetPrecision()= '%v' .  Instead, quotient.GetPrecision()= '%v'  .", ePrecision, quotient.GetPrecision())
+		t.Errorf("Expected quotient.GetPrecisionInt()= '%v' .  Instead, quotient.GetPrecisionInt()= '%v'  .", ePrecision, quotient.GetPrecision())
 	}
 
 	if eSignVal != quotient.GetSign() {
@@ -1313,7 +1313,7 @@ func TestIntAry_DivideThisBy_05(t *testing.T) {
 	}
 
 	if ePrecision != quotient.GetPrecision() {
-		t.Errorf("Expected quotient.GetPrecision()= '%v' .  Instead, quotient.GetPrecision()= '%v'  .", ePrecision, quotient.GetPrecision())
+		t.Errorf("Expected quotient.GetPrecisionInt()= '%v' .  Instead, quotient.GetPrecisionInt()= '%v'  .", ePrecision, quotient.GetPrecision())
 	}
 
 	if eSignVal != quotient.GetSign() {
@@ -1363,7 +1363,7 @@ func TestIntAry_DivideThisBy_07(t *testing.T) {
 	}
 
 	if ePrecision != quotient.GetPrecision() {
-		t.Errorf("Expected quotient.GetPrecision()= '%v' .  Instead, quotient.GetPrecision()= '%v'  .", ePrecision, quotient.GetPrecision())
+		t.Errorf("Expected quotient.GetPrecisionInt()= '%v' .  Instead, quotient.GetPrecisionInt()= '%v'  .", ePrecision, quotient.GetPrecision())
 	}
 
 	if eSignVal != quotient.GetSign() {
@@ -1395,7 +1395,7 @@ func TestIntAry_DivideThisBy_08(t *testing.T) {
 	}
 
 	if ePrecision != quotient.GetPrecision() {
-		t.Errorf("Expected quotient.GetPrecision()= '%v' .  Instead, quotient.GetPrecision()= '%v'  .", ePrecision, quotient.GetPrecision())
+		t.Errorf("Expected quotient.GetPrecisionInt()= '%v' .  Instead, quotient.GetPrecisionInt()= '%v'  .", ePrecision, quotient.GetPrecision())
 	}
 
 	if eSignVal != quotient.GetSign() {
@@ -1427,7 +1427,7 @@ func TestIntAry_DivideThisBy_09(t *testing.T) {
 	}
 
 	if ePrecision != quotient.GetPrecision() {
-		t.Errorf("Expected quotient.GetPrecision()= '%v' .  Instead, quotient.GetPrecision()= '%v'  .", ePrecision, quotient.GetPrecision())
+		t.Errorf("Expected quotient.GetPrecisionInt()= '%v' .  Instead, quotient.GetPrecisionInt()= '%v'  .", ePrecision, quotient.GetPrecision())
 	}
 
 	if eSignVal != quotient.GetSign() {
@@ -1459,7 +1459,7 @@ func TestIntAry_DivideThisBy_10(t *testing.T) {
 	}
 
 	if ePrecision != quotient.GetPrecision() {
-		t.Errorf("Expected quotient.GetPrecision()= '%v' .  Instead, quotient.GetPrecision()= '%v'  .", ePrecision, quotient.GetPrecision())
+		t.Errorf("Expected quotient.GetPrecisionInt()= '%v' .  Instead, quotient.GetPrecisionInt()= '%v'  .", ePrecision, quotient.GetPrecision())
 	}
 
 	if eSignVal != quotient.GetSign() {
@@ -1494,7 +1494,7 @@ func TestIntAry_DivideThisBy_11(t *testing.T) {
 	}
 
 	if ePrecision != quotient.GetPrecision() {
-		t.Errorf("Expected quotient.GetPrecision()= '%v' .  Instead, quotient.GetPrecision()= '%v'  .", ePrecision, quotient.GetPrecision())
+		t.Errorf("Expected quotient.GetPrecisionInt()= '%v' .  Instead, quotient.GetPrecisionInt()= '%v'  .", ePrecision, quotient.GetPrecision())
 	}
 
 	if eSignVal != quotient.GetSign() {
@@ -1530,7 +1530,7 @@ func TestIntAry_DivideThisBy_12(t *testing.T) {
 	}
 
 	if ePrecision != quotient.GetPrecision() {
-		t.Errorf("Expected quotient.GetPrecision()= '%v' .  Instead, quotient.GetPrecision()= '%v'  .", ePrecision, quotient.GetPrecision())
+		t.Errorf("Expected quotient.GetPrecisionInt()= '%v' .  Instead, quotient.GetPrecisionInt()= '%v'  .", ePrecision, quotient.GetPrecision())
 	}
 
 	if eSignVal != quotient.GetSign() {
@@ -1565,7 +1565,7 @@ func TestIntAry_DivideThisBy_13(t *testing.T) {
 	}
 
 	if ePrecision != quotient.GetPrecision() {
-		t.Errorf("Expected quotient.GetPrecision()= '%v' .  Instead, quotient.GetPrecision()= '%v'  .", ePrecision, quotient.GetPrecision())
+		t.Errorf("Expected quotient.GetPrecisionInt()= '%v' .  Instead, quotient.GetPrecisionInt()= '%v'  .", ePrecision, quotient.GetPrecision())
 	}
 
 	if eSignVal != quotient.GetSign() {
@@ -1621,7 +1621,7 @@ func TestIntAry_DivideThisBy_15(t *testing.T) {
 	}
 
 	if ePrecision != quotient.GetPrecision() {
-		t.Errorf("Expected quotient.GetPrecision()= '%v' .  Instead, quotient.GetPrecision()= '%v'  .", ePrecision, quotient.GetPrecision())
+		t.Errorf("Expected quotient.GetPrecisionInt()= '%v' .  Instead, quotient.GetPrecisionInt()= '%v'  .", ePrecision, quotient.GetPrecision())
 	}
 
 	if eSignVal != quotient.GetSign() {
@@ -1656,7 +1656,7 @@ func TestIntAry_DivideThisBy_16(t *testing.T) {
 	}
 
 	if ePrecision != quotient.GetPrecision() {
-		t.Errorf("Expected quotient.GetPrecision()= '%v' .  Instead, quotient.GetPrecision()= '%v'  .", ePrecision, quotient.GetPrecision())
+		t.Errorf("Expected quotient.GetPrecisionInt()= '%v' .  Instead, quotient.GetPrecisionInt()= '%v'  .", ePrecision, quotient.GetPrecision())
 	}
 
 	if eSignVal != quotient.GetSign() {

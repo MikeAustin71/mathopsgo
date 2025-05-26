@@ -182,7 +182,7 @@ func TestBigIntMath_GetMagnitude_07(t *testing.T) {
 			"numStr='%v' Error='%v'", numStr, err.Error())
 	}
 
-	target := big.NewInt(0).Set(fixDec.GetInteger())
+	target := big.NewInt(0).Set(fixDec.GetIntegerValue())
 	expectedMagnitude := big.NewInt(30)
 
 	magnitude, err := BigIntMath{}.GetMagnitude(target)
@@ -210,7 +210,7 @@ func TestBigIntMath_GetMagnitude_08(t *testing.T) {
 			"numStr='%v' Error='%v'", numStr, err.Error())
 	}
 
-	target := big.NewInt(0).Set(fixDec.GetInteger())
+	target := big.NewInt(0).Set(fixDec.GetIntegerValue())
 	expectedMagnitude := big.NewInt(30)
 
 	magnitude, err := BigIntMath{}.GetMagnitude(target)
@@ -240,7 +240,7 @@ func TestBigIntMath_GetMagnitude_09(t *testing.T) {
 			"numStr='%v' Error='%v'", numStr, err.Error())
 	}
 
-	target := big.NewInt(0).Set(fixDec.GetInteger())
+	target := big.NewInt(0).Set(fixDec.GetIntegerValue())
 
 	magnitude, err := BigIntMath{}.GetMagnitude(target)
 
@@ -269,7 +269,7 @@ func TestBigIntMath_GetMagnitude_10(t *testing.T) {
 			"numStr='%v' Error='%v'", numStr, err.Error())
 	}
 
-	target := big.NewInt(0).Set(fixDec.GetInteger())
+	target := big.NewInt(0).Set(fixDec.GetIntegerValue())
 
 	magnitude, err := BigIntMath{}.GetMagnitude(target)
 
@@ -298,7 +298,7 @@ func TestBigIntMath_GetMagnitude_11(t *testing.T) {
 			"numStr='%v' Error='%v'", numStr, err.Error())
 	}
 
-	target := big.NewInt(0).Set(fixDec.GetInteger())
+	target := big.NewInt(0).Set(fixDec.GetIntegerValue())
 
 	magnitude, err := BigIntMath{}.GetMagnitude(target)
 
@@ -327,7 +327,7 @@ func TestBigIntMath_GetMagnitude_12(t *testing.T) {
 			"numStr='%v' Error='%v'", numStr, err.Error())
 	}
 
-	target := big.NewInt(0).Set(fixDec.GetInteger())
+	target := big.NewInt(0).Set(fixDec.GetIntegerValue())
 
 	magnitude, err := BigIntMath{}.GetMagnitude(target)
 
@@ -356,7 +356,7 @@ func TestBigIntMath_GetMagnitude_13(t *testing.T) {
 			"numStr='%v' Error='%v'", numStr, err.Error())
 	}
 
-	target := big.NewInt(0).Set(fixDec.GetInteger())
+	target := big.NewInt(0).Set(fixDec.GetIntegerValue())
 
 	magnitude, err := BigIntMath{}.GetMagnitude(target)
 
@@ -385,7 +385,7 @@ func TestBigIntMath_GetMagnitude_14(t *testing.T) {
 			"numStr='%v' Error='%v'", numStr, err.Error())
 	}
 
-	target := big.NewInt(0).Set(fixDec.GetInteger())
+	target := big.NewInt(0).Set(fixDec.GetIntegerValue())
 
 	magnitude, err := BigIntMath{}.GetMagnitude(target)
 
@@ -414,7 +414,7 @@ func TestBigIntMath_GetMagnitude_15(t *testing.T) {
 			"numStr='%v' Error='%v'", numStr, err.Error())
 	}
 
-	target := big.NewInt(0).Set(fixDec.GetInteger())
+	target := big.NewInt(0).Set(fixDec.GetIntegerValue())
 
 	magnitude, err := BigIntMath{}.GetMagnitude(target)
 
@@ -443,7 +443,7 @@ func TestBigIntMath_GetMagnitude_16(t *testing.T) {
 			"numStr='%v' Error='%v'", numStr, err.Error())
 	}
 
-	target := big.NewInt(0).Set(fixDec.GetInteger())
+	target := big.NewInt(0).Set(fixDec.GetIntegerValue())
 
 	magnitude, err := BigIntMath{}.GetMagnitude(target)
 
@@ -472,7 +472,7 @@ func TestBigIntMath_GetMagnitude_17(t *testing.T) {
 			"numStr='%v' Error='%v'", numStr, err.Error())
 	}
 
-	target := big.NewInt(0).Set(fixDec.GetInteger())
+	target := big.NewInt(0).Set(fixDec.GetIntegerValue())
 
 	magnitude, err := BigIntMath{}.GetMagnitude(target)
 

@@ -4821,7 +4821,7 @@ func (ia *IntAry) pwrByTwos(power *big.Int, maxResultPrecision, internalPrecisio
 			//temp = big.NewInt(0).Mul(result, tBase)
 			//result = big.NewInt(0).Set(temp)
 			err = ia.MultiplyThisBy(&tBase, -1, internalPrecision)
-			//fmt.Println("ia precision = ", ia.GetPrecision())
+			//fmt.Println("ia precision = ", ia.GetPrecisionInt())
 
 			if err != nil {
 

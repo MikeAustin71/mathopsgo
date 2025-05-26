@@ -161,7 +161,7 @@ func TestIntegerSqrRoot(
 	fmt.Println("==============================================================")
 	fmt.Println("             radicand: ", binRadicand.GetNumStr())
 	fmt.Println("         maxPrecision: ", maxPrecision.Text(10))
-	fmt.Println("   Sqr Root Precision: ", binSqrRoot.GetPrecision())
+	fmt.Println("   Sqr Root Precision: ", binSqrRoot.GetPrecisionInt())
 	fmt.Println("      Sqr Root Result: ", binSqrRoot.GetNumStr())
 	fmt.Println("      Expected Result: ", expectedValue)
 	fmt.Println("status: ", status)
@@ -715,10 +715,10 @@ func main() {
 		return
 	}
 
-	if expectedAValPrecision != binAValue.GetPrecision() {
+	if expectedAValPrecision != binAValue.GetPrecisionInt() {
 		fmt.Printf("Expected  A Value Precision='%v'. "+
 			"Instead, aValue Precision='%v'",
-			expectedAValPrecision, binAValue.GetPrecision())
+			expectedAValPrecision, binAValue.GetPrecisionInt())
 		return
 	}
 
@@ -733,18 +733,18 @@ func main() {
 		return
 	}
 
-	if expectedGValPrecision != binGValue.GetPrecision() {
+	if expectedGValPrecision != binGValue.GetPrecisionInt() {
 		fmt.Printf("Expected G Value Precision='%v'. "+
 			"Instead, G Value Precision='%v'",
-			expectedGValPrecision, binGValue.GetPrecision())
+			expectedGValPrecision, binGValue.GetPrecisionInt())
 		return
 	}
 
 	aVal := binAValue.GetIntegerValue()
-	aValPrecision := big.NewInt(int64(binAValue.GetPrecision()))
+	aValPrecision := big.NewInt(int64(binAValue.GetPrecisionInt()))
 
 	gVal := binGValue.GetIntegerValue()
-	gValPrecision := big.NewInt(int64(binGValue.GetPrecision()))
+	gValPrecision := big.NewInt(int64(binGValue.GetPrecisionInt()))
 
 	result := big.NewInt(0)
 	result.Mul(aVal, gVal)
@@ -841,8 +841,8 @@ func main() {
 	gComPostRound.RoundToDecPlace(50)
 	fmt.Println("           gComPreRound: ", gComPreRound.GetNumStr())
 	fmt.Println("          gComPostRound: ", gComPostRound.GetNumStr())
-	fmt.Println(" gComPreRound Precision: ", gComPreRound.GetPrecision())
-	fmt.Println("gComPostRound Precision: ", gComPostRound.GetPrecision())
+	fmt.Println(" gComPreRound Precision: ", gComPreRound.GetPrecisionInt())
+	fmt.Println("gComPostRound Precision: ", gComPostRound.GetPrecisionInt())
 	fmt.Println("==================================================")
 	//fmt.Println("   sqrRtG: ", sqrRtG.GetNumStr())
 	fmt.Println()
@@ -947,10 +947,10 @@ func TestBigIntNumNatLogOfX(
 	fmt.Println("               BigIntMath{}.BigIntNumNatLogOfX() ")
 	fmt.Println("======================================================================")
 	fmt.Println("                xNum: ", xNum.GetNumStr())
-	fmt.Println("       xNumPrecision: ", xNum.GetPrecision())
+	fmt.Println("       xNumPrecision: ", xNum.GetPrecisionInt())
 	fmt.Println("        maxPrecision: ", maxPrecision)
 	fmt.Println("======================================================================")
-	fmt.Println("  ln(xNum) Precision: ", lnOfX.GetPrecision())
+	fmt.Println("  ln(xNum) Precision: ", lnOfX.GetPrecisionInt())
 	fmt.Println("            ln(xNum): ", lnOfX.GetNumStr())
 	fmt.Println("      expected value: ", expectedValue)
 	fmt.Println("======================================================================")
@@ -1354,7 +1354,7 @@ func main () {
 
 	base := big.NewInt(10)
 	basePrecision := big.NewInt(0)
-	xNum := fde.GetInteger()
+	xNum := fde.GetIntegerValue()
 	xNumPrecision := fde.GetPrecisionBigInt()
 	maxPrecision := big.NewInt(1000)
 	factor := big.NewInt(4)
@@ -1410,7 +1410,7 @@ func main() {
 	expectedValue := "14.220975666072438486085961843571"
 
 	TestBigIntLogBaseOfX(
-		fdEuler.GetInteger(),
+		fdEuler.GetIntegerValue(),
 		fdEuler.GetPrecisionBigInt(),
 		xNum,
 		xNumPrecision,
@@ -1568,7 +1568,7 @@ func TestBigIntToNegativeFractionalPower(
 	fmt.Println("               BigIntMathPower{}.Pwr() ")
 	fmt.Println("------------------------------------------------------------")
 	fmt.Println("     BigIntNum  result: ", binPwr.GetNumStr())
-	fmt.Println("   BigIntNum precision: ", binPwr.GetPrecision())
+	fmt.Println("   BigIntNum precision: ", binPwr.GetPrecisionInt())
 	fmt.Println("        expectedResult: ", expectedResult)
 	fmt.Println("------------------------------------------------------------")
 	fmt.Println("Execution Time: ", duration)

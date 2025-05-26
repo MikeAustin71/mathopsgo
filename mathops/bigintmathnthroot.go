@@ -290,7 +290,7 @@ func (nthrt *BigIntMathNthRoot) calcPositiveIntegerNthRoot(radicand, nthRoot Big
 				"nthRoot='%v' ", nthRoot.GetNumStr())
 	}
 
-	if nthRoot.GetPrecision() != 0 {
+	if nthRoot.GetPrecisionInt() != 0 {
 		return BigIntNum{}.NewZero(0),
 			fmt.Errorf(ePrefix+
 				"Error: Expected 'nthRoot' to be integer value. nthRoot is fractional value! "+

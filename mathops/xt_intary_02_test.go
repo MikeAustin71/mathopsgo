@@ -55,7 +55,7 @@ func TestIntAry_AddIntToThis_03(t *testing.T) {
 	}
 
 	if ia1.GetPrecisionUint() != precision {
-		t.Errorf("Expected ia1.GetPrecision= '%v'.  Instead, ia1.GetPrecision='%v' ",
+		t.Errorf("Expected ia1.GetPrecisionInt= '%v'.  Instead, ia1.GetPrecisionInt='%v' ",
 			precision, ia1.GetPrecision())
 	}
 }
@@ -116,7 +116,7 @@ func TestIntAry_AddIntToThis_06(t *testing.T) {
 	}
 
 	if ia1.GetPrecisionUint() != outPrecision {
-		t.Errorf("Expected ia1.GetPrecision= '%v'.  Instead, ia1.GetPrecision='%v' ", outPrecision, ia1.GetPrecision())
+		t.Errorf("Expected ia1.GetPrecisionInt= '%v'.  Instead, ia1.GetPrecisionInt='%v' ", outPrecision, ia1.GetPrecision())
 	}
 }
 
@@ -138,7 +138,7 @@ func TestIntAry_AddIntToThis_07(t *testing.T) {
 	}
 
 	if ia1.GetPrecisionUint() != outPrecision {
-		t.Errorf("Expected ia1.GetPrecision= '%v'.  Instead, ia1.GetPrecision='%v' ", outPrecision, ia1.GetPrecision())
+		t.Errorf("Expected ia1.GetPrecisionInt= '%v'.  Instead, ia1.GetPrecisionInt='%v' ", outPrecision, ia1.GetPrecision())
 	}
 }
 
@@ -160,7 +160,7 @@ func TestIntAry_AddIntToThis_08(t *testing.T) {
 	}
 
 	if ia1.GetPrecisionUint() != outPrecision {
-		t.Errorf("Expected ia1.GetPrecision= '%v'.  Instead, ia1.GetPrecision='%v' ", outPrecision, ia1.GetPrecision())
+		t.Errorf("Expected ia1.GetPrecisionInt= '%v'.  Instead, ia1.GetPrecisionInt='%v' ", outPrecision, ia1.GetPrecision())
 	}
 }
 
@@ -214,7 +214,7 @@ func TestIntAry_AddInt64ToThis_03(t *testing.T) {
 	}
 
 	if ia1.GetPrecisionUint() != precision {
-		t.Errorf("Expected ia1.GetPrecision= '%v'.  Instead, ia1.GetPrecision='%v' ", precision, ia1.GetPrecision())
+		t.Errorf("Expected ia1.GetPrecisionInt= '%v'.  Instead, ia1.GetPrecisionInt='%v' ", precision, ia1.GetPrecision())
 	}
 }
 
@@ -274,7 +274,7 @@ func TestIntAry_AddInt64ToThis_06(t *testing.T) {
 	}
 
 	if ia1.GetPrecisionUint() != outPrecision {
-		t.Errorf("Expected ia1.GetPrecision= '%v'.  Instead, ia1.GetPrecision='%v' ", outPrecision, ia1.GetPrecision())
+		t.Errorf("Expected ia1.GetPrecisionInt= '%v'.  Instead, ia1.GetPrecisionInt='%v' ", outPrecision, ia1.GetPrecision())
 	}
 }
 
@@ -296,7 +296,7 @@ func TestIntAry_AddInt64ToThis_07(t *testing.T) {
 	}
 
 	if ia1.GetPrecisionUint() != outPrecision {
-		t.Errorf("Expected ia1.GetPrecision= '%v'.  Instead, ia1.GetPrecision='%v' ", outPrecision, ia1.GetPrecision())
+		t.Errorf("Expected ia1.GetPrecisionInt= '%v'.  Instead, ia1.GetPrecisionInt='%v' ", outPrecision, ia1.GetPrecision())
 	}
 }
 
@@ -318,7 +318,7 @@ func TestIntAry_AddInt64ToThis_08(t *testing.T) {
 	}
 
 	if ia1.GetPrecisionUint() != outPrecision {
-		t.Errorf("Expected ia1.GetPrecision= '%v'.  Instead, ia1.GetPrecision='%v' ", outPrecision, ia1.GetPrecision())
+		t.Errorf("Expected ia1.GetPrecisionInt= '%v'.  Instead, ia1.GetPrecisionInt='%v' ", outPrecision, ia1.GetPrecision())
 	}
 }
 
@@ -384,7 +384,7 @@ func TestIntAry_AddBigIntToThis_03(t *testing.T) {
 	}
 
 	if ia1.GetPrecision() != precision {
-		t.Errorf("Expected ia1.GetPrecision= '%v'.  Instead, ia1.GetPrecision='%v' ", precision, ia1.GetPrecision())
+		t.Errorf("Expected ia1.GetPrecisionInt= '%v'.  Instead, ia1.GetPrecisionInt='%v' ", precision, ia1.GetPrecision())
 	}
 }
 
@@ -456,7 +456,7 @@ func TestIntAry_AddBigIntToThis_06(t *testing.T) {
 	}
 
 	if ia1.GetPrecision() != outPrecision {
-		t.Errorf("Expected ia1.GetPrecision= '%v'.  Instead, ia1.GetPrecision='%v' ", outPrecision, ia1.GetPrecision())
+		t.Errorf("Expected ia1.GetPrecisionInt= '%v'.  Instead, ia1.GetPrecisionInt='%v' ", outPrecision, ia1.GetPrecision())
 	}
 }
 
@@ -482,7 +482,7 @@ func TestIntAry_AddBigIntToThis_07(t *testing.T) {
 	}
 
 	if ia1.GetPrecision() != outPrecision {
-		t.Errorf("Expected ia1.GetPrecision= '%v'.  Instead, ia1.GetPrecision='%v' ", outPrecision, ia1.GetPrecision())
+		t.Errorf("Expected ia1.GetPrecisionInt= '%v'.  Instead, ia1.GetPrecisionInt='%v' ", outPrecision, ia1.GetPrecision())
 	}
 }
 
@@ -508,7 +508,7 @@ func TestIntAry_AddBigIntToThis_08(t *testing.T) {
 	}
 
 	if ia1.GetPrecision() != outPrecision {
-		t.Errorf("Expected ia1.GetPrecision= '%v'.  Instead, ia1.GetPrecision='%v' ", outPrecision, ia1.GetPrecision())
+		t.Errorf("Expected ia1.GetPrecisionInt= '%v'.  Instead, ia1.GetPrecisionInt='%v' ", outPrecision, ia1.GetPrecision())
 	}
 }
 
@@ -578,7 +578,7 @@ func TestIntAry_AddFloat32ToThis_01(t *testing.T) {
 	}
 
 	if ia1.GetPrecision() != outPrecision {
-		t.Errorf("Expected ia1.GetPrecision= '%v'.  Instead, ia1.GetPrecision='%v' ", outPrecision, ia1.GetPrecision())
+		t.Errorf("Expected ia1.GetPrecisionInt= '%v'.  Instead, ia1.GetPrecisionInt='%v' ", outPrecision, ia1.GetPrecision())
 	}
 }
 
@@ -605,7 +605,7 @@ func TestIntAry_AddFloat32ToThis_02(t *testing.T) {
 	}
 
 	if ia1.GetPrecision() != outPrecision {
-		t.Errorf("Expected ia1.GetPrecision= '%v'.  Instead, ia1.GetPrecision='%v' ", outPrecision, ia1.GetPrecision())
+		t.Errorf("Expected ia1.GetPrecisionInt= '%v'.  Instead, ia1.GetPrecisionInt='%v' ", outPrecision, ia1.GetPrecision())
 	}
 }
 
@@ -632,7 +632,7 @@ func TestIntAry_AddFloat32ToThis_03(t *testing.T) {
 	}
 
 	if ia1.GetPrecision() != outPrecision {
-		t.Errorf("Expected ia1.GetPrecision= '%v'.  Instead, ia1.GetPrecision='%v' ", outPrecision, ia1.GetPrecision())
+		t.Errorf("Expected ia1.GetPrecisionInt= '%v'.  Instead, ia1.GetPrecisionInt='%v' ", outPrecision, ia1.GetPrecision())
 	}
 }
 
@@ -659,7 +659,7 @@ func TestIntAry_AddFloat32ToThis_04(t *testing.T) {
 	}
 
 	if ia1.GetPrecision() != outPrecision {
-		t.Errorf("Expected ia1.GetPrecision= '%v'.  Instead, ia1.GetPrecision='%v' ", outPrecision, ia1.GetPrecision())
+		t.Errorf("Expected ia1.GetPrecisionInt= '%v'.  Instead, ia1.GetPrecisionInt='%v' ", outPrecision, ia1.GetPrecision())
 	}
 }
 
@@ -686,7 +686,7 @@ func TestIntAry_AddFloat32ToThis_05(t *testing.T) {
 	}
 
 	if ia1.GetPrecision() != outPrecision {
-		t.Errorf("Expected ia1.GetPrecision= '%v'.  Instead, ia1.GetPrecision='%v' ", outPrecision, ia1.GetPrecision())
+		t.Errorf("Expected ia1.GetPrecisionInt= '%v'.  Instead, ia1.GetPrecisionInt='%v' ", outPrecision, ia1.GetPrecision())
 	}
 }
 
@@ -713,7 +713,7 @@ func TestIntAry_AddFloat32ToThis_06(t *testing.T) {
 	}
 
 	if ia1.GetPrecision() != outPrecision {
-		t.Errorf("Expected ia1.GetPrecision= '%v'.  Instead, ia1.GetPrecision='%v' ", outPrecision, ia1.GetPrecision())
+		t.Errorf("Expected ia1.GetPrecisionInt= '%v'.  Instead, ia1.GetPrecisionInt='%v' ", outPrecision, ia1.GetPrecision())
 	}
 }
 
@@ -740,7 +740,7 @@ func TestIntAry_AddFloat32ToThis_07(t *testing.T) {
 	}
 
 	if ia1.GetPrecision() != outPrecision {
-		t.Errorf("Expected ia1.GetPrecision= '%v'.  Instead, ia1.GetPrecision='%v' ", outPrecision, ia1.GetPrecision())
+		t.Errorf("Expected ia1.GetPrecisionInt= '%v'.  Instead, ia1.GetPrecisionInt='%v' ", outPrecision, ia1.GetPrecision())
 	}
 }
 
@@ -767,7 +767,7 @@ func TestIntAry_AddFloat32ToThis_08(t *testing.T) {
 	}
 
 	if ia1.GetPrecision() != outPrecision {
-		t.Errorf("Expected ia1.GetPrecision= '%v'.  Instead, ia1.GetPrecision='%v' ", outPrecision, ia1.GetPrecision())
+		t.Errorf("Expected ia1.GetPrecisionInt= '%v'.  Instead, ia1.GetPrecisionInt='%v' ", outPrecision, ia1.GetPrecision())
 	}
 }
 
@@ -794,7 +794,7 @@ func TestIntAry_AddFloat32ToThis_09(t *testing.T) {
 	}
 
 	if ia1.GetPrecision() != outPrecision {
-		t.Errorf("Expected ia1.GetPrecision= '%v'.  Instead, ia1.GetPrecision='%v' ", outPrecision, ia1.GetPrecision())
+		t.Errorf("Expected ia1.GetPrecisionInt= '%v'.  Instead, ia1.GetPrecisionInt='%v' ", outPrecision, ia1.GetPrecision())
 	}
 }
 
@@ -821,7 +821,7 @@ func TestIntAry_AddFloat32ToThis_10(t *testing.T) {
 	}
 
 	if ia1.GetPrecision() != outPrecision {
-		t.Errorf("Expected ia1.GetPrecision= '%v'.  Instead, ia1.GetPrecision='%v' ", outPrecision, ia1.GetPrecision())
+		t.Errorf("Expected ia1.GetPrecisionInt= '%v'.  Instead, ia1.GetPrecisionInt='%v' ", outPrecision, ia1.GetPrecision())
 	}
 }
 
@@ -848,7 +848,7 @@ func TestIntAry_AddFloat32ToThis_11(t *testing.T) {
 	}
 
 	if ia1.GetPrecision() != outPrecision {
-		t.Errorf("Expected ia1.GetPrecision= '%v'.  Instead, ia1.GetPrecision='%v' ", outPrecision, ia1.GetPrecision())
+		t.Errorf("Expected ia1.GetPrecisionInt= '%v'.  Instead, ia1.GetPrecisionInt='%v' ", outPrecision, ia1.GetPrecision())
 	}
 }
 
@@ -874,7 +874,7 @@ func TestIntAry_AddFloat64ToThis_01(t *testing.T) {
 	}
 
 	if ia1.GetPrecision() != outPrecision {
-		t.Errorf("Expected ia1.GetPrecision= '%v'.  Instead, ia1.GetPrecision='%v' ", outPrecision, ia1.GetPrecision())
+		t.Errorf("Expected ia1.GetPrecisionInt= '%v'.  Instead, ia1.GetPrecisionInt='%v' ", outPrecision, ia1.GetPrecision())
 	}
 }
 
@@ -901,7 +901,7 @@ func TestIntAry_AddFloat64ToThis_02(t *testing.T) {
 	}
 
 	if ia1.GetPrecision() != outPrecision {
-		t.Errorf("Expected ia1.GetPrecision= '%v'.  Instead, ia1.GetPrecision='%v' ", outPrecision, ia1.GetPrecision())
+		t.Errorf("Expected ia1.GetPrecisionInt= '%v'.  Instead, ia1.GetPrecisionInt='%v' ", outPrecision, ia1.GetPrecision())
 	}
 }
 
@@ -928,7 +928,7 @@ func TestIntAry_AddFloat64ToThis_03(t *testing.T) {
 	}
 
 	if ia1.GetPrecision() != outPrecision {
-		t.Errorf("Expected ia1.GetPrecision= '%v'.  Instead, ia1.GetPrecision='%v' ", outPrecision, ia1.GetPrecision())
+		t.Errorf("Expected ia1.GetPrecisionInt= '%v'.  Instead, ia1.GetPrecisionInt='%v' ", outPrecision, ia1.GetPrecision())
 	}
 }
 
@@ -955,7 +955,7 @@ func TestIntAry_AddFloat64ToThis_04(t *testing.T) {
 	}
 
 	if ia1.GetPrecision() != outPrecision {
-		t.Errorf("Expected ia1.GetPrecision= '%v'.  Instead, ia1.GetPrecision='%v' ", outPrecision, ia1.GetPrecision())
+		t.Errorf("Expected ia1.GetPrecisionInt= '%v'.  Instead, ia1.GetPrecisionInt='%v' ", outPrecision, ia1.GetPrecision())
 	}
 }
 
@@ -982,7 +982,7 @@ func TestIntAry_AddFloat64ToThis_05(t *testing.T) {
 	}
 
 	if ia1.GetPrecision() != outPrecision {
-		t.Errorf("Expected ia1.GetPrecision= '%v'.  Instead, ia1.GetPrecision='%v' ", outPrecision, ia1.GetPrecision())
+		t.Errorf("Expected ia1.GetPrecisionInt= '%v'.  Instead, ia1.GetPrecisionInt='%v' ", outPrecision, ia1.GetPrecision())
 	}
 }
 
@@ -1009,7 +1009,7 @@ func TestIntAry_AddFloat64ToThis_06(t *testing.T) {
 	}
 
 	if ia1.GetPrecision() != outPrecision {
-		t.Errorf("Expected ia1.GetPrecision= '%v'.  Instead, ia1.GetPrecision='%v' ", outPrecision, ia1.GetPrecision())
+		t.Errorf("Expected ia1.GetPrecisionInt= '%v'.  Instead, ia1.GetPrecisionInt='%v' ", outPrecision, ia1.GetPrecision())
 	}
 }
 
@@ -1036,7 +1036,7 @@ func TestIntAry_AddFloat64ToThis_07(t *testing.T) {
 	}
 
 	if ia1.GetPrecision() != outPrecision {
-		t.Errorf("Expected ia1.GetPrecision= '%v'.  Instead, ia1.GetPrecision='%v' ", outPrecision, ia1.GetPrecision())
+		t.Errorf("Expected ia1.GetPrecisionInt= '%v'.  Instead, ia1.GetPrecisionInt='%v' ", outPrecision, ia1.GetPrecision())
 	}
 }
 
@@ -1063,7 +1063,7 @@ func TestIntAry_AddFloat64ToThis_08(t *testing.T) {
 	}
 
 	if ia1.GetPrecision() != outPrecision {
-		t.Errorf("Expected ia1.GetPrecision= '%v'.  Instead, ia1.GetPrecision='%v' ", outPrecision, ia1.GetPrecision())
+		t.Errorf("Expected ia1.GetPrecisionInt= '%v'.  Instead, ia1.GetPrecisionInt='%v' ", outPrecision, ia1.GetPrecision())
 	}
 }
 
@@ -1090,7 +1090,7 @@ func TestIntAry_AddFloat64ToThis_09(t *testing.T) {
 	}
 
 	if ia1.GetPrecision() != outPrecision {
-		t.Errorf("Expected ia1.GetPrecision= '%v'.  Instead, ia1.GetPrecision='%v' ", outPrecision, ia1.GetPrecision())
+		t.Errorf("Expected ia1.GetPrecisionInt= '%v'.  Instead, ia1.GetPrecisionInt='%v' ", outPrecision, ia1.GetPrecision())
 	}
 }
 
@@ -1117,7 +1117,7 @@ func TestIntAry_AddFloat64ToThis_10(t *testing.T) {
 	}
 
 	if ia1.GetPrecision() != outPrecision {
-		t.Errorf("Expected ia1.GetPrecision= '%v'.  Instead, ia1.GetPrecision='%v' ", outPrecision, ia1.GetPrecision())
+		t.Errorf("Expected ia1.GetPrecisionInt= '%v'.  Instead, ia1.GetPrecisionInt='%v' ", outPrecision, ia1.GetPrecision())
 	}
 }
 
@@ -1143,7 +1143,7 @@ func TestIntAry_AddFloatBigToThis_01(t *testing.T) {
 	}
 
 	if ia1.GetPrecision() != outPrecision {
-		t.Errorf("Expected ia1.GetPrecision= '%v'.  Instead, ia1.GetPrecision='%v' ", outPrecision, ia1.GetPrecision())
+		t.Errorf("Expected ia1.GetPrecisionInt= '%v'.  Instead, ia1.GetPrecisionInt='%v' ", outPrecision, ia1.GetPrecision())
 	}
 }
 
@@ -1170,7 +1170,7 @@ func TestIntAry_AddFloatBigToThis_02(t *testing.T) {
 	}
 
 	if ia1.GetPrecision() != outPrecision {
-		t.Errorf("Expected ia1.GetPrecision= '%v'.  Instead, ia1.GetPrecision='%v' ", outPrecision, ia1.GetPrecision())
+		t.Errorf("Expected ia1.GetPrecisionInt= '%v'.  Instead, ia1.GetPrecisionInt='%v' ", outPrecision, ia1.GetPrecision())
 	}
 }
 
@@ -1197,7 +1197,7 @@ func TestIntAry_AddFloatBigToThis_03(t *testing.T) {
 	}
 
 	if ia1.GetPrecision() != outPrecision {
-		t.Errorf("Expected ia1.GetPrecision= '%v'.  Instead, ia1.GetPrecision='%v' ", outPrecision, ia1.GetPrecision())
+		t.Errorf("Expected ia1.GetPrecisionInt= '%v'.  Instead, ia1.GetPrecisionInt='%v' ", outPrecision, ia1.GetPrecision())
 	}
 }
 
@@ -1224,7 +1224,7 @@ func TestIntAry_AddFloatBigToThis_04(t *testing.T) {
 	}
 
 	if ia1.GetPrecision() != outPrecision {
-		t.Errorf("Expected ia1.GetPrecision= '%v'.  Instead, ia1.GetPrecision='%v' ", outPrecision, ia1.GetPrecision())
+		t.Errorf("Expected ia1.GetPrecisionInt= '%v'.  Instead, ia1.GetPrecisionInt='%v' ", outPrecision, ia1.GetPrecision())
 	}
 }
 
@@ -1251,7 +1251,7 @@ func TestIntAry_AddFloatBigToThis_05(t *testing.T) {
 	}
 
 	if ia1.GetPrecision() != outPrecision {
-		t.Errorf("Expected ia1.GetPrecision= '%v'.  Instead, ia1.GetPrecision='%v' ", outPrecision, ia1.GetPrecision())
+		t.Errorf("Expected ia1.GetPrecisionInt= '%v'.  Instead, ia1.GetPrecisionInt='%v' ", outPrecision, ia1.GetPrecision())
 	}
 }
 
@@ -1278,7 +1278,7 @@ func TestIntAry_AddFloatBigToThis_06(t *testing.T) {
 	}
 
 	if ia1.GetPrecision() != outPrecision {
-		t.Errorf("Expected ia1.GetPrecision= '%v'.  Instead, ia1.GetPrecision='%v' ", outPrecision, ia1.GetPrecision())
+		t.Errorf("Expected ia1.GetPrecisionInt= '%v'.  Instead, ia1.GetPrecisionInt='%v' ", outPrecision, ia1.GetPrecision())
 	}
 
 }
@@ -1306,7 +1306,7 @@ func TestIntAry_AddFloatBigToThis_07(t *testing.T) {
 	}
 
 	if ia1.GetPrecision() != outPrecision {
-		t.Errorf("Expected ia1.GetPrecision= '%v'.  Instead, ia1.GetPrecision='%v' ", outPrecision, ia1.GetPrecision())
+		t.Errorf("Expected ia1.GetPrecisionInt= '%v'.  Instead, ia1.GetPrecisionInt='%v' ", outPrecision, ia1.GetPrecision())
 	}
 }
 
@@ -1333,7 +1333,7 @@ func TestIntAry_AddFloatBigToThis_08(t *testing.T) {
 	}
 
 	if ia1.GetPrecision() != outPrecision {
-		t.Errorf("Expected ia1.GetPrecision= '%v'.  Instead, ia1.GetPrecision='%v' ", outPrecision, ia1.GetPrecision())
+		t.Errorf("Expected ia1.GetPrecisionInt= '%v'.  Instead, ia1.GetPrecisionInt='%v' ", outPrecision, ia1.GetPrecision())
 	}
 }
 
@@ -1360,7 +1360,7 @@ func TestIntAry_AddFloatBigToThis_09(t *testing.T) {
 	}
 
 	if ia1.GetPrecision() != outPrecision {
-		t.Errorf("Expected ia1.GetPrecision= '%v'.  Instead, ia1.GetPrecision='%v' ", outPrecision, ia1.GetPrecision())
+		t.Errorf("Expected ia1.GetPrecisionInt= '%v'.  Instead, ia1.GetPrecisionInt='%v' ", outPrecision, ia1.GetPrecision())
 	}
 }
 
@@ -1387,7 +1387,7 @@ func TestIntAry_AddFloatBigToThis_10(t *testing.T) {
 	}
 
 	if ia1.GetPrecision() != outPrecision {
-		t.Errorf("Expected ia1.GetPrecision= '%v'.  Instead, ia1.GetPrecision='%v' ", outPrecision, ia1.GetPrecision())
+		t.Errorf("Expected ia1.GetPrecisionInt= '%v'.  Instead, ia1.GetPrecisionInt='%v' ", outPrecision, ia1.GetPrecision())
 	}
 }
 
