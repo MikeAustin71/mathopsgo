@@ -1,6 +1,7 @@
 package mathops
 
 import (
+  ePref "github.com/MikeAustin71/errpref"
   "math/big"
   "testing"
 )
@@ -1148,11 +1149,13 @@ func TestBigIntMathMultiply_MultiplyByTenToPwr_04(t *testing.T) {
       "Instead, NumStr='%v'\n\n",
       ePrefix, expectedNumStr, actualNumStr)
   }
-	
+
   return
 }
 
 func TestBigIntMathMultiply_MultiplyByTenToPwr_05(t *testing.T) {
+
+  ePrefix := "TestBigIntMathMultiply_MultiplyByTenToPwr_05"
 
   expectedNumStr := "10567.52"
   num := 1056752
@@ -1161,31 +1164,73 @@ func TestBigIntMathMultiply_MultiplyByTenToPwr_05(t *testing.T) {
 
   fixDec := new(BigIntFixedDecimal).NewInt(num, precision)
 
-  product, productPrecision, err :=
-    new(BigIntMathMultiply).BigIntMultiplyByTenToPower(
-      fixDec.GetInteger(), fixDec.GetPrecisionBigInt(), exponent)
+  fixDecBigInt, err := fixDec.GetInteger()
 
   if err != nil {
-    t.Errorf("Error returned by new(BigIntMathMultiply).BigIntMultiplyByTenToPower(...) "+
-      "Error='%v' ", err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "fixDecBigInt, err := fixDec.GetInteger()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  fixDecPrecisionBigInt, err := fixDec.GetPrecisionBigInt()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "fixDecBigInt, err := fixDec.GetInteger()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  product, productPrecision, err :=
+    new(BigIntMathMultiply).BigIntMultiplyByTenToPower(
+      fixDecBigInt, fixDecPrecisionBigInt, exponent)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "product, productPrecision, err := new(BigIntMathMultiply).\n"+
+      "  BigIntMultiplyByTenToPower(fixDecBigInt,\n"+
+      "    fixDecPrecisionBigInt, exponent)\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
   }
 
   result, err := new(BigIntFixedDecimal).NewBigIntPrecision(product, productPrecision)
 
   if err != nil {
-    t.Errorf("Error returned by new(BigIntFixedDecimal).NewBigIntBigPrecision(...) "+
-      "Error='%v' ", err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "fixDecBigInt, err := fixDec.GetInteger()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
   }
 
-  actualNumStr := result.GetNumStr()
+  actualNumStr, err := result.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "actualNumStr, err := result.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
 
   if expectedNumStr != actualNumStr {
-    t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v'. ",
-      expectedNumStr, actualNumStr)
+    t.Errorf("%v\n"+
+      "Error: Expected NumStr='%v'.\n"+
+      "Instead, NumStr='%v'\n\n",
+      ePrefix, expectedNumStr, actualNumStr)
   }
+
+  return
 }
 
 func TestBigIntMathMultiply_MultiplyByTenToPwr_06(t *testing.T) {
+
+  ePrefix := "TestBigIntMathMultiply_MultiplyByTenToPwr_06"
 
   expectedNumStr := "-10567.52"
   num := -1056752
@@ -1194,31 +1239,74 @@ func TestBigIntMathMultiply_MultiplyByTenToPwr_06(t *testing.T) {
 
   fixDec := new(BigIntFixedDecimal).NewInt(num, precision)
 
-  product, productPrecision, err :=
-    new(BigIntMathMultiply).BigIntMultiplyByTenToPower(
-      fixDec.GetInteger(), fixDec.GetPrecisionBigInt(), exponent)
+  fixDecBigInt, err := fixDec.GetInteger()
 
   if err != nil {
-    t.Errorf("Error returned by new(BigIntMathMultiply).BigIntMultiplyByTenToPower(...) "+
-      "Error='%v' ", err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "fixDecBigInt, err := fixDec.GetInteger()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  fixDecPrecisionBigInt, err := fixDec.GetPrecisionBigInt()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "fixDecPrecisionBigInt, err := fixDec.GetPrecisionBigInt()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  product, productPrecision, err :=
+    new(BigIntMathMultiply).BigIntMultiplyByTenToPower(
+      fixDecBigInt, fixDecPrecisionBigInt, exponent)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "product, productPrecision, err := new(BigIntMathMultiply).\n"+
+      "  BigIntMultiplyByTenToPower(fixDecBigInt, \n"+
+      "    fixDecPrecisionBigInt, exponent)\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
   }
 
   result, err := new(BigIntFixedDecimal).NewBigIntPrecision(product, productPrecision)
 
   if err != nil {
-    t.Errorf("Error returned by new(BigIntFixedDecimal).NewBigIntBigPrecision(...) "+
-      "Error='%v' ", err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "result, err := new(BigIntFixedDecimal).\n"+
+      "  NewBigIntPrecision(product, productPrecision)\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
   }
 
-  actualNumStr := result.GetNumStr()
+  actualNumStr, err := result.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "actualNumStr, err := result.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
 
   if expectedNumStr != actualNumStr {
-    t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v'. ",
-      expectedNumStr, actualNumStr)
+    t.Errorf("%v\n"+
+      "Error: Expected NumStr='%v'.\n"+
+      "Instead, NumStr='%v'\n\n",
+      ePrefix, expectedNumStr, actualNumStr)
   }
+
+  return
 }
 
 func TestBigIntMathMultiply_MultiplyByTenToPwr_07(t *testing.T) {
+
+  ePrefix := "TestBigIntMathMultiply_MultiplyByTenToPwr_07"
 
   expectedNumStr := "10567520000"
   num := 1056752
@@ -1227,31 +1315,72 @@ func TestBigIntMathMultiply_MultiplyByTenToPwr_07(t *testing.T) {
 
   fixDec := new(BigIntFixedDecimal).NewInt(num, precision)
 
-  product, productPrecision, err :=
-    new(BigIntMathMultiply).BigIntMultiplyByTenToPower(
-      fixDec.GetInteger(), fixDec.GetPrecisionBigInt(), exponent)
+  fixDecBigInt, err := fixDec.GetInteger()
 
   if err != nil {
-    t.Errorf("Error returned by new(BigIntMathMultiply).BigIntMultiplyByTenToPower(...) "+
-      "Error='%v' ", err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "fixDecBigInt, err := fixDec.GetInteger()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  fixDecPrecisionBigInt, err := fixDec.GetPrecisionBigInt()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "fixDecPrecisionBigInt, err := fixDec.GetPrecisionBigInt()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  product, productPrecision, err :=
+    new(BigIntMathMultiply).BigIntMultiplyByTenToPower(
+      fixDecBigInt, fixDecPrecisionBigInt, exponent)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "product, productPrecision, err := new(BigIntMathMultiply).\n"+
+      "  BigIntMultiplyByTenToPower(fixDecBigInt,\n"+
+      "    fixDecPrecisionBigInt, exponent)\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
   }
 
   result, err := new(BigIntFixedDecimal).NewBigIntPrecision(product, productPrecision)
 
   if err != nil {
-    t.Errorf("Error returned by new(BigIntFixedDecimal).NewBigIntBigPrecision(...) "+
-      "Error='%v' ", err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "result, err := new(BigIntFixedDecimal).NewBigIntPrecision(product, productPrecision)\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
   }
 
-  actualNumStr := result.GetNumStr()
+  actualNumStr, err := result.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "actualNumStr, err := result.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
 
   if expectedNumStr != actualNumStr {
-    t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v'. ",
-      expectedNumStr, actualNumStr)
+    t.Errorf("%v\n"+
+      "Error: Expected NumStr='%v'.\n"+
+      "Instead, NumStr='%v'\n\n",
+      ePrefix, expectedNumStr, actualNumStr)
   }
+  return
 }
 
 func TestBigIntMathMultiply_MultiplyByTenToPwr_08(t *testing.T) {
+
+  ePrefix := "TestBigIntMathMultiply_MultiplyByTenToPwr_08"
 
   expectedNumStr := "0"
   num := 0
@@ -1260,31 +1389,72 @@ func TestBigIntMathMultiply_MultiplyByTenToPwr_08(t *testing.T) {
 
   fixDec := new(BigIntFixedDecimal).NewInt(num, precision)
 
-  product, productPrecision, err :=
-    new(BigIntMathMultiply).BigIntMultiplyByTenToPower(
-      fixDec.GetInteger(), fixDec.GetPrecisionBigInt(), exponent)
+  fixDecBigInt, err := fixDec.GetInteger()
 
   if err != nil {
-    t.Errorf("Error returned by new(BigIntMathMultiply).BigIntMultiplyByTenToPower(...) "+
-      "Error='%v' ", err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "fixDecBigInt, err := fixDec.GetInteger()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  fixDecPrecisionBigInt, err := fixDec.GetPrecisionBigInt()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      " fixDecPrecisionBigInt, err := fixDec.GetPrecisionBigInt()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  product, productPrecision, err :=
+    new(BigIntMathMultiply).BigIntMultiplyByTenToPower(
+      fixDecBigInt, fixDecPrecisionBigInt, exponent)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "product, productPrecision, err := new(BigIntMathMultiply).\n"+
+      "  BigIntMultiplyByTenToPower(fixDecBigInt,\n"+
+      "    fixDecPrecisionBigInt, exponent)\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
   }
 
   result, err := new(BigIntFixedDecimal).NewBigIntPrecision(product, productPrecision)
 
   if err != nil {
-    t.Errorf("Error returned by new(BigIntFixedDecimal).NewBigIntBigPrecision(...) "+
-      "Error='%v' ", err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "result, err := new(BigIntFixedDecimal).NewBigIntPrecision(product, productPrecision)\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
   }
 
-  actualNumStr := result.GetNumStr()
+  actualNumStr, err := result.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "actualNumStr, err := result.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
 
   if expectedNumStr != actualNumStr {
-    t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v'. ",
-      expectedNumStr, actualNumStr)
+    t.Errorf("%v\n"+
+      "Error: Expected NumStr='%v'.\n"+
+      "Instead, NumStr='%v'\n\n",
+      ePrefix, expectedNumStr, actualNumStr)
   }
+  return
 }
 
 func TestBigIntMathMultiply_MultiplyByTenToPwr_09(t *testing.T) {
+
+  ePrefix := "TestBigIntMathMultiply_MultiplyByTenToPwr_09"
 
   expectedNumStr := "10.56752"
   num := 1056752
@@ -1293,32 +1463,73 @@ func TestBigIntMathMultiply_MultiplyByTenToPwr_09(t *testing.T) {
 
   fixDec := new(BigIntFixedDecimal).NewInt(num, precision)
 
-  product, productPrecision, err :=
-    new(BigIntMathMultiply).BigIntMultiplyByTenToPower(
-      fixDec.GetInteger(), fixDec.GetPrecisionBigInt(), exponent)
+  fixDecBigInt, err := fixDec.GetInteger()
 
   if err != nil {
-    t.Errorf("Error returned by new(BigIntMathMultiply).BigIntMultiplyByTenToPower(...) "+
-      "Error='%v' ", err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "fixDecBigInt, err := fixDec.GetInteger()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  fixDecPrecisionBigInt, err := fixDec.GetPrecisionBigInt()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "fixDecPrecisionBigInt, err := fixDec.GetPrecisionBigInt()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  product, productPrecision, err :=
+    new(BigIntMathMultiply).BigIntMultiplyByTenToPower(
+      fixDecBigInt, fixDecPrecisionBigInt, exponent)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "product, productPrecision, err := new(BigIntMathMultiply).\n"+
+      "  BigIntMultiplyByTenToPower(fixDecBigInt,\n"+
+      "    fixDecPrecisionBigInt, exponent)\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
   }
 
   result, err := new(BigIntFixedDecimal).NewBigIntPrecision(product, productPrecision)
 
   if err != nil {
-    t.Errorf("Error returned by new(BigIntFixedDecimal).NewBigIntBigPrecision(...) "+
-      "Error='%v' ", err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "result, err := new(BigIntFixedDecimal).NewBigIntPrecision(product, productPrecision)\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
   }
 
-  actualNumStr := result.GetNumStr()
+  actualNumStr, err := result.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "actualNumStr, err := result.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
 
   if expectedNumStr != actualNumStr {
-    t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v'. ",
-      expectedNumStr, actualNumStr)
+    t.Errorf("%v\n"+
+      "Error: Expected NumStr='%v'.\n"+
+      "Instead, NumStr='%v'\n\n",
+      ePrefix, expectedNumStr, actualNumStr)
   }
 
+  return
 }
 
 func TestBigIntMathMultiply_MultiplyByTenToPwr_10(t *testing.T) {
+
+  ePrefix := "TestBigIntMathMultiply_MultiplyByTenToPwr_10"
 
   expectedNumStr := "0.01056752"
   num := 1056752
@@ -1327,32 +1538,64 @@ func TestBigIntMathMultiply_MultiplyByTenToPwr_10(t *testing.T) {
 
   fixDec := new(BigIntFixedDecimal).NewInt(num, precision)
 
-  product, productPrecision, err :=
-    new(BigIntMathMultiply).BigIntMultiplyByTenToPower(
-      fixDec.GetInteger(), fixDec.GetPrecisionBigInt(), exponent)
+  fixDecBigInt, err := fixDec.GetInteger()
 
   if err != nil {
-    t.Errorf("Error returned by new(BigIntMathMultiply).BigIntMultiplyByTenToPower(...) "+
-      "Error='%v' ", err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "fixDecBigInt, err := fixDec.GetInteger()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  fixDecPrecisionBigInt, err := fixDec.GetPrecisionBigInt()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "fixDecPrecisionBigInt, err := fixDec.GetPrecisionBigInt()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  product, productPrecision, err :=
+    new(BigIntMathMultiply).BigIntMultiplyByTenToPower(
+      fixDecBigInt, fixDecPrecisionBigInt, exponent)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "product, productPrecision, err := new(BigIntMathMultiply).\n"+
+      "  BigIntMultiplyByTenToPower(fixDecBigInt,\n"+
+      "    fixDecPrecisionBigInt, exponent)\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
   }
 
   result, err := new(BigIntFixedDecimal).NewBigIntPrecision(product, productPrecision)
 
   if err != nil {
-    t.Errorf("Error returned by new(BigIntFixedDecimal).NewBigIntBigPrecision(...) "+
-      "Error='%v' ", err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "result, err := new(BigIntFixedDecimal).NewBigIntPrecision(product, productPrecision)\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
   }
 
-  actualNumStr := result.GetNumStr()
+  actualNumStr, err := result.GetNumStr()
 
   if expectedNumStr != actualNumStr {
-    t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v'. ",
-      expectedNumStr, actualNumStr)
+    t.Errorf("%v\n"+
+      "Error: Expected NumStr='%v'\nInstead, NumStr='%v'\n\n",
+      ePrefix, expectedNumStr, actualNumStr)
   }
 
+  return
 }
 
 func TestBigIntMathMultiply_MultiplyByTenToPwr_11(t *testing.T) {
+
+  ePrefix := "TestBigIntMathMultiply_MultiplyByTenToPwr_11"
 
   expectedNumStr := "-0.01056752"
   num := -1056752
@@ -1361,32 +1604,73 @@ func TestBigIntMathMultiply_MultiplyByTenToPwr_11(t *testing.T) {
 
   fixDec := new(BigIntFixedDecimal).NewInt(num, precision)
 
-  product, productPrecision, err :=
-    new(BigIntMathMultiply).BigIntMultiplyByTenToPower(
-      fixDec.GetInteger(), fixDec.GetPrecisionBigInt(), exponent)
+  fixDecBigInt, err := fixDec.GetInteger()
 
   if err != nil {
-    t.Errorf("Error returned by new(BigIntMathMultiply).BigIntMultiplyByTenToPower(...) "+
-      "Error='%v' ", err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "fixDecBigInt, err := fixDec.GetInteger()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  fixDecPrecisionBigInt, err := fixDec.GetPrecisionBigInt()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "fixDecPrecisionBigInt, err := fixDec.GetPrecisionBigInt()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  product, productPrecision, err :=
+    new(BigIntMathMultiply).BigIntMultiplyByTenToPower(
+      fixDecBigInt, fixDecPrecisionBigInt, exponent)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "product, productPrecision, err := new(BigIntMathMultiply).\n"+
+      "  BigIntMultiplyByTenToPower(fixDecBigInt,\n"+
+      "    fixDecPrecisionBigInt, exponent)\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
   }
 
   result, err := new(BigIntFixedDecimal).NewBigIntPrecision(product, productPrecision)
 
   if err != nil {
-    t.Errorf("Error returned by new(BigIntFixedDecimal).NewBigIntBigPrecision(...) "+
-      "Error='%v' ", err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "result, err := new(BigIntFixedDecimal).NewBigIntPrecision(product, productPrecision)\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
   }
 
-  actualNumStr := result.GetNumStr()
+  actualNumStr, err := result.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "actualNumStr, err := result.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
 
   if expectedNumStr != actualNumStr {
-    t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v'. ",
-      expectedNumStr, actualNumStr)
+    t.Errorf("%v\n"+
+      "Error: Expected NumStr='%v'.\n"+
+      "Instead, NumStr='%v'\n\n",
+      ePrefix, expectedNumStr, actualNumStr)
   }
 
+  return
 }
 
 func TestBigIntMathMultiply_BigIntMultiplyByTwoToPower_01(t *testing.T) {
+
+  ePrefix := "TestBigIntMathMultiply_BigIntMultiplyByTwoToPower_01"
 
   // multiplicand = 23.321
   multiplicandBInt := big.NewInt(23321)
@@ -1399,25 +1683,49 @@ func TestBigIntMathMultiply_BigIntMultiplyByTwoToPower_01(t *testing.T) {
       multiplicandBInt, multiplicandPrecision, exponent)
 
   if err != nil {
-    t.Errorf("Error returned by new(BigIntMathMultiply).BigIntMultiplyByTwoToPower(...) "+
-      "Error='%v' ", err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "product, productPrecision, err := new(BigIntMathMultiply).\n"+
+      "  BigIntMultiplyByTwoToPower(multiplicandBInt,\n"+
+      "    multiplicandPrecision, exponent)n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
   }
 
   result, err := new(BigIntNum).NewBigIntBigPrecision(product, productPrecision)
 
   if err != nil {
-    t.Errorf("Error returned by new(BigIntNum).NewBigIntBigPrecision(...) "+
-      "Error='%v' ", err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "result, err := new(BigIntNum).\n"+
+      "  NewBigIntBigPrecision(product, productPrecision)\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
   }
 
-  if expectedResult != result.GetNumStr() {
-    t.Errorf("Error: Expected result='%v'. Instead, result='%v'. ",
-      expectedResult, result.GetNumStr())
+  resultNumStr, err := result.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "resultNumStr, err := result.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
   }
 
+  if expectedResult != resultNumStr {
+    t.Errorf("%v\n"+
+      "Error: Expected result='%v'.\n"+
+      "Instead, result='%v'.\n\n",
+      ePrefix, expectedResult, resultNumStr)
+  }
+
+  return
 }
 
 func TestBigIntMathMultiply_BigIntMultiplyByTwoToPower_02(t *testing.T) {
+
+  ePrefix := "TestBigIntMathMultiply_BigIntMultiplyByTwoToPower_02"
 
   // multiplicand = 8
   multiplicandBInt := big.NewInt(8)
@@ -1430,22 +1738,54 @@ func TestBigIntMathMultiply_BigIntMultiplyByTwoToPower_02(t *testing.T) {
       multiplicandBInt, multiplicandPrecision, exponent)
 
   if err != nil {
-    t.Errorf("Error returned by new(BigIntMathMultiply).BigIntMultiplyByTwoToPower(...) "+
-      "Error='%v' ", err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "product, productPrecision, err := new(BigIntMathMultiply).\n"+
+      "  BigIntMultiplyByTwoToPower(multiplicandBInt,\n"+
+      "    multiplicandPrecision, exponent)\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
   }
 
   result, err := new(BigIntNum).NewBigIntBigPrecision(product, productPrecision)
 
   if err != nil {
-    t.Errorf("Error returned by new(BigIntNum).NewBigIntBigPrecision(...) "+
-      "Error='%v' ", err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "result, err := new(BigIntNum).\n"+
+      "  NewBigIntBigPrecision(product, productPrecision)\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
   }
 
-  if expectedResult != result.GetNumStr() {
-    t.Errorf("Error: Expected result='%v'. Instead, result='%v'. ",
-      expectedResult, result.GetNumStr())
+  resultNumStr, err := result.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "resultNumStr, err := result.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
   }
 
+  resultNumStr, err = result.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "resultNumStr, err = result.GetNumStr()\n\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if expectedResult != resultNumStr {
+    t.Errorf("%v\n"+
+      "Error: Expected result='%v'.\n"+
+      "Instead, result='%v'.\n\n",
+      ePrefix, expectedResult, resultNumStr)
+  }
+
+  return
 }
 
 func TestBigIntMathMultiply_BigIntMultiplyByTwoToPower_03(t *testing.T) {
