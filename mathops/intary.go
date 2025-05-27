@@ -3,6 +3,7 @@ package mathops
 import (
 	"bytes"
 	"fmt"
+	ePref "github.com/MikeAustin71/errpref"
 	"math"
 	"math/big"
 	"strconv"
@@ -4522,12 +4523,35 @@ func (ia *IntAry) NewZero(precision uint) (IntAry, error) {
 // equal to 'true', trailing zeros to the
 // right of the decimal place will also be
 // eliminated.
-func (ia *IntAry) OptimizeIntArrayLen(optimizeFracDigits bool) {
+func (ia *IntAry) OptimizeIntArrayLen(optimizeFracDigits bool) error {
 
-	ia.SetInternalFlags()
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
+
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"IntAry.OptimizeIntArrayLen",
+		"")
+
+	if err != nil {
+		return err
+	}
+
+	err = ia.SetInternalFlags()
+
+	if err != nil {
+
+		return &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "err = ia.SetInternalFlags()",
+			ErrContext: "",
+			ErrMessage: err.Error(),
+		}
+	}
 
 	if ia.isZeroValue {
-		return
+		return nil
 	}
 
 	integerLen := ia.intAryLen - ia.precision - ia.firstDigitIdx
@@ -4543,6 +4567,7 @@ func (ia *IntAry) OptimizeIntArrayLen(optimizeFracDigits bool) {
 
 	ia.precision = ia.intAryLen - integerLen
 
+	return nil
 }
 
 // Pow - Raises the value of the current intAry
@@ -6364,8 +6389,34 @@ func (ia *IntAry) SetIsZeroValue() {
 
 // SetInternalFlags - Sets Array Lengths and
 // test for zero values
-func (ia *IntAry) SetInternalFlags() {
-	ia.SetSignificantDigitIdxs()
+func (ia *IntAry) SetInternalFlags() error {
+
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
+
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"IntAry.SetInternalFlags",
+		"")
+
+	if err != nil {
+		return err
+	}
+
+	err = ia.SetSignificantDigitIdxs()
+
+	if err != nil {
+
+		return &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "err = ia.SetSignificantDigitIdxs()",
+			ErrContext: "",
+			ErrMessage: err.Error(),
+		}
+	}
+
+	return nil
 }
 
 // SetNumericSeparators - Used to assign values for the Decimal and Thousands separators
@@ -6653,9 +6704,32 @@ func (ia *IntAry) SetSign(signVal int) error {
 // Last Significant Digit (the last non-zero value
 // in the intAry) and records that index in the
 // local field variable, 'lastDigitIdx'.
-func (ia *IntAry) SetSignificantDigitIdxs() {
+func (ia *IntAry) SetSignificantDigitIdxs() error {
 
-	ia.SetNumericSeparatorsToDefaultIfEmpty()
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
+
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"IntAry.SetSignificantDigitIdxs",
+		"")
+
+	if err != nil {
+		return err
+	}
+
+	err = ia.SetNumericSeparatorsToDefaultIfEmpty()
+
+	if err != nil {
+
+		return &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "err = ia.SetNumericSeparatorsToDefaultIfEmpty()",
+			ErrContext: "",
+			ErrMessage: err.Error(),
+		}
+	}
 
 	ia.intAryLen = len(ia.intAry)
 
@@ -6734,7 +6808,7 @@ func (ia *IntAry) SetSignificantDigitIdxs() {
 		ia.significantFractionLen = 0
 	}
 
-	return
+	return nil
 }
 
 // SetSeparators - Used to assign values for the Decimal and Thousands separators as well
