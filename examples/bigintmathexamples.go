@@ -20,7 +20,7 @@ func ExampleNumStrDtoBigIntParse_02() {
 		return
 	}
 
-	nDto2, err := mathops.NumStrDto{}.ParseSignedBigInt(bNum1, precision)
+	nDto2, err := new(mathops.NumStrDto).ParseSignedBigInt(bNum1, precision)
 	if err != nil {
 		fmt.Printf("Error returned by nDto.ParseBigIntNum(bNum1). Error='%v' ",
 			err.Error())
@@ -36,10 +36,10 @@ func ExampleNumStrDtoBigIntParse_02() {
 func ExampleNumStrDtoBigIntNumParse_01() {
 	num1Str := "0.000"
 
-	bNum1, err := mathops.BigIntNum{}.NewNumStr(num1Str)
+	bNum1, err := new(mathops.BigIntNum).NewNumStr(num1Str)
 
 	if err != nil {
-		fmt.Printf("Error returned by mathops.BigIntNum{}.NewNumStr(num1Str). Error='%v' ",
+		fmt.Printf("Error returned by new(mathops.BigIntNum).NewNumStr(num1Str). Error='%v' ",
 			err.Error())
 		return
 	}
@@ -62,18 +62,18 @@ func ExampleRoundPrecision_01() {
 	expectedNumStr := "654.123"
 	newPrecision := uint(3)
 
-	bNum1, err := mathops.BigIntNum{}.NewNumStr(num1Str)
+	bNum1, err := new(mathops.BigIntNum).NewNumStr(num1Str)
 
 	if err != nil {
-		fmt.Printf("Error returned by mathops.BigIntNum{}.NewNumStr(num1Str). Error='%v' ",
+		fmt.Printf("Error returned by new(mathops.BigIntNum).NewNumStr(num1Str). Error='%v' ",
 			err.Error())
 		return
 	}
 
-	expectedNum, err := mathops.BigIntNum{}.NewNumStr(expectedNumStr)
+	expectedNum, err := new(mathops.BigIntNum).NewNumStr(expectedNumStr)
 
 	if err != nil {
-		fmt.Printf("Error returned by mathops.BigIntNum{}.NewNumStr(expectedNumStr). Error='%v' ",
+		fmt.Printf("Error returned by new(mathops.BigIntNum).NewNumStr(expectedNumStr). Error='%v' ",
 			err.Error())
 		return
 	}
@@ -105,18 +105,18 @@ func ExampleSetPrecision_01() {
 	expectedNumStr := "654.123"
 	newPrecision := uint(3)
 
-	bNum1, err := mathops.BigIntNum{}.NewNumStr(num1Str)
+	bNum1, err := new(mathops.BigIntNum).NewNumStr(num1Str)
 
 	if err != nil {
-		fmt.Printf("Error returned by mathops.BigIntNum{}.NewNumStr(num1Str). Error='%v' ",
+		fmt.Printf("Error returned by new(mathops.BigIntNum).NewNumStr(num1Str). Error='%v' ",
 			err.Error())
 		return
 	}
 
-	expectedNum, err := mathops.BigIntNum{}.NewNumStr(expectedNumStr)
+	expectedNum, err := new(mathops.BigIntNum).NewNumStr(expectedNumStr)
 
 	if err != nil {
-		fmt.Printf("Error returned by mathops.BigIntNum{}.NewNumStr(expectedNumStr). Error='%v' ",
+		fmt.Printf("Error returned by new(mathops.BigIntNum).NewNumStr(expectedNumStr). Error='%v' ",
 			err.Error())
 		return
 	}
@@ -148,7 +148,7 @@ func ExampleBigIntCurrencyStr_01(num1Str, expectedNumStr string, mode mathops.Ne
 	bINum, err := new(mathops.BigIntNum).NewNumStr(num1Str)
 
 	if err != nil {
-		fmt.Printf("Error returned by mathops.BigIntNum{}.NewNumStr(num1Str). "+
+		fmt.Printf("Error returned by new(mathops.BigIntNum).NewNumStr(num1Str). "+
 			" num1Str= '%v' Error='%v' ",
 			num1Str, err.Error())
 
@@ -177,10 +177,10 @@ func ExampleBigIntCurrencyStr_01(num1Str, expectedNumStr string, mode mathops.Ne
 // ExampleBigIntThouStr_01
 func ExampleBigIntThouStr_01(num1Str, expectedNumStr string, mode mathops.NegativeValueFmtMode) {
 
-	bINum, err := mathops.BigIntNum{}.NewNumStr(num1Str)
+	bINum, err := new(mathops.BigIntNum).NewNumStr(num1Str)
 
 	if err != nil {
-		fmt.Printf("Error returned by mathops.BigIntNum{}.NewNumStr(num1Str). "+
+		fmt.Printf("Error returned by new(mathops.BigIntNum).NewNumStr(num1Str). "+
 			" num1Str= '%v' Error='%v' ",
 			num1Str, err.Error())
 
@@ -204,7 +204,7 @@ func ExampleBigIntNumString_03(
 	expectedNumStr string,
 	mode mathops.NegativeValueFmtMode) {
 
-	bINum := mathops.BigIntNum{}.NewBigInt(bInt, precision)
+	bINum := new(mathops.BigIntNum).NewBigInt(bInt, precision)
 
 	outStr := bINum.FormatNumStr(mode)
 
@@ -219,10 +219,10 @@ func ExampleBigIntNumString_03(
 // ExampleBigIntNumString_02
 func ExampleBigIntNumString_02(num1Str, expectedNumStr string, mode mathops.NegativeValueFmtMode) {
 
-	bINum, err := mathops.BigIntNum{}.NewNumStr(num1Str)
+	bINum, err := new(mathops.BigIntNum).NewNumStr(num1Str)
 
 	if err != nil {
-		fmt.Printf("Error returned by mathops.BigIntNum{}.NewNumStr(num1Str). "+
+		fmt.Printf("Error returned by new(mathops.BigIntNum).NewNumStr(num1Str). "+
 			" num1Str= '%v' Error='%v' ",
 			num1Str, err.Error())
 
@@ -302,50 +302,50 @@ func ExampleSubtraction_01() {
 	lenSubtrahends := 6
 	subtrahendAry := make([]mathops.BigIntNum, lenSubtrahends)
 
-	subtrahendAry[0], err = mathops.BigIntNum{}.NewNumStr(subtrahend0)
+	subtrahendAry[0], err = new(mathops.BigIntNum).NewNumStr(subtrahend0)
 
 	if err != nil {
-		fmt.Printf("Error returned from mathops.BigIntNum{}.NewNumStr(subtrahend0). "+
+		fmt.Printf("Error returned from new(mathops.BigIntNum).NewNumStr(subtrahend0). "+
 			"Error='%v'. ", err.Error())
 		return
 	}
 
-	subtrahendAry[1], err = mathops.BigIntNum{}.NewNumStr(subtrahend1)
+	subtrahendAry[1], err = new(mathops.BigIntNum).NewNumStr(subtrahend1)
 
 	if err != nil {
-		fmt.Printf("Error returned from mathops.BigIntNum{}.NewNumStr(subtrahend1). "+
+		fmt.Printf("Error returned from new(mathops.BigIntNum).NewNumStr(subtrahend1). "+
 			"Error='%v'. ", err.Error())
 		return
 	}
 
-	subtrahendAry[2], err = mathops.BigIntNum{}.NewNumStr(subtrahend2)
+	subtrahendAry[2], err = new(mathops.BigIntNum).NewNumStr(subtrahend2)
 
 	if err != nil {
-		fmt.Printf("Error returned from mathops.BigIntNum{}.NewNumStr(subtrahend2). "+
+		fmt.Printf("Error returned from new(mathops.BigIntNum).NewNumStr(subtrahend2). "+
 			"Error='%v'. ", err.Error())
 		return
 	}
 
-	subtrahendAry[3], err = mathops.BigIntNum{}.NewNumStr(subtrahend3)
+	subtrahendAry[3], err = new(mathops.BigIntNum).NewNumStr(subtrahend3)
 
 	if err != nil {
-		fmt.Printf("Error returned from mathops.BigIntNum{}.NewNumStr(subtrahend3). "+
+		fmt.Printf("Error returned from new(mathops.BigIntNum).NewNumStr(subtrahend3). "+
 			"Error='%v'. ", err.Error())
 		return
 	}
 
-	subtrahendAry[4], err = mathops.BigIntNum{}.NewNumStr(subtrahend4)
+	subtrahendAry[4], err = new(mathops.BigIntNum).NewNumStr(subtrahend4)
 
 	if err != nil {
-		fmt.Printf("Error returned from mathops.BigIntNum{}.NewNumStr(subtrahend4). "+
+		fmt.Printf("Error returned from new(mathops.BigIntNum).NewNumStr(subtrahend4). "+
 			"Error='%v'. ", err.Error())
 		return
 	}
 
-	subtrahendAry[5], err = mathops.BigIntNum{}.NewNumStr(subtrahend5)
+	subtrahendAry[5], err = new(mathops.BigIntNum).NewNumStr(subtrahend5)
 
 	if err != nil {
-		fmt.Printf("Error returned from mathops.BigIntNum{}.NewNumStr(subtrahend5). "+
+		fmt.Printf("Error returned from new(mathops.BigIntNum).NewNumStr(subtrahend5). "+
 			"Error='%v'. ", err.Error())
 		return
 	}
@@ -367,9 +367,9 @@ func ExampleSubtraction_01() {
 		return
 	}
 
-	expectedBigINum := mathops.BigIntNum{}.NewBigInt(expectedBigI, expectedBigINumPrecision)
+	expectedBigINum := new(mathops.BigIntNum).NewBigInt(expectedBigI, expectedBigINumPrecision)
 
-	minuendBiNum := mathops.BigIntNum{}.NewBigInt(bMinuend, minuendPrecision)
+	minuendBiNum := new(mathops.BigIntNum).NewBigInt(bMinuend, minuendPrecision)
 
 	result := mathops.BigIntMathSubtract{}.SubtractBigIntNumArray(minuendBiNum, subtrahendAry)
 
@@ -407,10 +407,10 @@ func ExampleSubtraction_02() {
 		return
 	}
 
-	bigIMinuend, err := mathops.BigIntNum{}.NewNumStr(minuendStr)
+	bigIMinuend, err := new(mathops.BigIntNum).NewNumStr(minuendStr)
 
 	if err != nil {
-		fmt.Printf("Error returned by mathops.BigIntNum{}.NewNumStr(minuendStr). \n"+
+		fmt.Printf("Error returned by new(mathops.BigIntNum).NewNumStr(minuendStr). \n"+
 			"Error='%v' \n", err.Error())
 		return
 	}
@@ -475,7 +475,7 @@ func ExampleSubtraction_02() {
 		return
 	}
 
-	bigISub0, err := mathops.BigIntNum{}.NewNumStr(subtrahend0)
+	bigISub0, err := new(mathops.BigIntNum).NewNumStr(subtrahend0)
 
 	if err != nil {
 		fmt.Printf("Error returned by new(mathops.IntAry).NewNumStr(subtrahend0). \n"+
@@ -485,7 +485,7 @@ func ExampleSubtraction_02() {
 
 	subtrahendAry[0] = bigISub0
 
-	bigISub1, err := mathops.BigIntNum{}.NewNumStr(subtrahend1)
+	bigISub1, err := new(mathops.BigIntNum).NewNumStr(subtrahend1)
 
 	if err != nil {
 		fmt.Printf("Error returned by new(mathops.IntAry).NewNumStr(subtrahend1). \n"+
@@ -495,7 +495,7 @@ func ExampleSubtraction_02() {
 
 	subtrahendAry[1] = bigISub1
 
-	bigISub2, err := mathops.BigIntNum{}.NewNumStr(subtrahend2)
+	bigISub2, err := new(mathops.BigIntNum).NewNumStr(subtrahend2)
 
 	if err != nil {
 		fmt.Printf("Error returned by new(mathops.IntAry).NewNumStr(subtrahend2). \n"+
@@ -505,7 +505,7 @@ func ExampleSubtraction_02() {
 
 	subtrahendAry[2] = bigISub2
 
-	bigISub3, err := mathops.BigIntNum{}.NewNumStr(subtrahend3)
+	bigISub3, err := new(mathops.BigIntNum).NewNumStr(subtrahend3)
 
 	if err != nil {
 		fmt.Printf("Error returned by new(mathops.IntAry).NewNumStr(subtrahend3). \n"+
@@ -515,7 +515,7 @@ func ExampleSubtraction_02() {
 
 	subtrahendAry[3] = bigISub3
 
-	bigISub4, err := mathops.BigIntNum{}.NewNumStr(subtrahend4)
+	bigISub4, err := new(mathops.BigIntNum).NewNumStr(subtrahend4)
 
 	if err != nil {
 		fmt.Printf("Error returned by new(mathops.IntAry).NewNumStr(subtrahend4). \n"+
@@ -525,7 +525,7 @@ func ExampleSubtraction_02() {
 
 	subtrahendAry[4] = bigISub4
 
-	bigISub5, err := mathops.BigIntNum{}.NewNumStr(subtrahend5)
+	bigISub5, err := new(mathops.BigIntNum).NewNumStr(subtrahend5)
 
 	if err != nil {
 		fmt.Printf("Error returned by new(mathops.IntAry).NewNumStr(subtrahend5). \n"+
@@ -618,7 +618,7 @@ func Example_SubtractIntAryArray_01() {
 		return
 	}
 
-	expectedBigINum, err := mathops.BigIntNum{}.NewNumStr(expectedBigINumStr)
+	expectedBigINum, err := new(mathops.BigIntNum).NewNumStr(expectedBigINumStr)
 
 	if err != nil {
 		fmt.Printf("Error returned by BigIntNum{}.NewNumStr(expectedBigINumStr) "+
@@ -729,7 +729,7 @@ func ExampleBigIntRounding_01() {
 	expectedNumStr := "0.00"
 	roundToDec := uint(2)
 
-	bINum1, _ := mathops.BigIntNum{}.NewNumStr(nStr)
+	bINum1, _ := new(mathops.BigIntNum).NewNumStr(nStr)
 
 	bINum1.RoundToDecPlace(roundToDec)
 
@@ -828,19 +828,19 @@ func ExampleBigIntDivideModulo_03(
 	maxPrecision uint,
 	expectedResult string) {
 
-	bINDividend, err := mathops.BigIntNum{}.NewNumStr(numStrDividend)
+	bINDividend, err := new(mathops.BigIntNum).NewNumStr(numStrDividend)
 
 	if err != nil {
-		fmt.Printf("Error returned by mathops.BigIntNum{}.NewNumStr(numStrDividend) "+
+		fmt.Printf("Error returned by new(mathops.BigIntNum).NewNumStr(numStrDividend) "+
 			" numStrDividend='%v' Error='%v. ",
 			numStrDividend, err.Error())
 		return
 	}
 
-	bINDivisor, err := mathops.BigIntNum{}.NewNumStr(numStrDivisor)
+	bINDivisor, err := new(mathops.BigIntNum).NewNumStr(numStrDivisor)
 
 	if err != nil {
-		fmt.Printf("Error returned by mathops.BigIntNum{}.NewNumStr(numStrDivisor) "+
+		fmt.Printf("Error returned by new(mathops.BigIntNum).NewNumStr(numStrDivisor) "+
 			" numStrDivisor='%v' Error='%v. ",
 			numStrDividend, err.Error())
 		return
@@ -880,19 +880,19 @@ func ExampleBigIntDivideModulo_03(
 
 func ExampleBigIntDivideIntQuotient_02(numStrDividend, numStrDivisor, expectedResult string) {
 
-	bINDividend, err := mathops.BigIntNum{}.NewNumStr(numStrDividend)
+	bINDividend, err := new(mathops.BigIntNum).NewNumStr(numStrDividend)
 
 	if err != nil {
-		fmt.Printf("Error returned by mathops.BigIntNum{}.NewNumStr(numStrDividend) "+
+		fmt.Printf("Error returned by new(mathops.BigIntNum).NewNumStr(numStrDividend) "+
 			" numStrDividend='%v' Error='%v. ",
 			numStrDividend, err.Error())
 		return
 	}
 
-	bINDivisor, err := mathops.BigIntNum{}.NewNumStr(numStrDivisor)
+	bINDivisor, err := new(mathops.BigIntNum).NewNumStr(numStrDivisor)
 
 	if err != nil {
-		fmt.Printf("Error returned by mathops.BigIntNum{}.NewNumStr(numStrDivisor) "+
+		fmt.Printf("Error returned by new(mathops.BigIntNum).NewNumStr(numStrDivisor) "+
 			" numStrDivisor='%v' Error='%v. ",
 			numStrDividend, err.Error())
 		return
@@ -929,19 +929,19 @@ func ExampleBigIntDivideIntQuotient_02(numStrDividend, numStrDivisor, expectedRe
 
 func ExampleBigIntDivideQuotientModulo_01(numStrDividend, numStrDivisor string, maxPrecision uint) {
 
-	bINDividend, err := mathops.BigIntNum{}.NewNumStr(numStrDividend)
+	bINDividend, err := new(mathops.BigIntNum).NewNumStr(numStrDividend)
 
 	if err != nil {
-		fmt.Printf("Error returned by mathops.BigIntNum{}.NewNumStr(numStrDividend) "+
+		fmt.Printf("Error returned by new(mathops.BigIntNum).NewNumStr(numStrDividend) "+
 			" numStrDividend='%v' Error='%v. ",
 			numStrDividend, err.Error())
 		return
 	}
 
-	bINDivisor, err := mathops.BigIntNum{}.NewNumStr(numStrDivisor)
+	bINDivisor, err := new(mathops.BigIntNum).NewNumStr(numStrDivisor)
 
 	if err != nil {
-		fmt.Printf("Error returned by mathops.BigIntNum{}.NewNumStr(numStrDivisor) "+
+		fmt.Printf("Error returned by new(mathops.BigIntNum).NewNumStr(numStrDivisor) "+
 			" numStrDivisor='%v' Error='%v. ",
 			numStrDividend, err.Error())
 		return
@@ -1001,10 +1001,10 @@ func ExampleBigIntMultiply_02() {
 
 	expectedBigINumSign := 1
 
-	multiplierBiNum, err := mathops.BigIntNum{}.NewNumStr(multiplierStr)
+	multiplierBiNum, err := new(mathops.BigIntNum).NewNumStr(multiplierStr)
 
 	if err != nil {
-		fmt.Printf("Error returned by mathops.BigIntNum{}.NewNumStr(multiplierStr) "+
+		fmt.Printf("Error returned by new(mathops.BigIntNum).NewNumStr(multiplierStr) "+
 			"multiplierStr='%v'  Error='%v'. ", multiplierStr, err.Error())
 		return
 	}
@@ -1022,10 +1022,10 @@ func ExampleBigIntMultiply_02() {
 
 	for i := 0; i < lenArray; i++ {
 
-		bINumArray[i], err = mathops.BigIntNum{}.NewNumStr(multiplicandStrs[i])
+		bINumArray[i], err = new(mathops.BigIntNum).NewNumStr(multiplicandStrs[i])
 
 		if err != nil {
-			fmt.Printf("Error returned by mathops.BigIntNum{}.NewNumStr(multiplicandStrs[i]) "+
+			fmt.Printf("Error returned by new(mathops.BigIntNum).NewNumStr(multiplicandStrs[i]) "+
 				"i='%v'  multiplicandStrs[i]='%v'  Error='%v'. ", i, multiplicandStrs[i], err.Error())
 			return
 		}
@@ -1050,10 +1050,10 @@ func ExampleBigIntMultiply_02() {
 
 	}
 
-	expectedBigINum, err := mathops.BigIntNum{}.NewNumStr(expectedBigINumStr)
+	expectedBigINum, err := new(mathops.BigIntNum).NewNumStr(expectedBigINumStr)
 
 	if err != nil {
-		fmt.Printf("Error returned by mathops.BigIntNum{}.NewNumStr(expectedBigINumStr) "+
+		fmt.Printf("Error returned by new(mathops.BigIntNum).NewNumStr(expectedBigINumStr) "+
 			"expectedBigINumStr='%v'  Error='%v'. ", expectedBigINumStr, err.Error())
 		return
 	}
@@ -1062,7 +1062,7 @@ func ExampleBigIntMultiply_02() {
 		fmt.Println("PreLoad bINumArray[k]=", bINumArray[k].GetNumStr())
 	}
 
-	result := mathops.BigIntMathMultiply{}.MultiplyBigIntNumArray(multiplierBiNum, bINumArray)
+	result := new(mathops.BigIntMathMultiply).MultiplyBigIntNumArray(multiplierBiNum, bINumArray)
 
 	if !expectedBigINum.Equal(result) {
 		fmt.Printf("Error: Expected BigIntNum='%s'. Instead, BigIntNum= '%s'. ",
@@ -1111,10 +1111,10 @@ func ExampleBigIntMultiply_01() {
 
 	// expectedBigINumSign := 1
 
-	multiplierBiNum, err := mathops.BigIntNum{}.NewNumStr(multiplierStr)
+	multiplierBiNum, err := new(mathops.BigIntNum).NewNumStr(multiplierStr)
 
 	if err != nil {
-		fmt.Printf("Error returned by mathops.BigIntNum{}.NewNumStr(multiplierStr) "+
+		fmt.Printf("Error returned by new(mathops.BigIntNum).NewNumStr(multiplierStr) "+
 			"multiplierStr='%v'  Error='%v'. ", multiplierStr, err.Error())
 	}
 
@@ -1123,16 +1123,16 @@ func ExampleBigIntMultiply_01() {
 
 	for i := 0; i < lenArray; i++ {
 
-		bINumArray[i], err = mathops.BigIntNum{}.NewNumStr(multiplicandStrs[i])
+		bINumArray[i], err = new(mathops.BigIntNum).NewNumStr(multiplicandStrs[i])
 
 		if err != nil {
-			fmt.Printf("Error returned by mathops.BigIntNum{}.NewNumStr(multiplicandStrs[i]) "+
+			fmt.Printf("Error returned by new(mathops.BigIntNum).NewNumStr(multiplicandStrs[i]) "+
 				"i='%v'  multiplicandStrs[i]='%v'  Error='%v'. ", i, multiplicandStrs[i], err.Error())
 		}
 
 	}
 
-	result := mathops.BigIntMathMultiply{}.MultiplyBigIntNumArray(multiplierBiNum, bINumArray)
+	result := new(mathops.BigIntMathMultiply).MultiplyBigIntNumArray(multiplierBiNum, bINumArray)
 
 	fmt.Println("Expected Result: ", expectedBigINumStr)
 	fmt.Println("  Actual Result: ", result.GetNumStr())
@@ -1141,7 +1141,7 @@ func ExampleBigIntMultiply_01() {
 
 func ExampleBigIntNumPower_01(baseStr, exponentStr, expectedStr string, maxPrecision uint) {
 
-	bINumBase, err := mathops.BigIntNum{}.NewNumStr(baseStr)
+	bINumBase, err := new(mathops.BigIntNum).NewNumStr(baseStr)
 
 	if err != nil {
 		fmt.Printf("Error returned by BigIntNum{}.NewNumStr(baseStr). "+
@@ -1151,7 +1151,7 @@ func ExampleBigIntNumPower_01(baseStr, exponentStr, expectedStr string, maxPreci
 
 	fmt.Println("Base= ", bINumBase.GetNumStr())
 
-	bINumExponent, err := mathops.BigIntNum{}.NewNumStr(exponentStr)
+	bINumExponent, err := new(mathops.BigIntNum).NewNumStr(exponentStr)
 
 	if err != nil {
 		fmt.Printf("Error returned by BigIntNum{}.NewNumStr(exponentStr). "+
