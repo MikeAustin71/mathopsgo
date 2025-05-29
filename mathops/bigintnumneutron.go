@@ -1830,8 +1830,8 @@ func (bNumNeutron *bigIntNumNeutron) setIntFracStrings(
 	err = new(bigIntNumMolecule).setNumStr(
 		bNum,
 		string(cleanIntRuneAry),
-		bNumNumSeps,
-		bNumNumSeps,
+		&bNumNumSeps,
+		&bNumNumSeps,
 		ePrefix)
 
 	if err != nil {

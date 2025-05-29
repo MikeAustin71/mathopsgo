@@ -1700,8 +1700,8 @@ func (bIntMolecule *bigIntNumMolecule) setExpectedNumberOfDigits(
 func (bIntMolecule *bigIntNumMolecule) setNumStr(
 	bNum *BigIntNum,
 	numStr string,
-	numStrNumSepsDto NumericSeparatorDto,
-	outputNumSepsDto NumericSeparatorDto,
+	inputNumSepsDto *NumericSeparatorDto,
+	outputNumSepsDto *NumericSeparatorDto,
 	errPrefDto *ePref.ErrPrefixDto) error {
 
 	if bIntMolecule.lock == nil {
@@ -1736,19 +1736,34 @@ func (bIntMolecule *bigIntNumMolecule) setNumStr(
 
 	if bNum.bigInt == nil {
 
-		*bNum, err = new(bigIntNumMechanics).newZero(
-			bNum.precision,
-			ePrefix.XCpy(fmt.Sprintf("Settng 'bNum'. bNum.precision= '%v'", bNum.precision)))
-
-		if err != nil {
-			return err
+		return &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "",
+			ErrContext: "",
+			ErrMessage: "Error: Input parameter 'bNum' is invalid!\n" +
+				"bNum.bigInt is a 'nil' pointer.",
 		}
+	}
 
+	if inputNumSepsDto == nil {
+
+		return &InputPtrNilError{
+			ErrPrefix:     ePrefix.String(),
+			ParameterName: "'inputNumSepsDto'",
+		}
+	}
+
+	if outputNumSepsDto == nil {
+
+		return &InputPtrNilError{
+			ErrPrefix:     ePrefix.String(),
+			ParameterName: "'outputNumSepsDto'",
+		}
 	}
 
 	outputNumSepsDto.SetDefaultsIfEmpty()
 
-	if numStrNumSepsDto.DecimalSeparator == 0 {
+	if inputNumSepsDto.DecimalSeparator == 0 {
 
 		return &FuncReturnError{
 			ErrPrefix:  ePrefix.String(),
@@ -1759,7 +1774,7 @@ func (bIntMolecule *bigIntNumMolecule) setNumStr(
 		}
 	}
 
-	numStrNumSepsDto.SetDefaultsIfEmpty()
+	inputNumSepsDto.SetDefaultsIfEmpty()
 
 	if len(numStr) == 0 {
 
@@ -1802,7 +1817,7 @@ func (bIntMolecule *bigIntNumMolecule) setNumStr(
 			continue
 		}
 
-		if baseRunes[i] == ',' && numStrNumSepsDto.DecimalSeparator != ',' {
+		if baseRunes[i] == ',' && inputNumSepsDto.DecimalSeparator != ',' {
 			continue
 		}
 
@@ -1830,7 +1845,7 @@ func (bIntMolecule *bigIntNumMolecule) setNumStr(
 			continue
 		}
 
-		if baseRunes[i] == numStrNumSepsDto.DecimalSeparator {
+		if baseRunes[i] == inputNumSepsDto.DecimalSeparator {
 			isFractionalValue = true
 			continue
 		}
@@ -1881,7 +1896,7 @@ func (bIntMolecule *bigIntNumMolecule) setNumStr(
 
 	err = new(bigIntNumAtom).setNumericSeparatorsDto(
 		bNum,
-		outputNumSepsDto,
+		*outputNumSepsDto,
 		ePrefix)
 
 	return nil

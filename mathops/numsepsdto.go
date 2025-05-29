@@ -125,6 +125,137 @@ func (numSep *NumericSeparatorDto) Equal(numSep2 NumericSeparatorDto) bool {
 	return true
 }
 
+// GetInputSeparators
+//
+//	Implements the IGetNumSeparators interface. This method is
+//	called when the encapsulated Numeric Separators for the
+//	current instance of NumericSeparatorDto are used as input
+//	Numeric Separators. Input Numeric Separators are primarily
+//	used to parse number strings. The parsing number strings
+//	operation is used to convert number strings to numeric
+//	values.
+//
+//	Input Parameters
+//	================
+//
+//	None
+//
+//	Output Parameters
+//	=================
+//
+//	*NumericSeparatorDto
+//	  This returned instance of NumericSeparatorDto is designed to
+//	  used as input Numeric Separators when parsing number strings
+//	  and converting those strings to a numeric value.
+//
+//	error
+//	  If no errors are encountered, this returned error parameter
+//	  will be set to 'nil'.
+func (numSep *NumericSeparatorDto) GetInputSeparators() (*NumericSeparatorDto, error) {
+
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
+
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"NumericSeparatorDto.GetInputSeparators",
+		"")
+
+	if err != nil {
+		return &NumericSeparatorDto{}, err
+	}
+
+	err = new(numSepsDtoElectron).isValidNumStrDto(
+		numSep,
+		ePrefix.XCpy("Validating current 'numSep' instance"))
+
+	if err != nil {
+
+		return &NumericSeparatorDto{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "",
+				ErrContext: "The current instance of NumericSeparatorDto is invalid!",
+				ErrMessage: err.Error(),
+			}
+	}
+
+	inputNumSeps := &NumericSeparatorDto{}
+
+	inputNumSeps.CurrencySymbol = numSep.CurrencySymbol
+	inputNumSeps.DecimalSeparator = numSep.DecimalSeparator
+	inputNumSeps.ThousandsSeparator = numSep.ThousandsSeparator
+
+	return inputNumSeps, nil
+}
+
+// GetOutputSeparators
+//
+//	Implements the IGetNumSeparators interface. This method is
+//	called when the encapsulated Numeric Separators for the
+//	current instance of NumericSeparatorDto are used as output
+//	Numeric Separators. Output Numeric Separators are primarily
+//	used format number types returned from functions. When these
+//	number types are later converted to number strings for display
+//	purposes, the output formatting for decimal separators,
+//	thousands separators and currency symbols will be controlled
+//	by these output Numeric Separators.
+//
+//	Input Parameters
+//	================
+//
+//	None
+//
+//	Output Parameters
+//	=================
+//
+//	*NumericSeparatorDto
+//	  This returned instance of NumericSeparatorDto is designed to
+//	  used in formatting numeric types returned by other methods.
+//
+//	error
+//	  If no errors are encountered, this returned error parameter
+//	  will be set to 'nil'.
+func (numSep *NumericSeparatorDto) GetOutputSeparators() (*NumericSeparatorDto, error) {
+
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
+
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"NumericSeparatorDto.GetOutputSeparators",
+		"")
+
+	if err != nil {
+		return &NumericSeparatorDto{}, err
+	}
+
+	err = new(numSepsDtoElectron).isValidNumStrDto(
+		numSep,
+		ePrefix.XCpy("Validating current 'numSep' instance"))
+
+	if err != nil {
+
+		return &NumericSeparatorDto{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "",
+				ErrContext: "The current instance of NumericSeparatorDto is invalid!",
+				ErrMessage: err.Error(),
+			}
+	}
+
+	outputNumSeps := &NumericSeparatorDto{}
+
+	outputNumSeps.CurrencySymbol = numSep.CurrencySymbol
+	outputNumSeps.DecimalSeparator = numSep.DecimalSeparator
+	outputNumSeps.ThousandsSeparator = numSep.ThousandsSeparator
+
+	return outputNumSeps, nil
+}
+
 // IsValid
 //
 // This method will test the current instance of

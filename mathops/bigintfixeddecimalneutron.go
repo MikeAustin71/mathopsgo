@@ -105,7 +105,17 @@ func (bigIFdNeutron *bigIntFixedDecNeutron) divideByTenToPower(
 			big.NewInt(10),
 			big.NewInt(int64(exponent)), nil)
 
-	factor := new(BigIntFixedDecimal).New(scale, 0)
+	factor, err := new(BigIntFixedDecimal).New(scale, 0)
+
+	if err != nil {
+
+		return &FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "factor, err := new(BigIntFixedDecimal).New(scale, 0)",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
 
 	bigIFxDec2, err := new(bigIntFixedDecUtility).copyOut(
 		bigIFxDec,

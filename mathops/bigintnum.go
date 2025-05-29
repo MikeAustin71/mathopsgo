@@ -4375,8 +4375,8 @@ func (bNum *BigIntNum) NewNumStr(numStr string) (BigIntNum, error) {
 	err = new(bigIntNumMolecule).setNumStr(
 		&bigINum,
 		numStr,
-		numSeps,
-		numSeps,
+		&numSeps,
+		&numSeps,
 		ePrefix)
 
 	if err != nil {
@@ -4417,8 +4417,7 @@ func (bNum *BigIntNum) NewNumStr(numStr string) (BigIntNum, error) {
 //	the numeric value is assumed to be positive.
 func (bNum *BigIntNum) NewNumStrWithNumSeps(
 	numStr string,
-	numStrNumSeps NumericSeparatorDto,
-	outputNumSeps NumericSeparatorDto) (BigIntNum, error) {
+	numStrNumSeps IGetNumSeparators) (BigIntNum, error) {
 
 	var ePrefix *ePref.ErrPrefixDto
 	var err error
@@ -4432,6 +4431,12 @@ func (bNum *BigIntNum) NewNumStrWithNumSeps(
 	if err != nil {
 		return BigIntNum{}, err
 	}
+
+	var inputNumSeps, outputNumSeps *NumericSeparatorDto
+
+	inputNumSeps, err = numStrNumSeps.GetInputSeparators()
+
+	outputNumSeps, err = numStrNumSeps.GetOutputSeparators()
 
 	bINum2, err := new(bigIntNumMechanics).newZero(
 		0,
@@ -4452,7 +4457,7 @@ func (bNum *BigIntNum) NewNumStrWithNumSeps(
 	err = new(bigIntNumMolecule).setNumStr(
 		&bINum2,
 		numStr,
-		numStrNumSeps,
+		inputNumSeps,
 		outputNumSeps,
 		ePrefix)
 
@@ -4530,8 +4535,8 @@ func (bNum *BigIntNum) NewNumStrMaxPrecision(
 	err = new(bigIntNumMolecule).setNumStr(
 		&bINum2,
 		numStr,
-		numSeps,
-		numSeps,
+		&numSeps,
+		&numSeps,
 		ePrefix)
 
 	if err != nil {
@@ -6726,8 +6731,8 @@ func (bNum *BigIntNum) SetNumStr(numStr string,
 	return new(bigIntNumMolecule).setNumStr(
 		bNum,
 		numStr,
-		numStrNumSeps,
-		bNumNumSeps,
+		&numStrNumSeps,
+		&bNumNumSeps,
 		ePrefix)
 
 }

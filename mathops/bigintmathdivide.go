@@ -3964,7 +3964,18 @@ func (bIDivide *BigIntMathDivide) FixedDecimalFracQuotient(
 			}
 	}
 
-	dividendPrecision := dividend.GetPrecisionBigInt()
+	dividendPrecision, err := dividend.GetPrecisionBigInt()
+
+	if err != nil {
+
+		return quotient,
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "dividendPrecision, err := dividend.GetPrecisionBigInt()",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
 
 	divisorInt, err := divisor.GetIntegerValue()
 
@@ -3979,7 +3990,18 @@ func (bIDivide *BigIntMathDivide) FixedDecimalFracQuotient(
 			}
 	}
 
-	divisorPrecision := divisor.GetPrecisionBigInt()
+	divisorPrecision, err := divisor.GetPrecisionBigInt()
+
+	if err != nil {
+
+		return quotient,
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "divisorPrecision, err := divisor.GetPrecisionBigInt()",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
 
 	bigIntMaxPrecision := big.NewInt(0).SetUint64(uint64(maxPrecision))
 
@@ -5915,8 +5937,36 @@ func (bIDivide *BigIntMathDivide) NumStrQuotientMod(
 			}
 	}
 
+	numSepsPair := NumericSeparatorPairDto{}
+
+	err = numSepsPair.InputSeparators.CopyIn(&numStrNumSepsDto, true)
+
+	if err != nil {
+
+		return quotient, modulo,
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "err = numSepsPair.InputSeparators.CopyIn(&numStrNumSepsDto, true)",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
+
+	err = numSepsPair.OutputSeparators.CopyIn(&outputNumSepsDto, true)
+
+	if err != nil {
+
+		return quotient, modulo,
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "err = numSepsPair.OutputSeparators.CopyIn(&outputNumSepsDto, true)",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
+
 	bigIDividend, err := new(BigIntNum).NewNumStrWithNumSeps(
-		dividend, numStrNumSepsDto, outputNumSepsDto)
+		dividend, &numSepsPair)
 
 	if err != nil {
 
@@ -5931,7 +5981,7 @@ func (bIDivide *BigIntMathDivide) NumStrQuotientMod(
 	}
 
 	bigIDivisor, err := new(BigIntNum).NewNumStrWithNumSeps(
-		divisor, numStrNumSepsDto, outputNumSepsDto)
+		divisor, &numSepsPair)
 
 	if err != nil {
 
@@ -6119,15 +6169,38 @@ func (bIDivide *BigIntMathDivide) NumStrFracQuotient(
 			}
 	}
 
-	numStrNumSepsDto.SetDefaultsIfEmpty()
+	numSepsPair := NumericSeparatorPairDto{}
 
-	outputNumSepsDto.SetDefaultsIfEmpty()
+	err = numSepsPair.InputSeparators.CopyIn(&numStrNumSepsDto, true)
+
+	if err != nil {
+
+		return BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "err = numSepsPair.InputSeparators.CopyIn(&numStrNumSepsDto, true)",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
+
+	err = numSepsPair.OutputSeparators.CopyIn(&outputNumSepsDto, true)
+
+	if err != nil {
+
+		return BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "err = numSepsPair.OutputSeparators.CopyIn(&outputNumSepsDto, true)",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
 
 	bigIDividend, err := new(BigIntNum).
 		NewNumStrWithNumSeps(
 			dividend,
-			numStrNumSepsDto,
-			outputNumSepsDto)
+			&numSepsPair)
 
 	if err != nil {
 
@@ -6142,7 +6215,7 @@ func (bIDivide *BigIntMathDivide) NumStrFracQuotient(
 	}
 
 	bigIDivisor, err := new(BigIntNum).
-		NewNumStrWithNumSeps(divisor, numStrNumSepsDto, outputNumSepsDto)
+		NewNumStrWithNumSeps(divisor, &numSepsPair)
 
 	if err != nil {
 
@@ -6283,9 +6356,33 @@ func (bIDivide *BigIntMathDivide) NumStrFracQuotientArray(
 		return fracQuoArray, err
 	}
 
-	numStrNumSepsDto.SetDefaultsIfEmpty()
+	numSepsPair := NumericSeparatorPairDto{}
 
-	outputNumSepsDto.SetDefaultsIfEmpty()
+	err = numSepsPair.InputSeparators.CopyIn(&numStrNumSepsDto, true)
+
+	if err != nil {
+
+		return fracQuoArray,
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "err = numSepsPair.InputSeparators.CopyIn(&numStrNumSepsDto, true)",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
+
+	err = numSepsPair.OutputSeparators.CopyIn(&outputNumSepsDto, true)
+
+	if err != nil {
+
+		return fracQuoArray,
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "err = numSepsPair.OutputSeparators.CopyIn(&outputNumSepsDto, true)",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
 
 	lenAry := len(dividends)
 
@@ -6314,7 +6411,7 @@ func (bIDivide *BigIntMathDivide) NumStrFracQuotientArray(
 	fracQuoArray = make([]BigIntNum, lenAry, lenAry+20)
 
 	bigINumDivisor, err := new(BigIntNum).
-		NewNumStrWithNumSeps(divisor, numStrNumSepsDto, outputNumSepsDto)
+		NewNumStrWithNumSeps(divisor, &numSepsPair)
 
 	if err != nil {
 
@@ -6342,7 +6439,7 @@ func (bIDivide *BigIntMathDivide) NumStrFracQuotientArray(
 		}
 
 		bigINumDividend, err := new(BigIntNum).
-			NewNumStrWithNumSeps(dividends[i], numStrNumSepsDto, outputNumSepsDto)
+			NewNumStrWithNumSeps(dividends[i], &numSepsPair)
 
 		if err != nil {
 
@@ -6523,12 +6620,36 @@ func (bIDivide *BigIntMathDivide) NumStrModulo(
 			}
 	}
 
-	numStrNumSepsDto.SetDefaultsIfEmpty()
+	numSepsPair := NumericSeparatorPairDto{}
 
-	outputNumSepsDto.SetDefaultsIfEmpty()
+	err = numSepsPair.InputSeparators.CopyIn(&numStrNumSepsDto, true)
+
+	if err != nil {
+
+		return BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "err = numSepsPair.InputSeparators.CopyIn(&numStrNumSepsDto, true)",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
+
+	err = numSepsPair.OutputSeparators.CopyIn(&outputNumSepsDto, true)
+
+	if err != nil {
+
+		return BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "err = numSepsPair.OutputSeparators.CopyIn(&outputNumSepsDto, true)",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
 
 	bigIDividend, err := new(BigIntNum).
-		NewNumStrWithNumSeps(dividend, numStrNumSepsDto, outputNumSepsDto)
+		NewNumStrWithNumSeps(dividend, &numSepsPair)
 
 	if err != nil {
 
@@ -6543,7 +6664,7 @@ func (bIDivide *BigIntMathDivide) NumStrModulo(
 	}
 
 	bigIDivisor, err := new(BigIntNum).
-		NewNumStrWithNumSeps(divisor, numStrNumSepsDto, outputNumSepsDto)
+		NewNumStrWithNumSeps(divisor, &numSepsPair)
 
 	if err != nil {
 
