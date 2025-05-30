@@ -221,7 +221,8 @@ func (nSepsDtoMech *numSepsDtoMechanics) selectValidNumSepInSeries(
 					ErrPrefix: ePrefix.String(),
 					ReturnFunc: fmt.Sprintf("err = %vNumSep.GetNumericSeparatorsDto()",
 						alternateSourceName),
-					ErrContext: "Error: Failed to acquire 'multiplier' numSeps",
+					ErrContext: fmt.Sprintf("Error: Failed to acquire %vNumSep or %vNumSep Numeric Separators",
+						primarySourceName, alternateSourceName),
 					ErrMessage: err.Error(),
 				}
 		}

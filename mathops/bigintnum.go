@@ -4586,6 +4586,15 @@ func (bNum *BigIntNum) NewNumStrWithNumSeps(
 		return BigIntNum{}, err
 	}
 
+	if numStrNumSeps == nil {
+
+		return BigIntNum{},
+			&InputPtrNilError{
+				ErrPrefix:     ePrefix.String(),
+				ParameterName: "'numStrNumSeps'",
+			}
+	}
+
 	var inputNumSeps, outputNumSeps *NumericSeparatorDto
 
 	inputNumSeps, err = numStrNumSeps.GetInputSeparators()
