@@ -4308,36 +4308,90 @@ func (bNum *BigIntNum) NewINumMgr(numMgr INumMgr) (BigIntNum, error) {
 
 // NewNumStr
 //
-// Receives a number string as input and returns a new BigIntNum
-// instance encapsulating the number string's value.
+//		 Receives a number string as input, converts that string to
+//		 numeric value and returns a new BigIntNum instance encapsulating
+//		 that numeric value.
 //
-// A number string is a string of numeric digits. If the number
-// string is prefixed with a minus sign ('-') or surrounded in
-// parentheses '()', it is assumed to be a negative value. Otherwise,
-// the numeric value is assumed to be positive. Currency symbols
-// are ignored.
+//		 This method assumes that the input parameter 'numStr' is a
+//		 string of numeric digits which will be delimited by default
+//		 USA numeric separators. Default USA numeric separators are
+//		 defined as:
 //
-// This method assumes that the input parameter 'numStr' is a
-// string of numeric digits which may be delimited by default
-// USA numeric separators. Default USA numeric separators are
-// defined as:
+//		         decimal separator = '.'
+//		       thousands separator = ','
+//		           currency symbol = '$'
 //
-//	 	decimal separator = '.'
-//	   thousands separator = ','
-//			currency symbol = '$'
+//		 If the subject 'numStr' employs other national or cultural
+//		 numeric separators, see the method:
 //
-// If the subject 'numStr' employs other national or cultural
-// numeric separators, see the method:
+//		   BigIntNum.NewNumStrWithNumSeps()
 //
-//				BigIntNum.NewNumStrWithNumSeps()
 //
-//	NOTE
-//	====
+//		 Number Strings
+//		 ==============
 //
-//	The returned new instance of BigIntNum will contain default
-//	USA numeric separators (decimal separator, thousands seprator,
-//	and currency symbol)
-func (bNum *BigIntNum) NewNumStr(numStr string) (BigIntNum, error) {
+//		 Number strings are strings of numeric digits. These digits
+//		 must be formatted in a way that facilitates conversion to a
+//		 corresponding numeric value.
+//
+//		 Number String Negative Values
+//		 =============================
+//
+//		 The 'numStr' number string parameter passed to this method must
+//		 consist of a string of numeric digits representing a numeric
+//		 value. A leading minus sign (-), or surrounding parentheses
+//		 '()', may be included in this number string to indicate a
+//		 negative numeric value.
+//
+//		 Fractional Digits in Number Strings
+//		 ===================================
+//
+//		 The 'numStr' number string of numeric digits may also include
+//		 a delimiting decimal separator to identify fractional digits to
+//		 the right of the decimal separator. This method uses the
+//		 default USA Decimal Separator ('.') t parse 'numStr' and
+//		 identify any exiting fractional digits.
+//
+//		 Numeric Separators
+//		 ==================
+//
+//		 Numeric Separators define the Decimal Separator character,
+//		 Thousands Separator character, and Currency Symbol character.
+//		 These separator characters serve two purposes. First they are
+//		 used to format and display numeric values as number strings.
+//		 Second, they are also used to parse number strings and convert
+//		 them into numeric values.
+//
+//		 For this method, the number string, 'numStr', will be parsed
+//		 and converted to a numeric value based on the default USA
+//		 Numeric Separators. Likewise, the returned instance of
+//		 BigIntNum will be formatted with default USA Numeric
+//		 Separators. If the 'numStr' input parameter employs other
+//		 national or cultural numeric separators, see the method:
+//
+//		      BigIntNum.NewNumStrWithNumSeps()
+//
+//	  Input Parameters
+//	  ================
+//
+//	  numStr                   string
+//	    A string of numeric digits formatted as outlined above.
+//	    Using default USA Numeric Separators, this method will
+//	    parse the 'numStr' number string, convert it to a numeric
+//	    value and return that value as an instanace of BigIntNum.
+//
+//		Return Values
+//		=============
+//
+//		BigIntNum
+//		  This type returns the converted numeric value of input
+//		  parameter 'numStr'.
+//
+//		error
+//		  If no errors are encountered during method execution, this
+//		  returned error parameter is set to 'nil'.
+func (bNum *BigIntNum) NewNumStr(
+	numStr string) (BigIntNum, error) {
 
 	var ePrefix *ePref.ErrPrefixDto
 	var err error
@@ -4370,7 +4424,7 @@ func (bNum *BigIntNum) NewNumStr(numStr string) (BigIntNum, error) {
 	}
 
 	numSeps := NumericSeparatorDto{}
-	numSeps.SetDefaultsIfEmpty()
+	numSeps.SetUSADefaults()
 
 	err = new(bigIntNumMolecule).setNumStr(
 		&bigINum,
@@ -4396,25 +4450,125 @@ func (bNum *BigIntNum) NewNumStr(numStr string) (BigIntNum, error) {
 
 // NewNumStrWithNumSeps
 //
-// Receives a number string as input and returns a new BigIntNum
-// instance. The input parameter 'numStrNumSeps' contains numeric
-// separators (decimal separator, thousands separator and currency
-// symbol) which will be used to parse the number string.
+//	Receives a number string as input, converts that string to a
+//	numeric value and returns that value in new BigIntNum
+//	instance. The input parameter 'numStrNumSeps' contains numeric
+//	separators (decimal separator, thousands separator and currency
+//	symbol) which will be used to parse the number string and format
+//	the returned BigIntNum value.
 //
-// The 'outputNumSeps' will be used to configure the retunred
-// instance of BigIntNum.
+//	Number Strings
+//	==============
 //
-// If either the 'numStrNumSeps' or 'outputNumSeps' parameters are
-// determined to be invalid, they will be automatically set to USA
-// defaults.
+//	Number strings are strings of numeric digits. These digits
+//	must be formatted in a way that facilitates conversion to a
+//	corresponding numeric value.
 //
-//	Positive or Negative Value
-//	==========================
+//	Number String Negative Values
+//	=============================
 //
-//	A number string is a string of numeric digits. If the number
-//	string is prefixed with a minus sign ('-'), or surrounded by
-//	parentheses '()', it is assumed to be a negative value. Otherwise,
-//	the numeric value is assumed to be positive.
+//	The 'numStr' number string parameter passed to this method must
+//	consist of a string of numeric digits representing a numeric
+//	value. A leading minus sign (-), or surrounding parentheses
+//	'()', may be included in this number string to indicate a
+//	negative numeric value.
+//
+//	Fractional Digits in Number Strings
+//	===================================
+//
+//	The 'numStr' number string of numeric digits may also include
+//	a delimiting decimal separator to identify fractional digits to
+//	the right of the decimal separator. In the USA, the default
+//	decimal separator is the period character ('.'). The actual
+//	decimal separator character used to parse the 'numStr' number
+//	string is determined by the Numeric Separators parameter,
+//	'numStrNumSeps'.
+//
+//	Numeric Separators
+//	==================
+//
+//	Numeric Separators define the Decimal Separator character,
+//	Thousands Separator character, and Currency Symbol character.
+//	These separator characters serve two purposes. First they are
+//	used to format and display numeric values as number strings.
+//	Second, they are also used to parse number strings and convert
+//	them into numeric values. Number string 'numStr' will be parsed
+//	and converted to a numeric value based on the Numeric
+//	Separators provided by input parameter, 'numStrNumSeps'.
+//
+//	Numeric Separator characters are typically encapsulated in a
+//	type NumericSeparatorDto.
+//
+//	Input parameter 'numStrNumSeps' is of type IGetNumSeparators.
+//	This interface type allows users to submit one of two types
+//	for this parameter, a type NumericSeparatorDto instance or
+//	a type NumericSeparatorPairDto.
+//
+//	If a type NumericSeparatorDto is submitted, the encapsulated
+//	Numeric Separators will be used both to parse the number string
+//	passed through input parameter 'numStr' and to format the
+//	returned BigIntNum numeric value.
+//
+//	If a type NumericSeparatorPairDto is submitted for input
+//	parameter 'numStrNumSeps', separate sets of Numeric Separators
+//	will be used to parse the number string ('numStr') and format
+//	the returned 'BigIntNum' numeric value. Type
+//	NumericSeparatorPairDto contains two separate, embedded
+//	instances of NumericSeparatorDto. The 'input'
+//	NumericSeparatorDto will be used to parse the number string
+//	while the 'output' NumericSeparatorDto will be used to format
+//	the returned BigIntNum numeric value. The presence of two
+//	separate sets of Numeric Separators allows users to parse a
+//	number string formatted in one national number system while
+//	formatting the returned value in a different national number
+//	systems.
+//
+//	  Example:
+//	    Input Format  = USA
+//	    Output Format = European Union
+//
+//	If parameter 'numStrNumSeps' proves to be invalid, an error
+//	will be returned.
+//
+//	Input Parameters
+//	================
+//
+//	numStr                   string
+//	  This string value should be formatted as a string of
+//	  numeric digits as outlined above. Using the Numeric
+//	  Separators provided by input parameter 'numStrNumSeps',
+//	  this method will parse the 'numStr' number string and
+//	  convert it to a numeric value which will be returned as a
+//	  BigIntNum.
+//
+//	numStrNumSeps            IGetNumSeparators
+//	  The IGetNumSeparators interface type gives users the option
+//	  of submitting one of two different concrete types.
+//
+//	  User may choose to submit a type NumericSeparatorDto
+//	  consisting of one set of Numeric Separators. These Numeric
+//	  Separators will be used to both parse the number strings
+//	  provided by input parameter 'numstr' and format the returned
+//	  BigIntNum type containing the converted numeric value.
+//
+//	  The second alternatives allows the user to submit a type
+//	  NumericSeparatorPairDto for this parameter. This type
+//	  encapsulates two separate instances of NumericSeparatorDto.
+//	  The 'input' NumericSeparatorDto instance will be used to
+//	  parse number string 'numStr' while the 'output' instance
+//	  will be used to format the numeric value returned as a type
+//	  BigIntNum.
+//
+//	Return Values
+//	=============
+//
+//	BigIntNum
+//	  This type returns the converted numeric value of input
+//	  parameter 'numStr'.
+//
+//	error
+//	  If no errors are encountered during method execution, this
+//	  returned error parameter is set to 'nil'.
 func (bNum *BigIntNum) NewNumStrWithNumSeps(
 	numStr string,
 	numStrNumSeps IGetNumSeparators) (BigIntNum, error) {
@@ -4478,26 +4632,123 @@ func (bNum *BigIntNum) NewNumStrWithNumSeps(
 
 // NewNumStrMaxPrecision
 //
-// Receives a number string as input and returns a new BigIntNum
-// instance. If the resulting precision exceeds input parameter
-// 'maxPrecision', the returned BigIntNum result will be rounded
-// to 'maxPrecision' decimal places.
+//		Receives a number string as input, converts that string to a
+//		numeric value and returns that value in new BigIntNum
+//		instance. The input parameter 'numStrNumSeps' contains numeric
+//		separators (decimal separator, thousands separator and currency
+//		symbol) which will be used to parse the number string and format
+//		the returned BigIntNum value.
 //
-// A number string is a string of numeric digits. If the number
-// string is prefixed with a minus sign ('-') or surrounded in
-// parentheses, it is assumed to be a negative value. Otherwise,
-// the numeric value is assumed to be positive. Currency symbols
-// are ignored.
+//	 If the resulting precision exceeds input parameter
+//	 'maxPrecision', the returned BigIntNum result will be rounded to
+//	 'maxPrecision' decimal places.
 //
-//	NOTE
-//	====
 //
-//	The returned new instance of BigIntNum will contain default
-//	USA numeric separators (decimal separator, thousands seprator,
-//	and currency symbol)
+//		Number Strings
+//		==============
+//
+//		Number strings are strings of numeric digits. These digits
+//		must be formatted in a way that facilitates conversion to a
+//		corresponding numeric value.
+//
+//		Number String Negative Values
+//		=============================
+//
+//		The 'numStr' number string parameter passed to this method must
+//		consist of a string of numeric digits representing a numeric
+//		value. A leading minus sign (-), or surrounding parentheses
+//		'()', may be included in this number string to indicate a
+//		negative numeric value.
+//
+//		Fractional Digits in Number Strings
+//		===================================
+//
+//		The 'numStr' number string of numeric digits may also include
+//		a delimiting decimal separator to identify fractional digits to
+//		the right of the decimal separator. In the USA, the default
+//		decimal separator is the period character ('.'). The actual
+//		decimal separator character used to parse the 'numStr' number
+//		string is determined by the Numeric Separators parameter,
+//		'numStrNumSeps'.
+//
+//		Numeric Separators
+//		==================
+//
+//		Numeric Separators define the Decimal Separator character,
+//		Thousands Separator character, and Currency Symbol character.
+//		These separator characters serve two purposes. First they are
+//		used to format and display numeric values as number strings.
+//		Second, they are also used to parse number strings and convert
+//		them into numeric values. Number string 'numStr' will be parsed
+//		and converted to a numeric value based on the Numeric
+//		Separators provided by input parameter, 'numStrNumSeps'.
+//
+//		Numeric Separator characters are typically encapsulated in a
+//		type NumericSeparatorDto.
+//
+//		Input parameter 'numStrNumSeps' is of type IGetNumSeparators.
+//		This interface type allows users to submit one of two types
+//		for this parameter, a type NumericSeparatorDto instance or
+//		a type NumericSeparatorPairDto.
+//
+//		If a type NumericSeparatorDto is submitted, the encapsulated
+//		Numeric Separators will be used both to parse the number string
+//		passed through input parameter 'numStr' and to format the
+//		returned BigIntNum numeric value.
+//
+//		If a type NumericSeparatorPairDto is submitted for input
+//		parameter 'numStrNumSeps', separate sets of Numeric Separators
+//		will be used to parse the number string ('numStr') and format
+//		the returned 'BigIntNum' numeric value. Type
+//		NumericSeparatorPairDto contains two separate, embedded
+//		instances of NumericSeparatorDto. The 'input'
+//		NumericSeparatorDto will be used to parse the number string
+//		while the 'output' NumericSeparatorDto will be used to format
+//		the returned BigIntNum numeric value. The presence of two
+//		separate sets of Numeric Separators allows users to parse a
+//		number string formatted in one national number system while
+//		formatting the returned value in a different national number
+//		systems.
+//
+//		  Example:
+//		    Input Format  = USA
+//		    Output Format = European Union
+//
+//		If parameter 'numStrNumSeps' proves to be invalid, an error
+//		will be returned.
+//
+//		Input Parameters
+//		================
+//
+//		numStr                   string
+//		  This string value should be formatted as a string of
+//		  numeric digits as outlined above. Using the Numeric
+//		  Separators provided by input parameter 'numStrNumSeps',
+//		  this method will parse the 'numStr' number string and
+//		  convert it to a numeric value which will be returned as a
+//		  BigIntNum.
+//
+//		numStrNumSeps            IGetNumSeparators
+//		  The IGetNumSeparators interface type gives users the option
+//		  of submitting one of two different concrete types.
+//
+//		  User may choose to submit a type NumericSeparatorDto
+//		  consisting of one set of Numeric Separators. These Numeric
+//		  Separators will be used to both parse the number strings
+//		  provided by input parameter 'numstr' and format the returned
+//		  BigIntNum type containing the converted numeric value.
+//
+//		  The second alternatives allows the user to submit a type
+//		  NumericSeparatorPairDto for this parameter. This type
+//		  encapsulates two separate instances of NumericSeparatorDto.
+//		  The 'input' NumericSeparatorDto instance will be used to
+//		  parse number string 'numStr' while the 'output' instance
+//		  will be used to format the numeric value returned as a type
+//		  BigIntNum.
 func (bNum *BigIntNum) NewNumStrMaxPrecision(
 	numStr string,
-	maxPrecision uint) (BigIntNum, error) {
+	maxPrecision uint,
+	numStrNumSeps IGetNumSeparators) (BigIntNum, error) {
 
 	var ePrefix *ePref.ErrPrefixDto
 	var err error
@@ -4528,15 +4779,17 @@ func (bNum *BigIntNum) NewNumStrMaxPrecision(
 			}
 	}
 
-	numSeps := NumericSeparatorDto{}
+	var inputNumSeps, outputNumSeps *NumericSeparatorDto
 
-	numSeps.SetDefaultsIfEmpty()
+	inputNumSeps, err = numStrNumSeps.GetInputSeparators()
+
+	outputNumSeps, err = numStrNumSeps.GetOutputSeparators()
 
 	err = new(bigIntNumMolecule).setNumStr(
 		&bINum2,
 		numStr,
-		&numSeps,
-		&numSeps,
+		inputNumSeps,
+		outputNumSeps,
 		ePrefix)
 
 	if err != nil {
@@ -4574,16 +4827,35 @@ func (bNum *BigIntNum) NewNumStrMaxPrecision(
 
 // NewNumStrDto
 //
-// Receives a NumStrDto instance as input and returns
-// a new BigIntNum instance.
+//	 Receives a NumStrDto instance as input and returns
+//	 a new BigIntNum instance.
 //
-//	NOTE
-//	====
+//	 NOTE
+//	 ====
 //
-//	The returned new instance of BigIntNum will contain the numeric
-//	separators contained input parameter 'nDto'. Numeric separators
-//	consist of decimal separator, thousands seprator,	and currency
-//	symbol.
+//	 The returned new instance of BigIntNum will contain the numeric
+//	 separators contained input parameter 'nDto'. Numeric separators
+//	 consist of decimal separator, thousands seprator,	and currency
+//	 symbol.
+//
+//		Input Parameters
+//		================
+//
+//		nDto                     NewNumStrDto
+//		  The NewNumStrDto type contains all the member elements
+//		  necessary to convert the internal number string to a valid
+//	   numeric value.
+//
+//		Return Values
+//		=============
+//
+//		BigIntNum
+//		  This type returns the converted numeric value of input
+//		  parameter 'nDto'.
+//
+//		error
+//		  If no errors are encountered during method execution, this
+//		  returned error parameter is set to 'nil'.
 func (bNum *BigIntNum) NewNumStrDto(nDto NumStrDto) (BigIntNum, error) {
 
 	var ePrefix *ePref.ErrPrefixDto
@@ -5384,8 +5656,8 @@ func (bNum *BigIntNum) NewZero(precision uint) (BigIntNum, error) {
 // the BigIntNum components BigIntNum.bigInt and
 // BigIntNum.precision.
 //
-// This method is usually called after method bNum.IsValid()
-// returns false.
+// This method is usually called after method BigIntNum.IsValid()
+// returns an err.
 //
 // Calling this method causes Numeric Separators to be reset
 // to USA Defaults.
@@ -5485,13 +5757,13 @@ func (bNum *BigIntNum) RoundToDecPlace(precision uint) error {
 
 // SetBigInt
 //
-// Sets the value of the current BigIntNum instance using
-// the input parameters *big.Int integer and precision.
+//	Sets the value of the current BigIntNum instance using
+//	the input parameters *big.Int integer and precision.
 //
-// The 'precision' parameter specifies the number of digits to the right
-// of the decimal place. The Numeric value is equal to bigI x 10^(precision x -1).
-// This effectively locates the decimal place by counting from the extreme right
-// of the integer number, 'precision' places to the left. See the example below.
+//	The 'precision' parameter specifies the number of digits to the right
+//	of the decimal place. The Numeric value is equal to bigI x 10^(precision x -1).
+//	This effectively locates the decimal place by counting from the extreme right
+//	of the integer number, 'precision' places to the left. See the example below.
 //
 //	Input Parameters
 //	================
@@ -5513,8 +5785,8 @@ func (bNum *BigIntNum) RoundToDecPlace(precision uint) error {
 //			Integer Value		precision			Numeric Value
 //			  123456					 3					  123.456
 //
-// Existing numeric separators (decimal separator, thousands separator
-// and currency symbol) remain unchanged and are not altered by this method.
+//	Existing numeric separators (decimal separator, thousands separator
+//	and currency symbol) remain unchanged and are not altered by this method.
 func (bNum *BigIntNum) SetBigInt(bigI *big.Int, precision uint) error {
 
 	var ePrefix *ePref.ErrPrefixDto
@@ -6681,32 +6953,33 @@ func (bNum *BigIntNum) SetNumericSeparatorsToUSADefault() error {
 
 // SetNumStr
 //
-// Initializes the current BigIntNum instance for the numeric value
-// of the number string input parameter.
+//	Initializes the current BigIntNum instance for the numeric value
+//	of the number string input parameter 'numStr'.
 //
-// A number string is a string of numeric digits. If the number
-// string is prefixed with a minus sign ('-') or surrounded in
-// parentheses, it is assumed to be a negative value. Otherwise,
-// the numeric value is assumed to be positive. Currency symbols
-// are ignored.
+//	A number string is a string of numeric digits. If the number
+//	string is prefixed with a minus sign ('-') or surrounded in
+//	parentheses, it is assumed to be a negative value. Otherwise,
+//	the numeric value is assumed to be positive. Currency symbols
+//	are ignored.
 //
-// The numeric string of digits may also contain a decimal
-// separator defined by input parameter 'decimalSeparator'.
-// The decimal separator is used to separate integer and
-// fractional numeric digits within the number string.
+//	The numeric string of digits may also contain a decimal
+//	separator defined by input parameter 'decimalSeparator'.
+//	The decimal separator is used to separate integer and
+//	fractional numeric digits within the number string.
 //
-// Input parameter numStrNumSeps is an instance of
-// NumericSeparatorDto containing character symbols for
-// Decimal separators, Thousands separtors and the Currency
-// Symbol used in parsing the number string ('numStr').
+//	Input parameter numStrNumSeps is an instance of
+//	NumericSeparatorDto containing character symbols for
+//	Decimal separators, Thousands separtors and the Currency
+//	Symbol used in parsing the number string ('numStr').
 //
-// Upon completion this method will configure the current
-// instance of BigIntNum with the numeric value represented
-// by input parameter 'numStr'.
+//	Upon completion this method will configure the current
+//	instance of BigIntNum with the numeric value represented
+//	by input parameter 'numStr'.
 //
-// The previously configured Numeric Separators for the current
-// BigIntNum instance will remain unchanged.
-func (bNum *BigIntNum) SetNumStr(numStr string,
+//	The previously configured Numeric Separators for the current
+//	BigIntNum instance will remain unchanged.
+func (bNum *BigIntNum) SetNumStr(
+	numStr string,
 	numStrNumSeps NumericSeparatorDto) error {
 
 	var ePrefix *ePref.ErrPrefixDto
