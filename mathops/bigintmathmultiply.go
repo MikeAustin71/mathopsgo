@@ -21,106 +21,96 @@ type BigIntMathMultiply struct {
 
 // BigIntMultiply
 //
-//	 Overview
-//	 ========
+//	This method receives two *big.Int numbers and their associated
+//	precision specifications. This method then proceeds to perform
+//	a multiplication operation by multiplying the 'multiplier' times
+//	the 'multiplicand' to generate the 'product'.
 //
-//	 This method receives two *big.Int numbers and their associated
-//	 precision specifications. This method then proceeds to perform
-//	 a multiplication operation by multiplying the 'multiplier' times
-//	 the 'multiplicand' to generate the 'product'.
+//	'multiplier', 'multiplicand' and 'product' are configured as
+//	pairs of *big.Int integer numbers and precision specifications.
 //
-//	 'multiplier', 'multiplicand' and 'product' are configured as
-//	 pairs of *big.Int integer numbers and precision specifications.
+//	Taken together, an integer number and precision specification
+//	are used to define a fixed length floating point number.
 //
-//	 Taken together, an integer number and precision specification
-//	 are used to define a fixed length floating point number.
+//	Multiplication Operation
+//	========================
 //
-//		 Multiplication Operation
-//		 ========================
+//	In the multiplication operation, the number to be multiplied is
+//	called the "multiplicand", while the number of times the
+//	multiplicand is to be multiplied comes from the "multiplier".
+//	Usually, the multiplier is placed first and the multiplicand is
+//	placed second.
 //
-//		 In the multiplication operation, the number to be multiplied is
-//		 called the "multiplicand", while the number of times the
-//		 multiplicand is to be multiplied comes from the "multiplier".
-//		 Usually, the multiplier is placed first and the multiplicand is
-//		 placed second.
+//	For example, in the problem 5 x 3 equals 15, the 5 is the
+//	'multiplier', 3 is the 'multiplicand' and 15 is the 'product'
+//	or result.
 //
-//		 For example, in the problem 5 x 3 equals 15, the 5 is the
-//		 'multiplier', 3 is the 'multiplicand' and 15 is the 'product'
-//		 or result.
+//	  multiplier x multiplicand = product or result
 //
-//		   multiplier x multiplicand = product or result
+//	This method performs the multiplication operation described
+//	above and afterward returns the result or 'product' as a
+//	BigIntNum type.
 //
-//		 This method performs the multiplication operation described
-//		 above and afterward returns the result or 'product' as a
-//		 BigIntNum type.
+//	Examples
+//	========
 //
-//		Examples
-//		========
+//	Consider the following multiplication example.
 //
-//		Consider the following multiplication example.
+//	  752.314 x 21.67894 = product
 //
-//		  752.314 x 21.67894 = product
+//	'multiplier' and 'multiplicand' would be configured as follows:
 //
-//		'multiplier' and 'multiplicand' would be configured as follows:
+//	    multiplier            = 752314
+//	    multiplierPrecision   = 3
+//	    multiplicand          = 2167894
+//	    multiplicandPrecision = 5
 //
-//		    multiplier            = 752314
-//		    multiplierPrecision   = 3
-//		    multiplicand          = 2167894
-//		    multiplicandPrecision = 5
+//	The 'product' value (16309.37006716) of 'multiplier' and
+//	'multiplicand' would be calculated and configured as
+//	follows:
 //
-//		The 'product' value (16309.37006716) of 'multiplier' and
-//		'multiplicand' would be calculated and configured as
-//		follows:
+//	    product           = 1630937006716
+//	    productPrecision  = 8
+//	    product value     = 16309.37006716
 //
-//		    product           = 1630937006716
-//		    productPrecision  = 8
-//		    product value     = 16309.37006716
+//	Input Parameters
+//	================
 //
-//		Input Parameters
-//		================
+//	multiplier               *big.Int
+//	  The number to be multiplied by 'multiplicand'
 //
-//		multiplier               *big.Int
+//	multiplierPrecision      *big.Int
+//	  The 'multiplier' precision or numeric digits to
+//	  the right of the decimal point.
 //
-//		The number to be multiplied by 'multiplicand'
+//	multiplicand             *big.Int
+//	  The number to be multiplied by the 'multiplier'.
 //
-//		multiplierPrecision      *big.Int
+//	multiplicandPrecision    *big.Int
+//	  The 'multiplicand' precision or numeric digits to
+//	  the right of the decimal point.
 //
-//		The 'multiplier' precision or numeric digits to
-//		the right of the decimal point.
+//	Return Values
+//	=============
 //
-//		multiplicand             *big.Int
-//
-//		The number to be multiplied by the 'multiplier'.
-//
-//		multiplicandPrecision    *big.Int
-//
-//		The 'multiplicand' precision or numeric digits to
-//		the right of the decimal point.
-//
-//		Return Values
-//		=============
-//
-//		product                  *big.Int
-//
-//		The product of the multiplier multiplied by
-//		the multiplicand.
+//	product                  *big.Int
+//	  The product of the multiplier multiplied by the multiplicand.
 //
 //
-//		productPrecision         *big.Int
+//	productPrecision         *big.Int
+//	  The precision specification for the returned product. Here,
+//	  the term precision is defined as the number of fractional
+//	  digits to the right of the decimal place in the returned
+//	  'product'. 'productPrecision' is always equal to or greater
+//	  than zero.
 //
-//		The precision specification for the returned product. Here,
-//		the term precision is defined as the number of fractional
-//		digits to the right of the decimal place in the returned
-//		'product'. 'productPrecision' is always equal to or greater
-//		than zero.
 //
+//	Note
+//	====
 //
-//		Note
-//		====
+//	This method removes trailing fractional zeros from the result.
 //
-//		This method removes trailing fractional zeros from the result.
-//
-//		  Example: 3.1200 is returned as 3.12
+//	  Example: 3.1200 is returned as 3.12
 func (bMultiply *BigIntMathMultiply) BigIntMultiply(
 	multiplier *big.Int,
 	multiplierPrecision *big.Int,
@@ -245,88 +235,78 @@ func (bMultiply *BigIntMathMultiply) BigIntMultiplyByTenToPower(
 
 // BigIntMultiplyByTwoToPower
 //
-//		Overview
-//		========
+//	This method multiplies a *big.Int number by powers of two and
+//	returns the result (product) as a *big.Int value with an
+//	associated precision specification.
 //
-//		This method multiplies a *big.Int number by powers of two and
-//		returns the result (product) as a *big.Int value with an
-//		associated precision specification.
-//
-//			   product = multiplier X 2^exponent
+//		   product = multiplier X 2^exponent
 //
 //
-//		Three input parameters are required: the multiplier, multiplier
-//		precision and the exponent value.
+//	Three input parameters are required: the multiplier, multiplier
+//	precision and the exponent value.
 //
-//		Examples
-//		========
+//	Examples
+//	========
 //
-//		------  multiplier ---------  --------- product ------------
-//		integer  precision  exponent  integer  precision   value
+//	------  multiplier ---------  --------- product ------------
+//	integer  precision  exponent  integer  precision   value
 //
-//		12345        5         15     40452096      4      4045.2096
+//	12345        5         15     40452096      4      4045.2096
 //
-//		            (0.12345 x 2^15 = 4045.2096)
+//	            (0.12345 x 2^15 = 4045.2096)
 //
-//		571          1          8     146176        1      14617.6
+//	571          1          8     146176        1      14617.6
 //
-//		              (57.1 x 2^8 = 14617.6)
-//
-//
-//		Input Parameters
-//		================
-//
-//		multiplier               *big.Int
-//
-//		'multiplier' will be multiplied by two to power of 'exponent'
-//		to generate the result or 'product'.
+//	              (57.1 x 2^8 = 14617.6)
 //
 //
-//		multiplierPrecision	     *big.Int
+//	Input Parameters
+//	================
 //
-//		The precision specification for 'multiplier'. Precision
-//		specifies the number of digits to the right of the decimal
-//		place in 'multiplier'. This value must be greater than or
-//		equal to zero.
-//
-//		exponent                 uint
-//
-//		Two will be raised to the power of exponent and multiplied
-//		by 'multiplier' to generate the result or product. Since
-//	 'exponent' is a type uint (unsigned integer), the exponent
-//	 must be a positive number. Negative exponents are not
-//	 supported in this calculation.
+//	multiplier               *big.Int
+//	  'multiplier' will be multiplied by two to power of 'exponent'
+//	  to generate the result or 'product'.
 //
 //
-//		Return Values
-//		=============
+//	multiplierPrecision	     *big.Int
+//	  The precision specification for 'multiplier'. Precision
+//	  specifies the number of digits to the right of the decimal
+//	  place in 'multiplier'. This value must be greater than or
+//	  equal to zero.
 //
-//		product                  *big.Int
-//
-//		The multiplication result. product will be set equal to
-//		multiplier times two to the power of exponent.
-//
-//
-//		productPrecision         *big.Int
-//
-//		The precision specification for 'product'. Precision
-//		specifies the number of digits to the right of the
-//		decimal place in 'product'. This value will always be
-//		greater than or equal to zero.
+//	exponent                 uint
+//	  Two will be raised to the power of exponent and multiplied
+//	  by 'multiplier' to generate the result or product. Since
+//	  'exponent' is a type uint (unsigned integer), the exponent
+//	  must be a positive number. Negative exponents are not
+//	  supported in this calculation.
 //
 //
-//		err                      error
+//	Return Values
+//	=============
 //
-//		If 'multiplierPrecision' is less than zero, an error will
-//		be returned. If no processing errors are encountered, this
-//		error return value will be set to 'nil'.
+//	product                  *big.Int
+//	  The multiplication result. product will be set equal to
+//	  multiplier times two to the power of exponent.
 //
 //
-//		Note
-//		====
+//	productPrecision         *big.Int
+//	  The precision specification for 'product'. Precision
+//	  specifies the number of digits to the right of the
+//	  decimal place in 'product'. This value will always be
+//	  greater than or equal to zero.
 //
-//		This method will delete trailing fractional zeros from the
-//		returned result (product).
+//	err                      error
+//	  If 'multiplierPrecision' is less than zero, an error will
+//	  be returned. If no processing errors are encountered, this
+//	  error return value will be set to 'nil'.
+//
+//
+//	Note
+//	====
+//
+//	This method will delete trailing fractional zeros from the
+//	returned result (product).
 func (bMultiply *BigIntMathMultiply) BigIntMultiplyByTwoToPower(
 	multiplier,
 	multiplierPrecision *big.Int,
@@ -362,145 +342,140 @@ func (bMultiply *BigIntMathMultiply) BigIntMultiplyByTwoToPower(
 
 // FixedDecimalMultiply
 //
-//	Overview
-//	========
+//		This method receives two BigIntFixedDecimal types and then
+//		proceeds to perform a multiplication operation by multiplying
+//		the 'multiplier' by the 'multiplicand' to generate the
+//		'product'.
 //
-//	This method receives two BigIntFixedDecimal types and then
-//	proceeds to perform a multiplication operation by multiplying
-//	the 'multiplier' by the 'multiplicand' to generate the
-//	'product'.
+//		Multiplication Operation
+//		========================
 //
-//	Multiplication Operation
-//	========================
+//		In the multiplication operation, the number to be multiplied is
+//		called the "multiplicand", while the number of times the
+//		multiplicand is to be multiplied comes from the "multiplier".
+//		Usually the multiplier is placed first and the multiplicand is
+//		placed second.
 //
-//	In the multiplication operation, the number to be multiplied is
-//	called the "multiplicand", while the number of times the
-//	multiplicand is to be multiplied comes from the "multiplier".
-//	Usually the multiplier is placed first and the multiplicand is
-//	placed second.
+//		For example, in the problem 5 x 3 equals 15, the 5 is the
+//		'multiplier', 3 is the 'multiplicand' and 15 is the 'product'
+//		or result.
 //
-//	For example, in the problem 5 x 3 equals 15, the 5 is the
-//	'multiplier', 3 is the 'multiplicand' and 15 is the 'product'
-//	or result.
+//		  multiplier x multiplicand = product or result
 //
-//	  multiplier x multiplicand = product or result
+//		'multiplier', 'multiplicand' and 'product' are
+//		BigIntFixedDecimal types which may be used to defined fixed
+//		length floating point numbers.
 //
-//	'multiplier', 'multiplicand' and 'product' are
-//	BigIntFixedDecimal types which may be used to defined fixed
-//	length floating point numbers.
+//		BigIntFixedDecimal
+//		==================
 //
-//	BigIntFixedDecimal
-//	==================
+//		The BigIntFixedDecimal structure is defined as
 //
-//	The BigIntFixedDecimal structure is defined as
+//		type BigIntFixedDecimal struct {
+//		  integerNum *big.Int  -  All the numeric digits, both integer and fractional,
+//		                          necessary to define a fixed length floating point number.
+//		                          The number of digits to the right of the decimal place
+//		                          is specified by the data field,
+//		                          BigIntFixedDecimal.precision.
 //
-//	type BigIntFixedDecimal struct {
-//	  integerNum *big.Int  -  All the numeric digits, both integer and fractional,
-//	                          necessary to define a fixed length floating point number.
-//	                          The number of digits to the right of the decimal place
-//	                          is specified by the data field,
-//	                          BigIntFixedDecimal.precision.
+//		  precision  uint      -  Specifies the number of digits to the right of the decimal
+//		                          place in the series of numeric digits represented by data
+//		                          field BigIntFixedDecimal.integerNum.
 //
-//	  precision  uint      -  Specifies the number of digits to the right of the decimal
-//	                          place in the series of numeric digits represented by data
-//	                          field BigIntFixedDecimal.integerNum.
+//		}
 //
-//	}
+//		To represent the floating point number 52.459, a
+//		BigIntFixedDecimal Structure would be configured as follows:
 //
-//	To represent the floating point number 52.459, a
-//	BigIntFixedDecimal Structure would be configured as follows:
+//		   BigIntFixedDecimal.integerNum = 52459
+//		   BigIntFixedDecimal.precision  = 3
 //
-//	   BigIntFixedDecimal.integerNum = 52459
-//	   BigIntFixedDecimal.precision  = 3
+//		Consider the following multiplication example:
+//		   product = 752.314 x 21.67894 = 16309.37006716
 //
-//	Consider the following multiplication example:
-//	   product = 752.314 x 21.67894 = 16309.37006716
+//		'multiplier' and 'multiplicand' would be configured as follows:
 //
-//	'multiplier' and 'multiplicand' would be configured as follows:
+//		   multiplier.integerNum   = 752314
+//		   multiplier.precision    = 3
+//		   multiplicand.integerNum = 2167894
+//		   multiplicand.precision  = 5
 //
-//	   multiplier.integerNum   = 752314
-//	   multiplier.precision    = 3
-//	   multiplicand.integerNum = 2167894
-//	   multiplicand.precision  = 5
+//		The 'product' would be calculated as follows:
 //
-//	The 'product' would be calculated as follows:
+//		   product.integerNum  = 1630937006716
+//		   product.precision   = 8
 //
-//	   product.integerNum  = 1630937006716
-//	   product.precision   = 8
+//		Numeric Separators
+//		==================
 //
-//	Numeric Separators
-//	==================
+//		Numeric Separators define the Decimal Separator character,
+//		Thousands Separator character, and Currency Symbol character.
+//		These separator characters serve two purposes. First they are
+//		used to format and display numeric values as number strings.
+//		Second, they are also used to parse number strings and convert
+//		them into numeric values.
 //
-//	Numeric Separators define the Decimal Separator character,
-//	Thousands Separator character, and Currency Symbol character.
-//	These separator characters serve two purposes. First they are
-//	used to format and display numeric values as number strings.
-//	Second, they are also used to parse number strings and convert
-//	them into numeric values.
+//		Numeric Separator characters are typically encapsulated in a
+//		NumericSeparatorDto type.
 //
-//	Numeric Separator characters are typically encapsulated in a
-//	NumericSeparatorDto type.
+//		The BigIntFixedDecimal multiplication 'Product' returned by
+//		this method will contain numeric separators (Decimal Separator,
+//		Thousands Separator and Currency Symbol) derived from one of
+//		two possible sources.
 //
-//	The BigIntFixedDecimal multiplication 'Product' returned by
-//	this method will contain numeric separators (Decimal Separator,
-//	Thousands Separator and Currency Symbol) derived from one of
-//	two possible sources.
+//		Users have the option to supply an input parameter,
+//		'outputNumSeps' of type NumericSeparatorDto. If this optional
+//		parameter is provided, it will be used to configure the
+//		BigIntFixedDecimal multiplication 'product' returned from this
+//		method. Note that the first valid NumericSeparatorDto in the
+//		'outputNumSeps' series will be selected and used. There is no
+//		need to provide more than one valid NumericSeparatorDto object
+//		for input parameter 'outputNumSeps'.
 //
-//	Users have the option to supply an input parameter,
-//	'outputNumSeps' of type NumericSeparatorDto. If this optional
-//	parameter is provided, it will be used to configure the
-//	BigIntFixedDecimal multiplication 'product' returned from this
-//	method. Note that the first valid NumericSeparatorDto in the
-//	'outputNumSeps' series will be selected and used. There is no
-//	need to provide more than one valid NumericSeparatorDto object
-//	for input parameter 'outputNumSeps'.
+//		If the optional input parameter 'outputNumSeps' is NOT
+//		provided, the returned BigIntFixedDecimal instance will be
+//		configured using numeric separators copied from input
+//		parameter, 'multiplier'.
 //
-//	If the optional input parameter 'outputNumSeps' is NOT
-//	provided, the returned BigIntFixedDecimal instance will be
-//	configured using numeric separators copied from input
-//	parameter, 'multiplier'.
+//		Input Parameters
+//		================
 //
-//	Input Parameters
-//	================
+//		multiplier               BigIntFixedDecimal
+//		  The number to be multiplied by 'multiplicand'
 //
-//	multiplier               BigIntFixedDecimal
-//	The number to be multiplied by 'multiplicand'
+//		multiplicand             BigIntFixedDecimal
+//		  The number to be multiplied by the 'multiplier'.
 //
-//	multiplicand             BigIntFixedDecimal
-//	The number to be multiplied by the 'multiplier'.
+//		outputNumSeps            ... NumericSeparatorDto
+//		  This method is defined as a variadic function in that
+//		  'outputNumSeps' is configured as an optional input parameter
+//		  meaning that it is NOT required. The user can choose to
+//		  provide a value for 'outputNumSeps', or not.
 //
-//	outputNumSeps            ... NumericSeparatorDto
-//	This method is defined as a variadic function in that
-//	'outputNumSeps' is configured as an optional input parameter
-//	meaning that it is NOT required. The user can choose to
-//	provide a value for 'outputNumSeps', or not.
+//		  If the user chooses to provide a valid 'NumericSeparatorDto'
+//		  object for this parameter, it will be used to configure the
+//		  'BigIntNum' product value returned by this method.
 //
-//	If the user chooses to provide a valid 'NumericSeparatorDto'
-//	object for this parameter, it will be used to configure the
-//	'BigIntNum' product value returned by this method.
+//		  Note that only the first valid NumericSeparatorDto in the
+//		  'outputNumSeps' series will be selected and used. There is no
+//		  need to provide more than one valid NumericSeparatorDto object
+//		  for parameter 'outputNumSeps'.
 //
-//	Note that only the first valid NumericSeparatorDto in the
-//	'outputNumSeps' series will be selected and used. There is no
-//	need to provide more than one valid NumericSeparatorDto object
-//	for parameter 'outputNumSeps'.
+//		  Be advised that if the user chooses NOT to provide this
+//		  optional parameter, the 'BigIntNum' value returned by this
+//		  method will be configued using the 'NumericSeparatorDto'
+//		  copied from the 'multiplier' input parameter.
 //
-//	Be advised that if the user chooses NOT to provide this
-//	optional parameter, the 'BigIntNum' value returned by this
-//	method will be configued using the 'NumericSeparatorDto'
-//	copied from the 'multiplier' input parameter.
+//		Return Values
+//		=============
 //
-//	Return Values
-//	=============
+//		product                  BigIntFixedDecimal
+//	   The product of the 'multiplier' multiplied by	the
+//	   'multiplicand'.
 //
-//	product                  BigIntFixedDecimal
-//	The product of the 'multiplier' multiplied by	the
-//	'multiplicand'.
-//
-//
-//	err                      error
-//
-//	If no errors are encountered during execution, this returned
-//	error value will be set to 'nil'.
+//		err                      error
+//	   If no errors are encountered during execution, this returned
+//	   error value will be set to 'nil'.
 func (bMultiply *BigIntMathMultiply) FixedDecimalMultiply(
 	multiplier BigIntFixedDecimal,
 	multiplicand BigIntFixedDecimal,
@@ -585,45 +560,121 @@ func (bMultiply *BigIntMathMultiply) FixedDecimalMultiply(
 
 // MultiplyBigInt2ToPowerBigIntNum
 //
-// Multiplies a *big.Int number by powers of two and returns
-// the result as a BigIntNum type.
+//	Multiplies a *big.Int number by powers of two and returns
+//	the result as a BigIntNum type.
 //
-//	 Be Advised
-//	 ==========
+//	This method returns a BigIntNum type for the result.
 //
-//	 This method differs BigIntMathMultiply.BigIntMultiplyByTwoToPower.
-//	 BigIntMathMultiply.BigIntMultiplyByTwoToPower returns *big.Int
-//	 types.
-//
-//	 This method returns a BigIntNum type for the result.
-//
-//	 Examples
-//	 ========
+//	Examples
+//	========
 //
 //		product = multiplier X 2^exponent
 //
-//	 multiplier   multiplierPrecision    exponent       product
+//	multiplier   multiplierPrecision    exponent       product
 //
-//	 12345                 5                15          4045.2096
-//	            (0.12345 x 2^15 = 4045.2096)
+//	12345                 5                15          4045.2096
+//	           (0.12345 x 2^15 = 4045.2096)
 //
 //
-//	 571                   1                 8          14617.6
-//	              (57.1 x 2^8 = 14617.6)
+//	571                   1                 8          14617.6
+//	             (57.1 x 2^8 = 14617.6)
 //
-//	 Note
-//	 ====
+//	Trailing Fractional Zeros
+//	=========================
 //
-//	 This method will delete trailing fractional zeros from the
-//	 returned product.
+//	This method will delete trailing fractional zeros from the
+//	returned product.
 //
-// The returned BigIntNum multiplication 'result' will contain default
-// USA numeric separators (decimal separator, thousands separator and
-// currency symbol)
+//	Numeric Separators
+//	==================
+//
+//	Numeric Separators define the Decimal Separator character,
+//	Thousands Separator character, and Currency Symbol character.
+//	These separator characters serve two purposes. First they are
+//	used to format and display numeric values as number strings.
+//	Second, they are also used to parse number strings and convert
+//	them into numeric values.
+//
+//	Numeric Separator characters are typically encapsulated in a
+//	NumericSeparatorDto type.
+//
+//	For this method, users may provide an optional input parameter
+//	labeled 'outputNumSeps' of type NumericSeparatorDto. If this
+//	optional input parameter is provided, it will be used to format
+//	the BigIntNum object returned by this method. Note that the
+//	first valid NumericSeparatorDto in the 'outputNumSeps' series
+//	will be selected and used. There is no need to provide more
+//	than one valid NumericSeparatorDto object for parameter
+//	'outputNumSeps'.
+//
+//	If optional input parameter 'outputNumSeps' is NOT provided,
+//	the returned instance of BigIntNum will be configured with
+//	default USA Numeric Separators.
+//
+//	Input Parameters
+//	================
+//
+//	multiplier               *big.Int
+//		The product value computed by this method will be calculated
+//	  by multiplying 'multiplier' times 2 to power or 'exponent'.
+//
+//	      product = multiplier X 2^exponent
+//
+//	multiplierPrecision      uint
+//	  Precision is defined as the number of fractional numeric
+//	  digits to the right of the decimal place.
+//	  'multiplierPrecision' therefore defines the number of digits
+//	  in the 'multiplier' value which are fractional digits to the
+//	  right of the decimal place. See the examples above.
+//
+//	exponent                 uint
+//	  This value defines the exponent to used in multiplication
+//	  operation:
+//
+//	      product = multiplier X 2^exponent
+//
+//	outputNumSeps            ... NumericSeparatorDto
+//
+//	  This method is defined as a variadic function in that
+//	  'outputNumSeps' is configured as an optional input parameter
+//	  meaning that it is NOT required. The user can choose to
+//	  provide a value for 'outputNumSeps', or not.
+//
+//	  If the user chooses to provide a valid 'NumericSeparatorDto'
+//	  object for this parameter, it will be used to configure the
+//	  'BigIntNum' product value returned by this method.
+//
+//	  Note that the only first valid NumericSeparatorDto in the
+//	  'outputNumSeps' series will be selected and used. There is no
+//	  need to provide more than one valid NumericSeparatorDto object
+//	  for parameter 'outputNumSeps'.
+//
+//	  Be advised that if the user chooses NOT to provide this
+//	  optional parameter, the 'BigIntNum' value returned by this
+//	  method will be configued using default USA Numeric Separators.
+//
+//	Return Values
+//	=============
+//
+//	BigIntNum
+//	  The product of the multiplication operation described above is
+//	  returned as BigIntNum type.
+//
+//	error
+//	  If no errors are encountered during method execution, this
+//	  return parameter is set to 'nil'.
+//
+//	Be Advised
+//	==========
+//
+//	This method differs BigIntMathMultiply.BigIntMultiplyByTwoToPower.
+//	BigIntMathMultiply.BigIntMultiplyByTwoToPower returns *big.Int
+//	types.
 func (bMultiply *BigIntMathMultiply) MultiplyBigInt2ToPowerBigIntNum(
 	multiplier *big.Int,
 	multiplierPrecision uint,
-	exponent uint) (BigIntNum, error) {
+	exponent uint,
+	outputNumSeps ...NumericSeparatorDto) (BigIntNum, error) {
 	var ePrefix *ePref.ErrPrefixDto
 
 	var err error
@@ -638,12 +689,60 @@ func (bMultiply *BigIntMathMultiply) MultiplyBigInt2ToPowerBigIntNum(
 		return BigIntNum{}, err
 	}
 
-	numSepsDto := NumericSeparatorDto{}
+	var finalOutputNumSeps NumericSeparatorDto
 
-	numSepsDto.SetDefaultsIfEmpty()
+	usaNumSeps := new(NumericSeparatorDto)
+
+	usaNumSeps.SetUSADefaults()
+
+	if len(outputNumSeps) > 0 {
+
+		_, finalOutputNumSeps,
+			err = new(numSepsDtoMechanics).selectValidNumSepInSeries(
+			"output",
+			"usa",
+			usaNumSeps,
+			ePrefix,
+			outputNumSeps...)
+
+		if err != nil {
+
+			return BigIntNum{},
+				&FuncReturnError{
+					ErrPrefix: ePrefix.String(),
+					ReturnFunc: "_, finalOutputNumSeps, err = \n" +
+						"    new(numSepsDtoMechanics).selectValidNumSepInSeries(\n" +
+						"    \"outputNumSeps\", \"numStr\")",
+					ErrContext: "Error: Failed to Select 'finalOutputNumSeps'",
+					ErrMessage: err.Error(),
+				}
+		}
+	} else {
+
+		// Checks validity of bPairBig1NumSeps
+
+		err = new(numSepsDtoMechanics).copyNumSepsDto(
+			&finalOutputNumSeps, // Destination
+			usaNumSeps,
+			false, // Set Defaults if Empty
+			ePrefix.XCpy("Copy 'usaNumSeps' Into 'finalOutputNumSeps'"))
+
+		if err != nil {
+
+			return BigIntNum{},
+				&FuncReturnError{
+					ErrPrefix: ePrefix.String(),
+					ReturnFunc: "err = new(numSepsDtoMechanics).copyNumSepsDto(\n" +
+						"    &finalOutputNumSeps, &numStrNumSeps, false,\n" +
+						"    ePrefix.XCpy(\"Copy 'numStrNumSeps' Into 'finalOutputNumSeps'\"))",
+					ErrContext: "",
+					ErrMessage: err.Error(),
+				}
+		}
+	}
 
 	return new(bigIntMathMultiplyMechanics).multiplyByTwoToPowerBigIntNum(
-		multiplier, multiplierPrecision, exponent, numSepsDto, ePrefix)
+		multiplier, multiplierPrecision, exponent, finalOutputNumSeps, ePrefix)
 }
 
 // New
@@ -2714,120 +2813,117 @@ func (bMultiply *BigIntMathMultiply) MultiplyIntAry(
 
 // MultiplyIntAryArray
 //
-//		Overview
-//		========
+//	This method receives one IntAry instance which is classified as
+//	the 'multiplier'. The second input parameter is an array of
+//	IntAry Types labeled, 'multiplicands'. The first element of the
+//	'multiplicands' array is multiplied by the 'multiplier' to
+//	produce a 'product'. That 'product' then replaces the
+//	'multiplier' and is multiplied by the next element in the
+//	'multiplicands' array. This process is continued through the
+//	last element in the array when the combined, final 'product' is
+//	returned as a Type 'BigIntNum'.
 //
-//		This method receives one IntAry instance which is classified as
-//		the 'multiplier'. The second input parameter is an array of
-//		IntAry Types labeled, 'multiplicands'. The first element of the
-//		'multiplicands' array is multiplied by the 'multiplier' to
-//		produce a 'product'. That 'product' then replaces the
-//		'multiplier' and is multiplied by the next element in the
-//		'multiplicands' array. This process is continued through the
-//		last element in the array when the combined, final 'product' is
-//		returned as a Type 'BigIntNum'.
+//	  Example:
+//	    multiplier = 3
+//	    multiplicands = [3]IntAry{2,3,4}
 //
-//		  Example:
-//		    multiplier = 3
-//		    multiplicands = [3]IntAry{2,3,4}
+//	    (1) 3 x 2 = 6
+//	    (2) 6 x 3 = 18
+//	    (3) 18 x 4 = 72
+//	    The returned product is 72
 //
-//		    (1) 3 x 2 = 6
-//		    (2) 6 x 3 = 18
-//		    (3) 18 x 4 = 72
-//		    The returned product is 72
+//	Multiplication Operation
+//	========================
 //
-//		Multiplication Operation
-//		========================
+//	In the multiplication operation, the number to be multiplied is
+//	called the "multiplicand", while the number of times the
+//	multiplicand is to be multiplied comes from the "multiplier".
+//	Usually, the multiplier is placed first and the multiplicand is
+//	placed second.
 //
-//		In the multiplication operation, the number to be multiplied is
-//		called the "multiplicand", while the number of times the
-//		multiplicand is to be multiplied comes from the "multiplier".
-//		Usually, the multiplier is placed first and the multiplicand is
-//		placed second.
+//	For example, in the problem 5 x 3 equals 15, the 5 is the
+//	'multiplier', 3 is the 'multiplicand' and 15 is the 'product'
+//	or result.
 //
-//		For example, in the problem 5 x 3 equals 15, the 5 is the
-//		'multiplier', 3 is the 'multiplicand' and 15 is the 'product'
-//		or result.
+//	  multiplier x multiplicand = product or result
 //
-//		  multiplier x multiplicand = product or result
+//	This method performs the multiplication operation described
+//	above and afterward returns the result or 'product' as a
+//	BigIntNum type.
 //
-//		This method performs the multiplication operation described
-//		above and afterward returns the result or 'product' as a
-//		BigIntNum type.
+//	Numeric Separators
+//	==================
 //
-//		Numeric Separators
-//		==================
+//	Numeric Separators define the Decimal Separator character,
+//	Thousands Separator character, and Currency Symbol character.
+//	These separator characters serve two purposes. First they are
+//	used to format and display numeric values as number strings.
+//	Second, they are also used to parse number strings and convert
+//	them into numeric values.
 //
-//		Numeric Separators define the Decimal Separator character,
-//		Thousands Separator character, and Currency Symbol character.
-//		These separator characters serve two purposes. First they are
-//		used to format and display numeric values as number strings.
-//		Second, they are also used to parse number strings and convert
-//		them into numeric values.
+//	Numeric Separator characters are typically encapsulated in a
+//	NumericSeparatorDto type.
 //
-//		Numeric Separator characters are typically encapsulated in a
-//		NumericSeparatorDto type.
+//	The BigIntNum multiplication 'Product' returned by this method
+//	will contain numeric separators (Decimal Separator, Thousands
+//	Separator and Currency Symbol) derived from one of two possible
+//	sources.
 //
-//		The BigIntNum multiplication 'Product' returned by this method
-//		will contain numeric separators (Decimal Separator, Thousands
-//		Separator and Currency Symbol) derived from one of two possible
-//		sources.
+//	Users have the option to supply an input parameter,
+//	'outputNumSeps' of type NumericSeparatorDto. If this optional
+//	parameter is provided, it will be used to configure the
+//	BigIntNum multiplication 'product' returned from this method.
+//	Note that the first valid NumericSeparatorDto in the
+//	'outputNumSeps' series will be selected and used. There is no
+//	need to provide more than one valid NumericSeparatorDto object
+//	for input parameter 'outputNumSeps'.
 //
-//		Users have the option to supply an input parameter,
-//		'outputNumSeps' of type NumericSeparatorDto. If this optional
-//		parameter is provided, it will be used to configure the
-//		BigIntNum multiplication 'product' returned from this method.
-//		Note that the first valid NumericSeparatorDto in the
-//		'outputNumSeps' series will be selected and used. There is no
-//		need to provide more than one valid NumericSeparatorDto object
-//		for input parameter 'outputNumSeps'.
+//	If the optional input parameter 'outputNumSeps' is NOT
+//	provided, the returned BigIntNum instance will be
+//	configured using numeric separators copied from input
+//	parameter, 'multiplier'.
 //
-//		If the optional input parameter 'outputNumSeps' is NOT
-//		provided, the returned BigIntNum instance will be
-//		configured using numeric separators copied from input
-//		parameter, 'multiplier'.
+//	Input Parameters
+//	================
 //
-//		Input Parameters
-//		================
+//	multiplier               IntAry
+//	  This IntAry instance serves as the initial 'multiplier' in
+//	  the multiplication operation defined above.
 //
-//		multiplier               IntAry
-//		  This IntAry instance serves as the initial 'multiplier' in
-//		  the multiplication operation defined above.
+//	multiplicands           []IntAry
+//	  This array of IntAry objects serves as 'multiplicands' for
+//	  the multiplication operation defined above.
 //
-//		multiplicands           []IntAry
-//		  This array of IntAry objects serves as 'multiplicands' for
-//		  the multiplication operation defined above.
+//	outputNumSeps           ... NumericSeparatorDto
+//	  This method is defined as a variadic function in that
+//	  'outputNumSeps' is configured as an optional input parameter
+//	  meaning that it is NOT required. The user can choose to
+//	  provide a value for 'outputNumSeps', or not.
 //
-//		outputNumSeps           ... NumericSeparatorDto
-//		  This method is defined as a variadic function in that
-//		  'outputNumSeps' is configured as an optional input parameter
-//		  meaning that it is NOT required. The user can choose to
-//		  provide a value for 'outputNumSeps', or not.
+//	  If the user chooses to provide a valid 'NumericSeparatorDto'
+//	  object for this parameter, it will be used to configure the
+//	  'BigIntNum' product value returned by this method.
 //
-//		  If the user chooses to provide a valid 'NumericSeparatorDto'
-//		  object for this parameter, it will be used to configure the
-//		  'BigIntNum' product value returned by this method.
+//	  Note that only the first valid NumericSeparatorDto in the
+//	  'outputNumSeps' series will be selected and used. There is no
+//	  need to provide more than one valid NumericSeparatorDto
+//	  object for parameter 'outputNumSeps'.
 //
-//		  Note that only the first valid NumericSeparatorDto in the
-//		  'outputNumSeps' series will be selected and used. There is no
-//		  need to provide more than one valid NumericSeparatorDto
-//		  object for parameter 'outputNumSeps'.
+//	  Be advised that if the user chooses NOT to provide this
+//	  optional parameter, the 'BigIntNum' value returned by this
+//	  method will be configued using the 'NumericSeparatorDto'
+//	  copied from the 'multiplier' input parameter.
 //
-//		  Be advised that if the user chooses NOT to provide this
-//		  optional parameter, the 'BigIntNum' value returned by this
-//		  method will be configued using the 'NumericSeparatorDto'
-//		  copied from the 'multiplier' input parameter.
+//	Return Values
+//	=============
 //
-//		Return Values
-//		=============
+//	BigIntNum
+//	  The product of the multiplication operation described above
+//	  is returned as BigIntNum type.
 //
-//		BigIntNum
-//		  The product of the multiplication operation described above
-//		  is returned as BigIntNum type.
-//
-//		error
-//		  If no errors are encountered during method execution, this
-//	   return parameter is set to 'nil'.
+//	error
+//	  If no errors are encountered during method execution, this
+//	 return parameter is set to 'nil'.
 func (bMultiply *BigIntMathMultiply) MultiplyIntAryArray(
 	multiplier IntAry,
 	multiplicands []IntAry,
@@ -3716,160 +3812,153 @@ func (bMultiply *BigIntMathMultiply) MultiplyIntArySeries(
 
 // MultiplyNumStr
 //
-//	 Overview
-//	 ========
+//		This method receives two number strings and multiplies their
+//		numeric values to produce a 'product' which is returned as
+//		type BigIntNum.
 //
-//	 This method receives two number strings and multiplies their
-//	 numeric values to produce a 'product' which is returned as
-//	 type BigIntNum.
+//		    multiplier x multiplicand = product
 //
-//	     multiplier x multiplicand = product
+//		Number Strings
+//		==============
 //
-//	 Number Strings
-//	 ==============
+//		Number strings are strings of numeric digits. These digits
+//		must be formatted in a way that facilitates conversion to a
+//		corresponding numeric value. This method receives two number
+//		string input parameters labeled, 'multiplier' and
+//		'multiplicand' both of which are elements in the
+//	  multiplication operation performed by this method.
 //
-//	 Number strings are strings of numeric digits. These digits
-//	 must be formatted in way that allows conversion to a
-//	 corresponding numeric value. This method receives two
-//	 number string input parameters labeled, 'multiplier' and
-//	 'multiplicand'
+//		Number String Negative Values
+//		=============================
 //
-//	 Number String Negative Values
-//	 =============================
+//		The 'multiplier' and 'multiplicand' string parameters passed
+//		to this method are number strings which consist of strings of
+//		numeric digits representing a numeric value. A leading minus
+//		sign (-), or surrounding parentheses '()', may be included in
+//		these number strings to indicate a negative numeric value.
 //
-//	 The 'multiplier' and 'multiplicand' string parameters passed
-//	 to this method are number strings which consist of strings of
-//	 numeric digits representing a numeric value. A leading minus
-//	 sign (-), or surrounding parentheses '()', may be included in
-//	 these number strings to indicate a negative numeric value.
+//		Fractional Digits in Number Strings
+//		===================================
 //
-//	 Fractional Digits in Number Strings
-//	 ===================================
+//		The 'multiplier' and 'multiplicand' strings of numeric
+//		digits may also include a delimiting decimal separator to
+//		identify fractional digits to the right of the decimal
+//		separator. In the USA, the default decimal separator is the
+//		period character ('.').
 //
-//	 The 'multiplier' and 'multiplicand' strings of numeric
-//	 digits may also include a delimiting decimal separator to
-//	 identify fractional digits to the right of the decimal
-//	 separator. In the USA, the default decimal separator is the
-//	 period character ('.').
+//		These number strings are parsed based on the Numeric
+//		Separators, including the Decimal Separator character, which
+//		are specified by input parameter 'numStrNumSeps'.
 //
-//	 These number strings are parsed based on the Numeric
-//	 Separators, including the Decimal Separator character, which
-//	 are specified by input parameter 'numStrNumSeps'.
+//		Multiplication Operation
+//		========================
 //
-//	 Multiplication Operation
-//	 ========================
+//		In the multiplication operation, the number to be multiplied
+//		is called the "multiplicand", while the number of times the
+//		multiplicand is to be multiplied comes from the "multiplier".
+//		Usually. the multiplier is placed first and the multiplicand
+//		is placed second.
 //
-//	 In the multiplication operation, the number to be multiplied
-//	 is called the "multiplicand", while the number of times the
-//	 multiplicand is to be multiplied comes from the "multiplier".
-//	 Usually. the multiplier is placed first and the multiplicand
-//	 is placed second.
+//		For example, in the problem 5 x 3 equals 15, the 5 is the
+//		'multiplier', 3 is the 'multiplicand' and 15 is the 'product'
+//		or result.
 //
-//	 For example, in the problem 5 x 3 equals 15, the 5 is the
-//	 'multiplier', 3 is the 'multiplicand' and 15 is the 'product'
-//	 or result.
+//		    multiplier x multiplicand = product or result
 //
-//	     multiplier x multiplicand = product or result
+//		This method performs the multiplication operation described
+//		above and afterward returns the cumulative result or 'product'
+//		as a BigIntNum type.
 //
-//	 This method performs the multiplication operation described
-//	 above and afterward returns the cumulative result or 'product'
-//	 as a BigIntNum type.
-//
-//	 Numeric Separators
-//	 ==================
+//		Numeric Separators
+//		==================
 //
 //		Numeric Separators define the Decimal Separator character,
 //		Thousands Separator character, and Currency Symbol character.
 //		These separator characters serve two purposes. First they are
 //		used to format and display numeric values as number strings.
 //		Second, they are also used to parse number strings and convert
-//	 them into numeric values.
+//		them into numeric values.
 //
-//	 Numeric Separator characters are typically encapsulated in a
-//	 NumericSeparatorDto type.
+//		Numeric Separator characters are typically encapsulated in a
+//		NumericSeparatorDto type.
 //
-//	 Input parameter 'numStrNumSeps', of type NumericSeparatorDto,
-//	 contains numeric separators specifying the Decimal Separator,
-//	 Thousands Separator, and Currency Symbol. These numeric
-//	 separators are required to parse the 'multiplier' and
-//	 'multiplicand' number strings. This parsing operation is in
-//	 turn used to convert those strings into numeric values for
-//	 calculation purposes.
+//		Input parameter 'inputNumSeps', of type NumericSeparatorDto,
+//		contains numeric separators specifying the Decimal Separator,
+//		Thousands Separator, and Currency Symbol. These numeric
+//		separators are required to parse the 'multiplier' and
+//		'multiplicand' number strings. This parsing operation is in
+//		turn used to convert those strings into numeric values for
+//		calculation purposes.
 //
-//	 In addition, users may provide another optional input
-//	 parameter labeled 'outputNumSeps' of type NumericSeparatorDto.
-//	 If this optional input parameter is provided, it will be used
-//	 to format the BigIntNum object returned by this method. Note
-//	 that the first valid NumericSeparatorDto in the
-//	 'outputNumSeps' series will be selected and used. There is no
-//	 need to provide more than one valid NumericSeparatorDto object
-//	 for parameter 'outputNumSeps'.
+//		In addition, users may provide another optional input
+//		parameter labeled 'outputNumSeps' of type NumericSeparatorDto.
+//		If this optional parameter is provided, it will be used to
+//		format the BigIntNum object returned by this method. Note that
+//		the first valid NumericSeparatorDto in the 'outputNumSeps'
+//		series will be selected and used. There is no need to provide
+//		more than one valid NumericSeparatorDto object for parameter
+//		'outputNumSeps'.
 //
-//	 If optional input parameter 'outputNumSeps' is NOT provided,
-//	 or if the provided 'outputNumSeps' is invalid, the returned
-//	 instance of BigIntNum will be configured with Numeric
-//	 Separators supplied by mandatory input parameter,
-//	 'numStrNumSeps'.
+//		If optional input parameter 'outputNumSeps' is NOT provided,
+//		or if the provided 'outputNumSeps' is invalid, the returned
+//		instance of BigIntNum will be configured with Numeric
+//		Separators supplied by mandatory input parameter,
+//		'inputNumSeps'.
 //
-//	 Input Parameters
-//	 ================
+//		Input Parameters
+//		================
 //
-//	 multiplier               string
+//		multiplier               string
+//			This number string contains the numeric value which serves as
+//			the initial multiplier in the multiplication operation defined
+//			above.
 //
-//		This number string contains the numeric value which serves as
-//		the initial multiplier in the multiplication operation defined
-//		above.
+//		multiplicand             string
+//		  This string contains the multiplicand numeric value used in
+//		  the multiplication operation defined above.
 //
-//	 multiplicand             string
+//		inputNumSeps           NumericSeparatorDto
+//		  This instance of NumericSeparatorDto contains the Decimal
+//		  Separator character, Thousands Separator character and
+//		  Currency Symbol character used to parse the number strings
+//		  passed through input paramters 'multiplier' and
+//		  'multiplicand'.
 //
-//	 This string contains the multiplicand numeric value used in
-//	 the multiplication operation defined above.
+//		outputNumSeps            ... NumericSeparatorDto
 //
-//	 numStrNumSeps            NumericSeparatorDto
+//		  This method is defined as a variadic function in that
+//		  'outputNumSeps' is configured as an optional input parameter
+//		  meaning that it is NOT required. The user can choose to
+//		  provide a value for 'outputNumSeps', or not.
 //
-//	 This instance of NumericSeparatorDto contains the Decimal
-//	 Separator character, Thousands Separator character and
-//	 Currency Symbol character used to parse the number strings
-//	 passed through input paramters 'multiplier' and
-//	 'multiplicand'.
+//		  If the user chooses to provide a valid 'NumericSeparatorDto'
+//		  object for this parameter, it will be used to configure the
+//		  'BigIntNum' product value returned by this method.
 //
-//	 outputNumSeps            ... NumericSeparatorDto
+//		  Note that the only first valid NumericSeparatorDto in the
+//		  'outputNumSeps' series will be selected and used. There is no
+//		  need to provide more than one valid NumericSeparatorDto object
+//		  for parameter 'outputNumSeps'.
 //
-//	 This method is defined as a variadic function in that
-//	 'outputNumSeps' is configured as an optional input parameter
-//	 meaning that it is NOT required. The user can choose to
-//	 provide a value for 'outputNumSeps', or not.
+//		  Be advised that if the user chooses NOT to provide this
+//		  optional parameter, the 'BigIntNum' value returned by this
+//		  method will be configued using the 'NumericSeparatorDto'
+//		  copied from 'inputNumSeps'
 //
-//	 If the user chooses to provide a valid 'NumericSeparatorDto'
-//	 object for this parameter, it will be used to configure the
-//	 'BigIntNum' product value returned by this method.
+//		Return Values
+//		=============
 //
-//	 Note that the only first valid NumericSeparatorDto in the
-//	 'outputNumSeps' series will be selected and used. There is no
-//	 need to provide more than one valid NumericSeparatorDto object
-//	 for parameter 'outputNumSeps'.
+//		BigIntNum
+//		  The product of the multiplication operation described above is
+//		  returned as BigIntNum type.
 //
-//	 Be advised that if the user chooses NOT to provide this
-//	 optional parameter, the 'BigIntNum' value returned by this
-//	 method will be configued using the 'NumericSeparatorDto'
-//	 copied from 'numStrNumSeps'
-//
-//	 Return Values
-//	 =============
-//
-//	 BigIntNum
-//
-//	 The product of the multiplication operation described above is
-//	 returned as BigIntNum type.
-//
-//	 error
-//
-//	 If no errors are encountered during method execution, this
-//	 return parameter is set to 'nil'.
+//		error
+//		  If no errors are encountered during method execution, this
+//		  return parameter is set to 'nil'.
 func (bMultiply *BigIntMathMultiply) MultiplyNumStr(
 	multiplier string,
 	multiplicand string,
-	numStrNumSeps NumericSeparatorDto,
+	inputNumSeps NumericSeparatorDto,
 	outputNumSeps ...NumericSeparatorDto) (BigIntNum, error) {
 
 	var ePrefix *ePref.ErrPrefixDto
@@ -3912,15 +4001,15 @@ func (bMultiply *BigIntMathMultiply) MultiplyNumStr(
 
 	}
 
-	err = numStrNumSeps.IsValid(ePrefix.XCpy("Vaidating 'numStrNumSeps'").String())
+	err = inputNumSeps.IsValid(ePrefix.XCpy("Vaidating 'inputNumSeps'").String())
 
 	if err != nil {
 
 		return BigIntNum{},
 			&FuncReturnError{
 				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "err = numStrNumSeps.IsValid(ePrefix.XCpy(\"Vaidating 'numStrNumSeps'\").String())",
-				ErrContext: "Error: Input Parameter is Invalid!",
+				ReturnFunc: "err = inputNumSeps.IsValid(ePrefix.XCpy(\"Vaidating 'inputNumSeps'\").String())",
+				ErrContext: "Error: Input Parameter 'inputNumSeps' is Invalid!",
 				ErrMessage: err.Error(),
 			}
 	}
@@ -3931,9 +4020,9 @@ func (bMultiply *BigIntMathMultiply) MultiplyNumStr(
 
 		_, finalOutputNumSeps,
 			err = new(numSepsDtoMechanics).selectValidNumSepInSeries(
-			"outputNumSeps",
-			"numStr",
-			&numStrNumSeps,
+			"output",
+			"input",
+			&inputNumSeps,
 			ePrefix,
 			outputNumSeps...)
 
@@ -3955,9 +4044,9 @@ func (bMultiply *BigIntMathMultiply) MultiplyNumStr(
 
 		err = new(numSepsDtoMechanics).copyNumSepsDto(
 			&finalOutputNumSeps, // Destination
-			&numStrNumSeps,
+			&inputNumSeps,
 			false, // Set Defaults if Empty
-			ePrefix.XCpy("Copy 'numStrNumSeps' Into 'finalOutputNumSeps'"))
+			ePrefix.XCpy("Copy 'inputNumSeps' Into 'finalOutputNumSeps'"))
 
 		if err != nil {
 
@@ -3973,9 +4062,37 @@ func (bMultiply *BigIntMathMultiply) MultiplyNumStr(
 		}
 	}
 
+	numSepsPair := NumericSeparatorPairDto{}
+
+	err = numSepsPair.InputSeparators.CopyIn(&inputNumSeps, true)
+
+	if err != nil {
+
+		return BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "err = numSepsPair.InputSeparators.CopyIn(&inputNumSeps, true)",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
+
+	err = numSepsPair.OutputSeparators.CopyIn(&finalOutputNumSeps, true)
+
+	if err != nil {
+
+		return BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "err = numSepsPair.OutputSeparators.CopyIn(&finalOutputNumSeps, true)",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
+
 	var multiplierBINum, multiplicandBINum, finalResult BigIntNum
 
-	multiplierBINum, err = new(BigIntNum).NewNumStrWithNumSeps(multiplier, numStrNumSeps, finalOutputNumSeps)
+	multiplierBINum, err = new(BigIntNum).NewNumStrWithNumSeps(multiplier, &numSepsPair)
 
 	if err != nil {
 
@@ -3985,12 +4102,12 @@ func (bMultiply *BigIntMathMultiply) MultiplyNumStr(
 				ReturnFunc: "multiplierBINum, err := new(BigIntNum).NewNumStrWithNumSeps(\n" +
 					"    multiplier, numStrNumSeps, finalOutputNumSeps)",
 				ErrContext: fmt.Sprintf("multiplier = '%v'\nnumStrNumSeps= '%v'\nfinalOutputNumSeps=  '%v'",
-					multiplier, numStrNumSeps.String(), finalOutputNumSeps.String()),
+					multiplier, inputNumSeps.String(), finalOutputNumSeps.String()),
 				ErrMessage: err.Error(),
 			}
 	}
 
-	multiplicandBINum, err = new(BigIntNum).NewNumStrWithNumSeps(multiplicand, numStrNumSeps, finalOutputNumSeps)
+	multiplicandBINum, err = new(BigIntNum).NewNumStrWithNumSeps(multiplicand, &numSepsPair)
 
 	if err != nil {
 
@@ -4000,7 +4117,7 @@ func (bMultiply *BigIntMathMultiply) MultiplyNumStr(
 				ReturnFunc: "multiplicandBINum, err := new(BigIntNum).NewNumStrWithNumSeps(\n" +
 					"    multiplicand, numStrNumSeps, finalOutputNumSeps)",
 				ErrContext: fmt.Sprintf("multiplicand = '%v'\nnumStrNumSeps= '%v'\nfinalOutputNumSeps= '%v'",
-					multiplicand, numStrNumSeps.String(), finalOutputNumSeps.String()),
+					multiplicand, inputNumSeps.String(), finalOutputNumSeps.String()),
 				ErrMessage: err.Error(),
 			}
 	}
@@ -4283,7 +4400,35 @@ func (bMultiply *BigIntMathMultiply) MultiplyNumStrArray(
 
 	}
 
-	finalResult, err := new(BigIntNum).NewNumStrWithNumSeps(multiplier, numStrNumSeps, finalOutputNumSeps)
+	numSepsPair := NumericSeparatorPairDto{}
+
+	err = numSepsPair.InputSeparators.CopyIn(&numStrNumSeps, true)
+
+	if err != nil {
+
+		return BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "err = numSepsPair.InputSeparators.CopyIn(&numStrNumSepsDto, true)",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
+
+	err = numSepsPair.OutputSeparators.CopyIn(&finalOutputNumSeps, true)
+
+	if err != nil {
+
+		return BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "err = numSepsPair.OutputSeparators.CopyIn(&numStrNumSepsDto, true)",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
+
+	finalResult, err := new(BigIntNum).NewNumStrWithNumSeps(multiplier, &numSepsPair)
 
 	if err != nil {
 
@@ -4316,7 +4461,7 @@ func (bMultiply *BigIntMathMultiply) MultiplyNumStrArray(
 		}
 
 		multiplicandBINum, err = new(BigIntNum).
-			NewNumStrWithNumSeps(multiplicands[i], numStrNumSeps, finalOutputNumSeps)
+			NewNumStrWithNumSeps(multiplicands[i], &numSepsPair)
 
 		if err != nil {
 
@@ -4528,7 +4673,8 @@ func (bMultiply *BigIntMathMultiply) MultiplyNumStrArray(
 func (bMultiply *BigIntMathMultiply) MultiplyNumStrOutputToArray(
 	multiplier string,
 	multiplicands []string,
-	numStrNumSeps NumericSeparatorDto) ([]string, error) {
+	inputNumSeps NumericSeparatorDto,
+	outputNumSeps ...NumericSeparatorDto) ([]string, error) {
 
 	var ePrefix *ePref.ErrPrefixDto
 
@@ -4544,7 +4690,18 @@ func (bMultiply *BigIntMathMultiply) MultiplyNumStrOutputToArray(
 		return []string{}, err
 	}
 
-	numStrNumSeps.SetDefaultsIfEmpty()
+	err = inputNumSeps.IsValid(ePrefix.XCpy("Vaidating 'inputNumSeps'").String())
+
+	if err != nil {
+
+		return []string{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "err = inputNumSeps.IsValid(ePrefix.XCpy(\"Vaidating 'inputNumSeps'\").String())",
+				ErrContext: "Error: Input Parameter 'inputNumSeps' is Invalid!",
+				ErrMessage: err.Error(),
+			}
+	}
 
 	if len(multiplier) == 0 {
 
@@ -4571,9 +4728,85 @@ func (bMultiply *BigIntMathMultiply) MultiplyNumStrOutputToArray(
 			}
 	}
 
+	var finalOutputNumSeps NumericSeparatorDto
+
+	if len(outputNumSeps) > 0 {
+
+		_, finalOutputNumSeps,
+			err = new(numSepsDtoMechanics).selectValidNumSepInSeries(
+			"output",
+			"input",
+			&inputNumSeps,
+			ePrefix,
+			outputNumSeps...)
+
+		if err != nil {
+
+			return []string{},
+				&FuncReturnError{
+					ErrPrefix: ePrefix.String(),
+					ReturnFunc: "_, finalOutputNumSeps, err = \n" +
+						"    new(numSepsDtoMechanics).selectValidNumSepInSeries(\n" +
+						"    \"outputNumSeps\", \"numStr\")",
+					ErrContext: "Error: Failed to Select 'finalOutputNumSeps'",
+					ErrMessage: err.Error(),
+				}
+		}
+	} else {
+
+		// Checks validity of bPairBig1NumSeps
+
+		err = new(numSepsDtoMechanics).copyNumSepsDto(
+			&finalOutputNumSeps, // Destination
+			&inputNumSeps,
+			false, // Set Defaults if Empty
+			ePrefix.XCpy("Copy 'inputNumSeps' Into 'finalOutputNumSeps'"))
+
+		if err != nil {
+
+			return []string{},
+				&FuncReturnError{
+					ErrPrefix: ePrefix.String(),
+					ReturnFunc: "err = new(numSepsDtoMechanics).copyNumSepsDto(\n" +
+						"    &finalOutputNumSeps, &inputNumSeps, false,\n" +
+						"    ePrefix.XCpy(\"Copy 'inputNumSeps' Into 'finalOutputNumSeps'\"))",
+					ErrContext: "",
+					ErrMessage: err.Error(),
+				}
+		}
+	}
+
+	numSepsPair := NumericSeparatorPairDto{}
+
+	err = numSepsPair.InputSeparators.CopyIn(&inputNumSeps, true)
+
+	if err != nil {
+
+		return []string{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "err = numSepsPair.InputSeparators.CopyIn(&inputNumSeps, true)",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
+
+	err = numSepsPair.OutputSeparators.CopyIn(&finalOutputNumSeps, true)
+
+	if err != nil {
+
+		return []string{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "err = numSepsPair.OutputSeparators.CopyIn(&finalOutputNumSeps, true)",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
+
 	var multiplierBINum BigIntNum
 
-	multiplierBINum, err = new(BigIntNum).NewNumStrWithNumSeps(multiplier, numStrNumSeps, numStrNumSeps)
+	multiplierBINum, err = new(BigIntNum).NewNumStrWithNumSeps(multiplier, &numSepsPair)
 
 	if err != nil {
 
@@ -4583,7 +4816,7 @@ func (bMultiply *BigIntMathMultiply) MultiplyNumStrOutputToArray(
 				ReturnFunc: "multiplierBINum, err := new(BigIntNum).NewNumStrWithNumSeps(\n" +
 					"    multiplier, numStrNumSeps, numStrNumSeps)",
 				ErrContext: fmt.Sprintf("multiplier= '%v'\nnumStrNumSeps= '%v'",
-					multiplier, numStrNumSeps.String()),
+					multiplier, inputNumSeps.String()),
 				ErrMessage: err.Error(),
 			}
 	}
@@ -4623,7 +4856,7 @@ func (bMultiply *BigIntMathMultiply) MultiplyNumStrOutputToArray(
 		}
 
 		multiplicandBINum, err = new(BigIntNum).
-			NewNumStrWithNumSeps(multiplicands[i], numStrNumSeps, numStrNumSeps)
+			NewNumStrWithNumSeps(multiplicands[i], &numSepsPair)
 
 		if err != nil {
 
@@ -4632,7 +4865,7 @@ func (bMultiply *BigIntMathMultiply) MultiplyNumStrOutputToArray(
 					ErrPrefix:  ePrefix.String(),
 					ReturnFunc: fmt.Sprintf("multiplicandBINum, err := new(BigIntNum).NewNumStrWithNumSeps(multiplicands[%d], numStrNumSeps, numStrNumSeps)", i),
 					ErrContext: fmt.Sprintf("multiplicands[%d]= '%v'; numStrNumSeps= '%v'",
-						i, multiplicands[i], numStrNumSeps.String()),
+						i, multiplicands[i], inputNumSeps.String()),
 					ErrMessage: err.Error(),
 				}
 		}
@@ -4665,8 +4898,8 @@ func (bMultiply *BigIntMathMultiply) MultiplyNumStrOutputToArray(
 		}
 
 		finalResult, err = new(bigIntMathMultiplyNanobot).
-			multiplyPairWithNumSeps(bPair, numStrNumSeps,
-				ePrefix.XCpy("bPair & numStrNumSeps"))
+			multiplyPairWithNumSeps(bPair, finalOutputNumSeps,
+				ePrefix.XCpy("bPair & finalOutputNumSeps"))
 
 		if err != nil {
 
@@ -4703,143 +4936,134 @@ func (bMultiply *BigIntMathMultiply) MultiplyNumStrOutputToArray(
 
 // MultiplyNumStrSeries
 //
-//	 Overview
-//	 ========
+//	This method receives one input parameter of Type string which
+//	is classified as the 'multiplier'. The second input parameter
+//	is a comma-delimited series of strings labeled,
+//	'multiplicands'. The first element of the 'multiplicands'
+//	series is multiplied by the 'multiplier' to produce a
+//	'product'. That 'product' then replaces the 'multiplier' and is
+//	multiplied by the next element in the 'multiplicands' series.
+//	This process is repeated through the last element in the
+//	'multiplicands' series.
 //
-//	 This method receives one input parameter of Type string which
-//	 is classified as the 'multiplier'. The second input parameter
-//	 is a comma-delimited series of strings labeled,
-//	 'multiplicands'. The first element of the 'multiplicands'
-//	 series is multiplied by the 'multiplier' to produce a
-//	 'product'. That 'product' then replaces the 'multiplier' and is
-//	 multiplied by the next element in the 'multiplicands' series.
-//	 This process is repeated through the last element in the
-//	 'multiplicands' series.
+//	Upon completion of the multiplication calculation, the
+//	combined, final 'product' is returned as a Type 'BigIntNum'.
 //
-//	 Upon completion of the multiplication calculation, the
-//	 combined, final 'product' is returned as a Type 'BigIntNum'.
+//	  Example:
+//	    multiplier = 3
+//	    multiplicands = strings "2","3","4"
 //
-//	   Example:
-//	     multiplier = 3
-//	     multiplicands = strings "2","3","4"
+//	    (1) 3 x 2 = 6
+//	    (2) 6 x 3 = 18
+//	    (3) 18 x 4 = 72
+//	     The returned product is 72
 //
-//	     (1) 3 x 2 = 6
-//	     (2) 6 x 3 = 18
-//	     (3) 18 x 4 = 72
-//	      The returned product is 72
+//	Multiplication Operation
+//	========================
 //
-//	 Multiplication Operation
-//	 ========================
+//	In the multiplication operation, the number to be multiplied is
+//	called the 'multiplicand', while the number of times the
+//	multiplicand is multiplied comes from the 'multiplier'.
+//	Usually, the 'multiplier' is placed first and the
+//	'multiplicand' is placed second.
 //
-//	 In the multiplication operation, the number to be multiplied is
-//	 called the 'multiplicand', while the number of times the
-//	 multiplicand is multiplied comes from the 'multiplier'.
-//	 Usually, the 'multiplier' is placed first and the
-//	 'multiplicand' is placed second.
-//
-//	 For example, in the problem 5 x 3 equals 15, the 5 is the
-//	 'multiplier', 3 is the 'multiplicand' and 15 is the 'product'
-//	 or result.
+//	For example, in the problem 5 x 3 equals 15, the 5 is the
+//	'multiplier', 3 is the 'multiplicand' and 15 is the 'product'
+//	or result.
 //
 //			multiplier x multiplicand = product or result
 //
 //
-//	 Negative Values in Number Strings
-//	 =================================
+//	Negative Values in Number Strings
+//	=================================
 //
-//	 The 'multiplier' string and 'multiplicands' string series
-//	 passed to this method are number strings which consist of a
-//	 string of numeric digits representing a numeric value. A
-//	 leading minus sign(-), or surrounding parentheses '()', may be
-//	 included to indicate a negative numeric value.
+//	The 'multiplier' string and 'multiplicands' string series
+//	passed to this method are number strings which consist of a
+//	string of numeric digits representing a numeric value. A
+//	leading minus sign(-), or surrounding parentheses '()', may be
+//	included to indicate a negative numeric value.
 //
-//	 Fractional Digits in Number Strings
-//	 ===================================
+//	Fractional Digits in Number Strings
+//	===================================
 //
-//	 'multiplier' string and 'multiplicands' strings of numeric
-//	 digits may also include a delimiting decimal separator to
-//	 identify fractional digits to the right of the decimal
-//	 separator. These number strings are parsed based on the Numeric
-//	 Separators, including the decimal separator character, which
-//	 are specified by input parameter 'numStrNumSeps'.
+//	'multiplier' string and 'multiplicands' strings of numeric
+//	digits may also include a delimiting decimal separator to
+//	identify fractional digits to the right of the decimal
+//	separator. These number strings are parsed based on the Numeric
+//	Separators, including the decimal separator character, which
+//	are specified by input parameter 'inputNumSeps'.
 //
-//		Numeric Separators
-//		==================
+//	Numeric Separators
+//	==================
 //
-//		Numeric Separators define the Decimal Separator character,
-//		Thousands Separator character, and Currency Symbol character.
-//		These separator characters serve two purposes. First they are
-//		used to format and display numeric values as number strings.
-//		Second, they are also used to parse number strings and convert
-//	 them into numeric values.
+//	Numeric Separators define the Decimal Separator character,
+//	Thousands Separator character, and Currency Symbol character.
+//	These separator characters serve two purposes. First they are
+//	used to format and display numeric values as number strings.
+//	Second, they are also used to parse number strings and convert
+//	them into numeric values.
 //
-//	 Numeric Separator characters are typically encapsulated in a
-//	 NumericSeparatorDto type.
+//	Numeric Separator characters are typically encapsulated in a
+//	NumericSeparatorDto type.
 //
-//	 Input parameter 'numStrNumSeps', of type NumericSeparatorDto,
-//	 contains numeric separators specifying the Decimal Separator,
-//	 Thousands Separator, and Currency Symbol. These numeric
-//	 separators are required to parse the 'multiplier' and
-//	 'multiplicands' number strings. This parsing operation is in
-//	 turn used to convert those strings into numeric values for
-//	 calculation purposes.
+//	Input parameter 'inputNumSeps', of type NumericSeparatorDto,
+//	contains numeric separators specifying the Decimal Separator,
+//	Thousands Separator, and Currency Symbol. These numeric
+//	separators are required to parse the 'multiplier' and
+//	'multiplicands' number strings. This parsing operation is in
+//	turn used to convert those strings into numeric values for
+//	calculation purposes.
 //
-//	 Input parameter 'outputNumSeps' of type NumericSeparatorDto,
-//	 also contains numeric separators specifying the Decimal
-//	 Separator, Thousands Separator, and Currency Symbol.
-//	 The returned BigIntNum multiplication 'product' will contain
-//	 Numeric Separators specified by input parameter,
-//	 'outputNumSeps'.
+//	Input parameter 'outputNumSeps' of type NumericSeparatorDto,
+//	also contains numeric separators specifying the Decimal
+//	Separator, Thousands Separator, and Currency Symbol.
+//	The returned BigIntNum multiplication 'product' will contain
+//	Numeric Separators specified by input parameter,
+//	'outputNumSeps'.
 //
-//	 Input Parameters
-//	 ================
+//	Input Parameters
+//	================
 //
-//	 numStrNumSeps            NumericSeparatorDto
+//	inputNumSeps            NumericSeparatorDto
+//	  This instance of NumericSeparatorDto contains the Decimal
+//	  Separator character, Thousands Separator character and the
+//	  Currency Symbol character used to parse the number strings
+//	  passed through input paramters 'multiplier' and
+//	  'multiplicands'.
 //
-//	 This instance of NumericSeparatorDto contains the Decimal
-//	 Separator character, Thousands Separator character and the
-//	 Currency Symbol character used to parse the number strings
-//	 passed through input paramters 'multiplier' and
-//	 'multiplicands'.
+//	outputNumSeps            NumericSeparatorDto
+//	  This instance of NumericSeparatorDto contains the Decimal
+//	  Separator character, Thousands Separator character and the
+//	  Currency Symbol character used to format the BigIntNum product
+//	  returned by this method.
 //
-//	 outputNumSeps            NumericSeparatorDto
+//	multiplier               string
+//	  This number string contains the numeric value which serves as
+//	  the initial multiplier in the multiplication operation defined
+//	  above.
 //
-//	 This instance of NumericSeparatorDto contains the Decimal
-//	 Separator character, Thousands Separator character and the
-//	 Currency Symbol character used to format the BigIntNum product
-//	 returned by this method.
+//	multiplicands            ...string
+//	  This method is defined as a variadic function in that
+//	  'multiplicands' is configured to accept multiple number strings
+//	  which will serve as multiplicand values for the multiplication
+//	  operation defined above.
 //
-//	 multiplier               string
+//	  Although users have the option to supply zero strings for this
+//	  parameter, failure to provide at least one valid number string
+//	  will trigger an error.
 //
-//		This number string contains the numeric value which serves as
-//		the initial multiplier in the multiplication operation defined
-//		above.
+//	Return Values
+//	=============
 //
-//	 multiplicands            ...string
+//	BigIntNum
+//	  The product of the multiplication operation described above is
+//	  returned as BigIntNum type.
 //
-//	 This method is defined as a variadic function in that
-//	 'multiplicands' is configured to accept multiple number strings
-//	 which will serve as multiplicand values for the multiplication
-//	 operation defined above.
-//
-//	 Although users have the option to supply zero strings for this
-//	 parameter, failure to provide at least one valid number string
-//	 will trigger an error.
-//
-//	 Return Values
-//	 =============
-//
-//	 BigIntNum
-//
-//	 The product of the multiplication operation described above is
-//	 returned as BigIntNum type.
-//
-//	 error
-//
-//	 If no errors are encountered during method execution, this
-//	 return parameter is set to 'nil'.
+//	error
+//	  If no errors are encountered during method execution, this
+//	  return parameter is set to 'nil'.
 func (bMultiply *BigIntMathMultiply) MultiplyNumStrSeries(
-	numStrNumSeps NumericSeparatorDto,
+	inputNumSeps NumericSeparatorDto,
 	outputNumSeps NumericSeparatorDto,
 	multiplier string,
 	multiplicands ...string) (BigIntNum, error) {
@@ -4880,7 +5104,7 @@ func (bMultiply *BigIntMathMultiply) MultiplyNumStrSeries(
 			}
 	}
 
-	err = numStrNumSeps.IsValid(ePrefix.
+	err = inputNumSeps.IsValid(ePrefix.
 		XCpy("Validating numStrNumSeps").String())
 
 	if err != nil {
@@ -4892,7 +5116,7 @@ func (bMultiply *BigIntMathMultiply) MultiplyNumStrSeries(
 					"XCpy(\"Validating numStrNumSeps\").String())",
 				ErrContext: "Input parameter 'numStrNumSeps' is invalid!\n" +
 					fmt.Sprintf("'numStrNumSeps'= '%v'",
-						numStrNumSeps.String()),
+						inputNumSeps.String()),
 				ErrMessage: err.Error(),
 			}
 	}
@@ -4914,9 +5138,37 @@ func (bMultiply *BigIntMathMultiply) MultiplyNumStrSeries(
 			}
 	}
 
+	numSepsPair := NumericSeparatorPairDto{}
+
+	err = numSepsPair.InputSeparators.CopyIn(&inputNumSeps, true)
+
+	if err != nil {
+
+		return BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "err = numSepsPair.InputSeparators.CopyIn(&inputNumSeps, true)",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
+
+	err = numSepsPair.OutputSeparators.CopyIn(&outputNumSeps, true)
+
+	if err != nil {
+
+		return BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "err = numSepsPair.OutputSeparators.CopyIn(&finalOutputNumSeps, true)",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
+
 	var finalResult BigIntNum
 
-	finalResult, err = new(BigIntNum).NewNumStrWithNumSeps(multiplier, numStrNumSeps, outputNumSeps)
+	finalResult, err = new(BigIntNum).NewNumStrWithNumSeps(multiplier, &numSepsPair)
 
 	if err != nil {
 
@@ -4927,7 +5179,7 @@ func (bMultiply *BigIntMathMultiply) MultiplyNumStrSeries(
 					"    NewNumStrWithNumSeps(multiplier, inputNumSeps, outputNumSeps)",
 				ErrContext: fmt.Sprintf("'multiplier' number string = '%v'\n"+
 					"numStrNumSeps= '%v'\noutputNumSeps= '%v'",
-					multiplier, numStrNumSeps.String(), outputNumSeps.String()),
+					multiplier, inputNumSeps.String(), outputNumSeps.String()),
 				ErrMessage: err.Error(),
 			}
 	}
@@ -4939,7 +5191,7 @@ func (bMultiply *BigIntMathMultiply) MultiplyNumStrSeries(
 	for idx, multiplicand := range multiplicands {
 
 		multiplicandBINum, err := new(BigIntNum).
-			NewNumStrWithNumSeps(multiplicand, numStrNumSeps, outputNumSeps)
+			NewNumStrWithNumSeps(multiplicand, &numSepsPair)
 
 		if err != nil {
 
@@ -4950,7 +5202,7 @@ func (bMultiply *BigIntMathMultiply) MultiplyNumStrSeries(
 						"    NewNumStrWithNumSeps(multiplicand,\n" +
 						"    inputNumSeps, outputNumSeps)",
 					ErrContext: fmt.Sprintf("multiplicand= '%v' multiplicand index= '%d'\nnumStrNumSeps= '%v'\noutputNumSeps= '%v'",
-						multiplicand, idx, numStrNumSeps.String(), outputNumSeps.String()),
+						multiplicand, idx, inputNumSeps.String(), outputNumSeps.String()),
 					ErrMessage: err.Error(),
 				}
 		}
@@ -5023,113 +5275,105 @@ func (bMultiply *BigIntMathMultiply) MultiplyNumStrSeries(
 
 // MultiplyNumStrDto
 //
-//	 Overview
-//	 ========
+//	This method receives two NumStrDto instances and multiplies
+//	their numeric values. The result or 'product' is returned as a
+//	'BigIntNum' type.
 //
-//	 This method receives two NumStrDto instances and multiplies
-//	 their numeric values. The result or 'product' is returned as a
-//	 'BigIntNum' type.
+//	  multiplier x multiplicand = product or result
 //
-//	   multiplier x multiplicand = product or result
+//	Multiplication Operation
+//	========================
 //
-//	 Multiplication Operation
-//	 ========================
+//	In the multiplication operation, the number to be multiplied
+//	is called the "multiplicand", while the number of times the
+//	multiplicand is to be multiplied comes from the "multiplier".
+//	Usually. the multiplier is placed first and the multiplicand
+//	is placed second.
 //
-//	 In the multiplication operation, the number to be multiplied
-//	 is called the "multiplicand", while the number of times the
-//	 multiplicand is to be multiplied comes from the "multiplier".
-//	 Usually. the multiplier is placed first and the multiplicand
-//	 is placed second.
+//	For example, in the problem 5 x 3 equals 15, the 5 is the
+//	'multiplier', 3 is the 'multiplicand' and 15 is the 'product'
+//	or result.
 //
-//	 For example, in the problem 5 x 3 equals 15, the 5 is the
-//	 'multiplier', 3 is the 'multiplicand' and 15 is the 'product'
-//	 or result.
+//	    multiplier x multiplicand = product or result
 //
-//	     multiplier x multiplicand = product or result
+//	This method performs the multiplication operation described
+//	above and afterward returns the cumulative result or 'product'
+//	as a BigIntNum type.
 //
-//	 This method performs the multiplication operation described
-//	 above and afterward returns the cumulative result or 'product'
-//	 as a BigIntNum type.
+//	Numeric Separators
+//	==================
 //
-//	 Numeric Separators
-//	 ==================
+//	Numeric Separators define the Decimal Separator character,
+//	Thousands Separator character, and Currency Symbol character.
+//	These separator characters serve two purposes. First they are
+//	used to format and display numeric values as number strings.
+//	Second, they are also used to parse number strings and convert
+//	them into numeric values.
 //
-//		Numeric Separators define the Decimal Separator character,
-//		Thousands Separator character, and Currency Symbol character.
-//		These separator characters serve two purposes. First they are
-//		used to format and display numeric values as number strings.
-//		Second, they are also used to parse number strings and convert
-//	 them into numeric values.
+//	Numeric Separator characters are typically encapsulated in a
+//	NumericSeparatorDto type.
 //
-//	 Numeric Separator characters are typically encapsulated in a
-//	 NumericSeparatorDto type.
+//	The BigIntNum multiplication 'product' returned by this method
+//	will contain numeric separators (Decimal Separator, Thousands
+//	Separator and Currency Symbol) derived from one of two possible
+//	sources.
 //
-//	 The BigIntNum multiplication 'product' returned by this method
-//	 will contain numeric separators (Decimal Separator, Thousands
-//	 Separator and Currency Symbol) derived from one of two possible
-//	 sources.
+//	Users have the option to supply an input parameter,
+//	'outputNumSeps' of type NumericSeparatorDto. If this optional
+//	parameter is provided, it will be used to configure the
+//	returned BigIntNum multiplication 'product' from this method.
+//	Note that the first valid NumericSeparatorDto in the
+//	'outputNumSeps' series will be selected and used. There is no
+//	need to provide more than one valid NumericSeparatorDto object
+//	for input parameter 'outputNumSeps'.
 //
-//		Users have the option to supply an input parameter,
-//		'outputNumSeps' of type NumericSeparatorDto. If this optional
-//	 parameter is provided, it will be used to configure the
-//	 returned BigIntNum multiplication 'product' from this method.
-//	 Note that the first valid NumericSeparatorDto in the
-//	 'outputNumSeps' series will be selected and used. There is no
-//	 need to provide more than one valid NumericSeparatorDto object
-//	 for input parameter 'outputNumSeps'.
+//	If the optional input parameter 'outputNumSeps' is NOT
+//	provided, the returned BigIntNum instance will be
+//	configured using numeric separators copied from input
+//	parameter, 'multiplier'.
 //
-//		If the optional input parameter 'outputNumSeps' is NOT
-//		provided, the returned BigIntNum instance will be
-//		configured using numeric separators copied from input
-//		parameter, 'multiplier'.
+//	Input Parameters
+//	================
 //
-//	 Input Parameters
-//	 ================
+//	multiplier               NumStrDto
+//	  This NumStrDto instance serves as the initial 'multiplier' in
+//	  the multiplication operation defined above.
 //
-//	 multiplier               NumStrDto
+//	multiplicand             NumStrDto
+//	  This instace of NumStrDto serves as the 'multiplicand' for the
+//	  multiplication operation defined above.
 //
-//		This NumStrDto instance serves as the initial 'multiplier' in
-//		the multiplication operation defined above.
+//	outputNumSeps            ... NumericSeparatorDto
+//	  This method is defined as a variadic function in that
+//	  'outputNumSeps' is configured as an optional input parameter
+//	  meaning that it is NOT required. The user can choose to
+//	  provide a value for 'outputNumSeps', or not.
 //
-//	 multiplicand             NumStrDto
+//	  If the user chooses to provide a valid 'NumericSeparatorDto'
+//	  object for this parameter, it will be used to configure the
+//	  'BigIntNum' product value returned by this method with the
+//	  Numeric Separators copied from 'outputNumSeps'.
 //
-//	 This instace of NumStrDto serves as the 'multiplicand' for the
-//	 multiplication operation defined above.
+//	  Note that only the first valid NumericSeparatorDto in the
+//	  'outputNumSeps' series will be selected and used. There is no
+//	  need to provide more than one valid NumericSeparatorDto object
+//	  for parameter 'outputNumSeps'.
 //
-//	 outputNumSeps            ... NumericSeparatorDto
+//	  If the user chooses NOT to provide this optional parameter, the
+//	  'BigIntNum' value returned by this  method will be configued
+//	  using the 'NumericSeparatorDto' copied from the 'multiplier'
+//	  input parameter.
 //
-//	 This method is defined as a variadic function in that
-//	 'outputNumSeps' is configured as an optional input parameter
-//	 meaning that it is NOT required. The user can choose to
-//	 provide a value for 'outputNumSeps', or not.
+//	Return Values
+//	=============
 //
-//	 If the user chooses to provide a valid 'NumericSeparatorDto'
-//	 object for this parameter, it will be used to configure the
-//	 'BigIntNum' product value returned by this method with the
-//	 Numeric Separators copied from 'outputNumSeps'.
+//	BigIntNum
+//	  The product of the multiplication operation described above is
+//	  returned as BigIntNum type.
 //
-//	 Note that only the first valid NumericSeparatorDto in the
-//	 'outputNumSeps' series will be selected and used. There is no
-//	 need to provide more than one valid NumericSeparatorDto object
-//	 for parameter 'outputNumSeps'.
-//
-//	 If the user chooses NOT to provide this optional parameter, the
-//	 'BigIntNum' value returned by this  method will be configued
-//	 using the 'NumericSeparatorDto' copied from the 'multiplier'
-//	 input parameter.
-//
-//	 Return Values
-//	 =============
-//
-//	 BigIntNum
-//
-//	 The product of the multiplication operation described above is
-//	 returned as BigIntNum type.
-//
-//	 error
-//
-//	 If no errors are encountered during method execution, this
-//	 return parameter is set to 'nil'.
+//	error
+//	  If no errors are encountered during method execution, this
+//	  return parameter is set to 'nil'.
 func (bMultiply *BigIntMathMultiply) MultiplyNumStrDto(
 	multiplier NumStrDto,
 	multiplicand NumStrDto,
