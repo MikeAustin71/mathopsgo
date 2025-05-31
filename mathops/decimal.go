@@ -6501,44 +6501,83 @@ func (dec *Decimal) ShiftPrecisionRight(shiftRightPlaces uint) error {
   return nil
 }
 
-// SquareRoot - Returns a Decimal instance with a numeric value equal to the
-// square root of the current Decimal numeric value. The current Decimal instance
-// is the radicand.
+// SquareRoot
 //
-// Note: If the current Decimal value is a negative value, an error will be generated.
-// You cannot take the square root of a negative number.
+//	Returns a Decimal instance with a numeric value equal to the
+//	square root of the current Decimal numeric value. The current
+//	Decimal instance is the radicand.
 //
-// Returns:
-// ========
-// The calculation result is returned as a Decimal instance. The returned Decimal instance
-// will contain	numeric separators (decimal separator, thousands separator and currency symbol)
-// copied from the current Decimal instance (dec).
+//	Note: If the current Decimal value is a negative value, an
+//	error will be generated.
+//
+//	IMPORTANT
+//	=========
+//
+//	You cannot take the square root of a negative number.
+//
+//	Return Values
+//	=============
+//
+//	Decimal
+//	  The calculation result is returned as a Decimal instance. The
+//	  returned Decimal instance will contain numeric separators
+//	  (decimal separator, thousands separator and currency symbol)
+//	  copied from the current Decimal instance (dec).
+//
+//	error
+//	  If no errors are encountered during method execution, this
+//	  return parameter is set to 'nil'.
 func (dec *Decimal) SquareRoot(maxPrecision uint) (Decimal, error) {
 
-  ePrefix := "Decimal.SquareRoot() "
+  var ePrefix *ePref.ErrPrefixDto
 
-  err := dec.bigINum.IsValid(ePrefix + "Current Decimal instance is INVALID! ")
+  var err error
+
+  ePrefix,
+    err = ePref.ErrPrefixDto{}.NewIEmpty(
+    nil,
+    "Decimal.SquareRoot",
+    "")
+
+  if err != nil {
+    return Decimal{}, err
+  }
+
+  err = dec.bigINum.IsValid(ePrefix.XCpy("Validating 'dec'").String())
 
   if err != nil {
 
     return Decimal{},
-      fmt.Errorf("%v\n"+
-        "Validation Error on current Decimal instance 'dec'.\n"+
-        "Error returned by: \n"+
-        " err = dec.bigINum.IsValid(ePrefix)\n"+
-        "Error= %v\n",
-        ePrefix,
-        err.Error())
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "err = dec.bigINum.IsValid(ePrefix.XCpy(\"Validating 'dec'\").String())",
+        ErrContext: "Error: The current Decimal instance, 'dec', is INVALID!",
+        ErrMessage: err.Error(),
+      }
   }
 
-  if dec.GetSign() == -1 {
+  decSignValue, err := dec.GetSign()
+
+  if err != nil {
 
     return Decimal{},
-      fmt.Errorf("%v\n"+
-        "INVALID ENTRY!\n"+
-        "Cannot calculate nth root of a negative radicand.\n"+
-        "Decimal sign == -1\n",
-        ePrefix)
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "decSignValue, err := dec.GetSign()",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+  }
+
+  if decSignValue == -1 {
+
+    return Decimal{},
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "decSignValue, err := dec.GetSign()",
+        ErrContext: "The current instance of Decimal ('dec') is a negative number.",
+        ErrMessage: "Error: You cannot take the square root of a negative number.",
+      }
   }
 
   bINumTwo, err := new(BigIntNum).NewTwo(0)
@@ -6546,12 +6585,38 @@ func (dec *Decimal) SquareRoot(maxPrecision uint) (Decimal, error) {
   if err != nil {
 
     return Decimal{},
-      fmt.Errorf("%v\n"+
-        "Error returned by: \n"+
-        " bINumTwo, err := new(BigIntNum).NewTwo(0)\n"+
-        "Error= %v\n",
-        ePrefix,
-        err.Error())
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "bINumTwo, err := new(BigIntNum).NewTwo(0)",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+  }
+
+  decNumStr, err := dec.bigINum.GetNumStr()
+
+  if err != nil {
+
+    return Decimal{},
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "decNumStr, err := dec.bigINum.GetNumStr()",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+  }
+
+  bINumTwoNumStr, err := bINumTwo.GetNumStr()
+
+  if err != nil {
+
+    return Decimal{},
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "bINumTwoNumStr, err := bINumTwo.GetNumStr()",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
   }
 
   decSqRoot := new(Decimal).New()
@@ -6562,114 +6627,176 @@ func (dec *Decimal) SquareRoot(maxPrecision uint) (Decimal, error) {
   if err != nil {
 
     return Decimal{},
-      fmt.Errorf("%v\n"+
-        "Error returned by: \n"+
-        " decSqRoot.bigINum, err = BigIntMathNthRoot{}.GetNthRoot(dec.bigINum, bINumTwo, maxPrecision)\n"+
-        "Error= %v\n",
-        ePrefix,
-        err.Error())
-
+      &FuncReturnError{
+        ErrPrefix: ePrefix.String(),
+        ReturnFunc: "decSqRoot.bigINum, err = new(BigIntMathNthRoot).GetNthRoot(\n" +
+          "  dec.bigINum, bINumTwo, maxPrecision)",
+        ErrContext: fmt.Sprintf("dec.bigINum= '%v'\nbINumTwo= '%v'\nmaxPrecision= '%v",
+          decNumStr, bINumTwoNumStr, maxPrecision),
+        ErrMessage: err.Error(),
+      }
   }
 
-  err = decSqRoot.IsValid(ePrefix + "decSqRoot INVALID! ")
+  err = decSqRoot.IsValid(ePrefix.XCpy("Validating 'decSqRoot'").String())
 
   if err != nil {
 
     return Decimal{},
-      fmt.Errorf("%v\n"+
-        "Validation Error on current Decimal instance 'decSqRoot'.\n"+
-        "Error returned by: \n"+
-        " err = err = decSqRoot.IsValid(ePrefix + \"decSqRoot INVALID! \") \n"+
-        "Error= %v\n",
-        ePrefix,
-        err.Error())
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "err = decSqRoot.IsValid(ePrefix.XCpy(\"Validating 'decSqRoot'\").String())",
+        ErrContext: "Calculated return value 'decSqRoot' is INVALID!",
+        ErrMessage: err.Error(),
+      }
   }
 
   return decSqRoot, nil
 }
 
-// Subtract - Subtracts the incoming Decimal from the current
-// Decimal and returns the result as Decimal Type.
+// Subtract
 //
-// The returned Decimal Type contains the same numeric separators
-// (decimal separator, thousands separator and currency symbol)
-// as those of the current Decimal instance. The numeric separators
-// are copied form the current Decimal instance to the returned
-// Decimal instance.
+//  Subtracts the incoming Decimal from the current Decimal and
+//  returns the result as Decimal Type.
+//
+//                           Example
+//    Currend Decimal Instance - 'd2' = Retuned Decimal value
+//
+//  The returned Decimal Type contains the same numeric separators
+//  (decimal separator, thousands separator and currency symbol) as
+//  those of the current Decimal instance. The numeric separators
+//  are copied form the current Decimal instance to the returned
+//  Decimal instance.
 func (dec *Decimal) Subtract(d2 Decimal) (Decimal, error) {
 
-  ePrefix := "Decimal.Subtract() "
+  var ePrefix *ePref.ErrPrefixDto
+
   var err error
 
-  err = dec.bigINum.IsValid(ePrefix)
+  ePrefix,
+    err = ePref.ErrPrefixDto{}.NewIEmpty(
+    nil,
+    "Decimal.Subtract",
+    "")
+
+  if err != nil {
+    return Decimal{}, err
+  }
+
+  err = dec.bigINum.IsValid(ePrefix.XCpy("Validating 'dec'").String())
 
   if err != nil {
 
     return Decimal{},
-      fmt.Errorf("%v\n"+
-        "Validation Error on current Decimal instance 'dec'.\n"+
-        "Error returned by: \n"+
-        " err = dec.bigINum.IsValid(ePrefix)\n"+
-        "Error= %v\n",
-        ePrefix,
-        err.Error())
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "err = dec.bigINum.IsValid(ePrefix.XCpy(\"Validating 'dec'\").String())",
+        ErrContext: "Current Decimal instance, 'dec', is INVALID!",
+        ErrMessage: err.Error(),
+      }
   }
 
-  err = d2.IsValid(ePrefix)
+  decBINumStr, err := dec.bigINum.GetNumStr()
 
   if err != nil {
 
     return Decimal{},
-      fmt.Errorf("%v\n"+
-        "Validation Error on Decimal instance d2 returned by: \n"+
-        " err = d2.IsValid(ePrefix)\n"+
-        "Error= %v\n",
-        ePrefix,
-        err.Error())
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "decBINumStr, err := dec.bigINum.GetNumStr()",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
   }
 
-  numSeps := dec.bigINum.GetNumericSeparatorsDto()
+  err = d2.IsValid(ePrefix.XCpy("Validating input param 'd2'").String())
 
-  bINumResult := BigIntMathSubtract{}.SubtractBigIntNums(dec.bigINum, d2.bigINum)
+  if err != nil {
+
+    return Decimal{},
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "err = d2.IsValid(ePrefix.XCpy(\"Validating input param 'd2'\").String())",
+        ErrContext: "Input parameter 'd2' is INVALID!",
+        ErrMessage: err.Error(),
+      }
+  }
+
+  d2BigINumStr, err := d2.GetNumStr()
+
+  if err != nil {
+
+    return Decimal{},
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "d2BigINumStr, err := d2.GetNumStr()",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+  }
+
+  decNumSeps, err := dec.bigINum.GetNumericSeparatorsDto()
+
+  if err != nil {
+
+    return Decimal{},
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "decNumSeps, err := dec.bigINum.GetNumericSeparatorsDto()",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+  }
+
+  bINumResult, err := new(BigIntMathSubtract).SubtractBigIntNums(dec.bigINum, d2.bigINum)
+
+  if err != nil {
+
+    return Decimal{},
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "bINumResult, err := new(BigIntMathSubtract).SubtractBigIntNums(dec.bigINum, d2.bigINum)",
+        ErrContext: fmt.Sprintf("dec.bigINum= '%v'\n d2.bigINum= '%v'", decBINumStr, d2BigINumStr),
+        ErrMessage: err.Error(),
+      }
+  }
 
   d3, err := new(Decimal).NewBigIntNum(bINumResult)
 
   if err != nil {
 
     return Decimal{},
-      fmt.Errorf("%v\n"+
-        "Error returned by: \n"+
-        " d3, err := new(Decimal).NewBigIntNum(bINumResult)\n"+
-        "Error= %v\n",
-        ePrefix,
-        err.Error())
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "d3, err := new(Decimal).NewBigIntNum(bINumResult)",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
   }
 
-  err = d3.SetNumericSeparatorsDto(numSeps)
+  err = d3.SetNumericSeparatorsDto(decNumSeps)
 
   if err != nil {
 
     return Decimal{},
-      fmt.Errorf("%v\n"+
-        "Error returned by: \n"+
-        " err = d3.SetNumericSeparatorsDto(numSeps)\n"+
-        "Error= %v\n",
-        ePrefix,
-        err.Error())
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "err = d3.SetNumericSeparatorsDto(decNumSeps)",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
   }
 
-  err = d3.IsValid(ePrefix)
+  err = d3.IsValid(ePrefix.XCpy("Validating result 'd3'").String())
 
   if err != nil {
 
     return Decimal{},
-      fmt.Errorf("%v\n"+
-        "Validation Error on Decimal instance dec3.\n"+
-        "Error returned by: \n"+
-        " err = d3.IsValid(ePrefix)\n"+
-        "Error= %v\n",
-        ePrefix,
-        err.Error())
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "err = d3.IsValid(ePrefix.XCpy(\"Validating result 'd3'\").String())",
+        ErrContext: "Calculated result 'd3' FAILED Validation Tests",
+        ErrMessage: err.Error(),
+      }
   }
 
   return d3, nil
