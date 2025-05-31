@@ -825,38 +825,30 @@ func (ia *IntAry) CopyIn(iAry2 *IntAry, copyBackUp bool) {
 	}
 }
 
-// CopyOut - Makes a deep copy of the current IntAry
-// instance with backup and returns it as a new IntAry
-// object.
-func (ia *IntAry) CopyOut() IntAry {
+// CopyOut
+//
+// Makes a deep copy of the current IntAry instance with backup and
+// returns it as a new IntAry object.
+func (ia *IntAry) CopyOut() (IntAry, error) {
 
-	ia.SetInternalFlags()
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
+
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"IntAry.CopyOut()",
+		"")
+
+	if err != nil {
+		return IntAry{}, err
+	}
 
 	iAry2 := new(intAryElectron).newIntAry()
 
-	iAry2.intAry = make([]uint8, ia.intAryLen)
+	err = new(intAryProton).copy(&iAry2, ia, true, true, ePrefix)
 
-	for i := 0; i < ia.intAryLen; i++ {
-		iAry2.intAry[i] = ia.intAry[i]
-	}
-
-	iAry2.intAryLen = ia.intAryLen
-	iAry2.integerLen = ia.integerLen
-	iAry2.significantIntegerLen = ia.significantIntegerLen
-	iAry2.significantFractionLen = ia.significantFractionLen
-	iAry2.firstDigitIdx = ia.firstDigitIdx
-	iAry2.lastDigitIdx = ia.lastDigitIdx
-	iAry2.isZeroValue = ia.isZeroValue
-	iAry2.isIntegerZeroValue = ia.isIntegerZeroValue
-	iAry2.precision = ia.precision
-	iAry2.signVal = ia.signVal
-	iAry2.decimalSeparator = ia.decimalSeparator
-	iAry2.thousandsSeparator = ia.thousandsSeparator
-	iAry2.currencySymbol = ia.currencySymbol
-
-	iAry2.BackUp.CopyIn(&ia.BackUp)
-
-	return iAry2
+	return IntAry{}, err
 }
 
 // CopyOutNoBackup - Makes a deep copy of the current IntAry
@@ -2190,13 +2182,41 @@ func (ia *IntAry) GetMagnitude() (int, error) {
 	return ia.intAryLen - ia.precision - ia.firstDigitIdx - 1, nil
 }
 
-// GetMagnitudeDigits - Returns the number of digits
-// in the integer portion of the current IntAry numeric
-// value.
-func (ia *IntAry) GetMagnitudeDigits() int {
-	ia.SetInternalFlags()
-	return ia.intAryLen - ia.precision - ia.firstDigitIdx
+// GetMagnitudeDigits
+//
+//	Returns the number of digits in the integer portion of the
+//	current IntAry numeric value.
+func (ia *IntAry) GetMagnitudeDigits() (int, err) {
 
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
+
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"IntAry.GetMagnitudeDigits()",
+		"")
+
+	if err != nil {
+		return 0, err
+	}
+
+	err = new(intAryElectron).isValidIntAry(
+		ia, ePrefix.XCpy("Validating 'ia'").String())
+
+	if err != nil {
+
+		return 0,
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "err = new(intAryElectron).isValidIntAry(ia, ePrefix.XCpy(Validating 'ia').String())",
+				ErrContext: "The current instance of IntAry ('ia') is INVALID!\n" +
+					"'ia' FAILED Validation Tests.",
+				ErrMessage: err.Error(),
+			}
+	}
+
+	return new(intAryMechanics).getMagnitudeDigits(ia, ePrefix)
 }
 
 // GetNumericSeparatorsDto - Returns a structure containing the
@@ -6671,14 +6691,14 @@ func (ia *IntAry) SetInternalFlags() error {
 		return err
 	}
 
-	err = new(intAryMechanics).setInternalFlags(
+	err = new(intAryNanobot).setInternalFlags(
 		ia, ePrefix)
 
 	if err != nil {
 
 		return &FuncReturnError{
 			ErrPrefix:  ePrefix.String(),
-			ReturnFunc: "err = new(intAryMechanics).setInternalFlags(ia, ePrefix)",
+			ReturnFunc: "err = new(intAryNanobot).setInternalFlags(ia, ePrefix)",
 			ErrContext: "",
 			ErrMessage: err.Error(),
 		}
@@ -6985,14 +7005,14 @@ func (ia *IntAry) SetSign(signVal int) error {
 		return err
 	}
 
-	err = new(intAryMechanics).setInternalFlags(
+	err = new(intAryNanobot).setInternalFlags(
 		ia, ePrefix)
 
 	if err != nil {
 
 		return &FuncReturnError{
 			ErrPrefix:  ePrefix.String(),
-			ReturnFunc: "err = new(intAryMechanics).setInternalFlags(ia, ePrefix)",
+			ReturnFunc: "err = new(intAryNanobot).setInternalFlags(ia, ePrefix)",
 			ErrContext: "",
 			ErrMessage: err.Error(),
 		}

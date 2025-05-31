@@ -10,6 +10,42 @@ type intAryElectron struct {
 	lock *sync.Mutex
 }
 
+// Empty - Basically resets all the fields of the intAry
+// structure to their 'zero' values.
+func (iAryElectron *intAryElectron) empty(
+	ia *IntAry) {
+
+	if iAryElectron.lock == nil {
+		iAryElectron.lock = new(sync.Mutex)
+	}
+
+	iAryElectron.lock.Lock()
+
+	defer iAryElectron.lock.Unlock()
+
+	if ia == nil {
+		return
+	}
+
+	ia.intAry = []uint8{}
+	ia.intAryLen = 0
+	ia.integerLen = 0
+	ia.significantIntegerLen = 0
+	ia.significantFractionLen = 0
+	ia.firstDigitIdx = -1
+	ia.lastDigitIdx = -1
+	ia.isZeroValue = true
+	ia.isIntegerZeroValue = true
+	ia.precision = 0
+	ia.signVal = 1
+
+	ia.SetDecimalSeparator('.')
+	ia.SetThousandsSeparator(',')
+	ia.SetCurrencySymbol('$')
+
+	return
+}
+
 func (iAryElectron *intAryElectron) newIntAry() IntAry {
 
 	if iAryElectron.lock == nil {
@@ -56,26 +92,40 @@ func (iAryElectron *intAryElectron) isValidIntAry(
 
 	defer iAryElectron.lock.Unlock()
 
-	ePrefix := "intAryElectron.isValidIntAry()"
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
+
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		errName,
+		"intAryElectron.isValidIntAry()",
+		"")
+
+	if err != nil {
+		return err
+	}
 
 	if iAry == nil {
 
 		return fmt.Errorf("%v\n"+
-			"Calling Method: %v\n"+
 			"IntAry Validation Test.\n"+
 			"Error: Input parameter 'iAry' is a nil pointer!\n"+
 			"IntAry object FAILED Validation Test!\n",
-			errName,
-			ePrefix)
+			ePrefix.String())
 	}
 
-	if len(errName) == 0 {
+	err = new(intAryNanobot).setInternalFlags(
+		iAry, ePrefix)
 
-		errName = "intAryElectron.IsValid()"
+	if err != nil {
 
+		return &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "err = new(intAryNanobot).setInternalFlags(ia, ePrefix)",
+			ErrContext: "",
+			ErrMessage: err.Error(),
+		}
 	}
-
-	iAry.SetInternalFlags()
 
 	if iAry.signVal != -1 && iAry.signVal != 1 {
 

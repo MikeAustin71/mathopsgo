@@ -1,56 +1,65 @@
 package mathops
 
 import (
-  ePref "github.com/MikeAustin71/errpref"
-  "sync"
+	ePref "github.com/MikeAustin71/errpref"
+	"sync"
 )
 
 type intAryMechanics struct {
-  lock *sync.Mutex
+	lock *sync.Mutex
 }
 
-// setInternalFlags - Sets Array Lengths and
-// test for zero values
-func (iaMech *intAryMechanics) setInternalFlags(
-  ia *IntAry,
-  errPrefDto *ePref.ErrPrefixDto) error {
+// getMagnitudeDigits
+//
+//	Returns the number of digits in the integer portion of the
+//	numeric value in the IntAry instance passed as input parameter
+//	'ia'.
+//
+//	IMPORTANT
+//	=========
+//
+//	The calling function is responsible for verifying the validit
+//	of 'ia', the Intary object.
+func (iaMech *intAryMechanics) getMagnitudeDigits(
+	ia *IntAry,
+	errPrefDto *ePref.ErrPrefixDto) (int, error) {
 
-  if iaMech.lock == nil {
-    iaMech.lock = new(sync.Mutex)
-  }
+	if iaMech.lock == nil {
+		iaMech.lock = new(sync.Mutex)
+	}
 
-  iaMech.lock.Lock()
+	iaMech.lock.Lock()
 
-  defer iaMech.lock.Unlock()
+	defer iaMech.lock.Unlock()
 
-  var ePrefix *ePref.ErrPrefixDto
+	var ePrefix *ePref.ErrPrefixDto
 
-  var err error
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
-    errPrefDto,
-    "intAryMechanics.setInternalFlags()",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
+		errPrefDto,
+		"intAryMechanics.getMagnitudeDigits()",
+		"")
 
-  if err != nil {
-    return err
-  }
+	if err != nil {
+		return 0, err
+	}
 
-  err = new(intAryElectron).setSignificantDigitIdxs(
-    ia,
-    ePrefix)
+	err = new(intAryNanobot).setInternalFlags(
+		ia, ePrefix)
 
-  if err != nil {
+	if err != nil {
 
-    return &FuncReturnError{
-      ErrPrefix: ePrefix.String(),
-      ReturnFunc: "err = new(intAryElectron).\n" +
-        "  setSignificantDigitIdxs( ia, ePrefix)",
-      ErrContext: "",
-      ErrMessage: err.Error(),
-    }
-  }
+		return 0, &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "err = new(intAryNanobot).setInternalFlags(ia, ePrefix)",
+			ErrContext: "",
+			ErrMessage: err.Error(),
+		}
+	}
 
-  return nil
+	iaMagnitude := ia.intAryLen - ia.precision - ia.firstDigitIdx
+
+	return iaMagnitude, nil
 }
