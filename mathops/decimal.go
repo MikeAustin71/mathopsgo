@@ -1,9 +1,9 @@
 package mathops
 
 import (
-  "fmt"
-  ePref "github.com/MikeAustin71/errpref"
-  "math/big"
+	"fmt"
+	ePref "github.com/MikeAustin71/errpref"
+	"math/big"
 )
 
 /*
@@ -29,7 +29,7 @@ import (
 //
 // The Decimal Type implements the INumMgr interface.
 type Decimal struct {
-  bigINum BigIntNum
+	bigINum BigIntNum
 }
 
 var _ INumMgr = (*Decimal)(nil)
@@ -42,114 +42,114 @@ var _ INumMgr = (*Decimal)(nil)
 // set to the values of the current Decimal instance.
 func (dec *Decimal) Add(d2 Decimal) (Decimal, error) {
 
-  var ePrefix *ePref.ErrPrefixDto
-  var err error
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewIEmpty(
-    nil,
-    "Decimal.Add()",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"Decimal.Add()",
+		"")
 
-  if err != nil {
-    return Decimal{}, err
-  }
+	if err != nil {
+		return Decimal{}, err
+	}
 
-  err = dec.bigINum.IsValid(ePrefix.XCpy("Validating 'dec'").String())
+	err = dec.bigINum.IsValid(ePrefix.XCpy("Validating 'dec'").String())
 
-  if err != nil {
+	if err != nil {
 
-    return Decimal{},
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "err = dec.bigINum.IsValid(ePrefix.XCpy(\"Validating 'dec'\").String())",
-        ErrContext: "Current instance of Decimal (dec) is INVALID!\n" +
-          "Validation Error on Decimal instance 'dec'.",
-        ErrMessage: err.Error(),
-      }
-  }
+		return Decimal{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "err = dec.bigINum.IsValid(ePrefix.XCpy(\"Validating 'dec'\").String())",
+				ErrContext: "Current instance of Decimal (dec) is INVALID!\n" +
+					"Validation Error on Decimal instance 'dec'.",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  numSeps, err := dec.bigINum.GetNumericSeparatorsDto()
+	numSeps, err := dec.bigINum.GetNumericSeparatorsDto()
 
-  if err != nil {
+	if err != nil {
 
-    return Decimal{},
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "numSeps, err := dec.bigINum.GetNumericSeparatorsDto()",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-  }
+		return Decimal{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "numSeps, err := dec.bigINum.GetNumericSeparatorsDto()",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  err = d2.IsValid(ePrefix.XCpy("Validating Input Parameter 'd2'").String())
+	err = d2.IsValid(ePrefix.XCpy("Validating Input Parameter 'd2'").String())
 
-  if err != nil {
+	if err != nil {
 
-    return Decimal{},
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "",
-        ErrContext: "Input parameter d2 (type Decimal) is INVALID!\n" +
-          "Validation Error on Decimal instance 'd2'.",
-        ErrMessage: err.Error(),
-      }
-  }
+		return Decimal{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "",
+				ErrContext: "Input parameter d2 (type Decimal) is INVALID!\n" +
+					"Validation Error on Decimal instance 'd2'.",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  bINumResult, err := new(BigIntMathAdd).AddBigIntNums(dec.bigINum, d2.bigINum)
+	bINumResult, err := new(BigIntMathAdd).AddBigIntNums(dec.bigINum, d2.bigINum)
 
-  if err != nil {
+	if err != nil {
 
-    return Decimal{},
-      fmt.Errorf("%v\n"+
-        "Error returned by: \n"+
-        " bINumResult, err := new(BigIntMathAdd).AddBigIntNums(dec.bigINum, d2.bigINum)\n"+
-        "Error= %v\n",
-        ePrefix,
-        err.Error())
-  }
+		return Decimal{},
+			fmt.Errorf("%v\n"+
+				"Error returned by: \n"+
+				" bINumResult, err := new(BigIntMathAdd).AddBigIntNums(dec.bigINum, d2.bigINum)\n"+
+				"Error= %v\n",
+				ePrefix,
+				err.Error())
+	}
 
-  d3, err := new(Decimal).NewBigIntNum(bINumResult)
+	d3, err := new(Decimal).NewBigIntNum(bINumResult)
 
-  if err != nil {
+	if err != nil {
 
-    return Decimal{},
-      fmt.Errorf("%v\n"+
-        "Error returned by: \n"+
-        " d3, err := new(Decimal).NewBigIntNum(bINumResult)\n"+
-        "Error= %v\n",
-        ePrefix,
-        err.Error())
-  }
+		return Decimal{},
+			fmt.Errorf("%v\n"+
+				"Error returned by: \n"+
+				" d3, err := new(Decimal).NewBigIntNum(bINumResult)\n"+
+				"Error= %v\n",
+				ePrefix,
+				err.Error())
+	}
 
-  err = d3.IsValid(ePrefix.XCpy("Validating final result 'd3'").String())
+	err = d3.IsValid(ePrefix.XCpy("Validating final result 'd3'").String())
 
-  if err != nil {
+	if err != nil {
 
-    return Decimal{},
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "",
-        ErrContext: "Final result variable 'd3' (type Decimal) is INVALID!\n" +
-          "Validation Error on Decimal instance 'd3'.",
-        ErrMessage: err.Error(),
-      }
-  }
+		return Decimal{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "",
+				ErrContext: "Final result variable 'd3' (type Decimal) is INVALID!\n" +
+					"Validation Error on Decimal instance 'd3'.",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  err = d3.SetNumericSeparatorsDto(numSeps)
+	err = d3.SetNumericSeparatorsDto(numSeps)
 
-  if err != nil {
+	if err != nil {
 
-    return Decimal{},
-      fmt.Errorf("%v\n"+
-        "Error returned by: \n"+
-        " err = d3.SetNumericSeparatorsDto(numSeps)\n"+
-        "Error= %v\n",
-        ePrefix,
-        err.Error())
-  }
+		return Decimal{},
+			fmt.Errorf("%v\n"+
+				"Error returned by: \n"+
+				" err = d3.SetNumericSeparatorsDto(numSeps)\n"+
+				"Error= %v\n",
+				ePrefix,
+				err.Error())
+	}
 
-  return d3, nil
+	return d3, nil
 }
 
 // AddToThis - adds the value of the incoming Decimal to that
@@ -157,312 +157,312 @@ func (dec *Decimal) Add(d2 Decimal) (Decimal, error) {
 // in the current Decimal object.
 func (dec *Decimal) AddToThis(d2 Decimal) error {
 
-  var ePrefix *ePref.ErrPrefixDto
-  var err error
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewIEmpty(
-    nil,
-    "Decimal.AddToThis()",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"Decimal.AddToThis()",
+		"")
 
-  if err != nil {
-    return err
-  }
+	if err != nil {
+		return err
+	}
 
-  numSeps, err := dec.bigINum.GetNumericSeparatorsDto()
+	numSeps, err := dec.bigINum.GetNumericSeparatorsDto()
 
-  if err != nil {
+	if err != nil {
 
-    return &FuncReturnError{
-      ErrPrefix:  ePrefix.String(),
-      ReturnFunc: "numSeps, err := dec.bigINum.GetNumericSeparatorsDto()",
-      ErrContext: "",
-      ErrMessage: err.Error(),
-    }
-  }
+		return &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "numSeps, err := dec.bigINum.GetNumericSeparatorsDto()",
+			ErrContext: "",
+			ErrMessage: err.Error(),
+		}
+	}
 
-  dec.bigINum, err = new(BigIntMathAdd).AddBigIntNums(dec.bigINum, d2.bigINum)
+	dec.bigINum, err = new(BigIntMathAdd).AddBigIntNums(dec.bigINum, d2.bigINum)
 
-  if err != nil {
+	if err != nil {
 
-    return &FuncReturnError{
-      ErrPrefix: ePrefix.String(),
-      ReturnFunc: "dec.bigINum, err = new(BigIntMathAdd).\n" +
-        "   AddBigIntNums(dec.bigINum, d2.bigINum)",
-      ErrContext: "",
-      ErrMessage: err.Error(),
-    }
-  }
+		return &FuncReturnError{
+			ErrPrefix: ePrefix.String(),
+			ReturnFunc: "dec.bigINum, err = new(BigIntMathAdd).\n" +
+				"   AddBigIntNums(dec.bigINum, d2.bigINum)",
+			ErrContext: "",
+			ErrMessage: err.Error(),
+		}
+	}
 
-  err = dec.bigINum.SetNumericSeparatorsDto(numSeps)
+	err = dec.bigINum.SetNumericSeparatorsDto(numSeps)
 
-  if err != nil {
+	if err != nil {
 
-    return &FuncReturnError{
-      ErrPrefix:  ePrefix.String(),
-      ReturnFunc: "err = dec.bigINum.SetNumericSeparatorsDto(numSeps)",
-      ErrContext: "",
-      ErrMessage: err.Error(),
-    }
-  }
+		return &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "err = dec.bigINum.SetNumericSeparatorsDto(numSeps)",
+			ErrContext: "",
+			ErrMessage: err.Error(),
+		}
+	}
 
-  return nil
+	return nil
 }
 
 // AddToThisArray - Receives an array of Decimal objects and
 // adds them to the current Decimal value.
 func (dec *Decimal) AddToThisArray(decs []Decimal) error {
 
-  var ePrefix *ePref.ErrPrefixDto
-  var err error
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewIEmpty(
-    nil,
-    "Decimal.AddToThisArray()",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"Decimal.AddToThisArray()",
+		"")
 
-  if err != nil {
-    return err
-  }
+	if err != nil {
+		return err
+	}
 
-  err = dec.bigINum.IsValid(ePrefix.XCpy("Validating 'dec'").String())
+	err = dec.bigINum.IsValid(ePrefix.XCpy("Validating 'dec'").String())
 
-  if err != nil {
+	if err != nil {
 
-    return &FuncReturnError{
-      ErrPrefix:  ePrefix.String(),
-      ReturnFunc: "err = dec.bigINum.IsValid(ePrefix.XCpy(\"Validating 'dec'\").String())",
-      ErrContext: "Current instance of Decimal (dec) is INVALID!\n" +
-        "Validation Error on Decimal instance 'dec'.",
-      ErrMessage: err.Error(),
-    }
-  }
+		return &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "err = dec.bigINum.IsValid(ePrefix.XCpy(\"Validating 'dec'\").String())",
+			ErrContext: "Current instance of Decimal (dec) is INVALID!\n" +
+				"Validation Error on Decimal instance 'dec'.",
+			ErrMessage: err.Error(),
+		}
+	}
 
-  if len(decs) == 0 {
+	if len(decs) == 0 {
 
-    return &FuncReturnError{
-      ErrPrefix:  ePrefix.String(),
-      ReturnFunc: "",
-      ErrContext: "len(decs) == 0",
-      ErrMessage: "Error: Input parameter array 'decs' is EMPTY!",
-    }
-  }
+		return &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "",
+			ErrContext: "len(decs) == 0",
+			ErrMessage: "Error: Input parameter array 'decs' is EMPTY!",
+		}
+	}
 
-  numSeps, err := dec.bigINum.GetNumericSeparatorsDto()
+	numSeps, err := dec.bigINum.GetNumericSeparatorsDto()
 
-  if err != nil {
+	if err != nil {
 
-    return &FuncReturnError{
-      ErrPrefix:  ePrefix.String(),
-      ReturnFunc: "numSeps, err := dec.bigINum.GetNumericSeparatorsDto()",
-      ErrContext: "",
-      ErrMessage: err.Error(),
-    }
-  }
+		return &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "numSeps, err := dec.bigINum.GetNumericSeparatorsDto()",
+			ErrContext: "",
+			ErrMessage: err.Error(),
+		}
+	}
 
-  bINumResult, err := dec.bigINum.CopyOut()
+	bINumResult, err := dec.bigINum.CopyOut()
 
-  if err != nil {
+	if err != nil {
 
-    return &FuncReturnError{
-      ErrPrefix:  ePrefix.String(),
-      ReturnFunc: "bINumResult, err := dec.bigINum.CopyOut()",
-      ErrContext: "",
-      ErrMessage: err.Error(),
-    }
-  }
+		return &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "bINumResult, err := dec.bigINum.CopyOut()",
+			ErrContext: "",
+			ErrMessage: err.Error(),
+		}
+	}
 
-  for i, dx := range decs {
+	for i, dx := range decs {
 
-    err = dx.IsValid(ePrefix.XCpy("Validating 'dx'").String())
+		err = dx.IsValid(ePrefix.XCpy("Validating 'dx'").String())
 
-    if err != nil {
+		if err != nil {
 
-      return &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "bINumResult, err := dec.bigINum.CopyOut()",
-        ErrContext: fmt.Sprintf("Error: Array element decs[%v] is INVALID!\n"+
-          "decs[%v] Failed Decimal Validation Test.", i, i),
-        ErrMessage: err.Error(),
-      }
-    }
+			return &FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "bINumResult, err := dec.bigINum.CopyOut()",
+				ErrContext: fmt.Sprintf("Error: Array element decs[%v] is INVALID!\n"+
+					"decs[%v] Failed Decimal Validation Test.", i, i),
+				ErrMessage: err.Error(),
+			}
+		}
 
-    bINumResult, err = new(BigIntMathAdd).AddBigIntNums(bINumResult, dx.bigINum)
+		bINumResult, err = new(BigIntMathAdd).AddBigIntNums(bINumResult, dx.bigINum)
 
-    if err != nil {
+		if err != nil {
 
-      return &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "bINumResult, err = new(BigIntMathAdd).AddBigIntNums(bINumResult, dx.bigINum)",
-        ErrContext: fmt.Sprintf("Error occurred at array element decs[%v].", i),
-        ErrMessage: err.Error(),
-      }
-    }
-  } // End of for loop
+			return &FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "bINumResult, err = new(BigIntMathAdd).AddBigIntNums(bINumResult, dx.bigINum)",
+				ErrContext: fmt.Sprintf("Error occurred at array element decs[%v].", i),
+				ErrMessage: err.Error(),
+			}
+		}
+	} // End of for loop
 
-  err = bINumResult.SetNumericSeparatorsDto(numSeps)
+	err = bINumResult.SetNumericSeparatorsDto(numSeps)
 
-  if err != nil {
+	if err != nil {
 
-    return fmt.Errorf("%v\n"+
-      "Error returned by: \n"+
-      " err = bINumResult.SetNumericSeparatorsDto(numSeps)\n"+
-      "Error= %v\n",
-      ePrefix,
-      err.Error())
-  }
+		return fmt.Errorf("%v\n"+
+			"Error returned by: \n"+
+			" err = bINumResult.SetNumericSeparatorsDto(numSeps)\n"+
+			"Error= %v\n",
+			ePrefix,
+			err.Error())
+	}
 
-  err = dec.SetBigIntNum(bINumResult)
+	err = dec.SetBigIntNum(bINumResult)
 
-  if err != nil {
+	if err != nil {
 
-    return fmt.Errorf("%v\n"+
-      "Error returned by: \n"+
-      " err = dec.SetBigIntNum(bINumResult)\n"+
-      "Error= %v\n",
-      ePrefix,
-      err.Error())
-  }
+		return fmt.Errorf("%v\n"+
+			"Error returned by: \n"+
+			" err = dec.SetBigIntNum(bINumResult)\n"+
+			"Error= %v\n",
+			ePrefix,
+			err.Error())
+	}
 
-  err = dec.bigINum.IsValid(ePrefix.XCpy("Validating 'dec'").String())
+	err = dec.bigINum.IsValid(ePrefix.XCpy("Validating 'dec'").String())
 
-  if err != nil {
+	if err != nil {
 
-    return &FuncReturnError{
-      ErrPrefix:  ePrefix.String(),
-      ReturnFunc: "err = dec.bigINum.IsValid(ePrefix.XCpy(\"Validating 'dec'\").String())",
-      ErrContext: "Error: Decimal type resulting from Array Addition is INVALID!\n" +
-        "Decimal instance 'dec' FAILED Validation Test.",
-      ErrMessage: err.Error(),
-    }
-  }
+		return &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "err = dec.bigINum.IsValid(ePrefix.XCpy(\"Validating 'dec'\").String())",
+			ErrContext: "Error: Decimal type resulting from Array Addition is INVALID!\n" +
+				"Decimal instance 'dec' FAILED Validation Test.",
+			ErrMessage: err.Error(),
+		}
+	}
 
-  return nil
+	return nil
 }
 
 // AddToThisSeries - Receives multiple Decimal objects and
 // adds them to the current Decimal value.
 func (dec *Decimal) AddToThisSeries(decs ...Decimal) error {
 
-  var ePrefix *ePref.ErrPrefixDto
-  var err error
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewIEmpty(
-    nil,
-    "Decimal.AddToThisSeries()",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"Decimal.AddToThisSeries()",
+		"")
 
-  if err != nil {
-    return err
-  }
+	if err != nil {
+		return err
+	}
 
-  err = dec.bigINum.IsValid(ePrefix.XCpy("Validating 'dec'").String())
+	err = dec.bigINum.IsValid(ePrefix.XCpy("Validating 'dec'").String())
 
-  if err != nil {
+	if err != nil {
 
-    return &FuncReturnError{
-      ErrPrefix:  ePrefix.String(),
-      ReturnFunc: "err = dec.bigINum.IsValid(ePrefix.XCpy(\"Validating 'dec'\").String())",
-      ErrContext: "Error: The current Decimal instance (dec) is INVALID! ",
-      ErrMessage: err.Error(),
-    }
-  }
+		return &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "err = dec.bigINum.IsValid(ePrefix.XCpy(\"Validating 'dec'\").String())",
+			ErrContext: "Error: The current Decimal instance (dec) is INVALID! ",
+			ErrMessage: err.Error(),
+		}
+	}
 
-  numSeps, err := dec.bigINum.GetNumericSeparatorsDto()
+	numSeps, err := dec.bigINum.GetNumericSeparatorsDto()
 
-  if err != nil {
+	if err != nil {
 
-    return &FuncReturnError{
-      ErrPrefix:  ePrefix.String(),
-      ReturnFunc: "numSeps, err := dec.bigINum.GetNumericSeparatorsDto()",
-      ErrContext: "",
-      ErrMessage: err.Error(),
-    }
-  }
+		return &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "numSeps, err := dec.bigINum.GetNumericSeparatorsDto()",
+			ErrContext: "",
+			ErrMessage: err.Error(),
+		}
+	}
 
-  bINumResult, err := dec.bigINum.CopyOut()
+	bINumResult, err := dec.bigINum.CopyOut()
 
-  if err != nil {
+	if err != nil {
 
-    return fmt.Errorf("%v\n"+
-      "Error returned by: \n"+
-      " bINumResult, err := dec.bigINum.CopyOut()\n"+
-      "Error= %v\n",
-      ePrefix,
-      err.Error())
-  }
+		return fmt.Errorf("%v\n"+
+			"Error returned by: \n"+
+			" bINumResult, err := dec.bigINum.CopyOut()\n"+
+			"Error= %v\n",
+			ePrefix,
+			err.Error())
+	}
 
-  for i, dx := range decs {
+	for i, dx := range decs {
 
-    err = dx.IsValid(ePrefix.XCpy("Validating 'dx'").String())
+		err = dx.IsValid(ePrefix.XCpy("Validating 'dx'").String())
 
-    if err != nil {
+		if err != nil {
 
-      return &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "err = dx.IsValid(ePrefix.XCpy(\"Validating 'dx'\").String())",
-        ErrContext: fmt.Sprintf("Error: Series element decs[%v] is INVALID!\n", i),
-        ErrMessage: err.Error(),
-      }
-    }
+			return &FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "err = dx.IsValid(ePrefix.XCpy(\"Validating 'dx'\").String())",
+				ErrContext: fmt.Sprintf("Error: Series element decs[%v] is INVALID!\n", i),
+				ErrMessage: err.Error(),
+			}
+		}
 
-    bINumResult, err = new(BigIntMathAdd).AddBigIntNums(bINumResult, dx.bigINum)
+		bINumResult, err = new(BigIntMathAdd).AddBigIntNums(bINumResult, dx.bigINum)
 
-    if err != nil {
+		if err != nil {
 
-      return fmt.Errorf("%v\n"+
-        "Error returned by: \n"+
-        " bINumResult, err = new(BigIntMathAdd).AddBigIntNums(bINumResult, dx.bigINum)\n"+
-        "Error occurred at series element decs[%v]\n"+
-        "Error= %v\n",
-        ePrefix,
-        i,
-        err.Error())
-    }
+			return fmt.Errorf("%v\n"+
+				"Error returned by: \n"+
+				" bINumResult, err = new(BigIntMathAdd).AddBigIntNums(bINumResult, dx.bigINum)\n"+
+				"Error occurred at series element decs[%v]\n"+
+				"Error= %v\n",
+				ePrefix,
+				i,
+				err.Error())
+		}
 
-  }
+	}
 
-  err = bINumResult.SetNumericSeparatorsDto(numSeps)
+	err = bINumResult.SetNumericSeparatorsDto(numSeps)
 
-  if err != nil {
+	if err != nil {
 
-    return fmt.Errorf("%v\n"+
-      "Error returned by: \n"+
-      " err = bINumResult.SetNumericSeparatorsDto(numSeps)\n"+
-      "Error= %v\n",
-      ePrefix,
-      err.Error())
-  }
+		return fmt.Errorf("%v\n"+
+			"Error returned by: \n"+
+			" err = bINumResult.SetNumericSeparatorsDto(numSeps)\n"+
+			"Error= %v\n",
+			ePrefix,
+			err.Error())
+	}
 
-  err = dec.SetBigIntNum(bINumResult)
+	err = dec.SetBigIntNum(bINumResult)
 
-  if err != nil {
+	if err != nil {
 
-    return fmt.Errorf("%v\n"+
-      "Error returned by: \n"+
-      " err = dec.SetBigIntNum(bINumResult)\n"+
-      "Error= %v\n",
-      ePrefix,
-      err.Error())
-  }
+		return fmt.Errorf("%v\n"+
+			"Error returned by: \n"+
+			" err = dec.SetBigIntNum(bINumResult)\n"+
+			"Error= %v\n",
+			ePrefix,
+			err.Error())
+	}
 
-  err = dec.bigINum.IsValid(ePrefix.XCpy("Validating 'dec'").String())
+	err = dec.bigINum.IsValid(ePrefix.XCpy("Validating 'dec'").String())
 
-  if err != nil {
+	if err != nil {
 
-    return &FuncReturnError{
-      ErrPrefix:  ePrefix.String(),
-      ReturnFunc: "err = dec.bigINum.IsValid(ePrefix.XCpy(\"Validating 'dec'\").String())",
-      ErrContext: "Current instance of Decimal (dec) is INVALID!\n" +
-        "Validation Error on Decimal instance 'dec'.",
-      ErrMessage: err.Error(),
-    }
-  }
+		return &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "err = dec.bigINum.IsValid(ePrefix.XCpy(\"Validating 'dec'\").String())",
+			ErrContext: "Current instance of Decimal (dec) is INVALID!\n" +
+				"Validation Error on Decimal instance 'dec'.",
+			ErrMessage: err.Error(),
+		}
+	}
 
-  return nil
+	return nil
 }
 
 // AllDigitsNumStr - parses the incoming string and returns
@@ -472,37 +472,37 @@ func (dec *Decimal) AddToThisSeries(decs ...Decimal) error {
 // the 'numStr' input parameter.
 func (dec *Decimal) AllDigitsNumStr(numStr string) (string, error) {
 
-  ePrefix := "Decimal.AllDigitsNumStr()"
+	ePrefix := "Decimal.AllDigitsNumStr()"
 
-  bigIntNum, err := new(BigIntNum).NewNumStr(numStr)
+	bigIntNum, err := new(BigIntNum).NewNumStr(numStr)
 
-  if err != nil {
+	if err != nil {
 
-    return "",
-      fmt.Errorf("%v\n"+
-        "Error returned by: \n"+
-        " bigIntNum, err := new(BigIntNum).NewNumStr(numStr)\n"+
-        "Error= %v\n",
-        ePrefix,
-        err.Error())
-  }
+		return "",
+			fmt.Errorf("%v\n"+
+				"Error returned by: \n"+
+				" bigIntNum, err := new(BigIntNum).NewNumStr(numStr)\n"+
+				"Error= %v\n",
+				ePrefix,
+				err.Error())
+	}
 
-  var xStr string
+	var xStr string
 
-  xStr, err = bigIntNum.FormatNumStr(ABSOLUTEPURENUMSTRFMTMODE)
+	xStr, err = bigIntNum.FormatNumStr(ABSOLUTEPURENUMSTRFMTMODE)
 
-  if err != nil {
+	if err != nil {
 
-    return "",
-      fmt.Errorf("%v\n"+
-        "Error returned by: \n"+
-        " numStr, err = bigIntNum.FormatNumStr(ABSOLUTEPURENUMSTRFMTMODE)\n"+
-        "Error= %v\n",
-        ePrefix,
-        err.Error())
-  }
+		return "",
+			fmt.Errorf("%v\n"+
+				"Error returned by: \n"+
+				" numStr, err = bigIntNum.FormatNumStr(ABSOLUTEPURENUMSTRFMTMODE)\n"+
+				"Error= %v\n",
+				ePrefix,
+				err.Error())
+	}
 
-  return xStr, nil
+	return xStr, nil
 }
 
 // NumStrToDecimal - Creates a Decimal type from a number
@@ -515,48 +515,48 @@ func (dec *Decimal) AllDigitsNumStr(numStr string) (string, error) {
 // and currency symbol) remain unchanged and are not altered by this method.
 func (dec *Decimal) NumStrToDecimal(numStr string) (Decimal, error) {
 
-  var ePrefix *ePref.ErrPrefixDto
-  var err error
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewIEmpty(
-    nil,
-    "Decimal.NumStrToDecimal()",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"Decimal.NumStrToDecimal()",
+		"")
 
-  if err != nil {
-    return Decimal{}, err
-  }
+	if err != nil {
+		return Decimal{}, err
+	}
 
-  d2 := Decimal{}
+	d2 := Decimal{}
 
-  numSeps, err := dec.bigINum.GetNumericSeparatorsDto()
+	numSeps, err := dec.bigINum.GetNumericSeparatorsDto()
 
-  if err != nil {
+	if err != nil {
 
-    return Decimal{},
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "",
-        ErrContext: "numSeps, err := dec.bigINum.GetNumericSeparatorsDto()",
-        ErrMessage: err.Error(),
-      }
-  }
+		return Decimal{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "",
+				ErrContext: "numSeps, err := dec.bigINum.GetNumericSeparatorsDto()",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  d2.bigINum, err = new(BigIntNum).NewNumStrWithNumSeps(numStr, &numSeps)
+	d2.bigINum, err = new(BigIntNum).NewNumStrWithNumSeps(numStr, &numSeps)
 
-  if err != nil {
+	if err != nil {
 
-    return Decimal{},
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "d2.bigINum, err = new(BigIntNum).NewNumStrWithNumSeps(numStr, &numSeps)",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-  }
+		return Decimal{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "d2.bigINum, err = new(BigIntNum).NewNumStrWithNumSeps(numStr, &numSeps)",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  return d2, nil
+	return d2, nil
 }
 
 // CopyIn - Receives an incoming Decimal object
@@ -564,77 +564,77 @@ func (dec *Decimal) NumStrToDecimal(numStr string) (Decimal, error) {
 // equal to that of the incoming Decimal object.
 func (dec *Decimal) CopyIn(d2 Decimal) error {
 
-  ePrefix := "Decimal.CopyIn()"
+	ePrefix := "Decimal.CopyIn()"
 
-  dec.Empty()
+	dec.Empty()
 
-  var err error
+	var err error
 
-  dec.bigINum, err = d2.bigINum.CopyOut()
+	dec.bigINum, err = d2.bigINum.CopyOut()
 
-  if err != nil {
+	if err != nil {
 
-    return fmt.Errorf("%v\n"+
-      "Error returned by: \n"+
-      " dec.bigINum, err = d2.bigINum.CopyOut()\n"+
-      "Error= %v\n",
-      ePrefix,
-      err.Error())
-  }
+		return fmt.Errorf("%v\n"+
+			"Error returned by: \n"+
+			" dec.bigINum, err = d2.bigINum.CopyOut()\n"+
+			"Error= %v\n",
+			ePrefix,
+			err.Error())
+	}
 
-  return nil
+	return nil
 }
 
 // CopyOut - Returns a deep copy of the current Decimal
 // instance.
 func (dec *Decimal) CopyOut() (Decimal, error) {
 
-  ePrefix := "Decimal.CopyOut()"
+	ePrefix := "Decimal.CopyOut()"
 
-  err := dec.bigINum.IsValid(ePrefix)
+	err := dec.bigINum.IsValid(ePrefix)
 
-  if err != nil {
+	if err != nil {
 
-    return Decimal{},
-      fmt.Errorf("%v\n"+
-        "Current instance of Decimal (dec) is INVALID!\n"+
-        "Validation Error on Decimal instance 'dec'.\n"+
-        "Error returned by: \n"+
-        " err := dec.bigINum.IsValid(ePrefix)\n"+
-        "Error= %v\n",
-        ePrefix,
-        err.Error())
-  }
+		return Decimal{},
+			fmt.Errorf("%v\n"+
+				"Current instance of Decimal (dec) is INVALID!\n"+
+				"Validation Error on Decimal instance 'dec'.\n"+
+				"Error returned by: \n"+
+				" err := dec.bigINum.IsValid(ePrefix)\n"+
+				"Error= %v\n",
+				ePrefix,
+				err.Error())
+	}
 
-  d2 := new(Decimal).New()
+	d2 := new(Decimal).New()
 
-  bINum2, err := dec.bigINum.CopyOut()
+	bINum2, err := dec.bigINum.CopyOut()
 
-  if err != nil {
+	if err != nil {
 
-    return Decimal{},
-      fmt.Errorf("%v\n"+
-        "Error returned by: \n"+
-        " bINum2, err := dec.bigINum.CopyOut()\n"+
-        "Error= %v\n",
-        ePrefix,
-        err.Error())
-  }
+		return Decimal{},
+			fmt.Errorf("%v\n"+
+				"Error returned by: \n"+
+				" bINum2, err := dec.bigINum.CopyOut()\n"+
+				"Error= %v\n",
+				ePrefix,
+				err.Error())
+	}
 
-  err = d2.SetBigIntNum(bINum2)
+	err = d2.SetBigIntNum(bINum2)
 
-  if err != nil {
+	if err != nil {
 
-    return Decimal{},
-      fmt.Errorf("%v\n"+
-        "Error returned by: \n"+
-        " err = d2.SetBigIntNum(bINum2)\n"+
-        "Error= %v\n",
-        ePrefix,
-        err.Error())
-  }
+		return Decimal{},
+			fmt.Errorf("%v\n"+
+				"Error returned by: \n"+
+				" err = d2.SetBigIntNum(bINum2)\n"+
+				"Error= %v\n",
+				ePrefix,
+				err.Error())
+	}
 
-  return d2, nil
+	return d2, nil
 }
 
 // Cmp - Performs a comparison of two Decimal numeric values
@@ -648,37 +648,37 @@ func (dec *Decimal) CopyOut() (Decimal, error) {
 // dec < 	dec2							Return -1
 func (dec *Decimal) Cmp(dec2 Decimal) (int, error) {
 
-  ePrefix := "Decimal.Cmp()"
+	ePrefix := "Decimal.Cmp()"
 
-  err := dec.bigINum.IsValid(ePrefix)
+	err := dec.bigINum.IsValid(ePrefix)
 
-  if err != nil {
+	if err != nil {
 
-    return -99,
-      fmt.Errorf("%v\n"+
-        "Current instance of Decimal (dec) is INVALID!\n"+
-        "Validation Error on Decimal instance 'dec'.\n"+
-        "Error returned by: \n"+
-        " err := dec.bigINum.IsValid(ePrefix)\n"+
-        "Error= %v\n",
-        ePrefix,
-        err.Error())
-  }
+		return -99,
+			fmt.Errorf("%v\n"+
+				"Current instance of Decimal (dec) is INVALID!\n"+
+				"Validation Error on Decimal instance 'dec'.\n"+
+				"Error returned by: \n"+
+				" err := dec.bigINum.IsValid(ePrefix)\n"+
+				"Error= %v\n",
+				ePrefix,
+				err.Error())
+	}
 
-  cmpResult, err := dec.bigINum.Cmp(dec2.bigINum)
+	cmpResult, err := dec.bigINum.Cmp(dec2.bigINum)
 
-  if err != nil {
+	if err != nil {
 
-    return -99,
-      fmt.Errorf("%v\n"+
-        "Error returned by: \n"+
-        " cmpResult, err := dec.bigINum.Cmp(dec2.bigINum)\n"+
-        "Error= %v\n",
-        ePrefix,
-        err.Error())
-  }
+		return -99,
+			fmt.Errorf("%v\n"+
+				"Error returned by: \n"+
+				" cmpResult, err := dec.bigINum.Cmp(dec2.bigINum)\n"+
+				"Error= %v\n",
+				ePrefix,
+				err.Error())
+	}
 
-  return cmpResult, nil
+	return cmpResult, nil
 }
 
 // CubeRoot - Returns a Decimal instance with a numeric value equal to the
@@ -692,68 +692,68 @@ func (dec *Decimal) Cmp(dec2 Decimal) (int, error) {
 // copied from the current Decimal instance (dec).
 func (dec *Decimal) CubeRoot(maxPrecision uint) (Decimal, error) {
 
-  ePrefix := "Decimal.CubeRoot() "
+	ePrefix := "Decimal.CubeRoot() "
 
-  err := dec.bigINum.IsValid(ePrefix + "Current Decimal instance is INVALID! ")
+	err := dec.bigINum.IsValid(ePrefix + "Current Decimal instance is INVALID! ")
 
-  if err != nil {
+	if err != nil {
 
-    return Decimal{},
-      fmt.Errorf("%v\n"+
-        "Current instance of Decimal (dec) is INVALID!\n"+
-        "Validation Error on Decimal instance 'dec'.\n"+
-        "Error returned by: \n"+
-        " err := dec.bigINum.IsValid(ePrefix)\n"+
-        "Error= %v\n",
-        ePrefix,
-        err.Error())
-  }
+		return Decimal{},
+			fmt.Errorf("%v\n"+
+				"Current instance of Decimal (dec) is INVALID!\n"+
+				"Validation Error on Decimal instance 'dec'.\n"+
+				"Error returned by: \n"+
+				" err := dec.bigINum.IsValid(ePrefix)\n"+
+				"Error= %v\n",
+				ePrefix,
+				err.Error())
+	}
 
-  bINumThree, err := new(BigIntNum).NewThree(0)
+	bINumThree, err := new(BigIntNum).NewThree(0)
 
-  if err != nil {
+	if err != nil {
 
-    return Decimal{},
-      fmt.Errorf("%v\n"+
-        "Error returned by: \n"+
-        " bINumThree, err := new(BigIntNum).NewThree(0)\n"+
-        "Error= %v\n",
-        ePrefix,
-        err.Error())
-  }
+		return Decimal{},
+			fmt.Errorf("%v\n"+
+				"Error returned by: \n"+
+				" bINumThree, err := new(BigIntNum).NewThree(0)\n"+
+				"Error= %v\n",
+				ePrefix,
+				err.Error())
+	}
 
-  decCubeRoot := new(Decimal).New()
+	decCubeRoot := new(Decimal).New()
 
-  decCubeRoot.bigINum, err =
-    new(BigIntMathNthRoot).GetNthRoot(dec.bigINum, bINumThree, maxPrecision)
+	decCubeRoot.bigINum, err =
+		new(BigIntMathNthRoot).GetNthRoot(dec.bigINum, bINumThree, maxPrecision)
 
-  if err != nil {
+	if err != nil {
 
-    return Decimal{},
-      fmt.Errorf("%v\n"+
-        "Error returned by: \n"+
-        " decCubeRoot.bigINum, err = BigIntMathNthRoot{}.GetNthRoot(dec.bigINum, bINumThree, maxPrecision)\n"+
-        "Error= %v\n",
-        ePrefix,
-        err.Error())
-  }
+		return Decimal{},
+			fmt.Errorf("%v\n"+
+				"Error returned by: \n"+
+				" decCubeRoot.bigINum, err = BigIntMathNthRoot{}.GetNthRoot(dec.bigINum, bINumThree, maxPrecision)\n"+
+				"Error= %v\n",
+				ePrefix,
+				err.Error())
+	}
 
-  err = decCubeRoot.IsValid(ePrefix + "decCubeRoot INVALID! ")
+	err = decCubeRoot.IsValid(ePrefix + "decCubeRoot INVALID! ")
 
-  if err != nil {
+	if err != nil {
 
-    return Decimal{},
-      fmt.Errorf("%v\n"+
-        "Result value 'decCubeRoot' (type Decimal) is INVALID!\n"+
-        "Validation Error on Decimal instance 'decCubeRoot'.\n"+
-        "Error returned by: \n"+
-        " err = decCubeRoot.IsValid(ePrefix + \"decCubeRoot INVALID! \")\n"+
-        "Error= %v\n",
-        ePrefix,
-        err.Error())
-  }
+		return Decimal{},
+			fmt.Errorf("%v\n"+
+				"Result value 'decCubeRoot' (type Decimal) is INVALID!\n"+
+				"Validation Error on Decimal instance 'decCubeRoot'.\n"+
+				"Error returned by: \n"+
+				" err = decCubeRoot.IsValid(ePrefix + \"decCubeRoot INVALID! \")\n"+
+				"Error= %v\n",
+				ePrefix,
+				err.Error())
+	}
 
-  return decCubeRoot, nil
+	return decCubeRoot, nil
 }
 
 // Divide - Divides the current decimal value by the input parameter 'divisor'
@@ -764,91 +764,91 @@ func (dec *Decimal) CubeRoot(maxPrecision uint) (Decimal, error) {
 // and currency symbol) copied from the current Decimal instance (dec).
 func (dec *Decimal) Divide(divisor Decimal, maxPrecision uint) (Decimal, error) {
 
-  var ePrefix *ePref.ErrPrefixDto
-  var err error
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewIEmpty(
-    nil,
-    "Decimal.Divide()",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"Decimal.Divide()",
+		"")
 
-  if err != nil {
-    return Decimal{}, err
-  }
+	if err != nil {
+		return Decimal{}, err
+	}
 
-  err = dec.bigINum.IsValid(ePrefix.XCpy("Validating 'dec'").String())
+	err = dec.bigINum.IsValid(ePrefix.XCpy("Validating 'dec'").String())
 
-  if err != nil {
+	if err != nil {
 
-    return Decimal{},
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "err = dec.bigINum.IsValid(ePrefix.XCpy(\"Validating 'dec'\").String())",
-        ErrContext: "Current instance of Decimal (dec) is INVALID!\n" +
-          "Validation Error on Decimal instance 'dec'.",
-        ErrMessage: err.Error(),
-      }
-  }
+		return Decimal{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "err = dec.bigINum.IsValid(ePrefix.XCpy(\"Validating 'dec'\").String())",
+				ErrContext: "Current instance of Decimal (dec) is INVALID!\n" +
+					"Validation Error on Decimal instance 'dec'.",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  err = divisor.IsValid(ePrefix.XCpy("Validating input param 'divisor'").String())
+	err = divisor.IsValid(ePrefix.XCpy("Validating input param 'divisor'").String())
 
-  if err != nil {
+	if err != nil {
 
-    return Decimal{},
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "err = divisor.IsValid(ePrefix.XCpy(\"Validating input param 'divisor'\").String())",
-        ErrContext: "Input parameter 'divisor' (type Decimal) is INVALID!\n" +
-          "Validation Error on Decimal instance 'divisor'.",
-        ErrMessage: err.Error(),
-      }
-  }
+		return Decimal{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "err = divisor.IsValid(ePrefix.XCpy(\"Validating input param 'divisor'\").String())",
+				ErrContext: "Input parameter 'divisor' (type Decimal) is INVALID!\n" +
+					"Validation Error on Decimal instance 'divisor'.",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  numSeps, err := dec.bigINum.GetNumericSeparatorsDto()
+	numSeps, err := dec.bigINum.GetNumericSeparatorsDto()
 
-  if err != nil {
+	if err != nil {
 
-    return Decimal{},
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "numSeps, err := dec.bigINum.GetNumericSeparatorsDto()",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-  }
+		return Decimal{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "numSeps, err := dec.bigINum.GetNumericSeparatorsDto()",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  d2Quotient := new(Decimal).New()
+	d2Quotient := new(Decimal).New()
 
-  d2Quotient.bigINum, err =
-    new(BigIntMathDivide).BigIntNumFracQuotient(dec.bigINum, divisor.bigINum, numSeps, maxPrecision)
+	d2Quotient.bigINum, err =
+		new(BigIntMathDivide).BigIntNumFracQuotient(dec.bigINum, divisor.bigINum, numSeps, maxPrecision)
 
-  if err != nil {
+	if err != nil {
 
-    return Decimal{},
-      fmt.Errorf("%v\n"+
-        "Error returned by: \n"+
-        " d2Quotient.bigINum, err = new(BigIntMathDivide).BigIntNumFracQuotient(dec.bigINum, divisor.bigINum, maxPrecision)\n"+
-        "Error= %v\n",
-        ePrefix,
-        err.Error())
-  }
+		return Decimal{},
+			fmt.Errorf("%v\n"+
+				"Error returned by: \n"+
+				" d2Quotient.bigINum, err = new(BigIntMathDivide).BigIntNumFracQuotient(dec.bigINum, divisor.bigINum, maxPrecision)\n"+
+				"Error= %v\n",
+				ePrefix,
+				err.Error())
+	}
 
-  err = d2Quotient.IsValid(ePrefix.XCpy("Validating d2Quotient").String())
+	err = d2Quotient.IsValid(ePrefix.XCpy("Validating d2Quotient").String())
 
-  if err != nil {
+	if err != nil {
 
-    return Decimal{},
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "err = d2Quotient.IsValid(ePrefix.XCpy(\"Validating d2Quotient\").String())",
-        ErrContext: "Intermediate variable 'd2Quotient' (type Decimal) is INVALID!\n" +
-          "Validation Error on Decimal instance 'd2Quotient'.",
-        ErrMessage: err.Error(),
-      }
-  }
+		return Decimal{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "err = d2Quotient.IsValid(ePrefix.XCpy(\"Validating d2Quotient\").String())",
+				ErrContext: "Intermediate variable 'd2Quotient' (type Decimal) is INVALID!\n" +
+					"Validation Error on Decimal instance 'd2Quotient'.",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  return d2Quotient, nil
+	return d2Quotient, nil
 }
 
 // Equal - Returns true if the input Decimal instance is equal
@@ -862,7 +862,7 @@ func (dec *Decimal) Divide(divisor Decimal, maxPrecision uint) (Decimal, error) 
 // Decimal{}.EqualValue() below.
 func (dec *Decimal) Equal(dec2 Decimal) (bool, error) {
 
-  return dec.bigINum.Equal(dec2.bigINum)
+	return dec.bigINum.Equal(dec2.bigINum)
 }
 
 // EqualValue - Returns 'true' if the input Decimal instance holds
@@ -870,30 +870,30 @@ func (dec *Decimal) Equal(dec2 Decimal) (bool, error) {
 // instance.
 func (dec *Decimal) EqualValue(dec2 Decimal) (bool, error) {
 
-  ePrefix := "Decimal.EqualValue()"
+	ePrefix := "Decimal.EqualValue()"
 
-  areEqual, err := dec.bigINum.EqualValue(dec2.bigINum)
+	areEqual, err := dec.bigINum.EqualValue(dec2.bigINum)
 
-  if err != nil {
-    return false,
-      fmt.Errorf("%v\n"+
-        "Error returned by: \n"+
-        " areEqual, err := dec.bigINum.EqualValue(dec2.bigINum)\n"+
-        "Error= %v\n",
-        ePrefix,
-        err.Error())
-  }
+	if err != nil {
+		return false,
+			fmt.Errorf("%v\n"+
+				"Error returned by: \n"+
+				" areEqual, err := dec.bigINum.EqualValue(dec2.bigINum)\n"+
+				"Error= %v\n",
+				ePrefix,
+				err.Error())
+	}
 
-  return areEqual, nil
+	return areEqual, nil
 }
 
 // Empty - Sets all values of the current Decimal's
 // fields to their 'zero' values.
 func (dec *Decimal) Empty() {
 
-  new(bigIntNumElectron).empty(&dec.bigINum)
+	new(bigIntNumElectron).empty(&dec.bigINum)
 
-  return
+	return
 }
 
 // GetAbsoluteValue - returns the absolute value of the
@@ -901,35 +901,35 @@ func (dec *Decimal) Empty() {
 // '-123.456', this method will return '123.456'.
 func (dec *Decimal) GetAbsoluteValue() (Decimal, error) {
 
-  ePrefix := "Decimal.GetAbsoluteValue()"
+	ePrefix := "Decimal.GetAbsoluteValue()"
 
-  bi2, err := dec.bigINum.GetAbsoluteBigIntNumValue()
+	bi2, err := dec.bigINum.GetAbsoluteBigIntNumValue()
 
-  if err != nil {
+	if err != nil {
 
-    return Decimal{},
-      &FuncReturnError{
-        ErrPrefix:  ePrefix,
-        ReturnFunc: "bi2, err := dec.bigINum.GetAbsoluteBigIntNumValue()",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-  }
+		return Decimal{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix,
+				ReturnFunc: "bi2, err := dec.bigINum.GetAbsoluteBigIntNumValue()",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  bi3, err := new(Decimal).NewBigIntNum(bi2)
+	bi3, err := new(Decimal).NewBigIntNum(bi2)
 
-  if err != nil {
+	if err != nil {
 
-    return Decimal{},
-      &FuncReturnError{
-        ErrPrefix:  ePrefix,
-        ReturnFunc: "bi3, err := new(Decimal).NewBigIntNum(bi2)",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-  }
+		return Decimal{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix,
+				ReturnFunc: "bi3, err := new(Decimal).NewBigIntNum(bi2)",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  return bi3, nil
+	return bi3, nil
 }
 
 // GetAbsoluteAllDigitsStr - Returns the absolute value of the Decimal integer.
@@ -938,156 +938,156 @@ func (dec *Decimal) GetAbsoluteValue() (Decimal, error) {
 // is '-123.456', this method will return '123456'.
 func (dec *Decimal) GetAbsoluteAllDigitsStr() (string, error) {
 
-  ePrefix := "Decimal.GetAbsoluteAllDigitsStr()"
+	ePrefix := "Decimal.GetAbsoluteAllDigitsStr()"
 
-  err := dec.bigINum.IsValid(ePrefix)
+	err := dec.bigINum.IsValid(ePrefix)
 
-  if err != nil {
+	if err != nil {
 
-    return "",
-      fmt.Errorf("%v\n"+
-        "Current instance of Decimal (dec) is INVALID!\n"+
-        "Validation Error on Decimal instance 'dec'.\n"+
-        "Error returned by: \n"+
-        " err := dec.bigINum.IsValid(ePrefix)\n"+
-        "Error= %v\n",
-        ePrefix,
-        err.Error())
-  }
+		return "",
+			fmt.Errorf("%v\n"+
+				"Current instance of Decimal (dec) is INVALID!\n"+
+				"Validation Error on Decimal instance 'dec'.\n"+
+				"Error returned by: \n"+
+				" err := dec.bigINum.IsValid(ePrefix)\n"+
+				"Error= %v\n",
+				ePrefix,
+				err.Error())
+	}
 
-  numStr, err := dec.bigINum.FormatNumStr(ABSOLUTEPURENUMSTRFMTMODE)
+	numStr, err := dec.bigINum.FormatNumStr(ABSOLUTEPURENUMSTRFMTMODE)
 
-  if err != nil {
+	if err != nil {
 
-    return "",
-      fmt.Errorf("%v\n"+
-        "Error returned by: \n"+
-        " numStr, err := dec.bigINum.FormatNumStr(ABSOLUTEPURENUMSTRFMTMODE)\n"+
-        "Error= %v\n",
-        ePrefix,
-        err.Error())
-  }
+		return "",
+			fmt.Errorf("%v\n"+
+				"Error returned by: \n"+
+				" numStr, err := dec.bigINum.FormatNumStr(ABSOLUTEPURENUMSTRFMTMODE)\n"+
+				"Error= %v\n",
+				ePrefix,
+				err.Error())
+	}
 
-  return numStr, nil
+	return numStr, nil
 }
 
 // GetBigFloat - returns big Float representation of the Decimal Value.
 func (dec *Decimal) GetBigFloat() (*big.Float, error) {
 
-  var ePrefix *ePref.ErrPrefixDto
-  var err error
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewIEmpty(
-    nil,
-    "Decimal.GetBigFloat()",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"Decimal.GetBigFloat()",
+		"")
 
-  if err != nil {
-    return big.NewFloat(0.0), err
-  }
+	if err != nil {
+		return big.NewFloat(0.0), err
+	}
 
-  err = dec.bigINum.IsValid(ePrefix.XCpy("Validating 'dec'").String())
+	err = dec.bigINum.IsValid(ePrefix.XCpy("Validating 'dec'").String())
 
-  if err != nil {
+	if err != nil {
 
-    return big.NewFloat(0.0),
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "err = dec.bigINum.IsValid(ePrefix.XCpy(\"Validating 'dec'\").String())",
-        ErrContext: "Current instance of Decimal (dec) is INVALID!\n" +
-          "Validation Error on Decimal instance 'dec'.",
-        ErrMessage: err.Error(),
-      }
-  }
+		return big.NewFloat(0.0),
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "err = dec.bigINum.IsValid(ePrefix.XCpy(\"Validating 'dec'\").String())",
+				ErrContext: "Current instance of Decimal (dec) is INVALID!\n" +
+					"Validation Error on Decimal instance 'dec'.",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  bigFloat, err := dec.bigINum.GetBigFloat()
+	bigFloat, err := dec.bigINum.GetBigFloat()
 
-  if err != nil {
+	if err != nil {
 
-    return big.NewFloat(0.0),
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "bigFloat, err := dec.bigINum.GetBigFloat()",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-  }
+		return big.NewFloat(0.0),
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "bigFloat, err := dec.bigINum.GetBigFloat()",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  return bigFloat, nil
+	return bigFloat, nil
 }
 
 // GetBigFloatString - returns a signed number string which is accurate out
 // to a large number of decimal places.
 func (dec *Decimal) GetBigFloatString(precision uint) (string, error) {
 
-  var ePrefix *ePref.ErrPrefixDto
-  var err error
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewIEmpty(
-    nil,
-    "Decimal.GetBigFloatString()",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"Decimal.GetBigFloatString()",
+		"")
 
-  if err != nil {
-    return "", err
-  }
+	if err != nil {
+		return "", err
+	}
 
-  err = dec.bigINum.IsValid(ePrefix.XCpy("Validating 'dec'").String())
+	err = dec.bigINum.IsValid(ePrefix.XCpy("Validating 'dec'").String())
 
-  if err != nil {
+	if err != nil {
 
-    return "",
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "err = dec.bigINum.IsValid(ePrefix.XCpy(\"Validating 'dec'\").String())",
-        ErrContext: "Current instance of Decimal (dec) is INVALID!\n" +
-          "Validation Error on Decimal instance 'dec'.",
-        ErrMessage: err.Error(),
-      }
-  }
+		return "",
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "err = dec.bigINum.IsValid(ePrefix.XCpy(\"Validating 'dec'\").String())",
+				ErrContext: "Current instance of Decimal (dec) is INVALID!\n" +
+					"Validation Error on Decimal instance 'dec'.",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  biNum2, err := dec.bigINum.CopyOut()
+	biNum2, err := dec.bigINum.CopyOut()
 
-  if err != nil {
+	if err != nil {
 
-    return "",
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "biNum2, err := dec.bigINum.CopyOut()",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-  }
+		return "",
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "biNum2, err := dec.bigINum.CopyOut()",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  err = biNum2.SetPrecision(precision)
+	err = biNum2.SetPrecision(precision)
 
-  if err != nil {
+	if err != nil {
 
-    return "",
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "err = biNum2.SetPrecision(precision)",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-  }
+		return "",
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "err = biNum2.SetPrecision(precision)",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  biNum2NumStr, err := biNum2.GetNumStr()
+	biNum2NumStr, err := biNum2.GetNumStr()
 
-  if err != nil {
+	if err != nil {
 
-    return "",
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "biNum2NumStr, err := biNum2.GetNumStr()",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-  }
+		return "",
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "biNum2NumStr, err := biNum2.GetNumStr()",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  return biNum2NumStr, nil
+	return biNum2NumStr, nil
 }
 
 // GetBigInt - returns the Decimal value expressed as an
@@ -1098,25 +1098,25 @@ func (dec *Decimal) GetBigFloatString(precision uint) (string, error) {
 // GetScaleVal() below.
 func (dec *Decimal) GetBigInt() (*big.Int, error) {
 
-  ePrefix := "Decimal.GetBigInt() "
+	ePrefix := "Decimal.GetBigInt() "
 
-  err := dec.bigINum.IsValid(ePrefix)
+	err := dec.bigINum.IsValid(ePrefix)
 
-  if err != nil {
-    return big.NewInt(0),
-      fmt.Errorf(ePrefix+"This Decimal object is INVALID! Please re-initialize. "+
-        "Error='%v' ", err.Error())
-  }
+	if err != nil {
+		return big.NewInt(0),
+			fmt.Errorf(ePrefix+"This Decimal object is INVALID! Please re-initialize. "+
+				"Error='%v' ", err.Error())
+	}
 
-  bInt, err := dec.bigINum.GetBigInt()
+	bInt, err := dec.bigINum.GetBigInt()
 
-  if err != nil {
-    return big.NewInt(0),
-      fmt.Errorf(ePrefix+"Error returned by dec.bigINum.GetBigInt() "+
-        "Error='%v' ", err.Error())
-  }
+	if err != nil {
+		return big.NewInt(0),
+			fmt.Errorf(ePrefix+"Error returned by dec.bigINum.GetBigInt() "+
+				"Error='%v' ", err.Error())
+	}
 
-  return bInt, nil
+	return bInt, nil
 }
 
 // GetBigIntNum - Converts the current Decimal numeric value to
@@ -1130,84 +1130,84 @@ func (dec *Decimal) GetBigInt() (*big.Int, error) {
 // This method performs a validity test on the current Decimal instance.
 func (dec *Decimal) GetBigIntNum() (BigIntNum, error) {
 
-  ePrefix := "Decimal.GetBigIntNum()"
+	ePrefix := "Decimal.GetBigIntNum()"
 
-  err := dec.bigINum.IsValid(ePrefix + "Decimal INVALID! ")
+	err := dec.bigINum.IsValid(ePrefix + "Decimal INVALID! ")
 
-  if err != nil {
+	if err != nil {
 
-    return BigIntNum{},
-      fmt.Errorf("%v\n"+
-        "Current instance of Decimal (dec) is INVALID!\n"+
-        "Validation Error on Decimal instance 'dec'.\n"+
-        "Error returned by: \n"+
-        " err := dec.bigINum.IsValid(ePrefix + \"Decimal INVALID! \")\n"+
-        "Error= %v\n",
-        ePrefix,
-        err.Error())
+		return BigIntNum{},
+			fmt.Errorf("%v\n"+
+				"Current instance of Decimal (dec) is INVALID!\n"+
+				"Validation Error on Decimal instance 'dec'.\n"+
+				"Error returned by: \n"+
+				" err := dec.bigINum.IsValid(ePrefix + \"Decimal INVALID! \")\n"+
+				"Error= %v\n",
+				ePrefix,
+				err.Error())
 
-  }
+	}
 
-  bigIntNum2, err := dec.bigINum.CopyOut()
+	bigIntNum2, err := dec.bigINum.CopyOut()
 
-  if err != nil {
+	if err != nil {
 
-    return BigIntNum{},
-      fmt.Errorf("%v\n"+
-        "Error returned by: \n"+
-        " bigIntNum2, err := dec.bigINum.CopyOut()\n"+
-        "Error= %v\n",
-        ePrefix,
-        err.Error())
-  }
+		return BigIntNum{},
+			fmt.Errorf("%v\n"+
+				"Error returned by: \n"+
+				" bigIntNum2, err := dec.bigINum.CopyOut()\n"+
+				"Error= %v\n",
+				ePrefix,
+				err.Error())
+	}
 
-  return bigIntNum2, nil
+	return bigIntNum2, nil
 }
 
 // GetBigRat - Returns the current Decimal's numeric value expressed
 // as a rational number of type *big.Rat.
 func (dec *Decimal) GetBigRat() (*big.Rat, error) {
 
-  var ePrefix *ePref.ErrPrefixDto
-  var err error
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewIEmpty(
-    nil,
-    "BigIntNum.NewNumStrWithNumSeps()",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"BigIntNum.NewNumStrWithNumSeps()",
+		"")
 
-  if err != nil {
-    return big.NewRat(1, 1), err
-  }
+	if err != nil {
+		return big.NewRat(1, 1), err
+	}
 
-  err = dec.bigINum.IsValid(ePrefix.XCpy("Validating 'dec'").String())
+	err = dec.bigINum.IsValid(ePrefix.XCpy("Validating 'dec'").String())
 
-  if err != nil {
+	if err != nil {
 
-    return big.NewRat(1, 1),
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "err = dec.bigINum.IsValid(ePrefix.XCpy(\"Validating 'dec'\").String())",
-        ErrContext: "Error: Current instance of Decimal (dec) is INVALID!",
-        ErrMessage: err.Error(),
-      }
-  }
+		return big.NewRat(1, 1),
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "err = dec.bigINum.IsValid(ePrefix.XCpy(\"Validating 'dec'\").String())",
+				ErrContext: "Error: Current instance of Decimal (dec) is INVALID!",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  decBigRat, err := dec.bigINum.GetBigRat()
+	decBigRat, err := dec.bigINum.GetBigRat()
 
-  if err != nil {
+	if err != nil {
 
-    return big.NewRat(1, 1),
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "decBigRat, err := dec.bigINum.GetBigRat()",
-        ErrContext: "Error: Current instance of Decimal (dec) is INVALID!",
-        ErrMessage: err.Error(),
-      }
-  }
+		return big.NewRat(1, 1),
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "decBigRat, err := dec.bigINum.GetBigRat()",
+				ErrContext: "Error: Current instance of Decimal (dec) is INVALID!",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  return decBigRat, nil
+	return decBigRat, nil
 }
 
 // GetCurrencySymbol - Returns the Decimal's current
@@ -1222,33 +1222,33 @@ func (dec *Decimal) GetBigRat() (*big.Rat, error) {
 // ('$').
 func (dec *Decimal) GetCurrencySymbol() (rune, error) {
 
-  var ePrefix *ePref.ErrPrefixDto
-  var err error
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewIEmpty(
-    nil,
-    "Decimal.GetCurrencySymbol()",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"Decimal.GetCurrencySymbol()",
+		"")
 
-  if err != nil {
-    return 0, err
-  }
+	if err != nil {
+		return 0, err
+	}
 
-  currencySymbol, err := dec.bigINum.GetCurrencySymbol()
+	currencySymbol, err := dec.bigINum.GetCurrencySymbol()
 
-  if err != nil {
+	if err != nil {
 
-    return 0,
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "currencySymbol, err := dec.bigINum.GetCurrencySymbol()",
-        ErrContext: "Error: Current instance of Decimal (dec) is INVALID!",
-        ErrMessage: err.Error(),
-      }
-  }
+		return 0,
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "currencySymbol, err := dec.bigINum.GetCurrencySymbol()",
+				ErrContext: "Error: Current instance of Decimal (dec) is INVALID!",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  return currencySymbol, nil
+	return currencySymbol, nil
 }
 
 // GetCurrencyStr - Returns the Decimal's numeric value expressed
@@ -1278,22 +1278,22 @@ func (dec *Decimal) GetCurrencySymbol() (rune, error) {
 // returns an empty string.
 func (dec *Decimal) GetCurrencyStr() (string, error) {
 
-  ePrefix := "Decimal.GetCurrencyStr()"
+	ePrefix := "Decimal.GetCurrencyStr()"
 
-  currencyStr, err := dec.bigINum.FormatCurrencyStr(LEADMINUSNEGVALFMTMODE)
+	currencyStr, err := dec.bigINum.FormatCurrencyStr(LEADMINUSNEGVALFMTMODE)
 
-  if err != nil {
+	if err != nil {
 
-    return "",
-      fmt.Errorf("%v\n"+
-        "Error returned by: \n"+
-        " currencyStr, err := dec.bigINum.FormatCurrencyStr(LEADMINUSNEGVALFMTMODE)\n"+
-        "Error= %v\n",
-        ePrefix,
-        err.Error())
-  }
+		return "",
+			fmt.Errorf("%v\n"+
+				"Error returned by: \n"+
+				" currencyStr, err := dec.bigINum.FormatCurrencyStr(LEADMINUSNEGVALFMTMODE)\n"+
+				"Error= %v\n",
+				ePrefix,
+				err.Error())
+	}
 
-  return currencyStr, nil
+	return currencyStr, nil
 }
 
 // GetCurrencyParen - Returns the Decimal's numeric value expressed
@@ -1322,7 +1322,7 @@ func (dec *Decimal) GetCurrencyStr() (string, error) {
 // Note: If the current Decimal is invalid, this method
 // returns an empty string.
 func (dec *Decimal) GetCurrencyParen() (string, error) {
-  return dec.bigINum.FormatCurrencyStr(PARENTHESESNEGVALFMTMODE)
+	return dec.bigINum.FormatCurrencyStr(PARENTHESESNEGVALFMTMODE)
 }
 
 // GetDecimal - Returns a deep copy of the current Decimal instance.
@@ -1334,71 +1334,71 @@ func (dec *Decimal) GetCurrencyParen() (string, error) {
 // This method performs a validity test on the current Decimal instance.
 func (dec *Decimal) GetDecimal() (Decimal, error) {
 
-  ePrefix := "Decimal.GetDecimal()"
+	ePrefix := "Decimal.GetDecimal()"
 
-  err := dec.bigINum.IsValid(ePrefix + "Decimal INVALID! ")
+	err := dec.bigINum.IsValid(ePrefix + "Decimal INVALID! ")
 
-  if err != nil {
+	if err != nil {
 
-    return Decimal{},
-      fmt.Errorf("%v\n"+
-        "Current instance of Decimal (dec) is INVALID!\n"+
-        "Validation Error on Decimal instance 'dec'.\n"+
-        "Error returned by: \n"+
-        " err := dec.bigINum.IsValid(ePrefix + \"Decimal INVALID! \")\n"+
-        "Error= %v\n",
-        ePrefix,
-        err.Error())
+		return Decimal{},
+			fmt.Errorf("%v\n"+
+				"Current instance of Decimal (dec) is INVALID!\n"+
+				"Validation Error on Decimal instance 'dec'.\n"+
+				"Error returned by: \n"+
+				" err := dec.bigINum.IsValid(ePrefix + \"Decimal INVALID! \")\n"+
+				"Error= %v\n",
+				ePrefix,
+				err.Error())
 
-  }
+	}
 
-  dec2, err := dec.CopyOut()
+	dec2, err := dec.CopyOut()
 
-  if err != nil {
+	if err != nil {
 
-    return Decimal{},
-      fmt.Errorf("%v\n"+
-        "Error returned by: \n"+
-        " dec2, err := dec.CopyOut()\n"+
-        "Error= %v\n",
-        ePrefix,
-        err.Error())
-  }
+		return Decimal{},
+			fmt.Errorf("%v\n"+
+				"Error returned by: \n"+
+				" dec2, err := dec.CopyOut()\n"+
+				"Error= %v\n",
+				ePrefix,
+				err.Error())
+	}
 
-  return dec2, nil
+	return dec2, nil
 }
 
 // GetDecimalSeparator - returns the Decimal's current
 // value for Decimal Separator (i.e. '.')
 func (dec *Decimal) GetDecimalSeparator() (rune, error) {
 
-  var ePrefix *ePref.ErrPrefixDto
-  var err error
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewIEmpty(
-    nil,
-    "Decimal.GetDecimalSeparator()",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"Decimal.GetDecimalSeparator()",
+		"")
 
-  if err != nil {
-    return 0, err
-  }
+	if err != nil {
+		return 0, err
+	}
 
-  decDecimalSep, err := dec.bigINum.GetDecimalSeparator()
+	decDecimalSep, err := dec.bigINum.GetDecimalSeparator()
 
-  if err != nil {
+	if err != nil {
 
-    return 0,
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "decDecimalSep, err := dec.bigINum.GetDecimalSeparator()",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-  }
+		return 0,
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "decDecimalSep, err := dec.bigINum.GetDecimalSeparator()",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  return decDecimalSep, nil
+	return decDecimalSep, nil
 }
 
 // GetFloat32 - Returns the current value of the Decimal as a
@@ -1413,61 +1413,61 @@ func (dec *Decimal) GetDecimalSeparator() (rune, error) {
 //	Above Accuracy = +1
 func (dec *Decimal) GetFloat32() (float32, big.Accuracy, error) {
 
-  var ePrefix *ePref.ErrPrefixDto
-  var err error
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewIEmpty(
-    nil,
-    "Decimal.GetFloat32()",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"Decimal.GetFloat32()",
+		"")
 
-  if err != nil {
-    return float32(0.0), big.Accuracy(0), err
-  }
+	if err != nil {
+		return float32(0.0), big.Accuracy(0), err
+	}
 
-  err = dec.bigINum.IsValid(ePrefix.XCpy("Validating 'dec'").String())
+	err = dec.bigINum.IsValid(ePrefix.XCpy("Validating 'dec'").String())
 
-  if err != nil {
+	if err != nil {
 
-    return float32(0.0), big.Accuracy(0),
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "err = dec.bigINum.IsValid(ePrefix.XCpy(\"Validating 'dec'\").String())",
-        ErrContext: "The current instane of 'Decimal' is INVALID!",
-        ErrMessage: err.Error(),
-      }
-  }
+		return float32(0.0), big.Accuracy(0),
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "err = dec.bigINum.IsValid(ePrefix.XCpy(\"Validating 'dec'\").String())",
+				ErrContext: "The current instane of 'Decimal' is INVALID!",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  decBINumStr, err := dec.bigINum.GetNumStr()
+	decBINumStr, err := dec.bigINum.GetNumStr()
 
-  if err != nil {
+	if err != nil {
 
-    return float32(0.0), big.Accuracy(0),
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-  }
+		return float32(0.0), big.Accuracy(0),
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  bf, status := big.NewFloat(0.0).SetString(decBINumStr)
+	bf, status := big.NewFloat(0.0).SetString(decBINumStr)
 
-  if !status {
+	if !status {
 
-    return float32(0.0), big.Accuracy(0),
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "bf, status := big.NewFloat(0.0).SetString(decBINumStr)",
-        ErrContext: "'status' == false",
-        ErrMessage: fmt.Sprintf("SetString() Failed. NumStr= %v", decBINumStr),
-      }
-  }
+		return float32(0.0), big.Accuracy(0),
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "bf, status := big.NewFloat(0.0).SetString(decBINumStr)",
+				ErrContext: "'status' == false",
+				ErrMessage: fmt.Sprintf("SetString() Failed. NumStr= %v", decBINumStr),
+			}
+	}
 
-  f32, accuracy := bf.Float32()
+	f32, accuracy := bf.Float32()
 
-  return f32, accuracy, nil
+	return f32, accuracy, nil
 
 }
 
@@ -1483,62 +1483,62 @@ func (dec *Decimal) GetFloat32() (float32, big.Accuracy, error) {
 //	Above Accuracy = +1
 func (dec *Decimal) GetFloat64() (float64, big.Accuracy, error) {
 
-  var ePrefix *ePref.ErrPrefixDto
-  var err error
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewIEmpty(
-    nil,
-    "Decimal.GetFloat64()",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"Decimal.GetFloat64()",
+		"")
 
-  if err != nil {
-    return 0.0, big.Accuracy(0), err
-  }
+	if err != nil {
+		return 0.0, big.Accuracy(0), err
+	}
 
-  err = dec.bigINum.IsValid(ePrefix.XCpy("Validating 'dec'").String())
+	err = dec.bigINum.IsValid(ePrefix.XCpy("Validating 'dec'").String())
 
-  if err != nil {
+	if err != nil {
 
-    return 0.0, big.Accuracy(0),
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "err = dec.bigINum.IsValid(ePrefix.XCpy(\"Validating 'dec'\").String())",
-        ErrContext: "Current instance of Decimal (dec) is INVALID!\n" +
-          "Validation Error on Decimal instance 'dec'.",
-        ErrMessage: err.Error(),
-      }
-  }
+		return 0.0, big.Accuracy(0),
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "err = dec.bigINum.IsValid(ePrefix.XCpy(\"Validating 'dec'\").String())",
+				ErrContext: "Current instance of Decimal (dec) is INVALID!\n" +
+					"Validation Error on Decimal instance 'dec'.",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  decBigINumStr, err := dec.bigINum.GetNumStr()
+	decBigINumStr, err := dec.bigINum.GetNumStr()
 
-  if err != nil {
+	if err != nil {
 
-    return 0.0, big.Accuracy(0),
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "decBigINumStr, err := dec.bigINum.GetNumStr()",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-  }
+		return 0.0, big.Accuracy(0),
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "decBigINumStr, err := dec.bigINum.GetNumStr()",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  bf, status := big.NewFloat(0.0).SetString(decBigINumStr)
+	bf, status := big.NewFloat(0.0).SetString(decBigINumStr)
 
-  if !status {
+	if !status {
 
-    return 0.0, big.Accuracy(0),
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "bf, status := big.NewFloat(0.0).SetString(decBigINumStr)",
-        ErrContext: "'status'= false",
-        ErrMessage: fmt.Sprintf("SetString() Failed. NumStr= %v", decBigINumStr),
-      }
-  }
+		return 0.0, big.Accuracy(0),
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "bf, status := big.NewFloat(0.0).SetString(decBigINumStr)",
+				ErrContext: "'status'= false",
+				ErrMessage: fmt.Sprintf("SetString() Failed. NumStr= %v", decBigINumStr),
+			}
+	}
 
-  f64, accuracy := bf.Float64()
+	f64, accuracy := bf.Float64()
 
-  return f64, accuracy, nil
+	return f64, accuracy, nil
 }
 
 // GetIntAry - Returns an IntAry structure initialized
@@ -1549,37 +1549,37 @@ func (dec *Decimal) GetFloat64() (float64, big.Accuracy, error) {
 // from the current Decimal instance.
 func (dec *Decimal) GetIntAry() (IntAry, error) {
 
-  ePrefix := "Decimal.GetIntAryElements()"
+	ePrefix := "Decimal.GetIntAryElements()"
 
-  err := dec.bigINum.IsValid(ePrefix)
+	err := dec.bigINum.IsValid(ePrefix)
 
-  if err != nil {
+	if err != nil {
 
-    return IntAry{},
-      fmt.Errorf("%v\n"+
-        "Current instance of Decimal (dec) is INVALID!\n"+
-        "Validation Error on Decimal instance 'dec'.\n"+
-        "Error returned by: \n"+
-        " err := dec.bigINum.IsValid(ePrefix)\n"+
-        "Error= %v\n",
-        ePrefix,
-        err.Error())
-  }
+		return IntAry{},
+			fmt.Errorf("%v\n"+
+				"Current instance of Decimal (dec) is INVALID!\n"+
+				"Validation Error on Decimal instance 'dec'.\n"+
+				"Error returned by: \n"+
+				" err := dec.bigINum.IsValid(ePrefix)\n"+
+				"Error= %v\n",
+				ePrefix,
+				err.Error())
+	}
 
-  ia, err := dec.bigINum.GetIntAry()
+	ia, err := dec.bigINum.GetIntAry()
 
-  if err != nil {
+	if err != nil {
 
-    return IntAry{},
-      fmt.Errorf("%v\n"+
-        "Error returned by: \n"+
-        " ia, err := dec.bigINum.GetIntAry()\n"+
-        "Error= %v\n",
-        ePrefix,
-        err.Error())
-  }
+		return IntAry{},
+			fmt.Errorf("%v\n"+
+				"Error returned by: \n"+
+				" ia, err := dec.bigINum.GetIntAry()\n"+
+				"Error= %v\n",
+				ePrefix,
+				err.Error())
+	}
 
-  return ia, nil
+	return ia, nil
 }
 
 // GetNumericSeparatorsDto - returns a NumericSeparatorDto structure
@@ -1587,7 +1587,7 @@ func (dec *Decimal) GetIntAry() (IntAry, error) {
 // decimal point separator, thousands separator and currency symbol.
 func (dec *Decimal) GetNumericSeparatorsDto() (NumericSeparatorDto, error) {
 
-  return dec.bigINum.GetNumericSeparatorsDto()
+	return dec.bigINum.GetNumericSeparatorsDto()
 }
 
 // GetNumStr - Returns the internal value of the Decimal
@@ -1609,22 +1609,22 @@ func (dec *Decimal) GetNumericSeparatorsDto() (NumericSeparatorDto, error) {
 // -123456789.44
 func (dec *Decimal) GetNumStr() (string, error) {
 
-  ePrefix := "Decimal.GetNumStr()"
+	ePrefix := "Decimal.GetNumStr()"
 
-  numStr, err := dec.bigINum.FormatNumStr(LEADMINUSNEGVALFMTMODE)
+	numStr, err := dec.bigINum.FormatNumStr(LEADMINUSNEGVALFMTMODE)
 
-  if err != nil {
+	if err != nil {
 
-    return "",
-      fmt.Errorf("%v\n"+
-        "Error returned by: \n"+
-        " numStr, err := dec.bigINum.FormatNumStr(LEADMINUSNEGVALFMTMODE)\n"+
-        "Error= %v\n",
-        ePrefix,
-        err.Error())
-  }
+		return "",
+			fmt.Errorf("%v\n"+
+				"Error returned by: \n"+
+				" numStr, err := dec.bigINum.FormatNumStr(LEADMINUSNEGVALFMTMODE)\n"+
+				"Error= %v\n",
+				ePrefix,
+				err.Error())
+	}
 
-  return numStr, nil
+	return numStr, nil
 }
 
 // GetNumParen - Returns the internal value of the
@@ -1645,22 +1645,22 @@ func (dec *Decimal) GetNumStr() (string, error) {
 // (123.4)
 func (dec *Decimal) GetNumParen() (string, error) {
 
-  ePrefix := "Decimal.GetNumParen()"
+	ePrefix := "Decimal.GetNumParen()"
 
-  numStr, err := dec.bigINum.FormatNumStr(PARENTHESESNEGVALFMTMODE)
+	numStr, err := dec.bigINum.FormatNumStr(PARENTHESESNEGVALFMTMODE)
 
-  if err != nil {
+	if err != nil {
 
-    return "",
-      fmt.Errorf("%v\n"+
-        "Error returned by: \n"+
-        " numStr, err := dec.bigINum.FormatNumStr(PARENTHESESNEGVALFMTMODE)\n"+
-        "Error= %v\n",
-        ePrefix,
-        err.Error())
-  }
+		return "",
+			fmt.Errorf("%v\n"+
+				"Error returned by: \n"+
+				" numStr, err := dec.bigINum.FormatNumStr(PARENTHESESNEGVALFMTMODE)\n"+
+				"Error= %v\n",
+				ePrefix,
+				err.Error())
+	}
 
-  return numStr, nil
+	return numStr, nil
 }
 
 // GetNumStrDto - returns a NumStrDto structure initialized
@@ -1671,46 +1671,46 @@ func (dec *Decimal) GetNumParen() (string, error) {
 // instance.
 func (dec *Decimal) GetNumStrDto() (NumStrDto, error) {
 
-  var ePrefix *ePref.ErrPrefixDto
-  var err error
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewIEmpty(
-    nil,
-    "Decimal.GetNumStrDto()",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"Decimal.GetNumStrDto()",
+		"")
 
-  if err != nil {
-    return NumStrDto{}, err
-  }
+	if err != nil {
+		return NumStrDto{}, err
+	}
 
-  decBigINum, err := dec.bigINum.GetNumStr()
+	decBigINum, err := dec.bigINum.GetNumStr()
 
-  if err != nil {
+	if err != nil {
 
-    return NumStrDto{},
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "decBigINum, err := dec.bigINum.GetNumStr()",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-  }
+		return NumStrDto{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "decBigINum, err := dec.bigINum.GetNumStr()",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  nDto, err := dec.bigINum.GetNumStrDto()
+	nDto, err := dec.bigINum.GetNumStrDto()
 
-  if err != nil {
+	if err != nil {
 
-    return NumStrDto{},
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "nDto, err := dec.bigINum.GetNumStrDto()",
-        ErrContext: fmt.Sprintf("dec.bigINum= '%v'", decBigINum),
-        ErrMessage: err.Error(),
-      }
-  }
+		return NumStrDto{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "nDto, err := dec.bigINum.GetNumStrDto()",
+				ErrContext: fmt.Sprintf("dec.bigINum= '%v'", decBigINum),
+				ErrMessage: err.Error(),
+			}
+	}
 
-  return nDto, nil
+	return nDto, nil
 }
 
 // GetPrecision - returns the Decimal's current precision
@@ -1736,33 +1736,33 @@ func (dec *Decimal) GetNumStrDto() (NumStrDto, error) {
 //		123456								3								123.456
 func (dec *Decimal) GetPrecision() (int, error) {
 
-  var ePrefix *ePref.ErrPrefixDto
-  var err error
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewIEmpty(
-    nil,
-    "Decimal.GetPrecision()",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"Decimal.GetPrecision()",
+		"")
 
-  if err != nil {
-    return 0, err
-  }
+	if err != nil {
+		return 0, err
+	}
 
-  decBigINumIntPrecision, err := dec.bigINum.GetPrecisionInt()
+	decBigINumIntPrecision, err := dec.bigINum.GetPrecisionInt()
 
-  if err != nil {
+	if err != nil {
 
-    return 0,
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "decBigINumIntPrecision, err :=  dec.bigINum.GetPrecisionInt()",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-  }
+		return 0,
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "decBigINumIntPrecision, err :=  dec.bigINum.GetPrecisionInt()",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  return decBigINumIntPrecision, nil
+	return decBigINumIntPrecision, nil
 }
 
 // GetPrecisionUint - Returns precision as an
@@ -1784,20 +1784,20 @@ func (dec *Decimal) GetPrecision() (int, error) {
 //		123456								3								123.456
 func (dec *Decimal) GetPrecisionUint() (uint, error) {
 
-  ePrefix := "Decimal.GetPrecisionUint()"
+	ePrefix := "Decimal.GetPrecisionUint()"
 
-  precisionUint, err := dec.bigINum.GetPrecisionUint()
+	precisionUint, err := dec.bigINum.GetPrecisionUint()
 
-  if err != nil {
-    return 0, &FuncReturnError{
-      ErrPrefix:  ePrefix,
-      ReturnFunc: "precisionUint, err := dec.bigINum.GetPrecisionUint()",
-      ErrContext: "",
-      ErrMessage: err.Error(),
-    }
-  }
+	if err != nil {
+		return 0, &FuncReturnError{
+			ErrPrefix:  ePrefix,
+			ReturnFunc: "precisionUint, err := dec.bigINum.GetPrecisionUint()",
+			ErrContext: "",
+			ErrMessage: err.Error(),
+		}
+	}
 
-  return precisionUint, nil
+	return precisionUint, nil
 }
 
 // GetRational - returns a big Rational number type which
@@ -1807,44 +1807,44 @@ func (dec *Decimal) GetPrecisionUint() (uint, error) {
 // current value of the Decimal object.
 func (dec *Decimal) GetRational() (*big.Rat, error) {
 
-  ePrefix := "Decimal.GetRational()"
+	ePrefix := "Decimal.GetRational()"
 
-  err := dec.bigINum.IsValid(ePrefix)
+	err := dec.bigINum.IsValid(ePrefix)
 
-  if err != nil {
-    return big.NewRat(1, 1),
-      fmt.Errorf(ePrefix+"This Decimal object is INVALID! Please re-initialize. "+
-        "Error='%v' ", err.Error())
-  }
+	if err != nil {
+		return big.NewRat(1, 1),
+			fmt.Errorf(ePrefix+"This Decimal object is INVALID! Please re-initialize. "+
+				"Error='%v' ", err.Error())
+	}
 
-  x, err := dec.bigINum.GetBigInt()
+	x, err := dec.bigINum.GetBigInt()
 
-  if err != nil {
-    return big.NewRat(1, 1),
-      fmt.Errorf(ePrefix+"Error returned by dec.bigINum.GetBigInt() "+
-        "Error='%v' ", err.Error())
-  }
+	if err != nil {
+		return big.NewRat(1, 1),
+			fmt.Errorf(ePrefix+"Error returned by dec.bigINum.GetBigInt() "+
+				"Error='%v' ", err.Error())
+	}
 
-  decSignedAllDigitsBigInt := big.NewInt(0).Set(x)
+	decSignedAllDigitsBigInt := big.NewInt(0).Set(x)
 
-  rDividend := big.NewRat(1, 1).SetInt(decSignedAllDigitsBigInt)
+	rDividend := big.NewRat(1, 1).SetInt(decSignedAllDigitsBigInt)
 
-  decScaleFactor, err := dec.bigINum.GetScaleFactor()
+	decScaleFactor, err := dec.bigINum.GetScaleFactor()
 
-  if err != nil {
-    return big.NewRat(1, 1), &FuncReturnError{
-      ErrPrefix:  ePrefix,
-      ReturnFunc: "decScaleFactor, err := dec.bigINum.GetScaleFactor()",
-      ErrContext: "",
-      ErrMessage: err.Error(),
-    }
-  }
+	if err != nil {
+		return big.NewRat(1, 1), &FuncReturnError{
+			ErrPrefix:  ePrefix,
+			ReturnFunc: "decScaleFactor, err := dec.bigINum.GetScaleFactor()",
+			ErrContext: "",
+			ErrMessage: err.Error(),
+		}
+	}
 
-  rDivisor := big.NewRat(1, 1).SetInt(decScaleFactor)
+	rDivisor := big.NewRat(1, 1).SetInt(decScaleFactor)
 
-  rQuotient := big.NewRat(1, 1).Quo(rDividend, rDivisor)
+	rQuotient := big.NewRat(1, 1).Quo(rDividend, rDivisor)
 
-  return rQuotient, nil
+	return rQuotient, nil
 }
 
 // GetSign - Returns the sign of the current
@@ -1852,20 +1852,20 @@ func (dec *Decimal) GetRational() (*big.Rat, error) {
 // integers: +1 or -1.
 func (dec *Decimal) GetSign() (int, error) {
 
-  ePrefix := "Decimal.GetSign()"
+	ePrefix := "Decimal.GetSign()"
 
-  sign, err := dec.bigINum.GetSign()
+	sign, err := dec.bigINum.GetSign()
 
-  if err != nil {
-    return 0, &FuncReturnError{
-      ErrPrefix:  ePrefix,
-      ReturnFunc: "sign, err := dec.bigINum.GetSign()",
-      ErrContext: "",
-      ErrMessage: err.Error(),
-    }
-  }
+	if err != nil {
+		return 0, &FuncReturnError{
+			ErrPrefix:  ePrefix,
+			ReturnFunc: "sign, err := dec.bigINum.GetSign()",
+			ErrContext: "",
+			ErrMessage: err.Error(),
+		}
+	}
 
-  return sign, nil
+	return sign, nil
 }
 
 // GetRelevantPrecision - Returns an unsigned integer representing
@@ -1878,59 +1878,59 @@ func (dec *Decimal) GetSign() (int, error) {
 // there are no digits to the right of the decimal.
 func (dec *Decimal) GetRelevantPrecision() (uint, error) {
 
-  var ePrefix *ePref.ErrPrefixDto
-  var err error
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewIEmpty(
-    nil,
-    "BigIntNum.NewNumStrWithNumSeps()",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"BigIntNum.NewNumStrWithNumSeps()",
+		"")
 
-  if err != nil {
-    return 0, err
-  }
+	if err != nil {
+		return 0, err
+	}
 
-  bI2, err := dec.bigINum.CopyOut()
+	bI2, err := dec.bigINum.CopyOut()
 
-  if err != nil {
+	if err != nil {
 
-    return 0,
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "bI2, err := dec.bigINum.CopyOut()",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-  }
+		return 0,
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "bI2, err := dec.bigINum.CopyOut()",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  err = bI2.TrimTrailingFracZeros()
+	err = bI2.TrimTrailingFracZeros()
 
-  if err != nil {
+	if err != nil {
 
-    return 0,
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "err = bI2.TrimTrailingFracZeros()",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-  }
+		return 0,
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "err = bI2.TrimTrailingFracZeros()",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  bI2PrecisionUint, err := bI2.GetPrecisionUint()
+	bI2PrecisionUint, err := bI2.GetPrecisionUint()
 
-  if err != nil {
+	if err != nil {
 
-    return 0,
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "bI2PrecisionUint, err := bI2.GetPrecisionUint()",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-  }
+		return 0,
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "bI2PrecisionUint, err := bI2.GetPrecisionUint()",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  return bI2PrecisionUint, nil
+	return bI2PrecisionUint, nil
 }
 
 // GetScaleVal - Returns the scale value associated with this decimal value. The
@@ -1942,46 +1942,46 @@ func (dec *Decimal) GetRelevantPrecision() (uint, error) {
 // The return scale value is of type big integer (*big.Int)
 func (dec *Decimal) GetScaleVal() (*big.Int, error) {
 
-  var ePrefix *ePref.ErrPrefixDto
-  var err error
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewIEmpty(
-    nil,
-    "Decimal.GetScaleVal()",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"Decimal.GetScaleVal()",
+		"")
 
-  if err != nil {
-    return big.NewInt(0), err
-  }
+	if err != nil {
+		return big.NewInt(0), err
+	}
 
-  err = dec.bigINum.IsValid(ePrefix.XCpy("Validating 'dec'").String())
+	err = dec.bigINum.IsValid(ePrefix.XCpy("Validating 'dec'").String())
 
-  if err != nil {
+	if err != nil {
 
-    return big.NewInt(0),
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "err = dec.bigINum.IsValid(ePrefix.XCpy(\"Validating 'dec'\").String())",
-        ErrContext: "Error: The current instance of Decimal is INVALID!",
-        ErrMessage: err.Error(),
-      }
-  }
+		return big.NewInt(0),
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "err = dec.bigINum.IsValid(ePrefix.XCpy(\"Validating 'dec'\").String())",
+				ErrContext: "Error: The current instance of Decimal is INVALID!",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  decBigINumScaleFactor, err := dec.bigINum.GetScaleFactor()
+	decBigINumScaleFactor, err := dec.bigINum.GetScaleFactor()
 
-  if err != nil {
+	if err != nil {
 
-    return big.NewInt(0),
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "decBigINumScaleFactor, err := dec.bigINum.GetScaleFactor()",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-  }
+		return big.NewInt(0),
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "decBigINumScaleFactor, err := dec.bigINum.GetScaleFactor()",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  return decBigINumScaleFactor, nil
+	return decBigINumScaleFactor, nil
 }
 
 // GetSciNotationNumber - Converts the numeric value of the current
@@ -2008,33 +2008,33 @@ func (dec *Decimal) GetScaleVal() (*big.Int, error) {
 //	 										exponent    = '8'  (10^8)
 func (dec *Decimal) GetSciNotationNumber(mantissaLen uint) (SciNotationNum, error) {
 
-  var ePrefix *ePref.ErrPrefixDto
-  var err error
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewIEmpty(
-    nil,
-    "Decimal.GetSciNotationNumber()",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"Decimal.GetSciNotationNumber()",
+		"")
 
-  if err != nil {
-    return SciNotationNum{}, err
-  }
+	if err != nil {
+		return SciNotationNum{}, err
+	}
 
-  sciNotationNum, err := dec.bigINum.GetSciNotationNumber(mantissaLen)
+	sciNotationNum, err := dec.bigINum.GetSciNotationNumber(mantissaLen)
 
-  if err != nil {
+	if err != nil {
 
-    return SciNotationNum{},
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "sciNotationNum, err := dec.bigINum.GetSciNotationNumber(mantissaLen)",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-  }
+		return SciNotationNum{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "sciNotationNum, err := dec.bigINum.GetSciNotationNumber(mantissaLen)",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  return sciNotationNum, nil
+	return sciNotationNum, nil
 }
 
 // GetSciNotationStr - Returns a string expressing the current Decimal
@@ -2060,27 +2060,27 @@ func (dec *Decimal) GetSciNotationNumber(mantissaLen uint) (SciNotationNum, erro
 //												exponent    = '8'  (10^8)
 func (dec *Decimal) GetSciNotationStr(mantissaLen uint) (string, error) {
 
-  ePrefix := "BigIntNum.GetSciNotationStr() "
+	ePrefix := "BigIntNum.GetSciNotationStr() "
 
-  sciNotation, err := dec.bigINum.GetSciNotationNumber(mantissaLen)
+	sciNotation, err := dec.bigINum.GetSciNotationNumber(mantissaLen)
 
-  if err != nil {
-    return "",
-      fmt.Errorf(ePrefix+
-        "Error returned by dec.bigINum.GetSciNotationNumber(mantissaLen). "+
-        "Error='%v'", err.Error())
-  }
+	if err != nil {
+		return "",
+			fmt.Errorf(ePrefix+
+				"Error returned by dec.bigINum.GetSciNotationNumber(mantissaLen). "+
+				"Error='%v'", err.Error())
+	}
 
-  result, err := sciNotation.GetSciNotationStr(mantissaLen)
+	result, err := sciNotation.GetSciNotationStr(mantissaLen)
 
-  if err != nil {
-    return "",
-      fmt.Errorf(ePrefix+
-        "Error returned by sciNotation.GetSciNotationStr(mantissaLen). "+
-        "Error='%v'", err.Error())
-  }
+	if err != nil {
+		return "",
+			fmt.Errorf(ePrefix+
+				"Error returned by sciNotation.GetSciNotationStr(mantissaLen). "+
+				"Error='%v'", err.Error())
+	}
 
-  return result, nil
+	return result, nil
 }
 
 // GetSignedAllDigitsStr - Returns the Decimal's internal
@@ -2090,95 +2090,95 @@ func (dec *Decimal) GetSciNotationStr(mantissaLen uint) (string, error) {
 // would be returned as '-123456'
 func (dec *Decimal) GetSignedAllDigitsStr() (string, error) {
 
-  var ePrefix *ePref.ErrPrefixDto
-  var err error
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewIEmpty(
-    nil,
-    "BigIntNum.NewNumStrWithNumSeps()",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"BigIntNum.NewNumStrWithNumSeps()",
+		"")
 
-  if err != nil {
-    return "", err
-  }
+	if err != nil {
+		return "", err
+	}
 
-  err = dec.bigINum.IsValid(ePrefix.XCpy("Validating 'dec'").String())
+	err = dec.bigINum.IsValid(ePrefix.XCpy("Validating 'dec'").String())
 
-  if err != nil {
+	if err != nil {
 
-    return "",
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "err = dec.bigINum.IsValid(ePrefix.XCpy(\"Validating 'dec'\").String())",
-        ErrContext: "The current instance of Decimal is INVALID!",
-        ErrMessage: err.Error(),
-      }
-  }
+		return "",
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "err = dec.bigINum.IsValid(ePrefix.XCpy(\"Validating 'dec'\").String())",
+				ErrContext: "The current instance of Decimal is INVALID!",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  nDto, err := dec.bigINum.GetNumStrDto()
+	nDto, err := dec.bigINum.GetNumStrDto()
 
-  if err != nil {
+	if err != nil {
 
-    return "",
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "nDto, err := dec.bigINum.GetNumStrDto()",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-  }
+		return "",
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "nDto, err := dec.bigINum.GetNumStrDto()",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  result := ""
+	result := ""
 
-  decBigINumSignValue, err := dec.bigINum.GetSign()
+	decBigINumSignValue, err := dec.bigINum.GetSign()
 
-  if err != nil {
+	if err != nil {
 
-    return "",
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "decBigINumSignValue, err := dec.bigINum.GetSign()",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-  }
+		return "",
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "decBigINumSignValue, err := dec.bigINum.GetSign()",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  if decBigINumSignValue < 0 {
-    result += "-"
-  }
+	if decBigINumSignValue < 0 {
+		result += "-"
+	}
 
-  result += string(nDto.absAllNumRunes)
+	result += string(nDto.absAllNumRunes)
 
-  return result, nil
+	return result, nil
 }
 
 // GetSignedBigInt - Returns the numeric value of the current Decimal
 // instance as a signed *big.Int.
 func (dec *Decimal) GetSignedBigInt() (*big.Int, error) {
 
-  ePrefix := "Decimal.GetBigInt() "
+	ePrefix := "Decimal.GetBigInt() "
 
-  bInt, err := dec.bigINum.GetBigInt()
+	bInt, err := dec.bigINum.GetBigInt()
 
-  if err != nil {
+	if err != nil {
 
-    return big.NewInt(0),
-      fmt.Errorf("%v\n"+
-        "Error returned by: \n"+
-        " bInt, err := dec.bigINum.GetBigInt()\n"+
-        "Error= %v\n",
-        ePrefix,
-        err.Error())
-  }
+		return big.NewInt(0),
+			fmt.Errorf("%v\n"+
+				"Error returned by: \n"+
+				" bInt, err := dec.bigINum.GetBigInt()\n"+
+				"Error= %v\n",
+				ePrefix,
+				err.Error())
+	}
 
-  return big.NewInt(0).Set(bInt), nil
+	return big.NewInt(0).Set(bInt), nil
 }
 
 // GetThisPointer - Returns a pointer to the current Decimal instance
 func (dec *Decimal) GetThisPointer() *Decimal {
 
-  return dec
+	return dec
 }
 
 // GetThousandsSeparator - Gets the current value of
@@ -2193,33 +2193,33 @@ func (dec *Decimal) GetThisPointer() *Decimal {
 // For U.S.A. - The thousands separator is a comma (',')
 func (dec *Decimal) GetThousandsSeparator() (rune, error) {
 
-  var ePrefix *ePref.ErrPrefixDto
-  var err error
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewIEmpty(
-    nil,
-    "Decimal.GetThousandsSeparator()",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"Decimal.GetThousandsSeparator()",
+		"")
 
-  if err != nil {
-    return 0, err
-  }
+	if err != nil {
+		return 0, err
+	}
 
-  thousandsSeparator, err := dec.bigINum.GetThousandsSeparator()
+	thousandsSeparator, err := dec.bigINum.GetThousandsSeparator()
 
-  if err != nil {
+	if err != nil {
 
-    return 0,
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "thousandsSeparator, err := dec.bigINum.GetThousandsSeparator()",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-  }
+		return 0,
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "thousandsSeparator, err := dec.bigINum.GetThousandsSeparator()",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  return thousandsSeparator, nil
+	return thousandsSeparator, nil
 }
 
 // GetThouStr - Returns a number string which represents the Decimal's
@@ -2244,33 +2244,33 @@ func (dec *Decimal) GetThousandsSeparator() (rune, error) {
 // -123,456,789.12
 func (dec *Decimal) GetThouStr() (string, error) {
 
-  var ePrefix *ePref.ErrPrefixDto
-  var err error
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewIEmpty(
-    nil,
-    "Decimal.GetThouStr()",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"Decimal.GetThouStr()",
+		"")
 
-  if err != nil {
-    return "", err
-  }
+	if err != nil {
+		return "", err
+	}
 
-  decBigINumThouStr, err := dec.bigINum.FormatThousandsStr(LEADMINUSNEGVALFMTMODE)
+	decBigINumThouStr, err := dec.bigINum.FormatThousandsStr(LEADMINUSNEGVALFMTMODE)
 
-  if err != nil {
+	if err != nil {
 
-    return "",
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "decBigINumThouStr, err := dec.bigINum.FormatThousandsStr(LEADMINUSNEGVALFMTMODE)",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-  }
+		return "",
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "decBigINumThouStr, err := dec.bigINum.FormatThousandsStr(LEADMINUSNEGVALFMTMODE)",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  return decBigINumThouStr, nil
+	return decBigINumThouStr, nil
 }
 
 // GetThouParen - Returns the Decimal's numeric value formatted
@@ -2295,33 +2295,33 @@ func (dec *Decimal) GetThouStr() (string, error) {
 // (123,456,789.12)
 func (dec *Decimal) GetThouParen() (string, error) {
 
-  var ePrefix *ePref.ErrPrefixDto
-  var err error
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewIEmpty(
-    nil,
-    "Decimal.GetThouParen()",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"Decimal.GetThouParen()",
+		"")
 
-  if err != nil {
-    return "", err
-  }
+	if err != nil {
+		return "", err
+	}
 
-  fmtThouStrParen, err := dec.bigINum.FormatThousandsStr(PARENTHESESNEGVALFMTMODE)
+	fmtThouStrParen, err := dec.bigINum.FormatThousandsStr(PARENTHESESNEGVALFMTMODE)
 
-  if err != nil {
+	if err != nil {
 
-    return "",
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "fmtThouStrParen, err := dec.bigINum.FormatThousandsStr(PARENTHESESNEGVALFMTMODE)",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-  }
+		return "",
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "fmtThouStrParen, err := dec.bigINum.FormatThousandsStr(PARENTHESESNEGVALFMTMODE)",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  return fmtThouStrParen, nil
+	return fmtThouStrParen, nil
 }
 
 // GetIsValid - returns a boolean indicating
@@ -2337,14 +2337,14 @@ func (dec *Decimal) GetThouParen() (string, error) {
 // 'error' type.
 func (dec *Decimal) GetIsValid() bool {
 
-  ePrefix := "Decimal.GetIsValid()"
-  err := dec.bigINum.IsValid(ePrefix)
+	ePrefix := "Decimal.GetIsValid()"
+	err := dec.bigINum.IsValid(ePrefix)
 
-  if err != nil {
-    return false
-  }
+	if err != nil {
+		return false
+	}
 
-  return true
+	return true
 }
 
 // Inverse - Returns the inverseBigIntNum of the current
@@ -2358,27 +2358,27 @@ func (dec *Decimal) GetIsValid() bool {
 //	be triggered
 func (dec *Decimal) Inverse(maxPrecision uint) (Decimal, error) {
 
-  ePrefix := "Decimal.Inverse()"
+	ePrefix := "Decimal.Inverse()"
 
-  bin2, err := dec.bigINum.GetInverse(maxPrecision)
+	bin2, err := dec.bigINum.GetInverse(maxPrecision)
 
-  if err != nil {
-    return Decimal{},
-      fmt.Errorf(ePrefix+
-        "Error returned by dec.bigINum.GetInverse(uint(maxPrecision)) "+
-        "Error='%v' \n", err.Error())
-  }
+	if err != nil {
+		return Decimal{},
+			fmt.Errorf(ePrefix+
+				"Error returned by dec.bigINum.GetInverse(uint(maxPrecision)) "+
+				"Error='%v' \n", err.Error())
+	}
 
-  d2, err := bin2.GetDecimal()
+	d2, err := bin2.GetDecimal()
 
-  if err != nil {
-    return Decimal{},
-      fmt.Errorf(ePrefix+
-        "Error returned by bin2.GetDecimal() "+
-        "Error='%v' \n", err.Error())
-  }
+	if err != nil {
+		return Decimal{},
+			fmt.Errorf(ePrefix+
+				"Error returned by bin2.GetDecimal() "+
+				"Error='%v' \n", err.Error())
+	}
 
-  return d2, nil
+	return d2, nil
 }
 
 // IsEvenNumber - If the numeric value of the current Decimal instance
@@ -2386,7 +2386,7 @@ func (dec *Decimal) Inverse(maxPrecision uint) (Decimal, error) {
 // an even number and this method will return 'true'.
 func (dec *Decimal) IsEvenNumber() (bool, error) {
 
-  return dec.bigINum.IsEvenNumber()
+	return dec.bigINum.IsEvenNumber()
 }
 
 // IsFraction - returns a boolean value. If 'true',
@@ -2396,138 +2396,186 @@ func (dec *Decimal) IsEvenNumber() (bool, error) {
 // no digits to the right of the decimal place.
 func (dec *Decimal) IsFraction() (bool, error) {
 
-  ePrefix := "Decimal.IsFraction() "
+	ePrefix := "Decimal.IsFraction() "
 
-  err := dec.bigINum.IsValid(ePrefix)
+	err := dec.bigINum.IsValid(ePrefix)
 
-  if err != nil {
-    return false,
-      fmt.Errorf(ePrefix+"This Decimal object is INVALID! Please re-initialize. "+
-        "Error='%v' ", err.Error())
-  }
+	if err != nil {
+		return false,
+			fmt.Errorf(ePrefix+"This Decimal object is INVALID! Please re-initialize. "+
+				"Error='%v' ", err.Error())
+	}
 
-  if dec.bigINum.precision != 0 {
-    return true, nil
-  }
+	if dec.bigINum.precision != 0 {
+		return true, nil
+	}
 
-  return false, nil
+	return false, nil
 }
 
 // IsValid - Performs an internal diagnostic on the current
 // Decimal instance and returns an 'error' if the instance is INVALID.
 func (dec *Decimal) IsValid(callingMethodName string) error {
 
-  ePrefix := "Decimal.IsValid()"
+	ePrefix := "Decimal.IsValid()"
 
-  if len(callingMethodName) > 0 {
-    ePrefix = ePrefix + "\n" + callingMethodName
-  }
+	if len(callingMethodName) > 0 {
+		ePrefix = ePrefix + "\n" + callingMethodName
+	}
 
-  err := dec.bigINum.IsValid(ePrefix)
+	err := dec.bigINum.IsValid(ePrefix)
 
-  if err != nil {
-    return err
-  }
+	if err != nil {
+		return err
+	}
 
-  return nil
+	return nil
 }
 
 // IsZero - Returns true if the numeric value of the current
 // 'Decimal' instance is zero.
 func (dec *Decimal) IsZero() (bool, error) {
 
-  var ePrefix *ePref.ErrPrefixDto
-  var err error
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewIEmpty(
-    nil,
-    "Decimal.IsZero()",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"Decimal.IsZero()",
+		"")
 
-  if err != nil {
-    return false, err
-  }
+	if err != nil {
+		return false, err
+	}
 
-  err = dec.bigINum.IsValid(ePrefix.XCpy("Validating 'dec'").String())
+	err = dec.bigINum.IsValid(ePrefix.XCpy("Validating 'dec'").String())
 
-  if err != nil {
+	if err != nil {
 
-    return false,
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "err = dec.bigINum.IsValid(ePrefix.XCpy(\"Validating 'dec'\").String())",
-        ErrContext: "Current instance of 'dec.bigINum' is INVALID!",
-        ErrMessage: err.Error(),
-      }
-  }
+		return false,
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "err = dec.bigINum.IsValid(ePrefix.XCpy(\"Validating 'dec'\").String())",
+				ErrContext: "Current instance of 'dec.bigINum' is INVALID!",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  decBigINumIsZero, err := dec.bigINum.IsZero()
+	decBigINumIsZero, err := dec.bigINum.IsZero()
 
-  if err != nil {
+	if err != nil {
 
-    return false,
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "decBigINumIsZero, err := dec.bigINum.IsZero()",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-  }
+		return false,
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "decBigINumIsZero, err := dec.bigINum.IsZero()",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  return decBigINumIsZero, nil
+	return decBigINumIsZero, nil
 }
 
-// MakeDecimalFromIntAry - generates a Decimal Type based on string information
-// provided by the 'ia' *IntAry input parameter.
-func (dec *Decimal) MakeDecimalFromIntAry(ia *IntAry) (Decimal, error) {
+// MakeDecimalFromIntAry
+//
+//	Generates a Decimal Type based on string information provided
+//	by the 'ia' *IntAry input parameter.
+//
+//	The current instance of type Decimal will not be affected by
+//	this calculation and will remain unaltered.
+//
+//	Input Parameters
+//	================
+//
+//	ia                       *IntAry
+//	  Input parameter 'ia' is a pointer to a type IntAry. The
+//	  type IntAry structure stores numeric digits in an array
+//	  of unsigned 8-bit integers. This method receives an
+//	  IntAry object through this parameter, converts the digits
+//	  contained therein to a numeric value and returns this
+//	  numeric value in the form of a new instance to of type
+//	  Decimal.
+//
+//	Return Values
+//	=============
+//
+//	Decimal
+//	  The numeric value represented by input parameter ia, will
+//	  be configured and returned as a new instance to type Decimal.
+//
+//	error
+//	  If no errors are encountered during the calculation
+//	  performed by this method, a value of 'nil' will be
+//	  returned for this parameter.
+func (dec *Decimal) MakeDecimalFromIntAry(
+	ia *IntAry) (Decimal, error) {
 
-  ePrefix := "Decimal.MakeDecimalFromIntAry() "
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-  var err error
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"Decimal.MakeDecimalFromIntAry()",
+		"")
 
-  if ia == nil {
+	if err != nil {
+		return Decimal{}, err
+	}
 
-    return Decimal{},
-      fmt.Errorf("%v\n"+
-        "ERROR: Input parameter 'ia' is nil pointer!\n"+
-        "Error= %v\n",
-        ePrefix)
-  }
+	if ia == nil {
 
-  ia.SetInternalFlags()
+		return Decimal{},
+			&InputPtrNilError{
+				ErrPrefix:     ePrefix.String(),
+				ParameterName: "'ia'",
+			}
+	}
 
-  err = ia.IsValid(ePrefix)
+	err = ia.SetInternalFlags()
 
-  if err != nil {
+	if err != nil {
 
-    return Decimal{},
-      fmt.Errorf("%v\n"+
-        "Input parameter 'ia' is INVALID!\n"+
-        "Validation Error on IntAry instance 'ia'.\n"+
-        "Error returned by: \n"+
-        " err = ia.IsValid(ePrefix)\n"+
-        "Error= %v\n",
-        ePrefix,
-        err.Error())
-  }
+		return Decimal{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "err = ia.SetInternalFlags()",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  d2 := Decimal{}
+	err = ia.IsValid(ePrefix.XCpy("Validating input param 'ia'").String())
 
-  d2.bigINum, err = ia.GetBigIntNum()
+	if err != nil {
 
-  if err != nil {
+		return Decimal{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "err = ia.IsValid(ePrefix.XCpy(\"Validating input param 'ia'\").String())",
+				ErrContext: "Error: Input parameter 'ia' is INVALID!",
+				ErrMessage: err.Error(),
+			}
+	}
 
-    return Decimal{},
-      fmt.Errorf("%v\n"+
-        "Error returned by: \n"+
-        " d2.bigINum, err = ia.GetBigIntNum()\n"+
-        "Error= %v\n",
-        ePrefix,
-        err.Error())
-  }
+	d2 := Decimal{}
 
-  return d2, nil
+	d2.bigINum, err = ia.GetBigIntNum()
+
+	if err != nil {
+
+		return Decimal{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "d2.bigINum, err = ia.GetBigIntNum()",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
+
+	return d2, nil
 }
 
 // Mod - performs a modulo operation where the current BigIntNum numeric value is the
@@ -2551,75 +2599,75 @@ func (dec *Decimal) MakeDecimalFromIntAry(ia *IntAry) (Decimal, error) {
 // separator, thousands separator and currency symbol) copied from the current BigIntNum
 // instance (bNum).
 func (dec *Decimal) Mod(divisor Decimal,
-  maxPrecision uint) (modulo Decimal, err error) {
+	maxPrecision uint) (modulo Decimal, err error) {
 
-  var ePrefix *ePref.ErrPrefixDto
+	var ePrefix *ePref.ErrPrefixDto
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewIEmpty(
-    nil,
-    "Decimal.Mod()",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"Decimal.Mod()",
+		"")
 
-  if err != nil {
-    return modulo, err
-  }
+	if err != nil {
+		return modulo, err
+	}
 
-  err = dec.bigINum.IsValid(ePrefix.XCpy("Validating 'dec'").String())
+	err = dec.bigINum.IsValid(ePrefix.XCpy("Validating 'dec'").String())
 
-  if err != nil {
+	if err != nil {
 
-    return modulo,
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "err = dec.bigINum.IsValid(ePrefix.XCpy(\"Validating 'dec'\").String())",
-        ErrContext: "Error: The current instance of Decimal ('dec') is INVALID!",
-        ErrMessage: err.Error(),
-      }
-  }
+		return modulo,
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "err = dec.bigINum.IsValid(ePrefix.XCpy(\"Validating 'dec'\").String())",
+				ErrContext: "Error: The current instance of Decimal ('dec') is INVALID!",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  bigIntNum2, err := dec.bigINum.CopyOut()
+	bigIntNum2, err := dec.bigINum.CopyOut()
 
-  if err != nil {
+	if err != nil {
 
-    return modulo,
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "bigIntNum2, err := dec.bigINum.CopyOut()",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-  }
+		return modulo,
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "bigIntNum2, err := dec.bigINum.CopyOut()",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  numSeps, err := dec.bigINum.GetNumericSeparatorsDto()
+	numSeps, err := dec.bigINum.GetNumericSeparatorsDto()
 
-  if err != nil {
+	if err != nil {
 
-    return modulo,
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "numSeps, err := dec.bigINum.GetNumericSeparatorsDto()",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-  }
+		return modulo,
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "numSeps, err := dec.bigINum.GetNumericSeparatorsDto()",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  modulo.bigINum, err = new(BigIntMathDivide).BigIntNumModulo(
-    bigIntNum2, divisor.bigINum, numSeps, maxPrecision)
+	modulo.bigINum, err = new(BigIntMathDivide).BigIntNumModulo(
+		bigIntNum2, divisor.bigINum, numSeps, maxPrecision)
 
-  if err != nil {
+	if err != nil {
 
-    return modulo,
-      &FuncReturnError{
-        ErrPrefix: ePrefix.String(),
-        ReturnFunc: "modulo.bigINum, err = new(BigIntMathDivide).\n" +
-          "  BigIntNumModulo(bigIntNum2, divisor.bigINum, numSeps, maxPrecision)",
-        ErrContext: fmt.Sprintf("maxPrecision='%v'", maxPrecision),
-        ErrMessage: err.Error(),
-      }
-  }
+		return modulo,
+			&FuncReturnError{
+				ErrPrefix: ePrefix.String(),
+				ReturnFunc: "modulo.bigINum, err = new(BigIntMathDivide).\n" +
+					"  BigIntNumModulo(bigIntNum2, divisor.bigINum, numSeps, maxPrecision)",
+				ErrContext: fmt.Sprintf("maxPrecision='%v'", maxPrecision),
+				ErrMessage: err.Error(),
+			}
+	}
 
-  return modulo, nil
+	return modulo, nil
 }
 
 // Multiply - Multiplies the numeric value of the current Decimal instance
@@ -2634,93 +2682,93 @@ func (dec *Decimal) Mod(divisor Decimal,
 // (decimal separator, thousands separator and currency symbol) copied from
 // the current Decimal instance.
 func (dec *Decimal) Multiply(
-  multiplicand Decimal) (product Decimal, err error) {
+	multiplicand Decimal) (product Decimal, err error) {
 
-  var ePrefix *ePref.ErrPrefixDto
+	var ePrefix *ePref.ErrPrefixDto
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewIEmpty(
-    nil,
-    "Decimal.Multiply()",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"Decimal.Multiply()",
+		"")
 
-  if err != nil {
-    return Decimal{}, err
-  }
+	if err != nil {
+		return Decimal{}, err
+	}
 
-  product = new(Decimal).New()
+	product = new(Decimal).New()
 
-  err = dec.bigINum.IsValid(ePrefix.XCpy("Validating 'dec'").String())
+	err = dec.bigINum.IsValid(ePrefix.XCpy("Validating 'dec'").String())
 
-  if err != nil {
+	if err != nil {
 
-    return Decimal{},
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "err = dec.bigINum.IsValid(ePrefix.XCpy(\"Validating 'dec'\").String())",
-        ErrContext: "Current instance of Decimal (dec) is INVALID!\n" +
-          "Validation Error on Decimal instance 'dec'.",
-        ErrMessage: err.Error(),
-      }
-  }
+		return Decimal{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "err = dec.bigINum.IsValid(ePrefix.XCpy(\"Validating 'dec'\").String())",
+				ErrContext: "Current instance of Decimal (dec) is INVALID!\n" +
+					"Validation Error on Decimal instance 'dec'.",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  err = multiplicand.IsValid(ePrefix.XCpy("Validating Input Param 'multiplicand'").String())
+	err = multiplicand.IsValid(ePrefix.XCpy("Validating Input Param 'multiplicand'").String())
 
-  if err != nil {
+	if err != nil {
 
-    return Decimal{},
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "err = multiplicand.IsValid(ePrefix.XCpy(\"Validating Input Param 'multiplicand'\").String())",
-        ErrContext: "Input parameter multiplicand (type Deciimal) is INVALID!\n" +
-          "Validation Error on Decimal instance 'multiplicand'.",
-        ErrMessage: err.Error(),
-      }
-  }
+		return Decimal{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "err = multiplicand.IsValid(ePrefix.XCpy(\"Validating Input Param 'multiplicand'\").String())",
+				ErrContext: "Input parameter multiplicand (type Deciimal) is INVALID!\n" +
+					"Validation Error on Decimal instance 'multiplicand'.",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  numSeps, err := dec.bigINum.GetNumericSeparatorsDto()
+	numSeps, err := dec.bigINum.GetNumericSeparatorsDto()
 
-  if err != nil {
+	if err != nil {
 
-    return Decimal{},
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "numSeps, err := dec.bigINum.GetNumericSeparatorsDto()",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-  }
+		return Decimal{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "numSeps, err := dec.bigINum.GetNumericSeparatorsDto()",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  product.bigINum, err =
-    new(BigIntMathMultiply).MultiplyBigIntNums(
-      dec.bigINum, multiplicand.bigINum)
+	product.bigINum, err =
+		new(BigIntMathMultiply).MultiplyBigIntNums(
+			dec.bigINum, multiplicand.bigINum)
 
-  if err != nil {
+	if err != nil {
 
-    return Decimal{},
-      &FuncReturnError{
-        ErrPrefix: ePrefix.String(),
-        ReturnFunc: "product.bigINum, err = new(BigIntMathMultiply).\n" +
-          "   MultiplyBigIntNums(dec.bigINum, multiplicand.bigINum)",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-  }
+		return Decimal{},
+			&FuncReturnError{
+				ErrPrefix: ePrefix.String(),
+				ReturnFunc: "product.bigINum, err = new(BigIntMathMultiply).\n" +
+					"   MultiplyBigIntNums(dec.bigINum, multiplicand.bigINum)",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  err = product.bigINum.SetNumericSeparatorsDto(numSeps)
+	err = product.bigINum.SetNumericSeparatorsDto(numSeps)
 
-  if err != nil {
+	if err != nil {
 
-    return Decimal{},
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "err = product.bigINum.SetNumericSeparatorsDto(numSeps)",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-  }
+		return Decimal{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "err = product.bigINum.SetNumericSeparatorsDto(numSeps)",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  return product, nil
+	return product, nil
 }
 
 // New - Creates and returns a Decimal type. The Decimal numeric value is
@@ -2737,11 +2785,11 @@ func (dec *Decimal) Multiply(
 // a Decimal type.
 func (dec *Decimal) New() Decimal {
 
-  d := Decimal{}
+	d := Decimal{}
 
-  d.Empty()
+	d.Empty()
 
-  return d
+	return d
 }
 
 // NewWithNumSeps - Creates and returns a new Decimal instance.
@@ -2755,30 +2803,30 @@ func (dec *Decimal) New() Decimal {
 //
 //	d := Decimal{}.NewWithNumSeps(numSeps)
 func (dec *Decimal) NewWithNumSeps(
-  numSeps NumericSeparatorDto) (Decimal, error) {
+	numSeps NumericSeparatorDto) (Decimal, error) {
 
-  ePrefix := "Decimal.NewWithNumSeps()"
+	ePrefix := "Decimal.NewWithNumSeps()"
 
-  d := Decimal{}
+	d := Decimal{}
 
-  d.Empty()
+	d.Empty()
 
-  numSeps.SetDefaultsIfEmpty()
+	numSeps.SetDefaultsIfEmpty()
 
-  err := d.SetNumericSeparatorsDto(numSeps)
+	err := d.SetNumericSeparatorsDto(numSeps)
 
-  if err != nil {
+	if err != nil {
 
-    return Decimal{},
-      fmt.Errorf("%v\n"+
-        "Error returned by: \n"+
-        " err := d.SetNumericSeparatorsDto(numSeps)\n"+
-        "Error= %v\n",
-        ePrefix,
-        err.Error())
-  }
+		return Decimal{},
+			fmt.Errorf("%v\n"+
+				"Error returned by: \n"+
+				" err := d.SetNumericSeparatorsDto(numSeps)\n"+
+				"Error= %v\n",
+				ePrefix,
+				err.Error())
+	}
 
-  return d, nil
+	return d, nil
 }
 
 // NewPtr - Creates and returns a pointer to
@@ -2789,9 +2837,9 @@ func (dec *Decimal) NewWithNumSeps(
 // Example:
 // d1, err := Decimal{}.NewPtr().NumStrPrecisionToDecimal(inStr, precision,true)
 func (dec *Decimal) NewPtr() *Decimal {
-  d := Decimal{}
-  d.Empty()
-  return &d
+	d := Decimal{}
+	d.Empty()
+	return &d
 }
 
 // NewBigInt - Returns a Decimal type based on Big Int and
@@ -2806,74 +2854,74 @@ func (dec *Decimal) NewPtr() *Decimal {
 // bigI := big.NewInt(123456)
 // Decimal{}.NewBigInt(bigI, 3) = 123.456
 func (dec *Decimal) NewBigInt(
-  bigI *big.Int, precision uint) (Decimal, error) {
+	bigI *big.Int, precision uint) (Decimal, error) {
 
-  var ePrefix *ePref.ErrPrefixDto
-  var err error
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewIEmpty(
-    nil,
-    "Decimal.NewBigInt()",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"Decimal.NewBigInt()",
+		"")
 
-  if err != nil {
-    return Decimal{}, err
-  }
+	if err != nil {
+		return Decimal{}, err
+	}
 
-  d2 := new(Decimal).New()
+	d2 := new(Decimal).New()
 
-  if bigI == nil {
+	if bigI == nil {
 
-    return Decimal{},
-      &InputPtrNilError{
-        ErrPrefix:     ePrefix.String(),
-        ParameterName: "'bigI'",
-      }
-  }
+		return Decimal{},
+			&InputPtrNilError{
+				ErrPrefix:     ePrefix.String(),
+				ParameterName: "'bigI'",
+			}
+	}
 
-  err = d2.SetBigInt(bigI, precision)
+	err = d2.SetBigInt(bigI, precision)
 
-  if err != nil {
+	if err != nil {
 
-    return Decimal{},
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "err = d2.SetBigInt(bigI, precision)",
-        ErrContext: fmt.Sprintf("bigI= '%v' precision= '%v'",
-          bigI.Text(10), precision),
-        ErrMessage: err.Error(),
-      }
-  }
+		return Decimal{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "err = d2.SetBigInt(bigI, precision)",
+				ErrContext: fmt.Sprintf("bigI= '%v' precision= '%v'",
+					bigI.Text(10), precision),
+				ErrMessage: err.Error(),
+			}
+	}
 
-  return d2, nil
+	return d2, nil
 }
 
 // NewBigIntNum - Returns a Decimal instance based on input
 // parameter,
 func (dec *Decimal) NewBigIntNum(
-  bigINum BigIntNum) (Decimal, error) {
+	bigINum BigIntNum) (Decimal, error) {
 
-  ePrefix := "Decimal.NewBigIntNum()"
+	ePrefix := "Decimal.NewBigIntNum()"
 
-  var err error
+	var err error
 
-  d2 := Decimal{}
+	d2 := Decimal{}
 
-  d2.bigINum, err = bigINum.CopyOut()
+	d2.bigINum, err = bigINum.CopyOut()
 
-  if err != nil {
+	if err != nil {
 
-    return Decimal{},
-      fmt.Errorf("%v\n"+
-        "Error returned by: \n"+
-        " d2.bigINum, err = bigINum.CopyOut()\n"+
-        "Error= %v\n",
-        ePrefix,
-        err.Error())
-  }
+		return Decimal{},
+			fmt.Errorf("%v\n"+
+				"Error returned by: \n"+
+				" d2.bigINum, err = bigINum.CopyOut()\n"+
+				"Error= %v\n",
+				ePrefix,
+				err.Error())
+	}
 
-  return d2, nil
+	return d2, nil
 }
 
 // NewInt - Returns a Decimal type based on input parameters 'intNum'
@@ -2904,64 +2952,64 @@ func (dec *Decimal) NewBigIntNum(
 //	  123456          0              123456
 //	  123456          1              12345.6
 func (dec *Decimal) NewInt(
-  intNum int, precision uint) (Decimal, error) {
+	intNum int, precision uint) (Decimal, error) {
 
-  var ePrefix *ePref.ErrPrefixDto
-  var err error
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewIEmpty(
-    nil,
-    "Decimal.NewInt()",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"Decimal.NewInt()",
+		"")
 
-  if err != nil {
-    return Decimal{}, err
-  }
+	if err != nil {
+		return Decimal{}, err
+	}
 
-  d2 := new(Decimal).New()
+	d2 := new(Decimal).New()
 
-  err = d2.SetInt(intNum, precision)
+	err = d2.SetInt(intNum, precision)
 
-  if err != nil {
+	if err != nil {
 
-    return Decimal{},
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "err = d2.SetInt(intNum, precision)",
-        ErrContext: fmt.Sprintf("intNum= '%v' precision= '%v'",
-          intNum, precision),
-        ErrMessage: err.Error(),
-      }
-  }
+		return Decimal{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "err = d2.SetInt(intNum, precision)",
+				ErrContext: fmt.Sprintf("intNum= '%v' precision= '%v'",
+					intNum, precision),
+				ErrMessage: err.Error(),
+			}
+	}
 
-  numSeps, err := dec.bigINum.GetNumericSeparatorsDto()
+	numSeps, err := dec.bigINum.GetNumericSeparatorsDto()
 
-  if err != nil {
+	if err != nil {
 
-    return Decimal{},
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "numSeps, err := dec.bigINum.GetNumericSeparatorsDto()",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-  }
+		return Decimal{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "numSeps, err := dec.bigINum.GetNumericSeparatorsDto()",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  err = d2.SetNumericSeparatorsDto(numSeps)
+	err = d2.SetNumericSeparatorsDto(numSeps)
 
-  if err != nil {
+	if err != nil {
 
-    return Decimal{},
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "err = d2.SetNumericSeparatorsDto(numSeps)",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-  }
+		return Decimal{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "err = d2.SetNumericSeparatorsDto(numSeps)",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  return d2, nil
+	return d2, nil
 }
 
 // NewIntExponent - This method returns a new Decimal instance in which the
@@ -2994,26 +3042,26 @@ func (dec *Decimal) NewInt(
 //		123456		 		   3							123456.000
 //	  123456					 0              123456
 func (dec *Decimal) NewIntExponent(
-  intNum int, exponent int) (Decimal, error) {
+	intNum int, exponent int) (Decimal, error) {
 
-  ePrefix := "Decimal.NewIntExponent()"
+	ePrefix := "Decimal.NewIntExponent()"
 
-  d2 := new(Decimal).New()
+	d2 := new(Decimal).New()
 
-  err := d2.bigINum.SetBigIntExponent(big.NewInt(int64(intNum)), exponent)
+	err := d2.bigINum.SetBigIntExponent(big.NewInt(int64(intNum)), exponent)
 
-  if err != nil {
+	if err != nil {
 
-    return Decimal{},
-      fmt.Errorf("%v\n"+
-        "Error returned by: \n"+
-        " err := d2.bigINum.SetBigIntExponent(big.NewInt(int64(intNum)), exponent)\n"+
-        "Error= %v\n",
-        ePrefix,
-        err.Error())
-  }
+		return Decimal{},
+			fmt.Errorf("%v\n"+
+				"Error returned by: \n"+
+				" err := d2.bigINum.SetBigIntExponent(big.NewInt(int64(intNum)), exponent)\n"+
+				"Error= %v\n",
+				ePrefix,
+				err.Error())
+	}
 
-  return d2, nil
+	return d2, nil
 }
 
 // NewInt32 - Returns a new Decimal instance based on input parameters
@@ -3044,26 +3092,26 @@ func (dec *Decimal) NewIntExponent(
 //	  123456          0              123456
 //	  123456          1              12345.6
 func (dec *Decimal) NewInt32(
-  int32Num int32, precision uint) (Decimal, error) {
+	int32Num int32, precision uint) (Decimal, error) {
 
-  ePrefix := "Decimal.NewInt32()"
+	ePrefix := "Decimal.NewInt32()"
 
-  d2 := new(Decimal).New()
+	d2 := new(Decimal).New()
 
-  err := d2.SetInt64(int64(int32Num), precision)
+	err := d2.SetInt64(int64(int32Num), precision)
 
-  if err != nil {
+	if err != nil {
 
-    return Decimal{},
-      fmt.Errorf("%v\n"+
-        "Error returned by: \n"+
-        " err := d2.SetInt64(int64(int32Num), precision)\n"+
-        "Error= %v\n",
-        ePrefix,
-        err.Error())
-  }
+		return Decimal{},
+			fmt.Errorf("%v\n"+
+				"Error returned by: \n"+
+				" err := d2.SetInt64(int64(int32Num), precision)\n"+
+				"Error= %v\n",
+				ePrefix,
+				err.Error())
+	}
 
-  return d2, err
+	return d2, err
 }
 
 // NewInt32Exponent - This method returns a new Decimal instance in which the
@@ -3096,28 +3144,28 @@ func (dec *Decimal) NewInt32(
 //		 123456		 		   3							123456.000
 //		 123456          0              123456
 func (dec *Decimal) NewInt32Exponent(
-  int32Num int32, exponent int) (Decimal, error) {
+	int32Num int32, exponent int) (Decimal, error) {
 
-  ePrefix := "Decimal.NewInt32Exponent()"
+	ePrefix := "Decimal.NewInt32Exponent()"
 
-  d2 := new(Decimal).New()
+	d2 := new(Decimal).New()
 
-  bigI := big.NewInt(int64(int32Num))
+	bigI := big.NewInt(int64(int32Num))
 
-  err := d2.bigINum.SetBigIntExponent(bigI, exponent)
+	err := d2.bigINum.SetBigIntExponent(bigI, exponent)
 
-  if err != nil {
+	if err != nil {
 
-    return Decimal{},
-      fmt.Errorf("%v\n"+
-        "Error returned by: \n"+
-        " err := d2.bigINum.SetBigIntExponent(bigI, exponent)\n"+
-        "Error= %v\n",
-        ePrefix,
-        err.Error())
-  }
+		return Decimal{},
+			fmt.Errorf("%v\n"+
+				"Error returned by: \n"+
+				" err := d2.bigINum.SetBigIntExponent(bigI, exponent)\n"+
+				"Error= %v\n",
+				ePrefix,
+				err.Error())
+	}
 
-  return d2, nil
+	return d2, nil
 }
 
 // NewInt64 - Returns a new Decimal instance based on input parameters
@@ -3149,24 +3197,24 @@ func (dec *Decimal) NewInt32Exponent(
 //	  123456          1              12345.6
 func (dec *Decimal) NewInt64(int64Num int64, precision uint) (Decimal, error) {
 
-  ePrefix := "Decimal.NewInt64()"
+	ePrefix := "Decimal.NewInt64()"
 
-  d2 := new(Decimal).New()
+	d2 := new(Decimal).New()
 
-  err := d2.SetInt64(int64Num, precision)
+	err := d2.SetInt64(int64Num, precision)
 
-  if err != nil {
+	if err != nil {
 
-    return Decimal{},
-      fmt.Errorf("%v\n"+
-        "Error returned by: \n"+
-        " err := err := d2.SetInt64(int64Num, precision)\n"+
-        "Error= %v\n",
-        ePrefix,
-        err.Error())
-  }
+		return Decimal{},
+			fmt.Errorf("%v\n"+
+				"Error returned by: \n"+
+				" err := err := d2.SetInt64(int64Num, precision)\n"+
+				"Error= %v\n",
+				ePrefix,
+				err.Error())
+	}
 
-  return d2, nil
+	return d2, nil
 }
 
 // NewInt64Exponent - This method returns a new Decimal instance in which the
@@ -3199,65 +3247,65 @@ func (dec *Decimal) NewInt64(int64Num int64, precision uint) (Decimal, error) {
 //		 123456		 		   3							123456.000
 //		 123456          0              123456
 func (dec *Decimal) NewInt64Exponent(
-  int64Num int64, exponent int) (Decimal, error) {
+	int64Num int64, exponent int) (Decimal, error) {
 
-  var ePrefix *ePref.ErrPrefixDto
-  var err error
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewIEmpty(
-    nil,
-    "Decimal.NewInt64Exponent()",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"Decimal.NewInt64Exponent()",
+		"")
 
-  if err != nil {
-    return Decimal{}, err
-  }
+	if err != nil {
+		return Decimal{}, err
+	}
 
-  d2 := new(Decimal).New()
+	d2 := new(Decimal).New()
 
-  bigI := big.NewInt(int64Num)
+	bigI := big.NewInt(int64Num)
 
-  err = d2.bigINum.SetBigIntExponent(bigI, exponent)
+	err = d2.bigINum.SetBigIntExponent(bigI, exponent)
 
-  if err != nil {
+	if err != nil {
 
-    return Decimal{},
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "err = d2.bigINum.SetBigIntExponent(bigI, exponent)",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-  }
+		return Decimal{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "err = d2.bigINum.SetBigIntExponent(bigI, exponent)",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  numSeps, err := dec.bigINum.GetNumericSeparatorsDto()
+	numSeps, err := dec.bigINum.GetNumericSeparatorsDto()
 
-  if err != nil {
+	if err != nil {
 
-    return Decimal{},
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "numSeps, err := dec.bigINum.GetNumericSeparatorsDto()",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-  }
+		return Decimal{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "numSeps, err := dec.bigINum.GetNumericSeparatorsDto()",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  err = d2.SetNumericSeparatorsDto(numSeps)
+	err = d2.SetNumericSeparatorsDto(numSeps)
 
-  if err != nil {
+	if err != nil {
 
-    return Decimal{},
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "err = d2.SetNumericSeparatorsDto(numSeps)",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-  }
+		return Decimal{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "err = d2.SetNumericSeparatorsDto(numSeps)",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  return d2, nil
+	return d2, nil
 }
 
 // NewFive - Returns a Decimal Type with a value equal to '5' (five).
@@ -3281,224 +3329,224 @@ func (dec *Decimal) NewInt64Exponent(
 // numeric separators (decimal separator, thousands separator and currency symbol).
 func (dec *Decimal) NewFive(precision uint) (Decimal, error) {
 
-  ePrefix := "Decimal.NewFive()"
+	ePrefix := "Decimal.NewFive()"
 
-  bINum, err := new(BigIntNum).NewFive(precision)
+	bINum, err := new(BigIntNum).NewFive(precision)
 
-  if err != nil {
+	if err != nil {
 
-    return Decimal{},
-      fmt.Errorf("%v\n"+
-        "Error returned by: \n"+
-        " bINum, err := new(BigIntNum).NewFive(precision)\n"+
-        "Error= %v\n",
-        ePrefix,
-        err.Error())
+		return Decimal{},
+			fmt.Errorf("%v\n"+
+				"Error returned by: \n"+
+				" bINum, err := new(BigIntNum).NewFive(precision)\n"+
+				"Error= %v\n",
+				ePrefix,
+				err.Error())
 
-  }
+	}
 
-  d2 := new(Decimal).New()
+	d2 := new(Decimal).New()
 
-  err = d2.SetBigIntNum(bINum)
+	err = d2.SetBigIntNum(bINum)
 
-  if err != nil {
+	if err != nil {
 
-    return Decimal{},
-      fmt.Errorf("%v\n"+
-        "Error returned by: \n"+
-        " err = d2.SetBigIntNum(bINum)\n"+
-        "Error= %v\n",
-        ePrefix,
-        err.Error())
-  }
+		return Decimal{},
+			fmt.Errorf("%v\n"+
+				"Error returned by: \n"+
+				" err = d2.SetBigIntNum(bINum)\n"+
+				"Error= %v\n",
+				ePrefix,
+				err.Error())
+	}
 
-  return d2, nil
+	return d2, nil
 }
 
 // NewFloat32 - Creates a new Decimal instance based on a float32
 // input.
 func (dec *Decimal) NewFloat32(f32 float32) (Decimal, error) {
 
-  ePrefix := "Decimal.NewFloat32()"
+	ePrefix := "Decimal.NewFloat32()"
 
-  d2 := new(Decimal).New()
-  err := d2.SetFloat32(f32)
+	d2 := new(Decimal).New()
+	err := d2.SetFloat32(f32)
 
-  if err != nil {
-    return Decimal{},
-      fmt.Errorf("%v\n"+
-        "Error returned by d2.SetFloat32(f32).\n"+
-        "f32='%v' Error='%v' ",
-        ePrefix,
-        f32,
-        err.Error())
-  }
+	if err != nil {
+		return Decimal{},
+			fmt.Errorf("%v\n"+
+				"Error returned by d2.SetFloat32(f32).\n"+
+				"f32='%v' Error='%v' ",
+				ePrefix,
+				f32,
+				err.Error())
+	}
 
-  return d2, nil
+	return d2, nil
 }
 
 // NewFloat64 - Creates a new Decimal instance based on a float64
 // input.
 func (dec *Decimal) NewFloat64(
-  f64 float64, maxPrecision uint) (Decimal, error) {
+	f64 float64, maxPrecision uint) (Decimal, error) {
 
-  var ePrefix *ePref.ErrPrefixDto
-  var err error
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewIEmpty(
-    nil,
-    "Decimal.NewFloat64()",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"Decimal.NewFloat64()",
+		"")
 
-  if err != nil {
-    return Decimal{}, err
-  }
+	if err != nil {
+		return Decimal{}, err
+	}
 
-  numSeps, err := dec.bigINum.GetNumericSeparatorsDto()
+	numSeps, err := dec.bigINum.GetNumericSeparatorsDto()
 
-  if err != nil {
+	if err != nil {
 
-    return Decimal{},
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "numSeps, err := dec.bigINum.GetNumericSeparatorsDto()",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-  }
+		return Decimal{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "numSeps, err := dec.bigINum.GetNumericSeparatorsDto()",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  d2 := new(Decimal).New()
+	d2 := new(Decimal).New()
 
-  bigFloat := big.NewFloat(f64)
+	bigFloat := big.NewFloat(f64)
 
-  err = d2.bigINum.SetBigFloat(bigFloat, maxPrecision)
+	err = d2.bigINum.SetBigFloat(bigFloat, maxPrecision)
 
-  if err != nil {
+	if err != nil {
 
-    return Decimal{},
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "err = d2.bigINum.SetBigFloat(bigFloat, maxPrecision)",
-        ErrContext: fmt.Sprintf("bigFloat= '%v'  maxPrecision= '%v'",
-          bigFloat.Text('f', int(maxPrecision)), maxPrecision),
-        ErrMessage: err.Error(),
-      }
-  }
+		return Decimal{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "err = d2.bigINum.SetBigFloat(bigFloat, maxPrecision)",
+				ErrContext: fmt.Sprintf("bigFloat= '%v'  maxPrecision= '%v'",
+					bigFloat.Text('f', int(maxPrecision)), maxPrecision),
+				ErrMessage: err.Error(),
+			}
+	}
 
-  err = d2.SetNumericSeparatorsDto(numSeps)
+	err = d2.SetNumericSeparatorsDto(numSeps)
 
-  if err != nil {
+	if err != nil {
 
-    return Decimal{},
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "err = d2.SetNumericSeparatorsDto(numSeps)",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-  }
+		return Decimal{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "err = d2.SetNumericSeparatorsDto(numSeps)",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  return d2, nil
+	return d2, nil
 }
 
 // NewNumStrsMultiple - Used to create and return an array of Decimal Types.
 // Input parameters are a series of number strings.
 func (dec *Decimal) NewNumStrsMultiple(numStrs ...string) ([]Decimal, error) {
 
-  ePrefix := "Decimal.NewNumStrsMultiple()"
+	ePrefix := "Decimal.NewNumStrsMultiple()"
 
-  lenNumStrs := len(numStrs)
+	lenNumStrs := len(numStrs)
 
-  decAry := make([]Decimal, lenNumStrs, lenNumStrs+100)
+	decAry := make([]Decimal, lenNumStrs, lenNumStrs+100)
 
-  var dec2 Decimal
+	var dec2 Decimal
 
-  for i, numStr := range numStrs {
+	for i, numStr := range numStrs {
 
-    dec := new(Decimal).New()
+		dec := new(Decimal).New()
 
-    err := dec.SetNumStr(numStr)
+		err := dec.SetNumStr(numStr)
 
-    if err != nil {
+		if err != nil {
 
-      return []Decimal{},
-        fmt.Errorf("%v\n"+
-          "Error returned by dec.SetNumStr(bigINum).\n"+
-          "bigINum='%v'\nIndex='%v'\nError= %v\n",
-          ePrefix,
-          numStr,
-          i,
-          err.Error())
-    }
+			return []Decimal{},
+				fmt.Errorf("%v\n"+
+					"Error returned by dec.SetNumStr(bigINum).\n"+
+					"bigINum='%v'\nIndex='%v'\nError= %v\n",
+					ePrefix,
+					numStr,
+					i,
+					err.Error())
+		}
 
-    dec2, err = dec.CopyOut()
+		dec2, err = dec.CopyOut()
 
-    if err != nil {
+		if err != nil {
 
-      return []Decimal{},
-        fmt.Errorf("%v\n"+
-          "Error returned by:\n"+
-          "  dec2, err = dec.CopyOut().\n"+
-          "Array Element: decAry[%v]\nError= %v\n",
-          ePrefix,
-          i,
-          err.Error())
-    }
+			return []Decimal{},
+				fmt.Errorf("%v\n"+
+					"Error returned by:\n"+
+					"  dec2, err = dec.CopyOut().\n"+
+					"Array Element: decAry[%v]\nError= %v\n",
+					ePrefix,
+					i,
+					err.Error())
+		}
 
-    decAry[i] = dec2
-  }
+		decAry[i] = dec2
+	}
 
-  return decAry, nil
+	return decAry, nil
 }
 
 // NewNumStrArray - Used to create and return an array of Decimal Types.
 // The input parameter is an array of number strings.
 func (dec *Decimal) NewNumStrArray(numStrs []string) ([]Decimal, error) {
 
-  ePrefix := "Decimal.NewNumStrArray()"
+	ePrefix := "Decimal.NewNumStrArray()"
 
-  lenNumStrs := len(numStrs)
+	lenNumStrs := len(numStrs)
 
-  decAry := make([]Decimal, lenNumStrs, lenNumStrs+100)
+	decAry := make([]Decimal, lenNumStrs, lenNumStrs+100)
 
-  var dec2 Decimal
+	var dec2 Decimal
 
-  for i, numStr := range numStrs {
+	for i, numStr := range numStrs {
 
-    dec := new(Decimal).New()
+		dec := new(Decimal).New()
 
-    err := dec.SetNumStr(numStr)
+		err := dec.SetNumStr(numStr)
 
-    if err != nil {
+		if err != nil {
 
-      return []Decimal{},
-        fmt.Errorf("%v\n"+
-          "Error returned by: \n"+
-          " err := dec.SetNumStr(numStr)\n"+
-          "Error= %v\n",
-          ePrefix,
-          err.Error())
-    }
+			return []Decimal{},
+				fmt.Errorf("%v\n"+
+					"Error returned by: \n"+
+					" err := dec.SetNumStr(numStr)\n"+
+					"Error= %v\n",
+					ePrefix,
+					err.Error())
+		}
 
-    dec2, err = dec.CopyOut()
+		dec2, err = dec.CopyOut()
 
-    if err != nil {
+		if err != nil {
 
-      return []Decimal{},
-        fmt.Errorf("%v\n"+
-          "Error returned by: \n"+
-          " dec2, err = dec.CopyOut()\n"+
-          "Error= %v\n",
-          ePrefix,
-          err.Error())
-    }
+			return []Decimal{},
+				fmt.Errorf("%v\n"+
+					"Error returned by: \n"+
+					" dec2, err = dec.CopyOut()\n"+
+					"Error= %v\n",
+					ePrefix,
+					err.Error())
+		}
 
-    decAry[i] = dec2
+		decAry[i] = dec2
 
-  }
+	}
 
-  return decAry, nil
+	return decAry, nil
 }
 
 // NewNumStr - Returns a Decimal type based on a number string
@@ -3522,25 +3570,25 @@ func (dec *Decimal) NewNumStrArray(numStrs []string) ([]Decimal, error) {
 // Example: Decimal{}.NewNumStr("123.456")
 func (dec *Decimal) NewNumStr(numStr string) (Decimal, error) {
 
-  ePrefix := "Decimal.NewNumStr()"
+	ePrefix := "Decimal.NewNumStr()"
 
-  d2 := new(Decimal).New()
+	d2 := new(Decimal).New()
 
-  err := d2.SetNumStr(numStr)
+	err := d2.SetNumStr(numStr)
 
-  if err != nil {
+	if err != nil {
 
-    return Decimal{},
-      fmt.Errorf("%v\n"+
-        "Error returned by\n"+
-        " err := d2.SetNumStr(numStr)\n"+
-        "numStr='%v'\nError= %v\n",
-        ePrefix,
-        numStr,
-        err.Error())
-  }
+		return Decimal{},
+			fmt.Errorf("%v\n"+
+				"Error returned by\n"+
+				" err := d2.SetNumStr(numStr)\n"+
+				"numStr='%v'\nError= %v\n",
+				ePrefix,
+				numStr,
+				err.Error())
+	}
 
-  return d2, nil
+	return d2, nil
 }
 
 // NewNumStrWithNumSeps - Receives a number string as input and returns a
@@ -3551,41 +3599,41 @@ func (dec *Decimal) NewNumStr(numStr string) (Decimal, error) {
 // In addition, the numeric separators contained in input parameter 'numSeps'
 // will be copied to the returned Decimal instance.
 func (dec *Decimal) NewNumStrWithNumSeps(
-  numStr string,
-  numSeps NumericSeparatorDto) (Decimal, error) {
+	numStr string,
+	numSeps NumericSeparatorDto) (Decimal, error) {
 
-  ePrefix := "Decimal.NewNumStrWithNumSeps()"
+	ePrefix := "Decimal.NewNumStrWithNumSeps()"
 
-  numSeps.SetDefaultsIfEmpty()
+	numSeps.SetDefaultsIfEmpty()
 
-  d2 := new(Decimal).New()
+	d2 := new(Decimal).New()
 
-  err := d2.SetNumericSeparatorsDto(numSeps)
+	err := d2.SetNumericSeparatorsDto(numSeps)
 
-  if err != nil {
-    return Decimal{},
-      fmt.Errorf("%v\n"+
-        "Error returned by: \n"+
-        " err := d2.SetNumericSeparatorsDto(numSeps)\n"+
-        "Error= %v\n",
-        ePrefix,
-        err.Error())
-  }
+	if err != nil {
+		return Decimal{},
+			fmt.Errorf("%v\n"+
+				"Error returned by: \n"+
+				" err := d2.SetNumericSeparatorsDto(numSeps)\n"+
+				"Error= %v\n",
+				ePrefix,
+				err.Error())
+	}
 
-  err = d2.SetNumStr(numStr)
+	err = d2.SetNumStr(numStr)
 
-  if err != nil {
-    return Decimal{},
-      fmt.Errorf("%v\n"+
-        "Error returned by:\n"+
-        "d2.SetNumStr(numStr)\n"+
-        "numStr='%v'\nError= %v\n",
-        ePrefix,
-        numStr,
-        err.Error())
-  }
+	if err != nil {
+		return Decimal{},
+			fmt.Errorf("%v\n"+
+				"Error returned by:\n"+
+				"d2.SetNumStr(numStr)\n"+
+				"numStr='%v'\nError= %v\n",
+				ePrefix,
+				numStr,
+				err.Error())
+	}
 
-  return d2, nil
+	return d2, nil
 }
 
 // NewNumStrDto - Returns a Decimal type based on a NumStrDto
@@ -3598,63 +3646,63 @@ func (dec *Decimal) NewNumStrWithNumSeps(
 //
 // Example: Decimal{}.NewNumStrDto(numDto)
 func (dec *Decimal) NewNumStrDto(
-  numDto NumStrDto) (Decimal, error) {
+	numDto NumStrDto) (Decimal, error) {
 
-  var ePrefix *ePref.ErrPrefixDto
-  var err error
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewIEmpty(
-    nil,
-    "Decimal.NewNumStrDto()",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"Decimal.NewNumStrDto()",
+		"")
 
-  if err != nil {
-    return Decimal{}, err
-  }
+	if err != nil {
+		return Decimal{}, err
+	}
 
-  err = numDto.IsValid(ePrefix.XCpy("Validating input param 'numDto'").String())
+	err = numDto.IsValid(ePrefix.XCpy("Validating input param 'numDto'").String())
 
-  if err != nil {
+	if err != nil {
 
-    return Decimal{},
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "err = numDto.IsValid(ePrefix.XCpy(\"Validating input param 'numDto'\").String())",
-        ErrContext: "Error: Input parameter 'numDto' is INVALID! ",
-        ErrMessage: err.Error(),
-      }
-  }
+		return Decimal{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "err = numDto.IsValid(ePrefix.XCpy(\"Validating input param 'numDto'\").String())",
+				ErrContext: "Error: Input parameter 'numDto' is INVALID! ",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  numDtoNumStr, err := numDto.GetNumStr()
+	numDtoNumStr, err := numDto.GetNumStr()
 
-  if err != nil {
+	if err != nil {
 
-    return Decimal{},
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "numDtoNumStr, err := numDto.GetNumStr()",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-  }
+		return Decimal{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "numDtoNumStr, err := numDto.GetNumStr()",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  d2 := new(Decimal).New()
+	d2 := new(Decimal).New()
 
-  err = d2.SetNumStrDto(numDto)
+	err = d2.SetNumStrDto(numDto)
 
-  if err != nil {
+	if err != nil {
 
-    return Decimal{},
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "err = d2.SetNumStrDto(numDto)",
-        ErrContext: fmt.Sprintf("numDto= '%v'", numDtoNumStr),
-        ErrMessage: err.Error(),
-      }
-  }
+		return Decimal{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "err = d2.SetNumStrDto(numDto)",
+				ErrContext: fmt.Sprintf("numDto= '%v'", numDtoNumStr),
+				ErrMessage: err.Error(),
+			}
+	}
 
-  return d2, nil
+	return d2, nil
 }
 
 // NewNumStrPrecision - Returns a Decimal type based on a number string
@@ -3670,22 +3718,22 @@ func (dec *Decimal) NewNumStrDto(
 // Example: Decimal{}.NewNumStrPrecision('123456', 3, false) = 123.456
 func (dec *Decimal) NewNumStrPrecision(numStr string, precision uint, roundResult bool) (Decimal, error) {
 
-  ePrefix := "Decimal.NewNumStrPrecision() "
+	ePrefix := "Decimal.NewNumStrPrecision() "
 
-  d2, err := new(Decimal).NewPtr().NumStrPrecisionToDecimal(numStr, precision, roundResult)
+	d2, err := new(Decimal).NewPtr().NumStrPrecisionToDecimal(numStr, precision, roundResult)
 
-  if err != nil {
+	if err != nil {
 
-    return Decimal{},
-      fmt.Errorf("%v\n"+
-        "Error returned by: \n"+
-        " d2, err := new(Decimal).NewPtr().NumStrPrecisionToDecimal(numStr, precision, roundResult)\n"+
-        "Error= %v\n",
-        ePrefix,
-        err.Error())
-  }
+		return Decimal{},
+			fmt.Errorf("%v\n"+
+				"Error returned by: \n"+
+				" d2, err := new(Decimal).NewPtr().NumStrPrecisionToDecimal(numStr, precision, roundResult)\n"+
+				"Error= %v\n",
+				ePrefix,
+				err.Error())
+	}
 
-  return d2, nil
+	return d2, nil
 }
 
 // NewOne - Returns a Decimal Type with a value equal to '1' (one).
@@ -3709,50 +3757,50 @@ func (dec *Decimal) NewNumStrPrecision(numStr string, precision uint, roundResul
 // numeric separators (decimal separator, thousands separator and currency symbol).
 func (dec *Decimal) NewOne(precision uint) (Decimal, error) {
 
-  ePrefix := "Decimal.NewOne()"
+	ePrefix := "Decimal.NewOne()"
 
-  bINum, err := new(BigIntNum).NewOne(precision)
+	bINum, err := new(BigIntNum).NewOne(precision)
 
-  if err != nil {
+	if err != nil {
 
-    return Decimal{},
-      fmt.Errorf("%v\n"+
-        "Error returned by: \n"+
-        " bINum, err := new(BigIntNum).NewOne(precision)\n"+
-        "Error= %v\n",
-        ePrefix,
-        err.Error())
-  }
+		return Decimal{},
+			fmt.Errorf("%v\n"+
+				"Error returned by: \n"+
+				" bINum, err := new(BigIntNum).NewOne(precision)\n"+
+				"Error= %v\n",
+				ePrefix,
+				err.Error())
+	}
 
-  d2 := new(Decimal).New()
+	d2 := new(Decimal).New()
 
-  err = d2.SetNumericSeparatorsToDefaultIfEmpty()
+	err = d2.SetNumericSeparatorsToDefaultIfEmpty()
 
-  if err != nil {
+	if err != nil {
 
-    return Decimal{},
-      fmt.Errorf("%v\n"+
-        "Error returned by: \n"+
-        " err = d2.SetNumericSeparatorsToDefaultIfEmpty()\n"+
-        "Error= %v\n",
-        ePrefix,
-        err.Error())
-  }
+		return Decimal{},
+			fmt.Errorf("%v\n"+
+				"Error returned by: \n"+
+				" err = d2.SetNumericSeparatorsToDefaultIfEmpty()\n"+
+				"Error= %v\n",
+				ePrefix,
+				err.Error())
+	}
 
-  err = d2.SetBigIntNum(bINum)
+	err = d2.SetBigIntNum(bINum)
 
-  if err != nil {
+	if err != nil {
 
-    return Decimal{},
-      fmt.Errorf("%v\n"+
-        "Error returned by: \n"+
-        " err = d2.SetBigIntNum(bINum)\n"+
-        "Error= %v\n",
-        ePrefix,
-        err.Error())
-  }
+		return Decimal{},
+			fmt.Errorf("%v\n"+
+				"Error returned by: \n"+
+				" err = d2.SetBigIntNum(bINum)\n"+
+				"Error= %v\n",
+				ePrefix,
+				err.Error())
+	}
 
-  return d2, nil
+	return d2, nil
 }
 
 // NewRationalNum - Creates a new Decimal instance based on input parameters consisting
@@ -3761,83 +3809,83 @@ func (dec *Decimal) NewOne(precision uint) (Decimal, error) {
 //
 // For information on *big.Rat see https://golang.org/pkg/math/big/
 func (dec *Decimal) NewRationalNum(
-  bigRat *big.Rat, maxPrecision uint) (Decimal, error) {
+	bigRat *big.Rat, maxPrecision uint) (Decimal, error) {
 
-  var ePrefix *ePref.ErrPrefixDto
-  var err error
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewIEmpty(
-    nil,
-    "Decimal.NewRationalNum()",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"Decimal.NewRationalNum()",
+		"")
 
-  if err != nil {
-    return Decimal{}, err
-  }
+	if err != nil {
+		return Decimal{}, err
+	}
 
-  if bigRat == nil {
+	if bigRat == nil {
 
-    return Decimal{},
-      &InputPtrNilError{
-        ErrPrefix:     ePrefix.String(),
-        ParameterName: "'bigRat'",
-      }
-  }
+		return Decimal{},
+			&InputPtrNilError{
+				ErrPrefix:     ePrefix.String(),
+				ParameterName: "'bigRat'",
+			}
+	}
 
-  numSeps, err := dec.bigINum.GetNumericSeparatorsDto()
+	numSeps, err := dec.bigINum.GetNumericSeparatorsDto()
 
-  if err != nil {
+	if err != nil {
 
-    return Decimal{},
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "numSeps, err := dec.bigINum.GetNumericSeparatorsDto()",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-  }
+		return Decimal{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "numSeps, err := dec.bigINum.GetNumericSeparatorsDto()",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  d2, err := new(Decimal).NewZero(0)
+	d2, err := new(Decimal).NewZero(0)
 
-  if err != nil {
+	if err != nil {
 
-    return Decimal{},
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "d2, err := new(Decimal).NewZero(0)",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-  }
+		return Decimal{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "d2, err := new(Decimal).NewZero(0)",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  err = d2.bigINum.SetBigRat(bigRat, maxPrecision)
+	err = d2.bigINum.SetBigRat(bigRat, maxPrecision)
 
-  if err != nil {
+	if err != nil {
 
-    return Decimal{},
-      fmt.Errorf("%v\n"+
-        "Error returned by: \n"+
-        " err = d2.bigINum.SetBigRat(bigRat, maxPrecision)\n"+
-        "Error= %v\n",
-        ePrefix,
-        err.Error())
-  }
+		return Decimal{},
+			fmt.Errorf("%v\n"+
+				"Error returned by: \n"+
+				" err = d2.bigINum.SetBigRat(bigRat, maxPrecision)\n"+
+				"Error= %v\n",
+				ePrefix,
+				err.Error())
+	}
 
-  err = d2.SetNumericSeparatorsDto(numSeps)
+	err = d2.SetNumericSeparatorsDto(numSeps)
 
-  if err != nil {
+	if err != nil {
 
-    return Decimal{},
-      fmt.Errorf("%v\n"+
-        "Error returned by: \n"+
-        " err = d2.SetNumericSeparatorsDto(numSeps)\n"+
-        "Error= %v\n",
-        ePrefix,
-        err.Error())
-  }
+		return Decimal{},
+			fmt.Errorf("%v\n"+
+				"Error returned by: \n"+
+				" err = d2.SetNumericSeparatorsDto(numSeps)\n"+
+				"Error= %v\n",
+				ePrefix,
+				err.Error())
+	}
 
-  return d2, nil
+	return d2, nil
 }
 
 // NewTen - Returns a Decimal Type with a value equal to '10' (ten).
@@ -3861,37 +3909,37 @@ func (dec *Decimal) NewRationalNum(
 // numeric separators (decimal separator, thousands separator and currency symbol).
 func (dec *Decimal) NewTen(precision uint) (Decimal, error) {
 
-  ePrefix := "Decimal.NewTen()"
+	ePrefix := "Decimal.NewTen()"
 
-  bINum, err := new(BigIntNum).NewTen(precision)
+	bINum, err := new(BigIntNum).NewTen(precision)
 
-  if err != nil {
+	if err != nil {
 
-    return Decimal{},
-      fmt.Errorf("%v\n"+
-        "Error returned by: \n"+
-        " bINum, err := new(BigIntNum).NewTen(precision)\n"+
-        "Error= %v\n",
-        ePrefix,
-        err.Error())
-  }
+		return Decimal{},
+			fmt.Errorf("%v\n"+
+				"Error returned by: \n"+
+				" bINum, err := new(BigIntNum).NewTen(precision)\n"+
+				"Error= %v\n",
+				ePrefix,
+				err.Error())
+	}
 
-  d2 := new(Decimal).New()
+	d2 := new(Decimal).New()
 
-  err = d2.SetBigIntNum(bINum)
+	err = d2.SetBigIntNum(bINum)
 
-  if err != nil {
+	if err != nil {
 
-    return Decimal{},
-      fmt.Errorf("%v\n"+
-        "Error returned by: \n"+
-        " err = d2.SetBigIntNum(bINum)\n"+
-        "Error= %v\n",
-        ePrefix,
-        err.Error())
-  }
+		return Decimal{},
+			fmt.Errorf("%v\n"+
+				"Error returned by: \n"+
+				" err = d2.SetBigIntNum(bINum)\n"+
+				"Error= %v\n",
+				ePrefix,
+				err.Error())
+	}
 
-  return d2, nil
+	return d2, nil
 }
 
 // NewThree - Returns a Decimal Type with a value equal to '3' (three).
@@ -3915,37 +3963,37 @@ func (dec *Decimal) NewTen(precision uint) (Decimal, error) {
 // numeric separators (decimal separator, thousands separator and currency symbol).
 func (dec *Decimal) NewThree(precision uint) (Decimal, error) {
 
-  ePrefix := "Decimal.NewThree()"
+	ePrefix := "Decimal.NewThree()"
 
-  bINum, err := new(BigIntNum).NewThree(precision)
+	bINum, err := new(BigIntNum).NewThree(precision)
 
-  if err != nil {
+	if err != nil {
 
-    return Decimal{},
-      fmt.Errorf("%v\n"+
-        "Error returned by: \n"+
-        " bINum, err := new(BigIntNum).NewThree(precision)\n"+
-        "Error= %v\n",
-        ePrefix,
-        err.Error())
-  }
+		return Decimal{},
+			fmt.Errorf("%v\n"+
+				"Error returned by: \n"+
+				" bINum, err := new(BigIntNum).NewThree(precision)\n"+
+				"Error= %v\n",
+				ePrefix,
+				err.Error())
+	}
 
-  d2 := new(Decimal).New()
+	d2 := new(Decimal).New()
 
-  err = d2.SetBigIntNum(bINum)
+	err = d2.SetBigIntNum(bINum)
 
-  if err != nil {
+	if err != nil {
 
-    return Decimal{},
-      fmt.Errorf("%v\n"+
-        "Error returned by: \n"+
-        " err = d2.SetBigIntNum(bINum)\n"+
-        "Error= %v\n",
-        ePrefix,
-        err.Error())
-  }
+		return Decimal{},
+			fmt.Errorf("%v\n"+
+				"Error returned by: \n"+
+				" err = d2.SetBigIntNum(bINum)\n"+
+				"Error= %v\n",
+				ePrefix,
+				err.Error())
+	}
 
-  return d2, nil
+	return d2, nil
 }
 
 // NewTwo - Returns a Decimal Type with a value equal to '2' (two).
@@ -3969,37 +4017,37 @@ func (dec *Decimal) NewThree(precision uint) (Decimal, error) {
 // numeric separators (decimal separator, thousands separator and currency symbol).
 func (dec *Decimal) NewTwo(precision uint) (Decimal, error) {
 
-  ePrefix := "Decimal.NewTwo()"
+	ePrefix := "Decimal.NewTwo()"
 
-  bINum, err := new(BigIntNum).NewTwo(precision)
+	bINum, err := new(BigIntNum).NewTwo(precision)
 
-  if err != nil {
+	if err != nil {
 
-    return Decimal{},
-      fmt.Errorf("%v\n"+
-        "Error returned by: \n"+
-        " bINum, err := new(BigIntNum).NewTwo(precision)\n"+
-        "Error= %v\n",
-        ePrefix,
-        err.Error())
-  }
+		return Decimal{},
+			fmt.Errorf("%v\n"+
+				"Error returned by: \n"+
+				" bINum, err := new(BigIntNum).NewTwo(precision)\n"+
+				"Error= %v\n",
+				ePrefix,
+				err.Error())
+	}
 
-  d2 := new(Decimal).New()
+	d2 := new(Decimal).New()
 
-  err = d2.SetBigIntNum(bINum)
+	err = d2.SetBigIntNum(bINum)
 
-  if err != nil {
+	if err != nil {
 
-    return Decimal{},
-      fmt.Errorf("%v\n"+
-        "Error returned by: \n"+
-        " err = d2.SetBigIntNum(bINum)\n"+
-        "Error= %v\n",
-        ePrefix,
-        err.Error())
-  }
+		return Decimal{},
+			fmt.Errorf("%v\n"+
+				"Error returned by: \n"+
+				" err = d2.SetBigIntNum(bINum)\n"+
+				"Error= %v\n",
+				ePrefix,
+				err.Error())
+	}
 
-  return d2, nil
+	return d2, nil
 }
 
 // NewUint - Returns a new Decimal instance based on input parameters
@@ -4030,65 +4078,65 @@ func (dec *Decimal) NewTwo(precision uint) (Decimal, error) {
 //	  123456          0              123456
 //	  123456          1              12345.6
 func (dec *Decimal) NewUint(
-  uintNum uint, precision uint) (Decimal, error) {
+	uintNum uint, precision uint) (Decimal, error) {
 
-  var ePrefix *ePref.ErrPrefixDto
-  var err error
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewIEmpty(
-    nil,
-    "Decimal.NewUint()",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"Decimal.NewUint()",
+		"")
 
-  if err != nil {
-    return Decimal{}, err
-  }
+	if err != nil {
+		return Decimal{}, err
+	}
 
-  d2 := new(Decimal).New()
+	d2 := new(Decimal).New()
 
-  err = d2.bigINum.SetBigInt(big.NewInt(0).SetUint64(uint64(uintNum)), precision)
+	err = d2.bigINum.SetBigInt(big.NewInt(0).SetUint64(uint64(uintNum)), precision)
 
-  if err != nil {
+	if err != nil {
 
-    return Decimal{},
-      &FuncReturnError{
-        ErrPrefix: ePrefix.String(),
-        ReturnFunc: "err = d2.bigINum.SetBigInt(\n" +
-          "  big.NewInt(0).SetUint64(uint64(uintNum)), precision)",
-        ErrContext: fmt.Sprintf("uintNum= '%v'  precision= '%v'",
-          uintNum, precision),
-        ErrMessage: err.Error(),
-      }
-  }
+		return Decimal{},
+			&FuncReturnError{
+				ErrPrefix: ePrefix.String(),
+				ReturnFunc: "err = d2.bigINum.SetBigInt(\n" +
+					"  big.NewInt(0).SetUint64(uint64(uintNum)), precision)",
+				ErrContext: fmt.Sprintf("uintNum= '%v'  precision= '%v'",
+					uintNum, precision),
+				ErrMessage: err.Error(),
+			}
+	}
 
-  decNumSeps, err := dec.bigINum.GetNumericSeparatorsDto()
+	decNumSeps, err := dec.bigINum.GetNumericSeparatorsDto()
 
-  if err != nil {
+	if err != nil {
 
-    return Decimal{},
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "decNumSeps, err := dec.bigINum.GetNumericSeparatorsDto()",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-  }
+		return Decimal{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "decNumSeps, err := dec.bigINum.GetNumericSeparatorsDto()",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  err = d2.bigINum.SetNumericSeparatorsDto(decNumSeps)
+	err = d2.bigINum.SetNumericSeparatorsDto(decNumSeps)
 
-  if err != nil {
+	if err != nil {
 
-    return Decimal{},
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "err = d2.bigINum.SetNumericSeparatorsDto(decNumSeps)",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-  }
+		return Decimal{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "err = d2.bigINum.SetNumericSeparatorsDto(decNumSeps)",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  return d2, nil
+	return d2, nil
 }
 
 // NewUintExponent - This method returns a new Decimal instance in which
@@ -4121,66 +4169,66 @@ func (dec *Decimal) NewUint(
 //		 123456		 		   3							123456.000
 //		 123456					 0              123456
 func (dec *Decimal) NewUintExponent(
-  uintNum uint, exponent int) (Decimal, error) {
+	uintNum uint, exponent int) (Decimal, error) {
 
-  var ePrefix *ePref.ErrPrefixDto
-  var err error
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewIEmpty(
-    nil,
-    "Decimal.NewUintExponent()",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"Decimal.NewUintExponent()",
+		"")
 
-  if err != nil {
-    return Decimal{}, err
-  }
-  d2 := new(Decimal).New()
+	if err != nil {
+		return Decimal{}, err
+	}
+	d2 := new(Decimal).New()
 
-  err = d2.bigINum.SetBigIntExponent(
-    big.NewInt(0).SetUint64(uint64(uintNum)),
-    exponent)
+	err = d2.bigINum.SetBigIntExponent(
+		big.NewInt(0).SetUint64(uint64(uintNum)),
+		exponent)
 
-  if err != nil {
+	if err != nil {
 
-    return Decimal{},
-      &FuncReturnError{
-        ErrPrefix: ePrefix.String(),
-        ReturnFunc: "err = d2.bigINum.SetBigIntExponent(\n" +
-          "  big.NewInt(0).SetUint64(uint64(uintNum)),exponent)",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-  }
+		return Decimal{},
+			&FuncReturnError{
+				ErrPrefix: ePrefix.String(),
+				ReturnFunc: "err = d2.bigINum.SetBigIntExponent(\n" +
+					"  big.NewInt(0).SetUint64(uint64(uintNum)),exponent)",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  decBigINumNumSeps, err := dec.bigINum.GetNumericSeparatorsDto()
+	decBigINumNumSeps, err := dec.bigINum.GetNumericSeparatorsDto()
 
-  if err != nil {
+	if err != nil {
 
-    return Decimal{},
-      &FuncReturnError{
-        ErrPrefix: ePrefix.String(),
-        ReturnFunc: "decBigINumNumSeps, err := \n" +
-          "  dec.bigINum.GetNumericSeparatorsDto()",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-  }
+		return Decimal{},
+			&FuncReturnError{
+				ErrPrefix: ePrefix.String(),
+				ReturnFunc: "decBigINumNumSeps, err := \n" +
+					"  dec.bigINum.GetNumericSeparatorsDto()",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  err = d2.SetNumericSeparatorsDto(decBigINumNumSeps)
+	err = d2.SetNumericSeparatorsDto(decBigINumNumSeps)
 
-  if err != nil {
+	if err != nil {
 
-    return Decimal{},
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "err = d2.SetNumericSeparatorsDto(decBigINumNumSeps)",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-  }
+		return Decimal{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "err = d2.SetNumericSeparatorsDto(decBigINumNumSeps)",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  return d2, nil
+	return d2, nil
 }
 
 // NewUint32 - Returns a new Decimal instance based on input parameters
@@ -4211,64 +4259,64 @@ func (dec *Decimal) NewUintExponent(
 //	  123456          0              123456
 //	  123456          1              12345.6
 func (dec *Decimal) NewUint32(
-  uint32Num uint32, precision uint) (Decimal, error) {
+	uint32Num uint32, precision uint) (Decimal, error) {
 
-  var ePrefix *ePref.ErrPrefixDto
-  var err error
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewIEmpty(
-    nil,
-    "Decimal.NewUint32()",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"Decimal.NewUint32()",
+		"")
 
-  if err != nil {
-    return Decimal{}, err
-  }
+	if err != nil {
+		return Decimal{}, err
+	}
 
-  d2 := new(Decimal).New()
+	d2 := new(Decimal).New()
 
-  err = d2.bigINum.SetBigInt(big.NewInt(0).SetUint64(uint64(uint32Num)), precision)
+	err = d2.bigINum.SetBigInt(big.NewInt(0).SetUint64(uint64(uint32Num)), precision)
 
-  if err != nil {
+	if err != nil {
 
-    return Decimal{},
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "err = d2.bigINum.SetBigInt(big.NewInt(0).SetUint64(uint64(uint32Num)), precision)",
-        ErrContext: fmt.Sprintf("uint32Num= '%v'  precision= '%v'",
-          uint32Num, precision),
-        ErrMessage: err.Error(),
-      }
-  }
+		return Decimal{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "err = d2.bigINum.SetBigInt(big.NewInt(0).SetUint64(uint64(uint32Num)), precision)",
+				ErrContext: fmt.Sprintf("uint32Num= '%v'  precision= '%v'",
+					uint32Num, precision),
+				ErrMessage: err.Error(),
+			}
+	}
 
-  decBigINumNumSeps, err := dec.bigINum.GetNumericSeparatorsDto()
+	decBigINumNumSeps, err := dec.bigINum.GetNumericSeparatorsDto()
 
-  if err != nil {
+	if err != nil {
 
-    return Decimal{},
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "decBigINumNumSeps, err := dec.bigINum.GetNumericSeparatorsDto()",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-  }
+		return Decimal{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "decBigINumNumSeps, err := dec.bigINum.GetNumericSeparatorsDto()",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  err = d2.bigINum.SetNumericSeparatorsDto(decBigINumNumSeps)
+	err = d2.bigINum.SetNumericSeparatorsDto(decBigINumNumSeps)
 
-  if err != nil {
+	if err != nil {
 
-    return Decimal{},
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "err = d2.bigINum.SetNumericSeparatorsDto(decBigINumNumSeps)",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-  }
+		return Decimal{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "err = d2.bigINum.SetNumericSeparatorsDto(decBigINumNumSeps)",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  return d2, nil
+	return d2, nil
 }
 
 // NewUint32Exponent - This method returns a new Decimal instance in which the
@@ -4301,68 +4349,68 @@ func (dec *Decimal) NewUint32(
 //		 123456		 		   3							123456.000
 //	  123456          0              123456
 func (dec *Decimal) NewUint32Exponent(
-  uint32Num uint32, exponent int) (Decimal, error) {
+	uint32Num uint32, exponent int) (Decimal, error) {
 
-  var ePrefix *ePref.ErrPrefixDto
-  var err error
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewIEmpty(
-    nil,
-    "Decimal.NewUint32Exponent()",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"Decimal.NewUint32Exponent()",
+		"")
 
-  if err != nil {
-    return Decimal{}, err
-  }
+	if err != nil {
+		return Decimal{}, err
+	}
 
-  d2 := new(Decimal).New()
+	d2 := new(Decimal).New()
 
-  err = d2.bigINum.SetBigIntExponent(
-    big.NewInt(0).SetUint64(uint64(uint32Num)),
-    exponent)
+	err = d2.bigINum.SetBigIntExponent(
+		big.NewInt(0).SetUint64(uint64(uint32Num)),
+		exponent)
 
-  if err != nil {
+	if err != nil {
 
-    return Decimal{},
-      &FuncReturnError{
-        ErrPrefix: ePrefix.String(),
-        ReturnFunc: "err = d2.bigINum.SetBigIntExponent(\n" +
-          "  big.NewInt(0).SetUint64(uint64(uint32Num)),exponent)",
-        ErrContext: fmt.Sprintf("uint32Num= '%v'  exponent= '%v'",
-          uint32Num, exponent),
-        ErrMessage: err.Error(),
-      }
-  }
+		return Decimal{},
+			&FuncReturnError{
+				ErrPrefix: ePrefix.String(),
+				ReturnFunc: "err = d2.bigINum.SetBigIntExponent(\n" +
+					"  big.NewInt(0).SetUint64(uint64(uint32Num)),exponent)",
+				ErrContext: fmt.Sprintf("uint32Num= '%v'  exponent= '%v'",
+					uint32Num, exponent),
+				ErrMessage: err.Error(),
+			}
+	}
 
-  decBigINumNumSeps, err := dec.bigINum.GetNumericSeparatorsDto()
+	decBigINumNumSeps, err := dec.bigINum.GetNumericSeparatorsDto()
 
-  if err != nil {
+	if err != nil {
 
-    return Decimal{},
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "decBigINumNumSeps, err := dec.bigINum.GetNumericSeparatorsDto()",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-  }
+		return Decimal{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "decBigINumNumSeps, err := dec.bigINum.GetNumericSeparatorsDto()",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  err = d2.SetNumericSeparatorsDto(decBigINumNumSeps)
+	err = d2.SetNumericSeparatorsDto(decBigINumNumSeps)
 
-  if err != nil {
+	if err != nil {
 
-    return Decimal{},
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "err = d2.SetNumericSeparatorsDto(decBigINumNumSeps)",
-        ErrContext: fmt.Sprintf("decBigINumNumSeps= '%v'",
-          decBigINumNumSeps.String()),
-        ErrMessage: err.Error(),
-      }
-  }
+		return Decimal{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "err = d2.SetNumericSeparatorsDto(decBigINumNumSeps)",
+				ErrContext: fmt.Sprintf("decBigINumNumSeps= '%v'",
+					decBigINumNumSeps.String()),
+				ErrMessage: err.Error(),
+			}
+	}
 
-  return d2, nil
+	return d2, nil
 }
 
 // NewUint64 - Returns a new Decimal instance based on input parameters
@@ -4393,63 +4441,63 @@ func (dec *Decimal) NewUint32Exponent(
 //	  123456          0              123456
 //	  123456          1              12345.6
 func (dec *Decimal) NewUint64(
-  uint64Num uint64, precision uint) (Decimal, error) {
+	uint64Num uint64, precision uint) (Decimal, error) {
 
-  var ePrefix *ePref.ErrPrefixDto
-  var err error
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewIEmpty(
-    nil,
-    "Decimal.NewUint64()",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"Decimal.NewUint64()",
+		"")
 
-  if err != nil {
-    return Decimal{}, err
-  }
+	if err != nil {
+		return Decimal{}, err
+	}
 
-  d2 := new(Decimal).New()
+	d2 := new(Decimal).New()
 
-  err = d2.bigINum.SetBigInt(big.NewInt(0).SetUint64(uint64Num), precision)
+	err = d2.bigINum.SetBigInt(big.NewInt(0).SetUint64(uint64Num), precision)
 
-  if err != nil {
+	if err != nil {
 
-    return Decimal{},
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "err = d2.bigINum.SetBigInt(big.NewInt(0).SetUint64(uint64Num), precision)",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-  }
+		return Decimal{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "err = d2.bigINum.SetBigInt(big.NewInt(0).SetUint64(uint64Num), precision)",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  decNumStr, err := dec.bigINum.GetNumericSeparatorsDto()
+	decNumStr, err := dec.bigINum.GetNumericSeparatorsDto()
 
-  if err != nil {
+	if err != nil {
 
-    return Decimal{},
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "decNumStr, err := dec.bigINum.GetNumericSeparatorsDto()",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-  }
+		return Decimal{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "decNumStr, err := dec.bigINum.GetNumericSeparatorsDto()",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  err = d2.bigINum.SetNumericSeparatorsDto(decNumStr)
+	err = d2.bigINum.SetNumericSeparatorsDto(decNumStr)
 
-  if err != nil {
+	if err != nil {
 
-    return Decimal{},
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "err = d2.bigINum.SetNumericSeparatorsDto(decNumStr)",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-  }
+		return Decimal{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "err = d2.bigINum.SetNumericSeparatorsDto(decNumStr)",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  return d2, nil
+	return d2, nil
 }
 
 // NewUint64Exponent - This method returns a new Decimal instance in which the
@@ -4482,65 +4530,65 @@ func (dec *Decimal) NewUint64(
 //		 123456		 		   3							123456.000
 //		 123456          0              123456
 func (dec *Decimal) NewUint64Exponent(
-  uint64Num uint64, exponent int) (Decimal, error) {
+	uint64Num uint64, exponent int) (Decimal, error) {
 
-  var ePrefix *ePref.ErrPrefixDto
-  var err error
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewIEmpty(
-    nil,
-    "Decimal.NewUint64Exponent()",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"Decimal.NewUint64Exponent()",
+		"")
 
-  if err != nil {
-    return Decimal{}, err
-  }
+	if err != nil {
+		return Decimal{}, err
+	}
 
-  d2 := new(Decimal).New()
+	d2 := new(Decimal).New()
 
-  err = d2.bigINum.SetBigIntExponent(
-    big.NewInt(0).SetUint64(uint64Num),
-    exponent)
+	err = d2.bigINum.SetBigIntExponent(
+		big.NewInt(0).SetUint64(uint64Num),
+		exponent)
 
-  if err != nil {
+	if err != nil {
 
-    return Decimal{},
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "err = d2.bigINum.SetBigIntExponent(big.NewInt(0).SetUint64(uint64Num),exponent)",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-  }
+		return Decimal{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "err = d2.bigINum.SetBigIntExponent(big.NewInt(0).SetUint64(uint64Num),exponent)",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  decNumSeps, err := dec.bigINum.GetNumericSeparatorsDto()
+	decNumSeps, err := dec.bigINum.GetNumericSeparatorsDto()
 
-  if err != nil {
+	if err != nil {
 
-    return Decimal{},
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "decNumSeps, err := dec.bigINum.GetNumericSeparatorsDto()",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-  }
+		return Decimal{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "decNumSeps, err := dec.bigINum.GetNumericSeparatorsDto()",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  err = d2.SetNumericSeparatorsDto(decNumSeps)
+	err = d2.SetNumericSeparatorsDto(decNumSeps)
 
-  if err != nil {
+	if err != nil {
 
-    return Decimal{},
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "decNumSeps, err := dec.bigINum.GetNumericSeparatorsDto()",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-  }
+		return Decimal{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "decNumSeps, err := dec.bigINum.GetNumericSeparatorsDto()",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  return d2, nil
+	return d2, nil
 }
 
 // NewZero - Creates a New Decimal Instance with a value of zero. Input
@@ -4562,51 +4610,51 @@ func (dec *Decimal) NewUint64Exponent(
 // numeric separators (decimal separator, thousands separator and currency symbol).
 func (dec *Decimal) NewZero(precision uint) (Decimal, error) {
 
-  ePrefix := "Decimal.NewZero()"
+	ePrefix := "Decimal.NewZero()"
 
-  biNum, err := new(BigIntNum).NewZero(precision)
+	biNum, err := new(BigIntNum).NewZero(precision)
 
-  if err != nil {
+	if err != nil {
 
-    return Decimal{},
-      fmt.Errorf("%v\n"+
-        "Error returned by: \n"+
-        " biNum, err := new(BigIntNum).NewZero(precision)\n"+
-        "Error= %v\n",
-        ePrefix,
-        err.Error())
+		return Decimal{},
+			fmt.Errorf("%v\n"+
+				"Error returned by: \n"+
+				" biNum, err := new(BigIntNum).NewZero(precision)\n"+
+				"Error= %v\n",
+				ePrefix,
+				err.Error())
 
-  }
+	}
 
-  d2 := new(Decimal).New()
+	d2 := new(Decimal).New()
 
-  err = d2.SetNumericSeparatorsToDefaultIfEmpty()
+	err = d2.SetNumericSeparatorsToDefaultIfEmpty()
 
-  if err != nil {
+	if err != nil {
 
-    return Decimal{},
-      fmt.Errorf("%v\n"+
-        "Error returned by: \n"+
-        " err = d2.SetNumericSeparatorsToDefaultIfEmpty()\n"+
-        "Error= %v\n",
-        ePrefix,
-        err.Error())
-  }
+		return Decimal{},
+			fmt.Errorf("%v\n"+
+				"Error returned by: \n"+
+				" err = d2.SetNumericSeparatorsToDefaultIfEmpty()\n"+
+				"Error= %v\n",
+				ePrefix,
+				err.Error())
+	}
 
-  err = d2.SetBigIntNum(biNum)
+	err = d2.SetBigIntNum(biNum)
 
-  if err != nil {
+	if err != nil {
 
-    return Decimal{},
-      fmt.Errorf("%v\n"+
-        "Error returned by: \n"+
-        " err = d2.SetBigIntNum(biNum)\n"+
-        "Error= %v\n",
-        ePrefix,
-        err.Error())
-  }
+		return Decimal{},
+			fmt.Errorf("%v\n"+
+				"Error returned by: \n"+
+				" err = d2.SetBigIntNum(biNum)\n"+
+				"Error= %v\n",
+				ePrefix,
+				err.Error())
+	}
 
-  return d2, nil
+	return d2, nil
 }
 
 // NthRoot - Calculates the nth root of the current Decimal value. The numeric value of
@@ -4631,183 +4679,183 @@ func (dec *Decimal) NewZero(precision uint) (Decimal, error) {
 // instance will contain	numeric separators (decimal separator, thousands separator and
 // currency symbol) copied from the current Decimal instance (radicand).
 func (dec *Decimal) NthRoot(
-  nthRoot Decimal, maxPrecision uint) (Decimal, error) {
+	nthRoot Decimal, maxPrecision uint) (Decimal, error) {
 
-  var ePrefix *ePref.ErrPrefixDto
-  var err error
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewIEmpty(
-    nil,
-    "Decimal.NthRoot()",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"Decimal.NthRoot()",
+		"")
 
-  if err != nil {
-    return Decimal{}, err
-  }
+	if err != nil {
+		return Decimal{}, err
+	}
 
-  err = dec.bigINum.IsValid(ePrefix.XCpy("Validating 'dec'").String())
+	err = dec.bigINum.IsValid(ePrefix.XCpy("Validating 'dec'").String())
 
-  if err != nil {
+	if err != nil {
 
-    return Decimal{},
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "err = dec.bigINum.IsValid(ePrefix.XCpy(\"Validating 'dec'\").String())",
-        ErrContext: "Error: Current Decimal instance 'dec' is INVALID!",
-        ErrMessage: err.Error(),
-      }
-  }
+		return Decimal{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "err = dec.bigINum.IsValid(ePrefix.XCpy(\"Validating 'dec'\").String())",
+				ErrContext: "Error: Current Decimal instance 'dec' is INVALID!",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  err = nthRoot.IsValid(ePrefix.XCpy("Validating 'nthRoot'").String())
+	err = nthRoot.IsValid(ePrefix.XCpy("Validating 'nthRoot'").String())
 
-  if err != nil {
+	if err != nil {
 
-    return Decimal{},
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "",
-        ErrContext: "'nthRoot' input parameter is INVALID!",
-        ErrMessage: err.Error(),
-      }
-  }
+		return Decimal{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "",
+				ErrContext: "'nthRoot' input parameter is INVALID!",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  // If the radicand is zero, the result will always be zero
-  var decIsZero, nthRootIsZero bool
+	// If the radicand is zero, the result will always be zero
+	var decIsZero, nthRootIsZero bool
 
-  decIsZero, err = dec.bigINum.IsZero()
+	decIsZero, err = dec.bigINum.IsZero()
 
-  if err != nil {
+	if err != nil {
 
-    return Decimal{},
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "decIsZero, err = dec.bigINum.IsZero()",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-  }
+		return Decimal{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "decIsZero, err = dec.bigINum.IsZero()",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  if decIsZero {
+	if decIsZero {
 
-    dec3, err := new(Decimal).NewZero(0)
+		dec3, err := new(Decimal).NewZero(0)
 
-    if err != nil {
+		if err != nil {
 
-      return Decimal{},
-        &FuncReturnError{
-          ErrPrefix:  ePrefix.String(),
-          ReturnFunc: "dec3, err := new(Decimal).NewZero(0)",
-          ErrContext: "",
-          ErrMessage: err.Error(),
-        }
-    }
+			return Decimal{},
+				&FuncReturnError{
+					ErrPrefix:  ePrefix.String(),
+					ReturnFunc: "dec3, err := new(Decimal).NewZero(0)",
+					ErrContext: "",
+					ErrMessage: err.Error(),
+				}
+		}
 
-    return dec3, nil
-  }
+		return dec3, nil
+	}
 
-  nthRootIsZero, err = nthRoot.IsZero()
+	nthRootIsZero, err = nthRoot.IsZero()
 
-  if err != nil {
+	if err != nil {
 
-    return Decimal{},
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "nthRootIsZero, err = nthRoot.IsZero()",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-  }
+		return Decimal{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "nthRootIsZero, err = nthRoot.IsZero()",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  // If nth root is zero, the result is always one.
-  if nthRootIsZero {
+	// If nth root is zero, the result is always one.
+	if nthRootIsZero {
 
-    dec4, err := new(Decimal).NewOne(0)
+		dec4, err := new(Decimal).NewOne(0)
 
-    if err != nil {
+		if err != nil {
 
-      return Decimal{},
-        &FuncReturnError{
-          ErrPrefix:  ePrefix.String(),
-          ReturnFunc: "dec4, err := new(Decimal).NewOne(0)",
-          ErrContext: "",
-          ErrMessage: err.Error(),
-        }
-    }
+			return Decimal{},
+				&FuncReturnError{
+					ErrPrefix:  ePrefix.String(),
+					ReturnFunc: "dec4, err := new(Decimal).NewOne(0)",
+					ErrContext: "",
+					ErrMessage: err.Error(),
+				}
+		}
 
-    return dec4, nil
-  }
+		return dec4, nil
+	}
 
-  nthRootIsEven, err := nthRoot.IsEvenNumber()
+	nthRootIsEven, err := nthRoot.IsEvenNumber()
 
-  if err != nil {
+	if err != nil {
 
-    return Decimal{},
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "nthRootIsEven, err := nthRoot.IsEvenNumber()",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-  }
+		return Decimal{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "nthRootIsEven, err := nthRoot.IsEvenNumber()",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  decSignValue, err := dec.bigINum.GetSign()
+	decSignValue, err := dec.bigINum.GetSign()
 
-  if err != nil {
+	if err != nil {
 
-    return Decimal{},
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "decSignValue, err := dec.bigINum.GetSign()",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-  }
+		return Decimal{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "decSignValue, err := dec.bigINum.GetSign()",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  if decSignValue == -1 && nthRootIsEven {
+	if decSignValue == -1 && nthRootIsEven {
 
-    return Decimal{},
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "",
-        ErrContext: "if decSignValue == -1 && nthRootIsEven {",
-        ErrMessage: "INVALID ENTRY! Cannot calculate nth root of a\n" +
-          "negative radicand when nthRoot is even.\n" +
-          "The sign of 'dec' is -1 and the nthRoot is 'even'.",
-      }
-  }
+		return Decimal{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "",
+				ErrContext: "if decSignValue == -1 && nthRootIsEven {",
+				ErrMessage: "INVALID ENTRY! Cannot calculate nth root of a\n" +
+					"negative radicand when nthRoot is even.\n" +
+					"The sign of 'dec' is -1 and the nthRoot is 'even'.",
+			}
+	}
 
-  decNthRoot := new(Decimal).New()
+	decNthRoot := new(Decimal).New()
 
-  decNthRoot.bigINum, err =
-    new(BigIntMathNthRoot).GetNthRoot(dec.bigINum, nthRoot.bigINum, maxPrecision)
+	decNthRoot.bigINum, err =
+		new(BigIntMathNthRoot).GetNthRoot(dec.bigINum, nthRoot.bigINum, maxPrecision)
 
-  if err != nil {
+	if err != nil {
 
-    return Decimal{},
-      &FuncReturnError{
-        ErrPrefix: ePrefix.String(),
-        ReturnFunc: "decNthRoot.bigINum, err = new(BigIntMathNthRoot).\n" +
-          "  GetNthRoot(dec.bigINum, nthRoot.bigINum, maxPrecision)",
-        ErrContext: fmt.Sprintf("maxPrecision='%v'", maxPrecision),
-        ErrMessage: err.Error(),
-      }
-  }
+		return Decimal{},
+			&FuncReturnError{
+				ErrPrefix: ePrefix.String(),
+				ReturnFunc: "decNthRoot.bigINum, err = new(BigIntMathNthRoot).\n" +
+					"  GetNthRoot(dec.bigINum, nthRoot.bigINum, maxPrecision)",
+				ErrContext: fmt.Sprintf("maxPrecision='%v'", maxPrecision),
+				ErrMessage: err.Error(),
+			}
+	}
 
-  err = decNthRoot.IsValid(ePrefix.XCpy("Validating 'decNthRoot'").String())
+	err = decNthRoot.IsValid(ePrefix.XCpy("Validating 'decNthRoot'").String())
 
-  if err != nil {
+	if err != nil {
 
-    return Decimal{},
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "err = decNthRoot.IsValid(ePrefix.XCpy(\"Validating 'decNthRoot'\").String())",
-        ErrContext: "Validation Error on Decimal instance 'decNthRoot'.",
-        ErrMessage: err.Error(),
-      }
-  }
+		return Decimal{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "err = decNthRoot.IsValid(ePrefix.XCpy(\"Validating 'decNthRoot'\").String())",
+				ErrContext: "Validation Error on Decimal instance 'decNthRoot'.",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  return decNthRoot, nil
+	return decNthRoot, nil
 }
 
 // NumStrPrecisionToDecimal - receives a number string and a
@@ -4824,96 +4872,96 @@ func (dec *Decimal) NthRoot(
 // d2, err := d.NumStrPrecisionToDecimal("123456", 3, false)
 // d2 is Now Equal to 123.456
 func (dec *Decimal) NumStrPrecisionToDecimal(
-  numStr string,
-  requiredPrecision uint,
-  roundResult bool) (Decimal, error) {
+	numStr string,
+	requiredPrecision uint,
+	roundResult bool) (Decimal, error) {
 
-  var ePrefix *ePref.ErrPrefixDto
-  var err error
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewIEmpty(
-    nil,
-    "Decimal.NumStrPrecisionToDecimal()",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"Decimal.NumStrPrecisionToDecimal()",
+		"")
 
-  if err != nil {
-    return Decimal{}, err
-  }
+	if err != nil {
+		return Decimal{}, err
+	}
 
-  decNumSeps, err := dec.bigINum.GetNumericSeparatorsDto()
+	decNumSeps, err := dec.bigINum.GetNumericSeparatorsDto()
 
-  if err != nil {
+	if err != nil {
 
-    return Decimal{},
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "decNumSeps, err := dec.bigINum.GetNumericSeparatorsDto()",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-  }
+		return Decimal{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "decNumSeps, err := dec.bigINum.GetNumericSeparatorsDto()",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  d2 := Decimal{}
+	d2 := Decimal{}
 
-  d2.bigINum, err = new(BigIntNum).NewNumStr(numStr)
+	d2.bigINum, err = new(BigIntNum).NewNumStr(numStr)
 
-  if err != nil {
+	if err != nil {
 
-    return Decimal{},
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "d2.bigINum, err = new(BigIntNum).NewNumStr(numStr)",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-  }
+		return Decimal{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "d2.bigINum, err = new(BigIntNum).NewNumStr(numStr)",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  if roundResult == true {
+	if roundResult == true {
 
-    err = d2.bigINum.SetPrecision(requiredPrecision)
+		err = d2.bigINum.SetPrecision(requiredPrecision)
 
-    if err != nil {
+		if err != nil {
 
-      return Decimal{},
-        &FuncReturnError{
-          ErrPrefix:  ePrefix.String(),
-          ReturnFunc: "err = d2.bigINum.SetPrecision(requiredPrecision)",
-          ErrContext: fmt.Sprintf("requiredPrecision='%v'", requiredPrecision),
-          ErrMessage: err.Error(),
-        }
-    }
+			return Decimal{},
+				&FuncReturnError{
+					ErrPrefix:  ePrefix.String(),
+					ReturnFunc: "err = d2.bigINum.SetPrecision(requiredPrecision)",
+					ErrContext: fmt.Sprintf("requiredPrecision='%v'", requiredPrecision),
+					ErrMessage: err.Error(),
+				}
+		}
 
-  } else {
+	} else {
 
-    err = d2.bigINum.TruncToDecPlace(requiredPrecision)
+		err = d2.bigINum.TruncToDecPlace(requiredPrecision)
 
-    if err != nil {
+		if err != nil {
 
-      return Decimal{},
-        &FuncReturnError{
-          ErrPrefix:  ePrefix.String(),
-          ReturnFunc: "err = d2.bigINum.TruncToDecPlace(requiredPrecision)",
-          ErrContext: fmt.Sprintf("requiredPrecision='%v'", requiredPrecision),
-          ErrMessage: err.Error(),
-        }
-    }
-  }
+			return Decimal{},
+				&FuncReturnError{
+					ErrPrefix:  ePrefix.String(),
+					ReturnFunc: "err = d2.bigINum.TruncToDecPlace(requiredPrecision)",
+					ErrContext: fmt.Sprintf("requiredPrecision='%v'", requiredPrecision),
+					ErrMessage: err.Error(),
+				}
+		}
+	}
 
-  err = d2.bigINum.SetNumericSeparatorsDto(decNumSeps)
+	err = d2.bigINum.SetNumericSeparatorsDto(decNumSeps)
 
-  if err != nil {
+	if err != nil {
 
-    return Decimal{},
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "err = d2.bigINum.SetNumericSeparatorsDto(decNumSeps)",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-  }
+		return Decimal{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "err = d2.bigINum.SetNumericSeparatorsDto(decNumSeps)",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  return d2, nil
+	return d2, nil
 }
 
 // Pow - Raises the numeric value of the current Decimal instance to the power of
@@ -4938,50 +4986,50 @@ func (dec *Decimal) NumStrPrecisionToDecimal(
 // thousands separator and currency symbol) copied from the current Decimal instance.
 func (dec *Decimal) Pow(exponent Decimal, maxPrecision uint) (Decimal, error) {
 
-  ePrefix := "Decimal.Pow() "
+	ePrefix := "Decimal.Pow() "
 
-  err := dec.bigINum.IsValid(ePrefix)
+	err := dec.bigINum.IsValid(ePrefix)
 
-  if err != nil {
+	if err != nil {
 
-    return Decimal{},
-      fmt.Errorf("%v\n"+
-        "Validation Error returned by: \n"+
-        " err := dec.bigINum.IsValid(ePrefix)\n"+
-        "Error= %v\n",
-        ePrefix,
-        err.Error())
-  }
+		return Decimal{},
+			fmt.Errorf("%v\n"+
+				"Validation Error returned by: \n"+
+				" err := dec.bigINum.IsValid(ePrefix)\n"+
+				"Error= %v\n",
+				ePrefix,
+				err.Error())
+	}
 
-  d3 := new(Decimal).New()
+	d3 := new(Decimal).New()
 
-  d3.bigINum, err = new(BigIntMathPower).Pwr(dec.bigINum, exponent.bigINum, maxPrecision)
+	d3.bigINum, err = new(BigIntMathPower).Pwr(dec.bigINum, exponent.bigINum, maxPrecision)
 
-  if err != nil {
-    return Decimal{},
-      fmt.Errorf("%v\n"+
-        "Error returned by: \n"+
-        " d3.bigINum, err = BigIntMathPower{}.Pwr(dec.bigINum, exponent.bigINum, maxPrecision)\n"+
-        "Error= %v\n",
-        ePrefix,
-        err.Error())
-  }
+	if err != nil {
+		return Decimal{},
+			fmt.Errorf("%v\n"+
+				"Error returned by: \n"+
+				" d3.bigINum, err = BigIntMathPower{}.Pwr(dec.bigINum, exponent.bigINum, maxPrecision)\n"+
+				"Error= %v\n",
+				ePrefix,
+				err.Error())
+	}
 
-  err = d3.IsValid(ePrefix + "d3 INVALID! ")
+	err = d3.IsValid(ePrefix + "d3 INVALID! ")
 
-  if err != nil {
+	if err != nil {
 
-    return Decimal{},
-      fmt.Errorf("%v\n"+
-        "Validation Error on Decimal instance 'dec3'.\n"+
-        "Error returned by: \n"+
-        " err = d3.IsValid(ePrefix + \"d3 INVALID! \") \n"+
-        "Error= %v\n",
-        ePrefix,
-        err.Error())
-  }
+		return Decimal{},
+			fmt.Errorf("%v\n"+
+				"Validation Error on Decimal instance 'dec3'.\n"+
+				"Error returned by: \n"+
+				" err = d3.IsValid(ePrefix + \"d3 INVALID! \") \n"+
+				"Error= %v\n",
+				ePrefix,
+				err.Error())
+	}
 
-  return d3, nil
+	return d3, nil
 }
 
 // PowInt
@@ -5030,114 +5078,114 @@ func (dec *Decimal) Pow(exponent Decimal, maxPrecision uint) (Decimal, error) {
 //	  If no errors are encountered during method execution, this
 //	  return parameter is set to 'nil'.
 func (dec *Decimal) PowInt(
-  exponent int, maxPrecision uint) (Decimal, error) {
+	exponent int, maxPrecision uint) (Decimal, error) {
 
-  var ePrefix *ePref.ErrPrefixDto
-  var err error
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewIEmpty(
-    nil,
-    "Decimal.PowInt()",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"Decimal.PowInt()",
+		"")
 
-  if err != nil {
-    return Decimal{}, err
-  }
+	if err != nil {
+		return Decimal{}, err
+	}
 
-  err = dec.bigINum.IsValid(ePrefix.XCpy("Validating 'dec'").String())
+	err = dec.bigINum.IsValid(ePrefix.XCpy("Validating 'dec'").String())
 
-  if err != nil {
+	if err != nil {
 
-    return Decimal{},
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "err = dec.bigINum.IsValid(ePrefix.XCpy(\"Validating 'dec'\").String())",
-        ErrContext: "Error: The current instance of Decimal ('dec') is INVALID!",
-        ErrMessage: err.Error(),
-      }
-  }
+		return Decimal{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "err = dec.bigINum.IsValid(ePrefix.XCpy(\"Validating 'dec'\").String())",
+				ErrContext: "Error: The current instance of Decimal ('dec') is INVALID!",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  decNumSeps, err := dec.bigINum.GetNumericSeparatorsDto()
+	decNumSeps, err := dec.bigINum.GetNumericSeparatorsDto()
 
-  if err != nil {
+	if err != nil {
 
-    return Decimal{},
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "decNumSeps, err := dec.bigINum.GetNumericSeparatorsDto()",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-  }
+		return Decimal{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "decNumSeps, err := dec.bigINum.GetNumericSeparatorsDto()",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  biNumExponent, err := new(BigIntNum).NewBigInt(big.NewInt(int64(exponent)), 0)
+	biNumExponent, err := new(BigIntNum).NewBigInt(big.NewInt(int64(exponent)), 0)
 
-  if err != nil {
+	if err != nil {
 
-    return Decimal{},
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "biNumExponent, err := new(BigIntNum).NewBigInt(big.NewInt(int64(exponent)), 0)",
-        ErrContext: fmt.Sprintf("exponent= '%v'", exponent),
-        ErrMessage: err.Error(),
-      }
-  }
+		return Decimal{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "biNumExponent, err := new(BigIntNum).NewBigInt(big.NewInt(int64(exponent)), 0)",
+				ErrContext: fmt.Sprintf("exponent= '%v'", exponent),
+				ErrMessage: err.Error(),
+			}
+	}
 
-  biNumExponentNumStr, err := biNumExponent.GetNumStr()
+	biNumExponentNumStr, err := biNumExponent.GetNumStr()
 
-  if err != nil {
+	if err != nil {
 
-    return Decimal{},
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "biNumExponentNumStr, err := biNumExponent.GetNumStr()",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-  }
+		return Decimal{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "biNumExponentNumStr, err := biNumExponent.GetNumStr()",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  bINumResult, err := new(BigIntMathPower).Pwr(dec.bigINum, biNumExponent, maxPrecision)
+	bINumResult, err := new(BigIntMathPower).Pwr(dec.bigINum, biNumExponent, maxPrecision)
 
-  if err != nil {
+	if err != nil {
 
-    return Decimal{},
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "bINumResult, err := new(BigIntMathPower).Pwr(dec.bigINum, biNumExponent, maxPrecision)",
-        ErrContext: fmt.Sprintf("dec.bigINum= '%v' biNumExponent= '%v'\n"+
-          "maxPrecision= '%v'", decNumSeps, biNumExponentNumStr, maxPrecision),
-        ErrMessage: err.Error(),
-      }
-  }
+		return Decimal{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "bINumResult, err := new(BigIntMathPower).Pwr(dec.bigINum, biNumExponent, maxPrecision)",
+				ErrContext: fmt.Sprintf("dec.bigINum= '%v' biNumExponent= '%v'\n"+
+					"maxPrecision= '%v'", decNumSeps, biNumExponentNumStr, maxPrecision),
+				ErrMessage: err.Error(),
+			}
+	}
 
-  d3, err := new(Decimal).NewBigIntNum(bINumResult)
+	d3, err := new(Decimal).NewBigIntNum(bINumResult)
 
-  if err != nil {
+	if err != nil {
 
-    return Decimal{},
-      fmt.Errorf("%v\n"+
-        "Error returned by: \n"+
-        " d3, err := new(Decimal).NewBigIntNum(bINumResult)\n"+
-        "Error= %v\n",
-        ePrefix,
-        err.Error())
-  }
+		return Decimal{},
+			fmt.Errorf("%v\n"+
+				"Error returned by: \n"+
+				" d3, err := new(Decimal).NewBigIntNum(bINumResult)\n"+
+				"Error= %v\n",
+				ePrefix,
+				err.Error())
+	}
 
-  err = d3.SetNumericSeparatorsDto(decNumSeps)
+	err = d3.SetNumericSeparatorsDto(decNumSeps)
 
-  if err != nil {
+	if err != nil {
 
-    return Decimal{},
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "err = d3.SetNumericSeparatorsDto(decNumSeps)",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-  }
+		return Decimal{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "err = d3.SetNumericSeparatorsDto(decNumSeps)",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  return d3, nil
+	return d3, nil
 }
 
 // SetBigIntNum - Sets the numeric value of the current Decimal
@@ -5150,57 +5198,57 @@ func (dec *Decimal) PowInt(
 // not copied to the current Decimal instance.
 func (dec *Decimal) SetBigIntNum(bigINum BigIntNum) error {
 
-  var ePrefix *ePref.ErrPrefixDto
+	var ePrefix *ePref.ErrPrefixDto
 
-  var err error
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewIEmpty(
-    nil,
-    "Decimal.SetBigIntNum",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"Decimal.SetBigIntNum",
+		"")
 
-  if err != nil {
-    return err
-  }
+	if err != nil {
+		return err
+	}
 
-  decNumSeps, err := dec.bigINum.GetNumericSeparatorsDto()
+	decNumSeps, err := dec.bigINum.GetNumericSeparatorsDto()
 
-  if err != nil {
+	if err != nil {
 
-    return &FuncReturnError{
-      ErrPrefix:  ePrefix.String(),
-      ReturnFunc: "decNumSeps, err := dec.bigINum.GetNumericSeparatorsDto()",
-      ErrContext: "",
-      ErrMessage: err.Error(),
-    }
-  }
+		return &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "decNumSeps, err := dec.bigINum.GetNumericSeparatorsDto()",
+			ErrContext: "",
+			ErrMessage: err.Error(),
+		}
+	}
 
-  dec.bigINum, err = bigINum.CopyOut()
+	dec.bigINum, err = bigINum.CopyOut()
 
-  if err != nil {
+	if err != nil {
 
-    return &FuncReturnError{
-      ErrPrefix:  ePrefix.String(),
-      ReturnFunc: "dec.bigINum, err = bigINum.CopyOut()",
-      ErrContext: "",
-      ErrMessage: err.Error(),
-    }
-  }
+		return &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "dec.bigINum, err = bigINum.CopyOut()",
+			ErrContext: "",
+			ErrMessage: err.Error(),
+		}
+	}
 
-  err = dec.bigINum.SetNumericSeparatorsDto(decNumSeps)
+	err = dec.bigINum.SetNumericSeparatorsDto(decNumSeps)
 
-  if err != nil {
+	if err != nil {
 
-    return &FuncReturnError{
-      ErrPrefix:  ePrefix.String(),
-      ReturnFunc: "err = dec.bigINum.SetNumericSeparatorsDto(decNumSeps)",
-      ErrContext: "",
-      ErrMessage: err.Error(),
-    }
-  }
+		return &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "err = dec.bigINum.SetNumericSeparatorsDto(decNumSeps)",
+			ErrContext: "",
+			ErrMessage: err.Error(),
+		}
+	}
 
-  return nil
+	return nil
 }
 
 // SetBigInt - Sets the value of the current Decimal instance to the
@@ -5220,60 +5268,60 @@ func (dec *Decimal) SetBigIntNum(bigINum BigIntNum) error {
 // d.SetBigInt(iBig, 1)
 // This yields a numeric value of d = 12.3
 func (dec *Decimal) SetBigInt(
-  iBig *big.Int, precision uint) error {
+	iBig *big.Int, precision uint) error {
 
-  var ePrefix *ePref.ErrPrefixDto
+	var ePrefix *ePref.ErrPrefixDto
 
-  var err error
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewIEmpty(
-    nil,
-    "Decimal.SetBigInt",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"Decimal.SetBigInt",
+		"")
 
-  if err != nil {
-    return err
-  }
+	if err != nil {
+		return err
+	}
 
-  decNumSeps, err := dec.bigINum.GetNumericSeparatorsDto()
+	decNumSeps, err := dec.bigINum.GetNumericSeparatorsDto()
 
-  if err != nil {
+	if err != nil {
 
-    return &FuncReturnError{
-      ErrPrefix:  ePrefix.String(),
-      ReturnFunc: "decNumSeps, err := dec.bigINum.GetNumericSeparatorsDto()",
-      ErrContext: "",
-      ErrMessage: err.Error(),
-    }
-  }
+		return &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "decNumSeps, err := dec.bigINum.GetNumericSeparatorsDto()",
+			ErrContext: "",
+			ErrMessage: err.Error(),
+		}
+	}
 
-  dec.bigINum, err = new(BigIntNum).NewBigInt(iBig, precision)
+	dec.bigINum, err = new(BigIntNum).NewBigInt(iBig, precision)
 
-  if err != nil {
+	if err != nil {
 
-    return &FuncReturnError{
-      ErrPrefix:  ePrefix.String(),
-      ReturnFunc: "dec.bigINum, err = new(BigIntNum).NewBigInt(iBig, precision)",
-      ErrContext: fmt.Sprintf("iBig = '%v'  precision= '%v'",
-        iBig.Text(10), precision),
-      ErrMessage: err.Error(),
-    }
-  }
+		return &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "dec.bigINum, err = new(BigIntNum).NewBigInt(iBig, precision)",
+			ErrContext: fmt.Sprintf("iBig = '%v'  precision= '%v'",
+				iBig.Text(10), precision),
+			ErrMessage: err.Error(),
+		}
+	}
 
-  err = dec.bigINum.SetNumericSeparatorsDto(decNumSeps)
+	err = dec.bigINum.SetNumericSeparatorsDto(decNumSeps)
 
-  if err != nil {
+	if err != nil {
 
-    return &FuncReturnError{
-      ErrPrefix:  ePrefix.String(),
-      ReturnFunc: "err = dec.bigINum.SetNumericSeparatorsDto(decNumSeps)",
-      ErrContext: "",
-      ErrMessage: err.Error(),
-    }
-  }
+		return &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "err = dec.bigINum.SetNumericSeparatorsDto(decNumSeps)",
+			ErrContext: "",
+			ErrMessage: err.Error(),
+		}
+	}
 
-  return nil
+	return nil
 }
 
 // SetCurrencySymbol - sets the character which serves as the
@@ -5291,9 +5339,43 @@ func (dec *Decimal) SetBigInt(
 //	MikeAustin71/mathopsgo/mathops/mathopsconstants.go
 func (dec *Decimal) SetCurrencySymbol(currencySymbol rune) error {
 
-  dec.bigINum.SetCurrencySymbol(currencySymbol)
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-  return nil
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"Decimal.SetCurrencySymbol()",
+		"")
+
+	if err != nil {
+		return err
+	}
+
+	if currencySymbol == 0 {
+
+		return &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "",
+			ErrContext: "decimalSeparator == 0",
+			ErrMessage: "Error: Input parameter 'currencySymbol' is INVALID!\n" +
+				"'currencySymbol' has a value of zero.",
+		}
+	}
+
+	err = dec.bigINum.SetCurrencySymbol(currencySymbol)
+
+	if err != nil {
+
+		return &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "err = dec.bigINum.SetCurrencySymbol(currencySymbol)",
+			ErrContext: "",
+			ErrMessage: err.Error(),
+		}
+	}
+
+	return nil
 }
 
 // SetDecimalSeparator - sets the character which separates
@@ -5308,9 +5390,43 @@ func (dec *Decimal) SetCurrencySymbol(currencySymbol rune) error {
 // In the USA the Decimal Separator character is a period ('.')
 func (dec *Decimal) SetDecimalSeparator(decimalSeparator rune) error {
 
-  dec.bigINum.SetDecimalSeparator(decimalSeparator)
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-  return nil
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"Decimal.SetDecimalSeparator()",
+		"")
+
+	if err != nil {
+		return err
+	}
+
+	if decimalSeparator == 0 {
+
+		return &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "",
+			ErrContext: "decimalSeparator == 0",
+			ErrMessage: "Error: Input parameter 'decimalSeparator' is INVALID!\n" +
+				"'decimalSeparator' has a value of zero.",
+		}
+	}
+
+	err = dec.bigINum.SetDecimalSeparator(decimalSeparator)
+
+	if err != nil {
+
+		return &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "err = dec.bigINum.SetDecimalSeparator(decimalSeparator)",
+			ErrContext: "",
+			ErrMessage: err.Error(),
+		}
+	}
+
+	return nil
 }
 
 // SetFloat32 - Sets the value of the current decimal to
@@ -5325,37 +5441,37 @@ func (dec *Decimal) SetDecimalSeparator(decimalSeparator rune) error {
 // and currency symbol) remain unchanged and are not altered by this method.
 func (dec *Decimal) SetFloat32(f32 float32) error {
 
-  ePrefix := "Decimal.SetFloat32() "
+	ePrefix := "Decimal.SetFloat32() "
 
-  err := dec.SetNumericSeparatorsToDefaultIfEmpty()
+	err := dec.SetNumericSeparatorsToDefaultIfEmpty()
 
-  if err != nil {
+	if err != nil {
 
-    return fmt.Errorf("%v\n"+
-      "Error returned by: \n"+
-      " err := dec.SetNumericSeparatorsToDefaultIfEmpty()\n"+
-      "Error= %v\n",
-      ePrefix,
-      err.Error())
-  }
+		return fmt.Errorf("%v\n"+
+			"Error returned by: \n"+
+			" err := dec.SetNumericSeparatorsToDefaultIfEmpty()\n"+
+			"Error= %v\n",
+			ePrefix,
+			err.Error())
+	}
 
-  bigFloat := big.NewFloat(float64(f32))
+	bigFloat := big.NewFloat(float64(f32))
 
-  precision := bigFloat.Prec()
+	precision := bigFloat.Prec()
 
-  err = dec.bigINum.SetBigFloat(bigFloat, precision)
+	err = dec.bigINum.SetBigFloat(bigFloat, precision)
 
-  if err != nil {
+	if err != nil {
 
-    return fmt.Errorf("%v\n"+
-      "Error returned by: \n"+
-      " err = dec.bigINum.SetBigFloat(bigFloat, precision)\n"+
-      "Error= %v\n",
-      ePrefix,
-      err.Error())
-  }
+		return fmt.Errorf("%v\n"+
+			"Error returned by: \n"+
+			" err = dec.bigINum.SetBigFloat(bigFloat, precision)\n"+
+			"Error= %v\n",
+			ePrefix,
+			err.Error())
+	}
 
-  return nil
+	return nil
 }
 
 // SetFloat64 - Sets the value of the current decimal to
@@ -5371,37 +5487,37 @@ func (dec *Decimal) SetFloat32(f32 float32) error {
 // and currency symbol) remain unchanged and are not altered by this method.
 func (dec *Decimal) SetFloat64(f64 float64) error {
 
-  ePrefix := "Decimal.SetFloat64()"
+	ePrefix := "Decimal.SetFloat64()"
 
-  err := dec.SetNumericSeparatorsToDefaultIfEmpty()
+	err := dec.SetNumericSeparatorsToDefaultIfEmpty()
 
-  if err != nil {
+	if err != nil {
 
-    return fmt.Errorf("%v\n"+
-      "Error returned by: \n"+
-      " err := dec.SetNumericSeparatorsToDefaultIfEmpty()\n"+
-      "Error= %v\n",
-      ePrefix,
-      err.Error())
-  }
+		return fmt.Errorf("%v\n"+
+			"Error returned by: \n"+
+			" err := dec.SetNumericSeparatorsToDefaultIfEmpty()\n"+
+			"Error= %v\n",
+			ePrefix,
+			err.Error())
+	}
 
-  bigFloat := big.NewFloat(f64)
+	bigFloat := big.NewFloat(f64)
 
-  precision := bigFloat.Prec()
+	precision := bigFloat.Prec()
 
-  err = dec.bigINum.SetBigFloat(bigFloat, precision)
+	err = dec.bigINum.SetBigFloat(bigFloat, precision)
 
-  if err != nil {
+	if err != nil {
 
-    return fmt.Errorf("%v\n"+
-      "Error returned by: \n"+
-      " err = dec.bigINum.SetBigFloat(bigFloat, precision)\n"+
-      "Error= %v\n",
-      ePrefix,
-      err.Error())
-  }
+		return fmt.Errorf("%v\n"+
+			"Error returned by: \n"+
+			" err = dec.bigINum.SetBigFloat(bigFloat, precision)\n"+
+			"Error= %v\n",
+			ePrefix,
+			err.Error())
+	}
 
-  return nil
+	return nil
 }
 
 // SetFloatBig - Sets the value of the current Decimal to the
@@ -5417,33 +5533,33 @@ func (dec *Decimal) SetFloat64(f64 float64) error {
 // and currency symbol) remain unchanged and are not altered by this method.
 func (dec *Decimal) SetFloatBig(bigFloat *big.Float) error {
 
-  ePrefix := "Decimal.SetFloatBig() "
+	ePrefix := "Decimal.SetFloatBig() "
 
-  err := dec.SetNumericSeparatorsToDefaultIfEmpty()
+	err := dec.SetNumericSeparatorsToDefaultIfEmpty()
 
-  if err != nil {
+	if err != nil {
 
-    return fmt.Errorf("%v\n"+
-      "Error returned by: \n"+
-      " err := dec.SetNumericSeparatorsToDefaultIfEmpty()\n"+
-      "Error= %v\n",
-      ePrefix,
-      err.Error())
-  }
+		return fmt.Errorf("%v\n"+
+			"Error returned by: \n"+
+			" err := dec.SetNumericSeparatorsToDefaultIfEmpty()\n"+
+			"Error= %v\n",
+			ePrefix,
+			err.Error())
+	}
 
-  err = dec.bigINum.SetBigFloat(bigFloat, bigFloat.Prec())
+	err = dec.bigINum.SetBigFloat(bigFloat, bigFloat.Prec())
 
-  if err != nil {
+	if err != nil {
 
-    return fmt.Errorf("%v\n"+
-      "Error returned by: \n"+
-      " err = dec.bigINum.SetBigFloat(bigFloat, bigFloat.Prec())\n"+
-      "Error= %v\n",
-      ePrefix,
-      err.Error())
-  }
+		return fmt.Errorf("%v\n"+
+			"Error returned by: \n"+
+			" err = dec.bigINum.SetBigFloat(bigFloat, bigFloat.Prec())\n"+
+			"Error= %v\n",
+			ePrefix,
+			err.Error())
+	}
 
-  return nil
+	return nil
 }
 
 // SetInt - Sets the value of the current Decimal to the input parameter 'iNum'
@@ -5460,25 +5576,25 @@ func (dec *Decimal) SetFloatBig(bigFloat *big.Float) error {
 // Existing numeric separators (decimal separator, thousands separator
 // and currency symbol) remain unchanged and are not altered by this method.
 func (dec *Decimal) SetInt(
-  iNum int, precision uint) error {
+	iNum int, precision uint) error {
 
-  ePrefix := "Decimal.SetInt()"
+	ePrefix := "Decimal.SetInt()"
 
-  iBig := big.NewInt(int64(iNum))
+	iBig := big.NewInt(int64(iNum))
 
-  err := dec.bigINum.SetBigInt(iBig, precision)
+	err := dec.bigINum.SetBigInt(iBig, precision)
 
-  if err != nil {
+	if err != nil {
 
-    return fmt.Errorf("%v\n"+
-      "Error returned by: \n"+
-      " err := dec.bigINum.SetBigInt(iBig, precision)\n"+
-      "Error= %v\n",
-      ePrefix,
-      err.Error())
-  }
+		return fmt.Errorf("%v\n"+
+			"Error returned by: \n"+
+			" err := dec.bigINum.SetBigInt(iBig, precision)\n"+
+			"Error= %v\n",
+			ePrefix,
+			err.Error())
+	}
 
-  return nil
+	return nil
 }
 
 // SetInt32 - Sets the value of the current Decimal to the input parameter
@@ -5505,23 +5621,23 @@ func (dec *Decimal) SetInt(
 // int32Num:= int32(123456)
 // d.SetInt32(int32Num, 3) sets the numeric value of Decimal instance 'd' to 123.456.
 func (dec *Decimal) SetInt32(
-  int32Num int32, precision uint) error {
+	int32Num int32, precision uint) error {
 
-  ePrefix := "Decimal.SetInt32()"
+	ePrefix := "Decimal.SetInt32()"
 
-  err := dec.bigINum.SetBigInt(big.NewInt(int64(int32Num)), precision)
+	err := dec.bigINum.SetBigInt(big.NewInt(int64(int32Num)), precision)
 
-  if err != nil {
+	if err != nil {
 
-    return fmt.Errorf("%v\n"+
-      "Error returned by: \n"+
-      " err := dec.bigINum.SetBigInt(big.NewInt(int64(int32Num)), precision)\n"+
-      "Error= %v\n",
-      ePrefix,
-      err.Error())
-  }
+		return fmt.Errorf("%v\n"+
+			"Error returned by: \n"+
+			" err := dec.bigINum.SetBigInt(big.NewInt(int64(int32Num)), precision)\n"+
+			"Error= %v\n",
+			ePrefix,
+			err.Error())
+	}
 
-  return nil
+	return nil
 }
 
 // SetInt64 - Sets the value of the current Decimal to the input parameter
@@ -5548,23 +5664,23 @@ func (dec *Decimal) SetInt32(
 // i64:= int64(123456)
 // d.SetInt64(i64, 3) sets the numeric value of Decimal instance 'd' to 123.456.
 func (dec *Decimal) SetInt64(
-  i64 int64, precision uint) error {
+	i64 int64, precision uint) error {
 
-  ePrefix := "Decimal.SetInt64()"
+	ePrefix := "Decimal.SetInt64()"
 
-  err := dec.bigINum.SetBigInt(big.NewInt(i64), precision)
+	err := dec.bigINum.SetBigInt(big.NewInt(i64), precision)
 
-  if err != nil {
+	if err != nil {
 
-    return fmt.Errorf("%v\n"+
-      "Error returned by: \n"+
-      " dec.bigINum.SetBigInt(big.NewInt(i64), precision)\n"+
-      "Error= %v\n",
-      ePrefix,
-      err.Error())
-  }
+		return fmt.Errorf("%v\n"+
+			"Error returned by: \n"+
+			" dec.bigINum.SetBigInt(big.NewInt(i64), precision)\n"+
+			"Error= %v\n",
+			ePrefix,
+			err.Error())
+	}
 
-  return nil
+	return nil
 }
 
 // SetIntFracStrings - Sets the value of a decimal based on separate
@@ -5581,85 +5697,85 @@ func (dec *Decimal) SetInt64(
 // Existing numeric separators (decimal separator, thousands separator
 // and currency symbol) remain unchanged and are not altered by this method.
 func (dec *Decimal) SetIntFracStrings(
-  intNum, fracNum string, signVal int) error {
+	intNum, fracNum string, signVal int) error {
 
-  var ePrefix *ePref.ErrPrefixDto
+	var ePrefix *ePref.ErrPrefixDto
 
-  var err error
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewIEmpty(
-    nil,
-    "Decimal.SetIntFracStrings",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"Decimal.SetIntFracStrings",
+		"")
 
-  if err != nil {
-    return err
-  }
+	if err != nil {
+		return err
+	}
 
-  if signVal != 1 && signVal != -1 {
+	if signVal != 1 && signVal != -1 {
 
-    return &FuncReturnError{
-      ErrPrefix:  ePrefix.String(),
-      ReturnFunc: "",
-      ErrContext: fmt.Sprintf("signVal= '%v'", signVal),
-      ErrMessage: "Error: Input parameter 'signVal' is INVALID!\n" +
-        "'signVal' must be equal to +1 or -1.",
-    }
+		return &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "",
+			ErrContext: fmt.Sprintf("signVal= '%v'", signVal),
+			ErrMessage: "Error: Input parameter 'signVal' is INVALID!\n" +
+				"'signVal' must be equal to +1 or -1.",
+		}
 
-  }
+	}
 
-  numSeps, err := dec.bigINum.GetNumericSeparatorsDto()
+	numSeps, err := dec.bigINum.GetNumericSeparatorsDto()
 
-  if err != nil {
+	if err != nil {
 
-    return &FuncReturnError{
-      ErrPrefix:  ePrefix.String(),
-      ReturnFunc: "numSeps, err := dec.bigINum.GetNumericSeparatorsDto()",
-      ErrContext: "",
-      ErrMessage: err.Error(),
-    }
-  }
+		return &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "numSeps, err := dec.bigINum.GetNumericSeparatorsDto()",
+			ErrContext: "",
+			ErrMessage: err.Error(),
+		}
+	}
 
-  binIntNum := BigIntNum{}
+	binIntNum := BigIntNum{}
 
-  err = binIntNum.SetNumericSeparatorsDto(numSeps)
+	err = binIntNum.SetNumericSeparatorsDto(numSeps)
 
-  if err != nil {
+	if err != nil {
 
-    return &FuncReturnError{
-      ErrPrefix:  ePrefix.String(),
-      ReturnFunc: "err = binIntNum.SetNumericSeparatorsDto(numSeps)",
-      ErrContext: "",
-      ErrMessage: err.Error(),
-    }
-  }
+		return &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "err = binIntNum.SetNumericSeparatorsDto(numSeps)",
+			ErrContext: "",
+			ErrMessage: err.Error(),
+		}
+	}
 
-  err = binIntNum.SetIntFracStrings(intNum, fracNum, signVal)
+	err = binIntNum.SetIntFracStrings(intNum, fracNum, signVal)
 
-  if err != nil {
+	if err != nil {
 
-    return &FuncReturnError{
-      ErrPrefix:  ePrefix.String(),
-      ReturnFunc: "err = binIntNum.SetIntFracStrings(intNum, fracNum, signVal)",
-      ErrContext: "",
-      ErrMessage: err.Error(),
-    }
-  }
+		return &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "err = binIntNum.SetIntFracStrings(intNum, fracNum, signVal)",
+			ErrContext: "",
+			ErrMessage: err.Error(),
+		}
+	}
 
-  err = dec.bigINum.CopyIn(&binIntNum)
+	err = dec.bigINum.CopyIn(&binIntNum)
 
-  if err != nil {
+	if err != nil {
 
-    return &FuncReturnError{
-      ErrPrefix:  ePrefix.String(),
-      ReturnFunc: "err = dec.bigINum.CopyIn(&binIntNum)",
-      ErrContext: "",
-      ErrMessage: err.Error(),
-    }
-  }
+		return &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "err = dec.bigINum.CopyIn(&binIntNum)",
+			ErrContext: "",
+			ErrMessage: err.Error(),
+		}
+	}
 
-  return nil
+	return nil
 }
 
 // SetNumericSeparatorsDto - Sets the values of numeric separators:
@@ -5674,21 +5790,21 @@ func (dec *Decimal) SetIntFracStrings(
 // to zero, an error will be returned.
 func (dec *Decimal) SetNumericSeparatorsDto(customSeparators NumericSeparatorDto) error {
 
-  ePrefix := "Decimal.SetNumericSeparatorsDto()"
+	ePrefix := "Decimal.SetNumericSeparatorsDto()"
 
-  err := dec.bigINum.SetNumericSeparatorsDto(customSeparators)
+	err := dec.bigINum.SetNumericSeparatorsDto(customSeparators)
 
-  if err != nil {
+	if err != nil {
 
-    return fmt.Errorf("%v\n"+
-      "Error returned by: \n"+
-      " err := dec.bigINum.SetNumericSeparatorsDto(customSeparators)\n"+
-      "Error= %v\n",
-      ePrefix,
-      err.Error())
-  }
+		return fmt.Errorf("%v\n"+
+			"Error returned by: \n"+
+			" err := dec.bigINum.SetNumericSeparatorsDto(customSeparators)\n"+
+			"Error= %v\n",
+			ePrefix,
+			err.Error())
+	}
 
-  return nil
+	return nil
 }
 
 // SetNumericSeparators - Used to assign values for the Decimal and Thousands separators as well
@@ -5702,23 +5818,23 @@ func (dec *Decimal) SetNumericSeparatorsDto(customSeparators NumericSeparatorDto
 // Thousands Separator comma (',') 		= 1,000,000,000
 // Currency Symbol dollar sign ('$')	= $123
 func (dec *Decimal) SetNumericSeparators(
-  decimalSeparator, thousandsSeparator, currencySymbol rune) error {
+	decimalSeparator, thousandsSeparator, currencySymbol rune) error {
 
-  ePrefix := "Decimal.SetNumericSeparators()"
+	ePrefix := "Decimal.SetNumericSeparators()"
 
-  err := dec.bigINum.SetNumericSeparators(decimalSeparator, thousandsSeparator, currencySymbol)
+	err := dec.bigINum.SetNumericSeparators(decimalSeparator, thousandsSeparator, currencySymbol)
 
-  if err != nil {
+	if err != nil {
 
-    return fmt.Errorf("%v\n"+
-      "Error returned by: \n"+
-      " err := dec.bigINum.SetNumericSeparators(decimalSeparator, thousandsSeparator, currencySymbol)\n"+
-      "Error= %v\n",
-      ePrefix,
-      err.Error())
-  }
+		return fmt.Errorf("%v\n"+
+			"Error returned by: \n"+
+			" err := dec.bigINum.SetNumericSeparators(decimalSeparator, thousandsSeparator, currencySymbol)\n"+
+			"Error= %v\n",
+			ePrefix,
+			err.Error())
+	}
 
-  return nil
+	return nil
 }
 
 // SetNumericSeparatorsToDefaultIfEmpty - If numeric separators are
@@ -5735,21 +5851,21 @@ func (dec *Decimal) SetNumericSeparators(
 // are set to valid values.
 func (dec *Decimal) SetNumericSeparatorsToDefaultIfEmpty() error {
 
-  ePrefix := "Decimal.SetNumericSeparatorsToDefaultIfEmpty()"
+	ePrefix := "Decimal.SetNumericSeparatorsToDefaultIfEmpty()"
 
-  err := dec.bigINum.SetNumericSeparatorsToDefaultIfEmpty()
+	err := dec.bigINum.SetNumericSeparatorsToDefaultIfEmpty()
 
-  if err != nil {
+	if err != nil {
 
-    return fmt.Errorf("%v\n"+
-      "Error returned by: \n"+
-      " err := dec.bigINum.SetNumericSeparatorsToDefaultIfEmpty()\n"+
-      "Error= %v\n",
-      ePrefix,
-      err.Error())
-  }
+		return fmt.Errorf("%v\n"+
+			"Error returned by: \n"+
+			" err := dec.bigINum.SetNumericSeparatorsToDefaultIfEmpty()\n"+
+			"Error= %v\n",
+			ePrefix,
+			err.Error())
+	}
 
-  return nil
+	return nil
 }
 
 // SetNumericSeparatorsToUSADefault - Sets Numeric separators:
@@ -5768,45 +5884,45 @@ func (dec *Decimal) SetNumericSeparatorsToDefaultIfEmpty() error {
 //	dec.SetCurrencySymbol()
 func (dec *Decimal) SetNumericSeparatorsToUSADefault() error {
 
-  ePrefix := "Decimal.SetNumericSeparatorsToUSADefault()"
+	ePrefix := "Decimal.SetNumericSeparatorsToUSADefault()"
 
-  err := dec.SetDecimalSeparator('.')
+	err := dec.SetDecimalSeparator('.')
 
-  if err != nil {
+	if err != nil {
 
-    return fmt.Errorf("%v\n"+
-      "Error returned by: \n"+
-      " err := dec.SetDecimalSeparator('.')\n"+
-      "Error= %v\n",
-      ePrefix,
-      err.Error())
-  }
+		return fmt.Errorf("%v\n"+
+			"Error returned by: \n"+
+			" err := dec.SetDecimalSeparator('.')\n"+
+			"Error= %v\n",
+			ePrefix,
+			err.Error())
+	}
 
-  err = dec.SetThousandsSeparator(',')
+	err = dec.SetThousandsSeparator(',')
 
-  if err != nil {
+	if err != nil {
 
-    return fmt.Errorf("%v\n"+
-      "Error returned by: \n"+
-      " err = dec.SetThousandsSeparator(',')\n"+
-      "Error= %v\n",
-      ePrefix,
-      err.Error())
-  }
+		return fmt.Errorf("%v\n"+
+			"Error returned by: \n"+
+			" err = dec.SetThousandsSeparator(',')\n"+
+			"Error= %v\n",
+			ePrefix,
+			err.Error())
+	}
 
-  err = dec.SetCurrencySymbol('$')
+	err = dec.SetCurrencySymbol('$')
 
-  if err != nil {
+	if err != nil {
 
-    return fmt.Errorf("%v\n"+
-      "Error returned by: \n"+
-      " err = dec.SetCurrencySymbol('$')\n"+
-      "Error= %v\n",
-      ePrefix,
-      err.Error())
-  }
+		return fmt.Errorf("%v\n"+
+			"Error returned by: \n"+
+			" err = dec.SetCurrencySymbol('$')\n"+
+			"Error= %v\n",
+			ePrefix,
+			err.Error())
+	}
 
-  return nil
+	return nil
 }
 
 // SetNumStrPrecision
@@ -5830,84 +5946,84 @@ func (dec *Decimal) SetNumericSeparatorsToUSADefault() error {
 //
 //	  Resulting Decimal Value = 123.456
 func (dec *Decimal) SetNumStrPrecision(
-  str string, precision uint, roundResult bool) error {
+	str string, precision uint, roundResult bool) error {
 
-  var ePrefix *ePref.ErrPrefixDto
+	var ePrefix *ePref.ErrPrefixDto
 
-  var err error
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewIEmpty(
-    nil,
-    "Decimal.SetNumStrPrecision",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"Decimal.SetNumStrPrecision",
+		"")
 
-  if err != nil {
-    return err
-  }
+	if err != nil {
+		return err
+	}
 
-  err = dec.bigINum.IsValid(ePrefix.XCpy("Validating 'dec'").String())
+	err = dec.bigINum.IsValid(ePrefix.XCpy("Validating 'dec'").String())
 
-  if err != nil {
+	if err != nil {
 
-    return &FuncReturnError{
-      ErrPrefix:  ePrefix.String(),
-      ReturnFunc: "err = dec.bigINum.IsValid(ePrefix.XCpy(\"Validating 'dec'\").String())",
-      ErrContext: "Error: The current instance of Decimal ('dec') is INVALID!",
-      ErrMessage: err.Error(),
-    }
-  }
+		return &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "err = dec.bigINum.IsValid(ePrefix.XCpy(\"Validating 'dec'\").String())",
+			ErrContext: "Error: The current instance of Decimal ('dec') is INVALID!",
+			ErrMessage: err.Error(),
+		}
+	}
 
-  numSeps, err := dec.bigINum.GetNumericSeparatorsDto()
+	numSeps, err := dec.bigINum.GetNumericSeparatorsDto()
 
-  if err != nil {
+	if err != nil {
 
-    return &FuncReturnError{
-      ErrPrefix:  ePrefix.String(),
-      ReturnFunc: "numSeps, err := dec.bigINum.GetNumericSeparatorsDto()",
-      ErrContext: "",
-      ErrMessage: err.Error(),
-    }
-  }
+		return &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "numSeps, err := dec.bigINum.GetNumericSeparatorsDto()",
+			ErrContext: "",
+			ErrMessage: err.Error(),
+		}
+	}
 
-  d2, err := dec.NewNumStrPrecision(str, precision, roundResult)
+	d2, err := dec.NewNumStrPrecision(str, precision, roundResult)
 
-  if err != nil {
+	if err != nil {
 
-    return &FuncReturnError{
-      ErrPrefix:  ePrefix.String(),
-      ReturnFunc: "d2, err := dec.NewNumStrPrecision(str, precision, roundResult)",
-      ErrContext: fmt.Sprintf("str= '%v'\nprecision= '%v'\nroundResult= '%v'",
-        str, precision, roundResult),
-      ErrMessage: err.Error(),
-    }
-  }
+		return &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "d2, err := dec.NewNumStrPrecision(str, precision, roundResult)",
+			ErrContext: fmt.Sprintf("str= '%v'\nprecision= '%v'\nroundResult= '%v'",
+				str, precision, roundResult),
+			ErrMessage: err.Error(),
+		}
+	}
 
-  err = d2.SetNumericSeparatorsDto(numSeps)
+	err = d2.SetNumericSeparatorsDto(numSeps)
 
-  if err != nil {
+	if err != nil {
 
-    return &FuncReturnError{
-      ErrPrefix:  ePrefix.String(),
-      ReturnFunc: "err = d2.SetNumericSeparatorsDto(numSeps)",
-      ErrContext: "",
-      ErrMessage: err.Error(),
-    }
-  }
+		return &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "err = d2.SetNumericSeparatorsDto(numSeps)",
+			ErrContext: "",
+			ErrMessage: err.Error(),
+		}
+	}
 
-  err = dec.CopyIn(d2)
+	err = dec.CopyIn(d2)
 
-  if err != nil {
+	if err != nil {
 
-    return &FuncReturnError{
-      ErrPrefix:  ePrefix.String(),
-      ReturnFunc: "err = dec.CopyIn(d2)",
-      ErrContext: "",
-      ErrMessage: err.Error(),
-    }
-  }
+		return &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "err = dec.CopyIn(d2)",
+			ErrContext: "",
+			ErrMessage: err.Error(),
+		}
+	}
 
-  return nil
+	return nil
 }
 
 // SetNumStr
@@ -5930,69 +6046,69 @@ func (dec *Decimal) SetNumStrPrecision(
 //	altered by this method.
 func (dec *Decimal) SetNumStr(str string) error {
 
-  var ePrefix *ePref.ErrPrefixDto
+	var ePrefix *ePref.ErrPrefixDto
 
-  var err error
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewIEmpty(
-    nil,
-    "Decimal.SetNumStr",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"Decimal.SetNumStr",
+		"")
 
-  if err != nil {
-    return err
-  }
+	if err != nil {
+		return err
+	}
 
-  numSeps, err := dec.bigINum.GetNumericSeparatorsDto()
+	numSeps, err := dec.bigINum.GetNumericSeparatorsDto()
 
-  if err != nil {
+	if err != nil {
 
-    return &FuncReturnError{
-      ErrPrefix:  ePrefix.String(),
-      ReturnFunc: "numSeps, err := dec.bigINum.GetNumericSeparatorsDto()",
-      ErrContext: "",
-      ErrMessage: err.Error(),
-    }
-  }
+		return &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "numSeps, err := dec.bigINum.GetNumericSeparatorsDto()",
+			ErrContext: "",
+			ErrMessage: err.Error(),
+		}
+	}
 
-  d2, err := dec.NumStrToDecimal(str)
+	d2, err := dec.NumStrToDecimal(str)
 
-  if err != nil {
+	if err != nil {
 
-    return &FuncReturnError{
-      ErrPrefix:  ePrefix.String(),
-      ReturnFunc: "d2, err := dec.NumStrToDecimal(str)",
-      ErrContext: "",
-      ErrMessage: err.Error(),
-    }
-  }
+		return &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "d2, err := dec.NumStrToDecimal(str)",
+			ErrContext: "",
+			ErrMessage: err.Error(),
+		}
+	}
 
-  err = d2.SetNumericSeparatorsDto(numSeps)
+	err = d2.SetNumericSeparatorsDto(numSeps)
 
-  if err != nil {
+	if err != nil {
 
-    return &FuncReturnError{
-      ErrPrefix:  ePrefix.String(),
-      ReturnFunc: "err = d2.SetNumericSeparatorsDto(numSeps)",
-      ErrContext: "",
-      ErrMessage: err.Error(),
-    }
-  }
+		return &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "err = d2.SetNumericSeparatorsDto(numSeps)",
+			ErrContext: "",
+			ErrMessage: err.Error(),
+		}
+	}
 
-  err = dec.CopyIn(d2)
+	err = dec.CopyIn(d2)
 
-  if err != nil {
+	if err != nil {
 
-    return &FuncReturnError{
-      ErrPrefix:  ePrefix.String(),
-      ReturnFunc: "err = dec.CopyIn(d2)",
-      ErrContext: "",
-      ErrMessage: err.Error(),
-    }
-  }
+		return &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "err = dec.CopyIn(d2)",
+			ErrContext: "",
+			ErrMessage: err.Error(),
+		}
+	}
 
-  return nil
+	return nil
 }
 
 // SetNumStrDto - Sets the value of the current Decimal type
@@ -6002,69 +6118,69 @@ func (dec *Decimal) SetNumStr(str string) error {
 // and currency symbol) remain unchanged and are not altered by this method.
 func (dec *Decimal) SetNumStrDto(nDto NumStrDto) error {
 
-  var ePrefix *ePref.ErrPrefixDto
+	var ePrefix *ePref.ErrPrefixDto
 
-  var err error
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewIEmpty(
-    nil,
-    "Decimal.SetNumStrDto",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"Decimal.SetNumStrDto",
+		"")
 
-  if err != nil {
-    return err
-  }
+	if err != nil {
+		return err
+	}
 
-  numSeps, err := dec.bigINum.GetNumericSeparatorsDto()
+	numSeps, err := dec.bigINum.GetNumericSeparatorsDto()
 
-  if err != nil {
+	if err != nil {
 
-    return &FuncReturnError{
-      ErrPrefix:  ePrefix.String(),
-      ReturnFunc: "numSeps, err := dec.bigINum.GetNumericSeparatorsDto()",
-      ErrContext: "",
-      ErrMessage: err.Error(),
-    }
-  }
+		return &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "numSeps, err := dec.bigINum.GetNumericSeparatorsDto()",
+			ErrContext: "",
+			ErrMessage: err.Error(),
+		}
+	}
 
-  bIntNum, err := new(BigIntNum).NewNumStrDto(nDto)
+	bIntNum, err := new(BigIntNum).NewNumStrDto(nDto)
 
-  if err != nil {
+	if err != nil {
 
-    return &FuncReturnError{
-      ErrPrefix:  ePrefix.String(),
-      ReturnFunc: "bIntNum, err := new(BigIntNum).NewNumStrDto(nDto)",
-      ErrContext: "",
-      ErrMessage: err.Error(),
-    }
-  }
+		return &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "bIntNum, err := new(BigIntNum).NewNumStrDto(nDto)",
+			ErrContext: "",
+			ErrMessage: err.Error(),
+		}
+	}
 
-  err = bIntNum.SetNumericSeparatorsDto(numSeps)
+	err = bIntNum.SetNumericSeparatorsDto(numSeps)
 
-  if err != nil {
+	if err != nil {
 
-    return &FuncReturnError{
-      ErrPrefix:  ePrefix.String(),
-      ReturnFunc: "err = bIntNum.SetNumericSeparatorsDto(numSeps)",
-      ErrContext: "",
-      ErrMessage: err.Error(),
-    }
-  }
+		return &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "err = bIntNum.SetNumericSeparatorsDto(numSeps)",
+			ErrContext: "",
+			ErrMessage: err.Error(),
+		}
+	}
 
-  dec.bigINum, err = bIntNum.CopyOut()
+	dec.bigINum, err = bIntNum.CopyOut()
 
-  if err != nil {
+	if err != nil {
 
-    return &FuncReturnError{
-      ErrPrefix:  ePrefix.String(),
-      ReturnFunc: "dec.bigINum, err = bIntNum.CopyOut()",
-      ErrContext: "",
-      ErrMessage: err.Error(),
-    }
-  }
+		return &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "dec.bigINum, err = bIntNum.CopyOut()",
+			ErrContext: "",
+			ErrMessage: err.Error(),
+		}
+	}
 
-  return nil
+	return nil
 }
 
 // SetPrecisionRound - Sets the precision or
@@ -6079,34 +6195,34 @@ func (dec *Decimal) SetNumStrDto(nDto NumStrDto) error {
 // of the decimal place.
 func (dec *Decimal) SetPrecisionRound(precision uint) error {
 
-  ePrefix := "Decimal.SetPrecisionRound() "
+	ePrefix := "Decimal.SetPrecisionRound() "
 
-  err := dec.bigINum.IsValid(ePrefix)
+	err := dec.bigINum.IsValid(ePrefix)
 
-  if err != nil {
+	if err != nil {
 
-    return fmt.Errorf("%v\n"+
-      "Validation Error on current Decimal instance 'dec'.\n"+
-      "Error returned by: \n"+
-      " err = dec.bigINum.IsValid(ePrefix)\n"+
-      "Error= %v\n",
-      ePrefix,
-      err.Error())
-  }
+		return fmt.Errorf("%v\n"+
+			"Validation Error on current Decimal instance 'dec'.\n"+
+			"Error returned by: \n"+
+			" err = dec.bigINum.IsValid(ePrefix)\n"+
+			"Error= %v\n",
+			ePrefix,
+			err.Error())
+	}
 
-  err = dec.bigINum.SetPrecision(precision)
+	err = dec.bigINum.SetPrecision(precision)
 
-  if err != nil {
+	if err != nil {
 
-    return fmt.Errorf("%v\n"+
-      "Error returned by: \n"+
-      " err = dec.bigINum.SetPrecision(precision)\n"+
-      "Error= %v\n",
-      ePrefix,
-      err.Error())
-  }
+		return fmt.Errorf("%v\n"+
+			"Error returned by: \n"+
+			" err = dec.bigINum.SetPrecision(precision)\n"+
+			"Error= %v\n",
+			ePrefix,
+			err.Error())
+	}
 
-  return nil
+	return nil
 }
 
 // SetPrecisionTrunc - Sets the precision or
@@ -6124,46 +6240,46 @@ func (dec *Decimal) SetPrecisionRound(precision uint) error {
 // and currency symbol) remain unchanged and are not altered by this method.
 func (dec *Decimal) SetPrecisionTrunc(precision uint) error {
 
-  ePrefix := "Decimal.SetPrecisionTrunc() "
+	ePrefix := "Decimal.SetPrecisionTrunc() "
 
-  err := dec.bigINum.IsValid(ePrefix)
+	err := dec.bigINum.IsValid(ePrefix)
 
-  if err != nil {
+	if err != nil {
 
-    return fmt.Errorf("%v\n"+
-      "Validation Error on current Decimal instance 'dec'.\n"+
-      "Error returned by: \n"+
-      " err = dec.bigINum.IsValid(ePrefix)\n"+
-      "Error= %v\n",
-      ePrefix,
-      err.Error())
-  }
+		return fmt.Errorf("%v\n"+
+			"Validation Error on current Decimal instance 'dec'.\n"+
+			"Error returned by: \n"+
+			" err = dec.bigINum.IsValid(ePrefix)\n"+
+			"Error= %v\n",
+			ePrefix,
+			err.Error())
+	}
 
-  err = dec.bigINum.SetNumericSeparatorsToDefaultIfEmpty()
+	err = dec.bigINum.SetNumericSeparatorsToDefaultIfEmpty()
 
-  if err != nil {
+	if err != nil {
 
-    return fmt.Errorf("%v\n"+
-      "Error returned by: \n"+
-      " dec.bigINum.SetNumericSeparatorsToDefaultIfEmpty()\n"+
-      "Error= %v\n",
-      ePrefix,
-      err.Error())
-  }
+		return fmt.Errorf("%v\n"+
+			"Error returned by: \n"+
+			" dec.bigINum.SetNumericSeparatorsToDefaultIfEmpty()\n"+
+			"Error= %v\n",
+			ePrefix,
+			err.Error())
+	}
 
-  err = dec.bigINum.TruncToDecPlace(precision)
+	err = dec.bigINum.TruncToDecPlace(precision)
 
-  if err != nil {
+	if err != nil {
 
-    return fmt.Errorf("%v\n"+
-      "Error returned by: \n"+
-      " err = dec.bigINum.TruncToDecPlace(precision)\n"+
-      "Error= %v\n",
-      ePrefix,
-      err.Error())
-  }
+		return fmt.Errorf("%v\n"+
+			"Error returned by: \n"+
+			" err = dec.bigINum.TruncToDecPlace(precision)\n"+
+			"Error= %v\n",
+			ePrefix,
+			err.Error())
+	}
 
-  return nil
+	return nil
 }
 
 // SetSign - Sets the sign of the numeric value
@@ -6173,21 +6289,21 @@ func (dec *Decimal) SetPrecisionTrunc(precision uint) error {
 // If any other value is passed an error is thrown.
 func (dec *Decimal) SetSign(newSignVal int) error {
 
-  ePrefix := "Decimal.SetSign()"
+	ePrefix := "Decimal.SetSign()"
 
-  err := dec.bigINum.SetSignValue(newSignVal)
+	err := dec.bigINum.SetSignValue(newSignVal)
 
-  if err != nil {
+	if err != nil {
 
-    return fmt.Errorf("%v\n"+
-      "Error returned by: \n"+
-      " err := dec.bigINum.SetSignValue(newSignVal)\n"+
-      "Error= %v\n",
-      ePrefix,
-      err.Error())
-  }
+		return fmt.Errorf("%v\n"+
+			"Error returned by: \n"+
+			" err := dec.bigINum.SetSignValue(newSignVal)\n"+
+			"Error= %v\n",
+			ePrefix,
+			err.Error())
+	}
 
-  return nil
+	return nil
 }
 
 // SetThousandsSeparator - sets the character which serves
@@ -6202,9 +6318,43 @@ func (dec *Decimal) SetSign(newSignVal int) error {
 // and Currency Symbols.
 func (dec *Decimal) SetThousandsSeparator(thousandsSeparator rune) error {
 
-  dec.bigINum.SetThousandsSeparator(thousandsSeparator)
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-  return nil
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"BigIntNum.NewNumStrWithNumSeps()",
+		"")
+
+	if err != nil {
+		return err
+	}
+
+	if thousandsSeparator == 0 {
+
+		return &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "",
+			ErrContext: "thousandsSeparator == 0",
+			ErrMessage: "Error: Input parameter 'thousandsSeparator' is INVALID!\n" +
+				"'thousandsSeparator' has a value of zero.",
+		}
+	}
+
+	err = dec.bigINum.SetThousandsSeparator(thousandsSeparator)
+
+	if err != nil {
+
+		return &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "err = dec.bigINum.SetThousandsSeparator(thousandsSeparator)",
+			ErrContext: "",
+			ErrMessage: err.Error(),
+		}
+	}
+
+	return nil
 }
 
 // SetUint - Sets the value of the current Decimal instance to the input
@@ -6233,21 +6383,21 @@ func (dec *Decimal) SetThousandsSeparator(thousandsSeparator rune) error {
 // d.SetUint(uintNum, 3) sets the numeric value of Decimal instance 'd' to 123.456.
 func (dec *Decimal) SetUint(uintNum uint, precision uint) error {
 
-  ePrefix := "Decimal.SetUint()"
+	ePrefix := "Decimal.SetUint()"
 
-  err := dec.bigINum.SetBigInt(big.NewInt(0).SetUint64(uint64(uintNum)), precision)
+	err := dec.bigINum.SetBigInt(big.NewInt(0).SetUint64(uint64(uintNum)), precision)
 
-  if err != nil {
+	if err != nil {
 
-    return fmt.Errorf("%v\n"+
-      "Error returned by: \n"+
-      " err:= dec.bigINum.SetBigInt(big.NewInt(0).SetUint64(uint64(uintNum)), precision)\n"+
-      "Error= %v\n",
-      ePrefix,
-      err.Error())
-  }
+		return fmt.Errorf("%v\n"+
+			"Error returned by: \n"+
+			" err:= dec.bigINum.SetBigInt(big.NewInt(0).SetUint64(uint64(uintNum)), precision)\n"+
+			"Error= %v\n",
+			ePrefix,
+			err.Error())
+	}
 
-  return nil
+	return nil
 }
 
 // SetUint32 - Sets the value of the current Decimal instance to the input
@@ -6276,21 +6426,21 @@ func (dec *Decimal) SetUint(uintNum uint, precision uint) error {
 // d.SetUint32(uint32Num, 3) sets the numeric value of Decimal instance 'd' to 123.456.
 func (dec *Decimal) SetUint32(uint32Num uint32, precision uint) error {
 
-  ePrefix := "Decimal.SetUint32() "
+	ePrefix := "Decimal.SetUint32() "
 
-  err := dec.bigINum.SetBigInt(big.NewInt(0).SetUint64(uint64(uint32Num)), precision)
+	err := dec.bigINum.SetBigInt(big.NewInt(0).SetUint64(uint64(uint32Num)), precision)
 
-  if err != nil {
+	if err != nil {
 
-    return fmt.Errorf("%v\n"+
-      "Error returned by: \n"+
-      " dec.bigINum.SetBigInt(big.NewInt(0).SetUint64(uint64Num), precision)\n"+
-      "Error= %v\n",
-      ePrefix,
-      err.Error())
-  }
+		return fmt.Errorf("%v\n"+
+			"Error returned by: \n"+
+			" dec.bigINum.SetBigInt(big.NewInt(0).SetUint64(uint64Num), precision)\n"+
+			"Error= %v\n",
+			ePrefix,
+			err.Error())
+	}
 
-  return nil
+	return nil
 }
 
 // SetUint64 - Sets the value of the current Decimal instance to the input
@@ -6319,186 +6469,252 @@ func (dec *Decimal) SetUint32(uint32Num uint32, precision uint) error {
 // d.SetUint64(uint64Num, 3) sets the numeric value of Decimal instance 'd' to 123.456.
 func (dec *Decimal) SetUint64(uint64Num uint64, precision uint) error {
 
-  ePrefix := "Decimal.SetUint64()"
+	ePrefix := "Decimal.SetUint64()"
 
-  err := dec.bigINum.SetBigInt(big.NewInt(0).SetUint64(uint64Num), precision)
+	err := dec.bigINum.SetBigInt(big.NewInt(0).SetUint64(uint64Num), precision)
 
-  if err != nil {
+	if err != nil {
 
-    return fmt.Errorf("%v\n"+
-      "Error returned by: \n"+
-      " dec.bigINum.SetBigInt(big.NewInt(0).SetUint64(uint64Num), precision)\n"+
-      "Error= %v\n",
-      ePrefix,
-      err.Error())
-  }
+		return fmt.Errorf("%v\n"+
+			"Error returned by: \n"+
+			" dec.bigINum.SetBigInt(big.NewInt(0).SetUint64(uint64Num), precision)\n"+
+			"Error= %v\n",
+			ePrefix,
+			err.Error())
+	}
 
-  return nil
+	return nil
 }
 
-// ShiftPrecisionLeft - Shifts precision of the current Decimal instance
-// numeric value to the left by 'shiftLeftPlaces' decimal places. This
-// is a 'relative' shift-left operation. The shift left operation is
-// therefore performed with the current decimal point position as the
-// starting point.
+// ShiftPrecisionLeft
 //
-// This operation is equivalent to:	result = Decimal value / 10^shiftLeftPlaces
-// or signed number divided by 10 raised to the power of shiftLeftPlaces.
+//	Shifts precision of the current Decimal instance numeric value
+//	to the left by 'shiftLeftPlaces' decimal places. This is a
+//	'relative' shift-left operation. The shift left operation is
+//	therefore performed with the current decimal point position as
+//	the starting point.
 //
-// This method performs a relative shift left of the decimal point position.
-// Be careful, this is NOT Shift Number Left operation. This is Shift Precision
-// Left which means that the decimal point will be shifted left.
+//	This operation is equivalent to:
 //
-// See Examples below.
+//	            result = Decimal value / 10^shiftLeftPlaces
+//	                               OR
+//	         Signed number divided by 10 raised to the power of
+//	         'shiftLeftPlaces'.
 //
-// Input Parameters
-// ================
+//	This method performs a relative shift left of the decimal point
+//	position. Be careful, this is NOT Shift Number Left operation.
+//	This is 'Shift Precision Left' which means that the decimal
+//	point will be shifted left.
 //
-//	shiftLeftPlaces int	- The number of positions the decimal point will be
-//												shifted left from its current position.
+//	Examples:
+//	=========
 //
-// Examples:
-// =========
+//	                shift-left
+//	signed Number     places         Result
 //
-//	shift-left
+//	"123456.789"         3          "123.456789"
+//	"123456.789"         2          "1234.56789"
+//	"123456.789"         6          "0.123456789"
+//	"123456789"          6          "123.456789"
+//	"123"                5          "0.00123"
+//	"0"                  3          "0"
 //
-// signed Number		  places				Result
+//	"123456.789"         0          "123456.789"
+//	"-123456.789"        0          "-123456.789"
+//	zero has no effect on original number string
 //
-//	"123456.789"				3						"123.456789"
-//	"123456.789"				2						"1234.56789"
-//	"123456.789"        6					  "0.123456789"
-//	"123456789"	 			  6						"123.456789"
-//	"123"               5	          "0.00123"
-//	"0"								  3						"0"
-//	"123456.789"				0						"123456.789"		- zero has no effect on original number string
+//	"-123456.789"        3          "-123.456789"
+//	"-123456789"         6          "-123.456789"
 //
-// "-123456.789"        0          "-123456.789"
-// "-123456.789"        3          "-123.456789"
-// "-123456789"			    6					 "-123.456789"
+//	Numeric Separators
+//	==================
 //
-// Existing numeric separators (decimal separator, thousands separator
-// and currency symbol) remain unchanged and are not altered by this method.
+//	Existing numeric separators (decimal separator, thousands
+//	separator and currency symbol) remain unchanged and are not
+//	altered by this method.
+//
+//	Input Parameters
+//	================
+//
+//	shiftLeftPlaces          uint
+//	  The number of positions the decimal point will be	shifted
+//	  left from its current position.
+//
+//	Return Values
+//	=============
+//
+//	error
+//	  If no errors are encountered during method execution, this
+//	  returned error parameter is set to 'nil'.
 func (dec *Decimal) ShiftPrecisionLeft(shiftLeftPlaces uint) error {
 
-  ePrefix := "Decimal.ShiftPrecisionLeft() "
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-  err := dec.bigINum.IsValid(ePrefix)
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"Decimal.ShiftPrecisionLeft()",
+		"")
 
-  if err != nil {
+	if err != nil {
+		return err
+	}
 
-    return fmt.Errorf("%v\n"+
-      "Validation Error on current Decimal instance 'dec'.\n"+
-      "Error returned by: \n"+
-      " err = dec.bigINum.IsValid(ePrefix)\n"+
-      "Error= %v\n",
-      ePrefix,
-      err.Error())
-  }
+	err = dec.bigINum.IsValid(ePrefix.XCpy("Validating 'dec'").String())
 
-  err = dec.bigINum.ShiftPrecisionLeft(shiftLeftPlaces)
+	if err != nil {
 
-  err = dec.bigINum.IsValid(ePrefix)
+		return &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "err = dec.bigINum.IsValid(ePrefix.XCpy(\"Validating 'dec'\").String())",
+			ErrContext: "Error: The current Decimal instance 'dec' is INVALID!\n" +
+				"'dec' FAILED Validation Tests.",
+			ErrMessage: err.Error(),
+		}
+	}
 
-  if err != nil {
+	err = dec.bigINum.ShiftPrecisionLeft(shiftLeftPlaces)
 
-    return fmt.Errorf("%v\n"+
-      "Validation Error on current Decimal instance (dec) returned by: \n"+
-      " err = dec.bigINum.IsValid(ePrefix)\n"+
-      "This validation error occurred after a Shift Left Operation!\n"+
-      "Error= %v\n",
-      ePrefix,
-      err.Error())
-  }
+	if err != nil {
 
-  return nil
+		return &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "err = dec.bigINum.ShiftPrecisionLeft(shiftLeftPlaces)",
+			ErrContext: fmt.Sprintf("shiftLeftPlaces= '%v'", shiftLeftPlaces),
+			ErrMessage: err.Error(),
+		}
+	}
+
+	err = dec.bigINum.IsValid(ePrefix.XCpy("Validating 'dec' after Shift").String())
+
+	if err != nil {
+
+		return &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "err = dec.bigINum.IsValid(ePrefix.XCpy(\"Validating 'dec' after Shift\").String())",
+			ErrContext: "Error: The current Decimal instance 'dec' is INVALID!\n" +
+				"The Validation Error occurred after a Shift Left Operation!",
+			ErrMessage: err.Error(),
+		}
+	}
+
+	return nil
 }
 
-// ShiftPrecisionRight - Shifts precision of the current Decimal instance
-// numeric value to the right by 'shiftRightPlaces' decimal places. This
-// is a 'relative' shift-right operation. The shift right operation is
-// therefore performed with the current decimal point position as the
-// starting point.
+// ShiftPrecisionRight
 //
-// This is equivalent to: result = Decimal value X 10^shiftRightPrecision or
-// Decimal numeric value multiplied by 10 raised to the power of
-// shiftRightPrecision.
+//		Shifts precision of the current Decimal instance numeric value
+//		to the right by 'shiftRightPlaces' decimal places. This is a
+//		'relative' shift-right operation. The shift right operation is
+//		therefore performed with the current decimal point position as
+//		the starting point.
 //
-// This method performs a relative shift right of the decimal point position.
-// Be careful, this is NOT a Shift Number Right operation. This is Shift Precision
-// Right which means that the decimal point will be shifted right.
+//		This is equivalent to:
 //
-// See Examples below.
+//		   result = Decimal value X 10^shiftRightPrecision
+//	                          OR
+//		   The Decimal numeric value multiplied by 10 raised to
+//		   the power of shiftRightPrecision.
 //
-// Input Parameters
-// ================
+//		This method performs a relative shift right of the decimal
+//		point position. Be careful, this is NOT a Shift Number Right
+//		operation. This is Shift Precision Right which means that the
+//		decimal point will be shifted right.
 //
-//	shiftRightPlaces int	- The number of positions the decimal point will be
-//													shifted right from its current position.
+//		Examples:
+//		=========
 //
-// Examples:
-// =========
+//		                shift-right
+//		signed Number     places         Result
 //
-//	shift-right
+//		"123456.789"         3          "123456789"
+//		"123456.789"         2          "12345678.9"
+//		"123456.789"         6          "123456789000"
+//		"123456789"          6          "123456789000000"
+//		"123"                5          "12300000"
+//		"0"                  3          "0"
 //
-// signed Number		  places				Result
+//		"123456.789"         0          "123456.789"
+//		zero has no effect on original number string
 //
-//	"123456.789"				3						"123456789"
-//	"123456.789"				2						"12345678.9"
-//	"123456.789"        6					  "123456789000"
-//	"123456789"	 			  6						"123456789000000"
-//	"123"               5	          "12300000"
-//	"0"								  3						"0"
-//	"123456.789"				0						"123456.789"		- zero has no effect on original number string
+//		"-123456.789"        0          "-123456.789"
+//		"-123456.789"        3          "-123456789"
+//		"-123456789"         6          "-123456789000000"
 //
-// "-123456.789"        0          "-123456.789"
-// "-123456.789"        3          "-123456789"
-// "-123456789"			    6					 "-123456789000000"
+//		Numeric Separators
+//		==================
 //
-// Existing numeric separators (decimal separator, thousands separator
-// and currency symbol) remain unchanged and are not altered by this method.
+//		Existing numeric separators (decimal separator, thousands
+//		separator and currency symbol) remain unchanged and are not
+//		altered by this method.
+//
+//		Input Parameters
+//		================
+//
+//		shiftRightPlaces         uint
+//		  The number of positions the decimal point will be shifted
+//		  right from its current position.
+//
+//		Return Values
+//		=============
+//
+//		error
+//		  If no errors are encountered during method execution, this
+//		  returned error parameter is set to 'nil'.
 func (dec *Decimal) ShiftPrecisionRight(shiftRightPlaces uint) error {
 
-  ePrefix := "Decimal.ShiftPrecisionRight() "
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-  err := dec.bigINum.IsValid(ePrefix)
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"Decimal.ShiftPrecisionRight()",
+		"")
 
-  if err != nil {
+	if err != nil {
+		return err
+	}
 
-    return fmt.Errorf("%v\n"+
-      "Validation Error on current Decimal instance 'dec'.\n"+
-      "Error returned by: \n"+
-      " err = dec.bigINum.IsValid(ePrefix)\n"+
-      "Error= %v\n",
-      ePrefix,
-      err.Error())
-  }
+	err = dec.bigINum.IsValid(ePrefix.XCpy("Validating 'dec'").String())
 
-  err = dec.bigINum.ShiftPrecisionRight(shiftRightPlaces)
+	if err != nil {
 
-  if err != nil {
+		return &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "err = dec.bigINum.IsValid(ePrefix.XCpy(\"Validating 'dec'\").String())",
+			ErrContext: "Error: Current Decimal instance 'dec' is INVALID!",
+			ErrMessage: err.Error(),
+		}
+	}
 
-    return fmt.Errorf("%v\n"+
-      "Error returned by: \n"+
-      " err = dec.bigINum.ShiftPrecisionRight(shiftRightPlaces)\n"+
-      "Error= %v\n",
-      ePrefix,
-      err.Error())
-  }
+	err = dec.bigINum.ShiftPrecisionRight(shiftRightPlaces)
 
-  err = dec.bigINum.IsValid(ePrefix)
+	if err != nil {
 
-  if err != nil {
+		return &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "err = dec.bigINum.ShiftPrecisionRight(shiftRightPlaces)",
+			ErrContext: fmt.Sprintf("shiftRightPlaces= '%v'", shiftRightPlaces),
+			ErrMessage: err.Error(),
+		}
+	}
 
-    return fmt.Errorf("%v\n"+
-      "Validation Error on current Decimal instance (dec) returned by: \n"+
-      " err = dec.bigINum.IsValid(ePrefix)\n"+
-      "This validation error occurred after a Shift Right Operation!\n"+
-      "Error= %v\n",
-      ePrefix,
-      err.Error())
-  }
+	err = dec.bigINum.IsValid(ePrefix.XCpy("Validating 'dec' after Shift").String())
 
-  return nil
+	if err != nil {
+
+		return &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "err = dec.bigINum.IsValid(ePrefix.XCpy(\"Validating 'dec' after Shift\").String())",
+			ErrContext: "Error: Current Decimal instance 'dec' is INVALID!\n" +
+				"This validation error occurred after a Shift Right Operation!",
+			ErrMessage: err.Error(),
+		}
+	}
+
+	return nil
 }
 
 // SquareRoot
@@ -6529,449 +6745,729 @@ func (dec *Decimal) ShiftPrecisionRight(shiftRightPlaces uint) error {
 //	  return parameter is set to 'nil'.
 func (dec *Decimal) SquareRoot(maxPrecision uint) (Decimal, error) {
 
-  var ePrefix *ePref.ErrPrefixDto
+	var ePrefix *ePref.ErrPrefixDto
 
-  var err error
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewIEmpty(
-    nil,
-    "Decimal.SquareRoot",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"Decimal.SquareRoot",
+		"")
 
-  if err != nil {
-    return Decimal{}, err
-  }
+	if err != nil {
+		return Decimal{}, err
+	}
 
-  err = dec.bigINum.IsValid(ePrefix.XCpy("Validating 'dec'").String())
+	err = dec.bigINum.IsValid(ePrefix.XCpy("Validating 'dec'").String())
 
-  if err != nil {
+	if err != nil {
 
-    return Decimal{},
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "err = dec.bigINum.IsValid(ePrefix.XCpy(\"Validating 'dec'\").String())",
-        ErrContext: "Error: The current Decimal instance, 'dec', is INVALID!",
-        ErrMessage: err.Error(),
-      }
-  }
+		return Decimal{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "err = dec.bigINum.IsValid(ePrefix.XCpy(\"Validating 'dec'\").String())",
+				ErrContext: "Error: The current Decimal instance, 'dec', is INVALID!",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  decSignValue, err := dec.GetSign()
+	decSignValue, err := dec.GetSign()
 
-  if err != nil {
+	if err != nil {
 
-    return Decimal{},
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "decSignValue, err := dec.GetSign()",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-  }
+		return Decimal{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "decSignValue, err := dec.GetSign()",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  if decSignValue == -1 {
+	if decSignValue == -1 {
 
-    return Decimal{},
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "decSignValue, err := dec.GetSign()",
-        ErrContext: "The current instance of Decimal ('dec') is a negative number.",
-        ErrMessage: "Error: You cannot take the square root of a negative number.",
-      }
-  }
+		return Decimal{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "decSignValue, err := dec.GetSign()",
+				ErrContext: "The current instance of Decimal ('dec') is a negative number.",
+				ErrMessage: "Error: You cannot take the square root of a negative number.",
+			}
+	}
 
-  bINumTwo, err := new(BigIntNum).NewTwo(0)
+	bINumTwo, err := new(BigIntNum).NewTwo(0)
 
-  if err != nil {
+	if err != nil {
 
-    return Decimal{},
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "bINumTwo, err := new(BigIntNum).NewTwo(0)",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-  }
+		return Decimal{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "bINumTwo, err := new(BigIntNum).NewTwo(0)",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  decNumStr, err := dec.bigINum.GetNumStr()
+	decNumStr, err := dec.bigINum.GetNumStr()
 
-  if err != nil {
+	if err != nil {
 
-    return Decimal{},
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "decNumStr, err := dec.bigINum.GetNumStr()",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-  }
+		return Decimal{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "decNumStr, err := dec.bigINum.GetNumStr()",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  bINumTwoNumStr, err := bINumTwo.GetNumStr()
+	bINumTwoNumStr, err := bINumTwo.GetNumStr()
 
-  if err != nil {
+	if err != nil {
 
-    return Decimal{},
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "bINumTwoNumStr, err := bINumTwo.GetNumStr()",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-  }
+		return Decimal{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "bINumTwoNumStr, err := bINumTwo.GetNumStr()",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  decSqRoot := new(Decimal).New()
+	decSqRoot := new(Decimal).New()
 
-  decSqRoot.bigINum, err =
-    new(BigIntMathNthRoot).GetNthRoot(dec.bigINum, bINumTwo, maxPrecision)
+	decSqRoot.bigINum, err =
+		new(BigIntMathNthRoot).GetNthRoot(dec.bigINum, bINumTwo, maxPrecision)
 
-  if err != nil {
+	if err != nil {
 
-    return Decimal{},
-      &FuncReturnError{
-        ErrPrefix: ePrefix.String(),
-        ReturnFunc: "decSqRoot.bigINum, err = new(BigIntMathNthRoot).GetNthRoot(\n" +
-          "  dec.bigINum, bINumTwo, maxPrecision)",
-        ErrContext: fmt.Sprintf("dec.bigINum= '%v'\nbINumTwo= '%v'\nmaxPrecision= '%v",
-          decNumStr, bINumTwoNumStr, maxPrecision),
-        ErrMessage: err.Error(),
-      }
-  }
+		return Decimal{},
+			&FuncReturnError{
+				ErrPrefix: ePrefix.String(),
+				ReturnFunc: "decSqRoot.bigINum, err = new(BigIntMathNthRoot).GetNthRoot(\n" +
+					"  dec.bigINum, bINumTwo, maxPrecision)",
+				ErrContext: fmt.Sprintf("dec.bigINum= '%v'\nbINumTwo= '%v'\nmaxPrecision= '%v",
+					decNumStr, bINumTwoNumStr, maxPrecision),
+				ErrMessage: err.Error(),
+			}
+	}
 
-  err = decSqRoot.IsValid(ePrefix.XCpy("Validating 'decSqRoot'").String())
+	err = decSqRoot.IsValid(ePrefix.XCpy("Validating 'decSqRoot'").String())
 
-  if err != nil {
+	if err != nil {
 
-    return Decimal{},
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "err = decSqRoot.IsValid(ePrefix.XCpy(\"Validating 'decSqRoot'\").String())",
-        ErrContext: "Calculated return value 'decSqRoot' is INVALID!",
-        ErrMessage: err.Error(),
-      }
-  }
+		return Decimal{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "err = decSqRoot.IsValid(ePrefix.XCpy(\"Validating 'decSqRoot'\").String())",
+				ErrContext: "Calculated return value 'decSqRoot' is INVALID!",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  return decSqRoot, nil
+	return decSqRoot, nil
 }
 
 // Subtract
 //
-//  Subtracts the incoming Decimal from the current Decimal and
-//  returns the result as Decimal Type.
+//	Subtracts the incoming Decimal from the current Decimal and
+//	returns the result as Decimal Type.
 //
-//                           Example
-//    Currend Decimal Instance - 'd2' = Retuned Decimal value
+//	                         Example
+//	  Currend Decimal Instance - 'd2' = Retuned Decimal value
 //
-//  The returned Decimal Type contains the same numeric separators
-//  (decimal separator, thousands separator and currency symbol) as
-//  those of the current Decimal instance. The numeric separators
-//  are copied form the current Decimal instance to the returned
-//  Decimal instance.
+//	The returned Decimal Type contains the same numeric separators
+//	(decimal separator, thousands separator and currency symbol) as
+//	those of the current Decimal instance. The numeric separators
+//	are copied form the current Decimal instance to the returned
+//	Decimal instance.
 func (dec *Decimal) Subtract(d2 Decimal) (Decimal, error) {
 
-  var ePrefix *ePref.ErrPrefixDto
+	var ePrefix *ePref.ErrPrefixDto
 
-  var err error
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewIEmpty(
-    nil,
-    "Decimal.Subtract",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"Decimal.Subtract",
+		"")
 
-  if err != nil {
-    return Decimal{}, err
-  }
+	if err != nil {
+		return Decimal{}, err
+	}
 
-  err = dec.bigINum.IsValid(ePrefix.XCpy("Validating 'dec'").String())
+	err = dec.bigINum.IsValid(ePrefix.XCpy("Validating 'dec'").String())
 
-  if err != nil {
+	if err != nil {
 
-    return Decimal{},
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "err = dec.bigINum.IsValid(ePrefix.XCpy(\"Validating 'dec'\").String())",
-        ErrContext: "Current Decimal instance, 'dec', is INVALID!",
-        ErrMessage: err.Error(),
-      }
-  }
+		return Decimal{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "err = dec.bigINum.IsValid(ePrefix.XCpy(\"Validating 'dec'\").String())",
+				ErrContext: "Current Decimal instance, 'dec', is INVALID!",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  decBINumStr, err := dec.bigINum.GetNumStr()
+	decBINumStr, err := dec.bigINum.GetNumStr()
 
-  if err != nil {
+	if err != nil {
 
-    return Decimal{},
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "decBINumStr, err := dec.bigINum.GetNumStr()",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-  }
+		return Decimal{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "decBINumStr, err := dec.bigINum.GetNumStr()",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  err = d2.IsValid(ePrefix.XCpy("Validating input param 'd2'").String())
+	err = d2.IsValid(ePrefix.XCpy("Validating input param 'd2'").String())
 
-  if err != nil {
+	if err != nil {
 
-    return Decimal{},
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "err = d2.IsValid(ePrefix.XCpy(\"Validating input param 'd2'\").String())",
-        ErrContext: "Input parameter 'd2' is INVALID!",
-        ErrMessage: err.Error(),
-      }
-  }
+		return Decimal{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "err = d2.IsValid(ePrefix.XCpy(\"Validating input param 'd2'\").String())",
+				ErrContext: "Input parameter 'd2' is INVALID!",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  d2BigINumStr, err := d2.GetNumStr()
+	d2BigINumStr, err := d2.GetNumStr()
 
-  if err != nil {
+	if err != nil {
 
-    return Decimal{},
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "d2BigINumStr, err := d2.GetNumStr()",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-  }
+		return Decimal{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "d2BigINumStr, err := d2.GetNumStr()",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  decNumSeps, err := dec.bigINum.GetNumericSeparatorsDto()
+	decNumSeps, err := dec.bigINum.GetNumericSeparatorsDto()
 
-  if err != nil {
+	if err != nil {
 
-    return Decimal{},
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "decNumSeps, err := dec.bigINum.GetNumericSeparatorsDto()",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-  }
+		return Decimal{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "decNumSeps, err := dec.bigINum.GetNumericSeparatorsDto()",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  bINumResult, err := new(BigIntMathSubtract).SubtractBigIntNums(dec.bigINum, d2.bigINum)
+	bINumResult, err := new(BigIntMathSubtract).SubtractBigIntNums(dec.bigINum, d2.bigINum)
 
-  if err != nil {
+	if err != nil {
 
-    return Decimal{},
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "bINumResult, err := new(BigIntMathSubtract).SubtractBigIntNums(dec.bigINum, d2.bigINum)",
-        ErrContext: fmt.Sprintf("dec.bigINum= '%v'\n d2.bigINum= '%v'", decBINumStr, d2BigINumStr),
-        ErrMessage: err.Error(),
-      }
-  }
+		return Decimal{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "bINumResult, err := new(BigIntMathSubtract).SubtractBigIntNums(dec.bigINum, d2.bigINum)",
+				ErrContext: fmt.Sprintf("dec.bigINum= '%v'\n d2.bigINum= '%v'", decBINumStr, d2BigINumStr),
+				ErrMessage: err.Error(),
+			}
+	}
 
-  d3, err := new(Decimal).NewBigIntNum(bINumResult)
+	d3, err := new(Decimal).NewBigIntNum(bINumResult)
 
-  if err != nil {
+	if err != nil {
 
-    return Decimal{},
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "d3, err := new(Decimal).NewBigIntNum(bINumResult)",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-  }
+		return Decimal{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "d3, err := new(Decimal).NewBigIntNum(bINumResult)",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  err = d3.SetNumericSeparatorsDto(decNumSeps)
+	err = d3.SetNumericSeparatorsDto(decNumSeps)
 
-  if err != nil {
+	if err != nil {
 
-    return Decimal{},
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "err = d3.SetNumericSeparatorsDto(decNumSeps)",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-  }
+		return Decimal{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "err = d3.SetNumericSeparatorsDto(decNumSeps)",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  err = d3.IsValid(ePrefix.XCpy("Validating result 'd3'").String())
+	err = d3.IsValid(ePrefix.XCpy("Validating result 'd3'").String())
 
-  if err != nil {
+	if err != nil {
 
-    return Decimal{},
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "err = d3.IsValid(ePrefix.XCpy(\"Validating result 'd3'\").String())",
-        ErrContext: "Calculated result 'd3' FAILED Validation Tests",
-        ErrMessage: err.Error(),
-      }
-  }
+		return Decimal{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "err = d3.IsValid(ePrefix.XCpy(\"Validating result 'd3'\").String())",
+				ErrContext: "Calculated result 'd3' FAILED Validation Tests",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  return d3, nil
+	return d3, nil
 }
 
-// SubtractFromThis - Subtracts the value of the incoming Decimal type
-// from the current Decimal type. The updated value is stored and retained
-// in the current Decimal instance.
+// SubtractFromThis
 //
-// The numeric separators (decimal separator, thousands separator and
-// currency symbol) for the current Decimal instance remain unchanged
-// and are not modified by this method.
+//	Subtracts the value of the incoming Decimal type from the
+//	current Decimal type. The updated value is stored and
+//	retained in the current Decimal instance.
+//
+//	  Example
+//
+//	  dec = Current Decimal instance
+//	  d2  = Input parameter typ Decimal
+//
+//	  dec = dec - d2
+//
+//	The numeric separators (decimal separator, thousands separator
+//	and currency symbol) for the current Decimal instance remain
+//	unchanged and are not modified by this method.
 func (dec *Decimal) SubtractFromThis(d2 Decimal) error {
 
-  ePrefix := "Decimal.Subtract()"
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-  var err error
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"Decimal.SubtractFromThis()",
+		"")
 
-  err = dec.bigINum.IsValid(ePrefix)
+	if err != nil {
+		return err
+	}
 
-  if err != nil {
+	err = dec.bigINum.IsValid(ePrefix.XCpy("Validating 'dec'").String())
 
-    return fmt.Errorf("%v\n"+
-      "Validation Error on current Decimal instance (dec) returned by: \n"+
-      " err = dec.bigINum.IsValid(ePrefix)\n"+
-      "Error= %v\n",
-      ePrefix,
-      err.Error())
-  }
+	if err != nil {
 
-  err = d2.IsValid(ePrefix)
+		return &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "err = dec.bigINum.IsValid(ePrefix.XCpy(\"Validating 'dec'\").String())",
+			ErrContext: "Current Decimal instance 'dec' is INVALID!",
+			ErrMessage: err.Error(),
+		}
+	}
 
-  if err != nil {
+	err = d2.IsValid(ePrefix.XCpy("Validating input param 'd2'").String())
 
-    return fmt.Errorf("%v\n"+
-      "Validation Error on input parameter\n"+
-      "Decimal instance (d2). Error returned by: \n"+
-      " err = d2.IsValid(ePrefix)\n"+
-      "Error= %v\n",
-      ePrefix,
-      err.Error())
-  }
+	if err != nil {
 
-  numSeps := dec.bigINum.GetNumericSeparatorsDto()
+		return &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "err = d2.IsValid(ePrefix.XCpy(\"Validating input param 'd2'\").String())",
+			ErrContext: "Input parameter 'd2' FAILED Validation Tests and is INVALID!",
+			ErrMessage: err.Error(),
+		}
+	}
 
-  bINumResult := BigIntMathSubtract{}.SubtractBigIntNums(dec.bigINum, d2.bigINum)
+	decNumStr, err := dec.bigINum.GetNumStr()
 
-  err = bINumResult.SetNumericSeparatorsDto(numSeps)
+	if err != nil {
 
-  if err != nil {
-    return fmt.Errorf(ePrefix+
-      "Error returned by bINumResult.SetNumericSeparatorsDto(numSeps) "+
-      "Error='%v' \n", err.Error())
-  }
+		return &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "decNumStr, err := dec.bigINum.GetNumStr()",
+			ErrContext: "",
+			ErrMessage: err.Error(),
+		}
+	}
 
-  dec.bigINum, err = bINumResult.CopyOut()
+	d2NumStr, err := d2.GetNumStr()
 
-  if err != nil {
+	if err != nil {
 
-    return fmt.Errorf("%v\n"+
-      "Error returned by: \n"+
-      " dec.bigINum, err = bINumResult.CopyOut()\n\n"+
-      "Error= %v\n",
-      ePrefix,
-      err.Error())
-  }
+		return &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "d2NumStr, err := d2.GetNumStr()",
+			ErrContext: "",
+			ErrMessage: err.Error(),
+		}
+	}
 
-  return nil
+	decNumSeps, err := dec.bigINum.GetNumericSeparatorsDto()
+
+	if err != nil {
+
+		return &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "decNumSeps, err := dec.bigINum.GetNumericSeparatorsDto()",
+			ErrContext: "",
+			ErrMessage: err.Error(),
+		}
+	}
+
+	bINumResult, err := new(BigIntMathSubtract).SubtractBigIntNums(dec.bigINum, d2.bigINum)
+
+	if err != nil {
+
+		return &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "",
+			ErrContext: fmt.Sprintf("dec.bigINum= '%v'\nd2.bigINum= '%v",
+				decNumStr, d2NumStr),
+			ErrMessage: err.Error(),
+		}
+	}
+
+	err = bINumResult.SetNumericSeparatorsDto(decNumSeps)
+
+	if err != nil {
+
+		return &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "err = bINumResult.SetNumericSeparatorsDto(decNumSeps)",
+			ErrContext: "",
+			ErrMessage: err.Error(),
+		}
+	}
+
+	dec.bigINum, err = bINumResult.CopyOut()
+
+	if err != nil {
+
+		return &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "dec.bigINum, err = bINumResult.CopyOut()",
+			ErrContext: "",
+			ErrMessage: err.Error(),
+		}
+	}
+
+	return nil
 }
 
-// SubtractFromThisMultiple - Subtracts the value of multiple incoming
-// Decimal instances from the current Decimal type. The updated value
-// is stored and retained in the current Decimal instance.
+// SubtractFromThisMultiple
 //
-// Existing numeric separators (decimal separator, thousands separator
-// and currency symbol) remain unchanged and are not altered by this method.
+//		Subtracts the value of multiple incoming Decimal instances from
+//		the current Decimal type. The updated value is stored and
+//		retained in the current Decimal instance.
+//
+//	 Calculaion Methodology
+//	 ======================
+//
+//		  Current Decimal Instance = 'dec'
+//		  Series of Decimal values = 'decs'
+//
+//		      Result: dec = dec - decs
+//
+//		Existing numeric separators (decimal separator, thousands
+//		separator and currency symbol) remain unchanged and are not
+//		altered by this method.
+//
+//		Input Parameters
+//		================
+//
+//		decs                     ...Decimal
+//		  This method is defined as 'variadic' function meaning
+//		  that parameter 'decs' can accept a variable number of
+//		  arguments of type Decimal.
+//
+//		  The user therefore has the option to supply zero, one
+//		  or more than one instances of type Decimal. As described
+//		  above, each Decimal value will be subtracted from the
+//		  value of the current Decimal instance.
+//
+//		  If the user submitts zero Decimal objects for this
+//		  parameter, an error will be declared.
+//
+//		Return Values
+//		=============
+//
+//		error
+//		  If no errors are encountered during the calculation
+//		  performed by this method, a value of 'nil' will be
+//		  returned for this parameter.
 func (dec *Decimal) SubtractFromThisMultiple(decs ...Decimal) error {
 
-  ePrefix := "SubtractFromThisMultiple"
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-  err := dec.bigINum.SetNumericSeparatorsToDefaultIfEmpty()
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"Decimal.SubtractFromThisMultiple()",
+		"")
 
-  if err != nil {
+	if err != nil {
+		return err
+	}
 
-    return fmt.Errorf("%v\n"+
-      "Error returned by: \n"+
-      " err := dec.bigINum.SetNumericSeparatorsToDefaultIfEmpty()\n"+
-      "Error= %v\n",
-      ePrefix,
-      err.Error())
-  }
+	if len(decs) == 0 {
 
-  bINumResult, err := dec.bigINum.CopyOut()
+		return &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "",
+			ErrContext: "len(decs)==0",
+			ErrMessage: "Error: Input parameter 'decs' is empty!",
+		}
+	}
 
-  if err != nil {
+	err = dec.bigINum.IsValid(ePrefix.XCpy("Validating current instance 'dec'").String())
 
-    return fmt.Errorf("%v\n"+
-      "Error returned by: \n"+
-      " bINumResult, err := dec.bigINum.CopyOut()\n"+
-      "Error= %v\n",
-      ePrefix,
-      err.Error())
-  }
+	if err != nil {
 
-  for _, dx := range decs {
+		return &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "err = dec.bigINum.IsValid(ePrefix.XCpy(\"Validating current instance 'dec'\").String())",
+			ErrContext: "Error: The current Decimal instance 'dec' FAILED Validation Tests",
+			ErrMessage: err.Error(),
+		}
+	}
 
-    bINumResult = BigIntMathSubtract{}.SubtractBigIntNums(bINumResult, dx.bigINum)
-  }
+	bINumResult, err := dec.bigINum.CopyOut()
 
-  dec.bigINum, err = bINumResult.CopyOut()
+	if err != nil {
 
-  if err != nil {
+		return &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "bINumResult, err := dec.bigINum.CopyOut()",
+			ErrContext: "",
+			ErrMessage: err.Error(),
+		}
+	}
 
-    return fmt.Errorf("%v\n"+
-      "Error returned by: \n"+
-      " dec.bigINum, err = bINumResult.CopyOut()\n"+
-      "Error= %v\n",
-      ePrefix,
-      err.Error())
-  }
+	var bINumResultNumStr, dxNumStr string
 
-  return nil
+	for i, dx := range decs {
+
+		err = dx.IsValid(ePrefix.XCpy(fmt.Sprintf("Validating dx[%v]", i)).String())
+
+		if err != nil {
+
+			return &FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "err = dx.IsValid(ePrefix.XCpy(fmt.Sprintf(\"Validating dx[%v]\",i)).String())",
+				ErrContext: fmt.Sprintf("Input parameter decs_dx[%v] is INVALID!\n"+
+					"decs_dx[%v] FAILED Validation Tests.", i, i),
+				ErrMessage: err.Error(),
+			}
+		}
+
+		bINumResultNumStr, err = bINumResult.GetNumStr()
+
+		if err != nil {
+
+			return &FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "bINumResultNumStr, err = bINumResult.GetNumStr()",
+				ErrContext: fmt.Sprintf("decs cycle index='%v'", i),
+				ErrMessage: err.Error(),
+			}
+		}
+
+		dxNumStr, err = dx.GetNumStr()
+
+		if err != nil {
+
+			return &FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "dxNumStr, err = dx.GetNumStr()",
+				ErrContext: fmt.Sprintf("decs cycle index='%v'", i),
+				ErrMessage: err.Error(),
+			}
+		}
+
+		bINumResult, err = new(BigIntMathSubtract).
+			SubtractBigIntNums(bINumResult, dx.bigINum)
+
+		if err != nil {
+
+			return &FuncReturnError{
+				ErrPrefix: ePrefix.String(),
+				ReturnFunc: "bINumResult, err = new(BigIntMathSubtract).\n" +
+					"  SubtractBigIntNums(bINumResult, dx.bigINum)",
+				ErrContext: fmt.Sprintf("bINumResult= '%v'\ndx.bigINum= '%v'",
+					bINumResultNumStr, dxNumStr),
+				ErrMessage: err.Error(),
+			}
+		}
+	} // End of range loop
+
+	dec.bigINum, err = bINumResult.CopyOut()
+
+	if err != nil {
+
+		return &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "dec.bigINum, err = bINumResult.CopyOut()",
+			ErrContext: "",
+			ErrMessage: err.Error(),
+		}
+	}
+
+	return nil
 }
 
-// SubtractFromThisArray - Subtracts the values of an Array of incoming
-// Decimal instances from the current Decimal type. The updated value
-// is stored and retained in the current Decimal instance.
+// SubtractFromThisArray
 //
-// Existing numeric separators (decimal separator, thousands separator
-// and currency symbol) remain unchanged and are not altered by this method.
-func (dec *Decimal) SubtractFromThisArray(decs []Decimal) error {
+//	Subtracts the values of an Array of incoming Decimal instances
+//	from the current Decimal instance value. The updated value is
+//	stored and retained in the current Decimal instance.
+//
+//	Calculaion Methodology
+//	======================
+//
+//	       Current Decimal Instance = dec
+//	  Input Parameter Decimal Array = decs
+//
+//	          Result: dec = dec - decs
+//
+//
+//	Existing numeric separators (decimal separator, thousands
+//	separator and currency symbol) remain unchanged and are not
+//	altered by this method.
+//
+//	Input Parameters
+//	================
+//
+//	decs                     []Decimal
+//	  Input parameter 'decs' is an array of objects of type
+//	  Decimal. As described above, each Decimal value in this
+//	  array will be subtracted from the value of the current
+//	  Decimal instance.
+//
+//	  If the user submitts zero length array for this parameter,
+//	  an error will be declared.
+//
+//	Return Values
+//	=============
+//
+//	error
+//	  If no errors are encountered during the calculation
+//	  performed by this method, a value of 'nil' will be
+//	  returned for this parameter.
+func (dec *Decimal) SubtractFromThisArray(
+	decs []Decimal) error {
 
-  ePrefix := "Decimal.SubtractFromThisArray()"
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-  err := dec.bigINum.SetNumericSeparatorsToDefaultIfEmpty()
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"Decimal.SubtractFromThisArray()",
+		"")
 
-  if err != nil {
+	if err != nil {
+		return err
+	}
 
-    return fmt.Errorf("%v\n"+
-      "Error returned by: \n"+
-      " err := dec.bigINum.SetNumericSeparatorsToDefaultIfEmpty()\n"+
-      "Error= %v\n",
-      ePrefix,
-      err.Error())
-  }
+	if len(decs) == 0 {
 
-  bINumResult, err := dec.bigINum.CopyOut()
+		return &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "",
+			ErrContext: "len(decs)==0",
+			ErrMessage: "Error: Input parameter 'decs' is an empty array!",
+		}
+	}
 
-  if err != nil {
+	err = dec.bigINum.IsValid(ePrefix.XCpy("Validating current instance 'dec'").String())
 
-    return fmt.Errorf("%v\n"+
-      "Error returned by: \n"+
-      " bINumResult, err := dec.bigINum.CopyOut()\n"+
-      "Error= %v\n",
-      ePrefix,
-      err.Error())
-  }
+	if err != nil {
 
-  for _, dx := range decs {
+		return &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "err = dec.bigINum.IsValid(ePrefix.XCpy(\"Validating current instance 'dec'\").String())",
+			ErrContext: "Error: The current Decimal instance 'dec' FAILED Validation Tests",
+			ErrMessage: err.Error(),
+		}
+	}
 
-    bINumResult = BigIntMathSubtract{}.SubtractBigIntNums(bINumResult, dx.bigINum)
+	bINumResult, err := dec.bigINum.CopyOut()
 
-  }
+	if err != nil {
 
-  dec.bigINum, err = bINumResult.CopyOut()
+		return &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "bINumResult, err := dec.bigINum.CopyOut()",
+			ErrContext: "",
+			ErrMessage: err.Error(),
+		}
+	}
 
-  if err != nil {
+	var bINumResultNumStr, decsNumStr string
 
-    return fmt.Errorf("%v\n"+
-      "Error returned by: \n"+
-      " dec.bigINum, err = bINumResult.CopyOut()\n"+
-      "Error= %v\n",
-      ePrefix,
-      err.Error())
-  }
+	lenOfDecs := len(decs)
 
-  return nil
+	for i := 0; i < lenOfDecs; i++ {
+
+		err = decs[i].IsValid(ePrefix.XCpy(fmt.Sprintf("Validating decs[%v]", i)).String())
+
+		if err != nil {
+
+			return &FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: fmt.Sprintf("err = decs[%v].IsValid(ePrefix.XCpy(Validating decs[%v])", i, i),
+				ErrContext: fmt.Sprintf("Input parameter decs[%v] is INVALID!\n"+
+					"decs[%v] FAILED Validation Tests.", i, i),
+				ErrMessage: err.Error(),
+			}
+		}
+
+		bINumResultNumStr, err = bINumResult.GetNumStr()
+
+		if err != nil {
+
+			return &FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "bINumResultNumStr, err = bINumResult.GetNumStr()",
+				ErrContext: fmt.Sprintf("decs cycle index='%v'", i),
+				ErrMessage: err.Error(),
+			}
+		}
+
+		decsNumStr, err = decs[i].GetNumStr()
+
+		if err != nil {
+
+			return &FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "decsNumStr, err = decs[i].GetNumStr()",
+				ErrContext: fmt.Sprintf("decs cycle index='%v'", i),
+				ErrMessage: err.Error(),
+			}
+		}
+
+		bINumResult, err = new(BigIntMathSubtract).SubtractBigIntNums(bINumResult, decs[i].bigINum)
+
+		if err != nil {
+
+			return &FuncReturnError{
+				ErrPrefix: ePrefix.String(),
+				ReturnFunc: "bINumResult, err = new(BigIntMathSubtract).\n" +
+					fmt.Sprintf(" SubtractBigIntNums(bINumResult, decs[%d].bigINum)", i),
+				ErrContext: fmt.Sprintf("bINumResult= '%v'\ndecs[%d].bigINum= '%v'",
+					bINumResultNumStr, i, decsNumStr),
+				ErrMessage: err.Error(),
+			}
+		}
+	} // End of for loop
+
+	dec.bigINum, err = bINumResult.CopyOut()
+
+	if err != nil {
+
+		return &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "dec.bigINum, err = bINumResult.CopyOut()",
+			ErrContext: "",
+			ErrMessage: err.Error(),
+		}
+	}
+
+	return nil
 }
