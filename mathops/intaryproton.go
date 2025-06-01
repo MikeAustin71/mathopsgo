@@ -1,6 +1,7 @@
 package mathops
 
 import (
+	"fmt"
 	ePref "github.com/MikeAustin71/errpref"
 	"sync"
 )
@@ -280,4 +281,100 @@ func (iaProton *intAryProton) copyOutDigits(
 	}
 
 	return iAry2, nil
+}
+
+// setIntAryWithUint8Ary
+//
+//		This method is designed to set the value of the current IntAry
+//		object by passing in a pointer to an unsigned integer array
+//		([]uint8). []uint8 is the type of array native to the IntAry
+//		object.
+//
+//		Input parameter 'precision' will determine the number of digits
+//		to the right of the decimal place.
+//
+//		Input parameter 'signVal' must be either +1 or -1 indicating
+//		the	sign of the number represented by the integer array.
+//
+//		If signVal is not equal to +1 or -1, an error will be
+//		generated.
+//
+//	 The Numeric Separators originaly configured for the current
+//	 IntAry instance will NOT be modified.
+func (iaProton *intAryProton) setIntAryWithUint8Ary(
+	intAry *IntAry,
+	iAry2 []uint8,
+	precision uint,
+	signVal int,
+	errPrefDto *ePref.ErrPrefixDto) error {
+
+	iaProton.lock.Lock()
+
+	defer iaProton.lock.Unlock()
+
+	var ePrefix *ePref.ErrPrefixDto
+
+	var err error
+
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
+		errPrefDto,
+		"intAryProton.setIntAryWithUint8Ary()",
+		"")
+
+	if err != nil {
+		return err
+	}
+
+	if intAry == nil {
+
+		return &InputPtrNilError{
+			ErrPrefix:     ePrefix.String(),
+			ParameterName: "'intAry'",
+		}
+	}
+
+	if signVal != 1 && signVal != -1 {
+
+		return &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "",
+			ErrContext: "",
+			ErrMessage: fmt.Sprintf("Error: Input parameter 'signVal' is INVALID!\n"+
+				"signVal MUST HAVE a value of -1 or +1.\n"+
+				"signVal='%v'", signVal),
+		}
+	}
+
+	lIAry2 := len(iAry2)
+
+	intAry.intAry = make([]uint8, lIAry2)
+
+	for i := 0; i < lIAry2; i++ {
+
+		intAry.intAry[i] = iAry2[i]
+	}
+
+	intAry.intAryLen = lIAry2
+
+	intAry.precision = int(precision)
+
+	intAry.signVal = signVal
+
+	err = new(intAryNanobot).setInternalFlags(intAry, ePrefix.XCpy("Set 'intAry' Flags"))
+
+	if err != nil {
+		return err
+	}
+
+	if intAry.isIntegerZeroValue && intAry.integerLen > 1 {
+
+		err = new(intAryAtom).optimizeIntArrayLen(intAry, false, false, ePrefix)
+
+		if err != nil {
+			return err
+		}
+	}
+
+	return nil
 }

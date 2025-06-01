@@ -68,3 +68,63 @@ func (iaNanobot *intAryNanobot) setInternalFlags(
 
 	return nil
 }
+
+// getNumericSeparatorsDto
+//
+//	 Receives a pointer to IntAry and extracts the Numeric
+//	 Separators. These separators are consolidated and returned as
+//	 a NumericSeparatorDto structure containing the character or
+//	 'rune' values for decimal point separator, thousands
+//	 separator and currency symbol.
+//
+//		Numeric Separators
+//		==================
+//
+//		Numeric Separators define the Decimal Separator character,
+//		Thousands Separator character, and Currency Symbol character.
+//		These separator characters serve two purposes. First they are
+//		used to format and display numeric values as number strings.
+//		Second, they are also used to parse number strings and convert
+//		them into numeric values.
+func (iaNanobot *intAryNanobot) getNumericSeparatorsDto(
+	intAry *IntAry,
+	errPrefDto *ePref.ErrPrefixDto) (NumericSeparatorDto, error) {
+
+	if iaNanobot.lock == nil {
+		iaNanobot.lock = new(sync.Mutex)
+	}
+
+	iaNanobot.lock.Lock()
+
+	defer iaNanobot.lock.Unlock()
+
+	var ePrefix *ePref.ErrPrefixDto
+
+	var err error
+
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
+		errPrefDto,
+		"intAryNanobot.getNumericSeparatorsDto()",
+		"")
+
+	if err != nil {
+		return NumericSeparatorDto{}, err
+	}
+
+	if intAry == nil {
+
+		return NumericSeparatorDto{},
+			&InputPtrNilError{
+				ErrPrefix:     ePrefix.String(),
+				ParameterName: "'intAry'",
+			}
+	}
+
+	numSeps := NumericSeparatorDto{}
+	numSeps.DecimalSeparator = intAry.GetDecimalSeparator()
+	numSeps.ThousandsSeparator = intAry.GetThousandsSeparator()
+	numSeps.CurrencySymbol = intAry.GetCurrencySymbol()
+
+	return numSeps, nil
+}

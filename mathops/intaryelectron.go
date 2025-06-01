@@ -1,7 +1,6 @@
 package mathops
 
 import (
-	"fmt"
 	ePref "github.com/MikeAustin71/errpref"
 	"sync"
 )
@@ -131,10 +130,27 @@ func (iAryElectron *intAryElectron) newIntAry() IntAry {
 
 // isValidIntAry
 //
-//	Examines an intAry object and returns an error if
-//	that intAry object is found to be invalid.
+//		Examines an IntAry object and returns an error if	that IntAry
+//		object is found to be invalid.
+//
+//		IMPORTANT
+//		=========
+//
+//		This method tests both the validity of IntAry internal
+//	 	numeric value fields 'AND' the validity of the internal
+//	 	Numeric Separator fields.
+//
+//	 	To perform vaidity testing separately on numeric values
+//	 	and Numeric Sepators, see the following methods:
+//
+//	 	    'intAryLepton.isValidNumericValues'
+//
+//	 	    'intAryLepton.isValidNumSeps'
+//
+//	 To call both isValidIntAry and isValidNumSeps, call
+//	 'intAryLepton.isValidIntary'
 func (iAryElectron *intAryElectron) isValidIntAry(
-	iAry *IntAry,
+	intAry *IntAry,
 	errName string) error {
 
 	if iAryElectron.lock == nil {
@@ -158,84 +174,19 @@ func (iAryElectron *intAryElectron) isValidIntAry(
 		return err
 	}
 
-	if iAry == nil {
+	var iaLepton = new(intAryLepton)
 
-		return fmt.Errorf("%v\n"+
-			"IntAry Validation Test.\n"+
-			"Error: Input parameter 'iAry' is a nil pointer!\n"+
-			"IntAry object FAILED Validation Test!\n",
-			ePrefix.String())
-	}
-
-	err = new(intAryNanobot).setInternalFlags(
-		iAry, ePrefix)
+	err = iaLepton.isValidNumericValues(
+		intAry, ePrefix.XCpy("Testing Numeric Values").String())
 
 	if err != nil {
-
-		return &FuncReturnError{
-			ErrPrefix:  ePrefix.String(),
-			ReturnFunc: "err = new(intAryNanobot).setInternalFlags(ia, ePrefix)",
-			ErrContext: "",
-			ErrMessage: err.Error(),
-		}
+		return err
 	}
 
-	if iAry.signVal != -1 && iAry.signVal != 1 {
+	err = iaLepton.isValidNumSeps(
+		intAry, ePrefix.XCpy("Testing Numeric Separators").String())
 
-		return fmt.Errorf("%v\n"+
-			"Called Method: %v\n"+
-			"IntAry Validation Test.\n"+
-			"Error: sign Value is INVALID!\n"+
-			"sign Value= '%v'\n"+
-			"IntAry object FAILED Validation Test!\n",
-			errName,
-			ePrefix,
-			iAry.signVal)
-	}
-
-	if iAry.precision < 0 {
-
-		return fmt.Errorf("%v\n"+
-			"Called Method: %v\n"+
-			"IntAry Validation Test.\n"+
-			"Error: precision Value is INVALID!\n"+
-			"'precision' value is Less Than Zero!\n"+
-			"'precision' Value= '%v'\n"+
-			"IntAry object FAILED Validation Test!\n",
-			errName,
-			ePrefix,
-			iAry.precision)
-	}
-
-	if iAry.precision >= iAry.intAryLen {
-
-		return fmt.Errorf("%v\n"+
-			"Called Method: %v\n"+
-			"IntAry Validation Test.\n"+
-			"Error: 'precision' value is greater than or equal to IntArray length.\n"+
-			"iAry.precision= '%v'\n"+
-			"iAry.intAryLen= '%v' \n"+
-			"IntAry object FAILED Validation Test!\n",
-			errName,
-			ePrefix,
-			iAry.precision,
-			iAry.intAryLen)
-
-	}
-
-	if iAry.integerLen == 0 {
-
-		return fmt.Errorf("%v\n"+
-			"Called Method: %v\n"+
-			"IntAry Validation Test.\n"+
-			"Error: IntAry integer length is zero.\n"+
-			"Missing leading integer zero!\n"+
-			"IntAry object FAILED Validation Test!\n",
-			errName,
-			ePrefix)
-	}
-
-	return nil
+	return err
 }
 
 // setIntAryLength

@@ -173,13 +173,15 @@ func (iaMech *intAryMechanics) decrementIntegerOne(
 //	numeric value in the IntAry instance passed as input parameter
 //	'ia'.
 //
-//	IMPORTANT
-//	=========
 //
-//	The calling function is responsible for verifying the validit
-//	of 'ia', the Intary object.
+//	Validation Testing
+//	==================
+//
+//	If input parameter 'validateIntAry' is set to true, this
+//	method will subject 'intAry' to validation tests.
 func (iaMech *intAryMechanics) getMagnitudeDigits(
   intAry *IntAry,
+  validateIntAry bool,
   errPrefDto *ePref.ErrPrefixDto) (int, error) {
 
   if iaMech.lock == nil {
@@ -211,6 +213,23 @@ func (iaMech *intAryMechanics) getMagnitudeDigits(
         ErrPrefix:     ePrefix.String(),
         ParameterName: "'ia'",
       }
+  }
+
+  if validateIntAry {
+
+    err = new(intAryElectron).isValidIntAry(intAry, ePrefix.XCpy("Validating 'intAry'").String())
+
+    if err != nil {
+
+      return 0,
+        &FuncReturnError{
+          ErrPrefix: ePrefix.String(),
+          ReturnFunc: "err = new(intAryElectron).isValidIntAry(\n" +
+            "  intAry, ePrefix.XCpy(Validating 'intAry').String())",
+          ErrContext: "",
+          ErrMessage: err.Error(),
+        }
+    }
   }
 
   err = new(intAryNanobot).setInternalFlags(

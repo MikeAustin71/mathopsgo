@@ -76,7 +76,7 @@ func (iaQuark *intAryQuark) setIntAryToZero(
 
 func (iaQuark *intAryQuark) setNumericSeparatorsToUSADefault(
 	intAry *IntAry,
-	callingFunction string) error {
+	errPrefDto *ePref.ErrPrefixDto) error {
 
 	if iaQuark.lock == nil {
 		iaQuark.lock = new(sync.Mutex)
@@ -90,8 +90,8 @@ func (iaQuark *intAryQuark) setNumericSeparatorsToUSADefault(
 	var err error
 
 	ePrefix,
-		err = ePref.ErrPrefixDto{}.NewIEmpty(
-		callingFunction,
+		err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
+		errPrefDto,
 		"intAryQuark.setNumericSeparatorsToUSADefault()",
 		"")
 

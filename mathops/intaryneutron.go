@@ -282,7 +282,7 @@ func (iaNeutron *intAryNeutron) getBigInt(
 		return big.NewInt(0),
 			&InputPtrNilError{
 				ErrPrefix:     ePrefix.String(),
-				ParameterName: "'ia'",
+				ParameterName: "'intAry'",
 			}
 	}
 
@@ -348,6 +348,217 @@ func (iaNeutron *intAryNeutron) getBigInt(
 	}
 
 	return result, nil
+}
+
+// getFractionalDigits
+//
+//	Examines the current IntAry instanace and returns a new IntAry
+//	object consisting of the fractional digits to the right of the
+//	decimal point from the original, current IntAry object.
+//
+//	Note: The sign Value of the returned int Ary is always
+//	positive or +1.
+//
+//	The returned IntAry instance will display fractional digits
+//	with a leading integer digit of zero. Example '0.5678'
+func (iaNeutron *intAryNeutron) getFractionalDigits(
+	intAry *IntAry,
+	validateIntAry bool,
+	errPrefDto *ePref.ErrPrefixDto) (IntAry, error) {
+
+	var ePrefix *ePref.ErrPrefixDto
+
+	var err error
+
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
+		errPrefDto,
+		"intAryNeutron.getFractionalDigits()",
+		"")
+
+	if err != nil {
+		return IntAry{}, err
+	}
+
+	if intAry == nil {
+
+		return IntAry{},
+			&InputPtrNilError{
+				ErrPrefix:     ePrefix.String(),
+				ParameterName: "'intAry'",
+			}
+	}
+
+	if validateIntAry {
+
+		err = new(intAryElectron).isValidIntAry(
+			intAry, ePrefix.XCpy("Validating 'intAry'").String())
+
+		if err != nil {
+
+			return IntAry{},
+				&FuncReturnError{
+					ErrPrefix: ePrefix.String(),
+					ReturnFunc: "err = new(intAryElectron).isValidIntAry(\n" +
+						"   intAry, ePrefix.XCpy(Validating 'intAry').String())",
+					ErrContext: "Input parameter 'intAry' is INVALID!\n" +
+						"'intAry' FAILED Validation Tests.",
+					ErrMessage: err.Error(),
+				}
+		}
+	}
+
+	iAry2 := new(intAryElectron).newIntAry()
+
+	err = new(intAryQuark).setIntAryToZero(
+		&iAry2, 0, ePrefix.XCpy("Setting iAry2 to Zero"))
+
+	if intAry.precision == 0 {
+		return iAry2, nil
+	}
+
+	fracIdx := intAry.intAryLen - intAry.precision
+
+	iAry2.intAry = make([]uint8, intAry.precision+1)
+	idx := 1
+
+	for i := fracIdx; i < intAry.intAryLen; i++ {
+
+		iAry2.intAry[idx] = intAry.intAry[i]
+
+		idx++
+	}
+
+	iAry2.precision = intAry.precision
+
+	iAry2.signVal = 1
+
+	err = new(intAryNanobot).setInternalFlags(
+		&iAry2, ePrefix)
+
+	if err != nil {
+
+		return IntAry{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "err = new(intAryNanobot).setInternalFlags(&iAry2, ePrefix)",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
+	return iAry2, nil
+}
+
+// getNumStrDto
+//
+//	 Converts the IntAry input parameter ('') to a returned instance
+//	 of NumStrDto.
+//
+//	 The returned NumStrDto will contain numeric separators
+//	 (decimal separator, thousands separator and currency symbol)
+//	 copied from the current IntAry instance.
+//
+//		Validation Testing
+//		==================
+//
+//		If input parameter 'validateIntAry' is set to true, this
+//		method will subject 'intAry' to validation tests.
+func (iaNeutron *intAryNeutron) getNumStrDto(
+	intAry *IntAry,
+	validateIntAry bool,
+	errPrefDto *ePref.ErrPrefixDto) (NumStrDto, error) {
+
+	if iaNeutron.lock == nil {
+		iaNeutron.lock = new(sync.Mutex)
+	}
+
+	iaNeutron.lock.Lock()
+
+	defer iaNeutron.lock.Unlock()
+
+	var ePrefix *ePref.ErrPrefixDto
+
+	var err error
+
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
+		errPrefDto,
+		"intAryNeutron.getNumStrDto()",
+		"")
+
+	if err != nil {
+		return NumStrDto{}, err
+	}
+
+	if intAry == nil {
+
+		return NumStrDto{},
+			&InputPtrNilError{
+				ErrPrefix:     ePrefix.String(),
+				ParameterName: "'intAry'",
+			}
+	}
+
+	if validateIntAry {
+
+		err = new(intAryElectron).isValidIntAry(intAry, ePrefix.XCpy("Validating 'intAry'").String())
+
+		if err != nil {
+
+			return NumStrDto{},
+				&FuncReturnError{
+					ErrPrefix: ePrefix.String(),
+					ReturnFunc: "err = new(intAryElectron).isValidIntAry(\n" +
+						"  intAry, ePrefix.XCpy(Validating 'intAry').String())",
+					ErrContext: "",
+					ErrMessage: err.Error(),
+				}
+		}
+	}
+
+	numSeps, err := new(intAryNanobot).
+		getNumericSeparatorsDto(intAry, ePrefix.XCpy("numSeps<-intAry"))
+
+	if err != nil {
+
+		return NumStrDto{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "numSeps, err := new(intAryNanobot).getNumericSeparatorsDto(intAry, ePrefix)",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
+
+	// iaNumStr, err := ia.GetNumStr()
+	iaNumStr, err := new(intAryAtom).getRawNumStr(intAry, false, ePrefix.XCpy("iaNumStr<-intAry"))
+
+	if err != nil {
+
+		return NumStrDto{},
+			&FuncReturnError{
+				ErrPrefix: ePrefix.String(),
+				ReturnFunc: "iaNumStr, err := new(intAryAtom).getRawNumStr(\n" +
+					"  intAry, false, ePrefix.XCpy(iaNumStr<-intAry))",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
+
+	nDto, err := new(NumStrDto).NewNumStrWithNumSeps(iaNumStr, numSeps)
+
+	if err != nil {
+
+		return NumStrDto{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "nDto, err := new(NumStrDto).NewNumStrWithNumSeps(iaNumStr, numSeps)",
+				ErrContext: fmt.Sprintf("iaNumStr= '%v'\nnumSeps= '%v'", iaNumStr, numSeps),
+				ErrMessage: err.Error(),
+			}
+	}
+
+	return nDto, nil
 }
 
 // setSign
