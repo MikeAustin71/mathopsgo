@@ -1899,7 +1899,7 @@ func TestBigIntMathSubtract_SubtractIntAryOutputToArray_01(t *testing.T) {
 
 	for k := 0; k < lenSubtrahends; k++ {
 
-		if !resultArray[k].Equal(expectedResultsAry[k]) {
+		if !resultArray[k].Equals(&expectedResultsAry[k]) {
 			t.Errorf("Inequality Error: Expected ResultsAry='%v'. Instead, ResultsAry='%v'. ",
 				expectedResultsAry[k].GetNumStr(), resultArray[k].GetNumStr())
 		}
@@ -1973,7 +1973,7 @@ func TestBigIntMathSubtract_SubtractIntAryOutputToArray_02(t *testing.T) {
 
 	for k := 0; k < lenSubtrahends; k++ {
 
-		if !resultArray[k].Equal(expectedResultsAry[k]) {
+		if !resultArray[k].Equals(&expectedResultsAry[k]) {
 			t.Errorf("Error: Expected ResultsAry='%v' Not Equal. Instead, ResultsAry='%v'. ",
 				expectedResultsAry[k].GetNumStr(), resultArray[k].GetNumStr())
 		}
@@ -2047,7 +2047,7 @@ func TestBigIntMathSubtract_SubtractIntAryOutputToArray_03(t *testing.T) {
 
 	for k := 0; k < lenSubtrahends; k++ {
 
-		if !resultArray[k].Equal(expectedResultsAry[k]) {
+		if !resultArray[k].Equals(&expectedResultsAry[k]) {
 			t.Errorf("Error: Expected ResultsAry='%v' Not Equal. Instead, ResultsAry='%v'. ",
 				expectedResultsAry[k].GetNumStr(), resultArray[k].GetNumStr())
 		}
@@ -2120,7 +2120,7 @@ func TestBigIntMathSubtract_SubtractIntAryOutputToArray_04(t *testing.T) {
 
 	for k := 0; k < lenSubtrahends; k++ {
 
-		if !resultArray[k].Equal(expectedResultsAry[k]) {
+		if !resultArray[k].Equals(&expectedResultsAry[k]) {
 			t.Errorf("Error: Expected ResultsAry='%v' Not Equal. Instead, ResultsAry='%v'. ",
 				expectedResultsAry[k].GetNumStr(), resultArray[k].GetNumStr())
 		}
@@ -2194,7 +2194,7 @@ func TestBigIntMathSubtract_SubtractIntAryOutputToArray_05(t *testing.T) {
 
 	for k := 0; k < lenSubtrahends; k++ {
 
-		if !resultArray[k].Equal(expectedResultsAry[k]) {
+		if !resultArray[k].Equals(&expectedResultsAry[k]) {
 			t.Errorf("Error: Expected ResultsAry='%v' Not Equal. Instead, ResultsAry='%v'. ",
 				expectedResultsAry[k].GetNumStr(), resultArray[k].GetNumStr())
 		}

@@ -10,6 +10,11 @@ type intAryNeutron struct {
   lock *sync.Mutex
 }
 
+// copyToBackup
+//
+//	This method receives two IntAry objects, 'iaDestination' and
+//	'iaSource'. It then proceeds to copy the primary data fields
+//	from 'iaSource' to the 'BackUp' fields of 'iaDestination'.
 func (iaNeutron *intAryNeutron) copyToBackup(
   iaDestination *IntAry,
   iaSource *IntAry,
@@ -63,7 +68,7 @@ func (iaNeutron *intAryNeutron) copyToBackup(
 
       return &FuncReturnError{
         ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "err = new(intAryElectron).isValidIntAry(ia, ePrefix.XCpy(Validating 'ia').String())",
+        ReturnFunc: "err = new(intAryElectron).isValidIntAry(iaSource, ePrefix.XCpy(Validating 'iaSource').String())",
         ErrContext: "IntAry instanace 'iaSource' is INVALID!\n" +
           "'iaSource' FAILED Validation Tests.",
         ErrMessage: err.Error(),
@@ -88,7 +93,9 @@ func (iaNeutron *intAryNeutron) copyToBackup(
   iaDestination.BackUp.Empty()
 
   iaDestination.BackUp.intAry = make([]uint8, iaSource.intAryLen)
+
   for i := 0; i < iaSource.intAryLen; i++ {
+
     iaDestination.BackUp.intAry[i] = iaSource.intAry[i]
   }
 
@@ -107,6 +114,127 @@ func (iaNeutron *intAryNeutron) copyToBackup(
   iaDestination.BackUp.currencySymbol = iaSource.currencySymbol
 
   return nil
+}
+
+// equal
+//
+//	Receives two instances of IntAry and compares the values of all
+//	member data fields to determine if they are equivalent in all
+//	respects.
+//
+//	Returns 'true' if all member field values of 'iAry1' are equal
+//	to the corresponding field values of 'iAry2'.
+//
+//	Note that the BackUp fields for both compared IntAry objects
+//	are NOT included in the 'Equals' comparison.
+//
+//	If any errors are encountered, a boolean value of 'false' is
+//	returned
+func (iaNeutron *intAryNeutron) equal(
+  iAry1 *IntAry,
+  iAry2 *IntAry,
+  errPrefDto *ePref.ErrPrefixDto) (bool, error) {
+
+  if iaNeutron.lock == nil {
+    iaNeutron.lock = new(sync.Mutex)
+  }
+
+  iaNeutron.lock.Lock()
+
+  defer iaNeutron.lock.Unlock()
+
+  var ePrefix *ePref.ErrPrefixDto
+
+  var err error
+
+  ePrefix,
+    err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
+    errPrefDto,
+    "intAryNeutron.equal()",
+    "")
+
+  if err != nil {
+    return false, err
+  }
+
+  if iAry1 == nil {
+
+    return false,
+      &InputPtrNilError{
+        ErrPrefix:     ePrefix.String(),
+        ParameterName: "'iAry1'",
+      }
+  }
+
+  if iAry2 == nil {
+
+    return false,
+      &InputPtrNilError{
+        ErrPrefix:     ePrefix.String(),
+        ParameterName: "'iAry2'",
+      }
+  }
+
+  iaElectron := new(intAryElectron)
+
+  err = iaElectron.isValidIntAry(iAry1, ePrefix.XCpy("Validating 'iAry1'").String())
+
+  if err != nil {
+
+    return false,
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "err = iaElectron.isValidIntAry(iAry1, ePrefix.XCpy(Validating 'iAry1').String())",
+        ErrContext: "Input parameter 'iAry1' is INVALID!\n" +
+          "'iAry1' FAILED Validation Tests.",
+        ErrMessage: err.Error(),
+      }
+  }
+
+  err = iaElectron.isValidIntAry(iAry2, ePrefix.XCpy("Validating 'iAry1'").String())
+
+  if err != nil {
+
+    return false,
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "err = iaElectron.isValidIntAry(iAry2, ePrefix.XCpy(Validating 'iAry1').String())",
+        ErrContext: "Input parameter 'iAry2' is INVALID!\n" +
+          "'iAry2' FAILED Validation Tests.",
+        ErrMessage: err.Error(),
+      }
+  }
+
+  iaNanobot := new(intAryNanobot)
+
+  err = iaNanobot.setInternalFlags(iAry1, ePrefix.XCpy("Setting flags 'iAry1'"))
+
+  if err != nil {
+
+    return false,
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "err = iaNanobot.setInternalFlags(iAry1, ePrefix.XCpy(Setting flags 'iAry1'))",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+  }
+
+  err = iaNanobot.setInternalFlags(iAry2, ePrefix.XCpy("Setting flags 'iAry2'"))
+
+  if err != nil {
+
+    return false,
+      &FuncReturnError{
+        ErrPrefix: ePrefix.String(),
+        ReturnFunc: "err = iaNanobot.setInternalFlags(iAry2," +
+          "ePrefix.XCpy(Setting flags 'iAry2'))",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+  }
+
+  return new(intAryBoson).dataFieldEqualityTest(iAry1, iAry2), nil
 }
 
 // getBigInt

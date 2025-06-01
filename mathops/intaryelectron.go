@@ -13,7 +13,7 @@ type intAryElectron struct {
 // Empty - Basically resets all the fields of the intAry
 // structure to their 'zero' values.
 func (iAryElectron *intAryElectron) empty(
-	ia *IntAry) {
+	intAry *IntAry) {
 
 	if iAryElectron.lock == nil {
 		iAryElectron.lock = new(sync.Mutex)
@@ -23,29 +23,82 @@ func (iAryElectron *intAryElectron) empty(
 
 	defer iAryElectron.lock.Unlock()
 
-	if ia == nil {
+	if intAry == nil {
 		return
 	}
 
-	ia.intAry = []uint8{}
-	ia.intAryLen = 0
-	ia.integerLen = 0
-	ia.significantIntegerLen = 0
-	ia.significantFractionLen = 0
-	ia.firstDigitIdx = -1
-	ia.lastDigitIdx = -1
-	ia.isZeroValue = true
-	ia.isIntegerZeroValue = true
-	ia.precision = 0
-	ia.signVal = 1
+	intAry.intAry = []uint8{}
+	intAry.intAryLen = 0
+	intAry.integerLen = 0
+	intAry.significantIntegerLen = 0
+	intAry.significantFractionLen = 0
+	intAry.firstDigitIdx = -1
+	intAry.lastDigitIdx = -1
+	intAry.isZeroValue = true
+	intAry.isIntegerZeroValue = true
+	intAry.precision = 0
+	intAry.signVal = 1
 
-	ia.SetDecimalSeparator('.')
-	ia.SetThousandsSeparator(',')
-	ia.SetCurrencySymbol('$')
+	intAry.SetDecimalSeparator('.')
+	intAry.SetThousandsSeparator(',')
+	intAry.SetCurrencySymbol('$')
+
+	intAry.BackUp = new(BackUpIntAry).New()
 
 	return
 }
 
+// equals
+//
+//	Receives two instances of IntAry and compares the values of all
+//	member data fields to determine if they are equivalent in all
+//	respects.
+//
+//	Returns 'true' if all member field values of 'iAry1' are equal
+//	to the corresponding field values of 'iAry2'.
+//
+//	Note that the BackUp fields for both compared IntAry objects
+//	are NOT included in the 'Equals' comparison.
+//
+//	If any errors are encountered, a boolean value of 'false' is
+//	returned
+func (iAryElectron *intAryElectron) equals(
+	iAry1 *IntAry,
+	iAry2 *IntAry) bool {
+
+	if iAryElectron.lock == nil {
+		iAryElectron.lock = new(sync.Mutex)
+	}
+
+	iAryElectron.lock.Lock()
+
+	defer iAryElectron.lock.Unlock()
+
+	if iAry1 == nil || iAry2 == nil {
+		return false
+	}
+
+	iaNanobot := new(intAryNanobot)
+	var err error
+
+	err = iaNanobot.setInternalFlags(iAry1, nil)
+
+	if err != nil {
+		return false
+	}
+
+	err = iaNanobot.setInternalFlags(iAry2, nil)
+
+	if err != nil {
+		return false
+	}
+
+	return new(intAryBoson).dataFieldEqualityTest(iAry1, iAry2)
+}
+
+// newIntAry
+//
+// Generates a new instance of IntAry
 func (iAryElectron *intAryElectron) newIntAry() IntAry {
 
 	if iAryElectron.lock == nil {
@@ -181,6 +234,48 @@ func (iAryElectron *intAryElectron) isValidIntAry(
 			errName,
 			ePrefix)
 	}
+
+	return nil
+}
+
+// setIntAryLength
+//
+//	Calculates the current IntAry string length and sets internal
+//	variable 'ia.intAryLen'.
+func (iAryElectron *intAryElectron) setIntAryLength(
+	intAry *IntAry,
+	callingFunction string) error {
+
+	if iAryElectron.lock == nil {
+		iAryElectron.lock = new(sync.Mutex)
+	}
+
+	iAryElectron.lock.Lock()
+
+	defer iAryElectron.lock.Unlock()
+
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
+
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		callingFunction,
+		"intAryElectron.setIntAryLength()",
+		"")
+
+	if err != nil {
+		return err
+	}
+
+	if intAry == nil {
+
+		return &InputPtrNilError{
+			ErrPrefix:     ePrefix.String(),
+			ParameterName: "'intAry'",
+		}
+	}
+
+	intAry.intAryLen = len(intAry.intAry)
 
 	return nil
 }

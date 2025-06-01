@@ -3,6 +3,7 @@ package mathops
 import (
 	"errors"
 	"fmt"
+	ePref "github.com/MikeAustin71/errpref"
 )
 
 type IntAryMathDivide struct {
@@ -10,44 +11,49 @@ type IntAryMathDivide struct {
 	Result IntAry
 }
 
-// Divide - Divides the parameter 'dividend' by the parameter 'divisor'.
-// The result of this division is a 'quotient' which is returned as an
-// IntAry type.
+// Divide
 //
-// The dividend is the number being divided, the divisor is
-// the number by which the dividend is divided, and the quotient
-// is the result of the division.
+//	Divides the parameter 'dividend' by the parameter 'divisor'.
+//	The result of this division is a 'quotient' which is returned
+//	as an IntAry type.
 //
-// Given a ÷ b = c, a is the dividend, b is the divisor and c is
-// the quotient.
+//	The dividend is the number being divided, the divisor is the
+//	number by which the dividend is divided, and the quotient is
+//	the result of the division.
 //
-// Maximum precision of the division result is controlled by the input
-// parameter, 'maxPrecision'.
+//	Given a ÷ b = c, 'a' is the dividend, 'b' is the divisor and
+//	'c' is the quotient.
 //
-// If 'maxPrecision' is greater than or equal to zero ('0'),
-// the number of digits to the right of the decimal place will
-// not exceed 'maxPrecision'.
+//	Maximum precision of the division result is controlled by the
+//	input parameter, 'maxPrecision'.
 //
-// If 'maxPrecision' is set equal to minus one ('-1'), 'maxPrecision'
-// will be automatically set to a maximum of 4,096 digits to the right
-// of the decimal point.
+//	If 'maxPrecision' is greater than or equal to zero ('0'),
+//	the number of digits to the right of the decimal place will
+//	not exceed 'maxPrecision'.
 //
-// 'minPrecision' specifies the minimum precision of the final result.
-// If 'minPrecision' is less than zero, it is automatically set to zero.
+//	If 'maxPrecision' is set equal to minus one ('-1'),
+//	'maxPrecision' will be automatically set to a maximum of 4,096
+//	digits to the right of the decimal point.
 //
-// Returns
-// =======
-// IntAry - If the division calculation completes successfully, the
-//						computed quotient is returned as a type IntAry.
-// 						The return value 'IntAry' will contain the numeric separators
-// 						(decimal separator, thousands separator and currency symbol)
-// 						copied from input parameter 'dividend'.
+//	'minPrecision' specifies the minimum precision of the final
+//	result. If 'minPrecision' is less than zero, it is automatically
+//	set to zero.
 //
-/// error	- If the division calculation completes successfully this
-//						error type is set equal to 'nil'. Otherwise, it will
-//						contain an error message.
+//	Return Values
+//	=============
 //
-func (iaDivide IntAryMathDivide) Divide(
+//	IntAry
+//	  If the division calculation completes successfully, the
+//	  computed quotient is returned as a type IntAry.	The return
+//	  value 'IntAry' will contain the numeric separators (decimal
+//	  separator, thousands separator and currency symbol) copied
+//	  from input parameter 'dividend'.
+//
+//	error
+//	  If the division calculation completes successfully this error
+//	  type is set equal to 'nil'. Otherwise, it will contain an
+//	  appropriate error message.
+func (iaDivide *IntAryMathDivide) Divide(
 	dividend, divisor *IntAry,
 	minPrecision, maxPrecision int) (IntAry, error) {
 
@@ -224,82 +230,164 @@ func (iaDivide IntAryMathDivide) Divide(
 	return quotient, nil
 }
 
-// DivideByInt64 - Divide the IntAry parameter 'ia' by an int64 divisor and returns
-// the quotient in the pointer to the 'ia' parameter. Consequently, the original value
-// of 'ia' will be overwritten and replaced by the resulting quotient. The returned
-// value 'ia' will contain the same numeric separators (decimal separator, thousands
-// separator and currency symbol) as that of the original 'ia' instance. 'ia' numeric
-// separators will therefore remain unchanged.
+// DivideByInt64
 //
-// If the quotient has a number of decimal places to the right of the decimal point which is
-// greater than 'maxPrecision', the result is rounded to 'maxPrecision' decimal places.
+//	Divide the IntAry parameter 'ia' by an int64 divisor and
+//	returns the quotient in the pointer to the 'ia' parameter.
+//	Consequently, the original value of 'ia' will be overwritten
+//	and replaced by the resulting quotient.
 //
-// If 'maxPrecision' is set equal to -1, 'maxPrecision' is automatically set to 4,096.
+//	The returned value 'ia' will contain the same numeric
+//	separators (decimal separator, thousands separator and currency
+//	symbol) as that of the original 'ia' instance. 'ia' numeric
+//	separators will therefore remain unchanged.
 //
-// If 'maxPrecision' is less than -1, an error will be returned.
+//	If the quotient has a number of decimal places to the right of
+//	the decimal point which is greater than 'maxPrecision', the
+//	result is rounded to 'maxPrecision' decimal places.
 //
-func (iaDivide IntAryMathDivide) DivideByInt64(
+//	If 'maxPrecision' is set equal to -1, 'maxPrecision' is
+//	automatically set to 4,096.
+//
+//	If 'maxPrecision' is less than -1, an error will be returned.
+func (iaDivide *IntAryMathDivide) DivideByInt64(
 	ia *IntAry, divisor int64, maxPrecision int) error {
 
-	ePrefix := "iaDivide IntAryMathDivide() "
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
+
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"IntAryMathDivide.DivideByInt64()",
+		"")
+
+	if err != nil {
+		return err
+	}
 
 	if divisor == 0 {
-		return errors.New(ePrefix + "'divisor' Equals zero. Cannot divide by zero! \n")
+
+		return &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "",
+			ErrContext: "divisor == 0",
+			ErrMessage: "Error: Input parameter 'divisor' is zero!\n" +
+				"Attempted divide by zero.",
+		}
 	}
 
 	if maxPrecision < -1 {
-		return fmt.Errorf(ePrefix+"Error: Input Parameter 'maxPrecision' is less than -1! "+
-			"maxPrecision='%v' \n", maxPrecision)
+
+		return &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "",
+			ErrContext: "maxPrecision < -1",
+			ErrMessage: "Error: Input parameter 'maxPrecision' is less than -1 !\n" +
+				fmt.Sprintf("maxPrecision= '%v'", maxPrecision),
+		}
 	}
 
 	if maxPrecision == -1 {
 		maxPrecision = 4096
 	}
 
-	ia.OptimizeIntArrayLen(false)
+	err = ia.OptimizeIntArrayLen(false)
+
+	if err != nil {
+
+		return &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "err = ia.OptimizeIntArrayLen(false)",
+			ErrContext: "",
+			ErrMessage: err.Error(),
+		}
+	}
 
 	if ia.isZeroValue {
 
-		ia.SetIntAryToZero(ia.GetPrecisionUint())
+		iaPrecisionUint, err := ia.GetPrecisionUint()
+
+		if err != nil {
+
+			return &FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "iaPrecisionUint, err := ia.GetPrecisionUint()",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+		}
+
+		err = ia.SetIntAryToZero(iaPrecisionUint)
+
+		if err != nil {
+
+			return &FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "err = ia.SetIntAryToZero(iaPrecisionUint)",
+				ErrContext: fmt.Sprintf("iaPrecisionUint= '%v'", iaPrecisionUint),
+				ErrMessage: err.Error(),
+			}
+		}
+
 		return nil
 	}
 
 	dSignVal := 1
 
 	if divisor < 0 {
+
 		dSignVal = -1
+
 		divisor = divisor * -1
+
 	}
 
 	ia.signVal = dSignVal * ia.signVal
 
 	n1 := int64(0)
+
 	n2 := int64(0)
+
 	carry := int64(0)
+
 	iMaxPrecision := int(maxPrecision) + 1
+
 	newAryLen := ia.intAryLen
+
 	intAryLen := ia.intAryLen - ia.precision
+
 	precisionCnt := 0
 
 	for i := 0; i < newAryLen; i++ {
 
 		if i >= intAryLen {
+
 			precisionCnt++
 		}
 
 		if i < ia.intAryLen {
+
 			n1 = int64(ia.intAry[i]) + carry
+
 		} else {
+
 			n1 = int64(0) + carry
+
 		}
 
 		n2 = n1 / divisor
+
 		carry = (n1 - (n2 * divisor)) * 10
 
 		if i < ia.intAryLen {
+
 			ia.intAry[i] = uint8(n2)
+
 		} else {
+
 			ia.intAry = append(ia.intAry, uint8(n2))
+
 		}
 
 		if i == newAryLen-1 &&
@@ -316,38 +404,85 @@ func (iaDivide IntAryMathDivide) DivideByInt64(
 	ia.intAryLen = newAryLen
 
 	if precisionCnt >= iMaxPrecision {
+
 		iMaxPrecision--
-		ia.RoundToPrecision(iMaxPrecision)
+
+		err = ia.RoundToPrecision(iMaxPrecision)
+
+		if err != nil {
+
+			return &FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "err = ia.RoundToPrecision(iMaxPrecision)",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+		}
 	}
 
 	if ia.intAry[0] == 0 {
-		ia.SetSignificantDigitIdxs()
+
+		err = ia.SetSignificantDigitIdxs()
+
+		if err != nil {
+
+			return &FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "err = ia.SetSignificantDigitIdxs()",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+		}
+
 		ia.intAry = ia.intAry[ia.firstDigitIdx:]
+
 		ia.SetIntAryLength()
 	}
 
 	return nil
-
 }
 
-// DivideByTenToPower - Divide input parameter 'ia' of type IntAry by 10 raised
-// to the power of input parameter 'power'.
+// DivideByTenToPower
 //
-// The result, or quotient, is returned via the pointer to input parameter 'ia'.
-// Consequently, the original value of 'ia' will be overwritten and replaced by the
-// resulting quotient. The returned value 'ia' will contain the same numeric
-// separators (decimal separator, thousands separator and currency symbol)
-// as that of the original 'ia' instance. 'ia' numeric separators will
-// therefore remain unchanged.
+//	Divide input parameter 'ia' of type IntAry by 10 raised to the
+//	power of input parameter 'exponent'.
 //
-func (iaDivide IntAryMathDivide) DivideByTenToPower(ia *IntAry, power uint) {
+//	               'ia'
+//	    'ia' =  -----------
+//	            10^exponent
+//
+//	The result, or quotient, is returned via the pointer to input
+//	parameter 'ia'. Consequently, the original value of 'ia' will
+//	be overwritten and replaced by the resulting quotient.
+//
+//	The returned value, 'ia', will contain the same numeric
+//	separators (decimal separator, thousands separator and currency
+//	symbol) as that of the original 'ia' instance. 'ia' numeric
+//	separators will therefore remain unchanged.
+func (iaDivide *IntAryMathDivide) DivideByTenToPower(
+	ia *IntAry, exponent uint) error {
 
-	if power == 0 {
-		return
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
+
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"IntAryMathDivide.DivideByTenToPower()",
+		"")
+
+	if err != nil {
+		return err
 	}
 
-	ia.precision += int(power)
+	if exponent == 0 {
+		return nil
+	}
+
+	ia.precision += int(exponent)
+
 	ia.intAryLen = len(ia.intAry)
+
 	newLen := ia.precision + 1
 
 	if ia.intAryLen < newLen {
@@ -367,34 +502,96 @@ func (iaDivide IntAryMathDivide) DivideByTenToPower(ia *IntAry, power uint) {
 		}
 
 		ia.intAry = make([]uint8, newLen)
+
 		for i := 0; i < newLen; i++ {
+
 			ia.intAry[i] = t[i]
 		}
 
 		ia.intAryLen = newLen
 	}
 
-	ia.OptimizeIntArrayLen(false)
+	err = ia.OptimizeIntArrayLen(false)
+
+	if err != nil {
+
+		return &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "err = ia.OptimizeIntArrayLen(false)",
+			ErrContext: "",
+			ErrMessage: err.Error(),
+		}
+	}
+
+	return nil
 }
 
-// DivideByTwoQuoMod - Receives an input parameter of pointer to
-// an IntAry instance ('ia'). 'ia' is then divided by two (2). The
-// result, or quotient, is returned via the pointer to input parameter
-// 'ia'. Consequently, the original value of 'ia' will be overwritten
-// and replaced by the resulting quotient. The returned value 'ia' will
-// contain the same numeric separators (decimal separator, thousands
-// separator and currency symbol) as that of the original 'ia' instance.
-// 'ia' numeric separators will therefore remain unchanged.
+// DivideByTwo
 //
-func (iaDivide IntAryMathDivide) DivideByTwo(ia *IntAry) {
+//	Receives an input parameter of pointer to an IntAry instance
+//	('ia'). 'ia' is then divided by two (2). The result, or
+//	quotient, is returned via the pointer to input parameter 'ia'.
+//	Consequently, the original value of 'ia' will be overwritten
+//	and replaced by the resulting quotient.
+//
+//	The returned value 'ia' will contain the same numeric
+//	separators (decimal separator, thousands separator and currency
+//	symbol) as that of the original 'ia' instance. 'ia' numeric
+//	separators will therefore remain unchanged.
+func (iaDivide *IntAryMathDivide) DivideByTwo(ia *IntAry) error {
 
-	ia.OptimizeIntArrayLen(false)
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
+
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"IntAryMathDivide.DivideByTwo()",
+		"")
+
+	if err != nil {
+		return err
+	}
+
+	err = ia.OptimizeIntArrayLen(false)
+
+	if err != nil {
+
+		return &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "err = ia.OptimizeIntArrayLen(false)",
+			ErrContext: "",
+			ErrMessage: err.Error(),
+		}
+	}
 
 	if ia.isZeroValue {
 
-		ia.SetIntAryToZero(ia.GetPrecisionUint())
+		iaPrecisionUint, err := ia.GetPrecisionUint()
 
-		return
+		if err != nil {
+
+			return &FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "iaPrecisionUint, err := ia.GetPrecisionUint()",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+		}
+
+		err = ia.SetIntAryToZero(iaPrecisionUint)
+
+		if err != nil {
+
+			return &FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "iaPrecisionUint, err := ia.GetPrecisionUint()",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+		}
+
+		return nil
 	}
 
 	n1 := uint8(0)
@@ -417,9 +614,23 @@ func (iaDivide IntAryMathDivide) DivideByTwo(ia *IntAry) {
 	}
 
 	if ia.intAry[0] == 0 {
-		ia.SetSignificantDigitIdxs()
+
+		err = ia.SetSignificantDigitIdxs()
+
+		if err != nil {
+
+			return &FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "err = ia.SetSignificantDigitIdxs()",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+		}
+
 		ia.intAry = ia.intAry[ia.firstDigitIdx:]
+
 		ia.SetIntAryLength()
 	}
 
+	return nil
 }

@@ -996,7 +996,7 @@ func TestNumStrDto_GetIntAry(t *testing.T) {
 			numStr, actualIa.GetNumStr())
 	}
 
-	if !controlIa.Equal(actualIa) {
+	if !controlIa.Equals(&actualIa) {
 		t.Errorf("Error: controlIa NOT EQUAL to actual actualIa! "+
 			"controlNDto='%v' nDto='%v'",
 			controlNDto.GetNumStr(), actualIa.GetNumStr())
