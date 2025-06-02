@@ -835,30 +835,30 @@ func (ia *IntAry) DivideByTenToPower(exponent uint) error {
 
 // DivideThisBy
 //
-//		Divides the current value of intAry by the parameter iAry2. The
-//		result of this division is returned as an intAry.
+//	Divides the current value of intAry by the parameter iAry2. The
+//	result of this division is returned as an intAry.
 //
-//	 Given a ÷ b = c, 'a' is the dividend, 'b' is the divisor and
-//	 'c' is the quotient. For this method
+//	Given a ÷ b = c, 'a' is the dividend, 'b' is the divisor and
+//	'c' is the quotient. For this method
 //
-//	     a = Current Instance of IntAry ('ia')
-//	     b = Input parameter 'iAry2'
-//	     c = Quotient returned by this method
+//	    a = Current Instance of IntAry ('ia')
+//	    b = Input parameter 'iAry2'
+//	    c = Quotient returned by this method
 //
-//		Maximum precision of the division result is controlled by the
-//		input parameter, 'maxPrecision'.
+//	Maximum precision of the division result is controlled by the
+//	input parameter, 'maxPrecision'.
 //
-//		If 'maxPrecision' is greater than or equal to zero ('0'), the
-//		number of digits to the right of the decimal place will not
-//		exceed 'maxPrecision'.
+//	If 'maxPrecision' is greater than or equal to zero ('0'), the
+//	number of digits to the right of the decimal place will not
+//	exceed 'maxPrecision'.
 //
-//		If 'maxPrecision' is set equal to minus one ('-1'),
-//		'maxPrecision' will be automatically set to a maximum of 4,096
-//		digits to the right of the decimal point.
+//	If 'maxPrecision' is set equal to minus one ('-1'),
+//	'maxPrecision' will be automatically set to a maximum of 4,096
+//	digits to the right of the decimal point.
 //
-//		'minPrecision' specifies the minimum precision of the final
-//		result. If 'minPrecision' is less than zero, it is automatically
-//		set to zero.
+//	'minPrecision' specifies the minimum precision of the final
+//	result. If 'minPrecision' is less than zero, it is automatically
+//	set to zero.
 func (ia *IntAry) DivideThisBy(iAry2 *IntAry, minPrecision, maxPrecision int) (IntAry, error) {
 
 	var ePrefix *ePref.ErrPrefixDto
@@ -883,97 +883,8 @@ func (ia *IntAry) DivideThisBy(iAry2 *IntAry, minPrecision, maxPrecision int) (I
 			}
 	}
 
-	iaElectron := new(intAryElectron)
-
-	err = iaElectron.isValidIntAry(
-		ia, ePrefix.XCpy("Validating IntAry ('ia')").String())
-
-	if err != nil {
-
-		return IntAry{},
-			&FuncReturnError{
-				ErrPrefix: ePrefix.String(),
-				ReturnFunc: "err = iaElectron.isValidIntAry(ia,\n" +
-					"ePrefix.XCpy(Validating IntAry ('ia')).String())",
-				ErrContext: "",
-				ErrMessage: err.Error(),
-			}
-	}
-
-	err = iaElectron.isValidIntAry(
-		iAry2, ePrefix.XCpy("Validating IntAry ('iAry2')").String())
-
-	if err != nil {
-
-		return IntAry{},
-			&FuncReturnError{
-				ErrPrefix: ePrefix.String(),
-				ReturnFunc: "err = new(intAryElectron).isValidIntAry(iAry2,\n" +
-					"  ePrefix.XCpy(Validating IntAry ('iAry2')).String())",
-				ErrContext: "Input parameter 'iAry2' is INVALID!\n" +
-					"'iAry2' FAILED validation tests.",
-				ErrMessage: err.Error(),
-			}
-	}
-
-	iaNumStr, err := ia.GetNumStr()
-
-	if err != nil {
-
-		return IntAry{},
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "iaNumStr, err := ia.GetNumStr()",
-				ErrContext: "",
-				ErrMessage: err.Error(),
-			}
-	}
-
-	iAry2NumStr, err := iAry2.GetNumStr()
-
-	if err != nil {
-
-		return IntAry{},
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "iAry2NumStr, err := iAry2.GetNumStr()",
-				ErrContext: "",
-				ErrMessage: err.Error(),
-			}
-	}
-
-	quotient, err := new(IntAryMathDivide).Divide(
-		ia, iAry2, minPrecision, maxPrecision)
-
-	if err != nil {
-
-		return IntAry{},
-			&FuncReturnError{
-				ErrPrefix: ePrefix.String(),
-				ReturnFunc: "quotient, err := new(IntAryMathDivide).Divide(\n" +
-					"  ia, iAry2, minPrecision, maxPrecision)",
-				ErrContext: fmt.Sprintf("ia= '%v'\n iAry2= '%v'\n minPrecision= '%v'\nmaxPrecision= '%v'",
-					iaNumStr, iAry2NumStr, minPrecision, maxPrecision),
-				ErrMessage: err.Error(),
-			}
-	}
-
-	err = new(intAryElectron).isValidIntAry(
-		&quotient,
-		ePrefix.XCpy("Validating 'quotient'").String())
-
-	if err != nil {
-
-		return IntAry{},
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "",
-				ErrContext: "",
-				ErrMessage: err.Error(),
-			}
-	}
-
-	return quotient, err
+	return new(intAryNeutron).divideIntArys(
+		ia, true, iAry2, true, minPrecision, maxPrecision, ePrefix)
 }
 
 // Empty - Basically resets all the fields of the intAry

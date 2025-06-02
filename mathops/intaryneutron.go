@@ -455,15 +455,15 @@ func (iaNeutron *intAryNeutron) divideByInt64(
 
 // divideByTenToPower
 //
-//	Divide the numerical value of an IntAry instance by
-//	10 raised to the power of the input parameter, 'exponent'.
+//		Divide the numerical value of an IntAry instance by
+//		10 raised to the power of the input parameter, 'exponent'.
 //
-//	             'ia'
-//	    ia =  -------------
-//	         (10^exponent)
+//		             'ia'
+//		    ia =  -------------
+//		         (10^exponent)
 //
-//	The result or quotient is stored in the IntAry instance passed
-//  as input parameter 'intAry'.
+//		The result or quotient is stored in the IntAry instance passed
+//	 as input parameter 'intAry'.
 func (iaNeutron *intAryNeutron) divideByTenToPower(
   intAry *IntAry,
   validateIntAry bool,
@@ -551,6 +551,176 @@ func (iaNeutron *intAryNeutron) divideByTenToPower(
   }
 
   return nil
+}
+
+// divideIntArys
+//
+//	Divides input parameters iAry1 by iAry2. The result of this
+//	division is returned as an IntAry (Quotient).
+//
+//	Given a ÷ b = c, 'a' is the dividend, 'b' is the divisor and
+//	'c' is the quotient. For this method
+//
+//	    dividend = a = IntAry input parameter 'iAry1'
+//	    divisor  = b = IntAry input parameter 'iAry2'
+//	    quotient = c = Quotient returned by this method
+//
+//	Maximum precision of the division result is controlled by the
+//	input parameter, 'maxPrecision'.
+//
+//	If 'maxPrecision' is greater than or equal to zero ('0'), the
+//	number of digits to the right of the decimal place will not
+//	exceed 'maxPrecision'.
+//
+//	If 'maxPrecision' is set equal to minus one ('-1'),
+//	'maxPrecision' will be automatically set to a maximum of 4,096
+//	digits to the right of the decimal point.
+//
+//	'minPrecision' specifies the minimum precision of the final
+//	result. If 'minPrecision' is less than zero, it is automatically
+//	set to zero.
+//
+//	Numeric Separators
+//	==================
+//
+//	Numeric Separators for the returned 'quotient' are copied from
+//	'iAry1'.
+func (iaNeutron *intAryNeutron) divideIntArys(
+  iAry1 *IntAry,
+  validateIntAry1 bool,
+  iAry2 *IntAry,
+  validateIntAry2 bool,
+  minPrecision,
+  maxPrecision int,
+  errPrefDto *ePref.ErrPrefixDto) (quotient IntAry, err error) {
+
+  var ePrefix *ePref.ErrPrefixDto
+
+  ePrefix,
+    err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
+    errPrefDto,
+    "intAryNeutron.divideIntArys()",
+    "")
+
+  if err != nil {
+    return IntAry{}, err
+  }
+
+  if iAry1 == nil {
+
+    return IntAry{},
+      &InputPtrNilError{
+        ErrPrefix:     ePrefix.String(),
+        ParameterName: "'ia'",
+      }
+  }
+
+  if iAry2 == nil {
+
+    return IntAry{},
+      &InputPtrNilError{
+        ErrPrefix:     ePrefix.String(),
+        ParameterName: "'iAry2'",
+      }
+  }
+
+  iaElectron := new(intAryElectron)
+
+  if validateIntAry1 {
+
+    err = iaElectron.isValidIntAry(
+      iAry1, ePrefix.XCpy("Validating IntAry ('iAry1')").String())
+
+    if err != nil {
+
+      return IntAry{},
+        &FuncReturnError{
+          ErrPrefix: ePrefix.String(),
+          ReturnFunc: "err = iaElectron.isValidIntAry(iAry1,\n" +
+            "ePrefix.XCpy(Validating IntAry ('iAry1')).String())",
+          ErrContext: "",
+          ErrMessage: err.Error(),
+        }
+    }
+  }
+
+  if validateIntAry2 {
+
+    err = iaElectron.isValidIntAry(
+      iAry2, ePrefix.XCpy("Validating IntAry ('iAry2')").String())
+
+    if err != nil {
+
+      return IntAry{},
+        &FuncReturnError{
+          ErrPrefix: ePrefix.String(),
+          ReturnFunc: "err = new(intAryElectron).isValidIntAry(iAry2,\n" +
+            "  ePrefix.XCpy(Validating IntAry ('iAry2')).String())",
+          ErrContext: "Input parameter 'iAry2' is INVALID!\n" +
+            "'iAry2' FAILED validation tests.",
+          ErrMessage: err.Error(),
+        }
+    }
+  }
+
+  iAry1NumStr, err := iAry1.GetNumStr()
+
+  if err != nil {
+
+    return IntAry{},
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "iAry1NumStr, err := iAry1.GetNumStr()",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+  }
+
+  iAry2NumStr, err := iAry2.GetNumStr()
+
+  if err != nil {
+
+    return IntAry{},
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "iAry2NumStr, err := iAry2.GetNumStr()",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+  }
+
+  quotient, err = new(IntAryMathDivide).Divide(
+    iAry1, iAry2, minPrecision, maxPrecision)
+
+  if err != nil {
+
+    return IntAry{},
+      &FuncReturnError{
+        ErrPrefix: ePrefix.String(),
+        ReturnFunc: "quotient, err = new(IntAryMathDivide).Divide(\n" +
+          "  iAry1, iAry2, minPrecision, maxPrecision)",
+        ErrContext: fmt.Sprintf("iAry1= '%v'\n iAry2= '%v'\n minPrecision= '%v'\nmaxPrecision= '%v'",
+          iAry1NumStr, iAry2NumStr, minPrecision, maxPrecision),
+        ErrMessage: err.Error(),
+      }
+  }
+
+  err = new(intAryElectron).isValidIntAry(
+    &quotient,
+    ePrefix.XCpy("Validating 'quotient'").String())
+
+  if err != nil {
+
+    return IntAry{},
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "",
+        ErrContext: "Quotient returned by IntAryMathDivide.Divide is INVALID!",
+        ErrMessage: err.Error(),
+      }
+  }
+
+  return quotient, err
 }
 
 // getBigInt
