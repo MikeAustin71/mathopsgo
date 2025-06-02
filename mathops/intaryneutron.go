@@ -599,7 +599,7 @@ func (iaNeutron *intAryNeutron) divideIntArys(
   ePrefix,
     err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
     errPrefDto,
-    "intAryNeutron.divideIntArys()",
+    "intAryNeutron.divideIntArys",
     "")
 
   if err != nil {
@@ -721,6 +721,280 @@ func (iaNeutron *intAryNeutron) divideIntArys(
   }
 
   return quotient, err
+}
+
+// floor
+//
+//	Math 'Floor' function. Finds the integer number which is less
+//	than or equal to the value of the current intAry.
+//
+//	Reference Wikipedia
+//	  https://en.wikipedia.org/wiki/Floor_and_ceiling_functions
+//
+//	Examples
+//	========
+//
+//	  Initial     Floor
+//	   Value      Value
+//	  -------    -------
+//	   5.95         5
+//	   5.05         5
+//	   5            5
+//	  -5.05        -6
+//	   2.4          2
+//	   2.9          2
+//	  -2.7         -3
+//	  -2           -2
+func (iaNeutron *intAryNeutron) floor(
+  intAry *IntAry,
+  validateIntAry1 bool,
+  errPrefDto *ePref.ErrPrefixDto) (IntAry, error) {
+
+  var ePrefix *ePref.ErrPrefixDto
+  var err error
+
+  ePrefix,
+    err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
+    errPrefDto,
+    "intAryNeutron.floor",
+    "")
+
+  if err != nil {
+    return IntAry{}, err
+  }
+
+  if validateIntAry1 {
+
+    err = new(intAryElectron).isValidIntAry(
+      intAry,
+      ePrefix.XCpy("Validating 'intAry'").String())
+
+    if err != nil {
+
+      return IntAry{},
+        &FuncReturnError{
+          ErrPrefix:  ePrefix.String(),
+          ReturnFunc: "err = new(intAryElectron).isValidIntAry(intAry, ePrefix.XCpy(Validating 'ia').String()",
+          ErrContext: "Current instance of IntAry ('intAry') is INVALID!\n" +
+            "'ia' FAILED validation tests.",
+          ErrMessage: err.Error(),
+        }
+    }
+
+  } else {
+
+    err = new(intAryNanobot).setInternalFlags(
+      intAry, ePrefix.XCpy("Setting 'intAry' Flags"))
+
+    if err != nil {
+
+      return IntAry{},
+        &FuncReturnError{
+          ErrPrefix: ePrefix.String(),
+          ReturnFunc: "err = new(intAryNanobot).setInternalFlags(\n" +
+            "  intAry, ePrefix.XCpy(Setting 'intAry' Flags))",
+          ErrContext: "",
+          ErrMessage: err.Error(),
+        }
+    }
+  }
+
+  numSeps, err := new(intAryPhoton).getNumericSeparatorsDto(intAry, ePrefix.XCpy("IntAry NumSeps"))
+
+  if err != nil {
+
+    return IntAry{},
+      &FuncReturnError{
+        ErrPrefix: ePrefix.String(),
+        ReturnFunc: "numSeps, err := new(intAryPhoton).\n" +
+          "  getNumericSeparatorsDto(intAry, ePrefix.XCpy(IntAry NumSeps))",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+  }
+
+  iAry2 := new(intAryElectron).newIntAry()
+
+  err = new(intAryPhoton).setNumericSeparatorsDto(
+    &iAry2, numSeps, false, ePrefix)
+
+  if err != nil {
+
+    return IntAry{},
+      &FuncReturnError{
+        ErrPrefix: ePrefix.String(),
+        ReturnFunc: "err = new(intAryPhoton).\n" +
+          "  setNumericSeparatorsDto(&iAry2, numSeps, false, ePrefix)",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+  }
+
+  if intAry.isZeroValue {
+
+    //err = iAry2.SetIntAryToZero(uint(ia.precision))
+    err = new(intAryQuark).
+      setIntAryToZero(&iAry2, uint(intAry.precision), numSeps, ePrefix)
+
+    if err != nil {
+
+      return IntAry{},
+        &FuncReturnError{
+          ErrPrefix:  ePrefix.String(),
+          ReturnFunc: "err = new(intAryQuark).setIntAryToZero(intAry, uint(intAry.precision), numSeps, ePrefix)",
+          ErrContext: "",
+          ErrMessage: err.Error(),
+        }
+    }
+  }
+
+  hasFracDigits, err := new(intAryNanobot).hasFractionalDigits(
+    intAry, false, ePrefix.XCpy("intAry Frac Digits"))
+
+  if err != nil {
+
+    return IntAry{},
+      &FuncReturnError{
+        ErrPrefix: ePrefix.String(),
+        ReturnFunc: "hasFracDigits, err := new(intAryNanobot).hasFractionalDigits(\n" +
+          "intAry, false, ePrefix)",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+  }
+
+  if !hasFracDigits {
+    // There are NO non-zero digits to the
+    // right of the decimal place
+
+    err = new(intAryProton).copy(&iAry2, intAry, false, true, ePrefix)
+
+    if err != nil {
+
+      return IntAry{},
+        &FuncReturnError{
+          ErrPrefix: ePrefix.String(),
+          ReturnFunc: "err = new(intAryProton).copy(\n" +
+            "  &iAry2, ia, false, true, ePrefix)",
+          ErrContext: "",
+          ErrMessage: err.Error(),
+        }
+    }
+
+    return iAry2, err
+  }
+
+  intLen := intAry.intAryLen - intAry.precision
+
+  intIdx := intLen - 1
+
+  if intAry.signVal > 0 {
+    // There ARE non-zero digits to the right of the
+    // decimal place
+    t := make([]uint8, intAry.intAryLen)
+
+    for i := 0; i < intLen; i++ {
+
+      t[i] = intAry.intAry[i]
+    }
+
+    iAry2.intAry = t[0:]
+
+    iAry2.intAryLen = intAry.intAryLen
+
+    iAry2.precision = intAry.precision
+
+    iAry2.signVal = intAry.signVal
+
+    return iAry2, nil
+  }
+
+  // The number has non-zero digits to
+  // the right of the decimal place and
+  // the number sign is minus (- or ia.signVal = -1)
+
+  t := make([]uint8, intAry.intAryLen+1)
+
+  n1 := uint8(0)
+
+  n2 := uint8(0)
+
+  carry := uint8(0)
+
+  for i := intIdx; i >= 0; i-- {
+
+    n1 = intAry.intAry[i]
+
+    if i == intIdx {
+
+      if n1+1 > 9 {
+
+        n2 = n1 + 1 - 10
+
+        carry = 1
+
+      } else {
+
+        n2 = n1 + 1
+
+        carry = 0
+
+      }
+
+    } else {
+
+      if n1+carry > 9 {
+
+        n2 = n1 + carry - 10
+
+        carry = 1
+
+      } else {
+
+        n2 = n1 + carry
+
+        carry = 0
+      }
+    }
+
+    t[i+1] = n2
+
+  }
+
+  if carry != 0 {
+
+    t[0] = carry
+
+    iAry2.intAry = t[0 : intAry.intAryLen+1]
+
+  } else {
+
+    iAry2.intAry = t[1 : intAry.intAryLen+1]
+  }
+
+  iAry2.precision = intAry.precision
+
+  iAry2.signVal = intAry.signVal
+
+  iAry2.intAryLen = len(iAry2.intAry)
+
+  //iAry2.SetIsZeroValue()
+  err = new(intAryNanobot).setInternalFlags(
+    &iAry2, ePrefix.XCpy("Setting 'iAry2' Flags"))
+
+  if err != nil {
+
+    return IntAry{},
+      &FuncReturnError{
+        ErrPrefix: ePrefix.String(),
+        ReturnFunc: "err = new(intAryNanobot).setInternalFlags(\n" +
+          "  &iAry2, ePrefix.XCpy(Setting 'iAry2' Flags)",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+  }
+
+  return iAry2, nil
 }
 
 // getBigInt
