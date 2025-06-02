@@ -1,6 +1,9 @@
 package mathops
 
-import "fmt"
+import (
+	"fmt"
+	ePref "github.com/MikeAustin71/errpref"
+)
 
 type IntAryMathMultiply struct {
 	Input  IntAryPair
@@ -16,17 +19,30 @@ type IntAryMathMultiply struct {
 // ================
 //
 // base		*IntAry		- Pointer to an IntAry numeric value. 'base' is multiplied
-//										by 10 to the exponent 'power' and the result is stored
-//										in base. The original value of 'base' will therefore be
-//										overwritten and destroyed.
+//
+//	by 10 to the exponent 'power' and the result is stored
+//	in base. The original value of 'base' will therefore be
+//	overwritten and destroyed.
 //
 // power  uint			- 10 is raised to the exponent 'power' and multiplied by 'base'.
-//
-func (iaMultiply IntAryMathMultiply) MultiplyByTenToPower(base *IntAry, power uint) {
+func (iaMultiply *IntAryMathMultiply) MultiplyByTenToPower(base *IntAry, power uint) error {
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
+
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"IntAryMathMultiply.MultiplyByTenToPower()",
+		"")
+
+	if err != nil {
+		return err
+	}
 
 	if power == 0 {
-		return
+		return nil
 	}
+
 	for i := uint(0); i < power; i++ {
 
 		if base.precision > 0 {
@@ -43,8 +59,19 @@ func (iaMultiply IntAryMathMultiply) MultiplyByTenToPower(base *IntAry, power ui
 		base.precision = 0
 	}
 
-	base.OptimizeIntArrayLen(false)
+	err = base.OptimizeIntArrayLen(false)
 
+	if err != nil {
+
+		return &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "err = base.OptimizeIntArrayLen(false)",
+			ErrContext: "",
+			ErrMessage: err.Error(),
+		}
+	}
+
+	return nil
 }
 
 // MultiplyByTwoToPower - Multiplies 'base' by 2 to the exponent 'power'. The result
@@ -56,22 +83,47 @@ func (iaMultiply IntAryMathMultiply) MultiplyByTenToPower(base *IntAry, power ui
 // ================
 //
 // base		*IntAry		- Pointer to an IntAry numeric value. 'base' is multiplied
-//										by 2 to the exponent 'power' and the result is stored
-//										in base. The original value of 'base' will therefore be
-//										overwritten and destroyed.
+//
+//	by 2 to the exponent 'power' and the result is stored
+//	in base. The original value of 'base' will therefore be
+//	overwritten and destroyed.
 //
 // power  uint			- 2 is raised to the exponent 'power' and multiplied by 'base'.
-//
-func (iaMultiply IntAryMathMultiply) MultiplyByTwoToPower(base *IntAry, power uint) {
+func (iaMultiply *IntAryMathMultiply) MultiplyByTwoToPower(base *IntAry, power uint) error {
 
-	base.SetIntAryLength()
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
+
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"IntAryMathMultiply.MultiplyByTwoToPower()",
+		"")
+
+	if err != nil {
+		return err
+	}
+
+	err = base.SetIntAryLength()
+
+	if err != nil {
+
+		return &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "err = base.SetIntAryLength()",
+			ErrContext: "",
+			ErrMessage: err.Error(),
+		}
+	}
 
 	if power == 0 {
-		return
+		return nil
 	}
 
 	for h := uint(0); h < power; h++ {
+
 		n1 := uint8(0)
+
 		carry := uint8(0)
 
 		for i := base.intAryLen - 1; i >= 0; i-- {
@@ -79,9 +131,12 @@ func (iaMultiply IntAryMathMultiply) MultiplyByTwoToPower(base *IntAry, power ui
 			n1 = (base.intAry[i] * 2) + carry
 
 			if n1 > 9 {
+
 				n1 = n1 - 10
 				carry = 1
+
 			} else {
+
 				carry = 0
 			}
 
@@ -89,12 +144,15 @@ func (iaMultiply IntAryMathMultiply) MultiplyByTwoToPower(base *IntAry, power ui
 		}
 
 		if carry > 0 {
+
 			base.intAry = append([]uint8{1}, base.intAry...)
+
 			base.intAryLen++
 		}
 
 	}
 
+	return nil
 }
 
 // MultiplyInPlace - Multiplies IntAry parameter 'ia1' by IntAry parameter 'ia2' and
@@ -104,36 +162,39 @@ func (iaMultiply IntAryMathMultiply) MultiplyByTwoToPower(base *IntAry, power ui
 // ================
 //
 // 'ia1' -				Pointer to an intAry object. 'ia1' will be multiplied by 'ia2' and the
-//                result will be stored here in 'ia1'.
+//
+//	result will be stored here in 'ia1'.
 //
 // 'ia2' - 				Pointer to an intAry object. In this multiplication operation, 'ia2'
-// 								is the multiplier.
+//
+//	is the multiplier.
 //
 // 'minimumResultPrecision' int -
-//								'minimumResultPrecision' will determine the minimum number of digits computed
-//								to the right of the decimal place in the final result.
 //
-//								If 'minimumResultPrecision' is set to a value of -1, all significant digits (digits
-//								greater than zero) will be returned to the right of the decimal place. Remember
-//								that the maximum number of decimal digits returned will be controlled by parameter
-//								'maxResultPrecision'
+//	'minimumResultPrecision' will determine the minimum number of digits computed
+//	to the right of the decimal place in the final result.
 //
-//								If 'minimumResultPrecision' is set to a value less than -1, an error will be triggered.
+//	If 'minimumResultPrecision' is set to a value of -1, all significant digits (digits
+//	greater than zero) will be returned to the right of the decimal place. Remember
+//	that the maximum number of decimal digits returned will be controlled by parameter
+//	'maxResultPrecision'
+//
+//	If 'minimumResultPrecision' is set to a value less than -1, an error will be triggered.
 //
 // 'maxResultPrecision' 		int -
-//								'maxResultPrecision' will determine the maximum
-// 								number of digits to the right of the decimal
-//								place in the result.
 //
-//								Valid values are -1 and values >= zero ('0')
-//        				Values less than -1 will trigger an error.
+//									'maxResultPrecision' will determine the maximum
+//									number of digits to the right of the decimal
+//									place in the result.
 //
-//								A value of -1 signals that no limit will be placed on
-//								the number of decimals places to right of the decimal
-//								point in the result. Be advised that a very, very large number
-//								of decimal digits may be accommodated by the IntAry Type.
+//									Valid values are -1 and values >= zero ('0')
+//	       				Values less than -1 will trigger an error.
 //
-func (iaMultiply IntAryMathMultiply) MultiplyInPlace(
+//									A value of -1 signals that no limit will be placed on
+//									the number of decimals places to right of the decimal
+//									point in the result. Be advised that a very, very large number
+//									of decimal digits may be accommodated by the IntAry Type.
+func (iaMultiply *IntAryMathMultiply) MultiplyInPlace(
 	ia1, ia2 *IntAry,
 	minimumResultPrecision, maxResultPrecision int) error {
 
@@ -156,71 +217,119 @@ func (iaMultiply IntAryMathMultiply) MultiplyInPlace(
 // ==========
 //
 // 'ia1' - 				Pointer to an intAry object. In this multiplication operation, 'ia1'
-// 								is the multiplicand.
+//
+//	is the multiplicand.
 //
 // 'ia2' - 				Pointer to an intAry object. In this multiplication operation, 'ia2'
-// 								is the multiplier.
 //
-//  'iaResult' -	Pointer to an intAry object which will be populated with the result
-//								of the multiplication operation. The multiplication operation is achieved
-//								by multiplying 'ia1' by 'ia2'.
+//									is the multiplier.
+//
+//	 'iaResult' -	Pointer to an intAry object which will be populated with the result
+//									of the multiplication operation. The multiplication operation is achieved
+//									by multiplying 'ia1' by 'ia2'.
 //
 // 'minimumResultPrecision' int -
-//								'minimumResultPrecision' will determine the minimum number of digits computed
-//								to the right of the decimal place in the final result.
-//								If 'minimumResultPrecision' is set to a value of -1, all significant digits (digits
-//								greater than zero) will be returned to the right of the decimal place. Remember
-//								that the maximum number of decimal digits returned will be controlled by parameter
-//								'maxResultPrecision'
+//
+//	'minimumResultPrecision' will determine the minimum number of digits computed
+//	to the right of the decimal place in the final result.
+//	If 'minimumResultPrecision' is set to a value of -1, all significant digits (digits
+//	greater than zero) will be returned to the right of the decimal place. Remember
+//	that the maximum number of decimal digits returned will be controlled by parameter
+//	'maxResultPrecision'
 //
 // 'maxResultPrecision' 		int -
-//								'maxResultPrecision' will determine the maximum
-// 								number of digits to the right of the decimal
-//								place in the result.
 //
-//								Valid values are -1 and values >= zero ('0')
-//        				Values less than -1 will trigger an error.
+//									'maxResultPrecision' will determine the maximum
+//									number of digits to the right of the decimal
+//									place in the result.
 //
-//								A value of -1 signals that no limit will be placed on
-//								the number of decimals places to right of the decimal
-//								point in the result. Be advised that a very, very large number
-//								of decimal digits may be accommodated by the IntAry Type.
+//									Valid values are -1 and values >= zero ('0')
+//	       				Values less than -1 will trigger an error.
+//
+//									A value of -1 signals that no limit will be placed on
+//									the number of decimals places to right of the decimal
+//									point in the result. Be advised that a very, very large number
+//									of decimal digits may be accommodated by the IntAry Type.
 //
 // The returned parameter 'iaResult' will contain numeric separators (decimal separator,
 // thousands separator and currency symbol) copied from input parameter, 'ia1'.
-//
-func (iaMultiply IntAryMathMultiply) Multiply(
+func (iaMultiply *IntAryMathMultiply) Multiply(
 	ia1, ia2, iaResult *IntAry,
 	minimumResultPrecision,
 	maxResultPrecision int) error {
 
-	ePrefix := "IntAryMathMultiply.MultiplyInPlace() "
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
+
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"IntAryMathMultiply.Multiply()",
+		"")
+
+	if err != nil {
+		return err
+	}
 
 	if maxResultPrecision < -1 {
-		return fmt.Errorf(ePrefix+
-			"Error: Input Parameter 'maxResultPrecision' is less than -1. "+
-			"maxResultPrecision= %v\n", maxResultPrecision)
+
+		return &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "",
+			ErrContext: "maxResultPrecision < -1",
+			ErrMessage: fmt.Sprintf("Error: Input Parameter 'maxResultPrecision' is less than -1.\n"+
+				"  maxResultPrecision= %v", maxResultPrecision),
+		}
 	}
 
 	if minimumResultPrecision < -1 {
-		return fmt.Errorf(ePrefix+
-			"Error: Input Parameter 'minimumResultPrecision is less than -1. "+
-			"minimumResultPrecision='%v' ", minimumResultPrecision)
+
+		return &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "",
+			ErrContext: "minimumResultPrecision < -1",
+			ErrMessage: fmt.Sprintf("Error: Input Parameter 'minimumResultPrecision is less than -1.\n"+
+				"minimumResultPrecision='%v'", minimumResultPrecision),
+		}
 	}
 
-	err := ia1.IsValid(ePrefix + "ia1 INVALID! ")
+	err = ia1.IsValid(ePrefix.XCpy("'ia1' is INVALID!").String())
 
 	if err != nil {
-		return err
+
+		return &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "err = ia1.IsValid(ePrefix.XCpy('ia1' is INVALID!).String())",
+			ErrContext: "Input parameter 'ia1' is INVALID!\n" +
+				"'ia1' FAILED Validation Tests.",
+			ErrMessage: err.Error(),
+		}
 	}
 
-	err = ia2.IsValid(ePrefix + "ia2 INVALID! ")
+	err = ia2.IsValid(ePrefix.XCpy("'ia2' is INVALID!").String())
 
 	if err != nil {
-		return err
+
+		return &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "err = ia2.IsValid(ePrefix.XCpy('ia2' is INVALID!).String())",
+			ErrContext: "Input parameter 'ia2' is INVALID!\n" +
+				"'ia2' FAILED Validation Tests.",
+			ErrMessage: err.Error(),
+		}
 	}
 
-	numSeps := ia1.GetNumericSeparatorsDto()
+	numSeps, err := ia1.GetNumericSeparatorsDto()
+
+	if err != nil {
+
+		return &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "numSeps, err := ia1.GetNumericSeparatorsDto()",
+			ErrContext: "",
+			ErrMessage: err.Error(),
+		}
+	}
 
 	if minimumResultPrecision > maxResultPrecision &&
 		maxResultPrecision != -1 {
@@ -228,8 +337,29 @@ func (iaMultiply IntAryMathMultiply) Multiply(
 		maxResultPrecision = minimumResultPrecision
 	}
 
-	ia1.SetInternalFlags()
-	ia2.SetInternalFlags()
+	err = ia1.SetInternalFlags()
+
+	if err != nil {
+
+		return &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "err = ia1.SetInternalFlags()",
+			ErrContext: "",
+			ErrMessage: err.Error(),
+		}
+	}
+
+	err = ia2.SetInternalFlags()
+
+	if err != nil {
+
+		return &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "err = ia2.SetInternalFlags()",
+			ErrContext: "",
+			ErrMessage: err.Error(),
+		}
+	}
 
 	if ia1.isZeroValue || ia2.isZeroValue {
 
@@ -237,7 +367,17 @@ func (iaMultiply IntAryMathMultiply) Multiply(
 			minimumResultPrecision = 0
 		}
 
-		iaResult.SetIntAryToZero(uint(minimumResultPrecision))
+		err = iaResult.SetIntAryToZero(uint(minimumResultPrecision))
+
+		if err != nil {
+
+			return &FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "err = iaResult.SetIntAryToZero(uint(minimumResultPrecision))",
+				ErrContext: fmt.Sprintf("minimumResultPrecision= %v", minimumResultPrecision),
+				ErrMessage: err.Error(),
+			}
+		}
 
 		return nil
 	}
@@ -262,8 +402,11 @@ func (iaMultiply IntAryMathMultiply) Multiply(
 	offset := 0
 
 	for i := ia2.intAryLen - 1; i >= 0; i-- {
+
 		multiplicand = ia2.intAry[i]
+
 		offset++
+
 		nextResultIdx := newIntAryLen - offset
 
 		for j := ia1.intAryLen - 1; j >= 0; j-- {
@@ -277,7 +420,9 @@ func (iaMultiply IntAryMathMultiply) Multiply(
 			resultAry[resultIdx] += product
 
 			for resultAry[resultIdx] > 9 {
+
 				carry = resultAry[resultIdx] / 10
+
 				resultAry[resultIdx] = resultAry[resultIdx] - (carry * 10)
 
 				resultIdx--
@@ -287,6 +432,7 @@ func (iaMultiply IntAryMathMultiply) Multiply(
 			}
 
 			carry = 0
+
 			nextResultIdx--
 		}
 
@@ -295,8 +441,11 @@ func (iaMultiply IntAryMathMultiply) Multiply(
 	if newIntAryLen-newPrecision > 1 && resultAry[0] == 0 {
 
 		iaResult.intAry = resultAry[1:]
+
 		newIntAryLen--
+
 	} else {
+
 		iaResult.intAry = resultAry
 	}
 
@@ -307,24 +456,63 @@ func (iaMultiply IntAryMathMultiply) Multiply(
 	iaResult.isZeroValue = false
 
 	if minimumResultPrecision < 0 {
-		iaResult.OptimizeIntArrayLen(true)
+
+		err = iaResult.OptimizeIntArrayLen(true)
+
+		if err != nil {
+
+			return &FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "err = iaResult.OptimizeIntArrayLen(true)",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+		}
+
 		newPrecision = iaResult.precision
 
 	} else if newPrecision < minimumResultPrecision {
-		iaResult.SetPrecision(minimumResultPrecision, false)
+
+		err = iaResult.SetPrecision(minimumResultPrecision, false)
+
+		if err != nil {
+
+			return &FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "err = iaResult.SetPrecision(minimumResultPrecision, false)",
+				ErrContext: fmt.Sprintf("minimumResultPrecision= %v", minimumResultPrecision),
+				ErrMessage: err.Error(),
+			}
+		}
 
 	}
 
 	if maxResultPrecision > -1 && maxResultPrecision < newPrecision {
-		iaResult.SetPrecision(maxResultPrecision, true)
+
+		err = iaResult.SetPrecision(maxResultPrecision, true)
+
+		if err != nil {
+
+			return &FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "err = iaResult.SetPrecision(maxResultPrecision, true)",
+				ErrContext: fmt.Sprintf("maxResultPrecision= %v", maxResultPrecision),
+				ErrMessage: err.Error(),
+			}
+		}
+
 	}
 
 	err = iaResult.SetNumericSeparatorsDto(numSeps)
 
 	if err != nil {
-		return fmt.Errorf(ePrefix+
-			"Error returned by iaResult.SetNumericSeparatorsDto(numSeps). "+
-			"Error='%v'", err.Error())
+
+		return &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "err = iaResult.SetNumericSeparatorsDto(numSeps)",
+			ErrContext: "",
+			ErrMessage: err.Error(),
+		}
 	}
 
 	return nil

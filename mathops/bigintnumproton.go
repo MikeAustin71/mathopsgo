@@ -198,7 +198,7 @@ func (bIntNumProton *bigIntNumProton) bigIntNumCmp(
 				err.Error())
 	}
 
-	difference, err := BigIntMathSubtract{}.SubtractBigIntNums(
+	difference, err := new(BigIntMathSubtract).SubtractBigIntNums(
 		bNum2,
 		*bigIntNum2)
 
@@ -311,7 +311,7 @@ func (bIntNumProton *bigIntNumProton) bigIntNumDecrement(
 		return fmt.Errorf("%v\n%w", ePrefix, err)
 	}
 
-	result := BigIntMathSubtract{}.SubtractPair(bPair)
+	result := new(BigIntMathSubtract).SubtractPair(bPair)
 
 	err = new(bigIntNumUtility).bigIntNumCopyIn(
 		bNum,

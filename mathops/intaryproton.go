@@ -117,7 +117,7 @@ func (iaProton *intAryProton) copy(
 
 	if copyToBackup {
 
-		err = new(intAryNeutron).copyToBackup(
+		err = new(intAryLepton).copyToBackup(
 			iaDestination,
 			iaSource,
 			false,
@@ -264,7 +264,7 @@ func (iaProton *intAryProton) copyOutDigits(
 	}
 
 	if copyToBackup {
-		err = new(intAryNeutron).copyToBackup(
+		err = new(intAryLepton).copyToBackup(
 			&iAry2, &iAry2, false, ePrefix)
 
 		if err != nil {

@@ -1,7 +1,6 @@
 package mathops
 
 import (
-	"bytes"
 	"fmt"
 	ePref "github.com/MikeAustin71/errpref"
 	"math"
@@ -419,384 +418,122 @@ func (ia *IntAry) AppendToIntAry(num uint8) {
 	}
 }
 
-// Ceiling - Returns an IntAry which constitutes
-// the mathematical ceiling of the current
-// IntAry.
+// Ceiling
 //
-// Examples
-// ========
+//	Returns an IntAry which constitutes the mathematical ceiling of
+//	the current IntAry.
 //
-//							Initial 		 Ceiling
-//	 					 Value				Value
-//							-------      -------
-//	 						5.95					6
-//	 						5.05					6
-//	 						5							5
-//							 -5.05			 	 -5
-//	 						2.4				  	3
-//	 						2.9					 	3
-//							 -2.7				 	 -2
-//							 -2					 	 -2
+//	Examples
+//	========
+//
+//	      Initial      Ceiling
+//	       Value        Value
+//	      -------      -------
+//	        5.95          6
+//	        5.05          6
+//	        5             5
+//	       -5.05         -5
+//	        2.4           3
+//	        2.9           3
+//	       -2.7          -2
+//	       -2            -2
 func (ia *IntAry) Ceiling() (IntAry, error) {
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-	ePrefix := "IntAry.Ceiling()"
-
-	err := new(intAryElectron).isValidIntAry(
-		ia,
-		ePrefix+" Called on 'ia'")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"IntAry.Ceiling()",
+		"")
 
 	if err != nil {
 		return IntAry{}, err
 	}
 
-	iAry2 := new(intAryElectron).newIntAry()
-
-	intLen := ia.intAryLen - ia.precision
-
-	intIdx := intLen - 1
-
-	hasFracDigits, err := ia.HasFractionalDigits()
-
-	if err != nil {
-
-		return iAry2,
-			fmt.Errorf("%v"+
-				ePrefix+"Error returned by ia.HasFractionalDigits()\n"+
-				"Error= %v\n", ePrefix, err.Error())
-	}
-
-	if !hasFracDigits {
-
-		iAry2, err = ia.CopyOut()
-
-		return iAry2, err
-	}
-
-	if ia.signVal < 0 {
-
-		t := make([]uint8, ia.intAryLen)
-
-		for i := 0; i < intLen; i++ {
-			t[i] = ia.intAry[i]
-		}
-
-		iAry2.intAry = t[0:]
-		iAry2.intAryLen = ia.intAryLen
-		iAry2.precision = ia.precision
-		iAry2.signVal = ia.signVal
-		return iAry2, nil
-	}
-
-	t := make([]uint8, ia.intAryLen+1)
-
-	n1 := 0
-	n2 := 0
-	carry := 0
-	adjFac := 1 * ia.signVal
-	for i := intIdx; i >= 0; i-- {
-
-		n1 = int(ia.intAry[i])
-
-		if i == intIdx {
-			if n1+adjFac < 0 {
-				n2 = 10 + n1 + adjFac
-				carry = -1
-			} else if n1+adjFac > 9 {
-				n2 = n1 + adjFac - 10
-				carry = 1
-			} else {
-				n2 = n1 + adjFac
-				carry = 0
-			}
-
-		} else {
-
-			if n1+carry < 0 {
-				n2 = 10 + n1
-				carry = -1
-			} else if n1+carry > 9 {
-				n2 = n1 - 10
-				carry = 1
-			} else {
-				n2 = n1 + carry
-				carry = 0
-			}
-
-		}
-
-		t[i+1] = uint8(n2)
-
-	}
-
-	if carry != 0 {
-		t[0] = uint8(carry)
-		iAry2.intAry = t[0 : ia.intAryLen+1]
-
-	} else {
-
-		iAry2.intAry = t[1 : ia.intAryLen+1]
-	}
-
-	iAry2.intAryLen = len(iAry2.intAry)
-	iAry2.precision = ia.precision
-	iAry2.signVal = ia.signVal
-
-	return iAry2, nil
+	return new(intAryNeutron).ceiling(ia, true, ePrefix)
 }
 
-// ChangeSign - Changes the sign of the current IntAry instance.
-// If the current IntAry numeric value is positive (+), this method
-// will change the sign value to negative (-).
+// ChangeSign
 //
-// Conversely, if the current IntAry is a negative (-) numeric value,
-// this method will change the sign to positive (+).
+//	Changes the sign of the current IntAry instance.
+//
+//	If the current IntAry numeric value is positive (+),
+//	this method will change the sign value to negative (-).
+//
+//	Conversely, if the current IntAry is a negative (-)
+//	numeric value, this method will change the sign to
+//	positive (+).
 func (ia *IntAry) ChangeSign() error {
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-	ePrefix := "IntAry.ChangeSign()"
-
-	err := new(intAryElectron).isValidIntAry(
-		ia,
-		ePrefix)
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"IntAry.ChangeSign",
+		"")
 
 	if err != nil {
-
-		return &FuncReturnError{
-			ErrPrefix:  ePrefix,
-			ReturnFunc: "err := new(intAryElectron).isValidIntAry(ia, ePrefix)",
-			ErrContext: "Error: Current IntAry instance is INVALID!\n" +
-				"'ia' FAILED Validation Tests.",
-			ErrMessage: err.Error(),
-		}
+		return err
 	}
 
-	if ia.isZeroValue {
-		ia.signVal = 1
-		return nil
-	}
-
-	if ia.signVal < 1 {
-		ia.signVal = 1
-	} else {
-		ia.signVal = -1
-	}
-
-	return nil
+	return new(intAryNeutron).changeSign(ia, true, ePrefix)
 }
 
-// CompareSignedValues - Compares two IntAry signed numeric values.
+// CompareSignedValues
 //
-// Returns:
-// 0  = Current IntAry value is equal to the passed IntAry value.
-// 1  = Current IntAry value is greater than the passed IntAry value.
-// -1 = Current IntAry value is less than the passed IntAry value.
-func (ia *IntAry) CompareSignedValues(iAry2 *IntAry) int {
+//	Compares two IntAry signed numeric values.
+//
+//	Returns:
+//	 0  = Current IntAry value is equal to the passed IntAry value.
+//	 1  = Current IntAry value is greater than the passed IntAry value.
+//	-1  = Current IntAry value is less than the passed IntAry value.
+func (ia *IntAry) CompareSignedValues(iAry2 *IntAry) (int, error) {
 
-	iCompare := ia.CompareAbsoluteValues(iAry2)
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-	if ia.isZeroValue && iAry2.isZeroValue {
-		return 0
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"IntAry.CompareSignedValues()",
+		"")
+
+	if err != nil {
+		return -1, err
 	}
 
-	if ia.signVal != iAry2.signVal {
-
-		if ia.signVal == 1 {
-			return 1
-		} else {
-			return -1
-		}
-	}
-
-	// Must be ia.signVal == iAry2.signVal
-
-	if ia.signVal == 1 {
-		return iCompare
-	}
-
-	// Must be ia.signVal && iAry2.signVal == -1
-
-	return iCompare * -1
-
+	return new(intAryPhoton).compareSignedValues(
+		ia, true, iAry2, true, ePrefix)
 }
 
-// CompareAbsoluteValues - Compares the absolute values of
-// two IntAry instances.
-// Returns:
-// 0  = Current IntAry value is equal to the passed IntAry value.
-// 1  = Current IntAry value is greater than the passed IntAry value.
-// -1 = Current IntAry value is less than the passed IntAry value.
-func (ia *IntAry) CompareAbsoluteValues(iAry2 *IntAry) int {
+// CompareAbsoluteValues
+//
+//	Compares the absolute values of two IntAry instances.
+//
+//	Returns:
+//	 0  = Current IntAry value is equal to the passed IntAry value.
+//	 1  = Current IntAry value is greater than the passed IntAry value.
+//	-1  = Current IntAry value is less than the passed IntAry value.
+func (ia *IntAry) CompareAbsoluteValues(iAry2 *IntAry) (int, error) {
 
-	ia.SetIntAryLength()
-	iAry2.SetIntAryLength()
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-	iAry2.SetIsZeroValue()
-	ia.SetIsZeroValue()
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"IntAry.CompareAbsoluteValues()",
+		"")
 
-	if ia.isZeroValue && iAry2.isZeroValue {
-		return 0
-	}
-
-	iaIntLen := ia.intAryLen - ia.precision
-	iAry2IntLen := iAry2.intAryLen - iAry2.precision
-
-	// Integer Lengths are Equal
-	if iaIntLen == iAry2IntLen {
-		for i := 0; i < iaIntLen; i++ {
-			if ia.intAry[i] > iAry2.intAry[i] {
-				return 1
-			}
-
-			if iAry2.intAry[i] > ia.intAry[i] {
-				return -1
-			}
-		}
-	}
-
-	deltaStartIdx := 0
-
-	// ia Integer Length is Greater than IAry2 Integer Length
-	if iaIntLen > iAry2IntLen {
-		deltaStartIdx = iaIntLen - iAry2IntLen
-
-		for j := 0; j < iaIntLen; j++ {
-
-			if j < deltaStartIdx {
-
-				if ia.intAry[j] > 0 {
-					return 1
-				}
-
-			} else {
-				// 'i' must be >= deltaStartIdx
-
-				if ia.intAry[j] > iAry2.intAry[j-deltaStartIdx] {
-					return 1
-				}
-
-				if iAry2.intAry[j-deltaStartIdx] > ia.intAry[j] {
-					return -1
-				}
-			}
-		}
-	}
-
-	// iAry2 Integer Length is Greater Than ia Integer Length
-	if iAry2IntLen > iaIntLen {
-		deltaStartIdx = iAry2IntLen - iaIntLen
-
-		for k := 0; k < iAry2IntLen; k++ {
-
-			if k < deltaStartIdx {
-				if iAry2.intAry[k] > 0 {
-					return -1
-				}
-
-			} else {
-				// 'i' must be >= deltaStartIdx
-
-				if iAry2.intAry[k] > ia.intAry[k-deltaStartIdx] {
-					return -1
-				}
-
-				if ia.intAry[k-deltaStartIdx] > iAry2.intAry[k] {
-					return 1
-				}
-			}
-		}
-	}
-
-	// If precision is zero, the intAry's are equivalent
-	if ia.precision == 0 && iAry2.precision == 0 {
-		return 0
-	}
-
-	// Integer Values are Equivalent. Now test
-	// digits to the right of the decimal point.
-
-	// Test fractional digits to right of decimal point
-	iaFracIdx := iaIntLen
-	iAry2FracIdx := iAry2IntLen
-	// Test for case of Equal precision
-	if ia.precision == iAry2.precision {
-		for m := 0; m < ia.precision; m++ {
-
-			if ia.intAry[iaFracIdx] > iAry2.intAry[iAry2FracIdx] {
-				return 1
-			}
-
-			if iAry2.intAry[iAry2FracIdx] > ia.intAry[iaFracIdx] {
-				return -1
-			}
-
-			iaFracIdx++
-			iAry2FracIdx++
-		}
-	}
-
-	iaFracIdx = iaIntLen
-	iAry2FracIdx = iAry2IntLen
-	// Test for case where ia precision Greater than iAry2 precision
-	if ia.precision > iAry2.precision {
-
-		for i := 0; i < ia.precision; i++ {
-
-			if i < iAry2.precision {
-
-				if ia.intAry[iaFracIdx] > iAry2.intAry[iAry2FracIdx] {
-					return 1
-				}
-
-				if iAry2.intAry[iAry2FracIdx] > ia.intAry[iaFracIdx] {
-					return -1
-				}
-
-				iaFracIdx++
-				iAry2FracIdx++
-
-			} else {
-				if ia.intAry[iaFracIdx] > 0 {
-					return 1
-				}
-
-				iaFracIdx++
-			}
-		}
-	}
-
-	iaFracIdx = iaIntLen
-	iAry2FracIdx = iAry2IntLen
-	// Test for case where iAry2 precision Greater than ia precision
-	if iAry2.precision > ia.precision {
-
-		for i := 0; i < iAry2.precision; i++ {
-
-			if i < ia.precision {
-
-				if ia.intAry[iaFracIdx] > iAry2.intAry[iAry2FracIdx] {
-					return 1
-				}
-
-				if iAry2.intAry[iAry2FracIdx] > ia.intAry[iaFracIdx] {
-					return -1
-				}
-
-				iaFracIdx++
-				iAry2FracIdx++
-
-			} else {
-				if iAry2.intAry[iAry2FracIdx] > 0 {
-					return -1
-				}
-
-				iAry2FracIdx++
-			}
-		}
-
+	if err != nil {
+		return -1, err
 	}
 
 	// The two absolute numeric values must be equal
-	return 0
-
+	return new(intAryQuark).compareAbsoluteValues(
+		ia, true, iAry2, true, ePrefix)
 }
 
 // CopyIn
@@ -986,7 +723,7 @@ func (ia *IntAry) CopyToBackUp() error {
 		return err
 	}
 
-	return new(intAryNeutron).copyToBackup(ia, ia, true, ePrefix)
+	return new(intAryLepton).copyToBackup(ia, ia, true, ePrefix)
 }
 
 // DecrementIntegerOne
@@ -1030,19 +767,8 @@ func (ia *IntAry) DivideByTwo() error {
 		return err
 	}
 
-	err = new(IntAryMathDivide).DivideByTwo(ia)
-
-	if err != nil {
-
-		return &FuncReturnError{
-			ErrPrefix:  ePrefix.String(),
-			ReturnFunc: "err = new(IntAryMathDivide).DivideByTwo(ia)",
-			ErrContext: "",
-			ErrMessage: err.Error(),
-		}
-	}
-
-	return nil
+	return new(intAryNeutron).divideByTwo(
+		ia, true, ePrefix.XCpy("Divide 'ia' by 2"))
 }
 
 // DivideByInt64
@@ -1074,37 +800,20 @@ func (ia *IntAry) DivideByInt64(
 		return err
 	}
 
-	err = new(intAryElectron).isValidIntAry(
-		ia,
-		ePrefix.XCpy("Validating IntAry ('ia')").String())
-
-	if err != nil {
-		return err
-	}
-
-	err = new(IntAryMathDivide).DivideByInt64(ia, divisor, maxPrecision)
-
-	if err != nil {
-
-		return &FuncReturnError{
-			ErrPrefix:  ePrefix.String(),
-			ReturnFunc: "err = new(IntAryMathDivide).DivideByInt64(ia, divisor, maxPrecision)",
-			ErrContext: "",
-			ErrMessage: err.Error(),
-		}
-	}
-
-	return nil
+	return new(intAryNeutron).divideByInt64(
+		ia, true, divisor, maxPrecision, ePrefix)
 }
 
 // DivideByTenToPower
 //
-//		Divide the numerical value of the current IntAry instance by
-//		10 raised to the power of the input parameter, 'exponent'.
+//	Divide the numerical value of the current IntAry instance by
+//	10 raised to the power of the input parameter, 'exponent'.
 //
-//	               'ia'
-//		    ia =  -------------
-//	           (10^exponent)
+//	             'ia'
+//	    ia =  -------------
+//	         (10^exponent)
+//
+//	The result or quotient is stored in the current IntAry instance.
 func (ia *IntAry) DivideByTenToPower(exponent uint) error {
 
 	var ePrefix *ePref.ErrPrefixDto
@@ -1120,19 +829,8 @@ func (ia *IntAry) DivideByTenToPower(exponent uint) error {
 		return err
 	}
 
-	err = new(IntAryMathDivide).DivideByTenToPower(ia, exponent)
-
-	if err != nil {
-
-		return &FuncReturnError{
-			ErrPrefix:  ePrefix.String(),
-			ReturnFunc: "",
-			ErrContext: "",
-			ErrMessage: err.Error(),
-		}
-	}
-
-	return nil
+	return new(intAryNeutron).divideByTenToPower(
+		ia, true, exponent, ePrefix)
 }
 
 // DivideThisBy
@@ -1324,7 +1022,7 @@ func (ia *IntAry) Equal(iAry2 *IntAry) (bool, error) {
 		return false, err
 	}
 
-	return new(intAryNeutron).equal(ia, true, iAry2, true, ePrefix)
+	return new(intAryAtom).equal(ia, true, iAry2, true, ePrefix)
 }
 
 // Equals
@@ -1818,21 +1516,35 @@ func (ia *IntAry) GetDecimalSeparator() rune {
 
 // GetFractionalDigits
 //
-//	 Examines the current IntAry instanace and returns a new IntAry
-//	 object consisting of the fractional digits to the right of the
-//	 decimal point from the original, current IntAry object.
+//	Examines the current IntAry instanace and returns a new IntAry
+//	object consisting of the fractional digits to the right of the
+//	decimal point from the original, current IntAry object.
 //
-//	 Note: The sign Value of the returned int Ary is always
-//	 positive or +1.
+//	Note: The sign Value of the returned int Ary is always
+//	positive or +1.
 //
-//	 The returned IntAry instance will display fractional digits
-//	 with a leading integer digit of zero. Example '0.5678'
+//	The returned IntAry instance will display fractional digits
+//	with a leading integer digit of zero. Example '0.5678'
 //
-//		 Validation Testing
-//		 ==================
+//	Numeric Separators
+//	==================
 //
-//		 This method will perform validation testing on the current
-//		 instance of IntAry
+//	Numeric Separators define the Decimal Separator character,
+//	Thousands Separator character, and Currency Symbol character.
+//	These separator characters serve two purposes. First they are
+//	used to format and display numeric values as number strings.
+//	Second, they are also used to parse number strings and
+//	convert them into numeric values.
+//
+//	The IntAry object returned by this method will be configured
+//	with Numeric Separators copied from the original, current
+//	instance of IntAry.
+//
+//	Validation Testing
+//	==================
+//
+//	This method will perform validation testing on the current
+//	instance of IntAry
 func (ia *IntAry) GetFractionalDigits() (IntAry, error) {
 	var ePrefix *ePref.ErrPrefixDto
 	var err error
@@ -1858,45 +1570,47 @@ func (ia *IntAry) GetFractionalDigits() (IntAry, error) {
 	return new(intAryNeutron).getFractionalDigits(ia, true, ePrefix)
 }
 
-// GetIntegerDigits - Examines the current intAry object
-// and returns a new intAry consisting of only the integer
-// digits to the left of the decimal point in the current
-// intAry object.
+// GetIntegerDigits
+//
+//	Examines the current intAry object and returns a new intAry
+//	consisting of only the integer digits to the left of the
+//	decimal point in the current intAry object.
+//
+//	Numeric Separators
+//	==================
+//
+//	Numeric Separators define the Decimal Separator character,
+//	Thousands Separator character, and Currency Symbol character.
+//	These separator characters serve two purposes. First they are
+//	used to format and display numeric values as number strings.
+//	Second, they are also used to parse number strings and
+//	convert them into numeric values.
+//
+//	The IntAry object returned by this method will be configured
+//	with Numeric Separators copied from the original, current
+//	instance of IntAry.
+//
+//	Validation Testing
+//	==================
+//
+//	This method will perform validation testing on the current
+//	instance of IntAry
 func (ia *IntAry) GetIntegerDigits() (IntAry, error) {
 
-	err := new(intAryElectron).isValidIntAry(
-		ia,
-		"GetFractionalDigits() Called on 'ia'")
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
+
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"IntAry.SetIntAryToZero",
+		"")
 
 	if err != nil {
 		return IntAry{}, err
 	}
 
-	iAry2 := new(intAryElectron).newIntAry()
-
-	if ia.isZeroValue {
-		iAry2.SetIntAryToZero(0)
-		return iAry2, nil
-	}
-
-	intLen := ia.intAryLen - ia.precision
-
-	iAry2.intAry = make([]uint8, intLen)
-
-	for i := 0; i < intLen; i++ {
-		iAry2.intAry[i] = ia.intAry[i]
-	}
-
-	iAry2.signVal = ia.signVal
-	iAry2.precision = 0
-
-	iAry2.SetInternalFlags()
-
-	if iAry2.isZeroValue {
-		iAry2.signVal = 1
-	}
-
-	return iAry2, nil
+	return new(intAryNeutron).getIntegerDigits(ia, true, ePrefix)
 }
 
 // GetInt - returns the value of the current
@@ -2434,19 +2148,19 @@ func (ia *IntAry) GetMagnitudeDigits() (int, error) {
 
 // GetNumericSeparatorsDto
 //
-//	 Returns a NumericSeparatorDto structure containing the
-//	 character or rune values for decimal point separator, thousands
-//	 separator and currency symbol.
+//	Returns a NumericSeparatorDto structure containing the
+//	character or rune values for decimal point separator, thousands
+//	separator and currency symbol.
 //
-//		Numeric Separators
-//		==================
+//	Numeric Separators
+//	==================
 //
-//		Numeric Separators define the Decimal Separator character,
-//		Thousands Separator character, and Currency Symbol character.
-//		These separator characters serve two purposes. First they are
-//		used to format and display numeric values as number strings.
-//		Second, they are also used to parse number strings and convert
-//		them into numeric values.
+//	Numeric Separators define the Decimal Separator character,
+//	Thousands Separator character, and Currency Symbol character.
+//	These separator characters serve two purposes. First they are
+//	used to format and display numeric values as number strings.
+//	Second, they are also used to parse number strings and convert
+//	them into numeric values.
 func (ia *IntAry) GetNumericSeparatorsDto() (NumericSeparatorDto, error) {
 
 	var ePrefix *ePref.ErrPrefixDto
@@ -2462,7 +2176,7 @@ func (ia *IntAry) GetNumericSeparatorsDto() (NumericSeparatorDto, error) {
 		return NumericSeparatorDto{}, err
 	}
 
-	return new(intAryNanobot).getNumericSeparatorsDto(ia, ePrefix)
+	return new(intAryPhoton).getNumericSeparatorsDto(ia, ePrefix)
 }
 
 // GetNumStr
@@ -3056,51 +2770,31 @@ func (ia *IntAry) GetThousandsSeparator() rune {
 	return ia.thousandsSeparator
 }
 
-// HasFractionalDigits - This method examines the
-// current intAry object to determine if there
-// are non-zero digits to the right of the decimal
-// place. If all digits to the right of the decimal
-// place are zero, this method returns 'false'
+// HasFractionalDigits
 //
-// If non-zero digits are present to the right of the
-// decimal place, the method returns 'true'.
+//	This method examines the current intAry object to determine if
+//	there are non-zero digits to the right of the decimal place. If
+//	all digits to the right of the decimal place are zero, this
+//	method returns 'false'
+//
+//	If non-zero digits are present to the right of the decimal
+//	place, the method returns 'true'.
 func (ia *IntAry) HasFractionalDigits() (bool, error) {
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-	ePrefix := "IntAry.HasFractionalDigits()"
-
-	err := new(intAryElectron).isValidIntAry(
-		ia,
-		ePrefix+" Called on 'ia'")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"IntAry.HasFractionalDigits",
+		"")
 
 	if err != nil {
 		return false, err
 	}
 
-	if ia.precision == 0 {
-		return false, nil
-	}
-
-	ia.SetIntAryLength()
-
-	intLen := ia.intAryLen - ia.precision
-
-	if intLen < 1 {
-		return false,
-			fmt.Errorf("%v\n"+
-				"Error - Int Array integer length is less than 1.\n"+
-				"intLen= '%v'",
-				ePrefix,
-				intLen)
-
-	}
-
-	for i := intLen; i < ia.intAryLen; i++ {
-		if ia.intAry[i] > 0 {
-			return true, nil
-		}
-	}
-
-	return false, nil
+	return new(intAryNanobot).hasFractionalDigits(
+		ia, true, ePrefix)
 }
 
 // IncrementIntegerOne - Increment the value of the
@@ -3218,61 +2912,85 @@ func (ia *IntAry) IsValid(errName string) error {
 		errName)
 }
 
-// IsEvenNumber - Returns true if the current IntAry numeric value
-// is evenly divisible by two (2) with no remainder.
+// IsEvenNumber
 //
-// Even Number Definition:
+//	Returns 'true' if the current IntAry numeric value is evenly
+//	divisible by two (2) with no remainder.
 //
-//	https://www.mathsisfun.com/definitions/even-number.html
-func (ia *IntAry) IsEvenNumber() bool {
+//	Even Number Definition:
+//	  https://www.mathsisfun.com/definitions/even-number.html
+func (ia *IntAry) IsEvenNumber() (bool, error) {
 
-	if ia.precision > 0 {
-		return false
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
+
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"IntAry.IsEvenNumber()",
+		"")
+
+	if err != nil {
+		return false, err
 	}
 
-	if ia.IsZero() {
-		return true
-	}
-
-	tNum := ia.CopyOut()
-
-	IntAryMathDivide{}.DivideByTwo(&tNum)
-
-	if tNum.precision > 0 {
-		return false
-	}
-
-	return true
+	return new(intAryMechanics).isIntAryEvenNumber(
+		ia, true, ePrefix.XCpy("Is 'ia' Even Number"))
 }
 
-// IsMinusOne - Returns 'true' if the value of the current
-// IntAry is minus one (-1).
+// IsMinusOne
 //
-// Examples:
-// =========
+//	Returns 'true' if the value of the current IntAry is minus one
+//	(-1).
 //
-// Value 			Result
-// -----			------
-// -1.0				true
-// -1					true
-// -1.0000		true
-// -1.0001		false
-// -2.0				false
-func (ia *IntAry) IsMinusOne() bool {
+//	Examples:
+//	=========
+//
+//	    Value      Result
+//	    -----      ------
+//	    -1.0        true
+//	    -1          true
+//	    -1.0000     true
+//	    -1.0001     false
+//	    -2.0        false
+func (ia *IntAry) IsMinusOne() (bool, error) {
+
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
+
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"IntAry.IsMinusOne()",
+		"")
+
+	if err != nil {
+		return false, err
+	}
 
 	iaMinusOne, err := new(IntAry).NewOne(ia.precision)
 
 	if err != nil {
-		return false
+
+		return false,
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "iaMinusOne, err := new(IntAry).NewOne(ia.precision)",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
 	}
 
-	iaMinusOne.ChangeSign()
+	err = iaMinusOne.ChangeSign()
 
-	if ia.Equals(&iaMinusOne) {
-		return true
+	isIaEqualToMinusOne, err := new(intAryAtom).equal(
+		ia, true, &iaMinusOne, true, ePrefix.XCpy("'ia' == 'iaMinusOne' ?"))
+
+	if isIaEqualToMinusOne {
+		return true, nil
 	}
 
-	return false
+	return false, nil
 }
 
 // IsOne - Returns 'true' if the value of the current
@@ -5567,8 +5285,26 @@ func (ia *IntAry) SetAbsoluteValueThis() error {
 // the method GetCurrencySymbol().
 //
 // Note the default thousands separator character is the comma (',').
-func (ia *IntAry) SetCurrencySymbol(currencySymbol rune) {
-	ia.currencySymbol = currencySymbol
+func (ia *IntAry) SetCurrencySymbol(currencySymbol rune) error {
+
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
+
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"IntAry.SetCurrencySymbol()",
+		"")
+
+	if err != nil {
+		return err
+	}
+
+	return new(intAryPhoton).
+		setNumSepSymbol(ia,
+			CURRENCYSYMBOL,
+			currencySymbol,
+			ePrefix.XCpy("Setting 'ia' currency symbol"))
 }
 
 // SetDecimalSeparator - sets the decimal separator character
@@ -5586,8 +5322,26 @@ func (ia *IntAry) SetCurrencySymbol(currencySymbol rune) {
 // method GetDecimalSeparator().
 //
 // Note: The default decimal separator character is '.'
-func (ia *IntAry) SetDecimalSeparator(decimalSeparator rune) {
-	ia.decimalSeparator = decimalSeparator
+func (ia *IntAry) SetDecimalSeparator(decimalSeparator rune) error {
+
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
+
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"IntAry.SetDecimalSeparator()",
+		"")
+
+	if err != nil {
+		return err
+	}
+
+	return new(intAryPhoton).
+		setNumSepSymbol(ia,
+			DECIMALSYMBOL,
+			decimalSeparator,
+			ePrefix.XCpy("Setting 'ia' decimal symbol"))
 }
 
 // SetElement - Sets the value of an IntAry element
@@ -5668,16 +5422,31 @@ func (ia *IntAry) SetEqualArrayLengths(iAry2 *IntAry) {
 	return
 }
 
-// SetIntAryLength - Calculates the current IntAry string length
-// and sets internal variable 'ia.intAryLen'.
-func (ia *IntAry) SetIntAryLength() {
+// SetIntAryLength
+//
+//	Calculates the current IntAry string length and sets internal
+//	variable 'ia.intAryLen'.
+func (ia *IntAry) SetIntAryLength() error {
 
-	_ = new(intAryElectron).setIntAryLength(ia, "IntAry.SetIntAryLength")
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-	return
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"IntAry.SetIntAryLength()",
+		"")
+
+	if err != nil {
+		return err
+	}
+
+	err = new(intAryElectron).setIntAryLength(ia, ePrefix.XCpy("Setting 'ia' IntAry Length"))
+
+	return err
 }
 
-// SetIntAryToFive - Sets the value of the intAry object to one ('1').
+// SetIntAryToFive - Sets the value of the intAry object to one ('5').
 func (ia *IntAry) SetIntAryToFive(precision int) error {
 
 	if precision < 0 {
@@ -5693,8 +5462,6 @@ func (ia *IntAry) SetIntAryToFive(precision int) error {
 	ia.isIntegerZeroValue = false
 	ia.firstDigitIdx = 0
 	ia.lastDigitIdx = 0
-
-	ia.SetNumericSeparatorsToDefaultIfEmpty()
 
 	return nil
 }
@@ -5799,7 +5566,10 @@ func (ia *IntAry) SetIntAryToTen(precision int) error {
 
 // SetIntAryToZero
 //
-//	Sets the value of the intAry object to zero ('0').
+//		Sets the value of the current IntAry object to zero ('0').
+//
+//	 The existing Numeric Separators configured for the current
+//	 IntAry instance will remain unchanged.
 func (ia *IntAry) SetIntAryToZero(precision uint) error {
 
 	var ePrefix *ePref.ErrPrefixDto
@@ -5815,8 +5585,14 @@ func (ia *IntAry) SetIntAryToZero(precision uint) error {
 		return err
 	}
 
+	numSeps, err := new(intAryPhoton).getNumericSeparatorsDto(ia, ePrefix.XCpy("ia numSeps -> numSeps"))
+
+	if err != nil {
+		return err
+	}
+
 	return new(intAryQuark).setIntAryToZero(
-		ia, precision, ePrefix)
+		ia, precision, numSeps, ePrefix)
 }
 
 // SetIntAryWithInt - Sets the value of the current intAry object
@@ -6882,13 +6658,14 @@ func (ia *IntAry) SetInternalFlags() error {
 	}
 
 	err = new(intAryNanobot).setInternalFlags(
-		ia, ePrefix)
+		ia, ePrefix.XCpy("Setting 'ia' Flags"))
 
 	if err != nil {
 
 		return &FuncReturnError{
-			ErrPrefix:  ePrefix.String(),
-			ReturnFunc: "err = new(intAryNanobot).setInternalFlags(ia, ePrefix)",
+			ErrPrefix: ePrefix.String(),
+			ReturnFunc: "err = new(intAryNanobot).setInternalFlags(\n" +
+				"  ia, ePrefix.XCpy(Setting 'ia' Flags))",
 			ErrContext: "",
 			ErrMessage: err.Error(),
 		}
@@ -6897,10 +6674,10 @@ func (ia *IntAry) SetInternalFlags() error {
 	return nil
 }
 
-// SetIsZeroValue - Analyzes the value
-// of the intAry and sets a flag
-// if the value of intAry evaluates
-// to zero.
+// SetIsZeroValue
+//
+//	Analyzes the value of the intAry and sets a flag if the value
+//	of intAry evaluates to zero.
 func (ia *IntAry) SetIsZeroValue() {
 	ia.intAryLen = len(ia.intAry)
 
@@ -6973,12 +6750,12 @@ func (ia *IntAry) SetNumericSeparators(
 		return err
 	}
 
-	err = new(intAryMechanics).setNumericSeparators(
+	err = new(intAryPhoton).setNumericSeparators(
 		ia,
 		decimalSeparator,
 		thousandsSeparator,
 		currencySymbol,
-		ePrefix.String())
+		ePrefix)
 
 	if err != nil {
 
@@ -7008,16 +6785,26 @@ func (ia *IntAry) SetNumericSeparators(
 //	Effectively, this method ensures that numeric separators are
 //	set to valid values.
 func (ia *IntAry) SetNumericSeparatorsToDefaultIfEmpty() error {
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-	ePrefix := "IntAry.SetNumericSeparatorsToDefaultIfEmpty"
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"IntAry.SetNumericSeparatorsToDefaultIfEmpty()",
+		"")
 
-	err := new(intAryBoson).setNumericSeparatorsToDefaultIfEmpty(
-		ia, ePrefix)
+	if err != nil {
+		return err
+	}
+
+	err = new(intAryPhoton).setNumericSeparatorsToDefaultIfEmpty(
+		ia, ePrefix.XCpy("Set 'ia' Numeric Separators"))
 
 	if err != nil {
 
 		return &FuncReturnError{
-			ErrPrefix: ePrefix,
+			ErrPrefix: ePrefix.String(),
 			ReturnFunc: "err := new(intAryBoson).\n" +
 				"  setNumericSeparatorsToDefaultIfEmpty(ia, ePrefix)",
 			ErrContext: "",
@@ -7057,7 +6844,7 @@ func (ia *IntAry) SetNumericSeparatorsToUSADefault() error {
 	if err != nil {
 		return err
 	}
-	err = new(intAryQuark).setNumericSeparatorsToUSADefault(
+	err = new(intAryPhoton).setNumericSeparatorsToUSADefault(
 		ia, ePrefix)
 
 	if err != nil {
@@ -7088,11 +6875,21 @@ func (ia *IntAry) SetNumericSeparatorsToUSADefault() error {
 //	If any of the values contained in input parameter
 //	'customSeparators' are set to zero, an error will be returned.
 func (ia *IntAry) SetNumericSeparatorsDto(customSeparators NumericSeparatorDto) error {
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-	ePrefix := "IntAry.SetNumericSeparatorsDto()"
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"IntAry.SetNumericSeparatorsDto()",
+		"")
 
-	return new(intAryMechanics).setNumericSeparatorsDto(
-		ia, customSeparators, ePrefix)
+	if err != nil {
+		return err
+	}
+
+	return new(intAryPhoton).setNumericSeparatorsDto(
+		ia, customSeparators, true, ePrefix)
 }
 
 // SetPrecision - Sets the precision of the current
@@ -7364,69 +7161,104 @@ func (ia *IntAry) SetSignificantDigitIdxs() error {
 // Decimal Separator period ('.') 		= 123.456
 // Thousands Separator comma (',') 		= 1,000,000,000
 // Currency Symbol dollar sign ('$')	= $123
-func (ia *IntAry) SetSeparators(decimalSeparator, thousandsSeparator, currencySymbol rune) {
+func (ia *IntAry) SetSeparators(decimalSeparator, thousandsSeparator, currencySymbol rune) error {
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-	if decimalSeparator == 0 {
-		decimalSeparator = '.'
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"IntAry.SetSeparators()",
+		"")
+
+	if err != nil {
+		return err
 	}
 
-	if thousandsSeparator == 0 {
-		thousandsSeparator = ','
-	}
-
-	if currencySymbol == 0 {
-		currencySymbol = '$'
-	}
-
-	ia.decimalSeparator = decimalSeparator
-
-	ia.thousandsSeparator = thousandsSeparator
-
-	ia.currencySymbol = currencySymbol
-
-	return
+	return new(intAryPhoton).setNumericSeparators(
+		ia,
+		decimalSeparator,
+		thousandsSeparator,
+		currencySymbol,
+		ePrefix.XCpy("Setting 'ia' Numeric Separators"))
 }
 
-// ShiftPrecisionLeft - Shifts the relative position of a decimal point within a number
-// string. The position of the decimal point is shifted 'shiftPrecision' positions to
-// the left of the current decimal point position.
+// ShiftPrecisionLeft
 //
-// This is equivalent to: result = signedNumStr / 10^precision or signedNumStr divided
-// by 10 raised to the power of precision.
+//	Shifts the relative position of a decimal point within a number
+//	string. The position of the decimal point is shifted
+//	'shiftPrecision' positions to the left of the current decimal
+//	point position.
 //
-// See the Examples section below.
+//	This is equivalent to:
+//	    result = signedNumStr / 10^precision or signedNumStr divided
+//	             by 10 raised to the power of precision.
 //
-// Input Parameters
-// ================
+//	See the Examples section below.
 //
-//	shiftPrecision		uint		- The number of digits by which the current decimal point
-//															position in the current IntAry numeric value, will be
-//															shifted to the left.
+//	Input Parameters
+//	================
 //
-// Examples
-// ========
+//	shiftPrecision           uint
+//	  The number of digits by which the current decimal point
+//	  position in the current IntAry numeric value, will be shifted
+//	  to the left.
 //
-//											Requested
-//	                     Shift
-//	 signedNumStr			precision				Result
-//		"123456.789"				3						"123.456789"
-//		"123456.789"				2						"1234.56789"
-//		"123456.789"				6						"0.123456789"
-//		"123456789"					6						"123.456789"
-//		"123"								5						"0.00123"
-//			"0"								3						"0.000"
-//			"0.000"						2						"0.00000"
-//		"123456.789"				0						"123456.789"
-//												- zero 'shiftPrecision' has no effect on
-//																original number string
+//	Return Values
+//	=============
 //
-// "-123456.789"					0						"-123.456789"
-// "-123456.789"					3						"-123.456789"
-// "-123456789"						6						"-123.456789"
-func (ia *IntAry) ShiftPrecisionLeft(shiftPrecision uint) {
+//	error
+//	  If processing errors are encountered, an appropriate error
+//	  message will be configured through this return parameter.
+//
+//	Examples
+//	========
+//
+//	                    Requested
+//	                      Shift
+//	    signedNumStr    precision      Result
+//	     "123456.789"       3           "123.456789"
+//	     "123456.789"       2          "1234.56789"
+//	     "123456.789"       6             "0.123456789"
+//	  "123456789"           6           "123.456789"
+//	        "123"           5             "0.00123"
+//	          "0"           3             "0.000"
+//	          "0.000"       2             "0.00000"
+//	    "-123456.789"       3          "-123.456789"
+//	 "-123456789"           6          "-123.456789"
+//
+//	          zero 'shiftPrecision' has no effect
+//	             on the original number string
+//
+//	     "123456.789"       0         "123456.789"
+//	    "-123456.789"       0         "-123.456789"
+func (ia *IntAry) ShiftPrecisionLeft(shiftPrecision uint) error {
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-	IntAryMathDivide{}.DivideByTenToPower(ia, shiftPrecision)
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"IntAry.ShiftPrecisionLeft()",
+		"")
 
+	if err != nil {
+		return err
+	}
+
+	err = new(IntAryMathDivide).DivideByTenToPower(ia, shiftPrecision)
+
+	if err != nil {
+
+		return &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "err = new(IntAryMathDivide).DivideByTenToPower(ia, shiftPrecision)",
+			ErrContext: fmt.Sprintf("shiftPrecision= '%v'", shiftPrecision),
+			ErrMessage: err.Error(),
+		}
+	}
+
+	return nil
 }
 
 // ShiftPrecisionRight - Shifts the existing precision of the current IntAry numeric value.
@@ -7464,7 +7296,7 @@ func (ia *IntAry) ShiftPrecisionLeft(shiftPrecision uint) {
 // "-123456789"			    6					 "-123456789000000"
 func (ia *IntAry) ShiftPrecisionRight(shiftPrecision uint) {
 
-	IntAryMathMultiply{}.MultiplyByTenToPower(ia, shiftPrecision)
+	new(IntAryMathMultiply).MultiplyByTenToPower(ia, shiftPrecision)
 
 }
 
@@ -7483,8 +7315,26 @@ func (ia *IntAry) ShiftPrecisionRight(shiftPrecision uint) {
 // method GetIntAryStats().
 //
 // Note the default thousands separator character is the comma (',').
-func (ia *IntAry) SetThousandsSeparator(thousandsSeparator rune) {
-	ia.thousandsSeparator = thousandsSeparator
+func (ia *IntAry) SetThousandsSeparator(thousandsSeparator rune) error {
+
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
+
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"IntAry.SetDecimalSeparator()",
+		"")
+
+	if err != nil {
+		return err
+	}
+
+	return new(intAryPhoton).
+		setNumSepSymbol(ia,
+			THOUSANDSYMBOL,
+			thousandsSeparator,
+			ePrefix.XCpy("Setting 'ia' thousands symbol"))
 }
 
 // SubtractFromThis - Subtracts the value of parameter

@@ -1,6 +1,7 @@
 package mathops
 
 import (
+	"fmt"
 	ePref "github.com/MikeAustin71/errpref"
 	"sync"
 )
@@ -127,4 +128,93 @@ func (iaNanobot *intAryNanobot) getNumericSeparatorsDto(
 	numSeps.CurrencySymbol = intAry.GetCurrencySymbol()
 
 	return numSeps, nil
+}
+
+// hasFractionalDigits
+//
+//	This method examines the current intAry object to determine if
+//	there are non-zero digits to the right of the decimal place. If
+//	all digits to the right of the decimal place are zero, this
+//	method returns 'false'
+//
+//	If non-zero digits are present to the right of the decimal
+//	place, the method returns 'true'.
+func (iaNanobot *intAryNanobot) hasFractionalDigits(
+	intAry *IntAry,
+	validateIntAry bool,
+	errPrefDto *ePref.ErrPrefixDto) (bool, error) {
+
+	var ePrefix *ePref.ErrPrefixDto
+
+	var err error
+
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
+		errPrefDto,
+		"intAryNanobot.hasFractionalDigits",
+		"")
+
+	if err != nil {
+		return false, err
+	}
+
+	if validateIntAry {
+		err = new(intAryElectron).isValidIntAry(
+			intAry,
+			ePrefix.XCpy("Validating 'intAry'").String())
+
+		if err != nil {
+
+			return false,
+				&FuncReturnError{
+					ErrPrefix: ePrefix.String(),
+					ReturnFunc: "err = new(intAryElectron).isValidIntAry(\n" +
+						"  intAry, ePrefix.XCpy(Validating 'intAry').String())",
+					ErrContext: "",
+					ErrMessage: err.Error(),
+				}
+		}
+	}
+
+	if intAry.precision == 0 {
+		return false, nil
+	}
+
+	err = new(intAryElectron).setIntAryLength(
+		intAry, ePrefix.XCpy("Setting 'intAry' IntAry Length"))
+
+	if err != nil {
+
+		return false,
+			&FuncReturnError{
+				ErrPrefix: ePrefix.String(),
+				ReturnFunc: "err = new(intAryElectron).setIntAryLength(\n" +
+					"intAry, ePrefix.XCpy(Setting 'intAry' IntAry Length))",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
+
+	intLen := intAry.intAryLen - intAry.precision
+
+	if intLen < 1 {
+		return false,
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "",
+				ErrContext: "intLen < 1",
+				ErrMessage: fmt.Sprintf("Error - Int Array integer length is less than 1.\n"+
+					"intLen= '%v'", intLen),
+			}
+	}
+
+	for i := intLen; i < intAry.intAryLen; i++ {
+
+		if intAry.intAry[i] > 0 {
+
+			return true, nil
+		}
+	}
+
+	return false, nil
 }

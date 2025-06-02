@@ -329,7 +329,7 @@ func (bIntNumBoson *bigIntNumBoson) roundToDecimalPlace(
 // setNumSepSymbol
 //
 // Sets the number separator symbol on an instance of
-// BigIntFixedDecimal passed as input parameter 'bigIFxDec'.
+// BigIntNum passed as input parameter 'bNum'.
 //
 //		Input Parameters
 //		================
@@ -369,7 +369,7 @@ func (bIntNumBoson *bigIntNumBoson) roundToDecimalPlace(
 //		numSepSymbol        rune
 //
 //		The specific numer separator character which will be
-//		transferred to 'bigIFxDec'.
+//		transferred to 'bNum'.
 func (bIntNumBoson *bigIntNumBoson) setNumSepSymbol(
 	bNum *BigIntNum,
 	numSepSymbolType NumSepSymbolCode,
@@ -415,7 +415,7 @@ func (bIntNumBoson *bigIntNumBoson) setNumSepSymbol(
 			ErrContext: fmt.Sprintf("numSepSymbolType is eqaul to %v separator.",
 				numSepSymbolType.String()),
 			ErrMessage: "Error: Input parameter 'numSepSymbol' is INVALID!\n" +
-				"'numSepSymbol' is empty and has a zero value!",
+				"'numSepSymbol' is empty and has a zero value.",
 		}
 	}
 

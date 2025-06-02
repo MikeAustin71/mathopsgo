@@ -436,7 +436,18 @@ func (iaDivide *IntAryMathDivide) DivideByInt64(
 
 		ia.intAry = ia.intAry[ia.firstDigitIdx:]
 
-		ia.SetIntAryLength()
+		err = ia.SetIntAryLength()
+
+		if err != nil {
+
+			return &FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "err = ia.SetIntAryLength()",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+		}
+
 	}
 
 	return nil

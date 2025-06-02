@@ -195,7 +195,7 @@ func (iAryElectron *intAryElectron) isValidIntAry(
 //	variable 'ia.intAryLen'.
 func (iAryElectron *intAryElectron) setIntAryLength(
 	intAry *IntAry,
-	callingFunction string) error {
+	errPrefDto *ePref.ErrPrefixDto) error {
 
 	if iAryElectron.lock == nil {
 		iAryElectron.lock = new(sync.Mutex)
@@ -209,8 +209,8 @@ func (iAryElectron *intAryElectron) setIntAryLength(
 	var err error
 
 	ePrefix,
-		err = ePref.ErrPrefixDto{}.NewIEmpty(
-		callingFunction,
+		err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
+		errPrefDto,
 		"intAryElectron.setIntAryLength()",
 		"")
 
@@ -274,13 +274,15 @@ func (iAryElectron *intAryElectron) setSignificantDigitIdxs(
 		}
 	}
 
-	err = ia.SetNumericSeparatorsToDefaultIfEmpty()
+	err = new(intAryPhoton).setNumericSeparatorsToDefaultIfEmpty(
+		ia, ePrefix.XCpy("Set 'ia' Numeric Separators"))
 
 	if err != nil {
 
 		return &FuncReturnError{
-			ErrPrefix:  ePrefix.String(),
-			ReturnFunc: "err = ia.SetNumericSeparatorsToDefaultIfEmpty()",
+			ErrPrefix: ePrefix.String(),
+			ReturnFunc: "err = new(intAryPhoton).setNumericSeparatorsToDefaultIfEmpty(\n" +
+				"ia, ePrefix.XCpy(Set 'ia' Numeric Separators))",
 			ErrContext: "",
 			ErrMessage: err.Error(),
 		}

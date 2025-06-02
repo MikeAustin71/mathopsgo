@@ -10,6 +10,112 @@ type intAryLepton struct {
 	lock *sync.Mutex
 }
 
+// copyToBackup
+//
+//	This method receives two IntAry objects, 'iaDestination' and
+//	'iaSource'. It then proceeds to copy the primary data fields
+//	from 'iaSource' to the 'BackUp' fields of 'iaDestination'.
+func (iAryLepton *intAryLepton) copyToBackup(
+	iaDestination *IntAry,
+	iaSource *IntAry,
+	validateSourceIntAry bool,
+	errPrefDto *ePref.ErrPrefixDto) error {
+
+	if iAryLepton.lock == nil {
+		iAryLepton.lock = new(sync.Mutex)
+	}
+
+	iAryLepton.lock.Lock()
+
+	defer iAryLepton.lock.Unlock()
+
+	var ePrefix *ePref.ErrPrefixDto
+
+	var err error
+
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
+		errPrefDto,
+		"intAryLepton.copyToBackup",
+		"")
+
+	if err != nil {
+		return err
+	}
+
+	if iaDestination == nil {
+
+		return &InputPtrNilError{
+			ErrPrefix:     ePrefix.String(),
+			ParameterName: "'iaDestination'",
+		}
+	}
+
+	if iaSource == nil {
+
+		return &InputPtrNilError{
+			ErrPrefix:     ePrefix.String(),
+			ParameterName: "'iaDestination'",
+		}
+	}
+
+	if validateSourceIntAry {
+
+		err = new(intAryElectron).isValidIntAry(
+			iaSource, ePrefix.XCpy("Validating 'iaSource'").String())
+
+		if err != nil {
+
+			return &FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "err = new(intAryElectron).isValidIntAry(iaSource, ePrefix.XCpy(Validating 'iaSource').String())",
+				ErrContext: "IntAry instanace 'iaSource' is INVALID!\n" +
+					"'iaSource' FAILED Validation Tests.",
+				ErrMessage: err.Error(),
+			}
+		}
+
+	}
+
+	err = new(intAryNanobot).setInternalFlags(
+		iaSource, ePrefix)
+
+	if err != nil {
+
+		return &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "err = new(intAryNanobot).setInternalFlags(iaSource, ePrefix)",
+			ErrContext: "",
+			ErrMessage: err.Error(),
+		}
+	}
+
+	iaDestination.BackUp.Empty()
+
+	iaDestination.BackUp.intAry = make([]uint8, iaSource.intAryLen)
+
+	for i := 0; i < iaSource.intAryLen; i++ {
+
+		iaDestination.BackUp.intAry[i] = iaSource.intAry[i]
+	}
+
+	iaDestination.BackUp.intAryLen = iaSource.intAryLen
+	iaDestination.BackUp.integerLen = iaSource.integerLen
+	iaDestination.BackUp.significantIntegerLen = iaSource.significantIntegerLen
+	iaDestination.BackUp.significantFractionLen = iaSource.significantFractionLen
+	iaDestination.BackUp.firstDigitIdx = iaSource.firstDigitIdx
+	iaDestination.BackUp.lastDigitIdx = iaSource.lastDigitIdx
+	iaDestination.BackUp.isZeroValue = iaSource.isZeroValue
+	iaDestination.BackUp.isIntegerZeroValue = iaSource.isIntegerZeroValue
+	iaDestination.BackUp.precision = iaSource.precision
+	iaDestination.BackUp.signVal = iaSource.signVal
+	iaDestination.BackUp.decimalSeparator = iaSource.decimalSeparator
+	iaDestination.BackUp.thousandsSeparator = iaSource.thousandsSeparator
+	iaDestination.BackUp.currencySymbol = iaSource.currencySymbol
+
+	return nil
+}
+
 // isValidNumericValues
 //
 //	Examines an IntAry object and returns an error if	that IntAry
@@ -101,7 +207,7 @@ func (iAryLepton *intAryLepton) isValidNumericValues(
 	if intAry.precision >= intAry.intAryLen {
 
 		return fmt.Errorf("%v\n"+
-			"Called Method: %v\n"+
+			"Calling Method: %v\n"+
 			"IntAry Validation Test.\n"+
 			"Error: 'precision' value is greater than or equal to IntArray length.\n"+
 			"iAry.precision= '%v'\n"+
@@ -117,7 +223,7 @@ func (iAryLepton *intAryLepton) isValidNumericValues(
 	if intAry.integerLen == 0 {
 
 		return fmt.Errorf("%v\n"+
-			"Called Method: %v\n"+
+			"Calling Method: %v\n"+
 			"IntAry Validation Test.\n"+
 			"Error: IntAry integer length is zero.\n"+
 			"Missing leading integer zero!\n"+

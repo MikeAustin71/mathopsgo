@@ -1,76 +1,11 @@
 package mathops
 
 import (
-	ePref "github.com/MikeAustin71/errpref"
 	"sync"
 )
 
 type intAryBoson struct {
 	lock *sync.Mutex
-}
-
-// setNumericSeparatorsToDefaultIfEmpty
-//
-//	 Receives a pointer to an IntAry object. By defintion, the
-//	 IntAry contains fields for Numeric Separators.
-//
-//		If numeric separators are set to zero or nil, this method will
-//		set those numeric separators to the USA defaults. This means
-//		that the Decimal separator is set to a period ('.'), the
-//		Thousands separator is set to a comma (',') and the currency
-//		symbol is set to the dollar sign ('$').
-//
-//		If the numeric separators were previously set to a value other
-//		than zero or nil, that value is not altered by this method.
-//
-//		Effectively, this method ensures that numeric separators are
-//		set to valid values.
-func (iaBoson *intAryBoson) setNumericSeparatorsToDefaultIfEmpty(
-	intAry *IntAry,
-	callingFunction string) error {
-
-	if iaBoson.lock == nil {
-		iaBoson.lock = new(sync.Mutex)
-	}
-
-	iaBoson.lock.Lock()
-
-	defer iaBoson.lock.Unlock()
-
-	var ePrefix *ePref.ErrPrefixDto
-	var err error
-
-	ePrefix,
-		err = ePref.ErrPrefixDto{}.NewIEmpty(
-		callingFunction,
-		"IntAry.DivideByInt64()",
-		"")
-
-	if err != nil {
-		return err
-	}
-
-	if intAry == nil {
-
-		return &InputPtrNilError{
-			ErrPrefix:     ePrefix.String(),
-			ParameterName: "'intAry'",
-		}
-	}
-
-	if intAry.decimalSeparator == 0 {
-		intAry.decimalSeparator = '.'
-	}
-
-	if intAry.thousandsSeparator == 0 {
-		intAry.thousandsSeparator = ','
-	}
-
-	if intAry.currencySymbol == 0 {
-		intAry.currencySymbol = '$'
-	}
-
-	return nil
 }
 
 // dataField Equality Test

@@ -10,6 +10,135 @@ type intAryAtom struct {
 	lock *sync.Mutex
 }
 
+// equal
+//
+//	Receives two instances of IntAry and compares the values of all
+//	member data fields to determine if they are equivalent in all
+//	respects.
+//
+//	Returns 'true' if all member field values of 'iAry1' are equal
+//	to the corresponding field values of 'iAry2'.
+//
+//	Note that the BackUp fields for both compared IntAry objects
+//	are NOT included in the 'Equals' comparison.
+//
+//	If any errors are encountered, a boolean value of 'false' is
+//	returned
+func (iaAtom *intAryAtom) equal(
+	iAry1 *IntAry,
+	validateiAry1 bool,
+	iAry2 *IntAry,
+	validateiAry2 bool,
+	errPrefDto *ePref.ErrPrefixDto) (bool, error) {
+
+	if iaAtom.lock == nil {
+		iaAtom.lock = new(sync.Mutex)
+	}
+
+	iaAtom.lock.Lock()
+
+	defer iaAtom.lock.Unlock()
+
+	var ePrefix *ePref.ErrPrefixDto
+
+	var err error
+
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
+		errPrefDto,
+		"intAryNeutron.equal()",
+		"")
+
+	if err != nil {
+		return false, err
+	}
+
+	if iAry1 == nil {
+
+		return false,
+			&InputPtrNilError{
+				ErrPrefix:     ePrefix.String(),
+				ParameterName: "'iAry1'",
+			}
+	}
+
+	if iAry2 == nil {
+
+		return false,
+			&InputPtrNilError{
+				ErrPrefix:     ePrefix.String(),
+				ParameterName: "'iAry2'",
+			}
+	}
+
+	iaElectron := new(intAryElectron)
+
+	if validateiAry1 {
+
+		err = iaElectron.isValidIntAry(iAry1, ePrefix.XCpy("Validating 'iAry1'").String())
+
+		if err != nil {
+
+			return false,
+				&FuncReturnError{
+					ErrPrefix:  ePrefix.String(),
+					ReturnFunc: "err = iaElectron.isValidIntAry(iAry1, ePrefix.XCpy(Validating 'iAry1').String())",
+					ErrContext: "Input parameter 'iAry1' is INVALID!\n" +
+						"'iAry1' FAILED Validation Tests.",
+					ErrMessage: err.Error(),
+				}
+		}
+	}
+
+	if validateiAry2 {
+
+		err = iaElectron.isValidIntAry(iAry2, ePrefix.XCpy("Validating 'iAry1'").String())
+
+		if err != nil {
+
+			return false,
+				&FuncReturnError{
+					ErrPrefix:  ePrefix.String(),
+					ReturnFunc: "err = iaElectron.isValidIntAry(iAry2, ePrefix.XCpy(Validating 'iAry1').String())",
+					ErrContext: "Input parameter 'iAry2' is INVALID!\n" +
+						"'iAry2' FAILED Validation Tests.",
+					ErrMessage: err.Error(),
+				}
+		}
+	}
+
+	iaNanobot := new(intAryNanobot)
+
+	err = iaNanobot.setInternalFlags(iAry1, ePrefix.XCpy("Setting flags 'iAry1'"))
+
+	if err != nil {
+
+		return false,
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "err = iaNanobot.setInternalFlags(iAry1, ePrefix.XCpy(Setting flags 'iAry1'))",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
+
+	err = iaNanobot.setInternalFlags(iAry2, ePrefix.XCpy("Setting flags 'iAry2'"))
+
+	if err != nil {
+
+		return false,
+			&FuncReturnError{
+				ErrPrefix: ePrefix.String(),
+				ReturnFunc: "err = iaNanobot.setInternalFlags(iAry2," +
+					"ePrefix.XCpy(Setting flags 'iAry2'))",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
+
+	return new(intAryBoson).dataFieldEqualityTest(iAry1, iAry2), nil
+}
+
 // getRawNumStr
 //
 //	Returns the current value of the input parameter IntAry object
