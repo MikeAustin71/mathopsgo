@@ -1,13 +1,13 @@
 package mathops
 
 import (
-	"fmt"
-	ePref "github.com/MikeAustin71/errpref"
-	"sync"
+  "fmt"
+  ePref "github.com/MikeAustin71/errpref"
+  "sync"
 )
 
 type intAryUtility struct {
-	theLock sync.Mutex
+  theLock sync.Mutex
 }
 
 // selectIntAryValidation
@@ -17,91 +17,91 @@ type intAryUtility struct {
 // Specific characteristics of the validation are engineered
 // through user input.
 func (iaUtility *intAryUtility) selectIntAryValidation(
-	intAry *IntAry,
-	intAryName string,
-	validateIntAry bool,
-	errPrefDto *ePref.ErrPrefixDto) error {
+  intAry *IntAry,
+  intAryName string,
+  validateIntAry bool,
+  errPrefDto *ePref.ErrPrefixDto) error {
 
-	iaUtility.theLock.Lock()
+  iaUtility.theLock.Lock()
 
-	defer iaUtility.theLock.Unlock()
-	var ePrefix *ePref.ErrPrefixDto
+  defer iaUtility.theLock.Unlock()
+  var ePrefix *ePref.ErrPrefixDto
 
-	var err error
+  var err error
 
-	ePrefix,
-		err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
-		errPrefDto,
-		"intAryUtility.selectIntAryValidation()",
-		"")
+  ePrefix,
+    err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
+    errPrefDto,
+    "intAryUtility.selectIntAryValidation()",
+    "")
 
-	if err != nil {
-		return err
-	}
+  if err != nil {
+    return err
+  }
 
-	if intAry == nil {
+  if intAry == nil {
 
-		return &InputPtrNilError{
-			ErrPrefix:     ePrefix.String(),
-			ParameterName: "'intAry'",
-		}
-	}
+    return &InputPtrNilError{
+      ErrPrefix:     ePrefix.String(),
+      ParameterName: "'intAry'",
+    }
+  }
 
-	if intAryName == "" {
-		intAryName = "intAry"
-	}
+  if intAryName == "" {
+    intAryName = "intAry"
+  }
 
-	var tagLine1, tagLine2, retFuncName string
+  var tagLine1, tagLine2, retFuncName string
 
-	if !validateIntAry {
+  if !validateIntAry {
 
-		tagLine1 = fmt.Sprintf("Setting '%s' Flags", intAryName)
+    tagLine1 = fmt.Sprintf("Setting '%s' Flags", intAryName)
 
-		tagLine2 = fmt.Sprintf("Error Setting Flags on '%s'", intAryName)
+    tagLine2 = fmt.Sprintf("Error Setting Flags on '%s'", intAryName)
 
-		retFuncName = fmt.Sprintf("err = new(intAryNanobot).setInternalFlags(\n"+
-			"  %s, ePrefix.XCpy(Setting '%s' Flags))", intAryName, intAryName)
+    retFuncName = fmt.Sprintf("err = new(intAryNanobot).setInternalFlags(\n"+
+      "  %s, ePrefix.XCpy(Setting '%s' Flags))", intAryName, intAryName)
 
-		err = new(intAryNanobot).setInternalFlags(
-			intAry, ePrefix.XCpy(tagLine1))
+    err = new(intAryNanobot).setInternalFlags(
+      intAry, ePrefix.XCpy(tagLine1))
 
-		if err != nil {
+    if err != nil {
 
-			return &FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: retFuncName,
-				ErrContext: tagLine2,
-				ErrMessage: err.Error(),
-			}
-		}
+      return &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: retFuncName,
+        ErrContext: tagLine2,
+        ErrMessage: err.Error(),
+      }
+    }
 
-		return nil
-	} // End Of if !validateIntAry
+    return nil
+  } // End Of if !validateIntAry
 
-	// We need to validate the IntAry Object.
-	tagLine1 = fmt.Sprintf("Validating '%s'", intAryName)
+  // We need to validate the IntAry Object.
+  tagLine1 = fmt.Sprintf("Validating '%s'", intAryName)
 
-	tagLine2 = fmt.Sprintf("Input parameter '%s' is INVALID!\n"+
-		"'%s' FAILED Validation Tests.", intAryName, intAryName)
+  tagLine2 = fmt.Sprintf("Input parameter '%s' is INVALID!\n"+
+    "'%s' FAILED Validation Tests.", intAryName, intAryName)
 
-	retFuncName = fmt.Sprintf("err = new(intAryElectron).isValidIntAry(\n"+
-		"%s, ePrefix.XCpy(Validating '%s').String())", intAryName, intAryName)
+  retFuncName = fmt.Sprintf("err = new(intAryElectron).isValidIntAry(\n"+
+    "%s, ePrefix.XCpy(Validating '%s').String())", intAryName, intAryName)
 
-	err = new(intAryElectron).isValidIntAry(
-		intAry,
-		ePrefix.XCpy(tagLine1).String())
+  err = new(intAryElectron).isValidIntAry(
+    intAry,
+    ePrefix.XCpy(tagLine1).String())
 
-	if err != nil {
+  if err != nil {
 
-		return &FuncReturnError{
-			ErrPrefix:  ePrefix.String(),
-			ReturnFunc: retFuncName,
-			ErrContext: tagLine2,
-			ErrMessage: err.Error(),
-		}
-	}
+    return &FuncReturnError{
+      ErrPrefix:  ePrefix.String(),
+      ReturnFunc: retFuncName,
+      ErrContext: tagLine2,
+      ErrMessage: err.Error(),
+    }
+  }
 
-	return nil
+  return nil
 }
 
 // selectNumericSeparators
@@ -112,96 +112,95 @@ func (iaUtility *intAryUtility) selectIntAryValidation(
 // Specific characteristics of the returned Numeric Separator Dto
 // objects are engineered through user input.
 func (iaUtility *intAryUtility) selectNumericSeparators(
-	intAry *IntAry,
-	intAryName string,
-	outputNumSepsName string,
-	useDefaultNumSeps bool,
-	setDefaultsIfEmpty bool,
-	validateNumSeps bool,
-	errPrefDto *ePref.ErrPrefixDto) (NumericSeparatorDto, error) {
+  intAry *IntAry,
+  nsProfile NumSepProfileSelection,
+  errPrefDto *ePref.ErrPrefixDto) (NumericSeparatorDto, error) {
 
-	iaUtility.theLock.Lock()
+  iaUtility.theLock.Lock()
 
-	defer iaUtility.theLock.Unlock()
-	var ePrefix *ePref.ErrPrefixDto
+  defer iaUtility.theLock.Unlock()
+  var ePrefix *ePref.ErrPrefixDto
 
-	var err error
+  var err error
 
-	ePrefix,
-		err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
-		errPrefDto,
-		"intAryUtility.selectNumericSeparators()",
-		"")
+  ePrefix,
+    err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
+    errPrefDto,
+    "intAryUtility.selectNumericSeparators()",
+    "")
 
-	if err != nil {
-		return NumericSeparatorDto{}, err
-	}
+  if err != nil {
+    return NumericSeparatorDto{}, err
+  }
 
-	if intAryName == "" {
-		intAryName = "intAry"
-	}
+  if nsProfile.SourceObjectName == "" {
+    nsProfile.SourceObjectName = "intAry"
+  }
 
-	if outputNumSepsName == "" {
-		outputNumSepsName = "numSeps"
-	}
+  if nsProfile.OutputNumSepsName == "" {
+    nsProfile.OutputNumSepsName = "numSeps"
+  }
 
-	var numSeps NumericSeparatorDto
+  var numSeps NumericSeparatorDto
 
-	if useDefaultNumSeps {
+  if nsProfile.UseDefaultNumSeps {
 
-		numSeps = new(NumericSeparatorDto).NewUSADefaults()
+    numSeps = new(NumericSeparatorDto).NewUSADefaults()
 
-		return numSeps, nil
-	}
+    return numSeps, nil
+  }
 
-	if intAry == nil {
+  // If not using defaults, must use source object
+  if intAry == nil {
 
-		return NumericSeparatorDto{},
-			&InputPtrNilError{
-				ErrPrefix:     ePrefix.String(),
-				ParameterName: "'intAry'",
-			}
-	}
+    return NumericSeparatorDto{},
+      &InputPtrNilError{
+        ErrPrefix:     ePrefix.String(),
+        ParameterName: "'intAry'",
+      }
+  }
 
-	// Take NumSeps from 'intAry'
+  // Take NumSeps from 'intAry'
 
-	tagLine := fmt.Sprintf("%s Numeric Separators -> %s", intAryName, outputNumSepsName)
+  tagLine := fmt.Sprintf("%s Numeric Separators -> %s", nsProfile.SourceObjectName, nsProfile.OutputNumSepsName)
 
-	retFuncName := fmt.Sprintf("%s, err = new(intAryPhoton).getNumericSeparatorsDto(\n%s, ePrefix.XCpy(%s))",
-		outputNumSepsName, intAryName, tagLine)
+  retFuncName := fmt.Sprintf("%s, err = new(intAryPhoton).getNumericSeparatorsDto(\n%s, ePrefix.XCpy(%s))",
+    nsProfile.OutputNumSepsName, nsProfile.SourceObjectName, tagLine)
 
-	numSeps, err = new(intAryPhoton).getNumericSeparatorsDto(intAry, setDefaultsIfEmpty, ePrefix.XCpy(tagLine))
+  numSeps, err = new(intAryPhoton).getNumericSeparatorsDto(intAry, nsProfile.SetDefaultNumSepsIfEmpty, ePrefix.XCpy(tagLine))
 
-	if err != nil {
+  if err != nil {
 
-		return NumericSeparatorDto{},
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: retFuncName,
-				ErrContext: "",
-				ErrMessage: err.Error(),
-			}
-	}
+    return NumericSeparatorDto{},
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: retFuncName,
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+  }
 
-	if validateNumSeps {
+  if nsProfile.ValidateNumSeps {
 
-		tagLine = fmt.Sprintf("%s\nValidating Numeric Separators %s", ePrefix.String(), outputNumSepsName)
+    tagLine = fmt.Sprintf("%s\nValidating Numeric Separators %s",
+      ePrefix.String(), nsProfile.OutputNumSepsName)
 
-		retFuncName = fmt.Sprintf("err = %s.IsValid(ePrefix)", outputNumSepsName)
+    retFuncName = fmt.Sprintf(
+      "err = %s.IsValid(ePrefix)", nsProfile.OutputNumSepsName)
 
-		err = numSeps.IsValid(tagLine)
+    err = numSeps.IsValid(tagLine)
 
-		if err != nil {
+    if err != nil {
 
-			return NumericSeparatorDto{},
-				&FuncReturnError{
-					ErrPrefix:  ePrefix.String(),
-					ReturnFunc: retFuncName,
-					ErrContext: tagLine,
-					ErrMessage: err.Error(),
-				}
-		}
-	}
+      return NumericSeparatorDto{},
+        &FuncReturnError{
+          ErrPrefix:  ePrefix.String(),
+          ReturnFunc: retFuncName,
+          ErrContext: tagLine,
+          ErrMessage: err.Error(),
+        }
+    }
+  }
 
-	return numSeps, nil
+  return numSeps, nil
 }
