@@ -157,6 +157,7 @@ func (iaGluon *intAryGluon) setIntAryWithInt(
   var numSeps NumericSeparatorDto
 
   nsProfile.OutputNumSepsName = "numSeps"
+  nsProfile.SourceObjectName = "intAry"
 
   numSeps, err = iaUtils.selectNumericSeparators(
     intAry,
