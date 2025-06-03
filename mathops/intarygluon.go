@@ -14,83 +14,89 @@ type intAryGluon struct {
 
 // setIntAryWithInt
 //
-//		Sets the value of the current intAry object to that of the
-//		input parameter 'intDigits', an integer of type 'int'.
+//			Sets the value of the current intAry object to that of the
+//			input parameter 'intDigits', an integer of type 'int'.
 //
-//		Input parameter 'precision' to indicate the number of digits to
-//		the right of the decimal place. Input parameter 'precision' is
-//		of type uint.
+//			Input parameter 'precision' to indicate the number of digits to
+//			the right of the decimal place. Input parameter 'precision' is
+//			of type uint.
 //
-//		The numeric sign (plus or minus) of the resulting intAry value
-//		is determined by the sign of input parameter,'intDigits'.
+//			The numeric sign (plus or minus) of the resulting intAry value
+//			is determined by the sign of input parameter,'intDigits'.
 //
-//		Example
-//		=======
+//			Example
+//			=======
 //
-//		intDigits      precision      result
-//		---------      ---------      ------
+//			intDigits      precision      result
+//			---------      ---------      ------
 //
-//		  946254            3          946.254
-//		  946254            0          946254
-//		 -946254            3         -946.254
-//		 -946254            0         -946254
+//			  946254            3          946.254
+//			  946254            0          946254
+//			 -946254            3         -946.254
+//			 -946254            0         -946254
 //
-//	 IMPORTANT
-//	 =========
+//		 IMPORTANT
+//		 =========
 //
-//	 The maximum value for input parameter 'precision' is
-//	 2,147,483,647. This is the maximum value for a 32-bit
-//	 signed integer. The limitation derives from the maximum
-//	 length of arrays in 'Go'. Type IntAry relies on arrays
-//	 of 8-bit integers to store numeric values.
+//		 The maximum value for input parameter 'precision' is
+//		 2,147,483,647. This is the maximum value for a 32-bit
+//		 signed integer. The limitation derives from the maximum
+//		 length of arrays in 'Go'. Type IntAry relies on arrays
+//		 of 8-bit integers to store numeric values.
 //
-//	 Input Parameters
-//	 ================
+//		 Input Parameters
+//		 ================
 //
-//	 intAry                   *IntAry
-//	   A pointer to an IntAry object. This object will be
-//	   reconfigured with a new value based on the following
-//	   input parameters.
+//		 intAry                   *IntAry
+//		   A pointer to an IntAry object. This object will be
+//		   reconfigured with a new value based on the following
+//		   input parameters.
 //
-//	 validateIntAry           bool
-//	   When set to 'true', input parameter 'intAry' will be
-//	   subjected to validation tests.
+//		 validateIntAry           bool
+//		   When set to 'true', input parameter 'intAry' will be
+//		   subjected to validation tests.
 //
-//	 useDefaultNumSeps        bool
-//	   When set to 'true' Numeric Separators will be created
-//	   from default USA values and copied to input parameter
-//	   'intAry'.
+//		 useDefaultNumSeps        bool
+//		   When set to 'true' Numeric Separators will be created
+//		   from default USA values and copied to input parameter
+//		   'intAry'.
 //
-//	   When set to false, final Numeric Separators will be
-//	   copied from the inital value of 'intAry'.
+//		   When set to false, final Numeric Separators will be
+//		   copied from the inital value of 'intAry'.
 //
-//	 validateNumSeps          bool
-//	   When set to 'true', the final Numeric Separators will be
-//	   subjected to validation tests.
+//	  setDefaultsIfEmpty       bool
+//	    When set to 'true', the final Numeric Separators will
+//	    be tested for zero values. Any found zero values will
+//	    be replaced with USA default values.
 //
-//	 intDigits                int
-//	   The numeric digits contained in this value comprise both
-//	   the integer digits and the fractional digits which will be
-//	   configured in the final numeric value stored in parameter,
-//	   'intAry'.
+//		 validateNumSeps          bool
+//		   When set to 'true', the final Numeric Separators will be
+//		   subjected to validation tests.
 //
-//	 precision                uint
-//	   'precision' specifies the number of fractional digits in the
-//	   final numeric value stored in 'intAry'
+//		 intDigits                int
+//		   The numeric digits contained in this value comprise both
+//		   the integer digits and the fractional digits which will be
+//		   configured in the final numeric value stored in parameter,
+//		   'intAry'.
 //
-//	   Although 'precision' is an unsigned integer type, the maximum
-//	   value allowed for this parameter is 2,147,483,647.
+//		 precision                uint
+//		   'precision' specifies the number of fractional digits in the
+//		   final numeric value stored in 'intAry'
 //
-//	 Return Values
-//	 =============
+//		   Although 'precision' is an unsigned integer type, the maximum
+//		   value allowed for this parameter is 2,147,483,647.
 //
-//	 error
-//	   If no errors are encountered during processing, this returned
-//	   value will be set to 'nil'
+//		 Return Values
+//		 =============
+//
+//		 error
+//		   If no errors are encountered during processing, this returned
+//		   value will be set to 'nil'
 func (iaGluon *intAryGluon) setIntAryWithInt(
 	intAry *IntAry,
 	validateIntAry bool,
 	useDefaultNumSeps bool,
+	setDefaultsIfEmpty bool,
 	validateNumSeps bool,
 	intDigits int,
 	precision uint,
@@ -158,6 +164,7 @@ func (iaGluon *intAryGluon) setIntAryWithInt(
 		"intAry",
 		"numSeps",
 		useDefaultNumSeps,
+		setDefaultsIfEmpty,
 		validateNumSeps,
 		errPrefDto)
 

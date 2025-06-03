@@ -7,67 +7,7 @@ import (
 )
 
 type intAryNanobot struct {
-	lock *sync.Mutex
-}
-
-// setInternalFlags - Sets Array Lengths and
-// test for zero values
-//
-//	IMPORTANT
-//	=========
-//
-//	The calling function is responsible for verifying the validit
-//	of 'ia', the Intary object.
-func (iaNanobot *intAryNanobot) setInternalFlags(
-	ia *IntAry,
-	errPrefDto *ePref.ErrPrefixDto) error {
-
-	if iaNanobot.lock == nil {
-		iaNanobot.lock = new(sync.Mutex)
-	}
-
-	iaNanobot.lock.Lock()
-
-	defer iaNanobot.lock.Unlock()
-
-	var ePrefix *ePref.ErrPrefixDto
-
-	var err error
-
-	ePrefix,
-		err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
-		errPrefDto,
-		"intAryNanobot.setInternalFlags()",
-		"")
-
-	if err != nil {
-		return err
-	}
-
-	if ia == nil {
-
-		return &InputPtrNilError{
-			ErrPrefix:     ePrefix.String(),
-			ParameterName: "'ia'",
-		}
-	}
-
-	err = new(intAryElectron).setSignificantDigitIdxs(
-		ia,
-		ePrefix)
-
-	if err != nil {
-
-		return &FuncReturnError{
-			ErrPrefix: ePrefix.String(),
-			ReturnFunc: "err = new(intAryElectron).\n" +
-				"  setSignificantDigitIdxs( ia, ePrefix)",
-			ErrContext: "",
-			ErrMessage: err.Error(),
-		}
-	}
-
-	return nil
+	lock sync.Mutex
 }
 
 // getNumericSeparatorsDto
@@ -90,10 +30,6 @@ func (iaNanobot *intAryNanobot) setInternalFlags(
 func (iaNanobot *intAryNanobot) getNumericSeparatorsDto(
 	intAry *IntAry,
 	errPrefDto *ePref.ErrPrefixDto) (NumericSeparatorDto, error) {
-
-	if iaNanobot.lock == nil {
-		iaNanobot.lock = new(sync.Mutex)
-	}
 
 	iaNanobot.lock.Lock()
 
@@ -143,6 +79,10 @@ func (iaNanobot *intAryNanobot) hasFractionalDigits(
 	intAry *IntAry,
 	validateIntAry bool,
 	errPrefDto *ePref.ErrPrefixDto) (bool, error) {
+
+	iaNanobot.lock.Lock()
+
+	defer iaNanobot.lock.Unlock()
 
 	var ePrefix *ePref.ErrPrefixDto
 
@@ -217,4 +157,106 @@ func (iaNanobot *intAryNanobot) hasFractionalDigits(
 	}
 
 	return false, nil
+}
+
+// setInternalFlags
+//
+//	 Sets Array Lengths and test for zero values
+//
+//		IMPORTANT
+//		=========
+//
+//		The calling function is responsible for verifying the validity
+//		of 'ia', the IntAry object.
+func (iaNanobot *intAryNanobot) setInternalFlags(
+	ia *IntAry,
+	errPrefDto *ePref.ErrPrefixDto) error {
+
+	iaNanobot.lock.Lock()
+
+	defer iaNanobot.lock.Unlock()
+
+	var ePrefix *ePref.ErrPrefixDto
+
+	var err error
+
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
+		errPrefDto,
+		"intAryNanobot.setInternalFlags()",
+		"")
+
+	if err != nil {
+		return err
+	}
+
+	if ia == nil {
+
+		return &InputPtrNilError{
+			ErrPrefix:     ePrefix.String(),
+			ParameterName: "'ia'",
+		}
+	}
+
+	err = new(intAryElectron).setSignificantDigitIdxs(
+		ia,
+		ePrefix)
+
+	if err != nil {
+
+		return &FuncReturnError{
+			ErrPrefix: ePrefix.String(),
+			ReturnFunc: "err = new(intAryElectron).\n" +
+				"  setSignificantDigitIdxs( ia, ePrefix)",
+			ErrContext: "",
+			ErrMessage: err.Error(),
+		}
+	}
+
+	return nil
+}
+
+// setIsZeroValue
+//
+//	Analyzes the value of the intAry and sets a flag if the value
+//	of intAry evaluates to zero.
+func (iaNanobot *intAryNanobot) setIsZeroValue(
+	ia *IntAry) {
+
+	iaNanobot.lock.Lock()
+
+	defer iaNanobot.lock.Unlock()
+
+	if ia == nil {
+		return
+	}
+
+	ia.intAryLen = len(ia.intAry)
+
+	ia.isZeroValue = true
+
+	ia.isIntegerZeroValue = true
+
+	intLen := ia.intAryLen - ia.precision
+
+	for i := 0; i < ia.intAryLen; i++ {
+
+		if i < intLen && ia.intAry[i] > 0 {
+
+			ia.isIntegerZeroValue = false
+		}
+
+		if ia.intAry[i] > 0 {
+
+			ia.isZeroValue = false
+
+			return
+		}
+	}
+
+	// ia.isZeroValue == true
+	// signVal must be 1
+	ia.signVal = 1
+
+	return
 }

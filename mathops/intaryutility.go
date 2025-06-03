@@ -116,6 +116,7 @@ func (iaUtility *intAryUtility) selectNumericSeparators(
 	intAryName string,
 	outputNumSepsName string,
 	useDefaultNumSeps bool,
+	setDefaultsIfEmpty bool,
 	validateNumSeps bool,
 	errPrefDto *ePref.ErrPrefixDto) (NumericSeparatorDto, error) {
 
@@ -162,12 +163,14 @@ func (iaUtility *intAryUtility) selectNumericSeparators(
 			}
 	}
 
+	// Take NumSeps from 'intAry'
+
 	tagLine := fmt.Sprintf("%s Numeric Separators -> %s", intAryName, outputNumSepsName)
 
 	retFuncName := fmt.Sprintf("%s, err = new(intAryPhoton).getNumericSeparatorsDto(\n%s, ePrefix.XCpy(%s))",
 		outputNumSepsName, intAryName, tagLine)
 
-	numSeps, err = new(intAryPhoton).getNumericSeparatorsDto(intAry, ePrefix.XCpy(tagLine))
+	numSeps, err = new(intAryPhoton).getNumericSeparatorsDto(intAry, setDefaultsIfEmpty, ePrefix.XCpy(tagLine))
 
 	if err != nil {
 

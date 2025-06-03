@@ -29,6 +29,7 @@ type intAryPhoton struct {
 //		them into numeric values.
 func (iaPhoton *intAryPhoton) getNumericSeparatorsDto(
 	intAry *IntAry,
+	setDefaultsIfEmpty bool,
 	errPrefDto *ePref.ErrPrefixDto) (NumericSeparatorDto, error) {
 
 	if iaPhoton.lock == nil {
@@ -66,6 +67,10 @@ func (iaPhoton *intAryPhoton) getNumericSeparatorsDto(
 	numSeps.DecimalSeparator = intAry.GetDecimalSeparator()
 	numSeps.ThousandsSeparator = intAry.GetThousandsSeparator()
 	numSeps.CurrencySymbol = intAry.GetCurrencySymbol()
+
+	if setDefaultsIfEmpty {
+		numSeps.SetDefaultsIfEmpty()
+	}
 
 	return numSeps, nil
 }

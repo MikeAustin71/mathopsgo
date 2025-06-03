@@ -2054,7 +2054,7 @@ func (ia *IntAry) GetNumericSeparatorsDto() (NumericSeparatorDto, error) {
 		return NumericSeparatorDto{}, err
 	}
 
-	return new(intAryPhoton).getNumericSeparatorsDto(ia, ePrefix)
+	return new(intAryPhoton).getNumericSeparatorsDto(ia, false, ePrefix)
 }
 
 // GetNumStr
@@ -3589,7 +3589,7 @@ func (ia *IntAry) NewInt(intNum int, precision uint) (IntAry, error) {
 
 	iaPhoton := new(intAryPhoton)
 
-	numSeps, err := iaPhoton.getNumericSeparatorsDto(ia, ePrefix)
+	numSeps, err := iaPhoton.getNumericSeparatorsDto(ia, true, ePrefix)
 
 	if err != nil {
 
@@ -3602,8 +3602,6 @@ func (ia *IntAry) NewInt(intNum int, precision uint) (IntAry, error) {
 				ErrMessage: err.Error(),
 			}
 	}
-
-	numSeps.SetDefaultsIfEmpty()
 
 	//err = iAry.SetNumericSeparatorsDto(numSeps)
 
@@ -3623,6 +3621,7 @@ func (ia *IntAry) NewInt(intNum int, precision uint) (IntAry, error) {
 		&iAry,
 		true,
 		false,
+		true,
 		false,
 		intNum,
 		precision,
@@ -5542,7 +5541,7 @@ func (ia *IntAry) SetIntAryToZero(precision uint) error {
 		return err
 	}
 
-	numSeps, err := new(intAryPhoton).getNumericSeparatorsDto(ia, ePrefix.XCpy("ia numSeps -> numSeps"))
+	numSeps, err := new(intAryPhoton).getNumericSeparatorsDto(ia, true, ePrefix.XCpy("ia numSeps -> numSeps"))
 
 	if err != nil {
 
@@ -5623,6 +5622,7 @@ func (ia *IntAry) SetIntAryWithInt(intDigits int, precision uint) error {
 		ia,
 		true,
 		false,
+		true,
 		false,
 		intDigits,
 		precision,
@@ -6658,28 +6658,8 @@ func (ia *IntAry) SetInternalFlags() error {
 //	Analyzes the value of the intAry and sets a flag if the value
 //	of intAry evaluates to zero.
 func (ia *IntAry) SetIsZeroValue() {
-	ia.intAryLen = len(ia.intAry)
 
-	ia.isZeroValue = true
-	ia.isIntegerZeroValue = true
-
-	intLen := ia.intAryLen - ia.precision
-
-	for i := 0; i < ia.intAryLen; i++ {
-
-		if i < intLen && ia.intAry[i] > 0 {
-			ia.isIntegerZeroValue = false
-		}
-
-		if ia.intAry[i] > 0 {
-			ia.isZeroValue = false
-			return
-		}
-	}
-
-	// ia.isZeroValue == true
-	// signVal must be 1
-	ia.signVal = 1
+	new(intAryNanobot).setIsZeroValue(ia)
 }
 
 // SetNumericSeparators

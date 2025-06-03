@@ -85,40 +85,14 @@ func (iaNeutron *intAryNeutron) ceiling(
 			}
 	}
 
-	if validateIntAry {
+	err = new(intAryUtility).selectIntAryValidation(
+		intAry,
+		"intAry",
+		validateIntAry,
+		ePrefix)
 
-		err = new(intAryElectron).isValidIntAry(
-			intAry,
-			ePrefix.XCpy("Validating 'intAry'").String())
-
-		if err != nil {
-
-			return IntAry{},
-				&FuncReturnError{
-					ErrPrefix: ePrefix.String(),
-					ReturnFunc: "err = new(intAryElectron).isValidIntAry(\n" +
-						"intAry, ePrefix.XCpy(Validating 'intAry').String())",
-					ErrContext: "Input parameter 'intAry' is INVALID!\n" +
-						"'intAry' FAILED Validation Tests.",
-					ErrMessage: err.Error(),
-				}
-		}
-	} else {
-
-		err = new(intAryNanobot).setInternalFlags(
-			intAry, ePrefix.XCpy("Setting 'intAry' Flags"))
-
-		if err != nil {
-
-			return IntAry{},
-				&FuncReturnError{
-					ErrPrefix: ePrefix.String(),
-					ReturnFunc: "err = new(intAryNanobot).setInternalFlags(\n" +
-						"  intAry, ePrefix.XCpy(Setting 'intAry' Flags))",
-					ErrContext: "",
-					ErrMessage: err.Error(),
-				}
-		}
+	if err != nil {
+		return IntAry{}, err
 	}
 
 	numSeps, err := intAry.GetNumericSeparatorsDto()
@@ -133,6 +107,8 @@ func (iaNeutron *intAryNeutron) ceiling(
 				ErrMessage: err.Error(),
 			}
 	}
+
+	numSeps.SetDefaultsIfEmpty()
 
 	iAry2 := new(intAryElectron).newIntAry()
 
@@ -339,38 +315,14 @@ func (iaNeutron *intAryNeutron) changeSign(
 		}
 	}
 
-	if validateIntAry {
+	err = new(intAryUtility).selectIntAryValidation(
+		intAry,
+		"intAry",
+		validateIntAry,
+		ePrefix)
 
-		err = new(intAryElectron).isValidIntAry(
-			intAry,
-			ePrefix.XCpy("Validating 'intAry'").String())
-
-		if err != nil {
-
-			return &FuncReturnError{
-				ErrPrefix: ePrefix.String(),
-				ReturnFunc: "err = new(intAryElectron).isValidIntAry(\n" +
-					"intAry, ePrefix.XCpy(Validating 'intAry').String())",
-				ErrContext: "Input parameter 'intAry' is INVALID!\n" +
-					"'intAry' FAILED Validation Tests.",
-				ErrMessage: err.Error(),
-			}
-		}
-	} else {
-
-		err = new(intAryNanobot).setInternalFlags(
-			intAry, ePrefix.XCpy("Setting 'intAry' Flags"))
-
-		if err != nil {
-
-			return &FuncReturnError{
-				ErrPrefix: ePrefix.String(),
-				ReturnFunc: "err = new(intAryNanobot).setInternalFlags(\n" +
-					"  intAry, ePrefix.XCpy(Setting 'intAry' Flags))",
-				ErrContext: "",
-				ErrMessage: err.Error(),
-			}
-		}
+	if err != nil {
+		return err
 	}
 
 	if intAry.isZeroValue {
@@ -449,37 +401,14 @@ func (iaNeutron *intAryNeutron) divideByTwo(
 		}
 	}
 
-	if validateIntAry {
+	err = new(intAryUtility).selectIntAryValidation(
+		intAry,
+		"intAry",
+		validateIntAry,
+		ePrefix)
 
-		err = new(intAryElectron).isValidIntAry(
-			intAry, ePrefix.XCpy("Validating 'intAry'").String())
-
-		if err != nil {
-
-			return &FuncReturnError{
-				ErrPrefix: ePrefix.String(),
-				ReturnFunc: "err = new(intAryElectron).isValidIntAry(\n" +
-					"   intAry, ePrefix.XCpy(Validating 'intAry').String())",
-				ErrContext: "Input parameter 'intAry' is INVALID!\n" +
-					"'intAry' FAILED Validation Tests.",
-				ErrMessage: err.Error(),
-			}
-		}
-	} else {
-
-		err = new(intAryNanobot).setInternalFlags(
-			intAry, ePrefix.XCpy("Setting 'intAry' Flags"))
-
-		if err != nil {
-
-			return &FuncReturnError{
-				ErrPrefix: ePrefix.String(),
-				ReturnFunc: "err = new(intAryNanobot).setInternalFlags(\n" +
-					"  intAry, ePrefix.XCpy(Setting 'intAry' Flags))",
-				ErrContext: "",
-				ErrMessage: err.Error(),
-			}
-		}
+	if err != nil {
+		return err
 	}
 
 	err = new(IntAryMathDivide).DivideByTwo(intAry)
@@ -567,38 +496,14 @@ func (iaNeutron *intAryNeutron) divideByInt64(
 		}
 	}
 
-	if validateIntAry {
+	err = new(intAryUtility).selectIntAryValidation(
+		intAry,
+		"intAry",
+		validateIntAry,
+		ePrefix)
 
-		err = new(intAryElectron).isValidIntAry(
-			intAry,
-			ePrefix.XCpy("Validating intAry").String())
-
-		if err != nil {
-
-			return &FuncReturnError{
-				ErrPrefix: ePrefix.String(),
-				ReturnFunc: "err = new(intAryElectron).isValidIntAry(\n" +
-					"  intAry, ePrefix.XCpy(Validating 'intAry').String())",
-				ErrContext: "",
-				ErrMessage: err.Error(),
-			}
-		}
-	} else {
-
-		err = new(intAryNanobot).setInternalFlags(
-			intAry, ePrefix.XCpy("Setting 'intAry' Flags"))
-
-		if err != nil {
-
-			return &FuncReturnError{
-				ErrPrefix: ePrefix.String(),
-				ReturnFunc: "err = new(intAryNanobot).setInternalFlags(\n" +
-					"  ia, ePrefix.XCpy(Setting 'intAry' Flags))",
-				ErrContext: "",
-				ErrMessage: err.Error(),
-			}
-		}
-
+	if err != nil {
+		return err
 	}
 
 	intAryNumStr, err := new(intAryAtom).getRawNumStr(intAry, false, ePrefix)
@@ -696,37 +601,14 @@ func (iaNeutron *intAryNeutron) divideByTenToPower(
 		}
 	}
 
-	if validateIntAry {
+	err = new(intAryUtility).selectIntAryValidation(
+		intAry,
+		"intAry",
+		validateIntAry,
+		ePrefix)
 
-		err = new(intAryElectron).isValidIntAry(
-			intAry,
-			ePrefix.XCpy("Validating intAry").String())
-
-		if err != nil {
-
-			return &FuncReturnError{
-				ErrPrefix: ePrefix.String(),
-				ReturnFunc: "err = new(intAryElectron).isValidIntAry(\n" +
-					"  intAry, ePrefix.XCpy(Validating 'intAry').String())",
-				ErrContext: "",
-				ErrMessage: err.Error(),
-			}
-		}
-	} else {
-
-		err = new(intAryNanobot).setInternalFlags(
-			intAry, ePrefix.XCpy("Setting 'intAry' Flags"))
-
-		if err != nil {
-
-			return &FuncReturnError{
-				ErrPrefix: ePrefix.String(),
-				ReturnFunc: "err = new(intAryNanobot).setInternalFlags(\n" +
-					"  ia, ePrefix.XCpy(Setting 'intAry' Flags))",
-				ErrContext: "",
-				ErrMessage: err.Error(),
-			}
-		}
+	if err != nil {
+		return err
 	}
 
 	intAryNumStr, err := new(intAryAtom).getRawNumStr(intAry, false, ePrefix)
@@ -853,75 +735,26 @@ func (iaNeutron *intAryNeutron) divideIntArys(
 			}
 	}
 
-	iaElectron := new(intAryElectron)
+	iaUtils := new(intAryUtility)
 
-	if validateIntAry1 {
+	err = iaUtils.selectIntAryValidation(
+		iAry1,
+		"iAry1",
+		validateIntAry1,
+		ePrefix)
 
-		err = iaElectron.isValidIntAry(
-			iAry1, ePrefix.XCpy("Validating IntAry ('iAry1')").String())
-
-		if err != nil {
-
-			return IntAry{},
-				&FuncReturnError{
-					ErrPrefix: ePrefix.String(),
-					ReturnFunc: "err = iaElectron.isValidIntAry(iAry1,\n" +
-						"ePrefix.XCpy(Validating IntAry ('iAry1')).String())",
-					ErrContext: "",
-					ErrMessage: err.Error(),
-				}
-		}
-	} else {
-
-		err = new(intAryNanobot).setInternalFlags(
-			iAry1, ePrefix.XCpy("Setting 'iAry1' Flags"))
-
-		if err != nil {
-
-			return IntAry{},
-				&FuncReturnError{
-					ErrPrefix: ePrefix.String(),
-					ReturnFunc: "err = new(intAryNanobot).setInternalFlags(\n" +
-						"  iAry1, ePrefix.XCpy(Setting 'iAry1' Flags))",
-					ErrContext: "",
-					ErrMessage: err.Error(),
-				}
-		}
+	if err != nil {
+		return IntAry{}, err
 	}
 
-	if validateIntAry2 {
+	err = iaUtils.selectIntAryValidation(
+		iAry2,
+		"iAry2",
+		validateIntAry2,
+		ePrefix)
 
-		err = iaElectron.isValidIntAry(
-			iAry2, ePrefix.XCpy("Validating IntAry ('iAry2')").String())
-
-		if err != nil {
-
-			return IntAry{},
-				&FuncReturnError{
-					ErrPrefix: ePrefix.String(),
-					ReturnFunc: "err = new(intAryElectron).isValidIntAry(iAry2,\n" +
-						"  ePrefix.XCpy(Validating IntAry ('iAry2')).String())",
-					ErrContext: "Input parameter 'iAry2' is INVALID!\n" +
-						"'iAry2' FAILED validation tests.",
-					ErrMessage: err.Error(),
-				}
-		}
-	} else {
-
-		err = new(intAryNanobot).setInternalFlags(
-			iAry2, ePrefix.XCpy("Setting 'iAry2' Flags"))
-
-		if err != nil {
-
-			return IntAry{},
-				&FuncReturnError{
-					ErrPrefix: ePrefix.String(),
-					ReturnFunc: "err = new(intAryNanobot).setInternalFlags(\n" +
-						"  iAry2, ePrefix.XCpy(Setting 'iAry2' Flags))",
-					ErrContext: "",
-					ErrMessage: err.Error(),
-				}
-		}
+	if err != nil {
+		return IntAry{}, err
 	}
 
 	iAry1NumStr, err := iAry1.GetNumStr()
@@ -1060,43 +893,17 @@ func (iaNeutron *intAryNeutron) floor(
 			}
 	}
 
-	if validateIntAry {
+	err = new(intAryUtility).selectIntAryValidation(
+		intAry,
+		"intAry",
+		validateIntAry,
+		ePrefix)
 
-		err = new(intAryElectron).isValidIntAry(
-			intAry,
-			ePrefix.XCpy("Validating 'intAry'").String())
-
-		if err != nil {
-
-			return IntAry{},
-				&FuncReturnError{
-					ErrPrefix:  ePrefix.String(),
-					ReturnFunc: "err = new(intAryElectron).isValidIntAry(intAry, ePrefix.XCpy(Validating 'ia').String()",
-					ErrContext: "Input parameter 'intAry' is INVALID!\n" +
-						"'intAry' FAILED validation tests.",
-					ErrMessage: err.Error(),
-				}
-		}
-
-	} else {
-
-		err = new(intAryNanobot).setInternalFlags(
-			intAry, ePrefix.XCpy("Setting 'intAry' Flags"))
-
-		if err != nil {
-
-			return IntAry{},
-				&FuncReturnError{
-					ErrPrefix: ePrefix.String(),
-					ReturnFunc: "err = new(intAryNanobot).setInternalFlags(\n" +
-						"  intAry, ePrefix.XCpy(Setting 'intAry' Flags))",
-					ErrContext: "",
-					ErrMessage: err.Error(),
-				}
-		}
+	if err != nil {
+		return IntAry{}, err
 	}
 
-	numSeps, err := new(intAryPhoton).getNumericSeparatorsDto(intAry, ePrefix.XCpy("IntAry NumSeps"))
+	numSeps, err := new(intAryPhoton).getNumericSeparatorsDto(intAry, true, ePrefix.XCpy("IntAry NumSeps"))
 
 	if err != nil {
 
@@ -1340,39 +1147,14 @@ func (iaNeutron *intAryNeutron) getBigInt(
 			}
 	}
 
-	if validateIntAry {
+	err = new(intAryUtility).selectIntAryValidation(
+		intAry,
+		"intAry",
+		validateIntAry,
+		ePrefix)
 
-		err = new(intAryElectron).isValidIntAry(
-			intAry, ePrefix.XCpy("Validating 'intAry'").String())
-
-		if err != nil {
-
-			return big.NewInt(0),
-				&FuncReturnError{
-					ErrPrefix: ePrefix.String(),
-					ReturnFunc: "err = new(intAryElectron).isValidIntAry(\n" +
-						"   intAry, ePrefix.XCpy(Validating 'intAry').String())",
-					ErrContext: "Input parameter 'intAry' is INVALID!\n" +
-						"'intAry' FAILED Validation Tests.",
-					ErrMessage: err.Error(),
-				}
-		}
-	} else {
-
-		err = new(intAryNanobot).setInternalFlags(
-			intAry, ePrefix.XCpy("Setting 'intAry' Flags"))
-
-		if err != nil {
-
-			return big.NewInt(0),
-				&FuncReturnError{
-					ErrPrefix: ePrefix.String(),
-					ReturnFunc: "err = new(intAryNanobot).setInternalFlags(\n" +
-						"  intAry, ePrefix.XCpy(Setting 'intAry' Flags))",
-					ErrContext: "",
-					ErrMessage: err.Error(),
-				}
-		}
+	if err != nil {
+		return big.NewInt(0), err
 	}
 
 	lenIntAry := len(intAry.intAry)
@@ -1479,44 +1261,19 @@ func (iaNeutron *intAryNeutron) getAbsoluteValue(
 			}
 	}
 
-	if validateIntAry {
+	err = new(intAryUtility).selectIntAryValidation(
+		intAry,
+		"intAry",
+		validateIntAry,
+		ePrefix)
 
-		err = new(intAryElectron).isValidIntAry(
-			intAry,
-			ePrefix.XCpy("Validating 'intAry'").String())
-
-		if err != nil {
-
-			return IntAry{},
-				&FuncReturnError{
-					ErrPrefix:  ePrefix.String(),
-					ReturnFunc: "err = new(intAryElectron).isValidIntAry(intAry, ePrefix.XCpy(Validating 'ia').String()",
-					ErrContext: "Input parameter 'intAry' is INVALID!\n" +
-						"'intAry' FAILED validation tests.",
-					ErrMessage: err.Error(),
-				}
-		}
-
-	} else {
-
-		err = new(intAryNanobot).setInternalFlags(
-			intAry, ePrefix.XCpy("Setting 'intAry' Flags"))
-
-		if err != nil {
-
-			return IntAry{},
-				&FuncReturnError{
-					ErrPrefix: ePrefix.String(),
-					ReturnFunc: "err = new(intAryNanobot).setInternalFlags(\n" +
-						"  intAry, ePrefix.XCpy(Setting 'intAry' Flags))",
-					ErrContext: "",
-					ErrMessage: err.Error(),
-				}
-		}
+	if err != nil {
+		return IntAry{}, err
 	}
 
 	absIa := new(intAryElectron).newIntAry()
 
+	// intAry numSeps -> absIa
 	err = new(intAryProton).copy(&absIa, intAry, false, true, ePrefix)
 
 	if err != nil {
@@ -1614,42 +1371,17 @@ func (iaNeutron *intAryNeutron) getFractionalDigits(
 			}
 	}
 
-	if validateIntAry {
+	err = new(intAryUtility).selectIntAryValidation(
+		intAry,
+		"intAry",
+		validateIntAry,
+		ePrefix)
 
-		err = new(intAryElectron).isValidIntAry(
-			intAry, ePrefix.XCpy("Validating 'intAry'").String())
-
-		if err != nil {
-
-			return IntAry{},
-				&FuncReturnError{
-					ErrPrefix: ePrefix.String(),
-					ReturnFunc: "err = new(intAryElectron).isValidIntAry(\n" +
-						"   intAry, ePrefix.XCpy(Validating 'intAry').String())",
-					ErrContext: "Input parameter 'intAry' is INVALID!\n" +
-						"'intAry' FAILED Validation Tests.",
-					ErrMessage: err.Error(),
-				}
-		}
-	} else {
-
-		err = new(intAryNanobot).setInternalFlags(
-			intAry, ePrefix.XCpy("Setting 'intAry' Flags"))
-
-		if err != nil {
-
-			return IntAry{},
-				&FuncReturnError{
-					ErrPrefix: ePrefix.String(),
-					ReturnFunc: "err = new(intAryNanobot).setInternalFlags(\n" +
-						"  intAry, ePrefix.XCpy(Setting 'intAry' Flags))",
-					ErrContext: "",
-					ErrMessage: err.Error(),
-				}
-		}
+	if err != nil {
+		return IntAry{}, err
 	}
 
-	numSeps, err := new(intAryPhoton).getNumericSeparatorsDto(intAry, ePrefix.XCpy("Numeric Separators intAry -> numSeps"))
+	numSeps, err := new(intAryPhoton).getNumericSeparatorsDto(intAry, true, ePrefix.XCpy("Numeric Separators intAry -> numSeps"))
 
 	if err != nil {
 		return IntAry{}, err
@@ -1772,42 +1504,17 @@ func (iaNeutron *intAryNeutron) getIntegerDigits(
 			}
 	}
 
-	if validateIntAry {
+	err = new(intAryUtility).selectIntAryValidation(
+		intAry,
+		"intAry",
+		validateIntAry,
+		ePrefix)
 
-		err = new(intAryElectron).isValidIntAry(
-			intAry, ePrefix.XCpy("Validating 'intAry'").String())
-
-		if err != nil {
-
-			return IntAry{},
-				&FuncReturnError{
-					ErrPrefix: ePrefix.String(),
-					ReturnFunc: "err = new(intAryElectron).isValidIntAry(\n" +
-						"   intAry, ePrefix.XCpy(Validating 'intAry').String())",
-					ErrContext: "Input parameter 'intAry' is INVALID!\n" +
-						"'intAry' FAILED Validation Tests.",
-					ErrMessage: err.Error(),
-				}
-		}
-	} else {
-
-		err = new(intAryNanobot).setInternalFlags(
-			intAry, ePrefix.XCpy("Setting 'intAry' Flags"))
-
-		if err != nil {
-
-			return IntAry{},
-				&FuncReturnError{
-					ErrPrefix: ePrefix.String(),
-					ReturnFunc: "err = new(intAryNanobot).setInternalFlags(\n" +
-						"  intAry, ePrefix.XCpy(Setting 'intAry' Flags))",
-					ErrContext: "",
-					ErrMessage: err.Error(),
-				}
-		}
+	if err != nil {
+		return IntAry{}, err
 	}
 
-	numSeps, err := new(intAryPhoton).getNumericSeparatorsDto(intAry, ePrefix.XCpy("Numeric Separators intAry -> numSeps"))
+	numSeps, err := new(intAryPhoton).getNumericSeparatorsDto(intAry, true, ePrefix.XCpy("Numeric Separators intAry -> numSeps"))
 
 	if err != nil {
 		return IntAry{}, err
@@ -1935,41 +1642,18 @@ func (iaNeutron *intAryNeutron) getNumStrDto(
 			}
 	}
 
-	if validateIntAry {
+	err = new(intAryUtility).selectIntAryValidation(
+		intAry,
+		"intAry",
+		validateIntAry,
+		ePrefix)
 
-		err = new(intAryElectron).isValidIntAry(intAry, ePrefix.XCpy("Validating 'intAry'").String())
-
-		if err != nil {
-
-			return NumStrDto{},
-				&FuncReturnError{
-					ErrPrefix: ePrefix.String(),
-					ReturnFunc: "err = new(intAryElectron).isValidIntAry(\n" +
-						"  intAry, ePrefix.XCpy(Validating 'intAry').String())",
-					ErrContext: "",
-					ErrMessage: err.Error(),
-				}
-		}
-	} else {
-
-		err = new(intAryNanobot).setInternalFlags(
-			intAry, ePrefix.XCpy("Setting 'intAry' Flags"))
-
-		if err != nil {
-
-			return NumStrDto{},
-				&FuncReturnError{
-					ErrPrefix: ePrefix.String(),
-					ReturnFunc: "err = new(intAryNanobot).setInternalFlags(\n" +
-						"  intAry, ePrefix.XCpy(Setting 'intAry' Flags))",
-					ErrContext: "",
-					ErrMessage: err.Error(),
-				}
-		}
+	if err != nil {
+		return NumStrDto{}, err
 	}
 
 	numSeps, err := new(intAryPhoton).
-		getNumericSeparatorsDto(intAry, ePrefix.XCpy("numSeps<-intAry"))
+		getNumericSeparatorsDto(intAry, true, ePrefix.XCpy("numSeps<-intAry"))
 
 	if err != nil {
 
@@ -1982,7 +1666,6 @@ func (iaNeutron *intAryNeutron) getNumStrDto(
 			}
 	}
 
-	// iaNumStr, err := ia.GetNumStr()
 	iaNumStr, err := new(intAryAtom).getRawNumStr(intAry, false, ePrefix.XCpy("iaNumStr<-intAry"))
 
 	if err != nil {
