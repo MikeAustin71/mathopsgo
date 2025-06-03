@@ -68,38 +68,41 @@ In the following permutation formula, n= 'numOfItems'  and r = 'numOfItemsPicked
 // ================
 //
 // numOfItems 				*big.Int	- Must be a positive integer number greater than zero.
-//                                'numOfItems' must be greater than or equal to
-// 																'numOfItemsPicked'.
+//
+//	                               'numOfItems' must be greater than or equal to
+//																	'numOfItemsPicked'.
 //
 // numOfItemsPicked 	*big.Int	- Must be a positive integer number greater than zero.
-// 																'numOfItemsChosen' must be less than or equal to
-// 																'numOfItems'.
 //
+//	'numOfItemsChosen' must be less than or equal to
+//	'numOfItems'.
 //
 // Returns
 // =======
 //
 // BigIntNum			- If the calculation is successful, the result is returned as a
-//                  BigIntNum type. If the calculation fails, the error return is
-//                  populated.
+//
+//	BigIntNum type. If the calculation fails, the error return is
+//	populated.
 //
 // error					- If the calculation is successful, this return value is 'nil'. If
-//                  the calculation fails, 'error' is populated with an appropriate
-//                  error message.
+//
+//	the calculation fails, 'error' is populated with an appropriate
+//	error message.
 //
 // Calculation
 // ===========
 //
 // In the following permutation formula, n= 'numOfItems' and r = 'numOfItemsPicked'
 //
-//              						n!
-// 							nPr	 =		------
-// 												(n-r)!
-//             ----------------------
+//	             						n!
+//								nPr	 =		------
+//													(n-r)!
+//	            ----------------------
 //
-// 				Where n is the number of things to select from,
-//				and we pick r of them, repetition is NOT allowed,
-// 				and order matters.
+//					Where n is the number of things to select from,
+//					and we pick r of them, repetition is NOT allowed,
+//					and order matters.
 //
 // *** This permutation calculation assumes NO REPETITIONS! ***
 //
@@ -107,12 +110,13 @@ In the following permutation formula, n= 'numOfItems'  and r = 'numOfItemsPicked
 // =======
 // How many ways can first and second place be awarded to 10 people?
 //
-//                         10!
+//	10!
+//
 // Answer = 10P2 =       ------ =   10 x 9 = 90
-//                         8!
+//
+//	8!
 //
 // Note: 0! = 1
-//
 func (prob Probability) PermutationsNoRepsBigInt(
 	numOfItems, numOfItemsPicked *big.Int) (BigIntNum, error) {
 
@@ -206,37 +210,36 @@ func (prob Probability) PermutationsNoRepsBigInt(
 // =======
 //
 // BigIntNum			- If the calculation is successful, the result is returned as a
-//                  BigIntNum type. If the calculation fails, the error return is
-//                  populated.
+//
+//	BigIntNum type. If the calculation fails, the error return is
+//	populated.
 //
 // error					- If the calculation is successful, this return value is 'nil'. If
-//                  the calculation fails, 'error' is populated with an appropriate
-//                  error message.
+//
+//	the calculation fails, 'error' is populated with an appropriate
+//	error message.
 //
 // Calculation
 // ===========
 // In the following permutation formula, n= 'numOfItems'  and r = 'numOfItemsPicked'
 //
+//										nPr	 =		n^r
+//	                 -------------
 //
-// 									nPr	 =		n^r
-//                  -------------
-//
-// 				Where n is the number of things to choose from,
-//				and we choose r of them, repetition is allowed,
-// 				and order matters.
-//
+//					Where n is the number of things to choose from,
+//					and we choose r of them, repetition is allowed,
+//					and order matters.
 //
 // *** This permutation calculation assumes REPETITIONS ARE ALLOWED! ***
 // This is also known as 'ordered sampling with replacement'. Since this calculation
 // allows repetitions or replacements, the 'numOfItemsPicked' may be greater than
 // 'numOfItems'.
 //
-//  Example
-//  =======
-// 				Combination lock with 3 numbers: there are 10 numbers to choose from
-// 				(0,1,2,3,4,5,6,7,8,9) and we choose 3 of them (repetitions allowed):
-// 							10 × 10 × ... (3 times) = 10^3 = 1,000 permutations
-//
+//	 Example
+//	 =======
+//					Combination theLock with 3 numbers: there are 10 numbers to choose from
+//					(0,1,2,3,4,5,6,7,8,9) and we choose 3 of them (repetitions allowed):
+//								10 × 10 × ... (3 times) = 10^3 = 1,000 permutations
 func (prob Probability) PermutationsWithRepsBigInt(
 	numOfItems, numOfItemsPicked *big.Int) (BigIntNum, error) {
 
@@ -290,36 +293,35 @@ func (prob Probability) PermutationsWithRepsBigInt(
 // In the following permutation formulas, n= 'numOfItems'  and r = 'numOfItemsPicked'. The actual
 // formula applied depends on whether input parameter 'allowRepetitions' is 'true' or 'false'.
 //
-//      ====================================================================
-// 			'allowRepetitions' = false
+//	     ====================================================================
+//				'allowRepetitions' = false
 //
-//              						n!
-// 							nPr	 =		------
-// 												(n-r)!
-//             ----------------------
+//	             						n!
+//								nPr	 =		------
+//													(n-r)!
+//	            ----------------------
 //
-// 							Note: 0! = 1
+//								Note: 0! = 1
 //
-// 				Where n is the number of things to choose from,
-//				and we choose r of them, repetition is NOT allowed,
-// 				and order matters.
+//					Where n is the number of things to choose from,
+//					and we choose r of them, repetition is NOT allowed,
+//					and order matters.
 //
-//      When 'allowRepetitions' = false, 'numOfItemsPicked' must be a positive integer number
-//      which is less than or equal to 'numOfItems'.
+//	     When 'allowRepetitions' = false, 'numOfItemsPicked' must be a positive integer number
+//	     which is less than or equal to 'numOfItems'.
 //
-//      ====================================================================
-// 			'allowRepetitions' = true
+//	     ====================================================================
+//				'allowRepetitions' = true
 //
-// 									nPr	 =		n^r
-//                  -------------
+//										nPr	 =		n^r
+//	                 -------------
 //
-// 				Where n is the number of things to choose from,
-//				and we choose r of them, repetition IS allowed,
-// 				and order matters.
+//					Where n is the number of things to choose from,
+//					and we choose r of them, repetition IS allowed,
+//					and order matters.
 //
-//      When 'allowRepetitions' = true, 'numOfItemsPicked' must be a positive integer number.
-//      'numOfItemsPicked' can be greater than, equal to or less than 'numOfItems'.
-//
+//	     When 'allowRepetitions' = true, 'numOfItemsPicked' must be a positive integer number.
+//	     'numOfItemsPicked' can be greater than, equal to or less than 'numOfItems'.
 func (prob Probability) PermutationsBigIntNum(
 	numOfItems, numOfItemsPicked BigIntNum,
 	allowRepetitions bool) (BigIntNum, error) {
@@ -383,36 +385,35 @@ func (prob Probability) PermutationsBigIntNum(
 // In the following permutation formulas, n= 'numOfItems'  and r = 'numOfItemsPicked'. The actual
 // formula applied depends on whether input parameter 'allowRepetitions' is 'true' or 'false'.
 //
-//      ====================================================================
-// 			'allowRepetitions' = false
+//	     ====================================================================
+//				'allowRepetitions' = false
 //
-//              						n!
-// 							nPr	 =		------
-// 												(n-r)!
-//             ----------------------
+//	             						n!
+//								nPr	 =		------
+//													(n-r)!
+//	            ----------------------
 //
-// 							Note: 0! = 1
+//								Note: 0! = 1
 //
-// 				Where n is the number of things to choose from,
-//				and we choose r of them, repetition is NOT allowed,
-// 				and order matters.
+//					Where n is the number of things to choose from,
+//					and we choose r of them, repetition is NOT allowed,
+//					and order matters.
 //
-//      When 'allowRepetitions' = false, 'numOfItemsPicked' must be a positive integer number
-//      which is less than or equal to 'numOfItems'.
+//	     When 'allowRepetitions' = false, 'numOfItemsPicked' must be a positive integer number
+//	     which is less than or equal to 'numOfItems'.
 //
-//      ====================================================================
-// 			'allowRepetitions' = true
+//	     ====================================================================
+//				'allowRepetitions' = true
 //
-// 									nPr	 =		n^r
-//                  -------------
+//										nPr	 =		n^r
+//	                 -------------
 //
-// 				Where n is the number of things to choose from,
-//				and we choose r of them, repetition IS allowed,
-// 				and order matters.
+//					Where n is the number of things to choose from,
+//					and we choose r of them, repetition IS allowed,
+//					and order matters.
 //
-//      When 'allowRepetitions' = true, 'numOfItemsPicked' must be a positive integer number.
-//      'numOfItemsPicked' can be greater than, equal to or less than 'numOfItems'.
-//
+//	     When 'allowRepetitions' = true, 'numOfItemsPicked' must be a positive integer number.
+//	     'numOfItemsPicked' can be greater than, equal to or less than 'numOfItems'.
 func (prob Probability) PermutationsDecimal(
 	numOfItems, numOfItemsPicked Decimal,
 	allowRepetitions bool) (Decimal, error) {
@@ -525,36 +526,35 @@ func (prob Probability) PermutationsDecimal(
 // In the following permutation formulas, n= 'numOfItems'  and r = 'numOfItemsPicked'. The actual
 // formula applied depends on whether input parameter 'allowRepetitions' is 'true' or 'false'.
 //
-//      ====================================================================
-// 			'allowRepetitions' = false
+//	     ====================================================================
+//				'allowRepetitions' = false
 //
-//              						n!
-// 							nPr	 =		------
-// 												(n-r)!
-//             ----------------------
+//	             						n!
+//								nPr	 =		------
+//													(n-r)!
+//	            ----------------------
 //
-// 							Note: 0! = 1
+//								Note: 0! = 1
 //
-// 				Where n is the number of things to choose from,
-//				and we choose r of them, repetition is NOT allowed,
-// 				and order matters.
+//					Where n is the number of things to choose from,
+//					and we choose r of them, repetition is NOT allowed,
+//					and order matters.
 //
-//      When 'allowRepetitions' = false, 'numOfItemsPicked' must be a positive integer number
-//      which is less than or equal to 'numOfItems'.
+//	     When 'allowRepetitions' = false, 'numOfItemsPicked' must be a positive integer number
+//	     which is less than or equal to 'numOfItems'.
 //
-//      ====================================================================
-// 			'allowRepetitions' = true
+//	     ====================================================================
+//				'allowRepetitions' = true
 //
-// 									nPr	 =		n^r
-//                  -------------
+//										nPr	 =		n^r
+//	                 -------------
 //
-// 				Where n is the number of things to choose from,
-//				and we choose r of them, repetition IS allowed,
-// 				and order matters.
+//					Where n is the number of things to choose from,
+//					and we choose r of them, repetition IS allowed,
+//					and order matters.
 //
-//      When 'allowRepetitions' = true, 'numOfItemsPicked' must be a positive integer number.
-//      'numOfItemsPicked' can be greater than, equal to or less than 'numOfItems'.
-//
+//	     When 'allowRepetitions' = true, 'numOfItemsPicked' must be a positive integer number.
+//	     'numOfItemsPicked' can be greater than, equal to or less than 'numOfItems'.
 func (prob Probability) PermutationsIntAry(
 	numOfItems, numOfItemsPicked IntAry,
 	allowRepetitions bool) (IntAry, error) {
@@ -667,36 +667,35 @@ func (prob Probability) PermutationsIntAry(
 // In the following permutation formulas, n= 'numOfItems'  and r = 'numOfItemsPicked'. The actual
 // formula applied depends on whether input parameter 'allowRepetitions' is 'true' or 'false'.
 //
-//      ====================================================================
-// 			'allowRepetitions' = false
+//	     ====================================================================
+//				'allowRepetitions' = false
 //
-//              						n!
-// 							nPr	 =		------
-// 												(n-r)!
-//             ----------------------
+//	             						n!
+//								nPr	 =		------
+//													(n-r)!
+//	            ----------------------
 //
-// 							Note: 0! = 1
+//								Note: 0! = 1
 //
-// 				Where n is the number of things to choose from,
-//				and we choose r of them, repetition is NOT allowed,
-// 				and order matters.
+//					Where n is the number of things to choose from,
+//					and we choose r of them, repetition is NOT allowed,
+//					and order matters.
 //
-//      When 'allowRepetitions' = false, 'numOfItemsPicked' must be a positive integer number
-//      which is less than or equal to 'numOfItems'.
+//	     When 'allowRepetitions' = false, 'numOfItemsPicked' must be a positive integer number
+//	     which is less than or equal to 'numOfItems'.
 //
-//      ====================================================================
-// 			'allowRepetitions' = true
+//	     ====================================================================
+//				'allowRepetitions' = true
 //
-// 									nPr	 =		n^r
-//                  -------------
+//										nPr	 =		n^r
+//	                 -------------
 //
-// 				Where n is the number of things to choose from,
-//				and we choose r of them, repetition IS allowed,
-// 				and order matters.
+//					Where n is the number of things to choose from,
+//					and we choose r of them, repetition IS allowed,
+//					and order matters.
 //
-//      When 'allowRepetitions' = true, 'numOfItemsPicked' must be a positive integer number.
-//      'numOfItemsPicked' can be greater than, equal to or less than 'numOfItems'.
-//
+//	     When 'allowRepetitions' = true, 'numOfItemsPicked' must be a positive integer number.
+//	     'numOfItemsPicked' can be greater than, equal to or less than 'numOfItems'.
 func (prob Probability) PermutationsINumMgr(
 	numOfItems, numOfItemsPicked INumMgr,
 	allowRepetitions bool) (BigIntNum, error) {
@@ -800,36 +799,35 @@ func (prob Probability) PermutationsINumMgr(
 // In the following permutation formulas, n= 'numOfItems'  and r = 'numOfItemsPicked'. The actual
 // formula applied depends on whether input parameter 'allowRepetitions' is 'true' or 'false'.
 //
-//      ====================================================================
-// 			'allowRepetitions' = false
+//	     ====================================================================
+//				'allowRepetitions' = false
 //
-//              						n!
-// 							nPr	 =		------
-// 												(n-r)!
-//             ----------------------
+//	             						n!
+//								nPr	 =		------
+//													(n-r)!
+//	            ----------------------
 //
-// 							Note: 0! = 1
+//								Note: 0! = 1
 //
-// 				Where n is the number of things to choose from,
-//				and we choose r of them, repetition is NOT allowed,
-// 				and order matters.
+//					Where n is the number of things to choose from,
+//					and we choose r of them, repetition is NOT allowed,
+//					and order matters.
 //
-//      When 'allowRepetitions' = false, 'numOfItemsPicked' must be a positive integer number
-//      which is less than or equal to 'numOfItems'.
+//	     When 'allowRepetitions' = false, 'numOfItemsPicked' must be a positive integer number
+//	     which is less than or equal to 'numOfItems'.
 //
-//      ====================================================================
-// 			'allowRepetitions' = true
+//	     ====================================================================
+//				'allowRepetitions' = true
 //
-// 									nPr	 =		n^r
-//                  -------------
+//										nPr	 =		n^r
+//	                 -------------
 //
-// 				Where n is the number of things to choose from,
-//				and we choose r of them, repetition IS allowed,
-// 				and order matters.
+//					Where n is the number of things to choose from,
+//					and we choose r of them, repetition IS allowed,
+//					and order matters.
 //
-//      When 'allowRepetitions' = true, 'numOfItemsPicked' must be a positive integer number.
-//      'numOfItemsPicked' can be greater than, equal to or less than 'numOfItems'.
-//
+//	     When 'allowRepetitions' = true, 'numOfItemsPicked' must be a positive integer number.
+//	     'numOfItemsPicked' can be greater than, equal to or less than 'numOfItems'.
 func (prob Probability) PermutationsInt(
 	numOfItems, numOfItemsPicked int,
 	allowRepetitions bool) (BigIntNum, error) {
@@ -889,35 +887,34 @@ func (prob Probability) PermutationsInt(
 // In the following permutation formulas, n= 'numOfItems'  and r = 'numOfItemsPicked'. The actual
 // formula applied depends on whether input parameter 'allowRepetitions' is 'true' or 'false'.
 //
-//      ====================================================================
-// 			'allowRepetitions' = false
+//	     ====================================================================
+//				'allowRepetitions' = false
 //
-//              						n!
-// 							nPr	 =		------
-// 												(n-r)!
-//             ----------------------
+//	             						n!
+//								nPr	 =		------
+//													(n-r)!
+//	            ----------------------
 //
-// 							Note: 0! = 1
+//								Note: 0! = 1
 //
-// 				Where n is the number of things to choose from,
-//				and we choose r of them, repetition is NOT allowed,
-// 				and order matters.
+//					Where n is the number of things to choose from,
+//					and we choose r of them, repetition is NOT allowed,
+//					and order matters.
 //
-//      When 'allowRepetitions' = false, 'numOfItemsPicked' must be a positive integer number
-//      which is less than or equal to 'numOfItems'.
+//	     When 'allowRepetitions' = false, 'numOfItemsPicked' must be a positive integer number
+//	     which is less than or equal to 'numOfItems'.
 //
-//      ====================================================================
-// 			'allowRepetitions' = true
+//	     ====================================================================
+//				'allowRepetitions' = true
 //
-// 									nPr	 =		n^r
-//           			-----------------
-// 				Where n is the number of things to choose from,
-//				and we choose r of them, repetition is allowed,
-// 				and order matters.
+//										nPr	 =		n^r
+//	          			-----------------
+//					Where n is the number of things to choose from,
+//					and we choose r of them, repetition is allowed,
+//					and order matters.
 //
-//      When 'allowRepetitions' = true, 'numOfItemsPicked' must be a positive integer number.
-//      'numOfItemsPicked' can be greater than, equal to or less than 'numOfItems'.
-//
+//	     When 'allowRepetitions' = true, 'numOfItemsPicked' must be a positive integer number.
+//	     'numOfItemsPicked' can be greater than, equal to or less than 'numOfItems'.
 func (prob Probability) PermutationsInt32(
 	numOfItems, numOfItemsPicked int32,
 	allowRepetitions bool) (BigIntNum, error) {
@@ -978,36 +975,35 @@ func (prob Probability) PermutationsInt32(
 // In the following permutation formulas, n= 'numOfItems'  and r = 'numOfItemsPicked'. The actual
 // formula applied depends on whether input parameter 'allowRepetitions' is 'true' or 'false'.
 //
-//      ====================================================================
-// 			'allowRepetitions' = false
+//	     ====================================================================
+//				'allowRepetitions' = false
 //
-//              						n!
-// 							nPr	 =		------
-// 												(n-r)!
-//             ----------------------
+//	             						n!
+//								nPr	 =		------
+//													(n-r)!
+//	            ----------------------
 //
-// 							Note: 0! = 1
+//								Note: 0! = 1
 //
-// 				Where n is the number of things to choose from,
-//				and we choose r of them, repetition is NOT allowed,
-// 				and order matters.
+//					Where n is the number of things to choose from,
+//					and we choose r of them, repetition is NOT allowed,
+//					and order matters.
 //
-//      When 'allowRepetitions' = false, 'numOfItemsPicked' must be a positive integer number
-//      which is less than or equal to 'numOfItems'.
+//	     When 'allowRepetitions' = false, 'numOfItemsPicked' must be a positive integer number
+//	     which is less than or equal to 'numOfItems'.
 //
-//      ====================================================================
-// 			'allowRepetitions' = true
+//	     ====================================================================
+//				'allowRepetitions' = true
 //
-// 									nPr	 =		n^r
-//                  -------------
+//										nPr	 =		n^r
+//	                 -------------
 //
-// 				Where n is the number of things to choose from,
-//				and we choose r of them, repetition is allowed,
-// 				and order matters.
+//					Where n is the number of things to choose from,
+//					and we choose r of them, repetition is allowed,
+//					and order matters.
 //
-//      When 'allowRepetitions' = true, 'numOfItemsPicked' must be a positive integer number.
-//      'numOfItemsPicked' can be greater than, equal to or less than 'numOfItems'.
-//
+//	     When 'allowRepetitions' = true, 'numOfItemsPicked' must be a positive integer number.
+//	     'numOfItemsPicked' can be greater than, equal to or less than 'numOfItems'.
 func (prob Probability) PermutationsInt64(
 	numOfItems, numOfItemsPicked int64,
 	allowRepetitions bool) (BigIntNum, error) {
@@ -1062,37 +1058,35 @@ func (prob Probability) PermutationsInt64(
 // In the following permutation formulas, n= 'numOfItems'  and r = 'numOfItemsPicked'. The actual
 // formula applied depends on whether input parameter 'allowRepetitions' is 'true' or 'false'.
 //
-//      ====================================================================
-// 			'allowRepetitions' = false
+//	     ====================================================================
+//				'allowRepetitions' = false
 //
-//              						n!
-// 							nPr	 =		------
-// 												(n-r)!
-//             ----------------------
+//	             						n!
+//								nPr	 =		------
+//													(n-r)!
+//	            ----------------------
 //
-// 							Note: 0! = 1
+//								Note: 0! = 1
 //
-// 				Where n is the number of things to choose from,
-//				and we choose r of them, repetition is NOT allowed,
-// 				and order matters.
+//					Where n is the number of things to choose from,
+//					and we choose r of them, repetition is NOT allowed,
+//					and order matters.
 //
-//      When 'allowRepetitions' = false, 'numOfItemsPicked' must be a positive integer number
-//      which is less than or equal to 'numOfItems'.
+//	     When 'allowRepetitions' = false, 'numOfItemsPicked' must be a positive integer number
+//	     which is less than or equal to 'numOfItems'.
 //
-//      ====================================================================
-// 			'allowRepetitions' = true
+//	     ====================================================================
+//				'allowRepetitions' = true
 //
-// 									nPr	 =		n^r
-//                  -------------
+//										nPr	 =		n^r
+//	                 -------------
 //
-// 				Where n is the number of things to choose from,
-//				and we choose r of them, repetition IS allowed,
-// 				and order matters.
+//					Where n is the number of things to choose from,
+//					and we choose r of them, repetition IS allowed,
+//					and order matters.
 //
-//      When 'allowRepetitions' = true, 'numOfItemsPicked' must be a positive integer number.
-//      'numOfItemsPicked' can be greater than, equal to or less than 'numOfItems'.
-//
-//
+//	     When 'allowRepetitions' = true, 'numOfItemsPicked' must be a positive integer number.
+//	     'numOfItemsPicked' can be greater than, equal to or less than 'numOfItems'.
 func (prob Probability) PermutationsNumStrDto(
 	numOfItems, numOfItemsPicked NumStrDto,
 	allowRepetitions bool) (NumStrDto, error) {
@@ -1212,36 +1206,35 @@ func (prob Probability) PermutationsNumStrDto(
 // In the following permutation formulas, n= 'numOfItems'  and r = 'numOfItemsPicked'. The actual
 // formula applied depends on whether input parameter 'allowRepetitions' is 'true' or 'false'.
 //
-//      ====================================================================
-// 			'allowRepetitions' = false
+//	     ====================================================================
+//				'allowRepetitions' = false
 //
-//              						n!
-// 							nPr	 =		------
-// 												(n-r)!
-//             ----------------------
+//	             						n!
+//								nPr	 =		------
+//													(n-r)!
+//	            ----------------------
 //
-// 							Note: 0! = 1
+//								Note: 0! = 1
 //
-// 				Where n is the number of things to choose from,
-//				and we choose r of them, repetition is NOT allowed,
-// 				and order matters.
+//					Where n is the number of things to choose from,
+//					and we choose r of them, repetition is NOT allowed,
+//					and order matters.
 //
-//      When 'allowRepetitions' = false, 'numOfItemsPicked' must be a positive integer number
-//      which is less than or equal to 'numOfItems'.
+//	     When 'allowRepetitions' = false, 'numOfItemsPicked' must be a positive integer number
+//	     which is less than or equal to 'numOfItems'.
 //
-//      ====================================================================
-// 			'allowRepetitions' = true
+//	     ====================================================================
+//				'allowRepetitions' = true
 //
-// 									nPr	 =		n^r
-//                  -------------
+//										nPr	 =		n^r
+//	                 -------------
 //
-// 				Where n is the number of things to choose from,
-//				and we choose r of them, repetition IS allowed,
-// 				and order matters.
+//					Where n is the number of things to choose from,
+//					and we choose r of them, repetition IS allowed,
+//					and order matters.
 //
-//      When 'allowRepetitions' = true, 'numOfItemsPicked' must be a positive integer number.
-//      'numOfItemsPicked' can be greater than, equal to or less than 'numOfItems'.
-//
+//	     When 'allowRepetitions' = true, 'numOfItemsPicked' must be a positive integer number.
+//	     'numOfItemsPicked' can be greater than, equal to or less than 'numOfItems'.
 func (prob Probability) PermutationsNumberStr(
 	numOfItems, numOfItemsPicked string,
 	allowRepetitions bool) (BigIntNum, error) {
@@ -1362,36 +1355,35 @@ func (prob Probability) PermutationsNumberStr(
 // In the following permutation formulas, n= 'numOfItems'  and r = 'numOfItemsPicked'. The actual
 // formula applied depends on whether input parameter 'allowRepetitions' is 'true' or 'false'.
 //
-//      ====================================================================
-// 			'allowRepetitions' = false
+//	     ====================================================================
+//				'allowRepetitions' = false
 //
-//              						n!
-// 							nPr	 =		------
-// 												(n-r)!
-//             ----------------------
+//	             						n!
+//								nPr	 =		------
+//													(n-r)!
+//	            ----------------------
 //
-// 							Note: 0! = 1
+//								Note: 0! = 1
 //
-// 				Where n is the number of things to choose from,
-//				and we choose r of them, repetition is NOT allowed,
-// 				and order matters.
+//					Where n is the number of things to choose from,
+//					and we choose r of them, repetition is NOT allowed,
+//					and order matters.
 //
-//      When 'allowRepetitions' = false, 'numOfItemsPicked' must be a positive integer number
-//      which is less than or equal to 'numOfItems'.
+//	     When 'allowRepetitions' = false, 'numOfItemsPicked' must be a positive integer number
+//	     which is less than or equal to 'numOfItems'.
 //
-//      ====================================================================
-// 			'allowRepetitions' = true
+//	     ====================================================================
+//				'allowRepetitions' = true
 //
-// 									nPr	 =		n^r
-//                  -------------
+//										nPr	 =		n^r
+//	                 -------------
 //
-// 				Where n is the number of things to choose from,
-//				and we choose r of them, repetition is allowed,
-// 				and order matters.
+//					Where n is the number of things to choose from,
+//					and we choose r of them, repetition is allowed,
+//					and order matters.
 //
-//      When 'allowRepetitions' = true, 'numOfItemsPicked' must be a positive integer number.
-//      'numOfItemsPicked' can be greater than, equal to or less than 'numOfItems'.
-//
+//	     When 'allowRepetitions' = true, 'numOfItemsPicked' must be a positive integer number.
+//	     'numOfItemsPicked' can be greater than, equal to or less than 'numOfItems'.
 func (prob Probability) PermutationsUint(
 	numOfItems, numOfItemsPicked uint,
 	allowRepetitions bool) (BigIntNum, error) {
@@ -1440,36 +1432,35 @@ func (prob Probability) PermutationsUint(
 // In the following permutation formulas, n= 'numOfItems'  and r = 'numOfItemsPicked'. The actual
 // formula applied depends on whether input parameter 'allowRepetitions' is 'true' or 'false'.
 //
-//      ====================================================================
-// 			'allowRepetitions' = false
+//	     ====================================================================
+//				'allowRepetitions' = false
 //
-//              						n!
-// 							nPr	 =		------
-// 												(n-r)!
-//             ----------------------
+//	             						n!
+//								nPr	 =		------
+//													(n-r)!
+//	            ----------------------
 //
-// 							Note: 0! = 1
+//								Note: 0! = 1
 //
-// 				Where n is the number of things to choose from,
-//				and we choose r of them, repetition is NOT allowed,
-// 				and order matters.
+//					Where n is the number of things to choose from,
+//					and we choose r of them, repetition is NOT allowed,
+//					and order matters.
 //
-//      When 'allowRepetitions' = false, 'numOfItemsPicked' must be a positive integer number
-//      which is less than or equal to 'numOfItems'.
+//	     When 'allowRepetitions' = false, 'numOfItemsPicked' must be a positive integer number
+//	     which is less than or equal to 'numOfItems'.
 //
-//      ====================================================================
-// 			'allowRepetitions' = true
+//	     ====================================================================
+//				'allowRepetitions' = true
 //
-// 									nPr	 =		n^r
-//                  -------------
+//										nPr	 =		n^r
+//	                 -------------
 //
-// 				Where n is the number of things to choose from,
-//				and we choose r of them, repetition is allowed,
-// 				and order matters.
+//					Where n is the number of things to choose from,
+//					and we choose r of them, repetition is allowed,
+//					and order matters.
 //
-//      When 'allowRepetitions' = true, 'numOfItemsPicked' must be a positive integer number.
-//      'numOfItemsPicked' can be greater than, equal to or less than 'numOfItems'.
-//
+//	     When 'allowRepetitions' = true, 'numOfItemsPicked' must be a positive integer number.
+//	     'numOfItemsPicked' can be greater than, equal to or less than 'numOfItems'.
 func (prob Probability) PermutationsUint32(
 	numOfItems, numOfItemsPicked uint32,
 	allowRepetitions bool) (BigIntNum, error) {
@@ -1518,36 +1509,35 @@ func (prob Probability) PermutationsUint32(
 // In the following permutation formulas, n= 'numOfItems'  and r = 'numOfItemsPicked'. The actual
 // formula applied depends on whether input parameter 'allowRepetitions' is 'true' or 'false'.
 //
-//      ====================================================================
-// 			'allowRepetitions' = false
+//	     ====================================================================
+//				'allowRepetitions' = false
 //
-//              						n!
-// 							nPr	 =		------
-// 												(n-r)!
-//             ----------------------
+//	             						n!
+//								nPr	 =		------
+//													(n-r)!
+//	            ----------------------
 //
-// 							Note: 0! = 1
+//								Note: 0! = 1
 //
-// 				Where n is the number of things to choose from,
-//				and we choose r of them, repetition is NOT allowed,
-// 				and order matters.
+//					Where n is the number of things to choose from,
+//					and we choose r of them, repetition is NOT allowed,
+//					and order matters.
 //
-//      When 'allowRepetitions' = false, 'numOfItemsPicked' must be a positive integer number
-//      which is less than or equal to 'numOfItems'.
+//	     When 'allowRepetitions' = false, 'numOfItemsPicked' must be a positive integer number
+//	     which is less than or equal to 'numOfItems'.
 //
-//      ====================================================================
-// 			'allowRepetitions' = true
+//	     ====================================================================
+//				'allowRepetitions' = true
 //
-// 									nPr	 =		n^r
-//                  -------------
+//										nPr	 =		n^r
+//	                 -------------
 //
-// 				Where n is the number of things to choose from,
-//				and we choose r of them, repetition is allowed,
-// 				and order matters.
+//					Where n is the number of things to choose from,
+//					and we choose r of them, repetition is allowed,
+//					and order matters.
 //
-//      When 'allowRepetitions' = true, 'numOfItemsPicked' must be a positive integer number.
-//      'numOfItemsPicked' can be greater than, equal to or less than 'numOfItems'.
-//
+//	     When 'allowRepetitions' = true, 'numOfItemsPicked' must be a positive integer number.
+//	     'numOfItemsPicked' can be greater than, equal to or less than 'numOfItems'.
 func (prob Probability) PermutationsUint64(
 	numOfItems, numOfItemsPicked uint64,
 	allowRepetitions bool) (BigIntNum, error) {

@@ -104,6 +104,30 @@ func (nSepsDtoElectron *numSepsDtoElectron) isValidNumStrDto(
 	return nil
 }
 
+// newUSADefaults
+//
+// This method returns a new instance of NumericSeparatorDto
+// configured with USA default values.
+//
+// The USA default values are listed as follows:
+//
+//	Decimal Separator   = '.' (period)
+//	Thousands Separator = ',' (comma)
+//	Currency Symbol     = '$' (dollar sign)
+func (nSepsDtoElectron *numSepsDtoElectron) newUSADefaults() NumericSeparatorDto {
+
+	usaNumSepsDto := NumericSeparatorDto{}
+
+	usaNumSepsDto.DecimalSeparator = '.'
+
+	usaNumSepsDto.ThousandsSeparator = ','
+
+	usaNumSepsDto.CurrencySymbol = '$'
+
+	return usaNumSepsDto
+
+}
+
 // setNumSepDtoDefaultsIfEmpty
 //
 // If any of the NumericSeparatorDto member elements are invalid,

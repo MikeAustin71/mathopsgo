@@ -70,14 +70,32 @@ type IntAry struct {
   BackUp                 BackUpIntAry
 }
 
-// AddToThis - Adds the value of intAry parameter ia2 to the value
-// of the current intAry object.
+// AddToThis
 //
-// Parameters:
+//	Adds the value of intAry parameter ia2 to the value of the
+//	current intAry object.
 //
-// ia2 *intAry - Incoming intAry object whose value will be subtracted
 //
-//	from this current intAry value.
+//	Validation Testing
+//	==================
+//
+//	This method will NOT perform validation tests on the current
+//	instance of IntAry ('ia').
+//
+//	Input Parameters
+//	================
+//
+//	ia2                      *IntAry
+//	  The numeric value of this incoming IntAry object will be
+//	  subtracted from the numeric valud of the current IntAry
+//	  instance.
+//
+//	Return Values
+//	=============
+//
+//	error
+//	  If no errors are encountered during proceesing the return
+//	  value of this parameter will be set to 'nil'.
 func (ia *IntAry) AddToThis(ia2 *IntAry) error {
 
   IntAryMathAdd{}.RunTotal(ia, ia2)
@@ -107,7 +125,38 @@ func (ia *IntAry) AddToThis(ia2 *IntAry) error {
 //	946254				   0							   946254
 //	-946254  			   3					      -946.254
 //	-946254				   0						    -946254
+//
+//	Numeric Separators
+//	==================
+//
+//	Numeric Separators define the Decimal Separator character,
+//	Thousands Separator character, and Currency Symbol character.
+//	These separator characters serve two purposes. First they are
+//	used to format and display numeric values as number strings.
+//	Second, they are also used to parse number strings and
+//	convert them into numeric values.
+//
+//	Numeric Separators previous configured for the current IntAry
+//	instance ('ia') will not be modified by this method.
+//
+//	Validation Testing
+//	==================
+//
+//	This method will subject the current instance of IntAry ('ia')
+//	to validation tests.
 func (ia *IntAry) AddIntToThis(num int, precision uint) error {
+  var ePrefix *ePref.ErrPrefixDto
+  var err error
+
+  ePrefix,
+    err = ePref.ErrPrefixDto{}.NewIEmpty(
+    nil,
+    "IntAry.AddIntToThis()",
+    "")
+
+  if err != nil {
+    return err
+  }
 
   ia2, err := new(IntAry).NewInt(num, precision)
 
@@ -119,7 +168,17 @@ func (ia *IntAry) AddIntToThis(num int, precision uint) error {
 
   }
 
-  IntAryMathAdd{}.RunTotal(ia, &ia2)
+  err = new(IntAryMathAdd).RunTotal(ia, &ia2)
+
+  if err != nil {
+
+    return &FuncReturnError{
+      ErrPrefix:  ePrefix.String(),
+      ReturnFunc: "err = new(IntAryMathAdd).RunTotal(ia, &ia2)",
+      ErrContext: "",
+      ErrMessage: err.Error(),
+    }
+  }
 
   return nil
 }
@@ -437,6 +496,26 @@ func (ia *IntAry) AppendToIntAry(num uint8) {
 //	        2.9           3
 //	       -2.7          -2
 //	       -2            -2
+//
+//	Numeric Separators
+//	==================
+//
+//	Numeric Separators define the Decimal Separator character,
+//	Thousands Separator character, and Currency Symbol character.
+//	These separator characters serve two purposes. First they are
+//	used to format and display numeric values as number strings.
+//	Second, they are also used to parse number strings and
+//	convert them into numeric values.
+//
+//	The IntAry object returned by this method will be configured
+//	with Numeric Separators copied from the original, current
+//	IntAry instance, 'ia'.
+//
+//	Validation Testing
+//	==================
+//
+//	This method will subject the current instance of IntAry ('ia')
+//	to validation tests.
 func (ia *IntAry) Ceiling() (IntAry, error) {
   var ePrefix *ePref.ErrPrefixDto
   var err error
@@ -974,6 +1053,26 @@ func (ia *IntAry) Equals(iAry2 *IntAry) bool {
 //	   2.9          2
 //	  -2.7         -3
 //	  -2           -2
+//
+//	Numeric Separators
+//	==================
+//
+//	Numeric Separators define the Decimal Separator character,
+//	Thousands Separator character, and Currency Symbol character.
+//	These separator characters serve two purposes. First they are
+//	used to format and display numeric values as number strings.
+//	Second, they are also used to parse number strings and
+//	convert them into numeric values.
+//
+//	The IntAry object returned by this method will be configured
+//	with Numeric Separators copied from the original, current
+//	IntAry instance, 'ia'.
+//
+//	Validation Testing
+//	==================
+//
+//	This method will subject the current instance of IntAry to
+//	validation tests.
 func (ia *IntAry) Floor() (IntAry, error) {
 
   var ePrefix *ePref.ErrPrefixDto
@@ -992,8 +1091,10 @@ func (ia *IntAry) Floor() (IntAry, error) {
   return new(intAryNeutron).floor(ia, true, ePrefix)
 }
 
-// GetAbsoluteValue - Returns an intAry which represents
-// the Absolute Value of the current intAry
+// GetAbsoluteValue
+//
+//	Returns an IntAry object which represents the Absolute Value of
+//	the current intAry instance.
 func (ia *IntAry) GetAbsoluteValue() (IntAry, error) {
 
   var ePrefix *ePref.ErrPrefixDto
@@ -3397,43 +3498,117 @@ func (ia *IntAry) NewFloatBig(num *big.Float, precision int) (IntAry, error) {
   return iAry, err
 }
 
-// NewInt - Creates a new intAry object initialized to the value
-// of input parameter 'intNum' which is passed as type 'int'.
+// NewInt
 //
-// Input parameter 'precision' indicates the number of digits
-// to be formatted to the right of the decimal place. Input
-// parameter 'precision' is of type uint. The maximum value
-// allowed for 'precision' is 2147483645 (the max int32 value
-// minus 2). If 'precision' exceeds this maximum value it will
-// be reset to that maximum value.
+//	Creates a new intAry object initialized to the value of input
+//	parameter 'intNum' which is passed as type 'int'.
 //
-// Usage:
-// ------
-// This method is designed to be used in conjunction with the Decimal{}
-// syntax thereby allowing Decimal type creation and initialization in
-// one step.
+//	Input parameter 'precision' indicates the number of digits to
+//	be formatted to the right of the decimal place. Input parameter
+//	'precision' is of type uint. The maximum value allowed for
+//	'precision' is 2,147,483,647 (the max int32 value). If
+//	'precision' exceeds this maximum value, an error will be
+//	returned.
 //
-//					intNum := int(123456)
-//					precision := uint(3)
-//					dec := new(Decimal).NewInt(intNum, precision)
-//	       dec is now equal to 123.456
+//	Usage
+//	=====
 //
-// Examples:
-// ---------
+//	This method is designed to be used in conjunction with the
+//	'new' keyword shown as follows:
 //
-//	int Num		precision		Decimal Result
-//	123456			4						12.3456
-//	123456			0						123456
-//	123456			1						12345.6
+//	    intNum := int(123456)
+//	    precision := uint(3)
+//	    iAry := new(IntAry).NewInt(intNum, precision)
+//	    The numeric value of 'iAry' is now equal to 123.456
+//
+//	Examples
+//	========
+//
+//	int Num    precision    IntAry Result
+//	-------    ---------    -------------
+//
+//	123456         4           12.3456
+//	123456         0           123456
+//	123456         1           12345.6
+//
+//	Numeric Separators
+//	==================
+//
+//	Numeric Separators define the Decimal Separator character,
+//	Thousands Separator character, and Currency Symbol character.
+//	These separator characters serve two purposes. First they are
+//	used to format and display numeric values as number strings.
+//	Second, they are also used to parse number strings and
+//	convert them into numeric values.
+//
+//	The IntAry object returned by this method will be configured
+//	with Numeric Separators copied from current instance of IntAry.
+//
+//	Input Parameters
+//	================
+//
+//	intNum                   int
+//	  The numeric digits contained in this value comprise both
+//	  the integer digits and the fractional digits which will be
+//	  configured in the final numeric value stored in IntAry object
+//	  returned by this method.
+//
+//	precision                uint
+//	  'precision' specifies the number of fractional digits in the
+//	  final numeric value stored in 'intAry'
+//
+//	  Although 'precision' is an unsigned integer type, the maximum
+//	  value allowed for this parameter is 2,147,483,647.
+//
+//	Return Values
+//	=============
+//
+//	IntAry
+//	  This new instance of IntAry will be returned configured with
+//	  the numeric value calculated from input parameters, 'intNum'
+//	  and 'precision'.
+//
+//	error
+//	  If no errors are encountered during processing, this returned
+//	  value will be set to 'nil'
 func (ia *IntAry) NewInt(intNum int, precision uint) (IntAry, error) {
+  var ePrefix *ePref.ErrPrefixDto
+  var err error
 
-  ePrefix := "IntAry.NewInt()"
+  ePrefix,
+    err = ePref.ErrPrefixDto{}.NewIEmpty(
+    nil,
+    "IntAry.NewInt",
+    "")
+
+  if err != nil {
+    return IntAry{}, err
+  }
 
   iAry := new(intAryElectron).newIntAry()
 
-  iAry.SetIntAryWithInt(intNum, precision)
+  iaPhoton := new(intAryPhoton)
 
-  err := iAry.SetNumericSeparatorsDto(ia.GetNumericSeparatorsDto())
+  numSeps, err := iaPhoton.getNumericSeparatorsDto(ia, ePrefix)
+
+  if err != nil {
+
+    return IntAry{},
+      &FuncReturnError{
+        ErrPrefix: ePrefix.String(),
+        ReturnFunc: "numSeps, err := new(intAryPhoton).\n" +
+          "  getNumericSeparatorsDto(ia, ePrefix)",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+  }
+
+  numSeps.SetDefaultsIfEmpty()
+
+  //err = iAry.SetNumericSeparatorsDto(numSeps)
+
+  err = iaPhoton.setNumericSeparatorsDto(
+    &iAry, numSeps, true, ePrefix)
 
   if err != nil {
     return iAry,
@@ -3444,8 +3619,13 @@ func (ia *IntAry) NewInt(intNum int, precision uint) (IntAry, error) {
         err.Error())
   }
 
-  err = new(intAryElectron).isValidIntAry(
+  err = new(intAryGluon).setIntAryWithInt(
     &iAry,
+    true,
+    false,
+    false,
+    intNum,
+    precision,
     ePrefix)
 
   return iAry, err
@@ -5365,79 +5545,88 @@ func (ia *IntAry) SetIntAryToZero(precision uint) error {
   numSeps, err := new(intAryPhoton).getNumericSeparatorsDto(ia, ePrefix.XCpy("ia numSeps -> numSeps"))
 
   if err != nil {
-    return err
+
+    return &FuncReturnError{
+      ErrPrefix: ePrefix.String(),
+      ReturnFunc: "numSeps, err := new(intAryPhoton).getNumericSeparatorsDto(\n" +
+        "  ia, ePrefix.XCpy(ia numSeps -> numSeps))",
+      ErrContext: "",
+      ErrMessage: err.Error(),
+    }
   }
 
   return new(intAryQuark).setIntAryToZero(
     ia, precision, numSeps, ePrefix)
 }
 
-// SetIntAryWithInt - Sets the value of the current intAry object
-// to that of the input parameter 'intDigits', an integer of type
-// 'int'.
+// SetIntAryWithInt
 //
-// Input parameter 'precision' to indicate the number of digits
-// to the right of the decimal place. Input parameter 'precision'
-// is of type uint.
+//	Sets the value of the current intAry object to that of the
+//	input parameter 'intDigits', an integer of type 'int'.
 //
-// The numeric sign (plus or minus) of the resulting intAry value
-// is determined by the sign of input parameter,'intDigits'.
-// Example:
+//	Input parameter 'precision' to indicate the number of digits to
+//	the right of the decimal place. Input parameter 'precision' is
+//	of type uint.
 //
-//	intDigits     precision     	    result
-//	946254  			   3							   946.254
-//	946254				   0							   946254
-//	-946254  			   3					      -946.254
-//	-946254				   0						    -946254
-func (ia *IntAry) SetIntAryWithInt(intDigits int, precision uint) {
-  quotient := 0
-  mod := 0
+//	The numeric sign (plus or minus) of the resulting intAry value
+//	is determined by the sign of input parameter,'intDigits'.
+//
+//	Example
+//	=======
+//
+//	intDigits      precision      result
+//	---------      ---------      ------
+//
+//	  946254            3          946.254
+//	  946254            0          946254
+//	 -946254            3         -946.254
+//	 -946254            0         -946254
+//
+//	Input Parameters
+//	================
+//
+//	intDigits                int
+//	  The numeric digits contained in this value comprise both
+//	  the integer digits and the fractional digits which will be
+//	  configured in the final numeric value stored in the current
+//	  instance of IntAry.
+//
+//	precision                uint
+//	  'precision' specifies the number of fractional digits in the
+//	  final numeric value stored in the current instance of
+//	  'IntAry'.
+//
+//	  Although 'precision' is an unsigned integer type, the maximum
+//	  value allowed for this parameter is 2,147,483,647.
+//
+//	Return Values
+//	=============
+//
+//	error
+//	  If no errors are encountered during processing, this returned
+//	  value will be set to 'nil'
+func (ia *IntAry) SetIntAryWithInt(intDigits int, precision uint) error {
+  var ePrefix *ePref.ErrPrefixDto
+  var err error
 
-  ia.intAry = []uint8{}
-  ia.intAryLen = 0
-  ia.precision = int(precision)
-  ia.signVal = 1
+  ePrefix,
+    err = ePref.ErrPrefixDto{}.NewIEmpty(
+    nil,
+    "IntAry.SetIntAryWithInt()",
+    "")
 
-  if intDigits < 0 {
-    intDigits = intDigits * -1
-    ia.signVal = -1
+  if err != nil {
+    return err
   }
 
-  if intDigits == 0 {
-    ia.SetIntAryToZero(precision)
-    return
-  }
-
-  for {
-
-    if intDigits == 0 {
-      break
-    }
-
-    quotient = intDigits / 10
-
-    mod = intDigits - (quotient * 10)
-
-    ia.intAry = append(ia.intAry, uint8(mod))
-    ia.intAryLen++
-
-    intDigits = quotient
-
-  }
-
-  n1 := uint8(0)
-  lastIdx := ia.intAryLen - 1
-  totalLen := ia.intAryLen / 2
-  for i := 0; i < totalLen; i++ {
-    n1 = ia.intAry[i]
-    ia.intAry[i] = ia.intAry[lastIdx]
-    ia.intAry[lastIdx] = n1
-    lastIdx--
-  }
-
-  ia.SetInternalFlags()
-
-  return
+  return new(intAryGluon).setIntAryWithInt(
+    ia,
+    true,
+    false,
+    false,
+    intDigits,
+    precision,
+    ePrefix)
 }
 
 // SetIntAryWithInt32 - Sets the value of the current intAry object
@@ -6191,8 +6380,21 @@ func (ia *IntAry) SetIntAryWithUint8Ary(iAry2 []uint8, precision uint, signVal i
     return err
   }
 
-  return new(intAryProton).setIntAryWithUint8Ary(
+  err = new(intAryGluon).setIntAryWithUint8Ary(
     ia, iAry2, precision, signVal, ePrefix)
+
+  if err != nil {
+
+    return &FuncReturnError{
+      ErrPrefix: ePrefix.String(),
+      ReturnFunc: "err = new(intAryGluon).setIntAryWithUint8Ary(\n" +
+        "  ia, iAry2, precision, signVal, ePrefix)",
+      ErrContext: "",
+      ErrMessage: err.Error(),
+    }
+  }
+
+  return nil
 }
 
 // SetIntAryWithIntAryObj

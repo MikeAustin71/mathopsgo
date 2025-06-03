@@ -304,6 +304,15 @@ func (numSep *NumericSeparatorDto) New() NumericSeparatorDto {
 	return n2
 }
 
+// NewUSADefaults
+//
+//	Returns a new instance of NumericSeparatorDto. The rune values
+//	are automatically set to USA defaults.
+func (numSep *NumericSeparatorDto) NewUSADefaults() NumericSeparatorDto {
+
+	return new(numSepsDtoElectron).newUSADefaults()
+}
+
 // SetDefaultsIfEmpty - If any of the NumericSeparatorDTo rune values
 // are zero, this method will set those elements to USA default values.
 func (numSep *NumericSeparatorDto) SetDefaultsIfEmpty() {
