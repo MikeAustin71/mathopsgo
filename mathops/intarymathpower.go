@@ -3,6 +3,7 @@ package mathops
 import (
 	"errors"
 	"fmt"
+	ePref "github.com/MikeAustin71/errpref"
 	"math/big"
 )
 
@@ -31,34 +32,139 @@ type IntAryMathPower struct {
 // IntAry precision ( +2,147,483,646, which equals 2^31 − 2), an error
 // message is returned in addition to the maximum positive value for IntAry
 // precision (+2,147,483,646).
-func (iaPwr IntAryMathPower) MinimumRequiredPrecision(
+func (iaPwr *IntAryMathPower) MinimumRequiredPrecision(
 	base, exponent *IntAry) (int, error) {
 
-	ePrefix := "IntAryMathPower.MinimumRequiredPrecision() "
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-	maxValue := 2147483646
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"IntAryMathPower.MinimumRequiredPrecision()",
+		"")
 
-	basePrecision := IntAry{}.NewUint(base.GetPrecisionUint(), 0)
+	if err != nil {
+		return 0, err
+	}
 
-	tExponent := exponent.CopyOut()
+	//maxValue := 2147483646
 
-	if tExponent.GetSign() == -1 {
-		tExponent.ChangeSign()
+	signVal := 1
+
+	basePrecisionUint, err := base.GetPrecisionUint()
+
+	if err != nil {
+
+		return 0,
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "basePrecisionUint, err := base.GetPrecisionUint()",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
+
+	basePrecision, err := new(IntAry).NewUint(basePrecisionUint, signVal, 0)
+
+	if err != nil {
+
+		return 0,
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "basePrecision, err := new(IntAry).NewUint(basePrecisionUint, signVal, 0)",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
+
+	tExponent, err := exponent.CopyOut()
+
+	if err != nil {
+
+		return 0,
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "tExponent, err := exponent.CopyOut()",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
+
+	exponentSignVal, err := tExponent.GetSign()
+
+	if err != nil {
+
+		return 0,
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "exponentSignVal, err := tExponent.GetSign()",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
+
+	if exponentSignVal == -1 {
+
+		err = tExponent.ChangeSign()
+
+		if err != nil {
+
+			return 0,
+				&FuncReturnError{
+					ErrPrefix:  ePrefix.String(),
+					ReturnFunc: "err = tExponent.ChangeSign()",
+					ErrContext: "",
+					ErrMessage: err.Error(),
+				}
+		}
+
 	}
 
 	iaResult := IntAry{}
 
 	maxPrecision := tExponent.GetPrecision() + 5
 
-	err := IntAryMathMultiply{}.Multiply(&basePrecision, &tExponent, &iaResult, 0, maxPrecision)
+	err = new(IntAryMathMultiply).Multiply(&basePrecision, &tExponent, &iaResult, 0, maxPrecision)
 
 	if err != nil {
-		return maxValue, err
+
+		return 0,
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "err = new(IntAryMathMultiply).Multiply(&basePrecision, &tExponent, &iaResult, 0, maxPrecision)",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
 	}
 
-	if iaResult.GetPrecisionUint() > 0 {
+	iaResultPrecisionUint, err := iaResult.GetPrecisionUint()
 
-		iaResult.RoundToPrecision(0)
+	if err != nil {
+
+		return 0,
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "iaResultPrecisionUint, err := iaResult.GetPrecisionUint()",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
+
+	if iaResultPrecisionUint > 0 {
+
+		err = iaResult.RoundToPrecision(0)
+
+		if err != nil {
+
+			return 0,
+				&FuncReturnError{
+					ErrPrefix:  ePrefix.String(),
+					ReturnFunc: "err = iaResult.RoundToPrecision(0)",
+					ErrContext: "",
+					ErrMessage: err.Error(),
+				}
+		}
 
 	}
 
@@ -66,10 +172,13 @@ func (iaPwr IntAryMathPower) MinimumRequiredPrecision(
 
 	if err != nil {
 
-		return maxValue,
-			fmt.Errorf(ePrefix+
-				"Error: Minimum Required Precision exceeded maximum value of %v",
-				maxValue)
+		return 0,
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "intVal, err := iaResult.GetInt()",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
 	}
 
 	return intVal, nil
@@ -96,7 +205,7 @@ func (iaPwr IntAryMathPower) MinimumRequiredPrecision(
 // number of decimal places after the decimal point if the result is
 // greater than 'maxResultPrecision'.  If the value of 'maxResultPrecision'
 // is less than zero, it will be automatically set to a value of '4096'.
-func (iaPwr IntAryMathPower) Pwr(
+func (iaPwr *IntAryMathPower) Pwr(
 	base, exponent *IntAry,
 	minResultPrecision, maxResultPrecision int) error {
 
@@ -190,7 +299,7 @@ func (iaPwr IntAryMathPower) Pwr(
 // the decimal place in order to implement the 'minResultPrecision'
 // specification. If the value of 'minResultPrecision' is less than zero,
 // 'minResultPrecision' will be automatically set to a value of zero.
-func (iaPwr IntAryMathPower) PwrByMultiplication(
+func (iaPwr *IntAryMathPower) PwrByMultiplication(
 	base, exponent *IntAry,
 	minResultPrecision, maxResultPrecision int) (*IntAry, error) {
 

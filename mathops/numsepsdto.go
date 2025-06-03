@@ -5,12 +5,13 @@ import (
 	ePref "github.com/MikeAustin71/errpref"
 )
 
-type NumSepProfileSelection struct {
+type NumSepsProfileSelection struct {
 	SourceObjectName         string
 	OutputNumSepsName        string
 	UseDefaultNumSeps        bool
 	SetDefaultNumSepsIfEmpty bool
 	ValidateNumSeps          bool
+	OverrideNumSeps          NumericSeparatorDto
 }
 
 // NumericSeparatorDto
@@ -112,6 +113,19 @@ func (numSep *NumericSeparatorDto) CopyOut(setDefaultsIfEmpty bool) (NumericSepa
 		ePrefix.XCpy("Copy current 'numSep' into 'numSepsDest'"))
 
 	return *numSepsDest, err
+}
+
+// Empty
+//
+//	Resets all the member elements of the NumericSeparatorDto
+//	struct to their initital or 'zero' values.
+func (numSep *NumericSeparatorDto) Empty() {
+
+	numSep.DecimalSeparator = 0
+	numSep.ThousandsSeparator = 0
+	numSep.CurrencySymbol = 0
+
+	return
 }
 
 // Equal - Compares two NumericSeparatorDto's and returns 'true' if they

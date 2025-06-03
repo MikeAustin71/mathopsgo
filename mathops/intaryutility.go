@@ -113,7 +113,7 @@ func (iaUtility *intAryUtility) selectIntAryValidation(
 // objects are engineered through user input.
 func (iaUtility *intAryUtility) selectNumericSeparators(
 	intAry *IntAry,
-	nsProfile NumSepProfileSelection,
+	nsProfile NumSepsProfileSelection,
 	errPrefDto *ePref.ErrPrefixDto) (NumericSeparatorDto, error) {
 
 	iaUtility.theLock.Lock()
@@ -142,6 +142,26 @@ func (iaUtility *intAryUtility) selectNumericSeparators(
 	}
 
 	var numSeps NumericSeparatorDto
+
+	err = nsProfile.OverrideNumSeps.IsValid(ePrefix.String())
+
+	if err == nil {
+		// This a valid NumericSeparatorDto instance. Use This
+		err = numSeps.CopyIn(&nsProfile.OverrideNumSeps, true)
+
+		if err != nil {
+
+			return NumericSeparatorDto{},
+				&FuncReturnError{
+					ErrPrefix:  ePrefix.String(),
+					ReturnFunc: " err = numSeps.CopyIn(&nsProfile.OverrideNumSeps, true)",
+					ErrContext: "",
+					ErrMessage: err.Error(),
+				}
+		}
+
+		return numSeps, nil
+	}
 
 	if nsProfile.UseDefaultNumSeps {
 

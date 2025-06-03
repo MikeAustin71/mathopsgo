@@ -1492,17 +1492,49 @@ func TestIntAry_NewTwo_02(t *testing.T) {
 }
 
 func TestIntAry_NewUint_01(t *testing.T) {
+
+	ePrefix := "TestIntAry_NewUint_01"
+
 	uintNum := uint(123456)
 	precision := uint(3)
-	ia := IntAry{}.NewUint(uintNum, precision)
+	signVal := 1
+
+	ia, err := new(IntAry).NewUint(uintNum, signVal, precision)
+
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"ia, err := new(IntAry).NewUint(uintNum, signVal, precision)\n"+
+			"Error='%v'\n\n", ePrefix, err.Error())
+		return
+	}
+
 	eStr := "123.456"
 
-	if eStr != ia.GetNumStr() {
-		t.Errorf("Expected ia.GetNumStr()== %v  .   Instead ia.GetNumStr() == %v", eStr, ia.GetNumStr())
+	iaNumStr, err := ia.GetNumStr()
+
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"iaNumStr, err := ia.GetNumStr()\n"+
+			"Error='%v'\n\n", ePrefix, err.Error())
+		return
+	}
+
+	if eStr != iaNumStr {
+		t.Errorf("%v\n"+
+			"Expected ia.GetNumStr()== %v\n"+
+			"Instead ia.GetNumStr() == %v\n\n",
+			ePrefix, iaNumStr, eStr)
+
+		return
 	}
 
 	if int(precision) != ia.GetPrecision() {
-		t.Errorf("Expected ia.GetPrecisionInt() == %v  .   Instead ia.GetPrecisionInt() == %v", precision, ia.GetPrecision())
+		t.Errorf("%v\n"+
+			"Expected ia.GetPrecisionInt() == '%v'\n"+
+			"Instead ia.GetPrecisionInt() == %v\n\n",
+			ePrefix, precision, ia.GetPrecision())
 	}
 
 }
