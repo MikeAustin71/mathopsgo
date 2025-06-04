@@ -3151,14 +3151,16 @@ func (ia *IntAry) GetSciNotationNumber(mantissaLen uint) (SciNotationNum, error)
 			return SciNotationNum{}, err
 		}
 
-		err = iaNew.DivideByTenToPower(uint(magnitudeInt))
+		// err = iaNew.DivideByTenToPower(uint(magnitudeInt))
+		err = new(intAryNeutron).divideByTenToPower(&iaNew, true, uint(magnitudeInt), ePrefix)
 
 		if err != nil {
 
 			return SciNotationNum{},
 				&FuncReturnError{
-					ErrPrefix:  ePrefix.String(),
-					ReturnFunc: "err = iaNew.DivideByTenToPower(uint(magnitudeInt))",
+					ErrPrefix: ePrefix.String(),
+					ReturnFunc: "err = err = new(intAryNeutron).\n" +
+						"  divideByTenToPower( &iaNew, true, uint(magnitudeInt), ePrefix)",
 					ErrContext: "",
 					ErrMessage: err.Error(),
 				}
@@ -3197,15 +3199,17 @@ func (ia *IntAry) GetSciNotationNumber(mantissaLen uint) (SciNotationNum, error)
 
 		if ia.precision > 50000 {
 
-			// TODO - Break to separate source file
-			err = iaNew.SetPrecision(50000, true)
+			err = new(intAryMolecule).
+				setPrecision(&iaNew, false, 50000, true, ePrefix.XCpy("Set Precision 'iaNew'"))
 
 			if err != nil {
 
 				return SciNotationNum{},
 					&FuncReturnError{
-						ErrPrefix:  ePrefix.String(),
-						ReturnFunc: "err = iaNew.SetPrecision(50000, true)",
+						ErrPrefix: ePrefix.String(),
+						ReturnFunc: "err = new(intAryMolecule).\n" +
+							"  setPrecision(&iaNew, false, 50000, true,\n" +
+							"  ePrefix.XCpy(Set Precision 'iaNew'))",
 						ErrContext: "",
 						ErrMessage: err.Error(),
 					}
@@ -3860,17 +3864,42 @@ func (ia *IntAry) Inverse(maxPrecision int) (IntAry, error) {
 	return iaInverse, nil
 }
 
-// MultiplyByTwoToPower Multiply the existing value
-// of the IntAry by 2 to the power of the passed in
-// parameter.
-func (ia *IntAry) MultiplyByTwoToPower(power uint) {
+// MultiplyByTwoToPower
+//
+//		Multiply the existing value of the current IntAry instance by
+//		2 to the power of the input parameter 'power'.
+//
+//	 Example
+//	 =======
+//
+//	 IntAry Numeric Value x 2^power = result
+func (ia *IntAry) MultiplyByTwoToPower(power uint) error {
 
-	IntAryMathMultiply{}.MultiplyByTwoToPower(ia, power)
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"IntAry.MultiplyByTwoToPower()",
+		"")
+
+	if err != nil {
+		return err
+	}
+
+	return new(intAryNeutron).multiplyByTwoToPower(ia, true, power, ePrefix)
 }
 
-// MultiplyByTenToPower - The value of intAry is multiplied
-// by 10 to the power of the passed in parameter.
+// MultiplyByTenToPower
+//
+//	The value of intAry is multiplied by 10 to the power of the
+//	input parameter 'power'.
+//
+//	Example
+//	=======
+//
+//	IntAry Numeric Value x 10^power = result
 func (ia *IntAry) MultiplyByTenToPower(power uint) error {
 
 	var ePrefix *ePref.ErrPrefixDto
@@ -3879,21 +3908,21 @@ func (ia *IntAry) MultiplyByTenToPower(power uint) error {
 	ePrefix,
 		err = ePref.ErrPrefixDto{}.NewIEmpty(
 		nil,
-		"IntAry.NMultiplyByTenToPower",
+		"IntAry.MultiplyByTenToPower",
 		"")
 
 	if err != nil {
 		return err
 	}
 
-	err = new(IntAryMathMultiply).MultiplyByTenToPower(ia, power)
+	err = new(intAryNeutron).multiplyByTenToPower(ia, true, power, ePrefix)
 
 	if err != nil {
 
 		return &FuncReturnError{
 			ErrPrefix: ePrefix.String(),
-			ReturnFunc: "err = new(IntAryMathMultiply).\n" +
-				"  MultiplyByTenToPower(ia, power)",
+			ReturnFunc: "err = new(intAryNeutron).\n" +
+				"  multiplyByTenToPower(ia, true, power, ePrefix)",
 			ErrContext: "",
 			ErrMessage: err.Error(),
 		}
