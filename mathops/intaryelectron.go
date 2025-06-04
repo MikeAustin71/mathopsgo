@@ -38,9 +38,9 @@ func (iAryElectron *intAryElectron) empty(
 	intAry.precision = 0
 	intAry.signVal = 1
 
-	intAry.SetDecimalSeparator('.')
-	intAry.SetThousandsSeparator(',')
-	intAry.SetCurrencySymbol('$')
+	intAry.decimalSeparator = '.'
+	intAry.thousandsSeparator = ','
+	intAry.currencySymbol = '$'
 
 	intAry.BackUp = new(BackUpIntAry).New()
 

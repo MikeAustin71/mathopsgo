@@ -5,7 +5,7 @@ import (
 )
 
 type intAryBoson struct {
-	lock *sync.Mutex
+	lock sync.Mutex
 }
 
 // dataField Equality Test
@@ -18,10 +18,6 @@ type intAryBoson struct {
 func (iaBoson *intAryBoson) dataFieldEqualityTest(
 	iAry1 *IntAry,
 	iAry2 *IntAry) bool {
-
-	if iaBoson.lock == nil {
-		iaBoson.lock = new(sync.Mutex)
-	}
 
 	iaBoson.lock.Lock()
 
@@ -70,10 +66,6 @@ func (iaBoson *intAryBoson) dataFieldEqualityTest(
 //	intAry object passed as input parameter 'intAry'
 func (iaBoson *intAryBoson) emptyBackUp(
 	intAry *IntAry) {
-
-	if iaBoson.lock == nil {
-		iaBoson.lock = new(sync.Mutex)
-	}
 
 	iaBoson.lock.Lock()
 

@@ -282,7 +282,7 @@ func TestIntAry_ResetFromBackUp_01(t *testing.T) {
 		t.Errorf("Expected ia.NumStr2= '%v' .  Instead, ia.NumStr2= '%v' .", nStr2, ia.GetNumStr())
 	}
 
-	ia.ResetFromBackUp()
+	err = ia.ResetFromBackUp()
 
 	if nStr1 != ia.GetNumStr() {
 		t.Errorf("After Reset - Expected ia.NumStr1= '%v' .  Instead, ia.NumStr1= '%v' .", nStr1, ia.GetNumStr())
