@@ -1822,13 +1822,13 @@ func (iaNeutron *intAryNeutron) getNumStrDto(
 
 // MultiplyByTenToPower
 //
-//  The value of intAry is multiplied by 10 to the power of the
-//  input parameter 'power'.
+//	The value of intAry is multiplied by 10 to the power of the
+//	input parameter 'power'.
 //
-//  Example
-//  =======
+//	Example
+//	=======
 //
-//  IntAry Numeric Value x 10^power = result
+//	IntAry Numeric Value x 10^power = result
 func (iaNeutron *intAryNeutron) multiplyByTenToPower(
   intAry *IntAry,
   validateIntAry bool,
@@ -1892,13 +1892,13 @@ func (iaNeutron *intAryNeutron) multiplyByTenToPower(
 
 // MultiplyByTwoToPower
 //
-//	Multiply the existing value of the IntAry by 2 to the power
-//	of the input parameter 'power'.
+//		Multiply the existing value of the IntAry by 2 to the power
+//		of the input parameter 'power'.
 //
-//  Example
-//  =======
+//	 Example
+//	 =======
 //
-//  IntAry Numeric Value x 2^power = result
+//	 IntAry Numeric Value x 2^power = result
 func (iaNeutron *intAryNeutron) multiplyByTwoToPower(
   intAry *IntAry,
   validateIntAry bool,
@@ -1952,6 +1952,141 @@ func (iaNeutron *intAryNeutron) multiplyByTwoToPower(
       ErrPrefix: ePrefix.String(),
       ReturnFunc: "err = new(IntAryMathMultiply).\n" +
         "  MultiplyByTwoToPower(intAry, power)",
+      ErrContext: "",
+      ErrMessage: err.Error(),
+    }
+  }
+
+  return nil
+}
+
+// multiplyThisBy
+//
+//		Multiplies the IntAry parameter 'ia' by 'ia2' and
+//		stores the multiplication result in 'ia'.
+//
+//	 Example
+//	 =======
+//
+//	   ia = ia x ia2
+//
+//		Input Parameters
+//		================
+//
+//	 ia                       *ia
+//	   Pointer to an IntAry object. As shown above, this
+//	   IntAry object will store the final multiplication
+//	   result.
+//
+//		ia2                      *IntAry
+//		  Pointer to an IntAry object. In this multiplication
+//		  operation, 'ia2' is the multiplier.
+//
+//		minimumResultPrecision   int
+//		  'minimumResultPrecision' will determine the minimum number of
+//		  digits computed to the right of the decimal place in the
+//		  final result.
+//
+//		  If 'minimumResultPrecision' is set to a value of -1, all
+//		  significant digits (digits greater than zero) will be
+//		  returned to the right of the decimal place. Remember that
+//		  the maximum number of decimal digits returned will be
+//		  controlled by parameter 'maxResultPrecision'
+//
+//		maxResultPrecision       int
+//		  'maxResultPrecision' will determine the maximum number of
+//		  digits to the right of the decimal place in the result.
+//
+//		  Valid values are -1 and values >= zero ('0')
+//
+//		  Values less than -1 will trigger an error.
+//
+//		  A value of -1 signals that no limit will be placed on the
+//		  number of decimals places to right of the decimal point in
+//		  the result. Be advised that a very, very large number of
+//		  decimal digits may be accommodated by the IntAry Type.
+//
+//		Return Value
+//		============
+//
+//		error
+//		  If no errors are encountered, this method will return an
+//		  error value of 'nil'.
+func (iaNeutron *intAryNeutron) multiplyThisBy(
+  ia *IntAry,
+  validateIa bool,
+  ia2 *IntAry,
+  validateIa2 bool,
+  minimumPrecision,
+  maxPrecision int,
+  errPrefDto *ePref.ErrPrefixDto) error {
+
+  if iaNeutron.lock == nil {
+    iaNeutron.lock = new(sync.Mutex)
+  }
+
+  iaNeutron.lock.Lock()
+
+  defer iaNeutron.lock.Unlock()
+
+  var ePrefix *ePref.ErrPrefixDto
+  var err error
+
+  ePrefix,
+    err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
+    errPrefDto,
+    "intAryNeutron.multiplyThisBy",
+    "")
+
+  if err != nil {
+    return err
+  }
+
+  if ia == nil {
+
+    return &InputPtrNilError{
+      ErrPrefix:     ePrefix.String(),
+      ParameterName: "'ia'",
+    }
+  }
+
+  if ia2 == nil {
+
+    return &InputPtrNilError{
+      ErrPrefix:     ePrefix.String(),
+      ParameterName: "'ia2'",
+    }
+  }
+
+  err = new(intAryUtility).selectIntAryValidation(
+    ia,
+    "ia",
+    validateIa,
+    ePrefix)
+
+  if err != nil {
+    return err
+  }
+
+  err = new(intAryUtility).selectIntAryValidation(
+    ia2,
+    "ia2",
+    validateIa2,
+    ePrefix)
+
+  if err != nil {
+    return err
+  }
+
+  err = new(IntAryMathMultiply).
+    Multiply(ia, ia2, ia, minimumPrecision, maxPrecision)
+
+  if err != nil {
+
+    return &FuncReturnError{
+      ErrPrefix: ePrefix.String(),
+      ReturnFunc: "err = new(IntAryMathMultiply).\n" +
+        "  Multiply(ia, ia2, ia, minimumPrecision, maxPrecision)",
       ErrContext: "",
       ErrMessage: err.Error(),
     }

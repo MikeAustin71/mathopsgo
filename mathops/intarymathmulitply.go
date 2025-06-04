@@ -254,7 +254,9 @@ func (iaMultiply *IntAryMathMultiply) MultiplyInPlace(
 // The returned parameter 'iaResult' will contain numeric separators (decimal separator,
 // thousands separator and currency symbol) copied from input parameter, 'ia1'.
 func (iaMultiply *IntAryMathMultiply) Multiply(
-	ia1, ia2, iaResult *IntAry,
+	ia1 *IntAry,
+	ia2 *IntAry,
+	iaResult *IntAry,
 	minimumResultPrecision,
 	maxResultPrecision int) error {
 

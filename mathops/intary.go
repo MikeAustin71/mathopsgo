@@ -3931,42 +3931,71 @@ func (ia *IntAry) MultiplyByTenToPower(power uint) error {
 	return nil
 }
 
-// MultiplyThisBy -Multiplies the current IntAry by intAry ia2 and stores the multiplication result
-// in the IntAry instance.
+// MultiplyThisBy
 //
-// Parameters
-// ==========
+//		Multiplies the current IntAry instance ('ia') by IntAry input
+//		parameter 'ia2' and stores the multiplication result in the
+//		current IntAry instance ('ia').
 //
-// 'ia2'		Pointer to an intAry object.
+//	 Example
+//	 =======
 //
-//	In this multiplication operation, 'ia2' is the multiplier.
+//	   ia = ia x ia2
 //
-// 'minimumResultPrecision'		int	-
+//		Input Parameters
+//		================
 //
-//			'minimumResultPrecision' will determine the minimum number of digits computed
-//			to the right of the decimal place in the final result.
-//			If 'minimumResultPrecision' is set to a value of -1, all significant digits (digits
-//			greater than zero) will be returned to the right of the decimal place. Remember
-//			that the maximum number of decimal digits returned will be controlled by parameter
-//			'maxResultPrecision'
+//		ia2                      *IntAry
+//		  Pointer to an IntAry object. In this multiplication
+//		  operation, 'ia2' is the multiplier.
 //
-//	'maxResultPrecision'				int	-
+//		minimumResultPrecision   int
+//		  'minimumResultPrecision' will determine the minimum number of
+//		  digits computed to the right of the decimal place in the
+//		  final result.
 //
-//			'maxResultPrecision' will determine the maximum
-//			number of digits to the right of the decimal
-//			place in the result.
+//		  If 'minimumResultPrecision' is set to a value of -1, all
+//		  significant digits (digits greater than zero) will be
+//		  returned to the right of the decimal place. Remember that
+//		  the maximum number of decimal digits returned will be
+//		  controlled by parameter 'maxResultPrecision'
 //
-//			Valid values are -1 and values >= zero ('0')
-//			Values less than -1 will trigger an error.
+//		maxResultPrecision       int
+//		  'maxResultPrecision' will determine the maximum number of
+//		  digits to the right of the decimal place in the result.
 //
-//			A value of -1 signals that no limit will be placed on
-//			the number of decimals places to right of the decimal
-//			point in the result. Be advised that a very, very large number
-//			of decimal digits may be accommodated by the IntAry Type.
+//		  Valid values are -1 and values >= zero ('0')
+//
+//		  Values less than -1 will trigger an error.
+//
+//		  A value of -1 signals that no limit will be placed on the
+//		  number of decimals places to right of the decimal point in
+//		  the result. Be advised that a very, very large number of
+//		  decimal digits may be accommodated by the IntAry Type.
+//
+//		Return Value
+//		============
+//
+//		error
+//		  If no errors are encountered, this method will return an
+//		  error value of 'nil'.
 func (ia *IntAry) MultiplyThisBy(ia2 *IntAry, minimumPrecision, maxPrecision int) error {
 
-	return IntAryMathMultiply{}.Multiply(ia, ia2, ia, minimumPrecision, maxPrecision)
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"IntAry.MultiplyThisBy",
+		"")
+
+	if err != nil {
+		return err
+	}
+
+	return new(intAryNeutron).multiplyThisBy(
+		ia, true, ia2, true, minimumPrecision, maxPrecision, ePrefix)
 }
 
 // Multiply - Multiplies intAry ia1 by intAry ia2 and stores the multiplication result
