@@ -1402,7 +1402,7 @@ func (iaNeutron *intAryNeutron) getFractionalDigits(
 
 	iAry2 := new(intAryElectron).newIntAry()
 
-	nProfile := NumSepsProfileSelection{
+	nsProfile := NumSepsProfileSelection{
 		SourceObjectName:         "intAry",
 		OutputNumSepsName:        "numSeps",
 		UseDefaultNumSeps:        false,
@@ -1411,11 +1411,10 @@ func (iaNeutron *intAryNeutron) getFractionalDigits(
 		OverrideNumSeps:          numSeps,
 	}
 
-	// Copies intAry numSeps to iAry2
 	err = new(intAryQuark).setIntAryToZero(
 		&iAry2,
 		nil,
-		nProfile,
+		nsProfile,
 		0,
 		ePrefix.XCpy("Setting iAry2 to Zero"))
 
@@ -1425,7 +1424,7 @@ func (iaNeutron *intAryNeutron) getFractionalDigits(
 			&FuncReturnError{
 				ErrPrefix: ePrefix.String(),
 				ReturnFunc: "err = new(intAryQuark).setIntAryToZero(\n" +
-					"  &iAry2, nil, nProfile-numSeps, 0,\n" +
+					"  &iAry2, nil, nsProfile-numSeps, 0,\n" +
 					"  ePrefix.XCpy(Setting iAry2 to Zero))",
 				ErrContext: "",
 				ErrMessage: err.Error(),
