@@ -98,33 +98,48 @@ type IntAry struct {
 //	  value of this parameter will be set to 'nil'.
 func (ia *IntAry) AddToThis(ia2 *IntAry) error {
 
-  IntAryMathAdd{}.RunTotal(ia, ia2)
+  var ePrefix *ePref.ErrPrefixDto
+  var err error
+
+  ePrefix,
+    err = ePref.ErrPrefixDto{}.NewIEmpty(
+    nil,
+    "IntAry.AddToThis",
+    "")
+
+  if err != nil {
+    return err
+  }
+
+  err = new(IntAryMathAdd).RunTotal(ia, ia2)
+
+  if err != nil {
+
+    return &FuncReturnError{
+      ErrPrefix:  ePrefix.String(),
+      ReturnFunc: "err = new(IntAryMathAdd).RunTotal(ia, ia2)",
+      ErrContext: "",
+      ErrMessage: err.Error(),
+    }
+  }
 
   return nil
-
 }
 
-// AddIntToThis - Adds an integer number to the value of the
-// current IntAry object.
+// AddIntToThis
 //
-// Input Parameters:
+//	Adds an integer number to the value of the current IntAry
+//	object.
 //
-//	num int					-	The integer number to be added to the current IntAry object.
+//	Example
+//	=======
 //
-//	precision uint	- The precision which should be applied to the int64 input
-//										parameter to designate the number of digits to the right
-//										of the decimal point. Example:  num = 123456, precision = 3
-//										Result = 123.456 will be added to the current value of the
-//										current IntAry object. Note: If the value of input parameter
-//										'precision' is negative, an error will be returned
+//	  num         precision    result
 //
-// Example:
-//
-//	intDigits     precision     	    result
-//	946254  			   3							   946.254
-//	946254				   0							   946254
-//	-946254  			   3					      -946.254
-//	-946254				   0						    -946254
+//	 946254          3         946.254
+//	 946254          0         946254
+//	-946254          3        -946.254
+//	-946254          0        -946254
 //
 //	Numeric Separators
 //	==================
@@ -144,14 +159,39 @@ func (ia *IntAry) AddToThis(ia2 *IntAry) error {
 //
 //	This method will subject the current instance of IntAry ('ia')
 //	to validation tests.
+//
+//	Input Parameters
+//	================
+//
+//	num                      int
+//	  The integer number to be added to the current IntAry object.
+//
+//	precision                uint
+//	  The precision which should be applied to the int64 input
+//	  parameter to designate the number of digits to the right of
+//	  the decimal point.
+//
+//	  num = 123456, precision = 3	Result = 123.456
+//
+//	  The value 123.456 will be added to the current value of the
+//	  current IntAry object. Note: If the value of input parameter
+//	  'precision' is negative, an error will be returned.
+//
+//	Return Values
+//	=============
+//
+//	error
+//	  If no errors are encountered, this return value will be set
+//	  to 'nil'.
 func (ia *IntAry) AddIntToThis(num int, precision uint) error {
+
   var ePrefix *ePref.ErrPrefixDto
   var err error
 
   ePrefix,
     err = ePref.ErrPrefixDto{}.NewIEmpty(
     nil,
-    "IntAry.AddIntToThis()",
+    "IntAry.AddIntToThis",
     "")
 
   if err != nil {
@@ -162,10 +202,12 @@ func (ia *IntAry) AddIntToThis(num int, precision uint) error {
 
   if err != nil {
 
-    return fmt.Errorf("IntAry.AddIntToThis\n"+
-      "Error= %v",
-      err.Error())
-
+    return &FuncReturnError{
+      ErrPrefix:  ePrefix.String(),
+      ReturnFunc: "",
+      ErrContext: "",
+      ErrMessage: err.Error(),
+    }
   }
 
   err = new(IntAryMathAdd).RunTotal(ia, &ia2)
@@ -183,40 +225,82 @@ func (ia *IntAry) AddIntToThis(num int, precision uint) error {
   return nil
 }
 
-// AddInt64ToThis - Adds an integer (int64) to the value of the
-// current IntAry object.
+// AddInt64ToThis
 //
-// Input Parameters:
+//	Adds an integer (int64) to the value of the current IntAry
+//	object.
 //
-//	int64Num int64	-	The integer number to be added to the current IntAry object.
+//	Example
+//	=======
 //
-//	precision uint	-	The precision which should be applied to the int64 input
-//										parameter to designate the number of digits to the right
-//										of the decimal point. Example:  num = 123456, precision = 3
-//										Result = 123.456 will be added to the current value of the
-//										current IntAry object. If precision is greater than
-//										2147483647, it will be reduced to this maximum value.
+//	                         Result Added
+//	                         to Current
+//	int64Num    precision      IntAry
 //
-// Example:
+//	 946254        3           946.254
+//	 946254        0           946254
+//	-946254        3          -946.254
+//	-946254        0          -946254
 //
-//	                                  Result Added
-//	                                  to Current
-//	int64Num     precision     	    	 IntAry
-//	946254  			   3							   946.254
-//	946254				   0							   946254
-//	-946254  			   3					      -946.254
-//	-946254				   0						    -946254
+//	Input Parameters
+//	================
+//
+//	int64Num                 int64
+//		  The integer number to be added to the current IntAry object.
+//
+//	precision               uint
+//	  The precision which should be applied to the int64 input
+//	  parameter to designate the number of digits to the right
+//	  of the decimal point. Example:  num = 123456, precision = 3
+//	  Result = 123.456 will be added to the current value of the
+//	  current IntAry object. If precision is greater than
+//	  2,147,483,647 (max int32 value), and error will be returend.
+//
+//	Return Values
+//	=============
+//
+//	error
+//	  If no errors are encountered, this return value will be set
+//	  to 'nil'.
 func (ia *IntAry) AddInt64ToThis(int64Num int64, precision uint) error {
+
+  var ePrefix *ePref.ErrPrefixDto
+  var err error
+
+  ePrefix,
+    err = ePref.ErrPrefixDto{}.NewIEmpty(
+    nil,
+    "IntAry.AddInt64ToThis",
+    "")
+
+  if err != nil {
+    return err
+  }
 
   ia2, err := new(IntAry).NewInt64(int64Num, precision)
 
   if err != nil {
-    return fmt.Errorf("IntAry.AddInt64ToThis()\n"+
-      "Error= %v",
-      err.Error())
+
+    return &FuncReturnError{
+      ErrPrefix:  ePrefix.String(),
+      ReturnFunc: "ia2, err := new(IntAry).NewInt64(int64Num, precision)",
+      ErrContext: fmt.Sprintf("int64Num = '%v'  precision= '%v'",
+        int64Num, precision),
+      ErrMessage: err.Error(),
+    }
   }
 
-  IntAryMathAdd{}.RunTotal(ia, &ia2)
+  err = new(IntAryMathAdd).RunTotal(ia, &ia2)
+
+  if err != nil {
+
+    return &FuncReturnError{
+      ErrPrefix:  ePrefix.String(),
+      ReturnFunc: "",
+      ErrContext: "",
+      ErrMessage: err.Error(),
+    }
+  }
 
   return nil
 }
@@ -253,13 +337,42 @@ func (ia *IntAry) AddInt64ToThis(int64Num int64, precision uint) error {
 // object plus, '123.456'
 func (ia *IntAry) AddBigIntToThis(num *big.Int, precision int) error {
 
-  ia2, err := new(IntAry).NewBigInt(num, precision)
+  var ePrefix *ePref.ErrPrefixDto
+  var err error
+
+  ePrefix,
+    err = ePref.ErrPrefixDto{}.NewIEmpty(
+    nil,
+    "IntAry.AddBigIntToThis",
+    "")
 
   if err != nil {
     return err
   }
 
-  IntAryMathAdd{}.RunTotal(ia, &ia2)
+  ia2, err := new(IntAry).NewBigInt(num, precision)
+
+  if err != nil {
+
+    return &FuncReturnError{
+      ErrPrefix:  ePrefix.String(),
+      ReturnFunc: "ia2, err := new(IntAry).NewBigInt(num, precision)",
+      ErrContext: "",
+      ErrMessage: err.Error(),
+    }
+  }
+
+  err = new(IntAryMathAdd).RunTotal(ia, &ia2)
+
+  if err != nil {
+
+    return &FuncReturnError{
+      ErrPrefix:  ePrefix.String(),
+      ReturnFunc: "err = new(IntAryMathAdd).RunTotal(ia, &ia2)",
+      ErrContext: "",
+      ErrMessage: err.Error(),
+    }
+  }
 
   return nil
 }
@@ -268,15 +381,42 @@ func (ia *IntAry) AddBigIntToThis(num *big.Int, precision int) error {
 // to the BigIntNum input parameter.
 func (ia *IntAry) AddBigIntNumToThis(bINum BigIntNum) error {
 
+  var ePrefix *ePref.ErrPrefixDto
+  var err error
+
+  ePrefix,
+    err = ePref.ErrPrefixDto{}.NewIEmpty(
+    nil,
+    "IntAry.AddBigIntNumToThis",
+    "")
+
+  if err != nil {
+    return err
+  }
+
   ia2, err := new(IntAry).NewBigIntNum(bINum)
 
   if err != nil {
-    ePrefix := "IntAry.AddBigIntNumToThis() "
-    return fmt.Errorf(ePrefix+"Error returned by IntAry{}.NewBigIntNum(bINum). "+
-      "Error='%v'", err.Error())
+
+    return &FuncReturnError{
+      ErrPrefix:  ePrefix.String(),
+      ReturnFunc: "ia2, err := new(IntAry).NewBigIntNum(bINum)",
+      ErrContext: "",
+      ErrMessage: err.Error(),
+    }
   }
 
-  IntAryMathAdd{}.RunTotal(ia, &ia2)
+  err = new(IntAryMathAdd).RunTotal(ia, &ia2)
+
+  if err != nil {
+
+    return &FuncReturnError{
+      ErrPrefix:  ePrefix.String(),
+      ReturnFunc: "err = new(IntAryMathAdd).RunTotal(ia, &ia2)",
+      ErrContext: "",
+      ErrMessage: err.Error(),
+    }
+  }
 
   return nil
 }
@@ -315,17 +455,56 @@ func (ia *IntAry) AddBigIntNumToThis(bINum BigIntNum) error {
 // of digits to the right of the decimal place, rounding may occur.
 func (ia *IntAry) AddFloat32ToThis(num float32, precision int) error {
 
+  var ePrefix *ePref.ErrPrefixDto
+  var err error
+
+  ePrefix,
+    err = ePref.ErrPrefixDto{}.NewIEmpty(
+    nil,
+    "IntAry.AddFloat32ToThis",
+    "")
+
+  if err != nil {
+    return err
+  }
+
   if precision < -1 {
-    return fmt.Errorf("AddFloat32ToThis() Error: Input parameter 'precision' is invalid. 'precision' must be greater than or equal to -1. 'precision'= '%v'", precision)
+
+    return &FuncReturnError{
+      ErrPrefix:  ePrefix.String(),
+      ReturnFunc: "",
+      ErrContext: "precision < -1",
+      ErrMessage: fmt.Sprintf("Error: Input parameter 'precision' is invalid.\n"+
+        "'precision' must be greater than or equal to -1.\n"+
+        "'precision'= '%v'",
+        precision),
+    }
   }
 
   ia2, err := new(IntAry).NewFloat32(num, precision)
 
   if err != nil {
-    return nil
+
+    return &FuncReturnError{
+      ErrPrefix:  ePrefix.String(),
+      ReturnFunc: "ia2, err := new(IntAry).NewFloat32(num, precision)",
+      ErrContext: fmt.Sprintf("num = '%v'  precision= '%v'",
+        num, precision),
+      ErrMessage: err.Error(),
+    }
   }
 
-  IntAryMathAdd{}.RunTotal(ia, &ia2)
+  err = new(IntAryMathAdd).RunTotal(ia, &ia2)
+
+  if err != nil {
+
+    return &FuncReturnError{
+      ErrPrefix:  ePrefix.String(),
+      ReturnFunc: "err = new(IntAryMathAdd).RunTotal(ia, &ia2)",
+      ErrContext: "",
+      ErrMessage: err.Error(),
+    }
+  }
 
   return nil
 }
@@ -356,17 +535,54 @@ func (ia *IntAry) AddFloat32ToThis(num float32, precision int) error {
 //	of the decimal place, rounding may occur.
 func (ia *IntAry) AddFloat64ToThis(num float64, precision int) error {
 
-  if precision < -1 {
-    return fmt.Errorf("AddFloat64ToThis() Error: Input parameter 'precision' is invalid. 'precision' must be greater than or equal to -1. 'precision'= '%v'", precision)
-  }
+  var ePrefix *ePref.ErrPrefixDto
+  var err error
 
-  ia2, err := new(IntAry).NewFloat64(num, precision)
+  ePrefix,
+    err = ePref.ErrPrefixDto{}.NewIEmpty(
+    nil,
+    "IntAry.AddFloat64ToThis",
+    "")
 
   if err != nil {
     return err
   }
 
-  IntAryMathAdd{}.RunTotal(ia, &ia2)
+  if precision < -1 {
+
+    return &FuncReturnError{
+      ErrPrefix:  ePrefix.String(),
+      ReturnFunc: "",
+      ErrContext: "precision < -1",
+      ErrMessage: fmt.Sprintf("Error: Input parameter 'precision' is invalid.\n"+
+        "'precision' must be greater than or equal to -1.\n"+
+        "'precision'= '%v'", precision),
+    }
+  }
+
+  ia2, err := new(IntAry).NewFloat64(num, precision)
+
+  if err != nil {
+
+    return &FuncReturnError{
+      ErrPrefix:  ePrefix.String(),
+      ReturnFunc: "ia2, err := new(IntAry).NewFloat64(num, precision)",
+      ErrContext: "",
+      ErrMessage: err.Error(),
+    }
+  }
+
+  err = new(IntAryMathAdd).RunTotal(ia, &ia2)
+
+  if err != nil {
+
+    return &FuncReturnError{
+      ErrPrefix:  ePrefix.String(),
+      ReturnFunc: "err = new(IntAryMathAdd).RunTotal(ia, &ia2)",
+      ErrContext: "",
+      ErrMessage: err.Error(),
+    }
+  }
 
   return nil
 }
@@ -397,17 +613,54 @@ func (ia *IntAry) AddFloat64ToThis(num float64, precision int) error {
 //	of the decimal place, rounding may occur.
 func (ia *IntAry) AddFloatBigToThis(num *big.Float, precision int) error {
 
-  if precision < -1 {
-    return fmt.Errorf("AddFloatBigToThis() Error: Input parameter 'precision' is invalid. 'precision' must be greater than or equal to -1. 'precision'= '%v'", precision)
-  }
+  var ePrefix *ePref.ErrPrefixDto
+  var err error
 
-  ia2, err := new(IntAry).NewFloatBig(num, precision)
+  ePrefix,
+    err = ePref.ErrPrefixDto{}.NewIEmpty(
+    nil,
+    "IntAry.AddFloatBigToThis",
+    "")
 
   if err != nil {
     return err
   }
 
-  IntAryMathAdd{}.RunTotal(ia, &ia2)
+  if precision < -1 {
+
+    return &FuncReturnError{
+      ErrPrefix:  ePrefix.String(),
+      ReturnFunc: "",
+      ErrContext: "precision < -1",
+      ErrMessage: fmt.Sprintf("Error: Input parameter 'precision' is invalid.\n"+
+        "'precision' must be greater than or equal to -1.\n"+
+        "'precision'= '%v'", precision),
+    }
+  }
+
+  ia2, err := new(IntAry).NewFloatBig(num, precision)
+
+  if err != nil {
+
+    return &FuncReturnError{
+      ErrPrefix:  ePrefix.String(),
+      ReturnFunc: "ia2, err := new(IntAry).NewFloatBig(num, precision)",
+      ErrContext: "",
+      ErrMessage: err.Error(),
+    }
+  }
+
+  err = new(IntAryMathAdd).RunTotal(ia, &ia2)
+
+  if err != nil {
+
+    return &FuncReturnError{
+      ErrPrefix:  ePrefix.String(),
+      ReturnFunc: "err = new(IntAryMathAdd).RunTotal(ia, &ia2)",
+      ErrContext: "",
+      ErrMessage: err.Error(),
+    }
+  }
 
   return nil
 }
@@ -3587,38 +3840,11 @@ func (ia *IntAry) NewInt(intNum int, precision uint) (IntAry, error) {
 
   iAry := new(intAryElectron).newIntAry()
 
-  iaPhoton := new(intAryPhoton)
-
-  numSeps, err := iaPhoton.getNumericSeparatorsDto(ia, true, ePrefix)
-
-  if err != nil {
-
-    return IntAry{},
-      &FuncReturnError{
-        ErrPrefix: ePrefix.String(),
-        ReturnFunc: "numSeps, err := new(intAryPhoton).\n" +
-          "  getNumericSeparatorsDto(ia, ePrefix)",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-  }
-
-  err = iaPhoton.setNumericSeparatorsDto(
-    &iAry, numSeps, true, ePrefix)
-
-  if err != nil {
-    return iAry,
-      fmt.Errorf("%v\n"+
-        "Error returned by iAry.SetNumericSeparatorsDto()\n"+
-        "Error= %v\n",
-        ePrefix,
-        err.Error())
-  }
-
   err = new(intAryGluon).setIntAryWithInt(
     &iAry,
+    ia,
     NumSepsProfileSelection{
-      SourceObjectName:         "iAry",
+      SourceObjectName:         "ia",
       OutputNumSepsName:        "numSeps",
       UseDefaultNumSeps:        false,
       SetDefaultNumSepsIfEmpty: true,
@@ -4685,38 +4911,10 @@ func (ia *IntAry) NewUint64(
     return IntAry{}, err
   }
 
-  numSeps, err := new(intAryPhoton).getNumericSeparatorsDto(ia, true, ePrefix.XCpy("ia numSeps -> numSeps"))
-
-  if err != nil {
-
-    return IntAry{},
-      &FuncReturnError{
-        ErrPrefix: ePrefix.String(),
-        ReturnFunc: "numSeps, err := new(intAryPhoton).getNumericSeparatorsDto(\n" +
-          "  ia, ePrefix.XCpy(ia numSeps -> numSeps))",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-  }
-
-  iAry := new(IntAry)
-
-  err = new(intAryQuark).setIntAryToZero(
-    iAry, precision, numSeps, ePrefix)
-
-  if err != nil {
-
-    return IntAry{},
-      &FuncReturnError{
-        ErrPrefix: ePrefix.String(),
-        ReturnFunc: "err = new(intAryQuark).setIntAryToZero(\n" +
-          "iAry, precision, numSeps, ePrefix)",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-  }
+  iAry := new(intAryElectron).newIntAry()
 
   err = new(intAryGluon).setIntAryWithUint64(
+    &iAry,
     ia,
     NumSepsProfileSelection{
       SourceObjectName:         "ia",
@@ -4731,7 +4929,7 @@ func (ia *IntAry) NewUint64(
     precision,
     ePrefix)
 
-  return *iAry, err
+  return iAry, err
 }
 
 // NewUint64Exponent - Returns a new IntAry instance. The numeric
@@ -5693,21 +5891,21 @@ func (ia *IntAry) SetIntAryToZero(precision uint) error {
     return err
   }
 
-  numSeps, err := new(intAryPhoton).getNumericSeparatorsDto(ia, true, ePrefix.XCpy("ia numSeps -> numSeps"))
-
-  if err != nil {
-
-    return &FuncReturnError{
-      ErrPrefix: ePrefix.String(),
-      ReturnFunc: "numSeps, err := new(intAryPhoton).getNumericSeparatorsDto(\n" +
-        "  ia, ePrefix.XCpy(ia numSeps -> numSeps))",
-      ErrContext: "",
-      ErrMessage: err.Error(),
-    }
+  nsProfile := NumSepsProfileSelection{
+    SourceObjectName:         "ia",
+    OutputNumSepsName:        "numSeps",
+    UseDefaultNumSeps:        false,
+    SetDefaultNumSepsIfEmpty: true,
+    ValidateNumSeps:          false,
+    OverrideNumSeps:          NumericSeparatorDto{},
   }
 
   return new(intAryQuark).setIntAryToZero(
-    ia, precision, numSeps, ePrefix)
+    ia,
+    nil,
+    nsProfile,
+    precision,
+    ePrefix)
 }
 
 // SetIntAryWithInt
@@ -5772,6 +5970,7 @@ func (ia *IntAry) SetIntAryWithInt(intDigits int, precision uint) error {
 
   return new(intAryGluon).setIntAryWithInt(
     ia,
+    nil,
     NumSepsProfileSelection{
       SourceObjectName:         "ia",
       OutputNumSepsName:        "numSeps",
@@ -6110,6 +6309,7 @@ func (ia *IntAry) SetIntAryWithUint64(
 
   return new(intAryGluon).setIntAryWithUint64(
     ia,
+    nil,
     NumSepsProfileSelection{
       SourceObjectName:         "ia",
       OutputNumSepsName:        "numSeps",

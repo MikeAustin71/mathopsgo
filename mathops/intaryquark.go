@@ -335,14 +335,64 @@ func (iaQuark *intAryQuark) compareAbsoluteValues(
 
 // setIntAryToZero
 //
-//		Sets the value of the intAry object to zero ('0').
+//			Sets the value of the intAry object to zero ('0').
 //
-//	 Note: Input paramter 'numSeps' will be subjected to validation
-//	 testing.
+//		Input Parameters
+//		================
+//
+//		intAry                   *IntAry
+//		  A pointer to an IntAry object. This object will be
+//		  reconfigured with a zero value.
+//
+//		numSepsSrcIntAry         *IntAry
+//		  If this pointer is NOT 'nil', the Numeric Separators
+//	   will be taken from this IntAry Object.
+//
+//	   If this pointer is 'nil', it will be ignored and
+//	   the source of Numeric Separators will either be
+//	   the 'intAry' object or standard defaults as specified
+//	   by input parameter 'nsProfile'.
+//		  reconfigured with a new value based on the following
+//		  input parameters.
+//
+//		nsProfile                NumSepsProfileSelection
+//		 This struct contains all the prameters and options
+//		 necessary to generate the NumericSeparatorsDto which is
+//		 required for configuration of Numeric Separators in the
+//		 IntAry object returned by this method.
+//
+//		intDigits                int
+//		  The numeric digits contained in this value comprise both
+//		  the integer digits and the fractional digits which will be
+//		  configured in the final numeric value stored in parameter,
+//		  'intAry'.
+//
+//		signVal                  int
+//		  Input parameter 'signVal' must be set to one of two values:
+//		  +1 or -1. This value is used to signal the sign of the
+//		  resulting numeric value. +1 identifies a positive number and
+//		  -1 identifies a negative number. 'signVal' determines the
+//		  numeric sign of the resulting IntAry value, either plus or
+//		  minus.
+//
+//		precision                uint
+//		  'precision' specifies the number of fractional digits in the
+//		  final numeric value stored in 'intAry'
+//
+//		  Although 'precision' is an unsigned integer type, the maximum
+//		  value allowed for this parameter is 2,147,483,647.
+//
+//		Return Values
+//		=============
+//
+//		error
+//		  If no errors are encountered during processing, this returned
+//		  value will be set to 'nil'
 func (iaQuark *intAryQuark) setIntAryToZero(
 	intAry *IntAry,
+	numSepsSrcIntAry *IntAry,
+	nsProfile NumSepsProfileSelection,
 	precision uint,
-	numSeps NumericSeparatorDto,
 	errPrefDto *ePref.ErrPrefixDto) error {
 
 	if iaQuark.lock == nil {
@@ -374,16 +424,34 @@ func (iaQuark *intAryQuark) setIntAryToZero(
 		}
 	}
 
-	err = numSeps.IsValid(ePrefix.XCpy("Validating input param 'numSeps'").String())
+	var numSeps NumericSeparatorDto
 
-	if err != nil {
+	nsProfile.OutputNumSepsName = "numSeps"
 
-		return &FuncReturnError{
-			ErrPrefix:  ePrefix.String(),
-			ReturnFunc: "err = numSeps.IsValid(ePrefix.XCpy(Validating input param 'numSeps').String())",
-			ErrContext: "Input parameter 'numSeps' is INVALID!\n" +
-				"'numSeps' FAILED validation testing.",
-			ErrMessage: err.Error(),
+	if numSepsSrcIntAry == nil {
+
+		nsProfile.SourceObjectName = "intAry"
+
+		numSeps, err = new(intAryUtility).selectNumericSeparators(
+			intAry,
+			nsProfile,
+			errPrefDto)
+
+		if err != nil {
+			return err
+		}
+
+	} else {
+
+		nsProfile.SourceObjectName = "numSepsSrcIntAry"
+
+		numSeps, err = new(intAryUtility).selectNumericSeparators(
+			numSepsSrcIntAry,
+			nsProfile,
+			errPrefDto)
+
+		if err != nil {
+			return err
 		}
 	}
 
