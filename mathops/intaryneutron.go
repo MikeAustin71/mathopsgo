@@ -1614,6 +1614,95 @@ func (iaNeutron *intAryNeutron) getIntegerDigits(
 	return iAry2, nil
 }
 
+// getMagnitude
+//
+//	Returns the magnitude of the integer portion of the current
+//	IntAry numeric value. The integer portion of the number is
+//	represented by the digits to the left of the decimal point.
+//
+//	Magnitude is defined here as the power of 10 which generates a
+//	value less than or equal to the integer portion of the current
+//	IntAry numeric value.
+//
+//	   10^magnitude  <= IntAry value
+//
+//	Note
+//	====
+//
+//	If the current IntAry value is negative, an error will be generated.
+func (iaNeutron *intAryNeutron) getMagnitude(
+	intAry *IntAry,
+	validateIntAry bool,
+	errPrefDto *ePref.ErrPrefixDto) (int, error) {
+
+	if iaNeutron.lock == nil {
+		iaNeutron.lock = new(sync.Mutex)
+	}
+
+	iaNeutron.lock.Lock()
+
+	defer iaNeutron.lock.Unlock()
+
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
+
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
+		errPrefDto,
+		"intAryNeutron.getMagnitude",
+		"")
+
+	if err != nil {
+		return 0, err
+	}
+
+	if intAry == nil {
+
+		return 0,
+			&InputPtrNilError{
+				ErrPrefix:     ePrefix.String(),
+				ParameterName: "'intAry'",
+			}
+	}
+
+	err = new(intAryUtility).selectIntAryValidation(
+		intAry,
+		"intAry",
+		validateIntAry,
+		ePrefix)
+
+	if err != nil {
+		return 0, err
+	}
+
+	iaNumStr, err := new(intAryAtom).getRawNumStr(intAry, false, ePrefix)
+
+	if err != nil {
+
+		return 0,
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "iaNumStr, err := new(intAryAtom).getRawNumStr(ia, false, ePrefix)",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
+
+	if intAry.signVal == -1 {
+
+		return -1,
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "",
+				ErrContext: "ia.signVal == -1",
+				ErrMessage: "Error: current IntAry value is negative!\n" +
+					fmt.Sprintf("value= '%v'", iaNumStr),
+			}
+	}
+
+	return intAry.intAryLen - intAry.precision - intAry.firstDigitIdx - 1, nil
+}
+
 // getNumStrDto
 //
 //	Converts the IntAry input parameter ('intAry') to a returned

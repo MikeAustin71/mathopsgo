@@ -215,6 +215,9 @@ func TestStrMathOp_AddN1N2_03(t *testing.T) {
 }
 
 func TestStrMathOp_AddN1N2_04(t *testing.T) {
+
+	ePrefix := "TestStrMathOp_AddN1N2_04"
+
 	mOps := StrMathOp{}.New()
 	nStr1 := "-457.325"
 	nStr2 := "-22.2"
@@ -234,31 +237,45 @@ func TestStrMathOp_AddN1N2_04(t *testing.T) {
 
 	if err != nil {
 		t.Errorf("Received Error from mOps.AddN1N2(). nStr1= '%v' nStr2= '%v' Error= %v", nStr1, nStr2, err)
+		return
 	}
 
 	s := mOps.IFinal.GetNumStr()
 
 	if s != expected {
 		t.Errorf("Expected IFinal.GetNumStr()= '%v'. Instead got IFinal.Numstr= '%v' ", expected, s)
+		return
 	}
 
 	if mOps.IFinal.GetPrecision() != ePrecision {
 		t.Errorf("Error: Expected precision= '%v'. Instead received precision= '%v'", ePrecision, mOps.IFinal.GetPrecision())
+		return
 	}
 
 	if eSignVal != mOps.IFinal.GetSign() {
 		t.Errorf("Error: Expected SignVal= '%v'. Instead received SignVal= '%v'", eSignVal, mOps.IFinal.GetSign())
+		return
 	}
 
 	if lNRunes != mOps.IFinal.GetIntAryLength() {
 		t.Errorf("Error: Expected NumRunes Length= '%v'. Instead received NumRunes Length= '%v'", lNRunes, mOps.IFinal.GetIntAryLength())
+		return
 	}
 
 	if lEArray != mOps.IFinal.GetIntAryLength() {
 		t.Errorf("Error: Expected IntArray Length= '%v'. Instead received IntArry Length= '%v'", lEArray, mOps.IFinal.GetIntAryLength())
+		return
 	}
 
-	actualRunes := mOps.IFinal.GetRuneArray()
+	actualRunes, err := mOps.IFinal.GetRuneArray()
+
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"actualRunes, err := mOps.IFinal.GetRuneArray()\n"+
+			"Error='%v'\n\n", ePrefix, err.Error())
+		return
+	}
 
 	for i := 0; i < lNRunes; i++ {
 

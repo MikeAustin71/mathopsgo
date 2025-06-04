@@ -216,6 +216,22 @@ func (iaNanobot *intAryNanobot) setInternalFlags(
 	return nil
 }
 
+// setInternalFlagsNoErrors
+//
+//	This method differs from 'intAryNanobot.setInternalFlags' in
+//	that this method does NOT return an error.
+func (iaNanobot *intAryNanobot) setInternalFlagsNoErrors(
+	ia *IntAry) {
+
+	iaNanobot.lock.Lock()
+
+	defer iaNanobot.lock.Unlock()
+
+	new(intAryElectron).setSignificantDigitIdxsNoErrors(ia)
+
+	return
+}
+
 // setIsZeroValue
 //
 //	Analyzes the value of the intAry and sets a flag if the value

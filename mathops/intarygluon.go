@@ -132,32 +132,33 @@ func (iaGluon *intAryGluon) setIntAryWithInt(
 
 	nsProfile.OutputNumSepsName = "numSeps"
 
+	var actualNumSepsSrcIntAryPtr *IntAry
+
 	if numSepsSrcIntAry == nil {
 
 		nsProfile.SourceObjectName = "intAry"
-
-		numSeps, err = new(intAryUtility).selectNumericSeparators(
-			intAry,
-			nsProfile,
-			errPrefDto)
-
-		if err != nil {
-			return err
-		}
+		actualNumSepsSrcIntAryPtr = intAry
 
 	} else {
 
 		nsProfile.SourceObjectName = "numSepsSrcIntAry"
+		actualNumSepsSrcIntAryPtr = numSepsSrcIntAry
+	}
 
-		numSeps, err = new(intAryUtility).selectNumericSeparators(
-			numSepsSrcIntAry,
-			nsProfile,
-			errPrefDto)
+	numSeps, err = new(intAryUtility).selectNumericSeparators(
+		actualNumSepsSrcIntAryPtr,
+		nsProfile,
+		ePrefix)
 
-		if err != nil {
-			return err
+	if err != nil {
+
+		return &FuncReturnError{
+			ErrPrefix: ePrefix.String(),
+			ReturnFunc: "numSeps, err = new(intAryUtility).selectNumericSeparators(\n" +
+				"actualNumSepsSrcIntAryPtr, nsProfile, ePrefix)",
+			ErrContext: "",
+			ErrMessage: err.Error(),
 		}
-
 	}
 
 	quotient := 0
@@ -508,32 +509,33 @@ func (iaGluon *intAryGluon) setIntAryWithUint64(
 
 	nsProfile.OutputNumSepsName = "numSeps"
 
+	var actualNumSepsSrcIntAryPtr *IntAry
+
 	if numSepsSrcIntAry == nil {
 
 		nsProfile.SourceObjectName = "intAry"
-
-		numSeps, err = new(intAryUtility).selectNumericSeparators(
-			intAry,
-			nsProfile,
-			errPrefDto)
-
-		if err != nil {
-			return err
-		}
+		actualNumSepsSrcIntAryPtr = intAry
 
 	} else {
 
 		nsProfile.SourceObjectName = "numSepsSrcIntAry"
+		actualNumSepsSrcIntAryPtr = numSepsSrcIntAry
+	}
 
-		numSeps, err = new(intAryUtility).selectNumericSeparators(
-			numSepsSrcIntAry,
-			nsProfile,
-			errPrefDto)
+	numSeps, err = new(intAryUtility).selectNumericSeparators(
+		actualNumSepsSrcIntAryPtr,
+		nsProfile,
+		ePrefix)
 
-		if err != nil {
-			return err
+	if err != nil {
+
+		return &FuncReturnError{
+			ErrPrefix: ePrefix.String(),
+			ReturnFunc: "numSeps, err = new(intAryUtility).selectNumericSeparators(\n" +
+				"actualNumSepsSrcIntAryPtr, nsProfile, ePrefix)",
+			ErrContext: "",
+			ErrMessage: err.Error(),
 		}
-
 	}
 
 	intAry.signVal = signVal
