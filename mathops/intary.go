@@ -675,9 +675,32 @@ func (ia *IntAry) AddFloatBigToThis(num *big.Float, precision int) error {
 //	multiple times in order to improve performance.
 func (ia *IntAry) AddMultipleToThis(iaMany ...*IntAry) error {
 
-	for _, iAry := range iaMany {
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-		IntAryMathAdd{}.RunTotal(ia, iAry)
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"IntAry.AddMultipleToThis",
+		"")
+
+	if err != nil {
+		return err
+	}
+
+	for idx, iAry := range iaMany {
+
+		err = new(IntAryMathAdd).RunTotal(ia, iAry)
+
+		if err != nil {
+
+			return &FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "err = new(IntAryMathAdd).RunTotal(ia, iAry)",
+				ErrContext: fmt.Sprintf("Error occurred on cycle= '%v'", idx),
+				ErrMessage: err.Error(),
+			}
+		}
 
 	}
 
@@ -3816,12 +3839,33 @@ func (ia *IntAry) IsOne() (bool, error) {
 //	https://www.mathsisfun.com/definitions/even-number.html
 func (ia *IntAry) IsZero() (bool, error) {
 
-	err := new(intAryElectron).isValidIntAry(
-		ia,
-		"IntAry.IsZero()")
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
+
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"IntAry.IsZero",
+		"")
 
 	if err != nil {
 		return false, err
+	}
+
+	err = new(intAryElectron).isValidIntAry(
+		ia,
+		ePrefix.XCpy("Validating 'ia' of IsZero").String())
+
+	if err != nil {
+
+		return false,
+			&FuncReturnError{
+				ErrPrefix: ePrefix.String(),
+				ReturnFunc: "err = new(intAryElectron).isValidIntAry(ia,\n" +
+					"  ePrefix.XCpy(Validating 'ia' of IsZero).String()))",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
 	}
 
 	return ia.isZeroValue, nil
@@ -4309,39 +4353,92 @@ func (ia *IntAry) NewBigInt(num *big.Int, precision int) (IntAry, error) {
 // ia, err := intAry{}.NewBigIntNim(bINum)
 func (ia *IntAry) NewBigIntNum(bINum BigIntNum) (IntAry, error) {
 
-	ePrefix := "IntAry.NewBigIntNum()"
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-	iAry := new(intAryElectron).newIntAry()
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"IntAry.NewBigIntNum",
+		"")
 
-	if bINum.precision > uint(math.MaxInt32) {
-		return iAry,
-			fmt.Errorf("%v\n"+
-				"Error: Input parameter bINum has a 'precision' value\n"+
-				"which exceeds the MaxInt32 Value.\n"+
-				"MaxInt32='%v'\nbINum.precision='%v'\n",
-				ePrefix,
-				math.MinInt32,
-				bINum.precision)
+	if err != nil {
+		return IntAry{}, err
 	}
 
-	err := iAry.SetIntAryWithBigIntNum(bINum)
+	err = bINum.IsValid(ePrefix.XCpy("Validating bINum").String())
 
 	if err != nil {
 
 		return IntAry{},
-			fmt.Errorf("%v\n"+
-				"Error returned by iAry.SetIntAryWithBigIntNum(bINum).\n"+
-				"bINum='%v'\nError= %v\n",
-				ePrefix,
-				bINum.GetNumStr(),
-				err.Error())
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "err = bINum.IsValid(ePrefix.XCpy(Validating bINum).String())",
+				ErrContext: "Error: Input parameter 'bINum' is INVALID!\n" +
+					"'bINum' FAILED Validation Tests.",
+				ErrMessage: err.Error(),
+			}
 	}
 
-	err = new(intAryElectron).isValidIntAry(
-		&iAry,
-		ePrefix)
+	bINumNumStr, err := bINum.GetNumStr()
 
-	return iAry, err
+	if err != nil {
+
+		return IntAry{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "bINumNumStr, err := bINum.GetNumStr()",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
+
+	iAry := new(intAryElectron).newIntAry()
+
+	if bINum.precision > uint(math.MaxInt32) {
+
+		return IntAry{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "",
+				ErrContext: "",
+				ErrMessage: fmt.Sprintf("Error: Input parameter bINum has a 'precision' value\n"+
+					"which exceeds the MaxInt32 Value.\n"+
+					"MaxInt32= '%v'\n"+
+					"bINum.precision= '%v'\n"+
+					"bINum= '%v\n",
+					math.MaxInt32, bINum.precision, bINumNumStr),
+			}
+	}
+
+	err = iAry.SetIntAryWithBigIntNum(bINum)
+
+	if err != nil {
+
+		return IntAry{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "err = iAry.SetIntAryWithBigIntNum(bINum)",
+				ErrContext: fmt.Sprintf("bINum= '%v'\n", bINumNumStr),
+				ErrMessage: err.Error(),
+			}
+	}
+
+	err = new(intAryElectron).isValidIntAry(&iAry, ePrefix.XCpy("Validating Final Result 'iAry'").String())
+
+	if err != nil {
+
+		return IntAry{},
+			&FuncReturnError{
+				ErrPrefix: ePrefix.String(),
+				ReturnFunc: "err = new(intAryElectron).isValidIntAry(\n" +
+					"  &iAry, ePrefix.XCpy(Validating Final Result 'iAry').String())",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
+
+	return iAry, nil
 }
 
 // NewFive - Creates a new IntAry instance with a
@@ -4684,38 +4781,77 @@ func (ia *IntAry) NewInt(intNum int, precision uint) (IntAry, error) {
 	return iAry, err
 }
 
-// NewIntExponent - Returns a new IntAry instance. The numeric
-// value is set using an int value multiplied by 10 raised to the
-// power of the 'exponent' parameter.
+// NewIntExponent
 //
-//	numeric value = int X 10^exponent
+//	Returns a new IntAry instance. The numeric value is set using
+//	an int value multiplied by 10 raised to the power of the
+//	'exponent' parameter.
 //
-// Input parameter 'intNum' is of type int.
+//	    numeric value = int X 10^exponent
+//
+//	Input parameter 'intNum' is of type int.
 //
 // Input parameter 'exponent' is of type int.
 //
-// Usage:
-// ------
-// This method is designed to be used in conjunction with the IntAry{}
-// syntax thereby allowing IntAry type creation and initialization in
-// one step.
+//		Usage
+//		=====
 //
-//		iAry := IntAry{}.NewIntExponent(123456, -3)
-//	 -- iAry is now equal to "123.456", precision = 3
+//		This method may be used in conjunction with the 'new' keword
+//		syntax.
 //
-//		iAry := IntAry{}.NewIntExponent(123456, 3)
-//	 -- iAry is now equal to "123456.000", precision = 3
+//		    iAry := new(IntAry).NewIntExponent(123456, -3)
+//		    -- iAry is now equal to "123.456", precision = 3
 //
-// Examples:
-// ---------
+//		    iAry := new(IntAry).NewIntExponent(123456, 3)
+//		    -- iAry is now equal to "123456.000", precision = 3
 //
-//	intNum		exponent		IntAry Result
-//	123456			-3					 123.456
-//	123456			 3				123456.000
-//	123456			 0				123456
+//		Examples
+//		========
+//
+//		intNum      exponent      IntAry Result
+//
+//		123456         -3              123.456
+//		123456          3           123456.000
+//		123456          0           123456
+//
+//		Input Parameters
+//		================
+//
+//		intNum                   int
+//		  The numeric digits which will make up the returned IntAry
+//		  numeric value.
+//
+//		exponent                 int
+//		  This value will be used to determine the numeric digits in
+//		  'intNum' which will be assigned to the right of the decimal
+//		  point in the returned IntAry value.
+//
+//		Return Values
+//		=============
+//
+//		IntAry
+//		  This returned IntAry object will be configured with the
+//		  numeric value computed from input parameters 'intNum' and
+//		  'exponent' according to the conversion algorithm described
+//		  above.
+//
+//	 error
+//	   If no errors are encountered the return value for this
+//	   parameter will be set to 'nil'.
 func (ia *IntAry) NewIntExponent(intNum int, exponent int) (IntAry, error) {
 
-	ePrefix := "IntAry.NewIntExponent()"
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
+
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"IntAry.NewIntExponent",
+		"")
+
+	if err != nil {
+		return IntAry{}, err
+	}
 
 	if exponent > 0 {
 		for i := 0; i < exponent; i++ {
@@ -4729,24 +4865,65 @@ func (ia *IntAry) NewIntExponent(intNum int, exponent int) (IntAry, error) {
 
 	iAry := new(intAryElectron).newIntAry()
 
-	iAry.SetIntAryWithInt(intNum, uint(exponent))
-
-	err := iAry.SetNumericSeparatorsDto(ia.GetNumericSeparatorsDto())
+	err = iAry.SetIntAryWithInt(intNum, uint(exponent))
 
 	if err != nil {
-		return iAry,
-			fmt.Errorf("%v\n"+
-				"Error returned by iAry.SetNumericSeparatorsDto()\n"+
-				"Error= %v\n",
-				ePrefix,
-				err.Error())
+
+		return IntAry{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "err = iAry.SetIntAryWithInt(intNum, uint(exponent))",
+				ErrContext: fmt.Sprintf("intNum= '%v'  exponent= '%v'",
+					intNum, exponent),
+				ErrMessage: err.Error(),
+			}
+	}
+
+	numSeps, err := ia.GetNumericSeparatorsDto()
+
+	if err != nil {
+
+		return IntAry{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "numSeps, err := ia.GetNumericSeparatorsDto()",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
+
+	numSeps.SetDefaultsIfEmpty()
+
+	err = iAry.SetNumericSeparatorsDto(numSeps)
+
+	if err != nil {
+
+		return IntAry{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "err = iAry.SetNumericSeparatorsDto(numSeps)",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
 	}
 
 	err = new(intAryElectron).isValidIntAry(
 		&iAry,
-		ePrefix)
+		ePrefix.XCpy("Validating Final Result: 'iAry'").String())
 
-	return iAry, err
+	if err != nil {
+
+		return IntAry{},
+			&FuncReturnError{
+				ErrPrefix: ePrefix.String(),
+				ReturnFunc: "err = new(intAryElectron).isValidIntAry(\n" +
+					"&iAry, ePrefix.XCpy(Validating Final Result: 'iAry').String())",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
+
+	return iAry, nil
 }
 
 // NewInt32 - Creates a new intAry object initialized
