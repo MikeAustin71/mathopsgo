@@ -1,13 +1,13 @@
 package mathops
 
 import (
-  "fmt"
-  ePref "github.com/MikeAustin71/errpref"
-  "sync"
+	"fmt"
+	ePref "github.com/MikeAustin71/errpref"
+	"sync"
 )
 
 type intAryPhoton struct {
-  lock *sync.Mutex
+	lock *sync.Mutex
 }
 
 // getNumericSeparatorsDto
@@ -28,51 +28,51 @@ type intAryPhoton struct {
 //		Second, they are also used to parse number strings and convert
 //		them into numeric values.
 func (iaPhoton *intAryPhoton) getNumericSeparatorsDto(
-  intAry *IntAry,
-  setDefaultsIfEmpty bool,
-  errPrefDto *ePref.ErrPrefixDto) (NumericSeparatorDto, error) {
+	intAry *IntAry,
+	setDefaultsIfEmpty bool,
+	errPrefDto *ePref.ErrPrefixDto) (NumericSeparatorDto, error) {
 
-  if iaPhoton.lock == nil {
-    iaPhoton.lock = new(sync.Mutex)
-  }
+	if iaPhoton.lock == nil {
+		iaPhoton.lock = new(sync.Mutex)
+	}
 
-  iaPhoton.lock.Lock()
+	iaPhoton.lock.Lock()
 
-  defer iaPhoton.lock.Unlock()
+	defer iaPhoton.lock.Unlock()
 
-  var ePrefix *ePref.ErrPrefixDto
+	var ePrefix *ePref.ErrPrefixDto
 
-  var err error
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
-    errPrefDto,
-    "intAryPhoton.getNumericSeparatorsDto()",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
+		errPrefDto,
+		"intAryPhoton.getNumericSeparatorsDto()",
+		"")
 
-  if err != nil {
-    return NumericSeparatorDto{}, err
-  }
+	if err != nil {
+		return NumericSeparatorDto{}, err
+	}
 
-  if intAry == nil {
+	if intAry == nil {
 
-    return NumericSeparatorDto{},
-      &InputPtrNilError{
-        ErrPrefix:     ePrefix.String(),
-        ParameterName: "'intAry'",
-      }
-  }
+		return NumericSeparatorDto{},
+			&InputPtrNilError{
+				ErrPrefix:     ePrefix.String(),
+				ParameterName: "'intAry'",
+			}
+	}
 
-  numSeps := NumericSeparatorDto{}
-  numSeps.DecimalSeparator = intAry.GetDecimalSeparator()
-  numSeps.ThousandsSeparator = intAry.GetThousandsSeparator()
-  numSeps.CurrencySymbol = intAry.GetCurrencySymbol()
+	numSeps := NumericSeparatorDto{}
+	numSeps.DecimalSeparator = intAry.GetDecimalSeparator()
+	numSeps.ThousandsSeparator = intAry.GetThousandsSeparator()
+	numSeps.CurrencySymbol = intAry.GetCurrencySymbol()
 
-  if setDefaultsIfEmpty {
-    numSeps.SetDefaultsIfEmpty()
-  }
+	if setDefaultsIfEmpty {
+		numSeps.SetDefaultsIfEmpty()
+	}
 
-  return numSeps, nil
+	return numSeps, nil
 }
 
 // CompareSignedValues
@@ -84,167 +84,167 @@ func (iaPhoton *intAryPhoton) getNumericSeparatorsDto(
 //	 1  = Current IntAry value is greater than the passed IntAry value.
 //	-1  = Current IntAry value is less than the passed IntAry value.
 func (iaPhoton *intAryPhoton) compareSignedValues(
-  intAry1 *IntAry,
-  validateIntAry1 bool,
-  intAry2 *IntAry,
-  validateIntAry2 bool,
-  errPrefDto *ePref.ErrPrefixDto) (int, error) {
+	intAry1 *IntAry,
+	validateIntAry1 bool,
+	intAry2 *IntAry,
+	validateIntAry2 bool,
+	errPrefDto *ePref.ErrPrefixDto) (int, error) {
 
-  if iaPhoton.lock == nil {
-    iaPhoton.lock = new(sync.Mutex)
-  }
+	if iaPhoton.lock == nil {
+		iaPhoton.lock = new(sync.Mutex)
+	}
 
-  iaPhoton.lock.Lock()
+	iaPhoton.lock.Lock()
 
-  defer iaPhoton.lock.Unlock()
+	defer iaPhoton.lock.Unlock()
 
-  var ePrefix *ePref.ErrPrefixDto
+	var ePrefix *ePref.ErrPrefixDto
 
-  var err error
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
-    errPrefDto,
-    "intAryPhoton.getNumericSeparatorsDto()",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
+		errPrefDto,
+		"intAryPhoton.getNumericSeparatorsDto()",
+		"")
 
-  if err != nil {
-    return -1, err
-  }
+	if err != nil {
+		return -1, err
+	}
 
-  if intAry1 == nil {
+	if intAry1 == nil {
 
-    return -1,
-      &InputPtrNilError{
-        ErrPrefix:     ePrefix.String(),
-        ParameterName: "'intAry1'",
-      }
-  }
+		return -1,
+			&InputPtrNilError{
+				ErrPrefix:     ePrefix.String(),
+				ParameterName: "'intAry1'",
+			}
+	}
 
-  if intAry2 == nil {
+	if intAry2 == nil {
 
-    return -1,
-      &InputPtrNilError{
-        ErrPrefix:     ePrefix.String(),
-        ParameterName: "'intAry2'",
-      }
-  }
+		return -1,
+			&InputPtrNilError{
+				ErrPrefix:     ePrefix.String(),
+				ParameterName: "'intAry2'",
+			}
+	}
 
-  var doTier2ValidationIntAry1, doTier2ValidationIntAry2 bool
+	var doTier2ValidationIntAry1, doTier2ValidationIntAry2 bool
 
-  if validateIntAry1 {
-    doTier2ValidationIntAry1 = false
-  } else {
-    doTier2ValidationIntAry1 = true
-  }
+	if validateIntAry1 {
+		doTier2ValidationIntAry1 = false
+	} else {
+		doTier2ValidationIntAry1 = true
+	}
 
-  if validateIntAry2 {
-    doTier2ValidationIntAry2 = false
-  } else {
-    doTier2ValidationIntAry2 = true
-  }
+	if validateIntAry2 {
+		doTier2ValidationIntAry2 = false
+	} else {
+		doTier2ValidationIntAry2 = true
+	}
 
-  iAryElectron := new(intAryElectron)
+	iAryElectron := new(intAryElectron)
 
-  iAryNanobot := new(intAryNanobot)
+	iAryNanobot := new(intAryNanobot)
 
-  if validateIntAry1 {
+	if validateIntAry1 {
 
-    err = iAryElectron.isValidIntAry(intAry1, ePrefix.XCpy("Validating 'intAry1'").String())
+		err = iAryElectron.isValidIntAry(intAry1, ePrefix.XCpy("Validating 'intAry1'").String())
 
-    if err != nil {
+		if err != nil {
 
-      return -1,
-        &FuncReturnError{
-          ErrPrefix: ePrefix.String(),
-          ReturnFunc: "err = iAryElectron.isValidIntAry(\n" +
-            "  intAry1, ePrefix.XCpy(Validating 'intAry1').String())",
-          ErrContext: "",
-          ErrMessage: err.Error(),
-        }
-    }
+			return -1,
+				&FuncReturnError{
+					ErrPrefix: ePrefix.String(),
+					ReturnFunc: "err = iAryElectron.isValidIntAry(\n" +
+						"  intAry1, ePrefix.XCpy(Validating 'intAry1').String())",
+					ErrContext: "",
+					ErrMessage: err.Error(),
+				}
+		}
 
-  } else {
+	} else {
 
-    err = iAryNanobot.setInternalFlags(
-      intAry1, ePrefix.XCpy("Setting 'intAry1' Flags"))
+		err = iAryNanobot.setInternalFlags(
+			intAry1, ePrefix.XCpy("Setting 'intAry1' Flags"))
 
-    if err != nil {
+		if err != nil {
 
-      return -1,
-        &FuncReturnError{
-          ErrPrefix: ePrefix.String(),
-          ReturnFunc: "err = iAryNanobot.setInternalFlags(\n" +
-            "  intAry1, ePrefix.XCpy(Setting 'intAry1' Flags))",
-          ErrContext: "",
-          ErrMessage: err.Error(),
-        }
-    }
-  }
+			return -1,
+				&FuncReturnError{
+					ErrPrefix: ePrefix.String(),
+					ReturnFunc: "err = iAryNanobot.setInternalFlags(\n" +
+						"  intAry1, ePrefix.XCpy(Setting 'intAry1' Flags))",
+					ErrContext: "",
+					ErrMessage: err.Error(),
+				}
+		}
+	}
 
-  if validateIntAry2 {
+	if validateIntAry2 {
 
-    err = iAryElectron.isValidIntAry(intAry2, ePrefix.XCpy("Validating 'intAry2'").String())
+		err = iAryElectron.isValidIntAry(intAry2, ePrefix.XCpy("Validating 'intAry2'").String())
 
-    if err != nil {
+		if err != nil {
 
-      return -1,
-        &FuncReturnError{
-          ErrPrefix: ePrefix.String(),
-          ReturnFunc: "err = iAryElectron.isValidIntAry(\n" +
-            "  intAry2, ePrefix.XCpy(Validating 'intAry2').String())",
-          ErrContext: "",
-          ErrMessage: err.Error(),
-        }
-    }
+			return -1,
+				&FuncReturnError{
+					ErrPrefix: ePrefix.String(),
+					ReturnFunc: "err = iAryElectron.isValidIntAry(\n" +
+						"  intAry2, ePrefix.XCpy(Validating 'intAry2').String())",
+					ErrContext: "",
+					ErrMessage: err.Error(),
+				}
+		}
 
-  } else {
+	} else {
 
-    err = iAryNanobot.setInternalFlags(
-      intAry2, ePrefix.XCpy("Setting 'intAry2' Flags"))
+		err = iAryNanobot.setInternalFlags(
+			intAry2, ePrefix.XCpy("Setting 'intAry2' Flags"))
 
-    if err != nil {
+		if err != nil {
 
-      return -1,
-        &FuncReturnError{
-          ErrPrefix: ePrefix.String(),
-          ReturnFunc: "err = iAryNanobot.setInternalFlags(\n" +
-            "  intAry2, ePrefix.XCpy(Setting 'intAry2' Flags))",
-          ErrContext: "",
-          ErrMessage: err.Error(),
-        }
-    }
-  }
+			return -1,
+				&FuncReturnError{
+					ErrPrefix: ePrefix.String(),
+					ReturnFunc: "err = iAryNanobot.setInternalFlags(\n" +
+						"  intAry2, ePrefix.XCpy(Setting 'intAry2' Flags))",
+					ErrContext: "",
+					ErrMessage: err.Error(),
+				}
+		}
+	}
 
-  iCompare, err := new(intAryQuark).compareAbsoluteValues(
-    intAry1, doTier2ValidationIntAry1, intAry2, doTier2ValidationIntAry2, ePrefix)
+	iCompare, err := new(intAryQuark).compareAbsoluteValues(
+		intAry1, doTier2ValidationIntAry1, intAry2, doTier2ValidationIntAry2, ePrefix)
 
-  if intAry1.isZeroValue && intAry2.isZeroValue {
-    return 0, nil
-  }
+	if intAry1.isZeroValue && intAry2.isZeroValue {
+		return 0, nil
+	}
 
-  if intAry1.signVal != intAry2.signVal {
+	if intAry1.signVal != intAry2.signVal {
 
-    if intAry1.signVal == 1 {
+		if intAry1.signVal == 1 {
 
-      return 1, nil
+			return 1, nil
 
-    } else {
+		} else {
 
-      return -1, nil
+			return -1, nil
 
-    }
-  }
+		}
+	}
 
-  // Must be ia.signVal == iAry2.signVal
+	// Must be ia.signVal == iAry2.signVal
 
-  if intAry1.signVal == 1 {
-    return iCompare, nil
-  }
+	if intAry1.signVal == 1 {
+		return iCompare, nil
+	}
 
-  // Must be ia.signVal && iAry2.signVal == -1
+	// Must be ia.signVal && iAry2.signVal == -1
 
-  return iCompare * -1, nil
+	return iCompare * -1, nil
 }
 
 // ResetFromBackUp
@@ -252,82 +252,82 @@ func (iaPhoton *intAryPhoton) compareSignedValues(
 //	Retrieves data from the last saved backup and populates the
 //	current intAry instance.
 func (iaBoson *intAryBoson) resetFromBackUp(
-  ia *IntAry,
-  errPrefDto *ePref.ErrPrefixDto) error {
+	ia *IntAry,
+	errPrefDto *ePref.ErrPrefixDto) error {
 
-  iaBoson.lock.Lock()
+	iaBoson.lock.Lock()
 
-  defer iaBoson.lock.Unlock()
+	defer iaBoson.lock.Unlock()
 
-  var ePrefix *ePref.ErrPrefixDto
+	var ePrefix *ePref.ErrPrefixDto
 
-  var err error
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
-    errPrefDto,
-    "intAryBoson.resetFromBackUp()",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
+		errPrefDto,
+		"intAryBoson.resetFromBackUp()",
+		"")
 
-  if err != nil {
-    return err
-  }
+	if err != nil {
+		return err
+	}
 
-  ia.BackUp.SetInternalFlags()
+	ia.BackUp.SetInternalFlags()
 
-  ia.intAry = make([]uint8, ia.BackUp.intAryLen)
+	ia.intAry = make([]uint8, ia.BackUp.intAryLen)
 
-  for i := 0; i < ia.BackUp.intAryLen; i++ {
+	for i := 0; i < ia.BackUp.intAryLen; i++ {
 
-    ia.intAry[i] = ia.BackUp.intAry[i]
+		ia.intAry[i] = ia.BackUp.intAry[i]
 
-  }
+	}
 
-  ia.intAryLen = ia.BackUp.intAryLen
+	ia.intAryLen = ia.BackUp.intAryLen
 
-  ia.firstDigitIdx = ia.BackUp.firstDigitIdx
+	ia.firstDigitIdx = ia.BackUp.firstDigitIdx
 
-  ia.lastDigitIdx = ia.BackUp.lastDigitIdx
+	ia.lastDigitIdx = ia.BackUp.lastDigitIdx
 
-  ia.isZeroValue = ia.BackUp.isZeroValue
+	ia.isZeroValue = ia.BackUp.isZeroValue
 
-  ia.precision = ia.BackUp.precision
+	ia.precision = ia.BackUp.precision
 
-  ia.signVal = ia.BackUp.signVal
+	ia.signVal = ia.BackUp.signVal
 
-  ia.decimalSeparator = ia.BackUp.decimalSeparator
+	ia.decimalSeparator = ia.BackUp.decimalSeparator
 
-  if ia.decimalSeparator == 0 {
-    ia.decimalSeparator = '.'
-  }
+	if ia.decimalSeparator == 0 {
+		ia.decimalSeparator = '.'
+	}
 
-  ia.thousandsSeparator = ia.BackUp.thousandsSeparator
+	ia.thousandsSeparator = ia.BackUp.thousandsSeparator
 
-  if ia.thousandsSeparator == 0 {
-    ia.thousandsSeparator = ','
-  }
+	if ia.thousandsSeparator == 0 {
+		ia.thousandsSeparator = ','
+	}
 
-  ia.currencySymbol = ia.BackUp.currencySymbol
+	ia.currencySymbol = ia.BackUp.currencySymbol
 
-  if ia.currencySymbol == 0 {
-    ia.currencySymbol = '$'
-  }
+	if ia.currencySymbol == 0 {
+		ia.currencySymbol = '$'
+	}
 
-  err = new(intAryElectron).isValidIntAry(ia, ePrefix.XCpy("Validating after Backup Restore").String())
+	err = new(intAryElectron).isValidIntAry(ia, ePrefix.XCpy("Validating after Backup Restore").String())
 
-  if err != nil {
+	if err != nil {
 
-    return &FuncReturnError{
-      ErrPrefix:  ePrefix.String(),
-      ReturnFunc: "err = new(intAryElectron).isValidIntAry(ia, ePrefix.XCpy(Validating after Backup Restore).String())",
-      ErrContext: "After Backup Restore, IntAry ('ia') is INVALID!\n" +
-        "'ia' FAILED Validation Tests.\n" +
-        "Backup Restore FAILED!",
-      ErrMessage: err.Error(),
-    }
-  }
+		return &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "err = new(intAryElectron).isValidIntAry(ia, ePrefix.XCpy(Validating after Backup Restore).String())",
+			ErrContext: "After Backup Restore, IntAry ('ia') is INVALID!\n" +
+				"'ia' FAILED Validation Tests.\n" +
+				"Backup Restore FAILED!",
+			ErrMessage: err.Error(),
+		}
+	}
 
-  return nil
+	return nil
 }
 
 // setNumericSeparators
@@ -360,72 +360,72 @@ func (iaBoson *intAryBoson) resetFromBackUp(
 //	Thousands Separator comma (',')   = 1,000,000,000
 //	Currency Symbol dollar sign ('$') = $123
 func (iaPhoton *intAryPhoton) setNumericSeparators(
-  intAry *IntAry,
-  decimalSeparator,
-  thousandsSeparator,
-  currencySymbol rune,
-  errPrefDto *ePref.ErrPrefixDto) error {
+	intAry *IntAry,
+	decimalSeparator,
+	thousandsSeparator,
+	currencySymbol rune,
+	errPrefDto *ePref.ErrPrefixDto) error {
 
-  if iaPhoton.lock == nil {
-    iaPhoton.lock = new(sync.Mutex)
-  }
+	if iaPhoton.lock == nil {
+		iaPhoton.lock = new(sync.Mutex)
+	}
 
-  iaPhoton.lock.Lock()
+	iaPhoton.lock.Lock()
 
-  defer iaPhoton.lock.Unlock()
+	defer iaPhoton.lock.Unlock()
 
-  var ePrefix *ePref.ErrPrefixDto
-  var err error
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
-    errPrefDto,
-    "intAryPhoton.setNumericSeparators()",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
+		errPrefDto,
+		"intAryPhoton.setNumericSeparators()",
+		"")
 
-  if err != nil {
-    return err
-  }
+	if err != nil {
+		return err
+	}
 
-  if intAry == nil {
+	if intAry == nil {
 
-    return &InputPtrNilError{
-      ErrPrefix:     ePrefix.String(),
-      ParameterName: "'intAry'",
-    }
-  }
+		return &InputPtrNilError{
+			ErrPrefix:     ePrefix.String(),
+			ParameterName: "'intAry'",
+		}
+	}
 
-  var errMsg string
+	var errMsg string
 
-  if decimalSeparator == 0 {
-    errMsg += "Input parameter 'decimalSeparator' is empty.\n"
-  }
+	if decimalSeparator == 0 {
+		errMsg += "Input parameter 'decimalSeparator' is empty.\n"
+	}
 
-  if thousandsSeparator == 0 {
-    errMsg += "Input parameter 'thousandsSeparator' is empty.\n"
-  }
+	if thousandsSeparator == 0 {
+		errMsg += "Input parameter 'thousandsSeparator' is empty.\n"
+	}
 
-  if currencySymbol == 0 {
-    errMsg += "Input parameter 'currencySymbol' is empty.\n"
-  }
+	if currencySymbol == 0 {
+		errMsg += "Input parameter 'currencySymbol' is empty.\n"
+	}
 
-  if len(errMsg) > 0 {
+	if len(errMsg) > 0 {
 
-    return &FuncReturnError{
-      ErrPrefix:  ePrefix.String(),
-      ReturnFunc: "",
-      ErrContext: "",
-      ErrMessage: fmt.Sprintf("Error:\n%v", errMsg),
-    }
-  }
+		return &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "",
+			ErrContext: "",
+			ErrMessage: fmt.Sprintf("Error:\n%v", errMsg),
+		}
+	}
 
-  intAry.decimalSeparator = decimalSeparator
+	intAry.decimalSeparator = decimalSeparator
 
-  intAry.thousandsSeparator = thousandsSeparator
+	intAry.thousandsSeparator = thousandsSeparator
 
-  intAry.currencySymbol = currencySymbol
+	intAry.currencySymbol = currencySymbol
 
-  return nil
+	return nil
 }
 
 // setNumericSeparatorsDto
@@ -442,64 +442,64 @@ func (iaPhoton *intAryPhoton) setNumericSeparators(
 //		If input parameter 'validateNumericSeparators' is set to true,
 //	 'customSeparators' will be subjected to validatin testing.
 func (iaPhoton *intAryPhoton) setNumericSeparatorsDto(
-  intAry *IntAry,
-  customSeparators NumericSeparatorDto,
-  validateNumericSeparators bool,
-  errPrefDto *ePref.ErrPrefixDto) error {
+	intAry *IntAry,
+	customSeparators NumericSeparatorDto,
+	validateNumericSeparators bool,
+	errPrefDto *ePref.ErrPrefixDto) error {
 
-  if iaPhoton.lock == nil {
-    iaPhoton.lock = new(sync.Mutex)
-  }
+	if iaPhoton.lock == nil {
+		iaPhoton.lock = new(sync.Mutex)
+	}
 
-  iaPhoton.lock.Lock()
+	iaPhoton.lock.Lock()
 
-  defer iaPhoton.lock.Unlock()
+	defer iaPhoton.lock.Unlock()
 
-  var ePrefix *ePref.ErrPrefixDto
-  var err error
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
-    errPrefDto,
-    "intAryPhoton.setNumericSeparatorsDto()",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
+		errPrefDto,
+		"intAryPhoton.setNumericSeparatorsDto()",
+		"")
 
-  if err != nil {
-    return err
-  }
+	if err != nil {
+		return err
+	}
 
-  if intAry == nil {
+	if intAry == nil {
 
-    return &InputPtrNilError{
-      ErrPrefix:     ePrefix.String(),
-      ParameterName: "'intAry'",
-    }
-  }
+		return &InputPtrNilError{
+			ErrPrefix:     ePrefix.String(),
+			ParameterName: "'intAry'",
+		}
+	}
 
-  if validateNumericSeparators {
+	if validateNumericSeparators {
 
-    err = customSeparators.IsValid(ePrefix.XCpy("Validating 'customSeparators'").String())
+		err = customSeparators.IsValid(ePrefix.XCpy("Validating 'customSeparators'").String())
 
-    if err != nil {
+		if err != nil {
 
-      return &FuncReturnError{
-        ErrPrefix: ePrefix.String(),
-        ReturnFunc: "err = customSeparators.IsValid(ePrefix.XCpy(\n" +
-          "  Validating 'customSeparators').String())",
-        ErrContext: "Input parameter 'customSeparators' is invalid.\n" +
-          "'customSeparators' FAILED validation tests.",
-        ErrMessage: err.Error(),
-      }
-    }
-  }
+			return &FuncReturnError{
+				ErrPrefix: ePrefix.String(),
+				ReturnFunc: "err = customSeparators.IsValid(ePrefix.XCpy(\n" +
+					"  Validating 'customSeparators').String())",
+				ErrContext: "Input parameter 'customSeparators' is invalid.\n" +
+					"'customSeparators' FAILED validation tests.",
+				ErrMessage: err.Error(),
+			}
+		}
+	}
 
-  intAry.decimalSeparator = customSeparators.DecimalSeparator
+	intAry.decimalSeparator = customSeparators.DecimalSeparator
 
-  intAry.thousandsSeparator = customSeparators.ThousandsSeparator
+	intAry.thousandsSeparator = customSeparators.ThousandsSeparator
 
-  intAry.currencySymbol = customSeparators.CurrencySymbol
+	intAry.currencySymbol = customSeparators.CurrencySymbol
 
-  return nil
+	return nil
 }
 
 // setNumericSeparatorsToDefaultIfEmpty
@@ -519,51 +519,51 @@ func (iaPhoton *intAryPhoton) setNumericSeparatorsDto(
 //		Effectively, this method ensures that numeric separators are
 //		set to valid values.
 func (iaPhoton *intAryPhoton) setNumericSeparatorsToDefaultIfEmpty(
-  intAry *IntAry,
-  errPrefDto *ePref.ErrPrefixDto) error {
+	intAry *IntAry,
+	errPrefDto *ePref.ErrPrefixDto) error {
 
-  if iaPhoton.lock == nil {
-    iaPhoton.lock = new(sync.Mutex)
-  }
+	if iaPhoton.lock == nil {
+		iaPhoton.lock = new(sync.Mutex)
+	}
 
-  iaPhoton.lock.Lock()
+	iaPhoton.lock.Lock()
 
-  defer iaPhoton.lock.Unlock()
+	defer iaPhoton.lock.Unlock()
 
-  var ePrefix *ePref.ErrPrefixDto
-  var err error
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
-    errPrefDto,
-    "intAryPhoton.setNumericSeparatorsToDefaultIfEmpty()",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
+		errPrefDto,
+		"intAryPhoton.setNumericSeparatorsToDefaultIfEmpty()",
+		"")
 
-  if err != nil {
-    return err
-  }
+	if err != nil {
+		return err
+	}
 
-  if intAry == nil {
+	if intAry == nil {
 
-    return &InputPtrNilError{
-      ErrPrefix:     ePrefix.String(),
-      ParameterName: "'intAry'",
-    }
-  }
+		return &InputPtrNilError{
+			ErrPrefix:     ePrefix.String(),
+			ParameterName: "'intAry'",
+		}
+	}
 
-  if intAry.decimalSeparator == 0 {
-    intAry.decimalSeparator = '.'
-  }
+	if intAry.decimalSeparator == 0 {
+		intAry.decimalSeparator = '.'
+	}
 
-  if intAry.thousandsSeparator == 0 {
-    intAry.thousandsSeparator = ','
-  }
+	if intAry.thousandsSeparator == 0 {
+		intAry.thousandsSeparator = ','
+	}
 
-  if intAry.currencySymbol == 0 {
-    intAry.currencySymbol = '$'
-  }
+	if intAry.currencySymbol == 0 {
+		intAry.currencySymbol = '$'
+	}
 
-  return nil
+	return nil
 }
 
 // setNumericSeparatorsToUSADefault
@@ -583,45 +583,45 @@ func (iaPhoton *intAryPhoton) setNumericSeparatorsToDefaultIfEmpty(
 //		ia.SetThousandsSeparator()
 //		ia.SetCurrencySymbol()
 func (iaPhoton *intAryPhoton) setNumericSeparatorsToUSADefault(
-  intAry *IntAry,
-  errPrefDto *ePref.ErrPrefixDto) error {
+	intAry *IntAry,
+	errPrefDto *ePref.ErrPrefixDto) error {
 
-  if iaPhoton.lock == nil {
-    iaPhoton.lock = new(sync.Mutex)
-  }
+	if iaPhoton.lock == nil {
+		iaPhoton.lock = new(sync.Mutex)
+	}
 
-  iaPhoton.lock.Lock()
+	iaPhoton.lock.Lock()
 
-  defer iaPhoton.lock.Unlock()
+	defer iaPhoton.lock.Unlock()
 
-  var ePrefix *ePref.ErrPrefixDto
-  var err error
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
-    errPrefDto,
-    "intAryPhoton.setNumericSeparatorsToUSADefault()",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
+		errPrefDto,
+		"intAryPhoton.setNumericSeparatorsToUSADefault()",
+		"")
 
-  if err != nil {
-    return err
-  }
+	if err != nil {
+		return err
+	}
 
-  if intAry == nil {
+	if intAry == nil {
 
-    return &InputPtrNilError{
-      ErrPrefix:     ePrefix.String(),
-      ParameterName: "'intAry'",
-    }
-  }
+		return &InputPtrNilError{
+			ErrPrefix:     ePrefix.String(),
+			ParameterName: "'intAry'",
+		}
+	}
 
-  intAry.decimalSeparator = '.'
+	intAry.decimalSeparator = '.'
 
-  intAry.thousandsSeparator = ','
+	intAry.thousandsSeparator = ','
 
-  intAry.currencySymbol = '$'
+	intAry.currencySymbol = '$'
 
-  return nil
+	return nil
 }
 
 // setNumSepSymbol
@@ -665,72 +665,72 @@ func (iaPhoton *intAryPhoton) setNumericSeparatorsToUSADefault(
 //	  The specific numer separator character which will be
 //	  transferred to 'intAry'.
 func (iaPhoton *intAryPhoton) setNumSepSymbol(
-  intAry *IntAry,
-  numSepSymbolType NumSepSymbolCode,
-  numSepSymbol rune,
-  errPrefDto *ePref.ErrPrefixDto) error {
+	intAry *IntAry,
+	numSepSymbolType NumSepSymbolCode,
+	numSepSymbol rune,
+	errPrefDto *ePref.ErrPrefixDto) error {
 
-  if iaPhoton.lock == nil {
-    iaPhoton.lock = new(sync.Mutex)
-  }
+	if iaPhoton.lock == nil {
+		iaPhoton.lock = new(sync.Mutex)
+	}
 
-  iaPhoton.lock.Lock()
+	iaPhoton.lock.Lock()
 
-  defer iaPhoton.lock.Unlock()
+	defer iaPhoton.lock.Unlock()
 
-  var ePrefix *ePref.ErrPrefixDto
+	var ePrefix *ePref.ErrPrefixDto
 
-  var err error
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
-    errPrefDto,
-    "intAryPhoton.setNumSepSymbol",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
+		errPrefDto,
+		"intAryPhoton.setNumSepSymbol",
+		"")
 
-  if err != nil {
-    return err
-  }
+	if err != nil {
+		return err
+	}
 
-  if intAry == nil {
+	if intAry == nil {
 
-    return &InputPtrNilError{
-      ErrPrefix:     ePrefix.String(),
-      ErrContext:    "",
-      ParameterName: "'intAry'",
-    }
-  }
+		return &InputPtrNilError{
+			ErrPrefix:     ePrefix.String(),
+			ErrContext:    "",
+			ParameterName: "'intAry'",
+		}
+	}
 
-  if numSepSymbol == 0 {
+	if numSepSymbol == 0 {
 
-    return &FuncReturnError{
-      ErrPrefix:  ePrefix.String(),
-      ReturnFunc: "",
-      ErrContext: fmt.Sprintf("numSepSymbolType is eqaul to %v separator.",
-        numSepSymbolType.String()),
-      ErrMessage: "Error: Input parameter 'numSepSymbol' is INVALID!\n" +
-        "'numSepSymbol' is empty and has a zero value.",
-    }
-  }
+		return &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "",
+			ErrContext: fmt.Sprintf("numSepSymbolType is eqaul to %v separator.",
+				numSepSymbolType.String()),
+			ErrMessage: "Error: Input parameter 'numSepSymbol' is INVALID!\n" +
+				"'numSepSymbol' is empty and has a zero value.",
+		}
+	}
 
-  switch numSepSymbolType {
+	switch numSepSymbolType {
 
-  case DECIMALSYMBOL:
-    intAry.decimalSeparator = numSepSymbol
-  case THOUSANDSYMBOL:
-    intAry.thousandsSeparator = numSepSymbol
-  case CURRENCYSYMBOL:
-    intAry.currencySymbol = numSepSymbol
-  default:
-    return &FuncReturnError{
-      ErrPrefix:  ePrefix.String(),
-      ReturnFunc: "",
-      ErrContext: fmt.Sprintf(
-        "Input parameter 'numSepSymbolType' has an unknown value designator.\n"+
-          "Value of 'numSepSymbolType' = %v ", numSepSymbolType),
-      ErrMessage: "Error: Input parameter 'numSepSymbolType' is INVALID!",
-    }
-  }
+	case DECIMALSYMBOL:
+		intAry.decimalSeparator = numSepSymbol
+	case THOUSANDSYMBOL:
+		intAry.thousandsSeparator = numSepSymbol
+	case CURRENCYSYMBOL:
+		intAry.currencySymbol = numSepSymbol
+	default:
+		return &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "",
+			ErrContext: fmt.Sprintf(
+				"Input parameter 'numSepSymbolType' has an unknown value designator.\n"+
+					"Value of 'numSepSymbolType' = %v ", numSepSymbolType),
+			ErrMessage: "Error: Input parameter 'numSepSymbolType' is INVALID!",
+		}
+	}
 
-  return nil
+	return nil
 }

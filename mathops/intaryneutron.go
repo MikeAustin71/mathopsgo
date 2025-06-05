@@ -8,7 +8,7 @@ import (
 )
 
 type intAryNeutron struct {
-  lock *sync.Mutex
+  lock sync.Mutex
 }
 
 // ceiling
@@ -54,10 +54,6 @@ func (iaNeutron *intAryNeutron) ceiling(
   intAry *IntAry,
   validateIntAry bool,
   errPrefDto *ePref.ErrPrefixDto) (IntAry, error) {
-
-  if iaNeutron.lock == nil {
-    iaNeutron.lock = new(sync.Mutex)
-  }
 
   iaNeutron.lock.Lock()
 
@@ -286,10 +282,6 @@ func (iaNeutron *intAryNeutron) changeSign(
   validateIntAry bool,
   errPrefDto *ePref.ErrPrefixDto) error {
 
-  if iaNeutron.lock == nil {
-    iaNeutron.lock = new(sync.Mutex)
-  }
-
   iaNeutron.lock.Lock()
 
   defer iaNeutron.lock.Unlock()
@@ -371,10 +363,6 @@ func (iaNeutron *intAryNeutron) divideByTwo(
   intAry *IntAry,
   validateIntAry bool,
   errPrefDto *ePref.ErrPrefixDto) error {
-
-  if iaNeutron.lock == nil {
-    iaNeutron.lock = new(sync.Mutex)
-  }
 
   iaNeutron.lock.Lock()
 
@@ -466,10 +454,6 @@ func (iaNeutron *intAryNeutron) divideByInt64(
   divisor int64,
   maxPrecision int,
   errPrefDto *ePref.ErrPrefixDto) error {
-
-  if iaNeutron.lock == nil {
-    iaNeutron.lock = new(sync.Mutex)
-  }
 
   iaNeutron.lock.Lock()
 
@@ -571,10 +555,6 @@ func (iaNeutron *intAryNeutron) divideByTenToPower(
   validateIntAry bool,
   exponent uint,
   errPrefDto *ePref.ErrPrefixDto) error {
-
-  if iaNeutron.lock == nil {
-    iaNeutron.lock = new(sync.Mutex)
-  }
 
   iaNeutron.lock.Lock()
 
@@ -696,10 +676,6 @@ func (iaNeutron *intAryNeutron) divideIntArys(
   minPrecision,
   maxPrecision int,
   errPrefDto *ePref.ErrPrefixDto) (quotient IntAry, err error) {
-
-  if iaNeutron.lock == nil {
-    iaNeutron.lock = new(sync.Mutex)
-  }
 
   iaNeutron.lock.Lock()
 
@@ -862,10 +838,6 @@ func (iaNeutron *intAryNeutron) floor(
   intAry *IntAry,
   validateIntAry bool,
   errPrefDto *ePref.ErrPrefixDto) (IntAry, error) {
-
-  if iaNeutron.lock == nil {
-    iaNeutron.lock = new(sync.Mutex)
-  }
 
   iaNeutron.lock.Lock()
 
@@ -1129,10 +1101,6 @@ func (iaNeutron *intAryNeutron) getBigInt(
   validateIntAry bool,
   errPrefDto *ePref.ErrPrefixDto) (*big.Int, error) {
 
-  if iaNeutron.lock == nil {
-    iaNeutron.lock = new(sync.Mutex)
-  }
-
   iaNeutron.lock.Lock()
 
   defer iaNeutron.lock.Unlock()
@@ -1244,10 +1212,6 @@ func (iaNeutron *intAryNeutron) getAbsoluteValue(
   validateIntAry bool,
   errPrefDto *ePref.ErrPrefixDto) (IntAry, error) {
 
-  if iaNeutron.lock == nil {
-    iaNeutron.lock = new(sync.Mutex)
-  }
-
   iaNeutron.lock.Lock()
 
   defer iaNeutron.lock.Unlock()
@@ -1352,10 +1316,6 @@ func (iaNeutron *intAryNeutron) getFractionalDigits(
   intAry *IntAry,
   validateIntAry bool,
   errPrefDto *ePref.ErrPrefixDto) (IntAry, error) {
-
-  if iaNeutron.lock == nil {
-    iaNeutron.lock = new(sync.Mutex)
-  }
 
   iaNeutron.lock.Lock()
 
@@ -1499,10 +1459,6 @@ func (iaNeutron *intAryNeutron) getIntegerDigits(
   validateIntAry bool,
   errPrefDto *ePref.ErrPrefixDto) (IntAry, error) {
 
-  if iaNeutron.lock == nil {
-    iaNeutron.lock = new(sync.Mutex)
-  }
-
   iaNeutron.lock.Lock()
 
   defer iaNeutron.lock.Unlock()
@@ -1634,10 +1590,6 @@ func (iaNeutron *intAryNeutron) getMagnitude(
   validateIntAry bool,
   errPrefDto *ePref.ErrPrefixDto) (int, error) {
 
-  if iaNeutron.lock == nil {
-    iaNeutron.lock = new(sync.Mutex)
-  }
-
   iaNeutron.lock.Lock()
 
   defer iaNeutron.lock.Unlock()
@@ -1735,10 +1687,6 @@ func (iaNeutron *intAryNeutron) getNumStrDto(
   validateIntAry bool,
   errPrefDto *ePref.ErrPrefixDto) (NumStrDto, error) {
 
-  if iaNeutron.lock == nil {
-    iaNeutron.lock = new(sync.Mutex)
-  }
-
   iaNeutron.lock.Lock()
 
   defer iaNeutron.lock.Unlock()
@@ -1820,7 +1768,189 @@ func (iaNeutron *intAryNeutron) getNumStrDto(
   return nDto, nil
 }
 
-// MultiplyByTenToPower
+// Multiply
+//
+//	This method receives three IntAry input parameters, 'ia1',
+//	'ia2' and 'iaResult'.It then proceeds to multiply 'ia1' by
+//	'ia2' and stores the multiplication result in intAry
+//	'iaResult'.
+//
+//	Example
+//	=======
+//
+//	      product = multiplicand x multipllier
+//
+//	      iaResult = ia1 x ia2
+//
+//	Numeric Separators
+//	==================
+//
+//	Numeric Separators define the Decimal Separator character,
+//	Thousands Separator character, and Currency Symbol character.
+//	These separator characters serve two purposes. First they are
+//	used to format and display numeric values as number strings.
+//	Second, they are also used to parse number strings and
+//	convert them into numeric values.
+//
+//	Numeric Separators for the calculated multiplication result
+//	('iaResult') will be copied from current IntAry instance
+//	('ia').
+//
+//	Input Parameters
+//	================
+//
+//	ia1                      *IntAry
+//	  In this multiplication operation, 'ia1' is the multiplicand.
+//
+//	validateIa1              bool
+//	   When set to 'true', input parameter 'ia' will be subjected
+//	   to Validation Tests.
+//
+//	ia2                      *IntAry
+//	  In this multiplication operation, 'ia2' is the multiplier.
+//
+//	validateIa2              bool
+//	   When set to 'true', input parameter 'ia2' will be subjected
+//	   to Validation Tests.
+//
+//	iaResult                 *IntAry
+//
+//	  This 'iaResult' IntArray object which will store the result
+//	  of the multiplication operation. 'iaResult' is the 'product'.
+//
+//	validateIaResult         bool
+//	   When set to 'true', input parameter 'iaResult' will be
+//	   subjected to Validation Tests.
+//
+//	minimumResultPrecision   int
+//	  'minimumResultPrecision' will determine the minimum number of
+//	  digits computed to the right of the decimal place in the
+//	  final result or 'product'.
+//
+//	  If 'minimumResultPrecision' is set to a value of -1, all
+//	  significant digits (digits greater than zero) will be
+//	  returned to the right of the decimal place. Remember that
+//	  the maximum number of decimal digits returned will be
+//	  controlled by parameter 'maxResultPrecision'
+//
+//	maxResultPrecision       int
+//	  'maxResultPrecision' will determine the maximum number of
+//	  digits to the right of the decimal place in the result.
+//
+//	  Valid values are -1 and values >= zero ('0')
+//
+//	  Values less than -1 will trigger an error.
+//
+//	  A value of -1 signals that no limit will be placed on the
+//	  number of decimals places to right of the decimal point in
+//	  the result. Be advised that a very, very large number of
+//	  decimal digits may be accommodated by the IntAry Type.
+//
+//	Return Value
+//	============
+//
+//	error
+//	  If no errors are encountered, this method will return an
+//	  error value of 'nil'.
+func (iaNeutron *intAryNeutron) multiply(
+  ia1 *IntAry,
+  validateIa1 bool,
+  ia2 *IntAry,
+  validateIa2 bool,
+  iaResult *IntAry,
+  validateIaResult bool,
+  minimumResultPrecision int,
+  maxResultPrecision int,
+  errPrefDto *ePref.ErrPrefixDto) error {
+
+  iaNeutron.lock.Lock()
+
+  defer iaNeutron.lock.Unlock()
+
+  var ePrefix *ePref.ErrPrefixDto
+  var err error
+
+  ePrefix,
+    err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
+    errPrefDto,
+    "intAryNeutron.multiply",
+    "")
+
+  if err != nil {
+    return err
+  }
+
+  if ia1 == nil {
+
+    return &InputPtrNilError{
+      ErrPrefix:     ePrefix.String(),
+      ParameterName: "'ia1'",
+    }
+  }
+
+  if ia2 == nil {
+
+    return &InputPtrNilError{
+      ErrPrefix:     ePrefix.String(),
+      ParameterName: "'ia2'",
+    }
+  }
+
+  if iaResult == nil {
+
+    return &InputPtrNilError{
+      ErrPrefix:     ePrefix.String(),
+      ParameterName: "'ia2'",
+    }
+  }
+
+  err = new(intAryUtility).selectIntAryValidation(
+    ia1,
+    "ia1",
+    validateIa1,
+    ePrefix)
+
+  if err != nil {
+    return err
+  }
+
+  err = new(intAryUtility).selectIntAryValidation(
+    ia2,
+    "ia2",
+    validateIa2,
+    ePrefix)
+
+  if err != nil {
+    return err
+  }
+
+  err = new(IntAryMathMultiply).Multiply(ia1, ia2, iaResult, minimumResultPrecision, maxResultPrecision)
+
+  if err != nil {
+
+    return &FuncReturnError{
+      ErrPrefix: ePrefix.String(),
+      ReturnFunc: "err = new(IntAryMathMultiply).Multiply(\n" +
+        "  ia1, ia2, iaResult, minimumResultPrecision, maxResultPrecision)",
+      ErrContext: "",
+      ErrMessage: err.Error(),
+    }
+  }
+
+  err = new(intAryUtility).selectIntAryValidation(
+    iaResult,
+    "iaResult",
+    validateIaResult,
+    ePrefix)
+
+  if err != nil {
+    return err
+  }
+
+  return nil
+}
+
+// multiplyByTenToPower
 //
 //	The value of intAry is multiplied by 10 to the power of the
 //	input parameter 'power'.
@@ -1834,10 +1964,6 @@ func (iaNeutron *intAryNeutron) multiplyByTenToPower(
   validateIntAry bool,
   power uint,
   errPrefDto *ePref.ErrPrefixDto) error {
-
-  if iaNeutron.lock == nil {
-    iaNeutron.lock = new(sync.Mutex)
-  }
 
   iaNeutron.lock.Lock()
 
@@ -1890,7 +2016,7 @@ func (iaNeutron *intAryNeutron) multiplyByTenToPower(
   return nil
 }
 
-// MultiplyByTwoToPower
+// multiplyByTwoToPower
 //
 //		Multiply the existing value of the IntAry by 2 to the power
 //		of the input parameter 'power'.
@@ -1904,10 +2030,6 @@ func (iaNeutron *intAryNeutron) multiplyByTwoToPower(
   validateIntAry bool,
   power uint,
   errPrefDto *ePref.ErrPrefixDto) error {
-
-  if iaNeutron.lock == nil {
-    iaNeutron.lock = new(sync.Mutex)
-  }
 
   iaNeutron.lock.Lock()
 
@@ -1962,56 +2084,63 @@ func (iaNeutron *intAryNeutron) multiplyByTwoToPower(
 
 // multiplyThisBy
 //
-//		Multiplies the IntAry parameter 'ia' by 'ia2' and
-//		stores the multiplication result in 'ia'.
+//	Multiplies the IntAry parameter 'ia' by 'ia2' and
+//	stores the multiplication result in 'ia'.
 //
-//	 Example
-//	 =======
+//	Example
+//	=======
 //
-//	   ia = ia x ia2
+//	  ia = ia x ia2
 //
-//		Input Parameters
-//		================
+//	Input Parameters
+//	================
 //
-//	 ia                       *ia
-//	   Pointer to an IntAry object. As shown above, this
-//	   IntAry object will store the final multiplication
-//	   result.
+//	ia                       *ia
+//	  Pointer to an IntAry object. As shown above, this IntAry
+//	  object will store the final multiplication result.
 //
-//		ia2                      *IntAry
-//		  Pointer to an IntAry object. In this multiplication
-//		  operation, 'ia2' is the multiplier.
+//	validateIa               bool
+//	   When set to 'true', input parameter 'ia' will be subjected
+//	   to Validation Tests.
 //
-//		minimumResultPrecision   int
-//		  'minimumResultPrecision' will determine the minimum number of
-//		  digits computed to the right of the decimal place in the
-//		  final result.
+//	ia2                      *IntAry
+//	  Pointer to an IntAry object. In this multiplication
+//	  operation, 'ia2' is the multiplier.
 //
-//		  If 'minimumResultPrecision' is set to a value of -1, all
-//		  significant digits (digits greater than zero) will be
-//		  returned to the right of the decimal place. Remember that
-//		  the maximum number of decimal digits returned will be
-//		  controlled by parameter 'maxResultPrecision'
+//	validateIa2              bool
+//	   When set to 'true', input parameter 'ia2' will be subjected
+//	   to Validation Tests.
 //
-//		maxResultPrecision       int
-//		  'maxResultPrecision' will determine the maximum number of
-//		  digits to the right of the decimal place in the result.
+//	minimumResultPrecision   int
+//	  'minimumResultPrecision' will determine the minimum number of
+//	  digits computed to the right of the decimal place in the
+//	  final result.
 //
-//		  Valid values are -1 and values >= zero ('0')
+//	  If 'minimumResultPrecision' is set to a value of -1, all
+//	  significant digits (digits greater than zero) will be
+//	  returned to the right of the decimal place. Remember that
+//	  the maximum number of decimal digits returned will be
+//	  controlled by parameter 'maxResultPrecision'
 //
-//		  Values less than -1 will trigger an error.
+//	maxResultPrecision       int
+//	  'maxResultPrecision' will determine the maximum number of
+//	  digits to the right of the decimal place in the result.
 //
-//		  A value of -1 signals that no limit will be placed on the
-//		  number of decimals places to right of the decimal point in
-//		  the result. Be advised that a very, very large number of
-//		  decimal digits may be accommodated by the IntAry Type.
+//	  Valid values are -1 and values >= zero ('0')
 //
-//		Return Value
-//		============
+//	  Values less than -1 will trigger an error.
 //
-//		error
-//		  If no errors are encountered, this method will return an
-//		  error value of 'nil'.
+//	  A value of -1 signals that no limit will be placed on the
+//	  number of decimals places to right of the decimal point in
+//	  the result. Be advised that a very, very large number of
+//	  decimal digits may be accommodated by the IntAry Type.
+//
+//	Return Value
+//	============
+//
+//	error
+//	  If no errors are encountered, this method will return an
+//	  error value of 'nil'.
 func (iaNeutron *intAryNeutron) multiplyThisBy(
   ia *IntAry,
   validateIa bool,
@@ -2020,10 +2149,6 @@ func (iaNeutron *intAryNeutron) multiplyThisBy(
   minimumPrecision,
   maxPrecision int,
   errPrefDto *ePref.ErrPrefixDto) error {
-
-  if iaNeutron.lock == nil {
-    iaNeutron.lock = new(sync.Mutex)
-  }
 
   iaNeutron.lock.Lock()
 
@@ -2108,10 +2233,6 @@ func (iaNeutron *intAryNeutron) setSign(
   intAry *IntAry,
   signVal int,
   errPrefDto *ePref.ErrPrefixDto) error {
-
-  if iaNeutron.lock == nil {
-    iaNeutron.lock = new(sync.Mutex)
-  }
 
   iaNeutron.lock.Lock()
 

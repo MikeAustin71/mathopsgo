@@ -3873,6 +3873,19 @@ func (ia *IntAry) Inverse(maxPrecision int) (IntAry, error) {
 //	 =======
 //
 //	 IntAry Numeric Value x 2^power = result
+//
+//	Numeric Separators
+//	==================
+//
+//	Numeric Separators define the Decimal Separator character,
+//	Thousands Separator character, and Currency Symbol character.
+//	These separator characters serve two purposes. First they are
+//	used to format and display numeric values as number strings.
+//	Second, they are also used to parse number strings and
+//	convert them into numeric values.
+//
+//	Numeric Separators previous configured for the current IntAry
+//	instance ('ia') will not be modified by this method.
 func (ia *IntAry) MultiplyByTwoToPower(power uint) error {
 
 	var ePrefix *ePref.ErrPrefixDto
@@ -3888,7 +3901,20 @@ func (ia *IntAry) MultiplyByTwoToPower(power uint) error {
 		return err
 	}
 
-	return new(intAryNeutron).multiplyByTwoToPower(ia, true, power, ePrefix)
+	err = new(intAryNeutron).multiplyByTwoToPower(ia, true, power, ePrefix)
+
+	if err != nil {
+
+		return &FuncReturnError{
+			ErrPrefix: ePrefix.String(),
+			ReturnFunc: "err = new(intAryNeutron).\n" +
+				"  multiplyByTwoToPower(ia, true, power, ePrefix)",
+			ErrContext: "",
+			ErrMessage: err.Error(),
+		}
+	}
+
+	return nil
 }
 
 // MultiplyByTenToPower
@@ -3900,6 +3926,19 @@ func (ia *IntAry) MultiplyByTwoToPower(power uint) error {
 //	=======
 //
 //	IntAry Numeric Value x 10^power = result
+//
+//	Numeric Separators
+//	==================
+//
+//	Numeric Separators define the Decimal Separator character,
+//	Thousands Separator character, and Currency Symbol character.
+//	These separator characters serve two purposes. First they are
+//	used to format and display numeric values as number strings.
+//	Second, they are also used to parse number strings and
+//	convert them into numeric values.
+//
+//	Numeric Separators previous configured for the current IntAry
+//	instance ('ia') will not be modified by this method.
 func (ia *IntAry) MultiplyByTenToPower(power uint) error {
 
 	var ePrefix *ePref.ErrPrefixDto
@@ -3933,52 +3972,65 @@ func (ia *IntAry) MultiplyByTenToPower(power uint) error {
 
 // MultiplyThisBy
 //
-//		Multiplies the current IntAry instance ('ia') by IntAry input
-//		parameter 'ia2' and stores the multiplication result in the
-//		current IntAry instance ('ia').
+//	Multiplies the current IntAry instance ('ia') by IntAry input
+//	parameter 'ia2' and stores the multiplication result in the
+//	current IntAry instance ('ia').
 //
-//	 Example
-//	 =======
+//	Example
+//	=======
 //
-//	   ia = ia x ia2
+//	  ia = ia x ia2
 //
-//		Input Parameters
-//		================
+//	Numeric Separators
+//	==================
 //
-//		ia2                      *IntAry
-//		  Pointer to an IntAry object. In this multiplication
-//		  operation, 'ia2' is the multiplier.
+//	Numeric Separators define the Decimal Separator character,
+//	Thousands Separator character, and Currency Symbol character.
+//	These separator characters serve two purposes. First they are
+//	used to format and display numeric values as number strings.
+//	Second, they are also used to parse number strings and
+//	convert them into numeric values.
 //
-//		minimumResultPrecision   int
-//		  'minimumResultPrecision' will determine the minimum number of
-//		  digits computed to the right of the decimal place in the
-//		  final result.
+//	Numeric Separators previous configured for the current IntAry
+//	instance ('ia') will not be modified by this method.
 //
-//		  If 'minimumResultPrecision' is set to a value of -1, all
-//		  significant digits (digits greater than zero) will be
-//		  returned to the right of the decimal place. Remember that
-//		  the maximum number of decimal digits returned will be
-//		  controlled by parameter 'maxResultPrecision'
+//	Input Parameters
+//	================
 //
-//		maxResultPrecision       int
-//		  'maxResultPrecision' will determine the maximum number of
-//		  digits to the right of the decimal place in the result.
+//	ia2                      *IntAry
+//	  Pointer to an IntAry object. In this multiplication
+//	  operation, 'ia2' is the multiplier.
 //
-//		  Valid values are -1 and values >= zero ('0')
+//	minimumResultPrecision   int
+//	  'minimumResultPrecision' will determine the minimum number of
+//	  digits computed to the right of the decimal place in the
+//	  final result.
 //
-//		  Values less than -1 will trigger an error.
+//	  If 'minimumResultPrecision' is set to a value of -1, all
+//	  significant digits (digits greater than zero) will be
+//	  returned to the right of the decimal place. Remember that
+//	  the maximum number of decimal digits returned will be
+//	  controlled by parameter 'maxResultPrecision'
 //
-//		  A value of -1 signals that no limit will be placed on the
-//		  number of decimals places to right of the decimal point in
-//		  the result. Be advised that a very, very large number of
-//		  decimal digits may be accommodated by the IntAry Type.
+//	maxResultPrecision       int
+//	  'maxResultPrecision' will determine the maximum number of
+//	  digits to the right of the decimal place in the result.
 //
-//		Return Value
-//		============
+//	  Valid values are -1 and values >= zero ('0')
 //
-//		error
-//		  If no errors are encountered, this method will return an
-//		  error value of 'nil'.
+//	  Values less than -1 will trigger an error.
+//
+//	  A value of -1 signals that no limit will be placed on the
+//	  number of decimals places to right of the decimal point in
+//	  the result. Be advised that a very, very large number of
+//	  decimal digits may be accommodated by the IntAry Type.
+//
+//	Return Value
+//	============
+//
+//	error
+//	  If no errors are encountered, this method will return an
+//	  error value of 'nil'.
 func (ia *IntAry) MultiplyThisBy(ia2 *IntAry, minimumPrecision, maxPrecision int) error {
 
 	var ePrefix *ePref.ErrPrefixDto
@@ -3994,51 +4046,95 @@ func (ia *IntAry) MultiplyThisBy(ia2 *IntAry, minimumPrecision, maxPrecision int
 		return err
 	}
 
-	return new(intAryNeutron).multiplyThisBy(
+	err = new(intAryNeutron).multiplyThisBy(
 		ia, true, ia2, true, minimumPrecision, maxPrecision, ePrefix)
+
+	if err != nil {
+
+		return &FuncReturnError{
+			ErrPrefix: ePrefix.String(),
+			ReturnFunc: "err = new(intAryNeutron).multiplyThisBy(\n" +
+				"  ia, true, ia2, true, minimumPrecision, maxPrecision, ePrefix)",
+			ErrContext: "",
+			ErrMessage: err.Error(),
+		}
+	}
+
+	return nil
 }
 
-// Multiply - Multiplies intAry ia1 by intAry ia2 and stores the multiplication result
-// in intAry iaResult.
+// Multiply
 //
-// Parameters
-// ==========
+//	This method receives three IntAry input parameters, 'ia1',
+//	'ia2' and 'iaResult'.It then proceeds to multiply 'ia1' by
+//	'ia2' and stores the multiplication result in intAry
+//	'iaResult'.
 //
-//	'ia1'				-	Pointer to an intAry object.
+//	Example
+//	=======
 //
-//				In this multiplication operation, 'ia1' is the multiplicand.
+//	      product = multiplicand x multipllier
 //
-//	'ia2'				-	Pointer to an intAry object.
+//	      iaResult = ia1 x ia2
 //
-//				In this multiplication operation, 'ia2' is the multiplier.
+//	Numeric Separators
+//	==================
 //
-//	'iaResult'	-	Pointer to an intAry object.
+//	Numeric Separators define the Decimal Separator character,
+//	Thousands Separator character, and Currency Symbol character.
+//	These separator characters serve two purposes. First they are
+//	used to format and display numeric values as number strings.
+//	Second, they are also used to parse number strings and
+//	convert them into numeric values.
 //
-//				This 'iaResult' intArray object which will be populated with the result
-//				of the multiplication operation. The multiplication operation is achieved
-//				by multiplying 'ia1' by 'ia2'.
+//	Numeric Separators for the calculated multiplication result
+//	('iaResult') will be copied from current IntAry instance
+//	('ia').
 //
-// 'minimumResultPrecision' int -
+//	Input Parameters
+//	================
 //
-//	'minimumResultPrecision' will determine the minimum number of digits
-//	computed to the right of the decimal place in the final result.
-//	If 'minimumResultPrecision' is set to a value of -1, all significant digits
-//	(digits greater than zero) will be returned to the right of the decimal place.
-//	Remember that the maximum number of decimal digits returned will be controlled
-//	by parameter 'maxResultPrecision'
+//	ia1                      *IntAry
+//	  In this multiplication operation, 'ia1' is the multiplicand.
 //
-// 'maxResultPrecision' 		int -
+//	ia2                      *IntAry
+//	  In this multiplication operation, 'ia2' is the multiplier.
 //
-//	'maxResultPrecision' will determine the maximum number of digits to the right
-//	of the decimal place in the result.
+//	iaResult                 *IntAry
 //
-//	Valid values are -1 and values >= zero ('0')
-//	Values less than -1 will trigger an error.
+//	  This 'iaResult' IntArray object which will store the result
+//	  of the multiplication operation. 'iaResult' is the 'product'.
 //
-//	A value of -1 signals that no limit will be placed on
-//	the number of decimals places to right of the decimal
-//	point in the result. Be advised that a very, very large number
-//	of decimal digits may be accommodated by the IntAry Type.
+//	minimumResultPrecision   int
+//	  'minimumResultPrecision' will determine the minimum number of
+//	  digits computed to the right of the decimal place in the
+//	  final result or 'product'.
+//
+//	  If 'minimumResultPrecision' is set to a value of -1, all
+//	  significant digits (digits greater than zero) will be
+//	  returned to the right of the decimal place. Remember that
+//	  the maximum number of decimal digits returned will be
+//	  controlled by parameter 'maxResultPrecision'
+//
+//	maxResultPrecision       int
+//	  'maxResultPrecision' will determine the maximum number of
+//	  digits to the right of the decimal place in the result.
+//
+//	  Valid values are -1 and values >= zero ('0')
+//
+//	  Values less than -1 will trigger an error.
+//
+//	  A value of -1 signals that no limit will be placed on the
+//	  number of decimals places to right of the decimal point in
+//	  the result. Be advised that a very, very large number of
+//	  decimal digits may be accommodated by the IntAry Type.
+//
+//	Return Value
+//	============
+//
+//	error
+//	  If no errors are encountered, this method will return an
+//	  error value of 'nil'.
 func (ia *IntAry) Multiply(
 	ia1 *IntAry,
 	ia2 *IntAry,
@@ -4046,7 +4142,36 @@ func (ia *IntAry) Multiply(
 	minimumResultPrecision int,
 	maxResultPrecision int) error {
 
-	return IntAryMathMultiply{}.Multiply(ia1, ia2, iaResult, minimumResultPrecision, maxResultPrecision)
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
+
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"IntAry.Multiply",
+		"")
+
+	if err != nil {
+		return err
+	}
+
+	err = new(intAryNeutron).
+		multiply(ia1, true, ia2, true, iaResult,
+			true, minimumResultPrecision, maxResultPrecision, ePrefix)
+
+	if err != nil {
+
+		return &FuncReturnError{
+			ErrPrefix: ePrefix.String(),
+			ReturnFunc: "err = new(intAryNeutron).multiply(\n" +
+				"  ia1, true, ia2, true, iaResult,\n" +
+				"  true, minimumResultPrecision, maxResultPrecision, ePrefix)",
+			ErrContext: "",
+			ErrMessage: err.Error(),
+		}
+	}
+
+	return nil
 }
 
 // New - Creates and returns a new blank intAry object.
