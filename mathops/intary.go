@@ -3712,7 +3712,7 @@ func (ia *IntAry) IsMinusOne() (bool, error) {
 	ePrefix,
 		err = ePref.ErrPrefixDto{}.NewIEmpty(
 		nil,
-		"IntAry.IsMinusOne()",
+		"IntAry.IsMinusOne",
 		"")
 
 	if err != nil {
@@ -3757,19 +3757,54 @@ func (ia *IntAry) IsMinusOne() (bool, error) {
 // 1.0000			true
 // 1.0001			false
 // 2.0				false
-func (ia *IntAry) IsOne() bool {
+func (ia *IntAry) IsOne() (bool, error) {
+
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
+
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"IntAry.IsOne",
+		"")
+
+	if err != nil {
+		return false, err
+	}
 
 	iaOne, err := new(IntAry).NewOne(ia.precision)
 
 	if err != nil {
-		return false
+
+		return false,
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "iaOne, err := new(IntAry).NewOne(ia.precision)",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
 	}
 
-	if ia.Equals(&iaOne) {
-		return true
+	iaIsEqualOne, err := new(intAryAtom).equal(
+		ia, true, &iaOne, false, ePrefix.XCpy("'ia' == 'iaOne' ?"))
+
+	if err != nil {
+
+		return false,
+			&FuncReturnError{
+				ErrPrefix: ePrefix.String(),
+				ReturnFunc: "iaIsEqualOne, err := new(intAryAtom).equal(\n" +
+					"ia, true, &iaOne, false, ePrefix.XCpy('ia' == 'iaOne' ?))",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
 	}
 
-	return false
+	if iaIsEqualOne {
+		return true, nil
+	}
+
+	return false, nil
 }
 
 // IsZero - Analyzes the current IntAry to determine

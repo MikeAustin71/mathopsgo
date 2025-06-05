@@ -158,7 +158,7 @@ func (nthrt *NthRootOp) GetNthRootFloat64(radicand float64, precision, nthRoot, 
 //
 // 'maxPrecision' specifies the number of decimals to the right of the decimal place to
 // which the Nth root will be calculated.
-
+//
 // The calculation result is returned as an intAry object.
 //
 // Note: A negative 'radicand' value with an even nthRoot will generate an error.
@@ -612,7 +612,7 @@ func (nthrt *NthRootOp) GetSquareRootIntAry(radicand *IntAry, maxPrecision int) 
 // The calculation result is returned as an intAry object.
 //
 // Note: A negative 'radicand' value with an even nthRoot will generate an error.
-func (nthrt NthRootOp) NewNthRoot(radicand, nthRoot *IntAry, maxPrecision int) (IntAry, error) {
+func (nthrt *NthRootOp) NewNthRoot(radicand, nthRoot *IntAry, maxPrecision int) (IntAry, error) {
 
 	nthRtOp := NthRootOp{}
 
