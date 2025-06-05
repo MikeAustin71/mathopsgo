@@ -4649,6 +4649,7 @@ func (ia *IntAry) NewFloatBig(num *big.Float, precision int) (IntAry, error) {
 //	  If no errors are encountered during processing, this returned
 //	  value will be set to 'nil'
 func (ia *IntAry) NewInt(intNum int, precision uint) (IntAry, error) {
+
 	var ePrefix *ePref.ErrPrefixDto
 	var err error
 
@@ -5904,11 +5905,12 @@ func (ia *IntAry) OptimizeIntArrayLen(optimizeFracDigits bool) error {
 	return new(intAryAtom).optimizeIntArrayLen(ia, true, optimizeFracDigits, ePrefix)
 }
 
-// Pow - Raises the value of the current intAry
-// to the power designated by the input parameter 'power'.
-// This method calls ia.pwrByTwos() which raises
-// a number to a specified power using the
-// exponentiation by squaring algorithm.
+// Pow
+//
+//	Raises the value of the current intAry to the power designated
+//	by the input parameter 'power'. This method uses the
+//	'Power By Twos' technique which raises a number to a specified
+//	power using the exponentiation by squaring algorithm.
 //
 // Input Parameters:
 // =================
@@ -5946,39 +5948,59 @@ func (ia *IntAry) OptimizeIntArrayLen(optimizeFracDigits bool) error {
 //				point during internal multiplication operations.
 func (ia *IntAry) Pow(power int, maxResultPrecision int, internalPrecision int) error {
 
-	ePrefix := "IntAry.PowInt() "
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
+
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"IntAry.Pow",
+		"")
+
+	if err != nil {
+		return err
+	}
 
 	if internalPrecision < -1 {
-		return fmt.Errorf("%v\n"+
-			"Error: Parameter internalPrecision is less than -1.\n"+
-			"internalPrecision= %v\n",
-			ePrefix,
-			internalPrecision)
+
+		return &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "",
+			ErrContext: "internalPrecision < -1",
+			ErrMessage: fmt.Sprintf("Error: Parameter 'internalPrecision' is less than -1.\n"+
+				"internalPrecision= '%v'", internalPrecision),
+		}
 	}
 
-	/*
-		pwr := big.NewInt(int64(power))
-		return ia.pwrByTwos(pwr, maxResultPrecision, internalPrecision)
-	*/
+	iaPower := new(intAryElectron).newIntAry()
 
-	iaPower, err := new(IntAry).NewInt(power, 0)
-
-	if err != nil {
-		return fmt.Errorf("%v\n"+
-			"Error returned by new(IntAry).NewInt(power, 0).\n"+
-			"Error='%v' ",
-			ePrefix,
-			err.Error())
+	nsProfile := NumSepsProfileSelection{
+		SourceObjectName:         "ia",
+		OutputNumSepsName:        "numSeps",
+		UseDefaultNumSeps:        false,
+		SetDefaultNumSepsIfEmpty: true,
+		ValidateNumSeps:          false,
+		OverrideNumSeps:          NumericSeparatorDto{},
 	}
 
-	err = IntAryMathPower{}.Pwr(ia, &iaPower, 0, maxResultPrecision)
+	err = new(intAryGluon).setIntAryWithInt(
+		&iaPower,
+		ia,
+		nsProfile,
+		power,
+		0,
+		ePrefix)
+
+	err = new(IntAryMathPower).Pwr(ia, &iaPower, 0, maxResultPrecision)
 
 	if err != nil {
-		return fmt.Errorf("%v\n"+
-			"Error returned by IntAryMathPower{}.Pwr().\n"+
-			"Error='%v' ",
-			ePrefix,
-			err.Error())
+
+		return &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "err = new(IntAryMathPower).Pwr(ia, &iaPower, 0, maxResultPrecision)",
+			ErrContext: "",
+			ErrMessage: err.Error(),
+		}
 	}
 
 	return nil
@@ -8332,43 +8354,75 @@ func (ia *IntAry) ShiftPrecisionLeft(shiftPrecision uint) error {
 	return nil
 }
 
-// ShiftPrecisionRight - Shifts the existing precision of the current IntAry numeric value.
-// The position of the decimal point is shifted 'shiftPrecision' positions to the right.
+// ShiftPrecisionRight
 //
-// This is equivalent to: result = IntAry X 10^shiftPrecision or IntAry Multiplied by 10
-// raised to the power of input parameter 'shiftPrecision'.
+//	Shifts the existing precision of the current IntAry numeric
+//	value. The position of the decimal point is shifted 'shiftPrecision'
+//	positions to the right.
 //
-// Input Parameters:
-// =================
+//	This is equivalent to:
+//	   result = IntAry X 10^shiftPrecision
+//	                   or
+//	   IntAry Multiplied by 10 raised to the power of
+//	   input parameter 'shiftPrecision'.
 //
-//	shiftPrecision		uint		- The number of digits by which the current decimal
-//															point position in the current IntAry numeric value
-//															will be shifted to the right.
+//	Examples:
+//	=========
 //
-// Examples:
-// =========
+//	                  Input
+//	                 Parameter
+//	IntAry Value   shiftPrecision    Result
+//	------------   --------------    ------
 //
-//	  Input
-//	Parameter
+//	 "123456.789"        3           "123456789"
+//	 "123456.789"        2           "12345678.9"
+//	 "123456.789"        6           "123456789000"
+//	 "123456789"         6           "123456789000000"
+//	 "123"               5           "12300000"
+//	 "0"                 3           "0"
 //
-// IntAry Value		shiftPrecision		Result
-// ------------   --------------    ------
+//	 zero shiftPrecision has no effect on original number string
 //
-//	"123456.789"				3						"123456789"
-//	"123456.789"				2						"12345678.9"
-//	"123456.789"        6					  "123456789000"
-//	"123456789"	 			  6						"123456789000000"
-//	"123"               5	          "12300000"
-//	"0"								  3						"0"
-//	"123456.789"				0						"123456.789"		- zero has no effect on original number string
+//	 "123456.789"        0           "123456.789"
+//	"-123456.789"        0           "-123456.789"
+//	"-123456.789"        3           "-123456789"
+//	"-123456789"         6           "-123456789000000"
 //
-// "-123456.789"        0          "-123456.789"
-// "-123456.789"        3          "-123456789"
-// "-123456789"			    6					 "-123456789000000"
-func (ia *IntAry) ShiftPrecisionRight(shiftPrecision uint) {
+//	Input Parameters:
+//	=================
+//
+//	shiftPrecision            uint
+//	   The number of digits by which the current decimal point
+//	   position in the current IntAry numeric value will be shifted
+//	   to the right.
+func (ia *IntAry) ShiftPrecisionRight(shiftPrecision uint) error {
 
-	new(IntAryMathMultiply).MultiplyByTenToPower(ia, shiftPrecision)
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"IntAry.ShiftPrecisionRight",
+		"")
+
+	if err != nil {
+		return err
+	}
+
+	err = new(IntAryMathMultiply).MultiplyByTenToPower(ia, shiftPrecision)
+
+	if err != nil {
+
+		return &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "err = new(IntAryMathMultiply).MultiplyByTenToPower(ia, shiftPrecision)",
+			ErrContext: "",
+			ErrMessage: err.Error(),
+		}
+	}
+
+	return nil
 }
 
 // SetThousandsSeparator is used to set the value of the thousands

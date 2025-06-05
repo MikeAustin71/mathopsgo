@@ -18,6 +18,10 @@ func (iaMolecule *intAryMolecule) prefixToIntAry(
 	ia *IntAry,
 	num uint8) {
 
+	iaMolecule.lock.Lock()
+
+	defer iaMolecule.lock.Unlock()
+
 	if ia == nil {
 		return
 	}

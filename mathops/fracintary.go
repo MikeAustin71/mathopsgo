@@ -2,6 +2,7 @@ package mathops
 
 import (
 	"fmt"
+	ePref "github.com/MikeAustin71/errpref"
 	"math/big"
 )
 
@@ -12,227 +13,461 @@ type FracIntAry struct {
 	Denominator IntAry
 }
 
-// NewBigInts - Creates a new FracIntAry type from two *big.Int types passed
-// as input parameters.
+// IsValid
+//
+//	This method performs validity testing on the
+//	current instance of FracIntAry.
+//
+//	If the current FracIntAry instance is valid,
+//	this method returns 'nil'.
+//
+//	If the current FracIntAry instance is invalid,
+//	this method includes an appropriate error message
+//	in the returned 'error' object.
+func (fIa *FracIntAry) IsValid(callingFunctions string) error {
+
+	callingFunctions += "\nFracIntAry.IsValid()"
+
+	return new(fracIntAryMechanics).isValidFracInt(fIa, callingFunctions)
+}
+
+// NewBigInts
+//
+//	Creates a new FracIntAry type from two *big.Int types passed as
+//	input parameters.
 func (fIa *FracIntAry) NewBigInts(numerator, denominator *big.Int) (FracIntAry, error) {
-	ePrefix := "FracIntAry.NewBigInts() "
 
-	iaNumerator, err := IntAry{}.NewBigInt(numerator, 0)
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-	if err != nil {
-		return FracIntAry{},
-			fmt.Errorf(ePrefix+"- Error returned by IntAry{}.NewBigInt(numerator, 0) "+
-				"Error='%v' ", err)
-	}
-
-	iaDenominator, err := IntAry{}.NewBigInt(denominator, 0)
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"FracIntAry.NewBigInts",
+		"")
 
 	if err != nil {
-		return FracIntAry{},
-			fmt.Errorf(ePrefix+"- Error returned by IntAry{}.NewBigInt(denominator, 0) "+
-				"Error='%v' ", err)
+		return FracIntAry{}, err
 	}
 
-	newFracIntAry := new(FracIntAry).NewIntArys(&iaNumerator, &iaDenominator)
+	iaNumerator, err := new(IntAry).NewBigInt(numerator, 0)
+
+	if err != nil {
+
+		return FracIntAry{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "iaNumerator, err := new(IntAry).NewBigInt(numerator, 0)",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
+
+	iaDenominator, err := new(IntAry).NewBigInt(denominator, 0)
+
+	if err != nil {
+
+		return FracIntAry{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "iaDenominator, err := new(IntAry).NewBigInt(denominator, 0)",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
+
+	newFracIntAry, err := new(FracIntAry).NewIntArys(&iaNumerator, &iaDenominator)
+
+	if err != nil {
+
+		return FracIntAry{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "newFracIntAry, err := new(FracIntAry).NewIntArys(&iaNumerator, &iaDenominator)",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
 
 	return newFracIntAry, nil
 }
 
-// NewNumStrs - Creates a new FracIntAry type by passing input parameters numerator and
-// denominator as number strings.
-func (fIa *FracIntAry) NewNumStrs(numerator, denominator string) (FracIntAry, error) {
+// NewNumStrs
+//
+//	Creates a new FracIntAry type by passing input parameters
+//	numerator and denominator as number strings.
+func (fIa *FracIntAry) NewNumStrs(numerator string, denominator string) (FracIntAry, error) {
 
+	var ePrefix *ePref.ErrPrefixDto
 	var err error
 
-	ePrefix := "FracIntAry.NewNumStrs() "
-	fIa2 := FracIntAry{}
-
-	fIa2.Numerator, err = IntAry{}.NewNumStr(numerator)
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"FracIntAry.NewNumStrs",
+		"")
 
 	if err != nil {
-		return FracIntAry{}, fmt.Errorf(ePrefix+
-			"- Error returned from intAry{}.NewNumStr(numerator). Error= %v", err)
+		return FracIntAry{}, err
 	}
 
-	fIa2.Denominator, err = IntAry{}.NewNumStr(denominator)
+	fIa2 := FracIntAry{}
+
+	fIa2.Numerator, err = new(IntAry).NewNumStr(numerator)
 
 	if err != nil {
+
 		return FracIntAry{},
-			fmt.Errorf(ePrefix+
-				"- Error returned from intAry{}.NewNumStr(denominator). Error= %v", err)
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "fIa2.Numerator, err = new(IntAry).NewNumStr(numerator)",
+				ErrContext: fmt.Sprintf("numerator= '%v'", numerator),
+				ErrMessage: err.Error(),
+			}
+	}
+
+	fIa2.Denominator, err = new(IntAry).NewNumStr(denominator)
+
+	if err != nil {
+
+		return FracIntAry{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "fIa2.Denominator, err = new(IntAry).NewNumStr(denominator)",
+				ErrContext: fmt.Sprintf("denominator= '%v'", denominator),
+				ErrMessage: err.Error(),
+			}
 	}
 
 	return fIa2, nil
 }
 
-// NewIntArys - Creates a type FracIntAry by passing numerator and denominator
-// input parameters of type *intAry
-func (fIa *FracIntAry) NewIntArys(numerator, denominator *IntAry) FracIntAry {
+// NewIntArys
+//
+//	Creates a type FracIntAry by passing numerator and denominator
+//	input parameters of type *IntAry
+func (fIa *FracIntAry) NewIntArys(numerator *IntAry, denominator *IntAry) (FracIntAry, error) {
+
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
+
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"FracIntAry.NewIntArys",
+		"")
+
+	if err != nil {
+		return FracIntAry{}, err
+	}
 
 	fIa2 := FracIntAry{}
 
-	fIa2.Numerator = numerator.CopyOut()
-	fIa2.Denominator = denominator.CopyOut()
+	fIa2.Numerator, err = numerator.CopyOut()
 
-	return fIa2
+	if err != nil {
+
+		return FracIntAry{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "fIa2.Numerator, err = numerator.CopyOut()",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
+
+	fIa2.Denominator, err = denominator.CopyOut()
+
+	if err != nil {
+
+		return FracIntAry{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "fIa2.Denominator, err = denominator.CopyOut()",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
+
+	return fIa2, nil
 }
 
-// NewFracIntAry - Creates a FracIntAry instance from a single IntAry object.
-// The IntAry input parameter is converted into an equivalent fraction.
-func (fIa *FracIntAry) NewFracIntAry(ia *IntAry) FracIntAry {
+// NewFracIntAry
+//
+//	Creates a FracIntAry instance from a single IntAry object. The
+//	IntAry input parameter is converted into an equivalent
+//	fraction.
+//
+//	  ia
+//	 ----
+//	  1
+func (fIa *FracIntAry) NewFracIntAry(ia *IntAry) (FracIntAry, error) {
+
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
+
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"FracIntAry.NewFracIntAry",
+		"")
+
+	if err != nil {
+		return FracIntAry{}, err
+	}
 
 	fIa2 := FracIntAry{}
 
 	if ia.GetPrecision() == 0 {
 
-		fIa2.Numerator = ia.CopyOut()
-		fIa2.Denominator = IntAry{}.NewOne(0)
+		fIa2.Numerator, err = ia.CopyOut()
 
-		return fIa2
+		if err != nil {
+
+			return FracIntAry{},
+				&FuncReturnError{
+					ErrPrefix:  ePrefix.String(),
+					ReturnFunc: "fIa2.Numerator, err = ia.CopyOut()",
+					ErrContext: "",
+					ErrMessage: err.Error(),
+				}
+		}
+
+		fIa2.Denominator, err = new(IntAry).NewOne(0)
+
+		if err != nil {
+
+			return FracIntAry{},
+				&FuncReturnError{
+					ErrPrefix:  ePrefix.String(),
+					ReturnFunc: "fIa2.Denominator, err = new(IntAry).NewOne(0)",
+					ErrContext: "",
+					ErrMessage: err.Error(),
+				}
+		}
+
+		return fIa2, nil
 	}
 
 	precision := ia.GetPrecision()
-	fIa2.Numerator = ia.CopyOut()
+
+	fIa2.Numerator, err = ia.CopyOut()
+
+	if err != nil {
+
+		return FracIntAry{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "fIa2.Numerator, err = ia.CopyOut()",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
 
 	if precision > 0 {
-		fIa2.Numerator.ShiftPrecisionRight(uint(precision))
+
+		err = fIa2.Numerator.ShiftPrecisionRight(uint(precision))
+
+		if err != nil {
+
+			return FracIntAry{},
+				&FuncReturnError{
+					ErrPrefix:  ePrefix.String(),
+					ReturnFunc: "err = fIa2.Numerator.ShiftPrecisionRight(uint(precision))",
+					ErrContext: "",
+					ErrMessage: err.Error(),
+				}
+		}
 	}
 
-	fIa2.Denominator = IntAry{}.NewOne(0)
-	IntAryMathMultiply{}.MultiplyByTenToPower(&fIa2.Denominator, uint(precision))
+	fIa2.Denominator, err = new(IntAry).NewOne(0)
 
-	return fIa2
+	if err != nil {
+
+		return FracIntAry{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "fIa2.Denominator, err = new(IntAry).NewOne(0)",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
+
+	err = new(IntAryMathMultiply).MultiplyByTenToPower(&fIa2.Denominator, uint(precision))
+
+	if err != nil {
+
+		return FracIntAry{},
+			&FuncReturnError{
+				ErrPrefix: ePrefix.String(),
+				ReturnFunc: "err = new(IntAryMathMultiply).\n" +
+					"  MultiplyByTenToPower(&fIa2.Denominator, uint(precision))",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
+
+	return fIa2, nil
 }
 
-// CopyOut - Creates and returns a copy of the current
-// FracIntAry.
-func (fIa *FracIntAry) CopyOut() FracIntAry {
-
-	newFrac := FracIntAry{}
-
-	newFrac.Numerator = fIa.Numerator.CopyOut()
-	newFrac.Denominator = fIa.Denominator.CopyOut()
-
-	return newFrac
-}
-
-// CopyIn - Receives a pointer to an incoming FracIntAry and copies
-// the values into the current FracIntAry.
-func (fIa *FracIntAry) CopyIn(fIa2 *FracIntAry) {
-
-	fIa.Numerator = fIa2.Numerator.CopyOut()
-
-	fIa.Denominator = fIa2.Denominator.CopyOut()
-
-}
-
-// GetRationalValue - Converts the fraction and returns the value as a
-// big rational number (*big.Rat).
+// CopyOut
 //
-// Input parameter maxPrecision determines the maximum number of decimal
-// places to the right of the decimal point contained in the result.
+//	Creates and returns a copy of the current FracIntAry.
+func (fIa *FracIntAry) CopyOut() (FracIntAry, error) {
+
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
+
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"FracIntAry.CopyOut",
+		"")
+
+	if err != nil {
+		return FracIntAry{}, err
+	}
+
+	return new(fracIntAryNanobot).copyOut(
+		fIa, ePrefix)
+}
+
+// CopyIn
 //
-// If the value of maxPrecision is -1, maximum precision will default to
-// 4096 decimal places. maxPrecision values less than -1 will trigger an
-// error.
+//	Receives a pointer to an incoming FracIntAry and copies the
+//	values into the current FracIntAry.
+func (fIa *FracIntAry) CopyIn(fIa2 *FracIntAry) error {
+
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
+
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"FracIntAry.CopyIn",
+		"")
+
+	if err != nil {
+		return err
+	}
+
+	return new(fracIntAryNanobot).copyIn(fIa, fIa2, ePrefix)
+}
+
+// GetRationalValue
+//
+//	Converts the fraction and returns the value as a big rational
+//	number (*big.Rat).
+//
+//	maxPrecision
+//	============
+//
+//	Input parameter 'maxPrecision' determines the maximum number of
+//	decimal places to the right of the decimal point contained in
+//	the result.
+//
+//	If the value of 'maxPrecision' is -1, maximum precision will
+//	default to 4096 decimal places.
+//
+//	'maxPrecision' values less than -1 will trigger an error.
 func (fIa *FracIntAry) GetRationalValue(maxPrecision int) (*big.Rat, error) {
 
-	if maxPrecision < -1 {
-		return big.NewRat(1, 1), fmt.Errorf("GetRationalValue() - maxPrecision is less than -1 and therefore INVALID. maxPrecision= %v", maxPrecision)
-	}
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-	if maxPrecision == -1 {
-		maxPrecision = 4096
-	}
-
-	if fIa.Numerator.GetPrecision() == 0 && fIa.Denominator.GetPrecision() == 0 {
-
-		fRat, ok := big.NewRat(1, 1).SetString(fIa.Numerator.GetNumStr() + "/" + fIa.Denominator.GetNumStr())
-
-		if !ok {
-
-			return big.NewRat(1, 1),
-				fmt.Errorf("GetRationalValue()\n" +
-					"Method FAILED! :\n" +
-					"  big.NewFloat(0).SetString(big.NewRat(1, 1).SetString(fIa.Numerator.GetNumStr() + \"/\" + fIa.Denominator.GetNumStr())\n")
-
-		}
-
-		return fRat, nil
-
-	}
-
-	newFloat, err := fIa.Numerator.DivideThisBy(&fIa.Denominator, 0, maxPrecision)
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"FracIntAry.GetRationalValue",
+		"")
 
 	if err != nil {
-		return big.NewRat(1, 1), fmt.Errorf("GetRationalValue() - Error returned from fIa.Numerator.DivideThisBy(&fIa.Denominator, 42). Error= %v", err)
+		return big.NewRat(1, 1), err
 	}
 
-	fRat, ok := big.NewRat(1, 1).SetString(newFloat.GetNumStr())
-
-	if !ok {
-		return big.NewRat(1, 1),
-			fmt.Errorf("GetRationalValue()\n" +
-				"Method big.NewFloat(0).SetString(fracIa.GetNumStr()) Failed!\n")
-	}
-
-	return fRat, nil
-
+	return new(fracIntAryMechanics).getRationalValue(
+		fIa, maxPrecision, ePrefix)
 }
 
-// GetLowestCommonDenom - Returns a FracIntAry which represents the lowest common
-// denominator for the current FracIntAry.
+// GetLowestCommonDenom
 //
-// Note: if 'maxPrecision' is less than 0, it is automatically converted to '4,096'
-// decimal places.
+//	Returns a FracIntAry which represents the lowest common
+//	denominator for the current FracIntAry.
+//
+//	Note: if 'maxPrecision' is less than 0, it is automatically
+//	converted to '4,096' decimal places.
 func (fIa *FracIntAry) GetLowestCommonDenom(maxPrecision int) (FracIntAry, error) {
 
-	if maxPrecision < 0 {
-		maxPrecision = 4096
-	}
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-	ePrefix := "FracIntAry.GetLowestCommonDenom() "
-
-	ratFrac, err := fIa.GetRationalValue(maxPrecision)
-
-	if err != nil {
-		return FracIntAry{},
-			fmt.Errorf(ePrefix +
-				"Error returned by fIa.GetRationalValue(4096) ")
-	}
-
-	newFAry, err := fIa.NewBigInts(ratFrac.Num(), ratFrac.Denom())
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"FracIntAry.GetLowestCommonDenom",
+		"")
 
 	if err != nil {
-		return FracIntAry{},
-			fmt.Errorf(ePrefix +
-				"Error returned by fIa.NewBigInts(ratFrac.Num(), ratFrac.Denom()) ")
+		return FracIntAry{}, err
 	}
 
-	return newFAry, nil
+	return new(fracIntAryNanobot).getLowestCommonDenom(
+		fIa, maxPrecision, ePrefix)
 }
 
-// ReduceToLowestCommonDenom - Converts the value of the current FracIntAry
-// to its lowest common denominator.
+// ReduceToLowestCommonDenom
 //
-// Note: if 'maxPrecision' is less than 0, it is automatically converted to '4,096'
-// decimal places.
+//	Converts the value of the current FracIntAry to its lowest
+//	common denominator.
+//
+//	Note: if 'maxPrecision' is less than 0, it is automatically
+//	converted to '4,096' decimal places.
 func (fIa *FracIntAry) ReduceToLowestCommonDenom(maxPrecision int) error {
+
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
+
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"FracIntAry.ReduceToLowestCommonDenom",
+		"")
+
+	if err != nil {
+		return err
+	}
 
 	if maxPrecision < 0 {
 		maxPrecision = 4096
 	}
 
-	fIaLCD, err := fIa.GetLowestCommonDenom(maxPrecision)
+	fracIntNanobot := new(fracIntAryNanobot)
+
+	fIaLCD, err := fracIntNanobot.getLowestCommonDenom(
+		fIa, maxPrecision, ePrefix)
 
 	if err != nil {
-		ePrefix := "FracIntAry.ReduceToLowestCommonDenom() "
-		return fmt.Errorf(ePrefix+
-			"Error returned by fIa.GetLowestCommonDenom(maxPrecision). "+
-			"Error='%v' ", err.Error())
+
+		return &FuncReturnError{
+			ErrPrefix: ePrefix.String(),
+			ReturnFunc: "fIaLCD, err := new(fracIntAryNanobot).\n" +
+				"getLowestCommonDenom(fIa, maxPrecision, ePrefix)",
+			ErrContext: "",
+			ErrMessage: err.Error(),
+		}
 	}
 
-	fIa.CopyIn(&fIaLCD)
+	err = fracIntNanobot.copyIn(fIa, &fIaLCD, ePrefix)
+
+	if err != nil {
+
+		return &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "err = fracIntNanobot.copyIn(fIa, &fIaLCD, ePrefix)",
+			ErrContext: "",
+			ErrMessage: err.Error(),
+		}
+	}
 
 	return nil
 }
