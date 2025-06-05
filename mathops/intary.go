@@ -3828,75 +3828,39 @@ func (ia *IntAry) IsZero() (bool, error) {
 
 }
 
-// Inverse - Returns the inverseBigIntNum of the current intAry's
-// value.
+// Inverse
 //
-// Input Parameter:
+//	Returns the inverse BigIntNum of the current intAry's value.
 //
-//		maxPrecision int -	determines the number of digits to the
-//	 										right of the decimal point in the result.
+//	  IntAry = current instance of IntAry
+//	  Inverse = 1 ÷ IntAry
 //
-//												Note: if 'maxPrecision' is set equal to negative
-//															one (-1), the maximum number of decimals is
-//															set to 4096 digits to the right of the decimal
-//															place
+//	Input Parameter
+//	===============
+//
+//	maxPrecision             int
+//	  Determines the number of digits to the right of the decimal
+//	  point in the result.
+//
+//	  If 'maxPrecision' is set equal to negative one (-1), the
+//	  maximum number of decimal digits is automatically set to
+//	  4096 digits to the right of the decimal	place.
 func (ia *IntAry) Inverse(maxPrecision int) (IntAry, error) {
 
-	ePrefix := "IntAry.Inverse(maxPrecision int)"
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-	if maxPrecision < 0 {
-
-		return new(intAryElectron).newIntAry(),
-			fmt.Errorf("%v\n"+
-				"ERROR: Input parameter 'maxPrecision' is INVALID.\n"+
-				"'maxPrecision' cannot be less than zero.\n",
-				ePrefix)
-
-	}
-
-	internalPrecision := maxPrecision + 50
-
-	iaOne, err := new(IntAry).NewInt(1, 0)
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"IntAry.IsOne",
+		"")
 
 	if err != nil {
-		return new(intAryElectron).newIntAry(),
-			fmt.Errorf("%v\n"+
-				"Error returned from new(IntAry).NewInt(1, 0).\n"+
-				"Error= %v",
-				ePrefix,
-				err.Error())
+		return IntAry{}, err
 	}
 
-	iaInverse, err := iaOne.DivideThisBy(ia, 0, internalPrecision)
-
-	if err != nil {
-		return new(intAryElectron).newIntAry(),
-			fmt.Errorf("%v\n"+
-				"Error returned from iaOne.DivideThisBy(ia, maxPrecision).\n"+
-				"Error= %v",
-				ePrefix,
-				err)
-	}
-
-	if iaInverse.GetPrecision() > maxPrecision {
-
-		err = iaInverse.RoundToPrecision(maxPrecision)
-
-		if err != nil {
-
-			return new(intAryElectron).newIntAry(),
-				fmt.Errorf("%v\n"+
-					"Error returned from iaInverse.RoundToPrecision(maxPrecision).\n"+
-					"maxPrecision='%v'\n"+
-					"Error= %v\n",
-					ePrefix,
-					maxPrecision,
-					err.Error())
-		}
-
-	}
-
-	return iaInverse, nil
+	return new(intAryMechanics).inverseIntAry(ia, true, maxPrecision, ePrefix)
 }
 
 // MultiplyByTwoToPower

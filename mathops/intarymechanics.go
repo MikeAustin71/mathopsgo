@@ -1,6 +1,7 @@
 package mathops
 
 import (
+	"fmt"
 	ePref "github.com/MikeAustin71/errpref"
 	"sync"
 )
@@ -211,7 +212,7 @@ func (iaMech *intAryMechanics) getMagnitudeDigits(
 		return 0,
 			&InputPtrNilError{
 				ErrPrefix:     ePrefix.String(),
-				ParameterName: "'ia'",
+				ParameterName: "'intAry'",
 			}
 	}
 
@@ -251,6 +252,169 @@ func (iaMech *intAryMechanics) getMagnitudeDigits(
 	return intAryMagnitude, nil
 }
 
+// inverseIntAry
+//
+//	Returns the inverse BigIntNum of the input parameter IntAry
+//	('intAry') value.
+//
+//	  IntAry = input parameter 'intAry'
+//	  Inverse = 1 ÷ IntAry
+//
+//	Input Parameter
+//	===============
+//
+//	maxPrecision             int
+//	  Determines the number of digits to the right of the decimal
+//	  point in the result.
+//
+//	  If 'maxPrecision' is set equal to negative one (-1), the
+//	  maximum number of decimal digits is automatically set to
+//	  4096 digits to the right of the decimal	place.
+func (iaMech *intAryMechanics) inverseIntAry(
+	ia *IntAry,
+	validateIntAry bool,
+	maxPrecision int,
+	errPrefDto *ePref.ErrPrefixDto) (IntAry, error) {
+
+	if iaMech.lock == nil {
+		iaMech.lock = new(sync.Mutex)
+	}
+
+	iaMech.lock.Lock()
+
+	defer iaMech.lock.Unlock()
+
+	var ePrefix *ePref.ErrPrefixDto
+
+	var err error
+
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
+		errPrefDto,
+		"intAryMechanics.inverseIntAry()",
+		"")
+
+	if err != nil {
+		return IntAry{}, err
+	}
+
+	if ia == nil {
+
+		return IntAry{},
+			&InputPtrNilError{
+				ErrPrefix:     ePrefix.String(),
+				ParameterName: "'ia'",
+			}
+	}
+
+	if validateIntAry {
+
+		err = new(intAryElectron).isValidIntAry(ia, ePrefix.XCpy("Validating 'intAry'").String())
+
+		if err != nil {
+
+			return IntAry{},
+				&FuncReturnError{
+					ErrPrefix: ePrefix.String(),
+					ReturnFunc: "err = new(intAryElectron).isValidIntAry(\n" +
+						"  ia, ePrefix.XCpy(Validating 'ia').String())",
+					ErrContext: "",
+					ErrMessage: err.Error(),
+				}
+		}
+	}
+
+	if maxPrecision < 0 {
+
+		return IntAry{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "",
+				ErrContext: "",
+				ErrMessage: fmt.Sprintf("ERROR: Input parameter 'maxPrecision' is INVALID.\n"+
+					"'maxPrecision' cannot be less than zero.\n"+
+					"maxPrecision= '%v'", maxPrecision),
+			}
+	}
+
+	internalPrecision := maxPrecision + 50
+
+	iaOne := new(intAryElectron).newIntAry()
+
+	nsProfile := NumSepsProfileSelection{
+		SourceObjectName:         "ia",
+		OutputNumSepsName:        "numSeps",
+		UseDefaultNumSeps:        false,
+		SetDefaultNumSepsIfEmpty: true,
+		ValidateNumSeps:          false,
+		OverrideNumSeps:          NumericSeparatorDto{},
+	}
+
+	err = new(intAryGluon).setIntAryWithInt(
+		&iaOne,
+		ia,
+		nsProfile,
+		1,
+		0,
+		ePrefix.XCpy("Creating iaOne"))
+
+	if err != nil {
+
+		return IntAry{},
+			&FuncReturnError{
+				ErrPrefix: ePrefix.String(),
+				ReturnFunc: "err = new(intAryGluon).setIntAryWithInt(\n" +
+					"  &iaOne, ia,nsProfile, 1, 0, ePrefix.XCpy(Creating iaOne))",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
+
+	iaInverse, err := new(intAryNeutron).
+		divideIntArys(&iaOne, true, ia, false, 0, internalPrecision, ePrefix)
+
+	if err != nil {
+
+		return IntAry{},
+			&FuncReturnError{
+				ErrPrefix: ePrefix.String(),
+				ReturnFunc: "iaInverse, err := new(intAryNeutron).divideIntArys(\n" +
+					"  &iaOne, true, ia, false, 0, internalPrecision, ePrefix)",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
+
+	if iaInverse.GetPrecision() > maxPrecision {
+
+		err = new(intAryMolecule).roundToPrecision(
+			&iaInverse,
+			false,
+			maxPrecision,
+			ePrefix)
+
+		if err != nil {
+
+			return IntAry{},
+				&FuncReturnError{
+					ErrPrefix:  ePrefix.String(),
+					ReturnFunc: "err = new(intAryMolecule).roundToPrecision(&iaInverse, false, maxPrecision, ePrefix)",
+					ErrContext: fmt.Sprintf("maxPrecision= '%v'", maxPrecision),
+					ErrMessage: err.Error(),
+				}
+		}
+	}
+
+	return iaInverse, nil
+}
+
+// isIntAryEvenNumber
+//
+//	Returns 'true' if the current IntAry numeric value is evenly
+//	divisible by two (2) with no remainder.
+//
+//	Even Number Definition:
+//	  https://www.mathsisfun.com/definitions/even-number.html
 func (iaMech *intAryMechanics) isIntAryEvenNumber(
 	intAry *IntAry,
 	validateIntAry bool,

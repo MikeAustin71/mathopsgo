@@ -632,6 +632,8 @@ func (iaNeutron *intAryNeutron) divideByTenToPower(
 //	    divisor  = b = IntAry input parameter 'iAry2'
 //	    quotient = c = Quotient returned by this method
 //
+//	               iAry1 ÷ iAry2 = quotient
+//
 //	Maximum precision of the division result is controlled by the
 //	input parameter, 'maxPrecision'.
 //
