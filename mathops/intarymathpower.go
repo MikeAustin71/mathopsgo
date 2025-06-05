@@ -1,7 +1,6 @@
 package mathops
 
 import (
-  "errors"
   "fmt"
   ePref "github.com/MikeAustin71/errpref"
 )
@@ -11,26 +10,32 @@ type IntAryMathPower struct {
   Result IntAry
 }
 
-// MinimumRequiredPrecision - designed to be used with the power function
-// below. This method will compute the minimum number of decimal places
-// required to support the result of raising a 'base' value to a specified
-// 'exponent'. Both the 'base' and the 'exponent' are passed to this function
-// as type *IntAry.
+// MinimumRequiredPrecision
 //
-// For example, raising the value 3.12 to the power of 4 means that the
-// result will require at least 8-decimal places to the right of the
-// decimal in order to display a correct result. In the following example
-// with base ='3.12' and exponent = '4', this method will return '8'.
+//	This method is designed to be used with a power function
+//	provided below. It will compute the minimum number of decimal
+//	places required to support the result of raising a 'base' value
+//	to a specified exponent'. Both the 'base' and the 'exponent'
+//	are passed to this function as type *IntAry.
 //
-//	Example: 3.12^4 = 94.75854336 (8-digits to the right of the decimal)
+//	For example, raising the value 3.12 to the power of 4 means
+//	that the result will require at least 8-decimal places to the
+//	right of the decimal in order to display a correct result. In
+//	the following example with base ='3.12' and exponent = '4',
+//	this method will return '8'.
 //
-// The calculated minimum required precision is returned as a positive
-// value of type 'int'.
+//	Example
+//	=======
 //
-// If the minimum required precision exceeds the maximum positive value for
-// IntAry precision ( +2,147,483,646, which equals 2^31 − 2), an error
-// message is returned in addition to the maximum positive value for IntAry
-// precision (+2,147,483,646).
+//	  3.12^4 = 94.75854336 (8-digits to the right of the decimal)
+//
+//	The calculated minimum required precision is returned as a
+//	positive value of type 'int'.
+//
+//	If the minimum required precision exceeds the maximum positive
+//	value for IntAry precision ( +2,147,483,646, which equals 2^31 − 2),
+//	an error message is returned in addition to the maximum positive
+//	value for IntAry precision (+2,147,483,646).
 func (iaPwr *IntAryMathPower) MinimumRequiredPrecision(
   base, exponent *IntAry) (int, error) {
 
@@ -372,35 +377,39 @@ func (iaPwr *IntAryMathPower) Pwr(
   }
 
   if exponentPrecision == 0 && exponentSign == 1 {
-    return iaPwr.pwrTwoPositiveIntegerExponent(
+    return new(intAryMathPwrMechanics).pwrTwoPositiveIntegerExponent(
       base,
       exponent,
       minResultPrecision,
-      maxResultPrecision)
+      maxResultPrecision,
+      ePrefix)
   }
 
   if exponentPrecision == 0 && exponentSign == -1 {
-    return iaPwr.pwrTwoNegativeIntegerExponent(
+    return new(intAryMathPwrMechanics).pwrTwoNegativeIntegerExponent(
       base,
       exponent,
       minResultPrecision,
-      maxResultPrecision)
+      maxResultPrecision,
+      ePrefix)
   }
 
   if exponentPrecision > 0 && exponentSign == 1 {
-    return iaPwr.pwrTwoPositiveFractionalExponent(
+    return new(intAryMathPwrMechanics).pwrTwoPositiveFractionalExponent(
       base,
       exponent,
       minResultPrecision,
-      maxResultPrecision)
+      maxResultPrecision,
+      ePrefix)
   }
 
   if exponentPrecision > 0 && exponentSign == -1 {
-    return iaPwr.pwrTwoNegativeFractionalExponent(
+    return new(intAryMathPwrMechanics).pwrTwoNegativeFractionalExponent(
       base,
       exponent,
       minResultPrecision,
-      maxResultPrecision)
+      maxResultPrecision,
+      ePrefix)
   }
 
   return &FuncReturnError{
@@ -411,209 +420,287 @@ func (iaPwr *IntAryMathPower) Pwr(
   }
 }
 
-// PwrByMultiplication - raises base to the power of exponent using
-// repetitive multiplication. This method may be slower than the method
-// IntAryMathPower.Pwr(); however, this method is capable of handling
-// very large exponents. Effectively, input parameter 'base' is raised
-// to the power of exponent.
+// PwrByMultiplication
 //
-//	result = base^exponent
+//		Raises base to the power of exponent using repetitive
+//		multiplication. This method may be slower than the method
+//		IntAryMathPower.Pwr(); however, this method is capable of
+//		handling very large exponents.
 //
-// The result of this operation is returned as pointer to an IntAry
-// instance. This returned IntAry instance will contain numeric
-// separators (decimal separator, thousands separator and currency
-// symbol) copied from input parameter 'base'.
+//		Effectively, input parameter 'base' is raised to the power
+//		of exponent.
 //
-// Input parameter 'maxResultPrecision' will round the result to this
-// number of decimal places after the decimal point if the result is
-// greater than 'maxResultPrecision'.  If the value of 'maxResultPrecision'
-// is less than zero, it will be automatically set to a value of '4096'.
+//		    result = base^exponent
 //
-// Input parameter 'minResultPrecision' signals that if the result precision
-// is less than 'minResultPrecision', zeros will be added to the right of
-// the decimal place in order to implement the 'minResultPrecision'
-// specification. If the value of 'minResultPrecision' is less than zero,
-// 'minResultPrecision' will be automatically set to a value of zero.
+//	 'power' Operation Result
+//	 ========================
+//
+//		The result of this operation is returned as pointer to an
+//		IntAry instance.
+//
+//	 Numeric Separators
+//	 ==================
+//
+//		The IntAry instance returned by this method will contain
+//		numeric separators (decimal separator, thousands separator and
+//		currency symbol) copied from input parameter 'base'.
+//
+//		maxResultPrecision
+//		==================
+//
+//		Input parameter 'maxResultPrecision' will round the result to
+//		this number of decimal places after the decimal point if the
+//		result is greater than 'maxResultPrecision'.
+//
+//		If the value of 'maxResultPrecision' is less than zero, it will
+//		be automatically reset to a value of '4096'.
+//
+//		minResultPrecision
+//		==================
+//
+//		Input parameter 'minResultPrecision' signals that if the result
+//		precision is less than 'minResultPrecision', zeros will be
+//		added to the right of the decimal place in order to implement
+//		the 'minResultPrecision' specification.
+//
+//		If the value of 'minResultPrecision' is less than zero,
+//		'minResultPrecision' will be automatically reset to a value of
+//		zero.
 func (iaPwr *IntAryMathPower) PwrByMultiplication(
-  base, exponent *IntAry,
-  minResultPrecision, maxResultPrecision int) (*IntAry, error) {
+  base *IntAry,
+  exponent *IntAry,
+  minResultPrecision int,
+  maxResultPrecision int) (*IntAry, error) {
 
-  ePrefix := "IntAryMathPower.PwrByMultiplication() "
-  iaReturn := IntAry{}.NewZero(0)
+  var ePrefix *ePref.ErrPrefixDto
+  var err error
 
-  iaReturn.SetNumericSeparatorsDto(base.GetNumericSeparatorsDto())
-
-  err := base.IsValid(ePrefix + "Invalid 'base' - ")
-
-  if err != nil {
-    return &iaReturn, err
-  }
-
-  err = exponent.IsValid(ePrefix + "Invalid 'exponent' - ")
+  ePrefix,
+    err = ePref.ErrPrefixDto{}.NewIEmpty(
+    nil,
+    "IntAryMathPower.PwrByMultiplication",
+    "")
 
   if err != nil {
-    return &iaReturn, err
+    return &IntAry{}, err
   }
 
-  if base.IsZero() {
-    return &iaReturn,
-      errors.New(ePrefix + "'base' is zero value. INVALID INPUT!")
+  iaReturn, err := new(IntAry).NewZero(0)
+
+  if err != nil {
+
+    return &(IntAry{}),
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "iaReturn, err := new(IntAry).NewZero(0)",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
   }
 
-  if exponent.IsZero() {
-    iaReturn.SetIntAryToOne(minResultPrecision)
-    return &iaReturn, nil
+  baseNumSeps, err := base.GetNumericSeparatorsDto()
+
+  if err != nil {
+
+    return &(IntAry{}),
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "baseNumSeps, err := base.GetNumericSeparatorsDto()",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
   }
 
-  iaOne := IntAry{}.NewOne(exponent.GetPrecision())
+  err = iaReturn.SetNumericSeparatorsDto(baseNumSeps)
 
-  if exponent.Equals(&iaOne) {
-    iaReturn = base.CopyOut()
-    return &iaReturn, nil
+  if err != nil {
+
+    return &(IntAry{}),
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "err = iaReturn.SetNumericSeparatorsDto(baseNumSeps)",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
   }
 
-  exponentPrecision := exponent.GetPrecision()
-  exponentSign := exponent.GetSign()
+  err = base.IsValid(ePrefix.XCpy("Invalid 'base'").String())
 
-  if exponentPrecision == 0 && exponentSign == 1 {
-    return iaPwr.pwrMultiplyPositiveIntegerExponent(
-      base,
-      exponent,
-      minResultPrecision,
-      maxResultPrecision)
+  if err != nil {
+
+    return &(IntAry{}),
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "err = base.IsValid(ePrefix.XCpy(Invalid 'base').String())",
+        ErrContext: "Error: Input parameter 'base' is INVALID!\n" +
+          "'base' FAILED Validation Tests.",
+        ErrMessage: err.Error(),
+      }
   }
 
-  if exponentPrecision == 0 && exponentSign == -1 {
-    return iaPwr.pwrMultiplyNegativeIntegerExponent(
-      base,
-      exponent,
-      minResultPrecision,
-      maxResultPrecision)
+  err = exponent.IsValid(ePrefix.XCpy("Invalid 'exponent'").String())
+
+  if err != nil {
+
+    return &(IntAry{}),
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "err = exponent.IsValid(ePrefix.XCpy(Invalid 'exponent').String())",
+        ErrContext: "Error: Input parameter 'exponent' is INVALID!\n" +
+          "'exponent' FAILED Validation Tests.",
+        ErrMessage: err.Error(),
+      }
   }
 
-  if exponentPrecision > 0 && exponentSign == 1 {
-    return iaPwr.pwrMultiplyPositiveFractionalExponent(
-      base,
-      exponent,
-      minResultPrecision,
-      maxResultPrecision)
+  baseIsZero, err := base.IsZero()
+
+  if err != nil {
+
+    return &(IntAry{}),
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "baseIsZero, err := base.IsZero()",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
   }
 
-  if exponentPrecision > 0 && exponentSign == -1 {
-    return iaPwr.pwrMultiplyNegativeFractionalExponent(
-      base,
-      exponent,
-      minResultPrecision,
-      maxResultPrecision)
+  if baseIsZero {
+
+    return &(IntAry{}),
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "",
+        ErrContext: "",
+        ErrMessage: "Error: Input parameter 'base' is INVALID!\n" +
+          "'base' is zero value.",
+      }
   }
 
-  return &iaReturn,
-    errors.New(ePrefix + "Error: input parameters failed to match valid calculation types!")
-}
+  exponentIsZero, err := exponent.IsZero()
 
-// pwrMultiplyPositiveIntegerExponent - raises 'base' to the power of 'exponent'.
-// Input parameter 'exponent' is expected to represent a positive integer.
-// If 'exponent' is NOT a positive integer, an error will be thrown.
-//
-// If 'exponent' is a fractional value, i.e., it has digits to the right of the
-// decimal place, it is by definition NOT an integer value and an error will
-// be thrown.
-//
-// This method uses simple multiplication to generate the result.
-//
-// Input parameter 'maxResultPrecision' will round the result to this
-// number of decimal places after the decimal point if the result is
-// greater than 'maxResultPrecision'.  If the value of 'maxResultPrecision'
-// is less than zero, it will be automatically set to a value of '4096'.
-//
-// Input parameter 'minResultPrecision' signals that if the result precision
-// is less than 'minResultPrecision', zeros will be added to the right of
-// the decimal place in order to implement the 'minResultPrecision'
-// specification. If the value of 'minResultPrecision' is less than zero,
-// 'minResultPrecision' will be automatically set to a value of zero.
-//
-// The result of the power operation is returned as a pointer to a new
-// 'result' IntAry. None of the input parameters are altered by this
-// operation. The returned 'result' IntAry will contain numeric separators
-// (decimal separator, thousands separator and currency symbol) copied from
-// input parameter 'base'.
-//
-// Note: This method does not perform tests for base==0, exponent==0 or exponent==1.
-// It is assumed that these tests were performed before calling this method.
-func (iaPwr *IntAryMathPower) pwrMultiplyPositiveIntegerExponent(
-  base, exponent *IntAry,
-  minResultPrecision, maxResultPrecision int) (*IntAry, error) {
+  if err != nil {
 
-  ePrefix := "IntAryMathPower.pwrMultiplyPositiveIntegerExponent() "
-  iaErrReturn := IntAry{}.NewZero(0)
-
-  if exponent.GetSign() != 1 {
-    return &iaErrReturn,
-      fmt.Errorf(ePrefix+
-        "Error: 'exponent' is expected to be a positive integer. "+
-        "Instead, 'exponent' is negative! exponent='%v'",
-        exponent.GetNumStr())
+    return &(IntAry{}),
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "exponentIsZero, err := exponent.IsZero()",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
   }
 
-  if exponent.GetPrecision() != 0 {
-    return &iaErrReturn,
-      fmt.Errorf(ePrefix+
-        "Error: 'exponent' is expected to be an integer value. "+
-        "Instead, 'exponent' is a fractional value! exponent='%v'",
-        exponent.GetNumStr())
-  }
+  if exponentIsZero {
 
-  numSeps := base.GetNumericSeparatorsDto()
-
-  if maxResultPrecision < 0 {
-    maxResultPrecision = 4096
-  }
-
-  if minResultPrecision < 0 {
-    minResultPrecision = 0
-  }
-
-  if minResultPrecision > maxResultPrecision {
-    minResultPrecision = maxResultPrecision
-  }
-
-  result := IntAry{}.NewOne(0)
-
-  internalMaxPrecision := maxResultPrecision + 100
-
-  opExponent := exponent.CopyOut()
-
-  for !opExponent.IsZero() {
-
-    IntAryMathMultiply{}.MultiplyInPlace(&result, base, minResultPrecision, internalMaxPrecision)
-
-    err := opExponent.DecrementIntegerOne()
+    err = iaReturn.SetIntAryToOne(minResultPrecision)
 
     if err != nil {
-      return &iaErrReturn,
-        fmt.Errorf(ePrefix+
-          "Error returned by opExponent.DecrementIntegerOne() "+
-          "Error='%v' ", err.Error())
+
+      return &(IntAry{}),
+        &FuncReturnError{
+          ErrPrefix:  ePrefix.String(),
+          ReturnFunc: "err = iaReturn.SetIntAryToOne(minResultPrecision)",
+          ErrContext: fmt.Sprintf("minResultPrecision = '%v'", minResultPrecision),
+          ErrMessage: err.Error(),
+        }
     }
 
+    return &iaReturn, nil
   }
 
-  if result.GetPrecision() > maxResultPrecision {
-    result.RoundToPrecision(maxResultPrecision)
-  }
-
-  if result.GetPrecision() < minResultPrecision {
-    result.SetPrecision(minResultPrecision, false)
-  }
-
-  err := result.SetNumericSeparatorsDto(numSeps)
+  iaOne, err := new(IntAry).NewOne(exponent.GetPrecision())
 
   if err != nil {
-    return &iaErrReturn,
-      fmt.Errorf(ePrefix+
-        "Error returned by result.SetNumericSeparatorsDto(numSeps) "+
-        "Error='%v' ", err.Error())
+
+    return &(IntAry{}),
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "iaOne, err := new(IntAry).NewOne(exponent.GetPrecision())",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
   }
 
-  return &result, nil
+  if exponent.Equals(&iaOne) {
+
+    iaReturn, err = base.CopyOut()
+
+    if err != nil {
+
+      return &(IntAry{}),
+        &FuncReturnError{
+          ErrPrefix:  ePrefix.String(),
+          ReturnFunc: "iaReturn, err = base.CopyOut()",
+          ErrContext: "",
+          ErrMessage: err.Error(),
+        }
+    }
+
+    return &iaReturn, nil
+  }
+
+  exponentPrecisionVal := exponent.GetPrecision()
+
+  exponentSignVal, err := exponent.GetSign()
+
+  if err != nil {
+
+    return &(IntAry{}),
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "exponentSign, err := exponent.GetSign()",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+  }
+
+  if exponentPrecisionVal == 0 && exponentSignVal == 1 {
+
+    return new(intAryMathPwrMechanics).pwrMultiplyPositiveIntegerExponent(
+      base,
+      exponent,
+      minResultPrecision,
+      maxResultPrecision,
+      ePrefix)
+  }
+
+  if exponentPrecisionVal == 0 && exponentSignVal == -1 {
+
+    return new(intAryMathPwrMechanics).pwrMultiplyNegativeIntegerExponent(
+      base,
+      exponent,
+      minResultPrecision,
+      maxResultPrecision,
+      ePrefix)
+  }
+
+  if exponentPrecisionVal > 0 && exponentSignVal == 1 {
+    return new(intAryMathPwrMechanics).pwrMultiplyPositiveFractionalExponent(
+      base,
+      exponent,
+      minResultPrecision,
+      maxResultPrecision,
+      ePrefix)
+  }
+
+  if exponentPrecisionVal > 0 && exponentSignVal == -1 {
+    return new(intAryMathPwrMechanics).pwrMultiplyNegativeFractionalExponent(
+      base,
+      exponent,
+      minResultPrecision,
+      maxResultPrecision,
+      ePrefix)
+  }
+
+  //
+  //return &iaReturn,
+  //	errors.New(ePrefix + "Error: input parameters failed to match valid calculation types!")
+
+  return &(IntAry{}),
+    &FuncReturnError{
+      ErrPrefix:  ePrefix.String(),
+      ReturnFunc: "",
+      ErrContext: "",
+      ErrMessage: "Error: Input parameters failed to match valid calculation types!",
+    }
 }
