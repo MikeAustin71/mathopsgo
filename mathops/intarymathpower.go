@@ -1,14 +1,14 @@
 package mathops
 
 import (
-	"errors"
-	"fmt"
-	ePref "github.com/MikeAustin71/errpref"
+  "errors"
+  "fmt"
+  ePref "github.com/MikeAustin71/errpref"
 )
 
 type IntAryMathPower struct {
-	Input  IntAryPair
-	Result IntAry
+  Input  IntAryPair
+  Result IntAry
 }
 
 // MinimumRequiredPrecision - designed to be used with the power function
@@ -32,155 +32,155 @@ type IntAryMathPower struct {
 // message is returned in addition to the maximum positive value for IntAry
 // precision (+2,147,483,646).
 func (iaPwr *IntAryMathPower) MinimumRequiredPrecision(
-	base, exponent *IntAry) (int, error) {
+  base, exponent *IntAry) (int, error) {
 
-	var ePrefix *ePref.ErrPrefixDto
-	var err error
+  var ePrefix *ePref.ErrPrefixDto
+  var err error
 
-	ePrefix,
-		err = ePref.ErrPrefixDto{}.NewIEmpty(
-		nil,
-		"IntAryMathPower.MinimumRequiredPrecision()",
-		"")
+  ePrefix,
+    err = ePref.ErrPrefixDto{}.NewIEmpty(
+    nil,
+    "IntAryMathPower.MinimumRequiredPrecision()",
+    "")
 
-	if err != nil {
-		return 0, err
-	}
+  if err != nil {
+    return 0, err
+  }
 
-	//maxValue := 2147483646
+  //maxValue := 2147483646
 
-	signVal := 1
+  signVal := 1
 
-	basePrecisionUint, err := base.GetPrecisionUint()
+  basePrecisionUint, err := base.GetPrecisionUint()
 
-	if err != nil {
+  if err != nil {
 
-		return 0,
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "basePrecisionUint, err := base.GetPrecisionUint()",
-				ErrContext: "",
-				ErrMessage: err.Error(),
-			}
-	}
+    return 0,
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "basePrecisionUint, err := base.GetPrecisionUint()",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+  }
 
-	basePrecision, err := new(IntAry).NewUint(basePrecisionUint, signVal, 0)
+  basePrecision, err := new(IntAry).NewUint(basePrecisionUint, signVal, 0)
 
-	if err != nil {
+  if err != nil {
 
-		return 0,
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "basePrecision, err := new(IntAry).NewUint(basePrecisionUint, signVal, 0)",
-				ErrContext: "",
-				ErrMessage: err.Error(),
-			}
-	}
+    return 0,
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "basePrecision, err := new(IntAry).NewUint(basePrecisionUint, signVal, 0)",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+  }
 
-	tExponent, err := exponent.CopyOut()
+  tExponent, err := exponent.CopyOut()
 
-	if err != nil {
+  if err != nil {
 
-		return 0,
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "tExponent, err := exponent.CopyOut()",
-				ErrContext: "",
-				ErrMessage: err.Error(),
-			}
-	}
+    return 0,
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "tExponent, err := exponent.CopyOut()",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+  }
 
-	exponentSignVal, err := tExponent.GetSign()
+  exponentSignVal, err := tExponent.GetSign()
 
-	if err != nil {
+  if err != nil {
 
-		return 0,
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "exponentSignVal, err := tExponent.GetSign()",
-				ErrContext: "",
-				ErrMessage: err.Error(),
-			}
-	}
+    return 0,
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "exponentSignVal, err := tExponent.GetSign()",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+  }
 
-	if exponentSignVal == -1 {
+  if exponentSignVal == -1 {
 
-		err = tExponent.ChangeSign()
+    err = tExponent.ChangeSign()
 
-		if err != nil {
+    if err != nil {
 
-			return 0,
-				&FuncReturnError{
-					ErrPrefix:  ePrefix.String(),
-					ReturnFunc: "err = tExponent.ChangeSign()",
-					ErrContext: "",
-					ErrMessage: err.Error(),
-				}
-		}
+      return 0,
+        &FuncReturnError{
+          ErrPrefix:  ePrefix.String(),
+          ReturnFunc: "err = tExponent.ChangeSign()",
+          ErrContext: "",
+          ErrMessage: err.Error(),
+        }
+    }
 
-	}
+  }
 
-	iaResult := IntAry{}
+  iaResult := IntAry{}
 
-	maxPrecision := tExponent.GetPrecision() + 5
+  maxPrecision := tExponent.GetPrecision() + 5
 
-	err = new(IntAryMathMultiply).Multiply(&basePrecision, &tExponent, &iaResult, 0, maxPrecision)
+  err = new(IntAryMathMultiply).Multiply(&basePrecision, &tExponent, &iaResult, 0, maxPrecision)
 
-	if err != nil {
+  if err != nil {
 
-		return 0,
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "err = new(IntAryMathMultiply).Multiply(&basePrecision, &tExponent, &iaResult, 0, maxPrecision)",
-				ErrContext: "",
-				ErrMessage: err.Error(),
-			}
-	}
+    return 0,
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "err = new(IntAryMathMultiply).Multiply(&basePrecision, &tExponent, &iaResult, 0, maxPrecision)",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+  }
 
-	iaResultPrecisionUint, err := iaResult.GetPrecisionUint()
+  iaResultPrecisionUint, err := iaResult.GetPrecisionUint()
 
-	if err != nil {
+  if err != nil {
 
-		return 0,
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "iaResultPrecisionUint, err := iaResult.GetPrecisionUint()",
-				ErrContext: "",
-				ErrMessage: err.Error(),
-			}
-	}
+    return 0,
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "iaResultPrecisionUint, err := iaResult.GetPrecisionUint()",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+  }
 
-	if iaResultPrecisionUint > 0 {
+  if iaResultPrecisionUint > 0 {
 
-		err = iaResult.RoundToPrecision(0)
+    err = iaResult.RoundToPrecision(0)
 
-		if err != nil {
+    if err != nil {
 
-			return 0,
-				&FuncReturnError{
-					ErrPrefix:  ePrefix.String(),
-					ReturnFunc: "err = iaResult.RoundToPrecision(0)",
-					ErrContext: "",
-					ErrMessage: err.Error(),
-				}
-		}
+      return 0,
+        &FuncReturnError{
+          ErrPrefix:  ePrefix.String(),
+          ReturnFunc: "err = iaResult.RoundToPrecision(0)",
+          ErrContext: "",
+          ErrMessage: err.Error(),
+        }
+    }
 
-	}
+  }
 
-	intVal, err := iaResult.GetInt()
+  intVal, err := iaResult.GetInt()
 
-	if err != nil {
+  if err != nil {
 
-		return 0,
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "intVal, err := iaResult.GetInt()",
-				ErrContext: "",
-				ErrMessage: err.Error(),
-			}
-	}
+    return 0,
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "intVal, err := iaResult.GetInt()",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+  }
 
-	return intVal, nil
+  return intVal, nil
 }
 
 // Pwr
@@ -236,179 +236,179 @@ func (iaPwr *IntAryMathPower) MinimumRequiredPrecision(
 //
 // 'minResultPrecision' will be automatically set to a value of zero.
 func (iaPwr *IntAryMathPower) Pwr(
-	base *IntAry,
-	exponent *IntAry,
-	minResultPrecision,
-	maxResultPrecision int) error {
+  base *IntAry,
+  exponent *IntAry,
+  minResultPrecision,
+  maxResultPrecision int) error {
 
-	var ePrefix *ePref.ErrPrefixDto
-	var err error
+  var ePrefix *ePref.ErrPrefixDto
+  var err error
 
-	ePrefix,
-		err = ePref.ErrPrefixDto{}.NewIEmpty(
-		nil,
-		"IntAryMathPower.Pwr",
-		"")
+  ePrefix,
+    err = ePref.ErrPrefixDto{}.NewIEmpty(
+    nil,
+    "IntAryMathPower.Pwr",
+    "")
 
-	if err != nil {
-		return err
-	}
+  if err != nil {
+    return err
+  }
 
-	err = base.IsValid(ePrefix.XCpy(" base IntAry Error").String())
+  err = base.IsValid(ePrefix.XCpy(" base IntAry Error").String())
 
-	if err != nil {
+  if err != nil {
 
-		return &FuncReturnError{
-			ErrPrefix:  ePrefix.String(),
-			ReturnFunc: "err = base.IsValid(ePrefix.XCpy( base IntAry Error).String())",
-			ErrContext: "",
-			ErrMessage: err.Error(),
-		}
-	}
+    return &FuncReturnError{
+      ErrPrefix:  ePrefix.String(),
+      ReturnFunc: "err = base.IsValid(ePrefix.XCpy( base IntAry Error).String())",
+      ErrContext: "",
+      ErrMessage: err.Error(),
+    }
+  }
 
-	err = exponent.IsValid(ePrefix.XCpy(" exponent IntAry Error").String())
+  err = exponent.IsValid(ePrefix.XCpy(" exponent IntAry Error").String())
 
-	if err != nil {
+  if err != nil {
 
-		return &FuncReturnError{
-			ErrPrefix:  ePrefix.String(),
-			ReturnFunc: "err = exponent.IsValid(ePrefix.XCpy(exponent IntAry Error).String())",
-			ErrContext: "",
-			ErrMessage: err.Error(),
-		}
-	}
+    return &FuncReturnError{
+      ErrPrefix:  ePrefix.String(),
+      ReturnFunc: "err = exponent.IsValid(ePrefix.XCpy(exponent IntAry Error).String())",
+      ErrContext: "",
+      ErrMessage: err.Error(),
+    }
+  }
 
-	baseIsZero, err := base.IsZero()
+  baseIsZero, err := base.IsZero()
 
-	if err != nil {
+  if err != nil {
 
-		return &FuncReturnError{
-			ErrPrefix:  ePrefix.String(),
-			ReturnFunc: "baseIsZero, err :=  base.IsZero()",
-			ErrContext: "",
-			ErrMessage: err.Error(),
-		}
-	}
+    return &FuncReturnError{
+      ErrPrefix:  ePrefix.String(),
+      ReturnFunc: "baseIsZero, err :=  base.IsZero()",
+      ErrContext: "",
+      ErrMessage: err.Error(),
+    }
+  }
 
-	if baseIsZero {
+  if baseIsZero {
 
-		return &FuncReturnError{
-			ErrPrefix:  ePrefix.String(),
-			ReturnFunc: "base == Zero",
-			ErrContext: "",
-			ErrMessage: "Error: Input parameter 'base' has a zero value!",
-		}
-	}
+    return &FuncReturnError{
+      ErrPrefix:  ePrefix.String(),
+      ReturnFunc: "base == Zero",
+      ErrContext: "",
+      ErrMessage: "Error: Input parameter 'base' has a zero value!",
+    }
+  }
 
-	exponentIsZero, err := exponent.IsZero()
+  exponentIsZero, err := exponent.IsZero()
 
-	if err != nil {
+  if err != nil {
 
-		return &FuncReturnError{
-			ErrPrefix:  ePrefix.String(),
-			ReturnFunc: "exponentIsZero, err := exponent.IsZero()",
-			ErrContext: "",
-			ErrMessage: err.Error(),
-		}
-	}
+    return &FuncReturnError{
+      ErrPrefix:  ePrefix.String(),
+      ReturnFunc: "exponentIsZero, err := exponent.IsZero()",
+      ErrContext: "",
+      ErrMessage: err.Error(),
+    }
+  }
 
-	if exponentIsZero {
+  if exponentIsZero {
 
-		err = base.SetIntAryToOne(minResultPrecision)
+    err = base.SetIntAryToOne(minResultPrecision)
 
-		if err != nil {
+    if err != nil {
 
-			return &FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "err = base.SetIntAryToOne(minResultPrecision)",
-				ErrContext: fmt.Sprintf("minResultPrecision = '%v'", minResultPrecision),
-				ErrMessage: err.Error(),
-			}
-		}
+      return &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "err = base.SetIntAryToOne(minResultPrecision)",
+        ErrContext: fmt.Sprintf("minResultPrecision = '%v'", minResultPrecision),
+        ErrMessage: err.Error(),
+      }
+    }
 
-		return nil
-	}
+    return nil
+  }
 
-	iaOne, err := new(IntAry).NewOne(exponent.GetPrecision())
+  iaOne, err := new(IntAry).NewOne(exponent.GetPrecision())
 
-	if err != nil {
+  if err != nil {
 
-		return &FuncReturnError{
-			ErrPrefix:  ePrefix.String(),
-			ReturnFunc: "iaOne, err := new(IntAry).NewOne(exponent.GetPrecision())",
-			ErrContext: "",
-			ErrMessage: err.Error(),
-		}
-	}
+    return &FuncReturnError{
+      ErrPrefix:  ePrefix.String(),
+      ReturnFunc: "iaOne, err := new(IntAry).NewOne(exponent.GetPrecision())",
+      ErrContext: "",
+      ErrMessage: err.Error(),
+    }
+  }
 
-	exponentIsEqualIaOne, err := exponent.Equal(&iaOne)
+  exponentIsEqualIaOne, err := exponent.Equal(&iaOne)
 
-	if err != nil {
+  if err != nil {
 
-		return &FuncReturnError{
-			ErrPrefix:  ePrefix.String(),
-			ReturnFunc: "exponentIsEqualIaOne, err := exponent.Equal(&iaOne)",
-			ErrContext: "",
-			ErrMessage: err.Error(),
-		}
-	}
+    return &FuncReturnError{
+      ErrPrefix:  ePrefix.String(),
+      ReturnFunc: "exponentIsEqualIaOne, err := exponent.Equal(&iaOne)",
+      ErrContext: "",
+      ErrMessage: err.Error(),
+    }
+  }
 
-	if exponentIsEqualIaOne {
-		return nil
-	}
+  if exponentIsEqualIaOne {
+    return nil
+  }
 
-	exponentPrecision := exponent.GetPrecision()
+  exponentPrecision := exponent.GetPrecision()
 
-	exponentSign, err := exponent.GetSign()
+  exponentSign, err := exponent.GetSign()
 
-	if err != nil {
+  if err != nil {
 
-		return &FuncReturnError{
-			ErrPrefix:  ePrefix.String(),
-			ReturnFunc: "exponentSign, err := exponent.GetSign()",
-			ErrContext: "",
-			ErrMessage: err.Error(),
-		}
-	}
+    return &FuncReturnError{
+      ErrPrefix:  ePrefix.String(),
+      ReturnFunc: "exponentSign, err := exponent.GetSign()",
+      ErrContext: "",
+      ErrMessage: err.Error(),
+    }
+  }
 
-	if exponentPrecision == 0 && exponentSign == 1 {
-		return iaPwr.pwrTwoPositiveIntegerExponent(
-			base,
-			exponent,
-			minResultPrecision,
-			maxResultPrecision)
-	}
+  if exponentPrecision == 0 && exponentSign == 1 {
+    return iaPwr.pwrTwoPositiveIntegerExponent(
+      base,
+      exponent,
+      minResultPrecision,
+      maxResultPrecision)
+  }
 
-	if exponentPrecision == 0 && exponentSign == -1 {
-		return iaPwr.pwrTwoNegativeIntegerExponent(
-			base,
-			exponent,
-			minResultPrecision,
-			maxResultPrecision)
-	}
+  if exponentPrecision == 0 && exponentSign == -1 {
+    return iaPwr.pwrTwoNegativeIntegerExponent(
+      base,
+      exponent,
+      minResultPrecision,
+      maxResultPrecision)
+  }
 
-	if exponentPrecision > 0 && exponentSign == 1 {
-		return iaPwr.pwrTwoPositiveFractionalExponent(
-			base,
-			exponent,
-			minResultPrecision,
-			maxResultPrecision)
-	}
+  if exponentPrecision > 0 && exponentSign == 1 {
+    return iaPwr.pwrTwoPositiveFractionalExponent(
+      base,
+      exponent,
+      minResultPrecision,
+      maxResultPrecision)
+  }
 
-	if exponentPrecision > 0 && exponentSign == -1 {
-		return iaPwr.pwrTwoNegativeFractionalExponent(
-			base,
-			exponent,
-			minResultPrecision,
-			maxResultPrecision)
-	}
+  if exponentPrecision > 0 && exponentSign == -1 {
+    return iaPwr.pwrTwoNegativeFractionalExponent(
+      base,
+      exponent,
+      minResultPrecision,
+      maxResultPrecision)
+  }
 
-	return &FuncReturnError{
-		ErrPrefix:  ePrefix.String(),
-		ReturnFunc: ")",
-		ErrContext: "",
-		ErrMessage: "Error: Input parameters failed to match valid calculation types!",
-	}
+  return &FuncReturnError{
+    ErrPrefix:  ePrefix.String(),
+    ReturnFunc: ")",
+    ErrContext: "",
+    ErrMessage: "Error: Input parameters failed to match valid calculation types!",
+  }
 }
 
 // PwrByMultiplication - raises base to the power of exponent using
@@ -435,80 +435,80 @@ func (iaPwr *IntAryMathPower) Pwr(
 // specification. If the value of 'minResultPrecision' is less than zero,
 // 'minResultPrecision' will be automatically set to a value of zero.
 func (iaPwr *IntAryMathPower) PwrByMultiplication(
-	base, exponent *IntAry,
-	minResultPrecision, maxResultPrecision int) (*IntAry, error) {
+  base, exponent *IntAry,
+  minResultPrecision, maxResultPrecision int) (*IntAry, error) {
 
-	ePrefix := "IntAryMathPower.PwrByMultiplication() "
-	iaReturn := IntAry{}.NewZero(0)
+  ePrefix := "IntAryMathPower.PwrByMultiplication() "
+  iaReturn := IntAry{}.NewZero(0)
 
-	iaReturn.SetNumericSeparatorsDto(base.GetNumericSeparatorsDto())
+  iaReturn.SetNumericSeparatorsDto(base.GetNumericSeparatorsDto())
 
-	err := base.IsValid(ePrefix + "Invalid 'base' - ")
+  err := base.IsValid(ePrefix + "Invalid 'base' - ")
 
-	if err != nil {
-		return &iaReturn, err
-	}
+  if err != nil {
+    return &iaReturn, err
+  }
 
-	err = exponent.IsValid(ePrefix + "Invalid 'exponent' - ")
+  err = exponent.IsValid(ePrefix + "Invalid 'exponent' - ")
 
-	if err != nil {
-		return &iaReturn, err
-	}
+  if err != nil {
+    return &iaReturn, err
+  }
 
-	if base.IsZero() {
-		return &iaReturn,
-			errors.New(ePrefix + "'base' is zero value. INVALID INPUT!")
-	}
+  if base.IsZero() {
+    return &iaReturn,
+      errors.New(ePrefix + "'base' is zero value. INVALID INPUT!")
+  }
 
-	if exponent.IsZero() {
-		iaReturn.SetIntAryToOne(minResultPrecision)
-		return &iaReturn, nil
-	}
+  if exponent.IsZero() {
+    iaReturn.SetIntAryToOne(minResultPrecision)
+    return &iaReturn, nil
+  }
 
-	iaOne := IntAry{}.NewOne(exponent.GetPrecision())
+  iaOne := IntAry{}.NewOne(exponent.GetPrecision())
 
-	if exponent.Equals(&iaOne) {
-		iaReturn = base.CopyOut()
-		return &iaReturn, nil
-	}
+  if exponent.Equals(&iaOne) {
+    iaReturn = base.CopyOut()
+    return &iaReturn, nil
+  }
 
-	exponentPrecision := exponent.GetPrecision()
-	exponentSign := exponent.GetSign()
+  exponentPrecision := exponent.GetPrecision()
+  exponentSign := exponent.GetSign()
 
-	if exponentPrecision == 0 && exponentSign == 1 {
-		return iaPwr.pwrMultiplyPositiveIntegerExponent(
-			base,
-			exponent,
-			minResultPrecision,
-			maxResultPrecision)
-	}
+  if exponentPrecision == 0 && exponentSign == 1 {
+    return iaPwr.pwrMultiplyPositiveIntegerExponent(
+      base,
+      exponent,
+      minResultPrecision,
+      maxResultPrecision)
+  }
 
-	if exponentPrecision == 0 && exponentSign == -1 {
-		return iaPwr.pwrMultiplyNegativeIntegerExponent(
-			base,
-			exponent,
-			minResultPrecision,
-			maxResultPrecision)
-	}
+  if exponentPrecision == 0 && exponentSign == -1 {
+    return iaPwr.pwrMultiplyNegativeIntegerExponent(
+      base,
+      exponent,
+      minResultPrecision,
+      maxResultPrecision)
+  }
 
-	if exponentPrecision > 0 && exponentSign == 1 {
-		return iaPwr.pwrMultiplyPositiveFractionalExponent(
-			base,
-			exponent,
-			minResultPrecision,
-			maxResultPrecision)
-	}
+  if exponentPrecision > 0 && exponentSign == 1 {
+    return iaPwr.pwrMultiplyPositiveFractionalExponent(
+      base,
+      exponent,
+      minResultPrecision,
+      maxResultPrecision)
+  }
 
-	if exponentPrecision > 0 && exponentSign == -1 {
-		return iaPwr.pwrMultiplyNegativeFractionalExponent(
-			base,
-			exponent,
-			minResultPrecision,
-			maxResultPrecision)
-	}
+  if exponentPrecision > 0 && exponentSign == -1 {
+    return iaPwr.pwrMultiplyNegativeFractionalExponent(
+      base,
+      exponent,
+      minResultPrecision,
+      maxResultPrecision)
+  }
 
-	return &iaReturn,
-		errors.New(ePrefix + "Error: input parameters failed to match valid calculation types!")
+  return &iaReturn,
+    errors.New(ePrefix + "Error: input parameters failed to match valid calculation types!")
 }
 
 // pwrMultiplyPositiveIntegerExponent - raises 'base' to the power of 'exponent'.
@@ -541,81 +541,81 @@ func (iaPwr *IntAryMathPower) PwrByMultiplication(
 // Note: This method does not perform tests for base==0, exponent==0 or exponent==1.
 // It is assumed that these tests were performed before calling this method.
 func (iaPwr *IntAryMathPower) pwrMultiplyPositiveIntegerExponent(
-	base, exponent *IntAry,
-	minResultPrecision, maxResultPrecision int) (*IntAry, error) {
+  base, exponent *IntAry,
+  minResultPrecision, maxResultPrecision int) (*IntAry, error) {
 
-	ePrefix := "IntAryMathPower.pwrMultiplyPositiveIntegerExponent() "
-	iaErrReturn := IntAry{}.NewZero(0)
+  ePrefix := "IntAryMathPower.pwrMultiplyPositiveIntegerExponent() "
+  iaErrReturn := IntAry{}.NewZero(0)
 
-	if exponent.GetSign() != 1 {
-		return &iaErrReturn,
-			fmt.Errorf(ePrefix+
-				"Error: 'exponent' is expected to be a positive integer. "+
-				"Instead, 'exponent' is negative! exponent='%v'",
-				exponent.GetNumStr())
-	}
+  if exponent.GetSign() != 1 {
+    return &iaErrReturn,
+      fmt.Errorf(ePrefix+
+        "Error: 'exponent' is expected to be a positive integer. "+
+        "Instead, 'exponent' is negative! exponent='%v'",
+        exponent.GetNumStr())
+  }
 
-	if exponent.GetPrecision() != 0 {
-		return &iaErrReturn,
-			fmt.Errorf(ePrefix+
-				"Error: 'exponent' is expected to be an integer value. "+
-				"Instead, 'exponent' is a fractional value! exponent='%v'",
-				exponent.GetNumStr())
-	}
+  if exponent.GetPrecision() != 0 {
+    return &iaErrReturn,
+      fmt.Errorf(ePrefix+
+        "Error: 'exponent' is expected to be an integer value. "+
+        "Instead, 'exponent' is a fractional value! exponent='%v'",
+        exponent.GetNumStr())
+  }
 
-	numSeps := base.GetNumericSeparatorsDto()
+  numSeps := base.GetNumericSeparatorsDto()
 
-	if maxResultPrecision < 0 {
-		maxResultPrecision = 4096
-	}
+  if maxResultPrecision < 0 {
+    maxResultPrecision = 4096
+  }
 
-	if minResultPrecision < 0 {
-		minResultPrecision = 0
-	}
+  if minResultPrecision < 0 {
+    minResultPrecision = 0
+  }
 
-	if minResultPrecision > maxResultPrecision {
-		minResultPrecision = maxResultPrecision
-	}
+  if minResultPrecision > maxResultPrecision {
+    minResultPrecision = maxResultPrecision
+  }
 
-	result := IntAry{}.NewOne(0)
+  result := IntAry{}.NewOne(0)
 
-	internalMaxPrecision := maxResultPrecision + 100
+  internalMaxPrecision := maxResultPrecision + 100
 
-	opExponent := exponent.CopyOut()
+  opExponent := exponent.CopyOut()
 
-	for !opExponent.IsZero() {
+  for !opExponent.IsZero() {
 
-		IntAryMathMultiply{}.MultiplyInPlace(&result, base, minResultPrecision, internalMaxPrecision)
+    IntAryMathMultiply{}.MultiplyInPlace(&result, base, minResultPrecision, internalMaxPrecision)
 
-		err := opExponent.DecrementIntegerOne()
+    err := opExponent.DecrementIntegerOne()
 
-		if err != nil {
-			return &iaErrReturn,
-				fmt.Errorf(ePrefix+
-					"Error returned by opExponent.DecrementIntegerOne() "+
-					"Error='%v' ", err.Error())
-		}
+    if err != nil {
+      return &iaErrReturn,
+        fmt.Errorf(ePrefix+
+          "Error returned by opExponent.DecrementIntegerOne() "+
+          "Error='%v' ", err.Error())
+    }
 
-	}
+  }
 
-	if result.GetPrecision() > maxResultPrecision {
-		result.RoundToPrecision(maxResultPrecision)
-	}
+  if result.GetPrecision() > maxResultPrecision {
+    result.RoundToPrecision(maxResultPrecision)
+  }
 
-	if result.GetPrecision() < minResultPrecision {
-		result.SetPrecision(minResultPrecision, false)
-	}
+  if result.GetPrecision() < minResultPrecision {
+    result.SetPrecision(minResultPrecision, false)
+  }
 
-	err := result.SetNumericSeparatorsDto(numSeps)
+  err := result.SetNumericSeparatorsDto(numSeps)
 
-	if err != nil {
-		return &iaErrReturn,
-			fmt.Errorf(ePrefix+
-				"Error returned by result.SetNumericSeparatorsDto(numSeps) "+
-				"Error='%v' ", err.Error())
-	}
+  if err != nil {
+    return &iaErrReturn,
+      fmt.Errorf(ePrefix+
+        "Error returned by result.SetNumericSeparatorsDto(numSeps) "+
+        "Error='%v' ", err.Error())
+  }
 
-	return &result, nil
+  return &result, nil
 }
 
 // pwrMultiplyNegativeIntegerExponent - raises 'base' to the power of 'exponent'.
@@ -648,91 +648,91 @@ func (iaPwr *IntAryMathPower) pwrMultiplyPositiveIntegerExponent(
 // Note: This method does not perform tests for base==0 .
 // It is assumed that this test was performed before calling this method.
 func (iaPwr *IntAryMathPower) pwrMultiplyNegativeIntegerExponent(
-	base, exponent *IntAry,
-	minResultPrecision, maxResultPrecision int) (*IntAry, error) {
+  base, exponent *IntAry,
+  minResultPrecision, maxResultPrecision int) (*IntAry, error) {
 
-	ePrefix := "IntAryMathPower.pwrMultiplyNegativeIntegerExponent() "
-	iaErrReturn := IntAry{}.NewZero(0)
+  ePrefix := "IntAryMathPower.pwrMultiplyNegativeIntegerExponent() "
+  iaErrReturn := IntAry{}.NewZero(0)
 
-	if exponent.GetSign() != -1 {
-		return &iaErrReturn,
-			fmt.Errorf(ePrefix+
-				"Error: 'exponent' is expected to be a negative integer. "+
-				"Instead, 'exponent' is positive! exponent='%v'",
-				exponent.GetNumStr())
-	}
+  if exponent.GetSign() != -1 {
+    return &iaErrReturn,
+      fmt.Errorf(ePrefix+
+        "Error: 'exponent' is expected to be a negative integer. "+
+        "Instead, 'exponent' is positive! exponent='%v'",
+        exponent.GetNumStr())
+  }
 
-	if exponent.GetPrecision() > 0 {
-		return &iaErrReturn,
-			fmt.Errorf(ePrefix+
-				"Error: 'exponent' is expected to be an integer value. "+
-				"Instead, 'exponent' is a fractional value! exponent='%v'",
-				exponent.GetNumStr())
-	}
+  if exponent.GetPrecision() > 0 {
+    return &iaErrReturn,
+      fmt.Errorf(ePrefix+
+        "Error: 'exponent' is expected to be an integer value. "+
+        "Instead, 'exponent' is a fractional value! exponent='%v'",
+        exponent.GetNumStr())
+  }
 
-	numSeps := base.GetNumericSeparatorsDto()
+  numSeps := base.GetNumericSeparatorsDto()
 
-	if maxResultPrecision < 0 {
-		maxResultPrecision = 4096
-	}
+  if maxResultPrecision < 0 {
+    maxResultPrecision = 4096
+  }
 
-	if minResultPrecision < 0 {
-		minResultPrecision = 0
-	}
+  if minResultPrecision < 0 {
+    minResultPrecision = 0
+  }
 
-	if minResultPrecision > maxResultPrecision {
-		minResultPrecision = maxResultPrecision
-	}
+  if minResultPrecision > maxResultPrecision {
+    minResultPrecision = maxResultPrecision
+  }
 
-	internalMaxPrecision := maxResultPrecision + 100
+  internalMaxPrecision := maxResultPrecision + 100
 
-	newBase, err := base.Inverse(internalMaxPrecision)
+  newBase, err := base.Inverse(internalMaxPrecision)
 
-	if err != nil {
-		return &iaErrReturn,
-			fmt.Errorf(ePrefix +
-				"Error returned by base.Inverse(internalMaxPrecision)")
-	}
+  if err != nil {
+    return &iaErrReturn,
+      fmt.Errorf(ePrefix +
+        "Error returned by base.Inverse(internalMaxPrecision)")
+  }
 
-	result := IntAry{}.NewOne(0)
-	opExponent := exponent.CopyOut()
-	opExponent.ChangeSign()
-	iaZero := IntAry{}.NewZero(0)
-	internalMaxPrecision += 5
+  result := IntAry{}.NewOne(0)
+  opExponent := exponent.CopyOut()
+  opExponent.ChangeSign()
+  iaZero := IntAry{}.NewZero(0)
+  internalMaxPrecision += 5
 
-	for !opExponent.Equals(&iaZero) {
+  for !opExponent.Equals(&iaZero) {
 
-		IntAryMathMultiply{}.MultiplyInPlace(&result, &newBase, minResultPrecision, internalMaxPrecision)
+    IntAryMathMultiply{}.MultiplyInPlace(&result, &newBase, minResultPrecision, internalMaxPrecision)
 
-		err := opExponent.DecrementIntegerOne()
+    err := opExponent.DecrementIntegerOne()
 
-		if err != nil {
-			return &iaErrReturn,
-				fmt.Errorf(ePrefix+
-					"Error returned by opExponent.DecrementIntegerOne() "+
-					"Error='%v' ", err.Error())
-		}
+    if err != nil {
+      return &iaErrReturn,
+        fmt.Errorf(ePrefix+
+          "Error returned by opExponent.DecrementIntegerOne() "+
+          "Error='%v' ", err.Error())
+    }
 
-	}
+  }
 
-	if result.GetPrecision() > maxResultPrecision {
-		result.RoundToPrecision(maxResultPrecision)
-	}
+  if result.GetPrecision() > maxResultPrecision {
+    result.RoundToPrecision(maxResultPrecision)
+  }
 
-	if result.GetPrecision() < minResultPrecision {
-		result.SetPrecision(minResultPrecision, false)
-	}
+  if result.GetPrecision() < minResultPrecision {
+    result.SetPrecision(minResultPrecision, false)
+  }
 
-	err = result.SetNumericSeparatorsDto(numSeps)
+  err = result.SetNumericSeparatorsDto(numSeps)
 
-	if err != nil {
-		return &iaErrReturn,
-			fmt.Errorf(ePrefix+
-				"Error returned by SetNumericSeparatorsDto(numSeps) "+
-				"Error='%v' ", err.Error())
-	}
+  if err != nil {
+    return &iaErrReturn,
+      fmt.Errorf(ePrefix+
+        "Error returned by SetNumericSeparatorsDto(numSeps) "+
+        "Error='%v' ", err.Error())
+  }
 
-	return &result, nil
+  return &result, nil
 }
 
 // pwrMultiplyPositiveFractionalExponent - raises 'base' to the power of
@@ -771,473 +771,115 @@ func (iaPwr *IntAryMathPower) pwrMultiplyNegativeIntegerExponent(
 //	or exponent==1. Is is assumed that these tests were performed
 //	before calling this method.
 func (iaPwr *IntAryMathPower) pwrMultiplyPositiveFractionalExponent(
-	base, exponent *IntAry,
-	minResultPrecision, maxResultPrecision int) (*IntAry, error) {
-
-	ePrefix := "IntAryMathPower.pwrMultiplyPositiveFractionalExponent() "
-	iaErrReturn := IntAry{}.NewZero(0)
-
-	if exponent.GetSign() != 1 {
-		return &iaErrReturn,
-			fmt.Errorf(ePrefix+
-				"Error: 'exponent' is expected to be a positive fractional value. "+
-				"Instead, 'exponent' is a negative value! exponent='%v'",
-				exponent.GetNumStr())
-	}
-
-	if exponent.GetPrecision() < 1 {
-		return &iaErrReturn,
-			fmt.Errorf(ePrefix+
-				"Error: 'exponent' is expected to be a fractional value. "+
-				"Instead, 'exponent' is an integer value! exponent='%v'",
-				exponent.GetNumStr())
-	}
-
-	numSeps := base.GetNumericSeparatorsDto()
-
-	if maxResultPrecision < 0 {
-		maxResultPrecision = 4096
-	}
-
-	if minResultPrecision < 0 {
-		minResultPrecision = 0
-	}
-
-	if minResultPrecision > maxResultPrecision {
-		minResultPrecision = maxResultPrecision
-	}
-
-	internalMaxPrecision := maxResultPrecision + 100
-
-	fracIntAry := FracIntAry{}.NewFracIntAry(exponent)
-
-	err := fracIntAry.ReduceToLowestCommonDenom(internalMaxPrecision)
-
-	if err != nil {
-		return &iaErrReturn,
-			fmt.Errorf(ePrefix+
-				"Error returned by fracIntAry.ReduceToLowestCommonDenom(internalMaxPrecision) "+
-				"Error='%v' ", err.Error())
-	}
-
-	internalMaxPrecision += 5
-
-	newBase, err := NthRootOp{}.NewNthRoot(base, &fracIntAry.Denominator, internalMaxPrecision)
-
-	if err != nil {
-		return &iaErrReturn,
-			fmt.Errorf(ePrefix+
-				"Error returned by NthRootOp{}.NewNthRoot(...) "+
-				"Error='%v' ", err.Error())
-	}
-
-	result := IntAry{}.NewOne(0)
-	internalMaxPrecision += 5
-
-	if fracIntAry.Numerator.GetPrecision() != 0 ||
-		fracIntAry.Numerator.GetSign() == -1 {
-		return &iaErrReturn,
-			fmt.Errorf(ePrefix+"Error: fracIntAry.Numerator (new exponent) INVALID!  "+
-				"fracIntAry.Numerator='%v' ", fracIntAry.Numerator.GetNumStr())
-	}
-
-	// fracIntAry.Numerator == new exponent
-	for !fracIntAry.Numerator.IsZero() {
-
-		err = IntAryMathMultiply{}.MultiplyInPlace(&result, &newBase, minResultPrecision, internalMaxPrecision)
-
-		if err != nil {
-			return &iaErrReturn,
-				fmt.Errorf(ePrefix+
-					"Error returned by IntAryMathMultiply{}.MultiplyInPlace() "+
-					"Error='%v' ", err.Error())
-		}
-
-		err = fracIntAry.Numerator.DecrementIntegerOne()
-
-		if err != nil {
-			return &iaErrReturn,
-				fmt.Errorf(ePrefix+
-					"Error returned by fracIntAry.Numerator.DecrementIntegerOne() "+
-					"Error='%v' ", err.Error())
-		}
-
-	}
-
-	if result.GetPrecision() > maxResultPrecision {
-		result.RoundToPrecision(maxResultPrecision)
-	}
-
-	if result.GetPrecision() < minResultPrecision {
-		result.SetPrecision(minResultPrecision, false)
-	}
-
-	err = result.SetNumericSeparatorsDto(numSeps)
-
-	if err != nil {
-		return &iaErrReturn,
-			fmt.Errorf(ePrefix+
-				"Error returned by fracIntAry.Numerator.DecrementIntegerOne() "+
-				"Error='%v' ", err.Error())
-	}
-
-	return &result, nil
-}
-
-// pwrMultiplyNegativeFractionalExponent - raises 'base' to the power of
-// 'exponent'. Input parameter 'exponent' is expected to represent a negative
-// fractional value, i.e., a numeric value with digits to the right of the
-// decimal place.
-//
-// Input parameter must be negative numeric value with a value less than zero.
-// If 'exponent' is a positive value, an error will be thrown.
-//
-// If 'exponent' is a numeric value with no digits to the right of the
-// decimal place, it is by definition an integer value and NOT a fractional
-// value. In that case, an error will be thrown.
-//
-// This method uses simple multiplication to generate the result.
-//
-// Input parameter 'maxResultPrecision' will round the result to this
-// number of decimal places after the decimal point if the result is
-// greater than 'maxResultPrecision'.  If the value of 'maxResultPrecision'
-// is less than zero, it will be automatically set to a value of '4096'.
-//
-// Input parameter 'minResultPrecision' signals that if the result precision
-// is less than 'minResultPrecision', zeros will be added to the right of
-// the decimal place in order to implement the 'minResultPrecision'
-// specification. If the value of 'minResultPrecision' is less than zero,
-// 'minResultPrecision' will be automatically set to a value of zero.
-//
-// The result of this power operation is returned as a pointer to a new
-// 'result' IntAry. None of the input parameters are altered by this
-// operation. The returned 'result' IntAry will contain numeric separators
-// (decimal separator, thousands separator and currency symbol) copied from
-// input parameter 'base'.
-//
-// Note: This method does not perform a test for base==0. It is assumed
-//
-//	this test was performed before calling this method.
-func (iaPwr *IntAryMathPower) pwrMultiplyNegativeFractionalExponent(
-	base, exponent *IntAry,
-	minResultPrecision, maxResultPrecision int) (*IntAry, error) {
-
-	ePrefix := "IntAryMathPower.pwrMultiplyNegativeFractionalExponent() "
-	iaErrReturn := IntAry{}.NewZero(0)
-
-	if exponent.GetSign() != -1 {
-		return &iaErrReturn,
-			fmt.Errorf(ePrefix+
-				"Error: 'exponent' is expected to be a negative fractional value. "+
-				"Instead, 'exponent' is a positive value! exponent='%v'",
-				exponent.GetNumStr())
-	}
-
-	if exponent.GetPrecision() < 1 {
-		return &iaErrReturn,
-			fmt.Errorf(ePrefix+
-				"Error: 'exponent' is expected to be a fractional value. "+
-				"Instead, 'exponent' is an integer value! exponent='%v'",
-				exponent.GetNumStr())
-	}
-
-	numSeps := base.GetNumericSeparatorsDto()
-
-	if maxResultPrecision < 0 {
-		maxResultPrecision = 4096
-	}
-
-	if minResultPrecision < 0 {
-		minResultPrecision = 0
-	}
-
-	if minResultPrecision > maxResultPrecision {
-		minResultPrecision = maxResultPrecision
-	}
-
-	internalMaxPrecision := maxResultPrecision + 100
-
-	newExponent := exponent.CopyOut()
-
-	// Change sign from minus to plus
-	newExponent.ChangeSign()
-
-	newInverseBase, err := base.Inverse(internalMaxPrecision)
-
-	if err != nil {
-		return &iaErrReturn, fmt.Errorf(ePrefix+
-			"Error returned by base.Inverse(internalMaxPrecision) "+
-			"Error='%v' ", err.Error())
-	}
-
-	fracIntAry := FracIntAry{}.NewFracIntAry(&newExponent)
-
-	internalMaxPrecision += 5
-
-	err = fracIntAry.ReduceToLowestCommonDenom(internalMaxPrecision)
-
-	if err != nil {
-		return &iaErrReturn,
-			fmt.Errorf(ePrefix+
-				"Error returned by fracIntAry.ReduceToLowestCommonDenom(internalMaxPrecision) "+
-				"Error='%v' ", err.Error())
-	}
-
-	internalMaxPrecision += 5
-
-	newBase, err := NthRootOp{}.NewNthRoot(&newInverseBase, &fracIntAry.Denominator, internalMaxPrecision)
-
-	if err != nil {
-		return &iaErrReturn,
-			fmt.Errorf(ePrefix+
-				"Error returned by NthRootOp{}.NewNthRoot(...) "+
-				"Error='%v' ", err.Error())
-	}
-
-	result := IntAry{}.NewOne(0)
-
-	internalMaxPrecision += 5
-
-	if fracIntAry.Numerator.GetPrecision() != 0 ||
-		fracIntAry.Numerator.GetSign() == -1 {
-		return &iaErrReturn,
-			fmt.Errorf(ePrefix+"Error: fracIntAry.Numerator (new exponent) INVALID!  "+
-				"fracIntAry.Numerator='%v' ", fracIntAry.Numerator.GetNumStr())
-	}
-
-	// fracIntAry.Numerator == new exponent
-	for !fracIntAry.Numerator.IsZero() {
-
-		err := IntAryMathMultiply{}.MultiplyInPlace(&result, &newBase, minResultPrecision, internalMaxPrecision)
-
-		if err != nil {
-			return &iaErrReturn,
-				fmt.Errorf(ePrefix+
-					"Error returned by IntAryMathMultiply{}.MultiplyInPlace(...) "+
-					"Error='%v' ", err.Error())
-		}
-
-		err = fracIntAry.Numerator.DecrementIntegerOne()
-
-		if err != nil {
-			return &iaErrReturn,
-				fmt.Errorf(ePrefix+
-					"Error returned by fracIntAry.Numerator.DecrementIntegerOne() "+
-					"Error='%v' ", err.Error())
-		}
-	}
-
-	if result.GetPrecision() > maxResultPrecision {
-		result.RoundToPrecision(maxResultPrecision)
-	}
-
-	if result.GetPrecision() < minResultPrecision {
-		result.SetPrecision(minResultPrecision, false)
-	}
-
-	err = result.SetNumericSeparatorsDto(numSeps)
-
-	if err != nil {
-		return &iaErrReturn,
-			fmt.Errorf(ePrefix+
-				"Error returned by result.SetNumericSeparatorsDto(numSeps) "+
-				"Error='%v' ", err.Error())
-	}
-
-	return &result, nil
-}
-
-// pwrTwoPositiveIntegerExponent - raises 'base' to the power of 'exponent'.
-// Input parameter 'exponent' is expected to represent a positive integer.
-// If 'exponent' is NOT a positive integer, an error will be thrown.
-//
-// If 'exponent' is a fractional value, i.e., it has digits to the right of the
-// decimal place, it is by definition NOT an integer value and therefore, an
-// error will be thrown.
-//
-// Input parameter 'maxResultPrecision' will round the result to this
-// number of decimal places after the decimal point if the result is
-// greater than 'maxResultPrecision'.  If the value of 'maxResultPrecision'
-// is less than zero, it will be automatically set to a value of '4096'.
-//
-// Input parameter 'minResultPrecision' signals that if the result precision
-// is less than 'minResultPrecision', zeros will be added to the right of
-// the decimal place in order to implement the 'minResultPrecision'
-// specification. If the value of 'minResultPrecision' is less than zero,
-// 'minResultPrecision' will be automatically set to a value of zero.
-//
-// The result of the power operation is returned in the input parameter
-// 'base'. During this procedure the original value of 'base' is destroyed.
-// The returned IntAry object 'base' will contain same numeric separators
-// (decimal separator, thousands separator and currency symbol) as those
-// in the original 'base' instance. As such, the 'base' numeric separators
-// will remain unchanged.
-func (iaPwr *IntAryMathPower) pwrTwoPositiveIntegerExponent(
-	base, exponent *IntAry,
-	minResultPrecision, maxResultPrecision int) error {
-
-	ePrefix := "IntAryMathPower.pwrTwoPositiveIntegerExponent() "
-
-	if exponent.GetSign() != 1 {
-		return fmt.Errorf(ePrefix+
-			"Error: 'exponent' is expected to be a positive integer. "+
-			"Instead, 'exponent' is negative! exponent='%v'",
-			exponent.GetNumStr())
-	}
-
-	if exponent.GetPrecision() != 0 {
-		return fmt.Errorf(ePrefix+
-			"Error: 'exponent' is expected to be an integer value. "+
-			"Instead, 'exponent' is a fractional value! exponent='%v'",
-			exponent.GetNumStr())
-	}
-
-	numSeps := base.GetNumericSeparatorsDto()
-
-	if maxResultPrecision < 0 {
-		maxResultPrecision = 4096
-	}
-
-	if minResultPrecision < 0 {
-		minResultPrecision = 0
-	}
-
-	if minResultPrecision > maxResultPrecision {
-		minResultPrecision = maxResultPrecision
-	}
-
-	// This is an integer Exponent!
-	bInt, err := exponent.GetBigInt()
-
-	if err != nil {
-		return fmt.Errorf(ePrefix+
-			"Error returned by exponent.GetBigInt() Error='%v'\n",
-			err.Error())
-	}
-
-	internalPrecision := maxResultPrecision + 100
-
-	err = iaPwr.pwrByTwos(base, bInt, maxResultPrecision, internalPrecision)
-
-	if err != nil {
-		return fmt.Errorf(ePrefix+
-			"Error returned by iaPwr.PwrByTwos(...) Error='%v' ", err.Error())
-	}
-
-	if base.GetPrecision() > maxResultPrecision {
-		base.RoundToPrecision(maxResultPrecision)
-	}
-
-	if base.GetPrecision() < minResultPrecision {
-		base.SetPrecision(minResultPrecision, false)
-	}
-
-	err = base.SetNumericSeparatorsDto(numSeps)
-
-	if err != nil {
-		return fmt.Errorf(ePrefix+
-			"Error returned by base.SetNumericSeparatorsDto(numSeps) Error='%v' ",
-			err.Error())
-	}
-
-	return nil
-}
-
-// pwrTwoNegativeIntegerExponent - raises 'base' to the power of 'exponent'.
-// Input parameter 'exponent' is expected to represent a negative integer
-// value, i.e., a value less than zero.
-//
-// If 'exponent' is a positive integer (value greater than -1), an error
-// will be thrown.
-//
-// If 'exponent' is a fractional value, i.e., it has digits to the right of the
-// decimal place, it is by definition NOT an integer value and therefore, an
-// error will be thrown.
-//
-// Input parameter 'maxResultPrecision' will round the result to this
-// number of decimal places after the decimal point if the result is
-// greater than 'maxResultPrecision'.  If the value of 'maxResultPrecision'
-// is less than zero, it will be automatically set to a value of '4096'.
-//
-// Input parameter 'minResultPrecision' signals that if the result precision
-// is less than 'minResultPrecision', zeros will be added to the right of
-// the decimal place in order to implement the 'minResultPrecision'
-// specification. If the value of 'minResultPrecision' is less than zero,
-// 'minResultPrecision' will be automatically set to a value of zero.
-//
-// The result of the power operation is returned in the input parameter
-// 'base'. During this procedure the original value of 'base' is destroyed.
-// The returned IntAry object 'base' will contain same numeric separators
-// (decimal separator, thousands separator and currency symbol) as those
-// in the original 'base' instance. As such, the 'base' numeric separators
-// will remain unchanged.
-func (iaPwr *IntAryMathPower) pwrTwoNegativeIntegerExponent(
-	base, exponent *IntAry,
-	minResultPrecision, maxResultPrecision int) error {
-
-	ePrefix := "IntAryMathPower.pwrTwoNegativeIntegerExponent() "
-
-	if exponent.GetSign() != -1 {
-		return fmt.Errorf(ePrefix+
-			"Error: 'exponent' is expected to be a negative integer. "+
-			"Instead, 'exponent' is positive! exponent='%v'",
-			exponent.GetNumStr())
-	}
-
-	if exponent.GetPrecision() != 0 {
-		return fmt.Errorf(ePrefix+
-			"Error: 'exponent' is expected to be an integer value. "+
-			"Instead, 'exponent' is a fractional value! exponent='%v'",
-			exponent.GetNumStr())
-	}
-
-	numSeps := base.GetNumericSeparatorsDto()
-
-	if maxResultPrecision < 0 {
-		maxResultPrecision = 4096
-	}
-
-	if minResultPrecision < 0 {
-		minResultPrecision = 0
-	}
-
-	if minResultPrecision > maxResultPrecision {
-		minResultPrecision = maxResultPrecision
-	}
-
-	// This is an integer Exponent!
-	bInt, err := exponent.GetBigInt()
-
-	if err != nil {
-		return fmt.Errorf(ePrefix+
-			"Error returned by exponent.GetBigInt() Error='%v'\n",
-			err.Error())
-	}
-
-	internalPrecision := maxResultPrecision + 100
-
-	err = iaPwr.pwrByTwos(base, bInt, maxResultPrecision, internalPrecision)
-
-	if err != nil {
-		return fmt.Errorf(ePrefix+
-			"Error returned by iaPwr.PwrByTwos(...) Error='%v' ", err.Error())
-	}
-
-	if base.GetPrecision() > maxResultPrecision {
-		base.RoundToPrecision(maxResultPrecision)
-	}
-
-	if base.GetPrecision() < minResultPrecision {
-		base.SetPrecision(minResultPrecision, false)
-	}
-
-	err = base.SetNumericSeparatorsDto(numSeps)
-
-	if err != nil {
-		return fmt.Errorf(ePrefix+
-			"Error returned by base.SetNumericSeparatorsDto(numSeps) Error='%v' ",
-			err.Error())
-	}
-
-	return nil
+  base, exponent *IntAry,
+  minResultPrecision, maxResultPrecision int) (*IntAry, error) {
+
+  ePrefix := "IntAryMathPower.pwrMultiplyPositiveFractionalExponent() "
+  iaErrReturn := IntAry{}.NewZero(0)
+
+  if exponent.GetSign() != 1 {
+    return &iaErrReturn,
+      fmt.Errorf(ePrefix+
+        "Error: 'exponent' is expected to be a positive fractional value. "+
+        "Instead, 'exponent' is a negative value! exponent='%v'",
+        exponent.GetNumStr())
+  }
+
+  if exponent.GetPrecision() < 1 {
+    return &iaErrReturn,
+      fmt.Errorf(ePrefix+
+        "Error: 'exponent' is expected to be a fractional value. "+
+        "Instead, 'exponent' is an integer value! exponent='%v'",
+        exponent.GetNumStr())
+  }
+
+  numSeps := base.GetNumericSeparatorsDto()
+
+  if maxResultPrecision < 0 {
+    maxResultPrecision = 4096
+  }
+
+  if minResultPrecision < 0 {
+    minResultPrecision = 0
+  }
+
+  if minResultPrecision > maxResultPrecision {
+    minResultPrecision = maxResultPrecision
+  }
+
+  internalMaxPrecision := maxResultPrecision + 100
+
+  fracIntAry := FracIntAry{}.NewFracIntAry(exponent)
+
+  err := fracIntAry.ReduceToLowestCommonDenom(internalMaxPrecision)
+
+  if err != nil {
+    return &iaErrReturn,
+      fmt.Errorf(ePrefix+
+        "Error returned by fracIntAry.ReduceToLowestCommonDenom(internalMaxPrecision) "+
+        "Error='%v' ", err.Error())
+  }
+
+  internalMaxPrecision += 5
+
+  newBase, err := NthRootOp{}.NewNthRoot(base, &fracIntAry.Denominator, internalMaxPrecision)
+
+  if err != nil {
+    return &iaErrReturn,
+      fmt.Errorf(ePrefix+
+        "Error returned by NthRootOp{}.NewNthRoot(...) "+
+        "Error='%v' ", err.Error())
+  }
+
+  result := IntAry{}.NewOne(0)
+  internalMaxPrecision += 5
+
+  if fracIntAry.Numerator.GetPrecision() != 0 ||
+    fracIntAry.Numerator.GetSign() == -1 {
+    return &iaErrReturn,
+      fmt.Errorf(ePrefix+"Error: fracIntAry.Numerator (new exponent) INVALID!  "+
+        "fracIntAry.Numerator='%v' ", fracIntAry.Numerator.GetNumStr())
+  }
+
+  // fracIntAry.Numerator == new exponent
+  for !fracIntAry.Numerator.IsZero() {
+
+    err = IntAryMathMultiply{}.MultiplyInPlace(&result, &newBase, minResultPrecision, internalMaxPrecision)
+
+    if err != nil {
+      return &iaErrReturn,
+        fmt.Errorf(ePrefix+
+          "Error returned by IntAryMathMultiply{}.MultiplyInPlace() "+
+          "Error='%v' ", err.Error())
+    }
+
+    err = fracIntAry.Numerator.DecrementIntegerOne()
+
+    if err != nil {
+      return &iaErrReturn,
+        fmt.Errorf(ePrefix+
+          "Error returned by fracIntAry.Numerator.DecrementIntegerOne() "+
+          "Error='%v' ", err.Error())
+    }
+
+  }
+
+  if result.GetPrecision() > maxResultPrecision {
+    result.RoundToPrecision(maxResultPrecision)
+  }
+
+  if result.GetPrecision() < minResultPrecision {
+    result.SetPrecision(minResultPrecision, false)
+  }
+
+  err = result.SetNumericSeparatorsDto(numSeps)
+
+  if err != nil {
+    return &iaErrReturn,
+      fmt.Errorf(ePrefix+
+        "Error returned by fracIntAry.Numerator.DecrementIntegerOne() "+
+        "Error='%v' ", err.Error())
+  }
+
+  return &result, nil
 }
