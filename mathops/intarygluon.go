@@ -3,8 +3,6 @@ package mathops
 import (
 	"fmt"
 	ePref "github.com/MikeAustin71/errpref"
-	"math"
-	"math/big"
 	"sync"
 )
 
@@ -14,69 +12,79 @@ type intAryGluon struct {
 
 // setIntAryWithInt
 //
-//	Sets the value of the current intAry object to that of the
-//	input parameter 'intDigits', an integer of type 'int'.
+//		Receives an IntAry instance ('intAry') and reconfigures the
+//		numeric values based on input parameters 'intDigits' and
+//		'precision'.
 //
-//	Input parameter 'precision' to indicate the number of digits to
-//	the right of the decimal place. Input parameter 'precision' is
-//	of type uint.
+//	 Input parameter 'precision' to indicate the number of digits to
+//	 the right of the decimal place. Input parameter 'precision' is
+//	 of type uint.
 //
-//	The numeric sign (plus or minus) of the resulting intAry value
-//	is determined by the sign of input parameter,'intDigits'.
+//	 The numeric sign (plus or minus) of the resulting intAry value
+//	 is determined by the sign of input parameter,'intDigits'.
 //
-//	Example
-//	=======
+//	 Example
+//	 =======
 //
-//	intDigits      precision      result
-//	---------      ---------      ------
+//	 intDigits      precision      result
+//	 ---------      ---------      ------
 //
-//	  946254            3          946.254
-//	  946254            0          946254
-//	 -946254            3         -946.254
-//	 -946254            0         -946254
+//	   946254            3          946.254
+//	   946254            0          946254
+//	  -946254            3         -946.254
+//	  -946254            0         -946254
 //
-//	IMPORTANT
-//	=========
+//	 IMPORTANT
+//	 =========
 //
-//	The maximum value for input parameter 'precision' is
-//	2,147,483,647. This is the maximum value for a 32-bit
-//	signed integer. The limitation derives from the maximum
-//	length of arrays in 'Go'. Type IntAry relies on arrays
-//	of 8-bit integers to store numeric values.
+//	   In practice, the maximum limit for 'precision' will be
+//	   constrained by the maximum array size permitted by
+//	   your system. Type IntAry relies on arrays of 8-bit
+//	   integers for numeric value storage.
 //
-//	Input Parameters
-//	================
+//	 Input Parameters
+//	 ================
 //
-//	intAry                   *IntAry
-//	  A pointer to an IntAry object. This object will be
-//	  reconfigured with a new value based on the following
-//	  input parameters.
+//	 intAry                   *IntAry
+//	   A pointer to an IntAry object. This object will be
+//	   reconfigured with a new value based on the following
+//	   input parameters.
 //
-//	nsProfile                NumSepsProfileSelection
-//	 This struct contains all the prameters and options
-//	 necessary to generate the NumericSeparatorsDto which is
-//	 required for configuration of Numeric Separators in the
-//	 IntAry object returned by this method.
+//	 numSepsSrcIntAry         *IntAry
+//	   This instance of IntAry may be populated by the calling
+//	   function as a source of Numeric Separators
 //
-//	intDigits                int
-//	  The numeric digits contained in this value comprise both
-//	  the integer digits and the fractional digits which will be
-//	  configured in the final numeric value stored in parameter,
-//	  'intAry'.
+//	 nsProfile                NumSepsProfileSelection
+//	  This struct contains all the prameters and options
+//	  necessary to generate the NumericSeparatorsDto which is
+//	  required for configuration of Numeric Separators in the
+//	  IntAry object returned by this method.
 //
-//	precision                uint
-//	  'precision' specifies the number of fractional digits in the
-//	  final numeric value stored in 'intAry'
+//	 intDigits                int
+//	   The numeric digits contained in this value comprise both
+//	   the integer digits and the fractional digits which will be
+//	   configured in the final numeric value stored in parameter,
+//	   'intAry'.
 //
-//	  Although 'precision' is an unsigned integer type, the maximum
-//	  value allowed for this parameter is 2,147,483,647.
+//	 precision                uint
+//	   'precision' specifies the number of fractional digits in the
+//	   final numeric value stored in 'intAry'
 //
-//	Return Values
-//	=============
+//	   In practice, the maximum limit for 'precision' will be
+//	   constrained by the maximum array size permitted by
+//	   your system. Type IntAry relies on arrays of 8-bit
+//	   integers for numeric value storage.
 //
-//	error
-//	  If no errors are encountered during processing, this returned
-//	  value will be set to 'nil'
+//	 validateResult           bool
+//	   When set to 'true', the final numeric value calculated by
+//	   this method will be subjected to validation testing.
+//
+//			Return Values
+//			=============
+//
+//			error
+//			  If no errors are encountered during processing, this returned
+//			  value will be set to 'nil'
 func (iaGluon *intAryGluon) setIntAryWithInt(
 	intAry *IntAry,
 	numSepsSrcIntAry *IntAry,
@@ -109,23 +117,6 @@ func (iaGluon *intAryGluon) setIntAryWithInt(
 		return &InputPtrNilError{
 			ErrPrefix:     ePrefix.String(),
 			ParameterName: "'intAry'",
-		}
-	}
-
-	maxInt := big.NewInt(math.MaxInt)
-
-	precisionParam := big.NewInt(0).SetUint64(uint64(precision))
-
-	if precisionParam.Cmp(maxInt) > 0 {
-
-		return &FuncReturnError{
-			ErrPrefix:  ePrefix.String(),
-			ReturnFunc: "",
-			ErrContext: "",
-			ErrMessage: fmt.Sprintf("Error: Input precision 'parameter' is INVALID!\n"+
-				"The maximum value allowed for 'precision' is %v\n"+
-				"Input parameter 'precision' is %v",
-				maxInt.Text(10), precisionParam.Text(10)),
 		}
 	}
 
@@ -163,11 +154,15 @@ func (iaGluon *intAryGluon) setIntAryWithInt(
 	}
 
 	quotient := 0
+
 	mod := 0
 
 	intAry.intAry = []uint8{}
+
 	intAry.intAryLen = 0
+
 	intAry.precision = int(precision)
+
 	intAry.signVal = 1
 
 	if intDigits < 0 {
@@ -273,6 +268,273 @@ func (iaGluon *intAryGluon) setIntAryWithInt(
 			ErrPrefix: ePrefix.String(),
 			ReturnFunc: "err = new(intAryUtility).selectIntAryValidation(\n" +
 				"intAry,\"intAry\", validateResult, ePrefix)",
+			ErrContext: "",
+			ErrMessage: err.Error(),
+		}
+	}
+
+	return nil
+}
+
+// setIntAryWithInt64
+//
+//	Sets the value of the current intAry object to that of the
+//	input parameter 'int64Num', a 64-bit integer.
+//
+//	Input parameter 'precision' indicates the number of digits
+//	to be formatted to the right of the decimal place. Input
+//	parameter 'precision' is of type uint.
+//
+//	In practice, the maximum limit for 'precision' will be
+//	constrained by the maximum array size permitted by
+//	your system.
+//
+//	The numeric sign (plus or minus) of the resulting intAry value
+//	is determined by the sign of input parameter 'int64Num'.
+//
+//	Example
+//	=======
+//
+//	int64Num      precision      result
+//
+//	 946254           3           946.254
+//	 946254           0           946254
+//	-946254           3          -946.254
+//	-946254           0          -946254
+//
+//	Input Parameters
+//	================
+//
+//	ia                       *IntAry
+//	  This instance of IntAry will be overwritten with the new
+//	  IntAry values computed by this method.
+//
+//	numSepsSrcIntAry         *IntAry
+//	  This instance of IntAry may be populated by the calling
+//	  function as a source of Numeric Separators
+//
+//	nsProfile                NumSepsProfileSelection
+//	  This struct contains decision parameters for selecting and
+//	  configuring Numeric Separators.
+//
+//	int64Num                 int64
+//	  The numeric digits contained in this value comprise both
+//	  the integer digits and the fractional digits which will be
+//	  configured in the final numeric value stored in the IntAry
+//	  object returned by this method.
+//
+//	precision                uint
+//	  'precision' specifies the number of fractional digits in the
+//	  final numeric value stored in the returned IntAry object.
+//
+//	 In practice, the maximum limit for 'precision' will be
+//	 constrained by the maximum array size permitted by
+//	 your system.
+//
+//	validateResult           bool
+//	  When set to 'true', the final numeric value calculated by
+//	  this method will be subjected to validation testing.
+//
+//	Return Values
+//	=============
+//
+//	IntAry
+//	  This new instance of IntAry will be returned configured with
+//	  the numeric value calculated from input parameters, 'intNum'
+//	  and 'precision'.
+//
+//	error
+//	  If no errors are encountered during processing, this returned
+//	  value will be set to 'nil'
+func (iaGluon *intAryGluon) setIntAryWithInt64(
+	ia *IntAry,
+	numSepsSrcIntAry *IntAry,
+	nsProfile NumSepsProfileSelection,
+	int64Num int64,
+	precision uint,
+	validateResult bool,
+	errPrefDto *ePref.ErrPrefixDto) error {
+
+	iaGluon.lock.Lock()
+
+	defer iaGluon.lock.Unlock()
+
+	var ePrefix *ePref.ErrPrefixDto
+
+	var err error
+
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
+		errPrefDto,
+		"intAryGluon.setIntAryWithInt64",
+		"")
+
+	if err != nil {
+		return err
+	}
+
+	if ia == nil {
+
+		return &InputPtrNilError{
+			ErrPrefix:     ePrefix.String(),
+			ParameterName: "'ia'",
+		}
+	}
+
+	var numSeps NumericSeparatorDto
+
+	nsProfile.OutputNumSepsName = "numSeps"
+
+	var actualNumSepsSrcIntAryPtr *IntAry
+
+	if numSepsSrcIntAry == nil {
+
+		nsProfile.SourceObjectName = "ia"
+		actualNumSepsSrcIntAryPtr = ia
+
+	} else {
+
+		nsProfile.SourceObjectName = "numSepsSrcIntAry"
+		actualNumSepsSrcIntAryPtr = numSepsSrcIntAry
+	}
+
+	numSeps, err = new(intAryUtility).selectNumericSeparators(
+		actualNumSepsSrcIntAryPtr,
+		nsProfile,
+		ePrefix)
+
+	if err != nil {
+
+		return &FuncReturnError{
+			ErrPrefix: ePrefix.String(),
+			ReturnFunc: "numSeps, err = new(intAryUtility).selectNumericSeparators(\n" +
+				"actualNumSepsSrcIntAryPtr, nsProfile, ePrefix)",
+			ErrContext: "",
+			ErrMessage: err.Error(),
+		}
+	}
+
+	quotient := int64(0)
+
+	mod := int64(0)
+
+	i64Ten := int64(10)
+
+	ia.intAry = []uint8{}
+
+	ia.intAryLen = 0
+
+	ia.precision = int(precision)
+
+	ia.signVal = 1
+
+	if int64Num < 0 {
+
+		int64Num = int64Num * int64(-1)
+
+		ia.signVal = -1
+	}
+
+	if int64Num == 0 {
+
+		//ia.SetIntAryToZero(precision)
+
+		nsProfile = NumSepsProfileSelection{
+			SourceObjectName:         "ia",
+			OutputNumSepsName:        "numSeps",
+			UseDefaultNumSeps:        false,
+			SetDefaultNumSepsIfEmpty: true,
+			ValidateNumSeps:          false,
+			OverrideNumSeps:          numSeps,
+		}
+
+		// ia.SetIntAryToZero(precision)
+		err = new(intAryQuark).setIntAryToZero(
+			ia,
+			nil,
+			nsProfile,
+			precision,
+			ePrefix)
+
+		if err != nil {
+
+			return &FuncReturnError{
+				ErrPrefix: ePrefix.String(),
+				ReturnFunc: "err = new(intAryQuark).setIntAryToZero(\n" +
+					"  intAry, nil, nsProfile-numSeps, precision, ePrefix)",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+		}
+
+		return nil
+	}
+
+	for {
+
+		if int64Num == 0 {
+			break
+		}
+
+		quotient = int64Num / i64Ten
+
+		mod = int64Num - (quotient * i64Ten)
+
+		ia.intAry = append(ia.intAry, uint8(mod))
+
+		ia.intAryLen++
+
+		int64Num = quotient
+
+	}
+
+	n1 := uint8(0)
+
+	lastIdx := ia.intAryLen - 1
+
+	totalLen := ia.intAryLen / 2
+
+	for i := 0; i < totalLen; i++ {
+
+		n1 = ia.intAry[i]
+
+		ia.intAry[i] = ia.intAry[lastIdx]
+
+		ia.intAry[lastIdx] = n1
+
+		lastIdx--
+	}
+
+	//ia.SetInternalFlags()
+
+	err = new(intAryPhoton).setNumericSeparatorsDto(
+		ia, numSeps, false, ePrefix)
+
+	if err != nil {
+
+		return &FuncReturnError{
+			ErrPrefix: ePrefix.String(),
+			ReturnFunc: "err = new(intAryPhoton).setNumericSeparatorsDto(\n" +
+				"  ia, numSeps, true, ePrefix)",
+			ErrContext: "",
+			ErrMessage: err.Error(),
+		}
+	}
+
+	// If no validation specified, this will set
+	// internal flags
+	err = new(intAryUtility).selectIntAryValidation(
+		ia,
+		"ia",
+		validateResult,
+		ePrefix)
+
+	if err != nil {
+
+		return &FuncReturnError{
+			ErrPrefix: ePrefix.String(),
+			ReturnFunc: "err = new(intAryUtility).selectIntAryValidation(\n" +
+				"ia,\"ia\", validateResult, ePrefix)",
 			ErrContext: "",
 			ErrMessage: err.Error(),
 		}
@@ -442,8 +704,9 @@ func (iaGluon *intAryGluon) setIntAryWithUint8Ary(
 //	  'precision' specifies the number of fractional digits in the
 //	  final numeric value stored in 'intAry'
 //
-//	  Although 'precision' is an unsigned integer type, the maximum
-//	  value allowed for this parameter is 2,147,483,647.
+//	  In practice, the maximum limit for 'precision' will be
+//	  constrained by the maximum array size permitted by
+//	  your system.
 //
 //	validateResult           bool
 //	  When this parameter is set to 'true' the final calculation
@@ -496,23 +759,6 @@ func (iaGluon *intAryGluon) setIntAryWithUint64(
 			ErrMessage: fmt.Sprintf("Error: Input parameter 'signVal' is INVALID!\n"+
 				"The only valid values for 'signVal' are -1 or +1.\n"+
 				"signVal='%v'", signVal),
-		}
-	}
-
-	maxInt := big.NewInt(math.MaxInt)
-
-	precisionParam := big.NewInt(0).SetUint64(uint64(precision))
-
-	if precisionParam.Cmp(maxInt) > 0 {
-
-		return &FuncReturnError{
-			ErrPrefix:  ePrefix.String(),
-			ReturnFunc: "",
-			ErrContext: "",
-			ErrMessage: fmt.Sprintf("Error: Input precision 'parameter' is INVALID!\n"+
-				"The maximum value allowed for 'precision' is %v\n"+
-				"Input parameter 'precision' is %v",
-				maxInt.Text(10), precisionParam.Text(10)),
 		}
 	}
 
