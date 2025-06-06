@@ -1,13 +1,13 @@
 package mathops
 
 import (
-	"fmt"
-	ePref "github.com/MikeAustin71/errpref"
-	"sync"
+  "fmt"
+  ePref "github.com/MikeAustin71/errpref"
+  "sync"
 )
 
 type intAryGluon struct {
-	lock sync.Mutex
+  lock sync.Mutex
 }
 
 // setIntAryWithInt
@@ -86,461 +86,461 @@ type intAryGluon struct {
 //			  If no errors are encountered during processing, this returned
 //			  value will be set to 'nil'
 func (iaGluon *intAryGluon) setIntAryWithInt(
-	intAry *IntAry,
-	numSepsSrcIntAry *IntAry,
-	nsProfile NumSepsProfileSelection,
-	intDigits int,
-	precision uint,
-	validateResult bool,
-	errPrefDto *ePref.ErrPrefixDto) error {
+  intAry *IntAry,
+  numSepsSrcIntAry *IntAry,
+  nsProfile NumSepsProfileSelection,
+  intDigits int,
+  precision uint,
+  validateResult bool,
+  errPrefDto *ePref.ErrPrefixDto) error {
 
-	iaGluon.lock.Lock()
+  iaGluon.lock.Lock()
 
-	defer iaGluon.lock.Unlock()
+  defer iaGluon.lock.Unlock()
 
-	var ePrefix *ePref.ErrPrefixDto
+  var ePrefix *ePref.ErrPrefixDto
 
-	var err error
+  var err error
 
-	ePrefix,
-		err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
-		errPrefDto,
-		"intAryGluon.setIntAryWithInt",
-		"")
+  ePrefix,
+    err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
+    errPrefDto,
+    "intAryGluon.setIntAryWithInt",
+    "")
 
-	if err != nil {
-		return err
-	}
+  if err != nil {
+    return err
+  }
 
-	if intAry == nil {
+  if intAry == nil {
 
-		return &InputPtrNilError{
-			ErrPrefix:     ePrefix.String(),
-			ParameterName: "'intAry'",
-		}
-	}
+    return &InputPtrNilError{
+      ErrPrefix:     ePrefix.String(),
+      ParameterName: "'intAry'",
+    }
+  }
 
-	var numSeps NumericSeparatorDto
+  var numSeps NumericSeparatorDto
 
-	nsProfile.OutputNumSepsName = "numSeps"
+  nsProfile.OutputNumSepsName = "numSeps"
 
-	var actualNumSepsSrcIntAryPtr *IntAry
+  var actualNumSepsSrcIntAryPtr *IntAry
 
-	if numSepsSrcIntAry == nil {
+  if numSepsSrcIntAry == nil {
 
-		nsProfile.SourceObjectName = "intAry"
-		actualNumSepsSrcIntAryPtr = intAry
+    nsProfile.SourceObjectName = "intAry"
+    actualNumSepsSrcIntAryPtr = intAry
 
-	} else {
+  } else {
 
-		nsProfile.SourceObjectName = "numSepsSrcIntAry"
-		actualNumSepsSrcIntAryPtr = numSepsSrcIntAry
-	}
+    nsProfile.SourceObjectName = "numSepsSrcIntAry"
+    actualNumSepsSrcIntAryPtr = numSepsSrcIntAry
+  }
 
-	numSeps, err = new(intAryUtility).selectNumericSeparators(
-		actualNumSepsSrcIntAryPtr,
-		nsProfile,
-		ePrefix)
+  numSeps, err = new(intAryUtility).selectNumericSeparators(
+    actualNumSepsSrcIntAryPtr,
+    nsProfile,
+    ePrefix)
 
-	if err != nil {
+  if err != nil {
 
-		return &FuncReturnError{
-			ErrPrefix: ePrefix.String(),
-			ReturnFunc: "numSeps, err = new(intAryUtility).selectNumericSeparators(\n" +
-				"actualNumSepsSrcIntAryPtr, nsProfile, ePrefix)",
-			ErrContext: "",
-			ErrMessage: err.Error(),
-		}
-	}
+    return &FuncReturnError{
+      ErrPrefix: ePrefix.String(),
+      ReturnFunc: "numSeps, err = new(intAryUtility).selectNumericSeparators(\n" +
+        "actualNumSepsSrcIntAryPtr, nsProfile, ePrefix)",
+      ErrContext: "",
+      ErrMessage: err.Error(),
+    }
+  }
 
-	quotient := 0
+  quotient := 0
 
-	mod := 0
+  mod := 0
 
-	intAry.intAry = []uint8{}
+  intAry.intAry = []uint8{}
 
-	intAry.intAryLen = 0
+  intAry.intAryLen = 0
 
-	intAry.precision = int(precision)
+  intAry.precision = int(precision)
 
-	intAry.signVal = 1
+  intAry.signVal = 1
 
-	if intDigits < 0 {
+  if intDigits < 0 {
 
-		intDigits = intDigits * -1
+    intDigits = intDigits * -1
 
-		intAry.signVal = -1
-	}
+    intAry.signVal = -1
+  }
 
-	if intDigits == 0 {
+  if intDigits == 0 {
 
-		nsProfile = NumSepsProfileSelection{
-			SourceObjectName:         "intAry",
-			OutputNumSepsName:        "numSeps",
-			UseDefaultNumSeps:        false,
-			SetDefaultNumSepsIfEmpty: true,
-			ValidateNumSeps:          false,
-			OverrideNumSeps:          numSeps,
-		}
+    nsProfile = NumSepsProfileSelection{
+      SourceObjectName:         "intAry",
+      OutputNumSepsName:        "numSeps",
+      UseDefaultNumSeps:        false,
+      SetDefaultNumSepsIfEmpty: true,
+      ValidateNumSeps:          false,
+      OverrideNumSeps:          numSeps,
+    }
 
-		// ia.SetIntAryToZero(precision)
-		err = new(intAryQuark).setIntAryToZero(
-			intAry,
-			nil,
-			nsProfile,
-			precision,
-			ePrefix)
+    // ia.SetIntAryToZero(precision)
+    err = new(intAryQuark).setIntAryToZero(
+      intAry,
+      nil,
+      nsProfile,
+      precision,
+      ePrefix)
 
-		if err != nil {
+    if err != nil {
 
-			return &FuncReturnError{
-				ErrPrefix: ePrefix.String(),
-				ReturnFunc: "err = new(intAryQuark).setIntAryToZero(\n" +
-					"  intAry, nil, nsProfile-numSeps, precision, ePrefix)",
-				ErrContext: "",
-				ErrMessage: err.Error(),
-			}
-		}
+      return &FuncReturnError{
+        ErrPrefix: ePrefix.String(),
+        ReturnFunc: "err = new(intAryQuark).setIntAryToZero(\n" +
+          "  intAry, nil, nsProfile-numSeps, precision, ePrefix)",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+    }
 
-		return nil
-	}
+    return nil
+  }
 
-	for {
+  for {
 
-		if intDigits == 0 {
-			break
-		}
+    if intDigits == 0 {
+      break
+    }
 
-		quotient = intDigits / 10
+    quotient = intDigits / 10
 
-		mod = intDigits - (quotient * 10)
+    mod = intDigits - (quotient * 10)
 
-		intAry.intAry = append(intAry.intAry, uint8(mod))
+    intAry.intAry = append(intAry.intAry, uint8(mod))
 
-		intAry.intAryLen++
+    intAry.intAryLen++
 
-		intDigits = quotient
+    intDigits = quotient
 
-	}
+  }
 
-	n1 := uint8(0)
+  n1 := uint8(0)
 
-	lastIdx := intAry.intAryLen - 1
+  lastIdx := intAry.intAryLen - 1
 
-	totalLen := intAry.intAryLen / 2
+  totalLen := intAry.intAryLen / 2
 
-	for i := 0; i < totalLen; i++ {
+  for i := 0; i < totalLen; i++ {
 
-		n1 = intAry.intAry[i]
+    n1 = intAry.intAry[i]
 
-		intAry.intAry[i] = intAry.intAry[lastIdx]
+    intAry.intAry[i] = intAry.intAry[lastIdx]
 
-		intAry.intAry[lastIdx] = n1
+    intAry.intAry[lastIdx] = n1
 
-		lastIdx--
-	}
+    lastIdx--
+  }
 
-	err = new(intAryPhoton).setNumericSeparatorsDto(
-		intAry, numSeps, false, ePrefix)
+  err = new(intAryPhoton).setNumericSeparatorsDto(
+    intAry, numSeps, false, ePrefix)
 
-	if err != nil {
+  if err != nil {
 
-		return &FuncReturnError{
-			ErrPrefix: ePrefix.String(),
-			ReturnFunc: "err = new(intAryPhoton).setNumericSeparatorsDto(\n" +
-				"  intAry, numSeps, true, ePrefix)",
-			ErrContext: "",
-			ErrMessage: err.Error(),
-		}
-	}
+    return &FuncReturnError{
+      ErrPrefix: ePrefix.String(),
+      ReturnFunc: "err = new(intAryPhoton).setNumericSeparatorsDto(\n" +
+        "  intAry, numSeps, true, ePrefix)",
+      ErrContext: "",
+      ErrMessage: err.Error(),
+    }
+  }
 
-	// If no validation specified, this will set
-	// internal flags
-	err = new(intAryUtility).selectIntAryValidation(
-		intAry,
-		"intAry",
-		validateResult,
-		ePrefix)
+  // If no validation specified, this will set
+  // internal flags
+  err = new(intAryUtility).selectIntAryValidation(
+    intAry,
+    "intAry",
+    validateResult,
+    ePrefix)
 
-	if err != nil {
+  if err != nil {
 
-		return &FuncReturnError{
-			ErrPrefix: ePrefix.String(),
-			ReturnFunc: "err = new(intAryUtility).selectIntAryValidation(\n" +
-				"intAry,\"intAry\", validateResult, ePrefix)",
-			ErrContext: "",
-			ErrMessage: err.Error(),
-		}
-	}
+    return &FuncReturnError{
+      ErrPrefix: ePrefix.String(),
+      ReturnFunc: "err = new(intAryUtility).selectIntAryValidation(\n" +
+        "intAry,\"intAry\", validateResult, ePrefix)",
+      ErrContext: "",
+      ErrMessage: err.Error(),
+    }
+  }
 
-	return nil
+  return nil
 }
 
 // setIntAryWithInt64
 //
-//	Sets the value of the current intAry object to that of the
-//	input parameter 'int64Num', a 64-bit integer.
+//		Sets the value of the current intAry object to that of the
+//		input parameter 'int64Num', a 64-bit integer.
 //
-//	Input parameter 'precision' indicates the number of digits
-//	to be formatted to the right of the decimal place. Input
-//	parameter 'precision' is of type uint.
+//		Input parameter 'precision' indicates the number of digits
+//		to be formatted to the right of the decimal place. Input
+//		parameter 'precision' is of type uint.
 //
-//	In practice, the maximum limit for 'precision' will be
-//	constrained by the maximum array size permitted by
-//	your system.
+//		In practice, the maximum limit for 'precision' will be
+//		constrained by the maximum array size permitted by
+//		your system.
 //
-//	The numeric sign (plus or minus) of the resulting intAry value
-//	is determined by the sign of input parameter 'int64Num'.
+//		The numeric sign (plus or minus) of the resulting intAry value
+//		is determined by the sign of input parameter 'int64Num'.
 //
-//	Example
-//	=======
+//		Example
+//		=======
 //
-//	int64Num      precision      result
+//		int64Num      precision      result
 //
-//	 946254           3           946.254
-//	 946254           0           946254
-//	-946254           3          -946.254
-//	-946254           0          -946254
+//		 946254           3           946.254
+//		 946254           0           946254
+//		-946254           3          -946.254
+//		-946254           0          -946254
 //
-//	Input Parameters
-//	================
+//		Input Parameters
+//		================
 //
-//	ia                       *IntAry
-//	  This instance of IntAry will be overwritten with the new
-//	  IntAry values computed by this method.
+//		ia                       *IntAry
+//		  This instance of IntAry will be overwritten with the new
+//		  IntAry values computed by this method.
 //
-//	numSepsSrcIntAry         *IntAry
-//	  This instance of IntAry may be populated by the calling
-//	  function as a source of Numeric Separators
+//		numSepsSrcIntAry         *IntAry
+//		  This instance of IntAry may be populated by the calling
+//		  function as a source of Numeric Separators
 //
-//	nsProfile                NumSepsProfileSelection
-//	  This struct contains decision parameters for selecting and
-//	  configuring Numeric Separators.
+//		nsProfile                NumSepsProfileSelection
+//		  This struct contains decision parameters for selecting and
+//		  configuring Numeric Separators.
 //
-//	int64Num                 int64
-//	  The numeric digits contained in this value comprise both
-//	  the integer digits and the fractional digits which will be
-//	  configured in the final numeric value stored in the IntAry
-//	  object returned by this method.
+//		int64Num                 int64
+//		  The numeric digits contained in this value comprise both
+//		  the integer digits and the fractional digits which will be
+//		  configured in the final numeric value stored in the IntAry
+//		  object returned by this method.
 //
-//	precision                uint
-//	  'precision' specifies the number of fractional digits in the
-//	  final numeric value stored in the returned IntAry object.
+//		precision                uint
+//	   'precision' specifies the number of fractional digits in the
+//	   final numeric value stored in the returned IntAry object.
 //
-//	 In practice, the maximum limit for 'precision' will be
-//	 constrained by the maximum array size permitted by
-//	 your system.
+//	   In practice, the maximum limit for 'precision' will be
+//	   constrained by the maximum array size permitted by
+//	   your system.
 //
-//	validateResult           bool
-//	  When set to 'true', the final numeric value calculated by
-//	  this method will be subjected to validation testing.
+//		validateResult           bool
+//		  When set to 'true', the final numeric value calculated by
+//		  this method will be subjected to validation testing.
 //
-//	Return Values
-//	=============
+//		Return Values
+//		=============
 //
-//	IntAry
-//	  This new instance of IntAry will be returned configured with
-//	  the numeric value calculated from input parameters, 'intNum'
-//	  and 'precision'.
+//		IntAry
+//		  This new instance of IntAry will be returned configured with
+//		  the numeric value calculated from input parameters, 'intNum'
+//		  and 'precision'.
 //
-//	error
-//	  If no errors are encountered during processing, this returned
-//	  value will be set to 'nil'
+//		error
+//		  If no errors are encountered during processing, this returned
+//		  value will be set to 'nil'
 func (iaGluon *intAryGluon) setIntAryWithInt64(
-	ia *IntAry,
-	numSepsSrcIntAry *IntAry,
-	nsProfile NumSepsProfileSelection,
-	int64Num int64,
-	precision uint,
-	validateResult bool,
-	errPrefDto *ePref.ErrPrefixDto) error {
+  ia *IntAry,
+  numSepsSrcIntAry *IntAry,
+  nsProfile NumSepsProfileSelection,
+  int64Num int64,
+  precision uint,
+  validateResult bool,
+  errPrefDto *ePref.ErrPrefixDto) error {
 
-	iaGluon.lock.Lock()
+  iaGluon.lock.Lock()
 
-	defer iaGluon.lock.Unlock()
+  defer iaGluon.lock.Unlock()
 
-	var ePrefix *ePref.ErrPrefixDto
+  var ePrefix *ePref.ErrPrefixDto
 
-	var err error
+  var err error
 
-	ePrefix,
-		err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
-		errPrefDto,
-		"intAryGluon.setIntAryWithInt64",
-		"")
+  ePrefix,
+    err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
+    errPrefDto,
+    "intAryGluon.setIntAryWithInt64",
+    "")
 
-	if err != nil {
-		return err
-	}
+  if err != nil {
+    return err
+  }
 
-	if ia == nil {
+  if ia == nil {
 
-		return &InputPtrNilError{
-			ErrPrefix:     ePrefix.String(),
-			ParameterName: "'ia'",
-		}
-	}
+    return &InputPtrNilError{
+      ErrPrefix:     ePrefix.String(),
+      ParameterName: "'ia'",
+    }
+  }
 
-	var numSeps NumericSeparatorDto
+  var numSeps NumericSeparatorDto
 
-	nsProfile.OutputNumSepsName = "numSeps"
+  nsProfile.OutputNumSepsName = "numSeps"
 
-	var actualNumSepsSrcIntAryPtr *IntAry
+  var actualNumSepsSrcIntAryPtr *IntAry
 
-	if numSepsSrcIntAry == nil {
+  if numSepsSrcIntAry == nil {
 
-		nsProfile.SourceObjectName = "ia"
-		actualNumSepsSrcIntAryPtr = ia
+    nsProfile.SourceObjectName = "ia"
+    actualNumSepsSrcIntAryPtr = ia
 
-	} else {
+  } else {
 
-		nsProfile.SourceObjectName = "numSepsSrcIntAry"
-		actualNumSepsSrcIntAryPtr = numSepsSrcIntAry
-	}
+    nsProfile.SourceObjectName = "numSepsSrcIntAry"
+    actualNumSepsSrcIntAryPtr = numSepsSrcIntAry
+  }
 
-	numSeps, err = new(intAryUtility).selectNumericSeparators(
-		actualNumSepsSrcIntAryPtr,
-		nsProfile,
-		ePrefix)
+  numSeps, err = new(intAryUtility).selectNumericSeparators(
+    actualNumSepsSrcIntAryPtr,
+    nsProfile,
+    ePrefix)
 
-	if err != nil {
+  if err != nil {
 
-		return &FuncReturnError{
-			ErrPrefix: ePrefix.String(),
-			ReturnFunc: "numSeps, err = new(intAryUtility).selectNumericSeparators(\n" +
-				"actualNumSepsSrcIntAryPtr, nsProfile, ePrefix)",
-			ErrContext: "",
-			ErrMessage: err.Error(),
-		}
-	}
+    return &FuncReturnError{
+      ErrPrefix: ePrefix.String(),
+      ReturnFunc: "numSeps, err = new(intAryUtility).selectNumericSeparators(\n" +
+        "actualNumSepsSrcIntAryPtr, nsProfile, ePrefix)",
+      ErrContext: "",
+      ErrMessage: err.Error(),
+    }
+  }
 
-	quotient := int64(0)
+  quotient := int64(0)
 
-	mod := int64(0)
+  mod := int64(0)
 
-	i64Ten := int64(10)
+  i64Ten := int64(10)
 
-	ia.intAry = []uint8{}
+  ia.intAry = []uint8{}
 
-	ia.intAryLen = 0
+  ia.intAryLen = 0
 
-	ia.precision = int(precision)
+  ia.precision = int(precision)
 
-	ia.signVal = 1
+  ia.signVal = 1
 
-	if int64Num < 0 {
+  if int64Num < 0 {
 
-		int64Num = int64Num * int64(-1)
+    int64Num = int64Num * int64(-1)
 
-		ia.signVal = -1
-	}
+    ia.signVal = -1
+  }
 
-	if int64Num == 0 {
+  if int64Num == 0 {
 
-		//ia.SetIntAryToZero(precision)
+    //ia.SetIntAryToZero(precision)
 
-		nsProfile = NumSepsProfileSelection{
-			SourceObjectName:         "ia",
-			OutputNumSepsName:        "numSeps",
-			UseDefaultNumSeps:        false,
-			SetDefaultNumSepsIfEmpty: true,
-			ValidateNumSeps:          false,
-			OverrideNumSeps:          numSeps,
-		}
+    nsProfile = NumSepsProfileSelection{
+      SourceObjectName:         "ia",
+      OutputNumSepsName:        "numSeps",
+      UseDefaultNumSeps:        false,
+      SetDefaultNumSepsIfEmpty: true,
+      ValidateNumSeps:          false,
+      OverrideNumSeps:          numSeps,
+    }
 
-		// ia.SetIntAryToZero(precision)
-		err = new(intAryQuark).setIntAryToZero(
-			ia,
-			nil,
-			nsProfile,
-			precision,
-			ePrefix)
+    // ia.SetIntAryToZero(precision)
+    err = new(intAryQuark).setIntAryToZero(
+      ia,
+      nil,
+      nsProfile,
+      precision,
+      ePrefix)
 
-		if err != nil {
+    if err != nil {
 
-			return &FuncReturnError{
-				ErrPrefix: ePrefix.String(),
-				ReturnFunc: "err = new(intAryQuark).setIntAryToZero(\n" +
-					"  intAry, nil, nsProfile-numSeps, precision, ePrefix)",
-				ErrContext: "",
-				ErrMessage: err.Error(),
-			}
-		}
+      return &FuncReturnError{
+        ErrPrefix: ePrefix.String(),
+        ReturnFunc: "err = new(intAryQuark).setIntAryToZero(\n" +
+          "  intAry, nil, nsProfile-numSeps, precision, ePrefix)",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+    }
 
-		return nil
-	}
+    return nil
+  }
 
-	for {
+  for {
 
-		if int64Num == 0 {
-			break
-		}
+    if int64Num == 0 {
+      break
+    }
 
-		quotient = int64Num / i64Ten
+    quotient = int64Num / i64Ten
 
-		mod = int64Num - (quotient * i64Ten)
+    mod = int64Num - (quotient * i64Ten)
 
-		ia.intAry = append(ia.intAry, uint8(mod))
+    ia.intAry = append(ia.intAry, uint8(mod))
 
-		ia.intAryLen++
+    ia.intAryLen++
 
-		int64Num = quotient
+    int64Num = quotient
 
-	}
+  }
 
-	n1 := uint8(0)
+  n1 := uint8(0)
 
-	lastIdx := ia.intAryLen - 1
+  lastIdx := ia.intAryLen - 1
 
-	totalLen := ia.intAryLen / 2
+  totalLen := ia.intAryLen / 2
 
-	for i := 0; i < totalLen; i++ {
+  for i := 0; i < totalLen; i++ {
 
-		n1 = ia.intAry[i]
+    n1 = ia.intAry[i]
 
-		ia.intAry[i] = ia.intAry[lastIdx]
+    ia.intAry[i] = ia.intAry[lastIdx]
 
-		ia.intAry[lastIdx] = n1
+    ia.intAry[lastIdx] = n1
 
-		lastIdx--
-	}
+    lastIdx--
+  }
 
-	//ia.SetInternalFlags()
+  //ia.SetInternalFlags()
 
-	err = new(intAryPhoton).setNumericSeparatorsDto(
-		ia, numSeps, false, ePrefix)
+  err = new(intAryPhoton).setNumericSeparatorsDto(
+    ia, numSeps, false, ePrefix)
 
-	if err != nil {
+  if err != nil {
 
-		return &FuncReturnError{
-			ErrPrefix: ePrefix.String(),
-			ReturnFunc: "err = new(intAryPhoton).setNumericSeparatorsDto(\n" +
-				"  ia, numSeps, true, ePrefix)",
-			ErrContext: "",
-			ErrMessage: err.Error(),
-		}
-	}
+    return &FuncReturnError{
+      ErrPrefix: ePrefix.String(),
+      ReturnFunc: "err = new(intAryPhoton).setNumericSeparatorsDto(\n" +
+        "  ia, numSeps, true, ePrefix)",
+      ErrContext: "",
+      ErrMessage: err.Error(),
+    }
+  }
 
-	// If no validation specified, this will set
-	// internal flags
-	err = new(intAryUtility).selectIntAryValidation(
-		ia,
-		"ia",
-		validateResult,
-		ePrefix)
+  // If no validation specified, this will set
+  // internal flags
+  err = new(intAryUtility).selectIntAryValidation(
+    ia,
+    "ia",
+    validateResult,
+    ePrefix)
 
-	if err != nil {
+  if err != nil {
 
-		return &FuncReturnError{
-			ErrPrefix: ePrefix.String(),
-			ReturnFunc: "err = new(intAryUtility).selectIntAryValidation(\n" +
-				"ia,\"ia\", validateResult, ePrefix)",
-			ErrContext: "",
-			ErrMessage: err.Error(),
-		}
-	}
+    return &FuncReturnError{
+      ErrPrefix: ePrefix.String(),
+      ReturnFunc: "err = new(intAryUtility).selectIntAryValidation(\n" +
+        "ia,\"ia\", validateResult, ePrefix)",
+      ErrContext: "",
+      ErrMessage: err.Error(),
+    }
+  }
 
-	return nil
+  return nil
 }
 
 // setIntAryWithUint8Ary
@@ -562,81 +562,81 @@ func (iaGluon *intAryGluon) setIntAryWithInt64(
 //	The Numeric Separators originaly configured for the current
 //	IntAry instance will NOT be modified.
 func (iaGluon *intAryGluon) setIntAryWithUint8Ary(
-	intAry *IntAry,
-	iAry2 []uint8,
-	precision uint,
-	signVal int,
-	errPrefDto *ePref.ErrPrefixDto) error {
+  intAry *IntAry,
+  iAry2 []uint8,
+  precision uint,
+  signVal int,
+  errPrefDto *ePref.ErrPrefixDto) error {
 
-	iaGluon.lock.Lock()
+  iaGluon.lock.Lock()
 
-	defer iaGluon.lock.Unlock()
+  defer iaGluon.lock.Unlock()
 
-	var ePrefix *ePref.ErrPrefixDto
+  var ePrefix *ePref.ErrPrefixDto
 
-	var err error
+  var err error
 
-	ePrefix,
-		err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
-		errPrefDto,
-		"intAryGluon.setIntAryWithUint8Ary",
-		"")
+  ePrefix,
+    err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
+    errPrefDto,
+    "intAryGluon.setIntAryWithUint8Ary",
+    "")
 
-	if err != nil {
-		return err
-	}
+  if err != nil {
+    return err
+  }
 
-	if intAry == nil {
+  if intAry == nil {
 
-		return &InputPtrNilError{
-			ErrPrefix:     ePrefix.String(),
-			ParameterName: "'intAry'",
-		}
-	}
+    return &InputPtrNilError{
+      ErrPrefix:     ePrefix.String(),
+      ParameterName: "'intAry'",
+    }
+  }
 
-	if signVal != 1 && signVal != -1 {
+  if signVal != 1 && signVal != -1 {
 
-		return &FuncReturnError{
-			ErrPrefix:  ePrefix.String(),
-			ReturnFunc: "",
-			ErrContext: "",
-			ErrMessage: fmt.Sprintf("Error: Input parameter 'signVal' is INVALID!\n"+
-				"signVal MUST HAVE a value of -1 or +1.\n"+
-				"signVal='%v'", signVal),
-		}
-	}
+    return &FuncReturnError{
+      ErrPrefix:  ePrefix.String(),
+      ReturnFunc: "",
+      ErrContext: "",
+      ErrMessage: fmt.Sprintf("Error: Input parameter 'signVal' is INVALID!\n"+
+        "signVal MUST HAVE a value of -1 or +1.\n"+
+        "signVal='%v'", signVal),
+    }
+  }
 
-	lIAry2 := len(iAry2)
+  lIAry2 := len(iAry2)
 
-	intAry.intAry = make([]uint8, lIAry2)
+  intAry.intAry = make([]uint8, lIAry2)
 
-	for i := 0; i < lIAry2; i++ {
+  for i := 0; i < lIAry2; i++ {
 
-		intAry.intAry[i] = iAry2[i]
-	}
+    intAry.intAry[i] = iAry2[i]
+  }
 
-	intAry.intAryLen = lIAry2
+  intAry.intAryLen = lIAry2
 
-	intAry.precision = int(precision)
+  intAry.precision = int(precision)
 
-	intAry.signVal = signVal
+  intAry.signVal = signVal
 
-	err = new(intAryNanobot).setInternalFlags(intAry, ePrefix.XCpy("Set 'intAry' Flags"))
+  err = new(intAryNanobot).setInternalFlags(intAry, ePrefix.XCpy("Set 'intAry' Flags"))
 
-	if err != nil {
-		return err
-	}
+  if err != nil {
+    return err
+  }
 
-	if intAry.isIntegerZeroValue && intAry.integerLen > 1 {
+  if intAry.isIntegerZeroValue && intAry.integerLen > 1 {
 
-		err = new(intAryAtom).optimizeIntArrayLen(intAry, false, false, ePrefix)
+    err = new(intAryAtom).optimizeIntArrayLen(intAry, false, false, ePrefix)
 
-		if err != nil {
-			return err
-		}
-	}
+    if err != nil {
+      return err
+    }
+  }
 
-	return nil
+  return nil
 }
 
 // setIntAryWithUint64
@@ -720,192 +720,192 @@ func (iaGluon *intAryGluon) setIntAryWithUint8Ary(
 //	  If no errors are encountered during processing, this returned
 //	  value will be set to 'nil'
 func (iaGluon *intAryGluon) setIntAryWithUint64(
-	intAry *IntAry,
-	numSepsSrcIntAry *IntAry,
-	nsProfile NumSepsProfileSelection,
-	intDigits uint64,
-	signVal int,
-	precision uint,
-	validateResult bool,
-	errPrefDto *ePref.ErrPrefixDto) error {
+  intAry *IntAry,
+  numSepsSrcIntAry *IntAry,
+  nsProfile NumSepsProfileSelection,
+  intDigits uint64,
+  signVal int,
+  precision uint,
+  validateResult bool,
+  errPrefDto *ePref.ErrPrefixDto) error {
 
-	var ePrefix *ePref.ErrPrefixDto
-	var err error
+  var ePrefix *ePref.ErrPrefixDto
+  var err error
 
-	ePrefix,
-		err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
-		errPrefDto,
-		"intAryGluon.setIntAryWithInt",
-		"")
+  ePrefix,
+    err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
+    errPrefDto,
+    "intAryGluon.setIntAryWithInt",
+    "")
 
-	if err != nil {
-		return err
-	}
+  if err != nil {
+    return err
+  }
 
-	if intAry == nil {
+  if intAry == nil {
 
-		return &InputPtrNilError{
-			ErrPrefix:     ePrefix.String(),
-			ParameterName: "'intAry'",
-		}
-	}
+    return &InputPtrNilError{
+      ErrPrefix:     ePrefix.String(),
+      ParameterName: "'intAry'",
+    }
+  }
 
-	if signVal != 1 && signVal != -1 {
+  if signVal != 1 && signVal != -1 {
 
-		return &FuncReturnError{
-			ErrPrefix:  ePrefix.String(),
-			ReturnFunc: "",
-			ErrContext: "",
-			ErrMessage: fmt.Sprintf("Error: Input parameter 'signVal' is INVALID!\n"+
-				"The only valid values for 'signVal' are -1 or +1.\n"+
-				"signVal='%v'", signVal),
-		}
-	}
+    return &FuncReturnError{
+      ErrPrefix:  ePrefix.String(),
+      ReturnFunc: "",
+      ErrContext: "",
+      ErrMessage: fmt.Sprintf("Error: Input parameter 'signVal' is INVALID!\n"+
+        "The only valid values for 'signVal' are -1 or +1.\n"+
+        "signVal='%v'", signVal),
+    }
+  }
 
-	var numSeps NumericSeparatorDto
+  var numSeps NumericSeparatorDto
 
-	nsProfile.OutputNumSepsName = "numSeps"
+  nsProfile.OutputNumSepsName = "numSeps"
 
-	var actualNumSepsSrcIntAryPtr *IntAry
+  var actualNumSepsSrcIntAryPtr *IntAry
 
-	if numSepsSrcIntAry == nil {
+  if numSepsSrcIntAry == nil {
 
-		nsProfile.SourceObjectName = "intAry"
-		actualNumSepsSrcIntAryPtr = intAry
+    nsProfile.SourceObjectName = "intAry"
+    actualNumSepsSrcIntAryPtr = intAry
 
-	} else {
+  } else {
 
-		nsProfile.SourceObjectName = "numSepsSrcIntAry"
-		actualNumSepsSrcIntAryPtr = numSepsSrcIntAry
-	}
+    nsProfile.SourceObjectName = "numSepsSrcIntAry"
+    actualNumSepsSrcIntAryPtr = numSepsSrcIntAry
+  }
 
-	numSeps, err = new(intAryUtility).selectNumericSeparators(
-		actualNumSepsSrcIntAryPtr,
-		nsProfile,
-		ePrefix)
+  numSeps, err = new(intAryUtility).selectNumericSeparators(
+    actualNumSepsSrcIntAryPtr,
+    nsProfile,
+    ePrefix)
 
-	if err != nil {
+  if err != nil {
 
-		return &FuncReturnError{
-			ErrPrefix: ePrefix.String(),
-			ReturnFunc: "numSeps, err = new(intAryUtility).selectNumericSeparators(\n" +
-				"actualNumSepsSrcIntAryPtr, nsProfile, ePrefix)",
-			ErrContext: "",
-			ErrMessage: err.Error(),
-		}
-	}
+    return &FuncReturnError{
+      ErrPrefix: ePrefix.String(),
+      ReturnFunc: "numSeps, err = new(intAryUtility).selectNumericSeparators(\n" +
+        "actualNumSepsSrcIntAryPtr, nsProfile, ePrefix)",
+      ErrContext: "",
+      ErrMessage: err.Error(),
+    }
+  }
 
-	intAry.signVal = signVal
+  intAry.signVal = signVal
 
-	if intDigits == 0 {
+  if intDigits == 0 {
 
-		nsProfile = NumSepsProfileSelection{
-			SourceObjectName:         "intAry",
-			OutputNumSepsName:        "numSeps",
-			UseDefaultNumSeps:        false,
-			SetDefaultNumSepsIfEmpty: true,
-			ValidateNumSeps:          false,
-			OverrideNumSeps:          numSeps,
-		}
+    nsProfile = NumSepsProfileSelection{
+      SourceObjectName:         "intAry",
+      OutputNumSepsName:        "numSeps",
+      UseDefaultNumSeps:        false,
+      SetDefaultNumSepsIfEmpty: true,
+      ValidateNumSeps:          false,
+      OverrideNumSeps:          numSeps,
+    }
 
-		// ia numSeps -> final ia
-		err = new(intAryQuark).setIntAryToZero(
-			intAry,
-			nil,
-			nsProfile,
-			precision,
-			ePrefix)
+    // ia numSeps -> final ia
+    err = new(intAryQuark).setIntAryToZero(
+      intAry,
+      nil,
+      nsProfile,
+      precision,
+      ePrefix)
 
-		if err != nil {
+    if err != nil {
 
-			return &FuncReturnError{
-				ErrPrefix: ePrefix.String(),
-				ReturnFunc: "err = new(intAryQuark).setIntAryToZero(\n" +
-					"  ia, nil, nsProfile-numSeps, precision, ePrefix)",
-				ErrContext: fmt.Sprintf("precision= '%v'", precision),
-				ErrMessage: err.Error(),
-			}
-		}
+      return &FuncReturnError{
+        ErrPrefix: ePrefix.String(),
+        ReturnFunc: "err = new(intAryQuark).setIntAryToZero(\n" +
+          "  ia, nil, nsProfile-numSeps, precision, ePrefix)",
+        ErrContext: fmt.Sprintf("precision= '%v'", precision),
+        ErrMessage: err.Error(),
+      }
+    }
 
-		return nil
-	}
+    return nil
+  }
 
-	intAry.precision = int(precision)
+  intAry.precision = int(precision)
 
-	quotient := uint64(0)
-	mod := uint64(0)
-	ten := uint64(10)
+  quotient := uint64(0)
+  mod := uint64(0)
+  ten := uint64(10)
 
-	intAry.intAry = []uint8{}
-	intAry.intAryLen = 0
-	for {
+  intAry.intAry = []uint8{}
+  intAry.intAryLen = 0
+  for {
 
-		if intDigits == 0 {
-			break
-		}
+    if intDigits == 0 {
+      break
+    }
 
-		quotient = intDigits / ten
+    quotient = intDigits / ten
 
-		mod = intDigits - (quotient * ten)
+    mod = intDigits - (quotient * ten)
 
-		intAry.intAry = append(intAry.intAry, uint8(mod))
+    intAry.intAry = append(intAry.intAry, uint8(mod))
 
-		intAry.intAryLen++
+    intAry.intAryLen++
 
-		intDigits = quotient
+    intDigits = quotient
 
-	}
+  }
 
-	n1 := uint8(0)
+  n1 := uint8(0)
 
-	lastIdx := intAry.intAryLen - 1
+  lastIdx := intAry.intAryLen - 1
 
-	totalLen := intAry.intAryLen / 2
+  totalLen := intAry.intAryLen / 2
 
-	for i := 0; i < totalLen; i++ {
+  for i := 0; i < totalLen; i++ {
 
-		n1 = intAry.intAry[i]
+    n1 = intAry.intAry[i]
 
-		intAry.intAry[i] = intAry.intAry[lastIdx]
+    intAry.intAry[i] = intAry.intAry[lastIdx]
 
-		intAry.intAry[lastIdx] = n1
+    intAry.intAry[lastIdx] = n1
 
-		lastIdx--
-	}
+    lastIdx--
+  }
 
-	// original ia numSeps -> final ia
-	err = new(intAryPhoton).setNumericSeparatorsDto(
-		intAry, numSeps, false, ePrefix)
+  // original ia numSeps -> final ia
+  err = new(intAryPhoton).setNumericSeparatorsDto(
+    intAry, numSeps, false, ePrefix)
 
-	if err != nil {
+  if err != nil {
 
-		return &FuncReturnError{
-			ErrPrefix: ePrefix.String(),
-			ReturnFunc: "err = new(intAryPhoton).setNumericSeparatorsDto(\n" +
-				"ia, numSeps, false, ePrefix)",
-			ErrContext: "",
-			ErrMessage: err.Error(),
-		}
-	}
+    return &FuncReturnError{
+      ErrPrefix: ePrefix.String(),
+      ReturnFunc: "err = new(intAryPhoton).setNumericSeparatorsDto(\n" +
+        "ia, numSeps, false, ePrefix)",
+      ErrContext: "",
+      ErrMessage: err.Error(),
+    }
+  }
 
-	// If no validation specified, this will set
-	// internal flags
-	err = new(intAryUtility).selectIntAryValidation(
-		intAry,
-		"intAry",
-		validateResult,
-		ePrefix)
+  // If no validation specified, this will set
+  // internal flags
+  err = new(intAryUtility).selectIntAryValidation(
+    intAry,
+    "intAry",
+    validateResult,
+    ePrefix)
 
-	if err != nil {
+  if err != nil {
 
-		return &FuncReturnError{
-			ErrPrefix: ePrefix.String(),
-			ReturnFunc: "err = new(intAryUtility).selectIntAryValidation(\n" +
-				"intAry,\"intAry\", validateResult, ePrefix)",
-			ErrContext: "",
-			ErrMessage: err.Error(),
-		}
-	}
+    return &FuncReturnError{
+      ErrPrefix: ePrefix.String(),
+      ReturnFunc: "err = new(intAryUtility).selectIntAryValidation(\n" +
+        "intAry,\"intAry\", validateResult, ePrefix)",
+      ErrContext: "",
+      ErrMessage: err.Error(),
+    }
+  }
 
-	return nil
+  return nil
 }
