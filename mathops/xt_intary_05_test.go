@@ -14,7 +14,7 @@ func TestIntAry_MultiplyByTenToPower_01(t *testing.T) {
 	ePrecision := 0
 	eSignVal := 1
 
-	ia := IntAry{}.New()
+	ia := new(IntAry).New()
 	err := ia.SetIntAryWithNumStr(nStr)
 
 	if err != nil {
@@ -60,7 +60,7 @@ func TestIntAry_MultiplyByTenToPower_02(t *testing.T) {
 	ePrecision := 0
 	eSignVal := 1
 
-	ia := IntAry{}.New()
+	ia := new(IntAry).New()
 	err := ia.SetIntAryWithNumStr(nStr)
 
 	if err != nil {
@@ -105,7 +105,7 @@ func TestIntAry_MultiplyByTenToPower_03(t *testing.T) {
 	ePrecision := 0
 	eSignVal := 1
 
-	ia := IntAry{}.New()
+	ia := new(IntAry).New()
 	err := ia.SetIntAryWithNumStr(nStr)
 
 	if err != nil {
@@ -151,7 +151,7 @@ func TestIntAry_MultiplyByTenToPower_04(t *testing.T) {
 	ePrecision := 1
 	eSignVal := 1
 
-	ia := IntAry{}.New()
+	ia := new(IntAry).New()
 	err := ia.SetIntAryWithNumStr(nStr)
 
 	if err != nil {
@@ -196,7 +196,7 @@ func TestIntAry_MultiplyByTenToPower_05(t *testing.T) {
 	ePrecision := 0
 	eSignVal := -1
 
-	ia := IntAry{}.New()
+	ia := new(IntAry).New()
 	err := ia.SetIntAryWithNumStr(nStr)
 
 	if err != nil {
@@ -241,7 +241,7 @@ func TestIntAry_MultiplyByTenToPower_06(t *testing.T) {
 	ePrecision := 0
 	eSignVal := 1
 
-	ia := IntAry{}.New()
+	ia := new(IntAry).New()
 	err := ia.SetIntAryWithNumStr(nStr)
 
 	if err != nil {
@@ -280,7 +280,7 @@ func TestIntAry_MultiplyByTwoToPower_01(t *testing.T) {
 	nStr1 := "23"
 	expected := "12058624"
 	power := uint(19)
-	ia := IntAry{}.New()
+	ia := new(IntAry).New()
 	ia.SetIntAryWithNumStr(nStr1)
 	ia.MultiplyByTwoToPower(power)
 
@@ -294,7 +294,7 @@ func TestIntAry_MultiplyByTwoToPower_02(t *testing.T) {
 	nStr1 := "23"
 	expected := "23"
 	power := uint(0)
-	ia := IntAry{}.New()
+	ia := new(IntAry).New()
 	ia.SetIntAryWithNumStr(nStr1)
 	ia.MultiplyByTwoToPower(power)
 
@@ -308,7 +308,7 @@ func TestIntAry_MultiplyByTwoToPower_03(t *testing.T) {
 	nStr1 := "23"
 	expected := "46"
 	power := uint(1)
-	ia := IntAry{}.New()
+	ia := new(IntAry).New()
 	ia.SetIntAryWithNumStr(nStr1)
 	ia.MultiplyByTwoToPower(power)
 
@@ -320,8 +320,8 @@ func TestIntAry_MultiplyByTwoToPower_03(t *testing.T) {
 
 func TestIntAry_MultiplyThisBy_01(t *testing.T) {
 
-	this, _ := IntAry{}.NewNumStr("96.8524")
-	ia2, _ := IntAry{}.NewNumStr("8574.21396845")
+	this, _ := new(IntAry).NewNumStr("96.8524")
+	ia2, _ := new(IntAry).NewNumStr("8574.21396845")
 	expected := "830433.20095790678"
 
 	this.MultiplyThisBy(&ia2, -1, -1)
@@ -336,8 +336,8 @@ func TestIntAry_MultiplyThisBy_01(t *testing.T) {
 
 func TestIntAry_MultiplyThisBy_02(t *testing.T) {
 
-	this, _ := IntAry{}.NewNumStr("-96.8524")
-	ia2, _ := IntAry{}.NewNumStr("8574.21396845")
+	this, _ := new(IntAry).NewNumStr("-96.8524")
+	ia2, _ := new(IntAry).NewNumStr("8574.21396845")
 	expected := "-830433.20095790678"
 
 	this.MultiplyThisBy(&ia2, -1, -1)
@@ -352,8 +352,8 @@ func TestIntAry_MultiplyThisBy_02(t *testing.T) {
 
 func TestIntAry_MultiplyThisBy_03(t *testing.T) {
 
-	this, _ := IntAry{}.NewNumStr("96.8524")
-	ia2, _ := IntAry{}.NewNumStr("-8574.21396845")
+	this, _ := new(IntAry).NewNumStr("96.8524")
+	ia2, _ := new(IntAry).NewNumStr("-8574.21396845")
 	expected := "-830433.20095790678"
 
 	this.MultiplyThisBy(&ia2, -1, -1)
@@ -368,8 +368,8 @@ func TestIntAry_MultiplyThisBy_03(t *testing.T) {
 
 func TestIntAry_MultiplyThisBy_04(t *testing.T) {
 
-	this, _ := IntAry{}.NewNumStr("-96.8524")
-	ia2, _ := IntAry{}.NewNumStr("-8574.21396845")
+	this, _ := new(IntAry).NewNumStr("-96.8524")
+	ia2, _ := new(IntAry).NewNumStr("-8574.21396845")
 	expected := "830433.20095790678"
 
 	this.MultiplyThisBy(&ia2, -1, -1)
@@ -384,8 +384,8 @@ func TestIntAry_MultiplyThisBy_04(t *testing.T) {
 
 func TestIntAry_MultiplyThisBy_05(t *testing.T) {
 
-	this, _ := IntAry{}.NewNumStr("96.8524")
-	ia2, _ := IntAry{}.NewNumStr("8574.21396845")
+	this, _ := new(IntAry).NewNumStr("96.8524")
+	ia2, _ := new(IntAry).NewNumStr("8574.21396845")
 	expected := "830433.200958"
 	maxPrecision := 6
 
@@ -405,8 +405,8 @@ func TestIntAry_MultiplyThisBy_05(t *testing.T) {
 
 func TestIntAry_MultiplyThisBy_06(t *testing.T) {
 
-	this, _ := IntAry{}.NewNumStr("0")
-	ia2, _ := IntAry{}.NewNumStr("-8574.21396845")
+	this, _ := new(IntAry).NewNumStr("0")
+	ia2, _ := new(IntAry).NewNumStr("-8574.21396845")
 	expected := "0.00000000"
 
 	this.MultiplyThisBy(&ia2, 8, -1)
@@ -421,8 +421,8 @@ func TestIntAry_MultiplyThisBy_06(t *testing.T) {
 
 func TestIntAry_MultiplyThisBy_07(t *testing.T) {
 
-	this, _ := IntAry{}.NewNumStr("96.8524")
-	ia2, _ := IntAry{}.NewNumStr("0")
+	this, _ := new(IntAry).NewNumStr("96.8524")
+	ia2, _ := new(IntAry).NewNumStr("0")
 	expected := "0"
 
 	this.MultiplyThisBy(&ia2, 0, -1)
@@ -437,8 +437,8 @@ func TestIntAry_MultiplyThisBy_07(t *testing.T) {
 
 func TestIntAry_MultiplyThisBy_08(t *testing.T) {
 
-	this, _ := IntAry{}.NewNumStr("40")
-	ia2, _ := IntAry{}.NewNumStr("2")
+	this, _ := new(IntAry).NewNumStr("40")
+	ia2, _ := new(IntAry).NewNumStr("2")
 	expected := "80"
 
 	this.MultiplyThisBy(&ia2, 0, -1)
@@ -468,8 +468,8 @@ func TestIntAry_MultiplyThisBy_08(t *testing.T) {
 
 func TestIntAry_MultiplyThisBy_09(t *testing.T) {
 
-	this, _ := IntAry{}.NewNumStr("999.99")
-	ia2, _ := IntAry{}.NewNumStr("99.9")
+	this, _ := new(IntAry).NewNumStr("999.99")
+	ia2, _ := new(IntAry).NewNumStr("99.9")
 	expected := "99899.001"
 
 	this.MultiplyThisBy(&ia2, -1, -1)
@@ -501,7 +501,7 @@ func TestIntAry_NewNumStr_01(t *testing.T) {
 	ePrecision := 9
 	eSignVal := 1
 
-	ia, err := IntAry{}.NewNumStr(nStr1)
+	ia, err := new(IntAry).NewNumStr(nStr1)
 
 	if err != nil {
 		t.Errorf("Error returned from intAry{}.NewNumStr(nStr1). Error= %v", err)
@@ -526,7 +526,7 @@ func TestIntAry_NewNumStr_02(t *testing.T) {
 	ePrecision := 9
 	eSignVal := -1
 
-	ia, err := IntAry{}.NewNumStr(nStr1)
+	ia, err := new(IntAry).NewNumStr(nStr1)
 
 	if err != nil {
 		t.Errorf("Error returned from intAry{}.NewNumStr(nStr1). Error= %v", err)
@@ -561,7 +561,7 @@ func TestIntAry_NewNumStrWithNumSeps_01(t *testing.T) {
 	expectedNumSeps.ThousandsSeparator = frenchThousandsSeparator
 	expectedNumSeps.CurrencySymbol = frenchCurrencySymbol
 
-	ia, err := IntAry{}.NewNumStrWithNumSeps(nStr1, expectedNumSeps)
+	ia, err := new(IntAry).NewNumStrWithNumSeps(nStr1, expectedNumSeps)
 
 	if err != nil {
 		t.Errorf("Error returned from intAry{}.NewNumStr(nStr1). Error= %v", err)
@@ -600,7 +600,7 @@ func TestIntAry_NewNumStrWithNumSeps_02(t *testing.T) {
 	expectedNumSeps.ThousandsSeparator = ','
 	expectedNumSeps.CurrencySymbol = '$'
 
-	ia, err := IntAry{}.NewNumStrWithNumSeps(nStr1, expectedNumSeps)
+	ia, err := new(IntAry).NewNumStrWithNumSeps(nStr1, expectedNumSeps)
 
 	if err != nil {
 		t.Errorf("Error returned from intAry{}.NewNumStr(nStr1). Error= %v", err)
@@ -635,7 +635,7 @@ func TestIntAry_NewNumStrWithNumSeps_03(t *testing.T) {
 
 	expectedNumSeps := NumericSeparatorDto{}
 
-	ia, err := IntAry{}.NewNumStrWithNumSeps(nStr1, expectedNumSeps)
+	ia, err := new(IntAry).NewNumStrWithNumSeps(nStr1, expectedNumSeps)
 
 	if err != nil {
 		t.Errorf("Error returned from intAry{}.NewNumStr(nStr1). Error= %v", err)
@@ -667,7 +667,7 @@ func TestIntAry_NewNumStrWithNumSeps_03(t *testing.T) {
 func TestIntAry_NewBigInt_01(t *testing.T) {
 	num := big.NewInt(123456)
 	precision := 3
-	ia, err := IntAry{}.NewBigInt(num, precision)
+	ia, err := new(IntAry).NewBigInt(num, precision)
 	eStr := "123.456"
 	eSignVal := 1
 
@@ -692,7 +692,7 @@ func TestIntAry_NewBigInt_01(t *testing.T) {
 func TestIntAry_NewBigInt_02(t *testing.T) {
 	num := big.NewInt(-123456)
 	precision := 3
-	ia, err := IntAry{}.NewBigInt(num, precision)
+	ia, err := new(IntAry).NewBigInt(num, precision)
 	eStr := "-123.456"
 	eSignVal := -1
 
@@ -717,7 +717,7 @@ func TestIntAry_NewBigInt_02(t *testing.T) {
 func TestIntAry_NewFloatBig_01(t *testing.T) {
 	num := big.NewFloat(123.456)
 	precision := 3
-	ia, err := IntAry{}.NewFloatBig(num, 3)
+	ia, err := new(IntAry).NewFloatBig(num, 3)
 	eStr := "123.456"
 	eSignVal := 1
 
@@ -742,7 +742,7 @@ func TestIntAry_NewFloatBig_01(t *testing.T) {
 func TestIntAry_NewFloatBig_02(t *testing.T) {
 	num := big.NewFloat(-123.456)
 	precision := 3
-	ia, err := IntAry{}.NewFloatBig(num, precision)
+	ia, err := new(IntAry).NewFloatBig(num, precision)
 	eStr := "-123.456"
 	eSignVal := -1
 
@@ -767,7 +767,7 @@ func TestIntAry_NewFloatBig_02(t *testing.T) {
 func TestIntAry_NewFloatBig_03(t *testing.T) {
 	num := big.NewFloat(123.456000)
 	precision := 3
-	ia, err := IntAry{}.NewFloatBig(num, -1)
+	ia, err := new(IntAry).NewFloatBig(num, -1)
 	eStr := "123.456"
 	eSignVal := 1
 
@@ -792,7 +792,7 @@ func TestIntAry_NewFloatBig_03(t *testing.T) {
 func TestIntAry_NewFloatBig_04(t *testing.T) {
 	num := big.NewFloat(123.456700)
 	precision := 3
-	ia, err := IntAry{}.NewFloatBig(num, 3)
+	ia, err := new(IntAry).NewFloatBig(num, 3)
 	eStr := "123.457"
 	eSignVal := 1
 
@@ -817,7 +817,7 @@ func TestIntAry_NewFloatBig_04(t *testing.T) {
 func TestIntAry_NewFloat64_01(t *testing.T) {
 	num := float64(123.456111)
 	precision := 3
-	ia, err := IntAry{}.NewFloat64(num, precision)
+	ia, err := new(IntAry).NewFloat64(num, precision)
 	eStr := "123.456"
 	eSignVal := 1
 
@@ -841,7 +841,7 @@ func TestIntAry_NewFloat64_01(t *testing.T) {
 func TestIntAry_NewFloat64_02(t *testing.T) {
 	num := float64(-123.456111)
 	precision := 3
-	ia, err := IntAry{}.NewFloat64(num, precision)
+	ia, err := new(IntAry).NewFloat64(num, precision)
 	eStr := "-123.456"
 	eSignVal := -1
 
@@ -865,7 +865,7 @@ func TestIntAry_NewFloat64_02(t *testing.T) {
 func TestIntAry_NewFloat32_01(t *testing.T) {
 	num := float64(123.456111)
 	precision := 3
-	ia, err := IntAry{}.NewFloat64(num, precision)
+	ia, err := new(IntAry).NewFloat64(num, precision)
 	eStr := "123.456"
 	eSignVal := 1
 
@@ -889,7 +889,7 @@ func TestIntAry_NewFloat32_01(t *testing.T) {
 func TestIntAry_NewFloat32_02(t *testing.T) {
 	num := float64(-123.456111)
 	precision := 3
-	ia, err := IntAry{}.NewFloat64(num, precision)
+	ia, err := new(IntAry).NewFloat64(num, precision)
 	eStr := "-123.456"
 	eSignVal := -1
 
@@ -913,7 +913,7 @@ func TestIntAry_NewFloat32_02(t *testing.T) {
 func TestIntAry_NewInt_01(t *testing.T) {
 	num := int(123456)
 	precision := uint(3)
-	ia := IntAry{}.NewInt(num, precision)
+	ia := new(IntAry).NewInt(num, precision)
 	eStr := "123.456"
 	eSignVal := 1
 
@@ -934,7 +934,7 @@ func TestIntAry_NewInt_01(t *testing.T) {
 func TestIntAry_NewInt_02(t *testing.T) {
 	num := int(-123456)
 	precision := uint(3)
-	ia := IntAry{}.NewInt(num, precision)
+	ia := new(IntAry).NewInt(num, precision)
 	eStr := "-123.456"
 	eSignVal := -1
 
@@ -958,7 +958,7 @@ func TestIntAry_NewIntExponent_01(t *testing.T) {
 	exponent := 3
 	eStr := "123456.000"
 
-	ia := IntAry{}.NewIntExponent(intNum, exponent)
+	ia := new(IntAry).NewIntExponent(intNum, exponent)
 
 	if eStr != ia.GetNumStr() {
 		t.Errorf("Expected ia.GetNumStr()== %v  .   Instead ia.GetNumStr() == %v", eStr, ia.GetNumStr())
@@ -971,7 +971,7 @@ func TestIntAry_NewIntExponent_02(t *testing.T) {
 	exponent := -3
 	eStr := "123.456"
 
-	ia := IntAry{}.NewIntExponent(intNum, exponent)
+	ia := new(IntAry).NewIntExponent(intNum, exponent)
 
 	if eStr != ia.GetNumStr() {
 		t.Errorf("Expected ia.GetNumStr()== %v  .   Instead ia.GetNumStr() == %v", eStr, ia.GetNumStr())
@@ -984,7 +984,7 @@ func TestIntAry_NewIntExponent_03(t *testing.T) {
 	exponent := 0
 	eStr := "123456"
 
-	ia := IntAry{}.NewIntExponent(intNum, exponent)
+	ia := new(IntAry).NewIntExponent(intNum, exponent)
 
 	if eStr != ia.GetNumStr() {
 		t.Errorf("Expected ia.GetNumStr()== %v  .   Instead ia.GetNumStr() == %v", eStr, ia.GetNumStr())
@@ -997,7 +997,7 @@ func TestIntAry_NewIntExponent_04(t *testing.T) {
 	exponent := 0
 	eStr := "0"
 
-	ia := IntAry{}.NewIntExponent(intNum, exponent)
+	ia := new(IntAry).NewIntExponent(intNum, exponent)
 
 	if eStr != ia.GetNumStr() {
 		t.Errorf("Expected ia.GetNumStr()== %v  .   Instead ia.GetNumStr() == %v", eStr, ia.GetNumStr())
@@ -1010,7 +1010,7 @@ func TestIntAry_NewIntExponent_05(t *testing.T) {
 	exponent := 3
 	eStr := "0.000"
 
-	ia := IntAry{}.NewIntExponent(intNum, exponent)
+	ia := new(IntAry).NewIntExponent(intNum, exponent)
 
 	if eStr != ia.GetNumStr() {
 		t.Errorf("Expected ia.GetNumStr()== %v  .   Instead ia.GetNumStr() == %v", eStr, ia.GetNumStr())
@@ -1023,7 +1023,7 @@ func TestIntAry_NewIntExponent_06(t *testing.T) {
 	exponent := -3
 	eStr := "0.000"
 
-	ia := IntAry{}.NewIntExponent(intNum, exponent)
+	ia := new(IntAry).NewIntExponent(intNum, exponent)
 
 	if eStr != ia.GetNumStr() {
 		t.Errorf("Expected ia.GetNumStr()== %v  .   Instead ia.GetNumStr() == %v", eStr, ia.GetNumStr())
@@ -1036,7 +1036,7 @@ func TestIntAry_NewInt32_01(t *testing.T) {
 	eStr := "123.456"
 	eSignVal := 1
 
-	ia := IntAry{}.NewInt32(num, precision)
+	ia := new(IntAry).NewInt32(num, precision)
 
 	if eStr != ia.GetNumStr() {
 		t.Errorf("Expected ia.GetNumStr()== %v  .   Instead ia.GetNumStr() == %v", eStr, ia.GetNumStr())
@@ -1059,7 +1059,7 @@ func TestIntAry_NewInt32_02(t *testing.T) {
 	eStr := "-123.456"
 	eSignVal := -1
 
-	ia := IntAry{}.NewInt32(num, precision)
+	ia := new(IntAry).NewInt32(num, precision)
 
 	if eStr != ia.GetNumStr() {
 		t.Errorf("Expected ia.GetNumStr()== %v  .   Instead ia.GetNumStr() == %v", eStr, ia.GetNumStr())
@@ -1081,7 +1081,7 @@ func TestIntAry_NewInt32_03(t *testing.T) {
 	precision := uint(0)
 	eStr := "0"
 
-	ia := IntAry{}.NewInt32(num, precision)
+	ia := new(IntAry).NewInt32(num, precision)
 
 	if eStr != ia.GetNumStr() {
 		t.Errorf("Expected ia.GetNumStr()== %v  .   Instead ia.GetNumStr() == %v", eStr, ia.GetNumStr())
@@ -1099,7 +1099,7 @@ func TestIntAry_NewInt32_04(t *testing.T) {
 	precision := uint(3)
 	eStr := "0.000"
 
-	ia := IntAry{}.NewInt32(num, precision)
+	ia := new(IntAry).NewInt32(num, precision)
 
 	if eStr != ia.GetNumStr() {
 		t.Errorf("Expected ia.GetNumStr()== %v  .   Instead ia.GetNumStr() == %v", eStr, ia.GetNumStr())
@@ -1117,7 +1117,7 @@ func TestIntAry_NewInt32Exponent_01(t *testing.T) {
 	exponent := 3
 	eStr := "123456.000"
 
-	ia := IntAry{}.NewInt32Exponent(int32Num, exponent)
+	ia := new(IntAry).NewInt32Exponent(int32Num, exponent)
 
 	if eStr != ia.GetNumStr() {
 		t.Errorf("Expected ia.GetNumStr()== %v  .   Instead ia.GetNumStr() == %v", eStr, ia.GetNumStr())
@@ -1130,7 +1130,7 @@ func TestIntAry_NewInt32Exponent_02(t *testing.T) {
 	exponent := -3
 	eStr := "123.456"
 
-	ia := IntAry{}.NewInt32Exponent(int32Num, exponent)
+	ia := new(IntAry).NewInt32Exponent(int32Num, exponent)
 
 	if eStr != ia.GetNumStr() {
 		t.Errorf("Expected ia.GetNumStr()== %v  .   Instead ia.GetNumStr() == %v", eStr, ia.GetNumStr())
@@ -1143,7 +1143,7 @@ func TestIntAry_NewInt32Exponent_03(t *testing.T) {
 	exponent := 0
 	eStr := "123456"
 
-	ia := IntAry{}.NewInt32Exponent(int32Num, exponent)
+	ia := new(IntAry).NewInt32Exponent(int32Num, exponent)
 
 	if eStr != ia.GetNumStr() {
 		t.Errorf("Expected ia.GetNumStr()== %v  .   Instead ia.GetNumStr() == %v", eStr, ia.GetNumStr())
@@ -1156,7 +1156,7 @@ func TestIntAry_NewInt32Exponent_04(t *testing.T) {
 	exponent := 0
 	eStr := "0"
 
-	ia := IntAry{}.NewInt32Exponent(int32Num, exponent)
+	ia := new(IntAry).NewInt32Exponent(int32Num, exponent)
 
 	if eStr != ia.GetNumStr() {
 		t.Errorf("Expected ia.GetNumStr()== %v  .   Instead ia.GetNumStr() == %v", eStr, ia.GetNumStr())
@@ -1169,7 +1169,7 @@ func TestIntAry_NewInt32Exponent_05(t *testing.T) {
 	exponent := 3
 	eStr := "0.000"
 
-	ia := IntAry{}.NewInt32Exponent(int32Num, exponent)
+	ia := new(IntAry).NewInt32Exponent(int32Num, exponent)
 
 	if eStr != ia.GetNumStr() {
 		t.Errorf("Expected ia.GetNumStr()== %v  .   Instead ia.GetNumStr() == %v", eStr, ia.GetNumStr())
@@ -1182,7 +1182,7 @@ func TestIntAry_NewInt32Exponent_06(t *testing.T) {
 	exponent := -3
 	eStr := "0.000"
 
-	ia := IntAry{}.NewInt32Exponent(int32Num, exponent)
+	ia := new(IntAry).NewInt32Exponent(int32Num, exponent)
 
 	if eStr != ia.GetNumStr() {
 		t.Errorf("Expected ia.GetNumStr()== %v  .   Instead ia.GetNumStr() == %v", eStr, ia.GetNumStr())
@@ -1192,7 +1192,7 @@ func TestIntAry_NewInt32Exponent_06(t *testing.T) {
 func TestIntAry_NewInt64_01(t *testing.T) {
 	int64Num := int64(123456)
 	precision := uint(3)
-	ia := IntAry{}.NewInt64(int64Num, precision)
+	ia := new(IntAry).NewInt64(int64Num, precision)
 	eStr := "123.456"
 	eSignVal := 1
 
@@ -1213,7 +1213,7 @@ func TestIntAry_NewInt64_01(t *testing.T) {
 func TestIntAry_NewInt64_02(t *testing.T) {
 	int64Num := int64(-123456)
 	precision := uint(3)
-	ia := IntAry{}.NewInt64(int64Num, precision)
+	ia := new(IntAry).NewInt64(int64Num, precision)
 	eStr := "-123.456"
 	eSignVal := -1
 
@@ -1234,7 +1234,7 @@ func TestIntAry_NewInt64_02(t *testing.T) {
 func TestIntAry_NewInt64_03(t *testing.T) {
 	int64Num := int64(0)
 	precision := uint(3)
-	ia := IntAry{}.NewInt64(int64Num, precision)
+	ia := new(IntAry).NewInt64(int64Num, precision)
 	eStr := "0.000"
 	eSignVal := 1
 
@@ -1255,7 +1255,7 @@ func TestIntAry_NewInt64_03(t *testing.T) {
 func TestIntAry_NewInt64_04(t *testing.T) {
 	int64Num := int64(0)
 	precision := uint(0)
-	ia := IntAry{}.NewInt64(int64Num, precision)
+	ia := new(IntAry).NewInt64(int64Num, precision)
 	eStr := "0"
 	eSignVal := 1
 
@@ -1279,7 +1279,7 @@ func TestIntAry_NewInt64Exponent_01(t *testing.T) {
 	exponent := 3
 	eStr := "123456.000"
 
-	ia := IntAry{}.NewInt64Exponent(int64Num, exponent)
+	ia := new(IntAry).NewInt64Exponent(int64Num, exponent)
 
 	if eStr != ia.GetNumStr() {
 		t.Errorf("Expected ia.GetNumStr()== %v  .   Instead ia.GetNumStr() == %v", eStr, ia.GetNumStr())
@@ -1292,7 +1292,7 @@ func TestIntAry_NewInt64Exponent_02(t *testing.T) {
 	exponent := -3
 	eStr := "123.456"
 
-	ia := IntAry{}.NewInt64Exponent(int64Num, exponent)
+	ia := new(IntAry).NewInt64Exponent(int64Num, exponent)
 
 	if eStr != ia.GetNumStr() {
 		t.Errorf("Expected ia.GetNumStr()== %v  .   Instead ia.GetNumStr() == %v", eStr, ia.GetNumStr())
@@ -1305,7 +1305,7 @@ func TestIntAry_NewInt64Exponent_03(t *testing.T) {
 	exponent := 0
 	eStr := "123456"
 
-	ia := IntAry{}.NewInt64Exponent(int64Num, exponent)
+	ia := new(IntAry).NewInt64Exponent(int64Num, exponent)
 
 	if eStr != ia.GetNumStr() {
 		t.Errorf("Expected ia.GetNumStr()== %v  .   Instead ia.GetNumStr() == %v", eStr, ia.GetNumStr())
@@ -1318,7 +1318,7 @@ func TestIntAry_NewInt64Exponent_04(t *testing.T) {
 	exponent := 0
 	eStr := "0"
 
-	ia := IntAry{}.NewInt64Exponent(int64Num, exponent)
+	ia := new(IntAry).NewInt64Exponent(int64Num, exponent)
 
 	if eStr != ia.GetNumStr() {
 		t.Errorf("Expected ia.GetNumStr()== %v  .   Instead ia.GetNumStr() == %v", eStr, ia.GetNumStr())
@@ -1331,7 +1331,7 @@ func TestIntAry_NewInt64Exponent_05(t *testing.T) {
 	exponent := 3
 	eStr := "0.000"
 
-	ia := IntAry{}.NewInt64Exponent(int64Num, exponent)
+	ia := new(IntAry).NewInt64Exponent(int64Num, exponent)
 
 	if eStr != ia.GetNumStr() {
 		t.Errorf("Expected ia.GetNumStr()== %v  .   Instead ia.GetNumStr() == %v", eStr, ia.GetNumStr())
@@ -1344,7 +1344,7 @@ func TestIntAry_NewInt64Exponent_06(t *testing.T) {
 	exponent := -3
 	eStr := "0.000"
 
-	ia := IntAry{}.NewInt64Exponent(num, exponent)
+	ia := new(IntAry).NewInt64Exponent(num, exponent)
 
 	if eStr != ia.GetNumStr() {
 		t.Errorf("Expected ia.GetNumStr()== %v  .   Instead ia.GetNumStr() == %v", eStr, ia.GetNumStr())
@@ -1356,7 +1356,7 @@ func TestIntAry_NewOne_01(t *testing.T) {
 	expected := "1"
 	ePrecision := 0
 
-	ia := IntAry{}.NewOne(ePrecision)
+	ia := new(IntAry).NewOne(ePrecision)
 
 	if expected != ia.GetNumStr() {
 		t.Errorf("Error: Expected result='%v'. Instead, result='%v' ",
@@ -1370,7 +1370,7 @@ func TestIntAry_NewOne_02(t *testing.T) {
 	expected := "1.00"
 	ePrecision := 2
 
-	ia := IntAry{}.NewOne(ePrecision)
+	ia := new(IntAry).NewOne(ePrecision)
 
 	if expected != ia.GetNumStr() {
 		t.Errorf("Error: Expected result='%v'. Instead, result='%v' ",
@@ -1384,7 +1384,7 @@ func TestIntAry_NewFive_01(t *testing.T) {
 	expected := "5"
 	ePrecision := 0
 
-	ia := IntAry{}.NewFive(ePrecision)
+	ia := new(IntAry).NewFive(ePrecision)
 
 	if expected != ia.GetNumStr() {
 		t.Errorf("Error: Expected result='%v'. Instead, result='%v' ",
@@ -1398,7 +1398,7 @@ func TestIntAry_NewFive_02(t *testing.T) {
 	expected := "5.00"
 	ePrecision := 2
 
-	ia := IntAry{}.NewFive(ePrecision)
+	ia := new(IntAry).NewFive(ePrecision)
 
 	if expected != ia.GetNumStr() {
 		t.Errorf("Error: Expected result='%v'. Instead, result='%v' ",
@@ -1412,7 +1412,7 @@ func TestIntAry_NewTen_01(t *testing.T) {
 	expected := "10"
 	ePrecision := 0
 
-	ia := IntAry{}.NewTen(ePrecision)
+	ia := new(IntAry).NewTen(ePrecision)
 
 	if expected != ia.GetNumStr() {
 		t.Errorf("Error: Expected result='%v'. Instead, result='%v' ",
@@ -1426,7 +1426,7 @@ func TestIntAry_NewTen_02(t *testing.T) {
 	expected := "10.00"
 	ePrecision := 2
 
-	ia := IntAry{}.NewTen(ePrecision)
+	ia := new(IntAry).NewTen(ePrecision)
 
 	if expected != ia.GetNumStr() {
 		t.Errorf("Error: Expected result='%v'. Instead, result='%v' ",
@@ -1440,7 +1440,7 @@ func TestIntAry_NewThree_01(t *testing.T) {
 	expected := "3"
 	ePrecision := 0
 
-	ia := IntAry{}.NewThree(ePrecision)
+	ia := new(IntAry).NewThree(ePrecision)
 
 	if expected != ia.GetNumStr() {
 		t.Errorf("Error: Expected result='%v'. Instead, result='%v' ",
@@ -1454,7 +1454,7 @@ func TestIntAry_NewThree_02(t *testing.T) {
 	expected := "3.00"
 	ePrecision := 2
 
-	ia := IntAry{}.NewThree(ePrecision)
+	ia := new(IntAry).NewThree(ePrecision)
 
 	if expected != ia.GetNumStr() {
 		t.Errorf("Error: Expected result='%v'. Instead, result='%v' ",
@@ -1468,7 +1468,7 @@ func TestIntAry_NewTwo_01(t *testing.T) {
 	expected := "2"
 	ePrecision := 0
 
-	ia := IntAry{}.NewTwo(ePrecision)
+	ia := new(IntAry).NewTwo(ePrecision)
 
 	if expected != ia.GetNumStr() {
 		t.Errorf("Error: Expected result='%v'. Instead, result='%v' ",
@@ -1482,7 +1482,7 @@ func TestIntAry_NewTwo_02(t *testing.T) {
 	expected := "2.00"
 	ePrecision := 2
 
-	ia := IntAry{}.NewTwo(ePrecision)
+	ia := new(IntAry).NewTwo(ePrecision)
 
 	if expected != ia.GetNumStr() {
 		t.Errorf("Error: Expected result='%v'. Instead, result='%v' ",
@@ -1542,7 +1542,7 @@ func TestIntAry_NewUint_01(t *testing.T) {
 func TestIntAry_NewUint_02(t *testing.T) {
 	uintNum := uint(123456)
 	precision := uint(5)
-	ia := IntAry{}.NewUint(uintNum, precision)
+	ia := new(IntAry).NewUint(uintNum, precision)
 	eStr := "1.23456"
 
 	if eStr != ia.GetNumStr() {
@@ -1557,7 +1557,7 @@ func TestIntAry_NewUint_02(t *testing.T) {
 func TestIntAry_NewUint_03(t *testing.T) {
 	uintNum := uint(0)
 	precision := uint(3)
-	ia := IntAry{}.NewUint(uintNum, precision)
+	ia := new(IntAry).NewUint(uintNum, precision)
 	eStr := "0.000"
 
 	if eStr != ia.GetNumStr() {
@@ -1572,7 +1572,7 @@ func TestIntAry_NewUint_03(t *testing.T) {
 func TestIntAry_NewUint_04(t *testing.T) {
 	uintNum := uint(0)
 	precision := uint(0)
-	ia := IntAry{}.NewUint(uintNum, precision)
+	ia := new(IntAry).NewUint(uintNum, precision)
 	eStr := "0"
 
 	if eStr != ia.GetNumStr() {
@@ -1590,7 +1590,7 @@ func TestIntAry_NewUintExponent_01(t *testing.T) {
 	exponent := 3
 	eStr := "123456.000"
 
-	ia := IntAry{}.NewUintExponent(uintNum, exponent)
+	ia := new(IntAry).NewUintExponent(uintNum, exponent)
 
 	if eStr != ia.GetNumStr() {
 		t.Errorf("Expected ia.GetNumStr()== %v  .   Instead ia.GetNumStr() == %v", eStr, ia.GetNumStr())
@@ -1603,7 +1603,7 @@ func TestIntAry_NewUintExponent_02(t *testing.T) {
 	exponent := -3
 	eStr := "123.456"
 
-	ia := IntAry{}.NewUintExponent(uintNum, exponent)
+	ia := new(IntAry).NewUintExponent(uintNum, exponent)
 
 	if eStr != ia.GetNumStr() {
 		t.Errorf("Expected ia.GetNumStr()== %v  .   Instead ia.GetNumStr() == %v", eStr, ia.GetNumStr())
@@ -1616,7 +1616,7 @@ func TestIntAry_NewUintExponent_03(t *testing.T) {
 	exponent := 0
 	eStr := "123456"
 
-	ia := IntAry{}.NewUintExponent(uintNum, exponent)
+	ia := new(IntAry).NewUintExponent(uintNum, exponent)
 
 	if eStr != ia.GetNumStr() {
 		t.Errorf("Expected ia.GetNumStr()== %v  .   Instead ia.GetNumStr() == %v", eStr, ia.GetNumStr())
@@ -1629,7 +1629,7 @@ func TestIntAry_NewUintExponent_04(t *testing.T) {
 	exponent := 0
 	eStr := "0"
 
-	ia := IntAry{}.NewUintExponent(uintNum, exponent)
+	ia := new(IntAry).NewUintExponent(uintNum, exponent)
 
 	if eStr != ia.GetNumStr() {
 		t.Errorf("Expected ia.GetNumStr()== %v  .   Instead ia.GetNumStr() == %v", eStr, ia.GetNumStr())
@@ -1642,7 +1642,7 @@ func TestIntAry_NewUintExponent_05(t *testing.T) {
 	exponent := 3
 	eStr := "0.000"
 
-	ia := IntAry{}.NewUintExponent(uintNum, exponent)
+	ia := new(IntAry).NewUintExponent(uintNum, exponent)
 
 	if eStr != ia.GetNumStr() {
 		t.Errorf("Expected ia.GetNumStr()== %v  .   Instead ia.GetNumStr() == %v", eStr, ia.GetNumStr())
@@ -1655,7 +1655,7 @@ func TestIntAry_NewUintExponent_06(t *testing.T) {
 	exponent := -3
 	eStr := "0.000"
 
-	ia := IntAry{}.NewUintExponent(num, exponent)
+	ia := new(IntAry).NewUintExponent(num, exponent)
 
 	if eStr != ia.GetNumStr() {
 		t.Errorf("Expected ia.GetNumStr()== %v  .   Instead ia.GetNumStr() == %v", eStr, ia.GetNumStr())
@@ -1665,7 +1665,7 @@ func TestIntAry_NewUintExponent_06(t *testing.T) {
 func TestIntAry_NewUint32_01(t *testing.T) {
 	uint32Num := uint32(123456)
 	precision := uint(3)
-	ia := IntAry{}.NewUint32(uint32Num, precision)
+	ia := new(IntAry).NewUint32(uint32Num, precision)
 	eStr := "123.456"
 
 	if eStr != ia.GetNumStr() {
@@ -1681,7 +1681,7 @@ func TestIntAry_NewUint32_01(t *testing.T) {
 func TestIntAry_NewUint32_02(t *testing.T) {
 	uint32Num := uint32(123456)
 	precision := uint(5)
-	ia := IntAry{}.NewUint32(uint32Num, precision)
+	ia := new(IntAry).NewUint32(uint32Num, precision)
 	eStr := "1.23456"
 
 	if eStr != ia.GetNumStr() {
@@ -1696,7 +1696,7 @@ func TestIntAry_NewUint32_02(t *testing.T) {
 func TestIntAry_NewUint32_03(t *testing.T) {
 	uint32Num := uint32(0)
 	precision := uint(3)
-	ia := IntAry{}.NewUint32(uint32Num, precision)
+	ia := new(IntAry).NewUint32(uint32Num, precision)
 	eStr := "0.000"
 
 	if eStr != ia.GetNumStr() {
@@ -1711,7 +1711,7 @@ func TestIntAry_NewUint32_03(t *testing.T) {
 func TestIntAry_NewUint32_04(t *testing.T) {
 	uint32Num := uint32(0)
 	precision := uint(0)
-	ia := IntAry{}.NewUint32(uint32Num, precision)
+	ia := new(IntAry).NewUint32(uint32Num, precision)
 	eStr := "0"
 
 	if eStr != ia.GetNumStr() {
@@ -1729,7 +1729,7 @@ func TestIntAry_NewUint32Exponent_01(t *testing.T) {
 	exponent := 3
 	eStr := "123456.000"
 
-	ia := IntAry{}.NewUint32Exponent(uint32Num, exponent)
+	ia := new(IntAry).NewUint32Exponent(uint32Num, exponent)
 
 	if eStr != ia.GetNumStr() {
 		t.Errorf("Expected ia.GetNumStr()== %v  .   Instead ia.GetNumStr() == %v", eStr, ia.GetNumStr())
@@ -1742,7 +1742,7 @@ func TestIntAry_NewUint32Exponent_02(t *testing.T) {
 	exponent := -3
 	eStr := "123.456"
 
-	ia := IntAry{}.NewUint32Exponent(uint32Num, exponent)
+	ia := new(IntAry).NewUint32Exponent(uint32Num, exponent)
 
 	if eStr != ia.GetNumStr() {
 		t.Errorf("Expected ia.GetNumStr()== %v  .   Instead ia.GetNumStr() == %v", eStr, ia.GetNumStr())
@@ -1755,7 +1755,7 @@ func TestIntAry_NewUint32Exponent_03(t *testing.T) {
 	exponent := 0
 	eStr := "123456"
 
-	ia := IntAry{}.NewUint32Exponent(uint32Num, exponent)
+	ia := new(IntAry).NewUint32Exponent(uint32Num, exponent)
 
 	if eStr != ia.GetNumStr() {
 		t.Errorf("Expected ia.GetNumStr()== %v  .   Instead ia.GetNumStr() == %v", eStr, ia.GetNumStr())
@@ -1768,7 +1768,7 @@ func TestIntAry_NewUint32Exponent_04(t *testing.T) {
 	exponent := 0
 	eStr := "0"
 
-	ia := IntAry{}.NewUint32Exponent(uint32Num, exponent)
+	ia := new(IntAry).NewUint32Exponent(uint32Num, exponent)
 
 	if eStr != ia.GetNumStr() {
 		t.Errorf("Expected ia.GetNumStr()== %v  .   Instead ia.GetNumStr() == %v", eStr, ia.GetNumStr())
@@ -1781,7 +1781,7 @@ func TestIntAry_NewUint32Exponent_05(t *testing.T) {
 	exponent := 3
 	eStr := "0.000"
 
-	ia := IntAry{}.NewUint32Exponent(uint32Num, exponent)
+	ia := new(IntAry).NewUint32Exponent(uint32Num, exponent)
 
 	if eStr != ia.GetNumStr() {
 		t.Errorf("Expected ia.GetNumStr()== %v  .   Instead ia.GetNumStr() == %v", eStr, ia.GetNumStr())
@@ -1794,7 +1794,7 @@ func TestIntAry_NewUint32Exponent_06(t *testing.T) {
 	exponent := -3
 	eStr := "0.000"
 
-	ia := IntAry{}.NewUint32Exponent(num, exponent)
+	ia := new(IntAry).NewUint32Exponent(num, exponent)
 
 	if eStr != ia.GetNumStr() {
 		t.Errorf("Expected ia.GetNumStr()== %v  .   Instead ia.GetNumStr() == %v", eStr, ia.GetNumStr())
@@ -1804,7 +1804,7 @@ func TestIntAry_NewUint32Exponent_06(t *testing.T) {
 func TestIntAry_NewUint64_01(t *testing.T) {
 	uint64Num := uint64(123456)
 	precision := uint(3)
-	ia := IntAry{}.NewUint64(uint64Num, precision)
+	ia := new(IntAry).NewUint64(uint64Num, precision)
 	eStr := "123.456"
 
 	if eStr != ia.GetNumStr() {
@@ -1820,7 +1820,7 @@ func TestIntAry_NewUint64_01(t *testing.T) {
 func TestIntAry_NewUint64_02(t *testing.T) {
 	uint64Num := uint64(123456)
 	precision := uint(5)
-	ia := IntAry{}.NewUint64(uint64Num, precision)
+	ia := new(IntAry).NewUint64(uint64Num, precision)
 	eStr := "1.23456"
 
 	if eStr != ia.GetNumStr() {
@@ -1835,7 +1835,7 @@ func TestIntAry_NewUint64_02(t *testing.T) {
 func TestIntAry_NewUint64_03(t *testing.T) {
 	uint64Num := uint64(0)
 	precision := uint(3)
-	ia := IntAry{}.NewUint64(uint64Num, precision)
+	ia := new(IntAry).NewUint64(uint64Num, precision)
 	eStr := "0.000"
 
 	if eStr != ia.GetNumStr() {
@@ -1850,7 +1850,7 @@ func TestIntAry_NewUint64_03(t *testing.T) {
 func TestIntAry_NewUint64_04(t *testing.T) {
 	uint64Num := uint64(0)
 	precision := uint(0)
-	ia := IntAry{}.NewUint64(uint64Num, precision)
+	ia := new(IntAry).NewUint64(uint64Num, precision)
 	eStr := "0"
 
 	if eStr != ia.GetNumStr() {
@@ -1864,80 +1864,238 @@ func TestIntAry_NewUint64_04(t *testing.T) {
 
 func TestIntAry_NewUint64Exponent_01(t *testing.T) {
 
+	ePrefix := "TestIntAry_NewUint64Exponent_01"
+
 	uint64Num := uint64(123456)
+	signValue := 1
 	exponent := 3
 	eStr := "123456.000"
 
-	ia := IntAry{}.NewUint64Exponent(uint64Num, exponent)
+	ia, err := new(IntAry).NewUint64Exponent(uint64Num, signValue, exponent)
 
-	if eStr != ia.GetNumStr() {
-		t.Errorf("Expected ia.GetNumStr()== %v  .   Instead ia.GetNumStr() == %v", eStr, ia.GetNumStr())
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"ia, err := new(IntAry).NewUint64Exponent(uint64Num, signValue, exponent)\n"+
+			"Error='%v'\n\n", ePrefix, err.Error())
+		return
 	}
+
+	iaNumStr, err := ia.GetNumStr()
+
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"iaNumStr, err := ia.GetNumStr()\n"+
+			"Error='%v'\n\n", ePrefix, err.Error())
+		return
+	}
+
+	if eStr != iaNumStr {
+
+		t.Errorf("%v\n"+
+			"Error:\n"+
+			"Expected ia.GetNumStr()== %v.\n"+
+			"Instead ia.GetNumStr() == %v\n\n",
+			ePrefix, eStr, iaNumStr)
+
+	}
+
+	return
 }
 
 func TestIntAry_NewUint64Exponent_02(t *testing.T) {
 
+	ePrefix := "TestIntAry_NewUint64Exponent_02"
+
 	uint64Num := uint64(123456)
 	exponent := -3
+	signValue := 1
 	eStr := "123.456"
 
-	ia := IntAry{}.NewUint64Exponent(uint64Num, exponent)
+	ia, err := new(IntAry).NewUint64Exponent(uint64Num, signValue, exponent)
 
-	if eStr != ia.GetNumStr() {
-		t.Errorf("Expected ia.GetNumStr()== %v  .   Instead ia.GetNumStr() == %v", eStr, ia.GetNumStr())
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"ia, err := new(IntAry).NewUint64Exponent(uint64Num, signValue, exponent)\n"+
+			"Error='%v'\n\n", ePrefix, err.Error())
+		return
+	}
+
+	iaNumStr, err := ia.GetNumStr()
+
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"iaNumStr, err := ia.GetNumStr()\n"+
+			"Error='%v'\n\n", ePrefix, err.Error())
+		return
+	}
+
+	if eStr != iaNumStr {
+		t.Errorf("%v\n"+
+			"Error:\n"+
+			"Expected ia.GetNumStr()== '%v'\n"+
+			"Instead ia.GetNumStr() == '%v'",
+			ePrefix, eStr, iaNumStr)
 	}
 }
 
 func TestIntAry_NewUint64Exponent_03(t *testing.T) {
 
+	ePrefix := "TestIntAry_NewUint64Exponent_03"
+
 	uint64Num := uint64(123456)
 	exponent := 0
 	eStr := "123456"
+	signValue := 1
 
-	ia := IntAry{}.NewUint64Exponent(uint64Num, exponent)
+	ia, err := new(IntAry).NewUint64Exponent(uint64Num, signValue, exponent)
 
-	if eStr != ia.GetNumStr() {
-		t.Errorf("Expected ia.GetNumStr()== %v  .   Instead ia.GetNumStr() == %v", eStr, ia.GetNumStr())
+	if err != nil {
+		t.Errorf("%v\n" +
+			"Error returned by:\n"+
+			"ia, err := new(IntAry).NewUint64Exponent(uint64Num, signValue, exponent)\n"+
+			"Error='%v'\n\n", ePrefix, err.Error())
+		return
+	}
+
+	iaNumStr, err := ia.GetNumStr()
+
+	if err != nil {
+		t.Errorf("%v\n" +
+			"Error returned by:\n"+
+			"iaNumStr, err := ia.GetNumStr()\n"+
+			"Error='%v'\n\n", ePrefix, err.Error())
+		return
+	}
+
+
+	if eStr != iaNumStr {
+		t.Errorf("%v\n" +
+			"Error:\n"+
+			"Expected ia.GetNumStr()== '%v'\n" +
+			"Instead ia.GetNumStr() == '%v'\n\n",
+			ePrefix, eStr, iaNumStr)
 	}
 }
 
 func TestIntAry_NewUint64Exponent_04(t *testing.T) {
 
+	ePrefix := "TestIntAry_NewUint64Exponent_04"
 	uint64Num := uint64(0)
 	exponent := 0
 	eStr := "0"
+	signValue := 1
 
-	ia := IntAry{}.NewUint64Exponent(uint64Num, exponent)
+	ia, err := new(IntAry).NewUint64Exponent(uint64Num, signValue, exponent)
 
-	if eStr != ia.GetNumStr() {
-		t.Errorf("Expected ia.GetNumStr()== %v  .   Instead ia.GetNumStr() == %v", eStr, ia.GetNumStr())
+	if err != nil {
+		t.Errorf("%v\n" +
+			"Error returned by:\n"+
+			"ia, err := new(IntAry).NewUint64Exponent(uint64Num, signValue, exponent)\n"+
+			"Error='%v'\n\n", ePrefix, err.Error())
+		return
 	}
+
+	iaNumStr, err := ia.GetNumStr()
+
+	if err != nil {
+		t.Errorf("%v\n" +
+			"Error returned by:\n"+
+			"iaNumStr, err := ia.GetNumStr()\n\n"+
+			"Error='%v'\n\n", ePrefix, err.Error())
+		return
+	}
+
+	if eStr != iaNumStr {
+		t.Errorf("%v\n" +
+			"Error:\n"+
+			"Expected ia.GetNumStr()== '%v'\n" +
+			"Instead ia.GetNumStr() == %v\n\n",
+			ePrefix, eStr, iaNumStr))
+	}
+	return
 }
 
 func TestIntAry_NewUint64Exponent_05(t *testing.T) {
 
+	ePrefix := "TestIntAry_NewUint64Exponent_05"
 	uint64Num := uint64(0)
 	exponent := 3
 	eStr := "0.000"
+	signValue := 1
 
-	ia := IntAry{}.NewUint64Exponent(uint64Num, exponent)
+	ia, err := new(IntAry).NewUint64Exponent(uint64Num, signValue, exponent)
 
-	if eStr != ia.GetNumStr() {
-		t.Errorf("Expected ia.GetNumStr()== %v  .   Instead ia.GetNumStr() == %v", eStr, ia.GetNumStr())
+	if err != nil {
+		t.Errorf("%v\n" +
+			"Error returned by:\n"+
+			"ia, err := new(IntAry).NewUint64Exponent(uint64Num, signValue, exponent)\n"+
+			"Error='%v'\n\n", ePrefix, err.Error())
+		return
 	}
+
+	iaNumStr, err := ia.GetNumStr()
+
+	if err != nil {
+		t.Errorf("%v\n" +
+			"Error returned by:\n"+
+			"iaNumStr, err := ia.GetNumStr()\n"+
+			"Error='%v'\n\n", ePrefix, err.Error())
+		return
+	}
+
+	if eStr != iaNumStr {
+		t.Errorf("%v\n" +
+			"Expected ia.GetNumStr()== '%v'\n" +
+			"Instead ia.GetNumStr() == '%v'\n\n",
+			ePrefix, eStr, iaNumStr)
+	}
+
+	return
 }
 
 func TestIntAry_NewUint64Exponent_06(t *testing.T) {
 
+	ePrefix := "TestIntAry_NewUint64Exponent_06"
 	num := uint64(0)
 	exponent := -3
 	eStr := "0.000"
+	signValue := 1
 
-	ia := IntAry{}.NewUint64Exponent(num, exponent)
+	ia, err := new(IntAry).NewUint64Exponent(num, signValue, exponent)
 
-	if eStr != ia.GetNumStr() {
-		t.Errorf("Expected ia.GetNumStr()== %v  .   Instead ia.GetNumStr() == %v", eStr, ia.GetNumStr())
+	if err != nil {
+		t.Errorf("%v\n" +
+			"Error returned by:\n"+
+			"ia, err := new(IntAry).NewUint64Exponent(num, signValue, exponent)\n"+
+			"Error='%v'\n\n", ePrefix, err.Error())
+		return
 	}
+
+	iaNumStr, err := ia.GetNumStr()
+
+	if err != nil {
+		t.Errorf("%v\n" +
+			"Error returned by:\n"+
+			"iaNumStr, err := ia.GetNumStr()\n"+
+			"Error='%v'\n\n", ePrefix, err.Error())
+		return
+	}
+
+
+	if eStr != iaNumStr {
+
+		t.Errorf("%v\n" +
+			"Expected ia.GetNumStr()== '%v'\n" +
+			"Instead ia.GetNumStr() == '%v'\n\n",
+			ePrefix, eStr, iaNumStr)
+
+	}
+
+	return
 }
 
 func TestIntAry_OptimizeIntArrayLen_01(t *testing.T) {
@@ -1946,7 +2104,7 @@ func TestIntAry_OptimizeIntArrayLen_01(t *testing.T) {
 	ePrecision := 9
 	eLen := 12
 
-	ia := IntAry{}.New()
+	ia := new(IntAry).New()
 	ia.SetIntAryWithNumStr(nStr1)
 	ia.OptimizeIntArrayLen(false)
 
@@ -1970,7 +2128,7 @@ func TestIntAry_OptimizeIntArrayLen_02(t *testing.T) {
 	ePrecision := 6
 	eLen := 9
 
-	ia := IntAry{}.New()
+	ia := new(IntAry).New()
 	ia.SetIntAryWithNumStr(nStr1)
 	ia.OptimizeIntArrayLen(true)
 	if expected != ia.GetNumStr() {
@@ -1993,7 +2151,7 @@ func TestIntAry_OptimizeIntArrayLen_03(t *testing.T) {
 	ePrecision := 0
 	eLen := 3
 
-	ia := IntAry{}.New()
+	ia := new(IntAry).New()
 	ia.SetIntAryWithNumStr(nStr1)
 	ia.OptimizeIntArrayLen(true)
 
@@ -2017,7 +2175,7 @@ func TestIntAry_OptimizeIntArrayLen_04(t *testing.T) {
 	ePrecision := 5
 	eLen := 6
 
-	ia := IntAry{}.New()
+	ia := new(IntAry).New()
 	ia.SetIntAryWithNumStr(nStr1)
 	ia.OptimizeIntArrayLen(true)
 	if expected != ia.GetNumStr() {
@@ -2040,7 +2198,7 @@ func TestIntAry_OptimizeIntArrayLen_05(t *testing.T) {
 	ePrecision := 8
 	eLen := 9
 
-	ia := IntAry{}.New()
+	ia := new(IntAry).New()
 	ia.SetIntAryWithNumStr(nStr1)
 	ia.OptimizeIntArrayLen(true)
 	if expected != ia.GetNumStr() {
@@ -2063,7 +2221,7 @@ func TestIntAry_OptimizeIntArrayLen_06(t *testing.T) {
 	ePrecision := 1
 	eLen := 2
 
-	ia := IntAry{}.New()
+	ia := new(IntAry).New()
 	ia.SetIntAryWithNumStr(nStr1)
 	ia.OptimizeIntArrayLen(true)
 	if expected != ia.GetNumStr() {

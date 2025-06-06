@@ -1,13 +1,13 @@
 package mathops
 
 import (
-	"fmt"
-	ePref "github.com/MikeAustin71/errpref"
-	"sync"
+  "fmt"
+  ePref "github.com/MikeAustin71/errpref"
+  "sync"
 )
 
 type intAryNanobot struct {
-	lock sync.Mutex
+  lock sync.Mutex
 }
 
 // getNumericSeparatorsDto
@@ -28,42 +28,42 @@ type intAryNanobot struct {
 //		Second, they are also used to parse number strings and convert
 //		them into numeric values.
 func (iaNanobot *intAryNanobot) getNumericSeparatorsDto(
-	intAry *IntAry,
-	errPrefDto *ePref.ErrPrefixDto) (NumericSeparatorDto, error) {
+  intAry *IntAry,
+  errPrefDto *ePref.ErrPrefixDto) (NumericSeparatorDto, error) {
 
-	iaNanobot.lock.Lock()
+  iaNanobot.lock.Lock()
 
-	defer iaNanobot.lock.Unlock()
+  defer iaNanobot.lock.Unlock()
 
-	var ePrefix *ePref.ErrPrefixDto
+  var ePrefix *ePref.ErrPrefixDto
 
-	var err error
+  var err error
 
-	ePrefix,
-		err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
-		errPrefDto,
-		"intAryNanobot.getNumericSeparatorsDto()",
-		"")
+  ePrefix,
+    err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
+    errPrefDto,
+    "intAryNanobot.getNumericSeparatorsDto()",
+    "")
 
-	if err != nil {
-		return NumericSeparatorDto{}, err
-	}
+  if err != nil {
+    return NumericSeparatorDto{}, err
+  }
 
-	if intAry == nil {
+  if intAry == nil {
 
-		return NumericSeparatorDto{},
-			&InputPtrNilError{
-				ErrPrefix:     ePrefix.String(),
-				ParameterName: "'intAry'",
-			}
-	}
+    return NumericSeparatorDto{},
+      &InputPtrNilError{
+        ErrPrefix:     ePrefix.String(),
+        ParameterName: "'intAry'",
+      }
+  }
 
-	numSeps := NumericSeparatorDto{}
-	numSeps.DecimalSeparator = intAry.GetDecimalSeparator()
-	numSeps.ThousandsSeparator = intAry.GetThousandsSeparator()
-	numSeps.CurrencySymbol = intAry.GetCurrencySymbol()
+  numSeps := NumericSeparatorDto{}
+  numSeps.DecimalSeparator = intAry.GetDecimalSeparator()
+  numSeps.ThousandsSeparator = intAry.GetThousandsSeparator()
+  numSeps.CurrencySymbol = intAry.GetCurrencySymbol()
 
-	return numSeps, nil
+  return numSeps, nil
 }
 
 // hasFractionalDigits
@@ -76,87 +76,230 @@ func (iaNanobot *intAryNanobot) getNumericSeparatorsDto(
 //	If non-zero digits are present to the right of the decimal
 //	place, the method returns 'true'.
 func (iaNanobot *intAryNanobot) hasFractionalDigits(
-	intAry *IntAry,
-	validateIntAry bool,
-	errPrefDto *ePref.ErrPrefixDto) (bool, error) {
+  intAry *IntAry,
+  validateIntAry bool,
+  errPrefDto *ePref.ErrPrefixDto) (bool, error) {
 
-	iaNanobot.lock.Lock()
+  iaNanobot.lock.Lock()
 
-	defer iaNanobot.lock.Unlock()
+  defer iaNanobot.lock.Unlock()
 
-	var ePrefix *ePref.ErrPrefixDto
+  var ePrefix *ePref.ErrPrefixDto
 
-	var err error
+  var err error
 
-	ePrefix,
-		err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
-		errPrefDto,
-		"intAryNanobot.hasFractionalDigits",
-		"")
+  ePrefix,
+    err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
+    errPrefDto,
+    "intAryNanobot.hasFractionalDigits",
+    "")
 
-	if err != nil {
-		return false, err
-	}
+  if err != nil {
+    return false, err
+  }
 
-	if validateIntAry {
-		err = new(intAryElectron).isValidIntAry(
-			intAry,
-			ePrefix.XCpy("Validating 'intAry'").String())
+  if validateIntAry {
+    err = new(intAryElectron).isValidIntAry(
+      intAry,
+      ePrefix.XCpy("Validating 'intAry'").String())
 
-		if err != nil {
+    if err != nil {
 
-			return false,
-				&FuncReturnError{
-					ErrPrefix: ePrefix.String(),
-					ReturnFunc: "err = new(intAryElectron).isValidIntAry(\n" +
-						"  intAry, ePrefix.XCpy(Validating 'intAry').String())",
-					ErrContext: "",
-					ErrMessage: err.Error(),
-				}
-		}
-	}
+      return false,
+        &FuncReturnError{
+          ErrPrefix: ePrefix.String(),
+          ReturnFunc: "err = new(intAryElectron).isValidIntAry(\n" +
+            "  intAry, ePrefix.XCpy(Validating 'intAry').String())",
+          ErrContext: "",
+          ErrMessage: err.Error(),
+        }
+    }
+  }
 
-	if intAry.precision == 0 {
-		return false, nil
-	}
+  if intAry.precision == 0 {
+    return false, nil
+  }
 
-	err = new(intAryElectron).setIntAryLength(
-		intAry, ePrefix.XCpy("Setting 'intAry' IntAry Length"))
+  err = new(intAryElectron).setIntAryLength(
+    intAry, ePrefix.XCpy("Setting 'intAry' IntAry Length"))
 
-	if err != nil {
+  if err != nil {
 
-		return false,
-			&FuncReturnError{
-				ErrPrefix: ePrefix.String(),
-				ReturnFunc: "err = new(intAryElectron).setIntAryLength(\n" +
-					"intAry, ePrefix.XCpy(Setting 'intAry' IntAry Length))",
-				ErrContext: "",
-				ErrMessage: err.Error(),
-			}
-	}
+    return false,
+      &FuncReturnError{
+        ErrPrefix: ePrefix.String(),
+        ReturnFunc: "err = new(intAryElectron).setIntAryLength(\n" +
+          "intAry, ePrefix.XCpy(Setting 'intAry' IntAry Length))",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+  }
 
-	intLen := intAry.intAryLen - intAry.precision
+  intLen := intAry.intAryLen - intAry.precision
 
-	if intLen < 1 {
-		return false,
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "",
-				ErrContext: "intLen < 1",
-				ErrMessage: fmt.Sprintf("Error - Int Array integer length is less than 1.\n"+
-					"intLen= '%v'", intLen),
-			}
-	}
+  if intLen < 1 {
+    return false,
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "",
+        ErrContext: "intLen < 1",
+        ErrMessage: fmt.Sprintf("Error - Int Array integer length is less than 1.\n"+
+          "intLen= '%v'", intLen),
+      }
+  }
 
-	for i := intLen; i < intAry.intAryLen; i++ {
+  for i := intLen; i < intAry.intAryLen; i++ {
 
-		if intAry.intAry[i] > 0 {
+    if intAry.intAry[i] > 0 {
 
-			return true, nil
-		}
-	}
+      return true, nil
+    }
+  }
 
-	return false, nil
+  return false, nil
+}
+
+// setIntAryUint64Exponent
+//
+//	Returns a new IntAry instance based on input parameters,
+//	'uint64Num', 'signValue' and 'exponent'.
+//
+//	The returned IntAry numeric value is set using an uint64 value
+//	multiplied by 10 raised to the power of the 'exponent' parameter.
+//
+//		    Result Numeric Value = uint64 X 10^exponent
+//
+//	Usage
+//	=====
+//
+//	This method is may be used with the 'new' keyword syntax.
+//
+//	  iAry := new(IntAry).NewUint64Exponent(123456, -3)
+//	  -- iAry is now equal to "123.456", precision = 3
+//
+//	  iAry := new(IntAry).NewUint64Exponent(123456, 3)
+//	  -- iAry is now equal to "123456.000", precision = 3
+//
+//	Examples
+//	========
+//
+//	uint64Num      exponent      IntAry Result
+//
+//	  123456          -3              123.456
+//	  123456           3           123456.000
+//	  123456           0           123456
+//
+//	Input Parameters
+//	================
+//
+//	uint64Num               uint64
+//	  The uint64 holds the numeric digits which will make up the
+//	  returned IntAry numeric value.
+//
+//	signValue                int
+//	  This parameter must be set to one of two possible values:
+//	  +1 or -1.
+//
+//	  Final numeric values less than zero must be tagged with
+//	  signValue= -1.
+//
+//	  Final numeric values greater than or equal to zero must be
+//	  tagged with signValue= +1.
+//
+//	exponent                 int
+//	  This value will be used to determine the numeric digits in
+//	  'uint64Num' which will be assigned to the right of the
+//	  decimal point in the final calculation result returned as
+//	  IntAry instance.
+//
+//	Return Values
+//	=============
+//
+//	IntAry
+//	  This returned IntAry object will be configured with the
+//	  numeric value computed from input parameters 'uint64Num',
+//	  signValue and 'exponent'.
+//
+//	error
+//	  If no errors are encountered the return value for this
+//	  parameter will be set to 'nil'.
+func (iaNanobot *intAryNanobot) setIntAryUint64Exponent(
+  ia *IntAry,
+  numSepsSrcIntAry *IntAry,
+  nsProfile NumSepsProfileSelection,
+  uint64Num uint64,
+  signValue int,
+  exponent int,
+  validateResult bool,
+  errPrefDto *ePref.ErrPrefixDto) error {
+
+  iaNanobot.lock.Lock()
+
+  defer iaNanobot.lock.Unlock()
+
+  var ePrefix *ePref.ErrPrefixDto
+
+  var err error
+
+  ePrefix,
+    err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
+    errPrefDto,
+    "intAryNanobot.setInt64Exponent()",
+    "")
+
+  if err != nil {
+    return err
+  }
+
+  if ia == nil {
+
+    return &InputPtrNilError{
+      ErrPrefix:     ePrefix.String(),
+      ParameterName: "'ia'",
+    }
+  }
+
+  uint64Ten := uint64(10)
+
+  if exponent > 0 {
+    for i := 0; i < exponent; i++ {
+
+      uint64Num *= uint64Ten
+
+    }
+  }
+
+  if exponent < 0 {
+
+    exponent = exponent * -1
+
+  }
+
+  iAry := new(intAryElectron).newIntAry()
+
+  err = new(intAryGluon).setIntAryWithUint64(
+    &iAry,
+    numSepsSrcIntAry,
+    nsProfile,
+    uint64Num,
+    signValue,
+    uint(exponent),
+    validateResult,
+    ePrefix)
+
+  if err != nil {
+
+    return &FuncReturnError{
+      ErrPrefix: ePrefix.String(),
+      ReturnFunc: "err = new(intAryGluon).setIntAryWithUint64(\n" +
+        "  &iAry, ia, nsProfile, uint64Num, signValue, uint(exponent),\n" +
+        "  validateResult, ePrefix)",
+      ErrContext: "",
+      ErrMessage: err.Error(),
+    }
+  }
+
+  return nil
 }
 
 // setInternalFlags
@@ -169,51 +312,51 @@ func (iaNanobot *intAryNanobot) hasFractionalDigits(
 //		The calling function is responsible for verifying the validity
 //		of 'ia', the IntAry object.
 func (iaNanobot *intAryNanobot) setInternalFlags(
-	ia *IntAry,
-	errPrefDto *ePref.ErrPrefixDto) error {
+  ia *IntAry,
+  errPrefDto *ePref.ErrPrefixDto) error {
 
-	iaNanobot.lock.Lock()
+  iaNanobot.lock.Lock()
 
-	defer iaNanobot.lock.Unlock()
+  defer iaNanobot.lock.Unlock()
 
-	var ePrefix *ePref.ErrPrefixDto
+  var ePrefix *ePref.ErrPrefixDto
 
-	var err error
+  var err error
 
-	ePrefix,
-		err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
-		errPrefDto,
-		"intAryNanobot.setInternalFlags()",
-		"")
+  ePrefix,
+    err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
+    errPrefDto,
+    "intAryNanobot.setInternalFlags()",
+    "")
 
-	if err != nil {
-		return err
-	}
+  if err != nil {
+    return err
+  }
 
-	if ia == nil {
+  if ia == nil {
 
-		return &InputPtrNilError{
-			ErrPrefix:     ePrefix.String(),
-			ParameterName: "'ia'",
-		}
-	}
+    return &InputPtrNilError{
+      ErrPrefix:     ePrefix.String(),
+      ParameterName: "'ia'",
+    }
+  }
 
-	err = new(intAryElectron).setSignificantDigitIdxs(
-		ia,
-		ePrefix)
+  err = new(intAryElectron).setSignificantDigitIdxs(
+    ia,
+    ePrefix)
 
-	if err != nil {
+  if err != nil {
 
-		return &FuncReturnError{
-			ErrPrefix: ePrefix.String(),
-			ReturnFunc: "err = new(intAryElectron).\n" +
-				"  setSignificantDigitIdxs( ia, ePrefix)",
-			ErrContext: "",
-			ErrMessage: err.Error(),
-		}
-	}
+    return &FuncReturnError{
+      ErrPrefix: ePrefix.String(),
+      ReturnFunc: "err = new(intAryElectron).\n" +
+        "  setSignificantDigitIdxs( ia, ePrefix)",
+      ErrContext: "",
+      ErrMessage: err.Error(),
+    }
+  }
 
-	return nil
+  return nil
 }
 
 // setInternalFlagsNoErrors
@@ -221,15 +364,15 @@ func (iaNanobot *intAryNanobot) setInternalFlags(
 //	This method differs from 'intAryNanobot.setInternalFlags' in
 //	that this method does NOT return an error.
 func (iaNanobot *intAryNanobot) setInternalFlagsNoErrors(
-	ia *IntAry) {
+  ia *IntAry) {
 
-	iaNanobot.lock.Lock()
+  iaNanobot.lock.Lock()
 
-	defer iaNanobot.lock.Unlock()
+  defer iaNanobot.lock.Unlock()
 
-	new(intAryElectron).setSignificantDigitIdxsNoErrors(ia)
+  new(intAryElectron).setSignificantDigitIdxsNoErrors(ia)
 
-	return
+  return
 }
 
 // setIsZeroValue
@@ -237,42 +380,42 @@ func (iaNanobot *intAryNanobot) setInternalFlagsNoErrors(
 //	Analyzes the value of the intAry and sets a flag if the value
 //	of intAry evaluates to zero.
 func (iaNanobot *intAryNanobot) setIsZeroValue(
-	ia *IntAry) {
+  ia *IntAry) {
 
-	iaNanobot.lock.Lock()
+  iaNanobot.lock.Lock()
 
-	defer iaNanobot.lock.Unlock()
+  defer iaNanobot.lock.Unlock()
 
-	if ia == nil {
-		return
-	}
+  if ia == nil {
+    return
+  }
 
-	ia.intAryLen = len(ia.intAry)
+  ia.intAryLen = len(ia.intAry)
 
-	ia.isZeroValue = true
+  ia.isZeroValue = true
 
-	ia.isIntegerZeroValue = true
+  ia.isIntegerZeroValue = true
 
-	intLen := ia.intAryLen - ia.precision
+  intLen := ia.intAryLen - ia.precision
 
-	for i := 0; i < ia.intAryLen; i++ {
+  for i := 0; i < ia.intAryLen; i++ {
 
-		if i < intLen && ia.intAry[i] > 0 {
+    if i < intLen && ia.intAry[i] > 0 {
 
-			ia.isIntegerZeroValue = false
-		}
+      ia.isIntegerZeroValue = false
+    }
 
-		if ia.intAry[i] > 0 {
+    if ia.intAry[i] > 0 {
 
-			ia.isZeroValue = false
+      ia.isZeroValue = false
 
-			return
-		}
-	}
+      return
+    }
+  }
 
-	// ia.isZeroValue == true
-	// signVal must be 1
-	ia.signVal = 1
+  // ia.isZeroValue == true
+  // signVal must be 1
+  ia.signVal = 1
 
-	return
+  return
 }

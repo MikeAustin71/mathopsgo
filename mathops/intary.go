@@ -3206,6 +3206,7 @@ func (ia *IntAry) GetSciNotationNumber(mantissaLen uint) (SciNotationNum, error)
 			nsProfile,
 			magnitudeInt,
 			0,
+			false,
 			ePrefix)
 
 		if err != nil {
@@ -3369,6 +3370,7 @@ func (ia *IntAry) GetSciNotationNumber(mantissaLen uint) (SciNotationNum, error)
 			nsProfile,
 			intMagnitudeFrac,
 			0,
+			false,
 			ePrefix)
 
 		if err != nil {
@@ -4723,15 +4725,17 @@ func (ia *IntAry) NewFloatBig(num *big.Float, precision int) (IntAry, error) {
 //	intNum                   int
 //	  The numeric digits contained in this value comprise both
 //	  the integer digits and the fractional digits which will be
-//	  configured in the final numeric value stored in IntAry object
-//	  returned by this method.
+//	  configured in the final numeric value stored in the IntAry
+//	  object returned by this method.
 //
 //	precision                uint
 //	  'precision' specifies the number of fractional digits in the
-//	  final numeric value stored in 'intAry'
+//	  final numeric value stored in in the returned IntAry object.
 //
 //	  Although 'precision' is an unsigned integer type, the maximum
-//	  value allowed for this parameter is 2,147,483,647.
+//	  value allowed for this parameter is 2,147,483,647. This
+//	  is the maximum limit for a 32-bit integer which is the
+//	  internal IntAry storage type for 'precision.
 //
 //	Return Values
 //	=============
@@ -4776,6 +4780,7 @@ func (ia *IntAry) NewInt(intNum int, precision uint) (IntAry, error) {
 		nsProfile,
 		intNum,
 		precision,
+		true,
 		ePrefix)
 
 	return iAry, err
@@ -4789,55 +4794,51 @@ func (ia *IntAry) NewInt(intNum int, precision uint) (IntAry, error) {
 //
 //	    numeric value = int X 10^exponent
 //
-//	Input parameter 'intNum' is of type int.
+//	Usage
+//	=====
 //
-// Input parameter 'exponent' is of type int.
+//	This method may be used in conjunction with the 'new' keword
+//	syntax.
 //
-//		Usage
-//		=====
+//	    iAry := new(IntAry).NewIntExponent(123456, -3)
+//	    -- iAry is now equal to "123.456", precision = 3
 //
-//		This method may be used in conjunction with the 'new' keword
-//		syntax.
+//	    iAry := new(IntAry).NewIntExponent(123456, 3)
+//	    -- iAry is now equal to "123456.000", precision = 3
 //
-//		    iAry := new(IntAry).NewIntExponent(123456, -3)
-//		    -- iAry is now equal to "123.456", precision = 3
+//	Examples
+//	========
 //
-//		    iAry := new(IntAry).NewIntExponent(123456, 3)
-//		    -- iAry is now equal to "123456.000", precision = 3
+//	intNum      exponent      IntAry Result
 //
-//		Examples
-//		========
+//	123456         -3              123.456
+//	123456          3           123456.000
+//	123456          0           123456
 //
-//		intNum      exponent      IntAry Result
+//	Input Parameters
+//	================
 //
-//		123456         -3              123.456
-//		123456          3           123456.000
-//		123456          0           123456
+//	intNum                   int
+//	  The numeric digits which will make up the returned IntAry
+//	  numeric value.
 //
-//		Input Parameters
-//		================
+//	exponent                 int
+//	  This value will be used to determine the numeric digits in
+//	  'intNum' which will be assigned to the right of the decimal
+//	  point in the returned IntAry value.
 //
-//		intNum                   int
-//		  The numeric digits which will make up the returned IntAry
-//		  numeric value.
+//	Return Values
+//	=============
 //
-//		exponent                 int
-//		  This value will be used to determine the numeric digits in
-//		  'intNum' which will be assigned to the right of the decimal
-//		  point in the returned IntAry value.
+//	IntAry
+//	  This returned IntAry object will be configured with the
+//	  numeric value computed from input parameters 'intNum' and
+//	  'exponent' according to the conversion algorithm described
+//	  above.
 //
-//		Return Values
-//		=============
-//
-//		IntAry
-//		  This returned IntAry object will be configured with the
-//		  numeric value computed from input parameters 'intNum' and
-//		  'exponent' according to the conversion algorithm described
-//		  above.
-//
-//	 error
-//	   If no errors are encountered the return value for this
-//	   parameter will be set to 'nil'.
+//	error
+//	  If no errors are encountered the return value for this
+//	  parameter will be set to 'nil'.
 func (ia *IntAry) NewIntExponent(intNum int, exponent int) (IntAry, error) {
 
 	var ePrefix *ePref.ErrPrefixDto
@@ -4863,51 +4864,40 @@ func (ia *IntAry) NewIntExponent(intNum int, exponent int) (IntAry, error) {
 		exponent = exponent * -1
 	}
 
-	iAry := new(intAryElectron).newIntAry()
+	iAryElectron := new(intAryElectron)
 
-	err = iAry.SetIntAryWithInt(intNum, uint(exponent))
+	iAry := iAryElectron.newIntAry()
 
-	if err != nil {
-
-		return IntAry{},
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "err = iAry.SetIntAryWithInt(intNum, uint(exponent))",
-				ErrContext: fmt.Sprintf("intNum= '%v'  exponent= '%v'",
-					intNum, exponent),
-				ErrMessage: err.Error(),
-			}
+	nsProfile := NumSepsProfileSelection{
+		SourceObjectName:         "ia",
+		OutputNumSepsName:        "numSeps",
+		UseDefaultNumSeps:        false,
+		SetDefaultNumSepsIfEmpty: true,
+		ValidateNumSeps:          false,
 	}
 
-	numSeps, err := ia.GetNumericSeparatorsDto()
+	err = new(intAryGluon).setIntAryWithInt(
+		&iAry,
+		ia,
+		nsProfile,
+		intNum,
+		uint(exponent),
+		true,
+		ePrefix)
 
 	if err != nil {
 
 		return IntAry{},
 			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "numSeps, err := ia.GetNumericSeparatorsDto()",
+				ErrPrefix: ePrefix.String(),
+				ReturnFunc: "new(intAryGluon).setIntAryWithInt(\n" +
+					"  &iAry, ia, nsProfile, intNum, uint(exponent), ePrefix)",
 				ErrContext: "",
 				ErrMessage: err.Error(),
 			}
 	}
 
-	numSeps.SetDefaultsIfEmpty()
-
-	err = iAry.SetNumericSeparatorsDto(numSeps)
-
-	if err != nil {
-
-		return IntAry{},
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "err = iAry.SetNumericSeparatorsDto(numSeps)",
-				ErrContext: "",
-				ErrMessage: err.Error(),
-			}
-	}
-
-	err = new(intAryElectron).isValidIntAry(
+	err = iAryElectron.isValidIntAry(
 		&iAry,
 		ePrefix.XCpy("Validating Final Result: 'iAry'").String())
 
@@ -4926,92 +4916,157 @@ func (ia *IntAry) NewIntExponent(intNum int, exponent int) (IntAry, error) {
 	return iAry, nil
 }
 
-// NewInt32 - Creates a new intAry object initialized
-// to the value of input parameter 'int32Num' which is passed
-// as type 'int32'.
+// NewInt32
 //
-// Input parameter 'precision' indicates the number of digits
-// to be formatted to the right of the decimal place. Input
-// parameter 'precision' is of type uint. The maximum value
-// allowed for 'precision' is 2147483645 (the max int32 value
-// minus 2). If 'precision' exceeds this maximum value it will
-// be reset to that maximum value.
+//	Creates a new intAry object initialized to the value of input
+//	parameter 'int32Num' which is passed as type 'int32'.
 //
-// Usage:
-// ------
-// This method is designed to be used in conjunction with the
-// IntAry{} syntax thereby allowing IntAry type creation and
-// initialization in one step.
+//	Input parameter 'precision' indicates the number of digits to
+//	be formatted to the right of the decimal place. Input parameter
+//	'precision' is of type uint. The maximum value allowed for
+//	'precision' is 2147483645 (the max int32 value minus 2). If
+//	'precision' exceeds this maximum value it will be reset to that
+//	maximum value.
 //
-//	int32Num := int64(123456)
-//	precision := uint(3)
-//	iAry := IntAry{}.NewInt32(int32Num, precision)
-//	iAry is now equal to 123.456
+//	Usage
+//	=====
 //
-// Examples:
-// ---------
+//	This method may be used with the 'new' keyword syntax.
 //
-//	int32Num		precision		IntAry Result
-//		123456				4					12.3456
-//		123456				0					123456
-//		123456				1					12345.6
+//	  int32Num := int64(123456)
+//	  precision := uint(3)
+//	  iAry := new(IntAry).NewInt32(int32Num, precision)
+//	  iAry is now equal to 123.456
+//
+//	Examples
+//	========
+//
+//	int32Num      precision      IntAry Result
+//
+//	 123456           4              12.3456
+//	 123456           0              123456
+//	 123456           1              12345.6
+//
+//	Input Parameters
+//	================
+//
+//	int32Num                 int
+//	  The numeric digits contained in this value comprise both
+//	  the integer digits and the fractional digits which will be
+//	  configured in the final numeric value stored in the IntAry
+//	  object returned by this method.
+//
+//	precision                uint
+//	  'precision' specifies the number of fractional digits in the
+//	  final numeric value stored in the returned IntAry object.
+//
+//	  Although 'precision' is an unsigned integer type, the maximum
+//	  value allowed for this parameter is 2,147,483,647. This
+//	  is the maximum limit for a 32-bit integer which is the
+//	  internal IntAry storage type for 'precision.
+//
+//	Return Values
+//	=============
+//
+//	IntAry
+//	  This new instance of IntAry will be returned configured with
+//	  the numeric value calculated from input parameters, 'intNum'
+//	  and 'precision'.
+//
+//	error
+//	  If no errors are encountered during processing, this returned
+//	  value will be set to 'nil'
 func (ia *IntAry) NewInt32(int32Num int32, precision uint) (IntAry, error) {
 
-	ePrefix := "IntAry.NewInt32()"
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
+
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"IntAry.NewInt32",
+		"")
+
+	if err != nil {
+		return IntAry{}, err
+	}
 
 	iAry := new(intAryElectron).newIntAry()
 
-	iAry.SetIntAryWithInt32(int32Num, precision)
-
-	err := iAry.SetNumericSeparatorsDto(ia.GetNumericSeparatorsDto())
-
-	if err != nil {
-
-		return iAry,
-			fmt.Errorf("%v\n"+
-				"Error returned by iAry.SetNumericSeparatorsDto()\n"+
-				"Error= %v\n",
-				ePrefix,
-				err.Error())
-
+	nsProfile := NumSepsProfileSelection{
+		SourceObjectName:         "ia",
+		OutputNumSepsName:        "numSeps",
+		UseDefaultNumSeps:        false,
+		SetDefaultNumSepsIfEmpty: true,
+		ValidateNumSeps:          false,
+		OverrideNumSeps:          NumericSeparatorDto{},
 	}
 
-	err = new(intAryElectron).isValidIntAry(
+	err = new(intAryGluon).setIntAryWithInt(
 		&iAry,
+		ia,
+		nsProfile,
+		int(int32Num),
+		precision,
+		true,
 		ePrefix)
 
 	return iAry, err
 }
 
-// NewInt32Exponent - Returns a new IntAry instance. The numeric
-// value is set using an int32 value multiplied by 10 raised to the
-// power of the 'exponent' parameter.
+// NewInt32Exponent
 //
-//	numeric value = int32 X 10^exponent
+//	Returns a new IntAry instance. The numeric value is set using
+//	an int32 value multiplied by 10 raised to the power of the
+//	'exponent' parameter.
 //
-// Input parameter 'int32Num' is of type int32.
+//	    numeric value = int32 X 10^exponent
 //
-// Input parameter 'exponent' is of type int.
+//	Usage
+//	=====
 //
-// Usage:
-// ------
-// This method is designed to be used in conjunction with the IntAry{}
-// syntax thereby allowing IntAry type creation and initialization in
-// one step.
+//	This method may be used in conjunction with the 'new' keword
+//	syntax.
 //
-//		iAry := IntAry{}.NewInt32Exponent(123456, -3)
-//	 -- iAry is now equal to "123.456", precision = 3
+//	    iAry := new(IntAry).NewInt32Exponent(123456, -3)
+//	    -- iAry is now equal to "123.456", precision = 3
 //
-//		iAry := IntAry{}.NewInt32Exponent(123456, 3)
-//	 -- iAry is now equal to "123456.000", precision = 3
+//	    iAry := new(IntAry).NewInt32Exponent(123456, 3)
+//	    -- iAry is now equal to "123456.000", precision = 3
 //
-// Examples:
-// ---------
+//	Examples
+//	========
 //
-//	int32Num		exponent		IntAry Result
-//		123456			-3					123.456
-//		123456			 3					123456.000
-//		123456			 0					123456
+//	intNum      exponent      IntAry Result
+//
+//	123456         -3              123.456
+//	123456          3           123456.000
+//	123456          0           123456
+//
+//	Input Parameters
+//	================
+//
+//	intNum                   int
+//	  The numeric digits which will make up the returned IntAry
+//	  numeric value.
+//
+//	exponent                 int
+//	  This value will be used to determine the numeric digits in
+//	  'intNum' which will be assigned to the right of the decimal
+//	  point in the returned IntAry value.
+//
+//	Return Values
+//	=============
+//
+//	IntAry
+//	  This returned IntAry object will be configured with the
+//	  numeric value computed from input parameters 'intNum' and
+//	  'exponent' according to the conversion algorithm described
+//	  above.
+//
+//	error
+//	  If no errors are encountered the return value for this
+//	  parameter will be set to 'nil'.
 func (ia *IntAry) NewInt32Exponent(int32Num int32, exponent int) (IntAry, error) {
 
 	ePrefix := "IntAry.NewInt32()"
@@ -5132,11 +5187,13 @@ func (ia *IntAry) NewInt64(int64Num int64, precision uint) (IntAry, error) {
 	return iAry, err
 }
 
-// NewInt64Exponent - Returns a new IntAry instance. The numeric
-// value is set using an int64 value multiplied by 10 raised to the
-// power of the 'exponent' parameter.
+// NewInt64Exponent
 //
-//	numeric value = int64 X 10^exponent
+//	 Returns a new IntAry instance. The numeric value is set using
+//	 an int64 value multiplied by 10 raised to the power of the
+//	 'exponent' parameter.
+//
+//		numeric value = int64 X 10^exponent
 //
 // Input parameter 'int64Num' is of type int64.
 //
@@ -5813,7 +5870,7 @@ func (ia *IntAry) NewUint32Exponent(uint32Num uint32, exponent int) (IntAry, err
 // NewUint64
 //
 //	Creates a new intAry object initialized to the value of input
-//	parameter 'uint64Num' which is passed as type 'uint64'.
+//	parameters 'uint64Num', 'signValue', and 'precision'.
 //
 //	Input parameter 'precision' indicates the number of digits to
 //	be formatted to the right of the decimal place. Input
@@ -5873,11 +5930,11 @@ func (ia *IntAry) NewUint32Exponent(uint32Num uint32, exponent int) (IntAry, err
 //	  Although 'precision' is an unsigned integer type, the maximum
 //	  value allowed for this parameter is 2,147,483,647.
 //
-//	signVal                  int
-//	 Input parameter 'signVal' must be set to one of two values:
+//	signValue                int
+//	 Input parameter 'signValue' must be set to one of two values:
 //	 +1 or -1. This value is used to signal the sign of the
 //	 resulting numeric value. +1 identifies a positive number and
-//	 -1 identifies a negative number. 'signVal' determines the
+//	 -1 identifies a negative number. 'signValue' determines the
 //	 numeric sign of the resulting IntAry value, either plus or
 //	 minus.
 //
@@ -5900,7 +5957,7 @@ func (ia *IntAry) NewUint32Exponent(uint32Num uint32, exponent int) (IntAry, err
 //	  If no errors are encountered during processing, this returned
 //	  value will be set to 'nil'
 func (ia *IntAry) NewUint64(
-	uint64Num uint64, signVal int, precision uint) (IntAry, error) {
+	uint64Num uint64, signValue int, precision uint) (IntAry, error) {
 
 	var ePrefix *ePref.ErrPrefixDto
 	var err error
@@ -5917,57 +5974,107 @@ func (ia *IntAry) NewUint64(
 
 	iAry := new(intAryElectron).newIntAry()
 
+	nsProfile := NumSepsProfileSelection{
+		SourceObjectName:         "ia",
+		OutputNumSepsName:        "numSeps",
+		UseDefaultNumSeps:        false,
+		SetDefaultNumSepsIfEmpty: true,
+		ValidateNumSeps:          false,
+		OverrideNumSeps:          NumericSeparatorDto{},
+	}
+
 	err = new(intAryGluon).setIntAryWithUint64(
 		&iAry,
 		ia,
-		NumSepsProfileSelection{
-			SourceObjectName:         "ia",
-			OutputNumSepsName:        "numSeps",
-			UseDefaultNumSeps:        false,
-			SetDefaultNumSepsIfEmpty: true,
-			ValidateNumSeps:          false,
-			OverrideNumSeps:          NumericSeparatorDto{},
-		},
+		nsProfile,
 		uint64Num,
-		signVal,
+		signValue,
 		precision,
+		true,
 		ePrefix)
 
 	return iAry, err
 }
 
-// NewUint64Exponent - Returns a new IntAry instance. The numeric
-// value is set using an uint64 value multiplied by 10 raised to the
-// power of the 'exponent' parameter.
+// NewUint64Exponent
 //
-//	numeric value = uint64 X 10^exponent
+//	Returns a new IntAry instance based on input parameters,
+//	'uint64Num', 'signValue' and 'exponent'.
 //
-// Input parameter 'uint64Num' is of type uint64.
+//	The returned IntAry numeric value is set using an uint64 value
+//	multiplied by 10 raised to the power of the 'exponent' parameter.
 //
-// Input parameter 'exponent' is of type int.
+//		    Result Numeric Value = uint64 X 10^exponent
 //
-// Usage:
-// ------
-// This method is designed to be used in conjunction with the IntAry{}
-// syntax thereby allowing IntAry type creation and initialization in
-// one step.
+//	Usage
+//	=====
 //
-//		iAry := IntAry{}.NewUint64Exponent(123456, -3)
-//	 -- iAry is now equal to "123.456", precision = 3
+//	This method is may be used with the 'new' keyword syntax.
 //
-//		iAry := IntAry{}.NewUint64Exponent(123456, 3)
-//	 -- iAry is now equal to "123456.000", precision = 3
+//	  iAry := new(IntAry).NewUint64Exponent(123456, -3)
+//	  -- iAry is now equal to "123.456", precision = 3
 //
-// Examples:
-// ---------
+//	  iAry := new(IntAry).NewUint64Exponent(123456, 3)
+//	  -- iAry is now equal to "123456.000", precision = 3
 //
-//	 uint64Num		  exponent		  	IntAry Result
-//		 123456		 		  -3							123.456
-//		 123456		 		   3							123456.000
-//	  123456          0              123456
-func (ia *IntAry) NewUint64Exponent(uint64Num uint64, exponent int) (IntAry, error) {
+//	Examples
+//	========
+//
+//	uint64Num      exponent      IntAry Result
+//
+//	  123456          -3              123.456
+//	  123456           3           123456.000
+//	  123456           0           123456
+//
+//	Input Parameters
+//	================
+//
+//	uint64Num               uint64
+//	  The uint64 holds the numeric digits which will make up the
+//	  returned IntAry numeric value.
+//
+//	signValue                int
+//	  This parameter must be set to one of two possible values:
+//	  +1 or -1.
+//
+//	  Final numeric values less than zero must be tagged with
+//	  signValue= -1.
+//
+//	  Final numeric values greater than or equal to zero must be
+//	  tagged with signValue= +1.
+//
+//	exponent                 int
+//	  This value will be used to determine the numeric digits in
+//	  'uint64Num' which will be assigned to the right of the
+//	  decimal point in the final calculation result returned as
+//	  IntAry instance.
+//
+//	Return Values
+//	=============
+//
+//	IntAry
+//	  This returned IntAry object will be configured with the
+//	  numeric value computed from input parameters 'uint64Num',
+//	  signValue and 'exponent'.
+//
+//	error
+//	  If no errors are encountered the return value for this
+//	  parameter will be set to 'nil'.
+func (ia *IntAry) NewUint64Exponent(
+	uint64Num uint64, signValue int, exponent int) (IntAry, error) {
 
-	ePrefix := "IntAry.NewUint64Exponent()"
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
+
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"IntAry.NewUint64Exponent",
+		"")
+
+	if err != nil {
+		return IntAry{}, err
+	}
 
 	uint64Ten := uint64(10)
 
@@ -5983,25 +6090,39 @@ func (ia *IntAry) NewUint64Exponent(uint64Num uint64, exponent int) (IntAry, err
 
 	iAry := new(intAryElectron).newIntAry()
 
-	iAry.SetIntAryWithUint64(uint64Num, uint(exponent))
+	nsProfile := NumSepsProfileSelection{
+		SourceObjectName:         "ia",
+		OutputNumSepsName:        "numSeps",
+		UseDefaultNumSeps:        false,
+		SetDefaultNumSepsIfEmpty: true,
+		ValidateNumSeps:          false,
+		OverrideNumSeps:          NumericSeparatorDto{},
+	}
 
-	err := iAry.SetNumericSeparatorsDto(ia.GetNumericSeparatorsDto())
+	err = new(intAryNanobot).setIntAryUint64Exponent(
+		&iAry,
+		ia,
+		nsProfile,
+		uint64Num,
+		signValue,
+		exponent,
+		true,
+		ePrefix)
 
 	if err != nil {
 
-		return iAry,
-			fmt.Errorf("%v\n"+
-				"Error returned by iAry.SetNumericSeparatorsDto(ia.GetNumericSeparatorsDto())\n"+
-				"Error='%v'",
-				ePrefix,
-				err.Error())
+		return IntAry{},
+			&FuncReturnError{
+				ErrPrefix: ePrefix.String(),
+				ReturnFunc: "err = new(intAryNanobot).setIntAryUint64Exponent(\n" +
+					"  &iAry, ia, nsProfile, uint64Num, signValue,\n" +
+					"  exponent, validateResult=true, ePrefix)",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
 	}
 
-	err = new(intAryElectron).isValidIntAry(
-		&iAry,
-		ePrefix)
-
-	return iAry, err
+	return iAry, nil
 }
 
 // NewZero - Creates a new IntAry instance and sets
@@ -6165,6 +6286,7 @@ func (ia *IntAry) Pow(power int, maxResultPrecision int, internalPrecision int) 
 		nsProfile,
 		power,
 		0,
+		false,
 		ePrefix)
 
 	err = new(IntAryMathPower).Pwr(ia, &iaPower, 0, maxResultPrecision)
@@ -6725,15 +6847,34 @@ func (ia *IntAry) SetIntAryToFive(precision int) error {
 	return nil
 }
 
-// SetIntAryToOne - Sets the value of the intAry object to one ('1').
+// SetIntAryToOne
+//
+//	Sets the value of the intAry object to one ('1').
 func (ia *IntAry) SetIntAryToOne(precision int) error {
+
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
+
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"IntAry.SetIntAryToOne",
+		"")
+
+	if err != nil {
+		return err
+	}
 
 	if precision < 0 {
 
-		return fmt.Errorf("SetIntAryToOne()\n"+
-			"Error: Input parameter 'precision' is less than ZERO!\n"+
-			"precision= '%v'",
-			precision)
+		return &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "",
+			ErrContext: "",
+			ErrMessage: fmt.Sprintf("Error: Input parameter 'precision' is INVALID!\n"+
+				"'precision' is less than zero.\n"+
+				"precision= '%v'", precision),
+		}
 	}
 
 	ia.intAryLen = 1 + precision
@@ -6746,7 +6887,19 @@ func (ia *IntAry) SetIntAryToOne(precision int) error {
 	ia.firstDigitIdx = 0
 	ia.lastDigitIdx = 0
 
-	ia.SetNumericSeparatorsToDefaultIfEmpty()
+	err = new(intAryPhoton).setNumericSeparatorsToDefaultIfEmpty(
+		ia, ePrefix.XCpy("Set 'ia' Numeric Separators"))
+
+	if err != nil {
+
+		return &FuncReturnError{
+			ErrPrefix: ePrefix.String(),
+			ReturnFunc: "err := new(intAryBoson).\n" +
+				"  setNumericSeparatorsToDefaultIfEmpty(ia, ePrefix)",
+			ErrContext: "",
+			ErrMessage: err.Error(),
+		}
+	}
 
 	return nil
 }
@@ -6921,18 +7074,21 @@ func (ia *IntAry) SetIntAryWithInt(intDigits int, precision uint) error {
 		return err
 	}
 
+	nsProfile := NumSepsProfileSelection{
+		SourceObjectName:         "ia",
+		OutputNumSepsName:        "numSeps",
+		UseDefaultNumSeps:        false,
+		SetDefaultNumSepsIfEmpty: true,
+		ValidateNumSeps:          false,
+	}
+
 	return new(intAryGluon).setIntAryWithInt(
 		ia,
 		nil,
-		NumSepsProfileSelection{
-			SourceObjectName:         "ia",
-			OutputNumSepsName:        "numSeps",
-			UseDefaultNumSeps:        false,
-			SetDefaultNumSepsIfEmpty: true,
-			ValidateNumSeps:          false,
-		},
+		nsProfile,
 		intDigits,
 		precision,
+		true,
 		ePrefix)
 }
 
@@ -7260,20 +7416,23 @@ func (ia *IntAry) SetIntAryWithUint64(
 		return err
 	}
 
+	nsProfile := NumSepsProfileSelection{
+		SourceObjectName:         "ia",
+		OutputNumSepsName:        "numSeps",
+		UseDefaultNumSeps:        false,
+		SetDefaultNumSepsIfEmpty: true,
+		ValidateNumSeps:          false,
+		OverrideNumSeps:          NumericSeparatorDto{},
+	}
+
 	return new(intAryGluon).setIntAryWithUint64(
 		ia,
 		nil,
-		NumSepsProfileSelection{
-			SourceObjectName:         "ia",
-			OutputNumSepsName:        "numSeps",
-			UseDefaultNumSeps:        false,
-			SetDefaultNumSepsIfEmpty: true,
-			ValidateNumSeps:          false,
-			OverrideNumSeps:          NumericSeparatorDto{},
-		},
+		nsProfile,
 		intDigits,
 		signVal,
 		precision,
+		true,
 		ePrefix)
 }
 

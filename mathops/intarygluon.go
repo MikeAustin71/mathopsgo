@@ -83,6 +83,7 @@ func (iaGluon *intAryGluon) setIntAryWithInt(
 	nsProfile NumSepsProfileSelection,
 	intDigits int,
 	precision uint,
+	validateResult bool,
 	errPrefDto *ePref.ErrPrefixDto) error {
 
 	iaGluon.lock.Lock()
@@ -258,16 +259,20 @@ func (iaGluon *intAryGluon) setIntAryWithInt(
 		}
 	}
 
-	//ia.SetInternalFlags()
-	err = new(intAryNanobot).setInternalFlags(
-		intAry, ePrefix.XCpy("Setting 'intAry' Flags"))
+	// If no validation specified, this will set
+	// internal flags
+	err = new(intAryUtility).selectIntAryValidation(
+		intAry,
+		"intAry",
+		validateResult,
+		ePrefix)
 
 	if err != nil {
 
 		return &FuncReturnError{
 			ErrPrefix: ePrefix.String(),
-			ReturnFunc: "err = new(intAryNanobot).setInternalFlags(\n" +
-				"  intAry, ePrefix.XCpy(Setting 'intAry' Flags))",
+			ReturnFunc: "err = new(intAryUtility).selectIntAryValidation(\n" +
+				"intAry,\"intAry\", validateResult, ePrefix)",
 			ErrContext: "",
 			ErrMessage: err.Error(),
 		}
@@ -374,78 +379,83 @@ func (iaGluon *intAryGluon) setIntAryWithUint8Ary(
 
 // setIntAryWithUint64
 //
-//		Sets the value of the current IntAry object equal to that of
-//		the input parameter 'intDigits', a 64-bit unsigned integer.
+//	Sets the value of the current IntAry object equal to that of
+//	the input parameter 'intDigits', a 64-bit unsigned integer.
 //
-//		Note: Input parameter 'precision' to indicate the number of
-//		digits to the right of the decimal place.
+//	Note: Input parameter 'precision' to indicate the number of
+//	digits to the right of the decimal place.
 //
-//		Input parameter, 'signVal' must be set to one of two values:
-//		-1 or +1. 'signVal' determines the numeric sign of the
-//		resulting IntAry value, either plus or minus.
+//	Input parameter, 'signVal' must be set to one of two values:
+//	-1 or +1. 'signVal' determines the numeric sign of the
+//	resulting IntAry value, either plus or minus.
 //
-//		Example
-//		=======
+//	Example
+//	=======
 //
-//		intDigits  precision  signVal    result
+//	intDigits  precision  signVal    result
 //
-//		 946254        3         1       946.254
-//		 946254        0         1       946254
-//		 946254        3        -1      -946.254
-//		 946254        0        -1      -946254
+//	 946254        3         1       946.254
+//	 946254        0         1       946254
+//	 946254        3        -1      -946.254
+//	 946254        0        -1      -946254
 //
-//		Input Parameters
-//		================
+//	Input Parameters
+//	================
 //
-//		intAry                   *IntAry
-//		  A pointer to an IntAry object. This object will be
-//		  reconfigured with a new value based on the following
-//		  input parameters.
+//	intAry                   *IntAry
+//	  A pointer to an IntAry object. This object will be
+//	  reconfigured with a new value based on the following
+//	  input parameters.
 //
-//		numSepsSrcIntAry         *IntAry
-//		  If this pointer is NOT 'nil', the Numeric Separators
-//	   will be taken from this IntAry Object.
+//	numSepsSrcIntAry         *IntAry
+//	  If this pointer is NOT 'nil', the Numeric Separators
+//	 will be taken from this IntAry Object.
 //
-//	   If this pointer is 'nil', it will be ignored and
-//	   the source of Numeric Separators will either be
-//	   the 'intAry' object or standard defaults as specified
-//	   by input parameter 'nsProfile'.
-//		  reconfigured with a new value based on the following
-//		  input parameters.
+//	 If this pointer is 'nil', it will be ignored and
+//	 the source of Numeric Separators will either be
+//	 the 'intAry' object or standard defaults as specified
+//	 by input parameter 'nsProfile'.
+//	  reconfigured with a new value based on the following
+//	  input parameters.
 //
-//		nsProfile                NumSepsProfileSelection
-//		 This struct contains all the prameters and options
-//		 necessary to generate the NumericSeparatorsDto which is
-//		 required for configuration of Numeric Separators in the
-//		 IntAry object returned by this method.
+//	nsProfile                NumSepsProfileSelection
+//	 This struct contains all the prameters and options
+//	 necessary to generate the NumericSeparatorsDto which is
+//	 required for configuration of Numeric Separators in the
+//	 IntAry object returned by this method.
 //
-//		intDigits                int
-//		  The numeric digits contained in this value comprise both
-//		  the integer digits and the fractional digits which will be
-//		  configured in the final numeric value stored in parameter,
-//		  'intAry'.
+//	intDigits                int
+//	  The numeric digits contained in this value comprise both
+//	  the integer digits and the fractional digits which will be
+//	  configured in the final numeric value stored in parameter,
+//	  'intAry'.
 //
-//		signVal                  int
-//		  Input parameter 'signVal' must be set to one of two values:
-//		  +1 or -1. This value is used to signal the sign of the
-//		  resulting numeric value. +1 identifies a positive number and
-//		  -1 identifies a negative number. 'signVal' determines the
-//		  numeric sign of the resulting IntAry value, either plus or
-//		  minus.
+//	signVal                  int
+//	  Input parameter 'signVal' must be set to one of two values:
+//	  +1 or -1. This value is used to signal the sign of the
+//	  resulting numeric value. +1 identifies a positive number and
+//	  -1 identifies a negative number. 'signVal' determines the
+//	  numeric sign of the resulting IntAry value, either plus or
+//	  minus.
 //
-//		precision                uint
-//		  'precision' specifies the number of fractional digits in the
-//		  final numeric value stored in 'intAry'
+//	precision                uint
+//	  'precision' specifies the number of fractional digits in the
+//	  final numeric value stored in 'intAry'
 //
-//		  Although 'precision' is an unsigned integer type, the maximum
-//		  value allowed for this parameter is 2,147,483,647.
+//	  Although 'precision' is an unsigned integer type, the maximum
+//	  value allowed for this parameter is 2,147,483,647.
 //
-//		Return Values
-//		=============
+//	validateResult           bool
+//	  When this parameter is set to 'true' the final calculation
+//	  result generated by this method will be subjected to
+//	  validation tests.
 //
-//		error
-//		  If no errors are encountered during processing, this returned
-//		  value will be set to 'nil'
+//	Return Values
+//	=============
+//
+//	error
+//	  If no errors are encountered during processing, this returned
+//	  value will be set to 'nil'
 func (iaGluon *intAryGluon) setIntAryWithUint64(
 	intAry *IntAry,
 	numSepsSrcIntAry *IntAry,
@@ -453,6 +463,7 @@ func (iaGluon *intAryGluon) setIntAryWithUint64(
 	intDigits uint64,
 	signVal int,
 	precision uint,
+	validateResult bool,
 	errPrefDto *ePref.ErrPrefixDto) error {
 
 	var ePrefix *ePref.ErrPrefixDto
@@ -631,15 +642,20 @@ func (iaGluon *intAryGluon) setIntAryWithUint64(
 		}
 	}
 
-	err = new(intAryNanobot).setInternalFlags(
-		intAry, ePrefix.XCpy("Setting 'ia' Flags"))
+	// If no validation specified, this will set
+	// internal flags
+	err = new(intAryUtility).selectIntAryValidation(
+		intAry,
+		"intAry",
+		validateResult,
+		ePrefix)
 
 	if err != nil {
 
 		return &FuncReturnError{
 			ErrPrefix: ePrefix.String(),
-			ReturnFunc: "err = new(intAryNanobot).setInternalFlags(\n" +
-				"  ia, ePrefix.XCpy(Setting 'ia' Flags))",
+			ReturnFunc: "err = new(intAryUtility).selectIntAryValidation(\n" +
+				"intAry,\"intAry\", validateResult, ePrefix)",
 			ErrContext: "",
 			ErrMessage: err.Error(),
 		}
