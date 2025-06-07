@@ -2724,20 +2724,20 @@ func (nthrt *NthRootOp) findNextRoot(bundleIdx int) error {
   // nthrt.Big10ToNthPower = BaseNum^n
 
   itatr := big.NewInt(9)
-  term_1a := big.NewInt(0)
-  term_1b := big.NewInt(0)
+  term1a := big.NewInt(0)
+  term1b := big.NewInt(0)
 
-  term_2a1 := big.NewInt(0)
-  term_2a2 := big.NewInt(0)
-  term_2a := big.NewInt(0)
+  term2a1 := big.NewInt(0)
+  term2a2 := big.NewInt(0)
+  term2a := big.NewInt(0)
 
-  term_2b := big.NewInt(0)
-  term_2b1 := big.NewInt(0)
-  term_2b2 := big.NewInt(0)
+  term2b := big.NewInt(0)
+  term2b1 := big.NewInt(0)
+  term2b2 := big.NewInt(0)
 
-  term_1a = big.NewInt(0).Mul(nthrt.Big10ToNthPower, nthrt.R)
-  term_1b = big.NewInt(0).Set(nthrt.Alpha)
-  nthrt.Minuend = big.NewInt(0).Add(term_1a, term_1b)
+  term1a = big.NewInt(0).Mul(nthrt.Big10ToNthPower, nthrt.R)
+  term1b = big.NewInt(0).Set(nthrt.Alpha)
+  nthrt.Minuend = big.NewInt(0).Add(term1a, term1b)
 
   for itatr.Cmp(nthrt.BigZero) > -1 &&
     nthrt.RPrime.Cmp(nthrt.BigZero) == -1 {
@@ -2746,16 +2746,16 @@ func (nthrt *NthRootOp) findNextRoot(bundleIdx int) error {
     nthrt.YPrime = big.NewInt(0).Mul(nthrt.Y, nthrt.Big10)
     nthrt.YPrime = big.NewInt(0).Add(nthrt.YPrime, nthrt.Beta)
 
-    term_2a1 = big.NewInt(0).Mul(nthrt.BaseNum, nthrt.Y)
-    term_2a2 = big.NewInt(0).Add(term_2a1, nthrt.Beta)
-    term_2a = big.NewInt(0).Exp(term_2a2, big.NewInt(int64(nthrt.NthRootInt)), nil)
+    term2a1 = big.NewInt(0).Mul(nthrt.BaseNum, nthrt.Y)
+    term2a2 = big.NewInt(0).Add(term2a1, nthrt.Beta)
+    term2a = big.NewInt(0).Exp(term2a2, big.NewInt(int64(nthrt.NthRootInt)), nil)
 
-    term_2b1 = big.NewInt(0).Set(nthrt.Big10ToNthPower)
-    term_2b2 = big.NewInt(0).Exp(nthrt.Y, big.NewInt(int64(nthrt.NthRootInt)), nil)
+    term2b1 = big.NewInt(0).Set(nthrt.Big10ToNthPower)
+    term2b2 = big.NewInt(0).Exp(nthrt.Y, big.NewInt(int64(nthrt.NthRootInt)), nil)
 
-    term_2b = big.NewInt(0).Mul(term_2b1, term_2b2)
+    term2b = big.NewInt(0).Mul(term2b1, term2b2)
 
-    nthrt.Subtrahend = big.NewInt(0).Sub(term_2a, term_2b)
+    nthrt.Subtrahend = big.NewInt(0).Sub(term2a, term2b)
 
     nthrt.RPrime = big.NewInt(0).Sub(nthrt.Minuend, nthrt.Subtrahend)
 
