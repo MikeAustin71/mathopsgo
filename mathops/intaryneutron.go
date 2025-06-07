@@ -11,6 +11,118 @@ type intAryNeutron struct {
 	lock sync.Mutex
 }
 
+// addIntAryToThis
+//
+//	Adds the value of intAry parameter ia2 to the value of 'ia'.
+//
+//	Input Parameters
+//	================
+//
+//	ia2                      *IntAry
+//	  The numeric value of this incoming IntAry object will be
+//	  subtracted from the numeric valud of the current IntAry
+//	  instance.
+//
+//	Return Values
+//	=============
+//
+//	error
+//	  If no errors are encountered during proceesing the return
+//	  value of this parameter will be set to 'nil'.
+func (iaNeutron *intAryNeutron) addIntAryToThis(
+	ia *IntAry,
+	validateIa bool,
+	ia2 *IntAry,
+	validateIa2 bool,
+	validateResult bool,
+	errPrefDto *ePref.ErrPrefixDto) error {
+
+	iaNeutron.lock.Lock()
+
+	defer iaNeutron.lock.Unlock()
+
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
+
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
+		errPrefDto,
+		"intAryNeutron.addArrayLengthLeft()",
+		"")
+
+	if err != nil {
+		return err
+	}
+
+	if ia == nil {
+
+		return &InputPtrNilError{
+			ErrPrefix:     ePrefix.String(),
+			ParameterName: "'ia'",
+		}
+	}
+
+	if ia2 == nil {
+
+		return &InputPtrNilError{
+			ErrPrefix:     ePrefix.String(),
+			ParameterName: "'ia2'",
+		}
+	}
+
+	err = new(intAryUtility).selectIntAryValidation(
+		ia,
+		"ia",
+		validateIa,
+		ePrefix.XCpy("Validating 'ia' on Startup"))
+
+	if err != nil {
+		return err
+	}
+
+	err = new(intAryUtility).selectIntAryValidation(
+		ia2,
+		"ia2",
+		validateIa2,
+		ePrefix.XCpy("Validating 'ia2' on Startup"))
+
+	if err != nil {
+		return err
+	}
+
+	err = new(IntAryMathAdd).RunTotal(ia, ia2)
+
+	if err != nil {
+
+		return &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "err = new(IntAryMathAdd).RunTotal(ia, ia2)",
+			ErrContext: "",
+			ErrMessage: err.Error(),
+		}
+	}
+
+	err = new(intAryUtility).selectIntAryValidation(
+		ia,
+		"ia",
+		validateResult,
+		ePrefix.XCpy("Final Result Validation"))
+
+	if err != nil {
+
+		return &FuncReturnError{
+			ErrPrefix: ePrefix.String(),
+			ReturnFunc: fmt.Sprintf("err = new(intAryUtility).selectIntAryValidation(\n"+
+				"ia, \"ia\", validateResult='%v' ePrefix", validateResult),
+			ErrContext: "Error: The Final Result is INVALID!\n" +
+				"Final Result 'ia' FAILED Validation Tests",
+			ErrMessage: err.Error(),
+		}
+	}
+
+	return nil
+}
+
 // addArrayLengthLeft
 //
 //	 Adds leading zeros to the internal storage array holding the

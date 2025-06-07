@@ -70,7 +70,7 @@ type IntAry struct {
 	BackUp                 BackUpIntAry
 }
 
-// AddToThis
+// AddIntAryToThis
 //
 //	Adds the value of intAry parameter ia2 to the value of the
 //	current intAry object.
@@ -96,7 +96,7 @@ type IntAry struct {
 //	error
 //	  If no errors are encountered during proceesing the return
 //	  value of this parameter will be set to 'nil'.
-func (ia *IntAry) AddToThis(ia2 *IntAry) error {
+func (ia *IntAry) AddIntAryToThis(ia2 *IntAry) error {
 
 	var ePrefix *ePref.ErrPrefixDto
 	var err error
@@ -104,26 +104,14 @@ func (ia *IntAry) AddToThis(ia2 *IntAry) error {
 	ePrefix,
 		err = ePref.ErrPrefixDto{}.NewIEmpty(
 		nil,
-		"IntAry.AddToThis",
+		"IntAry.AddIntAryToThis",
 		"")
 
 	if err != nil {
 		return err
 	}
 
-	err = new(IntAryMathAdd).RunTotal(ia, ia2)
-
-	if err != nil {
-
-		return &FuncReturnError{
-			ErrPrefix:  ePrefix.String(),
-			ReturnFunc: "err = new(IntAryMathAdd).RunTotal(ia, ia2)",
-			ErrContext: "",
-			ErrMessage: err.Error(),
-		}
-	}
-
-	return nil
+	return new(intAryNeutron).addIntAryToThis(ia, false, ia2, true, true, ePrefix)
 }
 
 // AddIntToThis
@@ -204,7 +192,7 @@ func (ia *IntAry) AddIntToThis(num int, precision uint) error {
 
 		return &FuncReturnError{
 			ErrPrefix:  ePrefix.String(),
-			ReturnFunc: "",
+			ReturnFunc: "ia2, err := new(IntAry).NewInt(num, precision)",
 			ErrContext: "",
 			ErrMessage: err.Error(),
 		}
@@ -1499,8 +1487,10 @@ func (ia *IntAry) GetAbsoluteValue() (IntAry, error) {
 	return absIa, nil
 }
 
-// GetBigInt - Returns the current value of this intAry object expressed
-// as a signed integer number of type *big.Int.
+// GetBigInt
+//
+//	Returns the current value of this intAry object expressed as a
+//	signed integer number of type *big.Int.
 func (ia *IntAry) GetBigInt() (*big.Int, error) {
 
 	var ePrefix *ePref.ErrPrefixDto

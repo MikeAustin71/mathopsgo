@@ -103,10 +103,10 @@ func TestIntAry_AddToThis_01(t *testing.T) {
 			nStr2, err.Error())
 	}
 
-	err = ia1.AddToThis(&ia2)
+	err = ia1.AddIntAryToThis(&ia2)
 
 	if err != nil {
-		t.Errorf("Received Error from ia1.AddToThis(&ia2).\n"+
+		t.Errorf("Received Error from ia1.AddIntAryToThis(&ia2).\n"+
 			"ia2= '%v'\nError= %v\n", ia2, err)
 
 	}
@@ -170,10 +170,10 @@ func TestIntAry_AddToThis_02(t *testing.T) {
 			nStr2, err.Error())
 	}
 
-	err = ia1.AddToThis(&ia2)
+	err = ia1.AddIntAryToThis(&ia2)
 
 	if err != nil {
-		t.Errorf("Received Error from ia1.AddToThis(&ia2, true). nStr1= '%v' nStr2= '%v' Error= %v", nStr1, nStr2, err)
+		t.Errorf("Received Error from ia1.AddIntAryToThis(&ia2, true). nStr1= '%v' nStr2= '%v' Error= %v", nStr1, nStr2, err)
 	}
 
 	s := ia1.GetNumStr()
@@ -234,10 +234,10 @@ func TestIntAry_AddToThis_03(t *testing.T) {
 			nStr2, err.Error())
 	}
 
-	err = ia1.AddToThis(&ia2)
+	err = ia1.AddIntAryToThis(&ia2)
 
 	if err != nil {
-		t.Errorf("Received Error from ia1.AddToThis(&ia2, true). nStr1= '%v' nStr2= '%v' Error= %v", nStr1, nStr2, err)
+		t.Errorf("Received Error from ia1.AddIntAryToThis(&ia2, true). nStr1= '%v' nStr2= '%v' Error= %v", nStr1, nStr2, err)
 	}
 
 	s := ia1.GetNumStr()
@@ -299,10 +299,10 @@ func TestIntAry_AddToThis_04(t *testing.T) {
 			nStr2, err.Error())
 	}
 
-	err = ia1.AddToThis(&ia2)
+	err = ia1.AddIntAryToThis(&ia2)
 
 	if err != nil {
-		t.Errorf("Received Error from ia1.AddToThis(&ia2, true). nStr1= '%v' nStr2= '%v' Error= %v", nStr1, nStr2, err)
+		t.Errorf("Received Error from ia1.AddIntAryToThis(&ia2, true). nStr1= '%v' nStr2= '%v' Error= %v", nStr1, nStr2, err)
 	}
 
 	s := ia1.GetNumStr()
@@ -360,10 +360,10 @@ func TestIntAry_AddToThis_05(t *testing.T) {
 			nStr2, err.Error())
 	}
 
-	err = ia1.AddToThis(&ia2)
+	err = ia1.AddIntAryToThis(&ia2)
 
 	if err != nil {
-		t.Errorf("Received Error from ia1.AddToThis(&ia2, true). nStr1= '%v' nStr2= '%v' Error= %v", nStr1, nStr2, err)
+		t.Errorf("Received Error from ia1.AddIntAryToThis(&ia2, true). nStr1= '%v' nStr2= '%v' Error= %v", nStr1, nStr2, err)
 	}
 
 	s := ia1.GetNumStr()
@@ -421,10 +421,10 @@ func TestIntAry_AddToThis_06(t *testing.T) {
 			nStr2, err.Error())
 	}
 
-	err = ia1.AddToThis(&ia2)
+	err = ia1.AddIntAryToThis(&ia2)
 
 	if err != nil {
-		t.Errorf("Received Error from ia1.AddToThis(&ia2, true). nStr1= '%v' nStr2= '%v' Error= %v", nStr1, nStr2, err)
+		t.Errorf("Received Error from ia1.AddIntAryToThis(&ia2, true). nStr1= '%v' nStr2= '%v' Error= %v", nStr1, nStr2, err)
 	}
 
 	s := ia1.GetNumStr()
@@ -482,10 +482,10 @@ func TestIntAry_AddToThis_07(t *testing.T) {
 			nStr2, err.Error())
 	}
 
-	err = ia1.AddToThis(&ia2)
+	err = ia1.AddIntAryToThis(&ia2)
 
 	if err != nil {
-		t.Errorf("Received Error from ia1.AddToThis(&ia2, true). nStr1= '%v' nStr2= '%v' Error= %v", nStr1, nStr2, err)
+		t.Errorf("Received Error from ia1.AddIntAryToThis(&ia2, true). nStr1= '%v' nStr2= '%v' Error= %v", nStr1, nStr2, err)
 	}
 
 	s := ia1.GetNumStr()
@@ -542,10 +542,10 @@ func TestIntAry_AddToThis_08(t *testing.T) {
 			nStr2, err.Error())
 	}
 
-	err = ia1.AddToThis(&ia2)
+	err = ia1.AddIntAryToThis(&ia2)
 
 	if err != nil {
-		t.Errorf("Received Error from ia1.AddToThis(&ia2, true). nStr1= '%v' nStr2= '%v' Error= %v", nStr1, nStr2, err)
+		t.Errorf("Received Error from ia1.AddIntAryToThis(&ia2, true). nStr1= '%v' nStr2= '%v' Error= %v", nStr1, nStr2, err)
 	}
 
 	s := ia1.GetNumStr()
@@ -601,10 +601,10 @@ func TestIntAry_AddToThis_09(t *testing.T) {
 			nStr2, err.Error())
 	}
 
-	err = ia1.AddToThis(&ia2)
+	err = ia1.AddIntAryToThis(&ia2)
 
 	if err != nil {
-		t.Errorf("Received Error from ia1.AddToThis(&ia2, true). nStr1= '%v' nStr2= '%v' Error= %v", nStr1, nStr2, err)
+		t.Errorf("Received Error from ia1.AddIntAryToThis(&ia2, true). nStr1= '%v' nStr2= '%v' Error= %v", nStr1, nStr2, err)
 	}
 
 	s := ia1.GetNumStr()
@@ -663,10 +663,10 @@ func TestIntAry_AddToThis_10(t *testing.T) {
 			nStr2, err.Error())
 	}
 
-	err = ia1.AddToThis(&ia2)
+	err = ia1.AddIntAryToThis(&ia2)
 
 	if err != nil {
-		t.Errorf("Received Error from ia1.AddToThis(&ia2, true). nStr1= '%v' nStr2= '%v' Error= %v", nStr1, nStr2, err)
+		t.Errorf("Received Error from ia1.AddIntAryToThis(&ia2, true). nStr1= '%v' nStr2= '%v' Error= %v", nStr1, nStr2, err)
 	}
 
 	s := ia1.GetNumStr()
@@ -725,10 +725,10 @@ func TestIntAry_AddToThis_11(t *testing.T) {
 			nStr2, err.Error())
 	}
 
-	err = ia1.AddToThis(&ia2)
+	err = ia1.AddIntAryToThis(&ia2)
 
 	if err != nil {
-		t.Errorf("Received Error from ia1.AddToThis(&ia2, true). nStr1= '%v' nStr2= '%v' Error= %v", nStr1, nStr2, err)
+		t.Errorf("Received Error from ia1.AddIntAryToThis(&ia2, true). nStr1= '%v' nStr2= '%v' Error= %v", nStr1, nStr2, err)
 	}
 
 	s := ia1.GetNumStr()
@@ -787,10 +787,10 @@ func TestIntAry_AddToThis_12(t *testing.T) {
 			nStr2, err.Error())
 	}
 
-	err = ia1.AddToThis(&ia2)
+	err = ia1.AddIntAryToThis(&ia2)
 
 	if err != nil {
-		t.Errorf("Received Error from ia1.AddToThis(&ia2, true). nStr1= '%v' nStr2= '%v' Error= %v", nStr1, nStr2, err)
+		t.Errorf("Received Error from ia1.AddIntAryToThis(&ia2, true). nStr1= '%v' nStr2= '%v' Error= %v", nStr1, nStr2, err)
 	}
 
 	s := ia1.GetNumStr()
@@ -849,10 +849,10 @@ func TestIntAry_AddToThis_13(t *testing.T) {
 			nStr2, err.Error())
 	}
 
-	err = ia1.AddToThis(&ia2)
+	err = ia1.AddIntAryToThis(&ia2)
 
 	if err != nil {
-		t.Errorf("Received Error from ia1.AddToThis(&ia2, true). nStr1= '%v' nStr2= '%v' Error= %v", nStr1, nStr2, err)
+		t.Errorf("Received Error from ia1.AddIntAryToThis(&ia2, true). nStr1= '%v' nStr2= '%v' Error= %v", nStr1, nStr2, err)
 	}
 
 	s := ia1.GetNumStr()
@@ -911,10 +911,10 @@ func TestIntAry_AddToThis_14(t *testing.T) {
 			nStr2, err.Error())
 	}
 
-	err = ia1.AddToThis(&ia2)
+	err = ia1.AddIntAryToThis(&ia2)
 
 	if err != nil {
-		t.Errorf("Received Error from ia1.AddToThis(&ia2, true). nStr1= '%v' nStr2= '%v' Error= %v", nStr1, nStr2, err)
+		t.Errorf("Received Error from ia1.AddIntAryToThis(&ia2, true). nStr1= '%v' nStr2= '%v' Error= %v", nStr1, nStr2, err)
 	}
 
 	s := ia1.GetNumStr()
@@ -961,10 +961,10 @@ func TestIntAry_AddToThis_15(t *testing.T) {
 
 	err = ia2.SetIntAryWithNumStr(nStr2)
 
-	err = ia1.AddToThis(&ia2)
+	err = ia1.AddIntAryToThis(&ia2)
 
 	if err != nil {
-		t.Errorf("Received Error from ia1.AddToThis(&ia2, true). nStr1= '%v' nStr2= '%v' Error= %v", nStr1, nStr2, err)
+		t.Errorf("Received Error from ia1.AddIntAryToThis(&ia2, true). nStr1= '%v' nStr2= '%v' Error= %v", nStr1, nStr2, err)
 	}
 
 	s := ia1.GetNumStr()
@@ -1024,10 +1024,10 @@ func TestIntAry_AddToThis_16(t *testing.T) {
 
 	}
 
-	err = ia1.AddToThis(&ia2)
+	err = ia1.AddIntAryToThis(&ia2)
 
 	if err != nil {
-		t.Errorf("Received Error from ia1.AddToThis(&ia2, true). nStr1= '%v' nStr2= '%v' Error= %v", nStr1, nStr2, err)
+		t.Errorf("Received Error from ia1.AddIntAryToThis(&ia2, true). nStr1= '%v' nStr2= '%v' Error= %v", nStr1, nStr2, err)
 	}
 
 	s := ia1.GetNumStr()
@@ -1086,10 +1086,10 @@ func TestIntAry_AddToThis_17(t *testing.T) {
 			nStr2, err.Error())
 	}
 
-	err = ia1.AddToThis(&ia2)
+	err = ia1.AddIntAryToThis(&ia2)
 
 	if err != nil {
-		t.Errorf("Received Error from ia1.AddToThis(&ia2, true). nStr1= '%v' nStr2= '%v' Error= %v", nStr1, nStr2, err)
+		t.Errorf("Received Error from ia1.AddIntAryToThis(&ia2, true). nStr1= '%v' nStr2= '%v' Error= %v", nStr1, nStr2, err)
 	}
 
 	s := ia1.GetNumStr()
@@ -1148,10 +1148,10 @@ func TestIntAry_AddToThis_18(t *testing.T) {
 			nStr2, err.Error())
 	}
 
-	err = ia1.AddToThis(&ia2)
+	err = ia1.AddIntAryToThis(&ia2)
 
 	if err != nil {
-		t.Errorf("Received Error from ia1.AddToThis(&ia2, true). nStr1= '%v' nStr2= '%v' Error= %v", nStr1, nStr2, err)
+		t.Errorf("Received Error from ia1.AddIntAryToThis(&ia2, true). nStr1= '%v' nStr2= '%v' Error= %v", nStr1, nStr2, err)
 	}
 
 	s := ia1.GetNumStr()
@@ -1210,10 +1210,10 @@ func TestIntAry_AddToThis_19(t *testing.T) {
 			nStr2, err.Error())
 	}
 
-	err = ia1.AddToThis(&ia2)
+	err = ia1.AddIntAryToThis(&ia2)
 
 	if err != nil {
-		t.Errorf("Received Error from ia1.AddToThis(&ia2, true). nStr1= '%v' nStr2= '%v' Error= %v", nStr1, nStr2, err)
+		t.Errorf("Received Error from ia1.AddIntAryToThis(&ia2, true). nStr1= '%v' nStr2= '%v' Error= %v", nStr1, nStr2, err)
 	}
 
 	s := ia1.GetNumStr()
@@ -1273,10 +1273,10 @@ func TestIntAry_AddToThis_20(t *testing.T) {
 			nStr2, err.Error())
 	}
 
-	err = ia1.AddToThis(&ia2)
+	err = ia1.AddIntAryToThis(&ia2)
 
 	if err != nil {
-		t.Errorf("Received Error from ia1.AddToThis(&ia2, true). nStr1= '%v' nStr2= '%v' Error= %v", nStr1, nStr2, err)
+		t.Errorf("Received Error from ia1.AddIntAryToThis(&ia2, true). nStr1= '%v' nStr2= '%v' Error= %v", nStr1, nStr2, err)
 	}
 
 	s := ia1.GetNumStr()
@@ -1335,10 +1335,10 @@ func TestIntAry_AddToThis_21(t *testing.T) {
 			nStr2, err.Error())
 	}
 
-	err = ia1.AddToThis(&ia2)
+	err = ia1.AddIntAryToThis(&ia2)
 
 	if err != nil {
-		t.Errorf("Received Error from ia1.AddToThis(&ia2, true). nStr1= '%v' nStr2= '%v' Error= %v", nStr1, nStr2, err)
+		t.Errorf("Received Error from ia1.AddIntAryToThis(&ia2, true). nStr1= '%v' nStr2= '%v' Error= %v", nStr1, nStr2, err)
 	}
 
 	s := ia1.GetNumStr()
@@ -1398,10 +1398,10 @@ func TestIntAry_AddToThis_22(t *testing.T) {
 			nStr2, err.Error())
 	}
 
-	err = ia1.AddToThis(&ia2)
+	err = ia1.AddIntAryToThis(&ia2)
 
 	if err != nil {
-		t.Errorf("Received Error from ia1.AddToThis(&ia2, true). nStr1= '%v' nStr2= '%v' Error= %v", nStr1, nStr2, err)
+		t.Errorf("Received Error from ia1.AddIntAryToThis(&ia2, true). nStr1= '%v' nStr2= '%v' Error= %v", nStr1, nStr2, err)
 	}
 
 	s := ia1.GetNumStr()
@@ -1460,10 +1460,10 @@ func TestIntAry_AddToThis_23(t *testing.T) {
 			nStr2, err.Error())
 	}
 
-	err = ia1.AddToThis(&ia2)
+	err = ia1.AddIntAryToThis(&ia2)
 
 	if err != nil {
-		t.Errorf("Received Error from ia1.AddToThis(&ia2, true). nStr1= '%v' nStr2= '%v' Error= %v", nStr1, nStr2, err)
+		t.Errorf("Received Error from ia1.AddIntAryToThis(&ia2, true). nStr1= '%v' nStr2= '%v' Error= %v", nStr1, nStr2, err)
 	}
 
 	s := ia1.GetNumStr()
@@ -1522,10 +1522,10 @@ func TestIntAry_AddToThis_24(t *testing.T) {
 			nStr2, err.Error())
 	}
 
-	err = ia1.AddToThis(&ia2)
+	err = ia1.AddIntAryToThis(&ia2)
 
 	if err != nil {
-		t.Errorf("Received Error from ia1.AddToThis(&ia2, true). nStr1= '%v' nStr2= '%v' Error= %v", nStr1, nStr2, err)
+		t.Errorf("Received Error from ia1.AddIntAryToThis(&ia2, true). nStr1= '%v' nStr2= '%v' Error= %v", nStr1, nStr2, err)
 	}
 
 	s := ia1.GetNumStr()

@@ -1,8 +1,8 @@
 package mathops
 
 import (
-	"errors"
-	"fmt"
+  "errors"
+  "fmt"
 )
 
 /*
@@ -24,42 +24,42 @@ import (
 // 	IntAry
 //
 type StrMathOp struct {
-	N1       IntAry
-	N2       IntAry
-	N3       IntAry
-	IntMAry  [][]int
-	IFinal   IntAry
-	Dividend IntAry
-	Divisor  IntAry
-	Quotient IntAry
-	Modulo   IntAry
+  N1       IntAry
+  N2       IntAry
+  N3       IntAry
+  IntMAry  [][]int
+  IFinal   IntAry
+  Dividend IntAry
+  Divisor  IntAry
+  Quotient IntAry
+  Modulo   IntAry
 }
 
 func (sMathOp StrMathOp) New() StrMathOp {
-	iAry := StrMathOp{}
-	iAry.N1 = IntAry{}.New()
-	iAry.N2 = IntAry{}.New()
-	iAry.N3 = IntAry{}.New()
-	iAry.IntMAry = make([][]int, 0)
-	iAry.IFinal = IntAry{}.New()
-	iAry.Dividend = IntAry{}.New()
-	iAry.Divisor = IntAry{}.New()
-	iAry.Quotient = IntAry{}.New()
-	iAry.Modulo = IntAry{}.New()
-	return iAry
+  iAry := StrMathOp{}
+  iAry.N1 = IntAry{}.New()
+  iAry.N2 = IntAry{}.New()
+  iAry.N3 = IntAry{}.New()
+  iAry.IntMAry = make([][]int, 0)
+  iAry.IFinal = IntAry{}.New()
+  iAry.Dividend = IntAry{}.New()
+  iAry.Divisor = IntAry{}.New()
+  iAry.Quotient = IntAry{}.New()
+  iAry.Modulo = IntAry{}.New()
+  return iAry
 }
 
 func (sMathOp *StrMathOp) Empty() {
 
-	sMathOp.N1 = IntAry{}.New()
-	sMathOp.N2 = IntAry{}.New()
-	sMathOp.N3 = IntAry{}.New()
-	sMathOp.IntMAry = make([][]int, 0)
-	sMathOp.IFinal = IntAry{}.New()
-	sMathOp.Dividend = IntAry{}.New()
-	sMathOp.Divisor = IntAry{}.New()
-	sMathOp.Quotient = IntAry{}.New()
-	sMathOp.Modulo = IntAry{}.New()
+  sMathOp.N1 = IntAry{}.New()
+  sMathOp.N2 = IntAry{}.New()
+  sMathOp.N3 = IntAry{}.New()
+  sMathOp.IntMAry = make([][]int, 0)
+  sMathOp.IFinal = IntAry{}.New()
+  sMathOp.Dividend = IntAry{}.New()
+  sMathOp.Divisor = IntAry{}.New()
+  sMathOp.Quotient = IntAry{}.New()
+  sMathOp.Modulo = IntAry{}.New()
 
 }
 
@@ -69,17 +69,17 @@ func (sMathOp *StrMathOp) Empty() {
 // calling this method.
 func (sMathOp *StrMathOp) AddN1N2() error {
 
-	sMathOp.IFinal = sMathOp.N1.CopyOut()
+  sMathOp.IFinal = sMathOp.N1.CopyOut()
 
-	err := sMathOp.IFinal.AddToThis(&sMathOp.N2)
+  err := sMathOp.IFinal.AddIntAryToThis(&sMathOp.N2)
 
-	if err != nil {
-		return fmt.Errorf("StrMathOp.AddN1N2() Error returned by "+
-			"sMathOp.IFinal.AddToThis(&sMathOp.N2). Error='%v'",
-			err.Error())
-	}
+  if err != nil {
+    return fmt.Errorf("StrMathOp.AddN1N2() Error returned by "+
+      "sMathOp.IFinal.AddToThis(&sMathOp.N2). Error='%v'",
+      err.Error())
+  }
 
-	return nil
+  return nil
 }
 
 // RaiseThisToPower - Raises the value of sMathOp.N1 Int Array
@@ -90,69 +90,69 @@ func (sMathOp *StrMathOp) AddN1N2() error {
 // be set to the desired value.
 func (sMathOp *StrMathOp) RaiseToPower(power int) error {
 
-	if power < 0 {
-		return fmt.Errorf("error: power is less than zero - power= '%v'", power)
-	}
+  if power < 0 {
+    return fmt.Errorf("error: power is less than zero - power= '%v'", power)
+  }
 
-	sMathOp.N1.SetInternalFlags()
+  sMathOp.N1.SetInternalFlags()
 
-	sMathOp.IFinal = sMathOp.N1.CopyOut()
+  sMathOp.IFinal = sMathOp.N1.CopyOut()
 
-	resultPrecision := sMathOp.N1.GetPrecision()
+  resultPrecision := sMathOp.N1.GetPrecision()
 
-	if sMathOp.N1.IsZero() {
-		sMathOp.IFinal.SetIntAryToZero(uint(resultPrecision))
-		return nil
-	}
+  if sMathOp.N1.IsZero() {
+    sMathOp.IFinal.SetIntAryToZero(uint(resultPrecision))
+    return nil
+  }
 
-	if power == 0 {
+  if power == 0 {
 
-		sMathOp.IFinal.SetIntAryToOne(resultPrecision)
-		return nil
-	}
+    sMathOp.IFinal.SetIntAryToOne(resultPrecision)
+    return nil
+  }
 
-	if power == 1 {
+  if power == 1 {
 
-		return nil
-	}
+    return nil
+  }
 
-	resultPrecision = resultPrecision * power
+  resultPrecision = resultPrecision * power
 
-	sMathOp.IFinal.Pow(power, resultPrecision, resultPrecision+1500)
+  sMathOp.IFinal.Pow(power, resultPrecision, resultPrecision+1500)
 
-	return nil
+  return nil
 }
 
 // MultiplyN1N2 - Mulitplies Array N1 by Array N2 and
 // places the result in sMathOp.IFinal.
 func (sMathOp *StrMathOp) MultiplyN1N2() error {
 
-	sMathOp.N1.SetInternalFlags()
-	sMathOp.N2.SetInternalFlags()
+  sMathOp.N1.SetInternalFlags()
+  sMathOp.N2.SetInternalFlags()
 
-	sMathOp.IFinal = sMathOp.N1.CopyOut()
-	sMathOp.IFinal.SetInternalFlags()
+  sMathOp.IFinal = sMathOp.N1.CopyOut()
+  sMathOp.IFinal.SetInternalFlags()
 
-	n1Precision := sMathOp.N1.GetPrecision()
-	n2Precision := sMathOp.N2.GetPrecision()
+  n1Precision := sMathOp.N1.GetPrecision()
+  n2Precision := sMathOp.N2.GetPrecision()
 
-	greatestPrecision := n1Precision
+  greatestPrecision := n1Precision
 
-	if n2Precision > n1Precision {
-		greatestPrecision = n2Precision
-	}
+  if n2Precision > n1Precision {
+    greatestPrecision = n2Precision
+  }
 
-	maxPrecision := n1Precision + n2Precision
+  maxPrecision := n1Precision + n2Precision
 
-	err := sMathOp.IFinal.MultiplyThisBy(&sMathOp.N2, greatestPrecision, maxPrecision)
+  err := sMathOp.IFinal.MultiplyThisBy(&sMathOp.N2, greatestPrecision, maxPrecision)
 
-	if err != nil {
-		return fmt.Errorf("StrMathOp.MultiplyN1N2() Error returned by "+
-			"sMathOp.IFinal.MultiplyThisBy(&sMathOp.N2, maxPrecision) "+
-			"Error='%v' ", err.Error())
-	}
+  if err != nil {
+    return fmt.Errorf("StrMathOp.MultiplyN1N2() Error returned by "+
+      "sMathOp.IFinal.MultiplyThisBy(&sMathOp.N2, maxPrecision) "+
+      "Error='%v' ", err.Error())
+  }
 
-	return nil
+  return nil
 }
 
 // Divide - Divides the Dividend IntAry
@@ -160,95 +160,95 @@ func (sMathOp *StrMathOp) MultiplyN1N2() error {
 // stored int IntAry fields Quotient and Modulo
 func (sMathOp *StrMathOp) Divide(maxPrecision int) error {
 
-	sMathOp.Quotient.SetIntAryToZero(0)
-	sMathOp.Modulo.SetIntAryToZero(0)
-	tensCount := IntAry{}.New()
-	tensCount.SetIntAryToOne(0)
+  sMathOp.Quotient.SetIntAryToZero(0)
+  sMathOp.Modulo.SetIntAryToZero(0)
+  tensCount := IntAry{}.New()
+  tensCount.SetIntAryToOne(0)
 
-	newSignVal := 1
+  newSignVal := 1
 
-	if sMathOp.Divisor.GetSign() != sMathOp.Dividend.GetSign() {
-		newSignVal = -1
-	}
+  if sMathOp.Divisor.GetSign() != sMathOp.Dividend.GetSign() {
+    newSignVal = -1
+  }
 
-	if sMathOp.Divisor.GetSign() == -1 {
-		sMathOp.Divisor.SetSign(1)
-	}
+  if sMathOp.Divisor.GetSign() == -1 {
+    sMathOp.Divisor.SetSign(1)
+  }
 
-	if sMathOp.Dividend.GetSign() == -1 {
-		sMathOp.Dividend.SetSign(1)
-	}
+  if sMathOp.Dividend.GetSign() == -1 {
+    sMathOp.Dividend.SetSign(1)
+  }
 
-	sMathOp.Divisor.SetIsZeroValue()
-	if sMathOp.Divisor.IsZero() {
-		return errors.New("divisor is zero - divide by zero error")
-	}
+  sMathOp.Divisor.SetIsZeroValue()
+  if sMathOp.Divisor.IsZero() {
+    return errors.New("divisor is zero - divide by zero error")
+  }
 
-	sMathOp.Dividend.SetIsZeroValue()
+  sMathOp.Dividend.SetIsZeroValue()
 
-	if sMathOp.Dividend.IsZero() {
-		return nil
-	}
+  if sMathOp.Dividend.IsZero() {
+    return nil
+  }
 
-	trialDividend := sMathOp.Dividend.CopyOut()
+  trialDividend := sMathOp.Dividend.CopyOut()
 
-	dividendMag := sMathOp.Dividend.GetMagnitudeDigits()
-	divisorMag := sMathOp.Divisor.GetMagnitudeDigits()
-	deltaMag := uint(0)
-	incrementVal := IntAry{}.New()
-	incrementVal.SetIntAryWithNumStr(sMathOp.Divisor.GetNumStr())
+  dividendMag := sMathOp.Dividend.GetMagnitudeDigits()
+  divisorMag := sMathOp.Divisor.GetMagnitudeDigits()
+  deltaMag := uint(0)
+  incrementVal := IntAry{}.New()
+  incrementVal.SetIntAryWithNumStr(sMathOp.Divisor.GetNumStr())
 
-	if dividendMag > divisorMag {
-		deltaMag = uint(dividendMag - divisorMag)
-		tensCount.MultiplyByTenToPower(deltaMag)
-		incrementVal.MultiplyThisBy(&tensCount, -1, -1)
+  if dividendMag > divisorMag {
+    deltaMag = uint(dividendMag - divisorMag)
+    tensCount.MultiplyByTenToPower(deltaMag)
+    incrementVal.MultiplyThisBy(&tensCount, -1, -1)
 
-	} else if divisorMag > dividendMag {
-		deltaMag = uint(divisorMag - dividendMag)
-		trialDividend.MultiplyByTenToPower(deltaMag)
-		tensCount.DivideByTenToPower(deltaMag)
+  } else if divisorMag > dividendMag {
+    deltaMag = uint(divisorMag - dividendMag)
+    trialDividend.MultiplyByTenToPower(deltaMag)
+    tensCount.DivideByTenToPower(deltaMag)
 
-	}
+  }
 
-	compare := 0
-	precisionCutOff := maxPrecision + dividendMag + 1
+  compare := 0
+  precisionCutOff := maxPrecision + dividendMag + 1
 
-	for true {
+  for true {
 
-		if sMathOp.Quotient.GetPrecision() == precisionCutOff {
-			sMathOp.Quotient.SetSign(newSignVal)
-			sMathOp.Quotient.RoundToPrecision(maxPrecision)
-			return nil
-		}
+    if sMathOp.Quotient.GetPrecision() == precisionCutOff {
+      sMathOp.Quotient.SetSign(newSignVal)
+      sMathOp.Quotient.RoundToPrecision(maxPrecision)
+      return nil
+    }
 
-		compare = incrementVal.CompareAbsoluteValues(&trialDividend)
+    compare = incrementVal.CompareAbsoluteValues(&trialDividend)
 
-		if compare == 0 {
-			// incrementalVal is equal to trialDividend
-			sMathOp.Quotient.AddToThis(&tensCount)
-			sMathOp.Quotient.SetSign(newSignVal)
-			return nil
+    if compare == 0 {
+      // incrementalVal is equal to trialDividend
+      sMathOp.Quotient.AddIntAryToThis(&tensCount)
+      sMathOp.Quotient.SetSign(newSignVal)
+      return nil
 
-		} else if compare == -1 {
-			// incrementalVal < trialDividend
-			sMathOp.Quotient.AddToThis(&tensCount)
+    } else if compare == -1 {
+      // incrementalVal < trialDividend
+      sMathOp.Quotient.AddIntAryToThis(&tensCount)
 
-			// Calc Remainder
-			trialDividend.SubtractFromThis(&incrementVal)
+      // Calc Remainder
+      trialDividend.SubtractFromThis(&incrementVal)
 
-			continue
+      continue
 
-		} else {
-			// Must Be compare == 1
-			// incrementalVal > trialDividend
+    } else {
+      // Must Be compare == 1
+      // incrementalVal > trialDividend
 
-			tensCount.DivideByTenToPower(1)
-			incrementVal.DivideByTenToPower(1)
-		}
+      tensCount.DivideByTenToPower(1)
+      incrementVal.DivideByTenToPower(1)
+    }
 
-	}
+  }
 
-	return nil
+  return nil
 }
 
 // DivideDividendByDivisor - Divides the Dividend IntAry
@@ -256,49 +256,49 @@ func (sMathOp *StrMathOp) Divide(maxPrecision int) error {
 // stored int IntAry fields Quotient and
 func (sMathOp *StrMathOp) DivideDividendByDivisor() error {
 
-	sMathOp.N1 = sMathOp.Divisor
-	compare := -1
-	quotient := 0
-	sN := fmt.Sprintf("%v", quotient)
-	sMathOp.N2.SetIntAryWithNumStr(sN)
+  sMathOp.N1 = sMathOp.Divisor
+  compare := -1
+  quotient := 0
+  sN := fmt.Sprintf("%v", quotient)
+  sMathOp.N2.SetIntAryWithNumStr(sN)
 
-	for compare < 1 {
-		quotient++
-		sMathOp.N2.IncrementIntegerOne()
-		sMathOp.N3 = sMathOp.IFinal
-		sMathOp.MultiplyN1N2()
-		compare = sMathOp.IFinal.CompareSignedValues(&sMathOp.Dividend)
+  for compare < 1 {
+    quotient++
+    sMathOp.N2.IncrementIntegerOne()
+    sMathOp.N3 = sMathOp.IFinal
+    sMathOp.MultiplyN1N2()
+    compare = sMathOp.IFinal.CompareSignedValues(&sMathOp.Dividend)
 
-	}
-	quotient = quotient - 1
-	sN = fmt.Sprintf("%v", quotient)
-	sMathOp.Quotient.SetIntAryWithNumStr(sN)
+  }
+  quotient = quotient - 1
+  sN = fmt.Sprintf("%v", quotient)
+  sMathOp.Quotient.SetIntAryWithNumStr(sN)
 
-	if compare == 0 {
-		sMathOp.Modulo.SetIntAryToZero(0)
-		return nil
-	}
+  if compare == 0 {
+    sMathOp.Modulo.SetIntAryToZero(0)
+    return nil
+  }
 
-	sMathOp.N1 = sMathOp.Dividend
-	sMathOp.N2 = sMathOp.N3
-	sMathOp.SubtractN1N2()
-	sMathOp.Modulo = sMathOp.IFinal
-	return nil
+  sMathOp.N1 = sMathOp.Dividend
+  sMathOp.N2 = sMathOp.N3
+  sMathOp.SubtractN1N2()
+  sMathOp.Modulo = sMathOp.IFinal
+  return nil
 }
 
 func (sMathOp *StrMathOp) DivideBySubtraction() {
 
-	sMathOp.Modulo = sMathOp.Dividend.CopyOut()
-	sMathOp.Quotient.SetIntAryToZero(0)
-	compare := 1
+  sMathOp.Modulo = sMathOp.Dividend.CopyOut()
+  sMathOp.Quotient.SetIntAryToZero(0)
+  compare := 1
 
-	for compare >= 0 {
-		sMathOp.Modulo.SubtractFromThis(&sMathOp.Divisor)
-		sMathOp.Quotient.IncrementIntegerOne()
-		compare = sMathOp.Modulo.CompareSignedValues(&sMathOp.Divisor)
-	}
+  for compare >= 0 {
+    sMathOp.Modulo.SubtractFromThis(&sMathOp.Divisor)
+    sMathOp.Quotient.IncrementIntegerOne()
+    compare = sMathOp.Modulo.CompareSignedValues(&sMathOp.Divisor)
+  }
 
-	return
+  return
 }
 
 func (sMathOp *StrMathOp) SubtractDivArys() {
@@ -311,16 +311,16 @@ func (sMathOp *StrMathOp) SubtractDivArys() {
 //
 func (sMathOp *StrMathOp) SubtractN1N2() error {
 
-	sMathOp.IFinal = sMathOp.N1.CopyOut()
+  sMathOp.IFinal = sMathOp.N1.CopyOut()
 
-	err := sMathOp.IFinal.SubtractFromThis(&sMathOp.N2)
+  err := sMathOp.IFinal.SubtractFromThis(&sMathOp.N2)
 
-	if err != nil {
-		return fmt.Errorf("StrMathOp.SubtractN1N2() Error returned by "+
-			"sMathOp.IFinal.SubtractFromThis(&sMathOp.N2). Error='%v'",
-			err.Error())
-	}
+  if err != nil {
+    return fmt.Errorf("StrMathOp.SubtractN1N2() Error returned by "+
+      "sMathOp.IFinal.SubtractFromThis(&sMathOp.N2). Error='%v'",
+      err.Error())
+  }
 
-	return nil
+  return nil
 
 }
