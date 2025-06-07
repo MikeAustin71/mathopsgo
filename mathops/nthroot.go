@@ -1,9 +1,9 @@
 package mathops
 
 import (
-	"errors"
-	"fmt"
-	"math/big"
+  "fmt"
+  ePref "github.com/MikeAustin71/errpref"
+  "math/big"
 )
 
 /*
@@ -34,49 +34,55 @@ import (
 //
 // Dependencies: intAry - intary.go
 type NthRootOp struct {
-	NthRootIntAry      *IntAry
-	NthRootBigInt      *big.Int
-	NthRootInt         int
-	Radicand           *IntAry
-	BaseNumBundles     [][]int
-	LenBaseNumBundles  int
-	BaseNumBundlesIdx  int
-	ResultAry          IntAry
-	ResultIdx          int
-	ResultPrecision    int
-	RequestedPrecision int
-	BigOne             *big.Int
-	Big10              *big.Int
-	Big10ToNthPower    *big.Int
-	BigZero            *big.Int
-	Big3               *big.Int
-	Y                  *big.Int // Root Extracted thusfar
-	YPrime             *big.Int // Next Value of Y
-	Minuend            *big.Int
-	Subtrahend         *big.Int
-	R                  *big.Int // Let R be the remainder
-	RPrime             *big.Int // Let RPrime be the new value of r for next iteration
-	BaseNum            *big.Int // Base Number System - always 10
-	Alpha              *big.Int // Next n-digits of the radicand
-	Beta               *big.Int // Next Digit of the root
+  NthRootIntAry      *IntAry
+  NthRootBigInt      *big.Int
+  NthRootInt         int
+  Radicand           *IntAry
+  BaseNumBundles     [][]int
+  LenBaseNumBundles  int
+  BaseNumBundlesIdx  int
+  ResultAry          IntAry
+  ResultIdx          int
+  ResultPrecision    int
+  RequestedPrecision int
+  BigOne             *big.Int
+  Big10              *big.Int
+  Big10ToNthPower    *big.Int
+  BigZero            *big.Int
+  Big3               *big.Int
+  Y                  *big.Int // Root Extracted thusfar
+  YPrime             *big.Int // Next Value of Y
+  Minuend            *big.Int
+  Subtrahend         *big.Int
+  R                  *big.Int // Let R be the remainder
+  RPrime             *big.Int // Let RPrime be the new value of r for next iteration
+  BaseNum            *big.Int // Base Number System - always 10
+  Alpha              *big.Int // Next n-digits of the radicand
+  Beta               *big.Int // Next Digit of the root
 }
 
 func (nthrt *NthRootOp) Empty() {
-	nthrt.NthRootInt = 0
-	nthrt.NthRootBigInt = big.NewInt(0)
-	nRt := IntAry{}.NewZero(0)
-	nthrt.NthRootIntAry = &nRt
-	nRt = IntAry{}.NewZero(0)
-	nthrt.Radicand = &nRt
-	nthrt.BaseNumBundles = make([][]int, 0, 500)
-	nthrt.LenBaseNumBundles = 0
-	nthrt.BaseNumBundlesIdx = 0
-	nthrt.ResultAry = IntAry{}.NewZero(0)
-	nthrt.ResultIdx = 0
-	nthrt.ResultPrecision = 0
-	nthrt.RequestedPrecision = 0
-	nthrt.Big10 = big.NewInt(0)
-	nthrt.Big10ToNthPower = big.NewInt(0)
+
+  nthrt.NthRootInt = 0
+
+  nthrt.NthRootBigInt = big.NewInt(0)
+
+  nRt := new(IntAry).New()
+
+  nthrt.NthRootIntAry = &nRt
+
+  nRt = new(IntAry).New()
+
+  nthrt.Radicand = &nRt
+  nthrt.BaseNumBundles = make([][]int, 0, 500)
+  nthrt.LenBaseNumBundles = 0
+  nthrt.BaseNumBundlesIdx = 0
+  nthrt.ResultAry = new(IntAry).New()
+  nthrt.ResultIdx = 0
+  nthrt.ResultPrecision = 0
+  nthrt.RequestedPrecision = 0
+  nthrt.Big10 = big.NewInt(0)
+  nthrt.Big10ToNthPower = big.NewInt(0)
 }
 
 // GetNthRootFloat32 - Calculates the Nth Root of a positive real number ('radicand')
@@ -97,20 +103,50 @@ func (nthrt *NthRootOp) Empty() {
 // Note: A negative 'radicand' value with an even nthRoot will generate an error.
 func (nthrt *NthRootOp) GetNthRootFloat32(radicand float32, precision, nthRoot, maxPrecision int) (IntAry, error) {
 
-	ePrefix := "NthRootOp.GetNthRootFloat32() "
-	ai := IntAry{}.New()
+  var ePrefix *ePref.ErrPrefixDto
+  var err error
 
-	err := ai.SetIntAryWithFloat32(radicand, precision)
+  ePrefix,
+    err = ePref.ErrPrefixDto{}.NewIEmpty(
+    nil,
+    "NthRootOp.GetNthRootFloat32",
+    "")
 
-	if err != nil {
-		return IntAry{}.New(), fmt.Errorf(ePrefix+
-			"- Error ai.SetIntAryWithFloat32(radicand, precision) "+
-			"radicand= %v, precision=%v Error= %v \n", radicand, precision, err)
-	}
+  if err != nil {
+    return IntAry{}, err
+  }
 
-	iaNthRoot := IntAry{}.NewInt(nthRoot, 0)
+  ai := new(IntAry).New()
 
-	return nthrt.GetNthRootIntAry(&ai, &iaNthRoot, maxPrecision)
+  err = ai.SetIntAryWithFloat32(radicand, precision)
+
+  if err != nil {
+
+    return IntAry{},
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "",
+        ErrContext: fmt.Sprintf("radicand= '%v' precision= '%v'",
+          radicand, precision),
+        ErrMessage: err.Error(),
+      }
+  }
+
+  iaNthRoot, err := new(IntAry).NewInt(nthRoot, 0)
+
+  if err != nil {
+
+    return IntAry{},
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "iaNthRoot, err := new(IntAry).NewInt(nthRoot, 0)",
+        ErrContext: fmt.Sprintf("nthRoot= '%v'",
+          nthRoot),
+        ErrMessage: err.Error(),
+      }
+  }
+
+  return nthrt.GetNthRootIntAry(&ai, &iaNthRoot, maxPrecision)
 
 }
 
@@ -132,21 +168,48 @@ func (nthrt *NthRootOp) GetNthRootFloat32(radicand float32, precision, nthRoot, 
 // Note: A negative 'radicand' value with an even nthRoot will generate an error.
 func (nthrt *NthRootOp) GetNthRootFloat64(radicand float64, precision, nthRoot, maxPrecision int) (IntAry, error) {
 
-	ePrefix := "NthRootOp.GetNthRootFloat64() "
+  var ePrefix *ePref.ErrPrefixDto
+  var err error
 
-	ai := IntAry{}.New()
+  ePrefix,
+    err = ePref.ErrPrefixDto{}.NewIEmpty(
+    nil,
+    "NthRootOp.GetNthRootFloat64",
+    "")
 
-	err := ai.SetIntAryWithFloat64(radicand, int(precision))
+  if err != nil {
+    return IntAry{}, err
+  }
 
-	if err != nil {
-		return IntAry{}.New(), fmt.Errorf(ePrefix+
-			"- Error ai.SetIntAryWithFloat64(radicand, precision) "+
-			"nthRoot= %v, precision=%v Error= %v ", nthRoot, precision, err)
-	}
+  ai := new(IntAry).New()
 
-	iaNthRoot := IntAry{}.NewInt(nthRoot, 0)
+  err = ai.SetIntAryWithFloat64(radicand, precision)
 
-	return nthrt.GetNthRootIntAry(&ai, &iaNthRoot, maxPrecision)
+  if err != nil {
+
+    return IntAry{},
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "err = ai.SetIntAryWithFloat64(radicand, precision)",
+        ErrContext: fmt.Sprintf("nthRoot= %v precision=%v ", nthRoot, precision),
+        ErrMessage: err.Error(),
+      }
+  }
+
+  iaNthRoot, err := new(IntAry).NewInt(nthRoot, 0)
+
+  if err != nil {
+
+    return IntAry{},
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "iaNthRoot, err := new(IntAry).NewInt(nthRoot, 0)",
+        ErrContext: fmt.Sprintf("nthRoot= %v ", nthRoot),
+        ErrMessage: err.Error(),
+      }
+  }
+
+  return nthrt.GetNthRootIntAry(&ai, &iaNthRoot, maxPrecision)
 }
 
 // GetNthRootBigFloat - Calculates the Nth Root of a positive real number ('radicand')
@@ -164,21 +227,50 @@ func (nthrt *NthRootOp) GetNthRootFloat64(radicand float64, precision, nthRoot, 
 // Note: A negative 'radicand' value with an even nthRoot will generate an error.
 func (nthrt *NthRootOp) GetNthRootBigFloat(radicand *big.Float, nthRoot, maxPrecision int) (IntAry, error) {
 
-	ePrefix := "NthRootOp) GetNthRootBigFloat() "
+  var ePrefix *ePref.ErrPrefixDto
+  var err error
 
-	ai := IntAry{}.New()
+  ePrefix,
+    err = ePref.ErrPrefixDto{}.NewIEmpty(
+    nil,
+    "NthRootOp.GetNthRootBigFloat",
+    "")
 
-	err := ai.SetIntAryWithFloatBig(radicand, -1)
+  if err != nil {
+    return IntAry{}, err
+  }
 
-	if err != nil {
-		return IntAry{}.New(), fmt.Errorf(ePrefix+
-			"- Error ai.SetIntAryWithFloatBig(radicand) radicand= %v Error= %v ",
-			radicand, err.Error())
-	}
+  ai := new(IntAry).New()
 
-	iaNthRoot := IntAry{}.NewInt(nthRoot, 0)
+  err = ai.SetIntAryWithFloatBig(radicand, -1)
 
-	return nthrt.GetNthRootIntAry(&ai, &iaNthRoot, maxPrecision)
+  if err != nil {
+
+    return IntAry{},
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "err = ai.SetIntAryWithFloatBig(radicand, -1)",
+        ErrContext: fmt.Sprintf("radicand= '%v' precision= '%v'",
+          radicand, -1),
+        ErrMessage: err.Error(),
+      }
+  }
+
+  iaNthRoot, err := new(IntAry).NewInt(nthRoot, 0)
+
+  if err != nil {
+
+    return IntAry{},
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "iaNthRoot, err := new(IntAry).NewInt(nthRoot, 0)",
+        ErrContext: fmt.Sprintf("nthRoot= '%v' precision= '%v'",
+          nthRoot, 0),
+        ErrMessage: err.Error(),
+      }
+  }
+
+  return nthrt.GetNthRootIntAry(&ai, &iaNthRoot, maxPrecision)
 }
 
 // GetNthRootInt - Calculates the Nth Root of a positive real number ('radicand')
@@ -200,31 +292,77 @@ func (nthrt *NthRootOp) GetNthRootBigFloat(radicand *big.Float, nthRoot, maxPrec
 // Note: A negative 'radicand' value with an even nthRoot will generate an error.
 func (nthrt *NthRootOp) GetNthRootInt(radicand, precision, nthRoot, maxPrecision int) (IntAry, error) {
 
-	ePrefix := "NthRootOp.GetNthRootIn() "
+  var ePrefix *ePref.ErrPrefixDto
+  var err error
 
-	ai := IntAry{}.New()
+  ePrefix,
+    err = ePref.ErrPrefixDto{}.NewIEmpty(
+    nil,
+    "NthRootOp.GetNthRootIn",
+    "")
 
-	if precision < 0 {
-		return IntAry{},
-			fmt.Errorf(ePrefix+
-				"Error: Input parameter 'precision' is a negative value! precision='%v'",
-				precision)
-	}
+  if err != nil {
+    return IntAry{}, err
+  }
 
-	ai.SetIntAryWithInt(radicand, uint(precision))
+  ai := new(IntAry).New()
 
-	iaNthRoot := IntAry{}.NewInt(nthRoot, 0)
+  if precision < 0 {
 
-	iaResult, err := nthrt.GetNthRootIntAry(&ai, &iaNthRoot, maxPrecision)
+    return IntAry{},
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "",
+        ErrContext: "",
+        ErrMessage: fmt.Sprintf("Error: Input parameter 'precision' is INVALID!\n"+
+          "'precision' is a negative value.\n"+
+          "precision= '%v'",
+          precision),
+      }
+  }
 
-	if err != nil {
-		return IntAry{},
-			fmt.Errorf(ePrefix+
-				"Error returned by nthrt.GetNthRootIntAry(&ai, &iaNthRoot, maxPrecision) "+
-				"Error='%v' ", err.Error())
-	}
+  err = ai.SetIntAryWithInt(radicand, uint(precision))
 
-	return iaResult, nil
+  if err != nil {
+
+    return IntAry{},
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "err = ai.SetIntAryWithInt(radicand, uint(precision))",
+        ErrContext: fmt.Sprintf("radicand= '%v' precision= '%v'",
+          radicand, uint(precision)),
+        ErrMessage: err.Error(),
+      }
+  }
+
+  iaNthRoot, err := new(IntAry).NewInt(nthRoot, 0)
+
+  if err != nil {
+
+    return IntAry{},
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "iaNthRoot, err := new(IntAry).NewInt(nthRoot, 0)",
+        ErrContext: fmt.Sprintf("nthRoot= '%v' precision= '%v'",
+          nthRoot, 0),
+        ErrMessage: err.Error(),
+      }
+  }
+
+  iaResult, err := nthrt.GetNthRootIntAry(&ai, &iaNthRoot, maxPrecision)
+
+  if err != nil {
+
+    return IntAry{},
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "iaResult, err := nthrt.GetNthRootIntAry(&ai, &iaNthRoot, maxPrecision)",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+  }
+
+  return iaResult, nil
 }
 
 // GetNthRootInt64 - Calculates the Nth Root of a positive real number ('radicand')
@@ -246,31 +384,76 @@ func (nthrt *NthRootOp) GetNthRootInt(radicand, precision, nthRoot, maxPrecision
 // Note: A negative 'radicand' value with an even nthRoot will generate an error.
 func (nthrt *NthRootOp) GetNthRootInt64(radicand int64, precision, nthRoot, maxPrecision int) (IntAry, error) {
 
-	ePrefix := "NthRootOp.GetNthRootInt64() "
+  var ePrefix *ePref.ErrPrefixDto
+  var err error
 
-	if precision < 0 {
-		return IntAry{}.New(),
-			fmt.Errorf(ePrefix+
-				"Error: Input parameter 'precision' is a negative value. INVALID! "+
-				"precision='%v'", precision)
-	}
+  ePrefix,
+    err = ePref.ErrPrefixDto{}.NewIEmpty(
+    nil,
+    "NthRootOp.GetNthRootInt64",
+    "")
 
-	ai := IntAry{}.New()
+  if err != nil {
+    return IntAry{}, err
+  }
 
-	ai.SetIntAryWithInt64(radicand, uint(precision))
+  if precision < 0 {
 
-	iaNthRoot := IntAry{}.NewInt(nthRoot, 0)
+    return IntAry{},
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "",
+        ErrContext: "Error: Input parameter 'precision' is INVALID!\n" +
+          "'precision' is a negative value.\n" +
+          fmt.Sprintf("precision='%v'", precision),
+        ErrMessage: "",
+      }
+  }
 
-	iaResult, err := nthrt.GetNthRootIntAry(&ai, &iaNthRoot, maxPrecision)
+  ai := new(IntAry).New()
 
-	if err != nil {
-		return IntAry{}.New(),
-			fmt.Errorf(ePrefix+
-				"Error returned by nthrt.GetNthRootIntAry(&ai, &iaNthRoot, maxPrecision). "+
-				"Error='%v'", err.Error())
-	}
+  err = ai.SetIntAryWithInt64(radicand, uint(precision))
 
-	return iaResult, nil
+  if err != nil {
+
+    return IntAry{},
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "err = ai.SetIntAryWithInt64(radicand, uint(precision))",
+        ErrContext: fmt.Sprintf("radicand= '%v' precision= '%v'",
+          radicand, uint(precision)),
+        ErrMessage: err.Error(),
+      }
+  }
+
+  iaNthRoot, err := new(IntAry).NewInt(nthRoot, 0)
+
+  if err != nil {
+
+    return IntAry{},
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "iaNthRoot, err := new(IntAry).NewInt(nthRoot, 0)",
+        ErrContext: fmt.Sprintf("nthRoot= '%v' precision= '%v'",
+          nthRoot, 0),
+        ErrMessage: err.Error(),
+      }
+  }
+
+  iaResult, err := nthrt.GetNthRootIntAry(&ai, &iaNthRoot, maxPrecision)
+
+  if err != nil {
+
+    return IntAry{},
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "iaResult, err := nthrt.GetNthRootIntAry(&ai, &iaNthRoot, maxPrecision)",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+  }
+
+  return iaResult, nil
 }
 
 // GetNthRootBigInt - Calculates the Nth Root of a positive real number ('radicand')
@@ -291,21 +474,50 @@ func (nthrt *NthRootOp) GetNthRootInt64(radicand int64, precision, nthRoot, maxP
 // Note: A negative 'radicand' value with an even nthRoot will generate an error.
 func (nthrt *NthRootOp) GetNthRootBigInt(radicand *big.Int, precision, nthRoot, maxPrecision int) (IntAry, error) {
 
-	ePrefix := "NthRootOp.GetNthRootBigInt()"
+  var ePrefix *ePref.ErrPrefixDto
+  var err error
 
-	ai := IntAry{}.New()
+  ePrefix,
+    err = ePref.ErrPrefixDto{}.NewIEmpty(
+    nil,
+    "NthRootOp.GetNthRootBigInt",
+    "")
 
-	err := ai.SetIntAryWithBigInt(radicand, precision)
+  if err != nil {
+    return IntAry{}, err
+  }
 
-	if err != nil {
-		return IntAry{}.New(), fmt.Errorf(ePrefix+
-			"- Error returned by ai.SetIntAryWithBigInt(radicand, precision) "+
-			"radicand= %v, precision=%v Error= %v \n", radicand, precision, err.Error())
-	}
+  ai := new(IntAry).New()
 
-	iaNthRoot := IntAry{}.NewInt(nthRoot, 0)
+  err = ai.SetIntAryWithBigInt(radicand, precision)
 
-	return nthrt.GetNthRootIntAry(&ai, &iaNthRoot, maxPrecision)
+  if err != nil {
+
+    return IntAry{},
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "err = ai.SetIntAryWithBigInt(radicand, precision)",
+        ErrContext: fmt.Sprintf("radicand= %v, precision=%v",
+          radicand, precision),
+        ErrMessage: err.Error(),
+      }
+  }
+
+  iaNthRoot, err := new(IntAry).NewInt(nthRoot, 0)
+
+  if err != nil {
+
+    return IntAry{},
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "iaNthRoot, err := new(IntAry).NewInt(nthRoot, 0)",
+        ErrContext: fmt.Sprintf("nthRoot= %v, precision=%v",
+          nthRoot, 0),
+        ErrMessage: err.Error(),
+      }
+  }
+
+  return nthrt.GetNthRootIntAry(&ai, &iaNthRoot, maxPrecision)
 }
 
 // GetNthRootIntAry  - Calculates the Nth Root of a real number ('radicand')
@@ -324,17 +536,48 @@ func (nthrt *NthRootOp) GetNthRootBigInt(radicand *big.Int, precision, nthRoot, 
 //
 // Note: A negative 'radicand' value with an even nthRoot will generate an error.
 func (nthrt *NthRootOp) GetNthRootIntAry(
-	radicand, nthRoot *IntAry, maxPrecision int) (IntAry, error) {
+  radicand, nthRoot *IntAry, maxPrecision int) (IntAry, error) {
 
-	err := nthrt.calcNthRootGateway(radicand, nthRoot, maxPrecision)
+  var ePrefix *ePref.ErrPrefixDto
+  var err error
 
-	if err != nil {
-		return IntAry{}.New(),
-			fmt.Errorf("NthRootOp.GetNthRootIntAry() Error returned from calcNthRootGateway(..). "+
-				"Error= %v", err.Error())
-	}
+  ePrefix,
+    err = ePref.ErrPrefixDto{}.NewIEmpty(
+    nil,
+    "NthRootOp.GetNthRootIntAry",
+    "")
 
-	return nthrt.ResultAry.CopyOut(), nil
+  if err != nil {
+    return IntAry{}, err
+  }
+
+  err = nthrt.calcNthRootGateway(radicand, nthRoot, maxPrecision)
+
+  if err != nil {
+
+    return IntAry{},
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "err = nthrt.calcNthRootGateway(radicand, nthRoot, maxPrecision)",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+  }
+
+  resultIntAry, err := nthrt.ResultAry.CopyOut()
+
+  if err != nil {
+
+    return IntAry{},
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "resultIntAry, err := nthrt.ResultAry.CopyOut()",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+  }
+
+  return resultIntAry, nil
 }
 
 // GetSquareRootFloat32 - Calculates the Square Root of a positive real number ('radicand')
@@ -351,21 +594,39 @@ func (nthrt *NthRootOp) GetNthRootIntAry(
 //
 // Note: A negative 'radicand' value with an even nthRoot will generate an error.
 func (nthrt *NthRootOp) GetSquareRootFloat32(
-	radicand float32,
-	precision, maxPrecision int) (IntAry, error) {
+  radicand float32,
+  precision, maxPrecision int) (IntAry, error) {
 
-	ai := IntAry{}.New()
+  var ePrefix *ePref.ErrPrefixDto
+  var err error
 
-	err := ai.SetIntAryWithFloat32(radicand, int(precision))
+  ePrefix,
+    err = ePref.ErrPrefixDto{}.NewIEmpty(
+    nil,
+    "NthRootOp.GetSquareRootFloat32",
+    "")
 
-	if err != nil {
-		return IntAry{}.New(),
-			fmt.Errorf("NthRootOp.GetSquareRootFloat32() "+
-				"- Error ai.SetIntAryWithFloat32(radicand, precision) "+
-				"radicand= %v, precision=%v Error= %v ", radicand, precision, err.Error())
-	}
+  if err != nil {
+    return IntAry{}, err
+  }
 
-	return nthrt.GetSquareRootIntAry(&ai, maxPrecision)
+  ai := new(IntAry).New()
+
+  err = ai.SetIntAryWithFloat32(radicand, precision)
+
+  if err != nil {
+
+    return IntAry{},
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "err = ai.SetIntAryWithFloat32(radicand, precision)",
+        ErrContext: fmt.Sprintf("adicand= %v, precision=%v",
+          radicand, precision),
+        ErrMessage: err.Error(),
+      }
+  }
+
+  return nthrt.GetSquareRootIntAry(&ai, maxPrecision)
 
 }
 
@@ -383,21 +644,39 @@ func (nthrt *NthRootOp) GetSquareRootFloat32(
 //
 // Note: A negative 'radicand' value with an even nthRoot will generate an error.
 func (nthrt *NthRootOp) GetSquareRootFloat64(
-	radicand float64,
-	precision, maxPrecision int) (IntAry, error) {
+  radicand float64,
+  precision, maxPrecision int) (IntAry, error) {
 
-	ai := IntAry{}.New()
+  var ePrefix *ePref.ErrPrefixDto
+  var err error
 
-	err := ai.SetIntAryWithFloat64(radicand, precision)
+  ePrefix,
+    err = ePref.ErrPrefixDto{}.NewIEmpty(
+    nil,
+    "NthRootOp.GetSquareRootFloat64",
+    "")
 
-	if err != nil {
-		return IntAry{}.New(),
-			fmt.Errorf("NthRootOp.GetSquareRootFloat64() "+
-				"- Error ai.SetIntAryWithFloat64(radicand, precision) "+
-				"radicand= %v, precision=%v Error= %v ", radicand, precision, err.Error())
-	}
+  if err != nil {
+    return IntAry{}, err
+  }
 
-	return nthrt.GetSquareRootIntAry(&ai, maxPrecision)
+  ai := new(IntAry).New()
+
+  err = ai.SetIntAryWithFloat64(radicand, precision)
+
+  if err != nil {
+
+    return IntAry{},
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "err = ai.SetIntAryWithFloat64(radicand, precision)",
+        ErrContext: fmt.Sprintf("radicand= %v, precision=%v",
+          radicand, precision),
+        ErrMessage: err.Error(),
+      }
+  }
+
+  return nthrt.GetSquareRootIntAry(&ai, maxPrecision)
 }
 
 // GetSquareRootBigFloat - Calculates the Square Root of a positive real number ('radicand')
@@ -406,24 +685,42 @@ func (nthrt *NthRootOp) GetSquareRootFloat64(
 //
 // 'maxPrecision' specifies the number of decimals to the right of the decimal place to
 // which the square root will be calculated.
-
+//
 // The calculation result is returned as an intAry object.
 //
 // Note: A negative 'radicand' value with an even nthRoot will generate an error.
 func (nthrt *NthRootOp) GetSquareRootBigFloat(radicand *big.Float, maxPrecision int) (IntAry, error) {
 
-	ai := IntAry{}.New()
+  var ePrefix *ePref.ErrPrefixDto
+  var err error
 
-	err := ai.SetIntAryWithFloatBig(radicand, -1)
+  ePrefix,
+    err = ePref.ErrPrefixDto{}.NewIEmpty(
+    nil,
+    "NthRootOp.GetSquareRootBigFloat",
+    "")
 
-	if err != nil {
-		return IntAry{}.New(),
-			fmt.Errorf("NthRootOp.GetSquareRootBigFloat() "+
-				"- Error ai.SetIntAryWithFloatBig(radicand) radicand= %v Error= %v ",
-				radicand, err.Error())
-	}
+  if err != nil {
+    return IntAry{}, err
+  }
 
-	return nthrt.GetSquareRootIntAry(&ai, maxPrecision)
+  ai := new(IntAry).New()
+
+  err = ai.SetIntAryWithFloatBig(radicand, -1)
+
+  if err != nil {
+
+    return IntAry{},
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "err = ai.SetIntAryWithFloatBig(radicand, -1)",
+        ErrContext: fmt.Sprintf("radicand= '%v' precision= '%v'",
+          radicand, -1),
+        ErrMessage: err.Error(),
+      }
+  }
+
+  return nthrt.GetSquareRootIntAry(&ai, maxPrecision)
 }
 
 // GetSquareRootInt - Calculates the Square Root of a positive real number ('radicand')
@@ -442,20 +739,49 @@ func (nthrt *NthRootOp) GetSquareRootBigFloat(radicand *big.Float, maxPrecision 
 // Note: A negative 'radicand' value with an even nthRoot will generate an error.
 func (nthrt *NthRootOp) GetSquareRootInt(radicand int, precision, maxPrecision int) (IntAry, error) {
 
-	ePrefix := "NthRootOp.GetSquareRootInt() "
+  var ePrefix *ePref.ErrPrefixDto
+  var err error
 
-	ai := IntAry{}.New()
+  ePrefix,
+    err = ePref.ErrPrefixDto{}.NewIEmpty(
+    nil,
+    "NthRootOp.GetSquareRootInt",
+    "")
 
-	if precision < 0 {
-		return IntAry{},
-			fmt.Errorf(ePrefix+
-				"Error: Input parameter 'precision' is a negative value! precision='%v'",
-				precision)
-	}
+  if err != nil {
+    return IntAry{}, err
+  }
 
-	ai.SetIntAryWithInt(radicand, uint(precision))
+  ai := new(IntAry).New()
 
-	return nthrt.GetSquareRootIntAry(&ai, maxPrecision)
+  if precision < 0 {
+
+    return IntAry{},
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "",
+        ErrContext: "Error: Input parameter 'precision' is INVALID!\n" +
+          "'precision' is a negative value.\n" +
+          fmt.Sprintf("precision= '%v'", precision),
+        ErrMessage: "",
+      }
+  }
+
+  err = ai.SetIntAryWithInt(radicand, uint(precision))
+
+  if err != nil {
+
+    return IntAry{},
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: " err = ai.SetIntAryWithInt(radicand, uint(precision))",
+        ErrContext: fmt.Sprintf("radicand= '%v' precision= '%v'",
+          radicand, precision),
+        ErrMessage: err.Error(),
+      }
+  }
+
+  return nthrt.GetSquareRootIntAry(&ai, maxPrecision)
 }
 
 // GetSquareRootInt32 - Calculates the Square Root of a positive real number ('radicand')
@@ -474,29 +800,62 @@ func (nthrt *NthRootOp) GetSquareRootInt(radicand int, precision, maxPrecision i
 // Note: A negative 'radicand' value with an even nthRoot will generate an error.
 func (nthrt *NthRootOp) GetSquareRootInt32(radicand int32, precision, maxPrecision int) (IntAry, error) {
 
-	ePrefix := "NthRootOp.GetSquareRootInt32() "
+  var ePrefix *ePref.ErrPrefixDto
+  var err error
 
-	if precision < 0 {
-		return IntAry{}.New(),
-			fmt.Errorf(ePrefix+
-				"Error: Input parameter 'precision' is less than zero. INVALID! "+
-				"precision='%v' ", precision)
-	}
+  ePrefix,
+    err = ePref.ErrPrefixDto{}.NewIEmpty(
+    nil,
+    "NthRootOp.GetSquareRootInt32",
+    "")
 
-	ai := IntAry{}.New()
+  if err != nil {
+    return IntAry{}, err
+  }
 
-	ai.SetIntAryWithInt32(radicand, uint(precision))
+  if precision < 0 {
 
-	iaResult, err := nthrt.GetSquareRootIntAry(&ai, maxPrecision)
+    return IntAry{},
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "",
+        ErrContext: "",
+        ErrMessage: fmt.Sprintf("Error: Input parameter 'precision' is INVALID!\n"+
+          "'precision' is less than zero."+
+          "precision='%v' ", precision),
+      }
+  }
 
-	if err != nil {
-		return IntAry{}.New(),
-			fmt.Errorf(ePrefix+
-				"Error returned by nthrt.GetSquareRootIntAry(&ai, maxPrecision). "+
-				"Error='%v' ", err.Error())
-	}
+  ai := new(IntAry).New()
 
-	return iaResult, nil
+  err = ai.SetIntAryWithInt32(radicand, uint(precision))
+
+  if err != nil {
+
+    return IntAry{},
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "err = ai.SetIntAryWithInt32(radicand, uint(precision))",
+        ErrContext: fmt.Sprintf("radicand= '%v' precision= '%v'",
+          radicand, precision),
+        ErrMessage: err.Error(),
+      }
+  }
+
+  iaResult, err := nthrt.GetSquareRootIntAry(&ai, maxPrecision)
+
+  if err != nil {
+
+    return IntAry{},
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "iaResult, err := nthrt.GetSquareRootIntAry(&ai, maxPrecision)",
+        ErrContext: fmt.Sprintf("maxPrecision= '%v'", maxPrecision),
+        ErrMessage: err.Error(),
+      }
+  }
+
+  return iaResult, nil
 }
 
 // GetSquareRootInt64 - Calculates the Square Root of a positive real number ('radicand')
@@ -515,29 +874,62 @@ func (nthrt *NthRootOp) GetSquareRootInt32(radicand int32, precision, maxPrecisi
 // Note: A negative 'radicand' value with an even nthRoot will generate an error.
 func (nthrt *NthRootOp) GetSquareRootInt64(radicand int64, precision, maxPrecision int) (IntAry, error) {
 
-	ePrefix := "NthRootOp.GetSquareRootInt64() "
+  var ePrefix *ePref.ErrPrefixDto
+  var err error
 
-	if precision < 0 {
-		return IntAry{}.New(),
-			fmt.Errorf(ePrefix+
-				"Error: Input parameter 'precision' is less than zero. INVALID! "+
-				"precision='%v'", precision)
-	}
+  ePrefix,
+    err = ePref.ErrPrefixDto{}.NewIEmpty(
+    nil,
+    "NthRootOp.GetSquareRootInt64",
+    "")
 
-	ai := IntAry{}.New()
+  if err != nil {
+    return IntAry{}, err
+  }
 
-	ai.SetIntAryWithInt64(radicand, uint(precision))
+  if precision < 0 {
 
-	iaResult, err := nthrt.GetSquareRootIntAry(&ai, maxPrecision)
+    return IntAry{},
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "",
+        ErrContext: "",
+        ErrMessage: fmt.Sprintf("Error: Input parameter 'precision' is INVALID!\n"+
+          "'precision' is less than zero."+
+          "precision='%v'", precision),
+      }
+  }
 
-	if err != nil {
-		return IntAry{}.New(),
-			fmt.Errorf(ePrefix+
-				"Error returned by nthrt.GetSquareRootIntAry(&ai, maxPrecision). "+
-				"Error='%v'", err.Error())
-	}
+  ai := new(IntAry).New()
 
-	return iaResult, nil
+  err = ai.SetIntAryWithInt64(radicand, uint(precision))
+
+  if err != nil {
+
+    return IntAry{},
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "err = ai.SetIntAryWithInt64(radicand, uint(precision))",
+        ErrContext: fmt.Sprintf("radicand= '%v' precision= '%v'",
+          radicand, precision),
+        ErrMessage: err.Error(),
+      }
+  }
+
+  iaResult, err := nthrt.GetSquareRootIntAry(&ai, maxPrecision)
+
+  if err != nil {
+
+    return IntAry{},
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "iaResult, err := nthrt.GetSquareRootIntAry(&ai, maxPrecision)",
+        ErrContext: fmt.Sprintf("maxPrecision= '%v'", maxPrecision),
+        ErrMessage: err.Error(),
+      }
+  }
+
+  return iaResult, nil
 }
 
 // GetSquareRootBigInt - Calculates the Square Root of a positive real number ('radicand')
@@ -554,15 +946,37 @@ func (nthrt *NthRootOp) GetSquareRootInt64(radicand int64, precision, maxPrecisi
 //
 // Note: A negative 'radicand' value with an even nthRoot will generate an error.
 func (nthrt *NthRootOp) GetSquareRootBigInt(radicand *big.Int, precision, maxPrecision int) (IntAry, error) {
-	ai := IntAry{}.New()
 
-	err := ai.SetIntAryWithBigInt(radicand, precision)
+  var ePrefix *ePref.ErrPrefixDto
+  var err error
 
-	if err != nil {
-		return IntAry{}.New(), fmt.Errorf("NthRootOp.GetSquareRootBigInt() - Error ai.SetIntAryWithBigInt(radicand, precision) radicand= %v, precision=%v Error= %v ", radicand, precision, err)
-	}
+  ePrefix,
+    err = ePref.ErrPrefixDto{}.NewIEmpty(
+    nil,
+    "NthRootOp.GetSquareRootBigInt",
+    "")
 
-	return nthrt.GetSquareRootIntAry(&ai, maxPrecision)
+  if err != nil {
+    return IntAry{}, err
+  }
+
+  ai := new(IntAry).New()
+
+  err = ai.SetIntAryWithBigInt(radicand, precision)
+
+  if err != nil {
+
+    return IntAry{},
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "err = ai.SetIntAryWithBigInt(radicand, precision)",
+        ErrContext: fmt.Sprintf("radicand= '%v' precision= '%v'",
+          radicand, precision),
+        ErrMessage: err.Error(),
+      }
+  }
+
+  return nthrt.GetSquareRootIntAry(&ai, maxPrecision)
 }
 
 // GetSquareRootIntAry - Calculates the square Root of a positive real number ('radicand')
@@ -577,24 +991,62 @@ func (nthrt *NthRootOp) GetSquareRootBigInt(radicand *big.Int, precision, maxPre
 // Note: A negative 'radicand' value with an even nthRoot will generate an error.
 func (nthrt *NthRootOp) GetSquareRootIntAry(radicand *IntAry, maxPrecision int) (IntAry, error) {
 
-	ePrefix := "NthRootOp.GetSquareRootIntAry() "
+  var ePrefix *ePref.ErrPrefixDto
+  var err error
 
-	iaNthRoot := IntAry{}.NewTwo(0)
+  ePrefix,
+    err = ePref.ErrPrefixDto{}.NewIEmpty(
+    nil,
+    "NthRootOp.GetSquareRootIntAry",
+    "")
 
-	err := nthrt.calcNthRootGateway(radicand, &iaNthRoot, maxPrecision)
+  if err != nil {
+    return IntAry{}, err
+  }
 
-	if err != nil {
-		return IntAry{}.New(),
-			fmt.Errorf(ePrefix+
-				"- Error returned from nthrt.calcNthRootGateway(radicand, &iaNthRoot, maxPrecision). "+
-				"Error= %v", err.Error())
-	}
+  iaNthRoot, err := new(IntAry).NewTwo(0)
 
-	return nthrt.ResultAry.CopyOut(), nil
+  if err != nil {
 
+    return IntAry{},
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "iaNthRoot, err := new(IntAry).NewTwo(0)",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+  }
+
+  err = nthrt.calcNthRootGateway(radicand, &iaNthRoot, maxPrecision)
+
+  if err != nil {
+
+    return IntAry{},
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "err = nthrt.calcNthRootGateway(radicand, &iaNthRoot, maxPrecision)",
+        ErrContext: fmt.Sprintf("maxPrecision= '%v'", maxPrecision),
+        ErrMessage: err.Error(),
+      }
+  }
+
+  resultIntAry, err := nthrt.ResultAry.CopyOut()
+
+  if err != nil {
+
+    return IntAry{},
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "resultIntAry, err = nthrt.ResultAry.CopyOut()",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+  }
+
+  return resultIntAry, nil
 }
 
-// NewNthRoot - Returns the result of an Nth Root calculation. The result
+// NewNthRoot - Returns the result of a Nth Root calculation. The result
 // is returned as a type 'IntAry'.
 //
 // This method calculates the Nth Root of a real number ('radicand') passed
@@ -614,9 +1066,35 @@ func (nthrt *NthRootOp) GetSquareRootIntAry(radicand *IntAry, maxPrecision int) 
 // Note: A negative 'radicand' value with an even nthRoot will generate an error.
 func (nthrt *NthRootOp) NewNthRoot(radicand, nthRoot *IntAry, maxPrecision int) (IntAry, error) {
 
-	nthRtOp := NthRootOp{}
+  var ePrefix *ePref.ErrPrefixDto
+  var err error
 
-	return nthRtOp.GetNthRootIntAry(radicand, nthRoot, maxPrecision)
+  ePrefix,
+    err = ePref.ErrPrefixDto{}.NewIEmpty(
+    nil,
+    "NthRootOp.NewNthRoot",
+    "")
+
+  if err != nil {
+    return IntAry{}, err
+  }
+
+  nthRtOp := NthRootOp{}
+
+  resultIntAry, err := nthRtOp.GetNthRootIntAry(radicand, nthRoot, maxPrecision)
+
+  if err != nil {
+
+    return IntAry{},
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "resultIntAry, err := nthRtOp.GetNthRootIntAry(radicand, nthRoot, maxPrecision)",
+        ErrContext: fmt.Sprintf("maxPrecision= '%v'", maxPrecision),
+        ErrMessage: err.Error(),
+      }
+  }
+
+  return resultIntAry, nil
 }
 
 // SetNthRootIntAry  - Calculates the Nth Root of a number ('radicand') passed to the
@@ -641,10 +1119,35 @@ func (nthrt *NthRootOp) NewNthRoot(radicand, nthRoot *IntAry, maxPrecision int) 
 // Note: A negative 'radicand' value with an even nthRoot will generate an error.
 func (nthrt *NthRootOp) SetNthRootIntAry(radicand, nthRoot *IntAry, maxPrecision int) error {
 
-	return nthrt.calcNthRootGateway(radicand, nthRoot, maxPrecision)
+  var ePrefix *ePref.ErrPrefixDto
+  var err error
+
+  ePrefix,
+    err = ePref.ErrPrefixDto{}.NewIEmpty(
+    nil,
+    "NthRootOp.SetNthRootIntAry",
+    "")
+
+  if err != nil {
+    return err
+  }
+
+  err = nthrt.calcNthRootGateway(radicand, nthRoot, maxPrecision)
+
+  if err != nil {
+
+    return &FuncReturnError{
+      ErrPrefix:  ePrefix.String(),
+      ReturnFunc: "err = nthrt.calcNthRootGateway(radicand, nthRoot, maxPrecision)",
+      ErrContext: fmt.Sprintf("maxPrecision= '%v'", maxPrecision),
+      ErrMessage: err.Error(),
+    }
+  }
+
+  return nil
 }
 
-// calcNthRootGateway - This method is is the primary means by which the nth root
+// calcNthRootGateway - This method is the primary means by which the nth root
 // calculation is accessed. All screening and validation of input parameters 'radicand'
 // and 'nthRoot' are performed here. If 'radicand' and 'nthRoot' pass all tests for
 // validity, this method proceeds to perform the nth root calculation and store the result
@@ -655,451 +1158,1218 @@ func (nthrt *NthRootOp) SetNthRootIntAry(radicand, nthRoot *IntAry, maxPrecision
 // 4,096 decimal places.
 func (nthrt *NthRootOp) calcNthRootGateway(radicand, nthRoot *IntAry, maxPrecision int) error {
 
-	ePrefix := "NthRootOp.calcNthRootGateway() "
+  var ePrefix *ePref.ErrPrefixDto
+  var err error
 
-	if maxPrecision < 0 {
-		maxPrecision = 4096
-	}
+  ePrefix,
+    err = ePref.ErrPrefixDto{}.NewIEmpty(
+    nil,
+    "NthRootOp.calcNthRootGateway",
+    "")
 
-	nthrt.ResultAry = IntAry{}.NewInt32(0, 0)
+  if err != nil {
+    return err
+  }
 
-	// If radicand is zero, the result will always be zero.
-	if radicand.IsZero() {
-		nthrt.ResultAry.SetIntAryToZero(uint(maxPrecision))
-		return nil
-	}
+  if maxPrecision < 0 {
+    maxPrecision = 4096
+  }
 
-	if nthRoot.IsZero() {
-		nthrt.ResultAry.SetIntAryToOne(maxPrecision)
-		return nil
-	}
+  nthrt.ResultAry, err = new(IntAry).NewInt32(0, 0)
 
-	nthRootPrecision := nthRoot.GetPrecision()
-	nthRootSign := nthRoot.GetSign()
+  if err != nil {
 
-	if nthRootPrecision == 0 && nthRootSign == -1 {
+    return &FuncReturnError{
+      ErrPrefix:  ePrefix.String(),
+      ReturnFunc: "nthrt.ResultAry, err = new(IntAry).NewInt32(0, 0)",
+      ErrContext: fmt.Sprintf("int32Num= '%v' precision= '%v'",
+        0, 0),
+      ErrMessage: err.Error(),
+    }
+  }
 
-		return nthrt.calcNegativeIntegerNthRoot(radicand, nthRoot, maxPrecision)
+  radicandIsZero, err := radicand.IsZero()
 
-	} else if nthRoot.precision > 0 && nthRootSign == -1 {
+  if err != nil {
 
-		return nthrt.calcNegativeFractionalNthRoot(radicand, nthRoot, maxPrecision)
+    return &FuncReturnError{
+      ErrPrefix:  ePrefix.String(),
+      ReturnFunc: "radicandIsZero, err := radicand.IsZero()",
+      ErrContext: "",
+      ErrMessage: err.Error(),
+    }
+  }
 
-	} else if nthRoot.precision == 0 && nthRootSign == 1 {
+  // If radicand is zero, the result will always be zero.
+  if radicandIsZero {
 
-		return nthrt.calcPositiveIntegerNthRoot(radicand, nthRoot, maxPrecision)
+    err = nthrt.ResultAry.SetIntAryToZero(uint(maxPrecision))
 
-	} else if nthRoot.precision > 0 && nthRootSign == 1 {
+    if err != nil {
 
-		return nthrt.calcPositiveFractionalNthRoot(radicand, nthRoot, maxPrecision)
+      return &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "err = nthrt.ResultAry.SetIntAryToZero(uint(maxPrecision))",
+        ErrContext: fmt.Sprintf("maxPrecision= '%v'", maxPrecision),
+        ErrMessage: err.Error(),
+      }
+    }
 
-	}
+    return nil
+  }
 
-	return fmt.Errorf(ePrefix+
-		"Error - 'nthRoot' configuration failed to match acceptable calculation patterns! "+
-		"nthRoot='%v' ", nthRoot.GetNumStr())
+  nthRootIsZero, err := nthRoot.IsZero()
+
+  if err != nil {
+
+    return &FuncReturnError{
+      ErrPrefix:  ePrefix.String(),
+      ReturnFunc: "nthRootIsZero, err = nthRoot.IsZero()",
+      ErrContext: "",
+      ErrMessage: err.Error(),
+    }
+  }
+
+  if nthRootIsZero {
+
+    err = nthrt.ResultAry.SetIntAryToOne(maxPrecision)
+
+    if err != nil {
+
+      return &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "err = nthrt.ResultAry.SetIntAryToOne(maxPrecision)",
+        ErrContext: fmt.Sprintf("maxPrecision= '%v'", maxPrecision),
+        ErrMessage: err.Error(),
+      }
+    }
+
+    return nil
+  }
+
+  nthRootPrecision := nthRoot.GetPrecision()
+
+  nthRootSign, err := nthRoot.GetSign()
+
+  if err != nil {
+
+    return &FuncReturnError{
+      ErrPrefix:  ePrefix.String(),
+      ReturnFunc: "nthRootSign, err := nthRoot.GetSign()",
+      ErrContext: "",
+      ErrMessage: err.Error(),
+    }
+  }
+
+  if nthRootPrecision == 0 && nthRootSign == -1 {
+
+    return nthrt.calcNegativeIntegerNthRoot(radicand, nthRoot, maxPrecision)
+
+  } else if nthRoot.precision > 0 && nthRootSign == -1 {
+
+    return nthrt.calcNegativeFractionalNthRoot(radicand, nthRoot, maxPrecision)
+
+  } else if nthRoot.precision == 0 && nthRootSign == 1 {
+
+    return nthrt.calcPositiveIntegerNthRoot(radicand, nthRoot, maxPrecision)
+
+  } else if nthRoot.precision > 0 && nthRootSign == 1 {
+
+    return nthrt.calcPositiveFractionalNthRoot(radicand, nthRoot, maxPrecision)
+
+  }
+
+  nthRootNumStr, err := nthRoot.GetNumStr()
+
+  if err != nil {
+
+    return &FuncReturnError{
+      ErrPrefix:  ePrefix.String(),
+      ReturnFunc: "nthRootNumStr, err := nthRoot.GetNumStr()",
+      ErrContext: "",
+      ErrMessage: err.Error(),
+    }
+  }
+
+  return &FuncReturnError{
+    ErrPrefix:  ePrefix.String(),
+    ReturnFunc: "",
+    ErrContext: "",
+    ErrMessage: fmt.Sprintf("Error - 'nthRoot' configuration failed to match acceptable calculation patterns! "+
+      "nthRoot='%v' ", nthRootNumStr),
+  }
 
 }
 
 // calcPositiveIntegerNthRoot - Calculates the Nth Root of a radicand where
 // nth root is both positive and an integer value.
 func (nthrt *NthRootOp) calcPositiveIntegerNthRoot(
-	radicand, nthRoot *IntAry,
-	maxPrecision int) error {
+  radicand, nthRoot *IntAry,
+  maxPrecision int) error {
 
-	ePrefix := "NthRootOp.calcPositiveIntegerNthRoot() "
+  var ePrefix *ePref.ErrPrefixDto
+  var err error
 
-	if nthRoot.GetSign() != 1 {
-		return fmt.Errorf(ePrefix+
-			"Error expected postive 'nthRoot'. 'nthRoot' is negative! "+
-			"nthRoot= %v", nthRoot.GetNumStr())
-	}
+  ePrefix,
+    err = ePref.ErrPrefixDto{}.NewIEmpty(
+    nil,
+    "NthRootOp.calcPositiveIntegerNthRoot",
+    "")
 
-	if radicand.GetSign() == -1 {
+  if err != nil {
+    return err
+  }
 
-		if nthRoot.IsEvenNumber() {
-			return errors.New(ePrefix +
-				"INVALID ENTRY - Cannot calculate nthRoot of a negative number when nthRoot is even.\n")
-		}
-	}
+  nthRootSignVal, err := nthRoot.GetSign()
 
-	if maxPrecision < 0 {
-		maxPrecision = 4096
-	}
+  if err != nil {
 
-	err := nthrt.initialize(radicand, nthRoot, maxPrecision)
+    return &FuncReturnError{
+      ErrPrefix:  ePrefix.String(),
+      ReturnFunc: "nthRootSignVal, err := nthRoot.GetSign()",
+      ErrContext: "",
+      ErrMessage: err.Error(),
+    }
+  }
 
-	if err != nil {
-		return fmt.Errorf(ePrefix+
-			"Error returned from initialization. Error= %v",
-			err.Error())
-	}
+  nthRootNumStr, err := nthRoot.GetNumStr()
 
-	err = nthrt.doRootExtraction()
+  if err != nil {
 
-	if err != nil {
-		return fmt.Errorf(ePrefix+
-			"- Error returned from nthrt.doRootExtraction() "+
-			"Error='%v' ", err.Error())
-	}
+    return &FuncReturnError{
+      ErrPrefix:  ePrefix.String(),
+      ReturnFunc: "nthRootNumStr, err := nthRoot.GetNumStr()",
+      ErrContext: "",
+      ErrMessage: err.Error(),
+    }
+  }
 
-	return nil
+  if nthRootSignVal != 1 {
+
+    return &FuncReturnError{
+      ErrPrefix:  ePrefix.String(),
+      ReturnFunc: "nthRootSignVal, err := nthRoot.GetSign()",
+      ErrContext: "",
+      ErrMessage: fmt.Sprintf("Error: Expected postive 'nthRoot'.\n"+
+        "Instead, 'nthRoot' is negative!\n"+
+        "nthRoot= %v", nthRootNumStr),
+    }
+  }
+
+  radicandSignVal, err := radicand.GetSign()
+
+  if err != nil {
+
+    return &FuncReturnError{
+      ErrPrefix:  ePrefix.String(),
+      ReturnFunc: "radicandSignVal, err := radicand.GetSign()",
+      ErrContext: "",
+      ErrMessage: err.Error(),
+    }
+  }
+
+  if radicandSignVal == -1 {
+
+    return &FuncReturnError{
+      ErrPrefix:  ePrefix.String(),
+      ReturnFunc: "radicandSignVal, err := radicand.GetSign()",
+      ErrContext: "",
+      ErrMessage: "Error: Cannot calculate nthRoot of a negative number when nthRoot is even.\n" +
+        "Sign Value of radicand is -1",
+    }
+  }
+
+  if maxPrecision < 0 {
+    maxPrecision = 4096
+  }
+
+  err = nthrt.initialize(radicand, nthRoot, maxPrecision)
+
+  if err != nil {
+
+    return &FuncReturnError{
+      ErrPrefix:  ePrefix.String(),
+      ReturnFunc: "err = nthrt.initialize(radicand, nthRoot, maxPrecision)",
+      ErrContext: fmt.Sprintf("maxPrecision= '%v'", maxPrecision),
+      ErrMessage: err.Error(),
+    }
+  }
+
+  err = nthrt.doRootExtraction()
+
+  if err != nil {
+
+    return &FuncReturnError{
+      ErrPrefix:  ePrefix.String(),
+      ReturnFunc: "err = nthrt.doRootExtraction()",
+      ErrContext: "",
+      ErrMessage: err.Error(),
+    }
+  }
+
+  return nil
 }
 
 // calcNegativeIntegerNthRoot - Calculates the Nth Root of a radicand where
 // nth root is both negative and an integer value.
 func (nthrt *NthRootOp) calcNegativeIntegerNthRoot(
-	radicand, nthRoot *IntAry,
-	maxPrecision int) error {
+  radicand, nthRoot *IntAry,
+  maxPrecision int) error {
 
-	ePrefix := "NthRootOp.calcNegativeIntegerNthRoot() "
+  var ePrefix *ePref.ErrPrefixDto
+  var err error
 
-	if nthRoot.GetSign() != -1 {
-		return fmt.Errorf(ePrefix+
-			"Error expected negative 'nthRoot'. 'nthRoot' is positive! "+
-			"nthRoot= %v", nthRoot.GetNumStr())
-	}
+  ePrefix,
+    err = ePref.ErrPrefixDto{}.NewIEmpty(
+    nil,
+    "NthRootOp.calcNegativeIntegerNthRoot",
+    "")
 
-	if radicand.GetSign() == -1 {
+  if err != nil {
+    return err
+  }
 
-		if nthRoot.IsEvenNumber() {
-			return errors.New(ePrefix +
-				"INVALID ENTRY - Cannot calculate nthRoot of a negative number when nthRoot is even.\n")
-		}
-	}
+  nthRootSignVal, err := nthRoot.GetSign()
 
-	if maxPrecision < 0 {
-		maxPrecision = 4096
-	}
+  if err != nil {
 
-	// Change sign from negative (-) to positive (+)
-	nthRoot.ChangeSign()
+    return &FuncReturnError{
+      ErrPrefix:  ePrefix.String(),
+      ReturnFunc: "nthRootSignVal, err := nthRoot.GetSign()",
+      ErrContext: "",
+      ErrMessage: err.Error(),
+    }
+  }
 
-	err := nthrt.initialize(radicand, nthRoot, maxPrecision)
+  nthRootNumStr, err := nthRoot.GetNumStr()
 
-	if err != nil {
-		return fmt.Errorf(ePrefix+
-			"Error returned from initialization. Error= %v",
-			err.Error())
-	}
+  if err != nil {
 
-	err = nthrt.doRootExtraction()
+    return &FuncReturnError{
+      ErrPrefix:  ePrefix.String(),
+      ReturnFunc: "nthRootNumStr, err := nthRoot.GetNumStr()",
+      ErrContext: "",
+      ErrMessage: err.Error(),
+    }
+  }
 
-	if err != nil {
-		return fmt.Errorf(ePrefix+
-			"- Error returned from nthrt.doRootExtraction() "+
-			"Error='%v' ", err.Error())
-	}
+  if nthRootSignVal != -1 {
 
-	result, err := nthrt.ResultAry.Inverse(maxPrecision + 100)
+    return &FuncReturnError{
+      ErrPrefix:  ePrefix.String(),
+      ReturnFunc: "",
+      ErrContext: "",
+      ErrMessage: fmt.Sprintf("Error expected negative 'nthRoot'.\n"+
+        "Instead, 'nthRoot' is positive!"+
+        "nthRoot= %v", nthRootNumStr),
+    }
+  }
 
-	if err != nil {
-		return fmt.Errorf(ePrefix+
-			"- Error returned from nthrt.ResultAry.Inverse() "+
-			"Error='%v' ", err.Error())
+  radicandSignVal, err := radicand.GetSign()
 
-	}
+  if err != nil {
 
-	if result.GetPrecision() > maxPrecision {
-		result.RoundToPrecision(maxPrecision)
-	}
+    return &FuncReturnError{
+      ErrPrefix:  ePrefix.String(),
+      ReturnFunc: "radicandSignVal, err := radicand.GetSign()",
+      ErrContext: "",
+      ErrMessage: err.Error(),
+    }
+  }
 
-	// Change sign from positive (+), back to negative (-)
-	nthRoot.ChangeSign()
+  if radicandSignVal == -1 {
 
-	nthrt.Empty()
-	nthrt.NthRootIntAry.CopyIn(nthRoot, false)
-	nthrt.ResultAry.CopyIn(&result, false)
-	nthrt.Radicand = radicand.CopyOutPtr()
-	nthrt.ResultPrecision = nthrt.ResultAry.GetPrecision()
-	nthrt.RequestedPrecision = maxPrecision
-	nthrt.NthRootBigInt, err = nthrt.NthRootIntAry.GetBigInt()
-	if err != nil {
-		return fmt.Errorf(ePrefix+
-			"- Error returned from nthrt.NthRootIntAry.GetBigInt() "+
-			"Error='%v' ", err.Error())
+    nthRootIsEvenNum, err := nthRoot.IsEvenNumber()
 
-	}
+    if err != nil {
 
-	return nil
+      return &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "nthRootIsEvenNum, err := nthRoot.IsEvenNumber()",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+    }
+
+    if nthRootIsEvenNum {
+
+      return &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "",
+        ErrContext: "",
+        ErrMessage: "Error: Invalid Entry!\n" +
+          "Cannot calculate nthRoot of a negative number when nthRoot is even.",
+      }
+    }
+  }
+
+  if maxPrecision < 0 {
+    maxPrecision = 4096
+  }
+
+  // Change sign from negative (-) to positive (+)
+  err = nthRoot.ChangeSign()
+
+  if err != nil {
+
+    return &FuncReturnError{
+      ErrPrefix:  ePrefix.String(),
+      ReturnFunc: "err = nthRoot.ChangeSign()",
+      ErrContext: "",
+      ErrMessage: err.Error(),
+    }
+  }
+
+  err = nthrt.initialize(radicand, nthRoot, maxPrecision)
+
+  if err != nil {
+
+    return &FuncReturnError{
+      ErrPrefix:  ePrefix.String(),
+      ReturnFunc: "err = nthrt.initialize(radicand, nthRoot, maxPrecision)",
+      ErrContext: "Error returned from initialization.",
+      ErrMessage: err.Error(),
+    }
+  }
+
+  err = nthrt.doRootExtraction()
+
+  if err != nil {
+
+    return &FuncReturnError{
+      ErrPrefix:  ePrefix.String(),
+      ReturnFunc: "err = nthrt.doRootExtraction()",
+      ErrContext: "",
+      ErrMessage: err.Error(),
+    }
+  }
+
+  result, err := nthrt.ResultAry.Inverse(maxPrecision + 100)
+
+  if err != nil {
+
+    return &FuncReturnError{
+      ErrPrefix:  ePrefix.String(),
+      ReturnFunc: "result, err := nthrt.ResultAry.Inverse(maxPrecision + 100)",
+      ErrContext: "",
+      ErrMessage: err.Error(),
+    }
+  }
+
+  if result.GetPrecision() > maxPrecision {
+
+    err = result.RoundToPrecision(maxPrecision)
+
+    if err != nil {
+
+      return &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "err = result.RoundToPrecision(maxPrecision)",
+        ErrContext: fmt.Sprintf("maxPrecision= '%v'", maxPrecision),
+        ErrMessage: err.Error(),
+      }
+    }
+
+  }
+
+  // Change sign from positive (+), back to negative (-)
+  err = nthRoot.ChangeSign()
+
+  if err != nil {
+
+    return &FuncReturnError{
+      ErrPrefix:  ePrefix.String(),
+      ReturnFunc: "err = nthRoot.ChangeSign()",
+      ErrContext: "",
+      ErrMessage: err.Error(),
+    }
+  }
+
+  nthrt.Empty()
+
+  err = nthrt.NthRootIntAry.CopyIn(nthRoot, false)
+
+  if err != nil {
+
+    return &FuncReturnError{
+      ErrPrefix:  ePrefix.String(),
+      ReturnFunc: "err = nthrt.NthRootIntAry.CopyIn(nthRoot, false)",
+      ErrContext: "",
+      ErrMessage: err.Error(),
+    }
+  }
+
+  err = nthrt.ResultAry.CopyIn(&result, false)
+
+  if err != nil {
+
+    return &FuncReturnError{
+      ErrPrefix:  ePrefix.String(),
+      ReturnFunc: "err = nthrt.ResultAry.CopyIn(&result, false)",
+      ErrContext: "",
+      ErrMessage: err.Error(),
+    }
+  }
+
+  nthrt.Radicand, err = radicand.CopyOutPtr()
+
+  if err != nil {
+
+    return &FuncReturnError{
+      ErrPrefix:  ePrefix.String(),
+      ReturnFunc: "nthrt.Radicand, err = radicand.CopyOutPtr()",
+      ErrContext: "",
+      ErrMessage: err.Error(),
+    }
+  }
+
+  nthrt.ResultPrecision = nthrt.ResultAry.GetPrecision()
+
+  nthrt.RequestedPrecision = maxPrecision
+
+  nthrt.NthRootBigInt, err = nthrt.NthRootIntAry.GetBigInt()
+
+  if err != nil {
+
+    return &FuncReturnError{
+      ErrPrefix:  ePrefix.String(),
+      ReturnFunc: "nthrt.NthRootBigInt, err = nthrt.NthRootIntAry.GetBigInt()",
+      ErrContext: "",
+      ErrMessage: err.Error(),
+    }
+  }
+
+  return nil
 }
 
 // calcPositiveFractionalNthRoot - Calculates the Nth Root of a radicand where
 // nth root is both negative and an integer value.
 func (nthrt *NthRootOp) calcPositiveFractionalNthRoot(
-	radicand, nthRoot *IntAry,
-	maxPrecision int) error {
+  radicand, nthRoot *IntAry,
+  maxPrecision int) error {
 
-	ePrefix := "NthRootOp.calcPositiveFractionalNthRoot() "
+  var ePrefix *ePref.ErrPrefixDto
+  var err error
 
-	if nthRoot.GetPrecision() < 1 {
-		return fmt.Errorf(ePrefix+
-			"Error- Expected fractional 'nthRoot'. 'nthRoot' is an integer value. "+
-			"nthRoot='%v' ", nthRoot.GetNumStr())
-	}
+  ePrefix,
+    err = ePref.ErrPrefixDto{}.NewIEmpty(
+    nil,
+    "NthRootOp.calcPositiveFractionalNthRoot",
+    "")
 
-	if maxPrecision < 0 {
-		maxPrecision = 4096
-	}
+  if err != nil {
+    return err
+  }
 
-	internalMaxPrecision := maxPrecision + 100
+  nthRootNumStr, err := nthRoot.GetNumStr()
 
-	fracIntAry := FracIntAry{}.NewFracIntAry(nthRoot)
+  if err != nil {
 
-	err := fracIntAry.ReduceToLowestCommonDenom(internalMaxPrecision)
+    return &FuncReturnError{
+      ErrPrefix:  ePrefix.String(),
+      ReturnFunc: "nthRootNumStr, err := nthRoot.GetNumStr()",
+      ErrContext: "",
+      ErrMessage: err.Error(),
+    }
+  }
 
-	if err != nil {
-		return fmt.Errorf(ePrefix+
-			"Error returned by fracIntAry.ReduceToLowestCommonDenom(internalMaxPrecision) "+
-			"internalMaxPrecision='%v' Error='%v' ",
-			internalMaxPrecision, err.Error())
-	}
+  if nthRoot.GetPrecision() < 1 {
 
-	newRadicand := radicand.CopyOut()
+    return &FuncReturnError{
+      ErrPrefix:  ePrefix.String(),
+      ReturnFunc: "",
+      ErrContext: "",
+      ErrMessage: fmt.Sprintf("Error: Expected fractional 'nthRoot'.\n"+
+        "Instead, 'nthRoot' is an integer value.\n"+
+        "nthRoot='%v' ", nthRootNumStr),
+    }
+  }
 
-	err = IntAryMathPower{}.Pwr(
-		&newRadicand,
-		&fracIntAry.Denominator,
-		0,
-		internalMaxPrecision)
+  if maxPrecision < 0 {
+    maxPrecision = 4096
+  }
 
-	if err != nil {
-		return fmt.Errorf(ePrefix+
-			"Error returned by IntAryMathPower{}.Pwr(radicand, fracIntAry.Denominator) "+
-			"Error='%v' ", err.Error())
-	}
+  internalMaxPrecision := maxPrecision + 100
 
-	if newRadicand.GetSign() == -1 {
+  fracIntAry, err := new(FracIntAry).NewFracIntAry(nthRoot)
 
-		if fracIntAry.Numerator.IsEvenNumber() {
-			return errors.New(ePrefix +
-				"INVALID ENTRY - Cannot calculate nthRoot of a negative number when nthRoot is even.\n")
-		}
-	}
+  if err != nil {
 
-	err = nthrt.initialize(&newRadicand, &fracIntAry.Numerator, maxPrecision)
+    return &FuncReturnError{
+      ErrPrefix:  ePrefix.String(),
+      ReturnFunc: "fracIntAry, err := new(FracIntAry).NewFracIntAry(nthRoot)",
+      ErrContext: "",
+      ErrMessage: err.Error(),
+    }
+  }
 
-	if err != nil {
-		return fmt.Errorf(ePrefix+
-			"Error returned from initialization. Error= %v",
-			err.Error())
-	}
+  err = fracIntAry.ReduceToLowestCommonDenom(internalMaxPrecision)
 
-	err = nthrt.doRootExtraction()
+  if err != nil {
 
-	if err != nil {
-		return fmt.Errorf(ePrefix+
-			"- Error returned from nthrt.doRootExtraction() "+
-			"Error='%v' ", err.Error())
-	}
+    return &FuncReturnError{
+      ErrPrefix:  ePrefix.String(),
+      ReturnFunc: "err = fracIntAry.ReduceToLowestCommonDenom(internalMaxPrecision)",
+      ErrContext: "",
+      ErrMessage: err.Error(),
+    }
+  }
 
-	return nil
+  newRadicand, err := radicand.CopyOut()
+
+  if err != nil {
+
+    return &FuncReturnError{
+      ErrPrefix:  ePrefix.String(),
+      ReturnFunc: "newRadicand, err := radicand.CopyOut()",
+      ErrContext: "",
+      ErrMessage: err.Error(),
+    }
+  }
+
+  err = new(IntAryMathPower).Pwr(
+    &newRadicand,
+    &fracIntAry.Denominator,
+    0,
+    internalMaxPrecision)
+
+  if err != nil {
+
+    return &FuncReturnError{
+      ErrPrefix: ePrefix.String(),
+      ReturnFunc: "err = new(IntAryMathPower).Pwr(\n" +
+        "  &newRadicand, &fracIntAry.Denominator, 0, internalMaxPrecision)",
+      ErrContext: fmt.Sprintf("minResultPrecision= '0' internalMaxPrecision= '%v' ",
+        internalMaxPrecision),
+      ErrMessage: err.Error(),
+    }
+  }
+
+  newRadicandSignVal, err := newRadicand.GetSign()
+
+  if err != nil {
+
+    return &FuncReturnError{
+      ErrPrefix:  ePrefix.String(),
+      ReturnFunc: "newRadicandSignVal, err :=  newRadicand.GetSign()",
+      ErrContext: "",
+      ErrMessage: err.Error(),
+    }
+  }
+
+  if newRadicandSignVal == -1 {
+
+    fracIntAryNumeratorIsEvenNum, err := fracIntAry.Numerator.IsEvenNumber()
+
+    if err != nil {
+
+      return &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "fracIntAryNumeratorIsEvenNum, err := fracIntAry.Numerator.IsEvenNumber()",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+    }
+
+    if fracIntAryNumeratorIsEvenNum {
+      return &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "",
+        ErrContext: "",
+        ErrMessage: "Error: INVALID ENTRY\n" +
+          "Cannot calculate nthRoot of a negative number when nthRoot is even.",
+      }
+    }
+  }
+
+  err = nthrt.initialize(&newRadicand, &fracIntAry.Numerator, maxPrecision)
+
+  if err != nil {
+
+    return &FuncReturnError{
+      ErrPrefix:  ePrefix.String(),
+      ReturnFunc: "err = nthrt.initialize(&newRadicand, &fracIntAry.Numerator, maxPrecision)",
+      ErrContext: fmt.Sprintf("maxPrecision= '%v'", maxPrecision),
+      ErrMessage: err.Error(),
+    }
+  }
+
+  err = nthrt.doRootExtraction()
+
+  if err != nil {
+
+    return &FuncReturnError{
+      ErrPrefix:  ePrefix.String(),
+      ReturnFunc: "err = nthrt.doRootExtraction()",
+      ErrContext: "",
+      ErrMessage: err.Error(),
+    }
+  }
+
+  return nil
 }
 
 // calcNegativeFractionalNthRoot - Calculates the Nth Root of a radicand where
 // nth root is both negative and an integer value.
 func (nthrt *NthRootOp) calcNegativeFractionalNthRoot(
-	radicand, nthRoot *IntAry,
-	maxPrecision int) error {
+  radicand, nthRoot *IntAry,
+  maxPrecision int) error {
 
-	ePrefix := "NthRootOp.calcNegativeFractionalNthRoot() "
+  var ePrefix *ePref.ErrPrefixDto
+  var err error
 
-	if maxPrecision < 0 {
-		maxPrecision = 4096
-	}
+  ePrefix,
+    err = ePref.ErrPrefixDto{}.NewIEmpty(
+    nil,
+    "NthRootOp.calcNegativeFractionalNthRoot",
+    "")
 
-	internalMaxPrecision := maxPrecision + 100
+  if err != nil {
+    return err
+  }
 
-	if nthRoot.GetSign() != -1 {
-		return fmt.Errorf(ePrefix+
-			"Error: Expected negative 'nthRoot'. Instead, 'nthRoot' is positive! "+
-			"nthRoot='%v' ", nthRoot.GetNumStr())
-	}
+  if maxPrecision < 0 {
+    maxPrecision = 4096
+  }
 
-	// Change sign from negative (-) to positive (+)
-	nthRoot.ChangeSign()
+  internalMaxPrecision := maxPrecision + 100
 
-	if nthRoot.GetPrecision() < 1 {
-		return fmt.Errorf(ePrefix+
-			"Error- Expected fractional 'nthRoot'. 'nthRoot' is an integer value. "+
-			"nthRoot='%v' ", nthRoot.GetNumStr())
-	}
+  nthRootSignVal, err := nthRoot.GetSign()
 
-	fracIntAry := FracIntAry{}.NewFracIntAry(nthRoot)
+  if err != nil {
 
-	err := fracIntAry.ReduceToLowestCommonDenom(internalMaxPrecision)
+    return &FuncReturnError{
+      ErrPrefix:  ePrefix.String(),
+      ReturnFunc: "nthRootSignVal, err := nthRoot.GetSign()",
+      ErrContext: "",
+      ErrMessage: err.Error(),
+    }
+  }
 
-	if err != nil {
-		return fmt.Errorf(ePrefix+
-			"Error returned by fracIntAry.ReduceToLowestCommonDenom(4096) "+
-			"Error='%v' ", err.Error())
-	}
+  nthRootNumStr, err := nthRoot.GetNumStr()
 
-	newRadicand := radicand.CopyOut()
+  if err != nil {
 
-	err = IntAryMathPower{}.Pwr(
-		&newRadicand,
-		&fracIntAry.Denominator,
-		0,
-		internalMaxPrecision)
+    return &FuncReturnError{
+      ErrPrefix:  ePrefix.String(),
+      ReturnFunc: "nthRootNumStr, err := nthRoot.GetNumStr()",
+      ErrContext: "",
+      ErrMessage: err.Error(),
+    }
+  }
 
-	if err != nil {
-		return fmt.Errorf(ePrefix+
-			"Error returned by IntAryMathPower{}.Pwr(radicand, fracIntAry.Denominator) "+
-			"Error='%v' ", err.Error())
-	}
+  if nthRootSignVal != -1 {
 
-	if newRadicand.GetSign() == -1 {
+    return &FuncReturnError{
+      ErrPrefix:  ePrefix.String(),
+      ReturnFunc: "",
+      ErrContext: "",
+      ErrMessage: fmt.Sprintf("Error: Expected negative 'nthRoot'. Instead, 'nthRoot' is positive! "+
+        "nthRoot='%v' ", nthRootNumStr),
+    }
+  }
 
-		if fracIntAry.Numerator.IsEvenNumber() {
-			return errors.New(ePrefix +
-				"INVALID ENTRY - Cannot calculate nthRoot of a negative number when nthRoot is even. \n")
-		}
-	}
+  // Change sign from negative (-) to positive (+)
+  err = nthRoot.ChangeSign()
 
-	err = nthrt.initialize(&newRadicand, &fracIntAry.Numerator, internalMaxPrecision)
+  if err != nil {
 
-	if err != nil {
-		return fmt.Errorf(ePrefix+
-			"Error returned from initialization. Error= %v",
-			err.Error())
-	}
+    return &FuncReturnError{
+      ErrPrefix:  ePrefix.String(),
+      ReturnFunc: "err = nthRoot.ChangeSign()",
+      ErrContext: "",
+      ErrMessage: err.Error(),
+    }
+  }
 
-	err = nthrt.doRootExtraction()
+  if nthRoot.GetPrecision() < 1 {
 
-	if err != nil {
-		return fmt.Errorf(ePrefix+
-			"- Error returned from nthrt.doRootExtraction() "+
-			"Error='%v' ", err.Error())
-	}
+    return &FuncReturnError{
+      ErrPrefix:  ePrefix.String(),
+      ReturnFunc: "err = nthRoot.ChangeSign()",
+      ErrContext: "",
+      ErrMessage: fmt.Sprintf("Error: Expected fractional 'nthRoot'.\n"+
+        "Instead, 'nthRoot' is an integer value."+
+        "nthRoot='%v' ", nthRootNumStr),
+    }
+  }
 
-	result, err := nthrt.ResultAry.Inverse(internalMaxPrecision + 10)
+  fracIntAry, err := new(FracIntAry).NewFracIntAry(nthRoot)
 
-	if err != nil {
-		return fmt.Errorf(ePrefix+
-			"- Error returned from nthrt.ResultAry.Inverse() "+
-			"Error='%v' ", err.Error())
+  if err != nil {
 
-	}
+    return &FuncReturnError{
+      ErrPrefix:  ePrefix.String(),
+      ReturnFunc: "fracIntAry, err := new(FracIntAry).NewFracIntAry(nthRoot)",
+      ErrContext: "",
+      ErrMessage: err.Error(),
+    }
+  }
 
-	if result.GetPrecision() > maxPrecision {
-		result.RoundToPrecision(maxPrecision)
-	}
+  err = fracIntAry.ReduceToLowestCommonDenom(internalMaxPrecision)
 
-	// Change sign from positive (+), back to negative (-)
-	fracIntAry.Numerator.ChangeSign()
+  if err != nil {
 
-	nthrt.Empty()
-	nthrt.NthRootIntAry.CopyIn(&fracIntAry.Numerator, false)
-	nthrt.ResultAry.CopyIn(&result, false)
-	nthrt.Radicand = newRadicand.CopyOutPtr()
-	nthrt.ResultPrecision = nthrt.ResultAry.GetPrecision()
-	nthrt.RequestedPrecision = maxPrecision
-	nthrt.NthRootBigInt, err = nthrt.NthRootIntAry.GetBigInt()
-	if err != nil {
-		return fmt.Errorf(ePrefix+
-			"- Error returned from nthrt.NthRootIntAry.GetBigInt() "+
-			"Error='%v' ", err.Error())
+    return &FuncReturnError{
+      ErrPrefix:  ePrefix.String(),
+      ReturnFunc: "err = fracIntAry.ReduceToLowestCommonDenom(internalMaxPrecision)",
+      ErrContext: fmt.Sprintf("internalMaxPrecision= '%v'", internalMaxPrecision),
+      ErrMessage: err.Error(),
+    }
+  }
 
-	}
+  newRadicand, err := radicand.CopyOut()
 
-	return nil
+  if err != nil {
+
+    return &FuncReturnError{
+      ErrPrefix:  ePrefix.String(),
+      ReturnFunc: "newRadicand, err := radicand.CopyOut()",
+      ErrContext: "",
+      ErrMessage: err.Error(),
+    }
+  }
+
+  err = new(IntAryMathPower).Pwr(
+    &newRadicand,
+    &fracIntAry.Denominator,
+    0,
+    internalMaxPrecision)
+
+  if err != nil {
+
+    return &FuncReturnError{
+      ErrPrefix: ePrefix.String(),
+      ReturnFunc: "err = new(IntAryMathPower).Pwr(\n" +
+        "  &newRadicand, &fracIntAry.Denominator, 0, internalMaxPrecision)",
+      ErrContext: fmt.Sprintf("minResultPrecision= '%v' internalMaxPrecision= '%v'",
+        0, internalMaxPrecision),
+      ErrMessage: err.Error(),
+    }
+  }
+
+  newRadicandSignVal, err := newRadicand.GetSign()
+
+  if err != nil {
+
+    return &FuncReturnError{
+      ErrPrefix:  ePrefix.String(),
+      ReturnFunc: "newRadicandSignVal, err :=  newRadicand.GetSign()",
+      ErrContext: "",
+      ErrMessage: err.Error(),
+    }
+  }
+
+  if newRadicandSignVal == -1 {
+
+    fracIntAryNumeratorIsEvenNum, err := fracIntAry.Numerator.IsEvenNumber()
+
+    if err != nil {
+
+      return &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "fracIntAryNumeratorIsEvenNum, err := fracIntAry.Numerator.IsEvenNumber()",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+    }
+
+    if fracIntAryNumeratorIsEvenNum {
+
+      return &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "",
+        ErrContext: "",
+        ErrMessage: "Error: INVALID ENTRY!\n" +
+          "Cannot calculate nthRoot of a negative number when nthRoot is even.",
+      }
+    }
+
+    err = nthrt.initialize(&newRadicand, &fracIntAry.Numerator, internalMaxPrecision)
+
+    if err != nil {
+
+      return &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "err = nthrt.initialize(&newRadicand, &fracIntAry.Numerator, internalMaxPrecision)",
+        ErrContext: fmt.Sprintf("internalMaxPrecision= '%v'", internalMaxPrecision),
+        ErrMessage: err.Error(),
+      }
+    }
+
+    err = nthrt.doRootExtraction()
+
+    if err != nil {
+
+      return &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "err = nthrt.doRootExtraction()",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+    }
+
+    result, err := nthrt.ResultAry.Inverse(internalMaxPrecision + 10)
+
+    if err != nil {
+
+      return &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "result, err := nthrt.ResultAry.Inverse(internalMaxPrecision + 10)",
+        ErrContext: fmt.Sprintf("internalMaxPrecision= '%v' + 10", internalMaxPrecision),
+        ErrMessage: err.Error(),
+      }
+    }
+
+    if result.GetPrecision() > maxPrecision {
+
+      err = result.RoundToPrecision(maxPrecision)
+
+      if err != nil {
+
+        return &FuncReturnError{
+          ErrPrefix:  ePrefix.String(),
+          ReturnFunc: "err = result.RoundToPrecision(maxPrecision)",
+          ErrContext: fmt.Sprintf("maxPrecision= '%v'", maxPrecision),
+          ErrMessage: err.Error(),
+        }
+      }
+
+    }
+
+    // Change sign from positive (+), back to negative (-)
+    err = fracIntAry.Numerator.ChangeSign()
+
+    if err != nil {
+
+      return &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "err = fracIntAry.Numerator.ChangeSign()",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+    }
+
+    nthrt.Empty()
+
+    err = nthrt.NthRootIntAry.CopyIn(&fracIntAry.Numerator, false)
+
+    if err != nil {
+
+      return &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "err = nthrt.NthRootIntAry.CopyIn(&fracIntAry.Numerator, false)",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+    }
+
+    err = nthrt.ResultAry.CopyIn(&result, false)
+
+    if err != nil {
+
+      return &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "err = nthrt.ResultAry.CopyIn(&result, false)",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+    }
+
+    nthrt.Radicand, err = newRadicand.CopyOutPtr()
+
+    if err != nil {
+
+      return &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "nthrt.Radicand, err = newRadicand.CopyOutPtr()",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+    }
+
+    nthrt.ResultPrecision = nthrt.ResultAry.GetPrecision()
+
+    nthrt.RequestedPrecision = maxPrecision
+
+    nthrt.NthRootBigInt, err = nthrt.NthRootIntAry.GetBigInt()
+
+    if err != nil {
+
+      return &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "nthrt.NthRootBigInt, err = nthrt.NthRootIntAry.GetBigInt()",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+    }
+
+    return nil
+  }
+
+  return nil
 }
 
 // initialize - Initializes the data fields of the NthRootOp structure and validates the
 // radicand and nthRoot numerical values passed to the Nth Root Calculation.
 func (nthrt *NthRootOp) initialize(radicand, nthRoot *IntAry, maxPrecision int) error {
 
-	ePrefix := "NthRootOp.initialize() "
+  var ePrefix *ePref.ErrPrefixDto
+  var err error
 
-	err := radicand.IsValid(ePrefix + "'radicand' Invalid - ")
+  ePrefix,
+    err = ePref.ErrPrefixDto{}.NewIEmpty(
+    nil,
+    "NthRootOp.initialize",
+    "")
 
-	if err != nil {
-		return err
-	}
+  if err != nil {
+    return err
+  }
 
-	err = nthRoot.IsValid(ePrefix + "'nthRoot' Invalid - ")
+  err = radicand.IsValid(ePrefix.XCpy("Validating 'radicand'").String())
 
-	if err != nil {
-		return err
-	}
+  if err != nil {
 
-	if nthRoot.GetSign() < 1 {
-		return fmt.Errorf(ePrefix+
-			"Error nthRoot is a negative number! nthRoot='%v'",
-			nthRoot.GetNumStr())
-	}
+    return &FuncReturnError{
+      ErrPrefix:  ePrefix.String(),
+      ReturnFunc: "err = radicand.IsValid(ePrefix.XCpy( \"Validating 'radicand'\").String())",
+      ErrContext: "",
+      ErrMessage: err.Error(),
+    }
+  }
 
-	if maxPrecision < 0 {
-		return fmt.Errorf(ePrefix+
-			"Error 'maxPrecision' is less than zero! maxPrecision='%v'",
-			maxPrecision)
-	}
+  err = nthRoot.IsValid(ePrefix.XCpy("Validating 'nthRoot'").String())
 
-	if nthRoot.IsOne() {
-		return fmt.Errorf(ePrefix+
-			"- Input Parameter 'nthRoot' INVALID! 'nthRoot' cannot equal 1. "+
-			"nthRoot= %v\n", nthRoot.GetNumStr())
-	}
+  if err != nil {
 
-	nthrt.NthRootInt, err = nthRoot.GetInt()
+    return &FuncReturnError{
+      ErrPrefix:  ePrefix.String(),
+      ReturnFunc: "err = nthRoot.IsValid(ePrefix.XCpy(\"Validating 'nthRoot'\").String())",
+      ErrContext: "",
+      ErrMessage: err.Error(),
+    }
+  }
 
-	if err != nil {
-		return fmt.Errorf(ePrefix+"Error returned by nthRoot.GetInt() Error='%v' ",
-			err.Error())
-	}
+  nthRootSignVal, err := nthRoot.GetSign()
 
-	nthrt.NthRootIntAry = nthRoot.CopyOutPtr()
+  if err != nil {
 
-	bINum, err := nthRoot.GetBigInt()
+    return &FuncReturnError{
+      ErrPrefix:  ePrefix.String(),
+      ReturnFunc: "nthRootSignVal, err := nthRoot.GetSign()",
+      ErrContext: "",
+      ErrMessage: err.Error(),
+    }
+  }
 
-	if err != nil {
-		return fmt.Errorf(ePrefix+"Error returned by nthRoot.GetBigInt() Error='%v' ",
-			err.Error())
-	}
+  nthRootNumStr, err := nthRoot.GetNumStr()
 
-	nthrt.NthRootBigInt = big.NewInt(0).Set(bINum)
+  if err != nil {
 
-	nthrt.Radicand = radicand
-	nthrt.RequestedPrecision = maxPrecision
+    return &FuncReturnError{
+      ErrPrefix:  ePrefix.String(),
+      ReturnFunc: "nthRootNumStr, err := nthRoot.GetNumStr()",
+      ErrContext: "",
+      ErrMessage: err.Error(),
+    }
+  }
 
-	err = nthrt.bundleInts()
+  if nthRootSignVal < 1 {
 
-	if err != nil {
-		return fmt.Errorf(ePrefix+
-			"- Error returned from nthrt.bundleInts(). Error= %v", err.Error())
-	}
+    return &FuncReturnError{
+      ErrPrefix:  ePrefix.String(),
+      ReturnFunc: "",
+      ErrContext: "",
+      ErrMessage: fmt.Sprintf("Error: nthRoot is INVALID!\n"+
+        "nthRoot is a negative number!\n"+
+        "nthRoot='%v'",
+        nthRootNumStr),
+    }
+  }
 
-	err = nthrt.bundleFracs()
+  if maxPrecision < 0 {
 
-	if err != nil {
-		return fmt.Errorf("NthRootOp.initialize() - Error returned from nthrt.bundleFracs(). Error= %v", err)
-	}
+    return &FuncReturnError{
+      ErrPrefix:  ePrefix.String(),
+      ReturnFunc: "",
+      ErrContext: "",
+      ErrMessage: fmt.Sprintf("Error: 'maxPrecision' is INVALID!\n"+
+        "'maxPrecision' is less than zero!\n"+
+        "maxPrecision='%v'",
+        maxPrecision),
+    }
+  }
 
-	err = nthrt.calcPrecision()
+  nthRootIsOne, err := nthRoot.IsOne()
 
-	if err != nil {
-		return fmt.Errorf("NthRootOp.initialize() - Error returned from nthrt.CalcPrecision(). Error= %v", err)
-	}
+  if err != nil {
 
-	// Set constants for calculations
+    return &FuncReturnError{
+      ErrPrefix:  ePrefix.String(),
+      ReturnFunc: "nthRootIsOne, err := nthRoot.IsOne()",
+      ErrContext: "",
+      ErrMessage: err.Error(),
+    }
+  }
 
-	nthrt.BigOne = big.NewInt(1)
-	nthrt.Big3 = big.NewInt(3)
-	nthrt.Big10 = big.NewInt(10)
-	nthrt.Big10ToNthPower = big.NewInt(0).Exp(nthrt.Big10, big.NewInt(int64(nthrt.NthRootInt)), nil)
-	nthrt.BigZero = big.NewInt(0)
-	nthrt.ResultAry = IntAry{}.New()
-	nthrt.ResultAry.SetPrecision(nthrt.RequestedPrecision, false)
-	nthrt.ResultAry.SetSign(radicand.GetSign())
-	nthrt.Y = big.NewInt(0)
-	nthrt.YPrime = big.NewInt(0)
-	nthrt.R = big.NewInt(0)
-	nthrt.RPrime = big.NewInt(0)
-	nthrt.BaseNum = big.NewInt(10)
-	nthrt.Alpha = big.NewInt(0)
-	nthrt.Beta = big.NewInt(0)
-	return nil
+  if nthRootIsOne {
+
+    return &FuncReturnError{
+      ErrPrefix:  ePrefix.String(),
+      ReturnFunc: "",
+      ErrContext: "",
+      ErrMessage: fmt.Sprintf("Error: Input Parameter 'nthRoot' INVALID!\n"+
+        "'nthRoot' cannot equal 1. "+
+        "nthRoot= %v", nthRootNumStr),
+    }
+  }
+
+  nthrt.NthRootInt, err = nthRoot.GetInt()
+
+  if err != nil {
+
+    return &FuncReturnError{
+      ErrPrefix:  ePrefix.String(),
+      ReturnFunc: "nthrt.NthRootInt, err = nthRoot.GetInt()",
+      ErrContext: "",
+      ErrMessage: err.Error(),
+    }
+  }
+
+  nthrt.NthRootIntAry, err = nthRoot.CopyOutPtr()
+
+  if err != nil {
+
+    return &FuncReturnError{
+      ErrPrefix:  ePrefix.String(),
+      ReturnFunc: "nthrt.NthRootIntAry, err = nthRoot.CopyOutPtr()",
+      ErrContext: "",
+      ErrMessage: err.Error(),
+    }
+  }
+
+  bINum, err := nthRoot.GetBigInt()
+
+  if err != nil {
+
+    return &FuncReturnError{
+      ErrPrefix:  ePrefix.String(),
+      ReturnFunc: "bINum, err := nthRoot.GetBigInt()",
+      ErrContext: "",
+      ErrMessage: err.Error(),
+    }
+  }
+
+  nthrt.NthRootBigInt = big.NewInt(0).Set(bINum)
+
+  nthrt.Radicand = radicand
+
+  nthrt.RequestedPrecision = maxPrecision
+
+  err = nthrt.bundleInts()
+
+  if err != nil {
+
+    return &FuncReturnError{
+      ErrPrefix:  ePrefix.String(),
+      ReturnFunc: "err = nthrt.bundleInts()",
+      ErrContext: "",
+      ErrMessage: err.Error(),
+    }
+  }
+
+  err = nthrt.bundleFracs()
+
+  if err != nil {
+
+    return &FuncReturnError{
+      ErrPrefix:  ePrefix.String(),
+      ReturnFunc: "err = nthrt.bundleFracs()",
+      ErrContext: "",
+      ErrMessage: err.Error(),
+    }
+  }
+
+  err = nthrt.calcPrecision()
+
+  if err != nil {
+
+    return &FuncReturnError{
+      ErrPrefix:  ePrefix.String(),
+      ReturnFunc: "err = nthrt.calcPrecision()",
+      ErrContext: "",
+      ErrMessage: err.Error(),
+    }
+  }
+
+  // Set constants for calculations
+
+  nthrt.BigOne = big.NewInt(1)
+
+  nthrt.Big3 = big.NewInt(3)
+
+  nthrt.Big10 = big.NewInt(10)
+
+  nthrt.Big10ToNthPower = big.NewInt(0).Exp(nthrt.Big10, big.NewInt(int64(nthrt.NthRootInt)), nil)
+
+  nthrt.BigZero = big.NewInt(0)
+
+  nthrt.ResultAry = new(IntAry).New()
+
+  err = nthrt.ResultAry.SetPrecision(nthrt.RequestedPrecision, false)
+
+  if err != nil {
+
+    return &FuncReturnError{
+      ErrPrefix: ePrefix.String(),
+      ReturnFunc: "err = nthrt.ResultAry.SetPrecision(\n" +
+        "  nthrt.RequestedPrecision, false)",
+      ErrContext: fmt.Sprintf("nthrt.RequestedPrecision= '%v'",
+        nthrt.RequestedPrecision),
+      ErrMessage: err.Error(),
+    }
+  }
+
+  radicandSignVal, err := radicand.GetSign()
+
+  if err != nil {
+
+    return &FuncReturnError{
+      ErrPrefix:  ePrefix.String(),
+      ReturnFunc: "nthRootSignVal, err := nthRoot.GetSign()",
+      ErrContext: "",
+      ErrMessage: err.Error(),
+    }
+  }
+
+  err = nthrt.ResultAry.SetSign(radicandSignVal)
+
+  if err != nil {
+
+    return &FuncReturnError{
+      ErrPrefix:  ePrefix.String(),
+      ReturnFunc: "nthRootSignVal, err := nthRoot.GetSign()",
+      ErrContext: "",
+      ErrMessage: err.Error(),
+    }
+  }
+
+  nthrt.Y = big.NewInt(0)
+
+  nthrt.YPrime = big.NewInt(0)
+
+  nthrt.R = big.NewInt(0)
+
+  nthrt.RPrime = big.NewInt(0)
+
+  nthrt.BaseNum = big.NewInt(10)
+
+  nthrt.Alpha = big.NewInt(0)
+
+  nthrt.Beta = big.NewInt(0)
+
+  return nil
 }
 
 // bundleInts - computes the bundle size and creates the
@@ -1107,59 +2377,100 @@ func (nthrt *NthRootOp) initialize(radicand, nthRoot *IntAry, maxPrecision int) 
 // digits in the original number.
 func (nthrt *NthRootOp) bundleInts() error {
 
-	intNums, err := nthrt.Radicand.GetIntegerDigits()
+  var ePrefix *ePref.ErrPrefixDto
+  var err error
 
-	intNumsStats := intNums.GetIntAryStats()
+  ePrefix,
+    err = ePref.ErrPrefixDto{}.NewIEmpty(
+    nil,
+    "NthRootOp.bundleInts",
+    "")
 
-	if err != nil {
-		return fmt.Errorf("NthRootOp.bundleInts() - Error= %v", err)
-	}
+  if err != nil {
+    return err
+  }
 
-	if intNumsStats.IntAryLen < 1 {
-		return errors.New("NthRootOp.bundleInts() intNums array length less than 1")
-	}
+  intNums, err := nthrt.Radicand.GetIntegerDigits()
 
-	bundleSize := 0
+  if err != nil {
 
-	if intNumsStats.IntAryLen <= nthrt.NthRootInt {
+    return &FuncReturnError{
+      ErrPrefix:  ePrefix.String(),
+      ReturnFunc: "intNums, err := nthrt.Radicand.GetIntegerDigits()",
+      ErrContext: "",
+      ErrMessage: err.Error(),
+    }
+  }
 
-		bundleSize = 1
+  intNumsStats := intNums.GetIntAryStats()
 
-	} else {
+  if intNumsStats.IntAryLen < 1 {
 
-		bundleSize = intNumsStats.IntAryLen / nthrt.NthRootInt
+    return &FuncReturnError{
+      ErrPrefix:  ePrefix.String(),
+      ReturnFunc: "",
+      ErrContext: "",
+      ErrMessage: "Error: intNums array length less than 1",
+    }
+  }
 
-		if intNumsStats.IntAryLen > ((intNumsStats.IntAryLen / nthrt.NthRootInt) * nthrt.NthRootInt) {
+  bundleSize := 0
 
-			bundleSize++
+  if intNumsStats.IntAryLen <= nthrt.NthRootInt {
 
-		}
+    bundleSize = 1
 
-	}
+  } else {
 
-	nthrt.BaseNumBundles = make([][]int, bundleSize)
+    bundleSize = intNumsStats.IntAryLen / nthrt.NthRootInt
 
-	bundleIdx := bundleSize - 1
-	intAryIdx := 0
-	intAry, _ := intNums.GetIntAryElements()
-	for j := intNumsStats.IntAryLen - 1; j >= 0; j -= nthrt.NthRootInt {
-		bundle := make([]int, nthrt.NthRootInt)
-		intAryIdx = j
-		for k := nthrt.NthRootInt - 1; k >= 0; k-- {
-			if intAryIdx < 0 {
-				break
-			}
+    if intNumsStats.IntAryLen > ((intNumsStats.IntAryLen / nthrt.NthRootInt) * nthrt.NthRootInt) {
 
-			bundle[k] = int(intAry[intAryIdx])
-			intAryIdx--
-		}
+      bundleSize++
 
-		nthrt.BaseNumBundles[bundleIdx] = append(nthrt.BaseNumBundles[bundleIdx], bundle...)
+    }
 
-		bundleIdx--
-	}
+  }
 
-	return nil
+  nthrt.BaseNumBundles = make([][]int, bundleSize)
+
+  bundleIdx := bundleSize - 1
+  intAryIdx := 0
+
+  intAry, _, err := intNums.GetIntAryElements()
+
+  if err != nil {
+
+    return &FuncReturnError{
+      ErrPrefix:  ePrefix.String(),
+      ReturnFunc: "intAry, _, err := intNums.GetIntAryElements()",
+      ErrContext: "",
+      ErrMessage: err.Error(),
+    }
+  }
+
+  for j := intNumsStats.IntAryLen - 1; j >= 0; j -= nthrt.NthRootInt {
+
+    bundle := make([]int, nthrt.NthRootInt)
+
+    intAryIdx = j
+
+    for k := nthrt.NthRootInt - 1; k >= 0; k-- {
+
+      if intAryIdx < 0 {
+        break
+      }
+
+      bundle[k] = int(intAry[intAryIdx])
+      intAryIdx--
+    }
+
+    nthrt.BaseNumBundles[bundleIdx] = append(nthrt.BaseNumBundles[bundleIdx], bundle...)
+
+    bundleIdx--
+  }
+
+  return nil
 }
 
 // bundleFracs - computes the numeric bundle size and creates
@@ -1167,35 +2478,67 @@ func (nthrt *NthRootOp) bundleInts() error {
 // digits in the original number.
 func (nthrt *NthRootOp) bundleFracs() error {
 
-	if nthrt.Radicand.GetPrecision() < 1 {
-		return nil
-	}
+  var ePrefix *ePref.ErrPrefixDto
+  var err error
 
-	fracNums, err := nthrt.Radicand.GetFractionalDigits()
+  ePrefix,
+    err = ePref.ErrPrefixDto{}.NewIEmpty(
+    nil,
+    "NthRootOp.bundleFracs",
+    "")
 
-	iFracNumStats := fracNums.GetIntAryStats()
-	iFAry, _ := fracNums.GetIntAryElements()
+  if err != nil {
+    return err
+  }
 
-	if err != nil {
-		return fmt.Errorf("NthRootOp.bundleFracs() Error Returned from nthrt.OriginalRadicand.GetFractionalDigits() - Error= %v", err)
-	}
+  if nthrt.Radicand.GetPrecision() < 1 {
+    return nil
+  }
 
-	for i := 1; i < iFracNumStats.IntAryLen; i += nthrt.NthRootInt {
+  fracNums, err := nthrt.Radicand.GetFractionalDigits()
 
-		bundle := make([]int, nthrt.NthRootInt)
+  if err != nil {
 
-		for j := 0; j < nthrt.NthRootInt; j++ {
+    return &FuncReturnError{
+      ErrPrefix:  ePrefix.String(),
+      ReturnFunc: "fracNums, err := nthrt.Radicand.GetFractionalDigits()",
+      ErrContext: "",
+      ErrMessage: err.Error(),
+    }
+  }
 
-			if i+j < iFracNumStats.IntAryLen {
-				bundle[j] = int(iFAry[i+j])
-			}
-		}
+  iFracNumStats := fracNums.GetIntAryStats()
 
-		nthrt.BaseNumBundles = append(nthrt.BaseNumBundles, bundle)
+  iFAry, _, err := fracNums.GetIntAryElements()
 
-	}
+  if err != nil {
 
-	return nil
+    return &FuncReturnError{
+      ErrPrefix:  ePrefix.String(),
+      ReturnFunc: "iFAry, _, err := fracNums.GetIntAryElements()",
+      ErrContext: "",
+      ErrMessage: err.Error(),
+    }
+  }
+
+  for i := 1; i < iFracNumStats.IntAryLen; i += nthrt.NthRootInt {
+
+    bundle := make([]int, nthrt.NthRootInt)
+
+    for j := 0; j < nthrt.NthRootInt; j++ {
+
+      if i+j < iFracNumStats.IntAryLen {
+
+        bundle[j] = int(iFAry[i+j])
+
+      }
+    }
+
+    nthrt.BaseNumBundles = append(nthrt.BaseNumBundles, bundle)
+
+  }
+
+  return nil
 }
 
 // CalcPrecision - calculates the bundle size and creates
@@ -1204,136 +2547,250 @@ func (nthrt *NthRootOp) bundleFracs() error {
 // right of the decimal point.
 func (nthrt *NthRootOp) calcPrecision() error {
 
-	if nthrt.Radicand.GetPrecision() < 0 {
-		return fmt.Errorf("NthRootOp.CalcPrecision() - Existing precision is less than zero! OriginalRadicand.precision= %v", nthrt.Radicand.GetPrecision())
-	}
+  var ePrefix *ePref.ErrPrefixDto
+  var err error
 
-	existingPrecision := nthrt.Radicand.GetPrecision() / nthrt.NthRootInt
+  ePrefix,
+    err = ePref.ErrPrefixDto{}.NewIEmpty(
+    nil,
+    "NthRootOp.calcPrecision",
+    "")
 
-	if nthrt.Radicand.GetPrecision() != existingPrecision*nthrt.NthRootInt {
-		existingPrecision++
-	}
+  if err != nil {
+    return err
+  }
 
-	bundle := make([]int, nthrt.NthRootInt)
+  if nthrt.Radicand.GetPrecision() < 0 {
 
-	if nthrt.RequestedPrecision <= existingPrecision {
+    return &FuncReturnError{
+      ErrPrefix:  ePrefix.String(),
+      ReturnFunc: "",
+      ErrContext: "nthrt.Radicand.GetPrecision() < 0",
+      ErrMessage: fmt.Sprintf("Error: Existing precision is less than zero!\nnthrt.Radicand.precision= %v", nthrt.Radicand.GetPrecision()),
+    }
+  }
 
-		// nthrt.BaseNumBundles = append(nthrt.BaseNumBundles, bundle)
+  existingPrecision := nthrt.Radicand.GetPrecision() / nthrt.NthRootInt
 
-		nthrt.RequestedPrecision = existingPrecision
+  if nthrt.Radicand.GetPrecision() != existingPrecision*nthrt.NthRootInt {
+    existingPrecision++
+  }
 
-		// return nil
-	}
+  bundle := make([]int, nthrt.NthRootInt)
 
-	nthrt.RequestedPrecision++
+  if nthrt.RequestedPrecision <= existingPrecision {
 
-	deltaPrecision := nthrt.RequestedPrecision - existingPrecision
+    // nthrt.BaseNumBundles = append(nthrt.BaseNumBundles, bundle)
 
-	for i := 0; i < deltaPrecision; i++ {
-		nthrt.BaseNumBundles = append(nthrt.BaseNumBundles, bundle)
-	}
+    nthrt.RequestedPrecision = existingPrecision
 
-	nthrt.LenBaseNumBundles = len(nthrt.BaseNumBundles)
+    // return nil
+  }
 
-	nthrt.ResultPrecision = nthrt.RequestedPrecision
+  nthrt.RequestedPrecision++
 
-	return nil
+  deltaPrecision := nthrt.RequestedPrecision - existingPrecision
+
+  for i := 0; i < deltaPrecision; i++ {
+
+    nthrt.BaseNumBundles = append(nthrt.BaseNumBundles, bundle)
+
+  }
+
+  nthrt.LenBaseNumBundles = len(nthrt.BaseNumBundles)
+
+  nthrt.ResultPrecision = nthrt.RequestedPrecision
+
+  return nil
 }
 
 func (nthrt *NthRootOp) doRootExtraction() error {
 
-	nthrt.Y = big.NewInt(0)
-	nthrt.Minuend = big.NewInt(0)
-	nthrt.Subtrahend = big.NewInt(0)
-	nthrt.R = big.NewInt(0)
+  var ePrefix *ePref.ErrPrefixDto
+  var err error
 
-	for i := 0; i < nthrt.LenBaseNumBundles; i++ {
+  ePrefix,
+    err = ePref.ErrPrefixDto{}.NewIEmpty(
+    nil,
+    "NthRootOp.doRootExtraction",
+    "")
 
-		nthrt.findNextRoot(i)
+  if err != nil {
+    return err
+  }
 
-	}
+  nthrt.Y = big.NewInt(0)
 
-	nthrt.ResultAry.SetSign(nthrt.Radicand.GetSign())
-	nthrt.ResultAry.OptimizeIntArrayLen(false)
-	err := nthrt.ResultAry.RoundToPrecision(nthrt.RequestedPrecision - 1)
+  nthrt.Minuend = big.NewInt(0)
 
-	if err != nil {
-		return fmt.Errorf("doRootExtraction() - Error returned from sqrt.ResultAry.RoundToPrecision(sqrt.ResultPrecision). nthrt.ResultPrecision= %v  Error= %v", nthrt.ResultPrecision, err)
-	}
+  nthrt.Subtrahend = big.NewInt(0)
 
-	return nil
+  nthrt.R = big.NewInt(0)
+
+  for i := 0; i < nthrt.LenBaseNumBundles; i++ {
+
+    err = nthrt.findNextRoot(i)
+
+    if err != nil {
+
+      return &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: fmt.Sprintf("err = nthrt.findNextRoot(%d)", i),
+        ErrContext: "for i := 0; i < nthrt.LenBaseNumBundles; i++",
+        ErrMessage: err.Error(),
+      }
+    }
+
+  }
+
+  nthrtRadicandSignVal, err := nthrt.Radicand.GetSign()
+
+  if err != nil {
+
+    return &FuncReturnError{
+      ErrPrefix:  ePrefix.String(),
+      ReturnFunc: "nthrtRadicandSignVal, err := nthrt.Radicand.GetSign()",
+      ErrContext: "",
+      ErrMessage: err.Error(),
+    }
+  }
+
+  err = nthrt.ResultAry.SetSign(nthrtRadicandSignVal)
+
+  if err != nil {
+
+    return &FuncReturnError{
+      ErrPrefix:  ePrefix.String(),
+      ReturnFunc: "err = nthrt.ResultAry.SetSign(nthrtRadicandSignVal)",
+      ErrContext: "",
+      ErrMessage: err.Error(),
+    }
+  }
+
+  err = nthrt.ResultAry.OptimizeIntArrayLen(false)
+
+  if err != nil {
+
+    return &FuncReturnError{
+      ErrPrefix:  ePrefix.String(),
+      ReturnFunc: "err = nthrt.ResultAry.OptimizeIntArrayLen(false)",
+      ErrContext: "",
+      ErrMessage: err.Error(),
+    }
+  }
+
+  err = nthrt.ResultAry.RoundToPrecision(nthrt.RequestedPrecision - 1)
+
+  if err != nil {
+
+    return &FuncReturnError{
+      ErrPrefix:  ePrefix.String(),
+      ReturnFunc: "err = nthrt.ResultAry.RoundToPrecision(nthrt.RequestedPrecision - 1)",
+      ErrContext: fmt.Sprintf("nthrt.RequestedPrecision= '%v'\n"+
+        "nthrt.RequestedPrecision-1= '%v'", nthrt.RequestedPrecision, nthrt.RequestedPrecision-1),
+      ErrMessage: err.Error(),
+    }
+  }
+
+  return nil
 }
 
-func (nthrt *NthRootOp) findNextRoot(bundleIdx int) {
+func (nthrt *NthRootOp) findNextRoot(bundleIdx int) error {
 
-	bundle := nthrt.getBundleBigInt(bundleIdx)
+  var ePrefix *ePref.ErrPrefixDto
+  var err error
 
-	// alpha = next n-digits of radicand
-	nthrt.Alpha = big.NewInt(0).Set(bundle)
+  ePrefix,
+    err = ePref.ErrPrefixDto{}.NewIEmpty(
+    nil,
+    "NthRootOp.findNextRoot",
+    "")
 
-	nthrt.RPrime = big.NewInt(-1)
+  if err != nil {
+    return err
+  }
 
-	// nthrt.R already set
-	// n = nthrt.NthRootInt already set
-	// nthrt.Y already set
-	// nthrt.BaseNum = 10
-	// nthrt.Big10ToNthPower = BaseNum^n
+  bundle := nthrt.getBundleBigInt(bundleIdx)
 
-	itatr := big.NewInt(9)
-	term_1a := big.NewInt(0)
-	term_1b := big.NewInt(0)
+  // alpha = next n-digits of radicand
+  nthrt.Alpha = big.NewInt(0).Set(bundle)
 
-	term_2a1 := big.NewInt(0)
-	term_2a2 := big.NewInt(0)
-	term_2a := big.NewInt(0)
+  nthrt.RPrime = big.NewInt(-1)
 
-	term_2b := big.NewInt(0)
-	term_2b1 := big.NewInt(0)
-	term_2b2 := big.NewInt(0)
+  // nthrt.R already set
+  // n = nthrt.NthRootInt already set
+  // nthrt.Y already set
+  // nthrt.BaseNum = 10
+  // nthrt.Big10ToNthPower = BaseNum^n
 
-	term_1a = big.NewInt(0).Mul(nthrt.Big10ToNthPower, nthrt.R)
-	term_1b = big.NewInt(0).Set(nthrt.Alpha)
-	nthrt.Minuend = big.NewInt(0).Add(term_1a, term_1b)
+  itatr := big.NewInt(9)
+  term_1a := big.NewInt(0)
+  term_1b := big.NewInt(0)
 
-	for itatr.Cmp(nthrt.BigZero) > -1 &&
-		nthrt.RPrime.Cmp(nthrt.BigZero) == -1 {
+  term_2a1 := big.NewInt(0)
+  term_2a2 := big.NewInt(0)
+  term_2a := big.NewInt(0)
 
-		nthrt.Beta = big.NewInt(0).Set(itatr)
-		nthrt.YPrime = big.NewInt(0).Mul(nthrt.Y, nthrt.Big10)
-		nthrt.YPrime = big.NewInt(0).Add(nthrt.YPrime, nthrt.Beta)
+  term_2b := big.NewInt(0)
+  term_2b1 := big.NewInt(0)
+  term_2b2 := big.NewInt(0)
 
-		term_2a1 = big.NewInt(0).Mul(nthrt.BaseNum, nthrt.Y)
-		term_2a2 = big.NewInt(0).Add(term_2a1, nthrt.Beta)
-		term_2a = big.NewInt(0).Exp(term_2a2, big.NewInt(int64(nthrt.NthRootInt)), nil)
+  term_1a = big.NewInt(0).Mul(nthrt.Big10ToNthPower, nthrt.R)
+  term_1b = big.NewInt(0).Set(nthrt.Alpha)
+  nthrt.Minuend = big.NewInt(0).Add(term_1a, term_1b)
 
-		term_2b1 = big.NewInt(0).Set(nthrt.Big10ToNthPower)
-		term_2b2 = big.NewInt(0).Exp(nthrt.Y, big.NewInt(int64(nthrt.NthRootInt)), nil)
+  for itatr.Cmp(nthrt.BigZero) > -1 &&
+    nthrt.RPrime.Cmp(nthrt.BigZero) == -1 {
 
-		term_2b = big.NewInt(0).Mul(term_2b1, term_2b2)
+    nthrt.Beta = big.NewInt(0).Set(itatr)
+    nthrt.YPrime = big.NewInt(0).Mul(nthrt.Y, nthrt.Big10)
+    nthrt.YPrime = big.NewInt(0).Add(nthrt.YPrime, nthrt.Beta)
 
-		nthrt.Subtrahend = big.NewInt(0).Sub(term_2a, term_2b)
+    term_2a1 = big.NewInt(0).Mul(nthrt.BaseNum, nthrt.Y)
+    term_2a2 = big.NewInt(0).Add(term_2a1, nthrt.Beta)
+    term_2a = big.NewInt(0).Exp(term_2a2, big.NewInt(int64(nthrt.NthRootInt)), nil)
 
-		nthrt.RPrime = big.NewInt(0).Sub(nthrt.Minuend, nthrt.Subtrahend)
+    term_2b1 = big.NewInt(0).Set(nthrt.Big10ToNthPower)
+    term_2b2 = big.NewInt(0).Exp(nthrt.Y, big.NewInt(int64(nthrt.NthRootInt)), nil)
 
-		itatr = big.NewInt(0).Sub(itatr, nthrt.BigOne)
-	}
+    term_2b = big.NewInt(0).Mul(term_2b1, term_2b2)
 
-	nthrt.R = big.NewInt(0).Set(nthrt.RPrime)
-	nthrt.Y = big.NewInt(0).Set(nthrt.YPrime)
-	nthrt.ResultAry.AppendToIntAry(uint8(nthrt.Beta.Int64()))
+    nthrt.Subtrahend = big.NewInt(0).Sub(term_2a, term_2b)
 
+    nthrt.RPrime = big.NewInt(0).Sub(nthrt.Minuend, nthrt.Subtrahend)
+
+    itatr = big.NewInt(0).Sub(itatr, nthrt.BigOne)
+  }
+
+  nthrt.R = big.NewInt(0).Set(nthrt.RPrime)
+
+  nthrt.Y = big.NewInt(0).Set(nthrt.YPrime)
+
+  err = nthrt.ResultAry.AppendToIntAry(uint8(nthrt.Beta.Int64()))
+
+  if err != nil {
+
+    return &FuncReturnError{
+      ErrPrefix:  ePrefix.String(),
+      ReturnFunc: "newRadicand, err := radicand.CopyOut()",
+      ErrContext: "",
+      ErrMessage: err.Error(),
+    }
+  }
+
+  return nil
 }
 
 func (nthrt *NthRootOp) getBundleBigInt(idx int) *big.Int {
 
-	bigBundleVal := big.NewInt(0)
+  bigBundleVal := big.NewInt(0)
 
-	for i := 0; i < nthrt.NthRootInt; i++ {
+  for i := 0; i < nthrt.NthRootInt; i++ {
 
-		bigBundleVal = big.NewInt(0).Mul(bigBundleVal, nthrt.Big10)
-		bigBundleVal = big.NewInt(0).Add(bigBundleVal, big.NewInt(0).SetInt64(int64(nthrt.BaseNumBundles[idx][i])))
+    bigBundleVal = big.NewInt(0).Mul(bigBundleVal, nthrt.Big10)
+    bigBundleVal = big.NewInt(0).Add(bigBundleVal, big.NewInt(0).SetInt64(int64(nthrt.BaseNumBundles[idx][i])))
 
-	}
+  }
 
-	return bigBundleVal
+  return bigBundleVal
 }

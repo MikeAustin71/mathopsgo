@@ -709,8 +709,8 @@ func (ia *IntAry) AddMultipleToThis(iaMany ...*IntAry) error {
 
 // AddArrayLengthLeft
 //
-//  Adds leading zeros to the internal storage array holding the
-// 	numeric value for the current instance of IntAry.
+//	 Adds leading zeros to the internal storage array holding the
+//		numeric value for the current instance of IntAry.
 func (ia *IntAry) AddArrayLengthLeft(addLen int) error {
 
   var ePrefix *ePref.ErrPrefixDto
@@ -7460,7 +7460,29 @@ func (ia *IntAry) SetIntAryWithInt(intDigits int, precision uint) error {
 //	946254				   0							   946254
 //	-946254  			   3					      -946.254
 //	-946254				   0						    -946254
-func (ia *IntAry) SetIntAryWithInt32(int32Num int32, precision uint) {
+func (ia *IntAry) SetIntAryWithInt32(int32Num int32, precision uint) error {
+
+  var ePrefix *ePref.ErrPrefixDto
+  var err error
+
+  ePrefix,
+    err = ePref.ErrPrefixDto{}.NewIEmpty(
+    nil,
+    "IntAry.SetIntAryWithInt32",
+    "")
+
+  if err != nil {
+    return err
+  }
+
+  nsProfile := NumSepsProfileSelection{
+    SourceObjectName:         "ia",
+    OutputNumSepsName:        "numSeps",
+    UseDefaultNumSeps:        false,
+    SetDefaultNumSepsIfEmpty: true,
+    ValidateNumSeps:          false,
+    OverrideNumSeps:          NumericSeparatorDto{},
+  }
 
   tenI32 := int32(10)
   quotient := int32(0)
@@ -7477,8 +7499,27 @@ func (ia *IntAry) SetIntAryWithInt32(int32Num int32, precision uint) {
   }
 
   if int32Num == 0 {
-    ia.SetIntAryToZero(precision)
-    return
+    //ia.SetIntAryToZero(precision)
+
+    err = new(intAryQuark).setIntAryToZero(
+      ia,
+      nil,
+      nsProfile,
+      precision,
+      ePrefix)
+
+    if err != nil {
+
+      return &FuncReturnError{
+        ErrPrefix: ePrefix.String(),
+        ReturnFunc: fmt.Sprintf("err = new(intAryQuark).setIntAryToZero(\n"+
+          "ia, nil, nsProfile, precision= '%v', ePrefix", precision),
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+    }
+
+    return nil
   }
 
   for {
@@ -7499,18 +7540,37 @@ func (ia *IntAry) SetIntAryWithInt32(int32Num int32, precision uint) {
   }
 
   n1 := uint8(0)
+
   lastIdx := ia.intAryLen - 1
+
   totalLen := ia.intAryLen / 2
+
   for i := 0; i < totalLen; i++ {
+
     n1 = ia.intAry[i]
+
     ia.intAry[i] = ia.intAry[lastIdx]
+
     ia.intAry[lastIdx] = n1
+
     lastIdx--
   }
 
-  ia.SetInternalFlags()
+  err = new(intAryNanobot).setInternalFlags(
+    ia, ePrefix.XCpy("Setting 'ia' Flags"))
 
-  return
+  if err != nil {
+
+    return &FuncReturnError{
+      ErrPrefix: ePrefix.String(),
+      ReturnFunc: "err = new(intAryNanobot).setInternalFlags(\n" +
+        "  ia, ePrefix.XCpy(Setting 'ia' Flags))",
+      ErrContext: "",
+      ErrMessage: err.Error(),
+    }
+  }
+
+  return nil
 }
 
 // SetIntAryWithInt64
