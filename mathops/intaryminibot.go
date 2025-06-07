@@ -1,14 +1,14 @@
 package mathops
 
 import (
-  "fmt"
-  ePref "github.com/MikeAustin71/errpref"
-  "math/big"
-  "sync"
+	"fmt"
+	ePref "github.com/MikeAustin71/errpref"
+	"math/big"
+	"sync"
 )
 
 type intAryMinibot struct {
-  lock sync.Mutex
+	lock sync.Mutex
 }
 
 // pwrByTwos
@@ -63,359 +63,359 @@ type intAryMinibot struct {
 //	  If no errors are encountered during processing, this returned
 //	  error parameter will be set to 'nil'.
 func (iaMinibot *intAryMinibot) pwrByTwos(
-  ia *IntAry,
-  validateIa bool,
-  numSepsSrcIntAry *IntAry,
-  nsProfile NumSepsProfileSelection,
-  power *big.Int,
-  maxResultPrecision int,
-  internalPrecision int,
-  validateResult bool,
-  errPrefDto *ePref.ErrPrefixDto) error {
-
-  iaMinibot.lock.Lock()
-
-  defer iaMinibot.lock.Unlock()
-
-  var ePrefix *ePref.ErrPrefixDto
-
-  var err error
-
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
-    errPrefDto,
-    "intAryMinibot.setInt64Exponent()",
-    "")
-
-  if err != nil {
-    return err
-  }
-
-  if ia == nil {
-
-    return &InputPtrNilError{
-      ErrPrefix:     ePrefix.String(),
-      ParameterName: "'ia'",
-    }
-  }
-
-  if power == nil {
-
-    return &InputPtrNilError{
-      ErrPrefix:     ePrefix.String(),
-      ParameterName: "'power'",
-    }
-  }
-
-  if maxResultPrecision < -1 {
-
-    return &FuncReturnError{
-      ErrPrefix:  ePrefix.String(),
-      ReturnFunc: "",
-      ErrContext: "",
-      ErrMessage: fmt.Sprintf("Error: Parameter maxResultPrecision is less than -1.\n"+
-        "maxResultPrecision= %v", maxResultPrecision),
-    }
-  }
-
-  if internalPrecision < -1 {
-
-    return &FuncReturnError{
-      ErrPrefix:  ePrefix.String(),
-      ReturnFunc: "",
-      ErrContext: "",
-      ErrMessage: fmt.Sprintf("Error: Parameter internalPrecision is less than -1.\n"+
-        "internalPrecision= %v", internalPrecision),
-    }
-  }
-
-  err = new(intAryUtility).selectIntAryValidation(
-    ia,
-    "ia",
-    validateIa,
-    ePrefix)
+	ia *IntAry,
+	validateIa bool,
+	numSepsSrcIntAry *IntAry,
+	nsProfile NumSepsProfileSelection,
+	power *big.Int,
+	maxResultPrecision int,
+	internalPrecision int,
+	validateResult bool,
+	errPrefDto *ePref.ErrPrefixDto) error {
+
+	iaMinibot.lock.Lock()
+
+	defer iaMinibot.lock.Unlock()
+
+	var ePrefix *ePref.ErrPrefixDto
+
+	var err error
+
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
+		errPrefDto,
+		"intAryMinibot.setInt64Exponent()",
+		"")
+
+	if err != nil {
+		return err
+	}
+
+	if ia == nil {
+
+		return &InputPtrNilError{
+			ErrPrefix:     ePrefix.String(),
+			ParameterName: "'ia'",
+		}
+	}
+
+	if power == nil {
+
+		return &InputPtrNilError{
+			ErrPrefix:     ePrefix.String(),
+			ParameterName: "'power'",
+		}
+	}
+
+	if maxResultPrecision < -1 {
+
+		return &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "",
+			ErrContext: "",
+			ErrMessage: fmt.Sprintf("Error: Parameter maxResultPrecision is less than -1.\n"+
+				"maxResultPrecision= %v", maxResultPrecision),
+		}
+	}
+
+	if internalPrecision < -1 {
+
+		return &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "",
+			ErrContext: "",
+			ErrMessage: fmt.Sprintf("Error: Parameter internalPrecision is less than -1.\n"+
+				"internalPrecision= %v", internalPrecision),
+		}
+	}
+
+	err = new(intAryUtility).selectIntAryValidation(
+		ia,
+		"ia",
+		validateIa,
+		ePrefix)
 
-  if err != nil {
+	if err != nil {
 
-    return &FuncReturnError{
-      ErrPrefix: ePrefix.String(),
-      ReturnFunc: fmt.Sprintf("err = new(intAryUtility).selectIntAryValidation(\n"+
-        "ia, 'ia', validateIa= '%v', ePrefix)", validateIa),
-      ErrContext: "Valiate on Startup",
-      ErrMessage: err.Error(),
-    }
-  }
+		return &FuncReturnError{
+			ErrPrefix: ePrefix.String(),
+			ReturnFunc: fmt.Sprintf("err = new(intAryUtility).selectIntAryValidation(\n"+
+				"ia, 'ia', validateIa= '%v', ePrefix)", validateIa),
+			ErrContext: "Valiate on Startup",
+			ErrMessage: err.Error(),
+		}
+	}
 
-  var finalNumSeps NumericSeparatorDto
+	var finalNumSeps NumericSeparatorDto
 
-  nsProfile.OutputNumSepsName = "finalNumSeps"
+	nsProfile.OutputNumSepsName = "finalNumSeps"
 
-  var actualNumSepsSrcIntAryPtr *IntAry
+	var actualNumSepsSrcIntAryPtr *IntAry
 
-  if numSepsSrcIntAry == nil {
+	if numSepsSrcIntAry == nil {
 
-    nsProfile.SourceObjectName = "ia"
-    actualNumSepsSrcIntAryPtr = ia
-
-  } else {
+		nsProfile.SourceObjectName = "ia"
+		actualNumSepsSrcIntAryPtr = ia
+
+	} else {
 
-    nsProfile.SourceObjectName = "numSepsSrcIntAry"
-    actualNumSepsSrcIntAryPtr = numSepsSrcIntAry
-  }
+		nsProfile.SourceObjectName = "numSepsSrcIntAry"
+		actualNumSepsSrcIntAryPtr = numSepsSrcIntAry
+	}
 
-  finalNumSeps, err = new(intAryUtility).selectNumericSeparators(
-    actualNumSepsSrcIntAryPtr,
-    nsProfile,
-    ePrefix)
+	finalNumSeps, err = new(intAryUtility).selectNumericSeparators(
+		actualNumSepsSrcIntAryPtr,
+		nsProfile,
+		ePrefix)
 
-  if err != nil {
+	if err != nil {
 
-    return &FuncReturnError{
-      ErrPrefix: ePrefix.String(),
-      ReturnFunc: "finalNumSeps, err = new(intAryUtility).selectNumericSeparators(\n" +
-        "actualNumSepsSrcIntAryPtr, nsProfile, ePrefix)",
-      ErrContext: "",
-      ErrMessage: err.Error(),
-    }
-  }
+		return &FuncReturnError{
+			ErrPrefix: ePrefix.String(),
+			ReturnFunc: "finalNumSeps, err = new(intAryUtility).selectNumericSeparators(\n" +
+				"actualNumSepsSrcIntAryPtr, nsProfile, ePrefix)",
+			ErrContext: "",
+			ErrMessage: err.Error(),
+		}
+	}
 
-  if internalPrecision < maxResultPrecision {
-    internalPrecision = maxResultPrecision + 20
-  }
+	if internalPrecision < maxResultPrecision {
+		internalPrecision = maxResultPrecision + 20
+	}
 
-  // Internal flags alread set on 'ia'
+	// Internal flags alread set on 'ia'
 
-  nsProfile2 := NumSepsProfileSelection{
-    SourceObjectName:         "ia",
-    OutputNumSepsName:        "numSeps",
-    UseDefaultNumSeps:        false,
-    SetDefaultNumSepsIfEmpty: false,
-    ValidateNumSeps:          false,
-    OverrideNumSeps:          finalNumSeps,
-  }
+	nsProfile2 := NumSepsProfileSelection{
+		SourceObjectName:         "ia",
+		OutputNumSepsName:        "numSeps",
+		UseDefaultNumSeps:        false,
+		SetDefaultNumSepsIfEmpty: false,
+		ValidateNumSeps:          false,
+		OverrideNumSeps:          finalNumSeps,
+	}
 
-  iaHlprNeutron := new(intAryNeutron)
+	iaHlprNeutron := new(intAryNeutron)
 
-  if ia.isZeroValue {
-    //ia.SetIntAryToZero(0)
+	if ia.isZeroValue {
+		//ia.SetIntAryToZero(0)
 
-    err = new(intAryQuark).setIntAryToZero(
-      ia,
-      nil,
-      nsProfile2,
-      uint(ia.precision),
-      ePrefix)
+		err = new(intAryQuark).setIntAryToZero(
+			ia,
+			nil,
+			nsProfile2,
+			uint(ia.precision),
+			ePrefix)
 
-    if err != nil {
+		if err != nil {
 
-      return &FuncReturnError{
-        ErrPrefix: ePrefix.String(),
-        ReturnFunc: "err = new(intAryQuark).setIntAryToZero(\n" +
-          "  ia, nsProfile2, uint(ia.precision), ePrefix)",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-    }
-
-    return nil
-  }
+			return &FuncReturnError{
+				ErrPrefix: ePrefix.String(),
+				ReturnFunc: "err = new(intAryQuark).setIntAryToZero(\n" +
+					"  ia, nsProfile2, uint(ia.precision), ePrefix)",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+		}
+
+		return nil
+	}
 
-  tPower := big.NewInt(0).Set(power)
+	tPower := big.NewInt(0).Set(power)
 
-  one := big.NewInt(1)
+	one := big.NewInt(1)
 
-  zero := big.NewInt(0)
+	zero := big.NewInt(0)
 
-  two := big.NewInt(2)
+	two := big.NewInt(2)
 
-  if tPower.Cmp(two) == -1 {
-
-    if tPower.Cmp(zero) == -1 {
-
-      ia2, err := new(intAryMechanics).inverseIntAry(ia, false, internalPrecision, ePrefix)
-
-      if err != nil {
+	if tPower.Cmp(two) == -1 {
+
+		if tPower.Cmp(zero) == -1 {
+
+			ia2, err := new(intAryMechanics).inverseIntAry(ia, false, internalPrecision, ePrefix)
+
+			if err != nil {
 
-        return &FuncReturnError{
-          ErrPrefix: ePrefix.String(),
-          ReturnFunc: "ia2, err := new(intAryMechanics).inverseIntAry(\n" +
-            "ia, vallidate=false, internalPrecision, ePrefix)",
-          ErrContext: "",
-          ErrMessage: err.Error(),
-        }
-      }
+				return &FuncReturnError{
+					ErrPrefix: ePrefix.String(),
+					ReturnFunc: "ia2, err := new(intAryMechanics).inverseIntAry(\n" +
+						"ia, vallidate=false, internalPrecision, ePrefix)",
+					ErrContext: "",
+					ErrMessage: err.Error(),
+				}
+			}
 
-      err = new(intAryProton).copy(ia, &ia2, false, false, ePrefix)
+			err = new(intAryProton).copy(ia, &ia2, false, false, ePrefix)
 
-      if err != nil {
+			if err != nil {
 
-        return &FuncReturnError{
-          ErrPrefix:  ePrefix.String(),
-          ReturnFunc: "err = new(intAryProton).copy(ia, &ia2, validate=false, copyBackup=false, ePrefix)",
-          ErrContext: "ia2->ia",
-          ErrMessage: err.Error(),
-        }
-      }
-
-      tPower = big.NewInt(0).Mul(tPower, big.NewInt(-1))
+				return &FuncReturnError{
+					ErrPrefix:  ePrefix.String(),
+					ReturnFunc: "err = new(intAryProton).copy(ia, &ia2, validate=false, copyBackup=false, ePrefix)",
+					ErrContext: "ia2->ia",
+					ErrMessage: err.Error(),
+				}
+			}
+
+			tPower = big.NewInt(0).Mul(tPower, big.NewInt(-1))
 
-    } else if tPower.Cmp(one) == 0 {
-      // no change in value. x^1 == x
-      return nil
-    } else if tPower.Cmp(zero) == 0 {
+		} else if tPower.Cmp(one) == 0 {
+			// no change in value. x^1 == x
+			return nil
+		} else if tPower.Cmp(zero) == 0 {
 
-      err = new(intAryGluon).setIntAryWithInt(ia, nil, nsProfile2, 1, 0, true, ePrefix)
+			err = new(intAryGluon).setIntAryWithInt(ia, nil, nsProfile2, 1, 0, true, ePrefix)
 
-      if err != nil {
+			if err != nil {
 
-        return &FuncReturnError{
-          ErrPrefix: ePrefix.String(),
-          ReturnFunc: "err = new(intAryGluon).setIntAryWithInt(\n" +
-            "  ia, numSepsSrc=nil, nsProfile2, 1, 0, validateResult=true, ePrefix)",
-          ErrContext: "Set 'ia' to '1' 0 Precision",
-          ErrMessage: err.Error(),
-        }
-      }
-
-      return nil
-    }
-  }
-
-  tBase := new(IntAry).New()
-
-  err = new(intAryProton).copy(&tBase, ia, false, false, ePrefix)
-
-  if err != nil {
+				return &FuncReturnError{
+					ErrPrefix: ePrefix.String(),
+					ReturnFunc: "err = new(intAryGluon).setIntAryWithInt(\n" +
+						"  ia, numSepsSrc=nil, nsProfile2, 1, 0, validateResult=true, ePrefix)",
+					ErrContext: "Set 'ia' to '1' 0 Precision",
+					ErrMessage: err.Error(),
+				}
+			}
+
+			return nil
+		}
+	}
+
+	tBase := new(IntAry).New()
+
+	err = new(intAryProton).copy(&tBase, ia, false, false, ePrefix)
+
+	if err != nil {
 
-    return &FuncReturnError{
-      ErrPrefix: ePrefix.String(),
-      ReturnFunc: "err = new(intAryProton).copy(\n" +
-        "  &iAry2, ia, validateSource=false, copyToBackup=false, ePrefix)",
-      ErrContext: "ia -> iAry2",
-      ErrMessage: err.Error(),
-    }
-  }
-
-  // Set 'ia' = 1
-  err = new(intAryGluon).setIntAryWithInt(ia, nil, nsProfile2, 1, 0, true, ePrefix)
-
-  if err != nil {
-
-    return &FuncReturnError{
-      ErrPrefix: ePrefix.String(),
-      ReturnFunc: "err = new(intAryGluon).setIntAryWithInt(\n" +
-        "  ia, numSepsSrc=nil, nsProfile2, 1, 0, validateResult=true, ePrefix)",
-      ErrContext: "Set 'ia' to '1' 0 Precision",
-      ErrMessage: err.Error(),
-    }
-  }
-
-  for tPower.Cmp(zero) == 1 {
-    //temp, _:= intAry{}.NewNumStr("0")
-
-    if big.NewInt(0).Mod(tPower, two).Cmp(one) == 0 {
-      //temp = big.NewInt(0).Mul(result, tBase)
-      //result = big.NewInt(0).Set(temp)
-
-      err = iaHlprNeutron.multiplyThisBy(ia, false, &tBase, false, -1, internalPrecision, ePrefix)
-
-      if err != nil {
-
-        return &FuncReturnError{
-          ErrPrefix: ePrefix.String(),
-          ReturnFunc: fmt.Sprintf("err = iaHlprNeutron.multiplyThisBy(\n"+
-            "ia, validateIa=false, &tBase, validateTbase=false,\n"+
-            "minPrecision=-1, internalPrecision= '%v', ePrefix)",
-            internalPrecision),
-          ErrContext: "Multiply 'ia' by tBase (ia x tBase)",
-          ErrMessage: err.Error(),
-        }
-      }
-
-      //fmt.Println("ia precision = ", ia.GetPrecisionInt())
-
-      if tPower.Cmp(one) == 0 {
-
-        if maxResultPrecision > -1 && maxResultPrecision < ia.GetPrecision() {
-
-          err = new(intAryMolecule).
-            setPrecision(ia, true, maxResultPrecision, true, ePrefix)
-
-          if err != nil {
-
-            return &FuncReturnError{
-              ErrPrefix: ePrefix.String(),
-              ReturnFunc: "err = new(intAryMolecule).setPrecision(\n" +
-                "ia, validate=true, maxResultPrecision, roundResult=true, ePrefix)",
-              ErrContext: fmt.Sprintf("maxResultPrecision= '%v'",
-                maxResultPrecision),
-              ErrMessage: err.Error(),
-            }
-          }
-
-          return nil
-        }
-        // Keep going!
-      }
-
-      err = iaHlprNeutron.multiplyThisBy(&tBase, false, &tBase, false, -1, internalPrecision, ePrefix)
-
-      if err != nil {
-
-        return &FuncReturnError{
-          ErrPrefix: ePrefix.String(),
-          ReturnFunc: fmt.Sprintf("err = iaHlprNeutron.multiplyThisBy(\n"+
-            "&tBase, validateTbase=false, &tBase, validateTbase=false,\n"+
-            "minPrecision=-1, internalPrecision= '%v', ePrefix)",
-            internalPrecision),
-          ErrContext: "Multiply 'ia' by tBase (ia x tBase)",
-          ErrMessage: err.Error(),
-        }
-      }
-    }
-
-    tPower = big.NewInt(0).Div(tPower, two)
-  }
-
-  if maxResultPrecision < ia.GetPrecision() &&
-    maxResultPrecision == -1 {
-
-    err = new(intAryMolecule).
-      setPrecision(ia, true, maxResultPrecision, true, ePrefix)
-
-    if err != nil {
-
-      return &FuncReturnError{
-        ErrPrefix: ePrefix.String(),
-        ReturnFunc: "err = new(intAryMolecule).setPrecision(\n" +
-          "ia, validate=true, maxResultPrecision, roundResult=true, ePrefix)",
-        ErrContext: fmt.Sprintf("maxResultPrecision= '%v'",
-          maxResultPrecision),
-        ErrMessage: err.Error(),
-      }
-    }
-  }
-
-  // If no validation specified, this will set
-  // internal flags
-  err = new(intAryUtility).selectIntAryValidation(
-    ia,
-    "ia",
-    validateResult,
-    ePrefix)
-
-  if err != nil {
-
-    return &FuncReturnError{
-      ErrPrefix: ePrefix.String(),
-      ReturnFunc: "err = new(intAryUtility).selectIntAryValidation(\n" +
-        "ia,\"ia\", validateResult, ePrefix)",
-      ErrContext: "Validating Final Result",
-      ErrMessage: err.Error(),
-    }
-  }
-
-  return nil
+		return &FuncReturnError{
+			ErrPrefix: ePrefix.String(),
+			ReturnFunc: "err = new(intAryProton).copy(\n" +
+				"  &iAry2, ia, validateSource=false, copyToBackup=false, ePrefix)",
+			ErrContext: "ia -> iAry2",
+			ErrMessage: err.Error(),
+		}
+	}
+
+	// Set 'ia' = 1
+	err = new(intAryGluon).setIntAryWithInt(ia, nil, nsProfile2, 1, 0, true, ePrefix)
+
+	if err != nil {
+
+		return &FuncReturnError{
+			ErrPrefix: ePrefix.String(),
+			ReturnFunc: "err = new(intAryGluon).setIntAryWithInt(\n" +
+				"  ia, numSepsSrc=nil, nsProfile2, 1, 0, validateResult=true, ePrefix)",
+			ErrContext: "Set 'ia' to '1' 0 Precision",
+			ErrMessage: err.Error(),
+		}
+	}
+
+	for tPower.Cmp(zero) == 1 {
+		//temp, _:= intAry{}.NewNumStr("0")
+
+		if big.NewInt(0).Mod(tPower, two).Cmp(one) == 0 {
+			//temp = big.NewInt(0).Mul(result, tBase)
+			//result = big.NewInt(0).Set(temp)
+
+			err = iaHlprNeutron.multiplyThisBy(ia, false, &tBase, false, -1, internalPrecision, ePrefix)
+
+			if err != nil {
+
+				return &FuncReturnError{
+					ErrPrefix: ePrefix.String(),
+					ReturnFunc: fmt.Sprintf("err = iaHlprNeutron.multiplyThisBy(\n"+
+						"ia, validateIa=false, &tBase, validateTbase=false,\n"+
+						"minPrecision=-1, internalPrecision= '%v', ePrefix)",
+						internalPrecision),
+					ErrContext: "Multiply 'ia' by tBase (ia x tBase)",
+					ErrMessage: err.Error(),
+				}
+			}
+
+			//fmt.Println("ia precision = ", ia.GetPrecisionInt())
+
+			if tPower.Cmp(one) == 0 {
+
+				if maxResultPrecision > -1 && maxResultPrecision < ia.GetPrecision() {
+
+					err = new(intAryMolecule).
+						setPrecision(ia, true, maxResultPrecision, true, ePrefix)
+
+					if err != nil {
+
+						return &FuncReturnError{
+							ErrPrefix: ePrefix.String(),
+							ReturnFunc: "err = new(intAryMolecule).setPrecision(\n" +
+								"ia, validate=true, maxResultPrecision, roundResult=true, ePrefix)",
+							ErrContext: fmt.Sprintf("maxResultPrecision= '%v'",
+								maxResultPrecision),
+							ErrMessage: err.Error(),
+						}
+					}
+
+					return nil
+				}
+				// Keep going!
+			}
+
+			err = iaHlprNeutron.multiplyThisBy(&tBase, false, &tBase, false, -1, internalPrecision, ePrefix)
+
+			if err != nil {
+
+				return &FuncReturnError{
+					ErrPrefix: ePrefix.String(),
+					ReturnFunc: fmt.Sprintf("err = iaHlprNeutron.multiplyThisBy(\n"+
+						"&tBase, validateTbase=false, &tBase, validateTbase=false,\n"+
+						"minPrecision=-1, internalPrecision= '%v', ePrefix)",
+						internalPrecision),
+					ErrContext: "Multiply 'ia' by tBase (ia x tBase)",
+					ErrMessage: err.Error(),
+				}
+			}
+		}
+
+		tPower = big.NewInt(0).Div(tPower, two)
+	}
+
+	if maxResultPrecision < ia.GetPrecision() &&
+		maxResultPrecision == -1 {
+
+		err = new(intAryMolecule).
+			setPrecision(ia, true, maxResultPrecision, true, ePrefix)
+
+		if err != nil {
+
+			return &FuncReturnError{
+				ErrPrefix: ePrefix.String(),
+				ReturnFunc: "err = new(intAryMolecule).setPrecision(\n" +
+					"ia, validate=true, maxResultPrecision, roundResult=true, ePrefix)",
+				ErrContext: fmt.Sprintf("maxResultPrecision= '%v'",
+					maxResultPrecision),
+				ErrMessage: err.Error(),
+			}
+		}
+	}
+
+	// If no validation specified, this will set
+	// internal flags
+	err = new(intAryUtility).selectIntAryValidation(
+		ia,
+		"ia",
+		validateResult,
+		ePrefix)
+
+	if err != nil {
+
+		return &FuncReturnError{
+			ErrPrefix: ePrefix.String(),
+			ReturnFunc: "err = new(intAryUtility).selectIntAryValidation(\n" +
+				"ia,\"ia\", validateResult, ePrefix)",
+			ErrContext: "Validating Final Result",
+			ErrMessage: err.Error(),
+		}
+	}
+
+	return nil
 }
 
 // setIntAryInt64Exponent
@@ -480,111 +480,111 @@ func (iaMinibot *intAryMinibot) pwrByTwos(
 //	  If no errors are encountered during processing, this returned
 //		 value will be set to 'nil'
 func (iaMinibot *intAryMinibot) setIntAryInt64Exponent(
-  ia *IntAry,
-  numSepsSrcIntAry *IntAry,
-  nsProfile NumSepsProfileSelection,
-  int64Num int64,
-  exponent int,
-  validateResult bool,
-  errPrefDto *ePref.ErrPrefixDto) error {
+	ia *IntAry,
+	numSepsSrcIntAry *IntAry,
+	nsProfile NumSepsProfileSelection,
+	int64Num int64,
+	exponent int,
+	validateResult bool,
+	errPrefDto *ePref.ErrPrefixDto) error {
 
-  iaMinibot.lock.Lock()
+	iaMinibot.lock.Lock()
 
-  defer iaMinibot.lock.Unlock()
+	defer iaMinibot.lock.Unlock()
 
-  var ePrefix *ePref.ErrPrefixDto
+	var ePrefix *ePref.ErrPrefixDto
 
-  var err error
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
-    errPrefDto,
-    "intAryMinibot.setIntAryInt64Exponent()",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
+		errPrefDto,
+		"intAryMinibot.setIntAryInt64Exponent()",
+		"")
 
-  if err != nil {
-    return err
-  }
+	if err != nil {
+		return err
+	}
 
-  if ia == nil {
+	if ia == nil {
 
-    return &InputPtrNilError{
-      ErrPrefix:     ePrefix.String(),
-      ParameterName: "'ia'",
-    }
-  }
+		return &InputPtrNilError{
+			ErrPrefix:     ePrefix.String(),
+			ParameterName: "'ia'",
+		}
+	}
 
-  var numSeps NumericSeparatorDto
+	var numSeps NumericSeparatorDto
 
-  nsProfile.OutputNumSepsName = "numSeps"
+	nsProfile.OutputNumSepsName = "numSeps"
 
-  var actualNumSepsSrcIntAryPtr *IntAry
+	var actualNumSepsSrcIntAryPtr *IntAry
 
-  if numSepsSrcIntAry == nil {
+	if numSepsSrcIntAry == nil {
 
-    nsProfile.SourceObjectName = "ia"
-    actualNumSepsSrcIntAryPtr = ia
+		nsProfile.SourceObjectName = "ia"
+		actualNumSepsSrcIntAryPtr = ia
 
-  } else {
+	} else {
 
-    nsProfile.SourceObjectName = "numSepsSrcIntAry"
-    actualNumSepsSrcIntAryPtr = numSepsSrcIntAry
-  }
+		nsProfile.SourceObjectName = "numSepsSrcIntAry"
+		actualNumSepsSrcIntAryPtr = numSepsSrcIntAry
+	}
 
-  numSeps, err = new(intAryUtility).selectNumericSeparators(
-    actualNumSepsSrcIntAryPtr,
-    nsProfile,
-    ePrefix)
+	numSeps, err = new(intAryUtility).selectNumericSeparators(
+		actualNumSepsSrcIntAryPtr,
+		nsProfile,
+		ePrefix)
 
-  if err != nil {
+	if err != nil {
 
-    return &FuncReturnError{
-      ErrPrefix: ePrefix.String(),
-      ReturnFunc: "numSeps, err = new(intAryUtility).selectNumericSeparators(\n" +
-        "actualNumSepsSrcIntAryPtr, nsProfile, ePrefix)",
-      ErrContext: "",
-      ErrMessage: err.Error(),
-    }
-  }
+		return &FuncReturnError{
+			ErrPrefix: ePrefix.String(),
+			ReturnFunc: "numSeps, err = new(intAryUtility).selectNumericSeparators(\n" +
+				"actualNumSepsSrcIntAryPtr, nsProfile, ePrefix)",
+			ErrContext: "",
+			ErrMessage: err.Error(),
+		}
+	}
 
-  nsProfile2 := NumSepsProfileSelection{
-    SourceObjectName:         "ia",
-    OutputNumSepsName:        "numSeps",
-    UseDefaultNumSeps:        false,
-    SetDefaultNumSepsIfEmpty: true,
-    ValidateNumSeps:          false,
-    OverrideNumSeps:          numSeps,
-  }
+	nsProfile2 := NumSepsProfileSelection{
+		SourceObjectName:         "ia",
+		OutputNumSepsName:        "numSeps",
+		UseDefaultNumSeps:        false,
+		SetDefaultNumSepsIfEmpty: true,
+		ValidateNumSeps:          false,
+		OverrideNumSeps:          numSeps,
+	}
 
-  if exponent > 0 {
-    for i := 0; i < exponent; i++ {
+	if exponent > 0 {
+		for i := 0; i < exponent; i++ {
 
-      int64Num *= 10
+			int64Num *= 10
 
-    }
-  }
+		}
+	}
 
-  if exponent < 0 {
+	if exponent < 0 {
 
-    exponent = exponent * -1
+		exponent = exponent * -1
 
-  }
+	}
 
-  err = new(intAryGluon).setIntAryWithInt64(
-    ia, nil, nsProfile2, int64Num, uint(exponent), validateResult, ePrefix)
+	err = new(intAryGluon).setIntAryWithInt64(
+		ia, nil, nsProfile2, int64Num, uint(exponent), validateResult, ePrefix)
 
-  if err != nil {
+	if err != nil {
 
-    return &FuncReturnError{
-      ErrPrefix: ePrefix.String(),
-      ReturnFunc: "err = new(intAryGluon).setIntAryWithInt64(\n" +
-        "  ia, nil, nsProfile2, int64Num, uint(exponent), validateResult, ePrefix)",
-      ErrContext: fmt.Sprintf("validateResult = '%v'", validateResult),
-      ErrMessage: err.Error(),
-    }
-  }
+		return &FuncReturnError{
+			ErrPrefix: ePrefix.String(),
+			ReturnFunc: "err = new(intAryGluon).setIntAryWithInt64(\n" +
+				"  ia, nil, nsProfile2, int64Num, uint(exponent), validateResult, ePrefix)",
+			ErrContext: fmt.Sprintf("validateResult = '%v'", validateResult),
+			ErrMessage: err.Error(),
+		}
+	}
 
-  return nil
+	return nil
 }
 
 // setIntAryUint64Exponent
@@ -666,120 +666,120 @@ func (iaMinibot *intAryMinibot) setIntAryInt64Exponent(
 //	  If no errors are encountered the return value for this
 //	  parameter will be set to 'nil'.
 func (iaMinibot *intAryMinibot) setIntAryUint64Exponent(
-  ia *IntAry,
-  numSepsSrcIntAry *IntAry,
-  nsProfile NumSepsProfileSelection,
-  uint64Num uint64,
-  signValue int,
-  exponent int,
-  validateResult bool,
-  errPrefDto *ePref.ErrPrefixDto) error {
+	ia *IntAry,
+	numSepsSrcIntAry *IntAry,
+	nsProfile NumSepsProfileSelection,
+	uint64Num uint64,
+	signValue int,
+	exponent int,
+	validateResult bool,
+	errPrefDto *ePref.ErrPrefixDto) error {
 
-  iaMinibot.lock.Lock()
+	iaMinibot.lock.Lock()
 
-  defer iaMinibot.lock.Unlock()
+	defer iaMinibot.lock.Unlock()
 
-  var ePrefix *ePref.ErrPrefixDto
+	var ePrefix *ePref.ErrPrefixDto
 
-  var err error
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
-    errPrefDto,
-    "intAryMinibot.setInt64Exponent()",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
+		errPrefDto,
+		"intAryMinibot.setInt64Exponent()",
+		"")
 
-  if err != nil {
-    return err
-  }
+	if err != nil {
+		return err
+	}
 
-  if ia == nil {
+	if ia == nil {
 
-    return &InputPtrNilError{
-      ErrPrefix:     ePrefix.String(),
-      ParameterName: "'ia'",
-    }
-  }
+		return &InputPtrNilError{
+			ErrPrefix:     ePrefix.String(),
+			ParameterName: "'ia'",
+		}
+	}
 
-  var numSeps NumericSeparatorDto
+	var numSeps NumericSeparatorDto
 
-  nsProfile.OutputNumSepsName = "numSeps"
+	nsProfile.OutputNumSepsName = "numSeps"
 
-  var actualNumSepsSrcIntAryPtr *IntAry
+	var actualNumSepsSrcIntAryPtr *IntAry
 
-  if numSepsSrcIntAry == nil {
+	if numSepsSrcIntAry == nil {
 
-    nsProfile.SourceObjectName = "ia"
-    actualNumSepsSrcIntAryPtr = ia
+		nsProfile.SourceObjectName = "ia"
+		actualNumSepsSrcIntAryPtr = ia
 
-  } else {
+	} else {
 
-    nsProfile.SourceObjectName = "numSepsSrcIntAry"
-    actualNumSepsSrcIntAryPtr = numSepsSrcIntAry
-  }
+		nsProfile.SourceObjectName = "numSepsSrcIntAry"
+		actualNumSepsSrcIntAryPtr = numSepsSrcIntAry
+	}
 
-  numSeps, err = new(intAryUtility).selectNumericSeparators(
-    actualNumSepsSrcIntAryPtr,
-    nsProfile,
-    ePrefix)
+	numSeps, err = new(intAryUtility).selectNumericSeparators(
+		actualNumSepsSrcIntAryPtr,
+		nsProfile,
+		ePrefix)
 
-  if err != nil {
+	if err != nil {
 
-    return &FuncReturnError{
-      ErrPrefix: ePrefix.String(),
-      ReturnFunc: "numSeps, err = new(intAryUtility).selectNumericSeparators(\n" +
-        "actualNumSepsSrcIntAryPtr, nsProfile, ePrefix)",
-      ErrContext: "",
-      ErrMessage: err.Error(),
-    }
-  }
+		return &FuncReturnError{
+			ErrPrefix: ePrefix.String(),
+			ReturnFunc: "numSeps, err = new(intAryUtility).selectNumericSeparators(\n" +
+				"actualNumSepsSrcIntAryPtr, nsProfile, ePrefix)",
+			ErrContext: "",
+			ErrMessage: err.Error(),
+		}
+	}
 
-  nsProfile2 := NumSepsProfileSelection{
-    SourceObjectName:         "ia",
-    OutputNumSepsName:        "numSeps",
-    UseDefaultNumSeps:        false,
-    SetDefaultNumSepsIfEmpty: true,
-    ValidateNumSeps:          false,
-    OverrideNumSeps:          numSeps,
-  }
+	nsProfile2 := NumSepsProfileSelection{
+		SourceObjectName:         "ia",
+		OutputNumSepsName:        "numSeps",
+		UseDefaultNumSeps:        false,
+		SetDefaultNumSepsIfEmpty: true,
+		ValidateNumSeps:          false,
+		OverrideNumSeps:          numSeps,
+	}
 
-  uint64Ten := uint64(10)
+	uint64Ten := uint64(10)
 
-  if exponent > 0 {
-    for i := 0; i < exponent; i++ {
+	if exponent > 0 {
+		for i := 0; i < exponent; i++ {
 
-      uint64Num *= uint64Ten
+			uint64Num *= uint64Ten
 
-    }
-  }
+		}
+	}
 
-  if exponent < 0 {
+	if exponent < 0 {
 
-    exponent = exponent * -1
+		exponent = exponent * -1
 
-  }
+	}
 
-  err = new(intAryGluon).setIntAryWithUint64(
-    ia,
-    nil,
-    nsProfile2,
-    uint64Num,
-    signValue,
-    uint(exponent),
-    validateResult,
-    ePrefix)
+	err = new(intAryGluon).setIntAryWithUint64(
+		ia,
+		nil,
+		nsProfile2,
+		uint64Num,
+		signValue,
+		uint(exponent),
+		validateResult,
+		ePrefix)
 
-  if err != nil {
+	if err != nil {
 
-    return &FuncReturnError{
-      ErrPrefix: ePrefix.String(),
-      ReturnFunc: "err = new(intAryGluon).setIntAryWithUint64(\n" +
-        "  &iAry, ia, nsProfile2, uint64Num, signValue, uint(exponent),\n" +
-        "  validateResult, ePrefix)",
-      ErrContext: "",
-      ErrMessage: err.Error(),
-    }
-  }
+		return &FuncReturnError{
+			ErrPrefix: ePrefix.String(),
+			ReturnFunc: "err = new(intAryGluon).setIntAryWithUint64(\n" +
+				"  &iAry, ia, nsProfile2, uint64Num, signValue, uint(exponent),\n" +
+				"  validateResult, ePrefix)",
+			ErrContext: "",
+			ErrMessage: err.Error(),
+		}
+	}
 
-  return nil
+	return nil
 }

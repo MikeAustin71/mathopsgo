@@ -2222,6 +2222,259 @@ func (iaNeutron *intAryNeutron) multiplyThisBy(
 	return nil
 }
 
+// SetIntAryWithIntFracStr
+//
+//	Sets the value of the current IntAry instance based on a
+//	numeric value represented by separate integer and fractional
+//	components.
+//
+//	Input parameters 'intStr' and 'fracStr' are strings
+//	representing the integer and fractional components. They are
+//	combined by this method to create a numeric value which is
+//	assigned to, and stored in, the current IntAry instance.
+//
+//	Input parameter 'signVal' must be set to one of two values:
+//	+1 or -1. This value is used to signal the sign of the
+//	resulting numeric value. +1 generates a positive number and -1
+//	generates a negative number. If input parameters 'inStr' or
+//	'fracStr' contain a leading minus or plus sign character, it
+//	will be ignored. The sign of the resulting numeric value is
+//	controlled strictly by input parameter, 'signVal'.
+//
+//	IMPORTANT
+//	=========
+//
+//	This method will use the numeric separators in the current
+//	instance of IntAry to convert the integer and fractional
+//	components into a consolidated number string for internal
+//	calculation purposes.
+func (iaNeutron *intAryNeutron) setIntAryWithIntFracStr(
+	ia *IntAry,
+	validateIa bool,
+	numSepsSrcIntAry *IntAry,
+	nsProfile NumSepsProfileSelection,
+	intStr string,
+	fracStr string,
+	signVal int,
+	validateResult bool,
+	errPrefDto *ePref.ErrPrefixDto) error {
+
+	iaNeutron.lock.Lock()
+
+	defer iaNeutron.lock.Unlock()
+
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
+
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
+		errPrefDto,
+		"intAryNeutron.SetIntAryWithIntFracStr()",
+		"")
+
+	if err != nil {
+		return err
+	}
+
+	if ia == nil {
+
+		return &InputPtrNilError{
+			ErrPrefix:     ePrefix.String(),
+			ParameterName: "'ia'",
+		}
+	}
+
+	if len(intStr) == 0 && len(fracStr) == 0 {
+
+		return &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "",
+			ErrContext: "",
+			ErrMessage: "Error: Input parameters 'intStr' and 'fracStr' empty strings!",
+		}
+
+	}
+
+	if len(intStr) == 0 && len(fracStr) != 0 {
+		intStr = "0"
+	}
+
+	err = new(intAryUtility).selectIntAryValidation(
+		ia,
+		"ia",
+		validateIa,
+		ePrefix)
+
+	if err != nil {
+		return err
+	}
+
+	var numSeps NumericSeparatorDto
+
+	nsProfile.OutputNumSepsName = "numSeps"
+
+	var actualNumSepsSrcIntAryPtr *IntAry
+
+	if numSepsSrcIntAry == nil {
+
+		nsProfile.SourceObjectName = "ia"
+		actualNumSepsSrcIntAryPtr = ia
+
+	} else {
+
+		nsProfile.SourceObjectName = "numSepsSrcIntAry"
+		actualNumSepsSrcIntAryPtr = numSepsSrcIntAry
+	}
+
+	numSeps, err = new(intAryUtility).selectNumericSeparators(
+		actualNumSepsSrcIntAryPtr,
+		nsProfile,
+		ePrefix)
+
+	if err != nil {
+
+		return &FuncReturnError{
+			ErrPrefix: ePrefix.String(),
+			ReturnFunc: "finalNumSeps, err = new(intAryUtility).selectNumericSeparators(\n" +
+				"actualNumSepsSrcIntAryPtr, nsProfile, ePrefix)",
+			ErrContext: "",
+			ErrMessage: err.Error(),
+		}
+	}
+
+	err = numSeps.IsValid(ePrefix.XCpy("Validating 'numSeps'").String())
+
+	if err != nil {
+
+		return &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "err = numSeps.IsValid(ePrefix.XCpy(\"Validating 'numSeps'\".String())",
+			ErrContext: fmt.Sprintf("Generated 'numSeps' is INVALILD!\n"+
+				"numSeps.DecimalSeparator= '%c'\n"+
+				"numSeps.ThousandsSeparator= '%c'\n"+
+				"numSeps.CurrencySymbol= '%c'",
+				numSeps.DecimalSeparator, numSeps.ThousandsSeparator, numSeps.CurrencySymbol),
+			ErrMessage: err.Error(),
+		}
+	}
+
+	localDecimalSeparator := numSeps.DecimalSeparator
+
+	if localDecimalSeparator == 0 {
+		localDecimalSeparator = '.'
+	}
+
+	nsProfile2 := NumSepsProfileSelection{
+		SourceObjectName:         "ia",
+		OutputNumSepsName:        "numSeps",
+		UseDefaultNumSeps:        false,
+		SetDefaultNumSepsIfEmpty: false,
+		ValidateNumSeps:          false,
+		OverrideNumSeps:          numSeps,
+	}
+
+	cleanIntRuneAry := make([]rune, 0, 100)
+
+	zeroChar := uint8('0')
+	nineChar := uint8('9')
+
+	lStr := len(intStr)
+
+	if lStr == 0 {
+
+		return fmt.Errorf("%v\n"+
+			"Error: Input Parameter 'intStr' is zero Length!\n",
+			ePrefix)
+	}
+
+	isFirstRune := true
+
+	// Create pure number string from 'intStr'
+	for i := 0; i < lStr; i++ {
+
+		if intStr[i] >= zeroChar &&
+			intStr[i] <= nineChar {
+
+			if isFirstRune && signVal == -1 {
+
+				cleanIntRuneAry = append(cleanIntRuneAry, '-')
+			}
+
+			isFirstRune = false
+
+			cleanIntRuneAry = append(cleanIntRuneAry, rune(intStr[i]))
+		}
+	}
+
+	if len(cleanIntRuneAry) == 0 {
+
+		cleanIntRuneAry = append(cleanIntRuneAry, '0')
+	}
+
+	lStr = len(fracStr)
+
+	if lStr > 0 {
+
+		isFirstRune = true
+
+		for j := 0; j < lStr; j++ {
+
+			if fracStr[j] >= zeroChar &&
+				fracStr[j] <= nineChar {
+
+				if isFirstRune {
+					cleanIntRuneAry = append(cleanIntRuneAry, localDecimalSeparator)
+					isFirstRune = false
+				}
+
+				cleanIntRuneAry = append(cleanIntRuneAry, rune(fracStr[j]))
+			}
+
+		}
+	}
+
+	err = new(intAryQuark).setIntAryWithNumStr(
+		ia,
+		validateIa,
+		numSepsSrcIntAry,
+		nsProfile2,
+		string(cleanIntRuneAry),
+		validateResult,
+		ePrefix)
+
+	if err != nil {
+
+		return &FuncReturnError{
+			ErrPrefix: ePrefix.String(),
+			ReturnFunc: fmt.Sprintf("err = new(intAryQuark).setIntAryWithNumStr(\n"+
+				"ia, validateIa= '%v', numSepsSrcIntAry, nsProfile2, numStr, validateResult= '%v', ePrefix)",
+				validateIa, validateResult),
+			ErrContext: fmt.Sprintf("numStr= %v", string(cleanIntRuneAry)),
+			ErrMessage: err.Error(),
+		}
+
+	}
+
+	err = new(intAryUtility).selectIntAryValidation(
+		ia,
+		"ia",
+		validateResult,
+		ePrefix)
+
+	if err != nil {
+
+		return &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "err = new(intAryUtility).selectIntAryValidation(ia,\"ia\", validateResult, ePrefix)",
+			ErrContext: "The final calculation result of intAryNeutron.setIntAryWithIntFracStr()\n" +
+				"FAILED Validation Tests",
+			ErrMessage: err.Error(),
+		}
+	}
+
+	return nil
+}
+
 // setIntAryWithNumStrMaxPrecision
 //
 //	Receives a raw number string and sets the fields of the
@@ -2253,7 +2506,7 @@ func (iaNeutron *intAryNeutron) setIntAryWithNumStrMaxPrecision(
 	ePrefix,
 		err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
 		errPrefDto,
-		"intAryNeutron.getBigInt()",
+		"intAryNeutron.setIntAryWithNumStrMaxPrecision()",
 		"")
 
 	if err != nil {
