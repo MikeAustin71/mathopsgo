@@ -3,11 +3,241 @@ package mathops
 import (
 	"fmt"
 	ePref "github.com/MikeAustin71/errpref"
+	"math/big"
 	"sync"
 )
 
 type intAryGluon struct {
 	lock sync.Mutex
+}
+
+// setIntAryWithBigInt
+//
+//	Sets the current value of the intAry to the value of input
+//	parameter 'intDigits'. The sign value (plus or minus) is taken
+//	from the input parameter, 'intDigits'.
+//
+//	The precision or number of digits to the right of the decimal
+//	point, is determined by the input parameter, 'precision'. Input
+//	parameter 'precision' must be passed as a positive value.
+//
+//	Negative 'precision' values will trigger an error.
+//
+//	Example
+//	=======
+//
+//	intDigits      precision      result
+//
+//	 946254            3           946.254
+//	 946254            0           946254
+//	-946254            3          -946.254
+//	-946254            0          -946254
+func (iaGluon *intAryGluon) setIntAryWithBigInt(
+	ia *IntAry,
+	numSepsSrcIntAry *IntAry,
+	nsProfile NumSepsProfileSelection,
+	intDigits *big.Int,
+	precision int,
+	validateResult bool,
+	errPrefDto *ePref.ErrPrefixDto) error {
+
+	iaGluon.lock.Lock()
+
+	defer iaGluon.lock.Unlock()
+
+	var ePrefix *ePref.ErrPrefixDto
+
+	var err error
+
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
+		errPrefDto,
+		"intAryGluon.setIntAryWithBigInt()",
+		"")
+
+	if err != nil {
+		return err
+	}
+
+	if ia == nil {
+
+		return &InputPtrNilError{
+			ErrPrefix:     ePrefix.String(),
+			ParameterName: "'ia'",
+		}
+	}
+
+	if intDigits == nil {
+
+		return &InputPtrNilError{
+			ErrPrefix:     ePrefix.String(),
+			ParameterName: "'intDigits'",
+		}
+	}
+
+	if precision < 0 {
+
+		return &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "",
+			ErrContext: "",
+			ErrMessage: fmt.Sprintf("Error: Input parameter 'precision' is a negative value!\n"+
+				"precision='%v'", precision),
+		}
+
+	}
+
+	var numSeps NumericSeparatorDto
+
+	nsProfile.OutputNumSepsName = "numSeps"
+
+	var actualNumSepsSrcIntAryPtr *IntAry
+
+	if numSepsSrcIntAry == nil {
+
+		nsProfile.SourceObjectName = "ia"
+		actualNumSepsSrcIntAryPtr = ia
+
+	} else {
+
+		nsProfile.SourceObjectName = "numSepsSrcIntAry"
+		actualNumSepsSrcIntAryPtr = numSepsSrcIntAry
+	}
+
+	numSeps, err = new(intAryUtility).selectNumericSeparators(
+		actualNumSepsSrcIntAryPtr,
+		nsProfile,
+		ePrefix)
+
+	if err != nil {
+
+		return &FuncReturnError{
+			ErrPrefix: ePrefix.String(),
+			ReturnFunc: "numSeps, err = new(intAryUtility).selectNumericSeparators(\n" +
+				"actualNumSepsSrcIntAryPtr, nsProfile, ePrefix)",
+			ErrContext: "",
+			ErrMessage: err.Error(),
+		}
+	}
+
+	nsProfile2 := NumSepsProfileSelection{
+		SourceObjectName:         "ia",
+		OutputNumSepsName:        "numSeps",
+		UseDefaultNumSeps:        false,
+		SetDefaultNumSepsIfEmpty: true,
+		ValidateNumSeps:          false,
+		OverrideNumSeps:          numSeps,
+	}
+
+	bigZero := big.NewInt(0)
+
+	quotient := big.NewInt(0)
+
+	mod := big.NewInt(0)
+
+	big10 := big.NewInt(10)
+
+	modX := big.NewInt(0)
+
+	xIntDigits := big.NewInt(0).Set(intDigits)
+
+	compare := bigZero.Cmp(xIntDigits)
+
+	ia.intAry = []uint8{}
+
+	ia.intAryLen = 0
+
+	ia.precision = precision
+
+	ia.signVal = 1
+
+	if compare == 1 {
+
+		bigMinus1 := big.NewInt(0).SetInt64(int64(-1))
+
+		xIntDigits = big.NewInt(0).Mul(xIntDigits, bigMinus1)
+
+		ia.signVal = -1
+	}
+
+	if compare == 0 {
+
+		err = new(intAryQuark).setIntAryToZero(
+			ia,
+			nil,
+			nsProfile2,
+			uint(precision),
+			ePrefix)
+
+		if err != nil {
+
+			return &FuncReturnError{
+				ErrPrefix: ePrefix.String(),
+				ReturnFunc: fmt.Sprintf("err = new(intAryQuark).setIntAryToZero(\n"+
+					"ia, nil, nsProfile2, uint(precision)= '%v', ePrefix", precision),
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+		}
+
+		return nil
+	}
+
+	for {
+
+		compare := bigZero.Cmp(xIntDigits)
+
+		if compare == 0 {
+			break
+		}
+
+		quotient, mod = big.NewInt(0).QuoRem(xIntDigits, big10, modX)
+
+		ia.intAry = append(ia.intAry, uint8(mod.Int64()))
+
+		ia.intAryLen++
+
+		xIntDigits.Set(quotient)
+
+	}
+
+	n1 := uint8(0)
+
+	lastIdx := ia.intAryLen - 1
+
+	totalLen := ia.intAryLen / 2
+
+	for i := 0; i < totalLen; i++ {
+
+		n1 = ia.intAry[i]
+
+		ia.intAry[i] = ia.intAry[lastIdx]
+
+		ia.intAry[lastIdx] = n1
+
+		lastIdx--
+	}
+
+	// If no validation specified, this will set
+	// internal flags
+	err = new(intAryUtility).selectIntAryValidation(
+		ia,
+		"ia",
+		validateResult,
+		ePrefix)
+
+	if err != nil {
+
+		return &FuncReturnError{
+			ErrPrefix: ePrefix.String(),
+			ReturnFunc: fmt.Sprintf("err = new(intAryUtility).selectIntAryValidation(\n"+
+				"ia,\"ia\", validateResult= '%v', ePrefix)", validateResult),
+			ErrContext: "",
+			ErrMessage: err.Error(),
+		}
+	}
+
+	return nil
 }
 
 // setIntAryWithInt

@@ -4247,37 +4247,45 @@ func (ia *IntAry) NewWithNumSeps(numSeps NumericSeparatorDto) (IntAry, error) {
 // ia, err := intAry{}.NewBigInt(num, precision)
 func (ia *IntAry) NewBigInt(num *big.Int, precision int) (IntAry, error) {
 
-	ePrefix := "IntAry.NewBigInt() "
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-	if precision < 0 {
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"IntAry.NewBigInt",
+		"")
 
-		return IntAry{},
-			fmt.Errorf("%v\n"+
-				"Error: Input parameter 'precision' is a negative value!\n"+
-				"precision='%v'\n",
-				ePrefix,
-				precision)
+	if err != nil {
+		return IntAry{}, err
 	}
 
 	iAry := new(intAryElectron).newIntAry()
 
-	err := iAry.SetIntAryWithBigInt(num, precision)
+	err = new(intAryProton).copy(&iAry, ia, false, false, ePrefix)
 
 	if err != nil {
 
 		return IntAry{},
-			fmt.Errorf("%v\n"+
-				"Error returned by iAry.SetIntAryWithBigInt(num, precision)\n"+
-				"precision='%v'\n"+
-				"Error= %v\n",
-				ePrefix,
-				precision,
-				err.Error())
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "err = new(intAryProton).copy(&iAry, ia, true, false, ePrefix)",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
 	}
 
-	err = new(intAryElectron).isValidIntAry(
-		&iAry,
-		ePrefix)
+	nsProfile := NumSepsProfileSelection{
+		SourceObjectName:         "iAry",
+		OutputNumSepsName:        "numSeps",
+		UseDefaultNumSeps:        false,
+		SetDefaultNumSepsIfEmpty: true,
+		ValidateNumSeps:          false,
+		OverrideNumSeps:          NumericSeparatorDto{},
+	}
+
+	err = new(intAryGluon).setIntAryWithBigInt(
+		&iAry, nil, nsProfile, num, precision, true, ePrefix)
 
 	return iAry, err
 }
@@ -4802,20 +4810,6 @@ func (ia *IntAry) NewIntExponent(intNum int, exponent int) (IntAry, error) {
 		"IntAry.NewIntExponent",
 		"")
 
-	if err != nil {
-		return IntAry{}, err
-	}
-
-	if exponent > 0 {
-		for i := 0; i < exponent; i++ {
-			intNum *= 10
-		}
-	}
-
-	if exponent < 0 {
-		exponent = exponent * -1
-	}
-
 	iAry := new(intAryElectron).newIntAry()
 
 	err = new(intAryProton).copy(&iAry, ia, true, false, ePrefix)
@@ -4839,12 +4833,12 @@ func (ia *IntAry) NewIntExponent(intNum int, exponent int) (IntAry, error) {
 		ValidateNumSeps:          false,
 	}
 
-	err = new(intAryGluon).setIntAryWithInt(
+	err = new(intAryMinibot).setIntAryInt64Exponent(
 		&iAry,
 		nil,
 		nsProfile,
-		intNum,
-		uint(exponent),
+		int64(intNum),
+		exponent,
 		true,
 		ePrefix)
 
@@ -4853,8 +4847,8 @@ func (ia *IntAry) NewIntExponent(intNum int, exponent int) (IntAry, error) {
 		return IntAry{},
 			&FuncReturnError{
 				ErrPrefix: ePrefix.String(),
-				ReturnFunc: "new(intAryGluon).setIntAryWithInt(\n" +
-					"  &iAry, nil, nsProfile, intNum, uint(exponent),\n" +
+				ReturnFunc: "new(intAryMinibot).setIntAryInt64Exponent(\n" +
+					"  &iAry, nil, nsProfile, int64(intNum), exponent,\n" +
 					"validateResult=true, ePrefix)",
 				ErrContext: "",
 				ErrMessage: err.Error(),
@@ -4942,7 +4936,7 @@ func (ia *IntAry) NewInt32(int32Num int32, precision uint) (IntAry, error) {
 	iAry := new(intAryElectron).newIntAry()
 
 	nsProfile := NumSepsProfileSelection{
-		SourceObjectName:         "ia",
+		SourceObjectName:         "iAry",
 		OutputNumSepsName:        "numSeps",
 		UseDefaultNumSeps:        false,
 		SetDefaultNumSepsIfEmpty: true,
@@ -5023,71 +5017,59 @@ func (ia *IntAry) NewInt32Exponent(int32Num int32, exponent int) (IntAry, error)
 	ePrefix,
 		err = ePref.ErrPrefixDto{}.NewIEmpty(
 		nil,
-		"IntAry.NewIntExponent",
+		"IntAry.NewInt32Exponent",
 		"")
 
 	if err != nil {
 		return IntAry{}, err
 	}
 
-	if exponent > 0 {
-		for i := 0; i < exponent; i++ {
-			int32Num *= 10
-		}
-	}
-
-	if exponent < 0 {
-		exponent = exponent * -1
-	}
-
 	iAry := new(intAryElectron).newIntAry()
 
-	iAry.SetIntAryWithInt32(int32Num, uint(exponent))
-
-	iaNumStr, err := ia.GetNumericSeparatorsDto()
+	err = new(intAryProton).copy(&iAry, ia, true, false, ePrefix)
 
 	if err != nil {
 
 		return IntAry{},
 			&FuncReturnError{
 				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "iaNumStr, err := ia.GetNumericSeparatorsDto()",
+				ReturnFunc: "err = new(intAryProton).copy(&iAry, ia, true, false, ePrefix)",
 				ErrContext: "",
 				ErrMessage: err.Error(),
 			}
 	}
 
-	err = iAry.SetNumericSeparatorsDto(iaNumStr)
-
-	if err != nil {
-
-		return IntAry{},
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "err = iAry.SetNumericSeparatorsDto(iaNumStr)",
-				ErrContext: fmt.Sprintf("iaNumStr= '%v'", iaNumStr),
-				ErrMessage: err.Error(),
-			}
+	nsProfile := NumSepsProfileSelection{
+		SourceObjectName:         "iAry",
+		OutputNumSepsName:        "numSeps",
+		UseDefaultNumSeps:        false,
+		SetDefaultNumSepsIfEmpty: true,
+		ValidateNumSeps:          false,
 	}
 
-	err = new(intAryElectron).isValidIntAry(
+	err = new(intAryMinibot).setIntAryInt64Exponent(
 		&iAry,
-		ePrefix.XCpy("Validating 'iAary'").String())
+		nil,
+		nsProfile,
+		int64(int32Num),
+		exponent,
+		true,
+		ePrefix)
 
 	if err != nil {
 
 		return IntAry{},
 			&FuncReturnError{
 				ErrPrefix: ePrefix.String(),
-				ReturnFunc: "err = new(intAryElectron).isValidIntAry(\n" +
-					"  &iAry, ePrefix.XCpy(Validating 'iAary').String())",
-				ErrContext: "Error: 'iAry' Final Calculated Result is INVALID!\n" +
-					"'iAry' FAILED Validation Tests.",
+				ReturnFunc: "new(intAryMinibot).setIntAryInt64Exponent(\n" +
+					"  &iAry, nil, nsProfile, int64(int32Num), exponent,\n" +
+					"validateResult=true, ePrefix)",
+				ErrContext: "",
 				ErrMessage: err.Error(),
 			}
 	}
 
-	return iAry, err
+	return iAry, nil
 }
 
 // NewInt64
@@ -7484,87 +7466,22 @@ func (ia *IntAry) SetIntAryWithInt32(int32Num int32, precision uint) error {
 		OverrideNumSeps:          NumericSeparatorDto{},
 	}
 
-	tenI32 := int32(10)
-	quotient := int32(0)
-	mod := int32(0)
-
-	ia.intAry = []uint8{}
-	ia.intAryLen = 0
-	ia.precision = int(precision)
-	ia.signVal = 1
-
-	if int32Num < 0 {
-		int32Num = int32Num * -1
-		ia.signVal = -1
-	}
-
-	if int32Num == 0 {
-		//ia.SetIntAryToZero(precision)
-
-		err = new(intAryQuark).setIntAryToZero(
-			ia,
-			nil,
-			nsProfile,
-			precision,
-			ePrefix)
-
-		if err != nil {
-
-			return &FuncReturnError{
-				ErrPrefix: ePrefix.String(),
-				ReturnFunc: fmt.Sprintf("err = new(intAryQuark).setIntAryToZero(\n"+
-					"ia, nil, nsProfile, precision= '%v', ePrefix", precision),
-				ErrContext: "",
-				ErrMessage: err.Error(),
-			}
-		}
-
-		return nil
-	}
-
-	for {
-
-		if int32Num == 0 {
-			break
-		}
-
-		quotient = int32Num / tenI32
-
-		mod = int32Num - (quotient * tenI32)
-
-		ia.intAry = append(ia.intAry, uint8(mod))
-		ia.intAryLen++
-
-		int32Num = quotient
-
-	}
-
-	n1 := uint8(0)
-
-	lastIdx := ia.intAryLen - 1
-
-	totalLen := ia.intAryLen / 2
-
-	for i := 0; i < totalLen; i++ {
-
-		n1 = ia.intAry[i]
-
-		ia.intAry[i] = ia.intAry[lastIdx]
-
-		ia.intAry[lastIdx] = n1
-
-		lastIdx--
-	}
-
-	err = new(intAryNanobot).setInternalFlags(
-		ia, ePrefix.XCpy("Setting 'ia' Flags"))
+	err = new(intAryGluon).setIntAryWithInt(
+		ia,
+		nil,
+		nsProfile,
+		int(int32Num),
+		precision,
+		true,
+		ePrefix)
 
 	if err != nil {
 
 		return &FuncReturnError{
 			ErrPrefix: ePrefix.String(),
-			ReturnFunc: "err = new(intAryNanobot).setInternalFlags(\n" +
-				"  ia, ePrefix.XCpy(Setting 'ia' Flags))",
+			ReturnFunc: "err = new(intAryGluon).setIntAryWithInt(\n" +
+				"ia, nil, nsProfile, int(int32Num), precision,\n" +
+				"validateResult=true, ePrefix",
 			ErrContext: "",
 			ErrMessage: err.Error(),
 		}
@@ -7850,91 +7767,73 @@ func (ia *IntAry) SetIntAryWithUint64(
 		ePrefix)
 }
 
-// SetIntAryWithBigInt - Sets the current value of the intAry to the value
-// of input parameter 'intDigits'. The sign value (plus or minus) is taken
-// from the input parameter, 'intDigits'. The precision or number of digits
-// to the right of the decimal point, is determined by the input parameter,
-// 'precision'. Input parameter 'precision' must be passed as a positive value.
-// Negative 'precision' values will trigger an error.
+// SetIntAryWithBigInt
 //
-// Example:
+//	Sets the current value of the intAry to the value of input
+//	parameter 'intDigits'. The sign value (plus or minus) is taken
+//	from the input parameter, 'intDigits'.
 //
-//	intDigits     precision     	    result
-//	946254  			   3							   946.254
-//	946254				   0							   946254
-//	-946254  			   3					      -946.254
-//	-946254				   0						    -946254
+//	The precision or number of digits to the right of the decimal
+//	point, is determined by the input parameter, 'precision'. Input
+//	parameter 'precision' must be passed as a positive value.
+//
+//	Negative 'precision' values will trigger an error.
+//
+//	Example
+//	=======
+//
+//	intDigits      precision      result
+//
+//	 946254            3           946.254
+//	 946254            0           946254
+//	-946254            3          -946.254
+//	-946254            0          -946254
 func (ia *IntAry) SetIntAryWithBigInt(intDigits *big.Int, precision int) error {
 
-	ePrefix := "IntAry.SetIntAryWithBigInt()"
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
+
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"IntAry.SetIntAryWithBigInt",
+		"")
+
+	if err != nil {
+		return err
+	}
+
+	if intDigits == nil {
+
+		return &InputPtrNilError{
+			ErrPrefix:     ePrefix.String(),
+			ParameterName: "'intDigits'",
+		}
+	}
 
 	if precision < 0 {
 
-		return fmt.Errorf("%v\n"+
-			"Error: Input parameter 'precision' is a negative value!\n"+
-			"precision='%v'\n",
-			ePrefix,
-			precision)
-
-	}
-
-	bigZero := big.NewInt(0)
-	quotient := big.NewInt(0)
-	mod := big.NewInt(0)
-	big10 := big.NewInt(10)
-	modX := big.NewInt(0)
-
-	xIntDigits := big.NewInt(0).Set(intDigits)
-
-	compare := bigZero.Cmp(xIntDigits)
-
-	ia.intAry = []uint8{}
-	ia.intAryLen = 0
-	ia.precision = precision
-
-	ia.signVal = 1
-
-	if compare == 1 {
-		bigMinus1 := big.NewInt(0).SetInt64(int64(-1))
-		xIntDigits = big.NewInt(0).Mul(xIntDigits, bigMinus1)
-		ia.signVal = -1
-	}
-
-	if compare == 0 {
-		ia.SetIntAryToZero(uint(precision))
-		return nil
-	}
-
-	for {
-
-		compare := bigZero.Cmp(xIntDigits)
-
-		if compare == 0 {
-			break
+		return &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "",
+			ErrContext: "",
+			ErrMessage: fmt.Sprintf("Error: Input parameter 'precision' is a negative value!\n"+
+				"precision='%v'", precision),
 		}
 
-		quotient, mod = big.NewInt(0).QuoRem(xIntDigits, big10, modX)
-
-		ia.intAry = append(ia.intAry, uint8(mod.Int64()))
-		ia.intAryLen++
-
-		xIntDigits.Set(quotient)
-
 	}
 
-	n1 := uint8(0)
-	lastIdx := ia.intAryLen - 1
-	totalLen := ia.intAryLen / 2
-	for i := 0; i < totalLen; i++ {
-		n1 = ia.intAry[i]
-		ia.intAry[i] = ia.intAry[lastIdx]
-		ia.intAry[lastIdx] = n1
-		lastIdx--
+	nsProfile := NumSepsProfileSelection{
+		SourceObjectName:         "ia",
+		OutputNumSepsName:        "numSeps",
+		UseDefaultNumSeps:        false,
+		SetDefaultNumSepsIfEmpty: true,
+		ValidateNumSeps:          false,
+		OverrideNumSeps:          NumericSeparatorDto{},
 	}
 
-	ia.SetInternalFlags()
-
-	return nil
+	return new(intAryGluon).setIntAryWithBigInt(
+		ia, nil, nsProfile, intDigits, precision, true, ePrefix)
 }
 
 // SetIntAryWithBigIntNum - Sets the current value of the intAry to the value
