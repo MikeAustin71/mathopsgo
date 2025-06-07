@@ -709,7 +709,8 @@ func (ia *IntAry) AddMultipleToThis(iaMany ...*IntAry) error {
 
 // AddArrayLengthLeft
 //
-//	Adds leading zeros to the intAry
+//  Adds leading zeros to the internal storage array holding the
+// 	numeric value for the current instance of IntAry.
 func (ia *IntAry) AddArrayLengthLeft(addLen int) error {
 
   var ePrefix *ePref.ErrPrefixDto
@@ -718,70 +719,14 @@ func (ia *IntAry) AddArrayLengthLeft(addLen int) error {
   ePrefix,
     err = ePref.ErrPrefixDto{}.NewIEmpty(
     nil,
-    "IntAry.AddArrayLengthLeft()",
+    "IntAry.AddArrayLengthLeft",
     "")
 
   if err != nil {
     return err
   }
 
-  err = new(intAryElectron).setIntAryLength(ia, ePrefix.XCpy("Setting 'ia' IntAry Length"))
-
-  if err != nil {
-
-    return &FuncReturnError{
-      ErrPrefix: ePrefix.String(),
-      ReturnFunc: "err = new(intAryElectron).setIntAryLength(ia,\n" +
-        "  ePrefix.XCpy(Setting 'ia' IntAry Length))",
-      ErrContext: "",
-      ErrMessage: err.Error(),
-    }
-  }
-
-  newLen := addLen + ia.intAryLen
-
-  t := make([]uint8, newLen)
-
-  for i := 0; i < newLen; i++ {
-
-    if i < addLen {
-      t[i] = 0
-    } else {
-      t[i] = ia.intAry[i-addLen]
-    }
-
-  }
-
-  ia.intAry = t
-
-  err = new(intAryElectron).setIntAryLength(ia, ePrefix.XCpy("Setting 'ia' IntAry Length"))
-
-  if err != nil {
-
-    return &FuncReturnError{
-      ErrPrefix: ePrefix.String(),
-      ReturnFunc: "err = new(intAryElectron).setIntAryLength(ia,\n" +
-        "  ePrefix.XCpy(Setting 'ia' IntAry Length))",
-      ErrContext: "",
-      ErrMessage: err.Error(),
-    }
-  }
-
-  err = new(intAryNanobot).setInternalFlags(
-    ia, ePrefix.XCpy("Setting 'ia' Flags"))
-
-  if err != nil {
-
-    return &FuncReturnError{
-      ErrPrefix: ePrefix.String(),
-      ReturnFunc: "err = new(intAryNanobot).setInternalFlags(\n" +
-        "  ia, ePrefix.XCpy(Setting 'ia' Flags))",
-      ErrContext: "",
-      ErrMessage: err.Error(),
-    }
-  }
-
-  return nil
+  return new(intAryNeutron).addArrayLengthLeft(ia, true, addLen, true, ePrefix)
 }
 
 // AddArrayLengthRight
@@ -795,58 +740,15 @@ func (ia *IntAry) AddArrayLengthRight(addLen int) error {
   ePrefix,
     err = ePref.ErrPrefixDto{}.NewIEmpty(
     nil,
-    "IntAry.AddArrayLengthRight()",
+    "IntAry.AddArrayLengthRight",
     "")
 
   if err != nil {
     return err
   }
 
-  err = new(intAryElectron).setIntAryLength(ia, ePrefix.XCpy("Setting 'ia' IntAry Length"))
-
-  if err != nil {
-
-    return &FuncReturnError{
-      ErrPrefix: ePrefix.String(),
-      ReturnFunc: "err = new(intAryElectron).setIntAryLength(ia,\n" +
-        "  ePrefix.XCpy(Setting 'ia' IntAry Length))",
-      ErrContext: "",
-      ErrMessage: err.Error(),
-    }
-  }
-
-  for i := 0; i < addLen; i++ {
-    ia.intAry = append(ia.intAry, 0)
-  }
-
-  err = new(intAryElectron).setIntAryLength(ia, ePrefix.XCpy("Setting 'ia' IntAry Length"))
-
-  if err != nil {
-
-    return &FuncReturnError{
-      ErrPrefix: ePrefix.String(),
-      ReturnFunc: "err = new(intAryElectron).setIntAryLength(ia,\n" +
-        "  ePrefix.XCpy(Setting 'ia' IntAry Length))",
-      ErrContext: "",
-      ErrMessage: err.Error(),
-    }
-  }
-
-  err = new(intAryNanobot).setInternalFlags(
-    ia, ePrefix.XCpy("Setting 'ia' Flags"))
-
-  if err != nil {
-
-    return &FuncReturnError{
-      ErrPrefix: ePrefix.String(),
-      ReturnFunc: "err = new(intAryNanobot).setInternalFlags(\n" +
-        "  ia, ePrefix.XCpy(Setting 'ia' Flags))",
-      ErrContext: "",
-      ErrMessage: err.Error(),
-    }
-  }
-
-  return nil
+  return new(intAryNeutron).addArrayLengthRight(
+    ia, true, addLen, true, ePrefix)
 }
 
 // AppendToIntAry - appends an integer of
@@ -947,7 +849,7 @@ func (ia *IntAry) Ceiling() (IntAry, error) {
     return IntAry{}, err
   }
 
-  return new(intAryNeutron).ceiling(ia, true, ePrefix)
+  return new(intAryNeutron).ceiling(ia, true, true, ePrefix)
 }
 
 // ChangeSign
@@ -7206,7 +7108,8 @@ func (ia *IntAry) SetElement(index, val int) error {
 // SetEqualArrayLengths - Compares an intAry object
 // to the current intAry and ensures that the lengths
 // of both IntArrays are equal.
-func (ia *IntAry) SetEqualArrayLengths(iAry2 *IntAry) {
+func (ia *IntAry) SetEqualArrayLengths(iAry2 *IntAry) error {
+
   iAry2.SetInternalFlags()
   ia.SetInternalFlags()
 
@@ -7214,6 +7117,7 @@ func (ia *IntAry) SetEqualArrayLengths(iAry2 *IntAry) {
   iAry2IntLen := iAry2.intAryLen - iAry2.precision
 
   if iaIntLen > iAry2IntLen {
+
     iAry2.AddArrayLengthLeft(iaIntLen - iAry2IntLen)
   }
 
@@ -7231,7 +7135,7 @@ func (ia *IntAry) SetEqualArrayLengths(iAry2 *IntAry) {
     ia.precision = iAry2.precision
   }
 
-  return
+  return nil
 }
 
 // SetIntAryLength
