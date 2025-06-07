@@ -2222,6 +2222,169 @@ func (iaNeutron *intAryNeutron) multiplyThisBy(
 	return nil
 }
 
+// setIntAryWithNumStrMaxPrecision
+//
+//	Receives a raw number string and sets the fields of the
+//	internal intAry structure to the appropriate values.
+//
+//	A second input parameter specifies the maximum allowable
+//	precision for the IntAry. If IntAry precision exceeds
+//	'maxPrecision', IntAry precision is rounded to 'maxPrecision'.
+//
+//	The term 'precision' defines the number of numeric digits to
+//	the right of the decimal point or decimal separator.
+func (iaNeutron *intAryNeutron) setIntAryWithNumStrMaxPrecision(
+	ia *IntAry,
+	validateIa bool,
+	numSepsSrcIntAry *IntAry,
+	nsProfile NumSepsProfileSelection,
+	numStr string,
+	maxPrecision int,
+	validateResult bool,
+	errPrefDto *ePref.ErrPrefixDto) error {
+
+	iaNeutron.lock.Lock()
+
+	defer iaNeutron.lock.Unlock()
+
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
+
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
+		errPrefDto,
+		"intAryNeutron.getBigInt()",
+		"")
+
+	if err != nil {
+		return err
+	}
+
+	if ia == nil {
+
+		return &InputPtrNilError{
+			ErrPrefix:     ePrefix.String(),
+			ParameterName: "'ia'",
+		}
+	}
+
+	err = new(intAryUtility).selectIntAryValidation(
+		ia,
+		"ia",
+		validateIa,
+		ePrefix)
+
+	if err != nil {
+		return err
+	}
+
+	var numSeps NumericSeparatorDto
+
+	nsProfile.OutputNumSepsName = "numSeps"
+
+	var actualNumSepsSrcIntAryPtr *IntAry
+
+	if numSepsSrcIntAry == nil {
+
+		nsProfile.SourceObjectName = "ia"
+		actualNumSepsSrcIntAryPtr = ia
+
+	} else {
+
+		nsProfile.SourceObjectName = "numSepsSrcIntAry"
+		actualNumSepsSrcIntAryPtr = numSepsSrcIntAry
+	}
+
+	numSeps, err = new(intAryUtility).selectNumericSeparators(
+		actualNumSepsSrcIntAryPtr,
+		nsProfile,
+		ePrefix)
+
+	if err != nil {
+
+		return &FuncReturnError{
+			ErrPrefix: ePrefix.String(),
+			ReturnFunc: "finalNumSeps, err = new(intAryUtility).selectNumericSeparators(\n" +
+				"actualNumSepsSrcIntAryPtr, nsProfile, ePrefix)",
+			ErrContext: "",
+			ErrMessage: err.Error(),
+		}
+	}
+
+	nsProfile2 := NumSepsProfileSelection{
+		SourceObjectName:         "ia",
+		OutputNumSepsName:        "numSeps",
+		UseDefaultNumSeps:        false,
+		SetDefaultNumSepsIfEmpty: false,
+		ValidateNumSeps:          false,
+		OverrideNumSeps:          numSeps,
+	}
+
+	err = new(intAryQuark).setIntAryWithNumStr(
+		ia,
+		validateIa,
+		numSepsSrcIntAry,
+		nsProfile2,
+		numStr,
+		validateResult,
+		ePrefix)
+
+	if err != nil {
+
+		return &FuncReturnError{
+			ErrPrefix: ePrefix.String(),
+			ReturnFunc: fmt.Sprintf("err = new(intAryQuark).setIntAryWithNumStr(\n"+
+				"ia, validateIa= '%v', numSepsSrcIntAry, nsProfile2, numStr, validateResult= '%v', ePrefix)",
+				validateIa, validateResult),
+			ErrContext: "",
+			ErrMessage: err.Error(),
+		}
+
+	}
+
+	if ia.precision > maxPrecision {
+
+		err = new(intAryMolecule).roundToPrecision(
+			ia,
+			true,
+			maxPrecision,
+			ePrefix)
+
+		if err != nil {
+
+			return &FuncReturnError{
+				ErrPrefix: ePrefix.String(),
+				ReturnFunc: fmt.Sprintf("err = new(intAryMolecule).roundToPrecision(\n"+
+					"ia, validateIa='true',\n"+
+					"maxPrecision= '%v', ePrefix",
+					maxPrecision),
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+		}
+	}
+
+	err = new(intAryUtility).selectIntAryValidation(
+		ia,
+		"ia",
+		validateResult,
+		ePrefix)
+
+	if err != nil {
+
+		return &FuncReturnError{
+			ErrPrefix: ePrefix.String(),
+			ReturnFunc: fmt.Sprintf("err = new(intAryUtility).selectIntAryValidation(\n"+
+				"ia, 'ia', validateResult='%v', ePrefix",
+				validateResult),
+			ErrContext: "",
+			ErrMessage: err.Error(),
+		}
+	}
+
+	return nil
+}
+
 // setSign
 //
 //	Used to change the sign value of the intAry  object passed as

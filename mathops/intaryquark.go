@@ -1,6 +1,7 @@
 package mathops
 
 import (
+	"fmt"
 	ePref "github.com/MikeAustin71/errpref"
 	"sync"
 )
@@ -428,30 +429,32 @@ func (iaQuark *intAryQuark) setIntAryToZero(
 
 	nsProfile.OutputNumSepsName = "numSeps"
 
+	var actualNumSepsSrcIntAryPtr *IntAry
+
 	if numSepsSrcIntAry == nil {
 
 		nsProfile.SourceObjectName = "intAry"
-
-		numSeps, err = new(intAryUtility).selectNumericSeparators(
-			intAry,
-			nsProfile,
-			errPrefDto)
-
-		if err != nil {
-			return err
-		}
+		actualNumSepsSrcIntAryPtr = intAry
 
 	} else {
 
 		nsProfile.SourceObjectName = "numSepsSrcIntAry"
+		actualNumSepsSrcIntAryPtr = numSepsSrcIntAry
+	}
 
-		numSeps, err = new(intAryUtility).selectNumericSeparators(
-			numSepsSrcIntAry,
-			nsProfile,
-			errPrefDto)
+	numSeps, err = new(intAryUtility).selectNumericSeparators(
+		actualNumSepsSrcIntAryPtr,
+		nsProfile,
+		ePrefix)
 
-		if err != nil {
-			return err
+	if err != nil {
+
+		return &FuncReturnError{
+			ErrPrefix: ePrefix.String(),
+			ReturnFunc: "finalNumSeps, err = new(intAryUtility).selectNumericSeparators(\n" +
+				"actualNumSepsSrcIntAryPtr, nsProfile, ePrefix)",
+			ErrContext: "",
+			ErrMessage: err.Error(),
 		}
 	}
 
@@ -487,6 +490,251 @@ func (iaQuark *intAryQuark) setIntAryToZero(
 			ReturnFunc: "err = new(intAryNanobot).\n" +
 				"  setInternalFlags(intAry, ePrefix)",
 			ErrContext: "",
+			ErrMessage: err.Error(),
+		}
+	}
+
+	return nil
+}
+
+// setIntAryWithNumStr
+//
+//	Receives a raw number string and sets the fields of the
+//	internal intAry structure to the appropriate values.
+func (iaQuark *intAryQuark) setIntAryWithNumStr(
+	ia *IntAry,
+	validateIa bool,
+	numSepsSrcIntAry *IntAry,
+	nsProfile NumSepsProfileSelection,
+	str string,
+	validateResult bool,
+	errPrefDto *ePref.ErrPrefixDto) error {
+
+	if iaQuark.lock == nil {
+		iaQuark.lock = new(sync.Mutex)
+	}
+
+	iaQuark.lock.Lock()
+
+	defer iaQuark.lock.Unlock()
+
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
+
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
+		errPrefDto,
+		"intAryQuark.setIntAryToZero()",
+		"")
+
+	if err != nil {
+		return err
+	}
+
+	if ia == nil {
+
+		return &InputPtrNilError{
+			ErrPrefix:     ePrefix.String(),
+			ParameterName: "'ia'",
+		}
+	}
+
+	if len(str) == 0 {
+
+		return &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "",
+			ErrContext: "",
+			ErrMessage: "Error: Input parameter 'str' is a zero length number string",
+		}
+
+	}
+
+	err = new(intAryUtility).selectIntAryValidation(
+		ia,
+		"ia",
+		validateIa,
+		ePrefix)
+
+	if err != nil {
+
+		return &FuncReturnError{
+			ErrPrefix: ePrefix.String(),
+			ReturnFunc: fmt.Sprintf("err = new(intAryUtility).selectIntAryValidation(\n"+
+				"ia, 'ia', validateIa= '%v', ePrefix)", validateIa),
+			ErrContext: "Valiate on Startup",
+			ErrMessage: err.Error(),
+		}
+	}
+
+	var numSeps NumericSeparatorDto
+
+	nsProfile.OutputNumSepsName = "numSeps"
+
+	var actualNumSepsSrcIntAryPtr *IntAry
+
+	if numSepsSrcIntAry == nil {
+
+		nsProfile.SourceObjectName = "ia"
+		actualNumSepsSrcIntAryPtr = ia
+
+	} else {
+
+		nsProfile.SourceObjectName = "numSepsSrcIntAry"
+		actualNumSepsSrcIntAryPtr = numSepsSrcIntAry
+	}
+
+	numSeps, err = new(intAryUtility).selectNumericSeparators(
+		actualNumSepsSrcIntAryPtr,
+		nsProfile,
+		ePrefix)
+
+	if err != nil {
+
+		return &FuncReturnError{
+			ErrPrefix: ePrefix.String(),
+			ReturnFunc: "finalNumSeps, err = new(intAryUtility).selectNumericSeparators(\n" +
+				"actualNumSepsSrcIntAryPtr, nsProfile, ePrefix)",
+			ErrContext: "",
+			ErrMessage: err.Error(),
+		}
+	}
+
+	nsProfile2 := NumSepsProfileSelection{
+		SourceObjectName:         "ia",
+		OutputNumSepsName:        "numSeps",
+		UseDefaultNumSeps:        false,
+		SetDefaultNumSepsIfEmpty: false,
+		ValidateNumSeps:          false,
+		OverrideNumSeps:          numSeps,
+	}
+
+	new(intAryBoson).emptyBackUp(ia)
+
+	err = new(intAryPhoton).setNumericSeparatorsDto(
+		ia, numSeps, true, ePrefix)
+
+	if err != nil {
+
+		return &FuncReturnError{
+			ErrPrefix: ePrefix.String(),
+			ReturnFunc: "err = new(intAryPhoton).setNumericSeparatorsDto(\n" +
+				"ia, numSeps, true, ePrefix)",
+			ErrContext: "",
+			ErrMessage: err.Error(),
+		}
+	}
+
+	ia.signVal = 1
+	baseRunes := []rune(str)
+	lBaseRunes := len(baseRunes)
+	isStartRunes := false
+	isEndRunes := false
+	isFractionalValue := false
+
+	for i := 0; i < lBaseRunes && isEndRunes == false; i++ {
+
+		if baseRunes[i] == '+' ||
+			baseRunes[i] == ' ' ||
+			baseRunes[i] == ia.thousandsSeparator ||
+			baseRunes[i] == ia.currencySymbol {
+
+			continue
+
+		}
+
+		if baseRunes[i] == ',' && ia.decimalSeparator != ',' {
+			continue
+		}
+
+		if isStartRunes == true &&
+			isFractionalValue &&
+			baseRunes[i] == ia.decimalSeparator {
+
+			continue
+		}
+
+		if baseRunes[i] == '-' &&
+			isStartRunes == false &&
+			i+1 < lBaseRunes &&
+			((baseRunes[i+1] >= '0' && baseRunes[i+1] <= '9') ||
+				baseRunes[i+1] == ia.decimalSeparator) {
+
+			ia.signVal = -1
+			isStartRunes = true
+			continue
+
+		} else if baseRunes[i] >= '0' && baseRunes[i] <= '9' {
+
+			ia.intAry = append(ia.intAry, uint8(baseRunes[i]-48))
+			isStartRunes = true
+
+			if isFractionalValue {
+				ia.precision++
+			}
+
+		} else if i+1 < lBaseRunes &&
+			baseRunes[i+1] >= '0' && baseRunes[i+1] <= '9' &&
+			baseRunes[i] == ia.decimalSeparator {
+
+			isFractionalValue = true
+			continue
+
+		} else if isStartRunes {
+
+			isEndRunes = true
+
+		}
+	}
+
+	err = new(intAryNanobot).setInternalFlags(
+		ia, ePrefix.XCpy("Setting 'ia' Flags"))
+
+	if err != nil {
+
+		return &FuncReturnError{
+			ErrPrefix: ePrefix.String(),
+			ReturnFunc: "err = new(intAryNanobot).setInternalFlags(\n" +
+				"  ia, ePrefix.XCpy(Setting 'ia' Flags))",
+			ErrContext: "",
+			ErrMessage: err.Error(),
+		}
+	}
+
+	if ia.intAryLen == 0 || ia.isZeroValue {
+
+		err = new(intAryQuark).setIntAryToZero(
+			ia,
+			nil,
+			nsProfile2,
+			uint(ia.precision),
+			ePrefix)
+
+		if err != nil {
+
+			return &FuncReturnError{
+				ErrPrefix: ePrefix.String(),
+				ReturnFunc: fmt.Sprintf("err = new(intAryQuark).setIntAryToZero(\n"+
+					"ia, nil, nsProfile2, uint(ia.precision)= '%v', ePrefix", uint(ia.precision)),
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+		}
+	}
+
+	err = new(intAryUtility).selectIntAryValidation(
+		ia,
+		"ia",
+		validateResult,
+		ePrefix)
+
+	if err != nil {
+
+		return &FuncReturnError{
+			ErrPrefix: ePrefix.String(),
+			ReturnFunc: fmt.Sprintf("err = new(intAryUtility).selectIntAryValidation(\n"+
+				"ia, 'ia', validateResult= '%v', ePrefix)", validateResult),
+			ErrContext: "Valiate on Exit",
 			ErrMessage: err.Error(),
 		}
 	}

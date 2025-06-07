@@ -146,19 +146,6 @@ func (iaMinibot *intAryMinibot) pwrByTwos(
     }
   }
 
-  //finalNumSeps, err := new(intAryPhoton).getNumericSeparatorsDto(ia, true, ePrefix)
-  //
-  //if err != nil {
-  //
-  //	return &FuncReturnError{
-  //		ErrPrefix: ePrefix.String(),
-  //		ReturnFunc: "finalNumSeps, err := new(intAryPhoton).getNumericSeparatorsDto(\n" +
-  //			"ia, setDefaultsIfEmpty=true, ePrefix)",
-  //		ErrContext: "",
-  //		ErrMessage: err.Error(),
-  //	}
-  //}
-
   var finalNumSeps NumericSeparatorDto
 
   nsProfile.OutputNumSepsName = "finalNumSeps"
