@@ -358,7 +358,7 @@ func (iaQuark *intAryQuark) setIntAryToOne(
   ePrefix,
     err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
     errPrefDto,
-    "intAryQuark.setIntAryToZero()",
+    "intAryQuark.setIntAryToOne()",
     "")
 
   if err != nil {
@@ -436,6 +436,422 @@ func (iaQuark *intAryQuark) setIntAryToOne(
     uint(precision),
     true,
     ePrefix.XCpy("Set 'ia' = 1"))
+}
+
+// setIntAryToTwo
+//
+//	Sets the value of the intAry object to two ('2').
+func (iaQuark *intAryQuark) setIntAryToTwo(
+  ia *IntAry,
+  numSepsSrcIntAry *IntAry,
+  nsProfile NumSepsProfileSelection,
+  precision int,
+  errPrefDto *ePref.ErrPrefixDto) error {
+
+  if iaQuark.lock == nil {
+    iaQuark.lock = new(sync.Mutex)
+  }
+
+  iaQuark.lock.Lock()
+
+  defer iaQuark.lock.Unlock()
+
+  var ePrefix *ePref.ErrPrefixDto
+  var err error
+
+  ePrefix,
+    err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
+    errPrefDto,
+    "intAryQuark.setIntAryToTwo()",
+    "")
+
+  if err != nil {
+    return err
+  }
+
+  if ia == nil {
+
+    return &InputPtrNilError{
+      ErrPrefix:     ePrefix.String(),
+      ParameterName: "'ia'",
+    }
+  }
+
+  if precision < 0 {
+
+    return &FuncReturnError{
+      ErrPrefix:  ePrefix.String(),
+      ReturnFunc: "",
+      ErrContext: "",
+      ErrMessage: fmt.Sprintf("Error: Input parameter 'precision' is INVALID!\n"+
+        "'precision' is less than ZERO!\n"+
+        "precision= '%v'", precision),
+    }
+  }
+
+  var numSeps NumericSeparatorDto
+
+  nsProfile.OutputNumSepsName = "numSeps"
+
+  var actualNumSepsSrcIntAryPtr *IntAry
+
+  if numSepsSrcIntAry == nil {
+
+    nsProfile.SourceObjectName = "ia"
+    actualNumSepsSrcIntAryPtr = ia
+
+  } else {
+
+    nsProfile.SourceObjectName = "numSepsSrcIntAry"
+    actualNumSepsSrcIntAryPtr = numSepsSrcIntAry
+  }
+
+  numSeps, err = new(intAryUtility).selectNumericSeparators(
+    actualNumSepsSrcIntAryPtr,
+    nsProfile,
+    ePrefix)
+
+  if err != nil {
+
+    return &FuncReturnError{
+      ErrPrefix: ePrefix.String(),
+      ReturnFunc: "numSeps, err = new(intAryUtility).selectNumericSeparators(\n" +
+        "actualNumSepsSrcIntAryPtr, nsProfile, ePrefix)",
+      ErrContext: fmt.Sprintf("nsProfile.SourceObjectName= '%v'",
+        nsProfile.SourceObjectName),
+      ErrMessage: err.Error(),
+    }
+  }
+
+  nsProfile2 := NumSepsProfileSelection{
+    SourceObjectName:         "ia",
+    OutputNumSepsName:        "numSeps",
+    UseDefaultNumSeps:        false,
+    SetDefaultNumSepsIfEmpty: true,
+    ValidateNumSeps:          false,
+    OverrideNumSeps:          numSeps,
+  }
+
+  return new(intAryGluon).setIntAryWithInt(
+    ia,
+    nil,
+    nsProfile2,
+    2,
+    uint(precision),
+    true,
+    ePrefix.XCpy("Set 'ia' = 2"))
+}
+
+// setIntAryToThree
+//
+//	Sets the value of the intAry object to three ('3').
+func (iaQuark *intAryQuark) setIntAryToThree(
+  ia *IntAry,
+  numSepsSrcIntAry *IntAry,
+  nsProfile NumSepsProfileSelection,
+  precision int,
+  errPrefDto *ePref.ErrPrefixDto) error {
+
+  if iaQuark.lock == nil {
+    iaQuark.lock = new(sync.Mutex)
+  }
+
+  iaQuark.lock.Lock()
+
+  defer iaQuark.lock.Unlock()
+
+  var ePrefix *ePref.ErrPrefixDto
+  var err error
+
+  ePrefix,
+    err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
+    errPrefDto,
+    "intAryQuark.setIntAryToThree()",
+    "")
+
+  if err != nil {
+    return err
+  }
+
+  if ia == nil {
+
+    return &InputPtrNilError{
+      ErrPrefix:     ePrefix.String(),
+      ParameterName: "'ia'",
+    }
+  }
+
+  if precision < 0 {
+
+    return &FuncReturnError{
+      ErrPrefix:  ePrefix.String(),
+      ReturnFunc: "",
+      ErrContext: "",
+      ErrMessage: fmt.Sprintf("Error: Input parameter 'precision' is INVALID!\n"+
+        "'precision' is less than ZERO!\n"+
+        "precision= '%v'", precision),
+    }
+  }
+
+  var numSeps NumericSeparatorDto
+
+  nsProfile.OutputNumSepsName = "numSeps"
+
+  var actualNumSepsSrcIntAryPtr *IntAry
+
+  if numSepsSrcIntAry == nil {
+
+    nsProfile.SourceObjectName = "ia"
+    actualNumSepsSrcIntAryPtr = ia
+
+  } else {
+
+    nsProfile.SourceObjectName = "numSepsSrcIntAry"
+    actualNumSepsSrcIntAryPtr = numSepsSrcIntAry
+  }
+
+  numSeps, err = new(intAryUtility).selectNumericSeparators(
+    actualNumSepsSrcIntAryPtr,
+    nsProfile,
+    ePrefix)
+
+  if err != nil {
+
+    return &FuncReturnError{
+      ErrPrefix: ePrefix.String(),
+      ReturnFunc: "numSeps, err = new(intAryUtility).selectNumericSeparators(\n" +
+        "actualNumSepsSrcIntAryPtr, nsProfile, ePrefix)",
+      ErrContext: fmt.Sprintf("nsProfile.SourceObjectName= '%v'",
+        nsProfile.SourceObjectName),
+      ErrMessage: err.Error(),
+    }
+  }
+
+  nsProfile2 := NumSepsProfileSelection{
+    SourceObjectName:         "ia",
+    OutputNumSepsName:        "numSeps",
+    UseDefaultNumSeps:        false,
+    SetDefaultNumSepsIfEmpty: true,
+    ValidateNumSeps:          false,
+    OverrideNumSeps:          numSeps,
+  }
+
+  return new(intAryGluon).setIntAryWithInt(
+    ia,
+    nil,
+    nsProfile2,
+    3,
+    uint(precision),
+    true,
+    ePrefix.XCpy("Set 'ia' = 3"))
+}
+
+// setIntAryToFive
+//
+//	Sets the value of the intAry object to five ('5').
+func (iaQuark *intAryQuark) setIntAryToFive(
+  ia *IntAry,
+  numSepsSrcIntAry *IntAry,
+  nsProfile NumSepsProfileSelection,
+  precision int,
+  errPrefDto *ePref.ErrPrefixDto) error {
+
+  if iaQuark.lock == nil {
+    iaQuark.lock = new(sync.Mutex)
+  }
+
+  iaQuark.lock.Lock()
+
+  defer iaQuark.lock.Unlock()
+
+  var ePrefix *ePref.ErrPrefixDto
+  var err error
+
+  ePrefix,
+    err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
+    errPrefDto,
+    "intAryQuark.setIntAryToFive()",
+    "")
+
+  if err != nil {
+    return err
+  }
+
+  if ia == nil {
+
+    return &InputPtrNilError{
+      ErrPrefix:     ePrefix.String(),
+      ParameterName: "'ia'",
+    }
+  }
+
+  if precision < 0 {
+
+    return &FuncReturnError{
+      ErrPrefix:  ePrefix.String(),
+      ReturnFunc: "",
+      ErrContext: "",
+      ErrMessage: fmt.Sprintf("Error: Input parameter 'precision' is INVALID!\n"+
+        "'precision' is less than ZERO!\n"+
+        "precision= '%v'", precision),
+    }
+  }
+
+  var numSeps NumericSeparatorDto
+
+  nsProfile.OutputNumSepsName = "numSeps"
+
+  var actualNumSepsSrcIntAryPtr *IntAry
+
+  if numSepsSrcIntAry == nil {
+
+    nsProfile.SourceObjectName = "ia"
+    actualNumSepsSrcIntAryPtr = ia
+
+  } else {
+
+    nsProfile.SourceObjectName = "numSepsSrcIntAry"
+    actualNumSepsSrcIntAryPtr = numSepsSrcIntAry
+  }
+
+  numSeps, err = new(intAryUtility).selectNumericSeparators(
+    actualNumSepsSrcIntAryPtr,
+    nsProfile,
+    ePrefix)
+
+  if err != nil {
+
+    return &FuncReturnError{
+      ErrPrefix: ePrefix.String(),
+      ReturnFunc: "numSeps, err = new(intAryUtility).selectNumericSeparators(\n" +
+        "actualNumSepsSrcIntAryPtr, nsProfile, ePrefix)",
+      ErrContext: fmt.Sprintf("nsProfile.SourceObjectName= '%v'",
+        nsProfile.SourceObjectName),
+      ErrMessage: err.Error(),
+    }
+  }
+
+  nsProfile2 := NumSepsProfileSelection{
+    SourceObjectName:         "ia",
+    OutputNumSepsName:        "numSeps",
+    UseDefaultNumSeps:        false,
+    SetDefaultNumSepsIfEmpty: true,
+    ValidateNumSeps:          false,
+    OverrideNumSeps:          numSeps,
+  }
+
+  return new(intAryGluon).setIntAryWithInt(
+    ia,
+    nil,
+    nsProfile2,
+    5,
+    uint(precision),
+    true,
+    ePrefix.XCpy("Set 'ia' = 5"))
+}
+
+// setIntAryToTen
+//
+//	Sets the value of the intAry object to ten ('10').
+func (iaQuark *intAryQuark) setIntAryToTen(
+  ia *IntAry,
+  numSepsSrcIntAry *IntAry,
+  nsProfile NumSepsProfileSelection,
+  precision int,
+  errPrefDto *ePref.ErrPrefixDto) error {
+
+  if iaQuark.lock == nil {
+    iaQuark.lock = new(sync.Mutex)
+  }
+
+  iaQuark.lock.Lock()
+
+  defer iaQuark.lock.Unlock()
+
+  var ePrefix *ePref.ErrPrefixDto
+  var err error
+
+  ePrefix,
+    err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
+    errPrefDto,
+    "intAryQuark.setIntAryToTen",
+    "")
+
+  if err != nil {
+    return err
+  }
+
+  if ia == nil {
+
+    return &InputPtrNilError{
+      ErrPrefix:     ePrefix.String(),
+      ParameterName: "'ia'",
+    }
+  }
+
+  if precision < 0 {
+
+    return &FuncReturnError{
+      ErrPrefix:  ePrefix.String(),
+      ReturnFunc: "",
+      ErrContext: "",
+      ErrMessage: fmt.Sprintf("Error: Input parameter 'precision' is INVALID!\n"+
+        "'precision' is less than ZERO!\n"+
+        "precision= '%v'", precision),
+    }
+  }
+
+  var numSeps NumericSeparatorDto
+
+  nsProfile.OutputNumSepsName = "numSeps"
+
+  var actualNumSepsSrcIntAryPtr *IntAry
+
+  if numSepsSrcIntAry == nil {
+
+    nsProfile.SourceObjectName = "ia"
+    actualNumSepsSrcIntAryPtr = ia
+
+  } else {
+
+    nsProfile.SourceObjectName = "numSepsSrcIntAry"
+    actualNumSepsSrcIntAryPtr = numSepsSrcIntAry
+  }
+
+  numSeps, err = new(intAryUtility).selectNumericSeparators(
+    actualNumSepsSrcIntAryPtr,
+    nsProfile,
+    ePrefix)
+
+  if err != nil {
+
+    return &FuncReturnError{
+      ErrPrefix: ePrefix.String(),
+      ReturnFunc: "numSeps, err = new(intAryUtility).selectNumericSeparators(\n" +
+        "actualNumSepsSrcIntAryPtr, nsProfile, ePrefix)",
+      ErrContext: fmt.Sprintf("nsProfile.SourceObjectName= '%v'",
+        nsProfile.SourceObjectName),
+      ErrMessage: err.Error(),
+    }
+  }
+
+  nsProfile2 := NumSepsProfileSelection{
+    SourceObjectName:         "ia",
+    OutputNumSepsName:        "numSeps",
+    UseDefaultNumSeps:        false,
+    SetDefaultNumSepsIfEmpty: true,
+    ValidateNumSeps:          false,
+    OverrideNumSeps:          numSeps,
+  }
+
+  return new(intAryGluon).setIntAryWithInt(
+    ia,
+    nil,
+    nsProfile2,
+    10,
+    uint(precision),
+    true,
+    ePrefix.XCpy("Set 'ia' = 10"))
 }
 
 // setIntAryToZero
