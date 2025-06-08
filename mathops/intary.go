@@ -8673,8 +8673,8 @@ func (ia *IntAry) SetIntAryWithUint8Ary(iAry2 []uint8, precision uint, signVal i
 
 // SetIntAryWithIntAryObj
 //
-//  Sets the value of the current IntAry with equal to that of
-//  an IntAry object passed in as parameter 'iAry2'.
+//	Sets the value of the current IntAry with equal to that of
+//	an IntAry object passed in as parameter 'iAry2'.
 func (ia *IntAry) SetIntAryWithIntAryObj(iAry2 *IntAry, copyBackup bool) error {
   var ePrefix *ePref.ErrPrefixDto
   var err error
@@ -9188,15 +9188,15 @@ func (ia *IntAry) SetSign(signVal int) error {
   return new(intAryNeutron).setSign(ia, signVal, ePrefix)
 }
 
-// SetSignificantDigitIdxs - Finds the first
-// significant digit (the first numeric digit
-// greater than zero) and sets index value in
-// the local field variable, 'firstDigitIdx'.
+// SetSignificantDigitIdxs
 //
-// In addition, this method also identifies the
-// Last Significant Digit (the last non-zero value
-// in the intAry) and records that index in the
-// local field variable, 'lastDigitIdx'.
+//	Finds the first significant digit (the first numeric digit
+//	greater than zero) and sets index value in the local field
+//	variable, 'firstDigitIdx'.
+//
+//	In addition, this method also identifies the Last Significant
+//	Digit (the last non-zero value in the intAry) and records that
+//	index in the local field variable, 'lastDigitIdx'.
 func (ia *IntAry) SetSignificantDigitIdxs() error {
 
   var ePrefix *ePref.ErrPrefixDto
@@ -9212,93 +9212,19 @@ func (ia *IntAry) SetSignificantDigitIdxs() error {
     return err
   }
 
-  err = ia.SetNumericSeparatorsToDefaultIfEmpty()
+  err = new(intAryElectron).setSignificantDigitIdxs(
+    ia,
+    ePrefix)
 
   if err != nil {
 
     return &FuncReturnError{
-      ErrPrefix:  ePrefix.String(),
-      ReturnFunc: "err = ia.SetNumericSeparatorsToDefaultIfEmpty()",
+      ErrPrefix: ePrefix.String(),
+      ReturnFunc: "err = new(intAryElectron).\n" +
+        "  setSignificantDigitIdxs( ia, ePrefix)",
       ErrContext: "",
       ErrMessage: err.Error(),
     }
-  }
-
-  ia.intAryLen = len(ia.intAry)
-
-  if ia.intAryLen == ia.precision {
-
-    ia.intAry = append([]uint8{0}, ia.intAry...)
-
-    ia.intAryLen++
-  }
-
-  if ia.intAryLen < ia.precision {
-
-    deltaZeros := ia.precision - ia.intAryLen + 1
-
-    zeroAry := make([]uint8, deltaZeros)
-
-    ia.intAry = append(zeroAry, ia.intAry...)
-
-    ia.intAryLen += deltaZeros
-  }
-
-  ia.firstDigitIdx = -1
-  ia.lastDigitIdx = -1
-
-  ia.integerLen = 0
-  ia.significantIntegerLen = 0
-  ia.significantFractionLen = 0
-
-  lastIntIdx := ia.intAryLen - ia.precision - 1
-  ia.isZeroValue = true
-  ia.isIntegerZeroValue = true
-  ia.integerLen = ia.intAryLen - ia.precision
-
-  for i := 0; i < ia.intAryLen; i++ {
-    if ia.intAry[i] > 0 {
-
-      ia.isZeroValue = false
-
-      if i < ia.integerLen {
-
-        ia.isIntegerZeroValue = false
-      }
-    }
-
-    // At minimum, there should be a single
-    // leading zero before the decimal point.
-    // Example 0.000.
-    if i == lastIntIdx && ia.intAry[i] == 0 {
-
-      if ia.firstDigitIdx == -1 {
-
-        ia.firstDigitIdx = i
-      }
-
-    }
-
-    if ia.intAry[i] > 0 {
-
-      if ia.firstDigitIdx == -1 {
-
-        ia.firstDigitIdx = i
-      }
-
-      ia.lastDigitIdx = i
-    }
-
-  }
-
-  ia.significantIntegerLen = ia.intAryLen - ia.precision - ia.firstDigitIdx
-
-  if ia.lastDigitIdx >= ia.integerLen {
-
-    ia.significantFractionLen = ia.lastDigitIdx - ia.integerLen + 1
-  } else {
-
-    ia.significantFractionLen = 0
   }
 
   return nil
@@ -9548,10 +9474,23 @@ func (ia *IntAry) SuffixToIntAry(num uint8) {
 // a string.
 func (ia *IntAry) String() string {
 
-  str, err := ia.GetNumStr()
+  var ePrefix *ePref.ErrPrefixDto
+  var err error
+
+  ePrefix,
+    err = ePref.ErrPrefixDto{}.NewIEmpty(
+    nil,
+    "IntAry.String",
+    "")
 
   if err != nil {
     return ""
+  }
+
+  str, err := new(intAryAtom).getRawNumStr(ia, false, ePrefix)
+
+  if err != nil {
+    return err.Error()
   }
 
   return str
