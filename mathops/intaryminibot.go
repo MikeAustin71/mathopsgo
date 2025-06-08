@@ -3,6 +3,7 @@ package mathops
 import (
 	"fmt"
 	ePref "github.com/MikeAustin71/errpref"
+	"math"
 	"math/big"
 	"sync"
 )
@@ -412,6 +413,176 @@ func (iaMinibot *intAryMinibot) pwrByTwos(
 				"ia,\"ia\", validateResult, ePrefix)",
 			ErrContext: "Validating Final Result",
 			ErrMessage: err.Error(),
+		}
+	}
+
+	return nil
+}
+
+func (iaMinibot *intAryMinibot) setIntAryWithBigIntNum(
+	ia *IntAry,
+	numSepsSrcIntAry *IntAry,
+	nsProfile NumSepsProfileSelection,
+	bINum *BigIntNum,
+	validateBINum bool,
+	validateResult bool,
+	errPrefDto *ePref.ErrPrefixDto) error {
+
+	iaMinibot.lock.Lock()
+
+	defer iaMinibot.lock.Unlock()
+
+	var ePrefix *ePref.ErrPrefixDto
+
+	var err error
+
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
+		errPrefDto,
+		"intAryMinibot.setIntAryWithBigIntNum()",
+		"")
+
+	if err != nil {
+		return err
+	}
+
+	if ia == nil {
+
+		return &InputPtrNilError{
+			ErrPrefix:     ePrefix.String(),
+			ParameterName: "'ia'",
+		}
+	}
+
+	if bINum == nil {
+
+		return &InputPtrNilError{
+			ErrPrefix:     ePrefix.String(),
+			ParameterName: "'bINum'",
+		}
+	}
+
+	if validateBINum {
+
+		err = bINum.IsValid(ePrefix.XCpy("Validating bINum").String())
+
+		if err != nil {
+
+			return &FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "err = bINum.IsValid(ePrefix.XCpy(\"Validating bINum\").String())",
+				ErrContext: "Input parameter 'bINum' is invalid!\n" +
+					"'bINum' FAILED Validation Tests.",
+				ErrMessage: err.Error(),
+			}
+		}
+	}
+
+	bINumStr, err := bINum.GetNumStr()
+
+	if err != nil {
+
+		return &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "bINumStr, err := bINum.GetNumStr()",
+			ErrContext: "",
+			ErrMessage: err.Error(),
+		}
+	}
+
+	if bINum.precision > uint(math.MaxInt) {
+
+		return &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "",
+			ErrContext: "",
+			ErrMessage: fmt.Sprintf("Error: Input parameter bINum has a 'precision' value\n"+
+				"which exceeds the Maximum Integer (MaxInt) Value.\n"+
+				"MaxInt= '%v'\n"+
+				"bINum.precision= '%v'\n"+
+				"bINum= '%v\n",
+				math.MaxInt, bINum.precision, bINumStr),
+		}
+	}
+
+	var numSeps NumericSeparatorDto
+
+	nsProfile.OutputNumSepsName = "numSeps"
+
+	var actualNumSepsSrcIntAryPtr *IntAry
+
+	if numSepsSrcIntAry == nil {
+
+		nsProfile.SourceObjectName = "ia"
+		actualNumSepsSrcIntAryPtr = ia
+
+	} else {
+
+		nsProfile.SourceObjectName = "numSepsSrcIntAry"
+		actualNumSepsSrcIntAryPtr = numSepsSrcIntAry
+	}
+
+	numSeps, err = new(intAryUtility).selectNumericSeparators(
+		actualNumSepsSrcIntAryPtr,
+		nsProfile,
+		ePrefix)
+
+	if err != nil {
+
+		return &FuncReturnError{
+			ErrPrefix: ePrefix.String(),
+			ReturnFunc: "numSeps, err = new(intAryUtility).selectNumericSeparators(\n" +
+				"actualNumSepsSrcIntAryPtr, nsProfile, ePrefix)",
+			ErrContext: "",
+			ErrMessage: err.Error(),
+		}
+	}
+
+	nsProfile2 := NumSepsProfileSelection{
+		SourceObjectName:         "ia",
+		OutputNumSepsName:        "numSeps",
+		UseDefaultNumSeps:        false,
+		SetDefaultNumSepsIfEmpty: true,
+		ValidateNumSeps:          false,
+		OverrideNumSeps:          numSeps,
+	}
+
+	bInt, err := bINum.GetBigInt()
+
+	if err != nil {
+
+		return &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "bInt, err := bINum.GetBigInt()",
+			ErrContext: "",
+			ErrMessage: err.Error(),
+		}
+	}
+
+	bigINumPrecisionUint, err := bINum.GetPrecisionUint()
+
+	if err != nil {
+
+		return &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "bigINumPrecisionUint, err := bigINum.GetPrecisionUint()",
+			ErrContext: "",
+			ErrMessage: err.Error(),
+		}
+	}
+
+	err = new(intAryGluon).setIntAryWithBigInt(
+		ia, nil, nsProfile2, bInt, int(bigINumPrecisionUint), validateResult, ePrefix)
+
+	if err != nil {
+
+		return &FuncReturnError{
+			ErrPrefix: ePrefix.String(),
+			ReturnFunc: fmt.Sprintf("err = new(intAryGluon).setIntAryWithBigInt(\n"+
+				"ia, nil, nsProfile2, bInt, int(bigINumPrecisionUint), validateResult='%v', ePrefix)",
+				validateResult),
+			ErrContext: fmt.Sprintf("bINum= '%v' bInt= '%v'",
+				bINumStr, bInt.Text(10)),
 		}
 	}
 

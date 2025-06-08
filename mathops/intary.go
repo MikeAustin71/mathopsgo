@@ -4232,6 +4232,10 @@ func (ia *IntAry) NewBigInt(num *big.Int, precision int) (IntAry, error) {
 // Usage:
 // bINum, _ := new(BigIntNum).NewNumStr("1234.5678")
 // ia, err := intAry{}.NewBigIntNim(bINum)
+//
+// The value of Numeric Separators contained in BigINum will NOT be copied
+// into the current IntAry instance. IntAry will retain its
+// current numeric separator values.
 func (ia *IntAry) NewBigIntNum(bINum BigIntNum) (IntAry, error) {
 
   var ePrefix *ePref.ErrPrefixDto
@@ -4247,73 +4251,41 @@ func (ia *IntAry) NewBigIntNum(bINum BigIntNum) (IntAry, error) {
     return IntAry{}, err
   }
 
-  err = bINum.IsValid(ePrefix.XCpy("Validating bINum").String())
-
-  if err != nil {
-
-    return IntAry{},
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "err = bINum.IsValid(ePrefix.XCpy(Validating bINum).String())",
-        ErrContext: "Error: Input parameter 'bINum' is INVALID!\n" +
-          "'bINum' FAILED Validation Tests.",
-        ErrMessage: err.Error(),
-      }
-  }
-
-  bINumNumStr, err := bINum.GetNumStr()
-
-  if err != nil {
-
-    return IntAry{},
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "bINumNumStr, err := bINum.GetNumStr()",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-  }
-
   iAry := new(intAryElectron).newIntAry()
 
-  if bINum.precision > uint(math.MaxInt32) {
-
-    return IntAry{},
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "",
-        ErrContext: "",
-        ErrMessage: fmt.Sprintf("Error: Input parameter bINum has a 'precision' value\n"+
-          "which exceeds the MaxInt32 Value.\n"+
-          "MaxInt32= '%v'\n"+
-          "bINum.precision= '%v'\n"+
-          "bINum= '%v\n",
-          math.MaxInt32, bINum.precision, bINumNumStr),
-      }
-  }
-
-  err = iAry.SetIntAryWithBigIntNum(bINum)
+  err = new(intAryProton).copy(&iAry, ia, false, false, ePrefix)
 
   if err != nil {
 
     return IntAry{},
       &FuncReturnError{
         ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "err = iAry.SetIntAryWithBigIntNum(bINum)",
-        ErrContext: fmt.Sprintf("bINum= '%v'\n", bINumNumStr),
+        ReturnFunc: "err = new(intAryProton).copy(&iAry, ia, true, false, ePrefix)",
+        ErrContext: "",
         ErrMessage: err.Error(),
       }
   }
 
-  err = new(intAryElectron).isValidIntAry(&iAry, ePrefix.XCpy("Validating Final Result 'iAry'").String())
+  nsProfile := NumSepsProfileSelection{
+    SourceObjectName:         "iAry",
+    OutputNumSepsName:        "numSeps",
+    UseDefaultNumSeps:        false,
+    SetDefaultNumSepsIfEmpty: true,
+    ValidateNumSeps:          false,
+    OverrideNumSeps:          NumericSeparatorDto{},
+  }
+
+  err = new(intAryMinibot).setIntAryWithBigIntNum(
+    &iAry, nil, nsProfile, &bINum, true, true, ePrefix)
 
   if err != nil {
 
     return IntAry{},
       &FuncReturnError{
         ErrPrefix: ePrefix.String(),
-        ReturnFunc: "err = new(intAryElectron).isValidIntAry(\n" +
-          "  &iAry, ePrefix.XCpy(Validating Final Result 'iAry').String())",
+        ReturnFunc: "err = new(intAryMinibot).setIntAryWithBigIntNum(\n" +
+          "  &iAry, nil, nsProfile, &bINum,\n" +
+          "  validateBINum=true, validateResult=true, ePrefix)",
         ErrContext: "",
         ErrMessage: err.Error(),
       }
@@ -7792,51 +7764,28 @@ func (ia *IntAry) SetIntAryWithBigIntNum(bigINum BigIntNum) error {
     return err
   }
 
-  if bigINum.precision > uint(math.MaxInt32) {
-
-    return fmt.Errorf("%v\n"+
-      "Error: Input parameter bigINum has a 'precision' value\n"+
-      "which exceeds the MaxInt32 Value.\n"+
-      "MaxInt32='%v'\n"+
-      "bigINum.precision='%v'\n",
-      ePrefix,
-      math.MinInt32,
-      bigINum.precision)
+  nsProfile := NumSepsProfileSelection{
+    SourceObjectName:         "ia",
+    OutputNumSepsName:        "numSeps",
+    UseDefaultNumSeps:        false,
+    SetDefaultNumSepsIfEmpty: true,
+    ValidateNumSeps:          false,
+    OverrideNumSeps:          NumericSeparatorDto{},
   }
 
-  bInt, err := bigINum.GetBigInt()
+  err = new(intAryMinibot).setIntAryWithBigIntNum(
+    ia, nil, nsProfile, &bigINum, true, true, ePrefix)
 
   if err != nil {
 
     return &FuncReturnError{
-      ErrPrefix:  ePrefix.String(),
-      ReturnFunc: "bInt, err := bigINum.GetBigInt()",
+      ErrPrefix: ePrefix.String(),
+      ReturnFunc: "err = new(intAryMinibot).setIntAryWithBigIntNum(\n" +
+        "  ia, nil, nsProfile, &bigINum,\n" +
+        "  validateBINum=true, validateResult=true, ePrefix)",
       ErrContext: "",
       ErrMessage: err.Error(),
     }
-  }
-
-  bigINumPrecisionUint, err := bigINum.GetPrecisionUint()
-
-  if err != nil {
-
-    return &FuncReturnError{
-      ErrPrefix:  ePrefix.String(),
-      ReturnFunc: "bigINumPrecisionUint, err := bigINum.GetPrecisionUint()",
-      ErrContext: "",
-      ErrMessage: err.Error(),
-    }
-  }
-
-  err = ia.SetIntAryWithBigInt(bInt, int(bigINumPrecisionUint))
-
-  if err != nil {
-
-    return fmt.Errorf("%v\n"+
-      "Error returned by ia.SetIntAryWithBigInt(bInt, "+
-      "bigINum.GetPrecisionUint())).\n"+
-      "Error='%v'",
-      err.Error())
   }
 
   return nil
