@@ -4118,41 +4118,67 @@ func (ia *IntAry) New() IntAry {
 	return iAry
 }
 
-// NewWithNumSeps - Creates and returns a new blank intAry object.
+// NewWithNumSeps
 //
-// The returned IntAry instance will contain numeric separators (decimal
-// separator, thousands separator and currency symbol) as specified
-// by input parameter, 'numSeps'.
+//	 Creates and returns a new blank intAry object. The returned
+//	 IntAry instance will contain numeric separators (decimal
+//	 separator, thousands separator and currency symbol) as
+//	 specified by input parameter, 'numSeps'.
 //
-//	Usage: ia := intAry{}.New()
+//		Usage: ia := new(intAry).New(numSeps)
 //
-//	Note: If input parameter 'numSeps' is empty, it will be set to
-//				default USA separators.
+//		Note: If input parameter 'numSeps' is empty, it will be set to
+//					default USA separators.
 func (ia *IntAry) NewWithNumSeps(numSeps NumericSeparatorDto) (IntAry, error) {
 
-	ePrefix := "IntAry.NewWithNumSeps()"
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
+
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"IntAry.NewWithNumSeps",
+		"")
+
+	if err != nil {
+		return IntAry{}, err
+	}
 
 	numSeps.SetDefaultsIfEmpty()
 
 	iAry := new(intAryElectron).newIntAry()
 
-	err := iAry.SetNumericSeparatorsDto(numSeps)
+	err = iAry.SetNumericSeparatorsDto(numSeps)
 
 	if err != nil {
 
 		return iAry,
-			fmt.Errorf("%v\n"+
-				"Error returned by iAry.SetNumericSeparatorsDto(numSeps)\n"+
-				"Error= %v\n",
-				ePrefix,
-				err.Error())
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "err = iAry.SetNumericSeparatorsDto(numSeps)",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
 	}
 
 	err = new(intAryElectron).isValidIntAry(
 		&iAry,
-		ePrefix)
+		ePrefix.XCpy("Validating 'iAry'").String())
 
-	return iAry, err
+	if err != nil {
+
+		return iAry,
+			&FuncReturnError{
+				ErrPrefix: ePrefix.String(),
+				ReturnFunc: "err = new(intAryElectron).isValidIntAry(\n" +
+					"&iAry, ePrefix.XCpy(\"Validating 'iAry'\").String())",
+				ErrContext: "Newly generated IntAry object 'iAry' is INVALID!\n" +
+					"'iAry' FAILED final validation tests.",
+				ErrMessage: err.Error(),
+			}
+	}
+
+	return iAry, nil
 }
 
 // NewBigInt - Creates a new intAry object initialized
@@ -4527,78 +4553,78 @@ func (ia *IntAry) NewFloatBig(num *big.Float, precision int) (IntAry, error) {
 
 // NewInt
 //
-//		Creates a new intAry object initialized to the value of input
-//		parameter 'intNum' which is passed as type 'int'.
+//	Creates a new intAry object initialized to the value of input
+//	parameter 'intNum' which is passed as type 'int'.
 //
-//		Input parameter 'precision' indicates the number of digits to
-//		be formatted to the right of the decimal place. Input parameter
-//		'precision' is of type uint. The maximum value allowed for
-//		'precision' is 2,147,483,647 (the max int32 value). If
-//		'precision' exceeds this maximum value, an error will be
-//		returned.
+//	Input parameter 'precision' indicates the number of digits to
+//	be formatted to the right of the decimal place. Input parameter
+//	'precision' is of type uint. The maximum value allowed for
+//	'precision' is 2,147,483,647 (the max int32 value). If
+//	'precision' exceeds this maximum value, an error will be
+//	returned.
 //
-//		Usage
-//		=====
+//	Usage
+//	=====
 //
-//		This method is designed to be used in conjunction with the
-//		'new' keyword shown as follows:
+//	This method is designed to be used in conjunction with the
+//	'new' keyword shown as follows:
 //
-//		    intNum := int(123456)
-//		    precision := uint(3)
-//		    iAry := new(IntAry).NewInt(intNum, precision)
-//		    The numeric value of 'iAry' is now equal to 123.456
+//	    intNum := int(123456)
+//	    precision := uint(3)
+//	    iAry := new(IntAry).NewInt(intNum, precision)
+//	    The numeric value of 'iAry' is now equal to 123.456
 //
-//		Examples
-//		========
+//	Examples
+//	========
 //
-//		int Num    precision    IntAry Result
-//		-------    ---------    -------------
+//	int Num    precision    IntAry Result
+//	-------    ---------    -------------
 //
-//		123456         4           12.3456
-//		123456         0           123456
-//		123456         1           12345.6
+//	123456         4           12.3456
+//	123456         0           123456
+//	123456         1           12345.6
 //
-//		Numeric Separators
-//		==================
+//	Numeric Separators
+//	==================
 //
-//		Numeric Separators define the Decimal Separator character,
-//		Thousands Separator character, and Currency Symbol character.
-//		These separator characters serve two purposes. First they are
-//		used to format and display numeric values as number strings.
-//		Second, they are also used to parse number strings and
-//		convert them into numeric values.
+//	Numeric Separators define the Decimal Separator character,
+//	Thousands Separator character, and Currency Symbol character.
+//	These separator characters serve two purposes. First they are
+//	used to format and display numeric values as number strings.
+//	Second, they are also used to parse number strings and
+//	convert them into numeric values.
 //
-//		The IntAry object returned by this method will be configured
-//		with Numeric Separators copied from current instance of IntAry.
+//	The IntAry object returned by this method will be configured
+//	with Numeric Separators copied from current instance of IntAry.
 //
-//		Input Parameters
-//		================
+//	Input Parameters
+//	================
 //
-//		intNum                   int
-//		  The numeric digits contained in this value comprise both
-//		  the integer digits and the fractional digits which will be
-//		  configured in the final numeric value stored in the IntAry
-//		  object returned by this method.
+//	intNum                   int
+//	  The numeric digits contained in this value comprise both
+//	  the integer digits and the fractional digits which will be
+//	  configured in the final numeric value stored in the IntAry
+//	  object returned by this method.
 //
-//		precision                uint
-//		  'precision' specifies the number of fractional digits in the
-//		  final numeric value stored in the returned IntAry object.
+//	precision                uint
+//	  'precision' specifies the number of fractional digits in the
+//	  final numeric value stored in the returned IntAry object.
 //
-//	   In practice, the maximum limit for 'precision' will be
-//	   constrained by the maximum array size permitted by
-//	   your system.
+//	 In practice, the maximum limit for 'precision' will be
+//	 constrained by the maximum array size permitted by
+//	 your system.
 //
-//		Return Values
-//		=============
+//	Return Values
+//	=============
 //
-//		IntAry
-//		  This new instance of IntAry will be returned configured with
-//		  the numeric value calculated from input parameters, 'intNum'
-//		  and 'precision'.
+//	IntAry
+//	  This new instance of IntAry will be returned configured with
+//	  the numeric value calculated from input parameters, 'intNum'
+//	  and 'precision'.
 //
-//		error
-//		  If no errors are encountered during processing, this returned
-//		  value will be set to 'nil'
+//	error
+//	  If no errors are encountered during processing, this returned
+//	  value will be set to 'nil'
 func (ia *IntAry) NewInt(intNum int, precision uint) (IntAry, error) {
 
 	var ePrefix *ePref.ErrPrefixDto
@@ -7056,21 +7082,47 @@ func (ia *IntAry) SetIntAryLength() error {
 // SetIntAryToFive - Sets the value of the intAry object to one ('5').
 func (ia *IntAry) SetIntAryToFive(precision int) error {
 
-	if precision < 0 {
-		return fmt.Errorf("SetIntAryToFive() - Error: precision is less than ZERO! precision= '%v'", precision)
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
+
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"IntAry.SetIntAryToFive",
+		"")
+
+	if err != nil {
+		return err
 	}
 
-	ia.intAryLen = 1 + precision
-	ia.precision = precision
-	ia.intAry = make([]uint8, ia.intAryLen)
-	ia.intAry[0] = 5
-	ia.signVal = 1
-	ia.isZeroValue = false
-	ia.isIntegerZeroValue = false
-	ia.firstDigitIdx = 0
-	ia.lastDigitIdx = 0
+	if precision < 0 {
 
-	return nil
+		return &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "",
+			ErrContext: "",
+			ErrMessage: fmt.Sprintf("Error: Input parameter 'precision' is INVALID!\n"+
+				"'precision' is less than ZERO!\n"+
+				"precision= '%v'", precision),
+		}
+	}
+
+	nsProfile := NumSepsProfileSelection{
+		SourceObjectName:         "ia",
+		OutputNumSepsName:        "numSeps",
+		UseDefaultNumSeps:        false,
+		SetDefaultNumSepsIfEmpty: true,
+		ValidateNumSeps:          false,
+	}
+
+	return new(intAryGluon).setIntAryWithInt(
+		ia,
+		nil,
+		nsProfile,
+		5,
+		uint(precision),
+		true,
+		ePrefix.XCpy("Set 'ia' = 5"))
 }
 
 // SetIntAryToOne
@@ -7091,6 +7143,54 @@ func (ia *IntAry) SetIntAryToOne(precision int) error {
 		return err
 	}
 
+	nsProfile := NumSepsProfileSelection{
+		SourceObjectName:         "ia",
+		OutputNumSepsName:        "numSeps",
+		UseDefaultNumSeps:        false,
+		SetDefaultNumSepsIfEmpty: true,
+		ValidateNumSeps:          false,
+	}
+
+	return new(intAryQuark).setIntAryToOne(
+		ia,
+		nil,
+		nsProfile,
+		precision,
+		ePrefix.XCpy("Set 'ia' = 1"))
+}
+
+// SetIntAryToTwo
+//
+//	Sets the value of the current IntAry object to two ('2').
+//
+//		Input Parameters
+//		================
+//
+//		precision                uint
+//		  'precision' specifies the number of fractional digits in the
+//		  final numeric value stored in the returned IntAry object.
+//
+//	Return Values
+//	=============
+//
+//	error
+//	  If no errors are encountered during processing, this returned
+//	  value will be set to 'nil'
+func (ia *IntAry) SetIntAryToTwo(precision int) error {
+
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
+
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"IntAry.SetIntAryToTwo",
+		"")
+
+	if err != nil {
+		return err
+	}
+
 	if precision < 0 {
 
 		return &FuncReturnError{
@@ -7098,108 +7198,123 @@ func (ia *IntAry) SetIntAryToOne(precision int) error {
 			ReturnFunc: "",
 			ErrContext: "",
 			ErrMessage: fmt.Sprintf("Error: Input parameter 'precision' is INVALID!\n"+
-				"'precision' is less than zero.\n"+
+				"'precision' is less than ZERO!\n"+
 				"precision= '%v'", precision),
 		}
 	}
 
-	ia.intAryLen = 1 + precision
-	ia.precision = precision
-	ia.intAry = make([]uint8, ia.intAryLen)
-	ia.intAry[0] = 1
-	ia.signVal = 1
-	ia.isZeroValue = false
-	ia.isIntegerZeroValue = false
-	ia.firstDigitIdx = 0
-	ia.lastDigitIdx = 0
+	nsProfile := NumSepsProfileSelection{
+		SourceObjectName:         "ia",
+		OutputNumSepsName:        "numSeps",
+		UseDefaultNumSeps:        false,
+		SetDefaultNumSepsIfEmpty: true,
+		ValidateNumSeps:          false,
+	}
 
-	err = new(intAryPhoton).setNumericSeparatorsToDefaultIfEmpty(
-		ia, ePrefix.XCpy("Set 'ia' Numeric Separators"))
+	return new(intAryGluon).setIntAryWithInt(
+		ia,
+		nil,
+		nsProfile,
+		2,
+		uint(precision),
+		true,
+		ePrefix.XCpy("Set 'ia' = 2"))
+}
+
+// SetIntAryToThree
+//
+//	Sets the value of the intAry object to three ('3').
+func (ia *IntAry) SetIntAryToThree(precision int) error {
+
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
+
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"IntAry.SetIntAryToThree",
+		"")
 
 	if err != nil {
+		return err
+	}
+
+	if precision < 0 {
 
 		return &FuncReturnError{
-			ErrPrefix: ePrefix.String(),
-			ReturnFunc: "err := new(intAryBoson).\n" +
-				"  setNumericSeparatorsToDefaultIfEmpty(ia, ePrefix)",
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "",
 			ErrContext: "",
-			ErrMessage: err.Error(),
+			ErrMessage: fmt.Sprintf("Error: Input parameter 'precision' is INVALID!\n"+
+				"'precision' is less than ZERO!\n"+
+				"precision= '%v'", precision),
 		}
 	}
 
-	return nil
-}
-
-// SetIntAryToTwo - Sets the value of the intAry object to one ('1').
-func (ia *IntAry) SetIntAryToTwo(precision int) error {
-
-	if precision < 0 {
-		return fmt.Errorf("SetIntAryToTwo()\n"+
-			"Error: Input parameter 'precision' is less than ZERO!\n"+
-			"precision= '%v'\n", precision)
+	nsProfile := NumSepsProfileSelection{
+		SourceObjectName:         "ia",
+		OutputNumSepsName:        "numSeps",
+		UseDefaultNumSeps:        false,
+		SetDefaultNumSepsIfEmpty: true,
+		ValidateNumSeps:          false,
 	}
 
-	ia.intAryLen = 1 + precision
-	ia.precision = precision
-	ia.intAry = make([]uint8, ia.intAryLen)
-	ia.intAry[0] = 2
-	ia.signVal = 1
-	ia.isZeroValue = false
-	ia.isIntegerZeroValue = false
-	ia.firstDigitIdx = 0
-	ia.lastDigitIdx = 0
-
-	ia.SetNumericSeparatorsToDefaultIfEmpty()
-
-	return nil
+	return new(intAryGluon).setIntAryWithInt(
+		ia,
+		nil,
+		nsProfile,
+		3,
+		uint(precision),
+		true,
+		ePrefix.XCpy("Set 'ia' = 3"))
 }
 
-// SetIntAryToThree - Sets the value of the intAry object to one ('1').
-func (ia *IntAry) SetIntAryToThree(precision int) error {
-
-	if precision < 0 {
-		return fmt.Errorf("SetIntAryToThree()\n"+
-			"Error: precision is less than ZERO!\n"+
-			"precision= '%v'\n", precision)
-	}
-
-	ia.intAryLen = 1 + precision
-	ia.precision = precision
-	ia.intAry = make([]uint8, ia.intAryLen)
-	ia.intAry[0] = 3
-	ia.signVal = 1
-	ia.isZeroValue = false
-	ia.isIntegerZeroValue = false
-	ia.firstDigitIdx = 0
-	ia.lastDigitIdx = 0
-
-	ia.SetNumericSeparatorsToDefaultIfEmpty()
-
-	return nil
-}
-
-// SetIntAryToTen - Sets the value of the intAry object to ten ('10')
+// SetIntAryToTen
+//
+// Sets the value of the current IntAry object to ten ('10').
 func (ia *IntAry) SetIntAryToTen(precision int) error {
 
-	if precision < 0 {
-		return fmt.Errorf("SetIntAryToTen()\n"+
-			"Error: Input parameter 'precision' is less than ZERO!\n"+
-			"precision= '%v'", precision)
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
+
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"IntAry.SetIntAryToTen",
+		"")
+
+	if err != nil {
+		return err
 	}
 
-	ia.intAryLen = 2 + precision
-	ia.precision = precision
-	ia.intAry = make([]uint8, ia.intAryLen)
-	ia.intAry[0] = 1
-	ia.signVal = 1
-	ia.isZeroValue = false
-	ia.isIntegerZeroValue = false
-	ia.firstDigitIdx = 0
-	ia.lastDigitIdx = 0
+	if precision < 0 {
 
-	ia.SetNumericSeparatorsToDefaultIfEmpty()
+		return &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "",
+			ErrContext: "",
+			ErrMessage: fmt.Sprintf("Error: Input parameter 'precision' is INVALID!\n"+
+				"'precision' is less than ZERO!\n"+
+				"precision= '%v'", precision),
+		}
+	}
 
-	return nil
+	nsProfile := NumSepsProfileSelection{
+		SourceObjectName:         "ia",
+		OutputNumSepsName:        "numSeps",
+		UseDefaultNumSeps:        false,
+		SetDefaultNumSepsIfEmpty: true,
+		ValidateNumSeps:          false,
+	}
+
+	return new(intAryGluon).setIntAryWithInt(
+		ia,
+		nil,
+		nsProfile,
+		10,
+		uint(precision),
+		true,
+		ePrefix.XCpy("Set 'ia' = 10"))
 }
 
 // SetIntAryToZero
@@ -7306,7 +7421,7 @@ func (ia *IntAry) SetIntAryWithInt(intDigits int, precision uint) error {
 	ePrefix,
 		err = ePref.ErrPrefixDto{}.NewIEmpty(
 		nil,
-		"IntAry.SetIntAryWithInt()",
+		"IntAry.SetIntAryWithInt",
 		"")
 
 	if err != nil {
