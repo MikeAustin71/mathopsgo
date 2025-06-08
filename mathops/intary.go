@@ -219,7 +219,7 @@ func (ia *IntAry) AddIntToThis(num int, precision uint) error {
 //	  of the decimal point. Example:  num = 123456, precision = 3
 //	  Result = 123.456 will be added to the current value of the
 //	  current IntAry object. If precision is greater than
-//	  2,147,483,647 (max int32 value), and error will be returend.
+//	  2,147,483,647 (max int32 value), and error will be returned.
 //
 //	Return Values
 //	=============
@@ -242,76 +242,7 @@ func (ia *IntAry) AddInt64ToThis(int64Num int64, precision uint) error {
     return err
   }
 
-  //ia2, err := new(IntAry).NewInt64(int64Num, precision)
-  //
-  //if err != nil {
-  //
-  //	return &FuncReturnError{
-  //		ErrPrefix:  ePrefix.String(),
-  //		ReturnFunc: "ia2, err := new(IntAry).NewInt64(int64Num, precision)",
-  //		ErrContext: fmt.Sprintf("int64Num = '%v'  precision= '%v'",
-  //			int64Num, precision),
-  //		ErrMessage: err.Error(),
-  //	}
-  //}
-
-  ia2 := new(intAryElectron).newIntAry()
-
-  err = new(intAryProton).copy(&ia2, ia, true, false, ePrefix)
-
-  if err != nil {
-
-    return &FuncReturnError{
-      ErrPrefix:  ePrefix.String(),
-      ReturnFunc: "err = new(intAryProton).copy(&ia2, ia, true, false, ePrefix)",
-      ErrContext: "",
-      ErrMessage: err.Error(),
-    }
-  }
-
-  nsProfile := NumSepsProfileSelection{
-    SourceObjectName:         "ia2",
-    OutputNumSepsName:        "numSeps",
-    UseDefaultNumSeps:        false,
-    SetDefaultNumSepsIfEmpty: true,
-    ValidateNumSeps:          false,
-    OverrideNumSeps:          NumericSeparatorDto{},
-  }
-
-  err = new(intAryGluon).setIntAryWithInt64(
-    &ia2,
-    nil,
-    nsProfile,
-    int64Num,
-    precision,
-    true,
-    ePrefix)
-
-  if err != nil {
-
-    return &FuncReturnError{
-      ErrPrefix: ePrefix.String(),
-      ReturnFunc: "err = new(intAryGluon).setIntAryWithInt64(\n" +
-        "  &iAry, nil, nsProfile, int64Num, precision,\n" +
-        "  validateResult=true, ePrefix)",
-      ErrContext: "",
-      ErrMessage: err.Error(),
-    }
-  }
-
-  err = new(IntAryMathAdd).RunTotal(ia, &ia2)
-
-  if err != nil {
-
-    return &FuncReturnError{
-      ErrPrefix:  ePrefix.String(),
-      ReturnFunc: "",
-      ErrContext: "",
-      ErrMessage: err.Error(),
-    }
-  }
-
-  return nil
+  return new(intAryNeutron).addInt64ToThis(ia, true, int64Num, precision, true, ePrefix)
 }
 
 // AddBigIntToThis - Adds the value of the *big.Int input

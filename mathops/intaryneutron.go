@@ -148,27 +148,29 @@ func (iaNeutron *intAryNeutron) addIntAryToThis(
 //	Second, they are also used to parse number strings and
 //	convert them into numeric values.
 //
-//	Numeric Separators previous configured for the current IntAry
-//	instance ('ia') will not be modified by this method.
+//	Numeric Separators configured for input parameter 'ia'
+//	will be stored with the final addition result and remain
+//	unchanged from the original Numeric Separator configuration.
 //
 //	Validation Testing
 //	==================
 //
-//	This method will subject the current instance of IntAry ('ia')
-//	to validation tests.
+//	This method may conduct tests on input Parameter 'ia' and
+//	the final addition result depending on user configured
+//	input parameters 'validateIa' and 'validateResult'.
 //
 //	Input Parameters
 //	================
 //
-//  ia                       *IntAry
-//   The numeric value of this IntAry will be added to 'num' and
-//   the result will be stored here. During this operation, the
-//   original value of 'ia' will be destroyed and overwritten with
-//   the addition result.
+//	ia                       *IntAry
+//	 The numeric value of this IntAry will be added to 'num' and
+//	 the result will be stored here. During this operation, the
+//	 original value of 'ia' will be destroyed and overwritten with
+//	 the addition result.
 //
-//  validateIa               bool
-//   When set to 'true', input parameter 'ia' will be subjected to
-//   validation tests.
+//	validateIa               bool
+//	 When set to 'true', input parameter 'ia' will be subjected to
+//	 validation tests.
 //
 //	num                      int
 //	  The integer number to be added to the current IntAry object.
@@ -184,9 +186,9 @@ func (iaNeutron *intAryNeutron) addIntAryToThis(
 //	  current IntAry object. Note: If the value of input parameter
 //	  'precision' is negative, an error will be returned.
 //
-//  validateIa               bool
-//   When set to 'true', the final result of the addition operation
-//   will be subjected to validation tests.
+//	validateResult          bool
+//	  When set to 'true', the final result of the addition operation
+//	  will be subjected to validation tests.
 //
 //	Return Values
 //	=============
@@ -288,6 +290,198 @@ func (iaNeutron *intAryNeutron) addIntToThis(
     return &FuncReturnError{
       ErrPrefix:  ePrefix.String(),
       ReturnFunc: "err = new(IntAryMathAdd).RunTotal(ia, &ia2)",
+      ErrContext: "",
+      ErrMessage: err.Error(),
+    }
+  }
+
+  err = new(intAryUtility).selectIntAryValidation(
+    ia,
+    "ia",
+    validateResult,
+    ePrefix.XCpy("Final Result Validation"))
+
+  if err != nil {
+
+    return &FuncReturnError{
+      ErrPrefix: ePrefix.String(),
+      ReturnFunc: fmt.Sprintf("err = new(intAryUtility).selectIntAryValidation(\n"+
+        "ia, \"ia\", validateResult='%v' ePrefix", validateResult),
+      ErrContext: "Error: The Final Result is INVALID!\n" +
+        "Final Result 'ia' FAILED Validation Tests",
+      ErrMessage: err.Error(),
+    }
+  }
+
+  return nil
+}
+
+// addInt64ToThis
+//
+//	Adds an integer (int64) to the value of the current IntAry
+//	object.
+//
+//	Example
+//	=======
+//
+//	                         Result Added
+//	                         to Current
+//	int64Num    precision      IntAry
+//
+//	 946254        3           946.254
+//	 946254        0           946254
+//	-946254        3          -946.254
+//	-946254        0          -946254
+//
+//	Numeric Separators
+//	==================
+//
+//	Numeric Separators define the Decimal Separator character,
+//	Thousands Separator character, and Currency Symbol character.
+//	These separator characters serve two purposes. First they are
+//	used to format and display numeric values as number strings.
+//	Second, they are also used to parse number strings and
+//	convert them into numeric values.
+//
+//	Numeric Separators configured for input parameter 'ia'
+//	will be stored with the final addition result and remain
+//	unchanged from the original Numeric Separator configuration.
+//
+//	Validation Testing
+//	==================
+//
+//	This method may conduct tests on input Parameter 'ia' and
+//	the final addition result depending on user configured
+//	input parameters 'validateIa' and 'validateResult'.
+//
+//	Input Parameters
+//	================
+//
+//	ia                       *IntAry
+//	  The numeric value of this IntAry will be added to 'int64Num'
+//	  and the result will be stored here. During this operation,
+//	  the original value of 'ia' will be destroyed and overwritten
+//	  with the addition result.
+//
+//	validateIa               bool
+//	  When set to 'true', input parameter 'ia' will be subjected to
+//	  validation tests.
+//
+//	int64Num                 int64
+//	  The integer number to be added to the current IntAry object.
+//
+//	precision                uint
+//	  The precision which should be applied to the int64 input
+//	  parameter to designate the number of digits to the right
+//	  of the decimal point. Example:  num = 123456, precision = 3
+//	  Result = 123.456 will be added to the current value of the
+//	  current IntAry object. If precision is greater than
+//	  2,147,483,647 (max int32 value), and error will be returend.
+//
+//	validateResult           bool
+//	 When set to 'true', the final result of the addition operation
+//	 will be subjected to validation tests.
+//
+//	Return Values
+//	=============
+//
+//	error
+//	  If no errors are encountered, this return value will be set
+//	  to 'nil'.
+func (iaNeutron *intAryNeutron) addInt64ToThis(
+  ia *IntAry,
+  validateIa bool,
+  int64Num int64,
+  precision uint,
+  validateResult bool,
+  errPrefDto *ePref.ErrPrefixDto) error {
+
+  iaNeutron.lock.Lock()
+
+  defer iaNeutron.lock.Unlock()
+
+  var ePrefix *ePref.ErrPrefixDto
+  var err error
+
+  ePrefix,
+    err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
+    errPrefDto,
+    "intAryNeutron.addIntAryToThis()",
+    "")
+
+  if err != nil {
+    return err
+  }
+
+  if ia == nil {
+
+    return &InputPtrNilError{
+      ErrPrefix:     ePrefix.String(),
+      ParameterName: "'ia'",
+    }
+  }
+
+  err = new(intAryUtility).selectIntAryValidation(
+    ia,
+    "ia",
+    validateIa,
+    ePrefix.XCpy("Validating 'ia' on Startup"))
+
+  if err != nil {
+    return err
+  }
+
+  ia2 := new(intAryElectron).newIntAry()
+
+  err = new(intAryProton).copy(&ia2, ia, true, false, ePrefix)
+
+  if err != nil {
+
+    return &FuncReturnError{
+      ErrPrefix:  ePrefix.String(),
+      ReturnFunc: "err = new(intAryProton).copy(&ia2, ia, true, false, ePrefix)",
+      ErrContext: "",
+      ErrMessage: err.Error(),
+    }
+  }
+
+  nsProfile := NumSepsProfileSelection{
+    SourceObjectName:         "ia2",
+    OutputNumSepsName:        "numSeps",
+    UseDefaultNumSeps:        false,
+    SetDefaultNumSepsIfEmpty: true,
+    ValidateNumSeps:          false,
+    OverrideNumSeps:          NumericSeparatorDto{},
+  }
+
+  err = new(intAryGluon).setIntAryWithInt64(
+    &ia2,
+    nil,
+    nsProfile,
+    int64Num,
+    precision,
+    true,
+    ePrefix)
+
+  if err != nil {
+
+    return &FuncReturnError{
+      ErrPrefix: ePrefix.String(),
+      ReturnFunc: "err = new(intAryGluon).setIntAryWithInt64(\n" +
+        "  &iAry, nil, nsProfile, int64Num, precision,\n" +
+        "  validateResult=true, ePrefix)",
+      ErrContext: "",
+      ErrMessage: err.Error(),
+    }
+  }
+
+  err = new(IntAryMathAdd).RunTotal(ia, &ia2)
+
+  if err != nil {
+
+    return &FuncReturnError{
+      ErrPrefix:  ePrefix.String(),
+      ReturnFunc: "",
       ErrContext: "",
       ErrMessage: err.Error(),
     }
