@@ -439,7 +439,7 @@ func (iaMinibot *intAryMinibot) setIntAryWithBigIntNum(
 	ePrefix,
 		err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
 		errPrefDto,
-		"intAryMinibot.setIntAryWithBigIntNum()",
+		"intAryMinibot.setIntAryWithBigIntNum",
 		"")
 
 	if err != nil {
