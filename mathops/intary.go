@@ -4321,35 +4321,102 @@ func (ia *IntAry) NewBigIntNum(bINum BigIntNum) (IntAry, error) {
   return iAry, nil
 }
 
-// NewFive - Creates a new IntAry instance with a
-// value of '3'.
+// NewFive
 //
-// Note: 'precision' values less than zero will be
-// converted to zero.
+//	Creates a new IntAry object with a value of '5'.
+//
+//	Numeric Separators
+//	==================
+//
+//	Numeric Separators define the Decimal Separator character,
+//	Thousands Separator character, and Currency Symbol character.
+//	These separator characters serve two purposes. First they are
+//	used to format and display numeric values as number strings.
+//	Second, they are also used to parse number strings and
+//	convert them into numeric values.
+//
+//	This method will copy the Numeric Separators configured
+//	for the current instance of IntAry to the new, returned
+//	instance of IntAry.
+//
+//	Input Parameters
+//	================
+//
+//	precision                int
+//	  'precision' specifies the number of fractional digits in the
+//	  final numeric value stored in the returned IntAry object.
+//
+//	  If the value of 'precision' is less than zero, an error will
+//	  be returned.
+//
+//	Return Values
+//	=============
+//
+//	IntAry
+//	  This method returns a new IntAry object configured with the
+//	  numeric value of five ('5') and the 'precision' and Numeric
+//	  Separator specifications described above.
+//
+//	error
+//	  If no errors are encountered during processing, this returned
+//	  value will be set to 'nil'
 func (ia *IntAry) NewFive(precision int) (IntAry, error) {
 
-  ePrefix := "IntAry.NewFive()"
+  var ePrefix *ePref.ErrPrefixDto
+  var err error
 
-  iAry := IntAry{}
+  ePrefix,
+    err = ePref.ErrPrefixDto{}.NewIEmpty(
+    nil,
+    "IntAry.NewOne",
+    "")
 
-  err := iAry.SetIntAryToFive(precision)
+  if err != nil {
+    return IntAry{}, err
+  }
+
+  iAry := new(intAryElectron).newIntAry()
+
+  err = new(intAryProton).copy(&iAry, ia, false, false, ePrefix)
 
   if err != nil {
 
     return IntAry{},
-      fmt.Errorf("%v\n"+
-        "Error returned by ia1.SetIntAryToFive(precision)\n"+
-        "precision='%v'\n",
-        ePrefix,
-        precision)
-
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "err = new(intAryProton).copy(&iAry, ia, true, false, ePrefix)",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
   }
 
-  err = new(intAryElectron).isValidIntAry(
-    &iAry,
-    ePrefix)
+  nsProfile := NumSepsProfileSelection{
+    SourceObjectName:         "iAry",
+    OutputNumSepsName:        "numSeps",
+    UseDefaultNumSeps:        false,
+    SetDefaultNumSepsIfEmpty: true,
+    ValidateNumSeps:          false,
+  }
 
-  return iAry, err
+  err = new(intAryQuark).setIntAryToFive(
+    &iAry,
+    nil,
+    nsProfile,
+    precision,
+    ePrefix.XCpy("Set 'ia' = 5"))
+
+  if err != nil {
+
+    return IntAry{},
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "err = new(intAryQuark).setIntAryToFive(&iAry, nil, nsProfile, precisioin, ePrefix)",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+  }
+
+  return iAry, nil
 }
 
 // NewFloat32 - Creates a new intAry object initialized
@@ -5642,34 +5709,102 @@ func (ia *IntAry) NewNumStrDto(numDto NumStrDto) (IntAry, error) {
   return iAry, nil
 }
 
-// NewOne - Creates a new IntAry with a value of '1'.
-// Note: 'precision' values less than zero will be
-// converted to zero.
+// NewOne
+//
+//	Creates a new IntAry object with a value of '1'.
+//
+//	Numeric Separators
+//	==================
+//
+//	Numeric Separators define the Decimal Separator character,
+//	Thousands Separator character, and Currency Symbol character.
+//	These separator characters serve two purposes. First they are
+//	used to format and display numeric values as number strings.
+//	Second, they are also used to parse number strings and
+//	convert them into numeric values.
+//
+//	This method will copy the Numeric Separators configured
+//	for the current instance of IntAry to the new, returned
+//	instance of IntAry.
+//
+//	Input Parameters
+//	================
+//
+//	precision                int
+//	  'precision' specifies the number of fractional digits in the
+//	  final numeric value stored in the returned IntAry object.
+//
+//	  If the value of 'precision' is less than zero, an error will
+//	  be returned.
+//
+//	Return Values
+//	=============
+//
+//	IntAry
+//	  This method returns a new IntAry object configured with the
+//	  numeric value of one ('1') and the 'precision' and Numeric
+//	  Separator specifications described above.
+//
+//	error
+//	  If no errors are encountered during processing, this returned
+//	  value will be set to 'nil'
 func (ia *IntAry) NewOne(precision int) (IntAry, error) {
 
-  ePrefix := "IntAry.NewOne()"
+  var ePrefix *ePref.ErrPrefixDto
+  var err error
 
-  iAry := IntAry{}
+  ePrefix,
+    err = ePref.ErrPrefixDto{}.NewIEmpty(
+    nil,
+    "IntAry.NewOne",
+    "")
 
-  err := iAry.SetIntAryToOne(precision)
+  if err != nil {
+    return IntAry{}, err
+  }
+
+  iAry := new(intAryElectron).newIntAry()
+
+  err = new(intAryProton).copy(&iAry, ia, false, false, ePrefix)
 
   if err != nil {
 
-    return iAry,
-      fmt.Errorf("%v\n"+
-        "Error returned by iAry.SetIntAryToOne(precision)\n"+
-        "precision='%v'\n"+
-        "Error= %v\n",
-        ePrefix,
-        precision,
-        err.Error())
+    return IntAry{},
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "err = new(intAryProton).copy(&iAry, ia, true, false, ePrefix)",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
   }
 
-  err = new(intAryElectron).isValidIntAry(
-    &iAry,
-    ePrefix)
+  nsProfile := NumSepsProfileSelection{
+    SourceObjectName:         "iAry",
+    OutputNumSepsName:        "numSeps",
+    UseDefaultNumSeps:        false,
+    SetDefaultNumSepsIfEmpty: true,
+    ValidateNumSeps:          false,
+  }
 
-  return iAry, err
+  err = new(intAryQuark).setIntAryToOne(
+    &iAry,
+    nil,
+    nsProfile,
+    precision,
+    ePrefix.XCpy("Set 'ia' = 1"))
+
+  if err != nil {
+
+    return IntAry{},
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "err = new(intAryQuark).setIntAryToOne(&iAry, nil, nsProfile, precisioin, ePrefix)",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+  }
+
+  return iAry, nil
 }
 
 // NewPtr - Returns a pointer to a new IntAry instance.
@@ -5680,98 +5815,299 @@ func (ia *IntAry) NewPtr() *IntAry {
   return &ia2
 }
 
-// NewTen - Creates a new IntAry instance with a
-// value of '10'.
+// NewTen
 //
-// Note: 'precision' values less than zero will be
-// converted to zero.
+//	Creates a new IntAry object with a value of '1'.
+//
+//	Numeric Separators
+//	==================
+//
+//	Numeric Separators define the Decimal Separator character,
+//	Thousands Separator character, and Currency Symbol character.
+//	These separator characters serve two purposes. First they are
+//	used to format and display numeric values as number strings.
+//	Second, they are also used to parse number strings and
+//	convert them into numeric values.
+//
+//	This method will copy the Numeric Separators configured
+//	for the current instance of IntAry to the new, returned
+//	instance of IntAry.
+//
+//	Input Parameters
+//	================
+//
+//	precision                int
+//	  'precision' specifies the number of fractional digits in the
+//	  final numeric value stored in the returned IntAry object.
+//
+//	  If the value of 'precision' is less than zero, an error will
+//	  be returned.
+//
+//	Return Values
+//	=============
+//
+//	IntAry
+//	  This method returns a new IntAry object configured with the
+//	  numeric value of ten ('10') and the 'precision' and Numeric
+//	  Separator specifications described above.
+//
+//	error
+//	  If no errors are encountered during processing, this returned
+//	  value will be set to 'nil'
 func (ia *IntAry) NewTen(precision int) (IntAry, error) {
 
-  ePrefix := "IntAry.NewTen()"
+  var ePrefix *ePref.ErrPrefixDto
+  var err error
 
-  iAry := IntAry{}
+  ePrefix,
+    err = ePref.ErrPrefixDto{}.NewIEmpty(
+    nil,
+    "IntAry.NewTen",
+    "")
 
-  err := iAry.SetIntAryToTen(precision)
+  if err != nil {
+    return IntAry{}, err
+  }
+
+  iAry := new(intAryElectron).newIntAry()
+
+  err = new(intAryProton).copy(&iAry, ia, false, false, ePrefix)
 
   if err != nil {
 
-    return iAry,
-      fmt.Errorf("%v\n"+
-        "Error returned by iAry.SetIntAryToTen(precision)\n"+
-        "precision='%v'\n"+
-        "Error= %v\n",
-        ePrefix,
-        precision,
-        err.Error())
+    return IntAry{},
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "err = new(intAryProton).copy(&iAry, ia, true, false, ePrefix)",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
   }
 
-  err = new(intAryElectron).isValidIntAry(
-    &iAry,
-    ePrefix)
+  nsProfile := NumSepsProfileSelection{
+    SourceObjectName:         "iAry",
+    OutputNumSepsName:        "numSeps",
+    UseDefaultNumSeps:        false,
+    SetDefaultNumSepsIfEmpty: true,
+    ValidateNumSeps:          false,
+  }
 
-  return iAry, err
+  err = new(intAryQuark).setIntAryToTen(
+    &iAry,
+    nil,
+    nsProfile,
+    precision,
+    ePrefix.XCpy("Set 'ia' = 10"))
+
+  if err != nil {
+
+    return IntAry{},
+      &FuncReturnError{
+        ErrPrefix: ePrefix.String(),
+        ReturnFunc: "err = new(intAryQuark).setIntAryToTen(\n" +
+          "&iAry, nil, nsProfile, precisioin, ePrefix)",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+  }
+
+  return iAry, nil
 }
 
-// NewThree - Creates a new IntAry instance with a
-// value of '3'.
+// NewThree
 //
-// Note: 'precision' values less than zero will be
-// converted to zero.
+//	Creates a new IntAry instance with a value of '3'.
+//
+//	Numeric Separators
+//	==================
+//
+//	Numeric Separators define the Decimal Separator character,
+//	Thousands Separator character, and Currency Symbol character.
+//	These separator characters serve two purposes. First they are
+//	used to format and display numeric values as number strings.
+//	Second, they are also used to parse number strings and
+//	convert them into numeric values.
+//
+//	This method will copy the Numeric Separators configured
+//	for the current instance of IntAry to the new, returned
+//	instance of IntAry.
+//
+//	Input Parameters
+//	================
+//
+//	precision                int
+//	  'precision' specifies the number of fractional digits in the
+//	  final numeric value stored in the returned IntAry object.
+//
+//	  If the value of 'precision' is less than zero, an error will
+//	  be returned.
+//
+//	Return Values
+//	=============
+//
+//	IntAry
+//	  This method returns a new IntAry object configured with the
+//	  numeric value of three ('3') and the 'precision' and Numeric
+//	  Separator specifications described above.
+//
+//	error
+//	  If no errors are encountered during processing, this returned
+//	  value will be set to 'nil'
 func (ia *IntAry) NewThree(precision int) (IntAry, error) {
 
-  ePrefix := "IntAry.NewThree()"
+  var ePrefix *ePref.ErrPrefixDto
+  var err error
 
-  iAry := IntAry{}
+  ePrefix,
+    err = ePref.ErrPrefixDto{}.NewIEmpty(
+    nil,
+    "IntAry.NewThree",
+    "")
 
-  err := iAry.SetIntAryToThree(precision)
+  if err != nil {
+    return IntAry{}, err
+  }
+
+  iAry := new(intAryElectron).newIntAry()
+
+  err = new(intAryProton).copy(&iAry, ia, false, false, ePrefix)
 
   if err != nil {
 
-    return iAry,
-      fmt.Errorf("%v\n"+
-        "Error returned by iAry.SetIntAryToThree(precision)\n"+
-        "precision='%v'\n"+
-        "Error= %v\n",
-        ePrefix,
-        precision,
-        err.Error())
+    return IntAry{},
+      &FuncReturnError{
+        ErrPrefix: ePrefix.String(),
+        ReturnFunc: "err = new(intAryProton).copy(\n" +
+          "  &iAry, ia, true, false, ePrefix)",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
   }
 
-  err = new(intAryElectron).isValidIntAry(
-    &iAry,
-    ePrefix)
+  nsProfile := NumSepsProfileSelection{
+    SourceObjectName:         "iAry",
+    OutputNumSepsName:        "numSeps",
+    UseDefaultNumSeps:        false,
+    SetDefaultNumSepsIfEmpty: true,
+    ValidateNumSeps:          false,
+  }
 
-  return iAry, err
+  err = new(intAryQuark).setIntAryToThree(
+    &iAry,
+    nil,
+    nsProfile,
+    precision,
+    ePrefix.XCpy("Set 'ia' = 3"))
+
+  if err != nil {
+
+    return IntAry{},
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "err = new(intAryQuark).setIntAryToThree(&iAry, nil, nsProfile, precisioin, ePrefix)",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+  }
+
+  return iAry, nil
 }
 
-// NewTwo - Creates a new IntAry instance with a
-// value of '2'.
+// NewTwo
 //
-// Note: 'precision' values less than zero will be
-// converted to zero.
+//	Creates a new IntAry instance with a value of '2'.
+//
+//	Numeric Separators
+//	==================
+//
+//	Numeric Separators define the Decimal Separator character,
+//	Thousands Separator character, and Currency Symbol character.
+//	These separator characters serve two purposes. First they are
+//	used to format and display numeric values as number strings.
+//	Second, they are also used to parse number strings and
+//	convert them into numeric values.
+//
+//	This method will copy the Numeric Separators configured
+//	for the current instance of IntAry to the new, returned
+//	instance of IntAry.
+//
+//	Input Parameters
+//	================
+//
+//	precision                int
+//	  'precision' specifies the number of fractional digits in the
+//	  final numeric value stored in the returned IntAry object.
+//
+//	  If the value of 'precision' is less than zero, an error will
+//	  be returned.
+//
+//	Return Values
+//	=============
+//
+//	IntAry
+//	  This method returns a new IntAry object configured with the
+//	  numeric value of two ('2') and the 'precision' and Numeric
+//	  Separator specifications described above.
+//
+//	error
+//	  If no errors are encountered during processing, this returned
+//	  value will be set to 'nil'
 func (ia *IntAry) NewTwo(precision int) (IntAry, error) {
 
-  ePrefix := "IntAry.NewTwo()"
+  var ePrefix *ePref.ErrPrefixDto
+  var err error
 
-  iAry := IntAry{}
+  ePrefix,
+    err = ePref.ErrPrefixDto{}.NewIEmpty(
+    nil,
+    "IntAry.NewTwo",
+    "")
 
-  err := iAry.SetIntAryToTwo(precision)
+  if err != nil {
+    return IntAry{}, err
+  }
+
+  iAry := new(intAryElectron).newIntAry()
+
+  err = new(intAryProton).copy(&iAry, ia, false, false, ePrefix)
 
   if err != nil {
 
-    return iAry,
-      fmt.Errorf("%v\n"+
-        "Error returned by iAry.SetIntAryToTwo(precision)\n"+
-        "precision='%v'\n"+
-        "Error= %v\n",
-        ePrefix,
-        precision,
-        err.Error())
+    return IntAry{},
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "err = new(intAryProton).copy(&iAry, ia, true, false, ePrefix)",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
   }
 
-  err = new(intAryElectron).isValidIntAry(
+  nsProfile := NumSepsProfileSelection{
+    SourceObjectName:         "iAry",
+    OutputNumSepsName:        "numSeps",
+    UseDefaultNumSeps:        false,
+    SetDefaultNumSepsIfEmpty: true,
+    ValidateNumSeps:          false,
+  }
+
+  err = new(intAryQuark).setIntAryToTwo(
     &iAry,
-    ePrefix)
+    nil,
+    nsProfile,
+    precision,
+    ePrefix.XCpy("Set 'ia' = 2"))
+
+  if err != nil {
+
+    return IntAry{},
+      &FuncReturnError{
+        ErrPrefix: ePrefix.String(),
+        ReturnFunc: "err = new(intAryQuark).setIntAryToTwo(\n" +
+          "&iAry, nil, nsProfile, precisioin, ePrefix)",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+  }
 
   return iAry, err
 }
@@ -7079,7 +7415,39 @@ func (ia *IntAry) SetIntAryLength() error {
   return err
 }
 
-// SetIntAryToFive - Sets the value of the intAry object to one ('5').
+// SetIntAryToFive
+//
+//	Sets the value of the intAry object to one ('5').
+//
+//	Numeric Separators
+//	==================
+//
+//	Numeric Separators define the Decimal Separator character,
+//	Thousands Separator character, and Currency Symbol character.
+//	These separator characters serve two purposes. First they are
+//	used to format and display numeric values as number strings.
+//	Second, they are also used to parse number strings and
+//	convert them into numeric values.
+//
+//	This method will not alter the Numeric Separators configured
+//	for the current instance of IntAry.
+//
+//	Input Parameters
+//	================
+//
+//	precision                int
+//	  'precision' specifies the number of fractional digits in the
+//	  final numeric value stored in the returned IntAry object.
+//
+//	  If the value of 'precision' is less than zero, an error will
+//	  be returned.
+//
+//	Return Values
+//	=============
+//
+//	error
+//	  If no errors are encountered during processing, this returned
+//	  value will be set to 'nil'
 func (ia *IntAry) SetIntAryToFive(precision int) error {
 
   var ePrefix *ePref.ErrPrefixDto
@@ -7114,6 +7482,33 @@ func (ia *IntAry) SetIntAryToFive(precision int) error {
 // SetIntAryToOne
 //
 //	Sets the value of the intAry object to one ('1').
+//
+//	Numeric Separators
+//	==================
+//
+//	Numeric Separators define the Decimal Separator character,
+//	Thousands Separator character, and Currency Symbol character.
+//	These separator characters serve two purposes. First they are
+//	used to format and display numeric values as number strings.
+//	Second, they are also used to parse number strings and
+//	convert them into numeric values.
+//
+//	This method will not alter the Numeric Separators configured
+//	for the current instance of IntAry.
+//
+//	Input Parameters
+//	================
+//
+//	precision                uint
+//	  'precision' specifies the number of fractional digits in the
+//	  final numeric value stored in the returned IntAry object.
+//
+//	  If the value of 'precision' is less than zero, an error will
+//	  be returned.
+//
+//	error
+//	  If no errors are encountered during processing, this returned
+//	  value will be set to 'nil'
 func (ia *IntAry) SetIntAryToOne(precision int) error {
 
   var ePrefix *ePref.ErrPrefixDto
@@ -7149,12 +7544,28 @@ func (ia *IntAry) SetIntAryToOne(precision int) error {
 //
 //	Sets the value of the current IntAry object to two ('2').
 //
-//		Input Parameters
-//		================
+//	Numeric Separators
+//	==================
 //
-//		precision                uint
-//		  'precision' specifies the number of fractional digits in the
-//		  final numeric value stored in the returned IntAry object.
+//	Numeric Separators define the Decimal Separator character,
+//	Thousands Separator character, and Currency Symbol character.
+//	These separator characters serve two purposes. First they are
+//	used to format and display numeric values as number strings.
+//	Second, they are also used to parse number strings and
+//	convert them into numeric values.
+//
+//	This method will not alter the Numeric Separators configured
+//	for the current instance of IntAry.
+//
+//	Input Parameters
+//	================
+//
+//	precision                uint
+//	  'precision' specifies the number of fractional digits in the
+//	  final numeric value stored in the returned IntAry object.
+//
+//	  If the value of 'precision' is less than zero, an error will
+//	  be returned.
 //
 //	Return Values
 //	=============
@@ -7196,6 +7607,36 @@ func (ia *IntAry) SetIntAryToTwo(precision int) error {
 // SetIntAryToThree
 //
 //	Sets the value of the intAry object to three ('3').
+//
+//	Numeric Separators
+//	==================
+//
+//	Numeric Separators define the Decimal Separator character,
+//	Thousands Separator character, and Currency Symbol character.
+//	These separator characters serve two purposes. First they are
+//	used to format and display numeric values as number strings.
+//	Second, they are also used to parse number strings and
+//	convert them into numeric values.
+//
+//	This method will not alter the Numeric Separators configured
+//	for the current instance of IntAry.
+//
+//	Input Parameters
+//	================
+//
+//	precision                uint
+//	  'precision' specifies the number of fractional digits in the
+//	  final numeric value stored in the returned IntAry object.
+//
+//	  If the value of 'precision' is less than zero, an error will
+//	  be returned.
+//
+//	Return Values
+//	=============
+//
+//	error
+//	  If no errors are encountered during processing, this returned
+//	  value will be set to 'nil'
 func (ia *IntAry) SetIntAryToThree(precision int) error {
 
   var ePrefix *ePref.ErrPrefixDto
@@ -7229,7 +7670,37 @@ func (ia *IntAry) SetIntAryToThree(precision int) error {
 
 // SetIntAryToTen
 //
-// Sets the value of the current IntAry object to ten ('10').
+//	Sets the value of the current IntAry object to ten ('10').
+//
+//	Numeric Separators
+//	==================
+//
+//	Numeric Separators define the Decimal Separator character,
+//	Thousands Separator character, and Currency Symbol character.
+//	These separator characters serve two purposes. First they are
+//	used to format and display numeric values as number strings.
+//	Second, they are also used to parse number strings and
+//	convert them into numeric values.
+//
+//	This method will not alter the Numeric Separators configured
+//	for the current instance of IntAry.
+//
+//	Input Parameters
+//	================
+//
+//	precision                int
+//	  'precision' specifies the number of fractional digits in the
+//	  final numeric value stored in the returned IntAry object.
+//
+//	  If the value of 'precision' is less than zero, an error will
+//	  be returned.
+//
+//	Return Values
+//	=============
+//
+//	error
+//	  If no errors are encountered during processing, this returned
+//	  value will be set to 'nil'
 func (ia *IntAry) SetIntAryToTen(precision int) error {
 
   var ePrefix *ePref.ErrPrefixDto
