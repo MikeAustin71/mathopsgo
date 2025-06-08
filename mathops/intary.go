@@ -245,36 +245,48 @@ func (ia *IntAry) AddInt64ToThis(int64Num int64, precision uint) error {
   return new(intAryNeutron).addInt64ToThis(ia, true, int64Num, precision, true, ePrefix)
 }
 
-// AddBigIntToThis - Adds the value of the *big.Int input
-// parameter, 'num' to the value of the current IntAry object.
+// AddBigIntToThis
 //
-// Input Parameters:
+//	Adds the value of the *big.Int input parameter, 'num' to the
+//	value of the current IntAry object.
 //
-// num *big.Int 	- The numeric value to be added to the
-//
-//	value of the current IntAry object. Note
-//	that 'num' may be positive or negative.
-//
-// precision uint	- 'precision' indicates the number of digits
-//
-//	to be formatted to the right of the decimal
-//	place.
-//
-// Example:
+//	Example
+//	=======
 //
 //	intDigits     precision     	    result
-//	946254  			   3							   946.254
-//	946254				   0							   946254
-//	-946254  			   3					      -946.254
-//	-946254				   0						    -946254
 //
-// Usage:
-// num := big.NewInt(123456)
-// precision := uint(3)
-// err := ia.AddBigIntToThis(num, precision)
+//	 946254           3                946.254
+//	 946254           0                946254
+//	-946254           3               -946.254
+//	-946254           0               -946254
 //
-// The result will equal the current value of the IntAry
-// object plus, '123.456'
+//	Usage
+//	=====
+//
+//	num := big.NewInt(123456)
+//	precision := uint(3)
+//	err := ia.AddBigIntToThis(num, precision)
+//
+//	The result will equal the current value of the IntAry
+//	object plus, '123.456'
+//
+//	Input Parameters
+//	================
+//
+//	num                       *big.Int
+//	  The numeric value to be added to the value of the current
+//	  IntAry object. Note that 'num' may be positive or negative.
+//
+//	precision                 uint
+//	  'precision' indicates the number of digits to be formatted
+//	  to the right of the decimal	place.
+//
+//	Return Values
+//	=============
+//
+//	error
+//	  If no errors are encountered, this return value will be set
+//	  to 'nil'.
 func (ia *IntAry) AddBigIntToThis(num *big.Int, precision int) error {
 
   var ePrefix *ePref.ErrPrefixDto
@@ -290,31 +302,8 @@ func (ia *IntAry) AddBigIntToThis(num *big.Int, precision int) error {
     return err
   }
 
-  ia2, err := new(IntAry).NewBigInt(num, precision)
-
-  if err != nil {
-
-    return &FuncReturnError{
-      ErrPrefix:  ePrefix.String(),
-      ReturnFunc: "ia2, err := new(IntAry).NewBigInt(num, precision)",
-      ErrContext: "",
-      ErrMessage: err.Error(),
-    }
-  }
-
-  err = new(IntAryMathAdd).RunTotal(ia, &ia2)
-
-  if err != nil {
-
-    return &FuncReturnError{
-      ErrPrefix:  ePrefix.String(),
-      ReturnFunc: "err = new(IntAryMathAdd).RunTotal(ia, &ia2)",
-      ErrContext: "",
-      ErrMessage: err.Error(),
-    }
-  }
-
-  return nil
+  return new(intAryNeutron).addBigIntToThis(
+    ia, true, num, precision, true, ePrefix)
 }
 
 // AddBigIntNumToThis - Adds the value of the current IntAry

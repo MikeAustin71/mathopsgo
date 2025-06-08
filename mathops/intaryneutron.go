@@ -11,6 +11,211 @@ type intAryNeutron struct {
   lock sync.Mutex
 }
 
+// addArrayLengthLeft
+//
+//	 Adds leading zeros to the internal storage array holding the
+//		numeric value for the current instance of IntAry.
+func (iaNeutron *intAryNeutron) addArrayLengthLeft(
+  ia *IntAry,
+  validateIa bool,
+  addLen int,
+  validateResult bool,
+  errPrefDto *ePref.ErrPrefixDto) error {
+
+  iaNeutron.lock.Lock()
+
+  defer iaNeutron.lock.Unlock()
+
+  var ePrefix *ePref.ErrPrefixDto
+  var err error
+
+  ePrefix,
+    err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
+    errPrefDto,
+    "intAryNeutron.addArrayLengthLeft()",
+    "")
+
+  if err != nil {
+    return err
+  }
+
+  if ia == nil {
+
+    return &InputPtrNilError{
+      ErrPrefix:     ePrefix.String(),
+      ParameterName: "'ia'",
+    }
+  }
+
+  if addLen < 0 {
+
+    return &FuncReturnError{
+      ErrPrefix:  ePrefix.String(),
+      ReturnFunc: "",
+      ErrContext: "",
+      ErrMessage: "Error: Input parameter 'addLen' is INVALID!\n" +
+        "'addLen' has value less than zero.\n" +
+        fmt.Sprintf("addLen= '%v'", addLen),
+    }
+
+  }
+
+  if addLen == 0 {
+    // Nothing to add
+    return nil
+  }
+
+  err = new(intAryUtility).selectIntAryValidation(
+    ia,
+    "ia",
+    validateIa,
+    ePrefix)
+
+  if err != nil {
+    return err
+  }
+
+  err = new(intAryElectron).setIntAryLength(ia, ePrefix.XCpy("Setting 'ia' IntAry Length"))
+
+  if err != nil {
+
+    return &FuncReturnError{
+      ErrPrefix: ePrefix.String(),
+      ReturnFunc: "err = new(intAryElectron).setIntAryLength(ia,\n" +
+        "  ePrefix.XCpy(Setting 'ia' IntAry Length))",
+      ErrContext: "",
+      ErrMessage: err.Error(),
+    }
+  }
+
+  newLen := addLen + ia.intAryLen
+
+  t := make([]uint8, newLen)
+
+  for i := 0; i < newLen; i++ {
+
+    if i < addLen {
+
+      t[i] = 0
+
+    } else {
+
+      t[i] = ia.intAry[i-addLen]
+
+    }
+
+  }
+
+  ia.intAry = t
+
+  err = new(intAryUtility).selectIntAryValidation(
+    ia,
+    "ia",
+    validateResult,
+    ePrefix.XCpy("Validating Final Calculation Result"))
+
+  if err != nil {
+    return err
+  }
+
+  return nil
+}
+
+// addArrayLengthRight
+//
+//	Adds trailing zeros to the right of the current intAry.
+func (iaNeutron *intAryNeutron) addArrayLengthRight(
+  ia *IntAry,
+  validateIa bool,
+  addLen int,
+  validateResult bool,
+  errPrefDto *ePref.ErrPrefixDto) error {
+
+  iaNeutron.lock.Lock()
+
+  defer iaNeutron.lock.Unlock()
+
+  var ePrefix *ePref.ErrPrefixDto
+  var err error
+
+  ePrefix,
+    err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
+    errPrefDto,
+    "intAryNeutron.addArrayLengthLeft()",
+    "")
+
+  if err != nil {
+    return err
+  }
+
+  if ia == nil {
+
+    return &InputPtrNilError{
+      ErrPrefix:     ePrefix.String(),
+      ParameterName: "'ia'",
+    }
+  }
+
+  if addLen < 0 {
+
+    return &FuncReturnError{
+      ErrPrefix:  ePrefix.String(),
+      ReturnFunc: "",
+      ErrContext: "",
+      ErrMessage: "Error: Input parameter 'addLen' is INVALID!\n" +
+        "'addLen' has value less than zero.\n" +
+        fmt.Sprintf("addLen= '%v'", addLen),
+    }
+
+  }
+
+  if addLen == 0 {
+    // Nothing to add
+    return nil
+  }
+
+  err = new(intAryUtility).selectIntAryValidation(
+    ia,
+    "ia",
+    validateIa,
+    ePrefix)
+
+  if err != nil {
+    return err
+  }
+
+  err = new(intAryElectron).setIntAryLength(ia, ePrefix.XCpy("Setting 'ia' IntAry Length"))
+
+  if err != nil {
+
+    return &FuncReturnError{
+      ErrPrefix: ePrefix.String(),
+      ReturnFunc: "err = new(intAryElectron).setIntAryLength(ia,\n" +
+        "  ePrefix.XCpy(Setting 'ia' IntAry Length))",
+      ErrContext: "",
+      ErrMessage: err.Error(),
+    }
+  }
+
+  for i := 0; i < addLen; i++ {
+
+    ia.intAry = append(ia.intAry, 0)
+
+  }
+
+  err = new(intAryUtility).selectIntAryValidation(
+    ia,
+    "ia",
+    validateResult,
+    ePrefix.XCpy("Validating Final Calculation Result"))
+
+  if err != nil {
+    return err
+  }
+
+  return nil
+}
+
 // addIntAryToThis
 //
 //	Adds the value of intAry parameter ia2 to the value of 'ia'.
@@ -352,7 +557,7 @@ func (iaNeutron *intAryNeutron) addIntToThis(
 //
 //	This method may conduct tests on input Parameter 'ia' and
 //	the final addition result depending on user configured
-//	input parameters 'validateIa' and 'validateResult'.
+//	input parameters, 'validateIa' and 'validateResult'.
 //
 //	Input Parameters
 //	================
@@ -406,7 +611,7 @@ func (iaNeutron *intAryNeutron) addInt64ToThis(
   ePrefix,
     err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
     errPrefDto,
-    "intAryNeutron.addIntAryToThis()",
+    "intAryNeutron.addInt64ToThis()",
     "")
 
   if err != nil {
@@ -508,14 +713,88 @@ func (iaNeutron *intAryNeutron) addInt64ToThis(
   return nil
 }
 
-// addArrayLengthLeft
+// AddBigIntToThis
 //
-//	 Adds leading zeros to the internal storage array holding the
-//		numeric value for the current instance of IntAry.
-func (iaNeutron *intAryNeutron) addArrayLengthLeft(
+//	Adds the value of the *big.Int input parameter, 'num' to the
+//	value of the current IntAry object.
+//
+//	Example
+//	=======
+//
+//	intDigits     precision     	    result
+//
+//	 946254           3                946.254
+//	 946254           0                946254
+//	-946254           3               -946.254
+//	-946254           0               -946254
+//
+//	Usage
+//	=====
+//
+//	num := big.NewInt(123456)
+//	precision := uint(3)
+//	err := ia.AddBigIntToThis(num, precision)
+//
+//	The result will equal the current value of the IntAry
+//	object plus, '123.456'
+//
+//	Numeric Separators
+//	==================
+//
+//	Numeric Separators define the Decimal Separator character,
+//	Thousands Separator character, and Currency Symbol character.
+//	These separator characters serve two purposes. First they are
+//	used to format and display numeric values as number strings.
+//	Second, they are also used to parse number strings and
+//	convert them into numeric values.
+//
+//	Numeric Separators configured for input parameter 'ia'
+//	will be stored with the final addition result and remain
+//	unchanged from the original Numeric Separator configuration.
+//
+//	Validation Testing
+//	==================
+//
+//	This method may conduct tests on input Parameter 'ia' and
+//	the final addition result depending on user configured
+//	input parameters, 'validateIa' and 'validateResult'.
+//
+//	Input Parameters
+//	================
+//
+//	ia                       *IntAry
+//	  The numeric value of this IntAry will be added to 'num'
+//	  and the result will be stored here. During this operation,
+//	  the original value of 'ia' will be destroyed and overwritten
+//	  with the addition result.
+//
+//	validateIa               bool
+//	  When set to 'true', input parameter 'ia' will be subjected to
+//	  validation tests.
+//
+//	num                       *big.Int
+//	  The numeric value to be added to the value of the current
+//	  IntAry object. Note that 'num' may be positive or negative.
+//
+//	precision                 int
+//	  'precision' indicates the number of digits to be formatted
+//	  to the right of the decimal	place.
+//
+//	validateResult           bool
+//	 When set to 'true', the final result of the addition operation
+//	 will be subjected to validation tests.
+//
+//	Return Values
+//	=============
+//
+//	error
+//	  If no errors are encountered, this return value will be set
+//	  to 'nil'.
+func (iaNeutron *intAryNeutron) addBigIntToThis(
   ia *IntAry,
   validateIa bool,
-  addLen int,
+  num *big.Int,
+  precision int,
   validateResult bool,
   errPrefDto *ePref.ErrPrefixDto) error {
 
@@ -529,7 +808,7 @@ func (iaNeutron *intAryNeutron) addArrayLengthLeft(
   ePrefix,
     err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
     errPrefDto,
-    "intAryNeutron.addArrayLengthLeft()",
+    "intAryNeutron.addBigIntToThis()",
     "")
 
   if err != nil {
@@ -544,170 +823,82 @@ func (iaNeutron *intAryNeutron) addArrayLengthLeft(
     }
   }
 
-  if addLen < 0 {
-
-    return &FuncReturnError{
-      ErrPrefix:  ePrefix.String(),
-      ReturnFunc: "",
-      ErrContext: "",
-      ErrMessage: "Error: Input parameter 'addLen' is INVALID!\n" +
-        "'addLen' has value less than zero.\n" +
-        fmt.Sprintf("addLen= '%v'", addLen),
-    }
-
-  }
-
-  if addLen == 0 {
-    // Nothing to add
-    return nil
-  }
-
   err = new(intAryUtility).selectIntAryValidation(
     ia,
     "ia",
     validateIa,
-    ePrefix)
+    ePrefix.XCpy("Validating 'ia' on Startup"))
 
   if err != nil {
     return err
   }
 
-  err = new(intAryElectron).setIntAryLength(ia, ePrefix.XCpy("Setting 'ia' IntAry Length"))
+  ia2 := new(intAryElectron).newIntAry()
+
+  err = new(intAryProton).copy(&ia2, ia, true, false, ePrefix)
 
   if err != nil {
 
     return &FuncReturnError{
       ErrPrefix: ePrefix.String(),
-      ReturnFunc: "err = new(intAryElectron).setIntAryLength(ia,\n" +
-        "  ePrefix.XCpy(Setting 'ia' IntAry Length))",
+      ReturnFunc: "err = new(intAryProton).copy(\n" +
+        "  &ia2, ia, validateSource=true, CopyToBackup=false, ePrefix)",
       ErrContext: "",
       ErrMessage: err.Error(),
     }
   }
 
-  newLen := addLen + ia.intAryLen
-
-  t := make([]uint8, newLen)
-
-  for i := 0; i < newLen; i++ {
-
-    if i < addLen {
-
-      t[i] = 0
-
-    } else {
-
-      t[i] = ia.intAry[i-addLen]
-
-    }
-
+  nsProfile := NumSepsProfileSelection{
+    SourceObjectName:         "ia2",
+    OutputNumSepsName:        "numSeps",
+    UseDefaultNumSeps:        false,
+    SetDefaultNumSepsIfEmpty: true,
+    ValidateNumSeps:          false,
+    OverrideNumSeps:          NumericSeparatorDto{},
   }
 
-  ia.intAry = t
-
-  err = new(intAryUtility).selectIntAryValidation(
-    ia,
-    "ia",
-    validateResult,
-    ePrefix.XCpy("Validating Final Calculation Result"))
-
-  if err != nil {
-    return err
-  }
-
-  return nil
-}
-
-// AddArrayLengthRight
-//
-//	Adds trailing zeros to the right of the current intAry.
-func (iaNeutron *intAryNeutron) addArrayLengthRight(
-  ia *IntAry,
-  validateIa bool,
-  addLen int,
-  validateResult bool,
-  errPrefDto *ePref.ErrPrefixDto) error {
-
-  iaNeutron.lock.Lock()
-
-  defer iaNeutron.lock.Unlock()
-
-  var ePrefix *ePref.ErrPrefixDto
-  var err error
-
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
-    errPrefDto,
-    "intAryNeutron.addArrayLengthLeft()",
-    "")
-
-  if err != nil {
-    return err
-  }
-
-  if ia == nil {
-
-    return &InputPtrNilError{
-      ErrPrefix:     ePrefix.String(),
-      ParameterName: "'ia'",
-    }
-  }
-
-  if addLen < 0 {
-
-    return &FuncReturnError{
-      ErrPrefix:  ePrefix.String(),
-      ReturnFunc: "",
-      ErrContext: "",
-      ErrMessage: "Error: Input parameter 'addLen' is INVALID!\n" +
-        "'addLen' has value less than zero.\n" +
-        fmt.Sprintf("addLen= '%v'", addLen),
-    }
-
-  }
-
-  if addLen == 0 {
-    // Nothing to add
-    return nil
-  }
-
-  err = new(intAryUtility).selectIntAryValidation(
-    ia,
-    "ia",
-    validateIa,
-    ePrefix)
-
-  if err != nil {
-    return err
-  }
-
-  err = new(intAryElectron).setIntAryLength(ia, ePrefix.XCpy("Setting 'ia' IntAry Length"))
+  err = new(intAryGluon).setIntAryWithBigInt(
+    &ia2, nil, nsProfile, num, precision, true, ePrefix)
 
   if err != nil {
 
     return &FuncReturnError{
       ErrPrefix: ePrefix.String(),
-      ReturnFunc: "err = new(intAryElectron).setIntAryLength(ia,\n" +
-        "  ePrefix.XCpy(Setting 'ia' IntAry Length))",
+      ReturnFunc: "err = new(intAryGluon).setIntAryWithBigInt(\n" +
+        "&ia2, nil, nsProfile, num, precision, true, ePrefix)",
       ErrContext: "",
       ErrMessage: err.Error(),
     }
   }
 
-  for i := 0; i < addLen; i++ {
+  err = new(IntAryMathAdd).RunTotal(ia, &ia2)
 
-    ia.intAry = append(ia.intAry, 0)
+  if err != nil {
 
+    return &FuncReturnError{
+      ErrPrefix:  ePrefix.String(),
+      ReturnFunc: "err = new(IntAryMathAdd).RunTotal(ia, &ia2)",
+      ErrContext: "",
+      ErrMessage: err.Error(),
+    }
   }
 
   err = new(intAryUtility).selectIntAryValidation(
     ia,
     "ia",
     validateResult,
-    ePrefix.XCpy("Validating Final Calculation Result"))
+    ePrefix.XCpy("Final Result Validation"))
 
   if err != nil {
-    return err
+
+    return &FuncReturnError{
+      ErrPrefix: ePrefix.String(),
+      ReturnFunc: fmt.Sprintf("err = new(intAryUtility).selectIntAryValidation(\n"+
+        "ia, \"ia\", validateResult='%v' ePrefix", validateResult),
+      ErrContext: "Error: The Final Result is INVALID!\n" +
+        "Final Result 'ia' FAILED Validation Tests",
+      ErrMessage: err.Error(),
+    }
   }
 
   return nil
