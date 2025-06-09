@@ -1159,12 +1159,32 @@ func TestBigIntFixedDecimal_Cmp_01(t *testing.T) {
     return
   }
 
+  fd1NumStr, err := fd1.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "fd1NumStr, err := fd1.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
   fd2, err := new(BigIntFixedDecimal).NewNumStr(num2Str, '.')
 
   if err != nil {
     t.Errorf("%v\n"+
       "Error returned by:\n"+
       "fd2, err := new(BigIntFixedDecimal).NewNumStr(num2Str, '.')\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  fd2NumStr, err := fd2.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "fd2NumStr, err := fd2.GetNumStr()\n"+
       "Error='%v'\n\n", ePrefix, err.Error())
     return
   }
@@ -1182,9 +1202,13 @@ func TestBigIntFixedDecimal_Cmp_01(t *testing.T) {
   if expectedResult != cmpResult {
     t.Errorf("%v\n"+
       "Error: Unexpected Result!\n"+
-      "Expected fd1.Cmp(fd2) == '%v'\n"+
-      "Instead fd1.Cmp(fd2) == '%v'\n\n",
-      ePrefix, expectedResult, cmpResult)
+      "Expected Compare Result = %v\n"+
+      "Actual Compare Result = %v\n"+
+      "Original numStr1 = %v\n"+
+      "Original numStr2 = %v\n"+
+      "Actual BigIntFixedDecimal fd1NumStr1 = %v\n"+
+      "Actual BigIntFixedDecimal fd2NumStr1 = %v\n\n",
+      ePrefix, expectedResult, cmpResult, num1Str, num2Str, fd1NumStr, fd2NumStr)
   }
 
   return
@@ -1207,6 +1231,16 @@ func TestBigIntFixedDecimal_Cmp_02(t *testing.T) {
     return
   }
 
+  fd1NumStr, err := fd1.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "fd1NumStr, err := fd1.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
   fd2, err := new(BigIntFixedDecimal).NewNumStr(num2Str, '.')
 
   if err != nil {
@@ -1217,14 +1251,36 @@ func TestBigIntFixedDecimal_Cmp_02(t *testing.T) {
     return
   }
 
-  cmpResult := fd1.Cmp(fd2)
+  fd2NumStr, err := fd2.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "fd2NumStr, err := fd2.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  cmpResult, err := fd1.Cmp(fd2)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "cmpResult, err := fd1.Cmp(fd2)\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
 
   if expectedResult != cmpResult {
     t.Errorf("%v\n"+
       "Error: Unexpected Result!\n"+
-      "Expected fd1.Cmp(fd2) == '%v'\n"+
-      "Instead fd1.Cmp(fd2) == '%v'\n\n",
-      ePrefix, expectedResult, cmpResult)
+      "Expected Compare Result = %v\n"+
+      "Actual Compare Result = %v\n"+
+      "Original numStr1 = %v\n"+
+      "Original numStr2 = %v\n"+
+      "Actual BigIntFixedDecimal fd1NumStr1 = %v\n"+
+      "Actual BigIntFixedDecimal fd2NumStr1 = %v\n\n",
+      ePrefix, expectedResult, cmpResult, num1Str, num2Str, fd1NumStr, fd2NumStr)
   }
 
   return
@@ -1247,6 +1303,16 @@ func TestBigIntFixedDecimal_Cmp_03(t *testing.T) {
     return
   }
 
+  fd1NumStr, err := fd1.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "fd1NumStr, err := fd1.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
   fd2, err := new(BigIntFixedDecimal).NewNumStr(num2Str, '.')
 
   if err != nil {
@@ -1254,6 +1320,16 @@ func TestBigIntFixedDecimal_Cmp_03(t *testing.T) {
       "Error returned by:\n"+
       "fd2, err := new(BigIntFixedDecimal).NewNumStr(num2Str, '.')\n"+
       "num2Str='%v'\nError='%v'\n\n", ePrefix, num2Str, err.Error())
+    return
+  }
+
+  fd2NumStr, err := fd2.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "fd2NumStr, err := fd2.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
     return
   }
 
@@ -1270,9 +1346,13 @@ func TestBigIntFixedDecimal_Cmp_03(t *testing.T) {
   if expectedResult != cmpResult {
     t.Errorf("%v\n"+
       "Error: Unexpected Result!\n"+
-      "Expected fd1.Cmp(fd2) == '%v'\n"+
-      "Instead fd1.Cmp(fd2) == '%v'\n\n",
-      ePrefix, expectedResult, cmpResult)
+      "Expected Compare Result = %v\n"+
+      "Actual Compare Result = %v\n"+
+      "Original numStr1 = %v\n"+
+      "Original numStr2 = %v\n"+
+      "Actual BigIntFixedDecimal fd1NumStr1 = %v\n"+
+      "Actual BigIntFixedDecimal fd2NumStr1 = %v\n\n",
+      ePrefix, expectedResult, cmpResult, num1Str, num2Str, fd1NumStr, fd2NumStr)
   }
 
   return
@@ -1280,240 +1360,588 @@ func TestBigIntFixedDecimal_Cmp_03(t *testing.T) {
 
 func TestBigIntFixedDecimal_Cmp_04(t *testing.T) {
 
+  ePrefix := "TestBigIntFixedDecimal_Cmp_04"
+
   num1Str := "837123.4"
   num2Str := "837123.5"
   expectedResult := -1
 
-  fd1, err := new(BigIntFixedDecimal).NewNumStr(num1Str)
+  fd1, err := new(BigIntFixedDecimal).NewNumStr(num1Str, '.')
 
   if err != nil {
-    t.Errorf("Error returned by new(BigIntFixedDecimal).NewNumStr(num1Str). "+
-      "num1Str='%v' Error='%v'", num1Str, err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "fd1, err := new(BigIntFixedDecimal).NewNumStr(num1Str, '.')\n"+
+      "num1Str='%v'\n"+
+      "Error='%v'\n\n", ePrefix, num1Str, err.Error())
+    return
   }
 
-  fd2, err := new(BigIntFixedDecimal).NewNumStr(num2Str)
+  fd2, err := new(BigIntFixedDecimal).NewNumStr(num2Str, '.')
 
   if err != nil {
-    t.Errorf("Error returned by new(BigIntFixedDecimal).NewNumStr(num2Str). "+
-      "num2Str='%v' Error='%v'", num2Str, err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "fd2, err := new(BigIntFixedDecimal).NewNumStr(num2Str, '.')\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
   }
 
-  cmpResult := fd1.Cmp(fd2)
+  fd1NumStr, err := fd1.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "fd1NumStr, err := fd1.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  fd2NumStr, err := fd2.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "fd2NumStr, err := fd2.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  cmpResult, err := fd1.Cmp(fd2)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "cmpResult, err := fd1.Cmp(fd2)\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
 
   if expectedResult != cmpResult {
-    t.Errorf("Error: Expected compare result='%v'. "+
-      "Instead, compare result='%v' ",
-      expectedResult, cmpResult)
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Expected Compare Result = %v\n"+
+      "Actual Compare Result = %v\n"+
+      "Original numStr1 = %v\n"+
+      "Original numStr2 = %v\n"+
+      "Actual BigIntFixedDecimal fd1NumStr1 = %v\n"+
+      "Actual BigIntFixedDecimal fd2NumStr1 = %v\n\n",
+      ePrefix, expectedResult, cmpResult, num1Str, num2Str, fd1NumStr, fd2NumStr)
   }
 
+  return
 }
 
 func TestBigIntFixedDecimal_Cmp_05(t *testing.T) {
+
+  ePrefix := "TestBigIntFixedDecimal_Cmp_05"
 
   num1Str := "0"
   num2Str := "0.1"
   expectedResult := -1
 
-  fd1, err := new(BigIntFixedDecimal).NewNumStr(num1Str)
+  fd1, err := new(BigIntFixedDecimal).NewNumStr(num1Str, '.')
 
   if err != nil {
-    t.Errorf("Error returned by new(BigIntFixedDecimal).NewNumStr(num1Str). "+
-      "num1Str='%v' Error='%v'", num1Str, err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "fd1, err := new(BigIntFixedDecimal).NewNumStr(num1Str, '.')\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
   }
 
-  fd2, err := new(BigIntFixedDecimal).NewNumStr(num2Str)
+  fd1NumStr, err := fd1.GetNumStr()
 
   if err != nil {
-    t.Errorf("Error returned by new(BigIntFixedDecimal).NewNumStr(num2Str). "+
-      "num2Str='%v' Error='%v'", num2Str, err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "fd1NumStr, err := fd1.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
   }
 
-  cmpResult := fd1.Cmp(fd2)
+  fd2, err := new(BigIntFixedDecimal).NewNumStr(num2Str, '.')
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "fd2, err := new(BigIntFixedDecimal).NewNumStr(num2Str, '.')\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  fd2NumStr, err := fd2.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "fd2NumStr, err := fd2.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  cmpResult, err := fd1.Cmp(fd2)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "cmpResult, err := fd1.Cmp(fd2)\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
 
   if expectedResult != cmpResult {
-    t.Errorf("Error: Expected compare result='%v'. "+
-      "Instead, compare result='%v' ",
-      expectedResult, cmpResult)
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Expected Compare Result == '%v'\n"+
+      "Instead  Compare Result == '%v'\n"+
+      "Original numStr1 = %v\n"+
+      "Original numStr2 = %v\n"+
+      "Actual BigIntFixedDecimal fd1NumStr1 = %v\n"+
+      "Actual BigIntFixedDecimal fd2NumStr1 = %v\n\n",
+      ePrefix, expectedResult, cmpResult, num1Str, num2Str, fd1NumStr, fd2NumStr)
   }
 
+  return
 }
 
 func TestBigIntFixedDecimal_Cmp_06(t *testing.T) {
 
+  ePrefix := "TestBigIntFixedDecimal_Cmp_06"
   num1Str := "35.123456"
   num2Str := "40.5"
   expectedResult := -1
 
-  fd1, err := new(BigIntFixedDecimal).NewNumStr(num1Str)
+  fd1, err := new(BigIntFixedDecimal).NewNumStr(num1Str, '.')
 
   if err != nil {
-    t.Errorf("Error returned by new(BigIntFixedDecimal).NewNumStr(num1Str). "+
-      "num1Str='%v' Error='%v'", num1Str, err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "fd1, err := new(BigIntFixedDecimal).NewNumStr(num1Str, '.')\n"+
+      "num1Str='%v'\n"+
+      "Error='%v'\n\n", ePrefix, num1Str, err.Error())
+    return
   }
 
-  fd2, err := new(BigIntFixedDecimal).NewNumStr(num2Str)
+  fd1NumStr, err := fd1.GetNumStr()
 
   if err != nil {
-    t.Errorf("Error returned by new(BigIntFixedDecimal).NewNumStr(num2Str). "+
-      "num2Str='%v' Error='%v'", num2Str, err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "fd1NumStr, err := fd1.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
   }
 
-  cmpResult := fd1.Cmp(fd2)
+  fd2, err := new(BigIntFixedDecimal).NewNumStr(num2Str, '.')
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "fd2, err := new(BigIntFixedDecimal).NewNumStr(num2Str, '.')\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  fd2NumStr, err := fd2.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "fd2NumStr, err := fd2.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  cmpResult, err := fd1.Cmp(fd2)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "cmpResult, err := fd1.Cmp(fd2)\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
 
   if expectedResult != cmpResult {
-    t.Errorf("Error: Expected compare result='%v'. "+
-      "Instead, compare result='%v' ",
-      expectedResult, cmpResult)
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Expected Compare Result = %v\n"+
+      "Actual Compare Result = %v\n"+
+      "Original numStr1 = %v\n"+
+      "Original numStr2 = %v\n"+
+      "Actual BigIntFixedDecimal fd1NumStr == '%v'\n"+
+      "Actual BigIntFixedDecimal fd2NumStr == '%v'\n\n",
+      ePrefix, expectedResult, cmpResult, num1Str, num2Str, fd1NumStr, fd2NumStr)
   }
 
+  return
 }
 
 func TestBigIntFixedDecimal_Cmp_07(t *testing.T) {
 
+  ePrefix := "TestBigIntFixedDecimal_Cmp_07"
   num1Str := "35.123456"
   num2Str := "2.5"
   expectedResult := 1
 
-  fd1, err := new(BigIntFixedDecimal).NewNumStr(num1Str)
+  fd1, err := new(BigIntFixedDecimal).NewNumStr(num1Str, '.')
 
   if err != nil {
-    t.Errorf("Error returned by new(BigIntFixedDecimal).NewNumStr(num1Str). "+
-      "num1Str='%v' Error='%v'", num1Str, err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "fd1, err := new(BigIntFixedDecimal).NewNumStr(num1Str, '.')\n"+
+      "num1Str='%v'\n"+
+      "Error='%v'\n\n", ePrefix, num1Str, err.Error())
+    return
   }
 
-  fd2, err := new(BigIntFixedDecimal).NewNumStr(num2Str)
+  fd1NumStr, err := fd1.GetNumStr()
 
   if err != nil {
-    t.Errorf("Error returned by new(BigIntFixedDecimal).NewNumStr(num2Str). "+
-      "num2Str='%v' Error='%v'", num2Str, err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "fd1NumStr, err := fd1.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
   }
 
-  cmpResult := fd1.Cmp(fd2)
+  fd2, err := new(BigIntFixedDecimal).NewNumStr(num2Str, '.')
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "fd2, err := new(BigIntFixedDecimal).NewNumStr(num2Str, '.')\n"+
+      "num2Str='%v'\n"+
+      "Error='%v'\n\n", ePrefix, num2Str, err.Error())
+    return
+  }
+
+  fd2NumStr, err := fd2.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "fd2NumStr, err := fd2.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  cmpResult, err := fd1.Cmp(fd2)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
 
   if expectedResult != cmpResult {
-    t.Errorf("Error: Expected compare result='%v'. "+
-      "Instead, compare result='%v' ",
-      expectedResult, cmpResult)
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Expected Compare Result = %v\n"+
+      "Actual Compare Result = %v\n"+
+      "Original numStr1 = %v\n"+
+      "Original numStr2 = %v\n"+
+      "Actual fd1NumStr == '%v'\n"+
+      "Actual fd2NumStr == '%v'\n\n",
+      ePrefix, expectedResult, cmpResult, num1Str, num2Str, fd1NumStr, fd2NumStr)
   }
 
+  return
 }
 
 func TestBigIntFixedDecimal_Cmp_08(t *testing.T) {
 
+  ePrefix := "TestBigIntFixedDecimal_Cmp_08"
   num1Str := "35.123456"
   num2Str := "2.123456789012345"
   expectedResult := 1
 
-  fd1, err := new(BigIntFixedDecimal).NewNumStr(num1Str)
+  fd1, err := new(BigIntFixedDecimal).NewNumStr(num1Str, '.')
 
   if err != nil {
-    t.Errorf("Error returned by new(BigIntFixedDecimal).NewNumStr(num1Str). "+
-      "num1Str='%v' Error='%v'", num1Str, err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "fd1, err := new(BigIntFixedDecimal).NewNumStr(num1Str, '.')\n"+
+      "num1Str='%v'\n"+
+      "Error='%v'\n\n", ePrefix, num1Str, err.Error())
+    return
   }
 
-  fd2, err := new(BigIntFixedDecimal).NewNumStr(num2Str)
+  fd1NumStr, err := fd1.GetNumStr()
 
   if err != nil {
-    t.Errorf("Error returned by new(BigIntFixedDecimal).NewNumStr(num2Str). "+
-      "num2Str='%v' Error='%v'", num2Str, err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "fd1NumStr, err := fd1.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
   }
 
-  cmpResult := fd1.Cmp(fd2)
+  fd2, err := new(BigIntFixedDecimal).NewNumStr(num2Str, '.')
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "fd2, err := new(BigIntFixedDecimal).NewNumStr(num2Str, '.')\n"+
+      "num2Str='%v'\n"+
+      "Error='%v'\n\n", ePrefix, num2Str, err.Error())
+    return
+  }
+
+  fd2NumStr, err := fd2.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "fd2NumStr, err := fd2.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  cmpResult, err := fd1.Cmp(fd2)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "cmpResult, err := fd1.Cmp(fd2)\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
 
   if expectedResult != cmpResult {
-    t.Errorf("Error: Expected compare result='%v'. "+
-      "Instead, compare result='%v' ",
-      expectedResult, cmpResult)
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Expected Compare Result = %v\n"+
+      "Actual Compare Result = %v\n"+
+      "Original numStr1 = %v\n"+
+      "Original numStr2 = %v\n"+
+      "Actual fd1NumStr == '%v'\n"+
+      "Actual fd2NumStr == '%v'\n\n",
+      ePrefix, expectedResult, cmpResult, num1Str, num2Str, fd1NumStr, fd2NumStr)
   }
 
 }
 
 func TestBigIntFixedDecimal_Cmp_09(t *testing.T) {
 
+  ePrefix := "TestBigIntFixedDecimal_Cmp_09"
   num1Str := "-35.123456"
   num2Str := "2.123456789012345"
   expectedResult := -1
 
-  fd1, err := new(BigIntFixedDecimal).NewNumStr(num1Str)
+  fd1, err := new(BigIntFixedDecimal).NewNumStr(num1Str, '.')
 
   if err != nil {
-    t.Errorf("Error returned by new(BigIntFixedDecimal).NewNumStr(num1Str). "+
-      "num1Str='%v' Error='%v'", num1Str, err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "fd1, err := new(BigIntFixedDecimal).NewNumStr(num1Str,'.')\n"+
+      "num1Str='%v'\n"+
+      "Error='%v'\n\n", ePrefix, num1Str, err.Error())
+    return
   }
 
-  fd2, err := new(BigIntFixedDecimal).NewNumStr(num2Str)
+  fd1NumStr, err := fd1.GetNumStr()
 
   if err != nil {
-    t.Errorf("Error returned by new(BigIntFixedDecimal).NewNumStr(num2Str). "+
-      "num2Str='%v' Error='%v'", num2Str, err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "fd1NumStr, err := fd1.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
   }
 
-  cmpResult := fd1.Cmp(fd2)
+  fd2, err := new(BigIntFixedDecimal).NewNumStr(num2Str, '.')
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "fd2, err := new(BigIntFixedDecimal).NewNumStr(num2Str, '.')\n"+
+      "num2Str='%v'\n"+
+      "Error='%v'\n\n", ePrefix, num2Str, err.Error())
+    return
+  }
+
+  fd2NumStr, err := fd2.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "fd2NumStr, err := fd2.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  cmpResult, err := fd1.Cmp(fd2)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "cmpResult, err := fd1.Cmp(fd2)\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
 
   if expectedResult != cmpResult {
-    t.Errorf("Error: Expected compare result='%v'. "+
-      "Instead, compare result='%v' ",
-      expectedResult, cmpResult)
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Expected Compare Result = %v\n"+
+      "Actual Compare Result = %v\n"+
+      "Original numStr1 = %v\n"+
+      "Original numStr2 = %v\n"+
+      "Actual fd1NumStr == '%v'\n"+
+      "Actual fd2NumStr == '%v'\n\n",
+      ePrefix, expectedResult, cmpResult, num1Str, num2Str, fd1NumStr, fd2NumStr)
   }
 
+  return
 }
 
 func TestBigIntFixedDecimal_Cmp_10(t *testing.T) {
 
+  ePrefix := "TestBigIntFixedDecimal_Cmp_10"
   num1Str := "-35.123456"
   num2Str := "-35.123455"
   expectedResult := -1
 
-  fd1, err := new(BigIntFixedDecimal).NewNumStr(num1Str)
+  fd1, err := new(BigIntFixedDecimal).NewNumStr(num1Str, '.')
 
   if err != nil {
-    t.Errorf("Error returned by new(BigIntFixedDecimal).NewNumStr(num1Str). "+
-      "num1Str='%v' Error='%v'", num1Str, err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "fd1, err := new(BigIntFixedDecimal).NewNumStr(num1Str, '.')\n"+
+      "num1Str='%v'\n"+
+      "Error='%v'\n\n", ePrefix, num1Str, err.Error())
+    return
   }
 
-  fd2, err := new(BigIntFixedDecimal).NewNumStr(num2Str)
+  fd1NumStr, err := fd1.GetNumStr()
 
   if err != nil {
-    t.Errorf("Error returned by new(BigIntFixedDecimal).NewNumStr(num2Str). "+
-      "num2Str='%v' Error='%v'", num2Str, err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "fd1NumStr, err := fd1.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
   }
 
-  cmpResult := fd1.Cmp(fd2)
+  fd2, err := new(BigIntFixedDecimal).NewNumStr(num2Str, '.')
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "fd2, err := new(BigIntFixedDecimal).NewNumStr(num2Str, '.')\n"+
+      "num2Str='%v'\n"+
+      "Error='%v'\n\n", ePrefix, num2Str, err.Error())
+    return
+  }
+
+  fd2NumStr, err := fd2.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "fd2NumStr, err := fd2.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  cmpResult, err := fd1.Cmp(fd2)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "cmpResult, err := fd1.Cmp(fd2)\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
 
   if expectedResult != cmpResult {
-    t.Errorf("Error: Expected compare result='%v'. "+
-      "Instead, compare result='%v' ",
-      expectedResult, cmpResult)
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Expected Compare Result = %v\n"+
+      "Actual Compare Result = %v\n"+
+      "Original numStr1 = %v\n"+
+      "Original numStr2 = %v\n"+
+      "Actual fd1NumStr == '%v'\n"+
+      "Actual fd2NumStr == '%v'\n\n",
+      ePrefix, expectedResult, cmpResult, num1Str, num2Str, fd1NumStr, fd2NumStr)
   }
 
+  return
 }
 
 func TestBigIntFixedDecimal_Cmp_11(t *testing.T) {
-
+	
+  ePrefix := "TestBigIntFixedDecimal_Cmp_11"
   num1Str := "-35.123455"
   num2Str := "-35.123456"
   expectedResult := 1
 
-  fd1, err := new(BigIntFixedDecimal).NewNumStr(num1Str)
+  fd1, err := new(BigIntFixedDecimal).NewNumStr(num1Str, '.')
 
   if err != nil {
-    t.Errorf("Error returned by new(BigIntFixedDecimal).NewNumStr(num1Str). "+
-      "num1Str='%v' Error='%v'", num1Str, err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "fd1, err := new(BigIntFixedDecimal).NewNumStr(num1Str, '.')\n"+
+      "num1Str='%v'\n"+
+      "Error='%v'\n\n", ePrefix, num1Str, err.Error())
+    return
   }
 
-  fd2, err := new(BigIntFixedDecimal).NewNumStr(num2Str)
+  fd1NumStr, err := fd1.GetNumStr()
 
   if err != nil {
-    t.Errorf("Error returned by new(BigIntFixedDecimal).NewNumStr(num2Str). "+
-      "num2Str='%v' Error='%v'", num2Str, err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "fd1NumStr, err := fd1.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
   }
 
-  cmpResult := fd1.Cmp(fd2)
+  fd2, err := new(BigIntFixedDecimal).NewNumStr(num2Str, '.')
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "fd2, err := new(BigIntFixedDecimal).NewNumStr(num2Str, '.')\n"+
+      "num2Str='%v'\n"+
+      "Error='%v'\n\n", ePrefix, num2Str, err.Error())
+    return
+  }
+
+  fd2NumStr, err := fd2.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "fd2NumStr, err := fd2.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  cmpResult, err := fd1.Cmp(fd2)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
 
   if expectedResult != cmpResult {
-    t.Errorf("Error: Expected compare result='%v'. "+
-      "Instead, compare result='%v' ",
-      expectedResult, cmpResult)
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Expected Compare Result = %v\n"+
+      "Actual Compare Result = %v\n"+
+      "Original numStr1 = %v\n"+
+      "Original numStr2 = %v\n"+
+      "Actual fd1NumStr == '%v'\n"+
+      "Actual fd2NumStr == '%v'\n\n",
+      ePrefix, expectedResult, cmpResult, num1Str, num2Str, fd1NumStr, fd2NumStr)
   }
 
 }
