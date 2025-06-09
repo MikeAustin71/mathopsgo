@@ -3698,7 +3698,7 @@ func (iaNeutron *intAryNeutron) shiftPrecisionLeft(
   ePrefix,
     err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
     errPrefDto,
-    "intAryNeutron.shiftPrecisionLeft()",
+    "intAryNeutron.shiftPrecisionLeft",
     "")
 
   if err != nil {
@@ -3732,6 +3732,148 @@ func (iaNeutron *intAryNeutron) shiftPrecisionLeft(
       ErrPrefix:  ePrefix.String(),
       ReturnFunc: "err = new(IntAryMathDivide).DivideByTenToPower(ia, shiftPrecision)",
       ErrContext: fmt.Sprintf("shiftPrecisionLeft= '%v'", shiftPrecisionLeft),
+      ErrMessage: err.Error(),
+    }
+  }
+
+  // This method will always 'Set Internal Flags' on 'ia'
+  err = new(intAryUtility).selectIntAryValidation(
+    ia,
+    "ia",
+    validateResult,
+    ePrefix.XCpy("Final Result Validation"))
+
+  if err != nil {
+
+    return &FuncReturnError{
+      ErrPrefix: ePrefix.String(),
+      ReturnFunc: fmt.Sprintf("err = new(intAryUtility).selectIntAryValidation(\n"+
+        "ia, \"ia\", validateResult='%v' ePrefix", validateResult),
+      ErrContext: "Error: The Final Result is INVALID!\n" +
+        "Final Result 'ia' FAILED Validation Tests",
+      ErrMessage: err.Error(),
+    }
+  }
+
+  return nil
+}
+
+// shiftPrecisionRight
+//
+//	Shifts the existing precision of the current IntAry numeric
+//	value. The position of the decimal point is shifted
+//	'shiftPrecisionRight' positions to the right.
+//
+//	This is equivalent to:
+//	   result = IntAry X 10^shiftPrecision
+//	                   or
+//	   IntAry Multiplied by 10 raised to the power of
+//	   input parameter 'shiftPrecision'.
+//
+//	Examples:
+//	=========
+//
+//	                  Input
+//	                 Parameter
+//	IntAry Value   shiftPrecision    Result
+//	------------   --------------    ------
+//
+//	 "123456.789"        3           "123456789"
+//	 "123456.789"        2           "12345678.9"
+//	 "123456.789"        6           "123456789000"
+//	 "123456789"         6           "123456789000000"
+//	 "123"               5           "12300000"
+//	 "0"                 3           "0"
+//
+//	 zero shiftPrecision has no effect on original number string
+//
+//	 "123456.789"        0           "123456.789"
+//	"-123456.789"        0           "-123456.789"
+//	"-123456.789"        3           "-123456789"
+//	"-123456789"         6           "-123456789000000"
+//
+//	Input Parameters:
+//	=================
+//
+//	ia                       *IntAry
+//	  The 'shift precision' operation will be performed on this
+//	  instance of IntAry. Furthermore, the result of the 'shift
+//	  precision' operation will be stored in this IntAry object
+//	  upon method completion.
+//
+//	validateIaOnStarup       bool
+//	  When set to 'true', the 'ia' IntAry object will be subjected
+//	  to validation tests before the 'shift precision' operation is
+//	  initiated.
+//
+//	shiftPrecisionRight      uint
+//	   The number of digits by which the current decimal point
+//	   position in the current IntAry numeric value will be shifted
+//	   to the right.
+//
+//	  In practice, the maximum limit for 'shiftPrecision' will
+//	  depend on the maximum array size permitted by your system.
+//	  The IntAry type stores inidividual numeric digts in an
+//	  internal array of type uint8.
+//
+//	validateResult           bool
+//	  When set to 'true', the 'ia' IntAry object will be subject to
+//	  final validation tests, after the 'shift precision' operation
+//	  is completed.
+//
+//	Return Values
+//	=============
+//
+//	error
+//	  If processing errors are encountered, an appropriate error
+//	  message will be configured through this return parameter.
+func (iaNeutron *intAryNeutron) shiftPrecisionRight(
+  ia *IntAry,
+  validateIaOnStarup bool,
+  shiftPrecisionRight uint,
+  validateResult bool,
+  errPrefDto *ePref.ErrPrefixDto) error {
+
+  var ePrefix *ePref.ErrPrefixDto
+  var err error
+
+  ePrefix,
+    err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
+    errPrefDto,
+    "intAryNeutron.shiftPrecisionRight",
+    "")
+
+  if err != nil {
+    return err
+  }
+
+  if ia == nil {
+
+    return &InputPtrNilError{
+      ErrPrefix:     ePrefix.String(),
+      ParameterName: "'ia'",
+    }
+  }
+
+  // This method will always 'Set Internal Flags' on 'ia'
+  err = new(intAryUtility).selectIntAryValidation(
+    ia,
+    "ia",
+    validateIaOnStarup,
+    ePrefix.XCpy("Validating 'ia' on Startup"))
+
+  if err != nil {
+    return err
+  }
+
+  err = new(IntAryMathMultiply).MultiplyByTenToPower(ia, shiftPrecisionRight)
+
+  if err != nil {
+
+    return &FuncReturnError{
+      ErrPrefix:  ePrefix.String(),
+      ReturnFunc: "err = new(IntAryMathMultiply).MultiplyByTenToPower(ia, shiftPrecisionRight)",
+      ErrContext: "",
       ErrMessage: err.Error(),
     }
   }

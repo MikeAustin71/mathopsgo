@@ -9381,11 +9381,18 @@ func (ia *IntAry) ShiftPrecisionLeft(shiftPrecisionLeft uint) error {
 //	Input Parameters:
 //	=================
 //
-//	shiftPrecision            uint
+//	shiftPrecisionRight      uint
 //	   The number of digits by which the current decimal point
 //	   position in the current IntAry numeric value will be shifted
 //	   to the right.
-func (ia *IntAry) ShiftPrecisionRight(shiftPrecision uint) error {
+//
+//	Return Values
+//	=============
+//
+//	error
+//	  If processing errors are encountered, an appropriate error
+//	  message will be configured through this return parameter.
+func (ia *IntAry) ShiftPrecisionRight(shiftPrecisionRight uint) error {
 
 	var ePrefix *ePref.ErrPrefixDto
 	var err error
@@ -9400,19 +9407,8 @@ func (ia *IntAry) ShiftPrecisionRight(shiftPrecision uint) error {
 		return err
 	}
 
-	err = new(IntAryMathMultiply).MultiplyByTenToPower(ia, shiftPrecision)
-
-	if err != nil {
-
-		return &FuncReturnError{
-			ErrPrefix:  ePrefix.String(),
-			ReturnFunc: "err = new(IntAryMathMultiply).MultiplyByTenToPower(ia, shiftPrecision)",
-			ErrContext: "",
-			ErrMessage: err.Error(),
-		}
-	}
-
-	return nil
+	return new(intAryNeutron).shiftPrecisionRight(
+		ia, true, shiftPrecisionRight, true, ePrefix)
 }
 
 // SetThousandsSeparator is used to set the value of the thousands
