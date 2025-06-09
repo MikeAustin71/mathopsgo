@@ -682,8 +682,9 @@ func (iaGluon *intAryGluon) setIntAryWithIntAryObj(
 		return &FuncReturnError{
 			ErrPrefix: ePrefix.String(),
 			ReturnFunc: fmt.Sprintf("err = new(intAryUtility).selectIntAryValidation(\n"+
-				"iAry2Source, 'iAry2Source', validateIa= '%v', ePrefix)", validateIAry2Source),
-			ErrContext: "Valiate on Startup",
+				"  iAry2Source, 'iAry2Source', \n"+
+				"  validateIAry2Source= '%v', ePrefix)", validateIAry2Source),
+			ErrContext: "Valiate 'iAry2Source' on Startup",
 			ErrMessage: err.Error(),
 		}
 	}
@@ -717,7 +718,7 @@ func (iaGluon *intAryGluon) setIntAryWithIntAryObj(
 			ReturnFunc: fmt.Sprintf("err = new(intAryUtility).selectIntAryValidation(\n"+
 				"  iAry1Destination,\"iAry1Destination\",\n"+
 				"  validateResult='%v', ePrefix)", validateResult),
-			ErrContext: "",
+			ErrContext: "Validating Final Result 'iAry1Destination' on Exit",
 			ErrMessage: err.Error(),
 		}
 	}

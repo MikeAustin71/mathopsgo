@@ -3549,15 +3549,17 @@ func (ia *IntAry) IncrementIntegerOne() error {
 
 // IsValid - Examines the current intAry and returns
 // an error if the intAry object is found to be invalid.
-func (ia *IntAry) IsValid(errName string) error {
+func (ia *IntAry) IsValid(callingFunctionChain string) error {
 
-	if len(errName) == 0 {
-		errName = "IntAry.IsValid()"
+	if len(callingFunctionChain) == 0 {
+		callingFunctionChain = "IntAry.IsValid()"
+	} else {
+		callingFunctionChain += "\nIntAry.IsValid()"
 	}
 
 	return new(intAryElectron).isValidIntAry(
 		ia,
-		errName)
+		callingFunctionChain)
 }
 
 // IsEvenNumber
@@ -9093,6 +9095,7 @@ func (ia *IntAry) SetNumericSeparatorsToUSADefault() error {
 //	If any of the values contained in input parameter
 //	'customSeparators' are set to zero, an error will be returned.
 func (ia *IntAry) SetNumericSeparatorsDto(customSeparators NumericSeparatorDto) error {
+
 	var ePrefix *ePref.ErrPrefixDto
 	var err error
 
@@ -9495,10 +9498,33 @@ func (ia *IntAry) String() string {
 //	from this current intAry value.
 func (ia *IntAry) SubtractFromThis(ia2 *IntAry) error {
 
-	IntAryMathSubtract{}.SubtractTotal(ia, ia2)
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
+
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"IntAry.SubtractFromThis()",
+		"")
+
+	if err != nil {
+		return err
+	}
+
+	err = new(IntAryMathSubtract).SubtractTotal(ia, true, ia2, true, true)
+
+	if err != nil {
+
+		return &FuncReturnError{
+			ErrPrefix: ePrefix.String(),
+			ReturnFunc: "err = new(IntAryMathSubtract).SubtractTotal(\n" +
+				"  ia, validateIa1=true, ia2, validateiA2=true, validateResult=true)",
+			ErrContext: "",
+			ErrMessage: err.Error(),
+		}
+	}
 
 	return nil
-
 }
 
 // SubtractMultipleFromThis - This method will subtract multiple intAry values from the
@@ -9513,10 +9539,49 @@ func (ia *IntAry) SubtractFromThis(ia2 *IntAry) error {
 //	subtracted from the current intAry Value.
 func (ia *IntAry) SubtractMultipleFromThis(iaMany ...*IntAry) error {
 
-	for _, iAry := range iaMany {
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-		IntAryMathSubtract{}.SubtractTotal(ia, iAry)
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"IntAry.SetNumericSeparatorsDto()",
+		"")
 
+	if err != nil {
+		return err
+	}
+
+	err = new(intAryElectron).isValidIntAry(
+		ia,
+		ePrefix.XCpy("Validating 'ia'").String())
+
+	if err != nil {
+
+		return &FuncReturnError{
+			ErrPrefix: ePrefix.String(),
+			ReturnFunc: "err = new(intAryElectron).isValidIntAry(\n" +
+				"  ia, ePrefix.XCpy(\"Validating 'ia'\").String()))",
+			ErrContext: "Error: The current instance of IntAry ('ia') is INVALID!\n" +
+				"'ia' FAILED Validation Testing.",
+			ErrMessage: err.Error(),
+		}
+	}
+
+	for idx, iAry := range iaMany {
+
+		err = new(IntAryMathSubtract).SubtractTotal(ia, false, iAry, true, true)
+
+		if err != nil {
+
+			return &FuncReturnError{
+				ErrPrefix: ePrefix.String(),
+				ReturnFunc: "err = new(IntAryMathSubtract).SubtractTotal(\n" +
+					"  ia, validateIa1=false, ia2, validateiA2=true, validateResult=true)",
+				ErrContext: fmt.Sprintf("'range' Cycle index ('idx') = %d", idx),
+				ErrMessage: err.Error(),
+			}
+		}
 	}
 
 	return nil

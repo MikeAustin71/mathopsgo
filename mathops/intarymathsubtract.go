@@ -1,5 +1,10 @@
 package mathops
 
+import (
+	"fmt"
+	ePref "github.com/MikeAustin71/errpref"
+)
+
 type IntAryMathSubtract struct {
 	Input  IntAryPair
 	Result IntAry
@@ -19,188 +24,117 @@ type IntAryMathSubtract struct {
 // IntAry will contain numeric separators (decimal separator, thousands separator
 // and currency symbol) copied from input parameter 'minuend'.
 
-func (iaSubtract IntAryMathSubtract) Subtract(minuend, subtrahend *IntAry) IntAry {
+func (iaSubtract *IntAryMathSubtract) Subtract(minuend *IntAry, subtrahend *IntAry) (IntAry, error) {
 
-	ia3 := minuend.CopyOut()
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-	iaSubtract.SubtractTotal(&ia3, subtrahend)
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"IntAryMathSubtract.Subtract",
+		"")
 
-	return ia3
+	if err != nil {
+		return IntAry{}, err
+	}
+
+	//ia3 := minuend.CopyOut()
+
+	ia3 := new(intAryElectron).newIntAry()
+
+	err = new(intAryProton).copy(
+		&ia3, minuend, true, false,
+		ePrefix.XCpy("minuend->ia3"))
+
+	if err != nil {
+
+		return IntAry{},
+			&FuncReturnError{
+				ErrPrefix: ePrefix.String(),
+				ReturnFunc: "err = new(intAryProton).copy(\n" +
+					"  &ia3, minuend, validateMinuend=true,\n" +
+					"  copyToBackup=false, ePrefix)",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
+
+	err = new(intAryMathSubtractMechanics).subtractTotal(&ia3, false, subtrahend, true, true, ePrefix)
+
+	if err != nil {
+
+		return IntAry{},
+			&FuncReturnError{
+				ErrPrefix: ePrefix.String(),
+				ReturnFunc: "err = new(intAryMathSubtractMechanics).subtractTotal(\n" +
+					"  &ia3, validateIa3=false, subtrahend, validateSubtrahend=true,\n" +
+					"  validateResult=true, ePrefix)",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
+
+	return ia3, nil
 }
 
-// SubtractTotal - This method performs a subtraction operation subtracting
-// input parameter 'ia2' from input parameter 'ia1'. The result, or difference,
-// is returned through use of a pointer in 'ia1'. This means that the original
-// value of 'ia1' will be overwritten and destroyed by the subtraction operation.
+// SubtractTotal
 //
-// The returned 'ia1' IntAry will contain numeric separators (decimal separator,
-// thousands separator and currency symbol) from the original 'ia1' IntAry
-// instance. This means that the numeric separators contained in the original
-// ia1 IntAry will remain unchanged.
+//	This method performs a subtraction operation subtracting input
+//	parameter 'ia2' from input parameter 'ia1'. The result, or
+//	difference, is returned through use of a pointer in 'ia1'. This
+//	means that the original value of 'ia1' will be overwritten and
+//	destroyed by the subtraction operation.
 //
-func (iaSubtract IntAryMathSubtract) SubtractTotal(ia1, ia2 *IntAry) {
-
-	numSeps := ia1.GetNumericSeparatorsDto()
-
-	ia1.SetEqualArrayLengths(ia2)
-
-	if ia1.isZeroValue && ia2.isZeroValue {
-		ia1.SetIntAryToZero(ia1.GetPrecisionUint())
-		return
-	}
-
-	compare := ia1.CompareAbsoluteValues(ia2)
-	isZeroResult := false
-
-	// Largest Value in now in N1 slot
-	newSignVal := ia1.signVal
-	doAdd := false
-	doReverseNums := false
-
-	if compare == 1 {
-		// compare == + 1
-		// Absolute Value: N1 > N2
-
-		if ia1.signVal == 1 && ia2.signVal == 1 {
-			doAdd = false
-			newSignVal = 1
-		} else if ia1.signVal == -1 && ia2.signVal == 1 {
-			doAdd = true
-			newSignVal = -1
-		} else if ia1.signVal == -1 && ia2.signVal == -1 {
-			doAdd = false
-			newSignVal = -1
-		} else {
-			// Must Be ia1.signVal == 1 && ia2.signVal == -1
-			doAdd = true
-			newSignVal = 1
-		}
-
-	} else if compare == -1 {
-		// Absolute Values: N2 > N1
-		if ia1.signVal == 1 && ia2.signVal == 1 {
-			doAdd = false
-			doReverseNums = true
-			newSignVal = -1
-		} else if ia1.signVal == -1 && ia2.signVal == 1 {
-			doAdd = true
-			newSignVal = -1
-		} else if ia1.signVal == -1 && ia2.signVal == -1 {
-			doAdd = false
-			doReverseNums = true
-			newSignVal = 1
-		} else {
-			// Must Be ia1.signVal == 1 && ia2.signVal == -1
-			doAdd = true
-			newSignVal = 1
-		}
-
-	} else {
-		// Must be compare == 0
-		// Absolute Values: N1==N2
-		if ia1.signVal == 1 && ia2.signVal == 1 {
-			doAdd = false
-			newSignVal = 1
-			isZeroResult = true
-		} else if ia1.signVal == -1 && ia2.signVal == 1 {
-			doAdd = true
-			newSignVal = -1
-		} else if ia1.signVal == -1 && ia2.signVal == -1 {
-			doAdd = false
-			newSignVal = 1
-			isZeroResult = true
-		} else {
-			// Must Be ia1.signVal == 1 && ia2.signVal == -1
-			doAdd = true
-			newSignVal = 1
-		}
-
-	}
-
-	iaSubtract.addToSubtract(ia1, ia2, newSignVal, doAdd, isZeroResult, doReverseNums)
-
-	ia1.SetNumericSeparatorsDto(numSeps)
-
-	return
-}
-
-// addToSubtract - Adds or subtracts two IntAry instances and returns the result
-// in the first IntAry parameter,'ia1'.
+//	The returned 'ia1' IntAry will contain numeric separators
+//	(decimal separator, thousands separator and currency symbol)
+//	copied from the original 'ia1' IntAry 'ia1' instance. This
+//	means that the numeric separators contained in the original
+//	'ia1' IntAry will remain unchanged.
 //
-func (iaSubtract *IntAryMathSubtract) addToSubtract(
-	ia1, ia2 *IntAry,
-	newSignVal int,
-	doAdd bool,
-	isZeroResult bool,
-	doReverseNums bool) {
+//	If input paramter 'validateIa1' is set to true, IntAry object
+//	'ia1' will be subjected to validation testing.
+//
+//	If input paramter 'validateIa2' is set to true, IntAry object
+//	'ia2' will be subjected to validation testing.
+//
+//	If input paramter 'validateIa2' is set to true, the final
+//	result ('ia1'), after performing the subtraction operation,
+//	will be subjected to validation testing.
+func (iaSubtract *IntAryMathSubtract) SubtractTotal(
+	ia1 *IntAry,
+	validateIa1 bool,
+	ia2 *IntAry,
+	validateIa2 bool,
+	validateResult bool) error {
 
-	if isZeroResult {
-		ia1.SetIntAryToZero(ia1.GetPrecisionUint())
-		return
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
+
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"IntAryMathSubtract.SubtractTotal",
+		"")
+
+	if err != nil {
+		return err
 	}
 
-	ia1.signVal = newSignVal
+	err = new(intAryMathSubtractMechanics).subtractTotal(
+		ia1, validateIa1, ia2, true, true, ePrefix)
 
-	carry := 0
-	n1 := 0
-	n2 := 0
-	n3 := 0
+	if err != nil {
 
-	for j := ia1.intAryLen - 1; j >= 0; j-- {
-
-		if doReverseNums {
-
-			n2 = int(ia1.intAry[j])
-			n1 = int(ia2.intAry[j])
-
-		} else {
-			n1 = int(ia1.intAry[j])
-			n2 = int(ia2.intAry[j])
-
+		return &FuncReturnError{
+			ErrPrefix: ePrefix.String(),
+			ReturnFunc: fmt.Sprintf("err = new(intAryMathSubtractMechanics).subtractTotal(\n"+
+				"ia1, validateIa1=%v, ia2, validateIa2=%v, validateResult=%v, ePrefix)",
+				validateIa1, validateIa2, validateResult),
+			ErrContext: "",
+			ErrMessage: err.Error(),
 		}
-
-		if doAdd {
-			// doAdd == true
-			// Do Addition
-
-			n3 = n1 + n2 + carry
-
-			if n3 > 9 {
-				n3 = n1 + n2 + carry - 10
-				carry = 1
-
-			} else {
-				carry = 0
-			}
-
-		} else {
-			// doAdd == false
-			// Do Subtraction
-			n3 = n1 - n2 - carry
-
-			if n3 < 0 {
-				n3 = n1 + 10 - n2 - carry
-				carry = 1
-			} else {
-				carry = 0
-			}
-		}
-
-		ia1.intAry[j] = uint8(n3)
-
 	}
 
-	if carry > 0 {
-		ia1.intAry = append([]uint8{1}, ia1.intAry...)
-		ia1.intAryLen++
-	}
-
-	if ia1.intAry[0] == 0 {
-		ia1.SetSignificantDigitIdxs()
-		ia1.intAry = ia1.intAry[ia1.firstDigitIdx:]
-	}
-
-	ia1.SetInternalFlags()
-
-	return
+	return nil
 }
