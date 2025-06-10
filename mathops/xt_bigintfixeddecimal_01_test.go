@@ -1874,7 +1874,7 @@ func TestBigIntFixedDecimal_Cmp_10(t *testing.T) {
 }
 
 func TestBigIntFixedDecimal_Cmp_11(t *testing.T) {
-	
+
   ePrefix := "TestBigIntFixedDecimal_Cmp_11"
   num1Str := "-35.123455"
   num2Str := "-35.123456"
@@ -1947,368 +1947,1246 @@ func TestBigIntFixedDecimal_Cmp_11(t *testing.T) {
 }
 
 func TestBigIntFixedDecimal_CmpZero_01(t *testing.T) {
+
+  ePrefix := "TestBigIntFixedDecimal_CmpZero_01"
   numStr := "123.45"
   expectedCmpResult := 1
 
-  fd, err := new(BigIntFixedDecimal).NewNumStr(numStr)
+  fd, err := new(BigIntFixedDecimal).NewNumStr(numStr, '.')
 
   if err != nil {
-    t.Errorf("Error returnd by new(BigIntFixedDecimal).NewNumStr(numStr). "+
-      "numStr='%v' Error='%v'", numStr, err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "fd, err := new(BigIntFixedDecimal).NewNumStr(numStr, '.')\n"+
+      "numStr='%v'\n"+
+      "Error='%v'\n\n", ePrefix, numStr, err.Error())
+    return
   }
 
-  actualCmp := fd.CmpZero()
+  fdNumStr, err := fd.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "fdNumStr, err := fd.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  actualCmp, err := fd.CmpZero()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "actualCmp, err := fd.CmpZero()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
 
   if expectedCmpResult != actualCmp {
     t.Errorf("Error: Expected compare result='%v'. Instead, actual compare result='%v'. ",
       expectedCmpResult, actualCmp)
   }
 
+  if expectedCmpResult != actualCmp {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Expected Compare Result = %v\n"+
+      "Actual Compare Result = %v\n"+
+      "Expected fdNumStr = '%v'\n"+
+      "Actual fdNumStr = '%v'\n\n",
+      ePrefix, expectedCmpResult, actualCmp, numStr, fdNumStr)
+  }
+
+  return
 }
 
 func TestBigIntFixedDecimal_CmpZero_02(t *testing.T) {
+
+  ePrefix := "TestBigIntFixedDecimal_CmpZero_02"
   numStr := "-123.45"
   expectedCmpResult := -1
 
-  fd, err := new(BigIntFixedDecimal).NewNumStr(numStr)
+  fd, err := new(BigIntFixedDecimal).NewNumStr(numStr, '.')
 
   if err != nil {
-    t.Errorf("Error returnd by new(BigIntFixedDecimal).NewNumStr(numStr). "+
-      "numStr='%v' Error='%v'", numStr, err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "fd, err := new(BigIntFixedDecimal).NewNumStr(numStr, '.')\n"+
+      "numStr='%v'\n"+
+      "Error='%v'\n\n", ePrefix, numStr, err.Error())
+    return
   }
 
-  actualCmp := fd.CmpZero()
+  fdNumStr, err := fd.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "fdNumStr, err := fd.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  actualCmp, err := fd.CmpZero()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "actualCmp, err := fd.CmpZero()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
 
   if expectedCmpResult != actualCmp {
-    t.Errorf("Error: Expected compare result='%v'. Instead, actual compare result='%v'. ",
-      expectedCmpResult, actualCmp)
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Expected Compare Result = %v\n"+
+      "Actual Compare Result = %v\n"+
+      "Expected fdNumStr = '%v'\n"+
+      "Actual fdNumStr = '%v'\n\n",
+      ePrefix, expectedCmpResult, actualCmp, numStr, fdNumStr)
   }
 
+  return
 }
 
 func TestBigIntFixedDecimal_CmpZero_03(t *testing.T) {
+
+  ePrefix := "TestBigIntFixedDecimal_CmpZero_03"
   numStr := "0"
   expectedCmpResult := 0
 
-  fd, err := new(BigIntFixedDecimal).NewNumStr(numStr)
+  fd, err := new(BigIntFixedDecimal).NewNumStr(numStr, '.')
 
   if err != nil {
-    t.Errorf("Error returnd by new(BigIntFixedDecimal).NewNumStr(numStr). "+
-      "numStr='%v' Error='%v'", numStr, err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "fd, err := new(BigIntFixedDecimal).NewNumStr(numStr, '.')\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
   }
 
-  actualCmp := fd.CmpZero()
+  fdNumStr, err := fd.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "fdNumStr, err := fd.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  actualCmp, err := fd.CmpZero()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "actualCmp, err := fd.CmpZero()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
 
   if expectedCmpResult != actualCmp {
-    t.Errorf("Error: Expected compare result='%v'. Instead, actual compare result='%v'. ",
-      expectedCmpResult, actualCmp)
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Expected Compare Result = %v\n"+
+      "Actual Compare Result = %v\n"+
+      "Expected fdNumStr = '%v'\n"+
+      "Actual fdNumStr = '%v'\n\n",
+      ePrefix, expectedCmpResult, actualCmp, numStr, fdNumStr)
   }
 
+  return
 }
 
 func TestBigIntFixedDecimal_CmpZero_04(t *testing.T) {
+
+  ePrefix := "TestBigIntFixedDecimal_CmpZero_04"
   numStr := "0.00"
   expectedCmpResult := 0
 
-  fd, err := new(BigIntFixedDecimal).NewNumStr(numStr)
+  fd, err := new(BigIntFixedDecimal).NewNumStr(numStr, '.')
 
   if err != nil {
-    t.Errorf("Error returnd by new(BigIntFixedDecimal).NewNumStr(numStr). "+
-      "numStr='%v' Error='%v'", numStr, err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "fd, err := new(BigIntFixedDecimal).NewNumStr(numStr, '.')\n"+
+      "numStr='%v'\n"+
+      "Error='%v'\n\n", ePrefix, numStr, err.Error())
+    return
   }
 
-  actualCmp := fd.CmpZero()
+  fdNumStr, err := fd.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "fdNumStr, err := fd.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  actualCmp, err := fd.CmpZero()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "actualCmp, err := fd.CmpZero()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
 
   if expectedCmpResult != actualCmp {
-    t.Errorf("Error: Expected compare result='%v'. Instead, actual compare result='%v'. ",
-      expectedCmpResult, actualCmp)
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Expected Compare Result = %v\n"+
+      "Actual Compare Result = %v\n"+
+      "Expected fdNumStr = '%v'\n"+
+      "Actual fdNumStr = '%v'\n\n",
+      ePrefix, expectedCmpResult, actualCmp, numStr, fdNumStr)
   }
 
+  return
 }
 
 func TestBigIntFixedDecimal_CmpZero_05(t *testing.T) {
+
+  ePrefix := "TestBigIntFixedDecimal_CmpZero_05"
   numStr := "8"
   expectedCmpResult := 1
 
-  fd, err := new(BigIntFixedDecimal).NewNumStr(numStr)
+  fd, err := new(BigIntFixedDecimal).NewNumStr(numStr, '.')
 
   if err != nil {
-    t.Errorf("Error returnd by new(BigIntFixedDecimal).NewNumStr(numStr). "+
-      "numStr='%v' Error='%v'", numStr, err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "fd, err := new(BigIntFixedDecimal).NewNumStr(numStr, '.')\n"+
+      "numStr='%v'\n"+
+      "Error='%v'\n\n", ePrefix, numStr, err.Error())
+    return
   }
 
-  actualCmp := fd.CmpZero()
+  fdNumStr, err := fd.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "fdNumStr, err := fd.GetNumStr()n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  actualCmp, err := fd.CmpZero()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "actualCmp, err := fd.CmpZero()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
 
   if expectedCmpResult != actualCmp {
-    t.Errorf("Error: Expected compare result='%v'. Instead, actual compare result='%v'. ",
-      expectedCmpResult, actualCmp)
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Expected Compare Result = %v\n"+
+      "Actual Compare Result = %v\n"+
+      "Expected fdNumStr = '%v'\n"+
+      "Actual fdNumStr = '%v'\n\n",
+      ePrefix, expectedCmpResult, actualCmp, numStr, fdNumStr)
   }
 
+  return
 }
 
 func TestBigIntFixedDecimal_CmpZero_06(t *testing.T) {
+  ePrefix := "TestBigIntFixedDecimal_CmpZero_06"
   numStr := "-8"
   expectedCmpResult := -1
 
-  fd, err := new(BigIntFixedDecimal).NewNumStr(numStr)
+  fd, err := new(BigIntFixedDecimal).NewNumStr(numStr, '.')
 
   if err != nil {
-    t.Errorf("Error returnd by new(BigIntFixedDecimal).NewNumStr(numStr). "+
-      "numStr='%v' Error='%v'", numStr, err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "fd, err := new(BigIntFixedDecimal).NewNumStr(numStr, '.')\n"+
+      "numStr='%v\n"+
+      "Error='%v'\n\n", ePrefix, numStr, err.Error())
+    return
   }
 
-  actualCmp := fd.CmpZero()
+  fdNumStr, err := fd.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "fdNumStr, err := fd.GetNumStr()n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  actualCmp, err := fd.CmpZero()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "actualCmp, err := fd.CmpZero()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
 
   if expectedCmpResult != actualCmp {
-    t.Errorf("Error: Expected compare result='%v'. Instead, actual compare result='%v'. ",
-      expectedCmpResult, actualCmp)
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Expected Compare Result = %v\n"+
+      "Actual Compare Result = %v\n"+
+      "Expected fdNumStr = '%v'\n"+
+      "Actual fdNumStr = '%v'\n\n",
+      ePrefix, expectedCmpResult, actualCmp, numStr, fdNumStr)
   }
 
+  return
 }
 
 func TestBigIntFixedDecimal_CopyIn_01(t *testing.T) {
+
+  ePrefix := "TestBigIntFixedDecimal_CopyIn_01"
+
   expectedNumStr := "-123.45"
 
   originalNum := big.NewInt(-12345)
   originalNumPrecision := uint(2)
 
-  fixedDec := new(BigIntFixedDecimal).New(originalNum, originalNumPrecision)
+  fixedDec, err := new(BigIntFixedDecimal).New(originalNum, originalNumPrecision)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "fixedDec, err := new(BigIntFixedDecimal).New(originalNum, originalNumPrecision)\n"+
+      "originalNum= '%v'\n"+
+      "originalNumPrecision= '%v'\n"+
+      "Error='%v'\n\n", ePrefix, originalNum, originalNumPrecision, err.Error())
+    return
+  }
+
+  fixedDecNumStr, err := fixedDec.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      " fixedDecNumStr, err := fixedDec.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
 
   fD2 := BigIntFixedDecimal{}
 
-  fD2.CopyIn(fixedDec)
+  err = fD2.CopyIn(fixedDec)
 
-  if expectedNumStr != fD2.GetNumStr() {
-    t.Errorf("Error: Expected result='%v'. Instead, result='%v'",
-      expectedNumStr, fD2.GetNumStr())
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = fD2.CopyIn(fixedDec)\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
   }
 
+  fd2NumStr, err := fD2.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "fd2NumStr, err := fD2.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if expectedNumStr != fixedDecNumStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Expected fixedDecNumStr = '%v'\n"+
+      "Instead fixedDecNumStr == '%v'\n\n",
+      ePrefix, expectedNumStr, fixedDecNumStr)
+    return
+  }
+
+  if expectedNumStr != fd2NumStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Expected fd2NumStr = '%v'\n"+
+      "Instead fd2NumStr == '%v'\n\n",
+      ePrefix, expectedNumStr, fd2NumStr)
+  }
+
+  return
 }
 
 func TestBigIntFixedDecimal_CopyIn_02(t *testing.T) {
+
+  ePrefix := "TestBigIntFixedDecimal_CopyIn_02"
+
   expectedNumStr := "123.45"
 
   originalNum := big.NewInt(12345)
   originalNumPrecision := uint(2)
 
-  fixedDec := new(BigIntFixedDecimal).New(originalNum, originalNumPrecision)
+  fixedDec, err := new(BigIntFixedDecimal).New(originalNum, originalNumPrecision)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "fixedDec, err := new(BigIntFixedDecimal).New(originalNum, originalNumPrecision)\n"+
+      "originalNum= '%v'\n"+
+      "originalNumPrecision= '%v'\n"+
+      "Error='%v'\n\n", ePrefix, originalNum, originalNumPrecision, err.Error())
+    return
+  }
+
+  fixedDecNumStr, err := fixedDec.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      " fixedDecNumStr, err := fixedDec.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
 
   fD2 := BigIntFixedDecimal{}
 
-  fD2.CopyIn(fixedDec)
+  err = fD2.CopyIn(fixedDec)
 
-  if expectedNumStr != fD2.GetNumStr() {
-    t.Errorf("Error: Expected result='%v'. Instead, result='%v'",
-      expectedNumStr, fD2.GetNumStr())
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = fD2.CopyIn(fixedDec)\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
   }
 
+  fd2NumStr, err := fD2.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "fd2NumStr, err := fD2.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+
+    return
+  }
+
+  if expectedNumStr != fixedDecNumStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Expected fixedDecNumStr = '%v'\n"+
+      "Instead fixedDecNumStr == '%v'\n\n",
+      ePrefix, expectedNumStr, fixedDecNumStr)
+
+    return
+  }
+
+  if expectedNumStr != fd2NumStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Expected fd2NumStr = '%v'\n"+
+      "Instead fd2NumStr == '%v'\n\n",
+      ePrefix, expectedNumStr, fd2NumStr)
+  }
+
+  return
 }
 
 func TestBigIntFixedDecimal_CopyIn_03(t *testing.T) {
+  ePrefix := "TestBigIntFixedDecimal_CopyIn_03"
   expectedNumStr := "12345"
 
   originalNum := big.NewInt(12345)
   originalNumPrecision := uint(0)
 
-  fixedDec := new(BigIntFixedDecimal).New(originalNum, originalNumPrecision)
+  fixedDec, err := new(BigIntFixedDecimal).New(originalNum, originalNumPrecision)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "fixedDec, err := new(BigIntFixedDecimal).New(originalNum, originalNumPrecision)\n"+
+      "originalNum= '%v'\n"+
+      "originalNumPrecision= '%v'\n"+
+      "Error='%v'\n\n", ePrefix, originalNum, originalNumPrecision, err.Error())
+    return
+  }
+
+  fixedDecNumStr, err := fixedDec.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      " fixedDecNumStr, err := fixedDec.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
 
   fD2 := BigIntFixedDecimal{}
 
-  fD2.CopyIn(fixedDec)
+  err = fD2.CopyIn(fixedDec)
 
-  if expectedNumStr != fD2.GetNumStr() {
-    t.Errorf("Error: Expected result='%v'. Instead, result='%v'",
-      expectedNumStr, fD2.GetNumStr())
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = fD2.CopyIn(fixedDec)\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
   }
 
+  fd2NumStr, err := fD2.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "fd2NumStr, err := fD2.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if expectedNumStr != fixedDecNumStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Expected fixedDecNumStr = '%v'\n"+
+      "Instead fixedDecNumStr == '%v'\n\n",
+      ePrefix, expectedNumStr, fixedDecNumStr)
+    return
+  }
+
+  if expectedNumStr != fd2NumStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Expected fd2NumStr = '%v'\n"+
+      "Instead fd2NumStr == '%v'\n\n",
+      ePrefix, expectedNumStr, fd2NumStr)
+  }
+
+  return
 }
 
 func TestBigIntFixedDecimal_CopyIn_04(t *testing.T) {
+  ePrefix := "TestBigIntFixedDecimal_CopyIn_04"
+
   expectedNumStr := "-12345"
 
   originalNum := big.NewInt(-12345)
   originalNumPrecision := uint(0)
 
-  fixedDec := new(BigIntFixedDecimal).New(originalNum, originalNumPrecision)
+  fixedDec, err := new(BigIntFixedDecimal).New(originalNum, originalNumPrecision)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "fixedDec, err := new(BigIntFixedDecimal).New(originalNum, originalNumPrecision)\n"+
+      "originalNum= '%v'\n"+
+      "originalNumPrecision= '%v'\n"+
+      "Error='%v'\n\n", ePrefix, originalNum, originalNumPrecision, err.Error())
+    return
+  }
+
+  fixedDecNumStr, err := fixedDec.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      " fixedDecNumStr, err := fixedDec.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
 
   fD2 := BigIntFixedDecimal{}
 
-  fD2.CopyIn(fixedDec)
+  err = fD2.CopyIn(fixedDec)
 
-  if expectedNumStr != fD2.GetNumStr() {
-    t.Errorf("Error: Expected result='%v'. Instead, result='%v'",
-      expectedNumStr, fD2.GetNumStr())
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = fD2.CopyIn(fixedDec)\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
   }
 
+  fd2NumStr, err := fD2.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "fd2NumStr, err := fD2.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if expectedNumStr != fixedDecNumStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Expected fixedDecNumStr = '%v'\n"+
+      "Instead fixedDecNumStr == '%v'\n\n",
+      ePrefix, expectedNumStr, fixedDecNumStr)
+    return
+  }
+
+  if expectedNumStr != fd2NumStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Expected fd2NumStr = '%v'\n"+
+      "Instead fd2NumStr == '%v'\n\n",
+      ePrefix, expectedNumStr, fd2NumStr)
+  }
+
+  return
 }
 
 func TestBigIntFixedDecimal_CopyIn_05(t *testing.T) {
+
+  ePrefix := "TestBigIntFixedDecimal_CopyIn_05"
   expectedNumStr := "0.000"
 
   originalNum := big.NewInt(0)
   originalNumPrecision := uint(3)
 
-  fixedDec := new(BigIntFixedDecimal).New(originalNum, originalNumPrecision)
+  fixedDec, err := new(BigIntFixedDecimal).New(originalNum, originalNumPrecision)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "fixedDec, err := new(BigIntFixedDecimal).New(originalNum, originalNumPrecision)\n"+
+      "originalNum= '%v'\n"+
+      "originalNumPrecision= '%v'\n"+
+      "Error='%v'\n\n", ePrefix, originalNum, originalNumPrecision, err.Error())
+    return
+  }
+
+  fixedDecNumStr, err := fixedDec.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      " fixedDecNumStr, err := fixedDec.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
 
   fD2 := BigIntFixedDecimal{}
 
-  fD2.CopyIn(fixedDec)
+  err = fD2.CopyIn(fixedDec)
 
-  if expectedNumStr != fD2.GetNumStr() {
-    t.Errorf("Error: Expected result='%v'. Instead, result='%v'",
-      expectedNumStr, fD2.GetNumStr())
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = fD2.CopyIn(fixedDec)\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
   }
 
+  fd2NumStr, err := fD2.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "fd2NumStr, err := fD2.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if expectedNumStr != fixedDecNumStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Expected fixedDecNumStr = '%v'\n"+
+      "Instead fixedDecNumStr == '%v'\n\n",
+      ePrefix, expectedNumStr, fixedDecNumStr)
+    return
+  }
+
+  if expectedNumStr != fd2NumStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Expected fd2NumStr = '%v'\n"+
+      "Instead fd2NumStr == '%v'\n\n",
+      ePrefix, expectedNumStr, fd2NumStr)
+  }
+
+  return
 }
 
 func TestBigIntFixedDecimal_CopyInPtr_01(t *testing.T) {
+
+  ePrefix := "TestBigIntFixedDecimal_CopyIn_01"
+
   expectedNumStr := "-123.45"
 
   originalNum := big.NewInt(-12345)
   originalNumPrecision := uint(2)
 
-  fixedDec := new(BigIntFixedDecimal).New(originalNum, originalNumPrecision)
+  fixedDec, err := new(BigIntFixedDecimal).New(originalNum, originalNumPrecision)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "fixedDec, err := new(BigIntFixedDecimal).New(originalNum, originalNumPrecision)\n"+
+      "originalNum= '%v'\n"+
+      "originalNumPrecision= '%v'\n"+
+      "Error='%v'\n\n", ePrefix, originalNum, originalNumPrecision, err.Error())
+    return
+  }
+
+  fixedDecNumStr, err := fixedDec.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      " fixedDecNumStr, err := fixedDec.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
 
   fD2 := BigIntFixedDecimal{}
 
-  fD2.CopyInPtr(&fixedDec)
+  err = fD2.CopyInPtr(&fixedDec)
 
-  if expectedNumStr != fD2.GetNumStr() {
-    t.Errorf("Error: Expected result='%v'. Instead, result='%v'",
-      expectedNumStr, fD2.GetNumStr())
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = fD2.CopyInPtr(&fixedDec)\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
   }
 
+  fd2NumStr, err := fD2.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "fd2NumStr, err := fD2.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if expectedNumStr != fixedDecNumStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Expected fixedDecNumStr = '%v'\n"+
+      "Instead fixedDecNumStr == '%v'\n\n",
+      ePrefix, expectedNumStr, fixedDecNumStr)
+    return
+  }
+
+  if expectedNumStr != fd2NumStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Expected fd2NumStr = '%v'\n"+
+      "Instead fd2NumStr == '%v'\n\n",
+      ePrefix, expectedNumStr, fd2NumStr)
+  }
+
+  return
 }
 
 func TestBigIntFixedDecimal_CopyInPtr_02(t *testing.T) {
+
+  ePrefix := "TestBigIntFixedDecimal_CopyIn_02"
+
   expectedNumStr := "123.45"
 
   originalNum := big.NewInt(12345)
   originalNumPrecision := uint(2)
 
-  fixedDec := new(BigIntFixedDecimal).New(originalNum, originalNumPrecision)
+  fixedDec, err := new(BigIntFixedDecimal).New(originalNum, originalNumPrecision)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "fixedDec, err := new(BigIntFixedDecimal).New(originalNum, originalNumPrecision)\n"+
+      "originalNum= '%v'\n"+
+      "originalNumPrecision= '%v'\n"+
+      "Error='%v'\n\n", ePrefix, originalNum, originalNumPrecision, err.Error())
+    return
+  }
+
+  fixedDecNumStr, err := fixedDec.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      " fixedDecNumStr, err := fixedDec.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
 
   fD2 := BigIntFixedDecimal{}
 
-  fD2.CopyInPtr(&fixedDec)
+  err = fD2.CopyInPtr(&fixedDec)
 
-  if expectedNumStr != fD2.GetNumStr() {
-    t.Errorf("Error: Expected result='%v'. Instead, result='%v'",
-      expectedNumStr, fD2.GetNumStr())
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = fD2.CopyInPtr(&fixedDec)\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
   }
 
+  fd2NumStr, err := fD2.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "fd2NumStr, err := fD2.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if expectedNumStr != fixedDecNumStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Expected fixedDecNumStr = '%v'\n"+
+      "Instead fixedDecNumStr == '%v'\n\n",
+      ePrefix, expectedNumStr, fixedDecNumStr)
+    return
+  }
+
+  if expectedNumStr != fd2NumStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Expected fd2NumStr = '%v'\n"+
+      "Instead fd2NumStr == '%v'\n\n",
+      ePrefix, expectedNumStr, fd2NumStr)
+  }
+
+  return
 }
 
 func TestBigIntFixedDecimal_CopyInPtr_03(t *testing.T) {
+
+  ePrefix := "TestBigIntFixedDecimal_CopyIn_03"
   expectedNumStr := "12345"
 
   originalNum := big.NewInt(12345)
   originalNumPrecision := uint(0)
 
-  fixedDec := new(BigIntFixedDecimal).New(originalNum, originalNumPrecision)
+  fixedDec, err := new(BigIntFixedDecimal).New(originalNum, originalNumPrecision)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "fixedDec, err := new(BigIntFixedDecimal).New(originalNum, originalNumPrecision)\n"+
+      "originalNum= '%v'\n"+
+      "originalNumPrecision= '%v'\n"+
+      "Error='%v'\n\n", ePrefix, originalNum, originalNumPrecision, err.Error())
+    return
+  }
+
+  fixedDecNumStr, err := fixedDec.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      " fixedDecNumStr, err := fixedDec.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
 
   fD2 := BigIntFixedDecimal{}
 
-  fD2.CopyInPtr(&fixedDec)
+  err = fD2.CopyInPtr(&fixedDec)
 
-  if expectedNumStr != fD2.GetNumStr() {
-    t.Errorf("Error: Expected result='%v'. Instead, result='%v'",
-      expectedNumStr, fD2.GetNumStr())
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = fD2.CopyInPtr(&fixedDec)\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
   }
 
+  fd2NumStr, err := fD2.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "fd2NumStr, err := fD2.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if expectedNumStr != fixedDecNumStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Expected fixedDecNumStr = '%v'\n"+
+      "Instead fixedDecNumStr == '%v'\n\n",
+      ePrefix, expectedNumStr, fixedDecNumStr)
+    return
+  }
+
+  if expectedNumStr != fd2NumStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Expected fd2NumStr = '%v'\n"+
+      "Instead fd2NumStr == '%v'\n\n",
+      ePrefix, expectedNumStr, fd2NumStr)
+  }
+
+  return
 }
 
 func TestBigIntFixedDecimal_CopyInPtr_04(t *testing.T) {
+  ePrefix := "TestBigIntFixedDecimal_CopyIn_04"
   expectedNumStr := "-12345"
 
   originalNum := big.NewInt(-12345)
   originalNumPrecision := uint(0)
 
-  fixedDec := new(BigIntFixedDecimal).New(originalNum, originalNumPrecision)
+  fixedDec, err := new(BigIntFixedDecimal).New(originalNum, originalNumPrecision)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "fixedDec, err := new(BigIntFixedDecimal).New(originalNum, originalNumPrecision)\n"+
+      "originalNum= '%v'\n"+
+      "originalNumPrecision= '%v'\n"+
+      "Error='%v'\n\n", ePrefix, originalNum, originalNumPrecision, err.Error())
+    return
+  }
+
+  fixedDecNumStr, err := fixedDec.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      " fixedDecNumStr, err := fixedDec.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
 
   fD2 := BigIntFixedDecimal{}
 
-  fD2.CopyInPtr(&fixedDec)
+  err = fD2.CopyInPtr(&fixedDec)
 
-  if expectedNumStr != fD2.GetNumStr() {
-    t.Errorf("Error: Expected result='%v'. Instead, result='%v'",
-      expectedNumStr, fD2.GetNumStr())
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = fD2.CopyInPtr(&fixedDec)\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
   }
 
+  fd2NumStr, err := fD2.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "fd2NumStr, err := fD2.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if expectedNumStr != fixedDecNumStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Expected fixedDecNumStr = '%v'\n"+
+      "Instead fixedDecNumStr == '%v'\n\n",
+      ePrefix, expectedNumStr, fixedDecNumStr)
+    return
+  }
+
+  if expectedNumStr != fd2NumStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Expected fd2NumStr = '%v'\n"+
+      "Instead fd2NumStr == '%v'\n\n",
+      ePrefix, expectedNumStr, fd2NumStr)
+  }
+
+  return
 }
 
 func TestBigIntFixedDecimal_CopyInPtr_05(t *testing.T) {
+  ePrefix := "TestBigIntFixedDecimal_CopyIn_05"
   expectedNumStr := "0.000"
 
   originalNum := big.NewInt(0)
   originalNumPrecision := uint(3)
 
-  fixedDec := new(BigIntFixedDecimal).New(originalNum, originalNumPrecision)
+  fixedDec, err := new(BigIntFixedDecimal).New(originalNum, originalNumPrecision)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "fixedDec, err := new(BigIntFixedDecimal).New(originalNum, originalNumPrecision)\n"+
+      "originalNum= '%v'\n"+
+      "originalNumPrecision= '%v'\n"+
+      "Error='%v'\n\n", ePrefix, originalNum, originalNumPrecision, err.Error())
+    return
+  }
+
+  fixedDecNumStr, err := fixedDec.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      " fixedDecNumStr, err := fixedDec.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
 
   fD2 := BigIntFixedDecimal{}
 
-  fD2.CopyInPtr(&fixedDec)
+  err = fD2.CopyInPtr(&fixedDec)
 
-  if expectedNumStr != fD2.GetNumStr() {
-    t.Errorf("Error: Expected result='%v'. Instead, result='%v'",
-      expectedNumStr, fD2.GetNumStr())
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = fD2.CopyInPtr(&fixedDec)\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
   }
 
+  fd2NumStr, err := fD2.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "fd2NumStr, err := fD2.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if expectedNumStr != fixedDecNumStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Expected fixedDecNumStr = '%v'\n"+
+      "Instead fixedDecNumStr == '%v'\n\n",
+      ePrefix, expectedNumStr, fixedDecNumStr)
+    return
+  }
+
+  if expectedNumStr != fd2NumStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Expected fd2NumStr = '%v'\n"+
+      "Instead fd2NumStr == '%v'\n\n",
+      ePrefix, expectedNumStr, fd2NumStr)
+  }
+
+  return
 }
 
 func TestBigIntFixedDecimal_CopyOut_01(t *testing.T) {
+
+  ePrefix := "TestBigIntFixedDecimal_CopyOut_01"
+
   expectedNumStr := "894.1234"
 
   originalNum := big.NewInt(8941234)
   originalNumPrecision := uint(4)
 
-  fixedDec := new(BigIntFixedDecimal).New(originalNum, originalNumPrecision)
+  fixedDec, err := new(BigIntFixedDecimal).New(originalNum, originalNumPrecision)
 
-  fD2 := fixedDec.CopyOut()
-
-  if expectedNumStr != fD2.GetNumStr() {
-    t.Errorf("Error: Expected result='%v'. Instead, result='%v'",
-      expectedNumStr, fD2.GetNumStr())
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "fixedDec, err := new(BigIntFixedDecimal).New(originalNum, originalNumPrecision)\n"+
+      "originalNum= '%v'\n"+
+      "originalNumPrecision= '%v'\n"+
+      "Error='%v'\n\n", ePrefix, originalNum, originalNumPrecision, err.Error())
+    return
   }
 
+  fixedDecNumStr, err := fixedDec.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      " fixedDecNumStr, err := fixedDec.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  fD2, err := fixedDec.CopyOut()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "fD2, err := fixedDec.CopyOut()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  fd2NumStr, err := fD2.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "fd2NumStr, err := fD2.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if expectedNumStr != fixedDecNumStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Expected fixedDecNumStr = '%v'\n"+
+      "Instead fixedDecNumStr == '%v'\n\n",
+      ePrefix, expectedNumStr, fixedDecNumStr)
+    return
+  }
+
+  if expectedNumStr != fd2NumStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Expected fd2NumStr = '%v'\n"+
+      "Instead fd2NumStr == '%v'\n\n",
+      ePrefix, expectedNumStr, fd2NumStr)
+  }
+
+  return
 }
 
 func TestBigIntFixedDecimal_CopyOut_02(t *testing.T) {
+
+  ePrefix := "TestBigIntFixedDecimal_CopyOut_02"
+
   expectedNumStr := "-894.1234"
 
   originalNum := big.NewInt(-8941234)
   originalNumPrecision := uint(4)
 
-  fixedDec := new(BigIntFixedDecimal).New(originalNum, originalNumPrecision)
+  fixedDec, err := new(BigIntFixedDecimal).New(originalNum, originalNumPrecision)
 
-  fD2 := fixedDec.CopyOut()
-
-  if expectedNumStr != fD2.GetNumStr() {
-    t.Errorf("Error: Expected result='%v'. Instead, result='%v'",
-      expectedNumStr, fD2.GetNumStr())
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "fixedDec, err := new(BigIntFixedDecimal).New(originalNum, originalNumPrecision)\n"+
+      "originalNum= '%v'\n"+
+      "originalNumPrecision= '%v'\n"+
+      "Error='%v'\n\n", ePrefix, originalNum, originalNumPrecision, err.Error())
+    return
   }
 
+  fixedDecNumStr, err := fixedDec.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      " fixedDecNumStr, err := fixedDec.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  fD2, err := fixedDec.CopyOut()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "fD2, err := fixedDec.CopyOut()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  fd2NumStr, err := fD2.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "fd2NumStr, err := fD2.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if expectedNumStr != fixedDecNumStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Expected fixedDecNumStr = '%v'\n"+
+      "Instead fixedDecNumStr == '%v'\n\n",
+      ePrefix, expectedNumStr, fixedDecNumStr)
+    return
+  }
+
+  if expectedNumStr != fd2NumStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Expected fd2NumStr = '%v'\n"+
+      "Instead fd2NumStr == '%v'\n\n",
+      ePrefix, expectedNumStr, fd2NumStr)
+  }
+
+  return
 }
 
 func TestBigIntFixedDecimal_CopyOut_03(t *testing.T) {
+
+  ePrefix := "TestBigIntFixedDecimal_CopyOut_03"
   expectedNumStr := "0.000"
 
   originalNum := big.NewInt(0)
   originalNumPrecision := uint(3)
 
-  fixedDec := new(BigIntFixedDecimal).New(originalNum, originalNumPrecision)
+  fixedDec, err := new(BigIntFixedDecimal).New(originalNum, originalNumPrecision)
 
-  fD2 := fixedDec.CopyOut()
-
-  if expectedNumStr != fD2.GetNumStr() {
-    t.Errorf("Error: Expected result='%v'. Instead, result='%v'",
-      expectedNumStr, fD2.GetNumStr())
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "fixedDec, err := new(BigIntFixedDecimal).New(originalNum, originalNumPrecision)\n"+
+      "originalNum= '%v'\n"+
+      "originalNumPrecision= '%v'\n"+
+      "Error='%v'\n\n", ePrefix, originalNum, originalNumPrecision, err.Error())
+    return
   }
 
+  fixedDecNumStr, err := fixedDec.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      " fixedDecNumStr, err := fixedDec.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  fD2, err := fixedDec.CopyOut()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "fD2, err := fixedDec.CopyOut()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  fd2NumStr, err := fD2.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "fd2NumStr, err := fD2.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if expectedNumStr != fixedDecNumStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Expected fixedDecNumStr = '%v'\n"+
+      "Instead fixedDecNumStr == '%v'\n\n",
+      ePrefix, expectedNumStr, fixedDecNumStr)
+    return
+  }
+
+  if expectedNumStr != fd2NumStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Expected fd2NumStr = '%v'\n"+
+      "Instead fd2NumStr == '%v'\n\n",
+      ePrefix, expectedNumStr, fd2NumStr)
+  }
+
+  return
 }
 
 func TestBigIntFixedDecimal_DivideByTenToPwr_01(t *testing.T) {
 
+  ePrefix := "TestBigIntFixedDecimal_DivideByTenToPwr_01"
   expectedNumStr := "-0.12345"
 
   originalNum := -12345
@@ -2317,17 +3195,52 @@ func TestBigIntFixedDecimal_DivideByTenToPwr_01(t *testing.T) {
 
   fixedDec := new(BigIntFixedDecimal).NewInt(originalNum, originalNumPrecision)
 
-  fixedDec.DivideByTenToPower(exponent)
+  fixedDecNumStr, err := fixedDec.GetNumStr()
 
-  if expectedNumStr != fixedDec.GetNumStr() {
-    t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v'",
-      expectedNumStr, fixedDec.GetNumStr())
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      " fixedDecNumStr, err := fixedDec.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
   }
 
+  err = fixedDec.DivideByTenToPower(exponent)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = fixedDec.DivideByTenToPower(exponent)\n"+
+      "exponent= '%v'\nOriginal fixedDec= '%v'\nError='%v'\n\n",
+      ePrefix, exponent, fixedDecNumStr, err.Error())
+    return
+  }
+
+  fixedDecNumStr2, err := fixedDec.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "fixedDecNumStr2, err := fixedDec.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if expectedNumStr != fixedDecNumStr2 {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Expected fixedDecNumStr2 = '%v'\n"+
+      "Instead, fixedDecNumStr2 = '%v'\n\n",
+      ePrefix, expectedNumStr, fixedDecNumStr2)
+
+  }
+
+  return
 }
 
 func TestBigIntFixedDecimal_DivideByTenToPwr_02(t *testing.T) {
 
+  ePrefix := "TestBigIntFixedDecimal_DivideByTenToPwr_02"
   expectedNumStr := "12.345"
 
   originalNum := 12345
@@ -2336,17 +3249,52 @@ func TestBigIntFixedDecimal_DivideByTenToPwr_02(t *testing.T) {
 
   fixedDec := new(BigIntFixedDecimal).NewInt(originalNum, originalNumPrecision)
 
-  fixedDec.DivideByTenToPower(exponent)
+  fixedDecNumStr, err := fixedDec.GetNumStr()
 
-  if expectedNumStr != fixedDec.GetNumStr() {
-    t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v'",
-      expectedNumStr, fixedDec.GetNumStr())
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      " fixedDecNumStr, err := fixedDec.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
   }
 
+  err = fixedDec.DivideByTenToPower(exponent)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = fixedDec.DivideByTenToPower(exponent)\n"+
+      "exponent= '%v'\nOriginal fixedDec= '%v'\nError='%v'\n\n",
+      ePrefix, exponent, fixedDecNumStr, err.Error())
+    return
+  }
+
+  fixedDecNumStr2, err := fixedDec.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "fixedDecNumStr2, err := fixedDec.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if expectedNumStr != fixedDecNumStr2 {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Expected fixedDecNumStr2 = '%v'\n"+
+      "Instead, fixedDecNumStr2 = '%v'\n\n",
+      ePrefix, expectedNumStr, fixedDecNumStr2)
+
+  }
+
+  return
 }
 
 func TestBigIntFixedDecimal_DivideByTenToPwr_03(t *testing.T) {
 
+  ePrefix := "TestBigIntFixedDecimal_DivideByTenToPwr_03"
   expectedNumStr := "-12.345"
 
   originalNum := -12345
@@ -2355,17 +3303,52 @@ func TestBigIntFixedDecimal_DivideByTenToPwr_03(t *testing.T) {
 
   fixedDec := new(BigIntFixedDecimal).NewInt(originalNum, originalNumPrecision)
 
-  fixedDec.DivideByTenToPower(exponent)
+  fixedDecNumStr, err := fixedDec.GetNumStr()
 
-  if expectedNumStr != fixedDec.GetNumStr() {
-    t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v'",
-      expectedNumStr, fixedDec.GetNumStr())
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      " fixedDecNumStr, err := fixedDec.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
   }
 
+  err = fixedDec.DivideByTenToPower(exponent)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = fixedDec.DivideByTenToPower(exponent)\n"+
+      "exponent= '%v'\nOriginal fixedDec= '%v'\nError='%v'\n\n",
+      ePrefix, exponent, fixedDecNumStr, err.Error())
+    return
+  }
+
+  fixedDecNumStr2, err := fixedDec.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "fixedDecNumStr2, err := fixedDec.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if expectedNumStr != fixedDecNumStr2 {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Expected fixedDecNumStr2 = '%v'\n"+
+      "Instead, fixedDecNumStr2 = '%v'\n\n",
+      ePrefix, expectedNumStr, fixedDecNumStr2)
+
+  }
+
+  return
 }
 
 func TestBigIntFixedDecimal_DivideByTenToPwr_04(t *testing.T) {
 
+  ePrefix := "TestBigIntFixedDecimal_DivideByTenToPwr_04"
   expectedNumStr := "0.00012345"
 
   originalNum := 12345
@@ -2374,16 +3357,52 @@ func TestBigIntFixedDecimal_DivideByTenToPwr_04(t *testing.T) {
 
   fixedDec := new(BigIntFixedDecimal).NewInt(originalNum, originalNumPrecision)
 
-  fixedDec.DivideByTenToPower(exponent)
+  fixedDecNumStr, err := fixedDec.GetNumStr()
 
-  if expectedNumStr != fixedDec.GetNumStr() {
-    t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v'",
-      expectedNumStr, fixedDec.GetNumStr())
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      " fixedDecNumStr, err := fixedDec.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
   }
 
+  err = fixedDec.DivideByTenToPower(exponent)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = fixedDec.DivideByTenToPower(exponent)\n"+
+      "exponent= '%v'\nOriginal fixedDec= '%v'\nError='%v'\n\n",
+      ePrefix, exponent, fixedDecNumStr, err.Error())
+    return
+  }
+
+  fixedDecNumStr2, err := fixedDec.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "fixedDecNumStr2, err := fixedDec.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if expectedNumStr != fixedDecNumStr2 {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Expected fixedDecNumStr2 = '%v'\n"+
+      "Instead, fixedDecNumStr2 = '%v'\n\n",
+      ePrefix, expectedNumStr, fixedDecNumStr2)
+
+  }
+
+  return
 }
 
 func TestBigIntFixedDecimal_DivideByTenToPwr_05(t *testing.T) {
+
+  ePrefix := "TestBigIntFixedDecimal_DivideByTenToPwr_05"
 
   expectedNumStr := "-0.00012345"
 
@@ -2393,16 +3412,52 @@ func TestBigIntFixedDecimal_DivideByTenToPwr_05(t *testing.T) {
 
   fixedDec := new(BigIntFixedDecimal).NewInt(originalNum, originalNumPrecision)
 
-  fixedDec.DivideByTenToPower(exponent)
+  fixedDecNumStr, err := fixedDec.GetNumStr()
 
-  if expectedNumStr != fixedDec.GetNumStr() {
-    t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v'",
-      expectedNumStr, fixedDec.GetNumStr())
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      " fixedDecNumStr, err := fixedDec.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
   }
 
+  err = fixedDec.DivideByTenToPower(exponent)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = fixedDec.DivideByTenToPower(exponent)\n"+
+      "exponent= '%v'\nOriginal fixedDec= '%v'\nError='%v'\n\n",
+      ePrefix, exponent, fixedDecNumStr, err.Error())
+    return
+  }
+
+  fixedDecNumStr2, err := fixedDec.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "fixedDecNumStr2, err := fixedDec.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if expectedNumStr != fixedDecNumStr2 {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Expected fixedDecNumStr2 = '%v'\n"+
+      "Instead, fixedDecNumStr2 = '%v'\n\n",
+      ePrefix, expectedNumStr, fixedDecNumStr2)
+
+  }
+
+  return
 }
 
 func TestBigIntFixedDecimal_DivideByTenToPwr_06(t *testing.T) {
+
+  ePrefix := "TestBigIntFixedDecimal_DivideByTenToPwr_06"
 
   expectedNumStr := "0.0057"
 
@@ -2412,17 +3467,51 @@ func TestBigIntFixedDecimal_DivideByTenToPwr_06(t *testing.T) {
 
   fixedDec := new(BigIntFixedDecimal).NewInt(originalNum, originalNumPrecision)
 
-  fixedDec.DivideByTenToPower(exponent)
+  fixedDecNumStr, err := fixedDec.GetNumStr()
 
-  if expectedNumStr != fixedDec.GetNumStr() {
-    t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v'",
-      expectedNumStr, fixedDec.GetNumStr())
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      " fixedDecNumStr, err := fixedDec.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
   }
 
+  err = fixedDec.DivideByTenToPower(exponent)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = fixedDec.DivideByTenToPower(exponent)\n"+
+      "exponent= '%v'\nOriginal fixedDec= '%v'\nError='%v'\n\n",
+      ePrefix, exponent, fixedDecNumStr, err.Error())
+    return
+  }
+
+  fixedDecNumStr2, err := fixedDec.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "fixedDecNumStr2, err := fixedDec.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if expectedNumStr != fixedDecNumStr2 {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Expected fixedDecNumStr2 = '%v'\n"+
+      "Instead, fixedDecNumStr2 = '%v'\n\n",
+      ePrefix, expectedNumStr, fixedDecNumStr2)
+
+  }
+
+  return
 }
 
 func TestBigIntFixedDecimal_DivideByTenToPwr_07(t *testing.T) {
-
+  ePrefix := "TestBigIntFixedDecimal_DivideByTenToPwr_07"
   expectedNumStr := "0"
 
   originalNum := 0
@@ -2431,510 +3520,1510 @@ func TestBigIntFixedDecimal_DivideByTenToPwr_07(t *testing.T) {
 
   fixedDec := new(BigIntFixedDecimal).NewInt(originalNum, originalNumPrecision)
 
-  fixedDec.DivideByTenToPower(exponent)
+  fixedDecNumStr, err := fixedDec.GetNumStr()
 
-  if expectedNumStr != fixedDec.GetNumStr() {
-    t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v'",
-      expectedNumStr, fixedDec.GetNumStr())
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      " fixedDecNumStr, err := fixedDec.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
   }
 
+  err = fixedDec.DivideByTenToPower(exponent)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = fixedDec.DivideByTenToPower(exponent)\n"+
+      "exponent= '%v'\nOriginal fixedDec= '%v'\nError='%v'\n\n",
+      ePrefix, exponent, fixedDecNumStr, err.Error())
+    return
+  }
+
+  fixedDecNumStr2, err := fixedDec.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "fixedDecNumStr2, err := fixedDec.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if expectedNumStr != fixedDecNumStr2 {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Expected fixedDecNumStr2 = '%v'\n"+
+      "Instead, fixedDecNumStr2 = '%v'\n\n",
+      ePrefix, expectedNumStr, fixedDecNumStr2)
+
+  }
+
+  return
 }
 
 func TestBigIntFixedDecimal_BigIntDividedByTwoToPower_01(t *testing.T) {
+
+  ePrefix := "TestBigIntFixedDecimal_BigIntDividedByTwoToPower_01"
 
   num := int64(33333)
   numPrecision := uint(0)
   exponent := uint(8)
   expectedNum := int64(130)
 
-  fixDec := new(BigIntFixedDecimal).NewInt64(num, numPrecision)
+  fixedDec := new(BigIntFixedDecimal).NewInt64(num, numPrecision)
+
+  fixedDecNumStr, err := fixedDec.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      " fixedDecNumStr, err := fixedDec.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
 
   expectedValue := new(BigIntFixedDecimal).NewInt64(expectedNum, 0)
 
-  fixDec.DivideByTwoToPower(exponent)
+  expectedValueNumStr, err := expectedValue.GetNumStr()
 
-  if expectedValue.GetNumStr() != fixDec.GetNumStr() {
-    t.Errorf("Error: Expected result='%v'. Instead, result='%v'.",
-      expectedValue.GetNumStr(), fixDec.GetNumStr())
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedValueNumStr, err := expectedValue.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
   }
+
+  err = fixedDec.DivideByTwoToPower(exponent)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = fixedDec.DivideByTwoToPower(exponent)\n"+
+      "Original expectedValueNumStr= '%v'\n"+
+      "Error='%v'\n\n", ePrefix, fixedDecNumStr, err.Error())
+    return
+  }
+
+  fixedDecNumStr2, err := fixedDec.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "fixedDecNumStr2, err := fixedDec.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if expectedValueNumStr != fixedDecNumStr2 {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Expected fixedDecNumStr2 = '%v'\n"+
+      "Instead, fixedDecNumStr2 = '%v'\n\n",
+      ePrefix, expectedValueNumStr, fixedDecNumStr2)
+  }
+
+  return
 }
 
 func TestBigIntFixedDecimal_BigIntDividedByTwoToPower_02(t *testing.T) {
 
+  ePrefix := "TestBigIntFixedDecimal_BigIntDividedByTwoToPower_02"
   num := int64(33123456)
   numPrecision := uint(3)
   exponent := uint(8)
   expectedNum := int64(129388)
 
-  fixDec := new(BigIntFixedDecimal).NewInt64(num, numPrecision)
+  fixedDec := new(BigIntFixedDecimal).NewInt64(num, numPrecision)
+
+  fixedDecNumStr, err := fixedDec.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      " fixedDecNumStr, err := fixedDec.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
 
   expectedValue := new(BigIntFixedDecimal).NewInt64(expectedNum, 0)
 
-  fixDec.DivideByTwoToPower(exponent)
+  expectedValueNumStr, err := expectedValue.GetNumStr()
 
-  if expectedValue.GetNumStr() != fixDec.GetNumStr() {
-    t.Errorf("Error: Expected result='%v'. Instead, result='%v'.",
-      expectedValue.GetNumStr(), fixDec.GetNumStr())
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedValueNumStr, err := expectedValue.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
   }
+
+  err = fixedDec.DivideByTwoToPower(exponent)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = fixedDec.DivideByTwoToPower(exponent)\n"+
+      "Original expectedValueNumStr= '%v'\n"+
+      "Error='%v'\n\n", ePrefix, fixedDecNumStr, err.Error())
+    return
+  }
+
+  fixedDecNumStr2, err := fixedDec.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "fixedDecNumStr2, err := fixedDec.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if expectedValueNumStr != fixedDecNumStr2 {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Expected fixedDecNumStr2 = '%v'\n"+
+      "Instead, fixedDecNumStr2 = '%v'\n\n",
+      ePrefix, expectedValueNumStr, fixedDecNumStr2)
+  }
+
+  return
 }
 
 func TestBigIntFixedDecimal_BigIntDividedByTwoToPower_03(t *testing.T) {
 
+  ePrefix := "TestBigIntFixedDecimal_BigIntDividedByTwoToPower_03"
   num := int64(4)
   numPrecision := uint(0)
   exponent := uint(9)
   expectedNum := int64(0)
 
-  fixDec := new(BigIntFixedDecimal).NewInt64(num, numPrecision)
+  fixedDec := new(BigIntFixedDecimal).NewInt64(num, numPrecision)
+
+  fixedDecNumStr, err := fixedDec.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      " fixedDecNumStr, err := fixedDec.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
 
   expectedValue := new(BigIntFixedDecimal).NewInt64(expectedNum, 0)
 
-  fixDec.DivideByTwoToPower(exponent)
+  expectedValueNumStr, err := expectedValue.GetNumStr()
 
-  if expectedValue.GetNumStr() != fixDec.GetNumStr() {
-    t.Errorf("Error: Expected result='%v'. Instead, result='%v'.",
-      expectedValue.GetNumStr(), fixDec.GetNumStr())
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedValueNumStr, err := expectedValue.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
   }
+
+  err = fixedDec.DivideByTwoToPower(exponent)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = fixedDec.DivideByTwoToPower(exponent)\n"+
+      "Original expectedValueNumStr= '%v'\n"+
+      "Error='%v'\n\n", ePrefix, fixedDecNumStr, err.Error())
+    return
+  }
+
+  fixedDecNumStr2, err := fixedDec.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "fixedDecNumStr2, err := fixedDec.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if expectedValueNumStr != fixedDecNumStr2 {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Expected fixedDecNumStr2 = '%v'\n"+
+      "Instead, fixedDecNumStr2 = '%v'\n\n",
+      ePrefix, expectedValueNumStr, fixedDecNumStr2)
+  }
+
+  return
 }
 
 func TestBigIntFixedDecimal_BigIntDividedByTwoToPower_04(t *testing.T) {
 
+  ePrefix := "TestBigIntFixedDecimal_BigIntDividedByTwoToPower_04"
   num := int64(-8123456789012345)
   numPrecision := uint(0)
   exponent := uint(12)
   expectedNum := int64(-1983265817630)
 
-  fixDec := new(BigIntFixedDecimal).NewInt64(num, numPrecision)
+  fixedDec := new(BigIntFixedDecimal).NewInt64(num, numPrecision)
+
+  fixedDecNumStr, err := fixedDec.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      " fixedDecNumStr, err := fixedDec.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
 
   expectedValue := new(BigIntFixedDecimal).NewInt64(expectedNum, 0)
 
-  fixDec.DivideByTwoToPower(exponent)
+  expectedValueNumStr, err := expectedValue.GetNumStr()
 
-  if expectedValue.GetNumStr() != fixDec.GetNumStr() {
-    t.Errorf("Error: Expected result='%v'. Instead, result='%v'.",
-      expectedValue.GetNumStr(), fixDec.GetNumStr())
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedValueNumStr, err := expectedValue.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
   }
+
+  err = fixedDec.DivideByTwoToPower(exponent)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = fixedDec.DivideByTwoToPower(exponent)\n"+
+      "Original expectedValueNumStr= '%v'\n"+
+      "Error='%v'\n\n", ePrefix, fixedDecNumStr, err.Error())
+    return
+  }
+
+  fixedDecNumStr2, err := fixedDec.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "fixedDecNumStr2, err := fixedDec.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if expectedValueNumStr != fixedDecNumStr2 {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Expected fixedDecNumStr2 = '%v'\n"+
+      "Instead, fixedDecNumStr2 = '%v'\n\n",
+      ePrefix, expectedValueNumStr, fixedDecNumStr2)
+  }
+
+  return
 }
 
 func TestBigIntFixedDecimal_BigIntDividedByTwoToPower_05(t *testing.T) {
-
+  ePrefix := "TestBigIntFixedDecimal_BigIntDividedByTwoToPower_05"
   num := int64(8123456789012345)
   exponent := uint(12)
   expectedNum := int64(1983265817629)
   numPrecision := uint(0)
 
-  fixDec := new(BigIntFixedDecimal).NewInt64(num, numPrecision)
+  fixedDec := new(BigIntFixedDecimal).NewInt64(num, numPrecision)
+
+  fixedDecNumStr, err := fixedDec.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      " fixedDecNumStr, err := fixedDec.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
 
   expectedValue := new(BigIntFixedDecimal).NewInt64(expectedNum, 0)
 
-  fixDec.DivideByTwoToPower(exponent)
+  expectedValueNumStr, err := expectedValue.GetNumStr()
 
-  if expectedValue.GetNumStr() != fixDec.GetNumStr() {
-    t.Errorf("Error: Expected result='%v'. Instead, result='%v'.",
-      expectedValue.GetNumStr(), fixDec.GetNumStr())
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedValueNumStr, err := expectedValue.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
   }
+
+  err = fixedDec.DivideByTwoToPower(exponent)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = fixedDec.DivideByTwoToPower(exponent)\n"+
+      "Original expectedValueNumStr= '%v'\n"+
+      "Error='%v'\n\n", ePrefix, fixedDecNumStr, err.Error())
+    return
+  }
+
+  fixedDecNumStr2, err := fixedDec.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "fixedDecNumStr2, err := fixedDec.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if expectedValueNumStr != fixedDecNumStr2 {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Expected fixedDecNumStr2 = '%v'\n"+
+      "Instead, fixedDecNumStr2 = '%v'\n\n",
+      ePrefix, expectedValueNumStr, fixedDecNumStr2)
+  }
+
+  return
 }
 
 func TestBigIntFixedDecimal_BigIntDividedByTwoToPower_06(t *testing.T) {
 
+  ePrefix := "TestBigIntFixedDecimal_BigIntDividedByTwoToPower_06"
   num := int64(4)
   exponent := uint(1)
   expectedNum := int64(2)
   numPrecision := uint(0)
 
-  fixDec := new(BigIntFixedDecimal).NewInt64(num, numPrecision)
+  fixedDec := new(BigIntFixedDecimal).NewInt64(num, numPrecision)
+
+  fixedDecNumStr, err := fixedDec.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      " fixedDecNumStr, err := fixedDec.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
 
   expectedValue := new(BigIntFixedDecimal).NewInt64(expectedNum, 0)
 
-  fixDec.DivideByTwoToPower(exponent)
+  expectedValueNumStr, err := expectedValue.GetNumStr()
 
-  if expectedValue.GetNumStr() != fixDec.GetNumStr() {
-    t.Errorf("Error: Expected result='%v'. Instead, result='%v'.",
-      expectedValue.GetNumStr(), fixDec.GetNumStr())
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedValueNumStr, err := expectedValue.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
   }
+
+  err = fixedDec.DivideByTwoToPower(exponent)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = fixedDec.DivideByTwoToPower(exponent)\n"+
+      "Original expectedValueNumStr= '%v'\n"+
+      "Error='%v'\n\n", ePrefix, fixedDecNumStr, err.Error())
+    return
+  }
+
+  fixedDecNumStr2, err := fixedDec.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "fixedDecNumStr2, err := fixedDec.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if expectedValueNumStr != fixedDecNumStr2 {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Expected fixedDecNumStr2 = '%v'\n"+
+      "Instead, fixedDecNumStr2 = '%v'\n\n",
+      ePrefix, expectedValueNumStr, fixedDecNumStr2)
+  }
+
+  return
 }
 
 func TestBigIntFixedDecimal_BigIntDividedByTwoToPower_07(t *testing.T) {
-
+  ePrefix := "TestBigIntFixedDecimal_BigIntDividedByTwoToPower_07"
   num := int64(-4)
   exponent := uint(1)
   expectedNum := int64(-2)
   numPrecision := uint(0)
 
-  fixDec := new(BigIntFixedDecimal).NewInt64(num, numPrecision)
+  fixedDec := new(BigIntFixedDecimal).NewInt64(num, numPrecision)
+
+  fixedDecNumStr, err := fixedDec.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      " fixedDecNumStr, err := fixedDec.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
 
   expectedValue := new(BigIntFixedDecimal).NewInt64(expectedNum, 0)
 
-  fixDec.DivideByTwoToPower(exponent)
+  expectedValueNumStr, err := expectedValue.GetNumStr()
 
-  if expectedValue.GetNumStr() != fixDec.GetNumStr() {
-    t.Errorf("Error: Expected result='%v'. Instead, result='%v'.",
-      expectedValue.GetNumStr(), fixDec.GetNumStr())
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedValueNumStr, err := expectedValue.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
   }
+
+  err = fixedDec.DivideByTwoToPower(exponent)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = fixedDec.DivideByTwoToPower(exponent)\n"+
+      "Original expectedValueNumStr= '%v'\n"+
+      "Error='%v'\n\n", ePrefix, fixedDecNumStr, err.Error())
+    return
+  }
+
+  fixedDecNumStr2, err := fixedDec.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "fixedDecNumStr2, err := fixedDec.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if expectedValueNumStr != fixedDecNumStr2 {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Expected fixedDecNumStr2 = '%v'\n"+
+      "Instead, fixedDecNumStr2 = '%v'\n\n",
+      ePrefix, expectedValueNumStr, fixedDecNumStr2)
+  }
+
+  return
 }
 
 func TestBigIntFixedDecimal_BigIntDividedByTwoToPower_08(t *testing.T) {
 
+  ePrefix := "TestBigIntFixedDecimal_BigIntDividedByTwoToPower_08"
   // Fixed Decimal Initial Value = -40579.123456
   num := int64(-40579123456)
   numPrecision := uint(6)
   exponent := uint(3)
   expectedNum := int64(-5072390432)
 
-  fixDec := new(BigIntFixedDecimal).NewInt64(num, numPrecision)
+  fixedDec := new(BigIntFixedDecimal).NewInt64(num, numPrecision)
+
+  fixedDecNumStr, err := fixedDec.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      " fixedDecNumStr, err := fixedDec.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
 
   expectedValue := new(BigIntFixedDecimal).NewInt64(expectedNum, 0)
 
-  fixDec.DivideByTwoToPower(exponent)
+  expectedValueNumStr, err := expectedValue.GetNumStr()
 
-  if expectedValue.GetNumStr() != fixDec.GetNumStr() {
-    t.Errorf("Error: Expected result='%v'. Instead, result='%v'.",
-      expectedValue.GetNumStr(), fixDec.GetNumStr())
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedValueNumStr, err := expectedValue.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
   }
+
+  err = fixedDec.DivideByTwoToPower(exponent)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = fixedDec.DivideByTwoToPower(exponent)\n"+
+      "Original expectedValueNumStr= '%v'\n"+
+      "Error='%v'\n\n", ePrefix, fixedDecNumStr, err.Error())
+    return
+  }
+
+  fixedDecNumStr2, err := fixedDec.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "fixedDecNumStr2, err := fixedDec.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if expectedValueNumStr != fixedDecNumStr2 {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Expected fixedDecNumStr2 = '%v'\n"+
+      "Instead, fixedDecNumStr2 = '%v'\n\n",
+      ePrefix, expectedValueNumStr, fixedDecNumStr2)
+  }
+
+  return
 }
 
 func TestBigIntFixedDecimal_BigIntDividedByTwoToPower_09(t *testing.T) {
 
+  ePrefix := "TestBigIntFixedDecimal_BigIntDividedByTwoToPower_09"
   // Fixed Decimal Initial Value = 40579.123456
   num := int64(40579123456)
   numPrecision := uint(6)
   exponent := uint(3)
   expectedNum := int64(5072390432)
 
-  fixDec := new(BigIntFixedDecimal).NewInt64(num, numPrecision)
+  fixedDec := new(BigIntFixedDecimal).NewInt64(num, numPrecision)
+
+  fixedDecNumStr, err := fixedDec.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      " fixedDecNumStr, err := fixedDec.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
 
   expectedValue := new(BigIntFixedDecimal).NewInt64(expectedNum, 0)
 
-  fixDec.DivideByTwoToPower(exponent)
+  expectedValueNumStr, err := expectedValue.GetNumStr()
 
-  if expectedValue.GetNumStr() != fixDec.GetNumStr() {
-    t.Errorf("Error: Expected result='%v'. Instead, result='%v'.",
-      expectedValue.GetNumStr(), fixDec.GetNumStr())
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedValueNumStr, err := expectedValue.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
   }
+
+  err = fixedDec.DivideByTwoToPower(exponent)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = fixedDec.DivideByTwoToPower(exponent)\n"+
+      "Original expectedValueNumStr= '%v'\n"+
+      "Error='%v'\n\n", ePrefix, fixedDecNumStr, err.Error())
+    return
+  }
+
+  fixedDecNumStr2, err := fixedDec.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "fixedDecNumStr2, err := fixedDec.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if expectedValueNumStr != fixedDecNumStr2 {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Expected fixedDecNumStr2 = '%v'\n"+
+      "Instead, fixedDecNumStr2 = '%v'\n\n",
+      ePrefix, expectedValueNumStr, fixedDecNumStr2)
+  }
+
+  return
 }
 
 func TestBigIntFixedDecimal_BigIntDividedByTwoToPower_10(t *testing.T) {
 
+  ePrefix := "TestBigIntFixedDecimal_BigIntDividedByTwoToPower_10"
   // Fixed Decimal Initial Value = 67.1234
   num := int64(671234)
   numPrecision := uint(4)
   exponent := uint(2)
   expectedNum := int64(167808)
 
-  fixDec := new(BigIntFixedDecimal).NewInt64(num, numPrecision)
+  fixedDec := new(BigIntFixedDecimal).NewInt64(num, numPrecision)
+
+  fixedDecNumStr, err := fixedDec.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      " fixedDecNumStr, err := fixedDec.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
 
   expectedValue := new(BigIntFixedDecimal).NewInt64(expectedNum, 0)
 
-  fixDec.DivideByTwoToPower(exponent)
+  expectedValueNumStr, err := expectedValue.GetNumStr()
 
-  if expectedValue.GetNumStr() != fixDec.GetNumStr() {
-    t.Errorf("Error: Expected result='%v'. Instead, result='%v'.",
-      expectedValue.GetNumStr(), fixDec.GetNumStr())
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedValueNumStr, err := expectedValue.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
   }
+
+  err = fixedDec.DivideByTwoToPower(exponent)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = fixedDec.DivideByTwoToPower(exponent)\n"+
+      "Original expectedValueNumStr= '%v'\n"+
+      "Error='%v'\n\n", ePrefix, fixedDecNumStr, err.Error())
+    return
+  }
+
+  fixedDecNumStr2, err := fixedDec.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "fixedDecNumStr2, err := fixedDec.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if expectedValueNumStr != fixedDecNumStr2 {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Expected fixedDecNumStr2 = '%v'\n"+
+      "Instead, fixedDecNumStr2 = '%v'\n\n",
+      ePrefix, expectedValueNumStr, fixedDecNumStr2)
+  }
+
+  return
 }
 
 func TestBigIntFixedDecimal_Floor_01(t *testing.T) {
+  ePrefix := "TestBigIntFixedDecimal_Floor_01"
   num := 0
   precision := uint(0)
 
   expectedNumStr := "0"
 
-  fixDec := new(BigIntFixedDecimal).NewInt(num, precision)
+  fixedDec := new(BigIntFixedDecimal).NewInt(num, precision)
 
-  floor := fixDec.Floor()
+  floor, err := fixedDec.Floor()
 
-  if expectedNumStr != floor.GetNumStr() {
-    t.Errorf("Error: Expected result='%v'. Instead, result='%v' ",
-      expectedNumStr, floor.GetNumStr())
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "floor, err := fixedDec.Floor()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
   }
+
+  floorNumStr, err := floor.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "floorNumStr, err := floor.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if expectedNumStr != floorNumStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Expected floorNumStr = '%v'\n"+
+      "Instead, floorNumStr = '%v'\n\n",
+      ePrefix, expectedNumStr, floorNumStr)
+  }
+
+  return
 }
 
 func TestBigIntFixedDecimal_Floor_02(t *testing.T) {
+  ePrefix := "TestBigIntFixedDecimal_Floor_02"
   num := 4
   precision := uint(0)
 
   expectedNumStr := "4"
+  fixedDec := new(BigIntFixedDecimal).NewInt(num, precision)
 
-  fixDec := new(BigIntFixedDecimal).NewInt(num, precision)
+  floor, err := fixedDec.Floor()
 
-  floor := fixDec.Floor()
-
-  if expectedNumStr != floor.GetNumStr() {
-    t.Errorf("Error: Expected result='%v'. Instead, result='%v' ",
-      expectedNumStr, floor.GetNumStr())
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "floor, err := fixedDec.Floor()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
   }
+
+  floorNumStr, err := floor.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "floorNumStr, err := floor.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if expectedNumStr != floorNumStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Expected floorNumStr = '%v'\n"+
+      "Instead, floorNumStr = '%v'\n\n",
+      ePrefix, expectedNumStr, floorNumStr)
+  }
+
+  return
 }
 
 func TestBigIntFixedDecimal_Floor_03(t *testing.T) {
+  ePrefix := "TestBigIntFixedDecimal_Floor_03"
   num := 32
   precision := uint(1)
 
   expectedNumStr := "3"
 
-  fixDec := new(BigIntFixedDecimal).NewInt(num, precision)
+  fixedDec := new(BigIntFixedDecimal).NewInt(num, precision)
 
-  floor := fixDec.Floor()
+  floor, err := fixedDec.Floor()
 
-  if expectedNumStr != floor.GetNumStr() {
-    t.Errorf("Error: Expected result='%v'. Instead, result='%v' ",
-      expectedNumStr, floor.GetNumStr())
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "floor, err := fixedDec.Floor()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
   }
 
+  floorNumStr, err := floor.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "floorNumStr, err := floor.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if expectedNumStr != floorNumStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Expected floorNumStr = '%v'\n"+
+      "Instead, floorNumStr = '%v'\n\n",
+      ePrefix, expectedNumStr, floorNumStr)
+  }
+
+  return
 }
 
 func TestBigIntFixedDecimal_Floor_04(t *testing.T) {
+  ePrefix := "TestBigIntFixedDecimal_Floor_04"
   num := 29
   precision := uint(1)
 
   expectedNumStr := "2"
+  fixedDec := new(BigIntFixedDecimal).NewInt(num, precision)
 
-  fixDec := new(BigIntFixedDecimal).NewInt(num, precision)
+  floor, err := fixedDec.Floor()
 
-  floor := fixDec.Floor()
-
-  if expectedNumStr != floor.GetNumStr() {
-    t.Errorf("Error: Expected result='%v'. Instead, result='%v' ",
-      expectedNumStr, floor.GetNumStr())
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "floor, err := fixedDec.Floor()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
   }
+
+  floorNumStr, err := floor.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "floorNumStr, err := floor.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if expectedNumStr != floorNumStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Expected floorNumStr = '%v'\n"+
+      "Instead, floorNumStr = '%v'\n\n",
+      ePrefix, expectedNumStr, floorNumStr)
+  }
+
+  return
 }
 
 func TestBigIntFixedDecimal_Floor_05(t *testing.T) {
+  ePrefix := "TestBigIntFixedDecimal_Floor_05"
   num := -27
   precision := uint(1)
 
   expectedNumStr := "-3"
+  fixedDec := new(BigIntFixedDecimal).NewInt(num, precision)
 
-  fixDec := new(BigIntFixedDecimal).NewInt(num, precision)
+  floor, err := fixedDec.Floor()
 
-  floor := fixDec.Floor()
-
-  if expectedNumStr != floor.GetNumStr() {
-    t.Errorf("Error: Expected result='%v'. Instead, result='%v' ",
-      expectedNumStr, floor.GetNumStr())
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "floor, err := fixedDec.Floor()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
   }
+
+  floorNumStr, err := floor.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "floorNumStr, err := floor.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if expectedNumStr != floorNumStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Expected floorNumStr = '%v'\n"+
+      "Instead, floorNumStr = '%v'\n\n",
+      ePrefix, expectedNumStr, floorNumStr)
+  }
+
+  return
 }
 
 func TestBigIntFixedDecimal_Floor_06(t *testing.T) {
+  ePrefix := "TestBigIntFixedDecimal_Floor_06"
   num := -2
   precision := uint(0)
 
   expectedNumStr := "-2"
+  fixedDec := new(BigIntFixedDecimal).NewInt(num, precision)
 
-  fixDec := new(BigIntFixedDecimal).NewInt(num, precision)
+  floor, err := fixedDec.Floor()
 
-  floor := fixDec.Floor()
-
-  if expectedNumStr != floor.GetNumStr() {
-    t.Errorf("Error: Expected result='%v'. Instead, result='%v' ",
-      expectedNumStr, floor.GetNumStr())
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "floor, err := fixedDec.Floor()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
   }
+
+  floorNumStr, err := floor.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "floorNumStr, err := floor.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if expectedNumStr != floorNumStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Expected floorNumStr = '%v'\n"+
+      "Instead, floorNumStr = '%v'\n\n",
+      ePrefix, expectedNumStr, floorNumStr)
+  }
+
+  return
 }
 
 func TestBigIntFixedDecimal_Floor_07(t *testing.T) {
+  ePrefix := "TestBigIntFixedDecimal_Floor_07"
   num := 595
   precision := uint(2)
 
   expectedNumStr := "5"
+  fixedDec := new(BigIntFixedDecimal).NewInt(num, precision)
 
-  fixDec := new(BigIntFixedDecimal).NewInt(num, precision)
+  floor, err := fixedDec.Floor()
 
-  floor := fixDec.Floor()
-
-  if expectedNumStr != floor.GetNumStr() {
-    t.Errorf("Error: Expected result='%v'. Instead, result='%v' ",
-      expectedNumStr, floor.GetNumStr())
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "floor, err := fixedDec.Floor()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
   }
+
+  floorNumStr, err := floor.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "floorNumStr, err := floor.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if expectedNumStr != floorNumStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Expected floorNumStr = '%v'\n"+
+      "Instead, floorNumStr = '%v'\n\n",
+      ePrefix, expectedNumStr, floorNumStr)
+  }
+
+  return
 }
 
 func TestBigIntFixedDecimal_Floor_08(t *testing.T) {
+  ePrefix := "TestBigIntFixedDecimal_Floor_08"
   num := 505
   precision := uint(2)
 
   expectedNumStr := "5"
+  fixedDec := new(BigIntFixedDecimal).NewInt(num, precision)
 
-  fixDec := new(BigIntFixedDecimal).NewInt(num, precision)
+  floor, err := fixedDec.Floor()
 
-  floor := fixDec.Floor()
-
-  if expectedNumStr != floor.GetNumStr() {
-    t.Errorf("Error: Expected result='%v'. Instead, result='%v' ",
-      expectedNumStr, floor.GetNumStr())
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "floor, err := fixedDec.Floor()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
   }
+
+  floorNumStr, err := floor.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "floorNumStr, err := floor.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if expectedNumStr != floorNumStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Expected floorNumStr = '%v'\n"+
+      "Instead, floorNumStr = '%v'\n\n",
+      ePrefix, expectedNumStr, floorNumStr)
+  }
+
+  return
 }
 
 func TestBigIntFixedDecimal_Floor_09(t *testing.T) {
+  ePrefix := "TestBigIntFixedDecimal_Floor_09"
   num := -505
   precision := uint(2)
 
   expectedNumStr := "-6"
+  fixedDec := new(BigIntFixedDecimal).NewInt(num, precision)
 
-  fixDec := new(BigIntFixedDecimal).NewInt(num, precision)
+  floor, err := fixedDec.Floor()
 
-  floor := fixDec.Floor()
-
-  if expectedNumStr != floor.GetNumStr() {
-    t.Errorf("Error: Expected result='%v'. Instead, result='%v' ",
-      expectedNumStr, floor.GetNumStr())
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "floor, err := fixedDec.Floor()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
   }
+
+  floorNumStr, err := floor.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "floorNumStr, err := floor.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if expectedNumStr != floorNumStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Expected floorNumStr = '%v'\n"+
+      "Instead, floorNumStr = '%v'\n\n",
+      ePrefix, expectedNumStr, floorNumStr)
+  }
+
+  return
 }
 
 func TestBigIntFixedDecimal_Floor_10(t *testing.T) {
+  ePrefix := "TestBigIntFixedDecimal_Floor_10"
   num := 29
   precision := uint(1)
 
   expectedNumStr := "2"
+  fixedDec := new(BigIntFixedDecimal).NewInt(num, precision)
 
-  fixDec := new(BigIntFixedDecimal).NewInt(num, precision)
+  floor, err := fixedDec.Floor()
 
-  floor := fixDec.Floor()
-
-  if expectedNumStr != floor.GetNumStr() {
-    t.Errorf("Error: Expected result='%v'. Instead, result='%v' ",
-      expectedNumStr, floor.GetNumStr())
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "floor, err := fixedDec.Floor()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
   }
+
+  floorNumStr, err := floor.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "floorNumStr, err := floor.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if expectedNumStr != floorNumStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Expected floorNumStr = '%v'\n"+
+      "Instead, floorNumStr = '%v'\n\n",
+      ePrefix, expectedNumStr, floorNumStr)
+  }
+
+  return
 }
 
 func TestBigIntFixedDecimal_Floor_11(t *testing.T) {
+
+  ePrefix := "TestBigIntFixedDecimal_Floor_11"
   num := -27
   precision := uint(1)
 
   expectedNumStr := "-3"
+  fixedDec := new(BigIntFixedDecimal).NewInt(num, precision)
 
-  fixDec := new(BigIntFixedDecimal).NewInt(num, precision)
+  floor, err := fixedDec.Floor()
 
-  floor := fixDec.Floor()
-
-  if expectedNumStr != floor.GetNumStr() {
-    t.Errorf("Error: Expected result='%v'. Instead, result='%v' ",
-      expectedNumStr, floor.GetNumStr())
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "floor, err := fixedDec.Floor()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
   }
+
+  floorNumStr, err := floor.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "floorNumStr, err := floor.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if expectedNumStr != floorNumStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Expected floorNumStr = '%v'\n"+
+      "Instead, floorNumStr = '%v'\n\n",
+      ePrefix, expectedNumStr, floorNumStr)
+  }
+
+  return
 }
 
 func TestBigIntFixedDecimal_Floor_12(t *testing.T) {
+
+  ePrefix := "TestBigIntFixedDecimal_Floor_12"
   num := 0
   precision := uint(0)
 
   expectedNumStr := "0"
+  fixedDec := new(BigIntFixedDecimal).NewInt(num, precision)
 
-  fixDec := new(BigIntFixedDecimal).NewInt(num, precision)
+  floor, err := fixedDec.Floor()
 
-  floor := fixDec.Floor()
-
-  if expectedNumStr != floor.GetNumStr() {
-    t.Errorf("Error: Expected result='%v'. Instead, result='%v' ",
-      expectedNumStr, floor.GetNumStr())
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "floor, err := fixedDec.Floor()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
   }
+
+  floorNumStr, err := floor.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "floorNumStr, err := floor.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if expectedNumStr != floorNumStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Expected floorNumStr = '%v'\n"+
+      "Instead, floorNumStr = '%v'\n\n",
+      ePrefix, expectedNumStr, floorNumStr)
+  }
+
+  return
 }
 
 func TestBigIntFixedDecimal_Floor_13(t *testing.T) {
 
+  ePrefix := "TestBigIntFixedDecimal_Floor_13"
   numStr := "18972.0000000000001"
 
   expectedNumStr := "18972"
 
-  fixDec, err :=
-    new(BigIntFixedDecimal).NewNumStr(numStr)
+  fixedDec, err :=
+    new(BigIntFixedDecimal).NewNumStr(numStr, '.')
 
   if err != nil {
-    t.Errorf("Error returned by new(BigIntFixedDecimal)."+
-      "NewNumStr(numStr). numStr='%v' Error='%v'",
-      numStr, err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "fixedDec, err := new(BigIntFixedDecimal).NewNumStr(numStr, '.')\n"+
+      "numStr='%v'\n"+
+      "Error='%v'\n\n", ePrefix, numStr, err.Error())
+    return
   }
 
-  floor := fixDec.Floor()
+  fixedDecNumStr, err := fixedDec.GetNumStr()
 
-  if expectedNumStr != floor.GetNumStr() {
-    t.Errorf("Error: Expected result='%v'. Instead, result='%v' ",
-      expectedNumStr, floor.GetNumStr())
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "fixedDecNumStr, err := fixedDec.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
   }
+
+  if numStr != fixedDecNumStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Expected fixedDecNumStr = '%v'\n"+
+      "Instead, fixedDecNumStr = '%v'\n\n",
+      ePrefix, numStr, fixedDecNumStr)
+
+    return
+  }
+
+  floor, err := fixedDec.Floor()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "floor, err := fixedDec.Floor()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  floorNumStr, err := floor.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "floorNumStr, err := floor.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if expectedNumStr != floorNumStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Expected floorNumStr = '%v'\n"+
+      "Instead, floorNumStr = '%v'\n\n",
+      ePrefix, expectedNumStr, floorNumStr)
+  }
+
+  return
 }
 
 func TestBigIntFixedDecimal_Floor_14(t *testing.T) {
 
+  ePrefix := "TestBigIntFixedDecimal_Floor_14"
   numStr := "-18972.0000000000001"
 
   expectedNumStr := "-18973"
 
-  fixDec, err :=
-    new(BigIntFixedDecimal).NewNumStr(numStr)
+  fixedDec, err :=
+    new(BigIntFixedDecimal).NewNumStr(numStr, '.')
 
   if err != nil {
-    t.Errorf("Error returned by new(BigIntFixedDecimal)."+
-      "NewNumStr(numStr). numStr='%v' Error='%v'",
-      numStr, err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "fixedDec, err := new(BigIntFixedDecimal).NewNumStr(numStr, '.')\n"+
+      "numStr='%v'\n"+
+      "Error='%v'\n\n", ePrefix, numStr, err.Error())
+    return
   }
 
-  floor := fixDec.Floor()
+  fixedDecNumStr, err := fixedDec.GetNumStr()
 
-  if expectedNumStr != floor.GetNumStr() {
-    t.Errorf("Error: Expected result='%v'. Instead, result='%v' ",
-      expectedNumStr, floor.GetNumStr())
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "fixedDecNumStr, err := fixedDec.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
   }
+
+  if numStr != fixedDecNumStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Expected fixedDecNumStr = '%v'\n"+
+      "Instead, fixedDecNumStr = '%v'\n\n",
+      ePrefix, numStr, fixedDecNumStr)
+
+    return
+  }
+
+  floor, err := fixedDec.Floor()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "floor, err := fixedDec.Floor()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  floorNumStr, err := floor.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "floorNumStr, err := floor.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if expectedNumStr != floorNumStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Expected floorNumStr = '%v'\n"+
+      "Instead, floorNumStr = '%v'\n\n",
+      ePrefix, expectedNumStr, floorNumStr)
+  }
+
+  return
 }
 
 func TestBigIntFixedDecimal_Floor_15(t *testing.T) {
 
+  ePrefix := "TestBigIntFixedDecimal_Floor_15"
   numStr := "0.0000000000001"
 
   expectedNumStr := "0"
 
-  fixDec, err :=
-    new(BigIntFixedDecimal).NewNumStr(numStr)
+  fixedDec, err :=
+    new(BigIntFixedDecimal).NewNumStr(numStr, '.')
 
   if err != nil {
-    t.Errorf("Error returned by new(BigIntFixedDecimal)."+
-      "NewNumStr(numStr). numStr='%v' Error='%v'",
-      numStr, err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "fixedDec, err := new(BigIntFixedDecimal).NewNumStr(numStr, '.')\n"+
+      "numStr='%v'\n"+
+      "Error='%v'\n\n", ePrefix, numStr, err.Error())
+    return
   }
 
-  floor := fixDec.Floor()
+  fixedDecNumStr, err := fixedDec.GetNumStr()
 
-  if expectedNumStr != floor.GetNumStr() {
-    t.Errorf("Error: Expected result='%v'. Instead, result='%v' ",
-      expectedNumStr, floor.GetNumStr())
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "fixedDecNumStr, err := fixedDec.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
   }
+
+  if numStr != fixedDecNumStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Expected fixedDecNumStr = '%v'\n"+
+      "Instead, fixedDecNumStr = '%v'\n\n",
+      ePrefix, numStr, fixedDecNumStr)
+
+    return
+  }
+
+  floor, err := fixedDec.Floor()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "fixedDecNumStr, err := fixedDec.GetNumStr()\n"+
+      "Original Fixed Dec NumStr= '%v'\n"+
+      "Error='%v'\n\n", ePrefix, fixedDecNumStr, err.Error())
+    return
+  }
+
+  floorNumStr, err := floor.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "floorNumStr, err := floor.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if expectedNumStr != floorNumStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Expected floorNumStr = '%v'\n"+
+      "Instead, floorNumStr = '%v'\n\n",
+      ePrefix, expectedNumStr, floorNumStr)
+  }
+
+  return
 }
 
 func TestBigIntFixedDecimal_Floor_16(t *testing.T) {
 
+  ePrefix := "TestBigIntFixedDecimal_Floor_16"
   numStr := "-189765342891.0000000000001"
   expectedNumStr := "-189765342892"
 
-  fixDec, err :=
-    new(BigIntFixedDecimal).NewNumStr(numStr)
+  fixedDec, err :=
+    new(BigIntFixedDecimal).NewNumStr(numStr, '.')
 
   if err != nil {
-    t.Errorf("Error returned by new(BigIntFixedDecimal)."+
-      "NewNumStr(numStr). numStr='%v' Error='%v'",
-      numStr, err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "fixedDec, err := new(BigIntFixedDecimal).NewNumStr(numStr, '.')\n"+
+      "numStr='%v'\n"+
+      "Error='%v'\n\n", ePrefix, numStr, err.Error())
+    return
   }
 
-  floor := fixDec.Floor()
+  fixedDecNumStr, err := fixedDec.GetNumStr()
 
-  if expectedNumStr != floor.GetNumStr() {
-    t.Errorf("Error: Expected result='%v'. Instead, result='%v' ",
-      expectedNumStr, floor.GetNumStr())
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "fixedDecNumStr, err := fixedDec.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
   }
+
+  if numStr != fixedDecNumStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Expected fixedDecNumStr = '%v'\n"+
+      "Instead, fixedDecNumStr = '%v'\n\n",
+      ePrefix, numStr, fixedDecNumStr)
+
+    return
+  }
+
+  floor, err := fixedDec.Floor()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "fixedDecNumStr, err := fixedDec.GetNumStr()\n"+
+      "Original Fixed Dec NumStr= '%v'\n"+
+      "Error='%v'\n\n", ePrefix, fixedDecNumStr, err.Error())
+    return
+  }
+
+  floorNumStr, err := floor.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "floorNumStr, err := floor.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if expectedNumStr != floorNumStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Expected floorNumStr = '%v'\n"+
+      "Instead, floorNumStr = '%v'\n\n",
+      ePrefix, expectedNumStr, floorNumStr)
+  }
+
+  return
 }
 
 func TestBigIntFixedDecimal_Floor_17(t *testing.T) {
 
+  ePrefix := "TestBigIntFixedDecimal_Floor_17"
   numStr := "189765342891.0000000000001"
   expectedNumStr := "189765342891"
 
-  fixDec, err :=
-    new(BigIntFixedDecimal).NewNumStr(numStr)
+  fixedDec, err :=
+    new(BigIntFixedDecimal).NewNumStr(numStr, '.')
 
   if err != nil {
-    t.Errorf("Error returned by new(BigIntFixedDecimal)."+
-      "NewNumStr(numStr). numStr='%v' Error='%v'",
-      numStr, err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "fixedDec, err := new(BigIntFixedDecimal).NewNumStr(numStr, '.')\n"+
+      "numStr='%v'\n"+
+      "Error='%v'\n\n", ePrefix, numStr, err.Error())
+    return
   }
 
-  floor := fixDec.Floor()
+  fixedDecNumStr, err := fixedDec.GetNumStr()
 
-  if expectedNumStr != floor.GetNumStr() {
-    t.Errorf("Error: Expected result='%v'. Instead, result='%v' ",
-      expectedNumStr, floor.GetNumStr())
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "fixedDecNumStr, err := fixedDec.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
   }
+
+  if numStr != fixedDecNumStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Expected fixedDecNumStr = '%v'\n"+
+      "Instead, fixedDecNumStr = '%v'\n\n",
+      ePrefix, numStr, fixedDecNumStr)
+
+    return
+  }
+
+  floor, err := fixedDec.Floor()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "fixedDecNumStr, err := fixedDec.GetNumStr()\n"+
+      "Original Fixed Dec NumStr= '%v'\n"+
+      "Error='%v'\n\n", ePrefix, fixedDecNumStr, err.Error())
+    return
+  }
+
+  floorNumStr, err := floor.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "floorNumStr, err := floor.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if expectedNumStr != floorNumStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Expected floorNumStr = '%v'\n"+
+      "Instead, floorNumStr = '%v'\n\n",
+      ePrefix, expectedNumStr, floorNumStr)
+  }
+
+  return
 }
