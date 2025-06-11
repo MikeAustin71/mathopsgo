@@ -1166,12 +1166,7 @@ func TestBigIntFixedDecimal_SetNumStr_09(t *testing.T) {
   numStr := "(00052.1234)"
   expectedNumStr := "-52.1234"
   expectedPrecision := uint(4)
-  fixedDec, err := new(BigIntFixedDecimal).NewNumStr(origNumStr)
-
-  if err != nil {
-    t.Errorf("Error returned by %v", err.Error())
-  }
-
+	
   fixedDec, err := new(BigIntFixedDecimal).NewNumStr(origNumStr, '.')
 
   if err != nil {
@@ -1822,6 +1817,7 @@ func TestBigIntFixedDecimal_SetNumStr_18(t *testing.T) {
 }
 
 func TestBigIntFixedDecimal_TrimTrailingFracZeros_01(t *testing.T) {
+  ePrefix := "TestBigIntFixedDecimal_TrimTrailingFracZeros_01"
 
   num := 456123000
   precision := uint(6)
@@ -1831,16 +1827,30 @@ func TestBigIntFixedDecimal_TrimTrailingFracZeros_01(t *testing.T) {
 
   fixedDec.TrimTrailingFracZeros()
 
-  actualNumStr := fixedDec.GetNumStr()
+  fixedDecNumStr, err := fixedDec.GetNumStr()
 
-  if expectedNumStr != actualNumStr {
-    t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v'. ",
-      expectedNumStr, actualNumStr)
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "fixedDecNumStr, err := fixedDec.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
   }
 
+  if expectedNumStr != fixedDecNumStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Expected fixedDecNumStr = '%v'\n"+
+      "Instead, fixedDecNumStr = '%v'\n\n",
+      ePrefix, expectedNumStr, fixedDecNumStr)
+  }
+
+  return
 }
 
 func TestBigIntFixedDecimal_TrimTrailingFracZeros_02(t *testing.T) {
+
+  ePrefix := "TestBigIntFixedDecimal_TrimTrailingFracZeros_02"
 
   num := -456123000
   precision := uint(6)
@@ -1850,17 +1860,30 @@ func TestBigIntFixedDecimal_TrimTrailingFracZeros_02(t *testing.T) {
 
   fixedDec.TrimTrailingFracZeros()
 
-  actualNumStr := fixedDec.GetNumStr()
+  fixedDecNumStr, err := fixedDec.GetNumStr()
 
-  if expectedNumStr != actualNumStr {
-    t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v'. ",
-      expectedNumStr, actualNumStr)
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "fixedDecNumStr, err := fixedDec.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
   }
 
+  if expectedNumStr != fixedDecNumStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Expected fixedDecNumStr = '%v'\n"+
+      "Instead, fixedDecNumStr = '%v'\n\n",
+      ePrefix, expectedNumStr, fixedDecNumStr)
+  }
+
+  return
 }
 
 func TestBigIntFixedDecimal_TrimTrailingFracZeros_03(t *testing.T) {
 
+  ePrefix := "TestBigIntFixedDecimal_TrimTrailingFracZeros_03"
   num := 0
   precision := uint(3)
   expectedNumStr := "0"
@@ -1869,17 +1892,29 @@ func TestBigIntFixedDecimal_TrimTrailingFracZeros_03(t *testing.T) {
 
   fixedDec.TrimTrailingFracZeros()
 
-  actualNumStr := fixedDec.GetNumStr()
+  fixedDecNumStr, err := fixedDec.GetNumStr()
 
-  if expectedNumStr != actualNumStr {
-    t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v'. ",
-      expectedNumStr, actualNumStr)
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "fixedDecNumStr, err := fixedDec.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
   }
 
+  if expectedNumStr != fixedDecNumStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Expected fixedDecNumStr = '%v'\n"+
+      "Instead, fixedDecNumStr = '%v'\n\n",
+      ePrefix, expectedNumStr, fixedDecNumStr)
+  }
+
+  return
 }
 
 func TestBigIntFixedDecimal_TrimTrailingFracZeros_04(t *testing.T) {
-
+  ePrefix := "TestBigIntFixedDecimal_TrimTrailingFracZeros_04"
   num := 70
   precision := uint(1)
   expectedNumStr := "7"
@@ -1888,17 +1923,30 @@ func TestBigIntFixedDecimal_TrimTrailingFracZeros_04(t *testing.T) {
 
   fixedDec.TrimTrailingFracZeros()
 
-  actualNumStr := fixedDec.GetNumStr()
+  fixedDecNumStr, err := fixedDec.GetNumStr()
 
-  if expectedNumStr != actualNumStr {
-    t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v'. ",
-      expectedNumStr, actualNumStr)
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "fixedDecNumStr, err := fixedDec.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
   }
 
+  if expectedNumStr != fixedDecNumStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Expected fixedDecNumStr = '%v'\n"+
+      "Instead, fixedDecNumStr = '%v'\n\n",
+      ePrefix, expectedNumStr, fixedDecNumStr)
+  }
+
+  return
 }
 
 func TestBigIntFixedDecimal_TrimTrailingFracZeros_05(t *testing.T) {
 
+  ePrefix := "TestBigIntFixedDecimal_TrimTrailingFracZeros_05"
   num := uint64(7000000000000000000)
   precision := uint(17)
   expectedNumStr := "70"
@@ -1907,17 +1955,30 @@ func TestBigIntFixedDecimal_TrimTrailingFracZeros_05(t *testing.T) {
 
   fixedDec.TrimTrailingFracZeros()
 
-  actualNumStr := fixedDec.GetNumStr()
+  fixedDecNumStr, err := fixedDec.GetNumStr()
 
-  if expectedNumStr != actualNumStr {
-    t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v'. ",
-      expectedNumStr, actualNumStr)
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "fixedDecNumStr, err := fixedDec.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
   }
 
+  if expectedNumStr != fixedDecNumStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Expected fixedDecNumStr = '%v'\n"+
+      "Instead, fixedDecNumStr = '%v'\n\n",
+      ePrefix, expectedNumStr, fixedDecNumStr)
+  }
+
+  return
 }
 
 func TestBigIntFixedDecimal_TruncToDecPlace_01(t *testing.T) {
 
+  ePrefix := "TestBigIntFixedDecimal_TruncToDecPlace_01"
   num := -123567
   precision := uint(3)
   expectedNumStr := "-123.56"
@@ -1927,15 +1988,29 @@ func TestBigIntFixedDecimal_TruncToDecPlace_01(t *testing.T) {
 
   fixedDec.TruncToDecPlace(truncToDec)
 
-  actualNumStr := fixedDec.GetNumStr()
+  fixedDecNumStr, err := fixedDec.GetNumStr()
 
-  if expectedNumStr != actualNumStr {
-    t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v'. ",
-      expectedNumStr, actualNumStr)
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "fixedDecNumStr, err := fixedDec.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
   }
+
+  if expectedNumStr != fixedDecNumStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Expected fixedDecNumStr = '%v'\n"+
+      "Instead, fixedDecNumStr = '%v'\n\n",
+      ePrefix, expectedNumStr, fixedDecNumStr)
+  }
+
+  return
 }
 
 func TestBigIntFixedDecimal_TruncToDecPlace_02(t *testing.T) {
+  ePrefix := "TestBigIntFixedDecimal_TruncToDecPlace_02"
   num := 123567
   precision := uint(3)
   expectedNumStr := "123.56"
@@ -1945,16 +2020,30 @@ func TestBigIntFixedDecimal_TruncToDecPlace_02(t *testing.T) {
 
   fixedDec.TruncToDecPlace(truncToDec)
 
-  actualNumStr := fixedDec.GetNumStr()
+  fixedDecNumStr, err := fixedDec.GetNumStr()
 
-  if expectedNumStr != actualNumStr {
-    t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v'. ",
-      expectedNumStr, actualNumStr)
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "fixedDecNumStr, err := fixedDec.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
   }
+
+  if expectedNumStr != fixedDecNumStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Expected fixedDecNumStr = '%v'\n"+
+      "Instead, fixedDecNumStr = '%v'\n\n",
+      ePrefix, expectedNumStr, fixedDecNumStr)
+  }
+
+  return
 }
 
 func TestBigIntFixedDecimal_TruncToDecPlace_03(t *testing.T) {
 
+  ePrefix := "TestBigIntFixedDecimal_TruncToDecPlace_03"
   num := 123567
   precision := uint(3)
   expectedNumStr := "123.567"
@@ -1964,16 +2053,30 @@ func TestBigIntFixedDecimal_TruncToDecPlace_03(t *testing.T) {
 
   fixedDec.TruncToDecPlace(truncToDec)
 
-  actualNumStr := fixedDec.GetNumStr()
+  fixedDecNumStr, err := fixedDec.GetNumStr()
 
-  if expectedNumStr != actualNumStr {
-    t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v'. ",
-      expectedNumStr, actualNumStr)
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "fixedDecNumStr, err := fixedDec.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
   }
+
+  if expectedNumStr != fixedDecNumStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Expected fixedDecNumStr = '%v'\n"+
+      "Instead, fixedDecNumStr = '%v'\n\n",
+      ePrefix, expectedNumStr, fixedDecNumStr)
+  }
+
+  return
 }
 
 func TestBigIntFixedDecimal_TruncToDecPlace_04(t *testing.T) {
 
+  ePrefix := "TestBigIntFixedDecimal_TruncToDecPlace_04"
   num := 123567
   precision := uint(3)
   expectedNumStr := "123.5670"
@@ -1983,16 +2086,30 @@ func TestBigIntFixedDecimal_TruncToDecPlace_04(t *testing.T) {
 
   fixedDec.TruncToDecPlace(truncToDec)
 
-  actualNumStr := fixedDec.GetNumStr()
+  fixedDecNumStr, err := fixedDec.GetNumStr()
 
-  if expectedNumStr != actualNumStr {
-    t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v'. ",
-      expectedNumStr, actualNumStr)
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "fixedDecNumStr, err := fixedDec.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
   }
+
+  if expectedNumStr != fixedDecNumStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Expected fixedDecNumStr = '%v'\n"+
+      "Instead, fixedDecNumStr = '%v'\n\n",
+      ePrefix, expectedNumStr, fixedDecNumStr)
+  }
+
+  return
 }
 
 func TestBigIntFixedDecimal_TruncToDecPlace_05(t *testing.T) {
 
+  ePrefix := "TestBigIntFixedDecimal_TruncToDecPlace_05"
   num := -123567
   precision := uint(3)
   expectedNumStr := "-123.5670"
@@ -2002,15 +2119,29 @@ func TestBigIntFixedDecimal_TruncToDecPlace_05(t *testing.T) {
 
   fixedDec.TruncToDecPlace(truncToDec)
 
-  actualNumStr := fixedDec.GetNumStr()
+  fixedDecNumStr, err := fixedDec.GetNumStr()
 
-  if expectedNumStr != actualNumStr {
-    t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v'. ",
-      expectedNumStr, actualNumStr)
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "fixedDecNumStr, err := fixedDec.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
   }
+
+  if expectedNumStr != fixedDecNumStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Expected fixedDecNumStr = '%v'\n"+
+      "Instead, fixedDecNumStr = '%v'\n\n",
+      ePrefix, expectedNumStr, fixedDecNumStr)
+  }
+
+  return
 }
 
 func TestBigIntFixedDecimal_TruncToDecPlace_06(t *testing.T) {
+  ePrefix := "TestBigIntFixedDecimal_TruncToDecPlace_06"
   num := 0
   precision := uint(3)
   expectedNumStr := "0.00"
@@ -2020,16 +2151,29 @@ func TestBigIntFixedDecimal_TruncToDecPlace_06(t *testing.T) {
 
   fixedDec.TruncToDecPlace(truncToDec)
 
-  actualNumStr := fixedDec.GetNumStr()
+  fixedDecNumStr, err := fixedDec.GetNumStr()
 
-  if expectedNumStr != actualNumStr {
-    t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v'. ",
-      expectedNumStr, actualNumStr)
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "fixedDecNumStr, err := fixedDec.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
   }
+
+  if expectedNumStr != fixedDecNumStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Expected fixedDecNumStr = '%v'\n"+
+      "Instead, fixedDecNumStr = '%v'\n\n",
+      ePrefix, expectedNumStr, fixedDecNumStr)
+  }
+
+  return
 }
 
 func TestBigIntFixedDecimal_TruncToDecPlace_07(t *testing.T) {
-
+  ePrefix := "TestBigIntFixedDecimal_TruncToDecPlace_07"
   num := 654123456
   precision := uint(6)
   expectedNumStr := "654.123"
@@ -2039,16 +2183,30 @@ func TestBigIntFixedDecimal_TruncToDecPlace_07(t *testing.T) {
 
   fixedDec.TruncToDecPlace(truncToDec)
 
-  actualNumStr := fixedDec.GetNumStr()
+  fixedDecNumStr, err := fixedDec.GetNumStr()
 
-  if expectedNumStr != actualNumStr {
-    t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v'. ",
-      expectedNumStr, actualNumStr)
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "fixedDecNumStr, err := fixedDec.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
   }
+
+  if expectedNumStr != fixedDecNumStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Expected fixedDecNumStr = '%v'\n"+
+      "Instead, fixedDecNumStr = '%v'\n\n",
+      ePrefix, expectedNumStr, fixedDecNumStr)
+  }
+
+  return
 }
 
 func TestBigIntFixedDecimal_TruncToDecPlace_08(t *testing.T) {
 
+  ePrefix := "TestBigIntFixedDecimal_TruncToDecPlace_08"
   num := 654123456789
   precision := uint(9)
   expectedNumStr := "654.1234"
@@ -2058,16 +2216,30 @@ func TestBigIntFixedDecimal_TruncToDecPlace_08(t *testing.T) {
 
   fixedDec.TruncToDecPlace(truncToDec)
 
-  actualNumStr := fixedDec.GetNumStr()
+  fixedDecNumStr, err := fixedDec.GetNumStr()
 
-  if expectedNumStr != actualNumStr {
-    t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v'. ",
-      expectedNumStr, actualNumStr)
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "fixedDecNumStr, err := fixedDec.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
   }
+
+  if expectedNumStr != fixedDecNumStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Expected fixedDecNumStr = '%v'\n"+
+      "Instead, fixedDecNumStr = '%v'\n\n",
+      ePrefix, expectedNumStr, fixedDecNumStr)
+  }
+
+  return
 }
 
 func TestBigIntFixedDecimal_TruncToDecPlace_09(t *testing.T) {
 
+  ePrefix := "TestBigIntFixedDecimal_TruncToDecPlace_09"
   num := 654123456789
   precision := uint(9)
   expectedNumStr := "654"
@@ -2077,16 +2249,30 @@ func TestBigIntFixedDecimal_TruncToDecPlace_09(t *testing.T) {
 
   fixedDec.TruncToDecPlace(truncToDec)
 
-  actualNumStr := fixedDec.GetNumStr()
+  fixedDecNumStr, err := fixedDec.GetNumStr()
 
-  if expectedNumStr != actualNumStr {
-    t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v'. ",
-      expectedNumStr, actualNumStr)
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "fixedDecNumStr, err := fixedDec.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
   }
+
+  if expectedNumStr != fixedDecNumStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Expected fixedDecNumStr = '%v'\n"+
+      "Instead, fixedDecNumStr = '%v'\n\n",
+      ePrefix, expectedNumStr, fixedDecNumStr)
+  }
+
+  return
 }
 
 func TestBigIntFixedDecimal_TruncToDecPlace_10(t *testing.T) {
 
+  ePrefix := "TestBigIntFixedDecimal_TruncToDecPlace_10"
   num := 654
   precision := uint(0)
   expectedNumStr := "654.00000"
@@ -2096,16 +2282,30 @@ func TestBigIntFixedDecimal_TruncToDecPlace_10(t *testing.T) {
 
   fixedDec.TruncToDecPlace(truncToDec)
 
-  actualNumStr := fixedDec.GetNumStr()
+  fixedDecNumStr, err := fixedDec.GetNumStr()
 
-  if expectedNumStr != actualNumStr {
-    t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v'. ",
-      expectedNumStr, actualNumStr)
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "fixedDecNumStr, err := fixedDec.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
   }
+
+  if expectedNumStr != fixedDecNumStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Expected fixedDecNumStr = '%v'\n"+
+      "Instead, fixedDecNumStr = '%v'\n\n",
+      ePrefix, expectedNumStr, fixedDecNumStr)
+  }
+
+  return
 }
 
 func TestBigIntFixedDecimal_TruncToDecPlace_11(t *testing.T) {
 
+  ePrefix := "TestBigIntFixedDecimal_TruncToDecPlace_11"
   num := 654123
   precision := uint(3)
   expectedNumStr := "654.123000000"
@@ -2115,16 +2315,30 @@ func TestBigIntFixedDecimal_TruncToDecPlace_11(t *testing.T) {
 
   fixedDec.TruncToDecPlace(truncToDec)
 
-  actualNumStr := fixedDec.GetNumStr()
+  fixedDecNumStr, err := fixedDec.GetNumStr()
 
-  if expectedNumStr != actualNumStr {
-    t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v'. ",
-      expectedNumStr, actualNumStr)
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "fixedDecNumStr, err := fixedDec.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
   }
+
+  if expectedNumStr != fixedDecNumStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Expected fixedDecNumStr = '%v'\n"+
+      "Instead, fixedDecNumStr = '%v'\n\n",
+      ePrefix, expectedNumStr, fixedDecNumStr)
+  }
+
+  return
 }
 
 func TestBigIntFixedDecimal_TruncToDecPlace_12(t *testing.T) {
 
+  ePrefix := "TestBigIntFixedDecimal_TruncToDecPlace_12"
   num := 0
   precision := uint(0)
   expectedNumStr := "0.000000"
@@ -2134,16 +2348,30 @@ func TestBigIntFixedDecimal_TruncToDecPlace_12(t *testing.T) {
 
   fixedDec.TruncToDecPlace(truncToDec)
 
-  actualNumStr := fixedDec.GetNumStr()
+  fixedDecNumStr, err := fixedDec.GetNumStr()
 
-  if expectedNumStr != actualNumStr {
-    t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v'. ",
-      expectedNumStr, actualNumStr)
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "fixedDecNumStr, err := fixedDec.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
   }
+
+  if expectedNumStr != fixedDecNumStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Expected fixedDecNumStr = '%v'\n"+
+      "Instead, fixedDecNumStr = '%v'\n\n",
+      ePrefix, expectedNumStr, fixedDecNumStr)
+  }
+
+  return
 }
 
 func TestBigIntFixedDecimal_TruncToDecPlace_13(t *testing.T) {
 
+  ePrefix := "TestBigIntFixedDecimal_TruncToDecPlace_13"
   num := 0
   precision := uint(6)
   expectedNumStr := "0"
@@ -2153,15 +2381,30 @@ func TestBigIntFixedDecimal_TruncToDecPlace_13(t *testing.T) {
 
   fixedDec.TruncToDecPlace(truncToDec)
 
-  actualNumStr := fixedDec.GetNumStr()
+  fixedDecNumStr, err := fixedDec.GetNumStr()
 
-  if expectedNumStr != actualNumStr {
-    t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v'. ",
-      expectedNumStr, actualNumStr)
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "fixedDecNumStr, err := fixedDec.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
   }
+
+  if expectedNumStr != fixedDecNumStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Expected fixedDecNumStr = '%v'\n"+
+      "Instead, fixedDecNumStr = '%v'\n\n",
+      ePrefix, expectedNumStr, fixedDecNumStr)
+  }
+
+  return
 }
 
 func TestBigIntFixedDecimal_TruncToDecPlace_14(t *testing.T) {
+
+  ePrefix := "TestBigIntFixedDecimal_TruncToDecPlace_14"
   num := 654123456789015
   precision := uint(12)
   expectedNumStr := "654.12345678901"
@@ -2171,10 +2414,23 @@ func TestBigIntFixedDecimal_TruncToDecPlace_14(t *testing.T) {
 
   fixedDec.TruncToDecPlace(truncToDec)
 
-  actualNumStr := fixedDec.GetNumStr()
+  fixedDecNumStr, err := fixedDec.GetNumStr()
 
-  if expectedNumStr != actualNumStr {
-    t.Errorf("Error: Expected NumStr='%v'. Instead, NumStr='%v'. ",
-      expectedNumStr, actualNumStr)
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "fixedDecNumStr, err := fixedDec.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
   }
+
+  if expectedNumStr != fixedDecNumStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Expected fixedDecNumStr = '%v'\n"+
+      "Instead, fixedDecNumStr = '%v'\n\n",
+      ePrefix, expectedNumStr, fixedDecNumStr)
+  }
+
+  return
 }
