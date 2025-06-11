@@ -632,7 +632,8 @@ func TestBigIntFixedDecimal_SetNumStr_01(t *testing.T) {
     t.Errorf("%v\n"+
       "Error returned by:\n"+
       "fixedDec, err := new(BigIntFixedDecimal).NewNumStr(origNumStr, '.')\n"+
-      "Error='%v'\n\n", ePrefix, err.Error())
+      "origNumStr='%v'\n"+
+      "Error='%v'\n\n", ePrefix, origNumStr, err.Error())
     return
   }
 
@@ -1166,7 +1167,7 @@ func TestBigIntFixedDecimal_SetNumStr_09(t *testing.T) {
   numStr := "(00052.1234)"
   expectedNumStr := "-52.1234"
   expectedPrecision := uint(4)
-	
+
   fixedDec, err := new(BigIntFixedDecimal).NewNumStr(origNumStr, '.')
 
   if err != nil {
