@@ -913,158 +913,302 @@ func TestBigIntMath_BigIntPrecisionCmp_01(t *testing.T) {
   }
 
   if expectedResult != cmpResult {
-    t.Errorf("Error: Expected compare result='%v'. "+
-      "Instead, compare result='%v' ",
-      expectedResult, cmpResult)
-  }
-
-  if expectedResult != cmpResult {
     t.Errorf("%v\n"+
       "Error: Unexpected Result!\n"+
-      "Expected Compare Result = '%v'\n"+
-      "Instead, Compare Result = '%v'\n\n",
+      "Expected cmpResult = '%v'\n"+
+      "Instead, cmpResult = '%v'\n\n",
       ePrefix,
       expectedResult,
       cmpResult)
   }
 
   return
-
 }
 
 func TestBigIntMath_BigIntPrecisionCmp_02(t *testing.T) {
+  ePrefix := "TestBigIntMath_BigIntPrecisionCmp_02"
   num1 := big.NewInt(52)
   num1Precision := big.NewInt(1)
   num2 := big.NewInt(5105)
   num2Precision := big.NewInt(3)
   expectedResult := 1
 
-  cmpResult :=
+  cmpResult, err :=
     new(BigIntMath).BigIntPrecisionCmp(
       num1,
       num1Precision,
       num2,
       num2Precision)
 
-  if expectedResult != cmpResult {
-    t.Errorf("Error: Expected compare result='%v'. "+
-      "Instead, compare result='%v' ",
-      expectedResult, cmpResult)
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "cmpResult, err := new(BigIntMath).BigIntPrecisionCmp(\n"+
+      " num1, num1Precision,  num2, num2Precision)\n"+
+      " num1= '%v'\n"+
+      "num1Precision= '%v'\n,"+
+      "num2= '%v'\n,"+
+      "num2Precision= '%v'\n"+
+      "Error='%v'\n\n",
+      ePrefix,
+      num1.Text(10),
+      num1Precision.Text(10),
+      num2.Text(10),
+      num2Precision.Text(10),
+      err.Error())
+    return
   }
 
+  if expectedResult != cmpResult {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Expected cmpResult = '%v'\n"+
+      "Instead, cmpResult = '%v'\n\n",
+      ePrefix,
+      expectedResult,
+      cmpResult)
+  }
+
+  return
 }
 
 func TestBigIntMath_BigIntPrecisionCmp_03(t *testing.T) {
+  ePrefix := "TestBigIntMath_BigIntPrecisionCmp_03"
   num1 := big.NewInt(-52)
   num1Precision := big.NewInt(1)
   num2 := big.NewInt(5105)
   num2Precision := big.NewInt(3)
   expectedResult := -1
 
-  cmpResult :=
+  cmpResult, err :=
     new(BigIntMath).BigIntPrecisionCmp(
       num1,
       num1Precision,
       num2,
       num2Precision)
 
-  if expectedResult != cmpResult {
-    t.Errorf("Error: Expected compare result='%v'. "+
-      "Instead, compare result='%v' ",
-      expectedResult, cmpResult)
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "cmpResult, err := new(BigIntMath).BigIntPrecisionCmp(\n"+
+      " num1, num1Precision,  num2, num2Precision)\n"+
+      " num1= '%v'\n"+
+      "num1Precision= '%v'\n,"+
+      "num2= '%v'\n,"+
+      "num2Precision= '%v'\n"+
+      "Error='%v'\n\n",
+      ePrefix,
+      num1.Text(10),
+      num1Precision.Text(10),
+      num2.Text(10),
+      num2Precision.Text(10),
+      err.Error())
+    return
   }
 
+  if expectedResult != cmpResult {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Expected cmpResult = '%v'\n"+
+      "Instead, cmpResult = '%v'\n\n",
+      ePrefix,
+      expectedResult,
+      cmpResult)
+  }
+
+  return
 }
 
 func TestBigIntMath_BigIntPrecisionCmp_04(t *testing.T) {
+  ePrefix := "TestBigIntMath_BigIntPrecisionCmp_04"
   num1 := big.NewInt(52346789)
   num1Precision := big.NewInt(1)
   num2 := big.NewInt(8234001)
   num2Precision := big.NewInt(3)
   expectedResult := 1
 
-  cmpResult :=
+  cmpResult, err :=
     new(BigIntMath).BigIntPrecisionCmp(
       num1,
       num1Precision,
       num2,
       num2Precision)
 
-  if expectedResult != cmpResult {
-    t.Errorf("Error: Expected compare result='%v'. "+
-      "Instead, compare result='%v' ",
-      expectedResult, cmpResult)
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "cmpResult, err := new(BigIntMath).BigIntPrecisionCmp(\n"+
+      " num1, num1Precision,  num2, num2Precision)\n"+
+      " num1= '%v'\n"+
+      "num1Precision= '%v'\n,"+
+      "num2= '%v'\n,"+
+      "num2Precision= '%v'\n"+
+      "Error='%v'\n\n",
+      ePrefix,
+      num1.Text(10),
+      num1Precision.Text(10),
+      num2.Text(10),
+      num2Precision.Text(10),
+      err.Error())
+    return
   }
 
+  if expectedResult != cmpResult {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Expected cmpResult = '%v'\n"+
+      "Instead, cmpResult = '%v'\n\n",
+      ePrefix,
+      expectedResult,
+      cmpResult)
+  }
+
+  return
 }
 
 func TestBigIntMath_BigIntPrecisionCmp_05(t *testing.T) {
+  ePrefix := "TestBigIntMath_BigIntPrecisionCmp_05"
   num1 := big.NewInt(52346789)
   num1Precision := big.NewInt(1)
   num2 := big.NewInt(52346789)
   num2Precision := big.NewInt(1)
   expectedResult := 0
 
-  cmpResult :=
+  cmpResult, err :=
     new(BigIntMath).BigIntPrecisionCmp(
       num1,
       num1Precision,
       num2,
       num2Precision)
 
-  if expectedResult != cmpResult {
-    t.Errorf("Error: Expected compare result='%v'. "+
-      "Instead, compare result='%v' ",
-      expectedResult, cmpResult)
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "cmpResult, err := new(BigIntMath).BigIntPrecisionCmp(\n"+
+      " num1, num1Precision,  num2, num2Precision)\n"+
+      " num1= '%v'\n"+
+      "num1Precision= '%v'\n,"+
+      "num2= '%v'\n,"+
+      "num2Precision= '%v'\n"+
+      "Error='%v'\n\n",
+      ePrefix,
+      num1.Text(10),
+      num1Precision.Text(10),
+      num2.Text(10),
+      num2Precision.Text(10),
+      err.Error())
+    return
   }
 
+  if expectedResult != cmpResult {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Expected cmpResult = '%v'\n"+
+      "Instead, cmpResult = '%v'\n\n",
+      ePrefix,
+      expectedResult,
+      cmpResult)
+  }
+
+  return
 }
 
 func TestBigIntMath_BigIntPrecisionCmp_06(t *testing.T) {
+  ePrefix := "TestBigIntMath_BigIntPrecisionCmp_06"
   num1 := big.NewInt(-51)
   num1Precision := big.NewInt(1)
   num2 := big.NewInt(-52)
   num2Precision := big.NewInt(1)
   expectedResult := 1
 
-  cmpResult :=
+  cmpResult, err :=
     new(BigIntMath).BigIntPrecisionCmp(
       num1,
       num1Precision,
       num2,
       num2Precision)
 
-  if expectedResult != cmpResult {
-    t.Errorf("Error: Expected compare result='%v'. "+
-      "Instead, compare result='%v' ",
-      expectedResult, cmpResult)
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "cmpResult, err := new(BigIntMath).BigIntPrecisionCmp(\n"+
+      " num1, num1Precision,  num2, num2Precision)\n"+
+      " num1= '%v'\n"+
+      "num1Precision= '%v'\n,"+
+      "num2= '%v'\n,"+
+      "num2Precision= '%v'\n"+
+      "Error='%v'\n\n",
+      ePrefix,
+      num1.Text(10),
+      num1Precision.Text(10),
+      num2.Text(10),
+      num2Precision.Text(10),
+      err.Error())
+    return
   }
 
+  if expectedResult != cmpResult {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Expected cmpResult = '%v'\n"+
+      "Instead, cmpResult = '%v'\n\n",
+      ePrefix,
+      expectedResult,
+      cmpResult)
+  }
+
+  return
 }
 
 func TestBigIntMath_BigIntPrecisionCmp_07(t *testing.T) {
+  ePrefix := "TestBigIntMath_BigIntPrecisionCmp_07"
   num1 := big.NewInt(-51)
   num1Precision := big.NewInt(1)
   num2 := big.NewInt(-51)
   num2Precision := big.NewInt(1)
   expectedResult := 0
 
-  cmpResult :=
+  cmpResult, err :=
     new(BigIntMath).BigIntPrecisionCmp(
       num1,
       num1Precision,
       num2,
       num2Precision)
 
-  if expectedResult != cmpResult {
-    t.Errorf("Error: Expected compare result='%v'. "+
-      "Instead, compare result='%v' ",
-      expectedResult, cmpResult)
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "cmpResult, err := new(BigIntMath).BigIntPrecisionCmp(\n"+
+      " num1, num1Precision,  num2, num2Precision)\n"+
+      " num1= '%v'\n"+
+      "num1Precision= '%v'\n,"+
+      "num2= '%v'\n,"+
+      "num2Precision= '%v'\n"+
+      "Error='%v'\n\n",
+      ePrefix,
+      num1.Text(10),
+      num1Precision.Text(10),
+      num2.Text(10),
+      num2Precision.Text(10),
+      err.Error())
+    return
   }
 
+  if expectedResult != cmpResult {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Expected cmpResult = '%v'\n"+
+      "Instead, cmpResult = '%v'\n\n",
+      ePrefix,
+      expectedResult,
+      cmpResult)
+  }
+
+  return
 }
 
 func TestBigIntMath_RoundToMaxPrecision_01(t *testing.T) {
+  ePrefix := "TestBigIntMath_RoundToMaxPrecision_01"
   num1 := big.NewInt(762939453125)
   num1Precision := big.NewInt(17)
   maxPrecision := big.NewInt(16)
@@ -1074,31 +1218,100 @@ func TestBigIntMath_RoundToMaxPrecision_01(t *testing.T) {
     new(BigIntMath).RoundToMaxPrecision(num1, num1Precision, maxPrecision, false)
 
   if err != nil {
-    t.Errorf("Error returned from Round to Max Precision: %v", err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "result, resultPrecision, err := new(BigIntMath).RoundToMaxPrecision(\n"+
+      "  num1, num1Precision, maxPrecision, false)\n"+
+      "num1= '%v'\n"+
+      "num1Precision= '%v'\n"+
+      "maxPrecision= '%v'\n"+
+      "Error='%v'\n\n",
+      ePrefix,
+      num1.Text(10),
+      num1Precision.Text(10),
+      maxPrecision.Text(10),
+      err.Error())
+
+    return
   }
 
   binResult, err := new(BigIntNum).NewBigIntBigPrecision(result, resultPrecision)
 
   if err != nil {
-    t.Errorf("Error returned from new(BigIntNum).NewBigIntBigPrecision: %v",
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "binResult, err := new(BigIntNum).NewBigIntBigPrecision(result, resultPrecision)\n"+
+      "result= '%v'\n"+
+      "resultPrecision= '%v'\n"+
+      "Error='%v'\n\n",
+      ePrefix,
+      result.Text(10),
+      resultPrecision.Text(10),
       err.Error())
+
+    return
   }
 
-  if expectedResult != binResult.GetNumStr() {
-    t.Errorf("Error: Expected result ='%v'. Instead, result='%v'. ",
-      expectedResult, binResult.GetNumStr())
+  binResultNumStr, err := binResult.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "binResultNumStr, err := binResult.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
   }
 
+  if expectedResult != binResultNumStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Expected binResult = '%v'\n"+
+      "Instead, binResult = '%v'\n\n",
+      ePrefix,
+      expectedResult,
+      binResultNumStr)
+  }
+
+  return
 }
 
 func TestBigIntMath_RoundToMaxPrecision_02(t *testing.T) {
-  binNum1, err := new(BigIntNum).NewNumStr("276213586400995126719079828947")
+
+  ePrefix := "TestBigIntMath_RoundToMaxPrecision_02"
+
+  originalNumStr := "276213586400995126719079828947"
+
+  binNum1, err := new(BigIntNum).NewNumStr(originalNumStr)
 
   if err != nil {
-    t.Errorf("Error returned from binNum1: %v", err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "binNum1, err := new(BigIntNum).NewNumStr(originalNumStr)\n"+
+      "originalNumStr= '%v'\n"+
+      "Error='%v'\n\n", ePrefix, originalNumStr, err.Error())
+    return
   }
 
-  num1 := binNum1.GetIntegerValue()
+  binNum1NumStr, err := binNum1.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "binNum1NumStr, err := binNum1.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  num1, err := binNum1.GetIntegerValue()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "num1, err := binNum1.GetIntegerValue()\n"+
+      "binNum1NumStr= '%v'\n"+
+      "Error='%v'\n\n", ePrefix, binNum1NumStr, err.Error())
+    return
+  }
 
   num1Precision := big.NewInt(32)
   // "0.00276213586400995126719079828947"
@@ -1109,32 +1322,100 @@ func TestBigIntMath_RoundToMaxPrecision_02(t *testing.T) {
     new(BigIntMath).RoundToMaxPrecision(num1, num1Precision, maxPrecision, false)
 
   if err != nil {
-    t.Errorf("Error returned from Round to Max Precision: %v", err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "result, resultPrecision, err := new(BigIntMath).RoundToMaxPrecision(\n"+
+      "  num1, num1Precision, maxPrecision, false)\n"+
+      "num1= '%v'\n"+
+      "num1Precision= '%v'\n"+
+      "maxPrecision= '%v'\n"+
+      "Error='%v'\n\n",
+      ePrefix,
+      num1.Text(10),
+      num1Precision.Text(10),
+      maxPrecision.Text(10),
+      err.Error())
+
+    return
   }
 
   binResult, err := new(BigIntNum).NewBigIntBigPrecision(result, resultPrecision)
 
   if err != nil {
-    t.Errorf("Error returned from new(BigIntNum).NewBigIntBigPrecision: %v",
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "binResult, err := new(BigIntNum).NewBigIntBigPrecision(result, resultPrecision)\n"+
+      "result= '%v'\n"+
+      "resultPrecision= '%v'\n"+
+      "Error='%v'\n\n",
+      ePrefix,
+      result.Text(10),
+      resultPrecision.Text(10),
       err.Error())
+
+    return
   }
 
-  if expectedResult != binResult.GetNumStr() {
-    t.Errorf("Error: Expected result ='%v'. Instead, result='%v'. ",
-      expectedResult, binResult.GetNumStr())
+  binResultNumStr, err := binResult.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "binResultNumStr, err := binResult.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
   }
 
+  if expectedResult != binResultNumStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Expected binResult = '%v'\n"+
+      "Instead, binResult = '%v'\n\n",
+      ePrefix,
+      expectedResult,
+      binResultNumStr)
+  }
+
+  return
 }
 
 func TestBigIntMath_RoundToMaxPrecision_03(t *testing.T) {
 
+  ePrefix := "TestBigIntMath_RoundToMaxPrecision_03"
+
+  originalNumStr := "276213586400995126719079828947"
+
   binNum1, err := new(BigIntNum).NewNumStr("276213586400995126719079828947")
 
   if err != nil {
-    t.Errorf("Error returned from binNum1: %v", err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "binNum1, err := new(BigIntNum).NewNumStr(originalNumStr)\n"+
+      "originalNumStr= '%v'\n"+
+      "Error='%v'\n\n", ePrefix, originalNumStr, err.Error())
+    return
   }
 
-  num1 := binNum1.GetIntegerValue()
+  binNum1NumStr, err := binNum1.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "binNum1NumStr, err := binNum1.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  num1, err := binNum1.GetIntegerValue()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "num1, err := binNum1.GetIntegerValue()\n"+
+      "binNum1NumStr= '%v'\n"+
+      "Error='%v'\n\n", ePrefix, binNum1NumStr, err.Error())
+    return
+  }
 
   num1Precision := big.NewInt(32)
   // "0.00276213586400995126719079828947"
@@ -1145,32 +1426,100 @@ func TestBigIntMath_RoundToMaxPrecision_03(t *testing.T) {
     new(BigIntMath).RoundToMaxPrecision(num1, num1Precision, maxPrecision, false)
 
   if err != nil {
-    t.Errorf("Error returned from Round to Max Precision: %v", err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "result, resultPrecision, err := new(BigIntMath).RoundToMaxPrecision(\n"+
+      "  num1, num1Precision, maxPrecision, false)\n"+
+      "num1= '%v'\n"+
+      "num1Precision= '%v'\n"+
+      "maxPrecision= '%v'\n"+
+      "Error='%v'\n\n",
+      ePrefix,
+      num1.Text(10),
+      num1Precision.Text(10),
+      maxPrecision.Text(10),
+      err.Error())
+
+    return
   }
 
   binResult, err := new(BigIntNum).NewBigIntBigPrecision(result, resultPrecision)
 
   if err != nil {
-    t.Errorf("Error returned from new(BigIntNum).NewBigIntBigPrecision: %v",
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "binResult, err := new(BigIntNum).NewBigIntBigPrecision(result, resultPrecision)\n"+
+      "result= '%v'\n"+
+      "resultPrecision= '%v'\n"+
+      "Error='%v'\n\n",
+      ePrefix,
+      result.Text(10),
+      resultPrecision.Text(10),
       err.Error())
+
+    return
   }
 
-  if expectedResult != binResult.GetNumStr() {
-    t.Errorf("Error: Expected result ='%v'. Instead, result='%v'. ",
-      expectedResult, binResult.GetNumStr())
+  binResultNumStr, err := binResult.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "binResultNumStr, err := binResult.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
   }
 
+  if expectedResult != binResultNumStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Expected binResult = '%v'\n"+
+      "Instead, binResult = '%v'\n\n",
+      ePrefix,
+      expectedResult,
+      binResultNumStr)
+  }
+
+  return
 }
 
 func TestBigIntMath_RoundToMaxPrecision_04(t *testing.T) {
 
-  binNum1, err := new(BigIntNum).NewNumStr("-276213586400995126719079828947")
+  ePrefix := "TestBigIntMath_RoundToMaxPrecision_04"
+
+  originalNumStr := "-276213586400995126719079828947"
+
+  binNum1, err := new(BigIntNum).NewNumStr(originalNumStr)
 
   if err != nil {
-    t.Errorf("Error returned from binNum1: %v", err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "binNum1, err := new(BigIntNum).NewNumStr(originalNumStr)\n"+
+      "originalNumStr= '%v'\n"+
+      "Error='%v'\n\n", ePrefix, originalNumStr, err.Error())
+    return
   }
 
-  num1 := binNum1.GetIntegerValue()
+  binNum1NumStr, err := binNum1.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "binNum1NumStr, err := binNum1.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  num1, err := binNum1.GetIntegerValue()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "num1, err := binNum1.GetIntegerValue()\n"+
+      "binNum1NumStr= '%v'\n"+
+      "Error='%v'\n\n", ePrefix, binNum1NumStr, err.Error())
+    return
+  }
 
   num1Precision := big.NewInt(32)
   // "-0.00276213586400995126719079828947"
@@ -1181,31 +1530,99 @@ func TestBigIntMath_RoundToMaxPrecision_04(t *testing.T) {
     new(BigIntMath).RoundToMaxPrecision(num1, num1Precision, maxPrecision, false)
 
   if err != nil {
-    t.Errorf("Error returned from Round to Max Precision: %v", err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "result, resultPrecision, err := new(BigIntMath).RoundToMaxPrecision(\n"+
+      "  num1, num1Precision, maxPrecision, false)\n"+
+      "num1= '%v'\n"+
+      "num1Precision= '%v'\n"+
+      "maxPrecision= '%v'\n"+
+      "Error='%v'\n\n",
+      ePrefix,
+      num1.Text(10),
+      num1Precision.Text(10),
+      maxPrecision.Text(10),
+      err.Error())
+
+    return
   }
 
   binResult, err := new(BigIntNum).NewBigIntBigPrecision(result, resultPrecision)
 
   if err != nil {
-    t.Errorf("Error returned from new(BigIntNum).NewBigIntBigPrecision: %v",
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "binResult, err := new(BigIntNum).NewBigIntBigPrecision(result, resultPrecision)\n"+
+      "result= '%v'\n"+
+      "resultPrecision= '%v'\n"+
+      "Error='%v'\n\n",
+      ePrefix,
+      result.Text(10),
+      resultPrecision.Text(10),
       err.Error())
+
+    return
   }
 
-  if expectedResult != binResult.GetNumStr() {
-    t.Errorf("Error: Expected result ='%v'. Instead, result='%v'. ",
-      expectedResult, binResult.GetNumStr())
+  binResultNumStr, err := binResult.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "binResultNumStr, err := binResult.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
   }
 
+  if expectedResult != binResultNumStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Expected binResult = '%v'\n"+
+      "Instead, binResult = '%v'\n\n",
+      ePrefix,
+      expectedResult,
+      binResultNumStr)
+  }
+
+  return
 }
 
 func TestBigIntMath_RoundToMaxPrecision_05(t *testing.T) {
-  binNum1, err := new(BigIntNum).NewNumStr("-276213586400995126719079828947")
+  ePrefix := "TestBigIntMath_RoundToMaxPrecision_05"
+
+  originalNumStr := "-276213586400995126719079828947"
+
+  binNum1, err := new(BigIntNum).NewNumStr(originalNumStr)
 
   if err != nil {
-    t.Errorf("Error returned from binNum1: %v", err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "binNum1, err := new(BigIntNum).NewNumStr(originalNumStr)\n"+
+      "originalNumStr= '%v'\n"+
+      "Error='%v'\n\n", ePrefix, originalNumStr, err.Error())
+    return
   }
 
-  num1 := binNum1.GetIntegerValue()
+  binNum1NumStr, err := binNum1.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "binNum1NumStr, err := binNum1.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  num1, err := binNum1.GetIntegerValue()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "num1, err := binNum1.GetIntegerValue()\n"+
+      "binNum1NumStr= '%v'\n"+
+      "Error='%v'\n\n", ePrefix, binNum1NumStr, err.Error())
+    return
+  }
 
   num1Precision := big.NewInt(32)
   // "-0.00276213586400995126719079828947"
@@ -1216,24 +1633,65 @@ func TestBigIntMath_RoundToMaxPrecision_05(t *testing.T) {
     new(BigIntMath).RoundToMaxPrecision(num1, num1Precision, maxPrecision, false)
 
   if err != nil {
-    t.Errorf("Error returned from Round to Max Precision: %v", err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "result, resultPrecision, err := new(BigIntMath).RoundToMaxPrecision(\n"+
+      "  num1, num1Precision, maxPrecision, false)\n"+
+      "num1= '%v'\n"+
+      "num1Precision= '%v'\n"+
+      "maxPrecision= '%v'\n"+
+      "Error='%v'\n\n",
+      ePrefix,
+      num1.Text(10),
+      num1Precision.Text(10),
+      maxPrecision.Text(10),
+      err.Error())
+
+    return
   }
 
   binResult, err := new(BigIntNum).NewBigIntBigPrecision(result, resultPrecision)
 
   if err != nil {
-    t.Errorf("Error returned from new(BigIntNum).NewBigIntBigPrecision: %v",
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "binResult, err := new(BigIntNum).NewBigIntBigPrecision(result, resultPrecision)\n"+
+      "result= '%v'\n"+
+      "resultPrecision= '%v'\n"+
+      "Error='%v'\n\n",
+      ePrefix,
+      result.Text(10),
+      resultPrecision.Text(10),
       err.Error())
+
+    return
   }
 
-  if expectedResult != binResult.GetNumStr() {
-    t.Errorf("Error: Expected result ='%v'. Instead, result='%v'. ",
-      expectedResult, binResult.GetNumStr())
+  binResultNumStr, err := binResult.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "binResultNumStr, err := binResult.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
   }
 
+  if expectedResult != binResultNumStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Expected binResult = '%v'\n"+
+      "Instead, binResult = '%v'\n\n",
+      ePrefix,
+      expectedResult,
+      binResultNumStr)
+  }
+
+  return
 }
 
 func TestBigIntMath_RoundToMaxPrecision_06(t *testing.T) {
+  ePrefix := "TestBigIntMath_RoundToMaxPrecision_06"
 
   num1 := big.NewInt(1230000)
 
@@ -1246,25 +1704,66 @@ func TestBigIntMath_RoundToMaxPrecision_06(t *testing.T) {
     new(BigIntMath).RoundToMaxPrecision(num1, num1Precision, maxPrecision, true)
 
   if err != nil {
-    t.Errorf("Error returned from Round to Max Precision: %v", err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "result, resultPrecision, err := new(BigIntMath).RoundToMaxPrecision(\n"+
+      "  num1, num1Precision, maxPrecision, false)\n"+
+      "num1= '%v'\n"+
+      "num1Precision= '%v'\n"+
+      "maxPrecision= '%v'\n"+
+      "Error='%v'\n\n",
+      ePrefix,
+      num1.Text(10),
+      num1Precision.Text(10),
+      maxPrecision.Text(10),
+      err.Error())
+
+    return
   }
 
   binResult, err := new(BigIntNum).NewBigIntBigPrecision(result, resultPrecision)
 
   if err != nil {
-    t.Errorf("Error returned from new(BigIntNum).NewBigIntBigPrecision: %v",
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "binResult, err := new(BigIntNum).NewBigIntBigPrecision(result, resultPrecision)\n"+
+      "result= '%v'\n"+
+      "resultPrecision= '%v'\n"+
+      "Error='%v'\n\n",
+      ePrefix,
+      result.Text(10),
+      resultPrecision.Text(10),
       err.Error())
+
+    return
   }
 
-  if expectedResult != binResult.GetNumStr() {
-    t.Errorf("Error: Expected result ='%v'. Instead, result='%v'. ",
-      expectedResult, binResult.GetNumStr())
+  binResultNumStr, err := binResult.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "binResultNumStr, err := binResult.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
   }
 
+  if expectedResult != binResultNumStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Expected binResult = '%v'\n"+
+      "Instead, binResult = '%v'\n\n",
+      ePrefix,
+      expectedResult,
+      binResultNumStr)
+  }
+
+  return
 }
 
 func TestBigIntMath_RoundToMaxPrecision_07(t *testing.T) {
 
+  ePrefix := "TestBigIntMath_RoundToMaxPrecision_07"
   num1 := big.NewInt(-1230000)
 
   num1Precision := big.NewInt(5)
@@ -1276,23 +1775,66 @@ func TestBigIntMath_RoundToMaxPrecision_07(t *testing.T) {
     new(BigIntMath).RoundToMaxPrecision(num1, num1Precision, maxPrecision, true)
 
   if err != nil {
-    t.Errorf("Error returned from Round to Max Precision: %v", err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "result, resultPrecision, err := new(BigIntMath).RoundToMaxPrecision(\n"+
+      "  num1, num1Precision, maxPrecision, false)\n"+
+      "num1= '%v'\n"+
+      "num1Precision= '%v'\n"+
+      "maxPrecision= '%v'\n"+
+      "Error='%v'\n\n",
+      ePrefix,
+      num1.Text(10),
+      num1Precision.Text(10),
+      maxPrecision.Text(10),
+      err.Error())
+
+    return
   }
 
   binResult, err := new(BigIntNum).NewBigIntBigPrecision(result, resultPrecision)
 
   if err != nil {
-    t.Errorf("Error returned from new(BigIntNum).NewBigIntBigPrecision: %v",
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "binResult, err := new(BigIntNum).NewBigIntBigPrecision(result, resultPrecision)\n"+
+      "result= '%v'\n"+
+      "resultPrecision= '%v'\n"+
+      "Error='%v'\n\n",
+      ePrefix,
+      result.Text(10),
+      resultPrecision.Text(10),
       err.Error())
+
+    return
   }
 
-  if expectedResult != binResult.GetNumStr() {
-    t.Errorf("Error: Expected result ='%v'. Instead, result='%v'. ",
-      expectedResult, binResult.GetNumStr())
+  binResultNumStr, err := binResult.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "binResultNumStr, err := binResult.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
   }
+
+  if expectedResult != binResultNumStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Expected binResult = '%v'\n"+
+      "Instead, binResult = '%v'\n\n",
+      ePrefix,
+      expectedResult,
+      binResultNumStr)
+  }
+
+  return
 }
 
 func TestBigIntMath_TruncateToMaxPrecision_01(t *testing.T) {
+
+  ePrefix := "TestBigIntMath_TruncateToMaxPrecision_01"
   num1 := big.NewInt(762939453125)
   num1Precision := big.NewInt(17)
   maxPrecision := big.NewInt(16)
@@ -1302,31 +1844,99 @@ func TestBigIntMath_TruncateToMaxPrecision_01(t *testing.T) {
     new(BigIntMath).TruncateToMaxPrecision(num1, num1Precision, maxPrecision)
 
   if err != nil {
-    t.Errorf("Error returned from Truncate to Max Precision: %v", err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "result, resultPrecision, err := new(BigIntMath).RoundToMaxPrecision(\n"+
+      "  num1, num1Precision, maxPrecision, false)\n"+
+      "num1= '%v'\n"+
+      "num1Precision= '%v'\n"+
+      "maxPrecision= '%v'\n"+
+      "Error='%v'\n\n",
+      ePrefix,
+      num1.Text(10),
+      num1Precision.Text(10),
+      maxPrecision.Text(10),
+      err.Error())
+
+    return
   }
 
   binResult, err := new(BigIntNum).NewBigIntBigPrecision(result, resultPrecision)
 
   if err != nil {
-    t.Errorf("Error returned from new(BigIntNum).NewBigIntBigPrecision: %v",
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "binResult, err := new(BigIntNum).NewBigIntBigPrecision(result, resultPrecision)\n"+
+      "result= '%v'\n"+
+      "resultPrecision= '%v'\n"+
+      "Error='%v'\n\n",
+      ePrefix,
+      result.Text(10),
+      resultPrecision.Text(10),
       err.Error())
+
+    return
   }
 
-  if expectedResult != binResult.GetNumStr() {
-    t.Errorf("Error: Expected result ='%v'. Instead, result='%v'. ",
-      expectedResult, binResult.GetNumStr())
+  binResultNumStr, err := binResult.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "binResultNumStr, err := binResult.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
   }
 
+  if expectedResult != binResultNumStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Expected binResult = '%v'\n"+
+      "Instead, binResult = '%v'\n\n",
+      ePrefix,
+      expectedResult,
+      binResultNumStr)
+  }
+
+  return
 }
 
 func TestBigIntMath_TruncateToMaxPrecision_02(t *testing.T) {
-  binNum1, err := new(BigIntNum).NewNumStr("276213586400995126719079828947")
+  ePrefix := "TestBigIntMath_TruncateToMaxPrecision_02"
+
+  originalNumStr := "276213586400995126719079828947"
+
+  binNum1, err := new(BigIntNum).NewNumStr(originalNumStr)
 
   if err != nil {
-    t.Errorf("Error returned from binNum1: %v", err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "binNum1, err := new(BigIntNum).NewNumStr(originalNumStr)\n"+
+      "originalNumStr= '%v'\n"+
+      "Error='%v'\n\n", ePrefix, originalNumStr, err.Error())
+    return
   }
 
-  num1 := binNum1.GetIntegerValue()
+  binNum1NumStr, err := binNum1.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "binNum1NumStr, err := binNum1.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  num1, err := binNum1.GetIntegerValue()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "num1, err := binNum1.GetIntegerValue()\n"+
+      "binNum1NumStr= '%v'\n"+
+      "Error='%v'\n\n", ePrefix, binNum1NumStr, err.Error())
+    return
+  }
 
   num1Precision := big.NewInt(32)
   // "0.00276213586400995126719079828947"
@@ -1337,32 +1947,100 @@ func TestBigIntMath_TruncateToMaxPrecision_02(t *testing.T) {
     new(BigIntMath).TruncateToMaxPrecision(num1, num1Precision, maxPrecision)
 
   if err != nil {
-    t.Errorf("Error returned from Truncate to Max Precision: %v", err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "result, resultPrecision, err := new(BigIntMath).TruncateToMaxPrecision(\n"+
+      "  num1, num1Precision, maxPrecision, false)\n"+
+      "num1= '%v'\n"+
+      "num1Precision= '%v'\n"+
+      "maxPrecision= '%v'\n"+
+      "Error='%v'\n\n",
+      ePrefix,
+      num1.Text(10),
+      num1Precision.Text(10),
+      maxPrecision.Text(10),
+      err.Error())
+
+    return
   }
 
   binResult, err := new(BigIntNum).NewBigIntBigPrecision(result, resultPrecision)
 
   if err != nil {
-    t.Errorf("Error returned from new(BigIntNum).NewBigIntBigPrecision: %v",
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "binResult, err := new(BigIntNum).NewBigIntBigPrecision(result, resultPrecision)\n"+
+      "result= '%v'\n"+
+      "resultPrecision= '%v'\n"+
+      "Error='%v'\n\n",
+      ePrefix,
+      result.Text(10),
+      resultPrecision.Text(10),
       err.Error())
+
+    return
   }
 
-  if expectedResult != binResult.GetNumStr() {
-    t.Errorf("Error: Expected result ='%v'. Instead, result='%v'. ",
-      expectedResult, binResult.GetNumStr())
+  binResultNumStr, err := binResult.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "binResultNumStr, err := binResult.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
   }
 
+  if expectedResult != binResultNumStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Expected binResult = '%v'\n"+
+      "Instead, binResult = '%v'\n\n",
+      ePrefix,
+      expectedResult,
+      binResultNumStr)
+  }
+
+  return
 }
 
 func TestBigIntMath_TruncateToMaxPrecision_03(t *testing.T) {
 
-  binNum1, err := new(BigIntNum).NewNumStr("276213586400995126719079828947")
+  ePrefix := "TestBigIntMath_TruncateToMaxPrecision_03"
+
+  originalNumStr := "276213586400995126719079828947"
+
+  binNum1, err := new(BigIntNum).NewNumStr(originalNumStr)
 
   if err != nil {
-    t.Errorf("Error returned from binNum1: %v", err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "binNum1, err := new(BigIntNum).NewNumStr(originalNumStr)\n"+
+      "originalNumStr= '%v'\n"+
+      "Error='%v'\n\n", ePrefix, originalNumStr, err.Error())
+    return
   }
 
-  num1 := binNum1.GetIntegerValue()
+  binNum1NumStr, err := binNum1.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "binNum1NumStr, err := binNum1.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  num1, err := binNum1.GetIntegerValue()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "num1, err := binNum1.GetIntegerValue()\n"+
+      "binNum1NumStr= '%v'\n"+
+      "Error='%v'\n\n", ePrefix, binNum1NumStr, err.Error())
+    return
+  }
 
   num1Precision := big.NewInt(32)
   // "0.00276213586400995126719079828947"
@@ -1373,32 +2051,99 @@ func TestBigIntMath_TruncateToMaxPrecision_03(t *testing.T) {
     new(BigIntMath).TruncateToMaxPrecision(num1, num1Precision, maxPrecision)
 
   if err != nil {
-    t.Errorf("Error returned from Truncate to Max Precision: %v", err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "result, resultPrecision, err := new(BigIntMath).TruncateToMaxPrecision(\n"+
+      "  num1, num1Precision, maxPrecision, false)\n"+
+      "num1= '%v'\n"+
+      "num1Precision= '%v'\n"+
+      "maxPrecision= '%v'\n"+
+      "Error='%v'\n\n",
+      ePrefix,
+      num1.Text(10),
+      num1Precision.Text(10),
+      maxPrecision.Text(10),
+      err.Error())
+
+    return
   }
 
   binResult, err := new(BigIntNum).NewBigIntBigPrecision(result, resultPrecision)
 
   if err != nil {
-    t.Errorf("Error returned from new(BigIntNum).NewBigIntBigPrecision: %v",
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "binResult, err := new(BigIntNum).NewBigIntBigPrecision(result, resultPrecision)\n"+
+      "result= '%v'\n"+
+      "resultPrecision= '%v'\n"+
+      "Error='%v'\n\n",
+      ePrefix,
+      result.Text(10),
+      resultPrecision.Text(10),
       err.Error())
+
+    return
   }
 
-  if expectedResult != binResult.GetNumStr() {
-    t.Errorf("Error: Expected result ='%v'. Instead, result='%v'. ",
-      expectedResult, binResult.GetNumStr())
+  binResultNumStr, err := binResult.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "binResultNumStr, err := binResult.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
   }
 
+  if expectedResult != binResultNumStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Expected binResult = '%v'\n"+
+      "Instead, binResult = '%v'\n\n",
+      ePrefix,
+      expectedResult,
+      binResultNumStr)
+  }
+
+  return
 }
 
 func TestBigIntMath_TruncateToMaxPrecision_04(t *testing.T) {
 
-  binNum1, err := new(BigIntNum).NewNumStr("-276213586400995126719079828947")
+  ePrefix := "TestBigIntMath_TruncateToMaxPrecision_04"
+  originalNumStr := "-276213586400995126719079828947"
+
+  binNum1, err := new(BigIntNum).NewNumStr(originalNumStr)
 
   if err != nil {
-    t.Errorf("Error returned from binNum1: %v", err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "binNum1, err := new(BigIntNum).NewNumStr(originalNumStr)\n"+
+      "originalNumStr= '%v'\n"+
+      "Error='%v'\n\n", ePrefix, originalNumStr, err.Error())
+    return
   }
 
-  num1 := binNum1.GetIntegerValue()
+  binNum1NumStr, err := binNum1.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "binNum1NumStr, err := binNum1.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  num1, err := binNum1.GetIntegerValue()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "num1, err := binNum1.GetIntegerValue()\n"+
+      "binNum1NumStr= '%v'\n"+
+      "Error='%v'\n\n", ePrefix, binNum1NumStr, err.Error())
+    return
+  }
 
   num1Precision := big.NewInt(32)
   // "-0.00276213586400995126719079828947"
@@ -1409,31 +2154,99 @@ func TestBigIntMath_TruncateToMaxPrecision_04(t *testing.T) {
     new(BigIntMath).TruncateToMaxPrecision(num1, num1Precision, maxPrecision)
 
   if err != nil {
-    t.Errorf("Error returned from Round to Max Precision: %v", err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "result, resultPrecision, err := new(BigIntMath).TruncateToMaxPrecision(\n"+
+      "  num1, num1Precision, maxPrecision, false)\n"+
+      "num1= '%v'\n"+
+      "num1Precision= '%v'\n"+
+      "maxPrecision= '%v'\n"+
+      "Error='%v'\n\n",
+      ePrefix,
+      num1.Text(10),
+      num1Precision.Text(10),
+      maxPrecision.Text(10),
+      err.Error())
+
+    return
   }
 
   binResult, err := new(BigIntNum).NewBigIntBigPrecision(result, resultPrecision)
 
   if err != nil {
-    t.Errorf("Error returned from new(BigIntNum).NewBigIntBigPrecision: %v",
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "binResult, err := new(BigIntNum).NewBigIntBigPrecision(result, resultPrecision)\n"+
+      "result= '%v'\n"+
+      "resultPrecision= '%v'\n"+
+      "Error='%v'\n\n",
+      ePrefix,
+      result.Text(10),
+      resultPrecision.Text(10),
       err.Error())
+
+    return
   }
 
-  if expectedResult != binResult.GetNumStr() {
-    t.Errorf("Error: Expected result ='%v'. Instead, result='%v'. ",
-      expectedResult, binResult.GetNumStr())
+  binResultNumStr, err := binResult.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "binResultNumStr, err := binResult.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
   }
 
+  if expectedResult != binResultNumStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Expected binResult = '%v'\n"+
+      "Instead, binResult = '%v'\n\n",
+      ePrefix,
+      expectedResult,
+      binResultNumStr)
+  }
+
+  return
 }
 
 func TestBigIntMath_TruncateToMaxPrecision_05(t *testing.T) {
-  binNum1, err := new(BigIntNum).NewNumStr("-276213586400995126719079828947")
+
+  ePrefix := "TestBigIntMath_TruncateToMaxPrecision_05"
+  originalNumStr := "-276213586400995126719079828947"
+
+  binNum1, err := new(BigIntNum).NewNumStr(originalNumStr)
 
   if err != nil {
-    t.Errorf("Error returned from binNum1: %v", err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "binNum1, err := new(BigIntNum).NewNumStr(originalNumStr)\n"+
+      "originalNumStr= '%v'\n"+
+      "Error='%v'\n\n", ePrefix, originalNumStr, err.Error())
+    return
   }
 
-  num1 := binNum1.GetIntegerValue()
+  binNum1NumStr, err := binNum1.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "binNum1NumStr, err := binNum1.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  num1, err := binNum1.GetIntegerValue()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "num1, err := binNum1.GetIntegerValue()\n"+
+      "binNum1NumStr= '%v'\n"+
+      "Error='%v'\n\n", ePrefix, binNum1NumStr, err.Error())
+    return
+  }
 
   num1Precision := big.NewInt(32)
   // "-0.00276213586400995126719079828947"
@@ -1444,19 +2257,59 @@ func TestBigIntMath_TruncateToMaxPrecision_05(t *testing.T) {
     new(BigIntMath).TruncateToMaxPrecision(num1, num1Precision, maxPrecision)
 
   if err != nil {
-    t.Errorf("Error returned from Round to Max Precision: %v", err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "result, resultPrecision, err := new(BigIntMath).TruncateToMaxPrecision(\n"+
+      "  num1, num1Precision, maxPrecision, false)\n"+
+      "num1= '%v'\n"+
+      "num1Precision= '%v'\n"+
+      "maxPrecision= '%v'\n"+
+      "Error='%v'\n\n",
+      ePrefix,
+      num1.Text(10),
+      num1Precision.Text(10),
+      maxPrecision.Text(10),
+      err.Error())
+
+    return
   }
 
   binResult, err := new(BigIntNum).NewBigIntBigPrecision(result, resultPrecision)
 
   if err != nil {
-    t.Errorf("Error returned from new(BigIntNum).NewBigIntBigPrecision: %v",
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "binResult, err := new(BigIntNum).NewBigIntBigPrecision(result, resultPrecision)\n"+
+      "result= '%v'\n"+
+      "resultPrecision= '%v'\n"+
+      "Error='%v'\n\n",
+      ePrefix,
+      result.Text(10),
+      resultPrecision.Text(10),
       err.Error())
+
+    return
   }
 
-  if expectedResult != binResult.GetNumStr() {
-    t.Errorf("Error: Expected result ='%v'. Instead, result='%v'. ",
-      expectedResult, binResult.GetNumStr())
+  binResultNumStr, err := binResult.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "binResultNumStr, err := binResult.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
   }
 
+  if expectedResult != binResultNumStr {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Expected binResult = '%v'\n"+
+      "Instead, binResult = '%v'\n\n",
+      ePrefix,
+      expectedResult,
+      binResultNumStr)
+  }
+
+  return
 }
