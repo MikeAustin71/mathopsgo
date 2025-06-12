@@ -27,7 +27,7 @@ type NumStrDto struct {
 	//		no preceding plus or minus sign character. Example: 123.456 =
 	//		[]rune{'1','2','3','4','5','6'}
 	precision          uint // The number of digits to the right of the decimal point.
-	thousandsSeparator rune // Separates thousands in the integer number: '1,000,000,000
+	thousandsSeparator rune // Separates thousands in the integer number: '1,000,000,000'
 	decimalSeparator   rune // Separates integer and fractional elements of a number. '123.456'
 	currencySymbol     rune // Currency symbol used in currency string displays
 }
@@ -331,6 +331,8 @@ func (nDto *NumStrDto) CopyIn(nInDto NumStrDto) {
 
 }
 
+// Divide
+//
 // Divides the current NumStrDto by input parameter 'n2Dto'.
 // Maximum precision of the division result is controlled by the input
 // parameter, 'maximumPrecision'.
@@ -349,17 +351,17 @@ func (nDto *NumStrDto) Divide(n2Dto NumStrDto, minimumPrecision, maximumPrecisio
 
 	ePrefix := "NumStrDto.Divide() "
 
-	ia1, err := IntAry{}.NewNumStrDto(nDto.CopyOut())
+	ia1, err := new(IntAry).NewNumStrDto(nDto.CopyOut())
 
 	if err != nil {
-		return fmt.Errorf(ePrefix+"Error returned by IntAry{}.NewNumStrDto(nDto.CopyOut()). "+
+		return fmt.Errorf(ePrefix+"Error returned by new(IntAry).NewNumStrDto(nDto.CopyOut()). "+
 			"Error='%v'", err.Error())
 	}
 
-	ia2, err := IntAry{}.NewNumStrDto(n2Dto)
+	ia2, err := new(IntAry).NewNumStrDto(n2Dto)
 
 	if err != nil {
-		return fmt.Errorf(ePrefix+"Error returned by IntAry{}.NewNumStrDto(n2Dto). "+
+		return fmt.Errorf(ePrefix+"Error returned by new(IntAry).NewNumStrDto(n2Dto). "+
 			"Error='%v'", err.Error())
 	}
 
@@ -1130,7 +1132,7 @@ func (nDto *NumStrDto) FormatThousandsStr(negValMode NegativeValueFmtMode) (stri
 // GetAbsoluteBigInt - Returns the absolute value of all numeric
 // digits in the number string (nDto.absAllNumRunes). As such,
 // Fractional digits to the right of the decimal are included
-// in the consolidate integer number. All of the numeric digits
+// in the consolidate integer number. All the numeric digits
 // in the number string are therefore returned as a *big.Int
 // This method will fail if the NumStrDto has not been properly
 // initialized with a valid number string.
@@ -1170,7 +1172,7 @@ func (nDto *NumStrDto) GetAbsoluteBigInt() (*big.Int, error) {
 }
 
 // GetAbsAllNumRunes - Returns an array of runes representing
-// all of the integer and fractional digits included in the
+// all the integer and fractional digits included in the
 // current NumStrDto instance. The rune array returned will
 // consist of numeric digits with no sign value prefixed. This
 // effectively returns the absolute value of all integer and
@@ -1193,7 +1195,7 @@ func (nDto *NumStrDto) GetAbsAllNumRunes() []rune {
 	return outRunes
 }
 
-// GetAbsFracRunes - Returns all of the fractional digits
+// GetAbsFracRunes - Returns all the fractional digits
 // to the right of the decimal place in the current NumStrDto
 // instance as an array of runes. The rune array is not signed;
 // that is, the rune array does not contain a '+' or '-' character
@@ -1229,12 +1231,12 @@ func (nDto *NumStrDto) GetAbsFracRunesLength() int {
 	return int(nDto.precision)
 }
 
-// GetAbsIntRunes - Returns all of the integer digits included
+// GetAbsIntRunes - Returns all the integer digits included
 // in the current NumStrDto numeric value as an array of runes.
 // The returned rune array does not contain a sign value in the
 // first position and therefore represents the absolute or positive
 // value of all the integer digits. The integer digits of a NumStrDto
-// numeric includes all of the digits to the left of the decimal point.
+// numeric includes all the digits to the left of the decimal point.
 //
 // If the current NumStrDto consists of zero integers and fractional
 // digits (Example: '0.123456'), this method will return a rune array
@@ -1284,7 +1286,7 @@ func (nDto *NumStrDto) GetAbsIntRunesLength() int {
 	return lenAllNums - int(nDto.precision)
 }
 
-// GetBigInt - returns a integer of type *big.Int representing
+// GetBigInt - returns an integer of type *big.Int representing
 // the signed integer value of NumStrDto.numStrDto. Decimal numbers
 // like '-123.456' will be returned as signed integer values, '-123456'.
 //
@@ -1331,7 +1333,7 @@ func (nDto *NumStrDto) GetBigIntNum() (BigIntNum, error) {
 	err := nDto.IsValid(ePrefix + " This NumStrDto INVALID! ")
 
 	if err != nil {
-		return BigIntNum{}.NewZero(0), err
+		return new(BigIntNum).NewZero(0), err
 	}
 
 	numSeps := nDto.GetNumericSeparatorsDto()
@@ -1339,18 +1341,18 @@ func (nDto *NumStrDto) GetBigIntNum() (BigIntNum, error) {
 	bInt, err := nDto.GetBigInt()
 
 	if err != nil {
-		return BigIntNum{}.NewZero(0),
+		return new(BigIntNum).NewZero(0),
 			fmt.Errorf(ePrefix+
 				"Error returned by nDto.GetBigInt() "+
 				"Error='%v' ", err.Error())
 	}
 
-	bIntNum := BigIntNum{}.NewBigInt(bInt, nDto.precision)
+	bIntNum := new(BigIntNum).NewBigInt(bInt, nDto.precision)
 
 	err = bIntNum.SetNumericSeparatorsDto(numSeps)
 
 	if err != nil {
-		return BigIntNum{}.NewZero(0),
+		return new(BigIntNum).NewZero(0),
 			fmt.Errorf(ePrefix+
 				"Error returned by bIntNum.SetNumericSeparatorsDto(numSeps) "+
 				"Error='%v' \n", err.Error())
@@ -1467,20 +1469,22 @@ func (nDto *NumStrDto) GetDecimal() (Decimal, error) {
 
 	numSeps := nDto.GetNumericSeparatorsDto()
 
-	dec, err := Decimal{}.NewNumStrWithNumSeps(nDto.GetNumStr(), numSeps)
+	dec, err := new(Decimal).NewNumStrWithNumSeps(nDto.GetNumStr(), numSeps)
 
 	if err != nil {
 		return Decimal{},
 			fmt.Errorf(ePrefix+
-				"Error returned by Decimal{}.NewNumStrWithNumSeps(nDto.GetNumStr(), numSeps) "+
+				"Error returned by new(Decimal).NewNumStrWithNumSeps(nDto.GetNumStr(), numSeps) "+
 				"Error='%v' ", err.Error())
 	}
 
 	return dec, nil
 }
 
-// GetIntAryElements - Converts the current NumStrDto instance
-// to a Type IntAry and returns it to the calling function.
+// GetIntAry
+//
+//	Converts the current NumStrDto instance to a Type IntAry and
+//	returns it to the calling function.
 func (nDto *NumStrDto) GetIntAry() (IntAry, error) {
 	ePrefix := "NumStrDto.GetIntAryElements() "
 
@@ -1492,12 +1496,12 @@ func (nDto *NumStrDto) GetIntAry() (IntAry, error) {
 
 	numSeps := nDto.GetNumericSeparatorsDto()
 
-	ia, err := IntAry{}.NewNumStrWithNumSeps(nDto.GetNumStr(), numSeps)
+	ia, err := new(IntAry).NewNumStrWithNumSeps(nDto.GetNumStr(), numSeps)
 
 	if err != nil {
 		return IntAry{},
 			fmt.Errorf(ePrefix+
-				"Error returned by IntAry{}.NewNumStrWithNumSeps(nDto.GetNumStr(), numSeps). "+
+				"Error returned by new(IntAry).NewNumStrWithNumSeps(nDto.GetNumStr(), numSeps). "+
 				"nDto='%v' Error='%v'", nDto.GetNumStr(), err.Error())
 	}
 
@@ -1599,7 +1603,7 @@ func (nDto *NumStrDto) GetNumStrDto() (NumStrDto, error) {
 	err := nDto.IsValid(ePrefix + "NumStrDto INVALID! ")
 
 	if err != nil {
-		return NumStrDto{}.New(), err
+		return new(NumStrDto).New(), err
 	}
 
 	return nDto.CopyOut(), nil
@@ -1781,7 +1785,7 @@ func (nDto *NumStrDto) GetSciNotationNumber(mantissaLen uint) (SciNotationNum, e
 	bINum, err := nDto.GetBigIntNum()
 
 	if err != nil {
-		return SciNotationNum{}.New(),
+		return new(SciNotationNum).New(),
 			fmt.Errorf(ePrefix+
 				"Error returned by nDto.GetBigIntNum(). Error='%v'",
 				err.Error())
@@ -1790,7 +1794,7 @@ func (nDto *NumStrDto) GetSciNotationNumber(mantissaLen uint) (SciNotationNum, e
 	sciNotation, err := bINum.GetSciNotationNumber(mantissaLen)
 
 	if err != nil {
-		return SciNotationNum{}.New(),
+		return new(SciNotationNum).New(),
 			fmt.Errorf(ePrefix+
 				"Error returned by bINum.GetSciNotationNumber(mantissaLen). Error='%v'",
 				err.Error())
@@ -1951,7 +1955,7 @@ func (nDto *NumStrDto) GetZeroNumStrDto(numFracDigits uint) NumStrDto {
 		nDto.currencySymbol = '$'
 	}
 
-	n2Dto := NumStrDto{}.New()
+	n2Dto := new(NumStrDto).New()
 	n2Dto.signVal = 1
 	n2Dto.thousandsSeparator = nDto.thousandsSeparator
 	n2Dto.decimalSeparator = nDto.decimalSeparator
@@ -2115,7 +2119,7 @@ func (nDto *NumStrDto) Multiply(n2Dto NumStrDto) error {
 }
 
 // MultiplyNumStrs - Multiplies two NumStrDto instances and returns the result as
-// an separate NumStrDto instance.
+// a separate NumStrDto instance.
 func (nDto *NumStrDto) MultiplyNumStrs(n1Dto NumStrDto, n2Dto NumStrDto) (NumStrDto, error) {
 	ePrefix := "NumStrDto.MultiplyNumStrs() "
 
@@ -2254,7 +2258,7 @@ func (nDto *NumStrDto) NewBigFloat(
 
 	numStr := bigFloat.Text('f', precision)
 
-	n2, err := NumStrDto{}.NewPtr().ParseNumStr(numStr)
+	n2, err := new(NumStrDto).NewPtr().ParseNumStr(numStr)
 
 	if err != nil {
 		return NumStrDto{},
@@ -2273,7 +2277,7 @@ func (nDto *NumStrDto) NewBigInt(signedBigInt *big.Int, precision uint) (NumStrD
 
 	ePrefix := "NumStrDto.NewBigInt() "
 
-	n2, err := NumStrDto{}.ParseSignedBigInt(
+	n2, err := new(NumStrDto).ParseSignedBigInt(
 		big.NewInt(0).Set(signedBigInt),
 		precision)
 
@@ -2297,7 +2301,7 @@ func (nDto *NumStrDto) NewBigInt(signedBigInt *big.Int, precision uint) (NumStrD
 // instance which is returned to the calling function.
 func (nDto *NumStrDto) NewBigIntNum(bINum BigIntNum) (NumStrDto, error) {
 	ePrefix := "NumStrDto.NewBigIntNum() "
-	n2, err := NumStrDto{}.ParseBigIntNum(bINum)
+	n2, err := new(NumStrDto).ParseBigIntNum(bINum)
 
 	if err != nil {
 		return NumStrDto{},
@@ -2318,7 +2322,7 @@ func (nDto *NumStrDto) NewFloat32(f32 float32, precision int) (NumStrDto, error)
 
 	numStr := strconv.FormatFloat(float64(f32), 'f', precision, 32)
 
-	n2, err := NumStrDto{}.NewPtr().ParseNumStr(numStr)
+	n2, err := new(NumStrDto).NewPtr().ParseNumStr(numStr)
 
 	if err != nil {
 		return NumStrDto{},
@@ -2339,7 +2343,7 @@ func (nDto *NumStrDto) NewFloat64(f64 float64, precision int) (NumStrDto, error)
 
 	numStr := strconv.FormatFloat(f64, 'f', precision, 64)
 
-	n2, err := NumStrDto{}.NewPtr().ParseNumStr(numStr)
+	n2, err := new(NumStrDto).NewPtr().ParseNumStr(numStr)
 
 	if err != nil {
 		return NumStrDto{},
@@ -2360,11 +2364,11 @@ func (nDto *NumStrDto) NewFloat64(f64 float64, precision int) (NumStrDto, error)
 // NumStrDto{} syntax thereby allowing NumStrDto type creation and
 // initialization in one step.
 //
-// Example: NumStrDto{}.NewInt(123456, 3) yields a new NumStrDto
+// Example: new(NumStrDto).NewInt(123456, 3) yields a new NumStrDto
 // instance with a numeric value of 123.456.
 func (nDto *NumStrDto) NewInt(intNum int, precision uint) NumStrDto {
 
-	n2 := NumStrDto{}.NewInt64(int64(intNum), precision)
+	n2 := new(NumStrDto).NewInt64(int64(intNum), precision)
 
 	return n2
 }
@@ -2385,10 +2389,10 @@ func (nDto *NumStrDto) NewInt(intNum int, precision uint) NumStrDto {
 // syntax thereby allowing Decimal type creation and initialization in
 // one step.
 //
-//		nDto := NumStrDto{}.NewIntExponent(123456, -3)
+//		nDto := new(NumStrDto).NewIntExponent(123456, -3)
 //	 -- nDto is now equal to "123.456", precision = 3
 //
-//		nDto := NumStrDto{}.NewIntExponent(123456, 3)
+//		nDto := new(NumStrDto).NewIntExponent(123456, 3)
 //	 -- decNum is now equal to "123456.000", precision = 3
 //
 // Examples:
@@ -2400,7 +2404,7 @@ func (nDto *NumStrDto) NewInt(intNum int, precision uint) NumStrDto {
 //	  123456          0              123456
 func (nDto *NumStrDto) NewIntExponent(intNum int, exponent int) NumStrDto {
 
-	return NumStrDto{}.NewInt64Exponent(int64(intNum), exponent)
+	return new(NumStrDto).NewInt64Exponent(int64(intNum), exponent)
 }
 
 // NewInt32 - Creates a new NumStrDto instance from an int32 and a
@@ -2413,11 +2417,11 @@ func (nDto *NumStrDto) NewIntExponent(intNum int, exponent int) NumStrDto {
 // NumStrDto{} syntax thereby allowing NumStrDto type creation and
 // initialization in one step.
 //
-// Example: NumStrDto{}.NewInt32(123456, 3) yields a new NumStrDto
+// Example: new(NumStrDto).NewInt32(123456, 3) yields a new NumStrDto
 // instance with a numeric value of 123.456.
 func (nDto *NumStrDto) NewInt32(int32Num int32, precision uint) NumStrDto {
 
-	n2 := NumStrDto{}.NewInt64(int64(int32Num), precision)
+	n2 := new(NumStrDto).NewInt64(int64(int32Num), precision)
 
 	return n2
 }
@@ -2441,7 +2445,7 @@ func (nDto *NumStrDto) NewInt32(int32Num int32, precision uint) NumStrDto {
 //		 123456		 		   +3							123456.000
 func (nDto *NumStrDto) NewInt32Exponent(int32Num int32, exponent int) NumStrDto {
 
-	return NumStrDto{}.NewInt64Exponent(int64(int32Num), exponent)
+	return new(NumStrDto).NewInt64Exponent(int64(int32Num), exponent)
 }
 
 // NewInt64 - Creates a new NumStrDto instance from an int64 and a
@@ -2454,19 +2458,19 @@ func (nDto *NumStrDto) NewInt32Exponent(int32Num int32, exponent int) NumStrDto 
 // NumStrDto{} syntax thereby allowing NumStrDto type creation and
 // initialization in one step.
 //
-// Example: NumStrDto{}.NewInt64(123456, 3) yields a NumStrDto instance
+// Example: new(NumStrDto).NewInt64(123456, 3) yields a NumStrDto instance
 // with a numeric value of 123.456.
 func (nDto *NumStrDto) NewInt64(i64 int64, precision uint) NumStrDto {
 	ePrefix := "NumStrDto.NewInt64() "
 
 	numStr := strconv.FormatInt(i64, 10)
 
-	n2, err := NumStrDto{}.NewPtr().ParseNumStr(numStr)
+	n2, err := new(NumStrDto).NewPtr().ParseNumStr(numStr)
 
 	// This should never produce an error.
 	if err != nil {
 		sErr := fmt.Sprintf(ePrefix+
-			"Fatal Error returned by NumStrDto{}.NewPtr().ParseNumStr(numStr). "+
+			"Fatal Error returned by new(NumStrDto).NewPtr().ParseNumStr(numStr). "+
 			"numStr='%v' Error='%v'",
 			numStr, err.Error())
 
@@ -2494,10 +2498,10 @@ func (nDto *NumStrDto) NewInt64(i64 int64, precision uint) NumStrDto {
 // syntax thereby allowing NumStrDto type creation and initialization in
 // one step.
 //
-//		nDto := NumStrDto{}.NewInt64Exponent(123456, -3)
+//		nDto := new(NumStrDto).NewInt64Exponent(123456, -3)
 //	 -- nDto is now equal to "123.456", precision = 3
 //
-//		nDto := NumStrDto{}.NewInt64Exponent(123456, 3)
+//		nDto := new(NumStrDto).NewInt64Exponent(123456, 3)
 //	 -- decNum is now equal to "123456.000", precision = 3
 //
 // Examples:
@@ -2524,7 +2528,7 @@ func (nDto *NumStrDto) NewInt64Exponent(int64Num int64, exponent int) NumStrDto 
 	var n2 NumStrDto
 
 	if exponent == 0 {
-		n2, _ = NumStrDto{}.NewNumStr(numStr)
+		n2, _ = new(NumStrDto).NewNumStr(numStr)
 	} else {
 		n2, _ = nDto.ShiftPrecisionLeft(numStr, uint(exponent))
 	}
@@ -2547,7 +2551,7 @@ func (nDto *NumStrDto) NewInt64Exponent(int64Num int64, exponent int) NumStrDto 
 //
 //					uintNum := uint(123456)
 //					precision := uint(3)
-//					nDto := NumStrDto{}.NewUint(uintNum, precision)
+//					nDto := new(NumStrDto).NewUint(uintNum, precision)
 //	       nDto is now equal to 123.456
 //
 // Examples:
@@ -2559,7 +2563,7 @@ func (nDto *NumStrDto) NewInt64Exponent(int64Num int64, exponent int) NumStrDto 
 //	  123456          1              12345.6
 func (nDto *NumStrDto) NewUint(uintNum uint, precision uint) NumStrDto {
 
-	n2 := NumStrDto{}.NewUint64(uint64(uintNum), precision)
+	n2 := new(NumStrDto).NewUint64(uint64(uintNum), precision)
 
 	return n2
 }
@@ -2576,10 +2580,10 @@ func (nDto *NumStrDto) NewUint(uintNum uint, precision uint) NumStrDto {
 // syntax thereby allowing NumStrDto type creation and initialization in
 // one step.
 //
-//		nDto := NumStrDto{}.NewUintExponent(123456, -3)
+//		nDto := new(NumStrDto).NewUintExponent(123456, -3)
 //	 -- nDto is now equal to "123.456", precision = 3
 //
-//		nDto := NumStrDto{}.NewUintExponent(123456, 3)
+//		nDto := new(NumStrDto).NewUintExponent(123456, 3)
 //	 -- nDto is now equal to "123456.000", precision = 3
 //
 // Examples:
@@ -2609,7 +2613,7 @@ func (nDto *NumStrDto) NewUintExponent(uintNum uint, exponent int) NumStrDto {
 //
 //					uint32Num := uint32(123456)
 //					precision := uint(3)
-//					nDto := NumStrDto{}.NewUint32(uint32Num, precision)
+//					nDto := new(NumStrDto).NewUint32(uint32Num, precision)
 //	       nDto is now equal to 123.456
 //
 // Examples:
@@ -2621,7 +2625,7 @@ func (nDto *NumStrDto) NewUintExponent(uintNum uint, exponent int) NumStrDto {
 //	  123456          1              12345.6
 func (nDto *NumStrDto) NewUint32(uint32Num uint32, precision uint) NumStrDto {
 
-	n2 := NumStrDto{}.NewUint64(uint64(uint32Num), precision)
+	n2 := new(NumStrDto).NewUint64(uint64(uint32Num), precision)
 
 	return n2
 }
@@ -2642,10 +2646,10 @@ func (nDto *NumStrDto) NewUint32(uint32Num uint32, precision uint) NumStrDto {
 // syntax thereby allowing NumStrDto type creation and initialization in
 // one step.
 //
-//		nDto := NumStrDto{}.NewUint32Exponent(123456, -3)
+//		nDto := new(NumStrDto).NewUint32Exponent(123456, -3)
 //	 -- nDto is now equal to "123.456", precision = 3
 //
-//		nDto := NumStrDto{}.NewUint32Exponent(123456, 3)
+//		nDto := new(NumStrDto).NewUint32Exponent(123456, 3)
 //	 -- nDto is now equal to "123456.000", precision = 3
 //
 // Examples:
@@ -2674,7 +2678,7 @@ func (nDto *NumStrDto) NewUint32Exponent(uint32Num uint32, exponent int) NumStrD
 //
 //					uint64Num := uint64(123456)
 //					precision := uint(3)
-//					nDto := NumStrDto{}.NewUint64(uint64Num, precision)
+//					nDto := new(NumStrDto).NewUint64(uint64Num, precision)
 //	       nDto is now equal to 123.456
 //
 // Examples:
@@ -2690,11 +2694,11 @@ func (nDto *NumStrDto) NewUint64(uint64Num uint64, precision uint) NumStrDto {
 
 	numStr := strconv.FormatUint(uint64Num, 10)
 
-	n2, err := NumStrDto{}.NewPtr().ParseNumStr(numStr)
+	n2, err := new(NumStrDto).NewPtr().ParseNumStr(numStr)
 	// This should NEVER produce an error
 	if err != nil {
 		sError := fmt.Sprintf(ePrefix+
-			"Fatal Error returned by NumStrDto{}.NewPtr().ParseNumStr(numStr) "+
+			"Fatal Error returned by new(NumStrDto).NewPtr().ParseNumStr(numStr) "+
 			"numStr='%v' Error='%v' ", numStr, err.Error())
 		panic(sError)
 	}
@@ -2722,10 +2726,10 @@ func (nDto *NumStrDto) NewUint64(uint64Num uint64, precision uint) NumStrDto {
 // syntax thereby allowing NumStrDto type creation and initialization in
 // one step.
 //
-//		nDto := NumStrDto{}.NewUint64Exponent(123456, -3)
+//		nDto := new(NumStrDto).NewUint64Exponent(123456, -3)
 //	 -- nDto is now equal to "123.456", precision = 3
 //
-//		nDto := NumStrDto{}.NewUint64Exponent(123456, 3)
+//		nDto := new(NumStrDto).NewUint64Exponent(123456, 3)
 //	 -- nDto is now equal to "123456.000", precision = 3
 //
 // Examples:
@@ -2754,11 +2758,11 @@ func (nDto *NumStrDto) NewUint64Exponent(uint64Num uint64, exponent int) NumStrD
 	var err error
 
 	if exponent == 0 {
-		n2, err = NumStrDto{}.NewNumStr(numStr)
+		n2, err = new(NumStrDto).NewNumStr(numStr)
 		// This should never produce an error.
 		if err != nil {
 			sErr := fmt.Sprintf(ePrefix+
-				"Fatal Error returned by NumStrDto{}.NewNumStr(numStr). "+
+				"Fatal Error returned by new(NumStrDto).NewNumStr(numStr). "+
 				"numStr='%v' uint64Num='%v' Error='%v'",
 				numStr, uint64Num, err.Error())
 			panic(sErr)
@@ -2792,7 +2796,7 @@ func (nDto *NumStrDto) NewRational(bigRat *big.Rat, precision int) (NumStrDto, e
 	ePrefix := "NumStrDto.NewRational() "
 	numStr := bigRat.FloatString(precision)
 
-	n2, err := NumStrDto{}.NewPtr().ParseNumStr(numStr)
+	n2, err := new(NumStrDto).NewPtr().ParseNumStr(numStr)
 
 	if err != nil {
 		return NumStrDto{},
@@ -2820,12 +2824,12 @@ func (nDto *NumStrDto) NewRational(bigRat *big.Rat, precision int) (NumStrDto, e
 //
 // Usage Example:
 //
-//	n, err := NumStrDto{}.NewNumStr("123.456")
+//	n, err := new(NumStrDto).NewNumStr("123.456")
 func (nDto *NumStrDto) NewNumStr(numStr string) (NumStrDto, error) {
 
 	ePrefix := "NumStrDto.NewNumStr() "
 
-	n := NumStrDto{}.New()
+	n := new(NumStrDto).New()
 
 	n2, err := n.ParseNumStr(numStr)
 
@@ -2852,7 +2856,7 @@ func (nDto *NumStrDto) NewNumStrWithNumSeps(
 
 	ePrefix := "IntAry.NewNumStrWithNumSeps() "
 
-	n := NumStrDto{}.New()
+	n := new(NumStrDto).New()
 
 	numSeps.SetDefaultsIfEmpty()
 
@@ -2882,7 +2886,7 @@ func (nDto *NumStrDto) NewNumStrWithNumSeps(
 // fields. This method will return the newly
 // create type (not a pointer to the type).
 // Example:
-// n := NumStrDto{}.New()
+// n := new(NumStrDto).New()
 // n2, err := n.ParseNumStr("123.456")
 //
 // Compare this method of object creation
@@ -2900,7 +2904,7 @@ func (nDto *NumStrDto) New() NumStrDto {
 // type. As such, this method may be used
 // to streamline the initialization process.
 // Example:
-// n, err := NumStrDto{}.NewPtr().ParseNumStr("123.456")
+// n, err := new(NumStrDto).NewPtr().ParseNumStr("123.456")
 func (nDto *NumStrDto) NewPtr() *NumStrDto {
 	n := NumStrDto{}
 	n.Empty()
@@ -2922,13 +2926,13 @@ func (nDto *NumStrDto) NewZero(precision uint) NumStrDto {
 		}
 	}
 
-	n2, err := NumStrDto{}.NewPtr().ParseNumStr(numStr)
+	n2, err := new(NumStrDto).NewPtr().ParseNumStr(numStr)
 
 	// This should NEVER produce an error.
 	if err != nil {
 		ePrefix := "NumStrDto.NewZero() "
 		sErr := fmt.Sprintf(ePrefix+
-			"Error returned by NumStrDto{}.NewPtr().ParseNumStr(numStr). "+
+			"Error returned by new(NumStrDto).NewPtr().ParseNumStr(numStr). "+
 			"numStr='%v' Error='%v' ", numStr, err.Error())
 		panic(sErr)
 	}
@@ -2945,7 +2949,7 @@ func (nDto *NumStrDto) ParseBigIntNum(biNum BigIntNum) (NumStrDto, error) {
 	nDto.SetNumericSeparatorsToDefaultIfEmpty()
 	numSeps := nDto.GetNumericSeparatorsDto()
 
-	n2Dto := NumStrDto{}.New()
+	n2Dto := new(NumStrDto).New()
 
 	n2Dto.SetCurrencySymbol(biNum.GetCurrencySymbol())
 	n2Dto.SetDecimalSeparator(biNum.GetDecimalSeparator())
@@ -3009,7 +3013,7 @@ func (nDto *NumStrDto) ParseBigIntNum(biNum BigIntNum) (NumStrDto, error) {
 	err := n2Dto.SetNumericSeparatorsDto(numSeps)
 
 	if err != nil {
-		return NumStrDto{}.New(),
+		return new(NumStrDto).New(),
 			fmt.Errorf(ePrefix+"Error returned by n2Dto.SetNumericSeparatorsDto(numSeps) "+
 				"Error='%v' \n", err.Error())
 	}
@@ -3017,7 +3021,7 @@ func (nDto *NumStrDto) ParseBigIntNum(biNum BigIntNum) (NumStrDto, error) {
 	err = n2Dto.IsValid("")
 
 	if err != nil {
-		return NumStrDto{}.New(),
+		return new(NumStrDto).New(),
 			fmt.Errorf(ePrefix+
 				"NumStrDto INVALID! Error='%v'",
 				err.Error())
@@ -3035,7 +3039,7 @@ func (nDto *NumStrDto) ParseSignedBigInt(signedBigInt *big.Int, precision uint) 
 	nDto.SetNumericSeparatorsToDefaultIfEmpty()
 	numSeps := nDto.GetNumericSeparatorsDto()
 
-	n2Dto := NumStrDto{}.New()
+	n2Dto := new(NumStrDto).New()
 
 	n2Dto.SetCurrencySymbol(nDto.GetCurrencySymbol())
 	n2Dto.SetDecimalSeparator(nDto.GetDecimalSeparator())
@@ -3097,7 +3101,7 @@ func (nDto *NumStrDto) ParseSignedBigInt(signedBigInt *big.Int, precision uint) 
 	err := n2Dto.SetNumericSeparatorsDto(numSeps)
 
 	if err != nil {
-		return NumStrDto{}.New(),
+		return new(NumStrDto).New(),
 			fmt.Errorf(ePrefix+"Error returned by n2Dto.SetNumericSeparatorsDto(numSeps) "+
 				"Error='%v' \n", err.Error())
 	}
@@ -3105,7 +3109,7 @@ func (nDto *NumStrDto) ParseSignedBigInt(signedBigInt *big.Int, precision uint) 
 	err = n2Dto.IsValid("")
 
 	if err != nil {
-		return NumStrDto{}.New(),
+		return new(NumStrDto).New(),
 			fmt.Errorf(ePrefix+
 				"NumStrDto INVALID! Error='%v'",
 				err.Error())
@@ -3133,7 +3137,7 @@ func (nDto *NumStrDto) ParseNumStr(str string) (NumStrDto, error) {
 
 	nDto.SetNumericSeparatorsToDefaultIfEmpty()
 	numSeps := nDto.GetNumericSeparatorsDto()
-	n2Dto := NumStrDto{}.New()
+	n2Dto := new(NumStrDto).New()
 
 	n2Dto.signVal = 1
 	n2Dto.SetNumericSeparatorsDto(numSeps)
@@ -3268,7 +3272,7 @@ func (nDto *NumStrDto) ParseNumStr(str string) (NumStrDto, error) {
 //
 // shiftPrecision 	 			 uint -		The number of positions which the decimal point
 //
-//	will be shifted. If 'shiftPrecision is Equal to
+//	will be shifted. If 'shiftPrecision' is Equal to
 //	zero, no action will be taken, no error will be
 //	issued and the original signedNumStr will be
 //	returned.
@@ -3378,7 +3382,7 @@ func (nDto *NumStrDto) SetDecimalSeparator(decimalSeparator rune) {
 // used to separate thousands in the display of the NumStrDto number
 // string. In the USA the typical thousands separator is the comma.
 //
-// If if a zero value is submitted, the Thousands Separator will default
+// If a zero value is submitted, the Thousands Separator will default
 // to the comma character.
 //
 // Example:
@@ -3412,7 +3416,7 @@ func (nDto *NumStrDto) SetThousandsSeparator(thousandsSeparator rune) {
 //															numeric value ('+').
 //
 //	shiftPrecision		uint		- The number of digits by which the current decimal point
-//															point position in the number string, 'signedNumStr' will
+//															position in the number string, 'signedNumStr' will
 //															be shifted to the left.
 //
 // Returns
@@ -3467,7 +3471,7 @@ func (nDto *NumStrDto) ShiftPrecisionLeft(
 		nDto.currencySymbol = '$'
 	}
 
-	n1, err := NumStrDto{}.NewPtr().ParseNumStr(signedNumStr)
+	n1, err := new(NumStrDto).NewPtr().ParseNumStr(signedNumStr)
 
 	if err != nil {
 		return NumStrDto{}, fmt.Errorf(ePrefix+
@@ -3476,7 +3480,7 @@ func (nDto *NumStrDto) ShiftPrecisionLeft(
 			signedNumStr, err)
 	}
 
-	n2 := NumStrDto{}.New()
+	n2 := new(NumStrDto).New()
 
 	n2.thousandsSeparator = nDto.thousandsSeparator
 	n2.decimalSeparator = nDto.decimalSeparator
@@ -3575,13 +3579,13 @@ func (nDto *NumStrDto) ShiftPrecisionRight(signedNumStr string, precision uint) 
 		nDto.currencySymbol = '$'
 	}
 
-	n1, err := NumStrDto{}.NewPtr().ParseNumStr(signedNumStr)
+	n1, err := new(NumStrDto).NewPtr().ParseNumStr(signedNumStr)
 
 	if err != nil {
 		return NumStrDto{}, fmt.Errorf(ePrefix+"- Received Error from NumStrDto.ParseNumStr(signedNumStr). str= '%v' Error= %v", signedNumStr, err)
 	}
 
-	n2 := NumStrDto{}.New()
+	n2 := new(NumStrDto).New()
 
 	iTotalSpecPrecision := 0
 	iPrecision := int(precision)
@@ -3744,13 +3748,13 @@ func (nDto *NumStrDto) SetNumericSeparatorsToDefaultIfEmpty() error {
 	return nil
 }
 
-// SetNumericSeparatorsToUSADefault - Sets Numeric separators:
+// SetNumericSeparatorsToUSADefault
 //
-//	Decimal Point Separator
-//	Thousands Separator
-//	Currency Symbol
+// Sets Numeric separatorsto United States of America (USA) defaults.
 //
-// to United States of America (USA) defaults.
+//	Decimal Point Separator = '.'
+//	Thousands Separator = ','
+//	Currency Symbol = '$'
 //
 // Call specific methods to set numeric separators for other countries or
 // cultures:
@@ -3772,10 +3776,10 @@ func (nDto *NumStrDto) SetNumStr(numStr string) error {
 
 	numSeps := nDto.GetNumericSeparatorsDto()
 
-	n2, err := NumStrDto{}.NewNumStr(numStr)
+	n2, err := new(NumStrDto).NewNumStr(numStr)
 
 	if err != nil {
-		return fmt.Errorf(ePrefix+"Error returned by NumStrDto{}.NewNumStr(numStr). "+
+		return fmt.Errorf(ePrefix+"Error returned by new(NumStrDto).NewNumStr(numStr). "+
 			"numStr='%v' Error='%v' ", numStr, err.Error())
 	}
 
@@ -3866,7 +3870,7 @@ func (nDto *NumStrDto) SetPrecision(
 		nDto.currencySymbol = '$'
 	}
 
-	n0 := NumStrDto{}.New()
+	n0 := new(NumStrDto).New()
 	n0.thousandsSeparator = nDto.thousandsSeparator
 	n0.decimalSeparator = nDto.decimalSeparator
 	n0.currencySymbol = nDto.currencySymbol
@@ -3880,7 +3884,7 @@ func (nDto *NumStrDto) SetPrecision(
 				"signedNumStr='%v' Error= %v", signedNumStr, err)
 	}
 
-	n2 := NumStrDto{}.New()
+	n2 := new(NumStrDto).New()
 
 	n2.signVal = n1.signVal
 	n2.precision = precision
