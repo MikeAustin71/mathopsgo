@@ -1,4417 +1,4417 @@
 package mathops
 
 import (
-  "math/big"
-  "testing"
+	"math/big"
+	"testing"
 )
 
 func TestBigIntMathAdd_AddBigInts_01(t *testing.T) {
 
-  ePrefix := "TestBigIntMathAdd_AddBigInts_01"
-  // n1Str := 123456.789
-  b1Str := "123456789"
-  b1Precision := uint(3)
+	ePrefix := "TestBigIntMathAdd_AddBigInts_01"
+	// n1Str := 123456.789
+	b1Str := "123456789"
+	b1Precision := uint(3)
 
-  b1Big, oK := big.NewInt(0).SetString(b1Str, 10)
+	b1Big, oK := big.NewInt(0).SetString(b1Str, 10)
 
-  if !oK {
-    t.Errorf("%v\n"+
-      "Error returned by:\n"+
-      "b1Big, oK := big.NewInt(0).SetString(b1Str, 10)\n"+
-      "b1Str='%v'\n\n", ePrefix, b1Str)
-    return
-  }
+	if !oK {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"b1Big, oK := big.NewInt(0).SetString(b1Str, 10)\n"+
+			"b1Str='%v'\n\n", ePrefix, b1Str)
+		return
+	}
 
-  // n2Str := 987.123456
-  b2Str := "987123456"
-  b2Precision := uint(6)
+	// n2Str := 987.123456
+	b2Str := "987123456"
+	b2Precision := uint(6)
 
-  b2Big, oK := big.NewInt(0).SetString(b2Str, 10)
+	b2Big, oK := big.NewInt(0).SetString(b2Str, 10)
 
-  if !oK {
-    t.Errorf("%v\n"+
-      "Error returned by:\n"+
-      "b2Big, oK := big.NewInt(0).SetString(b2Str, 10)\n"+
-      "b2Str='%v'\n\n", ePrefix, b2Str)
-    return
-  }
+	if !oK {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"b2Big, oK := big.NewInt(0).SetString(b2Str, 10)\n"+
+			"b2Str='%v'\n\n", ePrefix, b2Str)
+		return
+	}
 
-  // Result := 124443.912456
-  expectedResultStr := "124443912456"
-  expectedPrecision := uint(6)
-  expectedSign := 1
+	// Result := 124443.912456
+	expectedResultStr := "124443912456"
+	expectedPrecision := uint(6)
+	expectedSign := 1
 
-  biExpectedResult, oK := big.NewInt(0).SetString(expectedResultStr, 10)
+	biExpectedResult, oK := big.NewInt(0).SetString(expectedResultStr, 10)
 
-  if !oK {
-    t.Errorf("%v\n"+
-      "Error returned by:\n"+
-      "biExpectedResult, oK := big.NewInt(0).SetString(expectedResultStr, 10)\n"+
-      "expectedResultStr='%v'\n\n", ePrefix, expectedResultStr)
-    return
-  }
+	if !oK {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"biExpectedResult, oK := big.NewInt(0).SetString(expectedResultStr, 10)\n"+
+			"expectedResultStr='%v'\n\n", ePrefix, expectedResultStr)
+		return
+	}
 
-  result, err := new(BigIntMathAdd).AddBigInts(b1Big, b1Precision, b2Big, b2Precision)
+	result, err := new(BigIntMathAdd).AddBigInts(b1Big, b1Precision, b2Big, b2Precision)
 
-  if err != nil {
-    t.Errorf("%v\n"+
-      "Error returned by:\n"+
-      "result, err := new(BigIntMathAdd).AddBigInts(b1Big, b1Precision, b2Big, b2Precision)\n"+
-      "b1Big= '%v'\n"+
-      "b1Precision= '%v'\n"+
-      "b2Big= '%v'\n"+
-      "b2Precision= '%v'\n"+
-      "Error='%v'\n\n", ePrefix,
-      b1Big.Text(10),
-      b1Precision,
-      b2Big.Text(10),
-      b2Precision,
-      err.Error())
-    return
-  }
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"result, err := new(BigIntMathAdd).AddBigInts(b1Big, b1Precision, b2Big, b2Precision)\n"+
+			"b1Big= '%v'\n"+
+			"b1Precision= '%v'\n"+
+			"b2Big= '%v'\n"+
+			"b2Precision= '%v'\n"+
+			"Error='%v'\n\n", ePrefix,
+			b1Big.Text(10),
+			b1Precision,
+			b2Big.Text(10),
+			b2Precision,
+			err.Error())
+		return
+	}
 
-  if biExpectedResult.Cmp(result.bigInt) != 0 {
-    t.Errorf("%v\n"+
-      "Error: Unexpected Result!\n"+
-      "Expected result.bigInt = '%v'\n"+
-      "Instead, result.bigInt = '%v'\n\n",
-      ePrefix,
-      biExpectedResult.Text(10),
-      result.bigInt.Text(10))
-    return
-  }
+	if biExpectedResult.Cmp(result.bigInt) != 0 {
+		t.Errorf("%v\n"+
+			"Error: Unexpected Result!\n"+
+			"Expected result.bigInt = '%v'\n"+
+			"Instead, result.bigInt = '%v'\n\n",
+			ePrefix,
+			biExpectedResult.Text(10),
+			result.bigInt.Text(10))
+		return
+	}
 
-  if expectedPrecision != result.precision {
-    t.Errorf("%v\n"+
-      "Error: Unexpected Result!\n"+
-      "Expected result.precision = '%v'\n"+
-      "Instead, result.precision = '%v'\n\n",
-      ePrefix,
-      expectedPrecision,
-      result.precision)
-    return
-  }
+	if expectedPrecision != result.precision {
+		t.Errorf("%v\n"+
+			"Error: Unexpected Result!\n"+
+			"Expected result.precision = '%v'\n"+
+			"Instead, result.precision = '%v'\n\n",
+			ePrefix,
+			expectedPrecision,
+			result.precision)
+		return
+	}
 
-  if expectedSign != result.sign {
-    t.Errorf("%v\n"+
-      "Error: Unexpected Result!\n"+
-      "Expected result.sign = '%v'\n"+
-      "Instead, result.sign = '%v'\n\n",
-      ePrefix,
-      expectedSign,
-      result.sign)
-  }
+	if expectedSign != result.sign {
+		t.Errorf("%v\n"+
+			"Error: Unexpected Result!\n"+
+			"Expected result.sign = '%v'\n"+
+			"Instead, result.sign = '%v'\n\n",
+			ePrefix,
+			expectedSign,
+			result.sign)
+	}
 
-  return
+	return
 }
 
 func TestBigIntMathAdd_AddBigInts_02(t *testing.T) {
 
-  ePrefix := "TestBigIntMathAdd_AddBigInts_02"
-  // n1Str := 123456.789
-  b1Str := "123456789"
-  b1Precision := uint(3)
+	ePrefix := "TestBigIntMathAdd_AddBigInts_02"
+	// n1Str := 123456.789
+	b1Str := "123456789"
+	b1Precision := uint(3)
 
-  b1Big, oK := big.NewInt(0).SetString(b1Str, 10)
+	b1Big, oK := big.NewInt(0).SetString(b1Str, 10)
 
-  if !oK {
-    t.Errorf("%v\n"+
-      "Error returned by:\n"+
-      "b1Big, oK := big.NewInt(0).SetString(b1Str, 10)\n"+
-      "b1Str='%v'\n\n", ePrefix, b1Str)
-    return
-  }
+	if !oK {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"b1Big, oK := big.NewInt(0).SetString(b1Str, 10)\n"+
+			"b1Str='%v'\n\n", ePrefix, b1Str)
+		return
+	}
 
-  // n2Str := -987.123456
-  b2Str := "-987123456"
-  b2Precision := uint(6)
-  b2Big, oK := big.NewInt(0).SetString(b2Str, 10)
+	// n2Str := -987.123456
+	b2Str := "-987123456"
+	b2Precision := uint(6)
+	b2Big, oK := big.NewInt(0).SetString(b2Str, 10)
 
-  if !oK {
-    t.Errorf("%v\n"+
-      "Error returned by:\n"+
-      "b2Big, oK := big.NewInt(0).SetString(b2Str, 10)\n"+
-      "b2Str='%v'\n\n", ePrefix, b2Str)
-    return
-  }
+	if !oK {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"b2Big, oK := big.NewInt(0).SetString(b2Str, 10)\n"+
+			"b2Str='%v'\n\n", ePrefix, b2Str)
+		return
+	}
 
-  // Result := 122469.665544
-  expectedResultStr := "122469665544"
-  expectedPrecision := uint(6)
-  expectedSign := 1
-  biExpectedResult, oK := big.NewInt(0).SetString(expectedResultStr, 10)
+	// Result := 122469.665544
+	expectedResultStr := "122469665544"
+	expectedPrecision := uint(6)
+	expectedSign := 1
+	biExpectedResult, oK := big.NewInt(0).SetString(expectedResultStr, 10)
 
-  if !oK {
-    t.Errorf("%v\n"+
-      "Error returned by:\n"+
-      "biExpectedResult, oK := big.NewInt(0).SetString(expectedResultStr, 10)\n"+
-      "expectedResultStr='%v'\n\n", ePrefix, expectedResultStr)
-    return
-  }
+	if !oK {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"biExpectedResult, oK := big.NewInt(0).SetString(expectedResultStr, 10)\n"+
+			"expectedResultStr='%v'\n\n", ePrefix, expectedResultStr)
+		return
+	}
 
-  result, err := new(BigIntMathAdd).AddBigInts(b1Big, b1Precision, b2Big, b2Precision)
+	result, err := new(BigIntMathAdd).AddBigInts(b1Big, b1Precision, b2Big, b2Precision)
 
-  if err != nil {
-    t.Errorf("%v\n"+
-      "Error returned by:\n"+
-      "result, err := new(BigIntMathAdd).AddBigInts(b1Big, b1Precision, b2Big, b2Precision)\n"+
-      "b1Big= '%v'\n"+
-      "b1Precision= '%v'\n"+
-      "b2Big= '%v'\n"+
-      "b2Precision= '%v'\n"+
-      "Error='%v'\n\n", ePrefix,
-      b1Big.Text(10),
-      b1Precision,
-      b2Big.Text(10),
-      b2Precision,
-      err.Error())
-    return
-  }
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"result, err := new(BigIntMathAdd).AddBigInts(b1Big, b1Precision, b2Big, b2Precision)\n"+
+			"b1Big= '%v'\n"+
+			"b1Precision= '%v'\n"+
+			"b2Big= '%v'\n"+
+			"b2Precision= '%v'\n"+
+			"Error='%v'\n\n", ePrefix,
+			b1Big.Text(10),
+			b1Precision,
+			b2Big.Text(10),
+			b2Precision,
+			err.Error())
+		return
+	}
 
-  if biExpectedResult.Cmp(result.bigInt) != 0 {
-    t.Errorf("%v\n"+
-      "Error: Unexpected Result!\n"+
-      "Expected result.bigInt = '%v'\n"+
-      "Instead, result.bigInt = '%v'\n\n",
-      ePrefix,
-      biExpectedResult.Text(10),
-      result.bigInt.Text(10))
-    return
-  }
+	if biExpectedResult.Cmp(result.bigInt) != 0 {
+		t.Errorf("%v\n"+
+			"Error: Unexpected Result!\n"+
+			"Expected result.bigInt = '%v'\n"+
+			"Instead, result.bigInt = '%v'\n\n",
+			ePrefix,
+			biExpectedResult.Text(10),
+			result.bigInt.Text(10))
+		return
+	}
 
-  if expectedPrecision != result.precision {
-    t.Errorf("%v\n"+
-      "Error: Unexpected Result!\n"+
-      "Expected result.precision = '%v'\n"+
-      "Instead, result.precision = '%v'\n\n",
-      ePrefix,
-      expectedPrecision,
-      result.precision)
-    return
-  }
+	if expectedPrecision != result.precision {
+		t.Errorf("%v\n"+
+			"Error: Unexpected Result!\n"+
+			"Expected result.precision = '%v'\n"+
+			"Instead, result.precision = '%v'\n\n",
+			ePrefix,
+			expectedPrecision,
+			result.precision)
+		return
+	}
 
-  if expectedSign != result.sign {
-    t.Errorf("%v\n"+
-      "Error: Unexpected Result!\n"+
-      "Expected result.sign = '%v'\n"+
-      "Instead, result.sign = '%v'\n\n",
-      ePrefix,
-      expectedSign,
-      result.sign)
-  }
+	if expectedSign != result.sign {
+		t.Errorf("%v\n"+
+			"Error: Unexpected Result!\n"+
+			"Expected result.sign = '%v'\n"+
+			"Instead, result.sign = '%v'\n\n",
+			ePrefix,
+			expectedSign,
+			result.sign)
+	}
 
-  return
+	return
 }
 
 func TestBigIntMathAdd_AddBigInts_03(t *testing.T) {
 
-  ePrefix := "TestBigIntMathAdd_AddBigInts_03"
-  // n1Str := -123456.789
-  b1Str := "-123456789"
-  b1Precision := uint(3)
+	ePrefix := "TestBigIntMathAdd_AddBigInts_03"
+	// n1Str := -123456.789
+	b1Str := "-123456789"
+	b1Precision := uint(3)
 
-  b1Big, oK := big.NewInt(0).SetString(b1Str, 10)
+	b1Big, oK := big.NewInt(0).SetString(b1Str, 10)
 
-  if !oK {
-    t.Errorf("%v\n"+
-      "Error returned by:\n"+
-      "b1Big, oK := big.NewInt(0).SetString(b1Str, 10)\n"+
-      "b1Str='%v'\n\n", ePrefix, b1Str)
-    return
-  }
+	if !oK {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"b1Big, oK := big.NewInt(0).SetString(b1Str, 10)\n"+
+			"b1Str='%v'\n\n", ePrefix, b1Str)
+		return
+	}
 
-  // n2Str := 987.123456
-  b2Str := "987123456"
-  b2Precision := uint(6)
+	// n2Str := 987.123456
+	b2Str := "987123456"
+	b2Precision := uint(6)
 
-  b2Big, oK := big.NewInt(0).SetString(b2Str, 10)
+	b2Big, oK := big.NewInt(0).SetString(b2Str, 10)
 
-  if !oK {
-    t.Errorf("%v\n"+
-      "Error returned by:\n"+
-      "b2Big, oK := big.NewInt(0).SetString(b2Str, 10)\n"+
-      "b2Str='%v'\n\n", ePrefix, b2Str)
-    return
-  }
+	if !oK {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"b2Big, oK := big.NewInt(0).SetString(b2Str, 10)\n"+
+			"b2Str='%v'\n\n", ePrefix, b2Str)
+		return
+	}
 
-  // Result := -122469.665544
-  expectedResultStr := "-122469665544"
-  expectedPrecision := uint(6)
-  expectedSign := -1
+	// Result := -122469.665544
+	expectedResultStr := "-122469665544"
+	expectedPrecision := uint(6)
+	expectedSign := -1
 
-  biExpectedResult, oK := big.NewInt(0).SetString(expectedResultStr, 10)
+	biExpectedResult, oK := big.NewInt(0).SetString(expectedResultStr, 10)
 
-  if !oK {
-    t.Errorf("%v\n"+
-      "Error returned by:\n"+
-      "biExpectedResult, oK := big.NewInt(0).SetString(expectedResultStr, 10)\n"+
-      "expectedResultStr='%v'\n\n", ePrefix, expectedResultStr)
-    return
-  }
+	if !oK {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"biExpectedResult, oK := big.NewInt(0).SetString(expectedResultStr, 10)\n"+
+			"expectedResultStr='%v'\n\n", ePrefix, expectedResultStr)
+		return
+	}
 
-  result, err := new(BigIntMathAdd).AddBigInts(b1Big, b1Precision, b2Big, b2Precision)
+	result, err := new(BigIntMathAdd).AddBigInts(b1Big, b1Precision, b2Big, b2Precision)
 
-  if err != nil {
-    t.Errorf("%v\n"+
-      "Error returned by:\n"+
-      "result, err := new(BigIntMathAdd).AddBigInts(b1Big, b1Precision, b2Big, b2Precision)\n"+
-      "b1Big= '%v'\n"+
-      "b1Precision= '%v'\n"+
-      "b2Big= '%v'\n"+
-      "b2Precision= '%v'\n"+
-      "Error='%v'\n\n", ePrefix,
-      b1Big.Text(10),
-      b1Precision,
-      b2Big.Text(10),
-      b2Precision,
-      err.Error())
-    return
-  }
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"result, err := new(BigIntMathAdd).AddBigInts(b1Big, b1Precision, b2Big, b2Precision)\n"+
+			"b1Big= '%v'\n"+
+			"b1Precision= '%v'\n"+
+			"b2Big= '%v'\n"+
+			"b2Precision= '%v'\n"+
+			"Error='%v'\n\n", ePrefix,
+			b1Big.Text(10),
+			b1Precision,
+			b2Big.Text(10),
+			b2Precision,
+			err.Error())
+		return
+	}
 
-  if biExpectedResult.Cmp(result.bigInt) != 0 {
-    t.Errorf("%v\n"+
-      "Error: Unexpected Result!\n"+
-      "Expected result.bigInt = '%v'\n"+
-      "Instead, result.bigInt = '%v'\n\n",
-      ePrefix,
-      biExpectedResult.Text(10),
-      result.bigInt.Text(10))
-    return
-  }
+	if biExpectedResult.Cmp(result.bigInt) != 0 {
+		t.Errorf("%v\n"+
+			"Error: Unexpected Result!\n"+
+			"Expected result.bigInt = '%v'\n"+
+			"Instead, result.bigInt = '%v'\n\n",
+			ePrefix,
+			biExpectedResult.Text(10),
+			result.bigInt.Text(10))
+		return
+	}
 
-  if expectedPrecision != result.precision {
-    t.Errorf("%v\n"+
-      "Error: Unexpected Result!\n"+
-      "Expected result.precision = '%v'\n"+
-      "Instead, result.precision = '%v'\n\n",
-      ePrefix,
-      expectedPrecision,
-      result.precision)
-    return
-  }
+	if expectedPrecision != result.precision {
+		t.Errorf("%v\n"+
+			"Error: Unexpected Result!\n"+
+			"Expected result.precision = '%v'\n"+
+			"Instead, result.precision = '%v'\n\n",
+			ePrefix,
+			expectedPrecision,
+			result.precision)
+		return
+	}
 
-  if expectedSign != result.sign {
-    t.Errorf("%v\n"+
-      "Error: Unexpected Result!\n"+
-      "Expected result.sign = '%v'\n"+
-      "Instead, result.sign = '%v'\n\n",
-      ePrefix,
-      expectedSign,
-      result.sign)
-  }
+	if expectedSign != result.sign {
+		t.Errorf("%v\n"+
+			"Error: Unexpected Result!\n"+
+			"Expected result.sign = '%v'\n"+
+			"Instead, result.sign = '%v'\n\n",
+			ePrefix,
+			expectedSign,
+			result.sign)
+	}
 
-  return
+	return
 }
 
 func TestBigIntMathAdd_AddBigInts_04(t *testing.T) {
-  ePrefix := "TestBigIntMathAdd_AddBigInts_04"
-  // n1Str := -123456.789
-  b1Str := "-123456789"
-  b1Precision := uint(3)
+	ePrefix := "TestBigIntMathAdd_AddBigInts_04"
+	// n1Str := -123456.789
+	b1Str := "-123456789"
+	b1Precision := uint(3)
 
-  b1Big, oK := big.NewInt(0).SetString(b1Str, 10)
+	b1Big, oK := big.NewInt(0).SetString(b1Str, 10)
 
-  if !oK {
-    t.Errorf("%v\n"+
-      "Error returned by:\n"+
-      "b1Big, oK := big.NewInt(0).SetString(b1Str, 10)\n"+
-      "b1Str='%v'\n\n", ePrefix, b1Str)
-    return
-  }
+	if !oK {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"b1Big, oK := big.NewInt(0).SetString(b1Str, 10)\n"+
+			"b1Str='%v'\n\n", ePrefix, b1Str)
+		return
+	}
 
-  // n2Str := -987.123456
-  b2Str := "-987123456"
-  b2Precision := uint(6)
+	// n2Str := -987.123456
+	b2Str := "-987123456"
+	b2Precision := uint(6)
 
-  b2Big, oK := big.NewInt(0).SetString(b2Str, 10)
+	b2Big, oK := big.NewInt(0).SetString(b2Str, 10)
 
-  if !oK {
-    t.Errorf("%v\n"+
-      "Error returned by:\n"+
-      "b2Big, oK := big.NewInt(0).SetString(b2Str, 10)\n"+
-      "b2Str='%v'\n\n", ePrefix, b2Str)
-    return
-  }
+	if !oK {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"b2Big, oK := big.NewInt(0).SetString(b2Str, 10)\n"+
+			"b2Str='%v'\n\n", ePrefix, b2Str)
+		return
+	}
 
-  // Result := -124443.912456
-  expectedResultStr := "-124443912456"
-  expectedPrecision := uint(6)
-  expectedSign := -1
+	// Result := -124443.912456
+	expectedResultStr := "-124443912456"
+	expectedPrecision := uint(6)
+	expectedSign := -1
 
-  biExpectedResult, oK := big.NewInt(0).SetString(expectedResultStr, 10)
+	biExpectedResult, oK := big.NewInt(0).SetString(expectedResultStr, 10)
 
-  if !oK {
-    t.Errorf("%v\n"+
-      "Error returned by:\n"+
-      "biExpectedResult, oK := big.NewInt(0).SetString(expectedResultStr, 10)\n"+
-      "expectedResultStr='%v'\n\n", ePrefix, expectedResultStr)
-    return
-  }
+	if !oK {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"biExpectedResult, oK := big.NewInt(0).SetString(expectedResultStr, 10)\n"+
+			"expectedResultStr='%v'\n\n", ePrefix, expectedResultStr)
+		return
+	}
 
-  result, err := new(BigIntMathAdd).AddBigInts(b1Big, b1Precision, b2Big, b2Precision)
+	result, err := new(BigIntMathAdd).AddBigInts(b1Big, b1Precision, b2Big, b2Precision)
 
-  if err != nil {
-    t.Errorf("%v\n"+
-      "Error returned by:\n"+
-      "result, err := new(BigIntMathAdd).AddBigInts(b1Big, b1Precision, b2Big, b2Precision)\n"+
-      "b1Big= '%v'\n"+
-      "b1Precision= '%v'\n"+
-      "b2Big= '%v'\n"+
-      "b2Precision= '%v'\n"+
-      "Error='%v'\n\n", ePrefix,
-      b1Big.Text(10),
-      b1Precision,
-      b2Big.Text(10),
-      b2Precision,
-      err.Error())
-    return
-  }
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"result, err := new(BigIntMathAdd).AddBigInts(b1Big, b1Precision, b2Big, b2Precision)\n"+
+			"b1Big= '%v'\n"+
+			"b1Precision= '%v'\n"+
+			"b2Big= '%v'\n"+
+			"b2Precision= '%v'\n"+
+			"Error='%v'\n\n", ePrefix,
+			b1Big.Text(10),
+			b1Precision,
+			b2Big.Text(10),
+			b2Precision,
+			err.Error())
+		return
+	}
 
-  if biExpectedResult.Cmp(result.bigInt) != 0 {
-    t.Errorf("%v\n"+
-      "Error: Unexpected Result!\n"+
-      "Expected result.bigInt = '%v'\n"+
-      "Instead, result.bigInt = '%v'\n\n",
-      ePrefix,
-      biExpectedResult.Text(10),
-      result.bigInt.Text(10))
-    return
-  }
+	if biExpectedResult.Cmp(result.bigInt) != 0 {
+		t.Errorf("%v\n"+
+			"Error: Unexpected Result!\n"+
+			"Expected result.bigInt = '%v'\n"+
+			"Instead, result.bigInt = '%v'\n\n",
+			ePrefix,
+			biExpectedResult.Text(10),
+			result.bigInt.Text(10))
+		return
+	}
 
-  if expectedPrecision != result.precision {
-    t.Errorf("%v\n"+
-      "Error: Unexpected Result!\n"+
-      "Expected result.precision = '%v'\n"+
-      "Instead, result.precision = '%v'\n\n",
-      ePrefix,
-      expectedPrecision,
-      result.precision)
-    return
-  }
+	if expectedPrecision != result.precision {
+		t.Errorf("%v\n"+
+			"Error: Unexpected Result!\n"+
+			"Expected result.precision = '%v'\n"+
+			"Instead, result.precision = '%v'\n\n",
+			ePrefix,
+			expectedPrecision,
+			result.precision)
+		return
+	}
 
-  if expectedSign != result.sign {
-    t.Errorf("%v\n"+
-      "Error: Unexpected Result!\n"+
-      "Expected result.sign = '%v'\n"+
-      "Instead, result.sign = '%v'\n\n",
-      ePrefix,
-      expectedSign,
-      result.sign)
-  }
+	if expectedSign != result.sign {
+		t.Errorf("%v\n"+
+			"Error: Unexpected Result!\n"+
+			"Expected result.sign = '%v'\n"+
+			"Instead, result.sign = '%v'\n\n",
+			ePrefix,
+			expectedSign,
+			result.sign)
+	}
 
-  return
+	return
 }
 
 func TestBigIntMathAdd_AddBigIntNums_01(t *testing.T) {
 
-  ePrefix := "TestBigIntMathAdd_AddBigIntNums_01"
-  // n1Str := 123456.789
-  b1Str := "123456789"
-  b1Precision := uint(3)
+	ePrefix := "TestBigIntMathAdd_AddBigIntNums_01"
+	// n1Str := 123456.789
+	b1Str := "123456789"
+	b1Precision := uint(3)
 
-  b1Big, oK := big.NewInt(0).SetString(b1Str, 10)
+	b1Big, oK := big.NewInt(0).SetString(b1Str, 10)
 
-  if !oK {
-    t.Errorf("%v\n"+
-      "Error returned by:\n"+
-      "b1Big, oK := big.NewInt(0).SetString(b1Str, 10)\n"+
-      "b1Str='%v'\n\n", ePrefix, b1Str)
-    return
-  }
+	if !oK {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"b1Big, oK := big.NewInt(0).SetString(b1Str, 10)\n"+
+			"b1Str='%v'\n\n", ePrefix, b1Str)
+		return
+	}
 
-  b1Num, err := new(BigIntNum).NewBigInt(b1Big, b1Precision)
+	b1Num, err := new(BigIntNum).NewBigInt(b1Big, b1Precision)
 
-  if err != nil {
-    t.Errorf("%v\n"+
-      "Error returned by:\n"+
-      "b1Num, err := new(BigIntNum).NewBigInt(b1Big, b1Precision)\n"+
-      "b1Big= '%v'\n"+
-      "b1Precision= '%v'\n"+
-      "Error='%v'\n\n", ePrefix,
-      b1Big.Text(10),
-      b1Precision,
-      err.Error())
-    return
-  }
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"b1Num, err := new(BigIntNum).NewBigInt(b1Big, b1Precision)\n"+
+			"b1Big= '%v'\n"+
+			"b1Precision= '%v'\n"+
+			"Error='%v'\n\n", ePrefix,
+			b1Big.Text(10),
+			b1Precision,
+			err.Error())
+		return
+	}
 
-  b1NumStr, err := b1Num.GetNumStr()
+	b1NumStr, err := b1Num.GetNumStr()
 
-  if err != nil {
-    t.Errorf("%v\n"+
-      "Error returned by:\n"+
-      "b1NumStr, err := b1Num.GetNumStr()\n"+
-      "Error='%v'\n\n", ePrefix, err.Error())
-    return
-  }
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"b1NumStr, err := b1Num.GetNumStr()\n"+
+			"Error='%v'\n\n", ePrefix, err.Error())
+		return
+	}
 
-  // n2Str := 987.123456
-  b2Str := "987123456"
-  b2Precision := uint(6)
+	// n2Str := 987.123456
+	b2Str := "987123456"
+	b2Precision := uint(6)
 
-  b2Big, oK := big.NewInt(0).SetString(b2Str, 10)
+	b2Big, oK := big.NewInt(0).SetString(b2Str, 10)
 
-  if !oK {
-    t.Errorf("%v\n"+
-      "Error returned by:\n"+
-      "b2Big, oK := big.NewInt(0).SetString(b2Str, 10)\n"+
-      "b2Str='%v'\n\n", ePrefix, b2Str)
-    return
-  }
+	if !oK {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"b2Big, oK := big.NewInt(0).SetString(b2Str, 10)\n"+
+			"b2Str='%v'\n\n", ePrefix, b2Str)
+		return
+	}
 
-  b2Num, err := new(BigIntNum).NewBigInt(b2Big, b2Precision)
+	b2Num, err := new(BigIntNum).NewBigInt(b2Big, b2Precision)
 
-  if err != nil {
-    t.Errorf("%v\n"+
-      "Error returned by:\n"+
-      "b2Num, err := new(BigIntNum).NewBigInt(b2Big, b2Precision)\n"+
-      "b2Big= '%v'\n"+
-      "b2Precision= '%v'\n"+
-      "Error='%v'\n\n", ePrefix,
-      b2Big.Text(10),
-      b2Precision,
-      err.Error())
-    return
-  }
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"b2Num, err := new(BigIntNum).NewBigInt(b2Big, b2Precision)\n"+
+			"b2Big= '%v'\n"+
+			"b2Precision= '%v'\n"+
+			"Error='%v'\n\n", ePrefix,
+			b2Big.Text(10),
+			b2Precision,
+			err.Error())
+		return
+	}
 
-  b2NumStr, err := b2Num.GetNumStr()
+	b2NumStr, err := b2Num.GetNumStr()
 
-  if err != nil {
-    t.Errorf("%v\n"+
-      "Error returned by:\n"+
-      "b2NumStr, err := b2Num.GetNumStr()\n"+
-      "Error='%v'\n\n", ePrefix, err.Error())
-    return
-  }
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"b2NumStr, err := b2Num.GetNumStr()\n"+
+			"Error='%v'\n\n", ePrefix, err.Error())
+		return
+	}
 
-  // Result := 124443.912456
-  expectedResultStr := "124443912456"
-  expectedPrecision := uint(6)
-  expectedSign := 1
+	// Result := 124443.912456
+	expectedResultStr := "124443912456"
+	expectedPrecision := uint(6)
+	expectedSign := 1
 
-  biExpectedResult, oK := big.NewInt(0).SetString(expectedResultStr, 10)
+	biExpectedResult, oK := big.NewInt(0).SetString(expectedResultStr, 10)
 
-  if !oK {
-    t.Errorf("%v\n"+
-      "Error returned by:\n"+
-      "biExpectedResult, oK := big.NewInt(0).SetString(expectedResultStr, 10)\n"+
-      "expectedResultStr='%v'\n\n", ePrefix, expectedResultStr)
-    return
-  }
+	if !oK {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"biExpectedResult, oK := big.NewInt(0).SetString(expectedResultStr, 10)\n"+
+			"expectedResultStr='%v'\n\n", ePrefix, expectedResultStr)
+		return
+	}
 
-  result, err := new(BigIntMathAdd).AddBigIntNums(b1Num, b2Num)
+	result, err := new(BigIntMathAdd).AddBigIntNums(b1Num, b2Num)
 
-  if err != nil {
-    t.Errorf("%v\n"+
-      "Error returned by:\n"+
-      "result, err := new(BigIntMathAdd).AddBigIntNums(b1Num, b2Num)\n"+
-      "b1Num= '%v'\n"+
-      "b2Num= '%v'\n"+
-      "Error='%v'\n\n",
-      b1NumStr,
-      b2NumStr,
-      ePrefix,
-      err.Error())
-    return
-  }
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"result, err := new(BigIntMathAdd).AddBigIntNums(b1Num, b2Num)\n"+
+			"b1Num= '%v'\n"+
+			"b2Num= '%v'\n"+
+			"Error='%v'\n\n",
+			b1NumStr,
+			b2NumStr,
+			ePrefix,
+			err.Error())
+		return
+	}
 
-  if biExpectedResult.Cmp(result.bigInt) != 0 {
-    t.Errorf("%v\n"+
-      "Error: Unexpected Result!\n"+
-      "Expected result.bigInt = '%v'\n"+
-      "Instead, result.bigInt = '%v'\n\n",
-      ePrefix,
-      biExpectedResult.Text(10),
-      result.bigInt.Text(10))
-    return
-  }
+	if biExpectedResult.Cmp(result.bigInt) != 0 {
+		t.Errorf("%v\n"+
+			"Error: Unexpected Result!\n"+
+			"Expected result.bigInt = '%v'\n"+
+			"Instead, result.bigInt = '%v'\n\n",
+			ePrefix,
+			biExpectedResult.Text(10),
+			result.bigInt.Text(10))
+		return
+	}
 
-  if expectedPrecision != result.precision {
-    t.Errorf("%v\n"+
-      "Error: Unexpected Result!\n"+
-      "Expected result.precision = '%v'\n"+
-      "Instead, result.precision = '%v'\n\n",
-      ePrefix,
-      expectedPrecision,
-      result.precision)
-    return
-  }
+	if expectedPrecision != result.precision {
+		t.Errorf("%v\n"+
+			"Error: Unexpected Result!\n"+
+			"Expected result.precision = '%v'\n"+
+			"Instead, result.precision = '%v'\n\n",
+			ePrefix,
+			expectedPrecision,
+			result.precision)
+		return
+	}
 
-  if expectedSign != result.sign {
-    t.Errorf("%v\n"+
-      "Error: Unexpected Result!\n"+
-      "Expected result.sign = '%v'\n"+
-      "Instead, result.sign = '%v'\n\n",
-      ePrefix,
-      expectedSign,
-      result.sign)
-  }
+	if expectedSign != result.sign {
+		t.Errorf("%v\n"+
+			"Error: Unexpected Result!\n"+
+			"Expected result.sign = '%v'\n"+
+			"Instead, result.sign = '%v'\n\n",
+			ePrefix,
+			expectedSign,
+			result.sign)
+	}
 
-  return
+	return
 }
 
 func TestBigIntMathAdd_AddBigIntNums_02(t *testing.T) {
 
-  ePrefix := "TestBigIntMathAdd_AddBigIntNums_02"
+	ePrefix := "TestBigIntMathAdd_AddBigIntNums_02"
 
-  // n1Str := 123456.789
-  b1Str := "123456789"
-  b1Precision := uint(3)
+	// n1Str := 123456.789
+	b1Str := "123456789"
+	b1Precision := uint(3)
 
-  b1Big, oK := big.NewInt(0).SetString(b1Str, 10)
+	b1Big, oK := big.NewInt(0).SetString(b1Str, 10)
 
-  if !oK {
-    t.Errorf("%v\n"+
-      "Error returned by:\n"+
-      "b1Big, oK := big.NewInt(0).SetString(b1Str, 10)\n"+
-      "b1Str='%v'\n\n", ePrefix, b1Str)
-    return
-  }
+	if !oK {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"b1Big, oK := big.NewInt(0).SetString(b1Str, 10)\n"+
+			"b1Str='%v'\n\n", ePrefix, b1Str)
+		return
+	}
 
-  b1Num, err := new(BigIntNum).NewBigInt(b1Big, b1Precision)
+	b1Num, err := new(BigIntNum).NewBigInt(b1Big, b1Precision)
 
-  if err != nil {
-    t.Errorf("%v\n"+
-      "Error returned by:\n"+
-      "b1Num, err := new(BigIntNum).NewBigInt(b1Big, b1Precision)\n"+
-      "b1Big= '%v'\n"+
-      "b1Precision= '%v'\n"+
-      "Error='%v'\n\n", ePrefix,
-      b1Big.Text(10),
-      b1Precision,
-      err.Error())
-    return
-  }
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"b1Num, err := new(BigIntNum).NewBigInt(b1Big, b1Precision)\n"+
+			"b1Big= '%v'\n"+
+			"b1Precision= '%v'\n"+
+			"Error='%v'\n\n", ePrefix,
+			b1Big.Text(10),
+			b1Precision,
+			err.Error())
+		return
+	}
 
-  b1NumStr, err := b1Num.GetNumStr()
+	b1NumStr, err := b1Num.GetNumStr()
 
-  if err != nil {
-    t.Errorf("%v\n"+
-      "Error returned by:\n"+
-      "b1NumStr, err := b1Num.GetNumStr()\n"+
-      "Error='%v'\n\n", ePrefix, err.Error())
-    return
-  }
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"b1NumStr, err := b1Num.GetNumStr()\n"+
+			"Error='%v'\n\n", ePrefix, err.Error())
+		return
+	}
 
-  // n2Str := -987.123456
-  b2Str := "-987123456"
-  b2Precision := uint(6)
+	// n2Str := -987.123456
+	b2Str := "-987123456"
+	b2Precision := uint(6)
 
-  b2Big, oK := big.NewInt(0).SetString(b2Str, 10)
+	b2Big, oK := big.NewInt(0).SetString(b2Str, 10)
 
-  if !oK {
-    t.Errorf("%v\n"+
-      "Error returned by:\n"+
-      "b2Big, oK := big.NewInt(0).SetString(b2Str, 10)\n"+
-      "b2Str='%v'\n\n", ePrefix, b2Str)
-    return
-  }
+	if !oK {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"b2Big, oK := big.NewInt(0).SetString(b2Str, 10)\n"+
+			"b2Str='%v'\n\n", ePrefix, b2Str)
+		return
+	}
 
-  b2Num, err := new(BigIntNum).NewBigInt(b2Big, b2Precision)
+	b2Num, err := new(BigIntNum).NewBigInt(b2Big, b2Precision)
 
-  if err != nil {
-    t.Errorf("%v\n"+
-      "Error returned by:\n"+
-      "b2Num, err := new(BigIntNum).NewBigInt(b2Big, b2Precision)\n"+
-      "b2Big= '%v'\n"+
-      "b2Precision= '%v'\n"+
-      "Error='%v'\n\n", ePrefix,
-      b2Big.Text(10),
-      b2Precision,
-      err.Error())
-    return
-  }
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"b2Num, err := new(BigIntNum).NewBigInt(b2Big, b2Precision)\n"+
+			"b2Big= '%v'\n"+
+			"b2Precision= '%v'\n"+
+			"Error='%v'\n\n", ePrefix,
+			b2Big.Text(10),
+			b2Precision,
+			err.Error())
+		return
+	}
 
-  b2NumStr, err := b2Num.GetNumStr()
+	b2NumStr, err := b2Num.GetNumStr()
 
-  if err != nil {
-    t.Errorf("%v\n"+
-      "Error returned by:\n"+
-      "b2NumStr, err := b2Num.GetNumStr()\n"+
-      "Error='%v'\n\n", ePrefix, err.Error())
-    return
-  }
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"b2NumStr, err := b2Num.GetNumStr()\n"+
+			"Error='%v'\n\n", ePrefix, err.Error())
+		return
+	}
 
-  // Result := 122469.665544
-  expectedResultStr := "122469665544"
-  expectedPrecision := uint(6)
-  expectedSign := 1
+	// Result := 122469.665544
+	expectedResultStr := "122469665544"
+	expectedPrecision := uint(6)
+	expectedSign := 1
 
-  biExpectedResult, oK := big.NewInt(0).SetString(expectedResultStr, 10)
+	biExpectedResult, oK := big.NewInt(0).SetString(expectedResultStr, 10)
 
-  if !oK {
-    t.Errorf("%v\n"+
-      "Error returned by:\n"+
-      "biExpectedResult, oK := big.NewInt(0).SetString(expectedResultStr, 10)\n"+
-      "expectedResultStr='%v'\n\n", ePrefix, expectedResultStr)
-    return
-  }
+	if !oK {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"biExpectedResult, oK := big.NewInt(0).SetString(expectedResultStr, 10)\n"+
+			"expectedResultStr='%v'\n\n", ePrefix, expectedResultStr)
+		return
+	}
 
-  result, err := new(BigIntMathAdd).AddBigIntNums(b1Num, b2Num)
+	result, err := new(BigIntMathAdd).AddBigIntNums(b1Num, b2Num)
 
-  if err != nil {
-    t.Errorf("%v\n"+
-      "Error returned by:\n"+
-      "result, err := new(BigIntMathAdd).AddBigIntNums(b1Num, b2Num)\n"+
-      "b1Num= '%v'\n"+
-      "b2Num= '%v'\n"+
-      "Error='%v'\n\n",
-      b1NumStr,
-      b2NumStr,
-      ePrefix,
-      err.Error())
-    return
-  }
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"result, err := new(BigIntMathAdd).AddBigIntNums(b1Num, b2Num)\n"+
+			"b1Num= '%v'\n"+
+			"b2Num= '%v'\n"+
+			"Error='%v'\n\n",
+			b1NumStr,
+			b2NumStr,
+			ePrefix,
+			err.Error())
+		return
+	}
 
-  if biExpectedResult.Cmp(result.bigInt) != 0 {
-    t.Errorf("%v\n"+
-      "Error: Unexpected Result!\n"+
-      "Expected result.bigInt = '%v'\n"+
-      "Instead, result.bigInt = '%v'\n\n",
-      ePrefix,
-      biExpectedResult.Text(10),
-      result.bigInt.Text(10))
-    return
-  }
+	if biExpectedResult.Cmp(result.bigInt) != 0 {
+		t.Errorf("%v\n"+
+			"Error: Unexpected Result!\n"+
+			"Expected result.bigInt = '%v'\n"+
+			"Instead, result.bigInt = '%v'\n\n",
+			ePrefix,
+			biExpectedResult.Text(10),
+			result.bigInt.Text(10))
+		return
+	}
 
-  if expectedPrecision != result.precision {
-    t.Errorf("%v\n"+
-      "Error: Unexpected Result!\n"+
-      "Expected result.precision = '%v'\n"+
-      "Instead, result.precision = '%v'\n\n",
-      ePrefix,
-      expectedPrecision,
-      result.precision)
-    return
-  }
+	if expectedPrecision != result.precision {
+		t.Errorf("%v\n"+
+			"Error: Unexpected Result!\n"+
+			"Expected result.precision = '%v'\n"+
+			"Instead, result.precision = '%v'\n\n",
+			ePrefix,
+			expectedPrecision,
+			result.precision)
+		return
+	}
 
-  if expectedSign != result.sign {
-    t.Errorf("%v\n"+
-      "Error: Unexpected Result!\n"+
-      "Expected result.sign = '%v'\n"+
-      "Instead, result.sign = '%v'\n\n",
-      ePrefix,
-      expectedSign,
-      result.sign)
-  }
+	if expectedSign != result.sign {
+		t.Errorf("%v\n"+
+			"Error: Unexpected Result!\n"+
+			"Expected result.sign = '%v'\n"+
+			"Instead, result.sign = '%v'\n\n",
+			ePrefix,
+			expectedSign,
+			result.sign)
+	}
 
-  return
+	return
 }
 
 func TestBigIntMathAdd_AddBigIntNums_03(t *testing.T) {
-  ePrefix := "TestBigIntMathAdd_AddBigIntNums_03"
-  // n1Str := -123456.789
-  b1Str := "-123456789"
-  b1Precision := uint(3)
-  b1Big, oK := big.NewInt(0).SetString(b1Str, 10)
+	ePrefix := "TestBigIntMathAdd_AddBigIntNums_03"
+	// n1Str := -123456.789
+	b1Str := "-123456789"
+	b1Precision := uint(3)
+	b1Big, oK := big.NewInt(0).SetString(b1Str, 10)
 
-  if !oK {
-    t.Errorf("%v\n"+
-      "Error returned by:\n"+
-      "b1Big, oK := big.NewInt(0).SetString(b1Str, 10)\n"+
-      "b1Str='%v'\n\n", ePrefix, b1Str)
-    return
-  }
+	if !oK {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"b1Big, oK := big.NewInt(0).SetString(b1Str, 10)\n"+
+			"b1Str='%v'\n\n", ePrefix, b1Str)
+		return
+	}
 
-  b1Num, err := new(BigIntNum).NewBigInt(b1Big, b1Precision)
+	b1Num, err := new(BigIntNum).NewBigInt(b1Big, b1Precision)
 
-  if err != nil {
-    t.Errorf("%v\n"+
-      "Error returned by:\n"+
-      "b1Num, err := new(BigIntNum).NewBigInt(b1Big, b1Precision)\n"+
-      "b1Big= '%v'\n"+
-      "b1Precision= '%v'\n"+
-      "Error='%v'\n\n", ePrefix,
-      b1Big.Text(10),
-      b1Precision,
-      err.Error())
-    return
-  }
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"b1Num, err := new(BigIntNum).NewBigInt(b1Big, b1Precision)\n"+
+			"b1Big= '%v'\n"+
+			"b1Precision= '%v'\n"+
+			"Error='%v'\n\n", ePrefix,
+			b1Big.Text(10),
+			b1Precision,
+			err.Error())
+		return
+	}
 
-  b1NumStr, err := b1Num.GetNumStr()
+	b1NumStr, err := b1Num.GetNumStr()
 
-  if err != nil {
-    t.Errorf("%v\n"+
-      "Error returned by:\n"+
-      "b1NumStr, err := b1Num.GetNumStr()\n"+
-      "Error='%v'\n\n", ePrefix, err.Error())
-    return
-  }
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"b1NumStr, err := b1Num.GetNumStr()\n"+
+			"Error='%v'\n\n", ePrefix, err.Error())
+		return
+	}
 
-  // n2Str := 987.123456
-  b2Str := "987123456"
-  b2Precision := uint(6)
-  b2Big, oK := big.NewInt(0).SetString(b2Str, 10)
+	// n2Str := 987.123456
+	b2Str := "987123456"
+	b2Precision := uint(6)
+	b2Big, oK := big.NewInt(0).SetString(b2Str, 10)
 
-  if !oK {
-    t.Errorf("%v\n"+
-      "Error returned by:\n"+
-      "b2Big, oK := big.NewInt(0).SetString(b2Str, 10)\n"+
-      "b2Str='%v'\n\n", ePrefix, b2Str)
-    return
-  }
+	if !oK {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"b2Big, oK := big.NewInt(0).SetString(b2Str, 10)\n"+
+			"b2Str='%v'\n\n", ePrefix, b2Str)
+		return
+	}
 
-  b2Num, err := new(BigIntNum).NewBigInt(b2Big, b2Precision)
+	b2Num, err := new(BigIntNum).NewBigInt(b2Big, b2Precision)
 
-  if err != nil {
-    t.Errorf("%v\n"+
-      "Error returned by:\n"+
-      "b2Num, err := new(BigIntNum).NewBigInt(b2Big, b2Precision)\n"+
-      "b2Big= '%v'\n"+
-      "b2Precision= '%v'\n"+
-      "Error='%v'\n\n", ePrefix,
-      b2Big.Text(10),
-      b2Precision,
-      err.Error())
-    return
-  }
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"b2Num, err := new(BigIntNum).NewBigInt(b2Big, b2Precision)\n"+
+			"b2Big= '%v'\n"+
+			"b2Precision= '%v'\n"+
+			"Error='%v'\n\n", ePrefix,
+			b2Big.Text(10),
+			b2Precision,
+			err.Error())
+		return
+	}
 
-  b2NumStr, err := b2Num.GetNumStr()
+	b2NumStr, err := b2Num.GetNumStr()
 
-  if err != nil {
-    t.Errorf("%v\n"+
-      "Error returned by:\n"+
-      "b2NumStr, err := b2Num.GetNumStr()\n"+
-      "Error='%v'\n\n", ePrefix, err.Error())
-    return
-  }
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"b2NumStr, err := b2Num.GetNumStr()\n"+
+			"Error='%v'\n\n", ePrefix, err.Error())
+		return
+	}
 
-  // Result := -122469.665544
-  expectedResultStr := "-122469665544"
-  expectedPrecision := uint(6)
-  expectedSign := -1
-  biExpectedResult, oK := big.NewInt(0).SetString(expectedResultStr, 10)
+	// Result := -122469.665544
+	expectedResultStr := "-122469665544"
+	expectedPrecision := uint(6)
+	expectedSign := -1
+	biExpectedResult, oK := big.NewInt(0).SetString(expectedResultStr, 10)
 
-  result, err := new(BigIntMathAdd).AddBigIntNums(b1Num, b2Num)
+	result, err := new(BigIntMathAdd).AddBigIntNums(b1Num, b2Num)
 
-  if err != nil {
-    t.Errorf("%v\n"+
-      "Error returned by:\n"+
-      "result, err := new(BigIntMathAdd).AddBigIntNums(b1Num, b2Num)\n"+
-      "b1Num= '%v'\n"+
-      "b2Num= '%v'\n"+
-      "Error='%v'\n\n",
-      b1NumStr,
-      b2NumStr,
-      ePrefix,
-      err.Error())
-    return
-  }
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"result, err := new(BigIntMathAdd).AddBigIntNums(b1Num, b2Num)\n"+
+			"b1Num= '%v'\n"+
+			"b2Num= '%v'\n"+
+			"Error='%v'\n\n",
+			b1NumStr,
+			b2NumStr,
+			ePrefix,
+			err.Error())
+		return
+	}
 
-  if biExpectedResult.Cmp(result.bigInt) != 0 {
-    t.Errorf("%v\n"+
-      "Error: Unexpected Result!\n"+
-      "Expected result.bigInt = '%v'\n"+
-      "Instead, result.bigInt = '%v'\n\n",
-      ePrefix,
-      biExpectedResult.Text(10),
-      result.bigInt.Text(10))
-    return
-  }
+	if biExpectedResult.Cmp(result.bigInt) != 0 {
+		t.Errorf("%v\n"+
+			"Error: Unexpected Result!\n"+
+			"Expected result.bigInt = '%v'\n"+
+			"Instead, result.bigInt = '%v'\n\n",
+			ePrefix,
+			biExpectedResult.Text(10),
+			result.bigInt.Text(10))
+		return
+	}
 
-  if expectedPrecision != result.precision {
-    t.Errorf("%v\n"+
-      "Error: Unexpected Result!\n"+
-      "Expected result.precision = '%v'\n"+
-      "Instead, result.precision = '%v'\n\n",
-      ePrefix,
-      expectedPrecision,
-      result.precision)
-    return
-  }
+	if expectedPrecision != result.precision {
+		t.Errorf("%v\n"+
+			"Error: Unexpected Result!\n"+
+			"Expected result.precision = '%v'\n"+
+			"Instead, result.precision = '%v'\n\n",
+			ePrefix,
+			expectedPrecision,
+			result.precision)
+		return
+	}
 
-  if expectedSign != result.sign {
-    t.Errorf("%v\n"+
-      "Error: Unexpected Result!\n"+
-      "Expected result.sign = '%v'\n"+
-      "Instead, result.sign = '%v'\n\n",
-      ePrefix,
-      expectedSign,
-      result.sign)
-  }
+	if expectedSign != result.sign {
+		t.Errorf("%v\n"+
+			"Error: Unexpected Result!\n"+
+			"Expected result.sign = '%v'\n"+
+			"Instead, result.sign = '%v'\n\n",
+			ePrefix,
+			expectedSign,
+			result.sign)
+	}
 
-  return
+	return
 }
 
 func TestBigIntMathAdd_AddBigIntNums_04(t *testing.T) {
 
-  ePrefix := "TestBigIntMathAdd_AddBigIntNums_04"
-  // n1Str := -123456.789
-  b1Str := "-123456789"
-  b1Precision := uint(3)
-  b1Big, oK := big.NewInt(0).SetString(b1Str, 10)
+	ePrefix := "TestBigIntMathAdd_AddBigIntNums_04"
+	// n1Str := -123456.789
+	b1Str := "-123456789"
+	b1Precision := uint(3)
+	b1Big, oK := big.NewInt(0).SetString(b1Str, 10)
 
-  if !oK {
-    t.Errorf("%v\n"+
-      "Error returned by:\n"+
-      "b1Big, oK := big.NewInt(0).SetString(b1Str, 10)\n"+
-      "b1Str='%v'\n\n", ePrefix, b1Str)
-    return
-  }
+	if !oK {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"b1Big, oK := big.NewInt(0).SetString(b1Str, 10)\n"+
+			"b1Str='%v'\n\n", ePrefix, b1Str)
+		return
+	}
 
-  b1Num, err := new(BigIntNum).NewBigInt(b1Big, b1Precision)
+	b1Num, err := new(BigIntNum).NewBigInt(b1Big, b1Precision)
 
-  if err != nil {
-    t.Errorf("%v\n"+
-      "Error returned by:\n"+
-      "b1Num, err := new(BigIntNum).NewBigInt(b1Big, b1Precision)\n"+
-      "b1Big= '%v'\n"+
-      "b1Precision= '%v'\n"+
-      "Error='%v'\n\n", ePrefix,
-      b1Big.Text(10),
-      b1Precision,
-      err.Error())
-    return
-  }
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"b1Num, err := new(BigIntNum).NewBigInt(b1Big, b1Precision)\n"+
+			"b1Big= '%v'\n"+
+			"b1Precision= '%v'\n"+
+			"Error='%v'\n\n", ePrefix,
+			b1Big.Text(10),
+			b1Precision,
+			err.Error())
+		return
+	}
 
-  b1NumStr, err := b1Num.GetNumStr()
+	b1NumStr, err := b1Num.GetNumStr()
 
-  if err != nil {
-    t.Errorf("%v\n"+
-      "Error returned by:\n"+
-      "b1NumStr, err := b1Num.GetNumStr()\n"+
-      "Error='%v'\n\n", ePrefix, err.Error())
-    return
-  }
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"b1NumStr, err := b1Num.GetNumStr()\n"+
+			"Error='%v'\n\n", ePrefix, err.Error())
+		return
+	}
 
-  // n2Str := -987.123456
-  b2Str := "-987123456"
-  b2Precision := uint(6)
+	// n2Str := -987.123456
+	b2Str := "-987123456"
+	b2Precision := uint(6)
 
-  b2Big, oK := big.NewInt(0).SetString(b2Str, 10)
+	b2Big, oK := big.NewInt(0).SetString(b2Str, 10)
 
-  if !oK {
-    t.Errorf("%v\n"+
-      "Error returned by:\n"+
-      "b2Big, oK := big.NewInt(0).SetString(b2Str, 10)\n"+
-      "b2Str='%v'\n\n", ePrefix, b2Str)
-    return
-  }
+	if !oK {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"b2Big, oK := big.NewInt(0).SetString(b2Str, 10)\n"+
+			"b2Str='%v'\n\n", ePrefix, b2Str)
+		return
+	}
 
-  b2Num, err := new(BigIntNum).NewBigInt(b2Big, b2Precision)
+	b2Num, err := new(BigIntNum).NewBigInt(b2Big, b2Precision)
 
-  if err != nil {
-    t.Errorf("%v\n"+
-      "Error returned by:\n"+
-      "b2Num, err := new(BigIntNum).NewBigInt(b2Big, b2Precision)\n"+
-      "b2Big= '%v'\n"+
-      "b2Precision= '%v'\n"+
-      "Error='%v'\n\n", ePrefix,
-      b2Big.Text(10),
-      b2Precision,
-      err.Error())
-    return
-  }
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"b2Num, err := new(BigIntNum).NewBigInt(b2Big, b2Precision)\n"+
+			"b2Big= '%v'\n"+
+			"b2Precision= '%v'\n"+
+			"Error='%v'\n\n", ePrefix,
+			b2Big.Text(10),
+			b2Precision,
+			err.Error())
+		return
+	}
 
-  b2NumStr, err := b2Num.GetNumStr()
+	b2NumStr, err := b2Num.GetNumStr()
 
-  if err != nil {
-    t.Errorf("%v\n"+
-      "Error returned by:\n"+
-      "b2NumStr, err := b2Num.GetNumStr()\n"+
-      "Error='%v'\n\n", ePrefix, err.Error())
-    return
-  }
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"b2NumStr, err := b2Num.GetNumStr()\n"+
+			"Error='%v'\n\n", ePrefix, err.Error())
+		return
+	}
 
-  // Result := -124443.912456
-  expectedResultStr := "-124443912456"
-  expectedPrecision := uint(6)
-  expectedSign := -1
+	// Result := -124443.912456
+	expectedResultStr := "-124443912456"
+	expectedPrecision := uint(6)
+	expectedSign := -1
 
-  biExpectedResult, oK := big.NewInt(0).SetString(expectedResultStr, 10)
+	biExpectedResult, oK := big.NewInt(0).SetString(expectedResultStr, 10)
 
-  if !oK {
-    t.Errorf("%v\n"+
-      "Error returned by:\n"+
-      "biExpectedResult, oK := big.NewInt(0).SetString(expectedResultStr, 10)\n"+
-      "expectedResultStr='%v'\n\n", ePrefix, expectedResultStr)
-    return
-  }
+	if !oK {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"biExpectedResult, oK := big.NewInt(0).SetString(expectedResultStr, 10)\n"+
+			"expectedResultStr='%v'\n\n", ePrefix, expectedResultStr)
+		return
+	}
 
-  result, err := new(BigIntMathAdd).AddBigIntNums(b1Num, b2Num)
+	result, err := new(BigIntMathAdd).AddBigIntNums(b1Num, b2Num)
 
-  if err != nil {
-    t.Errorf("%v\n"+
-      "Error returned by:\n"+
-      "result, err := new(BigIntMathAdd).AddBigIntNums(b1Num, b2Num)\n"+
-      "b1Num= '%v'\n"+
-      "b2Num= '%v'\n"+
-      "Error='%v'\n\n",
-      b1NumStr,
-      b2NumStr,
-      ePrefix,
-      err.Error())
-    return
-  }
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"result, err := new(BigIntMathAdd).AddBigIntNums(b1Num, b2Num)\n"+
+			"b1Num= '%v'\n"+
+			"b2Num= '%v'\n"+
+			"Error='%v'\n\n",
+			b1NumStr,
+			b2NumStr,
+			ePrefix,
+			err.Error())
+		return
+	}
 
-  if biExpectedResult.Cmp(result.bigInt) != 0 {
-    t.Errorf("%v\n"+
-      "Error: Unexpected Result!\n"+
-      "Expected result.bigInt = '%v'\n"+
-      "Instead, result.bigInt = '%v'\n\n",
-      ePrefix,
-      biExpectedResult.Text(10),
-      result.bigInt.Text(10))
-    return
-  }
+	if biExpectedResult.Cmp(result.bigInt) != 0 {
+		t.Errorf("%v\n"+
+			"Error: Unexpected Result!\n"+
+			"Expected result.bigInt = '%v'\n"+
+			"Instead, result.bigInt = '%v'\n\n",
+			ePrefix,
+			biExpectedResult.Text(10),
+			result.bigInt.Text(10))
+		return
+	}
 
-  if expectedPrecision != result.precision {
-    t.Errorf("%v\n"+
-      "Error: Unexpected Result!\n"+
-      "Expected result.precision = '%v'\n"+
-      "Instead, result.precision = '%v'\n\n",
-      ePrefix,
-      expectedPrecision,
-      result.precision)
-    return
-  }
+	if expectedPrecision != result.precision {
+		t.Errorf("%v\n"+
+			"Error: Unexpected Result!\n"+
+			"Expected result.precision = '%v'\n"+
+			"Instead, result.precision = '%v'\n\n",
+			ePrefix,
+			expectedPrecision,
+			result.precision)
+		return
+	}
 
-  if expectedSign != result.sign {
-    t.Errorf("%v\n"+
-      "Error: Unexpected Result!\n"+
-      "Expected result.sign = '%v'\n"+
-      "Instead, result.sign = '%v'\n\n",
-      ePrefix,
-      expectedSign,
-      result.sign)
-  }
+	if expectedSign != result.sign {
+		t.Errorf("%v\n"+
+			"Error: Unexpected Result!\n"+
+			"Expected result.sign = '%v'\n"+
+			"Instead, result.sign = '%v'\n\n",
+			ePrefix,
+			expectedSign,
+			result.sign)
+	}
 
-  return
+	return
 }
 
 func TestBigIntMathAdd_AddBigIntNums_05(t *testing.T) {
 
-  ePrefix := "TestBigIntMathAdd_AddBigIntNums_05"
+	ePrefix := "TestBigIntMathAdd_AddBigIntNums_05"
 
-  // n1Str := 123456.789
-  b1Str := "123456.789"
+	// n1Str := 123456.789
+	b1Str := "123456.789"
 
-  b1Num, err := new(BigIntNum).NewNumStr(b1Str)
+	b1Num, err := new(BigIntNum).NewNumStr(b1Str)
 
-  if err != nil {
-    t.Errorf("%v\n"+
-      "Error returned by:\n"+
-      "b1Num, err := new(BigIntNum).NewNumStr(b1Str)\n"+
-      "b1Str= '%v'\n"+
-      "Error='%v'\n\n", ePrefix,
-      b1Str,
-      err.Error())
-    return
-  }
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"b1Num, err := new(BigIntNum).NewNumStr(b1Str)\n"+
+			"b1Str= '%v'\n"+
+			"Error='%v'\n\n", ePrefix,
+			b1Str,
+			err.Error())
+		return
+	}
 
-  b1NumStr, err := b1Num.GetNumStr()
+	b1NumStr, err := b1Num.GetNumStr()
 
-  if err != nil {
-    t.Errorf("%v\n"+
-      "Error returned by:\n"+
-      "b1NumStr, err := b1Num.GetNumStr()\n"+
-      "Error='%v'\n\n", ePrefix, err.Error())
-    return
-  }
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"b1NumStr, err := b1Num.GetNumStr()\n"+
+			"Error='%v'\n\n", ePrefix, err.Error())
+		return
+	}
 
-  expectedNumSeps := NumericSeparatorDto{}
-  frenchDecSeparator := ','
-  frenchThousandsSeparator := ' '
-  frenchCurrencySymbol := '€'
+	expectedNumSeps := NumericSeparatorDto{}
+	frenchDecSeparator := ','
+	frenchThousandsSeparator := ' '
+	frenchCurrencySymbol := '€'
 
-  expectedNumSeps.DecimalSeparator = frenchDecSeparator
-  expectedNumSeps.ThousandsSeparator = frenchThousandsSeparator
-  expectedNumSeps.CurrencySymbol = frenchCurrencySymbol
+	expectedNumSeps.DecimalSeparator = frenchDecSeparator
+	expectedNumSeps.ThousandsSeparator = frenchThousandsSeparator
+	expectedNumSeps.CurrencySymbol = frenchCurrencySymbol
 
-  err = b1Num.SetNumericSeparatorsDto(expectedNumSeps)
+	err = b1Num.SetNumericSeparatorsDto(expectedNumSeps)
 
-  if err != nil {
-    t.Errorf("%v\n"+
-      "Error returned by:\n"+
-      "err = b1Num.SetNumericSeparatorsDto(expectedNumSeps)\n"+
-      "expectedNumSeps= '%v'\nError='%v'\n\n", ePrefix,
-      expectedNumSeps.String(),
-      err.Error())
-    return
-  }
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"err = b1Num.SetNumericSeparatorsDto(expectedNumSeps)\n"+
+			"expectedNumSeps= '%v'\nError='%v'\n\n", ePrefix,
+			expectedNumSeps.String(),
+			err.Error())
+		return
+	}
 
-  // n2Str := 987.123456
-  b2Str := "987.123456"
+	// n2Str := 987.123456
+	b2Str := "987.123456"
 
-  b2Num, err := new(BigIntNum).NewNumStr(b2Str)
+	b2Num, err := new(BigIntNum).NewNumStr(b2Str)
 
-  if err != nil {
-    t.Errorf("%v\n"+
-      "Error returned by:\n"+
-      "b2Num, err := new(BigIntNum).NewNumStr(b2Str)\n"+
-      "b2Str= '%v'\n"+
-      "Error='%v'\n\n",
-      ePrefix,
-      b2Str,
-      err.Error())
-    return
-  }
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"b2Num, err := new(BigIntNum).NewNumStr(b2Str)\n"+
+			"b2Str= '%v'\n"+
+			"Error='%v'\n\n",
+			ePrefix,
+			b2Str,
+			err.Error())
+		return
+	}
 
-  b2NumStr, err := b2Num.GetNumStr()
+	b2NumStr, err := b2Num.GetNumStr()
 
-  if err != nil {
-    t.Errorf("%v\n"+
-      "Error returned by:\n"+
-      "b2NumStr, err := b2Num.GetNumStr()\n"+
-      "Error='%v'\n\n", ePrefix, err.Error())
-    return
-  }
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"b2NumStr, err := b2Num.GetNumStr()\n"+
+			"Error='%v'\n\n", ePrefix, err.Error())
+		return
+	}
 
-  // Result := 124443.912456
-  expectedResultStr := "124443,912456"
+	// Result := 124443.912456
+	expectedResultStr := "124443,912456"
 
-  result, err := new(BigIntMathAdd).AddBigIntNums(b1Num, b2Num)
+	result, err := new(BigIntMathAdd).AddBigIntNums(b1Num, b2Num)
 
-  if err != nil {
-    t.Errorf("%v\n"+
-      "Error returned by:\n"+
-      "result, err := new(BigIntMathAdd).AddBigIntNums(b1Num, b2Num)\n"+
-      "b1Num= '%v'\n"+
-      "b2Num= '%v'\n"+
-      "Error='%v'\n\n",
-      b1NumStr,
-      b2NumStr,
-      ePrefix,
-      err.Error())
-    return
-  }
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"result, err := new(BigIntMathAdd).AddBigIntNums(b1Num, b2Num)\n"+
+			"b1Num= '%v'\n"+
+			"b2Num= '%v'\n"+
+			"Error='%v'\n\n",
+			b1NumStr,
+			b2NumStr,
+			ePrefix,
+			err.Error())
+		return
+	}
 
-  actualResultNumStr, err := result.GetNumStr()
+	actualResultNumStr, err := result.GetNumStr()
 
-  if err != nil {
-    t.Errorf("%v\n"+
-      "Error returned by:\n"+
-      "actualResultNumStr, err := result.GetNumStr()\n"+
-      "Error='%v'\n\n", ePrefix, err.Error())
-    return
-  }
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"actualResultNumStr, err := result.GetNumStr()\n"+
+			"Error='%v'\n\n", ePrefix, err.Error())
+		return
+	}
 
-  if expectedResultStr != actualResultNumStr {
-    t.Errorf("%v\n"+
-      "Error: Unexpected Result!\n"+
-      "Expected actualResultNumStr = '%v'\n"+
-      "Instead, actualResultNumStr = '%v'\n\n",
-      ePrefix,
-      expectedResultStr,
-      actualResultNumStr)
-    return
-  }
+	if expectedResultStr != actualResultNumStr {
+		t.Errorf("%v\n"+
+			"Error: Unexpected Result!\n"+
+			"Expected actualResultNumStr = '%v'\n"+
+			"Instead, actualResultNumStr = '%v'\n\n",
+			ePrefix,
+			expectedResultStr,
+			actualResultNumStr)
+		return
+	}
 
-  actualNumSeps, err := result.GetNumericSeparatorsDto()
+	actualNumSeps, err := result.GetNumericSeparatorsDto()
 
-  if err != nil {
-    t.Errorf("%v\n"+
-      "Error returned by:\n"+
-      "actualNumSeps, err := result.GetNumericSeparatorsDto()\n"+
-      "result= '%v'\n"+
-      "Error='%v'\n\n",
-      ePrefix,
-      actualResultNumStr,
-      err.Error())
-    return
-  }
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"actualNumSeps, err := result.GetNumericSeparatorsDto()\n"+
+			"result= '%v'\n"+
+			"Error='%v'\n\n",
+			ePrefix,
+			actualResultNumStr,
+			err.Error())
+		return
+	}
 
-  if !expectedNumSeps.Equal(actualNumSeps) {
-    t.Errorf("%v\n"+
-      "Error: Unexpected Result!\n"+
-      "Expected actualNumSeps = '%v'\n"+
-      "Instead, actualNumSeps = '%v'\n\n",
-      ePrefix,
-      expectedNumSeps.String(),
-      actualNumSeps.String())
-  }
+	if !expectedNumSeps.Equal(actualNumSeps) {
+		t.Errorf("%v\n"+
+			"Error: Unexpected Result!\n"+
+			"Expected actualNumSeps = '%v'\n"+
+			"Instead, actualNumSeps = '%v'\n\n",
+			ePrefix,
+			expectedNumSeps.String(),
+			actualNumSeps.String())
+	}
 
-  return
+	return
 }
 
 func TestBigIntMathAdd_AddBigIntNumArray_01(t *testing.T) {
 
-  ePrefix := "TestBigIntMathAdd_AddBigIntNumArray_01"
+	ePrefix := "TestBigIntMathAdd_AddBigIntNumArray_01"
 
-  numStrs := []string{"45.8",
-    "1.45962",
-    "58.71",
-    "-37.62174",
-    "89.8",
-  }
+	numStrs := []string{"45.8",
+		"1.45962",
+		"58.71",
+		"-37.62174",
+		"89.8",
+	}
 
-  expectedTotalStr := "158.14788"
+	expectedTotalStr := "158.14788"
 
-  expectedBNum, err := new(BigIntNum).NewNumStr(expectedTotalStr)
+	expectedBNum, err := new(BigIntNum).NewNumStr(expectedTotalStr)
 
-  if err != nil {
-    t.Errorf("%v\n"+
-      "Error returned by:\n"+
-      "expectedBNum, err := new(BigIntNum).NewNumStr(expectedTotalStr)\n"+
-      "expectedTotalStr= '%v'\n"+
-      "Error='%v'\n\n",
-      ePrefix,
-      expectedTotalStr,
-      err.Error())
-    return
-  }
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"expectedBNum, err := new(BigIntNum).NewNumStr(expectedTotalStr)\n"+
+			"expectedTotalStr= '%v'\n"+
+			"Error='%v'\n\n",
+			ePrefix,
+			expectedTotalStr,
+			err.Error())
+		return
+	}
 
-  expectedBNumStr, err := expectedBNum.GetNumStr()
+	expectedBNumStr, err := expectedBNum.GetNumStr()
 
-  if err != nil {
-    t.Errorf("%v\n"+
-      "Error returned by:\n"+
-      "expectedBNumStr, err := expectedBNum.GetNumStr()\n"+
-      "Error='%v'\n\n", ePrefix, err.Error())
-    return
-  }
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"expectedBNumStr, err := expectedBNum.GetNumStr()\n"+
+			"Error='%v'\n\n", ePrefix, err.Error())
+		return
+	}
 
-  expectedResultNumStr, err := expectedBNum.GetNumStr()
+	expectedResultNumStr, err := expectedBNum.GetNumStr()
 
-  if err != nil {
-    t.Errorf("%v\n"+
-      "Error returned by:\n"+
-      "expectedResultNumStr, err := expectedBNum.GetNumStr()\n"+
-      "Error='%v'\n\n", ePrefix, err.Error())
-    return
-  }
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"expectedResultNumStr, err := expectedBNum.GetNumStr()\n"+
+			"Error='%v'\n\n", ePrefix, err.Error())
+		return
+	}
 
-  const lenBigNums = 5
+	const lenBigNums = 5
 
-  bNums := make([]BigIntNum, lenBigNums)
+	bNums := make([]BigIntNum, lenBigNums)
 
-  for i := 0; i < lenBigNums; i++ {
+	for i := 0; i < lenBigNums; i++ {
 
-    bNums[i], err = new(BigIntNum).NewNumStr(numStrs[i])
+		bNums[i], err = new(BigIntNum).NewNumStr(numStrs[i])
 
-    if err != nil {
+		if err != nil {
 
-      t.Errorf("%v\n"+
-        "Error returned by new(BigIntNum).NewNumStr(numStrs[%d])\n"+
-        "numStrs[%d]='%v'\n"+
-        "Error='%v'\n\n",
-        ePrefix,
-        i,
-        i,
-        numStrs[i],
-        err.Error())
-    }
-  }
+			t.Errorf("%v\n"+
+				"Error returned by new(BigIntNum).NewNumStr(numStrs[%d])\n"+
+				"numStrs[%d]='%v'\n"+
+				"Error='%v'\n\n",
+				ePrefix,
+				i,
+				i,
+				numStrs[i],
+				err.Error())
+		}
+	}
 
-  results, err := new(BigIntMathAdd).AddBigIntNumArray(bNums)
+	results, err := new(BigIntMathAdd).AddBigIntNumArray(bNums)
 
-  if err != nil {
-    t.Errorf("%v\n"+
-      "Error returned by:\n"+
-      "results, err := new(BigIntMathAdd).AddBigIntNumArray(bNums)\n"+
-      "Error='%v'\n\n", ePrefix, err.Error())
-    return
-  }
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"results, err := new(BigIntMathAdd).AddBigIntNumArray(bNums)\n"+
+			"Error='%v'\n\n", ePrefix, err.Error())
+		return
+	}
 
-  actualResultNumStr, err := results.GetNumStr()
+	actualResultNumStr, err := results.GetNumStr()
 
-  if err != nil {
-    t.Errorf("%v\n"+
-      "Error returned by:\n"+
-      "actualResultNumStr, err := results.GetNumStr()\n"+
-      "Error='%v'\n\n", ePrefix, err.Error())
-    return
-  }
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"actualResultNumStr, err := results.GetNumStr()\n"+
+			"Error='%v'\n\n", ePrefix, err.Error())
+		return
+	}
 
-  if expectedResultNumStr != actualResultNumStr {
-    t.Errorf("%v\n"+
-      "Error: Unexpected Result!\n"+
-      "Expected actualResultNumStr = '%v'\n"+
-      "Instead, actualResultNumStr = '%v'\n\n",
-      ePrefix,
-      expectedResultNumStr,
-      actualResultNumStr)
-    return
-  }
+	if expectedResultNumStr != actualResultNumStr {
+		t.Errorf("%v\n"+
+			"Error: Unexpected Result!\n"+
+			"Expected actualResultNumStr = '%v'\n"+
+			"Instead, actualResultNumStr = '%v'\n\n",
+			ePrefix,
+			expectedResultNumStr,
+			actualResultNumStr)
+		return
+	}
 
-  resultsEqualToBNum, err := expectedBNum.Equal(results)
+	resultsEqualToBNum, err := expectedBNum.Equal(results)
 
-  if err != nil {
-    t.Errorf("%v\n"+
-      "Error returned by:\n"+
-      "resultsEqualToBNum, err = expectedBNum.Equal(results)\n"+
-      "Error='%v'\n\n", ePrefix, err.Error())
-    return
-  }
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"resultsEqualToBNum, err = expectedBNum.Equal(results)\n"+
+			"Error='%v'\n\n", ePrefix, err.Error())
+		return
+	}
 
-  if !resultsEqualToBNum {
-    t.Errorf("%v\n"+
-      "Error: Unexpected Result!\n"+
-      "Expected results = '%v'\n"+
-      "Instead, results = '%v'\n\n",
-      ePrefix,
-      expectedBNum.bigInt.Text(10),
-      results.bigInt.Text(10))
-    return
-  }
+	if !resultsEqualToBNum {
+		t.Errorf("%v\n"+
+			"Error: Unexpected Result!\n"+
+			"Expected results = '%v'\n"+
+			"Instead, results = '%v'\n\n",
+			ePrefix,
+			expectedBNum.bigInt.Text(10),
+			results.bigInt.Text(10))
+		return
+	}
 
-  if expectedBNumStr != actualResultNumStr {
-    t.Errorf("%v\n"+
-      "Error: Unexpected Result!\n"+
-      "Expected resultsNumStr = '%v'\n"+
-      "Instead, resultsNumStr = '%v'\n\n",
-      ePrefix,
-      expectedBNumStr,
-      actualResultNumStr)
-  }
+	if expectedBNumStr != actualResultNumStr {
+		t.Errorf("%v\n"+
+			"Error: Unexpected Result!\n"+
+			"Expected resultsNumStr = '%v'\n"+
+			"Instead, resultsNumStr = '%v'\n\n",
+			ePrefix,
+			expectedBNumStr,
+			actualResultNumStr)
+	}
 
-  return
+	return
 }
 
 func TestBigIntMathAdd_AddBigIntNumArray_02(t *testing.T) {
 
-  ePrefix := "TestBigIntMathAdd_AddBigIntNumArray_02"
+	ePrefix := "TestBigIntMathAdd_AddBigIntNumArray_02"
 
-  numStrs := []string{"-978425.648941",
-    "33.12",
-    "-804.1",
-    "32567",
-    "-41.859",
-  }
+	numStrs := []string{"-978425.648941",
+		"33.12",
+		"-804.1",
+		"32567",
+		"-41.859",
+	}
 
-  expectedTotalStr := "-946671.487941"
+	expectedTotalStr := "-946671.487941"
 
-  expectedBNum, err := new(BigIntNum).NewNumStr(expectedTotalStr)
+	expectedBNum, err := new(BigIntNum).NewNumStr(expectedTotalStr)
 
-  if err != nil {
-    t.Errorf("%v\n"+
-      "Error returned by:\n"+
-      "expectedBNum, err := new(BigIntNum).NewNumStr(expectedTotalStr)\n"+
-      "expectedTotalStr= '%v'\n"+
-      "Error='%v'\n\n",
-      ePrefix,
-      expectedTotalStr,
-      err.Error())
-    return
-  }
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"expectedBNum, err := new(BigIntNum).NewNumStr(expectedTotalStr)\n"+
+			"expectedTotalStr= '%v'\n"+
+			"Error='%v'\n\n",
+			ePrefix,
+			expectedTotalStr,
+			err.Error())
+		return
+	}
 
-  expectedResultNumStr, err := expectedBNum.GetNumStr()
+	expectedResultNumStr, err := expectedBNum.GetNumStr()
 
-  if err != nil {
-    t.Errorf("%v\n"+
-      "Error returned by:\n"+
-      "expectedResultNumStr, err := expectedBNum.GetNumStr()\n"+
-      "Error='%v'\n\n", ePrefix, err.Error())
-    return
-  }
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"expectedResultNumStr, err := expectedBNum.GetNumStr()\n"+
+			"Error='%v'\n\n", ePrefix, err.Error())
+		return
+	}
 
-  const lenBigNums = 5
+	const lenBigNums = 5
 
-  bNums := make([]BigIntNum, lenBigNums)
+	bNums := make([]BigIntNum, lenBigNums)
 
-  for i := 0; i < lenBigNums; i++ {
+	for i := 0; i < lenBigNums; i++ {
 
-    bNums[i], err = new(BigIntNum).NewNumStr(numStrs[i])
+		bNums[i], err = new(BigIntNum).NewNumStr(numStrs[i])
 
-    if err != nil {
+		if err != nil {
 
-      t.Errorf("%v\n"+
-        "Error returned by new(BigIntNum).NewNumStr(numStrs[%d])\n"+
-        "numStrs[%d]='%v'\n"+
-        "Error='%v'\n\n",
-        ePrefix,
-        i,
-        i,
-        numStrs[i],
-        err.Error())
-    }
-  }
+			t.Errorf("%v\n"+
+				"Error returned by new(BigIntNum).NewNumStr(numStrs[%d])\n"+
+				"numStrs[%d]='%v'\n"+
+				"Error='%v'\n\n",
+				ePrefix,
+				i,
+				i,
+				numStrs[i],
+				err.Error())
+		}
+	}
 
-  results, err := new(BigIntMathAdd).AddBigIntNumArray(bNums)
+	results, err := new(BigIntMathAdd).AddBigIntNumArray(bNums)
 
-  if err != nil {
-    t.Errorf("%v\n"+
-      "Error returned by:\n"+
-      "results, err := new(BigIntMathAdd).AddBigIntNumArray(bNums)\n"+
-      "Error='%v'\n\n", ePrefix, err.Error())
-    return
-  }
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"results, err := new(BigIntMathAdd).AddBigIntNumArray(bNums)\n"+
+			"Error='%v'\n\n", ePrefix, err.Error())
+		return
+	}
 
-  actualResultNumStr, err := results.GetNumStr()
+	actualResultNumStr, err := results.GetNumStr()
 
-  if err != nil {
-    t.Errorf("%v\n"+
-      "Error returned by:\n"+
-      "actualResultNumStr, err := results.GetNumStr()\n"+
-      "Error='%v'\n\n", ePrefix, err.Error())
-    return
-  }
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"actualResultNumStr, err := results.GetNumStr()\n"+
+			"Error='%v'\n\n", ePrefix, err.Error())
+		return
+	}
 
-  if expectedResultNumStr != actualResultNumStr {
-    t.Errorf("%v\n"+
-      "Error: Unexpected Result!\n"+
-      "Expected actualResultNumStr = '%v'\n"+
-      "Instead, actualResultNumStr = '%v'\n\n",
-      ePrefix,
-      expectedResultNumStr,
-      actualResultNumStr)
-    return
-  }
+	if expectedResultNumStr != actualResultNumStr {
+		t.Errorf("%v\n"+
+			"Error: Unexpected Result!\n"+
+			"Expected actualResultNumStr = '%v'\n"+
+			"Instead, actualResultNumStr = '%v'\n\n",
+			ePrefix,
+			expectedResultNumStr,
+			actualResultNumStr)
+		return
+	}
 
-  resultsEqualToBNum, err := expectedBNum.Equal(results)
+	resultsEqualToBNum, err := expectedBNum.Equal(results)
 
-  if err != nil {
-    t.Errorf("%v\n"+
-      "Error returned by:\n"+
-      "resultsEqualToBNum, err = expectedBNum.Equal(results)\n"+
-      "Error='%v'\n\n", ePrefix, err.Error())
-    return
-  }
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"resultsEqualToBNum, err = expectedBNum.Equal(results)\n"+
+			"Error='%v'\n\n", ePrefix, err.Error())
+		return
+	}
 
-  if !resultsEqualToBNum {
-    t.Errorf("%v\n"+
-      "Error: Unexpected Result!\n"+
-      "Expected results = '%v'\n"+
-      "Instead, results = '%v'\n\n",
-      ePrefix,
-      expectedBNum.bigInt.Text(10),
-      results.bigInt.Text(10))
-    return
-  }
+	if !resultsEqualToBNum {
+		t.Errorf("%v\n"+
+			"Error: Unexpected Result!\n"+
+			"Expected results = '%v'\n"+
+			"Instead, results = '%v'\n\n",
+			ePrefix,
+			expectedBNum.bigInt.Text(10),
+			results.bigInt.Text(10))
+		return
+	}
 
-  if expectedResultNumStr != actualResultNumStr {
-    t.Errorf("%v\n"+
-      "Error: Unexpected Result!\n"+
-      "Expected resultsNumStr = '%v'\n"+
-      "Instead, resultsNumStr = '%v'\n\n",
-      ePrefix,
-      expectedResultNumStr,
-      actualResultNumStr)
-  }
+	if expectedResultNumStr != actualResultNumStr {
+		t.Errorf("%v\n"+
+			"Error: Unexpected Result!\n"+
+			"Expected resultsNumStr = '%v'\n"+
+			"Instead, resultsNumStr = '%v'\n\n",
+			ePrefix,
+			expectedResultNumStr,
+			actualResultNumStr)
+	}
 
-  return
+	return
 }
 
 func TestBigIntMathAdd_AddBigIntNumArray_03(t *testing.T) {
-  ePrefix := "TestBigIntMathAdd_AddBigIntNumArray_03"
-  numStrs := []string{"-978425.648941",
-    "33.12",
-    "-804.1",
-    "32567",
-    "-41.859",
-  }
+	ePrefix := "TestBigIntMathAdd_AddBigIntNumArray_03"
+	numStrs := []string{"-978425.648941",
+		"33.12",
+		"-804.1",
+		"32567",
+		"-41.859",
+	}
 
-  expectedTotalStr := "-946671,487941"
+	expectedTotalStr := "-946671,487941"
 
-  expectedNumSeps := NumericSeparatorDto{}
-  frenchDecSeparator := ','
-  frenchThousandsSeparator := ' '
-  frenchCurrencySymbol := '€'
+	expectedNumSeps := NumericSeparatorDto{}
+	frenchDecSeparator := ','
+	frenchThousandsSeparator := ' '
+	frenchCurrencySymbol := '€'
 
-  expectedNumSeps.DecimalSeparator = frenchDecSeparator
-  expectedNumSeps.ThousandsSeparator = frenchThousandsSeparator
-  expectedNumSeps.CurrencySymbol = frenchCurrencySymbol
+	expectedNumSeps.DecimalSeparator = frenchDecSeparator
+	expectedNumSeps.ThousandsSeparator = frenchThousandsSeparator
+	expectedNumSeps.CurrencySymbol = frenchCurrencySymbol
 
-  const lenBigNums = 5
-  var err error
-  bNums := make([]BigIntNum, lenBigNums)
+	const lenBigNums = 5
+	var err error
+	bNums := make([]BigIntNum, lenBigNums)
 
-  for i := 0; i < lenBigNums; i++ {
+	for i := 0; i < lenBigNums; i++ {
 
-    bNums[i], err = new(BigIntNum).NewNumStr(numStrs[i])
+		bNums[i], err = new(BigIntNum).NewNumStr(numStrs[i])
 
-    if err != nil {
+		if err != nil {
 
-      t.Errorf("%v\n"+
-        "Error returned by\n"+
-        "new(BigIntNum).NewNumStr(numStrs[%d])\n"+
-        "numStrs[%d]='%v'\n"+
-        "Error='%v'\n\n",
-        ePrefix,
-        i,
-        i,
-        numStrs[i],
-        err.Error())
-    }
-  }
+			t.Errorf("%v\n"+
+				"Error returned by\n"+
+				"new(BigIntNum).NewNumStr(numStrs[%d])\n"+
+				"numStrs[%d]='%v'\n"+
+				"Error='%v'\n\n",
+				ePrefix,
+				i,
+				i,
+				numStrs[i],
+				err.Error())
+		}
+	}
 
-  err = bNums[0].SetNumericSeparatorsDto(expectedNumSeps)
+	err = bNums[0].SetNumericSeparatorsDto(expectedNumSeps)
 
-  if err != nil {
-    t.Errorf("%v\n"+
-      "Error returned by:\n"+
-      "err = bNums[0].SetNumericSeparatorsDto(expectedNumSeps)\n"+
-      "expectedNumSeps= '%v'\n"+
-      "Error='%v'\n\n",
-      ePrefix,
-      expectedNumSeps.String(),
-      err.Error())
-    return
-  }
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"err = bNums[0].SetNumericSeparatorsDto(expectedNumSeps)\n"+
+			"expectedNumSeps= '%v'\n"+
+			"Error='%v'\n\n",
+			ePrefix,
+			expectedNumSeps.String(),
+			err.Error())
+		return
+	}
 
-  results, err := new(BigIntMathAdd).AddBigIntNumArray(bNums)
+	results, err := new(BigIntMathAdd).AddBigIntNumArray(bNums)
 
-  if err != nil {
-    t.Errorf("%v\n"+
-      "Error returned by:\n"+
-      "results, err := new(BigIntMathAdd).AddBigIntNumArray(bNums)\n"+
-      "Error='%v'\n\n", ePrefix, err.Error())
-    return
-  }
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"results, err := new(BigIntMathAdd).AddBigIntNumArray(bNums)\n"+
+			"Error='%v'\n\n", ePrefix, err.Error())
+		return
+	}
 
-  actualResultNumStr, err := results.GetNumStr()
+	actualResultNumStr, err := results.GetNumStr()
 
-  if err != nil {
-    t.Errorf("%v\n"+
-      "Error returned by:\n"+
-      "actualResultNumStr, err := results.GetNumStr()\n"+
-      "Error='%v'\n\n", ePrefix, err.Error())
-    return
-  }
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"actualResultNumStr, err := results.GetNumStr()\n"+
+			"Error='%v'\n\n", ePrefix, err.Error())
+		return
+	}
 
-  if expectedTotalStr != actualResultNumStr {
-    t.Errorf("%v\n"+
-      "Error: Unexpected Result!\n"+
-      "Expected actualResultNumStr = '%v'\n"+
-      "Instead, actualResultNumStr = '%v'\n\n",
-      ePrefix,
-      expectedTotalStr,
-      actualResultNumStr)
-    return
-  }
+	if expectedTotalStr != actualResultNumStr {
+		t.Errorf("%v\n"+
+			"Error: Unexpected Result!\n"+
+			"Expected actualResultNumStr = '%v'\n"+
+			"Instead, actualResultNumStr = '%v'\n\n",
+			ePrefix,
+			expectedTotalStr,
+			actualResultNumStr)
+		return
+	}
 
-  actualNumSeps, err := results.GetNumericSeparatorsDto()
+	actualNumSeps, err := results.GetNumericSeparatorsDto()
 
-  if err != nil {
-    t.Errorf("%v\n"+
-      "Error returned by:\n"+
-      "actualNumSeps, err := results.GetNumericSeparatorsDto()\n"+
-      "Error='%v'\n\n", ePrefix, err.Error())
-    return
-  }
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"actualNumSeps, err := results.GetNumericSeparatorsDto()\n"+
+			"Error='%v'\n\n", ePrefix, err.Error())
+		return
+	}
 
-  if !expectedNumSeps.Equal(actualNumSeps) {
-    t.Errorf("%v\n"+
-      "Error: Unexpected Result!\n"+
-      "Expected actualNumSeps = '%v'\n"+
-      "Instead, actualNumSeps = '%v'\n\n",
-      ePrefix,
-      expectedNumSeps.String(),
-      actualNumSeps.String())
-  }
+	if !expectedNumSeps.Equal(actualNumSeps) {
+		t.Errorf("%v\n"+
+			"Error: Unexpected Result!\n"+
+			"Expected actualNumSeps = '%v'\n"+
+			"Instead, actualNumSeps = '%v'\n\n",
+			ePrefix,
+			expectedNumSeps.String(),
+			actualNumSeps.String())
+	}
 
-  return
+	return
 }
 
 func TestBigIntMathAdd_AddBigIntNumOutputToArray_01(t *testing.T) {
 
-  ePrefix := "TestBigIntMathAdd_AddBigIntNumOutputToArray_01"
+	ePrefix := "TestBigIntMathAdd_AddBigIntNumOutputToArray_01"
 
-  var err error
+	var err error
 
-  // multiplier = 0
-  addendStr := "5"
-  // bNumStrs
-  bNumStrs := []string{
-    "5",
-    "10.123",
-    "15",
-    "253.692",
-    "35",
-    "55",
-  }
+	// multiplier = 0
+	addendStr := "5"
+	// bNumStrs
+	bNumStrs := []string{
+		"5",
+		"10.123",
+		"15",
+		"253.692",
+		"35",
+		"55",
+	}
 
-  // Expected Results Array
-  expectedNumStrs := []string{
-    "10",
-    "15.123",
-    "20",
-    "258.692",
-    "40",
-    "60",
-  }
+	// Expected Results Array
+	expectedNumStrs := []string{
+		"10",
+		"15.123",
+		"20",
+		"258.692",
+		"40",
+		"60",
+	}
 
-  addendBiNum, err := new(BigIntNum).NewNumStr(addendStr)
+	addendBiNum, err := new(BigIntNum).NewNumStr(addendStr)
 
-  if err != nil {
-    t.Errorf("%v\n"+
-      "Error returned by:\n"+
-      "addendBiNum, err := new(BigIntNum).NewNumStr(addendStr)\n"+
-      "addendStr= '%v'\n"+
-      "Error='%v'\n\n",
-      ePrefix,
-      addendStr,
-      err.Error())
-    return
-  }
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"addendBiNum, err := new(BigIntNum).NewNumStr(addendStr)\n"+
+			"addendStr= '%v'\n"+
+			"Error='%v'\n\n",
+			ePrefix,
+			addendStr,
+			err.Error())
+		return
+	}
 
-  addendBiNumStr, err := addendBiNum.NewNumStr(addendStr)
+	addendBiNumStr, err := addendBiNum.NewNumStr(addendStr)
 
-  if err != nil {
-    t.Errorf("%v\n"+
-      "Error returned by:\n"+
-      "addendBiNumStr, err := addendBiNum.NewNumStr(addendStr)\n"+
-      "addendStr= '%v'\n"+
-      "Error='%v'\n\n",
-      ePrefix,
-      addendStr,
-      err.Error())
-    return
-  }
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"addendBiNumStr, err := addendBiNum.NewNumStr(addendStr)\n"+
+			"addendStr= '%v'\n"+
+			"Error='%v'\n\n",
+			ePrefix,
+			addendStr,
+			err.Error())
+		return
+	}
 
-  lenArray := len(bNumStrs)
-  bINumArray := make([]BigIntNum, lenArray)
+	lenArray := len(bNumStrs)
+	bINumArray := make([]BigIntNum, lenArray)
 
-  for i := 0; i < lenArray; i++ {
+	for i := 0; i < lenArray; i++ {
 
-    bINumArray[i], err = new(BigIntNum).NewNumStr(bNumStrs[i])
+		bINumArray[i], err = new(BigIntNum).NewNumStr(bNumStrs[i])
 
-    if err != nil {
+		if err != nil {
 
-      t.Errorf("%v\n"+
-        "Error returned by\n"+
-        "bINumArray[%d], err = new(BigIntNum).NewNumStr(bNumStrs[%d])\n"+
-        "bNumStrs[%d]= '%v'\n"+
-        "Error='%v'\n\n",
-        ePrefix,
-        i,
-        i,
-        i,
-        bNumStrs[i],
-        err.Error())
-    }
-  }
+			t.Errorf("%v\n"+
+				"Error returned by\n"+
+				"bINumArray[%d], err = new(BigIntNum).NewNumStr(bNumStrs[%d])\n"+
+				"bNumStrs[%d]= '%v'\n"+
+				"Error='%v'\n\n",
+				ePrefix,
+				i,
+				i,
+				i,
+				bNumStrs[i],
+				err.Error())
+		}
+	}
 
-  result, err := new(BigIntMathAdd).AddBigIntNumOutputToArray(
-    addendBiNum, bINumArray)
+	result, err := new(BigIntMathAdd).AddBigIntNumOutputToArray(
+		addendBiNum, bINumArray)
 
-  if err != nil {
-    t.Errorf("%v\n"+
-      "Error returned by:\n"+
-      "result, err := new(BigIntMathAdd).AddBigIntNumOutputToArray(addendBiNum, bINumArray)\n"+
-      "addendBiNum= '%v'\n"+
-      "Error='%v'\n\n",
-      ePrefix,
-      addendBiNumStr,
-      err.Error())
-    return
-  }
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"result, err := new(BigIntMathAdd).AddBigIntNumOutputToArray(addendBiNum, bINumArray)\n"+
+			"addendBiNum= '%v'\n"+
+			"Error='%v'\n\n",
+			ePrefix,
+			addendBiNumStr,
+			err.Error())
+		return
+	}
 
-  var resultNumStr string
+	var resultNumStr string
 
-  for j := 0; j < lenArray; j++ {
+	for j := 0; j < lenArray; j++ {
 
-    resultNumStr, err = result[j].GetNumStr()
+		resultNumStr, err = result[j].GetNumStr()
 
-    if err != nil {
-      t.Errorf("%v\n"+
-        "Error returned by:\n"+
-        "resultNumStr, err = result[%d].GetNumStr()\n"+
-        "Error='%v'\n\n", ePrefix, j, err.Error())
-      return
-    }
+		if err != nil {
+			t.Errorf("%v\n"+
+				"Error returned by:\n"+
+				"resultNumStr, err = result[%d].GetNumStr()\n"+
+				"Error='%v'\n\n", ePrefix, j, err.Error())
+			return
+		}
 
-    if expectedNumStrs[j] != resultNumStr {
+		if expectedNumStrs[j] != resultNumStr {
 
-      t.Errorf("%v\n"+
-        "Error: Unexpected Result!\n"+
-        "Expected resultNumStr = '%v'\n"+
-        "Instead, resultNumStr = '%v'\n"+
-        "Cycle Index = '%v'\n\n",
-        ePrefix,
-        expectedNumStrs[j],
-        resultNumStr,
-        j)
-      return
-    }
-  }
+			t.Errorf("%v\n"+
+				"Error: Unexpected Result!\n"+
+				"Expected resultNumStr = '%v'\n"+
+				"Instead, resultNumStr = '%v'\n"+
+				"Cycle Index = '%v'\n\n",
+				ePrefix,
+				expectedNumStrs[j],
+				resultNumStr,
+				j)
+			return
+		}
+	}
 
-  return
+	return
 }
 
 func TestBigIntMathAdd_AddBigIntNumOutputToArray_02(t *testing.T) {
 
-  ePrefix := "TestBigIntMathAdd_AddBigIntNumOutputToArray_02"
+	ePrefix := "TestBigIntMathAdd_AddBigIntNumOutputToArray_02"
 
-  var err error
+	var err error
 
-  // multiplier = 0
-  addendStr := "3.1"
-  // bNumStrs
-  bNumStrs := []string{
-    "5",
-    "10.123",
-    "0",
-    "253.692",
-    "35",
-    "55",
-  }
+	// multiplier = 0
+	addendStr := "3.1"
+	// bNumStrs
+	bNumStrs := []string{
+		"5",
+		"10.123",
+		"0",
+		"253.692",
+		"35",
+		"55",
+	}
 
-  // Expected Results Array
-  expectedNumStrs := []string{
-    "8.1",
-    "13.223",
-    "3.1",
-    "256.792",
-    "38.1",
-    "58.1",
-  }
+	// Expected Results Array
+	expectedNumStrs := []string{
+		"8.1",
+		"13.223",
+		"3.1",
+		"256.792",
+		"38.1",
+		"58.1",
+	}
 
-  addendBiNum, err := new(BigIntNum).NewNumStr(addendStr)
+	addendBiNum, err := new(BigIntNum).NewNumStr(addendStr)
 
-  if err != nil {
-    t.Errorf("%v\n"+
-      "Error returned by:\n"+
-      "addendBiNum, err := new(BigIntNum).NewNumStr(addendStr)\n"+
-      "addendStr= '%v'\n"+
-      "Error='%v'\n\n",
-      ePrefix,
-      addendStr,
-      err.Error())
-    return
-  }
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"addendBiNum, err := new(BigIntNum).NewNumStr(addendStr)\n"+
+			"addendStr= '%v'\n"+
+			"Error='%v'\n\n",
+			ePrefix,
+			addendStr,
+			err.Error())
+		return
+	}
 
-  addendBiNumStr, err := addendBiNum.NewNumStr(addendStr)
+	addendBiNumStr, err := addendBiNum.NewNumStr(addendStr)
 
-  if err != nil {
-    t.Errorf("%v\n"+
-      "Error returned by:\n"+
-      "addendBiNumStr, err := addendBiNum.NewNumStr(addendStr)\n"+
-      "addendStr= '%v'\n"+
-      "Error='%v'\n\n",
-      ePrefix,
-      addendStr,
-      err.Error())
-    return
-  }
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"addendBiNumStr, err := addendBiNum.NewNumStr(addendStr)\n"+
+			"addendStr= '%v'\n"+
+			"Error='%v'\n\n",
+			ePrefix,
+			addendStr,
+			err.Error())
+		return
+	}
 
-  lenArray := len(bNumStrs)
-  bINumArray := make([]BigIntNum, lenArray)
+	lenArray := len(bNumStrs)
+	bINumArray := make([]BigIntNum, lenArray)
 
-  for i := 0; i < lenArray; i++ {
+	for i := 0; i < lenArray; i++ {
 
-    bINumArray[i], err = new(BigIntNum).NewNumStr(bNumStrs[i])
+		bINumArray[i], err = new(BigIntNum).NewNumStr(bNumStrs[i])
 
-    if err != nil {
+		if err != nil {
 
-      t.Errorf("%v\n"+
-        "Error returned by\n"+
-        "bINumArray[%d], err = new(BigIntNum).NewNumStr(bNumStrs[%d])\n"+
-        "bNumStrs[%d]= '%v'\n"+
-        "Error='%v'\n\n",
-        ePrefix,
-        i,
-        i,
-        i,
-        bNumStrs[i],
-        err.Error())
-    }
-  }
+			t.Errorf("%v\n"+
+				"Error returned by\n"+
+				"bINumArray[%d], err = new(BigIntNum).NewNumStr(bNumStrs[%d])\n"+
+				"bNumStrs[%d]= '%v'\n"+
+				"Error='%v'\n\n",
+				ePrefix,
+				i,
+				i,
+				i,
+				bNumStrs[i],
+				err.Error())
+		}
+	}
 
-  result, err := new(BigIntMathAdd).AddBigIntNumOutputToArray(
-    addendBiNum, bINumArray)
+	result, err := new(BigIntMathAdd).AddBigIntNumOutputToArray(
+		addendBiNum, bINumArray)
 
-  if err != nil {
-    t.Errorf("%v\n"+
-      "Error returned by:\n"+
-      "result, err := new(BigIntMathAdd).AddBigIntNumOutputToArray(addendBiNum, bINumArray)\n"+
-      "addendBiNum= '%v'\n"+
-      "Error='%v'\n\n",
-      ePrefix,
-      addendBiNumStr,
-      err.Error())
-    return
-  }
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"result, err := new(BigIntMathAdd).AddBigIntNumOutputToArray(addendBiNum, bINumArray)\n"+
+			"addendBiNum= '%v'\n"+
+			"Error='%v'\n\n",
+			ePrefix,
+			addendBiNumStr,
+			err.Error())
+		return
+	}
 
-  var resultNumStr string
+	var resultNumStr string
 
-  for j := 0; j < lenArray; j++ {
+	for j := 0; j < lenArray; j++ {
 
-    resultNumStr, err = result[j].GetNumStr()
+		resultNumStr, err = result[j].GetNumStr()
 
-    if err != nil {
-      t.Errorf("%v\n"+
-        "Error returned by:\n"+
-        "resultNumStr, err = result[%d].GetNumStr()\n"+
-        "Error='%v'\n\n", ePrefix, j, err.Error())
-      return
-    }
+		if err != nil {
+			t.Errorf("%v\n"+
+				"Error returned by:\n"+
+				"resultNumStr, err = result[%d].GetNumStr()\n"+
+				"Error='%v'\n\n", ePrefix, j, err.Error())
+			return
+		}
 
-    if expectedNumStrs[j] != resultNumStr {
+		if expectedNumStrs[j] != resultNumStr {
 
-      t.Errorf("%v\n"+
-        "Error: Unexpected Result!\n"+
-        "Expected resultNumStr = '%v'\n"+
-        "Instead, resultNumStr = '%v'\n"+
-        "Cycle Index = '%v'\n\n",
-        ePrefix,
-        expectedNumStrs[j],
-        resultNumStr,
-        j)
-      return
-    }
-  }
+			t.Errorf("%v\n"+
+				"Error: Unexpected Result!\n"+
+				"Expected resultNumStr = '%v'\n"+
+				"Instead, resultNumStr = '%v'\n"+
+				"Cycle Index = '%v'\n\n",
+				ePrefix,
+				expectedNumStrs[j],
+				resultNumStr,
+				j)
+			return
+		}
+	}
 
-  return
+	return
 }
 
 func TestBigIntMathAdd_AddBigIntNumOutputToArray_03(t *testing.T) {
 
-  ePrefix := "TestBigIntMathAdd_AddBigIntNumOutputToArray_03"
+	ePrefix := "TestBigIntMathAdd_AddBigIntNumOutputToArray_03"
 
-  var err error
+	var err error
 
-  // multiplier = 0
-  addendStr := "5"
-  // bNumStrs
-  bNumStrs := []string{
-    "5",
-    "10.123",
-    "15",
-    "253.692",
-    "35",
-    "55",
-  }
+	// multiplier = 0
+	addendStr := "5"
+	// bNumStrs
+	bNumStrs := []string{
+		"5",
+		"10.123",
+		"15",
+		"253.692",
+		"35",
+		"55",
+	}
 
-  // Expected Results Array
-  expectedNumStrs := []string{
-    "10",
-    "15,123",
-    "20",
-    "258,692",
-    "40",
-    "60",
-  }
+	// Expected Results Array
+	expectedNumStrs := []string{
+		"10",
+		"15,123",
+		"20",
+		"258,692",
+		"40",
+		"60",
+	}
 
-  addendBiNum, err := new(BigIntNum).NewNumStr(addendStr)
+	addendBiNum, err := new(BigIntNum).NewNumStr(addendStr)
 
-  if err != nil {
-    t.Errorf("%v\n"+
-      "Error returned by:\n"+
-      "addendBiNum, err := new(BigIntNum).NewNumStr(addendStr)\n"+
-      "addendStr= '%v'\n"+
-      "Error='%v'\n\n",
-      ePrefix,
-      addendStr,
-      err.Error())
-    return
-  }
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"addendBiNum, err := new(BigIntNum).NewNumStr(addendStr)\n"+
+			"addendStr= '%v'\n"+
+			"Error='%v'\n\n",
+			ePrefix,
+			addendStr,
+			err.Error())
+		return
+	}
 
-  addendBiNumStr, err := addendBiNum.NewNumStr(addendStr)
+	addendBiNumStr, err := addendBiNum.NewNumStr(addendStr)
 
-  if err != nil {
-    t.Errorf("%v\n"+
-      "Error returned by:\n"+
-      "addendBiNumStr, err := addendBiNum.NewNumStr(addendStr)\n"+
-      "addendStr= '%v'\n"+
-      "Error='%v'\n\n",
-      ePrefix,
-      addendStr,
-      err.Error())
-    return
-  }
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"addendBiNumStr, err := addendBiNum.NewNumStr(addendStr)\n"+
+			"addendStr= '%v'\n"+
+			"Error='%v'\n\n",
+			ePrefix,
+			addendStr,
+			err.Error())
+		return
+	}
 
-  expectedNumSeps := NumericSeparatorDto{}
-  frenchDecSeparator := ','
-  frenchThousandsSeparator := ' '
-  frenchCurrencySymbol := '€'
+	expectedNumSeps := NumericSeparatorDto{}
+	frenchDecSeparator := ','
+	frenchThousandsSeparator := ' '
+	frenchCurrencySymbol := '€'
 
-  expectedNumSeps.DecimalSeparator = frenchDecSeparator
-  expectedNumSeps.ThousandsSeparator = frenchThousandsSeparator
-  expectedNumSeps.CurrencySymbol = frenchCurrencySymbol
+	expectedNumSeps.DecimalSeparator = frenchDecSeparator
+	expectedNumSeps.ThousandsSeparator = frenchThousandsSeparator
+	expectedNumSeps.CurrencySymbol = frenchCurrencySymbol
 
-  err = addendBiNum.SetNumericSeparatorsDto(expectedNumSeps)
+	err = addendBiNum.SetNumericSeparatorsDto(expectedNumSeps)
 
-  if err != nil {
-    t.Errorf("%v\n"+
-      "Error returned by:\n"+
-      "err = addendBiNum.SetNumericSeparatorsDto(expectedNumSeps)\n"+
-      "Error='%v'\n\n", ePrefix, err.Error())
-    return
-  }
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"err = addendBiNum.SetNumericSeparatorsDto(expectedNumSeps)\n"+
+			"Error='%v'\n\n", ePrefix, err.Error())
+		return
+	}
 
-  lenArray := len(bNumStrs)
-  bINumArray := make([]BigIntNum, lenArray)
+	lenArray := len(bNumStrs)
+	bINumArray := make([]BigIntNum, lenArray)
 
-  for i := 0; i < lenArray; i++ {
+	for i := 0; i < lenArray; i++ {
 
-    bINumArray[i], err = new(BigIntNum).NewNumStr(bNumStrs[i])
+		bINumArray[i], err = new(BigIntNum).NewNumStr(bNumStrs[i])
 
-    if err != nil {
-      t.Errorf("%v\n"+
-        "Error returned by:\n"+
-        "bINumArray[%d], err = new(BigIntNum).NewNumStr(bNumStrs[%d])\n"+
-        "bNumStrs[%d]= '%v'\n"+
-        "Error='%v'\n\n", ePrefix, i, i, i, bNumStrs[i], err.Error())
-      return
-    }
-  }
+		if err != nil {
+			t.Errorf("%v\n"+
+				"Error returned by:\n"+
+				"bINumArray[%d], err = new(BigIntNum).NewNumStr(bNumStrs[%d])\n"+
+				"bNumStrs[%d]= '%v'\n"+
+				"Error='%v'\n\n", ePrefix, i, i, i, bNumStrs[i], err.Error())
+			return
+		}
+	}
 
-  result, err := new(BigIntMathAdd).AddBigIntNumOutputToArray(
-    addendBiNum, bINumArray)
+	result, err := new(BigIntMathAdd).AddBigIntNumOutputToArray(
+		addendBiNum, bINumArray)
 
-  if err != nil {
-    t.Errorf("%v\n"+
-      "Error returned by:\n"+
-      "result, err := new(BigIntMathAdd).AddBigIntNumOutputToArray(addendBiNum, bINumArray)\n"+
-      "addendBiNum= '%v'\n"+
-      "Error='%v'\n\n",
-      ePrefix,
-      addendBiNumStr,
-      err.Error())
-    return
-  }
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"result, err := new(BigIntMathAdd).AddBigIntNumOutputToArray(addendBiNum, bINumArray)\n"+
+			"addendBiNum= '%v'\n"+
+			"Error='%v'\n\n",
+			ePrefix,
+			addendBiNumStr,
+			err.Error())
+		return
+	}
 
-  var resultNumStr string
-  var actualNumSeps NumericSeparatorDto
+	var resultNumStr string
+	var actualNumSeps NumericSeparatorDto
 
-  for j := 0; j < lenArray; j++ {
+	for j := 0; j < lenArray; j++ {
 
-    resultNumStr, err = result[j].GetNumStr()
+		resultNumStr, err = result[j].GetNumStr()
 
-    if err != nil {
-      t.Errorf("%v\n"+
-        "Error returned by:\n"+
-        "resultNumStr, err = result[%d].GetNumStr()\n"+
-        "Error='%v'\n\n", ePrefix, j, err.Error())
-      return
-    }
+		if err != nil {
+			t.Errorf("%v\n"+
+				"Error returned by:\n"+
+				"resultNumStr, err = result[%d].GetNumStr()\n"+
+				"Error='%v'\n\n", ePrefix, j, err.Error())
+			return
+		}
 
-    if expectedNumStrs[j] != resultNumStr {
+		if expectedNumStrs[j] != resultNumStr {
 
-      t.Errorf("%v\n"+
-        "Error: Unexpected Result!\n"+
-        "Expected resultNumStr = '%v'\n"+
-        "Instead, resultNumStr = '%v'\n"+
-        "Cycle Index = '%v'\n\n",
-        ePrefix,
-        expectedNumStrs[j],
-        resultNumStr,
-        j)
-      return
-    }
+			t.Errorf("%v\n"+
+				"Error: Unexpected Result!\n"+
+				"Expected resultNumStr = '%v'\n"+
+				"Instead, resultNumStr = '%v'\n"+
+				"Cycle Index = '%v'\n\n",
+				ePrefix,
+				expectedNumStrs[j],
+				resultNumStr,
+				j)
+			return
+		}
 
-    actualNumSeps, err = result[j].GetNumericSeparatorsDto()
+		actualNumSeps, err = result[j].GetNumericSeparatorsDto()
 
-    if err != nil {
-      t.Errorf("%v\n"+
-        "Error returned by:\n"+
-        "actualNumSeps, err = result[%d].GetNumericSeparatorsDto()\n"+
-        "Error='%v'\n\n", ePrefix, j, err.Error())
-      return
-    }
+		if err != nil {
+			t.Errorf("%v\n"+
+				"Error returned by:\n"+
+				"actualNumSeps, err = result[%d].GetNumericSeparatorsDto()\n"+
+				"Error='%v'\n\n", ePrefix, j, err.Error())
+			return
+		}
 
-    if !expectedNumSeps.Equal(actualNumSeps) {
+		if !expectedNumSeps.Equal(actualNumSeps) {
 
-      t.Errorf("%v\n"+
-        "Error: Unexpected Result!\n"+
-        "Numeric Serparators don't match.\n"+
-        "Expected actualNumSeps = '%v'\n"+
-        "Instead, actualNumSeps = '%v'\n"+
-        "Cycle Index = '%v'\n\n",
-        ePrefix,
-        expectedNumSeps.String(),
-        actualNumSeps.String(),
-        j)
-      return
-    }
-  }
+			t.Errorf("%v\n"+
+				"Error: Unexpected Result!\n"+
+				"Numeric Serparators don't match.\n"+
+				"Expected actualNumSeps = '%v'\n"+
+				"Instead, actualNumSeps = '%v'\n"+
+				"Cycle Index = '%v'\n\n",
+				ePrefix,
+				expectedNumSeps.String(),
+				actualNumSeps.String(),
+				j)
+			return
+		}
+	}
 
-  return
+	return
 }
 
 func TestBigIntMathAdd_AddBigIntNumSeries_01(t *testing.T) {
-  ePrefix := "TestBigIntMathAdd_AddBigIntNumSeries_01"
-  n1Str := "45.8"
-  n2Str := "1.45962"
-  n3Str := "58.71"
-  n4Str := "-37.62174"
-  n5Str := "89.8"
-  expectedTotalStr := "158.14788"
+	ePrefix := "TestBigIntMathAdd_AddBigIntNumSeries_01"
+	n1Str := "45.8"
+	n2Str := "1.45962"
+	n3Str := "58.71"
+	n4Str := "-37.62174"
+	n5Str := "89.8"
+	expectedTotalStr := "158.14788"
 
-  expectedBNum, err := new(BigIntNum).NewNumStr(expectedTotalStr)
+	expectedBNum, err := new(BigIntNum).NewNumStr(expectedTotalStr)
 
-  if err != nil {
-    t.Errorf("%v\n"+
-      "Error returned by:\n"+
-      "expectedBNum, err := new(BigIntNum).NewNumStr(expectedTotalStr)\n"+
-      "expectedTotalStr= '%v'\n"+
-      "Error='%v'\n\n", ePrefix, expectedTotalStr, err.Error())
-    return
-  }
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"expectedBNum, err := new(BigIntNum).NewNumStr(expectedTotalStr)\n"+
+			"expectedTotalStr= '%v'\n"+
+			"Error='%v'\n\n", ePrefix, expectedTotalStr, err.Error())
+		return
+	}
 
-  expectedResultNumStr, err := expectedBNum.GetNumStr()
+	expectedResultNumStr, err := expectedBNum.GetNumStr()
 
-  if err != nil {
-    t.Errorf("%v\n"+
-      "Error returned by:\n"+
-      "expectedResultNumStr, err := expectedBNum.GetNumStr()\n"+
-      "Error='%v'\n\n", ePrefix, err.Error())
-    return
-  }
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"expectedResultNumStr, err := expectedBNum.GetNumStr()\n"+
+			"Error='%v'\n\n", ePrefix, err.Error())
+		return
+	}
 
-  b1, err := new(BigIntNum).NewNumStr(n1Str)
+	b1, err := new(BigIntNum).NewNumStr(n1Str)
 
-  if err != nil {
-    t.Errorf("%v\n"+
-      "Error returned by:\n"+
-      "b1, err := new(BigIntNum).NewNumStr(n1Str)\n"+
-      "n1Str= '%v'\n"+
-      "Error='%v'\n\n", ePrefix, n1Str, err.Error())
-    return
-  }
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"b1, err := new(BigIntNum).NewNumStr(n1Str)\n"+
+			"n1Str= '%v'\n"+
+			"Error='%v'\n\n", ePrefix, n1Str, err.Error())
+		return
+	}
 
-  b1NumStr, err := b1.GetNumStr()
+	b1NumStr, err := b1.GetNumStr()
 
-  if err != nil {
-    t.Errorf("%v\n"+
-      "Error returned by:\n"+
-      "b1NumStr, err := b1.GetNumStr()\n"+
-      "Error='%v'\n\n", ePrefix, err.Error())
-    return
-  }
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"b1NumStr, err := b1.GetNumStr()\n"+
+			"Error='%v'\n\n", ePrefix, err.Error())
+		return
+	}
 
-  b2, err := new(BigIntNum).NewNumStr(n2Str)
+	b2, err := new(BigIntNum).NewNumStr(n2Str)
 
-  if err != nil {
-    t.Errorf("%v\n"+
-      "Error returned by:\n"+
-      "b2, err := new(BigIntNum).NewNumStr(n2Str)\n"+
-      "n2Str= '%v'\n"+
-      "Error='%v'\n\n", ePrefix, n2Str, err.Error())
-    return
-  }
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"b2, err := new(BigIntNum).NewNumStr(n2Str)\n"+
+			"n2Str= '%v'\n"+
+			"Error='%v'\n\n", ePrefix, n2Str, err.Error())
+		return
+	}
 
-  b2NumStr, err := b2.GetNumStr()
+	b2NumStr, err := b2.GetNumStr()
 
-  if err != nil {
-    t.Errorf("%v\n"+
-      "Error returned by:\n"+
-      "b2NumStr, err := b2.GetNumStr()\n"+
-      "Error='%v'\n\n", ePrefix, err.Error())
-    return
-  }
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"b2NumStr, err := b2.GetNumStr()\n"+
+			"Error='%v'\n\n", ePrefix, err.Error())
+		return
+	}
 
-  b3, err := new(BigIntNum).NewNumStr(n3Str)
+	b3, err := new(BigIntNum).NewNumStr(n3Str)
 
-  if err != nil {
-    t.Errorf("%v\n"+
-      "Error returned by:\n"+
-      "b3, err := new(BigIntNum).NewNumStr(n3Str)\n"+
-      "n3Str= '%v'\n"+
-      "Error='%v'\n\n", ePrefix, n3Str, err.Error())
-    return
-  }
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"b3, err := new(BigIntNum).NewNumStr(n3Str)\n"+
+			"n3Str= '%v'\n"+
+			"Error='%v'\n\n", ePrefix, n3Str, err.Error())
+		return
+	}
 
-  b3NumStr, err := b3.GetNumStr()
+	b3NumStr, err := b3.GetNumStr()
 
-  if err != nil {
-    t.Errorf("%v\n"+
-      "Error returned by:\n"+
-      "b3NumStr, err := b3.GetNumStr()\n"+
-      "Error='%v'\n\n", ePrefix, err.Error())
-    return
-  }
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"b3NumStr, err := b3.GetNumStr()\n"+
+			"Error='%v'\n\n", ePrefix, err.Error())
+		return
+	}
 
-  b4, err := new(BigIntNum).NewNumStr(n4Str)
+	b4, err := new(BigIntNum).NewNumStr(n4Str)
 
-  if err != nil {
-    t.Errorf("%v\n"+
-      "Error returned by:\n"+
-      "b4, err := new(BigIntNum).NewNumStr(n4Str)\n"+
-      "n4Str= '%v'\n"+
-      "Error='%v'\n\n", ePrefix, n4Str, err.Error())
-    return
-  }
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"b4, err := new(BigIntNum).NewNumStr(n4Str)\n"+
+			"n4Str= '%v'\n"+
+			"Error='%v'\n\n", ePrefix, n4Str, err.Error())
+		return
+	}
 
-  b4NumStr, err := b4.GetNumStr()
+	b4NumStr, err := b4.GetNumStr()
 
-  if err != nil {
-    t.Errorf("%v\n"+
-      "Error returned by:\n"+
-      "b4NumStr, err := b4.GetNumStr()\n"+
-      "Error='%v'\n\n", ePrefix, err.Error())
-    return
-  }
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"b4NumStr, err := b4.GetNumStr()\n"+
+			"Error='%v'\n\n", ePrefix, err.Error())
+		return
+	}
 
-  b5, err := new(BigIntNum).NewNumStr(n5Str)
+	b5, err := new(BigIntNum).NewNumStr(n5Str)
 
-  if err != nil {
-    t.Errorf("%v\n"+
-      "Error returned by:\n"+
-      "b5, err := new(BigIntNum).NewNumStr(n5Str)\n"+
-      "n5Str= '%v'\n"+
-      "Error='%v'\n\n", ePrefix, n5Str, err.Error())
-    return
-  }
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"b5, err := new(BigIntNum).NewNumStr(n5Str)\n"+
+			"n5Str= '%v'\n"+
+			"Error='%v'\n\n", ePrefix, n5Str, err.Error())
+		return
+	}
 
-  b5NumStr, err := b5.GetNumStr()
+	b5NumStr, err := b5.GetNumStr()
 
-  if err != nil {
-    t.Errorf("%v\n"+
-      "Error returned by:\n"+
-      "b5NumStr, err := b5.GetNumStr()\n"+
-      "Error='%v'\n\n", ePrefix, err.Error())
-    return
-  }
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"b5NumStr, err := b5.GetNumStr()\n"+
+			"Error='%v'\n\n", ePrefix, err.Error())
+		return
+	}
 
-  total, err := new(BigIntMathAdd).AddBigIntNumSeries(b1, b2, b3, b4, b5)
+	total, err := new(BigIntMathAdd).AddBigIntNumSeries(b1, b2, b3, b4, b5)
 
-  if err != nil {
-    t.Errorf("%v\n"+
-      "Error returned by:\n"+
-      "total, err := new(BigIntMathAdd).AddBigIntNumSeries(b1, b2, b3, b4, b5)\n"+
-      "b1= '%v'\n"+
-      "b2= '%v'\n"+
-      "b3= '%v'\n"+
-      "b4= '%v'\n"+
-      "b5= '%v'\n"+
-      "Error='%v'\n\n",
-      ePrefix,
-      b1NumStr,
-      b2NumStr,
-      b3NumStr,
-      b4NumStr,
-      b5NumStr,
-      err.Error())
-    return
-  }
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"total, err := new(BigIntMathAdd).AddBigIntNumSeries(b1, b2, b3, b4, b5)\n"+
+			"b1= '%v'\n"+
+			"b2= '%v'\n"+
+			"b3= '%v'\n"+
+			"b4= '%v'\n"+
+			"b5= '%v'\n"+
+			"Error='%v'\n\n",
+			ePrefix,
+			b1NumStr,
+			b2NumStr,
+			b3NumStr,
+			b4NumStr,
+			b5NumStr,
+			err.Error())
+		return
+	}
 
-  totalNumStr, err := total.GetNumStr()
+	totalNumStr, err := total.GetNumStr()
 
-  if err != nil {
-    t.Errorf("%v\n"+
-      "Error returned by:\n"+
-      "totalNumStr, err := total.GetNumStr()\n"+
-      "Error='%v'\n\n", ePrefix, err.Error())
-    return
-  }
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"totalNumStr, err := total.GetNumStr()\n"+
+			"Error='%v'\n\n", ePrefix, err.Error())
+		return
+	}
 
-  expectedBNumEqualsTotal, err := expectedBNum.Equal(total)
+	expectedBNumEqualsTotal, err := expectedBNum.Equal(total)
 
-  if err != nil {
-    t.Errorf("%v\n"+
-      "Error returned by:\n"+
-      "expectedBNumEqualsTotal, err := expectedBNum.Equal(total)\n"+
-      "Error='%v'\n\n", ePrefix, err.Error())
-    return
-  }
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"expectedBNumEqualsTotal, err := expectedBNum.Equal(total)\n"+
+			"Error='%v'\n\n", ePrefix, err.Error())
+		return
+	}
 
-  if !expectedBNumEqualsTotal {
-    t.Errorf("%v\n"+
-      "Error: Unexpected Result!\n"+
-      "Expected total = '%v'\n"+
-      "Instead, total = '%v'\n\n",
-      ePrefix, expectedResultNumStr, totalNumStr)
-  }
+	if !expectedBNumEqualsTotal {
+		t.Errorf("%v\n"+
+			"Error: Unexpected Result!\n"+
+			"Expected total = '%v'\n"+
+			"Instead, total = '%v'\n\n",
+			ePrefix, expectedResultNumStr, totalNumStr)
+	}
 
-  return
+	return
 }
 
 func TestBigIntMathAdd_AddBigIntNumSeries_02(t *testing.T) {
-  ePrefix := "TestBigIntMathAdd_AddBigIntNumSeries_02"
-  n1Str := "-978425.648941"
-  n2Str := "33.12"
-  n3Str := "-804.1"
-  n4Str := "32567"
-  n5Str := "-41.859"
-  expectedTotalStr := "-946671.487941"
+	ePrefix := "TestBigIntMathAdd_AddBigIntNumSeries_02"
+	n1Str := "-978425.648941"
+	n2Str := "33.12"
+	n3Str := "-804.1"
+	n4Str := "32567"
+	n5Str := "-41.859"
+	expectedTotalStr := "-946671.487941"
 
-  expectedBNum, err := new(BigIntNum).NewNumStr(expectedTotalStr)
+	expectedBNum, err := new(BigIntNum).NewNumStr(expectedTotalStr)
 
-  if err != nil {
-    t.Errorf("%v\n"+
-      "Error returned by:\n"+
-      "expectedBNum, err := new(BigIntNum).NewNumStr(expectedTotalStr)\n"+
-      "expectedTotalStr= '%v'\n"+
-      "Error='%v'\n\n", ePrefix, expectedTotalStr, err.Error())
-    return
-  }
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"expectedBNum, err := new(BigIntNum).NewNumStr(expectedTotalStr)\n"+
+			"expectedTotalStr= '%v'\n"+
+			"Error='%v'\n\n", ePrefix, expectedTotalStr, err.Error())
+		return
+	}
 
-  expectedResultNumStr, err := expectedBNum.GetNumStr()
+	expectedResultNumStr, err := expectedBNum.GetNumStr()
 
-  if err != nil {
-    t.Errorf("%v\n"+
-      "Error returned by:\n"+
-      "expectedResultNumStr, err := expectedBNum.GetNumStr()\n"+
-      "Error='%v'\n\n", ePrefix, err.Error())
-    return
-  }
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"expectedResultNumStr, err := expectedBNum.GetNumStr()\n"+
+			"Error='%v'\n\n", ePrefix, err.Error())
+		return
+	}
 
-  b1, err := new(BigIntNum).NewNumStr(n1Str)
+	b1, err := new(BigIntNum).NewNumStr(n1Str)
 
-  if err != nil {
-    t.Errorf("%v\n"+
-      "Error returned by:\n"+
-      "b1, err := new(BigIntNum).NewNumStr(n1Str)\n"+
-      "n1Str= '%v'\n"+
-      "Error='%v'\n\n", ePrefix, n1Str, err.Error())
-    return
-  }
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"b1, err := new(BigIntNum).NewNumStr(n1Str)\n"+
+			"n1Str= '%v'\n"+
+			"Error='%v'\n\n", ePrefix, n1Str, err.Error())
+		return
+	}
 
-  b1NumStr, err := b1.GetNumStr()
+	b1NumStr, err := b1.GetNumStr()
 
-  if err != nil {
-    t.Errorf("%v\n"+
-      "Error returned by:\n"+
-      "b1NumStr, err := b1.GetNumStr()\n"+
-      "Error='%v'\n\n", ePrefix, err.Error())
-    return
-  }
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"b1NumStr, err := b1.GetNumStr()\n"+
+			"Error='%v'\n\n", ePrefix, err.Error())
+		return
+	}
 
-  b2, err := new(BigIntNum).NewNumStr(n2Str)
+	b2, err := new(BigIntNum).NewNumStr(n2Str)
 
-  if err != nil {
-    t.Errorf("%v\n"+
-      "Error returned by:\n"+
-      "b2, err := new(BigIntNum).NewNumStr(n2Str)\n"+
-      "n2Str= '%v'\n"+
-      "Error='%v'\n\n", ePrefix, n2Str, err.Error())
-    return
-  }
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"b2, err := new(BigIntNum).NewNumStr(n2Str)\n"+
+			"n2Str= '%v'\n"+
+			"Error='%v'\n\n", ePrefix, n2Str, err.Error())
+		return
+	}
 
-  b2NumStr, err := b2.GetNumStr()
+	b2NumStr, err := b2.GetNumStr()
 
-  if err != nil {
-    t.Errorf("%v\n"+
-      "Error returned by:\n"+
-      "b2NumStr, err := b2.GetNumStr()\n"+
-      "Error='%v'\n\n", ePrefix, err.Error())
-    return
-  }
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"b2NumStr, err := b2.GetNumStr()\n"+
+			"Error='%v'\n\n", ePrefix, err.Error())
+		return
+	}
 
-  b3, err := new(BigIntNum).NewNumStr(n3Str)
+	b3, err := new(BigIntNum).NewNumStr(n3Str)
 
-  if err != nil {
-    t.Errorf("%v\n"+
-      "Error returned by:\n"+
-      "b3, err := new(BigIntNum).NewNumStr(n3Str)\n"+
-      "n3Str= '%v'\n"+
-      "Error='%v'\n\n", ePrefix, n3Str, err.Error())
-    return
-  }
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"b3, err := new(BigIntNum).NewNumStr(n3Str)\n"+
+			"n3Str= '%v'\n"+
+			"Error='%v'\n\n", ePrefix, n3Str, err.Error())
+		return
+	}
 
-  b3NumStr, err := b3.GetNumStr()
+	b3NumStr, err := b3.GetNumStr()
 
-  if err != nil {
-    t.Errorf("%v\n"+
-      "Error returned by:\n"+
-      "b3NumStr, err := b3.GetNumStr()\n"+
-      "Error='%v'\n\n", ePrefix, err.Error())
-    return
-  }
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"b3NumStr, err := b3.GetNumStr()\n"+
+			"Error='%v'\n\n", ePrefix, err.Error())
+		return
+	}
 
-  b4, err := new(BigIntNum).NewNumStr(n4Str)
+	b4, err := new(BigIntNum).NewNumStr(n4Str)
 
-  if err != nil {
-    t.Errorf("%v\n"+
-      "Error returned by:\n"+
-      "b4, err := new(BigIntNum).NewNumStr(n4Str)\n"+
-      "n4Str= '%v'\n"+
-      "Error='%v'\n\n", ePrefix, n4Str, err.Error())
-    return
-  }
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"b4, err := new(BigIntNum).NewNumStr(n4Str)\n"+
+			"n4Str= '%v'\n"+
+			"Error='%v'\n\n", ePrefix, n4Str, err.Error())
+		return
+	}
 
-  b4NumStr, err := b4.GetNumStr()
+	b4NumStr, err := b4.GetNumStr()
 
-  if err != nil {
-    t.Errorf("%v\n"+
-      "Error returned by:\n"+
-      "b4NumStr, err := b4.GetNumStr()\n"+
-      "Error='%v'\n\n", ePrefix, err.Error())
-    return
-  }
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"b4NumStr, err := b4.GetNumStr()\n"+
+			"Error='%v'\n\n", ePrefix, err.Error())
+		return
+	}
 
-  b5, err := new(BigIntNum).NewNumStr(n5Str)
+	b5, err := new(BigIntNum).NewNumStr(n5Str)
 
-  if err != nil {
-    t.Errorf("%v\n"+
-      "Error returned by:\n"+
-      "b5, err := new(BigIntNum).NewNumStr(n5Str)\n"+
-      "n5Str= '%v'\n"+
-      "Error='%v'\n\n", ePrefix, n5Str, err.Error())
-    return
-  }
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"b5, err := new(BigIntNum).NewNumStr(n5Str)\n"+
+			"n5Str= '%v'\n"+
+			"Error='%v'\n\n", ePrefix, n5Str, err.Error())
+		return
+	}
 
-  b5NumStr, err := b5.GetNumStr()
+	b5NumStr, err := b5.GetNumStr()
 
-  if err != nil {
-    t.Errorf("%v\n"+
-      "Error returned by:\n"+
-      "b5NumStr, err := b5.GetNumStr()\n"+
-      "Error='%v'\n\n", ePrefix, err.Error())
-    return
-  }
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"b5NumStr, err := b5.GetNumStr()\n"+
+			"Error='%v'\n\n", ePrefix, err.Error())
+		return
+	}
 
-  total, err := new(BigIntMathAdd).AddBigIntNumSeries(b1, b2, b3, b4, b5)
+	total, err := new(BigIntMathAdd).AddBigIntNumSeries(b1, b2, b3, b4, b5)
 
-  if err != nil {
-    t.Errorf("%v\n"+
-      "Error returned by:\n"+
-      "total, err := new(BigIntMathAdd).AddBigIntNumSeries(b1, b2, b3, b4, b5)\n"+
-      "b1= '%v'\n"+
-      "b2= '%v'\n"+
-      "b3= '%v'\n"+
-      "b4= '%v'\n"+
-      "b5= '%v'\n"+
-      "Error='%v'\n\n",
-      ePrefix,
-      b1NumStr,
-      b2NumStr,
-      b3NumStr,
-      b4NumStr,
-      b5NumStr,
-      err.Error())
-    return
-  }
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"total, err := new(BigIntMathAdd).AddBigIntNumSeries(b1, b2, b3, b4, b5)\n"+
+			"b1= '%v'\n"+
+			"b2= '%v'\n"+
+			"b3= '%v'\n"+
+			"b4= '%v'\n"+
+			"b5= '%v'\n"+
+			"Error='%v'\n\n",
+			ePrefix,
+			b1NumStr,
+			b2NumStr,
+			b3NumStr,
+			b4NumStr,
+			b5NumStr,
+			err.Error())
+		return
+	}
 
-  totalNumStr, err := total.GetNumStr()
+	totalNumStr, err := total.GetNumStr()
 
-  if err != nil {
-    t.Errorf("%v\n"+
-      "Error returned by:\n"+
-      "totalNumStr, err := total.GetNumStr()\n"+
-      "Error='%v'\n\n", ePrefix, err.Error())
-    return
-  }
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"totalNumStr, err := total.GetNumStr()\n"+
+			"Error='%v'\n\n", ePrefix, err.Error())
+		return
+	}
 
-  expectedBNumEqualsTotal, err := expectedBNum.Equal(total)
+	expectedBNumEqualsTotal, err := expectedBNum.Equal(total)
 
-  if err != nil {
-    t.Errorf("%v\n"+
-      "Error returned by:\n"+
-      "expectedBNumEqualsTotal, err := expectedBNum.Equal(total)\n"+
-      "Error='%v'\n\n", ePrefix, err.Error())
-    return
-  }
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"expectedBNumEqualsTotal, err := expectedBNum.Equal(total)\n"+
+			"Error='%v'\n\n", ePrefix, err.Error())
+		return
+	}
 
-  if !expectedBNumEqualsTotal {
-    t.Errorf("%v\n"+
-      "Error: Unexpected Result!\n"+
-      "Expected total = '%v'\n"+
-      "Instead, total = '%v'\n\n",
-      ePrefix, expectedResultNumStr, totalNumStr)
-  }
+	if !expectedBNumEqualsTotal {
+		t.Errorf("%v\n"+
+			"Error: Unexpected Result!\n"+
+			"Expected total = '%v'\n"+
+			"Instead, total = '%v'\n\n",
+			ePrefix, expectedResultNumStr, totalNumStr)
+	}
 
-  return
+	return
 }
 
 func TestBigIntMathAdd_AddBigIntNumSeries_03(t *testing.T) {
-  ePrefix := "TestBigIntMathAdd_AddBigIntNumSeries_03"
-  n1Str := "45.8"
-  n2Str := "1.45962"
-  n3Str := "58.71"
-  n4Str := "-37.62174"
-  n5Str := "89.8"
-  expectedTotalStr := "158.14788"
+	ePrefix := "TestBigIntMathAdd_AddBigIntNumSeries_03"
+	n1Str := "45.8"
+	n2Str := "1.45962"
+	n3Str := "58.71"
+	n4Str := "-37.62174"
+	n5Str := "89.8"
+	expectedTotalStr := "158.14788"
 
-  expectedBNum, err := new(BigIntNum).NewNumStr(expectedTotalStr)
+	expectedBNum, err := new(BigIntNum).NewNumStr(expectedTotalStr)
 
-  if err != nil {
-    t.Errorf("%v\n"+
-      "Error returned by:\n"+
-      "expectedBNum, err := new(BigIntNum).NewNumStr(expectedTotalStr)\n"+
-      "expectedTotalStr= '%v'\n"+
-      "Error='%v'\n\n", ePrefix, expectedTotalStr, err.Error())
-    return
-  }
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"expectedBNum, err := new(BigIntNum).NewNumStr(expectedTotalStr)\n"+
+			"expectedTotalStr= '%v'\n"+
+			"Error='%v'\n\n", ePrefix, expectedTotalStr, err.Error())
+		return
+	}
 
-  expectedResultNumStr, err := expectedBNum.GetNumStr()
+	expectedResultNumStr, err := expectedBNum.GetNumStr()
 
-  if err != nil {
-    t.Errorf("%v\n"+
-      "Error returned by:\n"+
-      "expectedResultNumStr, err := expectedBNum.GetNumStr()\n"+
-      "Error='%v'\n\n", ePrefix, err.Error())
-    return
-  }
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"expectedResultNumStr, err := expectedBNum.GetNumStr()\n"+
+			"Error='%v'\n\n", ePrefix, err.Error())
+		return
+	}
 
-  b1, err := new(BigIntNum).NewNumStr(n1Str)
+	b1, err := new(BigIntNum).NewNumStr(n1Str)
 
-  if err != nil {
-    t.Errorf("%v\n"+
-      "Error returned by:\n"+
-      "b1, err := new(BigIntNum).NewNumStr(n1Str)\n"+
-      "n1Str= '%v'\n"+
-      "Error='%v'\n\n", ePrefix, n1Str, err.Error())
-    return
-  }
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"b1, err := new(BigIntNum).NewNumStr(n1Str)\n"+
+			"n1Str= '%v'\n"+
+			"Error='%v'\n\n", ePrefix, n1Str, err.Error())
+		return
+	}
 
-  b1NumStr, err := b1.GetNumStr()
+	b1NumStr, err := b1.GetNumStr()
 
-  if err != nil {
-    t.Errorf("%v\n"+
-      "Error returned by:\n"+
-      "b1NumStr, err := b1.GetNumStr()\n"+
-      "Error='%v'\n\n", ePrefix, err.Error())
-    return
-  }
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"b1NumStr, err := b1.GetNumStr()\n"+
+			"Error='%v'\n\n", ePrefix, err.Error())
+		return
+	}
 
-  b2, err := new(BigIntNum).NewNumStr(n2Str)
+	b2, err := new(BigIntNum).NewNumStr(n2Str)
 
-  if err != nil {
-    t.Errorf("%v\n"+
-      "Error returned by:\n"+
-      "b2, err := new(BigIntNum).NewNumStr(n2Str)\n"+
-      "n2Str= '%v'\n"+
-      "Error='%v'\n\n", ePrefix, n2Str, err.Error())
-    return
-  }
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"b2, err := new(BigIntNum).NewNumStr(n2Str)\n"+
+			"n2Str= '%v'\n"+
+			"Error='%v'\n\n", ePrefix, n2Str, err.Error())
+		return
+	}
 
-  b2NumStr, err := b2.GetNumStr()
+	b2NumStr, err := b2.GetNumStr()
 
-  if err != nil {
-    t.Errorf("%v\n"+
-      "Error returned by:\n"+
-      "b2NumStr, err := b2.GetNumStr()\n"+
-      "Error='%v'\n\n", ePrefix, err.Error())
-    return
-  }
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"b2NumStr, err := b2.GetNumStr()\n"+
+			"Error='%v'\n\n", ePrefix, err.Error())
+		return
+	}
 
-  b3, err := new(BigIntNum).NewNumStr(n3Str)
+	b3, err := new(BigIntNum).NewNumStr(n3Str)
 
-  if err != nil {
-    t.Errorf("%v\n"+
-      "Error returned by:\n"+
-      "b3, err := new(BigIntNum).NewNumStr(n3Str)\n"+
-      "n3Str= '%v'\n"+
-      "Error='%v'\n\n", ePrefix, n3Str, err.Error())
-    return
-  }
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"b3, err := new(BigIntNum).NewNumStr(n3Str)\n"+
+			"n3Str= '%v'\n"+
+			"Error='%v'\n\n", ePrefix, n3Str, err.Error())
+		return
+	}
 
-  b3NumStr, err := b3.GetNumStr()
+	b3NumStr, err := b3.GetNumStr()
 
-  if err != nil {
-    t.Errorf("%v\n"+
-      "Error returned by:\n"+
-      "b3NumStr, err := b3.GetNumStr()\n"+
-      "Error='%v'\n\n", ePrefix, err.Error())
-    return
-  }
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"b3NumStr, err := b3.GetNumStr()\n"+
+			"Error='%v'\n\n", ePrefix, err.Error())
+		return
+	}
 
-  b4, err := new(BigIntNum).NewNumStr(n4Str)
+	b4, err := new(BigIntNum).NewNumStr(n4Str)
 
-  if err != nil {
-    t.Errorf("%v\n"+
-      "Error returned by:\n"+
-      "b4, err := new(BigIntNum).NewNumStr(n4Str)\n"+
-      "n4Str= '%v'\n"+
-      "Error='%v'\n\n", ePrefix, n4Str, err.Error())
-    return
-  }
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"b4, err := new(BigIntNum).NewNumStr(n4Str)\n"+
+			"n4Str= '%v'\n"+
+			"Error='%v'\n\n", ePrefix, n4Str, err.Error())
+		return
+	}
 
-  b4NumStr, err := b4.GetNumStr()
+	b4NumStr, err := b4.GetNumStr()
 
-  if err != nil {
-    t.Errorf("%v\n"+
-      "Error returned by:\n"+
-      "b4NumStr, err := b4.GetNumStr()\n"+
-      "Error='%v'\n\n", ePrefix, err.Error())
-    return
-  }
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"b4NumStr, err := b4.GetNumStr()\n"+
+			"Error='%v'\n\n", ePrefix, err.Error())
+		return
+	}
 
-  b5, err := new(BigIntNum).NewNumStr(n5Str)
+	b5, err := new(BigIntNum).NewNumStr(n5Str)
 
-  if err != nil {
-    t.Errorf("%v\n"+
-      "Error returned by:\n"+
-      "b5, err := new(BigIntNum).NewNumStr(n5Str)\n"+
-      "n5Str= '%v'\n"+
-      "Error='%v'\n\n", ePrefix, n5Str, err.Error())
-    return
-  }
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"b5, err := new(BigIntNum).NewNumStr(n5Str)\n"+
+			"n5Str= '%v'\n"+
+			"Error='%v'\n\n", ePrefix, n5Str, err.Error())
+		return
+	}
 
-  b5NumStr, err := b5.GetNumStr()
+	b5NumStr, err := b5.GetNumStr()
 
-  if err != nil {
-    t.Errorf("%v\n"+
-      "Error returned by:\n"+
-      "b5NumStr, err := b5.GetNumStr()\n"+
-      "Error='%v'\n\n", ePrefix, err.Error())
-    return
-  }
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"b5NumStr, err := b5.GetNumStr()\n"+
+			"Error='%v'\n\n", ePrefix, err.Error())
+		return
+	}
 
-  total, err := new(BigIntMathAdd).AddBigIntNumSeries(b1, b2, b3, b4, b5)
+	total, err := new(BigIntMathAdd).AddBigIntNumSeries(b1, b2, b3, b4, b5)
 
-  if err != nil {
-    t.Errorf("%v\n"+
-      "Error returned by:\n"+
-      "total, err := new(BigIntMathAdd).AddBigIntNumSeries(b1, b2, b3, b4, b5)\n"+
-      "b1= '%v'\n"+
-      "b2= '%v'\n"+
-      "b3= '%v'\n"+
-      "b4= '%v'\n"+
-      "b5= '%v'\n"+
-      "Error='%v'\n\n",
-      ePrefix,
-      b1NumStr,
-      b2NumStr,
-      b3NumStr,
-      b4NumStr,
-      b5NumStr,
-      err.Error())
-    return
-  }
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"total, err := new(BigIntMathAdd).AddBigIntNumSeries(b1, b2, b3, b4, b5)\n"+
+			"b1= '%v'\n"+
+			"b2= '%v'\n"+
+			"b3= '%v'\n"+
+			"b4= '%v'\n"+
+			"b5= '%v'\n"+
+			"Error='%v'\n\n",
+			ePrefix,
+			b1NumStr,
+			b2NumStr,
+			b3NumStr,
+			b4NumStr,
+			b5NumStr,
+			err.Error())
+		return
+	}
 
-  totalNumStr, err := total.GetNumStr()
+	totalNumStr, err := total.GetNumStr()
 
-  if err != nil {
-    t.Errorf("%v\n"+
-      "Error returned by:\n"+
-      "totalNumStr, err := total.GetNumStr()\n"+
-      "Error='%v'\n\n", ePrefix, err.Error())
-    return
-  }
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"totalNumStr, err := total.GetNumStr()\n"+
+			"Error='%v'\n\n", ePrefix, err.Error())
+		return
+	}
 
-  expectedBNumEqualsTotal, err := expectedBNum.Equal(total)
+	expectedBNumEqualsTotal, err := expectedBNum.Equal(total)
 
-  if err != nil {
-    t.Errorf("%v\n"+
-      "Error returned by:\n"+
-      "expectedBNumEqualsTotal, err := expectedBNum.Equal(total)\n"+
-      "Error='%v'\n\n", ePrefix, err.Error())
-    return
-  }
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"expectedBNumEqualsTotal, err := expectedBNum.Equal(total)\n"+
+			"Error='%v'\n\n", ePrefix, err.Error())
+		return
+	}
 
-  if !expectedBNumEqualsTotal {
-    t.Errorf("%v\n"+
-      "Error: Unexpected Result!\n"+
-      "Expected total = '%v'\n"+
-      "Instead, total = '%v'\n\n",
-      ePrefix, expectedResultNumStr, totalNumStr)
-  }
+	if !expectedBNumEqualsTotal {
+		t.Errorf("%v\n"+
+			"Error: Unexpected Result!\n"+
+			"Expected total = '%v'\n"+
+			"Instead, total = '%v'\n\n",
+			ePrefix, expectedResultNumStr, totalNumStr)
+	}
 
-  return
+	return
 }
 
 func TestBigIntMathAdd_AddBigIntNumSeries_04(t *testing.T) {
-  ePrefix := "TestBigIntMathAdd_AddBigIntNumSeries_04"
+	ePrefix := "TestBigIntMathAdd_AddBigIntNumSeries_04"
 
-  n1Str := "45.8"
-  n2Str := "1.45962"
-  n3Str := "58.71"
-  n4Str := "-37.62174"
-  n5Str := "89.8"
-  expectedResultNumStr := "158,14788"
+	n1Str := "45.8"
+	n2Str := "1.45962"
+	n3Str := "58.71"
+	n4Str := "-37.62174"
+	n5Str := "89.8"
+	expectedResultNumStr := "158,14788"
 
-  b1, err := new(BigIntNum).NewNumStr(n1Str)
+	b1, err := new(BigIntNum).NewNumStr(n1Str)
 
-  if err != nil {
-    t.Errorf("%v\n"+
-      "Error returned by:\n"+
-      "b1, err := new(BigIntNum).NewNumStr(n1Str)\n"+
-      "n1Str= '%v'\n"+
-      "Error='%v'\n\n", ePrefix, n1Str, err.Error())
-    return
-  }
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"b1, err := new(BigIntNum).NewNumStr(n1Str)\n"+
+			"n1Str= '%v'\n"+
+			"Error='%v'\n\n", ePrefix, n1Str, err.Error())
+		return
+	}
 
-  b1NumStr, err := b1.GetNumStr()
+	b1NumStr, err := b1.GetNumStr()
 
-  if err != nil {
-    t.Errorf("%v\n"+
-      "Error returned by:\n"+
-      "b1NumStr, err := b1.GetNumStr()\n"+
-      "Error='%v'\n\n", ePrefix, err.Error())
-    return
-  }
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"b1NumStr, err := b1.GetNumStr()\n"+
+			"Error='%v'\n\n", ePrefix, err.Error())
+		return
+	}
 
-  expectedNumSeps := NumericSeparatorDto{}
-  frenchDecSeparator := ','
-  frenchThousandsSeparator := ' '
-  frenchCurrencySymbol := '€'
+	expectedNumSeps := NumericSeparatorDto{}
+	frenchDecSeparator := ','
+	frenchThousandsSeparator := ' '
+	frenchCurrencySymbol := '€'
 
-  expectedNumSeps.DecimalSeparator = frenchDecSeparator
-  expectedNumSeps.ThousandsSeparator = frenchThousandsSeparator
-  expectedNumSeps.CurrencySymbol = frenchCurrencySymbol
+	expectedNumSeps.DecimalSeparator = frenchDecSeparator
+	expectedNumSeps.ThousandsSeparator = frenchThousandsSeparator
+	expectedNumSeps.CurrencySymbol = frenchCurrencySymbol
 
-  err = b1.SetNumericSeparatorsDto(expectedNumSeps)
+	err = b1.SetNumericSeparatorsDto(expectedNumSeps)
 
-  if err != nil {
-    t.Errorf("%v\n"+
-      "Error returned by:\n"+
-      "err = b1.SetNumericSeparatorsDto(expectedNumSeps)\n"+
-      "expectedNumSeps= '%v'\n"+
-      "Error='%v'\n\n", ePrefix, expectedNumSeps.String(), err.Error())
-    return
-  }
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"err = b1.SetNumericSeparatorsDto(expectedNumSeps)\n"+
+			"expectedNumSeps= '%v'\n"+
+			"Error='%v'\n\n", ePrefix, expectedNumSeps.String(), err.Error())
+		return
+	}
 
-  b2, err := new(BigIntNum).NewNumStr(n2Str)
+	b2, err := new(BigIntNum).NewNumStr(n2Str)
 
-  if err != nil {
-    t.Errorf("%v\n"+
-      "Error returned by:\n"+
-      "b2, err := new(BigIntNum).NewNumStr(n2Str)\n"+
-      "n2Str= '%v'\n"+
-      "Error='%v'\n\n", ePrefix, n2Str, err.Error())
-    return
-  }
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"b2, err := new(BigIntNum).NewNumStr(n2Str)\n"+
+			"n2Str= '%v'\n"+
+			"Error='%v'\n\n", ePrefix, n2Str, err.Error())
+		return
+	}
 
-  b2NumStr, err := b2.GetNumStr()
+	b2NumStr, err := b2.GetNumStr()
 
-  if err != nil {
-    t.Errorf("%v\n"+
-      "Error returned by:\n"+
-      "b2NumStr, err := b2.GetNumStr()\n"+
-      "Error='%v'\n\n", ePrefix, err.Error())
-    return
-  }
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"b2NumStr, err := b2.GetNumStr()\n"+
+			"Error='%v'\n\n", ePrefix, err.Error())
+		return
+	}
 
-  b3, err := new(BigIntNum).NewNumStr(n3Str)
+	b3, err := new(BigIntNum).NewNumStr(n3Str)
 
-  if err != nil {
-    t.Errorf("%v\n"+
-      "Error returned by:\n"+
-      "b3, err := new(BigIntNum).NewNumStr(n3Str)\n"+
-      "n3Str= '%v'\n"+
-      "Error='%v'\n\n", ePrefix, n3Str, err.Error())
-    return
-  }
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"b3, err := new(BigIntNum).NewNumStr(n3Str)\n"+
+			"n3Str= '%v'\n"+
+			"Error='%v'\n\n", ePrefix, n3Str, err.Error())
+		return
+	}
 
-  b3NumStr, err := b3.GetNumStr()
+	b3NumStr, err := b3.GetNumStr()
 
-  if err != nil {
-    t.Errorf("%v\n"+
-      "Error returned by:\n"+
-      "b3NumStr, err := b3.GetNumStr()\n"+
-      "Error='%v'\n\n", ePrefix, err.Error())
-    return
-  }
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"b3NumStr, err := b3.GetNumStr()\n"+
+			"Error='%v'\n\n", ePrefix, err.Error())
+		return
+	}
 
-  b4, err := new(BigIntNum).NewNumStr(n4Str)
+	b4, err := new(BigIntNum).NewNumStr(n4Str)
 
-  if err != nil {
-    t.Errorf("%v\n"+
-      "Error returned by:\n"+
-      "b4, err := new(BigIntNum).NewNumStr(n4Str)\n"+
-      "n4Str= '%v'\n"+
-      "Error='%v'\n\n", ePrefix, n4Str, err.Error())
-    return
-  }
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"b4, err := new(BigIntNum).NewNumStr(n4Str)\n"+
+			"n4Str= '%v'\n"+
+			"Error='%v'\n\n", ePrefix, n4Str, err.Error())
+		return
+	}
 
-  b4NumStr, err := b4.GetNumStr()
+	b4NumStr, err := b4.GetNumStr()
 
-  if err != nil {
-    t.Errorf("%v\n"+
-      "Error returned by:\n"+
-      "b4NumStr, err := b4.GetNumStr()\n"+
-      "Error='%v'\n\n", ePrefix, err.Error())
-    return
-  }
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"b4NumStr, err := b4.GetNumStr()\n"+
+			"Error='%v'\n\n", ePrefix, err.Error())
+		return
+	}
 
-  b5, err := new(BigIntNum).NewNumStr(n5Str)
+	b5, err := new(BigIntNum).NewNumStr(n5Str)
 
-  if err != nil {
-    t.Errorf("%v\n"+
-      "Error returned by:\n"+
-      "b5, err := new(BigIntNum).NewNumStr(n5Str)\n"+
-      "n5Str= '%v'\n"+
-      "Error='%v'\n\n", ePrefix, n5Str, err.Error())
-    return
-  }
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"b5, err := new(BigIntNum).NewNumStr(n5Str)\n"+
+			"n5Str= '%v'\n"+
+			"Error='%v'\n\n", ePrefix, n5Str, err.Error())
+		return
+	}
 
-  b5NumStr, err := b5.GetNumStr()
+	b5NumStr, err := b5.GetNumStr()
 
-  if err != nil {
-    t.Errorf("%v\n"+
-      "Error returned by:\n"+
-      "b5NumStr, err := b5.GetNumStr()\n"+
-      "Error='%v'\n\n", ePrefix, err.Error())
-    return
-  }
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"b5NumStr, err := b5.GetNumStr()\n"+
+			"Error='%v'\n\n", ePrefix, err.Error())
+		return
+	}
 
-  total, err := new(BigIntMathAdd).AddBigIntNumSeries(b1, b2, b3, b4, b5)
+	total, err := new(BigIntMathAdd).AddBigIntNumSeries(b1, b2, b3, b4, b5)
 
-  if err != nil {
-    t.Errorf("%v\n"+
-      "Error returned by:\n"+
-      "total, err := new(BigIntMathAdd).AddBigIntNumSeries(b1, b2, b3, b4, b5)\n"+
-      "b1= '%v'\n"+
-      "b2= '%v'\n"+
-      "b3= '%v'\n"+
-      "b4= '%v'\n"+
-      "b5= '%v'\n"+
-      "Error='%v'\n\n",
-      ePrefix,
-      b1NumStr,
-      b2NumStr,
-      b3NumStr,
-      b4NumStr,
-      b5NumStr,
-      err.Error())
-    return
-  }
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"total, err := new(BigIntMathAdd).AddBigIntNumSeries(b1, b2, b3, b4, b5)\n"+
+			"b1= '%v'\n"+
+			"b2= '%v'\n"+
+			"b3= '%v'\n"+
+			"b4= '%v'\n"+
+			"b5= '%v'\n"+
+			"Error='%v'\n\n",
+			ePrefix,
+			b1NumStr,
+			b2NumStr,
+			b3NumStr,
+			b4NumStr,
+			b5NumStr,
+			err.Error())
+		return
+	}
 
-  actualNumStr, err := total.GetNumStr()
+	actualNumStr, err := total.GetNumStr()
 
-  if err != nil {
-    t.Errorf("%v\n"+
-      "Error returned by:\n"+
-      "actualNumStr, err := total.GetNumStr()\n"+
-      "Error='%v'\n\n", ePrefix, err.Error())
-    return
-  }
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"actualNumStr, err := total.GetNumStr()\n"+
+			"Error='%v'\n\n", ePrefix, err.Error())
+		return
+	}
 
-  if expectedResultNumStr != actualNumStr {
-    t.Errorf("Error: Expected total='%v'. Instead, "+
-      "total='%v'. ",
-      expectedResultNumStr, actualNumStr)
-  }
+	if expectedResultNumStr != actualNumStr {
+		t.Errorf("Error: Expected total='%v'. Instead, "+
+			"total='%v'. ",
+			expectedResultNumStr, actualNumStr)
+	}
 
-  if expectedResultNumStr != actualNumStr {
-    t.Errorf("%v\n"+
-      "Error: Unexpected Result!\n"+
-      "Expected actualNumStr = '%v'\n"+
-      "Instead, actualNumStr = '%v'\n\n",
-      ePrefix, expectedResultNumStr, actualNumStr)
-    return
-  }
+	if expectedResultNumStr != actualNumStr {
+		t.Errorf("%v\n"+
+			"Error: Unexpected Result!\n"+
+			"Expected actualNumStr = '%v'\n"+
+			"Instead, actualNumStr = '%v'\n\n",
+			ePrefix, expectedResultNumStr, actualNumStr)
+		return
+	}
 
-  actualNumSeps, err := total.GetNumericSeparatorsDto()
+	actualNumSeps, err := total.GetNumericSeparatorsDto()
 
-  if err != nil {
-    t.Errorf("%v\n"+
-      "Error returned by:\n"+
-      "actualNumSeps, err := total.GetNumericSeparatorsDto()\n"+
-      "Error='%v'\n\n", ePrefix, err.Error())
-    return
-  }
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"actualNumSeps, err := total.GetNumericSeparatorsDto()\n"+
+			"Error='%v'\n\n", ePrefix, err.Error())
+		return
+	}
 
-  if !expectedNumSeps.Equal(actualNumSeps) {
-    t.Errorf("Error: Expected numSeps='%v'. Instead, numSeps='%v'",
-      expectedNumSeps.String(), actualNumSeps.String())
-  }
+	if !expectedNumSeps.Equal(actualNumSeps) {
+		t.Errorf("Error: Expected numSeps='%v'. Instead, numSeps='%v'",
+			expectedNumSeps.String(), actualNumSeps.String())
+	}
 
-  if !expectedNumSeps.Equal(actualNumSeps) {
-    t.Errorf("%v\n"+
-      "Error: Unexpected Result!\n"+
-      "Numeric Separators don't match.\n"+
-      "Expected actualNumSeps = '%v'\n"+
-      "Instead, actualNumSeps = '%v'\n\n",
-      ePrefix, expectedNumSeps.String(), actualNumSeps.String())
-  }
+	if !expectedNumSeps.Equal(actualNumSeps) {
+		t.Errorf("%v\n"+
+			"Error: Unexpected Result!\n"+
+			"Numeric Separators don't match.\n"+
+			"Expected actualNumSeps = '%v'\n"+
+			"Instead, actualNumSeps = '%v'\n\n",
+			ePrefix, expectedNumSeps.String(), actualNumSeps.String())
+	}
 
-  return
+	return
 
 }
 
 func TestBigIntMathAdd_AddDecimal_01(t *testing.T) {
-  ePrefix := "TestBigIntMathAdd_AddDecimal_01"
-  n1Str := "123456.789"
+	ePrefix := "TestBigIntMathAdd_AddDecimal_01"
+	n1Str := "123456.789"
 
-  n2Str := "987.123456"
+	n2Str := "987.123456"
 
-  expectedNumStr := "124443.912456"
-  expectedPrecision := uint(6)
-  expectedSign := 1
+	expectedNumStr := "124443.912456"
+	expectedPrecision := uint(6)
+	expectedSign := 1
 
-  dec1, err := new(Decimal).NewNumStr(n1Str)
+	dec1, err := new(Decimal).NewNumStr(n1Str)
 
-  if err != nil {
-    t.Errorf("%v\n"+
-      "Error returned by:\n"+
-      "dec1, err := new(Decimal).NewNumStr(n1Str)\n"+
-      "n1Str= '%v'\n"+
-      "Error='%v'\n\n", ePrefix, n1Str, err.Error())
-    return
-  }
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"dec1, err := new(Decimal).NewNumStr(n1Str)\n"+
+			"n1Str= '%v'\n"+
+			"Error='%v'\n\n", ePrefix, n1Str, err.Error())
+		return
+	}
 
-  dec1NumStr, err := dec1.GetNumStr()
+	dec1NumStr, err := dec1.GetNumStr()
 
-  if err != nil {
-    t.Errorf("%v\n"+
-      "Error returned by:\n"+
-      "dec1NumStr, err := dec1.GetNumStr()\n"+
-      "Error='%v'\n\n", ePrefix, err.Error())
-    return
-  }
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"dec1NumStr, err := dec1.GetNumStr()\n"+
+			"Error='%v'\n\n", ePrefix, err.Error())
+		return
+	}
 
-  dec2, err := new(Decimal).NewNumStr(n2Str)
+	dec2, err := new(Decimal).NewNumStr(n2Str)
 
-  if err != nil {
-    t.Errorf("%v\n"+
-      "Error returned by:\n"+
-      "dec2, err := new(Decimal).NewNumStr(n2Str)\n"+
-      "n2Str= '%v'\n"+
-      "Error='%v'\n\n", ePrefix, n2Str, err.Error())
-    return
-  }
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"dec2, err := new(Decimal).NewNumStr(n2Str)\n"+
+			"n2Str= '%v'\n"+
+			"Error='%v'\n\n", ePrefix, n2Str, err.Error())
+		return
+	}
 
-  dec2NumStr, err := dec2.GetNumStr()
+	dec2NumStr, err := dec2.GetNumStr()
 
-  if err != nil {
-    t.Errorf("%v\n"+
-      "Error returned by:\n"+
-      "dec2NumStr, err := dec2.GetNumStr()\n"+
-      "Error='%v'\n\n", ePrefix, err.Error())
-    return
-  }
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"dec2NumStr, err := dec2.GetNumStr()\n"+
+			"Error='%v'\n\n", ePrefix, err.Error())
+		return
+	}
 
-  result, err := new(BigIntMathAdd).AddDecimal(dec1, dec2)
+	result, err := new(BigIntMathAdd).AddDecimal(dec1, dec2)
 
-  if err != nil {
-    t.Errorf("%v\n"+
-      "Error returned by:\n"+
-      "result, err := new(BigIntMathAdd).AddDecimal(dec1, dec2)\n"+
-      "dec1= '%v'\n"+
-      "dec2= '%v'\n"+
-      "Error='%v'\n\n", ePrefix, dec1NumStr, dec2NumStr, err.Error())
-    return
-  }
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"result, err := new(BigIntMathAdd).AddDecimal(dec1, dec2)\n"+
+			"dec1= '%v'\n"+
+			"dec2= '%v'\n"+
+			"Error='%v'\n\n", ePrefix, dec1NumStr, dec2NumStr, err.Error())
+		return
+	}
 
-  actualNumStr, err := result.GetNumStr()
+	actualNumStr, err := result.GetNumStr()
 
-  if err != nil {
-    t.Errorf("%v\n"+
-      "Error returned by:\n"+
-      "actualNumStr, err := result.GetNumStr()\n"+
-      "Error='%v'\n\n", ePrefix, err.Error())
-    return
-  }
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"actualNumStr, err := result.GetNumStr()\n"+
+			"Error='%v'\n\n", ePrefix, err.Error())
+		return
+	}
 
-  if expectedNumStr != actualNumStr {
-    t.Errorf("%v\n"+
-      "Error: Unexpected Result!\n"+
-      "Expected actualNumStr = '%v'\n"+
-      "Instead, actualNumStr = '%v'\n\n",
-      ePrefix, expectedNumStr, actualNumStr)
-    return
-  }
+	if expectedNumStr != actualNumStr {
+		t.Errorf("%v\n"+
+			"Error: Unexpected Result!\n"+
+			"Expected actualNumStr = '%v'\n"+
+			"Instead, actualNumStr = '%v'\n\n",
+			ePrefix, expectedNumStr, actualNumStr)
+		return
+	}
 
-  if expectedPrecision != result.precision {
-    t.Errorf("%v\n"+
-      "Error: Unexpected Result!\n"+
-      "Expected result.precision = '%v'\n"+
-      "Instead, result.precision = '%v'\n\n",
-      ePrefix, expectedPrecision, result.precision)
-    return
-  }
+	if expectedPrecision != result.precision {
+		t.Errorf("%v\n"+
+			"Error: Unexpected Result!\n"+
+			"Expected result.precision = '%v'\n"+
+			"Instead, result.precision = '%v'\n\n",
+			ePrefix, expectedPrecision, result.precision)
+		return
+	}
 
-  if expectedSign != result.sign {
-    t.Errorf("%v\n"+
-      "Error: Unexpected Result!\n"+
-      "Expected result.sign = '%v'\n"+
-      "Instead, result.sign = '%v'\n\n",
-      ePrefix, expectedSign, result.sign)
-  }
+	if expectedSign != result.sign {
+		t.Errorf("%v\n"+
+			"Error: Unexpected Result!\n"+
+			"Expected result.sign = '%v'\n"+
+			"Instead, result.sign = '%v'\n\n",
+			ePrefix, expectedSign, result.sign)
+	}
 
-  return
+	return
 }
 
 func TestBigIntMathAdd_AddDecimal_02(t *testing.T) {
 
-  ePrefix := "TestBigIntMathAdd_AddDecimal_02"
-  n1Str := "123456.789"
+	ePrefix := "TestBigIntMathAdd_AddDecimal_02"
+	n1Str := "123456.789"
 
-  n2Str := "-987.123456"
+	n2Str := "-987.123456"
 
-  expectedNumStr := "122469.665544"
-  expectedPrecision := uint(6)
-  expectedSign := 1
+	expectedNumStr := "122469.665544"
+	expectedPrecision := uint(6)
+	expectedSign := 1
 
-  dec1, err := new(Decimal).NewNumStr(n1Str)
+	dec1, err := new(Decimal).NewNumStr(n1Str)
 
-  if err != nil {
-    t.Errorf("%v\n"+
-      "Error returned by:\n"+
-      "dec1, err := new(Decimal).NewNumStr(n1Str)\n"+
-      "n1Str= '%v'\n"+
-      "Error='%v'\n\n", ePrefix, n1Str, err.Error())
-    return
-  }
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"dec1, err := new(Decimal).NewNumStr(n1Str)\n"+
+			"n1Str= '%v'\n"+
+			"Error='%v'\n\n", ePrefix, n1Str, err.Error())
+		return
+	}
 
-  dec1NumStr, err := dec1.GetNumStr()
+	dec1NumStr, err := dec1.GetNumStr()
 
-  if err != nil {
-    t.Errorf("%v\n"+
-      "Error returned by:\n"+
-      "dec1NumStr, err := dec1.GetNumStr()\n"+
-      "Error='%v'\n\n", ePrefix, err.Error())
-    return
-  }
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"dec1NumStr, err := dec1.GetNumStr()\n"+
+			"Error='%v'\n\n", ePrefix, err.Error())
+		return
+	}
 
-  dec2, err := new(Decimal).NewNumStr(n2Str)
+	dec2, err := new(Decimal).NewNumStr(n2Str)
 
-  if err != nil {
-    t.Errorf("%v\n"+
-      "Error returned by:\n"+
-      "dec2, err := new(Decimal).NewNumStr(n2Str)\n"+
-      "n2Str= '%v'\n"+
-      "Error='%v'\n\n", ePrefix, n2Str, err.Error())
-    return
-  }
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"dec2, err := new(Decimal).NewNumStr(n2Str)\n"+
+			"n2Str= '%v'\n"+
+			"Error='%v'\n\n", ePrefix, n2Str, err.Error())
+		return
+	}
 
-  dec2NumStr, err := dec2.GetNumStr()
+	dec2NumStr, err := dec2.GetNumStr()
 
-  if err != nil {
-    t.Errorf("%v\n"+
-      "Error returned by:\n"+
-      "dec2NumStr, err := dec2.GetNumStr()\n"+
-      "Error='%v'\n\n", ePrefix, err.Error())
-    return
-  }
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"dec2NumStr, err := dec2.GetNumStr()\n"+
+			"Error='%v'\n\n", ePrefix, err.Error())
+		return
+	}
 
-  result, err := new(BigIntMathAdd).AddDecimal(dec1, dec2)
+	result, err := new(BigIntMathAdd).AddDecimal(dec1, dec2)
 
-  if err != nil {
-    t.Errorf("%v\n"+
-      "Error returned by:\n"+
-      "result, err := new(BigIntMathAdd).AddDecimal(dec1, dec2)\n"+
-      "dec1= '%v'\n"+
-      "dec2= '%v'\n"+
-      "Error='%v'\n\n", ePrefix, dec1NumStr, dec2NumStr, err.Error())
-    return
-  }
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"result, err := new(BigIntMathAdd).AddDecimal(dec1, dec2)\n"+
+			"dec1= '%v'\n"+
+			"dec2= '%v'\n"+
+			"Error='%v'\n\n", ePrefix, dec1NumStr, dec2NumStr, err.Error())
+		return
+	}
 
-  actualNumStr, err := result.GetNumStr()
+	actualNumStr, err := result.GetNumStr()
 
-  if err != nil {
-    t.Errorf("%v\n"+
-      "Error returned by:\n"+
-      "actualNumStr, err := result.GetNumStr()\n"+
-      "Error='%v'\n\n", ePrefix, err.Error())
-    return
-  }
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"actualNumStr, err := result.GetNumStr()\n"+
+			"Error='%v'\n\n", ePrefix, err.Error())
+		return
+	}
 
-  if expectedNumStr != actualNumStr {
-    t.Errorf("%v\n"+
-      "Error: Unexpected Result!\n"+
-      "Expected actualNumStr = '%v'\n"+
-      "Instead, actualNumStr = '%v'\n\n",
-      ePrefix, expectedNumStr, actualNumStr)
-    return
-  }
+	if expectedNumStr != actualNumStr {
+		t.Errorf("%v\n"+
+			"Error: Unexpected Result!\n"+
+			"Expected actualNumStr = '%v'\n"+
+			"Instead, actualNumStr = '%v'\n\n",
+			ePrefix, expectedNumStr, actualNumStr)
+		return
+	}
 
-  if expectedPrecision != result.precision {
-    t.Errorf("%v\n"+
-      "Error: Unexpected Result!\n"+
-      "Expected result.precision = '%v'\n"+
-      "Instead, result.precision = '%v'\n\n",
-      ePrefix, expectedPrecision, result.precision)
-    return
-  }
+	if expectedPrecision != result.precision {
+		t.Errorf("%v\n"+
+			"Error: Unexpected Result!\n"+
+			"Expected result.precision = '%v'\n"+
+			"Instead, result.precision = '%v'\n\n",
+			ePrefix, expectedPrecision, result.precision)
+		return
+	}
 
-  if expectedSign != result.sign {
-    t.Errorf("%v\n"+
-      "Error: Unexpected Result!\n"+
-      "Expected result.sign = '%v'\n"+
-      "Instead, result.sign = '%v'\n\n",
-      ePrefix, expectedSign, result.sign)
-  }
+	if expectedSign != result.sign {
+		t.Errorf("%v\n"+
+			"Error: Unexpected Result!\n"+
+			"Expected result.sign = '%v'\n"+
+			"Instead, result.sign = '%v'\n\n",
+			ePrefix, expectedSign, result.sign)
+	}
 
-  return
+	return
 }
 
 func TestBigIntMathAdd_AddDecimal_03(t *testing.T) {
-  ePrefix := "TestBigIntMathAdd_AddDecimal_03"
-  n1Str := "-123456.789"
+	ePrefix := "TestBigIntMathAdd_AddDecimal_03"
+	n1Str := "-123456.789"
 
-  n2Str := "987.123456"
+	n2Str := "987.123456"
 
-  expectedNumStr := "-122469.665544"
-  expectedPrecision := uint(6)
-  expectedSign := -1
+	expectedNumStr := "-122469.665544"
+	expectedPrecision := uint(6)
+	expectedSign := -1
 
-  dec1, err := new(Decimal).NewNumStr(n1Str)
+	dec1, err := new(Decimal).NewNumStr(n1Str)
 
-  if err != nil {
-    t.Errorf("%v\n"+
-      "Error returned by:\n"+
-      "dec1, err := new(Decimal).NewNumStr(n1Str)\n"+
-      "n1Str= '%v'\n"+
-      "Error='%v'\n\n", ePrefix, n1Str, err.Error())
-    return
-  }
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"dec1, err := new(Decimal).NewNumStr(n1Str)\n"+
+			"n1Str= '%v'\n"+
+			"Error='%v'\n\n", ePrefix, n1Str, err.Error())
+		return
+	}
 
-  dec1NumStr, err := dec1.GetNumStr()
+	dec1NumStr, err := dec1.GetNumStr()
 
-  if err != nil {
-    t.Errorf("%v\n"+
-      "Error returned by:\n"+
-      "dec1NumStr, err := dec1.GetNumStr()\n"+
-      "Error='%v'\n\n", ePrefix, err.Error())
-    return
-  }
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"dec1NumStr, err := dec1.GetNumStr()\n"+
+			"Error='%v'\n\n", ePrefix, err.Error())
+		return
+	}
 
-  dec2, err := new(Decimal).NewNumStr(n2Str)
+	dec2, err := new(Decimal).NewNumStr(n2Str)
 
-  if err != nil {
-    t.Errorf("%v\n"+
-      "Error returned by:\n"+
-      "dec2, err := new(Decimal).NewNumStr(n2Str)\n"+
-      "n2Str= '%v'\n"+
-      "Error='%v'\n\n", ePrefix, n2Str, err.Error())
-    return
-  }
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"dec2, err := new(Decimal).NewNumStr(n2Str)\n"+
+			"n2Str= '%v'\n"+
+			"Error='%v'\n\n", ePrefix, n2Str, err.Error())
+		return
+	}
 
-  dec2NumStr, err := dec2.GetNumStr()
+	dec2NumStr, err := dec2.GetNumStr()
 
-  if err != nil {
-    t.Errorf("%v\n"+
-      "Error returned by:\n"+
-      "dec2NumStr, err := dec2.GetNumStr()\n"+
-      "Error='%v'\n\n", ePrefix, err.Error())
-    return
-  }
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"dec2NumStr, err := dec2.GetNumStr()\n"+
+			"Error='%v'\n\n", ePrefix, err.Error())
+		return
+	}
 
-  result, err := new(BigIntMathAdd).AddDecimal(dec1, dec2)
+	result, err := new(BigIntMathAdd).AddDecimal(dec1, dec2)
 
-  if err != nil {
-    t.Errorf("%v\n"+
-      "Error returned by:\n"+
-      "result, err := new(BigIntMathAdd).AddDecimal(dec1, dec2)\n"+
-      "dec1= '%v'\n"+
-      "dec2= '%v'\n"+
-      "Error='%v'\n\n", ePrefix, dec1NumStr, dec2NumStr, err.Error())
-    return
-  }
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"result, err := new(BigIntMathAdd).AddDecimal(dec1, dec2)\n"+
+			"dec1= '%v'\n"+
+			"dec2= '%v'\n"+
+			"Error='%v'\n\n", ePrefix, dec1NumStr, dec2NumStr, err.Error())
+		return
+	}
 
-  actualNumStr, err := result.GetNumStr()
+	actualNumStr, err := result.GetNumStr()
 
-  if err != nil {
-    t.Errorf("%v\n"+
-      "Error returned by:\n"+
-      "actualNumStr, err := result.GetNumStr()\n"+
-      "Error='%v'\n\n", ePrefix, err.Error())
-    return
-  }
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"actualNumStr, err := result.GetNumStr()\n"+
+			"Error='%v'\n\n", ePrefix, err.Error())
+		return
+	}
 
-  if expectedNumStr != actualNumStr {
-    t.Errorf("%v\n"+
-      "Error: Unexpected Result!\n"+
-      "Expected actualNumStr = '%v'\n"+
-      "Instead, actualNumStr = '%v'\n\n",
-      ePrefix, expectedNumStr, actualNumStr)
-    return
-  }
+	if expectedNumStr != actualNumStr {
+		t.Errorf("%v\n"+
+			"Error: Unexpected Result!\n"+
+			"Expected actualNumStr = '%v'\n"+
+			"Instead, actualNumStr = '%v'\n\n",
+			ePrefix, expectedNumStr, actualNumStr)
+		return
+	}
 
-  if expectedPrecision != result.precision {
-    t.Errorf("%v\n"+
-      "Error: Unexpected Result!\n"+
-      "Expected result.precision = '%v'\n"+
-      "Instead, result.precision = '%v'\n\n",
-      ePrefix, expectedPrecision, result.precision)
-    return
-  }
+	if expectedPrecision != result.precision {
+		t.Errorf("%v\n"+
+			"Error: Unexpected Result!\n"+
+			"Expected result.precision = '%v'\n"+
+			"Instead, result.precision = '%v'\n\n",
+			ePrefix, expectedPrecision, result.precision)
+		return
+	}
 
-  if expectedSign != result.sign {
-    t.Errorf("%v\n"+
-      "Error: Unexpected Result!\n"+
-      "Expected result.sign = '%v'\n"+
-      "Instead, result.sign = '%v'\n\n",
-      ePrefix, expectedSign, result.sign)
-  }
+	if expectedSign != result.sign {
+		t.Errorf("%v\n"+
+			"Error: Unexpected Result!\n"+
+			"Expected result.sign = '%v'\n"+
+			"Instead, result.sign = '%v'\n\n",
+			ePrefix, expectedSign, result.sign)
+	}
 
-  return
+	return
 }
 
 func TestBigIntMathAdd_AddDecimal_04(t *testing.T) {
-  ePrefix := "TestBigIntMathAdd_AddDecimal_04"
-  n1Str := "123456.789"
+	ePrefix := "TestBigIntMathAdd_AddDecimal_04"
+	n1Str := "123456.789"
 
-  n2Str := "987.123456"
+	n2Str := "987.123456"
 
-  expectedNumStr := "124443,912456"
-  expectedPrecision := uint(6)
-  expectedSign := 1
+	expectedNumStr := "124443,912456"
+	expectedPrecision := uint(6)
+	expectedSign := 1
 
-  dec1, err := new(Decimal).NewNumStr(n1Str)
+	dec1, err := new(Decimal).NewNumStr(n1Str)
 
-  if err != nil {
-    t.Errorf("%v\n"+
-      "Error returned by:\n"+
-      "dec1, err := new(Decimal).NewNumStr(n1Str)\n"+
-      "n1Str= '%v'\n"+
-      "Error='%v'\n\n", ePrefix, n1Str, err.Error())
-    return
-  }
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"dec1, err := new(Decimal).NewNumStr(n1Str)\n"+
+			"n1Str= '%v'\n"+
+			"Error='%v'\n\n", ePrefix, n1Str, err.Error())
+		return
+	}
 
-  dec1NumStr, err := dec1.GetNumStr()
+	dec1NumStr, err := dec1.GetNumStr()
 
-  if err != nil {
-    t.Errorf("%v\n"+
-      "Error returned by:\n"+
-      "dec1NumStr, err := dec1.GetNumStr()\n"+
-      "Error='%v'\n\n", ePrefix, err.Error())
-    return
-  }
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"dec1NumStr, err := dec1.GetNumStr()\n"+
+			"Error='%v'\n\n", ePrefix, err.Error())
+		return
+	}
 
-  expectedNumSeps := NumericSeparatorDto{}
-  frenchDecSeparator := ','
-  frenchThousandsSeparator := ' '
-  frenchCurrencySymbol := '€'
+	expectedNumSeps := NumericSeparatorDto{}
+	frenchDecSeparator := ','
+	frenchThousandsSeparator := ' '
+	frenchCurrencySymbol := '€'
 
-  expectedNumSeps.DecimalSeparator = frenchDecSeparator
-  expectedNumSeps.ThousandsSeparator = frenchThousandsSeparator
-  expectedNumSeps.CurrencySymbol = frenchCurrencySymbol
+	expectedNumSeps.DecimalSeparator = frenchDecSeparator
+	expectedNumSeps.ThousandsSeparator = frenchThousandsSeparator
+	expectedNumSeps.CurrencySymbol = frenchCurrencySymbol
 
-  err = dec1.SetNumericSeparatorsDto(expectedNumSeps)
+	err = dec1.SetNumericSeparatorsDto(expectedNumSeps)
 
-  if err != nil {
-    t.Errorf("%v\n"+
-      "Error returned by:\n"+
-      "err = dec1.SetNumericSeparatorsDto(expectedNumSeps)\n"+
-      "expectedNumSeps= '%v'\n"+
-      "Error='%v'\n\n", ePrefix, expectedNumSeps.String(), err.Error())
-    return
-  }
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"err = dec1.SetNumericSeparatorsDto(expectedNumSeps)\n"+
+			"expectedNumSeps= '%v'\n"+
+			"Error='%v'\n\n", ePrefix, expectedNumSeps.String(), err.Error())
+		return
+	}
 
-  dec2, err := new(Decimal).NewNumStr(n2Str)
+	dec2, err := new(Decimal).NewNumStr(n2Str)
 
-  if err != nil {
-    t.Errorf("%v\n"+
-      "Error returned by:\n"+
-      "dec2, err := new(Decimal).NewNumStr(n2Str)\n"+
-      "n2Str= '%v'\n"+
-      "Error='%v'\n\n", ePrefix, n2Str, err.Error())
-    return
-  }
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"dec2, err := new(Decimal).NewNumStr(n2Str)\n"+
+			"n2Str= '%v'\n"+
+			"Error='%v'\n\n", ePrefix, n2Str, err.Error())
+		return
+	}
 
-  dec2NumStr, err := dec2.GetNumStr()
+	dec2NumStr, err := dec2.GetNumStr()
 
-  if err != nil {
-    t.Errorf("%v\n"+
-      "Error returned by:\n"+
-      "dec2NumStr, err := dec2.GetNumStr()\n"+
-      "Error='%v'\n\n", ePrefix, err.Error())
-    return
-  }
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"dec2NumStr, err := dec2.GetNumStr()\n"+
+			"Error='%v'\n\n", ePrefix, err.Error())
+		return
+	}
 
-  result, err := new(BigIntMathAdd).AddDecimal(dec1, dec2)
+	result, err := new(BigIntMathAdd).AddDecimal(dec1, dec2)
 
-  if err != nil {
-    t.Errorf("%v\n"+
-      "Error returned by:\n"+
-      "result, err := new(BigIntMathAdd).AddDecimal(dec1, dec2)\n"+
-      "dec1= '%v'\n"+
-      "dec2= '%v'\n"+
-      "Error='%v'\n\n", ePrefix, dec1NumStr, dec2NumStr, err.Error())
-    return
-  }
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"result, err := new(BigIntMathAdd).AddDecimal(dec1, dec2)\n"+
+			"dec1= '%v'\n"+
+			"dec2= '%v'\n"+
+			"Error='%v'\n\n", ePrefix, dec1NumStr, dec2NumStr, err.Error())
+		return
+	}
 
-  actualNumStr, err := result.GetNumStr()
+	actualNumStr, err := result.GetNumStr()
 
-  if err != nil {
-    t.Errorf("%v\n"+
-      "Error returned by:\n"+
-      "actualNumStr, err := result.GetNumStr()\n"+
-      "Error='%v'\n\n", ePrefix, err.Error())
-    return
-  }
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"actualNumStr, err := result.GetNumStr()\n"+
+			"Error='%v'\n\n", ePrefix, err.Error())
+		return
+	}
 
-  if expectedNumStr != actualNumStr {
-    t.Errorf("%v\n"+
-      "Error: Unexpected Result!\n"+
-      "Expected actualNumStr = '%v'\n"+
-      "Instead, actualNumStr = '%v'\n\n",
-      ePrefix, expectedNumStr, actualNumStr)
-    return
-  }
+	if expectedNumStr != actualNumStr {
+		t.Errorf("%v\n"+
+			"Error: Unexpected Result!\n"+
+			"Expected actualNumStr = '%v'\n"+
+			"Instead, actualNumStr = '%v'\n\n",
+			ePrefix, expectedNumStr, actualNumStr)
+		return
+	}
 
-  if expectedPrecision != result.precision {
-    t.Errorf("%v\n"+
-      "Error: Unexpected Result!\n"+
-      "Expected result.precision = '%v'\n"+
-      "Instead, result.precision = '%v'\n\n",
-      ePrefix, expectedPrecision, result.precision)
-    return
-  }
+	if expectedPrecision != result.precision {
+		t.Errorf("%v\n"+
+			"Error: Unexpected Result!\n"+
+			"Expected result.precision = '%v'\n"+
+			"Instead, result.precision = '%v'\n\n",
+			ePrefix, expectedPrecision, result.precision)
+		return
+	}
 
-  if expectedSign != result.sign {
-    t.Errorf("%v\n"+
-      "Error: Unexpected Result!\n"+
-      "Expected result.sign = '%v'\n"+
-      "Instead, result.sign = '%v'\n\n",
-      ePrefix, expectedPrecision, result.sign)
-    return
-  }
+	if expectedSign != result.sign {
+		t.Errorf("%v\n"+
+			"Error: Unexpected Result!\n"+
+			"Expected result.sign = '%v'\n"+
+			"Instead, result.sign = '%v'\n\n",
+			ePrefix, expectedPrecision, result.sign)
+		return
+	}
 
-  actualNumSeps, err := result.GetNumericSeparatorsDto()
+	actualNumSeps, err := result.GetNumericSeparatorsDto()
 
-  if err != nil {
-    t.Errorf("%v\n"+
-      "Error returned by:\n"+
-      "actualNumSeps, err := result.GetNumericSeparatorsDto()\n"+
-      "Error='%v'\n\n", ePrefix, err.Error())
-    return
-  }
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"actualNumSeps, err := result.GetNumericSeparatorsDto()\n"+
+			"Error='%v'\n\n", ePrefix, err.Error())
+		return
+	}
 
-  if !expectedNumSeps.Equal(actualNumSeps) {
-    t.Errorf("Error: Expected numSeps='%v'. Instead, numSeps='%v'",
-      expectedNumSeps.String(), actualNumSeps.String())
-  }
+	if !expectedNumSeps.Equal(actualNumSeps) {
+		t.Errorf("Error: Expected numSeps='%v'. Instead, numSeps='%v'",
+			expectedNumSeps.String(), actualNumSeps.String())
+	}
 
-  if !expectedNumSeps.Equal(actualNumSeps) {
-    t.Errorf("%v\n"+
-      "Error: Unexpected Result!\n"+
-      "Expected actualNumSeps = '%v'\n"+
-      "Instead, actualNumSeps = '%v'\n\n",
-      ePrefix, expectedNumSeps.String(), actualNumSeps.String())
-  }
+	if !expectedNumSeps.Equal(actualNumSeps) {
+		t.Errorf("%v\n"+
+			"Error: Unexpected Result!\n"+
+			"Expected actualNumSeps = '%v'\n"+
+			"Instead, actualNumSeps = '%v'\n\n",
+			ePrefix, expectedNumSeps.String(), actualNumSeps.String())
+	}
 
-  return
+	return
 }
 
 func TestBigIntMathAdd_AddDecimalArray_01(t *testing.T) {
-  ePrefix := "TestBigIntMathAdd_AddDecimalArray_01"
-  numStrAry := []string{
-    "45.8",
-    "1.45962",
-    "58.71",
-    "-37.62174",
-    "89.8",
-  }
+	ePrefix := "TestBigIntMathAdd_AddDecimalArray_01"
+	numStrAry := []string{
+		"45.8",
+		"1.45962",
+		"58.71",
+		"-37.62174",
+		"89.8",
+	}
 
-  lenStrAry := len(numStrAry)
+	lenStrAry := len(numStrAry)
 
-  expectedTotalStr := "158.14788"
+	expectedTotalStr := "158.14788"
 
-  expectedBNum, err := new(BigIntNum).NewNumStr(expectedTotalStr)
+	expectedBNum, err := new(BigIntNum).NewNumStr(expectedTotalStr)
 
-  if err != nil {
-    t.Errorf("%v\n"+
-      "Error returned by:\n"+
-      "expectedBNum, err := new(BigIntNum).NewNumStr(expectedTotalStr)\n"+
-      "expectedTotalStr= '%v'\n"+
-      "Error='%v'\n\n", ePrefix, expectedTotalStr, err.Error())
-    return
-  }
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"expectedBNum, err := new(BigIntNum).NewNumStr(expectedTotalStr)\n"+
+			"expectedTotalStr= '%v'\n"+
+			"Error='%v'\n\n", ePrefix, expectedTotalStr, err.Error())
+		return
+	}
 
-  expectedResultNumStr, err := expectedBNum.GetNumStr()
+	expectedResultNumStr, err := expectedBNum.GetNumStr()
 
-  if err != nil {
-    t.Errorf("%v\n"+
-      "Error returned by:\n"+
-      "expectedResultNumStr, err := expectedBNum.GetNumStr()\n"+
-      "Error='%v'\n\n", ePrefix, err.Error())
-    return
-  }
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"expectedResultNumStr, err := expectedBNum.GetNumStr()\n"+
+			"Error='%v'\n\n", ePrefix, err.Error())
+		return
+	}
 
-  decAry := make([]Decimal, lenStrAry)
+	decAry := make([]Decimal, lenStrAry)
 
-  var dec Decimal
+	var dec Decimal
 
-  for i := 0; i < lenStrAry; i++ {
+	for i := 0; i < lenStrAry; i++ {
 
-    dec, err = new(Decimal).NewNumStr(numStrAry[i])
+		dec, err = new(Decimal).NewNumStr(numStrAry[i])
 
-    if err != nil {
-      t.Errorf("%v\n"+
-        "Error returned by:\n"+
-        "dec, err = new(Decimal).NewNumStr(numStrAry[%d])\n"+
-        "numStrAry[%d]= '%v'\n"+
-        "Error='%v'\n\n",
-        ePrefix, i, i, numStrAry[i], err.Error())
-      return
-    }
+		if err != nil {
+			t.Errorf("%v\n"+
+				"Error returned by:\n"+
+				"dec, err = new(Decimal).NewNumStr(numStrAry[%d])\n"+
+				"numStrAry[%d]= '%v'\n"+
+				"Error='%v'\n\n",
+				ePrefix, i, i, numStrAry[i], err.Error())
+			return
+		}
 
-    decAry[i] = dec
+		decAry[i] = dec
 
-  }
+	}
 
-  total, err := new(BigIntMathAdd).AddDecimalArray(decAry)
+	total, err := new(BigIntMathAdd).AddDecimalArray(decAry)
 
-  if err != nil {
-    t.Errorf("%v\n"+
-      "Error returned by:\n"+
-      "total, err := new(BigIntMathAdd).AddDecimalArray(decAry)\n"+
-      "Error='%v'\n\n", ePrefix, err.Error())
-    return
-  }
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"total, err := new(BigIntMathAdd).AddDecimalArray(decAry)\n"+
+			"Error='%v'\n\n", ePrefix, err.Error())
+		return
+	}
 
-  actualTotalNumstr, err := total.GetNumStr()
+	actualTotalNumstr, err := total.GetNumStr()
 
-  if err != nil {
-    t.Errorf("%v\n"+
-      "Error returned by:\n"+
-      "actualTotalNumstr, err := total.GetNumStr()\n"+
-      "Error='%v'\n\n", ePrefix, err.Error())
-    return
-  }
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"actualTotalNumstr, err := total.GetNumStr()\n"+
+			"Error='%v'\n\n", ePrefix, err.Error())
+		return
+	}
 
-  expectedBNumEqualsTotal, err := expectedBNum.Equal(total)
+	expectedBNumEqualsTotal, err := expectedBNum.Equal(total)
 
-  if err != nil {
-    t.Errorf("%v\n"+
-      "Error returned by:\n"+
-      "expectedBNumEqualsTotal, err := expectedBNum.Equal(total)\n"+
-      "Error='%v'\n\n", ePrefix, err.Error())
-    return
-  }
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"expectedBNumEqualsTotal, err := expectedBNum.Equal(total)\n"+
+			"Error='%v'\n\n", ePrefix, err.Error())
+		return
+	}
 
-  if !expectedBNumEqualsTotal {
-    t.Errorf("%v\n"+
-      "Error: Unexpected Result!\n"+
-      "Expected total = '%v'\n"+
-      "Instead, total = '%v'\n\n",
-      ePrefix, expectedResultNumStr, actualTotalNumstr)
-    return
-  }
+	if !expectedBNumEqualsTotal {
+		t.Errorf("%v\n"+
+			"Error: Unexpected Result!\n"+
+			"Expected total = '%v'\n"+
+			"Instead, total = '%v'\n\n",
+			ePrefix, expectedResultNumStr, actualTotalNumstr)
+		return
+	}
 
-  if expectedResultNumStr != actualTotalNumstr {
-    t.Errorf("%v\n"+
-      "Error: Unexpected Result!\n"+
-      "Expected total NumStr = '%v'\n"+
-      "Instead, total NumStr = '%v'\n\n",
-      ePrefix, expectedResultNumStr, actualTotalNumstr)
-  }
+	if expectedResultNumStr != actualTotalNumstr {
+		t.Errorf("%v\n"+
+			"Error: Unexpected Result!\n"+
+			"Expected total NumStr = '%v'\n"+
+			"Instead, total NumStr = '%v'\n\n",
+			ePrefix, expectedResultNumStr, actualTotalNumstr)
+	}
 
-  return
+	return
 }
 
 func TestBigIntMathAdd_AddDecimalArray_02(t *testing.T) {
 
-  ePrefix := "TestBigIntMathAdd_AddDecimalArray_02"
-  numStrAry := []string{
-    "-978425.648941",
-    "33.12",
-    "-804.1",
-    "32567",
-    "-41.859",
-  }
+	ePrefix := "TestBigIntMathAdd_AddDecimalArray_02"
+	numStrAry := []string{
+		"-978425.648941",
+		"33.12",
+		"-804.1",
+		"32567",
+		"-41.859",
+	}
 
-  lenStrAry := len(numStrAry)
+	lenStrAry := len(numStrAry)
 
-  expectedTotalStr := "-946671.487941"
+	expectedTotalStr := "-946671.487941"
 
-  expectedBNum, err := new(BigIntNum).NewNumStr(expectedTotalStr)
+	expectedBNum, err := new(BigIntNum).NewNumStr(expectedTotalStr)
 
-  if err != nil {
-    t.Errorf("%v\n"+
-      "Error returned by:\n"+
-      "expectedBNum, err := new(BigIntNum).NewNumStr(expectedTotalStr)\n"+
-      "expectedTotalStr= '%v'\n"+
-      "Error='%v'\n\n", ePrefix, expectedTotalStr, err.Error())
-    return
-  }
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"expectedBNum, err := new(BigIntNum).NewNumStr(expectedTotalStr)\n"+
+			"expectedTotalStr= '%v'\n"+
+			"Error='%v'\n\n", ePrefix, expectedTotalStr, err.Error())
+		return
+	}
 
-  expectedResultNumStr, err := expectedBNum.GetNumStr()
+	expectedResultNumStr, err := expectedBNum.GetNumStr()
 
-  if err != nil {
-    t.Errorf("%v\n"+
-      "Error returned by:\n"+
-      "expectedResultNumStr, err := expectedBNum.GetNumStr()\n"+
-      "Error='%v'\n\n", ePrefix, err.Error())
-    return
-  }
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"expectedResultNumStr, err := expectedBNum.GetNumStr()\n"+
+			"Error='%v'\n\n", ePrefix, err.Error())
+		return
+	}
 
-  decAry := make([]Decimal, lenStrAry)
+	decAry := make([]Decimal, lenStrAry)
 
-  var dec Decimal
+	var dec Decimal
 
-  for i := 0; i < lenStrAry; i++ {
+	for i := 0; i < lenStrAry; i++ {
 
-    dec, err = new(Decimal).NewNumStr(numStrAry[i])
+		dec, err = new(Decimal).NewNumStr(numStrAry[i])
 
-    if err != nil {
-      t.Errorf("%v\n"+
-        "Error returned by:\n"+
-        "dec, err = new(Decimal).NewNumStr(numStrAry[%d])\n"+
-        "numStrAry[%d]= '%v'\n"+
-        "Error='%v'\n\n",
-        ePrefix, i, i, numStrAry[i], err.Error())
-      return
-    }
+		if err != nil {
+			t.Errorf("%v\n"+
+				"Error returned by:\n"+
+				"dec, err = new(Decimal).NewNumStr(numStrAry[%d])\n"+
+				"numStrAry[%d]= '%v'\n"+
+				"Error='%v'\n\n",
+				ePrefix, i, i, numStrAry[i], err.Error())
+			return
+		}
 
-    decAry[i] = dec
+		decAry[i] = dec
 
-  }
+	}
 
-  total, err := new(BigIntMathAdd).AddDecimalArray(decAry)
+	total, err := new(BigIntMathAdd).AddDecimalArray(decAry)
 
-  if err != nil {
-    t.Errorf("%v\n"+
-      "Error returned by:\n"+
-      "total, err := new(BigIntMathAdd).AddDecimalArray(decAry)\n"+
-      "Error='%v'\n\n", ePrefix, err.Error())
-    return
-  }
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"total, err := new(BigIntMathAdd).AddDecimalArray(decAry)\n"+
+			"Error='%v'\n\n", ePrefix, err.Error())
+		return
+	}
 
-  actualTotalNumStr, err := total.GetNumStr()
+	actualTotalNumStr, err := total.GetNumStr()
 
-  if err != nil {
-    t.Errorf("%v\n"+
-      "Error returned by:\n"+
-      "actualTotalNumStr, err := total.GetNumStr()\n"+
-      "Error='%v'\n\n", ePrefix, err.Error())
-    return
-  }
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"actualTotalNumStr, err := total.GetNumStr()\n"+
+			"Error='%v'\n\n", ePrefix, err.Error())
+		return
+	}
 
-  expectedBNumEqualsTotal, err := expectedBNum.Equal(total)
+	expectedBNumEqualsTotal, err := expectedBNum.Equal(total)
 
-  if err != nil {
-    t.Errorf("%v\n"+
-      "Error returned by:\n"+
-      "expectedBNumEqualsTotal, err := expectedBNum.Equal(total)\n"+
-      "Error='%v'\n\n", ePrefix, err.Error())
-    return
-  }
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"expectedBNumEqualsTotal, err := expectedBNum.Equal(total)\n"+
+			"Error='%v'\n\n", ePrefix, err.Error())
+		return
+	}
 
-  if !expectedBNumEqualsTotal {
-    t.Errorf("%v\n"+
-      "Error: Unexpected Result!\n"+
-      "Expected total = '%v'\n"+
-      "Instead, total = '%v'\n\n",
-      ePrefix, expectedResultNumStr, actualTotalNumStr)
-    return
-  }
+	if !expectedBNumEqualsTotal {
+		t.Errorf("%v\n"+
+			"Error: Unexpected Result!\n"+
+			"Expected total = '%v'\n"+
+			"Instead, total = '%v'\n\n",
+			ePrefix, expectedResultNumStr, actualTotalNumStr)
+		return
+	}
 
-  if expectedResultNumStr != actualTotalNumStr {
-    t.Errorf("%v\n"+
-      "Error: Unexpected Result!\n"+
-      "Expected total NumStr = '%v'\n"+
-      "Instead, total NumStr = '%v'\n\n",
-      ePrefix, expectedResultNumStr, actualTotalNumStr)
-  }
+	if expectedResultNumStr != actualTotalNumStr {
+		t.Errorf("%v\n"+
+			"Error: Unexpected Result!\n"+
+			"Expected total NumStr = '%v'\n"+
+			"Instead, total NumStr = '%v'\n\n",
+			ePrefix, expectedResultNumStr, actualTotalNumStr)
+	}
 
-  return
+	return
 }
 
 func TestBigIntMathAdd_AddDecimalArray_03(t *testing.T) {
-  ePrefix := "TestBigIntMathAdd_AddDecimalArray_03"
-  numStrAry := []string{
-    "45.8",
-    "1.45962",
-    "58.71",
-    "-37.62174",
-    "89.8",
-  }
+	ePrefix := "TestBigIntMathAdd_AddDecimalArray_03"
+	numStrAry := []string{
+		"45.8",
+		"1.45962",
+		"58.71",
+		"-37.62174",
+		"89.8",
+	}
 
-  lenStrAry := len(numStrAry)
+	lenStrAry := len(numStrAry)
 
-  expectedTotalStr := "158,14788"
+	expectedTotalStr := "158,14788"
 
-  decAry := make([]Decimal, lenStrAry)
+	decAry := make([]Decimal, lenStrAry)
 
-  var dec Decimal
-  var err error
+	var dec Decimal
+	var err error
 
-  for i := 0; i < lenStrAry; i++ {
+	for i := 0; i < lenStrAry; i++ {
 
-    dec, err = new(Decimal).NewNumStr(numStrAry[i])
+		dec, err = new(Decimal).NewNumStr(numStrAry[i])
 
-    if err != nil {
-      t.Errorf("%v\n"+
-        "Error returned by:\n"+
-        "dec, err = new(Decimal).NewNumStr(numStrAry[%d])\n"+
-        "numStrAry[%d]= '%v'\n"+
-        "Error='%v'\n\n",
-        ePrefix, i, i, numStrAry[i], err.Error())
-      return
-    }
+		if err != nil {
+			t.Errorf("%v\n"+
+				"Error returned by:\n"+
+				"dec, err = new(Decimal).NewNumStr(numStrAry[%d])\n"+
+				"numStrAry[%d]= '%v'\n"+
+				"Error='%v'\n\n",
+				ePrefix, i, i, numStrAry[i], err.Error())
+			return
+		}
 
-    decAry[i] = dec
+		decAry[i] = dec
 
-  }
+	}
 
-  expectedNumSeps := NumericSeparatorDto{}
-  frenchDecSeparator := ','
-  frenchThousandsSeparator := ' '
-  frenchCurrencySymbol := '€'
+	expectedNumSeps := NumericSeparatorDto{}
+	frenchDecSeparator := ','
+	frenchThousandsSeparator := ' '
+	frenchCurrencySymbol := '€'
 
-  expectedNumSeps.DecimalSeparator = frenchDecSeparator
-  expectedNumSeps.ThousandsSeparator = frenchThousandsSeparator
-  expectedNumSeps.CurrencySymbol = frenchCurrencySymbol
+	expectedNumSeps.DecimalSeparator = frenchDecSeparator
+	expectedNumSeps.ThousandsSeparator = frenchThousandsSeparator
+	expectedNumSeps.CurrencySymbol = frenchCurrencySymbol
 
-  err = decAry[0].SetNumericSeparatorsDto(expectedNumSeps)
+	err = decAry[0].SetNumericSeparatorsDto(expectedNumSeps)
 
-  if err != nil {
-    t.Errorf("%v\n"+
-      "Error returned by:\n"+
-      "err = decAry[0].SetNumericSeparatorsDto(expectedNumSeps)\n"+
-      "expectedNumSeps= '%v'\n"+
-      "Error='%v'\n\n", ePrefix, expectedNumSeps.String(), err.Error())
-    return
-  }
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"err = decAry[0].SetNumericSeparatorsDto(expectedNumSeps)\n"+
+			"expectedNumSeps= '%v'\n"+
+			"Error='%v'\n\n", ePrefix, expectedNumSeps.String(), err.Error())
+		return
+	}
 
-  total, err := new(BigIntMathAdd).AddDecimalArray(decAry)
+	total, err := new(BigIntMathAdd).AddDecimalArray(decAry)
 
-  if err != nil {
-    t.Errorf("%v\n"+
-      "Error returned by:\n"+
-      "total, err := new(BigIntMathAdd).AddDecimalArray(decAry)\n"+
-      "Error='%v'\n\n", ePrefix, err.Error())
-    return
-  }
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"total, err := new(BigIntMathAdd).AddDecimalArray(decAry)\n"+
+			"Error='%v'\n\n", ePrefix, err.Error())
+		return
+	}
 
-  actualTotalNumStr, err := total.GetNumStr()
+	actualTotalNumStr, err := total.GetNumStr()
 
-  if err != nil {
-    t.Errorf("%v\n"+
-      "Error returned by:\n"+
-      "actualTotalNumStr, err := total.GetNumStr()\n"+
-      "Error='%v'\n\n", ePrefix, err.Error())
-    return
-  }
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"actualTotalNumStr, err := total.GetNumStr()\n"+
+			"Error='%v'\n\n", ePrefix, err.Error())
+		return
+	}
 
-  if expectedTotalStr != actualTotalNumStr {
-    t.Errorf("%v\n"+
-      "Error: Unexpected Result!\n"+
-      "Expected total NumStr = '%v'\n"+
-      "Instead, total NumStr = '%v'\n\n",
-      ePrefix, expectedTotalStr, actualTotalNumStr)
-    return
-  }
+	if expectedTotalStr != actualTotalNumStr {
+		t.Errorf("%v\n"+
+			"Error: Unexpected Result!\n"+
+			"Expected total NumStr = '%v'\n"+
+			"Instead, total NumStr = '%v'\n\n",
+			ePrefix, expectedTotalStr, actualTotalNumStr)
+		return
+	}
 
-  actualNumSeps, err := total.GetNumericSeparatorsDto()
+	actualNumSeps, err := total.GetNumericSeparatorsDto()
 
-  if err != nil {
-    t.Errorf("%v\n"+
-      "Error returned by:\n"+
-      "actualNumSeps := total.GetNumericSeparatorsDto()\n"+
-      "Error='%v'\n\n", ePrefix, err.Error())
-    return
-  }
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"actualNumSeps := total.GetNumericSeparatorsDto()\n"+
+			"Error='%v'\n\n", ePrefix, err.Error())
+		return
+	}
 
-  if !expectedNumSeps.Equal(actualNumSeps) {
-    t.Errorf("Error: Expected numSeps='%v'. Instead, numSeps='%v'",
-      expectedNumSeps.String(), actualNumSeps.String())
-  }
+	if !expectedNumSeps.Equal(actualNumSeps) {
+		t.Errorf("Error: Expected numSeps='%v'. Instead, numSeps='%v'",
+			expectedNumSeps.String(), actualNumSeps.String())
+	}
 
-  if !expectedNumSeps.Equal(actualNumSeps) {
-    t.Errorf("%v\n"+
-      "Error: Unexpected Result!\n"+
-      "Expected actualNumSeps = '%v'\n"+
-      "Instead, actualNumSeps = '%v'\n\n",
-      ePrefix, expectedNumSeps.String(), actualNumSeps.String())
-  }
+	if !expectedNumSeps.Equal(actualNumSeps) {
+		t.Errorf("%v\n"+
+			"Error: Unexpected Result!\n"+
+			"Expected actualNumSeps = '%v'\n"+
+			"Instead, actualNumSeps = '%v'\n\n",
+			ePrefix, expectedNumSeps.String(), actualNumSeps.String())
+	}
 
-  return
+	return
 }
 
 func TestBigIntMathAdd_AddDecimalOutputToArray_01(t *testing.T) {
 
-  ePrefix := "TestBigIntMathAdd_AddDecimalArray_01"
-  var err error
+	ePrefix := "TestBigIntMathAdd_AddDecimalArray_01"
+	var err error
 
-  // addendStr = 5
-  addendStr := "5"
+	// addendStr = 5
+	addendStr := "5"
 
-  // decNumStrs
-  decNumStrs := []string{
-    "5",
-    "10.123",
-    "15",
-    "253.692",
-    "35",
-    "55",
-  }
+	// decNumStrs
+	decNumStrs := []string{
+		"5",
+		"10.123",
+		"15",
+		"253.692",
+		"35",
+		"55",
+	}
 
-  // Expected Results Array
-  expectedNumStrs := []string{
-    "10",
-    "15.123",
-    "20",
-    "258.692",
-    "40",
-    "60",
-  }
+	// Expected Results Array
+	expectedNumStrs := []string{
+		"10",
+		"15.123",
+		"20",
+		"258.692",
+		"40",
+		"60",
+	}
 
-  decAddend, err := new(Decimal).NewNumStr(addendStr)
+	decAddend, err := new(Decimal).NewNumStr(addendStr)
 
-  if err != nil {
-    t.Errorf("%v\n"+
-      "Error returned by:\n"+
-      "decAddend, err := new(Decimal).NewNumStr(addendStr)\n"+
-      "addendStr= '%v'\n"+
-      "Error='%v'\n\n", ePrefix, addendStr, err.Error())
-    return
-  }
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"decAddend, err := new(Decimal).NewNumStr(addendStr)\n"+
+			"addendStr= '%v'\n"+
+			"Error='%v'\n\n", ePrefix, addendStr, err.Error())
+		return
+	}
 
-  decAddendNumStr, err := decAddend.GetNumStr()
+	decAddendNumStr, err := decAddend.GetNumStr()
 
-  if err != nil {
-    t.Errorf("%v\n"+
-      "Error returned by:\n"+
-      "decAddendNumStr, err := decAddend.GetNumStr()\n"+
-      "Error='%v'\n\n", ePrefix, err.Error())
-    return
-  }
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"decAddendNumStr, err := decAddend.GetNumStr()\n"+
+			"Error='%v'\n\n", ePrefix, err.Error())
+		return
+	}
 
-  lenArray := len(decNumStrs)
-  decArray := make([]Decimal, lenArray)
+	lenArray := len(decNumStrs)
+	decArray := make([]Decimal, lenArray)
 
-  for i := 0; i < lenArray; i++ {
+	for i := 0; i < lenArray; i++ {
 
-    decArray[i], err = new(Decimal).NewNumStr(decNumStrs[i])
+		decArray[i], err = new(Decimal).NewNumStr(decNumStrs[i])
 
-    if err != nil {
-      t.Errorf("%v\n"+
-        "Error returned by:\n"+
-        "decArray[%d], err = new(Decimal).NewNumStr(decNumStrs[%d])\n"+
-        "decNumStrs[%d]= '%v'\n"+
-        "Error='%v'\n\n",
-        ePrefix, i, i, i, decNumStrs[i], err.Error())
-      return
-    }
-  }
+		if err != nil {
+			t.Errorf("%v\n"+
+				"Error returned by:\n"+
+				"decArray[%d], err = new(Decimal).NewNumStr(decNumStrs[%d])\n"+
+				"decNumStrs[%d]= '%v'\n"+
+				"Error='%v'\n\n",
+				ePrefix, i, i, i, decNumStrs[i], err.Error())
+			return
+		}
+	}
 
-  result, err := new(BigIntMathAdd).AddDecimalOutputToArray(decAddend, decArray)
+	result, err := new(BigIntMathAdd).AddDecimalOutputToArray(decAddend, decArray)
 
-  if err != nil {
-    t.Errorf("%v\n"+
-      "Error returned by:\n"+
-      "result, err := new(BigIntMathAdd).AddDecimalOutputToArray(decAddend, decArray)\n"+
-      "decAddend= '%v'\n"+
-      "Error='%v'\n\n", ePrefix, decAddendNumStr, err.Error())
-    return
-  }
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"result, err := new(BigIntMathAdd).AddDecimalOutputToArray(decAddend, decArray)\n"+
+			"decAddend= '%v'\n"+
+			"Error='%v'\n\n", ePrefix, decAddendNumStr, err.Error())
+		return
+	}
 
-  var resultNumStr string
+	var resultNumStr string
 
-  for j := 0; j < lenArray; j++ {
+	for j := 0; j < lenArray; j++ {
 
-    resultNumStr, err = result[j].GetNumStr()
+		resultNumStr, err = result[j].GetNumStr()
 
-    if err != nil {
-      t.Errorf("%v\n"+
-        "Error returned by:\n"+
-        "resultNumStr, err = result[%d].GetNumStr()\n"+
-        "Error='%v'\n\n", ePrefix, j, err.Error())
-      return
-    }
+		if err != nil {
+			t.Errorf("%v\n"+
+				"Error returned by:\n"+
+				"resultNumStr, err = result[%d].GetNumStr()\n"+
+				"Error='%v'\n\n", ePrefix, j, err.Error())
+			return
+		}
 
-    if expectedNumStrs[j] != resultNumStr {
-      t.Errorf("%v\n"+
-        "Error: Unexpected Result!\n"+
-        "Expected expectedNumStrs[%d] = '%v'\n"+
-        "Instead, expectedNumStrs[%d] = '%v'\n\n",
-        ePrefix, j, resultNumStr, j, expectedNumStrs[j])
-      return
-    }
-  }
+		if expectedNumStrs[j] != resultNumStr {
+			t.Errorf("%v\n"+
+				"Error: Unexpected Result!\n"+
+				"Expected expectedNumStrs[%d] = '%v'\n"+
+				"Instead, expectedNumStrs[%d] = '%v'\n\n",
+				ePrefix, j, resultNumStr, j, expectedNumStrs[j])
+			return
+		}
+	}
 
-  return
+	return
 }
 
 func TestBigIntMathAdd_AddDecimalOutputToArray_02(t *testing.T) {
-  ePrefix := "TestBigIntMathAdd_AddDecimalArray_02"
-  var err error
+	ePrefix := "TestBigIntMathAdd_AddDecimalArray_02"
+	var err error
 
-  // addendStr = 3.1
-  addendStr := "3.1"
+	// addendStr = 3.1
+	addendStr := "3.1"
 
-  // decNumStrs
-  decNumStrs := []string{
-    "5",
-    "10.123",
-    "0",
-    "253.692",
-    "35",
-    "55",
-  }
+	// decNumStrs
+	decNumStrs := []string{
+		"5",
+		"10.123",
+		"0",
+		"253.692",
+		"35",
+		"55",
+	}
 
-  // Expected Results Array
-  expectedNumStrs := []string{
-    "8.1",
-    "13.223",
-    "3.1",
-    "256.792",
-    "38.1",
-    "58.1",
-  }
+	// Expected Results Array
+	expectedNumStrs := []string{
+		"8.1",
+		"13.223",
+		"3.1",
+		"256.792",
+		"38.1",
+		"58.1",
+	}
 
-  decAddend, err := new(Decimal).NewNumStr(addendStr)
+	decAddend, err := new(Decimal).NewNumStr(addendStr)
 
-  if err != nil {
-    t.Errorf("%v\n"+
-      "Error returned by:\n"+
-      "decAddend, err := new(Decimal).NewNumStr(addendStr)\n"+
-      "addendStr= '%v'\n"+
-      "Error='%v'\n\n", ePrefix, addendStr, err.Error())
-    return
-  }
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"decAddend, err := new(Decimal).NewNumStr(addendStr)\n"+
+			"addendStr= '%v'\n"+
+			"Error='%v'\n\n", ePrefix, addendStr, err.Error())
+		return
+	}
 
-  decAddendNumStr, err := decAddend.GetNumStr()
+	decAddendNumStr, err := decAddend.GetNumStr()
 
-  if err != nil {
-    t.Errorf("%v\n"+
-      "Error returned by:\n"+
-      "decAddendNumStr, err := decAddend.GetNumStr()\n"+
-      "Error='%v'\n\n", ePrefix, err.Error())
-    return
-  }
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"decAddendNumStr, err := decAddend.GetNumStr()\n"+
+			"Error='%v'\n\n", ePrefix, err.Error())
+		return
+	}
 
-  lenArray := len(decNumStrs)
-  decsArray := make([]Decimal, lenArray)
+	lenArray := len(decNumStrs)
+	decsArray := make([]Decimal, lenArray)
 
-  for i := 0; i < lenArray; i++ {
+	for i := 0; i < lenArray; i++ {
 
-    decsArray[i], err = new(Decimal).NewNumStr(decNumStrs[i])
+		decsArray[i], err = new(Decimal).NewNumStr(decNumStrs[i])
 
-    if err != nil {
-      t.Errorf("%v\n"+
-        "Error returned by:\n"+
-        "decArray[%d], err = new(Decimal).NewNumStr(decNumStrs[%d])\n"+
-        "decNumStrs[%d]= '%v'\n"+
-        "Error='%v'\n\n",
-        ePrefix, i, i, i, decNumStrs[i], err.Error())
-      return
-    }
+		if err != nil {
+			t.Errorf("%v\n"+
+				"Error returned by:\n"+
+				"decArray[%d], err = new(Decimal).NewNumStr(decNumStrs[%d])\n"+
+				"decNumStrs[%d]= '%v'\n"+
+				"Error='%v'\n\n",
+				ePrefix, i, i, i, decNumStrs[i], err.Error())
+			return
+		}
 
-  }
+	}
 
-  result, err := new(BigIntMathAdd).AddDecimalOutputToArray(decAddend, decsArray)
+	result, err := new(BigIntMathAdd).AddDecimalOutputToArray(decAddend, decsArray)
 
-  if err != nil {
-    t.Errorf("%v\n"+
-      "Error returned by:\n"+
-      "result, err := new(BigIntMathAdd).AddDecimalOutputToArray(decAddend, decArray)\n"+
-      "decAddend= '%v'\n"+
-      "Error='%v'\n\n", ePrefix, decAddendNumStr, err.Error())
-    return
-  }
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"result, err := new(BigIntMathAdd).AddDecimalOutputToArray(decAddend, decArray)\n"+
+			"decAddend= '%v'\n"+
+			"Error='%v'\n\n", ePrefix, decAddendNumStr, err.Error())
+		return
+	}
 
-  var resultNumStr string
+	var resultNumStr string
 
-  for j := 0; j < lenArray; j++ {
+	for j := 0; j < lenArray; j++ {
 
-    resultNumStr, err = result[j].GetNumStr()
+		resultNumStr, err = result[j].GetNumStr()
 
-    if err != nil {
-      t.Errorf("%v\n"+
-        "Error returned by:\n"+
-        "resultNumStr, err = result[%d].GetNumStr()\n"+
-        "Error='%v'\n\n", ePrefix, j, err.Error())
-      return
-    }
+		if err != nil {
+			t.Errorf("%v\n"+
+				"Error returned by:\n"+
+				"resultNumStr, err = result[%d].GetNumStr()\n"+
+				"Error='%v'\n\n", ePrefix, j, err.Error())
+			return
+		}
 
-    if expectedNumStrs[j] != resultNumStr {
-      t.Errorf("%v\n"+
-        "Error: Unexpected Result!\n"+
-        "Expected expectedNumStrs[%d] = '%v'\n"+
-        "Instead, expectedNumStrs[%d] = '%v'\n\n",
-        ePrefix, j, resultNumStr, j, expectedNumStrs[j])
-      return
-    }
-  }
+		if expectedNumStrs[j] != resultNumStr {
+			t.Errorf("%v\n"+
+				"Error: Unexpected Result!\n"+
+				"Expected expectedNumStrs[%d] = '%v'\n"+
+				"Instead, expectedNumStrs[%d] = '%v'\n\n",
+				ePrefix, j, resultNumStr, j, expectedNumStrs[j])
+			return
+		}
+	}
 
-  return
+	return
 }
 
 func TestBigIntMathAdd_AddDecimalOutputToArray_03(t *testing.T) {
 
-  ePrefix := "TestBigIntMathAdd_AddDecimalArray_03"
+	ePrefix := "TestBigIntMathAdd_AddDecimalArray_03"
 
-  var err error
+	var err error
 
-  // addendStr = 5
-  addendStr := "5"
+	// addendStr = 5
+	addendStr := "5"
 
-  // decNumStrs
-  decNumStrs := []string{
-    "5",
-    "10.123",
-    "15",
-    "253.692",
-    "35",
-    "55",
-  }
+	// decNumStrs
+	decNumStrs := []string{
+		"5",
+		"10.123",
+		"15",
+		"253.692",
+		"35",
+		"55",
+	}
 
-  // Expected Results Array
-  expectedNumStrs := []string{
-    "10",
-    "15,123",
-    "20",
-    "258,692",
-    "40",
-    "60",
-  }
+	// Expected Results Array
+	expectedNumStrs := []string{
+		"10",
+		"15,123",
+		"20",
+		"258,692",
+		"40",
+		"60",
+	}
 
-  decAddend, err := new(Decimal).NewNumStr(addendStr)
+	decAddend, err := new(Decimal).NewNumStr(addendStr)
 
-  if err != nil {
-    t.Errorf("%v\n"+
-      "Error returned by:\n"+
-      "decAddend, err := new(Decimal).NewNumStr(addendStr)\n"+
-      "addendStr= '%v'\n"+
-      "Error='%v'\n\n", ePrefix, addendStr, err.Error())
-    return
-  }
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"decAddend, err := new(Decimal).NewNumStr(addendStr)\n"+
+			"addendStr= '%v'\n"+
+			"Error='%v'\n\n", ePrefix, addendStr, err.Error())
+		return
+	}
 
-  decAddendNumStr, err := decAddend.GetNumStr()
+	decAddendNumStr, err := decAddend.GetNumStr()
 
-  if err != nil {
-    t.Errorf("%v\n"+
-      "Error returned by:\n"+
-      "decAddendNumStr, err := decAddend.GetNumStr()\n"+
-      "Error='%v'\n\n", ePrefix, err.Error())
-    return
-  }
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"decAddendNumStr, err := decAddend.GetNumStr()\n"+
+			"Error='%v'\n\n", ePrefix, err.Error())
+		return
+	}
 
-  expectedNumSeps := NumericSeparatorDto{}
-  frenchDecSeparator := ','
-  frenchThousandsSeparator := ' '
-  frenchCurrencySymbol := '€'
+	expectedNumSeps := NumericSeparatorDto{}
+	frenchDecSeparator := ','
+	frenchThousandsSeparator := ' '
+	frenchCurrencySymbol := '€'
 
-  expectedNumSeps.DecimalSeparator = frenchDecSeparator
-  expectedNumSeps.ThousandsSeparator = frenchThousandsSeparator
-  expectedNumSeps.CurrencySymbol = frenchCurrencySymbol
+	expectedNumSeps.DecimalSeparator = frenchDecSeparator
+	expectedNumSeps.ThousandsSeparator = frenchThousandsSeparator
+	expectedNumSeps.CurrencySymbol = frenchCurrencySymbol
 
-  err = decAddend.SetNumericSeparatorsDto(expectedNumSeps)
+	err = decAddend.SetNumericSeparatorsDto(expectedNumSeps)
 
-  if err != nil {
-    t.Errorf("%v\n"+
-      "Error returned by:\n"+
-      "err = decAddend.SetNumericSeparatorsDto(expectedNumSeps)\n"+
-      "Error='%v'\n\n", ePrefix, err.Error())
-    return
-  }
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"err = decAddend.SetNumericSeparatorsDto(expectedNumSeps)\n"+
+			"Error='%v'\n\n", ePrefix, err.Error())
+		return
+	}
 
-  lenArray := len(decNumStrs)
-  decArray := make([]Decimal, lenArray)
+	lenArray := len(decNumStrs)
+	decArray := make([]Decimal, lenArray)
 
-  for i := 0; i < lenArray; i++ {
+	for i := 0; i < lenArray; i++ {
 
-    decArray[i], err = new(Decimal).NewNumStr(decNumStrs[i])
+		decArray[i], err = new(Decimal).NewNumStr(decNumStrs[i])
 
-    if err != nil {
-      t.Errorf("%v\n"+
-        "Error returned by:\n"+
-        "decArray[%d], err = new(Decimal).NewNumStr(decNumStrs[%d])\n"+
-        "decNumStrs[%d]= '%v'\n"+
-        "Error='%v'\n\n",
-        ePrefix, i, i, i, decNumStrs[i], err.Error())
-      return
-    }
+		if err != nil {
+			t.Errorf("%v\n"+
+				"Error returned by:\n"+
+				"decArray[%d], err = new(Decimal).NewNumStr(decNumStrs[%d])\n"+
+				"decNumStrs[%d]= '%v'\n"+
+				"Error='%v'\n\n",
+				ePrefix, i, i, i, decNumStrs[i], err.Error())
+			return
+		}
 
-  }
+	}
 
-  result, err := new(BigIntMathAdd).AddDecimalOutputToArray(decAddend, decArray)
+	result, err := new(BigIntMathAdd).AddDecimalOutputToArray(decAddend, decArray)
 
-  if err != nil {
-    t.Errorf("%v\n"+
-      "Error returned by:\n"+
-      "result, err := new(BigIntMathAdd).AddDecimalOutputToArray(decAddend, decArray)\n"+
-      "decAddend= '%v'\n"+
-      "Error='%v'\n\n", ePrefix, decAddendNumStr, err.Error())
-    return
-  }
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"result, err := new(BigIntMathAdd).AddDecimalOutputToArray(decAddend, decArray)\n"+
+			"decAddend= '%v'\n"+
+			"Error='%v'\n\n", ePrefix, decAddendNumStr, err.Error())
+		return
+	}
 
-  var resultNumStr string
-  var actualNumSeps NumericSeparatorDto
+	var resultNumStr string
+	var actualNumSeps NumericSeparatorDto
 
-  for j := 0; j < lenArray; j++ {
+	for j := 0; j < lenArray; j++ {
 
-    resultNumStr, err = result[j].GetNumStr()
+		resultNumStr, err = result[j].GetNumStr()
 
-    if err != nil {
-      t.Errorf("%v\n"+
-        "Error returned by:\n"+
-        "resultNumStr, err = result[%d].GetNumStr()\n"+
-        "Error='%v'\n\n", ePrefix, j, err.Error())
-      return
-    }
+		if err != nil {
+			t.Errorf("%v\n"+
+				"Error returned by:\n"+
+				"resultNumStr, err = result[%d].GetNumStr()\n"+
+				"Error='%v'\n\n", ePrefix, j, err.Error())
+			return
+		}
 
-    if expectedNumStrs[j] != resultNumStr {
-      t.Errorf("%v\n"+
-        "Error: Unexpected Result!\n"+
-        "Expected expectedNumStrs[%d] = '%v'\n"+
-        "Instead, expectedNumStrs[%d] = '%v'\n\n",
-        ePrefix, j, resultNumStr, j, expectedNumStrs[j])
-      return
-    }
+		if expectedNumStrs[j] != resultNumStr {
+			t.Errorf("%v\n"+
+				"Error: Unexpected Result!\n"+
+				"Expected expectedNumStrs[%d] = '%v'\n"+
+				"Instead, expectedNumStrs[%d] = '%v'\n\n",
+				ePrefix, j, resultNumStr, j, expectedNumStrs[j])
+			return
+		}
 
-    actualNumSeps, err = result[j].GetNumericSeparatorsDto()
+		actualNumSeps, err = result[j].GetNumericSeparatorsDto()
 
-    if err != nil {
-      t.Errorf("%v\n"+
-        "Error returned by:\n"+
-        "actualNumSeps, err = result[%d].GetNumericSeparatorsDto()\n"+
-        "Error='%v'\n\n", ePrefix, j, err.Error())
-      return
-    }
+		if err != nil {
+			t.Errorf("%v\n"+
+				"Error returned by:\n"+
+				"actualNumSeps, err = result[%d].GetNumericSeparatorsDto()\n"+
+				"Error='%v'\n\n", ePrefix, j, err.Error())
+			return
+		}
 
-    if !expectedNumSeps.Equal(actualNumSeps) {
-      t.Errorf("%v\n"+
-        "Error: Unexpected Result!\n"+
-        "Expected result[%d]NumSeps = '%v'\n"+
-        "Instead, result[%d]NumSeps = '%v'\n\n",
-        ePrefix, j, expectedNumSeps.String(), j, actualNumSeps.String())
-      return
-    }
-  }
+		if !expectedNumSeps.Equal(actualNumSeps) {
+			t.Errorf("%v\n"+
+				"Error: Unexpected Result!\n"+
+				"Expected result[%d]NumSeps = '%v'\n"+
+				"Instead, result[%d]NumSeps = '%v'\n\n",
+				ePrefix, j, expectedNumSeps.String(), j, actualNumSeps.String())
+			return
+		}
+	}
 
-  return
+	return
 }
 
 func TestBigIntMathAdd_AddDecimalSeries_01(t *testing.T) {
-  ePrefix := "TestBigIntMathAdd_AddDecimalSeries_01"
-  n1Str := "45.8"
-  n2Str := "1.45962"
-  n3Str := "58.71"
-  n4Str := "-37.62174"
-  n5Str := "89.8"
-  expectedTotalStr := "158.14788"
+	ePrefix := "TestBigIntMathAdd_AddDecimalSeries_01"
+	n1Str := "45.8"
+	n2Str := "1.45962"
+	n3Str := "58.71"
+	n4Str := "-37.62174"
+	n5Str := "89.8"
+	expectedTotalStr := "158.14788"
 
-  expectedBNum, err := new(BigIntNum).NewNumStr(expectedTotalStr)
+	expectedBNum, err := new(BigIntNum).NewNumStr(expectedTotalStr)
 
-  if err != nil {
-    t.Errorf("%v\n"+
-      "Error returned by:\n"+
-      "expectedBNum, err := new(BigIntNum).NewNumStr(expectedTotalStr)\n"+
-      "expectedTotalStr= '%v'\n"+
-      "Error='%v'\n\n", ePrefix, expectedTotalStr, err.Error())
-    return
-  }
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"expectedBNum, err := new(BigIntNum).NewNumStr(expectedTotalStr)\n"+
+			"expectedTotalStr= '%v'\n"+
+			"Error='%v'\n\n", ePrefix, expectedTotalStr, err.Error())
+		return
+	}
 
-  expectedResultNumStr, err := expectedBNum.GetNumStr()
+	expectedResultNumStr, err := expectedBNum.GetNumStr()
 
-  if err != nil {
-    t.Errorf("%v\n"+
-      "Error returned by:\n"+
-      "expectedResultNumStr, err := expectedBNum.GetNumStr()\n"+
-      "Error='%v'\n\n", ePrefix, err.Error())
-    return
-  }
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"expectedResultNumStr, err := expectedBNum.GetNumStr()\n"+
+			"Error='%v'\n\n", ePrefix, err.Error())
+		return
+	}
 
-  dec1, err := new(Decimal).NewNumStr(n1Str)
+	dec1, err := new(Decimal).NewNumStr(n1Str)
 
-  if err != nil {
-    t.Errorf("%v\n"+
-      "Error returned by:\n"+
-      "dec1, err := new(Decimal).NewNumStr(n1Str)\n"+
-      "n1Str= '%v'\n"+
-      "Error='%v'\n\n", ePrefix, n1Str, err.Error())
-    return
-  }
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"dec1, err := new(Decimal).NewNumStr(n1Str)\n"+
+			"n1Str= '%v'\n"+
+			"Error='%v'\n\n", ePrefix, n1Str, err.Error())
+		return
+	}
 
-  dec1NumStr, err := dec1.GetNumStr()
+	dec1NumStr, err := dec1.GetNumStr()
 
-  if err != nil {
-    t.Errorf("%v\n"+
-      "Error returned by:\n"+
-      "dec1NumStr, err := dec1.GetNumStr()\n"+
-      "Error='%v'\n\n", ePrefix, err.Error())
-    return
-  }
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"dec1NumStr, err := dec1.GetNumStr()\n"+
+			"Error='%v'\n\n", ePrefix, err.Error())
+		return
+	}
 
-  dec2, err := new(Decimal).NewNumStr(n2Str)
+	dec2, err := new(Decimal).NewNumStr(n2Str)
 
-  if err != nil {
-    t.Errorf("%v\n"+
-      "Error returned by:\n"+
-      "dec2, err := new(Decimal).NewNumStr(n2Str)\n"+
-      "n2Str= '%v'\n"+
-      "Error='%v'\n\n", ePrefix, n2Str, err.Error())
-    return
-  }
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"dec2, err := new(Decimal).NewNumStr(n2Str)\n"+
+			"n2Str= '%v'\n"+
+			"Error='%v'\n\n", ePrefix, n2Str, err.Error())
+		return
+	}
 
-  dec2NumStr, err := dec2.GetNumStr()
+	dec2NumStr, err := dec2.GetNumStr()
 
-  if err != nil {
-    t.Errorf("%v\n"+
-      "Error returned by:\n"+
-      "dec2NumStr, err := dec2.GetNumStr()\n"+
-      "Error='%v'\n\n", ePrefix, err.Error())
-    return
-  }
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"dec2NumStr, err := dec2.GetNumStr()\n"+
+			"Error='%v'\n\n", ePrefix, err.Error())
+		return
+	}
 
-  dec3, err := new(Decimal).NewNumStr(n3Str)
+	dec3, err := new(Decimal).NewNumStr(n3Str)
 
-  if err != nil {
-    t.Errorf("%v\n"+
-      "Error returned by:\n"+
-      "dec3, err := new(Decimal).NewNumStr(n3Str)\n"+
-      "n3Str= '%v'\n"+
-      "Error='%v'\n\n", ePrefix, n3Str, err.Error())
-    return
-  }
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"dec3, err := new(Decimal).NewNumStr(n3Str)\n"+
+			"n3Str= '%v'\n"+
+			"Error='%v'\n\n", ePrefix, n3Str, err.Error())
+		return
+	}
 
-  dec3NumStr, err := dec3.GetNumStr()
+	dec3NumStr, err := dec3.GetNumStr()
 
-  if err != nil {
-    t.Errorf("%v\n"+
-      "Error returned by:\n"+
-      "dec3NumStr, err := dec3.GetNumStr()\n"+
-      "Error='%v'\n\n", ePrefix, err.Error())
-    return
-  }
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"dec3NumStr, err := dec3.GetNumStr()\n"+
+			"Error='%v'\n\n", ePrefix, err.Error())
+		return
+	}
 
-  dec4, err := new(Decimal).NewNumStr(n4Str)
+	dec4, err := new(Decimal).NewNumStr(n4Str)
 
-  if err != nil {
-    t.Errorf("%v\n"+
-      "Error returned by:\n"+
-      "dec4, err := new(Decimal).NewNumStr(n4Str)\n"+
-      "n4Str= '%v'\n"+
-      "Error='%v'\n\n", ePrefix, n4Str, err.Error())
-    return
-  }
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"dec4, err := new(Decimal).NewNumStr(n4Str)\n"+
+			"n4Str= '%v'\n"+
+			"Error='%v'\n\n", ePrefix, n4Str, err.Error())
+		return
+	}
 
-  dec4NumStr, err := dec4.GetNumStr()
+	dec4NumStr, err := dec4.GetNumStr()
 
-  if err != nil {
-    t.Errorf("%v\n"+
-      "Error returned by:\n"+
-      "dec4NumStr, err := dec4.GetNumStr()\n"+
-      "Error='%v'\n\n", ePrefix, err.Error())
-    return
-  }
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"dec4NumStr, err := dec4.GetNumStr()\n"+
+			"Error='%v'\n\n", ePrefix, err.Error())
+		return
+	}
 
-  dec5, err := new(Decimal).NewNumStr(n5Str)
+	dec5, err := new(Decimal).NewNumStr(n5Str)
 
-  if err != nil {
-    t.Errorf("%v\n"+
-      "Error returned by:\n"+
-      "dec5, err := new(Decimal).NewNumStr(n5Str)\n"+
-      "n5Str= '%v'\n"+
-      "Error='%v'\n\n", ePrefix, n5Str, err.Error())
-    return
-  }
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"dec5, err := new(Decimal).NewNumStr(n5Str)\n"+
+			"n5Str= '%v'\n"+
+			"Error='%v'\n\n", ePrefix, n5Str, err.Error())
+		return
+	}
 
-  dec5NumStr, err := dec5.GetNumStr()
+	dec5NumStr, err := dec5.GetNumStr()
 
-  if err != nil {
-    t.Errorf("%v\n"+
-      "Error returned by:\n"+
-      "dec5NumStr, err := dec5.GetNumStr()\n"+
-      "Error='%v'\n\n", ePrefix, err.Error())
-    return
-  }
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"dec5NumStr, err := dec5.GetNumStr()\n"+
+			"Error='%v'\n\n", ePrefix, err.Error())
+		return
+	}
 
-  total, err := new(BigIntMathAdd).AddDecimalSeries(dec1, dec2, dec3, dec4, dec5)
+	total, err := new(BigIntMathAdd).AddDecimalSeries(dec1, dec2, dec3, dec4, dec5)
 
-  if err != nil {
-    t.Errorf("%v\n"+
-      "Error returned by:\n"+
-      "total, err := new(BigIntMathAdd).AddDecimalSeries(dec1, dec2, dec3, dec4, dec5)\n"+
-      "dec1= '%v'\n"+
-      "dec2= '%v'\n"+
-      "dec3= '%v'\n"+
-      "dec4= '%v'\n"+
-      "dec5= '%v'\n"+
-      "Error='%v'\n\n",
-      ePrefix,
-      dec1NumStr,
-      dec2NumStr,
-      dec3NumStr,
-      dec4NumStr,
-      dec5NumStr,
-      err.Error())
-    return
-  }
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"total, err := new(BigIntMathAdd).AddDecimalSeries(dec1, dec2, dec3, dec4, dec5)\n"+
+			"dec1= '%v'\n"+
+			"dec2= '%v'\n"+
+			"dec3= '%v'\n"+
+			"dec4= '%v'\n"+
+			"dec5= '%v'\n"+
+			"Error='%v'\n\n",
+			ePrefix,
+			dec1NumStr,
+			dec2NumStr,
+			dec3NumStr,
+			dec4NumStr,
+			dec5NumStr,
+			err.Error())
+		return
+	}
 
-  totalNumStr, err := total.GetNumStr()
+	totalNumStr, err := total.GetNumStr()
 
-  if err != nil {
-    t.Errorf("%v\n"+
-      "Error returned by:\n"+
-      "totalNumStr, err := total.GetNumStr()\n"+
-      "Error='%v'\n\n", ePrefix, err.Error())
-    return
-  }
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"totalNumStr, err := total.GetNumStr()\n"+
+			"Error='%v'\n\n", ePrefix, err.Error())
+		return
+	}
 
-  expectedBNumEqualsTotal, err := expectedBNum.Equal(total)
+	expectedBNumEqualsTotal, err := expectedBNum.Equal(total)
 
-  if err != nil {
-    t.Errorf("%v\n"+
-      "Error returned by:\n"+
-      "expectedBNumEqualsTotal, err := expectedBNum.Equal(total)\n"+
-      "Error='%v'\n\n", ePrefix, err.Error())
-    return
-  }
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"expectedBNumEqualsTotal, err := expectedBNum.Equal(total)\n"+
+			"Error='%v'\n\n", ePrefix, err.Error())
+		return
+	}
 
-  if !expectedBNumEqualsTotal {
-    t.Errorf("%v\n"+
-      "Error: Unexpected Result!\n"+
-      "Expected total = '%v'\n"+
-      "Instead, total = '%v'\n\n",
-      ePrefix, expectedResultNumStr, totalNumStr)
-    return
-  }
+	if !expectedBNumEqualsTotal {
+		t.Errorf("%v\n"+
+			"Error: Unexpected Result!\n"+
+			"Expected total = '%v'\n"+
+			"Instead, total = '%v'\n\n",
+			ePrefix, expectedResultNumStr, totalNumStr)
+		return
+	}
 
-  if expectedResultNumStr != totalNumStr {
-    t.Errorf("%v\n"+
-      "Error: Unexpected Result!\n"+
-      "Expected totalNumStr = '%v'\n"+
-      "Instead, totalNumStr = '%v'\n\n",
-      ePrefix, expectedResultNumStr, totalNumStr)
-  }
+	if expectedResultNumStr != totalNumStr {
+		t.Errorf("%v\n"+
+			"Error: Unexpected Result!\n"+
+			"Expected totalNumStr = '%v'\n"+
+			"Instead, totalNumStr = '%v'\n\n",
+			ePrefix, expectedResultNumStr, totalNumStr)
+	}
 
-  return
+	return
 }
 
 func TestBigIntMathAdd_AddDecimalSeries_02(t *testing.T) {
-  ePrefix := "TestBigIntMathAdd_AddDecimalSeries_02"
-  n1Str := "-978425.648941"
-  n2Str := "33.12"
-  n3Str := "-804.1"
-  n4Str := "32567"
-  n5Str := "-41.859"
-  expectedTotalStr := "-946671.487941"
+	ePrefix := "TestBigIntMathAdd_AddDecimalSeries_02"
+	n1Str := "-978425.648941"
+	n2Str := "33.12"
+	n3Str := "-804.1"
+	n4Str := "32567"
+	n5Str := "-41.859"
+	expectedTotalStr := "-946671.487941"
 
-  expectedBNum, err := new(BigIntNum).NewNumStr(expectedTotalStr)
+	expectedBNum, err := new(BigIntNum).NewNumStr(expectedTotalStr)
 
-  if err != nil {
-    t.Errorf("%v\n"+
-      "Error returned by:\n"+
-      "expectedBNum, err := new(BigIntNum).NewNumStr(expectedTotalStr)\n"+
-      "expectedTotalStr= '%v'\n"+
-      "Error='%v'\n\n", ePrefix, expectedTotalStr, err.Error())
-    return
-  }
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"expectedBNum, err := new(BigIntNum).NewNumStr(expectedTotalStr)\n"+
+			"expectedTotalStr= '%v'\n"+
+			"Error='%v'\n\n", ePrefix, expectedTotalStr, err.Error())
+		return
+	}
 
-  expectedResultNumStr, err := expectedBNum.GetNumStr()
+	expectedResultNumStr, err := expectedBNum.GetNumStr()
 
-  if err != nil {
-    t.Errorf("%v\n"+
-      "Error returned by:\n"+
-      "expectedResultNumStr, err := expectedBNum.GetNumStr()\n"+
-      "Error='%v'\n\n", ePrefix, err.Error())
-    return
-  }
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"expectedResultNumStr, err := expectedBNum.GetNumStr()\n"+
+			"Error='%v'\n\n", ePrefix, err.Error())
+		return
+	}
 
-  dec1, err := new(Decimal).NewNumStr(n1Str)
+	dec1, err := new(Decimal).NewNumStr(n1Str)
 
-  if err != nil {
-    t.Errorf("%v\n"+
-      "Error returned by:\n"+
-      "dec1, err := new(Decimal).NewNumStr(n1Str)\n"+
-      "n1Str= '%v'\n"+
-      "Error='%v'\n\n", ePrefix, n1Str, err.Error())
-    return
-  }
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"dec1, err := new(Decimal).NewNumStr(n1Str)\n"+
+			"n1Str= '%v'\n"+
+			"Error='%v'\n\n", ePrefix, n1Str, err.Error())
+		return
+	}
 
-  dec1NumStr, err := dec1.GetNumStr()
+	dec1NumStr, err := dec1.GetNumStr()
 
-  if err != nil {
-    t.Errorf("%v\n"+
-      "Error returned by:\n"+
-      "dec1NumStr, err := dec1.GetNumStr()\n"+
-      "Error='%v'\n\n", ePrefix, err.Error())
-    return
-  }
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"dec1NumStr, err := dec1.GetNumStr()\n"+
+			"Error='%v'\n\n", ePrefix, err.Error())
+		return
+	}
 
-  dec2, err := new(Decimal).NewNumStr(n2Str)
+	dec2, err := new(Decimal).NewNumStr(n2Str)
 
-  if err != nil {
-    t.Errorf("%v\n"+
-      "Error returned by:\n"+
-      "dec2, err := new(Decimal).NewNumStr(n2Str)\n"+
-      "n2Str= '%v'\n"+
-      "Error='%v'\n\n", ePrefix, n2Str, err.Error())
-    return
-  }
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"dec2, err := new(Decimal).NewNumStr(n2Str)\n"+
+			"n2Str= '%v'\n"+
+			"Error='%v'\n\n", ePrefix, n2Str, err.Error())
+		return
+	}
 
-  dec2NumStr, err := dec2.GetNumStr()
+	dec2NumStr, err := dec2.GetNumStr()
 
-  if err != nil {
-    t.Errorf("%v\n"+
-      "Error returned by:\n"+
-      "dec2NumStr, err := dec2.GetNumStr()\n"+
-      "Error='%v'\n\n", ePrefix, err.Error())
-    return
-  }
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"dec2NumStr, err := dec2.GetNumStr()\n"+
+			"Error='%v'\n\n", ePrefix, err.Error())
+		return
+	}
 
-  dec3, err := new(Decimal).NewNumStr(n3Str)
+	dec3, err := new(Decimal).NewNumStr(n3Str)
 
-  if err != nil {
-    t.Errorf("%v\n"+
-      "Error returned by:\n"+
-      "dec3, err := new(Decimal).NewNumStr(n3Str)\n"+
-      "n3Str= '%v'\n"+
-      "Error='%v'\n\n", ePrefix, n3Str, err.Error())
-    return
-  }
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"dec3, err := new(Decimal).NewNumStr(n3Str)\n"+
+			"n3Str= '%v'\n"+
+			"Error='%v'\n\n", ePrefix, n3Str, err.Error())
+		return
+	}
 
-  dec3NumStr, err := dec3.GetNumStr()
+	dec3NumStr, err := dec3.GetNumStr()
 
-  if err != nil {
-    t.Errorf("%v\n"+
-      "Error returned by:\n"+
-      "dec3NumStr, err := dec3.GetNumStr()\n"+
-      "Error='%v'\n\n", ePrefix, err.Error())
-    return
-  }
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"dec3NumStr, err := dec3.GetNumStr()\n"+
+			"Error='%v'\n\n", ePrefix, err.Error())
+		return
+	}
 
-  dec4, err := new(Decimal).NewNumStr(n4Str)
+	dec4, err := new(Decimal).NewNumStr(n4Str)
 
-  if err != nil {
-    t.Errorf("%v\n"+
-      "Error returned by:\n"+
-      "dec4, err := new(Decimal).NewNumStr(n4Str)\n"+
-      "n4Str= '%v'\n"+
-      "Error='%v'\n\n", ePrefix, n4Str, err.Error())
-    return
-  }
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"dec4, err := new(Decimal).NewNumStr(n4Str)\n"+
+			"n4Str= '%v'\n"+
+			"Error='%v'\n\n", ePrefix, n4Str, err.Error())
+		return
+	}
 
-  dec4NumStr, err := dec4.GetNumStr()
+	dec4NumStr, err := dec4.GetNumStr()
 
-  if err != nil {
-    t.Errorf("%v\n"+
-      "Error returned by:\n"+
-      "dec4NumStr, err := dec4.GetNumStr()\n"+
-      "Error='%v'\n\n", ePrefix, err.Error())
-    return
-  }
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"dec4NumStr, err := dec4.GetNumStr()\n"+
+			"Error='%v'\n\n", ePrefix, err.Error())
+		return
+	}
 
-  dec5, err := new(Decimal).NewNumStr(n5Str)
+	dec5, err := new(Decimal).NewNumStr(n5Str)
 
-  if err != nil {
-    t.Errorf("%v\n"+
-      "Error returned by:\n"+
-      "dec5, err := new(Decimal).NewNumStr(n5Str)\n"+
-      "n5Str= '%v'\n"+
-      "Error='%v'\n\n", ePrefix, n5Str, err.Error())
-    return
-  }
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"dec5, err := new(Decimal).NewNumStr(n5Str)\n"+
+			"n5Str= '%v'\n"+
+			"Error='%v'\n\n", ePrefix, n5Str, err.Error())
+		return
+	}
 
-  dec5NumStr, err := dec5.GetNumStr()
+	dec5NumStr, err := dec5.GetNumStr()
 
-  if err != nil {
-    t.Errorf("%v\n"+
-      "Error returned by:\n"+
-      "dec5NumStr, err := dec5.GetNumStr()\n"+
-      "Error='%v'\n\n", ePrefix, err.Error())
-    return
-  }
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"dec5NumStr, err := dec5.GetNumStr()\n"+
+			"Error='%v'\n\n", ePrefix, err.Error())
+		return
+	}
 
-  total, err := new(BigIntMathAdd).AddDecimalSeries(dec1, dec2, dec3, dec4, dec5)
+	total, err := new(BigIntMathAdd).AddDecimalSeries(dec1, dec2, dec3, dec4, dec5)
 
-  if err != nil {
-    t.Errorf("%v\n"+
-      "Error returned by:\n"+
-      "total, err := new(BigIntMathAdd).AddDecimalSeries(dec1, dec2, dec3, dec4, dec5)\n"+
-      "dec1= '%v'\n"+
-      "dec2= '%v'\n"+
-      "dec3= '%v'\n"+
-      "dec4= '%v'\n"+
-      "dec5= '%v'\n"+
-      "Error='%v'\n\n",
-      ePrefix,
-      dec1NumStr,
-      dec2NumStr,
-      dec3NumStr,
-      dec4NumStr,
-      dec5NumStr,
-      err.Error())
-    return
-  }
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"total, err := new(BigIntMathAdd).AddDecimalSeries(dec1, dec2, dec3, dec4, dec5)\n"+
+			"dec1= '%v'\n"+
+			"dec2= '%v'\n"+
+			"dec3= '%v'\n"+
+			"dec4= '%v'\n"+
+			"dec5= '%v'\n"+
+			"Error='%v'\n\n",
+			ePrefix,
+			dec1NumStr,
+			dec2NumStr,
+			dec3NumStr,
+			dec4NumStr,
+			dec5NumStr,
+			err.Error())
+		return
+	}
 
-  totalNumStr, err := total.GetNumStr()
+	totalNumStr, err := total.GetNumStr()
 
-  if err != nil {
-    t.Errorf("%v\n"+
-      "Error returned by:\n"+
-      "totalNumStr, err := total.GetNumStr()\n"+
-      "Error='%v'\n\n", ePrefix, err.Error())
-    return
-  }
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"totalNumStr, err := total.GetNumStr()\n"+
+			"Error='%v'\n\n", ePrefix, err.Error())
+		return
+	}
 
-  expectedBNumEqualsTotal, err := expectedBNum.Equal(total)
+	expectedBNumEqualsTotal, err := expectedBNum.Equal(total)
 
-  if err != nil {
-    t.Errorf("%v\n"+
-      "Error returned by:\n"+
-      "expectedBNumEqualsTotal, err := expectedBNum.Equal(total)\n"+
-      "Error='%v'\n\n", ePrefix, err.Error())
-    return
-  }
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"expectedBNumEqualsTotal, err := expectedBNum.Equal(total)\n"+
+			"Error='%v'\n\n", ePrefix, err.Error())
+		return
+	}
 
-  if !expectedBNumEqualsTotal {
-    t.Errorf("%v\n"+
-      "Error: Unexpected Result!\n"+
-      "Expected total = '%v'\n"+
-      "Instead, total = '%v'\n\n",
-      ePrefix, expectedResultNumStr, totalNumStr)
-    return
-  }
+	if !expectedBNumEqualsTotal {
+		t.Errorf("%v\n"+
+			"Error: Unexpected Result!\n"+
+			"Expected total = '%v'\n"+
+			"Instead, total = '%v'\n\n",
+			ePrefix, expectedResultNumStr, totalNumStr)
+		return
+	}
 
-  if expectedResultNumStr != totalNumStr {
-    t.Errorf("%v\n"+
-      "Error: Unexpected Result!\n"+
-      "Expected totalNumStr = '%v'\n"+
-      "Instead, totalNumStr = '%v'\n\n",
-      ePrefix, expectedResultNumStr, totalNumStr)
-  }
+	if expectedResultNumStr != totalNumStr {
+		t.Errorf("%v\n"+
+			"Error: Unexpected Result!\n"+
+			"Expected totalNumStr = '%v'\n"+
+			"Instead, totalNumStr = '%v'\n\n",
+			ePrefix, expectedResultNumStr, totalNumStr)
+	}
 
-  return
+	return
 }
 
 func TestBigIntMathAdd_AddDecimalSeries_03(t *testing.T) {
-  ePrefix := "TestBigIntMathAdd_AddDecimalSeries_03"
-  n1Str := "45.8"
-  n2Str := "1.45962"
-  n3Str := "58.71"
-  n4Str := "-37.62174"
-  n5Str := "89.8"
+	ePrefix := "TestBigIntMathAdd_AddDecimalSeries_03"
+	n1Str := "45.8"
+	n2Str := "1.45962"
+	n3Str := "58.71"
+	n4Str := "-37.62174"
+	n5Str := "89.8"
 
-  expectedTotalStr := "158,14788"
+	expectedTotalStr := "158,14788"
 
-  dec1, err := new(Decimal).NewNumStr(n1Str)
+	dec1, err := new(Decimal).NewNumStr(n1Str)
 
-  if err != nil {
-    t.Errorf("%v\n"+
-      "Error returned by:\n"+
-      "dec1, err := new(Decimal).NewNumStr(n1Str)\n"+
-      "n1Str= '%v'\n"+
-      "Error='%v'\n\n", ePrefix, n1Str, err.Error())
-    return
-  }
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"dec1, err := new(Decimal).NewNumStr(n1Str)\n"+
+			"n1Str= '%v'\n"+
+			"Error='%v'\n\n", ePrefix, n1Str, err.Error())
+		return
+	}
 
-  dec1NumStr, err := dec1.GetNumStr()
+	dec1NumStr, err := dec1.GetNumStr()
 
-  if err != nil {
-    t.Errorf("%v\n"+
-      "Error returned by:\n"+
-      "dec1NumStr, err := dec1.GetNumStr()\n"+
-      "Error='%v'\n\n", ePrefix, err.Error())
-    return
-  }
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"dec1NumStr, err := dec1.GetNumStr()\n"+
+			"Error='%v'\n\n", ePrefix, err.Error())
+		return
+	}
 
-  expectedNumSeps := NumericSeparatorDto{}
-  frenchDecSeparator := ','
-  frenchThousandsSeparator := ' '
-  frenchCurrencySymbol := '€'
+	expectedNumSeps := NumericSeparatorDto{}
+	frenchDecSeparator := ','
+	frenchThousandsSeparator := ' '
+	frenchCurrencySymbol := '€'
 
-  expectedNumSeps.DecimalSeparator = frenchDecSeparator
-  expectedNumSeps.ThousandsSeparator = frenchThousandsSeparator
-  expectedNumSeps.CurrencySymbol = frenchCurrencySymbol
+	expectedNumSeps.DecimalSeparator = frenchDecSeparator
+	expectedNumSeps.ThousandsSeparator = frenchThousandsSeparator
+	expectedNumSeps.CurrencySymbol = frenchCurrencySymbol
 
-  err = dec1.SetNumericSeparatorsDto(expectedNumSeps)
+	err = dec1.SetNumericSeparatorsDto(expectedNumSeps)
 
-  if err != nil {
-    t.Errorf("%v\n"+
-      "Error returned by:\n"+
-      "err = dec1.SetNumericSeparatorsDto(expectedNumSeps)\n"+
-      "expectedNumSeps= '%v'\n"+
-      "Error='%v'\n\n", ePrefix, expectedNumSeps.String(), err.Error())
-    return
-  }
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"err = dec1.SetNumericSeparatorsDto(expectedNumSeps)\n"+
+			"expectedNumSeps= '%v'\n"+
+			"Error='%v'\n\n", ePrefix, expectedNumSeps.String(), err.Error())
+		return
+	}
 
-  dec2, err := new(Decimal).NewNumStr(n2Str)
+	dec2, err := new(Decimal).NewNumStr(n2Str)
 
-  if err != nil {
-    t.Errorf("%v\n"+
-      "Error returned by:\n"+
-      "dec2, err := new(Decimal).NewNumStr(n2Str)\n"+
-      "n2Str= '%v'\n"+
-      "Error='%v'\n\n", ePrefix, n2Str, err.Error())
-    return
-  }
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"dec2, err := new(Decimal).NewNumStr(n2Str)\n"+
+			"n2Str= '%v'\n"+
+			"Error='%v'\n\n", ePrefix, n2Str, err.Error())
+		return
+	}
 
-  dec2NumStr, err := dec2.GetNumStr()
+	dec2NumStr, err := dec2.GetNumStr()
 
-  if err != nil {
-    t.Errorf("%v\n"+
-      "Error returned by:\n"+
-      "dec2NumStr, err := dec2.GetNumStr()\n"+
-      "Error='%v'\n\n", ePrefix, err.Error())
-    return
-  }
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"dec2NumStr, err := dec2.GetNumStr()\n"+
+			"Error='%v'\n\n", ePrefix, err.Error())
+		return
+	}
 
-  dec3, err := new(Decimal).NewNumStr(n3Str)
+	dec3, err := new(Decimal).NewNumStr(n3Str)
 
-  if err != nil {
-    t.Errorf("%v\n"+
-      "Error returned by:\n"+
-      "dec3, err := new(Decimal).NewNumStr(n3Str)\n"+
-      "n3Str= '%v'\n"+
-      "Error='%v'\n\n", ePrefix, n3Str, err.Error())
-    return
-  }
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"dec3, err := new(Decimal).NewNumStr(n3Str)\n"+
+			"n3Str= '%v'\n"+
+			"Error='%v'\n\n", ePrefix, n3Str, err.Error())
+		return
+	}
 
-  dec3NumStr, err := dec3.GetNumStr()
+	dec3NumStr, err := dec3.GetNumStr()
 
-  if err != nil {
-    t.Errorf("%v\n"+
-      "Error returned by:\n"+
-      "dec3NumStr, err := dec3.GetNumStr()\n"+
-      "Error='%v'\n\n", ePrefix, err.Error())
-    return
-  }
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"dec3NumStr, err := dec3.GetNumStr()\n"+
+			"Error='%v'\n\n", ePrefix, err.Error())
+		return
+	}
 
-  dec4, err := new(Decimal).NewNumStr(n4Str)
+	dec4, err := new(Decimal).NewNumStr(n4Str)
 
-  if err != nil {
-    t.Errorf("%v\n"+
-      "Error returned by:\n"+
-      "dec4, err := new(Decimal).NewNumStr(n4Str)\n"+
-      "n4Str= '%v'\n"+
-      "Error='%v'\n\n", ePrefix, n4Str, err.Error())
-    return
-  }
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"dec4, err := new(Decimal).NewNumStr(n4Str)\n"+
+			"n4Str= '%v'\n"+
+			"Error='%v'\n\n", ePrefix, n4Str, err.Error())
+		return
+	}
 
-  dec4NumStr, err := dec4.GetNumStr()
+	dec4NumStr, err := dec4.GetNumStr()
 
-  if err != nil {
-    t.Errorf("%v\n"+
-      "Error returned by:\n"+
-      "dec4NumStr, err := dec4.GetNumStr()\n"+
-      "Error='%v'\n\n", ePrefix, err.Error())
-    return
-  }
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"dec4NumStr, err := dec4.GetNumStr()\n"+
+			"Error='%v'\n\n", ePrefix, err.Error())
+		return
+	}
 
-  dec5, err := new(Decimal).NewNumStr(n5Str)
+	dec5, err := new(Decimal).NewNumStr(n5Str)
 
-  if err != nil {
-    t.Errorf("%v\n"+
-      "Error returned by:\n"+
-      "dec5, err := new(Decimal).NewNumStr(n5Str)\n"+
-      "n5Str= '%v'\n"+
-      "Error='%v'\n\n", ePrefix, n5Str, err.Error())
-    return
-  }
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"dec5, err := new(Decimal).NewNumStr(n5Str)\n"+
+			"n5Str= '%v'\n"+
+			"Error='%v'\n\n", ePrefix, n5Str, err.Error())
+		return
+	}
 
-  dec5NumStr, err := dec5.GetNumStr()
+	dec5NumStr, err := dec5.GetNumStr()
 
-  if err != nil {
-    t.Errorf("%v\n"+
-      "Error returned by:\n"+
-      "dec5NumStr, err := dec5.GetNumStr()\n"+
-      "Error='%v'\n\n", ePrefix, err.Error())
-    return
-  }
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"dec5NumStr, err := dec5.GetNumStr()\n"+
+			"Error='%v'\n\n", ePrefix, err.Error())
+		return
+	}
 
-  total, err := new(BigIntMathAdd).AddDecimalSeries(dec1, dec2, dec3, dec4, dec5)
+	total, err := new(BigIntMathAdd).AddDecimalSeries(dec1, dec2, dec3, dec4, dec5)
 
-  if err != nil {
-    t.Errorf("%v\n"+
-      "Error returned by:\n"+
-      "total, err := new(BigIntMathAdd).AddDecimalSeries(dec1, dec2, dec3, dec4, dec5)\n"+
-      "dec1= '%v'\n"+
-      "dec2= '%v'\n"+
-      "dec3= '%v'\n"+
-      "dec4= '%v'\n"+
-      "dec5= '%v'\n"+
-      "Error='%v'\n\n",
-      ePrefix,
-      dec1NumStr,
-      dec2NumStr,
-      dec3NumStr,
-      dec4NumStr,
-      dec5NumStr,
-      err.Error())
-    return
-  }
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"total, err := new(BigIntMathAdd).AddDecimalSeries(dec1, dec2, dec3, dec4, dec5)\n"+
+			"dec1= '%v'\n"+
+			"dec2= '%v'\n"+
+			"dec3= '%v'\n"+
+			"dec4= '%v'\n"+
+			"dec5= '%v'\n"+
+			"Error='%v'\n\n",
+			ePrefix,
+			dec1NumStr,
+			dec2NumStr,
+			dec3NumStr,
+			dec4NumStr,
+			dec5NumStr,
+			err.Error())
+		return
+	}
 
-  totalNumStr, err := total.GetNumStr()
+	totalNumStr, err := total.GetNumStr()
 
-  if err != nil {
-    t.Errorf("%v\n"+
-      "Error returned by:\n"+
-      "totalNumStr, err := total.GetNumStr()\n"+
-      "Error='%v'\n\n", ePrefix, err.Error())
-    return
-  }
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"totalNumStr, err := total.GetNumStr()\n"+
+			"Error='%v'\n\n", ePrefix, err.Error())
+		return
+	}
 
-  if expectedTotalStr != totalNumStr {
-    t.Errorf("Error: Expected total='%v'. Instead, "+
-      "total='%v'. ",
-      expectedTotalStr, totalNumStr)
-  }
+	if expectedTotalStr != totalNumStr {
+		t.Errorf("Error: Expected total='%v'. Instead, "+
+			"total='%v'. ",
+			expectedTotalStr, totalNumStr)
+	}
 
-  actualNumSeps, err := total.GetNumericSeparatorsDto()
+	actualNumSeps, err := total.GetNumericSeparatorsDto()
 
-  if err != nil {
-    t.Errorf("%v\n"+
-      "Error returned by:\n"+
-      "actualNumSeps, err := total.GetNumericSeparatorsDto()\n"+
-      "Error='%v'\n\n", ePrefix, err.Error())
-    return
-  }
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"actualNumSeps, err := total.GetNumericSeparatorsDto()\n"+
+			"Error='%v'\n\n", ePrefix, err.Error())
+		return
+	}
 
-  if !expectedNumSeps.Equal(actualNumSeps) {
-    t.Errorf("Error: Expected numSeps='%v'. Instead, numSeps='%v'",
-      expectedNumSeps.String(), actualNumSeps.String())
-  }
+	if !expectedNumSeps.Equal(actualNumSeps) {
+		t.Errorf("Error: Expected numSeps='%v'. Instead, numSeps='%v'",
+			expectedNumSeps.String(), actualNumSeps.String())
+	}
 
-  if !expectedNumSeps.Equal(actualNumSeps) {
-    t.Errorf("%v\n"+
-      "Error: Unexpected Result!\n"+
-      "Expected total NumSeps = '%v'\n"+
-      "Instead, total NumSeps = '%v'\n\n",
-      ePrefix, expectedNumSeps.String(), actualNumSeps.String())
-  }
+	if !expectedNumSeps.Equal(actualNumSeps) {
+		t.Errorf("%v\n"+
+			"Error: Unexpected Result!\n"+
+			"Expected total NumSeps = '%v'\n"+
+			"Instead, total NumSeps = '%v'\n\n",
+			ePrefix, expectedNumSeps.String(), actualNumSeps.String())
+	}
 
-  return
+	return
 }
