@@ -1382,7 +1382,7 @@ func TestBigIntMathAdd_AddBigIntNumArray_02(t *testing.T) {
 }
 
 func TestBigIntMathAdd_AddBigIntNumArray_03(t *testing.T) {
-
+  ePrefix := "TestBigIntMathAdd_AddBigIntNumArray_03"
   numStrs := []string{"-978425.648941",
     "33.12",
     "-804.1",
@@ -1410,38 +1410,91 @@ func TestBigIntMathAdd_AddBigIntNumArray_03(t *testing.T) {
     bNums[i], err = new(BigIntNum).NewNumStr(numStrs[i])
 
     if err != nil {
-      t.Errorf("Error returned by new(BigIntNum).NewNumStr(numStrs[i]). "+
-        "i='%v' numStrs[i]='%v' Error='%v'",
-        i, numStrs[i], err.Error())
-    }
 
+      t.Errorf("%v\n"+
+        "Error returned by\n"+
+        "new(BigIntNum).NewNumStr(numStrs[%d])\n"+
+        "numStrs[%d]='%v'\n"+
+        "Error='%v'\n\n",
+        ePrefix,
+        i,
+        i,
+        numStrs[i],
+        err.Error())
+    }
   }
 
   err = bNums[0].SetNumericSeparatorsDto(expectedNumSeps)
 
   if err != nil {
-    t.Errorf("Error returned by bNums[0].SetNumericSeparatorsDto(expectedNumSeps). "+
-      "Error='%v'", err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = bNums[0].SetNumericSeparatorsDto(expectedNumSeps)\n"+
+      "expectedNumSeps= '%v'\n"+
+      "Error='%v'\n\n",
+      ePrefix,
+      expectedNumSeps.String(),
+      err.Error())
+    return
   }
 
-  results := new(BigIntMathAdd).AddBigIntNumArray(bNums)
+  results, err := new(BigIntMathAdd).AddBigIntNumArray(bNums)
 
-  actualResultNumStr := results.GetNumStr()
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "results, err := new(BigIntMathAdd).AddBigIntNumArray(bNums)\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  actualResultNumStr, err := results.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "actualResultNumStr, err := results.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
 
   if expectedTotalStr != actualResultNumStr {
-    t.Errorf("Error: Expected Total='%v'. Instead, Total='%v'. ",
-      expectedTotalStr, actualResultNumStr)
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Expected actualResultNumStr = '%v'\n"+
+      "Instead, actualResultNumStr = '%v'\n\n",
+      ePrefix,
+      expectedTotalStr,
+      actualResultNumStr)
+    return
   }
 
-  actualNumSeps := results.GetNumericSeparatorsDto()
+  actualNumSeps, err := results.GetNumericSeparatorsDto()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "actualNumSeps, err := results.GetNumericSeparatorsDto()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
 
   if !expectedNumSeps.Equal(actualNumSeps) {
-    t.Errorf("Error: Expected numSeps='%v'. Instead, numSeps='%v'",
-      expectedNumSeps.String(), actualNumSeps.String())
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Expected actualNumSeps = '%v'\n"+
+      "Instead, actualNumSeps = '%v'\n\n",
+      ePrefix,
+      expectedNumSeps.String(),
+      actualNumSeps.String())
   }
+
+  return
 }
 
 func TestBigIntMathAdd_AddBigIntNumOutputToArray_01(t *testing.T) {
+
+  ePrefix := "TestBigIntMathAdd_AddBigIntNumOutputToArray_01"
 
   var err error
 
@@ -1470,8 +1523,29 @@ func TestBigIntMathAdd_AddBigIntNumOutputToArray_01(t *testing.T) {
   addendBiNum, err := new(BigIntNum).NewNumStr(addendStr)
 
   if err != nil {
-    t.Errorf("Error returned by new(BigIntNum).NewNumStr(addendStr) "+
-      "addendStr='%v'  Error='%v'. ", addendStr, err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "addendBiNum, err := new(BigIntNum).NewNumStr(addendStr)\n"+
+      "addendStr= '%v'\n"+
+      "Error='%v'\n\n",
+      ePrefix,
+      addendStr,
+      err.Error())
+    return
+  }
+
+  addendBiNumStr, err := addendBiNum.NewNumStr(addendStr)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "addendBiNumStr, err := addendBiNum.NewNumStr(addendStr)\n"+
+      "addendStr= '%v'\n"+
+      "Error='%v'\n\n",
+      ePrefix,
+      addendStr,
+      err.Error())
+    return
   }
 
   lenArray := len(bNumStrs)
@@ -1482,26 +1556,71 @@ func TestBigIntMathAdd_AddBigIntNumOutputToArray_01(t *testing.T) {
     bINumArray[i], err = new(BigIntNum).NewNumStr(bNumStrs[i])
 
     if err != nil {
-      t.Errorf("Error returned by new(BigIntNum).NewNumStr(bNumStrs[i]) "+
-        "i='%v'  bNumStrs[i]='%v'  Error='%v'. ", i, bNumStrs[i], err.Error())
-    }
 
+      t.Errorf("%v\n"+
+        "Error returned by\n"+
+        "bINumArray[%d], err = new(BigIntNum).NewNumStr(bNumStrs[%d])\n"+
+        "bNumStrs[%d]= '%v'\n"+
+        "Error='%v'\n\n",
+        ePrefix,
+        i,
+        i,
+        i,
+        bNumStrs[i],
+        err.Error())
+    }
   }
 
-  result := new(BigIntMathAdd).AddBigIntNumOutputToArray(addendBiNum, bINumArray)
+  result, err := new(BigIntMathAdd).AddBigIntNumOutputToArray(
+    addendBiNum, bINumArray)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "result, err := new(BigIntMathAdd).AddBigIntNumOutputToArray(addendBiNum, bINumArray)\n"+
+      "addendBiNum= '%v'\n"+
+      "Error='%v'\n\n",
+      ePrefix,
+      addendBiNumStr,
+      err.Error())
+    return
+  }
+
+  var resultNumStr string
 
   for j := 0; j < lenArray; j++ {
 
-    if expectedNumStrs[j] != result[j].GetNumStr() {
-      t.Errorf("Error: Expected NumStr[%v]='%v'. Instead NumStr[%v]='%v'. ",
-        j, expectedNumStrs[j], j, result[j].GetNumStr())
+    resultNumStr, err = result[j].GetNumStr()
+
+    if err != nil {
+      t.Errorf("%v\n"+
+        "Error returned by:\n"+
+        "resultNumStr, err = result[%d].GetNumStr()\n"+
+        "Error='%v'\n\n", ePrefix, j, err.Error())
+      return
     }
 
+    if expectedNumStrs[j] != resultNumStr {
+
+      t.Errorf("%v\n"+
+        "Error: Unexpected Result!\n"+
+        "Expected resultNumStr = '%v'\n"+
+        "Instead, resultNumStr = '%v'\n"+
+        "Cycle Index = '%v'\n\n",
+        ePrefix,
+        expectedNumStrs[j],
+        resultNumStr,
+        j)
+      return
+    }
   }
 
+  return
 }
 
 func TestBigIntMathAdd_AddBigIntNumOutputToArray_02(t *testing.T) {
+
+  ePrefix := "TestBigIntMathAdd_AddBigIntNumOutputToArray_02"
 
   var err error
 
@@ -1530,8 +1649,29 @@ func TestBigIntMathAdd_AddBigIntNumOutputToArray_02(t *testing.T) {
   addendBiNum, err := new(BigIntNum).NewNumStr(addendStr)
 
   if err != nil {
-    t.Errorf("Error returned by new(BigIntNum).NewNumStr(addendStr) "+
-      "addendStr='%v'  Error='%v'. ", addendStr, err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "addendBiNum, err := new(BigIntNum).NewNumStr(addendStr)\n"+
+      "addendStr= '%v'\n"+
+      "Error='%v'\n\n",
+      ePrefix,
+      addendStr,
+      err.Error())
+    return
+  }
+
+  addendBiNumStr, err := addendBiNum.NewNumStr(addendStr)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "addendBiNumStr, err := addendBiNum.NewNumStr(addendStr)\n"+
+      "addendStr= '%v'\n"+
+      "Error='%v'\n\n",
+      ePrefix,
+      addendStr,
+      err.Error())
+    return
   }
 
   lenArray := len(bNumStrs)
@@ -1542,26 +1682,71 @@ func TestBigIntMathAdd_AddBigIntNumOutputToArray_02(t *testing.T) {
     bINumArray[i], err = new(BigIntNum).NewNumStr(bNumStrs[i])
 
     if err != nil {
-      t.Errorf("Error returned by new(BigIntNum).NewNumStr(bNumStrs[i]) "+
-        "i='%v'  bNumStrs[i]='%v'  Error='%v'. ", i, bNumStrs[i], err.Error())
-    }
 
+      t.Errorf("%v\n"+
+        "Error returned by\n"+
+        "bINumArray[%d], err = new(BigIntNum).NewNumStr(bNumStrs[%d])\n"+
+        "bNumStrs[%d]= '%v'\n"+
+        "Error='%v'\n\n",
+        ePrefix,
+        i,
+        i,
+        i,
+        bNumStrs[i],
+        err.Error())
+    }
   }
 
-  result := new(BigIntMathAdd).AddBigIntNumOutputToArray(addendBiNum, bINumArray)
+  result, err := new(BigIntMathAdd).AddBigIntNumOutputToArray(
+    addendBiNum, bINumArray)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "result, err := new(BigIntMathAdd).AddBigIntNumOutputToArray(addendBiNum, bINumArray)\n"+
+      "addendBiNum= '%v'\n"+
+      "Error='%v'\n\n",
+      ePrefix,
+      addendBiNumStr,
+      err.Error())
+    return
+  }
+
+  var resultNumStr string
 
   for j := 0; j < lenArray; j++ {
 
-    if expectedNumStrs[j] != result[j].GetNumStr() {
-      t.Errorf("Error: Expected NumStr[%v]='%v'. Instead NumStr[%v]='%v'. ",
-        j, expectedNumStrs[j], j, result[j].GetNumStr())
+    resultNumStr, err = result[j].GetNumStr()
+
+    if err != nil {
+      t.Errorf("%v\n"+
+        "Error returned by:\n"+
+        "resultNumStr, err = result[%d].GetNumStr()\n"+
+        "Error='%v'\n\n", ePrefix, j, err.Error())
+      return
     }
 
+    if expectedNumStrs[j] != resultNumStr {
+
+      t.Errorf("%v\n"+
+        "Error: Unexpected Result!\n"+
+        "Expected resultNumStr = '%v'\n"+
+        "Instead, resultNumStr = '%v'\n"+
+        "Cycle Index = '%v'\n\n",
+        ePrefix,
+        expectedNumStrs[j],
+        resultNumStr,
+        j)
+      return
+    }
   }
 
+  return
 }
 
 func TestBigIntMathAdd_AddBigIntNumOutputToArray_03(t *testing.T) {
+
+  ePrefix := "TestBigIntMathAdd_AddBigIntNumOutputToArray_03"
 
   var err error
 
@@ -1590,8 +1775,29 @@ func TestBigIntMathAdd_AddBigIntNumOutputToArray_03(t *testing.T) {
   addendBiNum, err := new(BigIntNum).NewNumStr(addendStr)
 
   if err != nil {
-    t.Errorf("Error returned by new(BigIntNum).NewNumStr(addendStr) "+
-      "addendStr='%v'  Error='%v'. ", addendStr, err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "addendBiNum, err := new(BigIntNum).NewNumStr(addendStr)\n"+
+      "addendStr= '%v'\n"+
+      "Error='%v'\n\n",
+      ePrefix,
+      addendStr,
+      err.Error())
+    return
+  }
+
+  addendBiNumStr, err := addendBiNum.NewNumStr(addendStr)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "addendBiNumStr, err := addendBiNum.NewNumStr(addendStr)\n"+
+      "addendStr= '%v'\n"+
+      "Error='%v'\n\n",
+      ePrefix,
+      addendStr,
+      err.Error())
+    return
   }
 
   expectedNumSeps := NumericSeparatorDto{}
@@ -1606,9 +1812,11 @@ func TestBigIntMathAdd_AddBigIntNumOutputToArray_03(t *testing.T) {
   err = addendBiNum.SetNumericSeparatorsDto(expectedNumSeps)
 
   if err != nil {
-    t.Errorf("Error returned by addendBiNum."+
-      "SetNumericSeparatorsDto(expectedNumSeps). "+
-      "Error='%v' ", err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "err = addendBiNum.SetNumericSeparatorsDto(expectedNumSeps)\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
   }
 
   lenArray := len(bNumStrs)
@@ -1619,33 +1827,90 @@ func TestBigIntMathAdd_AddBigIntNumOutputToArray_03(t *testing.T) {
     bINumArray[i], err = new(BigIntNum).NewNumStr(bNumStrs[i])
 
     if err != nil {
-      t.Errorf("Error returned by new(BigIntNum).NewNumStr(bNumStrs[i]) "+
-        "i='%v'  bNumStrs[i]='%v'  Error='%v'. ", i, bNumStrs[i], err.Error())
+      t.Errorf("%v\n"+
+        "Error returned by:\n"+
+        "bINumArray[%d], err = new(BigIntNum).NewNumStr(bNumStrs[%d])\n"+
+        "bNumStrs[%d]= '%v'\n"+
+        "Error='%v'\n\n", ePrefix, i, i, i, bNumStrs[i], err.Error())
+      return
     }
-
   }
 
-  result := new(BigIntMathAdd).AddBigIntNumOutputToArray(addendBiNum, bINumArray)
+  result, err := new(BigIntMathAdd).AddBigIntNumOutputToArray(
+    addendBiNum, bINumArray)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "result, err := new(BigIntMathAdd).AddBigIntNumOutputToArray(addendBiNum, bINumArray)\n"+
+      "addendBiNum= '%v'\n"+
+      "Error='%v'\n\n",
+      ePrefix,
+      addendBiNumStr,
+      err.Error())
+    return
+  }
+
+  var resultNumStr string
+  var actualNumSeps NumericSeparatorDto
 
   for j := 0; j < lenArray; j++ {
 
-    if expectedNumStrs[j] != result[j].GetNumStr() {
-      t.Errorf("Error: Expected NumStr[%v]='%v'. Instead NumStr[%v]='%v'. ",
-        j, expectedNumStrs[j], j, result[j].GetNumStr())
+    resultNumStr, err = result[j].GetNumStr()
+
+    if err != nil {
+      t.Errorf("%v\n"+
+        "Error returned by:\n"+
+        "resultNumStr, err = result[%d].GetNumStr()\n"+
+        "Error='%v'\n\n", ePrefix, j, err.Error())
+      return
     }
 
-    actualNumSeps := result[j].GetNumericSeparatorsDto()
+    if expectedNumStrs[j] != resultNumStr {
+
+      t.Errorf("%v\n"+
+        "Error: Unexpected Result!\n"+
+        "Expected resultNumStr = '%v'\n"+
+        "Instead, resultNumStr = '%v'\n"+
+        "Cycle Index = '%v'\n\n",
+        ePrefix,
+        expectedNumStrs[j],
+        resultNumStr,
+        j)
+      return
+    }
+
+    actualNumSeps, err = result[j].GetNumericSeparatorsDto()
+
+    if err != nil {
+      t.Errorf("%v\n"+
+        "Error returned by:\n"+
+        "actualNumSeps, err = result[%d].GetNumericSeparatorsDto()\n"+
+        "Error='%v'\n\n", ePrefix, j, err.Error())
+      return
+    }
 
     if !expectedNumSeps.Equal(actualNumSeps) {
-      t.Errorf("Error: Expected numSeps='%v' Instead, numSeps='%v'",
-        expectedNumSeps.String(), actualNumSeps.String())
-    }
 
+      t.Errorf("%v\n"+
+        "Error: Unexpected Result!\n"+
+        "Numeric Serparators don't match.\n"+
+        "Expected actualNumSeps = '%v'\n"+
+        "Instead, actualNumSeps = '%v'\n"+
+        "Cycle Index = '%v'\n\n",
+        ePrefix,
+        expectedNumSeps.String(),
+        actualNumSeps.String(),
+        j)
+      return
+    }
   }
 
+  return
 }
 
 func TestBigIntMathAdd_AddBigIntNumSeries_01(t *testing.T) {
+  ePrefix := "TestBigIntMathAdd_AddBigIntNumSeries_01"
   n1Str := "45.8"
   n2Str := "1.45962"
   n3Str := "58.71"
@@ -1656,56 +1921,180 @@ func TestBigIntMathAdd_AddBigIntNumSeries_01(t *testing.T) {
   expectedBNum, err := new(BigIntNum).NewNumStr(expectedTotalStr)
 
   if err != nil {
-    t.Errorf("Error returned by new(BigIntNum).NewNumStr(expectedTotalStr). "+
-      "expectedTotalStr='%v' Error='%v'.", expectedTotalStr, err.Error())
-
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBNum, err := new(BigIntNum).NewNumStr(expectedTotalStr)\n"+
+      "expectedTotalStr= '%v'\n"+
+      "Error='%v'\n\n", ePrefix, expectedTotalStr, err.Error())
+    return
   }
 
-  expectedResultNumStr := expectedBNum.GetNumStr()
+  expectedResultNumStr, err := expectedBNum.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedResultNumStr, err := expectedBNum.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
 
   b1, err := new(BigIntNum).NewNumStr(n1Str)
 
   if err != nil {
-    t.Errorf("Error returned by new(BigIntNum).NewNumStr(n1Str). "+
-      "n1Str='%v' Error='%v'.", n1Str, err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "b1, err := new(BigIntNum).NewNumStr(n1Str)\n"+
+      "n1Str= '%v'\n"+
+      "Error='%v'\n\n", ePrefix, n1Str, err.Error())
+    return
+  }
+
+  b1NumStr, err := b1.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "b1NumStr, err := b1.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
   }
 
   b2, err := new(BigIntNum).NewNumStr(n2Str)
 
   if err != nil {
-    t.Errorf("Error returned by new(BigIntNum).NewNumStr(n2Str). "+
-      "n2Str='%v' Error='%v'.", n2Str, err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "b2, err := new(BigIntNum).NewNumStr(n2Str)\n"+
+      "n2Str= '%v'\n"+
+      "Error='%v'\n\n", ePrefix, n2Str, err.Error())
+    return
+  }
+
+  b2NumStr, err := b2.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "b2NumStr, err := b2.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
   }
 
   b3, err := new(BigIntNum).NewNumStr(n3Str)
 
   if err != nil {
-    t.Errorf("Error returned by new(BigIntNum).NewNumStr(n3Str). "+
-      "n3Str='%v' Error='%v'.", n3Str, err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "b3, err := new(BigIntNum).NewNumStr(n3Str)\n"+
+      "n3Str= '%v'\n"+
+      "Error='%v'\n\n", ePrefix, n3Str, err.Error())
+    return
+  }
+
+  b3NumStr, err := b3.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "b3NumStr, err := b3.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
   }
 
   b4, err := new(BigIntNum).NewNumStr(n4Str)
 
   if err != nil {
-    t.Errorf("Error returned by new(BigIntNum).NewNumStr(n4Str). "+
-      "n4Str='%v' Error='%v'.", n4Str, err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "b4, err := new(BigIntNum).NewNumStr(n4Str)\n"+
+      "n4Str= '%v'\n"+
+      "Error='%v'\n\n", ePrefix, n4Str, err.Error())
+    return
+  }
+
+  b4NumStr, err := b4.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "b4NumStr, err := b4.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
   }
 
   b5, err := new(BigIntNum).NewNumStr(n5Str)
 
   if err != nil {
-    t.Errorf("Error returned by new(BigIntNum).NewNumStr(n5Str). "+
-      "n5Str='%v' Error='%v'.", n5Str, err.Error())
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "b5, err := new(BigIntNum).NewNumStr(n5Str)\n"+
+      "n5Str= '%v'\n"+
+      "Error='%v'\n\n", ePrefix, n5Str, err.Error())
+    return
   }
 
-  total := new(BigIntMathAdd).AddBigIntNumSeries(b1, b2, b3, b4, b5)
+  b5NumStr, err := b5.GetNumStr()
 
-  if !expectedBNum.Equal(total) {
-    t.Errorf("Error - Incorrect Total: Expected total='%v'. Instead, "+
-      "total='%v'. ",
-      expectedResultNumStr, total.bigInt.Text(10))
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "b5NumStr, err := b5.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
   }
 
+  total, err := new(BigIntMathAdd).AddBigIntNumSeries(b1, b2, b3, b4, b5)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "total, err := new(BigIntMathAdd).AddBigIntNumSeries(b1, b2, b3, b4, b5)\n"+
+      "b1= '%v'\n"+
+      "b2= '%v'\n"+
+      "b3= '%v'\n"+
+      "b4= '%v'\n"+
+      "b5= '%v'\n"+
+      "Error='%v'\n\n",
+      ePrefix,
+      b1NumStr,
+      b2NumStr,
+      b3NumStr,
+      b4NumStr,
+      b5NumStr,
+      err.Error())
+    return
+  }
+
+  totalNumStr, err := total.GetNumStr()
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "totalNumStr, err := total.GetNumStr()\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  expectedBNumEqualsTotal, err := expectedBNum.Equal(total)
+
+  if err != nil {
+    t.Errorf("%v\n"+
+      "Error returned by:\n"+
+      "expectedBNumEqualsTotal, err := expectedBNum.Equal(total)\n"+
+      "Error='%v'\n\n", ePrefix, err.Error())
+    return
+  }
+
+  if !expectedBNumEqualsTotal {
+    t.Errorf("%v\n"+
+      "Error: Unexpected Result!\n"+
+      "Expected total = '%v'\n"+
+      "Instead, total = '%v'\n\n",
+      ePrefix, expectedResultNumStr, totalNumStr)
+  }
+
+  return
 }
 
 func TestBigIntMathAdd_AddBigIntNumSeries_02(t *testing.T) {
