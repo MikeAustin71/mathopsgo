@@ -345,7 +345,7 @@ func TestBigIntMathAdd_AddINumMgr_03(t *testing.T) {
     t.Errorf("%v\n"+
       "Error returned by:\n"+
       "result, err := new(BigIntMathAdd).AddINumMgr(\n"+
-      "nDto1.GetThisPointer(), dec2.GetThisPointer())"+
+      "nDto1.GetThisPointer(), dec2.GetThisPointer())\n"+
       "nDto1= '%v'\n"+
       "dec2= '%v'\n"+
       "Error='%v'\n\n",
@@ -1683,7 +1683,7 @@ func TestBigIntMathAdd_AddINumMgrSeries_01(t *testing.T) {
       "Error: Unexpected Result!\n"+
       "'expectedBNum' does NOT match 'expectedTotalStr'\n"+
       "Expected expectedResultNumStr = '%v'\n"+
-      "Instead, fixedDecNumStr2 = '%v'\n\n",
+      "Instead, expectedResultNumStr = '%v'\n\n",
       ePrefix, expectedTotalStr, expectedResultNumStr)
 
     return
