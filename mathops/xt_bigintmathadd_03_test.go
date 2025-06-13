@@ -2703,6 +2703,16 @@ func TestBigIntMathAdd_AddNumStrDtoArray_01(t *testing.T) {
 		return
 	}
 
+	if expectedTotalStr != expectedResultNumStr {
+		t.Errorf("%v\n"+
+			"Error: Unexpected Result!\n"+
+			"Expected bNum expectedResultNumStr = '%v'\n"+
+			"Instead, bNum expectedResultNumStr = '%v'\n\n",
+			ePrefix, expectedTotalStr, expectedResultNumStr)
+
+		return
+	}
+
 	lenNStrAry := len(numStrAry)
 
 	numStrDtoAry := make([]NumStrDto, lenNStrAry)
@@ -2983,4 +2993,5 @@ func TestBigIntMathAdd_AddNumStrDtoArray_03(t *testing.T) {
 			actualNumSeps.String())
 	}
 
+	return
 }
