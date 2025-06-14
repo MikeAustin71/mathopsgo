@@ -1,7 +1,6 @@
 package mathops
 
 import (
-	"errors"
 	"fmt"
 	ePref "github.com/MikeAustin71/errpref"
 	"sync"
@@ -61,6 +60,21 @@ func (nStrDtoMuon *numStrDtoMuon) findNumStrSignificantDigitLimits(
 
 	lenAbsAllRunes := len(absAllRunes)
 
+	numSeps, err := new(numStrDtoAtom).getNumericSeparatorsDto(
+		numStrDto, ePrefix.XCpy("numStrDto->numSeps"))
+
+	if err != nil {
+
+		return NumStrDto{},
+			&FuncReturnError{
+				ErrPrefix: ePrefix.String(),
+				ReturnFunc: "numSeps, err := new(numStrDtoAtom).getNumericSeparatorsDto(\n" +
+					"  numStrDto, ePrefix.XCpy(\"numStrDto->numSeps\"))",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
+
 	if validateNumStrDto {
 
 		err = new(numStrDtoElectron).isValidNumStrDto(
@@ -111,6 +125,19 @@ func (nStrDtoMuon *numStrDtoMuon) findNumStrSignificantDigitLimits(
 					ErrContext: "precision > uint(lenAbsAllRunes)",
 					ErrMessage: "Error: Input parameter 'precision' is INVALID!\n" +
 						"'precision' value is greater than length of rune array.",
+				}
+		}
+
+		err = numSeps.IsValid(ePrefix.XCpy("Validating 'numSeps'").String())
+
+		if err != nil {
+
+			return NumStrDto{},
+				&FuncReturnError{
+					ErrPrefix:  ePrefix.String(),
+					ReturnFunc: "err = numSeps.IsValid(ePrefix.XCpy(\"Validating 'numSeps'\").String())",
+					ErrContext: "Error: Numeric Separators extrated from input parameter 'numStrDto' are INVALID!",
+					ErrMessage: err.Error(),
 				}
 		}
 
@@ -175,10 +202,18 @@ func (nStrDtoMuon *numStrDtoMuon) findNumStrSignificantDigitLimits(
 		numStrOut += string(absAllRunes[lastIntIdx+1 : lastFracIdx+1])
 	}
 
-	nOutDto, err := nDto.ParseNumStr(numStrOut)
+	// nOutDto, err := nDto.ParseNumStr(numStrOut)
+	nOutDto, err := new(numStrDtoQuark).parseNumStr(numStrOut, numSeps, ePrefix)
 
 	if err != nil {
-		return NumStrDto{}, fmt.Errorf("FindSignificantDigitLimits() - Error retuned from nDto.ParseNumStr(numStrOut). numStrOut= '%v' Error= %v", numStrOut, err)
+
+		return NumStrDto{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "nOutDto, err := new(numStrDtoQuark).parseNumStr(numStrOut, numSeps, ePrefix)",
+				ErrContext: fmt.Sprintf("numStrOut= '%v'", numStrOut),
+				ErrMessage: err.Error(),
+			}
 	}
 
 	return nOutDto, nil

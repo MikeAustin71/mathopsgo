@@ -1478,10 +1478,21 @@ func (nDto *NumStrDto) GetIntAry() (IntAry, error) {
 // separator and currency symbol.
 func (nDto *NumStrDto) GetNumericSeparatorsDto() (NumericSeparatorDto, error) {
 
-	numSeps := NumericSeparatorDto{}
-	numSeps.DecimalSeparator = nDto.GetDecimalSeparator()
-	numSeps.ThousandsSeparator = nDto.GetThousandsSeparator()
-	numSeps.CurrencySymbol = nDto.GetCurrencySymbol()
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
+
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"NumStrDto.GetNumericSeparatorsDto",
+		"")
+
+	if err != nil {
+		return NumericSeparatorDto{}, err
+	}
+
+	numSeps, err := new(numStrDtoAtom).getNumericSeparatorsDto(
+		nDto, ePrefix.XCpy("nDto -> numSeps"))
 
 	return numSeps, nil
 }
@@ -3073,134 +3084,25 @@ func (nDto *NumStrDto) ParseNumStr(str string) (NumStrDto, error) {
 		return NumStrDto{}, err
 	}
 
-	if len(str) == 0 {
-		return NumStrDto{}, errors.New(ePrefix + "Received zero length number string as input!")
-	}
-
-	nDto.SetNumericSeparatorsToDefaultIfEmpty()
-	numSeps := nDto.GetNumericSeparatorsDto()
-	n2Dto := new(NumStrDto).New()
-
-	n2Dto.signVal = 1
-	n2Dto.SetNumericSeparatorsDto(numSeps)
-	baseRunes := []rune(str)
-	lBaseRunes := len(baseRunes)
-	isStartRunes := false
-	isEndRunes := false
-	isMinusSignFound := false
-	//lCurRunes := len(NumStrCurrencySymbols)
-	//isSkip := false
-	isFractionalValue := false
-
-	var absFracRunes []rune
-	var absIntRunes []rune
-
-	for i := 0; i < lBaseRunes && isEndRunes == false; i++ {
-
-		if baseRunes[i] != '-' &&
-			baseRunes[i] != n2Dto.decimalSeparator &&
-			(baseRunes[i] < '0' || baseRunes[i] > '9') {
-
-			continue
-
-		} else if baseRunes[i] == '-' &&
-			isMinusSignFound == false &&
-			isStartRunes == false && isEndRunes == false &&
-			i+1 < lBaseRunes &&
-			((baseRunes[i+1] >= '0' && baseRunes[i+1] <= '9') ||
-				baseRunes[i+1] == n2Dto.decimalSeparator) {
-
-			isMinusSignFound = true
-			n2Dto.signVal = -1
-			isStartRunes = true
-			continue
-
-		} else if isEndRunes == false &&
-			baseRunes[i] >= '0' && baseRunes[i] <= '9' {
-
-			n2Dto.absAllNumRunes = append(n2Dto.absAllNumRunes, baseRunes[i])
-			isStartRunes = true
-
-			if isFractionalValue {
-				absFracRunes = append(absFracRunes, baseRunes[i])
-			} else {
-				absIntRunes = append(absIntRunes, baseRunes[i])
-			}
-
-		} else if isEndRunes == false &&
-			i+1 < lBaseRunes &&
-			baseRunes[i+1] >= '0' && baseRunes[i+1] <= '9' &&
-			baseRunes[i] == n2Dto.decimalSeparator {
-
-			isFractionalValue = true
-			continue
-
-		}
-
-		if i == lBaseRunes-1 {
-
-			isEndRunes = true
-
-		}
-
-	}
-
-	lenAbsAllNumRunes := len(n2Dto.absAllNumRunes)
-
-	if lenAbsAllNumRunes == 0 {
-		nZeroNumStr := nDto.GetZeroNumStrDto(0)
-		return nZeroNumStr, nil
-	}
-
-	lenAbsIntNumRunes := len(absIntRunes)
-	if lenAbsIntNumRunes == 0 {
-		absIntRunes = append(absIntRunes, '0')
-	}
-
-	lenAbsAllNumRunes = len(n2Dto.absAllNumRunes)
-	lenAbsIntNumRunes = len(absIntRunes)
-	lenAbsFracNumRunes := len(absFracRunes)
-
-	isZeroVal := true
-
-	for i := 0; i < lenAbsAllNumRunes; i++ {
-		if n2Dto.absAllNumRunes[i] != '0' {
-			isZeroVal = false
-		}
-	}
-
-	if isZeroVal {
-		nZeroDto := nDto.GetZeroNumStrDto(uint(lenAbsFracNumRunes))
-		return nZeroDto, nil
-	}
-
-	if isFractionalValue {
-		n2Dto.precision = uint(len(absFracRunes))
-	}
-
-	if lenAbsAllNumRunes != lenAbsIntNumRunes+lenAbsFracNumRunes {
-		n2Dto.absAllNumRunes = []rune{}
-		newLenAbsAllNumRunes := lenAbsIntNumRunes + lenAbsFracNumRunes
-
-		for i := 0; i < newLenAbsAllNumRunes; i++ {
-			if i < lenAbsIntNumRunes {
-				n2Dto.absAllNumRunes = append(n2Dto.absAllNumRunes, absIntRunes[i])
-			} else {
-				n2Dto.absAllNumRunes = append(n2Dto.absAllNumRunes, absFracRunes[i-lenAbsIntNumRunes])
-			}
-		}
-
-		lenAbsAllNumRunes = len(n2Dto.absAllNumRunes)
-	}
-
-	// Validate n2Dto object
-	err = n2Dto.IsValid(ePrefix.String())
+	numSeps, err := new(numStrDtoAtom).getNumericSeparatorsDto(
+		nDto, ePrefix.XCpy("nDto -> numSeps"))
 
 	if err != nil {
-		return NumStrDto{}, err
+
+		return NumStrDto{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "",
+				ErrContext: "Error: The numeric separators for the current NumStrDto are INVALID!\n" +
+					"The returned instance of NumericSeparatorDto ('numSeps') FAILED Validation Tests.",
+				ErrMessage: err.Error(),
+			}
 	}
 
-	return n2Dto, nil
+	return new(numStrDtoQuark).parseNumStr(
+		str,
+		numSeps,
+		ePrefix)
 
 }
 
