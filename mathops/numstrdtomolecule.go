@@ -1,12 +1,214 @@
 package mathops
 
 import (
-	ePref "github.com/MikeAustin71/errpref"
-	"sync"
+  ePref "github.com/MikeAustin71/errpref"
+  "sync"
 )
 
 type numStrDtoMolecule struct {
-	lock sync.Mutex
+  lock sync.Mutex
+}
+
+// compareSignedValues
+//
+//	Compares the signed numeric values of two NumStrDto objects.
+//
+//	The term 'signed numeric values' as used here means that the
+//	two NumStrDto objects being compared may be either positive
+//	or negative numeric values.
+//
+//	Examples
+//	========
+//
+//	   n1         n2          Result
+//
+//	-9691.23     91.245         -1
+//	 9691.23     91.245          1
+//	   -5        82             -1
+//	    5         5              0
+//
+//	Input Parameters
+//	================
+//
+//	n1Dto                    *NumStrDto
+//	  A pointer to an instance of NumStrDto. The signed numeric
+//	  value of this object will be compared to input parameter.
+//	  'n2Dto'.
+//
+//	n2Dto                    *NumStrDto
+//	  A pointer to an instance of NumStrDto. The signed numeric
+//	  value of this object will be compared to input parameter.
+//	  'n1Dto'.
+//
+//	Return Values
+//	=============
+//
+//	int
+//	  This returned integer will be set to one of three values:
+//
+//	  -1 = n1Dto is less than n2Dto
+//
+//	   0 = n1Dto is equal to n2Dto
+//
+//	   1 = n1Dto is greater than n2Dto
+func (nStrDtoMolecule *numStrDtoMolecule) compareSignedValues(
+  n1Dto *NumStrDto,
+  validateN1Dto bool,
+  n2Dto *NumStrDto,
+  validateN2Dto bool,
+  errPrefDto *ePref.ErrPrefixDto) (int, error) {
+
+  nStrDtoMolecule.lock.Lock()
+
+  defer nStrDtoMolecule.lock.Unlock()
+
+  var ePrefix *ePref.ErrPrefixDto
+  var err error
+
+  ePrefix,
+    err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
+    errPrefDto,
+    "numStrDtoMolecule.copy()",
+    "")
+
+  if err != nil {
+    return 0, err
+  }
+
+  if n1Dto == nil {
+
+    return 0, &InputPtrNilError{
+      ErrPrefix:     ePrefix.String(),
+      ParameterName: "'n1Dto'",
+    }
+  }
+
+  if n2Dto == nil {
+
+    return 0, &InputPtrNilError{
+      ErrPrefix:     ePrefix.String(),
+      ParameterName: "'n2Dto'",
+    }
+  }
+
+  if validateN1Dto {
+
+    err = new(numStrDtoElectron).isValidNumStrDto(
+      n1Dto, ePrefix.XCpy("Validating 'n1Dto'"))
+
+    if err != nil {
+
+      return 0, &FuncReturnError{
+        ErrPrefix: ePrefix.String(),
+        ReturnFunc: "err = new(numStrDtoElectron).isValidNumStrDto(\n" +
+          "  n1Dto, ePrefix)",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+    }
+  }
+
+  if validateN2Dto {
+
+    err = new(numStrDtoElectron).isValidNumStrDto(
+      n2Dto, ePrefix.XCpy("Validating 'n2Dto'"))
+
+    if err != nil {
+
+      return 0, &FuncReturnError{
+        ErrPrefix: ePrefix.String(),
+        ReturnFunc: "err = new(numStrDtoElectron).isValidNumStrDto(\n" +
+          "  n2Dto, ePrefix)",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+    }
+  }
+
+  cmpAbs, err := new(numStrDtoAtom).compareAbsoluteValues(
+    n1Dto, false, n2Dto, false, ePrefix.XCpy("n1Dto vs n2Dto"))
+
+  if err != nil {
+
+    return 0,
+      &FuncReturnError{
+        ErrPrefix: ePrefix.String(),
+        ReturnFunc: "cmpAbs, err := new(numStrDtoAtom).compareAbsoluteValues(\n" +
+          "  n1Dto, false, n2Dto, false, ePrefix)\n",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+  }
+
+  if cmpAbs == 0 {
+
+    if n1Dto.signVal == n2Dto.signVal {
+
+      return 0, nil
+
+    } else {
+      // n1Dto.signVal != n2Dto.signVal
+
+      if n1Dto.signVal == 1 {
+        return 1, nil
+      }
+
+      // n2Dto.signVal must == 1
+      return -1, nil
+
+    }
+  }
+
+  if cmpAbs == 1 {
+
+    if n1Dto.signVal == n2Dto.signVal {
+
+      if n1Dto.signVal == 1 {
+        return 1, nil
+      }
+
+      // must be n1Dto.signVal == n2Dto.signVal && n1Dto.signVal == -1
+
+      return -1, nil
+
+    }
+
+    // must be n1Dto.signVal != n2Dto.signVal
+    if n1Dto.signVal == 1 {
+
+      return 1, nil
+    } else {
+      // must be n2Dto.signVal == 1
+
+      return -1, nil
+    }
+  }
+
+  // MUST BE:
+  // cmpAbs == -1
+
+  if n2Dto.signVal == n1Dto.signVal {
+
+    if n2Dto.signVal == 1 {
+      // n1Dto.signVal && n2Dto.signVal must equal 1
+
+      return -1, nil
+    } else {
+      // n1Dto.signVal && n2Dto.signVal must equal -1
+
+      return 1, nil
+    }
+
+  }
+
+  // must be n2Dto.signVal != n1Dto.signVal
+
+  if n2Dto.signVal == -1 {
+    return 1, nil
+  }
+
+  // must be n2Dto.signVal == 1
+  return -1, nil
 }
 
 // copy
@@ -17,81 +219,81 @@ type numStrDtoMolecule struct {
 // NumStrDto fields and returns a completely
 // new instance of NumStrDto
 func (nStrDtoMolecule *numStrDtoMolecule) copy(
-	destinationNStrDto *NumStrDto,
-	sourceNStrDto *NumStrDto,
-	validateSourceDto bool,
-	errPrefDto *ePref.ErrPrefixDto) error {
+  destinationNStrDto *NumStrDto,
+  sourceNStrDto *NumStrDto,
+  validateSourceDto bool,
+  errPrefDto *ePref.ErrPrefixDto) error {
 
-	nStrDtoMolecule.lock.Lock()
+  nStrDtoMolecule.lock.Lock()
 
-	defer nStrDtoMolecule.lock.Unlock()
+  defer nStrDtoMolecule.lock.Unlock()
 
-	var ePrefix *ePref.ErrPrefixDto
-	var err error
+  var ePrefix *ePref.ErrPrefixDto
+  var err error
 
-	ePrefix,
-		err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
-		errPrefDto,
-		"numStrDtoMolecule.copy()",
-		"")
+  ePrefix,
+    err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
+    errPrefDto,
+    "numStrDtoMolecule.copy()",
+    "")
 
-	if err != nil {
-		return err
-	}
+  if err != nil {
+    return err
+  }
 
-	if sourceNStrDto == nil {
+  if sourceNStrDto == nil {
 
-		return &InputPtrNilError{
-			ErrPrefix:     ePrefix.String(),
-			ParameterName: "'sourceNStrDto'",
-		}
-	}
+    return &InputPtrNilError{
+      ErrPrefix:     ePrefix.String(),
+      ParameterName: "'sourceNStrDto'",
+    }
+  }
 
-	if destinationNStrDto == nil {
+  if destinationNStrDto == nil {
 
-		return &InputPtrNilError{
-			ErrPrefix:     ePrefix.String(),
-			ParameterName: "'destinationNStrDto'",
-		}
-	}
+    return &InputPtrNilError{
+      ErrPrefix:     ePrefix.String(),
+      ParameterName: "'destinationNStrDto'",
+    }
+  }
 
-	if validateSourceDto {
+  if validateSourceDto {
 
-		err = new(numStrDtoElectron).isValidNumStrDto(
-			sourceNStrDto, ePrefix.XCpy("Validating 'sourceNStrDto'"))
+    err = new(numStrDtoElectron).isValidNumStrDto(
+      sourceNStrDto, ePrefix.XCpy("Validating 'sourceNStrDto'"))
 
-		if err != nil {
+    if err != nil {
 
-			return &FuncReturnError{
-				ErrPrefix: ePrefix.String(),
-				ReturnFunc: "err = new(numStrDtoElectron).isValidNumStrDto(\n" +
-					"  sourceNStrDto, ePrefix)",
-				ErrContext: "",
-				ErrMessage: err.Error(),
-			}
-		}
-	}
+      return &FuncReturnError{
+        ErrPrefix: ePrefix.String(),
+        ReturnFunc: "err = new(numStrDtoElectron).isValidNumStrDto(\n" +
+          "  sourceNStrDto, ePrefix)",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+    }
+  }
 
-	lenSrcRunes := len(sourceNStrDto.absAllNumRunes)
+  lenSrcRunes := len(sourceNStrDto.absAllNumRunes)
 
-	destinationNStrDto.absAllNumRunes =
-		make([]rune, lenSrcRunes)
+  destinationNStrDto.absAllNumRunes =
+    make([]rune, lenSrcRunes)
 
-	for i := 0; i < lenSrcRunes; i++ {
-		destinationNStrDto.absAllNumRunes[i] = sourceNStrDto.absAllNumRunes[i]
-	}
+  for i := 0; i < lenSrcRunes; i++ {
+    destinationNStrDto.absAllNumRunes[i] = sourceNStrDto.absAllNumRunes[i]
+  }
 
-	destinationNStrDto.signVal = sourceNStrDto.signVal
+  destinationNStrDto.signVal = sourceNStrDto.signVal
 
-	destinationNStrDto.precision = sourceNStrDto.precision
+  destinationNStrDto.precision = sourceNStrDto.precision
 
-	destinationNStrDto.thousandsSeparator = sourceNStrDto.thousandsSeparator
+  destinationNStrDto.thousandsSeparator = sourceNStrDto.thousandsSeparator
 
-	destinationNStrDto.decimalSeparator = sourceNStrDto.decimalSeparator
+  destinationNStrDto.decimalSeparator = sourceNStrDto.decimalSeparator
 
-	destinationNStrDto.currencySymbol = sourceNStrDto.currencySymbol
+  destinationNStrDto.currencySymbol = sourceNStrDto.currencySymbol
 
-	return nil
+  return nil
 }
 
 // newZeroNumStrDto
@@ -110,32 +312,32 @@ func (nStrDtoMolecule *numStrDtoMolecule) copy(
 //	     2                "0.00"
 //	     4                "0.0000"
 func (nStrDtoMolecule *numStrDtoMolecule) newZeroNumStrDto(
-	numSeps NumericSeparatorDto,
-	numFracDigits uint) NumStrDto {
+  numSeps NumericSeparatorDto,
+  numFracDigits uint) NumStrDto {
 
-	nStrDtoMolecule.lock.Lock()
+  nStrDtoMolecule.lock.Lock()
 
-	defer nStrDtoMolecule.lock.Unlock()
+  defer nStrDtoMolecule.lock.Unlock()
 
-	numSeps.SetDefaultsIfEmpty()
+  numSeps.SetDefaultsIfEmpty()
 
-	n2Dto := NumStrDto{}
-	n2Dto.signVal = 1
-	n2Dto.thousandsSeparator = numSeps.ThousandsSeparator
-	n2Dto.decimalSeparator = numSeps.DecimalSeparator
-	n2Dto.currencySymbol = numSeps.CurrencySymbol
-	n2Dto.signVal = 1
-	n2Dto.precision = 0
-	n2Dto.absAllNumRunes = append(n2Dto.absAllNumRunes, '0')
+  n2Dto := NumStrDto{}
+  n2Dto.signVal = 1
+  n2Dto.thousandsSeparator = numSeps.ThousandsSeparator
+  n2Dto.decimalSeparator = numSeps.DecimalSeparator
+  n2Dto.currencySymbol = numSeps.CurrencySymbol
+  n2Dto.signVal = 1
+  n2Dto.precision = 0
+  n2Dto.absAllNumRunes = append(n2Dto.absAllNumRunes, '0')
 
-	if numFracDigits > 0 {
+  if numFracDigits > 0 {
 
-		for i := uint(0); i < numFracDigits; i++ {
-			n2Dto.absAllNumRunes = append(n2Dto.absAllNumRunes, '0')
-		}
+    for i := uint(0); i < numFracDigits; i++ {
+      n2Dto.absAllNumRunes = append(n2Dto.absAllNumRunes, '0')
+    }
 
-		n2Dto.precision = numFracDigits
-	}
+    n2Dto.precision = numFracDigits
+  }
 
-	return n2Dto
+  return n2Dto
 }

@@ -164,88 +164,66 @@ func (nDto *NumStrDto) AddNumStrs(n1Dto NumStrDto, n2Dto NumStrDto) (NumStrDto, 
     numSeps, &n1Dto, true, &n2Dto, true, ePrefix.XCpy("nDto"))
 }
 
-// CompareSignedValues - compares the signed numeric values
-// of two NumStrDto objects.
+// CompareSignedValues
 //
-// Return Values:
-// -1 = n1Dto is less than n2Dto
+//	Compares the signed numeric values of two NumStrDto objects.
 //
-//	0 = n1Dto is equal to n2Dto
-//	1 = n1Dto is greater than n2Dto
+//	The term 'signed numeric values' as used here means that the
+//	two NumStrDto objects being compared may be either positive
+//	or negative numeric values.
 //
-// Examples:
+//	Examples
+//	========
 //
-//		n1        			n2           	Result
-//		-9691.23				91.245				 	-1
-//	 9691.23					91.245					 1
-//	 -5							82							-1
-//	  5							 5							 0
-func (nDto *NumStrDto) CompareSignedValues(n1Dto, n2Dto *NumStrDto) int {
+//	   n1         n2          Result
+//
+//	-9691.23     91.245         -1
+//	 9691.23     91.245          1
+//	   -5        82             -1
+//	    5         5              0
+//
+//	Input Parameters
+//	================
+//
+//	n1Dto                    *NumStrDto
+//	  A pointer to an instance of NumStrDto. The signed numeric
+//	  value of this object will be compared to input parameter.
+//	  'n2Dto'.
+//
+//	n2Dto                    *NumStrDto
+//	  A pointer to an instance of NumStrDto. The signed numeric
+//	  value of this object will be compared to input parameter.
+//	  'n1Dto'.
+//
+//	Return Values
+//	=============
+//
+//	int
+//	  This returned integer will be set to one of three values:
+//
+//	  -1 = n1Dto is less than n2Dto
+//
+//	   0 = n1Dto is equal to n2Dto
+//
+//	   1 = n1Dto is greater than n2Dto
+func (nDto *NumStrDto) CompareSignedValues(n1Dto *NumStrDto, n2Dto *NumStrDto) (int, error) {
 
-  cmpAbs := nDto.CompareAbsoluteValues(n1Dto, n2Dto)
+  var ePrefix *ePref.ErrPrefixDto
+  var err error
 
-  if cmpAbs == 0 {
+  ePrefix,
+    err = ePref.ErrPrefixDto{}.NewIEmpty(
+    nil,
+    "NumStrDto.CompareSignedValues",
+    "")
 
-    if n1Dto.signVal == n2Dto.signVal {
-      return 0
-    } else {
-      // n1Dto.signVal != n2Dto.signVal
-      if n1Dto.signVal == 1 {
-        return 1
-      }
-
-      // n2Dto.signVal must == 1
-      return -1
-
-    }
-
-  }
-
-  if cmpAbs == 1 {
-
-    if n1Dto.signVal == n2Dto.signVal {
-
-      if n1Dto.signVal == 1 {
-        return 1
-      }
-
-      // must be n1Dto.signVal == n2Dto.signVal && n1Dto.signVal == -1
-
-      return -1
-
-    }
-
-    // must be n1Dto.signVal != n2Dto.signVal
-    if n1Dto.signVal == 1 {
-      return 1
-    } else {
-      // must be n2Dto.signVal == 1
-      return -1
-    }
-  }
-
-  // cmpAbs == -1
-
-  if n2Dto.signVal == n1Dto.signVal {
-
-    if n2Dto.signVal == 1 {
-      // n1Dto.signVal && n2Dto.signVal must equal 1
-      return -1
-    } else {
-      // n1Dto.signVal && n2Dto.signVal must equal -1
-      return 1
-    }
-
-  }
-
-  // must be n2Dto.signVal != n1Dto.signVal
-
-  if n2Dto.signVal == -1 {
-    return 1
+  if err != nil {
+    return 0, err
   }
 
   // must be n2Dto.signVal == 1
-  return -1
+  return new(numStrDtoMolecule).compareSignedValues(
+    n1Dto, true, n2Dto, true, ePrefix.XCpy("n1Dto vs n2Dto"))
 }
 
 // CompareAbsoluteValues
