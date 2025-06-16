@@ -1,6 +1,7 @@
 package mathops
 
 import (
+	"fmt"
 	ePref "github.com/MikeAustin71/errpref"
 	"sync"
 )
@@ -287,6 +288,78 @@ func (nStrDtoAtom *numStrDtoAtom) compareAbsoluteValues(
 	}
 
 	return 0, nil
+}
+
+// findIntArraySignificantDigitLimits
+//
+//	Receives an array of integers and converts them to a number
+//	string consisting of significant digits. Leading and trailing
+//	zeros are eliminated.
+//
+//	See Method: FindNumStrSignificantDigitLimits()
+func (nStrDtoAtom *numStrDtoAtom) findIntArraySignificantDigitLimits(
+	numSeps NumericSeparatorDto,
+	intArray []int,
+	precision uint,
+	signVal int,
+	errPrefDto *ePref.ErrPrefixDto) (NumStrDto, error) {
+
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
+
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
+		errPrefDto,
+		"numStrDtoAtom.findIntArraySignificantDigitLimits",
+		"")
+
+	if err != nil {
+		return NumStrDto{}, err
+	}
+
+	err = numSeps.IsValid(ePrefix.XCpy("Validating 'numSeps'").String())
+
+	if err != nil {
+
+		return NumStrDto{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "err = numSeps.IsValid(ePrefix.XCpy(\"Validating 'numSeps'\").String())",
+				ErrContext: "Error: Numeric Separators input paramter ('numSeps') is INVALID!\n" +
+					"'numSeps' FAILED Validation Tests.",
+				ErrMessage: err.Error(),
+			}
+	}
+
+	lenIntArray := len(intArray)
+
+	var absNumStr []rune
+
+	for i := 0; i < lenIntArray; i++ {
+		absNumStr = append(absNumStr, rune(intArray[i]+48))
+	}
+
+	outNStrDto, err := new(numStrDtoMuon).findNumStrSignificantDigitLimits(
+		numSeps,
+		absNumStr,
+		precision,
+		signVal,
+		ePrefix)
+
+	if err != nil {
+
+		return NumStrDto{},
+			&FuncReturnError{
+				ErrPrefix: ePrefix.String(),
+				ReturnFunc: "outNStrDto, err := new(numStrDtoMuon).findNumStrSignificantDigitLimits(\n" +
+					"numSeps, absNumStr, precision, signVal, ePrefix)",
+				ErrContext: fmt.Sprintf("absNumStr= '%v'\nprecision= '%v'  signVal= '%v'\n",
+					absNumStr, precision, signVal),
+				ErrMessage: err.Error(),
+			}
+	}
+
+	return outNStrDto, nil
 }
 
 // formatNumStr

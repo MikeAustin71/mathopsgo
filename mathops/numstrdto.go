@@ -33,87 +33,146 @@ type NumStrDto struct {
 	currencySymbol     rune // Currency symbol used in currency string displays
 }
 
-// Add - Adds the value of input NumStrDto to the current NumStrDto
-// instance
+// Add
+//
+//	Adds the value of input NumStrDto parameter 'n2Dto' to the
+//	value of the current NumStrDto instance.
+//
+//	  nDto current instance + n2Dto = nDto current instance
 func (nDto *NumStrDto) Add(n2Dto NumStrDto) error {
-	ePrefix := "NumStrDto.Add() "
-	n1Dto := nDto.CopyOut()
 
-	nResult, err := nDto.AddNumStrs(n1Dto, n2Dto)
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
+
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"NumStrDto.Add",
+		"")
 
 	if err != nil {
-		return fmt.Errorf(ePrefix+"Error returned by nDto.AddNumStrs(n1Dto, n2Dto). "+
-			"Error='%v'", err.Error())
+		return err
 	}
 
-	nDto.CopyIn(nResult)
+	err = new(numStrDtoElectron).isValidNumStrDto(
+		nDto, ePrefix.XCpy("Validating 'nDto'"))
+
+	if err != nil {
+		return &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "",
+			ErrContext: "Error: The current NumStrDto instance is INVALID!",
+			ErrMessage: err.Error(),
+		}
+	}
+
+	numSeps, err := new(numStrDtoAtom).getNumericSeparatorsDto(
+		nDto, ePrefix.XCpy("nDto -> numSeps"))
+
+	if err != nil {
+		return &FuncReturnError{
+			ErrPrefix: ePrefix.String(),
+			ReturnFunc: "numSeps, err := new(numStrDtoAtom).getNumericSeparatorsDto(\n" +
+				"  nDto, ePrefix.XCpy(\"nDto -> numSeps\"))",
+			ErrContext: "",
+			ErrMessage: err.Error(),
+		}
+	}
+
+	err = new(numStrDtoMechanics).addNumStrDto(
+		numSeps, nDto, false, &n2Dto,
+		true, ePrefix.XCpy("nDto + n2Dto->nDto"))
+
+	if err != nil {
+		return &FuncReturnError{
+			ErrPrefix: ePrefix.String(),
+			ReturnFunc: "err = new(numStrDtoMechanics).addNumStrDto(\n" +
+				"  numSeps, nDto, false, &n2Dto, true, ePrefix)",
+			ErrContext: "",
+			ErrMessage: err.Error(),
+		}
+	}
 
 	return nil
 }
 
-// AddNumStrs - Adds the values represented by two NumStrDto objects and
-// returns the result as an NumStrDto.
+// AddNumStrs
+//
+//		Adds the values represented by two NumStrDto objects and
+//		returns the result as a new instance of NumStrDto.
+//
+//	   n1Dto + n2Dto = Returned NumStrDto
+//
+//		Numeric Separators
+//		==================
+//
+//		Numeric Separators define the Decimal Separator character,
+//		Thousands Separator character, and Currency Symbol character.
+//		These separator characters serve two purposes. First they are
+//		used to format and display numeric values as number strings.
+//		Second, they are also used to parse number strings and
+//		convert them into numeric values.
+//
+//		The final NumStrDto result returned by this method will be
+//		configured with the Numeric Separators provided by the
+//		current instance of 'nDto'. If these Numeric Separators are
+//		determined to be invalid, an error will be returned.
 func (nDto *NumStrDto) AddNumStrs(n1Dto NumStrDto, n2Dto NumStrDto) (NumStrDto, error) {
 
-	n1DtoSetup, n2DtoSetup, _, _, err := nDto.FormatForMathOps(n1Dto, n2Dto)
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
+
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"NumStrDto.AddNumStrs",
+		"")
 
 	if err != nil {
-		return NumStrDto{}, fmt.Errorf("AddNumStrs() - Error returned from nDto.FormatForMathOps(n1Dto, n2Dto). Error= %v", err)
+		return NumStrDto{}, err
 	}
 
-	newSignVal := n1DtoSetup.signVal
+	err = new(numStrDtoElectron).isValidNumStrDto(
+		nDto, ePrefix.XCpy("Validating 'nDto'"))
 
-	if n1DtoSetup.signVal != n2DtoSetup.signVal {
-		n1DtoSetup.SetSignValue(1)
-		n2DtoSetup.SetSignValue(1)
-		nDtoOut, err := nDto.SubtractNumStrs(n1DtoSetup, n2DtoSetup)
-
-		if err != nil {
-			return NumStrDto{}, fmt.Errorf("AddNumStrs() - Error returned from nDto.SubtractNumStrs(n1DtoSetup, n2DtoSetup). Error= %v", err)
+	if err != nil {
+		return NumStrDto{}, &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "",
+			ErrContext: "Error: The current NumStrDto instance is INVALID!",
+			ErrMessage: err.Error(),
 		}
+	}
 
-		if nDto.IsNumStrZeroValue(&nDtoOut) {
-			newSignVal = 1
+	numSeps, err := new(numStrDtoAtom).getNumericSeparatorsDto(
+		nDto, ePrefix.XCpy("nDto -> numSeps"))
+
+	if err != nil {
+		return NumStrDto{}, &FuncReturnError{
+			ErrPrefix: ePrefix.String(),
+			ReturnFunc: "numSeps, err := new(numStrDtoAtom).getNumericSeparatorsDto(\n" +
+				"  nDto, ePrefix.XCpy(\"nDto -> numSeps\"))",
+			ErrContext: "",
+			ErrMessage: err.Error(),
 		}
-
-		nDtoOut.SetSignValue(newSignVal)
-
-		return nDtoOut, nil
 	}
 
-	precision := n1DtoSetup.precision
-	lenN1AllRunes := len(n1DtoSetup.absAllNumRunes)
+	var totalNStrDto NumStrDto
 
-	n3IntAry := make([]int, lenN1AllRunes+1)
-	carry := 0
-	n1 := 0
-	n2 := 0
-	n3 := 0
+	totalNStrDto, err = new(numStrDtoBoson).addNumStrs(
+		numSeps, &n1Dto, true, &n2Dto, true, ePrefix.XCpy("n1Dto + n2Dto"))
 
-	for j := lenN1AllRunes - 1; j >= 0; j-- {
-
-		n1 = int(n1DtoSetup.absAllNumRunes[j]) - 48
-		n2 = int(n2DtoSetup.absAllNumRunes[j]) - 48
-
-		n3 = n1 + n2 + carry
-
-		carry = 0
-
-		if n3 > 9 {
-			n3 = n3 - 10
-			carry = 1
+	if err != nil {
+		return NumStrDto{}, &FuncReturnError{
+			ErrPrefix: ePrefix.String(),
+			ReturnFunc: "totalNStrDto, err = new(numStrDtoBoson).addNumStrs(\n" +
+				"  numSeps, &n1Dto, true, &n2Dto, true, ePrefix)",
+			ErrContext: "",
+			ErrMessage: err.Error(),
 		}
-
-		n3IntAry[j+1] = n3
-
 	}
 
-	if carry > 0 {
-		n3IntAry[0] = carry
-	}
-
-	return nDto.FindIntArraySignificantDigitLimits(n3IntAry, precision, newSignVal)
-
+	return totalNStrDto, nil
 }
 
 // CompareSignedValues - compares the signed numeric values
@@ -487,20 +546,79 @@ func (nDto *NumStrDto) Empty() {
 	return
 }
 
-// FindIntArraySignificantDigitLimits - Receives an array of integers and converts them
-// to a number string consisting of significant digits. Leading and trailing zeros are
-// eliminated. See Method: FindNumStrSignificantDigitLimits()
-func (nDto *NumStrDto) FindIntArraySignificantDigitLimits(intArray []int, precision uint, signVal int) (NumStrDto, error) {
+// FindIntArraySignificantDigitLimits
+//
+//	Receives an array of integers and converts them to a number
+//	string consisting of significant digits. Leading and trailing
+//	zeros are eliminated.
+//
+//	See Method: FindNumStrSignificantDigitLimits()
+func (nDto *NumStrDto) FindIntArraySignificantDigitLimits(
+	intArray []int,
+	precision uint,
+	signVal int) (NumStrDto, error) {
 
-	lenIntArray := len(intArray)
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-	var absNumStr []rune
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"NumStrDto.FindIntArraySignificantDigitLimits",
+		"")
 
-	for i := 0; i < lenIntArray; i++ {
-		absNumStr = append(absNumStr, rune(intArray[i]+48))
+	if err != nil {
+		return NumStrDto{}, err
 	}
 
-	return nDto.FindNumStrSignificantDigitLimits(absNumStr, precision, signVal)
+	nStrDtoAtom := new(numStrDtoAtom)
+
+	numSeps, err := nStrDtoAtom.getNumericSeparatorsDto(
+		nDto, ePrefix.XCpy("nDto->numSeps"))
+
+	if err != nil {
+
+		return NumStrDto{},
+			&FuncReturnError{
+				ErrPrefix: ePrefix.String(),
+				ReturnFunc: "numSeps, err := nStrDtoAtom.getNumericSeparatorsDto(\n" +
+					"  nDto, ePrefix.XCpy(\"nDto->numSeps\"))",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
+
+	err = numSeps.IsValid(ePrefix.XCpy("Validating 'numSeps' from 'nDto'").String())
+
+	if err != nil {
+
+		return NumStrDto{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "err = numSeps.IsValid(ePrefix.XCpy(\"Validating 'numSeps' from 'nDto'\").String())",
+				ErrContext: "Error: Numeric Separators copied from current NumStrDto ('nDto') is INVALID!\n" +
+					"'numSeps' FAILED Validation Tests.",
+				ErrMessage: err.Error(),
+			}
+	}
+
+	outNStrDto, err := nStrDtoAtom.findIntArraySignificantDigitLimits(
+		numSeps, intArray, precision, signVal, ePrefix)
+
+	if err != nil {
+
+		return NumStrDto{},
+			&FuncReturnError{
+				ErrPrefix: ePrefix.String(),
+				ReturnFunc: "outNStrDto, err := nStrDtoAtom.\n" +
+					"  findIntArraySignificantDigitLimits(\n" +
+					"  numSeps, intArray, precision, signVal, ePrefix)",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
+
+	return outNStrDto, nil
 }
 
 // FindNumStrSignificantDigitLimits
@@ -532,28 +650,82 @@ func (nDto *NumStrDto) FindNumStrSignificantDigitLimits(
 		return NumStrDto{}, err
 	}
 
+	numSeps, err := new(numStrDtoAtom).getNumericSeparatorsDto(
+		nDto, ePrefix.XCpy("nDto->numSeps"))
+
+	if err != nil {
+
+		return NumStrDto{},
+			&FuncReturnError{
+				ErrPrefix: ePrefix.String(),
+				ReturnFunc: "numSeps, err := \n" +
+					"  new(numStrDtoAtom).getNumericSeparatorsDto(\n" +
+					"   nDto, ePrefix.XCpy(\"nDto->numSeps\"))",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
+
+	err = numSeps.IsValid(ePrefix.XCpy("Validating 'numSeps' from 'nDto'").String())
+
+	if err != nil {
+
+		return NumStrDto{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "err = numSeps.IsValid(ePrefix.XCpy(\"Validating 'numSeps' from 'nDto'\").String())",
+				ErrContext: "Error: Numeric Separators copied from current NumStrDto ('nDto') is INVALID!\n" +
+					"'numSeps' FAILED Validation Tests.",
+				ErrMessage: err.Error(),
+			}
+	}
+
 	return new(numStrDtoMuon).findNumStrSignificantDigitLimits(
-		nDto, true, absAllRunes, precision, signVal, ePrefix)
+		numSeps, absAllRunes, precision, signVal, ePrefix)
 }
 
-// FormatForMathOps - receives two NumStrDto objects and converts their strings
-// such that both have the same number of integer and fractional digits. This will
-// facilitate the performance of string based math operations such as addition and
-// subtraction.
+// FormatForMathOps
 //
-// The return values represent the formatted NumStrDto objects. The first NumStrDto
-// returned always contains the larger absolute value. The second NumStrDto always
-// contains the absolute numeric value which is less than or equal to the first
-// NumStrDto object returned.
+//	Receives two NumStrDto objects and converts their number
+//	strings such that both have the same number of integer and
+//	fractional digits while maintaining their original numeric
+//	values. This transform will facilitate the performance of
+//	string based math operations such as addition and subtraction.
 //
-// The third parameter returned by this method is an int which will always be set to
-// 1 or 0. 1 indicates that the absolute value of the first NumStrDto returned by
-// this method is greater than the second NumStrDto returned by this method. If
-// the int value returned is zero, it signals that the absolute values
-// (not the signed values) of both returned NumStrDto objects are equal.
+//	The return values represent the formatted NumStrDto objects.
+//	The first NumStrDto returned always contains the larger
+//	absolute value. The second NumStrDto always contains the
+//	absolute numeric value which is less than or equal to the first
+//	NumStrDto object returned.
+//
+//	The third parameter returned by this method is an integer
+//	('compare') value which will always be set to '1' or '0'.
+//
+//	'1' indicates that the absolute value of the first NumStrDto
+//	object ('n1DtoOut') returned by this method is greater than the
+//	second NumStrDto object ('n2DtoOut') returned by this method.
+//
+//	If the returned integer ('compare') value returned is zero, it
+//	signals that the absolute values (not the signed values) of
+//	both returned NumStrDto objects are equal.
+//
+//	If the absolute value of 'n1Dto' is less than 'n2Dto', return
+//	value 'n1DtoOut' will be populated with 'n2Dto' values, return
+//	value 'n2DtoOut' will be populated with 'n1Dto' values and return
+//	parameter 'isOrderReversed' will be set to 'true'.
 func (nDto *NumStrDto) FormatForMathOps(n1Dto, n2Dto NumStrDto) (n1DtoOut NumStrDto, n2DtoOut NumStrDto, compare int, isOrderReversed bool, err error) {
 
-	ePrefix := "NumStrDto.FormatForMathOps() "
+	var ePrefix *ePref.ErrPrefixDto
+
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"NumStrDto.FormatForMathOps",
+		"")
+
+	if err != nil {
+		return NumStrDto{}, NumStrDto{}, 0, false, err
+	}
 
 	lenN1AllRunes := 0
 	lenN1IntRunes := 0
@@ -1541,16 +1713,29 @@ func (nDto *NumStrDto) GetNumParen() string {
 //	-123456.78
 func (nDto *NumStrDto) GetNumStr() (string, error) {
 
-	ePrefix := "NumStrDto.GetNumStr()"
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-	outStr, err := nDto.FormatNumStr(LEADMINUSNEGVALFMTMODE)
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"NumStrDto.GetNumStr",
+		"")
+
+	if err != nil {
+		return "", err
+	}
+
+	outStr, err := new(numStrDtoAtom).formatNumStr(
+		nDto, true, LEADMINUSNEGVALFMTMODE, ePrefix)
 
 	if err != nil {
 
 		return "",
 			&FuncReturnError{
-				ErrPrefix:  ePrefix,
-				ReturnFunc: "outStr, err := nDto.FormatNumStr(LEADMINUSNEGVALFMTMODE)",
+				ErrPrefix: ePrefix.String(),
+				ReturnFunc: "outStr, err :=new(numStrDtoAtom).\n" +
+					"  formatNumStr(LEADMINUSNEGVALFMTMODE, ePrefix)",
 				ErrContext: "",
 				ErrMessage: err.Error(),
 			}
@@ -1983,7 +2168,7 @@ func (nDto *NumStrDto) IsNumStrZeroValue(numDto *NumStrDto) (bool, error) {
 	}
 
 	return new(numStrDtoElectron).isNumStrZeroValue(
-		numDto, true, ePrefix.XCpy("Validating numDto"))
+		numDto, true, ePrefix.XCpy("numDto=0 ?"))
 }
 
 // IsValid
@@ -3100,10 +3285,9 @@ func (nDto *NumStrDto) ParseNumStr(str string) (NumStrDto, error) {
 	}
 
 	return new(numStrDtoQuark).parseNumStr(
-		str,
 		numSeps,
+		str,
 		ePrefix)
-
 }
 
 // ScaleNumStr - Shifts the position of the decimal point left or right depending
@@ -3908,128 +4092,143 @@ func (nDto *NumStrDto) SetThisPrecision(
 	return nil
 }
 
-// Subtract - Subtracts the value of an input NumStrDto from the
-// current NumStrDto instance.
+// Subtract
+//
+//	Subtracts the value of an input NumStrDto from the current
+//	NumStrDto instance.
 func (nDto *NumStrDto) Subtract(n2Dto NumStrDto) error {
 
-	ePrefix := "NumStrDto.Subtract() "
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-	n1Dto := nDto.CopyOut()
-
-	nResult, err := nDto.SubtractNumStrs(n1Dto, n2Dto)
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"NumStrDto.Subtract",
+		"")
 
 	if err != nil {
-		return fmt.Errorf(ePrefix+"Error returned by nDto.SubtractNumStrs(n1Dto, n2Dto). "+
-			"Error='%v'", err.Error())
+		return err
 	}
 
-	nDto.CopyIn(nResult)
+	err = new(numStrDtoElectron).isValidNumStrDto(
+		nDto, ePrefix.XCpy("Validating 'nDto'"))
+
+	if err != nil {
+		return &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "",
+			ErrContext: "Error: The current NumStrDto instance is INVALID!",
+			ErrMessage: err.Error(),
+		}
+	}
+
+	numSeps, err := new(numStrDtoAtom).getNumericSeparatorsDto(
+		nDto, ePrefix.XCpy("nDto -> numSeps"))
+
+	if err != nil {
+		return &FuncReturnError{
+			ErrPrefix: ePrefix.String(),
+			ReturnFunc: "numSeps, err := new(numStrDtoAtom).getNumericSeparatorsDto(\n" +
+				"  nDto, ePrefix.XCpy(\"nDto -> numSeps\"))",
+			ErrContext: "",
+			ErrMessage: err.Error(),
+		}
+	}
+
+	var differenceNStrDto NumStrDto
+
+	differenceNStrDto, err = new(numStrDtoBoson).subtractNumStrs(
+		numSeps, nDto, false, &n2Dto, true, ePrefix.XCpy("nDto - n2Dto"))
+
+	if err != nil {
+		return &FuncReturnError{
+			ErrPrefix: ePrefix.String(),
+			ReturnFunc: "differenceNStrDto, err = new(numStrDtoBoson).subtractNumStrs(\n" +
+				"  numSeps, nDto, false, &n2Dto, true, ePrefix)",
+			ErrContext: "",
+			ErrMessage: err.Error(),
+		}
+	}
+
+	// nDto.CopyIn(nResult)
+	err = new(numStrDtoMolecule).copy(nDto, &differenceNStrDto, false, ePrefix.XCpy("nResult->n1Dto"))
+
+	if err != nil {
+
+		return &FuncReturnError{
+			ErrPrefix: ePrefix.String(),
+			ReturnFunc: "err = new(numStrDtoMolecule).copy(\n" +
+				"nDto, &differenceNStrDto, false, ePrefix)",
+			ErrContext: "Copying differenceNStrDto->current instance nDto",
+			ErrMessage: err.Error(),
+		}
+	}
 
 	return nil
 }
 
-// SubtractNumStrs - Subtracts the numeric values represented by two NumStrDto
-// objects.
-func (nDto *NumStrDto) SubtractNumStrs(n1Dto, n2Dto NumStrDto) (NumStrDto, error) {
+// SubtractNumStrs
+//
+//		Subtracts the numeric values supplied by two NumStrDto input
+//		parameters and returns the result as a new instance of
+//		NumStrDto.
+//
+//	 n1Dto - n2Dto = new returned NumStrDto instance
+func (nDto *NumStrDto) SubtractNumStrs(n1Dto NumStrDto, n2Dto NumStrDto) (NumStrDto, error) {
 
-	ePrefix := "NumStrDto.SubtractNumStrs() "
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-	n1NumDto, n2NumDto, compare, isReversed, err := nDto.FormatForMathOps(n1Dto, n2Dto)
-
-	if err != nil {
-		return NumStrDto{},
-			fmt.Errorf(ePrefix+"- Error from nDto.FormatForMathOps(n1Dto, n2Dto). "+
-				"Error= %v", err)
-	}
-
-	if compare == 0 {
-		return nDto.GetZeroNumStrDto(n1NumDto.precision), nil
-	}
-
-	newSignVal := n1NumDto.signVal
-	precision := n1NumDto.precision
-
-	if n1NumDto.signVal != n2NumDto.signVal {
-
-		err = n1NumDto.SetSignValue(1)
-
-		if err != nil {
-			return NumStrDto{},
-				fmt.Errorf(ePrefix+"- Error from n1NumDto.SetSignValue(1). Error= %v", err)
-		}
-
-		err = n2NumDto.SetSignValue(1)
-
-		if err != nil {
-			return NumStrDto{},
-				fmt.Errorf(ePrefix+"- Error from n2NumDto.SetSignValue(1). Error= %v", err)
-		}
-
-		nOutDto, err := nDto.AddNumStrs(n1NumDto, n2NumDto)
-
-		if err != nil {
-			return NumStrDto{},
-				fmt.Errorf(ePrefix+"- Error from nDto.AddNumStrs(n1NumDto, n2NumDto). "+
-					"Error= %v", err)
-		}
-
-		nOutDto.SetSignValue(newSignVal)
-
-		return nOutDto, nil
-	}
-
-	// Change sign for subtraction
-	newSignVal = n1NumDto.signVal
-
-	if isReversed {
-		newSignVal = newSignVal * -1
-	}
-
-	lenN1AllRunes := len(n1NumDto.absAllNumRunes)
-
-	n1IntAry := make([]int, lenN1AllRunes)
-	n2IntAry := make([]int, lenN1AllRunes)
-	n3IntAry := make([]int, lenN1AllRunes)
-
-	for i := 0; i < lenN1AllRunes; i++ {
-
-		n1IntAry[i] = int(n1NumDto.absAllNumRunes[i]) - 48
-		n2IntAry[i] = int(n2NumDto.absAllNumRunes[i]) - 48
-
-	}
-
-	carry := 0
-	n1 := 0
-	n2 := 0
-	n3 := 0
-	// Main Subtraction Routine
-	for j := lenN1AllRunes - 1; j >= 0; j-- {
-
-		n1 = n1IntAry[j]
-		n2 = n2IntAry[j]
-		n3 = 0
-
-		if n1-carry-n2 < 0 {
-			n1 += 10
-			n3 = n1 - n2 - carry
-			carry = 1
-		} else {
-			n3 = n1 - n2 - carry
-			carry = 0
-		}
-
-		n3IntAry[j] = n3
-
-	}
-
-	nOutDto, err := nDto.FindIntArraySignificantDigitLimits(n3IntAry, precision, newSignVal)
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"NumStrDto.SubtractNumStrs",
+		"")
 
 	if err != nil {
-		return NumStrDto{},
-			fmt.Errorf(ePrefix+"- Error from final nDto.FindIntArraySignificantDigitLimits"+
-				"(n3IntAry, precision, newSignVal). precision='%v' newSignVal='%v' Error= %v",
-				precision, newSignVal, err)
+		return NumStrDto{}, err
 	}
 
-	return nOutDto, nil
+	err = new(numStrDtoElectron).isValidNumStrDto(
+		nDto, ePrefix.XCpy("Validating 'nDto'"))
+
+	if err != nil {
+		return NumStrDto{}, &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "",
+			ErrContext: "Error: The current NumStrDto instance is INVALID!",
+			ErrMessage: err.Error(),
+		}
+	}
+
+	numSeps, err := new(numStrDtoAtom).getNumericSeparatorsDto(
+		nDto, ePrefix.XCpy("nDto -> numSeps"))
+
+	if err != nil {
+		return NumStrDto{}, &FuncReturnError{
+			ErrPrefix: ePrefix.String(),
+			ReturnFunc: "numSeps, err := new(numStrDtoAtom).getNumericSeparatorsDto(\n" +
+				"  nDto, ePrefix.XCpy(\"nDto -> numSeps\"))",
+			ErrContext: "",
+			ErrMessage: err.Error(),
+		}
+	}
+
+	var differenceNStrDto NumStrDto
+
+	differenceNStrDto, err = new(numStrDtoBoson).subtractNumStrs(
+		numSeps, &n1Dto, true, &n2Dto, true, ePrefix.XCpy("n1Dto - n2Dto"))
+
+	if err != nil {
+		return NumStrDto{}, &FuncReturnError{
+			ErrPrefix: ePrefix.String(),
+			ReturnFunc: "differenceNStrDto, err = new(numStrDtoBoson).subtractNumStrs(\n" +
+				"  numSeps, &n1Dto, true, &n2Dto, true, ePrefix)",
+			ErrContext: "",
+			ErrMessage: err.Error(),
+		}
+	}
+
+	return differenceNStrDto, nil
 }

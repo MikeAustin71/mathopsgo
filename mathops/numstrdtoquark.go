@@ -23,8 +23,8 @@ type numStrDtoQuark struct {
 //		'numSeps'. If the NumericSeparatorDto object ('numSeps') is
 //	 invalid, an error will be returned.
 func (nStrDtoQuark *numStrDtoQuark) parseNumStr(
-	str string,
 	numSeps NumericSeparatorDto,
+	str string,
 	errPrefDto *ePref.ErrPrefixDto) (NumStrDto, error) {
 
 	nStrDtoQuark.lock.Lock()

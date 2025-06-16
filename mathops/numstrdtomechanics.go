@@ -1,51 +1,132 @@
 package mathops
 
 import (
-	"fmt"
-	ePref "github.com/MikeAustin71/errpref"
-	"sync"
+  ePref "github.com/MikeAustin71/errpref"
+  "sync"
 )
 
 type numStrDtoMechanics struct {
-	lock sync.Mutex
+  lock sync.Mutex
 }
 
 // addNumStrDto
 //
-//	Adds the value of input parameter 'n2Dto' to the current
-//	value of 'n2Dto'.
+//	Adds the numeric values of input parameters 'n1Dto' and 'n2Dto'. The
+//	final result is stored in parameter 'n1Dto'.
 func (numStrDtoMech *numStrDtoMechanics) addNumStrDto(
-	n1Dto *NumStrDto,
-	n2Dto *NumStrDto,
-	errPrefDto *ePref.ErrPrefixDto) error {
+  numSeps NumericSeparatorDto,
+  n1Dto *NumStrDto,
+  validateN1Dto bool,
+  n2Dto *NumStrDto,
+  validateN2Dto bool,
+  errPrefDto *ePref.ErrPrefixDto) error {
 
-	numStrDtoMech.lock.Lock()
+  numStrDtoMech.lock.Lock()
 
-	defer numStrDtoMech.lock.Unlock()
+  defer numStrDtoMech.lock.Unlock()
 
-	var ePrefix *ePref.ErrPrefixDto
-	var err error
+  var ePrefix *ePref.ErrPrefixDto
+  var err error
 
-	ePrefix,
-		err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
-		errPrefDto,
-		"numStrDtoMechanics.addNumStrDto()",
-		"")
+  ePrefix,
+    err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
+    errPrefDto,
+    "numStrDtoMechanics.addNumStrDto()",
+    "")
 
-	if err != nil {
-		return err
-	}
+  if err != nil {
+    return err
+  }
 
-	n1Dto := nDto.CopyOut()
+  if n1Dto == nil {
 
-	nResult, err := nDto.AddNumStrs(n1Dto, n2Dto)
+    return &InputPtrNilError{
+      ErrPrefix:     ePrefix.String(),
+      ParameterName: "'n1Dto'",
+    }
+  }
 
-	if err != nil {
-		return fmt.Errorf(ePrefix+"Error returned by nDto.AddNumStrs(n1Dto, n2Dto). "+
-			"Error='%v'", err.Error())
-	}
+  if n2Dto == nil {
 
-	nDto.CopyIn(nResult)
+    return &InputPtrNilError{
+      ErrPrefix:     ePrefix.String(),
+      ParameterName: "'n2Dto'",
+    }
+  }
 
-	return nil
+  if validateN1Dto {
+
+    err = new(numStrDtoElectron).isValidNumStrDto(
+      n1Dto, ePrefix.XCpy("Validating 'n1Dto'"))
+
+    if err != nil {
+
+      return &FuncReturnError{
+        ErrPrefix: ePrefix.String(),
+        ReturnFunc: "err = new(numStrDtoElectron).isValidNumStrDto(\n" +
+          "  n1Dto, ePrefix)",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+    }
+  }
+
+  if validateN2Dto {
+
+    err = new(numStrDtoElectron).isValidNumStrDto(
+      n2Dto, ePrefix.XCpy("Validating 'n2Dto'"))
+
+    if err != nil {
+
+      return &FuncReturnError{
+        ErrPrefix: ePrefix.String(),
+        ReturnFunc: "err = new(numStrDtoElectron).isValidNumStrDto(\n" +
+          "  n2Dto, ePrefix)",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+    }
+  }
+
+  err = numSeps.IsValid(ePrefix.XCpy("Validating 'numSeps'").String())
+
+  if err != nil {
+
+    return &FuncReturnError{
+      ErrPrefix:  ePrefix.String(),
+      ReturnFunc: "err = numSeps.IsValid(ePrefix.XCpy(\"Validating 'numSeps'\").String())",
+      ErrContext: "Error: Numeric Separators input paramter ('numSeps') is INVALID!\n" +
+        "'numSeps' FAILED Validation Tests.",
+      ErrMessage: err.Error(),
+    }
+  }
+
+  nResult, err := new(numStrDtoBoson).addNumStrs(
+    numSeps, n1Dto, false, n2Dto, false, ePrefix.XCpy("n1Dto+n2Dto"))
+
+  if err != nil {
+
+    return &FuncReturnError{
+      ErrPrefix: ePrefix.String(),
+      ReturnFunc: "nResult, err := new(numStrDtoBoson).addNumStrs(\n" +
+        "  numSeps, n1Dto, false, n2Dto, false, ePrefix)",
+      ErrContext: "",
+      ErrMessage: err.Error(),
+    }
+  }
+
+  err = new(numStrDtoMolecule).copy(n1Dto, &nResult, false, ePrefix.XCpy("nResult->n1Dto"))
+
+  if err != nil {
+
+    return &FuncReturnError{
+      ErrPrefix: ePrefix.String(),
+      ReturnFunc: "err = new(numStrDtoMolecule).copy(\n" +
+        "  n1Dto, &nResult, false, ePrefix)",
+      ErrContext: "",
+      ErrMessage: err.Error(),
+    }
+  }
+
+  return nil
 }

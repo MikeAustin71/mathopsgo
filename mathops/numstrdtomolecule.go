@@ -1,12 +1,12 @@
 package mathops
 
 import (
-  ePref "github.com/MikeAustin71/errpref"
-  "sync"
+	ePref "github.com/MikeAustin71/errpref"
+	"sync"
 )
 
 type numStrDtoMolecule struct {
-  lock sync.Mutex
+	lock sync.Mutex
 }
 
 // copy
@@ -17,81 +17,81 @@ type numStrDtoMolecule struct {
 // NumStrDto fields and returns a completely
 // new instance of NumStrDto
 func (nStrDtoMolecule *numStrDtoMolecule) copy(
-  destinationNStrDto *NumStrDto,
-  sourceNStrDto *NumStrDto,
-  validateSourceDto bool,
-  errPrefDto *ePref.ErrPrefixDto) error {
+	destinationNStrDto *NumStrDto,
+	sourceNStrDto *NumStrDto,
+	validateSourceDto bool,
+	errPrefDto *ePref.ErrPrefixDto) error {
 
-  nStrDtoMolecule.lock.Lock()
+	nStrDtoMolecule.lock.Lock()
 
-  defer nStrDtoMolecule.lock.Unlock()
+	defer nStrDtoMolecule.lock.Unlock()
 
-  var ePrefix *ePref.ErrPrefixDto
-  var err error
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
-    errPrefDto,
-    "numStrDtoMolecule.copy()",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
+		errPrefDto,
+		"numStrDtoMolecule.copy()",
+		"")
 
-  if err != nil {
-    return err
-  }
+	if err != nil {
+		return err
+	}
 
-  if sourceNStrDto == nil {
+	if sourceNStrDto == nil {
 
-    return &InputPtrNilError{
-      ErrPrefix:     ePrefix.String(),
-      ParameterName: "'sourceNStrDto'",
-    }
-  }
+		return &InputPtrNilError{
+			ErrPrefix:     ePrefix.String(),
+			ParameterName: "'sourceNStrDto'",
+		}
+	}
 
-  if destinationNStrDto == nil {
+	if destinationNStrDto == nil {
 
-    return &InputPtrNilError{
-      ErrPrefix:     ePrefix.String(),
-      ParameterName: "'destinationNStrDto'",
-    }
-  }
+		return &InputPtrNilError{
+			ErrPrefix:     ePrefix.String(),
+			ParameterName: "'destinationNStrDto'",
+		}
+	}
 
-  if validateSourceDto {
+	if validateSourceDto {
 
-    err = new(numStrDtoElectron).isValidNumStrDto(
-      sourceNStrDto, ePrefix.XCpy("Validating 'sourceNStrDto'"))
+		err = new(numStrDtoElectron).isValidNumStrDto(
+			sourceNStrDto, ePrefix.XCpy("Validating 'sourceNStrDto'"))
 
-    if err != nil {
+		if err != nil {
 
-      return &FuncReturnError{
-        ErrPrefix: ePrefix.String(),
-        ReturnFunc: "err = new(numStrDtoElectron).isValidNumStrDto(\n" +
-          "  sourceNStrDto, ePrefix)",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-    }
-  }
+			return &FuncReturnError{
+				ErrPrefix: ePrefix.String(),
+				ReturnFunc: "err = new(numStrDtoElectron).isValidNumStrDto(\n" +
+					"  sourceNStrDto, ePrefix)",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+		}
+	}
 
-  lenSrcRunes := len(sourceNStrDto.absAllNumRunes)
+	lenSrcRunes := len(sourceNStrDto.absAllNumRunes)
 
-  destinationNStrDto.absAllNumRunes =
-    make([]rune, lenSrcRunes)
+	destinationNStrDto.absAllNumRunes =
+		make([]rune, lenSrcRunes)
 
-  for i := 0; i < lenSrcRunes; i++ {
-    destinationNStrDto.absAllNumRunes[i] = sourceNStrDto.absAllNumRunes[i]
-  }
+	for i := 0; i < lenSrcRunes; i++ {
+		destinationNStrDto.absAllNumRunes[i] = sourceNStrDto.absAllNumRunes[i]
+	}
 
-  destinationNStrDto.signVal = sourceNStrDto.signVal
+	destinationNStrDto.signVal = sourceNStrDto.signVal
 
-  destinationNStrDto.precision = sourceNStrDto.precision
+	destinationNStrDto.precision = sourceNStrDto.precision
 
-  destinationNStrDto.thousandsSeparator = sourceNStrDto.thousandsSeparator
+	destinationNStrDto.thousandsSeparator = sourceNStrDto.thousandsSeparator
 
-  destinationNStrDto.decimalSeparator = sourceNStrDto.decimalSeparator
+	destinationNStrDto.decimalSeparator = sourceNStrDto.decimalSeparator
 
-  destinationNStrDto.currencySymbol = sourceNStrDto.currencySymbol
+	destinationNStrDto.currencySymbol = sourceNStrDto.currencySymbol
 
-  return nil
+	return nil
 }
 
 // newZeroNumStrDto
@@ -110,32 +110,32 @@ func (nStrDtoMolecule *numStrDtoMolecule) copy(
 //	     2                "0.00"
 //	     4                "0.0000"
 func (nStrDtoMolecule *numStrDtoMolecule) newZeroNumStrDto(
-  numSeps NumericSeparatorDto,
-  numFracDigits uint) NumStrDto {
+	numSeps NumericSeparatorDto,
+	numFracDigits uint) NumStrDto {
 
-  nStrDtoMolecule.lock.Lock()
+	nStrDtoMolecule.lock.Lock()
 
-  defer nStrDtoMolecule.lock.Unlock()
+	defer nStrDtoMolecule.lock.Unlock()
 
-  numSeps.SetDefaultsIfEmpty()
+	numSeps.SetDefaultsIfEmpty()
 
-  n2Dto := NumStrDto{}
-  n2Dto.signVal = 1
-  n2Dto.thousandsSeparator = numSeps.ThousandsSeparator
-  n2Dto.decimalSeparator = numSeps.DecimalSeparator
-  n2Dto.currencySymbol = numSeps.CurrencySymbol
-  n2Dto.signVal = 1
-  n2Dto.precision = 0
-  n2Dto.absAllNumRunes = append(n2Dto.absAllNumRunes, '0')
+	n2Dto := NumStrDto{}
+	n2Dto.signVal = 1
+	n2Dto.thousandsSeparator = numSeps.ThousandsSeparator
+	n2Dto.decimalSeparator = numSeps.DecimalSeparator
+	n2Dto.currencySymbol = numSeps.CurrencySymbol
+	n2Dto.signVal = 1
+	n2Dto.precision = 0
+	n2Dto.absAllNumRunes = append(n2Dto.absAllNumRunes, '0')
 
-  if numFracDigits > 0 {
+	if numFracDigits > 0 {
 
-    for i := uint(0); i < numFracDigits; i++ {
-      n2Dto.absAllNumRunes = append(n2Dto.absAllNumRunes, '0')
-    }
+		for i := uint(0); i < numFracDigits; i++ {
+			n2Dto.absAllNumRunes = append(n2Dto.absAllNumRunes, '0')
+		}
 
-    n2Dto.precision = numFracDigits
-  }
+		n2Dto.precision = numFracDigits
+	}
 
-  return n2Dto
+	return n2Dto
 }
