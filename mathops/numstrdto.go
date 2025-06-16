@@ -61,7 +61,8 @@ func (nDto *NumStrDto) Add(n2Dto NumStrDto) error {
     return &FuncReturnError{
       ErrPrefix:  ePrefix.String(),
       ReturnFunc: "",
-      ErrContext: "Error: The current NumStrDto instance is INVALID!",
+      ErrContext: "Error: The current NumStrDto instance ('nDto') is INVALID!\n" +
+        "'nDto' FAILED Validation Tests.",
       ErrMessage: err.Error(),
     }
   }
@@ -132,47 +133,35 @@ func (nDto *NumStrDto) AddNumStrs(n1Dto NumStrDto, n2Dto NumStrDto) (NumStrDto, 
     return NumStrDto{}, err
   }
 
-  err = new(numStrDtoElectron).isValidNumStrDto(
-    nDto, ePrefix.XCpy("Validating 'nDto'"))
-
-  if err != nil {
-    return NumStrDto{}, &FuncReturnError{
-      ErrPrefix:  ePrefix.String(),
-      ReturnFunc: "",
-      ErrContext: "Error: The current NumStrDto instance is INVALID!",
-      ErrMessage: err.Error(),
-    }
-  }
-
   numSeps, err := new(numStrDtoAtom).getNumericSeparatorsDto(
     nDto, ePrefix.XCpy("nDto -> numSeps"))
 
   if err != nil {
-    return NumStrDto{}, &FuncReturnError{
-      ErrPrefix: ePrefix.String(),
-      ReturnFunc: "numSeps, err := new(numStrDtoAtom).getNumericSeparatorsDto(\n" +
-        "  nDto, ePrefix.XCpy(\"nDto -> numSeps\"))",
-      ErrContext: "",
-      ErrMessage: err.Error(),
-    }
+    return NumStrDto{},
+      &FuncReturnError{
+        ErrPrefix: ePrefix.String(),
+        ReturnFunc: "numSeps, err := new(numStrDtoAtom).getNumericSeparatorsDto(\n" +
+          "  nDto, ePrefix.XCpy(\"nDto -> numSeps\"))",
+        ErrContext: "Error extracting Numeric Separators from current NumStrDto instance.",
+        ErrMessage: err.Error(),
+      }
   }
 
-  var totalNStrDto NumStrDto
-
-  totalNStrDto, err = new(numStrDtoBoson).addNumStrs(
-    numSeps, &n1Dto, true, &n2Dto, true, ePrefix.XCpy("n1Dto + n2Dto"))
+  err = numSeps.IsValid(ePrefix.XCpy("Validating 'numSeps'").String())
 
   if err != nil {
+
     return NumStrDto{}, &FuncReturnError{
-      ErrPrefix: ePrefix.String(),
-      ReturnFunc: "totalNStrDto, err = new(numStrDtoBoson).addNumStrs(\n" +
-        "  numSeps, &n1Dto, true, &n2Dto, true, ePrefix)",
-      ErrContext: "",
+      ErrPrefix:  ePrefix.String(),
+      ReturnFunc: "err = numSeps.IsValid(ePrefix.XCpy(\"Validating 'numSeps'\").String())",
+      ErrContext: "Error: The current instance of NumStrDto ('nDto') is INVALID!\n" +
+        "Numeric Separators from 'nDto' FAILED Validation Tests.",
       ErrMessage: err.Error(),
     }
   }
 
-  return totalNStrDto, nil
+  return new(numStrDtoMechanics).addNumStrs(
+    numSeps, &n1Dto, true, &n2Dto, true, ePrefix.XCpy("nDto"))
 }
 
 // CompareSignedValues - compares the signed numeric values
@@ -735,7 +724,8 @@ func (nDto *NumStrDto) FormatForMathOps(n1Dto, n2Dto NumStrDto) (n1DtoOut NumStr
       &FuncReturnError{
         ErrPrefix:  ePrefix.String(),
         ReturnFunc: "",
-        ErrContext: "Error: The current NumStrDto instance is INVALID!",
+        ErrContext: "Error: The current NumStrDto instance ('nDto') is INVALID!\n" +
+          "The Numeric Seprators encapsulated by 'nDto' FAILED Validation Tests.",
         ErrMessage: err.Error(),
       }
   }
