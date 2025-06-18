@@ -1,6 +1,7 @@
 package mathops
 
 import (
+	"fmt"
 	ePref "github.com/MikeAustin71/errpref"
 	"sync"
 )
@@ -256,4 +257,237 @@ func (numStrDtoMech *numStrDtoMechanics) addNumStrs(
 	}
 
 	return totalNStrDto, nil
+}
+
+// divideNumStrs
+//
+//	Divides NumStrDto input parameters 'n2Dto'.
+//	Maximum precision of the division result is controlled by the
+//	input parameter, 'maximumPrecision'.
+//
+//	If 'maximumPrecision' is greater than or equal to zero ('0'),
+//	the number of digits to the right of the decimal place will
+//	not exceed 'maximumPrecision'.
+//
+//	'maximumPrecision' is set equal to minus one ('-1'), will be
+//	set to a maximum of 1,024 digits to the right of the decimal
+//	point. If 'maximumPrecision' is less than '-1', an error will
+//	be returned.
+//
+//	'minimumPrecision' specifies the minimum precision of the final
+//	result. If 'minimumPrecision' is less than zero, an error will
+//	be returned.
+func (numStrDtoMech *numStrDtoMechanics) divideNumStrs(
+	numSeps NumericSeparatorDto,
+	dividendDto *NumStrDto,
+	validateDividend bool,
+	divisorDto *NumStrDto,
+	validateDivisor bool,
+	minimumPrecision int,
+	maximumPrecision int,
+	errPrefDto *ePref.ErrPrefixDto) (NumStrDto, error) {
+
+	numStrDtoMech.lock.Lock()
+
+	defer numStrDtoMech.lock.Unlock()
+
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
+
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
+		errPrefDto,
+		"numStrDtoMechanics.divideNumStrs()",
+		"")
+
+	if err != nil {
+		return NumStrDto{}, err
+	}
+
+	if dividendDto == nil {
+
+		return NumStrDto{}, &InputPtrNilError{
+			ErrPrefix:     ePrefix.String(),
+			ParameterName: "'dividendDto'",
+		}
+	}
+
+	if divisorDto == nil {
+
+		return NumStrDto{}, &InputPtrNilError{
+			ErrPrefix:     ePrefix.String(),
+			ParameterName: "'divisorDto'",
+		}
+	}
+
+	if validateDividend {
+
+		err = new(numStrDtoElectron).isValidNumStrDto(
+			dividendDto, ePrefix.XCpy("Validating 'dividendDto'"))
+
+		if err != nil {
+
+			return NumStrDto{}, &FuncReturnError{
+				ErrPrefix: ePrefix.String(),
+				ReturnFunc: "err = new(numStrDtoElectron).isValidNumStrDto(\n" +
+					"  dividendDto, ePrefix)",
+				ErrContext: "Error: Input parameter 'dividendDto' is INVALID!\n" +
+					"'dividendDto' FAILED Validation Tests.",
+				ErrMessage: err.Error(),
+			}
+		}
+	}
+
+	if validateDivisor {
+
+		err = new(numStrDtoElectron).isValidNumStrDto(
+			divisorDto, ePrefix.XCpy("Validating 'divisorDto'"))
+
+		if err != nil {
+
+			return NumStrDto{}, &FuncReturnError{
+				ErrPrefix: ePrefix.String(),
+				ReturnFunc: "err = new(numStrDtoElectron).isValidNumStrDto(\n" +
+					"  divisorDto, ePrefix)",
+				ErrContext: "Error: Input parameter 'divisorDto' is INVALID!\n" +
+					"'divisorDto' FAILED Validation Tests.",
+				ErrMessage: err.Error(),
+			}
+		}
+	}
+
+	err = numSeps.IsValid(ePrefix.XCpy("Validating 'numSeps'").String())
+
+	if err != nil {
+
+		return NumStrDto{}, &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "err = numSeps.IsValid(ePrefix.XCpy(\"Validating 'numSeps'\").String())",
+			ErrContext: "Error: Numeric Separators input paramter ('numSeps') is INVALID!\n" +
+				"'numSeps' FAILED Validation Tests.",
+			ErrMessage: err.Error(),
+		}
+	}
+
+	dividendNumStr, err := new(numStrDtoAtom).formatNumStr(
+		dividendDto, false, LEADMINUSNEGVALFMTMODE, ePrefix)
+
+	if err != nil {
+
+		return NumStrDto{},
+			&FuncReturnError{
+				ErrPrefix: ePrefix.String(),
+				ReturnFunc: "dividendNumStr, err := new(numStrDtoAtom).formatNumStr(\n" +
+					"  dividendDto, false, LEADMINUSNEGVALFMTMODE, ePrefix)",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
+
+	divisorNumStr, err := new(numStrDtoAtom).formatNumStr(
+		divisorDto, false, LEADMINUSNEGVALFMTMODE, ePrefix)
+
+	if err != nil {
+
+		return NumStrDto{},
+			&FuncReturnError{
+				ErrPrefix: ePrefix.String(),
+				ReturnFunc: "divisorNumStr, err := new(numStrDtoAtom).formatNumStr(\n" +
+					"  divisorDto, false, LEADMINUSNEGVALFMTMODE, ePrefix)",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
+
+	iaDividend, err := new(IntAry).NewNumStrWithNumSeps(
+		dividendNumStr, numSeps)
+
+	if err != nil {
+
+		return NumStrDto{},
+			&FuncReturnError{
+				ErrPrefix: ePrefix.String(),
+				ReturnFunc: "iaDividend, err := new(IntAry).NewNumStrWithNumSeps(\n" +
+					"dividendNumStr, numSeps)",
+				ErrContext: fmt.Sprintf("dividendNumStr= '%v'", dividendNumStr),
+				ErrMessage: err.Error(),
+			}
+	}
+
+	iaDivisor, err := new(IntAry).NewNumStrWithNumSeps(
+		divisorNumStr, numSeps)
+
+	if err != nil {
+
+		return NumStrDto{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "iaDivisor, err := new(IntAry).NewNumStrWithNumSeps(",
+				ErrContext: "divisorNumStr, numSeps)",
+				ErrMessage: err.Error(),
+			}
+	}
+
+	iaQuotient, err := new(IntAryMathDivide).Divide(
+		&iaDividend, &iaDivisor, minimumPrecision, maximumPrecision)
+
+	if err != nil {
+
+		return NumStrDto{},
+			&FuncReturnError{
+				ErrPrefix: ePrefix.String(),
+				ReturnFunc: "iaQuotient, err = new(IntAryMathDivide).Divide(\n" +
+					"  &iaDividend, &iaDivisor, minimumPrecision, maximumPrecision)",
+				ErrContext: fmt.Sprintf("iaDividend= '%v'\n iaDivisor= '%v'\n"+
+					"minPrecision= '%v'\nmaxPrecision= '%v'",
+					dividendNumStr, divisorNumStr, minimumPrecision, maximumPrecision),
+				ErrMessage: err.Error(),
+			}
+	}
+
+	resultNumStrDto, err := iaQuotient.GetNumStrDto()
+
+	if err != nil {
+
+		return NumStrDto{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "resultNumStrDto, err := iaQuotient.GetNumStrDto()",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
+
+	if resultNumStrDto.GetPrecision() < minimumPrecision {
+
+		err = resultNumStrDto.SetThisPrecision(uint(minimumPrecision), false)
+
+		if err != nil {
+
+			return NumStrDto{},
+				&FuncReturnError{
+					ErrPrefix:  ePrefix.String(),
+					ReturnFunc: "err = resultNumStrDto.SetThisPrecision(uint(minimumPrecision), false)",
+					ErrContext: "",
+					ErrMessage: err.Error(),
+				}
+		}
+	}
+
+	err = new(numStrDtoElectron).isValidNumStrDto(
+		&resultNumStrDto, ePrefix.XCpy("Validating 'resultNumStrDto'"))
+
+	if err != nil {
+
+		return NumStrDto{}, &FuncReturnError{
+			ErrPrefix: ePrefix.String(),
+			ReturnFunc: "err = new(numStrDtoElectron).isValidNumStrDto(\n" +
+				"  &resultNumStrDto, ePrefix)",
+			ErrContext: "Error: Final Result NumStrDto 'resultNumStrDto' is INVALID!\n" +
+				"'resultNumStrDto' FAILED Validation Tests.",
+			ErrMessage: err.Error(),
+		}
+	}
+
+	return resultNumStrDto, nil
 }
