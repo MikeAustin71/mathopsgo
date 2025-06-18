@@ -311,6 +311,21 @@ func (nStrDtoMolecule *numStrDtoMolecule) copy(
 //	     0                "0"
 //	     2                "0.00"
 //	     4                "0.0000"
+//
+//	Numeric Separators
+//	==================
+//
+//	Numeric Separators define the Decimal Separator character,
+//	Thousands Separator character, and Currency Symbol character.
+//	These separator characters serve two purposes. First they are
+//	used to format and display numeric values as number strings.
+//	Second, they are also used to parse number strings and
+//	convert them into numeric values.
+//
+//	The final NumStrDto result returned by this method will be
+//	configured with the Numeric Separators passed by input
+//	parameter 'numSeps'. If these Numeric Separators are
+//	determined to be invalid, an error will be returned.
 func (nStrDtoMolecule *numStrDtoMolecule) newZeroNumStrDto(
 	numSeps NumericSeparatorDto,
 	numFracDigits uint) NumStrDto {

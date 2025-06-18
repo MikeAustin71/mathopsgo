@@ -566,6 +566,168 @@ func (nStrDtoAtom *numStrDtoAtom) getNumericSeparatorsDto(
 	return numSeps, nil
 }
 
+// setNumericSeparators
+//
+//	Used to assign values for the Decimal and Thousands separators
+//	as well as the Currency Symbol to be used in displaying number
+//	string representations of the numeric value encapsulated by the
+//	current NumStrDto instance.
+//
+//	If zero values are submitted as input for Decimal Separator,
+//	Thousands Separator or Currency Symbol, an error will be
+//	returned.
+//
+//	USA Examples
+//	============
+//
+//	Decimal Separator period ('.')    = 123.456
+//	Thousands Separator comma (',')   = 1,000,000,000
+//	Currency Symbol dollar sign ('$') = $123
+func (nStrDtoAtom *numStrDtoAtom) setNumericSeparators(
+	numStrDto *NumStrDto,
+	decimalSeparator rune,
+	thousandsSeparator rune,
+	currencySymbol rune,
+	errPrefDto *ePref.ErrPrefixDto) error {
+
+	nStrDtoAtom.lock.Lock()
+
+	defer nStrDtoAtom.lock.Unlock()
+
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
+
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
+		errPrefDto,
+		"numStrDtoAtom.setNumericSeparatorsDto()",
+		"")
+
+	if err != nil {
+		return err
+	}
+
+	if numStrDto == nil {
+
+		return &InputPtrNilError{
+			ErrPrefix:     ePrefix.String(),
+			ParameterName: "'numStrDto'",
+		}
+	}
+
+	if decimalSeparator == 0 {
+
+		return &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "",
+			ErrContext: "",
+			ErrMessage: "Error: Input parameter 'decimalSeparator' is INVALID!\n" +
+				"rune 'decimalSeparator' has a value of zero.",
+		}
+
+	}
+
+	if thousandsSeparator == 0 {
+
+		return &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "",
+			ErrContext: "",
+			ErrMessage: "Error: Input parameter 'thousandsSeparator' is INVALID!\n" +
+				"rune 'thousandsSeparator' has a value of zero.",
+		}
+
+	}
+
+	if currencySymbol == 0 {
+
+		return &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "",
+			ErrContext: "",
+			ErrMessage: "Error: Input parameter 'currencySymbol' is INVALID!\n" +
+				"rune 'currencySymbol' has a value of zero.",
+		}
+
+	}
+
+	numStrDto.decimalSeparator = decimalSeparator
+	numStrDto.thousandsSeparator = thousandsSeparator
+	numStrDto.currencySymbol = currencySymbol
+
+	return nil
+}
+
+// setNumericSeparatorsDto
+//
+//		Sets the values of numeric separators:
+//
+//		  decimal point separator
+//		  thousands separator
+//		  currency symbol
+//
+//		Numeric Separator values are transmitted through input
+//		parameter 'customSeparators'.
+//
+//		If any of the values contained in input parameter
+//		'customSeparators' is set to zero, an error will be returned.
+//
+//	 If this method completes successfully, input parameter
+//	 NumStrDto, 'numStrDto', will be configured with Numeric
+//	 Separators copied from 'customSeparators'.
+func (nStrDtoAtom *numStrDtoAtom) setNumericSeparatorsDto(
+	numStrDto *NumStrDto,
+	customSeparators NumericSeparatorDto,
+	errPrefDto *ePref.ErrPrefixDto) error {
+
+	nStrDtoAtom.lock.Lock()
+
+	defer nStrDtoAtom.lock.Unlock()
+
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
+
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
+		errPrefDto,
+		"numStrDtoAtom.setNumericSeparatorsDto()",
+		"")
+
+	if err != nil {
+		return err
+	}
+
+	if numStrDto == nil {
+
+		return &InputPtrNilError{
+			ErrPrefix:     ePrefix.String(),
+			ParameterName: "'numStrDto'",
+		}
+	}
+
+	err = customSeparators.IsValid(ePrefix.XCpy("Validating 'customSeparators'").String())
+
+	if err != nil {
+
+		return &FuncReturnError{
+			ErrPrefix: ePrefix.String(),
+			ReturnFunc: "err = customSeparators.IsValid(\n" +
+				"ePrefix.XCpy(\"Validating 'customSeparators'\").String())",
+			ErrContext: "Input parameter 'customSeparators' is INVALID!\n" +
+				"'customSeparators' FAILED validation tests.",
+			ErrMessage: err.Error(),
+		}
+	}
+
+	numStrDto.decimalSeparator = customSeparators.DecimalSeparator
+
+	numStrDto.thousandsSeparator = customSeparators.ThousandsSeparator
+
+	numStrDto.currencySymbol = customSeparators.CurrencySymbol
+
+	return nil
+}
+
 // setNumericSeparatorsToDefaultIfEmpty
 //
 //	If numeric separators are set to zero or nil, this method will
