@@ -39,6 +39,20 @@ type NumStrDto struct {
 //	value of the current NumStrDto instance.
 //
 //	  nDto current instance + n2Dto = nDto current instance
+//
+//	Numeric Separators
+//	==================
+//
+//	Numeric Separators define the Decimal Separator character,
+//	Thousands Separator character, and Currency Symbol character.
+//	These separator characters serve two purposes. First they are
+//	used to format and display numeric values as number strings.
+//	Second, they are also used to parse number strings and
+//	convert them into numeric values.
+//
+//	The Numeric Separators originally configured for the current
+//	instance of NumStrDto will remain unchanged. No modifications
+//	to Numeric Separators will be made by this method.
 func (nDto *NumStrDto) Add(n2Dto NumStrDto) error {
 
 	var ePrefix *ePref.ErrPrefixDto
@@ -3864,38 +3878,106 @@ func (nDto *NumStrDto) SetSignValue(newSignVal int) error {
 		nDto, true, newSignVal, ePrefix)
 }
 
-// SetThisPrecision - Sets precision for the current NumStrDto instance.
-// 'precision' identifies the number of decimal places to the right of the
-// decimal point.
+// SetThisPrecision
 //
-// Input Parameters
-// ================
+//	Sets precision for the current NumStrDto instance.
 //
-//	precision 		uint		- The 'precision' values designates the number of places to the right of the
-//													decimal point which will be realized upon completion of this operation. The
-//													precision operation will be performed on the number string contained in the
-//													NumStrDto instance.
+//	'precision' identifies the number of decimal places to the
+//	 right of the decimal point.
 //
-//	roundResult 	bool		- If the 'precision' value is less than the current number of places to the
-//													right of the decimal point, this method will truncate the existing fractional
-//													digits. If 'roundResult' is set to true, this truncation operation will
-//													include rounding the last digit.
+//	Numeric Separators
+//	==================
+//
+//	Numeric Separators define the Decimal Separator character,
+//	Thousands Separator character, and Currency Symbol character.
+//	These separator characters serve two purposes. First they are
+//	used to format and display numeric values as number strings.
+//	Second, they are also used to parse number strings and
+//	convert them into numeric values.
+//
+//	The Numeric Separators originally configured for the current
+//	instance of NumStrDto will remain unchanged. No modifications
+//	to Numeric Separators will be made by this method.
+//
+//	Input Parameters
+//	================
+//
+//	precision                uint
+//	  The 'precision' values designates the number of places to the
+//	  right of the decimal point which will be realized upon
+//	  completion of this operation. The precision operation will be
+//	  performed on the number string contained in the NumStrDto
+//	  instance.
+//
+//	roundResult              bool
+//	  If the 'precision' value is less than the current number of
+//	  places to the right of the decimal point, this method will
+//	  truncate the existing fractional digits. If 'roundResult' is
+//	  set to 'true', this truncation operation will include
+//	  rounding the last digit.
+//
+//	Return Parameters
+//	=================
+//
+//	error
+//	  If an error is encountered during processing, this returned
+//	  error object will be configured with an appropriate error
+//	  message.
 func (nDto *NumStrDto) SetThisPrecision(
 	precision uint,
 	roundResult bool) error {
 
-	ePrefix := "NumStrDto.SetThisPrecision() "
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-	n2, err := nDto.SetPrecision(nDto.GetNumStr(), precision, roundResult)
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"NumStrDto.SetThisPrecision",
+		"")
 
 	if err != nil {
-		return fmt.Errorf(ePrefix+
-			"Error returned by nDto.SetPrecision(signedNumStr, precision, "+
-			"roundResult). nDto.numStrDto='%v' precision='%v', roundResult='%v'",
-			nDto.GetNumStr(), precision, roundResult)
+		return err
 	}
 
-	nDto.CopyIn(n2)
+	numSeps, err := new(numStrDtoAtom).getNumericSeparatorsDto(
+		nDto, ePrefix.XCpy("nDto -> numSeps"))
+
+	if err != nil {
+		return &FuncReturnError{
+			ErrPrefix: ePrefix.String(),
+			ReturnFunc: "numSeps, err := new(numStrDtoAtom).getNumericSeparatorsDto(\n" +
+				"  nDto, ePrefix.XCpy(\"nDto -> numSeps\"))",
+			ErrContext: "Error extracting Numeric Separators from current NumStrDto instance.",
+			ErrMessage: err.Error(),
+		}
+	}
+
+	err = numSeps.IsValid(ePrefix.XCpy("Validating 'numSeps'").String())
+
+	if err != nil {
+
+		return &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "err = numSeps.IsValid(ePrefix.XCpy(\"Validating 'numSeps'\").String())",
+			ErrContext: "Error: The current instance of NumStrDto ('nDto') is INVALID!\n" +
+				"Numeric Separators from 'nDto' FAILED Validation Tests.",
+			ErrMessage: err.Error(),
+		}
+	}
+
+	err = new(numStrDtoMuon).setPrecisionNumStrDto(
+		numSeps, nDto, precision, roundResult, ePrefix)
+
+	if err != nil {
+		return &FuncReturnError{
+			ErrPrefix: ePrefix.String(),
+			ReturnFunc: "err = new(numStrDtoMuon).setPrecisionNumStrDto(\n" +
+				"  numSeps, nDto, precision, roundResult, ePrefix)",
+			ErrContext: "",
+			ErrMessage: err.Error(),
+		}
+	}
 
 	return nil
 }
