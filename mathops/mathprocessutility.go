@@ -83,6 +83,55 @@ func (mathProcUtil *MathProcessUtility) CodeDurationToStr(tDuration time.Duratio
 	return outStr, nil
 }
 
+// DoesBigIntExceedMax32BitInt
+//
+//	Tests a signed *Big Int value to determine if it exceeds the
+//	maximum allowable value for a 32-bit integer.
+//
+//	The maximum value for a 32-bit integer is 2,147,483,647 or
+//	2^31 - 1.
+func (mathProcUtil *MathProcessUtility) DoesBigIntExceedMax32BitInt(
+	candidateBitIntValue *big.Int) (
+	bigIntIsNilPtr bool, bigIntExceedMax32BitInt bool, bigIntLessThanZero bool) {
+
+	if candidateBitIntValue == nil {
+
+		bigIntIsNilPtr = true
+		bigIntExceedMax32BitInt = false
+		bigIntLessThanZero = false
+
+		return bigIntIsNilPtr, bigIntExceedMax32BitInt, bigIntLessThanZero
+	}
+
+	max32BitIntBigInt := big.NewInt(math.MaxInt32)
+
+	if candidateBitIntValue.Cmp(max32BitIntBigInt) == 1 {
+
+		bigIntIsNilPtr = false
+		bigIntExceedMax32BitInt = true
+		bigIntLessThanZero = false
+
+		return bigIntIsNilPtr, bigIntExceedMax32BitInt, bigIntLessThanZero
+	}
+
+	bigZero := big.NewInt(0)
+
+	if candidateBitIntValue.Cmp(bigZero) == -1 {
+
+		bigIntIsNilPtr = false
+		bigIntExceedMax32BitInt = false
+		bigIntLessThanZero = true
+
+		return bigIntIsNilPtr, bigIntExceedMax32BitInt, bigIntLessThanZero
+	}
+
+	bigIntIsNilPtr = false
+	bigIntExceedMax32BitInt = false
+	bigIntLessThanZero = false
+
+	return bigIntIsNilPtr, bigIntExceedMax32BitInt, bigIntLessThanZero
+}
+
 // DoesUintExceedMax32BitInt
 //
 //	Tests an unsigned integer value to determine if it exceeds the
@@ -97,9 +146,9 @@ func (mathProcUtil *MathProcessUtility) DoesUintExceedMax32BitInt(
 
 	candidateBigInt := big.NewInt(0).SetUint64(uint64(candidateUintValue))
 
-	if max32BitIntBigInt.Cmp(candidateBigInt) < 1 {
-		return false
+	if candidateBigInt.Cmp(max32BitIntBigInt) == 1 {
+		return true
 	}
 
-	return true
+	return false
 }

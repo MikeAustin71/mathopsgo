@@ -479,10 +479,7 @@ func (nStrDtoQuark *numStrDtoQuark) parseNumStr(
 //	===========
 //
 //	'precision' determines the number of digits to the right of the
-//	decimal place. The boolean parameter 'roundResult' is used to
-//	apply rounding in those cases where 'precision' dictates a
-//	reduction in the number of digits to the right of the decimal
-//	place.
+//	decimal place.
 //
 //	  signedBigInt    precision           result
 //
