@@ -3125,7 +3125,7 @@ func (nDto *NumStrDto) ParseSignedBigIntNumSeps(
   ePrefix,
     err = ePref.ErrPrefixDto{}.NewIEmpty(
     nil,
-    "NumStrDto.ParseSignedBigInt",
+    "NumStrDto.ParseSignedBigIntNumSeps",
     "")
 
   if err != nil {
