@@ -4,7 +4,6 @@ import (
   "errors"
   "fmt"
   ePref "github.com/MikeAustin71/errpref"
-  "math"
   "math/big"
   "strconv"
 )
@@ -113,25 +112,25 @@ func (nDto *NumStrDto) Add(n2Dto NumStrDto) error {
 
 // AddNumStrs
 //
-//		Adds the values represented by two NumStrDto objects and
-//		returns the result as a new instance of NumStrDto.
+//	Adds the values represented by two NumStrDto objects and
+//	returns the result as a new instance of NumStrDto.
 //
-//	   n1Dto + n2Dto = Returned NumStrDto
+//	 n1Dto + n2Dto = Returned NumStrDto
 //
-//		Numeric Separators
-//		==================
+//	Numeric Separators
+//	==================
 //
-//		Numeric Separators define the Decimal Separator character,
-//		Thousands Separator character, and Currency Symbol character.
-//		These separator characters serve two purposes. First they are
-//		used to format and display numeric values as number strings.
-//		Second, they are also used to parse number strings and
-//		convert them into numeric values.
+//	Numeric Separators define the Decimal Separator character,
+//	Thousands Separator character, and Currency Symbol character.
+//	These separator characters serve two purposes. First they are
+//	used to format and display numeric values as number strings.
+//	Second, they are also used to parse number strings and
+//	convert them into numeric values.
 //
-//		The final NumStrDto result returned by this method will be
-//		configured with the Numeric Separators provided by the
-//		current instance of 'nDto'. If these Numeric Separators are
-//		determined to be invalid, an error will be returned.
+//	The final NumStrDto result returned by this method will be
+//	configured with the Numeric Separators provided by the
+//	current instance of 'nDto'. If these Numeric Separators are
+//	determined to be invalid, an error will be returned.
 func (nDto *NumStrDto) AddNumStrs(n1Dto NumStrDto, n2Dto NumStrDto) (NumStrDto, error) {
 
   var ePrefix *ePref.ErrPrefixDto
@@ -586,7 +585,7 @@ func (nDto *NumStrDto) FindIntArraySignificantDigitLimits(
     return NumStrDto{},
       &FuncReturnError{
         ErrPrefix: ePrefix.String(),
-        ReturnFunc: "numSeps, err := nStrDtoAtom.getNumericSeparatorsDto(\n" +
+        ReturnFunc: "numSeps, err := new(numStrDtoAtom).getNumericSeparatorsDto(\n" +
           "  nDto, ePrefix.XCpy(\"nDto->numSeps\"))",
         ErrContext: "",
         ErrMessage: err.Error(),
@@ -2054,155 +2053,186 @@ func (nDto *NumStrDto) IsZero() (bool, error) {
     nDto, true, ePrefix.XCpy("Validating nDto"))
 }
 
-// Multiply - Multiplies the current NumStrDto by the input
-// parameter NumStrDto and stores the result in the current
-// NumStrDto.
+// Multiply
+//
+//	Multiplies the current NumStrDto by the input parameter
+//	NumStrDto ('n2Dto') and stores the result in the current
+//	NumStrDto instance ('nDto').
+//
+//	Numeric Separators
+//	==================
+//
+//	Numeric Separators define the Decimal Separator character,
+//	Thousands Separator character, and Currency Symbol character.
+//	These separator characters serve two purposes. First they are
+//	used to format and display numeric values as number strings.
+//	Second, they are also used to parse number strings and
+//	convert them into numeric values.
+//
+//	This method will not modify the Numeric Separators previously
+//	configured for this current instance of NumStrDto ('nDto').
+//	Numeric Separators will therefore remain unchanged.
 func (nDto *NumStrDto) Multiply(n2Dto NumStrDto) error {
-  ePrefix := "NumStrDto.Multiply() "
 
-  n1Dto := nDto.CopyOut()
+  var ePrefix *ePref.ErrPrefixDto
+  var err error
 
-  nResult, err := nDto.MultiplyNumStrs(n1Dto, n2Dto)
+  ePrefix,
+    err = ePref.ErrPrefixDto{}.NewIEmpty(
+    nil,
+    "NumStrDto.Multiply",
+    "")
 
   if err != nil {
-    return fmt.Errorf(ePrefix+"Error returned by MultiplyNumStrs(n1Dto, n2Dto). "+
-      "Error='%v'", err.Error())
+    return err
   }
 
-  nDto.CopyIn(nResult)
+  err = new(numStrDtoElectron).isValidNumStrDto(
+    nDto, ePrefix.XCpy("Validating 'nDto'"))
+
+  if err != nil {
+    return &FuncReturnError{
+      ErrPrefix:  ePrefix.String(),
+      ReturnFunc: "",
+      ErrContext: "Error: The current NumStrDto instance ('nDto') is INVALID!\n" +
+        "'nDto' FAILED Validation Tests.",
+      ErrMessage: err.Error(),
+    }
+  }
+
+  numSeps, err := new(numStrDtoAtom).getNumericSeparatorsDto(
+    nDto, ePrefix.XCpy("nDto -> numSeps"))
+
+  if err != nil {
+    return &FuncReturnError{
+      ErrPrefix: ePrefix.String(),
+      ReturnFunc: "numSeps, err := new(numStrDtoAtom).getNumericSeparatorsDto(\n" +
+        "  nDto, ePrefix.XCpy(\"nDto -> numSeps\"))",
+      ErrContext: "",
+      ErrMessage: err.Error(),
+    }
+  }
+
+  n1Dto := NumStrDto{}
+
+  err = new(numStrDtoMolecule).copy(
+    &n1Dto,
+    nDto,
+    false,
+    ePrefix.XCpy("nDto -> n1Dto"))
+
+  if err != nil {
+
+    return &FuncReturnError{
+      ErrPrefix: ePrefix.String(),
+      ReturnFunc: "err = new(numStrDtoMolecule).copy(\n" +
+        "&n1Dto, nDto, false ePrefix)",
+      ErrContext: "Error Copying current instance 'nDto' to 'n1Dto'",
+      ErrMessage: err.Error(),
+    }
+  }
+
+  nResult, err := new(numStrDtoTau).multiplyNumStrs(
+    numSeps, &n1Dto, false, &n2Dto, true, ePrefix)
+
+  if err != nil {
+
+    return &FuncReturnError{
+      ErrPrefix: ePrefix.String(),
+      ReturnFunc: "nResult, err := new(numStrDtoTau).multiplyNumStrs(\n" +
+        "numSeps, &n1Dto, false, &n2Dto, true, ePrefix)",
+      ErrContext: "",
+      ErrMessage: err.Error(),
+    }
+  }
+
+  err = new(numStrDtoMolecule).copy(
+    nDto,
+    &nResult,
+    false,
+    ePrefix.XCpy("nResult -> nDto"))
+
+  if err != nil {
+
+    return &FuncReturnError{
+      ErrPrefix: ePrefix.String(),
+      ReturnFunc: "err = new(numStrDtoMolecule).copy(\n" +
+        "nDto, &nResult, false ePrefix)",
+      ErrContext: "Error Copying Final Result 'nResult' to 'nDto'",
+      ErrMessage: err.Error(),
+    }
+  }
 
   return nil
 }
 
-// MultiplyNumStrs - Multiplies two NumStrDto instances and returns the result as
-// a separate NumStrDto instance.
-func (nDto *NumStrDto) MultiplyNumStrs(n1Dto NumStrDto, n2Dto NumStrDto) (NumStrDto, error) {
-  ePrefix := "NumStrDto.MultiplyNumStrs() "
+// MultiplyNumStrs
+//
+//	Multiplies two NumStrDto instances and returns the result as a
+//	separate NumStrDto instance.
+//
+//	Numeric Separators
+//	==================
+//
+//	Numeric Separators define the Decimal Separator character,
+//	Thousands Separator character, and Currency Symbol character.
+//	These separator characters serve two purposes. First they are
+//	used to format and display numeric values as number strings.
+//	Second, they are also used to parse number strings and
+//	convert them into numeric values.
+//
+//	The final NumStrDto result returned by this method will be
+//	configured with the Numeric Separators provided by the
+//	current instance of NumStrDto ('nDto'). If these Numeric
+//	Separators are determined to be invalid, an error will be
+//	returned.
+func (nDto *NumStrDto) MultiplyNumStrs(
+  n1Dto NumStrDto, n2Dto NumStrDto) (NumStrDto, error) {
 
-  if err := n1Dto.IsValid(ePrefix + "- "); err != nil {
-    return NumStrDto{},
-      fmt.Errorf(ePrefix+
-        "- n1Dto, first NumStrDto is invalid! Error= %v", err)
-  }
+  var ePrefix *ePref.ErrPrefixDto
+  var err error
 
-  if err := n2Dto.IsValid(ePrefix + "- "); err != nil {
-    return NumStrDto{},
-      fmt.Errorf(ePrefix+"- n2Dto, second NumStrDto is invalid! Error= %v", err)
-  }
-
-  lenN1AbsAllRunes := len(n1Dto.absAllNumRunes)
-  lenN2AbsAllRunes := len(n2Dto.absAllNumRunes)
-
-  var n1Setup NumStrDto
-  var n2Setup NumStrDto
-
-  if lenN2AbsAllRunes > lenN1AbsAllRunes {
-    n1Setup = n2Dto.CopyOut()
-    n2Setup = n1Dto.CopyOut()
-  } else if lenN1AbsAllRunes > lenN2AbsAllRunes {
-    n1Setup = n1Dto.CopyOut()
-    n2Setup = n2Dto.CopyOut()
-  } else {
-    // Must be lenN1AbsAllRunes == lenN2AbsAllRunes
-    n1Setup = n1Dto.CopyOut()
-    n2Setup = n2Dto.CopyOut()
-
-  }
-
-  newPrecision := n1Setup.precision + n2Setup.precision
-  newSignVal := 1
-
-  if n1Setup.signVal == n2Setup.signVal {
-    newSignVal = 1
-  } else {
-    // Must be n1Setup.signVal != n2Setup.signVal
-    newSignVal = -1
-  }
-
-  lenN1AbsAllRunes = len(n1Setup.absAllNumRunes)
-  lenN2AbsAllRunes = len(n2Setup.absAllNumRunes)
-  lenLevels := lenN2AbsAllRunes
-  lenNumPlaces := (lenN1AbsAllRunes + lenN2AbsAllRunes) + 1
-
-  intMAry := make([][]int, lenLevels)
-
-  for i := 0; i < lenLevels; i++ {
-    intMAry[i] = make([]int, lenNumPlaces)
-  }
-
-  intFinalAry := make([]int, lenNumPlaces+1)
-
-  carry := 0
-  levels := 0
-  place := 0
-  n1 := 0
-  n2 := 0
-  n3 := 0
-  n4 := 0
-  for i := lenN2AbsAllRunes - 1; i >= 0; i-- {
-
-    place = (lenNumPlaces - 1) - levels
-
-    for j := lenN1AbsAllRunes - 1; j >= 0; j-- {
-
-      n1 = int(n1Setup.absAllNumRunes[j]) - 48
-      n2 = int(n2Setup.absAllNumRunes[i]) - 48
-      n3 = (n1 * n2) + carry
-      n4 = int(math.Mod(float64(n3), float64(10.00)))
-
-      intMAry[levels][place] = n4
-
-      carry = int(n3 / 10)
-
-      place--
-    }
-
-    intMAry[levels][place] = carry
-    carry = 0
-    levels++
-  }
-
-  carry = 0
-  n1 = 0
-  n2 = 0
-  n3 = 0
-  n4 = 0
-  for i := 0; i < lenLevels; i++ {
-    for j := lenNumPlaces - 1; j >= 0; j-- {
-
-      n1 = intFinalAry[j+1]
-      n2 = intMAry[i][j]
-      n3 = n1 + n2 + carry
-      n4 = 0
-
-      if n3 > 9 {
-        n4 = int(math.Mod(float64(n3), float64(10.0)))
-        carry = n3 / 10
-
-      } else {
-        n4 = n3
-        carry = 0
-      }
-
-      intFinalAry[j+1] = n4
-    }
-
-    if carry > 0 {
-      intFinalAry[0] = carry
-    }
-
-  }
-
-  numStrOut, err := nDto.FindIntArraySignificantDigitLimits(intFinalAry, newPrecision, newSignVal)
+  ePrefix,
+    err = ePref.ErrPrefixDto{}.NewIEmpty(
+    nil,
+    "NumStrDto.MultiplyNumStrs",
+    "")
 
   if err != nil {
-    return NumStrDto{},
-      fmt.Errorf(ePrefix+
-        "- Error returned from nDto.FindIntArraySignificantDigitLimits(intFinalAry,newPrecision, "+
-        "newSignVal). Error= %v", err)
+    return NumStrDto{}, err
   }
 
-  return numStrOut, nil
+  numSeps, err := new(numStrDtoAtom).getNumericSeparatorsDto(
+    nDto, ePrefix.XCpy("nDto->numSeps"))
+
+  if err != nil {
+
+    return NumStrDto{},
+      &FuncReturnError{
+        ErrPrefix: ePrefix.String(),
+        ReturnFunc: "numSeps, err := new(numStrDtoAtom).getNumericSeparatorsDto(\n" +
+          "  nDto, ePrefix.XCpy(\"nDto->numSeps\"))",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+  }
+
+  err = numSeps.IsValid(ePrefix.XCpy("Validating 'numSeps' from 'nDto'").String())
+
+  if err != nil {
+
+    return NumStrDto{},
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "err = numSeps.IsValid(ePrefix.XCpy(\"Validating 'numSeps' from 'nDto'\").String())",
+        ErrContext: "Error: Numeric Separators copied from current NumStrDto ('nDto') is INVALID!\n" +
+          "'numSeps' FAILED Validation Tests.",
+        ErrMessage: err.Error(),
+      }
+  }
+
+  return new(numStrDtoTau).multiplyNumStrs(
+    numSeps, &n1Dto, true, &n2Dto, true, ePrefix)
 }
 
 // NewBigFloat - Creates a new NumStrDto instance from a Big Float value
@@ -2920,29 +2950,29 @@ func (nDto *NumStrDto) New() NumStrDto {
 
 // NewNumSeps
 //
-//	Used to create a new instance of NumStrDto.
+//		Used to create a new instance of NumStrDto.
 //
-//	Numeric Separators
-//	==================
+//		Numeric Separators
+//		==================
 //
-//	Numeric Separators define the Decimal Separator character,
-//	Thousands Separator character, and Currency Symbol character.
-//	These separator characters serve two purposes. First they are
-//	used to format and display numeric values as number strings.
-//	Second, they are also used to parse number strings and
-//	convert them into numeric values.
+//		Numeric Separators define the Decimal Separator character,
+//		Thousands Separator character, and Currency Symbol character.
+//		These separator characters serve two purposes. First they are
+//		used to format and display numeric values as number strings.
+//		Second, they are also used to parse number strings and
+//		convert them into numeric values.
 //
-//	The final NumStrDto result returned by this method will be
-//	configured with the Numeric Separators provided by input
-//  parameter 'numSeps'. If 'numSeps' is determined to be invalid,
-//  an error will be returned.
+//		The final NumStrDto result returned by this method will be
+//		configured with the Numeric Separators provided by input
+//	 parameter 'numSeps'. If 'numSeps' is determined to be invalid,
+//	 an error will be returned.
 //
-//	Final Result
-//	============
-//	This method returns a new instance of NumStrDto.
+//		Final Result
+//		============
+//		This method returns a new instance of NumStrDto.
 //
-//	The numeric value of the returned NumStrDto object will be set
-//	to zero ('0') with a precision of zero ('0').
+//		The numeric value of the returned NumStrDto object will be set
+//		to zero ('0') with a precision of zero ('0').
 func (nDto *NumStrDto) NewNumSeps(numSeps NumericSeparatorDto) (NumStrDto, error) {
 
   var ePrefix *ePref.ErrPrefixDto
