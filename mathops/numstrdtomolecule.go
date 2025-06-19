@@ -299,14 +299,14 @@ func (nStrDtoMolecule *numStrDtoMolecule) copy(
 // newZeroNumStrDto
 //
 //	Returns a new NumStrDto initialized to zero value. If the
-//	parameter numFracDigits is set to a value greater than zero,
+//	parameter 'precision' is set to a value greater than zero,
 //	then an equal number of zero characters will be added to the
 //	right of the decimal point.
 //
 //	Examples
 //	========
 //
-//	numFracDigits    Results NumStrOut
+//	precision      Results NumStrOut
 //
 //	     0                "0"
 //	     2                "0.00"
@@ -328,7 +328,7 @@ func (nStrDtoMolecule *numStrDtoMolecule) copy(
 //	determined to be invalid, an error will be returned.
 func (nStrDtoMolecule *numStrDtoMolecule) newZeroNumStrDto(
 	numSeps NumericSeparatorDto,
-	numFracDigits uint) NumStrDto {
+	precision uint) NumStrDto {
 
 	nStrDtoMolecule.lock.Lock()
 
@@ -345,13 +345,13 @@ func (nStrDtoMolecule *numStrDtoMolecule) newZeroNumStrDto(
 	n2Dto.precision = 0
 	n2Dto.absAllNumRunes = append(n2Dto.absAllNumRunes, '0')
 
-	if numFracDigits > 0 {
+	if precision > 0 {
 
-		for i := uint(0); i < numFracDigits; i++ {
+		for i := uint(0); i < precision; i++ {
 			n2Dto.absAllNumRunes = append(n2Dto.absAllNumRunes, '0')
 		}
 
-		n2Dto.precision = numFracDigits
+		n2Dto.precision = precision
 	}
 
 	return n2Dto
