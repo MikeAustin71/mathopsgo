@@ -1,13 +1,13 @@
 package mathops
 
 import (
-  "fmt"
-  ePref "github.com/MikeAustin71/errpref"
-  "sync"
+	"fmt"
+	ePref "github.com/MikeAustin71/errpref"
+	"sync"
 )
 
 type numStrDtoMuon struct {
-  lock sync.Mutex
+	lock sync.Mutex
 }
 
 // findNumStrSignificantDigitLimits
@@ -25,153 +25,153 @@ type numStrDtoMuon struct {
 //	000006700        4         1       0.67
 //	001230000        4         1     123.0
 func (nStrDtoMuon *numStrDtoMuon) findNumStrSignificantDigitLimits(
-  numSeps NumericSeparatorDto,
-  absAllRunes []rune,
-  precision uint,
-  signVal int,
-  errPrefDto *ePref.ErrPrefixDto) (NumStrDto, error) {
+	numSeps NumericSeparatorDto,
+	absAllRunes []rune,
+	precision uint,
+	signVal int,
+	errPrefDto *ePref.ErrPrefixDto) (NumStrDto, error) {
 
-  nStrDtoMuon.lock.Lock()
+	nStrDtoMuon.lock.Lock()
 
-  defer nStrDtoMuon.lock.Unlock()
+	defer nStrDtoMuon.lock.Unlock()
 
-  var ePrefix *ePref.ErrPrefixDto
-  var err error
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
-    errPrefDto,
-    "numStrDtoMuon.findNumStrSignificantDigitLimits()",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
+		errPrefDto,
+		"numStrDtoMuon.findNumStrSignificantDigitLimits()",
+		"")
 
-  if err != nil {
-    return NumStrDto{}, err
-  }
+	if err != nil {
+		return NumStrDto{}, err
+	}
 
-  err = numSeps.IsValid(ePrefix.XCpy("Validating 'numSeps'").String())
+	err = numSeps.IsValid(ePrefix.XCpy("Validating 'numSeps'").String())
 
-  if err != nil {
+	if err != nil {
 
-    return NumStrDto{},
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "err = numSeps.IsValid(ePrefix.XCpy(\"Validating 'numSeps'\").String())",
-        ErrContext: "Error: Numeric Separators ('numSeps') are INVALID!",
-        ErrMessage: err.Error(),
-      }
-  }
+		return NumStrDto{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "err = numSeps.IsValid(ePrefix.XCpy(\"Validating 'numSeps'\").String())",
+				ErrContext: "Error: Numeric Separators ('numSeps') are INVALID!",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  lenAbsAllRunes := len(absAllRunes)
+	lenAbsAllRunes := len(absAllRunes)
 
-  if signVal != -1 && signVal != 1 {
+	if signVal != -1 && signVal != 1 {
 
-    return NumStrDto{},
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "",
-        ErrContext: "",
-        ErrMessage: "Error: Input parameter 'signVal' is INVALID!\n" +
-          "signVal must be either -1 or 1\n" +
-          fmt.Sprintf("signVal=%d", signVal),
-      }
-  }
+		return NumStrDto{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "",
+				ErrContext: "",
+				ErrMessage: "Error: Input parameter 'signVal' is INVALID!\n" +
+					"signVal must be either -1 or 1\n" +
+					fmt.Sprintf("signVal=%d", signVal),
+			}
+	}
 
-  if lenAbsAllRunes < 1 {
-    return NumStrDto{},
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "",
-        ErrContext: "len(absAllRunes) == 0",
-        ErrMessage: "Error: Input parameter 'absAllRunes' is INVALID!\n" +
-          "'absAllRunes' has ZERO length.",
-      }
-  }
+	if lenAbsAllRunes < 1 {
+		return NumStrDto{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "",
+				ErrContext: "len(absAllRunes) == 0",
+				ErrMessage: "Error: Input parameter 'absAllRunes' is INVALID!\n" +
+					"'absAllRunes' has ZERO length.",
+			}
+	}
 
-  if precision > uint(lenAbsAllRunes) {
-    return NumStrDto{},
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "",
-        ErrContext: "precision > uint(lenAbsAllRunes)",
-        ErrMessage: "Error: Input parameter 'precision' is INVALID!\n" +
-          "'precision' value is greater than length of rune array.",
-      }
-  }
+	if precision > uint(lenAbsAllRunes) {
+		return NumStrDto{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "",
+				ErrContext: "precision > uint(lenAbsAllRunes)",
+				ErrMessage: "Error: Input parameter 'precision' is INVALID!\n" +
+					"'precision' value is greater than length of rune array.",
+			}
+	}
 
-  iPrecision := int(precision)
-  firstIntIdx := -1
-  lastIntIdx := -1
-  lastFracIdx := -1
+	iPrecision := int(precision)
+	firstIntIdx := -1
+	lastIntIdx := -1
+	lastFracIdx := -1
 
-  isFractional := false
+	isFractional := false
 
-  if iPrecision > 0 {
-    isFractional = true
-  }
+	if iPrecision > 0 {
+		isFractional = true
+	}
 
-  lenAbsFracRunes := iPrecision
+	lenAbsFracRunes := iPrecision
 
-  lenAbsIntRunes := lenAbsAllRunes - lenAbsFracRunes
+	lenAbsIntRunes := lenAbsAllRunes - lenAbsFracRunes
 
-  for i := 0; i < lenAbsAllRunes; i++ {
+	for i := 0; i < lenAbsAllRunes; i++ {
 
-    if i < lenAbsIntRunes {
+		if i < lenAbsIntRunes {
 
-      if firstIntIdx == -1 && absAllRunes[i] > '0' && absAllRunes[i] <= '9' {
-        firstIntIdx = i
-      }
+			if firstIntIdx == -1 && absAllRunes[i] > '0' && absAllRunes[i] <= '9' {
+				firstIntIdx = i
+			}
 
-      lastIntIdx = i
-    }
+			lastIntIdx = i
+		}
 
-    if isFractional && i >= lenAbsIntRunes && absAllRunes[i] > '0' && absAllRunes[i] <= '9' {
+		if isFractional && i >= lenAbsIntRunes && absAllRunes[i] > '0' && absAllRunes[i] <= '9' {
 
-      lastFracIdx = i
-    }
+			lastFracIdx = i
+		}
 
-  }
+	}
 
-  if firstIntIdx == -1 {
+	if firstIntIdx == -1 {
 
-    firstIntIdx = lastIntIdx
-  }
+		firstIntIdx = lastIntIdx
+	}
 
-  if isFractional && lastFracIdx == -1 {
+	if isFractional && lastFracIdx == -1 {
 
-    lastFracIdx = lenAbsIntRunes
-  }
+		lastFracIdx = lenAbsIntRunes
+	}
 
-  numStrOut := ""
+	numStrOut := ""
 
-  if signVal < 0 {
+	if signVal < 0 {
 
-    numStrOut = "-"
-  }
+		numStrOut = "-"
+	}
 
-  numStrOut += string(absAllRunes[firstIntIdx : lastIntIdx+1])
+	numStrOut += string(absAllRunes[firstIntIdx : lastIntIdx+1])
 
-  if isFractional {
+	if isFractional {
 
-    numStrOut += string(numSeps.DecimalSeparator)
+		numStrOut += string(numSeps.DecimalSeparator)
 
-    numStrOut += string(absAllRunes[lastIntIdx+1 : lastFracIdx+1])
-  }
+		numStrOut += string(absAllRunes[lastIntIdx+1 : lastFracIdx+1])
+	}
 
-  // nOutDto, err := nDto.ParseNumStr(numStrOut)
-  nOutDto, err := new(numStrDtoQuark).parseNumStr(numSeps, numStrOut, ePrefix)
+	// nOutDto, err := nDto.ParseNumStr(numStrOut)
+	nOutDto, err := new(numStrDtoQuark).parseNumStr(numSeps, numStrOut, ePrefix)
 
-  if err != nil {
+	if err != nil {
 
-    return NumStrDto{},
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "nOutDto, err := new(numStrDtoQuark).parseNumStr(numStrOut, numSeps, ePrefix)",
-        ErrContext: fmt.Sprintf("numStrOut= '%v'", numStrOut),
-        ErrMessage: err.Error(),
-      }
-  }
+		return NumStrDto{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "nOutDto, err := new(numStrDtoQuark).parseNumStr(numStrOut, numSeps, ePrefix)",
+				ErrContext: fmt.Sprintf("numStrOut= '%v'", numStrOut),
+				ErrMessage: err.Error(),
+			}
+	}
 
-  return nOutDto, nil
+	return nOutDto, nil
 }
 
 // setPrecisionNumStrDto
@@ -226,84 +226,84 @@ func (nStrDtoMuon *numStrDtoMuon) findNumStrSignificantDigitLimits(
 //	  error object will be configured with an appropriate error
 //	  message.
 func (nStrDtoMuon *numStrDtoMuon) setPrecisionNumStrDto(
-  numSeps NumericSeparatorDto,
-  nStrDto *NumStrDto,
-  precision uint,
-  roundResult bool,
-  errPrefDto *ePref.ErrPrefixDto) error {
+	numSeps NumericSeparatorDto,
+	nStrDto *NumStrDto,
+	precision uint,
+	roundResult bool,
+	errPrefDto *ePref.ErrPrefixDto) error {
 
-  var ePrefix *ePref.ErrPrefixDto
-  var err error
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
-    errPrefDto,
-    "numStrDtoAtom.setPrecisionNumStrDto",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
+		errPrefDto,
+		"numStrDtoAtom.setPrecisionNumStrDto",
+		"")
 
-  if err != nil {
-    return err
-  }
+	if err != nil {
+		return err
+	}
 
-  if nStrDto == nil {
+	if nStrDto == nil {
 
-    return &InputPtrNilError{
-      ErrPrefix:     ePrefix.String(),
-      ParameterName: "'nStrDto'",
-    }
-  }
+		return &InputPtrNilError{
+			ErrPrefix:     ePrefix.String(),
+			ParameterName: "'nStrDto'",
+		}
+	}
 
-  err = numSeps.IsValid(ePrefix.XCpy("Validating 'numSeps'").String())
+	err = numSeps.IsValid(ePrefix.XCpy("Validating 'numSeps'").String())
 
-  if err != nil {
+	if err != nil {
 
-    return &FuncReturnError{
-      ErrPrefix:  ePrefix.String(),
-      ReturnFunc: "err = numSeps.IsValid(ePrefix.XCpy(\"Validating 'numSeps'\").String())",
-      ErrContext: "Error: Input parameter 'numSeps' is INVALID!\n" +
-        "'numSeps' FAILED validation tests.",
-      ErrMessage: err.Error(),
-    }
-  }
+		return &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "err = numSeps.IsValid(ePrefix.XCpy(\"Validating 'numSeps'\").String())",
+			ErrContext: "Error: Input parameter 'numSeps' is INVALID!\n" +
+				"'numSeps' FAILED validation tests.",
+			ErrMessage: err.Error(),
+		}
+	}
 
-  nDtoNumStr, err := new(numStrDtoAtom).formatNumStr(
-    nStrDto, false, LEADMINUSNEGVALFMTMODE, ePrefix)
+	nDtoNumStr, err := new(numStrDtoAtom).formatNumStr(
+		nStrDto, false, LEADMINUSNEGVALFMTMODE, ePrefix)
 
-  if err != nil {
+	if err != nil {
 
-    return &FuncReturnError{
-      ErrPrefix: ePrefix.String(),
-      ReturnFunc: "nDtoNumStr, err := new(numStrDtoAtom).formatNumStr(\n" +
-        "  nDto, false, LEADMINUSNEGVALFMTMODE, ePrefix)",
-      ErrContext: "",
-      ErrMessage: err.Error(),
-    }
-  }
+		return &FuncReturnError{
+			ErrPrefix: ePrefix.String(),
+			ReturnFunc: "nDtoNumStr, err := new(numStrDtoAtom).formatNumStr(\n" +
+				"  nDto, false, LEADMINUSNEGVALFMTMODE, ePrefix)",
+			ErrContext: "",
+			ErrMessage: err.Error(),
+		}
+	}
 
-  n2, err := new(numStrDtoPhoton).setPrecision(
-    numSeps, nDtoNumStr, precision, roundResult, ePrefix)
+	n2, err := new(numStrDtoPhoton).setPrecision(
+		numSeps, nDtoNumStr, precision, roundResult, ePrefix)
 
-  if err != nil {
+	if err != nil {
 
-    return &FuncReturnError{
-      ErrPrefix: ePrefix.String(),
-      ReturnFunc: "n2, err := new(numStrDtoPhoton).setPrecision(\n" +
-        "  numSeps, nDtoNumStr, precision, roundResult, ePrefix)",
-      ErrContext: "",
-      ErrMessage: err.Error(),
-    }
-  }
+		return &FuncReturnError{
+			ErrPrefix: ePrefix.String(),
+			ReturnFunc: "n2, err := new(numStrDtoPhoton).setPrecision(\n" +
+				"  numSeps, nDtoNumStr, precision, roundResult, ePrefix)",
+			ErrContext: "",
+			ErrMessage: err.Error(),
+		}
+	}
 
-  err = new(numStrDtoMolecule).copy(nStrDto, &n2, true, ePrefix)
+	err = new(numStrDtoMolecule).copy(nStrDto, &n2, true, ePrefix)
 
-  if err != nil {
-    return &FuncReturnError{
-      ErrPrefix:  ePrefix.String(),
-      ReturnFunc: "err = new(numStrDtoMolecule).copy(nStrDto, &n2, true, ePrefix)",
-      ErrContext: "Error copying final result into NumStrDto instance 'nStrDto'.",
-      ErrMessage: err.Error(),
-    }
-  }
+	if err != nil {
+		return &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "err = new(numStrDtoMolecule).copy(nStrDto, &n2, true, ePrefix)",
+			ErrContext: "Error copying final result into NumStrDto instance 'nStrDto'.",
+			ErrMessage: err.Error(),
+		}
+	}
 
-  return nil
+	return nil
 }
