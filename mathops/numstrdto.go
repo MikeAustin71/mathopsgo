@@ -2883,6 +2883,14 @@ func (nDto *NumStrDto) NewPtr() *NumStrDto {
 //	     2                "0.00"
 //	     4                "0.0000"
 //
+//	Maximum Precision Value
+//	=======================
+//
+//	Input parameter 'precision' is an unsigned integer value.
+//	If this value exceeds the maximum value for a 32-bit integer,
+//	this value will be automatically reduced to the maximum
+//	limit of 2,147,483,647 or	2^31 - 1.
+//
 //	Numeric Separators
 //	==================
 //
@@ -2978,92 +2986,86 @@ func (nDto *NumStrDto) ParseBigIntNum(biNum BigIntNum) (NumStrDto, error) {
     numSeps, &biNum, false, ePrefix)
 }
 
-// ParseSignedBigInt - receives a signed *Big Int number and precision parameter. It then
-// generates and returns a new NumStrDto type.
+// ParseSignedBigInt
+//
+//	Receives a signed *Big Int number and a precision parameter. It
+//	then generates and returns a new instance of NumStrDto.
+//
+//	'precision'
+//	===========
+//
+//	'precision' determines the number of digits to the right of the
+//	decimal place. The boolean parameter 'roundResult' is used to
+//	apply rounding in those cases where 'precision' dictates a
+//	reduction in the number of digits to the right of the decimal
+//	place.
+//
+//	   signedBigInt   precision     	    result
+//	    946254            3               946.254
+//	    946254            0               946254
+//	   -946254            3              -946.254
+//	   -946254            0              -946254
+//
+//
+//	Maximum Precision Value
+//	=======================
+//
+//	Input parameter 'precision' is an unsigned integer value.
+//	The maximum limit for a 'precision' uint value is
+//	2,147,483,647 or	2^31 - 1. This is also the maximum
+//	allowable limit for a signed 32-bit integer.
+//
+//	If the 'precision' value exceeds the maximum allowable limit,
+//	an error will be returned.
+//
+//	Numeric Separators
+//	==================
+//
+//	Numeric Separators define the Decimal Separator character,
+//	Thousands Separator character, and Currency Symbol character.
+//	These separator characters serve two purposes. First they are
+//	used to format and display numeric values as number strings.
+//	Second, they are also used to parse number strings and
+//	convert them into numeric values.
+//
+//	The final NumStrDto result returned by this method will be
+//	configured with the Numeric Separators copied from the current
+//	NumStrDto instance ('nDto'). If these Numeric Separators prove
+//	to be invalid, they will be automatically reset to default USA
+//	values.
 func (nDto *NumStrDto) ParseSignedBigInt(signedBigInt *big.Int, precision uint) (NumStrDto, error) {
 
-  ePrefix := "NumStrDto.ParseSignedBigInt() "
+  var ePrefix *ePref.ErrPrefixDto
+  var err error
 
-  nDto.SetNumericSeparatorsToDefaultIfEmpty()
-  numSeps := nDto.GetNumericSeparatorsDto()
-
-  n2Dto := new(NumStrDto).New()
-
-  n2Dto.SetCurrencySymbol(nDto.GetCurrencySymbol())
-  n2Dto.SetDecimalSeparator(nDto.GetDecimalSeparator())
-  n2Dto.SetThousandsSeparator(nDto.GetThousandsSeparator())
-  n2Dto.precision = precision
-  scratchNum := big.NewInt(0).Set(signedBigInt)
-  bigZero := big.NewInt(0)
-  n2Dto.signVal = 1
-
-  if scratchNum.Cmp(bigZero) == -1 {
-    scratchNum.Neg(scratchNum)
-    n2Dto.signVal = -1
-  }
-
-  bigTen := big.NewInt(int64(10))
-  modulo := big.NewInt(0)
-  n2Dto.absAllNumRunes = make([]rune, 0, 100)
-
-  if scratchNum.Cmp(bigZero) == 0 {
-
-    n2Dto.absAllNumRunes = append(n2Dto.absAllNumRunes, '0')
-
-  } else {
-
-    for scratchNum.Cmp(bigZero) == 1 {
-      modulo = big.NewInt(0).Rem(scratchNum, bigTen)
-      scratchNum = big.NewInt(0).Quo(scratchNum, bigTen)
-      n2Dto.absAllNumRunes = append(n2Dto.absAllNumRunes, rune(modulo.Int64()+int64(48)))
-    }
-  }
-
-  lenAllNumRunes := len(n2Dto.absAllNumRunes)
-
-  if int(n2Dto.precision) >= lenAllNumRunes {
-
-    deltaNumRunes := int(n2Dto.precision) - lenAllNumRunes + 1
-
-    for k := 0; k < deltaNumRunes; k++ {
-      n2Dto.absAllNumRunes = append(n2Dto.absAllNumRunes, '0')
-      lenAllNumRunes++
-    }
-
-  }
-
-  tRune := rune(0)
-
-  if lenAllNumRunes > 1 {
-    xLen := lenAllNumRunes - 1
-    sortLimit := xLen / 2
-    yCnt := 0
-    for i := xLen; i > sortLimit; i-- {
-      tRune = n2Dto.absAllNumRunes[yCnt]
-      n2Dto.absAllNumRunes[yCnt] = n2Dto.absAllNumRunes[i]
-      n2Dto.absAllNumRunes[i] = tRune
-      yCnt++
-    }
-  }
-
-  err := n2Dto.SetNumericSeparatorsDto(numSeps)
+  ePrefix,
+    err = ePref.ErrPrefixDto{}.NewIEmpty(
+    nil,
+    "NumStrDto.ParseSignedBigInt",
+    "")
 
   if err != nil {
-    return new(NumStrDto).New(),
-      fmt.Errorf(ePrefix+"Error returned by n2Dto.SetNumericSeparatorsDto(numSeps) "+
-        "Error='%v' \n", err.Error())
+    return NumStrDto{}, err
   }
 
-  err = n2Dto.IsValid("")
+  numSeps, err := new(numStrDtoAtom).getNumericSeparatorsDto(
+    nDto, ePrefix.XCpy("nDto -> numSeps"))
 
   if err != nil {
-    return new(NumStrDto).New(),
-      fmt.Errorf(ePrefix+
-        "NumStrDto INVALID! Error='%v'",
-        err.Error())
+    return NumStrDto{},
+      &FuncReturnError{
+        ErrPrefix: ePrefix.String(),
+        ReturnFunc: "numSeps, err := new(numStrDtoAtom).getNumericSeparatorsDto(\n" +
+          "  nDto, ePrefix.XCpy(\"nDto -> numSeps\"))",
+        ErrContext: "Error extracting Numeric Separators from current instance of NumStrDto.",
+        ErrMessage: err.Error(),
+      }
   }
 
-  return n2Dto, nil
+  numSeps.SetDefaultsIfEmpty()
+
+  return new(numStrDtoQuark).parseSignedBigInt(
+    numSeps, signedBigInt, precision, ePrefix)
 }
 
 // ParseNumStr

@@ -2,6 +2,7 @@ package mathops
 
 import (
 	ePref "github.com/MikeAustin71/errpref"
+	"math"
 	"sync"
 )
 
@@ -312,6 +313,14 @@ func (nStrDtoMolecule *numStrDtoMolecule) copy(
 //	     2                "0.00"
 //	     4                "0.0000"
 //
+//	Maximum Precision Value
+//	=======================
+//
+//	Input parameter 'precision' is an unsigned integer value.
+//	If this value exceeds the maximum value for a 32-bit integer,
+//	this value will be automatically reduced to the maximum
+//	limit of 2,147,483,647 or	2^31 - 1.
+//
 //	Numeric Separators
 //	==================
 //
@@ -325,7 +334,8 @@ func (nStrDtoMolecule *numStrDtoMolecule) copy(
 //	The final NumStrDto result returned by this method will be
 //	configured with the Numeric Separators passed by input
 //	parameter 'numSeps'. If these Numeric Separators are
-//	determined to be invalid, an error will be returned.
+//	determined to be invalid, they will be automatically reset
+//	to default USA values.
 func (nStrDtoMolecule *numStrDtoMolecule) newZeroNumStrDto(
 	numSeps NumericSeparatorDto,
 	precision uint) NumStrDto {
@@ -333,6 +343,12 @@ func (nStrDtoMolecule *numStrDtoMolecule) newZeroNumStrDto(
 	nStrDtoMolecule.lock.Lock()
 
 	defer nStrDtoMolecule.lock.Unlock()
+
+	if new(MathProcessUtility).DoesUintExceedMax32BitInt(precision) {
+
+		precision = uint(math.MaxInt32)
+
+	}
 
 	numSeps.SetDefaultsIfEmpty()
 
