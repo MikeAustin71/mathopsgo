@@ -1709,44 +1709,48 @@ func (nDto *NumStrDto) GetRationalNumber() (int, *big.Rat, error) {
   return signVal, rationalNum, nil
 }
 
-// GetScaleFactor - returns the scale factor for this number
-// string. Scale factor is defined by 10 raised to the power
-// of nDto.precision.  nDto.precision is the number of
-// digits to the right of the decimal point.
+// GetScaleFactor
 //
-// This method will fail if the NumStrDto has not been properly
-// initialized with a valid number string.
+//	Returns the scale factor for the number string encapsulated by
+//	the current instance of NumStrDto.
+//
+//	Scale factor is defined by 10 raised to the power of
+//	'precision' (nDto.precision).  nDto.precision is the number of
+//	digits to the right of the decimal point.
+//
+//	This method will fail and return an error if the current instance
+//	of NumStrDto is invalid.
 func (nDto *NumStrDto) GetScaleFactor() (*big.Int, error) {
 
-  ePrefix := "NumStrDto.GetScaleFactor() "
+  var ePrefix *ePref.ErrPrefixDto
+  var err error
 
-  err := nDto.IsValid("")
+  ePrefix,
+    err = ePref.ErrPrefixDto{}.NewIEmpty(
+    nil,
+    "NumStrDto.GetScaleFactor",
+    "")
+
+  if err != nil {
+    return big.NewInt(0), err
+  }
+
+  err = new(numStrDtoElectron).isValidNumStrDto(
+    nDto, ePrefix.XCpy("Validating 'nDto'"))
 
   if err != nil {
     return big.NewInt(0),
-      fmt.Errorf(ePrefix+"This NumStrDto instance is INVALID! Error='%v'", err.Error())
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "",
+        ErrContext: "Error: The current NumStrDto instance ('nDto') is INVALID!\n" +
+          "'nDto' FAILED Validation Tests.",
+        ErrMessage: err.Error(),
+      }
   }
 
-  if len(nDto.absAllNumRunes) == 0 {
-    s := ePrefix +
-      "- The existing NumStrDto is a zero length number. " +
-      "Re-initialize the NumStrDto object and try again."
-    return big.NewInt(0), errors.New(s)
-
-  }
-
-  if nDto.precision == 0 {
-    return big.NewInt(int64(1)), nil
-  }
-
-  base10 := big.NewInt(0).SetInt64(int64(10))
-
-  bigPrecision := big.NewInt(0).SetInt64(int64(nDto.precision))
-
-  scaleFactor := big.NewInt(0).Exp(base10, bigPrecision, nil)
-
-  return scaleFactor, nil
-
+  return new(numStrDtoGluon).getScaleFactor(
+    nDto, false, ePrefix)
 }
 
 // GetSciNotationNumber - Converts the numeric value of the current
@@ -1914,10 +1918,6 @@ func (nDto *NumStrDto) GetThouStr() string {
 //
 // Example: 1,000,000,000
 func (nDto *NumStrDto) GetThousandsSeparator() rune {
-
-  if nDto.thousandsSeparator == 0 {
-    nDto.thousandsSeparator = ','
-  }
 
   return nDto.thousandsSeparator
 }
