@@ -3068,6 +3068,76 @@ func (nDto *NumStrDto) ParseSignedBigInt(signedBigInt *big.Int, precision uint) 
     numSeps, signedBigInt, precision, ePrefix)
 }
 
+// ParseSignedBigIntNumSeps
+//
+//	Receives a signed *Big Int number and a precision parameter. It
+//	then generates and returns a new instance of NumStrDto.
+//
+//	'precision'
+//	===========
+//
+//	'precision' determines the number of digits to the right of the
+//	decimal place. The boolean parameter 'roundResult' is used to
+//	apply rounding in those cases where 'precision' dictates a
+//	reduction in the number of digits to the right of the decimal
+//	place.
+//
+//	   signedBigInt    precision      result
+//	    946254            3            946.254
+//	    946254            0            946254
+//	   -946254            3           -946.254
+//	   -946254            0           -946254
+//
+//
+//	Maximum Precision Value
+//	=======================
+//
+//	Input parameter 'precision' is an unsigned integer value.
+//	The maximum limit for a 'precision' uint value is
+//	2,147,483,647 or	2^31 - 1. This is also the maximum
+//	allowable limit for a signed 32-bit integer.
+//
+//	If the 'precision' value exceeds the maximum allowable limit,
+//	an error will be returned.
+//
+//	Numeric Separators
+//	==================
+//
+//	Numeric Separators define the Decimal Separator character,
+//	Thousands Separator character, and Currency Symbol character.
+//	These separator characters serve two purposes. First they are
+//	used to format and display numeric values as number strings.
+//	Second, they are also used to parse number strings and
+//	convert them into numeric values.
+//
+//	The final NumStrDto result returned by this method will be
+//	configured with the Numeric Separators copied from input
+//	parameter 'numSeps'. If these Numeric Separators prove
+//	to be invalid, an error will be returned.
+func (nDto *NumStrDto) ParseSignedBigIntNumSeps(
+  signedBigInt *big.Int,
+  precision uint,
+  numSeps NumericSeparatorDto) (NumStrDto, error) {
+
+  var ePrefix *ePref.ErrPrefixDto
+  var err error
+
+  ePrefix,
+    err = ePref.ErrPrefixDto{}.NewIEmpty(
+    nil,
+    "NumStrDto.ParseSignedBigInt",
+    "")
+
+  if err != nil {
+    return NumStrDto{}, err
+  }
+
+  numSeps.SetDefaultsIfEmpty()
+
+  return new(numStrDtoQuark).parseSignedBigInt(
+    numSeps, signedBigInt, precision, ePrefix)
+}
+
 // ParseNumStr
 //
 //	Receives a raw string and converts to a properly formatted
