@@ -1,8 +1,10 @@
 package mathops
 
 import (
+	"fmt"
 	ePref "github.com/MikeAustin71/errpref"
 	"math"
+	"strconv"
 	"sync"
 )
 
@@ -295,6 +297,103 @@ func (nStrDtoMolecule *numStrDtoMolecule) copy(
 	destinationNStrDto.currencySymbol = sourceNStrDto.currencySymbol
 
 	return nil
+}
+
+// NewInt64
+//
+//	Creates a new NumStrDto instance from an int64 value and a
+//	precision specification.
+//
+//	Input parameter 'precision' indicates the number of digits to
+//	be formatted to the right of the decimal place.
+//
+//	Example
+//	=======
+//
+//	          new(NumStrDto).NewInt64(123456, 3)
+//	Yields a NumStrDto instance with a numeric value of 123.456.
+func (nStrDtoMolecule *numStrDtoMolecule) newInt64(
+	numSeps NumericSeparatorDto,
+	i64 int64,
+	precision uint,
+	errPrefDto *ePref.ErrPrefixDto) (NumStrDto, error) {
+
+	nStrDtoMolecule.lock.Lock()
+
+	defer nStrDtoMolecule.lock.Unlock()
+
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
+
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
+		errPrefDto,
+		"numStrDtoMolecule.newInt64()",
+		"")
+
+	if err != nil {
+		return NumStrDto{}, err
+	}
+
+	if new(MathProcessUtility).DoesUintExceedMax32BitInt(precision) {
+
+		return NumStrDto{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "",
+				ErrContext: "",
+				ErrMessage: "Error: Input parameter 'precision' is INVALID!\n" +
+					"'precision' Exceeds the maximum allowable limt of 2,147,483,647.\n" +
+					fmt.Sprintf("precision= '%v'", precision),
+			}
+	}
+
+	err = numSeps.IsValid(ePrefix.XCpy("Validating 'numSeps'").String())
+
+	if err != nil {
+
+		return NumStrDto{}, &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "err = numSeps.IsValid(ePrefix.XCpy(\"Validating 'numSeps'\").String())",
+			ErrContext: "Error: Numeric Separators input paramter ('numSeps') is INVALID!\n" +
+				"'numSeps' FAILED Validation Tests.",
+			ErrMessage: err.Error(),
+		}
+	}
+
+	numStr := strconv.FormatInt(i64, 10)
+
+	n2, err := new(numStrDtoQuark).parseNumStr(
+		numSeps, numStr, ePrefix)
+
+	if err != nil {
+
+		return NumStrDto{},
+			&FuncReturnError{
+				ErrPrefix: ePrefix.String(),
+				ReturnFunc: "n2, err := new(numStrDtoQuark).parseNumStr(\n" +
+					"  numSeps, numStr, ePrefix)",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
+
+	err = new(numStrDtoMuon).setPrecisionNumStrDto(
+		numSeps, &n2, precision, true, ePrefix.XCpy("n2"))
+
+	if err != nil {
+
+		return NumStrDto{},
+			&FuncReturnError{
+				ErrPrefix: ePrefix.String(),
+				ReturnFunc: "err = new(numStrDtoMuon).setPrecisionNumStrDto(\n" +
+					"  numSeps, &n2, precision, true, ePrefix)",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
+
+	return n2, nil
 }
 
 // newZeroNumStrDto
