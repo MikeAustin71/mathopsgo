@@ -501,44 +501,53 @@ func (nDto *NumStrDto) Divide(n2Dto NumStrDto, minimumPrecision, maximumPrecisio
 
 // Equal
 //
-//	Returns true if the input parameter NumStrDto instance is equal
-//	in all respects to the current NumStrDto Instance.
+//	Returns 'true' if the input parameter NumStrDto instance
+//	'n2Dto' is equal in all respects to the current NumStrDto
+//	instance ('nDto').
+//
+//	If the current instance of NumStrDto is invalid, this method
+//	returns 'false'.
+//
+//	Likewise, if the incoming NumStrDto 'n2Dto' is invalid, this
+//	method returns 'false'.
+//
+//	This method differs from NumStrDto.EqualTo in that this method
+//	does not return an error.
 func (nDto *NumStrDto) Equal(n2Dto NumStrDto) bool {
 
-  err := nDto.IsValid("")
+  return new(numStrDtoAtom).equal(nDto, &n2Dto)
+}
+
+// EqualTo
+//
+//	Returns 'true' if the input parameter NumStrDto instance
+//	'n2Dto' is equal in all respects to the current NumStrDto
+//	instance ('nDto').
+//
+//	If the current instance of NumStrDto is invalid, this method
+//	returns 'false'.
+//
+//	Likewise, if the incoming NumStrDto 'n2Dto' is invalid, this
+//	method returns 'false'.
+//
+//	This is identical to NumStrDto.Equal with the sole exceiption
+//	being that this method returns an 'error'.
+func (nDto *NumStrDto) EqualTo(n2Dto NumStrDto) (bool, error) {
+
+  var ePrefix *ePref.ErrPrefixDto
+  var err error
+
+  ePrefix,
+    err = ePref.ErrPrefixDto{}.NewIEmpty(
+    nil,
+    "NumStrDto.EqualTo",
+    "")
 
   if err != nil {
-    return false
+    return false, err
   }
 
-  err = n2Dto.IsValid("")
-
-  if err != nil {
-    return false
-  }
-
-  if nDto.GetNumStr() != n2Dto.GetNumStr() {
-    return false
-  }
-
-  lenAbsRuneArray := len(nDto.absAllNumRunes)
-
-  if nDto.signVal != n2Dto.signVal ||
-    lenAbsRuneArray != len(n2Dto.absAllNumRunes) ||
-    nDto.precision != n2Dto.precision ||
-    nDto.thousandsSeparator != n2Dto.thousandsSeparator ||
-    nDto.decimalSeparator != n2Dto.decimalSeparator ||
-    nDto.currencySymbol != n2Dto.currencySymbol {
-    return false
-  }
-
-  for i := 0; i < lenAbsRuneArray; i++ {
-    if nDto.absAllNumRunes[i] != n2Dto.absAllNumRunes[i] {
-      return false
-    }
-  }
-
-  return true
+  return new(numStrDtoAtom).equalTo(nDto, &n2Dto, ePrefix)
 }
 
 // Empty - Sets all the fields in the NumStrDto
@@ -1566,8 +1575,8 @@ func (nDto *NumStrDto) GetNumStr() (string, error) {
     return "",
       &FuncReturnError{
         ErrPrefix: ePrefix.String(),
-        ReturnFunc: "outStr, err :=new(numStrDtoAtom).\n" +
-          "  formatNumStr(LEADMINUSNEGVALFMTMODE, ePrefix)",
+        ReturnFunc: "outStr, err :=new(numStrDtoAtom).formatNumStr(\n" +
+          "  nDto, true, LEADMINUSNEGVALFMTMODE, ePrefix)",
         ErrContext: "",
         ErrMessage: err.Error(),
       }

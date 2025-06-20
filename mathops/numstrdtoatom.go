@@ -362,6 +362,240 @@ func (nStrDtoAtom *numStrDtoAtom) findIntArraySignificantDigitLimits(
 	return outNStrDto, nil
 }
 
+// equal
+//
+//	Returns 'true' if the input parameter NumStrDto instance is
+//	equal in all respects to the current NumStrDto Instance.
+//
+//	If the current instance of NumStrDto is invalid, this method
+//	returns 'false'.
+//
+//	Likewise, if the incoming NumStrDto 'n2Dto' is invalid, this
+//	method returns 'false'.
+func (nStrDtoAtom *numStrDtoAtom) equal(
+	nDto *NumStrDto,
+	n2Dto *NumStrDto) bool {
+
+	nStrDtoAtom.lock.Lock()
+
+	defer nStrDtoAtom.lock.Unlock()
+
+	ePrefix,
+		err := ePref.ErrPrefixDto{}.NewIEmpty(
+		"",
+		"numStrDtoAtom.equal",
+		"")
+
+	if err != nil {
+		return false
+	}
+
+	if nDto == nil {
+		return false
+	}
+
+	if n2Dto == nil {
+		return false
+	}
+
+	// err := nDto.IsValid("")
+	err = new(numStrDtoElectron).isValidNumStrDto(
+		nDto, ePrefix)
+
+	if err != nil {
+		return false
+	}
+
+	//err = n2Dto.IsValid("")
+	err = new(numStrDtoElectron).isValidNumStrDto(
+		n2Dto, ePrefix)
+
+	if err != nil {
+		return false
+	}
+
+	nDtoNumStr, err := new(numStrDtoAtom).formatNumStr(
+		nDto, false, LEADMINUSNEGVALFMTMODE, ePrefix)
+
+	if err != nil {
+		return false
+	}
+
+	n2DtoNumStr, err := new(numStrDtoAtom).formatNumStr(
+		n2Dto, false, LEADMINUSNEGVALFMTMODE, ePrefix)
+
+	if err != nil {
+		return false
+	}
+
+	if nDtoNumStr != n2DtoNumStr {
+		return false
+	}
+
+	lennDtoAbsRuneArray := len(nDto.absAllNumRunes)
+
+	if nDto.signVal != n2Dto.signVal ||
+		lennDtoAbsRuneArray != len(n2Dto.absAllNumRunes) ||
+		nDto.precision != n2Dto.precision ||
+		nDto.thousandsSeparator != n2Dto.thousandsSeparator ||
+		nDto.decimalSeparator != n2Dto.decimalSeparator ||
+		nDto.currencySymbol != n2Dto.currencySymbol {
+
+		return false
+	}
+
+	for i := 0; i < lennDtoAbsRuneArray; i++ {
+
+		if nDto.absAllNumRunes[i] != n2Dto.absAllNumRunes[i] {
+
+			return false
+		}
+	}
+
+	return true
+}
+
+// equalTo
+//
+//		Returns 'true' if both input parameters 'nDto' and 'n2Dto'
+//		are equal in all respects.
+//
+//		If the current instance of NumStrDto is invalid, this method
+//		returns 'false'.
+//
+//		Likewise, if the incoming NumStrDto 'n2Dto' is invalid, this
+//		method returns 'false'.
+//
+//	 This is identical to  numStrDtoAtom.equal with the sole
+//	 exceiption being that this method returns an 'error'.
+func (nStrDtoAtom *numStrDtoAtom) equalTo(
+	nDto *NumStrDto,
+	n2Dto *NumStrDto,
+	errPrefDto *ePref.ErrPrefixDto) (bool, error) {
+
+	nStrDtoAtom.lock.Lock()
+
+	defer nStrDtoAtom.lock.Unlock()
+
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
+
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
+		errPrefDto,
+		"numStrDtoAtom.equalTo",
+		"")
+
+	if err != nil {
+		return false, err
+	}
+
+	if nDto == nil {
+
+		return false,
+			&InputPtrNilError{
+				ErrPrefix:     ePrefix.String(),
+				ParameterName: "'nDto'",
+			}
+	}
+
+	if n2Dto == nil {
+
+		return false,
+			&InputPtrNilError{
+				ErrPrefix:     ePrefix.String(),
+				ParameterName: "'n2Dto'",
+			}
+	}
+
+	// err := nDto.IsValid("")
+
+	err = new(numStrDtoElectron).isValidNumStrDto(
+		nDto, ePrefix.XCpy("Validating 'nDto'"))
+
+	if err != nil {
+		return false,
+			&FuncReturnError{
+				ErrPrefix: ePrefix.String(),
+				ReturnFunc: "err = new(numStrDtoElectron).isValidNumStrDto(\n" +
+					"nDto, ePrefix.XCpy(\"Validating 'nDto'\"))",
+				ErrContext: "Error: NumStrDto parameter 'nDto' is INVALID!\n" +
+					"'nDto' FAILED Validation Tests.",
+				ErrMessage: err.Error(),
+			}
+	}
+
+	err = new(numStrDtoElectron).isValidNumStrDto(
+		n2Dto, ePrefix.XCpy("Validating 'n2Dto'"))
+
+	if err != nil {
+		return false,
+			&FuncReturnError{
+				ErrPrefix: ePrefix.String(),
+				ReturnFunc: "err = new(numStrDtoElectron).isValidNumStrDto(\n" +
+					"n2Dto, ePrefix.XCpy(\"Validating 'n2Dto'\"))",
+				ErrContext: "Error: NumStrDto input parameter 'n2Dto' is INVALID!\n" +
+					"'n2Dto' FAILED Validation Tests.",
+				ErrMessage: err.Error(),
+			}
+	}
+
+	nDtoNumStr, err := new(numStrDtoAtom).formatNumStr(
+		nDto, false, LEADMINUSNEGVALFMTMODE, ePrefix)
+
+	if err != nil {
+
+		return false,
+			&FuncReturnError{
+				ErrPrefix: ePrefix.String(),
+				ReturnFunc: "outStr, err :=new(numStrDtoAtom).formatNumStr(\n" +
+					"  nDto, false, LEADMINUSNEGVALFMTMODE, ePrefix)",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
+
+	n2DtoNumStr, err := new(numStrDtoAtom).formatNumStr(
+		n2Dto, false, LEADMINUSNEGVALFMTMODE, ePrefix)
+
+	if err != nil {
+
+		return false,
+			&FuncReturnError{
+				ErrPrefix: ePrefix.String(),
+				ReturnFunc: "outStr, err :=new(numStrDtoAtom).formatNumStr(\n" +
+					"  n2Dto, false, LEADMINUSNEGVALFMTMODE, ePrefix)",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
+
+	if nDtoNumStr != n2DtoNumStr {
+		return false, nil
+	}
+
+	lennDtoAbsRuneArray := len(nDto.absAllNumRunes)
+
+	if nDto.signVal != n2Dto.signVal ||
+		lennDtoAbsRuneArray != len(n2Dto.absAllNumRunes) ||
+		nDto.precision != n2Dto.precision ||
+		nDto.thousandsSeparator != n2Dto.thousandsSeparator ||
+		nDto.decimalSeparator != n2Dto.decimalSeparator ||
+		nDto.currencySymbol != n2Dto.currencySymbol {
+
+		return false, nil
+	}
+
+	for i := 0; i < lennDtoAbsRuneArray; i++ {
+		if nDto.absAllNumRunes[i] != n2Dto.absAllNumRunes[i] {
+
+			return false, nil
+		}
+	}
+
+	return true, nil
+}
+
 // formatNumStr
 //
 //	Formats the numeric value of the current NumStrDto as number
