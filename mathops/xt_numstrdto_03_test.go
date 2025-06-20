@@ -15,13 +15,21 @@ func TestNumStrDto_GetAbsoluteBigInt_01(t *testing.T) {
 		t.Errorf("big.SetString(absNumStr,10) Failed!. absNumStr= '%v'", absNumStr)
 	}
 
-	n1, err := NumStrDto{}.NewPtr().ParseNumStr(nStr)
+	n1, err := new(NumStrDto).ParseNumStr(nStr)
 
 	if err != nil {
 		t.Errorf("Received error from n1 NumStrDto.ParseNumStr(nStr). nStr= '%v' Error= %v", nStr, err)
 	}
 
-	absBigInt, err := n1.GetAbsoluteBigInt()
+	absBigInt, _, err := n1.GetAbsoluteBigInt()
+
+	if err != nil {
+		t.Errorf("%v\n"+
+			"Error returned by:\n"+
+			"absBigInt, _, err := n1.GetAbsoluteBigInt()\n"+
+			"Error='%v'\n\n", ePrefix, err.Error())
+		return
+	}
 
 	if absBigInt.Cmp(expected) != 0 {
 		t.Errorf("Expected absBigInt= %v . Instead got, %v", expected.String(), absBigInt.String())

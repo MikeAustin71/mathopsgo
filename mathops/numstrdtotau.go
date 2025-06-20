@@ -630,7 +630,7 @@ func (nStrDtoTau *numStrDtoTau) lowLevelSubtraction(
 	return nOutDto, nil
 }
 
-// MultiplyNumStrs
+// multiplyNumStrs
 //
 //	Multiplies two NumStrDto instances and returns the result as a
 //	separate NumStrDto instance.
