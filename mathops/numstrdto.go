@@ -772,142 +772,56 @@ func (nDto *NumStrDto) FormatForMathOps(n1Dto, n2Dto NumStrDto) (n1DtoOut NumStr
     numSeps, &n1Dto, true, &n2Dto, true, ePrefix.XCpy("n1Dto,n2Dto"))
 }
 
-// FormatCurrencyStr - Formats the current NumStrDto numeric value as a currency string.
+// FormatCurrencyStr
 //
-// If the Currency Symbol was not previously set for this NumStrDto, the currency symbol
-// is defaulted to the USA standard dollar sign, ('$').
+//	Formats the current NumStrDto numeric value as a currency
+//	string.
 //
-// If the Decimal Separator was not previously set for this NumStrDto, the Decimal Separator
-// is defaulted to the USA standard period ('.').
+//	If the current instance of NumStrDto ('nDto') is invalid, an
+//	error will be returned.
 //
-// If the Thousands Separator was not previously set for this NumStrDto, the Thousands
-// Separator is defaulted to the USA standard comma (',').
+//	Input Parameters
+//	================
 //
-// Input Parameters
-// ================
+//	negValMode               NegativeValueFmtMode
+//	  Specifies the display mode for negative values:
 //
-// negValMode NegativeValueFmtMode -	Specifies the display mode for negative values:
+//	  LEADMINUSNEGVALFMTMODE
+//	    Negative values formatted with a leading minus sign.
+//	    Example: -$123,456.78
 //
-//	LEADMINUSNEGVALFMTMODE 		-	Negative values formatted with
-//													 		a leading minus sign.
-//															Example: -$123,456.78
+//	  PARENTHESESNEGVALFMTMODE
+//	    Negative values formatted with surrounding parentheses.
+//	    Example: ($123,456.78)
 //
-//	PARENTHESESNEGVALFMTMODE	-	Negative values formatted with
-//															surrounding parentheses.
-//															Example: ($123,456.78)
+//	Return Values
+//	=============
+//
+//	string
+//	  A number string formatted for currency containing the numeric
+//	  value of the current NumStrDto instance.
+//	    Example:  $123,456.78
+//
+//	error
+//	  If a processing error is encountered, this error object will
+//	  be returned formatted with an appropriate error message.
 func (nDto *NumStrDto) FormatCurrencyStr(negValMode NegativeValueFmtMode) (string, error) {
 
-  ePrefix := "NumStrDto.FormatCurrencyStr() "
+  var ePrefix *ePref.ErrPrefixDto
+  var err error
 
-  if nDto.thousandsSeparator == 0 {
-    nDto.thousandsSeparator = ','
-  }
-
-  if nDto.decimalSeparator == 0 {
-    nDto.decimalSeparator = '.'
-  }
-
-  if nDto.currencySymbol == 0 {
-    nDto.currencySymbol = '$'
-  }
-
-  err := nDto.IsValid("")
+  ePrefix,
+    err = ePref.ErrPrefixDto{}.NewIEmpty(
+    nil,
+    "NumStrDto.FormatCurrencyStr",
+    "")
 
   if err != nil {
-    return "",
-      fmt.Errorf(ePrefix + "")
+    return "", err
   }
 
-  lenAllNumRunes := len(nDto.absAllNumRunes)
-
-  lenOut := lenAllNumRunes
-
-  lenIntRunes := lenAllNumRunes - int(nDto.precision)
-
-  seps := lenIntRunes / 3
-
-  mod := lenIntRunes - (seps * 3)
-
-  if mod == 0 {
-    seps--
-  }
-
-  // adjust for thousands delimiters
-  lenOut += seps
-
-  // adjust for negative sign value
-  if nDto.signVal == -1 {
-    if negValMode == LEADMINUSNEGVALFMTMODE {
-      lenOut++
-    } else {
-      // MUST BE negValMode == PARENTHESESNEGVALFMTMODE
-      lenOut += 2
-    }
-  }
-
-  // adjust for decimal point
-  if nDto.precision > 0 {
-    lenOut++
-  }
-
-  // adjust for currency symbol
-  lenOut++
-
-  outRunes := make([]rune, lenOut)
-  outIdx := lenOut - 1
-  allNumsIdx := lenAllNumRunes - 1
-
-  // If negative value and parenthesis formatting
-  // specified, format trailing parenthesis.
-  if nDto.signVal == -1 &&
-    negValMode == PARENTHESESNEGVALFMTMODE {
-    outRunes[outIdx] = ')'
-    outIdx--
-  }
-
-  if nDto.precision > 0 {
-
-    for i := 0; i < int(nDto.precision); i++ {
-      outRunes[outIdx] = nDto.absAllNumRunes[allNumsIdx]
-      outIdx--
-      allNumsIdx--
-    }
-
-    outRunes[outIdx] = nDto.decimalSeparator
-    outIdx--
-  }
-
-  sepCnt := 0
-
-  for i := 0; i < lenIntRunes; i++ {
-
-    sepCnt++
-
-    if sepCnt == 4 && seps > 0 {
-      sepCnt = 1
-      seps--
-      outRunes[outIdx] = nDto.thousandsSeparator
-      outIdx--
-    }
-
-    outRunes[outIdx] = nDto.absAllNumRunes[allNumsIdx]
-    outIdx--
-    allNumsIdx--
-
-  }
-
-  outRunes[outIdx] = nDto.currencySymbol
-
-  // If required, add leading negative
-  // value sign
-  if nDto.signVal == -1 &&
-    negValMode == PARENTHESESNEGVALFMTMODE {
-    outRunes[0] = '('
-  } else if nDto.signVal == -1 {
-    outRunes[0] = '-'
-  }
-
-  return string(outRunes), nil
+  return new(numStrDtoMechanics).formatCurrencyStr(
+    nDto, true, negValMode, ePrefix)
 
 }
 

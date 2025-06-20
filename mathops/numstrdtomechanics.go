@@ -1,13 +1,13 @@
 package mathops
 
 import (
-	"fmt"
-	ePref "github.com/MikeAustin71/errpref"
-	"sync"
+  "fmt"
+  ePref "github.com/MikeAustin71/errpref"
+  "sync"
 )
 
 type numStrDtoMechanics struct {
-	lock sync.Mutex
+  lock sync.Mutex
 }
 
 // addNumStrDto
@@ -15,121 +15,121 @@ type numStrDtoMechanics struct {
 //	Adds the numeric values of input parameters 'n1Dto' and 'n2Dto'. The
 //	final result is stored in parameter 'n1Dto'.
 func (numStrDtoMech *numStrDtoMechanics) addNumStrDto(
-	numSeps NumericSeparatorDto,
-	n1Dto *NumStrDto,
-	validateN1Dto bool,
-	n2Dto *NumStrDto,
-	validateN2Dto bool,
-	errPrefDto *ePref.ErrPrefixDto) error {
+  numSeps NumericSeparatorDto,
+  n1Dto *NumStrDto,
+  validateN1Dto bool,
+  n2Dto *NumStrDto,
+  validateN2Dto bool,
+  errPrefDto *ePref.ErrPrefixDto) error {
 
-	numStrDtoMech.lock.Lock()
+  numStrDtoMech.lock.Lock()
 
-	defer numStrDtoMech.lock.Unlock()
+  defer numStrDtoMech.lock.Unlock()
 
-	var ePrefix *ePref.ErrPrefixDto
-	var err error
+  var ePrefix *ePref.ErrPrefixDto
+  var err error
 
-	ePrefix,
-		err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
-		errPrefDto,
-		"numStrDtoMechanics.addNumStrDto()",
-		"")
+  ePrefix,
+    err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
+    errPrefDto,
+    "numStrDtoMechanics.addNumStrDto()",
+    "")
 
-	if err != nil {
-		return err
-	}
+  if err != nil {
+    return err
+  }
 
-	if n1Dto == nil {
+  if n1Dto == nil {
 
-		return &InputPtrNilError{
-			ErrPrefix:     ePrefix.String(),
-			ParameterName: "'n1Dto'",
-		}
-	}
+    return &InputPtrNilError{
+      ErrPrefix:     ePrefix.String(),
+      ParameterName: "'n1Dto'",
+    }
+  }
 
-	if n2Dto == nil {
+  if n2Dto == nil {
 
-		return &InputPtrNilError{
-			ErrPrefix:     ePrefix.String(),
-			ParameterName: "'n2Dto'",
-		}
-	}
+    return &InputPtrNilError{
+      ErrPrefix:     ePrefix.String(),
+      ParameterName: "'n2Dto'",
+    }
+  }
 
-	if validateN1Dto {
+  if validateN1Dto {
 
-		err = new(numStrDtoElectron).isValidNumStrDto(
-			n1Dto, ePrefix.XCpy("Validating 'n1Dto'"))
+    err = new(numStrDtoElectron).isValidNumStrDto(
+      n1Dto, ePrefix.XCpy("Validating 'n1Dto'"))
 
-		if err != nil {
+    if err != nil {
 
-			return &FuncReturnError{
-				ErrPrefix: ePrefix.String(),
-				ReturnFunc: "err = new(numStrDtoElectron).isValidNumStrDto(\n" +
-					"  n1Dto, ePrefix)",
-				ErrContext: "",
-				ErrMessage: err.Error(),
-			}
-		}
-	}
+      return &FuncReturnError{
+        ErrPrefix: ePrefix.String(),
+        ReturnFunc: "err = new(numStrDtoElectron).isValidNumStrDto(\n" +
+          "  n1Dto, ePrefix)",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+    }
+  }
 
-	if validateN2Dto {
+  if validateN2Dto {
 
-		err = new(numStrDtoElectron).isValidNumStrDto(
-			n2Dto, ePrefix.XCpy("Validating 'n2Dto'"))
+    err = new(numStrDtoElectron).isValidNumStrDto(
+      n2Dto, ePrefix.XCpy("Validating 'n2Dto'"))
 
-		if err != nil {
+    if err != nil {
 
-			return &FuncReturnError{
-				ErrPrefix: ePrefix.String(),
-				ReturnFunc: "err = new(numStrDtoElectron).isValidNumStrDto(\n" +
-					"  n2Dto, ePrefix)",
-				ErrContext: "",
-				ErrMessage: err.Error(),
-			}
-		}
-	}
+      return &FuncReturnError{
+        ErrPrefix: ePrefix.String(),
+        ReturnFunc: "err = new(numStrDtoElectron).isValidNumStrDto(\n" +
+          "  n2Dto, ePrefix)",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+    }
+  }
 
-	err = numSeps.IsValid(ePrefix.XCpy("Validating 'numSeps'").String())
+  err = numSeps.IsValid(ePrefix.XCpy("Validating 'numSeps'").String())
 
-	if err != nil {
+  if err != nil {
 
-		return &FuncReturnError{
-			ErrPrefix:  ePrefix.String(),
-			ReturnFunc: "err = numSeps.IsValid(ePrefix.XCpy(\"Validating 'numSeps'\").String())",
-			ErrContext: "Error: Numeric Separators input paramter ('numSeps') is INVALID!\n" +
-				"'numSeps' FAILED Validation Tests.",
-			ErrMessage: err.Error(),
-		}
-	}
+    return &FuncReturnError{
+      ErrPrefix:  ePrefix.String(),
+      ReturnFunc: "err = numSeps.IsValid(ePrefix.XCpy(\"Validating 'numSeps'\").String())",
+      ErrContext: "Error: Numeric Separators input paramter ('numSeps') is INVALID!\n" +
+        "'numSeps' FAILED Validation Tests.",
+      ErrMessage: err.Error(),
+    }
+  }
 
-	nResult, err := new(numStrDtoBoson).addNumStrs(
-		numSeps, n1Dto, false, n2Dto, false, ePrefix.XCpy("n1Dto+n2Dto"))
+  nResult, err := new(numStrDtoBoson).addNumStrs(
+    numSeps, n1Dto, false, n2Dto, false, ePrefix.XCpy("n1Dto+n2Dto"))
 
-	if err != nil {
+  if err != nil {
 
-		return &FuncReturnError{
-			ErrPrefix: ePrefix.String(),
-			ReturnFunc: "nResult, err := new(numStrDtoBoson).addNumStrs(\n" +
-				"  numSeps, n1Dto, false, n2Dto, false, ePrefix)",
-			ErrContext: "",
-			ErrMessage: err.Error(),
-		}
-	}
+    return &FuncReturnError{
+      ErrPrefix: ePrefix.String(),
+      ReturnFunc: "nResult, err := new(numStrDtoBoson).addNumStrs(\n" +
+        "  numSeps, n1Dto, false, n2Dto, false, ePrefix)",
+      ErrContext: "",
+      ErrMessage: err.Error(),
+    }
+  }
 
-	err = new(numStrDtoMolecule).copy(n1Dto, &nResult, false, ePrefix.XCpy("nResult->n1Dto"))
+  err = new(numStrDtoMolecule).copy(n1Dto, &nResult, false, ePrefix.XCpy("nResult->n1Dto"))
 
-	if err != nil {
+  if err != nil {
 
-		return &FuncReturnError{
-			ErrPrefix: ePrefix.String(),
-			ReturnFunc: "err = new(numStrDtoMolecule).copy(\n" +
-				"  n1Dto, &nResult, false, ePrefix)",
-			ErrContext: "",
-			ErrMessage: err.Error(),
-		}
-	}
+    return &FuncReturnError{
+      ErrPrefix: ePrefix.String(),
+      ReturnFunc: "err = new(numStrDtoMolecule).copy(\n" +
+        "  n1Dto, &nResult, false, ePrefix)",
+      ErrContext: "",
+      ErrMessage: err.Error(),
+    }
+  }
 
-	return nil
+  return nil
 }
 
 // addNumStrs
@@ -154,109 +154,109 @@ func (numStrDtoMech *numStrDtoMechanics) addNumStrDto(
 //	 	parameter 'numSeps'. If these Numeric Separators are
 //		determined to be invalid, an error will be returned.
 func (numStrDtoMech *numStrDtoMechanics) addNumStrs(
-	numSeps NumericSeparatorDto,
-	n1Dto *NumStrDto,
-	validateN1Dto bool,
-	n2Dto *NumStrDto,
-	validateN2Dto bool,
-	errPrefDto *ePref.ErrPrefixDto) (NumStrDto, error) {
+  numSeps NumericSeparatorDto,
+  n1Dto *NumStrDto,
+  validateN1Dto bool,
+  n2Dto *NumStrDto,
+  validateN2Dto bool,
+  errPrefDto *ePref.ErrPrefixDto) (NumStrDto, error) {
 
-	numStrDtoMech.lock.Lock()
+  numStrDtoMech.lock.Lock()
 
-	defer numStrDtoMech.lock.Unlock()
+  defer numStrDtoMech.lock.Unlock()
 
-	var ePrefix *ePref.ErrPrefixDto
-	var err error
+  var ePrefix *ePref.ErrPrefixDto
+  var err error
 
-	ePrefix,
-		err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
-		errPrefDto,
-		"numStrDtoMechanics.addNumStrs()",
-		"")
+  ePrefix,
+    err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
+    errPrefDto,
+    "numStrDtoMechanics.addNumStrs()",
+    "")
 
-	if err != nil {
-		return NumStrDto{}, err
-	}
+  if err != nil {
+    return NumStrDto{}, err
+  }
 
-	if n1Dto == nil {
+  if n1Dto == nil {
 
-		return NumStrDto{}, &InputPtrNilError{
-			ErrPrefix:     ePrefix.String(),
-			ParameterName: "'n1Dto'",
-		}
-	}
+    return NumStrDto{}, &InputPtrNilError{
+      ErrPrefix:     ePrefix.String(),
+      ParameterName: "'n1Dto'",
+    }
+  }
 
-	if n2Dto == nil {
+  if n2Dto == nil {
 
-		return NumStrDto{}, &InputPtrNilError{
-			ErrPrefix:     ePrefix.String(),
-			ParameterName: "'n2Dto'",
-		}
-	}
+    return NumStrDto{}, &InputPtrNilError{
+      ErrPrefix:     ePrefix.String(),
+      ParameterName: "'n2Dto'",
+    }
+  }
 
-	if validateN1Dto {
+  if validateN1Dto {
 
-		err = new(numStrDtoElectron).isValidNumStrDto(
-			n1Dto, ePrefix.XCpy("Validating 'n1Dto'"))
+    err = new(numStrDtoElectron).isValidNumStrDto(
+      n1Dto, ePrefix.XCpy("Validating 'n1Dto'"))
 
-		if err != nil {
+    if err != nil {
 
-			return NumStrDto{}, &FuncReturnError{
-				ErrPrefix: ePrefix.String(),
-				ReturnFunc: "err = new(numStrDtoElectron).isValidNumStrDto(\n" +
-					"  n1Dto, ePrefix)",
-				ErrContext: "",
-				ErrMessage: err.Error(),
-			}
-		}
-	}
+      return NumStrDto{}, &FuncReturnError{
+        ErrPrefix: ePrefix.String(),
+        ReturnFunc: "err = new(numStrDtoElectron).isValidNumStrDto(\n" +
+          "  n1Dto, ePrefix)",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+    }
+  }
 
-	if validateN2Dto {
+  if validateN2Dto {
 
-		err = new(numStrDtoElectron).isValidNumStrDto(
-			n2Dto, ePrefix.XCpy("Validating 'n2Dto'"))
+    err = new(numStrDtoElectron).isValidNumStrDto(
+      n2Dto, ePrefix.XCpy("Validating 'n2Dto'"))
 
-		if err != nil {
+    if err != nil {
 
-			return NumStrDto{}, &FuncReturnError{
-				ErrPrefix: ePrefix.String(),
-				ReturnFunc: "err = new(numStrDtoElectron).isValidNumStrDto(\n" +
-					"  n2Dto, ePrefix)",
-				ErrContext: "",
-				ErrMessage: err.Error(),
-			}
-		}
-	}
+      return NumStrDto{}, &FuncReturnError{
+        ErrPrefix: ePrefix.String(),
+        ReturnFunc: "err = new(numStrDtoElectron).isValidNumStrDto(\n" +
+          "  n2Dto, ePrefix)",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+    }
+  }
 
-	err = numSeps.IsValid(ePrefix.XCpy("Validating 'numSeps'").String())
+  err = numSeps.IsValid(ePrefix.XCpy("Validating 'numSeps'").String())
 
-	if err != nil {
+  if err != nil {
 
-		return NumStrDto{}, &FuncReturnError{
-			ErrPrefix:  ePrefix.String(),
-			ReturnFunc: "err = numSeps.IsValid(ePrefix.XCpy(\"Validating 'numSeps'\").String())",
-			ErrContext: "Error: Numeric Separators input paramter ('numSeps') is INVALID!\n" +
-				"'numSeps' FAILED Validation Tests.",
-			ErrMessage: err.Error(),
-		}
-	}
+    return NumStrDto{}, &FuncReturnError{
+      ErrPrefix:  ePrefix.String(),
+      ReturnFunc: "err = numSeps.IsValid(ePrefix.XCpy(\"Validating 'numSeps'\").String())",
+      ErrContext: "Error: Numeric Separators input paramter ('numSeps') is INVALID!\n" +
+        "'numSeps' FAILED Validation Tests.",
+      ErrMessage: err.Error(),
+    }
+  }
 
-	var totalNStrDto NumStrDto
+  var totalNStrDto NumStrDto
 
-	totalNStrDto, err = new(numStrDtoBoson).addNumStrs(
-		numSeps, n1Dto, false, n2Dto, false, ePrefix.XCpy("n1Dto + n2Dto"))
+  totalNStrDto, err = new(numStrDtoBoson).addNumStrs(
+    numSeps, n1Dto, false, n2Dto, false, ePrefix.XCpy("n1Dto + n2Dto"))
 
-	if err != nil {
-		return NumStrDto{}, &FuncReturnError{
-			ErrPrefix: ePrefix.String(),
-			ReturnFunc: "totalNStrDto, err = new(numStrDtoBoson).addNumStrs(\n" +
-				"  numSeps, n1Dto, false, n2Dto, false, ePrefix)",
-			ErrContext: "",
-			ErrMessage: err.Error(),
-		}
-	}
+  if err != nil {
+    return NumStrDto{}, &FuncReturnError{
+      ErrPrefix: ePrefix.String(),
+      ReturnFunc: "totalNStrDto, err = new(numStrDtoBoson).addNumStrs(\n" +
+        "  numSeps, n1Dto, false, n2Dto, false, ePrefix)",
+      ErrContext: "",
+      ErrMessage: err.Error(),
+    }
+  }
 
-	return totalNStrDto, nil
+  return totalNStrDto, nil
 }
 
 // divideNumStrs
@@ -278,216 +278,443 @@ func (numStrDtoMech *numStrDtoMechanics) addNumStrs(
 //	result. If 'minimumPrecision' is less than zero, an error will
 //	be returned.
 func (numStrDtoMech *numStrDtoMechanics) divideNumStrs(
-	numSeps NumericSeparatorDto,
-	dividendDto *NumStrDto,
-	validateDividend bool,
-	divisorDto *NumStrDto,
-	validateDivisor bool,
-	minimumPrecision int,
-	maximumPrecision int,
-	errPrefDto *ePref.ErrPrefixDto) (NumStrDto, error) {
+  numSeps NumericSeparatorDto,
+  dividendDto *NumStrDto,
+  validateDividend bool,
+  divisorDto *NumStrDto,
+  validateDivisor bool,
+  minimumPrecision int,
+  maximumPrecision int,
+  errPrefDto *ePref.ErrPrefixDto) (NumStrDto, error) {
 
-	numStrDtoMech.lock.Lock()
+  numStrDtoMech.lock.Lock()
 
-	defer numStrDtoMech.lock.Unlock()
+  defer numStrDtoMech.lock.Unlock()
 
-	var ePrefix *ePref.ErrPrefixDto
-	var err error
+  var ePrefix *ePref.ErrPrefixDto
+  var err error
 
-	ePrefix,
-		err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
-		errPrefDto,
-		"numStrDtoMechanics.divideNumStrs()",
-		"")
+  ePrefix,
+    err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
+    errPrefDto,
+    "numStrDtoMechanics.divideNumStrs()",
+    "")
 
-	if err != nil {
-		return NumStrDto{}, err
-	}
+  if err != nil {
+    return NumStrDto{}, err
+  }
 
-	if dividendDto == nil {
+  if dividendDto == nil {
 
-		return NumStrDto{}, &InputPtrNilError{
-			ErrPrefix:     ePrefix.String(),
-			ParameterName: "'dividendDto'",
-		}
-	}
+    return NumStrDto{}, &InputPtrNilError{
+      ErrPrefix:     ePrefix.String(),
+      ParameterName: "'dividendDto'",
+    }
+  }
 
-	if divisorDto == nil {
+  if divisorDto == nil {
 
-		return NumStrDto{}, &InputPtrNilError{
-			ErrPrefix:     ePrefix.String(),
-			ParameterName: "'divisorDto'",
-		}
-	}
+    return NumStrDto{}, &InputPtrNilError{
+      ErrPrefix:     ePrefix.String(),
+      ParameterName: "'divisorDto'",
+    }
+  }
 
-	if validateDividend {
+  if validateDividend {
 
-		err = new(numStrDtoElectron).isValidNumStrDto(
-			dividendDto, ePrefix.XCpy("Validating 'dividendDto'"))
+    err = new(numStrDtoElectron).isValidNumStrDto(
+      dividendDto, ePrefix.XCpy("Validating 'dividendDto'"))
 
-		if err != nil {
+    if err != nil {
 
-			return NumStrDto{}, &FuncReturnError{
-				ErrPrefix: ePrefix.String(),
-				ReturnFunc: "err = new(numStrDtoElectron).isValidNumStrDto(\n" +
-					"  dividendDto, ePrefix)",
-				ErrContext: "Error: Input parameter 'dividendDto' is INVALID!\n" +
-					"'dividendDto' FAILED Validation Tests.",
-				ErrMessage: err.Error(),
-			}
-		}
-	}
+      return NumStrDto{}, &FuncReturnError{
+        ErrPrefix: ePrefix.String(),
+        ReturnFunc: "err = new(numStrDtoElectron).isValidNumStrDto(\n" +
+          "  dividendDto, ePrefix)",
+        ErrContext: "Error: Input parameter 'dividendDto' is INVALID!\n" +
+          "'dividendDto' FAILED Validation Tests.",
+        ErrMessage: err.Error(),
+      }
+    }
+  }
 
-	if validateDivisor {
+  if validateDivisor {
 
-		err = new(numStrDtoElectron).isValidNumStrDto(
-			divisorDto, ePrefix.XCpy("Validating 'divisorDto'"))
+    err = new(numStrDtoElectron).isValidNumStrDto(
+      divisorDto, ePrefix.XCpy("Validating 'divisorDto'"))
 
-		if err != nil {
+    if err != nil {
 
-			return NumStrDto{}, &FuncReturnError{
-				ErrPrefix: ePrefix.String(),
-				ReturnFunc: "err = new(numStrDtoElectron).isValidNumStrDto(\n" +
-					"  divisorDto, ePrefix)",
-				ErrContext: "Error: Input parameter 'divisorDto' is INVALID!\n" +
-					"'divisorDto' FAILED Validation Tests.",
-				ErrMessage: err.Error(),
-			}
-		}
-	}
+      return NumStrDto{}, &FuncReturnError{
+        ErrPrefix: ePrefix.String(),
+        ReturnFunc: "err = new(numStrDtoElectron).isValidNumStrDto(\n" +
+          "  divisorDto, ePrefix)",
+        ErrContext: "Error: Input parameter 'divisorDto' is INVALID!\n" +
+          "'divisorDto' FAILED Validation Tests.",
+        ErrMessage: err.Error(),
+      }
+    }
+  }
 
-	err = numSeps.IsValid(ePrefix.XCpy("Validating 'numSeps'").String())
+  err = numSeps.IsValid(ePrefix.XCpy("Validating 'numSeps'").String())
 
-	if err != nil {
+  if err != nil {
 
-		return NumStrDto{}, &FuncReturnError{
-			ErrPrefix:  ePrefix.String(),
-			ReturnFunc: "err = numSeps.IsValid(ePrefix.XCpy(\"Validating 'numSeps'\").String())",
-			ErrContext: "Error: Numeric Separators input paramter ('numSeps') is INVALID!\n" +
-				"'numSeps' FAILED Validation Tests.",
-			ErrMessage: err.Error(),
-		}
-	}
+    return NumStrDto{}, &FuncReturnError{
+      ErrPrefix:  ePrefix.String(),
+      ReturnFunc: "err = numSeps.IsValid(ePrefix.XCpy(\"Validating 'numSeps'\").String())",
+      ErrContext: "Error: Numeric Separators input paramter ('numSeps') is INVALID!\n" +
+        "'numSeps' FAILED Validation Tests.",
+      ErrMessage: err.Error(),
+    }
+  }
 
-	dividendNumStr, err := new(numStrDtoAtom).formatNumStr(
-		dividendDto, false, LEADMINUSNEGVALFMTMODE, ePrefix)
+  dividendNumStr, err := new(numStrDtoAtom).formatNumStr(
+    dividendDto, false, LEADMINUSNEGVALFMTMODE, ePrefix)
 
-	if err != nil {
+  if err != nil {
 
-		return NumStrDto{},
-			&FuncReturnError{
-				ErrPrefix: ePrefix.String(),
-				ReturnFunc: "dividendNumStr, err := new(numStrDtoAtom).formatNumStr(\n" +
-					"  dividendDto, false, LEADMINUSNEGVALFMTMODE, ePrefix)",
-				ErrContext: "",
-				ErrMessage: err.Error(),
-			}
-	}
+    return NumStrDto{},
+      &FuncReturnError{
+        ErrPrefix: ePrefix.String(),
+        ReturnFunc: "dividendNumStr, err := new(numStrDtoAtom).formatNumStr(\n" +
+          "  dividendDto, false, LEADMINUSNEGVALFMTMODE, ePrefix)",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+  }
 
-	divisorNumStr, err := new(numStrDtoAtom).formatNumStr(
-		divisorDto, false, LEADMINUSNEGVALFMTMODE, ePrefix)
+  divisorNumStr, err := new(numStrDtoAtom).formatNumStr(
+    divisorDto, false, LEADMINUSNEGVALFMTMODE, ePrefix)
 
-	if err != nil {
+  if err != nil {
 
-		return NumStrDto{},
-			&FuncReturnError{
-				ErrPrefix: ePrefix.String(),
-				ReturnFunc: "divisorNumStr, err := new(numStrDtoAtom).formatNumStr(\n" +
-					"  divisorDto, false, LEADMINUSNEGVALFMTMODE, ePrefix)",
-				ErrContext: "",
-				ErrMessage: err.Error(),
-			}
-	}
+    return NumStrDto{},
+      &FuncReturnError{
+        ErrPrefix: ePrefix.String(),
+        ReturnFunc: "divisorNumStr, err := new(numStrDtoAtom).formatNumStr(\n" +
+          "  divisorDto, false, LEADMINUSNEGVALFMTMODE, ePrefix)",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+  }
 
-	iaDividend, err := new(IntAry).NewNumStrWithNumSeps(
-		dividendNumStr, numSeps)
+  iaDividend, err := new(IntAry).NewNumStrWithNumSeps(
+    dividendNumStr, numSeps)
 
-	if err != nil {
+  if err != nil {
 
-		return NumStrDto{},
-			&FuncReturnError{
-				ErrPrefix: ePrefix.String(),
-				ReturnFunc: "iaDividend, err := new(IntAry).NewNumStrWithNumSeps(\n" +
-					"dividendNumStr, numSeps)",
-				ErrContext: fmt.Sprintf("dividendNumStr= '%v'", dividendNumStr),
-				ErrMessage: err.Error(),
-			}
-	}
+    return NumStrDto{},
+      &FuncReturnError{
+        ErrPrefix: ePrefix.String(),
+        ReturnFunc: "iaDividend, err := new(IntAry).NewNumStrWithNumSeps(\n" +
+          "dividendNumStr, numSeps)",
+        ErrContext: fmt.Sprintf("dividendNumStr= '%v'", dividendNumStr),
+        ErrMessage: err.Error(),
+      }
+  }
 
-	iaDivisor, err := new(IntAry).NewNumStrWithNumSeps(
-		divisorNumStr, numSeps)
+  iaDivisor, err := new(IntAry).NewNumStrWithNumSeps(
+    divisorNumStr, numSeps)
 
-	if err != nil {
+  if err != nil {
 
-		return NumStrDto{},
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "iaDivisor, err := new(IntAry).NewNumStrWithNumSeps(",
-				ErrContext: "divisorNumStr, numSeps)",
-				ErrMessage: err.Error(),
-			}
-	}
+    return NumStrDto{},
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "iaDivisor, err := new(IntAry).NewNumStrWithNumSeps(",
+        ErrContext: "divisorNumStr, numSeps)",
+        ErrMessage: err.Error(),
+      }
+  }
 
-	iaQuotient, err := new(IntAryMathDivide).Divide(
-		&iaDividend, &iaDivisor, minimumPrecision, maximumPrecision)
+  iaQuotient, err := new(IntAryMathDivide).Divide(
+    &iaDividend, &iaDivisor, minimumPrecision, maximumPrecision)
 
-	if err != nil {
+  if err != nil {
 
-		return NumStrDto{},
-			&FuncReturnError{
-				ErrPrefix: ePrefix.String(),
-				ReturnFunc: "iaQuotient, err = new(IntAryMathDivide).Divide(\n" +
-					"  &iaDividend, &iaDivisor, minimumPrecision, maximumPrecision)",
-				ErrContext: fmt.Sprintf("iaDividend= '%v'\n iaDivisor= '%v'\n"+
-					"minPrecision= '%v'\nmaxPrecision= '%v'",
-					dividendNumStr, divisorNumStr, minimumPrecision, maximumPrecision),
-				ErrMessage: err.Error(),
-			}
-	}
+    return NumStrDto{},
+      &FuncReturnError{
+        ErrPrefix: ePrefix.String(),
+        ReturnFunc: "iaQuotient, err = new(IntAryMathDivide).Divide(\n" +
+          "  &iaDividend, &iaDivisor, minimumPrecision, maximumPrecision)",
+        ErrContext: fmt.Sprintf("iaDividend= '%v'\n iaDivisor= '%v'\n"+
+          "minPrecision= '%v'\nmaxPrecision= '%v'",
+          dividendNumStr, divisorNumStr, minimumPrecision, maximumPrecision),
+        ErrMessage: err.Error(),
+      }
+  }
 
-	resultNumStrDto, err := iaQuotient.GetNumStrDto()
+  resultNumStrDto, err := iaQuotient.GetNumStrDto()
 
-	if err != nil {
+  if err != nil {
 
-		return NumStrDto{},
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "resultNumStrDto, err := iaQuotient.GetNumStrDto()",
-				ErrContext: "",
-				ErrMessage: err.Error(),
-			}
-	}
+    return NumStrDto{},
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "resultNumStrDto, err := iaQuotient.GetNumStrDto()",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+  }
 
-	if resultNumStrDto.GetPrecision() < minimumPrecision {
+  if resultNumStrDto.GetPrecision() < minimumPrecision {
 
-		err = resultNumStrDto.SetThisPrecision(uint(minimumPrecision), false)
+    err = resultNumStrDto.SetThisPrecision(uint(minimumPrecision), false)
 
-		if err != nil {
+    if err != nil {
 
-			return NumStrDto{},
-				&FuncReturnError{
-					ErrPrefix:  ePrefix.String(),
-					ReturnFunc: "err = resultNumStrDto.SetThisPrecision(uint(minimumPrecision), false)",
-					ErrContext: "",
-					ErrMessage: err.Error(),
-				}
-		}
-	}
+      return NumStrDto{},
+        &FuncReturnError{
+          ErrPrefix:  ePrefix.String(),
+          ReturnFunc: "err = resultNumStrDto.SetThisPrecision(uint(minimumPrecision), false)",
+          ErrContext: "",
+          ErrMessage: err.Error(),
+        }
+    }
+  }
 
-	err = new(numStrDtoElectron).isValidNumStrDto(
-		&resultNumStrDto, ePrefix.XCpy("Validating 'resultNumStrDto'"))
+  err = new(numStrDtoElectron).isValidNumStrDto(
+    &resultNumStrDto, ePrefix.XCpy("Validating 'resultNumStrDto'"))
 
-	if err != nil {
+  if err != nil {
 
-		return NumStrDto{}, &FuncReturnError{
-			ErrPrefix: ePrefix.String(),
-			ReturnFunc: "err = new(numStrDtoElectron).isValidNumStrDto(\n" +
-				"  &resultNumStrDto, ePrefix)",
-			ErrContext: "Error: Final Result NumStrDto 'resultNumStrDto' is INVALID!\n" +
-				"'resultNumStrDto' FAILED Validation Tests.",
-			ErrMessage: err.Error(),
-		}
-	}
+    return NumStrDto{}, &FuncReturnError{
+      ErrPrefix: ePrefix.String(),
+      ReturnFunc: "err = new(numStrDtoElectron).isValidNumStrDto(\n" +
+        "  &resultNumStrDto, ePrefix)",
+      ErrContext: "Error: Final Result NumStrDto 'resultNumStrDto' is INVALID!\n" +
+        "'resultNumStrDto' FAILED Validation Tests.",
+      ErrMessage: err.Error(),
+    }
+  }
 
-	return resultNumStrDto, nil
+  return resultNumStrDto, nil
+}
+
+// formatCurrencyStr
+//
+//	Formats the current NumStrDto numeric value as a currency
+//	string.
+//
+//	If the Currency Symbol was not previously set for the
+//	NumStrDto instance 'nDto', an error will be returned.
+//
+//	Input Parameters
+//	================
+//
+//	negValMode               NegativeValueFmtMode
+//	  Specifies the display mode for negative values:
+//
+//	  LEADMINUSNEGVALFMTMODE
+//	    Negative values formatted with a leading minus sign.
+//	    Example: -$123,456.78
+//
+//	  PARENTHESESNEGVALFMTMODE
+//	    Negative values formatted with surrounding parentheses.
+//	    Example: ($123,456.78)
+//
+//	Return Values
+//	=============
+//
+//	string
+//	  A number string formatted for currency containing the numeric
+//	  value of the current NumStrDto instance.
+//	    Example:  $123,456.78
+//
+//	error
+//	  If a processing error is encountered, this error object will
+//	  be returned formatted with an appropriate error message.
+func (numStrDtoMech *numStrDtoMechanics) formatCurrencyStr(
+  nDto *NumStrDto,
+  validateNDto bool,
+  negValMode NegativeValueFmtMode,
+  errPrefDto *ePref.ErrPrefixDto) (string, error) {
+
+  numStrDtoMech.lock.Lock()
+
+  defer numStrDtoMech.lock.Unlock()
+
+  var ePrefix *ePref.ErrPrefixDto
+  var err error
+
+  ePrefix,
+    err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
+    errPrefDto,
+    "numStrDtoMechanics.formatCurrencyStr()",
+    "")
+
+  if err != nil {
+    return "", err
+  }
+
+  if nDto == nil {
+
+    return "", &InputPtrNilError{
+      ErrPrefix:     ePrefix.String(),
+      ParameterName: "'nDto'",
+    }
+  }
+
+  if validateNDto {
+
+    err = new(numStrDtoElectron).isValidNumStrDto(
+      nDto, ePrefix.XCpy("Validating 'nDto'"))
+
+    if err != nil {
+
+      return "", &FuncReturnError{
+        ErrPrefix: ePrefix.String(),
+        ReturnFunc: "err = new(numStrDtoElectron).isValidNumStrDto(\n" +
+          "  nDto, ePrefix)",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+    }
+  }
+
+  numSeps, err := new(numStrDtoAtom).getNumericSeparatorsDto(
+    nDto, ePrefix.XCpy("nDto -> numSeps"))
+
+  if err != nil {
+    return "",
+      &FuncReturnError{
+        ErrPrefix: ePrefix.String(),
+        ReturnFunc: "numSeps, err := new(numStrDtoAtom).getNumericSeparatorsDto(\n" +
+          "  nDto, ePrefix.XCpy(\"nDto -> numSeps\"))",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+  }
+
+  if !validateNDto {
+
+    err = numSeps.IsValid(ePrefix.XCpy("Validating 'numSeps'").String())
+
+    if err != nil {
+
+      return "",
+        &FuncReturnError{
+          ErrPrefix:  ePrefix.String(),
+          ReturnFunc: "err = numSeps.IsValid(ePrefix.XCpy(\"Validating 'numSeps'\").String())",
+          ErrContext: "Error: The NumStrDto instance ('nDto') is INVALID!\n" +
+            "Numeric Separators from 'nDto' FAILED Validation Tests.",
+          ErrMessage: err.Error(),
+        }
+    }
+  }
+
+  lenAllNumRunes := len(nDto.absAllNumRunes)
+
+  lenOut := lenAllNumRunes
+
+  lenIntRunes := lenAllNumRunes - int(nDto.precision)
+
+  seps := lenIntRunes / 3
+
+  mod := lenIntRunes - (seps * 3)
+
+  if mod == 0 {
+
+    seps--
+  }
+
+  // adjust for thousands delimiters
+  lenOut += seps
+
+  // adjust for negative sign value
+  if nDto.signVal == -1 {
+
+    if negValMode == LEADMINUSNEGVALFMTMODE {
+
+      lenOut++
+
+    } else {
+
+      // MUST BE negValMode == PARENTHESESNEGVALFMTMODE
+      lenOut += 2
+    }
+  }
+
+  // adjust for decimal point
+  if nDto.precision > 0 {
+
+    lenOut++
+  }
+
+  // adjust for currency symbol
+  lenOut++
+
+  outRunes := make([]rune, lenOut)
+
+  outIdx := lenOut - 1
+
+  allNumsIdx := lenAllNumRunes - 1
+
+  // If negative value and parenthesis formatting
+  // specified, format trailing parenthesis.
+  if nDto.signVal == -1 &&
+    negValMode == PARENTHESESNEGVALFMTMODE {
+
+    outRunes[outIdx] = ')'
+
+    outIdx--
+  }
+
+  if nDto.precision > 0 {
+
+    for i := 0; i < int(nDto.precision); i++ {
+
+      outRunes[outIdx] = nDto.absAllNumRunes[allNumsIdx]
+
+      outIdx--
+
+      allNumsIdx--
+    }
+
+    outRunes[outIdx] = nDto.decimalSeparator
+
+    outIdx--
+  }
+
+  sepCnt := 0
+
+  for i := 0; i < lenIntRunes; i++ {
+
+    sepCnt++
+
+    if sepCnt == 4 && seps > 0 {
+
+      sepCnt = 1
+
+      seps--
+
+      outRunes[outIdx] = nDto.thousandsSeparator
+
+      outIdx--
+    }
+
+    outRunes[outIdx] = nDto.absAllNumRunes[allNumsIdx]
+
+    outIdx--
+
+    allNumsIdx--
+
+  }
+
+  outRunes[outIdx] = numSeps.CurrencySymbol
+
+  // If required, add leading negative
+  // value sign
+  if nDto.signVal == -1 &&
+    negValMode == PARENTHESESNEGVALFMTMODE {
+
+    outRunes[0] = '('
+
+  } else if nDto.signVal == -1 {
+
+    outRunes[0] = '-'
+  }
+
+  return string(outRunes), nil
 }
