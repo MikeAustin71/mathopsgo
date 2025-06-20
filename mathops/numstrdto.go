@@ -777,8 +777,11 @@ func (nDto *NumStrDto) FormatForMathOps(n1Dto, n2Dto NumStrDto) (n1DtoOut NumStr
 //	Formats the current NumStrDto numeric value as a currency
 //	string.
 //
-//	If the current instance of NumStrDto ('nDto') is invalid, an
-//	error will be returned.
+//	IMPORTANT
+//	=========
+//
+//	If the current NumStrDto instance is invalid, an error will be
+//	returned.
 //
 //	Input Parameters
 //	================
@@ -838,12 +841,8 @@ func (nDto *NumStrDto) FormatCurrencyStr(negValMode NegativeValueFmtMode) (strin
 //	IMPORTANT
 //	=========
 //
-//	Make certain that the decimal separator has been properly
-//	configured for the current NumStrDto instance BEFORE you
-//	call this method. Note: The USA decimal separator is the
-//	period '.'. Decimal separators are used to separate integer
-//	and fractional components of a numeric value. If the decimal
-//	separator rune is set to zero, an error will be returned.
+//	If the current NumStrDto instance is invalid, an error will be
+//	returned.
 //
 //	Input Parameters
 //	================
@@ -851,13 +850,25 @@ func (nDto *NumStrDto) FormatCurrencyStr(negValMode NegativeValueFmtMode) (strin
 //	negValMode               NegativeValueFmtMode
 //	  Specifies the display mode for negative values:
 //
-//	  LEADMINUSNEGVALFMTMODE    - Negative values formatted with
-//	                              a leading minus sign.
-//	                              Example: -123456.78
+//	    LEADMINUSNEGVALFMTMODE
+//	      Negative values formatted with a leading minus sign.
+//	        Example: -123456.78
 //
-//	  PARENTHESESNEGVALFMTMODE  - Negative values formatted with
-//	                              surrounding parentheses.
-//	                              Example: (123456.78)
+//	    PARENTHESESNEGVALFMTMODE
+//	      Negative values formatted with surrounding parentheses.
+//	        Example: (123456.78)
+//
+//	Return Values
+//	=============
+//
+//	string
+//	  A formatted number string containing the numeric value of the
+//	  current NumStrDto instance.
+//	    Example:  123456.78
+//
+//	error
+//	  If a processing error is encountered, this error object will
+//	  be returned formatted with an appropriate error message.
 func (nDto *NumStrDto) FormatNumStr(negValMode NegativeValueFmtMode) (string, error) {
 
   var ePrefix *ePref.ErrPrefixDto
@@ -877,132 +888,66 @@ func (nDto *NumStrDto) FormatNumStr(negValMode NegativeValueFmtMode) (string, er
     nDto, true, negValMode, ePrefix)
 }
 
-// FormatThousandsStr - Returns the number string delimited with the
-// nDto.thousandsSeparator character plus the Decimal Separator if
-// applicable.
+// FormatThousandsStr
 //
-// Example:
-// numstr = 1000000.234 converted to 1,000,000.234
+//	Extracts the numeric value from the current NumStrDto instance
+//	and returns the equivalent number string delimited with the
+//	nDto.thousandsSeparator character plus the decimal separator if
+//	applicable.
 //
-// Input Parameters
-// ================
+//	Example
+//	=======
 //
-// Input Parameters
-// ================
+//	  numstr = 1000000.234 converted to 1,000,000.234
 //
-// negValMode NegativeValueFmtMode -	Specifies the display mode for negative values:
+//	IMPORTANT
+//	=========
 //
-//	LEADMINUSNEGVALFMTMODE 		-	Negative values formatted with
-//													 		a leading minus sign.
-//															Example: -123,456.78
+//	If the current NumStrDto instance is invalid, an error will be
+//	returned.
 //
-//	PARENTHESESNEGVALFMTMODE	-	Negative values formatted with
-//															surrounding parentheses.
-//															Example: (123,456.78)
+//	Input Parameters
+//	================
+//
+//	  negValMode             NegativeValueFmtMode
+//	    Specifies the display mode for negative values:
+//
+//	    LEADMINUSNEGVALFMTMODE
+//	      Negative values formatted with a leading minus sign.
+//	        Example: -123,456.78
+//
+//	    PARENTHESESNEGVALFMTMODE
+//	      Negative values formatted with surrounding parentheses.
+//	        Example: (123,456.78)
+//
+//	Return Values
+//	=============
+//
+//	string
+//	  A number string containing the numeric value of the current
+//	  NumStrDto instance formatted with thousands separators.
+//	    Example:  123,456.78
+//
+//	error
+//	  If a processing error is encountered, this error object will
+//	  be returned formatted with an appropriate error message.
 func (nDto *NumStrDto) FormatThousandsStr(negValMode NegativeValueFmtMode) (string, error) {
 
-  ePrefix := "NumStrDto.FormatThousandsStr() "
+  var ePrefix *ePref.ErrPrefixDto
+  var err error
 
-  if nDto.thousandsSeparator == 0 {
-    nDto.thousandsSeparator = ','
-  }
-
-  if nDto.decimalSeparator == 0 {
-    nDto.decimalSeparator = '.'
-  }
-
-  err := nDto.IsValid("")
+  ePrefix,
+    err = ePref.ErrPrefixDto{}.NewIEmpty(
+    nil,
+    "NumStrDto.FormatThousandsStr",
+    "")
 
   if err != nil {
-    return "", fmt.Errorf(ePrefix+"NumStrDto INVALID! Error='%v'",
-      err.Error())
+    return "", err
   }
 
-  lenAllNumRunes := len(nDto.absAllNumRunes)
-
-  lenOut := lenAllNumRunes
-
-  lenIntRunes := lenAllNumRunes - int(nDto.precision)
-
-  seps := lenIntRunes / 3
-
-  mod := lenIntRunes - (seps * 3)
-
-  if mod == 0 {
-    seps--
-  }
-
-  // adjust for thousands delimiters
-  lenOut += seps
-
-  // adjust for negative sign value
-  if nDto.signVal == -1 {
-    if negValMode == LEADMINUSNEGVALFMTMODE {
-      lenOut++
-    } else {
-      // MUST BE negValMode == PARENTHESESNEGVALFMTMODE
-      lenOut += 2
-    }
-
-  }
-
-  // adjust for decimal point
-  if nDto.precision > 0 {
-    lenOut++
-  }
-
-  outRunes := make([]rune, lenOut)
-  outIdx := lenOut - 1
-
-  if nDto.signVal == -1 &&
-    negValMode == PARENTHESESNEGVALFMTMODE {
-    outRunes[outIdx] = ')'
-    outIdx--
-  }
-
-  allNumsIdx := lenAllNumRunes - 1
-
-  if nDto.precision > 0 {
-
-    for i := 0; i < int(nDto.precision); i++ {
-      outRunes[outIdx] = nDto.absAllNumRunes[allNumsIdx]
-      outIdx--
-      allNumsIdx--
-    }
-
-    outRunes[outIdx] = nDto.decimalSeparator
-    outIdx--
-  }
-
-  sepCnt := 0
-
-  for i := 0; i < lenIntRunes; i++ {
-
-    sepCnt++
-
-    if sepCnt == 4 && seps > 0 {
-      sepCnt = 1
-      seps--
-      outRunes[outIdx] = nDto.thousandsSeparator
-      outIdx--
-    }
-
-    outRunes[outIdx] = nDto.absAllNumRunes[allNumsIdx]
-    outIdx--
-    allNumsIdx--
-
-  }
-
-  if nDto.signVal == -1 {
-    if negValMode == LEADMINUSNEGVALFMTMODE {
-      outRunes[0] = '-'
-    } else {
-      outRunes[0] = '('
-    }
-
-  }
-
-  return string(outRunes), nil
+  return new(numStrDtoMechanics).formatThousandsStr(
+    nDto, true, negValMode, ePrefix)
 }
 
 // GetAbsoluteBigInt - Returns the absolute value of all numeric
