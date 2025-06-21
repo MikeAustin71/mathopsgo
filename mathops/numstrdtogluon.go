@@ -228,6 +228,141 @@ func (nStrDtoGluon *numStrDtoGluon) getAbsoluteBigInt(
   return absBigInt, nDto.precision, nil
 }
 
+// getAbsPureNumStr
+//
+//	Returns all digits in the current NumStrDto numeric value as a
+//	pure, unsigned number string. If fractional digits exists, they
+//	are included in the string and NOT separated by a decimal
+//	separator.
+//
+//	All the numeric digits in the numeric value are returned as a
+//	type string.
+//
+//	Examples
+//	========
+//
+//	Numeric
+//	Value       pureNumStr    precision    numberSign
+//	------      ----------    ---------    ----------
+//
+//	 123.45      12345            2             1
+//	 12345       12345            0             1
+//	-123.45      11245            2            -1
+//
+//	IMPORTANT
+//	=========
+//
+//	If the current NumStrDto instance is invalid, an error will be
+//	returned.
+//
+//	Input Parameters
+//	================
+//
+//	nDto                     *NumStrDto
+//	  The returned number string will be extracted from the numeric
+//	  value contained in this instance of NumStrDto
+//
+//	validateNumStrDto        bool
+//	  When set to 'true', the NumStrDto parameter 'nDto' will be
+//	  subjected to validation tests.
+//
+//	errPrefDto					*ePref.ErrPrefixDto
+//
+//	  This object encapsulates an error prefix string
+//	  which is included in all returned error
+//	  messages. Usually, it contains the name of the
+//	  calling method or methods listed as a function
+//	  chain.
+//
+//	  If no error prefix information is needed, set
+//	  this parameter to 'nil'.
+//
+//	  Type ErrPrefixDto is included in the 'errpref'
+//	  software package:
+//	    "github.com/MikeAustin71/errpref".
+//
+//	Return Values
+//	=============
+//
+//	pureNumStr               string
+//	  This returned string value contains the pure number string
+//	  representaion of the absolue numeric value for the current
+//	  NumStrDto instance.
+//
+//	precision                 uint
+//	  An unsigned integer value representing the number of
+//	  fractional digits to the right of the decimal point in the
+//	  numeric value returned by 'pureNumStr'.
+//
+//	numberSign                int
+//	  The returned number sign will designate the 'purNumStr' as
+//	  either a positive value or a negative value.
+//
+//	  Possible return values:
+//	    +1 = Positive numeric value (including zero)
+//	                OR
+//	    -1 = Negative numeric value
+//
+//	error
+//	  If a processing error is encountered, this error object will
+//	  be returned formatted with an appropriate error message.
+func (nStrDtoGluon *numStrDtoGluon) getAbsPureNumStr(
+  nDto *NumStrDto,
+  validateNumStrDto bool,
+  errPrefDto *ePref.ErrPrefixDto) (
+  pureNumStr string, precision uint, numberSign int, err error) {
+
+  nStrDtoGluon.lock.Lock()
+
+  defer nStrDtoGluon.lock.Unlock()
+
+  var ePrefix *ePref.ErrPrefixDto
+
+  ePrefix,
+    err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
+    errPrefDto,
+    "numStrDtoGluon.getAbsPureNumStr()",
+    "")
+
+  if err != nil {
+    return pureNumStr, precision, numberSign, err
+  }
+
+  if nDto == nil {
+
+    return pureNumStr, precision, numberSign,
+      &InputPtrNilError{
+        ErrPrefix:     ePrefix.String(),
+        ParameterName: "'nDto'",
+      }
+  }
+
+  if validateNumStrDto {
+
+    err = new(numStrDtoElectron).isValidNumStrDto(
+      nDto, ePrefix.XCpy("Validating 'nDto'"))
+
+    if err != nil {
+      return pureNumStr, precision, numberSign,
+        &FuncReturnError{
+          ErrPrefix:  ePrefix.String(),
+          ReturnFunc: "",
+          ErrContext: "Error: NumStrDto ('nDto') is INVALID!\n" +
+            "'nDto' FAILED Validation Tests.",
+          ErrMessage: err.Error(),
+        }
+    }
+  }
+
+  pureNumStr = string(nDto.absAllNumRunes)
+
+  precision = nDto.precision
+
+  numberSign = nDto.signVal
+
+  return pureNumStr, precision, numberSign, err
+}
+
 // getAbsFracRunes
 //
 //	Returns all the fractional digits to the right of the decimal
