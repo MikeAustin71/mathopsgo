@@ -1426,7 +1426,7 @@ func (nDto *NumStrDto) GetBigIntNum() (BigIntNum, error) {
 // GetCurrencySymbol
 //
 //	Returns the character currently designated as the currency
-//	symbol for this number string.
+//	symbol for the current instance of NumStrDto.
 //
 //	If the currency symbol configured for the current NumStrDto
 //	instance is invalid, it is automatically reset to the default
@@ -1441,51 +1441,98 @@ func (nDto *NumStrDto) GetCurrencySymbol() rune {
 	}
 
 	return nDto.currencySymbol
-
 }
 
-// GetCurrencyParen - Returns the number string delimited with the
-// nDto.thousandsSeparator character and the currency symbol. If
-// the value is negative, the number will be surrounded in parentheses.
+// GetCurrencyParen
 //
-// Example:
-// numstr = 1000000.23
-// GetThouStr() = $1,000,000.23
+//	Returns a number string delimited with the Thousands Separator
+//	character and the Currency Symbol. The numeric value for the
+//	number string is taken from the current instance of NumStrDto.
 //
-// numstr = -1000000.23
-// GetThouStr() = ($1,000,000.23)
+//	Both the Thousands Separator and the Currency Symbol characters
+//	are taken from the Numeric Separators configured for the
+//	current instance of NumStrDto.
 //
-// Note: If the current NumStrDto is invalid, this method
-// returns an empty string.
+//	If the numeric value is negative, the returned number string
+//	will be surrounded in parentheses.
+//
+//	Example
+//	=======
+//
+//	  Number String = 1000000.23
+//	  Returned Formatted Currency String = $1,000,000.23
+//
+//	  Number String = -1000000.23
+//	  Returned Formatted Currency String = ($1,000,000.23)
+//
+//	Note:  If the current NumStrDto is invalid, this method
+//	       returns an empty string.
 func (nDto *NumStrDto) GetCurrencyParen() string {
 
-	outStr, err := nDto.FormatCurrencyStr(PARENTHESESNEGVALFMTMODE)
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
+
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"NumStrDto.GetCurrencyParen",
+		"")
+
+	if err != nil {
+		return ""
+	}
+
+	outStr, err := new(numStrDtoMechanics).formatCurrencyStr(
+		nDto, true, PARENTHESESNEGVALFMTMODE, ePrefix)
 
 	if err != nil {
 		return ""
 	}
 
 	return outStr
-
 }
 
-// GetCurrencyStr - Returns the number string delimited with the
-// nDto.thousandsSeparator character and the currency symbol.
-// If the value is negative, a leading minus sign will be prefixed
-// to the currency display.
+// GetCurrencyStr
 //
-// Example:
-// numstr = 1000000.23
-// GetCurrencyStr() = $1,000,000.23
+//	Returns a number string delimited with the Thousands Separator
+//	character and the Currency Symbol. The numeric value for the
+//	number string is taken from the current instance of NumStrDto.
 //
-// numstr = -1000000.23
-// GetCurrencyStr() = -$1,000,000.23
+//	Both the Thousands Separator and the Currency Symbol characters
+//	are taken from the Numeric Separators configured for the
+//	current instance of NumStrDto.
 //
-// Note: If the current NumStrDto is invalid, this method
-// returns an empty string.
+//	If the value is negative, a leading minus sign will be prefixed
+//	to the currency display.
+//
+//	Example
+//	=======
+//
+//	  Number String = 1000000.23
+//	  Returned Formatted Currency String = $1,000,000.23
+//
+//	  Number String = -1000000.23
+//	  Returned Formatted Currency String = -$1,000,000.23
+//
+//	Note:  If the current NumStrDto is invalid, this method
+//	       returns an empty string.
 func (nDto *NumStrDto) GetCurrencyStr() string {
 
-	outStr, err := nDto.FormatCurrencyStr(LEADMINUSNEGVALFMTMODE)
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
+
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"NumStrDto.GetCurrencyParen",
+		"")
+
+	if err != nil {
+		return ""
+	}
+
+	outStr, err := new(numStrDtoMechanics).formatCurrencyStr(
+		nDto, true, LEADMINUSNEGVALFMTMODE, ePrefix)
 
 	if err != nil {
 		return ""
@@ -1494,12 +1541,18 @@ func (nDto *NumStrDto) GetCurrencyStr() string {
 	return outStr
 }
 
-// GetDecimalSeparator - returns the character designated
-// as the decimal separator for the current NumStrDto instance.
+// GetDecimalSeparator
 //
-// In the USA, the decimal separator is the period character ('.').
+//	Returns the character currently designated as the decimal
+//	separator for the current instance of NumStrDto.
 //
-// Example:		123.456
+//	If the decimal separator configured for the current NumStrDto
+//	instance is invalid, it is automatically reset to the default
+//	USA decimal separator and the period ('.') character is
+//	returned.
+//
+//	In the USA, the decimal separator is the period character ('.').
+//	  Example:  123.456
 func (nDto *NumStrDto) GetDecimalSeparator() rune {
 
 	if nDto.decimalSeparator == 0 {
@@ -1507,42 +1560,50 @@ func (nDto *NumStrDto) GetDecimalSeparator() rune {
 	}
 
 	return nDto.decimalSeparator
-
 }
 
-// GetDecimal - Converts the current NumStrDto instance
-// to a Type 'Decimal' and returns it to the calling
-// function.
+// GetDecimal
 //
-// The returned Decimal instance will contain numeric
-// separators (decimal separator, thousands separator
-// and currency symbol) copied from the current NumStrDto
-// instance.
+//	Converts the current NumStrDto instance to a Type 'Decimal' and
+//	returns it to the calling function.
 //
-// Before returning the Decimal result, this method
-// performs a validity test on the current NumStrDto instance.
+//	The returned Decimal instance will contain numeric separators
+//	(decimal separator, thousands separator and currency symbol)
+//	copied from the current NumStrDto instance.
+//
+//	Before returning the Decimal result, this method
+//	performs a validity test on the current NumStrDto instance.
 func (nDto *NumStrDto) GetDecimal() (Decimal, error) {
 
-	ePrefix := "NumStrDto.GetIntAryElements() "
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-	err := nDto.IsValid(ePrefix)
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"NumStrDto.GetDecimal",
+		"")
 
 	if err != nil {
 		return Decimal{}, err
 	}
 
-	numSeps := nDto.GetNumericSeparatorsDto()
-
-	dec, err := new(Decimal).NewNumStrWithNumSeps(nDto.GetNumStr(), numSeps)
+	numSeps, err := new(numStrDtoAtom).getNumericSeparatorsDto(
+		nDto, ePrefix.XCpy("nDto -> numSeps"))
 
 	if err != nil {
 		return Decimal{},
-			fmt.Errorf(ePrefix+
-				"Error returned by new(Decimal).NewNumStrWithNumSeps(nDto.GetNumStr(), numSeps) "+
-				"Error='%v' ", err.Error())
+			&FuncReturnError{
+				ErrPrefix: ePrefix.String(),
+				ReturnFunc: "numSeps, err := new(numStrDtoAtom).getNumericSeparatorsDto(\n" +
+					"  nDto, ePrefix.XCpy(\"nDto -> numSeps\"))",
+				ErrContext: "Error extracting Numeric Separators from current NumStrDto instance.",
+				ErrMessage: err.Error(),
+			}
 	}
 
-	return dec, nil
+	return new(numStrDtoMechanics).getDecimal(
+		numSeps, nDto, true, ePrefix)
 }
 
 // GetIntAry
@@ -1550,26 +1611,36 @@ func (nDto *NumStrDto) GetDecimal() (Decimal, error) {
 //	Converts the current NumStrDto instance to a Type IntAry and
 //	returns it to the calling function.
 func (nDto *NumStrDto) GetIntAry() (IntAry, error) {
-	ePrefix := "NumStrDto.GetIntAryElements() "
 
-	err := nDto.IsValid(ePrefix)
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
+
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"NumStrDto.GetIntAry",
+		"")
 
 	if err != nil {
 		return IntAry{}, err
 	}
 
-	numSeps := nDto.GetNumericSeparatorsDto()
-
-	ia, err := new(IntAry).NewNumStrWithNumSeps(nDto.GetNumStr(), numSeps)
+	numSeps, err := new(numStrDtoAtom).getNumericSeparatorsDto(
+		nDto, ePrefix.XCpy("nDto -> numSeps"))
 
 	if err != nil {
 		return IntAry{},
-			fmt.Errorf(ePrefix+
-				"Error returned by new(IntAry).NewNumStrWithNumSeps(nDto.GetNumStr(), numSeps). "+
-				"nDto='%v' Error='%v'", nDto.GetNumStr(), err.Error())
+			&FuncReturnError{
+				ErrPrefix: ePrefix.String(),
+				ReturnFunc: "numSeps, err := new(numStrDtoAtom).getNumericSeparatorsDto(\n" +
+					"  nDto, ePrefix.XCpy(\"nDto -> numSeps\"))",
+				ErrContext: "Error extracting Numeric Separators from current NumStrDto instance.",
+				ErrMessage: err.Error(),
+			}
 	}
 
-	return ia, nil
+	return new(numStrDtoMechanics).getIntAry(
+		numSeps, nDto, true, ePrefix)
 }
 
 // GetNumericSeparatorsDto - Returns a structure containing the

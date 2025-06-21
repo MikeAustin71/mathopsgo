@@ -1072,3 +1072,211 @@ func (numStrDtoMech *numStrDtoMechanics) getBigIntNum(
 
   return bIntNum, nil
 }
+
+// getDecimal
+//
+//	Converts the current NumStrDto instance to a Type 'Decimal' and
+//	returns it to the calling function.
+//
+//	The returned Decimal instance will contain numeric separators
+//	(decimal separator, thousands separator and currency symbol)
+//	copied from the NumStrDto instance 'nDto'.
+func (numStrDtoMech *numStrDtoMechanics) getDecimal(
+  numSeps NumericSeparatorDto,
+  nDto *NumStrDto,
+  validateNumStrDto bool,
+  errPrefDto *ePref.ErrPrefixDto) (Decimal, error) {
+
+  numStrDtoMech.lock.Lock()
+
+  defer numStrDtoMech.lock.Unlock()
+
+  var ePrefix *ePref.ErrPrefixDto
+  var err error
+
+  ePrefix,
+    err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
+    errPrefDto,
+    "numStrDtoMechanics.getDecimal",
+    "")
+
+  if err != nil {
+    return Decimal{}, err
+  }
+
+  if nDto == nil {
+
+    return Decimal{},
+      &InputPtrNilError{
+        ErrPrefix:     ePrefix.String(),
+        ParameterName: "'nDto'",
+      }
+  }
+
+  if validateNumStrDto {
+
+    err = new(numStrDtoElectron).isValidNumStrDto(
+      nDto, ePrefix.XCpy("Validating 'nDto'"))
+
+    if err != nil {
+      return Decimal{},
+        &FuncReturnError{
+          ErrPrefix:  ePrefix.String(),
+          ReturnFunc: "",
+          ErrContext: "Error: NumStrDto ('nDto') is INVALID!\n" +
+            "'nDto' FAILED Validation Tests.",
+          ErrMessage: err.Error(),
+        }
+    }
+  }
+
+  err = numSeps.IsValid(ePrefix.XCpy("Validating 'numSeps'").String())
+
+  if err != nil {
+
+    return Decimal{},
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "err = numSeps.IsValid(ePrefix.XCpy(\"Validating 'numSeps'\").String())",
+        ErrContext: "Error: Numeric Separators input paramter ('numSeps') is INVALID!\n" +
+          "'numSeps' FAILED Validation Tests.",
+        ErrMessage: err.Error(),
+      }
+  }
+
+  numStr, err := new(numStrDtoAtom).formatNumStr(
+    nDto, false, LEADMINUSNEGVALFMTMODE, ePrefix)
+
+  if err != nil {
+
+    return Decimal{},
+      &FuncReturnError{
+        ErrPrefix: ePrefix.String(),
+        ReturnFunc: "numStr, err :=new(numStrDtoAtom).formatNumStr(\n" +
+          "  nDto, false, LEADMINUSNEGVALFMTMODE, ePrefix)",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+  }
+
+  dec, err := new(Decimal).NewNumStrWithNumSeps(numStr, numSeps)
+
+  if err != nil {
+
+    return Decimal{},
+      &FuncReturnError{
+        ErrPrefix: ePrefix.String(),
+        ReturnFunc: "dec, err := new(Decimal).NewNumStrWithNumSeps(\n" +
+          "  numStr, numSeps)",
+        ErrContext: fmt.Sprintf("numStr= '%v'\n"+
+          "numSeps= '%v'", numStr, numSeps.String()),
+        ErrMessage: err.Error(),
+      }
+  }
+
+  return dec, nil
+}
+
+// getIntAry
+//
+//	Converts the current NumStrDto instance to a Type 'IntAry' and
+//	returns it to the calling function.
+//
+//	The returned IntAry instance will contain numeric separators
+//	(decimal separator, thousands separator and currency symbol)
+//	copied from the NumStrDto instance, 'nDto'.
+func (numStrDtoMech *numStrDtoMechanics) getIntAry(
+  numSeps NumericSeparatorDto,
+  nDto *NumStrDto,
+  validateNumStrDto bool,
+  errPrefDto *ePref.ErrPrefixDto) (IntAry, error) {
+
+  numStrDtoMech.lock.Lock()
+
+  defer numStrDtoMech.lock.Unlock()
+
+  var ePrefix *ePref.ErrPrefixDto
+  var err error
+
+  ePrefix,
+    err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
+    errPrefDto,
+    "numStrDtoMechanics.getIntAry",
+    "")
+
+  if err != nil {
+    return IntAry{}, err
+  }
+
+  if nDto == nil {
+
+    return IntAry{},
+      &InputPtrNilError{
+        ErrPrefix:     ePrefix.String(),
+        ParameterName: "'nDto'",
+      }
+  }
+
+  if validateNumStrDto {
+
+    err = new(numStrDtoElectron).isValidNumStrDto(
+      nDto, ePrefix.XCpy("Validating 'nDto'"))
+
+    if err != nil {
+      return IntAry{},
+        &FuncReturnError{
+          ErrPrefix:  ePrefix.String(),
+          ReturnFunc: "",
+          ErrContext: "Error: NumStrDto ('nDto') is INVALID!\n" +
+            "'nDto' FAILED Validation Tests.",
+          ErrMessage: err.Error(),
+        }
+    }
+  }
+
+  err = numSeps.IsValid(ePrefix.XCpy("Validating 'numSeps'").String())
+
+  if err != nil {
+
+    return IntAry{},
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "err = numSeps.IsValid(ePrefix.XCpy(\"Validating 'numSeps'\").String())",
+        ErrContext: "Error: Numeric Separators input paramter ('numSeps') is INVALID!\n" +
+          "'numSeps' FAILED Validation Tests.",
+        ErrMessage: err.Error(),
+      }
+  }
+
+  numStr, err := new(numStrDtoAtom).formatNumStr(
+    nDto, false, LEADMINUSNEGVALFMTMODE, ePrefix)
+
+  if err != nil {
+
+    return IntAry{},
+      &FuncReturnError{
+        ErrPrefix: ePrefix.String(),
+        ReturnFunc: "numStr, err :=new(numStrDtoAtom).formatNumStr(\n" +
+          "  nDto, false, LEADMINUSNEGVALFMTMODE, ePrefix)",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+  }
+
+  intAry, err := new(IntAry).NewNumStrWithNumSeps(numStr, numSeps)
+
+  if err != nil {
+
+    return IntAry{},
+      &FuncReturnError{
+        ErrPrefix: ePrefix.String(),
+        ReturnFunc: "intAry, err := new(IntAry).NewNumStrWithNumSeps(\n" +
+          "  numStr, numSeps)",
+        ErrContext: fmt.Sprintf("numStr= '%v'\n"+
+          "numSeps= '%v'", numStr, numSeps.String()),
+        ErrMessage: err.Error(),
+      }
+  }
+
+  return intAry, nil
+}
