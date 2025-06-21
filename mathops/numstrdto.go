@@ -1435,8 +1435,9 @@ func (nDto *NumStrDto) GetBigIntNum() (BigIntNum, error) {
 //	symbol for the current instance of NumStrDto.
 //
 //	If the currency symbol configured for the current NumStrDto
-//	instance is invalid, it is automatically reset to the default
-//	USA currency symbol and the dollar sign ('$') is returned.
+//	instance is invalid, it will be automatically reset to the
+//	default USA currency symbol and the dollar sign ('$') is
+//	returned.
 //
 //	For a list of Major Currency Unicode Symbols, see constants
 //	located in: MikeAustin71/mathopsgo/mathops/mathopsconstants.go
@@ -2173,22 +2174,42 @@ func (nDto *NumStrDto) GetThisPointer() *NumStrDto {
 	return nDto
 }
 
-// GetThouParen - Returns the number string delimited with the
-// nDto.thousandsSeparator character. Negative values are
-// surrounded in parentheses.
+// GetThouParen
 //
-// Example:
-// numstr = 1000000.234
-// GetThouStr() = 1,000,000.234
+//	Returns the number string delimited with the Thousands
+//	Separator character (nDto.thousandsSeparator) plus the
+//	Decimal Separator, if applicable.
 //
-// numstr = -1000000.234
-// GetThouStr() = (1,000,000.234)
+//	Negative values are surrounded in parentheses.
 //
-// Note: If the current NumStrDto is invalid, this method
-// returns an empty string.
+//	Example
+//	=======
+//
+//	numstr = 1000000.234
+//	GetThouStr() = 1,000,000.234
+//
+//	numstr = -1000000.234
+//	GetThouStr() = (1,000,000.234)
+//
+//	Note: If the current NumStrDto is invalid, this method
+//	      returns an empty string.
 func (nDto *NumStrDto) GetThouParen() string {
 
-	outStr, err := nDto.FormatThousandsStr(PARENTHESESNEGVALFMTMODE)
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
+
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"NumStrDto.GetThouParen",
+		"")
+
+	if err != nil {
+		return ""
+	}
+
+	outStr, err := new(numStrDtoMechanics).formatThousandsStr(
+		nDto, true, PARENTHESESNEGVALFMTMODE, ePrefix)
 
 	if err != nil {
 		return ""
@@ -2197,22 +2218,42 @@ func (nDto *NumStrDto) GetThouParen() string {
 	return outStr
 }
 
-// GetThouStr - Returns the number string delimited with the
-// nDto.thousandsSeparator character plus the Decimal Separator
-// if applicable.
+// GetThouStr
 //
-// Example:
-// numstr = 1000000.234
-// GetThouStr() = 1,000,000.234
+//	Returns the number string delimited with the Thousands
+//	Separator (nDto.thousandsSeparator) character plus the
+//	Decimal Separator if applicable.
 //
-// numstr = -1000000.234
-// GetThouStr() = -1,000,000.234
+//	Negative values are formatted with a leading minus sign.
 //
-// Note: If the current NumStrDto is invalid, this method
-// returns an empty string.
+//	Example
+//	=======
+//
+//	numstr = 1000000.234
+//	GetThouStr() = 1,000,000.234
+//
+//	numstr = -1000000.234
+//	GetThouStr() = -1,000,000.234
+//
+//	Note: If the current NumStrDto is invalid, this method
+//	      returns an empty string.
 func (nDto *NumStrDto) GetThouStr() string {
 
-	outStr, err := nDto.FormatThousandsStr(LEADMINUSNEGVALFMTMODE)
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
+
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"NumStrDto.GetThouStr",
+		"")
+
+	if err != nil {
+		return ""
+	}
+
+	outStr, err := new(numStrDtoMechanics).formatThousandsStr(
+		nDto, true, LEADMINUSNEGVALFMTMODE, ePrefix)
 
 	if err != nil {
 		return ""
@@ -2221,14 +2262,28 @@ func (nDto *NumStrDto) GetThouStr() string {
 	return outStr
 }
 
-// GetThousandsSeparator - returns a rune which represents
-// the character currently used to separate thousands in
-// the display of the current NumStrDto number string.
+// GetThousandsSeparator
 //
-// In the USA, the thousands separator is a comma character.
+//	Returns the character currently designated as the Thousands
+//	Separator for the current instance of NumStrDto.
 //
-// Example: 1,000,000,000
+//	In the USA, the thousands separator is a comma character.
+//
+//	Example
+//	=======
+//
+//	1,000,000,000 - In this example the comma (',') is the
+//	                Thousands Separator
+//
+//	If the Thousands Separator configured for the current NumStrDto
+//	instance is invalid, it will be automatically reset to the
+//	default USA currency symbol and the comma character (',') is
+//	returned.
 func (nDto *NumStrDto) GetThousandsSeparator() rune {
+
+	if nDto.thousandsSeparator == 0 {
+		nDto.thousandsSeparator = ','
+	}
 
 	return nDto.thousandsSeparator
 }
@@ -2259,17 +2314,33 @@ func (nDto *NumStrDto) GetZeroNumStrDto(numFracDigits uint) NumStrDto {
 	return new(numStrDtoMolecule).newZeroNumStrDto(numSeps, numFracDigits)
 }
 
-// HasNumericDigits - returns 'false' if the number
-// string for the current NumStrDto instance is uninitialized
-// and contains no numeric digits. In this case, the length
-// of the number string is zero characters.
+// HasNumericDigits
 //
-// If this method returns 'true' it signals that there is at
-// least one numeric digit in the number string, even if that
-// digit is zero.
+//	Returns 'false' if the number string for the current NumStrDto
+//	instance is invalid or contains no numeric digits. In this
+//	case, the length of the internal number array is zero
+//	characters.
+//
+//	If this method returns 'true' it signals that there is at
+//	least one numeric digit in the number string, even if that
+//	digit is zero.
 func (nDto *NumStrDto) HasNumericDigits() bool {
 
-	err := nDto.IsValid("NumStrDto.HasNumericDigits() ")
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
+
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"NumStrDto.HasNumericDigits",
+		"")
+
+	if err != nil {
+		return false
+	}
+
+	err = new(numStrDtoElectron).isValidNumStrDto(
+		nDto, ePrefix)
 
 	if err != nil {
 		return false
@@ -2278,17 +2349,43 @@ func (nDto *NumStrDto) HasNumericDigits() bool {
 	return true
 }
 
-// IsFractionalValue - Returns 'true' if the numeric value of the
-// current NumStrDto object includes a fractional value; that is,
-// the number has fractional digits to the right of the decimal
-// point.
+// IsFractionalValue
+//
+//	Returns 'false' if the NumStrDto instance is invalid, contains
+//	no numeric digits, or contains no fractional digits to the
+//	right of the decimal place.
+//
+//	Returns 'true' if the numeric value of the current NumStrDto
+//	object is valid and includes a fractional value; that is,
+//	the number has fractional digits to the right of the decimal
+//	point is greater than zero.
 func (nDto *NumStrDto) IsFractionalValue() bool {
 
-	if nDto.precision > 0 {
-		return true
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
+
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"NumStrDto.IsFractionalValue",
+		"")
+
+	if err != nil {
+		return false
 	}
 
-	return false
+	err = new(numStrDtoElectron).isValidNumStrDto(
+		nDto, ePrefix)
+
+	if err != nil {
+		return false
+	}
+
+	if nDto.precision < 1 {
+		return false
+	}
+
+	return true
 }
 
 // IsNumStrZeroValue
@@ -2303,7 +2400,7 @@ func (nDto *NumStrDto) IsNumStrZeroValue(numDto *NumStrDto) (bool, error) {
 	ePrefix,
 		err = ePref.ErrPrefixDto{}.NewIEmpty(
 		nil,
-		"NumStrDto.GetAbsAllNumRunes",
+		"NumStrDto.IsNumStrZeroValue",
 		"")
 
 	if err != nil {
@@ -2345,6 +2442,12 @@ func (nDto *NumStrDto) IsValid(callingFunction string) error {
 //
 //	Analyzes the current instance of NumStrDto and returns 'true'
 //	if all the digits in the number string are zero.
+//
+//	IMPORTANT
+//	=========
+//
+//	If the current NumStrDto instance is invalid, an error will be
+//	returned.
 func (nDto *NumStrDto) IsZero() (bool, error) {
 
 	var ePrefix *ePref.ErrPrefixDto
@@ -2353,7 +2456,7 @@ func (nDto *NumStrDto) IsZero() (bool, error) {
 	ePrefix,
 		err = ePref.ErrPrefixDto{}.NewIEmpty(
 		nil,
-		"NumStrDto.GetAbsAllNumRunes",
+		"NumStrDto.IsZero",
 		"")
 
 	if err != nil {
@@ -2383,6 +2486,12 @@ func (nDto *NumStrDto) IsZero() (bool, error) {
 //	This method will not modify the Numeric Separators previously
 //	configured for this current instance of NumStrDto ('nDto').
 //	Numeric Separators will therefore remain unchanged.
+//
+//	IMPORTANT
+//	=========
+//
+//	If the current NumStrDto instance is invalid, an error will be
+//	returned.
 func (nDto *NumStrDto) Multiply(n2Dto NumStrDto) error {
 
 	var ePrefix *ePref.ErrPrefixDto
