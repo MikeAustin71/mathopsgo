@@ -1667,33 +1667,50 @@ func (nDto *NumStrDto) GetNumericSeparatorsDto() (NumericSeparatorDto, error) {
 	return numSeps, nil
 }
 
-// GetNumParen - Returns the numeric value of the current NumStrDto
-// instance as a signed number string. The resulting number string
-// will NOT contain a currency symbol or thousands separators. It
-// will contain a decimal separator and fractional digits if such
-// fractional digits exist.
+// GetNumParen
 //
-// Note: If the current NumStrDto is invalid, this method will return
-// an empty string.
+//	Returns the numeric value of the current NumStrDto instance as
+//	a signed number string. The resulting number string will NOT
+//	contain a currency symbol or thousands separators. It will
+//	contain a decimal separator and fractional digits if such
+//	fractional digits exist.
 //
-// If the sign of the numeric value is negative, the resulting number
-// string will be surrounded in parentheses.
+//	If the sign of the numeric value is negative, the resulting
+//	number string will be surrounded in parentheses.
 //
-// Examples:
-// numeric value						result
+//	Examples
+//	========
 //
-//	 123456.78							123456.78
-//	-123456.78             (123456.78)
+//	Numeric Value      Result
+//
+//	 123456.78        123456.78
+//	-123456.78       (123456.78)
+//
+//	Note: If the current NumStrDto is invalid, this method will
+//	      return an empty string.
 func (nDto *NumStrDto) GetNumParen() string {
 
-	outStr, err := nDto.FormatNumStr(PARENTHESESNEGVALFMTMODE)
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
+
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"NumStrDto.GetDecimal",
+		"")
+
+	if err != nil {
+		return ""
+	}
+
+	outStr, err := new(numStrDtoAtom).formatNumStr(
+		nDto, true, PARENTHESESNEGVALFMTMODE, ePrefix)
 
 	if err != nil {
 		return ""
 	}
 
 	return outStr
-
 }
 
 // GetNumStr - returns the numeric value of the current NumStrDto
@@ -1742,76 +1759,161 @@ func (nDto *NumStrDto) GetNumStr() (string, error) {
 	return outStr, nil
 }
 
-// GetNumStrDto - Returns a deep copy of the current NumStrDto
-// instance.
+// GetNumStrDto
 //
-// The returned NumStrDto instance will contain numeric
-// separators (decimal separator, thousands separator
-// and currency symbol) copied from the current NumStrDto
-// instance.
+//	Returns a deep copy of the current NumStrDto instance.
 //
-// Before returning the NumStrDto result, this method
-// performs a validity test on the current NumStrDto instance.
+//	The returned NumStrDto instance will contain numeric
+//	separators (decimal separator, thousands separator
+//	and currency symbol) copied from the current NumStrDto
+//	instance.
 //
-// This method is necessary in order to fulfill the requirements
-// of the INumMgr interface.
+//	This method is necessary in order to fulfill the requirements
+//	of the INumMgr interface.
+//
+//	IMPORTANT
+//	=========
+//
+//	If the current NumStrDto instance is invalid, an error will be
+//	returned.
 func (nDto *NumStrDto) GetNumStrDto() (NumStrDto, error) {
 
-	ePrefix := "NumStrDto.GetNumStrDto() "
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-	err := nDto.IsValid(ePrefix + "NumStrDto INVALID! ")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"NumStrDto.GetNumStrDto",
+		"")
 
 	if err != nil {
-		return new(NumStrDto).New(), err
+		return NumStrDto{}, err
 	}
 
-	return nDto.CopyOut(), nil
+	numStrDtoOut := NumStrDto{}
+
+	err = new(numStrDtoMolecule).copy(
+		&numStrDtoOut,
+		nDto,
+		true,
+		ePrefix)
+
+	if err != nil {
+
+		return NumStrDto{},
+			&FuncReturnError{
+				ErrPrefix: ePrefix.String(),
+				ReturnFunc: "err = new(numStrDtoMolecule).copy(\n" +
+					"",
+				ErrContext: "Error copying current NumStrDto instance.",
+				ErrMessage: err.Error(),
+			}
+	}
+
+	return numStrDtoOut, nil
 }
 
-// GetPrecision - Returns the precision of the current
-// NumStrDto Instance.
+// GetPrecision
 //
-// precision is defined as the number of numeric digits to
-// the right of the decimal place. To compute the location
-// of the decimal point in a string of numeric digits, go
-// to the right most digit in the number string and count
-// left 'precision' digits.
+//	Returns the precision of the current NumStrDto Instance.
+//	'precision' is defined as the number of numeric digits to the
+//	right of the decimal place. To compute the location of the
+//	decimal point in a string of numeric digits, go to the right
+//	most digit in the number string and count left, 'precision'
+//	digits.
 //
-// The value of 'precision' returned by this method will
-// always be >= zero (greater than or equal to zero '0').
+//	For a valid instance of NumStrDto, the value of 'precision'
+//	returned by this method will always be >= zero (greater than or
+//	equal to zero '0').
 //
-// Example:
+//	IMPORTANT
+//	=========
 //
-//					1.234    	GetPrecision() = 3
-//							5			GetPrecision() = 0
-//				0.12345  		GetPrecision() = 5
+//	If the current NumStrDto instance is invalid, a value of -1
+//	will be returned.
 //
-//	Number String				precision				Fractional Number
-//		123456								3								123.456
+//	Example
+//	=======
+//
+//	 1.234      GetPrecision() = 3
+//	 5          GetPrecision() = 0
+//	 0.12345    GetPrecision() = 5
+//
+//	Number String   precision    Fractional Number
+//	  123456           3             123.456
 func (nDto *NumStrDto) GetPrecision() int {
+
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
+
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"NumStrDto.GetPrecision",
+		"")
+
+	if err != nil {
+		return -1
+	}
+
+	err = new(numStrDtoElectron).isValidNumStrDto(
+		nDto, ePrefix.XCpy("Validating 'nDto'"))
+
+	if err != nil {
+		return -1
+	}
+
 	return int(nDto.precision)
 }
 
-// GetPrecisionUint - Returns the precision of the
-// current NumStrDto Instance as an unsigned integer
-// (uint). precision represents the number of fractional
-// digits to the right of the decimal point.
+// GetPrecisionUint
 //
-// precision is defined as the number of numeric digits to
-// the right of the decimal place. To compute the location
-// of the decimal point in a string of numeric digits, go
-// to the right most digit in the number string and count
-// left 'precision' digits.
+//	Returns the 'precision' of the current NumStrDto instance as an
+//	unsigned integer (uint). 'precision' represents the number of
+//	fractional digits to the right of the decimal point.
 //
-// Example:
+//	To compute the location of the decimal point in a string of
+//	numeric digits, go to the right most digit in the number string
+//	and count left 'precision' digits.
 //
-//					1.234    	GetPrecision() = 3
-//							5			GetPrecision() = 0
-//				0.12345  		GetPrecision() = 5
+//	Example
+//	=======
 //
-//	Number String				precision				Fractional Number
-//		123456								3								123.456
-func (nDto *NumStrDto) GetPrecisionUint() (uint, error) {
+//	 1.234    GetPrecision() = 3
+//	 5        GetPrecision() = 0
+//	 0.12345  GetPrecision() = 5
+//
+//	Number String   'precision'   Fractional Number
+//	   123456            3             123.456
+func (nDto *NumStrDto) GetPrecisionUint() (precision uint, err error) {
+
+	var ePrefix *ePref.ErrPrefixDto
+
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"NumStrDto.GetPrecisionUint",
+		"")
+
+	if err != nil {
+		return 0, err
+	}
+
+	err = new(numStrDtoElectron).isValidNumStrDto(
+		nDto, ePrefix.XCpy("Validating 'nDto'"))
+
+	if err != nil {
+		return 0,
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "",
+				ErrContext: "Error: The current NumStrDto instance ('nDto') is INVALID!\n" +
+					"'nDto' FAILED Validation Tests.",
+				ErrMessage: err.Error(),
+			}
+	}
+
 	return nDto.precision, nil
 }
 
