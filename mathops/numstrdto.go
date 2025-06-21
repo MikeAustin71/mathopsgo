@@ -2117,13 +2117,57 @@ func (nDto *NumStrDto) GetSciNotationStr(mantissaLen uint) (string, error) {
 		nDto, true, mantissaLen, ePrefix)
 }
 
-// GetSign - Returns the sign value for this NumStrDto
-// numeric value. Return values will be either +1 or -1.
+// GetSign
+//
+//	Returns the sign value for the current instance NumStrDto
+//	numeric value.
+//
+//	Return sign values will be either +1 or -1.
+//
+//	 Possible Sign Values
+//	   1 = NumStrDto numeric value is a Positive Number
+//	  -1 = NumStrDto numeric value is a Negative Number
+//
+//	IMPORTANT
+//	=========
+//
+//	If the current NumStrDto instance is invalid, an error will be
+//	returned.
 func (nDto *NumStrDto) GetSign() (int, error) {
+
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
+
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"NumStrDto.GetSign",
+		"")
+
+	if err != nil {
+		return 0, err
+	}
+
+	err = new(numStrDtoElectron).isValidNumStrDto(
+		nDto, ePrefix.XCpy("Validating 'nDto'"))
+
+	if err != nil {
+		return 0,
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "",
+				ErrContext: "Error: The current NumStrDto instance ('nDto') is INVALID!\n" +
+					"'nDto' FAILED Validation Tests.",
+				ErrMessage: err.Error(),
+			}
+	}
+
 	return nDto.signVal, nil
 }
 
-// GetThisPointer - Returns a pointer to the current NumStrDto instance.
+// GetThisPointer
+//
+//	Returns a pointer to the current NumStrDto instance.
 func (nDto *NumStrDto) GetThisPointer() *NumStrDto {
 
 	return nDto
