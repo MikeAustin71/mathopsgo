@@ -1425,7 +1425,7 @@ func (nDto *NumStrDto) GetBigIntNum() (BigIntNum, error) {
 			}
 	}
 
-	return new(numStrDtoMechanics).getBigIntNum(
+	return new(numStrDtoMechanics).getBigIntNumWithBigInt(
 		numSeps, nDto, true, ePrefix)
 }
 
@@ -2019,51 +2019,46 @@ func (nDto *NumStrDto) GetScaleFactor() (*big.Int, error) {
 		nDto, false, ePrefix)
 }
 
-// GetSciNotationNumber - Converts the numeric value of the current
-// NumStrDto instance into scientific notation and returns this value
-// as an instance of type SciNotationNum.
+// GetSciNotationNumber
 //
-// Input Parameter
-// ===============
+//	Converts the numeric value of the current NumStrDto instance
+//	into scientific notation and returns this value as an instance
+//	of type SciNotationNum.
 //
-// mantissaLen uint	- Specifies the length of the mantissa in the returned
+//	Example Scientific Notation
+//	===========================
 //
-//											scientific notation string. If the value of 'mantissaLen'
-//											is less than two ('2'), this method will automatically set
-//											the 'mantissaLen' to a default value of two ('2').
+//	    scientific notation string: '2.652e+8'
+//	    significand  = '2.652'
+//	    significand integer digit  = '2'
+//	    mantissa  = significand factional digits = '.652'
+//	    exponent  = '8' (10^8)
 //
-//											Example Scientific Notation:
-//											----------------------------
+//	Input Parameter
+//	===============
 //
-//	 										scientific notation string: '2.652e+8'
-//
-//	 										significand = '2.652'
-//	 										significand integer digit = '2'
-//												mantissa		= significand factional digits = '.652'
-//	 										exponent    = '8'  (10^8)
+//	mantissaLen              uint
+//	  Specifies the length of the mantissa in the returned
+//	  scientific notation string. If the value of 'mantissaLen' is
+//	  less than two ('2'), this method will automatically set the
+//	  'mantissaLen' to a default value of two ('2').
 func (nDto *NumStrDto) GetSciNotationNumber(mantissaLen uint) (SciNotationNum, error) {
 
-	ePrefix := "NumStrDto.GetSciNotationNumber() "
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-	bINum, err := nDto.GetBigIntNum()
-
-	if err != nil {
-		return new(SciNotationNum).New(),
-			fmt.Errorf(ePrefix+
-				"Error returned by nDto.GetBigIntNum(). Error='%v'",
-				err.Error())
-	}
-
-	sciNotation, err := bINum.GetSciNotationNumber(mantissaLen)
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"NumStrDto.GetSciNotationNumber",
+		"")
 
 	if err != nil {
-		return new(SciNotationNum).New(),
-			fmt.Errorf(ePrefix+
-				"Error returned by bINum.GetSciNotationNumber(mantissaLen). Error='%v'",
-				err.Error())
+		return SciNotationNum{}, err
 	}
 
-	return sciNotation, nil
+	return new(numStrDtoGluon).getSciNotationNumber(
+		nDto, true, mantissaLen, ePrefix)
 }
 
 // GetSciNotationStr - Returns a string expressing the current NumStrDto

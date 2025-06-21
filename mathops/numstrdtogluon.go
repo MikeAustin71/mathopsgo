@@ -770,10 +770,6 @@ func (nStrDtoGluon *numStrDtoGluon) getAbsIntRunes(
 //	If the current NumStrDto instance is invalid, an error will be
 //	returned.
 //
-//	Input Parameters
-//	================
-//
-//	NONE
 //
 //	Return Values
 //	=============
@@ -939,4 +935,172 @@ func (nStrDtoGluon *numStrDtoGluon) getScaleFactor(
   scaleFactor := big.NewInt(0).Exp(base10, bigPrecision, nil)
 
   return scaleFactor, nil
+}
+
+// getSciNotationNumber
+//
+//	Converts the numeric value of the current NumStrDto instance
+//	into scientific notation and returns this value as an instance
+//	of type SciNotationNum.
+//
+//	Example Scientific Notation
+//	===========================
+//
+//	    scientific notation string: '2.652e+8'
+//	    significand  = '2.652'
+//	    significand integer digit  = '2'
+//	    mantissa  = significand factional digits = '.652'
+//	    exponent  = '8' (10^8)
+//
+//	Input Parameter
+//	===============
+//
+//	nDto                     *NumStrDto
+//	  The returned SciNotationNum instance contain the numeric
+//	  value extracted from this instance of NumStrDto
+//
+//	validateNumStrDto        bool
+//	  When set to 'true', the NumStrDto parameter 'nDto' will be
+//	  subjected to validation tests.
+//
+//	mantissaLen              uint
+//	  Specifies the length of the mantissa in the returned
+//	  scientific notation string. If the value of 'mantissaLen' is
+//	  less than two ('2'), this method will automatically set the
+//	  'mantissaLen' to a default value of two ('2').
+//
+//	errPrefDto					*ePref.ErrPrefixDto
+//
+//	  This object encapsulates an error prefix string
+//	  which is included in all returned error
+//	  messages. Usually, it contains the name of the
+//	  calling method or methods listed as a function
+//	  chain.
+//
+//	  If no error prefix information is needed, set
+//	  this parameter to 'nil'.
+//
+//	  Type ErrPrefixDto is included in the 'errpref'
+//	  software package:
+//	    "github.com/MikeAustin71/errpref".
+//
+//
+//	Return Values
+//	=============
+//
+//	SciNotationNum
+//	  This returned SciNotationNum instance contains the numeric
+//	  representaion of the NumStrDto instance 'nDto'.
+//
+//	error
+//	  If a processing error is encountered, this error object will
+//	  be returned formatted with an appropriate error message.
+func (nStrDtoGluon *numStrDtoGluon) getSciNotationNumber(
+  nDto *NumStrDto,
+  validateNumStrDto bool,
+  mantissaLen uint,
+  errPrefDto *ePref.ErrPrefixDto) (SciNotationNum, error) {
+
+  nStrDtoGluon.lock.Lock()
+
+  defer nStrDtoGluon.lock.Unlock()
+
+  var err error
+  var ePrefix *ePref.ErrPrefixDto
+
+  ePrefix,
+    err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
+    errPrefDto,
+    "numStrDtoGluon.getSciNotationNumber()",
+    "")
+
+  if err != nil {
+    return SciNotationNum{}, err
+  }
+
+  if nDto == nil {
+
+    return SciNotationNum{},
+      &InputPtrNilError{
+        ErrPrefix:     ePrefix.String(),
+        ParameterName: "'nDto'",
+      }
+  }
+
+  if validateNumStrDto {
+
+    err = new(numStrDtoElectron).isValidNumStrDto(
+      nDto, ePrefix.XCpy("Validating 'nDto'"))
+
+    if err != nil {
+      return SciNotationNum{},
+        &FuncReturnError{
+          ErrPrefix:  ePrefix.String(),
+          ReturnFunc: "",
+          ErrContext: "Error: NumStrDto ('nDto') is INVALID!\n" +
+            "'nDto' FAILED Validation Tests.",
+          ErrMessage: err.Error(),
+        }
+    }
+  }
+
+  numSeps, err := new(numStrDtoAtom).getNumericSeparatorsDto(
+    nDto, ePrefix.XCpy("nDto -> numSeps"))
+
+  if err != nil {
+    return SciNotationNum{},
+      &FuncReturnError{
+        ErrPrefix: ePrefix.String(),
+        ReturnFunc: "numSeps, err := new(numStrDtoAtom).getNumericSeparatorsDto(\n" +
+          "  nDto, ePrefix.XCpy(\"nDto -> numSeps\"))",
+        ErrContext: "Error extracting Numeric Separators from from NumStrDto ('nDto').",
+        ErrMessage: err.Error(),
+      }
+  }
+
+  err = numSeps.IsValid(ePrefix.XCpy("Validating 'numSeps'").String())
+
+  if err != nil {
+
+    return SciNotationNum{},
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "err = numSeps.IsValid(ePrefix.XCpy(\"Validating 'numSeps'\").String())",
+        ErrContext: "Error: The NumStrDto instance ('nDto') is INVALID!\n" +
+          "Numeric Separators from 'nDto' FAILED Validation Tests.",
+        ErrMessage: err.Error(),
+      }
+  }
+
+  //bINum, err := nDto.GetBigIntNum()
+  bINum, err := new(numStrDtoMechanics).getBigIntNumWithNumStr(
+    numSeps, nDto, false, ePrefix)
+
+  if err != nil {
+
+    return SciNotationNum{},
+      &FuncReturnError{
+        ErrPrefix: ePrefix.String(),
+        ReturnFunc: "bINum, err := new(numStrDtoMechanics).getBigIntNumWithNumStr(\n" +
+          "  numSeps, nDto, false, ePrefix)",
+        ErrContext: "Error extracting BigIntNum from NumStrDto ('nDto').",
+        ErrMessage: err.Error(),
+      }
+  }
+
+  sciNotation, err := bINum.GetSciNotationNumber(mantissaLen)
+
+  if err != nil {
+
+    return SciNotationNum{},
+      &FuncReturnError{
+        ErrPrefix: ePrefix.String(),
+        ReturnFunc: "sciNotation, err := bINum.\n" +
+          "  GetSciNotationNumber(mantissaLen)",
+        ErrContext: "Error converting BigIntNum ('bINum') to Scientific Notation.",
+        ErrMessage: err.Error(),
+      }
+  }
+
+  return sciNotation, nil
 }

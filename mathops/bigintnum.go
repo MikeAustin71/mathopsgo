@@ -4534,6 +4534,12 @@ func (bNum *BigIntNum) NewNumStr(
 //	If parameter 'numStrNumSeps' proves to be invalid, an error
 //	will be returned.
 //
+//	Example Method Call
+//	===================
+//
+//	** Pass numSeps as a pointer **
+//	bIntNum, err := new(BigIntNum).NewNumStrWithNumSeps(outStr, &numSeps)
+//
 //	Input Parameters
 //	================
 //

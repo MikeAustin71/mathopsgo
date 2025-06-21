@@ -951,31 +951,34 @@ func (numStrDtoMech *numStrDtoMechanics) formatThousandsStr(
 	return string(outRunes), nil
 }
 
-// getBigIntNum
+// getBigIntNumWithBigInt
 //
-//	Converts the numeric value of the current NumStrDto to a
-//	type 'BigIntNum' object and returns it to the calling function.
+//		Converts the numeric value of the current NumStrDto to a
+//		type 'BigIntNum' object and returns it to the calling function.
+//	 The NumStrDto is first converted into a *big.Int type and a
+//	 precision value before the final conversion to type 'BigIntNum'
+//	 object.
 //
-//	IMPORTANT
-//	=========
+//		IMPORTANT
+//		=========
 //
-//	If the current NumStrDto instance is invalid, an error will be
-//	returned.
+//		If the current NumStrDto instance is invalid, an error will be
+//		returned.
 //
-//	Numeric Separators
-//	==================
+//		Numeric Separators
+//		==================
 //
-//	Numeric Separators define the Decimal Separator character,
-//	Thousands Separator character, and Currency Symbol character.
-//	These separator characters serve two purposes. First they are
-//	used to format and display numeric values as number strings.
-//	Second, they are also used to parse number strings and
-//	convert them into numeric values.
+//		Numeric Separators define the Decimal Separator character,
+//		Thousands Separator character, and Currency Symbol character.
+//		These separator characters serve two purposes. First they are
+//		used to format and display numeric values as number strings.
+//		Second, they are also used to parse number strings and
+//		convert them into numeric values.
 //
-//	The Numeric Separators configured for the current instance of
-//	NumStrDto will be copied to the BigIntNum object returned by
-//	this method.
-func (numStrDtoMech *numStrDtoMechanics) getBigIntNum(
+//		The Numeric Separators configured for the current instance of
+//		NumStrDto will be copied to the BigIntNum object returned by
+//		this method.
+func (numStrDtoMech *numStrDtoMechanics) getBigIntNumWithBigInt(
 	numSeps NumericSeparatorDto,
 	nDto *NumStrDto,
 	validateNumStrDto bool,
@@ -991,7 +994,7 @@ func (numStrDtoMech *numStrDtoMechanics) getBigIntNum(
 	ePrefix,
 		err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
 		errPrefDto,
-		"numStrDtoMechanics.getBigIntNum",
+		"numStrDtoMechanics.getBigIntNumWithBigInt",
 		"")
 
 	if err != nil {
@@ -1066,6 +1069,129 @@ func (numStrDtoMech *numStrDtoMechanics) getBigIntNum(
 					"signedBiNumPrecision= '%v'\n"+
 					"numSeps= '%v'",
 					signedBIntNum.Text(10), signedBiNumPrecision, numSeps.String()),
+				ErrMessage: err.Error(),
+			}
+	}
+
+	return bIntNum, nil
+}
+
+// getBigIntNumWithNumStr
+//
+//		Converts the numeric value of the current NumStrDto to a
+//		type 'BigIntNum' object and returns it to the calling function.
+//	 The NumStrDto is first converted to a number string which is
+//	 then converted into a type 'BigIntNum' object.
+//
+//		IMPORTANT
+//		=========
+//
+//		If the current NumStrDto instance is invalid, an error will be
+//		returned.
+//
+//		Numeric Separators
+//		==================
+//
+//		Numeric Separators define the Decimal Separator character,
+//		Thousands Separator character, and Currency Symbol character.
+//		These separator characters serve two purposes. First they are
+//		used to format and display numeric values as number strings.
+//		Second, they are also used to parse number strings and
+//		convert them into numeric values.
+//
+//		The Numeric Separators configured for the current instance of
+//		NumStrDto will be copied to the BigIntNum object returned by
+//		this method.
+func (numStrDtoMech *numStrDtoMechanics) getBigIntNumWithNumStr(
+	numSeps NumericSeparatorDto,
+	nDto *NumStrDto,
+	validateNumStrDto bool,
+	errPrefDto *ePref.ErrPrefixDto) (BigIntNum, error) {
+
+	numStrDtoMech.lock.Lock()
+
+	defer numStrDtoMech.lock.Unlock()
+
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
+
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
+		errPrefDto,
+		"numStrDtoMechanics.getBigIntNumWithBigInt",
+		"")
+
+	if err != nil {
+		return BigIntNum{}, err
+	}
+
+	if nDto == nil {
+
+		return BigIntNum{},
+			&InputPtrNilError{
+				ErrPrefix:     ePrefix.String(),
+				ParameterName: "'nDto'",
+			}
+	}
+
+	if validateNumStrDto {
+
+		err = new(numStrDtoElectron).isValidNumStrDto(
+			nDto, ePrefix.XCpy("Validating 'nDto'"))
+
+		if err != nil {
+			return BigIntNum{},
+				&FuncReturnError{
+					ErrPrefix:  ePrefix.String(),
+					ReturnFunc: "",
+					ErrContext: "Error: NumStrDto ('nDto') is INVALID!\n" +
+						"'nDto' FAILED Validation Tests.",
+					ErrMessage: err.Error(),
+				}
+		}
+	}
+
+	err = numSeps.IsValid(ePrefix.XCpy("Validating 'numSeps'").String())
+
+	if err != nil {
+
+		return BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "err = numSeps.IsValid(ePrefix.XCpy(\"Validating 'numSeps'\").String())",
+				ErrContext: "Error: Numeric Separators input paramter ('numSeps') is INVALID!\n" +
+					"'numSeps' FAILED Validation Tests.",
+				ErrMessage: err.Error(),
+			}
+	}
+
+	outStr, err := new(numStrDtoAtom).formatNumStr(
+		nDto, true, LEADMINUSNEGVALFMTMODE, ePrefix)
+
+	if err != nil {
+
+		return BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix: ePrefix.String(),
+				ReturnFunc: "outStr, err :=new(numStrDtoAtom).formatNumStr(\n" +
+					"  nDto, true, LEADMINUSNEGVALFMTMODE, ePrefix)",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
+
+	bIntNum, err := new(BigIntNum).NewNumStrWithNumSeps(outStr, &numSeps)
+
+	if err != nil {
+
+		return BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix: ePrefix.String(),
+				ReturnFunc: "bIntNum, err := new(BigIntNum).NewNumStrWithNumSeps(\n" +
+					"  outStr, &numSeps)",
+				ErrContext: fmt.Sprintf("outStr= '%v'\n"+
+					"numSeps= '%v'",
+					outStr, numSeps.String()),
 				ErrMessage: err.Error(),
 			}
 	}
