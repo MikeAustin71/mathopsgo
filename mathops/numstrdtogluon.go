@@ -134,6 +134,32 @@ func (nStrDtoGluon *numStrDtoGluon) getAbsAllNumRunes(
 //	All the numeric digits in the number string are
 //	therefore returned as a type *big.Int numeric value.
 //
+//	Input Parameter
+//	===============
+//
+//	nDto                     *NumStrDto
+//	  The returned Big Int Number (*big.Int) contains the numeric
+//	  value extracted from this instance of NumStrDto.
+//
+//	validateNumStrDto        bool
+//	  When set to 'true', the NumStrDto parameter 'nDto' will be
+//	  subjected to validation tests.
+//
+//	errPrefDto					*ePref.ErrPrefixDto
+//
+//	  This object encapsulates an error prefix string
+//	  which is included in all returned error
+//	  messages. Usually, it contains the name of the
+//	  calling method or methods listed as a function
+//	  chain.
+//
+//	  If no error prefix information is needed, set
+//	  this parameter to 'nil'.
+//
+//	  Type ErrPrefixDto is included in the 'errpref'
+//	  software package:
+//	    "github.com/MikeAustin71/errpref".
+//
 //	Return Values
 //	=============
 //
@@ -770,6 +796,31 @@ func (nStrDtoGluon *numStrDtoGluon) getAbsIntRunes(
 //	If the current NumStrDto instance is invalid, an error will be
 //	returned.
 //
+//	Input Parameter
+//	===============
+//
+//	nDto                     *NumStrDto
+//	  The returned rational number contains the numeric value
+//	  extracted from this instance of NumStrDto.
+//
+//	validateNumStrDto        bool
+//	  When set to 'true', the NumStrDto parameter 'nDto' will be
+//	  subjected to validation tests.
+//
+//	errPrefDto					*ePref.ErrPrefixDto
+//
+//	  This object encapsulates an error prefix string
+//	  which is included in all returned error
+//	  messages. Usually, it contains the name of the
+//	  calling method or methods listed as a function
+//	  chain.
+//
+//	  If no error prefix information is needed, set
+//	  this parameter to 'nil'.
+//
+//	  Type ErrPrefixDto is included in the 'errpref'
+//	  software package:
+//	    "github.com/MikeAustin71/errpref".
 //
 //	Return Values
 //	=============
@@ -956,8 +1007,8 @@ func (nStrDtoGluon *numStrDtoGluon) getScaleFactor(
 //	===============
 //
 //	nDto                     *NumStrDto
-//	  The returned SciNotationNum instance contain the numeric
-//	  value extracted from this instance of NumStrDto
+//	  The returned SciNotationNum instance contains the numeric
+//	  value extracted from this instance of NumStrDto.
 //
 //	validateNumStrDto        bool
 //	  When set to 'true', the NumStrDto parameter 'nDto' will be
@@ -983,7 +1034,6 @@ func (nStrDtoGluon *numStrDtoGluon) getScaleFactor(
 //	  Type ErrPrefixDto is included in the 'errpref'
 //	  software package:
 //	    "github.com/MikeAustin71/errpref".
-//
 //
 //	Return Values
 //	=============
@@ -1086,6 +1136,10 @@ func (nStrDtoGluon *numStrDtoGluon) getSciNotationNumber(
         ErrContext: "Error extracting BigIntNum from NumStrDto ('nDto').",
         ErrMessage: err.Error(),
       }
+  }
+
+  if mantissaLen < 2 {
+    mantissaLen = 2
   }
 
   sciNotation, err := bINum.GetSciNotationNumber(mantissaLen)

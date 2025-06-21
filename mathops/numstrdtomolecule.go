@@ -299,6 +299,140 @@ func (nStrDtoMolecule *numStrDtoMolecule) copy(
 	return nil
 }
 
+// getSciNotationStr
+//
+//	Returns a string expressing the current NumStrDto numerical value as
+//	scientific notation.
+//
+//	Example Scientific Notation
+//	===========================
+//
+//	    scientific notation string: '2.652e+8'
+//	    significand  = '2.652'
+//	    significand integer digit  = '2'
+//	    mantissa  = significand factional digits = '.652'
+//	    exponent  = '8' (10^8)
+//
+//	Input Parameter
+//	===============
+//
+//	nDto                     *NumStrDto
+//	  The returned SciNotationNum string contains the numeric
+//	  value extracted from this instance of NumStrDto
+//
+//	mantissaLen              uint
+//	 Specifies the length of the mantissa in the returned
+//	 scientific notation string. If the value of 'mantissaLen' is
+//	 less than two ('2'), this method will automatically set the
+//	 'mantissaLen' to a default value of two ('2').
+//
+//	errPrefDto					*ePref.ErrPrefixDto
+//
+//	  This object encapsulates an error prefix string
+//	  which is included in all returned error
+//	  messages. Usually, it contains the name of the
+//	  calling method or methods listed as a function
+//	  chain.
+//
+//	  If no error prefix information is needed, set
+//	  this parameter to 'nil'.
+//
+//	  Type ErrPrefixDto is included in the 'errpref'
+//	  software package:
+//	    "github.com/MikeAustin71/errpref".
+//
+//	Return Values
+//	=============
+//
+//	string
+//	  This returned strings contains the numeric representaion of
+//	  the NumStrDto instance 'nDto' formatted in Scientific
+//	  Notation.
+//
+//	error
+//	  If a processing error is encountered, this error object will
+//	  be returned formatted with an appropriate error message.
+func (nStrDtoMolecule *numStrDtoMolecule) getSciNotationStr(
+	nDto *NumStrDto,
+	validateNumStrDto bool,
+	mantissaLen uint,
+	errPrefDto *ePref.ErrPrefixDto) (string, error) {
+
+	nStrDtoMolecule.lock.Lock()
+
+	defer nStrDtoMolecule.lock.Unlock()
+
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
+
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
+		errPrefDto,
+		"numStrDtoMolecule.getSciNotationStr()",
+		"")
+
+	if err != nil {
+		return "", err
+	}
+
+	if nDto == nil {
+
+		return "",
+			&InputPtrNilError{
+				ErrPrefix:     ePrefix.String(),
+				ParameterName: "'nDto'",
+			}
+	}
+
+	if validateNumStrDto {
+
+		err = new(numStrDtoElectron).isValidNumStrDto(
+			nDto, ePrefix.XCpy("Validating 'nDto'"))
+
+		if err != nil {
+			return "",
+				&FuncReturnError{
+					ErrPrefix:  ePrefix.String(),
+					ReturnFunc: "",
+					ErrContext: "Error: NumStrDto ('nDto') is INVALID!\n" +
+						"'nDto' FAILED Validation Tests.",
+					ErrMessage: err.Error(),
+				}
+		}
+	}
+
+	sciNotation, err := new(numStrDtoGluon).getSciNotationNumber(
+		nDto, false, mantissaLen, ePrefix)
+
+	if err != nil {
+
+		return "",
+			&FuncReturnError{
+				ErrPrefix: ePrefix.String(),
+				ReturnFunc: "sciNotation, err := new(numStrDtoGluon).getSciNotationNumber(\n" +
+					"  nDto, false, mantissaLen, ePrefix)",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
+
+	sciNotationStr, err := sciNotation.GetSciNotationStr(mantissaLen)
+
+	if err != nil {
+
+		return "",
+			&FuncReturnError{
+				ErrPrefix: ePrefix.String(),
+				ReturnFunc: "sciNotationStr, err := sciNotation.\n" +
+					"  GetSciNotationStr(mantissaLen)",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
+
+	return sciNotationStr, nil
+}
+
 // NewInt64
 //
 //	Creates a new NumStrDto instance from an int64 value and a

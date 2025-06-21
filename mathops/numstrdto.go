@@ -1984,8 +1984,11 @@ func (nDto *NumStrDto) GetRationalNumber() (signValue int, bigRat *big.Rat, err 
 //	'precision' (nDto.precision).  nDto.precision is the number of
 //	digits to the right of the decimal point.
 //
-//	This method will fail and return an error if the current instance
-//	of NumStrDto is invalid.
+//	IMPORTANT
+//	=========
+//
+//	If the current NumStrDto instance is invalid, an error will be
+//	returned.
 func (nDto *NumStrDto) GetScaleFactor() (*big.Int, error) {
 
 	var ePrefix *ePref.ErrPrefixDto
@@ -2042,6 +2045,12 @@ func (nDto *NumStrDto) GetScaleFactor() (*big.Int, error) {
 //	  scientific notation string. If the value of 'mantissaLen' is
 //	  less than two ('2'), this method will automatically set the
 //	  'mantissaLen' to a default value of two ('2').
+//
+//	IMPORTANT
+//	=========
+//
+//	If the current NumStrDto instance is invalid, an error will be
+//	returned.
 func (nDto *NumStrDto) GetSciNotationNumber(mantissaLen uint) (SciNotationNum, error) {
 
 	var ePrefix *ePref.ErrPrefixDto
@@ -2061,54 +2070,51 @@ func (nDto *NumStrDto) GetSciNotationNumber(mantissaLen uint) (SciNotationNum, e
 		nDto, true, mantissaLen, ePrefix)
 }
 
-// GetSciNotationStr - Returns a string expressing the current NumStrDto
-// numerical value as scientific notation.
+// GetSciNotationStr
 //
-// Input Parameter
-// ===============
+//	Returns a string expressing the current NumStrDto numerical value as
+//	scientific notation.
 //
-// mantissaLen uint	- Specifies the length of the mantissa in the returned
+//	Example Scientific Notation
+//	===========================
 //
-//											scientific notation string. If the value of 'mantissaLen'
-//											is less than two ('2'), this method will automatically set
-//											the 'mantissaLen' to a default value of two ('2').
+//	    scientific notation string: '2.652e+8'
+//	    significand  = '2.652'
+//	    significand integer digit  = '2'
+//	    mantissa  = significand factional digits = '.652'
+//	    exponent  = '8' (10^8)
 //
-//											Example Scientific Notation:
-//											----------------------------
+//	Input Parameter
+//	===============
 //
-//	 										scientific notation string: '2.652e+8'
+//	mantissaLen              uint
+//	  Specifies the length of the mantissa in the returned
+//	  scientific notation string. If the value of 'mantissaLen' is
+//	  less than two ('2'), this method will automatically set the
+//	  'mantissaLen' to a default value of two ('2').
 //
-//	 										significand = '2.652'
-//	 										significand integer digit = '2'
-//												mantissa		= significand factional digits = '.652'
-//	 										exponent    = '8'  (10^8)
+//	IMPORTANT
+//	=========
+//
+//	If the current NumStrDto instance is invalid, an error will be
+//	returned.
 func (nDto *NumStrDto) GetSciNotationStr(mantissaLen uint) (string, error) {
 
-	ePrefix := "NumStrDto.GetSciNotationStr() "
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-	if mantissaLen < 2 {
-		mantissaLen = 2
-	}
-
-	sciNotation, err := nDto.GetSciNotationNumber(mantissaLen)
-
-	if err != nil {
-		return "",
-			fmt.Errorf(ePrefix+
-				"Error returned by bNum.GetSciNotationNumber(mantissaLen). "+
-				"Error='%v'", err.Error())
-	}
-
-	result, err := sciNotation.GetSciNotationStr(mantissaLen)
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"NumStrDto.GetSciNotationStr",
+		"")
 
 	if err != nil {
-		return "",
-			fmt.Errorf(ePrefix+
-				"Error returned by sciNotation.GetSciNotationStr(mantissaLen). "+
-				"Error='%v'", err.Error())
+		return "", err
 	}
 
-	return result, nil
+	return new(numStrDtoMolecule).getSciNotationStr(
+		nDto, true, mantissaLen, ePrefix)
 }
 
 // GetSign - Returns the sign value for this NumStrDto
