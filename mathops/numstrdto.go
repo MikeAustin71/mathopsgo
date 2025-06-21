@@ -52,6 +52,12 @@ type NumStrDto struct {
 //	The Numeric Separators originally configured for the current
 //	instance of NumStrDto will remain unchanged. No modifications
 //	to Numeric Separators will be made by this method.
+//
+//	IMPORTANT
+//	=========
+//
+//	If the current NumStrDto instance is invalid, an error will be
+//	returned.
 func (nDto *NumStrDto) Add(n2Dto NumStrDto) error {
 
 	var ePrefix *ePref.ErrPrefixDto
@@ -1917,64 +1923,56 @@ func (nDto *NumStrDto) GetPrecisionUint() (precision uint, err error) {
 	return nDto.precision, nil
 }
 
-// GetRationalNumber - returns the sign value of the number string, plus the
-// numeric value of the number string expressed as a Rational Number.
+// GetRationalNumber
 //
-// This method will return an error if the NumStrDto fields are not properly
-// initialized and populated.
+//	Returns the sign value of the number string, plus the numeric
+//	value of the number string expressed as a Rational Number.
 //
-// Returns
-// =======
+//	IMPORTANT
+//	=========
 //
-// sign value  						int 			- sign value of the number string
-// big Rational Number		*big.Rat	- Number string expressed as a
+//	If the current NumStrDto instance is invalid, an error will be
+//	returned.
 //
-//	rational number
+//	Input Parameters
+//	================
 //
-// err										error			- In case of failure, an 'error' type
+//	NONE
 //
-//	is returned. In case of success this
-//	value is 'nil'
-func (nDto *NumStrDto) GetRationalNumber() (int, *big.Rat, error) {
+//	Return Values
+//	=============
+//
+//	signValue                int
+//	  Sign value of the current instance NumStrDto numeric value.
+//	  This returned value either be a +1 or a -1.
+//
+//	    Possible Sign Values
+//	      1 = NumStrDto numeric value is a Positive Number
+//	     -1 = NumStrDto numeric value is a Negative Number
+//
+//	bigRat                   *big.Rat
+//	  NumStrDto numeric value expressed as a rational number.
+//
+//	err                      error
+//	  If an error is encountered during processing, this error
+//	  object will be returned configured with an appropriate error
+//	  message.
+func (nDto *NumStrDto) GetRationalNumber() (signValue int, bigRat *big.Rat, err error) {
 
-	ePrefix := "NumStrDto.GetRationalNumber() "
+	var ePrefix *ePref.ErrPrefixDto
 
-	err := nDto.IsValid("")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"NumStrDto.GetRationalNumber",
+		"")
 
 	if err != nil {
-		return 0, big.NewRat(1, 1),
-			fmt.Errorf(ePrefix+"This NumStrDto instance is INVALID! Error='%v'", err.Error())
+		return 0, big.NewRat(1, 1), err
 	}
 
-	ratZero := big.NewRat(0, 1)
-
-	err = nDto.IsValid(ePrefix)
-
-	if err != nil {
-		return 0, ratZero, errors.New(ePrefix +
-			"- Error: The existing NumStrDto is corrupted or improperly initialized. " +
-			"Re-initialize the NumStrDto object and try again.")
-	}
-
-	signVal := nDto.signVal
-
-	absInt, isOk := big.NewInt(0).SetString(string(nDto.absAllNumRunes), 10)
-
-	if !isOk {
-		return 0, ratZero, fmt.Errorf(ePrefix+
-			"- Conversion of nDto.absAllNumRunes to big.Int Failed! "+
-			"nDto.absIntRunes= '%v'", nDto.absAllNumRunes)
-	}
-
-	base10 := big.NewInt(10)
-
-	bigPrecision := big.NewInt(int64(nDto.precision))
-
-	scaleFactor := big.NewInt(0).Exp(base10, bigPrecision, nil)
-
-	rationalNum := big.NewRat(1, 1).SetFrac(absInt, scaleFactor)
-
-	return signVal, rationalNum, nil
+	return new(numStrDtoGluon).getRationalNumber(
+		nDto, true, ePrefix)
 }
 
 // GetScaleFactor
