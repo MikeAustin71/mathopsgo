@@ -4424,144 +4424,124 @@ func (nDto *NumStrDto) SetThousandsSeparator(thousandsSeparator rune) error {
 		nDto, thousandsSeparator, ePrefix)
 }
 
-// ShiftPrecisionLeft - Shifts the relative position of a decimal point within a number
-// string. The position of the decimal point is shifted 'shiftPrecision' positions to
-// the left of the current decimal point position.
+// ShiftPrecisionLeft
 //
-// This is equivalent to: result = signedNumStr / 10^precision or signedNumStr divided
-// by 10 raised to the power of precision.
+//	Shifts the relative position of a decimal point within a number
+//	string. The position of the decimal point is shifted
+//	'shiftPrecision' positions to the left of the current decimal
+//	point position.
 //
-// See the Examples section below.
+//	This is equivalent to:
+//	         result = signedNumStr / 10^precision
+//	                          or
+//	 signedNumStr divided by 10 raised to the power of precision.
 //
-// Input Parameters
-// ================
+//	Examples
+//	========
 //
-//	signedNumStr		string		- A valid number string. The leading digit may optionally
-//															be a '+' or '-' indicating numeric sign value. If '+'
-//															or '-'	characters are not present in the first character
-//															position, the number is assumed to represent a positive
-//															numeric value ('+').
+//	                  Shift-Left
+//	signedNumStr      precision         Result
 //
-//	shiftPrecision		uint		- The number of digits by which the current decimal point
-//															position in the number string, 'signedNumStr' will
-//															be shifted to the left.
+//	"123456.789"          3           "123.456789"
+//	"123456.789"          2           "1234.56789"
+//	"123456.789"          6           "0.123456789"
+//	"123456789"           6           "123.456789"
+//	"123"                 5           "0.00123"
+//	"0"                   3           "0.000"
+//	"0.000"               2           "0.00000"
+//	"123456.789"          0           "123456.789"
+//	      zero 'shiftPrecision' has no effect on
+//	          the original number string
 //
-// Returns
-// =======
+//	"-123456.789"         3           "-123.456789"
+//	"-123456789"          6           "-123.456789"
 //
-//	NumStrDto				- If successful, the method returns the result of the Shift Left precision
-//										operation in the form of a 'NumStrDto' instance
+//	Numeric Separators
+//	==================
 //
-//	error						- If successful, the 'error' type is set to 'nil'. In case of an error,
-//										the 'error' instance returned will hold the error message.
+//	The Numeric Separators originally configured for the current
+//	instance of NumStrDto will be copied to the returned instance
+//	of NumStrDto.
 //
-// Examples
-// ========
+//	IMPORTANT
+//	=========
 //
-//	                   Shift-Left
-//	 signedNumStr			precision				Result
-//		 "123456.789"				  3						"123.456789"
-//		 "123456.789"				  2						"1234.56789"
-//		 "123456.789"	   		  6					  "0.123456789"
-//		 "123456789"					6						"123.456789"
-//		 "123"								5						"0.00123"
-//	  "0"									3						"0.000"
-//		 "0.000"							2						"0.00000"
-//	 "123456.789"					0						"123456.789"		- zero 'shiftPrecision' has no effect on
-//																												original number string
+//	If the current NumStrDto instance is invalid, an error will be
+//	returned.
 //
-// "-123456.789"          0          "-123.456789"
-// "-123456.789"          3          "-123.456789"
-// "-123456789"						6					 "-123.456789"
+//	Input Parameters
+//	================
+//
+//	signedNumStr             string
+//	  A valid number string. The leading digit may optionally be a
+//	  '+' or '-' indicating numeric sign value. If '+' or '-'
+//	  characters are not present in the first character position,
+//	  the number is assumed to represent a positive	numeric value
+//	  ('+').
+//
+//	shiftPrecision           uint
+//	  The number of digits by which the current decimal point
+//	  position in the number string, 'signedNumStr' will be shifted
+//	  to the left.
+//
+//	Return Values
+//	=============
+//
+//	NumStrDto
+//	  This method returns the result of the Shift Left precision
+//	  operation in the form of a new 'NumStrDto' instance.
+//
+//	error
+//	  If a processing error is encountered, this returned error
+//	  object will be configured with an appropriate error message.
 func (nDto *NumStrDto) ShiftPrecisionLeft(
 	signedNumStr string,
 	shiftLeftPrecision uint) (NumStrDto, error) {
 
-	ePrefix := "NumStrDto.ShiftPrecisionLeft() "
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-	if len(signedNumStr) == 0 {
-		return NumStrDto{}, errors.New(ePrefix +
-			"Received zero length number string!")
-	}
-
-	// Set defaults for thousands separators,
-	// decimal separators and currency Symbols
-	if nDto.thousandsSeparator == 0 {
-		nDto.thousandsSeparator = ','
-	}
-
-	if nDto.decimalSeparator == 0 {
-		nDto.decimalSeparator = '.'
-	}
-
-	if nDto.currencySymbol == 0 {
-		nDto.currencySymbol = '$'
-	}
-
-	n1, err := new(NumStrDto).NewPtr().ParseNumStr(signedNumStr)
-
-	if err != nil {
-		return NumStrDto{}, fmt.Errorf(ePrefix+
-			"Received Error from NumStrDto.ParseNumStr(signedNumStr). "+
-			"str= '%v' Error= %v",
-			signedNumStr, err)
-	}
-
-	n2 := new(NumStrDto).New()
-
-	n2.thousandsSeparator = nDto.thousandsSeparator
-	n2.decimalSeparator = nDto.decimalSeparator
-	n2.currencySymbol = nDto.currencySymbol
-	n2.signVal = n1.signVal
-	n2.precision = shiftLeftPrecision + n1.precision
-	iTotalSpecPrecision := int(n2.precision)
-	lenAbsAllNumRunes := len(n1.absAllNumRunes)
-	lenAbsIntRunes := n1.GetAbsIntRunesLength()
-	lenAbsFracRunes := n1.GetAbsFracRunesLength()
-
-	if nDto.IsNumStrZeroValue(&n1) {
-
-		return nDto.GetZeroNumStrDto(n2.precision), nil
-	}
-
-	if iTotalSpecPrecision == lenAbsAllNumRunes {
-
-		n2.absAllNumRunes = append(n2.absAllNumRunes, '0')
-
-	} else if iTotalSpecPrecision > lenAbsAllNumRunes {
-
-		deltaPrecision := iTotalSpecPrecision - lenAbsAllNumRunes + 1
-
-		for i := 0; i < deltaPrecision; i++ {
-			n2.absAllNumRunes = append(n2.absAllNumRunes, '0')
-		}
-
-	}
-
-	for j := 0; j < lenAbsAllNumRunes; j++ {
-		n2.absAllNumRunes = append(n2.absAllNumRunes, n1.absAllNumRunes[j])
-	}
-
-	lenAbsAllNumRunes = len(n2.absAllNumRunes)
-	lenAbsFracRunes = iTotalSpecPrecision
-	lenAbsIntRunes = lenAbsAllNumRunes - lenAbsFracRunes
-
-	if lenAbsIntRunes <= 0 {
-		return NumStrDto{}, fmt.Errorf(ePrefix+
-			"Calculated number of integer digits is less than or equal to ZERO. "+
-			"lenAbsIntRunes= '%v' ",
-			lenAbsIntRunes)
-	}
-
-	lenAbsFracRunes = n2.GetAbsFracRunesLength()
-
-	err = n2.IsValid(ePrefix)
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"NumStrDto.ShiftPrecisionLeft",
+		"")
 
 	if err != nil {
 		return NumStrDto{}, err
 	}
 
-	return n2, nil
+	err = new(numStrDtoElectron).isValidNumStrDto(
+		nDto, ePrefix.XCpy("Validating 'nDto'"))
+
+	if err != nil {
+		return NumStrDto{},
+			&FuncReturnError{
+				ErrPrefix: ePrefix.String(),
+				ReturnFunc: "err = new(numStrDtoElectron).isValidNumStrDto(\n" +
+					"nDto, ePrefix)",
+				ErrContext: "Error: The current NumStrDto instance ('nDto') is INVALID!\n" +
+					"'nDto' FAILED Validation Tests.",
+				ErrMessage: err.Error(),
+			}
+	}
+
+	numSeps, err := new(numStrDtoAtom).getNumericSeparatorsDto(
+		nDto, ePrefix.XCpy("nDto -> numSeps"))
+
+	if err != nil {
+		return NumStrDto{},
+			&FuncReturnError{
+				ErrPrefix: ePrefix.String(),
+				ReturnFunc: "numSeps, err := new(numStrDtoAtom).getNumericSeparatorsDto(\n" +
+					"  nDto, ePrefix.XCpy(\"nDto -> numSeps\"))",
+				ErrContext: "Error extracting Numeric Separators from current NumStrDto instance.",
+				ErrMessage: err.Error(),
+			}
+	}
+
+	return new(numStrDtoTau).shiftPrecisionLeft(
+		numSeps, signedNumStr, shiftLeftPrecision, ePrefix)
 }
 
 // ShiftPrecisionRight - Shifts the existing precision of a number string. The position of
