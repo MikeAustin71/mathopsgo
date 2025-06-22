@@ -4450,6 +4450,7 @@ func (nDto *NumStrDto) SetThousandsSeparator(thousandsSeparator rune) error {
 //	"0"                   3           "0.000"
 //	"0.000"               2           "0.00000"
 //	"123456.789"          0           "123456.789"
+//	"-123456.789"         0           "-123456.789"
 //	      zero 'shiftPrecision' has no effect on
 //	          the original number string
 //
