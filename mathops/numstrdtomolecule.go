@@ -907,11 +907,49 @@ func (nStrDtoMolecule *numStrDtoMolecule) newFloat64(
 //	Creates a new NumStrDto instance from an int64 value and a
 //	precision specification.
 //
-//	Input parameter 'precision' indicates the number of digits to
-//	be formatted to the right of the decimal place.
+//	'precision'
+//	===========
 //
-//	Example
-//	=======
+//	'precision' determines the number of digits to the right of the
+//	decimal place.
+//
+//	   int64         precision          result
+//
+//	   946254            3               946.254
+//	   946254            1               94625.4
+//	   946254            0               946254
+//	  -946254            3              -946.254
+//	  -946254            2              -9462.54
+//	  -946254            0              -946254
+//
+//	Maximum Precision Value
+//	=======================
+//
+//	Input parameter 'precision' is an unsigned integer value.
+//	The maximum limit for a 'precision' uint value is
+//	2,147,483,647 or	2^31 - 1. This is also the maximum
+//	allowable limit for a signed 32-bit integer.
+//
+//	If the 'precision' value exceeds the maximum allowable limit,
+//	an error will be returned.
+//
+//	Numeric Separators
+//	==================
+//
+//	Numeric Separators define the Decimal Separator character,
+//	Thousands Separator character, and Currency Symbol character.
+//	These separator characters serve two purposes. First they are
+//	used to format and display numeric values as number strings.
+//	Second, they are also used to parse number strings and
+//	convert them into numeric values.
+//
+//	The final NumStrDto result returned by this method will be
+//	configured with the Numeric Separators copied from the input
+//	parameter ('numSeps'). If these Numeric Separators prove
+//	to be invalid, an error will be returned.
+//
+//	Example Calling Syntax
+//	======================
 //
 //	          new(NumStrDto).NewInt64(123456, 3)
 //	Yields a NumStrDto instance with a numeric value of 123.456.

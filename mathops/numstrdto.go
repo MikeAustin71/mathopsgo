@@ -2704,9 +2704,9 @@ func (nDto *NumStrDto) NewBigFloat(
 
 // NewBigInt
 //
-//	Receives a signed Bit Int Number (*big.Int) and precision
+//	Receives a signed Big Int Number (*big.Int) and precision
 //	specification. This method then proceeds to create and return
-//	a new instace of NumStrDto instance.
+//	a new instace of NumStrDto.
 //
 //	'precision'
 //	===========
@@ -3001,22 +3001,161 @@ func (nDto *NumStrDto) NewFloat64(f64 float64, precision int) (NumStrDto, error)
 
 // NewInt
 //
-// Creates a new NumStrDto from an int and a precision specification.
+//	Receives a integer number (int) and precision specification.
+//	This method then proceeds to create and return a new instace of
+//	NumStrDto.
 //
-// Input parameter 'precision' indicates the number of digits to be
-// formatted to the right of the decimal place.
+//	'precision'
+//	===========
 //
-// The 'NewInt' method is designed to used in conjunction with
-// NumStrDto{} syntax thereby allowing NumStrDto type creation and
-// initialization in one step.
+//	'precision' determines the number of digits to the right of the
+//	decimal place.
 //
-// Example: new(NumStrDto).NewInt(123456, 3) yields a new NumStrDto
-// instance with a numeric value of 123.456.
+//	  integer        precision           result
+//
+//	   946254            3               946.254
+//	   946254            1               94625.4
+//	   946254            0               946254
+//	  -946254            3              -946.254
+//	  -946254            2              -9462.54
+//	  -946254            0              -946254
+//
+//
+//	Maximum Precision Value
+//	=======================
+//
+//	Input parameter 'precision' is an unsigned integer value.
+//	The maximum limit for a 'precision' uint value is
+//	2,147,483,647 or	2^31 - 1. This is also the maximum
+//	allowable limit for a signed 32-bit integer.
+//
+//	If this value exceeds the maximum value for a 32-bit integer,
+//	this 'precision' value will be automatically reduced to the
+//	maximum limit of 2,147,483,647 or	2^31 - 1.
+//
+//	Numeric Separators
+//	==================
+//
+//	Numeric Separators define the Decimal Separator character,
+//	Thousands Separator character, and Currency Symbol character.
+//	These separator characters serve two purposes. First they are
+//	used to format and display numeric values as number strings.
+//	Second, they are also used to parse number strings and
+//	convert them into numeric values.
+//
+//	The final NumStrDto result returned by this method will be
+//	configured with the Numeric Separators copied from the current
+//	NumStrDto instance ('nDto'). If these Numeric Separators prove
+//	to be invalid, they will be automatically reset to USA default
+//	values.
 func (nDto *NumStrDto) NewInt(intNum int, precision uint) NumStrDto {
 
-	n2 := new(NumStrDto).NewInt64(int64(intNum), precision)
+	var numSeps NumericSeparatorDto
+
+	numSeps.ThousandsSeparator = nDto.thousandsSeparator
+	numSeps.DecimalSeparator = nDto.decimalSeparator
+	numSeps.CurrencySymbol = nDto.currencySymbol
+
+	numSeps.SetDefaultsIfEmpty()
+
+	n2 := new(numStrDtoMechanics).newIntNumStrDto(numSeps, intNum, precision)
 
 	return n2
+}
+
+// NewIntNumSeps
+//
+//	Receives an integer number (int) and precision specification.
+//	This method then proceeds to create and return a new instace of
+//	NumStrDto.
+//
+//	'precision'
+//	===========
+//
+//	'precision' determines the number of digits to the right of the
+//	decimal place.
+//
+//	  integer        precision           result
+//
+//	   946254            3               946.254
+//	   946254            1               94625.4
+//	   946254            0               946254
+//	  -946254            3              -946.254
+//	  -946254            2              -9462.54
+//	  -946254            0              -946254
+//
+//
+//	Maximum Precision Value
+//	=======================
+//
+//	Input parameter 'precision' is an unsigned integer value.
+//	The maximum limit for a 'precision' uint value is
+//	2,147,483,647 or	2^31 - 1. This is also the maximum
+//	allowable limit for a signed 32-bit integer.
+//
+//	If this value exceeds the maximum value for a 32-bit integer,
+//	an error will be returned.
+//
+//	Numeric Separators
+//	==================
+//
+//	Numeric Separators define the Decimal Separator character,
+//	Thousands Separator character, and Currency Symbol character.
+//	These separator characters serve two purposes. First they are
+//	used to format and display numeric values as number strings.
+//	Second, they are also used to parse number strings and
+//	convert them into numeric values.
+//
+//	The final NumStrDto result returned by this method will be
+//	configured with the Numeric Separators copied from the input
+//	parameter ('numSeps'). If these Numeric Separators prove
+//	to be invalid, an error will be returned.
+func (nDto *NumStrDto) NewIntNumSeps(
+	intNum int,
+	precision uint,
+	numSeps NumericSeparatorDto) (NumStrDto, error) {
+
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
+
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"NumStrDto.NewIntNumSeps",
+		"")
+
+	if err != nil {
+		return NumStrDto{}, err
+	}
+
+	if new(MathProcessUtility).DoesUintExceedMax32BitInt(precision) {
+
+		return NumStrDto{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "",
+				ErrContext: "",
+				ErrMessage: "Error: Input parameter 'precision' is INVALID!\n" +
+					"'precision' Exceeds the maximum allowable limt of 2,147,483,647.\n" +
+					fmt.Sprintf("precision= '%v'", precision),
+			}
+	}
+
+	err = numSeps.IsValid(ePrefix.XCpy("Validating 'numSeps'").String())
+
+	if err != nil {
+
+		return NumStrDto{}, &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "err = numSeps.IsValid(ePrefix.XCpy(\"Validating 'numSeps'\").String())",
+			ErrContext: "Error: Numeric Separators input paramter ('numSeps') is INVALID!\n" +
+				"'numSeps' FAILED Validation Tests.",
+			ErrMessage: err.Error(),
+		}
+	}
+
+	return new(numStrDtoMolecule).newInt64(
+		numSeps, int64(intNum), precision, ePrefix)
 }
 
 // NewIntExponent - Returns a new NumStrDto instance. The numeric
@@ -3099,14 +3238,31 @@ func (nDto *NumStrDto) NewInt32Exponent(int32Num int32, exponent int) NumStrDto 
 //	Creates a new NumStrDto instance from an int64 value and a
 //	precision specification.
 //
-//	Input parameter 'precision' indicates the number of digits to
-//	be formatted to the right of the decimal place.
+//	'precision'
+//	===========
 //
-//	Example
-//	=======
+//	'precision' determines the number of digits to the right of the
+//	decimal place.
 //
-//	          new(NumStrDto).NewInt64(123456, 3)
-//	Yields a NumStrDto instance with a numeric value of 123.456.
+//	   int64         precision          result
+//
+//	   946254            3               946.254
+//	   946254            1               94625.4
+//	   946254            0               946254
+//	  -946254            3              -946.254
+//	  -946254            2              -9462.54
+//	  -946254            0              -946254
+//
+//	Maximum Precision Value
+//	=======================
+//
+//	Input parameter 'precision' is an unsigned integer value.
+//	The maximum limit for a 'precision' uint value is
+//	2,147,483,647 or	2^31 - 1. This is also the maximum
+//	allowable limit for a signed 32-bit integer.
+//
+//	If the 'precision' value exceeds the maximum allowable limit,
+//	an error will be returned.
 //
 //	Numeric Separators
 //	==================
@@ -3122,6 +3278,12 @@ func (nDto *NumStrDto) NewInt32Exponent(int32Num int32, exponent int) NumStrDto 
 //	instance of NumStrDto will be copied to the new, returned
 //	instance of NumStrDto. If these Numeric Separators are
 //	determined to be invalid, an error will be returned.
+//
+//	Example Calling Syntax
+//	======================
+//
+//	          new(NumStrDto).NewInt64(123456, 3)
+//	Yields a NumStrDto instance with a numeric value of 123.456.
 func (nDto *NumStrDto) NewInt64(i64 int64, precision uint) (NumStrDto, error) {
 
 	var ePrefix *ePref.ErrPrefixDto
@@ -3130,7 +3292,7 @@ func (nDto *NumStrDto) NewInt64(i64 int64, precision uint) (NumStrDto, error) {
 	ePrefix,
 		err = ePref.ErrPrefixDto{}.NewIEmpty(
 		nil,
-		"NumStrDto.SetThisPrecision",
+		"NumStrDto.NewInt64",
 		"")
 
 	if err != nil {

@@ -3,6 +3,8 @@ package mathops
 import (
 	"fmt"
 	ePref "github.com/MikeAustin71/errpref"
+	"math"
+	"strconv"
 	"sync"
 )
 
@@ -1405,4 +1407,81 @@ func (numStrDtoMech *numStrDtoMechanics) getIntAry(
 	}
 
 	return intAry, nil
+}
+
+// newIntNumStrDto
+//
+//	Returns a new NumStrDto initialized to zero value. If the
+//	parameter 'precision' is set to a value greater than zero,
+//	then an equal number of zero characters will be added to the
+//	right of the decimal point.
+//
+//	Examples
+//	========
+//
+//	precision      Results NumStrOut
+//
+//	     0                "0"
+//	     2                "0.00"
+//	     4                "0.0000"
+//
+//	Maximum Precision Value
+//	=======================
+//
+//	Input parameter 'precision' is an unsigned integer value.
+//	If this value exceeds the maximum value for a 32-bit integer,
+//	this value will be automatically reduced to the maximum
+//	limit of 2,147,483,647 or	2^31 - 1.
+//
+//	Numeric Separators
+//	==================
+//
+//	Numeric Separators define the Decimal Separator character,
+//	Thousands Separator character, and Currency Symbol character.
+//	These separator characters serve two purposes. First they are
+//	used to format and display numeric values as number strings.
+//	Second, they are also used to parse number strings and
+//	convert them into numeric values.
+//
+//	The final NumStrDto result returned by this method will be
+//	configured with the Numeric Separators passed by input
+//	parameter 'numSeps'. If these Numeric Separators are
+//	determined to be invalid, they will be automatically reset
+//	to default USA values.
+func (numStrDtoMech *numStrDtoMechanics) newIntNumStrDto(
+	numSeps NumericSeparatorDto,
+	numIntValue int,
+	precision uint) NumStrDto {
+
+	numStrDtoMech.lock.Lock()
+
+	defer numStrDtoMech.lock.Unlock()
+	var ePrefix *ePref.ErrPrefixDto
+
+	ePrefix,
+		_ = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"numStrDtoMechanics.newIntNumStrDto",
+		"")
+
+	if new(MathProcessUtility).DoesUintExceedMax32BitInt(precision) {
+
+		precision = uint(math.MaxInt32)
+
+	}
+
+	numSeps.SetDefaultsIfEmpty()
+
+	usaNumSeps := new(NumericSeparatorDto).NewUSADefaults()
+
+	numStr := strconv.FormatInt(int64(numIntValue), 10)
+
+	n2Dto, _ := new(numStrDtoQuark).parseNumStr(
+		usaNumSeps, numStr, ePrefix)
+
+	n2Dto.thousandsSeparator = numSeps.ThousandsSeparator
+	n2Dto.decimalSeparator = numSeps.DecimalSeparator
+	n2Dto.currencySymbol = numSeps.CurrencySymbol
+
+	return n2Dto
 }
