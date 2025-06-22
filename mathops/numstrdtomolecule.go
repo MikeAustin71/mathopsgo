@@ -463,7 +463,7 @@ func (nStrDtoMolecule *numStrDtoMolecule) newBigFloat(
 	ePrefix,
 		err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
 		errPrefDto,
-		"numStrDtoMolecule.getSciNotationStr()",
+		"numStrDtoMolecule.newBigFloat()",
 		"")
 
 	if err != nil {
@@ -730,7 +730,7 @@ func (nStrDtoMolecule *numStrDtoMolecule) newBigIntNum(
 	return n2, nil
 }
 
-// NewFloat32
+// newFloat32
 //
 //	Receives a type float32 numeric value and precision
 //	specification. This method then converts these parameters into
@@ -762,7 +762,7 @@ func (nStrDtoMolecule *numStrDtoMolecule) newFloat32(
 	ePrefix,
 		err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
 		errPrefDto,
-		"numStrDtoMolecule.newBigInt()",
+		"numStrDtoMolecule.newFloat32()",
 		"")
 
 	if err != nil {
@@ -798,7 +798,92 @@ func (nStrDtoMolecule *numStrDtoMolecule) newFloat32(
 
 	numStr := strconv.FormatFloat(float64(f32), 'f', precision, 32)
 
-	// n2, err := new(NumStrDto).NewPtr().ParseNumStr(numStr)
+	n2, err := new(numStrDtoQuark).parseNumStr(numSeps, numStr, ePrefix)
+
+	if err != nil {
+
+		return NumStrDto{},
+			&FuncReturnError{
+				ErrPrefix: ePrefix.String(),
+				ReturnFunc: "n2, err := new(numStrDtoQuark).parseNumStr(\n" +
+					"  numSeps, numStr, ePrefix)",
+				ErrContext: fmt.Sprintf("numStr= '%s'\n"+
+					"numSeps= '%s'", numStr, numSeps.String()),
+				ErrMessage: err.Error(),
+			}
+	}
+
+	return n2, nil
+}
+
+// newFloat64
+//
+//	Receives a type float32 numeric value and precision
+//	specification. This method then converts these parameters into
+//	a new NumStrDto instance and returns that NumStrDto instance to
+//	the calling functin.
+//
+//	The 'precision' specification designates the number of digits
+//	to the right of the decimal point in the final numeric value.
+//
+//	'precision' MUST BE >= -1
+//
+//	"The special precision -1 uses the smallest number of digits
+//	necessary such that ParseFloat will return f exactly. The
+//	exponent is written as a decimal integer ..."
+//	  Go Documentation: https://pkg.go.dev/strconv#FormatFloat
+func (nStrDtoMolecule *numStrDtoMolecule) newFloat64(
+	numSeps NumericSeparatorDto,
+	f64 float64,
+	precision int,
+	errPrefDto *ePref.ErrPrefixDto) (NumStrDto, error) {
+
+	nStrDtoMolecule.lock.Lock()
+
+	defer nStrDtoMolecule.lock.Unlock()
+
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
+
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
+		errPrefDto,
+		"numStrDtoMolecule.newFloat64()",
+		"")
+
+	if err != nil {
+		return NumStrDto{}, err
+	}
+
+	err = numSeps.IsValid(ePrefix.XCpy("Validating 'numSeps'").String())
+
+	if err != nil {
+
+		return NumStrDto{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "err = numSeps.IsValid(ePrefix.XCpy(\"Validating 'numSeps'\").String())",
+				ErrContext: "Error: Numeric Separators input paramter ('numSeps') is INVALID!\n" +
+					"'numSeps' FAILED Validation Tests.",
+				ErrMessage: err.Error(),
+			}
+	}
+
+	if precision < -1 {
+
+		return NumStrDto{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "",
+				ErrContext: "",
+				ErrMessage: "Error: Input parameter 'precision' is INVALID!\n" +
+					"'precision' must be >= -1\n" +
+					fmt.Sprintf("precision = %d", precision),
+			}
+	}
+
+	numStr := strconv.FormatFloat(f64, 'f', precision, 64)
+
 	n2, err := new(numStrDtoQuark).parseNumStr(numSeps, numStr, ePrefix)
 
 	if err != nil {
