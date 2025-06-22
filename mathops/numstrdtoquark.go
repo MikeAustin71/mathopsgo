@@ -1,14 +1,14 @@
 package mathops
 
 import (
-	"fmt"
-	ePref "github.com/MikeAustin71/errpref"
-	"math/big"
-	"sync"
+  "fmt"
+  ePref "github.com/MikeAustin71/errpref"
+  "math/big"
+  "sync"
 )
 
 type numStrDtoQuark struct {
-	lock sync.Mutex
+  lock sync.Mutex
 }
 
 // parseBigIntNum
@@ -32,174 +32,174 @@ type numStrDtoQuark struct {
 //		configured with the Numeric Separators copied from the input
 //	 parameter 'biNum'.
 func (nStrDtoQuark *numStrDtoQuark) parseBigIntNum(
-	numSeps NumericSeparatorDto,
-	biNum *BigIntNum,
-	validateBiNum bool,
-	errPrefDto *ePref.ErrPrefixDto) (NumStrDto, error) {
+  numSeps NumericSeparatorDto,
+  biNum *BigIntNum,
+  validateBiNum bool,
+  errPrefDto *ePref.ErrPrefixDto) (NumStrDto, error) {
 
-	nStrDtoQuark.lock.Lock()
+  nStrDtoQuark.lock.Lock()
 
-	defer nStrDtoQuark.lock.Unlock()
+  defer nStrDtoQuark.lock.Unlock()
 
-	var ePrefix *ePref.ErrPrefixDto
-	var err error
+  var ePrefix *ePref.ErrPrefixDto
+  var err error
 
-	ePrefix,
-		err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
-		errPrefDto,
-		"numStrDtoQuark.parseBigIntNum()",
-		"")
+  ePrefix,
+    err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
+    errPrefDto,
+    "numStrDtoQuark.parseBigIntNum()",
+    "")
 
-	if err != nil {
-		return NumStrDto{}, err
-	}
+  if err != nil {
+    return NumStrDto{}, err
+  }
 
-	if biNum == nil {
+  if biNum == nil {
 
-		return NumStrDto{}, &InputPtrNilError{
-			ErrPrefix:     ePrefix.String(),
-			ParameterName: "'biNum'",
-		}
-	}
+    return NumStrDto{}, &InputPtrNilError{
+      ErrPrefix:     ePrefix.String(),
+      ParameterName: "'biNum'",
+    }
+  }
 
-	if validateBiNum {
+  if validateBiNum {
 
-		err = new(bigIntNumAtom).isBigIntNumValid(
-			biNum,
-			ePrefix.XCpy("Validating Input Parameter 'biNum'"))
+    err = new(bigIntNumAtom).isBigIntNumValid(
+      biNum,
+      ePrefix.XCpy("Validating Input Parameter 'biNum'"))
 
-		if err != nil {
+    if err != nil {
 
-			return NumStrDto{}, &FuncReturnError{
-				ErrPrefix: ePrefix.String(),
-				ReturnFunc: "err = new(bigIntNumAtom).isBigIntNumValid(\n" +
-					"  biNum, ePrefix)",
-				ErrContext: "Error: Input parameter 'biNum' (BigIntNum) is INVALID!\n" +
-					"'biNum' FAILED Validation Tests.",
-				ErrMessage: err.Error(),
-			}
-		}
-	}
+      return NumStrDto{}, &FuncReturnError{
+        ErrPrefix: ePrefix.String(),
+        ReturnFunc: "err = new(bigIntNumAtom).isBigIntNumValid(\n" +
+          "  biNum, ePrefix)",
+        ErrContext: "Error: Input parameter 'biNum' (BigIntNum) is INVALID!\n" +
+          "'biNum' FAILED Validation Tests.",
+        ErrMessage: err.Error(),
+      }
+    }
+  }
 
-	err = numSeps.IsValid(ePrefix.XCpy("Validating 'numSeps'").String())
+  err = numSeps.IsValid(ePrefix.XCpy("Validating 'numSeps'").String())
 
-	if err != nil {
+  if err != nil {
 
-		return NumStrDto{},
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "err = numSeps.IsValid(ePrefix.XCpy(\"Validating 'numSeps'\").String())",
-				ErrContext: "Error: Input parameter 'numSeps' is INVALID!\n" +
-					"'numSeps' FAILED Validation Tests.",
-				ErrMessage: err.Error(),
-			}
-	}
+    return NumStrDto{},
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "err = numSeps.IsValid(ePrefix.XCpy(\"Validating 'numSeps'\").String())",
+        ErrContext: "Error: Input parameter 'numSeps' is INVALID!\n" +
+          "'numSeps' FAILED Validation Tests.",
+        ErrMessage: err.Error(),
+      }
+  }
 
-	n2Dto := NumStrDto{}
+  n2Dto := NumStrDto{}
 
-	n2Dto.signVal = biNum.sign
+  n2Dto.signVal = biNum.sign
 
-	n2Dto.precision = biNum.precision
+  n2Dto.precision = biNum.precision
 
-	scratchNum := big.NewInt(0).Set(biNum.bigInt)
+  scratchNum := big.NewInt(0).Set(biNum.bigInt)
 
-	if n2Dto.signVal < 0 {
-		scratchNum.Neg(scratchNum)
-	}
+  if n2Dto.signVal < 0 {
+    scratchNum.Neg(scratchNum)
+  }
 
-	bigZero := big.NewInt(0)
+  bigZero := big.NewInt(0)
 
-	bigTen := big.NewInt(int64(10))
+  bigTen := big.NewInt(int64(10))
 
-	modulo := big.NewInt(0)
+  modulo := big.NewInt(0)
 
-	modX := big.NewInt(0)
+  modX := big.NewInt(0)
 
-	n2Dto.absAllNumRunes = make([]rune, 0)
+  n2Dto.absAllNumRunes = make([]rune, 0)
 
-	if scratchNum.Cmp(bigZero) == 0 {
+  if scratchNum.Cmp(bigZero) == 0 {
 
-		n2Dto.absAllNumRunes = append(n2Dto.absAllNumRunes, '0')
+    n2Dto.absAllNumRunes = append(n2Dto.absAllNumRunes, '0')
 
-	} else {
+  } else {
 
-		for scratchNum.Cmp(bigZero) == 1 {
+    for scratchNum.Cmp(bigZero) == 1 {
 
-			scratchNum, modulo = big.NewInt(0).QuoRem(scratchNum, bigTen, modX)
+      scratchNum, modulo = big.NewInt(0).QuoRem(scratchNum, bigTen, modX)
 
-			n2Dto.absAllNumRunes = append(n2Dto.absAllNumRunes, rune(modulo.Int64()+int64(48)))
-		}
-	}
+      n2Dto.absAllNumRunes = append(n2Dto.absAllNumRunes, rune(modulo.Int64()+int64(48)))
+    }
+  }
 
-	lenAllNumRunes := len(n2Dto.absAllNumRunes)
+  lenAllNumRunes := len(n2Dto.absAllNumRunes)
 
-	if int(n2Dto.precision) >= lenAllNumRunes {
+  if int(n2Dto.precision) >= lenAllNumRunes {
 
-		deltaNumRunes := int(n2Dto.precision) - lenAllNumRunes + 1
+    deltaNumRunes := int(n2Dto.precision) - lenAllNumRunes + 1
 
-		for k := 0; k < deltaNumRunes; k++ {
+    for k := 0; k < deltaNumRunes; k++ {
 
-			n2Dto.absAllNumRunes = append(n2Dto.absAllNumRunes, '0')
+      n2Dto.absAllNumRunes = append(n2Dto.absAllNumRunes, '0')
 
-			lenAllNumRunes++
-		}
+      lenAllNumRunes++
+    }
 
-	}
+  }
 
-	tRune := rune(0)
+  tRune := rune(0)
 
-	if lenAllNumRunes > 1 {
+  if lenAllNumRunes > 1 {
 
-		xLen := lenAllNumRunes - 1
+    xLen := lenAllNumRunes - 1
 
-		sortLimit := xLen / 2
+    sortLimit := xLen / 2
 
-		yCnt := 0
+    yCnt := 0
 
-		for i := xLen; i > sortLimit; i-- {
+    for i := xLen; i > sortLimit; i-- {
 
-			tRune = n2Dto.absAllNumRunes[yCnt]
+      tRune = n2Dto.absAllNumRunes[yCnt]
 
-			n2Dto.absAllNumRunes[yCnt] = n2Dto.absAllNumRunes[i]
+      n2Dto.absAllNumRunes[yCnt] = n2Dto.absAllNumRunes[i]
 
-			n2Dto.absAllNumRunes[i] = tRune
+      n2Dto.absAllNumRunes[i] = tRune
 
-			yCnt++
-		}
-	}
+      yCnt++
+    }
+  }
 
-	err = new(numStrDtoAtom).setNumericSeparatorsDto(
-		&n2Dto, numSeps, ePrefix.XCpy("numSeps->n2Dto"))
+  err = new(numStrDtoAtom).setNumericSeparatorsDto(
+    &n2Dto, numSeps, ePrefix.XCpy("numSeps->n2Dto"))
 
-	if err != nil {
+  if err != nil {
 
-		return NumStrDto{},
-			&FuncReturnError{
-				ErrPrefix: ePrefix.String(),
-				ReturnFunc: "err = new(numStrDtoAtom).setNumericSeparatorsDto(\n" +
-					"&n2Dto, numSeps, ePrefix)",
-				ErrContext: "",
-				ErrMessage: err.Error(),
-			}
-	}
+    return NumStrDto{},
+      &FuncReturnError{
+        ErrPrefix: ePrefix.String(),
+        ReturnFunc: "err = new(numStrDtoAtom).setNumericSeparatorsDto(\n" +
+          "&n2Dto, numSeps, ePrefix)",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+  }
 
-	err = new(numStrDtoElectron).isValidNumStrDto(
-		&n2Dto, ePrefix.XCpy("Validating Final Result 'n2Dto'"))
+  err = new(numStrDtoElectron).isValidNumStrDto(
+    &n2Dto, ePrefix.XCpy("Validating Final Result 'n2Dto'"))
 
-	if err != nil {
+  if err != nil {
 
-		return NumStrDto{},
-			&FuncReturnError{
-				ErrPrefix: ePrefix.String(),
-				ReturnFunc: "err =new(numStrDtoElectron).isValidNumStrDto(\n" +
-					"&n2Dto, ePrefix)",
-				ErrContext: "Error: The final calculated result ('n2Dto') is INVALID!\n" +
-					"'n2Dto' FAILED Validation Tests.",
-				ErrMessage: err.Error(),
-			}
-	}
+    return NumStrDto{},
+      &FuncReturnError{
+        ErrPrefix: ePrefix.String(),
+        ReturnFunc: "err =new(numStrDtoElectron).isValidNumStrDto(\n" +
+          "&n2Dto, ePrefix)",
+        ErrContext: "Error: The final calculated result ('n2Dto') is INVALID!\n" +
+          "'n2Dto' FAILED Validation Tests.",
+        ErrMessage: err.Error(),
+      }
+  }
 
-	return n2Dto, nil
+  return n2Dto, nil
 }
 
 // parseNumStr
@@ -216,257 +216,272 @@ func (nStrDtoQuark *numStrDtoQuark) parseBigIntNum(
 //	'numSeps'. If the NumericSeparatorDto object ('numSeps') is
 //	invalid, an error will be returned.
 func (nStrDtoQuark *numStrDtoQuark) parseNumStr(
-	numSeps NumericSeparatorDto,
-	str string,
-	errPrefDto *ePref.ErrPrefixDto) (NumStrDto, error) {
+  numSeps NumericSeparatorDto,
+  str string,
+  errPrefDto *ePref.ErrPrefixDto) (NumStrDto, error) {
 
-	nStrDtoQuark.lock.Lock()
+  nStrDtoQuark.lock.Lock()
 
-	defer nStrDtoQuark.lock.Unlock()
+  defer nStrDtoQuark.lock.Unlock()
 
-	var ePrefix *ePref.ErrPrefixDto
-	var err error
+  var ePrefix *ePref.ErrPrefixDto
+  var err error
 
-	ePrefix,
-		err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
-		errPrefDto,
-		"numStrDtoQuark.parseNumStr()",
-		"")
+  ePrefix,
+    err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
+    errPrefDto,
+    "numStrDtoQuark.parseNumStr()",
+    "")
 
-	if err != nil {
-		return NumStrDto{}, err
-	}
+  if err != nil {
+    return NumStrDto{}, err
+  }
 
-	if len(str) == 0 {
+  if len(str) == 0 {
 
-		return NumStrDto{},
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "",
-				ErrContext: "",
-				ErrMessage: "Error: Input parameter 'str' is INVALID!\n" +
-					"'str' (string) is empty with a zero length.",
-			}
-	}
+    return NumStrDto{},
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "",
+        ErrContext: "",
+        ErrMessage: "Error: Input parameter 'str' is INVALID!\n" +
+          "'str' (string) is empty with a zero length.",
+      }
+  }
 
-	err = numSeps.IsValid(ePrefix.XCpy("Validating 'numSeps'").String())
+  err = numSeps.IsValid(ePrefix.XCpy("Validating 'numSeps'").String())
 
-	if err != nil {
+  if err != nil {
 
-		return NumStrDto{},
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "err = numSeps.IsValid(ePrefix.XCpy(\"Validating 'numSeps'\").String())",
-				ErrContext: "Error: Input parameter 'numSeps' is INVALID!\n" +
-					"'numSeps' FAILED Validation Tests.",
-				ErrMessage: err.Error(),
-			}
-	}
-
-	nStrMolecule := new(numStrDtoMolecule)
-
-	n2Dto := nStrMolecule.newZeroNumStrDto(numSeps, 0)
-
-	n2Dto.signVal = 1
-
-	baseRunes := []rune(str)
-
-	lBaseRunes := len(baseRunes)
-
-	isStartRunes := false
-
-	isEndRunes := false
-
-	isMinusSignFound := false
-
-	//lCurRunes := len(NumStrCurrencySymbols)
-	//isSkip := false
-	isFractionalValue := false
-
-	var absFracRunes []rune
-	var absIntRunes []rune
-
-	for i := 0; i < lBaseRunes && isEndRunes == false; i++ {
-
-		if baseRunes[i] != '-' &&
-			baseRunes[i] != n2Dto.decimalSeparator &&
-			(baseRunes[i] < '0' || baseRunes[i] > '9') {
-
-			continue
-
-		} else if baseRunes[i] == '-' &&
-			isMinusSignFound == false &&
-			isStartRunes == false &&
-			i+1 < lBaseRunes &&
-			((baseRunes[i+1] >= '0' && baseRunes[i+1] <= '9') ||
-				baseRunes[i+1] == n2Dto.decimalSeparator) {
-
-			isMinusSignFound = true
-			n2Dto.signVal = -1
-			isStartRunes = true
-			continue
-
-		} else if baseRunes[i] >= '0' && baseRunes[i] <= '9' {
-
-			n2Dto.absAllNumRunes = append(n2Dto.absAllNumRunes, baseRunes[i])
-			isStartRunes = true
-
-			if isFractionalValue {
-				absFracRunes = append(absFracRunes, baseRunes[i])
-			} else {
-				absIntRunes = append(absIntRunes, baseRunes[i])
-			}
+    return NumStrDto{},
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "err = numSeps.IsValid(ePrefix.XCpy(\"Validating 'numSeps'\").String())",
+        ErrContext: "Error: Input parameter 'numSeps' is INVALID!\n" +
+          "'numSeps' FAILED Validation Tests.",
+        ErrMessage: err.Error(),
+      }
+  }
+
+  nStrMolecule := new(numStrDtoMolecule)
+
+  n2Dto := nStrMolecule.newZeroNumStrDto(numSeps, 0)
+
+  n2Dto.signVal = 1
+
+  baseRunes := []rune(str)
+
+  lBaseRunes := len(baseRunes)
+
+  isStartRunes := false
+
+  isEndRunes := false
+
+  isMinusSignFound := false
+
+  //lCurRunes := len(NumStrCurrencySymbols)
+  //isSkip := false
+  isFractionalValue := false
+
+  var absFracRunes []rune
+  var absIntRunes []rune
+
+  for i := 0; i < lBaseRunes && isEndRunes == false; i++ {
+
+    if baseRunes[i] != '-' &&
+      baseRunes[i] != n2Dto.decimalSeparator &&
+      (baseRunes[i] < '0' || baseRunes[i] > '9') {
+
+      continue
+
+    } else if baseRunes[i] == '-' &&
+      isMinusSignFound == false &&
+      isStartRunes == false &&
+      i+1 < lBaseRunes &&
+      ((baseRunes[i+1] >= '0' && baseRunes[i+1] <= '9') ||
+        baseRunes[i+1] == n2Dto.decimalSeparator) {
+
+      isMinusSignFound = true
+      n2Dto.signVal = -1
+      isStartRunes = true
+      continue
+
+    } else if baseRunes[i] >= '0' && baseRunes[i] <= '9' {
+
+      n2Dto.absAllNumRunes = append(n2Dto.absAllNumRunes, baseRunes[i])
+      isStartRunes = true
+
+      if isFractionalValue {
+        absFracRunes = append(absFracRunes, baseRunes[i])
+      } else {
+        absIntRunes = append(absIntRunes, baseRunes[i])
+      }
 
-		} else if i+1 < lBaseRunes &&
-			baseRunes[i+1] >= '0' && baseRunes[i+1] <= '9' &&
-			baseRunes[i] == n2Dto.decimalSeparator {
-
-			isFractionalValue = true
-			continue
-
-		}
-
-		if i == lBaseRunes-1 {
-
-			isEndRunes = true
-
-		}
-
-	}
-
-	// Original Code
-	//for i := 0; i < lBaseRunes && isEndRunes == false; i++ {
-	//
-	//  if baseRunes[i] != '-' &&
-	//    baseRunes[i] != n2Dto.decimalSeparator &&
-	//    (baseRunes[i] < '0' || baseRunes[i] > '9') {
-	//
-	//    continue
-	//
-	//  } else if baseRunes[i] == '-' &&
-	//    isMinusSignFound == false &&
-	//    isStartRunes == false && isEndRunes == false &&
-	//    i+1 < lBaseRunes &&
-	//    ((baseRunes[i+1] >= '0' && baseRunes[i+1] <= '9') ||
-	//      baseRunes[i+1] == n2Dto.decimalSeparator) {
-	//
-	//    isMinusSignFound = true
-	//    n2Dto.signVal = -1
-	//    isStartRunes = true
-	//    continue
-	//
-	//  } else if isEndRunes == false &&
-	//    baseRunes[i] >= '0' && baseRunes[i] <= '9' {
-	//
-	//    n2Dto.absAllNumRunes = append(n2Dto.absAllNumRunes, baseRunes[i])
-	//    isStartRunes = true
-	//
-	//    if isFractionalValue {
-	//      absFracRunes = append(absFracRunes, baseRunes[i])
-	//    } else {
-	//      absIntRunes = append(absIntRunes, baseRunes[i])
-	//    }
-	//
-	//  } else if isEndRunes == false &&
-	//    i+1 < lBaseRunes &&
-	//    baseRunes[i+1] >= '0' && baseRunes[i+1] <= '9' &&
-	//    baseRunes[i] == n2Dto.decimalSeparator {
-	//
-	//    isFractionalValue = true
-	//    continue
-	//
-	//  }
-	//
-	//  if i == lBaseRunes-1 {
-	//
-	//    isEndRunes = true
-	//
-	//  }
-	//
-	//}
+    } else if i+1 < lBaseRunes &&
+      baseRunes[i+1] >= '0' && baseRunes[i+1] <= '9' &&
+      baseRunes[i] == n2Dto.decimalSeparator {
+
+      isFractionalValue = true
+      continue
+
+    }
+
+    if i == lBaseRunes-1 {
+
+      isEndRunes = true
+
+    }
+
+  }
+
+  // Original Code
+  //for i := 0; i < lBaseRunes && isEndRunes == false; i++ {
+  //
+  //  if baseRunes[i] != '-' &&
+  //    baseRunes[i] != n2Dto.decimalSeparator &&
+  //    (baseRunes[i] < '0' || baseRunes[i] > '9') {
+  //
+  //    continue
+  //
+  //  } else if baseRunes[i] == '-' &&
+  //    isMinusSignFound == false &&
+  //    isStartRunes == false && isEndRunes == false &&
+  //    i+1 < lBaseRunes &&
+  //    ((baseRunes[i+1] >= '0' && baseRunes[i+1] <= '9') ||
+  //      baseRunes[i+1] == n2Dto.decimalSeparator) {
+  //
+  //    isMinusSignFound = true
+  //    n2Dto.signVal = -1
+  //    isStartRunes = true
+  //    continue
+  //
+  //  } else if isEndRunes == false &&
+  //    baseRunes[i] >= '0' && baseRunes[i] <= '9' {
+  //
+  //    n2Dto.absAllNumRunes = append(n2Dto.absAllNumRunes, baseRunes[i])
+  //    isStartRunes = true
+  //
+  //    if isFractionalValue {
+  //      absFracRunes = append(absFracRunes, baseRunes[i])
+  //    } else {
+  //      absIntRunes = append(absIntRunes, baseRunes[i])
+  //    }
+  //
+  //  } else if isEndRunes == false &&
+  //    i+1 < lBaseRunes &&
+  //    baseRunes[i+1] >= '0' && baseRunes[i+1] <= '9' &&
+  //    baseRunes[i] == n2Dto.decimalSeparator {
+  //
+  //    isFractionalValue = true
+  //    continue
+  //
+  //  }
+  //
+  //  if i == lBaseRunes-1 {
+  //
+  //    isEndRunes = true
+  //
+  //  }
+  //
+  //}
 
-	lenAbsAllNumRunes := len(n2Dto.absAllNumRunes)
+  lenAbsAllNumRunes := len(n2Dto.absAllNumRunes)
 
-	if lenAbsAllNumRunes == 0 {
+  if lenAbsAllNumRunes == 0 {
 
-		n2Dto = nStrMolecule.newZeroNumStrDto(numSeps, 0)
+    n2Dto = nStrMolecule.newZeroNumStrDto(numSeps, 0)
 
-		return n2Dto, nil
-	}
+    return n2Dto, nil
+  }
 
-	lenAbsIntNumRunes := len(absIntRunes)
+  lenAbsIntNumRunes := len(absIntRunes)
 
-	if lenAbsIntNumRunes == 0 {
+  if lenAbsIntNumRunes == 0 {
 
-		absIntRunes = append(absIntRunes, '0')
-	}
+    absIntRunes = append(absIntRunes, '0')
+  }
 
-	lenAbsAllNumRunes = len(n2Dto.absAllNumRunes)
+  lenAbsAllNumRunes = len(n2Dto.absAllNumRunes)
 
-	lenAbsIntNumRunes = len(absIntRunes)
+  lenAbsIntNumRunes = len(absIntRunes)
 
-	lenAbsFracNumRunes := len(absFracRunes)
+  lenAbsFracNumRunes := len(absFracRunes)
 
-	isZeroVal := true
+  isZeroVal := true
 
-	for i := 0; i < lenAbsAllNumRunes; i++ {
+  for i := 0; i < lenAbsAllNumRunes; i++ {
 
-		if n2Dto.absAllNumRunes[i] != '0' {
+    if n2Dto.absAllNumRunes[i] != '0' {
 
-			isZeroVal = false
-		}
-	}
+      isZeroVal = false
+    }
+  }
 
-	if isZeroVal {
+  if isZeroVal {
 
-		n2Dto = nStrMolecule.newZeroNumStrDto(numSeps, uint(lenAbsFracNumRunes))
-		//nZeroDto := nDto.GetZeroNumStrDto(uint(lenAbsFracNumRunes))
-		return n2Dto, nil
-	}
+    n2Dto = nStrMolecule.newZeroNumStrDto(numSeps, uint(lenAbsFracNumRunes))
+    //nZeroDto := nDto.GetZeroNumStrDto(uint(lenAbsFracNumRunes))
+    return n2Dto, nil
+  }
 
-	if isFractionalValue {
-		n2Dto.precision = uint(len(absFracRunes))
-	}
+  if isFractionalValue {
+    n2Dto.precision = uint(len(absFracRunes))
+  }
 
-	if lenAbsAllNumRunes != lenAbsIntNumRunes+lenAbsFracNumRunes {
+  if lenAbsAllNumRunes != lenAbsIntNumRunes+lenAbsFracNumRunes {
 
-		n2Dto.absAllNumRunes = []rune{}
+    n2Dto.absAllNumRunes = []rune{}
 
-		newLenAbsAllNumRunes := lenAbsIntNumRunes + lenAbsFracNumRunes
+    newLenAbsAllNumRunes := lenAbsIntNumRunes + lenAbsFracNumRunes
 
-		for i := 0; i < newLenAbsAllNumRunes; i++ {
+    for i := 0; i < newLenAbsAllNumRunes; i++ {
 
-			if i < lenAbsIntNumRunes {
+      if i < lenAbsIntNumRunes {
 
-				n2Dto.absAllNumRunes = append(n2Dto.absAllNumRunes, absIntRunes[i])
+        n2Dto.absAllNumRunes = append(n2Dto.absAllNumRunes, absIntRunes[i])
 
-			} else {
+      } else {
 
-				n2Dto.absAllNumRunes = append(n2Dto.absAllNumRunes, absFracRunes[i-lenAbsIntNumRunes])
-			}
-		}
+        n2Dto.absAllNumRunes = append(n2Dto.absAllNumRunes, absFracRunes[i-lenAbsIntNumRunes])
+      }
+    }
 
-		lenAbsAllNumRunes = len(n2Dto.absAllNumRunes)
-	}
+    lenAbsAllNumRunes = len(n2Dto.absAllNumRunes)
+  }
 
-	// Validate n2Dto object
+  err = new(numStrDtoAtom).setNumericSeparatorsDto(
+    &n2Dto, numSeps, ePrefix.XCpy("numSeps->n2Dto"))
 
-	err = new(numStrDtoElectron).isValidNumStrDto(
-		&n2Dto, ePrefix.XCpy("Validating 'n2Dto' Result"))
+  if err != nil {
 
-	if err != nil {
+    return NumStrDto{},
+      &FuncReturnError{
+        ErrPrefix: ePrefix.String(),
+        ReturnFunc: "err = new(numStrDtoAtom).setNumericSeparatorsDto(\n" +
+          "&n2Dto, numSeps, ePrefix)",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+  }
 
-		return NumStrDto{},
-			&FuncReturnError{
-				ErrPrefix: ePrefix.String(),
-				ReturnFunc: "err = new(numStrDtoElectron).isValidNumStrDto(\n" +
-					"  &n2Dto, ePrefix.XCpy(\"Validating 'n2Dto' Result\"))",
-				ErrContext: "Error: Calculated result 'n2Dto' is INVALID!",
-				ErrMessage: err.Error(),
-			}
-	}
+  // Validate n2Dto object
 
-	return n2Dto, nil
+  err = new(numStrDtoElectron).isValidNumStrDto(
+    &n2Dto, ePrefix.XCpy("Validating 'n2Dto' Result"))
+
+  if err != nil {
+
+    return NumStrDto{},
+      &FuncReturnError{
+        ErrPrefix: ePrefix.String(),
+        ReturnFunc: "err = new(numStrDtoElectron).isValidNumStrDto(\n" +
+          "  &n2Dto, ePrefix.XCpy(\"Validating 'n2Dto' Result\"))",
+        ErrContext: "Error: Calculated result 'n2Dto' is INVALID!",
+        ErrMessage: err.Error(),
+      }
+  }
+
+  return n2Dto, nil
 
 }
 
@@ -515,168 +530,168 @@ func (nStrDtoQuark *numStrDtoQuark) parseNumStr(
 //	to be invalid, they will be automatically reset to default USA
 //	values.
 func (nStrDtoQuark *numStrDtoQuark) parseSignedBigInt(
-	numSeps NumericSeparatorDto,
-	signedBigInt *big.Int,
-	precision uint,
-	errPrefDto *ePref.ErrPrefixDto) (NumStrDto, error) {
+  numSeps NumericSeparatorDto,
+  signedBigInt *big.Int,
+  precision uint,
+  errPrefDto *ePref.ErrPrefixDto) (NumStrDto, error) {
 
-	nStrDtoQuark.lock.Lock()
+  nStrDtoQuark.lock.Lock()
 
-	defer nStrDtoQuark.lock.Unlock()
+  defer nStrDtoQuark.lock.Unlock()
 
-	var ePrefix *ePref.ErrPrefixDto
-	var err error
+  var ePrefix *ePref.ErrPrefixDto
+  var err error
 
-	ePrefix,
-		err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
-		errPrefDto,
-		"numStrDtoQuark.parseSignedBigInt()",
-		"")
+  ePrefix,
+    err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
+    errPrefDto,
+    "numStrDtoQuark.parseSignedBigInt()",
+    "")
 
-	if err != nil {
-		return NumStrDto{}, err
-	}
+  if err != nil {
+    return NumStrDto{}, err
+  }
 
-	if signedBigInt == nil {
+  if signedBigInt == nil {
 
-		return NumStrDto{}, &InputPtrNilError{
-			ErrPrefix:     ePrefix.String(),
-			ParameterName: "'signedBigInt'",
-		}
-	}
+    return NumStrDto{}, &InputPtrNilError{
+      ErrPrefix:     ePrefix.String(),
+      ParameterName: "'signedBigInt'",
+    }
+  }
 
-	err = numSeps.IsValid(ePrefix.XCpy("Validating 'numSeps'").String())
+  err = numSeps.IsValid(ePrefix.XCpy("Validating 'numSeps'").String())
 
-	if err != nil {
+  if err != nil {
 
-		return NumStrDto{},
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "err = numSeps.IsValid(ePrefix.XCpy(\"Validating 'numSeps'\").String())",
-				ErrContext: "Error: Input parameter 'numSeps' is INVALID!\n" +
-					"'numSeps' FAILED Validation Tests.",
-				ErrMessage: err.Error(),
-			}
-	}
+    return NumStrDto{},
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "err = numSeps.IsValid(ePrefix.XCpy(\"Validating 'numSeps'\").String())",
+        ErrContext: "Error: Input parameter 'numSeps' is INVALID!\n" +
+          "'numSeps' FAILED Validation Tests.",
+        ErrMessage: err.Error(),
+      }
+  }
 
-	if new(MathProcessUtility).DoesUintExceedMax32BitInt(precision) {
+  if new(MathProcessUtility).DoesUintExceedMax32BitInt(precision) {
 
-		return NumStrDto{},
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "",
-				ErrContext: "",
-				ErrMessage: "Error: Input parameter 'precision' is INVALID!\n" +
-					"'precision' Exceeds the maximum allowable limt of 2,147,483,647.\n" +
-					fmt.Sprintf("precision= '%v'", precision),
-			}
-	}
+    return NumStrDto{},
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "",
+        ErrContext: "",
+        ErrMessage: "Error: Input parameter 'precision' is INVALID!\n" +
+          "'precision' Exceeds the maximum allowable limt of 2,147,483,647.\n" +
+          fmt.Sprintf("precision= '%v'", precision),
+      }
+  }
 
-	n2Dto := NumStrDto{}
+  n2Dto := NumStrDto{}
 
-	n2Dto.precision = precision
+  n2Dto.precision = precision
 
-	scratchNum := big.NewInt(0).Set(signedBigInt)
+  scratchNum := big.NewInt(0).Set(signedBigInt)
 
-	bigZero := big.NewInt(0)
+  bigZero := big.NewInt(0)
 
-	n2Dto.signVal = 1
+  n2Dto.signVal = 1
 
-	if scratchNum.Cmp(bigZero) == -1 {
+  if scratchNum.Cmp(bigZero) == -1 {
 
-		scratchNum.Neg(scratchNum)
+    scratchNum.Neg(scratchNum)
 
-		n2Dto.signVal = -1
-	}
+    n2Dto.signVal = -1
+  }
 
-	bigTen := big.NewInt(int64(10))
+  bigTen := big.NewInt(int64(10))
 
-	modulo := big.NewInt(0)
+  modulo := big.NewInt(0)
 
-	n2Dto.absAllNumRunes = make([]rune, 0, 100)
+  n2Dto.absAllNumRunes = make([]rune, 0, 100)
 
-	if scratchNum.Cmp(bigZero) == 0 {
+  if scratchNum.Cmp(bigZero) == 0 {
 
-		n2Dto.absAllNumRunes = append(n2Dto.absAllNumRunes, '0')
+    n2Dto.absAllNumRunes = append(n2Dto.absAllNumRunes, '0')
 
-	} else {
+  } else {
 
-		for scratchNum.Cmp(bigZero) == 1 {
+    for scratchNum.Cmp(bigZero) == 1 {
 
-			modulo = big.NewInt(0).Rem(scratchNum, bigTen)
+      modulo = big.NewInt(0).Rem(scratchNum, bigTen)
 
-			scratchNum = big.NewInt(0).Quo(scratchNum, bigTen)
+      scratchNum = big.NewInt(0).Quo(scratchNum, bigTen)
 
-			n2Dto.absAllNumRunes = append(n2Dto.absAllNumRunes, rune(modulo.Int64()+int64(48)))
-		}
-	}
+      n2Dto.absAllNumRunes = append(n2Dto.absAllNumRunes, rune(modulo.Int64()+int64(48)))
+    }
+  }
 
-	lenAllNumRunes := len(n2Dto.absAllNumRunes)
+  lenAllNumRunes := len(n2Dto.absAllNumRunes)
 
-	if int(n2Dto.precision) >= lenAllNumRunes {
+  if int(n2Dto.precision) >= lenAllNumRunes {
 
-		deltaNumRunes := int(n2Dto.precision) - lenAllNumRunes + 1
+    deltaNumRunes := int(n2Dto.precision) - lenAllNumRunes + 1
 
-		for k := 0; k < deltaNumRunes; k++ {
+    for k := 0; k < deltaNumRunes; k++ {
 
-			n2Dto.absAllNumRunes = append(n2Dto.absAllNumRunes, '0')
+      n2Dto.absAllNumRunes = append(n2Dto.absAllNumRunes, '0')
 
-			lenAllNumRunes++
-		}
-	}
+      lenAllNumRunes++
+    }
+  }
 
-	tRune := rune(0)
+  tRune := rune(0)
 
-	if lenAllNumRunes > 1 {
+  if lenAllNumRunes > 1 {
 
-		xLen := lenAllNumRunes - 1
+    xLen := lenAllNumRunes - 1
 
-		sortLimit := xLen / 2
+    sortLimit := xLen / 2
 
-		yCnt := 0
+    yCnt := 0
 
-		for i := xLen; i > sortLimit; i-- {
+    for i := xLen; i > sortLimit; i-- {
 
-			tRune = n2Dto.absAllNumRunes[yCnt]
+      tRune = n2Dto.absAllNumRunes[yCnt]
 
-			n2Dto.absAllNumRunes[yCnt] = n2Dto.absAllNumRunes[i]
+      n2Dto.absAllNumRunes[yCnt] = n2Dto.absAllNumRunes[i]
 
-			n2Dto.absAllNumRunes[i] = tRune
+      n2Dto.absAllNumRunes[i] = tRune
 
-			yCnt++
-		}
-	}
+      yCnt++
+    }
+  }
 
-	err = new(numStrDtoAtom).setNumericSeparatorsDto(
-		&n2Dto, numSeps, ePrefix.XCpy("numSeps->n2Dto"))
+  err = new(numStrDtoAtom).setNumericSeparatorsDto(
+    &n2Dto, numSeps, ePrefix.XCpy("numSeps->n2Dto"))
 
-	if err != nil {
+  if err != nil {
 
-		return NumStrDto{},
-			&FuncReturnError{
-				ErrPrefix: ePrefix.String(),
-				ReturnFunc: "err = new(numStrDtoAtom).setNumericSeparatorsDto(\n" +
-					"&n2Dto, numSeps, ePrefix)",
-				ErrContext: "",
-				ErrMessage: err.Error(),
-			}
-	}
+    return NumStrDto{},
+      &FuncReturnError{
+        ErrPrefix: ePrefix.String(),
+        ReturnFunc: "err = new(numStrDtoAtom).setNumericSeparatorsDto(\n" +
+          "&n2Dto, numSeps, ePrefix)",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+  }
 
-	err = new(numStrDtoElectron).isValidNumStrDto(
-		&n2Dto, ePrefix.XCpy("Validating Final Result 'n2Dto'"))
+  err = new(numStrDtoElectron).isValidNumStrDto(
+    &n2Dto, ePrefix.XCpy("Validating Final Result 'n2Dto'"))
 
-	if err != nil {
+  if err != nil {
 
-		return NumStrDto{},
-			&FuncReturnError{
-				ErrPrefix: ePrefix.String(),
-				ReturnFunc: "err =new(numStrDtoElectron).isValidNumStrDto(\n" +
-					"&n2Dto, ePrefix)",
-				ErrContext: "Error: The final calculated result ('n2Dto') is INVALID!\n" +
-					"'n2Dto' FAILED Validation Tests.",
-				ErrMessage: err.Error(),
-			}
-	}
+    return NumStrDto{},
+      &FuncReturnError{
+        ErrPrefix: ePrefix.String(),
+        ReturnFunc: "err =new(numStrDtoElectron).isValidNumStrDto(\n" +
+          "&n2Dto, ePrefix)",
+        ErrContext: "Error: The final calculated result ('n2Dto') is INVALID!\n" +
+          "'n2Dto' FAILED Validation Tests.",
+        ErrMessage: err.Error(),
+      }
+  }
 
-	return n2Dto, nil
+  return n2Dto, nil
 }

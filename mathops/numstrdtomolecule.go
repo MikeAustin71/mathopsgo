@@ -1,16 +1,16 @@
 package mathops
 
 import (
-  "fmt"
-  ePref "github.com/MikeAustin71/errpref"
-  "math"
-  "math/big"
-  "strconv"
-  "sync"
+	"fmt"
+	ePref "github.com/MikeAustin71/errpref"
+	"math"
+	"math/big"
+	"strconv"
+	"sync"
 )
 
 type numStrDtoMolecule struct {
-  lock sync.Mutex
+	lock sync.Mutex
 }
 
 // compareSignedValues
@@ -56,163 +56,163 @@ type numStrDtoMolecule struct {
 //
 //	   1 = n1Dto is greater than n2Dto
 func (nStrDtoMolecule *numStrDtoMolecule) compareSignedValues(
-  n1Dto *NumStrDto,
-  validateN1Dto bool,
-  n2Dto *NumStrDto,
-  validateN2Dto bool,
-  errPrefDto *ePref.ErrPrefixDto) (int, error) {
+	n1Dto *NumStrDto,
+	validateN1Dto bool,
+	n2Dto *NumStrDto,
+	validateN2Dto bool,
+	errPrefDto *ePref.ErrPrefixDto) (int, error) {
 
-  nStrDtoMolecule.lock.Lock()
+	nStrDtoMolecule.lock.Lock()
 
-  defer nStrDtoMolecule.lock.Unlock()
+	defer nStrDtoMolecule.lock.Unlock()
 
-  var ePrefix *ePref.ErrPrefixDto
-  var err error
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
-    errPrefDto,
-    "numStrDtoMolecule.copy()",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
+		errPrefDto,
+		"numStrDtoMolecule.copy()",
+		"")
 
-  if err != nil {
-    return 0, err
-  }
+	if err != nil {
+		return 0, err
+	}
 
-  if n1Dto == nil {
+	if n1Dto == nil {
 
-    return 0, &InputPtrNilError{
-      ErrPrefix:     ePrefix.String(),
-      ParameterName: "'n1Dto'",
-    }
-  }
+		return 0, &InputPtrNilError{
+			ErrPrefix:     ePrefix.String(),
+			ParameterName: "'n1Dto'",
+		}
+	}
 
-  if n2Dto == nil {
+	if n2Dto == nil {
 
-    return 0, &InputPtrNilError{
-      ErrPrefix:     ePrefix.String(),
-      ParameterName: "'n2Dto'",
-    }
-  }
+		return 0, &InputPtrNilError{
+			ErrPrefix:     ePrefix.String(),
+			ParameterName: "'n2Dto'",
+		}
+	}
 
-  if validateN1Dto {
+	if validateN1Dto {
 
-    err = new(numStrDtoElectron).isValidNumStrDto(
-      n1Dto, ePrefix.XCpy("Validating 'n1Dto'"))
+		err = new(numStrDtoElectron).isValidNumStrDto(
+			n1Dto, ePrefix.XCpy("Validating 'n1Dto'"))
 
-    if err != nil {
+		if err != nil {
 
-      return 0, &FuncReturnError{
-        ErrPrefix: ePrefix.String(),
-        ReturnFunc: "err = new(numStrDtoElectron).isValidNumStrDto(\n" +
-          "  n1Dto, ePrefix)",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-    }
-  }
+			return 0, &FuncReturnError{
+				ErrPrefix: ePrefix.String(),
+				ReturnFunc: "err = new(numStrDtoElectron).isValidNumStrDto(\n" +
+					"  n1Dto, ePrefix)",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+		}
+	}
 
-  if validateN2Dto {
+	if validateN2Dto {
 
-    err = new(numStrDtoElectron).isValidNumStrDto(
-      n2Dto, ePrefix.XCpy("Validating 'n2Dto'"))
+		err = new(numStrDtoElectron).isValidNumStrDto(
+			n2Dto, ePrefix.XCpy("Validating 'n2Dto'"))
 
-    if err != nil {
+		if err != nil {
 
-      return 0, &FuncReturnError{
-        ErrPrefix: ePrefix.String(),
-        ReturnFunc: "err = new(numStrDtoElectron).isValidNumStrDto(\n" +
-          "  n2Dto, ePrefix)",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-    }
-  }
+			return 0, &FuncReturnError{
+				ErrPrefix: ePrefix.String(),
+				ReturnFunc: "err = new(numStrDtoElectron).isValidNumStrDto(\n" +
+					"  n2Dto, ePrefix)",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+		}
+	}
 
-  cmpAbs, err := new(numStrDtoAtom).compareAbsoluteValues(
-    n1Dto, false, n2Dto, false, ePrefix.XCpy("n1Dto vs n2Dto"))
+	cmpAbs, err := new(numStrDtoAtom).compareAbsoluteValues(
+		n1Dto, false, n2Dto, false, ePrefix.XCpy("n1Dto vs n2Dto"))
 
-  if err != nil {
+	if err != nil {
 
-    return 0,
-      &FuncReturnError{
-        ErrPrefix: ePrefix.String(),
-        ReturnFunc: "cmpAbs, err := new(numStrDtoAtom).compareAbsoluteValues(\n" +
-          "  n1Dto, false, n2Dto, false, ePrefix)\n",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-  }
+		return 0,
+			&FuncReturnError{
+				ErrPrefix: ePrefix.String(),
+				ReturnFunc: "cmpAbs, err := new(numStrDtoAtom).compareAbsoluteValues(\n" +
+					"  n1Dto, false, n2Dto, false, ePrefix)\n",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  if cmpAbs == 0 {
+	if cmpAbs == 0 {
 
-    if n1Dto.signVal == n2Dto.signVal {
+		if n1Dto.signVal == n2Dto.signVal {
 
-      return 0, nil
+			return 0, nil
 
-    } else {
-      // n1Dto.signVal != n2Dto.signVal
+		} else {
+			// n1Dto.signVal != n2Dto.signVal
 
-      if n1Dto.signVal == 1 {
-        return 1, nil
-      }
+			if n1Dto.signVal == 1 {
+				return 1, nil
+			}
 
-      // n2Dto.signVal must == 1
-      return -1, nil
+			// n2Dto.signVal must == 1
+			return -1, nil
 
-    }
-  }
+		}
+	}
 
-  if cmpAbs == 1 {
+	if cmpAbs == 1 {
 
-    if n1Dto.signVal == n2Dto.signVal {
+		if n1Dto.signVal == n2Dto.signVal {
 
-      if n1Dto.signVal == 1 {
-        return 1, nil
-      }
+			if n1Dto.signVal == 1 {
+				return 1, nil
+			}
 
-      // must be n1Dto.signVal == n2Dto.signVal && n1Dto.signVal == -1
+			// must be n1Dto.signVal == n2Dto.signVal && n1Dto.signVal == -1
 
-      return -1, nil
+			return -1, nil
 
-    }
+		}
 
-    // must be n1Dto.signVal != n2Dto.signVal
-    if n1Dto.signVal == 1 {
+		// must be n1Dto.signVal != n2Dto.signVal
+		if n1Dto.signVal == 1 {
 
-      return 1, nil
-    } else {
-      // must be n2Dto.signVal == 1
+			return 1, nil
+		} else {
+			// must be n2Dto.signVal == 1
 
-      return -1, nil
-    }
-  }
+			return -1, nil
+		}
+	}
 
-  // MUST BE:
-  // cmpAbs == -1
+	// MUST BE:
+	// cmpAbs == -1
 
-  if n2Dto.signVal == n1Dto.signVal {
+	if n2Dto.signVal == n1Dto.signVal {
 
-    if n2Dto.signVal == 1 {
-      // n1Dto.signVal && n2Dto.signVal must equal 1
+		if n2Dto.signVal == 1 {
+			// n1Dto.signVal && n2Dto.signVal must equal 1
 
-      return -1, nil
-    } else {
-      // n1Dto.signVal && n2Dto.signVal must equal -1
+			return -1, nil
+		} else {
+			// n1Dto.signVal && n2Dto.signVal must equal -1
 
-      return 1, nil
-    }
+			return 1, nil
+		}
 
-  }
+	}
 
-  // must be n2Dto.signVal != n1Dto.signVal
+	// must be n2Dto.signVal != n1Dto.signVal
 
-  if n2Dto.signVal == -1 {
-    return 1, nil
-  }
+	if n2Dto.signVal == -1 {
+		return 1, nil
+	}
 
-  // must be n2Dto.signVal == 1
-  return -1, nil
+	// must be n2Dto.signVal == 1
+	return -1, nil
 }
 
 // copy
@@ -223,81 +223,81 @@ func (nStrDtoMolecule *numStrDtoMolecule) compareSignedValues(
 // NumStrDto fields and returns a completely
 // new instance of NumStrDto
 func (nStrDtoMolecule *numStrDtoMolecule) copy(
-  destinationNStrDto *NumStrDto,
-  sourceNStrDto *NumStrDto,
-  validateSourceDto bool,
-  errPrefDto *ePref.ErrPrefixDto) error {
+	destinationNStrDto *NumStrDto,
+	sourceNStrDto *NumStrDto,
+	validateSourceDto bool,
+	errPrefDto *ePref.ErrPrefixDto) error {
 
-  nStrDtoMolecule.lock.Lock()
+	nStrDtoMolecule.lock.Lock()
 
-  defer nStrDtoMolecule.lock.Unlock()
+	defer nStrDtoMolecule.lock.Unlock()
 
-  var ePrefix *ePref.ErrPrefixDto
-  var err error
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
-    errPrefDto,
-    "numStrDtoMolecule.copy()",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
+		errPrefDto,
+		"numStrDtoMolecule.copy()",
+		"")
 
-  if err != nil {
-    return err
-  }
+	if err != nil {
+		return err
+	}
 
-  if sourceNStrDto == nil {
+	if sourceNStrDto == nil {
 
-    return &InputPtrNilError{
-      ErrPrefix:     ePrefix.String(),
-      ParameterName: "'sourceNStrDto'",
-    }
-  }
+		return &InputPtrNilError{
+			ErrPrefix:     ePrefix.String(),
+			ParameterName: "'sourceNStrDto'",
+		}
+	}
 
-  if destinationNStrDto == nil {
+	if destinationNStrDto == nil {
 
-    return &InputPtrNilError{
-      ErrPrefix:     ePrefix.String(),
-      ParameterName: "'destinationNStrDto'",
-    }
-  }
+		return &InputPtrNilError{
+			ErrPrefix:     ePrefix.String(),
+			ParameterName: "'destinationNStrDto'",
+		}
+	}
 
-  if validateSourceDto {
+	if validateSourceDto {
 
-    err = new(numStrDtoElectron).isValidNumStrDto(
-      sourceNStrDto, ePrefix.XCpy("Validating 'sourceNStrDto'"))
+		err = new(numStrDtoElectron).isValidNumStrDto(
+			sourceNStrDto, ePrefix.XCpy("Validating 'sourceNStrDto'"))
 
-    if err != nil {
+		if err != nil {
 
-      return &FuncReturnError{
-        ErrPrefix: ePrefix.String(),
-        ReturnFunc: "err = new(numStrDtoElectron).isValidNumStrDto(\n" +
-          "  sourceNStrDto, ePrefix)",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-    }
-  }
+			return &FuncReturnError{
+				ErrPrefix: ePrefix.String(),
+				ReturnFunc: "err = new(numStrDtoElectron).isValidNumStrDto(\n" +
+					"  sourceNStrDto, ePrefix)",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+		}
+	}
 
-  lenSrcRunes := len(sourceNStrDto.absAllNumRunes)
+	lenSrcRunes := len(sourceNStrDto.absAllNumRunes)
 
-  destinationNStrDto.absAllNumRunes =
-    make([]rune, lenSrcRunes)
+	destinationNStrDto.absAllNumRunes =
+		make([]rune, lenSrcRunes)
 
-  for i := 0; i < lenSrcRunes; i++ {
-    destinationNStrDto.absAllNumRunes[i] = sourceNStrDto.absAllNumRunes[i]
-  }
+	for i := 0; i < lenSrcRunes; i++ {
+		destinationNStrDto.absAllNumRunes[i] = sourceNStrDto.absAllNumRunes[i]
+	}
 
-  destinationNStrDto.signVal = sourceNStrDto.signVal
+	destinationNStrDto.signVal = sourceNStrDto.signVal
 
-  destinationNStrDto.precision = sourceNStrDto.precision
+	destinationNStrDto.precision = sourceNStrDto.precision
 
-  destinationNStrDto.thousandsSeparator = sourceNStrDto.thousandsSeparator
+	destinationNStrDto.thousandsSeparator = sourceNStrDto.thousandsSeparator
 
-  destinationNStrDto.decimalSeparator = sourceNStrDto.decimalSeparator
+	destinationNStrDto.decimalSeparator = sourceNStrDto.decimalSeparator
 
-  destinationNStrDto.currencySymbol = sourceNStrDto.currencySymbol
+	destinationNStrDto.currencySymbol = sourceNStrDto.currencySymbol
 
-  return nil
+	return nil
 }
 
 // getSciNotationStr
@@ -354,84 +354,84 @@ func (nStrDtoMolecule *numStrDtoMolecule) copy(
 //	  If a processing error is encountered, this error object will
 //	  be returned formatted with an appropriate error message.
 func (nStrDtoMolecule *numStrDtoMolecule) getSciNotationStr(
-  nDto *NumStrDto,
-  validateNumStrDto bool,
-  mantissaLen uint,
-  errPrefDto *ePref.ErrPrefixDto) (string, error) {
+	nDto *NumStrDto,
+	validateNumStrDto bool,
+	mantissaLen uint,
+	errPrefDto *ePref.ErrPrefixDto) (string, error) {
 
-  nStrDtoMolecule.lock.Lock()
+	nStrDtoMolecule.lock.Lock()
 
-  defer nStrDtoMolecule.lock.Unlock()
+	defer nStrDtoMolecule.lock.Unlock()
 
-  var ePrefix *ePref.ErrPrefixDto
-  var err error
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
-    errPrefDto,
-    "numStrDtoMolecule.getSciNotationStr()",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
+		errPrefDto,
+		"numStrDtoMolecule.getSciNotationStr()",
+		"")
 
-  if err != nil {
-    return "", err
-  }
+	if err != nil {
+		return "", err
+	}
 
-  if nDto == nil {
+	if nDto == nil {
 
-    return "",
-      &InputPtrNilError{
-        ErrPrefix:     ePrefix.String(),
-        ParameterName: "'nDto'",
-      }
-  }
+		return "",
+			&InputPtrNilError{
+				ErrPrefix:     ePrefix.String(),
+				ParameterName: "'nDto'",
+			}
+	}
 
-  if validateNumStrDto {
+	if validateNumStrDto {
 
-    err = new(numStrDtoElectron).isValidNumStrDto(
-      nDto, ePrefix.XCpy("Validating 'nDto'"))
+		err = new(numStrDtoElectron).isValidNumStrDto(
+			nDto, ePrefix.XCpy("Validating 'nDto'"))
 
-    if err != nil {
-      return "",
-        &FuncReturnError{
-          ErrPrefix:  ePrefix.String(),
-          ReturnFunc: "",
-          ErrContext: "Error: NumStrDto ('nDto') is INVALID!\n" +
-            "'nDto' FAILED Validation Tests.",
-          ErrMessage: err.Error(),
-        }
-    }
-  }
+		if err != nil {
+			return "",
+				&FuncReturnError{
+					ErrPrefix:  ePrefix.String(),
+					ReturnFunc: "",
+					ErrContext: "Error: NumStrDto ('nDto') is INVALID!\n" +
+						"'nDto' FAILED Validation Tests.",
+					ErrMessage: err.Error(),
+				}
+		}
+	}
 
-  sciNotation, err := new(numStrDtoGluon).getSciNotationNumber(
-    nDto, false, mantissaLen, ePrefix)
+	sciNotation, err := new(numStrDtoGluon).getSciNotationNumber(
+		nDto, false, mantissaLen, ePrefix)
 
-  if err != nil {
+	if err != nil {
 
-    return "",
-      &FuncReturnError{
-        ErrPrefix: ePrefix.String(),
-        ReturnFunc: "sciNotation, err := new(numStrDtoGluon).getSciNotationNumber(\n" +
-          "  nDto, false, mantissaLen, ePrefix)",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-  }
+		return "",
+			&FuncReturnError{
+				ErrPrefix: ePrefix.String(),
+				ReturnFunc: "sciNotation, err := new(numStrDtoGluon).getSciNotationNumber(\n" +
+					"  nDto, false, mantissaLen, ePrefix)",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  sciNotationStr, err := sciNotation.GetSciNotationStr(mantissaLen)
+	sciNotationStr, err := sciNotation.GetSciNotationStr(mantissaLen)
 
-  if err != nil {
+	if err != nil {
 
-    return "",
-      &FuncReturnError{
-        ErrPrefix: ePrefix.String(),
-        ReturnFunc: "sciNotationStr, err := sciNotation.\n" +
-          "  GetSciNotationStr(mantissaLen)",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-  }
+		return "",
+			&FuncReturnError{
+				ErrPrefix: ePrefix.String(),
+				ReturnFunc: "sciNotationStr, err := sciNotation.\n" +
+					"  GetSciNotationStr(mantissaLen)",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  return sciNotationStr, nil
+	return sciNotationStr, nil
 }
 
 // newBigFloat
@@ -448,68 +448,68 @@ func (nStrDtoMolecule *numStrDtoMolecule) getSciNotationStr(
 //	using x.Prec() mantissa bits."
 //	  Go Documentation: https://pkg.go.dev/math/big#Float.Text
 func (nStrDtoMolecule *numStrDtoMolecule) newBigFloat(
-  numSeps NumericSeparatorDto,
-  bigFloat *big.Float,
-  precision int,
-  errPrefDto *ePref.ErrPrefixDto) (NumStrDto, error) {
+	numSeps NumericSeparatorDto,
+	bigFloat *big.Float,
+	precision int,
+	errPrefDto *ePref.ErrPrefixDto) (NumStrDto, error) {
 
-  nStrDtoMolecule.lock.Lock()
+	nStrDtoMolecule.lock.Lock()
 
-  defer nStrDtoMolecule.lock.Unlock()
+	defer nStrDtoMolecule.lock.Unlock()
 
-  var ePrefix *ePref.ErrPrefixDto
-  var err error
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
-    errPrefDto,
-    "numStrDtoMolecule.getSciNotationStr()",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
+		errPrefDto,
+		"numStrDtoMolecule.getSciNotationStr()",
+		"")
 
-  if err != nil {
-    return NumStrDto{}, err
-  }
+	if err != nil {
+		return NumStrDto{}, err
+	}
 
-  if bigFloat == nil {
+	if bigFloat == nil {
 
-    return NumStrDto{},
-      &InputPtrNilError{
-        ErrPrefix:     ePrefix.String(),
-        ParameterName: "'bigFloat'",
-      }
-  }
+		return NumStrDto{},
+			&InputPtrNilError{
+				ErrPrefix:     ePrefix.String(),
+				ParameterName: "'bigFloat'",
+			}
+	}
 
-  err = numSeps.IsValid(ePrefix.XCpy("Validating 'numSeps'").String())
+	err = numSeps.IsValid(ePrefix.XCpy("Validating 'numSeps'").String())
 
-  if err != nil {
+	if err != nil {
 
-    return NumStrDto{}, &FuncReturnError{
-      ErrPrefix:  ePrefix.String(),
-      ReturnFunc: "err = numSeps.IsValid(ePrefix.XCpy(\"Validating 'numSeps'\").String())",
-      ErrContext: "Error: Input parameter 'numSeps' is INVALID!\n" +
-        "'numSeps' Numeric Separators FAILED Validation Tests.",
-      ErrMessage: err.Error(),
-    }
-  }
+		return NumStrDto{}, &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "err = numSeps.IsValid(ePrefix.XCpy(\"Validating 'numSeps'\").String())",
+			ErrContext: "Error: Input parameter 'numSeps' is INVALID!\n" +
+				"'numSeps' Numeric Separators FAILED Validation Tests.",
+			ErrMessage: err.Error(),
+		}
+	}
 
-  numStr := bigFloat.Text('f', precision)
+	numStr := bigFloat.Text('f', precision)
 
-  n2, err := new(numStrDtoQuark).parseNumStr(numSeps, numStr, ePrefix)
+	n2, err := new(numStrDtoQuark).parseNumStr(numSeps, numStr, ePrefix)
 
-  if err != nil {
+	if err != nil {
 
-    return NumStrDto{},
-      &FuncReturnError{
-        ErrPrefix: ePrefix.String(),
-        ReturnFunc: "n2, err := new(numStrDtoQuark).parseNumStr(\n" +
-          "  numSeps, numStr, ePrefix)",
-        ErrContext: fmt.Sprintf("numStr = '%s'\n"+
-          "numSeps = '%s'", numStr, numSeps.String()),
-        ErrMessage: err.Error(),
-      }
-  }
+		return NumStrDto{},
+			&FuncReturnError{
+				ErrPrefix: ePrefix.String(),
+				ReturnFunc: "n2, err := new(numStrDtoQuark).parseNumStr(\n" +
+					"  numSeps, numStr, ePrefix)",
+				ErrContext: fmt.Sprintf("numStr = '%s'\n"+
+					"numSeps = '%s'", numStr, numSeps.String()),
+				ErrMessage: err.Error(),
+			}
+	}
 
-  return n2, nil
+	return n2, nil
 }
 
 // newBigInt
@@ -559,89 +559,175 @@ func (nStrDtoMolecule *numStrDtoMolecule) newBigFloat(
 //	NumStrDto instance ('nDto'). If these Numeric Separators prove
 //	to be invalid, an error will be returned.
 func (nStrDtoMolecule *numStrDtoMolecule) newBigInt(
-  numSeps NumericSeparatorDto,
-  signedBigInt *big.Int,
-  precision uint,
-  errPrefDto *ePref.ErrPrefixDto) (NumStrDto, error) {
+	numSeps NumericSeparatorDto,
+	signedBigInt *big.Int,
+	precision uint,
+	errPrefDto *ePref.ErrPrefixDto) (NumStrDto, error) {
 
-  nStrDtoMolecule.lock.Lock()
+	nStrDtoMolecule.lock.Lock()
 
-  defer nStrDtoMolecule.lock.Unlock()
+	defer nStrDtoMolecule.lock.Unlock()
 
-  var ePrefix *ePref.ErrPrefixDto
-  var err error
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
-    errPrefDto,
-    "numStrDtoMolecule.newBigInt()",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
+		errPrefDto,
+		"numStrDtoMolecule.newBigInt()",
+		"")
 
-  if err != nil {
-    return NumStrDto{}, err
-  }
+	if err != nil {
+		return NumStrDto{}, err
+	}
 
-  if new(MathProcessUtility).DoesUintExceedMax32BitInt(precision) {
+	if new(MathProcessUtility).DoesUintExceedMax32BitInt(precision) {
 
-    return NumStrDto{},
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "",
-        ErrContext: "",
-        ErrMessage: "Error: Input parameter 'precision' is INVALID!\n" +
-          "'precision' Exceeds the maximum allowable limt of 2,147,483,647.\n" +
-          fmt.Sprintf("precision= '%v'", precision),
-      }
-  }
+		return NumStrDto{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "",
+				ErrContext: "",
+				ErrMessage: "Error: Input parameter 'precision' is INVALID!\n" +
+					"'precision' Exceeds the maximum allowable limt of 2,147,483,647.\n" +
+					fmt.Sprintf("precision= '%v'", precision),
+			}
+	}
 
-  err = numSeps.IsValid(ePrefix.XCpy("Validating 'numSeps'").String())
+	err = numSeps.IsValid(ePrefix.XCpy("Validating 'numSeps'").String())
 
-  if err != nil {
+	if err != nil {
 
-    return NumStrDto{},
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "err = numSeps.IsValid(ePrefix.XCpy(\"Validating 'numSeps'\").String())",
-        ErrContext: "Error: Numeric Separators input paramter ('numSeps') is INVALID!\n" +
-          "'numSeps' FAILED Validation Tests.",
-        ErrMessage: err.Error(),
-      }
-  }
+		return NumStrDto{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "err = numSeps.IsValid(ePrefix.XCpy(\"Validating 'numSeps'\").String())",
+				ErrContext: "Error: Numeric Separators input paramter ('numSeps') is INVALID!\n" +
+					"'numSeps' FAILED Validation Tests.",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  n2, err := new(numStrDtoQuark).parseSignedBigInt(
-    numSeps, signedBigInt, precision, ePrefix)
+	n2, err := new(numStrDtoQuark).parseSignedBigInt(
+		numSeps, signedBigInt, precision, ePrefix)
 
-  if err != nil {
+	if err != nil {
 
-    return NumStrDto{},
-      &FuncReturnError{
-        ErrPrefix: ePrefix.String(),
-        ReturnFunc: "n2, err := new(numStrDtoQuark).parseSignedBigInt(\n" +
-          "  numSeps, signedBigInt, precision, ePrefix)",
-        ErrContext: fmt.Sprintf("signedBigInt = '%s'\n"+
-          "precision = '%v'\n"+
-          "numSeps = '%s'",
-          signedBigInt.Text(10), precision, numSeps.String()),
-        ErrMessage: err.Error(),
-      }
-  }
+		return NumStrDto{},
+			&FuncReturnError{
+				ErrPrefix: ePrefix.String(),
+				ReturnFunc: "n2, err := new(numStrDtoQuark).parseSignedBigInt(\n" +
+					"  numSeps, signedBigInt, precision, ePrefix)",
+				ErrContext: fmt.Sprintf("signedBigInt = '%s'\n"+
+					"precision = '%v'\n"+
+					"numSeps = '%s'",
+					signedBigInt.Text(10), precision, numSeps.String()),
+				ErrMessage: err.Error(),
+			}
+	}
 
-  err = new(numStrDtoElectron).isValidNumStrDto(
-    &n2, ePrefix.XCpy("Validating final result 'n2'"))
+	err = new(numStrDtoElectron).isValidNumStrDto(
+		&n2, ePrefix.XCpy("Validating final result 'n2'"))
 
-  if err != nil {
-    return NumStrDto{},
-      &FuncReturnError{
-        ErrPrefix: ePrefix.String(),
-        ReturnFunc: "err = new(numStrDtoElectron).isValidNumStrDto(\n" +
-          "  &n2, ePrefix)",
-        ErrContext: "Error: Final result NumStrDto ('n2') is INVALID!\n" +
-          "'n2' FAILED Final Validation Tests.",
-        ErrMessage: err.Error(),
-      }
-  }
+	if err != nil {
+		return NumStrDto{},
+			&FuncReturnError{
+				ErrPrefix: ePrefix.String(),
+				ReturnFunc: "err = new(numStrDtoElectron).isValidNumStrDto(\n" +
+					"  &n2, ePrefix)",
+				ErrContext: "Error: Final result NumStrDto ('n2') is INVALID!\n" +
+					"'n2' FAILED Final Validation Tests.",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  return n2, nil
+	return n2, nil
+}
+
+// newBigIntNum
+//
+//	Receives a type BigIntNum numeric value, converts it to a
+//	type NumStrDto and then returns that NumStrDto instance.
+func (nStrDtoMolecule *numStrDtoMolecule) newBigIntNum(
+	biNum BigIntNum,
+	errPrefDto *ePref.ErrPrefixDto) (NumStrDto, error) {
+
+	nStrDtoMolecule.lock.Lock()
+
+	defer nStrDtoMolecule.lock.Unlock()
+
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
+
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
+		errPrefDto,
+		"numStrDtoMolecule.newBigIntNum()",
+		"")
+
+	if err != nil {
+		return NumStrDto{}, err
+	}
+
+	err = new(bigIntNumAtom).isBigIntNumValid(
+		&biNum,
+		ePrefix.XCpy("Validating Input Parameter 'biNum'"))
+
+	if err != nil {
+
+		return NumStrDto{}, &FuncReturnError{
+			ErrPrefix: ePrefix.String(),
+			ReturnFunc: "err = new(bigIntNumAtom).isBigIntNumValid(\n" +
+				"  biNum, ePrefix)",
+			ErrContext: "Error: Input parameter 'biNum' (BigIntNum) is INVALID!\n" +
+				"'biNum' FAILED Validation Tests.",
+			ErrMessage: err.Error(),
+		}
+	}
+
+	numSeps, err := biNum.GetNumericSeparatorsDto()
+
+	if err != nil {
+
+		return NumStrDto{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "numSeps, err := biNum.GetNumericSeparatorsDto()",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
+
+	biNumStr, err := biNum.GetNumStr()
+
+	if err != nil {
+
+		return NumStrDto{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "biNumStr, err := biNum.GetNumStr()",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
+
+	// n2, err := new(NumStrDto).ParseBigIntNum(bINum)
+	n2, err := new(numStrDtoQuark).parseBigIntNum(numSeps, &biNum, false, ePrefix)
+
+	if err != nil {
+
+		return NumStrDto{},
+			&FuncReturnError{
+				ErrPrefix: ePrefix.String(),
+				ReturnFunc: "n2, err := new(numStrDtoQuark).parseBigIntNum(\n" +
+					"  numSeps, &biNum, false, ePrefix)",
+				ErrContext: fmt.Sprintf("biNum= '%s'\n"+
+					"numSeps= '%s'", biNumStr, numSeps.String()),
+				ErrMessage: err.Error(),
+			}
+	}
+
+	return n2, nil
 }
 
 // newInt64
@@ -658,87 +744,87 @@ func (nStrDtoMolecule *numStrDtoMolecule) newBigInt(
 //	          new(NumStrDto).NewInt64(123456, 3)
 //	Yields a NumStrDto instance with a numeric value of 123.456.
 func (nStrDtoMolecule *numStrDtoMolecule) newInt64(
-  numSeps NumericSeparatorDto,
-  i64 int64,
-  precision uint,
-  errPrefDto *ePref.ErrPrefixDto) (NumStrDto, error) {
+	numSeps NumericSeparatorDto,
+	i64 int64,
+	precision uint,
+	errPrefDto *ePref.ErrPrefixDto) (NumStrDto, error) {
 
-  nStrDtoMolecule.lock.Lock()
+	nStrDtoMolecule.lock.Lock()
 
-  defer nStrDtoMolecule.lock.Unlock()
+	defer nStrDtoMolecule.lock.Unlock()
 
-  var ePrefix *ePref.ErrPrefixDto
-  var err error
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
-    errPrefDto,
-    "numStrDtoMolecule.newInt64()",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
+		errPrefDto,
+		"numStrDtoMolecule.newInt64()",
+		"")
 
-  if err != nil {
-    return NumStrDto{}, err
-  }
+	if err != nil {
+		return NumStrDto{}, err
+	}
 
-  if new(MathProcessUtility).DoesUintExceedMax32BitInt(precision) {
+	if new(MathProcessUtility).DoesUintExceedMax32BitInt(precision) {
 
-    return NumStrDto{},
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "",
-        ErrContext: "",
-        ErrMessage: "Error: Input parameter 'precision' is INVALID!\n" +
-          "'precision' Exceeds the maximum allowable limt of 2,147,483,647.\n" +
-          fmt.Sprintf("precision= '%v'", precision),
-      }
-  }
+		return NumStrDto{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "",
+				ErrContext: "",
+				ErrMessage: "Error: Input parameter 'precision' is INVALID!\n" +
+					"'precision' Exceeds the maximum allowable limt of 2,147,483,647.\n" +
+					fmt.Sprintf("precision= '%v'", precision),
+			}
+	}
 
-  err = numSeps.IsValid(ePrefix.XCpy("Validating 'numSeps'").String())
+	err = numSeps.IsValid(ePrefix.XCpy("Validating 'numSeps'").String())
 
-  if err != nil {
+	if err != nil {
 
-    return NumStrDto{}, &FuncReturnError{
-      ErrPrefix:  ePrefix.String(),
-      ReturnFunc: "err = numSeps.IsValid(ePrefix.XCpy(\"Validating 'numSeps'\").String())",
-      ErrContext: "Error: Numeric Separators input paramter ('numSeps') is INVALID!\n" +
-        "'numSeps' FAILED Validation Tests.",
-      ErrMessage: err.Error(),
-    }
-  }
+		return NumStrDto{}, &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "err = numSeps.IsValid(ePrefix.XCpy(\"Validating 'numSeps'\").String())",
+			ErrContext: "Error: Numeric Separators input paramter ('numSeps') is INVALID!\n" +
+				"'numSeps' FAILED Validation Tests.",
+			ErrMessage: err.Error(),
+		}
+	}
 
-  numStr := strconv.FormatInt(i64, 10)
+	numStr := strconv.FormatInt(i64, 10)
 
-  n2, err := new(numStrDtoQuark).parseNumStr(
-    numSeps, numStr, ePrefix)
+	n2, err := new(numStrDtoQuark).parseNumStr(
+		numSeps, numStr, ePrefix)
 
-  if err != nil {
+	if err != nil {
 
-    return NumStrDto{},
-      &FuncReturnError{
-        ErrPrefix: ePrefix.String(),
-        ReturnFunc: "n2, err := new(numStrDtoQuark).parseNumStr(\n" +
-          "  numSeps, numStr, ePrefix)",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-  }
+		return NumStrDto{},
+			&FuncReturnError{
+				ErrPrefix: ePrefix.String(),
+				ReturnFunc: "n2, err := new(numStrDtoQuark).parseNumStr(\n" +
+					"  numSeps, numStr, ePrefix)",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  err = new(numStrDtoMuon).setPrecisionNumStrDto(
-    numSeps, &n2, precision, true, ePrefix.XCpy("n2"))
+	err = new(numStrDtoMuon).setPrecisionNumStrDto(
+		numSeps, &n2, precision, true, ePrefix.XCpy("n2"))
 
-  if err != nil {
+	if err != nil {
 
-    return NumStrDto{},
-      &FuncReturnError{
-        ErrPrefix: ePrefix.String(),
-        ReturnFunc: "err = new(numStrDtoMuon).setPrecisionNumStrDto(\n" +
-          "  numSeps, &n2, precision, true, ePrefix)",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-  }
+		return NumStrDto{},
+			&FuncReturnError{
+				ErrPrefix: ePrefix.String(),
+				ReturnFunc: "err = new(numStrDtoMuon).setPrecisionNumStrDto(\n" +
+					"  numSeps, &n2, precision, true, ePrefix)",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  return n2, nil
+	return n2, nil
 }
 
 // newZeroNumStrDto
@@ -781,38 +867,38 @@ func (nStrDtoMolecule *numStrDtoMolecule) newInt64(
 //	determined to be invalid, they will be automatically reset
 //	to default USA values.
 func (nStrDtoMolecule *numStrDtoMolecule) newZeroNumStrDto(
-  numSeps NumericSeparatorDto,
-  precision uint) NumStrDto {
+	numSeps NumericSeparatorDto,
+	precision uint) NumStrDto {
 
-  nStrDtoMolecule.lock.Lock()
+	nStrDtoMolecule.lock.Lock()
 
-  defer nStrDtoMolecule.lock.Unlock()
+	defer nStrDtoMolecule.lock.Unlock()
 
-  if new(MathProcessUtility).DoesUintExceedMax32BitInt(precision) {
+	if new(MathProcessUtility).DoesUintExceedMax32BitInt(precision) {
 
-    precision = uint(math.MaxInt32)
+		precision = uint(math.MaxInt32)
 
-  }
+	}
 
-  numSeps.SetDefaultsIfEmpty()
+	numSeps.SetDefaultsIfEmpty()
 
-  n2Dto := NumStrDto{}
-  n2Dto.signVal = 1
-  n2Dto.thousandsSeparator = numSeps.ThousandsSeparator
-  n2Dto.decimalSeparator = numSeps.DecimalSeparator
-  n2Dto.currencySymbol = numSeps.CurrencySymbol
-  n2Dto.signVal = 1
-  n2Dto.precision = 0
-  n2Dto.absAllNumRunes = append(n2Dto.absAllNumRunes, '0')
+	n2Dto := NumStrDto{}
+	n2Dto.signVal = 1
+	n2Dto.thousandsSeparator = numSeps.ThousandsSeparator
+	n2Dto.decimalSeparator = numSeps.DecimalSeparator
+	n2Dto.currencySymbol = numSeps.CurrencySymbol
+	n2Dto.signVal = 1
+	n2Dto.precision = 0
+	n2Dto.absAllNumRunes = append(n2Dto.absAllNumRunes, '0')
 
-  if precision > 0 {
+	if precision > 0 {
 
-    for i := uint(0); i < precision; i++ {
-      n2Dto.absAllNumRunes = append(n2Dto.absAllNumRunes, '0')
-    }
+		for i := uint(0); i < precision; i++ {
+			n2Dto.absAllNumRunes = append(n2Dto.absAllNumRunes, '0')
+		}
 
-    n2Dto.precision = precision
-  }
+		n2Dto.precision = precision
+	}
 
-  return n2Dto
+	return n2Dto
 }
