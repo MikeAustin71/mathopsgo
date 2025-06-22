@@ -512,6 +512,138 @@ func (nStrDtoMolecule *numStrDtoMolecule) newBigFloat(
   return n2, nil
 }
 
+// newBigInt
+//
+//	Receives a signed Bit Int Number (*big.Int) and precision
+//	specification. This method then proceeds to create and return
+//	a new instace of NumStrDto instance.
+//
+//	'precision'
+//	===========
+//
+//	'precision' determines the number of digits to the right of the
+//	decimal place.
+//
+//	  signedBigInt    precision           result
+//
+//	    946254            3               946.254
+//	    946254            1               94625.4
+//	    946254            0               946254
+//	   -946254            3              -946.254
+//	   -946254            2              -9462.54
+//	   -946254            0              -946254
+//
+//	Maximum Precision Value
+//	=======================
+//
+//	Input parameter 'precision' is an unsigned integer value.
+//	The maximum limit for a 'precision' uint value is
+//	2,147,483,647 or	2^31 - 1. This is also the maximum
+//	allowable limit for a signed 32-bit integer.
+//
+//	If the 'precision' value exceeds the maximum allowable limit,
+//	an error will be returned.
+//
+//	Numeric Separators
+//	==================
+//
+//	Numeric Separators define the Decimal Separator character,
+//	Thousands Separator character, and Currency Symbol character.
+//	These separator characters serve two purposes. First they are
+//	used to format and display numeric values as number strings.
+//	Second, they are also used to parse number strings and
+//	convert them into numeric values.
+//
+//	The final NumStrDto result returned by this method will be
+//	configured with the Numeric Separators copied from the current
+//	NumStrDto instance ('nDto'). If these Numeric Separators prove
+//	to be invalid, an error will be returned.
+func (nStrDtoMolecule *numStrDtoMolecule) newBigInt(
+  numSeps NumericSeparatorDto,
+  signedBigInt *big.Int,
+  precision uint,
+  errPrefDto *ePref.ErrPrefixDto) (NumStrDto, error) {
+
+  nStrDtoMolecule.lock.Lock()
+
+  defer nStrDtoMolecule.lock.Unlock()
+
+  var ePrefix *ePref.ErrPrefixDto
+  var err error
+
+  ePrefix,
+    err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
+    errPrefDto,
+    "numStrDtoMolecule.newBigInt()",
+    "")
+
+  if err != nil {
+    return NumStrDto{}, err
+  }
+
+  if new(MathProcessUtility).DoesUintExceedMax32BitInt(precision) {
+
+    return NumStrDto{},
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "",
+        ErrContext: "",
+        ErrMessage: "Error: Input parameter 'precision' is INVALID!\n" +
+          "'precision' Exceeds the maximum allowable limt of 2,147,483,647.\n" +
+          fmt.Sprintf("precision= '%v'", precision),
+      }
+  }
+
+  err = numSeps.IsValid(ePrefix.XCpy("Validating 'numSeps'").String())
+
+  if err != nil {
+
+    return NumStrDto{},
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "err = numSeps.IsValid(ePrefix.XCpy(\"Validating 'numSeps'\").String())",
+        ErrContext: "Error: Numeric Separators input paramter ('numSeps') is INVALID!\n" +
+          "'numSeps' FAILED Validation Tests.",
+        ErrMessage: err.Error(),
+      }
+  }
+
+  n2, err := new(numStrDtoQuark).parseSignedBigInt(
+    numSeps, signedBigInt, precision, ePrefix)
+
+  if err != nil {
+
+    return NumStrDto{},
+      &FuncReturnError{
+        ErrPrefix: ePrefix.String(),
+        ReturnFunc: "n2, err := new(numStrDtoQuark).parseSignedBigInt(\n" +
+          "  numSeps, signedBigInt, precision, ePrefix)",
+        ErrContext: fmt.Sprintf("signedBigInt = '%s'\n"+
+          "precision = '%v'\n"+
+          "numSeps = '%s'",
+          signedBigInt.Text(10), precision, numSeps.String()),
+        ErrMessage: err.Error(),
+      }
+  }
+
+  err = new(numStrDtoElectron).isValidNumStrDto(
+    &n2, ePrefix.XCpy("Validating final result 'n2'"))
+
+  if err != nil {
+    return NumStrDto{},
+      &FuncReturnError{
+        ErrPrefix: ePrefix.String(),
+        ReturnFunc: "err = new(numStrDtoElectron).isValidNumStrDto(\n" +
+          "  &n2, ePrefix)",
+        ErrContext: "Error: Final result NumStrDto ('n2') is INVALID!\n" +
+          "'n2' FAILED Final Validation Tests.",
+        ErrMessage: err.Error(),
+      }
+  }
+
+  return n2, nil
+}
+
 // newInt64
 //
 //	Creates a new NumStrDto instance from an int64 value and a

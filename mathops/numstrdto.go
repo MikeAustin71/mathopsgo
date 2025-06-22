@@ -2702,8 +2702,52 @@ func (nDto *NumStrDto) NewBigFloat(
     numSeps, bigFloat, precision, ePrefix)
 }
 
-// NewBigInt - Creates a new NumStrDto instance from a signed big integer (*big.Int) and
-// a precision specification.
+// NewBigInt
+//
+//	Receives a signed Bit Int Number (*big.Int) and precision
+//	specification. This method then proceeds to create and return
+//	a new instace of NumStrDto instance.
+//
+//	'precision'
+//	===========
+//
+//	'precision' determines the number of digits to the right of the
+//	decimal place.
+//
+//	  signedBigInt    precision           result
+//
+//	    946254            3               946.254
+//	    946254            1               94625.4
+//	    946254            0               946254
+//	   -946254            3              -946.254
+//	   -946254            2              -9462.54
+//	   -946254            0              -946254
+//
+//	Maximum Precision Value
+//	=======================
+//
+//	Input parameter 'precision' is an unsigned integer value.
+//	The maximum limit for a 'precision' uint value is
+//	2,147,483,647 or	2^31 - 1. This is also the maximum
+//	allowable limit for a signed 32-bit integer.
+//
+//	If the 'precision' value exceeds the maximum allowable limit,
+//	an error will be returned.
+//
+//	Numeric Separators
+//	==================
+//
+//	Numeric Separators define the Decimal Separator character,
+//	Thousands Separator character, and Currency Symbol character.
+//	These separator characters serve two purposes. First they are
+//	used to format and display numeric values as number strings.
+//	Second, they are also used to parse number strings and
+//	convert them into numeric values.
+//
+//	The final NumStrDto result returned by this method will be
+//	configured with the Numeric Separators copied from the current
+//	NumStrDto instance ('nDto'). If these Numeric Separators prove
+//	to be invalid, an error will be returned.
 func (nDto *NumStrDto) NewBigInt(signedBigInt *big.Int, precision uint) (NumStrDto, error) {
 
   var ePrefix *ePref.ErrPrefixDto
@@ -2719,24 +2763,90 @@ func (nDto *NumStrDto) NewBigInt(signedBigInt *big.Int, precision uint) (NumStrD
     return NumStrDto{}, err
   }
 
-  n2, err := new(NumStrDto).ParseSignedBigInt(
-    big.NewInt(0).Set(signedBigInt),
-    precision)
+  numSeps, err := new(numStrDtoAtom).getNumericSeparatorsDto(
+    nDto, ePrefix.XCpy("nDto -> numSeps"))
 
   if err != nil {
     return NumStrDto{},
-      fmt.Errorf(ePrefix+"Error returned by ParseSignedBigInt(signedBigInt, precision). "+
-        "signedBigInt='%v' precision='%v'  Error='%v'",
-        signedBigInt.Text(10), precision, err.Error())
+      &FuncReturnError{
+        ErrPrefix: ePrefix.String(),
+        ReturnFunc: "numSeps, err := new(numStrDtoAtom).getNumericSeparatorsDto(\n" +
+          "  nDto, ePrefix.XCpy(\"nDto -> numSeps\"))",
+        ErrContext: "Error extracting Numeric Separators from current NumStrDto instance.",
+        ErrMessage: err.Error(),
+      }
   }
 
-  err = n2.IsValid(ePrefix + "'n2' INVALID! ")
+  return new(numStrDtoMolecule).newBigInt(
+    numSeps, signedBigInt, precision, ePrefix)
+}
+
+// NewBigIntNumSeps
+//
+//	Receives a signed Bit Int Number (*big.Int) and precision
+//	specification. This method then proceeds to create and return
+//	a new instace of NumStrDto instance.
+//
+//	'precision'
+//	===========
+//
+//	'precision' determines the number of digits to the right of the
+//	decimal place.
+//
+//	  signedBigInt    precision           result
+//
+//	    946254            3               946.254
+//	    946254            1               94625.4
+//	    946254            0               946254
+//	   -946254            3              -946.254
+//	   -946254            2              -9462.54
+//	   -946254            0              -946254
+//
+//	Maximum Precision Value
+//	=======================
+//
+//	Input parameter 'precision' is an unsigned integer value.
+//	The maximum limit for a 'precision' uint value is
+//	2,147,483,647 or	2^31 - 1. This is also the maximum
+//	allowable limit for a signed 32-bit integer.
+//
+//	If the 'precision' value exceeds the maximum allowable limit,
+//	an error will be returned.
+//
+//	Numeric Separators
+//	==================
+//
+//	Numeric Separators define the Decimal Separator character,
+//	Thousands Separator character, and Currency Symbol character.
+//	These separator characters serve two purposes. First they are
+//	used to format and display numeric values as number strings.
+//	Second, they are also used to parse number strings and
+//	convert them into numeric values.
+//
+//	The final NumStrDto result returned by this method will be
+//	configured with the Numeric Separators copied from input
+//	parameter 'numSeps'. If these Numeric Separators prove to be
+//	invalid, an error will be returned.
+func (nDto *NumStrDto) NewBigIntNumSeps(
+  signedBigInt *big.Int,
+  precision uint,
+  numSeps NumericSeparatorDto) (NumStrDto, error) {
+
+  var ePrefix *ePref.ErrPrefixDto
+  var err error
+
+  ePrefix,
+    err = ePref.ErrPrefixDto{}.NewIEmpty(
+    nil,
+    "NumStrDto.NewBigIntNumSeps",
+    "")
 
   if err != nil {
     return NumStrDto{}, err
   }
 
-  return n2, nil
+  return new(numStrDtoMolecule).newBigInt(
+    numSeps, signedBigInt, precision, ePrefix)
 }
 
 // NewBigIntNum - Receives a BigIntNum and converts it to a NumStrDto
