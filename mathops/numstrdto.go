@@ -2871,25 +2871,68 @@ func (nDto *NumStrDto) NewBigIntNum(biNum BigIntNum) (NumStrDto, error) {
 	return new(numStrDtoMolecule).newBigIntNum(biNum, ePrefix)
 }
 
-// NewFloat32 - Creates a new NumStrDto instance from a float32
-// and precision specification.
+// NewFloat32
+//
+//	Receives a type float32 numeric value and precision
+//	specification. This method then converts these parameters into
+//	a new NumStrDto instance and returns that NumStrDto instance to
+//	the calling functin.
+//
+//	The 'precision' specification designates the number of digits
+//	to the right of the decimal point in the final numeric value.
+//
+//	'precision' MUST BE >= -1
+//
+//	"The special precision -1 uses the smallest number of digits
+//	necessary such that ParseFloat will return f exactly. The
+//	exponent is written as a decimal integer ..."
+//	  Go Documentation: https://pkg.go.dev/strconv#FormatFloat
+//
+//	Numeric Separators
+//	==================
+//
+//	Numeric Separators define the Decimal Separator character,
+//	Thousands Separator character, and Currency Symbol character.
+//	These separator characters serve two purposes. First they are
+//	used to format and display numeric values as number strings.
+//	Second, they are also used to parse number strings and
+//	convert them into numeric values.
+//
+//	The final NumStrDto result returned by this method will be
+//	configured with the Numeric Separators copied from the current
+//	NumStrDto instance ('nDto'). If these Numeric Separators prove
+//	to be invalid, an error will be returned.
 func (nDto *NumStrDto) NewFloat32(f32 float32, precision int) (NumStrDto, error) {
 
-	ePrefix := "NumStrDto.NewFloat32() "
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-	numStr := strconv.FormatFloat(float64(f32), 'f', precision, 32)
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"NumStrDto.NewFloat32",
+		"")
 
-	n2, err := new(NumStrDto).NewPtr().ParseNumStr(numStr)
+	if err != nil {
+		return NumStrDto{}, err
+	}
+
+	numSeps, err := new(numStrDtoAtom).getNumericSeparatorsDto(
+		nDto, ePrefix.XCpy("nDto -> numSeps"))
 
 	if err != nil {
 		return NumStrDto{},
-			fmt.Errorf(ePrefix+"Error returned by n.ParseNumStr(numStr). "+
-				"numStr='%v'  Error='%v'",
-				numStr, err.Error())
+			&FuncReturnError{
+				ErrPrefix: ePrefix.String(),
+				ReturnFunc: "numSeps, err := new(numStrDtoAtom).getNumericSeparatorsDto(\n" +
+					"  nDto, ePrefix.XCpy(\"nDto -> numSeps\"))",
+				ErrContext: "Error extracting Numeric Separators from current NumStrDto instance.",
+				ErrMessage: err.Error(),
+			}
 	}
 
-	return n2, nil
-
+	return new(numStrDtoMolecule).newFloat32(
+		numSeps, f32, precision, ePrefix)
 }
 
 // NewFloat64 - Creates a new NumStrDto instance from a float64
