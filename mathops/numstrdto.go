@@ -3225,38 +3225,105 @@ func (nDto *NumStrDto) NewIntNumSeps(
     numSeps, int64(intNum), precision, ePrefix)
 }
 
-// NewIntExponent - Returns a new NumStrDto instance. The numeric
-// value is set using an integer multiplied by 10 raised to the
-// power of the 'exponent' parameter.
+// NewIntExponent
 //
-//	numeric value = integer X 10^exponent
+//	Returns a new NumStrDto instance. The numeric value is set
+//	using an integer multiplied by 10 raised to the power of the
+//	'exponent' parameter.
 //
-// Input parameter 'intNum' is of type int.
+//	          numeric value = integer X 10^exponent
 //
-// Input parameter 'exponent' is of type int.
+//	Usage
+//	=====
 //
-// Usage:
-// ------
-// This method is designed to be used in conjunction with the Decimal{}
-// syntax thereby allowing Decimal type creation and initialization in
-// one step.
+//	  nDto := new(NumStrDto).NewIntExponent(123456, -3)
+//	   nDto is now equal to "123.456", precision = 3
 //
-//		nDto := new(NumStrDto).NewIntExponent(123456, -3)
-//	 -- nDto is now equal to "123.456", precision = 3
+//	  nDto := new(NumStrDto).NewIntExponent(123456, 3)
+//	  nDto is now equal to "123456.000", precision = 3
 //
-//		nDto := new(NumStrDto).NewIntExponent(123456, 3)
-//	 -- decNum is now equal to "123456.000", precision = 3
+//	Examples
+//	========
 //
-// Examples:
-// ---------
+//	intNum        exponent        NumStrDto Result
 //
-//	  intNum			 exponent			  	NumStrDto Result
-//		 123456		 		  -3							123.456
-//		 123456		 		   3							123456.000
-//	  123456          0              123456
-func (nDto *NumStrDto) NewIntExponent(intNum int, exponent int) NumStrDto {
+//	123456          -3                123.456
+//	123456           3                123456.000
+//	123456           0                123456
+//
+//	Numeric Separators
+//	==================
+//
+//	Numeric Separators define the Decimal Separator character,
+//	Thousands Separator character, and Currency Symbol character.
+//	These separator characters serve two purposes. First they are
+//	used to format and display numeric values as number strings.
+//	Second, they are also used to parse number strings and
+//	convert them into numeric values.
+//
+//	The final NumStrDto result returned by this method will be
+//	configured with the Numeric Separators copied from the current
+//	NumStrDto instance ('nDto'). If these Numeric Separators prove
+//	to be invalid, an error will be returned.
+func (nDto *NumStrDto) NewIntExponent(intNum int, exponent int) (NumStrDto, error) {
 
-  return new(NumStrDto).NewInt64Exponent(int64(intNum), exponent)
+  var ePrefix *ePref.ErrPrefixDto
+  var err error
+
+  ePrefix,
+    err = ePref.ErrPrefixDto{}.NewIEmpty(
+    nil,
+    "NumStrDto.NewIntExponent",
+    "")
+
+  if err != nil {
+    return NumStrDto{}, err
+  }
+
+  numSeps, err := new(numStrDtoAtom).getNumericSeparatorsDto(
+    nDto, ePrefix.XCpy("nDto -> numSeps"))
+
+  if err != nil {
+
+    return NumStrDto{},
+      &FuncReturnError{
+        ErrPrefix: ePrefix.String(),
+        ReturnFunc: "numSeps, err := new(numStrDtoAtom).getNumericSeparatorsDto(\n" +
+          "nDto, ePrefix.XCpy(\"nDto -> numSeps\"))",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+  }
+
+  err = numSeps.IsValid(ePrefix.XCpy("Validating 'numSeps'").String())
+
+  if err != nil {
+
+    return NumStrDto{}, &FuncReturnError{
+      ErrPrefix:  ePrefix.String(),
+      ReturnFunc: "err = numSeps.IsValid(ePrefix.XCpy(\"Validating 'numSeps'\").String())",
+      ErrContext: "Error: The current instance of NumStrDto ('nDto') is INVALID!\n" +
+        "Numeric Separators from 'nDto' FAILED Validation Tests.",
+      ErrMessage: err.Error(),
+    }
+  }
+
+  newNumStrDto, err := new(numStrDtoMolecule).newInt64Exponent(
+    numSeps, int64(intNum), exponent, ePrefix)
+
+  if err != nil {
+
+    return NumStrDto{},
+      &FuncReturnError{
+        ErrPrefix: ePrefix.String(),
+        ReturnFunc: "newNumStrDto, err := new(numStrDtoMolecule).newInt64Exponent(\n" +
+          "  numSeps, int64(intNum), exponent, ePrefix)",
+        ErrContext: "Error converting 'intNum' to NumStrDto",
+        ErrMessage: err.Error(),
+      }
+  }
+
+  return newNumStrDto, nil
 }
 
 // NewInt32 - Creates a new NumStrDto instance from an int32 and a
@@ -3418,11 +3485,11 @@ func (nDto *NumStrDto) NewInt64(i64 int64, precision uint) (NumStrDto, error) {
 //	Examples
 //	========
 //
-//	int64Num      exponent      Result
+//	int64Num      exponent     NumStrDto Result
 //
-//	 123456         -3          123.456
-//	 123456          3          123456.000
-//	 123456          0          123456
+//	 123456         -3             123.456
+//	 123456          3             123456.000
+//	 123456          0             123456
 //
 //	Numeric Separators
 //	==================
