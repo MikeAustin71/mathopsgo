@@ -3068,9 +3068,9 @@ func (nDto *NumStrDto) NewFloat64NumSeps(
 
 // NewInt
 //
-//	Receives a integer number (int) and precision specification.
-//	This method then proceeds to create and return a new instace of
-//	NumStrDto.
+//	Receives an integer number ('intNum') and precision
+//	specification. This method then proceeds to create and return
+//	a new instace of NumStrDto.
 //
 //	'precision'
 //	===========
@@ -3078,7 +3078,7 @@ func (nDto *NumStrDto) NewFloat64NumSeps(
 //	'precision' determines the number of digits to the right of the
 //	decimal place.
 //
-//	  integer        precision           result
+//	  intNum         precision     NumStrDto Result
 //
 //	   946254            3               946.254
 //	   946254            1               94625.4
@@ -3115,6 +3115,14 @@ func (nDto *NumStrDto) NewFloat64NumSeps(
 //	NumStrDto instance ('nDto'). If these Numeric Separators prove
 //	to be invalid, they will be automatically reset to USA default
 //	values.
+//
+//	Usage
+//	=====
+//
+//	          intNum := 123456
+//	          precision := 3
+//	          nDto := new(NumStrDto).NewInt(intNum, precision)
+//	                nDto is now equal to 123.456
 func (nDto *NumStrDto) NewInt(intNum int, precision uint) NumStrDto {
 
   var numSeps NumericSeparatorDto
@@ -3227,9 +3235,9 @@ func (nDto *NumStrDto) NewIntNumSeps(
 
 // NewIntExponent
 //
-//	Returns a new NumStrDto instance. The numeric value is set
-//	using an integer multiplied by 10 raised to the power of the
-//	'exponent' parameter.
+//	Returns a new NumStrDto instance. The numeric value for this
+//	new NumStrDto is set using an integer multiplied by 10 raised
+//	to the power of the 'exponent' parameter.
 //
 //	          numeric value = integer X 10^exponent
 //
@@ -3819,127 +3827,166 @@ func (nDto *NumStrDto) NewUint32Exponent(uint32Num uint32, exponent int) NumStrD
   return nDto.NewUint64Exponent(uint64(uint32Num), exponent)
 }
 
-// NewUint64 - Creates a new NumStrDto instance from an uint64 and a
-// precision specification.
+// NewUint64
 //
-// Input parameter 'precision' indicates the number of digits to be
-// formatted to the right of the decimal place.
+//	Receives an uint64 value and a precision specification. This
+//	method then proceeds to create and return a new instance of
+//	NumStrDto.
 //
-// Usage:
-// ------
-// This method is designed to be used in conjunction with the NumStrDto{}
-// syntax thereby allowing NumStrDto type creation and initialization in
-// one step.
+//	'precision'
+//	===========
 //
-//					uint64Num := uint64(123456)
-//					precision := uint(3)
-//					nDto := new(NumStrDto).NewUint64(uint64Num, precision)
-//	       nDto is now equal to 123.456
+//	'precision' determines the number of digits to the right of the
+//	decimal place.
 //
-// Examples:
-// ---------
+//	  intNum         precision     NumStrDto Result
 //
-//	  uint64Num		precision			NumStrDto Result
-//		 123456		 		   4							12.3456
-//	  123456          0              123456
-//	  123456          1              12345.6
-func (nDto *NumStrDto) NewUint64(uint64Num uint64, precision uint) NumStrDto {
+//	   946254            3               946.254
+//	   946254            1               94625.4
+//	   946254            0               946254
+//	  -946254            3              -946.254
+//	  -946254            2              -9462.54
+//	  -946254            0              -946254
+//
+//	Maximum Precision Value
+//	=======================
+//
+//	Input parameter 'precision' is an unsigned integer value.
+//	The maximum limit for a 'precision' uint value is
+//	2,147,483,647 or	2^31 - 1. This is also the maximum
+//	allowable limit for a signed 32-bit integer.
+//
+//	If this value exceeds the maximum value for a 32-bit integer,
+//	this 'precision' value will be automatically reduced to the
+//	maximum limit of 2,147,483,647 or	2^31 - 1.
+//
+//	Numeric Separators
+//	==================
+//
+//	Numeric Separators define the Decimal Separator character,
+//	Thousands Separator character, and Currency Symbol character.
+//	These separator characters serve two purposes. First they are
+//	used to format and display numeric values as number strings.
+//	Second, they are also used to parse number strings and
+//	convert them into numeric values.
+//
+//	The final NumStrDto result returned by this method will be
+//	configured with the Numeric Separators copied from the current
+//	NumStrDto instance ('nDto'). If these Numeric Separators prove
+//	to be invalid, they will be automatically reset to USA default
+//	values.
+//
+//	Usage
+//	=====
+//
+//	          uint64Num := uint64(123456)
+//	          precision := uint(3)
+//	          nDto, err := new(NumStrDto).NewUint64(uint64Num, precision)
+//	                nDto is now equal to 123.456
+func (nDto *NumStrDto) NewUint64(uint64Num uint64, precision uint) (NumStrDto, error) {
 
-  ePrefix := "NumStrDto.NewUint64() "
-
-  numStr := strconv.FormatUint(uint64Num, 10)
-
-  n2, err := new(NumStrDto).NewPtr().ParseNumStr(numStr)
-  // This should NEVER produce an error
-  if err != nil {
-    sError := fmt.Sprintf(ePrefix+
-      "Fatal Error returned by new(NumStrDto).NewPtr().ParseNumStr(numStr) "+
-      "numStr='%v' Error='%v' ", numStr, err.Error())
-    panic(sError)
-  }
-
-  n2.SetThisPrecision(precision, true)
-
-  n2.SetNumericSeparatorsDto(nDto.GetNumericSeparatorsDto())
-
-  return n2
-}
-
-// NewUint64Exponent - Returns a new NumStrDto instance. The numeric
-// value is set using an uint64 value multiplied by 10 raised to the
-// power of the 'exponent' parameter.
-//
-//	numeric value = int64 X 10^exponent
-//
-// Input parameter 'uint64Num' is of type uint64.
-//
-// Input parameter 'exponent' is of type int.
-//
-// Usage:
-// ------
-// This method is designed to be used in conjunction with the NumStrDto{}
-// syntax thereby allowing NumStrDto type creation and initialization in
-// one step.
-//
-//		nDto := new(NumStrDto).NewUint64Exponent(123456, -3)
-//	 -- nDto is now equal to "123.456", precision = 3
-//
-//		nDto := new(NumStrDto).NewUint64Exponent(123456, 3)
-//	 -- nDto is now equal to "123456.000", precision = 3
-//
-// Examples:
-// ---------
-//
-//	  uint64Num		exponent			NumStrDto Result
-//		 123456		 		  -3							123.456
-//		 123456		 		   3							123456.000
-//	  123456          0              123456
-func (nDto *NumStrDto) NewUint64Exponent(uint64Num uint64, exponent int) NumStrDto {
-
-  ePrefix := "NumStrDto.NewUint64Exponent() "
-  numStr := strconv.FormatUint(uint64Num, 10)
-
-  if exponent > 0 {
-    for i := 0; i < exponent; i++ {
-      numStr += "0"
-    }
-  }
-
-  if exponent < 0 {
-    exponent = exponent * -1
-  }
-
-  var n2 NumStrDto
+  var ePrefix *ePref.ErrPrefixDto
   var err error
 
-  if exponent == 0 {
-    n2, err = new(NumStrDto).NewNumStr(numStr)
-    // This should never produce an error.
-    if err != nil {
-      sErr := fmt.Sprintf(ePrefix+
-        "Fatal Error returned by new(NumStrDto).NewNumStr(numStr). "+
-        "numStr='%v' uint64Num='%v' Error='%v'",
-        numStr, uint64Num, err.Error())
-      panic(sErr)
-    }
+  ePrefix,
+    err = ePref.ErrPrefixDto{}.NewIEmpty(
+    nil,
+    "NumStrDto.NewUint64",
+    "")
 
-  } else {
-    n2, err = nDto.ShiftPrecisionLeft(numStr, uint(exponent))
-    // This should never produce an error.
-    if err != nil {
-      sErr := fmt.Sprintf(ePrefix+
-        "Fatal Error returned by nDto.ShiftPrecisionLeft("+
-        "numStr, uint(exponent)). "+
-        "numStr='%v' uint64Num='%v' exponent='%v' Error='%v'",
-        numStr, uint64Num, exponent, err.Error())
-      panic(sErr)
-    }
-
+  if err != nil {
+    return NumStrDto{}, err
   }
 
-  n2.SetNumericSeparatorsDto(nDto.GetNumericSeparatorsDto())
+  numSeps, err := new(numStrDtoAtom).getNumericSeparatorsDto(
+    nDto, ePrefix.XCpy("nDto -> numSeps"))
 
-  return n2
+  if err != nil {
+    return NumStrDto{},
+      &FuncReturnError{
+        ErrPrefix: ePrefix.String(),
+        ReturnFunc: "numSeps, err := new(numStrDtoAtom).getNumericSeparatorsDto(\n" +
+          "  nDto, ePrefix.XCpy(\"nDto -> numSeps\"))",
+        ErrContext: "Error extracting Numeric Separators from current NumStrDto instance.",
+        ErrMessage: err.Error(),
+      }
+  }
+
+  return new(numStrDtoMolecule).newUint64(
+    numSeps, uint64Num, precision, ePrefix)
+}
+
+// NewUint64Exponent
+//
+//  Returns a new NumStrDto instance. The numeric value for this
+//  new NumStrDto is set using an uint64 value multiplied by 10
+//  raised to the power of the 'exponent' parameter.
+//
+//           numeric value = uint64Num X 10^exponent
+//
+//	Usage
+//	=====
+//
+//	  nDto := new(NumStrDto).NewIntExponent(uint64(123456), -3)
+//	     nDto is now equal to "123.456", precision = 3
+//
+//	  nDto := new(NumStrDto).NewIntExponent(uint64(123456), 3)
+//	     nDto is now equal to "123456.000", precision = 3
+//
+//	Examples
+//	========
+//
+//	intNum        exponent        NumStrDto Result
+//
+//	123456          -3                123.456
+//	123456           3                123456.000
+//	123456           0                123456
+//
+//	Numeric Separators
+//	==================
+//
+//	Numeric Separators define the Decimal Separator character,
+//	Thousands Separator character, and Currency Symbol character.
+//	These separator characters serve two purposes. First they are
+//	used to format and display numeric values as number strings.
+//	Second, they are also used to parse number strings and
+//	convert them into numeric values.
+//
+//	The final NumStrDto result returned by this method will be
+//	configured with the Numeric Separators copied from the current
+//	NumStrDto instance ('nDto'). If these Numeric Separators prove
+//	to be invalid, an error will be returned.
+func (nDto *NumStrDto) NewUint64Exponent(uint64Num uint64, exponent int) (NumStrDto, error) {
+
+  var ePrefix *ePref.ErrPrefixDto
+  var err error
+
+  ePrefix,
+    err = ePref.ErrPrefixDto{}.NewIEmpty(
+    nil,
+    "NumStrDto.NewUint64Exponent",
+    "")
+
+  if err != nil {
+    return NumStrDto{}, err
+  }
+
+  numSeps, err := new(numStrDtoAtom).getNumericSeparatorsDto(
+    nDto, ePrefix.XCpy("nDto -> numSeps"))
+
+  if err != nil {
+    return NumStrDto{},
+      &FuncReturnError{
+        ErrPrefix: ePrefix.String(),
+        ReturnFunc: "numSeps, err := new(numStrDtoAtom).getNumericSeparatorsDto(\n" +
+          "  nDto, ePrefix.XCpy(\"nDto -> numSeps\"))",
+        ErrContext: "Error extracting Numeric Separators from current NumStrDto instance.",
+        ErrMessage: err.Error(),
+      }
+  }
+
+  return new(numStrDtoMolecule).newUint64Exponent(
+    numSeps, uint64Num, exponent, ePrefix)
 }
 
 // NewRational - Creates a new NumStrDto instance from a rational number and a precision
