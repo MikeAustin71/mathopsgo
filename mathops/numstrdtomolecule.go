@@ -1262,14 +1262,14 @@ func (nStrDtoMolecule *numStrDtoMolecule) newInt64Exponent(
 //	parentheses ('()').
 //
 //	The input parameter 'numSeps' contains numeric	separators
-//	(decimal separator, thousands separator and currency	symbol)
+//	(decimal separator, thousands separator and currency symbol)
 //	which will be used to parse the number string.
 //
 //	The numeric separators contained in inputparameter 'numSeps'
 //	will be used to parse the number string and configured the
 //	returned NumStrDto instance.
 func (nStrDtoMolecule *numStrDtoMolecule) newNumStrWithNumSeps(
-	numStr string,
+	signedNumStr string,
 	numStrNumSeps IGetNumSeparators,
 	errPrefDto *ePref.ErrPrefixDto) (NumStrDto, error) {
 
@@ -1290,7 +1290,7 @@ func (nStrDtoMolecule *numStrDtoMolecule) newNumStrWithNumSeps(
 		return NumStrDto{}, err
 	}
 
-	if len(numStr) == 0 {
+	if len(signedNumStr) == 0 {
 
 		return NumStrDto{},
 			&FuncReturnError{
@@ -1359,7 +1359,7 @@ func (nStrDtoMolecule *numStrDtoMolecule) newNumStrWithNumSeps(
 
 	//n2, err := n.ParseNumStr(numStr)
 	n2, err := new(numStrDtoQuark).parseNumStr(
-		*inputNumSeps, numStr, ePrefix)
+		*inputNumSeps, signedNumStr, ePrefix)
 
 	if err != nil {
 
@@ -1367,9 +1367,9 @@ func (nStrDtoMolecule *numStrDtoMolecule) newNumStrWithNumSeps(
 			&FuncReturnError{
 				ErrPrefix: ePrefix.String(),
 				ReturnFunc: "n2, err := new(numStrDtoQuark).parseNumStr(\n" +
-					"*inputNumSeps, numStr, ePrefix)",
+					"*inputNumSeps, signedNumStr, ePrefix)",
 				ErrContext: fmt.Sprintf("inputNumSeps= '%s'\n"+
-					"numStr= '%s'", inputNumSeps.String(), numStr),
+					"signedNumStr= '%s'", inputNumSeps.String(), signedNumStr),
 				ErrMessage: err.Error(),
 			}
 	}
@@ -1387,7 +1387,6 @@ func (nStrDtoMolecule *numStrDtoMolecule) newNumStrWithNumSeps(
 					outputNumSeps.String()),
 				ErrMessage: err.Error(),
 			}
-
 	}
 
 	err = new(numStrDtoElectron).isValidNumStrDto(
@@ -1937,4 +1936,290 @@ func (nStrDtoMolecule *numStrDtoMolecule) newZeroNumStrDto(
 	}
 
 	return n2Dto
+}
+
+// scaleNumStr
+//
+//	Shifts the position of the decimal point left or right
+//	depending on the value of input parameter 'scaleMode'.
+//
+//	Number Strings
+//	==============
+//
+//	Number strings are strings of numeric digits. These digits
+//	must be formatted in a way that facilitates conversion to a
+//	corresponding numeric value.
+//
+//	Number String Negative Values
+//	=============================
+//
+//	The 'numStr' number string parameter passed to this method must
+//	consist of a string of numeric digits representing a numeric
+//	value. A leading minus sign (-), or surrounding parentheses
+//	'()', may be included in this number string to indicate a
+//	negative numeric value.
+//
+//	Fractional Digits in Number Strings
+//	===================================
+//
+//	The 'numStr' number string of numeric digits may also include
+//	a delimiting decimal separator to identify fractional digits to
+//	the right of the decimal separator. In the USA, the default
+//	decimal separator is the period character ('.'). The actual
+//	decimal separator character used to parse the 'numStr' number
+//	string is determined by the Numeric Separators parameter,
+//	'numStrNumSeps'.
+//
+//	Input Parameters
+//	================
+//
+//	signedNumStr					 string
+//	  This parameter should be formatted as a string of numeric
+//	  digits as outlined above. Using the Numeric
+//	  Separators provided by input parameter 'numStrNumSeps',
+//	  this method will parse the 'numStr' number string and
+//	  convert it to a numeric value which will be returned as a
+//	  NumStrDto.
+//
+//	numStrNumSeps            IGetNumSeparators
+//	  The IGetNumSeparators interface type gives users the option
+//	  of submitting one of two different concrete types.
+//
+//	  User may choose to submit a type NumericSeparatorDto
+//	  consisting of one set of Numeric Separators. These Numeric
+//	  Separators will be used to both parse the number string
+//	  provided by input parameter 'signedNumStr' and format the
+//	  returned NumStrDto type containing the converted numeric
+//	  value.
+//
+//	  The second alternative allows the user to submit a type
+//	  NumericSeparatorPairDto for this parameter. This type
+//	  encapsulates two separate instances of NumericSeparatorDto.
+//	  The 'input' NumericSeparatorDto instance will be used to
+//	  parse number string 'signedNumStr' while the 'output'
+//	  instance will be used to format the numeric value contained
+//	  in the returned instance of NumStrDto.
+//
+//	shiftPrecision           uint
+//	  The number of positions which the decimal point will be
+//	  shifted. If 'shiftPrecision' is Equal to zero, no action will
+//	  be taken, no error will be issued and the original
+//	  'signedNumStr' will be configured in the returned NumStrDto
+//	  instance.
+//
+//	scaleMode                PrecisionScaleMode
+//	  A constant with one of two Scale Mode values.
+//
+//	  SCALEPRECISIONLEFT -  Shifts the decimal point from its
+//	                        current position to the left.
+//
+//	  SCALEPRECISIONRIGHT - Shifts the decimal point from its
+//	                        current position to the right.
+//
+//	  Note: See Methods NumStrDto.ShiftPrecisionRight() and
+//	  NumStrDto.ShiftPrecisionLeft() for additional information.
+//
+//	Return Values
+//	=============
+//
+//	NumStrDto
+//	  This new NumStrDto instance contains the numeric value
+//	  extracted from the 'signedNumStr' and transformed as
+//	 described above.
+//
+//	error
+//	  If errors are encountered during processng, this returned
+//	  error object will be configured with an appropriate error
+//	  message.
+func (nStrDtoMolecule *numStrDtoMolecule) scaleNumStr(
+	signedNumStr string,
+	numStrNumSeps IGetNumSeparators,
+	shiftPrecision uint,
+	scaleMode PrecisionScaleMode,
+	errPrefDto *ePref.ErrPrefixDto) (NumStrDto, error) {
+
+	nStrDtoMolecule.lock.Lock()
+
+	defer nStrDtoMolecule.lock.Unlock()
+
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
+
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
+		errPrefDto,
+		"numStrDtoMolecule.scaleNumStr",
+		"")
+
+	if err != nil {
+		return NumStrDto{}, err
+	}
+
+	if len(signedNumStr) == 0 {
+
+		return NumStrDto{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "",
+				ErrContext: "len(numStr) == 0",
+				ErrMessage: "Error: Input parameter 'signedNumStr' is INVALID!\n" +
+					"'signedNumStr' is an empty, zero length string.",
+			}
+
+	}
+
+	if new(MathProcessUtility).DoesUintExceedMax32BitInt(shiftPrecision) {
+
+		return NumStrDto{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "",
+				ErrContext: "",
+				ErrMessage: "Error: Input parameter 'shiftPrecision' is INVALID!\n" +
+					"'precision' Exceeds the maximum allowable limt of 2,147,483,647.\n" +
+					fmt.Sprintf("shiftPrecision= '%v'", shiftPrecision),
+			}
+	}
+
+	inputNumSeps, err := numStrNumSeps.GetInputSeparators()
+
+	if err != nil {
+		return NumStrDto{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "inputNumSeps, err = numStrNumSeps.GetInputSeparators()",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+
+	}
+
+	err = inputNumSeps.IsValid(ePrefix.XCpy("Validating 'inputNumSeps'").String())
+
+	if err != nil {
+
+		return NumStrDto{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "err = inputNumSeps.IsValid(ePrefix.XCpy(\"Validating 'inputNumSeps'\").String())",
+				ErrContext: "Error: Numeric Separators input paramter ('inputNumSeps') is INVALID!\n" +
+					"'inputNumSeps' FAILED Validation Tests.",
+				ErrMessage: err.Error(),
+			}
+	}
+
+	outputNumSeps, err := numStrNumSeps.GetOutputSeparators()
+
+	if err != nil {
+		return NumStrDto{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "outputNumSeps, err = numStrNumSeps.GetOutputSeparators()",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
+
+	err = outputNumSeps.IsValid(ePrefix.XCpy("Validating 'outputNumSeps'").String())
+
+	if err != nil {
+
+		return NumStrDto{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "err = outputNumSeps.IsValid(ePrefix.XCpy(\"Validating 'outputNumSeps'\").String())",
+				ErrContext: "Error: Numeric Separators input paramter ('outputNumSeps') is INVALID!\n" +
+					"'outputNumSeps' FAILED Validation Tests.",
+				ErrMessage: err.Error(),
+			}
+	}
+
+	n2Dto := NumStrDto{}
+
+	if scaleMode == SCALEPRECISIONLEFT {
+
+		// n2Dto, err = nDto.ShiftPrecisionLeft(signedNumStr, shiftPrecision)
+		n2Dto, err = new(numStrDtoTau).shiftPrecisionLeft(
+			*inputNumSeps, signedNumStr, shiftPrecision, ePrefix)
+
+		if err != nil {
+			return NumStrDto{},
+				&FuncReturnError{
+					ErrPrefix: ePrefix.String(),
+					ReturnFunc: "n2Dto, err = new(numStrDtoTau).shiftPrecisionLeft(\n" +
+						"*inputNumSeps, signedNumStr, shiftPrecision, ePrefix)",
+					ErrContext: fmt.Sprintf("inputNumSeps= '%s'\n"+
+						"signedNumStr= '%s'\n"+
+						"shiftPrecision= '%v'\n"+
+						"Scale Mode= SCALEPRECISIONLEFT",
+						inputNumSeps.String(), signedNumStr, shiftPrecision),
+					ErrMessage: err.Error(),
+				}
+		}
+
+	} else if scaleMode == SCALEPRECISIONRIGHT {
+
+		//n2Dto, err = nDto.ShiftPrecisionRight(signedNumStr, shiftPrecision)
+		n2Dto, err = new(numStrDtoTau).shiftPrecisionRight(
+			*inputNumSeps, signedNumStr, shiftPrecision, ePrefix)
+
+		if err != nil {
+			return NumStrDto{},
+				&FuncReturnError{
+					ErrPrefix: ePrefix.String(),
+					ReturnFunc: "n2Dto, err = new(numStrDtoTau).shiftPrecisionRight(\n" +
+						"*inputNumSeps, signedNumStr, shiftPrecision, ePrefix)",
+					ErrContext: fmt.Sprintf("inputNumSeps= '%s'\n"+
+						"signedNumStr= '%s'\n"+
+						"shiftPrecision= '%v'\n"+
+						"Scale Mode= SCALEPRECISIONRIGHT",
+						inputNumSeps.String(), signedNumStr, shiftPrecision),
+					ErrMessage: err.Error(),
+				}
+		}
+
+	} else {
+
+		return NumStrDto{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "",
+				ErrContext: "",
+				ErrMessage: "Error! Scale Mode is INVALID!\n" +
+					"Scale Mode is NOT Equal to SCALEPRECISIONLEFT or SCALEPRECISIONRIGHT.",
+			}
+	}
+
+	err = new(numStrDtoAtom).setNumericSeparatorsDto(
+		&n2Dto, *outputNumSeps, ePrefix.XCpy("outputNumSeps->n2Dto"))
+
+	if err != nil {
+		return NumStrDto{},
+			&FuncReturnError{
+				ErrPrefix: ePrefix.String(),
+				ReturnFunc: "err = new(numStrDtoAtom).setNumericSeparatorsDto(\n" +
+					"&n2Dto, *outputNumSeps, ePrefix)",
+				ErrContext: fmt.Sprintf("outputNumSeps= '%s'\n",
+					outputNumSeps.String()),
+				ErrMessage: err.Error(),
+			}
+	}
+
+	err = new(numStrDtoElectron).isValidNumStrDto(
+		&n2Dto, ePrefix.XCpy("Validating Final Result 'n2Dto'"))
+
+	if err != nil {
+
+		return NumStrDto{},
+			&FuncReturnError{
+				ErrPrefix: ePrefix.String(),
+				ReturnFunc: "err = new(numStrDtoElectron).isValidNumStrDto(\n" +
+					"  &n2Dto, ePrefix)",
+				ErrContext: "Final Calculated Result NumStrDto 'n2Dto' is INVALID!\n" +
+					"'n2Dto' FAILED Validation Tests.",
+				ErrMessage: err.Error(),
+			}
+	}
+
+	return n2Dto, nil
 }

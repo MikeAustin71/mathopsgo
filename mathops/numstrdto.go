@@ -4339,70 +4339,90 @@ func (nDto *NumStrDto) NewRational(bigRat *big.Rat, precision uint) (NumStrDto, 
 
 // NewNumStr
 //
-//		Used to create a populated NumStrDto instance based on a valid
-//		number string input parameter.
+//	Used to create a populated NumStrDto instance based on a valid
+//	number string input parameter ('signedNumStr').
 //
-//		This method assumes that the input parameter 'numStr' is a string
-//		of numeric digits which may be delimited by default USA numeric
-//		separators. Default USA numeric separators are defined as:
+//	Number Strings
+//	==============
 //
-//		  decimal separator = '.'
-//		  thousands separator = ','
-//		  currency symbol = '$'
+//	Number strings are strings of numeric digits. These digits
+//	must be formatted in a way that facilitates conversion to a
+//	corresponding numeric value.
 //
-//		If the subject 'numStr' employs other national or cultural numeric
-//		separators, see method NumStrDto.NewNumStrWithNumSeps(), below.
+//	Number String Negative Values
+//	=============================
 //
-//		Usage
-//		=====
+//	The 'signedNumStr' number string parameter passed to this
+//	method must consist of a string of numeric digits representing
+//	a numeric value. A leading minus sign (-), or surrounding
+//	parentheses '()', may be included in this number string to
+//	indicate a negative numeric value.
 //
-//		n, err := new(NumStrDto).NewNumStr("123.456")
+//	Fractional Digits in Number Strings
+//	===================================
 //
-//		n, err := new(NumStrDto).NewNumStr("-123.456")
+//	The 'signedNumStr' number string of numeric digits may also
+//	include a delimiting decimal separator to identify fractional
+//	digits to the right of the decimal separator. In the USA, the
+//	default decimal separator is the period character ('.'). The
+//	actual decimal separator character used to parse the
+//	'signedNumStr' number string is determined by the Numeric
+//	Separators configured for the current instance of NumStrDto
+//	('nDto').
 //
-//		Numeric Separators
-//		==================
+//	If the subject 'signedNumStr' employs other national or cultural
+//	numeric separators, see method NumStrDto.NewNumStrWithNumSeps(),
+//	below.
 //
-//		Numeric Separators define the Decimal Separator character,
-//		Thousands Separator character, and Currency Symbol character.
-//		These separator characters serve two purposes. First they are
-//		used to format and display numeric values as number strings.
-//		Second, they are also used to parse number strings and
-//		convert them into numeric values.
+//	Usage
+//	=====
 //
-//		The final NumStrDto result returned by this method will be
-//		configured with the Numeric Separators copied from the current
-//		NumStrDto instance ('nDto'). If these Numeric Separators prove
-//		to be invalid, an error will be returned.
+//	n, err := new(NumStrDto).NewNumStr("123.456")
 //
-//	 The Numeric Separators extracted from the current instance of
-//	 NumStrDto will serve two functions. First, they will be used
-//	 to parse input parameter 'numStr' and second, they will be used
-//	 to configure the returned instance of NumStrDto.
+//	n, err := new(NumStrDto).NewNumStr("-123.456")
 //
-//		Input Parameters
-//		================
+//	Numeric Separators
+//	==================
 //
-//		numStr                   string
-//		  This parameter should be formatted as a string of numeric
-//		  digits as outlined above. Using the Numeric
-//		  Separators provided by input parameter 'numStrNumSeps',
-//		  this method will parse the 'numStr' number string and
-//		  convert it to a numeric value which will be returned as a
-//		  NumStrDto.
+//	Numeric Separators define the Decimal Separator character,
+//	Thousands Separator character, and Currency Symbol character.
+//	These separator characters serve two purposes. First they are
+//	used to format and display numeric values as number strings.
+//	Second, they are also used to parse number strings and
+//	convert them into numeric values.
 //
-//		Return Values
-//		=============
+//	The Numeric Separators extracted from the current instance of
+//	NumStrDto will serve two functions. First, they will be used
+//	to parse input parameter 'signedNumStr' and second, they will
+//	be used to configure the returned instance of NumStrDto.
 //
-//		NumStrDto
-//		  This new NumStrDto instance contains the converted numeric
-//		  value of input parameter 'numStr'.
+//	The final NumStrDto result returned by this method will be
+//	configured with the Numeric Separators copied from the current
+//	NumStrDto instance ('nDto'). If these Numeric Separators prove
+//	to be invalid, an error will be returned.
 //
-//		error
-//		  If errors are encountered during processng, this returned
-//		  error object will be configured with an appropriate error
-//		  message.
-func (nDto *NumStrDto) NewNumStr(numStr string) (NumStrDto, error) {
+//	Input Parameters
+//	================
+//
+//	signedNumStr           string
+//	  This parameter should be formatted as a string of numeric
+//	  digits as outlined above. Using the Numeric Separators
+//	  provided by the current instance of NumStrDto, this method
+//	  will parse this number string and convert it to a numeric
+//	  value which will be returned as a new instance of NumStrDto.
+//
+//	Return Values
+//	=============
+//
+//	NumStrDto
+//	  This new NumStrDto instance contains the converted numeric
+//	  value of input parameter 'signedNumStr'.
+//
+//	error
+//	  If errors are encountered during processng, this returned
+//	  error object will be configured with an appropriate error
+//	  message.
+func (nDto *NumStrDto) NewNumStr(signedNumStr string) (NumStrDto, error) {
 
 	var ePrefix *ePref.ErrPrefixDto
 	var err error
@@ -4445,7 +4465,7 @@ func (nDto *NumStrDto) NewNumStr(numStr string) (NumStrDto, error) {
 	}
 
 	return new(numStrDtoMolecule).newNumStrWithNumSeps(
-		numStr, &numSeps, ePrefix)
+		signedNumStr, &numSeps, ePrefix)
 }
 
 // NewNumStrWithNumSeps
@@ -4463,30 +4483,30 @@ func (nDto *NumStrDto) NewNumStr(numStr string) (NumStrDto, error) {
 //	Number String Negative Values
 //	=============================
 //
-//	The 'numStr' number string parameter passed to this method must
-//	consist of a string of numeric digits representing a numeric
-//	value. A leading minus sign (-), or surrounding parentheses
-//	'()', may be included in this number string to indicate a
-//	negative numeric value.
+//	The 'signedNumStr' number string parameter passed to this
+//	method must consist of a string of numeric digits representing
+//	a numeric value. A leading minus sign (-), or surrounding
+//	parentheses '()', may be included in this number string to
+//	indicate a negative numeric value.
 //
 //	Fractional Digits in Number Strings
 //	===================================
 //
-//	The 'numStr' number string of numeric digits may also include
-//	a delimiting decimal separator to identify fractional digits to
-//	the right of the decimal separator. In the USA, the default
-//	decimal separator is the period character ('.'). The actual
-//	decimal separator character used to parse the 'numStr' number
-//	string is determined by the Numeric Separators parameter,
-//	'numStrNumSeps'.
+//	The 'signedNumStr' number string of numeric digits may also
+//	include a delimiting decimal separator to identify fractional
+//	digits to the right of the decimal separator. In the USA, the
+//	default decimal separator is the period character ('.'). The
+//	actual decimal separator character used to parse the
+//	'signedNumStr' number string is determined by the Numeric
+//	Separators input parameter, 'numStrNumSeps'.
 //
-//	The input parameter 'numSeps' contains numeric	separators
+//	The input parameter 'numStrNumSeps' contains numeric separators
 //	(decimal separator, thousands separator and currency symbol)
 //	which will be used to parse the number string.
 //
-//	The numeric separators contained in inputparameter 'numSeps'
-//	will be used to parse the number string and configured the
-//	returned NumStrDto instance.
+//	The numeric separators contained in input parameter
+//	'numStrNumSeps' will also be used to configure the	returned
+//	NumStrDto instance.
 //
 //	Numeric Separators
 //	==================
@@ -4496,27 +4516,27 @@ func (nDto *NumStrDto) NewNumStr(numStr string) (NumStrDto, error) {
 //	These separator characters serve two purposes. First they are
 //	used to format and display numeric values as number strings.
 //	Second, they are also used to parse number strings and convert
-//	them into numeric values. Number string 'numStr' will be parsed
-//	and converted to a numeric value based on the Numeric
+//	them into numeric values. Number string 'signedNumStr' will be
+//	parsed and converted to a numeric value based on the Numeric
 //	Separators provided by input parameter, 'numStrNumSeps'.
 //
 //	Numeric Separator characters are typically encapsulated in a
 //	type NumericSeparatorDto.
 //
 //	Input parameter 'numStrNumSeps' is of type IGetNumSeparators.
-//	This interface type allows users to submit one of two types
-//	for this parameter, a type NumericSeparatorDto instance or
-//	a type NumericSeparatorPairDto.
+//	This interface type allows users to submit one of two concrete
+//	types for this parameter, a type NumericSeparatorDto instance
+//	or a type NumericSeparatorPairDto.
 //
 //	If a type NumericSeparatorDto is submitted, the encapsulated
 //	Numeric Separators will be used both to parse the number string
-//	passed through input parameter 'numStr' and to format the
-//	returned NumStrDto numeric value.
+//	passed through input parameter 'signedNumStr' and to format the
+//	returned NumStrDto instance.
 //
 //	If a type NumericSeparatorPairDto is submitted for input
 //	parameter 'numStrNumSeps', separate sets of Numeric Separators
-//	will be used to parse the number string ('numStr') and format
-//	the returned 'NumStrDto' numeric value. Type
+//	will be used to parse the number string ('signedNumStr') and
+//	format the returned 'NumStrDto' numeric value. Type
 //	NumericSeparatorPairDto contains two separate, embedded
 //	instances of NumericSeparatorDto. The 'input'
 //	NumericSeparatorDto will be used to parse the number string
@@ -4537,30 +4557,31 @@ func (nDto *NumStrDto) NewNumStr(numStr string) (NumStrDto, error) {
 //	Input Parameters
 //	================
 //
-//	numStr                   string
+//	signedNumStr             string
 //	  This parameter should be formatted as a string of numeric
-//	  digits as outlined above. Using the Numeric
-//	  Separators provided by input parameter 'numStrNumSeps',
-//	  this method will parse the 'numStr' number string and
-//	  convert it to a numeric value which will be returned as a
+//	  digits as outlined above. Using the Numeric Separators
+//	  provided by input parameter 'numStrNumSeps', this method will
+//	  parse the 'signedNumStr' number string and convert it to a
+//	  numeric value which will be returned as an instance of
 //	  NumStrDto.
 //
 //	numStrNumSeps            IGetNumSeparators
 //	  The IGetNumSeparators interface type gives users the option
 //	  of submitting one of two different concrete types.
 //
-//	  User may choose to submit a type NumericSeparatorDto
+//	  Users may choose to submit a type NumericSeparatorDto
 //	  consisting of one set of Numeric Separators. These Numeric
-//	  Separators will be used to both parse the number strings
-//	  provided by input parameter 'numStr' and format the returned
-//	  NumStrDto type containing the converted numeric value.
+//	  Separators will be used to both parse the number string
+//	  provided by input parameter 'nusignedNumStrmStr' and format
+//	  the returned NumStrDto type containing the converted numeric
+//	  value.
 //
-//	  The second alternatives allows the user to submit a type
+//	  The second alternative allows the user to submit a type
 //	  NumericSeparatorPairDto for this parameter. This type
 //	  encapsulates two separate instances of NumericSeparatorDto.
 //	  The 'input' NumericSeparatorDto instance will be used to
-//	  parse number string 'numStr' while the 'output' instance
-//	  will be used to format the numeric value returned as a type
+//	  parse number string 'signedNumStr' while the 'output'
+//	  instance will be configued in the returned instance of
 //	  NumStrDto.
 //
 //	Return Values
@@ -4568,14 +4589,14 @@ func (nDto *NumStrDto) NewNumStr(numStr string) (NumStrDto, error) {
 //
 //	NumStrDto
 //	  This new NumStrDto instance contains the converted numeric
-//	  value of input parameter 'numStr'.
+//	  value of input parameter 'signedNumStr'.
 //
 //	error
 //	  If errors are encountered during processng, this returned
 //	  error object will be configured with an appropriate error
 //	  message.
 func (nDto *NumStrDto) NewNumStrWithNumSeps(
-	numStr string,
+	signedNumStr string,
 	numStrNumSeps IGetNumSeparators) (NumStrDto, error) {
 
 	var ePrefix *ePref.ErrPrefixDto
@@ -4592,7 +4613,7 @@ func (nDto *NumStrDto) NewNumStrWithNumSeps(
 	}
 
 	return new(numStrDtoMolecule).newNumStrWithNumSeps(
-		numStr, numStrNumSeps, ePrefix)
+		signedNumStr, numStrNumSeps, ePrefix)
 }
 
 // New
@@ -5112,80 +5133,166 @@ func (nDto *NumStrDto) ParseNumStr(str string) (NumStrDto, error) {
 		ePrefix)
 }
 
-// ScaleNumStr - Shifts the position of the decimal point left or right depending
-// on the value of input parameter 'scaleMode'.
+// ScaleNumStr
 //
-// Input Parameters
-// ================
+//	Shifts the position of the decimal point left or right
+//	depending on the value of input parameter 'scaleMode'.
 //
-// signedNumStr					 string -		A valid Signed Number String
+//	Number Strings
+//	==============
 //
-// shiftPrecision 	 			 uint -		The number of positions which the decimal point
+//	Number strings are strings of numeric digits. These digits
+//	must be formatted in a way that facilitates conversion to a
+//	corresponding numeric value.
 //
-//	will be shifted. If 'shiftPrecision' is Equal to
-//	zero, no action will be taken, no error will be
-//	issued and the original signedNumStr will be
-//	returned.
+//	Number String Negative Values
+//	=============================
 //
-// scaleMode	PrecisionScaleMode -	A constant with one of two Scale Mode values.
+//	The 'signedNumStr' number string parameter passed to this method must
+//	consist of a string of numeric digits representing a numeric
+//	value. A leading minus sign (-), or surrounding parentheses
+//	'()', may be included in this number string to indicate a
+//	negative numeric value.
 //
-//	SCALEPRECISIONLEFT - 	Shifts the decimal point
-//												from its current position
-//												to the left.
+//	Fractional Digits in Number Strings
+//	===================================
 //
-//	SCALEPRECISIONRIGHT - Shifts the decimal point
-//												from its current position
-//												to the right.
+//	The 'signedNumStr' number string of numeric digits may also
+//	include a delimiting decimal separator to identify fractional
+//	digits to the right of the decimal separator. In the USA, the
+//	default decimal separator is the period character ('.'). The
+//	actual decimal separator character used to parse the
+//	'signedNumStr' number string is determined by the Numeric
+//	Separators input parameter, 'numStrNumSeps'.
 //
-// Note: 	See Methods NumStrDto.ShiftPrecisionRight() and NumStrDto.ShiftPrecisionLeft()
+//	Numeric Separators
+//	==================
 //
-//	for additional information.
-func (nDto *NumStrDto) ScaleNumStr(signedNumStr string,
+//	Numeric Separators define the Decimal Separator character,
+//	Thousands Separator character, and Currency Symbol character.
+//	These separator characters serve two purposes. First they are
+//	used to format and display numeric values as number strings.
+//	Second, they are also used to parse number strings and convert
+//	them into numeric values. Number string 'signedNumStr' will be
+//	parsed and converted to a numeric value based on the Numeric
+//	Separators provided by input parameter, 'numStrNumSeps'.
+//
+//	Numeric Separator characters are typically encapsulated in a
+//	type NumericSeparatorDto.
+//
+//	Input parameter 'numStrNumSeps' is of type IGetNumSeparators.
+//	This interface type allows users to submit one of two concrete
+//	types for this parameter, a type NumericSeparatorDto instance
+//	or a type NumericSeparatorPairDto.
+//
+//	If a type NumericSeparatorDto is submitted, the encapsulated
+//	Numeric Separators will be used both to parse the number string
+//	passed through input parameter 'signedNumStr' and to format the
+//	returned NumStrDto instance.
+//
+//	If a type NumericSeparatorPairDto is submitted for input
+//	parameter 'numStrNumSeps', separate sets of Numeric Separators
+//	will be used to parse the number string ('signedNumStr') and
+//	format the returned 'NumStrDto' numeric value. Type
+//	NumericSeparatorPairDto contains two separate, embedded
+//	instances of NumericSeparatorDto. The 'input'
+//	NumericSeparatorDto will be used to parse the number string
+//	while the 'output' NumericSeparatorDto will be used to format
+//	the returned NumStrDto numeric value. The presence of two
+//	separate sets of Numeric Separators allows users to parse a
+//	number string formatted in one national number system while
+//	formatting the returned value in a different national number
+//	systems.
+//
+//	  Example:
+//	    Input Format  = USA
+//	    Output Format = European Union
+//
+//	If parameter 'numStrNumSeps' proves to be invalid, an error
+//	will be returned.
+//
+//	Input Parameters
+//	================
+//
+//	signedNumStr					 string
+//	  This parameter should be formatted as a string of numeric
+//	  digits as outlined above. Using the Numeric
+//	  Separators provided by input parameter 'numStrNumSeps',
+//	  this method will parse the 'signedNumStr' number string and
+//	  convert it to a numeric value which will be returned as an
+//	  instance of NumStrDto.
+//
+//	numStrNumSeps            IGetNumSeparators
+//	  The IGetNumSeparators interface type gives users the option
+//	  of submitting one of two different concrete types.
+//
+//	  Users may choose to submit a type NumericSeparatorDto
+//	  consisting of one set of Numeric Separators. These Numeric
+//	  Separators will be used to both parse the number string
+//	  provided by input parameter 'signedNumStr' and format the
+//	  returned NumStrDto type containing the converted numeric
+//	  value.
+//
+//	  The second alternative allows users to submit a type
+//	  NumericSeparatorPairDto for this parameter. This type
+//	  encapsulates two separate instances of NumericSeparatorDto.
+//	  The 'input' NumericSeparatorDto instance will be used to
+//	  parse number string 'signedNumStr' while the 'output'
+//	  instance will be configued in the returned instance of
+//	  NumStrDto.
+//
+//	shiftPrecision           uint
+//	  The number of positions which the decimal point will be
+//	  shifted. If 'shiftPrecision' is Equal to zero, no action will
+//	  be taken, no error will be issued and the original
+//	  'signedNumStr' will be configured in the returned NumStrDto
+//	  instance.
+//
+//	scaleMode                PrecisionScaleMode
+//	  A constant with one of two Scale Mode values.
+//
+//	  SCALEPRECISIONLEFT -  Shifts the decimal point from its
+//	                        current position to the left.
+//
+//	  SCALEPRECISIONRIGHT - Shifts the decimal point from its
+//	                        current position to the right.
+//
+//	  Note: See Methods NumStrDto.ShiftPrecisionRight() and
+//	  NumStrDto.ShiftPrecisionLeft() for additional information.
+//
+//	Return Values
+//	=============
+//
+//	NumStrDto
+//	  This new NumStrDto instance contains the numeric value
+//	  extracted from the 'signedNumStr' and transformed as
+//	 described above.
+//
+//	error
+//	  If errors are encountered during processng, this returned
+//	  error object will be configured with an appropriate error
+//	  message.
+func (nDto *NumStrDto) ScaleNumStr(
+	signedNumStr string,
+	numStrNumSeps IGetNumSeparators,
 	shiftPrecision uint,
 	scaleMode PrecisionScaleMode) (NumStrDto, error) {
 
-	ePrefix := "NumStrDto.ScaleNumStr() "
-
-	n2Dto := NumStrDto{}
-
+	var ePrefix *ePref.ErrPrefixDto
 	var err error
 
-	if scaleMode == SCALEPRECISIONLEFT {
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"NumStrDto.ScaleNumStr",
+		"")
 
-		n2Dto, err = nDto.ShiftPrecisionLeft(signedNumStr, shiftPrecision)
-
-		if err != nil {
-			return NumStrDto{},
-				fmt.Errorf(ePrefix+
-					"Error returned from nDto.ShiftPrecisionLeft(signedNumStr, shiftPrecision) "+
-					"signedNumStr='%v' shiftPrecision='%v' scaleMode='%v' Error='%v' ",
-					signedNumStr, shiftPrecision, scaleMode.String(), err.Error())
-
-		}
-
-	} else if scaleMode == SCALEPRECISIONRIGHT {
-
-		n2Dto, err = nDto.ShiftPrecisionRight(signedNumStr, shiftPrecision)
-
-		if err != nil {
-			return NumStrDto{},
-				fmt.Errorf(ePrefix+
-					"Error returned from nDto.ShiftPrecisionRight(signedNumStr, shiftPrecision) "+
-					"signedNumStr='%v' shiftPrecision='%v' scaleMode='%v' Error='%v' ",
-					signedNumStr, shiftPrecision, scaleMode.String(), err.Error())
-		}
-
-	} else {
-
-		return NumStrDto{},
-			fmt.Errorf(ePrefix+
-				"Error! Scale Mode is INVALID! "+
-				"Scale Mode is NOT Equal to SCALEPRECISIONLEFT or SCALEPRECISIONRIGHT. scaleMode='%v' ",
-				scaleMode.String())
-
+	if err != nil {
+		return NumStrDto{}, err
 	}
 
-	return n2Dto, nil
+	return new(numStrDtoMolecule).scaleNumStr(
+		signedNumStr, numStrNumSeps, shiftPrecision, scaleMode, ePrefix)
 }
 
 // SetCurrencySymbol

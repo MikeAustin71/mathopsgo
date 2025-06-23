@@ -4555,9 +4555,9 @@ func (bNum *BigIntNum) NewNumStr(
 //	  The IGetNumSeparators interface type gives users the option
 //	  of submitting one of two different concrete types.
 //
-//	  User may choose to submit a type NumericSeparatorDto
+//	  Users may choose to submit a type NumericSeparatorDto
 //	  consisting of one set of Numeric Separators. These Numeric
-//	  Separators will be used to both parse the number strings
+//	  Separators will be used to both parse the number string
 //	  provided by input parameter 'numStr' and format the returned
 //	  BigIntNum type containing the converted numeric value.
 //
