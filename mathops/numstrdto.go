@@ -3398,58 +3398,91 @@ func (nDto *NumStrDto) NewInt64(i64 int64, precision uint) (NumStrDto, error) {
     numSeps, i64, precision, ePrefix)
 }
 
-// NewInt64Exponent - Returns a new NumStrDto instance. The numeric
-// value is set using an int64 value multiplied by 10 raised to the
-// power of the 'exponent' parameter.
+// NewInt64Exponent
 //
-//	numeric value = int64 X 10^exponent
+//	Returns a new NumStrDto instance. The numeric value is set
+//	using an int64 value multiplied by 10 raised to the power of
+//	the 'exponent' parameter.
 //
-// Input parameter 'int64Num' is of type int64.
+//	      numeric value = int64 X 10^exponent
 //
-// Input parameter 'exponent' is of type int.
-//
-// Usage:
-// ------
-// This method is designed to be used in conjunction with the NumStrDto{}
-// syntax thereby allowing NumStrDto type creation and initialization in
-// one step.
+//	Usage
+//	=====
 //
 //		nDto := new(NumStrDto).NewInt64Exponent(123456, -3)
-//	 -- nDto is now equal to "123.456", precision = 3
+//	     nDto is now equal to "123.456", precision = 3
 //
 //		nDto := new(NumStrDto).NewInt64Exponent(123456, 3)
-//	 -- decNum is now equal to "123456.000", precision = 3
+//	  nDto is now equal to "123456.000", precision = 3
 //
-// Examples:
-// ---------
+//	Examples
+//	========
 //
-//	  int64Num		 exponent			  	Decimal Result
-//		 123456		 		  -3							123.456
-//		 123456		 		   3							123456.000
-//	  123456          0              123456
-func (nDto *NumStrDto) NewInt64Exponent(int64Num int64, exponent int) NumStrDto {
+//	int64Num      exponent      Result
+//
+//	 123456         -3          123.456
+//	 123456          3          123456.000
+//	 123456          0          123456
+//
+//	Numeric Separators
+//	==================
+//
+//	Numeric Separators define the Decimal Separator character,
+//	Thousands Separator character, and Currency Symbol character.
+//	These separator characters serve two purposes. First they are
+//	used to format and display numeric values as number strings.
+//	Second, they are also used to parse number strings and
+//	convert them into numeric values.
+//
+//	The final NumStrDto result returned by this method will be
+//	configured with the Numeric Separators copied from the current
+//	NumStrDto instance ('nDto'). If these Numeric Separators prove
+//	to be invalid, an error will be returned.
+func (nDto *NumStrDto) NewInt64Exponent(int64Num int64, exponent int) (NumStrDto, error) {
 
-  numStr := strconv.FormatInt(int64Num, 10)
+  var ePrefix *ePref.ErrPrefixDto
+  var err error
 
-  if exponent > 0 {
-    for i := 0; i < exponent; i++ {
-      numStr += "0"
+  ePrefix,
+    err = ePref.ErrPrefixDto{}.NewIEmpty(
+    nil,
+    "NumStrDto.NewInt64Exponent",
+    "")
+
+  if err != nil {
+    return NumStrDto{}, err
+  }
+
+  numSeps, err := new(numStrDtoAtom).getNumericSeparatorsDto(
+    nDto, ePrefix.XCpy("nDto -> numSeps"))
+
+  if err != nil {
+
+    return NumStrDto{},
+      &FuncReturnError{
+        ErrPrefix: ePrefix.String(),
+        ReturnFunc: "numSeps, err := new(numStrDtoAtom).getNumericSeparatorsDto(\n" +
+          "nDto, ePrefix.XCpy(\"nDto -> numSeps\"))",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+  }
+
+  err = numSeps.IsValid(ePrefix.XCpy("Validating 'numSeps'").String())
+
+  if err != nil {
+
+    return NumStrDto{}, &FuncReturnError{
+      ErrPrefix:  ePrefix.String(),
+      ReturnFunc: "err = numSeps.IsValid(ePrefix.XCpy(\"Validating 'numSeps'\").String())",
+      ErrContext: "Error: The current instance of NumStrDto ('nDto') is INVALID!\n" +
+        "Numeric Separators from 'nDto' FAILED Validation Tests.",
+      ErrMessage: err.Error(),
     }
   }
 
-  if exponent < 0 {
-    exponent = exponent * -1
-  }
-
-  var n2 NumStrDto
-
-  if exponent == 0 {
-    n2, _ = new(NumStrDto).NewNumStr(numStr)
-  } else {
-    n2, _ = nDto.ShiftPrecisionLeft(numStr, uint(exponent))
-  }
-
-  return n2
+  return new(numStrDtoMolecule).newInt64Exponent(
+    numSeps, int64Num, exponent, ePrefix)
 }
 
 // NewUint - Creates a new NumStrDto instance from an uint and a

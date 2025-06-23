@@ -1037,6 +1037,125 @@ func (nStrDtoMolecule *numStrDtoMolecule) newInt64(
 	return n2, nil
 }
 
+// newInt64Exponent
+//
+//	Returns a new NumStrDto instance. The numeric value is set
+//	using an int64 value multiplied by 10 raised to the power of
+//	the 'exponent' parameter.
+//
+//	      numeric value = int64 X 10^exponent
+//
+//	Usage
+//	=====
+//
+//		nDto := new(NumStrDto).NewInt64Exponent(123456, -3)
+//	     nDto is now equal to "123.456", precision = 3
+//
+//		nDto := new(NumStrDto).NewInt64Exponent(123456, 3)
+//	  nDto is now equal to "123456.000", precision = 3
+//
+//	Examples
+//	========
+//
+//	int64Num      exponent      Result
+//
+//	 123456         -3          123.456
+//	 123456          3          123456.000
+//	 123456          0          123456
+func (nStrDtoMolecule *numStrDtoMolecule) newInt64Exponent(
+	numSeps NumericSeparatorDto,
+	int64Num int64,
+	exponent int,
+	errPrefDto *ePref.ErrPrefixDto) (NumStrDto, error) {
+
+	nStrDtoMolecule.lock.Lock()
+
+	defer nStrDtoMolecule.lock.Unlock()
+
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
+
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
+		errPrefDto,
+		"numStrDtoMolecule.newInt64Exponent()",
+		"")
+
+	if err != nil {
+		return NumStrDto{}, err
+	}
+
+	err = numSeps.IsValid(ePrefix.XCpy("Validating 'numSeps'").String())
+
+	if err != nil {
+
+		return NumStrDto{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "err = numSeps.IsValid(ePrefix.XCpy(\"Validating 'numSeps'\").String())",
+				ErrContext: "Error: Numeric Separators input paramter ('numSeps') is INVALID!\n" +
+					"'numSeps' FAILED Validation Tests.",
+				ErrMessage: err.Error(),
+			}
+	}
+
+	numStr := strconv.FormatInt(int64Num, 10)
+
+	if exponent > 0 {
+
+		for i := 0; i < exponent; i++ {
+
+			numStr += "0"
+
+		}
+	}
+
+	if exponent < 0 {
+
+		exponent = exponent * -1
+	}
+
+	var n2 NumStrDto
+
+	if exponent == 0 {
+
+		n2, err = new(numStrDtoQuark).parseNumStr(
+			numSeps, numStr, ePrefix)
+
+		if err != nil {
+
+			return NumStrDto{},
+				&FuncReturnError{
+					ErrPrefix: ePrefix.String(),
+					ReturnFunc: "n2, err = new(numStrDtoQuark).parseNumStr(\n" +
+						"  numSeps, numStr, ePrefix)",
+					ErrContext: "",
+					ErrMessage: err.Error(),
+				}
+		}
+
+	} else {
+
+		n2, err = new(numStrDtoTau).shiftPrecisionLeft(
+			numSeps, numStr, uint(exponent), ePrefix)
+
+		if err != nil {
+
+			return NumStrDto{},
+				&FuncReturnError{
+					ErrPrefix: ePrefix.String(),
+					ReturnFunc: "n2, err = new(numStrDtoTau).shiftPrecisionLeft(\n" +
+						"  numSeps, numStr, uint(exponent), ePrefix)",
+					ErrContext: "",
+					ErrMessage: err.Error(),
+				}
+		}
+
+	}
+
+	return n2, nil
+}
+
 // newZeroNumStrDto
 //
 //	Returns a new NumStrDto initialized to zero value. If the
