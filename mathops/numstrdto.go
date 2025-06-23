@@ -3326,23 +3326,106 @@ func (nDto *NumStrDto) NewIntExponent(intNum int, exponent int) (NumStrDto, erro
   return newNumStrDto, nil
 }
 
-// NewInt32 - Creates a new NumStrDto instance from an int32 and a
-// precision specification.
+// NewInt32
 //
-// Input parameter 'precision' indicates the number of digits to be
-// formatted to the right of the decimal place.
+//	Creates a new NumStrDto instance from an int32 and a precision
+//	specification.
 //
-// The 'NewInt32' method is designed to used in conjunction with
-// NumStrDto{} syntax thereby allowing NumStrDto type creation and
-// initialization in one step.
+//	Useage
+//	=======
 //
-// Example: new(NumStrDto).NewInt32(123456, 3) yields a new NumStrDto
-// instance with a numeric value of 123.456.
-func (nDto *NumStrDto) NewInt32(int32Num int32, precision uint) NumStrDto {
+//	            new(NumStrDto).NewInt32(123456, 3)
+//	 Yields a new NumStrDto instance with a numeric value of 123.456.
+//
+//	'prescision'
+//	============
+//
+//	Input parameter 'precision' indicates the number of digits to
+//	be formatted to the right of the decimal place.
+//
+//	Maximum Precision Value
+//	=======================
+//
+//	Input parameter 'precision' is an unsigned integer value.	The
+//	maximum limit for a 'precision' uint value is	2,147,483,647 or
+//	2^31 - 1. This is also the maximum allowable limit for a signed
+//	32-bit integer.
+//
+//	If the 'precision' value exceeds the maximum allowable limit,
+//	an error will be returned.
+//
+//	Numeric Separators
+//	==================
+//
+//	Numeric Separators define the Decimal Separator character,
+//	Thousands Separator character, and Currency Symbol character.
+//	These separator characters serve two purposes. First they are
+//	used to format and display numeric values as number strings.
+//	Second, they are also used to parse number strings and
+//	convert them into numeric values.
+//
+//	The final NumStrDto result returned by this method will be
+//	configured with the Numeric Separators copied from the current
+//	NumStrDto instance ('nDto'). If these Numeric Separators prove
+//	to be invalid, an error will be returned.
+func (nDto *NumStrDto) NewInt32(int32Num int32, precision uint) (NumStrDto, error) {
 
-  n2 := new(NumStrDto).NewInt64(int64(int32Num), precision)
+  var ePrefix *ePref.ErrPrefixDto
+  var err error
 
-  return n2
+  ePrefix,
+    err = ePref.ErrPrefixDto{}.NewIEmpty(
+    nil,
+    "NumStrDto.NewInt32",
+    "")
+
+  if err != nil {
+    return NumStrDto{}, err
+  }
+
+  numSeps, err := new(numStrDtoAtom).getNumericSeparatorsDto(
+    nDto, ePrefix.XCpy("nDto -> numSeps"))
+
+  if err != nil {
+    return NumStrDto{},
+      &FuncReturnError{
+        ErrPrefix: ePrefix.String(),
+        ReturnFunc: "numSeps, err := new(numStrDtoAtom).getNumericSeparatorsDto(\n" +
+          "  nDto, ePrefix.XCpy(\"nDto -> numSeps\"))",
+        ErrContext: "Error extracting Numeric Separators from current NumStrDto instance.",
+        ErrMessage: err.Error(),
+      }
+  }
+
+  err = numSeps.IsValid(ePrefix.XCpy("Validating 'numSeps'").String())
+
+  if err != nil {
+
+    return NumStrDto{}, &FuncReturnError{
+      ErrPrefix:  ePrefix.String(),
+      ReturnFunc: "err = numSeps.IsValid(ePrefix.XCpy(\"Validating 'numSeps'\").String())",
+      ErrContext: "Error: The current instance of NumStrDto ('nDto') is INVALID!\n" +
+        "Numeric Separators from 'nDto' FAILED Validation Tests.",
+      ErrMessage: err.Error(),
+    }
+  }
+
+  n2, err := new(numStrDtoMolecule).newInt64(
+    numSeps, int64(int32Num), precision, ePrefix)
+
+  if err != nil {
+
+    return NumStrDto{},
+      &FuncReturnError{
+        ErrPrefix: ePrefix.String(),
+        ReturnFunc: "n2, err := new(numStrDtoMolecule).newInt64(\n" +
+          "  numSeps, int64(int32Num), precision, ePrefix)",
+        ErrContext: "Error converting 'int32Num' to NumStrDto",
+        ErrMessage: err.Error(),
+      }
+  }
+
+  return n2, nil
 }
 
 // NewInt32Exponent - Returns a new NumStrDto instance. The numeric
@@ -3362,9 +3445,65 @@ func (nDto *NumStrDto) NewInt32(int32Num int32, precision uint) NumStrDto {
 //
 //	  int32Num			exponent			NumStrDto Result
 //		 123456		 		   +3							123456.000
-func (nDto *NumStrDto) NewInt32Exponent(int32Num int32, exponent int) NumStrDto {
+func (nDto *NumStrDto) NewInt32Exponent(int32Num int32, exponent int) (NumStrDto, error) {
 
-  return new(NumStrDto).NewInt64Exponent(int64(int32Num), exponent)
+  var ePrefix *ePref.ErrPrefixDto
+  var err error
+
+  ePrefix,
+    err = ePref.ErrPrefixDto{}.NewIEmpty(
+    nil,
+    "NumStrDto.NewInt32Exponent",
+    "")
+
+  if err != nil {
+    return NumStrDto{}, err
+  }
+
+  numSeps, err := new(numStrDtoAtom).getNumericSeparatorsDto(
+    nDto, ePrefix.XCpy("nDto -> numSeps"))
+
+  if err != nil {
+
+    return NumStrDto{},
+      &FuncReturnError{
+        ErrPrefix: ePrefix.String(),
+        ReturnFunc: "numSeps, err := new(numStrDtoAtom).getNumericSeparatorsDto(\n" +
+          "nDto, ePrefix.XCpy(\"nDto -> numSeps\"))",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+  }
+
+  err = numSeps.IsValid(ePrefix.XCpy("Validating 'numSeps'").String())
+
+  if err != nil {
+
+    return NumStrDto{}, &FuncReturnError{
+      ErrPrefix:  ePrefix.String(),
+      ReturnFunc: "err = numSeps.IsValid(ePrefix.XCpy(\"Validating 'numSeps'\").String())",
+      ErrContext: "Error: The current instance of NumStrDto ('nDto') is INVALID!\n" +
+        "Numeric Separators from 'nDto' FAILED Validation Tests.",
+      ErrMessage: err.Error(),
+    }
+  }
+
+  newNumStrDto, err := new(numStrDtoMolecule).newInt64Exponent(
+    numSeps, int64(int32Num), exponent, ePrefix)
+
+  if err != nil {
+
+    return NumStrDto{},
+      &FuncReturnError{
+        ErrPrefix: ePrefix.String(),
+        ReturnFunc: "newNumStrDto, err := new(numStrDtoMolecule).newInt64Exponent(\n" +
+          "  numSeps, int64(int32Num), exponent, ePrefix)",
+        ErrContext: "Error converting 'int32Num' to NumStrDto",
+        ErrMessage: err.Error(),
+      }
+  }
+
+  return newNumStrDto, nil
 }
 
 // NewInt64
