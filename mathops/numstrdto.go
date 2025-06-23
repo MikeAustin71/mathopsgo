@@ -3013,6 +3013,59 @@ func (nDto *NumStrDto) NewFloat64(f64 float64, precision int) (NumStrDto, error)
     numSeps, f64, precision, ePrefix)
 }
 
+// NewFloat64NumSeps
+//
+//	Receives a type float64 numeric value, precision
+//	specification and Numeric Separators specification. This method
+//	then converts these parameters into a new NumStrDto instance
+//	and returns that NumStrDto instance to the calling function.
+//
+//	The 'precision' specification designates the number of digits
+//	to the right of the decimal point in the final numeric value.
+//
+//	'precision' MUST BE >= -1
+//
+//	"The special precision -1 uses the smallest number of digits
+//	necessary such that ParseFloat will return f exactly. The
+//	exponent is written as a decimal integer ..."
+//	  Go Documentation: https://pkg.go.dev/strconv#FormatFloat
+//
+//	Numeric Separators
+//	==================
+//
+//	Numeric Separators define the Decimal Separator character,
+//	Thousands Separator character, and Currency Symbol character.
+//	These separator characters serve two purposes. First they are
+//	used to format and display numeric values as number strings.
+//	Second, they are also used to parse number strings and
+//	convert them into numeric values.
+//
+//	The final NumStrDto result returned by this method will be
+//	configured with the Numeric Separators copied from the input
+//	parameter 'numSeps' (NumericSeparatorDto). If these Numeric
+//	Separators prove to be invalid, an error will be returned.
+func (nDto *NumStrDto) NewFloat64NumSeps(
+  f64 float64,
+  precision int,
+  numSeps NumericSeparatorDto) (NumStrDto, error) {
+
+  var ePrefix *ePref.ErrPrefixDto
+  var err error
+
+  ePrefix,
+    err = ePref.ErrPrefixDto{}.NewIEmpty(
+    nil,
+    "NumStrDto.NewFloat64NumSeps",
+    "")
+
+  if err != nil {
+    return NumStrDto{}, err
+  }
+
+  return new(numStrDtoMolecule).newFloat64(
+    numSeps, f64, precision, ePrefix)
+}
+
 // NewInt
 //
 //	Receives a integer number (int) and precision specification.
