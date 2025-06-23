@@ -5746,19 +5746,21 @@ func (nDto *NumStrDto) SetNumericSeparatorsDto(
 //	set to valid values.
 func (nDto *NumStrDto) SetNumericSeparatorsToDefaultIfEmpty() error {
 
-	if nDto.GetDecimalSeparator() == 0 {
-		nDto.SetDecimalSeparator('.')
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
+
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"NumStrDto.SetNumericSeparatorsToDefaultIfEmpty",
+		"")
+
+	if err != nil {
+		return err
 	}
 
-	if nDto.GetThousandsSeparator() == 0 {
-		nDto.SetThousandsSeparator(',')
-	}
-
-	if nDto.GetCurrencySymbol() == 0 {
-		nDto.SetCurrencySymbol('$')
-	}
-
-	return nil
+	return new(numStrDtoAtom).setNumericSeparatorsToDefaultIfEmpty(
+		nDto, ePrefix)
 }
 
 // SetNumericSeparatorsToUSADefault
@@ -5776,15 +5778,32 @@ func (nDto *NumStrDto) SetNumericSeparatorsToDefaultIfEmpty() error {
 //	  nDto.SetDecimalSeparator()
 //	  nDto.SetThousandsSeparator()
 //	  nDto.SetCurrencySymbol()
-func (nDto *NumStrDto) SetNumericSeparatorsToUSADefault() {
-	nDto.SetDecimalSeparator('.')
-	nDto.SetThousandsSeparator(',')
-	nDto.SetCurrencySymbol('$')
+func (nDto *NumStrDto) SetNumericSeparatorsToUSADefault() error {
+
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
+
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"NumStrDto.SetNumericSeparatorsToUSADefault",
+		"")
+
+	if err != nil {
+		return err
+	}
+
+	return new(numStrDtoAtom).setNumericSeparatorsToUSADefault(
+		nDto, ePrefix)
 }
 
-// SetNumStr - Sets the value of the current NumStrDto instance
-// to the number string received as input.
-func (nDto *NumStrDto) SetNumStr(numStr string) error {
+// SetNumStr
+//
+// Sets the value of the current NumStrDto instance to the number
+// string received as input.
+func (nDto *NumStrDto) SetNumStr(
+	signedNumStr string,
+	numStrNumSeps IGetNumSeparators) error {
 
 	var ePrefix *ePref.ErrPrefixDto
 	var err error
@@ -5799,115 +5818,121 @@ func (nDto *NumStrDto) SetNumStr(numStr string) error {
 		return err
 	}
 
-	numSeps := nDto.GetNumericSeparatorsDto()
-
-	n2, err := new(NumStrDto).NewNumStr(numStr)
-
-	if err != nil {
-		return fmt.Errorf(ePrefix+"Error returned by new(NumStrDto).NewNumStr(numStr). "+
-			"numStr='%v' Error='%v' ", numStr, err.Error())
-	}
-
-	err = n2.SetNumericSeparatorsDto(numSeps)
+	n2Dto, err := new(numStrDtoMolecule).newNumStrWithNumSeps(
+		signedNumStr, numStrNumSeps, ePrefix)
 
 	if err != nil {
-		return fmt.Errorf(ePrefix+
-			"Error returned by n2.SetNumericSeparatorsDto(numSeps) "+
-			"Error='%v' \n", err.Error())
+		return &FuncReturnError{
+			ErrPrefix: ePrefix.String(),
+			ReturnFunc: "n2Dto, err := new(numStrDtoMolecule).newNumStrWithNumSeps(\n" +
+				"signedNumStr, numStrNumSeps, ePrefix)",
+			ErrContext: "",
+			ErrMessage: err.Error(),
+		}
+
 	}
 
-	nDto.CopyIn(n2)
+	err = new(numStrDtoMolecule).copy(nDto, &n2Dto, false, ePrefix)
+
+	if err != nil {
+		return &FuncReturnError{
+			ErrPrefix: ePrefix.String(),
+			ReturnFunc: "err = new(numStrDtoMolecule).copy(\n" +
+				" nDto, &n2Dto, false, ePrefix)",
+			ErrContext: "Error copying final result to current NumStrDto instance 'nDto'",
+			ErrMessage: err.Error(),
+		}
+	}
 
 	return nil
-
 }
 
 // SetPrecision
 //
-//		Parses the incoming number string and applies the designated
-//		'precision'.
+//	Parses the incoming number string and applies the designated
+//	'precision'.
 //
-//		'precision' determines the number of digits to the right of the
-//		decimal place. The boolean parameter 'roundResult' is used to
-//		apply rounding in those cases where 'precision' dictates a
-//		reduction in the number of digits to the right of the decimal
-//		place. See 'Examples' below.
+//	'precision' determines the number of digits to the right of the
+//	decimal place. The boolean parameter 'roundResult' is used to
+//	apply rounding in those cases where 'precision' dictates a
+//	reduction in the number of digits to the right of the decimal
+//	place. See 'Examples' below.
 //
-//		Numeric Separators
-//		==================
+//	Numeric Separators
+//	==================
 //
-//		Numeric Separators define the Decimal Separator character,
-//		Thousands Separator character, and Currency Symbol character.
-//		These separator characters serve two purposes. First they are
-//		used to format and display numeric values as number strings.
-//		Second, they are also used to parse number strings and
-//		convert them into numeric values.
+//	Numeric Separators define the Decimal Separator character,
+//	Thousands Separator character, and Currency Symbol character.
+//	These separator characters serve two purposes. First they are
+//	used to format and display numeric values as number strings.
+//	Second, they are also used to parse number strings and
+//	convert them into numeric values.
 //
-//		The final NumStrDto result returned by this method will be
-//		configured with the Numeric Separators provided by the
-//		current instance of 'nDto'. If these Numeric Separators are
-//		determined to be invalid, an error will be returned.
+//	The final NumStrDto result returned by this method will be
+//	configured with the Numeric Separators provided by the
+//	current instance of 'nDto'. If these Numeric Separators are
+//	determined to be invalid, an error will be returned.
 //
-//		Examples
-//		========
+//	Examples
+//	========
 //
-//		         ------------ Input Parameters ------------
+//	         ------------ Input Parameters ------------
 //
-//		Example
-//		 No       signedNumStr    precision   roundResult     Final Result
+//	Example
+//	 No       signedNumStr    precision   roundResult     Final Result
 //
-//		  1       "123456789"         7          false          "123456789.0000000"
-//		  2       "123456789"         7          true           "123456789.0000000"
-//		  3      "-123456789"         7          false         "-123456789.0000000"
-//		  4      "-123456789"         7          true          "-123456789.0000000"
-//		  5       "123456.789"        2          true           "123456.79"
-//		  6       "123456.789"        2          false          "123456.78"
-//		  7       "123456.789"        5          false          "123456.78900"
-//		  8       "123.456789"        1          false          "123.4"
-//		  9       "123.456789"        1          true           "123.5"
-//		 10      "-123.456789"        1          false         "-123.4"
-//		 11      "-123.456789"        1          true          "-123.5"
-//		 12       "123456.789"        0          true           "123457"
-//		 13      "-123456.789"        0          true          "-123457"
-//		 14       "123456.789"        0          false          "123456"
-//		 15      "-123456.789"        0          false         "-123456"
-//		 16       "123457"            1          false          "123457.0"
-//		 17       "123457"            1          true           "123457.0"
-//		 18      "-123457"            1          false         "-123457.0"
-//		 19      "-123457"            1          true          "-123457.0"
+//	  1       "123456789"         7          false          "123456789.0000000"
+//	  2       "123456789"         7          true           "123456789.0000000"
+//	  3      "-123456789"         7          false         "-123456789.0000000"
+//	  4      "-123456789"         7          true          "-123456789.0000000"
+//	  5       "123456.789"        2          true           "123456.79"
+//	  6       "123456.789"        2          false          "123456.78"
+//	  7       "123456.789"        5          false          "123456.78900"
+//	  8       "123.456789"        1          false          "123.4"
+//	  9       "123.456789"        1          true           "123.5"
+//	 10      "-123.456789"        1          false         "-123.4"
+//	 11      "-123.456789"        1          true          "-123.5"
+//	 12       "123456.789"        0          true           "123457"
+//	 13      "-123456.789"        0          true          "-123457"
+//	 14       "123456.789"        0          false          "123456"
+//	 15      "-123456.789"        0          false         "-123456"
+//	 16       "123457"            1          false          "123457.0"
+//	 17       "123457"            1          true           "123457.0"
+//	 18      "-123457"            1          false         "-123457.0"
+//	 19      "-123457"            1          true          "-123457.0"
 //
-//		Input Parameters
-//		================
+//	Input Parameters
+//	================
 //
-//		signedNumStr             string
-//		  A valid number string
+//	signedNumStr             string
+//	  A valid number string
 //
-//		precision                uint
-//		  The 'precision' values designates the number of places to the
-//		  right of the decimal point which will be realized upon
-//		  completion of this operation.
+//	precision                uint
+//	  The 'precision' values designates the number of places to the
+//	  right of the decimal point which will be realized upon
+//	  completion of this operation.
 //
-//	   If 'precision' exceeds the maximum limit of 2,147,483,647
-//	   an error will be returned
+//	 If 'precision' exceeds the maximum limit of 2,147,483,647
+//	 an error will be returned
 //
-//		roundResult              bool
-//		  If the 'precision' value is less than the current number of
-//		  places to the right of the decimal point, this method will
-//		  truncate the existing fractional digits. If 'roundResult' is
-//		  set to true, this truncation operation will include rounding
-//		  the last digit.
+//	roundResult              bool
+//	  If the 'precision' value is less than the current number of
+//	  places to the right of the decimal point, this method will
+//	  truncate the existing fractional digits. If 'roundResult' is
+//	  set to true, this truncation operation will include rounding
+//	  the last digit.
 //
-//		Return Values
-//		=============
+//	Return Values
+//	=============
 //
-//		NumStrDto
-//		  This returned instance of NumStrDto will contain the result
-//		  of the 'set precision' operation described above.
+//	NumStrDto
+//	  This returned instance of NumStrDto will contain the result
+//	  of the 'set precision' operation described above.
 //
-//		error
-//		  If an error is encountered during processing, this returned
-//		  error object will be configured with an appropriate error
-//		  message
+//	error
+//	  If an error is encountered during processing, this returned
+//	  error object will be configured with an appropriate error
+//	  message
 func (nDto *NumStrDto) SetPrecision(
 	signedNumStr string,
 	precision uint,
