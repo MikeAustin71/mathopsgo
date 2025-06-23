@@ -4558,7 +4558,7 @@ func (bNum *BigIntNum) NewNumStr(
 //	  User may choose to submit a type NumericSeparatorDto
 //	  consisting of one set of Numeric Separators. These Numeric
 //	  Separators will be used to both parse the number strings
-//	  provided by input parameter 'numstr' and format the returned
+//	  provided by input parameter 'numStr' and format the returned
 //	  BigIntNum type containing the converted numeric value.
 //
 //	  The second alternatives allows the user to submit a type
@@ -4609,7 +4609,29 @@ func (bNum *BigIntNum) NewNumStrWithNumSeps(
 
 	inputNumSeps, err = numStrNumSeps.GetInputSeparators()
 
+	if err != nil {
+		return BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "inputNumSeps, err = numStrNumSeps.GetInputSeparators()",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+
+	}
+
 	outputNumSeps, err = numStrNumSeps.GetOutputSeparators()
+
+	if err != nil {
+		return BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "outputNumSeps, err = numStrNumSeps.GetOutputSeparators()",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+
+	}
 
 	bINum2, err := new(bigIntNumMechanics).newZero(
 		0,

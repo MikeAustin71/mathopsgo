@@ -286,7 +286,7 @@ func TestBigIntMathDivide_NumStrDtoFracQuotient_06(t *testing.T) {
 	expectedNumSeps.ThousandsSeparator = frenchThousandsSeparator
 	expectedNumSeps.CurrencySymbol = frenchCurrencySymbol
 
-	dividend, err := NumStrDto{}.NewNumStrWithNumSeps(dividendStr, expectedNumSeps)
+	dividend, err := new(NumStrDto).NewNumStrWithNumSeps(dividendStr, &expectedNumSeps)
 
 	if err != nil {
 		t.Errorf("Error returned by NumStrDto{}.NewNumStrWithNumSeps("+

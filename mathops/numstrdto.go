@@ -4,7 +4,6 @@ import (
 	"fmt"
 	ePref "github.com/MikeAustin71/errpref"
 	"math/big"
-	"strconv"
 )
 
 /*
@@ -3436,23 +3435,42 @@ func (nDto *NumStrDto) NewInt32(int32Num int32, precision uint) (NumStrDto, erro
 	return n2, nil
 }
 
-// NewInt32Exponent - Returns a new NumStrDto instance. The numeric
-// value is set using an int32 value multiplied by 10 raised to the
-// power of the 'exponent' parameter.
+// NewInt32Exponent
 //
-//	numeric value = int32 X 10^exponent
+//	 Returns a new NumStrDto instance. The numeric value is set
+//	 using an int32 value multiplied by 10 raised to the power of
+//	 the 'exponent' parameter.
 //
-// For example, if exponent is -3, precision is set equal to 'int32Num'
-// divided by 10^+3. Example:
+//	       numeric value = int32 X 10^exponent
 //
-//	  int32Num			exponent			NumStrDto Result
-//		 123456		 		  -3							123.456
+//	 For example, if exponent is -3, precision is set equal to
+//	 'int32Num' divided by 10^+3. Example:
 //
-// If exponent is +3, int32Num is multiplied by 10 raised to the
-// power of exponent and precision is set equal to exponent.
+//	 int32Num    exponent    NumStrDto Result
 //
-//	  int32Num			exponent			NumStrDto Result
-//		 123456		 		   +3							123456.000
+//	  123456        -3            123.456
+//
+//	 If exponent is +3, int32Num is multiplied by 10 raised to the
+//	 power of exponent and precision is set equal to exponent.
+//
+//	 int32Num     exponent    NumStrDto Result
+//
+//	  123456         +3          123456.000
+//
+//		Numeric Separators
+//		==================
+//
+//		Numeric Separators define the Decimal Separator character,
+//		Thousands Separator character, and Currency Symbol character.
+//		These separator characters serve two purposes. First they are
+//		used to format and display numeric values as number strings.
+//		Second, they are also used to parse number strings and
+//		convert them into numeric values.
+//
+//		The final NumStrDto result returned by this method will be
+//		configured with the Numeric Separators copied from the current
+//		NumStrDto instance ('nDto'). If these Numeric Separators prove
+//		to be invalid, an error will be returned.
 func (nDto *NumStrDto) NewInt32Exponent(int32Num int32, exponent int) (NumStrDto, error) {
 
 	var ePrefix *ePref.ErrPrefixDto
@@ -3729,8 +3747,7 @@ func (nDto *NumStrDto) NewInt64Exponent(int64Num int64, exponent int) (NumStrDto
 //	allowable limit for a signed 32-bit integer.
 //
 //	If this value exceeds the maximum value for a 32-bit integer,
-//	this 'precision' value will be automatically reduced to the
-//	maximum limit of 2,147,483,647 or	2^31 - 1.
+//	an error will be returned.
 //
 //	Numeric Separators
 //	==================
@@ -3745,8 +3762,7 @@ func (nDto *NumStrDto) NewInt64Exponent(int64Num int64, exponent int) (NumStrDto
 //	The final NumStrDto result returned by this method will be
 //	configured with the Numeric Separators copied from the current
 //	NumStrDto instance ('nDto'). If these Numeric Separators prove
-//	to be invalid, they will be automatically reset to USA default
-//	values.
+//	to be invalid, an error will be returned.
 //
 //	Usage
 //	=====
@@ -3919,8 +3935,7 @@ func (nDto *NumStrDto) NewUintExponent(uintNum uint, exponent int) (NumStrDto, e
 //	allowable limit for a signed 32-bit integer.
 //
 //	If this value exceeds the maximum value for a 32-bit integer,
-//	this 'precision' value will be automatically reduced to the
-//	maximum limit of 2,147,483,647 or	2^31 - 1.
+//	an error will be returned.
 //
 //	Numeric Separators
 //	==================
@@ -3935,8 +3950,7 @@ func (nDto *NumStrDto) NewUintExponent(uintNum uint, exponent int) (NumStrDto, e
 //	The final NumStrDto result returned by this method will be
 //	configured with the Numeric Separators copied from the current
 //	NumStrDto instance ('nDto'). If these Numeric Separators prove
-//	to be invalid, they will be automatically reset to USA default
-//	values.
+//	to be invalid, an error will be returned.
 //
 //	Usage
 //	=====
@@ -4109,8 +4123,7 @@ func (nDto *NumStrDto) NewUint32Exponent(uint32Num uint32, exponent int) (NumStr
 //	allowable limit for a signed 32-bit integer.
 //
 //	If this value exceeds the maximum value for a 32-bit integer,
-//	this 'precision' value will be automatically reduced to the
-//	maximum limit of 2,147,483,647 or	2^31 - 1.
+//	an error will be returned.
 //
 //	Numeric Separators
 //	==================
@@ -4125,8 +4138,7 @@ func (nDto *NumStrDto) NewUint32Exponent(uint32Num uint32, exponent int) (NumStr
 //	The final NumStrDto result returned by this method will be
 //	configured with the Numeric Separators copied from the current
 //	NumStrDto instance ('nDto'). If these Numeric Separators prove
-//	to be invalid, they will be automatically reset to USA default
-//	values.
+//	to be invalid, an error will be returned.
 //
 //	Usage
 //	=====
@@ -4241,98 +4253,346 @@ func (nDto *NumStrDto) NewUint64Exponent(uint64Num uint64, exponent int) (NumStr
 		numSeps, uint64Num, exponent, ePrefix)
 }
 
-// NewRational - Creates a new NumStrDto instance from a rational number and a precision
-// specification.
+// NewRational
 //
-// For information on Big Rational Numbers (*big.Rat), see https://golang.org/pkg/math/big/
-func (nDto *NumStrDto) NewRational(bigRat *big.Rat, precision int) (NumStrDto, error) {
+//	Creates a new NumStrDto instance from a big rational number
+//	(*big.Rat) and a precision specification.
+//
+//	For information on Big Rational Numbers (*big.Rat), see:
+//	  https://golang.org/pkg/math/big/
+//
+//	'precision'
+//	===========
+//
+//	'precision' determines the number of digits to the right of the
+//	decimal place.
+//
+//	  bigRat         precision     NumStrDto Result
+//
+//	   946254/1          3               946.254
+//	   946254/1          1               94625.4
+//	   946254/1          0               946254
+//	  -946254/1          3              -946.254
+//	  -946254/1          2              -9462.54
+//	  -946254/1          0              -946254
+//	       40/2          2               20.00
+//	      480/5          1               81.6
+//
+//	Maximum Precision Value
+//	=======================
+//
+//	Input parameter 'precision' is an unsigned integer value.
+//	The maximum allowable limit for a 'precision' uint value is
+//	2,147,483,647 or	2^31 - 1. This is also the maximum
+//	allowable limit for a signed 32-bit integer.
+//
+//	If this value exceeds the maximum value for a 32-bit integer,
+//	an error will be returned.
+//
+//	Numeric Separators
+//	==================
+//
+//	Numeric Separators define the Decimal Separator character,
+//	Thousands Separator character, and Currency Symbol character.
+//	These separator characters serve two purposes. First they are
+//	used to format and display numeric values as number strings.
+//	Second, they are also used to parse number strings and
+//	convert them into numeric values.
+//
+//	The final NumStrDto result returned by this method will be
+//	configured with the Numeric Separators copied from the current
+//	NumStrDto instance ('nDto'). If these Numeric Separators prove
+//	to be invalid, an error will be returned.
+func (nDto *NumStrDto) NewRational(bigRat *big.Rat, precision uint) (NumStrDto, error) {
 
-	ePrefix := "NumStrDto.NewRational() "
-	numStr := bigRat.FloatString(precision)
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-	n2, err := new(NumStrDto).NewPtr().ParseNumStr(numStr)
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"NumStrDto.NewRational",
+		"")
 
 	if err != nil {
-		return NumStrDto{},
-			fmt.Errorf(ePrefix+"Error returned by n.ParseNumStr(numStr). "+
-				"numStr='%v'  Error='%v'",
-				numStr, err.Error())
+		return NumStrDto{}, err
 	}
 
-	return n2, nil
+	numSeps, err := new(numStrDtoAtom).getNumericSeparatorsDto(
+		nDto, ePrefix.XCpy("nDto -> numSeps"))
+
+	if err != nil {
+
+		return NumStrDto{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "",
+				ErrContext: "Error: The numeric separators for the current NumStrDto are INVALID!\n" +
+					"The returned instance of NumericSeparatorDto ('numSeps') FAILED Validation Tests.",
+				ErrMessage: err.Error(),
+			}
+	}
+
+	return new(numStrDtoMolecule).newRational(
+		numSeps, bigRat, precision, ePrefix)
 }
 
-// NewNumStr - Used to create a populated NumStrDto instance.
-// using a valid number string as an input parameter.
+// NewNumStr
 //
-// This method assumes that the input parameter 'numStr' is a string
-// of numeric digits which may be delimited by default USA numeric
-// separators. Default USA numeric separators are defined as:
+//		Used to create a populated NumStrDto instance based on a valid
+//		number string input parameter.
 //
-//	 	decimal separator = '.'
-//	   thousands separator = ','
-//			currency symbol = '$'
+//		This method assumes that the input parameter 'numStr' is a string
+//		of numeric digits which may be delimited by default USA numeric
+//		separators. Default USA numeric separators are defined as:
 //
-// If the subject 'numStr' employs other national or cultural numeric
-// separators, see method NumStrDto.NewNumStrWithNumSeps(), below.
+//		  decimal separator = '.'
+//		  thousands separator = ','
+//		  currency symbol = '$'
 //
-// Usage Example:
+//		If the subject 'numStr' employs other national or cultural numeric
+//		separators, see method NumStrDto.NewNumStrWithNumSeps(), below.
 //
-//	n, err := new(NumStrDto).NewNumStr("123.456")
+//		Usage
+//		=====
+//
+//		n, err := new(NumStrDto).NewNumStr("123.456")
+//
+//		n, err := new(NumStrDto).NewNumStr("-123.456")
+//
+//		Numeric Separators
+//		==================
+//
+//		Numeric Separators define the Decimal Separator character,
+//		Thousands Separator character, and Currency Symbol character.
+//		These separator characters serve two purposes. First they are
+//		used to format and display numeric values as number strings.
+//		Second, they are also used to parse number strings and
+//		convert them into numeric values.
+//
+//		The final NumStrDto result returned by this method will be
+//		configured with the Numeric Separators copied from the current
+//		NumStrDto instance ('nDto'). If these Numeric Separators prove
+//		to be invalid, an error will be returned.
+//
+//	 The Numeric Separators extracted from the current instance of
+//	 NumStrDto will serve two functions. First, they will be used
+//	 to parse input parameter 'numStr' and second, they will be used
+//	 to configure the returned instance of NumStrDto.
+//
+//		Input Parameters
+//		================
+//
+//		numStr                   string
+//		  This parameter should be formatted as a string of numeric
+//		  digits as outlined above. Using the Numeric
+//		  Separators provided by input parameter 'numStrNumSeps',
+//		  this method will parse the 'numStr' number string and
+//		  convert it to a numeric value which will be returned as a
+//		  NumStrDto.
+//
+//		Return Values
+//		=============
+//
+//		NumStrDto
+//		  This new NumStrDto instance contains the converted numeric
+//		  value of input parameter 'numStr'.
+//
+//		error
+//		  If errors are encountered during processng, this returned
+//		  error object will be configured with an appropriate error
+//		  message.
 func (nDto *NumStrDto) NewNumStr(numStr string) (NumStrDto, error) {
 
-	ePrefix := "NumStrDto.NewNumStr() "
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-	n := new(NumStrDto).New()
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"NumStrDto.NewNumStr",
+		"")
 
-	n2, err := n.ParseNumStr(numStr)
+	if err != nil {
+		return NumStrDto{}, err
+	}
+
+	numSeps, err := new(numStrDtoAtom).getNumericSeparatorsDto(
+		nDto, ePrefix.XCpy("nDto -> numSeps"))
 
 	if err != nil {
 		return NumStrDto{},
-			fmt.Errorf(ePrefix+"Error returned by n.ParseNumStr(numStrDto). "+
-				"numStrDto='%v'  Error='%v'",
-				numStr, err.Error())
+			&FuncReturnError{
+				ErrPrefix: ePrefix.String(),
+				ReturnFunc: "numSeps, err := new(numStrDtoAtom).getNumericSeparatorsDto(\n" +
+					"  nDto, ePrefix.XCpy(\"nDto -> numSeps\"))",
+				ErrContext: "Error extracting Numeric Separators from current NumStrDto instance.",
+				ErrMessage: err.Error(),
+			}
 	}
 
-	return n2, nil
+	err = numSeps.IsValid(ePrefix.XCpy("Validating 'numSeps'").String())
+
+	if err != nil {
+
+		return NumStrDto{}, &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "err = numSeps.IsValid(ePrefix.XCpy(\"Validating 'numSeps'\").String())",
+			ErrContext: "Error: The current instance of NumStrDto ('nDto') is INVALID!\n" +
+				"Numeric Separators from 'nDto' FAILED Validation Tests.",
+			ErrMessage: err.Error(),
+		}
+	}
+
+	return new(numStrDtoMolecule).newNumStrWithNumSeps(
+		numStr, &numSeps, ePrefix)
 }
 
-// NewNumStrWithNumSeps - Receives a number string as input and returns a
-// new NumStrDto instance. The input parameter 'numSeps' contains numeric
-// separators (decimal separator, thousands separator and currency symbol)
-// which will be used to parse the number string.
+// NewNumStrWithNumSeps
 //
-// In addition, the numeric separators contained in input parameter 'numSeps'
-// will be copied to the returned NumStrDto instance.
+//	Receives a number string as input and returns a new NumStrDto
+//	instance.
+//
+//	Number Strings
+//	==============
+//
+//	Number strings are strings of numeric digits. These digits
+//	must be formatted in a way that facilitates conversion to a
+//	corresponding numeric value.
+//
+//	Number String Negative Values
+//	=============================
+//
+//	The 'numStr' number string parameter passed to this method must
+//	consist of a string of numeric digits representing a numeric
+//	value. A leading minus sign (-), or surrounding parentheses
+//	'()', may be included in this number string to indicate a
+//	negative numeric value.
+//
+//	Fractional Digits in Number Strings
+//	===================================
+//
+//	The 'numStr' number string of numeric digits may also include
+//	a delimiting decimal separator to identify fractional digits to
+//	the right of the decimal separator. In the USA, the default
+//	decimal separator is the period character ('.'). The actual
+//	decimal separator character used to parse the 'numStr' number
+//	string is determined by the Numeric Separators parameter,
+//	'numStrNumSeps'.
+//
+//	The input parameter 'numSeps' contains numeric	separators
+//	(decimal separator, thousands separator and currency symbol)
+//	which will be used to parse the number string.
+//
+//	The numeric separators contained in inputparameter 'numSeps'
+//	will be used to parse the number string and configured the
+//	returned NumStrDto instance.
+//
+//	Numeric Separators
+//	==================
+//
+//	Numeric Separators define the Decimal Separator character,
+//	Thousands Separator character, and Currency Symbol character.
+//	These separator characters serve two purposes. First they are
+//	used to format and display numeric values as number strings.
+//	Second, they are also used to parse number strings and convert
+//	them into numeric values. Number string 'numStr' will be parsed
+//	and converted to a numeric value based on the Numeric
+//	Separators provided by input parameter, 'numStrNumSeps'.
+//
+//	Numeric Separator characters are typically encapsulated in a
+//	type NumericSeparatorDto.
+//
+//	Input parameter 'numStrNumSeps' is of type IGetNumSeparators.
+//	This interface type allows users to submit one of two types
+//	for this parameter, a type NumericSeparatorDto instance or
+//	a type NumericSeparatorPairDto.
+//
+//	If a type NumericSeparatorDto is submitted, the encapsulated
+//	Numeric Separators will be used both to parse the number string
+//	passed through input parameter 'numStr' and to format the
+//	returned NumStrDto numeric value.
+//
+//	If a type NumericSeparatorPairDto is submitted for input
+//	parameter 'numStrNumSeps', separate sets of Numeric Separators
+//	will be used to parse the number string ('numStr') and format
+//	the returned 'NumStrDto' numeric value. Type
+//	NumericSeparatorPairDto contains two separate, embedded
+//	instances of NumericSeparatorDto. The 'input'
+//	NumericSeparatorDto will be used to parse the number string
+//	while the 'output' NumericSeparatorDto will be used to format
+//	the returned NumStrDto numeric value. The presence of two
+//	separate sets of Numeric Separators allows users to parse a
+//	number string formatted in one national number system while
+//	formatting the returned value in a different national number
+//	systems.
+//
+//	  Example:
+//	    Input Format  = USA
+//	    Output Format = European Union
+//
+//	If parameter 'numStrNumSeps' proves to be invalid, an error
+//	will be returned.
+//
+//	Input Parameters
+//	================
+//
+//	numStr                   string
+//	  This parameter should be formatted as a string of numeric
+//	  digits as outlined above. Using the Numeric
+//	  Separators provided by input parameter 'numStrNumSeps',
+//	  this method will parse the 'numStr' number string and
+//	  convert it to a numeric value which will be returned as a
+//	  NumStrDto.
+//
+//	numStrNumSeps            IGetNumSeparators
+//	  The IGetNumSeparators interface type gives users the option
+//	  of submitting one of two different concrete types.
+//
+//	  User may choose to submit a type NumericSeparatorDto
+//	  consisting of one set of Numeric Separators. These Numeric
+//	  Separators will be used to both parse the number strings
+//	  provided by input parameter 'numStr' and format the returned
+//	  NumStrDto type containing the converted numeric value.
+//
+//	  The second alternatives allows the user to submit a type
+//	  NumericSeparatorPairDto for this parameter. This type
+//	  encapsulates two separate instances of NumericSeparatorDto.
+//	  The 'input' NumericSeparatorDto instance will be used to
+//	  parse number string 'numStr' while the 'output' instance
+//	  will be used to format the numeric value returned as a type
+//	  NumStrDto.
+//
+//	Return Values
+//	=============
+//
+//	NumStrDto
+//	  This new NumStrDto instance contains the converted numeric
+//	  value of input parameter 'numStr'.
+//
+//	error
+//	  If errors are encountered during processng, this returned
+//	  error object will be configured with an appropriate error
+//	  message.
 func (nDto *NumStrDto) NewNumStrWithNumSeps(
 	numStr string,
-	numSeps NumericSeparatorDto) (NumStrDto, error) {
+	numStrNumSeps IGetNumSeparators) (NumStrDto, error) {
 
-	ePrefix := "IntAry.NewNumStrWithNumSeps() "
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-	n := new(NumStrDto).New()
-
-	numSeps.SetDefaultsIfEmpty()
-
-	err := n.SetNumericSeparatorsDto(numSeps)
-
-	if err != nil {
-		return NumStrDto{},
-			fmt.Errorf(ePrefix+
-				"Error returned by  Ary.SetIntAryWithNumStr(numStr). "+
-				"Error='%v' ", err.Error())
-	}
-
-	n2, err := n.ParseNumStr(numStr)
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"NumStrDto.NewNumStrWithNumSeps",
+		"")
 
 	if err != nil {
-		return NumStrDto{},
-			fmt.Errorf(ePrefix+
-				"Error returned by n.ParseNumStr(numStr). "+
-				"numStr='%v', Error='%v' ", numStr, err.Error())
+		return NumStrDto{}, err
 	}
 
-	return n2, nil
+	return new(numStrDtoMolecule).newNumStrWithNumSeps(
+		numStr, numStrNumSeps, ePrefix)
 }
 
 // New
