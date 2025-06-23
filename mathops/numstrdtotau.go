@@ -1038,6 +1038,10 @@ func (nStrDtoTau *numStrDtoTau) multiplyNumStrs(
 //	Input Parameters
 //	================
 //
+//	numSeps                  NumericSeparatorDto
+//	 This parameter contains the Numeric Separators which will be
+//	 used to populate the returned instance of 'NumStrDto'.
+//
 //	signedNumStr             string
 //	  A valid number string. The leading digit may optionally be a
 //	  '+' or '-' indicating numeric sign value. If '+' or '-'
@@ -1049,6 +1053,21 @@ func (nStrDtoTau *numStrDtoTau) multiplyNumStrs(
 //	  The number of digits by which the current decimal point
 //	  position in the number string, 'signedNumStr' will be shifted
 //	  to the left.
+//
+//	errPrefDto					*ePref.ErrPrefixDto
+//
+//	  This object encapsulates an error prefix string
+//	  which is included in all returned error
+//	  messages. Usually, it contains the name of the
+//	  calling method or methods listed as a function
+//	  chain.
+//
+//	  If no error prefix information is needed, set
+//	  this parameter to 'nil'.
+//
+//	  Type ErrPrefixDto is included in the 'errpref'
+//	  software package:
+//	    "github.com/MikeAustin71/errpref".
 //
 //	Return Values
 //	=============
@@ -1109,7 +1128,19 @@ func (nStrDtoTau *numStrDtoTau) shiftPrecisionLeft(
       }
   }
 
-  // n1, err := new(NumStrDto).NewPtr().ParseNumStr(signedNumStr)
+  if new(MathProcessUtility).DoesUintExceedMax32BitInt(shiftLeftPrecision) {
+
+    return NumStrDto{},
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "",
+        ErrContext: "",
+        ErrMessage: "Error: Input parameter 'shiftLeftPrecision' is INVALID!\n" +
+          "'shiftLeftPrecision' Exceeds the maximum allowable limt of 2,147,483,647.\n" +
+          fmt.Sprintf("shiftLeftPrecision= '%v'", shiftLeftPrecision),
+      }
+  }
+
   n1, err := new(numStrDtoQuark).parseNumStr(numSeps, signedNumStr, ePrefix)
 
   if err != nil {
@@ -1125,13 +1156,23 @@ func (nStrDtoTau *numStrDtoTau) shiftPrecisionLeft(
       }
   }
 
-  n2 := new(NumStrDto).New()
+  u64TotalSpecPrecision := uint64(shiftLeftPrecision) + uint64(n1.precision)
 
-  n2.thousandsSeparator = numSeps.ThousandsSeparator
+  if new(MathProcessUtility).DoesUint64ExceedMax32BitInt(u64TotalSpecPrecision) {
 
-  n2.decimalSeparator = numSeps.DecimalSeparator
+    return NumStrDto{},
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "",
+        ErrContext: "",
+        ErrMessage: "Error: Computed parameter 'u64TotalSpecPrecision' is INVALID!\n" +
+          "'u64TotalSpecPrecision' Exceeds the maximum allowable limt of 2,147,483,647.\n" +
+          "'u64TotalSpecPrecision' is the sum of 'shiftLeftPrecision' plus 'n1.precision'\n" +
+          fmt.Sprintf("u64TotalSpecPrecision= '%v'", u64TotalSpecPrecision),
+      }
+  }
 
-  n2.currencySymbol = numSeps.CurrencySymbol
+  n2 := new(numStrDtoMolecule).newZeroNumStrDto(numSeps, 0)
 
   n2.signVal = n1.signVal
 
@@ -1232,6 +1273,51 @@ func (nStrDtoTau *numStrDtoTau) shiftPrecisionLeft(
       }
   }
 
+  err = new(numStrDtoElectron).isValidNumStrDto(
+    &n2, ePrefix.XCpy("Validating 'n2'"))
+
+  if err != nil {
+    return NumStrDto{},
+      &FuncReturnError{
+        ErrPrefix: ePrefix.String(),
+        ReturnFunc: "err = new(numStrDtoElectron).isValidNumStrDto(\n" +
+          "  &n2, ePrefix)",
+        ErrContext: "Error: The Final Result NumStrDto instance ('n2') is INVALID!\n" +
+          "'n2' FAILED Validation Tests.",
+        ErrMessage: err.Error(),
+      }
+  }
+
+  actualLenAbsFracRunes, err := new(numStrDtoGluon).getAbsFracRunesLength(
+    &n2, false, ePrefix)
+
+  if err != nil {
+
+    return NumStrDto{},
+      &FuncReturnError{
+        ErrPrefix: ePrefix.String(),
+        ReturnFunc: "actualLenAbsFracRunes, err := new(numStrDtoGluon).\n" +
+          "  getAbsFracRunesLength(&n2, false, ePrefix)",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+  }
+
+  if actualLenAbsFracRunes != iTotalSpecPrecision {
+
+    return NumStrDto{},
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "",
+        ErrContext: "actualLenAbsFracRunes != iTotalSpecPrecision",
+        ErrMessage: "Error: Calculated number of fractional digits is INVALID!\n" +
+          "fractional digits not equal to requested fractional digits.\n" +
+          fmt.Sprintf("Calculated Fractional Digits= '%v'\n"+
+            "Requested Fractional Digits= '%v'",
+            actualLenAbsFracRunes, iTotalSpecPrecision),
+      }
+  }
+
   if uint(lenAbsFracRunes) != n2.precision {
 
     return NumStrDto{},
@@ -1245,11 +1331,270 @@ func (nStrDtoTau *numStrDtoTau) shiftPrecisionLeft(
             "Requested Fractional Digits= '%v'",
             lenAbsFracRunes, n2.precision),
       }
+  }
+
+  return n2, nil
+}
+
+// shiftPrecisionRight
+//
+//	Shifts the existing precision of a number string. The position
+//	of the decimal point is shifted 'shiftRightPrecision' positions
+//	to the right.
+//
+//	This is equivalent to:
+//
+//	       result = signedNumStr X 10^shiftRightPrecision
+//	                             or
+//	signedNumStr Multiplied by 10 raised to the power of 'shiftRightPrecision'.
+//
+//	Examples
+//	========
+//
+//	signedNumStr    shiftRightPrecision     Result
+//
+//	"123456.789"             3            "123456789"
+//	"123456.789"             2            "12345678.9"
+//	"123456.789"             6            "123456789000"
+//	"123456789"              6            "123456789000000"
+//	"123"                    5            "12300000"
+//	"0"                      3            "0"
+//	"-123456.789"            3            "-123456789"
+//	"-123456789"             6            "-123456789000000"
+//
+//	       zero ('0') 'shiftRightPrecision' has
+//	      no effect on the original number string
+//
+//	"123456.789"             0            "123456.789"
+//	"-123456.789"            0            "-123456.789"
+//
+//	Numeric Separators
+//	==================
+//
+//	The Numeric Separators originally configured for the current
+//	instance of NumStrDto will be copied to the returned instance
+//	of NumStrDto.
+//
+//	IMPORTANT
+//	=========
+//
+//	If the current NumStrDto instance is invalid, an error will be
+//	returned.
+//
+//	Input Parameters
+//	================
+//
+//	numSeps                  NumericSeparatorDto
+//	 This parameter contains the Numeric Separators which will be
+//	 used to populate the returned instance of 'NumStrDto'.
+//
+//	signedNumStr             string
+//	  A valid number string. The leading digit may optionally be a
+//	  '+' or '-' indicating numeric sign value. If '+' or '-'
+//	  characters are not present in the first character position,
+//	  the number is assumed to represent a positive	numeric value
+//	  ('+').
+//
+//	shiftRightPrecision      uint
+//	  The number of digits by which the current decimal point
+//	  position in the number string, 'signedNumStr' will be shifted
+//	  to the right.
+//
+//	errPrefDto					*ePref.ErrPrefixDto
+//
+//	  This object encapsulates an error prefix string
+//	  which is included in all returned error
+//	  messages. Usually, it contains the name of the
+//	  calling method or methods listed as a function
+//	  chain.
+//
+//	  If no error prefix information is needed, set
+//	  this parameter to 'nil'.
+//
+//	  Type ErrPrefixDto is included in the 'errpref'
+//	  software package:
+//	    "github.com/MikeAustin71/errpref".
+//
+//	Return Values
+//	=============
+//
+//	NumStrDto
+//	  This method returns the result of the Shift Left precision
+//	  operation in the form of a new 'NumStrDto' instance.
+//
+//	error
+//	  If a processing error is encountered, this returned error
+//	  object will be configured with an appropriate error message.
+func (nStrDtoTau *numStrDtoTau) shiftPrecisionRight(
+  numSeps NumericSeparatorDto,
+  signedNumStr string,
+  shiftRightPrecision uint,
+  errPrefDto *ePref.ErrPrefixDto) (NumStrDto, error) {
+
+  nStrDtoTau.lock.Lock()
+
+  defer nStrDtoTau.lock.Unlock()
+
+  var ePrefix *ePref.ErrPrefixDto
+  var err error
+
+  ePrefix,
+    err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
+    errPrefDto,
+    "numStrDtoTau.shiftPrecisionRight()",
+    "")
+
+  if err != nil {
+    return NumStrDto{}, err
+  }
+
+  if len(signedNumStr) == 0 {
+
+    return NumStrDto{},
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "",
+        ErrContext: "len(signedNumStr) == 0",
+        ErrMessage: "Error: Input parameter 'signedNumStr' is INVALID!\n" +
+          "'signedNumStr' is a zero length string.",
+      }
+  }
+
+  err = numSeps.IsValid(ePrefix.XCpy("Validating 'numSeps'").String())
+
+  if err != nil {
+
+    return NumStrDto{},
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "err = numSeps.IsValid(ePrefix.XCpy(\"Validating 'numSeps'\").String())",
+        ErrContext: "Error: Input parameter 'numSeps' is INVALID!\n" +
+          "'numSeps' FAILED Validation Tests.",
+        ErrMessage: err.Error(),
+      }
+  }
+
+  if new(MathProcessUtility).DoesUintExceedMax32BitInt(shiftRightPrecision) {
+
+    return NumStrDto{},
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "",
+        ErrContext: "",
+        ErrMessage: "Error: Input parameter 'shiftRightPrecision' is INVALID!\n" +
+          "'shiftRightPrecision' Exceeds the maximum allowable limt of 2,147,483,647.\n" +
+          fmt.Sprintf("shiftRightPrecision= '%v'", shiftRightPrecision),
+      }
+  }
+
+  n1, err := new(numStrDtoQuark).parseNumStr(numSeps, signedNumStr, ePrefix)
+
+  if err != nil {
+
+    return NumStrDto{},
+      &FuncReturnError{
+        ErrPrefix: ePrefix.String(),
+        ReturnFunc: "n1, err := new(numStrDtoQuark).parseNumStr(\n" +
+          "  numSeps, signedNumStr, ePrefix)",
+        ErrContext: fmt.Sprintf("signedNumStr= '%s'\n"+
+          "numSeps= '%s'", signedNumStr, numSeps.String()),
+        ErrMessage: err.Error(),
+      }
+  }
+
+  n2 := new(numStrDtoMolecule).newZeroNumStrDto(numSeps, 0)
+
+  iTotalSpecPrecision := 0
+
+  iPrecision := int(shiftRightPrecision)
+
+  iN1Precision := int(n1.precision)
+
+  if iN1Precision > 0 && iPrecision < iN1Precision {
+
+    iTotalSpecPrecision = iN1Precision - iPrecision
+
+  } else {
+
+    iTotalSpecPrecision = 0
 
   }
 
+  n2.signVal = n1.signVal
+
+  n2.precision = uint(iTotalSpecPrecision)
+
+  lenAbsAllNumRunes := len(n1.absAllNumRunes)
+
+  n1NumStrIsZeroValue, err := new(numStrDtoElectron).isNumStrZeroValue(
+    &n1, true, ePrefix)
+
+  if err != nil {
+
+    return NumStrDto{},
+      &FuncReturnError{
+        ErrPrefix: ePrefix.String(),
+        ReturnFunc: "n1NumStrIsZeroValue, err := new(numStrDtoElectron).\n" +
+          "  isNumStrZeroValue(&n1, true, ePrefix)",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+  }
+
+  if n1NumStrIsZeroValue {
+
+    // return nDto.GetZeroNumStrDto(0), nil
+
+    n3 := new(numStrDtoMolecule).newZeroNumStrDto(numSeps, n2.precision)
+
+    return n3, nil
+  }
+
+  if int(shiftRightPrecision) > int(n1.precision) {
+
+    for i := 0; i < lenAbsAllNumRunes; i++ {
+
+      n2.absAllNumRunes = append(n2.absAllNumRunes, n1.absAllNumRunes[i])
+
+    }
+
+    deltaPrecision := int(shiftRightPrecision) - int(n1.precision)
+
+    for i := 0; i < deltaPrecision; i++ {
+
+      n2.absAllNumRunes = append(n2.absAllNumRunes, '0')
+
+    }
+
+  } else {
+
+    for i := 0; i < lenAbsAllNumRunes; i++ {
+
+      n2.absAllNumRunes = append(n2.absAllNumRunes, n1.absAllNumRunes[i])
+
+    }
+  }
+
+  lenAbsAllNumRunes = len(n2.absAllNumRunes)
+
+  lenAbsFracRunes := iTotalSpecPrecision
+
+  lenAbsIntRunes := lenAbsAllNumRunes - lenAbsFracRunes
+
+  if lenAbsIntRunes <= 0 {
+
+    return NumStrDto{},
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "",
+        ErrContext: "lenAbsIntRunes <= 0",
+        ErrMessage: "Error: Calculated number of integer digits is less than or equal to ZERO.\n" +
+          fmt.Sprintf("lenAbsIntRunes= '%v' ", lenAbsIntRunes),
+      }
+  }
+
   err = new(numStrDtoElectron).isValidNumStrDto(
-    &n2, ePrefix.XCpy("Validating 'nDto'"))
+    &n2, ePrefix.XCpy("Validating 'n2'"))
 
   if err != nil {
     return NumStrDto{},
@@ -1260,6 +1605,51 @@ func (nStrDtoTau *numStrDtoTau) shiftPrecisionLeft(
         ErrContext: "Error: The Final Result NumStrDto instance ('n2') is INVALID!\n" +
           "'n2' FAILED Validation Tests.",
         ErrMessage: err.Error(),
+      }
+  }
+
+  actualLenAbsFracRunes, err := new(numStrDtoGluon).getAbsFracRunesLength(
+    &n2, false, ePrefix)
+
+  if err != nil {
+
+    return NumStrDto{},
+      &FuncReturnError{
+        ErrPrefix: ePrefix.String(),
+        ReturnFunc: "actualLenAbsFracRunes, err := new(numStrDtoGluon).\n" +
+          "  getAbsFracRunesLength(&n2, false, ePrefix)",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+  }
+
+  if actualLenAbsFracRunes != iTotalSpecPrecision {
+
+    return NumStrDto{},
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "",
+        ErrContext: "actualLenAbsFracRunes != iTotalSpecPrecision",
+        ErrMessage: "Error: Calculated number of fractional digits is INVALID!\n" +
+          "fractional digits not equal to requested fractional digits.\n" +
+          fmt.Sprintf("Calculated Fractional Digits= '%v'\n"+
+            "Requested Fractional Digits= '%v'",
+            actualLenAbsFracRunes, iTotalSpecPrecision),
+      }
+  }
+
+  if uint(lenAbsFracRunes) != n2.precision {
+
+    return NumStrDto{},
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "",
+        ErrContext: "uint(lenAbsFracRunes) != n2.precision",
+        ErrMessage: "Error: Calculated number of fractional digits is INVALID!\n" +
+          "fractional digits not equal to requested fractional digits.\n" +
+          fmt.Sprintf("Calculated Fractional Digits= '%v'\n"+
+            "Requested Fractional Digits= '%v'",
+            lenAbsFracRunes, n2.precision),
       }
   }
 

@@ -1,6 +1,7 @@
 package mathops
 
 import (
+	"fmt"
 	ePref "github.com/MikeAustin71/errpref"
 	"sync"
 )
@@ -102,6 +103,18 @@ func (nStrDtoElectron *numStrDtoElectron) isValidNumStrDto(
 			ErrContext: "numStrDto.currencySymbol == 0",
 			ErrMessage: "Error: Currency Separator cannot be '0'\n" +
 				"NumStrDto Numeric Separators are Invalid!",
+		}
+	}
+
+	if new(MathProcessUtility).DoesUintExceedMax32BitInt(numStrDto.precision) {
+
+		return &FuncReturnError{
+			ErrPrefix:  ePrefix.String(),
+			ReturnFunc: "",
+			ErrContext: "",
+			ErrMessage: "Error: NumStrDto member data element 'precision' is INVALID!\n" +
+				"'precision' Exceeds the maximum allowable int32 limt of 2,147,483,647.\n" +
+				fmt.Sprintf("precision= '%v'", numStrDto.precision),
 		}
 	}
 

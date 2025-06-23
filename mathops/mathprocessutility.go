@@ -152,3 +152,24 @@ func (mathProcUtil *MathProcessUtility) DoesUintExceedMax32BitInt(
 
 	return false
 }
+
+// DoesUint64ExceedMax32BitInt
+//
+//	Tests an unsigned 62-bit integer value to determine if it
+//	exceeds the maximum allowable value for a 32-bit integer.
+//
+//	The maximum value for a 32-bit integer is 2,147,483,647 or
+//	2^31 - 1.
+func (mathProcUtil *MathProcessUtility) DoesUint64ExceedMax32BitInt(
+	candidateUintValue uint64) (exceedsMaxInt bool) {
+
+	max32BitIntBigInt := big.NewInt(math.MaxInt32)
+
+	candidateBigInt := big.NewInt(0).SetUint64(candidateUintValue)
+
+	if candidateBigInt.Cmp(max32BitIntBigInt) == 1 {
+		return true
+	}
+
+	return false
+}
