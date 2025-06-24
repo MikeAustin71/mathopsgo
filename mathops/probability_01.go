@@ -1,10 +1,10 @@
 package mathops
 
 import (
-  "errors"
-  "fmt"
-  ePref "github.com/MikeAustin71/errpref"
-  "math/big"
+	"errors"
+	"fmt"
+	ePref "github.com/MikeAustin71/errpref"
+	"math/big"
 )
 
 /*
@@ -70,12 +70,12 @@ $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 */
 
 type Probability struct {
-  NoOfTrials                   BigIntNum
-  PossibleOutcomesPerTrial     BigIntNum
-  NoSuccessfulOutcomesPerTrial BigIntNum
-  TotPossibleOutcomes          BigIntNum
-  TotSuccessfulOutcomes        BigIntNum
-  PercentCertainty             BigIntNum
+	NoOfTrials                   BigIntNum
+	PossibleOutcomesPerTrial     BigIntNum
+	NoSuccessfulOutcomesPerTrial BigIntNum
+	TotPossibleOutcomes          BigIntNum
+	TotSuccessfulOutcomes        BigIntNum
+	PercentCertainty             BigIntNum
 }
 
 // CombinationsNoRepsBigInt
@@ -143,190 +143,190 @@ type Probability struct {
 //
 //	 Note:  0! = 1
 func (prob Probability) CombinationsNoRepsBigInt(
-  numOfItems, numOfItemsChosen *big.Int) (BigIntNum, error) {
+	numOfItems, numOfItemsChosen *big.Int) (BigIntNum, error) {
 
-  ePrefix := "Probability.CombinationsNoRepsBigInt() "
-  bigZero := big.NewInt(0)
-  numSeps := new(NumericSeparatorDto).NewUSADefaults()
+	ePrefix := "Probability.CombinationsNoRepsBigInt() "
+	bigZero := big.NewInt(0)
+	numSeps := new(NumericSeparatorDto).NewUSADefaults()
 
-  if numOfItems.Cmp(bigZero) == 0 {
-    return BigIntNum{},
-      fmt.Errorf("%v\n"+
-        "Error: Input parameter 'numOfItems' is ZERO!\n",
-        ePrefix)
-  }
+	if numOfItems.Cmp(bigZero) == 0 {
+		return BigIntNum{},
+			fmt.Errorf("%v\n"+
+				"Error: Input parameter 'numOfItems' is ZERO!\n",
+				ePrefix)
+	}
 
-  if numOfItems.Cmp(bigZero) < 0 {
-    return BigIntNum{},
-      fmt.Errorf("%v\n"+
-        "Error: Input parameter 'numOfItems' is LESS THAN ZERO!\n",
-        ePrefix)
-  }
+	if numOfItems.Cmp(bigZero) < 0 {
+		return BigIntNum{},
+			fmt.Errorf("%v\n"+
+				"Error: Input parameter 'numOfItems' is LESS THAN ZERO!\n",
+				ePrefix)
+	}
 
-  if numOfItemsChosen.Cmp(bigZero) < 0 {
-    return BigIntNum{},
-      fmt.Errorf("%v\n"+
-        "Error: Input parameter 'numOfItemsChosen' is LESS THAN ZERO!\n",
-        ePrefix)
-  }
+	if numOfItemsChosen.Cmp(bigZero) < 0 {
+		return BigIntNum{},
+			fmt.Errorf("%v\n"+
+				"Error: Input parameter 'numOfItemsChosen' is LESS THAN ZERO!\n",
+				ePrefix)
+	}
 
-  if numOfItems.Cmp(numOfItemsChosen) < 0 {
-    return BigIntNum{},
-      errors.New(ePrefix + "Error: 'numOfItems' is LESS THAN 'numOfItemsChosen'! ")
+	if numOfItems.Cmp(numOfItemsChosen) < 0 {
+		return BigIntNum{},
+			errors.New(ePrefix + "Error: 'numOfItems' is LESS THAN 'numOfItemsChosen'! ")
 
-  }
+	}
 
-  if numOfItemsChosen.Cmp(bigZero) == 0 {
-    return BigIntNum{},
-      errors.New(ePrefix + "Error: 'numOfItemsChosen' is ZERO! ")
-  }
+	if numOfItemsChosen.Cmp(bigZero) == 0 {
+		return BigIntNum{},
+			errors.New(ePrefix + "Error: 'numOfItemsChosen' is ZERO! ")
+	}
 
-  bigOne := big.NewInt(1)
+	bigOne := big.NewInt(1)
 
-  if numOfItemsChosen.Cmp(bigOne) == 0 {
+	if numOfItemsChosen.Cmp(bigOne) == 0 {
 
-    biNumOfItems, err := new(BigIntNum).NewBigInt(numOfItems, 0)
+		biNumOfItems, err := new(BigIntNum).NewBigInt(numOfItems, 0)
 
-    if err != nil {
-      return BigIntNum{},
-        &FuncReturnError{
-          ErrPrefix: ePrefix,
-          ReturnFunc: "biNumOfItems, err := new(BigIntNum).\n" +
-            "NewBigInt(numOfItems, 0)",
-          ErrContext: "",
-          ErrMessage: err.Error(),
-        }
+		if err != nil {
+			return BigIntNum{},
+				&FuncReturnError{
+					ErrPrefix: ePrefix,
+					ReturnFunc: "biNumOfItems, err := new(BigIntNum).\n" +
+						"NewBigInt(numOfItems, 0)",
+					ErrContext: "",
+					ErrMessage: err.Error(),
+				}
 
-    }
+		}
 
-    return biNumOfItems, nil
-  }
+		return biNumOfItems, nil
+	}
 
-  numeratorNUpperLimit := big.NewInt(0).Set(numOfItems)
-  numeratorNLowerLimit := big.NewInt(0).Set(bigOne)
+	numeratorNUpperLimit := big.NewInt(0).Set(numOfItems)
+	numeratorNLowerLimit := big.NewInt(0).Set(bigOne)
 
-  nMinusR := big.NewInt(0).Sub(numOfItems, numOfItemsChosen)
+	nMinusR := big.NewInt(0).Sub(numOfItems, numOfItemsChosen)
 
-  if nMinusR.Cmp(bigZero) == 0 {
-    nMinusR = big.NewInt(0).Set(bigOne)
-  }
+	if nMinusR.Cmp(bigZero) == 0 {
+		nMinusR = big.NewInt(0).Set(bigOne)
+	}
 
-  var nFactorial BigIntNum
-  var rFactorial BigIntNum
-  var err error
+	var nFactorial BigIntNum
+	var rFactorial BigIntNum
+	var err error
 
-  if nMinusR.Cmp(numOfItemsChosen) == 1 {
-    // nMinusR is Greater Than numOfItemsChosen
-    numeratorNLowerLimit = big.NewInt(0).Set(nMinusR)
-    nFactorial, err = NFactorial{}.CalcFactorialValueBigInt(
-      numeratorNUpperLimit, numeratorNLowerLimit)
+	if nMinusR.Cmp(numOfItemsChosen) == 1 {
+		// nMinusR is Greater Than numOfItemsChosen
+		numeratorNLowerLimit = big.NewInt(0).Set(nMinusR)
+		nFactorial, err = NFactorial{}.CalcFactorialValueBigInt(
+			numeratorNUpperLimit, numeratorNLowerLimit)
 
-    if err != nil {
-      return BigIntNum{},
-        fmt.Errorf("%v\n"+
-          "Error returned by NFactorial{}.CalcFactorialValueBigInt("+
-          "numeratorNUpperLimit, numeratorNLowerLimit). "+
-          "numeratorNUpperLimit='%v'  numeratorNLowerLimit=nMinusR='%v' Error='%v'",
-          ePrefix,
-          numeratorNUpperLimit.Text(10),
-          numeratorNLowerLimit.Text(10),
-          err.Error())
-    }
+		if err != nil {
+			return BigIntNum{},
+				fmt.Errorf("%v\n"+
+					"Error returned by NFactorial{}.CalcFactorialValueBigInt("+
+					"numeratorNUpperLimit, numeratorNLowerLimit). "+
+					"numeratorNUpperLimit='%v'  numeratorNLowerLimit=nMinusR='%v' Error='%v'",
+					ePrefix,
+					numeratorNUpperLimit.Text(10),
+					numeratorNLowerLimit.Text(10),
+					err.Error())
+		}
 
-    rUpperLimit := big.NewInt(0).Set(numOfItemsChosen)
-    rLowerLimit := big.NewInt(0).Set(bigOne)
+		rUpperLimit := big.NewInt(0).Set(numOfItemsChosen)
+		rLowerLimit := big.NewInt(0).Set(bigOne)
 
-    rFactorial, err = NFactorial{}.CalcFactorialValueBigInt(
-      rUpperLimit, rLowerLimit)
+		rFactorial, err = NFactorial{}.CalcFactorialValueBigInt(
+			rUpperLimit, rLowerLimit)
 
-    if err != nil {
-      return BigIntNum{},
-        fmt.Errorf("%v\n"+
-          "Error returned by NFactorial{}.CalcFactorialValueBigInt("+
-          "rUpperLimit, rLowerLimit). "+
-          "rUpperLimit='%v'  rLowerLimit='%v' Error='%v'",
-          ePrefix,
-          rUpperLimit.Text(10), rLowerLimit.Text(10),
-          err.Error())
-    }
+		if err != nil {
+			return BigIntNum{},
+				fmt.Errorf("%v\n"+
+					"Error returned by NFactorial{}.CalcFactorialValueBigInt("+
+					"rUpperLimit, rLowerLimit). "+
+					"rUpperLimit='%v'  rLowerLimit='%v' Error='%v'",
+					ePrefix,
+					rUpperLimit.Text(10), rLowerLimit.Text(10),
+					err.Error())
+		}
 
-  } else {
-    // nMinusR is Less Than OR Equal to numOfItemsChosen
+	} else {
+		// nMinusR is Less Than OR Equal to numOfItemsChosen
 
-    numeratorNLowerLimit = big.NewInt(0).Set(numOfItemsChosen)
+		numeratorNLowerLimit = big.NewInt(0).Set(numOfItemsChosen)
 
-    nFactorial, err = NFactorial{}.CalcFactorialValueBigInt(
-      numeratorNUpperLimit, numeratorNLowerLimit)
+		nFactorial, err = NFactorial{}.CalcFactorialValueBigInt(
+			numeratorNUpperLimit, numeratorNLowerLimit)
 
-    if err != nil {
-      return BigIntNum{},
-        fmt.Errorf("%v\n"+
-          "Error returned by NFactorial{}.CalcFactorialValueBigInt("+
-          "numeratorNUpperLimit, numeratorNLowerLimit). "+
-          "numeratorNUpperLimit='%v'  numeratorNLowerLimit=numOfItemsChosen='%v' Error='%v'",
-          ePrefix,
-          numeratorNUpperLimit.Text(10),
-          numeratorNLowerLimit.Text(10),
-          err.Error())
-    }
+		if err != nil {
+			return BigIntNum{},
+				fmt.Errorf("%v\n"+
+					"Error returned by NFactorial{}.CalcFactorialValueBigInt("+
+					"numeratorNUpperLimit, numeratorNLowerLimit). "+
+					"numeratorNUpperLimit='%v'  numeratorNLowerLimit=numOfItemsChosen='%v' Error='%v'",
+					ePrefix,
+					numeratorNUpperLimit.Text(10),
+					numeratorNLowerLimit.Text(10),
+					err.Error())
+		}
 
-    rFactorial, err = NFactorial{}.CalcFactorialValueBigInt(
-      nMinusR, big.NewInt(0).Set(bigOne))
+		rFactorial, err = NFactorial{}.CalcFactorialValueBigInt(
+			nMinusR, big.NewInt(0).Set(bigOne))
 
-    if err != nil {
-      return BigIntNum{},
-        fmt.Errorf("%v\n"+
-          "Error returned by NFactorial{}.CalcFactorialValueBigInt("+
-          "nMinusR, 1). "+
-          "UpperLimit=nMinusR='%v'  Error='%v'",
-          ePrefix,
-          nMinusR.Text(10),
-          err.Error())
-    }
-  }
+		if err != nil {
+			return BigIntNum{},
+				fmt.Errorf("%v\n"+
+					"Error returned by NFactorial{}.CalcFactorialValueBigInt("+
+					"nMinusR, 1). "+
+					"UpperLimit=nMinusR='%v'  Error='%v'",
+					ePrefix,
+					nMinusR.Text(10),
+					err.Error())
+		}
+	}
 
-  nFactorialNumStr, err := nFactorial.GetNumStr()
+	nFactorialNumStr, err := nFactorial.GetNumStr()
 
-  if err != nil {
-    return BigIntNum{},
-      &FuncReturnError{
-        ErrPrefix:  ePrefix,
-        ReturnFunc: "nFactorialNumStr, err := nFactorial.GetNumStr()",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
+	if err != nil {
+		return BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix,
+				ReturnFunc: "nFactorialNumStr, err := nFactorial.GetNumStr()",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
 
-  }
+	}
 
-  rFactorialNumStr, err := rFactorial.GetNumStr()
+	rFactorialNumStr, err := rFactorial.GetNumStr()
 
-  if err != nil {
-    return BigIntNum{},
-      &FuncReturnError{
-        ErrPrefix:  ePrefix,
-        ReturnFunc: "rFactorialNumStr, err := rFactorial.GetNumStr()",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
+	if err != nil {
+		return BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix,
+				ReturnFunc: "rFactorialNumStr, err := rFactorial.GetNumStr()",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
 
-  }
+	}
 
-  combinationsResult, err :=
-    new(BigIntMathDivide).BigIntNumFracQuotient(nFactorial, rFactorial, numSeps, 10)
+	combinationsResult, err :=
+		new(BigIntMathDivide).BigIntNumFracQuotient(nFactorial, rFactorial, numSeps, 10)
 
-  if err != nil {
-    return BigIntNum{},
-      fmt.Errorf("%v\n"+
-        "Error returned by BigIntMathDivide{}.BigIntNumFracQuotient("+
-        "nFactorial, rFactorial, numSeps, 10)). "+
-        "nFactorial='%v'  rFactorial='%v' Error='%v'",
-        ePrefix,
-        nFactorialNumStr,
-        rFactorialNumStr,
-        err.Error())
-  }
+	if err != nil {
+		return BigIntNum{},
+			fmt.Errorf("%v\n"+
+				"Error returned by BigIntMathDivide{}.BigIntNumFracQuotient("+
+				"nFactorial, rFactorial, numSeps, 10)). "+
+				"nFactorial='%v'  rFactorial='%v' Error='%v'",
+				ePrefix,
+				nFactorialNumStr,
+				rFactorialNumStr,
+				err.Error())
+	}
 
-  return combinationsResult, nil
+	return combinationsResult, nil
 }
 
 // CombinationsWithRepsBigInt
@@ -382,152 +382,152 @@ func (prob Probability) CombinationsNoRepsBigInt(
 //
 //	Note: 0! = 1
 func (prob Probability) CombinationsWithRepsBigInt(
-  numOfItems, numOfItemsChosen *big.Int) (BigIntNum, error) {
+	numOfItems, numOfItemsChosen *big.Int) (BigIntNum, error) {
 
-  var ePrefix *ePref.ErrPrefixDto
-  var err error
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewIEmpty(
-    nil,
-    "Probability.CombinationsWithRepsBigInt",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"Probability.CombinationsWithRepsBigInt",
+		"")
 
-  if err != nil {
-    return BigIntNum{}, err
-  }
+	if err != nil {
+		return BigIntNum{}, err
+	}
 
-  bigZero := big.NewInt(0)
+	bigZero := big.NewInt(0)
 
-  if numOfItems.Cmp(bigZero) == 0 {
-    return BigIntNum{},
-      fmt.Errorf("%v\n"+
-        "Error: Input parameter 'numOfItems' is ZERO!",
-        ePrefix)
-  }
+	if numOfItems.Cmp(bigZero) == 0 {
+		return BigIntNum{},
+			fmt.Errorf("%v\n"+
+				"Error: Input parameter 'numOfItems' is ZERO!",
+				ePrefix)
+	}
 
-  if numOfItems.Cmp(bigZero) < 0 {
-    return BigIntNum{},
-      fmt.Errorf("%v\n"+
-        "Error: Input parameter 'numOfItems' is LESS THAN ZERO!",
-        ePrefix)
-  }
+	if numOfItems.Cmp(bigZero) < 0 {
+		return BigIntNum{},
+			fmt.Errorf("%v\n"+
+				"Error: Input parameter 'numOfItems' is LESS THAN ZERO!",
+				ePrefix)
+	}
 
-  if numOfItemsChosen.Cmp(bigZero) < 0 {
-    return BigIntNum{},
-      fmt.Errorf("%v\n"+
-        "Error: Input parameter 'numOfItemsChosen' is LESS THAN ZERO!\n",
-        ePrefix)
-  }
+	if numOfItemsChosen.Cmp(bigZero) < 0 {
+		return BigIntNum{},
+			fmt.Errorf("%v\n"+
+				"Error: Input parameter 'numOfItemsChosen' is LESS THAN ZERO!\n",
+				ePrefix)
+	}
 
-  if numOfItemsChosen.Cmp(bigZero) == 0 {
-    return BigIntNum{},
-      fmt.Errorf("%v\n"+
-        "Error: 'numOfItemsChosen' is ZERO!\n",
-        ePrefix)
-  }
+	if numOfItemsChosen.Cmp(bigZero) == 0 {
+		return BigIntNum{},
+			fmt.Errorf("%v\n"+
+				"Error: 'numOfItemsChosen' is ZERO!\n",
+				ePrefix)
+	}
 
-  bigOne := big.NewInt(1)
+	bigOne := big.NewInt(1)
 
-  numSeps := new(NumericSeparatorDto).NewUSADefaults()
+	numSeps := new(NumericSeparatorDto).NewUSADefaults()
 
-  // If 'numOfItemsChosen' == 1, result is always equal to 'numOfItems'.
-  if numOfItemsChosen.Cmp(bigOne) == 0 {
+	// If 'numOfItemsChosen' == 1, result is always equal to 'numOfItems'.
+	if numOfItemsChosen.Cmp(bigOne) == 0 {
 
-    bINumOne, err := new(BigIntNum).NewBigInt(numOfItems, 0)
+		bINumOne, err := new(BigIntNum).NewBigInt(numOfItems, 0)
 
-    if err != nil {
+		if err != nil {
 
-      return BigIntNum{},
-        &FuncReturnError{
-          ErrPrefix:  ePrefix.String(),
-          ReturnFunc: "bINumOne, err := new(BigIntNum).NewBigInt(numOfItems, 0)",
-          ErrContext: "",
-          ErrMessage: err.Error(),
-        }
-    }
+			return BigIntNum{},
+				&FuncReturnError{
+					ErrPrefix:  ePrefix.String(),
+					ReturnFunc: "bINumOne, err := new(BigIntNum).NewBigInt(numOfItems, 0)",
+					ErrContext: "",
+					ErrMessage: err.Error(),
+				}
+		}
 
-    return bINumOne, nil
-  }
+		return bINumOne, nil
+	}
 
-  temp1 := big.NewInt(0).Add(numOfItems, numOfItemsChosen)
+	temp1 := big.NewInt(0).Add(numOfItems, numOfItemsChosen)
 
-  numeratorUpperLimit := big.NewInt(0).Sub(temp1, bigOne)
-  numeratorLowerLimit := big.NewInt(0).Sub(numOfItems, bigOne)
+	numeratorUpperLimit := big.NewInt(0).Sub(temp1, bigOne)
+	numeratorLowerLimit := big.NewInt(0).Sub(numOfItems, bigOne)
 
-  nFactorial, err := NFactorial{}.CalcFactorialValueBigInt(
-    numeratorUpperLimit, numeratorLowerLimit)
+	nFactorial, err := NFactorial{}.CalcFactorialValueBigInt(
+		numeratorUpperLimit, numeratorLowerLimit)
 
-  if err != nil {
-    return BigIntNum{},
-      fmt.Errorf("%v\n"+
-        "Error returned by NFactorial{}.CalcFactorialValueBigInt("+
-        "numeratorUpperLimit, numeratorLowerLimit). "+
-        "numeratorNUpperLimit='%v'  numeratorNLowerLimit='%v' Error='%v'",
-        ePrefix,
-        numeratorUpperLimit.Text(10),
-        numeratorLowerLimit.Text(10),
-        err.Error())
-  }
+	if err != nil {
+		return BigIntNum{},
+			fmt.Errorf("%v\n"+
+				"Error returned by NFactorial{}.CalcFactorialValueBigInt("+
+				"numeratorUpperLimit, numeratorLowerLimit). "+
+				"numeratorNUpperLimit='%v'  numeratorNLowerLimit='%v' Error='%v'",
+				ePrefix,
+				numeratorUpperLimit.Text(10),
+				numeratorLowerLimit.Text(10),
+				err.Error())
+	}
 
-  rUpperLimit := big.NewInt(0).Set(numOfItemsChosen)
-  rLowerLimit := big.NewInt(1)
+	rUpperLimit := big.NewInt(0).Set(numOfItemsChosen)
+	rLowerLimit := big.NewInt(1)
 
-  rFactorial, err := NFactorial{}.CalcFactorialValueBigInt(
-    rUpperLimit, rLowerLimit)
+	rFactorial, err := NFactorial{}.CalcFactorialValueBigInt(
+		rUpperLimit, rLowerLimit)
 
-  if err != nil {
-    return BigIntNum{},
-      fmt.Errorf("%v\n"+
-        "Error returned by NFactorial{}.CalcFactorialValueBigInt("+
-        "rUpperLimit, rLowerLimit). "+
-        "rUpperLimit='%v'  rLowerLimit='%v' Error='%v'",
-        ePrefix,
-        rUpperLimit.Text(10), rLowerLimit.Text(10),
-        err.Error())
-  }
+	if err != nil {
+		return BigIntNum{},
+			fmt.Errorf("%v\n"+
+				"Error returned by NFactorial{}.CalcFactorialValueBigInt("+
+				"rUpperLimit, rLowerLimit). "+
+				"rUpperLimit='%v'  rLowerLimit='%v' Error='%v'",
+				ePrefix,
+				rUpperLimit.Text(10), rLowerLimit.Text(10),
+				err.Error())
+	}
 
-  nFactorialNumStr, err := nFactorial.GetNumStr()
+	nFactorialNumStr, err := nFactorial.GetNumStr()
 
-  if err != nil {
+	if err != nil {
 
-    return BigIntNum{},
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "nFactorialNumStr, err := nFactorial.GetNumStr()",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-  }
+		return BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "nFactorialNumStr, err := nFactorial.GetNumStr()",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  rFactorialNumStr, err := rFactorial.GetNumStr()
+	rFactorialNumStr, err := rFactorial.GetNumStr()
 
-  if err != nil {
+	if err != nil {
 
-    return BigIntNum{},
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "rFactorialNumStr, err := rFactorial.GetNumStr()",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-  }
+		return BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "rFactorialNumStr, err := rFactorial.GetNumStr()",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  combinationsResult, err :=
-    new(BigIntMathDivide).BigIntNumFracQuotient(nFactorial, rFactorial, numSeps, 10)
+	combinationsResult, err :=
+		new(BigIntMathDivide).BigIntNumFracQuotient(nFactorial, rFactorial, numSeps, 10)
 
-  if err != nil {
-    return BigIntNum{},
-      fmt.Errorf("%v\n"+
-        "Error returned by BigIntMathDivide{}.BigIntNumFracQuotient("+
-        "nFactorial, rFactorial, 10)). "+
-        "nFactorial='%v'  rFactorial='%v'\nError='%v'",
-        ePrefix,
-        nFactorialNumStr, rFactorialNumStr,
-        err.Error())
-  }
+	if err != nil {
+		return BigIntNum{},
+			fmt.Errorf("%v\n"+
+				"Error returned by BigIntMathDivide{}.BigIntNumFracQuotient("+
+				"nFactorial, rFactorial, 10)). "+
+				"nFactorial='%v'  rFactorial='%v'\nError='%v'",
+				ePrefix,
+				nFactorialNumStr, rFactorialNumStr,
+				err.Error())
+	}
 
-  return combinationsResult, nil
+	return combinationsResult, nil
 }
 
 // CombinationsBigIntNum
@@ -601,165 +601,165 @@ func (prob Probability) CombinationsWithRepsBigInt(
 //	both be positive integer numbers. 'numOfItems' can be greater than, equal
 //	to or less than 'numOfItemsChosen'.
 func (prob Probability) CombinationsBigIntNum(
-  numOfItems, numOfItemsChosen BigIntNum, allowRepetitions bool) (BigIntNum, error) {
+	numOfItems, numOfItemsChosen BigIntNum, allowRepetitions bool) (BigIntNum, error) {
 
-  var ePrefix *ePref.ErrPrefixDto
-  var err error
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewIEmpty(
-    nil,
-    "Probability.CombinationsBigIntNum",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"Probability.CombinationsBigIntNum",
+		"")
 
-  if err != nil {
-    return BigIntNum{}, err
-  }
+	if err != nil {
+		return BigIntNum{}, err
+	}
 
-  numOfItemsIsZero, err := numOfItems.IsZero()
+	numOfItemsIsZero, err := numOfItems.IsZero()
 
-  if err != nil {
-    return BigIntNum{},
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "numOfItemsIsZero, err := numOfItems.IsZero()",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-  }
+	if err != nil {
+		return BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "numOfItemsIsZero, err := numOfItems.IsZero()",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  if numOfItemsIsZero {
+	if numOfItemsIsZero {
 
-    return BigIntNum{},
-      fmt.Errorf("%v\n"+
-        "Error: Input parameter 'numOfItems' is ZERO!\n",
-        ePrefix)
-  }
+		return BigIntNum{},
+			fmt.Errorf("%v\n"+
+				"Error: Input parameter 'numOfItems' is ZERO!\n",
+				ePrefix)
+	}
 
-  numOfItemsChosenIsZero, err := numOfItemsChosen.IsZero()
+	numOfItemsChosenIsZero, err := numOfItemsChosen.IsZero()
 
-  if err != nil {
-    return BigIntNum{},
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "numOfItemsChosenIsZero, err := numOfItemsChosen.IsZero()",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
+	if err != nil {
+		return BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "numOfItemsChosenIsZero, err := numOfItemsChosen.IsZero()",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
 
-  }
+	}
 
-  if numOfItemsChosenIsZero {
-    return BigIntNum{},
-      fmt.Errorf("%v\n"+
-        "Error: Input parameter 'numOfItemsPicked' is ZERO!",
-        ePrefix)
-  }
+	if numOfItemsChosenIsZero {
+		return BigIntNum{},
+			fmt.Errorf("%v\n"+
+				"Error: Input parameter 'numOfItemsPicked' is ZERO!",
+				ePrefix)
+	}
 
-  numOfItemsSignValue, err := numOfItems.GetSign()
+	numOfItemsSignValue, err := numOfItems.GetSign()
 
-  if err != nil {
-    return BigIntNum{},
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "numOfItemsSignValue, err := numOfItems.GetSign()",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
+	if err != nil {
+		return BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "numOfItemsSignValue, err := numOfItems.GetSign()",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
 
-  }
+	}
 
-  if numOfItemsSignValue == -1 {
-    return BigIntNum{},
-      fmt.Errorf("%v\n"+
-        "Error: Input parameter 'numOfItems' is LESS THAN ZERO!",
-        ePrefix)
-  }
+	if numOfItemsSignValue == -1 {
+		return BigIntNum{},
+			fmt.Errorf("%v\n"+
+				"Error: Input parameter 'numOfItems' is LESS THAN ZERO!",
+				ePrefix)
+	}
 
-  numOfItemsChosenSignValue, err := numOfItemsChosen.GetSign()
+	numOfItemsChosenSignValue, err := numOfItemsChosen.GetSign()
 
-  if err != nil {
-    return BigIntNum{},
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "numOfItemsChosenSignValue, err := numOfItemsChosen.GetSign()",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
+	if err != nil {
+		return BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "numOfItemsChosenSignValue, err := numOfItemsChosen.GetSign()",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
 
-  }
+	}
 
-  if numOfItemsChosenSignValue == -1 {
-    return BigIntNum{},
-      fmt.Errorf("%v\n"+
-        "Error: Input parameter 'numOfItemsPicked' is LESS THAN ZERO!",
-        ePrefix)
-  }
+	if numOfItemsChosenSignValue == -1 {
+		return BigIntNum{},
+			fmt.Errorf("%v\n"+
+				"Error: Input parameter 'numOfItemsPicked' is LESS THAN ZERO!",
+				ePrefix)
+	}
 
-  numOfItemsPrecisionUint, err := numOfItems.GetPrecisionUint()
+	numOfItemsPrecisionUint, err := numOfItems.GetPrecisionUint()
 
-  if err != nil {
-    return BigIntNum{},
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "numOfItemsPrecisionUint, err := numOfItems.GetPrecisionUint()",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-  }
+	if err != nil {
+		return BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "numOfItemsPrecisionUint, err := numOfItems.GetPrecisionUint()",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  if numOfItemsPrecisionUint > 0 {
-    return BigIntNum{},
-      fmt.Errorf("%v\n"+
-        "Error: Input parameter 'numOfItems' is NOT an Integer!",
-        ePrefix)
-  }
+	if numOfItemsPrecisionUint > 0 {
+		return BigIntNum{},
+			fmt.Errorf("%v\n"+
+				"Error: Input parameter 'numOfItems' is NOT an Integer!",
+				ePrefix)
+	}
 
-  numOfItemsChosenPrecisionUint, err := numOfItemsChosen.GetPrecisionUint()
+	numOfItemsChosenPrecisionUint, err := numOfItemsChosen.GetPrecisionUint()
 
-  if err != nil {
-    return BigIntNum{},
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "numOfItemsChosenPrecisionUint, err := numOfItemsChosen.GetPrecisionUint()",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-  }
+	if err != nil {
+		return BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "numOfItemsChosenPrecisionUint, err := numOfItemsChosen.GetPrecisionUint()",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  if numOfItemsChosenPrecisionUint > 0 {
-    return BigIntNum{},
-      fmt.Errorf("%v\n"+
-        "Error: Input parameter 'numOfItems' is NOT an Integer!",
-        ePrefix)
-  }
+	if numOfItemsChosenPrecisionUint > 0 {
+		return BigIntNum{},
+			fmt.Errorf("%v\n"+
+				"Error: Input parameter 'numOfItems' is NOT an Integer!",
+				ePrefix)
+	}
 
-  numOfItemsVsChosenCmp, err := numOfItems.Cmp(numOfItemsChosen)
+	numOfItemsVsChosenCmp, err := numOfItems.Cmp(numOfItemsChosen)
 
-  if err != nil {
+	if err != nil {
 
-    return BigIntNum{},
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "numOfItemsCmpResult, err := numOfItems.Cmp(numOfItemsChosen)",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-  }
+		return BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "numOfItemsCmpResult, err := numOfItems.Cmp(numOfItemsChosen)",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  if !allowRepetitions && numOfItemsVsChosenCmp < 0 {
-    return BigIntNum{},
-      fmt.Errorf("%v\n"+
-        "Error: 'numOfItems' is LESS THAN 'numOfItemsPicked'!\n",
-        ePrefix)
+	if !allowRepetitions && numOfItemsVsChosenCmp < 0 {
+		return BigIntNum{},
+			fmt.Errorf("%v\n"+
+				"Error: 'numOfItems' is LESS THAN 'numOfItemsPicked'!\n",
+				ePrefix)
 
-  }
+	}
 
-  if !allowRepetitions {
-    return Probability{}.CombinationsNoRepsBigInt(numOfItems.bigInt, numOfItemsChosen.bigInt)
-  }
+	if !allowRepetitions {
+		return Probability{}.CombinationsNoRepsBigInt(numOfItems.bigInt, numOfItemsChosen.bigInt)
+	}
 
-  return Probability{}.CombinationsWithRepsBigInt(numOfItems.bigInt, numOfItemsChosen.bigInt)
+	return Probability{}.CombinationsWithRepsBigInt(numOfItems.bigInt, numOfItemsChosen.bigInt)
 }
 
 // CombinationsDecimal
@@ -834,226 +834,226 @@ func (prob Probability) CombinationsBigIntNum(
 //	must both be positive integer numbers. 'numOfItems' can be greater than,
 //	equal to or less than 'numOfItemsChosen'.
 func (prob Probability) CombinationsDecimal(
-  numOfItems, numOfItemsChosen Decimal, allowRepetitions bool) (Decimal, error) {
+	numOfItems, numOfItemsChosen Decimal, allowRepetitions bool) (Decimal, error) {
 
-  var ePrefix *ePref.ErrPrefixDto
-  var err error
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewIEmpty(
-    nil,
-    "Probability.CombinationsDecimal",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"Probability.CombinationsDecimal",
+		"")
 
-  if err != nil {
-    return Decimal{}, err
-  }
+	if err != nil {
+		return Decimal{}, err
+	}
 
-  numOfItemsSignValue, err := numOfItems.GetSign()
+	numOfItemsSignValue, err := numOfItems.GetSign()
 
-  if err != nil {
+	if err != nil {
 
-    return Decimal{},
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "numOfItemsSignValue, err := numOfItems.GetSign()",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-  }
+		return Decimal{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "numOfItemsSignValue, err := numOfItems.GetSign()",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  if numOfItemsSignValue == -1 {
-    return Decimal{},
-      fmt.Errorf("%v\n"+
-        "Error: Input parameter 'numOfItems' is LESS THAN ZERO!\n",
-        ePrefix)
-  }
+	if numOfItemsSignValue == -1 {
+		return Decimal{},
+			fmt.Errorf("%v\n"+
+				"Error: Input parameter 'numOfItems' is LESS THAN ZERO!\n",
+				ePrefix)
+	}
 
-  numOfItemsIsZero, err := numOfItems.IsZero()
+	numOfItemsIsZero, err := numOfItems.IsZero()
 
-  if err != nil {
+	if err != nil {
 
-    return Decimal{},
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "numOfItemsIsZero, err := numOfItems.IsZero()",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-  }
+		return Decimal{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "numOfItemsIsZero, err := numOfItems.IsZero()",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  if numOfItemsIsZero {
-    return Decimal{},
-      fmt.Errorf("%v\n"+
-        "Error: Input parameter 'numOfItems' is ZERO!\n",
-        ePrefix)
-  }
+	if numOfItemsIsZero {
+		return Decimal{},
+			fmt.Errorf("%v\n"+
+				"Error: Input parameter 'numOfItems' is ZERO!\n",
+				ePrefix)
+	}
 
-  numOfItemsPrecisionUint, err := numOfItems.GetPrecisionUint()
+	numOfItemsPrecisionUint, err := numOfItems.GetPrecisionUint()
 
-  if err != nil {
+	if err != nil {
 
-    return Decimal{},
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "numOfItemsPrecisionUint, err := numOfItems.GetPrecisionUint()",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-  }
+		return Decimal{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "numOfItemsPrecisionUint, err := numOfItems.GetPrecisionUint()",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  if numOfItemsPrecisionUint > 0 {
-    return Decimal{},
-      fmt.Errorf("%v\n"+
-        "Error: Input parameter 'numOfItems' is NOT an Integer!\n",
-        ePrefix)
-  }
+	if numOfItemsPrecisionUint > 0 {
+		return Decimal{},
+			fmt.Errorf("%v\n"+
+				"Error: Input parameter 'numOfItems' is NOT an Integer!\n",
+				ePrefix)
+	}
 
-  numOfItemsChosenSignValue, err := numOfItems.GetSign()
+	numOfItemsChosenSignValue, err := numOfItems.GetSign()
 
-  if err != nil {
+	if err != nil {
 
-    return Decimal{},
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "numOfItemsChosenSignValue, err := numOfItems.GetSign()",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-  }
+		return Decimal{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "numOfItemsChosenSignValue, err := numOfItems.GetSign()",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  if numOfItemsChosenSignValue == -1 {
-    return Decimal{},
-      fmt.Errorf("%v\n"+
-        "Error: Input parameter 'numOfItemsChosen' is LESS THAN ZERO!\n",
-        ePrefix)
-  }
+	if numOfItemsChosenSignValue == -1 {
+		return Decimal{},
+			fmt.Errorf("%v\n"+
+				"Error: Input parameter 'numOfItemsChosen' is LESS THAN ZERO!\n",
+				ePrefix)
+	}
 
-  numOfItemsChosenIsZero, err := numOfItemsChosen.IsZero()
+	numOfItemsChosenIsZero, err := numOfItemsChosen.IsZero()
 
-  if err != nil {
+	if err != nil {
 
-    return Decimal{},
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "numOfItemsChosenIsZero, err := numOfItemsChosen.IsZero()",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-  }
+		return Decimal{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "numOfItemsChosenIsZero, err := numOfItemsChosen.IsZero()",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  if numOfItemsChosenIsZero {
-    return Decimal{},
-      fmt.Errorf("%v\n"+
-        "Error: Input parameter 'numOfItemsChosen' is ZERO!\n",
-        ePrefix)
-  }
+	if numOfItemsChosenIsZero {
+		return Decimal{},
+			fmt.Errorf("%v\n"+
+				"Error: Input parameter 'numOfItemsChosen' is ZERO!\n",
+				ePrefix)
+	}
 
-  numOfItemsChosenPrecisionUint, err := numOfItems.GetPrecisionUint()
+	numOfItemsChosenPrecisionUint, err := numOfItems.GetPrecisionUint()
 
-  if numOfItemsChosenPrecisionUint > 0 {
-    return Decimal{},
-      fmt.Errorf("%v\n"+
-        "Error: Input parameter 'numOfItemsChosen' is NOT an Integer!\n",
-        ePrefix)
-  }
+	if numOfItemsChosenPrecisionUint > 0 {
+		return Decimal{},
+			fmt.Errorf("%v\n"+
+				"Error: Input parameter 'numOfItemsChosen' is NOT an Integer!\n",
+				ePrefix)
+	}
 
-  n, err := numOfItems.GetBigInt()
+	n, err := numOfItems.GetBigInt()
 
-  if err != nil {
-    return Decimal{},
-      fmt.Errorf("%v\n"+
-        "Error returned by numOfItems.GetBigInt().\n"+
-        "Error='%v' \n",
-        ePrefix,
-        err.Error())
-  }
+	if err != nil {
+		return Decimal{},
+			fmt.Errorf("%v\n"+
+				"Error returned by numOfItems.GetBigInt().\n"+
+				"Error='%v' \n",
+				ePrefix,
+				err.Error())
+	}
 
-  r, err := numOfItemsChosen.GetBigInt()
+	r, err := numOfItemsChosen.GetBigInt()
 
-  if err != nil {
-    return Decimal{},
-      fmt.Errorf("%v\n"+
-        "Error returned by numOfItemsChosen.GetBigInt().\n"+
-        "Error='%v' \n",
-        ePrefix,
-        err.Error())
-  }
+	if err != nil {
+		return Decimal{},
+			fmt.Errorf("%v\n"+
+				"Error returned by numOfItemsChosen.GetBigInt().\n"+
+				"Error='%v' \n",
+				ePrefix,
+				err.Error())
+	}
 
-  numOfItemsNumStr, err := numOfItems.GetNumStr()
+	numOfItemsNumStr, err := numOfItems.GetNumStr()
 
-  if err != nil {
+	if err != nil {
 
-    return Decimal{},
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "numOfItemsNumStr, err := numOfItems.GetNumStr()",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-  }
+		return Decimal{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "numOfItemsNumStr, err := numOfItems.GetNumStr()",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  numOfItemsChosenNumStr, err := numOfItemsChosen.GetNumStr()
+	numOfItemsChosenNumStr, err := numOfItemsChosen.GetNumStr()
 
-  if err != nil {
+	if err != nil {
 
-    return Decimal{},
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "numOfItemsChosenNumStr, err := numOfItemsChosen.GetNumStr()",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-  }
+		return Decimal{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "numOfItemsChosenNumStr, err := numOfItemsChosen.GetNumStr()",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  if !allowRepetitions && n.Cmp(r) < 0 {
-    return Decimal{},
-      fmt.Errorf("%v\n"+
-        "Error: 'numOfItems' is LESS THAN 'numOfItemsChosen'.\n"+
-        "numOfItems='%v' numOfItemsChosen='%v' \n",
-        ePrefix,
-        numOfItemsNumStr,
-        numOfItemsChosenNumStr)
-  }
+	if !allowRepetitions && n.Cmp(r) < 0 {
+		return Decimal{},
+			fmt.Errorf("%v\n"+
+				"Error: 'numOfItems' is LESS THAN 'numOfItemsChosen'.\n"+
+				"numOfItems='%v' numOfItemsChosen='%v' \n",
+				ePrefix,
+				numOfItemsNumStr,
+				numOfItemsChosenNumStr)
+	}
 
-  var result BigIntNum
+	var result BigIntNum
 
-  if !allowRepetitions {
+	if !allowRepetitions {
 
-    result, err = Probability{}.CombinationsNoRepsBigInt(n, r)
+		result, err = Probability{}.CombinationsNoRepsBigInt(n, r)
 
-    if err != nil {
-      return Decimal{},
-        fmt.Errorf("%v\n"+
-          "Error returned by Probability{}.CombinationsNoRepsBigInt(numOfItems, numOfItemsChosen).\n"+
-          "Error='%v' \n",
-          ePrefix,
-          err.Error())
-    }
+		if err != nil {
+			return Decimal{},
+				fmt.Errorf("%v\n"+
+					"Error returned by Probability{}.CombinationsNoRepsBigInt(numOfItems, numOfItemsChosen).\n"+
+					"Error='%v' \n",
+					ePrefix,
+					err.Error())
+		}
 
-  } else {
+	} else {
 
-    result, err = Probability{}.CombinationsWithRepsBigInt(n, r)
+		result, err = Probability{}.CombinationsWithRepsBigInt(n, r)
 
-    if err != nil {
-      return Decimal{},
-        fmt.Errorf("%v\n"+
-          "Error returned by Probability{}.CombinationsWithRepsBigInt(numOfItems, numOfItemsChosen).\n"+
-          "Error='%v' \n", ePrefix, err.Error())
-    }
+		if err != nil {
+			return Decimal{},
+				fmt.Errorf("%v\n"+
+					"Error returned by Probability{}.CombinationsWithRepsBigInt(numOfItems, numOfItemsChosen).\n"+
+					"Error='%v' \n", ePrefix, err.Error())
+		}
 
-  }
+	}
 
-  resultDecimal, err := result.GetDecimal()
+	resultDecimal, err := result.GetDecimal()
 
-  if err != nil {
-    return Decimal{},
-      fmt.Errorf("%v\n"+
-        "Error returned by result.GetDecimal().\n"+
-        "Error='%v' \n", ePrefix, err.Error())
-  }
+	if err != nil {
+		return Decimal{},
+			fmt.Errorf("%v\n"+
+				"Error returned by result.GetDecimal().\n"+
+				"Error='%v' \n", ePrefix, err.Error())
+	}
 
-  return resultDecimal, nil
+	return resultDecimal, nil
 }
 
 // CombinationsIntAry
@@ -1124,241 +1124,241 @@ func (prob Probability) CombinationsDecimal(
 //	 must both be positive integer numbers. 'numOfItems' can be greater
 //	 than, equal to or less than 'numOfItemsChosen'.
 func (prob Probability) CombinationsIntAry(
-  numOfItems, numOfItemsChosen IntAry, allowRepetitions bool) (IntAry, error) {
+	numOfItems, numOfItemsChosen IntAry, allowRepetitions bool) (IntAry, error) {
 
-  var ePrefix *ePref.ErrPrefixDto
-  var err error
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewIEmpty(
-    nil,
-    "Probability.CombinationsIntAry",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"Probability.CombinationsIntAry",
+		"")
 
-  if err != nil {
-    return IntAry{}, err
-  }
+	if err != nil {
+		return IntAry{}, err
+	}
 
-  numOfItemsSignValue, err := numOfItems.GetSign()
+	numOfItemsSignValue, err := numOfItems.GetSign()
 
-  if err != nil {
+	if err != nil {
 
-    return IntAry{},
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "numOfItemsSignValue, err := numOfItems.GetSign()",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-  }
+		return IntAry{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "numOfItemsSignValue, err := numOfItems.GetSign()",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  if numOfItemsSignValue == -1 {
-    return IntAry{},
-      fmt.Errorf("%v\n"+
-        "Error: Input parameter 'numOfItems' is LESS THAN ZERO!\n",
-        ePrefix)
-  }
+	if numOfItemsSignValue == -1 {
+		return IntAry{},
+			fmt.Errorf("%v\n"+
+				"Error: Input parameter 'numOfItems' is LESS THAN ZERO!\n",
+				ePrefix)
+	}
 
-  numOfItemsIsZero, err := numOfItems.IsZero()
+	numOfItemsIsZero, err := numOfItems.IsZero()
 
-  if err != nil {
+	if err != nil {
 
-    return IntAry{},
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "numOfItemsIsZero, err := numOfItems.IsZero()",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-  }
+		return IntAry{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "numOfItemsIsZero, err := numOfItems.IsZero()",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  if numOfItemsIsZero {
-    return IntAry{},
-      fmt.Errorf("%v\n"+
-        "Error: Input parameter 'numOfItems' is ZERO!\n",
-        ePrefix)
-  }
+	if numOfItemsIsZero {
+		return IntAry{},
+			fmt.Errorf("%v\n"+
+				"Error: Input parameter 'numOfItems' is ZERO!\n",
+				ePrefix)
+	}
 
-  numOfItemsPrecisionUint, err := numOfItems.GetPrecisionUint()
+	numOfItemsPrecisionUint, err := numOfItems.GetPrecisionUint()
 
-  if err != nil {
+	if err != nil {
 
-    return IntAry{},
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "numOfItemsPrecisionUint, err := numOfItems.GetPrecisionUint()",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-  }
+		return IntAry{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "numOfItemsPrecisionUint, err := numOfItems.GetPrecisionUint()",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  if numOfItemsPrecisionUint > 0 {
-    return IntAry{},
-      fmt.Errorf("%v\n"+
-        "Error: Input parameter 'numOfItems' is NOT an Integer!\n",
-        ePrefix)
-  }
+	if numOfItemsPrecisionUint > 0 {
+		return IntAry{},
+			fmt.Errorf("%v\n"+
+				"Error: Input parameter 'numOfItems' is NOT an Integer!\n",
+				ePrefix)
+	}
 
-  numOfItemsChosenSignValue, err := numOfItemsChosen.GetSign()
+	numOfItemsChosenSignValue, err := numOfItemsChosen.GetSign()
 
-  if err != nil {
+	if err != nil {
 
-    return IntAry{},
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "numOfItemsChosenSignValue, err := numOfItemsChosen.GetSign()",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-  }
+		return IntAry{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "numOfItemsChosenSignValue, err := numOfItemsChosen.GetSign()",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  if numOfItemsChosenSignValue == -1 {
-    return IntAry{},
-      fmt.Errorf("%v\n"+
-        "Error: Input parameter 'numOfItemsChosen' is LESS THAN ZERO!\n",
-        ePrefix)
-  }
+	if numOfItemsChosenSignValue == -1 {
+		return IntAry{},
+			fmt.Errorf("%v\n"+
+				"Error: Input parameter 'numOfItemsChosen' is LESS THAN ZERO!\n",
+				ePrefix)
+	}
 
-  numOfItemsChosenIsZero, err := numOfItemsChosen.IsZero()
+	numOfItemsChosenIsZero, err := numOfItemsChosen.IsZero()
 
-  if err != nil {
+	if err != nil {
 
-    return IntAry{},
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "numOfItemsChosenIsZero, err := numOfItemsChosen.IsZero()",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-  }
+		return IntAry{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "numOfItemsChosenIsZero, err := numOfItemsChosen.IsZero()",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  if numOfItemsChosenIsZero {
-    return IntAry{},
-      fmt.Errorf("%v\n"+
-        "Error: Input parameter 'numOfItemsChosen' is ZERO!\n",
-        ePrefix)
-  }
+	if numOfItemsChosenIsZero {
+		return IntAry{},
+			fmt.Errorf("%v\n"+
+				"Error: Input parameter 'numOfItemsChosen' is ZERO!\n",
+				ePrefix)
+	}
 
-  numOfItemsChosenPrecisionUint, err := numOfItemsChosen.GetPrecisionUint()
+	numOfItemsChosenPrecisionUint, err := numOfItemsChosen.GetPrecisionUint()
 
-  if err != nil {
+	if err != nil {
 
-    return IntAry{},
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "numOfItemsChosenPrecisionUint, err := numOfItemsChosen.GetPrecisionUint()",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-  }
+		return IntAry{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "numOfItemsChosenPrecisionUint, err := numOfItemsChosen.GetPrecisionUint()",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  if numOfItemsChosenPrecisionUint > 0 {
-    return IntAry{},
-      fmt.Errorf("%v\n"+
-        "Error: Input parameter 'numOfItemsChosen' is NOT an Integer!\n",
-        ePrefix)
-  }
+	if numOfItemsChosenPrecisionUint > 0 {
+		return IntAry{},
+			fmt.Errorf("%v\n"+
+				"Error: Input parameter 'numOfItemsChosen' is NOT an Integer!\n",
+				ePrefix)
+	}
 
-  n, err := numOfItems.GetBigInt()
+	n, err := numOfItems.GetBigInt()
 
-  if err != nil {
-    return IntAry{},
-      fmt.Errorf("%v\n"+
-        "Error returned by numOfItems.GetBigInt().\n"+
-        "Error='%v' \n",
-        ePrefix,
-        err.Error())
-  }
+	if err != nil {
+		return IntAry{},
+			fmt.Errorf("%v\n"+
+				"Error returned by numOfItems.GetBigInt().\n"+
+				"Error='%v' \n",
+				ePrefix,
+				err.Error())
+	}
 
-  r, err := numOfItemsChosen.GetBigInt()
+	r, err := numOfItemsChosen.GetBigInt()
 
-  if err != nil {
-    return IntAry{},
-      fmt.Errorf("%v\n"+
-        "Error returned by numOfItemsChosen.GetBigInt().\n"+
-        "Error='%v' \n",
-        ePrefix,
-        err.Error())
-  }
+	if err != nil {
+		return IntAry{},
+			fmt.Errorf("%v\n"+
+				"Error returned by numOfItemsChosen.GetBigInt().\n"+
+				"Error='%v' \n",
+				ePrefix,
+				err.Error())
+	}
 
-  numOfItemsNumStr, err := numOfItems.GetNumStr()
+	numOfItemsNumStr, err := numOfItems.GetNumStr()
 
-  if err != nil {
+	if err != nil {
 
-    return IntAry{},
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "numOfItemsNumStr, err := numOfItems.GetNumStr()",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-  }
+		return IntAry{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "numOfItemsNumStr, err := numOfItems.GetNumStr()",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  numOfItemsChosenNumStr, err := numOfItemsChosen.GetNumStr()
+	numOfItemsChosenNumStr, err := numOfItemsChosen.GetNumStr()
 
-  if err != nil {
+	if err != nil {
 
-    return IntAry{},
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "numOfItemsChosenNumStr, err := numOfItemsChosen.GetNumStr()",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-  }
+		return IntAry{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "numOfItemsChosenNumStr, err := numOfItemsChosen.GetNumStr()",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  if !allowRepetitions && r.Cmp(n) == 1 {
-    return IntAry{},
-      fmt.Errorf("%v\n"+
-        "Error: 'numOfItemsChosen' is GREATER THAN 'numOfItems'.\n"+
-        "numOfItems='%v'\nnumOfItemsChosen='%v' \n",
-        ePrefix,
-        numOfItemsNumStr,
-        numOfItemsChosenNumStr)
-  }
+	if !allowRepetitions && r.Cmp(n) == 1 {
+		return IntAry{},
+			fmt.Errorf("%v\n"+
+				"Error: 'numOfItemsChosen' is GREATER THAN 'numOfItems'.\n"+
+				"numOfItems='%v'\nnumOfItemsChosen='%v' \n",
+				ePrefix,
+				numOfItemsNumStr,
+				numOfItemsChosenNumStr)
+	}
 
-  var result BigIntNum
+	var result BigIntNum
 
-  if !allowRepetitions {
+	if !allowRepetitions {
 
-    result, err = Probability{}.CombinationsNoRepsBigInt(n, r)
+		result, err = Probability{}.CombinationsNoRepsBigInt(n, r)
 
-    if err != nil {
-      return IntAry{},
-        fmt.Errorf("%v\n"+
-          "Error returned by Probability{}.CombinationsNoRepsBigInt(numOfItems, numOfItemsChosen).\n"+
-          "Error='%v'\n",
-          ePrefix,
-          err.Error())
-    }
+		if err != nil {
+			return IntAry{},
+				fmt.Errorf("%v\n"+
+					"Error returned by Probability{}.CombinationsNoRepsBigInt(numOfItems, numOfItemsChosen).\n"+
+					"Error='%v'\n",
+					ePrefix,
+					err.Error())
+		}
 
-  } else {
+	} else {
 
-    result, err = Probability{}.CombinationsWithRepsBigInt(n, r)
+		result, err = Probability{}.CombinationsWithRepsBigInt(n, r)
 
-    if err != nil {
-      return IntAry{},
-        fmt.Errorf("%v\n"+
-          "Error returned by Probability{}.CombinationsWithRepsBigInt(numOfItems, numOfItemsChosen).\n"+
-          "Error='%v' \n",
-          ePrefix,
-          err.Error())
-    }
+		if err != nil {
+			return IntAry{},
+				fmt.Errorf("%v\n"+
+					"Error returned by Probability{}.CombinationsWithRepsBigInt(numOfItems, numOfItemsChosen).\n"+
+					"Error='%v' \n",
+					ePrefix,
+					err.Error())
+		}
 
-  }
+	}
 
-  resultIntAry, err := result.GetIntAry()
+	resultIntAry, err := result.GetIntAry()
 
-  if err != nil {
-    return IntAry{},
-      fmt.Errorf("%v\n"+
-        "Error returned by result.GetIntAry().\n"+
-        "Error='%v' \n",
-        ePrefix,
-        err.Error())
-  }
+	if err != nil {
+		return IntAry{},
+			fmt.Errorf("%v\n"+
+				"Error returned by result.GetIntAry().\n"+
+				"Error='%v' \n",
+				ePrefix,
+				err.Error())
+	}
 
-  return resultIntAry, nil
+	return resultIntAry, nil
 }
 
 // CombinationsINumMgr
@@ -1429,229 +1429,229 @@ func (prob Probability) CombinationsIntAry(
 //	must both be positive integer numbers. 'numOfItems' can be greater
 //	than, equal to or less than 'numOfItemsChosen'.
 func (prob Probability) CombinationsINumMgr(
-  numOfItems, numOfItemsChosen INumMgr, allowRepetitions bool) (BigIntNum, error) {
+	numOfItems, numOfItemsChosen INumMgr, allowRepetitions bool) (BigIntNum, error) {
 
-  var ePrefix *ePref.ErrPrefixDto
-  var err error
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewIEmpty(
-    nil,
-    "Probability.CombinationsINumMgr",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"Probability.CombinationsINumMgr",
+		"")
 
-  if err != nil {
-    return BigIntNum{}, err
-  }
+	if err != nil {
+		return BigIntNum{}, err
+	}
 
-  numOfItemsSignValue, err := numOfItems.GetSign()
+	numOfItemsSignValue, err := numOfItems.GetSign()
 
-  if err != nil {
+	if err != nil {
 
-    return BigIntNum{},
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "numOfItemsSignValue, err := numOfItems.GetSign()",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-  }
+		return BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "numOfItemsSignValue, err := numOfItems.GetSign()",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  if numOfItemsSignValue == -1 {
-    return BigIntNum{},
-      fmt.Errorf("%v\n"+
-        "Error: Input parameter 'numOfItems' is LESS THAN ZERO!\n",
-        ePrefix)
-  }
+	if numOfItemsSignValue == -1 {
+		return BigIntNum{},
+			fmt.Errorf("%v\n"+
+				"Error: Input parameter 'numOfItems' is LESS THAN ZERO!\n",
+				ePrefix)
+	}
 
-  numOfItemsIsZero, err := numOfItems.IsZero()
+	numOfItemsIsZero, err := numOfItems.IsZero()
 
-  if err != nil {
+	if err != nil {
 
-    return BigIntNum{},
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "numOfItemsIsZero, err := numOfItems.IsZero()",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-  }
+		return BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "numOfItemsIsZero, err := numOfItems.IsZero()",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  if numOfItemsIsZero {
-    return BigIntNum{},
-      fmt.Errorf("%v\n" +
-        "Error: Input parameter 'numOfItems' is ZERO!\n")
-  }
+	if numOfItemsIsZero {
+		return BigIntNum{},
+			fmt.Errorf("%v\n" +
+				"Error: Input parameter 'numOfItems' is ZERO!\n")
+	}
 
-  numOfItemsPrecisionUint, err := numOfItems.GetPrecisionUint()
+	numOfItemsPrecisionUint, err := numOfItems.GetPrecisionUint()
 
-  if err != nil {
+	if err != nil {
 
-    return BigIntNum{},
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "numOfItemsPrecisionUint, err := numOfItems.GetPrecisionUint()",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-  }
+		return BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "numOfItemsPrecisionUint, err := numOfItems.GetPrecisionUint()",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  if numOfItemsPrecisionUint > 0 {
-    return BigIntNum{},
-      fmt.Errorf("%v\n"+
-        "Error: Input parameter 'numOfItems' is NOT an Integer!\n",
-        ePrefix)
-  }
+	if numOfItemsPrecisionUint > 0 {
+		return BigIntNum{},
+			fmt.Errorf("%v\n"+
+				"Error: Input parameter 'numOfItems' is NOT an Integer!\n",
+				ePrefix)
+	}
 
-  numOfItemsChosenSignValue, err := numOfItemsChosen.GetSign()
+	numOfItemsChosenSignValue, err := numOfItemsChosen.GetSign()
 
-  if err != nil {
+	if err != nil {
 
-    return BigIntNum{},
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "numOfItemsChosenSignValue, err := numOfItemsChosen.GetSign()",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-  }
+		return BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "numOfItemsChosenSignValue, err := numOfItemsChosen.GetSign()",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  if numOfItemsChosenSignValue == -1 {
-    return BigIntNum{},
-      fmt.Errorf("%v\n"+
-        "Error: Input parameter 'numOfItemsChosen' is LESS THAN ZERO!\n",
-        ePrefix)
-  }
+	if numOfItemsChosenSignValue == -1 {
+		return BigIntNum{},
+			fmt.Errorf("%v\n"+
+				"Error: Input parameter 'numOfItemsChosen' is LESS THAN ZERO!\n",
+				ePrefix)
+	}
 
-  numOfItemsChosenIsZero, err := numOfItemsChosen.IsZero()
+	numOfItemsChosenIsZero, err := numOfItemsChosen.IsZero()
 
-  if err != nil {
+	if err != nil {
 
-    return BigIntNum{},
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "numOfItemsChosenIsZero, err := numOfItemsChosen.IsZero()",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-  }
+		return BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "numOfItemsChosenIsZero, err := numOfItemsChosen.IsZero()",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  if numOfItemsChosenIsZero {
-    return BigIntNum{},
-      fmt.Errorf("%v\n"+
-        "Error: Input parameter 'numOfItemsChosen' is ZERO!\n",
-        ePrefix)
-  }
+	if numOfItemsChosenIsZero {
+		return BigIntNum{},
+			fmt.Errorf("%v\n"+
+				"Error: Input parameter 'numOfItemsChosen' is ZERO!\n",
+				ePrefix)
+	}
 
-  numOfItemsChosenPrecisionUint, err := numOfItemsChosen.GetPrecisionUint()
+	numOfItemsChosenPrecisionUint, err := numOfItemsChosen.GetPrecisionUint()
 
-  if err != nil {
+	if err != nil {
 
-    return BigIntNum{},
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "numOfItemsChosenPrecisionUint, err := numOfItemsChosen.GetPrecisionUint()",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-  }
+		return BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "numOfItemsChosenPrecisionUint, err := numOfItemsChosen.GetPrecisionUint()",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  if numOfItemsChosenPrecisionUint > 0 {
-    return BigIntNum{},
-      fmt.Errorf("%v\n"+
-        "Error: Input parameter 'numOfItemsChosen' is NOT an Integer!\n",
-        ePrefix)
-  }
+	if numOfItemsChosenPrecisionUint > 0 {
+		return BigIntNum{},
+			fmt.Errorf("%v\n"+
+				"Error: Input parameter 'numOfItemsChosen' is NOT an Integer!\n",
+				ePrefix)
+	}
 
-  n, err := numOfItems.GetBigInt()
+	n, err := numOfItems.GetBigInt()
 
-  if err != nil {
-    return BigIntNum{},
-      fmt.Errorf("%v\n"+
-        "Error returned by numOfItems.GetBigInt().\n"+
-        "Error='%v'\n",
-        ePrefix,
-        err.Error())
-  }
+	if err != nil {
+		return BigIntNum{},
+			fmt.Errorf("%v\n"+
+				"Error returned by numOfItems.GetBigInt().\n"+
+				"Error='%v'\n",
+				ePrefix,
+				err.Error())
+	}
 
-  r, err := numOfItemsChosen.GetBigInt()
+	r, err := numOfItemsChosen.GetBigInt()
 
-  if err != nil {
-    return BigIntNum{},
-      fmt.Errorf("%v\n"+
-        "Error returned by numOfItemsChosen.GetBigInt().\n"+
-        "Error='%v'\n",
-        ePrefix,
-        err.Error())
-  }
+	if err != nil {
+		return BigIntNum{},
+			fmt.Errorf("%v\n"+
+				"Error returned by numOfItemsChosen.GetBigInt().\n"+
+				"Error='%v'\n",
+				ePrefix,
+				err.Error())
+	}
 
-  numOfItemsNumStr, err := numOfItems.GetNumStr()
+	numOfItemsNumStr, err := numOfItems.GetNumStr()
 
-  if err != nil {
+	if err != nil {
 
-    return BigIntNum{},
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "numOfItemsNumStr, err := numOfItems.GetNumStr()",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-  }
+		return BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "numOfItemsNumStr, err := numOfItems.GetNumStr()",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  numOfItemsChosenNumStr, err := numOfItemsChosen.GetNumStr()
+	numOfItemsChosenNumStr, err := numOfItemsChosen.GetNumStr()
 
-  if err != nil {
+	if err != nil {
 
-    return BigIntNum{},
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "numOfItemsChosenNumStr, err := numOfItemsChosen.GetNumStr()",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-  }
+		return BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "numOfItemsChosenNumStr, err := numOfItemsChosen.GetNumStr()",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  if !allowRepetitions && r.Cmp(n) == 1 {
-    return BigIntNum{},
-      fmt.Errorf("%v\n"+
-        "Error: 'numOfItemsChosen' is GREATER THAN 'numOfItems'.\n"+
-        "numOfItems='%v' numOfItemsChosen='%v' \n",
-        ePrefix,
-        numOfItemsNumStr,
-        numOfItemsChosenNumStr)
-  }
+	if !allowRepetitions && r.Cmp(n) == 1 {
+		return BigIntNum{},
+			fmt.Errorf("%v\n"+
+				"Error: 'numOfItemsChosen' is GREATER THAN 'numOfItems'.\n"+
+				"numOfItems='%v' numOfItemsChosen='%v' \n",
+				ePrefix,
+				numOfItemsNumStr,
+				numOfItemsChosenNumStr)
+	}
 
-  var result BigIntNum
+	var result BigIntNum
 
-  if !allowRepetitions {
+	if !allowRepetitions {
 
-    result, err = Probability{}.CombinationsNoRepsBigInt(n, r)
+		result, err = Probability{}.CombinationsNoRepsBigInt(n, r)
 
-    if err != nil {
-      return BigIntNum{},
-        fmt.Errorf("%v\n"+
-          "Error returned by Probability{}.CombinationsNoRepsBigInt(numOfItems, numOfItemsChosen).\n"+
-          "Error='%v' \n",
-          ePrefix,
-          err.Error())
-    }
+		if err != nil {
+			return BigIntNum{},
+				fmt.Errorf("%v\n"+
+					"Error returned by Probability{}.CombinationsNoRepsBigInt(numOfItems, numOfItemsChosen).\n"+
+					"Error='%v' \n",
+					ePrefix,
+					err.Error())
+		}
 
-  } else {
+	} else {
 
-    result, err = Probability{}.CombinationsWithRepsBigInt(n, r)
+		result, err = Probability{}.CombinationsWithRepsBigInt(n, r)
 
-    if err != nil {
-      return BigIntNum{},
-        fmt.Errorf("%v\n"+
-          "Error returned by Probability{}.CombinationsWithRepsBigInt(numOfItems, numOfItemsChosen).\n"+
-          "Error='%v' \n",
-          ePrefix,
-          err.Error())
-    }
+		if err != nil {
+			return BigIntNum{},
+				fmt.Errorf("%v\n"+
+					"Error returned by Probability{}.CombinationsWithRepsBigInt(numOfItems, numOfItemsChosen).\n"+
+					"Error='%v' \n",
+					ePrefix,
+					err.Error())
+		}
 
-  }
+	}
 
-  return result, nil
+	return result, nil
 }
 
 // CombinationsInt
@@ -1722,84 +1722,84 @@ func (prob Probability) CombinationsINumMgr(
 //	must both be positive integer numbers. 'numOfItems' can be greater than,
 //	equal to or less than 'numOfItemsChosen'.
 func (prob Probability) CombinationsInt(
-  numOfItems, numOfItemsChosen int, allowRepetitions bool) (BigIntNum, error) {
+	numOfItems, numOfItemsChosen int, allowRepetitions bool) (BigIntNum, error) {
 
-  ePrefix := "Probability.CombinationsInt() "
+	ePrefix := "Probability.CombinationsInt() "
 
-  if numOfItems < 0 {
-    return BigIntNum{},
-      fmt.Errorf("%v\n"+
-        "Error: Input parameter 'numOfItems' is LESS THAN ZERO!\n",
-        ePrefix)
-  }
+	if numOfItems < 0 {
+		return BigIntNum{},
+			fmt.Errorf("%v\n"+
+				"Error: Input parameter 'numOfItems' is LESS THAN ZERO!\n",
+				ePrefix)
+	}
 
-  if numOfItems == 0 {
-    return BigIntNum{},
-      fmt.Errorf("%v\n"+
-        "Error: Input parameter 'numOfItems' is ZERO!\n",
-        ePrefix)
-  }
+	if numOfItems == 0 {
+		return BigIntNum{},
+			fmt.Errorf("%v\n"+
+				"Error: Input parameter 'numOfItems' is ZERO!\n",
+				ePrefix)
+	}
 
-  if numOfItemsChosen < 0 {
-    return BigIntNum{},
-      fmt.Errorf("%v\n"+
-        "Error: Input parameter 'numOfItemsChosen' is LESS THAN ZERO!\n",
-        ePrefix)
-  }
+	if numOfItemsChosen < 0 {
+		return BigIntNum{},
+			fmt.Errorf("%v\n"+
+				"Error: Input parameter 'numOfItemsChosen' is LESS THAN ZERO!\n",
+				ePrefix)
+	}
 
-  if numOfItemsChosen == 0 {
-    return BigIntNum{},
-      fmt.Errorf("%v\n"+
-        "Error: Input parameter 'numOfItemsChosen' is ZERO!\n",
-        ePrefix)
-  }
+	if numOfItemsChosen == 0 {
+		return BigIntNum{},
+			fmt.Errorf("%v\n"+
+				"Error: Input parameter 'numOfItemsChosen' is ZERO!\n",
+				ePrefix)
+	}
 
-  n := big.NewInt(int64(numOfItems))
+	n := big.NewInt(int64(numOfItems))
 
-  r := big.NewInt(int64(numOfItemsChosen))
+	r := big.NewInt(int64(numOfItemsChosen))
 
-  if !allowRepetitions && r.Cmp(n) == 1 {
-    return BigIntNum{},
-      fmt.Errorf("%v\n"+
-        "Error: 'numOfItemsChosen' is GREATER THAN 'numOfItems'.\n"+
-        "numOfItems='%v' numOfItemsChosen='%v' \n",
-        ePrefix,
-        numOfItems,
-        numOfItemsChosen)
-  }
+	if !allowRepetitions && r.Cmp(n) == 1 {
+		return BigIntNum{},
+			fmt.Errorf("%v\n"+
+				"Error: 'numOfItemsChosen' is GREATER THAN 'numOfItems'.\n"+
+				"numOfItems='%v' numOfItemsChosen='%v' \n",
+				ePrefix,
+				numOfItems,
+				numOfItemsChosen)
+	}
 
-  var result BigIntNum
-  var err error
+	var result BigIntNum
+	var err error
 
-  if !allowRepetitions {
+	if !allowRepetitions {
 
-    result, err = Probability{}.CombinationsNoRepsBigInt(n, r)
+		result, err = Probability{}.CombinationsNoRepsBigInt(n, r)
 
-    if err != nil {
-      return BigIntNum{},
-        fmt.Errorf("%v\n"+
-          "Error returned by Probability{}.CombinationsNoRepsBigInt(numOfItems, numOfItemsChosen).\n"+
-          "Error='%v' \n",
-          ePrefix,
-          err.Error())
-    }
+		if err != nil {
+			return BigIntNum{},
+				fmt.Errorf("%v\n"+
+					"Error returned by Probability{}.CombinationsNoRepsBigInt(numOfItems, numOfItemsChosen).\n"+
+					"Error='%v' \n",
+					ePrefix,
+					err.Error())
+		}
 
-  } else {
+	} else {
 
-    result, err = Probability{}.CombinationsWithRepsBigInt(n, r)
+		result, err = Probability{}.CombinationsWithRepsBigInt(n, r)
 
-    if err != nil {
-      return BigIntNum{},
-        fmt.Errorf("%v\n"+
-          "Error returned by Probability{}.CombinationsWithRepsBigInt(numOfItems, numOfItemsChosen).\n"+
-          "Error='%v' \n",
-          ePrefix,
-          err.Error())
-    }
+		if err != nil {
+			return BigIntNum{},
+				fmt.Errorf("%v\n"+
+					"Error returned by Probability{}.CombinationsWithRepsBigInt(numOfItems, numOfItemsChosen).\n"+
+					"Error='%v' \n",
+					ePrefix,
+					err.Error())
+		}
 
-  }
+	}
 
-  return result, nil
+	return result, nil
 }
 
 // CombinationsInt32
@@ -1870,83 +1870,83 @@ func (prob Probability) CombinationsInt(
 //	must both be positive integer numbers. 'numOfItems' can be greater
 //	than, equal to or less than 'numOfItemsChosen'.
 func (prob Probability) CombinationsInt32(
-  numOfItems, numOfItemsChosen int32, allowRepetitions bool) (BigIntNum, error) {
+	numOfItems, numOfItemsChosen int32, allowRepetitions bool) (BigIntNum, error) {
 
-  ePrefix := "Probability.CombinationsInt32() "
+	ePrefix := "Probability.CombinationsInt32() "
 
-  if numOfItems < 0 {
-    return BigIntNum{},
-      fmt.Errorf("%v\n"+
-        "Error: Input parameter 'numOfItems' is LESS THAN ZERO!\n",
-        ePrefix)
-  }
+	if numOfItems < 0 {
+		return BigIntNum{},
+			fmt.Errorf("%v\n"+
+				"Error: Input parameter 'numOfItems' is LESS THAN ZERO!\n",
+				ePrefix)
+	}
 
-  if numOfItems == 0 {
-    return BigIntNum{},
-      fmt.Errorf("%v\n"+
-        "Error: Input parameter 'numOfItems' is ZERO!\n",
-        ePrefix)
-  }
+	if numOfItems == 0 {
+		return BigIntNum{},
+			fmt.Errorf("%v\n"+
+				"Error: Input parameter 'numOfItems' is ZERO!\n",
+				ePrefix)
+	}
 
-  if numOfItemsChosen < 0 {
-    return BigIntNum{},
-      fmt.Errorf("%v\n"+
-        "Error: Input parameter 'numOfItemsChosen' is LESS THAN ZERO!\n",
-        ePrefix)
-  }
+	if numOfItemsChosen < 0 {
+		return BigIntNum{},
+			fmt.Errorf("%v\n"+
+				"Error: Input parameter 'numOfItemsChosen' is LESS THAN ZERO!\n",
+				ePrefix)
+	}
 
-  if numOfItemsChosen == 0 {
-    return BigIntNum{},
-      fmt.Errorf("%v\n"+
-        "Error: Input parameter 'numOfItemsChosen' is ZERO!\n",
-        ePrefix)
-  }
+	if numOfItemsChosen == 0 {
+		return BigIntNum{},
+			fmt.Errorf("%v\n"+
+				"Error: Input parameter 'numOfItemsChosen' is ZERO!\n",
+				ePrefix)
+	}
 
-  n := big.NewInt(int64(numOfItems))
+	n := big.NewInt(int64(numOfItems))
 
-  r := big.NewInt(int64(numOfItemsChosen))
+	r := big.NewInt(int64(numOfItemsChosen))
 
-  if !allowRepetitions && r.Cmp(n) == 1 {
-    return BigIntNum{},
-      fmt.Errorf("%v\n"+
-        "Error: 'numOfItemsChosen' is GREATER THAN 'numOfItems'.\n"+
-        "numOfItems='%v' numOfItemsChosen='%v'\n",
-        ePrefix,
-        numOfItems, numOfItemsChosen)
-  }
+	if !allowRepetitions && r.Cmp(n) == 1 {
+		return BigIntNum{},
+			fmt.Errorf("%v\n"+
+				"Error: 'numOfItemsChosen' is GREATER THAN 'numOfItems'.\n"+
+				"numOfItems='%v' numOfItemsChosen='%v'\n",
+				ePrefix,
+				numOfItems, numOfItemsChosen)
+	}
 
-  var result BigIntNum
-  var err error
+	var result BigIntNum
+	var err error
 
-  if !allowRepetitions {
+	if !allowRepetitions {
 
-    result, err = Probability{}.CombinationsNoRepsBigInt(n, r)
+		result, err = Probability{}.CombinationsNoRepsBigInt(n, r)
 
-    if err != nil {
-      return BigIntNum{},
-        fmt.Errorf("%v\n"+
-          "Error returned by Probability{}.CombinationsNoRepsBigInt(numOfItems, numOfItemsChosen). "+
-          "Error='%v' \n",
-          ePrefix,
-          err.Error())
-    }
+		if err != nil {
+			return BigIntNum{},
+				fmt.Errorf("%v\n"+
+					"Error returned by Probability{}.CombinationsNoRepsBigInt(numOfItems, numOfItemsChosen). "+
+					"Error='%v' \n",
+					ePrefix,
+					err.Error())
+		}
 
-  } else {
+	} else {
 
-    result, err = Probability{}.CombinationsWithRepsBigInt(n, r)
+		result, err = Probability{}.CombinationsWithRepsBigInt(n, r)
 
-    if err != nil {
-      return BigIntNum{},
-        fmt.Errorf("%v\n"+
-          "Error returned by Probability{}.CombinationsWithRepsBigInt32(numOfItems, numOfItemsChosen).\n"+
-          "Error='%v' \n",
-          ePrefix,
-          err.Error())
-    }
+		if err != nil {
+			return BigIntNum{},
+				fmt.Errorf("%v\n"+
+					"Error returned by Probability{}.CombinationsWithRepsBigInt32(numOfItems, numOfItemsChosen).\n"+
+					"Error='%v' \n",
+					ePrefix,
+					err.Error())
+		}
 
-  }
+	}
 
-  return result, nil
+	return result, nil
 }
 
 // CombinationsInt64
@@ -2016,80 +2016,80 @@ func (prob Probability) CombinationsInt32(
 //	must both be positive integer numbers. 'numOfItems' can be greater
 //	than, equal to or less than 'numOfItemsChosen'.
 func (prob Probability) CombinationsInt64(
-  numOfItems, numOfItemsChosen int64, allowRepetitions bool) (BigIntNum, error) {
+	numOfItems, numOfItemsChosen int64, allowRepetitions bool) (BigIntNum, error) {
 
-  ePrefix := "Probability.CombinationsInt64() "
+	ePrefix := "Probability.CombinationsInt64() "
 
-  if numOfItems < 0 {
-    return BigIntNum{},
-      fmt.Errorf("%v\n"+
-        "Error: Input parameter 'numOfItems' is LESS THAN ZERO!\n",
-        ePrefix)
-  }
+	if numOfItems < 0 {
+		return BigIntNum{},
+			fmt.Errorf("%v\n"+
+				"Error: Input parameter 'numOfItems' is LESS THAN ZERO!\n",
+				ePrefix)
+	}
 
-  if numOfItems == 0 {
-    return BigIntNum{},
-      fmt.Errorf("%v\n"+
-        "Error: Input parameter 'numOfItems' is ZERO!\n",
-        ePrefix)
-  }
+	if numOfItems == 0 {
+		return BigIntNum{},
+			fmt.Errorf("%v\n"+
+				"Error: Input parameter 'numOfItems' is ZERO!\n",
+				ePrefix)
+	}
 
-  if numOfItemsChosen < 0 {
-    return BigIntNum{},
-      fmt.Errorf("%v\n"+
-        "Error: Input parameter 'numOfItemsChosen' is LESS THAN ZERO!\n",
-        ePrefix)
-  }
+	if numOfItemsChosen < 0 {
+		return BigIntNum{},
+			fmt.Errorf("%v\n"+
+				"Error: Input parameter 'numOfItemsChosen' is LESS THAN ZERO!\n",
+				ePrefix)
+	}
 
-  if numOfItemsChosen == 0 {
-    return BigIntNum{},
-      fmt.Errorf("%v\n"+
-        "Error: Input parameter 'numOfItemsChosen' is ZERO!\n",
-        ePrefix)
-  }
+	if numOfItemsChosen == 0 {
+		return BigIntNum{},
+			fmt.Errorf("%v\n"+
+				"Error: Input parameter 'numOfItemsChosen' is ZERO!\n",
+				ePrefix)
+	}
 
-  n := big.NewInt(numOfItems)
+	n := big.NewInt(numOfItems)
 
-  r := big.NewInt(numOfItemsChosen)
+	r := big.NewInt(numOfItemsChosen)
 
-  if !allowRepetitions && r.Cmp(n) == 1 {
-    return BigIntNum{},
-      fmt.Errorf("%v\n"+
-        "Error: 'numOfItemsChosen' is GREATER THAN 'numOfItems'.\n"+
-        "numOfItems='%v' numOfItemsChosen='%v' \n",
-        ePrefix,
-        numOfItems,
-        numOfItemsChosen)
-  }
+	if !allowRepetitions && r.Cmp(n) == 1 {
+		return BigIntNum{},
+			fmt.Errorf("%v\n"+
+				"Error: 'numOfItemsChosen' is GREATER THAN 'numOfItems'.\n"+
+				"numOfItems='%v' numOfItemsChosen='%v' \n",
+				ePrefix,
+				numOfItems,
+				numOfItemsChosen)
+	}
 
-  var result BigIntNum
-  var err error
+	var result BigIntNum
+	var err error
 
-  if !allowRepetitions {
+	if !allowRepetitions {
 
-    result, err = Probability{}.CombinationsNoRepsBigInt(n, r)
+		result, err = Probability{}.CombinationsNoRepsBigInt(n, r)
 
-    if err != nil {
-      return BigIntNum{},
-        fmt.Errorf("%v\n"+
-          "Error returned by Probability{}.CombinationsNoRepsBigInt(numOfItems, numOfItemsChosen).\n"+
-          "Error='%v' \n", ePrefix, err.Error())
-    }
+		if err != nil {
+			return BigIntNum{},
+				fmt.Errorf("%v\n"+
+					"Error returned by Probability{}.CombinationsNoRepsBigInt(numOfItems, numOfItemsChosen).\n"+
+					"Error='%v' \n", ePrefix, err.Error())
+		}
 
-  } else {
+	} else {
 
-    result, err = Probability{}.CombinationsWithRepsBigInt(n, r)
+		result, err = Probability{}.CombinationsWithRepsBigInt(n, r)
 
-    if err != nil {
-      return BigIntNum{},
-        fmt.Errorf("%v\n"+
-          "Error returned by Probability{}.CombinationsWithRepsBigInt64(numOfItems, numOfItemsChosen).\n"+
-          "Error='%v' \n", ePrefix, err.Error())
-    }
+		if err != nil {
+			return BigIntNum{},
+				fmt.Errorf("%v\n"+
+					"Error returned by Probability{}.CombinationsWithRepsBigInt64(numOfItems, numOfItemsChosen).\n"+
+					"Error='%v' \n", ePrefix, err.Error())
+		}
 
-  }
+	}
 
-  return result, nil
+	return result, nil
 }
 
 // CombinationsNumStrDto
@@ -2152,230 +2152,230 @@ func (prob Probability) CombinationsInt64(
 //	be positive integer numbers. 'numOfItems' can be greater than, equal to or less
 //	than 'numOfItemsChosen'.
 func (prob Probability) CombinationsNumStrDto(
-  numOfItems, numOfItemsChosen NumStrDto, allowRepetitions bool) (NumStrDto, error) {
+	numOfItems, numOfItemsChosen NumStrDto, allowRepetitions bool) (NumStrDto, error) {
 
-  var ePrefix *ePref.ErrPrefixDto
-  var err error
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewIEmpty(
-    nil,
-    "Probability.CombinationsNumStrDto",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"Probability.CombinationsNumStrDto",
+		"")
 
-  if err != nil {
-    return NumStrDto{}, err
-  }
+	if err != nil {
+		return NumStrDto{}, err
+	}
 
-  numOfItemsSignValue, err := numOfItems.GetSign()
+	numOfItemsSignValue, err := numOfItems.GetSign()
 
-  if err != nil {
+	if err != nil {
 
-    return NumStrDto{},
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "numOfItemsSignValue, err := numOfItems.GetSign()",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-  }
+		return NumStrDto{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "numOfItemsSignValue, err := numOfItems.GetSign()",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  if numOfItemsSignValue == -1 {
-    return NumStrDto{},
-      fmt.Errorf("%v\n"+
-        "Error: Input parameter 'numOfItems' is LESS THAN ZERO!\n",
-        ePrefix)
-  }
+	if numOfItemsSignValue == -1 {
+		return NumStrDto{},
+			fmt.Errorf("%v\n"+
+				"Error: Input parameter 'numOfItems' is LESS THAN ZERO!\n",
+				ePrefix)
+	}
 
-  numOfItemsIsZero, err := numOfItems.IsZero()
+	numOfItemsIsZero, err := numOfItems.IsZero()
 
-  if err != nil {
+	if err != nil {
 
-    return NumStrDto{},
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "numOfItemsIsZero, err := numOfItems.IsZero()",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-  }
+		return NumStrDto{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "numOfItemsIsZero, err := numOfItems.IsZero()",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  if numOfItemsIsZero {
-    return NumStrDto{},
-      fmt.Errorf("%v\n"+
-        "Error: Input parameter 'numOfItems' is ZERO!\n",
-        ePrefix)
-  }
+	if numOfItemsIsZero {
+		return NumStrDto{},
+			fmt.Errorf("%v\n"+
+				"Error: Input parameter 'numOfItems' is ZERO!\n",
+				ePrefix)
+	}
 
-  numOfItemsPrecisionUint, err := numOfItems.GetPrecisionUint()
+	numOfItemsPrecisionUint, err := numOfItems.GetPrecisionUint()
 
-  if err != nil {
+	if err != nil {
 
-    return NumStrDto{},
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "numOfItemsPrecisionUint, err := numOfItems.GetPrecisionUint()",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-  }
+		return NumStrDto{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "numOfItemsPrecisionUint, err := numOfItems.GetPrecisionUint()",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  if numOfItemsPrecisionUint > 0 {
-    return NumStrDto{},
-      fmt.Errorf("%v\n"+
-        "Error: Input parameter 'numOfItems' is NOT an Integer!\n",
-        ePrefix)
-  }
+	if numOfItemsPrecisionUint > 0 {
+		return NumStrDto{},
+			fmt.Errorf("%v\n"+
+				"Error: Input parameter 'numOfItems' is NOT an Integer!\n",
+				ePrefix)
+	}
 
-  numOfItemsChosenSignValue, err := numOfItemsChosen.GetSign()
+	numOfItemsChosenSignValue, err := numOfItemsChosen.GetSign()
 
-  if err != nil {
+	if err != nil {
 
-    return NumStrDto{},
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "numOfItemsChosenSignValue, err := numOfItemsChosen.GetSign()",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-  }
+		return NumStrDto{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "numOfItemsChosenSignValue, err := numOfItemsChosen.GetSign()",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  if numOfItemsChosenSignValue == -1 {
-    return NumStrDto{},
-      fmt.Errorf("%v\n"+
-        "Error: Input parameter 'numOfItemsChosen' is LESS THAN ZERO!\n",
-        ePrefix)
-  }
+	if numOfItemsChosenSignValue == -1 {
+		return NumStrDto{},
+			fmt.Errorf("%v\n"+
+				"Error: Input parameter 'numOfItemsChosen' is LESS THAN ZERO!\n",
+				ePrefix)
+	}
 
-  numOfItemsChosenIsZero, err := numOfItemsChosen.IsZero()
+	numOfItemsChosenIsZero, err := numOfItemsChosen.IsZero()
 
-  if err != nil {
+	if err != nil {
 
-    return NumStrDto{},
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "numOfItemsChosenIsZero, err := numOfItemsChosen.IsZero()",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-  }
+		return NumStrDto{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "numOfItemsChosenIsZero, err := numOfItemsChosen.IsZero()",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  if numOfItemsChosenIsZero {
-    return NumStrDto{},
-      fmt.Errorf("%v\n"+
-        "Error: Input parameter 'numOfItemsChosen' is ZERO!\n",
-        ePrefix)
-  }
+	if numOfItemsChosenIsZero {
+		return NumStrDto{},
+			fmt.Errorf("%v\n"+
+				"Error: Input parameter 'numOfItemsChosen' is ZERO!\n",
+				ePrefix)
+	}
 
-  numOfItemsChosenPrecisionUint, err := numOfItemsChosen.GetPrecisionUint()
+	numOfItemsChosenPrecisionUint, err := numOfItemsChosen.GetPrecisionUint()
 
-  if err != nil {
+	if err != nil {
 
-    return NumStrDto{},
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "numOfItemsChosenPrecisionUint, err := numOfItemsChosen.GetPrecisionUint()",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-  }
+		return NumStrDto{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "numOfItemsChosenPrecisionUint, err := numOfItemsChosen.GetPrecisionUint()",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  if numOfItemsChosenPrecisionUint > 0 {
-    return NumStrDto{},
-      fmt.Errorf("%v\n"+
-        "Error: Input parameter 'numOfItemsChosen' is NOT an Integer!\n",
-        ePrefix)
-  }
+	if numOfItemsChosenPrecisionUint > 0 {
+		return NumStrDto{},
+			fmt.Errorf("%v\n"+
+				"Error: Input parameter 'numOfItemsChosen' is NOT an Integer!\n",
+				ePrefix)
+	}
 
-  n, err := numOfItems.GetBigInt()
+	n, err := numOfItems.GetBigInt()
 
-  if err != nil {
-    return NumStrDto{},
-      fmt.Errorf("%v\n"+
-        "Error returned by numOfItems.GetBigInt().\n"+
-        "Error='%v' \n", ePrefix, err.Error())
-  }
+	if err != nil {
+		return NumStrDto{},
+			fmt.Errorf("%v\n"+
+				"Error returned by numOfItems.GetBigInt().\n"+
+				"Error='%v' \n", ePrefix, err.Error())
+	}
 
-  r, err := numOfItemsChosen.GetBigInt()
+	r, err := numOfItemsChosen.GetBigInt()
 
-  if err != nil {
-    return NumStrDto{},
-      fmt.Errorf("%v\n"+
-        "Error returned by numOfItemsChosen.GetBigInt().\n"+
-        "Error='%v' \n", ePrefix, err.Error())
-  }
+	if err != nil {
+		return NumStrDto{},
+			fmt.Errorf("%v\n"+
+				"Error returned by numOfItemsChosen.GetBigInt().\n"+
+				"Error='%v' \n", ePrefix, err.Error())
+	}
 
-  numOfItemsNumStr, err := numOfItems.GetNumStr()
+	numOfItemsNumStr, err := numOfItems.GetNumStr()
 
-  if err != nil {
+	if err != nil {
 
-    return NumStrDto{},
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "numOfItemsNumStr, err := numOfItems.GetNumStr()",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-  }
+		return NumStrDto{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "numOfItemsNumStr, err := numOfItems.GetNumStr()",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  numOfItemsChosenNumStr, err := numOfItemsChosen.GetNumStr()
+	numOfItemsChosenNumStr, err := numOfItemsChosen.GetNumStr()
 
-  if err != nil {
+	if err != nil {
 
-    return NumStrDto{},
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "numOfItemsChosenNumStr, err := numOfItemsChosen.GetNumStr()",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-  }
+		return NumStrDto{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "numOfItemsChosenNumStr, err := numOfItemsChosen.GetNumStr()",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  if !allowRepetitions && r.Cmp(n) == 1 {
-    return NumStrDto{},
-      fmt.Errorf("%v\n"+
-        "Error: 'numOfItemsChosen' is GREATER THAN 'numOfItems'.\n"+
-        "numOfItems='%v' numOfItemsChosen='%v' \n",
-        ePrefix,
-        numOfItemsNumStr, numOfItemsChosenNumStr)
-  }
+	if !allowRepetitions && r.Cmp(n) == 1 {
+		return NumStrDto{},
+			fmt.Errorf("%v\n"+
+				"Error: 'numOfItemsChosen' is GREATER THAN 'numOfItems'.\n"+
+				"numOfItems='%v' numOfItemsChosen='%v' \n",
+				ePrefix,
+				numOfItemsNumStr, numOfItemsChosenNumStr)
+	}
 
-  var result BigIntNum
+	var result BigIntNum
 
-  if !allowRepetitions {
+	if !allowRepetitions {
 
-    result, err = Probability{}.CombinationsNoRepsBigInt(n, r)
+		result, err = Probability{}.CombinationsNoRepsBigInt(n, r)
 
-    if err != nil {
-      return NumStrDto{},
-        fmt.Errorf("%v\n"+
-          "Error returned by Probability{}.CombinationsNoRepsBigInt(numOfItems, numOfItemsChosen).\n"+
-          "Error='%v' \n", ePrefix, err.Error())
-    }
+		if err != nil {
+			return NumStrDto{},
+				fmt.Errorf("%v\n"+
+					"Error returned by Probability{}.CombinationsNoRepsBigInt(numOfItems, numOfItemsChosen).\n"+
+					"Error='%v' \n", ePrefix, err.Error())
+		}
 
-  } else {
+	} else {
 
-    result, err = Probability{}.CombinationsWithRepsBigInt(n, r)
+		result, err = Probability{}.CombinationsWithRepsBigInt(n, r)
 
-    if err != nil {
-      return NumStrDto{},
-        fmt.Errorf("%v\n"+
-          "Error returned by Probability{}.CombinationsWithRepsBigInt(numOfItems, numOfItemsChosen).\n"+
-          "Error='%v' \n", ePrefix, err.Error())
-    }
+		if err != nil {
+			return NumStrDto{},
+				fmt.Errorf("%v\n"+
+					"Error returned by Probability{}.CombinationsWithRepsBigInt(numOfItems, numOfItemsChosen).\n"+
+					"Error='%v' \n", ePrefix, err.Error())
+		}
 
-  }
+	}
 
-  resultNumStrDto, err := result.GetNumStrDto()
+	resultNumStrDto, err := result.GetNumStrDto()
 
-  if err != nil {
-    return NumStrDto{},
-      fmt.Errorf("%v\n"+
-        "Error returned by result.GetNumStrDto().\n"+
-        "Error='%v' \n", ePrefix, err.Error())
-  }
+	if err != nil {
+		return NumStrDto{},
+			fmt.Errorf("%v\n"+
+				"Error returned by result.GetNumStrDto().\n"+
+				"Error='%v' \n", ePrefix, err.Error())
+	}
 
-  return resultNumStrDto, nil
+	return resultNumStrDto, nil
 }
 
 // CombinationsNumberStr
@@ -2443,200 +2443,200 @@ func (prob Probability) CombinationsNumStrDto(
 //	be positive integer numbers. 'numOfItems' can be greater than, equal to or less
 //	than 'numOfItemsChosen'.
 func (prob Probability) CombinationsNumberStr(
-  numOfItems, numOfItemsChosen string, allowRepetitions bool) (BigIntNum, error) {
+	numOfItems, numOfItemsChosen string, allowRepetitions bool) (BigIntNum, error) {
 
-  var ePrefix *ePref.ErrPrefixDto
-  var err error
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewIEmpty(
-    nil,
-    "Probability.CombinationsNumberStr",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"Probability.CombinationsNumberStr",
+		"")
 
-  if err != nil {
-    return BigIntNum{}, err
-  }
+	if err != nil {
+		return BigIntNum{}, err
+	}
 
-  if numOfItems == "" {
-    return BigIntNum{},
-      fmt.Errorf("%v\n"+
-        "Error: Input parameter 'numOfItems' is an EMPTY string!\n",
-        ePrefix)
-  }
+	if numOfItems == "" {
+		return BigIntNum{},
+			fmt.Errorf("%v\n"+
+				"Error: Input parameter 'numOfItems' is an EMPTY string!\n",
+				ePrefix)
+	}
 
-  if numOfItemsChosen == "" {
-    return BigIntNum{},
-      fmt.Errorf("%v\n"+
-        "Error: Input parameter 'numOfItemsChosen' is an EMPTY string!\n",
-        ePrefix)
-  }
+	if numOfItemsChosen == "" {
+		return BigIntNum{},
+			fmt.Errorf("%v\n"+
+				"Error: Input parameter 'numOfItemsChosen' is an EMPTY string!\n",
+				ePrefix)
+	}
 
-  nBigIntNum, err := new(BigIntNum).NewNumStr(numOfItems)
+	nBigIntNum, err := new(BigIntNum).NewNumStr(numOfItems)
 
-  if err != nil {
-    return BigIntNum{},
-      fmt.Errorf("%v\n"+
-        "Error returned by:\n"+
-        "new(BigIntNum).NewNumStr(numOfItems).\n"+
-        "Error='%v'\n",
-        ePrefix,
-        err.Error())
-  }
+	if err != nil {
+		return BigIntNum{},
+			fmt.Errorf("%v\n"+
+				"Error returned by:\n"+
+				"new(BigIntNum).NewNumStr(numOfItems).\n"+
+				"Error='%v'\n",
+				ePrefix,
+				err.Error())
+	}
 
-  nBigIntNumIsZero, err := nBigIntNum.IsZero()
+	nBigIntNumIsZero, err := nBigIntNum.IsZero()
 
-  if err != nil {
-    return BigIntNum{},
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "nBigIntNumIsZero, err := nBigIntNum.IsZero()",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-  }
+	if err != nil {
+		return BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "nBigIntNumIsZero, err := nBigIntNum.IsZero()",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  if nBigIntNumIsZero {
-    return BigIntNum{},
-      fmt.Errorf("%v\n"+
-        "Error: Input parameter 'numOfItems' is ZERO!\n",
-        ePrefix)
-  }
+	if nBigIntNumIsZero {
+		return BigIntNum{},
+			fmt.Errorf("%v\n"+
+				"Error: Input parameter 'numOfItems' is ZERO!\n",
+				ePrefix)
+	}
 
-  nBigIntNumSignValue, err := nBigIntNum.GetSign()
+	nBigIntNumSignValue, err := nBigIntNum.GetSign()
 
-  if err != nil {
-    return BigIntNum{},
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "nBigIntNumSignValue, err := nBigIntNum.GetSign()",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-  }
+	if err != nil {
+		return BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "nBigIntNumSignValue, err := nBigIntNum.GetSign()",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  if nBigIntNumSignValue == -1 {
-    return BigIntNum{},
-      fmt.Errorf("%v\n"+
-        "Error: Input parameter 'numOfItems' is LESS THAN ZERO!\n",
-        ePrefix)
-  }
+	if nBigIntNumSignValue == -1 {
+		return BigIntNum{},
+			fmt.Errorf("%v\n"+
+				"Error: Input parameter 'numOfItems' is LESS THAN ZERO!\n",
+				ePrefix)
+	}
 
-  nBigIntNumPrecisionUint, err := nBigIntNum.GetPrecisionUint()
+	nBigIntNumPrecisionUint, err := nBigIntNum.GetPrecisionUint()
 
-  if err != nil {
-    return BigIntNum{},
-      &FuncReturnError{
-        ErrPrefix: ePrefix.String(),
-        ReturnFunc: "nBigIntNumPrecisionUint, err := \n" +
-          "  nBigIntNum.GetPrecisionUint()",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-  }
+	if err != nil {
+		return BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix: ePrefix.String(),
+				ReturnFunc: "nBigIntNumPrecisionUint, err := \n" +
+					"  nBigIntNum.GetPrecisionUint()",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  if nBigIntNumPrecisionUint > 0 {
-    return BigIntNum{},
-      fmt.Errorf("%v\n"+
-        "Error: Input parameter 'numOfItems' is NOT an Integer!\n",
-        ePrefix)
-  }
+	if nBigIntNumPrecisionUint > 0 {
+		return BigIntNum{},
+			fmt.Errorf("%v\n"+
+				"Error: Input parameter 'numOfItems' is NOT an Integer!\n",
+				ePrefix)
+	}
 
-  rBigIntNum, err := new(BigIntNum).NewNumStr(numOfItemsChosen)
+	rBigIntNum, err := new(BigIntNum).NewNumStr(numOfItemsChosen)
 
-  if err != nil {
-    return BigIntNum{},
-      fmt.Errorf("%v\n"+
-        "Error returned by BigIntNum{}.NewNumStr(numOfItemsChosen).\n"+
-        "Error='%v' ",
-        ePrefix,
-        err.Error())
-  }
+	if err != nil {
+		return BigIntNum{},
+			fmt.Errorf("%v\n"+
+				"Error returned by BigIntNum{}.NewNumStr(numOfItemsChosen).\n"+
+				"Error='%v' ",
+				ePrefix,
+				err.Error())
+	}
 
-  rBigIntNumIsZero, err := rBigIntNum.IsZero()
+	rBigIntNumIsZero, err := rBigIntNum.IsZero()
 
-  if err != nil {
-    return BigIntNum{},
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "rBigIntNumIsZero, err := rBigIntNum.IsZero()",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-  }
+	if err != nil {
+		return BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "rBigIntNumIsZero, err := rBigIntNum.IsZero()",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  if rBigIntNumIsZero {
-    return BigIntNum{},
-      fmt.Errorf("%v\n"+
-        "Error: Input parameter 'numOfItemsChosen' is ZERO!\n",
-        ePrefix)
-  }
+	if rBigIntNumIsZero {
+		return BigIntNum{},
+			fmt.Errorf("%v\n"+
+				"Error: Input parameter 'numOfItemsChosen' is ZERO!\n",
+				ePrefix)
+	}
 
-  rBigIntNumSignValue, err := rBigIntNum.GetSign()
+	rBigIntNumSignValue, err := rBigIntNum.GetSign()
 
-  if err != nil {
-    return BigIntNum{},
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "rBigIntNumSignValue, err := rBigIntNum.GetSign()",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-  }
+	if err != nil {
+		return BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "rBigIntNumSignValue, err := rBigIntNum.GetSign()",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  if rBigIntNumSignValue == -1 {
-    return BigIntNum{},
-      fmt.Errorf("%v\n"+
-        "Error: Input parameter 'numOfItemsChosen' is LESS THAN ZERO!\n",
-        ePrefix)
-  }
+	if rBigIntNumSignValue == -1 {
+		return BigIntNum{},
+			fmt.Errorf("%v\n"+
+				"Error: Input parameter 'numOfItemsChosen' is LESS THAN ZERO!\n",
+				ePrefix)
+	}
 
-  rBigIntNumPrecisionUint, err := rBigIntNum.GetPrecisionUint()
+	rBigIntNumPrecisionUint, err := rBigIntNum.GetPrecisionUint()
 
-  if err != nil {
-    return BigIntNum{},
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "rBigIntNumPrecisionUint, err := rBigIntNum.GetPrecisionUint()",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-  }
+	if err != nil {
+		return BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "rBigIntNumPrecisionUint, err := rBigIntNum.GetPrecisionUint()",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  if rBigIntNumPrecisionUint > 0 {
-    return BigIntNum{},
-      fmt.Errorf("%v\n"+
-        "Error: Input parameter 'numOfItemsChosen' is NOT an Integer!\n",
-        ePrefix)
-  }
+	if rBigIntNumPrecisionUint > 0 {
+		return BigIntNum{},
+			fmt.Errorf("%v\n"+
+				"Error: Input parameter 'numOfItemsChosen' is NOT an Integer!\n",
+				ePrefix)
+	}
 
-  nBigIntNumVsRBigIntNumCmp, err := nBigIntNum.Cmp(rBigIntNum)
+	nBigIntNumVsRBigIntNumCmp, err := nBigIntNum.Cmp(rBigIntNum)
 
-  if err != nil {
-    return BigIntNum{},
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "nBigIntNumVsRBigIntNum, err := nBigIntNum.Cmp(rBigIntNum)",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-  }
+	if err != nil {
+		return BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "nBigIntNumVsRBigIntNum, err := nBigIntNum.Cmp(rBigIntNum)",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  if !allowRepetitions && nBigIntNumVsRBigIntNumCmp < 0 {
-    return BigIntNum{},
-      fmt.Errorf("%v\n"+
-        "Error: 'numOfItems' is LESS THAN 'numOfItemsChosen'!\n"+
-        "numOfItems='%v' numOfItemsChosen='%v' \n",
-        ePrefix,
-        numOfItems,
-        numOfItemsChosen)
-  }
+	if !allowRepetitions && nBigIntNumVsRBigIntNumCmp < 0 {
+		return BigIntNum{},
+			fmt.Errorf("%v\n"+
+				"Error: 'numOfItems' is LESS THAN 'numOfItemsChosen'!\n"+
+				"numOfItems='%v' numOfItemsChosen='%v' \n",
+				ePrefix,
+				numOfItems,
+				numOfItemsChosen)
+	}
 
-  if !allowRepetitions {
-    return Probability{}.CombinationsNoRepsBigInt(nBigIntNum.bigInt, rBigIntNum.bigInt)
-  }
+	if !allowRepetitions {
+		return Probability{}.CombinationsNoRepsBigInt(nBigIntNum.bigInt, rBigIntNum.bigInt)
+	}
 
-  return Probability{}.CombinationsWithRepsBigInt(nBigIntNum.bigInt, rBigIntNum.bigInt)
+	return Probability{}.CombinationsWithRepsBigInt(nBigIntNum.bigInt, rBigIntNum.bigInt)
 }
 
 // CombinationsUint
@@ -2698,70 +2698,70 @@ func (prob Probability) CombinationsNumberStr(
 //	be integer numbers. 'numOfItems' can be greater than, equal to or less
 //	than 'numOfItemsChosen'.
 func (prob Probability) CombinationsUint(
-  numOfItems, numOfItemsChosen uint, allowRepetitions bool) (BigIntNum, error) {
+	numOfItems, numOfItemsChosen uint, allowRepetitions bool) (BigIntNum, error) {
 
-  ePrefix := "Probability.CombinationsUint() "
+	ePrefix := "Probability.CombinationsUint() "
 
-  if numOfItems == 0 {
-    return BigIntNum{},
-      fmt.Errorf("%v\n"+
-        "Error: Input parameter 'numOfItems' is ZERO!\n",
-        ePrefix)
-  }
+	if numOfItems == 0 {
+		return BigIntNum{},
+			fmt.Errorf("%v\n"+
+				"Error: Input parameter 'numOfItems' is ZERO!\n",
+				ePrefix)
+	}
 
-  if numOfItemsChosen == 0 {
-    return BigIntNum{},
-      fmt.Errorf("%v\n"+
-        "Error: Input parameter 'numOfItemsChosen' is ZERO!\n",
-        ePrefix)
-  }
+	if numOfItemsChosen == 0 {
+		return BigIntNum{},
+			fmt.Errorf("%v\n"+
+				"Error: Input parameter 'numOfItemsChosen' is ZERO!\n",
+				ePrefix)
+	}
 
-  n := big.NewInt(0).SetUint64(uint64(numOfItems))
+	n := big.NewInt(0).SetUint64(uint64(numOfItems))
 
-  r := big.NewInt(0).SetUint64(uint64(numOfItemsChosen))
+	r := big.NewInt(0).SetUint64(uint64(numOfItemsChosen))
 
-  if !allowRepetitions && r.Cmp(n) == 1 {
-    return BigIntNum{},
-      fmt.Errorf("%v\n"+
-        "Error: 'numOfItemsChosen' is GREATER THAN 'numOfItems'.\n"+
-        "numOfItems='%v' numOfItemsChosen='%v' \n",
-        ePrefix,
-        numOfItems,
-        numOfItemsChosen)
-  }
+	if !allowRepetitions && r.Cmp(n) == 1 {
+		return BigIntNum{},
+			fmt.Errorf("%v\n"+
+				"Error: 'numOfItemsChosen' is GREATER THAN 'numOfItems'.\n"+
+				"numOfItems='%v' numOfItemsChosen='%v' \n",
+				ePrefix,
+				numOfItems,
+				numOfItemsChosen)
+	}
 
-  var result BigIntNum
-  var err error
+	var result BigIntNum
+	var err error
 
-  if !allowRepetitions {
+	if !allowRepetitions {
 
-    result, err = Probability{}.CombinationsNoRepsBigInt(n, r)
+		result, err = Probability{}.CombinationsNoRepsBigInt(n, r)
 
-    if err != nil {
-      return BigIntNum{},
-        fmt.Errorf("%v\n"+
-          "Error returned by Probability{}.CombinationsNoRepsBigInt(numOfItems, numOfItemsChosen).\n"+
-          "Error='%v' \n",
-          ePrefix,
-          err.Error())
-    }
+		if err != nil {
+			return BigIntNum{},
+				fmt.Errorf("%v\n"+
+					"Error returned by Probability{}.CombinationsNoRepsBigInt(numOfItems, numOfItemsChosen).\n"+
+					"Error='%v' \n",
+					ePrefix,
+					err.Error())
+		}
 
-  } else {
+	} else {
 
-    result, err = Probability{}.CombinationsWithRepsBigInt(n, r)
+		result, err = Probability{}.CombinationsWithRepsBigInt(n, r)
 
-    if err != nil {
-      return BigIntNum{},
-        fmt.Errorf("%v\n"+
-          "Error returned by Probability{}.CombinationsWithRepsBigInt(numOfItems, numOfItemsChosen).\n"+
-          "Error='%v' \n",
-          ePrefix,
-          err.Error())
-    }
+		if err != nil {
+			return BigIntNum{},
+				fmt.Errorf("%v\n"+
+					"Error returned by Probability{}.CombinationsWithRepsBigInt(numOfItems, numOfItemsChosen).\n"+
+					"Error='%v' \n",
+					ePrefix,
+					err.Error())
+		}
 
-  }
+	}
 
-  return result, nil
+	return result, nil
 }
 
 // CombinationsUint32
@@ -2831,80 +2831,80 @@ func (prob Probability) CombinationsUint(
 //	must both be integer numbers. 'numOfItems' can be greater than, equal
 //	to or less than 'numOfItemsChosen'.
 func (prob Probability) CombinationsUint32(
-  numOfItems, numOfItemsChosen uint32, allowRepetitions bool) (BigIntNum, error) {
+	numOfItems, numOfItemsChosen uint32, allowRepetitions bool) (BigIntNum, error) {
 
-  var ePrefix *ePref.ErrPrefixDto
-  var err error
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewIEmpty(
-    nil,
-    "Probability.CombinationsUint32",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"Probability.CombinationsUint32",
+		"")
 
-  if err != nil {
-    return BigIntNum{}, err
-  }
+	if err != nil {
+		return BigIntNum{}, err
+	}
 
-  if numOfItems == 0 {
-    return BigIntNum{},
-      fmt.Errorf("%v\n"+
-        "Error: Input parameter 'numOfItems' is ZERO!\n",
-        ePrefix)
-  }
+	if numOfItems == 0 {
+		return BigIntNum{},
+			fmt.Errorf("%v\n"+
+				"Error: Input parameter 'numOfItems' is ZERO!\n",
+				ePrefix)
+	}
 
-  if numOfItemsChosen == 0 {
-    return BigIntNum{},
-      fmt.Errorf("%v\n"+
-        "Error: Input parameter 'numOfItemsChosen' is ZERO!\n",
-        ePrefix)
-  }
+	if numOfItemsChosen == 0 {
+		return BigIntNum{},
+			fmt.Errorf("%v\n"+
+				"Error: Input parameter 'numOfItemsChosen' is ZERO!\n",
+				ePrefix)
+	}
 
-  n := big.NewInt(0).SetUint64(uint64(numOfItems))
+	n := big.NewInt(0).SetUint64(uint64(numOfItems))
 
-  r := big.NewInt(0).SetUint64(uint64(numOfItemsChosen))
+	r := big.NewInt(0).SetUint64(uint64(numOfItemsChosen))
 
-  if !allowRepetitions && r.Cmp(n) == 1 {
-    return BigIntNum{},
-      fmt.Errorf("%v\n"+
-        "Error: 'numOfItemsChosen' is GREATER THAN 'numOfItems'.\n"+
-        "numOfItems='%v'\nnumOfItemsChosen='%v' \n",
-        ePrefix,
-        numOfItems,
-        numOfItemsChosen)
-  }
+	if !allowRepetitions && r.Cmp(n) == 1 {
+		return BigIntNum{},
+			fmt.Errorf("%v\n"+
+				"Error: 'numOfItemsChosen' is GREATER THAN 'numOfItems'.\n"+
+				"numOfItems='%v'\nnumOfItemsChosen='%v' \n",
+				ePrefix,
+				numOfItems,
+				numOfItemsChosen)
+	}
 
-  var result BigIntNum
+	var result BigIntNum
 
-  if !allowRepetitions {
+	if !allowRepetitions {
 
-    result, err = Probability{}.CombinationsNoRepsBigInt(n, r)
+		result, err = Probability{}.CombinationsNoRepsBigInt(n, r)
 
-    if err != nil {
-      return BigIntNum{},
-        fmt.Errorf("%v\n"+
-          "Error returned by Probability{}.CombinationsNoRepsBigInt(numOfItems, numOfItemsChosen).\n"+
-          "Error='%v' \n",
-          ePrefix,
-          err.Error())
-    }
+		if err != nil {
+			return BigIntNum{},
+				fmt.Errorf("%v\n"+
+					"Error returned by Probability{}.CombinationsNoRepsBigInt(numOfItems, numOfItemsChosen).\n"+
+					"Error='%v' \n",
+					ePrefix,
+					err.Error())
+		}
 
-  } else {
+	} else {
 
-    result, err = Probability{}.CombinationsWithRepsBigInt(n, r)
+		result, err = Probability{}.CombinationsWithRepsBigInt(n, r)
 
-    if err != nil {
-      return BigIntNum{},
-        fmt.Errorf("%v\n"+
-          "Error returned by Probability{}.CombinationsWithRepsBigInt(numOfItems, numOfItemsChosen).\n"+
-          "Error='%v' \n",
-          ePrefix,
-          err.Error())
-    }
+		if err != nil {
+			return BigIntNum{},
+				fmt.Errorf("%v\n"+
+					"Error returned by Probability{}.CombinationsWithRepsBigInt(numOfItems, numOfItemsChosen).\n"+
+					"Error='%v' \n",
+					ePrefix,
+					err.Error())
+		}
 
-  }
+	}
 
-  return result, nil
+	return result, nil
 }
 
 // CombinationsUint64
@@ -2974,78 +2974,78 @@ func (prob Probability) CombinationsUint32(
 //	must both be integer numbers. 'numOfItems' can be greater than, equal
 //	to or less than 'numOfItemsChosen'.
 func (prob Probability) CombinationsUint64(
-  numOfItems, numOfItemsChosen uint64, allowRepetitions bool) (BigIntNum, error) {
+	numOfItems, numOfItemsChosen uint64, allowRepetitions bool) (BigIntNum, error) {
 
-  var ePrefix *ePref.ErrPrefixDto
-  var err error
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewIEmpty(
-    nil,
-    "Probability.CombinationsUint64",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"Probability.CombinationsUint64",
+		"")
 
-  if err != nil {
-    return BigIntNum{}, err
-  }
+	if err != nil {
+		return BigIntNum{}, err
+	}
 
-  if numOfItems == 0 {
-    return BigIntNum{},
-      fmt.Errorf("%v\n"+
-        "Error: Input parameter 'numOfItems' is ZERO!\n",
-        ePrefix)
-  }
+	if numOfItems == 0 {
+		return BigIntNum{},
+			fmt.Errorf("%v\n"+
+				"Error: Input parameter 'numOfItems' is ZERO!\n",
+				ePrefix)
+	}
 
-  if numOfItemsChosen == 0 {
-    return BigIntNum{},
-      fmt.Errorf("%v\n"+
-        "Error: Input parameter 'numOfItemsChosen' is ZERO!\n",
-        ePrefix)
-  }
+	if numOfItemsChosen == 0 {
+		return BigIntNum{},
+			fmt.Errorf("%v\n"+
+				"Error: Input parameter 'numOfItemsChosen' is ZERO!\n",
+				ePrefix)
+	}
 
-  n := big.NewInt(0).SetUint64(numOfItems)
+	n := big.NewInt(0).SetUint64(numOfItems)
 
-  r := big.NewInt(0).SetUint64(numOfItemsChosen)
+	r := big.NewInt(0).SetUint64(numOfItemsChosen)
 
-  if !allowRepetitions && r.Cmp(n) == 1 {
-    return BigIntNum{},
-      fmt.Errorf("%v\n"+
-        "Error: 'numOfItemsChosen' is GREATER THAN 'numOfItems'.\n"+
-        "numOfItems='%v' numOfItemsChosen='%v' \n",
-        ePrefix,
-        numOfItems,
-        numOfItemsChosen)
-  }
+	if !allowRepetitions && r.Cmp(n) == 1 {
+		return BigIntNum{},
+			fmt.Errorf("%v\n"+
+				"Error: 'numOfItemsChosen' is GREATER THAN 'numOfItems'.\n"+
+				"numOfItems='%v' numOfItemsChosen='%v' \n",
+				ePrefix,
+				numOfItems,
+				numOfItemsChosen)
+	}
 
-  var result BigIntNum
+	var result BigIntNum
 
-  if !allowRepetitions {
+	if !allowRepetitions {
 
-    result, err = Probability{}.CombinationsNoRepsBigInt(n, r)
+		result, err = Probability{}.CombinationsNoRepsBigInt(n, r)
 
-    if err != nil {
-      return BigIntNum{},
-        fmt.Errorf("%v\n"+
-          "Error returned by Probability{}.CombinationsNoRepsBigInt(numOfItems, numOfItemsChosen). "+
-          "Error='%v' \n",
-          ePrefix,
-          err.Error())
-    }
+		if err != nil {
+			return BigIntNum{},
+				fmt.Errorf("%v\n"+
+					"Error returned by Probability{}.CombinationsNoRepsBigInt(numOfItems, numOfItemsChosen). "+
+					"Error='%v' \n",
+					ePrefix,
+					err.Error())
+		}
 
-  } else {
+	} else {
 
-    result, err = Probability{}.CombinationsWithRepsBigInt(n, r)
+		result, err = Probability{}.CombinationsWithRepsBigInt(n, r)
 
-    if err != nil {
-      return BigIntNum{},
-        fmt.Errorf("%v\n"+
-          "Error returned by Probability{}.CombinationsWithRepsBigInt(numOfItems, numOfItemsChosen).\n"+
-          "Error='%v' \n",
-          ePrefix,
-          err.Error())
-    }
+		if err != nil {
+			return BigIntNum{},
+				fmt.Errorf("%v\n"+
+					"Error returned by Probability{}.CombinationsWithRepsBigInt(numOfItems, numOfItemsChosen).\n"+
+					"Error='%v' \n",
+					ePrefix,
+					err.Error())
+		}
 
-  }
+	}
 
-  return result, nil
+	return result, nil
 }
