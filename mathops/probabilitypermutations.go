@@ -2336,159 +2336,345 @@ func (prob Probability) PermutationsNumStrDto(
   return numStrDtoResult, nil
 }
 
-// PermutationsNumberStr - Calculates the number of permutations associated with a collection
-// of 'numOfItems' from which one picks 'numOfItemsPicked'. Order IS significant.
+// PermutationsNumberStr
 //
-// Input parameters 'numOfItems' and 'numOfItemsPicked' are passed as strings. These strings
-// must be formatted as valid number strings. Number strings may be prefixed by a plus (+) or
-// minus (-) and must consist of a string of numeric digits which may be delimited by a thousands
-// separator. If the numeric value is a fractional value, the fractional digits must be
-// preceded by a period ('.') or decimal separator.
+//	 Calculates the number of permutations associated with a collection
+//	 of 'numOfItems' from which one picks 'numOfItemsPicked'. Order IS
+//	 significant.
 //
-// Both input parameters must be non-zero, positive integer numbers.
+//	 Input parameters 'numOfItems' and 'numOfItemsPicked' are passed as
+//	 strings. These strings must be formatted as valid number strings.
+//	 Number strings may be prefixed by a plus (+) or minus (-) and must
+//	 consist of a string of numeric digits which may be delimited by a
+//	 thousand separator. If the numeric value is a fractional value,
+//	 the fractional digits must be preceded by a period ('.') or
+//	 decimal separator.
 //
-// The input parameter 'allowRepetitions' is a boolean value which will determine whether the
-// calculation results will allow repetitions or not. The formula for the permutation will
-// therefore vary depending on whether repetitions are allowed.
+//	 Both input parameters must be non-zero, positive integer numbers.
 //
-// The result of this permutation calculation is returned as a type BigIntNum.
+//	 The input parameter 'allowRepetitions' is a boolean value which
+//	 will determine whether the calculation results will allow
+//	 repetitions or not. The formula for the permutation will
+//	 therefore vary depending on whether repetitions are allowed.
 //
-// In the following permutation formulas, n= 'numOfItems'  and r = 'numOfItemsPicked'. The actual
-// formula applied depends on whether input parameter 'allowRepetitions' is 'true' or 'false'.
+//	 The result of this permutation calculation is returned as a type
+//	 BigIntNum.
 //
-//	     ====================================================================
-//				'allowRepetitions' = false
+//	 In the following permutation formulas, n= 'numOfItems' and
+//	 r = 'numOfItemsPicked'. The actual formula applied depends on
+//	 whether input parameter 'allowRepetitions' is 'true' or 'false'.
 //
-//	             						n!
-//								nPr	 =		------
-//													(n-r)!
-//	            ----------------------
+//		========================================================================
 //
-//								Note: 0! = 1
+//		          'allowRepetitions' = false
 //
-//					Where n is the number of things to choose from,
-//					and we choose r of them, repetition is NOT allowed,
-//					and order matters.
+//		========================================================================
 //
-//	     When 'allowRepetitions' = false, 'numOfItemsPicked' must be a positive integer number
-//	     which is less than or equal to 'numOfItems'.
+//		                     n!
+//		           nPr  =  ------
+//		                   (n-r)!
 //
-//	     ====================================================================
-//				'allowRepetitions' = true
+//		                Note: 0! = 1
 //
-//										nPr	 =		n^r
-//	                 -------------
+//		      Where n is the number of things to choose from,
+//		      and we choose r of them, repetition is NOT allowed,
+//		      and order matters.
 //
-//					Where n is the number of things to choose from,
-//					and we choose r of them, repetition IS allowed,
-//					and order matters.
+//		When 'allowRepetitions' = false, 'numOfItemsPicked' must be a positive
+//		integer number which is less than or equal to 'numOfItems'.
 //
-//	     When 'allowRepetitions' = true, 'numOfItemsPicked' must be a positive integer number.
-//	     'numOfItemsPicked' can be greater than, equal to or less than 'numOfItems'.
+//		========================================================================
+//
+//		         'allowRepetitions' = true
+//
+//		========================================================================
+//
+//		           nPr  =  n^r
+//
+//		      Where n is the number of things to choose from,
+//		      and we choose r of them, repetition IS allowed,
+//		      and order matters.
+//
+//		When 'allowRepetitions' = true, 'numOfItemsPicked' must be a positive
+//		integer number. 'numOfItemsPicked' can be greater than, equal to or
+//		less than 'numOfItems'.
 func (prob Probability) PermutationsNumberStr(
   numOfItems, numOfItemsPicked string,
   allowRepetitions bool) (BigIntNum, error) {
 
-  ePrefix := "Probability.PermutationsNumberStr() "
+  var ePrefix *ePref.ErrPrefixDto
+  var err error
+
+  ePrefix,
+    err = ePref.ErrPrefixDto{}.NewIEmpty(
+    nil,
+    "Probability.PermutationsNumberStr",
+    "")
+
+  if err != nil {
+    return BigIntNum{}, err
+  }
 
   if numOfItems == "" {
+
     return BigIntNum{},
-      errors.New(ePrefix +
-        "Error: Input Parameter 'numOfItems' is an EMPTY string!")
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "",
+        ErrContext: "",
+        ErrMessage: "Error: Input Parameter 'numOfItems' is an EMPTY string!",
+      }
   }
 
   if numOfItemsPicked == "" {
+
     return BigIntNum{},
-      errors.New(ePrefix +
-        "Error: Input Parameter 'numOfItemsPicked' is an EMPTY string!")
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "",
+        ErrContext: "",
+        ErrMessage: "Error: Input Parameter 'numOfItemsPicked' is an EMPTY string!",
+      }
   }
 
-  nBigINum, err := BigIntNum{}.NewNumStr(numOfItems)
+  nBigINumOfItems, err := new(BigIntNum).NewNumStr(numOfItems)
+
+  if err != nil {
+
+    return BigIntNum{},
+      &FuncReturnError{
+        ErrPrefix: ePrefix.String(),
+        ReturnFunc: "nBigINumOfItems, err := new(BigIntNum).\n" +
+          "  NewNumStr(numOfItems)",
+        ErrContext: fmt.Sprintf("numOfItems= '%v'", numOfItems),
+        ErrMessage: err.Error(),
+      }
+  }
+
+  rBigINumOfItemsPicked, err := new(BigIntNum).NewNumStr(numOfItemsPicked)
+
+  if err != nil {
+
+    return BigIntNum{},
+      &FuncReturnError{
+        ErrPrefix: ePrefix.String(),
+        ReturnFunc: "rBigINumOfItemsPicked, err := new(BigIntNum).\n" +
+          "  NewNumStr(numOfItemsPicked)",
+        ErrContext: fmt.Sprintf("numOfItemsPicked= '%v'", numOfItemsPicked),
+        ErrMessage: err.Error(),
+      }
+  }
+
+  nBigINumOfItemsSignValue, err := nBigINumOfItems.GetSign()
 
   if err != nil {
     return BigIntNum{},
-      fmt.Errorf(ePrefix+
-        "Error returned by BigIntNum{}.NewNumStr(numOfItems) "+
-        "Error='%v' \n", err.Error())
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "nBigINumOfItemsSignValue, err :=  nBigINumOfItems.GetSign()",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
   }
 
-  rBigINum, err := BigIntNum{}.NewNumStr(numOfItemsPicked)
+  if nBigINumOfItemsSignValue == -1 {
+
+    return BigIntNum{},
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "",
+        ErrContext: "",
+        ErrMessage: "Error: Input parameter 'numOfItems' is LESS THAN ZERO!",
+      }
+  }
+
+  nBigINumOfItemsIsZero, err := nBigINumOfItems.IsZero()
 
   if err != nil {
     return BigIntNum{},
-      fmt.Errorf(ePrefix+
-        "Error returned by BigIntNum{}.NewNumStr(numOfItemsPicked) "+
-        "Error='%v' \n", err.Error())
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "nBigINumOfItemsIsZero, err :=  nBigINumOfItems.IsZero()",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
   }
 
-  if nBigINum.GetSign() == -1 {
+  if nBigINumOfItemsIsZero {
+
     return BigIntNum{},
-      fmt.Errorf(ePrefix+"Error: Input parameter 'numOfItems' is LESS THAN ZERO! "+
-        "numOfItems='%v'", numOfItems)
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "",
+        ErrContext: "",
+        ErrMessage: "Error: Input parameter 'numOfItems' is ZERO!!",
+      }
   }
 
-  if nBigINum.IsZero() {
+  nBigINumOfItemsPrecisionUint, err := nBigINumOfItems.GetPrecisionUint()
+
+  if err != nil {
+
     return BigIntNum{},
-      errors.New(ePrefix + "Error: Input parameter 'numOfItems' is ZERO!")
+      &FuncReturnError{
+        ErrPrefix: ePrefix.String(),
+        ReturnFunc: "nBigINumOfItemsPrecisionUint, err := \n" +
+          "  nBigINumOfItems.GetPrecisionUint()",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
   }
 
-  if nBigINum.GetPrecisionUint() > 0 {
+  if nBigINumOfItemsPrecisionUint > 0 {
+
     return BigIntNum{},
-      errors.New(ePrefix + "Error: Input parameter 'numOfItems' is NOT an Integer!")
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "",
+        ErrContext: "",
+        ErrMessage: "Error: Input parameter 'numOfItems' is NOT an Integer!",
+      }
   }
 
-  if rBigINum.GetSign() == -1 {
+  rBigINumOfItemsPickedSignValue, err := rBigINumOfItemsPicked.GetSign()
+
+  if err != nil {
+
     return BigIntNum{},
-      fmt.Errorf(ePrefix+
-        "Error: Input parameter 'numOfItemsPicked' is LESS THAN ZERO! "+
-        "numOfItemsPicked='%v' ", numOfItemsPicked)
+      &FuncReturnError{
+        ErrPrefix: ePrefix.String(),
+        ReturnFunc: "rBigINumOfItemsPickedSignValue, err := \n" +
+          "  rBigINumOfItemsPicked.GetSign()",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
   }
 
-  if rBigINum.IsZero() {
+  if rBigINumOfItemsPickedSignValue == -1 {
+
     return BigIntNum{},
-      errors.New(ePrefix + "Error: Input parameter 'numOfItemsPicked' is ZERO!")
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "",
+        ErrContext: fmt.Sprintf("numOfItemsPicked='%v' ", numOfItemsPicked),
+        ErrMessage: "Error: Input parameter 'numOfItemsPicked' is LESS THAN ZERO!",
+      }
   }
 
-  if rBigINum.GetPrecisionUint() > 0 {
+  rBigINumOfItemsPickedIsZero, err := rBigINumOfItemsPicked.IsZero()
+
+  if err != nil {
+
     return BigIntNum{},
-      errors.New(ePrefix + "Error: Input parameter 'numOfItemsPicked' is NOT an Integer!")
+      &FuncReturnError{
+        ErrPrefix: ePrefix.String(),
+        ReturnFunc: "rBigINumOfItemsPickedIsZero, err := \n" +
+          "  rBigINumOfItemsPicked.IsZero()",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
   }
 
-  if !allowRepetitions && nBigINum.Cmp(rBigINum) < 0 {
+  if rBigINumOfItemsPickedIsZero {
+
     return BigIntNum{},
-      fmt.Errorf(ePrefix+
-        "Error: 'numOfItems' is LESS THAN 'numOfItemsPicked'.  "+
-        "numOfItems='%v' numOfItemsPicked='%v' \n",
-        numOfItems, numOfItemsPicked)
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "",
+        ErrContext: "",
+        ErrMessage: "Error: Input parameter 'numOfItemsPicked' is ZERO!",
+      }
   }
 
-  var result BigIntNum
+  rBigINumOfItemsPickedPrecisionUint, err := rBigINumOfItemsPicked.GetPrecisionUint()
+
+  if err != nil {
+
+    return BigIntNum{},
+      &FuncReturnError{
+        ErrPrefix: ePrefix.String(),
+        ReturnFunc: "rBigINumOfItemsPickedPrecisionUint, err :=\n" +
+          "  rBigINumOfItemsPicked.GetPrecisionUint()",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+  }
+
+  if rBigINumOfItemsPickedPrecisionUint > 0 {
+
+    return BigIntNum{},
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "",
+        ErrContext: "",
+        ErrMessage: "Error: Input parameter 'numOfItemsPicked' is NOT an Integer!",
+      }
+  }
+
+  nBigINumOfItemsCmprBigINumOfItemsPicked, err := nBigINumOfItems.Cmp(rBigINumOfItemsPicked)
+
+  if err != nil {
+
+    return BigIntNum{},
+      &FuncReturnError{
+        ErrPrefix: ePrefix.String(),
+        ReturnFunc: "nBigINumOfItemsCmprBigINumOfItemsPicked, err := \n" +
+          "  nBigINumOfItems.Cmp(rBigINumOfItemsPicked)",
+        ErrContext: "Comparing nBigINumOfItems vs rBigINumOfItemsPicked",
+        ErrMessage: err.Error(),
+      }
+  }
+
+  if !allowRepetitions && nBigINumOfItemsCmprBigINumOfItemsPicked < 0 {
+
+    return BigIntNum{},
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "",
+        ErrContext: fmt.Sprintf("allowRepetitions= 'false'\n"+
+          "numOfItems='%v'\n"+
+          "numOfItemsPicked='%v'",
+          numOfItems, numOfItemsPicked),
+        ErrMessage: "Error: 'numOfItems' is LESS THAN 'numOfItemsPicked'.",
+      }
+  }
+
+  var resultBINum BigIntNum
 
   if !allowRepetitions {
 
-    result, err = Probability{}.PermutationsNoRepsBigInt(nBigINum.bigInt, rBigINum.bigInt)
+    resultBINum, err = Probability{}.PermutationsNoRepsBigInt(nBigINumOfItems.bigInt, rBigINumOfItemsPicked.bigInt)
 
     if err != nil {
+
       return BigIntNum{},
-        fmt.Errorf(ePrefix+
-          "Error returned by Probability{}.PermutationsNoRepsBigInt(numOfItems, numOfItemsPicked). "+
-          "Error='%v' \n", err.Error())
+        &FuncReturnError{
+          ErrPrefix: ePrefix.String(),
+          ReturnFunc: "resultBINum, err = Probability{}.PermutationsNoRepsBigInt(\n" +
+            "  nBigINumOfItems.bigInt, rBigINumOfItemsPicked.bigInt)",
+          ErrContext: "",
+          ErrMessage: err.Error(),
+        }
     }
 
   } else {
 
-    result, err = Probability{}.PermutationsWithRepsBigInt(nBigINum.bigInt, rBigINum.bigInt)
+    resultBINum, err = Probability{}.PermutationsWithRepsBigInt(nBigINumOfItems.bigInt, rBigINumOfItemsPicked.bigInt)
 
     if err != nil {
-      return BigIntNum{},
-        fmt.Errorf(ePrefix+
-          "Error returned by Probability{}.PermutationsWithRepsBigInt(numOfItems, numOfItemsPicked). "+
-          "Error='%v' \n", err.Error())
-    }
 
+      return BigIntNum{},
+        &FuncReturnError{
+          ErrPrefix: ePrefix.String(),
+          ReturnFunc: "resultBINum, err = Probability{}.PermutationsWithRepsBigInt(\n" +
+            "  nBigINumOfItems.bigInt, rBigINumOfItemsPicked.bigInt)",
+          ErrContext: "",
+          ErrMessage: err.Error(),
+        }
+    }
   }
 
-  return result, nil
+  return resultBINum, nil
 }
 
 // PermutationsUint - Calculates the number of permutations associated with a collection of
