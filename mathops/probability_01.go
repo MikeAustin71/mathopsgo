@@ -80,69 +80,68 @@ type Probability struct {
 
 // CombinationsNoRepsBigInt
 //
-//  Calculates the number of combinations from 'numOfItems' and
-//  'numOfItemsChosen' or 'n' things chosen 'r' at a time with NO
-//  repetitions and order does NOT matter. This is also referred to
-//  as an unordered sampling WITHOUT replacement. The calculation
-//  result is returned as a BigIntNum type.
+//		Calculates the number of combinations from 'numOfItems' and
+//		'numOfItemsChosen' or 'n' things chosen 'r' at a time with NO
+//		repetitions and order does NOT matter. This is also referred to
+//		as an unordered sampling WITHOUT replacement. The calculation
+//		result is returned as a BigIntNum type.
 //
-//  Input Parameters
-//  ================
+//		Input Parameters
+//		================
 //
-//  numOfItems               *big.Int
-//    Must be a positive integer number greater than zero.
-//  	                               'numOfItems' must be greater than or equal to
-//  																	'numOfItemsChosen'.
+//		numOfItems               *big.Int
+//		  Must be a positive integer number greater than zero.
+//		  'numOfItems' must be greater than or equal to
+//		  'numOfItemsChosen'.
 //
-//  numOfItemsChosen 	*big.Int	- Must be a positive integer number greater than zero.
+//	 numOfItemsChosen         *big.Int
+//	   Must be a positive integer number greater than zero.
+//	  'numOfItemsChosen' must be less than or equal to 'numOfItems'.
 //
-//  	'numOfItemsChosen' must be less than or equal to
-//  	'numOfItems'.
+//		Return Values
+//		=============
 //
-//  Returns
-//  =======
+//		BigIntNum
+//	   If the calculation is successful, the result is returned as a
+//			BigIntNum type. If the calculation fails, the error return is
+//			populated.
 //
-//  BigIntNum			- If the calculation is successful, the result is returned as a
+//		error
+//	   If an error is encountered during processing, this returend
+//	   'error' object will be configured with an appropriate error
+//	   message.
 //
-//  	BigIntNum type. If the calculation fails, the error return is
-//  	populated.
+//		Calculation
+//		===========
 //
-//  error					- If the calculation is successful, this return value is 'nil'. If
+//	 The calculation performed by this method uses the following
+//	 combinations formula, n= 'numOfItems' and r = 'numOfItemsChosen'.
 //
-//  	the calculation fails, 'error' is populated with an appropriate
-//  	error message.
+//	                        n!
+//	            nCr  =  -----------
+//	                    (n-r)! r!
 //
-//  Calculation
-//  ===========
+//	 --------------------------------------------------
 //
-// The calculation performed by this method uses the following combinations formula,
-// n= 'numOfItems' and r = 'numOfItemsChosen'.
+//	 Where n is the number of things to choose from,
+//	 and we choose r of them, repetition is NOT allowed,
+//	 and order does NOT matter.
 //
-//																				 n!
-//												 nCr	 =		-----------
-//																		 (n-r)! r!
+//	 *** This calculation assumes NO REPETITIONS! ***
 //
-//	       --------------------------------------------------
+//	 (a.k.a. as unordered sampling WITHOUT replacement)
 //
-//							Where n is the number of things to choose from,
-//							and we choose r of them, repetition is NOT allowed,
-//							and order does NOT matter.
+//	 Example WITHOUT Repetitions
+//	 ===========================
 //
-// *** This calculation assumes NO REPETITIONS! ***
+//	 There are 16 pool balls. How many ways to choose 3 pool balls with NO repetitions
+//	 or No repeats.
 //
-//	(a.k.a. as unordered sampling WITHOUT replacement)
+//	                16!             16 x 15 x 14
+//	 16C3 =   -------------   =    --------------  =  560
+//	           (16-3)! x 3!             3 x 2
 //
-// Example WITHOUT Repetitions
-// ===========================
-//
-// There are 16 pool balls. How many ways to choose 3 pool balls with NO repetitions
-// or No repeats.
-//
-//	                 16!            16 x 15 x 14
-//		16C3 =    -------------  =    --------------  =    560
-//	           (16-3)! x 3!            3 x 2
-//
-// Note: 0! = 1
+//	 Note:  0! = 1
 func (prob Probability) CombinationsNoRepsBigInt(
   numOfItems, numOfItemsChosen *big.Int) (BigIntNum, error) {
 
@@ -330,52 +329,58 @@ func (prob Probability) CombinationsNoRepsBigInt(
   return combinationsResult, nil
 }
 
-// CombinationsWithRepsBigInt - Calculates the number of combinations from
-// 'numOfItems' and 'numOfItemsChosen' or 'n' things chosen 'r' at a time
-// WITH repetitions and order does NOT matter. This is also referred to
-// as an unordered sampling WITH replacement. The calculation result is
-// returned as a BigIntNum type.
+// CombinationsWithRepsBigInt
 //
-// Input Parameters
-// ================
+//	Calculates the number of combinations from
+//	'numOfItems' and 'numOfItemsChosen' or 'n' things chosen 'r' at a time
+//	WITH repetitions and order does NOT matter. This is also referred to
+//	as an unordered sampling WITH replacement. The calculation result is
+//	returned as a BigIntNum type.
 //
-// numOfItems 				*big.Int	- Must be a positive integer number greater than zero.
+//	Input Parameters
+//	================
 //
-// numOfItemsChosen 	*big.Int	- Must be a positive integer number greater than zero.
+//	numOfItems               *big.Int
+//	  Must be a positive integer number greater than zero.
 //
-// Returns
-// =======
+//	numOfItemsChosen         *big.Int
+//	  Must be a positive integer number greater than zero.
 //
-// BigIntNum			- If the calculation is successful, the result is returned as a
+//	Return Values
+//	=============
 //
-//	BigIntNum type. If the calculation fails, the error return is
-//	populated.
+//	BigIntNum
+//	  If the calculation is successful, the result is returned as a
+//	  BigIntNum type. If the calculation fails, the error return is
+//	  populated.
 //
-// error					- If the calculation is successful, this return value is 'nil'. If
+//	error
+//	  If the calculation is successful, this return value is 'nil'.
+//	  If the calculation fails, 'error' is populated with an
+//	  appropriate error message.
 //
-//	the calculation fails, 'error' is populated with an appropriate
-//	error message.
+//	Calculation
+//	===========
 //
-// Calculation
-// ===========
+//	The calculation performed by this method uses the following
+//	combinations formula, n= 'numOfItems' and r = 'numOfItemsChosen'.
+//	Since this calculation applies to unordered sampling WITH
+//	replacement, 'numOfItemsChosen' may exceed 'numOfItems'.
 //
-// The calculation performed by this method uses the following combinations formula,
-// n= 'numOfItems' and r = 'numOfItemsChosen'. Since this calculation applies to
-// unordered sampling WITH replacement, 'numOfItemsChosen' may exceed 'numOfItems'.
+//	                     (r + n - 1)!
+//	         nCr  =  -------------------
+//	                       r! (n-1)!
 //
-//								(r + n - 1)!
-//	nCr    =  -------------------
-//				 				 r! (n-1)!
+//	Example WITH Repetitions
+//	========================
 //
-// Example WITH Repetitions:
-// -------------------------
-// Let us say there are five flavors of icecream:
-// (1) banana, (2) chocolate, (3) lemon, (4) strawberry and (5) vanilla.
+//	Let us say there are five flavors of icecream:
+//	(1) banana, (2) chocolate, (3) lemon, (4) strawberry and (5) vanilla.
 //
-// We can have three scoops. How many variations will there be?
-// nCr = (n==5 r==3) = 5C3 = Answer: 35
+//	We can have three scoops. How many variations will there be?
+//	nCr = (n==5 r==3) = 5C3 = Answer: 35
 //
-// Note: 0! = 1
+//	Note: 0! = 1
 func (prob Probability) CombinationsWithRepsBigInt(
   numOfItems, numOfItemsChosen *big.Int) (BigIntNum, error) {
 
@@ -525,64 +530,76 @@ func (prob Probability) CombinationsWithRepsBigInt(
   return combinationsResult, nil
 }
 
-// CombinationsBigIntNum - Calculates the number of combinations associated with a collection of
-// 'numOfItems' from which one chooses 'numOfItemsChosen'. Order IS NOT significant. Input parameters
-// 'numOfItems' and 'numOfItemsChosen' are passed as type 'BigIntNum'. Both input parameters must
-// be non-zero, positive integer numbers.
+// CombinationsBigIntNum
 //
-// The input parameter 'allowRepetitions' is a boolean value which will determine whether the
-// calculation results will allow repetitions or not. The formula for the calculation of combinations
-// will therefore vary depending on whether repetitions are allowed. 'allowRepetitions' == false signals
-// unordered sampling WITHOUT replacement. 'allowRepetitions' == true signals unordered sampling WITH
-// replacement.
+//	Calculates the number of combinations associated with a
+//	collection of 'numOfItems' from which one chooses
+//	'numOfItemsChosen'. Order IS NOT significant. Input parameters
+//	'numOfItems' and 'numOfItemsChosen' are passed as type
+//	'BigIntNum'. Both input parameters must be non-zero, positive
+//	integer numbers.
 //
-// The result of this combination calculation is returned as a type 'BigIntNum'.
+//	The input parameter 'allowRepetitions' is a boolean value which
+//	will determine whether the calculation results will allow
+//	repetitions or not. The formula for the calculation of
+//	combinations will therefore vary depending on whether
+//	repetitions are allowed.
 //
-// In the following combination formulas, n= 'numOfItems'  and r = 'numOfItemsChosen'. The actual
-// formula applied depends on whether input parameter 'allowRepetitions' is 'true' or 'false'.
+//	'allowRepetitions' == false signals unordered sampling WITHOUT
+//	replacement.
 //
-//	     ====================================================================
-//				'allowRepetitions' = false
-//	     ====================================================================
+//	'allowRepetitions' == true signals unordered sampling WITH
+//	replacement.
 //
-//							n!
-//				nCr	=  -----------
-//						(n-r)! r!
+//	The result of this combination calculation is returned as a
+//	type 'BigIntNum'.
 //
-//	       --------------------------------------------------
+//	In the following combination formulas, n= 'numOfItems'
+//	and r = 'numOfItemsChosen'. The actual formula applied depends
+//	on whether input parameter 'allowRepetitions' is 'true' or
+//	'false'.
 //
-//			Where n is the number of things to choose from,
-//			and we choose r of them, order does NOT matter
-//	        and repetition is NOT allowed.
+//	====================================================================
+//	       'allowRepetitions' = false
+//	====================================================================
 //
-// *** This version of the combinations calculation assumes NO REPETITIONS! ***
+//	                      n!
+//	          nCr  =  -----------
+//	                   (n-r)! r!
 //
-//	   (a.k.a. as unordered sampling WITHOUT replacement)
+//	--------------------------------------------------
 //
-//	    When 'allowRepetitions' = false, 'numOfItems' and 'numOfItemsChosen' must both
-//		be positive integer numbers. In addition, 'numOfItems' MUST be greater than or
-//		equal to 'numOfItemsChosen'.
+//	Where n is the number of things to choose from,
+//	and we choose r of them, order does NOT matter
+//	and repetition is NOT allowed.
 //
-//	     ====================================================================
-//				'allowRepetitions' = true
-//	     ====================================================================
+//	*** This version of the combinations calculation assumes NO REPETITIONS! ***
 //
+//	(a.k.a. as unordered sampling WITHOUT replacement)
 //
-//								(r + n - 1)!
-//					nCr    =  -------------------
-//								r! (n-1)!
+//	When 'allowRepetitions' = false, 'numOfItems' and 'numOfItemsChosen'
+//	must both be positive integer numbers. In addition, 'numOfItems'
+//	MUST be greater than or equal to 'numOfItemsChosen'.
 //
-//					Where n is the number of things to choose from,
-//					and we choose r of them, order does NOT matter
-//					and repetition IS NOT allowed.
+//	====================================================================
+//	       'allowRepetitions' = true
+//	====================================================================
 //
-// *** This version of the combinations calculation assumes REPETITIONS ARE ALLOWED! ***
+//	                     (r + n - 1)!
+//	          nCr  =  -------------------
+//	                      r! (n-1)!
 //
-//	   (a.k.a. as unordered sampling WITH replacement)
+//	Where n is the number of things to choose from,
+//	and we choose r of them, order does NOT matter
+//	and repetition IS NOT allowed.
 //
-//	     When 'allowRepetitions' = true, 'numOfItems' and 'numOfItemsChosen' must both
-//				be positive integer numbers. 'numOfItems' can be greater than, equal to or less
-//				than 'numOfItemsChosen'.
+//	*** This version of the combinations calculation assumes REPETITIONS ARE ALLOWED! ***
+//
+//	(a.k.a. as unordered sampling WITH replacement)
+//
+//	When 'allowRepetitions' = true, 'numOfItems' and 'numOfItemsChosen' must
+//	both be positive integer numbers. 'numOfItems' can be greater than, equal
+//	to or less than 'numOfItemsChosen'.
 func (prob Probability) CombinationsBigIntNum(
   numOfItems, numOfItemsChosen BigIntNum, allowRepetitions bool) (BigIntNum, error) {
 
@@ -745,64 +762,77 @@ func (prob Probability) CombinationsBigIntNum(
   return Probability{}.CombinationsWithRepsBigInt(numOfItems.bigInt, numOfItemsChosen.bigInt)
 }
 
-// CombinationsDecimal - Calculates the number of combinations associated with a collection of
-// 'numOfItems' from which one chooses 'numOfItemsChosen'. Order IS NOT significant. Input parameters
-// 'numOfItems' and 'numOfItemsChosen' are passed as type 'Decimal'. Both input parameters must
-// be non-zero, positive integer numbers.
+// CombinationsDecimal
 //
-// The input parameter 'allowRepetitions' is a boolean value which will determine whether the
-// calculation results will allow repetitions or not. The formula for the calculation of combinations
-// will therefore vary depending on whether repetitions are allowed. 'allowRepetitions' == false signals
-// unordered sampling WITHOUT replacement. 'allowRepetitions' == true signals unordered sampling WITH
-// replacement.
+//	Calculates the number of combinations associated with a collection
+//	of 'numOfItems' from which one chooses 'numOfItemsChosen'. Order
+//	IS NOT significant. Input parameters 'numOfItems' and
+//	'numOfItemsChosen' are passed as type 'Decimal'. Both input
+//	parameters must be non-zero, positive integer numbers.
 //
-// The result of this combination calculation is returned as a type 'Decimal'.
+//	The input parameter 'allowRepetitions' is a boolean value which will
+//	determine whether the calculation results will allow repetitions or
+//	not. The formula for the calculation of combinations will therefore
+//	vary depending on whether repetitions are allowed.
 //
-// In the following combination formulas, n= 'numOfItems'  and r = 'numOfItemsChosen'. The actual
-// formula applied depends on whether input parameter 'allowRepetitions' is 'true' or 'false'.
+//	'allowRepetitions' == false signals unordered sampling WITHOUT
+//	replacement.
 //
-//	     ====================================================================
-//				'allowRepetitions' = false
-//	     ====================================================================
+//	'allowRepetitions' == true signals unordered sampling WITH
+//	replacement.
 //
-//																				 n!
-//												 nCr	 =		-----------
-//																		 (n-r)! r!
+//	The result of this combination calculation is returned as a type
+//	'Decimal'.
 //
-//	       --------------------------------------------------
+//	In the following combination formulas, n= 'numOfItems'  and
+//	r = 'numOfItemsChosen'. The actual formula applied depends on
+//	whether input parameter 'allowRepetitions' is 'true' or 'false'.
 //
-//							Where n is the number of things to choose from,
-//							and we choose r of them, order does NOT matter
-//	           and repetition is NOT allowed.
+//	====================================================================
+//	          'allowRepetitions' = false
+//	====================================================================
 //
-// *** This version of the combinations calculation assumes NO REPETITIONS! ***
+//	                      n!
+//	          nCr  =  -----------
+//	                   (n-r)! r!
 //
-//	   (a.k.a. as unordered sampling WITHOUT replacement)
+//	--------------------------------------------------
 //
-//	     When 'allowRepetitions' = false, 'numOfItems' and 'numOfItemsChosen' must both
-//				be positive integer numbers. In addition, 'numOfItems' MUST be greater than or
-//				equal to 'numOfItemsChosen'.
+//	Where n is the number of things to choose from,
+//	and we choose r of them, order does NOT matter
+//	and repetition is NOT allowed.
 //
-//	     ====================================================================
-//				'allowRepetitions' = true
-//	     ====================================================================
+//	This version of the combinations calculation assumes
+//	NO REPETITIONS!
+//
+//	(a.k.a. as unordered sampling WITHOUT replacement)
+//
+//	When 'allowRepetitions' = false, 'numOfItems' and
+//	'numOfItemsChosen' must both be positive integer numbers.
+//	In addition, 'numOfItems' MUST be greater than or equal to
+//	'numOfItemsChosen'.
+//
+//	====================================================================
+//	       'allowRepetitions' = true
+//	====================================================================
 //
 //
-//																(r + n - 1)!
-//									nCr    =  -------------------
-//												 				 r! (n-1)!
+//	                    (r + n - 1)!
+//	          nCr  =  -------------------
+//	                      r! (n-1)!
 //
-//					Where n is the number of things to choose from,
-//					and we choose r of them, order does NOT matter
-//					and repetition IS NOT allowed.
+//	Where n is the number of things to choose from,
+//	and we choose r of them, order does NOT matter
+//	and repetition IS NOT allowed.
 //
-// *** This version of the combinations calculation assumes REPETITIONS ARE ALLOWED! ***
+//	This version of the combinations calculation assumes REPETITIONS
+//	ARE ALLOWED!
 //
 //	(a.k.a. as unordered sampling WITH replacement)
 //
-//	When 'allowRepetitions' = true, 'numOfItems' and 'numOfItemsChosen' must both
-//	be positive integer numbers. 'numOfItems' can be greater than, equal to or less
-//	than 'numOfItemsChosen'.
+//	When 'allowRepetitions' = true, 'numOfItems' and 'numOfItemsChosen'
+//	must both be positive integer numbers. 'numOfItems' can be greater than,
+//	equal to or less than 'numOfItemsChosen'.
 func (prob Probability) CombinationsDecimal(
   numOfItems, numOfItemsChosen Decimal, allowRepetitions bool) (Decimal, error) {
 
@@ -1026,64 +1056,73 @@ func (prob Probability) CombinationsDecimal(
   return resultDecimal, nil
 }
 
-// CombinationsIntAry - Calculates the number of combinations associated with a collection of
-// 'numOfItems' from which one chooses 'numOfItemsChosen'. Order IS NOT significant. Input parameters
-// 'numOfItems' and 'numOfItemsChosen' are passed as type 'IntAry'. Both input parameters must
-// be non-zero, positive integer numbers.
+// CombinationsIntAry
 //
-// The input parameter 'allowRepetitions' is a boolean value which will determine whether the
-// calculation results will allow repetitions or not. The formula for the calculation of combinations
-// will therefore vary depending on whether repetitions are allowed. 'allowRepetitions' == false signals
-// unordered sampling WITHOUT replacement. 'allowRepetitions' == true signals unordered sampling WITH
-// replacement.
+//	 Calculates the number of combinations associated with a collection
+//	 of 'numOfItems' from which one chooses 'numOfItemsChosen'. Order
+//	 IS NOT significant. Input parameters 'numOfItems' and
+//	 'numOfItemsChosen' are passed as type 'IntAry'. Both input
+//	 parameters must be non-zero, positive integer numbers.
 //
-// The result of this combination calculation is returned as a type 'IntAry'.
+//	 The input parameter 'allowRepetitions' is a boolean value which will
+//	 determine whether the calculation results will allow repetitions or
+//	 not. The formula for the calculation of combinations will therefore
+//	 vary depending on whether repetitions are allowed.
 //
-// In the following combination formulas, n= 'numOfItems'  and r = 'numOfItemsChosen'. The actual
-// formula applied depends on whether input parameter 'allowRepetitions' is 'true' or 'false'.
+//	 'allowRepetitions' == false signals unordered sampling WITHOUT
+//	 replacement.
 //
-//	     ====================================================================
-//				'allowRepetitions' = false
-//	     ====================================================================
+//	 'allowRepetitions' == true signals unordered sampling WITH
+//	 replacement.
 //
-//										 n!
-//					 nCr	 =		-----------
-//									 (n-r)! r!
+//	 The result of this combination calculation is returned as a type
+//	 'IntAry'.
 //
-//	       --------------------------------------------------
+//	 In the following combination formulas, n= 'numOfItems' and
+//	 r = 'numOfItemsChosen'. The actual formula applied depends on whether
+//	 input parameter 'allowRepetitions' is 'true' or 'false'.
 //
-//				Where n is the number of things to choose from,
-//				and we choose r of them, order does NOT matter
-//	         and repetition is NOT allowed.
+//	 ====================================================================
+//	        'allowRepetitions' = false
+//	 ====================================================================
 //
-// *** This version of the combinations calculation assumes NO REPETITIONS! ***
+//	                       n!
+//	           nCr  =  -----------
+//	                   (n-r)! r!
 //
-//	   (a.k.a. as unordered sampling WITHOUT replacement)
+//	 --------------------------------------------------
 //
-//	     When 'allowRepetitions' = false, 'numOfItems' and 'numOfItemsChosen' must both
-//				be positive integer numbers. In addition, 'numOfItems' MUST be greater than or
-//				equal to 'numOfItemsChosen'.
+//	 Where n is the number of things to choose from,
+//	 and we choose r of them, order does NOT matter
+//	 and repetition is NOT allowed.
 //
-//	     ====================================================================
-//				'allowRepetitions' = true
-//	     ====================================================================
+//	 This version of the combinations calculation assumes NO REPETITIONS!
+//	 (a.k.a. as unordered sampling WITHOUT replacement)
 //
+//	 When 'allowRepetitions' = false, 'numOfItems' and 'numOfItemsChosen' must both
+//	 be positive integer numbers. In addition, 'numOfItems' MUST be greater than or
+//	 equal to 'numOfItemsChosen'.
 //
-//									(r + n - 1)!
-//						nCr    =  -------------------
-//					 				 r! (n-1)!
+//	 ====================================================================
+//	           'allowRepetitions' = true
+//	 ====================================================================
 //
-//					Where n is the number of things to choose from,
-//					and we choose r of them, order does NOT matter
-//					and repetition IS NOT allowed.
+//	                     (r + n - 1)!
+//	           nCr  =  -------------------
+//	                       r! (n-1)!
 //
-// *** This version of the combinations calculation assumes REPETITIONS ARE ALLOWED! ***
+//		Where n is the number of things to choose from,
+//		and we choose r of them, order does NOT matter
+//		and repetition IS NOT allowed.
 //
-//	   (a.k.a. as unordered sampling WITH replacement)
+//	 This version of the combinations calculation assumes REPETITIONS
+//	 ARE ALLOWED!
 //
-//	     When 'allowRepetitions' = true, 'numOfItems' and 'numOfItemsChosen' must both
-//				be positive integer numbers. 'numOfItems' can be greater than, equal to or less
-//				than 'numOfItemsChosen'.
+//	 (a.k.a. as unordered sampling WITH replacement)
+//
+//	 When 'allowRepetitions' = true, 'numOfItems' and 'numOfItemsChosen'
+//	 must both be positive integer numbers. 'numOfItems' can be greater
+//	 than, equal to or less than 'numOfItemsChosen'.
 func (prob Probability) CombinationsIntAry(
   numOfItems, numOfItemsChosen IntAry, allowRepetitions bool) (IntAry, error) {
 
@@ -1322,64 +1361,73 @@ func (prob Probability) CombinationsIntAry(
   return resultIntAry, nil
 }
 
-// CombinationsINumMgr - Calculates the number of combinations associated with a collection of
-// 'numOfItems' from which one chooses 'numOfItemsChosen'. Order IS NOT significant. Input parameters
-// 'numOfItems' and 'numOfItemsChosen' are passed as type 'INumMgr'. Both input parameters must
-// be non-zero, positive integer numbers.
+// CombinationsINumMgr
 //
-// The input parameter 'allowRepetitions' is a boolean value which will determine whether the
-// calculation results will allow repetitions or not. The formula for the calculation of combinations
-// will therefore vary depending on whether repetitions are allowed. 'allowRepetitions' == false signals
-// unordered sampling WITHOUT replacement. 'allowRepetitions' == true signals unordered sampling WITH
-// replacement.
+//	Calculates the number of combinations associated with a collection
+//	of 'numOfItems' from which one chooses 'numOfItemsChosen'. Order
+//	IS NOT significant. Input parameters 'numOfItems' and
+//	'numOfItemsChosen' are passed as type 'INumMgr'. Both input
+//	parameters must be non-zero, positive integer numbers.
 //
-// The result of this combination calculation is returned as a type 'INumMgr'.
+//	The input parameter 'allowRepetitions' is a boolean value which will
+//	determine whether the calculation results will allow repetitions or
+//	not. The formula for the calculation of combinations will therefore
+//	vary depending on whether repetitions are allowed.
 //
-// In the following combination formulas, n= 'numOfItems'  and r = 'numOfItemsChosen'. The actual
-// formula applied depends on whether input parameter 'allowRepetitions' is 'true' or 'false'.
+//	'allowRepetitions' == false signals unordered sampling WITHOUT
+//	replacement.
 //
-//		   ====================================================================
-//		            'allowRepetitions' = false
-//		   ====================================================================
+//	'allowRepetitions' == true signals unordered sampling WITH
+//	replacement.
 //
-//		                       n!
-//		           nCr  =  -----------
-//		                    (n-r)! r!
+//	The result of this combination calculation is returned as a type
+//	'INumMgr'.
 //
-//		       --------------------------------------------------
+//	In the following combination formulas, n= 'numOfItems' and
+//	r = 'numOfItemsChosen'. The actual formula applied depends on whether
+//	input parameter 'allowRepetitions' is 'true' or 'false'.
 //
-//						Where n is the number of things to choose from,
-//						and we choose r of them, order does NOT matter
-//			         and repetition is NOT allowed.
+//	====================================================================
+//	          'allowRepetitions' = false
+//	====================================================================
 //
-//	 *** This version of the combinations calculation assumes NO REPETITIONS! ***
+//	                      n!
+//	          nCr  =  -----------
+//	                   (n-r)! r!
 //
-//	    (a.k.a. as unordered sampling WITHOUT replacement)
+//	--------------------------------------------------
 //
-//	    When 'allowRepetitions' = false, 'numOfItems' and 'numOfItemsChosen' must both
-//	    be positive integer numbers. In addition, 'numOfItems' MUST be greater than or
-//	    equal to 'numOfItemsChosen'.
+//	Where n is the number of things to choose from,
+//	and we choose r of them, order does NOT matter
+//	and repetition is NOT allowed.
 //
-//	    ====================================================================
-//	      'allowRepetitions' = true
-//	    ====================================================================
+//	This version of the combinations calculation assumes NO REPETITIONS!
+//	(a.k.a. as unordered sampling WITHOUT replacement)
+//
+// When 'allowRepetitions' = false, 'numOfItems' and 'numOfItemsChosen' must both
+// be positive integer numbers. In addition, 'numOfItems' MUST be greater than or
+// equal to 'numOfItemsChosen'.
+//
+//	====================================================================
+//	          'allowRepetitions' = true
+//	====================================================================
 //
 //
-//	                (r + n - 1)!
-//	       nCr = -------------------
-//	                  r! (n-1)!
+//	                     (r + n - 1)!
+//	          nCr  =  -------------------
+//	                       r! (n-1)!
 //
-//	       Where n is the number of things to choose from,
-//	       and we choose r of them, order does NOT matter
-//	       and repetition IS NOT allowed.
+//	Where n is the number of things to choose from,
+//	and we choose r of them, order does NOT matter
+//	and repetition IS NOT allowed.
 //
-// *** This version of the combinations calculation assumes REPETITIONS ARE ALLOWED! ***
+//	This version of the combinations calculation assumes REPETITIONS
+//	ARE ALLOWED!
+//	     (a.k.a. as unordered sampling WITH replacement)
 //
-//	   (a.k.a. as unordered sampling WITH replacement)
-//
-//	    When 'allowRepetitions' = true, 'numOfItems' and 'numOfItemsChosen' must both
-//			be positive integer numbers. 'numOfItems' can be greater than, equal to or less
-//			than 'numOfItemsChosen'.
+//	When 'allowRepetitions' = true, 'numOfItems' and 'numOfItemsChosen'
+//	must both be positive integer numbers. 'numOfItems' can be greater
+//	than, equal to or less than 'numOfItemsChosen'.
 func (prob Probability) CombinationsINumMgr(
   numOfItems, numOfItemsChosen INumMgr, allowRepetitions bool) (BigIntNum, error) {
 
@@ -1606,64 +1654,73 @@ func (prob Probability) CombinationsINumMgr(
   return result, nil
 }
 
-// CombinationsInt - Calculates the number of combinations associated with a collection of
-// 'numOfItems' from which one chooses 'numOfItemsChosen'. Order IS NOT significant. Input parameters
-// 'numOfItems' and 'numOfItemsChosen' are passed as type 'int'. Both input parameters must
-// be non-zero, positive integer numbers.
+// CombinationsInt
 //
-// The input parameter 'allowRepetitions' is a boolean value which will determine whether the
-// calculation results will allow repetitions or not. The formula for the calculation of combinations
-// will therefore vary depending on whether repetitions are allowed. 'allowRepetitions' == false signals
-// unordered sampling WITHOUT replacement. 'allowRepetitions' == true signals unordered sampling WITH
-// replacement.
+//	Calculates the number of combinations associated with a
+//	collection of 'numOfItems' from which one chooses
+//	'numOfItemsChosen'. Order IS NOT significant. Input parameters
+//	'numOfItems' and 'numOfItemsChosen' are passed as type 'int'.
+//	Both input parameters must be non-zero, positive integer numbers.
 //
-// The result of this combination calculation is returned as a type 'BigIntNum'.
+//	The input parameter 'allowRepetitions' is a boolean value which
+//	will determine whether the calculation results will allow
+//	repetitions or not. The formula for the calculation of
+//	combinations will therefore vary depending on whether
+//	repetitions are allowed.
 //
-// In the following combination formulas, n= 'numOfItems'  and r = 'numOfItemsChosen'. The actual
-// formula applied depends on whether input parameter 'allowRepetitions' is 'true' or 'false'.
+//	'allowRepetitions' == false signals unordered sampling WITHOUT
+//	replacement. 'allowRepetitions' == true signals unordered sampling
+//	WITH replacement.
 //
-//	    ====================================================================
-//	    	'allowRepetitions' = false
-//	    ====================================================================
+//	The result of this combination calculation is returned as a type
+//	'BigIntNum'.
 //
-//	                   n!
-//	       nCr  =  -----------
-//	               (n-r)! r!
+//	In the following combination formulas, n= 'numOfItems'  and
+//	r = 'numOfItemsChosen'. The actual formula applied depends on
+//	whether input parameter 'allowRepetitions' is 'true' or 'false'.
 //
-//	    --------------------------------------------------
+//	====================================================================
+//		'allowRepetitions' = false
+//	====================================================================
 //
-//	      Where n is the number of things to choose from,
-//	      and we choose r of them, order does NOT matter
-//	      and repetition is NOT allowed.
-//
-//	*** This version of the combinations calculation assumes NO REPETITIONS! ***
-//
-//	  (a.k.a. as unordered sampling WITHOUT replacement)
-//
-//	  When 'allowRepetitions' = false, 'numOfItems' and 'numOfItemsChosen' must both
-//	  be positive integer numbers. In addition, 'numOfItems' MUST be greater than or
-//	  equal to 'numOfItemsChosen'.
-//
-//	    ====================================================================
-//	    	'allowRepetitions' = true
-//	    ====================================================================
+//		                    n!
+//		        nCr  =  -----------
+//		                 (n-r)! r!
 //
 //
-//	               (r + n - 1)!
-//	       nCr = -------------------
-//	                r! (n-1)!
+//		Where n is the number of things to choose from,
+//		and we choose r of them, order does NOT matter
+//		and repetition is NOT allowed.
 //
-//	       Where n is the number of things to choose from,
-//	       and we choose r of them, order does NOT matter
-//	       and repetition IS NOT allowed.
+//	------------------------------------------------------------------------
 //
-//	*** This version of the combinations calculation assumes REPETITIONS ARE ALLOWED! ***
+//		This version of the combinations calculation assumes NO REPETITIONS!
+//		        (a.k.a. as unordered sampling WITHOUT replacement)
 //
-//	 (a.k.a. as unordered sampling WITH replacement)
+//	When 'allowRepetitions' = false, 'numOfItems' and 'numOfItemsChosen'
+//	must both be positive integer numbers. In addition, 'numOfItems' MUST
+//	be greater than or equal to 'numOfItemsChosen'.
 //
-//	 When 'allowRepetitions' = true, 'numOfItems' and 'numOfItemsChosen' must both
-//	 be positive integer numbers. 'numOfItems' can be greater than, equal to or less
-//	 than 'numOfItemsChosen'.
+//	========================================================================
+//		'allowRepetitions' = true
+//	========================================================================
+//
+//		                    (r + n - 1)!
+//		        nCr  =  -------------------
+//		                     r! (n-1)!
+//
+//		Where n is the number of things to choose from,
+//		and we choose r of them, order does NOT matter
+//		and repetition IS NOT allowed.
+//
+//	This version of the combinations calculation assumes REPETITIONS ARE
+//	ALLOWED!
+//
+//		(a.k.a. as unordered sampling WITH replacement)
+//
+//	When 'allowRepetitions' = true, 'numOfItems' and 'numOfItemsChosen'
+//	must both be positive integer numbers. 'numOfItems' can be greater than,
+//	equal to or less than 'numOfItemsChosen'.
 func (prob Probability) CombinationsInt(
   numOfItems, numOfItemsChosen int, allowRepetitions bool) (BigIntNum, error) {
 
@@ -1745,64 +1802,73 @@ func (prob Probability) CombinationsInt(
   return result, nil
 }
 
-// CombinationsInt32 - Calculates the number of combinations associated with a collection of
-// 'numOfItems' from which one chooses 'numOfItemsChosen'. Order IS NOT significant. Input parameters
-// 'numOfItems' and 'numOfItemsChosen' are passed as type 'int32'. Both input parameters must
-// be non-zero, positive integer numbers.
+// CombinationsInt32
 //
-// The input parameter 'allowRepetitions' is a boolean value which will determine whether the
-// calculation results will allow repetitions or not. The formula for the calculation of combinations
-// will therefore vary depending on whether repetitions are allowed. 'allowRepetitions' == false signals
-// unordered sampling WITHOUT replacement. 'allowRepetitions' == true signals unordered sampling WITH
-// replacement.
+//	Calculates the number of combinations associated with a collection
+//	of 'numOfItems' from which one chooses 'numOfItemsChosen'. Order IS
+//	NOT significant. Input parameters 'numOfItems' and 'numOfItemsChosen'
+//	are passed as type 'int32'. Both input parameters must be non-zero,
+//	positive integer numbers.
 //
-// The result of this combination calculation is returned as a type 'BigIntNum'.
+//	The input parameter 'allowRepetitions' is a boolean value which will
+//	determine whether the calculation results will allow repetitions or
+//	not. The formula for the calculation of combinations will therefore
+//	vary depending on whether repetitions are allowed.
 //
-// In the following combination formulas, n= 'numOfItems'  and r = 'numOfItemsChosen'. The actual
-// formula applied depends on whether input parameter 'allowRepetitions' is 'true' or 'false'.
+//	'allowRepetitions' == false signals unordered sampling WITHOUT
+//	replacement.
 //
-//	     ====================================================================
-//				'allowRepetitions' = false
-//	     ====================================================================
+//	'allowRepetitions' == true signals unordered sampling WITH
+//	replacement.
 //
-//											 n!
-//						 nCr	 =		-----------
-//										 (n-r)! r!
+//	The result of this combination calculation is returned as a type
+//	'BigIntNum'.
 //
-//	       --------------------------------------------------
+//	In the following combination formulas, n= 'numOfItems' and
+//	r = 'numOfItemsChosen'. The actual formula applied depends on whether
+//	input parameter 'allowRepetitions' is 'true' or 'false'.
 //
-//				Where n is the number of things to choose from,
-//				and we choose r of them, order does NOT matter
-//	         and repetition is NOT allowed.
+//	====================================================================
+//	          'allowRepetitions' = false
+//	====================================================================
 //
-// *** This version of the combinations calculation assumes NO REPETITIONS! ***
+//	                      n!
+//	          nCr  =  -----------
+//	                   (n-r)! r!
 //
-//	   (a.k.a. as unordered sampling WITHOUT replacement)
+//	--------------------------------------------------
 //
-//	     When 'allowRepetitions' = false, 'numOfItems' and 'numOfItemsChosen' must both
-//				be positive integer numbers. In addition, 'numOfItems' MUST be greater than or
-//				equal to 'numOfItemsChosen'.
+//	Where n is the number of things to choose from,
+//	and we choose r of them, order does NOT matter
+//	and repetition is NOT allowed.
 //
-//	     ====================================================================
-//				'allowRepetitions' = true
-//	     ====================================================================
+//	This version of the combinations calculation assumes NO REPETITIONS!
+//	      (a.k.a. as unordered sampling WITHOUT replacement)
+//
+//	When 'allowRepetitions' = false, 'numOfItems' and 'numOfItemsChosen'
+//	must both be positive integer numbers. In addition, 'numOfItems' MUST
+//	be greater than or equal to 'numOfItemsChosen'.
+//
+//	====================================================================
+//	          'allowRepetitions' = true
+//	====================================================================
 //
 //
-//									(r + n - 1)!
-//						nCr    =  -------------------
-//					 				 r! (n-1)!
+//	                  (r + n - 1)!
+//	          nCr = -------------------
+//	                  r! (n-1)!
 //
-//					Where n is the number of things to choose from,
-//					and we choose r of them, order does NOT matter
-//					and repetition IS NOT allowed.
+//	Where n is the number of things to choose from,
+//	and we choose r of them, order does NOT matter
+//	and repetition IS NOT allowed.
 //
-// *** This version of the combinations calculation assumes REPETITIONS ARE ALLOWED! ***
+//	This version of the combinations calculation assumes REPETITIONS
+//	ARE ALLOWED!
+//		   (a.k.a. as unordered sampling WITH replacement)
 //
-//	   (a.k.a. as unordered sampling WITH replacement)
-//
-//	     When 'allowRepetitions' = true, 'numOfItems' and 'numOfItemsChosen' must both
-//			be positive integer numbers. 'numOfItems' can be greater than, equal to or less
-//			than 'numOfItemsChosen'.
+//	When 'allowRepetitions' = true, 'numOfItems' and 'numOfItemsChosen'
+//	must both be positive integer numbers. 'numOfItems' can be greater
+//	than, equal to or less than 'numOfItemsChosen'.
 func (prob Probability) CombinationsInt32(
   numOfItems, numOfItemsChosen int32, allowRepetitions bool) (BigIntNum, error) {
 
@@ -1883,64 +1949,72 @@ func (prob Probability) CombinationsInt32(
   return result, nil
 }
 
-// CombinationsInt64 - Calculates the number of combinations associated with a collection of
-// 'numOfItems' from which one chooses 'numOfItemsChosen'. Order IS NOT significant. Input parameters
-// 'numOfItems' and 'numOfItemsChosen' are passed as type 'int32'. Both input parameters must
-// be non-zero, positive integer numbers.
+// CombinationsInt64
 //
-// The input parameter 'allowRepetitions' is a boolean value which will determine whether the
-// calculation results will allow repetitions or not. The formula for the calculation of combinations
-// will therefore vary depending on whether repetitions are allowed. 'allowRepetitions' == false signals
-// unordered sampling WITHOUT replacement. 'allowRepetitions' == true signals unordered sampling WITH
-// replacement.
+//	Calculates the number of combinations associated with a collection
+//	of 'numOfItems' from which one chooses 'numOfItemsChosen'. Order IS
+//	NOT significant. Input parameters 'numOfItems' and
+//	'numOfItemsChosen' are passed as type 'int32'. Both input parameters
+//	must be non-zero, positive integer numbers.
 //
-// The result of this combination calculation is returned as a type 'BigIntNum'.
+//	The input parameter 'allowRepetitions' is a boolean value which will
+//	determine whether the calculation results will allow repetitions or
+//	not. The formula for the calculation of combinations will therefore
+//	vary depending on whether repetitions are allowed.
 //
-// In the following combination formulas, n= 'numOfItems'  and r = 'numOfItemsChosen'. The actual
-// formula applied depends on whether input parameter 'allowRepetitions' is 'true' or 'false'.
+//	'allowRepetitions' == false signals unordered sampling WITHOUT
+//	replacement.
 //
-//	     ====================================================================
-//				'allowRepetitions' = false
-//	     ====================================================================
+//	'allowRepetitions' == true signals unordered sampling WITH
+//	replacement.
 //
-//											 n!
-//						 nCr	 =		-----------
-//										 (n-r)! r!
+//	The result of this combination calculation is returned as a type
+//	'BigIntNum'.
 //
-//	       --------------------------------------------------
+//	In the following combination formulas, n= 'numOfItems'  and
+//	r = 'numOfItemsChosen'. The actual formula applied depends on whether
+//	input parameter 'allowRepetitions' is 'true' or 'false'.
 //
-//				Where n is the number of things to choose from,
-//				and we choose r of them, order does NOT matter
-//	         and repetition is NOT allowed.
+//	====================================================================
+//	          'allowRepetitions' = false
+//	====================================================================
 //
-// *** This version of the combinations calculation assumes NO REPETITIONS! ***
+//	                    n!
+//	       nCr  =  -------------
+//	                (n-r)! r!
 //
-//	   (a.k.a. as unordered sampling WITHOUT replacement)
+//	--------------------------------------------------
 //
-//	     When 'allowRepetitions' = false, 'numOfItems' and 'numOfItemsChosen' must both
-//				be positive integer numbers. In addition, 'numOfItems' MUST be greater than or
-//				equal to 'numOfItemsChosen'.
+//	Where n is the number of things to choose from,
+//	and we choose r of them, order does NOT matter
+//	and repetition is NOT allowed.
 //
-//	     ====================================================================
-//				'allowRepetitions' = true
-//	     ====================================================================
+//	This version of the combinations calculation assumes NO REPETITIONS!
+//	     (a.k.a. as unordered sampling WITHOUT replacement)
 //
+//	When 'allowRepetitions' = false, 'numOfItems' and 'numOfItemsChosen'
+//	must both be positive integer numbers. In addition, 'numOfItems'
+//	MUST be greater than or equal to 'numOfItemsChosen'.
 //
-//								(r + n - 1)!
-//					nCr    =  -------------------
-//				 				 r! (n-1)!
+//	====================================================================
+//	          'allowRepetitions' = true
+//	====================================================================
 //
-//				Where n is the number of things to choose from,
-//				and we choose r of them, order does NOT matter
-//				and repetition IS NOT allowed.
+//	                    (r + n - 1)!
+//	          nCr  =  -------------------
+//	                      r! (n-1)!
 //
-// *** This version of the combinations calculation assumes REPETITIONS ARE ALLOWED! ***
+//	Where n is the number of things to choose from,
+//	and we choose r of them, order does NOT matter
+//	and repetition IS NOT allowed.
 //
-//	   (a.k.a. as unordered sampling WITH replacement)
+//	This version of the combinations calculation assumes REPETITIONS
+//	ARE ALLOWED!
+//	        (a.k.a. as unordered sampling WITH replacement)
 //
-//	     When 'allowRepetitions' = true, 'numOfItems' and 'numOfItemsChosen' must both
-//				be positive integer numbers. 'numOfItems' can be greater than, equal to or less
-//				than 'numOfItemsChosen'.
+//	When 'allowRepetitions' = true, 'numOfItems' and 'numOfItemsChosen'
+//	must both be positive integer numbers. 'numOfItems' can be greater
+//	than, equal to or less than 'numOfItemsChosen'.
 func (prob Probability) CombinationsInt64(
   numOfItems, numOfItemsChosen int64, allowRepetitions bool) (BigIntNum, error) {
 
@@ -2040,40 +2114,39 @@ func (prob Probability) CombinationsInt64(
 //	          'allowRepetitions' = false
 //	====================================================================
 //
-//	                       n!
-//	           nCr  =  -----------
-//	                    (n-r)! r!
+//	                      n!
+//	          nCr  =  -----------
+//	                   (n-r)! r!
 //
-//	 --------------------------------------------------
+//	--------------------------------------------------
 //
-//	     Where n is the number of things to choose from,
-//	     and we choose r of them, order does NOT matter
-//	     and repetition is NOT allowed.
+//	Where n is the number of things to choose from,
+//	and we choose r of them, order does NOT matter
+//	and repetition is NOT allowed.
 //
-//	*** This version of the combinations calculation assumes NO REPETITIONS! ***
+//	This version of the combinations calculation assumes NO REPETITIONS!
+//	        (a.k.a. as unordered sampling WITHOUT replacement)
 //
-//	 (a.k.a. as unordered sampling WITHOUT replacement)
+//	When 'allowRepetitions' = false, 'numOfItems' and 'numOfItemsChosen' must both
+//	be positive integer numbers. In addition, 'numOfItems' MUST be greater than or
+//	equal to 'numOfItemsChosen'.
 //
-//	 When 'allowRepetitions' = false, 'numOfItems' and 'numOfItemsChosen' must both
-//	 be positive integer numbers. In addition, 'numOfItems' MUST be greater than or
-//	 equal to 'numOfItemsChosen'.
-//
-//	 ====================================================================
-//	          'allowRepetitions' = true
-//	 ====================================================================
+//	====================================================================
+//	         'allowRepetitions' = true
+//	====================================================================
 //
 //
-//	                (r + n - 1)!
-//	      nCr  =  -------------------
-//	                 r! (n-1)!
+//	               (r + n - 1)!
+//	     nCr  =  -------------------
+//	                r! (n-1)!
 //
-//	      Where n is the number of things to choose from,
-//	      and we choose r of them, order does NOT matter
-//	      and repetition IS NOT allowed.
+//	Where n is the number of things to choose from,
+//	and we choose r of them, order does NOT matter
+//	and repetition IS NOT allowed.
 //
-//	*** This version of the combinations calculation assumes REPETITIONS ARE ALLOWED! ***
-//
-//	(a.k.a. as unordered sampling WITH replacement)
+//	This version of the combinations calculation assumes REPETITIONS ARE
+//	ALLOWED!
+//	      (a.k.a. as unordered sampling WITH replacement)
 //
 //	When 'allowRepetitions' = true, 'numOfItems' and 'numOfItemsChosen' must both
 //	be positive integer numbers. 'numOfItems' can be greater than, equal to or less
@@ -2328,27 +2401,26 @@ func (prob Probability) CombinationsNumStrDto(
 //	In the following combination formulas, n= 'numOfItems'  and r = 'numOfItemsChosen'. The actual
 //	formula applied depends on whether input parameter 'allowRepetitions' is 'true' or 'false'.
 //
-//	  ====================================================================
-//	  	'allowRepetitions' = false
-//	  ====================================================================
+//	====================================================================
+//		'allowRepetitions' = false
+//	====================================================================
 //
-//	                     n!
-//	        nCr  =  -----------
-//	                 (n-r)! r!
+//	                   n!
+//	      nCr  =  -----------
+//	               (n-r)! r!
 //
-//	  --------------------------------------------------
+//	--------------------------------------------------
 //
-//	  Where n is the number of things to choose from,
-//	  and we choose r of them, order does NOT matter
-//	  and repetition is NOT allowed.
+//	Where n is the number of things to choose from,
+//	and we choose r of them, order does NOT matter
+//	and repetition is NOT allowed.
 //
-//	*** This version of the combinations calculation assumes NO REPETITIONS! ***
-//
+//	This version of the combinations calculation assumes NO REPETITIONS!
 //	    (a.k.a. as unordered sampling WITHOUT replacement)
 //
-//	    When 'allowRepetitions' = false, 'numOfItems' and 'numOfItemsChosen' must both
-//	    be positive integer numbers. In addition, 'numOfItems' MUST be greater than or
-//	    equal to 'numOfItemsChosen'.
+//	When 'allowRepetitions' = false, 'numOfItems' and 'numOfItemsChosen' must both
+//	be positive integer numbers. In addition, 'numOfItems' MUST be greater than or
+//	equal to 'numOfItemsChosen'.
 //
 //	====================================================================
 //	        allowRepetitions' = true
@@ -2359,12 +2431,12 @@ func (prob Probability) CombinationsNumStrDto(
 //	        nCr  =  -------------------
 //	                    r! (n-1)!
 //
-//	    Where n is the number of things to choose from,
-//	    and we choose r of them, order does NOT matter
-//	    and repetition IS NOT allowed.
+//	Where n is the number of things to choose from,
+//	and we choose r of them, order does NOT matter
+//	and repetition IS NOT allowed.
 //
-//	*** This version of the combinations calculation assumes REPETITIONS ARE ALLOWED! ***
-//
+//	This version of the combinations calculation assumes REPETITIONS ARE
+//	ALLOWED!
 //	      (a.k.a. as unordered sampling WITH replacement)
 //
 //	When 'allowRepetitions' = true, 'numOfItems' and 'numOfItemsChosen' must both
@@ -2586,7 +2658,7 @@ func (prob Probability) CombinationsNumberStr(
 //	formula applied depends on whether input parameter 'allowRepetitions' is 'true' or 'false'.
 //
 //	====================================================================
-//	           'allowRepetitions' = false
+//	          'allowRepetitions' = false
 //	====================================================================
 //
 //	                n!
@@ -2599,19 +2671,16 @@ func (prob Probability) CombinationsNumberStr(
 //	and we choose r of them, order does NOT matter
 //	and repetition is NOT allowed.
 //
-//	*** This version of the combinations calculation assumes NO REPETITIONS! ***
-//
-//	(a.k.a. as unordered sampling WITHOUT replacement)
+//	This version of the combinations calculation assumes NO REPETITIONS!
+//	       (a.k.a. as unordered sampling WITHOUT replacement)
 //
 //	When 'allowRepetitions' = false, 'numOfItems' and 'numOfItemsChosen' must both
 //	be integer numbers. In addition, 'numOfItems' MUST be greater than or
 //	equal to 'numOfItemsChosen'.
 //
-// ====================================================================
-//
-//	'allowRepetitions' = true
-//
-// ====================================================================
+//	====================================================================
+//		        'allowRepetitions' = true
+//	====================================================================
 //
 //	                (r + n - 1)!
 //	      nCr  =  -------------------
@@ -2621,9 +2690,9 @@ func (prob Probability) CombinationsNumberStr(
 //	and we choose r of them, order does NOT matter
 //	and repetition IS NOT allowed.
 //
-//	*** This version of the combinations calculation assumes REPETITIONS ARE ALLOWED! ***
-//
-//	(a.k.a. as unordered sampling WITH replacement)
+//	This version of the combinations calculation assumes REPETITIONS
+//	ARE ALLOWED!
+//	       (a.k.a. as unordered sampling WITH replacement)
 //
 //	When 'allowRepetitions' = true, 'numOfItems' and 'numOfItemsChosen' must both
 //	be integer numbers. 'numOfItems' can be greater than, equal to or less
@@ -2697,24 +2766,32 @@ func (prob Probability) CombinationsUint(
 
 // CombinationsUint32
 //
-//	Calculates the number of combinations associated with a collection of
-//	'numOfItems' from which one chooses 'numOfItemsChosen'. Order IS NOT significant. Input parameters
-//	'numOfItems' and 'numOfItemsChosen' are passed as type 'uint32'. Both input parameters must
-//	be non-zero, integer numbers.
+//	Calculates the number of combinations associated with a collection
+//	of 'numOfItems' from which one chooses 'numOfItemsChosen'. Order IS
+//	NOT significant. Input parameters 'numOfItems' and 'numOfItemsChosen'
+//	are passed as type 'uint32'. Both input parameters must be non-zero,
+//	integer numbers.
 //
-//	The input parameter 'allowRepetitions' is a boolean value which will determine whether the
-//	calculation results will allow repetitions or not. The formula for the calculation of combinations
-//	will therefore vary depending on whether repetitions are allowed. 'allowRepetitions' == false signals
-//	unordered sampling WITHOUT replacement. 'allowRepetitions' == true signals unordered sampling WITH
+//	The input parameter 'allowRepetitions' is a boolean value which will
+//	determine whether the calculation results will allow repetitions or
+//	not. The formula for the calculation of combinations will therefore
+//	vary depending on whether repetitions are allowed.
+//
+//	'allowRepetitions' == false signals unordered sampling WITHOUT
 //	replacement.
 //
-//	The result of this combination calculation is returned as a type 'BigIntNum'.
+//	'allowRepetitions' == true signals unordered sampling WITH
+//	replacement.
 //
-//	In the following combination formulas, n= 'numOfItems'  and r = 'numOfItemsChosen'. The actual
-//	formula applied depends on whether input parameter 'allowRepetitions' is 'true' or 'false'.
+//	The result of this combination calculation is returned as a type
+//	'BigIntNum'.
+//
+//	In the following combination formulas, n= 'numOfItems' and
+//	r = 'numOfItemsChosen'. The actual formula applied depends on
+//	whether input parameter 'allowRepetitions' is 'true' or 'false'.
 //
 //	====================================================================
-//	     'allowRepetitions' = false
+//	          'allowRepetitions' = false
 //	====================================================================
 //
 //	                     n!
@@ -2727,16 +2804,15 @@ func (prob Probability) CombinationsUint(
 //	and we choose r of them, order does NOT matter
 //	and repetition is NOT allowed.
 //
-//	*** This version of the combinations calculation assumes NO REPETITIONS! ***
+//	This version of the combinations calculation assumes NO REPETITIONS!
+//	        (a.k.a. as unordered sampling WITHOUT replacement)
 //
-//	(a.k.a. as unordered sampling WITHOUT replacement)
-//
-//	When 'allowRepetitions' = false, 'numOfItems' and 'numOfItemsChosen' must both
-//	be integer numbers. In addition, 'numOfItems' MUST be greater than or
-//	equal to 'numOfItemsChosen'.
+//	When 'allowRepetitions' = false, 'numOfItems' and 'numOfItemsChosen'
+//	must both be integer numbers. In addition, 'numOfItems' MUST be greater
+//	than or equal to 'numOfItemsChosen'.
 //
 //	====================================================================
-//	     'allowRepetitions' = true
+//	          'allowRepetitions' = true
 //	====================================================================
 //
 //	                     (r + n - 1)!
@@ -2747,17 +2823,28 @@ func (prob Probability) CombinationsUint(
 //	and we choose r of them, order does NOT matter
 //	and repetition IS NOT allowed.
 //
-//	*** This version of the combinations calculation assumes REPETITIONS ARE ALLOWED! ***
+//	This version of the combinations calculation assumes REPETITIONS
+//	ARE ALLOWED!
+//	          (a.k.a. as unordered sampling WITH replacement)
 //
-//	(a.k.a. as unordered sampling WITH replacement)
-//
-//	When 'allowRepetitions' = true, 'numOfItems' and 'numOfItemsChosen' must both
-//	be integer numbers. 'numOfItems' can be greater than, equal to or less
-//	than 'numOfItemsChosen'.
+//	When 'allowRepetitions' = true, 'numOfItems' and 'numOfItemsChosen'
+//	must both be integer numbers. 'numOfItems' can be greater than, equal
+//	to or less than 'numOfItemsChosen'.
 func (prob Probability) CombinationsUint32(
   numOfItems, numOfItemsChosen uint32, allowRepetitions bool) (BigIntNum, error) {
 
-  ePrefix := "Probability.CombinationsUint32() "
+  var ePrefix *ePref.ErrPrefixDto
+  var err error
+
+  ePrefix,
+    err = ePref.ErrPrefixDto{}.NewIEmpty(
+    nil,
+    "Probability.CombinationsUint32",
+    "")
+
+  if err != nil {
+    return BigIntNum{}, err
+  }
 
   if numOfItems == 0 {
     return BigIntNum{},
@@ -2788,7 +2875,6 @@ func (prob Probability) CombinationsUint32(
   }
 
   var result BigIntNum
-  var err error
 
   if !allowRepetitions {
 
@@ -2823,67 +2909,85 @@ func (prob Probability) CombinationsUint32(
 
 // CombinationsUint64
 //
-//  Calculates the number of combinations associated with a collection of
-//  'numOfItems' from which one chooses 'numOfItemsChosen'. Order IS NOT significant. Input parameters
-//  'numOfItems' and 'numOfItemsChosen' are passed as type 'uint64'. Both input parameters must
-//  be non-zero, integer numbers.
+//	Calculates the number of combinations associated with a collection
+//	of 'numOfItems' from which one chooses 'numOfItemsChosen'. Order IS
+//	NOT significant. Input parameters 'numOfItems' and 'numOfItemsChosen'
+//	are passed as type 'uint64'. Both input parameters must be non-zero,
+//	integer numbers.
 //
-//  The input parameter 'allowRepetitions' is a boolean value which will determine whether the
-//  calculation results will allow repetitions or not. The formula for the calculation of combinations
-//  will therefore vary depending on whether repetitions are allowed. 'allowRepetitions' == false signals
-//  unordered sampling WITHOUT replacement. 'allowRepetitions' == true signals unordered sampling WITH
-//  replacement.
+//	The input parameter 'allowRepetitions' is a boolean value which will
+//	determine whether the calculation results will allow repetitions or
+//	not. The formula for the calculation of combinations will therefore
+//	vary depending on whether repetitions are allowed.
 //
-//  The result of this combination calculation is returned as a type 'BigIntNum'.
+//	'allowRepetitions' == false signals	unordered sampling WITHOUT
+//	replacement.
 //
-//  In the following combination formulas, n= 'numOfItems'  and r = 'numOfItemsChosen'. The actual
-//  formula applied depends on whether input parameter 'allowRepetitions' is 'true' or 'false'.
+//	'allowRepetitions' == true signals unordered sampling WITH
+//	replacement.
 //
-//  ====================================================================
-//         'allowRepetitions' = false
-//  ====================================================================
+//	The result of this combination calculation is returned as a type
+//	'BigIntNum'.
 //
-//                         n!
-//            nCr  =  -----------
-//                    (n-r)! r!
+//	In the following combination formulas, n= 'numOfItems' and
+//	r = 'numOfItemsChosen'. The actual formula applied depends on whether
+//	input parameter 'allowRepetitions' is 'true' or 'false'.
 //
-//  --------------------------------------------------
+//	====================================================================
+//	       'allowRepetitions' = false
+//	====================================================================
 //
-//  Where n is the number of things to choose from,
-//  and we choose r of them, order does NOT matter
-//  and repetition is NOT allowed.
+//	                       n!
+//	          nCr  =  -----------
+//	                  (n-r)! r!
 //
-//  *** This version of the combinations calculation assumes NO REPETITIONS! ***
+//	--------------------------------------------------
 //
-//  (a.k.a. as unordered sampling WITHOUT replacement)
+//	Where n is the number of things to choose from,
+//	and we choose r of them, order does NOT matter
+//	and repetition is NOT allowed.
 //
-//  When 'allowRepetitions' = false, 'numOfItems' and 'numOfItemsChosen' must both
-//  be integer numbers. In addition, 'numOfItems' MUST be greater than or
-//  equal to 'numOfItemsChosen'.
+//	This version of the combinations calculation assumes NO REPETITIONS!
+//	       (a.k.a. as unordered sampling WITHOUT replacement)
 //
-//  ====================================================================
-//         'allowRepetitions' = true
-//  ====================================================================
+//	When 'allowRepetitions' = false, 'numOfItems' and 'numOfItemsChosen' must both
+//	be integer numbers. In addition, 'numOfItems' MUST be greater than or
+//	equal to 'numOfItemsChosen'.
 //
-//                      (r + n - 1)!
-//           nCr  =  -------------------
-//                       r! (n-1)!
+//	====================================================================
+//	       'allowRepetitions' = true
+//	====================================================================
 //
-//  Where n is the number of things to choose from,
-//  and we choose r of them, order does NOT matter
-//  and repetition IS NOT allowed.
+//	                    (r + n - 1)!
+//	         nCr  =  -------------------
+//	                     r! (n-1)!
 //
-//  *** This version of the combinations calculation assumes REPETITIONS ARE ALLOWED! ***
+//	Where n is the number of things to choose from,
+//	and we choose r of them, order does NOT matter
+//	and repetition IS NOT allowed.
 //
-//  (a.k.a. as unordered sampling WITH replacement)
+//	This version of the combinations calculation assumes REPETITIONS
+//	ARE ALLOWED!
+//	       (a.k.a. as unordered sampling WITH replacement)
 //
-//  When 'allowRepetitions' = true, 'numOfItems' and 'numOfItemsChosen' must both
-//  be integer numbers. 'numOfItems' can be greater than, equal to or less
-//  than 'numOfItemsChosen'.
+//	When 'allowRepetitions' = true, 'numOfItems' and 'numOfItemsChosen'
+//	must both be integer numbers. 'numOfItems' can be greater than, equal
+//	to or less than 'numOfItemsChosen'.
 func (prob Probability) CombinationsUint64(
   numOfItems, numOfItemsChosen uint64, allowRepetitions bool) (BigIntNum, error) {
 
-  ePrefix := "Probability.CombinationsUint64() "
+  var ePrefix *ePref.ErrPrefixDto
+  var err error
+
+  ePrefix,
+    err = ePref.ErrPrefixDto{}.NewIEmpty(
+    nil,
+    "Probability.CombinationsUint64",
+    "")
+
+  if err != nil {
+    return BigIntNum{}, err
+  }
 
   if numOfItems == 0 {
     return BigIntNum{},
@@ -2914,7 +3018,6 @@ func (prob Probability) CombinationsUint64(
   }
 
   var result BigIntNum
-  var err error
 
   if !allowRepetitions {
 
