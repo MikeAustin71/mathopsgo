@@ -1,7 +1,6 @@
 package mathops
 
 import (
-  "errors"
   "fmt"
   ePref "github.com/MikeAustin71/errpref"
   "math/big"
@@ -449,8 +448,9 @@ func (prob Probability) PermutationsWithRepsBigInt(
 //	and we choose r of them, repetition is NOT allowed,
 //	and order matters.
 //
-//	When 'allowRepetitions' = false, 'numOfItemsPicked' must be a positive
-//	integer number which is less than or equal to 'numOfItems'.
+//	When 'allowRepetitions' = false, 'numOfItemsPicked' must be
+//	a positive integer number which is less than or equal to
+//	'numOfItems'.
 //
 //	========================================================================
 //
@@ -2338,66 +2338,66 @@ func (prob Probability) PermutationsNumStrDto(
 
 // PermutationsNumberStr
 //
-//	 Calculates the number of permutations associated with a collection
-//	 of 'numOfItems' from which one picks 'numOfItemsPicked'. Order IS
-//	 significant.
+//	Calculates the number of permutations associated with a collection
+//	of 'numOfItems' from which one picks 'numOfItemsPicked'. Order IS
+//	significant.
 //
-//	 Input parameters 'numOfItems' and 'numOfItemsPicked' are passed as
-//	 strings. These strings must be formatted as valid number strings.
-//	 Number strings may be prefixed by a plus (+) or minus (-) and must
-//	 consist of a string of numeric digits which may be delimited by a
-//	 thousand separator. If the numeric value is a fractional value,
-//	 the fractional digits must be preceded by a period ('.') or
-//	 decimal separator.
+//	Input parameters 'numOfItems' and 'numOfItemsPicked' are passed as
+//	strings. These strings must be formatted as valid number strings.
+//	Number strings may be prefixed by a plus (+) or minus (-) and must
+//	consist of a string of numeric digits which may be delimited by a
+//	thousand separator. If the numeric value is a fractional value,
+//	the fractional digits must be preceded by a period ('.') or
+//	decimal separator.
 //
-//	 Both input parameters must be non-zero, positive integer numbers.
+//	Both input parameters must be non-zero, positive integer numbers.
 //
-//	 The input parameter 'allowRepetitions' is a boolean value which
-//	 will determine whether the calculation results will allow
-//	 repetitions or not. The formula for the permutation will
-//	 therefore vary depending on whether repetitions are allowed.
+//	The input parameter 'allowRepetitions' is a boolean value which
+//	will determine whether the calculation results will allow
+//	repetitions or not. The formula for the permutation will
+//	therefore vary depending on whether repetitions are allowed.
 //
-//	 The result of this permutation calculation is returned as a type
-//	 BigIntNum.
+//	The result of this permutation calculation is returned as a type
+//	BigIntNum.
 //
-//	 In the following permutation formulas, n= 'numOfItems' and
-//	 r = 'numOfItemsPicked'. The actual formula applied depends on
-//	 whether input parameter 'allowRepetitions' is 'true' or 'false'.
+//	In the following permutation formulas, n= 'numOfItems' and
+//	r = 'numOfItemsPicked'. The actual formula applied depends on
+//	whether input parameter 'allowRepetitions' is 'true' or 'false'.
 //
-//		========================================================================
+//	========================================================================
 //
-//		          'allowRepetitions' = false
+//	          'allowRepetitions' = false
 //
-//		========================================================================
+//	========================================================================
 //
-//		                     n!
-//		           nPr  =  ------
-//		                   (n-r)!
+//	                     n!
+//	           nPr  =  ------
+//	                   (n-r)!
 //
-//		                Note: 0! = 1
+//	                Note: 0! = 1
 //
-//		      Where n is the number of things to choose from,
-//		      and we choose r of them, repetition is NOT allowed,
-//		      and order matters.
+//	      Where n is the number of things to choose from,
+//	      and we choose r of them, repetition is NOT allowed,
+//	      and order matters.
 //
-//		When 'allowRepetitions' = false, 'numOfItemsPicked' must be a positive
-//		integer number which is less than or equal to 'numOfItems'.
+//	When 'allowRepetitions' = false, 'numOfItemsPicked' must be a positive
+//	integer number which is less than or equal to 'numOfItems'.
 //
-//		========================================================================
+//	========================================================================
 //
-//		         'allowRepetitions' = true
+//	         'allowRepetitions' = true
 //
-//		========================================================================
+//	========================================================================
 //
-//		           nPr  =  n^r
+//	           nPr  =  n^r
 //
-//		      Where n is the number of things to choose from,
-//		      and we choose r of them, repetition IS allowed,
-//		      and order matters.
+//	      Where n is the number of things to choose from,
+//	      and we choose r of them, repetition IS allowed,
+//	      and order matters.
 //
-//		When 'allowRepetitions' = true, 'numOfItemsPicked' must be a positive
-//		integer number. 'numOfItemsPicked' can be greater than, equal to or
-//		less than 'numOfItems'.
+//	When 'allowRepetitions' = true, 'numOfItemsPicked' must be a positive
+//	integer number. 'numOfItemsPicked' can be greater than, equal to or
+//	less than 'numOfItems'.
 func (prob Probability) PermutationsNumberStr(
   numOfItems, numOfItemsPicked string,
   allowRepetitions bool) (BigIntNum, error) {
@@ -2677,233 +2677,363 @@ func (prob Probability) PermutationsNumberStr(
   return resultBINum, nil
 }
 
-// PermutationsUint - Calculates the number of permutations associated with a collection of
-// 'numOfItems' from which one picks 'numOfItemsPicked'. Order IS significant. Input
-// parameters 'numOfItems' and 'numOfItemsPicked' are passed as type uint. 'numOfItems'
-// must be equal to or greater than 'numOfItemsPicked'.
+// PermutationsUint
 //
-// The input parameter 'allowRepetitions' is a boolean value which will determine whether the
-// calculation results will allow repetitions or not. The formula for the permutation will
-// therefore vary depending on whether repetitions are allowed.
+//	 Calculates the number of permutations associated with a collection
+//	 of 'numOfItems' from which one picks 'numOfItemsPicked'. Order IS
+//	 significant. Input parameters 'numOfItems' and 'numOfItemsPicked'
+//	 are passed as type uint. 'numOfItems' must be equal to or greater
+//	 than 'numOfItemsPicked'.
 //
-// The result of this permutation calculation is returned as a type BigIntNum.
+//	 The input parameter 'allowRepetitions' is a boolean value which
+//	 will determine whether the calculation results will allow
+//	 repetitions or not. The formula for the permutation will
+//	 therefore vary depending on whether repetitions are allowed.
 //
-// In the following permutation formulas, n= 'numOfItems'  and r = 'numOfItemsPicked'. The actual
-// formula applied depends on whether input parameter 'allowRepetitions' is 'true' or 'false'.
+//	 The result of this permutation calculation is returned as a type
+//	 BigIntNum.
 //
-//	     ====================================================================
-//				'allowRepetitions' = false
+//	 In the following permutation formulas, n = 'numOfItems' and
+//	 r = 'numOfItemsPicked'. The actual formula applied depends on
+//	 whether input parameter 'allowRepetitions' is 'true' or 'false'.
 //
-//	             						n!
-//								nPr	 =		------
-//													(n-r)!
-//	            ----------------------
+//	========================================================================
 //
-//								Note: 0! = 1
+//	          'allowRepetitions' = false
 //
-//					Where n is the number of things to choose from,
-//					and we choose r of them, repetition is NOT allowed,
-//					and order matters.
+//	========================================================================
 //
-//	     When 'allowRepetitions' = false, 'numOfItemsPicked' must be a positive integer number
-//	     which is less than or equal to 'numOfItems'.
+//	                     n!
+//	           nPr  =  ------
+//	                   (n-r)!
 //
-//	     ====================================================================
-//				'allowRepetitions' = true
+//	                Note: 0! = 1
 //
-//										nPr	 =		n^r
-//	                 -------------
+//	      Where n is the number of things to choose from,
+//	      and we choose r of them, repetition is NOT allowed,
+//	      and order matters.
 //
-//					Where n is the number of things to choose from,
-//					and we choose r of them, repetition is allowed,
-//					and order matters.
+//	When 'allowRepetitions' = false, 'numOfItemsPicked' must be a positive
+//	integer number which is less than or equal to 'numOfItems'.
 //
-//	     When 'allowRepetitions' = true, 'numOfItemsPicked' must be a positive integer number.
-//	     'numOfItemsPicked' can be greater than, equal to or less than 'numOfItems'.
+//
+//	========================================================================
+//
+//	         'allowRepetitions' = true
+//
+//	========================================================================
+//
+//	           nPr  =  n^r
+//
+//	      Where n is the number of things to choose from,
+//	      and we choose r of them, repetition IS allowed,
+//	      and order matters.
+//
+//	When 'allowRepetitions' = true, 'numOfItemsPicked' must be a positive
+//	integer number. 'numOfItemsPicked' can be greater than, equal to or
+//	less than 'numOfItems'.
 func (prob Probability) PermutationsUint(
   numOfItems, numOfItemsPicked uint,
   allowRepetitions bool) (BigIntNum, error) {
 
-  ePrefix := "Probability.PermutationsUint() "
+  var ePrefix *ePref.ErrPrefixDto
+  var err error
+
+  ePrefix,
+    err = ePref.ErrPrefixDto{}.NewIEmpty(
+    nil,
+    "Probability.PermutationsUint",
+    "")
+
+  if err != nil {
+    return BigIntNum{}, err
+  }
 
   if numOfItems == 0 {
+
     return BigIntNum{},
-      errors.New(ePrefix + "Error: 'numOfItems' is ZERO! ")
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "",
+        ErrContext: "",
+        ErrMessage: "Error: 'numOfItems' is ZERO!",
+      }
   }
 
   if numOfItemsPicked == 0 {
+
     return BigIntNum{},
-      errors.New(ePrefix + "Error: 'numOfItemsPicked' is ZERO! ")
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "",
+        ErrContext: "",
+        ErrMessage: "Error: 'numOfItemsPicked' is ZERO!",
+      }
   }
 
   if !allowRepetitions && numOfItemsPicked > numOfItems {
+
     return BigIntNum{},
-      fmt.Errorf(ePrefix+
-        "Error: 'numOfItemsPicked' is GREATER THAN 'numOfItems'.  "+
-        "numOfItems='%v' numOfItemsPicked='%v' \n",
-        numOfItems, numOfItemsPicked)
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "",
+        ErrContext: fmt.Sprintf("allowRepetitions= 'false'\n"+
+          "numOfItems='%v'\n"+
+          "numOfItemsPicked='%v'",
+          numOfItems, numOfItemsPicked),
+        ErrMessage: "Error: 'numOfItemsPicked' is GREATER THAN 'numOfItems'.",
+      }
   }
 
   n := big.NewInt(int64(numOfItems))
+
   r := big.NewInt(int64(numOfItemsPicked))
 
   if !allowRepetitions {
+
     return Probability{}.PermutationsNoRepsBigInt(n, r)
   }
 
+  // allowRepetitions = 'true'
   return Probability{}.PermutationsWithRepsBigInt(n, r)
 }
 
-// PermutationsUint32 - Calculates the number of permutations associated with a collection of
-// 'numOfItems' from which one picks 'numOfItemsPicked'. Order IS significant. Input
-// parameters 'numOfItems' and 'numOfItemsPicked' are passed as type uint32. 'numOfItems'
-// must be equal to or greater than 'numOfItemsPicked'.
+// PermutationsUint32
 //
-// The input parameter 'allowRepetitions' is a boolean value which will determine whether the
-// calculation results will allow repetitions or not. The formula for the permutation will
-// therefore vary depending on whether repetitions are allowed.
+//	Calculates the number of permutations associated with a collection
+//	of 'numOfItems' from which one picks 'numOfItemsPicked'. Order IS
+//	significant. Input parameters 'numOfItems' and 'numOfItemsPicked'
+//	are passed as type uint32. 'numOfItems' must be equal to or
+//	greater than 'numOfItemsPicked'.
 //
-// The result of this permutation calculation is returned as a type BigIntNum.
+//	The input parameter 'allowRepetitions' is a boolean value which
+//	will determine whether the calculation results will allow
+//	repetitions or not. The formula for the permutation will
+//	therefore vary depending on whether repetitions are allowed.
 //
-// In the following permutation formulas, n= 'numOfItems'  and r = 'numOfItemsPicked'. The actual
-// formula applied depends on whether input parameter 'allowRepetitions' is 'true' or 'false'.
+//	The result of this permutation calculation is returned as a type
+//	BigIntNum.
 //
-//	     ====================================================================
-//				'allowRepetitions' = false
+//	In the following permutation formulas, n= 'numOfItems' and
+//	r = 'numOfItemsPicked'. The actual formula applied depends on
+//	whether input parameter 'allowRepetitions' is 'true' or 'false'.
 //
-//	             						n!
-//								nPr	 =		------
-//													(n-r)!
-//	            ----------------------
+//	========================================================================
 //
-//								Note: 0! = 1
+//	          'allowRepetitions' = false
 //
-//					Where n is the number of things to choose from,
-//					and we choose r of them, repetition is NOT allowed,
-//					and order matters.
+//	========================================================================
 //
-//	     When 'allowRepetitions' = false, 'numOfItemsPicked' must be a positive integer number
-//	     which is less than or equal to 'numOfItems'.
+//	                     n!
+//	           nPr  =  ------
+//	                   (n-r)!
 //
-//	     ====================================================================
-//				'allowRepetitions' = true
+//	                Note: 0! = 1
 //
-//										nPr	 =		n^r
-//	                 -------------
+//	      Where n is the number of things to choose from,
+//	      and we choose r of them, repetition is NOT allowed,
+//	      and order matters.
 //
-//					Where n is the number of things to choose from,
-//					and we choose r of them, repetition is allowed,
-//					and order matters.
+//	When 'allowRepetitions' = false, 'numOfItemsPicked' must be a positive
+//	integer number which is less than or equal to 'numOfItems'.
 //
-//	     When 'allowRepetitions' = true, 'numOfItemsPicked' must be a positive integer number.
-//	     'numOfItemsPicked' can be greater than, equal to or less than 'numOfItems'.
+//	========================================================================
+//
+//	         'allowRepetitions' = true
+//
+//	========================================================================
+//
+//	           nPr  =  n^r
+//
+//	      Where n is the number of things to choose from,
+//	      and we choose r of them, repetition IS allowed,
+//	      and order matters.
+//
+//	When 'allowRepetitions' = true, 'numOfItemsPicked' must be a positive
+//	integer number. 'numOfItemsPicked' can be greater than, equal to or
+//	less than 'numOfItems'.
 func (prob Probability) PermutationsUint32(
   numOfItems, numOfItemsPicked uint32,
   allowRepetitions bool) (BigIntNum, error) {
 
-  ePrefix := "Probability.PermutationsUint32() "
+  var ePrefix *ePref.ErrPrefixDto
+  var err error
+
+  ePrefix,
+    err = ePref.ErrPrefixDto{}.NewIEmpty(
+    nil,
+    "Probability.PermutationsUint32",
+    "")
+
+  if err != nil {
+    return BigIntNum{}, err
+  }
 
   if numOfItems == 0 {
+
     return BigIntNum{},
-      errors.New(ePrefix + "Error: 'numOfItems' is ZERO! ")
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "",
+        ErrContext: "",
+        ErrMessage: "Error: 'numOfItems' is ZERO!",
+      }
   }
 
   if numOfItemsPicked == 0 {
+
     return BigIntNum{},
-      errors.New(ePrefix + "Error: 'numOfItemsPicked' is ZERO! ")
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "",
+        ErrContext: "",
+        ErrMessage: "Error: 'numOfItemsPicked' is ZERO!",
+      }
   }
 
   if !allowRepetitions && numOfItemsPicked > numOfItems {
+
     return BigIntNum{},
-      fmt.Errorf(ePrefix+
-        "Error: 'numOfItemsPicked' is GREATER THAN 'numOfItems'.  "+
-        "numOfItems='%v' numOfItemsPicked='%v' \n",
-        numOfItems, numOfItemsPicked)
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "",
+        ErrContext: fmt.Sprintf("allowRepetitions= 'false'\n"+
+          "numOfItems='%v'\n"+
+          "numOfItemsPicked='%v'",
+          numOfItems, numOfItemsPicked),
+        ErrMessage: "Error: 'numOfItemsPicked' is GREATER THAN 'numOfItems'.",
+      }
   }
 
   n := big.NewInt(int64(numOfItems))
+
   r := big.NewInt(int64(numOfItemsPicked))
 
   if !allowRepetitions {
+
     return Probability{}.PermutationsNoRepsBigInt(n, r)
   }
 
+  // allowRepetitions = 'true'
   return Probability{}.PermutationsWithRepsBigInt(n, r)
 }
 
-// PermutationsUint64 - Calculates the number of permutations associated with a collection of
-// 'numOfItems' from which one picks 'numOfItemsPicked'. Order IS significant. Input
-// parameters 'numOfItems' and 'numOfItemsPicked' are passed as type uint64. 'numOfItems'
-// must be equal to or greater than 'numOfItemsPicked'.
+// PermutationsUint64
 //
-// The input parameter 'allowRepetitions' is a boolean value which will determine whether the
-// calculation results will allow repetitions or not. The formula for the permutation will
-// therefore vary depending on whether repetitions are allowed.
+//	Calculates the number of permutations associated with a collection
+//	of 'numOfItems' from which one picks 'numOfItemsPicked'. Order IS
+//	significant. Input parameters 'numOfItems' and 'numOfItemsPicked'
+//	are passed as type uint64. 'numOfItems' must be equal to or
+//	greater than 'numOfItemsPicked'.
 //
-// The result of this permutation calculation is returned as a type BigIntNum.
+//	The input parameter 'allowRepetitions' is a boolean value which
+//	will determine whether the calculation results will allow
+//	repetitions or not. The formula for the permutation will
+//	therefore vary depending on whether repetitions are allowed.
 //
-// In the following permutation formulas, n= 'numOfItems'  and r = 'numOfItemsPicked'. The actual
-// formula applied depends on whether input parameter 'allowRepetitions' is 'true' or 'false'.
+//	The result of this permutation calculation is returned as a type
+//	BigIntNum.
 //
-//	     ====================================================================
-//				'allowRepetitions' = false
+//	In the following permutation formulas, n = 'numOfItems' and
+//	r = 'numOfItemsPicked'. The actual formula applied depends on
+//	whether input parameter 'allowRepetitions' is 'true' or 'false'.
 //
-//	             						n!
-//								nPr	 =		------
-//													(n-r)!
-//	            ----------------------
+//	========================================================================
 //
-//								Note: 0! = 1
+//	          'allowRepetitions' = false
 //
-//					Where n is the number of things to choose from,
-//					and we choose r of them, repetition is NOT allowed,
-//					and order matters.
+//	========================================================================
 //
-//	     When 'allowRepetitions' = false, 'numOfItemsPicked' must be a positive integer number
-//	     which is less than or equal to 'numOfItems'.
+//	                     n!
+//	           nPr  =  ------
+//	                   (n-r)!
 //
-//	     ====================================================================
-//				'allowRepetitions' = true
+//	                Note: 0! = 1
 //
-//										nPr	 =		n^r
-//	                 -------------
+//	      Where n is the number of things to choose from,
+//	      and we choose r of them, repetition is NOT allowed,
+//	      and order matters.
 //
-//					Where n is the number of things to choose from,
-//					and we choose r of them, repetition is allowed,
-//					and order matters.
+//	When 'allowRepetitions' = false, 'numOfItemsPicked' must be a positive
+//	integer number which is less than or equal to 'numOfItems'.
 //
-//	     When 'allowRepetitions' = true, 'numOfItemsPicked' must be a positive integer number.
-//	     'numOfItemsPicked' can be greater than, equal to or less than 'numOfItems'.
+//
+//	========================================================================
+//
+//	         'allowRepetitions' = true
+//
+//	========================================================================
+//
+//	           nPr  =  n^r
+//
+//	      Where n is the number of things to choose from,
+//	      and we choose r of them, repetition IS allowed,
+//	      and order matters.
+//
+//	When 'allowRepetitions' = true, 'numOfItemsPicked' must be a positive
+//	integer number. 'numOfItemsPicked' can be greater than, equal to or
+//	less than 'numOfItems'.
 func (prob Probability) PermutationsUint64(
   numOfItems, numOfItemsPicked uint64,
   allowRepetitions bool) (BigIntNum, error) {
 
-  ePrefix := "Probability.PermutationsUint64() "
+  var ePrefix *ePref.ErrPrefixDto
+  var err error
+
+  ePrefix,
+    err = ePref.ErrPrefixDto{}.NewIEmpty(
+    nil,
+    "Probability.PermutationsUint64",
+    "")
+
+  if err != nil {
+    return BigIntNum{}, err
+  }
 
   if numOfItems == 0 {
+
     return BigIntNum{},
-      errors.New(ePrefix + "Error: 'numOfItems' is ZERO! ")
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "",
+        ErrContext: "",
+        ErrMessage: "Error: 'numOfItems' is ZERO!",
+      }
   }
 
   if numOfItemsPicked == 0 {
+
     return BigIntNum{},
-      errors.New(ePrefix + "Error: 'numOfItemsPicked' is ZERO! ")
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "",
+        ErrContext: "",
+        ErrMessage: "Error: 'numOfItemsPicked' is ZERO!",
+      }
   }
 
   if !allowRepetitions && numOfItemsPicked > numOfItems {
+
     return BigIntNum{},
-      fmt.Errorf(ePrefix+
-        "Error: 'numOfItemsPicked' is GREATER THAN 'numOfItems'.  "+
-        "numOfItems='%v' numOfItemsPicked='%v' \n",
-        numOfItems, numOfItemsPicked)
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "",
+        ErrContext: fmt.Sprintf("allowRepetitions= 'false'\n"+
+          "numOfItems='%v'\n"+
+          "numOfItemsPicked='%v'",
+          numOfItems, numOfItemsPicked),
+        ErrMessage: "Error: 'numOfItemsPicked' is GREATER THAN 'numOfItems'.",
+      }
   }
 
   n := big.NewInt(int64(numOfItems))
+
   r := big.NewInt(int64(numOfItemsPicked))
 
   if !allowRepetitions {
     return Probability{}.PermutationsNoRepsBigInt(n, r)
   }
 
+  // allowRepetitions = 'true'
   return Probability{}.PermutationsWithRepsBigInt(n, r)
 }

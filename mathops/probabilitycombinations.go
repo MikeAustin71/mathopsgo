@@ -1,7 +1,6 @@
 package mathops
 
 import (
-	"errors"
 	"fmt"
 	ePref "github.com/MikeAustin71/errpref"
 	"math/big"
@@ -145,40 +144,77 @@ type Probability struct {
 func (prob Probability) CombinationsNoRepsBigInt(
 	numOfItems, numOfItemsChosen *big.Int) (BigIntNum, error) {
 
-	ePrefix := "Probability.CombinationsNoRepsBigInt() "
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
+
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"Probability.CombinationsNoRepsBigInt",
+		"")
+
+	if err != nil {
+		return BigIntNum{}, err
+	}
+
 	bigZero := big.NewInt(0)
 	numSeps := new(NumericSeparatorDto).NewUSADefaults()
 
 	if numOfItems.Cmp(bigZero) == 0 {
+
 		return BigIntNum{},
-			fmt.Errorf("%v\n"+
-				"Error: Input parameter 'numOfItems' is ZERO!\n",
-				ePrefix)
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "",
+				ErrContext: "",
+				ErrMessage: "Error: Input parameter 'numOfItems' is ZERO!",
+			}
 	}
 
 	if numOfItems.Cmp(bigZero) < 0 {
+
 		return BigIntNum{},
-			fmt.Errorf("%v\n"+
-				"Error: Input parameter 'numOfItems' is LESS THAN ZERO!\n",
-				ePrefix)
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "",
+				ErrContext: fmt.Sprintf("numOfItems= '%v'",
+					numOfItems.Text(10)),
+				ErrMessage: "Error: Input parameter 'numOfItems' is LESS THAN ZERO!",
+			}
 	}
 
 	if numOfItemsChosen.Cmp(bigZero) < 0 {
+
 		return BigIntNum{},
-			fmt.Errorf("%v\n"+
-				"Error: Input parameter 'numOfItemsChosen' is LESS THAN ZERO!\n",
-				ePrefix)
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "",
+				ErrContext: fmt.Sprintf("numOfItemsChosen= '%v'",
+					numOfItemsChosen.Text(10)),
+				ErrMessage: "Error: Input parameter 'numOfItemsChosen' is LESS THAN ZERO!",
+			}
 	}
 
 	if numOfItems.Cmp(numOfItemsChosen) < 0 {
-		return BigIntNum{},
-			errors.New(ePrefix + "Error: 'numOfItems' is LESS THAN 'numOfItemsChosen'! ")
 
+		return BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "",
+				ErrContext: "",
+				ErrMessage: "Error: 'numOfItems' is LESS THAN 'numOfItemsChosen'!",
+			}
 	}
 
 	if numOfItemsChosen.Cmp(bigZero) == 0 {
+
 		return BigIntNum{},
-			errors.New(ePrefix + "Error: 'numOfItemsChosen' is ZERO! ")
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "",
+				ErrContext: "",
+				ErrMessage: "Error: 'numOfItemsChosen' is ZERO!",
+			}
 	}
 
 	bigOne := big.NewInt(1)
@@ -188,66 +224,75 @@ func (prob Probability) CombinationsNoRepsBigInt(
 		biNumOfItems, err := new(BigIntNum).NewBigInt(numOfItems, 0)
 
 		if err != nil {
+
 			return BigIntNum{},
 				&FuncReturnError{
-					ErrPrefix: ePrefix,
+					ErrPrefix: ePrefix.String(),
 					ReturnFunc: "biNumOfItems, err := new(BigIntNum).\n" +
 						"NewBigInt(numOfItems, 0)",
 					ErrContext: "",
 					ErrMessage: err.Error(),
 				}
-
 		}
 
 		return biNumOfItems, nil
 	}
 
 	numeratorNUpperLimit := big.NewInt(0).Set(numOfItems)
+
 	numeratorNLowerLimit := big.NewInt(0).Set(bigOne)
 
 	nMinusR := big.NewInt(0).Sub(numOfItems, numOfItemsChosen)
 
 	if nMinusR.Cmp(bigZero) == 0 {
+
 		nMinusR = big.NewInt(0).Set(bigOne)
 	}
 
 	var nFactorial BigIntNum
+
 	var rFactorial BigIntNum
-	var err error
 
 	if nMinusR.Cmp(numOfItemsChosen) == 1 {
 		// nMinusR is Greater Than numOfItemsChosen
 		numeratorNLowerLimit = big.NewInt(0).Set(nMinusR)
+
 		nFactorial, err = NFactorial{}.CalcFactorialValueBigInt(
 			numeratorNUpperLimit, numeratorNLowerLimit)
 
 		if err != nil {
+
 			return BigIntNum{},
-				fmt.Errorf("%v\n"+
-					"Error returned by NFactorial{}.CalcFactorialValueBigInt("+
-					"numeratorNUpperLimit, numeratorNLowerLimit). "+
-					"numeratorNUpperLimit='%v'  numeratorNLowerLimit=nMinusR='%v' Error='%v'",
-					ePrefix,
-					numeratorNUpperLimit.Text(10),
-					numeratorNLowerLimit.Text(10),
-					err.Error())
+				&FuncReturnError{
+					ErrPrefix: ePrefix.String(),
+					ReturnFunc: "nFactorial, err = NFactorial{}.CalcFactorialValueBigInt(\n" +
+						"  numeratorNUpperLimit, numeratorNLowerLimit)",
+					ErrContext: fmt.Sprintf("numeratorNUpperLimit= '%v'\n"+
+						"numeratorNLowerLimit=nMinusR= '%v'",
+						numeratorNUpperLimit.Text(10), numeratorNLowerLimit.Text(10)),
+					ErrMessage: err.Error(),
+				}
 		}
 
 		rUpperLimit := big.NewInt(0).Set(numOfItemsChosen)
+
 		rLowerLimit := big.NewInt(0).Set(bigOne)
 
 		rFactorial, err = NFactorial{}.CalcFactorialValueBigInt(
 			rUpperLimit, rLowerLimit)
 
 		if err != nil {
+
 			return BigIntNum{},
-				fmt.Errorf("%v\n"+
-					"Error returned by NFactorial{}.CalcFactorialValueBigInt("+
-					"rUpperLimit, rLowerLimit). "+
-					"rUpperLimit='%v'  rLowerLimit='%v' Error='%v'",
-					ePrefix,
-					rUpperLimit.Text(10), rLowerLimit.Text(10),
-					err.Error())
+				&FuncReturnError{
+					ErrPrefix: ePrefix.String(),
+					ReturnFunc: "rFactorial, err = NFactorial{}.CalcFactorialValueBigInt(\n" +
+						"  rUpperLimit, rLowerLimit)",
+					ErrContext: fmt.Sprintf("rUpperLimit= '%v'\n"+
+						"rLowerLimit= '%v'",
+						rUpperLimit.Text(10), rLowerLimit.Text(10)),
+					ErrMessage: err.Error(),
+				}
 		}
 
 	} else {
@@ -259,29 +304,33 @@ func (prob Probability) CombinationsNoRepsBigInt(
 			numeratorNUpperLimit, numeratorNLowerLimit)
 
 		if err != nil {
+
 			return BigIntNum{},
-				fmt.Errorf("%v\n"+
-					"Error returned by NFactorial{}.CalcFactorialValueBigInt("+
-					"numeratorNUpperLimit, numeratorNLowerLimit). "+
-					"numeratorNUpperLimit='%v'  numeratorNLowerLimit=numOfItemsChosen='%v' Error='%v'",
-					ePrefix,
-					numeratorNUpperLimit.Text(10),
-					numeratorNLowerLimit.Text(10),
-					err.Error())
+				&FuncReturnError{
+					ErrPrefix: ePrefix.String(),
+					ReturnFunc: "nFactorial, err = NFactorial{}.CalcFactorialValueBigInt(\n" +
+						"  numeratorNUpperLimit, numeratorNLowerLimit)",
+					ErrContext: fmt.Sprintf("numeratorNUpperLimit= '%v'\n"+
+						"numeratorNLowerLimit= '%v'",
+						numeratorNUpperLimit.Text(10), numeratorNLowerLimit.Text(10)),
+					ErrMessage: err.Error(),
+				}
 		}
 
 		rFactorial, err = NFactorial{}.CalcFactorialValueBigInt(
 			nMinusR, big.NewInt(0).Set(bigOne))
 
 		if err != nil {
+
 			return BigIntNum{},
-				fmt.Errorf("%v\n"+
-					"Error returned by NFactorial{}.CalcFactorialValueBigInt("+
-					"nMinusR, 1). "+
-					"UpperLimit=nMinusR='%v'  Error='%v'",
-					ePrefix,
-					nMinusR.Text(10),
-					err.Error())
+				&FuncReturnError{
+					ErrPrefix: ePrefix.String(),
+					ReturnFunc: "rFactorial, err = NFactorial{}.CalcFactorialValueBigInt(\n" +
+						"  nMinusR, big.NewInt(0).Set(bigOne))",
+					ErrContext: fmt.Sprintf("UpperLimit=nMinusR= '%v'",
+						nMinusR.Text(10)),
+					ErrMessage: err.Error(),
+				}
 		}
 	}
 
@@ -290,7 +339,7 @@ func (prob Probability) CombinationsNoRepsBigInt(
 	if err != nil {
 		return BigIntNum{},
 			&FuncReturnError{
-				ErrPrefix:  ePrefix,
+				ErrPrefix:  ePrefix.String(),
 				ReturnFunc: "nFactorialNumStr, err := nFactorial.GetNumStr()",
 				ErrContext: "",
 				ErrMessage: err.Error(),
@@ -303,7 +352,7 @@ func (prob Probability) CombinationsNoRepsBigInt(
 	if err != nil {
 		return BigIntNum{},
 			&FuncReturnError{
-				ErrPrefix:  ePrefix,
+				ErrPrefix:  ePrefix.String(),
 				ReturnFunc: "rFactorialNumStr, err := rFactorial.GetNumStr()",
 				ErrContext: "",
 				ErrMessage: err.Error(),
@@ -315,15 +364,17 @@ func (prob Probability) CombinationsNoRepsBigInt(
 		new(BigIntMathDivide).BigIntNumFracQuotient(nFactorial, rFactorial, numSeps, 10)
 
 	if err != nil {
+
 		return BigIntNum{},
-			fmt.Errorf("%v\n"+
-				"Error returned by BigIntMathDivide{}.BigIntNumFracQuotient("+
-				"nFactorial, rFactorial, numSeps, 10)). "+
-				"nFactorial='%v'  rFactorial='%v' Error='%v'",
-				ePrefix,
-				nFactorialNumStr,
-				rFactorialNumStr,
-				err.Error())
+			&FuncReturnError{
+				ErrPrefix: ePrefix.String(),
+				ReturnFunc: "combinationsResult, err := new(BigIntMathDivide).BigIntNumFracQuotient(\n" +
+					"  nFactorial, rFactorial, numSeps, 10)",
+				ErrContext: fmt.Sprintf("nFactorial= '%v'\n"+
+					"rFactorial= '%v'",
+					nFactorialNumStr, rFactorialNumStr),
+				ErrMessage: err.Error(),
+			}
 	}
 
 	return combinationsResult, nil
@@ -331,10 +382,10 @@ func (prob Probability) CombinationsNoRepsBigInt(
 
 // CombinationsWithRepsBigInt
 //
-//	Calculates the number of combinations from
-//	'numOfItems' and 'numOfItemsChosen' or 'n' things chosen 'r' at a time
-//	WITH repetitions and order does NOT matter. This is also referred to
-//	as an unordered sampling WITH replacement. The calculation result is
+//	Calculates the number of combinations from 'numOfItems' and
+//	'numOfItemsChosen' or 'n' things chosen 'r' at a time WITH
+//	repetitions and order does NOT matter. This is also referred to as
+//	an unordered sampling WITH replacement. The calculation result is
 //	returned as a BigIntNum type.
 //
 //	Input Parameters
@@ -400,24 +451,38 @@ func (prob Probability) CombinationsWithRepsBigInt(
 	bigZero := big.NewInt(0)
 
 	if numOfItems.Cmp(bigZero) == 0 {
+
 		return BigIntNum{},
-			fmt.Errorf("%v\n"+
-				"Error: Input parameter 'numOfItems' is ZERO!",
-				ePrefix)
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "",
+				ErrContext: "",
+				ErrMessage: "Error: Input parameter 'numOfItems' is ZERO!",
+			}
 	}
 
 	if numOfItems.Cmp(bigZero) < 0 {
+
 		return BigIntNum{},
-			fmt.Errorf("%v\n"+
-				"Error: Input parameter 'numOfItems' is LESS THAN ZERO!",
-				ePrefix)
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "",
+				ErrContext: fmt.Sprintf("numOfItems= '%v'",
+					numOfItems.Text(10)),
+				ErrMessage: "Error: Input parameter 'numOfItems' is LESS THAN ZERO!",
+			}
 	}
 
 	if numOfItemsChosen.Cmp(bigZero) < 0 {
+
 		return BigIntNum{},
-			fmt.Errorf("%v\n"+
-				"Error: Input parameter 'numOfItemsChosen' is LESS THAN ZERO!\n",
-				ePrefix)
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "",
+				ErrContext: fmt.Sprintf("numOfItemsChosen= '%v'",
+					numOfItemsChosen.Text(10)),
+				ErrMessage: "Error: Input parameter 'numOfItemsChosen' is LESS THAN ZERO!",
+			}
 	}
 
 	if numOfItemsChosen.Cmp(bigZero) == 0 {
@@ -453,38 +518,45 @@ func (prob Probability) CombinationsWithRepsBigInt(
 	temp1 := big.NewInt(0).Add(numOfItems, numOfItemsChosen)
 
 	numeratorUpperLimit := big.NewInt(0).Sub(temp1, bigOne)
+
 	numeratorLowerLimit := big.NewInt(0).Sub(numOfItems, bigOne)
 
 	nFactorial, err := NFactorial{}.CalcFactorialValueBigInt(
 		numeratorUpperLimit, numeratorLowerLimit)
 
 	if err != nil {
+
 		return BigIntNum{},
-			fmt.Errorf("%v\n"+
-				"Error returned by NFactorial{}.CalcFactorialValueBigInt("+
-				"numeratorUpperLimit, numeratorLowerLimit). "+
-				"numeratorNUpperLimit='%v'  numeratorNLowerLimit='%v' Error='%v'",
-				ePrefix,
-				numeratorUpperLimit.Text(10),
-				numeratorLowerLimit.Text(10),
-				err.Error())
+			&FuncReturnError{
+				ErrPrefix: ePrefix.String(),
+				ReturnFunc: "nFactorial, err = NFactorial{}.CalcFactorialValueBigInt(\n" +
+					"  numeratorUpperLimit, numeratorLowerLimit)",
+				ErrContext: fmt.Sprintf("numeratorUpperLimit= '%v'\n"+
+					"numeratorLowerLimit= '%v'",
+					numeratorUpperLimit.Text(10), numeratorLowerLimit.Text(10)),
+				ErrMessage: err.Error(),
+			}
 	}
 
 	rUpperLimit := big.NewInt(0).Set(numOfItemsChosen)
+
 	rLowerLimit := big.NewInt(1)
 
 	rFactorial, err := NFactorial{}.CalcFactorialValueBigInt(
 		rUpperLimit, rLowerLimit)
 
 	if err != nil {
+
 		return BigIntNum{},
-			fmt.Errorf("%v\n"+
-				"Error returned by NFactorial{}.CalcFactorialValueBigInt("+
-				"rUpperLimit, rLowerLimit). "+
-				"rUpperLimit='%v'  rLowerLimit='%v' Error='%v'",
-				ePrefix,
-				rUpperLimit.Text(10), rLowerLimit.Text(10),
-				err.Error())
+			&FuncReturnError{
+				ErrPrefix: ePrefix.String(),
+				ReturnFunc: "rFactorial, err = NFactorial{}.CalcFactorialValueBigInt(\n" +
+					"  rUpperLimit, rLowerLimit)",
+				ErrContext: fmt.Sprintf("rUpperLimit= '%v'\n"+
+					"rLowerLimit= '%v'",
+					rUpperLimit.Text(10), rLowerLimit.Text(10)),
+				ErrMessage: err.Error(),
+			}
 	}
 
 	nFactorialNumStr, err := nFactorial.GetNumStr()
@@ -517,14 +589,17 @@ func (prob Probability) CombinationsWithRepsBigInt(
 		new(BigIntMathDivide).BigIntNumFracQuotient(nFactorial, rFactorial, numSeps, 10)
 
 	if err != nil {
+
 		return BigIntNum{},
-			fmt.Errorf("%v\n"+
-				"Error returned by BigIntMathDivide{}.BigIntNumFracQuotient("+
-				"nFactorial, rFactorial, 10)). "+
-				"nFactorial='%v'  rFactorial='%v'\nError='%v'",
-				ePrefix,
-				nFactorialNumStr, rFactorialNumStr,
-				err.Error())
+			&FuncReturnError{
+				ErrPrefix: ePrefix.String(),
+				ReturnFunc: "combinationsResult, err := new(BigIntMathDivide).BigIntNumFracQuotient(\n" +
+					"  nFactorial, rFactorial, numSeps, 10)",
+				ErrContext: fmt.Sprintf("nFactorial= '%v'\n"+
+					"rFactorial= '%v'",
+					nFactorialNumStr, rFactorialNumStr),
+				ErrMessage: err.Error(),
+			}
 	}
 
 	return combinationsResult, nil
@@ -532,12 +607,11 @@ func (prob Probability) CombinationsWithRepsBigInt(
 
 // CombinationsBigIntNum
 //
-//	Calculates the number of combinations associated with a
-//	collection of 'numOfItems' from which one chooses
-//	'numOfItemsChosen'. Order IS NOT significant. Input parameters
-//	'numOfItems' and 'numOfItemsChosen' are passed as type
-//	'BigIntNum'. Both input parameters must be non-zero, positive
-//	integer numbers.
+//	Calculates the number of combinations associated with a collection
+//	of 'numOfItems' from which one chooses 'numOfItemsChosen'. Order
+//	IS NOT significant. Input parameters 'numOfItems' and
+//	'numOfItemsChosen' are passed as type 'BigIntNum'. Both input
+//	parameters must be non-zero, positive integer numbers.
 //
 //	The input parameter 'allowRepetitions' is a boolean value which
 //	will determine whether the calculation results will allow
@@ -554,52 +628,56 @@ func (prob Probability) CombinationsWithRepsBigInt(
 //	The result of this combination calculation is returned as a
 //	type 'BigIntNum'.
 //
-//	In the following combination formulas, n= 'numOfItems'
-//	and r = 'numOfItemsChosen'. The actual formula applied depends
-//	on whether input parameter 'allowRepetitions' is 'true' or
+//	In the following combination formulas, n= 'numOfItems' and
+//	r = 'numOfItemsChosen'. The actual formula applied depends on
+//	whether input parameter 'allowRepetitions' is 'true' or
 //	'false'.
 //
-//	====================================================================
-//	       'allowRepetitions' = false
-//	====================================================================
+//	========================================================================
+//
+//	          'allowRepetitions' = false
+//
+//	========================================================================
 //
 //	                      n!
 //	          nCr  =  -----------
 //	                   (n-r)! r!
 //
-//	--------------------------------------------------
 //
-//	Where n is the number of things to choose from,
-//	and we choose r of them, order does NOT matter
-//	and repetition is NOT allowed.
+//	     Where n is the number of things to choose from,
+//	     and we choose r of them, order does NOT matter
+//	     and repetition is NOT allowed.
 //
-//	*** This version of the combinations calculation assumes NO REPETITIONS! ***
+//	This version of the combinations calculation assumes NO REPETITIONS!
+//	      (a.k.a. as unordered sampling WITHOUT replacement)
 //
-//	(a.k.a. as unordered sampling WITHOUT replacement)
+//	When 'allowRepetitions' = false, 'numOfItems' and
+//	'numOfItemsChosen' must both be positive integer numbers. In
+//	addition, 'numOfItems' MUST be greater than or equal to
+//	'numOfItemsChosen'.
 //
-//	When 'allowRepetitions' = false, 'numOfItems' and 'numOfItemsChosen'
-//	must both be positive integer numbers. In addition, 'numOfItems'
-//	MUST be greater than or equal to 'numOfItemsChosen'.
+//	========================================================================
 //
-//	====================================================================
-//	       'allowRepetitions' = true
-//	====================================================================
+//	          'allowRepetitions' = true
+//
+//	========================================================================
 //
 //	                     (r + n - 1)!
 //	          nCr  =  -------------------
 //	                      r! (n-1)!
 //
-//	Where n is the number of things to choose from,
-//	and we choose r of them, order does NOT matter
-//	and repetition IS NOT allowed.
+//	     Where n is the number of things to choose from,
+//	     and we choose r of them, order does NOT matter
+//	     and repetition IS NOT allowed.
 //
-//	*** This version of the combinations calculation assumes REPETITIONS ARE ALLOWED! ***
+//	This version of the combinations calculation assumes REPETITIONS ARE
+//	ALLOWED!
+//	         (a.k.a. as unordered sampling WITH replacement)
 //
-//	(a.k.a. as unordered sampling WITH replacement)
-//
-//	When 'allowRepetitions' = true, 'numOfItems' and 'numOfItemsChosen' must
-//	both be positive integer numbers. 'numOfItems' can be greater than, equal
-//	to or less than 'numOfItemsChosen'.
+//	When 'allowRepetitions' = true, 'numOfItems' and
+//	'numOfItemsChosen' must both be positive integer numbers.
+//	'numOfItems' can be greater than, equal to or less than
+//	'numOfItemsChosen'.
 func (prob Probability) CombinationsBigIntNum(
 	numOfItems, numOfItemsChosen BigIntNum, allowRepetitions bool) (BigIntNum, error) {
 
@@ -631,9 +709,12 @@ func (prob Probability) CombinationsBigIntNum(
 	if numOfItemsIsZero {
 
 		return BigIntNum{},
-			fmt.Errorf("%v\n"+
-				"Error: Input parameter 'numOfItems' is ZERO!\n",
-				ePrefix)
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "",
+				ErrContext: "",
+				ErrMessage: "Error: Input parameter 'numOfItems' is ZERO!",
+			}
 	}
 
 	numOfItemsChosenIsZero, err := numOfItemsChosen.IsZero()
@@ -650,10 +731,14 @@ func (prob Probability) CombinationsBigIntNum(
 	}
 
 	if numOfItemsChosenIsZero {
+
 		return BigIntNum{},
-			fmt.Errorf("%v\n"+
-				"Error: Input parameter 'numOfItemsPicked' is ZERO!",
-				ePrefix)
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "",
+				ErrContext: "",
+				ErrMessage: "Error: Input parameter 'numOfItemsPicked' is ZERO!",
+			}
 	}
 
 	numOfItemsSignValue, err := numOfItems.GetSign()
@@ -670,10 +755,14 @@ func (prob Probability) CombinationsBigIntNum(
 	}
 
 	if numOfItemsSignValue == -1 {
+
 		return BigIntNum{},
-			fmt.Errorf("%v\n"+
-				"Error: Input parameter 'numOfItems' is LESS THAN ZERO!",
-				ePrefix)
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "",
+				ErrContext: "",
+				ErrMessage: "Error: Input parameter 'numOfItems' is LESS THAN ZERO!",
+			}
 	}
 
 	numOfItemsChosenSignValue, err := numOfItemsChosen.GetSign()
@@ -690,10 +779,14 @@ func (prob Probability) CombinationsBigIntNum(
 	}
 
 	if numOfItemsChosenSignValue == -1 {
+
 		return BigIntNum{},
-			fmt.Errorf("%v\n"+
-				"Error: Input parameter 'numOfItemsPicked' is LESS THAN ZERO!",
-				ePrefix)
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "",
+				ErrContext: "",
+				ErrMessage: "Error: Input parameter 'numOfItemsPicked' is LESS THAN ZERO!",
+			}
 	}
 
 	numOfItemsPrecisionUint, err := numOfItems.GetPrecisionUint()
@@ -709,10 +802,14 @@ func (prob Probability) CombinationsBigIntNum(
 	}
 
 	if numOfItemsPrecisionUint > 0 {
+
 		return BigIntNum{},
-			fmt.Errorf("%v\n"+
-				"Error: Input parameter 'numOfItems' is NOT an Integer!",
-				ePrefix)
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "",
+				ErrContext: "",
+				ErrMessage: "Error: Input parameter 'numOfItems' is NOT an Integer!",
+			}
 	}
 
 	numOfItemsChosenPrecisionUint, err := numOfItemsChosen.GetPrecisionUint()
@@ -728,10 +825,14 @@ func (prob Probability) CombinationsBigIntNum(
 	}
 
 	if numOfItemsChosenPrecisionUint > 0 {
+
 		return BigIntNum{},
-			fmt.Errorf("%v\n"+
-				"Error: Input parameter 'numOfItems' is NOT an Integer!",
-				ePrefix)
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "",
+				ErrContext: "",
+				ErrMessage: "Error: Input parameter 'numOfItemsChosen' is NOT an Integer!",
+			}
 	}
 
 	numOfItemsVsChosenCmp, err := numOfItems.Cmp(numOfItemsChosen)
@@ -748,14 +849,18 @@ func (prob Probability) CombinationsBigIntNum(
 	}
 
 	if !allowRepetitions && numOfItemsVsChosenCmp < 0 {
-		return BigIntNum{},
-			fmt.Errorf("%v\n"+
-				"Error: 'numOfItems' is LESS THAN 'numOfItemsPicked'!\n",
-				ePrefix)
 
+		return BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "",
+				ErrContext: "allowRepetitions= 'false'",
+				ErrMessage: "Error: 'numOfItems' is LESS THAN 'numOfItemsPicked'!",
+			}
 	}
 
 	if !allowRepetitions {
+
 		return Probability{}.CombinationsNoRepsBigInt(numOfItems.bigInt, numOfItemsChosen.bigInt)
 	}
 
@@ -770,10 +875,11 @@ func (prob Probability) CombinationsBigIntNum(
 //	'numOfItemsChosen' are passed as type 'Decimal'. Both input
 //	parameters must be non-zero, positive integer numbers.
 //
-//	The input parameter 'allowRepetitions' is a boolean value which will
-//	determine whether the calculation results will allow repetitions or
-//	not. The formula for the calculation of combinations will therefore
-//	vary depending on whether repetitions are allowed.
+//	The input parameter 'allowRepetitions' is a boolean value which
+//	will determine whether the calculation results will allow
+//	repetitions or not. The formula for the calculation of
+//	combinations will therefore vary depending on whether repetitions
+//	are allowed.
 //
 //	'allowRepetitions' == false signals unordered sampling WITHOUT
 //	replacement.
@@ -788,19 +894,20 @@ func (prob Probability) CombinationsBigIntNum(
 //	r = 'numOfItemsChosen'. The actual formula applied depends on
 //	whether input parameter 'allowRepetitions' is 'true' or 'false'.
 //
-//	====================================================================
+//	========================================================================
+//
 //	          'allowRepetitions' = false
-//	====================================================================
+//
+//	========================================================================
 //
 //	                      n!
 //	          nCr  =  -----------
 //	                   (n-r)! r!
 //
-//	--------------------------------------------------
 //
-//	Where n is the number of things to choose from,
-//	and we choose r of them, order does NOT matter
-//	and repetition is NOT allowed.
+//	     Where n is the number of things to choose from,
+//	     and we choose r of them, order does NOT matter
+//	     and repetition is NOT allowed.
 //
 //	This version of the combinations calculation assumes
 //	NO REPETITIONS!
@@ -812,27 +919,30 @@ func (prob Probability) CombinationsBigIntNum(
 //	In addition, 'numOfItems' MUST be greater than or equal to
 //	'numOfItemsChosen'.
 //
-//	====================================================================
-//	       'allowRepetitions' = true
-//	====================================================================
+//	========================================================================
+//
+//	          'allowRepetitions' = true
+//
+//	========================================================================
 //
 //
 //	                    (r + n - 1)!
 //	          nCr  =  -------------------
 //	                      r! (n-1)!
 //
-//	Where n is the number of things to choose from,
-//	and we choose r of them, order does NOT matter
-//	and repetition IS NOT allowed.
+//	     Where n is the number of things to choose from,
+//	     and we choose r of them, order does NOT matter
+//	     and repetition IS NOT allowed.
 //
 //	This version of the combinations calculation assumes REPETITIONS
 //	ARE ALLOWED!
 //
 //	(a.k.a. as unordered sampling WITH replacement)
 //
-//	When 'allowRepetitions' = true, 'numOfItems' and 'numOfItemsChosen'
-//	must both be positive integer numbers. 'numOfItems' can be greater than,
-//	equal to or less than 'numOfItemsChosen'.
+//	When 'allowRepetitions' = true, 'numOfItems' and
+//	'numOfItemsChosen' must both be positive integer numbers.
+//	'numOfItems' can be greater than, equal to or less than
+//	'numOfItemsChosen'.
 func (prob Probability) CombinationsDecimal(
 	numOfItems, numOfItemsChosen Decimal, allowRepetitions bool) (Decimal, error) {
 
@@ -863,10 +973,14 @@ func (prob Probability) CombinationsDecimal(
 	}
 
 	if numOfItemsSignValue == -1 {
+
 		return Decimal{},
-			fmt.Errorf("%v\n"+
-				"Error: Input parameter 'numOfItems' is LESS THAN ZERO!\n",
-				ePrefix)
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "",
+				ErrContext: "",
+				ErrMessage: "Error: Input parameter 'numOfItems' is LESS THAN ZERO!",
+			}
 	}
 
 	numOfItemsIsZero, err := numOfItems.IsZero()
@@ -883,10 +997,14 @@ func (prob Probability) CombinationsDecimal(
 	}
 
 	if numOfItemsIsZero {
+
 		return Decimal{},
-			fmt.Errorf("%v\n"+
-				"Error: Input parameter 'numOfItems' is ZERO!\n",
-				ePrefix)
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "",
+				ErrContext: "",
+				ErrMessage: "Error: Input parameter 'numOfItems' is ZERO!",
+			}
 	}
 
 	numOfItemsPrecisionUint, err := numOfItems.GetPrecisionUint()
@@ -903,10 +1021,14 @@ func (prob Probability) CombinationsDecimal(
 	}
 
 	if numOfItemsPrecisionUint > 0 {
+
 		return Decimal{},
-			fmt.Errorf("%v\n"+
-				"Error: Input parameter 'numOfItems' is NOT an Integer!\n",
-				ePrefix)
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "",
+				ErrContext: "",
+				ErrMessage: "Error: Input parameter 'numOfItems' is NOT an Integer!",
+			}
 	}
 
 	numOfItemsChosenSignValue, err := numOfItems.GetSign()
@@ -923,10 +1045,14 @@ func (prob Probability) CombinationsDecimal(
 	}
 
 	if numOfItemsChosenSignValue == -1 {
+
 		return Decimal{},
-			fmt.Errorf("%v\n"+
-				"Error: Input parameter 'numOfItemsChosen' is LESS THAN ZERO!\n",
-				ePrefix)
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "",
+				ErrContext: "",
+				ErrMessage: "Error: Input parameter 'numOfItemsChosen' is LESS THAN ZERO!",
+			}
 	}
 
 	numOfItemsChosenIsZero, err := numOfItemsChosen.IsZero()
@@ -943,41 +1069,65 @@ func (prob Probability) CombinationsDecimal(
 	}
 
 	if numOfItemsChosenIsZero {
+
 		return Decimal{},
-			fmt.Errorf("%v\n"+
-				"Error: Input parameter 'numOfItemsChosen' is ZERO!\n",
-				ePrefix)
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "",
+				ErrContext: "",
+				ErrMessage: "Error: Input parameter 'numOfItemsChosen' is ZERO!",
+			}
 	}
 
 	numOfItemsChosenPrecisionUint, err := numOfItems.GetPrecisionUint()
 
-	if numOfItemsChosenPrecisionUint > 0 {
+	if err != nil {
+
 		return Decimal{},
-			fmt.Errorf("%v\n"+
-				"Error: Input parameter 'numOfItemsChosen' is NOT an Integer!\n",
-				ePrefix)
+			&FuncReturnError{
+				ErrPrefix: ePrefix.String(),
+				ReturnFunc: "numOfItemsChosenPrecisionUint, err := \n" +
+					"  numOfItems.GetPrecisionUint()",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
+
+	if numOfItemsChosenPrecisionUint > 0 {
+
+		return Decimal{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "",
+				ErrContext: "",
+				ErrMessage: "Error: Input parameter 'numOfItemsChosen' is NOT an Integer!",
+			}
 	}
 
 	n, err := numOfItems.GetBigInt()
 
 	if err != nil {
+
 		return Decimal{},
-			fmt.Errorf("%v\n"+
-				"Error returned by numOfItems.GetBigInt().\n"+
-				"Error='%v' \n",
-				ePrefix,
-				err.Error())
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "n, err := numOfItems.GetBigInt()",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
 	}
 
 	r, err := numOfItemsChosen.GetBigInt()
 
 	if err != nil {
+
 		return Decimal{},
-			fmt.Errorf("%v\n"+
-				"Error returned by numOfItemsChosen.GetBigInt().\n"+
-				"Error='%v' \n",
-				ePrefix,
-				err.Error())
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "r, err := numOfItemsChosen.GetBigInt()",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
 	}
 
 	numOfItemsNumStr, err := numOfItems.GetNumStr()
@@ -1007,13 +1157,16 @@ func (prob Probability) CombinationsDecimal(
 	}
 
 	if !allowRepetitions && n.Cmp(r) < 0 {
+
 		return Decimal{},
-			fmt.Errorf("%v\n"+
-				"Error: 'numOfItems' is LESS THAN 'numOfItemsChosen'.\n"+
-				"numOfItems='%v' numOfItemsChosen='%v' \n",
-				ePrefix,
-				numOfItemsNumStr,
-				numOfItemsChosenNumStr)
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "",
+				ErrContext: fmt.Sprintf("numOfItems= '%v'\n"+
+					"numOfItemsChosen= '%v'",
+					numOfItemsNumStr, numOfItemsChosenNumStr),
+				ErrMessage: "Error: 'numOfItems' is LESS THAN 'numOfItemsChosen'.",
+			}
 	}
 
 	var result BigIntNum
@@ -1023,12 +1176,15 @@ func (prob Probability) CombinationsDecimal(
 		result, err = Probability{}.CombinationsNoRepsBigInt(n, r)
 
 		if err != nil {
+
 			return Decimal{},
-				fmt.Errorf("%v\n"+
-					"Error returned by Probability{}.CombinationsNoRepsBigInt(numOfItems, numOfItemsChosen).\n"+
-					"Error='%v' \n",
-					ePrefix,
-					err.Error())
+				&FuncReturnError{
+					ErrPrefix: ePrefix.String(),
+					ReturnFunc: "result, err = Probability{}.\n" +
+						"  CombinationsNoRepsBigInt(n, r)",
+					ErrContext: "",
+					ErrMessage: err.Error(),
+				}
 		}
 
 	} else {
@@ -1036,21 +1192,29 @@ func (prob Probability) CombinationsDecimal(
 		result, err = Probability{}.CombinationsWithRepsBigInt(n, r)
 
 		if err != nil {
-			return Decimal{},
-				fmt.Errorf("%v\n"+
-					"Error returned by Probability{}.CombinationsWithRepsBigInt(numOfItems, numOfItemsChosen).\n"+
-					"Error='%v' \n", ePrefix, err.Error())
-		}
 
+			return Decimal{},
+				&FuncReturnError{
+					ErrPrefix: ePrefix.String(),
+					ReturnFunc: "result, err = Probability{}.\n" +
+						"  CombinationsWithRepsBigInt(n, r)",
+					ErrContext: "",
+					ErrMessage: err.Error(),
+				}
+		}
 	}
 
 	resultDecimal, err := result.GetDecimal()
 
 	if err != nil {
+
 		return Decimal{},
-			fmt.Errorf("%v\n"+
-				"Error returned by result.GetDecimal().\n"+
-				"Error='%v' \n", ePrefix, err.Error())
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "resultDecimal, err := result.GetDecimal()",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
 	}
 
 	return resultDecimal, nil
@@ -1058,71 +1222,76 @@ func (prob Probability) CombinationsDecimal(
 
 // CombinationsIntAry
 //
-//	 Calculates the number of combinations associated with a collection
-//	 of 'numOfItems' from which one chooses 'numOfItemsChosen'. Order
-//	 IS NOT significant. Input parameters 'numOfItems' and
-//	 'numOfItemsChosen' are passed as type 'IntAry'. Both input
-//	 parameters must be non-zero, positive integer numbers.
+//	Calculates the number of combinations associated with a collection
+//	of 'numOfItems' from which one chooses 'numOfItemsChosen'. Order
+//	IS NOT significant. Input parameters 'numOfItems' and
+//	'numOfItemsChosen' are passed as type 'IntAry'. Both input
+//	parameters must be non-zero, positive integer numbers.
 //
-//	 The input parameter 'allowRepetitions' is a boolean value which will
-//	 determine whether the calculation results will allow repetitions or
-//	 not. The formula for the calculation of combinations will therefore
-//	 vary depending on whether repetitions are allowed.
+//	The input parameter 'allowRepetitions' is a boolean value which
+//	will determine whether the calculation results will allow
+//	repetitions or not. The formula for the calculation of
+//	combinations will therefore vary depending on whether repetitions
+//	are allowed.
 //
-//	 'allowRepetitions' == false signals unordered sampling WITHOUT
-//	 replacement.
+//	'allowRepetitions' == false signals unordered sampling WITHOUT
+//	replacement.
 //
-//	 'allowRepetitions' == true signals unordered sampling WITH
-//	 replacement.
+//	'allowRepetitions' == true signals unordered sampling WITH
+//	replacement.
 //
-//	 The result of this combination calculation is returned as a type
-//	 'IntAry'.
+//	The result of this combination calculation is returned as a type
+//	'IntAry'.
 //
-//	 In the following combination formulas, n= 'numOfItems' and
-//	 r = 'numOfItemsChosen'. The actual formula applied depends on whether
-//	 input parameter 'allowRepetitions' is 'true' or 'false'.
+//	In the following combination formulas, n= 'numOfItems' and
+//	r = 'numOfItemsChosen'. The actual formula applied depends on
+//	whether input parameter 'allowRepetitions' is 'true' or 'false'.
 //
-//	 ====================================================================
-//	        'allowRepetitions' = false
-//	 ====================================================================
+//	========================================================================
 //
-//	                       n!
-//	           nCr  =  -----------
-//	                   (n-r)! r!
+//	          'allowRepetitions' = false
 //
-//	 --------------------------------------------------
+//	========================================================================
 //
-//	 Where n is the number of things to choose from,
-//	 and we choose r of them, order does NOT matter
-//	 and repetition is NOT allowed.
+//	                      n!
+//	          nCr  =  -----------
+//	                  (n-r)! r!
 //
-//	 This version of the combinations calculation assumes NO REPETITIONS!
-//	 (a.k.a. as unordered sampling WITHOUT replacement)
 //
-//	 When 'allowRepetitions' = false, 'numOfItems' and 'numOfItemsChosen' must both
-//	 be positive integer numbers. In addition, 'numOfItems' MUST be greater than or
-//	 equal to 'numOfItemsChosen'.
+//	     Where n is the number of things to choose from,
+//	     and we choose r of them, order does NOT matter
+//	     and repetition is NOT allowed.
 //
-//	 ====================================================================
-//	           'allowRepetitions' = true
-//	 ====================================================================
+//	This version of the combinations calculation assumes NO REPETITIONS!
+//	(a.k.a. as unordered sampling WITHOUT replacement)
 //
-//	                     (r + n - 1)!
-//	           nCr  =  -------------------
-//	                       r! (n-1)!
+//	When 'allowRepetitions' = false, 'numOfItems' and 'numOfItemsChosen' must both
+//	be positive integer numbers. In addition, 'numOfItems' MUST be greater than or
+//	equal to 'numOfItemsChosen'.
 //
-//		Where n is the number of things to choose from,
-//		and we choose r of them, order does NOT matter
-//		and repetition IS NOT allowed.
+//	========================================================================
 //
-//	 This version of the combinations calculation assumes REPETITIONS
-//	 ARE ALLOWED!
+//	          'allowRepetitions' = true
 //
-//	 (a.k.a. as unordered sampling WITH replacement)
+//	========================================================================
 //
-//	 When 'allowRepetitions' = true, 'numOfItems' and 'numOfItemsChosen'
-//	 must both be positive integer numbers. 'numOfItems' can be greater
-//	 than, equal to or less than 'numOfItemsChosen'.
+//	                    (r + n - 1)!
+//	          nCr  =  -------------------
+//	                      r! (n-1)!
+//
+//	     Where n is the number of things to choose from,
+//	     and we choose r of them, order does NOT matter
+//	     and repetition IS NOT allowed.
+//
+//	This version of the combinations calculation assumes REPETITIONS
+//	ARE ALLOWED!
+//
+//	(a.k.a. as unordered sampling WITH replacement)
+//
+//	When 'allowRepetitions' = true, 'numOfItems' and
+//	'numOfItemsChosen' must both be positive integer numbers.
+//	'numOfItems' can be greater than, equal to or less than
+//	'numOfItemsChosen'.
 func (prob Probability) CombinationsIntAry(
 	numOfItems, numOfItemsChosen IntAry, allowRepetitions bool) (IntAry, error) {
 
@@ -1153,10 +1322,14 @@ func (prob Probability) CombinationsIntAry(
 	}
 
 	if numOfItemsSignValue == -1 {
+
 		return IntAry{},
-			fmt.Errorf("%v\n"+
-				"Error: Input parameter 'numOfItems' is LESS THAN ZERO!\n",
-				ePrefix)
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "",
+				ErrContext: "",
+				ErrMessage: "Error: Input parameter 'numOfItems' is LESS THAN ZERO!",
+			}
 	}
 
 	numOfItemsIsZero, err := numOfItems.IsZero()
@@ -1173,10 +1346,14 @@ func (prob Probability) CombinationsIntAry(
 	}
 
 	if numOfItemsIsZero {
+
 		return IntAry{},
-			fmt.Errorf("%v\n"+
-				"Error: Input parameter 'numOfItems' is ZERO!\n",
-				ePrefix)
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "",
+				ErrContext: "",
+				ErrMessage: "Error: Input parameter 'numOfItems' is ZERO!",
+			}
 	}
 
 	numOfItemsPrecisionUint, err := numOfItems.GetPrecisionUint()
@@ -1193,10 +1370,14 @@ func (prob Probability) CombinationsIntAry(
 	}
 
 	if numOfItemsPrecisionUint > 0 {
+
 		return IntAry{},
-			fmt.Errorf("%v\n"+
-				"Error: Input parameter 'numOfItems' is NOT an Integer!\n",
-				ePrefix)
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "",
+				ErrContext: "",
+				ErrMessage: "Error: Input parameter 'numOfItems' is NOT an Integer!",
+			}
 	}
 
 	numOfItemsChosenSignValue, err := numOfItemsChosen.GetSign()
@@ -1213,10 +1394,14 @@ func (prob Probability) CombinationsIntAry(
 	}
 
 	if numOfItemsChosenSignValue == -1 {
+
 		return IntAry{},
-			fmt.Errorf("%v\n"+
-				"Error: Input parameter 'numOfItemsChosen' is LESS THAN ZERO!\n",
-				ePrefix)
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "",
+				ErrContext: "",
+				ErrMessage: "Error: Input parameter 'numOfItemsChosen' is LESS THAN ZERO!",
+			}
 	}
 
 	numOfItemsChosenIsZero, err := numOfItemsChosen.IsZero()
@@ -1233,10 +1418,14 @@ func (prob Probability) CombinationsIntAry(
 	}
 
 	if numOfItemsChosenIsZero {
+
 		return IntAry{},
-			fmt.Errorf("%v\n"+
-				"Error: Input parameter 'numOfItemsChosen' is ZERO!\n",
-				ePrefix)
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "",
+				ErrContext: "",
+				ErrMessage: "Error: Input parameter 'numOfItemsChosen' is ZERO!",
+			}
 	}
 
 	numOfItemsChosenPrecisionUint, err := numOfItemsChosen.GetPrecisionUint()
@@ -1253,32 +1442,40 @@ func (prob Probability) CombinationsIntAry(
 	}
 
 	if numOfItemsChosenPrecisionUint > 0 {
+
 		return IntAry{},
-			fmt.Errorf("%v\n"+
-				"Error: Input parameter 'numOfItemsChosen' is NOT an Integer!\n",
-				ePrefix)
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "",
+				ErrContext: "",
+				ErrMessage: "Error: Input parameter 'numOfItemsChosen' is NOT an Integer!",
+			}
 	}
 
 	n, err := numOfItems.GetBigInt()
 
 	if err != nil {
+
 		return IntAry{},
-			fmt.Errorf("%v\n"+
-				"Error returned by numOfItems.GetBigInt().\n"+
-				"Error='%v' \n",
-				ePrefix,
-				err.Error())
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "n, err := numOfItems.GetBigInt()\n",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
 	}
 
 	r, err := numOfItemsChosen.GetBigInt()
 
 	if err != nil {
+
 		return IntAry{},
-			fmt.Errorf("%v\n"+
-				"Error returned by numOfItemsChosen.GetBigInt().\n"+
-				"Error='%v' \n",
-				ePrefix,
-				err.Error())
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "r, err := numOfItemsChosen.GetBigInt()",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
 	}
 
 	numOfItemsNumStr, err := numOfItems.GetNumStr()
@@ -1308,13 +1505,15 @@ func (prob Probability) CombinationsIntAry(
 	}
 
 	if !allowRepetitions && r.Cmp(n) == 1 {
+
 		return IntAry{},
-			fmt.Errorf("%v\n"+
-				"Error: 'numOfItemsChosen' is GREATER THAN 'numOfItems'.\n"+
-				"numOfItems='%v'\nnumOfItemsChosen='%v' \n",
-				ePrefix,
-				numOfItemsNumStr,
-				numOfItemsChosenNumStr)
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "",
+				ErrContext: fmt.Sprintf("numOfItems= '%v'\nnumOfItemsChosen= '%v'",
+					numOfItemsNumStr, numOfItemsChosenNumStr),
+				ErrMessage: "Error: 'numOfItemsChosen' is GREATER THAN 'numOfItems'.",
+			}
 	}
 
 	var result BigIntNum
@@ -1324,12 +1523,14 @@ func (prob Probability) CombinationsIntAry(
 		result, err = Probability{}.CombinationsNoRepsBigInt(n, r)
 
 		if err != nil {
+
 			return IntAry{},
-				fmt.Errorf("%v\n"+
-					"Error returned by Probability{}.CombinationsNoRepsBigInt(numOfItems, numOfItemsChosen).\n"+
-					"Error='%v'\n",
-					ePrefix,
-					err.Error())
+				&FuncReturnError{
+					ErrPrefix:  ePrefix.String(),
+					ReturnFunc: "result, err = Probability{}.CombinationsNoRepsBigInt(n, r)",
+					ErrContext: "",
+					ErrMessage: err.Error(),
+				}
 		}
 
 	} else {
@@ -1337,25 +1538,28 @@ func (prob Probability) CombinationsIntAry(
 		result, err = Probability{}.CombinationsWithRepsBigInt(n, r)
 
 		if err != nil {
-			return IntAry{},
-				fmt.Errorf("%v\n"+
-					"Error returned by Probability{}.CombinationsWithRepsBigInt(numOfItems, numOfItemsChosen).\n"+
-					"Error='%v' \n",
-					ePrefix,
-					err.Error())
-		}
 
+			return IntAry{},
+				&FuncReturnError{
+					ErrPrefix:  ePrefix.String(),
+					ReturnFunc: "result, err = Probability{}.CombinationsWithRepsBigInt(n, r)",
+					ErrContext: "",
+					ErrMessage: err.Error(),
+				}
+		}
 	}
 
 	resultIntAry, err := result.GetIntAry()
 
 	if err != nil {
+
 		return IntAry{},
-			fmt.Errorf("%v\n"+
-				"Error returned by result.GetIntAry().\n"+
-				"Error='%v' \n",
-				ePrefix,
-				err.Error())
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "resultIntAry, err := result.GetIntAry()",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
 	}
 
 	return resultIntAry, nil
@@ -1369,10 +1573,11 @@ func (prob Probability) CombinationsIntAry(
 //	'numOfItemsChosen' are passed as type 'INumMgr'. Both input
 //	parameters must be non-zero, positive integer numbers.
 //
-//	The input parameter 'allowRepetitions' is a boolean value which will
-//	determine whether the calculation results will allow repetitions or
-//	not. The formula for the calculation of combinations will therefore
-//	vary depending on whether repetitions are allowed.
+//	The input parameter 'allowRepetitions' is a boolean value which
+//	will determine whether the calculation results will allow
+//	repetitions or not. The formula for the calculation of
+//	combinations will therefore vary depending on whether repetitions
+//	are allowed.
 //
 //	'allowRepetitions' == false signals unordered sampling WITHOUT
 //	replacement.
@@ -1384,42 +1589,45 @@ func (prob Probability) CombinationsIntAry(
 //	'INumMgr'.
 //
 //	In the following combination formulas, n= 'numOfItems' and
-//	r = 'numOfItemsChosen'. The actual formula applied depends on whether
-//	input parameter 'allowRepetitions' is 'true' or 'false'.
+//	r = 'numOfItemsChosen'. The actual formula applied depends on
+//	whether input parameter 'allowRepetitions' is 'true' or 'false'.
 //
-//	====================================================================
+//	========================================================================
+//
 //	          'allowRepetitions' = false
-//	====================================================================
+//
+//	========================================================================
 //
 //	                      n!
 //	          nCr  =  -----------
 //	                   (n-r)! r!
 //
-//	--------------------------------------------------
 //
-//	Where n is the number of things to choose from,
-//	and we choose r of them, order does NOT matter
-//	and repetition is NOT allowed.
+//	       Where n is the number of things to choose from,
+//	       and we choose r of them, order does NOT matter
+//	       and repetition is NOT allowed.
 //
 //	This version of the combinations calculation assumes NO REPETITIONS!
 //	(a.k.a. as unordered sampling WITHOUT replacement)
 //
-// When 'allowRepetitions' = false, 'numOfItems' and 'numOfItemsChosen' must both
-// be positive integer numbers. In addition, 'numOfItems' MUST be greater than or
-// equal to 'numOfItemsChosen'.
+//	When 'allowRepetitions' = false, 'numOfItems' and 'numOfItemsChosen'
+//	must both be positive integer numbers. In addition, 'numOfItems' MUST
+//	be greater than or equal to 'numOfItemsChosen'.
 //
-//	====================================================================
+//	========================================================================
+//
 //	          'allowRepetitions' = true
-//	====================================================================
+//
+//	========================================================================
 //
 //
 //	                     (r + n - 1)!
 //	          nCr  =  -------------------
 //	                       r! (n-1)!
 //
-//	Where n is the number of things to choose from,
-//	and we choose r of them, order does NOT matter
-//	and repetition IS NOT allowed.
+//	       Where n is the number of things to choose from,
+//	       and we choose r of them, order does NOT matter
+//	       and repetition IS NOT allowed.
 //
 //	This version of the combinations calculation assumes REPETITIONS
 //	ARE ALLOWED!
@@ -1458,10 +1666,14 @@ func (prob Probability) CombinationsINumMgr(
 	}
 
 	if numOfItemsSignValue == -1 {
+
 		return BigIntNum{},
-			fmt.Errorf("%v\n"+
-				"Error: Input parameter 'numOfItems' is LESS THAN ZERO!\n",
-				ePrefix)
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "",
+				ErrContext: "",
+				ErrMessage: "Error: Input parameter 'numOfItems' is LESS THAN ZERO!",
+			}
 	}
 
 	numOfItemsIsZero, err := numOfItems.IsZero()
@@ -1478,9 +1690,14 @@ func (prob Probability) CombinationsINumMgr(
 	}
 
 	if numOfItemsIsZero {
+
 		return BigIntNum{},
-			fmt.Errorf("%v\n" +
-				"Error: Input parameter 'numOfItems' is ZERO!\n")
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "",
+				ErrContext: "",
+				ErrMessage: "Error: Input parameter 'numOfItems' is ZERO!",
+			}
 	}
 
 	numOfItemsPrecisionUint, err := numOfItems.GetPrecisionUint()
@@ -1497,10 +1714,14 @@ func (prob Probability) CombinationsINumMgr(
 	}
 
 	if numOfItemsPrecisionUint > 0 {
+
 		return BigIntNum{},
-			fmt.Errorf("%v\n"+
-				"Error: Input parameter 'numOfItems' is NOT an Integer!\n",
-				ePrefix)
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "",
+				ErrContext: "",
+				ErrMessage: "Error: Input parameter 'numOfItems' is NOT an Integer!",
+			}
 	}
 
 	numOfItemsChosenSignValue, err := numOfItemsChosen.GetSign()
@@ -1517,10 +1738,14 @@ func (prob Probability) CombinationsINumMgr(
 	}
 
 	if numOfItemsChosenSignValue == -1 {
+
 		return BigIntNum{},
-			fmt.Errorf("%v\n"+
-				"Error: Input parameter 'numOfItemsChosen' is LESS THAN ZERO!\n",
-				ePrefix)
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "",
+				ErrContext: "",
+				ErrMessage: "Error: Input parameter 'numOfItemsChosen' is LESS THAN ZERO!",
+			}
 	}
 
 	numOfItemsChosenIsZero, err := numOfItemsChosen.IsZero()
@@ -1537,10 +1762,14 @@ func (prob Probability) CombinationsINumMgr(
 	}
 
 	if numOfItemsChosenIsZero {
+
 		return BigIntNum{},
-			fmt.Errorf("%v\n"+
-				"Error: Input parameter 'numOfItemsChosen' is ZERO!\n",
-				ePrefix)
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "",
+				ErrContext: "",
+				ErrMessage: "Error: Input parameter 'numOfItemsChosen' is ZERO!",
+			}
 	}
 
 	numOfItemsChosenPrecisionUint, err := numOfItemsChosen.GetPrecisionUint()
@@ -1557,32 +1786,40 @@ func (prob Probability) CombinationsINumMgr(
 	}
 
 	if numOfItemsChosenPrecisionUint > 0 {
+
 		return BigIntNum{},
-			fmt.Errorf("%v\n"+
-				"Error: Input parameter 'numOfItemsChosen' is NOT an Integer!\n",
-				ePrefix)
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "",
+				ErrContext: "",
+				ErrMessage: "Error: Input parameter 'numOfItemsChosen' is NOT an Integer!",
+			}
 	}
 
 	n, err := numOfItems.GetBigInt()
 
 	if err != nil {
+
 		return BigIntNum{},
-			fmt.Errorf("%v\n"+
-				"Error returned by numOfItems.GetBigInt().\n"+
-				"Error='%v'\n",
-				ePrefix,
-				err.Error())
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "n, err := numOfItems.GetBigInt()",
+				ErrContext: "",
+				ErrMessage: "",
+			}
 	}
 
 	r, err := numOfItemsChosen.GetBigInt()
 
 	if err != nil {
+
 		return BigIntNum{},
-			fmt.Errorf("%v\n"+
-				"Error returned by numOfItemsChosen.GetBigInt().\n"+
-				"Error='%v'\n",
-				ePrefix,
-				err.Error())
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "r, err := numOfItemsChosen.GetBigInt()",
+				ErrContext: "",
+				ErrMessage: "",
+			}
 	}
 
 	numOfItemsNumStr, err := numOfItems.GetNumStr()
@@ -1612,13 +1849,15 @@ func (prob Probability) CombinationsINumMgr(
 	}
 
 	if !allowRepetitions && r.Cmp(n) == 1 {
+
 		return BigIntNum{},
-			fmt.Errorf("%v\n"+
-				"Error: 'numOfItemsChosen' is GREATER THAN 'numOfItems'.\n"+
-				"numOfItems='%v' numOfItemsChosen='%v' \n",
-				ePrefix,
-				numOfItemsNumStr,
-				numOfItemsChosenNumStr)
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "",
+				ErrContext: fmt.Sprintf("numOfItems= '%v'\nnumOfItemsChosen= '%v'",
+					numOfItemsNumStr, numOfItemsChosenNumStr),
+				ErrMessage: "Error: 'numOfItemsChosen' is GREATER THAN 'numOfItems'.",
+			}
 	}
 
 	var result BigIntNum
@@ -1628,12 +1867,15 @@ func (prob Probability) CombinationsINumMgr(
 		result, err = Probability{}.CombinationsNoRepsBigInt(n, r)
 
 		if err != nil {
+
 			return BigIntNum{},
-				fmt.Errorf("%v\n"+
-					"Error returned by Probability{}.CombinationsNoRepsBigInt(numOfItems, numOfItemsChosen).\n"+
-					"Error='%v' \n",
-					ePrefix,
-					err.Error())
+				&FuncReturnError{
+					ErrPrefix: ePrefix.String(),
+					ReturnFunc: "result, err = Probability{}.\n" +
+						"CombinationsNoRepsBigInt(n, r)",
+					ErrContext: "",
+					ErrMessage: "",
+				}
 		}
 
 	} else {
@@ -1641,14 +1883,16 @@ func (prob Probability) CombinationsINumMgr(
 		result, err = Probability{}.CombinationsWithRepsBigInt(n, r)
 
 		if err != nil {
-			return BigIntNum{},
-				fmt.Errorf("%v\n"+
-					"Error returned by Probability{}.CombinationsWithRepsBigInt(numOfItems, numOfItemsChosen).\n"+
-					"Error='%v' \n",
-					ePrefix,
-					err.Error())
-		}
 
+			return BigIntNum{},
+				&FuncReturnError{
+					ErrPrefix: ePrefix.String(),
+					ReturnFunc: "result, err = Probability{}.\n" +
+						"CombinationsWithRepsBigInt(n, r)",
+					ErrContext: "",
+					ErrMessage: "",
+				}
+		}
 	}
 
 	return result, nil
@@ -1656,11 +1900,11 @@ func (prob Probability) CombinationsINumMgr(
 
 // CombinationsInt
 //
-//	Calculates the number of combinations associated with a
-//	collection of 'numOfItems' from which one chooses
-//	'numOfItemsChosen'. Order IS NOT significant. Input parameters
-//	'numOfItems' and 'numOfItemsChosen' are passed as type 'int'.
-//	Both input parameters must be non-zero, positive integer numbers.
+//	Calculates the number of combinations associated with a	collection
+//	of 'numOfItems' from which one chooses 'numOfItemsChosen'. Order
+//	IS NOT significant. Input parameters 'numOfItems' and
+//	'numOfItemsChosen' are passed as type 'int'. Both input parameters
+//	must be non-zero, positive integer numbers.
 //
 //	The input parameter 'allowRepetitions' is a boolean value which
 //	will determine whether the calculation results will allow
@@ -1669,7 +1913,9 @@ func (prob Probability) CombinationsINumMgr(
 //	repetitions are allowed.
 //
 //	'allowRepetitions' == false signals unordered sampling WITHOUT
-//	replacement. 'allowRepetitions' == true signals unordered sampling
+//	replacement.
+//
+//	'allowRepetitions' == true signals unordered sampling
 //	WITH replacement.
 //
 //	The result of this combination calculation is returned as a type
@@ -1679,20 +1925,21 @@ func (prob Probability) CombinationsINumMgr(
 //	r = 'numOfItemsChosen'. The actual formula applied depends on
 //	whether input parameter 'allowRepetitions' is 'true' or 'false'.
 //
-//	====================================================================
-//		'allowRepetitions' = false
-//	====================================================================
+//	========================================================================
+//
+//	          'allowRepetitions' = false
+//
+//	========================================================================
 //
 //		                    n!
 //		        nCr  =  -----------
 //		                 (n-r)! r!
 //
 //
-//		Where n is the number of things to choose from,
-//		and we choose r of them, order does NOT matter
-//		and repetition is NOT allowed.
+//		     Where n is the number of things to choose from,
+//		     and we choose r of them, order does NOT matter
+//		     and repetition is NOT allowed.
 //
-//	------------------------------------------------------------------------
 //
 //		This version of the combinations calculation assumes NO REPETITIONS!
 //		        (a.k.a. as unordered sampling WITHOUT replacement)
@@ -1702,16 +1949,18 @@ func (prob Probability) CombinationsINumMgr(
 //	be greater than or equal to 'numOfItemsChosen'.
 //
 //	========================================================================
-//		'allowRepetitions' = true
+//
+//	          'allowRepetitions' = true
+//
 //	========================================================================
 //
 //		                    (r + n - 1)!
 //		        nCr  =  -------------------
 //		                     r! (n-1)!
 //
-//		Where n is the number of things to choose from,
-//		and we choose r of them, order does NOT matter
-//		and repetition IS NOT allowed.
+//		     Where n is the number of things to choose from,
+//		     and we choose r of them, order does NOT matter
+//		     and repetition IS NOT allowed.
 //
 //	This version of the combinations calculation assumes REPETITIONS ARE
 //	ALLOWED!
@@ -1719,39 +1968,66 @@ func (prob Probability) CombinationsINumMgr(
 //		(a.k.a. as unordered sampling WITH replacement)
 //
 //	When 'allowRepetitions' = true, 'numOfItems' and 'numOfItemsChosen'
-//	must both be positive integer numbers. 'numOfItems' can be greater than,
-//	equal to or less than 'numOfItemsChosen'.
+//	must both be positive integer numbers. 'numOfItems' can be greater
+//	than, equal to or less than 'numOfItemsChosen'.
 func (prob Probability) CombinationsInt(
 	numOfItems, numOfItemsChosen int, allowRepetitions bool) (BigIntNum, error) {
 
-	ePrefix := "Probability.CombinationsInt() "
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
+
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"Probability.CombinationsInt",
+		"")
+
+	if err != nil {
+		return BigIntNum{}, err
+	}
 
 	if numOfItems < 0 {
+
 		return BigIntNum{},
-			fmt.Errorf("%v\n"+
-				"Error: Input parameter 'numOfItems' is LESS THAN ZERO!\n",
-				ePrefix)
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "",
+				ErrContext: "",
+				ErrMessage: "Error: Input parameter 'numOfItems' is LESS THAN ZERO!",
+			}
 	}
 
 	if numOfItems == 0 {
+
 		return BigIntNum{},
-			fmt.Errorf("%v\n"+
-				"Error: Input parameter 'numOfItems' is ZERO!\n",
-				ePrefix)
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "",
+				ErrContext: "",
+				ErrMessage: "Error: Input parameter 'numOfItems' is ZERO!",
+			}
 	}
 
 	if numOfItemsChosen < 0 {
+
 		return BigIntNum{},
-			fmt.Errorf("%v\n"+
-				"Error: Input parameter 'numOfItemsChosen' is LESS THAN ZERO!\n",
-				ePrefix)
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "",
+				ErrContext: "",
+				ErrMessage: "Error: Input parameter 'numOfItemsChosen' is LESS THAN ZERO!",
+			}
 	}
 
 	if numOfItemsChosen == 0 {
+
 		return BigIntNum{},
-			fmt.Errorf("%v\n"+
-				"Error: Input parameter 'numOfItemsChosen' is ZERO!\n",
-				ePrefix)
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "",
+				ErrContext: "",
+				ErrMessage: "Error: Input parameter 'numOfItemsChosen' is ZERO!",
+			}
 	}
 
 	n := big.NewInt(int64(numOfItems))
@@ -1759,29 +2035,33 @@ func (prob Probability) CombinationsInt(
 	r := big.NewInt(int64(numOfItemsChosen))
 
 	if !allowRepetitions && r.Cmp(n) == 1 {
+
 		return BigIntNum{},
-			fmt.Errorf("%v\n"+
-				"Error: 'numOfItemsChosen' is GREATER THAN 'numOfItems'.\n"+
-				"numOfItems='%v' numOfItemsChosen='%v' \n",
-				ePrefix,
-				numOfItems,
-				numOfItemsChosen)
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "",
+				ErrContext: fmt.Sprintf("numOfItems= '%v'\nnumOfItemsChosen= '%v'",
+					numOfItems, numOfItemsChosen),
+				ErrMessage: "Error: 'numOfItemsChosen' is GREATER THAN 'numOfItems'.",
+			}
 	}
 
 	var result BigIntNum
-	var err error
 
 	if !allowRepetitions {
 
 		result, err = Probability{}.CombinationsNoRepsBigInt(n, r)
 
 		if err != nil {
+
 			return BigIntNum{},
-				fmt.Errorf("%v\n"+
-					"Error returned by Probability{}.CombinationsNoRepsBigInt(numOfItems, numOfItemsChosen).\n"+
-					"Error='%v' \n",
-					ePrefix,
-					err.Error())
+				&FuncReturnError{
+					ErrPrefix: ePrefix.String(),
+					ReturnFunc: "result, err = Probability{}.\n" +
+						"  CombinationsNoRepsBigInt(n, r)",
+					ErrContext: "",
+					ErrMessage: err.Error(),
+				}
 		}
 
 	} else {
@@ -1789,12 +2069,15 @@ func (prob Probability) CombinationsInt(
 		result, err = Probability{}.CombinationsWithRepsBigInt(n, r)
 
 		if err != nil {
+
 			return BigIntNum{},
-				fmt.Errorf("%v\n"+
-					"Error returned by Probability{}.CombinationsWithRepsBigInt(numOfItems, numOfItemsChosen).\n"+
-					"Error='%v' \n",
-					ePrefix,
-					err.Error())
+				&FuncReturnError{
+					ErrPrefix: ePrefix.String(),
+					ReturnFunc: "result, err = Probability{}.\n" +
+						"  CombinationsWithRepsBigInt(n, r)",
+					ErrContext: "",
+					ErrMessage: err.Error(),
+				}
 		}
 
 	}
@@ -1805,15 +2088,16 @@ func (prob Probability) CombinationsInt(
 // CombinationsInt32
 //
 //	Calculates the number of combinations associated with a collection
-//	of 'numOfItems' from which one chooses 'numOfItemsChosen'. Order IS
-//	NOT significant. Input parameters 'numOfItems' and 'numOfItemsChosen'
-//	are passed as type 'int32'. Both input parameters must be non-zero,
-//	positive integer numbers.
+//	of 'numOfItems' from which one chooses 'numOfItemsChosen'. Order
+//	IS NOT significant. Input parameters 'numOfItems' and
+//	'numOfItemsChosen' are passed as type 'int32'. Both input
+//	parameters must be non-zero, positive integer numbers.
 //
-//	The input parameter 'allowRepetitions' is a boolean value which will
-//	determine whether the calculation results will allow repetitions or
-//	not. The formula for the calculation of combinations will therefore
-//	vary depending on whether repetitions are allowed.
+//	The input parameter 'allowRepetitions' is a boolean value which
+//	will determine whether the calculation results will allow
+//	repetitions or not. The formula for the calculation of
+//	combinations will therefore vary depending on whether
+//	repetitions are allowed.
 //
 //	'allowRepetitions' == false signals unordered sampling WITHOUT
 //	replacement.
@@ -1825,81 +2109,113 @@ func (prob Probability) CombinationsInt(
 //	'BigIntNum'.
 //
 //	In the following combination formulas, n= 'numOfItems' and
-//	r = 'numOfItemsChosen'. The actual formula applied depends on whether
-//	input parameter 'allowRepetitions' is 'true' or 'false'.
+//	r = 'numOfItemsChosen'. The actual formula applied depends on
+//	whether input parameter 'allowRepetitions' is 'true' or 'false'.
 //
-//	====================================================================
+//	========================================================================
+//
 //	          'allowRepetitions' = false
-//	====================================================================
+//
+//	========================================================================
 //
 //	                      n!
 //	          nCr  =  -----------
 //	                   (n-r)! r!
 //
-//	--------------------------------------------------
 //
-//	Where n is the number of things to choose from,
-//	and we choose r of them, order does NOT matter
-//	and repetition is NOT allowed.
+//	     Where n is the number of things to choose from,
+//	     and we choose r of them, order does NOT matter
+//	     and repetition is NOT allowed.
 //
 //	This version of the combinations calculation assumes NO REPETITIONS!
 //	      (a.k.a. as unordered sampling WITHOUT replacement)
 //
-//	When 'allowRepetitions' = false, 'numOfItems' and 'numOfItemsChosen'
-//	must both be positive integer numbers. In addition, 'numOfItems' MUST
-//	be greater than or equal to 'numOfItemsChosen'.
+//	When 'allowRepetitions' = false, 'numOfItems' and
+//	'numOfItemsChosen' must both be positive integer numbers. In
+//	addition, 'numOfItems' MUST be greater than or equal to
+//	'numOfItemsChosen'.
 //
-//	====================================================================
+//	========================================================================
+//
 //	          'allowRepetitions' = true
-//	====================================================================
+//
+//	========================================================================
 //
 //
 //	                  (r + n - 1)!
 //	          nCr = -------------------
 //	                  r! (n-1)!
 //
-//	Where n is the number of things to choose from,
-//	and we choose r of them, order does NOT matter
-//	and repetition IS NOT allowed.
+//	     Where n is the number of things to choose from,
+//	     and we choose r of them, order does NOT matter
+//	     and repetition IS NOT allowed.
 //
 //	This version of the combinations calculation assumes REPETITIONS
 //	ARE ALLOWED!
 //		   (a.k.a. as unordered sampling WITH replacement)
 //
-//	When 'allowRepetitions' = true, 'numOfItems' and 'numOfItemsChosen'
-//	must both be positive integer numbers. 'numOfItems' can be greater
-//	than, equal to or less than 'numOfItemsChosen'.
+//	When 'allowRepetitions' = true, 'numOfItems' and
+//	'numOfItemsChosen' must both be positive integer numbers.
+//	'numOfItems' can be greater than, equal to or less than
+//	'numOfItemsChosen'.
 func (prob Probability) CombinationsInt32(
 	numOfItems, numOfItemsChosen int32, allowRepetitions bool) (BigIntNum, error) {
 
-	ePrefix := "Probability.CombinationsInt32() "
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
+
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"Probability.CombinationsInt32",
+		"")
+
+	if err != nil {
+		return BigIntNum{}, err
+	}
 
 	if numOfItems < 0 {
+
 		return BigIntNum{},
-			fmt.Errorf("%v\n"+
-				"Error: Input parameter 'numOfItems' is LESS THAN ZERO!\n",
-				ePrefix)
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "",
+				ErrContext: fmt.Sprintf("numOfItems= '%v'", numOfItems),
+				ErrMessage: "Error: Input parameter 'numOfItems' is LESS THAN ZERO!",
+			}
 	}
 
 	if numOfItems == 0 {
+
 		return BigIntNum{},
-			fmt.Errorf("%v\n"+
-				"Error: Input parameter 'numOfItems' is ZERO!\n",
-				ePrefix)
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "",
+				ErrContext: "",
+				ErrMessage: "Error: Input parameter 'numOfItems' is ZERO!",
+			}
 	}
 
 	if numOfItemsChosen < 0 {
+
 		return BigIntNum{},
-			fmt.Errorf("%v\n"+
-				"Error: Input parameter 'numOfItemsChosen' is LESS THAN ZERO!\n",
-				ePrefix)
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "",
+				ErrContext: fmt.Sprintf("numOfItemsChosen= '%v'", numOfItemsChosen),
+				ErrMessage: "Error: Input parameter 'numOfItemsChosen' is LESS THAN ZERO!",
+			}
 	}
 
 	if numOfItemsChosen == 0 {
+
 		return BigIntNum{},
-			fmt.Errorf("%v\n"+
-				"Error: Input parameter 'numOfItemsChosen' is ZERO!\n",
-				ePrefix)
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "",
+				ErrContext: "",
+				ErrMessage: "Error: Input parameter 'numOfItemsChosen' is ZERO!",
+			}
 	}
 
 	n := big.NewInt(int64(numOfItems))
@@ -1907,28 +2223,33 @@ func (prob Probability) CombinationsInt32(
 	r := big.NewInt(int64(numOfItemsChosen))
 
 	if !allowRepetitions && r.Cmp(n) == 1 {
+
 		return BigIntNum{},
-			fmt.Errorf("%v\n"+
-				"Error: 'numOfItemsChosen' is GREATER THAN 'numOfItems'.\n"+
-				"numOfItems='%v' numOfItemsChosen='%v'\n",
-				ePrefix,
-				numOfItems, numOfItemsChosen)
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "",
+				ErrContext: fmt.Sprintf("numOfItems= '%v'\nnumOfItemsChosen= '%v'",
+					numOfItems, numOfItemsChosen),
+				ErrMessage: "Error: 'numOfItemsChosen' is GREATER THAN 'numOfItems'.",
+			}
 	}
 
 	var result BigIntNum
-	var err error
 
 	if !allowRepetitions {
 
 		result, err = Probability{}.CombinationsNoRepsBigInt(n, r)
 
 		if err != nil {
+
 			return BigIntNum{},
-				fmt.Errorf("%v\n"+
-					"Error returned by Probability{}.CombinationsNoRepsBigInt(numOfItems, numOfItemsChosen). "+
-					"Error='%v' \n",
-					ePrefix,
-					err.Error())
+				&FuncReturnError{
+					ErrPrefix: ePrefix.String(),
+					ReturnFunc: "result, err = Probability{}.\n" +
+						"  CombinationsNoRepsBigInt(n, r)",
+					ErrContext: "",
+					ErrMessage: err.Error(),
+				}
 		}
 
 	} else {
@@ -1936,14 +2257,16 @@ func (prob Probability) CombinationsInt32(
 		result, err = Probability{}.CombinationsWithRepsBigInt(n, r)
 
 		if err != nil {
-			return BigIntNum{},
-				fmt.Errorf("%v\n"+
-					"Error returned by Probability{}.CombinationsWithRepsBigInt32(numOfItems, numOfItemsChosen).\n"+
-					"Error='%v' \n",
-					ePrefix,
-					err.Error())
-		}
 
+			return BigIntNum{},
+				&FuncReturnError{
+					ErrPrefix: ePrefix.String(),
+					ReturnFunc: "result, err = Probability{}.\n" +
+						"  CombinationsWithRepsBigInt(n, r)",
+					ErrContext: "",
+					ErrMessage: err.Error(),
+				}
+		}
 	}
 
 	return result, nil
@@ -1952,15 +2275,16 @@ func (prob Probability) CombinationsInt32(
 // CombinationsInt64
 //
 //	Calculates the number of combinations associated with a collection
-//	of 'numOfItems' from which one chooses 'numOfItemsChosen'. Order IS
-//	NOT significant. Input parameters 'numOfItems' and
-//	'numOfItemsChosen' are passed as type 'int32'. Both input parameters
-//	must be non-zero, positive integer numbers.
+//	of 'numOfItems' from which one chooses 'numOfItemsChosen'. Order
+//	IS NOT significant. Input parameters 'numOfItems' and
+//	'numOfItemsChosen' are passed as type 'int32'. Both input
+//	parameters must be non-zero, positive integer numbers.
 //
-//	The input parameter 'allowRepetitions' is a boolean value which will
-//	determine whether the calculation results will allow repetitions or
-//	not. The formula for the calculation of combinations will therefore
-//	vary depending on whether repetitions are allowed.
+//	The input parameter 'allowRepetitions' is a boolean value which
+//	will determine whether the calculation results will allow
+//	repetitions or not. The formula for the calculation of
+//	combinations will therefore vary depending on whether
+//	repetitions are allowed.
 //
 //	'allowRepetitions' == false signals unordered sampling WITHOUT
 //	replacement.
@@ -1972,22 +2296,23 @@ func (prob Probability) CombinationsInt32(
 //	'BigIntNum'.
 //
 //	In the following combination formulas, n= 'numOfItems'  and
-//	r = 'numOfItemsChosen'. The actual formula applied depends on whether
-//	input parameter 'allowRepetitions' is 'true' or 'false'.
+//	r = 'numOfItemsChosen'. The actual formula applied depends on
+//	whether input parameter 'allowRepetitions' is 'true' or 'false'.
 //
-//	====================================================================
+//	========================================================================
+//
 //	          'allowRepetitions' = false
-//	====================================================================
+//
+//	========================================================================
 //
 //	                    n!
 //	       nCr  =  -------------
 //	                (n-r)! r!
 //
-//	--------------------------------------------------
 //
-//	Where n is the number of things to choose from,
-//	and we choose r of them, order does NOT matter
-//	and repetition is NOT allowed.
+//	     Where n is the number of things to choose from,
+//	     and we choose r of them, order does NOT matter
+//	     and repetition is NOT allowed.
 //
 //	This version of the combinations calculation assumes NO REPETITIONS!
 //	     (a.k.a. as unordered sampling WITHOUT replacement)
@@ -1996,56 +2321,86 @@ func (prob Probability) CombinationsInt32(
 //	must both be positive integer numbers. In addition, 'numOfItems'
 //	MUST be greater than or equal to 'numOfItemsChosen'.
 //
-//	====================================================================
+//	========================================================================
+//
 //	          'allowRepetitions' = true
-//	====================================================================
+//
+//	========================================================================
 //
 //	                    (r + n - 1)!
 //	          nCr  =  -------------------
 //	                      r! (n-1)!
 //
-//	Where n is the number of things to choose from,
-//	and we choose r of them, order does NOT matter
-//	and repetition IS NOT allowed.
+//	     Where n is the number of things to choose from,
+//	     and we choose r of them, order does NOT matter
+//	     and repetition IS NOT allowed.
 //
 //	This version of the combinations calculation assumes REPETITIONS
 //	ARE ALLOWED!
 //	        (a.k.a. as unordered sampling WITH replacement)
 //
-//	When 'allowRepetitions' = true, 'numOfItems' and 'numOfItemsChosen'
-//	must both be positive integer numbers. 'numOfItems' can be greater
-//	than, equal to or less than 'numOfItemsChosen'.
+//	When 'allowRepetitions' = true, 'numOfItems' and
+//	'numOfItemsChosen' must both be positive integer numbers.
+//	'numOfItems' can be greater than, equal to or less than
+//	'numOfItemsChosen'.
 func (prob Probability) CombinationsInt64(
 	numOfItems, numOfItemsChosen int64, allowRepetitions bool) (BigIntNum, error) {
 
-	ePrefix := "Probability.CombinationsInt64() "
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
+
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"Probability.CombinationsInt64",
+		"")
+
+	if err != nil {
+		return BigIntNum{}, err
+	}
 
 	if numOfItems < 0 {
+
 		return BigIntNum{},
-			fmt.Errorf("%v\n"+
-				"Error: Input parameter 'numOfItems' is LESS THAN ZERO!\n",
-				ePrefix)
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "",
+				ErrContext: fmt.Sprintf("numOfItems= '%v'", numOfItems),
+				ErrMessage: "Error: Input parameter 'numOfItems' is LESS THAN ZERO!",
+			}
 	}
 
 	if numOfItems == 0 {
+
 		return BigIntNum{},
-			fmt.Errorf("%v\n"+
-				"Error: Input parameter 'numOfItems' is ZERO!\n",
-				ePrefix)
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "",
+				ErrContext: "",
+				ErrMessage: "Error: Input parameter 'numOfItems' is ZERO!",
+			}
 	}
 
 	if numOfItemsChosen < 0 {
+
 		return BigIntNum{},
-			fmt.Errorf("%v\n"+
-				"Error: Input parameter 'numOfItemsChosen' is LESS THAN ZERO!\n",
-				ePrefix)
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "",
+				ErrContext: fmt.Sprintf("numOfItemsChosen= '%v'", numOfItemsChosen),
+				ErrMessage: "Error: Input parameter 'numOfItemsChosen' is LESS THAN ZERO!",
+			}
 	}
 
 	if numOfItemsChosen == 0 {
+
 		return BigIntNum{},
-			fmt.Errorf("%v\n"+
-				"Error: Input parameter 'numOfItemsChosen' is ZERO!\n",
-				ePrefix)
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "",
+				ErrContext: "",
+				ErrMessage: "Error: Input parameter 'numOfItemsChosen' is ZERO!",
+			}
 	}
 
 	n := big.NewInt(numOfItems)
@@ -2053,27 +2408,33 @@ func (prob Probability) CombinationsInt64(
 	r := big.NewInt(numOfItemsChosen)
 
 	if !allowRepetitions && r.Cmp(n) == 1 {
+
 		return BigIntNum{},
-			fmt.Errorf("%v\n"+
-				"Error: 'numOfItemsChosen' is GREATER THAN 'numOfItems'.\n"+
-				"numOfItems='%v' numOfItemsChosen='%v' \n",
-				ePrefix,
-				numOfItems,
-				numOfItemsChosen)
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "",
+				ErrContext: fmt.Sprintf("numOfItems= '%v'\nnumOfItemsChosen= '%v'",
+					numOfItems, numOfItemsChosen),
+				ErrMessage: "Error: 'numOfItemsChosen' is GREATER THAN 'numOfItems'.",
+			}
 	}
 
 	var result BigIntNum
-	var err error
 
 	if !allowRepetitions {
 
 		result, err = Probability{}.CombinationsNoRepsBigInt(n, r)
 
 		if err != nil {
+
 			return BigIntNum{},
-				fmt.Errorf("%v\n"+
-					"Error returned by Probability{}.CombinationsNoRepsBigInt(numOfItems, numOfItemsChosen).\n"+
-					"Error='%v' \n", ePrefix, err.Error())
+				&FuncReturnError{
+					ErrPrefix: ePrefix.String(),
+					ReturnFunc: "result, err = Probability{}.\n" +
+						"  CombinationsNoRepsBigInt(n, r)",
+					ErrContext: "",
+					ErrMessage: err.Error(),
+				}
 		}
 
 	} else {
@@ -2081,12 +2442,16 @@ func (prob Probability) CombinationsInt64(
 		result, err = Probability{}.CombinationsWithRepsBigInt(n, r)
 
 		if err != nil {
-			return BigIntNum{},
-				fmt.Errorf("%v\n"+
-					"Error returned by Probability{}.CombinationsWithRepsBigInt64(numOfItems, numOfItemsChosen).\n"+
-					"Error='%v' \n", ePrefix, err.Error())
-		}
 
+			return BigIntNum{},
+				&FuncReturnError{
+					ErrPrefix: ePrefix.String(),
+					ReturnFunc: "result, err = Probability{}.\n" +
+						"  CombinationsWithRepsBigInt(n, r)",
+					ErrContext: "",
+					ErrMessage: err.Error(),
+				}
+		}
 	}
 
 	return result, nil
@@ -2094,35 +2459,41 @@ func (prob Probability) CombinationsInt64(
 
 // CombinationsNumStrDto
 //
-//	Calculates the number of combinations associated with a collection of
-//	'numOfItems' from which one chooses 'numOfItemsChosen'. Order IS NOT significant. Input parameters
-//	'numOfItems' and 'numOfItemsChosen' are passed as type 'NumStrDto'. Both input parameters must
-//	be non-zero, positive integer numbers.
+//	Calculates the number of combinations associated with a collection
+//	of 'numOfItems' from which one chooses 'numOfItemsChosen'. Order
+//	IS NOT significant. Input parameters 'numOfItems' and
+//	'numOfItemsChosen' are passed as type 'NumStrDto'. Both input
+//	parameters must be non-zero, positive integer numbers.
 //
-//	The input parameter 'allowRepetitions' is a boolean value which will determine whether the
-//	calculation results will allow repetitions or not. The formula for the calculation of combinations
-//	will therefore vary depending on whether repetitions are allowed. 'allowRepetitions' == false signals
-//	unordered sampling WITHOUT replacement. 'allowRepetitions' == true signals unordered sampling WITH
-//	replacement.
+//	The input parameter 'allowRepetitions' is a boolean value which
+//	will determine whether the calculation results will allow
+//	repetitions or not. The formula for the calculation of
+//	combinations will therefore vary depending on whether repetitions
+//	are allowed. 'allowRepetitions' == false signals unordered
+//	sampling WITHOUT replacement. 'allowRepetitions' == true signals
+//	unordered sampling WITH replacement.
 //
-//	The result of this combination calculation is returned as a type 'NumStrDto'.
+//	The result of this combination calculation is returned as a type
+//	'NumStrDto'.
 //
-//	In the following combination formulas, n= 'numOfItems'  and r = 'numOfItemsChosen'. The actual
-//	formula applied depends on whether input parameter 'allowRepetitions' is 'true' or 'false'.
+//	In the following combination formulas, n= 'numOfItems' and
+//	r = 'numOfItemsChosen'. The actual formula applied depends on
+//	whether input parameter 'allowRepetitions' is 'true' or 'false'.
 //
-//	====================================================================
+//	========================================================================
+//
 //	          'allowRepetitions' = false
-//	====================================================================
+//
+//	========================================================================
 //
 //	                      n!
 //	          nCr  =  -----------
 //	                   (n-r)! r!
 //
-//	--------------------------------------------------
 //
-//	Where n is the number of things to choose from,
-//	and we choose r of them, order does NOT matter
-//	and repetition is NOT allowed.
+//	     Where n is the number of things to choose from,
+//	     and we choose r of them, order does NOT matter
+//	     and repetition is NOT allowed.
 //
 //	This version of the combinations calculation assumes NO REPETITIONS!
 //	        (a.k.a. as unordered sampling WITHOUT replacement)
@@ -2131,26 +2502,28 @@ func (prob Probability) CombinationsInt64(
 //	be positive integer numbers. In addition, 'numOfItems' MUST be greater than or
 //	equal to 'numOfItemsChosen'.
 //
-//	====================================================================
-//	         'allowRepetitions' = true
-//	====================================================================
+//	========================================================================
+//
+//	          'allowRepetitions' = true
+//
+//	========================================================================
 //
 //
 //	               (r + n - 1)!
 //	     nCr  =  -------------------
 //	                r! (n-1)!
 //
-//	Where n is the number of things to choose from,
-//	and we choose r of them, order does NOT matter
-//	and repetition IS NOT allowed.
+//	     Where n is the number of things to choose from,
+//	     and we choose r of them, order does NOT matter
+//	     and repetition IS NOT allowed.
 //
 //	This version of the combinations calculation assumes REPETITIONS ARE
 //	ALLOWED!
 //	      (a.k.a. as unordered sampling WITH replacement)
 //
-//	When 'allowRepetitions' = true, 'numOfItems' and 'numOfItemsChosen' must both
-//	be positive integer numbers. 'numOfItems' can be greater than, equal to or less
-//	than 'numOfItemsChosen'.
+//	When 'allowRepetitions' = true, 'numOfItems' and 'numOfItemsChosen'
+//	must both be positive integer numbers. 'numOfItems' can be greater
+//	than, equal to or less than 'numOfItemsChosen'.
 func (prob Probability) CombinationsNumStrDto(
 	numOfItems, numOfItemsChosen NumStrDto, allowRepetitions bool) (NumStrDto, error) {
 
@@ -2181,10 +2554,14 @@ func (prob Probability) CombinationsNumStrDto(
 	}
 
 	if numOfItemsSignValue == -1 {
+
 		return NumStrDto{},
-			fmt.Errorf("%v\n"+
-				"Error: Input parameter 'numOfItems' is LESS THAN ZERO!\n",
-				ePrefix)
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "",
+				ErrContext: "",
+				ErrMessage: "Error: Input parameter 'numOfItems' is LESS THAN ZERO!",
+			}
 	}
 
 	numOfItemsIsZero, err := numOfItems.IsZero()
@@ -2201,10 +2578,14 @@ func (prob Probability) CombinationsNumStrDto(
 	}
 
 	if numOfItemsIsZero {
+
 		return NumStrDto{},
-			fmt.Errorf("%v\n"+
-				"Error: Input parameter 'numOfItems' is ZERO!\n",
-				ePrefix)
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "",
+				ErrContext: "",
+				ErrMessage: "Error: Input parameter 'numOfItems' is ZERO!",
+			}
 	}
 
 	numOfItemsPrecisionUint, err := numOfItems.GetPrecisionUint()
@@ -2221,10 +2602,14 @@ func (prob Probability) CombinationsNumStrDto(
 	}
 
 	if numOfItemsPrecisionUint > 0 {
+
 		return NumStrDto{},
-			fmt.Errorf("%v\n"+
-				"Error: Input parameter 'numOfItems' is NOT an Integer!\n",
-				ePrefix)
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "",
+				ErrContext: "",
+				ErrMessage: "Error: Input parameter 'numOfItems' is NOT an Integer!",
+			}
 	}
 
 	numOfItemsChosenSignValue, err := numOfItemsChosen.GetSign()
@@ -2233,18 +2618,23 @@ func (prob Probability) CombinationsNumStrDto(
 
 		return NumStrDto{},
 			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "numOfItemsChosenSignValue, err := numOfItemsChosen.GetSign()",
+				ErrPrefix: ePrefix.String(),
+				ReturnFunc: "numOfItemsChosenSignValue, err :=\n" +
+					"  numOfItemsChosen.GetSign()",
 				ErrContext: "",
 				ErrMessage: err.Error(),
 			}
 	}
 
 	if numOfItemsChosenSignValue == -1 {
+
 		return NumStrDto{},
-			fmt.Errorf("%v\n"+
-				"Error: Input parameter 'numOfItemsChosen' is LESS THAN ZERO!\n",
-				ePrefix)
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "",
+				ErrContext: "",
+				ErrMessage: "Error: Input parameter 'numOfItemsChosen' is LESS THAN ZERO!",
+			}
 	}
 
 	numOfItemsChosenIsZero, err := numOfItemsChosen.IsZero()
@@ -2261,10 +2651,14 @@ func (prob Probability) CombinationsNumStrDto(
 	}
 
 	if numOfItemsChosenIsZero {
+
 		return NumStrDto{},
-			fmt.Errorf("%v\n"+
-				"Error: Input parameter 'numOfItemsChosen' is ZERO!\n",
-				ePrefix)
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "",
+				ErrContext: "",
+				ErrMessage: "Error: Input parameter 'numOfItemsChosen' is ZERO!",
+			}
 	}
 
 	numOfItemsChosenPrecisionUint, err := numOfItemsChosen.GetPrecisionUint()
@@ -2281,28 +2675,40 @@ func (prob Probability) CombinationsNumStrDto(
 	}
 
 	if numOfItemsChosenPrecisionUint > 0 {
+
 		return NumStrDto{},
-			fmt.Errorf("%v\n"+
-				"Error: Input parameter 'numOfItemsChosen' is NOT an Integer!\n",
-				ePrefix)
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "",
+				ErrContext: "",
+				ErrMessage: "Error: Input parameter 'numOfItemsChosen' is NOT an Integer!",
+			}
 	}
 
 	n, err := numOfItems.GetBigInt()
 
 	if err != nil {
+
 		return NumStrDto{},
-			fmt.Errorf("%v\n"+
-				"Error returned by numOfItems.GetBigInt().\n"+
-				"Error='%v' \n", ePrefix, err.Error())
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "n, err := numOfItems.GetBigInt()",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
 	}
 
 	r, err := numOfItemsChosen.GetBigInt()
 
 	if err != nil {
+
 		return NumStrDto{},
-			fmt.Errorf("%v\n"+
-				"Error returned by numOfItemsChosen.GetBigInt().\n"+
-				"Error='%v' \n", ePrefix, err.Error())
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "r, err := numOfItemsChosen.GetBigInt()",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
 	}
 
 	numOfItemsNumStr, err := numOfItems.GetNumStr()
@@ -2332,12 +2738,16 @@ func (prob Probability) CombinationsNumStrDto(
 	}
 
 	if !allowRepetitions && r.Cmp(n) == 1 {
+
 		return NumStrDto{},
-			fmt.Errorf("%v\n"+
-				"Error: 'numOfItemsChosen' is GREATER THAN 'numOfItems'.\n"+
-				"numOfItems='%v' numOfItemsChosen='%v' \n",
-				ePrefix,
-				numOfItemsNumStr, numOfItemsChosenNumStr)
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "",
+				ErrContext: fmt.Sprintf("numOfItems='%v'\n"+
+					"numOfItemsChosen='%v'",
+					numOfItemsNumStr, numOfItemsChosenNumStr),
+				ErrMessage: "Error: Input parameter 'numOfItemsChosen' is LESS THAN ZERO!",
+			}
 	}
 
 	var result BigIntNum
@@ -2347,10 +2757,15 @@ func (prob Probability) CombinationsNumStrDto(
 		result, err = Probability{}.CombinationsNoRepsBigInt(n, r)
 
 		if err != nil {
+
 			return NumStrDto{},
-				fmt.Errorf("%v\n"+
-					"Error returned by Probability{}.CombinationsNoRepsBigInt(numOfItems, numOfItemsChosen).\n"+
-					"Error='%v' \n", ePrefix, err.Error())
+				&FuncReturnError{
+					ErrPrefix: ePrefix.String(),
+					ReturnFunc: "result, err = Probability{}.\n" +
+						"  CombinationsNoRepsBigInt(n, r)",
+					ErrContext: "",
+					ErrMessage: err.Error(),
+				}
 		}
 
 	} else {
@@ -2358,21 +2773,29 @@ func (prob Probability) CombinationsNumStrDto(
 		result, err = Probability{}.CombinationsWithRepsBigInt(n, r)
 
 		if err != nil {
-			return NumStrDto{},
-				fmt.Errorf("%v\n"+
-					"Error returned by Probability{}.CombinationsWithRepsBigInt(numOfItems, numOfItemsChosen).\n"+
-					"Error='%v' \n", ePrefix, err.Error())
-		}
 
+			return NumStrDto{},
+				&FuncReturnError{
+					ErrPrefix: ePrefix.String(),
+					ReturnFunc: "result, err = Probability{}.\n" +
+						"  CombinationsWithRepsBigInt(n, r)",
+					ErrContext: "",
+					ErrMessage: err.Error(),
+				}
+		}
 	}
 
 	resultNumStrDto, err := result.GetNumStrDto()
 
 	if err != nil {
+
 		return NumStrDto{},
-			fmt.Errorf("%v\n"+
-				"Error returned by result.GetNumStrDto().\n"+
-				"Error='%v' \n", ePrefix, err.Error())
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "esultNumStrDto, err := result.GetNumStrDto()",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
 	}
 
 	return resultNumStrDto, nil
@@ -2380,68 +2803,82 @@ func (prob Probability) CombinationsNumStrDto(
 
 // CombinationsNumberStr
 //
-//	Calculates the number of combinations associated with a collection of
-//	'numOfItems' from which one chooses 'numOfItemsChosen'. Order IS NOT significant.
+//	Calculates the number of combinations associated with a collection
+//	of 'numOfItems' from which one chooses 'numOfItemsChosen'. Order
+//	IS NOT significant.
 //
-//	Input parameters 'numOfItems' and 'numOfItemsChosen' are passed as strings. These strings
-//	must be formatted as valid number strings. Number strings may be prefixed by a plus (+) or
-//	minus (-) and must consist of a string of numeric digits which may be delimited by the
-//	'thousands' separator. If the numeric value is a fractional value, the fractional digits must
-//	be preceded by a period ('.') or decimal separator. However, for purposes of this calculation,
-//	both input parameters must be passed as positive. integer numbers.
+//	Input parameters 'numOfItems' and 'numOfItemsChosen' are passed as
+//	strings. These strings must be formatted as valid number strings.
+//	Number strings may be prefixed by a plus (+) or minus (-) and must
+//	consist of a string of numeric digits which may be delimited by
+//	the 'thousands' separator. If the numeric value is a fractional
+//	value, the fractional digits must be preceded by a period ('.') or
+//	decimal separator. However, for purposes of this calculation, both
+//	input parameters must be passed as positive. integer numbers.
 //
-//	The input parameter 'allowRepetitions' is a boolean value which will determine whether the
-//	calculation results will allow repetitions or not. The formula for the calculation of combinations
-//	will therefore vary depending on whether repetitions are allowed. 'allowRepetitions' == false signals
-//	unordered sampling WITHOUT replacement. 'allowRepetitions' == true signals unordered sampling WITH
+//	The input parameter 'allowRepetitions' is a boolean value which
+//	will determine whether the calculation results will allow
+//	repetitions or not. The formula for the calculation of
+//	combinations will therefore vary depending on whether repetitions
+//	are allowed.
+//
+//	'allowRepetitions' == false signals unordered sampling WITHOUT
 //	replacement.
 //
-//	The result of this combination calculation is returned as a type 'BigIntNum'.
+//	'allowRepetitions' == true signals unordered sampling WITH
+//	replacement.
 //
-//	In the following combination formulas, n= 'numOfItems'  and r = 'numOfItemsChosen'. The actual
-//	formula applied depends on whether input parameter 'allowRepetitions' is 'true' or 'false'.
+//	The result of this combination calculation is returned as a type
+//	'BigIntNum'.
 //
-//	====================================================================
-//		'allowRepetitions' = false
-//	====================================================================
+//	In the following combination formulas, n= 'numOfItems' and
+//	r = 'numOfItemsChosen'. The actual formula applied depends on
+//	whether input parameter 'allowRepetitions' is 'true' or 'false'.
+//
+//	========================================================================
+//
+//	          'allowRepetitions' = false
+//
+//	========================================================================
 //
 //	                   n!
 //	      nCr  =  -----------
 //	               (n-r)! r!
 //
-//	--------------------------------------------------
 //
-//	Where n is the number of things to choose from,
-//	and we choose r of them, order does NOT matter
-//	and repetition is NOT allowed.
+//	     Where n is the number of things to choose from,
+//	     and we choose r of them, order does NOT matter
+//	     and repetition is NOT allowed.
 //
 //	This version of the combinations calculation assumes NO REPETITIONS!
 //	    (a.k.a. as unordered sampling WITHOUT replacement)
 //
-//	When 'allowRepetitions' = false, 'numOfItems' and 'numOfItemsChosen' must both
-//	be positive integer numbers. In addition, 'numOfItems' MUST be greater than or
-//	equal to 'numOfItemsChosen'.
+//	When 'allowRepetitions' = false, 'numOfItems' and 'numOfItemsChosen'
+//	must both be positive integer numbers. In addition, 'numOfItems'
+//	MUST be greater than or equal to 'numOfItemsChosen'.
 //
-//	====================================================================
-//	        allowRepetitions' = true
-//	====================================================================
+//	========================================================================
+//
+//	          'allowRepetitions' = true
+//
+//	========================================================================
 //
 //
 //	                   (r + n - 1)!
 //	        nCr  =  -------------------
 //	                    r! (n-1)!
 //
-//	Where n is the number of things to choose from,
-//	and we choose r of them, order does NOT matter
-//	and repetition IS NOT allowed.
+//	     Where n is the number of things to choose from,
+//	     and we choose r of them, order does NOT matter
+//	     and repetition IS NOT allowed.
 //
 //	This version of the combinations calculation assumes REPETITIONS ARE
 //	ALLOWED!
 //	      (a.k.a. as unordered sampling WITH replacement)
 //
-//	When 'allowRepetitions' = true, 'numOfItems' and 'numOfItemsChosen' must both
-//	be positive integer numbers. 'numOfItems' can be greater than, equal to or less
-//	than 'numOfItemsChosen'.
+//	When 'allowRepetitions' = true, 'numOfItems' and 'numOfItemsChosen'
+//	must both be positive integer numbers. 'numOfItems' can be greater
+//	than, equal to or less than 'numOfItemsChosen'.
 func (prob Probability) CombinationsNumberStr(
 	numOfItems, numOfItemsChosen string, allowRepetitions bool) (BigIntNum, error) {
 
@@ -2459,29 +2896,39 @@ func (prob Probability) CombinationsNumberStr(
 	}
 
 	if numOfItems == "" {
+
 		return BigIntNum{},
-			fmt.Errorf("%v\n"+
-				"Error: Input parameter 'numOfItems' is an EMPTY string!\n",
-				ePrefix)
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "",
+				ErrContext: "",
+				ErrMessage: "Error: Input parameter 'numOfItems' is an EMPTY string!",
+			}
 	}
 
 	if numOfItemsChosen == "" {
+
 		return BigIntNum{},
-			fmt.Errorf("%v\n"+
-				"Error: Input parameter 'numOfItemsChosen' is an EMPTY string!\n",
-				ePrefix)
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "",
+				ErrContext: "",
+				ErrMessage: "Error: Input parameter 'numOfItemsChosen' is an EMPTY string!",
+			}
 	}
 
 	nBigIntNum, err := new(BigIntNum).NewNumStr(numOfItems)
 
 	if err != nil {
+
 		return BigIntNum{},
-			fmt.Errorf("%v\n"+
-				"Error returned by:\n"+
-				"new(BigIntNum).NewNumStr(numOfItems).\n"+
-				"Error='%v'\n",
-				ePrefix,
-				err.Error())
+			&FuncReturnError{
+				ErrPrefix: ePrefix.String(),
+				ReturnFunc: "nBigIntNum, err := new(BigIntNum).\n" +
+					"  NewNumStr(numOfItems)",
+				ErrContext: fmt.Sprintf("  numOfItems= '%v'", numOfItems),
+				ErrMessage: err.Error(),
+			}
 	}
 
 	nBigIntNumIsZero, err := nBigIntNum.IsZero()
@@ -2497,15 +2944,20 @@ func (prob Probability) CombinationsNumberStr(
 	}
 
 	if nBigIntNumIsZero {
+
 		return BigIntNum{},
-			fmt.Errorf("%v\n"+
-				"Error: Input parameter 'numOfItems' is ZERO!\n",
-				ePrefix)
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "",
+				ErrContext: "",
+				ErrMessage: "Error: Input parameter 'numOfItems' is ZERO!",
+			}
 	}
 
 	nBigIntNumSignValue, err := nBigIntNum.GetSign()
 
 	if err != nil {
+
 		return BigIntNum{},
 			&FuncReturnError{
 				ErrPrefix:  ePrefix.String(),
@@ -2516,10 +2968,14 @@ func (prob Probability) CombinationsNumberStr(
 	}
 
 	if nBigIntNumSignValue == -1 {
+
 		return BigIntNum{},
-			fmt.Errorf("%v\n"+
-				"Error: Input parameter 'numOfItems' is LESS THAN ZERO!\n",
-				ePrefix)
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "",
+				ErrContext: "",
+				ErrMessage: "Error: Input parameter 'numOfItems' is LESS THAN ZERO!",
+			}
 	}
 
 	nBigIntNumPrecisionUint, err := nBigIntNum.GetPrecisionUint()
@@ -2536,26 +2992,33 @@ func (prob Probability) CombinationsNumberStr(
 	}
 
 	if nBigIntNumPrecisionUint > 0 {
+
 		return BigIntNum{},
-			fmt.Errorf("%v\n"+
-				"Error: Input parameter 'numOfItems' is NOT an Integer!\n",
-				ePrefix)
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "",
+				ErrContext: "",
+				ErrMessage: "Error: Input parameter 'numOfItems' is NOT an Integer!",
+			}
 	}
 
 	rBigIntNum, err := new(BigIntNum).NewNumStr(numOfItemsChosen)
 
 	if err != nil {
 		return BigIntNum{},
-			fmt.Errorf("%v\n"+
-				"Error returned by BigIntNum{}.NewNumStr(numOfItemsChosen).\n"+
-				"Error='%v' ",
-				ePrefix,
-				err.Error())
+			&FuncReturnError{
+				ErrPrefix: ePrefix.String(),
+				ReturnFunc: "rBigIntNum, err := new(BigIntNum).\n" +
+					"  NewNumStr(numOfItemsChosen)",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
 	}
 
 	rBigIntNumIsZero, err := rBigIntNum.IsZero()
 
 	if err != nil {
+
 		return BigIntNum{},
 			&FuncReturnError{
 				ErrPrefix:  ePrefix.String(),
@@ -2566,10 +3029,14 @@ func (prob Probability) CombinationsNumberStr(
 	}
 
 	if rBigIntNumIsZero {
+
 		return BigIntNum{},
-			fmt.Errorf("%v\n"+
-				"Error: Input parameter 'numOfItemsChosen' is ZERO!\n",
-				ePrefix)
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "",
+				ErrContext: "",
+				ErrMessage: "Error: Input parameter 'numOfItemsChosen' is ZERO!",
+			}
 	}
 
 	rBigIntNumSignValue, err := rBigIntNum.GetSign()
@@ -2585,15 +3052,20 @@ func (prob Probability) CombinationsNumberStr(
 	}
 
 	if rBigIntNumSignValue == -1 {
+
 		return BigIntNum{},
-			fmt.Errorf("%v\n"+
-				"Error: Input parameter 'numOfItemsChosen' is LESS THAN ZERO!\n",
-				ePrefix)
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "",
+				ErrContext: "",
+				ErrMessage: "Error: Input parameter 'numOfItemsChosen' is LESS THAN ZERO!",
+			}
 	}
 
 	rBigIntNumPrecisionUint, err := rBigIntNum.GetPrecisionUint()
 
 	if err != nil {
+
 		return BigIntNum{},
 			&FuncReturnError{
 				ErrPrefix:  ePrefix.String(),
@@ -2604,15 +3076,20 @@ func (prob Probability) CombinationsNumberStr(
 	}
 
 	if rBigIntNumPrecisionUint > 0 {
+
 		return BigIntNum{},
-			fmt.Errorf("%v\n"+
-				"Error: Input parameter 'numOfItemsChosen' is NOT an Integer!\n",
-				ePrefix)
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "",
+				ErrContext: "",
+				ErrMessage: "Error: Input parameter 'numOfItemsChosen' is NOT an Integer!",
+			}
 	}
 
 	nBigIntNumVsRBigIntNumCmp, err := nBigIntNum.Cmp(rBigIntNum)
 
 	if err != nil {
+
 		return BigIntNum{},
 			&FuncReturnError{
 				ErrPrefix:  ePrefix.String(),
@@ -2623,16 +3100,19 @@ func (prob Probability) CombinationsNumberStr(
 	}
 
 	if !allowRepetitions && nBigIntNumVsRBigIntNumCmp < 0 {
+
 		return BigIntNum{},
-			fmt.Errorf("%v\n"+
-				"Error: 'numOfItems' is LESS THAN 'numOfItemsChosen'!\n"+
-				"numOfItems='%v' numOfItemsChosen='%v' \n",
-				ePrefix,
-				numOfItems,
-				numOfItemsChosen)
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "",
+				ErrContext: fmt.Sprintf("numOfItems='%v' numOfItemsChosen='%v'",
+					numOfItems, numOfItemsChosen),
+				ErrMessage: "Error: Input parameter 'numOfItemsChosen' is NOT an Integer!",
+			}
 	}
 
 	if !allowRepetitions {
+
 		return Probability{}.CombinationsNoRepsBigInt(nBigIntNum.bigInt, rBigIntNum.bigInt)
 	}
 
@@ -2641,141 +3121,17 @@ func (prob Probability) CombinationsNumberStr(
 
 // CombinationsUint
 //
-//	Calculates the number of combinations associated with a collection of
-//	'numOfItems' from which one chooses 'numOfItemsChosen'. Order IS NOT significant. Input parameters
-//	'numOfItems' and 'numOfItemsChosen' are passed as type 'uint'. Both input parameters must
-//	be non-zero, integer numbers.
-//
-//	The input parameter 'allowRepetitions' is a boolean value which will determine whether the
-//	calculation results will allow repetitions or not. The formula for the calculation of combinations
-//	will therefore vary depending on whether repetitions are allowed. 'allowRepetitions' == false signals
-//	unordered sampling WITHOUT replacement. 'allowRepetitions' == true signals unordered sampling WITH
-//	replacement.
-//
-//	The result of this combination calculation is returned as a type 'BigIntNum'.
-//
-//	In the following combination formulas, n= 'numOfItems'  and r = 'numOfItemsChosen'. The actual
-//	formula applied depends on whether input parameter 'allowRepetitions' is 'true' or 'false'.
-//
-//	====================================================================
-//	          'allowRepetitions' = false
-//	====================================================================
-//
-//	                n!
-//	    nCr  =  -----------
-//	             (n-r)! r!
-//
-//	--------------------------------------------------
-//
-//	Where n is the number of things to choose from,
-//	and we choose r of them, order does NOT matter
-//	and repetition is NOT allowed.
-//
-//	This version of the combinations calculation assumes NO REPETITIONS!
-//	       (a.k.a. as unordered sampling WITHOUT replacement)
-//
-//	When 'allowRepetitions' = false, 'numOfItems' and 'numOfItemsChosen' must both
-//	be integer numbers. In addition, 'numOfItems' MUST be greater than or
-//	equal to 'numOfItemsChosen'.
-//
-//	====================================================================
-//		        'allowRepetitions' = true
-//	====================================================================
-//
-//	                (r + n - 1)!
-//	      nCr  =  -------------------
-//	                 r! (n-1)!
-//
-//	Where n is the number of things to choose from,
-//	and we choose r of them, order does NOT matter
-//	and repetition IS NOT allowed.
-//
-//	This version of the combinations calculation assumes REPETITIONS
-//	ARE ALLOWED!
-//	       (a.k.a. as unordered sampling WITH replacement)
-//
-//	When 'allowRepetitions' = true, 'numOfItems' and 'numOfItemsChosen' must both
-//	be integer numbers. 'numOfItems' can be greater than, equal to or less
-//	than 'numOfItemsChosen'.
-func (prob Probability) CombinationsUint(
-	numOfItems, numOfItemsChosen uint, allowRepetitions bool) (BigIntNum, error) {
-
-	ePrefix := "Probability.CombinationsUint() "
-
-	if numOfItems == 0 {
-		return BigIntNum{},
-			fmt.Errorf("%v\n"+
-				"Error: Input parameter 'numOfItems' is ZERO!\n",
-				ePrefix)
-	}
-
-	if numOfItemsChosen == 0 {
-		return BigIntNum{},
-			fmt.Errorf("%v\n"+
-				"Error: Input parameter 'numOfItemsChosen' is ZERO!\n",
-				ePrefix)
-	}
-
-	n := big.NewInt(0).SetUint64(uint64(numOfItems))
-
-	r := big.NewInt(0).SetUint64(uint64(numOfItemsChosen))
-
-	if !allowRepetitions && r.Cmp(n) == 1 {
-		return BigIntNum{},
-			fmt.Errorf("%v\n"+
-				"Error: 'numOfItemsChosen' is GREATER THAN 'numOfItems'.\n"+
-				"numOfItems='%v' numOfItemsChosen='%v' \n",
-				ePrefix,
-				numOfItems,
-				numOfItemsChosen)
-	}
-
-	var result BigIntNum
-	var err error
-
-	if !allowRepetitions {
-
-		result, err = Probability{}.CombinationsNoRepsBigInt(n, r)
-
-		if err != nil {
-			return BigIntNum{},
-				fmt.Errorf("%v\n"+
-					"Error returned by Probability{}.CombinationsNoRepsBigInt(numOfItems, numOfItemsChosen).\n"+
-					"Error='%v' \n",
-					ePrefix,
-					err.Error())
-		}
-
-	} else {
-
-		result, err = Probability{}.CombinationsWithRepsBigInt(n, r)
-
-		if err != nil {
-			return BigIntNum{},
-				fmt.Errorf("%v\n"+
-					"Error returned by Probability{}.CombinationsWithRepsBigInt(numOfItems, numOfItemsChosen).\n"+
-					"Error='%v' \n",
-					ePrefix,
-					err.Error())
-		}
-
-	}
-
-	return result, nil
-}
-
-// CombinationsUint32
-//
 //	Calculates the number of combinations associated with a collection
-//	of 'numOfItems' from which one chooses 'numOfItemsChosen'. Order IS
-//	NOT significant. Input parameters 'numOfItems' and 'numOfItemsChosen'
-//	are passed as type 'uint32'. Both input parameters must be non-zero,
-//	integer numbers.
+//	of 'numOfItems' from which one chooses 'numOfItemsChosen'. Order
+//	IS NOT significant. Input parameters 'numOfItems' and
+//	'numOfItemsChosen' are passed as type 'uint'. Both input
+//	parameters must be non-zero, integer numbers.
 //
-//	The input parameter 'allowRepetitions' is a boolean value which will
-//	determine whether the calculation results will allow repetitions or
-//	not. The formula for the calculation of combinations will therefore
-//	vary depending on whether repetitions are allowed.
+//	The input parameter 'allowRepetitions' is a boolean value which
+//	will determine whether the calculation results will allow
+//	repetitions or not. The formula for the calculation of
+//	combinations will therefore vary depending on whether repetitions
+//	are allowed.
 //
 //	'allowRepetitions' == false signals unordered sampling WITHOUT
 //	replacement.
@@ -2790,46 +3146,211 @@ func (prob Probability) CombinationsUint(
 //	r = 'numOfItemsChosen'. The actual formula applied depends on
 //	whether input parameter 'allowRepetitions' is 'true' or 'false'.
 //
-//	====================================================================
+//	========================================================================
+//
 //	          'allowRepetitions' = false
-//	====================================================================
+//
+//	========================================================================
+//
+//	                n!
+//	    nCr  =  -----------
+//	             (n-r)! r!
+//
+//
+//	     Where n is the number of things to choose from,
+//	     and we choose r of them, order does NOT matter
+//	     and repetition is NOT allowed.
+//
+//	This version of the combinations calculation assumes NO REPETITIONS!
+//	       (a.k.a. as unordered sampling WITHOUT replacement)
+//
+//	When 'allowRepetitions' = false, 'numOfItems' and 'numOfItemsChosen'
+//	must both be integer numbers. In addition, 'numOfItems' MUST be
+//	greater than or	equal to 'numOfItemsChosen'.
+//
+//	========================================================================
+//
+//	          'allowRepetitions' = true
+//
+//	========================================================================
+//
+//	                (r + n - 1)!
+//	      nCr  =  -------------------
+//	                 r! (n-1)!
+//
+//	     Where n is the number of things to choose from,
+//	     and we choose r of them, order does NOT matter
+//	     and repetition IS NOT allowed.
+//
+//	This version of the combinations calculation assumes REPETITIONS
+//	ARE ALLOWED!
+//	       (a.k.a. as unordered sampling WITH replacement)
+//
+//	When 'allowRepetitions' = true, 'numOfItems' and 'numOfItemsChosen'
+//	must both be integer numbers. 'numOfItems' can be greater than,
+//	equal to or less than 'numOfItemsChosen'.
+func (prob Probability) CombinationsUint(
+	numOfItems, numOfItemsChosen uint, allowRepetitions bool) (BigIntNum, error) {
+
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
+
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"Probability.CombinationsUint",
+		"")
+
+	if err != nil {
+		return BigIntNum{}, err
+	}
+
+	if numOfItems == 0 {
+
+		return BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "",
+				ErrContext: "",
+				ErrMessage: "Error: Input parameter 'numOfItems' is ZERO!",
+			}
+	}
+
+	if numOfItemsChosen == 0 {
+
+		return BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "",
+				ErrContext: "",
+				ErrMessage: "Error: Input parameter 'numOfItemsChosen' is ZERO!",
+			}
+	}
+
+	n := big.NewInt(0).SetUint64(uint64(numOfItems))
+
+	r := big.NewInt(0).SetUint64(uint64(numOfItemsChosen))
+
+	if !allowRepetitions && r.Cmp(n) == 1 {
+
+		return BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "",
+				ErrContext: fmt.Sprintf("numOfItems= '%v'\nnumOfItemsChosen= '%v'",
+					numOfItems, numOfItemsChosen),
+				ErrMessage: "Error: 'numOfItemsChosen' is GREATER THAN 'numOfItems'.",
+			}
+	}
+
+	var result BigIntNum
+
+	if !allowRepetitions {
+
+		result, err = Probability{}.CombinationsNoRepsBigInt(n, r)
+
+		if err != nil {
+
+			return BigIntNum{},
+				&FuncReturnError{
+					ErrPrefix: ePrefix.String(),
+					ReturnFunc: "result, err = Probability{}.\n" +
+						"  CombinationsNoRepsBigInt(n, r)",
+					ErrContext: "",
+					ErrMessage: err.Error(),
+				}
+		}
+
+	} else {
+
+		result, err = Probability{}.CombinationsWithRepsBigInt(n, r)
+
+		if err != nil {
+
+			return BigIntNum{},
+				&FuncReturnError{
+					ErrPrefix: ePrefix.String(),
+					ReturnFunc: "result, err = Probability{}.\n" +
+						"  CombinationsWithRepsBigInt(n, r)",
+					ErrContext: "",
+					ErrMessage: err.Error(),
+				}
+		}
+	}
+
+	return result, nil
+}
+
+// CombinationsUint32
+//
+//	Calculates the number of combinations associated with a collection
+//	of 'numOfItems' from which one chooses 'numOfItemsChosen'. Order
+//	IS NOT significant. Input parameters 'numOfItems' and
+//	'numOfItemsChosen' are passed as type 'uint32'. Both input
+//	parameters must be non-zero, integer numbers.
+//
+//	The input parameter 'allowRepetitions' is a boolean value which
+//	will determine whether the calculation results will allow
+//	repetitions or not. The formula for the calculation of
+//	combinations will therefore vary depending on whether
+//	repetitions are allowed.
+//
+//	'allowRepetitions' == false signals unordered sampling WITHOUT
+//	replacement.
+//
+//	'allowRepetitions' == true signals unordered sampling WITH
+//	replacement.
+//
+//	The result of this combination calculation is returned as a type
+//	'BigIntNum'.
+//
+//	In the following combination formulas, n= 'numOfItems' and
+//	r = 'numOfItemsChosen'. The actual formula applied depends on
+//	whether input parameter 'allowRepetitions' is 'true' or 'false'.
+//
+//	========================================================================
+//
+//	          'allowRepetitions' = false
+//
+//	========================================================================
 //
 //	                     n!
 //	        nCr  =  -----------
 //	                 (n-r)! r!
 //
-//	--------------------------------------------------
 //
-//	Where n is the number of things to choose from,
-//	and we choose r of them, order does NOT matter
-//	and repetition is NOT allowed.
+//	     Where n is the number of things to choose from,
+//	     and we choose r of them, order does NOT matter
+//	     and repetition is NOT allowed.
 //
 //	This version of the combinations calculation assumes NO REPETITIONS!
 //	        (a.k.a. as unordered sampling WITHOUT replacement)
 //
 //	When 'allowRepetitions' = false, 'numOfItems' and 'numOfItemsChosen'
-//	must both be integer numbers. In addition, 'numOfItems' MUST be greater
-//	than or equal to 'numOfItemsChosen'.
+//	must both be integer numbers. In addition, 'numOfItems' MUST be
+//	greater than or equal to 'numOfItemsChosen'.
 //
-//	====================================================================
+//	========================================================================
+//
 //	          'allowRepetitions' = true
-//	====================================================================
+//
+//	========================================================================
 //
 //	                     (r + n - 1)!
 //	          nCr  =  -------------------
 //	                      r! (n-1)!
 //
-//	Where n is the number of things to choose from,
-//	and we choose r of them, order does NOT matter
-//	and repetition IS NOT allowed.
+//	     Where n is the number of things to choose from,
+//	     and we choose r of them, order does NOT matter
+//	     and repetition IS NOT allowed.
 //
 //	This version of the combinations calculation assumes REPETITIONS
 //	ARE ALLOWED!
 //	          (a.k.a. as unordered sampling WITH replacement)
 //
-//	When 'allowRepetitions' = true, 'numOfItems' and 'numOfItemsChosen'
-//	must both be integer numbers. 'numOfItems' can be greater than, equal
-//	to or less than 'numOfItemsChosen'.
+//	When 'allowRepetitions' = true, 'numOfItems' and
+//	'numOfItemsChosen' must both be integer numbers. 'numOfItems' can
+//	be greater than, equal to or less than 'numOfItemsChosen'.
 func (prob Probability) CombinationsUint32(
 	numOfItems, numOfItemsChosen uint32, allowRepetitions bool) (BigIntNum, error) {
 
@@ -2847,17 +3368,25 @@ func (prob Probability) CombinationsUint32(
 	}
 
 	if numOfItems == 0 {
+
 		return BigIntNum{},
-			fmt.Errorf("%v\n"+
-				"Error: Input parameter 'numOfItems' is ZERO!\n",
-				ePrefix)
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "",
+				ErrContext: "",
+				ErrMessage: "Error: Input parameter 'numOfItems' is ZERO!",
+			}
 	}
 
 	if numOfItemsChosen == 0 {
+
 		return BigIntNum{},
-			fmt.Errorf("%v\n"+
-				"Error: Input parameter 'numOfItemsChosen' is ZERO!\n",
-				ePrefix)
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "",
+				ErrContext: "",
+				ErrMessage: "Error: Input parameter 'numOfItemsChosen' is ZERO!",
+			}
 	}
 
 	n := big.NewInt(0).SetUint64(uint64(numOfItems))
@@ -2865,13 +3394,15 @@ func (prob Probability) CombinationsUint32(
 	r := big.NewInt(0).SetUint64(uint64(numOfItemsChosen))
 
 	if !allowRepetitions && r.Cmp(n) == 1 {
+
 		return BigIntNum{},
-			fmt.Errorf("%v\n"+
-				"Error: 'numOfItemsChosen' is GREATER THAN 'numOfItems'.\n"+
-				"numOfItems='%v'\nnumOfItemsChosen='%v' \n",
-				ePrefix,
-				numOfItems,
-				numOfItemsChosen)
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "",
+				ErrContext: fmt.Sprintf("numOfItems= '%v'\nnumOfItemsChosen= '%v'",
+					numOfItems, numOfItemsChosen),
+				ErrMessage: "Error: 'numOfItemsChosen' is GREATER THAN 'numOfItems'.",
+			}
 	}
 
 	var result BigIntNum
@@ -2881,12 +3412,15 @@ func (prob Probability) CombinationsUint32(
 		result, err = Probability{}.CombinationsNoRepsBigInt(n, r)
 
 		if err != nil {
+
 			return BigIntNum{},
-				fmt.Errorf("%v\n"+
-					"Error returned by Probability{}.CombinationsNoRepsBigInt(numOfItems, numOfItemsChosen).\n"+
-					"Error='%v' \n",
-					ePrefix,
-					err.Error())
+				&FuncReturnError{
+					ErrPrefix: ePrefix.String(),
+					ReturnFunc: "result, err = Probability{}.\n" +
+						"  CombinationsNoRepsBigInt(n, r)",
+					ErrContext: "",
+					ErrMessage: err.Error(),
+				}
 		}
 
 	} else {
@@ -2894,14 +3428,16 @@ func (prob Probability) CombinationsUint32(
 		result, err = Probability{}.CombinationsWithRepsBigInt(n, r)
 
 		if err != nil {
-			return BigIntNum{},
-				fmt.Errorf("%v\n"+
-					"Error returned by Probability{}.CombinationsWithRepsBigInt(numOfItems, numOfItemsChosen).\n"+
-					"Error='%v' \n",
-					ePrefix,
-					err.Error())
-		}
 
+			return BigIntNum{},
+				&FuncReturnError{
+					ErrPrefix: ePrefix.String(),
+					ReturnFunc: "result, err = Probability{}.\n" +
+						"  CombinationsWithRepsBigInt(n, r)",
+					ErrContext: "",
+					ErrMessage: err.Error(),
+				}
+		}
 	}
 
 	return result, nil
@@ -2910,15 +3446,16 @@ func (prob Probability) CombinationsUint32(
 // CombinationsUint64
 //
 //	Calculates the number of combinations associated with a collection
-//	of 'numOfItems' from which one chooses 'numOfItemsChosen'. Order IS
-//	NOT significant. Input parameters 'numOfItems' and 'numOfItemsChosen'
-//	are passed as type 'uint64'. Both input parameters must be non-zero,
-//	integer numbers.
+//	of 'numOfItems' from which one chooses 'numOfItemsChosen'. Order
+//	IS NOT significant. Input parameters 'numOfItems' and
+//	'numOfItemsChosen' are passed as type 'uint64'. Both input
+//	parameters must be non-zero, integer numbers.
 //
-//	The input parameter 'allowRepetitions' is a boolean value which will
-//	determine whether the calculation results will allow repetitions or
-//	not. The formula for the calculation of combinations will therefore
-//	vary depending on whether repetitions are allowed.
+//	The input parameter 'allowRepetitions' is a boolean value which
+//	will determine whether the calculation results will allow
+//	repetitions or not. The formula for the calculation of
+//	combinations will therefore vary depending on whether repetitions
+//	are allowed.
 //
 //	'allowRepetitions' == false signals	unordered sampling WITHOUT
 //	replacement.
@@ -2930,49 +3467,52 @@ func (prob Probability) CombinationsUint32(
 //	'BigIntNum'.
 //
 //	In the following combination formulas, n= 'numOfItems' and
-//	r = 'numOfItemsChosen'. The actual formula applied depends on whether
-//	input parameter 'allowRepetitions' is 'true' or 'false'.
+//	r = 'numOfItemsChosen'. The actual formula applied depends on
+//	whether input parameter 'allowRepetitions' is 'true' or 'false'.
 //
-//	====================================================================
-//	       'allowRepetitions' = false
-//	====================================================================
+//	========================================================================
+//
+//	          'allowRepetitions' = false
+//
+//	========================================================================
 //
 //	                       n!
 //	          nCr  =  -----------
 //	                  (n-r)! r!
 //
-//	--------------------------------------------------
 //
-//	Where n is the number of things to choose from,
-//	and we choose r of them, order does NOT matter
-//	and repetition is NOT allowed.
+//	     Where n is the number of things to choose from,
+//	     and we choose r of them, order does NOT matter
+//	     and repetition is NOT allowed.
 //
 //	This version of the combinations calculation assumes NO REPETITIONS!
 //	       (a.k.a. as unordered sampling WITHOUT replacement)
 //
-//	When 'allowRepetitions' = false, 'numOfItems' and 'numOfItemsChosen' must both
-//	be integer numbers. In addition, 'numOfItems' MUST be greater than or
-//	equal to 'numOfItemsChosen'.
+//	When 'allowRepetitions' = false, 'numOfItems' and 'numOfItemsChosen'
+//	must both be integer numbers. In addition, 'numOfItems' MUST be
+//	greater than or equal to 'numOfItemsChosen'.
 //
-//	====================================================================
-//	       'allowRepetitions' = true
-//	====================================================================
+//	========================================================================
+//
+//	          'allowRepetitions' = true
+//
+//	========================================================================
 //
 //	                    (r + n - 1)!
 //	         nCr  =  -------------------
 //	                     r! (n-1)!
 //
-//	Where n is the number of things to choose from,
-//	and we choose r of them, order does NOT matter
-//	and repetition IS NOT allowed.
+//	     Where n is the number of things to choose from,
+//	     and we choose r of them, order does NOT matter
+//	     and repetition IS NOT allowed.
 //
 //	This version of the combinations calculation assumes REPETITIONS
 //	ARE ALLOWED!
 //	       (a.k.a. as unordered sampling WITH replacement)
 //
-//	When 'allowRepetitions' = true, 'numOfItems' and 'numOfItemsChosen'
-//	must both be integer numbers. 'numOfItems' can be greater than, equal
-//	to or less than 'numOfItemsChosen'.
+//	When 'allowRepetitions' = true, 'numOfItems' and
+//	'numOfItemsChosen' must both be integer numbers. 'numOfItems' can
+//	be greater than, equal to or less than 'numOfItemsChosen'.
 func (prob Probability) CombinationsUint64(
 	numOfItems, numOfItemsChosen uint64, allowRepetitions bool) (BigIntNum, error) {
 
@@ -2990,17 +3530,25 @@ func (prob Probability) CombinationsUint64(
 	}
 
 	if numOfItems == 0 {
+
 		return BigIntNum{},
-			fmt.Errorf("%v\n"+
-				"Error: Input parameter 'numOfItems' is ZERO!\n",
-				ePrefix)
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "",
+				ErrContext: "",
+				ErrMessage: "Error: Input parameter 'numOfItems' is ZERO!",
+			}
 	}
 
 	if numOfItemsChosen == 0 {
+
 		return BigIntNum{},
-			fmt.Errorf("%v\n"+
-				"Error: Input parameter 'numOfItemsChosen' is ZERO!\n",
-				ePrefix)
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "",
+				ErrContext: "",
+				ErrMessage: "Error: Input parameter 'numOfItemsChosen' is ZERO!",
+			}
 	}
 
 	n := big.NewInt(0).SetUint64(numOfItems)
@@ -3008,13 +3556,15 @@ func (prob Probability) CombinationsUint64(
 	r := big.NewInt(0).SetUint64(numOfItemsChosen)
 
 	if !allowRepetitions && r.Cmp(n) == 1 {
+
 		return BigIntNum{},
-			fmt.Errorf("%v\n"+
-				"Error: 'numOfItemsChosen' is GREATER THAN 'numOfItems'.\n"+
-				"numOfItems='%v' numOfItemsChosen='%v' \n",
-				ePrefix,
-				numOfItems,
-				numOfItemsChosen)
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "",
+				ErrContext: fmt.Sprintf("numOfItems= '%v'\nnumOfItemsChosen= '%v'",
+					numOfItems, numOfItemsChosen),
+				ErrMessage: "Error: 'numOfItemsChosen' is GREATER THAN 'numOfItems'.",
+			}
 	}
 
 	var result BigIntNum
@@ -3024,12 +3574,15 @@ func (prob Probability) CombinationsUint64(
 		result, err = Probability{}.CombinationsNoRepsBigInt(n, r)
 
 		if err != nil {
+
 			return BigIntNum{},
-				fmt.Errorf("%v\n"+
-					"Error returned by Probability{}.CombinationsNoRepsBigInt(numOfItems, numOfItemsChosen). "+
-					"Error='%v' \n",
-					ePrefix,
-					err.Error())
+				&FuncReturnError{
+					ErrPrefix: ePrefix.String(),
+					ReturnFunc: "result, err = Probability{}.\n" +
+						"  CombinationsNoRepsBigInt(n, r)",
+					ErrContext: "",
+					ErrMessage: err.Error(),
+				}
 		}
 
 	} else {
@@ -3037,14 +3590,16 @@ func (prob Probability) CombinationsUint64(
 		result, err = Probability{}.CombinationsWithRepsBigInt(n, r)
 
 		if err != nil {
-			return BigIntNum{},
-				fmt.Errorf("%v\n"+
-					"Error returned by Probability{}.CombinationsWithRepsBigInt(numOfItems, numOfItemsChosen).\n"+
-					"Error='%v' \n",
-					ePrefix,
-					err.Error())
-		}
 
+			return BigIntNum{},
+				&FuncReturnError{
+					ErrPrefix: ePrefix.String(),
+					ReturnFunc: "result, err = Probability{}.\n" +
+						"  CombinationsWithRepsBigInt(n, r)",
+					ErrContext: "",
+					ErrMessage: err.Error(),
+				}
+		}
 	}
 
 	return result, nil
