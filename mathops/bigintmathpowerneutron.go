@@ -1,14 +1,14 @@
 package mathops
 
 import (
-  "fmt"
-  ePref "github.com/MikeAustin71/errpref"
-  "math/big"
-  "sync"
+	"fmt"
+	ePref "github.com/MikeAustin71/errpref"
+	"math/big"
+	"sync"
 )
 
 type bigIntMathPowerNeutron struct {
-  lock sync.Mutex
+	lock sync.Mutex
 }
 
 // bigIntNumRaiseToPositiveIntegerPower
@@ -36,186 +36,186 @@ type bigIntMathPowerNeutron struct {
 //	   -2.9      4           70.7281
 //	   -2        3.8        ERROR - Exponent is Fraction
 func (bIMathPwrNeutron *bigIntMathPowerNeutron) bigIntNumRaiseToPositiveIntegerPower(
-  base *BigIntNum,
-  validateBase bool,
-  exponent *BigIntNum,
-  validateExponent bool,
-  errPrefDto *ePref.ErrPrefixDto) (BigIntNum, error) {
+	base *BigIntNum,
+	validateBase bool,
+	exponent *BigIntNum,
+	validateExponent bool,
+	errPrefDto *ePref.ErrPrefixDto) (BigIntNum, error) {
 
-  bIMathPwrNeutron.lock.Lock()
+	bIMathPwrNeutron.lock.Lock()
 
-  defer bIMathPwrNeutron.lock.Unlock()
+	defer bIMathPwrNeutron.lock.Unlock()
 
-  var ePrefix *ePref.ErrPrefixDto
+	var ePrefix *ePref.ErrPrefixDto
 
-  var err error
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
-    errPrefDto,
-    "bigIntMathPowerNeutron.bigIntNumRaiseToPositiveIntegerPower",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
+		errPrefDto,
+		"bigIntMathPowerNeutron.bigIntNumRaiseToPositiveIntegerPower",
+		"")
 
-  if err != nil {
-    return BigIntNum{}, err
-  }
+	if err != nil {
+		return BigIntNum{}, err
+	}
 
-  if base == nil {
+	if base == nil {
 
-    return BigIntNum{},
-      &InputPtrNilError{
-        ErrPrefix:     ePrefix.String(),
-        ErrContext:    "",
-        ParameterName: "'base'",
-      }
-  }
+		return BigIntNum{},
+			&InputPtrNilError{
+				ErrPrefix:     ePrefix.String(),
+				ErrContext:    "",
+				ParameterName: "'base'",
+			}
+	}
 
-  if exponent == nil {
+	if exponent == nil {
 
-    return BigIntNum{},
-      &InputPtrNilError{
-        ErrPrefix:     ePrefix.String(),
-        ErrContext:    "",
-        ParameterName: "'exponent'",
-      }
-  }
+		return BigIntNum{},
+			&InputPtrNilError{
+				ErrPrefix:     ePrefix.String(),
+				ErrContext:    "",
+				ParameterName: "'exponent'",
+			}
+	}
 
-  if validateBase {
+	if validateBase {
 
-    err = base.IsValid(ePrefix.XCpy("Validating 'base'").String())
+		err = base.IsValid(ePrefix.XCpy("Validating 'base'").String())
 
-    if err != nil {
+		if err != nil {
 
-      return BigIntNum{},
-        &FuncReturnError{
-          ErrPrefix: ePrefix.String(),
-          ReturnFunc: "err = base.IsValid(\n" +
-            "  ePrefix.XCpy(\"Validating 'base'\").String()",
-          ErrContext: "Error: Input parameter 'base' is INVALID!\n" +
-            "'base' FAILED validation tests.",
-          ErrMessage: err.Error(),
-        }
-    }
-  }
+			return BigIntNum{},
+				&FuncReturnError{
+					ErrPrefix: ePrefix.String(),
+					ReturnFunc: "err = base.IsValid(\n" +
+						"  ePrefix.XCpy(\"Validating 'base'\").String()",
+					ErrContext: "Error: Input parameter 'base' is INVALID!\n" +
+						"'base' FAILED validation tests.",
+					ErrMessage: err.Error(),
+				}
+		}
+	}
 
-  if validateExponent {
+	if validateExponent {
 
-    err = exponent.IsValid(ePrefix.XCpy("Validating 'exponent'").String())
+		err = exponent.IsValid(ePrefix.XCpy("Validating 'exponent'").String())
 
-    if err != nil {
+		if err != nil {
 
-      return BigIntNum{},
-        &FuncReturnError{
-          ErrPrefix: ePrefix.String(),
-          ReturnFunc: "err = exponent.IsValid(\n" +
-            "  ePrefix.XCpy(\"Validating 'exponent'\").String()",
-          ErrContext: "Error: Input parameter 'exponent' is INVALID!\n" +
-            "'exponent' FAILED validation tests.",
-          ErrMessage: err.Error(),
-        }
-    }
-  }
+			return BigIntNum{},
+				&FuncReturnError{
+					ErrPrefix: ePrefix.String(),
+					ReturnFunc: "err = exponent.IsValid(\n" +
+						"  ePrefix.XCpy(\"Validating 'exponent'\").String()",
+					ErrContext: "Error: Input parameter 'exponent' is INVALID!\n" +
+						"'exponent' FAILED validation tests.",
+					ErrMessage: err.Error(),
+				}
+		}
+	}
 
-  exponentNumStr, err := exponent.GetNumStr()
+	exponentNumStr, err := exponent.GetNumStr()
 
-  if err != nil {
+	if err != nil {
 
-    return BigIntNum{},
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "exponentNumStr, err := exponent.GetNumStr()",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-  }
+		return BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "exponentNumStr, err := exponent.GetNumStr()",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  exponentPrecisionUint, err := exponent.GetPrecisionUint()
+	exponentPrecisionUint, err := exponent.GetPrecisionUint()
 
-  if err != nil {
+	if err != nil {
 
-    return BigIntNum{},
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "exponentPredisionUint, err := exponent.GetPrecisionUint()",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-  }
+		return BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "exponentPredisionUint, err := exponent.GetPrecisionUint()",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  if exponentPrecisionUint > 0 {
+	if exponentPrecisionUint > 0 {
 
-    return BigIntNum{},
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "",
-        ErrContext: fmt.Sprintf("exponent= '%v'", exponentNumStr),
-        ErrMessage: "Error: Input parameter 'exponent' is INVALID!\n" +
-          "'exponent' is an fractional number.\n" +
-          "Only integer exponents can be processed by this method.",
-      }
-  }
+		return BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "",
+				ErrContext: fmt.Sprintf("exponent= '%v'", exponentNumStr),
+				ErrMessage: "Error: Input parameter 'exponent' is INVALID!\n" +
+					"'exponent' is an fractional number.\n" +
+					"Only integer exponents can be processed by this method.",
+			}
+	}
 
-  exponentSignValue, err := exponent.GetSign()
+	exponentSignValue, err := exponent.GetSign()
 
-  if err != nil {
+	if err != nil {
 
-    return BigIntNum{},
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "exponentSignValue, err = exponent.GetSign()",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-  }
+		return BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "exponentSignValue, err = exponent.GetSign()",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  if exponentSignValue < 0 {
+	if exponentSignValue < 0 {
 
-    return BigIntNum{},
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "",
-        ErrContext: fmt.Sprintf("exponent= '%v'", exponentNumStr),
-        ErrMessage: "Error: Input parameter 'exponent' is a negative number.\n" +
-          "Only Positive Exponents can be processed by this method!",
-      }
-  }
+		return BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "",
+				ErrContext: fmt.Sprintf("exponent= '%v'", exponentNumStr),
+				ErrMessage: "Error: Input parameter 'exponent' is a negative number.\n" +
+					"Only Positive Exponents can be processed by this method!",
+			}
+	}
 
-  bigIBasePrecision := big.NewInt(int64(exponentPrecisionUint))
+	bigIBasePrecision := big.NewInt(int64(exponentPrecisionUint))
 
-  bigINewPrecision := big.NewInt(0).Mul(bigIBasePrecision, exponent.bigInt)
+	bigINewPrecision := big.NewInt(0).Mul(bigIBasePrecision, exponent.bigInt)
 
-  newPrecision := uint(bigINewPrecision.Int64())
+	newPrecision := uint(bigINewPrecision.Int64())
 
-  result := big.NewInt(0).Exp(base.bigInt, exponent.bigInt, nil)
+	result := big.NewInt(0).Exp(base.bigInt, exponent.bigInt, nil)
 
-  bINumResult, err := new(BigIntNum).NewBigInt(result, newPrecision)
+	bINumResult, err := new(BigIntNum).NewBigInt(result, newPrecision)
 
-  if err != nil {
+	if err != nil {
 
-    return BigIntNum{},
-      &FuncReturnError{
-        ErrPrefix: ePrefix.String(),
-        ReturnFunc: "bINumResult, err := new(BigIntNum).\n" +
-          "  NewBigInt(result, newPrecision)",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-  }
+		return BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix: ePrefix.String(),
+				ReturnFunc: "bINumResult, err := new(BigIntNum).\n" +
+					"  NewBigInt(result, newPrecision)",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  err = bINumResult.IsValid(ePrefix.XCpy("Validating 'bINumResult'").String())
+	err = bINumResult.IsValid(ePrefix.XCpy("Validating 'bINumResult'").String())
 
-  if err != nil {
+	if err != nil {
 
-    return BigIntNum{},
-      &FuncReturnError{
-        ErrPrefix: ePrefix.String(),
-        ReturnFunc: "err = bINumResult.IsValid(\n" +
-          "  ePrefix.XCpy(\"Validating 'bINumResult'\").String()",
-        ErrContext: "Error: Final Calculation Result 'bINumResult' is INVALID!\n" +
-          "'bINumResult' FAILED validation tests.",
-        ErrMessage: err.Error(),
-      }
-  }
+		return BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix: ePrefix.String(),
+				ReturnFunc: "err = bINumResult.IsValid(\n" +
+					"  ePrefix.XCpy(\"Validating 'bINumResult'\").String()",
+				ErrContext: "Error: Final Calculation Result 'bINumResult' is INVALID!\n" +
+					"'bINumResult' FAILED validation tests.",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  return bINumResult, nil
+	return bINumResult, nil
 }
