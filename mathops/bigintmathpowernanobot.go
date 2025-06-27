@@ -100,7 +100,6 @@ func (bIMathPwrNanobot *bigIntMathPowerNanobot) bigIntToPositiveIntegerPower(
 
   result = big.NewInt(0)
   resultPrecision = big.NewInt(0)
-  err = nil
 
   var ePrefix *ePref.ErrPrefixDto
 
