@@ -72,6 +72,21 @@ type bigIntMathPowerMacrobot struct {
 //	  the decimal place in the result will be limited by
 //	  'maxPrecision'.
 //
+//	errPrefDto					*ePref.ErrPrefixDto
+//
+//	  This object encapsulates an error prefix string
+//	  which is included in all returned error
+//	  messages. Usually, it contains the name of the
+//	  calling method or methods listed as a function
+//	  chain.
+//
+//	  If no error prefix information is needed, set
+//	  this parameter to 'nil'.
+//
+//	  Type ErrPrefixDto is included in the 'errpref'
+//	  software package:
+//	    "github.com/MikeAustin71/errpref".
+//
 //	Return Values
 //	=============
 //
@@ -93,10 +108,10 @@ type bigIntMathPowerMacrobot struct {
 //	  message will be formatted and returned. If the calculation
 //	  completes successfully, this return value will be set to 'nil'.
 func (bIMathPwrMacrobot *bigIntMathPowerMacrobot) bigIntToNegativeFractionalPower(
-	base,
-	basePrecision,
-	exponent,
-	exponentPrecision,
+	base *big.Int,
+	basePrecision *big.Int,
+	exponent *big.Int,
+	exponentPrecision *big.Int,
 	maxPrecision *big.Int,
 	errPrefDto *ePref.ErrPrefixDto) (
 	result *big.Int, resultPrecision *big.Int, err error) {
@@ -119,32 +134,96 @@ func (bIMathPwrMacrobot *bigIntMathPowerMacrobot) bigIntToNegativeFractionalPowe
 	if err != nil {
 		return result, resultPrecision, err
 	}
+
+	if base == nil {
+
+		return result, resultPrecision,
+			&InputPtrNilError{
+				ErrPrefix:     ePrefix.String(),
+				ErrContext:    "",
+				ParameterName: "'base'",
+			}
+	}
+
+	if basePrecision == nil {
+
+		return result, resultPrecision,
+			&InputPtrNilError{
+				ErrPrefix:     ePrefix.String(),
+				ErrContext:    "",
+				ParameterName: "'basePrecision'",
+			}
+	}
+
+	if exponent == nil {
+
+		return result, resultPrecision,
+			&InputPtrNilError{
+				ErrPrefix:     ePrefix.String(),
+				ErrContext:    "",
+				ParameterName: "'exponent'",
+			}
+	}
+
+	if exponentPrecision == nil {
+
+		return result, resultPrecision,
+			&InputPtrNilError{
+				ErrPrefix:     ePrefix.String(),
+				ErrContext:    "",
+				ParameterName: "'exponentPrecision'",
+			}
+	}
+
+	if maxPrecision == nil {
+
+		return result, resultPrecision,
+			&InputPtrNilError{
+				ErrPrefix:     ePrefix.String(),
+				ErrContext:    "",
+				ParameterName: "'maxPrecision'",
+			}
+	}
+
 	bigZero := big.NewInt(0)
+
 	bigOne := big.NewInt(1)
 
 	if base.Cmp(bigZero) == 0 {
+
 		// base is zero result is zero
 		return result, resultPrecision, err
 	}
 
 	if exponentPrecision.Cmp(bigZero) == 0 {
-		err = fmt.Errorf(ePrefix+
-			"Error: 'exponentPrecision' is zero. This is an integer exponent. "+
-			"exponentPrecision='%v' ", exponentPrecision.Text(10))
 
-		return result, resultPrecision, err
+		return result, resultPrecision,
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "",
+				ErrContext: fmt.Sprintf("exponent= '%v'\n"+
+					"exponentPrecision='%v'",
+					exponent.Text(10), exponentPrecision.Text(10)),
+				ErrMessage: "Error: Input parameter 'exponent' is INVALID!\n" +
+					"'exponentPrecision' is zero. This is an integer exponent.\n" +
+					"Only fractional exponents can be used with this method.",
+			}
 	}
 
 	// exponentPrecision > 0
 	cmpExponentZero := exponent.Cmp(bigZero)
 
 	if cmpExponentZero == 1 {
-		err = fmt.Errorf(ePrefix+
-			"Error: 'exponent' is a positive value! "+
-			"exponent='%v' ", exponent.Text(10))
 
-		return result, resultPrecision, err
-
+		return result, resultPrecision,
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "",
+				ErrContext: fmt.Sprintf("exponent= '%v'", exponent.Text(10)),
+				ErrMessage: "Error: Input parameter 'exponent' is INVALID!\n" +
+					"'exponent' is a positive value.\n" +
+					"Only negative exponents can be used with this method.",
+			}
 	}
 
 	if cmpExponentZero == 0 {
@@ -154,44 +233,75 @@ func (bIMathPwrMacrobot *bigIntMathPowerMacrobot) bigIntToNegativeFractionalPowe
 	}
 
 	if maxPrecision.Cmp(bigZero) == -1 {
-		err = fmt.Errorf(ePrefix+
-			"Error: 'maxPrecision' is a negative value! "+
-			"maxPrecision='%v' ", maxPrecision.Text(10))
 
-		return result, resultPrecision, err
+		return result, resultPrecision,
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "",
+				ErrContext: fmt.Sprintf("maxPrecision= '%v'", maxPrecision.Text(10)),
+				ErrMessage: "Error: Input parameter 'maxPrecision' is INVALID!\n" +
+					"'maxPrecision' is a negative value.",
+			}
 	}
 
 	positiveExponent := big.NewInt(0).Set(exponent)
+
 	positiveExponent.Neg(positiveExponent)
 
 	internalMaxPrecision := big.NewInt(0).Add(maxPrecision, big.NewInt(2))
 
-	positiveResult, positivePrecision, errx :=
-		BigIntMathPower{}.BigIntToPositiveFractionalPower(
+	positiveResult, positivePrecision, err :=
+		new(bigIntMathPowerMinibot).bigIntToPositiveFractionalPower(
 			base,
 			basePrecision,
 			positiveExponent,
 			exponentPrecision,
-			internalMaxPrecision)
+			internalMaxPrecision,
+			ePrefix)
 
-	if errx != nil {
-		err = fmt.Errorf(ePrefix+"%v", errx.Error())
-		return result, resultPrecision, err
+	if err != nil {
+
+		return result, resultPrecision,
+			&FuncReturnError{
+				ErrPrefix: ePrefix.String(),
+				ReturnFunc: "positiveResult, positivePrecision, err := \n" +
+					"  new(bigIntMathPowerMinibot).bigIntToPositiveFractionalPower(\n" +
+					"base, basePrecision, positiveExponent, exponentPrecision, internalMaxPrecision, ePrefix)",
+				ErrContext: fmt.Sprintf("base= '%v'\n"+
+					"basePrecision= '%v'\n"+
+					"positiveExponent= '%v'\n"+
+					"exponentPrecision= '%v'\n"+
+					"internalMaxPrecision= '%v'",
+					base.Text(10), basePrecision.Text(10), positiveExponent.Text(10),
+					exponentPrecision.Text(10), internalMaxPrecision.Text(10)),
+				ErrMessage: err.Error(),
+			}
 	}
 
-	result, resultPrecision, errx = BigIntMathDivide{}.BigIntFracQuotient(
+	result, resultPrecision, err = new(BigIntMathDivide).BigIntFracQuotient(
 		bigOne,
 		big.NewInt(0),
 		positiveResult,
 		positivePrecision,
 		maxPrecision)
 
-	if errx != nil {
-		result = big.NewInt(0)
-		resultPrecision = big.NewInt(0)
-		err = fmt.Errorf(ePrefix+"%v", errx.Error())
-		return result, resultPrecision, err
+	if err != nil {
+
+		return result, resultPrecision,
+			&FuncReturnError{
+				ErrPrefix: ePrefix.String(),
+				ReturnFunc: "result, resultPrecision, err = new(BigIntMathDivide).BigIntFracQuotient(\n" +
+					"  bigOne, big.NewInt(0), positiveResult, positivePrecision, maxPrecision, ePrefix)",
+				ErrContext: fmt.Sprintf("bigOne= '1'\n"+
+					"dividendPrecision= '0'\n"+
+					"positiveResult= '%v'\n"+
+					"positivePrecision= '%v'\n"+
+					"maxPrecision= '%v'",
+					positiveResult.Text(10), positivePrecision.Text(10),
+					maxPrecision.Text(10)),
+				ErrMessage: err.Error(),
+			}
 	}
 
-	return result, resultPrecision, err
+	return result, resultPrecision, nil
 }

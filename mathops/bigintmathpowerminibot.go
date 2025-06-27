@@ -69,6 +69,21 @@ type bigIntMathPowerMinibot struct {
 //	  'exponent', the maximum number of decimal digits to the right of
 //	  the decimal place in the result will be limited by 'maxPrecision'.
 //
+//	errPrefDto					*ePref.ErrPrefixDto
+//
+//	  This object encapsulates an error prefix string
+//	  which is included in all returned error
+//	  messages. Usually, it contains the name of the
+//	  calling method or methods listed as a function
+//	  chain.
+//
+//	  If no error prefix information is needed, set
+//	  this parameter to 'nil'.
+//
+//	  Type ErrPrefixDto is included in the 'errpref'
+//	  software package:
+//	    "github.com/MikeAustin71/errpref".
+//
 //	Return Values
 //	=============
 //
