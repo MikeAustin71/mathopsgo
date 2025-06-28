@@ -1,8 +1,8 @@
 package mathops
 
 import (
-  "fmt"
-  ePref "github.com/MikeAustin71/errpref"
+	"fmt"
+	ePref "github.com/MikeAustin71/errpref"
 )
 
 /*
@@ -18,10 +18,10 @@ import (
 */
 
 type TimeValOfMoney struct {
-  PresentValue BigIntNum
-  FutureValue  BigIntNum
-  InterestRate BigIntNum
-  NPeriods     BigIntNum
+	PresentValue BigIntNum
+	FutureValue  BigIntNum
+	InterestRate BigIntNum
+	NPeriods     BigIntNum
 }
 
 // LumpSumFVBigIntNum
@@ -77,218 +77,218 @@ type TimeValOfMoney struct {
 //	  message is returned in this 'error' type. If the calculation
 //	  is successful, this value is 'nil'.
 func (tvm *TimeValOfMoney) LumpSumFVBigIntNum(
-  presentValue, interestRate, numOfPeriods BigIntNum,
-  futureValueMaxPrecision uint) (BigIntNum, error) {
+	presentValue, interestRate, numOfPeriods BigIntNum,
+	futureValueMaxPrecision uint) (BigIntNum, error) {
 
-  var ePrefix *ePref.ErrPrefixDto
-  var err error
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewIEmpty(
-    nil,
-    "TimeValOfMoney.LumpSumFVBigIntNum",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"TimeValOfMoney.LumpSumFVBigIntNum",
+		"")
 
-  if err != nil {
-    return BigIntNum{}, err
-  }
+	if err != nil {
+		return BigIntNum{}, err
+	}
 
-  err = presentValue.IsValid(ePrefix.XCpy("presentValue").String())
+	err = presentValue.IsValid(ePrefix.XCpy("presentValue").String())
 
-  if err != nil {
+	if err != nil {
 
-    return BigIntNum{},
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "err = presentValue.IsValid(ePrefix)",
-        ErrContext: "Error: Input parameter 'presentValue' is invalid!\n" +
-          "'presentValue' FAILED validation tests.",
-        ErrMessage: err.Error(),
-      }
-  }
+		return BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "err = presentValue.IsValid(ePrefix)",
+				ErrContext: "Error: Input parameter 'presentValue' is invalid!\n" +
+					"'presentValue' FAILED validation tests.",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  err = interestRate.IsValid(ePrefix.XCpy("interestRate").String())
+	err = interestRate.IsValid(ePrefix.XCpy("interestRate").String())
 
-  if err != nil {
+	if err != nil {
 
-    return BigIntNum{},
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "err = interestRate.IsValid(ePrefix)",
-        ErrContext: "Error: Input parameter 'interestRate' is invalid!\n" +
-          "'interestRate' FAILED validation tests.",
-        ErrMessage: err.Error(),
-      }
-  }
+		return BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "err = interestRate.IsValid(ePrefix)",
+				ErrContext: "Error: Input parameter 'interestRate' is invalid!\n" +
+					"'interestRate' FAILED validation tests.",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  err = numOfPeriods.IsValid(ePrefix.XCpy("numOfPeriods").String())
+	err = numOfPeriods.IsValid(ePrefix.XCpy("numOfPeriods").String())
 
-  if err != nil {
+	if err != nil {
 
-    return BigIntNum{},
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "err = numOfPeriods.IsValid(ePrefix)",
-        ErrContext: "Error: Input parameter 'numOfPeriods' is invalid!\n" +
-          "'interestRate' FAILED validation tests.",
-        ErrMessage: err.Error(),
-      }
-  }
+		return BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "err = numOfPeriods.IsValid(ePrefix)",
+				ErrContext: "Error: Input parameter 'numOfPeriods' is invalid!\n" +
+					"'interestRate' FAILED validation tests.",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  numOfPeriodsSignValue, err := numOfPeriods.GetSign()
+	numOfPeriodsSignValue, err := numOfPeriods.GetSign()
 
-  if err != nil {
+	if err != nil {
 
-    return BigIntNum{},
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "numOfPeriodsSignValue, err := numOfPeriods.GetSign()",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-  }
+		return BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "numOfPeriodsSignValue, err := numOfPeriods.GetSign()",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  numOfPeriodsNumStr, err := numOfPeriods.GetNumStr()
+	numOfPeriodsNumStr, err := numOfPeriods.GetNumStr()
 
-  if err != nil {
+	if err != nil {
 
-    return BigIntNum{},
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "numOfPeriodsNumStr, err := numOfPeriods.GetNumStr()",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-  }
+		return BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "numOfPeriodsNumStr, err := numOfPeriods.GetNumStr()",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  if numOfPeriodsSignValue == -1 {
+	if numOfPeriodsSignValue == -1 {
 
-    return BigIntNum{},
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "",
-        ErrContext: fmt.Sprintf("numOfPeriods= '%v'", numOfPeriodsNumStr),
-        ErrMessage: "Input parameter 'numOfPeriods' is a negative value.",
-      }
-  }
+		return BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "",
+				ErrContext: fmt.Sprintf("numOfPeriods= '%v'", numOfPeriodsNumStr),
+				ErrMessage: "Input parameter 'numOfPeriods' is a negative value.",
+			}
+	}
 
-  binumOne, err := new(BigIntNum).NewOne(0)
+	binumOne, err := new(BigIntNum).NewOne(0)
 
-  if err != nil {
+	if err != nil {
 
-    return BigIntNum{},
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "binumOne, err := new(BigIntNum).NewOne(0)",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-  }
+		return BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "binumOne, err := new(BigIntNum).NewOne(0)",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  onePlusI, err := new(BigIntMathAdd).AddBigIntNums(binumOne, interestRate)
+	onePlusI, err := new(BigIntMathAdd).AddBigIntNums(binumOne, interestRate)
 
-  if err != nil {
+	if err != nil {
 
-    return BigIntNum{},
-      &FuncReturnError{
-        ErrPrefix: ePrefix.String(),
-        ReturnFunc: "onePlusI, err := new(BigIntMathAdd).\n" +
-          "AddBigIntNums(binumOne, interestRate)",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-  }
+		return BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix: ePrefix.String(),
+				ReturnFunc: "onePlusI, err := new(BigIntMathAdd).\n" +
+					"AddBigIntNums(binumOne, interestRate)",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  onePlusINumStr, err := onePlusI.GetNumStr()
+	onePlusINumStr, err := onePlusI.GetNumStr()
 
-  if err != nil {
+	if err != nil {
 
-    return BigIntNum{},
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "onePlusINumStr, err := onePlusI.GetNumStr()",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-  }
+		return BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "onePlusINumStr, err := onePlusI.GetNumStr()",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  maxPrecision, err := new(BigIntMathPower).BigIntNumMinRequiredPrecision(onePlusI, numOfPeriods)
+	maxPrecision, err := new(BigIntMathPower).BigIntNumMinRequiredPrecision(onePlusI, numOfPeriods)
 
-  if err != nil {
+	if err != nil {
 
-    return BigIntNum{},
-      &FuncReturnError{
-        ErrPrefix: ePrefix.String(),
-        ReturnFunc: "maxPrecision, err := new(BigIntMathPower).\n" +
-          "  BigIntNumMinRequiredPrecision(onePlusI, numOfPeriods)",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-  }
+		return BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix: ePrefix.String(),
+				ReturnFunc: "maxPrecision, err := new(BigIntMathPower).\n" +
+					"  BigIntNumMinRequiredPrecision(onePlusI, numOfPeriods)",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  pwrN, err := new(BigIntMathPower).Pwr(onePlusI, numOfPeriods, maxPrecision)
+	pwrN, err := new(BigIntMathPower).Pwr(onePlusI, numOfPeriods, maxPrecision)
 
-  if err != nil {
+	if err != nil {
 
-    return BigIntNum{},
-      &FuncReturnError{
-        ErrPrefix: ePrefix.String(),
-        ReturnFunc: "pwrN, err := new(BigIntMathPower).Pwr(\n" +
-          "  onePlusI, numOfPeriods, maxPrecision)",
-        ErrContext: fmt.Sprintf("onePlusI= '%v'\n"+
-          "numOfPeriods= '%v'\nmaxPrecision='%v'",
-          onePlusINumStr, numOfPeriodsNumStr, maxPrecision),
-        ErrMessage: err.Error(),
-      }
-  }
+		return BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix: ePrefix.String(),
+				ReturnFunc: "pwrN, err := new(BigIntMathPower).Pwr(\n" +
+					"  onePlusI, numOfPeriods, maxPrecision)",
+				ErrContext: fmt.Sprintf("onePlusI= '%v'\n"+
+					"numOfPeriods= '%v'\nmaxPrecision='%v'",
+					onePlusINumStr, numOfPeriodsNumStr, maxPrecision),
+				ErrMessage: err.Error(),
+			}
+	}
 
-  futureValue, err := new(BigIntMathMultiply).MultiplyBigIntNums(presentValue, pwrN)
+	futureValue, err := new(BigIntMathMultiply).MultiplyBigIntNums(presentValue, pwrN)
 
-  if err != nil {
+	if err != nil {
 
-    return BigIntNum{},
-      &FuncReturnError{
-        ErrPrefix: ePrefix.String(),
-        ReturnFunc: "futureValue, err := new(BigIntMathMultiply).\n" +
-          "  MultiplyBigIntNums(presentValue, pwrN)",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-  }
+		return BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix: ePrefix.String(),
+				ReturnFunc: "futureValue, err := new(BigIntMathMultiply).\n" +
+					"  MultiplyBigIntNums(presentValue, pwrN)",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  futureValuePrecisionUint, err := futureValue.GetPrecisionUint()
+	futureValuePrecisionUint, err := futureValue.GetPrecisionUint()
 
-  if err != nil {
+	if err != nil {
 
-    return BigIntNum{},
-      &FuncReturnError{
-        ErrPrefix: ePrefix.String(),
-        ReturnFunc: "futureValuePrecisionUint, err := \n" +
-          "futureValue.GetPrecisionUint()",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-  }
+		return BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix: ePrefix.String(),
+				ReturnFunc: "futureValuePrecisionUint, err := \n" +
+					"futureValue.GetPrecisionUint()",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  if futureValuePrecisionUint > futureValueMaxPrecision {
+	if futureValuePrecisionUint > futureValueMaxPrecision {
 
-    err = futureValue.RoundToDecPlace(futureValueMaxPrecision)
+		err = futureValue.RoundToDecPlace(futureValueMaxPrecision)
 
-    if err != nil {
+		if err != nil {
 
-      return BigIntNum{},
-        &FuncReturnError{
-          ErrPrefix: ePrefix.String(),
-          ReturnFunc: "err = futureValue.RoundToDecPlace(\n" +
-            "  futureValueMaxPrecision)",
-          ErrContext: "",
-          ErrMessage: err.Error(),
-        }
-    }
+			return BigIntNum{},
+				&FuncReturnError{
+					ErrPrefix: ePrefix.String(),
+					ReturnFunc: "err = futureValue.RoundToDecPlace(\n" +
+						"  futureValueMaxPrecision)",
+					ErrContext: "",
+					ErrMessage: err.Error(),
+				}
+		}
 
-  }
+	}
 
-  return futureValue, nil
+	return futureValue, nil
 }
 
 // LumpSumPVBigIntNum
@@ -315,166 +315,166 @@ func (tvm *TimeValOfMoney) LumpSumFVBigIntNum(
 //
 //	 PV = FV / (1 + DR)^NthRoot
 func (tvm *TimeValOfMoney) LumpSumPVBigIntNum(
-  futureValue, discountRate, numOfPeriods BigIntNum,
-  presentValueMaxPrecision uint) (BigIntNum, error) {
+	futureValue, discountRate, numOfPeriods BigIntNum,
+	presentValueMaxPrecision uint) (BigIntNum, error) {
 
-  var ePrefix *ePref.ErrPrefixDto
-  var err error
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewIEmpty(
-    nil,
-    "TimeValOfMoney.LumpSumPVBigIntNum",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"TimeValOfMoney.LumpSumPVBigIntNum",
+		"")
 
-  if err != nil {
-    return BigIntNum{}, err
-  }
+	if err != nil {
+		return BigIntNum{}, err
+	}
 
-  err = futureValue.IsValid(ePrefix.XCpy("futureValue").String())
+	err = futureValue.IsValid(ePrefix.XCpy("futureValue").String())
 
-  if err != nil {
+	if err != nil {
 
-    return BigIntNum{},
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "err = futureValue.IsValid(ePrefix)",
-        ErrContext: "Error: Input parameter 'futureValue' is invalid!\n" +
-          "'futureValue' FAILED validation tests.",
-        ErrMessage: err.Error(),
-      }
-  }
+		return BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "err = futureValue.IsValid(ePrefix)",
+				ErrContext: "Error: Input parameter 'futureValue' is invalid!\n" +
+					"'futureValue' FAILED validation tests.",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  futureValueNumStr, err := futureValue.GetNumStr()
+	futureValueNumStr, err := futureValue.GetNumStr()
 
-  if err != nil {
+	if err != nil {
 
-    return BigIntNum{},
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "futureValueNumStr, err := futureValue.GetNumStr()",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-  }
+		return BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "futureValueNumStr, err := futureValue.GetNumStr()",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  err = discountRate.IsValid(ePrefix.XCpy("discountRate").String())
+	err = discountRate.IsValid(ePrefix.XCpy("discountRate").String())
 
-  if err != nil {
+	if err != nil {
 
-    return BigIntNum{},
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "err = discountRate.IsValid(ePrefix)",
-        ErrContext: "Error: Input parameter 'discountRate' is invalid!\n" +
-          "'discountRate' FAILED validation tests.",
-        ErrMessage: err.Error(),
-      }
-  }
+		return BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "err = discountRate.IsValid(ePrefix)",
+				ErrContext: "Error: Input parameter 'discountRate' is invalid!\n" +
+					"'discountRate' FAILED validation tests.",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  err = numOfPeriods.IsValid(ePrefix.XCpy("numOfPeriods").String())
+	err = numOfPeriods.IsValid(ePrefix.XCpy("numOfPeriods").String())
 
-  if err != nil {
+	if err != nil {
 
-    return BigIntNum{},
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "err = numOfPeriods.IsValid(ePrefix)",
-        ErrContext: "Error: Input parameter 'numOfPeriods' is invalid!\n" +
-          "'numOfPeriods' FAILED validation tests.",
-        ErrMessage: err.Error(),
-      }
-  }
+		return BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "err = numOfPeriods.IsValid(ePrefix)",
+				ErrContext: "Error: Input parameter 'numOfPeriods' is invalid!\n" +
+					"'numOfPeriods' FAILED validation tests.",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  biNumOne, err := new(BigIntNum).NewOne(0)
+	biNumOne, err := new(BigIntNum).NewOne(0)
 
-  if err != nil {
+	if err != nil {
 
-    return BigIntNum{},
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "biNumOne, err := new(BigIntNum).NewOne(0)",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-  }
+		return BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "biNumOne, err := new(BigIntNum).NewOne(0)",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  onePlusDr, err := new(BigIntMathAdd).AddBigIntNums(
-    biNumOne, discountRate)
+	onePlusDr, err := new(BigIntMathAdd).AddBigIntNums(
+		biNumOne, discountRate)
 
-  if err != nil {
+	if err != nil {
 
-    return BigIntNum{},
-      &FuncReturnError{
-        ErrPrefix: ePrefix.String(),
-        ReturnFunc: "onePlusDr, err :=	new(BigIntMathAdd).AddBigIntNums(\n" +
-          "  biNumOne, discountRate)",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-  }
+		return BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix: ePrefix.String(),
+				ReturnFunc: "onePlusDr, err :=	new(BigIntMathAdd).AddBigIntNums(\n" +
+					"  biNumOne, discountRate)",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  onePlusDrNumStr, err := onePlusDr.GetNumStr()
+	onePlusDrNumStr, err := onePlusDr.GetNumStr()
 
-  if err != nil {
+	if err != nil {
 
-    return BigIntNum{},
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "onePlusDrNumStr, err := onePlusDr.GetNumStr()",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-  }
+		return BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "onePlusDrNumStr, err := onePlusDr.GetNumStr()",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  maxPrecision, err := new(BigIntMathPower).BigIntNumMinRequiredPrecision(
-    onePlusDr, numOfPeriods)
+	maxPrecision, err := new(BigIntMathPower).BigIntNumMinRequiredPrecision(
+		onePlusDr, numOfPeriods)
 
-  if err != nil {
+	if err != nil {
 
-    return BigIntNum{},
-      &FuncReturnError{
-        ErrPrefix: ePrefix.String(),
-        ReturnFunc: "maxPrecision, err := new(BigIntMathPower).BigIntNumMinRequiredPrecision(\n" +
-          "  onePlusDr, numOfPeriods)",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-  }
+		return BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix: ePrefix.String(),
+				ReturnFunc: "maxPrecision, err := new(BigIntMathPower).BigIntNumMinRequiredPrecision(\n" +
+					"  onePlusDr, numOfPeriods)",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  DRtoPwr, err := new(BigIntMathPower).Pwr(onePlusDr, numOfPeriods, maxPrecision)
+	DRtoPwr, err := new(BigIntMathPower).Pwr(onePlusDr, numOfPeriods, maxPrecision)
 
-  if err != nil {
+	if err != nil {
 
-    return BigIntNum{},
-      &FuncReturnError{
-        ErrPrefix: ePrefix.String(),
-        ReturnFunc: "DRtoPwr, err := new(BigIntMathPower).Pwr(\n" +
-          "  onePlusDr, numOfPeriods, maxPrecision)",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-  }
+		return BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix: ePrefix.String(),
+				ReturnFunc: "DRtoPwr, err := new(BigIntMathPower).Pwr(\n" +
+					"  onePlusDr, numOfPeriods, maxPrecision)",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  numSeps := new(NumericSeparatorDto).NewUSADefaults()
+	numSeps := new(NumericSeparatorDto).NewUSADefaults()
 
-  presentValue, err :=
-    new(BigIntMathDivide).BigIntNumFracQuotient(futureValue, DRtoPwr, numSeps, presentValueMaxPrecision)
+	presentValue, err :=
+		new(BigIntMathDivide).BigIntNumFracQuotient(futureValue, DRtoPwr, numSeps, presentValueMaxPrecision)
 
-  if err != nil {
+	if err != nil {
 
-    return BigIntNum{},
-      &FuncReturnError{
-        ErrPrefix: ePrefix.String(),
-        ReturnFunc: "presentValue, err := new(BigIntMathDivide).\n" +
-          "  BigIntNumFracQuotient(futureValue, DRtoPwr, numSeps, presentValueMaxPrecision)",
-        ErrContext: fmt.Sprintf("futureValue= '%v'\nonePlusDr= '%v'\nmaxPrecision= '%v'",
-          futureValueNumStr, onePlusDrNumStr, maxPrecision),
-        ErrMessage: err.Error(),
-      }
-  }
+		return BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix: ePrefix.String(),
+				ReturnFunc: "presentValue, err := new(BigIntMathDivide).\n" +
+					"  BigIntNumFracQuotient(futureValue, DRtoPwr, numSeps, presentValueMaxPrecision)",
+				ErrContext: fmt.Sprintf("futureValue= '%v'\nonePlusDr= '%v'\nmaxPrecision= '%v'",
+					futureValueNumStr, onePlusDrNumStr, maxPrecision),
+				ErrMessage: err.Error(),
+			}
+	}
 
-  return presentValue, nil
+	return presentValue, nil
 }
 
 // SimpleInterestBigIntNum
@@ -535,204 +535,204 @@ func (tvm *TimeValOfMoney) LumpSumPVBigIntNum(
 //	  error message is returned in this 'error' type. If the
 //	  calculation is successful, this value is 'nil'.
 func (tvm *TimeValOfMoney) SimpleInterestBigIntNum(
-  initialInvestment, interestRate, numOfPeriods BigIntNum,
-  futureValueMaxPrecision uint) (BigIntNum, error) {
+	initialInvestment, interestRate, numOfPeriods BigIntNum,
+	futureValueMaxPrecision uint) (BigIntNum, error) {
 
-  var ePrefix *ePref.ErrPrefixDto
-  var err error
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewIEmpty(
-    nil,
-    "TimeValOfMoney.LumpSumFVBigIntNum",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"TimeValOfMoney.LumpSumFVBigIntNum",
+		"")
 
-  if err != nil {
-    return BigIntNum{}, err
-  }
+	if err != nil {
+		return BigIntNum{}, err
+	}
 
-  err = initialInvestment.IsValid(ePrefix.XCpy("initialInvestment").String())
+	err = initialInvestment.IsValid(ePrefix.XCpy("initialInvestment").String())
 
-  if err != nil {
+	if err != nil {
 
-    return BigIntNum{},
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "err = initialInvestment.IsValid(ePrefix)",
-        ErrContext: "Error: Input parameter 'initialInvestment' is invalid!\n" +
-          "'initialInvestment' FAILED validation tests.",
-        ErrMessage: err.Error(),
-      }
-  }
+		return BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "err = initialInvestment.IsValid(ePrefix)",
+				ErrContext: "Error: Input parameter 'initialInvestment' is invalid!\n" +
+					"'initialInvestment' FAILED validation tests.",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  initialInvestmentNumStr, err := initialInvestment.GetNumStr()
+	initialInvestmentNumStr, err := initialInvestment.GetNumStr()
 
-  if err != nil {
+	if err != nil {
 
-    return BigIntNum{},
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "initialInvestmentNumStr, err := initialInvestment.GetNumStr()",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-  }
+		return BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "initialInvestmentNumStr, err := initialInvestment.GetNumStr()",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  err = interestRate.IsValid(ePrefix.XCpy("interestRate").String())
+	err = interestRate.IsValid(ePrefix.XCpy("interestRate").String())
 
-  if err != nil {
+	if err != nil {
 
-    return BigIntNum{},
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "err = interestRate.IsValid(ePrefix)",
-        ErrContext: "Error: Input parameter 'interestRate' is invalid!\n" +
-          "'interestRate' FAILED validation tests.",
-        ErrMessage: err.Error(),
-      }
-  }
+		return BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "err = interestRate.IsValid(ePrefix)",
+				ErrContext: "Error: Input parameter 'interestRate' is invalid!\n" +
+					"'interestRate' FAILED validation tests.",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  interestRateNumStr, err := interestRate.GetNumStr()
+	interestRateNumStr, err := interestRate.GetNumStr()
 
-  if err != nil {
+	if err != nil {
 
-    return BigIntNum{},
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "interestRateNumStr, err := interestRate.GetNumStr()",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-  }
+		return BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "interestRateNumStr, err := interestRate.GetNumStr()",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  err = numOfPeriods.IsValid(ePrefix.XCpy("numOfPeriods").String())
+	err = numOfPeriods.IsValid(ePrefix.XCpy("numOfPeriods").String())
 
-  if err != nil {
+	if err != nil {
 
-    return BigIntNum{},
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "err = numOfPeriods.IsValid(ePrefix)",
-        ErrContext: "Error: Input parameter 'numOfPeriods' is invalid!\n" +
-          "'numOfPeriods' FAILED validation tests.",
-        ErrMessage: err.Error(),
-      }
-  }
+		return BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "err = numOfPeriods.IsValid(ePrefix)",
+				ErrContext: "Error: Input parameter 'numOfPeriods' is invalid!\n" +
+					"'numOfPeriods' FAILED validation tests.",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  numOfPeriodsNumStr, err := numOfPeriods.GetNumStr()
+	numOfPeriodsNumStr, err := numOfPeriods.GetNumStr()
 
-  if err != nil {
+	if err != nil {
 
-    return BigIntNum{},
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "numOfPeriodsNumStr, err := numOfPeriods.GetNumStr()",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-  }
+		return BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "numOfPeriodsNumStr, err := numOfPeriods.GetNumStr()",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  iTimesN, err := new(BigIntMathMultiply).MultiplyBigIntNums(interestRate, numOfPeriods)
+	iTimesN, err := new(BigIntMathMultiply).MultiplyBigIntNums(interestRate, numOfPeriods)
 
-  if err != nil {
+	if err != nil {
 
-    return BigIntNum{},
-      &FuncReturnError{
-        ErrPrefix: ePrefix.String(),
-        ReturnFunc: "iTimesN, err := new(BigIntMathMultiply).MultiplyBigIntNums(\n" +
-          "  interestRate, numOfPeriods)",
-        ErrContext: fmt.Sprintf("interestRate= '%v'\nnumOfPeriods= '%v'",
-          interestRateNumStr, numOfPeriodsNumStr),
-        ErrMessage: err.Error(),
-      }
-  }
+		return BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix: ePrefix.String(),
+				ReturnFunc: "iTimesN, err := new(BigIntMathMultiply).MultiplyBigIntNums(\n" +
+					"  interestRate, numOfPeriods)",
+				ErrContext: fmt.Sprintf("interestRate= '%v'\nnumOfPeriods= '%v'",
+					interestRateNumStr, numOfPeriodsNumStr),
+				ErrMessage: err.Error(),
+			}
+	}
 
-  bINumOne, err := new(BigIntNum).NewOne(0)
+	bINumOne, err := new(BigIntNum).NewOne(0)
 
-  if err != nil {
+	if err != nil {
 
-    return BigIntNum{},
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "bINumOne, err := new(BigIntNum).NewOne(0)",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-  }
+		return BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "bINumOne, err := new(BigIntNum).NewOne(0)",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  onePlusITimesN, err :=
-    new(BigIntMathAdd).AddBigIntNums(bINumOne, iTimesN)
+	onePlusITimesN, err :=
+		new(BigIntMathAdd).AddBigIntNums(bINumOne, iTimesN)
 
-  if err != nil {
+	if err != nil {
 
-    return BigIntNum{},
-      &FuncReturnError{
-        ErrPrefix: ePrefix.String(),
-        ReturnFunc: "onePlusITimesN, err := new(BigIntMathAdd).\n" +
-          " AddBigIntNums(bINumOne, iTimesN)",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-  }
+		return BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix: ePrefix.String(),
+				ReturnFunc: "onePlusITimesN, err := new(BigIntMathAdd).\n" +
+					" AddBigIntNums(bINumOne, iTimesN)",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  onePlusITimesNNumStr, err := onePlusITimesN.GetNumStr()
+	onePlusITimesNNumStr, err := onePlusITimesN.GetNumStr()
 
-  if err != nil {
+	if err != nil {
 
-    return BigIntNum{},
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "onePlusITimesNNumStr, err := onePlusITimesN.GetNumStr()",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-  }
+		return BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "onePlusITimesNNumStr, err := onePlusITimesN.GetNumStr()",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  futureValue, err :=
-    new(BigIntMathMultiply).MultiplyBigIntNums(initialInvestment, onePlusITimesN)
+	futureValue, err :=
+		new(BigIntMathMultiply).MultiplyBigIntNums(initialInvestment, onePlusITimesN)
 
-  if err != nil {
+	if err != nil {
 
-    return BigIntNum{},
-      &FuncReturnError{
-        ErrPrefix: ePrefix.String(),
-        ReturnFunc: "futureValue, err := new(BigIntMathMultiply).\n" +
-          " MultiplyBigIntNums(initialInvestment, onePlusITimesN)",
-        ErrContext: fmt.Sprintf("initialInvestment= '%v'\nonePlusITimesN= '%v'",
-          initialInvestmentNumStr, onePlusITimesNNumStr),
-        ErrMessage: err.Error(),
-      }
-  }
+		return BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix: ePrefix.String(),
+				ReturnFunc: "futureValue, err := new(BigIntMathMultiply).\n" +
+					" MultiplyBigIntNums(initialInvestment, onePlusITimesN)",
+				ErrContext: fmt.Sprintf("initialInvestment= '%v'\nonePlusITimesN= '%v'",
+					initialInvestmentNumStr, onePlusITimesNNumStr),
+				ErrMessage: err.Error(),
+			}
+	}
 
-  futureValuePrecisionUint, err := futureValue.GetPrecisionUint()
+	futureValuePrecisionUint, err := futureValue.GetPrecisionUint()
 
-  if err != nil {
+	if err != nil {
 
-    return BigIntNum{},
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "futureValuePrecisionUint, err := futureValue.GetPrecisionUint()",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-  }
+		return BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "futureValuePrecisionUint, err := futureValue.GetPrecisionUint()",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  if futureValuePrecisionUint > futureValueMaxPrecision {
+	if futureValuePrecisionUint > futureValueMaxPrecision {
 
-    err = futureValue.RoundToDecPlace(futureValueMaxPrecision)
+		err = futureValue.RoundToDecPlace(futureValueMaxPrecision)
 
-    if err != nil {
+		if err != nil {
 
-      return BigIntNum{},
-        &FuncReturnError{
-          ErrPrefix: ePrefix.String(),
-          ReturnFunc: "futureValuePrecisionUint, err := futureValue.GetPrecisionUint(err = futureValue.\n" +
-            "  RoundToDecPlace(futureValueMaxPrecision)",
-          ErrContext: "",
-          ErrMessage: err.Error(),
-        }
-    }
-  }
+			return BigIntNum{},
+				&FuncReturnError{
+					ErrPrefix: ePrefix.String(),
+					ReturnFunc: "futureValuePrecisionUint, err := futureValue.GetPrecisionUint(err = futureValue.\n" +
+						"  RoundToDecPlace(futureValueMaxPrecision)",
+					ErrContext: "",
+					ErrMessage: err.Error(),
+				}
+		}
+	}
 
-  return futureValue, nil
+	return futureValue, nil
 }

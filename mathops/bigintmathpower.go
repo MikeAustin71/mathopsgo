@@ -920,40 +920,49 @@ func (bIPwr *BigIntMathPower) FixedDecimalPwrIteration(
 
 // BigIntNumMinRequiredPrecision
 //
-// Designed to be used with the power function (Pwr). This method will compute the minimum number of decimal places
-// required to support the result of raising a 'base' value to a specified
-// exponent. Both the 'base' and the 'exponent' are passed to this function
-// as type BigIntNum.
+//	Designed to be used with the power function (Pwr). This method
+//	will compute the minimum number of decimal places required to
+//	support the result of raising a 'base' value to a specified
+//	exponent. Both the 'base' and the 'exponent' are passed to this
+//	function as type BigIntNum.
 //
-// For example, raising the value 3.12 to the power of 4 means that the
-// result will require at least 8-decimal places to the right of the
-// decimal in order to display a correct result. In the following example
-// with base ='3.12' and exponent = '4', this method will return '8'.
+//	For example, raising the value 3.12 to the power of 4 means that
+//	the result will require at least 8-decimal places to the right of
+//	the decimal in order to display a correct result. In the following
+//	example with base ='3.12' and exponent = '4', this method will
+//	return '8'.
 //
-//	Example: 3.12^4 = 94.75854336 (8-digits to the right of the decimal)
+//	Example
+//	=======
 //
-// The calculated minimum required precision is returned as type 'uint'.
+//	3.12^4 = 94.75854336 (2x4 = 8-digits to the right of the decimal)
+//	       Minimum Required Precision = precision x exponent
 //
-// If the minimum required precision exceeds the maximum value for type
-// 'uint' (+4,294,967,295, which equals 2^32 − 1), an error message is returned
-// in addition to the maximum uint value (+4,294,967,295).
+//	The calculated minimum required precision is returned as type
+//	'uint'.
+//
+//	If the minimum required precision exceeds the maximum value for
+//	type 'uint' (+4,294,967,295, which equals 2^32 − 1), an error
+//	message is returned in addition to the maximum uint value
+//	(+4,294,967,295).
 func (bIPwr *BigIntMathPower) BigIntNumMinRequiredPrecision(
   base, exponent BigIntNum) (uint, error) {
 
-  basePrecision := new(BigIntNum).NewUint(base.GetPrecisionUint(), 0)
+  var ePrefix *ePref.ErrPrefixDto
+  var err error
 
-  tExponent := exponent.CopyOut()
+  ePrefix,
+    err = ePref.ErrPrefixDto{}.NewIEmpty(
+    nil,
+    "BigIntMathPower.BigIntNumMinRequiredPrecision",
+    "")
 
-  if tExponent.GetSign() == -1 {
-    tExponent.ChangeSign()
+  if err != nil {
+    return 0, err
   }
 
-  minRequiredPrecision :=
-    BigIntMathMultiply{}.MultiplyBigIntNums(basePrecision, tExponent)
-
-  minRequiredPrecision.RoundToDecPlace(0)
-
-  return minRequiredPrecision.GetUInt()
+  return new(bigIntMathPowerNeutron).bigIntNumMinRequiredPrecision(
+    &base, true, &exponent, true, ePrefix)
 }
 
 // Pwr - Raises 'base' to the power of 'exponent'.  Both 'base' and 'exponent' are Type BigIntNum.
