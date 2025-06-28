@@ -979,11 +979,11 @@ func TestBigIntMathPower_MinimumRequiredPrecision_01(t *testing.T) {
 	exponent := BigIntNum{}.NewInt(4, 0)
 	expectedResult := uint(8)
 
-	result, err := BigIntMathPower{}.MinimumRequiredPrecision(base, exponent)
+	result, err := BigIntMathPower{}.BigIntNumMinRequiredPrecision(base, exponent)
 
 	if err != nil {
 		t.Errorf("Error returned by BigIntMathPower{}."+
-			"MinimumRequiredPrecision(base, exponent)"+
+			"BigIntNumMinRequiredPrecision(base, exponent)"+
 			"Error='%v' ", err.Error())
 	}
 
@@ -1000,11 +1000,11 @@ func TestBigIntMathPower_MinimumRequiredPrecision_02(t *testing.T) {
 	exponent := BigIntNum{}.NewInt(18, 0)
 	expectedResult := uint(90)
 
-	result, err := BigIntMathPower{}.MinimumRequiredPrecision(base, exponent)
+	result, err := BigIntMathPower{}.BigIntNumMinRequiredPrecision(base, exponent)
 
 	if err != nil {
 		t.Errorf("Error returned by BigIntMathPower{}."+
-			"MinimumRequiredPrecision(base, exponent)"+
+			"BigIntNumMinRequiredPrecision(base, exponent)"+
 			"Error='%v' ", err.Error())
 	}
 
@@ -1021,11 +1021,11 @@ func TestBigIntMathPower_MinimumRequiredPrecision_03(t *testing.T) {
 	exponent := BigIntNum{}.NewInt(18, 0)
 	expectedResult := uint(90)
 
-	result, err := BigIntMathPower{}.MinimumRequiredPrecision(base, exponent)
+	result, err := BigIntMathPower{}.BigIntNumMinRequiredPrecision(base, exponent)
 
 	if err != nil {
 		t.Errorf("Error returned by BigIntMathPower{}."+
-			"MinimumRequiredPrecision(base, exponent)"+
+			"BigIntNumMinRequiredPrecision(base, exponent)"+
 			"Error='%v' ", err.Error())
 	}
 
@@ -1042,11 +1042,11 @@ func TestBigIntMathPower_MinimumRequiredPrecision_04(t *testing.T) {
 	exponent := BigIntNum{}.NewInt(-18, 0)
 	expectedResult := uint(90)
 
-	result, err := BigIntMathPower{}.MinimumRequiredPrecision(base, exponent)
+	result, err := BigIntMathPower{}.BigIntNumMinRequiredPrecision(base, exponent)
 
 	if err != nil {
 		t.Errorf("Error returned by BigIntMathPower{}."+
-			"MinimumRequiredPrecision(base, exponent)"+
+			"BigIntNumMinRequiredPrecision(base, exponent)"+
 			"Error='%v' ", err.Error())
 	}
 
@@ -1062,7 +1062,7 @@ func TestBigIntMathPower_MinimumRequiredPrecision_05(t *testing.T) {
 	base := BigIntNum{}.NewInt(312345, 5)
 	exponent := BigIntNum{}.NewUint64(12345678901234567890, 0)
 
-	result, err := BigIntMathPower{}.MinimumRequiredPrecision(base, exponent)
+	result, err := BigIntMathPower{}.BigIntNumMinRequiredPrecision(base, exponent)
 
 	if err == nil {
 		t.Error("Error: Expected error be returned. NO ERROR RETURNED!")

@@ -918,8 +918,9 @@ func (bIPwr *BigIntMathPower) FixedDecimalPwrIteration(
     base, true, exponent, internalMaxPrecision, outputMaxPrecision, ePrefix)
 }
 
-// MinimumRequiredPrecision - designed to be used with the power function
-// below. This method will compute the minimum number of decimal places
+// BigIntNumMinRequiredPrecision
+//
+// Designed to be used with the power function (Pwr). This method will compute the minimum number of decimal places
 // required to support the result of raising a 'base' value to a specified
 // exponent. Both the 'base' and the 'exponent' are passed to this function
 // as type BigIntNum.
@@ -936,7 +937,7 @@ func (bIPwr *BigIntMathPower) FixedDecimalPwrIteration(
 // If the minimum required precision exceeds the maximum value for type
 // 'uint' (+4,294,967,295, which equals 2^32 − 1), an error message is returned
 // in addition to the maximum uint value (+4,294,967,295).
-func (bIPwr *BigIntMathPower) MinimumRequiredPrecision(
+func (bIPwr *BigIntMathPower) BigIntNumMinRequiredPrecision(
   base, exponent BigIntNum) (uint, error) {
 
   basePrecision := new(BigIntNum).NewUint(base.GetPrecisionUint(), 0)
