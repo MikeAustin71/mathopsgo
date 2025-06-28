@@ -280,7 +280,9 @@ func (bIPwr *BigIntMathPower) BigIntToNegativeFractionalPower(
   maxPrecision *big.Int) (result *big.Int, resultPrecision *big.Int, err error) {
 
   result = big.NewInt(0)
+
   resultPrecision = big.NewInt(0)
+
   var ePrefix *ePref.ErrPrefixDto
 
   ePrefix,
@@ -821,86 +823,99 @@ func (bIPwr *BigIntMathPower) BigIntegerPwrIteration(
     base, basePrecision, exponent, internalMaxPrecision, outputMaxPrecision, ePrefix)
 }
 
-// FixedDecimalPwrIteration - Raises input parameter 'base' to the power of input parameter 'exponent'.
-// This method of raising a base to an exponent uses iterative multiplication and manages
-// the internal precision of each iterative multiplication. If, during the process of
-// multiplying the base times itself, the internal precision exceeds the 'internalMaxPrecision'
-// limit, that intermediate number is rounded down to 'internalMaxPrecision' digits to the
-// right of the decimal place.
+// FixedDecimalPwrIteration
 //
-// If the precision of the final result exceeds the limit imposed by input parameter,
-// 'outputMaxPrecision', that final result will be rounded to 'outputMaxPrecision'
-// digits to the right of the decimal place.
+//	Raises input parameter 'base' to the power of input parameter
+//	'exponent'.
 //
-// Input Parameter
-// ===============
+//	This process of raising a base to an exponent uses iterative
+//	multiplication and manages the internal precision of each
+//	iterative multiplication. If, during the process of multiplying
+//	the base times itself, the internal precision exceeds the
+//	'internalMaxPrecision' limit, that intermediate number is rounded
+//	to 'internalMaxPrecision' digits to the right of the decimal place.
 //
-// base	BigIntFixedDecimal	-	The base which will be raised to the power of 'exponent'.
+//	If the precision of the final result exceeds the limit imposed by
+//	input parameter, 'outputMaxPrecision', that final result will be
+//	rounded to 'outputMaxPrecision' digits to the right of the decimal
+//	place.
 //
-//	    The BigIntFixedDecimal type describes a numeric value with
-//	    a fixed number of digits to the right of the decimal place.
-//	    The type includes a *big.Int integer value and a precision
-//	    specification.
+//	Input Parameter
+//	===============
 //
-//								baseToPwr = base^exponent
+//	base                     BigIntFixedDecimal
+//	  The base which will be raised to the power of 'exponent'. The
+//	  BigIntFixedDecimal type describes a numeric value with a fixed
+//	  number of digits to the right of the decimal place. The type
+//	  includes a *big.Int integer value and a precision specification.
+//								- baseToPwr = base^exponent -
 //
-// exponent							uint	- This function will raise 'base' to the power of 'exponent'.
+//	exponent                 uint
+//	  This function will raise 'base' to the power of 'exponent'.
+//	              - baseToPwr = base^exponent -
 //
-//	baseToPwr = base^exponent
+//	internalMaxPrecision     uint
+//	  This value is imposed as a limit on the precision of internal
+//	  calculations necessary to compute the result of this power
+//	  operation. If during the calculation an interim or intermediate
+//	  result is generated which exceeds this limit, that intermediate
+//	  result will be rounded to 'internalMaxPrecision' digits to the
+//	  right of the decimal place.
 //
-// internalMaxPrecision uint	- This value is imposed as a limit on the precision of
+//	  The term 'precision' defines the number of digits to the right
+//	  of the decimal place.
 //
-//	                             internal calculations necessary to compute the result
-//	                             of this power operation. If during the calculation an
-//	                             interim or intermediate result is generated which exceeds
-//	                             this limit, that intermediate result will be rounded to
-//	            									'internalMaxPrecision' digits to the right of the decimal
-//	                             place. The term precision defines the number of digits to
-//																the right of the decimal place.
+//	  If 'internalMaxPrecision' is less than 'outputMaxPrecision',
+//	  'internalMaxPrecision' will be automatically set to a value of
+//	  'outputMaxPrecision' + 100.
 //
-//	                             If 'internalMaxPrecision' is less than 'outputMaxPrecision',
-//	                             'internalMaxPrecision' will be automatically set to a value
-//	                             of 'outputMaxPrecision' + 100.
+//	outputMaxPrecision       uint
+//	  This value is imposed as a limit on the precision of the final
+//	  calculated result of the power operation.
 //
-// outputMaxPrecision		uint	- This value is imposed as a limit on the precision of
+//	  If the number of digits to the right of the decimal point in the
+//	  final calculated result exceeds this limit, that final result
+//	  will be rounded to 'outputMaxPrecision' digits to the right of
+//	  the decimal place. The term precision defines the number of
+//	  digits to the right of the decimal place.
 //
-//	                             the final calculated result of the power operation.
-//																If the number of digits to the right of the decimal
-//	                             point in the final calculated result exceeds this limit,
-//																that final result will be rounded to 'outputMaxPrecision'
-//	                             digits to the right of the decimal place. The term precision
-//																defines the number of digits to the right of the decimal
-//																place.
+//	Return Values
+//	=============
 //
-// Return Values
-// =============
+//	baseToPwr                BigIntFixedDecimal
+//	  This function returns the result of 'base' raised to the power
+//	  of 'exponent'. This result, 'baseToPwr' is returned as a type
+//	  BigIntFixedDecimal.
 //
-// baseToPwr	BigIntFixedDecimal	-	This function returns the result of 'base' raised
+//	  The BigIntFixedDecimal type describes a numeric value with a
+//	  fixed number of digits to the right of the decimal place.
+//	             				   baseToPwr = base^exponent
 //
-//	                              		to the power of 'exponent'. This result, 'baseToPwr'
-//	                                 is returned as a type BigIntFixedDecimal. The BigIntFixedDecimal
-//																		type describes a numeric value with a fixed number of digits
-//																		to the right of the decimal place.
-//
-//	                                 				baseToPwr = base^exponent
+//	err                      error
+//	  If the function fails to complete successfully, this value is
+//	  configured with an appropriate error message and returned to the
+//	  caller. If the function completes successfully, this value is
+//	  set to 'nil'.
 func (bIPwr *BigIntMathPower) FixedDecimalPwrIteration(
   base BigIntFixedDecimal,
   exponent uint,
   internalMaxPrecision uint,
-  outputMaxPrecision uint) (baseToPwr BigIntFixedDecimal) {
+  outputMaxPrecision uint) (baseToPwr BigIntFixedDecimal, err error) {
 
-  baseToPwr = new(BigIntFixedDecimal).NewZero(0)
+  var ePrefix *ePref.ErrPrefixDto
 
-  bigIPwr, bigIPwrPrecision, _ := new(BigIntMathPower).BigIntegerPwrIteration(
-    base.GetIntegerValue(),
-    base.GetPrecisionBigInt(),
-    big.NewInt(0).SetUint64(uint64(exponent)),
-    big.NewInt(0).SetUint64(uint64(internalMaxPrecision)),
-    big.NewInt(0).SetUint64(uint64(outputMaxPrecision)))
+  ePrefix,
+    err = ePref.ErrPrefixDto{}.NewIEmpty(
+    nil,
+    "BigIntMathPower.FixedDecimalPwrIteration",
+    "")
 
-  baseToPwr, _ = new(BigIntFixedDecimal).NewBigIntPrecision(bigIPwr, bigIPwrPrecision)
+  if err != nil {
+    return baseToPwr, err
+  }
 
-  return baseToPwr
+  return new(bigIntMathPowerAtom).fixedDecimalPwrIteration(
+    base, true, exponent, internalMaxPrecision, outputMaxPrecision, ePrefix)
 }
 
 // MinimumRequiredPrecision - designed to be used with the power function
