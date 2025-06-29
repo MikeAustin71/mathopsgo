@@ -450,3 +450,255 @@ func (bIMathPwrMech *bigIntMathPowerMechanics) bigIntNumPwr(
 
 	return result, nil
 }
+
+// bigIntPwr
+//
+//	Raises input parameter 'base' to the power of input parameter
+//	'exponent'. Both 'base' and 'exponent' may be positive or negative
+//	integer or fractional values.
+//
+//	This method uses the exponent method ('Exp') provided by the go
+//	"math/big" package.
+func (bIMathPwrMech *bigIntMathPowerMechanics) bigIntPwr(
+	base *big.Int,
+	basePrecision *big.Int,
+	exponent *big.Int,
+	exponentPrecision *big.Int,
+	maxPrecision *big.Int,
+	errPrefDto *ePref.ErrPrefixDto) (result *big.Int, resultPrecision *big.Int, err error) {
+
+	bIMathPwrMech.lock.Lock()
+
+	defer bIMathPwrMech.lock.Unlock()
+
+	result = big.NewInt(0)
+	resultPrecision = big.NewInt(0)
+
+	var ePrefix *ePref.ErrPrefixDto
+
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
+		errPrefDto,
+		"bigIntMathPowerMechanics.bigIntNumPwr",
+		"")
+
+	if err != nil {
+		return result, resultPrecision, err
+	}
+
+	if base == nil {
+
+		return result, resultPrecision,
+			&InputPtrNilError{
+				ErrPrefix:     ePrefix.String(),
+				ErrContext:    "",
+				ParameterName: "'base'",
+			}
+	}
+
+	if basePrecision == nil {
+
+		return result, resultPrecision,
+			&InputPtrNilError{
+				ErrPrefix:     ePrefix.String(),
+				ErrContext:    "",
+				ParameterName: "'basePrecision'",
+			}
+	}
+
+	if exponent == nil {
+
+		return result, resultPrecision,
+			&InputPtrNilError{
+				ErrPrefix:     ePrefix.String(),
+				ErrContext:    "",
+				ParameterName: "'exponent'",
+			}
+	}
+
+	if maxPrecision == nil {
+
+		return result, resultPrecision,
+			&InputPtrNilError{
+				ErrPrefix:     ePrefix.String(),
+				ErrContext:    "",
+				ParameterName: "'maxPrecision'",
+			}
+	}
+
+	bigZero := big.NewInt(0)
+
+	if base.Cmp(bigZero) == 0 {
+		// zero to any power is zero
+		return result, resultPrecision, err
+	}
+
+	isZeroExponentPrecision := false
+
+	if exponentPrecision.Cmp(bigZero) == 0 {
+
+		isZeroExponentPrecision = true
+	}
+
+	exponentCmpZero := exponent.Cmp(bigZero)
+
+	if exponentCmpZero == 0 {
+
+		result = big.NewInt(1)
+
+		return result, resultPrecision, err
+	}
+
+	exponentIsNegative := false
+
+	if exponentCmpZero == -1 {
+
+		exponentIsNegative = true
+	}
+
+	if exponentIsNegative == false &&
+		isZeroExponentPrecision == true {
+
+		result, resultPrecision, err =
+			new(bigIntMathPowerNanobot).bigIntToPositiveIntegerPower(
+				base,
+				basePrecision,
+				exponent,
+				exponentPrecision,
+				maxPrecision,
+				ePrefix)
+
+		if err != nil {
+
+			return result, resultPrecision,
+				&FuncReturnError{
+					ErrPrefix: ePrefix.String(),
+					ReturnFunc: "result, resultPrecision, err =\n" +
+						"  new(bigIntMathPowerNanobot).bigIntToPositiveIntegerPower(\n" +
+						"  base, basePrecision, exponent, exponentPrecision,\n" +
+						"  maxPrecision, ePrefix)",
+					ErrContext: fmt.Sprintf("base= '%v'\n"+
+						"basePrecision= '%v'\n"+
+						"exponent= '%v'\n"+
+						"exponentPrecision= '%v'\n"+
+						"maxPrecision= '%v'",
+						base.Text(10),
+						basePrecision.Text(10),
+						exponent.Text(10),
+						exponentPrecision.Text(10),
+						maxPrecision.Text(10)),
+					ErrMessage: err.Error(),
+				}
+		}
+	} else if exponentIsNegative == true &&
+		isZeroExponentPrecision == true {
+
+		result, resultPrecision, err =
+			//new(BigIntMathPower).BigIntToNegativeIntegerPower(
+			new(bigIntMathPowerNeutron).bigIntToNegativeIntegerPower(
+				base,
+				basePrecision,
+				exponent,
+				exponentPrecision,
+				maxPrecision,
+				ePrefix)
+
+		if err != nil {
+
+			return result, resultPrecision,
+				&FuncReturnError{
+					ErrPrefix: ePrefix.String(),
+					ReturnFunc: "result, resultPrecision, err =\n" +
+						"  new(bigIntMathPowerNeutron).bigIntToNegativeIntegerPower(\n" +
+						"  base, basePrecision, exponent, exponentPrecision,\n" +
+						"  maxPrecision, ePrefix)",
+					ErrContext: fmt.Sprintf("base= '%v'\n"+
+						"basePrecision= '%v'\n"+
+						"exponent= '%v'\n"+
+						"exponentPrecision= '%v'\n"+
+						"maxPrecision= '%v'",
+						base.Text(10),
+						basePrecision.Text(10),
+						exponent.Text(10),
+						exponentPrecision.Text(10),
+						maxPrecision.Text(10)),
+					ErrMessage: err.Error(),
+				}
+		}
+	} else if exponentIsNegative == false {
+
+		//} else if exponentIsNegative == false &&
+		//	isZeroExponentPrecision == false {
+
+		result, resultPrecision, err =
+			//new(BigIntMathPower).BigIntToPositiveFractionalPower(
+			new(bigIntMathPowerMinibot).bigIntToPositiveFractionalPower(
+				base,
+				basePrecision,
+				exponent,
+				exponentPrecision,
+				maxPrecision,
+				ePrefix)
+
+		if err != nil {
+
+			return result, resultPrecision,
+				&FuncReturnError{
+					ErrPrefix: ePrefix.String(),
+					ReturnFunc: "result, resultPrecision, err =\n" +
+						"  new(bigIntMathPowerMinibot).bigIntToPositiveFractionalPower(\n" +
+						"  base, basePrecision, exponent, exponentPrecision,\n" +
+						"  maxPrecision, ePrefix)",
+					ErrContext: fmt.Sprintf("base= '%v'\n"+
+						"basePrecision= '%v'\n"+
+						"exponent= '%v'\n"+
+						"exponentPrecision= '%v'\n"+
+						"maxPrecision= '%v'",
+						base.Text(10),
+						basePrecision.Text(10),
+						exponent.Text(10),
+						exponentPrecision.Text(10),
+						maxPrecision.Text(10)),
+					ErrMessage: err.Error(),
+				}
+		}
+	} else {
+		//} else if exponentIsNegative == true &&
+		//	isZeroExponentPrecision == false {
+
+		result, resultPrecision, err =
+			// new(BigIntMathPower).BigIntToNegativeFractionalPower(
+			new(bigIntMathPowerMacrobot).bigIntToNegativeFractionalPower(
+				base,
+				basePrecision,
+				exponent,
+				exponentPrecision,
+				maxPrecision,
+				ePrefix)
+
+		if err != nil {
+
+			return result, resultPrecision,
+				&FuncReturnError{
+					ErrPrefix: ePrefix.String(),
+					ReturnFunc: "result, resultPrecision, err =\n" +
+						"  new(bigIntMathPowerMacrobot).bigIntToNegativeFractionalPower(\n" +
+						"  base, basePrecision, exponent, exponentPrecision,\n" +
+						"  maxPrecision, ePrefix)",
+					ErrContext: fmt.Sprintf("base= '%v'\n"+
+						"basePrecision= '%v'\n"+
+						"exponent= '%v'\n"+
+						"exponentPrecision= '%v'\n"+
+						"maxPrecision= '%v'",
+						base.Text(10),
+						basePrecision.Text(10),
+						exponent.Text(10),
+						exponentPrecision.Text(10),
+						maxPrecision.Text(10)),
+					ErrMessage: err.Error(),
+				}
+		}
+	}
+
+	return result, resultPrecision, nil
+}
