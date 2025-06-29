@@ -1171,7 +1171,7 @@ func (bLog BigIntMathLogarithms) EPwrXFromTaylorSeries(
 			}
 	}
 
-	// eToPwr, err := BigIntMathPower{}.Pwr(e, a, 500)
+	// eToPwr, err := BigIntMathPower{}.BigIntNumPwr(e, a, 500)
 
 	//eToPwr := BigIntMathMultiply{}.MultiplyBigIntNums(e.CopyOut(), e.CopyOut())
 

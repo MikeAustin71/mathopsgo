@@ -5003,13 +5003,13 @@ func (dec *Decimal) Pow(exponent Decimal, maxPrecision uint) (Decimal, error) {
 
 	d3 := new(Decimal).New()
 
-	d3.bigINum, err = new(BigIntMathPower).Pwr(dec.bigINum, exponent.bigINum, maxPrecision)
+	d3.bigINum, err = new(BigIntMathPower).BigIntNumPwr(dec.bigINum, exponent.bigINum, maxPrecision)
 
 	if err != nil {
 		return Decimal{},
 			fmt.Errorf("%v\n"+
 				"Error returned by: \n"+
-				" d3.bigINum, err = BigIntMathPower{}.Pwr(dec.bigINum, exponent.bigINum, maxPrecision)\n"+
+				" d3.bigINum, err = BigIntMathPower{}.BigIntNumPwr(dec.bigINum, exponent.bigINum, maxPrecision)\n"+
 				"Error= %v\n",
 				ePrefix,
 				err.Error())
@@ -5145,14 +5145,14 @@ func (dec *Decimal) PowInt(
 			}
 	}
 
-	bINumResult, err := new(BigIntMathPower).Pwr(dec.bigINum, biNumExponent, maxPrecision)
+	bINumResult, err := new(BigIntMathPower).BigIntNumPwr(dec.bigINum, biNumExponent, maxPrecision)
 
 	if err != nil {
 
 		return Decimal{},
 			&FuncReturnError{
 				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "bINumResult, err := new(BigIntMathPower).Pwr(dec.bigINum, biNumExponent, maxPrecision)",
+				ReturnFunc: "bINumResult, err := new(BigIntMathPower).BigIntNumPwr(dec.bigINum, biNumExponent, maxPrecision)",
 				ErrContext: fmt.Sprintf("dec.bigINum= '%v' biNumExponent= '%v'\n"+
 					"maxPrecision= '%v'", decNumSeps, biNumExponentNumStr, maxPrecision),
 				ErrMessage: err.Error(),

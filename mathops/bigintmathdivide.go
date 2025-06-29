@@ -1942,14 +1942,14 @@ func (bIDivide *BigIntMathDivide) BigIntNumDivideByTenToPowerQuoMod(
 	newMaxPrecision := maxPrecision + 10
 
 	scaleValue, err :=
-		new(BigIntMathPower).Pwr(bigITen, exponent, newMaxPrecision)
+		new(BigIntMathPower).BigIntNumPwr(bigITen, exponent, newMaxPrecision)
 
 	if err != nil {
 
 		return quotient, modulo,
 			&FuncReturnError{
 				ErrPrefix: ePrefix.String(),
-				ReturnFunc: "scaleValue, err := new(BigIntMathPower).Pwr(\n" +
+				ReturnFunc: "scaleValue, err := new(BigIntMathPower).BigIntNumPwr(\n" +
 					"    bigITen, exponent, newMaxPrecision)",
 				ErrContext: "",
 				ErrMessage: err.Error(),
@@ -2532,14 +2532,14 @@ func (bIDivide *BigIntMathDivide) BigIntNumDivideByTenToPowerFracQuo(
 	newMaxPrecision := maxPrecision + 10
 
 	scaleValue, err :=
-		new(BigIntMathPower).Pwr(bIntNum2, exponent, newMaxPrecision)
+		new(BigIntMathPower).BigIntNumPwr(bIntNum2, exponent, newMaxPrecision)
 
 	if err != nil {
 
 		return fracQuotient,
 			&FuncReturnError{
 				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "scaleValue, err := new(BigIntMathPower).Pwr(bIntNum2, exponent, newMaxPrecision)",
+				ReturnFunc: "scaleValue, err := new(BigIntMathPower).BigIntNumPwr(bIntNum2, exponent, newMaxPrecision)",
 				ErrContext: fmt.Sprintf("newMaxPrecision= '%v'", newMaxPrecision),
 				ErrMessage: err.Error(),
 			}
@@ -2658,7 +2658,7 @@ func (bIDivide *BigIntMathDivide) BigIntNumDivideByTenToPowerIntQuo(
 	newScalePrecision := maxPrecision + 10
 
 	scaleValue, err := new(BigIntMathPower).
-		Pwr(bINum10, exponent, newScalePrecision)
+		BigIntNumPwr(bINum10, exponent, newScalePrecision)
 
 	if err != nil {
 
@@ -2666,7 +2666,7 @@ func (bIDivide *BigIntMathDivide) BigIntNumDivideByTenToPowerIntQuo(
 			&FuncReturnError{
 				ErrPrefix: ePrefix.String(),
 				ReturnFunc: "scaleValue, err := new(BigIntMathPower).\n" +
-					"    Pwr(bINum10, exponent, newScalePrecision)",
+					"    BigIntNumPwr(bINum10, exponent, newScalePrecision)",
 				ErrContext: fmt.Sprintf("exponent= '%v' newScalePrecision= '%v'",
 					exponent, newScalePrecision),
 				ErrMessage: err.Error(),
@@ -2814,7 +2814,7 @@ func (bIDivide *BigIntMathDivide) BigIntNumDivideByTenToPowerMod(
 	newScalePrecision := maxPrecision + 10
 
 	scaleValue, err := new(BigIntMathPower).
-		Pwr(bINum10, exponent, newScalePrecision)
+		BigIntNumPwr(bINum10, exponent, newScalePrecision)
 
 	if err != nil {
 
@@ -2822,7 +2822,7 @@ func (bIDivide *BigIntMathDivide) BigIntNumDivideByTenToPowerMod(
 			&FuncReturnError{
 				ErrPrefix: ePrefix.String(),
 				ReturnFunc: "scaleValue, err := new(BigIntMathPower).\n" +
-					"    Pwr(bINum10, exponent, newScalePrecision)",
+					"    BigIntNumPwr(bINum10, exponent, newScalePrecision)",
 				ErrContext: fmt.Sprintf("exponent= '%v' newScalePrecision= '%v'",
 					exponent, newScalePrecision),
 				ErrMessage: err.Error(),

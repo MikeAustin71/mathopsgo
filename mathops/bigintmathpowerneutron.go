@@ -1,262 +1,262 @@
 package mathops
 
 import (
-  "fmt"
-  ePref "github.com/MikeAustin71/errpref"
-  "math/big"
-  "sync"
+	"fmt"
+	ePref "github.com/MikeAustin71/errpref"
+	"math/big"
+	"sync"
 )
 
 type bigIntMathPowerNeutron struct {
-  lock sync.Mutex
+	lock sync.Mutex
 }
 
 // bigIntNumMinRequiredPrecision
 //
-//  Designed to be used with the power function (Pwr). This method
-//  will compute the minimum number of decimal places required to
-//  support the result of raising a 'base' value to a specified
-//  exponent. Both the 'base' and the 'exponent' are passed to this
-//  function as type BigIntNum.
+//	Designed to be used with the power function (BigIntNumPwr). This method
+//	will compute the minimum number of decimal places required to
+//	support the result of raising a 'base' value to a specified
+//	exponent. Both the 'base' and the 'exponent' are passed to this
+//	function as type BigIntNum.
 //
-//  For example, raising the value 3.12 to the power of 4 means that
-//  the result will require at least 8-decimal places to the right of
-//  the decimal in order to display a correct result. In the following
-//  example with base ='3.12' and exponent = '4', this method will
-//  return '8'.
+//	For example, raising the value 3.12 to the power of 4 means that
+//	the result will require at least 8-decimal places to the right of
+//	the decimal in order to display a correct result. In the following
+//	example with base ='3.12' and exponent = '4', this method will
+//	return '8'.
 //
-//  Example
-//  =======
+//	Example
+//	=======
 //
-//  3.12^4 = 94.75854336 (2x4 = 8-digits to the right of the decimal)
-//         Minimum Required Precision = precision x exponent
+//	3.12^4 = 94.75854336 (2x4 = 8-digits to the right of the decimal)
+//	       Minimum Required Precision = precision x exponent
 //
-//  The calculated minimum required precision is returned as type
-//  'uint'.
+//	The calculated minimum required precision is returned as type
+//	'uint'.
 //
-//  If the minimum required precision exceeds the maximum value for
-//  type 'uint' (+4,294,967,295, which equals 2^32 − 1), an error
-//  message is returned in addition to the maximum uint value
-//  (+4,294,967,295).
+//	If the minimum required precision exceeds the maximum value for
+//	type 'uint' (+4,294,967,295, which equals 2^32 − 1), an error
+//	message is returned in addition to the maximum uint value
+//	(+4,294,967,295).
 func (bIMathPwrNeutron *bigIntMathPowerNeutron) bigIntNumMinRequiredPrecision(
-  base *BigIntNum,
-  validateBase bool,
-  exponent *BigIntNum,
-  validateExponent bool,
-  errPrefDto *ePref.ErrPrefixDto) (uint, error) {
+	base *BigIntNum,
+	validateBase bool,
+	exponent *BigIntNum,
+	validateExponent bool,
+	errPrefDto *ePref.ErrPrefixDto) (uint, error) {
 
-  bIMathPwrNeutron.lock.Lock()
+	bIMathPwrNeutron.lock.Lock()
 
-  defer bIMathPwrNeutron.lock.Unlock()
+	defer bIMathPwrNeutron.lock.Unlock()
 
-  var err error
+	var err error
 
-  var ePrefix *ePref.ErrPrefixDto
+	var ePrefix *ePref.ErrPrefixDto
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
-    errPrefDto,
-    "bigIntMathPowerNeutron.bigIntNumMinRequiredPrecision",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
+		errPrefDto,
+		"bigIntMathPowerNeutron.bigIntNumMinRequiredPrecision",
+		"")
 
-  if err != nil {
-    return 0, err
-  }
+	if err != nil {
+		return 0, err
+	}
 
-  if base == nil {
+	if base == nil {
 
-    return 0,
-      &InputPtrNilError{
-        ErrPrefix:     ePrefix.String(),
-        ErrContext:    "",
-        ParameterName: "'base'",
-      }
-  }
+		return 0,
+			&InputPtrNilError{
+				ErrPrefix:     ePrefix.String(),
+				ErrContext:    "",
+				ParameterName: "'base'",
+			}
+	}
 
-  if exponent == nil {
+	if exponent == nil {
 
-    return 0,
-      &InputPtrNilError{
-        ErrPrefix:     ePrefix.String(),
-        ErrContext:    "",
-        ParameterName: "'exponent'",
-      }
-  }
+		return 0,
+			&InputPtrNilError{
+				ErrPrefix:     ePrefix.String(),
+				ErrContext:    "",
+				ParameterName: "'exponent'",
+			}
+	}
 
-  if validateBase {
+	if validateBase {
 
-    err = base.IsValid(ePrefix.XCpy("Validating 'base'").String())
+		err = base.IsValid(ePrefix.XCpy("Validating 'base'").String())
 
-    if err != nil {
+		if err != nil {
 
-      return 0,
-        &FuncReturnError{
-          ErrPrefix: ePrefix.String(),
-          ReturnFunc: "err = base.IsValid(\n" +
-            "  ePrefix.XCpy(\"Validating 'base'\").String()",
-          ErrContext: "Error: Input parameter 'base' is INVALID!\n" +
-            "'base' FAILED validation tests.",
-          ErrMessage: err.Error(),
-        }
-    }
-  }
+			return 0,
+				&FuncReturnError{
+					ErrPrefix: ePrefix.String(),
+					ReturnFunc: "err = base.IsValid(\n" +
+						"  ePrefix.XCpy(\"Validating 'base'\").String()",
+					ErrContext: "Error: Input parameter 'base' is INVALID!\n" +
+						"'base' FAILED validation tests.",
+					ErrMessage: err.Error(),
+				}
+		}
+	}
 
-  if validateExponent {
+	if validateExponent {
 
-    err = exponent.IsValid(ePrefix.XCpy("Validating 'exponent'").String())
+		err = exponent.IsValid(ePrefix.XCpy("Validating 'exponent'").String())
 
-    if err != nil {
+		if err != nil {
 
-      return 0,
-        &FuncReturnError{
-          ErrPrefix: ePrefix.String(),
-          ReturnFunc: "err = exponent.IsValid(\n" +
-            "  ePrefix.XCpy(\"Validating 'exponent'\").String()",
-          ErrContext: "Error: Input parameter 'exponent' is INVALID!\n" +
-            "'exponent' FAILED validation tests.",
-          ErrMessage: err.Error(),
-        }
-    }
-  }
+			return 0,
+				&FuncReturnError{
+					ErrPrefix: ePrefix.String(),
+					ReturnFunc: "err = exponent.IsValid(\n" +
+						"  ePrefix.XCpy(\"Validating 'exponent'\").String()",
+					ErrContext: "Error: Input parameter 'exponent' is INVALID!\n" +
+						"'exponent' FAILED validation tests.",
+					ErrMessage: err.Error(),
+				}
+		}
+	}
 
-  basePrecisionUint, err := base.GetPrecisionUint()
+	basePrecisionUint, err := base.GetPrecisionUint()
 
-  if err != nil {
+	if err != nil {
 
-    return 0,
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "basePrecisionUint, err := base.GetPrecisionUint()",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-  }
+		return 0,
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "basePrecisionUint, err := base.GetPrecisionUint()",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  basePrecision, err := new(BigIntNum).NewUint(basePrecisionUint, 0)
+	basePrecision, err := new(BigIntNum).NewUint(basePrecisionUint, 0)
 
-  if err != nil {
+	if err != nil {
 
-    return 0,
-      &FuncReturnError{
-        ErrPrefix: ePrefix.String(),
-        ReturnFunc: "basePrecision, err := new(BigIntNum).\n" +
-          "  NewUint(basePrecisionUint, 0)",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-  }
+		return 0,
+			&FuncReturnError{
+				ErrPrefix: ePrefix.String(),
+				ReturnFunc: "basePrecision, err := new(BigIntNum).\n" +
+					"  NewUint(basePrecisionUint, 0)",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  basePrecisionNumStr, err := basePrecision.GetNumStr()
+	basePrecisionNumStr, err := basePrecision.GetNumStr()
 
-  if err != nil {
+	if err != nil {
 
-    return 0,
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "basePrecisionNumStr, err := basePrecision.GetNumStr()",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-  }
+		return 0,
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "basePrecisionNumStr, err := basePrecision.GetNumStr()",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  tExponent, err := exponent.CopyOut()
+	tExponent, err := exponent.CopyOut()
 
-  if err != nil {
+	if err != nil {
 
-    return 0,
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "tExponent, err := exponent.CopyOut()",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-  }
+		return 0,
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "tExponent, err := exponent.CopyOut()",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  tExponentNumStr, err := tExponent.GetNumStr()
+	tExponentNumStr, err := tExponent.GetNumStr()
 
-  if err != nil {
+	if err != nil {
 
-    return 0,
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "tExponentNumStr, err := tExponent.GetNumStr()",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-  }
+		return 0,
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "tExponentNumStr, err := tExponent.GetNumStr()",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  tExponentSignValue, err := tExponent.GetSign()
+	tExponentSignValue, err := tExponent.GetSign()
 
-  if err != nil {
+	if err != nil {
 
-    return 0,
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "tExponentSignValue, err := tExponent.GetSign()",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-  }
+		return 0,
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "tExponentSignValue, err := tExponent.GetSign()",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  if tExponentSignValue == -1 {
+	if tExponentSignValue == -1 {
 
-    err = tExponent.ChangeSign()
+		err = tExponent.ChangeSign()
 
-    if err != nil {
+		if err != nil {
 
-      return 0,
-        &FuncReturnError{
-          ErrPrefix:  ePrefix.String(),
-          ReturnFunc: "err = tExponent.ChangeSign()",
-          ErrContext: "tExponentSignValue == -1",
-          ErrMessage: err.Error(),
-        }
-    }
-  }
+			return 0,
+				&FuncReturnError{
+					ErrPrefix:  ePrefix.String(),
+					ReturnFunc: "err = tExponent.ChangeSign()",
+					ErrContext: "tExponentSignValue == -1",
+					ErrMessage: err.Error(),
+				}
+		}
+	}
 
-  minRequiredPrecision, err := new(BigIntMathMultiply).
-    MultiplyBigIntNums(basePrecision, tExponent)
+	minRequiredPrecision, err := new(BigIntMathMultiply).
+		MultiplyBigIntNums(basePrecision, tExponent)
 
-  if err != nil {
+	if err != nil {
 
-    return 0,
-      &FuncReturnError{
-        ErrPrefix: ePrefix.String(),
-        ReturnFunc: "minRequiredPrecision, err := new(BigIntMathMultiply).\n" +
-          "  MultiplyBigIntNums(basePrecision, tExponent)",
-        ErrContext: fmt.Sprintf("basePrecision= '%v'\n"+
-          "tExponent= '%v'", basePrecisionNumStr, tExponentNumStr),
-        ErrMessage: err.Error(),
-      }
-  }
+		return 0,
+			&FuncReturnError{
+				ErrPrefix: ePrefix.String(),
+				ReturnFunc: "minRequiredPrecision, err := new(BigIntMathMultiply).\n" +
+					"  MultiplyBigIntNums(basePrecision, tExponent)",
+				ErrContext: fmt.Sprintf("basePrecision= '%v'\n"+
+					"tExponent= '%v'", basePrecisionNumStr, tExponentNumStr),
+				ErrMessage: err.Error(),
+			}
+	}
 
-  err = minRequiredPrecision.RoundToDecPlace(0)
+	err = minRequiredPrecision.RoundToDecPlace(0)
 
-  if err != nil {
+	if err != nil {
 
-    return 0,
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "err = minRequiredPrecision.RoundToDecPlace(0)",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-  }
+		return 0,
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "err = minRequiredPrecision.RoundToDecPlace(0)",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  minRequiredPrecisionUint, err := minRequiredPrecision.GetUInt()
+	minRequiredPrecisionUint, err := minRequiredPrecision.GetUInt()
 
-  if err != nil {
+	if err != nil {
 
-    return 0,
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "minRequiredPrecisionUint, err := minRequiredPrecision.GetUInt()",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-  }
+		return 0,
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "minRequiredPrecisionUint, err := minRequiredPrecision.GetUInt()",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  return minRequiredPrecisionUint, nil
+	return minRequiredPrecisionUint, nil
 }
 
 // bigIntPwrIteration
@@ -352,161 +352,161 @@ func (bIMathPwrNeutron *bigIntMathPowerNeutron) bigIntNumMinRequiredPrecision(
 //	  message will be formatted and returned. If the calculation
 //	  completes successfully, this return value will be set to 'nil'.
 func (bIMathPwrNeutron *bigIntMathPowerNeutron) bigIntPwrIteration(
-  base *big.Int,
-  basePrecision uint,
-  exponent uint,
-  internalMaxPrecision uint,
-  outputMaxPrecision uint,
-  errPrefDto *ePref.ErrPrefixDto) (
-  baseToPwr *big.Int, baseToPwrPrecision uint, err error) {
+	base *big.Int,
+	basePrecision uint,
+	exponent uint,
+	internalMaxPrecision uint,
+	outputMaxPrecision uint,
+	errPrefDto *ePref.ErrPrefixDto) (
+	baseToPwr *big.Int, baseToPwrPrecision uint, err error) {
 
-  bIMathPwrNeutron.lock.Lock()
+	bIMathPwrNeutron.lock.Lock()
 
-  defer bIMathPwrNeutron.lock.Unlock()
+	defer bIMathPwrNeutron.lock.Unlock()
 
-  baseToPwr = big.NewInt(0)
+	baseToPwr = big.NewInt(0)
 
-  baseToPwrPrecision = 0
+	baseToPwrPrecision = 0
 
-  var ePrefix *ePref.ErrPrefixDto
+	var ePrefix *ePref.ErrPrefixDto
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
-    errPrefDto,
-    "bigIntMathPowerNeutron.bigIntPwrIteration",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
+		errPrefDto,
+		"bigIntMathPowerNeutron.bigIntPwrIteration",
+		"")
 
-  if err != nil {
-    return baseToPwr, baseToPwrPrecision, err
-  }
+	if err != nil {
+		return baseToPwr, baseToPwrPrecision, err
+	}
 
-  if base == nil {
+	if base == nil {
 
-    return baseToPwr, baseToPwrPrecision,
-      &InputPtrNilError{
-        ErrPrefix:     ePrefix.String(),
-        ErrContext:    "",
-        ParameterName: "'base'",
-      }
-  }
+		return baseToPwr, baseToPwrPrecision,
+			&InputPtrNilError{
+				ErrPrefix:     ePrefix.String(),
+				ErrContext:    "",
+				ParameterName: "'base'",
+			}
+	}
 
-  exponent++
+	exponent++
 
-  bigIZero := big.NewInt(0)
+	bigIZero := big.NewInt(0)
 
-  if base.Cmp(bigIZero) == 0 {
+	if base.Cmp(bigIZero) == 0 {
 
-    baseToPwr = big.NewInt(0)
+		baseToPwr = big.NewInt(0)
 
-    baseToPwrPrecision = 0
+		baseToPwrPrecision = 0
 
-    return baseToPwr, baseToPwrPrecision, nil
-  }
+		return baseToPwr, baseToPwrPrecision, nil
+	}
 
-  if base.Cmp(big.NewInt(1)) == 0 {
+	if base.Cmp(big.NewInt(1)) == 0 {
 
-    baseToPwr = big.NewInt(0).Set(base)
+		baseToPwr = big.NewInt(0).Set(base)
 
-    baseToPwrPrecision = basePrecision
+		baseToPwrPrecision = basePrecision
 
-    return baseToPwr, baseToPwrPrecision, nil
-  }
+		return baseToPwr, baseToPwrPrecision, nil
+	}
 
-  if internalMaxPrecision < outputMaxPrecision {
+	if internalMaxPrecision < outputMaxPrecision {
 
-    internalMaxPrecision = outputMaxPrecision + 100
-  }
+		internalMaxPrecision = outputMaxPrecision + 100
+	}
 
-  bigIPlusFive := big.NewInt(5)
+	bigIPlusFive := big.NewInt(5)
 
-  bigIMinusFive := big.NewInt(-5)
+	bigIMinusFive := big.NewInt(-5)
 
-  bigITen := big.NewInt(10)
+	bigITen := big.NewInt(10)
 
-  roundFactor := big.NewInt(0)
+	roundFactor := big.NewInt(0)
 
-  cmpResult := 0
+	cmpResult := 0
 
-  for i := uint(0); i < exponent; i++ {
+	for i := uint(0); i < exponent; i++ {
 
-    if i == 0 {
+		if i == 0 {
 
-      baseToPwr = big.NewInt(1)
+			baseToPwr = big.NewInt(1)
 
-      baseToPwrPrecision = 0
+			baseToPwrPrecision = 0
 
-    } else if i == 1 {
+		} else if i == 1 {
 
-      baseToPwr = big.NewInt(0).Set(base)
+			baseToPwr = big.NewInt(0).Set(base)
 
-      baseToPwrPrecision = basePrecision
+			baseToPwrPrecision = basePrecision
 
-    } else {
+		} else {
 
-      baseToPwr = big.NewInt(0).Mul(baseToPwr, base)
+			baseToPwr = big.NewInt(0).Mul(baseToPwr, base)
 
-      baseToPwrPrecision = baseToPwrPrecision + basePrecision
-    }
+			baseToPwrPrecision = baseToPwrPrecision + basePrecision
+		}
 
-    if baseToPwrPrecision > internalMaxPrecision {
+		if baseToPwrPrecision > internalMaxPrecision {
 
-      // beforeRounding := new(BigIntNum).NewBigInt(baseToPwr, baseToPwrPrecision)
-      delta := baseToPwrPrecision - internalMaxPrecision - 1
+			// beforeRounding := new(BigIntNum).NewBigInt(baseToPwr, baseToPwrPrecision)
+			delta := baseToPwrPrecision - internalMaxPrecision - 1
 
-      scale := big.NewInt(0).Exp(bigITen, big.NewInt(int64(delta)), nil)
+			scale := big.NewInt(0).Exp(bigITen, big.NewInt(int64(delta)), nil)
 
-      cmpResult = baseToPwr.Cmp(bigIZero)
+			cmpResult = baseToPwr.Cmp(bigIZero)
 
-      if cmpResult == 1 {
+			if cmpResult == 1 {
 
-        // baseToPwr is GREATER Than zero
-        roundFactor = big.NewInt(0).Mul(bigIPlusFive, scale)
+				// baseToPwr is GREATER Than zero
+				roundFactor = big.NewInt(0).Mul(bigIPlusFive, scale)
 
-      } else if cmpResult == -1 {
+			} else if cmpResult == -1 {
 
-        // baseToPwr is LESS Than zero
-        roundFactor = big.NewInt(0).Mul(bigIMinusFive, scale)
+				// baseToPwr is LESS Than zero
+				roundFactor = big.NewInt(0).Mul(bigIMinusFive, scale)
 
-      } else {
+			} else {
 
-        baseToPwrPrecision = 0
-        continue
-      }
+				baseToPwrPrecision = 0
+				continue
+			}
 
-      baseToPwr = big.NewInt(0).Add(baseToPwr, roundFactor)
+			baseToPwr = big.NewInt(0).Add(baseToPwr, roundFactor)
 
-      scale = big.NewInt(0).Mul(scale, bigITen)
+			scale = big.NewInt(0).Mul(scale, bigITen)
 
-      baseToPwr = big.NewInt(0).Quo(baseToPwr, scale)
+			baseToPwr = big.NewInt(0).Quo(baseToPwr, scale)
 
-      baseToPwrPrecision = internalMaxPrecision
-    }
-  }
+			baseToPwrPrecision = internalMaxPrecision
+		}
+	}
 
-  if baseToPwrPrecision > outputMaxPrecision {
+	if baseToPwrPrecision > outputMaxPrecision {
 
-    delta := baseToPwrPrecision - outputMaxPrecision - 1
+		delta := baseToPwrPrecision - outputMaxPrecision - 1
 
-    scale := big.NewInt(0).Exp(bigITen, big.NewInt(int64(delta)), nil)
+		scale := big.NewInt(0).Exp(bigITen, big.NewInt(int64(delta)), nil)
 
-    round := big.NewInt(0).Mul(bigIPlusFive, scale)
+		round := big.NewInt(0).Mul(bigIPlusFive, scale)
 
-    if baseToPwr.Cmp(bigIZero) == -1 {
+		if baseToPwr.Cmp(bigIZero) == -1 {
 
-      round = big.NewInt(0).Mul(round, big.NewInt(-1))
+			round = big.NewInt(0).Mul(round, big.NewInt(-1))
 
-    }
+		}
 
-    baseToPwr = big.NewInt(0).Add(baseToPwr, round)
+		baseToPwr = big.NewInt(0).Add(baseToPwr, round)
 
-    scale = big.NewInt(0).Mul(scale, bigITen)
+		scale = big.NewInt(0).Mul(scale, bigITen)
 
-    baseToPwr = big.NewInt(0).Quo(baseToPwr, scale)
+		baseToPwr = big.NewInt(0).Quo(baseToPwr, scale)
 
-    baseToPwrPrecision = outputMaxPrecision
-  }
+		baseToPwrPrecision = outputMaxPrecision
+	}
 
-  return baseToPwr, baseToPwrPrecision, nil
+	return baseToPwr, baseToPwrPrecision, nil
 }
 
 // bigIntegerPwrIteration
@@ -618,250 +618,250 @@ func (bIMathPwrNeutron *bigIntMathPowerNeutron) bigIntPwrIteration(
 //	  caller. If the function completes successfully, this value is
 //	  set to 'nil'.
 func (bIMathPwrNeutron *bigIntMathPowerNeutron) bigIntegerPwrIteration(
-  base *big.Int,
-  basePrecision *big.Int,
-  exponent *big.Int,
-  internalMaxPrecision *big.Int,
-  outputMaxPrecision *big.Int,
-  errPrefDto *ePref.ErrPrefixDto) (baseToPwr *big.Int, baseToPwrPrecision *big.Int, err error) {
-
-  bIMathPwrNeutron.lock.Lock()
-
-  defer bIMathPwrNeutron.lock.Unlock()
-
-  baseToPwr = big.NewInt(0)
-
-  baseToPwrPrecision = big.NewInt(0)
-
-  var ePrefix *ePref.ErrPrefixDto
-
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
-    errPrefDto,
-    "bigIntMathPowerNeutron.bigIntegerPwrIteration",
-    "")
-
-  if err != nil {
-    return baseToPwr, baseToPwrPrecision, err
-  }
-
-  if base == nil {
-
-    return baseToPwr, baseToPwrPrecision,
-      &InputPtrNilError{
-        ErrPrefix:     ePrefix.String(),
-        ErrContext:    "",
-        ParameterName: "'base'",
-      }
-  }
-
-  if basePrecision == nil {
-
-    return baseToPwr, baseToPwrPrecision,
-      &InputPtrNilError{
-        ErrPrefix:     ePrefix.String(),
-        ErrContext:    "",
-        ParameterName: "'basePrecision'",
-      }
-  }
+	base *big.Int,
+	basePrecision *big.Int,
+	exponent *big.Int,
+	internalMaxPrecision *big.Int,
+	outputMaxPrecision *big.Int,
+	errPrefDto *ePref.ErrPrefixDto) (baseToPwr *big.Int, baseToPwrPrecision *big.Int, err error) {
+
+	bIMathPwrNeutron.lock.Lock()
+
+	defer bIMathPwrNeutron.lock.Unlock()
+
+	baseToPwr = big.NewInt(0)
+
+	baseToPwrPrecision = big.NewInt(0)
+
+	var ePrefix *ePref.ErrPrefixDto
+
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
+		errPrefDto,
+		"bigIntMathPowerNeutron.bigIntegerPwrIteration",
+		"")
+
+	if err != nil {
+		return baseToPwr, baseToPwrPrecision, err
+	}
+
+	if base == nil {
+
+		return baseToPwr, baseToPwrPrecision,
+			&InputPtrNilError{
+				ErrPrefix:     ePrefix.String(),
+				ErrContext:    "",
+				ParameterName: "'base'",
+			}
+	}
+
+	if basePrecision == nil {
+
+		return baseToPwr, baseToPwrPrecision,
+			&InputPtrNilError{
+				ErrPrefix:     ePrefix.String(),
+				ErrContext:    "",
+				ParameterName: "'basePrecision'",
+			}
+	}
 
-  if exponent == nil {
+	if exponent == nil {
 
-    return baseToPwr, baseToPwrPrecision,
-      &InputPtrNilError{
-        ErrPrefix:     ePrefix.String(),
-        ErrContext:    "",
-        ParameterName: "'exponent'",
-      }
-  }
+		return baseToPwr, baseToPwrPrecision,
+			&InputPtrNilError{
+				ErrPrefix:     ePrefix.String(),
+				ErrContext:    "",
+				ParameterName: "'exponent'",
+			}
+	}
 
-  if internalMaxPrecision == nil {
+	if internalMaxPrecision == nil {
 
-    return baseToPwr, baseToPwrPrecision,
-      &InputPtrNilError{
-        ErrPrefix:     ePrefix.String(),
-        ErrContext:    "",
-        ParameterName: "'internalMaxPrecision'",
-      }
-  }
+		return baseToPwr, baseToPwrPrecision,
+			&InputPtrNilError{
+				ErrPrefix:     ePrefix.String(),
+				ErrContext:    "",
+				ParameterName: "'internalMaxPrecision'",
+			}
+	}
 
-  if outputMaxPrecision == nil {
+	if outputMaxPrecision == nil {
 
-    return baseToPwr, baseToPwrPrecision,
-      &InputPtrNilError{
-        ErrPrefix:     ePrefix.String(),
-        ErrContext:    "",
-        ParameterName: "'outputMaxPrecision'",
-      }
-  }
+		return baseToPwr, baseToPwrPrecision,
+			&InputPtrNilError{
+				ErrPrefix:     ePrefix.String(),
+				ErrContext:    "",
+				ParameterName: "'outputMaxPrecision'",
+			}
+	}
 
-  bigZero := big.NewInt(0)
+	bigZero := big.NewInt(0)
 
-  bigOne := big.NewInt(1)
+	bigOne := big.NewInt(1)
 
-  if exponent.Cmp(bigZero) == -1 {
+	if exponent.Cmp(bigZero) == -1 {
 
-    return baseToPwr, baseToPwrPrecision,
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "",
-        ErrContext: fmt.Sprintf("exponent = '%v'", exponent.Text(10)),
-        ErrMessage: "Error: Input parameter 'exponent' is out of range!\n" +
-          "'exponent' is a negative number.",
-      }
-  }
+		return baseToPwr, baseToPwrPrecision,
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "",
+				ErrContext: fmt.Sprintf("exponent = '%v'", exponent.Text(10)),
+				ErrMessage: "Error: Input parameter 'exponent' is out of range!\n" +
+					"'exponent' is a negative number.",
+			}
+	}
 
-  if basePrecision.Cmp(bigZero) == -1 {
+	if basePrecision.Cmp(bigZero) == -1 {
 
-    return baseToPwr, baseToPwrPrecision,
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "",
-        ErrContext: fmt.Sprintf("basePrecision = '%v'", basePrecision.Text(10)),
-        ErrMessage: "Error: Input parameter 'basePrecision' is out of range!\n" +
-          "'basePrecision' is a negative number.",
-      }
-  }
+		return baseToPwr, baseToPwrPrecision,
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "",
+				ErrContext: fmt.Sprintf("basePrecision = '%v'", basePrecision.Text(10)),
+				ErrMessage: "Error: Input parameter 'basePrecision' is out of range!\n" +
+					"'basePrecision' is a negative number.",
+			}
+	}
 
-  if outputMaxPrecision.Cmp(bigZero) == -1 {
+	if outputMaxPrecision.Cmp(bigZero) == -1 {
 
-    return baseToPwr, baseToPwrPrecision,
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "",
-        ErrContext: fmt.Sprintf("outputMaxPrecision = '%v'", outputMaxPrecision.Text(10)),
-        ErrMessage: "Error: Input parameter 'outputMaxPrecision' is out of range!\n" +
-          "'outputMaxPrecision' is a negative number.",
-      }
-  }
+		return baseToPwr, baseToPwrPrecision,
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "",
+				ErrContext: fmt.Sprintf("outputMaxPrecision = '%v'", outputMaxPrecision.Text(10)),
+				ErrMessage: "Error: Input parameter 'outputMaxPrecision' is out of range!\n" +
+					"'outputMaxPrecision' is a negative number.",
+			}
+	}
 
-  if base.Cmp(bigZero) == 0 {
-    return baseToPwr, baseToPwrPrecision, err
-  }
+	if base.Cmp(bigZero) == 0 {
+		return baseToPwr, baseToPwrPrecision, err
+	}
 
-  if base.Cmp(bigOne) == 0 &&
-    baseToPwrPrecision.Cmp(bigZero) == 0 {
+	if base.Cmp(bigOne) == 0 &&
+		baseToPwrPrecision.Cmp(bigZero) == 0 {
 
-    baseToPwr = big.NewInt(0).Set(bigOne)
+		baseToPwr = big.NewInt(0).Set(bigOne)
 
-    baseToPwrPrecision.Set(basePrecision)
+		baseToPwrPrecision.Set(basePrecision)
 
-    return baseToPwr, baseToPwrPrecision, err
-  }
+		return baseToPwr, baseToPwrPrecision, err
+	}
 
-  if base.Cmp(big.NewInt(-1)) == 0 &&
-    baseToPwrPrecision.Cmp(bigZero) == 0 {
+	if base.Cmp(big.NewInt(-1)) == 0 &&
+		baseToPwrPrecision.Cmp(bigZero) == 0 {
 
-    baseToPwr = big.NewInt(-1)
+		baseToPwr = big.NewInt(-1)
 
-    baseToPwrPrecision.Set(basePrecision)
+		baseToPwrPrecision.Set(basePrecision)
 
-    return baseToPwr, baseToPwrPrecision, err
-  }
+		return baseToPwr, baseToPwrPrecision, err
+	}
 
-  if internalMaxPrecision.Cmp(outputMaxPrecision) != 1 {
+	if internalMaxPrecision.Cmp(outputMaxPrecision) != 1 {
 
-    internalMaxPrecision = big.NewInt(0).Add(outputMaxPrecision, big.NewInt(100))
-  }
+		internalMaxPrecision = big.NewInt(0).Add(outputMaxPrecision, big.NewInt(100))
+	}
 
-  cycles := big.NewInt(0).Add(exponent, bigOne)
+	cycles := big.NewInt(0).Add(exponent, bigOne)
 
-  bigIPlusFive := big.NewInt(5)
+	bigIPlusFive := big.NewInt(5)
 
-  bigIMinusFive := big.NewInt(-5)
+	bigIMinusFive := big.NewInt(-5)
 
-  bigITen := big.NewInt(10)
+	bigITen := big.NewInt(10)
 
-  roundFactor := big.NewInt(0)
+	roundFactor := big.NewInt(0)
 
-  cmpResult := 0
+	cmpResult := 0
 
-  for i := big.NewInt(0); i.Cmp(cycles) == -1; i.Add(i, bigOne) {
+	for i := big.NewInt(0); i.Cmp(cycles) == -1; i.Add(i, bigOne) {
 
-    if i.Cmp(bigZero) == 0 {
+		if i.Cmp(bigZero) == 0 {
 
-      baseToPwr = big.NewInt(1)
+			baseToPwr = big.NewInt(1)
 
-      baseToPwrPrecision = big.NewInt(0)
+			baseToPwrPrecision = big.NewInt(0)
 
-    } else if i.Cmp(bigOne) == 0 {
+		} else if i.Cmp(bigOne) == 0 {
 
-      baseToPwr = big.NewInt(0).Set(base)
+			baseToPwr = big.NewInt(0).Set(base)
 
-      baseToPwrPrecision = big.NewInt(0).Set(basePrecision)
+			baseToPwrPrecision = big.NewInt(0).Set(basePrecision)
 
-    } else {
+		} else {
 
-      baseToPwr = big.NewInt(0).Mul(baseToPwr, base)
+			baseToPwr = big.NewInt(0).Mul(baseToPwr, base)
 
-      baseToPwrPrecision.Add(baseToPwrPrecision, basePrecision)
-    }
+			baseToPwrPrecision.Add(baseToPwrPrecision, basePrecision)
+		}
 
-    if baseToPwrPrecision.Cmp(internalMaxPrecision) == 1 {
+		if baseToPwrPrecision.Cmp(internalMaxPrecision) == 1 {
 
-      // beforeRounding := new(BigIntNum).NewBigInt(baseToPwr, baseToPwrPrecision)
+			// beforeRounding := new(BigIntNum).NewBigInt(baseToPwr, baseToPwrPrecision)
 
-      delta := big.NewInt(0).Sub(baseToPwrPrecision, internalMaxPrecision)
+			delta := big.NewInt(0).Sub(baseToPwrPrecision, internalMaxPrecision)
 
-      delta.Sub(delta, bigOne)
+			delta.Sub(delta, bigOne)
 
-      scale := big.NewInt(0).Exp(bigITen, delta, nil)
+			scale := big.NewInt(0).Exp(bigITen, delta, nil)
 
-      cmpResult = baseToPwr.Cmp(bigZero)
+			cmpResult = baseToPwr.Cmp(bigZero)
 
-      if cmpResult == 1 {
+			if cmpResult == 1 {
 
-        // baseToPwr is GREATER Than zero
-        roundFactor = big.NewInt(0).Mul(bigIPlusFive, scale)
+				// baseToPwr is GREATER Than zero
+				roundFactor = big.NewInt(0).Mul(bigIPlusFive, scale)
 
-      } else if cmpResult == -1 {
-        // baseToPwr is LESS Than zero
+			} else if cmpResult == -1 {
+				// baseToPwr is LESS Than zero
 
-        roundFactor = big.NewInt(0).Mul(bigIMinusFive, scale)
+				roundFactor = big.NewInt(0).Mul(bigIMinusFive, scale)
 
-      } else {
+			} else {
 
-        baseToPwrPrecision = big.NewInt(0)
+				baseToPwrPrecision = big.NewInt(0)
 
-        continue
-      }
+				continue
+			}
 
-      baseToPwr = big.NewInt(0).Add(baseToPwr, roundFactor)
+			baseToPwr = big.NewInt(0).Add(baseToPwr, roundFactor)
 
-      scale = big.NewInt(0).Mul(scale, bigITen)
+			scale = big.NewInt(0).Mul(scale, bigITen)
 
-      baseToPwr = big.NewInt(0).Quo(baseToPwr, scale)
+			baseToPwr = big.NewInt(0).Quo(baseToPwr, scale)
 
-      baseToPwrPrecision = big.NewInt(0).Set(internalMaxPrecision)
+			baseToPwrPrecision = big.NewInt(0).Set(internalMaxPrecision)
 
-    }
-  }
+		}
+	}
 
-  if baseToPwrPrecision.Cmp(outputMaxPrecision) == 1 {
+	if baseToPwrPrecision.Cmp(outputMaxPrecision) == 1 {
 
-    delta := big.NewInt(0).Sub(baseToPwrPrecision, outputMaxPrecision)
+		delta := big.NewInt(0).Sub(baseToPwrPrecision, outputMaxPrecision)
 
-    delta.Sub(delta, bigOne)
+		delta.Sub(delta, bigOne)
 
-    scale := big.NewInt(0).Exp(bigITen, delta, nil)
+		scale := big.NewInt(0).Exp(bigITen, delta, nil)
 
-    roundFactor = big.NewInt(0).Mul(bigIPlusFive, scale)
+		roundFactor = big.NewInt(0).Mul(bigIPlusFive, scale)
 
-    if baseToPwr.Cmp(bigZero) == -1 {
-      roundFactor = big.NewInt(0).Mul(roundFactor, big.NewInt(-1))
-    }
+		if baseToPwr.Cmp(bigZero) == -1 {
+			roundFactor = big.NewInt(0).Mul(roundFactor, big.NewInt(-1))
+		}
 
-    baseToPwr = big.NewInt(0).Add(baseToPwr, roundFactor)
+		baseToPwr = big.NewInt(0).Add(baseToPwr, roundFactor)
 
-    scale = big.NewInt(0).Mul(scale, bigITen)
+		scale = big.NewInt(0).Mul(scale, bigITen)
 
-    baseToPwr = big.NewInt(0).Quo(baseToPwr, scale)
+		baseToPwr = big.NewInt(0).Quo(baseToPwr, scale)
 
-    baseToPwrPrecision = big.NewInt(0).Set(outputMaxPrecision)
+		baseToPwrPrecision = big.NewInt(0).Set(outputMaxPrecision)
 
-  }
+	}
 
-  return baseToPwr, baseToPwrPrecision, err
+	return baseToPwr, baseToPwrPrecision, err
 }
 
 // bigIntToNegativeIntegerPower
@@ -960,209 +960,209 @@ func (bIMathPwrNeutron *bigIntMathPowerNeutron) bigIntegerPwrIteration(
 //	  message will be formatted and returned. If the calculation
 //	  completes successfully, this return value will be set to 'nil'.
 func (bIMathPwrNeutron *bigIntMathPowerNeutron) bigIntToNegativeIntegerPower(
-  base *big.Int,
-  basePrecision *big.Int,
-  exponent *big.Int,
-  exponentPrecision *big.Int,
-  maxPrecision *big.Int,
-  errPrefDto *ePref.ErrPrefixDto) (
-  result *big.Int, resultPrecision *big.Int, err error) {
+	base *big.Int,
+	basePrecision *big.Int,
+	exponent *big.Int,
+	exponentPrecision *big.Int,
+	maxPrecision *big.Int,
+	errPrefDto *ePref.ErrPrefixDto) (
+	result *big.Int, resultPrecision *big.Int, err error) {
 
-  bIMathPwrNeutron.lock.Lock()
+	bIMathPwrNeutron.lock.Lock()
 
-  defer bIMathPwrNeutron.lock.Unlock()
+	defer bIMathPwrNeutron.lock.Unlock()
 
-  result = big.NewInt(0)
-  resultPrecision = big.NewInt(0)
+	result = big.NewInt(0)
+	resultPrecision = big.NewInt(0)
 
-  var ePrefix *ePref.ErrPrefixDto
+	var ePrefix *ePref.ErrPrefixDto
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
-    errPrefDto,
-    "bigIntMathPowerNeutron.bigIntToNegativeIntegerPower",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
+		errPrefDto,
+		"bigIntMathPowerNeutron.bigIntToNegativeIntegerPower",
+		"")
 
-  if err != nil {
-    return result, resultPrecision, err
-  }
+	if err != nil {
+		return result, resultPrecision, err
+	}
 
-  if base == nil {
+	if base == nil {
 
-    return result, resultPrecision,
-      &InputPtrNilError{
-        ErrPrefix:     ePrefix.String(),
-        ErrContext:    "",
-        ParameterName: "'base'",
-      }
-  }
+		return result, resultPrecision,
+			&InputPtrNilError{
+				ErrPrefix:     ePrefix.String(),
+				ErrContext:    "",
+				ParameterName: "'base'",
+			}
+	}
 
-  if basePrecision == nil {
+	if basePrecision == nil {
 
-    return result, resultPrecision,
-      &InputPtrNilError{
-        ErrPrefix:     ePrefix.String(),
-        ErrContext:    "",
-        ParameterName: "'basePrecision'",
-      }
-  }
+		return result, resultPrecision,
+			&InputPtrNilError{
+				ErrPrefix:     ePrefix.String(),
+				ErrContext:    "",
+				ParameterName: "'basePrecision'",
+			}
+	}
 
-  if exponent == nil {
+	if exponent == nil {
 
-    return result, resultPrecision,
-      &InputPtrNilError{
-        ErrPrefix:     ePrefix.String(),
-        ErrContext:    "",
-        ParameterName: "'exponent'",
-      }
-  }
+		return result, resultPrecision,
+			&InputPtrNilError{
+				ErrPrefix:     ePrefix.String(),
+				ErrContext:    "",
+				ParameterName: "'exponent'",
+			}
+	}
 
-  if exponentPrecision == nil {
+	if exponentPrecision == nil {
 
-    return result, resultPrecision,
-      &InputPtrNilError{
-        ErrPrefix:     ePrefix.String(),
-        ErrContext:    "",
-        ParameterName: "'exponentPrecision'",
-      }
-  }
+		return result, resultPrecision,
+			&InputPtrNilError{
+				ErrPrefix:     ePrefix.String(),
+				ErrContext:    "",
+				ParameterName: "'exponentPrecision'",
+			}
+	}
 
-  if maxPrecision == nil {
+	if maxPrecision == nil {
 
-    return result, resultPrecision,
-      &InputPtrNilError{
-        ErrPrefix:     ePrefix.String(),
-        ErrContext:    "",
-        ParameterName: "'maxPrecision'",
-      }
-  }
+		return result, resultPrecision,
+			&InputPtrNilError{
+				ErrPrefix:     ePrefix.String(),
+				ErrContext:    "",
+				ParameterName: "'maxPrecision'",
+			}
+	}
 
-  bigOne := big.NewInt(1)
+	bigOne := big.NewInt(1)
 
-  bigZero := big.NewInt(0)
+	bigZero := big.NewInt(0)
 
-  if base.Cmp(bigZero) == 0 {
-    // base is zero result is zero
-    return result, resultPrecision, err
-  }
+	if base.Cmp(bigZero) == 0 {
+		// base is zero result is zero
+		return result, resultPrecision, err
+	}
 
-  cmpExponentZero := exponent.Cmp(bigZero)
+	cmpExponentZero := exponent.Cmp(bigZero)
 
-  if cmpExponentZero == 1 {
+	if cmpExponentZero == 1 {
 
-    return result, resultPrecision,
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "",
-        ErrContext: fmt.Sprintf("exponent= '%v'", exponent.Text(10)),
-        ErrMessage: "Error: Input parameter 'exponent' is INVALID!\n" +
-          "'exponent' is a positive value.\n" +
-          "Only negative exponents can be used with this method.",
-      }
-  }
+		return result, resultPrecision,
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "",
+				ErrContext: fmt.Sprintf("exponent= '%v'", exponent.Text(10)),
+				ErrMessage: "Error: Input parameter 'exponent' is INVALID!\n" +
+					"'exponent' is a positive value.\n" +
+					"Only negative exponents can be used with this method.",
+			}
+	}
 
-  if exponentPrecision.Cmp(bigZero) == 1 {
+	if exponentPrecision.Cmp(bigZero) == 1 {
 
-    return result, resultPrecision,
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "",
-        ErrContext: fmt.Sprintf("exponent= '%v'", exponent.Text(10)),
-        ErrMessage: "Error: Input parameter 'exponent' is INVALID!\n" +
-          "'exponent' is NOT an integer. It has fractional digits.\n" +
-          "Only negative, integer exponents can be used with this method.",
-      }
-  }
+		return result, resultPrecision,
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "",
+				ErrContext: fmt.Sprintf("exponent= '%v'", exponent.Text(10)),
+				ErrMessage: "Error: Input parameter 'exponent' is INVALID!\n" +
+					"'exponent' is NOT an integer. It has fractional digits.\n" +
+					"Only negative, integer exponents can be used with this method.",
+			}
+	}
 
-  if maxPrecision.Cmp(bigZero) == -1 {
+	if maxPrecision.Cmp(bigZero) == -1 {
 
-    return result, resultPrecision,
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "",
-        ErrContext: fmt.Sprintf("maxPrecision= '%v'", maxPrecision.Text(10)),
-        ErrMessage: "Error: Input parameter 'maxPrecision' is INVALID!\n" +
-          "'maxPrecision' is a negative value.\n" +
-          "Only positive 'maxPrecision' values can be used with this method.",
-      }
-  }
+		return result, resultPrecision,
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "",
+				ErrContext: fmt.Sprintf("maxPrecision= '%v'", maxPrecision.Text(10)),
+				ErrMessage: "Error: Input parameter 'maxPrecision' is INVALID!\n" +
+					"'maxPrecision' is a negative value.\n" +
+					"Only positive 'maxPrecision' values can be used with this method.",
+			}
+	}
 
-  if cmpExponentZero == 0 {
-    // Any number raised to a zero power is one
-    result = big.NewInt(1)
-    return result, resultPrecision, err
-  }
+	if cmpExponentZero == 0 {
+		// Any number raised to a zero power is one
+		result = big.NewInt(1)
+		return result, resultPrecision, err
+	}
 
-  if exponent.Cmp(big.NewInt(-1)) == 0 {
+	if exponent.Cmp(big.NewInt(-1)) == 0 {
 
-    // if exponent == -1, result is equal to inverseBigIntNum of base
-    result, resultPrecision, err =
-      new(BigIntMathDivide).BigIntFracQuotient(bigOne,
-        big.NewInt(0),
-        base,
-        basePrecision,
-        maxPrecision)
+		// if exponent == -1, result is equal to inverseBigIntNum of base
+		result, resultPrecision, err =
+			new(BigIntMathDivide).BigIntFracQuotient(bigOne,
+				big.NewInt(0),
+				base,
+				basePrecision,
+				maxPrecision)
 
-    if err != nil {
+		if err != nil {
 
-      return result, resultPrecision,
-        &FuncReturnError{
-          ErrPrefix: ePrefix.String(),
-          ReturnFunc: "result, resultPrecision, err =\n" +
-            "  new(BigIntMathDivide).BigIntFracQuotient(\n" +
-            "bigOne, big.NewInt(0), base, basePrecision, maxPrecision)",
-          ErrContext: fmt.Sprintf("bigOne= '1'\n"+
-            "dividendPrecision= '0'\n"+
-            "base= '%v'\n"+
-            "basePrecision= '%v'\n"+
-            "maxPrecision= '%v'\n",
-            base.Text(10), basePrecision.Text(10),
-            maxPrecision.Text(10)),
-          ErrMessage: err.Error(),
-        }
-    }
+			return result, resultPrecision,
+				&FuncReturnError{
+					ErrPrefix: ePrefix.String(),
+					ReturnFunc: "result, resultPrecision, err =\n" +
+						"  new(BigIntMathDivide).BigIntFracQuotient(\n" +
+						"bigOne, big.NewInt(0), base, basePrecision, maxPrecision)",
+					ErrContext: fmt.Sprintf("bigOne= '1'\n"+
+						"dividendPrecision= '0'\n"+
+						"base= '%v'\n"+
+						"basePrecision= '%v'\n"+
+						"maxPrecision= '%v'\n",
+						base.Text(10), basePrecision.Text(10),
+						maxPrecision.Text(10)),
+					ErrMessage: err.Error(),
+				}
+		}
 
-    return result, resultPrecision, err
-  }
+		return result, resultPrecision, err
+	}
 
-  tempExponent := big.NewInt(0).Set(exponent)
+	tempExponent := big.NewInt(0).Set(exponent)
 
-  // Exponent now positive integer value
-  tempExponent.Neg(tempExponent)
+	// Exponent now positive integer value
+	tempExponent.Neg(tempExponent)
 
-  tempResult := big.NewInt(0).Exp(base, tempExponent, nil)
+	tempResult := big.NewInt(0).Exp(base, tempExponent, nil)
 
-  tempResultPrecision := big.NewInt(0).Mul(
-    basePrecision, tempExponent)
+	tempResultPrecision := big.NewInt(0).Mul(
+		basePrecision, tempExponent)
 
-  result, resultPrecision, err =
-    new(BigIntMathDivide).BigIntFracQuotient(
-      bigOne,
-      big.NewInt(0),
-      tempResult,
-      tempResultPrecision,
-      maxPrecision)
+	result, resultPrecision, err =
+		new(BigIntMathDivide).BigIntFracQuotient(
+			bigOne,
+			big.NewInt(0),
+			tempResult,
+			tempResultPrecision,
+			maxPrecision)
 
-  if err != nil {
+	if err != nil {
 
-    return result, resultPrecision,
-      &FuncReturnError{
-        ErrPrefix: ePrefix.String(),
-        ReturnFunc: "result, resultPrecision, err =\n" +
-          "  new(BigIntMathDivide).BigIntFracQuotient(\n" +
-          "bigOne, big.NewInt(0), tempResult, tempResultPrecision, maxPrecision)",
-        ErrContext: fmt.Sprintf("bigOne= '1'\n"+
-          "dividendPrecision= '0'\n"+
-          "tempResult= '%v'\n"+
-          "tempResultPrecision= '%v'\n"+
-          "maxPrecision= '%v'\n",
-          tempResult.Text(10), tempResultPrecision.Text(10),
-          maxPrecision.Text(10)),
-        ErrMessage: err.Error(),
-      }
-  }
+		return result, resultPrecision,
+			&FuncReturnError{
+				ErrPrefix: ePrefix.String(),
+				ReturnFunc: "result, resultPrecision, err =\n" +
+					"  new(BigIntMathDivide).BigIntFracQuotient(\n" +
+					"bigOne, big.NewInt(0), tempResult, tempResultPrecision, maxPrecision)",
+				ErrContext: fmt.Sprintf("bigOne= '1'\n"+
+					"dividendPrecision= '0'\n"+
+					"tempResult= '%v'\n"+
+					"tempResultPrecision= '%v'\n"+
+					"maxPrecision= '%v'\n",
+					tempResult.Text(10), tempResultPrecision.Text(10),
+					maxPrecision.Text(10)),
+				ErrMessage: err.Error(),
+			}
+	}
 
-  return result, resultPrecision, err
+	return result, resultPrecision, err
 }
 
 // bigIntNumRaiseToPositiveIntegerPower
@@ -1190,186 +1190,186 @@ func (bIMathPwrNeutron *bigIntMathPowerNeutron) bigIntToNegativeIntegerPower(
 //	   -2.9      4           70.7281
 //	   -2        3.8        ERROR - Exponent is Fraction
 func (bIMathPwrNeutron *bigIntMathPowerNeutron) bigIntNumRaiseToPositiveIntegerPower(
-  base *BigIntNum,
-  validateBase bool,
-  exponent *BigIntNum,
-  validateExponent bool,
-  errPrefDto *ePref.ErrPrefixDto) (BigIntNum, error) {
+	base *BigIntNum,
+	validateBase bool,
+	exponent *BigIntNum,
+	validateExponent bool,
+	errPrefDto *ePref.ErrPrefixDto) (BigIntNum, error) {
 
-  bIMathPwrNeutron.lock.Lock()
+	bIMathPwrNeutron.lock.Lock()
 
-  defer bIMathPwrNeutron.lock.Unlock()
+	defer bIMathPwrNeutron.lock.Unlock()
 
-  var ePrefix *ePref.ErrPrefixDto
+	var ePrefix *ePref.ErrPrefixDto
 
-  var err error
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
-    errPrefDto,
-    "bigIntMathPowerNeutron.bigIntNumRaiseToPositiveIntegerPower",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
+		errPrefDto,
+		"bigIntMathPowerNeutron.bigIntNumRaiseToPositiveIntegerPower",
+		"")
 
-  if err != nil {
-    return BigIntNum{}, err
-  }
+	if err != nil {
+		return BigIntNum{}, err
+	}
 
-  if base == nil {
+	if base == nil {
 
-    return BigIntNum{},
-      &InputPtrNilError{
-        ErrPrefix:     ePrefix.String(),
-        ErrContext:    "",
-        ParameterName: "'base'",
-      }
-  }
+		return BigIntNum{},
+			&InputPtrNilError{
+				ErrPrefix:     ePrefix.String(),
+				ErrContext:    "",
+				ParameterName: "'base'",
+			}
+	}
 
-  if exponent == nil {
+	if exponent == nil {
 
-    return BigIntNum{},
-      &InputPtrNilError{
-        ErrPrefix:     ePrefix.String(),
-        ErrContext:    "",
-        ParameterName: "'exponent'",
-      }
-  }
+		return BigIntNum{},
+			&InputPtrNilError{
+				ErrPrefix:     ePrefix.String(),
+				ErrContext:    "",
+				ParameterName: "'exponent'",
+			}
+	}
 
-  if validateBase {
+	if validateBase {
 
-    err = base.IsValid(ePrefix.XCpy("Validating 'base'").String())
+		err = base.IsValid(ePrefix.XCpy("Validating 'base'").String())
 
-    if err != nil {
+		if err != nil {
 
-      return BigIntNum{},
-        &FuncReturnError{
-          ErrPrefix: ePrefix.String(),
-          ReturnFunc: "err = base.IsValid(\n" +
-            "  ePrefix.XCpy(\"Validating 'base'\").String()",
-          ErrContext: "Error: Input parameter 'base' is INVALID!\n" +
-            "'base' FAILED validation tests.",
-          ErrMessage: err.Error(),
-        }
-    }
-  }
+			return BigIntNum{},
+				&FuncReturnError{
+					ErrPrefix: ePrefix.String(),
+					ReturnFunc: "err = base.IsValid(\n" +
+						"  ePrefix.XCpy(\"Validating 'base'\").String()",
+					ErrContext: "Error: Input parameter 'base' is INVALID!\n" +
+						"'base' FAILED validation tests.",
+					ErrMessage: err.Error(),
+				}
+		}
+	}
 
-  if validateExponent {
+	if validateExponent {
 
-    err = exponent.IsValid(ePrefix.XCpy("Validating 'exponent'").String())
+		err = exponent.IsValid(ePrefix.XCpy("Validating 'exponent'").String())
 
-    if err != nil {
+		if err != nil {
 
-      return BigIntNum{},
-        &FuncReturnError{
-          ErrPrefix: ePrefix.String(),
-          ReturnFunc: "err = exponent.IsValid(\n" +
-            "  ePrefix.XCpy(\"Validating 'exponent'\").String()",
-          ErrContext: "Error: Input parameter 'exponent' is INVALID!\n" +
-            "'exponent' FAILED validation tests.",
-          ErrMessage: err.Error(),
-        }
-    }
-  }
+			return BigIntNum{},
+				&FuncReturnError{
+					ErrPrefix: ePrefix.String(),
+					ReturnFunc: "err = exponent.IsValid(\n" +
+						"  ePrefix.XCpy(\"Validating 'exponent'\").String()",
+					ErrContext: "Error: Input parameter 'exponent' is INVALID!\n" +
+						"'exponent' FAILED validation tests.",
+					ErrMessage: err.Error(),
+				}
+		}
+	}
 
-  exponentNumStr, err := exponent.GetNumStr()
+	exponentNumStr, err := exponent.GetNumStr()
 
-  if err != nil {
+	if err != nil {
 
-    return BigIntNum{},
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "exponentNumStr, err := exponent.GetNumStr()",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-  }
+		return BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "exponentNumStr, err := exponent.GetNumStr()",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  exponentPrecisionUint, err := exponent.GetPrecisionUint()
+	exponentPrecisionUint, err := exponent.GetPrecisionUint()
 
-  if err != nil {
+	if err != nil {
 
-    return BigIntNum{},
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "exponentPredisionUint, err := exponent.GetPrecisionUint()",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-  }
+		return BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "exponentPredisionUint, err := exponent.GetPrecisionUint()",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  if exponentPrecisionUint > 0 {
+	if exponentPrecisionUint > 0 {
 
-    return BigIntNum{},
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "",
-        ErrContext: fmt.Sprintf("exponent= '%v'", exponentNumStr),
-        ErrMessage: "Error: Input parameter 'exponent' is INVALID!\n" +
-          "'exponent' is an fractional number.\n" +
-          "Only integer exponents can be processed by this method.",
-      }
-  }
+		return BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "",
+				ErrContext: fmt.Sprintf("exponent= '%v'", exponentNumStr),
+				ErrMessage: "Error: Input parameter 'exponent' is INVALID!\n" +
+					"'exponent' is an fractional number.\n" +
+					"Only integer exponents can be processed by this method.",
+			}
+	}
 
-  exponentSignValue, err := exponent.GetSign()
+	exponentSignValue, err := exponent.GetSign()
 
-  if err != nil {
+	if err != nil {
 
-    return BigIntNum{},
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "exponentSignValue, err = exponent.GetSign()",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-  }
+		return BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "exponentSignValue, err = exponent.GetSign()",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  if exponentSignValue < 0 {
+	if exponentSignValue < 0 {
 
-    return BigIntNum{},
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "",
-        ErrContext: fmt.Sprintf("exponent= '%v'", exponentNumStr),
-        ErrMessage: "Error: Input parameter 'exponent' is a negative number.\n" +
-          "Only Positive Exponents can be processed by this method!",
-      }
-  }
+		return BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "",
+				ErrContext: fmt.Sprintf("exponent= '%v'", exponentNumStr),
+				ErrMessage: "Error: Input parameter 'exponent' is a negative number.\n" +
+					"Only Positive Exponents can be processed by this method!",
+			}
+	}
 
-  bigIBasePrecision := big.NewInt(int64(exponentPrecisionUint))
+	bigIBasePrecision := big.NewInt(int64(exponentPrecisionUint))
 
-  bigINewPrecision := big.NewInt(0).Mul(bigIBasePrecision, exponent.bigInt)
+	bigINewPrecision := big.NewInt(0).Mul(bigIBasePrecision, exponent.bigInt)
 
-  newPrecision := uint(bigINewPrecision.Int64())
+	newPrecision := uint(bigINewPrecision.Int64())
 
-  result := big.NewInt(0).Exp(base.bigInt, exponent.bigInt, nil)
+	result := big.NewInt(0).Exp(base.bigInt, exponent.bigInt, nil)
 
-  bINumResult, err := new(BigIntNum).NewBigInt(result, newPrecision)
+	bINumResult, err := new(BigIntNum).NewBigInt(result, newPrecision)
 
-  if err != nil {
+	if err != nil {
 
-    return BigIntNum{},
-      &FuncReturnError{
-        ErrPrefix: ePrefix.String(),
-        ReturnFunc: "bINumResult, err := new(BigIntNum).\n" +
-          "  NewBigInt(result, newPrecision)",
-        ErrContext: "",
-        ErrMessage: err.Error(),
-      }
-  }
+		return BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix: ePrefix.String(),
+				ReturnFunc: "bINumResult, err := new(BigIntNum).\n" +
+					"  NewBigInt(result, newPrecision)",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  err = bINumResult.IsValid(ePrefix.XCpy("Validating 'bINumResult'").String())
+	err = bINumResult.IsValid(ePrefix.XCpy("Validating 'bINumResult'").String())
 
-  if err != nil {
+	if err != nil {
 
-    return BigIntNum{},
-      &FuncReturnError{
-        ErrPrefix: ePrefix.String(),
-        ReturnFunc: "err = bINumResult.IsValid(\n" +
-          "  ePrefix.XCpy(\"Validating 'bINumResult'\").String()",
-        ErrContext: "Error: Final Calculation Result 'bINumResult' is INVALID!\n" +
-          "'bINumResult' FAILED validation tests.",
-        ErrMessage: err.Error(),
-      }
-  }
+		return BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix: ePrefix.String(),
+				ReturnFunc: "err = bINumResult.IsValid(\n" +
+					"  ePrefix.XCpy(\"Validating 'bINumResult'\").String()",
+				ErrContext: "Error: Final Calculation Result 'bINumResult' is INVALID!\n" +
+					"'bINumResult' FAILED validation tests.",
+				ErrMessage: err.Error(),
+			}
+	}
 
-  return bINumResult, nil
+	return bINumResult, nil
 }

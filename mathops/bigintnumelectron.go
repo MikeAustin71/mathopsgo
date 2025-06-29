@@ -306,7 +306,7 @@ func (bINumElectron *bigIntNumElectron) bigIntNumEqualValue(
 		return false, err
 	}
 
-	difference, err := BigIntMathSubtract{}.SubtractBigIntNums(
+	difference, err := new(BigIntMathSubtract).SubtractBigIntNums(
 		bNum3,
 		*b2)
 

@@ -1554,10 +1554,10 @@ func TestBigIntToNegativeFractionalPower(
 	binExponent, _ := mathops.BigIntNum{}.NewBigIntBigPrecision(exponent, exponentPrecision)
 
 	timeStart = time.Now()
-	binPwr, err := mathops.BigIntMathPower{}.Pwr(binBase, binExponent, uint(maxPrecision.Uint64()))
+	binPwr, err := mathops.BigIntMathPower{}.BigIntNumPwr(binBase, binExponent, uint(maxPrecision.Uint64()))
 	timeEnd = time.Now()
 	if err != nil {
-		fmt.Printf("Error returned by BigIntMathPower{}.Pwr(...) "+
+		fmt.Printf("Error returned by BigIntMathPower{}.BigIntNumPwr(...) "+
 			"Error='%v' ", err.Error())
 	}
 
@@ -1565,7 +1565,7 @@ func TestBigIntToNegativeFractionalPower(
 
 	duration = examples.CodeDurationToStr(timeDuration)
 	fmt.Println("------------------------------------------------------------")
-	fmt.Println("               BigIntMathPower{}.Pwr() ")
+	fmt.Println("               BigIntMathPower{}.BigIntNumPwr() ")
 	fmt.Println("------------------------------------------------------------")
 	fmt.Println("     BigIntNum  result: ", binPwr.GetNumStr())
 	fmt.Println("   BigIntNum precision: ", binPwr.GetPrecisionInt())

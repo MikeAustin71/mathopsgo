@@ -385,7 +385,7 @@ func (nthrt *BigIntMathNthRoot) calcPositiveFractionalNthRoot(radicand, nthRoot 
 
 	exponentMaxPrecision, _ := newMaxPrecision.GetUInt()
 
-	newRadicand, _ := BigIntMathPower{}.Pwr(radicand, exponent, exponentMaxPrecision)
+	newRadicand, _ := BigIntMathPower{}.BigIntNumPwr(radicand, exponent, exponentMaxPrecision)
 
 	if newRadicand.GetSign() == -1 {
 

@@ -1165,11 +1165,11 @@ func ExampleBigIntNumPower_01(baseStr, exponentStr, expectedStr string, maxPreci
 	var t1 time.Time
 
 	t0 = time.Now()
-	result, err := mathops.BigIntMathPower{}.Pwr(bINumBase, bINumExponent, maxPrecision)
+	result, err := mathops.BigIntMathPower{}.BigIntNumPwr(bINumBase, bINumExponent, maxPrecision)
 	t1 = time.Now()
 
 	if err != nil {
-		fmt.Printf("Error returned by BigIntMathPower{}.Pwr(bINumBase, bINumExponent, maxPrecision). "+
+		fmt.Printf("Error returned by BigIntMathPower{}.BigIntNumPwr(bINumBase, bINumExponent, maxPrecision). "+
 			"bINumBase='%v' bINumExponent='%v' maxPrecision='%v' Error='%v' \n",
 			bINumBase.GetNumStr(), bINumExponent.GetNumStr(), maxPrecision, err.Error())
 		return
@@ -1178,7 +1178,7 @@ func ExampleBigIntNumPower_01(baseStr, exponentStr, expectedStr string, maxPreci
 	str := CodeDurationToStr(t1.Sub(t0))
 
 	fmt.Println()
-	fmt.Println("*** BigIntMathPower{}.Pwr() ***")
+	fmt.Println("*** BigIntMathPower{}.BigIntNumPwr() ***")
 	fmt.Println("===============================")
 	if expectedStr != result.GetNumStr() {
 		fmt.Println("XXX FAILURE XXX")

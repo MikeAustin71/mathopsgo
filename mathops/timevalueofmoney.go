@@ -226,14 +226,14 @@ func (tvm *TimeValOfMoney) LumpSumFVBigIntNum(
 			}
 	}
 
-	pwrN, err := new(BigIntMathPower).Pwr(onePlusI, numOfPeriods, maxPrecision)
+	pwrN, err := new(BigIntMathPower).BigIntNumPwr(onePlusI, numOfPeriods, maxPrecision)
 
 	if err != nil {
 
 		return BigIntNum{},
 			&FuncReturnError{
 				ErrPrefix: ePrefix.String(),
-				ReturnFunc: "pwrN, err := new(BigIntMathPower).Pwr(\n" +
+				ReturnFunc: "pwrN, err := new(BigIntMathPower).BigIntNumPwr(\n" +
 					"  onePlusI, numOfPeriods, maxPrecision)",
 				ErrContext: fmt.Sprintf("onePlusI= '%v'\n"+
 					"numOfPeriods= '%v'\nmaxPrecision='%v'",
@@ -442,14 +442,14 @@ func (tvm *TimeValOfMoney) LumpSumPVBigIntNum(
 			}
 	}
 
-	DRtoPwr, err := new(BigIntMathPower).Pwr(onePlusDr, numOfPeriods, maxPrecision)
+	DRtoPwr, err := new(BigIntMathPower).BigIntNumPwr(onePlusDr, numOfPeriods, maxPrecision)
 
 	if err != nil {
 
 		return BigIntNum{},
 			&FuncReturnError{
 				ErrPrefix: ePrefix.String(),
-				ReturnFunc: "DRtoPwr, err := new(BigIntMathPower).Pwr(\n" +
+				ReturnFunc: "DRtoPwr, err := new(BigIntMathPower).BigIntNumPwr(\n" +
 					"  onePlusDr, numOfPeriods, maxPrecision)",
 				ErrContext: "",
 				ErrMessage: err.Error(),

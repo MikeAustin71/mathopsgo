@@ -1,15 +1,14 @@
 package mathops
 
 import (
-  "fmt"
-  ePref "github.com/MikeAustin71/errpref"
-  "math/big"
+	ePref "github.com/MikeAustin71/errpref"
+	"math/big"
 )
 
 type BigIntMathPower struct {
-  Base     BigIntNum
-  Exponent BigIntNum
-  Result   BigIntNum
+	Base     BigIntNum
+	Exponent BigIntNum
+	Result   BigIntNum
 }
 
 // BigIntPwr
@@ -21,174 +20,169 @@ type BigIntMathPower struct {
 //	This method uses the exponent method ('Exp') provided by the go
 //	"math/big" package.
 func (bIPwr *BigIntMathPower) BigIntPwr(
-  base *big.Int,
-  basePrecision *big.Int,
-  exponent *big.Int,
-  exponentPrecision *big.Int,
-  maxPrecision *big.Int) (result *big.Int, resultPrecision *big.Int, err error) {
+	base *big.Int,
+	basePrecision *big.Int,
+	exponent *big.Int,
+	exponentPrecision *big.Int,
+	maxPrecision *big.Int) (result *big.Int, resultPrecision *big.Int, err error) {
 
-  result = big.NewInt(0)
-  resultPrecision = big.NewInt(0)
+	result = big.NewInt(0)
+	resultPrecision = big.NewInt(0)
 
-  var ePrefix *ePref.ErrPrefixDto
+	var ePrefix *ePref.ErrPrefixDto
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewIEmpty(
-    nil,
-    "BigIntMathPower.BigIntPwr",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"BigIntMathPower.BigIntPwr",
+		"")
 
-  if err != nil {
-    return result, resultPrecision, err
-  }
+	if err != nil {
+		return result, resultPrecision, err
+	}
 
-  bigZero := big.NewInt(0)
+	bigZero := big.NewInt(0)
 
-  if base.Cmp(bigZero) == 0 {
-    // zero to any power is zero
-    return result, resultPrecision, err
-  }
+	if base.Cmp(bigZero) == 0 {
+		// zero to any power is zero
+		return result, resultPrecision, err
+	}
 
-  isZeroExponentPrecision := false
+	isZeroExponentPrecision := false
 
-  if exponentPrecision.Cmp(bigZero) == 0 {
+	if exponentPrecision.Cmp(bigZero) == 0 {
 
-    isZeroExponentPrecision = true
-  }
+		isZeroExponentPrecision = true
+	}
 
-  exponentCmpZero := exponent.Cmp(bigZero)
+	exponentCmpZero := exponent.Cmp(bigZero)
 
-  if exponentCmpZero == 0 {
+	if exponentCmpZero == 0 {
 
-    result = big.NewInt(1)
+		result = big.NewInt(1)
 
-    return result, resultPrecision, err
-  }
+		return result, resultPrecision, err
+	}
 
-  exponentIsNegative := false
+	exponentIsNegative := false
 
-  if exponentCmpZero == -1 {
+	if exponentCmpZero == -1 {
 
-    exponentIsNegative = true
-  }
+		exponentIsNegative = true
+	}
 
-  if exponentIsNegative == false &&
-    isZeroExponentPrecision == true {
+	if exponentIsNegative == false &&
+		isZeroExponentPrecision == true {
 
-    result, resultPrecision, err =
-      new(bigIntMathPowerNanobot).bigIntToPositiveIntegerPower(
-        base,
-        basePrecision,
-        exponent,
-        exponentPrecision,
-        maxPrecision,
-        ePrefix)
+		result, resultPrecision, err =
+			new(bigIntMathPowerNanobot).bigIntToPositiveIntegerPower(
+				base,
+				basePrecision,
+				exponent,
+				exponentPrecision,
+				maxPrecision,
+				ePrefix)
 
-    if err != nil {
+		if err != nil {
 
-      return result, resultPrecision,
-        &FuncReturnError{
-          ErrPrefix: ePrefix.String(),
-          ReturnFunc: "result, resultPrecision, err =\n" +
-            "  new(bigIntMathPowerNanobot).bigIntToPositiveIntegerPower(\n" +
-            "  base, basePrecision, exponent, exponentPrecision,\n" +
-            "  maxPrecision, ePrefix)",
-          ErrContext: "",
-          ErrMessage: err.Error(),
-        }
-    }
+			return result, resultPrecision,
+				&FuncReturnError{
+					ErrPrefix: ePrefix.String(),
+					ReturnFunc: "result, resultPrecision, err =\n" +
+						"  new(bigIntMathPowerNanobot).bigIntToPositiveIntegerPower(\n" +
+						"  base, basePrecision, exponent, exponentPrecision,\n" +
+						"  maxPrecision, ePrefix)",
+					ErrContext: "",
+					ErrMessage: err.Error(),
+				}
+		}
 
-  } else if exponentIsNegative == true &&
-    isZeroExponentPrecision == true {
+	} else if exponentIsNegative == true &&
+		isZeroExponentPrecision == true {
 
-    result, resultPrecision, err =
-    //new(BigIntMathPower).BigIntToNegativeIntegerPower(
-      new(bigIntMathPowerNeutron).bigIntToNegativeIntegerPower(
-        base,
-        basePrecision,
-        exponent,
-        exponentPrecision,
-        maxPrecision,
-        ePrefix)
+		result, resultPrecision, err =
+			//new(BigIntMathPower).BigIntToNegativeIntegerPower(
+			new(bigIntMathPowerNeutron).bigIntToNegativeIntegerPower(
+				base,
+				basePrecision,
+				exponent,
+				exponentPrecision,
+				maxPrecision,
+				ePrefix)
 
-    if err != nil {
+		if err != nil {
 
-      return result, resultPrecision,
-        &FuncReturnError{
-          ErrPrefix: ePrefix.String(),
-          ReturnFunc: "result, resultPrecision, err =\n" +
-            "  new(bigIntMathPowerNeutron).bigIntToNegativeIntegerPower(\n" +
-            "  base, basePrecision, exponent, exponentPrecision,\n" +
-            "  maxPrecision, ePrefix)",
-          ErrContext: "",
-          ErrMessage: err.Error(),
-        }
-    }
+			return result, resultPrecision,
+				&FuncReturnError{
+					ErrPrefix: ePrefix.String(),
+					ReturnFunc: "result, resultPrecision, err =\n" +
+						"  new(bigIntMathPowerNeutron).bigIntToNegativeIntegerPower(\n" +
+						"  base, basePrecision, exponent, exponentPrecision,\n" +
+						"  maxPrecision, ePrefix)",
+					ErrContext: "",
+					ErrMessage: err.Error(),
+				}
+		}
 
-  } else if exponentIsNegative == false {
+	} else if exponentIsNegative == false {
 
-    //} else if exponentIsNegative == false &&
-    //	isZeroExponentPrecision == false {
+		//} else if exponentIsNegative == false &&
+		//	isZeroExponentPrecision == false {
 
-    result, resultPrecision, err =
-    //new(BigIntMathPower).BigIntToPositiveFractionalPower(
-      new(bigIntMathPowerMinibot).bigIntToPositiveFractionalPower(
-        base,
-        basePrecision,
-        exponent,
-        exponentPrecision,
-        maxPrecision,
-        ePrefix)
+		result, resultPrecision, err =
+			//new(BigIntMathPower).BigIntToPositiveFractionalPower(
+			new(bigIntMathPowerMinibot).bigIntToPositiveFractionalPower(
+				base,
+				basePrecision,
+				exponent,
+				exponentPrecision,
+				maxPrecision,
+				ePrefix)
 
-    if err != nil {
+		if err != nil {
 
-      return result, resultPrecision,
-        &FuncReturnError{
-          ErrPrefix: ePrefix.String(),
-          ReturnFunc: "result, resultPrecision, err =\n" +
-            "  new(bigIntMathPowerMinibot).bigIntToPositiveFractionalPower(\n" +
-            "  base, basePrecision, exponent, exponentPrecision,\n" +
-            "  maxPrecision, ePrefix)",
-          ErrContext: "",
-          ErrMessage: err.Error(),
-        }
-    }
+			return result, resultPrecision,
+				&FuncReturnError{
+					ErrPrefix: ePrefix.String(),
+					ReturnFunc: "result, resultPrecision, err =\n" +
+						"  new(bigIntMathPowerMinibot).bigIntToPositiveFractionalPower(\n" +
+						"  base, basePrecision, exponent, exponentPrecision,\n" +
+						"  maxPrecision, ePrefix)",
+					ErrContext: "",
+					ErrMessage: err.Error(),
+				}
+		}
 
-  } else {
-    //} else if exponentIsNegative == true &&
-    //	isZeroExponentPrecision == false {
+	} else {
+		//} else if exponentIsNegative == true &&
+		//	isZeroExponentPrecision == false {
 
-    result, resultPrecision, err =
-    // new(BigIntMathPower).BigIntToNegativeFractionalPower(
-      new(bigIntMathPowerMacrobot).bigIntToNegativeFractionalPower(
-        base,
-        basePrecision,
-        exponent,
-        exponentPrecision,
-        maxPrecision,
-        ePrefix)
+		result, resultPrecision, err =
+			// new(BigIntMathPower).BigIntToNegativeFractionalPower(
+			new(bigIntMathPowerMacrobot).bigIntToNegativeFractionalPower(
+				base,
+				basePrecision,
+				exponent,
+				exponentPrecision,
+				maxPrecision,
+				ePrefix)
 
-    if err != nil {
+		if err != nil {
 
-      return result, resultPrecision,
-        &FuncReturnError{
-          ErrPrefix: ePrefix.String(),
-          ReturnFunc: "result, resultPrecision, err =\n" +
-            "  new(bigIntMathPowerMacrobot).bigIntToNegativeFractionalPower(\n" +
-            "  base, basePrecision, exponent, exponentPrecision,\n" +
-            "  maxPrecision, ePrefix)",
-          ErrContext: "",
-          ErrMessage: err.Error(),
-        }
-    }
-  }
+			return result, resultPrecision,
+				&FuncReturnError{
+					ErrPrefix: ePrefix.String(),
+					ReturnFunc: "result, resultPrecision, err =\n" +
+						"  new(bigIntMathPowerMacrobot).bigIntToNegativeFractionalPower(\n" +
+						"  base, basePrecision, exponent, exponentPrecision,\n" +
+						"  maxPrecision, ePrefix)",
+					ErrContext: "",
+					ErrMessage: err.Error(),
+				}
+		}
+	}
 
-  //else {
-  //
-  //	errx = errors.New("Setup Configuration Error! INVALID Calculation!")
-  //}
-
-  return result, resultPrecision, nil
+	return result, resultPrecision, nil
 }
 
 // BigIntToNegativeFractionalPower
@@ -273,30 +267,30 @@ func (bIPwr *BigIntMathPower) BigIntPwr(
 //	  message will be formatted and returned. If the calculation
 //	  completes successfully, this return value will be set to 'nil'.
 func (bIPwr *BigIntMathPower) BigIntToNegativeFractionalPower(
-  base *big.Int,
-  basePrecision *big.Int,
-  exponent *big.Int,
-  exponentPrecision *big.Int,
-  maxPrecision *big.Int) (result *big.Int, resultPrecision *big.Int, err error) {
+	base *big.Int,
+	basePrecision *big.Int,
+	exponent *big.Int,
+	exponentPrecision *big.Int,
+	maxPrecision *big.Int) (result *big.Int, resultPrecision *big.Int, err error) {
 
-  result = big.NewInt(0)
+	result = big.NewInt(0)
 
-  resultPrecision = big.NewInt(0)
+	resultPrecision = big.NewInt(0)
 
-  var ePrefix *ePref.ErrPrefixDto
+	var ePrefix *ePref.ErrPrefixDto
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewIEmpty(
-    nil,
-    "BigIntMathPower.BigIntToNegativeFractionalPower",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"BigIntMathPower.BigIntToNegativeFractionalPower",
+		"")
 
-  if err != nil {
-    return result, resultPrecision, err
-  }
+	if err != nil {
+		return result, resultPrecision, err
+	}
 
-  return new(bigIntMathPowerMacrobot).bigIntToNegativeFractionalPower(
-    base, basePrecision, exponent, exponentPrecision, maxPrecision, ePrefix)
+	return new(bigIntMathPowerMacrobot).bigIntToNegativeFractionalPower(
+		base, basePrecision, exponent, exponentPrecision, maxPrecision, ePrefix)
 }
 
 // BigIntToPositiveFractionalPower
@@ -378,26 +372,26 @@ func (bIPwr *BigIntMathPower) BigIntToNegativeFractionalPower(
 //	  message will be formatted and returned. If the calculation
 //	  completes successfully, this return value will be set to 'nil'.
 func (bIPwr *BigIntMathPower) BigIntToPositiveFractionalPower(
-  base,
-  basePrecision,
-  exponent,
-  exponentPrecision,
-  maxPrecision *big.Int) (result *big.Int, resultPrecision *big.Int, err error) {
+	base,
+	basePrecision,
+	exponent,
+	exponentPrecision,
+	maxPrecision *big.Int) (result *big.Int, resultPrecision *big.Int, err error) {
 
-  var ePrefix *ePref.ErrPrefixDto
+	var ePrefix *ePref.ErrPrefixDto
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewIEmpty(
-    nil,
-    "BigIntMathPower.BigIntToPositiveFractionalPower",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"BigIntMathPower.BigIntToPositiveFractionalPower",
+		"")
 
-  if err != nil {
-    return result, resultPrecision, err
-  }
+	if err != nil {
+		return result, resultPrecision, err
+	}
 
-  return new(bigIntMathPowerMinibot).bigIntToPositiveFractionalPower(
-    base, basePrecision, exponent, exponentPrecision, maxPrecision, ePrefix)
+	return new(bigIntMathPowerMinibot).bigIntToPositiveFractionalPower(
+		base, basePrecision, exponent, exponentPrecision, maxPrecision, ePrefix)
 }
 
 // BigIntToNegativeIntegerPower
@@ -481,26 +475,26 @@ func (bIPwr *BigIntMathPower) BigIntToPositiveFractionalPower(
 //	  message will be formatted and returned. If the calculation
 //	  completes successfully, this return value will be set to 'nil'.
 func (bIPwr *BigIntMathPower) BigIntToNegativeIntegerPower(
-  base,
-  basePrecision,
-  exponent,
-  exponentPrecision,
-  maxPrecision *big.Int) (result *big.Int, resultPrecision *big.Int, err error) {
+	base,
+	basePrecision,
+	exponent,
+	exponentPrecision,
+	maxPrecision *big.Int) (result *big.Int, resultPrecision *big.Int, err error) {
 
-  var ePrefix *ePref.ErrPrefixDto
+	var ePrefix *ePref.ErrPrefixDto
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewIEmpty(
-    nil,
-    "BigIntMathPower.BigIntToNegativeIntegerPower",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"BigIntMathPower.BigIntToNegativeIntegerPower",
+		"")
 
-  if err != nil {
-    return result, resultPrecision, err
-  }
+	if err != nil {
+		return result, resultPrecision, err
+	}
 
-  return new(bigIntMathPowerNeutron).bigIntToNegativeIntegerPower(
-    base, basePrecision, exponent, exponentPrecision, maxPrecision, ePrefix)
+	return new(bigIntMathPowerNeutron).bigIntToNegativeIntegerPower(
+		base, basePrecision, exponent, exponentPrecision, maxPrecision, ePrefix)
 }
 
 // BigIntToPositiveIntegerPower
@@ -579,27 +573,27 @@ func (bIPwr *BigIntMathPower) BigIntToNegativeIntegerPower(
 //	  If the calculation encounters an error, an appropriate error
 //	  message will be formatted and returned.
 func (bIPwr *BigIntMathPower) BigIntToPositiveIntegerPower(
-  base,
-  basePrecision,
-  exponent,
-  exponentPrecision,
-  maxPrecision *big.Int) (result *big.Int, resultPrecision *big.Int, err error) {
+	base,
+	basePrecision,
+	exponent,
+	exponentPrecision,
+	maxPrecision *big.Int) (result *big.Int, resultPrecision *big.Int, err error) {
 
-  var ePrefix *ePref.ErrPrefixDto
+	var ePrefix *ePref.ErrPrefixDto
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewIEmpty(
-    nil,
-    "BigIntMathPower.BigIntToPositiveIntegerPower",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"BigIntMathPower.BigIntToPositiveIntegerPower",
+		"")
 
-  if err != nil {
-    return result, resultPrecision, err
-  }
+	if err != nil {
+		return result, resultPrecision, err
+	}
 
-  return new(bigIntMathPowerNanobot).
-    bigIntToPositiveIntegerPower(
-      base, basePrecision, exponent, exponentPrecision, maxPrecision, ePrefix)
+	return new(bigIntMathPowerNanobot).
+		bigIntToPositiveIntegerPower(
+			base, basePrecision, exponent, exponentPrecision, maxPrecision, ePrefix)
 }
 
 // BigIntPwrIteration
@@ -680,28 +674,28 @@ func (bIPwr *BigIntMathPower) BigIntToPositiveIntegerPower(
 //	  message will be formatted and returned. If the calculation
 //	  completes successfully, this return value will be set to 'nil'.
 func (bIPwr *BigIntMathPower) BigIntPwrIteration(
-  base *big.Int,
-  basePrecision,
-  exponent,
-  internalMaxPrecision,
-  outputMaxPrecision uint) (baseToPwr *big.Int, baseToPwrPrecision uint, err error) {
+	base *big.Int,
+	basePrecision uint,
+	exponent uint,
+	internalMaxPrecision uint,
+	outputMaxPrecision uint) (baseToPwr *big.Int, baseToPwrPrecision uint, err error) {
 
-  baseToPwr = big.NewInt(0)
+	baseToPwr = big.NewInt(0)
 
-  var ePrefix *ePref.ErrPrefixDto
+	var ePrefix *ePref.ErrPrefixDto
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewIEmpty(
-    nil,
-    "BigIntMathPower.BigIntPwrIteration",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"BigIntMathPower.BigIntPwrIteration",
+		"")
 
-  if err != nil {
-    return baseToPwr, baseToPwrPrecision, err
-  }
+	if err != nil {
+		return baseToPwr, baseToPwrPrecision, err
+	}
 
-  return new(bigIntMathPowerNeutron).bigIntPwrIteration(
-    base, basePrecision, exponent, internalMaxPrecision, outputMaxPrecision, ePrefix)
+	return new(bigIntMathPowerNeutron).bigIntPwrIteration(
+		base, basePrecision, exponent, internalMaxPrecision, outputMaxPrecision, ePrefix)
 }
 
 // BigIntegerPwrIteration
@@ -798,29 +792,29 @@ func (bIPwr *BigIntMathPower) BigIntPwrIteration(
 //	  caller. If the function completes successfully, this value is
 //	  set to 'nil'.
 func (bIPwr *BigIntMathPower) BigIntegerPwrIteration(
-  base,
-  basePrecision,
-  exponent,
-  internalMaxPrecision,
-  outputMaxPrecision *big.Int) (baseToPwr *big.Int, baseToPwrPrecision *big.Int, err error) {
+	base,
+	basePrecision,
+	exponent,
+	internalMaxPrecision,
+	outputMaxPrecision *big.Int) (baseToPwr *big.Int, baseToPwrPrecision *big.Int, err error) {
 
-  baseToPwr = big.NewInt(0)
-  baseToPwrPrecision = big.NewInt(0)
+	baseToPwr = big.NewInt(0)
+	baseToPwrPrecision = big.NewInt(0)
 
-  var ePrefix *ePref.ErrPrefixDto
+	var ePrefix *ePref.ErrPrefixDto
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewIEmpty(
-    nil,
-    "BigIntMathPower.BigIntegerPwrIteration",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"BigIntMathPower.BigIntegerPwrIteration",
+		"")
 
-  if err != nil {
-    return baseToPwr, baseToPwrPrecision, err
-  }
+	if err != nil {
+		return baseToPwr, baseToPwrPrecision, err
+	}
 
-  return new(bigIntMathPowerNeutron).bigIntegerPwrIteration(
-    base, basePrecision, exponent, internalMaxPrecision, outputMaxPrecision, ePrefix)
+	return new(bigIntMathPowerNeutron).bigIntegerPwrIteration(
+		base, basePrecision, exponent, internalMaxPrecision, outputMaxPrecision, ePrefix)
 }
 
 // FixedDecimalPwrIteration
@@ -897,30 +891,30 @@ func (bIPwr *BigIntMathPower) BigIntegerPwrIteration(
 //	  caller. If the function completes successfully, this value is
 //	  set to 'nil'.
 func (bIPwr *BigIntMathPower) FixedDecimalPwrIteration(
-  base BigIntFixedDecimal,
-  exponent uint,
-  internalMaxPrecision uint,
-  outputMaxPrecision uint) (baseToPwr BigIntFixedDecimal, err error) {
+	base BigIntFixedDecimal,
+	exponent uint,
+	internalMaxPrecision uint,
+	outputMaxPrecision uint) (baseToPwr BigIntFixedDecimal, err error) {
 
-  var ePrefix *ePref.ErrPrefixDto
+	var ePrefix *ePref.ErrPrefixDto
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewIEmpty(
-    nil,
-    "BigIntMathPower.FixedDecimalPwrIteration",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"BigIntMathPower.FixedDecimalPwrIteration",
+		"")
 
-  if err != nil {
-    return baseToPwr, err
-  }
+	if err != nil {
+		return baseToPwr, err
+	}
 
-  return new(bigIntMathPowerAtom).fixedDecimalPwrIteration(
-    base, true, exponent, internalMaxPrecision, outputMaxPrecision, ePrefix)
+	return new(bigIntMathPowerAtom).fixedDecimalPwrIteration(
+		base, true, exponent, internalMaxPrecision, outputMaxPrecision, ePrefix)
 }
 
 // BigIntNumMinRequiredPrecision
 //
-//	Designed to be used with the power function (Pwr). This method
+//	Designed to be used with the power function (BigIntNumPwr). This method
 //	will compute the minimum number of decimal places required to
 //	support the result of raising a 'base' value to a specified
 //	exponent. Both the 'base' and the 'exponent' are passed to this
@@ -946,135 +940,74 @@ func (bIPwr *BigIntMathPower) FixedDecimalPwrIteration(
 //	message is returned in addition to the maximum uint value
 //	(+4,294,967,295).
 func (bIPwr *BigIntMathPower) BigIntNumMinRequiredPrecision(
-  base, exponent BigIntNum) (uint, error) {
+	base, exponent BigIntNum) (uint, error) {
 
-  var ePrefix *ePref.ErrPrefixDto
-  var err error
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewIEmpty(
-    nil,
-    "BigIntMathPower.BigIntNumMinRequiredPrecision",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"BigIntMathPower.BigIntNumMinRequiredPrecision",
+		"")
 
-  if err != nil {
-    return 0, err
-  }
+	if err != nil {
+		return 0, err
+	}
 
-  return new(bigIntMathPowerNeutron).bigIntNumMinRequiredPrecision(
-    &base, true, &exponent, true, ePrefix)
+	return new(bigIntMathPowerNeutron).bigIntNumMinRequiredPrecision(
+		&base, true, &exponent, true, ePrefix)
 }
 
-// Pwr - Raises 'base' to the power of 'exponent'.  Both 'base' and 'exponent' are Type BigIntNum.
-// Upon computing the result of 'base' raised to the power of 'exponent' (base^exponent), the result
-// is returned as Type BigIntNum.
+// BigIntNumPwr
 //
-// Examples:
-// =========
+//	Raises 'base' to the power of 'exponent'.  Both 'base' and
+//	'exponent' are Type BigIntNum.
 //
-//	base				exponent				maxPrecision	  		result
+//	Upon computing the result of 'base' raised to the power of
+//	'exponent' (base^exponent), the result is returned as a Type
+//	BigIntNum.
 //
-// -------			---------  			-------------	 			-------
+//	Examples
+//	========
 //
-//		2							 4								17								16
-//	 2							-4								17								 0.0625
-//	 3.7						 2.8							30								38.991040735983142451443031376258
-//	 3.7						-2.8							32 								 0.02564691737189623971146450249457
+//	base    exponent    maxPrecision  result
 //
-// -2							-3.8							32								 0.07179364718731468792491418417362
-// -2              3.8              30								13.928809012737986226180320279676
+//	 2         4            17        16
+//	 2        -4            17         0.0625
+//	 3.7       2.8          30        38.991040735983142451443031376258
+//	 3.7      -2.8          32         0.02564691737189623971146450249457
 //
-// The return value, a type BigIntNum, represents the result of the base^exponent operation described above.
-// This returned BigIntNum 'result' will contain numeric separators (decimal separator, thousands separator
-// and currency symbol) copied from input parameter,'base'.
-func (bIPwr *BigIntMathPower) Pwr(base, exponent BigIntNum, maxPrecision uint) (BigIntNum, error) {
+//	-2		    -3.8          32         0.07179364718731468792491418417362
+//	-2         3.8          30        13.928809012737986226180320279676
+//
+//	The return value, a type BigIntNum, represents the result of the
+//	base^exponent operation described above.
+//
+//	Numeric Separators
+//	==================
+//
+//	This returned BigIntNum 'result' will contain numeric separators
+//	(decimal separator, thousands separator and currency symbol)
+//	copied from input parameter,'base'.
+func (bIPwr *BigIntMathPower) BigIntNumPwr(
+	base BigIntNum, exponent BigIntNum, maxPrecision uint) (BigIntNum, error) {
 
-  ePrefix := "BigIntMathPower.Pwr() "
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-  result := new(BigIntNum).NewWithNumSeps(base.GetNumericSeparatorsDto())
-  var err error
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"BigIntMathPower.BigIntNumPwr",
+		"")
 
-  if base.IsZero() {
-    // If 'base' is zero, return zero value.
-    return result, nil
-  }
+	if err != nil {
+		return BigIntNum{}, err
+	}
 
-  if exponent.IsZero() {
-    return new(BigIntNum).NewOne(0), nil
-  }
-
-  numSeps := base.GetNumericSeparatorsDto()
-
-  bigOne := new(BigIntNum).NewOne(exponent.GetPrecisionUint())
-
-  if exponent.Equal(bigOne) {
-    result = base.CopyOut()
-    return base, nil
-  }
-
-  if exponent.GetPrecisionUint() == uint(0) {
-
-    if exponent.GetSign() > 0 {
-      // exponent is a positive number
-      result, err = bIPwr.bigIntNumRaiseToPositiveIntegerPower(base, exponent)
-
-      if err != nil {
-        return BigIntNum{},
-          fmt.Errorf(ePrefix+
-            "Error returned by bIPwr.bigIntNumRaiseToPositiveIntegerPower("+
-            "base, exponent, maxPrecision) "+
-            "base='%v' exponent='%v' Error='%v' ",
-            base.GetNumStr(), exponent.GetNumStr(), err.Error())
-      }
-
-    } else {
-      // exponent must be a negative number
-      result, err = bIPwr.bigIntNumRaiseToNegativeIntegerPower(base, exponent, maxPrecision)
-
-      if err != nil {
-        return BigIntNum{},
-          fmt.Errorf(ePrefix+"Error returned by bIPwr.bigIntNumRaiseToNegativeIntegerPower("+
-            "base, exponent, maxPrecision) "+
-            "base='%v' exponent='%v' maxPrecision='%v' Error='%v' ",
-            base.GetNumStr(), exponent.GetNumStr(), maxPrecision, err.Error())
-      }
-    }
-
-  } else {
-    // precision must be greater than zero. exponent is a fractional number
-
-    if exponent.GetSign() > 0 {
-      // fractional exponent is a positive number
-
-      result, err = bIPwr.bigIntNumRaiseToPositiveFractionalPower(base, exponent, maxPrecision)
-
-      if err != nil {
-        return BigIntNum{},
-          fmt.Errorf(ePrefix+
-            " Error='%v' \n", err.Error())
-      }
-
-    } else {
-      // fractional exponent must be a negative number
-
-      result, err = bIPwr.bigIntNumRaiseToNegativeFractionalPower(base, exponent, maxPrecision)
-
-      if err != nil {
-        return BigIntNum{},
-          fmt.Errorf(ePrefix+
-            "Error='%v' \n", err.Error())
-      }
-
-    }
-  }
-
-  if result.precision > maxPrecision {
-    result.SetPrecision(maxPrecision)
-  }
-
-  err = result.SetNumericSeparatorsDto(numSeps)
-
-  return result, nil
+	return new(bigIntMathPowerMechanics).bigIntNumPwr(
+		&base, true, &exponent, true, maxPrecision, ePrefix)
 }
 
 // computeInternalPrecision - Returns computed internal precision for variables used
