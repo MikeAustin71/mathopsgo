@@ -73,6 +73,13 @@ type BigIntMathNthRoot struct {
 //
 //  x bigIntMathNthRootAtom.calcPositiveFractionalNthRoot
 //
+//  -------------------------------------
+//
+// x bigIntMathNthRootNanobot.calcPositiveIntegerNthRoot
+//
+//  -------------------------------------
+//
+// x bigIntMathNthRootMacrobot.calcPositiveNthRoot
 
 // Empty
 //
