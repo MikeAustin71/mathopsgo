@@ -786,17 +786,52 @@ func (bIMathNthrtBoson *bigIntMathNthRootBoson) findNextRoot(
     return err
   }
 
+  if nthrt == nil {
+
+    return &InputPtrNilError{
+      ErrPrefix:     ePrefix.String(),
+      ErrContext:    "",
+      ParameterName: "'nthrt'",
+    }
+  }
+
   var bundle *big.Int
 
   bundle, nthrt.IntBundleRadicand, nthrt.FracBundleRadicand, err =
-    nthrt.getNextBundleBigIntValue(nthrt.IntBundleRadicand,
-      nthrt.FracBundleRadicand,
-      nthrt.NthRoot)
+    new(bigIntMathNthRootQuark).
+      getNextBundleBigIntValue(
+        nthrt,
+        &nthrt.IntBundleRadicand,
+        true,
+        &nthrt.FracBundleRadicand,
+        true,
+        &nthrt.NthRoot,
+        true,
+        ePrefix)
 
   if err != nil {
-    return fmt.Errorf(ePrefix+
-      "Error returned by nthrt.getNextBundleBigIntValue(nthrt.IntBundleRadicand). "+
-      "Error='%v' ", err.Error())
+
+    return &FuncReturnError{
+      ErrPrefix: ePrefix.String(),
+      ReturnFunc: "bundle, nthrt.IntBundleRadicand, nthrt.FracBundleRadicand, err =\n" +
+        "  getNextBundleBigIntValue(nthrt, &nthrt.IntBundleRadicand, true,\n" +
+        "  &nthrt.FracBundleRadicand, true, &nthrt.NthRoot, true, ePrefix)",
+      ErrContext: "",
+      ErrMessage: err.Error(),
+    }
+  }
+
+  nthrtNthRootAbsoluteBigInt, err := nthrt.NthRoot.GetAbsoluteBigIntValue()
+
+  if err != nil {
+
+    return &FuncReturnError{
+      ErrPrefix: ePrefix.String(),
+      ReturnFunc: "nthrtNthRootAbsoluteBigInt, err :=\n" +
+        "  nthrt.NthRoot.GetAbsoluteBigIntValue()",
+      ErrContext: "",
+      ErrMessage: err.Error(),
+    }
   }
 
   // alpha = next n-digits of radicand
@@ -832,13 +867,13 @@ func (bIMathNthrtBoson *bigIntMathNthRootBoson) findNextRoot(
     term2a2 = big.NewInt(0).Add(term2a1, nthrt.Beta)
 
     term2a = big.NewInt(0).Exp(term2a2,
-      big.NewInt(0).Set(nthrt.NthRoot.GetAbsoluteBigIntValue()),
+      big.NewInt(0).Set(nthrtNthRootAbsoluteBigInt),
       nil)
 
     term2b1 = big.NewInt(0).Set(nthrt.Big10ToNthPower)
 
     term2b2 = big.NewInt(0).Exp(nthrt.Y,
-      big.NewInt(0).Set(nthrt.NthRoot.GetAbsoluteBigIntValue()),
+      big.NewInt(0).Set(nthrtNthRootAbsoluteBigInt),
       nil)
 
     term2b = big.NewInt(0).Mul(term2b1, term2b2)
@@ -851,8 +886,11 @@ func (bIMathNthrtBoson *bigIntMathNthRootBoson) findNextRoot(
   }
 
   nthrt.R = big.NewInt(0).Set(nthrt.RPrime)
+
   nthrt.Y = big.NewInt(0).Set(nthrt.YPrime)
+
   nthrt.ResultBInt = big.NewInt(0).Mul(nthrt.ResultBInt, nthrt.Big10)
+
   nthrt.ResultBInt = big.NewInt(0).Add(nthrt.ResultBInt, nthrt.Beta)
 
   return nil

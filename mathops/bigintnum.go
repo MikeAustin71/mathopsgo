@@ -6638,9 +6638,9 @@ func (bNum *BigIntNum) SetExpectedNumberOfDigits(numOfDigits *big.Int) error {
 
 // SetExpectedToActualNumberOfDigits
 //
-// Sets the 'Expected' number of numeric digits associated with
-// this BigIntNum, to the actual number of numeric digits in the
-// BigIntNum value at the time when this method is called.
+//	Sets the 'Expected' number of numeric digits associated with this
+//	BigIntNum, to the actual number of numeric digits in the BigIntNum
+//	value at the time when this method is called.
 func (bNum *BigIntNum) SetExpectedToActualNumberOfDigits() error {
 
 	var ePrefix *ePref.ErrPrefixDto
