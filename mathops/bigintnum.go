@@ -1000,28 +1000,29 @@ func (bNum *BigIntNum) FormatThousandsStr(
 
 }
 
-// GetActualNumberOfDigits - Returns the number of numeric digits
-// in the absolute value of this BigIntNum instance. In addition,
-// a boolean value is returned indicating whether the absolute value
-// is zero.
+// GetActualNumberOfDigits
 //
-// Examples
-// ========
+//	Returns the number of numeric digits in the absolute value of this
+//	BigIntNum instance. In addition, a boolean value is returned
+//	indicating whether the absolute value is zero.
 //
-//	      123.45														5
-//	1,234,567                               7
+//	Examples
+//	========
 //
-// -1,234,567                               7
+//	Numeric Value      Actual Number of Digits
 //
-//					 0															1
-//	         0.00                           1
-//	       012.34                           4
-//	         0.1234													4
-//	       - 0.1234													4
-//	         0.123400												4
-//	         0.0123400											4
-//	 1,234,567.800												  8
-//	         5                              1
+//	        123.45                 5
+//	  1,234,567                    7
+//	 -1,234,567                    7
+//	          0                    1
+//	          0.00                 1
+//	        012.34                 4
+//	          0.1234               4
+//	         -0.1234               4
+//	          0.123400             4
+//	          0.0123400            4
+//	  1,234,567.800                8
+//	          5                    1
 func (bNum *BigIntNum) GetActualNumberOfDigits() (
 	numberOfDigits *big.Int, isZeroValue bool, err error) {
 

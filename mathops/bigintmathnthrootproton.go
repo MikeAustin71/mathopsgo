@@ -253,3 +253,63 @@ func (bIMathNthrtProton *bigIntMathNthRootProton) doRootExtraction(
 
 	return nil
 }
+
+// empty
+//
+//	Resets all the internal member variables to their initial or zero
+//	values for the current instance of BigIntMathNthRoot.
+func (bIMathNthrtProton *bigIntMathNthRootProton) empty(
+	nthrt *BigIntMathNthRoot) {
+
+	bIMathNthrtProton.lock.Lock()
+
+	defer bIMathNthrtProton.lock.Unlock()
+
+	if nthrt == nil {
+		return
+	}
+
+	nthrt.NthRoot = new(BigIntNum).New()
+
+	nthrt.OriginalRadicand = new(BigIntNum).New()
+
+	nthrt.IntBundleRadicand = new(BigIntNum).New()
+
+	nthrt.FracBundleRadicand = new(BigIntNum).New()
+
+	nthrt.BundleAddOnPrecision = big.NewInt(0)
+
+	nthrt.FracBundleLength = big.NewInt(0)
+
+	nthrt.TotalBundleLength = big.NewInt(0)
+
+	nthrt.ResultBInt = big.NewInt(0)
+
+	nthrt.ResultBINum = new(BigIntNum).New()
+
+	nthrt.RequestedPrecision = 0
+
+	nthrt.BigOne = big.NewInt(0)
+
+	nthrt.Big10 = big.NewInt(0)
+
+	nthrt.Big10ToNthPower = big.NewInt(0)
+
+	nthrt.BigZero = big.NewInt(0)
+
+	nthrt.YPrime = big.NewInt(0)
+
+	nthrt.Minuend = big.NewInt(0)
+
+	nthrt.Subtrahend = big.NewInt(0)
+
+	nthrt.R = big.NewInt(0)
+
+	nthrt.RPrime = big.NewInt(0)
+
+	nthrt.BaseNum = big.NewInt(0)
+
+	nthrt.Alpha = big.NewInt(0)
+
+	nthrt.Beta = big.NewInt(0)
+}
