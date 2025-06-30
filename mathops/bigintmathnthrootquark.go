@@ -11,6 +11,125 @@ type bigIntMathNthRootQuark struct {
 	lock sync.Mutex
 }
 
+// calcPrecision
+//
+//	 This method will calculate the actual precision of the calculation
+//	 result output by the Nth Root calculation.  Actual result
+//	 precision is equal to the Bundle Add On Precision + the quotient
+//	 of radicand precision divided by nthRoot.
+//
+//		bundleAddOnPrecision + Quotient(radicandPrecision/nthRoot)
+func (bIMathNthrtQuark *bigIntMathNthRootQuark) calcPrecision(
+	radicandPrecision *big.Int,
+	fracBundleLength *big.Int,
+	precisionAdjustment *big.Int,
+	bundleAddOnPrecision *big.Int,
+	nthRoot *big.Int,
+	errPrefDto *ePref.ErrPrefixDto) (actualPrecision *big.Int, err error) {
+
+	bIMathNthrtQuark.lock.Lock()
+
+	defer bIMathNthrtQuark.lock.Unlock()
+
+	var ePrefix *ePref.ErrPrefixDto
+
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
+		errPrefDto,
+		"bigIntMathNthRootQuark.calcPrecision",
+		"")
+
+	if err != nil {
+		return big.NewInt(0), err
+	}
+
+	if radicandPrecision == nil {
+
+		return big.NewInt(0),
+			&InputPtrNilError{
+				ErrPrefix:     ePrefix.String(),
+				ErrContext:    "",
+				ParameterName: "'radicandPrecision'",
+			}
+	}
+
+	if fracBundleLength == nil {
+
+		return big.NewInt(0),
+			&InputPtrNilError{
+				ErrPrefix:     ePrefix.String(),
+				ErrContext:    "",
+				ParameterName: "'fracBundleLength'",
+			}
+	}
+
+	if precisionAdjustment == nil {
+
+		return big.NewInt(0),
+			&InputPtrNilError{
+				ErrPrefix:     ePrefix.String(),
+				ErrContext:    "",
+				ParameterName: "'precisionAdjustment'",
+			}
+	}
+
+	if bundleAddOnPrecision == nil {
+
+		return big.NewInt(0),
+			&InputPtrNilError{
+				ErrPrefix:     ePrefix.String(),
+				ErrContext:    "",
+				ParameterName: "'bundleAddOnPrecision'",
+			}
+	}
+
+	if nthRoot == nil {
+
+		return big.NewInt(0),
+			&InputPtrNilError{
+				ErrPrefix:     ePrefix.String(),
+				ErrContext:    "",
+				ParameterName: "'nthRoot'",
+			}
+	}
+
+	actualPrecision = big.NewInt(0)
+
+	bigZero := big.NewInt(0)
+
+	if nthRoot.Cmp(bigZero) == 0 {
+
+		return actualPrecision,
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "",
+				ErrContext: "",
+				ErrMessage: "Error: Input parameter 'nthRoot' is INVALID!\n" +
+					"'nthRoot' has a zero value.\n" +
+					"Division by 'nthRoot' is Division by zero and will FAIL!",
+			}
+	}
+
+	actualPrecision = big.NewInt(0).Add(bundleAddOnPrecision, fracBundleLength)
+
+	actualPrecision = big.NewInt(0).Add(actualPrecision, precisionAdjustment)
+
+	if actualPrecision.Cmp(bigZero) < 0 {
+		actualPrecision = big.NewInt(0)
+	}
+
+	/*
+
+		fmt.Printf("----fracBundleLength: %v\n", fracBundleLength.Text(10))
+		fmt.Printf("bundleAddOnPrecision: %v\n", bundleAddOnPrecision.Text(10))
+		fmt.Printf("precision Adjustment: %v\n", precisionAdjustment.Text(10))
+		fmt.Printf("    actual precision: %v\n", actualPrecision.Text(10))
+
+	*/
+
+	return actualPrecision, nil
+}
+
 // getNextBundleBigIntValue - Calculate and return the next bundle of
 // numeric digits for nth Root extraction calculations.
 func (bIMathNthrtQuark *bigIntMathNthRootQuark) getNextBundleBigIntValue(

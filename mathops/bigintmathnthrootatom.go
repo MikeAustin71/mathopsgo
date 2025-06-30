@@ -530,10 +530,17 @@ func (bIMathNthrtAtom *bigIntMathNthRootAtom) calcPositiveFractionalNthRoot(
 		nthrt, &newRadicand, false, &newNthRoot, false, maxPrecision, ePrefix)
 
 	if err != nil {
-		return new(BigIntNum).NewZero(0),
-			fmt.Errorf(ePrefix+
-				"Error returned by nthrt.calcNthRootGateway(newRadicand, newNthRoot, maxPrecision). "+
-				"Error='%v' ", err.Error())
+
+		return BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix: ePrefix.String(),
+				ReturnFunc: "nthRootResult, err := \n" +
+					"  new(bigIntMathNthRootNeutron).calcNthRootGateway(\n" +
+					"  nthrt, &newRadicand, false, &newNthRoot, false,\n" +
+					"  maxPrecision, ePrefix)",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
 	}
 
 	return nthRootResult, nil

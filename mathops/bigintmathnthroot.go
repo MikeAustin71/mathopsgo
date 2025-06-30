@@ -50,13 +50,29 @@ type BigIntMathNthRoot struct {
 }
 
 // Low-Level Routines
+//
 //  x bigIntMathNthRootBoson.setupBundles
-//  bigIntMathNthRootBoson.calcBundleLength
-//  bigIntMathNthRootBoson.findNextRoot
+//  x bigIntMathNthRootBoson.calcBundleLength
+//  x bigIntMathNthRootBoson.findNextRoot
 //
 //  ------------------------------------
 //
-//  bigIntMathNthRootQuark.getNextBundleBigIntValue
+//  x bigIntMathNthRootQuark.getNextBundleBigIntValue
+//  x bigIntMathNthRootQuark.calcPrecision
+//
+//  -------------------------------------
+//
+//  x bigIntMathNthRootProton.initializeBigIntMathNthRoo
+//  x bigIntMathNthRootProton.doRootExtraction
+//
+//  -------------------------------------
+//
+//  x bigIntMathNthRootNeutron.calcNthRootGateway
+//
+//  -------------------------------------
+//
+//  x bigIntMathNthRootAtom.calcPositiveFractionalNthRoot
+//
 
 // Empty
 //
@@ -344,47 +360,4 @@ func (nthrt *BigIntMathNthRoot) calcPositiveIntegerNthRoot(radicand, nthRoot Big
 	}
 
 	return bINumResult, nil
-}
-
-// calcPrecision - This method will calculate the actual precision of the
-// result output by the Nth Root calculation.  Actual result precision is
-// equal to the Bundle Add On Precision + the quotient of radicand precision
-// divided by nthRoot.
-//
-//	bundleAddOnPrecision + Quotient(radicandPrecision/nthRoot)
-func (nthrt *BigIntMathNthRoot) calcPrecision(
-	radicandPrecision,
-	fracBundleLength,
-	precisionAdjustment,
-	bundleAddOnPrecision,
-	nthRoot *big.Int) (actualPrecision *big.Int, err error) {
-
-	actualPrecision = big.NewInt(0)
-	err = nil
-	bigZero := big.NewInt(0)
-
-	if nthRoot.Cmp(bigZero) == 0 {
-		ePrefix := "BigIntMathNthRoot.calcPrecision() "
-		err = errors.New(ePrefix +
-			"Error: nthRoot=0. Division by nthRoot is Division by zero and will FAIL!")
-		return actualPrecision, err
-
-	}
-
-	actualPrecision = big.NewInt(0).Add(bundleAddOnPrecision, fracBundleLength)
-	actualPrecision = big.NewInt(0).Add(actualPrecision, precisionAdjustment)
-
-	if actualPrecision.Cmp(bigZero) < 0 {
-		actualPrecision = big.NewInt(0)
-	}
-
-	/*
-		fmt.Println("    fracBundleLength: ", fracBundleLength.Text(10))
-		fmt.Println("bundleAddOnPrecision: ", bundleAddOnPrecision.Text(10))
-		fmt.Println("precision Adjustment: ", precisionAdjustment.Text(10))
-		fmt.Println("    actual precision: ", actualPrecision.Text(10))
-	*/
-	err = nil
-
-	return actualPrecision, err
 }

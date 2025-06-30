@@ -170,22 +170,37 @@ func (bIMathNthrtNeutron *bigIntMathNthRootNeutron) calcNthRootGateway(
 			}
 	}
 
-	_, err := new(bigIntMathNthRootProton).initializeBigIntMathNthRoot(
+	_, err = new(bigIntMathNthRootProton).initializeBigIntMathNthRoot(
 		nthrt, radicand, nthRoot, maxPrecision, ePrefix)
 
 	if err != nil {
-		return new(BigIntNum).NewZero(0),
-			fmt.Errorf(ePrefix+"-Error returned from initialization. Error= %v", err.Error())
+
+		return BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix: ePrefix.String(),
+				ReturnFunc: "_, err = new(bigIntMathNthRootProton).\n" +
+					"  initializeBigIntMathNthRoot(nthrt, radicand, nthRoot,\n" +
+					"    maxPrecision, ePrefix)",
+				ErrContext: fmt.Sprintf("radicand= '%v'\n"+
+					"nthRoot= '%v'", radicandNumStr, nthRootNumStr),
+				ErrMessage: err.Error(),
+			}
 	}
 
-	err = nthrt.doRootExtraction()
+	err = new(bigIntMathNthRootProton).doRootExtraction(nthrt, ePrefix)
 
 	if err != nil {
-		return new(BigIntNum).NewZero(0),
-			fmt.Errorf(ePrefix+"-Error returned from nthrt.doRootExtraction() - %v", err.Error())
+
+		return BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "err = new(bigIntMathNthRootProton).doRootExtraction(nthrt, ePrefix)",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
 	}
 
-	// fmt.Println("FracPrecision Count: ", nthrt.FracPrecision.Text(10))
+	// fmt.Printf("FracPrecision Count: %v\n", nthrt.FracPrecision.Text(10))
 
 	return nthrt.ResultBINum, nil
 }
