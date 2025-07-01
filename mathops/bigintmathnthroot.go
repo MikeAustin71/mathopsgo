@@ -49,37 +49,38 @@ type BigIntMathNthRoot struct {
 
 // Low-Level Routines
 //
-//  x bigIntMathNthRootBoson.setupBundles
-//  x bigIntMathNthRootBoson.calcBundleLength
-//  x bigIntMathNthRootBoson.findNextRoot
+//  bigIntMathNthRootBoson.setupBundles
+//  bigIntMathNthRootBoson.calcBundleLength
+//  bigIntMathNthRootBoson.findNextRoot
 //
 //  ------------------------------------
 //
-//  x bigIntMathNthRootQuark.getNextBundleBigIntValue
-//  x bigIntMathNthRootQuark.calcPrecision
+//  bigIntMathNthRootQuark.getNextBundleBigIntValue
+//  bigIntMathNthRootQuark.calcPrecision
 //
 //  -------------------------------------
 //
-//  x bigIntMathNthRootProton.initializeBigIntMathNthRoo
-//  x bigIntMathNthRootProton.doRootExtraction
+//  bigIntMathNthRootProton.initializeBigIntMathNthRoot
+//  bigIntMathNthRootProton.doRootExtraction
+//  bigIntMathNthRootProton.empty
 //
 //  -------------------------------------
 //
-//  x bigIntMathNthRootNeutron.calcNthRootGateway
+//  bigIntMathNthRootNeutron.calcNthRootGateway
 //
 //  -------------------------------------
 //
-//  x bigIntMathNthRootAtom.calcPositiveFractionalNthRoot
+//  bigIntMathNthRootAtom.calcPositiveFractionalNthRoot
 //
 //  -------------------------------------
 //
-// x bigIntMathNthRootNanobot.calcPositiveIntegerNthRoot
+//  bigIntMathNthRootNanobot.calcPositiveIntegerNthRoot
 //
 //  -------------------------------------
 //
-// x bigIntMathNthRootMacrobot.calcPositiveNthRoot
+//  bigIntMathNthRootMacrobot.calcPositiveNthRoot
 //
-// x bigIntMathNthRootMacrobot.calcNegativeNthRoot
+//  bigIntMathNthRootMacrobot.calcNegativeNthRoot
 
 // Empty
 //
