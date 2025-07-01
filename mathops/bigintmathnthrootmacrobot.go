@@ -10,6 +10,9 @@ type bigIntMathNthRootMacrobot struct {
 	lock sync.Mutex
 }
 
+//                             Stage 1                                             //
+// ******************************************************************************* //
+
 // calcNegativeNthRoot
 //
 //	Calculates the nth root result of a radicand where the nth root is

@@ -1,10 +1,8 @@
 package mathops
 
 import (
-  "errors"
-  "fmt"
-  ePref "github.com/MikeAustin71/errpref"
-  "math/big"
+	ePref "github.com/MikeAustin71/errpref"
+	"math/big"
 )
 
 // BigIntMathNthRoot - Used to extract square roots and nth roots of positive and negative
@@ -20,33 +18,33 @@ import (
 //
 // See: https://en.wikipedia.org/wiki/Shifting_nth_root_algorithm
 type BigIntMathNthRoot struct {
-  NthRoot               BigIntNum
-  OriginalRadicand      BigIntNum
-  SetupRadicand         BigIntNum
-  IntBundleRadicand     BigIntNum
-  FracBundleRadicand    BigIntNum
-  BundleAddOnPrecision  *big.Int
-  FracBundleLength      *big.Int
-  TotalBundleLength     *big.Int
-  ResultBInt            *big.Int
-  ActualResultPrecision *big.Int
-  FracPrecision         *big.Int
-  //ResultPrecision    int
-  ResultBINum        BigIntNum
-  RequestedPrecision uint
-  BigOne             *big.Int
-  Big10              *big.Int
-  Big10ToNthPower    *big.Int
-  BigZero            *big.Int
-  Y                  *big.Int // Root Extracted thusfar
-  YPrime             *big.Int // Next Value of Y
-  Minuend            *big.Int
-  Subtrahend         *big.Int
-  R                  *big.Int // Let R be the remainder
-  RPrime             *big.Int // Let RPrime be the new value of r for next iteration
-  BaseNum            *big.Int // Base Number System - always 10
-  Alpha              *big.Int // Next n-digits of the radicand
-  Beta               *big.Int // Next Digit of the root
+	NthRoot               BigIntNum
+	OriginalRadicand      BigIntNum
+	SetupRadicand         BigIntNum
+	IntBundleRadicand     BigIntNum
+	FracBundleRadicand    BigIntNum
+	BundleAddOnPrecision  *big.Int
+	FracBundleLength      *big.Int
+	TotalBundleLength     *big.Int
+	ResultBInt            *big.Int
+	ActualResultPrecision *big.Int
+	FracPrecision         *big.Int
+	//ResultPrecision    int
+	ResultBINum        BigIntNum
+	RequestedPrecision uint
+	BigOne             *big.Int
+	Big10              *big.Int
+	Big10ToNthPower    *big.Int
+	BigZero            *big.Int
+	Y                  *big.Int // Root Extracted thusfar
+	YPrime             *big.Int // Next Value of Y
+	Minuend            *big.Int
+	Subtrahend         *big.Int
+	R                  *big.Int // Let R be the remainder
+	RPrime             *big.Int // Let RPrime be the new value of r for next iteration
+	BaseNum            *big.Int // Base Number System - always 10
+	Alpha              *big.Int // Next n-digits of the radicand
+	Beta               *big.Int // Next Digit of the root
 }
 
 // Low-Level Routines
@@ -80,6 +78,8 @@ type BigIntMathNthRoot struct {
 //  -------------------------------------
 //
 // x bigIntMathNthRootMacrobot.calcPositiveNthRoot
+//
+// x bigIntMathNthRootMacrobot.calcNegativeNthRoot
 
 // Empty
 //
@@ -87,147 +87,92 @@ type BigIntMathNthRoot struct {
 //	values for the current instance of BigIntMathNthRoot.
 func (nthrt *BigIntMathNthRoot) Empty() {
 
-  new(bigIntMathNthRootProton).empty(nthrt)
+	new(bigIntMathNthRootProton).empty(nthrt)
 }
 
 // GetNthRoot
 //
-//	 Calculates the Nth Root of a real number ('radicand') passed to
-//	 the method as Type BigIntNum.  The calling function must supply
-//	 input parameters for 'radicand', 'nthRoot' and 'maxPrecision'.
+//	Calculates the Nth Root of a real number ('radicand') passed to
+//	the method as Type BigIntNum.  The calling function must supply
+//	input parameters for 'radicand', 'nthRoot' and 'maxPrecision'.
 //
-//	 Input Parameters
-//	 ================
+//	Numeric Separators
+//	==================
 //
-//	 radicand                 BigIntNum
-//	   The radicand value from which the nth Root will be taken.
-//	             nthRootResult^nthRoot = radicand
+//	Numeric Separators define the Decimal Separator character,
+//	Thousands Separator character, and Currency Symbol character.
+//	These separator characters serve two purposes. First they are
+//	used to format and display numeric values as number strings.
+//	Second, they are also used to parse number strings and
+//	convert them into numeric values.
 //
-//	 nthRoot                  BigIntNum
-//	   Specifies the root which will be calculated for parameter,
-//	   'radicand'. Examples: square root, cube root, 4th root, 9th root
-//	   etc.
+//	This method will copy the Numeric Separators configured
+//	for input parameter 'radicand' to the returned instance of
+//	BigIntNum.
 //
-//	   'nthRoot' is a BigIntNum Type which may be a positive or
-//	   negative number. In addition, the nthRoot may be either an
-//	   integer number or a fractional number.
+//	Input Parameters
+//	================
 //
-//	   The nthRoot must be a numeric value greater than one ('1') or
-//	   less than minus one (-1). nthRoots with a value of zero will
-//	   always return an nthRoot result of zero. Nth Root values of +1
-//	   or -1 will generate an error.
+//	radicand                 BigIntNum
+//	  The radicand value from which the nth Root will be taken.
+//	            nthRootResult^nthRoot = radicand
 //
-//	   If the radicand is negative and the nthRoot value is an even
-//	   number (evenly divisible by 2 with no remainder), an error will
-//	   be returned since the result of such a calculation is an
-//	   imaginary number.
+//	nthRoot                  BigIntNum
+//	  Specifies the root which will be calculated for parameter,
+//	  'radicand'. Examples: square root, cube root, 4th root, 9th root
+//	  etc.
 //
-//	 maxPrecision             uint
-//	   Specifies the maximum number of decimals to the right of the
-//	   decimal point to which the Nth root result will be calculated.
+//	  'nthRoot' is a BigIntNum Type which may be a positive or
+//	  negative number. In addition, the nthRoot may be either an
+//	  integer number or a fractional number.
 //
-//	 Return Values
-//	 =============
+//	  The nthRoot must be a numeric value greater than one ('1') or
+//	  less than minus one (-1). nthRoots with a value of zero will
+//	  always return an nthRoot result of zero. Nth Root values of +1
+//	  or -1 will generate an error.
+//
+//	  If the radicand is negative and the nthRoot value is an even
+//	  number (evenly divisible by 2 with no remainder), an error will
+//	  be returned since the result of such a calculation is an
+//	  imaginary number.
+//
+//	maxPrecision             uint
+//	  Specifies the maximum number of decimals to the right of the
+//	  decimal point to which the Nth root result will be calculated.
+//
+//	Return Values
+//	=============
 //
 //		BigIntNum
-//	   If the calculation is successful, the nth root result will be
-//	   returned as a BigIntNum type. This returned BigIntNum nth root
-//	   will contain numeric separators (decimal separator, thousands
-//	   separator and currency symbol) copied from input parameter,
-//	   'radicand'.
+//	  If the calculation is successful, the nth root result will be
+//	  returned as a BigIntNum type. This returned BigIntNum nth root
+//	  will contain numeric separators (decimal separator, thousands
+//	  separator and currency symbol) copied from input parameter,
+//	  'radicand'.
 //
-//	 error
-//	   If the calculation completes successfully, the 'error' type
-//	   returned will be set equal to 'nil'. If an error is encountered,
-//	   the returned 'error' type will contain an appropriate error
-//	   message.
+//	error
+//	  If the calculation completes successfully, the 'error' type
+//	  returned will be set equal to 'nil'. If an error is encountered,
+//	  the returned 'error' type will contain an appropriate error
+//	  message.
 func (nthrt *BigIntMathNthRoot) GetNthRoot(
-  radicand BigIntNum,
-  nthRoot BigIntNum,
-  maxPrecision uint) (BigIntNum, error) {
+	radicand BigIntNum,
+	nthRoot BigIntNum,
+	maxPrecision uint) (BigIntNum, error) {
 
-  ePrefix := "BigIntMathNthRoot.OriginalNthRoot() "
+	var ePrefix *ePref.ErrPrefixDto
+	var err error
 
-  if radicand.GetSign() == -1 {
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"BigIntMathNthRoot.GetNthRoot",
+		"")
 
-    isEvenNum, err := nthRoot.IsEvenNumber()
+	if err != nil {
+		return BigIntNum{}, err
+	}
 
-    if err != nil {
-      return new(BigIntNum).NewZero(0),
-        fmt.Errorf(ePrefix+
-          "Error returned by nthRoot.IsEvenNumber() "+
-          "nthRoot='%v' Error='%v'\n", nthRoot.GetNumStr(), err.Error())
-    }
-
-    if isEvenNum {
-      return new(BigIntNum).NewZero(0),
-        fmt.Errorf(ePrefix+
-          "INVALID ENTRY - Cannot calculate nthRoot of a negative radicand when nthRoot is even. "+
-          "Original Number= %v  nthRoot= %v\n", radicand.GetNumStr(), nthRoot.GetNumStr())
-    }
-
-  }
-
-  // If the radicand is zero, the result will always be zero
-  if radicand.IsZero() {
-    return radicand, nil
-  }
-
-  numSeps := radicand.GetNumericSeparatorsDto()
-
-  bigINumOne := new(BigIntNum).NewOne(0)
-
-  var err error
-
-  err = bigINumOne.SetNumericSeparatorsDto(numSeps)
-
-  if err != nil {
-    return new(BigIntNum).NewZero(0),
-      fmt.Errorf(ePrefix + "Error returned by bigINumOne.SetNumericSeparatorsDto(numSeps).")
-  }
-
-  // If nthRoot is zero, the result will always be '1'
-  if nthRoot.IsZero() {
-    return bigINumOne, nil
-  }
-
-  // Error if nthRoot == 1
-  if nthRoot.Cmp(bigINumOne) == 0 {
-    return new(BigIntNum).NewZero(0),
-      errors.New(ePrefix +
-        "Error - Input Parameter 'nthRoot' INVALID! 'nthRoot' cannot equal 1.\n")
-  }
-
-  var nthRootResult BigIntNum
-
-  if nthRoot.GetSign() == -1 {
-
-    nthRootResult, err = nthrt.calcNegativeNthRoot(radicand, nthRoot, maxPrecision)
-
-    if err != nil {
-      return new(BigIntNum).NewZero(0),
-        fmt.Errorf(ePrefix+"Error returned by nthrt.calcNegativeNthRoot(...). "+
-          "Error='%v' \n", err.Error())
-    }
-
-  } else {
-
-    nthRootResult, err = nthrt.calcPositiveNthRoot(radicand, nthRoot, maxPrecision)
-
-    if err != nil {
-      return new(BigIntNum).NewZero(0),
-        fmt.Errorf(ePrefix+"Error returned by nthrt.calcPositiveNthRoot(...). "+
-          "Error='%v' \n", err.Error())
-    }
-
-  }
-
-  err = nthRootResult.SetNumericSeparatorsDto(numSeps)
-
-  if err != nil {
-    return new(BigIntNum).NewZero(0),
-      fmt.Errorf(ePrefix + "Error returned by nthRootResult.SetNumericSeparatorsDto(numSeps).")
-  }
-
-  return nthRootResult, nil
+	return new(bigIntMathNthRootMechanics).getNthRoot(
+		nthrt, &radicand, true, &nthRoot, true, maxPrecision, ePrefix)
 }

@@ -53,16 +53,6 @@ func (bIMathNthrtNeutron *bigIntMathNthRootNeutron) calcNthRootGateway(
 		return BigIntNum{}, err
 	}
 
-	if radicand == nil {
-
-		return BigIntNum{},
-			&InputPtrNilError{
-				ErrPrefix:     ePrefix.String(),
-				ErrContext:    "",
-				ParameterName: "'radicand'",
-			}
-	}
-
 	if nthrt == nil {
 
 		return BigIntNum{},
@@ -70,6 +60,16 @@ func (bIMathNthrtNeutron *bigIntMathNthRootNeutron) calcNthRootGateway(
 				ErrPrefix:     ePrefix.String(),
 				ErrContext:    "",
 				ParameterName: "'nthrt'",
+			}
+	}
+
+	if radicand == nil {
+
+		return BigIntNum{},
+			&InputPtrNilError{
+				ErrPrefix:     ePrefix.String(),
+				ErrContext:    "",
+				ParameterName: "'radicand'",
 			}
 	}
 
