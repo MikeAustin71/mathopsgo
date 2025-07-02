@@ -1,15 +1,15 @@
 package mathops
 
 import (
-	"fmt"
-	ePref "github.com/MikeAustin71/errpref"
-	"math/big"
-	"sync"
+  "fmt"
+  ePref "github.com/MikeAustin71/errpref"
+  "math/big"
+  "sync"
 )
 
 // BigIntMathSubtract
 type bigIntMathSubtractNanobot struct {
-	lock sync.Mutex
+  lock sync.Mutex
 }
 
 // bigIntSubtract
@@ -108,167 +108,166 @@ type bigIntMathSubtractNanobot struct {
 //	  the returned 'error' type will contain an appropriate error
 //	  message.
 func (bIMathSubNanobot *bigIntMathSubtractNanobot) bigIntSubtract(
-	minuend *big.Int,
-	minuendPrecision *big.Int,
-	subtrahend *big.Int,
-	subtrahendPrecision *big.Int,
-	errPrefDto *ePref.ErrPrefixDto) (
-	difference *big.Int, differencePrecision *big.Int, err error) {
+  minuend *big.Int,
+  minuendPrecision *big.Int,
+  subtrahend *big.Int,
+  subtrahendPrecision *big.Int,
+  errPrefDto *ePref.ErrPrefixDto) (
+  difference *big.Int, differencePrecision *big.Int, err error) {
 
-	bIMathSubNanobot.lock.Lock()
+  bIMathSubNanobot.lock.Lock()
 
-	defer bIMathSubNanobot.lock.Unlock()
+  defer bIMathSubNanobot.lock.Unlock()
 
-	var ePrefix *ePref.ErrPrefixDto
+  var ePrefix *ePref.ErrPrefixDto
 
-	ePrefix,
-		err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
-		errPrefDto,
-		"bigIntMathSubtractNanobot.bigIntSubtract",
-		"")
+  ePrefix,
+    err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
+    errPrefDto,
+    "bigIntMathSubtractNanobot.bigIntSubtract",
+    "")
 
-	if err != nil {
-		return big.NewInt(0), big.NewInt(0), err
-	}
+  if err != nil {
+    return big.NewInt(0), big.NewInt(0), err
+  }
+  if minuend == nil {
 
-	if minuend == nil {
+    return big.NewInt(0), big.NewInt(0),
+      &InputPtrNilError{
+        ErrPrefix:     ePrefix.String(),
+        ErrContext:    "",
+        ParameterName: "'minuend'",
+      }
+  }
 
-		return big.NewInt(0), big.NewInt(0),
-			&InputPtrNilError{
-				ErrPrefix:     ePrefix.String(),
-				ErrContext:    "",
-				ParameterName: "'minuend'",
-			}
-	}
+  if minuendPrecision == nil {
 
-	if minuendPrecision == nil {
+    return big.NewInt(0), big.NewInt(0),
+      &InputPtrNilError{
+        ErrPrefix:     ePrefix.String(),
+        ErrContext:    "",
+        ParameterName: "'minuendPrecision'",
+      }
+  }
 
-		return big.NewInt(0), big.NewInt(0),
-			&InputPtrNilError{
-				ErrPrefix:     ePrefix.String(),
-				ErrContext:    "",
-				ParameterName: "'minuendPrecision'",
-			}
-	}
+  if subtrahend == nil {
 
-	if subtrahend == nil {
+    return big.NewInt(0), big.NewInt(0),
+      &InputPtrNilError{
+        ErrPrefix:     ePrefix.String(),
+        ErrContext:    "",
+        ParameterName: "'subtrahend'",
+      }
+  }
 
-		return big.NewInt(0), big.NewInt(0),
-			&InputPtrNilError{
-				ErrPrefix:     ePrefix.String(),
-				ErrContext:    "",
-				ParameterName: "'subtrahend'",
-			}
-	}
+  if subtrahendPrecision == nil {
 
-	if subtrahendPrecision == nil {
+    return big.NewInt(0), big.NewInt(0),
+      &InputPtrNilError{
+        ErrPrefix:     ePrefix.String(),
+        ErrContext:    "",
+        ParameterName: "'subPrecision'",
+      }
+  }
 
-		return big.NewInt(0), big.NewInt(0),
-			&InputPtrNilError{
-				ErrPrefix:     ePrefix.String(),
-				ErrContext:    "",
-				ParameterName: "'subPrecision'",
-			}
-	}
+  difference = big.NewInt(0)
 
-	difference = big.NewInt(0)
+  differencePrecision = big.NewInt(0)
 
-	differencePrecision = big.NewInt(0)
+  bigZero := big.NewInt(0)
 
-	bigZero := big.NewInt(0)
+  if minuendPrecision.Cmp(bigZero) == -1 {
 
-	if minuendPrecision.Cmp(bigZero) == -1 {
+    return difference, differencePrecision,
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "",
+        ErrContext: fmt.Sprintf("minuendPrecision= '%v'", minuendPrecision.Text(10)),
+        ErrMessage: "Error: Input parameter 'minuendPrecision' is INVALID!\n" +
+          "'minuendPrecision' has a value less than zero!",
+      }
+  }
 
-		return difference, differencePrecision,
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "",
-				ErrContext: fmt.Sprintf("minuendPrecision= '%v'", minuendPrecision.Text(10)),
-				ErrMessage: "Error: Input parameter 'minuendPrecision' is INVALID!\n" +
-					"'minuendPrecision' has a value less than zero!",
-			}
-	}
+  if subtrahendPrecision.Cmp(bigZero) == -1 {
 
-	if subtrahendPrecision.Cmp(bigZero) == -1 {
+    return difference, differencePrecision,
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "",
+        ErrContext: fmt.Sprintf("subtrahendPrecision= '%v'", subtrahendPrecision.Text(10)),
+        ErrMessage: "Error: Input parameter 'subtrahendPrecision' is INVALID!\n" +
+          "'subtrahendPrecision' has a value less than zero!",
+      }
+  }
 
-		return difference, differencePrecision,
-			&FuncReturnError{
-				ErrPrefix:  ePrefix.String(),
-				ReturnFunc: "",
-				ErrContext: fmt.Sprintf("subtrahendPrecision= '%v'", subtrahendPrecision.Text(10)),
-				ErrMessage: "Error: Input parameter 'subtrahendPrecision' is INVALID!\n" +
-					"'subtrahendPrecision' has a value less than zero!",
-			}
-	}
+  base10 := big.NewInt(10)
 
-	base10 := big.NewInt(10)
+  deltaPrecision := big.NewInt(0)
 
-	deltaPrecision := big.NewInt(0)
+  scale := big.NewInt(0)
 
-	scale := big.NewInt(0)
+  if minuendPrecision.Cmp(subtrahendPrecision) == 0 {
+    // Precisions are equal.
 
-	if minuendPrecision.Cmp(subtrahendPrecision) == 0 {
-		// Precisions are equal.
+    difference = big.NewInt(0).Sub(minuend, subtrahend)
 
-		difference = big.NewInt(0).Sub(minuend, subtrahend)
+    differencePrecision = big.NewInt(0).Set(minuendPrecision)
 
-		differencePrecision = big.NewInt(0).Set(minuendPrecision)
+  } else if minuendPrecision.Cmp(subtrahendPrecision) == 1 {
+    //  minPrecision > subPrecision
 
-	} else if minuendPrecision.Cmp(subtrahendPrecision) == 1 {
-		//  minPrecision > subPrecision
+    deltaPrecision = big.NewInt(0).Sub(minuendPrecision, subtrahendPrecision)
 
-		deltaPrecision = big.NewInt(0).Sub(minuendPrecision, subtrahendPrecision)
+    scale = big.NewInt(0).Exp(base10, deltaPrecision, nil)
 
-		scale = big.NewInt(0).Exp(base10, deltaPrecision, nil)
+    newSubInt := big.NewInt(0).Mul(subtrahend, scale)
 
-		newSubInt := big.NewInt(0).Mul(subtrahend, scale)
+    difference = big.NewInt(0).Sub(minuend, newSubInt)
 
-		difference = big.NewInt(0).Sub(minuend, newSubInt)
+    differencePrecision.Set(minuendPrecision)
 
-		differencePrecision.Set(minuendPrecision)
+  } else {
+    // subPrecision must be GREATER THAN minPrecision
 
-	} else {
-		// subPrecision must be GREATER THAN minPrecision
+    deltaPrecision = big.NewInt(0).Sub(subtrahendPrecision, minuendPrecision)
 
-		deltaPrecision = big.NewInt(0).Sub(subtrahendPrecision, minuendPrecision)
+    scale = big.NewInt(0).Exp(base10, deltaPrecision, nil)
 
-		scale = big.NewInt(0).Exp(base10, deltaPrecision, nil)
+    newMinuendInt := big.NewInt(0).Mul(minuend, scale)
 
-		newMinuendInt := big.NewInt(0).Mul(minuend, scale)
+    difference = big.NewInt(0).Sub(newMinuendInt, subtrahend)
 
-		difference = big.NewInt(0).Sub(newMinuendInt, subtrahend)
+    differencePrecision.Set(subtrahendPrecision)
+  }
 
-		differencePrecision.Set(subtrahendPrecision)
-	}
+  if difference.Cmp(bigZero) == 0 {
 
-	if difference.Cmp(bigZero) == 0 {
+    differencePrecision = big.NewInt(0)
+  }
 
-		differencePrecision = big.NewInt(0)
-	}
+  // Delete trailing fractional zeros
+  if differencePrecision.Cmp(bigZero) == 1 {
+    // differencePrecision > 0
 
-	// Delete trailing fractional zeros
-	if differencePrecision.Cmp(bigZero) == 1 {
-		// differencePrecision > 0
+    scrap := big.NewInt(0)
 
-		scrap := big.NewInt(0)
+    biBase10 := big.NewInt(10)
 
-		biBase10 := big.NewInt(10)
+    biBaseZero := big.NewInt(0)
 
-		biBaseZero := big.NewInt(0)
+    newDifference, mod10 := big.NewInt(0).QuoRem(difference, biBase10, scrap)
 
-		newDifference, mod10 := big.NewInt(0).QuoRem(difference, biBase10, scrap)
+    bigOne := big.NewInt(1)
 
-		bigOne := big.NewInt(1)
+    for mod10.Cmp(biBaseZero) == 0 && differencePrecision.Cmp(bigZero) == 1 {
 
-		for mod10.Cmp(biBaseZero) == 0 && differencePrecision.Cmp(bigZero) == 1 {
+      difference.Set(newDifference)
 
-			difference.Set(newDifference)
+      differencePrecision.Sub(differencePrecision, bigOne)
 
-			differencePrecision.Sub(differencePrecision, bigOne)
+      newDifference, mod10 = big.NewInt(0).QuoRem(difference, biBase10, scrap)
+    }
+  }
 
-			newDifference, mod10 = big.NewInt(0).QuoRem(difference, biBase10, scrap)
-		}
-	}
-
-	return difference, differencePrecision, nil
+  return difference, differencePrecision, nil
 }

@@ -3,6 +3,7 @@ package mathops
 import (
 	"fmt"
 	ePref "github.com/MikeAustin71/errpref"
+	"math/big"
 	"sync"
 )
 
@@ -324,4 +325,199 @@ func (bIMathSubMacrobot *bigIntMathSubtractMacrobot) fixedDecimalSubtract(
 	}
 
 	return difference, nil
+}
+
+// subtractBigInts
+//
+//	Performs the subtraction operation and returns the 'difference' as
+//	a type BigIntNum.
+//
+//	In the subtraction operation:
+//
+//	  b1 - b2 = difference or result
+//	  'minuend' - 'subtrahend' = difference or result
+//	  b1 = 'minuend'
+//	  b2 = 'subtrahend'
+//
+//	Input Parameters
+//	================
+//
+//	minuend                  *big.Int
+//	  The number from which the subtrahend will be subtracted.
+//
+//	minuendPrecision         uint
+//	  The 'minuend' precision or numeric digits after the decimal
+//	  point.
+//
+//	subtrahend               *big.Int
+//	  The number to be subtracted from the 'minuend'.
+//
+//	subtrahendPrecision      uint
+//	  The 'subtrahend' precision or numeric digits after the decimal
+//	  point.
+//
+//	errPrefDto					*ePref.ErrPrefixDto
+//
+//	  This object encapsulates an error prefix string
+//	  which is included in all returned error
+//	  messages. Usually, it contains the name of the
+//	  calling method or methods listed as a function
+//	  chain.
+//
+//	  If no error prefix information is needed, set
+//	  this parameter to 'nil'.
+//
+//	  Type ErrPrefixDto is included in the 'errpref'
+//	  software package:
+//	    "github.com/MikeAustin71/errpref".
+//
+//	Return Values
+//	=============
+//
+//	BigIntNum
+//	  After the subtraction operation, the 'difference' or 'result' is
+//	  returned as a Type BigIntNum.
+//
+//	  The returned BigIntNum 'result' will contain USA default numeric
+//	  separators (decimal separator, thousands separator and currency
+//	  symbol).
+//
+//	err                      error
+//	  If the calculation completes successfully, the 'error' type
+//	  returned will be set equal to 'nil'. If an error is encountered,
+//	  the returned 'error' type will contain an appropriate error
+//	  message.
+func (bIMathSubMacrobot *bigIntMathSubtractMacrobot) subtractBigInts(
+	numSeps NumericSeparatorDto,
+	minuend *big.Int,
+	minuendPrecision uint,
+	subtrahend *big.Int,
+	subtrahendPrecision uint,
+	errPrefDto *ePref.ErrPrefixDto) (BigIntNum, error) {
+
+	bIMathSubMacrobot.lock.Lock()
+
+	defer bIMathSubMacrobot.lock.Unlock()
+
+	var ePrefix *ePref.ErrPrefixDto
+
+	var err error
+
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
+		errPrefDto,
+		"bigIntMathSubtractMacrobot.subtractBigInts",
+		"")
+
+	if err != nil {
+		return BigIntNum{}, err
+	}
+
+	if minuend == nil {
+
+		return BigIntNum{},
+			&InputPtrNilError{
+				ErrPrefix:     ePrefix.String(),
+				ErrContext:    "",
+				ParameterName: "'minuend'",
+			}
+	}
+
+	if subtrahend == nil {
+
+		return BigIntNum{},
+			&InputPtrNilError{
+				ErrPrefix:     ePrefix.String(),
+				ErrContext:    "",
+				ParameterName: "'subtrahend'",
+			}
+	}
+
+	err = numSeps.IsValid(ePrefix.XCpy("Validating 'numSeps'").String())
+
+	if err != nil {
+
+		return BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix: ePrefix.String(),
+				ReturnFunc: "err = numSeps.IsValid(ePrefix.XCpy(\n" +
+					"\"Validating 'numSeps'\").String())",
+				ErrContext: "Error: Input parameter 'numSeps' is invalid.\n" +
+					"'numSeps' FAILED validation tests.",
+				ErrMessage: err.Error(),
+			}
+	}
+
+	// Returned error is ignored because minuend and subtrahend precisions
+	// will never be less than zero.
+	result, resultPrecision, err :=
+		new(bigIntMathSubtractNanobot).bigIntSubtract(
+			minuend,
+			big.NewInt(0).SetUint64(uint64(minuendPrecision)),
+			subtrahend,
+			big.NewInt(0).SetUint64(uint64(subtrahendPrecision)),
+			ePrefix)
+
+	if err != nil {
+
+		return BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix: ePrefix.String(),
+				ReturnFunc: "result, resultPrecision, err :=\n" +
+					"  new(bigIntMathSubtractNanobot).bigIntSubtract(\n" +
+					"minuend, big.NewInt(0).SetUint64(uint64(minPrecision)),\n" +
+					"subtrahend, big.NewInt(0).SetUint64(uint64(subPrecision)), ePrefix)",
+				ErrContext: fmt.Sprintf("minuend= '%v'\n"+
+					"minuendPrecision= '%v'\n"+
+					"subtrahend= '%v'\n"+
+					"subtrahendPrecision= '%v'",
+					minuend.Text(10), minuendPrecision,
+					subtrahend.Text(10), subtrahendPrecision),
+				ErrMessage: err.Error(),
+			}
+	}
+
+	biNum, err := new(BigIntNum).NewBigIntBigPrecision(result, resultPrecision)
+
+	if err != nil {
+
+		return BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix: ePrefix.String(),
+				ReturnFunc: "biNum, err := new(BigIntNum).\n" +
+					"  NewBigIntBigPrecision(result, resultPrecision)",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
+
+	err = biNum.SetNumericSeparatorsDto(numSeps)
+
+	if err != nil {
+
+		return BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "err = biNum.SetNumericSeparatorsDto(numSeps)",
+				ErrContext: fmt.Sprintf("numSeps= '%v'",
+					numSeps.String()),
+				ErrMessage: err.Error(),
+			}
+	}
+
+	err = biNum.IsValid(ePrefix.XCpy("Validating final result 'biNum'").String())
+
+	if err != nil {
+
+		return BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "err = biNum.IsValid(ePrefix)",
+				ErrContext: "Error: Final caclulated result 'biNum' is invalid.\n" +
+					"'biNum' FAILED validation tests.",
+				ErrMessage: err.Error(),
+			}
+	}
+
+	return biNum, nil
 }
