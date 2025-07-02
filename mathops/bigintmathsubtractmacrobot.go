@@ -1143,3 +1143,223 @@ func (bIMathSubMacrobot *bigIntMathSubtractMacrobot) subtractBigIntNums(
 
 	return difference, nil
 }
+
+// subtractBigIntNumSeries
+//
+//	Receives one BigIntNum which is classified as the 'minuend'. The
+//	second input parameter, 'subtrahends' is a series of Type
+//	BigIntNum's.
+//
+//	The 'subtrahends' series is subtracted from the 'minuend'.
+//
+//	In the subtraction operation:
+//
+//	    'minuend' - 'subtrahend' = difference or result
+//	    b1 = 'minuend'
+//		  b2 = 'subtrahend'
+//	    b1 - b2 = difference or result
+//
+//	In this method, the 'subtrahend' is a series of BigIntNum Types.
+//	This method is defined as a variadic function in that 'subtrahend'
+//	is configured as an optional input parameter meaning that it is NOT
+//	required. The user can choose to provide a value for 'subtrahend',
+//	or not.
+//
+//	If no value is provided for 'subtrahend', an error is returned.
+//
+//	Therefore, the user MUST provide one or more 'subtrahend' values,
+//	separated by commas.
+//
+//	After subtracting all 'subtrahend' values from 'minuend', the
+//	resulting cumulative 'difference' value is returned as a Type
+//	BigIntNum.
+//
+//	Numeric Separators
+//	==================
+//
+//	Numeric Separators define the Decimal Separator character,
+//	Thousands Separator character, and Currency Symbol character.
+//	These separator characters serve two purposes. First they are
+//	used to format and display numeric values as number strings.
+//	Second, they are also used to parse number strings and
+//	convert them into numeric values.
+//
+//	This method will copy the Numeric Separators configured
+//	for input parameter 'minuend' to the returned instance of
+//	'difference' (type BigIntNum).
+func (bIMathSubMacrobot *bigIntMathSubtractMacrobot) subtractBigIntNumSeries(
+	numSeps NumericSeparatorDto,
+	validateNumSeps bool,
+	minuend BigIntNum,
+	validateMinuend bool,
+	validateSubtrahends bool,
+	errPrefDto *ePref.ErrPrefixDto,
+	subtrahends ...BigIntNum) (difference BigIntNum, err error) {
+
+	bIMathSubMacrobot.lock.Lock()
+
+	defer bIMathSubMacrobot.lock.Unlock()
+
+	difference = new(BigIntNum).New()
+
+	var ePrefix *ePref.ErrPrefixDto
+
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
+		errPrefDto,
+		"bigIntMathSubtractMacrobot.subtractBigIntNumSeries",
+		"")
+
+	if err != nil {
+		return difference, err
+	}
+
+	if validateMinuend {
+
+		err = minuend.IsValid(ePrefix.XCpy("Validating 'minuend'").String())
+
+		if err != nil {
+
+			return difference,
+				&FuncReturnError{
+					ErrPrefix: ePrefix.String(),
+					ReturnFunc: "err = minuend.IsValid(ePrefix.XCpy(\n" +
+						"  \"Validating 'minuend'\").String())",
+					ErrContext: "Error: Input parameter 'minuend' is invalid.\n" +
+						"'minuend' FAILED validation tests.",
+					ErrMessage: err.Error(),
+				}
+		}
+	}
+
+	if validateNumSeps {
+
+		err = numSeps.IsValid(ePrefix.XCpy("Validating 'numSeps'").String())
+
+		if err != nil {
+
+			return difference,
+				&FuncReturnError{
+					ErrPrefix: ePrefix.String(),
+					ReturnFunc: "err = numSeps.IsValid(ePrefix.XCpy(\n" +
+						"  \"Validating 'numSeps'\").String())",
+					ErrContext: "Error: Input parameter 'numSeps' is invalid.\n" +
+						"'numSeps' FAILED validation tests.",
+					ErrMessage: err.Error(),
+				}
+		}
+	}
+
+	beginningMinuendNumStr, err := minuend.GetNumStr()
+
+	if err != nil {
+
+		return difference,
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "beginningMinuendNumStr, err := minuend.GetNumStr()",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
+
+	difference, err = minuend.CopyOut()
+
+	if err != nil {
+
+		return BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "difference, err = minuend.CopyOut()",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
+
+	foundSubtrahends := false
+
+	var bPair BigIntPair
+	var subtrahendNumStr string
+
+	for idx, subtrahend := range subtrahends {
+
+		foundSubtrahends = true
+
+		if validateSubtrahends {
+
+			err = subtrahend.IsValid(ePrefix.XCpy(fmt.Sprintf("Validating subtrahend[%d]", idx)).String())
+
+			if err != nil {
+
+				return BigIntNum{},
+					&FuncReturnError{
+						ErrPrefix:  ePrefix.String(),
+						ReturnFunc: fmt.Sprintf("err = subtrahend[%d].IsValid(ePrefix)", idx),
+						ErrContext: fmt.Sprintf("Error: subtrahend[%d] is invalid.\n"+
+							"subtrahend[%d] FAILED validation tests.", idx, idx),
+						ErrMessage: err.Error(),
+					}
+			}
+		}
+
+		subtrahendNumStr, err = subtrahend.GetNumStr()
+
+		if err != nil {
+
+			return BigIntNum{},
+				&FuncReturnError{
+					ErrPrefix:  ePrefix.String(),
+					ReturnFunc: "difference, err = minuend.CopyOut()",
+					ErrContext: "",
+					ErrMessage: err.Error(),
+				}
+		}
+
+		bPair, err = new(BigIntPair).NewBigIntNum(minuend, subtrahend)
+
+		if err != nil {
+
+			return BigIntNum{},
+				&FuncReturnError{
+					ErrPrefix:  ePrefix.String(),
+					ReturnFunc: fmt.Sprintf("bPair, err = new(BigIntPair).NewBigIntNum(minuend, subtrahend[%d])", idx),
+					ErrContext: fmt.Sprintf("Beginning 'minuend'= '%v'\n"+
+						"subtrahend[%d]= '%v'",
+						beginningMinuendNumStr, idx, subtrahendNumStr),
+					ErrMessage: err.Error(),
+				}
+		}
+
+		difference, err = new(bigIntMathSubtractNanobot).subtractBigIntPair(
+			numSeps, false, &bPair, true, ePrefix)
+
+		if err != nil {
+
+			return BigIntNum{},
+				&FuncReturnError{
+					ErrPrefix: ePrefix.String(),
+					ReturnFunc: "difference, err = new(bigIntMathSubtractNanobot).subtractBigIntPair(\n" +
+						"  numSeps, false, &bPair, true, ePrefix)",
+					ErrContext: fmt.Sprintf("Beginning 'minuend'= '%v'\n"+
+						"subtrahend[%d]= '%v'",
+						beginningMinuendNumStr, idx, subtrahendNumStr),
+					ErrMessage: err.Error(),
+				}
+		}
+	}
+
+	if !foundSubtrahends {
+
+		return BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "difference, err = minuend.CopyOut()",
+				ErrContext: "",
+				ErrMessage: "Error: Input parameter 'subtrahends' is invalid.\n" +
+					"'subtrahends' is empty and conains zero subtrahend values.",
+			}
+
+	}
+
+	return difference, nil
+}

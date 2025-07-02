@@ -325,7 +325,6 @@ func (bSubtract *BigIntMathSubtract) SubtractBigInts(
 //
 //	      'minuend' - 'subtrahend' = difference or result
 //
-//
 //	Numeric Separators
 //	==================
 //
@@ -337,8 +336,8 @@ func (bSubtract *BigIntMathSubtract) SubtractBigInts(
 //	convert them into numeric values.
 //
 //	This method will copy the Numeric Separators configured
-//	for input parameter 'minuend' will be copied to the returned
-//	instance of 'difference' (type BigIntFixedDecimal).
+//	for input parameter 'minuend' to the returned instance of
+//	'difference' (type BigIntNum).
 func (bSubtract *BigIntMathSubtract) SubtractBigIntNums(
   minuend BigIntNum, subtrahend BigIntNum) (difference BigIntNum, err error) {
 
@@ -424,8 +423,8 @@ func (bSubtract *BigIntMathSubtract) SubtractBigIntNums(
 //	convert them into numeric values.
 //
 //	This method will copy the Numeric Separators configured
-//	for input parameter 'minuend' will be copied to the returned
-//	instance of 'difference' (type BigIntFixedDecimal).
+//	for input parameter 'minuend' to the returned	instance of
+//	'difference' (type BigIntFixedDecimal).
 func (bSubtract *BigIntMathSubtract) SubtractBigIntNumArray(
   minuend BigIntNum,
   subtrahends []BigIntNum) (difference BigIntNum, err error) {
@@ -485,6 +484,20 @@ func (bSubtract *BigIntMathSubtract) SubtractBigIntNumArray(
 //	subtraction results returned by this method, will contain numeric
 //	separators (decimal separator, thousands separator and currency
 //	symbol) copied from input parameter 'minuend'.
+//
+//	Numeric Separators
+//	==================
+//
+//	Numeric Separators define the Decimal Separator character,
+//	Thousands Separator character, and Currency Symbol character.
+//	These separator characters serve two purposes. First they are
+//	used to format and display numeric values as number strings.
+//	Second, they are also used to parse number strings and
+//	convert them into numeric values.
+//
+//	This method will copy the Numeric Separators configured for input
+//	parameter 'minuend' to each member of the returned BigIntNum
+//	array.
 func (bSubtract *BigIntMathSubtract) SubtractBigIntNumOutputToArray(
   minuend BigIntNum,
   subtrahends []BigIntNum) ([]BigIntNum, error) {
@@ -521,45 +534,78 @@ func (bSubtract *BigIntMathSubtract) SubtractBigIntNumOutputToArray(
 
 // SubtractBigIntNumSeries
 //
-// Receives one BigIntNum which is classified as
-// the 'minuend'. The second input parameter, 'subtrahends' is a series of
-// Type BigIntNum .
+//	Receives one BigIntNum which is classified as the 'minuend'. The
+//	second input parameter, 'subtrahends' is a series of Type
+//	BigIntNum's.
 //
-// The 'subtrahends' series is subtracted from the 'minuend'.
+//	The 'subtrahends' series is subtracted from the 'minuend'.
 //
-// In the subtraction operation:
+//	In the subtraction operation:
 //
-//	b1 - b2 = difference or result
-//	'minuend' - 'subtrahend' = difference or result
-//	b1 = 'minuend'
-//	b2 = 'subtrahend'
+//	    'minuend' - 'subtrahend' = difference or result
+//	    b1 = 'minuend'
+//	    b2 = 'subtrahend'
+//	    b1 - b2 = difference or result
 //
-// In this method, the 'subtrahend' is a series of BigIntNum Types.
+//	In this method, the 'subtrahend' is a series of BigIntNum Types.
+//	This method is defined as a variadic function in that 'subtrahend'
+//	is configured as an optional input parameter meaning that it is NOT
+//	required. The user can choose to provide a value for 'subtrahend',
+//	or not.
 //
-// After the subtraction operation, the 'difference' or 'result' is returned as a
-// Type BigIntNum.
+//	If no value is provided for 'subtrahend', an error is returned.
 //
-// The subtraction result returned by this method as a Type BigIntNum will
-// contain numeric separators (decimal separator, thousands separator and currency
-// symbol) copied from input parameter 'minuend'.
+//	Therefore, the user MUST provide one or more 'subtrahend' values,
+//	separated by commas.
+//
+//	After subtracting all 'subtrahend' values from 'minuend', the
+//	resulting cumulative 'difference' value is returned as a Type
+//	BigIntNum.
+//
+//	Numeric Separators
+//	==================
+//
+//	Numeric Separators define the Decimal Separator character,
+//	Thousands Separator character, and Currency Symbol character.
+//	These separator characters serve two purposes. First they are
+//	used to format and display numeric values as number strings.
+//	Second, they are also used to parse number strings and
+//	convert them into numeric values.
+//
+//	This method will copy the Numeric Separators configured
+//	for input parameter 'minuend' to the returned instance of
+//	'difference' (type BigIntNum).
 func (bSubtract *BigIntMathSubtract) SubtractBigIntNumSeries(
   minuend BigIntNum,
-  subtrahends ...BigIntNum) BigIntNum {
+  subtrahends ...BigIntNum) (difference BigIntNum, err error) {
 
-  numSeps := minuend.GetNumericSeparatorsDto()
+  var ePrefix *ePref.ErrPrefixDto
 
-  finalResult := minuend.CopyOut()
+  ePrefix,
+    err = ePref.ErrPrefixDto{}.NewIEmpty(
+    nil,
+    "BigIntMathSubtract.SubtractBigIntNumSeries",
+    "")
 
-  for _, subtrahend := range subtrahends {
-
-    bPair := BigIntPair{}.NewBigIntNum(finalResult, subtrahend)
-
-    finalResult = bSubtract.subtractPairNoNumSeps(bPair)
+  if err != nil {
+    return BigIntNum{}, err
   }
 
-  _ = finalResult.SetNumericSeparatorsDto(numSeps)
+  numSeps, err := minuend.GetNumericSeparatorsDto()
 
-  return finalResult
+  if err != nil {
+
+    return BigIntNum{},
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "numSeps, err := minuend.GetNumericSeparatorsDto()",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+  }
+
+  return new(bigIntMathSubtractMacrobot).subtractBigIntNumSeries(
+    numSeps, false, minuend, true, true, ePrefix, subtrahends...)
 }
 
 // SubtractDecimal - Performs the subtraction operation on two Decimal Types.
