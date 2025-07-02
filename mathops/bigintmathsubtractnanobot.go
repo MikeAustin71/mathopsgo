@@ -1,15 +1,15 @@
 package mathops
 
 import (
-  "fmt"
-  ePref "github.com/MikeAustin71/errpref"
-  "math/big"
-  "sync"
+	"fmt"
+	ePref "github.com/MikeAustin71/errpref"
+	"math/big"
+	"sync"
 )
 
 // BigIntMathSubtract
 type bigIntMathSubtractNanobot struct {
-  lock sync.Mutex
+	lock sync.Mutex
 }
 
 // bigIntSubtract
@@ -108,166 +108,375 @@ type bigIntMathSubtractNanobot struct {
 //	  the returned 'error' type will contain an appropriate error
 //	  message.
 func (bIMathSubNanobot *bigIntMathSubtractNanobot) bigIntSubtract(
-  minuend *big.Int,
-  minuendPrecision *big.Int,
-  subtrahend *big.Int,
-  subtrahendPrecision *big.Int,
-  errPrefDto *ePref.ErrPrefixDto) (
-  difference *big.Int, differencePrecision *big.Int, err error) {
+	minuend *big.Int,
+	minuendPrecision *big.Int,
+	subtrahend *big.Int,
+	subtrahendPrecision *big.Int,
+	errPrefDto *ePref.ErrPrefixDto) (
+	difference *big.Int, differencePrecision *big.Int, err error) {
 
-  bIMathSubNanobot.lock.Lock()
+	bIMathSubNanobot.lock.Lock()
 
-  defer bIMathSubNanobot.lock.Unlock()
+	defer bIMathSubNanobot.lock.Unlock()
 
-  var ePrefix *ePref.ErrPrefixDto
+	var ePrefix *ePref.ErrPrefixDto
 
-  ePrefix,
-    err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
-    errPrefDto,
-    "bigIntMathSubtractNanobot.bigIntSubtract",
-    "")
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
+		errPrefDto,
+		"bigIntMathSubtractNanobot.bigIntSubtract",
+		"")
 
-  if err != nil {
-    return big.NewInt(0), big.NewInt(0), err
-  }
-  if minuend == nil {
+	if err != nil {
+		return big.NewInt(0), big.NewInt(0), err
+	}
 
-    return big.NewInt(0), big.NewInt(0),
-      &InputPtrNilError{
-        ErrPrefix:     ePrefix.String(),
-        ErrContext:    "",
-        ParameterName: "'minuend'",
-      }
-  }
+	if minuend == nil {
 
-  if minuendPrecision == nil {
+		return big.NewInt(0), big.NewInt(0),
+			&InputPtrNilError{
+				ErrPrefix:     ePrefix.String(),
+				ErrContext:    "",
+				ParameterName: "'minuend'",
+			}
+	}
 
-    return big.NewInt(0), big.NewInt(0),
-      &InputPtrNilError{
-        ErrPrefix:     ePrefix.String(),
-        ErrContext:    "",
-        ParameterName: "'minuendPrecision'",
-      }
-  }
+	if minuendPrecision == nil {
 
-  if subtrahend == nil {
+		return big.NewInt(0), big.NewInt(0),
+			&InputPtrNilError{
+				ErrPrefix:     ePrefix.String(),
+				ErrContext:    "",
+				ParameterName: "'minuendPrecision'",
+			}
+	}
 
-    return big.NewInt(0), big.NewInt(0),
-      &InputPtrNilError{
-        ErrPrefix:     ePrefix.String(),
-        ErrContext:    "",
-        ParameterName: "'subtrahend'",
-      }
-  }
+	if subtrahend == nil {
 
-  if subtrahendPrecision == nil {
+		return big.NewInt(0), big.NewInt(0),
+			&InputPtrNilError{
+				ErrPrefix:     ePrefix.String(),
+				ErrContext:    "",
+				ParameterName: "'subtrahend'",
+			}
+	}
 
-    return big.NewInt(0), big.NewInt(0),
-      &InputPtrNilError{
-        ErrPrefix:     ePrefix.String(),
-        ErrContext:    "",
-        ParameterName: "'subPrecision'",
-      }
-  }
+	if subtrahendPrecision == nil {
 
-  difference = big.NewInt(0)
+		return big.NewInt(0), big.NewInt(0),
+			&InputPtrNilError{
+				ErrPrefix:     ePrefix.String(),
+				ErrContext:    "",
+				ParameterName: "'subPrecision'",
+			}
+	}
 
-  differencePrecision = big.NewInt(0)
+	difference = big.NewInt(0)
 
-  bigZero := big.NewInt(0)
+	differencePrecision = big.NewInt(0)
 
-  if minuendPrecision.Cmp(bigZero) == -1 {
+	bigZero := big.NewInt(0)
 
-    return difference, differencePrecision,
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "",
-        ErrContext: fmt.Sprintf("minuendPrecision= '%v'", minuendPrecision.Text(10)),
-        ErrMessage: "Error: Input parameter 'minuendPrecision' is INVALID!\n" +
-          "'minuendPrecision' has a value less than zero!",
-      }
-  }
+	if minuendPrecision.Cmp(bigZero) == -1 {
 
-  if subtrahendPrecision.Cmp(bigZero) == -1 {
+		return difference, differencePrecision,
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "",
+				ErrContext: fmt.Sprintf("minuendPrecision= '%v'", minuendPrecision.Text(10)),
+				ErrMessage: "Error: Input parameter 'minuendPrecision' is INVALID!\n" +
+					"'minuendPrecision' has a value less than zero!",
+			}
+	}
 
-    return difference, differencePrecision,
-      &FuncReturnError{
-        ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "",
-        ErrContext: fmt.Sprintf("subtrahendPrecision= '%v'", subtrahendPrecision.Text(10)),
-        ErrMessage: "Error: Input parameter 'subtrahendPrecision' is INVALID!\n" +
-          "'subtrahendPrecision' has a value less than zero!",
-      }
-  }
+	if subtrahendPrecision.Cmp(bigZero) == -1 {
 
-  base10 := big.NewInt(10)
+		return difference, differencePrecision,
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "",
+				ErrContext: fmt.Sprintf("subtrahendPrecision= '%v'", subtrahendPrecision.Text(10)),
+				ErrMessage: "Error: Input parameter 'subtrahendPrecision' is INVALID!\n" +
+					"'subtrahendPrecision' has a value less than zero!",
+			}
+	}
 
-  deltaPrecision := big.NewInt(0)
+	base10 := big.NewInt(10)
 
-  scale := big.NewInt(0)
+	deltaPrecision := big.NewInt(0)
 
-  if minuendPrecision.Cmp(subtrahendPrecision) == 0 {
-    // Precisions are equal.
+	scale := big.NewInt(0)
 
-    difference = big.NewInt(0).Sub(minuend, subtrahend)
+	if minuendPrecision.Cmp(subtrahendPrecision) == 0 {
+		// Precisions are equal.
 
-    differencePrecision = big.NewInt(0).Set(minuendPrecision)
+		difference = big.NewInt(0).Sub(minuend, subtrahend)
 
-  } else if minuendPrecision.Cmp(subtrahendPrecision) == 1 {
-    //  minPrecision > subPrecision
+		differencePrecision = big.NewInt(0).Set(minuendPrecision)
 
-    deltaPrecision = big.NewInt(0).Sub(minuendPrecision, subtrahendPrecision)
+	} else if minuendPrecision.Cmp(subtrahendPrecision) == 1 {
+		//  minPrecision > subPrecision
 
-    scale = big.NewInt(0).Exp(base10, deltaPrecision, nil)
+		deltaPrecision = big.NewInt(0).Sub(minuendPrecision, subtrahendPrecision)
 
-    newSubInt := big.NewInt(0).Mul(subtrahend, scale)
+		scale = big.NewInt(0).Exp(base10, deltaPrecision, nil)
 
-    difference = big.NewInt(0).Sub(minuend, newSubInt)
+		newSubInt := big.NewInt(0).Mul(subtrahend, scale)
 
-    differencePrecision.Set(minuendPrecision)
+		difference = big.NewInt(0).Sub(minuend, newSubInt)
 
-  } else {
-    // subPrecision must be GREATER THAN minPrecision
+		differencePrecision.Set(minuendPrecision)
 
-    deltaPrecision = big.NewInt(0).Sub(subtrahendPrecision, minuendPrecision)
+	} else {
+		// subPrecision must be GREATER THAN minPrecision
 
-    scale = big.NewInt(0).Exp(base10, deltaPrecision, nil)
+		deltaPrecision = big.NewInt(0).Sub(subtrahendPrecision, minuendPrecision)
 
-    newMinuendInt := big.NewInt(0).Mul(minuend, scale)
+		scale = big.NewInt(0).Exp(base10, deltaPrecision, nil)
 
-    difference = big.NewInt(0).Sub(newMinuendInt, subtrahend)
+		newMinuendInt := big.NewInt(0).Mul(minuend, scale)
 
-    differencePrecision.Set(subtrahendPrecision)
-  }
+		difference = big.NewInt(0).Sub(newMinuendInt, subtrahend)
 
-  if difference.Cmp(bigZero) == 0 {
+		differencePrecision.Set(subtrahendPrecision)
+	}
 
-    differencePrecision = big.NewInt(0)
-  }
+	if difference.Cmp(bigZero) == 0 {
 
-  // Delete trailing fractional zeros
-  if differencePrecision.Cmp(bigZero) == 1 {
-    // differencePrecision > 0
+		differencePrecision = big.NewInt(0)
+	}
 
-    scrap := big.NewInt(0)
+	// Delete trailing fractional zeros
+	if differencePrecision.Cmp(bigZero) == 1 {
+		// differencePrecision > 0
 
-    biBase10 := big.NewInt(10)
+		scrap := big.NewInt(0)
 
-    biBaseZero := big.NewInt(0)
+		biBase10 := big.NewInt(10)
 
-    newDifference, mod10 := big.NewInt(0).QuoRem(difference, biBase10, scrap)
+		biBaseZero := big.NewInt(0)
 
-    bigOne := big.NewInt(1)
+		newDifference, mod10 := big.NewInt(0).QuoRem(difference, biBase10, scrap)
 
-    for mod10.Cmp(biBaseZero) == 0 && differencePrecision.Cmp(bigZero) == 1 {
+		bigOne := big.NewInt(1)
 
-      difference.Set(newDifference)
+		for mod10.Cmp(biBaseZero) == 0 && differencePrecision.Cmp(bigZero) == 1 {
 
-      differencePrecision.Sub(differencePrecision, bigOne)
+			difference.Set(newDifference)
 
-      newDifference, mod10 = big.NewInt(0).QuoRem(difference, biBase10, scrap)
-    }
-  }
+			differencePrecision.Sub(differencePrecision, bigOne)
 
-  return difference, differencePrecision, nil
+			newDifference, mod10 = big.NewInt(0).QuoRem(difference, biBase10, scrap)
+		}
+	}
+
+	return difference, differencePrecision, nil
+}
+
+// subtractPairNoNumSeps
+//
+//	Performs the subtraction operation. This method receives a type
+//	'BigIntPair' and proceeds to subtract bPair.Big1 from bPair.Big2.
+//
+//	After the subtraction operation, the 'difference' or 'result' is
+//	returned as a Type BigIntNum.
+//
+//	Numeric Separators
+//	==================
+//
+//	Numeric Separators define the Decimal Separator character,
+//	Thousands Separator character, and Currency Symbol character.
+//	These separator characters serve two purposes. First they are
+//	used to format and display numeric values as number strings.
+//	Second, they are also used to parse number strings and
+//	convert them into numeric values.
+//
+//	This method will copy Numeric Separators to the returned instance
+//	of 'difference' (type BigIntNum).
+func (bIMathSubNanobot *bigIntMathSubtractNanobot) subtractBigIntPair(
+	numSeps NumericSeparatorDto,
+	validateNumSeps bool,
+	bPair *BigIntPair,
+	validateBigIntPair bool,
+	errPrefDto *ePref.ErrPrefixDto) (difference BigIntNum, err error) {
+
+	bIMathSubNanobot.lock.Lock()
+
+	defer bIMathSubNanobot.lock.Unlock()
+
+	difference = new(BigIntNum).New()
+
+	var ePrefix *ePref.ErrPrefixDto
+
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
+		errPrefDto,
+		"bigIntMathSubtractNanobot.subtractBigIntPair",
+		"")
+
+	if err != nil {
+		return difference, err
+	}
+
+	if bPair == nil {
+
+		return difference,
+			&InputPtrNilError{
+				ErrPrefix:     ePrefix.String(),
+				ErrContext:    "",
+				ParameterName: "'bPair'",
+			}
+	}
+
+	if validateBigIntPair {
+
+		err = bPair.IsValid(ePrefix.XCpy("Validating 'bPair'").String())
+
+		if err != nil {
+
+			return difference,
+				&FuncReturnError{
+					ErrPrefix: ePrefix.String(),
+					ReturnFunc: " err = bPair.IsValid(ePrefix.XCpy(\n" +
+						"\"Validating 'bPair'\").String())",
+					ErrContext: "Error: Input parameter 'bPair' is INVALID!\n" +
+						"'bPair' FAILED validation tests.",
+					ErrMessage: err.Error(),
+				}
+		}
+	}
+
+	if validateBigIntPair {
+
+		err = numSeps.IsValid(ePrefix.XCpy("Validating 'numSeps'").String())
+
+		if err != nil {
+
+			return difference,
+				&FuncReturnError{
+					ErrPrefix: ePrefix.String(),
+					ReturnFunc: "err = numSeps.IsValid(ePrefix.XCpy(\n" +
+						"\"Validating 'numSeps'\").String())",
+					ErrContext: "Error: Input parameter 'numSeps' is INVALID!\n" +
+						"'numSeps' FAILED validation tests.",
+					ErrMessage: err.Error(),
+				}
+		}
+	}
+
+	if validateNumSeps {
+
+		err = numSeps.IsValid(ePrefix.XCpy("Validating 'numSeps'").String())
+
+		if err != nil {
+
+			return BigIntNum{},
+				&FuncReturnError{
+					ErrPrefix: ePrefix.String(),
+					ReturnFunc: "err = numSeps.IsValid(\n" +
+						"  ePrefix.XCpy(\"Validating 'numSeps'\").String())",
+					ErrContext: "Error: Input parameter 'numSeps' is INVALID!\n" +
+						"'numSeps' FAILED validation tests.",
+					ErrMessage: err.Error(),
+				}
+		}
+	}
+
+	err = bPair.MakePrecisionsEqual()
+
+	if err != nil {
+
+		return BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "err = bPair.MakePrecisionsEqual()",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
+
+	bPairBig1BigInt, err := bPair.GetBig1BigInt()
+
+	if err != nil {
+
+		return BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "bPairBig1BigInt, err := bPair.GetBig1BigInt()",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
+
+	bPairBig2BigInt, err := bPair.GetBig2BigInt()
+
+	if err != nil {
+
+		return BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "bPairBig2BigInt, err := bPair.GetBig2BigInt()",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
+
+	b3Difference := big.NewInt(0).Sub(bPairBig1BigInt, bPairBig2BigInt)
+
+	bPairBig2PrecisionUint, err := bPair.Big2.GetPrecisionUint()
+
+	if err != nil {
+
+		return BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "bPairBig2PrecisionUint, err := bPair.Big2.GetPrecisionUint()",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
+
+	difference, err = new(BigIntNum).NewBigInt(b3Difference, bPairBig2PrecisionUint)
+
+	if err != nil {
+
+		return BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix: ePrefix.String(),
+				ReturnFunc: "difference, err = new(BigIntNum).\n" +
+					"  NewBigInt(b3Difference, bPairBig2PrecisionUint)",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
+
+	err = difference.SetNumericSeparatorsDto(numSeps)
+
+	if err != nil {
+
+		return BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "err = difference.SetNumericSeparatorsDto(numSeps)",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
+
+	err = difference.IsValid(ePrefix.XCpy("Validating final result 'difference'").String())
+
+	if err != nil {
+
+		return BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix: ePrefix.String(),
+				ReturnFunc: "err = difference.IsValid(ePrefix.XCpy(\n" +
+					"  \"Validating final result 'difference'\").String())",
+				ErrContext: "Error: Final calculated result 'difference' is INVALID!\n" +
+					"'difference' FAILED validation tests.",
+				ErrMessage: err.Error(),
+			}
+	}
+
+	return difference, nil
 }
