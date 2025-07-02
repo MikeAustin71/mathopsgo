@@ -459,56 +459,69 @@ func (bSubtract *BigIntMathSubtract) SubtractBigIntNumArray(
     numSeps, true, minuend, true, subtrahends, true, ePrefix)
 }
 
-// SubtractBigIntNumOutputToArray - The first input parameter to this method
-// is a BigIntNum Type labeled, 'minuend'.  The second input parameter is an
-// array of BigIntNum types labeled 'subtrahends'. The 'minuend' is subtracted
-// from each element of the 'subtrahends' array with the result output to another
-// 'results' array of BigIntNum types which is then returned to the calling
-// function.
+// SubtractBigIntNumOutputToArray
 //
-// Example
-// =======
+//	The first input parameter to this method is a BigIntNum Type
+//	labeled, 'minuend'.  The second input parameter is an array of
+//	BigIntNum types labeled 'subtrahends'. The 'minuend' is subtracted
+//	from each element of the 'subtrahends' array with the result
+//	output to another 'results' array of BigIntNum types which is then
+//	returned to the calling function.
 //
-//	subtrahends										 Output
+//	Example
+//	=======
 //
-// Minuend   				    	  Array											   Array
+//	              subtrahends                 Output
+//	Minuend          Array                     Array
 //
-//	10			-					subtrahends[0] = 2			=				  outputarray[0] =  8
-//	10			-					subtrahends[1] = 3			=				  outputarray[1] =  7
-//	10			-					subtrahends[2] = 4			=				  outputarray[2] =  6
-//	10			-					subtrahends[3] = 5			=				  outputarray[3] =  5
-//	10			-					subtrahends[4] = 6			=				  outputarray[4] =  4
-//	10			-					subtrahends[5] = 9			=				  outputarray[5] =  1
+//	  10      -  subtrahends[0] = 2    =   outputarray[0] = 8
+//	  10      -  subtrahends[1] = 3    =   outputarray[1] = 7
+//	  10      -  subtrahends[2] = 4    =   outputarray[2] = 6
+//	  10      -  subtrahends[3] = 5    =   outputarray[3] = 5
+//	  10      -  subtrahends[4] = 6    =   outputarray[4] = 4
+//	  10      -  subtrahends[5] = 9    =   outputarray[5] = 1
 //
-// Each of the BigIntNum instances included in the array of BigIntNum subtraction
-// results returned by this method, will contain numeric separators (decimal separator,
-// thousands separator and currency symbol) copied from input parameter 'minuend'.
+//	Each of the BigIntNum instances included in the array of BigIntNum
+//	subtraction results returned by this method, will contain numeric
+//	separators (decimal separator, thousands separator and currency
+//	symbol) copied from input parameter 'minuend'.
 func (bSubtract *BigIntMathSubtract) SubtractBigIntNumOutputToArray(
   minuend BigIntNum,
-  subtrahends []BigIntNum) []BigIntNum {
+  subtrahends []BigIntNum) ([]BigIntNum, error) {
 
-  numSeps := minuend.GetNumericSeparatorsDto()
+  var ePrefix *ePref.ErrPrefixDto
+  var err error
 
-  lenSubtrahends := len(subtrahends)
+  ePrefix,
+    err = ePref.ErrPrefixDto{}.NewIEmpty(
+    nil,
+    "BigIntMathSubtract.SubtractBigIntNumOutputToArray",
+    "")
 
-  if lenSubtrahends == 0 {
-    return []BigIntNum{}
+  if err != nil {
+    return []BigIntNum{}, err
   }
 
-  resultsArray := make([]BigIntNum, lenSubtrahends)
+  numSeps, err := minuend.GetNumericSeparatorsDto()
 
-  for i := 0; i < lenSubtrahends; i++ {
+  if err != nil {
 
-    bPair := BigIntPair{}.NewBigIntNum(minuend, subtrahends[i])
-
-    resultsArray[i] = bSubtract.subtractPairNoNumSeps(bPair)
-    _ = resultsArray[i].SetNumericSeparatorsDto(numSeps)
+    return []BigIntNum{},
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "numSeps, err := minuend.GetNumericSeparatorsDto()",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
   }
 
-  return resultsArray
+  return new(bigIntMathSubtractMacrobot).subtractBigIntNumOutputToArray(
+    numSeps, true, minuend, true, subtrahends, true, ePrefix)
 }
 
-// SubtractBigIntNumSeries - Receives one BigIntNum which is classified as
+// SubtractBigIntNumSeries
+//
+// Receives one BigIntNum which is classified as
 // the 'minuend'. The second input parameter, 'subtrahends' is a series of
 // Type BigIntNum .
 //
