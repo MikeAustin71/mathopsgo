@@ -346,24 +346,6 @@ func (bIMathSubNanobot *bigIntMathSubtractNanobot) subtractBigIntPair(
 		}
 	}
 
-	if validateBigIntPair {
-
-		err = numSeps.IsValid(ePrefix.XCpy("Validating 'numSeps'").String())
-
-		if err != nil {
-
-			return difference,
-				&FuncReturnError{
-					ErrPrefix: ePrefix.String(),
-					ReturnFunc: "err = numSeps.IsValid(ePrefix.XCpy(\n" +
-						"\"Validating 'numSeps'\").String())",
-					ErrContext: "Error: Input parameter 'numSeps' is INVALID!\n" +
-						"'numSeps' FAILED validation tests.",
-					ErrMessage: err.Error(),
-				}
-		}
-	}
-
 	if validateNumSeps {
 
 		err = numSeps.IsValid(ePrefix.XCpy("Validating 'numSeps'").String())

@@ -428,30 +428,35 @@ func (bSubtract *BigIntMathSubtract) SubtractBigIntNums(
 //	instance of 'difference' (type BigIntFixedDecimal).
 func (bSubtract *BigIntMathSubtract) SubtractBigIntNumArray(
   minuend BigIntNum,
-  subtrahends []BigIntNum) BigIntNum {
+  subtrahends []BigIntNum) (difference BigIntNum, err error) {
 
-  numSeps := minuend.GetNumericSeparatorsDto()
+  var ePrefix *ePref.ErrPrefixDto
 
-  finalResult := minuend.CopyOut()
+  ePrefix,
+    err = ePref.ErrPrefixDto{}.NewIEmpty(
+    nil,
+    "BigIntMathSubtract.SubtractBigIntNumArray",
+    "")
 
-  lenSubtrahends := len(subtrahends)
-
-  if lenSubtrahends == 0 {
-    _ = finalResult.SetNumericSeparatorsDto(numSeps)
-    return finalResult
+  if err != nil {
+    return BigIntNum{}, err
   }
 
-  for i := 0; i < lenSubtrahends; i++ {
+  numSeps, err := minuend.GetNumericSeparatorsDto()
 
-    bPair := BigIntPair{}.NewBigIntNum(finalResult, subtrahends[i])
+  if err != nil {
 
-    finalResult = bSubtract.subtractPairNoNumSeps(bPair)
-
+    return BigIntNum{},
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "numSeps, err := minuend.GetNumericSeparatorsDto()",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
   }
 
-  _ = finalResult.SetNumericSeparatorsDto(numSeps)
-
-  return finalResult
+  return new(bigIntMathSubtractMacrobot).subtractBigIntNumArray(
+    numSeps, true, minuend, true, subtrahends, true, ePrefix)
 }
 
 // SubtractBigIntNumOutputToArray - The first input parameter to this method
