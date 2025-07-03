@@ -1,7 +1,6 @@
 package mathops
 
 import (
-  "errors"
   "fmt"
   ePref "github.com/MikeAustin71/errpref"
   "math/big"
@@ -1698,6 +1697,7 @@ func (bIMathSubMacrobot *bigIntMathSubtractMacrobot) subtractDecimalArray(
 
   var bigINumSubtrahend BigIntNum
   var subtrahendNumStr string
+  var bPair BigIntPair
 
   for i := 0; i < lenSubtrahends; i++ {
 
@@ -1715,6 +1715,23 @@ func (bIMathSubMacrobot *bigIntMathSubtractMacrobot) subtractDecimalArray(
         }
     }
 
+    if validateSubtrahend {
+
+      err = subtrahends[i].IsValid(ePrefix.XCpy(fmt.Sprintf("Validating 'subtrahends[%d]'", i)).String())
+
+      if err != nil {
+
+        return BigIntNum{},
+          &FuncReturnError{
+            ErrPrefix:  ePrefix.String(),
+            ReturnFunc: "err = subtrahends[i].IsValid(ePrefix)",
+            ErrContext: fmt.Sprintf("Error: 'subtrahends[%d]' is Invalid!\n"+
+              "'subtrahends[%d]' Failed Validation Tests", i, i),
+            ErrMessage: err.Error(),
+          }
+      }
+    }
+
     subtrahendNumStr, err = bigINumSubtrahend.GetNumStr()
 
     if err != nil {
@@ -1728,20 +1745,37 @@ func (bIMathSubMacrobot *bigIntMathSubtractMacrobot) subtractDecimalArray(
         }
     }
 
-    bPair := BigIntPair{}.NewBigIntNum(
-      finalResult, bigINumSubtrahend)
+    bPair, err = new(BigIntPair).NewBigIntNum(difference, bigINumSubtrahend)
 
-    finalResult = bSubtract.subtractPairNoNumSeps(bPair)
+    if err != nil {
+
+      return BigIntNum{},
+        &FuncReturnError{
+          ErrPrefix: ePrefix.String(),
+          ReturnFunc: "bPair, err = new(BigIntPair).\n" +
+            "  NewBigIntNum(difference, bigINumSubtrahend)",
+          ErrContext: "",
+          ErrMessage: err.Error(),
+        }
+    }
+
+    difference, err = new(bigIntMathSubtractNanobot).subtractBigIntPair(
+      numSeps, false, &bPair, true, ePrefix)
+
+    if err != nil {
+
+      return BigIntNum{},
+        &FuncReturnError{
+          ErrPrefix: ePrefix.String(),
+          ReturnFunc: "difference, err = new(bigIntMathSubtractNanobot).\n" +
+            "  subtractBigIntPair(numSeps, false, &bPair, true, ePrefix)",
+          ErrContext: fmt.Sprintf("minuend= '%v'\n"+
+            "subtrahend[%d]= '%v'",
+            minuendNumStr, i, subtrahendNumStr),
+          ErrMessage: err.Error(),
+        }
+    }
   }
 
-  err = finalResult.SetNumericSeparatorsDto(numSeps)
-
-  if err != nil {
-    return BigIntNum{},
-      fmt.Errorf(ePrefix+
-        "Error returned by finalResult.SetNumericSeparatorsDto(numSeps). "+
-        "Error='%v'", err.Error())
-  }
-
-  return finalResult, nil
+  return difference, nil
 }
