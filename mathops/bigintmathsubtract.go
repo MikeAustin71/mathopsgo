@@ -569,8 +569,8 @@ func (bSubtract *BigIntMathSubtract) SubtractBigIntNumOutputToArray(
 //	Thousands Separator character, and Currency Symbol character.
 //	These separator characters serve two purposes. First they are
 //	used to format and display numeric values as number strings.
-//	Second, they are also used to parse number strings and
-//	convert them into numeric values.
+//	Second, they are also used to parse number strings and convert
+//	them into numeric values.
 //
 //	This method will copy the Numeric Separators configured
 //	for input parameter 'minuend' to the returned instance of
@@ -608,40 +608,67 @@ func (bSubtract *BigIntMathSubtract) SubtractBigIntNumSeries(
     numSeps, false, minuend, true, true, ePrefix, subtrahends...)
 }
 
-// SubtractDecimal - Performs the subtraction operation on two Decimal Types.
+// SubtractDecimals
 //
-//	decMinuend - decSubtrahend = difference
+//	Performs the subtraction operation on two Decimal Types.
 //
-// In the subtraction operation:
+//	    decMinuend - decSubtrahend = difference
 //
-//	b1 - b2 = difference or result
-//	'minuend' - 'subtrahend' = difference or result
-//	b1 = 'minuend'
-//	b2 = 'subtrahend'
+//	In the subtraction operation:
 //
-// After the subtraction operation, the 'difference' or 'result' is returned as a
-// Type BigIntNum. This resulting BigIntNum instance will contain numeric separators
-// (decimal separator, thousands separator and currency symbol) copied from input
-// parameter 'decMinuend'.
-func (bSubtract *BigIntMathSubtract) SubtractDecimal(
+//	    'minuend' - 'subtrahend' = difference or result
+//	    decimal1  = 'minuend'
+//	    decimal2  = 'subtrahend'
+//	    decimal1  -  decimal2  =  difference or result
+//
+//	After the subtraction operation, the 'difference' or 'result' is
+//	returned as a Type BigIntNum.
+//
+//	Numeric Separators
+//	==================
+//
+//	Numeric Separators define the Decimal Separator character,
+//	Thousands Separator character, and Currency Symbol character.
+//	These separator characters serve two purposes. First they are
+//	used to format and display numeric values as number strings.
+//	Second, they are also used to parse number strings and convert
+//	them into numeric values.
+//
+//	This method will copy the Numeric Separators configured for input
+//	parameter 'decMinuend' to the returned instance of 'difference'
+//	(type BigIntNum).
+func (bSubtract *BigIntMathSubtract) SubtractDecimals(
   decMinuend Decimal,
-  decSubtrahend Decimal) (BigIntNum, error) {
+  decSubtrahend Decimal) (difference BigIntNum, err error) {
 
-  // This method will test the validity of decMinuend and decSubtrahend.
-  bPair, err := BigIntPair{}.NewDecimal(decMinuend, decSubtrahend)
+  var ePrefix *ePref.ErrPrefixDto
+
+  ePrefix,
+    err = ePref.ErrPrefixDto{}.NewIEmpty(
+    nil,
+    "BigIntMathSubtract.SubtractDecimals",
+    "")
 
   if err != nil {
-    ePrefix := "BigIntMathSubtract.SubtractDecimal() "
-    return new(BigIntNum).New(),
-      fmt.Errorf(ePrefix+
-        "Error returned by BigIntPair{}.NewDecimal(decMinuend, decSubtrahend). "+
-        "decMinuend='%v' decSubtrahend='%v' Error='%v'",
-        decMinuend.GetNumStr(), decSubtrahend.GetNumStr(), err.Error())
+    return BigIntNum{}, err
   }
 
-  finalResult := bSubtract.SubtractPair(bPair)
+  numSeps, err := decMinuend.GetNumericSeparatorsDto()
 
-  return finalResult, nil
+  if err != nil {
+
+    return BigIntNum{},
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "numSeps, err := minuend.GetNumericSeparatorsDto()",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+  }
+
+  return new(bigIntMathSubtractMacrobot).subtractDecimals(
+    numSeps, true, &decMinuend, true,
+    &decSubtrahend, true, ePrefix)
 }
 
 // SubtractDecimalArray - Receives one Decimal parameter which is classified as

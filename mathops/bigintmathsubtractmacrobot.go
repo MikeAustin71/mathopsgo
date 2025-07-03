@@ -1363,3 +1363,197 @@ func (bIMathSubMacrobot *bigIntMathSubtractMacrobot) subtractBigIntNumSeries(
 
 	return difference, nil
 }
+
+// subtractDecimals
+//
+//	Performs the subtraction operation on two Decimal Types.
+//
+//	    decMinuend - decSubtrahend = difference
+//
+//	In the subtraction operation:
+//
+//	    'minuend' - 'subtrahend' = difference or result
+//	    decimal1  = 'minuend'
+//	    decimal2  = 'subtrahend'
+//	    decimal1  -  decimal2  =  difference or result
+//
+//	After the subtraction operation, the 'difference' or 'result' is
+//	returned as a Type BigIntNum.
+//
+//	Numeric Separators
+//	==================
+//
+//	Numeric Separators define the Decimal Separator character,
+//	Thousands Separator character, and Currency Symbol character.
+//	These separator characters serve two purposes. First they are
+//	used to format and display numeric values as number strings.
+//	Second, they are also used to parse number strings and convert
+//	them into numeric values.
+//
+//	This method will copy the Numeric Separators configured for input
+//	parameter 'decMinuend' to the returned instance of 'difference'
+//	(type BigIntNum).
+func (bIMathSubMacrobot *bigIntMathSubtractMacrobot) subtractDecimals(
+	numSeps NumericSeparatorDto,
+	validateNumSeps bool,
+	decMinuend *Decimal,
+	validateMinuend bool,
+	decSubtrahend *Decimal,
+	validateSubtrahend bool,
+	errPrefDto *ePref.ErrPrefixDto) (difference BigIntNum, err error) {
+
+	bIMathSubMacrobot.lock.Lock()
+
+	defer bIMathSubMacrobot.lock.Unlock()
+
+	difference = new(BigIntNum).New()
+
+	var ePrefix *ePref.ErrPrefixDto
+
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
+		errPrefDto,
+		"bigIntMathSubtractMacrobot.subtractDecimals",
+		"")
+
+	if err != nil {
+		return difference, err
+	}
+
+	if decMinuend == nil {
+
+		return difference,
+			&InputPtrNilError{
+				ErrPrefix:     ePrefix.String(),
+				ErrContext:    "",
+				ParameterName: "'decMinuend'",
+			}
+	}
+
+	if decSubtrahend == nil {
+
+		return difference,
+			&InputPtrNilError{
+				ErrPrefix:     ePrefix.String(),
+				ErrContext:    "",
+				ParameterName: "'decSubtrahend'",
+			}
+	}
+
+	if validateMinuend {
+
+		err = decMinuend.IsValid(ePrefix.XCpy("Validating 'decMinuend'").String())
+
+		if err != nil {
+
+			return difference,
+				&FuncReturnError{
+					ErrPrefix: ePrefix.String(),
+					ReturnFunc: "err = decMinuend.IsValid(ePrefix.XCpy(\n" +
+						"  \"Validating 'decMinuend'\").String())",
+					ErrContext: "Error: Input parameter 'decMinuend' is invalid.\n" +
+						"'decMinuend' FAILED validation tests.",
+					ErrMessage: err.Error(),
+				}
+		}
+	}
+
+	if validateSubtrahend {
+
+		err = decSubtrahend.IsValid(ePrefix.XCpy("Validating 'decSubtrahend'").String())
+
+		if err != nil {
+
+			return difference,
+				&FuncReturnError{
+					ErrPrefix: ePrefix.String(),
+					ReturnFunc: "err = decSubtrahend.IsValid(ePrefix.XCpy(\n" +
+						"  \"Validating 'decSubtrahend'\").String())",
+					ErrContext: "Error: Input parameter 'decSubtrahend' is invalid.\n" +
+						"'decSubtrahend' FAILED validation tests.",
+					ErrMessage: err.Error(),
+				}
+		}
+	}
+
+	if validateNumSeps {
+
+		err = numSeps.IsValid(ePrefix.XCpy("Validating 'numSeps'").String())
+
+		if err != nil {
+
+			return difference,
+				&FuncReturnError{
+					ErrPrefix: ePrefix.String(),
+					ReturnFunc: "err = numSeps.IsValid(ePrefix.XCpy(\n" +
+						"  \"Validating 'numSeps'\").String())",
+					ErrContext: "Error: Input parameter 'numSeps' is invalid.\n" +
+						"'numSeps' FAILED validation tests.",
+					ErrMessage: err.Error(),
+				}
+		}
+	}
+
+	decMinuendNumStr, err := decSubtrahend.GetNumStr()
+
+	if err != nil {
+
+		return BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "decMinuendNumStr, err := decSubtrahend.GetNumStr()",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
+
+	decSubtrahendNumStr, err := decSubtrahend.GetNumStr()
+
+	if err != nil {
+
+		return BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "decSubtrahendNumStr, err := decSubtrahend.GetNumStr()",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
+
+	// This method will test the validity of decMinuend and decSubtrahend.
+
+	bPair, err := new(BigIntPair).NewDecimal(*decMinuend, *decSubtrahend)
+
+	if err != nil {
+
+		return BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "bPair, err := new(BigIntPair).NewDecimal(*decMinuend, *decSubtrahend)",
+				ErrContext: fmt.Sprintf("decMinuend= '%v'\n"+
+					"decSubtrahend= '%v'",
+					decMinuendNumStr, decSubtrahendNumStr),
+				ErrMessage: err.Error(),
+			}
+	}
+
+	difference, err = new(bigIntMathSubtractNanobot).subtractBigIntPair(
+		numSeps, false, &bPair, true, ePrefix)
+
+	if err != nil {
+
+		return BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix: ePrefix.String(),
+				ReturnFunc: "difference, err = new(bigIntMathSubtractNanobot).subtractBigIntPair(\n" +
+					"  numSeps, false, &bPair, true, ePrefix)",
+				ErrContext: fmt.Sprintf("decMinuend= '%v'\n"+
+					"decSubtrahend= '%v'\n"+
+					"numSeps= '%v'",
+					decMinuendNumStr, decSubtrahendNumStr, numSeps.String()),
+				ErrMessage: err.Error(),
+			}
+	}
+
+	return difference, nil
+}
