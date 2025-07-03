@@ -1613,7 +1613,7 @@ func (bIMathSubMacrobot *bigIntMathSubtractMacrobot) subtractDecimalArray(
   ePrefix,
     err = ePref.ErrPrefixDto{}.NewFromErrPrefDto(
     errPrefDto,
-    "bigIntMathSubtractMacrobot.subtractDecimals",
+    "bigIntMathSubtractMacrobot.subtractDecimalArray",
     "")
 
   if err != nil {
@@ -1717,18 +1717,18 @@ func (bIMathSubMacrobot *bigIntMathSubtractMacrobot) subtractDecimalArray(
 
     subtrahendNumStr, err = bigINumSubtrahend.GetNumStr()
 
-		if err != nil {
+    if err != nil {
 
-			return BigIntNum{},
-				&FuncReturnError{
-					ErrPrefix:  ePrefix.String(),
-					ReturnFunc: "subtrahendNumStr, err = bigINumSubtrahend.GetNumStr()",
-					ErrContext: fmt.Sprintf("bigINumSubtrahend[%d]", i),
-					ErrMessage: err.Error(),
-				}
-		}
+      return BigIntNum{},
+        &FuncReturnError{
+          ErrPrefix:  ePrefix.String(),
+          ReturnFunc: "subtrahendNumStr, err = bigINumSubtrahend.GetNumStr()",
+          ErrContext: fmt.Sprintf("bigINumSubtrahend[%d]", i),
+          ErrMessage: err.Error(),
+        }
+    }
 
-		bPair := BigIntPair{}.NewBigIntNum(
+    bPair := BigIntPair{}.NewBigIntNum(
       finalResult, bigINumSubtrahend)
 
     finalResult = bSubtract.subtractPairNoNumSeps(bPair)
