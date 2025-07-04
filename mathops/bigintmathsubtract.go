@@ -639,7 +639,7 @@ func (bSubtract *BigIntMathSubtract) SubtractBigIntNumSeries(
 //	(type BigIntNum).
 func (bSubtract *BigIntMathSubtract) SubtractDecimals(
   decMinuend Decimal,
-  decSubtrahend Decimal, ) (difference BigIntNum, err error) {
+  decSubtrahend Decimal) (difference BigIntNum, err error) {
 
   var ePrefix *ePref.ErrPrefixDto
 
@@ -929,7 +929,7 @@ func (bSubtract *BigIntMathSubtract) SubtractIntAry(
     return difference,
       &FuncReturnError{
         ErrPrefix:  ePrefix.String(),
-        ReturnFunc: "numSeps, err := minuend.GetNumericSeparatorsDto()",
+        ReturnFunc: "numSeps, err := iaMinuend.GetNumericSeparatorsDto()",
         ErrContext: "",
         ErrMessage: err.Error(),
       }
@@ -940,81 +940,75 @@ func (bSubtract *BigIntMathSubtract) SubtractIntAry(
     &iaSubtrahend, true, ePrefix)
 }
 
-// SubtractIntAryArray - Receives one IntAry parameter which is classified as
-// the 'minuend'. The second input parameter is an array of IntAry Types
-// labeled, 'subtrahends'.
+// SubtractIntAryArray
 //
-// The array of 'subtrahends' is subtracted from the 'minuend'.
+//	Receives one IntAry parameter which is classified as the
+//	'minuend'. The second input parameter is an array of IntAry Types
+//	labeled, 'subtrahends'.
 //
-// In the subtraction operation:
+//	The array of 'subtrahends' is subtracted from the 'minuend'.
 //
-//	b1 - b2 = difference or result
-//	'minuend' - 'subtrahend' = difference or result
-//	b1 = 'minuend'
-//	b2 = 'subtrahend'
+//	In the subtraction operation:
 //
-// In this method, the 'subtrahend' is an array of IntAry Types.
+//	    'minuend' - 'subtrahend' = difference or result
+//	    b1 = 'minuend'
+//	    b2 = 'subtrahend'
+//	    b1 - b2 = difference or result
 //
-// After the subtraction operation, the 'difference' or 'result' is returned as a
-// Type BigIntNum.
+//	In this method, the 'subtrahends' is an array of Decimal Types.
+//	Each element in the 'subtrahends' array is subtracted from the
+//	value of 'minuend'. After the subtraction operation, the
+//	cumulative 'difference' or 'result' is returned as a Type
+//	BigIntNum.
 //
-// The BigIntNum 'result' returned by this subtraction operation will contain
-// numeric separators (decimal separator, thousands separator and currency symbol)
-// which were copied from input parameter 'minuend'.
+//	After the subtraction operation, the cumulative 'difference' or
+//	'result' is returned as a Type BigIntNum.
+//
+//	Numeric Separators
+//	==================
+//
+//	Numeric Separators define the Decimal Separator character,
+//	Thousands Separator character, and Currency Symbol character.
+//	These separator characters serve two purposes. First they are
+//	used to format and display numeric values as number strings.
+//	Second, they are also used to parse number strings and convert
+//	them into numeric values.
+//
+//	This method will copy the Numeric Separators configured for input
+//	parameter 'minuend' to the returned instance of 'difference'
+//	(type BigIntNum).
 func (bSubtract *BigIntMathSubtract) SubtractIntAryArray(
   minuend IntAry,
-  subtrahends []IntAry) (BigIntNum, error) {
+  subtrahends []IntAry) (difference BigIntNum, err error) {
 
-  ePrefix := "BigIntMathSubtract.SubtractInAryArray() "
+  var ePrefix *ePref.ErrPrefixDto
 
-  // NewIntAry method will test validity of 'minuend'
-  finalResult, err := new(BigIntNum).NewIntAry(minuend)
-
-  if err != nil {
-    return BigIntNum{},
-      fmt.Errorf(ePrefix+
-        "Error returned by new(BigIntNum).NewIntAry(minuend). "+
-        "minuend='%v' Error='%v'", minuend.GetNumStr(), err.Error())
-  }
-
-  numSeps := minuend.GetNumericSeparatorsDto()
-
-  lenSubtrahends := len(subtrahends)
-
-  if lenSubtrahends == 0 {
-    _ = finalResult.SetNumericSeparatorsDto(numSeps)
-    return finalResult,
-      errors.New(ePrefix + "Error: subtrahends array is Empty!")
-  }
-
-  for i := 0; i < lenSubtrahends; i++ {
-
-    // Method NewIntAry will test validity of subtrahends[i]
-    bigINum, err := new(BigIntNum).NewIntAry(subtrahends[i])
-
-    if err != nil {
-      return BigIntNum{},
-        fmt.Errorf(ePrefix+
-          "Error returned by new(BigIntNum).NewIntAry(subtrahends[i]). "+
-          "i='%v' subtrahend='%v' Error='%v'",
-          i, subtrahends[i].GetNumStr(), err.Error())
-    }
-
-    bPair := BigIntPair{}.NewBigIntNum(finalResult, bigINum)
-
-    finalResult = bSubtract.subtractPairNoNumSeps(bPair)
-  }
-
-  err = finalResult.SetNumericSeparatorsDto(numSeps)
+  ePrefix,
+    err = ePref.ErrPrefixDto{}.NewIEmpty(
+    nil,
+    "BigIntMathSubtract.SubtractIntAry",
+    "")
 
   if err != nil {
-    return BigIntNum{},
-      fmt.Errorf(ePrefix+
-        "Error returned by finalResult.SetNumericSeparatorsDto(numSeps). "+
-        "Error='%v' \n", err.Error())
+    return difference, err
   }
 
-  return finalResult, nil
+  numSeps, err := minuend.GetNumericSeparatorsDto()
+
+  if err != nil {
+
+    return difference,
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "numSeps, err := minuend.GetNumericSeparatorsDto()",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+  }
+
+  return new(bigIntMathSubtractMacrobot).subtractIntAryArray(
+    numSeps, true, minuend, true,
+    subtrahends, true, ePrefix)
 }
 
 // SubtractIntAryOutputToArray - The first input parameter to this method
