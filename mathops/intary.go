@@ -70,6 +70,8 @@ type IntAry struct {
 	BackUp                 BackUpIntAry
 }
 
+var _ INumMgr = (*IntAry)(nil)
+
 // AddIntAryToThis
 //
 //	Adds the value of intAry parameter ia2 to the value of the

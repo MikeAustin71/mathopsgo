@@ -1126,9 +1126,9 @@ func (bSubtract *BigIntMathSubtract) SubtractIntAryOutputToArray(
 //	Second, they are also used to parse number strings and convert
 //	them into numeric values.
 //
-//	This method will copy the Numeric Separators configured
-//	for input parameter 'minuend' to the returned instance of
-//	'difference' (type BigIntNum).
+//	This method will copy the Numeric Separators configured	for input
+//	parameter 'minuend' to the returned instance of 'difference'
+//	(type BigIntNum).
 func (bSubtract *BigIntMathSubtract) SubtractIntArySeries(
   minuend IntAry,
   subtrahends ...IntAry) (difference BigIntNum, err error) {
@@ -1162,43 +1162,69 @@ func (bSubtract *BigIntMathSubtract) SubtractIntArySeries(
     numSeps, true, minuend, true, true, ePrefix, subtrahends...)
 }
 
-// SubtractINumMgr - Receives two objects which implement the INumMgr Interface
-// and subtracts their numeric values.
+// SubtractINumMgr
 //
-// The 'subtrahend' numeric value is subtracted from the 'minuend' numeric value.
+//	Receives two objects which implement the INumMgr Interface and
+//	subtracts their numeric values.
 //
-// In the subtraction operation:
+//	The 'subtrahend' numeric value is subtracted from the 'minuend'
+//	numeric value.
 //
-//	'minuend' - 'subtrahend' = difference or result
+//	In the subtraction operation:
 //
-// The INumMgr interface is implemented by types, BigIntNum, Decimal,
-// NumStrDto and IntAry.
+//	    'minuend' - 'subtrahend' = difference or result
 //
-// After the subtraction operation, the 'difference' or 'result' is returned as a
-// Type BigIntNum.
+//	The INumMgr interface is implemented by types, BigIntNum, Decimal,
+//	NumStrDto and IntAry.
 //
-// The BigIntNum 'result' returned by this subtraction operation will contain
-// numeric separators (decimal separator, thousands separator and currency symbol)
-// which were copied from input parameter 'minuend'.
+//	After the subtraction operation, the 'difference' or 'result' is
+//	returned as a Type BigIntNum.
+//
+//	Numeric Separators
+//	==================
+//
+//	Numeric Separators define the Decimal Separator character,
+//	Thousands Separator character, and Currency Symbol character.
+//	These separator characters serve two purposes. First they are
+//	used to format and display numeric values as number strings.
+//	Second, they are also used to parse number strings and convert
+//	them into numeric values.
+//
+//	This method will copy the Numeric Separators configured	for input
+//	parameter 'minuend' to the returned instance of 'difference'
+//	(type BigIntNum).
 func (bSubtract *BigIntMathSubtract) SubtractINumMgr(
   minuend,
-  subtrahend INumMgr) (BigIntNum, error) {
+  subtrahend INumMgr) (difference BigIntNum, err error) {
 
-  ePrefix := "BigIntMathSubtract.SubtractINumMgr() "
+  var ePrefix *ePref.ErrPrefixDto
 
-  bPair, err := BigIntPair{}.NewINumMgr(minuend, subtrahend)
+  ePrefix,
+    err = ePref.ErrPrefixDto{}.NewIEmpty(
+    nil,
+    "BigIntMathSubtract.SubtractINumMgr",
+    "")
 
   if err != nil {
-    return new(BigIntNum).New(),
-      fmt.Errorf(ePrefix+
-        "Error returned by NBigIntPair{}.NewINumMgr(minuend, subtrahend). "+
-        "minuend.GetNumStr()='%v', subtrahend.GetNumStr()='%v' Error='%v' ",
-        minuend.GetNumStr(), subtrahend.GetNumStr(), err.Error())
+    return difference, err
   }
 
-  finalResult := bSubtract.SubtractPair(bPair)
+  numSeps, err := minuend.GetNumericSeparatorsDto()
 
-  return finalResult, nil
+  if err != nil {
+
+    return difference,
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "numSeps, err := minuend.GetNumericSeparatorsDto()",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+  }
+
+  return new(bigIntMathSubtractMacrobot).subtractINumMgr(
+    numSeps, true, minuend, true,
+    subtrahend, true, ePrefix)
 }
 
 // SubtractINumMgrArray - Receives two input parameters. The first parameter
