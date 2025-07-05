@@ -1448,55 +1448,65 @@ func (bSubtract *BigIntMathSubtract) SubtractINumMgrSeries(
     true, ePrefix, subtrahends...)
 }
 
-// SubtractNumStr - Receives two number strings and proceeds to subtract
-// n2 from n1.
+// SubtractNumStr
 //
-// The 'n1' and 'n2' strings passed to this method are number strings in that they
-// consist of a string of numeric digits representing a numeric value. Number strings
-// may contain leading minus signs (-) to indicate a negative numeric value. The
-// numeric digits string may also include a delimiting decimal separator to identify
-// fractional digits. The number strings are parsed based on the decimal separator
-// character specified by input parameter 'numSeps'.
+//	Receives two number strings and proceeds to subtract subtrahend
+//	'n2' from minuend 'n1'.
 //
-// Input parameter 'numSeps' is a type NumericSeparatorDto and is used to
-// parse the number strings 'n1NumStr' and 'n2NumStr'. 'numSeps' represents the
-// applicable decimal separator, thousands separator and currency symbol. In
-// addition, 'numSeps' is also used in configuring the return value for this
-// subtraction operation.
+//	Number Strings
+//	==============
 //
-// In the subtraction operation:
+//	Number strings are strings of numeric digits. The digit characters
+//	which comprise a number string are formatted to facilitate
+//	conversion to a corresponding numeric value.
 //
-//	n1 - n2 = difference or result
-//	'minuend' - 'subtrahend' = difference or result
-//	n1 = 'minuend'
-//	n2 = 'subtrahend'
+//	The number string parameters ('n1' and 'n2') passed to this method
+//	must consist of a string of numeric digits representing a numeric
+//	value. A leading minus sign (-), or surrounding parentheses '()',
+//	may be included in this number string to indicate a negative
+//	numeric value.
 //
-// After the subtraction operation, the 'difference' or 'result' is returned as a
-// Type BigIntNum.
+//	The number string of numeric digits may also include a delimiting
+//	decimal separator to identify fractional digits to the right of
+//	the decimal separator. This method uses the default USA Decimal
+//	Separator ('.') to parse 'numStr' and identify any existing
+//	fractional digits.
 //
-// The BigIntNum 'result' returned by this subtraction operation will contain
-// numeric separators (decimal separator, thousands separator and currency symbol)
-// specified by input parameter, 'numSeps'.
+//	Input parameter 'numSeps' is a type NumericSeparatorDto and is
+//	used to parse the number strings 'n1' and 'n2' to extract their
+//	numeric values. 'numSeps' encapsulates the applicable decimal
+//	separator, thousands separator and currency symbol.
+//
+//	'numSeps' is also used in configuring the BigIntNum return value
+//	for this subtraction operation. This method will copy the Numeric
+//	Separators contained in 'numSeps' to the returned instance of
+//	'difference' (type BigIntNum).
+//
+//	In the subtraction operation:
+//
+//	    'minuend' - 'subtrahend' = difference or result
+//	    n1 - n2 = difference or result
+//	    n1 = 'minuend'
+//	    n2 = 'subtrahend'
 func (bSubtract *BigIntMathSubtract) SubtractNumStr(
   n1 string,
   n2 string,
-  numSeps NumericSeparatorDto) (BigIntNum, error) {
+  numSeps NumericSeparatorDto) (difference BigIntNum, err error) {
 
-  ePrefix := "BigIntMathSubtract.SubtractNumStr() "
+  var ePrefix *ePref.ErrPrefixDto
 
-  numSeps.SetDefaultsIfEmpty()
-
-  bPair, err := BigIntPair{}.NewNumStrWithNumSeps(n1, n2, numSeps)
+  ePrefix,
+    err = ePref.ErrPrefixDto{}.NewIEmpty(
+    nil,
+    "BigIntMathSubtract.SubtractNumStr",
+    "")
 
   if err != nil {
-    return BigIntNum{},
-      fmt.Errorf(ePrefix+"Error returned by BigIntPair{}.NewNumStr(n1, n2). "+
-        "Error='%v' ", err.Error())
+    return difference, err
   }
 
-  finalResult := bSubtract.SubtractPair(bPair)
-
-  return finalResult, nil
+  return new(bigIntMathSubtractMacrobot).subtractNumStr(
+    n1, true, n2, true, numSeps, true, ePrefix)
 }
 
 // SubtractNumStrArray - Receives one string parameter which is classified as

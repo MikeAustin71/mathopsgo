@@ -4354,8 +4354,8 @@ func (bNum *BigIntNum) NewINumMgr(numMgr INumMgr) (BigIntNum, error) {
 //		 The 'numStr' number string of numeric digits may also include
 //		 a delimiting decimal separator to identify fractional digits to
 //		 the right of the decimal separator. This method uses the
-//		 default USA Decimal Separator ('.') t parse 'numStr' and
-//		 identify any exiting fractional digits.
+//		 default USA Decimal Separator ('.') to parse 'numStr' and
+//		 identify any existing fractional digits.
 //
 //		 Numeric Separators
 //		 ==================
