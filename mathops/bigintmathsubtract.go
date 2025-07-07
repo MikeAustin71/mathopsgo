@@ -398,7 +398,12 @@ func (bSubtract *BigIntMathSubtract) SubtractBigIntNums(
 //	The second input parameter is an array of BigIntNum Types labeled,
 //	'subtrahends'.
 //
-//	The array of 'subtrahends' is subtracted from the 'minuend'.
+//	Subtraction Operation
+//	=====================
+//
+//	Each element in the 'subtrahends' array is subtracted from the
+//	'minuend'. The summary result of this subtraction operation is
+//	then returned as a BigIntNum type.
 //
 //	In the subtraction operation:
 //
@@ -411,6 +416,18 @@ func (bSubtract *BigIntMathSubtract) SubtractBigIntNums(
 //
 //	After the subtraction operation, the 'difference' or 'result' is
 //	returned as a Type BigIntNum.
+//
+//	                  subtrahends
+//	minuend              Array                   difference
+//
+//	  50      -     subtrahends[0] = 2
+//	  48      -     subtrahends[1] = 3
+//	  45      -     subtrahends[2] = 4
+//	  41      -     subtrahends[3] = 5
+//	  36      -     subtrahends[4] = 6
+//	  30      -     subtrahends[5] = 9
+//
+//	                      Final Returned 'difference' = 21
 //
 //	Numeric Separators
 //	==================
@@ -677,7 +694,12 @@ func (bSubtract *BigIntMathSubtract) SubtractDecimals(
 //	'minuend'. The second input parameter is an array of Decimal Types
 //	labeled, 'subtrahends'.
 //
-//	The array of 'subtrahends' is subtracted from the 'minuend'.
+//	Each element in the 'subtrahends' array is subtracted from the
+//	'minuend'. The summary result of this subtraction operation is
+//	then returned as a BigIntNum type.
+//
+//	Subtraction Operation
+//	=====================
 //
 //	In the subtraction operation:
 //
@@ -691,6 +713,16 @@ func (bSubtract *BigIntMathSubtract) SubtractDecimals(
 //	value of 'minuend'. After the subtraction operation, the
 //	cumulative 'difference' or 'result' is returned as a Type
 //	BigIntNum.
+//
+//	                  subtrahends
+//	minuend              Array                   difference
+//
+//	  50      -     subtrahends[0] = 2
+//	  48      -     subtrahends[1] = 3
+//	  45      -     subtrahends[2] = 4
+//	  41      -     subtrahends[3] = 5
+//	  36      -     subtrahends[4] = 6
+//	  30      -     subtrahends[5] = 9
 //
 //	Numeric Separators
 //	==================
@@ -950,7 +982,12 @@ func (bSubtract *BigIntMathSubtract) SubtractIntAry(
 //	'minuend'. The second input parameter is an array of IntAry Types
 //	labeled, 'subtrahends'.
 //
-//	The array of 'subtrahends' is subtracted from the 'minuend'.
+//	Subtraction Operation
+//	=====================
+//
+//	Each element in the 'subtrahends' array is subtracted from the
+//	'minuend'. The summary result of this subtraction operation is
+//	then returned as a BigIntNum type.
 //
 //	In the subtraction operation:
 //
@@ -967,6 +1004,18 @@ func (bSubtract *BigIntMathSubtract) SubtractIntAry(
 //
 //	After the subtraction operation, the cumulative 'difference' or
 //	'result' is returned as a Type BigIntNum.
+//
+//	                  subtrahends
+//	minuend              Array                   difference
+//
+//	  50      -     subtrahends[0] = 2
+//	  48      -     subtrahends[1] = 3
+//	  45      -     subtrahends[2] = 4
+//	  41      -     subtrahends[3] = 5
+//	  36      -     subtrahends[4] = 6
+//	  30      -     subtrahends[5] = 9
+//
+//	                      Final Returned 'difference' = 21
 //
 //	Numeric Separators
 //	==================
@@ -1232,9 +1281,13 @@ func (bSubtract *BigIntMathSubtract) SubtractINumMgr(
 //	parameter is an array of INumMgr instances which resents the
 //	'subtrahends'.
 //
+//	Subtraction Operation
+//	=====================
+//
 //	A subtraction operation is performed on the 'minuend' and the
-//	'subtrahends' array. The numeric value of the 'subtrahends' is
-//	subtracted from the 'minuend'.
+//	'subtrahends' array. Each numeric value of the 'subtrahends' array
+//	is subtracted from the 'minuend'. The summary result of this
+//	subractioin operation is returned as a BigIntNum type.
 //
 //	In the subtraction operation:
 //
@@ -1249,6 +1302,18 @@ func (bSubtract *BigIntMathSubtract) SubtractINumMgr(
 //	value of 'minuend'. After the subtraction operation, the
 //	cumulative 'difference' or 'result' is returned as a Type
 //	BigIntNum.
+//
+//	                  subtrahends
+//	minuend              Array                   difference
+//
+//	  50      -     subtrahends[0] = 2
+//	  48      -     subtrahends[1] = 3
+//	  45      -     subtrahends[2] = 4
+//	  41      -     subtrahends[3] = 5
+//	  36      -     subtrahends[4] = 6
+//	  30      -     subtrahends[5] = 9
+//
+//	                      Final Returned 'difference' = 21
 //
 //	Numeric Separators
 //	==================
@@ -1450,44 +1515,50 @@ func (bSubtract *BigIntMathSubtract) SubtractINumMgrSeries(
 
 // SubtractNumStr
 //
-//	Receives two number strings and proceeds to subtract subtrahend
-//	'n2' from minuend 'n1'.
+//		Receives two number strings and proceeds to subtract subtrahend
+//		'n2' from minuend 'n1'.
 //
-//	Number Strings
-//	==============
+//		Number Strings
+//		==============
 //
-//	Number strings are strings of numeric digits. The digit characters
-//	which comprise a number string are formatted to facilitate
-//	conversion to a corresponding numeric value.
+//		Number strings are strings of numeric digits. The digit characters
+//		which comprise a number string are formatted to facilitate
+//		conversion to a corresponding numeric value.
 //
-//	The number string parameters ('n1' and 'n2') passed to this method
-//	must consist of a string of numeric digits representing a numeric
-//	value. A leading minus sign (-), or surrounding parentheses '()',
-//	may be included in this number string to indicate a negative
-//	numeric value.
+//		The number string parameters ('n1' and 'n2') passed to this method
+//		must consist of a string of numeric digits representing a numeric
+//		value. A leading minus sign (-), or surrounding parentheses '()',
+//		may be included in this number string to indicate a negative
+//		numeric value.
 //
-//	The number string of numeric digits may also include a delimiting
-//	decimal separator to identify fractional digits to the right of
-//	the decimal separator. This method uses the default USA Decimal
-//	Separator ('.') to parse 'numStr' and identify any existing
-//	fractional digits.
+//		The number string of numeric digits may also include a delimiting
+//		decimal separator to identify fractional digits to the right of
+//		the decimal separator. This method uses the Decimal Separator
+//		extracted from input parameter 'numSeps' to parse 'numStr' and
+//		identify any existing fractional digits.
 //
-//	Input parameter 'numSeps' is a type NumericSeparatorDto and is
-//	used to parse the number strings 'n1' and 'n2' to extract their
-//	numeric values. 'numSeps' encapsulates the applicable decimal
-//	separator, thousands separator and currency symbol.
+//		Numeric Separators
+//		==================
 //
-//	'numSeps' is also used in configuring the BigIntNum return value
-//	for this subtraction operation. This method will copy the Numeric
-//	Separators contained in 'numSeps' to the returned instance of
-//	'difference' (type BigIntNum).
+//		Numeric Separators define the Decimal Separator character,
+//		Thousands Separator character, and Currency Symbol character.
+//		These separator characters serve two purposes. First they are
+//		used to format and display numeric values as number strings.
+//		Second, they are also used to parse number strings and convert
+//		them into numeric values.
 //
-//	In the subtraction operation:
+//		This method will copy the Numeric Separators provided by input
+//		parameter 'numSeps'. The Numeric Separators configured for the
+//		returned instance of 'difference' (type BigIntNum) will also be
+//	 copied from input parameter 'numSeps'.
 //
-//	    'minuend' - 'subtrahend' = difference or result
-//	    n1 - n2 = difference or result
-//	    n1 = 'minuend'
-//	    n2 = 'subtrahend'
+//		Subtraction Operation
+//		=====================
+//
+//		'minuend' - 'subtrahend' = difference or result
+//		n1 - n2 = difference or result
+//		n1 = 'minuend'
+//		n2 = 'subtrahend'
 func (bSubtract *BigIntMathSubtract) SubtractNumStr(
   n1 string,
   n2 string,
@@ -1509,93 +1580,93 @@ func (bSubtract *BigIntMathSubtract) SubtractNumStr(
     n1, true, n2, true, numSeps, true, ePrefix)
 }
 
-// SubtractNumStrArray - Receives one string parameter which is classified as
-// the 'minuend'. The second input parameter is an array of strings labeled,
-// 'subtrahends'.
+// SubtractNumStrArray
 //
-// The array of 'subtrahends' is subtracted from the 'minuend' and the summary
-// result of this transaction operation is returned as a BigIntNum type.
+//	Receives one number string input parameter which is classified as
+//	the 'minuend'. The second input parameter is an array of number
+//	strings labeled, 'subtrahends'.
 //
-// The 'minuend' string and 'subtrahends' string array are passed to this method
-// as number strings. As such, each number string consists of a string of numeric
-// digits representing a numeric value. Number strings may include a leading minus
-// sign indicating a negative numeric value. These strings of numeric digits may
-// also include a delimiting decimal separator to identify fractional digits. The
-// number strings are parsed based on the decimal separator character specified by
-// input parameter 'numSeps'.
+//	Number Strings
+//	==============
 //
-// Input parameter 'numSeps' is a type NumericSeparatorDto and is used to
-// parse the number strings 'minuend' and 'subtrahends'. 'numSeps' represents the
-// applicable decimal separator, thousands separator and currency symbol. In
-// addition, 'numSeps' is also used in configuring the return value for this
-// subtraction operation.
+//	Number strings are strings of numeric digits. The digit characters
+//	which comprise a number string are formatted to facilitate
+//	conversion to a corresponding numeric value.
 //
-// In the subtraction operation:
+//	The number string parameters ('minuend' and 'subtrahends') passed
+//	to this method must consist of stringd of numeric digits
+//	representing a numeric value. A leading minus sign (-), or
+//	surrounding parentheses '()', may be included in this number
+//	string to indicate a negative numeric value.
 //
-//	'minuend' - 'subtrahend' = difference or result
+//	The number string of numeric digits may also include a delimiting
+//	decimal separator to identify fractional digits to the right of
+//	the decimal separator. This method uses the Decimal Separator
+//	extracted from input parameter 'numSeps' to parse 'numStr' and
+//	identify any existing fractional digits.
 //
-// In this method, the 'subtrahend' is an array of string Types.
+//	Numeric Separators
+//	==================
 //
-// After all subtraction operations have been completed, the summary 'difference'
-// or 'result' is returned as a Type BigIntNum.
+//	Numeric Separators define the Decimal Separator character,
+//	Thousands Separator character, and Currency Symbol character.
+//	These separator characters serve two purposes. First they are
+//	used to format and display numeric values as number strings.
+//	Second, they are also used to parse number strings and convert
+//	them into numeric values.
 //
-// The BigIntNum 'result' returned by this subtraction operation will contain
-// numeric separators (decimal separator, thousands separator and currency symbol)
-// specified by input parameter, 'numSeps'.
+//	This method will copy the Numeric Separators provided by input
+//	parameter 'numSeps'. The Numeric Separators configured for the
+//	returned instance of 'difference' (type BigIntNum) will also be
+//	copied from input parameter 'numSeps'.
+//
+//	Subtraction Operation
+//	=====================
+//
+//	Each element in the 'subtrahends' array is subtracted from the
+//	'minuend'. The summary result of this subtraction operation is
+//	then returned as a BigIntNum type.
+//
+//	In the subtraction operation:
+//
+//	    'minuend' - 'subtrahends' = cumulative difference or result
+//
+//	In this method, 'subtrahends' is an array of number strings
+//	(Type string).
+//
+//	After all subtraction operations have been completed, the cumulative
+//	'difference' or 'result' is returned as a Type BigIntNum.
+//
+//	                  subtrahends
+//	minuend              Array                   difference
+//
+//	  50      -     subtrahends[0] = 2
+//	  48      -     subtrahends[1] = 3
+//	  45      -     subtrahends[2] = 4
+//	  41      -     subtrahends[3] = 5
+//	  36      -     subtrahends[4] = 6
+//	  30      -     subtrahends[5] = 9
+//
+//	                      Final Returned 'difference' = 21
 func (bSubtract *BigIntMathSubtract) SubtractNumStrArray(
   minuend string,
   subtrahends []string,
-  numSeps NumericSeparatorDto) (BigIntNum, error) {
+  numSeps NumericSeparatorDto) (difference BigIntNum, err error) {
 
-  ePrefix := "BigIntMathSubtract.SubtractNumStrArray() "
+  var ePrefix *ePref.ErrPrefixDto
 
-  numSeps.SetDefaultsIfEmpty()
-
-  finalResult, err := new(BigIntNum).NewNumStrWithNumSeps(minuend, numSeps)
-
-  if err != nil {
-    return BigIntNum{},
-      fmt.Errorf(ePrefix+
-        "Error returned by new(BigIntNum).NewNumStrWithNumSeps(minuend, numSeps). "+
-        "minuend='%v' numSeps='%v' Error='%v'",
-        minuend, numSeps.String(), err.Error())
-  }
-
-  lenSubtrahends := len(subtrahends)
-
-  if lenSubtrahends == 0 {
-    return finalResult,
-      errors.New(ePrefix + "Error: subtrahends array is Empty!")
-  }
-
-  for i := 0; i < lenSubtrahends; i++ {
-
-    bigINum, err := new(BigIntNum).NewNumStrWithNumSeps(subtrahends[i], numSeps)
-
-    if err != nil {
-      return BigIntNum{},
-        fmt.Errorf(ePrefix+
-          "Error returned by new(BigIntNum).NewNumStrWithNumSeps(subtrahends[i], numSeps). "+
-          "i='%v' subtrahend='%v' Error='%v'",
-          i, subtrahends[i], err.Error())
-    }
-
-    bPair := BigIntPair{}.NewBigIntNum(finalResult, bigINum)
-
-    finalResult = bSubtract.subtractPairNoNumSeps(bPair)
-  }
-
-  err = finalResult.SetNumericSeparatorsDto(numSeps)
+  ePrefix,
+    err = ePref.ErrPrefixDto{}.NewIEmpty(
+    nil,
+    "BigIntMathSubtract.SubtractNumStrArray",
+    "")
 
   if err != nil {
-    return BigIntNum{},
-      fmt.Errorf(ePrefix+
-        "Error returned by finalResult.SetNumericSeparatorsDto(numSeps). "+
-        "numSeps='%v' Error='%v'",
-        numSeps.String(), err.Error())
+    return difference, err
   }
 
-  return finalResult, nil
+  return new(bigIntMathSubtractMacrobot).subtractNumStrArray(
+    minuend, true, subtrahends, true, numSeps, true, ePrefix)
 }
 
 // SubtractNumStrOutputToArray - The first input parameter to this method
