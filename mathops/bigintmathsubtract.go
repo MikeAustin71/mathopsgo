@@ -1669,82 +1669,67 @@ func (bSubtract *BigIntMathSubtract) SubtractNumStrArray(
     minuend, true, subtrahends, true, numSeps, true, ePrefix)
 }
 
-// SubtractNumStrOutputToArray - The first input parameter to this method
-// is a string Type labeled, 'minuend'.  The second input parameter is an
-// array of strings labeled 'subtrahends'. The 'minuend' is subtracted
-// from each element of the 'subtrahends' array with the result output to
-// another 'results' array of strings which is then returned to the calling
-// function.
+// SubtractNumStrOutputToArray
 //
-// The 'minuend' string and 'subtrahends' string array are passed to this method
-// as number strings. Each number string consists of a string of numeric digits
-// representing a numeric value. Number strings may include a leading minus sign
-// (-) indicating a negative numeric value. Numeric strings may also include a
-// delimiting decimal separator to identify fractional digits. These number
-// strings are parsed based on the decimal separator character specified by input
-// parameter 'numSeps'.
+//	The first input parameter to this method is a number string
+//	labeled, 'minuend'.  The second input parameter is an array of
+//	number strings labeled 'subtrahends'.
 //
-// Input parameter 'numSeps' is a type NumericSeparatorDto and is used to
-// parse the number strings 'minuend' and 'subtrahends'. 'numSeps' represents the
-// applicable decimal separator, thousands separator and currency symbol. 'numSeps'
-// is also used in configuring the return value for this subtraction operation.
+//	Number Strings
+//	==============
 //
-// Example
-// =======
+//	Number strings are strings of numeric digits. The digit characters
+//	which comprise a number string are formatted to facilitate
+//	conversion to a corresponding numeric value.
 //
-//											    subtrahends										 Output
-//	 Minuend   				    	Array													Array
+//	The number string parameters ('minuend' and 'subtrahends') passed
+//	to this method must consist of stringd of numeric digits
+//	representing a numeric value. A leading minus sign (-), or
+//	surrounding parentheses '()', may be included in this number
+//	string to indicate a negative numeric value.
 //
-//			10			-					subtrahends[0] = 2			=				  outputarray[0] =  8
-//			10			-					subtrahends[1] = 3			=				  outputarray[1] =  7
-//			10			-					subtrahends[2] = 4			=				  outputarray[2] =  6
-//			10			-					subtrahends[3] = 5			=				  outputarray[3] =  5
-//			10			-					subtrahends[4] = 6			=				  outputarray[4] =  4
-//			10			-					subtrahends[5] = 9			=				  outputarray[5] =  1
+//	The number string of numeric digits may also include a delimiting
+//	decimal separator to identify fractional digits to the right of
+//	the decimal separator. This method uses the Decimal Separator
+//	extracted from input parameter 'numSeps' to parse 'numStr' and
+//	identify any existing fractional digits.
+//
+//	Subtraction Operation
+//	=====================
+//
+//	Each element of the 'subtrahends' array is subtracted from
+//	'minuend' with the result of each subtraction output to another
+//	'results' array of number strings which is then returned to the
+//	calling function.
+//
+//	                   subtrahends                     Output
+//	minuend               Array                         Array
+//
+//	  10      -      subtrahends[0] = 2      =      outputarray[0] = 8
+//	  10      -      subtrahends[1] = 3      =      outputarray[1] = 7
+//	  10      -      subtrahends[2] = 4      =      outputarray[2] = 6
+//	  10      -      subtrahends[3] = 5      =      outputarray[3] = 5
+//	  10      -      subtrahends[4] = 6      =      outputarray[4] = 4
+//	  10      -      subtrahends[5] = 9      =      outputarray[5] = 1
 func (bSubtract *BigIntMathSubtract) SubtractNumStrOutputToArray(
   minuend string,
   subtrahends []string,
-  numSeps NumericSeparatorDto) ([]string, error) {
+  numSeps NumericSeparatorDto) (results []string, err error) {
 
-  ePrefix := "BigIntMathSubtract.SubtractNumStrOutputToArray() "
+  var ePrefix *ePref.ErrPrefixDto
 
-  numSeps.SetDefaultsIfEmpty()
+  ePrefix,
+    err = ePref.ErrPrefixDto{}.NewIEmpty(
+    nil,
+    "BigIntMathSubtract.SubtractNumStrOutputToArray",
+    "")
 
-  lenSubtrahends := len(subtrahends)
-
-  if lenSubtrahends == 0 {
-    return []string{},
-      errors.New(ePrefix + "Error: subtrahends array is Empty!")
+  if err != nil {
+    return results, err
   }
 
-  resultsArray := make([]string, lenSubtrahends)
-
-  for i := 0; i < lenSubtrahends; i++ {
-
-    bPair, err := BigIntPair{}.NewNumStrWithNumSeps(minuend, subtrahends[i], numSeps)
-
-    if err != nil {
-      return []string{},
-        fmt.Errorf(ePrefix+
-          "Error returned by BigIntPair{}.NewNumStrWithNumSeps(minuend, subtrahends[i], numSeps) "+
-          "minuend='%v' subtrahends[%v]='%v' numSeps='%v' Error='%v'. ",
-          minuend, i, subtrahends[i], numSeps.String(), err.Error())
-    }
-
-    result := bSubtract.SubtractPair(bPair)
-
-    resultsArray[i] = result.GetNumStr()
-
-    if err != nil {
-      return []string{},
-        fmt.Errorf(ePrefix+
-          "Error returned by result.Result.GetNumStr() "+
-          "i='%v' result.Result='%v' Error='%v'. ",
-          i, result.GetNumStr(), err.Error())
-    }
-  }
-
-  return resultsArray, nil
+  return new(bigIntMathSubtractMacrobot).subtractNumStrOutputToArray(
+    minuend, true, subtrahends, true, numSeps, true, ePrefix)
 }
 
 // SubtractNumStrSeries - Receives one 'string' Type which is classified as
