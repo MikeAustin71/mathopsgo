@@ -2221,22 +2221,45 @@ func (bSubtract *BigIntMathSubtract) SubtractNumStrDtoSeries(
 	return finalResult, nil
 }
 
-// SubtractPair - Performs the subtraction operation. This method receives a type
-// 'BigIntPair' and proceeds to subtract bPair.Big2 from bPair.Big1.
+// SubtractPair
 //
-// After the subtraction operation, the 'difference' or 'result' is returned as a
-// Type BigIntNum.
+//	Performs the subtraction operation. This method receives a type
+//	'BigIntPair' and proceeds to subtract bPair.Big2 from bPair.Big1.
 //
-// The BigIntNum 'result' returned by this subtraction operation will contain
-// numeric separators (decimal separator, thousands separator and currency symbol)
-// which were copied from input parameter bPair.Big1, the minuend.
-func (bSubtract *BigIntMathSubtract) SubtractPair(bPair BigIntPair) BigIntNum {
+//	After the subtraction operation, the 'difference' or 'result' is
+//	returned as a Type BigIntNum.
+//
+//	The BigIntNum 'result' returned by this subtraction operation will
+//	contain numeric separators (decimal separator, thousands separator
+//	and currency symbol) which were copied from input parameter bPair.Big1,
+//	the minuend.
+func (bSubtract *BigIntMathSubtract) SubtractPair(bPair BigIntPair) (difference BigIntNum, err error) {
 
-	numSeps := bPair.Big1.GetNumericSeparatorsDto()
+	var ePrefix *ePref.ErrPrefixDto
 
-	finalResult := bSubtract.subtractPairNoNumSeps(bPair)
+	ePrefix,
+		err = ePref.ErrPrefixDto{}.NewIEmpty(
+		nil,
+		"BigIntMathSubtract.SubtractPair",
+		"")
 
-	_ = finalResult.SetNumericSeparatorsDto(numSeps)
+	if err != nil {
+		return difference, err
+	}
 
-	return finalResult
+	numSeps, err := bPair.Big1.GetNumericSeparatorsDto()
+
+	if err != nil {
+
+		return BigIntNum{},
+			&FuncReturnError{
+				ErrPrefix:  ePrefix.String(),
+				ReturnFunc: "numSeps, err := bPair.Big1.GetNumericSeparatorsDto()",
+				ErrContext: "",
+				ErrMessage: err.Error(),
+			}
+	}
+
+	return new(bigIntMathSubtractNanobot).subtractBigIntPair(
+		numSeps, true, &bPair, true, ePrefix)
 }
