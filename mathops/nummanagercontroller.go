@@ -70,4 +70,5 @@ func (nMgrContrlr *NumMgrContrlr) GetNumMgrFromNumValue(
 
 	}
 
+	return numMgr, nil
 }
