@@ -1,8 +1,9 @@
 package mathops
 
 import (
-	"fmt"
-	"math/big"
+  "fmt"
+  ePref "github.com/MikeAustin71/errpref"
+  "math/big"
 )
 
 // FixedDecimalReadOnly - encapsulates a Read Only
@@ -14,44 +15,80 @@ import (
 // read the numeric value encapsulated by the FixedDecimalReadOnly
 // type.
 type FixedDecimalReadOnly struct {
-	fixedDecimal BigIntFixedDecimal
+  fixedDecimal BigIntFixedDecimal
 }
 
 // GetBigIntNum - returns the numeric value of the underlying BigIntFixedDecimal
 // as a type BigIntNum.
 func (fDecRO *FixedDecimalReadOnly) GetBigIntNum() BigIntNum {
 
-	fDecRO.fixedDecimal.IsValid()
+  bigIntNum, _ := fDecRO.fixedDecimal.GetBigIntNum()
 
-	return fDecRO.fixedDecimal.GetBigIntNum()
+  return bigIntNum
 }
 
 // GetIntAry - Returns the numeric value of the underlying BigIntFixedDecimal
 // as a type IntAry.
 func (fDecRO *FixedDecimalReadOnly) GetIntAry() (IntAry, error) {
 
-	fDecRO.fixedDecimal.IsValid()
+  var ePrefix *ePref.ErrPrefixDto
+  var err error
 
-	return fDecRO.fixedDecimal.GetIntAry()
+  ePrefix,
+    err = ePref.ErrPrefixDto{}.NewIEmpty(
+    nil,
+    "FixedDecimalReadOnly.GetIntAry",
+    "")
+
+  if err != nil {
+    return IntAry{}, err
+  }
+
+  err = fDecRO.fixedDecimal.IsValid(ePrefix.XCpy("Validating fDecRO.fixedDecimal").String())
+
+  if err != nil {
+
+    return IntAry{},
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "err = fDecRO.fixedDecimal.IsValid(ePrefix)",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+  }
+
+  intAry, err := fDecRO.fixedDecimal.GetIntAry()
+
+  if err != nil {
+
+    return IntAry{},
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "intAry, err := fDecRO.fixedDecimal.GetIntAry()",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
+  }
+
+  return intAry, nil
 }
 
 // GetFixedDecimal - Returns a deep copy of the underlying
 // BigIntFixedDecimal value.
 func (fDecRO *FixedDecimalReadOnly) GetFixedDecimal() BigIntFixedDecimal {
 
-	fDecRO.fixedDecimal.IsValid()
+  fDecRoCopy, _ := fDecRO.fixedDecimal.CopyOut()
 
-	return fDecRO.fixedDecimal.CopyOut()
+  return fDecRoCopy
 }
 
 // GetInteger - Returns the *big.Int integer value from the
 // underlying BigIntFixedDecimal
 func (fDecRO *FixedDecimalReadOnly) GetInteger() *big.Int {
 
-	fDecRO.fixedDecimal.IsValid()
+  bigInt, _ := fDecRO.fixedDecimal.GetIntegerValue()
 
-	return fDecRO.fixedDecimal.GetIntegerValue()
-
+  return bigInt
 }
 
 // GetNumStr - Converts the underlying BigIntFixedDecimal
@@ -62,47 +99,44 @@ func (fDecRO *FixedDecimalReadOnly) GetInteger() *big.Int {
 // integer and fractional digits.
 func (fDecRO *FixedDecimalReadOnly) GetNumStr() string {
 
-	fDecRO.fixedDecimal.IsValid()
+  numStr, _ := fDecRO.fixedDecimal.GetNumStr()
 
-	return fDecRO.fixedDecimal.GetNumStr()
-
+  return numStr
 }
 
 // GetPrecisionUint - returns an unsigned integer specifying
 // the number of digits to the right of the decimal place.
 func (fDecRO *FixedDecimalReadOnly) GetPrecisionUint() uint {
 
-	fDecRO.fixedDecimal.IsValid()
+  precisionUint, _ := fDecRO.fixedDecimal.GetPrecisionUint()
 
-	return fDecRO.fixedDecimal.GetPrecisionUint()
-
+  return precisionUint
 }
 
 // GetPrecisionBigInt - returns an unsigned integer specifying
 // the number of digits to the right of the decimal place.
 func (fDecRO *FixedDecimalReadOnly) GetPrecisionBigInt() *big.Int {
 
-	fDecRO.fixedDecimal.IsValid()
+  precisionBigInt, _ := fDecRO.fixedDecimal.GetPrecisionBigInt()
 
-	return fDecRO.fixedDecimal.GetPrecisionBigInt()
-
+  return precisionBigInt
 }
 
 func (fDecRO *FixedDecimalReadOnly) GetBigIntPrecision() (integer, precision *big.Int) {
 
-	integer = fDecRO.GetInteger()
+  integer = fDecRO.GetInteger()
 
-	if integer == nil {
-		integer = big.NewInt(0)
-	}
+  if integer == nil {
+    integer = big.NewInt(0)
+  }
 
-	precision = fDecRO.GetPrecisionBigInt()
+  precision = fDecRO.GetPrecisionBigInt()
 
-	if precision == nil {
-		precision = big.NewInt(0)
-	}
+  if precision == nil {
+    precision = big.NewInt(0)
+  }
 
-	return integer, precision
+  return integer, precision
 }
 
 // IsValid - Performs diagnostic and remedial actions on
@@ -110,12 +144,24 @@ func (fDecRO *FixedDecimalReadOnly) GetBigIntPrecision() (integer, precision *bi
 // 'false' if the instance is uninitialized.
 func (fDecRO *FixedDecimalReadOnly) IsValid() bool {
 
-	return fDecRO.fixedDecimal.IsValid()
+  err := fDecRO.fixedDecimal.IsValid("fDecRO.fixedDecimal")
+
+  if err != nil {
+    return false
+  }
+
+  return true
 }
 
 func (fDecRO *FixedDecimalReadOnly) IsZero() bool {
 
-	return fDecRO.fixedDecimal.IsZero()
+  isZero, err := fDecRO.fixedDecimal.IsZero()
+
+  if err != nil {
+    return false
+  }
+
+  return isZero
 }
 
 // NewNumStr - Creates and returns a new FixedDecimalReadOnly
@@ -136,70 +182,73 @@ func (fDecRO *FixedDecimalReadOnly) IsZero() bool {
 // The only decimal separator recognized by this method is the
 // period ('.').
 func (fDecRO *FixedDecimalReadOnly) NewNumStr(numStr string) (FixedDecimalReadOnly, error) {
-	ePrefix := "FixedDecimalReadOnly.NewNumStr() "
+  ePrefix := "FixedDecimalReadOnly.NewNumStr() "
 
-	fo2 := FixedDecimalReadOnly{}
+  fo2 := FixedDecimalReadOnly{}
 
-	fo2.fixedDecimal = new(BigIntFixedDecimal).NewZero(0)
+  fo2.fixedDecimal = new(BigIntFixedDecimal).NewZero(0)
 
-	err := fo2.fixedDecimal.SetNumStr(numStr)
+  err := fo2.fixedDecimal.SetNumStr(numStr, '.')
 
-	if err != nil {
+  if err != nil {
 
-		return fo2,
-			fmt.Errorf(ePrefix)
-	}
+    return fo2,
+      fmt.Errorf(ePrefix)
+  }
 
-	return fo2, nil
+  return fo2, nil
 }
 
 // NewFixedDecimal - Receives a BigIntFixedDecimal instance
 // as an input parameter and returns a new FixedDecimalReadOnly
 // object.
 func (fDecRO *FixedDecimalReadOnly) NewFixedDecimal(
-	fixedDecimal BigIntFixedDecimal) (FixedDecimalReadOnly, error) {
+  fixedDecimal BigIntFixedDecimal) (FixedDecimalReadOnly, error) {
 
-	ePrefix := "FixedDecimalReadOnly.NewFixedDecimal()"
+  ePrefix := "FixedDecimalReadOnly.NewFixedDecimal()"
 
-	f2 := FixedDecimalReadOnly{}
+  f2 := FixedDecimalReadOnly{}
 
-	f2.fixedDecimal = new(BigIntFixedDecimal).NewZero(0)
+  f2.fixedDecimal = new(BigIntFixedDecimal).NewZero(0)
 
-	var err error
+  var err error
 
-	if !fixedDecimal.IsValid() {
-		err = fmt.Errorf("%v\n"+
-			"ERROR: Input Parameter 'fixedDecimal' is invalid\n",
-			ePrefix)
+  errX := fixedDecimal.IsValid(ePrefix)
 
-		return f2, err
-	}
+  if errX != nil {
+    err = fmt.Errorf("%v\n"+
+      "ERROR: Input Parameter 'fixedDecimal' is invalid\n"+
+      "Error: %v\n", errX.Error(),
+      ePrefix)
 
-	err = f2.fixedDecimal.CopyIn(fixedDecimal)
+    return f2, err
+  }
 
-	if err != nil {
-		return f2,
-			fmt.Errorf("%v\n"+
-				"Error returned by call to f2.fixedDecimal.CopyIn(fixedDecimal).\n"+
-				"Error='%v'\n",
-				err.Error())
-	}
+  err = f2.fixedDecimal.CopyIn(fixedDecimal)
 
-	return f2, err
+  if err != nil {
+    return f2,
+      fmt.Errorf("%v\n"+
+        "Error returned by call to f2.fixedDecimal.CopyIn(fixedDecimal).\n"+
+        "Error='%v'\n",
+        err.Error())
+  }
+
+  return f2, err
 }
 
 // NewInt - Creates and returns a new FixedDecimalReadOnly instance initialized
 // to by the input parameters 'intValue' and 'precision'. 'precision' specifies
 // the number of digits to the right of the decimal place in 'intValue'.
 func (fDecRO *FixedDecimalReadOnly) NewInt(
-	intValue int,
-	precision uint) FixedDecimalReadOnly {
+  intValue int,
+  precision uint) FixedDecimalReadOnly {
 
-	f2 := FixedDecimalReadOnly{}
+  f2 := FixedDecimalReadOnly{}
 
-	f2.fixedDecimal = new(BigIntFixedDecimal).NewInt(intValue, precision)
+  f2.fixedDecimal = new(BigIntFixedDecimal).NewInt(intValue, precision)
 
-	return f2
+  return f2
 
 }
 
@@ -207,14 +256,14 @@ func (fDecRO *FixedDecimalReadOnly) NewInt(
 // to by the input parameters 'int32Value' and 'precision'. 'precision' specifies
 // the number of digits to the right of the decimal place in 'intValue'.
 func (fDecRO *FixedDecimalReadOnly) NewInt32(
-	int32Value int32,
-	precision uint) FixedDecimalReadOnly {
+  int32Value int32,
+  precision uint) FixedDecimalReadOnly {
 
-	f2 := FixedDecimalReadOnly{}
+  f2 := FixedDecimalReadOnly{}
 
-	f2.fixedDecimal = new(BigIntFixedDecimal).NewInt32(int32Value, precision)
+  f2.fixedDecimal = new(BigIntFixedDecimal).NewInt32(int32Value, precision)
 
-	return f2
+  return f2
 
 }
 
@@ -222,14 +271,14 @@ func (fDecRO *FixedDecimalReadOnly) NewInt32(
 // to by the input parameters 'int64Value' and 'precision'. 'precision' specifies
 // the number of digits to the right of the decimal place in 'intValue'.
 func (fDecRO *FixedDecimalReadOnly) NewInt64(
-	int64Value int64,
-	precision uint) FixedDecimalReadOnly {
+  int64Value int64,
+  precision uint) FixedDecimalReadOnly {
 
-	f2 := FixedDecimalReadOnly{}
+  f2 := FixedDecimalReadOnly{}
 
-	f2.fixedDecimal = new(BigIntFixedDecimal).NewInt64(int64Value, precision)
+  f2.fixedDecimal = new(BigIntFixedDecimal).NewInt64(int64Value, precision)
 
-	return f2
+  return f2
 
 }
 
@@ -237,14 +286,14 @@ func (fDecRO *FixedDecimalReadOnly) NewInt64(
 // to by the input parameters 'uintValue' and 'precision'. 'precision' specifies
 // the number of digits to the right of the decimal place in 'intValue'.
 func (fDecRO *FixedDecimalReadOnly) NewUInt(
-	uintValue,
-	precision uint) FixedDecimalReadOnly {
+  uintValue,
+  precision uint) FixedDecimalReadOnly {
 
-	f2 := FixedDecimalReadOnly{}
+  f2 := FixedDecimalReadOnly{}
 
-	f2.fixedDecimal = new(BigIntFixedDecimal).NewUInt(uintValue, precision)
+  f2.fixedDecimal = new(BigIntFixedDecimal).NewUInt(uintValue, precision)
 
-	return f2
+  return f2
 
 }
 
@@ -252,14 +301,14 @@ func (fDecRO *FixedDecimalReadOnly) NewUInt(
 // to by the input parameters 'uintValue' and 'precision'. 'precision' specifies
 // the number of digits to the right of the decimal place in 'intValue'.
 func (fDecRO *FixedDecimalReadOnly) NewUInt32(
-	uint32Value uint32,
-	precision uint) FixedDecimalReadOnly {
+  uint32Value uint32,
+  precision uint) FixedDecimalReadOnly {
 
-	f2 := FixedDecimalReadOnly{}
+  f2 := FixedDecimalReadOnly{}
 
-	f2.fixedDecimal = new(BigIntFixedDecimal).NewUInt32(uint32Value, precision)
+  f2.fixedDecimal = new(BigIntFixedDecimal).NewUInt32(uint32Value, precision)
 
-	return f2
+  return f2
 
 }
 
@@ -267,14 +316,14 @@ func (fDecRO *FixedDecimalReadOnly) NewUInt32(
 // to by the input parameters 'uintValue' and 'precision'. 'precision' specifies
 // the number of digits to the right of the decimal place in 'intValue'.
 func (fDecRO *FixedDecimalReadOnly) NewUInt64(
-	uint64Value uint64,
-	precision uint) FixedDecimalReadOnly {
+  uint64Value uint64,
+  precision uint) FixedDecimalReadOnly {
 
-	f2 := FixedDecimalReadOnly{}
+  f2 := FixedDecimalReadOnly{}
 
-	f2.fixedDecimal = new(BigIntFixedDecimal).NewUInt64(uint64Value, precision)
+  f2.fixedDecimal = new(BigIntFixedDecimal).NewUInt64(uint64Value, precision)
 
-	return f2
+  return f2
 }
 
 // NewZero - Creates and returns a new FixedDecimalReadOnly instance initialized
@@ -282,10 +331,10 @@ func (fDecRO *FixedDecimalReadOnly) NewUInt64(
 // to the right of the decimal place.
 func (fDecRO *FixedDecimalReadOnly) NewZero() FixedDecimalReadOnly {
 
-	f2 := FixedDecimalReadOnly{}
+  f2 := FixedDecimalReadOnly{}
 
-	f2.fixedDecimal = new(BigIntFixedDecimal).NewZero(0)
+  f2.fixedDecimal = new(BigIntFixedDecimal).NewZero(0)
 
-	return f2
+  return f2
 
 }
