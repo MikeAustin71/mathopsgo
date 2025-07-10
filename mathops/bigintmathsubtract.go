@@ -1113,17 +1113,17 @@ func (bSubtract *BigIntMathSubtract) SubtractIntAryArray(
 
 // SubtractIntAryOutputToArray
 //
-//	The first input parameter to this method is a IntAry Type labeled,
-//	'minuend'.  The second input parameter is an array of IntAry types
-//	labeled 'subtrahends'.
+//	This method receives two input parameters. The first input
+//	parameter is an IntAry Type labeled, 'minuend'.  The second input
+//	parameter is an array of IntAry types labeled 'subtrahends'.
+//
+//	Subtraction Operation
+//	=====================
 //
 //	Each element in the 'subtrahends' array is subtracted from the
 //	'minuend' value with the 'dfference', or result, output to another
 //	'results' array of IntAry types which is then returned to the
 //	calling function.
-//
-//	Example
-//	=======
 //
 //	                subtrahends                   Output
 //	minuend            Array                       Array
@@ -2067,93 +2067,74 @@ func (bSubtract *BigIntMathSubtract) SubtractNumStrDtoArray(
     subtrahends, true, ePrefix)
 }
 
-// SubtractNumStrDtoOutputToArray - The first input parameter to this method
-// is a NumStrDto Type labeled, 'minuend'.  The second input parameter is an
-// array of NumStrDto types labeled 'subtrahends'. The 'minuend' is subtracted
-// from each element of the 'subtrahends' array with the result output to
-// another 'results' array of NumStrDto types which is then returned to the
-// calling function.
+// SubtractNumStrDtoOutputToArray
 //
-// Example
-// =======
-// 										    subtrahends										 Output
-// Minuend   				    	   Array											 Array
+//	This method receives two input parameters. The first input
+//	parameter is a NumStrDto Type labeled, 'minuend'.  The second
+//	input parameter is an array of NumStrDto types labeled 'subtrahends'.
 //
-//		10			-					subtrahends[0] = 2			=				  outputarray[0] =  8
-//		10			-					subtrahends[1] = 3			=				  outputarray[1] =  7
-//		10			-					subtrahends[2] = 4			=				  outputarray[2] =  6
-//		10			-					subtrahends[3] = 5			=				  outputarray[3] =  5
-//		10			-					subtrahends[4] = 6			=				  outputarray[4] =  4
-//		10			-					subtrahends[5] = 9			=				  outputarray[5] =  1
+//	Subtraction Operation
+//	=====================
 //
+//	Each element in the 'subtrahends' array is subtracted from the
+//	'minuend' value with the 'dfference', or result, output to another
+//	'results' array of NumStrDto types which is then returned to the
+//	calling function.
 //
-// Each array element in the []NumStrDto 'result' returned by this subtraction
-// operation will contain numeric separators (decimal separator, thousands
-// separator and currency symbol) which were copied from input parameter
-// 'minuend'.
+//	                subtrahends                   Results
+//	minuend            Array                       Array
 //
-
+//	  10      -    subtrahends[0] = 2     =     outputarray[0] =  8
+//	  10      -    subtrahends[1] = 3     =     outputarray[1] =  7
+//	  10      -    subtrahends[2] = 4     =     outputarray[2] =  6
+//	  10      -    subtrahends[3] = 5     =     outputarray[3] =  5
+//	  10      -    subtrahends[4] = 6     =     outputarray[4] =  4
+//	  10      -    subtrahends[5] = 9     =     outputarray[5] =  1
+//
+//	Numeric Separators
+//	==================
+//
+//	Each array element of the []IntAry 'result' returned by this
+//	subtraction operation will contain numeric separators (decimal
+//	separator, thousands separator and currency symbol) copied from
+//	input parameter 'minuend'.
+//
+//	The 'resultsArray' ([]NumStrDto) parameter returned by this
+//	subtraction operation will contain array elements with numeric
+//	separators (decimal separator, thousands separator and currency
+//	symbol) which have been copied from input parameter 'minuend'.
 func (bSubtract *BigIntMathSubtract) SubtractNumStrDtoOutputToArray(
   minuend NumStrDto,
-  subtrahends []NumStrDto) ([]NumStrDto, error) {
+  subtrahends []NumStrDto) (resultsArray []NumStrDto, err error) {
 
-  ePrefix := "BigIntMathSubtract.SubtractNumStrDtoOutputToArray() "
+  var ePrefix *ePref.ErrPrefixDto
 
-  lenSubtrahends := len(subtrahends)
-
-  err := minuend.IsValid(ePrefix + "'minuend' INVALID! ")
+  ePrefix,
+    err = ePref.ErrPrefixDto{}.NewIEmpty(
+    nil,
+    "BigIntMathSubtract.SubtractNumStrDtoOutputToArray",
+    "")
 
   if err != nil {
     return []NumStrDto{}, err
   }
 
-  if lenSubtrahends == 0 {
+  numSeps, err := minuend.GetNumericSeparatorsDto()
+
+  if err != nil {
+
     return []NumStrDto{},
-      errors.New(ePrefix + "Error: subtrahends array is Empty!")
+      &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "numSeps, err := minuend.GetNumericSeparatorsDto()",
+        ErrContext: "",
+        ErrMessage: err.Error(),
+      }
   }
 
-  numSeps := minuend.GetNumericSeparatorsDto()
-
-  resultsArray := make([]NumStrDto, lenSubtrahends)
-
-  for i := 0; i < lenSubtrahends; i++ {
-
-    err := subtrahends[i].IsValid(ePrefix +
-      fmt.Sprintf("subtrahends[%v] INVALID! ", i))
-
-    bPair, err := BigIntPair{}.NewNumStrDto(minuend, subtrahends[i])
-
-    if err != nil {
-      return []NumStrDto{},
-        fmt.Errorf(ePrefix+
-          "Error returned by BigIntPair{}.NewNumStrDto(minuend, subtrahends[i]) "+
-          "minuend='%v' subtrahends[%v]='%v' Error='%v'. ",
-          minuend.GetNumStr(), i, subtrahends[i].GetNumStr(), err.Error())
-    }
-
-    result := bSubtract.subtractPairNoNumSeps(bPair)
-
-    err = result.SetNumericSeparatorsDto(numSeps)
-
-    if err != nil {
-      return []NumStrDto{},
-        fmt.Errorf(ePrefix+
-          "Error returned by result.SetNumericSeparatorsDto(numSeps). "+
-          "Error='%v' \n", err.Error())
-    }
-
-    resultsArray[i], err = result.GetNumStrDto()
-
-    if err != nil {
-      return []NumStrDto{},
-        fmt.Errorf(ePrefix+
-          "Error returned by result.Result.GetNumStrDto() "+
-          "i='%v' result.Result='%v' Error='%v'. ",
-          i, result.GetNumStr(), err.Error())
-    }
-  }
-
-  return resultsArray, nil
+  return new(bigIntMathSubtractMacrobot).subtractNumStrDtoOutputToArray(
+    numSeps, true, minuend, true,
+    subtrahends, true, ePrefix)
 }
 
 // SubtractNumStrDtoSeries - Receives one NumStrDto Type which is classified as
