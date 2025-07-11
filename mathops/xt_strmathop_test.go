@@ -1606,7 +1606,7 @@ func TestStrMathOp_Divide_01(t *testing.T) {
 	eSignVal := -1
 	maxPrecision := 29
 
-	smop := StrMathOp{}.New()
+	smop := new(StrMathOp).New()
 	smop.Dividend.SetIntAryWithNumStr(dividend)
 	smop.Divisor.SetIntAryWithNumStr(divisor)
 	smop.Divide(maxPrecision)
