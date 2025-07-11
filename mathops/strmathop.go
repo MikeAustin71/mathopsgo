@@ -1,7 +1,6 @@
 package mathops
 
 import (
-  "errors"
   "fmt"
   ePref "github.com/MikeAustin71/errpref"
 )
@@ -1090,38 +1089,128 @@ func (sMathOp *StrMathOp) Divide(maxPrecision int) error {
   return nil
 }
 
-// DivideDividendByDivisor - Divides the Dividend IntAry
-// field by the Divisor IntAry field. The results are
-// stored int IntAry fields Quotient and
+// DivideDividendByDivisor
+//
+//	Performs division on two StrMathOp member variables.
+//	StrMathOp.Dividend is divided by StrMathOp.Divisor. The results
+//	are stored in StrMathOp member variables, StrMathOp.Quotient and
+//	StrMathOp.Modulo.
+//
+//	Before calling this method, StrMathOp.Dividend and
+//	StrMathOp.Divisor must be properly initialized and configured with
+//	the desired values.
 func (sMathOp *StrMathOp) DivideDividendByDivisor() error {
 
+  var ePrefix *ePref.ErrPrefixDto
+  var err error
+
+  ePrefix,
+    err = ePref.ErrPrefixDto{}.NewIEmpty(
+    nil,
+    "StrMathOp.DivideDividendByDivisor",
+    "")
+
+  if err != nil {
+    return err
+  }
+
   sMathOp.N1 = sMathOp.Divisor
+
   compare := -1
+
   quotient := 0
+
   sN := fmt.Sprintf("%v", quotient)
-  sMathOp.N2.SetIntAryWithNumStr(sN)
+
+  err = sMathOp.N2.SetIntAryWithNumStr(sN)
+
+  if err != nil {
+
+    return &FuncReturnError{
+      ErrPrefix:  ePrefix.String(),
+      ReturnFunc: "err = sMathOp.N2.SetIntAryWithNumStr(sN)",
+      ErrContext: fmt.Sprintf("sN= '%v'", sN),
+      ErrMessage: err.Error(),
+    }
+  }
+
+  currentCompare := 0
 
   for compare < 1 {
+
+    currentCompare = compare
+
     quotient++
-    sMathOp.N2.IncrementIntegerOne()
+
+    err = sMathOp.N2.IncrementIntegerOne()
+
+    if err != nil {
+
+      return &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "err = sMathOp.N2.IncrementIntegerOne()",
+        ErrContext: fmt.Sprintf("compare= '%v'", compare),
+        ErrMessage: err.Error(),
+      }
+    }
+
     sMathOp.N3 = sMathOp.IFinal
-    sMathOp.MultiplyN1N2()
-    compare = sMathOp.IFinal.CompareSignedValues(&sMathOp.Dividend)
 
+    err = sMathOp.MultiplyN1N2()
+
+    if err != nil {
+
+      return &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "err = sMathOp.MultiplyN1N2()",
+        ErrContext: fmt.Sprintf("compare= '%v'", currentCompare),
+        ErrMessage: err.Error(),
+      }
+    }
+
+    compare, err = sMathOp.IFinal.CompareSignedValues(&sMathOp.Dividend)
+
+    if err != nil {
+
+      return &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "err = sMathOp.MultiplyN1N2()",
+        ErrContext: fmt.Sprintf("compare= '%v'", currentCompare),
+        ErrMessage: err.Error(),
+      }
+    }
   }
+
   quotient = quotient - 1
-  sN = fmt.Sprintf("%v", quotient)
-  sMathOp.Quotient.SetIntAryWithNumStr(sN)
 
-  if compare == 0 {
-    sMathOp.Modulo.SetIntAryToZero(0)
-    return nil
+  sN = fmt.Sprintf("%v", quotient)
+
+  err = sMathOp.Quotient.SetIntAryWithNumStr(sN)
+
+  if err != nil {
+
+    return &FuncReturnError{
+      ErrPrefix:  ePrefix.String(),
+      ReturnFunc: "err = sMathOp.Quotient.SetIntAryWithNumStr(sN)",
+      ErrContext: fmt.Sprintf("sN= '%v'", sN),
+      ErrMessage: err.Error(),
+    }
   }
+
+  // Always false
+  //if compare == 0 {
+  //	sMathOp.Modulo.SetIntAryToZero(0)
+  //	return nil
+  //}
 
   sMathOp.N1 = sMathOp.Dividend
+
   sMathOp.N2 = sMathOp.N3
+
   sMathOp.SubtractN1N2()
+
   sMathOp.Modulo = sMathOp.IFinal
+
   return nil
 }
 
