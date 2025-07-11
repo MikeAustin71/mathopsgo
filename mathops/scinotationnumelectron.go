@@ -3,27 +3,27 @@ package mathops
 import "sync"
 
 type scinotationnumElectron struct {
-  lock sync.Mutex
+	lock sync.Mutex
 }
 
 // SetExponentCharIfEmpty - If the exponent rune is empty,
 // this method will set the exponentChar value to 'e'.
 func (sciNotElectron *scinotationnumElectron) setExponentCharIfEmpty(
-  sciNotan *SciNotationNum) {
+	sciNotan *SciNotationNum) {
 
-  sciNotElectron.lock.Lock()
+	sciNotElectron.lock.Lock()
 
-  defer sciNotElectron.lock.Unlock()
+	defer sciNotElectron.lock.Unlock()
 
-  if sciNotan == nil {
-    return
-  }
+	if sciNotan == nil {
+		return
+	}
 
-  if sciNotan.exponentChar == 0 {
-    sciNotan.exponentChar = 'e'
-  }
+	if sciNotan.exponentChar == 0 {
+		sciNotan.exponentChar = 'e'
+	}
 
-  return
+	return
 }
 
 // setDecimalSeparatorChar
@@ -37,26 +37,26 @@ func (sciNotElectron *scinotationnumElectron) setExponentCharIfEmpty(
 //	However, the user has the option to customize this decimal
 //	separator character by calling this method.
 func (sciNotElectron *scinotationnumElectron) setDecimalSeparatorChar(
-  sciNotan *SciNotationNum,
-  decimalChar rune) {
+	sciNotan *SciNotationNum,
+	decimalChar rune) {
 
-  sciNotElectron.lock.Lock()
+	sciNotElectron.lock.Lock()
 
-  defer sciNotElectron.lock.Unlock()
+	defer sciNotElectron.lock.Unlock()
 
-  if sciNotan == nil {
-    return
-  }
+	if sciNotan == nil {
+		return
+	}
 
-  if decimalChar == 0 {
-    return
-  }
+	if decimalChar == 0 {
+		return
+	}
 
-  sciNotan.decimalSeparator = decimalChar
+	sciNotan.decimalSeparator = decimalChar
 
-  _ = sciNotan.significand.SetDecimalSeparator(decimalChar)
+	_ = sciNotan.significand.SetDecimalSeparator(decimalChar)
 
-  return
+	return
 }
 
 // setDecimalSeparatorIfEmpty
@@ -75,22 +75,22 @@ func (sciNotElectron *scinotationnumElectron) setDecimalSeparatorChar(
 //
 //	See method SciNotationNum.SetDecimalSeparatorChar() below.
 func (sciNotElectron *scinotationnumElectron) setDecimalSeparatorIfEmpty(
-  sciNotan *SciNotationNum) {
+	sciNotan *SciNotationNum) {
 
-  sciNotElectron.lock.Lock()
+	sciNotElectron.lock.Lock()
 
-  defer sciNotElectron.lock.Unlock()
+	defer sciNotElectron.lock.Unlock()
 
-  if sciNotan == nil {
-    return
-  }
+	if sciNotan == nil {
+		return
+	}
 
-  if sciNotan.decimalSeparator == 0 {
-    sciNotan.decimalSeparator = '.'
-    _ = sciNotan.significand.SetDecimalSeparator('.')
-  }
+	if sciNotan.decimalSeparator == 0 {
+		sciNotan.decimalSeparator = '.'
+		_ = sciNotan.significand.SetDecimalSeparator('.')
+	}
 
-  return
+	return
 }
 
 // setMantissaLength
@@ -112,24 +112,24 @@ func (sciNotElectron *scinotationnumElectron) setDecimalSeparatorIfEmpty(
 //	mantissa		= significand factional digits = '.652'
 //	exponent    = '8'  (10^8)
 func (sciNotElectron *scinotationnumElectron) setMantissaLength(
-  sciNotan *SciNotationNum,
-  mantissaLen uint) {
+	sciNotan *SciNotationNum,
+	mantissaLen uint) {
 
-  sciNotElectron.lock.Lock()
+	sciNotElectron.lock.Lock()
 
-  defer sciNotElectron.lock.Unlock()
+	defer sciNotElectron.lock.Unlock()
 
-  if sciNotan == nil {
-    return
-  }
+	if sciNotan == nil {
+		return
+	}
 
-  if mantissaLen == 0 {
-    mantissaLen = 2
-  }
+	if mantissaLen == 0 {
+		mantissaLen = 2
+	}
 
-  sciNotan.mantissaLength = mantissaLen
+	sciNotan.mantissaLength = mantissaLen
 
-  return
+	return
 }
 
 // setMantissaLengthIfEmpty
@@ -145,37 +145,37 @@ func (sciNotElectron *scinotationnumElectron) setMantissaLength(
 //	In the example scientific notation '2.652e+8', the mantissa is
 //	'.652'
 func (sciNotElectron *scinotationnumElectron) setMantissaLengthIfEmpty(
-  sciNotan *SciNotationNum) {
+	sciNotan *SciNotationNum) {
 
-  sciNotElectron.lock.Lock()
+	sciNotElectron.lock.Lock()
 
-  defer sciNotElectron.lock.Unlock()
+	defer sciNotElectron.lock.Unlock()
 
-  if sciNotan == nil {
-    return
-  }
+	if sciNotan == nil {
+		return
+	}
 
-  var significandPrecisionUint uint
-  var err error
+	var significandPrecisionUint uint
+	var err error
 
-  significandPrecisionUint, err = sciNotan.significand.GetPrecisionUint()
+	significandPrecisionUint, err = sciNotan.significand.GetPrecisionUint()
 
-  if err != nil {
+	if err != nil {
 
-    significandPrecisionUint = 0
-  }
+		significandPrecisionUint = 0
+	}
 
-  if sciNotan.mantissaLength == 0 {
+	if sciNotan.mantissaLength == 0 {
 
-    if significandPrecisionUint == 0 {
-      sciNotan.mantissaLength = 2
+		if significandPrecisionUint == 0 {
+			sciNotan.mantissaLength = 2
 
-    } else {
+		} else {
 
-      sciNotan.mantissaLength = significandPrecisionUint
-    }
+			sciNotan.mantissaLength = significandPrecisionUint
+		}
 
-  }
+	}
 
-  return
+	return
 }
