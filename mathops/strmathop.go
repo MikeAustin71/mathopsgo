@@ -3,6 +3,7 @@ package mathops
 import (
   "errors"
   "fmt"
+  ePref "github.com/MikeAustin71/errpref"
 )
 
 /*
@@ -86,33 +87,143 @@ func (sMathOp *StrMathOp) AddN1N2() error {
 
 // RaiseToPower
 //
-//	Raises the value of sMathOp.N1 Int Array to the power specified by
-//	the 'power' parameter passed to this method.
+//			Raises the value of sMathOp.N1 Int Array to the power specified by
+//			the 'power' parameter passed to this method.
 //
-//	N1 ^ power
+//			N1 ^ power
 //
-//	Before calling this method, sMathOp.N1 Int Array must
-//	be set to the desired value.
-func (sMathOp *StrMathOp) RaiseToPower(power int) error {
+//		 Requirements
+//		 ============
+//
+//			Before calling this method, sMathOp.N1 Int Array must
+//			be set to the desired value.
+//
+//		 If input parameter 'power' is less than zero, an error will be
+//		 returned.
+//
+//		 If input parameter 'internalPrecisionIncrement' is less than 50
+//		 'internalPrecisionIncrement' will be automatically reset to 50.
+//
+//	 Return Values
+//	 =============
+//
+//	 Upon completion, calculed values are returned in sMathOp.IFinal.
+func (sMathOp *StrMathOp) RaiseToPower(
+  power int,
+  internalPrecisionIncrement int) error {
 
-  if power < 0 {
-    return fmt.Errorf("error: power is less than zero - power= '%v'", power)
+  var ePrefix *ePref.ErrPrefixDto
+  var err error
+
+  ePrefix,
+    err = ePref.ErrPrefixDto{}.NewIEmpty(
+    nil,
+    "StrMathOp.RaiseToPower",
+    "")
+
+  if err != nil {
+    return err
   }
 
-  sMathOp.N1.SetInternalFlags()
+  if power < 0 {
 
-  sMathOp.IFinal = sMathOp.N1.CopyOut()
+    return &FuncReturnError{
+      ErrPrefix:  ePrefix.String(),
+      ReturnFunc: "",
+      ErrContext: fmt.Sprintf("power=%d", power),
+      ErrMessage: "Error: Input parameter 'power' is out of range!\n" +
+        "'power' is less than zero.",
+    }
+  }
+
+  err = sMathOp.N1.IsValid(ePrefix.XCpy("Validating sMathOp.N1").String())
+
+  if err != nil {
+
+    return &FuncReturnError{
+      ErrPrefix:  ePrefix.String(),
+      ReturnFunc: "err = sMathOp.N1.IsValid(ePrefix)",
+      ErrContext: "sMathOp.N1 is invalid!\n" +
+        "You must configure sMathOp.N1 correctly before calling\n" +
+        "this method.",
+      ErrMessage: err.Error(),
+    }
+  }
+
+  if internalPrecisionIncrement < 50 {
+    internalPrecisionIncrement = 50
+  }
+
+  err = sMathOp.N1.SetInternalFlags()
+
+  if err != nil {
+
+    return &FuncReturnError{
+      ErrPrefix:  ePrefix.String(),
+      ReturnFunc: "err = sMathOp.N1.SetInternalFlags()",
+      ErrContext: "",
+      ErrMessage: err.Error(),
+    }
+  }
+
+  sMathOp.IFinal, err = sMathOp.N1.CopyOut()
+
+  if err != nil {
+
+    return &FuncReturnError{
+      ErrPrefix:  ePrefix.String(),
+      ReturnFunc: "sMathOp.IFinal, err = sMathOp.N1.CopyOut()",
+      ErrContext: "",
+      ErrMessage: err.Error(),
+    }
+  }
 
   resultPrecision := sMathOp.N1.GetPrecision()
 
-  if sMathOp.N1.IsZero() {
-    sMathOp.IFinal.SetIntAryToZero(uint(resultPrecision))
+  sMathOpN1IsZero, err := sMathOp.N1.IsZero()
+
+  if err != nil {
+
+    return &FuncReturnError{
+      ErrPrefix:  ePrefix.String(),
+      ReturnFunc: "sMathOpN1IsZero, err := sMathOp.N1.IsZero()",
+      ErrContext: "",
+      ErrMessage: err.Error(),
+    }
+  }
+
+  if sMathOpN1IsZero {
+
+    err = sMathOp.IFinal.SetIntAryToZero(uint(resultPrecision))
+
+    if err != nil {
+
+      return &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "err = sMathOp.IFinal.SetIntAryToZero(uint(resultPrecision))",
+        ErrContext: fmt.Sprintf("resultPrecision= '%v'\n"+
+          "sMathOp.N1 = 0", uint(resultPrecision)),
+        ErrMessage: err.Error(),
+      }
+    }
+
     return nil
   }
 
   if power == 0 {
 
-    sMathOp.IFinal.SetIntAryToOne(resultPrecision)
+    err = sMathOp.IFinal.SetIntAryToOne(resultPrecision)
+
+    if err != nil {
+
+      return &FuncReturnError{
+        ErrPrefix:  ePrefix.String(),
+        ReturnFunc: "err = sMathOp.IFinal.SetIntAryToOne(resultPrecision)",
+        ErrContext: "power= 0",
+        ErrMessage: err.Error(),
+      }
+    }
+
     return nil
   }
 
@@ -123,7 +234,22 @@ func (sMathOp *StrMathOp) RaiseToPower(power int) error {
 
   resultPrecision = resultPrecision * power
 
-  sMathOp.IFinal.Pow(power, resultPrecision, resultPrecision+1500)
+  internalPrecision := resultPrecision + internalPrecisionIncrement
+
+  err = sMathOp.IFinal.Pow(power, resultPrecision, internalPrecision)
+
+  if err != nil {
+
+    return &FuncReturnError{
+      ErrPrefix:  ePrefix.String(),
+      ReturnFunc: "err = sMathOp.IFinal.Pow(power, resultPrecision, internalPrecision)",
+      ErrContext: fmt.Sprintf("resultPrecision= '%v'\n"+
+        "internalPrecisionIncrement= '%v'\n"+
+        "internalPrecision= '%v'",
+        resultPrecision, internalPrecisionIncrement, internalPrecision),
+      ErrMessage: err.Error(),
+    }
+  }
 
   return nil
 }
